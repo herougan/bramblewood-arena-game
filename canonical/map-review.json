@@ -76,11 +76,6 @@
      "by": "owner"
     },
     {
-     "id": "bee-knight",
-     "why": "Owner L2: carried from T-1 / T-2 (Flying)",
-     "by": "owner"
-    },
-    {
      "id": "cottontail",
      "why": "Owner L2: carried from T-1 / T-2",
      "by": "owner"
@@ -116,18 +111,48 @@
      "by": "owner"
     },
     {
-     "id": "ant-hill",
-     "why": "Owner L3: one of Map 0's two ant cards (and its high-cost card)",
-     "by": "owner"
-    },
-    {
      "id": "beaver-lumberjack",
      "why": "The Outskirts' river beaver, Map 0's Lumber maker",
      "by": "claude"
     },
     {
-     "id": "owl-sentinel",
-     "why": "An owl for the misty tree-line",
+     "id": "honey-bee",
+     "why": "Owner 11-01: kept (A third bee card)",
+     "by": "owner"
+    },
+    {
+     "id": "soldier-ant",
+     "why": "Owner 11-01: kept (A third ant card)",
+     "by": "owner"
+    },
+    {
+     "id": "worker-ant",
+     "why": "Owner 11-01: kept (An ant from T-3 to T-5)",
+     "by": "owner"
+    },
+    {
+     "id": "duck-paddler",
+     "why": "Owner 11-01: kept (Owner O9: Map 0 carries only T-1 / T-2 cards; a Base card THEME2 carried)",
+     "by": "owner"
+    },
+    {
+     "id": "chipmunk-forager",
+     "why": "Owner 11-01: kept (Owner O9: Map 0 carries only T-1 / T-2 cards; a Base card THEME2 carried)",
+     "by": "owner"
+    },
+    {
+     "id": "earthworm",
+     "why": "Carried from T-1 / T-2 (Map 0 may carry +2 from the tutorial)",
+     "by": "claude"
+    },
+    {
+     "id": "duckling",
+     "why": "Carried from T-1 / T-2; the Outskirts' river",
+     "by": "claude"
+    },
+    {
+     "id": "silver-minnow",
+     "why": "Carried from T-1 / T-2 (Duckling is a Baby card, not counted)",
      "by": "claude"
     }
    ],
@@ -153,32 +178,25 @@
      "by": "claude"
     },
     {
-     "id": "duck-paddler",
-     "why": "Owner O9: Map 0 carries only T-1 / T-2 cards; a Base card THEME2 carried",
+     "id": "bee-knight",
+     "why": "Owner 11-01: cut",
      "by": "owner"
     },
     {
-     "id": "chipmunk-forager",
-     "why": "Owner O9: Map 0 carries only T-1 / T-2 cards; a Base card THEME2 carried",
+     "id": "ant-hill",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "owl-sentinel",
+     "why": "Owner 11-01: cut",
      "by": "owner"
     }
    ],
    "maybe": [
     {
-     "id": "honey-bee",
-     "why": "A third bee card"
-    },
-    {
      "id": "forager-ant",
      "why": "A third ant card (Base)"
-    },
-    {
-     "id": "soldier-ant",
-     "why": "A third ant card"
-    },
-    {
-     "id": "worker-ant",
-     "why": "An ant from T-3 to T-5"
     },
     {
      "id": "blister-beetle",
@@ -352,11 +370,6 @@
      "by": "kept"
     },
     {
-     "id": "ant-hill",
-     "why": "Carried from Bramblewood Outskirts (Map 0); Meadow & woodland card",
-     "by": "kept"
-    },
-    {
      "id": "chipmunk-cavalry",
      "why": "Meadow & woodland card",
      "by": "kept"
@@ -369,11 +382,28 @@
     {
      "id": "owl-sentinel",
      "why": "Carried from Map 0: a woodland owl",
-     "by": "claude"
+     "by": "claude",
+     "flag": "unlikely",
+     "flagWhy": "Map 1 is one unique over (13/12); Woodcock and Robin cover its birds"
     },
     {
      "id": "bee-forager",
      "why": "Carried from Map 0: bees in the thistles",
+     "by": "claude"
+    },
+    {
+     "id": "hollow-belly-rat",
+     "why": "Owner 11-01: kept (Meadow & woodland card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "cottontail",
+     "why": "Carried from Map 0 / T-1; a meadow rabbit",
+     "by": "claude"
+    },
+    {
+     "id": "honey-bee",
+     "why": "Carried from Map 0; thistle flowers",
      "by": "claude"
     }
    ],
@@ -387,6 +417,11 @@
      "id": "cypress-root-lurker",
      "why": "A swamp cypress root, not a thistle wood; moved to Gatorback Swamp",
      "by": "claude"
+    },
+    {
+     "id": "ant-hill",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
     }
    ],
    "maybe": [
@@ -396,10 +431,6 @@
     },
     {
      "id": "glintsnatch-magpie",
-     "why": "Meadow & woodland card, on no list now"
-    },
-    {
-     "id": "hollow-belly-rat",
      "why": "Meadow & woodland card, on no list now"
     },
     {
@@ -454,11 +485,6 @@
      "by": "kept"
     },
     {
-     "id": "tide-pool-crab",
-     "why": "Coast & shore card",
-     "by": "kept"
-    },
-    {
      "id": "badger-lumberjack",
      "why": "Carried from Thistlewood (Map 1); biome Meadow & woodland; kept for the mix; the list's resource maker",
      "by": "kept"
@@ -487,6 +513,16 @@
      "id": "oystercatcher",
      "why": "A shorebird of the pebble beach",
      "by": "claude"
+    },
+    {
+     "id": "rock-pool-starfish",
+     "why": "Owner 11-01: kept (Coast & shore card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "dolphin-knight",
+     "why": "Owner 11-01: added to Pebble Beach (limits ignored)",
+     "by": "owner"
     }
    ],
    "cut": [
@@ -509,6 +545,11 @@
      "id": "oyster-bank",
      "why": "Owner Q1 (already off since THEME2)",
      "by": "owner"
+    },
+    {
+     "id": "tide-pool-crab",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
     }
    ],
    "maybe": [
@@ -526,10 +567,6 @@
     },
     {
      "id": "great-skua",
-     "why": "Coast & shore card, on no list now"
-    },
-    {
-     "id": "rock-pool-starfish",
      "why": "Coast & shore card, on no list now"
     },
     {
@@ -553,11 +590,6 @@
     {
      "id": "peregrine-stooper",
      "why": "Cliffs (sea cliffs, painted cliffs) card; skirmish reward of 3-5",
-     "by": "kept"
-    },
-    {
-     "id": "the-gannet-queen",
-     "why": "Cliffs (sea cliffs, painted cliffs) card; skirmish reward of 3-7",
      "by": "kept"
     },
     {
@@ -604,6 +636,11 @@
      "id": "gull-thief",
      "why": "Carried from Map 2: a gull on the seabird cliffs",
      "by": "claude"
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "why": "Owner 11-01: kept (The owner took it off the beach; a crab swarm fits sea cliffs no better)",
+     "by": "owner"
     }
    ],
    "cut": [
@@ -618,13 +655,13 @@
      "by": "claude"
     },
     {
-     "id": "fiddler-crab-swarm",
-     "why": "The owner took it off the beach; a crab swarm fits sea cliffs no better",
-     "by": "claude"
-    },
-    {
      "id": "oyster-bank",
      "why": "Owner Q1 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "the-gannet-queen",
+     "why": "Owner 11-01: cut",
      "by": "owner"
     }
    ],
@@ -714,13 +751,18 @@
      "by": "owner"
     },
     {
-     "id": "duckling",
-     "why": "Carried from T-1 / T-2: ducks on the hollow's water",
+     "id": "duck-paddler",
+     "why": "Carried from Map 0; pond duck",
      "by": "claude"
     },
     {
-     "id": "pond-trout",
-     "why": "Carried from T-1 / T-2: a trout in the hollow's river",
+     "id": "field-vole",
+     "why": "Carried from Map 1; a vole of the wet hollow",
+     "by": "claude"
+    },
+    {
+     "id": "slow-worm",
+     "why": "Carried from Map 1; damp hollow",
      "by": "claude"
     }
    ],
@@ -748,6 +790,16 @@
     {
      "id": "signal-crayfish",
      "why": "Owner Q2 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "duckling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "pond-trout",
+     "why": "Owner 11-01: cut",
      "by": "owner"
     }
    ],
@@ -806,16 +858,6 @@
      "by": "kept"
     },
     {
-     "id": "snapper-hatchling",
-     "why": "Swamp & bog card; first-clear card of 5-1",
-     "by": "kept"
-    },
-    {
-     "id": "caiman-hatchling",
-     "why": "Swamp & bog card",
-     "by": "kept"
-    },
-    {
      "id": "swamp-alligator",
      "why": "Swamp & bog card",
      "by": "kept"
@@ -849,6 +891,16 @@
      "id": "snapstick-turtle",
      "why": "Carried from Map 4: a snapping turtle in the swamp",
      "by": "claude"
+    },
+    {
+     "id": "anhinga-spearbird",
+     "why": "Owner 11-01: kept (Swamp & bog card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "box-turtle",
+     "why": "Carried from Map 4; a swamp turtle",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -881,6 +933,16 @@
      "id": "sphagnum-vole",
      "why": "Owner Q3 (already off since THEME2)",
      "by": "owner"
+    },
+    {
+     "id": "snapper-hatchling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "caiman-hatchling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
     }
    ],
    "maybe": [
@@ -902,10 +964,6 @@
     },
     {
      "id": "the-unremembered",
-     "why": "Swamp & bog card, on no list now"
-    },
-    {
-     "id": "anhinga-spearbird",
      "why": "Swamp & bog card, on no list now"
     }
    ]
@@ -943,17 +1001,7 @@
      "by": "kept"
     },
     {
-     "id": "bogfire-newt",
-     "why": "Swamp & bog card",
-     "by": "kept"
-    },
-    {
      "id": "raven-scout",
-     "why": "Swamp & bog card",
-     "by": "kept"
-    },
-    {
-     "id": "cane-toad",
      "why": "Swamp & bog card",
      "by": "kept"
     },
@@ -981,6 +1029,11 @@
      "id": "marsh-harrier",
      "why": "A marsh harrier over the dark swamp",
      "by": "claude"
+    },
+    {
+     "id": "lamprey",
+     "why": "Owner 11-01: kept (Owner Q4 (already off since THEME2))",
+     "by": "owner"
     }
    ],
    "cut": [
@@ -1000,11 +1053,6 @@
      "by": "owner"
     },
     {
-     "id": "lamprey",
-     "why": "Owner Q4 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
      "id": "lotus-frog",
      "why": "Owner Q4 (already off since THEME2)",
      "by": "owner"
@@ -1012,6 +1060,16 @@
     {
      "id": "cottonmouth-matriarch",
      "why": "Owner Q4 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "bogfire-newt",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "cane-toad",
+     "why": "Owner 11-01: cut",
      "by": "owner"
     }
    ],
@@ -1105,11 +1163,6 @@
      "by": "owner"
     },
     {
-     "id": "duckling",
-     "why": "Carried from T-1 / T-2: the pond's \"very territorial ducks\"",
-     "by": "claude"
-    },
-    {
      "id": "pond-algae",
      "why": "Carried from Map 4: lily-pond algae",
      "by": "claude"
@@ -1129,6 +1182,11 @@
     {
      "id": "great-crested-grebe",
      "why": "Owner Q4 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "duckling",
+     "why": "Owner 11-01: cut",
      "by": "owner"
     }
    ],
@@ -1182,11 +1240,6 @@
      "by": "kept"
     },
     {
-     "id": "ant-warrior",
-     "why": "Fungal hollow card",
-     "by": "kept"
-    },
-    {
      "id": "planarian-splitter",
      "why": "Fungal hollow card",
      "by": "kept"
@@ -1219,7 +1272,9 @@
     {
      "id": "cane-toad",
      "why": "Carried from Sable Swampmire (Map 6); kin biome (Swamp & bog); a high-cost card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "New here since you cut it on Map 6; Map 7 is two unique over"
     },
     {
      "id": "adder-ambusher",
@@ -1229,11 +1284,33 @@
     {
      "id": "bogfire-newt",
      "why": "Carried from Sable Swampmire (Map 6); kin biome (Swamp & bog)",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "New here since you cut it on Map 6; Map 7 is two unique over"
     },
     {
      "id": "garden-snail",
      "why": "A Base snail among the mushrooms",
+     "by": "claude"
+    },
+    {
+     "id": "corpse-flower-beetle",
+     "why": "Owner 11-01: kept (A rot beetle)",
+     "by": "owner"
+    },
+    {
+     "id": "earthworm",
+     "why": "Carried from Map 0; compost and fungi",
+     "by": "claude"
+    },
+    {
+     "id": "slow-worm",
+     "why": "Carried from Map 1; leaf litter",
+     "by": "claude"
+    },
+    {
+     "id": "worker-ant",
+     "why": "Carried from Map 0; ants farm fungus (Compost Grub is a Baby card, not counted)",
      "by": "claude"
     }
    ],
@@ -1242,6 +1319,11 @@
      "id": "peat-cutter-vole",
      "why": "The owner took it off the swamp; nothing ties it to mushrooms",
      "by": "claude"
+    },
+    {
+     "id": "ant-warrior",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
     }
    ],
    "maybe": [
@@ -1252,10 +1334,6 @@
     {
      "id": "fungus-gnat-cloud",
      "why": "Fungus gnats"
-    },
-    {
-     "id": "corpse-flower-beetle",
-     "why": "A rot beetle"
     }
    ]
   },
@@ -1274,7 +1352,9 @@
     {
      "id": "pelican-diver",
      "why": "Caves & burrows card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "The delve is two unique over (5/3)"
     },
     {
      "id": "open-ocean-hermit-crab",
@@ -1294,7 +1374,9 @@
     {
      "id": "tide-pool-crab",
      "why": "Carried from Pebble Beach (Map 2); Coast & shore card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "New here since you cut it on Pebble Beach; the delve is two unique over (5/3)"
     },
     {
      "id": "tidepool-trapper-crab",
@@ -1320,6 +1402,21 @@
      "id": "conch-herald",
      "why": "Carried from Pebble Beach (Map 2); Coast & shore card",
      "by": "kept"
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "why": "Owner 11-01: kept (Caves & burrows card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "driftwood-crab",
+     "why": "Carried from Pebble Beach; the grotto's shore",
+     "by": "claude"
+    },
+    {
+     "id": "rock-pool-starfish",
+     "why": "Carried from Pebble Beach; tide pools in the grotto",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -1352,10 +1449,6 @@
    "maybe": [
     {
      "id": "arc-bat",
-     "why": "Caves & burrows card, on no list now"
-    },
-    {
-     "id": "gallery-orb-weaver",
      "why": "Caves & burrows card, on no list now"
     },
     {
@@ -1424,22 +1517,7 @@
      "by": "kept"
     },
     {
-     "id": "whip-spider",
-     "why": "Caves & burrows card",
-     "by": "kept"
-    },
-    {
-     "id": "badger-stonemason",
-     "why": "Caves & burrows card",
-     "by": "kept"
-    },
-    {
      "id": "octopus-tactician",
-     "why": "Carried from Smugglers' Grotto (Map 7); Caves & burrows card",
-     "by": "kept"
-    },
-    {
-     "id": "trash-panda-trickster",
      "why": "Carried from Smugglers' Grotto (Map 7); Caves & burrows card",
      "by": "kept"
     },
@@ -1449,31 +1527,55 @@
      "by": "kept"
     },
     {
-     "id": "ant-warrior",
-     "why": "Carried from The Morel Hollow (Map 7); kin biome (Fungal hollow)",
-     "by": "kept"
+     "id": "grotto-lobster",
+     "why": "Owner 11-01: kept (Caves & burrows card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "malachite-golem",
+     "why": "Owner 11-01: kept (Caves & burrows card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "why": "Carried from Smugglers' Grotto (your maybe)",
+     "by": "claude"
+    },
+    {
+     "id": "hollow-belly-rat",
+     "why": "Carried from Map 1; a cave rat",
+     "by": "claude"
     }
    ],
-   "cut": [],
+   "cut": [
+    {
+     "id": "whip-spider",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "badger-stonemason",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "ant-warrior",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    }
+   ],
    "maybe": [
     {
      "id": "arc-bat",
      "why": "Caves & burrows card, on no list now"
     },
     {
-     "id": "gallery-orb-weaver",
-     "why": "Caves & burrows card, on no list now"
-    },
-    {
      "id": "geode-scorpion",
-     "why": "Caves & burrows card, on no list now"
-    },
-    {
-     "id": "grotto-lobster",
-     "why": "Caves & burrows card, on no list now"
-    },
-    {
-     "id": "malachite-golem",
      "why": "Caves & burrows card, on no list now"
     },
     {
@@ -1512,7 +1614,9 @@
     {
      "id": "ant-warrior",
      "why": "Carried from The Morel Hollow (Map 7); Fungal hollow card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "New here since you cut it on Map 7; the challenge allows 1 own card"
     },
     {
      "id": "planarian-splitter",
@@ -1543,6 +1647,11 @@
      "id": "truffle-piglet",
      "why": "Carried from The Morel Hollow (Map 7); Fungal hollow card",
      "by": "kept"
+    },
+    {
+     "id": "garden-snail",
+     "why": "Carried from Map 7 (Compost Grub is a Baby card, not counted)",
+     "by": "claude"
     }
    ],
    "cut": [],
@@ -1594,11 +1703,6 @@
      "by": "kept"
     },
     {
-     "id": "mudpuppy",
-     "why": "Mangrove & kelp card; first-clear card of 9-4",
-     "by": "kept"
-    },
-    {
      "id": "reef-shark",
      "why": "Mangrove & kelp card",
      "by": "kept"
@@ -1606,11 +1710,6 @@
     {
      "id": "sunbittern-strider",
      "why": "Mangrove & kelp card",
-     "by": "kept"
-    },
-    {
-     "id": "minnow-skitter",
-     "why": "Mangrove & kelp card; first-clear card of 9-2",
      "by": "kept"
     },
     {
@@ -1629,13 +1728,23 @@
      "by": "kept"
     },
     {
-     "id": "caiman-hatchling",
-     "why": "Carried from Gatorback Swamp (Map 5); kin biome (Swamp & bog)",
-     "by": "kept"
-    },
-    {
      "id": "fiddler-crab-swarm",
      "why": "Fiddler crabs live in mangrove mud; carried from Map 2",
+     "by": "claude"
+    },
+    {
+     "id": "proboscis-monkey",
+     "why": "Owner 11-01: kept (Mangrove & kelp card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "horseshoe-crab",
+     "why": "Owner 11-01: kept (Mangrove & kelp card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "sea-turtle-elder",
+     "why": "Carried from Pebble Beach; mangrove shallows",
      "by": "claude"
     }
    ],
@@ -1644,6 +1753,21 @@
      "id": "lodge-engineer",
      "why": "A river lodge builder; mangroves have no lodges",
      "by": "claude"
+    },
+    {
+     "id": "mudpuppy",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "minnow-skitter",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "caiman-hatchling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
     }
    ],
    "maybe": [
@@ -1653,14 +1777,6 @@
     },
     {
      "id": "mudflat-godwit",
-     "why": "Mangrove & kelp card, on no list now"
-    },
-    {
-     "id": "proboscis-monkey",
-     "why": "Mangrove & kelp card, on no list now"
-    },
-    {
-     "id": "horseshoe-crab",
      "why": "Mangrove & kelp card, on no list now"
     },
     {
@@ -1957,6 +2073,11 @@
      "id": "great-barracuda",
      "why": "Carried from Coral Current (Map 10); Reef & ocean card",
      "by": "kept"
+    },
+    {
+     "id": "hagfish-silencer",
+     "why": "A third own card for the delve (from the maybes); deep-sea",
+     "by": "claude"
     }
    ],
    "cut": [],
@@ -1967,10 +2088,6 @@
     },
     {
      "id": "dolphin-knight",
-     "why": "Reef & ocean card, on no list now"
-    },
-    {
-     "id": "hagfish-silencer",
      "why": "Reef & ocean card, on no list now"
     },
     {
@@ -1992,11 +2109,6 @@
     {
      "id": "cunning-vixen",
      "why": "Briar maze card; skirmish reward of 12-2",
-     "by": "kept"
-    },
-    {
-     "id": "hedgehog-scout",
-     "why": "Briar maze card; skirmish reward of 12-5",
      "by": "kept"
     },
     {
@@ -2035,11 +2147,6 @@
      "by": "kept"
     },
     {
-     "id": "quillback-elder",
-     "why": "Briar maze card",
-     "by": "kept"
-    },
-    {
      "id": "carrion-crow",
      "why": "Kin biome (Meadow & woodland); the list's resource maker",
      "by": "kept"
@@ -2063,6 +2170,16 @@
      "id": "hedgerow-shrew",
      "why": "Carried from Map 1: a hedgerow shrew in the hedge maze",
      "by": "claude"
+    },
+    {
+     "id": "quill-thorn-boar",
+     "why": "Owner 11-01: kept (Briar maze card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "dormouse",
+     "why": "Carried from Map 1; a hedge dormouse",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -2070,13 +2187,19 @@
      "id": "mountain-hare",
      "why": "An alpine hare in a hedge maze",
      "by": "claude"
+    },
+    {
+     "id": "hedgehog-scout",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "quillback-elder",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
     }
    ],
    "maybe": [
-    {
-     "id": "quill-thorn-boar",
-     "why": "Briar maze card, on no list now"
-    },
     {
      "id": "hedge-changeling",
      "why": "Briar maze card, on no list now"
@@ -2229,7 +2352,9 @@
     {
      "id": "tasmanian-devil",
      "why": "Redwood deep card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "Map 13 is one unique over; not a redwood animal"
     },
     {
      "id": "stag-knight",
@@ -2265,6 +2390,11 @@
      "id": "cunning-vixen",
      "why": "Carried from The Briar Maze (Map 12); kin biome (Briar maze)",
      "by": "kept"
+    },
+    {
+     "id": "owl-nightwatch",
+     "why": "Carried from Map 7; an owl of the old trees",
+     "by": "claude"
     }
    ],
    "cut": [],
@@ -2344,6 +2474,11 @@
      "id": "venomlord-serpent",
      "why": "Carried from Gatorback Swamp (Map 5); Swamp & bog card",
      "by": "kept"
+    },
+    {
+     "id": "anhinga-spearbird",
+     "why": "Carried from Map 5 (kept there)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -2378,10 +2513,6 @@
     {
      "id": "the-unremembered",
      "why": "Swamp & bog card, on no list now"
-    },
-    {
-     "id": "anhinga-spearbird",
-     "why": "Swamp & bog card, on no list now"
     }
    ]
   },
@@ -2408,11 +2539,6 @@
      "by": "kept"
     },
     {
-     "id": "weaver-bird",
-     "why": "Savanna card; first-clear card of 14-3",
-     "by": "kept"
-    },
-    {
      "id": "springbok-pronker",
      "why": "Savanna card; first-clear card of 14-1",
      "by": "kept"
@@ -2430,16 +2556,6 @@
     {
      "id": "pangolin-roller",
      "why": "Savanna card",
-     "by": "kept"
-    },
-    {
-     "id": "meerkat-burrower",
-     "why": "Savanna card",
-     "by": "kept"
-    },
-    {
-     "id": "lodge-engineer",
-     "why": "Carried from Lilypad Reach (Map 6); kin biome (Village & keep); the list's resource maker",
      "by": "kept"
     },
     {
@@ -2461,12 +2577,37 @@
      "id": "plains-zebra",
      "why": "A plains zebra for the savanna (was on no list)",
      "by": "claude"
+    },
+    {
+     "id": "acacia-giraffe",
+     "why": "Owner 11-01: kept (Savanna card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "hoopoe-herald",
+     "why": "Owner 11-01: kept (Owner Q6; kept on SPECIAL as the first-clear card of 14-4)",
+     "by": "owner"
+    },
+    {
+     "id": "carrion-crow",
+     "why": "Carried from Map 12; savanna scavenger",
+     "by": "claude"
     }
    ],
    "cut": [
     {
-     "id": "hoopoe-herald",
-     "why": "Owner Q6; kept on SPECIAL as the first-clear card of 14-4",
+     "id": "weaver-bird",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "meerkat-burrower",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "lodge-engineer",
+     "why": "Owner 11-01: cut",
      "by": "owner"
     }
    ],
@@ -2485,10 +2626,6 @@
     },
     {
      "id": "rabid-jackal",
-     "why": "Savanna card, on no list now"
-    },
-    {
-     "id": "acacia-giraffe",
      "why": "Savanna card, on no list now"
     },
     {
@@ -2535,11 +2672,6 @@
      "by": "kept"
     },
     {
-     "id": "stable-colt",
-     "why": "Long grass card",
-     "by": "kept"
-    },
-    {
      "id": "warhorse-charger",
      "why": "Long grass card",
      "by": "kept"
@@ -2573,6 +2705,11 @@
      "id": "hedgehog-herbalist",
      "why": "Carried from The Sunken Grove (Map 13); kin biome (Meadow & woodland)",
      "by": "kept"
+    },
+    {
+     "id": "armory",
+     "why": "Owner 11-01: kept (kin biome: Village & keep card, on no list now)",
+     "by": "owner"
     }
    ],
    "cut": [
@@ -2595,16 +2732,17 @@
      "id": "courier-pigeon",
      "why": "Owner Q6 (already off since THEME2)",
      "by": "owner"
+    },
+    {
+     "id": "stable-colt",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
     }
    ],
    "maybe": [
     {
      "id": "wandering-traveller",
      "why": "Long grass card, on no list now"
-    },
-    {
-     "id": "armory",
-     "why": "kin biome: Village & keep card, on no list now"
     },
     {
      "id": "carrion-fly-swarm",
@@ -2673,6 +2811,11 @@
      "id": "golden-eagle-diver",
      "why": "Carried from Gannet Cliffs (Map 3); Mountain & sky card",
      "by": "kept"
+    },
+    {
+     "id": "vigil-owl",
+     "why": "The challenge's one own card (from the maybes)",
+     "by": "claude"
     }
    ],
    "cut": [],
@@ -2687,10 +2830,6 @@
     },
     {
      "id": "storm-heron",
-     "why": "Mountain & sky card, on no list now"
-    },
-    {
-     "id": "vigil-owl",
      "why": "Mountain & sky card, on no list now"
     },
     {
@@ -2723,11 +2862,6 @@
     {
      "id": "alpha-howler",
      "why": "Taiga card",
-     "by": "kept"
-    },
-    {
-     "id": "frost-hare-sprinter",
-     "why": "Taiga card; first-clear card of 16-2",
      "by": "kept"
     },
     {
@@ -2771,13 +2905,18 @@
      "by": "kept"
     },
     {
-     "id": "fawn-scout",
-     "why": "Carried from The Redwood Deep (Map 13); kin biome (Redwood deep)",
-     "by": "kept"
-    },
-    {
      "id": "pinecone-sapper",
      "why": "Pinecones for the Pinewood Taiga",
+     "by": "claude"
+    },
+    {
+     "id": "lunar-howler",
+     "why": "Owner 11-01: kept (Taiga card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "swift-fox",
+     "why": "Carried from Map 13; forest fox",
      "by": "claude"
     }
    ],
@@ -2786,13 +2925,19 @@
      "id": "trickster-fox",
      "why": "Owner Q6: \"not snow themed enough\"",
      "by": "owner"
+    },
+    {
+     "id": "frost-hare-sprinter",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "fawn-scout",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
     }
    ],
    "maybe": [
-    {
-     "id": "lunar-howler",
-     "why": "Taiga card, on no list now"
-    },
     {
      "id": "musk-ox-calf",
      "why": "Taiga card, on no list now"
@@ -2832,7 +2977,9 @@
     {
      "id": "badger-stonemason",
      "why": "Carried from Caves & Alcoves (Map 8); Caves & burrows card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "New here since you cut it on Map 8; the delve is two unique over"
     },
     {
      "id": "cave-olm",
@@ -2867,11 +3014,23 @@
     {
      "id": "whip-spider",
      "why": "Carried from Caves & Alcoves (Map 8); Caves & burrows card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "New here since you cut it on Map 8"
     },
     {
      "id": "glimmer-spider",
      "why": "The Glimmer Depths' own spider (the crystal theme)",
+     "by": "claude"
+    },
+    {
+     "id": "grotto-lobster",
+     "why": "Carried from Map 8 (kept there)",
+     "by": "claude"
+    },
+    {
+     "id": "malachite-golem",
+     "why": "Carried from Map 8 (kept there)",
      "by": "claude"
     }
    ],
@@ -2900,10 +3059,6 @@
      "why": "Caves & burrows card, on no list now"
     },
     {
-     "id": "grotto-lobster",
-     "why": "Caves & burrows card, on no list now"
-    },
-    {
      "id": "irradiated-glow-wyrm",
      "why": "Caves & burrows card, on no list now"
     }
@@ -2923,11 +3078,6 @@
     },
     {
      "id": "walrus-icebreaker",
-     "why": "Tundra & ice card; skirmish reward of 17-8",
-     "by": "kept"
-    },
-    {
-     "id": "wolfsbane-alpha",
      "why": "Tundra & ice card; skirmish reward of 17-8",
      "by": "kept"
     },
@@ -2979,20 +3129,34 @@
     {
      "id": "frost-hare-sprinter",
      "why": "Carried from The Pinewood Taiga (Map 16); Tundra & ice card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "New here since you cut it on Map 16; Map 17 is one unique over"
     },
     {
      "id": "mountain-hare",
      "why": "Carried from Eyrie Heights (Map 11); Tundra & ice card",
      "by": "kept"
-    }
-   ],
-   "cut": [],
-   "maybe": [
+    },
     {
      "id": "beluga",
-     "why": "Tundra & ice card, on no list now"
+     "why": "Owner 11-01: kept (Tundra & ice card, on no list now)",
+     "by": "owner"
     },
+    {
+     "id": "woodland-caribou",
+     "why": "Carried from Map 16; tundra caribou",
+     "by": "claude"
+    }
+   ],
+   "cut": [
+    {
+     "id": "wolfsbane-alpha",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    }
+   ],
+   "maybe": [
     {
      "id": "frostmoon-howler",
      "why": "Tundra & ice card, on no list now"
@@ -3017,11 +3181,6 @@
   },
   "md": {
    "chosen": [
-    {
-     "id": "obsidian-scorpion",
-     "why": "Glass dunes card; skirmish reward of 18-5",
-     "by": "kept"
-    },
     {
      "id": "antlion-pit",
      "why": "Glass dunes card; skirmish reward of 18-6",
@@ -3080,7 +3239,9 @@
     {
      "id": "meerkat-burrower",
      "why": "Carried from Savanna Reaches (Map 14); Glass dunes card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "New here since you cut it on Map 14; Map 18 is one unique over"
     },
     {
      "id": "bison-bulldozer",
@@ -3090,6 +3251,16 @@
     {
      "id": "spitting-cobra",
      "why": "Carried from Map 14: a cobra of the dry country",
+     "by": "claude"
+    },
+    {
+     "id": "glass-golem",
+     "why": "Owner 11-01: kept (Glass dunes card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "hollow-belly-rat",
+     "why": "Carried from Map 1 (your maybe)",
      "by": "claude"
     }
    ],
@@ -3103,6 +3274,11 @@
      "id": "static-fennec",
      "why": "Owner Q6 (already off since THEME2)",
      "by": "owner"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
     }
    ],
    "maybe": [
@@ -3115,19 +3291,11 @@
      "why": "Glass dunes card, on no list now"
     },
     {
-     "id": "glass-golem",
-     "why": "Glass dunes card, on no list now"
-    },
-    {
      "id": "inland-taipan",
      "why": "Glass dunes card, on no list now"
     },
     {
      "id": "glowing-gecko",
-     "why": "Glass dunes card, on no list now"
-    },
-    {
-     "id": "hollow-belly-rat",
      "why": "Glass dunes card, on no list now"
     }
    ]
@@ -3162,7 +3330,9 @@
     {
      "id": "weaver-bird",
      "why": "Carried from Savanna Reaches (Map 14); kin biome (Savanna)",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "New here since you cut it on Map 14; the delve is one unique over"
     },
     {
      "id": "leafcutter-gardener",
@@ -3197,6 +3367,11 @@
     {
      "id": "camouflage-frog",
      "why": "Carried from Map 6: a tree frog hiding in the leaves",
+     "by": "claude"
+    },
+    {
+     "id": "proboscis-monkey",
+     "why": "Carried from Map 9; canopy monkey",
      "by": "claude"
     }
    ],
@@ -3282,16 +3457,6 @@
      "by": "kept"
     },
     {
-     "id": "quill-volley",
-     "why": "Volcanic & ash card; skirmish reward of 19-2",
-     "by": "kept"
-    },
-    {
-     "id": "yeti-chieftain",
-     "why": "Volcanic & ash card; skirmish reward of 19-6",
-     "by": "kept"
-    },
-    {
      "id": "cinder-stoker",
      "why": "Volcanic & ash card; first-clear card of 19-1",
      "by": "kept"
@@ -3302,22 +3467,12 @@
      "by": "kept"
     },
     {
-     "id": "porcupine-roller",
-     "why": "Volcanic & ash card",
-     "by": "kept"
-    },
-    {
      "id": "magma-titan",
      "why": "Volcanic & ash card",
      "by": "kept"
     },
     {
      "id": "glacier-wolf-pack",
-     "why": "Volcanic & ash card",
-     "by": "kept"
-    },
-    {
-     "id": "phoenix-fledgling",
      "why": "Volcanic & ash card",
      "by": "kept"
     },
@@ -3345,16 +3500,48 @@
      "id": "obsidian-scorpion",
      "why": "Carried from The Glass Dunes (Map 18); Volcanic & ash card",
      "by": "kept"
-    }
-   ],
-   "cut": [],
-   "maybe": [
-    {
-     "id": "ember-wisp",
-     "why": "Volcanic & ash card, on no list now"
     },
     {
      "id": "granite-ox-golem",
+     "why": "Owner 11-01: kept (Volcanic & ash card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "pit-glutton",
+     "why": "Owner 11-01: kept (Volcanic & ash card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "why": "Carried from Map 8; volcanic vents",
+     "by": "claude"
+    }
+   ],
+   "cut": [
+    {
+     "id": "quill-volley",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "yeti-chieftain",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "porcupine-roller",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "phoenix-fledgling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    }
+   ],
+   "maybe": [
+    {
+     "id": "ember-wisp",
      "why": "Volcanic & ash card, on no list now"
     },
     {
@@ -3367,10 +3554,6 @@
     },
     {
      "id": "pall-wraith",
-     "why": "Volcanic & ash card, on no list now"
-    },
-    {
-     "id": "pit-glutton",
      "why": "Volcanic & ash card, on no list now"
     }
    ]
@@ -3441,6 +3624,11 @@
      "id": "dune-packrat",
      "why": "Carried from The Glass Dunes (Map 18); kin biome (Glass dunes); the list's resource maker",
      "by": "kept"
+    },
+    {
+     "id": "trapdoor-spider",
+     "why": "A third own card for the delve (from the maybes)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -3461,10 +3649,6 @@
     }
    ],
    "maybe": [
-    {
-     "id": "trapdoor-spider",
-     "why": "Pale desert card, on no list now"
-    },
     {
      "id": "pale-oryx",
      "why": "Pale desert card, on no list now"
@@ -3546,11 +3730,6 @@
      "by": "kept"
     },
     {
-     "id": "echidna-quillshot",
-     "why": "Carried from Ashen Spurn (Map 19); Volcanic & ash card",
-     "by": "kept"
-    },
-    {
      "id": "gorge-wyrm",
      "why": "A wyrm of the peak's gorges",
      "by": "claude"
@@ -3559,6 +3738,11 @@
      "id": "fumarole-ibex",
      "why": "An ibex on the fuming mountain slopes",
      "by": "claude"
+    },
+    {
+     "id": "pit-glutton",
+     "why": "Owner 11-01: kept (Volcanic & ash card, on no list now)",
+     "by": "owner"
     }
    ],
    "cut": [
@@ -3570,6 +3754,11 @@
     {
      "id": "bear-cub",
      "why": "Owner Q6",
+     "by": "owner"
+    },
+    {
+     "id": "echidna-quillshot",
+     "why": "Owner 11-01: cut",
      "by": "owner"
     }
    ],
@@ -3592,10 +3781,6 @@
     },
     {
      "id": "pall-wraith",
-     "why": "Volcanic & ash card, on no list now"
-    },
-    {
-     "id": "pit-glutton",
      "why": "Volcanic & ash card, on no list now"
     }
    ]
@@ -3737,7 +3922,9 @@
     {
      "id": "pack-mule",
      "why": "Carried from The Sundered Peak (Map 20); Volcanic & ash card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "The Lair is one card over its 14; a mule in a dragon's lair"
     },
     {
      "id": "obsidian-scorpion",
@@ -3760,13 +3947,18 @@
      "by": "kept"
     },
     {
-     "id": "phoenix-fledgling",
-     "why": "Carried from Map 19: a fire bird for the dragon's lair",
+     "id": "magma-wraith",
+     "why": "Carried from Map 20: the lair's molten dead",
      "by": "claude"
     },
     {
-     "id": "magma-wraith",
-     "why": "Carried from Map 20: the lair's molten dead",
+     "id": "granite-ox-golem",
+     "why": "Owner 11-01: kept (Volcanic & ash card, on no list now)",
+     "by": "owner"
+    },
+    {
+     "id": "salamander-pyromancer",
+     "why": "The Lair's fifth own card (Fire-drake Hatchling is a Baby card, not counted); from the maybes",
      "by": "claude"
     }
    ],
@@ -3780,13 +3972,14 @@
      "id": "bear-cub",
      "why": "The owner took it off Map 20; the same call for its lair",
      "by": "claude"
+    },
+    {
+     "id": "phoenix-fledgling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
     }
    ],
    "maybe": [
-    {
-     "id": "salamander-pyromancer",
-     "why": "Volcanic & ash card, on no list now"
-    },
     {
      "id": "the-sixfold",
      "why": "Volcanic & ash card, on no list now"
@@ -3797,10 +3990,6 @@
     },
     {
      "id": "ember-wisp",
-     "why": "Volcanic & ash card, on no list now"
-    },
-    {
-     "id": "granite-ox-golem",
      "why": "Volcanic & ash card, on no list now"
     },
     {
@@ -4178,7 +4367,9 @@
     {
      "id": "badger-berserker",
      "why": "Kin biome (Caves & burrows); first-clear card of 22-5",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "Map 22 is one unique over; only a tutorial card before"
     },
     {
      "id": "cinder-gecko",
@@ -4229,6 +4420,11 @@
      "id": "ember-jackal",
      "why": "Carried from Volcano Lair (Map 20); Volcanic & ash card",
      "by": "kept"
+    },
+    {
+     "id": "glacier-wolf-pack",
+     "why": "Carried from Map 19; ice and fire",
+     "by": "claude"
     }
    ],
    "cut": [],
@@ -4400,7 +4596,9 @@
     {
      "id": "quill-volley",
      "why": "Carried from Ashen Spurn (Map 19); Volcanic & ash card",
-     "by": "kept"
+     "by": "kept",
+     "flag": "unlikely",
+     "flagWhy": "New here since you cut it on Map 19; the delve is one unique over"
     },
     {
      "id": "ashbone-ghoul",
@@ -4431,6 +4629,11 @@
      "id": "phoenix-fledgling",
      "why": "Carried from Ashen Spurn (Map 19); Volcanic & ash card",
      "by": "kept"
+    },
+    {
+     "id": "cinder-stoker",
+     "why": "Carried from Map 19; a foundry stoker",
+     "by": "claude"
     }
    ],
    "cut": [],
@@ -4567,5 +4770,6 @@
     }
    ]
   }
- }
+ },
+ "theme4": "THEME4 (2026-11-01): the owner's picks folded (tools/theme4/apply_2026_11_01.py); chosen entries may carry flag \"unlikely\" + flagWhy (Claude's flag, still on the list)."
 }

@@ -4,6 +4,15 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-01 00:29: the owner's notes (with his Map cards export)
+- HH1 (proposal, data + UI13): a card kind beside rarity: Base, Baby, Faction ("Starter" cards you start with are Faction). Baby = eggs, hatchlings, kits, cubs, pups, calves, chicks, fry, Duckling, Compost Grub (list in tools/theme4/plan_2026_11_01.py BABY). Baby cards do not count toward a map list's own / carried numbers, and the Map cards view shows them (today eggs and hatchlings are missing there).
+- HH2 (THEME4, done 11-01): the owner's export folded in road order from Map 0 (docs/balance/owner-map-cards-export-2026-11-01.json -> canonical/map-pools.json and map-review.json, tools/theme4/). A card cut on an earlier map counts as new on the later one. Claude filled the carried slots and flagged over-limit cards "Unlikely" (still on the list; flag + flagWhy in map-review.json).
+- HH3 (UI13): edit a card from the Map cards view (open the card editor on a tile).
+- HH4 (CONTENT, UI13 + engine): Torch, common equipment: the equipped creature gets Illuminated. Found on Caves & Alcoves by clicking an interactable that only becomes clickable once a firepit lights it up.
+- HH5 (THEME4, done): fill spare carried slots by theme and past cards; Map 0 and Map 1 may have +1 own card; Map 0 may carry +2 (cards from the tutorial).
+- HH6 (THEME4, done): Dolphin Knight added to Pebble Beach (limits ignored; it is Rare, so it breaks Rare-from-Map-10 there).
+- HH7 (UI13): the Map cards view shows an "Unlikely" pill (with flagWhy) on flagged chosen cards.
+
 ## 10-31 23:38: the owner's notes
 - GG1 (UI12, tutorial): the "draw 1 card per turn" step becomes a tooltip over the deck that fades after 5 s: no action needed, no grey-out. The next tutorial step plays as usual, 5 s later (push the previous step's timing to make room).
 - GG2 (UI12, auth, top priority): in an incognito Chrome tab the owner signed out, then signed in with Google again: same account, but progress was reset to the tutorial and he was asked for a name again (once; later sign-ins kept his new Map 0 progress, so the old progress was overwritten). Find the cause (likely: the fresh local state is saved, or the name / tutorial flow starts, before the cloud save has loaded, and then overwrites it) and make it impossible: a fresh or emptier local save never replaces a richer cloud save. Read-only SQL on the saves is fine to confirm.

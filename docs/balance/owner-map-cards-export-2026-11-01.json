@@ -1,0 +1,1575 @@
+{
+ "exported": "2026-10-31T16:28:03.115Z",
+ "lists": [
+  {
+   "map": "Map 0 · Bramblewood Outskirts",
+   "mapId": "m1",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "honey-bee",
+    "soldier-ant",
+    "worker-ant",
+    "duck-paddler",
+    "chipmunk-forager"
+   ],
+   "cutNow": [
+    "bee-knight",
+    "ant-hill",
+    "owl-sentinel"
+   ],
+   "chosen": [
+    "crossed-eyes",
+    "bee-knight",
+    "cottontail",
+    "chipmunk-skirmisher",
+    "terrier-pup",
+    "house-cat",
+    "bee-forager",
+    "bee-sentry",
+    "ant-scout",
+    "ant-hill",
+    "beaver-lumberjack",
+    "owl-sentinel"
+   ],
+   "maybe": [
+    "honey-bee",
+    "forager-ant",
+    "soldier-ant",
+    "worker-ant",
+    "blister-beetle",
+    "bog-shrew"
+   ],
+   "cut": [
+    "feral-tomcat",
+    "chipmunk-cavalry",
+    "cypress-root-lurker",
+    "marsh-mallow-hare",
+    "duck-paddler",
+    "chipmunk-forager"
+   ]
+  },
+  {
+   "map": "Map 0 · Bramblewood Outskirts",
+   "mapId": "m1",
+   "list": "Submap: 🎓 Tutorial T-1 / T-2",
+   "listKey": "sub:mtut12",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "bee-knight",
+    "earthworm",
+    "pond-trout",
+    "silver-minnow",
+    "duckling",
+    "cottontail",
+    "crossed-eyes"
+   ],
+   "maybe": [
+    "honey-bee",
+    "river-carp",
+    "garden-snail",
+    "otter-kit",
+    "guppy",
+    "blister-beetle"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 0 · Bramblewood Outskirts",
+   "mapId": "m1",
+   "list": "Submap: 🎓 Tutorial T-3 to T-5",
+   "listKey": "sub:mtut",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "ash-cloud-condor",
+    "badger-berserker",
+    "bee-knight",
+    "burrow-rabbit",
+    "caustic-scorpion",
+    "dynamite-packrat",
+    "eagle-sharpshooter",
+    "earthworm",
+    "golden-eagle-diver",
+    "gull-thief",
+    "otter-paddler",
+    "pond-trout",
+    "rockslide-ram",
+    "scree-goat",
+    "thornwood-palisade",
+    "toucan-courier",
+    "trash-panda-trickster",
+    "worker-ant"
+   ],
+   "maybe": [
+    "honey-bee",
+    "garden-snail",
+    "forager-ant"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 0 · Bramblewood Outskirts",
+   "mapId": "m1",
+   "list": "Submap: 🌿 The Old Bramble",
+   "listKey": "sub:mo",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "ent",
+    "echidna-quillshot",
+    "dhole-matriarch",
+    "shimmerwing-stag",
+    "thorn-shrike",
+    "gatling-hog",
+    "quillguard",
+    "lucky-hopper",
+    "sergeant-bramblefox",
+    "bramblewood-lynx",
+    "wolf-spider-mother",
+    "taiga-lynx",
+    "hedgehog-herbalist"
+   ],
+   "maybe": [
+    "thornwood-palisade",
+    "elder-willow",
+    "heartwood-treant",
+    "strangler-vine",
+    "corpse-flower-beetle",
+    "carrion-fly-swarm"
+   ],
+   "cut": [
+    "owl-sentinel",
+    "terrier-pup",
+    "chipmunk-cavalry",
+    "chipmunk-skirmisher",
+    "feral-tomcat",
+    "glacier-wolf-pack",
+    "cypress-root-lurker",
+    "house-cat",
+    "marsh-mallow-hare",
+    "dune-packrat"
+   ]
+  },
+  {
+   "map": "Map 1 · Thistlewood",
+   "mapId": "mf",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "hollow-belly-rat"
+   ],
+   "cutNow": [
+    "ant-hill"
+   ],
+   "chosen": [
+    "cricket-drummer",
+    "badger-lumberjack",
+    "dormouse",
+    "field-mouse",
+    "field-vole",
+    "bramble-sprout",
+    "hedgerow-shrew",
+    "robin-redbreast",
+    "slow-worm",
+    "woodcock-lookout",
+    "ant-hill",
+    "chipmunk-cavalry",
+    "chipmunk-skirmisher",
+    "owl-sentinel",
+    "bee-forager"
+   ],
+   "maybe": [
+    "bee-drone",
+    "glintsnatch-magpie",
+    "hollow-belly-rat",
+    "moonlit-hare",
+    "puddle-skimmer",
+    "river-mink"
+   ],
+   "cut": [
+    "fire-ant-raft",
+    "cypress-root-lurker"
+   ]
+  },
+  {
+   "map": "Map 1 · Thistlewood",
+   "mapId": "mf",
+   "list": "Submap: 🍀 Clovermead",
+   "listKey": "sub:mq",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "lucky-hopper",
+    "field-mouse",
+    "field-vole",
+    "hedgerow-shrew",
+    "robin-redbreast",
+    "slow-worm",
+    "woodcock-lookout",
+    "bramble-sprout",
+    "cricket-drummer",
+    "badger-lumberjack",
+    "ant-hill",
+    "bee-forager",
+    "cottontail"
+   ],
+   "maybe": [
+    "carrion-fly-swarm",
+    "corpse-flower-beetle",
+    "firetail-trickster",
+    "gnawed-matriarch",
+    "heartwood-treant",
+    "king-maker"
+   ],
+   "cut": [
+    "house-cat"
+   ]
+  },
+  {
+   "map": "Map 2 · Pebble Beach",
+   "mapId": "mb",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "rock-pool-starfish"
+   ],
+   "cutNow": [
+    "tide-pool-crab"
+   ],
+   "chosen": [
+    "conch-herald",
+    "old-shell",
+    "open-ocean-hermit-crab",
+    "pincushion-urchin",
+    "conch-crawler",
+    "gull-thief",
+    "sea-turtle-elder",
+    "tide-pool-crab",
+    "badger-lumberjack",
+    "beaver-lumberjack",
+    "bramble-sprout",
+    "cricket-drummer",
+    "driftwood-crab",
+    "oystercatcher"
+   ],
+   "maybe": [
+    "fulmar-spitter",
+    "shoal-shark",
+    "beachcomber-sanderling",
+    "great-skua",
+    "rock-pool-starfish",
+    "sanderling"
+   ],
+   "cut": [
+    "fiddler-crab-swarm",
+    "grey-seal-bull",
+    "tidepool-trapper-crab",
+    "oyster-bank"
+   ]
+  },
+  {
+   "map": "Map 2 · Pebble Beach",
+   "mapId": "mb",
+   "list": "Submap: 🪷 Lilypad Reach",
+   "listKey": "sub:mp",
+   "keep": [],
+   "cutNow": [
+    "duckling"
+   ],
+   "chosen": [
+    "riverworks-bastion",
+    "lodge-engineer",
+    "old-sturgeon",
+    "water-shrew",
+    "box-turtle",
+    "muskrat-lodgekeeper",
+    "platypus-spur",
+    "pyrenean-desman",
+    "snapstick-turtle",
+    "water-vole",
+    "muskrat-reedgatherer",
+    "alley-cat",
+    "duckling",
+    "pond-algae"
+   ],
+   "maybe": [
+    "lotus-frog",
+    "dam-keeper-beaver",
+    "beaver-builder",
+    "elder-tortoise",
+    "otter-centurion",
+    "otter-scout"
+   ],
+   "cut": [
+    "shallows-fry",
+    "fiddler-crab-swarm",
+    "great-crested-grebe"
+   ]
+  },
+  {
+   "map": "Map 2 · Pebble Beach",
+   "mapId": "mb",
+   "list": "Submap: 🕳️ Smugglers' Grotto",
+   "listKey": "sub:mg",
+   "keep": [
+    "gallery-orb-weaver"
+   ],
+   "cutNow": [],
+   "chosen": [
+    "octopus-tactician",
+    "trash-panda-trickster",
+    "pelican-diver",
+    "open-ocean-hermit-crab",
+    "gull-thief",
+    "pincushion-urchin",
+    "tide-pool-crab",
+    "tidepool-trapper-crab",
+    "grey-seal-bull",
+    "sea-turtle-elder",
+    "conch-crawler",
+    "conch-herald"
+   ],
+   "maybe": [
+    "arc-bat",
+    "gallery-orb-weaver",
+    "geode-scorpion",
+    "grotto-lobster",
+    "malachite-golem",
+    "quarry-troll"
+   ],
+   "cut": [
+    "fiddler-crab-swarm",
+    "sulfur-vent-crab",
+    "shallows-fry",
+    "beaver-builder",
+    "duckling"
+   ]
+  },
+  {
+   "map": "Map 3 · Gannet Cliffs",
+   "mapId": "mc",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "fiddler-crab-swarm"
+   ],
+   "cutNow": [
+    "the-gannet-queen"
+   ],
+   "chosen": [
+    "golden-eagle-diver",
+    "puffin-diver",
+    "peregrine-stooper",
+    "the-gannet-queen",
+    "kittiwake-flock",
+    "peak-condor",
+    "red-billed-chough",
+    "razorbill",
+    "gannet-nestweaver",
+    "conch-crawler",
+    "conch-herald",
+    "feral-tomcat",
+    "gull-thief"
+   ],
+   "maybe": [
+    "riverwing-envoy",
+    "cobalt-talon-fledgling",
+    "crimson-wing-recruit",
+    "greyplume-fledgling",
+    "mosswing-laborer"
+   ],
+   "cut": [
+    "fulmar-spitter",
+    "dormouse",
+    "fiddler-crab-swarm",
+    "oyster-bank"
+   ]
+  },
+  {
+   "map": "Map 4 · Sunken Hollow",
+   "mapId": "m2",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [],
+   "cutNow": [
+    "duckling",
+    "pond-trout"
+   ],
+   "chosen": [
+    "snapstick-turtle",
+    "muskrat-lodgekeeper",
+    "platypus-spur",
+    "drowned-matriarch",
+    "water-shrew",
+    "water-vole",
+    "box-turtle",
+    "pyrenean-desman",
+    "muskrat-reedgatherer",
+    "beaver-lumberjack",
+    "fire-ant-raft",
+    "pond-algae",
+    "duckling",
+    "pond-trout"
+   ],
+   "maybe": [
+    "diving-bell-spider",
+    "fleetfootd",
+    "grass-snake",
+    "lotus-frog",
+    "otter-guard",
+    "river-mink"
+   ],
+   "cut": [
+    "old-sturgeon",
+    "stone-turtle-warden",
+    "marsh-mallow-hare",
+    "cypress-root-lurker",
+    "signal-crayfish"
+   ]
+  },
+  {
+   "map": "Map 5 · Gatorback Swamp",
+   "mapId": "mw",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "anhinga-spearbird"
+   ],
+   "cutNow": [
+    "snapper-hatchling",
+    "caiman-hatchling"
+   ],
+   "chosen": [
+    "alligator-gar",
+    "grass-viper",
+    "fen-mink",
+    "old-snapjaw",
+    "constrictor-coil",
+    "snapper-hatchling",
+    "caiman-hatchling",
+    "swamp-alligator",
+    "crocodile-ambusher",
+    "nutria-reedcutter",
+    "muskrat-reedgatherer",
+    "fire-ant-raft",
+    "cypress-root-lurker",
+    "snapstick-turtle"
+   ],
+   "maybe": [
+    "anaconda-coil",
+    "bog-revenant",
+    "cottonmouth-matriarch",
+    "greater-siren",
+    "the-unremembered",
+    "anhinga-spearbird"
+   ],
+   "cut": [
+    "venomlord-serpent",
+    "stone-turtle-warden",
+    "marsh-mallow-hare",
+    "buzzed-chipmunk",
+    "alley-cat",
+    "sphagnum-vole"
+   ]
+  },
+  {
+   "map": "Map 5 · Gatorback Swamp",
+   "mapId": "mw",
+   "list": "Submap: 🌳 The Sunken Grove",
+   "listKey": "sub:ms",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "hedgehog-herbalist",
+    "grass-viper",
+    "snapper-hatchling",
+    "constrictor-coil",
+    "alligator-gar",
+    "fen-mink",
+    "mangrove-mudskipper",
+    "swamp-alligator",
+    "caiman-hatchling",
+    "crocodile-ambusher",
+    "nutria-reedcutter",
+    "venomlord-serpent"
+   ],
+   "maybe": [
+    "anaconda-coil",
+    "bog-revenant",
+    "cottonmouth-matriarch",
+    "greater-siren",
+    "the-unremembered",
+    "anhinga-spearbird"
+   ],
+   "cut": [
+    "echo-keeper",
+    "swamp-rabbit"
+   ]
+  },
+  {
+   "map": "Map 6 · Sable Swampmire",
+   "mapId": "m8",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "lamprey"
+   ],
+   "cutNow": [
+    "bogfire-newt",
+    "cane-toad"
+   ],
+   "chosen": [
+    "booming-bittern",
+    "newt-doctor",
+    "adder-ambusher",
+    "poison-dart-croaker",
+    "heron-hag",
+    "camouflage-frog",
+    "bogfire-newt",
+    "raven-scout",
+    "cane-toad",
+    "constrictor-coil",
+    "nutria-reedcutter",
+    "alligator-gar",
+    "venomlord-serpent",
+    "marsh-harrier"
+   ],
+   "maybe": [
+    "anaconda-coil",
+    "bog-revenant",
+    "greater-siren",
+    "the-unremembered",
+    "anhinga-spearbird",
+    "bone-diviner"
+   ],
+   "cut": [
+    "marsh-wisp",
+    "peat-cutter-vole",
+    "mire-witch-heron",
+    "lamprey",
+    "lotus-frog",
+    "cottonmouth-matriarch"
+   ]
+  },
+  {
+   "map": "Map 7 · The Morel Hollow",
+   "mapId": "mu",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "corpse-flower-beetle"
+   ],
+   "cutNow": [
+    "ant-warrior"
+   ],
+   "chosen": [
+    "truffle-piglet",
+    "wolf-spider-mother",
+    "dung-beetle",
+    "leafcutter-gardener",
+    "ant-warrior",
+    "planarian-splitter",
+    "fungal-colossus",
+    "owl-nightwatch",
+    "bombardier-beetle",
+    "hawthorn-shieldbug",
+    "compost-grub",
+    "cane-toad",
+    "adder-ambusher",
+    "bogfire-newt",
+    "garden-snail"
+   ],
+   "maybe": [
+    "puffball-bombardier",
+    "fungus-gnat-cloud",
+    "corpse-flower-beetle"
+   ],
+   "cut": [
+    "peat-cutter-vole"
+   ]
+  },
+  {
+   "map": "Map 7 · The Morel Hollow",
+   "mapId": "mu",
+   "list": "Submap: 🍄 The Mycelium Deep",
+   "listKey": "sub:mz",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "rootworm-colony",
+    "dung-beetle",
+    "fungal-colossus",
+    "compost-grub",
+    "wolf-spider-mother",
+    "ant-warrior",
+    "planarian-splitter",
+    "bombardier-beetle",
+    "hawthorn-shieldbug",
+    "leafcutter-gardener",
+    "owl-nightwatch",
+    "truffle-piglet"
+   ],
+   "maybe": [
+    "anaconda-coil",
+    "arc-bat",
+    "bog-revenant"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 8 · Caves & Alcoves",
+   "mapId": "m4",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "grotto-lobster",
+    "malachite-golem"
+   ],
+   "cutNow": [
+    "whip-spider",
+    "badger-stonemason",
+    "trash-panda-trickster",
+    "ant-warrior"
+   ],
+   "chosen": [
+    "echo-screecher",
+    "giant-cave-huntsman",
+    "star-nosed-mole",
+    "quarry-mole",
+    "echo-matriarch",
+    "cave-olm",
+    "stalactite-golem",
+    "sulfur-cinder-moth",
+    "vampire-bat",
+    "whip-spider",
+    "badger-stonemason",
+    "octopus-tactician",
+    "trash-panda-trickster",
+    "pelican-diver",
+    "ant-warrior"
+   ],
+   "maybe": [
+    "arc-bat",
+    "gallery-orb-weaver",
+    "geode-scorpion",
+    "grotto-lobster",
+    "malachite-golem",
+    "quarry-troll"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 8 · Caves & Alcoves",
+   "mapId": "m4",
+   "list": "Submap: 💎 The Glimmer Depths",
+   "listKey": "sub:mn",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "lantern-spark-fly",
+    "prospector-mole",
+    "echo-screecher",
+    "sulfur-cinder-moth",
+    "badger-stonemason",
+    "cave-olm",
+    "giant-cave-huntsman",
+    "quarry-mole",
+    "stalactite-golem",
+    "star-nosed-mole",
+    "vampire-bat",
+    "whip-spider",
+    "glimmer-spider"
+   ],
+   "maybe": [
+    "arc-bat",
+    "barrow-leech-bat",
+    "gallery-orb-weaver",
+    "geode-scorpion",
+    "grotto-lobster",
+    "irradiated-glow-wyrm"
+   ],
+   "cut": [
+    "cave-bat-swarm"
+   ]
+  },
+  {
+   "map": "Map 9 · The Kelp Mangroves",
+   "mapId": "mk",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "proboscis-monkey",
+    "horseshoe-crab"
+   ],
+   "cutNow": [
+    "mudpuppy",
+    "minnow-skitter",
+    "caiman-hatchling"
+   ],
+   "chosen": [
+    "mangrove-kingfisher",
+    "mangrove-manatee",
+    "banded-sea-krait",
+    "mangrove-mudskipper",
+    "archerfish",
+    "mangrove-monitor",
+    "mudpuppy",
+    "reef-shark",
+    "sunbittern-strider",
+    "minnow-skitter",
+    "fishing-cat",
+    "crocodile-ambusher",
+    "booming-bittern",
+    "caiman-hatchling",
+    "fiddler-crab-swarm"
+   ],
+   "maybe": [
+    "ironclaw-fiddler",
+    "mudflat-godwit",
+    "proboscis-monkey",
+    "horseshoe-crab",
+    "kelpborn-otter",
+    "sea-hare"
+   ],
+   "cut": [
+    "lodge-engineer"
+   ]
+  },
+  {
+   "map": "Map 10 · Coral Current",
+   "mapId": "m7",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "colossal-squid",
+    "electric-ray",
+    "great-barracuda",
+    "reef-admiral",
+    "clownfish-scout",
+    "parrotfish",
+    "riptide-eel",
+    "coral-reef-shark",
+    "kraken-spawnling",
+    "swordfish-spearman",
+    "coral-polyp-colony",
+    "reef-shark",
+    "banded-sea-krait",
+    "mangrove-manatee",
+    "open-ocean-hermit-crab"
+   ],
+   "maybe": [
+    "coral-current-eel",
+    "dolphin-knight",
+    "hagfish-silencer",
+    "leopard-seal",
+    "mantis-shrimp",
+    "selkie-wavebinder"
+   ],
+   "cut": [
+    "gull-thief"
+   ]
+  },
+  {
+   "map": "Map 10 · Coral Current",
+   "mapId": "m7",
+   "list": "Submap: ⚓ The Sunken Depths",
+   "listKey": "sub:mj",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "blue-ringed-octopus",
+    "orca-vanguard",
+    "nautilus-drifter",
+    "clownfish-scout",
+    "kraken-spawnling",
+    "parrotfish",
+    "coral-reef-shark",
+    "mangrove-manatee",
+    "riptide-eel",
+    "colossal-squid",
+    "coral-polyp-colony",
+    "electric-ray",
+    "great-barracuda"
+   ],
+   "maybe": [
+    "coral-current-eel",
+    "dolphin-knight",
+    "hagfish-silencer",
+    "leopard-seal",
+    "mantis-shrimp",
+    "selkie-wavebinder"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 11 · Eyrie Heights",
+   "mapId": "m10",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "alpine-marmot",
+    "eagle-owl-quartermaster",
+    "ibex-rockcaller",
+    "chamois-leaper",
+    "chipmunk-hoarder",
+    "eyrie-warden",
+    "mountain-hare",
+    "apollo-butterfly",
+    "alpine-salamander",
+    "alpine-swift",
+    "gale-swift",
+    "gannet-nestweaver",
+    "golden-eagle-diver",
+    "peak-condor",
+    "peregrine-stooper"
+   ],
+   "maybe": [
+    "eagle-diver",
+    "mirrorhide-mutant",
+    "storm-heron",
+    "vigil-owl",
+    "abbey-goose",
+    "gangrenous-leech"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 11 · Eyrie Heights",
+   "mapId": "m10",
+   "list": "Submap: 🪺 The Aerie Vault",
+   "listKey": "sub:mv",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "wound-reaver",
+    "chipmunk-hoarder",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "alpine-marmot",
+    "ibex-rockcaller",
+    "alpine-salamander",
+    "alpine-swift",
+    "apollo-butterfly",
+    "chamois-leaper",
+    "gale-swift",
+    "golden-eagle-diver"
+   ],
+   "maybe": [
+    "eagle-diver",
+    "mirrorhide-mutant",
+    "storm-heron",
+    "vigil-owl",
+    "abbey-goose",
+    "gangrenous-leech"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 12 · The Briar Maze",
+   "mapId": "mh",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "quill-thorn-boar"
+   ],
+   "cutNow": [
+    "hedgehog-scout",
+    "quillback-elder"
+   ],
+   "chosen": [
+    "cunning-vixen",
+    "hedgehog-scout",
+    "quillguard",
+    "bramble-hoglet",
+    "hedge-weasel",
+    "lyrebird-mimic",
+    "thorn-shrike",
+    "mouse-sapper",
+    "gatling-hog",
+    "quillback-elder",
+    "carrion-crow",
+    "ant-hill",
+    "badger-lumberjack",
+    "field-mouse",
+    "hedgerow-shrew"
+   ],
+   "maybe": [
+    "quill-thorn-boar",
+    "hedge-changeling",
+    "briarback-hedgehog"
+   ],
+   "cut": [
+    "mountain-hare"
+   ]
+  },
+  {
+   "map": "Map 13 · The Redwood Deep",
+   "mapId": "mr",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "fawn-scout",
+    "shimmerwing-stag",
+    "sergeant-bramblefox",
+    "berserker-boar",
+    "grizzly-vanguard",
+    "bramblewood-lynx",
+    "swift-fox",
+    "tasmanian-devil",
+    "stag-knight",
+    "woodpecker-sapper",
+    "redwood-woodpecker",
+    "quillback-elder",
+    "carrion-crow",
+    "bramble-hoglet",
+    "cunning-vixen"
+   ],
+   "maybe": [
+    "fox-kit",
+    "carrion-fly-swarm",
+    "corpse-flower-beetle"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 14 · Savanna Reaches",
+   "mapId": "m5",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "acacia-giraffe",
+    "hoopoe-herald"
+   ],
+   "cutNow": [
+    "weaver-bird",
+    "meerkat-burrower",
+    "lodge-engineer"
+   ],
+   "chosen": [
+    "grave-grin-hyena",
+    "savanna-cheetah",
+    "spitting-cobra",
+    "pride-queen",
+    "weaver-bird",
+    "springbok-pronker",
+    "dust-hyena",
+    "marula-elephant",
+    "pangolin-roller",
+    "meerkat-burrower",
+    "lodge-engineer",
+    "leafcutter-gardener",
+    "mouse-sapper",
+    "house-cat",
+    "plains-zebra"
+   ],
+   "maybe": [
+    "fire-hawk",
+    "mongoose-duelist",
+    "monitor-rambler",
+    "rabid-jackal",
+    "acacia-giraffe",
+    "dune-jackal-scout"
+   ],
+   "cut": [
+    "hoopoe-herald"
+   ]
+  },
+  {
+   "map": "Map 14 · Savanna Reaches",
+   "mapId": "m5",
+   "list": "Submap: 🐆 The Canopy",
+   "listKey": "sub:my",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "hercules-beetle",
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "pangolin-roller",
+    "spitting-cobra",
+    "weaver-bird",
+    "leafcutter-gardener",
+    "vampire-bat",
+    "redwood-woodpecker",
+    "lyrebird-mimic",
+    "apollo-butterfly",
+    "poison-dart-croaker",
+    "camouflage-frog"
+   ],
+   "maybe": [
+    "toucan-courier",
+    "howler-monkey",
+    "strangler-vine",
+    "glasswing-butterfly",
+    "poison-dart-frog",
+    "bramblewood-macaque"
+   ],
+   "cut": [
+    "grave-grin-hyena",
+    "hoopoe-herald",
+    "savanna-cheetah",
+    "springbok-pronker",
+    "marula-elephant",
+    "dust-hyena",
+    "meerkat-burrower",
+    "rafflesia"
+   ]
+  },
+  {
+   "map": "Map 15 · The Long Grass",
+   "mapId": "ml",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "armory"
+   ],
+   "cutNow": [
+    "stable-colt"
+   ],
+   "chosen": [
+    "border-collie",
+    "stoat-cutthroat",
+    "talon-archer",
+    "cataphract-destrier",
+    "pronghorn-racer",
+    "bison-bulldozer",
+    "raccoon-bandit",
+    "stable-colt",
+    "warhorse-charger",
+    "shepherds-bark",
+    "squires-mount",
+    "lodge-engineer",
+    "carrion-crow",
+    "hedge-weasel",
+    "hedgehog-herbalist"
+   ],
+   "maybe": [
+    "wandering-traveller",
+    "armory",
+    "carrion-fly-swarm"
+   ],
+   "cut": [
+    "garden-tiger-moth",
+    "moonshell-snail",
+    "anvil-thrush",
+    "courier-pigeon"
+   ]
+  },
+  {
+   "map": "Map 16 · The Pinewood Taiga",
+   "mapId": "mt",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "lunar-howler"
+   ],
+   "cutNow": [
+    "frost-hare-sprinter",
+    "fawn-scout"
+   ],
+   "chosen": [
+    "woodland-caribou",
+    "taiga-lynx",
+    "dhole-matriarch",
+    "alpha-howler",
+    "frost-hare-sprinter",
+    "snowshoe-hare",
+    "dhole-runner",
+    "wolf-pack-runner",
+    "boreal-elk",
+    "cone-cutter-squirrel",
+    "berserker-boar",
+    "redwood-woodpecker",
+    "bramblewood-lynx",
+    "fawn-scout",
+    "pinecone-sapper"
+   ],
+   "maybe": [
+    "lunar-howler",
+    "musk-ox-calf",
+    "pack-wolf-reaver",
+    "timber-wolf-pack"
+   ],
+   "cut": [
+    "trickster-fox"
+   ]
+  },
+  {
+   "map": "Map 17 · Wolfsbane Tundra",
+   "mapId": "m6",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "beluga"
+   ],
+   "cutNow": [
+    "wolfsbane-alpha"
+   ],
+   "chosen": [
+    "lone-grey-wolf",
+    "polar-bear",
+    "walrus-icebreaker",
+    "wolfsbane-alpha",
+    "glacial-ape-king",
+    "harbor-seal",
+    "snow-bunting-archer",
+    "snow-ermine",
+    "ravenous-wolverine",
+    "spitting-spider",
+    "talus-pika",
+    "alpha-howler",
+    "cone-cutter-squirrel",
+    "frost-hare-sprinter",
+    "mountain-hare"
+   ],
+   "maybe": [
+    "beluga",
+    "frostmoon-howler",
+    "frostbitten-wolverine",
+    "musk-ox-calf",
+    "musk-ox-matriarch",
+    "frost-thistle-lynx"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 17 · Wolfsbane Tundra",
+   "mapId": "m6",
+   "list": "Submap: 🧊 The Ice Hollow",
+   "listKey": "sub:mi",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "greenland-shark",
+    "lone-grey-wolf",
+    "snow-ermine",
+    "glacial-ape-king",
+    "frost-hare-sprinter",
+    "ravenous-wolverine",
+    "harbor-seal",
+    "polar-bear",
+    "snow-bunting-archer",
+    "spitting-spider",
+    "walrus-icebreaker",
+    "talus-pika"
+   ],
+   "maybe": [
+    "arctic-fox-raider",
+    "beluga",
+    "frostmoon-howler",
+    "ice-crevasse-wolf",
+    "arctic-tern",
+    "frostbitten-wolverine"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 18 · The Glass Dunes",
+   "mapId": "md",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "glass-golem"
+   ],
+   "cutNow": [
+    "obsidian-scorpion"
+   ],
+   "chosen": [
+    "obsidian-scorpion",
+    "antlion-pit",
+    "caustic-scorpion",
+    "dust-devil-kestrel",
+    "thorny-devil",
+    "roadrunner-courier",
+    "sandfish",
+    "komodo-warlord",
+    "dromedary",
+    "fennec-fox",
+    "dune-packrat",
+    "dust-hyena",
+    "meerkat-burrower",
+    "bison-bulldozer",
+    "spitting-cobra"
+   ],
+   "maybe": [
+    "frillneck-duelist",
+    "glass-changeling",
+    "glass-golem",
+    "inland-taipan",
+    "glowing-gecko",
+    "hollow-belly-rat"
+   ],
+   "cut": [
+    "border-collie",
+    "static-fennec"
+   ]
+  },
+  {
+   "map": "Map 18 · The Glass Dunes",
+   "mapId": "md",
+   "list": "Submap: ☀️ The Pale Desert",
+   "listKey": "sub:mpd",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "quicksand-queen",
+    "skull-vulture",
+    "sand-widow",
+    "dust-hyena",
+    "caustic-scorpion",
+    "roadrunner-courier",
+    "sandfish",
+    "dust-devil-kestrel",
+    "fennec-fox",
+    "thorny-devil",
+    "antlion-pit",
+    "dromedary",
+    "dune-packrat"
+   ],
+   "maybe": [
+    "trapdoor-spider",
+    "pale-oryx",
+    "rabid-jackal",
+    "stonedrop-vulture",
+    "sandstorm-roc"
+   ],
+   "cut": [
+    "armadillo-guard",
+    "meerkat-sentry",
+    "dune-jackal-scout"
+   ]
+  },
+  {
+   "map": "Map 19 · Ashen Spurn",
+   "mapId": "m3",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "granite-ox-golem",
+    "pit-glutton"
+   ],
+   "cutNow": [
+    "quill-volley",
+    "yeti-chieftain",
+    "porcupine-roller",
+    "phoenix-fledgling"
+   ],
+   "chosen": [
+    "echidna-quillshot",
+    "fire-salamander",
+    "quill-volley",
+    "yeti-chieftain",
+    "cinder-stoker",
+    "yeti",
+    "porcupine-roller",
+    "magma-titan",
+    "glacier-wolf-pack",
+    "phoenix-fledgling",
+    "pumice-beetle",
+    "glacial-ape-king",
+    "talus-pika",
+    "hercules-beetle",
+    "obsidian-scorpion"
+   ],
+   "maybe": [
+    "ember-wisp",
+    "granite-ox-golem",
+    "lurking-dread",
+    "obsidian-lich",
+    "pall-wraith",
+    "pit-glutton"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 19 · Ashen Spurn",
+   "mapId": "m3",
+   "list": "Submap: 🪨 Basalt Foundry",
+   "listKey": "sub:m9",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "ember-revenant",
+    "anvilwhisker-otter",
+    "ore-smelter-mole",
+    "tide-spirit",
+    "cinder-gecko",
+    "ember-jackal",
+    "quill-volley",
+    "ashbone-ghoul",
+    "fire-salamander",
+    "magma-salamander",
+    "ash-cloud-condor",
+    "hercules-beetle",
+    "phoenix-fledgling"
+   ],
+   "maybe": [
+    "salamander-pyromancer",
+    "the-sixfold",
+    "thunder-lizard",
+    "woodland-brawler",
+    "ember-wisp",
+    "granite-ox-golem"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 20 · The Sundered Peak",
+   "mapId": "m11",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [
+    "pit-glutton"
+   ],
+   "cutNow": [
+    "echidna-quillshot"
+   ],
+   "chosen": [
+    "ash-cloud-condor",
+    "magma-wraith",
+    "ossuary-lammergeier",
+    "pack-mule",
+    "ashbone-ghoul",
+    "cave-warlord",
+    "cinder-skeleton",
+    "magma-salamander",
+    "ash-moth",
+    "glacier-wolf-pack",
+    "pumice-beetle",
+    "cinder-stoker",
+    "echidna-quillshot",
+    "gorge-wyrm",
+    "fumarole-ibex"
+   ],
+   "maybe": [
+    "ember-wisp",
+    "granite-ox-golem",
+    "lurking-dread",
+    "obsidian-lich",
+    "pall-wraith",
+    "pit-glutton"
+   ],
+   "cut": [
+    "woodland-brawler",
+    "bear-cub"
+   ]
+  },
+  {
+   "map": "Map 20 · The Sundered Peak",
+   "mapId": "m11",
+   "list": "Submap: 🌋 Eye of the Volcano",
+   "listKey": "sub:me",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "the-contradiction",
+    "cinder-stoker",
+    "ashbone-ghoul",
+    "cinder-skeleton",
+    "pack-mule",
+    "obsidian-scorpion",
+    "ash-cloud-condor",
+    "magma-wraith",
+    "ossuary-lammergeier",
+    "ash-moth",
+    "cave-warlord"
+   ],
+   "maybe": [
+    "salamander-pyromancer",
+    "the-sixfold",
+    "thunder-lizard",
+    "woodland-brawler",
+    "ember-wisp",
+    "granite-ox-golem"
+   ],
+   "cut": [
+    "bear-cub"
+   ]
+  },
+  {
+   "map": "Map 20 · The Sundered Peak",
+   "mapId": "m11",
+   "list": "Submap: 🐉 Volcano Lair",
+   "listKey": "sub:mx",
+   "keep": [
+    "granite-ox-golem"
+   ],
+   "cutNow": [
+    "phoenix-fledgling"
+   ],
+   "chosen": [
+    "fire-drake-hatchling",
+    "caldera-wyrm",
+    "ember-jackal",
+    "tide-spirit",
+    "ember-centipede",
+    "magma-salamander",
+    "magma-titan",
+    "cinder-stoker",
+    "pack-mule",
+    "obsidian-scorpion",
+    "ash-cloud-condor",
+    "ash-moth",
+    "ashbone-ghoul",
+    "phoenix-fledgling",
+    "magma-wraith"
+   ],
+   "maybe": [
+    "salamander-pyromancer",
+    "the-sixfold",
+    "thunder-lizard",
+    "ember-wisp",
+    "granite-ox-golem",
+    "lurking-dread"
+   ],
+   "cut": [
+    "woodland-brawler",
+    "bear-cub"
+   ]
+  },
+  {
+   "map": "Map 21 · The Quiet Summit",
+   "mapId": "m21",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "pika-hoarder",
+    "snow-owl-sentinel",
+    "snow-leopard",
+    "glacier-yak",
+    "eagle-sharpshooter",
+    "mountain-goat-climber",
+    "candle-moth",
+    "chapel-tortoise",
+    "friar-badger",
+    "gale-sprite",
+    "golden-magpie",
+    "eyrie-warden",
+    "talus-pika",
+    "alpine-marmot",
+    "golden-eagle-diver"
+   ],
+   "maybe": [
+    "eagle-diver",
+    "mirrorhide-mutant",
+    "storm-heron",
+    "vigil-owl",
+    "abbey-goose",
+    "gangrenous-leech"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 22 · The Rimefire Caldera",
+   "mapId": "m22",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "rimefire-salamander",
+    "caldera-snow-leopard",
+    "ur-elk",
+    "ice-petrel",
+    "badger-berserker",
+    "cinder-gecko",
+    "cinder-hornet",
+    "permafrost-mammoth",
+    "ashwing-ptarmigan",
+    "rimeheart-colossus",
+    "ash-imp",
+    "phoenix-fledgling",
+    "pumice-beetle",
+    "ember-centipede",
+    "ember-jackal"
+   ],
+   "maybe": [
+    "salamander-pyromancer",
+    "the-sixfold",
+    "thunder-lizard",
+    "woodland-brawler",
+    "ember-wisp",
+    "granite-ox-golem"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 23 · The Goldfeather Siege",
+   "mapId": "m23",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "testudo-tortoise",
+    "war-elephant",
+    "triumvirate",
+    "badger-trench-digger",
+    "howdah-archers",
+    "beetle-battering-ram",
+    "siege-rhino",
+    "trebuchet-crew",
+    "balloon-archer",
+    "colony",
+    "land-tiller",
+    "lodge-engineer",
+    "pack-mule",
+    "mouse-sapper",
+    "stoat-cutthroat"
+   ],
+   "maybe": [
+    "armory",
+    "mallard-marauder",
+    "margay",
+    "shieldbearer-hound",
+    "wandering-mage",
+    "war-hound"
+   ],
+   "cut": []
+  },
+  {
+   "map": "Map 24 · Goldfeather Keep",
+   "mapId": "m24",
+   "list": "Map",
+   "listKey": "cards",
+   "keep": [],
+   "cutNow": [],
+   "chosen": [
+    "gilded-swan-knight",
+    "iron-warden",
+    "battlement-heron",
+    "duckling-squadron",
+    "elderhorn-monarch",
+    "mallard-halberdier",
+    "tax-collector-teal",
+    "goose-sentry",
+    "great-gate",
+    "nest",
+    "stoneheart-golem",
+    "lodge-engineer",
+    "land-tiller",
+    "balloon-archer",
+    "badger-trench-digger"
+   ],
+   "maybe": [
+    "armory",
+    "mallard-marauder",
+    "margay",
+    "shieldbearer-hound",
+    "wandering-mage",
+    "war-hound"
+   ],
+   "cut": []
+  }
+ ]
+}
