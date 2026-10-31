@@ -26,8 +26,11 @@ function diffTables(a, b) {
 function halfMissReadings(R, table, now) {
   const out = {}, Z = R.placebo && R.placebo.test ? R.placebo.test.worthRuler.m : 0;
   (table.halfMiss || []).forEach(id => { const r = R[id]; if (!r || !r.test) return; const mNow = now[id] != null ? now[id] : (table.budget || {}).missMult || 1.5, price = r.test.price, z = r.placebo ? 0 : Z, W = r.test.worthRuler.m - z;
-    if (!(mNow > 1) || !(price > 0)) return; const stat = price / (mNow - 1);
-    out[id] = { measured: P.r2(1 + W / stat), lo: P.r2(1 + (r.test.worthRuler.lo - z) / stat), hi: P.r2(1 + (r.test.worthRuler.hi - z) / stat), now: mNow, worth: W, from: r.ctx ? 'pipeline measures' : 'SKILL2 measures', fingerprint: r.fingerprint }; });
+    // the stat terms the multiplier acts on: the carriers' mean 3A + H when the measure recorded it (pipeline measures); else the price on the carriers over
+    // (the multiplier tools/skill_costs.js priced it at - 1), and that tool takes a flat table.budget.missMult (1.5) per half-miss skill, not MISS_MULT_BY
+    const mTool = (table.budget || {}).missMult || 1.5, stat = r.statBase || (price > 0 && mTool > 1 ? price / (mTool - 1) : 0);
+    if (!(stat > 0)) return;
+    out[id] = { measured: P.r2(1 + W / stat), lo: P.r2(1 + (r.test.worthRuler.lo - z) / stat), hi: P.r2(1 + (r.test.worthRuler.hi - z) / stat), now: mNow, statBase: P.r2(stat), worth: W, from: r.ctx ? 'pipeline measures' : 'SKILL2 measures', fingerprint: r.fingerprint }; });
   return out;
 }
 
@@ -66,7 +69,7 @@ async function step(args, S) {
   const rec = (plan.rows || []).filter(r => r.kind === 'canon').map(r => r.note).filter(Boolean);
   rec.slice(0, 6).forEach(n => S.notes.push('record: ' + n));
   const hm = halfMissReadings(R, t, { flying: consts.flying, evasive: consts.evasive, shadow: consts.shadow }); S.inputs.halfMiss = hm;
-  Object.keys(hm).forEach(id => { const h = hm[id]; if (Math.abs(h.measured - h.now) > 0.05 && !want[id]) S.flagged.push({ id: id + ' multiplier', why: `measures imply x${h.measured} [${h.lo}, ${h.hi}], the budget has x${h.now} (an owner call: --set-const ${id}=${h.measured})` }); });
+  Object.keys(hm).forEach(id => { const h = hm[id]; if (Math.abs(h.measured - h.now) > 0.02 && !want[id]) S.flagged.push({ id: id + ' multiplier', why: `measures imply x${h.measured} [${h.lo}, ${h.hi}] on stat terms of ${h.statBase}, the budget has x${h.now} (an owner call: --set-const ${id}=${h.measured})` }); });
   // the constants: only those named, by value, with the measure that backs them
   if (Object.keys(want).length) {
     if (args.dry) S.notes.push('dry: constants not written (' + Object.keys(want).join(', ') + ')');

@@ -26,6 +26,9 @@ function itemsFor(plan, args) {
   }
   return out;
 }
+// the carriers' mean (attackWeight x Attack + Health): the stat terms a half-miss multiplier acts on (price.js reads it)
+function statBaseOf(res) { const cards = P.readJson(path.join(P.ROOT, 'canonical', 'cards.json')), by = {}; cards.forEach(c => { by[c.id] = c; });
+  const v = (res.carriers || []).map(id => by[id]).filter(Boolean).map(c => (res.attackWeight || 3) * (c.attack || 0) + (c.health || 0)); return v.length ? P.r2(v.reduce((a, b) => a + b, 0) / v.length) : null; }
 const seOf = w => (w.hi - w.lo) / 3.92;
 function converged(w, cfg) { return seOf(w) <= Math.max(cfg.seLow, cfg.seRel * Math.abs(w.m)); }
 
@@ -53,7 +56,7 @@ async function step(args, S) {
     const used = trail[trail.length - 1].fights; if (conv && used < maxF) { early++; saved += maxF - used; }
     const prev = have ? have.test.worthRuler : null, t = res.test;
     store.results[key] = { key: it.key, ctx, id: it.id, class: it.class, kind: it.kind, n: it.n, nCards: it.nCards, cards: it.cards, fights: used, converged: conv, stages: trail, fingerprint: res.fingerprint,
-      canonRate: res.canonRate, statRate: res.statRate, kappa: res.kappa, placebo: res.placebo || null, test: res.test, measuredAt: new Date().toISOString(), seconds: Math.round((Date.now() - s0) / 1000) };
+      canonRate: res.canonRate, statRate: res.statRate, kappa: res.kappa, placebo: res.placebo || null, test: res.test, statBase: statBaseOf(res), measuredAt: new Date().toISOString(), seconds: Math.round((Date.now() - s0) / 1000) };
     P.writeJson(STORE, store); measured++; S.cached.played++;
     S.changed.push({ id: it.key, field: 'worth', old: prev ? `${prev.m}` : '-', new: `${t.worthRuler.m} [${t.worthRuler.lo}, ${t.worthRuler.hi}] at ${used} fights, price on carriers ${t.price}` });
     if (!conv) S.flagged.push({ id: it.key, why: `interval still wide at ${used} fights (se ${P.r2(seOf(t.worthRuler))}); measure again with --fights ${used},${used * 2}` });
