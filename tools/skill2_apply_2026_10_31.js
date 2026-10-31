@@ -76,8 +76,8 @@ function anchors(opt) {
 //     (POW_FIT), unless it is pinned (POW_KEEP);
 //   - CONDITIONAL skills (a field, a map, a partner the vanilla carriers and the global fields rarely give) are raised to their reading but
 //     never lowered by it: a low reading there means "the carriers cannot show it" (docs/evaluation-protocol.md section 5);
-//   - a drawback (a price below 0) stays at or below 0, and a skill priced 0 or more never goes below 0 (a negative reading on the vanilla
-//     carriers: it protects or feeds cards they do not have);
+//   - a drawback (a price below 0) stays at or below 0; a skill priced 0 or more that reads 0.3 or less (NOTHING, the placebo's lower
+//     bound) is kept: it does not fire on the vanilla carriers (it protects or feeds cards they lack, or needs a target they never meet);
 //   - SPECIAL entries are priced by their own rule (below, each with its reason);
 //   - triggers: each measured trigger entry's worth / its price before; a trigger's weight (canonical/skill-costs.json triggers) is
 //     multiplied by the median of that ratio over its in-play entries (weighted by cards): the trigger layer's "how often" in the new
@@ -92,6 +92,7 @@ const CONDITIONAL = { tide: 'Tide fields only', mountainClimber: 'mountain terra
   dive: 'needs Flying or swimming (the carriers have neither)', changeling: 'shares a type with partners', prayer: 'needs Prayer partners', keenEye: 'against Changelings and in Mist',
   frostbite: 'cold maps (Frostbite Resist, Freezing)', taunt: 'protects partners', guardian: 'protects partners' };
 const POW_KEEP = {};
+const NOTHING = 0.3;
 const HELD_TRIG = ['bee-drone', 'worker-ant'];
 const SPECIAL = {
   // DECK1-1: Remember N acts only from the Exile zone, through its card's own On Death → Exile self; measured as the pair (Remember 1 on the
@@ -157,7 +158,8 @@ function prices(opt) {
     }
     if (CONDITIONAL[id] && e.value < e0.value) { kept.push(`${id}: reads ${e.value} < ${e0.value} (${CONDITIONAL[id]}); kept`); rows.push({ id, kind: 'kept', old: e0.value, fit: e.value, note: CONDITIONAL[id] + ': a low reading is not applied', pts }); return; }
     if (e0.value < 0 && e.value > 0) { rows.push({ id, kind: 'kept', old: e0.value, fit: e.value, note: 'a drawback stays at or below 0 (read ' + e.value + ')', pts }); return; }
-    if (e0.value >= 0 && e.value < 0) { if (e0.value === 0) { rows.push({ id, kind: 'kept', old: e0.value, fit: e.value, note: 'not a drawback: stays at 0 (read ' + e.value + ')', pts }); return; } e.value = 0; why = (why ? why + '; ' : '') + 'read below 0, set to 0 (not a drawback)'; }
+    // NOTHING (0.3, the placebo's lower bound): a positive skill that reads at or below it does not fire on these carriers (it needs a partner, a field or a target they lack): its price is kept, never lowered by it
+    if (e0.value >= 0 && e.value <= NOTHING && e.value < e0.value) { rows.push({ id, kind: 'kept', old: e0.value, fit: e.value, note: 'reads nothing on the vanilla carriers (' + e.value + ' <= ' + NOTHING + '): kept', pts }); return; }
     if (e0.value === e.value && e0.pow === e.pow) { rows.push({ id, kind: 'same', old: e0.value, fit: e.value, pts }); return; }
     const c = pts.map(p => p.conf), conf = c.includes('high') ? 'high' : c.includes('medium') ? 'medium' : 'low';
     e.measuredS = e.value; e.measuredConf = conf; e.measuredSE = r2(Math.min(...pts.map(p => (p.ci.hi - p.ci.lo) / 3.92 / Math.max(1e-9, factorOf(e, p.n)))));
@@ -183,7 +185,7 @@ function prices(opt) {
     const held = list.filter(r => r.cards.some(c => HELD_TRIG.includes(c))); if (held.length) { kept.push(`${k}: held (RECOST1-5: ${held.map(r => r.cards.join(', ')).join('; ')}); measured ${list.map(r => r2(r.test.worthRuler.m) + ' / ' + r.test.price).join(', ')}`); return; }
     const num = list.reduce((t, r) => t + r.nCards * r.test.worthRuler.m * (r.test.price / old), 0), den = list.reduce((t, r) => t + r.nCards * (r.test.price / old) ** 2, 0);
     let mult = r2(den ? num / den : 1), note = ''; const id0 = k.split('>')[1];
-    if (mult < 0) { mult = 0; note = 'read below 0: set to 0'; }
+    if (mult * list.reduce((t, r) => t + r.test.price, 0) / list.length <= NOTHING && mult < 1) { kept.push(k + ': reads nothing on the vanilla carriers (' + list.map(r => r2(r.test.worthRuler.m)).join(', ') + '): kept'); return; }
     trRows.push({ pair: k, old, mult, note, entries: list.map(r => ({ key: r.key, W: r2(r.test.worthRuler.m), lo: r2(r.test.worthRuler.lo), hi: r2(r.test.worthRuler.hi), price: r.test.price, fights: r.fights, cards: r.cards })) }); });
   // print
   rows.forEach(r => { if (r.kind === 'set') console.log(`set  ${r.id.padEnd(18)} ${String(r.old).padStart(6)}${r.oldPow != null ? '^' + r.oldPow : ''} -> ${String(r.value).padStart(6)}${r.pow != null ? '^' + r.pow : ''} (${r.scale}, ${r.conf})  ${r.pts.map(p => p.key + ' ' + r2(p.W) + ' was ' + p.price).join('; ')} ${r.why || ''}`);

@@ -1,0 +1,4836 @@
+{
+ "_about": "SKILL2 (2026-10-31): the price plan node tools/skill2_apply_2026_10_31.js prices builds from docs/balance/skill2-measures-2026-10-31.json (applied unless --dry).",
+ "rows": [
+  {
+   "id": "acidBolt",
+   "kind": "set",
+   "old": 7.23,
+   "value": 6.3,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "acidBolt=1",
+     "n": 1,
+     "w": 1,
+     "W": 6.2961,
+     "ci": {
+      "m": 6.2961,
+      "lo": 5.6276,
+      "hi": 6.6954
+     },
+     "price": 7.23,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "ambush",
+   "kind": "set",
+   "old": 0.87,
+   "value": 1.04,
+   "pow": 0.884,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "ambush=2",
+     "n": 2,
+     "w": 1,
+     "W": 1.9145,
+     "ci": {
+      "m": 1.9145,
+      "lo": 1.6601,
+      "hi": 2.3207
+     },
+     "price": 1.74,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "ambush=4",
+     "n": 4,
+     "w": 1,
+     "W": 3.5333,
+     "ci": {
+      "m": 3.5333,
+      "lo": 3.1285,
+      "hi": 3.9695
+     },
+     "price": 2.61,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.13): scale n, v x N^pow"
+  },
+  {
+   "id": "armor",
+   "kind": "canon",
+   "note": "armor=3: measured 4.84 [4.6, 5.09], the canon curve gives 5.56 (kept: two canon points fix the curve)"
+  },
+  {
+   "id": "arrow",
+   "kind": "set",
+   "old": 3,
+   "value": 4.02,
+   "pow": 0.646,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "arrow=1",
+     "n": 1,
+     "w": 3,
+     "W": 4.023,
+     "ci": {
+      "m": 4.023,
+      "lo": 3.79,
+      "hi": 4.2631
+     },
+     "price": 3,
+     "fights": 1000,
+     "conf": "high"
+    },
+    {
+     "key": "arrow=2",
+     "n": 2,
+     "w": 7,
+     "W": 6.2957,
+     "ci": {
+      "m": 6.2957,
+      "lo": 5.9759,
+      "hi": 6.5794
+     },
+     "price": 6,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 2.08): scale n, v x N^pow"
+  },
+  {
+   "id": "avalanche",
+   "kind": "set",
+   "old": 8.29,
+   "value": 6.81,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "avalanche=1",
+     "n": 1,
+     "w": 1,
+     "W": 6.8089,
+     "ci": {
+      "m": 6.8089,
+      "lo": 6.0346,
+      "hi": 7.5036
+     },
+     "price": 8.29,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "backstab",
+   "kind": "set",
+   "old": 0.6,
+   "value": 0.7,
+   "pow": 1.138,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "backstab=2",
+     "n": 2,
+     "w": 2,
+     "W": 1.5371000000000001,
+     "ci": {
+      "m": 1.5371000000000001,
+      "lo": 1.1804000000000001,
+      "hi": 2.0138
+     },
+     "price": 1.2,
+     "fights": 400,
+     "conf": "high"
+    },
+    {
+     "key": "backstab=3",
+     "n": 3,
+     "w": 1,
+     "W": 2.438,
+     "ci": {
+      "m": 2.438,
+      "lo": 1.9601,
+      "hi": 2.8816
+     },
+     "price": 2.31,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 0.01): scale n, v x N^pow"
+  },
+  {
+   "id": "bedrock",
+   "kind": "kept",
+   "old": 0.3,
+   "fit": 0.02,
+   "note": "needs Stone: a low reading is not applied",
+   "pts": [
+    {
+     "key": "bedrock",
+     "n": true,
+     "w": 1,
+     "W": 0.0151,
+     "ci": {
+      "m": 0.0151,
+      "lo": 0,
+      "hi": 0.0527
+     },
+     "price": 0.3,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "berserk",
+   "kind": "set",
+   "old": 3.09,
+   "value": 2.33,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "berserk=2",
+     "n": 2,
+     "w": 1,
+     "W": 4.6683,
+     "ci": {
+      "m": 4.6683,
+      "lo": 4.3962,
+      "hi": 5.0675
+     },
+     "price": 6.18,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "boomerang",
+   "kind": "set",
+   "old": 1.9,
+   "value": 1.97,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "boomerang",
+     "n": true,
+     "w": 3,
+     "W": 1.9731,
+     "ci": {
+      "m": 1.9731,
+      "lo": 1.6324,
+      "hi": 2.4896
+     },
+     "price": 1.9,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "breach",
+   "kind": "set",
+   "old": 1.9,
+   "value": 2.07,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "breach=2",
+     "n": 2,
+     "w": 1,
+     "W": 4.135,
+     "ci": {
+      "m": 4.135,
+      "lo": 3.7498,
+      "hi": 4.4103
+     },
+     "price": 3.8,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "brood",
+   "kind": "set",
+   "old": 2.2,
+   "value": 3.6,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "brood=2",
+     "n": 2,
+     "w": 1,
+     "W": 7.1939,
+     "ci": {
+      "m": 7.1939,
+      "lo": 6.8206,
+      "hi": 7.5327
+     },
+     "price": 4.4,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "bulldoze",
+   "kind": "set",
+   "old": 2.48,
+   "value": 2.31,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "bulldoze=1",
+     "n": 1,
+     "w": 1,
+     "W": 2.31,
+     "ci": {
+      "m": 2.31,
+      "lo": 1.9389,
+      "hi": 2.6698
+     },
+     "price": 2.48,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "bulwark",
+   "kind": "set",
+   "old": 7.2,
+   "value": 5.62,
+   "pow": 0.325,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "bulwark=1",
+     "n": 1,
+     "w": 1,
+     "W": 5.6173,
+     "ci": {
+      "m": 5.6173,
+      "lo": 5.0013,
+      "hi": 6.1075
+     },
+     "price": 7.2,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "bulwark=2",
+     "n": 2,
+     "w": 1,
+     "W": 7.0352,
+     "ci": {
+      "m": 7.0352,
+      "lo": 6.4024,
+      "hi": 7.5915
+     },
+     "price": 14.4,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 3.53): scale n, v x N^pow"
+  },
+  {
+   "id": "canopyCover",
+   "kind": "set",
+   "old": 0,
+   "value": 0.09,
+   "scale": "fixed",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "canopyCover",
+     "n": true,
+     "w": 1,
+     "W": 0.0904,
+     "ci": {
+      "m": 0.0904,
+      "lo": 0.0266,
+      "hi": 0.1837
+     },
+     "price": 0.6783,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "carrion",
+   "kind": "set",
+   "old": 1.3,
+   "value": 1.34,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "carrion=2",
+     "n": 2,
+     "w": 2,
+     "W": 2.677,
+     "ci": {
+      "m": 2.677,
+      "lo": 2.4204,
+      "hi": 2.9767
+     },
+     "price": 2.6,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "changeling",
+   "kind": "kept",
+   "old": 0.96,
+   "fit": 0.04,
+   "note": "shares a type with partners: a low reading is not applied",
+   "pts": [
+    {
+     "key": "changeling",
+     "n": true,
+     "w": 2,
+     "W": 0.03720000000000001,
+     "ci": {
+      "m": 0.03720000000000001,
+      "lo": -0.3156,
+      "hi": 0.3356
+     },
+     "price": 0.96,
+     "fights": 400,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "charge",
+   "kind": "set",
+   "old": 5.58,
+   "value": 3.66,
+   "scale": "fixed",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "charge={\"n\":2,\"do\":{\"do\":\"damage\",\"amount\":3,\"who\":\"enemy\",\"sub\":\"random\"}}",
+     "n": {
+      "n": 2,
+      "do": {
+       "do": "damage",
+       "amount": 3,
+       "who": "enemy",
+       "sub": "random"
+      }
+     },
+     "w": 1,
+     "W": 3.66,
+     "ci": {
+      "m": 3.66,
+      "lo": 3.277,
+      "hi": 4.2327
+     },
+     "price": 5.58,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "chrysalis",
+   "kind": "kept",
+   "old": 1.6,
+   "fit": 0.06,
+   "note": "reads nothing on the vanilla carriers (0.06 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "chrysalis",
+     "n": true,
+     "w": 1,
+     "W": 0.0603,
+     "ci": {
+      "m": 0.0603,
+      "lo": -0.0224,
+      "hi": 0.1882
+     },
+     "price": 1.6,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "coffee",
+   "kind": "set",
+   "old": 1.5,
+   "oldPow": -1,
+   "value": 2.08,
+   "pow": -1,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "coffee=1",
+     "n": 1,
+     "w": 1,
+     "W": 2.0756,
+     "ci": {
+      "m": 2.0756,
+      "lo": 1.6624,
+      "hi": 2.5923
+     },
+     "price": 1.5,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "confuse",
+   "kind": "set",
+   "old": 3,
+   "value": 1.87,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "confuse={\"chance\":50,\"duration\":2}",
+     "n": {
+      "chance": 50,
+      "duration": 2
+     },
+     "w": 1,
+     "W": 1.8693,
+     "ci": {
+      "m": 1.8693,
+      "lo": 1.515,
+      "hi": 2.3885
+     },
+     "price": 3,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "converge",
+   "kind": "kept",
+   "old": 0,
+   "fit": -0.14,
+   "note": "needs its targets: a low reading is not applied",
+   "pts": [
+    {
+     "key": "converge=\"enemy\"",
+     "n": "enemy",
+     "w": 1,
+     "W": -0.1432,
+     "ci": {
+      "m": -0.1432,
+      "lo": -0.5188,
+      "hi": 0.1664
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "corrode",
+   "kind": "set",
+   "old": 0,
+   "value": 1.8,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "corrode=2",
+     "n": 2,
+     "w": 1,
+     "W": 3.5967,
+     "ci": {
+      "m": 3.5967,
+      "lo": 3.13,
+      "hi": 3.9983
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "counterattack",
+   "kind": "kept",
+   "old": 0,
+   "fit": -6.28,
+   "note": "reads nothing on the vanilla carriers (-6.28 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "counterattack",
+     "n": true,
+     "w": 1,
+     "W": -6.2786,
+     "ci": {
+      "m": -6.2786,
+      "lo": -8.5439,
+      "hi": -4.9975
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "cower",
+   "kind": "set",
+   "old": -0.5,
+   "value": -0.67,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "cower=\"shell\"",
+     "n": "shell",
+     "w": 1,
+     "W": -0.6708,
+     "ci": {
+      "m": -0.6708,
+      "lo": -1.3611,
+      "hi": -0.202
+     },
+     "price": -0.5,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "crabClaws",
+   "kind": "kept",
+   "old": 0.1,
+   "fit": -0.05,
+   "note": "reads nothing on the vanilla carriers (-0.05 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "crabClaws",
+     "n": true,
+     "w": 3,
+     "W": -0.04999999999999999,
+     "ci": {
+      "m": -0.04999999999999999,
+      "lo": -0.6726,
+      "hi": 0.47730000000000006
+     },
+     "price": 0.1,
+     "fights": 400,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "cure",
+   "kind": "kept",
+   "old": 0.5,
+   "fit": 0.06,
+   "note": "reads nothing on the vanilla carriers (0.06 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "cure=2",
+     "n": 2,
+     "w": 1,
+     "W": 0.1206,
+     "ci": {
+      "m": 0.1206,
+      "lo": 0.0376,
+      "hi": 0.2164
+     },
+     "price": 1,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "darksight",
+   "kind": "kept",
+   "old": 3,
+   "fit": 0.25,
+   "note": "dark fights only: a low reading is not applied",
+   "pts": [
+    {
+     "key": "darksight",
+     "n": true,
+     "w": 2,
+     "W": 0.24650000000000005,
+     "ci": {
+      "m": 0.24650000000000005,
+      "lo": -0.06619999999999998,
+      "hi": 0.5594
+     },
+     "price": 3,
+     "fights": 400,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "daunt",
+   "kind": "set",
+   "old": 0.34,
+   "value": 1.89,
+   "pow": 0.714,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "daunt=1",
+     "n": 1,
+     "w": 3,
+     "W": 1.8859,
+     "ci": {
+      "m": 1.8859,
+      "lo": 1.6027,
+      "hi": 2.2817
+     },
+     "price": 0.34,
+     "fights": 400,
+     "conf": "high"
+    },
+    {
+     "key": "daunt=2",
+     "n": 2,
+     "w": 1,
+     "W": 3.0941,
+     "ci": {
+      "m": 3.0941,
+      "lo": 2.7344,
+      "hi": 3.4904
+     },
+     "price": 3.78,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.2): scale n, v x N^pow"
+  },
+  {
+   "id": "decay",
+   "kind": "set",
+   "old": 1.12,
+   "value": 4.76,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "decay=1",
+     "n": 1,
+     "w": 1,
+     "W": 4.7606,
+     "ci": {
+      "m": 4.7606,
+      "lo": 4.5285,
+      "hi": 5.0937
+     },
+     "price": 1.12,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "detonate",
+   "kind": "kept",
+   "old": 0.2,
+   "fit": 0,
+   "note": "reads nothing on the vanilla carriers (0 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "detonate",
+     "n": true,
+     "w": 1,
+     "W": 0,
+     "ci": {
+      "m": 0,
+      "lo": -0.0362,
+      "hi": 0.0485
+     },
+     "price": 0.2,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "dictator",
+   "kind": "same",
+   "old": 0,
+   "fit": 0,
+   "pts": [
+    {
+     "key": "dictator",
+     "n": true,
+     "w": 1,
+     "W": 0,
+     "ci": {
+      "m": 0,
+      "lo": 0,
+      "hi": 0
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "dive",
+   "kind": "kept",
+   "old": 1.25,
+   "fit": 0,
+   "note": "needs Flying or swimming (the carriers have neither): a low reading is not applied",
+   "pts": [
+    {
+     "key": "dive=2",
+     "n": 2,
+     "w": 2,
+     "W": 0.0024000000000000132,
+     "ci": {
+      "m": 0.0024000000000000132,
+      "lo": -0.2802,
+      "hi": 0.27480000000000004
+     },
+     "price": 1.77,
+     "fights": 400,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "drought",
+   "kind": "kept",
+   "old": 1,
+   "fit": 0.4,
+   "note": "Drought only: a low reading is not applied",
+   "pts": [
+    {
+     "key": "drought",
+     "n": true,
+     "w": 1,
+     "W": 0.3995,
+     "ci": {
+      "m": 0.3995,
+      "lo": 0.2103,
+      "hi": 0.6367
+     },
+     "price": 1,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "drunk",
+   "kind": "set",
+   "old": -1.12,
+   "value": -3.25,
+   "scale": "half",
+   "conf": "medium",
+   "pts": [
+    {
+     "key": "drunk",
+     "n": true,
+     "w": 1,
+     "W": -3.2486,
+     "ci": {
+      "m": -3.2486,
+      "lo": -4.5472,
+      "hi": -2.4697
+     },
+     "price": -1.12,
+     "fights": 300,
+     "conf": "medium"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "dry",
+   "kind": "kept",
+   "old": 4,
+   "fit": 0.34,
+   "note": "dry maps only: a low reading is not applied",
+   "pts": [
+    {
+     "key": "dry",
+     "n": true,
+     "w": 3,
+     "W": 0.3395,
+     "ci": {
+      "m": 0.3395,
+      "lo": 0.0791,
+      "hi": 0.6110000000000001
+     },
+     "price": 4,
+     "fights": 400,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "earthquake",
+   "kind": "set",
+   "old": 0.44,
+   "value": 0.35,
+   "pow": 0.961,
+   "scale": "n",
+   "conf": "medium",
+   "pts": [
+    {
+     "key": "earthquake=3",
+     "n": 3,
+     "w": 1,
+     "W": 1.0175,
+     "ci": {
+      "m": 1.0175,
+      "lo": 0.348,
+      "hi": 1.7706
+     },
+     "price": 0.88,
+     "fights": 300,
+     "conf": "medium"
+    },
+    {
+     "key": "earthquake=4",
+     "n": 4,
+     "w": 1,
+     "W": 1.3416,
+     "ci": {
+      "m": 1.3416,
+      "lo": 0.6153,
+      "hi": 2.2262
+     },
+     "price": 1.32,
+     "fights": 300,
+     "conf": "medium"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.01): scale n, v x N^pow"
+  },
+  {
+   "id": "esprit",
+   "kind": "set",
+   "old": 2.1,
+   "value": 2.52,
+   "pow": 0.488,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "esprit=1",
+     "n": 1,
+     "w": 2,
+     "W": 2.521,
+     "ci": {
+      "m": 2.521,
+      "lo": 2.1277999999999997,
+      "hi": 2.7300999999999997
+     },
+     "price": 2.1,
+     "fights": 400,
+     "conf": "high"
+    },
+    {
+     "key": "esprit=2",
+     "n": 2,
+     "w": 2,
+     "W": 3.5349999999999997,
+     "ci": {
+      "m": 3.5349999999999997,
+      "lo": 3.2258999999999998,
+      "hi": 3.9248000000000003
+     },
+     "price": 4.2,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.91): scale n, v x N^pow"
+  },
+  {
+   "id": "evolute",
+   "kind": "kept",
+   "old": 3,
+   "fit": -6.66,
+   "note": "reads nothing on the vanilla carriers (-6.66 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "evolute",
+     "n": true,
+     "w": 1,
+     "W": -6.6554,
+     "ci": {
+      "m": -6.6554,
+      "lo": -8.9953,
+      "hi": -5.3263
+     },
+     "price": 3,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "executioner",
+   "kind": "kept",
+   "old": 0.1,
+   "fit": 0.03,
+   "note": "reads nothing on the vanilla carriers (0.03 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "executioner=2",
+     "n": 2,
+     "w": 1,
+     "W": 0.053300000000000014,
+     "ci": {
+      "m": 0.053300000000000014,
+      "lo": -0.13229999999999997,
+      "hi": 0.23770000000000002
+     },
+     "price": 0.2,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "explode",
+   "kind": "set",
+   "old": 4,
+   "value": 4.16,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "explode={\"time\":1,\"damage\":4}",
+     "n": {
+      "time": 1,
+      "damage": 4
+     },
+     "w": 1,
+     "W": 4.1588,
+     "ci": {
+      "m": 4.1588,
+      "lo": 3.7825,
+      "hi": 4.4524
+     },
+     "price": 4,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "expose",
+   "kind": "set",
+   "old": 0.03,
+   "value": 0.07,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "expose=2",
+     "n": 2,
+     "w": 1,
+     "W": 0.1357,
+     "ci": {
+      "m": 0.1357,
+      "lo": -0.0432,
+      "hi": 0.3254
+     },
+     "price": 0.06,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "fastForward",
+   "kind": "set",
+   "old": 2.34,
+   "value": 2.95,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "fastForward=1",
+     "n": 1,
+     "w": 1,
+     "W": 2.9506,
+     "ci": {
+      "m": 2.9506,
+      "lo": 2.6072,
+      "hi": 3.4446
+     },
+     "price": 2.34,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "fester",
+   "kind": "kept",
+   "old": 2.8,
+   "fit": 0,
+   "note": "reads nothing on the vanilla carriers (0 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "fester",
+     "n": true,
+     "w": 1,
+     "W": 0,
+     "ci": {
+      "m": 0,
+      "lo": 0,
+      "hi": 0
+     },
+     "price": 2.8,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "fireArrow",
+   "kind": "set",
+   "old": 3.5,
+   "value": 4.01,
+   "pow": 0.651,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "fireArrow=1",
+     "n": 1,
+     "w": 2,
+     "W": 4.0061,
+     "ci": {
+      "m": 4.0061,
+      "lo": 3.5841,
+      "hi": 4.4582
+     },
+     "price": 3.5,
+     "fights": 400,
+     "conf": "high"
+    },
+    {
+     "key": "fireArrow=2",
+     "n": 2,
+     "w": 2,
+     "W": 6.2915,
+     "ci": {
+      "m": 6.2915,
+      "lo": 5.8166,
+      "hi": 6.6270999999999995
+     },
+     "price": 7,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 1.18): scale n, v x N^pow"
+  },
+  {
+   "id": "fletcher",
+   "kind": "set",
+   "old": 0,
+   "value": 3.18,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "arrow=1+fletcher=1",
+     "n": 1,
+     "w": 1,
+     "W": 7.2036,
+     "ci": {
+      "m": 7.2036,
+      "lo": 6.851,
+      "hi": 7.548500000000001
+     },
+     "price": 3,
+     "fights": 1000,
+     "conf": "high"
+    },
+    {
+     "key": "fletcher=1",
+     "n": 1,
+     "w": 1,
+     "W": 0.1855,
+     "ci": {
+      "m": 0.1855,
+      "lo": -0.0039000000000000146,
+      "hi": 0.3569
+     },
+     "price": 0,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ],
+   "why": "(Arrow 1 + Fletcher 1) 7.2 - Arrow 1 4.02, the Quartermaster's pair (DECK1-1); on carriers with no arrow of their own 0.19"
+  },
+  {
+   "id": "foePlenty",
+   "kind": "kept",
+   "old": 0.1,
+   "fit": 0,
+   "note": "needs the foe's resources: a low reading is not applied",
+   "pts": [
+    {
+     "key": "foePlenty",
+     "n": true,
+     "w": 1,
+     "W": 0,
+     "ci": {
+      "m": 0,
+      "lo": -0.0446,
+      "hi": 0.0475
+     },
+     "price": 0.1,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "foeScarcity",
+   "kind": "set",
+   "old": 1.54,
+   "value": 2.91,
+   "scale": "fixed",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "foeScarcity",
+     "n": true,
+     "w": 1,
+     "W": 2.9075,
+     "ci": {
+      "m": 2.9075,
+      "lo": 2.6267,
+      "hi": 3.2566
+     },
+     "price": 1.54,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "fog",
+   "kind": "kept",
+   "old": 2.7,
+   "fit": 0.08,
+   "note": "Mist only: a low reading is not applied",
+   "pts": [
+    {
+     "key": "fog",
+     "n": true,
+     "w": 1,
+     "W": 0.0754,
+     "ci": {
+      "m": 0.0754,
+      "lo": 0,
+      "hi": 0.206
+     },
+     "price": 2.7,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "freeze",
+   "kind": "set",
+   "old": 0.55,
+   "value": 1.84,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "freeze={\"chance\":25,\"duration\":1}",
+     "n": {
+      "chance": 25,
+      "duration": 1
+     },
+     "w": 1,
+     "W": 1.3266,
+     "ci": {
+      "m": 1.3266,
+      "lo": 0.9347,
+      "hi": 1.8272
+     },
+     "price": 0.55,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "freeze={\"chance\":30,\"duration\":1}",
+     "n": {
+      "chance": 30,
+      "duration": 1
+     },
+     "w": 1,
+     "W": 1.4622,
+     "ci": {
+      "m": 1.4622,
+      "lo": 1.0607,
+      "hi": 1.9598
+     },
+     "price": 0.55,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "freeze={\"chance\":40,\"duration\":2}",
+     "n": {
+      "chance": 40,
+      "duration": 2
+     },
+     "w": 1,
+     "W": 2.7352,
+     "ci": {
+      "m": 2.7352,
+      "lo": 2.4351,
+      "hi": 3.1978
+     },
+     "price": 0.55,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "least squares over 3 N"
+  },
+  {
+   "id": "frenzy",
+   "kind": "set",
+   "old": 0.88,
+   "value": 0.32,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "frenzy",
+     "n": true,
+     "w": 1,
+     "W": 0.3241,
+     "ci": {
+      "m": 0.3241,
+      "lo": 0.1529,
+      "hi": 0.5311
+     },
+     "price": 0.88,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "frost",
+   "kind": "kept",
+   "old": 1.12,
+   "fit": 0.3,
+   "note": "cold maps only: a low reading is not applied",
+   "pts": [
+    {
+     "key": "frost",
+     "n": true,
+     "w": 1,
+     "W": 0.3015,
+     "ci": {
+      "m": 0.3015,
+      "lo": 0.111,
+      "hi": 0.5428
+     },
+     "price": 1.12,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "frostbite",
+   "kind": "kept",
+   "old": 0.5,
+   "fit": 0.19,
+   "note": "cold maps (Frostbite Resist, Freezing): a low reading is not applied",
+   "pts": [
+    {
+     "key": "frostbite=1",
+     "n": 1,
+     "w": 3,
+     "W": 0.1884,
+     "ci": {
+      "m": 0.1884,
+      "lo": -0.09570000000000001,
+      "hi": 0.4982
+     },
+     "price": 0.5,
+     "fights": 400,
+     "conf": "high"
+    },
+    {
+     "key": "frostbite=2",
+     "n": 2,
+     "w": 1,
+     "W": 0.196,
+     "ci": {
+      "m": 0.196,
+      "lo": 0.0856,
+      "hi": 0.3559
+     },
+     "price": 1,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "gash",
+   "kind": "set",
+   "old": 0.24,
+   "value": 1.33,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "gash=3",
+     "n": 3,
+     "w": 3,
+     "W": 2.6671,
+     "ci": {
+      "m": 2.6671,
+      "lo": 2.3632,
+      "hi": 3.0176
+     },
+     "price": 0.48,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "greaterPoison",
+   "kind": "set",
+   "old": 0.39,
+   "value": 3.85,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "greaterPoison=1",
+     "n": 1,
+     "w": 1,
+     "W": 3.85,
+     "ci": {
+      "m": 3.85,
+      "lo": 3.4574,
+      "hi": 4.2505
+     },
+     "price": 0.39,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "guardian",
+   "kind": "kept",
+   "old": 0,
+   "fit": -0.82,
+   "note": "protects partners: a low reading is not applied",
+   "pts": [
+    {
+     "key": "guardian",
+     "n": true,
+     "w": 12,
+     "W": -0.8162,
+     "ci": {
+      "m": -0.8162,
+      "lo": -1.1825999999999999,
+      "hi": -0.5173
+     },
+     "price": 0,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "haste",
+   "kind": "set",
+   "old": 3,
+   "value": 2.72,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "haste",
+     "n": true,
+     "w": 1,
+     "W": 2.7209,
+     "ci": {
+      "m": 2.7209,
+      "lo": 2.3906,
+      "hi": 3.1708
+     },
+     "price": 3,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "healing",
+   "kind": "set",
+   "old": 1.2,
+   "value": 4.25,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "healing=1",
+     "n": 1,
+     "w": 2,
+     "W": 4.2467,
+     "ci": {
+      "m": 4.2467,
+      "lo": 3.9475999999999996,
+      "hi": 4.5682
+     },
+     "price": 1.2,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "heat",
+   "kind": "kept",
+   "old": 1.2,
+   "fit": 0.71,
+   "note": "hot maps only: a low reading is not applied",
+   "pts": [
+    {
+     "key": "heat",
+     "n": true,
+     "w": 1,
+     "W": 0.7085,
+     "ci": {
+      "m": 0.7085,
+      "lo": 0.4489,
+      "hi": 1.0605
+     },
+     "price": 1.2,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "heavyMetal",
+   "kind": "same",
+   "old": 0,
+   "fit": 0,
+   "pts": [
+    {
+     "key": "heavyMetal",
+     "n": true,
+     "w": 1,
+     "W": 0,
+     "ci": {
+      "m": 0,
+      "lo": 0,
+      "hi": 0
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "helmet",
+   "kind": "set",
+   "old": 0,
+   "value": 0.26,
+   "scale": "fixed",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "helmet",
+     "n": true,
+     "w": 1,
+     "W": 0.2563,
+     "ci": {
+      "m": 0.2563,
+      "lo": 0.0909,
+      "hi": 0.4455
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "herbalist",
+   "kind": "kept",
+   "old": 0.58,
+   "fit": 0.3,
+   "note": "reads nothing on the vanilla carriers (0.3 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "herbalist=1",
+     "n": 1,
+     "w": 1,
+     "W": 0.3015,
+     "ci": {
+      "m": 0.3015,
+      "lo": 0.1398,
+      "hi": 0.4989
+     },
+     "price": 0.58,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "hibernate",
+   "kind": "kept",
+   "old": 0.95,
+   "fit": -0.44,
+   "note": "reads nothing on the vanilla carriers (-0.44 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "hibernate",
+     "n": true,
+     "w": 1,
+     "W": -0.8743,
+     "ci": {
+      "m": -0.8743,
+      "lo": -1.3467,
+      "hi": -0.5658
+     },
+     "price": -2.8,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "hoard",
+   "kind": "set",
+   "old": 0.5,
+   "value": 2.12,
+   "pow": -2.32,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "hoard=1",
+     "n": 1,
+     "w": 1,
+     "W": 2.1219,
+     "ci": {
+      "m": 2.1219,
+      "lo": 1.7006,
+      "hi": 2.5795
+     },
+     "price": 0.5,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "hoard=3",
+     "n": 3,
+     "w": 1,
+     "W": 0.1658,
+     "ci": {
+      "m": 0.1658,
+      "lo": 0.0652,
+      "hi": 0.2886
+     },
+     "price": 1,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 3.33): scale n, v x N^pow"
+  },
+  {
+   "id": "hunter",
+   "kind": "kept",
+   "old": 0.28,
+   "fit": -0.18,
+   "note": "needs its prey type: a low reading is not applied",
+   "pts": [
+    {
+     "key": "hunter=1",
+     "n": 1,
+     "w": 1,
+     "W": -0.0377,
+     "ci": {
+      "m": -0.0377,
+      "lo": -0.5587,
+      "hi": 0.3588
+     },
+     "price": 0.28,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "hunter=2",
+     "n": 2,
+     "w": 1,
+     "W": -0.4221,
+     "ci": {
+      "m": -0.4221,
+      "lo": -0.9296,
+      "hi": 0.0136
+     },
+     "price": 0.56,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "iceArrow",
+   "kind": "set",
+   "old": 3.96,
+   "value": 5.83,
+   "pow": 0.262,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "iceArrow=1",
+     "n": 1,
+     "w": 1,
+     "W": 5.8285,
+     "ci": {
+      "m": 5.8285,
+      "lo": 5.1935,
+      "hi": 6.3166
+     },
+     "price": 3.96,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "iceArrow=2",
+     "n": 2,
+     "w": 1,
+     "W": 6.99,
+     "ci": {
+      "m": 6.99,
+      "lo": 6.3775,
+      "hi": 7.5081
+     },
+     "price": 7.92,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 4.36): scale n, v x N^pow"
+  },
+  {
+   "id": "iceBolt",
+   "kind": "set",
+   "old": 4.21,
+   "value": 3.5,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "iceBolt=2",
+     "n": 2,
+     "w": 1,
+     "W": 6.99,
+     "ci": {
+      "m": 6.99,
+      "lo": 6.3775,
+      "hi": 7.5081
+     },
+     "price": 8.42,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "illuminate",
+   "kind": "set",
+   "old": 0.2,
+   "value": 0.31,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "illuminate",
+     "n": true,
+     "w": 4,
+     "W": 0.3084,
+     "ci": {
+      "m": 0.3084,
+      "lo": 0.1058,
+      "hi": 0.5081
+     },
+     "price": 0.2,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "immolation",
+   "kind": "kept",
+   "old": 0,
+   "fit": -1.64,
+   "note": "reads nothing on the vanilla carriers (-1.64 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "immolation=1",
+     "n": 1,
+     "w": 2,
+     "W": -1.6427999999999998,
+     "ci": {
+      "m": -1.6427999999999998,
+      "lo": -2.4098,
+      "hi": -1.0365
+     },
+     "price": 0,
+     "fights": 400,
+     "conf": "medium"
+    }
+   ]
+  },
+  {
+   "id": "inspiring",
+   "kind": "set",
+   "old": 3.13,
+   "value": 3.13,
+   "pow": 0.58,
+   "scale": "n",
+   "conf": "canon",
+   "pts": [
+    {
+     "key": "inspiring=2",
+     "n": 2,
+     "w": 3,
+     "W": 4.6785,
+     "ci": {
+      "m": 4.6785,
+      "lo": 4.394,
+      "hi": 5.0362
+     },
+     "price": 7.08,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": "2026-10-31 (SKILL2): the canon point inspiring 1 = 3.13 kept (3.13); the curve v x N^pow refitted through it from inspiring=2 4.68 [4.39, 5.04] (was half, which gave 6.26)"
+  },
+  {
+   "id": "invisible",
+   "kind": "set",
+   "old": 1.36,
+   "value": 0.71,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "invisible=2",
+     "n": 2,
+     "w": 2,
+     "W": 1.415,
+     "ci": {
+      "m": 1.415,
+      "lo": 1.1265999999999998,
+      "hi": 1.7885
+     },
+     "price": 2.72,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "ironWill",
+   "kind": "set",
+   "old": 0,
+   "value": 0.14,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "ironWill",
+     "n": true,
+     "w": 1,
+     "W": 0.1357,
+     "ci": {
+      "m": 0.1357,
+      "lo": 0.0148,
+      "hi": 0.3159
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "keenEye",
+   "kind": "kept",
+   "old": 0.34,
+   "fit": 0,
+   "note": "against Changelings and in Mist: a low reading is not applied",
+   "pts": [
+    {
+     "key": "keenEye",
+     "n": true,
+     "w": 3,
+     "W": 0.0024000000000000132,
+     "ci": {
+      "m": 0.0024000000000000132,
+      "lo": -0.2802,
+      "hi": 0.27480000000000004
+     },
+     "price": 0.34,
+     "fights": 400,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "keenSense",
+   "kind": "kept",
+   "old": 1.63,
+   "fit": 0.26,
+   "note": "reads nothing on the vanilla carriers (0.26 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "keenSense",
+     "n": true,
+     "w": 1,
+     "W": 0.2563,
+     "ci": {
+      "m": 0.2563,
+      "lo": 0.0548,
+      "hi": 0.5005
+     },
+     "price": 1.63,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "king",
+   "kind": "set",
+   "old": 1.4,
+   "value": 2.75,
+   "scale": "fixed",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "king",
+     "n": true,
+     "w": 1,
+     "W": 2.7496,
+     "ci": {
+      "m": 2.7496,
+      "lo": 2.4938,
+      "hi": 3.1567
+     },
+     "price": 1.4,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "kinship",
+   "kind": "kept",
+   "old": 3,
+   "fit": 0.86,
+   "note": "needs its type beside it: a low reading is not applied",
+   "pts": [
+    {
+     "key": "kinship={\"type\":\"Bee\",\"atk\":1,\"hp\":0}",
+     "n": {
+      "type": "Bee",
+      "atk": 1,
+      "hp": 0
+     },
+     "w": 1,
+     "W": 0.1658,
+     "ci": {
+      "m": 0.1658,
+      "lo": 0.0306,
+      "hi": 0.3483
+     },
+     "price": 3,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "kinship={\"type\":\"Otter\",\"atk\":1,\"hp\":1}",
+     "n": {
+      "type": "Otter",
+      "atk": 1,
+      "hp": 1
+     },
+     "w": 1,
+     "W": 1.5527,
+     "ci": {
+      "m": 1.5527,
+      "lo": 1.2652,
+      "hi": 2.0959
+     },
+     "price": 3,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "lastStand",
+   "kind": "set",
+   "old": 0.6,
+   "value": 0.45,
+   "scale": "fixed",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "lastStand",
+     "n": true,
+     "w": 1,
+     "W": 0.4522,
+     "ci": {
+      "m": 0.4522,
+      "lo": 0.2938,
+      "hi": 0.6623
+     },
+     "price": 0.6,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "leader",
+   "kind": "kept",
+   "old": 0.1,
+   "fit": -0.08,
+   "note": "reads nothing on the vanilla carriers (-0.08 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "leader",
+     "n": true,
+     "w": 1,
+     "W": -0.0754,
+     "ci": {
+      "m": -0.0754,
+      "lo": -0.2674,
+      "hi": 0.0878
+     },
+     "price": 0.1,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "loneWolf",
+   "kind": "set",
+   "old": 2.62,
+   "value": 2.84,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "loneWolf=[1,1]",
+     "n": [
+      1,
+      1
+     ],
+     "w": 1,
+     "W": 5.6776,
+     "ci": {
+      "m": 5.6776,
+      "lo": 5.1804,
+      "hi": 6.1366
+     },
+     "price": 5.24,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "lumberjack",
+   "kind": "set",
+   "old": 2.76,
+   "value": 3.56,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "lumberjack",
+     "n": true,
+     "w": 1,
+     "W": 3.5571,
+     "ci": {
+      "m": 3.5571,
+      "lo": 3.0302,
+      "hi": 4.0986
+     },
+     "price": 2.76,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "meiosis",
+   "kind": "set",
+   "old": 2.79,
+   "value": 4.5,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "meiosis=1",
+     "n": 1,
+     "w": 2,
+     "W": 4.497,
+     "ci": {
+      "m": 4.497,
+      "lo": 4.1743,
+      "hi": 4.8138
+     },
+     "price": 2.79,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "midas",
+   "kind": "set",
+   "old": 0.03,
+   "value": 1.21,
+   "pow": 0.622,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "midas=2",
+     "n": 2,
+     "w": 1,
+     "W": 1.8693,
+     "ci": {
+      "m": 1.8693,
+      "lo": 1.5343,
+      "hi": 2.35
+     },
+     "price": 0.06,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "midas=3",
+     "n": 3,
+     "w": 1,
+     "W": 2.406,
+     "ci": {
+      "m": 2.406,
+      "lo": 1.9249,
+      "hi": 2.7355
+     },
+     "price": 0.06,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.14): scale n, v x N^pow"
+  },
+  {
+   "id": "mighty",
+   "kind": "set",
+   "old": 5,
+   "value": 5.05,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "mighty",
+     "n": true,
+     "w": 1,
+     "W": 5.0461,
+     "ci": {
+      "m": 5.0461,
+      "lo": 4.7664,
+      "hi": 5.4165
+     },
+     "price": 5,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "mountainClimber",
+   "kind": "kept",
+   "old": 4,
+   "fit": 0.37,
+   "note": "mountain terrain only: a low reading is not applied",
+   "pts": [
+    {
+     "key": "mountainClimber",
+     "n": true,
+     "w": 5,
+     "W": 0.37329999999999997,
+     "ci": {
+      "m": 0.37329999999999997,
+      "lo": 0.16690000000000005,
+      "hi": 0.5763
+     },
+     "price": 4,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "nightblind",
+   "kind": "set",
+   "old": -3,
+   "value": -2.63,
+   "scale": "half",
+   "conf": "medium",
+   "pts": [
+    {
+     "key": "nightblind",
+     "n": true,
+     "w": 1,
+     "W": -2.6305,
+     "ci": {
+      "m": -2.6305,
+      "lo": -3.653,
+      "hi": -1.9309
+     },
+     "price": -3,
+     "fights": 300,
+     "conf": "medium"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "octolash",
+   "kind": "set",
+   "old": 6.48,
+   "value": 8.32,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "octolash",
+     "n": true,
+     "w": 1,
+     "W": 8.3249,
+     "ci": {
+      "m": 8.3249,
+      "lo": 7.7348,
+      "hi": 8.8649
+     },
+     "price": 6.48,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "onDeathSpawn",
+   "kind": "set",
+   "old": 0.91,
+   "value": 4.17,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2}",
+     "n": {
+      "defId": "bat-swarmling",
+      "count": 2
+     },
+     "w": 1,
+     "W": 3.2757,
+     "ci": {
+      "m": 3.2757,
+      "lo": 2.8732,
+      "hi": 3.6398
+     },
+     "price": 0.91,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "onDeathSpawn={\"defId\":\"bramble-sprout\",\"count\":1}",
+     "n": {
+      "defId": "bramble-sprout",
+      "count": 1
+     },
+     "w": 1,
+     "W": 3.7313,
+     "ci": {
+      "m": 3.7313,
+      "lo": 3.3852,
+      "hi": 4.1388
+     },
+     "price": 0.91,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "onDeathSpawn={\"defId\":\"inkcloud-squid\",\"count\":2}",
+     "n": {
+      "defId": "inkcloud-squid",
+      "count": 2
+     },
+     "w": 1,
+     "W": 5.5117,
+     "ci": {
+      "m": 5.5117,
+      "lo": 5.0613,
+      "hi": 5.9933
+     },
+     "price": 0.91,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "least squares over 3 N"
+  },
+  {
+   "id": "onReadyDamage",
+   "kind": "set",
+   "old": 1.2,
+   "value": 4.13,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "onReadyDamage={\"amount\":3,\"dmgType\":\"physical\"}",
+     "n": {
+      "amount": 3,
+      "dmgType": "physical"
+     },
+     "w": 2,
+     "W": 2.9299999999999997,
+     "ci": {
+      "m": 2.9299999999999997,
+      "lo": 2.5504,
+      "hi": 3.3462
+     },
+     "price": 1.2,
+     "fights": 400,
+     "conf": "high"
+    },
+    {
+     "key": "onReadyDamage={\"amount\":6,\"dmgType\":\"physical\"}",
+     "n": {
+      "amount": 6,
+      "dmgType": "physical"
+     },
+     "w": 1,
+     "W": 4.9082,
+     "ci": {
+      "m": 4.9082,
+      "lo": 4.503,
+      "hi": 5.3497
+     },
+     "price": 2.93,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "onReadyDamage={\"amount\":8,\"dmgType\":\"physical\"}",
+     "n": {
+      "amount": 8,
+      "dmgType": "physical"
+     },
+     "w": 1,
+     "W": 5.7681,
+     "ci": {
+      "m": 5.7681,
+      "lo": 5.1726,
+      "hi": 6.2827
+     },
+     "price": 2.93,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "least squares over 3 N"
+  },
+  {
+   "id": "onSpawnDevilry",
+   "kind": "same",
+   "old": 0,
+   "fit": 0,
+   "pts": [
+    {
+     "key": "onSpawnDevilry=1",
+     "n": 1,
+     "w": 1,
+     "W": 0,
+     "ci": {
+      "m": 0,
+      "lo": -0.0473,
+      "hi": 0.0351
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "overwhelm",
+   "kind": "set",
+   "old": 0.28,
+   "value": 0.57,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "overwhelm",
+     "n": true,
+     "w": 3,
+     "W": 0.5663,
+     "ci": {
+      "m": 0.5663,
+      "lo": 0.33220000000000005,
+      "hi": 0.8407000000000001
+     },
+     "price": 0.28,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "pack",
+   "kind": "set",
+   "old": 0,
+   "value": 2.91,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "pack=2",
+     "n": 2,
+     "w": 1,
+     "W": 5.8134,
+     "ci": {
+      "m": 5.8134,
+      "lo": 5.1788,
+      "hi": 6.3022
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "packLeader",
+   "kind": "kept",
+   "old": 0,
+   "fit": -0.28,
+   "note": "needs its pack: a low reading is not applied",
+   "pts": [
+    {
+     "key": "packLeader",
+     "n": true,
+     "w": 1,
+     "W": -0.2789,
+     "ci": {
+      "m": -0.2789,
+      "lo": -0.7237,
+      "hi": 0.103
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "parasite",
+   "kind": "kept",
+   "old": 1,
+   "fit": -3.84,
+   "note": "reads nothing on the vanilla carriers (-3.84 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "parasite",
+     "n": true,
+     "w": 1,
+     "W": -3.844,
+     "ci": {
+      "m": -3.844,
+      "lo": -5.4144,
+      "hi": -2.8968
+     },
+     "price": 1,
+     "fights": 300,
+     "conf": "medium"
+    }
+   ]
+  },
+  {
+   "id": "perforate",
+   "kind": "set",
+   "old": 3.6,
+   "value": 2.97,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "perforate=2",
+     "n": 2,
+     "w": 1,
+     "W": 5.9416,
+     "ci": {
+      "m": 5.9416,
+      "lo": 5.3506,
+      "hi": 6.3964
+     },
+     "price": 7.2,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "pierce",
+   "kind": "set",
+   "old": 0.17,
+   "value": 0.25,
+   "pow": 0.538,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "pierce=1",
+     "n": 1,
+     "w": 4,
+     "W": 0.24580000000000002,
+     "ci": {
+      "m": 0.24580000000000002,
+      "lo": 0.052800000000000014,
+      "hi": 0.42110000000000003
+     },
+     "price": 0.17,
+     "fights": 1000,
+     "conf": "high"
+    },
+    {
+     "key": "pierce=2",
+     "n": 2,
+     "w": 2,
+     "W": 0.357,
+     "ci": {
+      "m": 0.357,
+      "lo": 0.06309999999999999,
+      "hi": 0.6343
+     },
+     "price": 0.34,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.01): scale n, v x N^pow"
+  },
+  {
+   "id": "poison",
+   "kind": "canon",
+   "note": "poison=3: measured 5.22 [4.88, 5.58], the canon curve gives 6.35 (kept: two canon points fix the curve)"
+  },
+  {
+   "id": "poisonBolt",
+   "kind": "set",
+   "old": 3.1,
+   "value": 2.99,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "poisonBolt=2",
+     "n": 2,
+     "w": 1,
+     "W": 5.9793,
+     "ci": {
+      "m": 5.9793,
+      "lo": 5.3605,
+      "hi": 6.4461
+     },
+     "price": 6.2,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "pounce",
+   "kind": "set",
+   "old": 1.33,
+   "value": 1.66,
+   "pow": 0.684,
+   "scale": "n",
+   "conf": "canon",
+   "pts": [
+    {
+     "key": "pounce=3",
+     "n": 3,
+     "w": 3,
+     "W": 3.4192,
+     "ci": {
+      "m": 3.4192,
+      "lo": 3.0619,
+      "hi": 3.8724
+     },
+     "price": 3.06,
+     "fights": 400,
+     "conf": "high"
+    },
+    {
+     "key": "pounce=5",
+     "n": 5,
+     "w": 1,
+     "W": 5.128,
+     "ci": {
+      "m": 5.128,
+      "lo": 4.7029,
+      "hi": 5.6261
+     },
+     "price": 4.68,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "pounce=6",
+     "n": 6,
+     "w": 1,
+     "W": 5.6701,
+     "ci": {
+      "m": 5.6701,
+      "lo": 5.1227,
+      "hi": 6.2002
+     },
+     "price": 5.24,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "2026-10-31 (SKILL2): the canon point pounce 2 = 2.66 kept (2.67); the curve v x N^pow refitted through it from pounce=3 3.42 [3.06, 3.87]; pounce=5 5.13 [4.7, 5.63]; pounce=6 5.67 [5.12, 6.2] (was half, which gave 2.66 / 3.99 / 5.32)"
+  },
+  {
+   "id": "prayer",
+   "kind": "kept",
+   "old": 0.9,
+   "fit": 0.09,
+   "note": "needs Prayer partners: a low reading is not applied",
+   "pts": [
+    {
+     "key": "prayer=1",
+     "n": 1,
+     "w": 2,
+     "W": 0.08960000000000001,
+     "ci": {
+      "m": 0.08960000000000001,
+      "lo": -0.18189999999999998,
+      "hi": 0.36450000000000005
+     },
+     "price": 0.9,
+     "fights": 400,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "prayerWard",
+   "kind": "kept",
+   "old": 1.3,
+   "fit": 0,
+   "note": "reads nothing on the vanilla carriers (0 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "prayerWard=1",
+     "n": 1,
+     "w": 1,
+     "W": 0,
+     "ci": {
+      "m": 0,
+      "lo": 0,
+      "hi": 0
+     },
+     "price": 1.3,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "predator",
+   "kind": "set",
+   "old": 0.7,
+   "value": 1.04,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "predator=1",
+     "n": 1,
+     "w": 2,
+     "W": 1.0371000000000001,
+     "ci": {
+      "m": 1.0371000000000001,
+      "lo": 0.7674,
+      "hi": 1.3525999999999998
+     },
+     "price": 0.7,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "prey",
+   "kind": "set",
+   "old": 0,
+   "value": 0.05,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "prey",
+     "n": true,
+     "w": 1,
+     "W": 0.0452,
+     "ci": {
+      "m": 0.0452,
+      "lo": 0,
+      "hi": 0.1165
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "prospector",
+   "kind": "kept",
+   "old": 1.2,
+   "fit": 0,
+   "note": "pays in Metal: a low reading is not applied",
+   "pts": [
+    {
+     "key": "prospector=1",
+     "n": 1,
+     "w": 1,
+     "W": 0,
+     "ci": {
+      "m": 0,
+      "lo": -0.0831,
+      "hi": 0.0636
+     },
+     "price": 1.2,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "purblind",
+   "kind": "kept",
+   "old": 0,
+   "fit": -5.65,
+   "note": "reads nothing on the vanilla carriers (-5.65 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "purblind",
+     "n": true,
+     "w": 1,
+     "W": -5.6454,
+     "ci": {
+      "m": -5.6454,
+      "lo": -7.5299,
+      "hi": -4.5682
+     },
+     "price": -6.25,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "quarry",
+   "kind": "kept",
+   "old": 2.5,
+   "fit": -4.26,
+   "note": "pays in Stone: a low reading is not applied",
+   "pts": [
+    {
+     "key": "quarry=1",
+     "n": 1,
+     "w": 1,
+     "W": -4.2586,
+     "ci": {
+      "m": -4.2586,
+      "lo": -5.7168,
+      "hi": -3.4048
+     },
+     "price": 2.5,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "rampart",
+   "kind": "kept",
+   "old": 0.22,
+   "fit": -0.08,
+   "note": "reads nothing on the vanilla carriers (-0.08 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "rampart",
+     "n": true,
+     "w": 1,
+     "W": -0.0829,
+     "ci": {
+      "m": -0.0829,
+      "lo": -0.4449,
+      "hi": 0.2403
+     },
+     "price": 0.22,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "reach",
+   "kind": "set",
+   "old": 0.5,
+   "value": 0.76,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "reach",
+     "n": true,
+     "w": 5,
+     "W": 0.7629,
+     "ci": {
+      "m": 0.7629,
+      "lo": 0.5474,
+      "hi": 0.9836999999999999
+     },
+     "price": 0.5,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "reflect",
+   "kind": "set",
+   "old": 1.04,
+   "value": 0.63,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "reflect",
+     "n": true,
+     "w": 1,
+     "W": 0.6331,
+     "ci": {
+      "m": 0.6331,
+      "lo": 0.3922,
+      "hi": 0.9709
+     },
+     "price": 1.04,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "regen",
+   "kind": "set",
+   "old": 1.73,
+   "value": 2.19,
+   "pow": 0.657,
+   "scale": "n",
+   "conf": "canon",
+   "pts": [
+    {
+     "key": "regen=1",
+     "n": 1,
+     "w": 4,
+     "W": 2.1538999999999997,
+     "ci": {
+      "m": 2.1538999999999997,
+      "lo": 1.9223,
+      "hi": 2.3773
+     },
+     "price": 1.93,
+     "fights": 1000,
+     "conf": "high"
+    },
+    {
+     "key": "regen=3",
+     "n": 3,
+     "w": 1,
+     "W": 3.9688,
+     "ci": {
+      "m": 3.9688,
+      "lo": 3.7042,
+      "hi": 4.302
+     },
+     "price": 4.54,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "2026-10-31 (SKILL2): the canon point regen 2 = 3.46 kept (3.45); the curve v x N^pow refitted through it from regen=1 2.15 [1.92, 2.38]; regen=3 3.97 [3.7, 4.3] (was n, which gave 1.73 / 5.19)"
+  },
+  {
+   "id": "relic",
+   "kind": "set",
+   "old": 0.09,
+   "value": 1.39,
+   "scale": "fixed",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "relic",
+     "n": true,
+     "w": 1,
+     "W": 1.3869,
+     "ci": {
+      "m": 1.3869,
+      "lo": 1.0545,
+      "hi": 1.842
+     },
+     "price": 0.09,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "reload",
+   "kind": "set",
+   "old": -6,
+   "value": -5.15,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "reload=1",
+     "n": 1,
+     "w": 2,
+     "W": -5.1541,
+     "ci": {
+      "m": -5.1541,
+      "lo": -6.8527000000000005,
+      "hi": -4.2404
+     },
+     "price": -6,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "remember",
+   "kind": "set",
+   "old": 2.07,
+   "value": 5,
+   "pow": -1.308,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "remember=1+T:onDeath>exileSelf",
+     "n": 1,
+     "w": 1,
+     "W": 4.9176,
+     "ci": {
+      "m": 4.9176,
+      "lo": 4.6376,
+      "hi": 5.2253
+     },
+     "price": 1.99,
+     "fights": 1000,
+     "conf": "high"
+    },
+    {
+     "key": "remember=2+T:onDeath>exileSelf",
+     "n": 2,
+     "w": 1,
+     "W": 1.9387,
+     "ci": {
+      "m": 1.9387,
+      "lo": 1.6935,
+      "hi": 2.2057
+     },
+     "price": 4.06,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ],
+   "why": "Remember 1 / 2 with their On Death → Exile self, as the cards carry them (DECK1-1): 4.92 / 1.94 with the trigger's -0.08 added back"
+  },
+  {
+   "id": "renewal",
+   "kind": "set",
+   "old": 0,
+   "value": 0.14,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "renewal",
+     "n": true,
+     "w": 1,
+     "W": 0.1432,
+     "ci": {
+      "m": 0.1432,
+      "lo": 0.0639,
+      "hi": 0.2458
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "rocket",
+   "kind": "set",
+   "old": 2.03,
+   "value": 1.73,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "rocket=4",
+     "n": 4,
+     "w": 1,
+     "W": 5.1785,
+     "ci": {
+      "m": 5.1785,
+      "lo": 4.82,
+      "hi": 5.6218
+     },
+     "price": 6.09,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "rupture",
+   "kind": "kept",
+   "old": 0.66,
+   "fit": 0.06,
+   "note": "reads nothing on the vanilla carriers (0.06 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "rupture",
+     "n": true,
+     "w": 1,
+     "W": 0.0603,
+     "ci": {
+      "m": 0.0603,
+      "lo": -0.016,
+      "hi": 0.1438
+     },
+     "price": 0.66,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "sacrifice",
+   "kind": "kept",
+   "old": 0,
+   "fit": -0.01,
+   "note": "needs allies to spend: a low reading is not applied",
+   "pts": [
+    {
+     "key": "sacrifice=2",
+     "n": 2,
+     "w": 1,
+     "W": -0.0151,
+     "ci": {
+      "m": -0.0151,
+      "lo": -0.0564,
+      "hi": 0
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "sap",
+   "kind": "set",
+   "old": 1,
+   "value": 2.77,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "sap",
+     "n": true,
+     "w": 1,
+     "W": 2.7711,
+     "ci": {
+      "m": 2.7711,
+      "lo": 2.5256,
+      "hi": 3.1353
+     },
+     "price": 1,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "scar",
+   "kind": "set",
+   "old": 2,
+   "value": 1.42,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "scar=2",
+     "n": 2,
+     "w": 1,
+     "W": 2.8429,
+     "ci": {
+      "m": 2.8429,
+      "lo": 2.5474,
+      "hi": 3.2883
+     },
+     "price": 4,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "scare",
+   "kind": "set",
+   "old": 0.18,
+   "value": 2.02,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "scare=2",
+     "n": 2,
+     "w": 1,
+     "W": 4.0321,
+     "ci": {
+      "m": 4.0321,
+      "lo": 3.7909,
+      "hi": 4.3528
+     },
+     "price": 0.36,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "scatterbrained",
+   "kind": "set",
+   "old": -6,
+   "value": -5.71,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "scatterbrained",
+     "n": true,
+     "w": 1,
+     "W": -5.7057,
+     "ci": {
+      "m": -5.7057,
+      "lo": -7.5291,
+      "hi": -4.6494
+     },
+     "price": -6,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "scavenge",
+   "kind": "set",
+   "old": 3.28,
+   "value": 2.67,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "scavenge=1",
+     "n": 1,
+     "w": 1,
+     "W": 2.6711,
+     "ci": {
+      "m": 2.6711,
+      "lo": 2.1527,
+      "hi": 3.0064
+     },
+     "price": 3.28,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "sentry",
+   "kind": "kept",
+   "old": 3,
+   "fit": 2.77,
+   "note": "needs an attacker in its lane: a low reading is not applied",
+   "pts": [
+    {
+     "key": "sentry",
+     "n": true,
+     "w": 2,
+     "W": 2.7666999999999997,
+     "ci": {
+      "m": 2.7666999999999997,
+      "lo": 2.5463999999999998,
+      "hi": 3.169
+     },
+     "price": 3,
+     "fights": 400,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "shatter",
+   "kind": "set",
+   "old": 0,
+   "value": 0.06,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "shatter=2",
+     "n": 2,
+     "w": 1,
+     "W": 0.1206,
+     "ci": {
+      "m": 0.1206,
+      "lo": 0.0154,
+      "hi": 0.2781
+     },
+     "price": 0,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "shell",
+   "kind": "set",
+   "old": 1.36,
+   "value": 1.99,
+   "pow": 0.449,
+   "scale": "n",
+   "conf": "canon",
+   "pts": [
+    {
+     "key": "shell=1",
+     "n": 1,
+     "w": 1,
+     "W": 1.6808,
+     "ci": {
+      "m": 1.6808,
+      "lo": 1.2719,
+      "hi": 2.1495
+     },
+     "price": 1.36,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "shell=4",
+     "n": 4,
+     "w": 1,
+     "W": 3.13,
+     "ci": {
+      "m": 3.13,
+      "lo": 2.808,
+      "hi": 3.5218
+     },
+     "price": 4.08,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "2026-10-31 (SKILL2): the canon point shell 2 = 2.72 kept (2.72); the curve v x N^pow refitted through it from shell=1 1.68 [1.27, 2.15]; shell=4 3.13 [2.81, 3.52] (was half, which gave 1.36 / 4.08)"
+  },
+  {
+   "id": "shield",
+   "kind": "set",
+   "old": 0,
+   "value": 2.62,
+   "scale": "fixed",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "shield=3",
+     "n": 3,
+     "w": 1,
+     "W": 2.302,
+     "ci": {
+      "m": 2.302,
+      "lo": 1.9227,
+      "hi": 2.6619
+     },
+     "price": 2.4,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "shield=4",
+     "n": 4,
+     "w": 1,
+     "W": 2.929,
+     "ci": {
+      "m": 2.929,
+      "lo": 2.6537,
+      "hi": 3.2835
+     },
+     "price": 3.2,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "least squares over 2 N"
+  },
+  {
+   "id": "siege",
+   "kind": "set",
+   "old": 0.39,
+   "value": 0.86,
+   "pow": 0.899,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "siege=4",
+     "n": 4,
+     "w": 2,
+     "W": 2.8847,
+     "ci": {
+      "m": 2.8847,
+      "lo": 2.5758,
+      "hi": 3.2264999999999997
+     },
+     "price": 1.17,
+     "fights": 400,
+     "conf": "high"
+    },
+    {
+     "key": "siege=1",
+     "n": 1,
+     "w": 1,
+     "W": 0.8366,
+     "ci": {
+      "m": 0.8366,
+      "lo": 0.5912,
+      "hi": 1.1488
+     },
+     "price": 0.96,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "siege=2",
+     "n": 2,
+     "w": 1,
+     "W": 1.6431,
+     "ci": {
+      "m": 1.6431,
+      "lo": 1.3618,
+      "hi": 2.0624
+     },
+     "price": 1.92,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "siege=3",
+     "n": 3,
+     "w": 1,
+     "W": 2.5017,
+     "ci": {
+      "m": 2.5017,
+      "lo": 2.1176,
+      "hi": 2.7915
+     },
+     "price": 1.92,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 4 N better than its 'half' scale (squared error 0.06 vs 0.42): scale n, v x N^pow"
+  },
+  {
+   "id": "sonar",
+   "kind": "set",
+   "old": 2,
+   "value": 0.31,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "sonar",
+     "n": true,
+     "w": 1,
+     "W": 0.309,
+     "ci": {
+      "m": 0.309,
+      "lo": 0.1045,
+      "hi": 0.5684
+     },
+     "price": 2,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "speed",
+   "kind": "set",
+   "old": 0.37,
+   "value": 0.89,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "speed=2",
+     "n": 2,
+     "w": 1,
+     "W": 1.7788,
+     "ci": {
+      "m": 1.7788,
+      "lo": 1.6231,
+      "hi": 2.1014
+     },
+     "price": 0.74,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "spitfire",
+   "kind": "set",
+   "old": 6.12,
+   "value": 5.02,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "spitfire=1",
+     "n": 1,
+     "w": 1,
+     "W": 5.0209,
+     "ci": {
+      "m": 5.0209,
+      "lo": 4.7167,
+      "hi": 5.4266
+     },
+     "price": 6.12,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "stealth",
+   "kind": "set",
+   "old": 2,
+   "value": 4.1,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "stealth",
+     "n": true,
+     "w": 3,
+     "W": 4.0967,
+     "ci": {
+      "m": 4.0967,
+      "lo": 3.5254,
+      "hi": 4.5428
+     },
+     "price": 2,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "stockpile",
+   "kind": "set",
+   "old": 2.18,
+   "value": 3.04,
+   "pow": 0.672,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "stockpile=1",
+     "n": 1,
+     "w": 1,
+     "W": 3.0367,
+     "ci": {
+      "m": 3.0367,
+      "lo": 2.6225,
+      "hi": 3.571
+     },
+     "price": 2.18,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "stockpile=2",
+     "n": 2,
+     "w": 1,
+     "W": 4.8376,
+     "ci": {
+      "m": 4.8376,
+      "lo": 4.4003,
+      "hi": 5.0895
+     },
+     "price": 4.36,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 0.31): scale n, v x N^pow"
+  },
+  {
+   "id": "storm",
+   "kind": "kept",
+   "old": 1.8,
+   "fit": 0.57,
+   "note": "storms only: a low reading is not applied",
+   "pts": [
+    {
+     "key": "storm",
+     "n": true,
+     "w": 1,
+     "W": 0.5653,
+     "ci": {
+      "m": 0.5653,
+      "lo": 0.3405,
+      "hi": 0.9041
+     },
+     "price": 1.8,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "strangle",
+   "kind": "set",
+   "old": 3.1,
+   "value": 3.91,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "strangle=1",
+     "n": 1,
+     "w": 1,
+     "W": 3.9133,
+     "ci": {
+      "m": 3.9133,
+      "lo": 3.5378,
+      "hi": 4.2947
+     },
+     "price": 3.1,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "stunOnHit",
+   "kind": "set",
+   "old": 1.66,
+   "value": 2.21,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "stunOnHit=1",
+     "n": 1,
+     "w": 1,
+     "W": 2.2144,
+     "ci": {
+      "m": 2.2144,
+      "lo": 1.7727,
+      "hi": 2.6194
+     },
+     "price": 1.66,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "sturdy",
+   "kind": "set",
+   "old": 0.69,
+   "value": 2.96,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "sturdy",
+     "n": true,
+     "w": 1,
+     "W": 2.9577,
+     "ci": {
+      "m": 2.9577,
+      "lo": 2.6757,
+      "hi": 3.3175
+     },
+     "price": 0.69,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "supreme",
+   "kind": "kept",
+   "old": 5,
+   "fit": 3.26,
+   "note": "Tide fields only: a low reading is not applied",
+   "pts": [
+    {
+     "key": "supreme",
+     "n": true,
+     "w": 1,
+     "W": 3.2563,
+     "ci": {
+      "m": 3.2563,
+      "lo": 2.9055,
+      "hi": 3.6506
+     },
+     "price": 5,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "swarm",
+   "kind": "set",
+   "old": 2.5,
+   "value": 2.97,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "swarm",
+     "n": true,
+     "w": 10,
+     "W": 2.9682,
+     "ci": {
+      "m": 2.9682,
+      "lo": 2.711,
+      "hi": 3.1484
+     },
+     "price": 2.5,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "sweep",
+   "kind": "set",
+   "old": 2.41,
+   "value": 3.52,
+   "pow": 0.454,
+   "scale": "n",
+   "conf": "canon",
+   "pts": [
+    {
+     "key": "sweep=3",
+     "n": 3,
+     "w": 4,
+     "W": 5.9012,
+     "ci": {
+      "m": 5.9012,
+      "lo": 5.5402,
+      "hi": 6.1929
+     },
+     "price": 5.24,
+     "fights": 1000,
+     "conf": "high"
+    },
+    {
+     "key": "sweep=4",
+     "n": 4,
+     "w": 1,
+     "W": 6.6204,
+     "ci": {
+      "m": 6.6204,
+      "lo": 6.0438,
+      "hi": 7.0774
+     },
+     "price": 6.81,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "sweep=5",
+     "n": 5,
+     "w": 1,
+     "W": 7.0578,
+     "ci": {
+      "m": 7.0578,
+      "lo": 6.5074,
+      "hi": 7.5332
+     },
+     "price": 7.61,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "2026-10-31 (SKILL2): the canon point sweep 2 = 4.82 kept (4.82); the curve v x N^pow refitted through it from sweep=3 5.9 [5.54, 6.19]; sweep=4 6.62 [6.04, 7.08]; sweep=5 7.06 [6.51, 7.53] (was half, which gave 4.82 / 7.23 / 7.23)"
+  },
+  {
+   "id": "swipe",
+   "kind": "set",
+   "old": 5.25,
+   "value": 4.41,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "swipe=1",
+     "n": 1,
+     "w": 1,
+     "W": 4.4115,
+     "ci": {
+      "m": 4.4115,
+      "lo": 3.9937,
+      "hi": 4.833
+     },
+     "price": 5.25,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "tangle",
+   "kind": "set",
+   "old": 1.4,
+   "value": 2.43,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "tangle=1",
+     "n": 1,
+     "w": 2,
+     "W": 2.4295999999999998,
+     "ci": {
+      "m": 2.4295999999999998,
+      "lo": 1.9855999999999998,
+      "hi": 2.6671
+     },
+     "price": 1.4,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "taunt",
+   "kind": "kept",
+   "old": 0.4,
+   "fit": -1.57,
+   "note": "protects partners: a low reading is not applied",
+   "pts": [
+    {
+     "key": "taunt",
+     "n": true,
+     "w": 3,
+     "W": -1.5673,
+     "ci": {
+      "m": -1.5673,
+      "lo": -2.5253,
+      "hi": -0.9292
+     },
+     "price": 0.4,
+     "fights": 400,
+     "conf": "medium"
+    }
+   ]
+  },
+  {
+   "id": "thorns",
+   "kind": "set",
+   "old": 1.25,
+   "value": 2.68,
+   "pow": 0.768,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "thorns=1",
+     "n": 1,
+     "w": 3,
+     "W": 2.6792,
+     "ci": {
+      "m": 2.6792,
+      "lo": 2.5073,
+      "hi": 3.0284999999999997
+     },
+     "price": 1.25,
+     "fights": 400,
+     "conf": "high"
+    },
+    {
+     "key": "thorns=2",
+     "n": 2,
+     "w": 3,
+     "W": 4.5629,
+     "ci": {
+      "m": 4.5629,
+      "lo": 4.3281,
+      "hi": 4.8576
+     },
+     "price": 2.5,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 0.38): scale n, v x N^pow"
+  },
+  {
+   "id": "tide",
+   "kind": "kept",
+   "old": 1.5,
+   "fit": 0.42,
+   "note": "Tide fields only: a low reading is not applied",
+   "pts": [
+    {
+     "key": "tide",
+     "n": true,
+     "w": 49,
+     "W": 0.4243,
+     "ci": {
+      "m": 0.4243,
+      "lo": 0.22750000000000004,
+      "hi": 0.6212000000000001
+     },
+     "price": 1.5,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "timbered",
+   "kind": "kept",
+   "old": 0.5,
+   "fit": 0.18,
+   "note": "needs Lumber cards: a low reading is not applied",
+   "pts": [
+    {
+     "key": "timbered",
+     "n": true,
+     "w": 1,
+     "W": 0.1809,
+     "ci": {
+      "m": 0.1809,
+      "lo": 0.066,
+      "hi": 0.3394
+     },
+     "price": 0.5,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "tornado",
+   "kind": "set",
+   "old": 2.5,
+   "value": 1.12,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "tornado=1",
+     "n": 1,
+     "w": 1,
+     "W": 1.1231,
+     "ci": {
+      "m": 1.1231,
+      "lo": 0.6182,
+      "hi": 1.6718
+     },
+     "price": 2.5,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "trap",
+   "kind": "set",
+   "old": 0.7,
+   "value": 0.82,
+   "pow": 0.681,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "trap=5",
+     "n": 5,
+     "w": 1,
+     "W": 2.454,
+     "ci": {
+      "m": 2.454,
+      "lo": 2.0021,
+      "hi": 2.8311
+     },
+     "price": 2.1,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "trap=6",
+     "n": 6,
+     "w": 1,
+     "W": 2.7783,
+     "ci": {
+      "m": 2.7783,
+      "lo": 2.4336,
+      "hi": 3.3259
+     },
+     "price": 2.8,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.09): scale n, v x N^pow"
+  },
+  {
+   "id": "trident",
+   "kind": "set",
+   "old": 4,
+   "value": 4.04,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "trident",
+     "n": true,
+     "w": 1,
+     "W": 4.04,
+     "ci": {
+      "m": 4.04,
+      "lo": 3.6037,
+      "hi": 4.4246
+     },
+     "price": 4,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "tsunami",
+   "kind": "set",
+   "old": 3.48,
+   "value": 4.02,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "tsunami=2",
+     "n": 2,
+     "w": 1,
+     "W": 8.0459,
+     "ci": {
+      "m": 8.0459,
+      "lo": 7.3029,
+      "hi": 8.817
+     },
+     "price": 6.96,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "twinShot",
+   "kind": "set",
+   "old": 6.61,
+   "value": 5.47,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "twinShot=1",
+     "n": 1,
+     "w": 1,
+     "W": 5.474,
+     "ci": {
+      "m": 5.474,
+      "lo": 5.0352,
+      "hi": 5.9645
+     },
+     "price": 6.61,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "twinStrike",
+   "kind": "set",
+   "old": 3.17,
+   "value": 6.99,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "twinStrike",
+     "n": true,
+     "w": 2,
+     "W": 6.9867,
+     "ci": {
+      "m": 6.9867,
+      "lo": 6.4864,
+      "hi": 7.3487
+     },
+     "price": 3.17,
+     "fights": 400,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "undead",
+   "kind": "set",
+   "old": 0.54,
+   "value": 2.14,
+   "scale": "fixed",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "undead",
+     "n": true,
+     "w": 4,
+     "W": 2.1399999999999997,
+     "ci": {
+      "m": 2.1399999999999997,
+      "lo": 1.9266,
+      "hi": 2.3387
+     },
+     "price": 0.54,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "vanguard",
+   "kind": "set",
+   "old": 1.2,
+   "value": 1.35,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "vanguard=1",
+     "n": 1,
+     "w": 1,
+     "W": 1.3492,
+     "ci": {
+      "m": 1.3492,
+      "lo": 0.8669,
+      "hi": 1.9012
+     },
+     "price": 1.2,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "venomous",
+   "kind": "set",
+   "old": 0.74,
+   "value": 2.4,
+   "pow": 0.887,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "venomous=2",
+     "n": 2,
+     "w": 2,
+     "W": 4.4342,
+     "ci": {
+      "m": 4.4342,
+      "lo": 4.2607,
+      "hi": 4.6098
+     },
+     "price": 1.48,
+     "fights": 400,
+     "conf": "high"
+    },
+    {
+     "key": "venomous=1",
+     "n": 1,
+     "w": 1,
+     "W": 2.398,
+     "ci": {
+      "m": 2.398,
+      "lo": 2.1837,
+      "hi": 2.6694
+     },
+     "price": 2.22,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.03): scale n, v x N^pow"
+  },
+  {
+   "id": "volley",
+   "kind": "set",
+   "old": 4.56,
+   "value": 6.27,
+   "pow": 0.405,
+   "scale": "n",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "volley=1",
+     "n": 1,
+     "w": 1,
+     "W": 6.2659,
+     "ci": {
+      "m": 6.2659,
+      "lo": 5.6514,
+      "hi": 6.7462
+     },
+     "price": 4.56,
+     "fights": 300,
+     "conf": "high"
+    },
+    {
+     "key": "volley=2",
+     "n": 2,
+     "w": 1,
+     "W": 8.2947,
+     "ci": {
+      "m": 8.2947,
+      "lo": 7.6899,
+      "hi": 8.9237
+     },
+     "price": 9.12,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 3.59): scale n, v x N^pow"
+  },
+  {
+   "id": "wakeful",
+   "kind": "kept",
+   "old": 0.5,
+   "fit": 0.03,
+   "note": "reads nothing on the vanilla carriers (0.03 <= 0.3): kept",
+   "pts": [
+    {
+     "key": "wakeful",
+     "n": true,
+     "w": 1,
+     "W": 0.0301,
+     "ci": {
+      "m": 0.0301,
+      "lo": -0.0732,
+      "hi": 0.1542
+     },
+     "price": 0.5,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "wave",
+   "kind": "set",
+   "old": 2,
+   "value": 2.72,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "wave=\"alternate\"",
+     "n": "alternate",
+     "w": 1,
+     "W": 2.7209,
+     "ci": {
+      "m": 2.7209,
+      "lo": 2.4155,
+      "hi": 3.1826
+     },
+     "price": 2,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  },
+  {
+   "id": "web",
+   "kind": "set",
+   "old": 0.34,
+   "value": 0.37,
+   "scale": "half",
+   "conf": "high",
+   "pts": [
+    {
+     "key": "web=1",
+     "n": 1,
+     "w": 1,
+     "W": 0.3693,
+     "ci": {
+      "m": 0.3693,
+      "lo": 0.1694,
+      "hi": 0.6052
+     },
+     "price": 0.34,
+     "fights": 300,
+     "conf": "high"
+    }
+   ],
+   "why": ""
+  }
+ ],
+ "shorthands": [
+  {
+   "id": "bounty",
+   "kind": "set",
+   "old": 1,
+   "mult": 0.88,
+   "pts": [
+    {
+     "key": "bounty=1",
+     "n": 1,
+     "w": 5,
+     "W": 2.1909,
+     "ci": {
+      "m": 2.1909,
+      "lo": 1.876,
+      "hi": 2.5339
+     },
+     "price": 2.5,
+     "fights": 1000,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "kinRally",
+   "kind": "set",
+   "old": 1,
+   "mult": 0.45,
+   "pts": [
+    {
+     "key": "kinRally=1",
+     "n": 1,
+     "w": 1,
+     "W": 2.9075,
+     "ci": {
+      "m": 2.9075,
+      "lo": 2.6017,
+      "hi": 3.3549
+     },
+     "price": 6.5,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  },
+  {
+   "id": "milling",
+   "kind": "set",
+   "old": 1,
+   "mult": 1.54,
+   "pts": [
+    {
+     "key": "milling=1",
+     "n": 1,
+     "w": 1,
+     "W": 4.6089,
+     "ci": {
+      "m": 4.6089,
+      "lo": 4.272,
+      "hi": 4.9673
+     },
+     "price": 3,
+     "fights": 300,
+     "conf": "high"
+    }
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "pair": "onAllyPlayed>reduceWaitOfSpawned",
+   "old": 1,
+   "mult": 0.75,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onAllyPlayed>reduceWaitOfSpawned {\"on\":\"onAllyPlayed\",\"do\":\"reduceWaitOfSpawned\",\"amount\":1,\"once\":true}",
+     "W": 1.5,
+     "lo": 1.17,
+     "hi": 2,
+     "price": 2,
+     "fights": 300,
+     "cards": [
+      "nest"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onAttack>buff",
+   "old": 1,
+   "mult": 1.03,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onAttack>buff {\"on\":\"onAttack\",\"do\":\"buff\",\"amount\":2,\"who\":\"self\"}",
+     "W": 5.83,
+     "lo": 5.31,
+     "hi": 6.29,
+     "price": 5.67,
+     "fights": 300,
+     "cards": [
+      "ravenous-wolverine"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onAttack>heal",
+   "old": 1,
+   "mult": 8.24,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onAttack>heal {\"do\":\"heal\",\"on\":\"onAttack\",\"amount\":1}",
+     "W": 2.22,
+     "lo": 1.82,
+     "hi": 2.6,
+     "price": 0.27,
+     "fights": 300,
+     "cards": [
+      "bee-forager"
+     ]
+    },
+    {
+     "key": "T:onAttack>heal {\"do\":\"heal\",\"on\":\"onAttack\",\"who\":\"self\",\"amount\":1}",
+     "W": 2.22,
+     "lo": 1.82,
+     "hi": 2.6,
+     "price": 0.27,
+     "fights": 300,
+     "cards": [
+      "forager-ant"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onDeath>damage",
+   "old": 1,
+   "mult": 1.51,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"}",
+     "W": 1.12,
+     "lo": 0.88,
+     "hi": 1.45,
+     "price": 0.64,
+     "fights": 300,
+     "cards": [
+      "sulfur-cinder-moth"
+     ]
+    },
+    {
+     "key": "T:onDeath>damage {\"on\":\"onDeath\",\"do\":\"damage\",\"amount\":5,\"dmgType\":\"heat\",\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+     "W": 2.35,
+     "lo": 1.93,
+     "hi": 2.66,
+     "price": 1.6,
+     "fights": 300,
+     "cards": [
+      "caldera-wyrm"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onKill>gain",
+   "old": 1,
+   "mult": 1.16,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onKill>gain {\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}",
+     "W": 1.63,
+     "lo": 1.27,
+     "hi": 2.05,
+     "price": 1.4,
+     "fights": 400,
+     "cards": [
+      "dust-hyena",
+      "gull-thief",
+      "ferry-toll-frog"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onReady>damage",
+   "old": 1,
+   "mult": 2.53,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":2,\"dmgType\":\"physical\",\"who\":\"enemy\",\"sub\":\"random\"}",
+     "W": 1.82,
+     "lo": 1.43,
+     "hi": 2.41,
+     "price": 0.72,
+     "fights": 300,
+     "cards": [
+      "pelican-diver"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onReady>gain",
+   "old": 1,
+   "mult": 2.19,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":1}",
+     "W": 3.04,
+     "lo": 2.6,
+     "hi": 3.38,
+     "price": 0.9,
+     "fights": 400,
+     "cards": [
+      "leafcutter-gardener",
+      "driftwood-crab",
+      "talus-pika"
+     ]
+    },
+    {
+     "key": "T:onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}",
+     "W": 3.04,
+     "lo": 2.62,
+     "hi": 3.58,
+     "price": 0.9,
+     "fights": 300,
+     "cards": [
+      "otter-angler"
+     ]
+    },
+    {
+     "key": "T:onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+     "W": 4.84,
+     "lo": 4.4,
+     "hi": 5.09,
+     "price": 1.8,
+     "fights": 300,
+     "cards": [
+      "nutria-reedcutter"
+     ]
+    },
+    {
+     "key": "T:onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":3}",
+     "W": 5.23,
+     "lo": 4.85,
+     "hi": 5.48,
+     "price": 2.7,
+     "fights": 300,
+     "cards": [
+      "dune-packrat"
+     ]
+    },
+    {
+     "key": "T:onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"resource\":\"metal\",\"amount\":1}",
+     "W": -0.08,
+     "lo": -0.23,
+     "hi": 0.04,
+     "price": 0.9,
+     "fights": 300,
+     "cards": [
+      "ore-smelter-mole"
+     ]
+    },
+    {
+     "key": "T:onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"resource\":\"uranium\",\"amount\":1}",
+     "W": -0.03,
+     "lo": -0.2,
+     "hi": 0.11,
+     "price": 0.9,
+     "fights": 300,
+     "cards": [
+      "irradiated-axolotl"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onSpawn>addWait",
+   "old": 1,
+   "mult": 0.33,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onSpawn>addWait {\"on\":\"onSpawn\",\"do\":\"addWait\",\"amount\":2,\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+     "W": 1.97,
+     "lo": 1.63,
+     "hi": 2.5,
+     "price": 5.88,
+     "fights": 300,
+     "cards": [
+      "glacier-yak"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onSpawn>drawCard",
+   "old": 1,
+   "mult": 0.56,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onSpawn>drawCard {\"on\":\"onSpawn\",\"do\":\"drawCard\",\"count\":1}",
+     "W": 3.61,
+     "lo": 3.01,
+     "hi": 4.25,
+     "price": 4.31,
+     "fights": 300,
+     "cards": [
+      "daily-post"
+     ]
+    },
+    {
+     "key": "T:onSpawn>drawCard {\"on\":\"onSpawn\",\"do\":\"drawCard\",\"count\":2}",
+     "W": 4.24,
+     "lo": 3.6,
+     "hi": 4.76,
+     "price": 8.61,
+     "fights": 300,
+     "cards": [
+      "snail-mail"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onSpawn>gain",
+   "old": 1,
+   "mult": 1.39,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":1}",
+     "W": 2.99,
+     "lo": 2.59,
+     "hi": 3.51,
+     "price": 1.05,
+     "fights": 300,
+     "cards": [
+      "gannet-nestweaver"
+     ]
+    },
+    {
+     "key": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2}",
+     "W": 5.05,
+     "lo": 4.65,
+     "hi": 5.28,
+     "price": 2.1,
+     "fights": 300,
+     "cards": [
+      "cone-cutter-squirrel"
+     ]
+    },
+    {
+     "key": "T:onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"stone\",\"amount\":2}",
+     "W": 0.05,
+     "lo": -0.12,
+     "hi": 0.28,
+     "price": 2.1,
+     "fights": 300,
+     "cards": [
+      "pumice-beetle"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onSpawn>magnet",
+   "old": 1,
+   "mult": 1.2,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onSpawn>magnet {\"on\":\"onSpawn\",\"do\":\"magnet\",\"amount\":1,\"who\":\"enemy\",\"sub\":\"all\"}",
+     "W": 0.53,
+     "lo": 0.23,
+     "hi": 0.87,
+     "price": 0.44,
+     "fights": 300,
+     "cards": [
+      "clap-net-trapper"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "onSpawn>stun",
+   "old": 1,
+   "mult": 0.31,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"}",
+     "W": 1.97,
+     "lo": 1.65,
+     "hi": 2.52,
+     "price": 6.3,
+     "fights": 300,
+     "cards": [
+      "ash-cloud-condor"
+     ]
+    }
+   ]
+  },
+  {
+   "pair": "perTurn>spawnCard",
+   "old": 1,
+   "mult": 1.27,
+   "note": "",
+   "entries": [
+    {
+     "key": "T:perTurn>spawnCard {\"do\":\"spawnCard\",\"on\":\"perTurn\",\"count\":1,\"defId\":\"ant-scout\",\"turnOf\":\"self\"}",
+     "W": 7.63,
+     "lo": 7.12,
+     "hi": 8.27,
+     "price": 6,
+     "fights": 300,
+     "cards": [
+      "ant-hill"
+     ]
+    }
+   ]
+  }
+ ],
+ "kept": [
+  "bedrock: reads 0.02 < 0.3 (needs Stone); kept",
+  "changeling: reads 0.04 < 0.96 (shares a type with partners); kept",
+  "converge: reads -0.14 < 0 (needs its targets); kept",
+  "darksight: reads 0.25 < 3 (dark fights only); kept",
+  "dive: reads 0 < 1.25 (needs Flying or swimming (the carriers have neither)); kept",
+  "drought: reads 0.4 < 1 (Drought only); kept",
+  "dry: reads 0.34 < 4 (dry maps only); kept",
+  "foePlenty: reads 0 < 0.1 (needs the foe's resources); kept",
+  "fog: reads 0.08 < 2.7 (Mist only); kept",
+  "frost: reads 0.3 < 1.12 (cold maps only); kept",
+  "frostbite: reads 0.19 < 0.5 (cold maps (Frostbite Resist, Freezing)); kept",
+  "guardian: reads -0.82 < 0 (protects partners); kept",
+  "heat: reads 0.71 < 1.2 (hot maps only); kept",
+  "hunter: reads -0.18 < 0.28 (needs its prey type); kept",
+  "keenEye: reads 0 < 0.34 (against Changelings and in Mist); kept",
+  "kinship: reads 0.86 < 3 (needs its type beside it); kept",
+  "mountainClimber: reads 0.37 < 4 (mountain terrain only); kept",
+  "packLeader: reads -0.28 < 0 (needs its pack); kept",
+  "prayer: reads 0.09 < 0.9 (needs Prayer partners); kept",
+  "prospector: reads 0 < 1.2 (pays in Metal); kept",
+  "quarry: reads -4.26 < 2.5 (pays in Stone); kept",
+  "sacrifice: reads -0.01 < 0 (needs allies to spend); kept",
+  "sentry: reads 2.77 < 3 (needs an attacker in its lane); kept",
+  "storm: reads 0.57 < 1.8 (storms only); kept",
+  "supreme: reads 3.26 < 5 (Tide fields only); kept",
+  "taunt: reads -1.57 < 0.4 (protects partners); kept",
+  "tide: reads 0.42 < 1.5 (Tide fields only); kept",
+  "timbered: reads 0.18 < 0.5 (needs Lumber cards); kept",
+  "onAttack>drawCard: held (RECOST1-5: worker-ant); measured 3.3 / 5.54",
+  "onAttacked>spawnCard: held (RECOST1-5: bee-drone); measured 4 / 7.6, 4 / 7.6",
+  "perTurn>forgeWeapon: reads nothing on the vanilla carriers (-0.03): kept"
+ ]
+}

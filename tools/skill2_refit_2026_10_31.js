@@ -33,6 +33,22 @@ const WELL_UNDER = 0.6;
 const r2 = v => Math.round(v * 100) / 100;
 const NAMED = { edits: {
   'marshal-of-rivergate': { attack: 4, health: 9, why: 'BUDGET2-5 (owner, via the coordinator): lift to 4/9 (was 2/3, 45% of N)' },
+  // DECK1-5: Gannet Cliffs' five list cards clearly under the fair line (BUDGET2's contribution run, per copy: Peak Condor -2.3, Hawk
+  // Arrowkeeper -2.2, Red-billed Chough -2.2, Peregrine Stooper -1.9, Conch Herald -1.5). On the canon's carriers +1 Attack is worth about
+  // 2.0 win-rate points a copy and +1 Health 0.43 (the stat yardstick split by +1 Attack = 4.6 Health), so each gets +1 Attack, or Health
+  // where the card's shape is Health (the Herald, an aura wall). Four of them fly: Flying is priced x1.39 on the stats (10.4 points on the
+  // carriers) but measures 4.0 (SKILL2-2), which is why the lift breaks their budget on paper.
+  'peak-condor': { attack: 4, health: 7, why: 'DECK1-5: onto the fair line (-2.3 a copy): 3/7 -> 4/7' },
+  'hawk-arrowkeeper': { attack: 2, health: 8, why: 'DECK1-5: onto the fair line (-2.2 a copy): 1/8 -> 2/8' },
+  'red-billed-chough': { attack: 3, health: 2, why: 'DECK1-5: onto the fair line (-2.2 a copy): 2/2 -> 3/2' },
+  'peregrine-stooper': { attack: 2, health: 8, why: 'DECK1-5: onto the fair line (-1.9 a copy): 1/8 -> 2/8' },
+  'conch-herald': { attack: 1, health: 13, why: 'DECK1-5: onto the fair line (-1.5 a copy), within its budget: 1/11 -> 1/13' },
+  // DECK1-1: the two of the four whose strength the re-priced skills do not explain (Executioner reads nothing on the carriers; Remember 1
+  // with its trigger now 4.92 leaves the Ghoul at 90% of N): trimmed toward the fair line (BUDGET2: Ghoul +4.7 a copy, Hyena +3.2), checked
+  // by the contribution run after the re-fit. The Quartermaster (Fletcher 0 -> 3.18) and the Wolf Spider Mother (Brood 2 4.4 -> 7.2) are
+  // trimmed by the re-fit rule itself.
+  'ashbone-ghoul': { attack: 2, health: 5, why: 'DECK1-1: toward the fair line (+4.7 a copy): 2/7 -> 2/5 (Remember 1 + its trigger re-priced 1.99 -> 4.92)' },
+  'grave-grin-hyena': { attack: 2, health: 10, why: 'DECK1-1: toward the fair line (+3.2 a copy): 2/14 -> 2/10 (Executioner reads nothing on the carriers: its strength is the body)' },
 } };
 
 function verdict(T, c) { const b = T.budget(c), b1 = T.budget(c, { level: 1 });
@@ -77,6 +93,9 @@ function main() {
     if (OVER_OK.has(c.id)) { held.push(Object.assign(base, { why: 'owner call: over on purpose (the creature-ranks rule)' })); return; }
     const f = fit(c, vNew, vOld);
     if (!f) { held.push(Object.assign(base, { why: 'no stat change fits (its skills alone break a cap)' })); return; }
+    // a fit that takes more than 40% of the card's 3A + H is not a re-fit but a new card: held with the cap-2 group (decision SKILL2-1)
+    { const pts = A => 3 * (+A.attack || 0) + (+A.health || 0), after = { attack: (+c.attack || 0) + f.dA, health: c.health + f.dH };
+      if (vNew.over && pts(after) < 0.6 * pts(c)) { held.push(Object.assign(base, { why: 'only ' + after.attack + '/' + after.health + ' fits (cap 2): more than 40% of its stats; held for SKILL2-1' })); return; } }
     const A = c.attack == null ? null : (+c.attack || 0) + f.dA, H = c.health + f.dH;
     rows.push(Object.assign(base, { kind: vNew.over ? 'trim' : 'lift', dA: f.dA, dH: f.dH, attack: A, health: H, to: `${A == null ? '-' : A}/${H}`, after: { use: f.w.use, N: f.w.N, x1: f.w.x1, x2: f.w.x2, cap2: f.w.cap2 } }));
   });
