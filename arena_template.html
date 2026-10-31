@@ -8923,6 +8923,26 @@
       radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,.42)),
       linear-gradient(105deg, #2c3a27 0%, #2c3a27 49.6%, #5a2b22 50.4%, #5a2b22 100%);}
   .vs-opener .vs-lvl{margin-top:4px;}
+  /* 2026-10-31 (package UI8, owner AA2: "tidy the fight intro VS screen's right side"): both sides are one centred column with the same rhythm:
+     portrait, name, two rows of small facts (one pill style; the left has one pill, the right up to four), the BR box (both facts blocks reserve
+     two pill rows, so the two BR boxes sit at the same height), the quote last. */
+  .vs-opener .vs-side{gap:10px; align-self:start; margin-top:clamp(70px, 20vh, 200px);}
+  .vs-opener .vs-portrait{display:flex; align-items:center; justify-content:center; min-height:clamp(84px,12.5vw,170px); position:relative;} /* same height both sides: the names, pills and BR boxes line up */
+  @media (max-width:560px){ .vs-opener .vs-side{align-self:center; margin-top:0;} }
+  .vs-opener .vs-facts{display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:6px; min-height:calc(2 * 26px + 6px); width:100%;}
+  .vs-opener .vs-facts-row{display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:6px; min-height:26px; max-width:100%;}
+  .vs-opener .vs-facts-row:empty{display:block;}
+  .vs-opener .vs-pill{display:inline-flex; align-items:center; gap:5px; box-sizing:border-box; min-height:26px; padding:3px 11px; border-radius:999px; font-size:clamp(11px,1.25vw,13px); font-weight:800; letter-spacing:.03em; line-height:1.15; text-transform:none;
+    background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); color:#f4ecd8; opacity:1; max-width:100%;}
+  .vs-opener .vs-pill.vs-people{text-transform:uppercase; letter-spacing:.09em;}
+  .vs-opener .vs-pill.vs-leaders{background:rgba(255,208,90,.16); border-color:rgba(255,208,90,.5); color:#ffe9b0; padding:2px 11px 2px 4px;}
+  .vs-opener .vs-pill.vs-ai-pill{background:rgba(120,170,255,.16); border-color:rgba(150,190,255,.45); color:#dfe9ff; padding:3px 11px;}
+  .vs-opener .vs-pill.vs-ai-pill.is-basic{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.22); color:#e8e8e8;}
+  .vs-opener .vs-pill.vs-ai-pill.is-smartest{background:rgba(220,120,255,.2); border-color:rgba(230,160,255,.6); color:#f6e4ff;}
+  .vs-opener .vs-lvl{margin-top:2px;}
+  .vs-opener .vs-taunt{margin-top:2px;}
+  @media (max-width:560px){ .vs-opener .vs-side{gap:6px;} .vs-opener .vs-facts{gap:4px; min-height:calc(2 * 24px + 4px);} .vs-opener .vs-facts-row{min-height:24px; gap:4px;} .vs-opener .vs-pill{min-height:24px; padding:2px 9px; font-size:11px;}
+    .vs-opener .vs-pill.vs-leaders{padding:2px 9px 2px 3px;} .vs-opener .vs-lvl{padding:4px 12px;} .vs-opener .vs-lvl b{font-size:22px;} .vs-opener .vs-taunt{font-size:12px; max-width:34ch;} }
   @media (max-width:560px){ .vs-opener::after{top:50%; bottom:auto; left:-10%; right:-10%; width:auto; height:6px; margin:-3px 0 0; transform:skewY(-4deg);
       background:linear-gradient(90deg, transparent, #fff3c4 20%, #ffd27a 50%, #fff3c4 80%, transparent);}
     .vs-opener{background:radial-gradient(ellipse 70% 30% at 50% 25%, rgba(140,220,120,.26), transparent 70%), radial-gradient(ellipse 70% 30% at 50% 75%, rgba(255,110,70,.28), transparent 70%),

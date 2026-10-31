@@ -31533,20 +31533,20 @@ function showVersusOpener(map, node, myChar, enemyChar){
     <div class="vs-side vs-me">
       <div class="vs-portrait">${avatarHTML(loadAvatar(), 84)}</div>
       <div class="vs-name">${escapeHtml(myProfile ? myProfile.name : 'You')}</div>
-      <div class="vs-sub">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
+      <div class="vs-facts"><div class="vs-facts-row"><span class="vs-pill vs-castle">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</span></div><div class="vs-facts-row"></div></div>
       ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${mainDeckLevel(myDeckCounts, myLeaderId)}</b></div>`; }catch(e){ return ''; } })()}
     </div>
     <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind${isBoss ? ' vis3-kind-boss' : isElite ? ' vis3-kind-elite' : ''}">${map ? escapeHtml(map.icon||'') + ' ' : ''}${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</span></div>
     <div class="vs-side vs-them">
       <div class="vs-portrait vs-rival-ico" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}${isBoss && !/raid|final|world|mega/.test(node.kind || '') ? '<span class="vis3-skull-frame"></span>' : isElite ? '<span class="vis3-elite-frame"></span>' : ''}</div>
       <div class="vs-name">${escapeHtml(node.name)}</div>
-      <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
-      <div class="vs-sub">${castleLineText(node)}</div>
-      ${(()=>{ try{ const L = leadersShownFor(node, map && map.id), defs = getCardDefs(); if(!L.length) return ''; // 2026-10-23 (package LEAD): an elite's or a boss's leader(s), by name and face
-        const face = id=> `<span class="vs-leader-face" aria-hidden="true">${escapeHtml(defs[id].icon || '👑')}</span>`;
-        const text = L.length > 1 ? TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}) : TX('ui.nv-vs-ally-leader', {name: defs[L[0]].name});
-        return `<div class="vs-leaders${L.length > 1 ? ' is-pair' : ''}">${L.slice(0, 2).map(face).join('')}<span>${escapeHtml(text)}</span></div>`; }catch(e){ return ''; } })()}
-      ${(()=>{ try{ const lv = cpuAiLevelForNode(map && map.id, node); return (isBoss || isElite || lv > 0) ? cpuAiPillHTML(lv) : ''; }catch(e){ return ''; } })()}${'' /* the CPU's difficulty (2026-10-18): always for elite / boss fights, else only when it isn't Basic */}
+      <div class="vs-facts">
+        <div class="vs-facts-row"><span class="vs-pill vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</span><span class="vs-pill vs-castle">${castleLineText(node)}</span></div>
+        <div class="vs-facts-row">${(()=>{ try{ const L = leadersShownFor(node, map && map.id), defs = getCardDefs(); if(!L.length) return ''; // 2026-10-23 (package LEAD): an elite's or a boss's leader(s), by name and face
+          const face = id=> `<span class="vs-leader-face" aria-hidden="true">${escapeHtml(defs[id].icon || '👑')}</span>`;
+          const text = L.length > 1 ? TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}) : TX('ui.nv-vs-ally-leader', {name: defs[L[0]].name});
+          return `<span class="vs-pill vs-leaders${L.length > 1 ? ' is-pair' : ''}">${L.slice(0, 2).map(face).join('')}<span>${escapeHtml(text)}</span></span>`; }catch(e){ return ''; } })()}${(()=>{ try{ const lv = cpuAiLevelForNode(map && map.id, node); return (isBoss || isElite || lv > 0) ? cpuAiPillHTML(lv).replace('class="vs-ai-pill', 'class="vs-pill vs-ai-pill') : ''; }catch(e){ return ''; } })()}</div>
+      </div>${'' /* 2026-10-31 (package UI8, owner AA2): the enemy's small facts (type, bramble Health / Armour, leader, CPU) are two even rows of one pill style under the name, the Their-BR box after them, the quote last; the CPU pill's difficulty is always shown for elite / boss fights, else only when it isn't Basic (2026-10-18) */}
       ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
