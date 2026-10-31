@@ -10,6 +10,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Z3 (idea): new skill Relict, effect to be decided by the owner: decision RELICT-1 (hub 🗳️ 💡 Ideas group).
 - Z4 (UI8): the battle's darkness light that follows the mouse goes under the cards, not over them.
 - Z5 (ENG15): Pounce reaches only the enemies around it (left, centre, right).
+- Z6 (owner 10:20; UI8 + ENG15): Shield badge stays on the card while any Shield is left, its number = Shield left; at 1 the number fades off (the icon alone = 1). Poison skips the Shield and hits Health (today a Poison tick is soaked by Shield / Shell's temporary Health, `damageCardFlat` → `applyDamage` → `spendTempHp`).
+- Z7 (owner 10:21): balancing should run on automation (scripts), not agent tokens: SPEED1 also builds one command per balancing step that ends in a short summary.
+
 
 ## 10-31 09:22: the owner's notes
 - Y1 (UI7): status numbers sit closer to their icon (like the shield). Poison and Regeneration show no number. Shield stays as it is (it feeds Health, then disappears).
