@@ -78,7 +78,8 @@ async function browser(){
       await ctx.close(); }
     // ===== 3. a stale cloud row like the owner's newer account
     { const [ctx, pg] = await open();
-      await pg.evaluate(MOCK); await pg.evaluate("livePullProgress()"); await pg.waitForTimeout(300);
+      // 2026-10-31 (package UI12, GG2): pushes wait until the account's cloud save has been read; applySessionIdentityInner marks that after its pull
+      await pg.evaluate(MOCK); await pg.evaluate("livePullProgress().then(ok=>{ if(ok) cloudSyncSettledUid = cloudUserId; })"); await pg.waitForTimeout(300);
       const pulled = await pg.evaluate("loadConquestProgress().completed"); // (Tutorial II's flag is on the device, so healTutorial2Flag puts mtut:tutorial2 back)
       ok(pulled.includes('mtut:tutorial') && !pulled.some(id=> /^m1:/.test(id)), 'B cloud: the sign-in pull takes the account\'s copy (the row is newer than anything this device pushed): ' + JSON.stringify(pulled));
       await fiveTimes(pg, 'B cloud');

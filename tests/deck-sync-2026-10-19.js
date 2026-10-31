@@ -91,6 +91,7 @@ function makeDevice(cloud, o){
   vm.createContext(ctx);
   vm.runInContext(`
     var cloudUserId = this.uid; function isSignedIn(){ return !!this_ctx().signedIn && !!cloudUserId; } function this_ctx(){ return globalThis; }
+    function cloudSyncSettled(){ return !!cloudUserId; } // 2026-10-31 (package UI12, GG2): the app pushes only once the account's cloud save is read; these devices have
     var sbClient = this.sbClient, deckDirty = false, deckDraftOn = false, deckEditingId = null;
     var DECK_LOOKS_KEY = 'bramblewood_arena_deck_looks', myDeckLooks = null;
     function legacyDeckLooks(){ return {}; } function deckLooksAll(){ return myDeckLooks || (myDeckLooks = {}); } function saveDeckLooks(){}

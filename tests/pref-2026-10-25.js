@@ -70,7 +70,8 @@ ok(/function referencePlayerDeck\(deck, level, base, overlay\)\{ return refParts
   ok(/refPlay \? refPartsDeck\(refPlay\.parts, referenceBaseDefs\(\), matchDefsOverlay\) : ownedDeckForMatch\(myDeckCounts\)/.test(f), '2. your deck is the set\'s copies at their levels');
   ok(/refPlay \? \(refPlay\.leader && getCardDefs\(\)\[refPlay\.leader\] \? refPlay\.leader : null\)/.test(f), '2. the set\'s leader (none for the map reference)');
   ok(/if\(refPlay\)\{ matchState\.adminTest = true; matchState\.refDeck = \{/.test(f), '2. it pays nothing (adminTest) and is marked refDeck'); }
-ok(/startConquestMatch\(f\.map\.id, f\.node\.key, \{skipEnergyCost: true, noAmbush: true, refSet: f\.node\.skirm \? skirmYou\(\) : undefined\}\)/.test(fnSrc('startProFight')), '2. the map skirmish plays the chosen set (UI10: or your deck)');
+// 2026-10-31 (package UI12, GG10): the set is the previewed draw's (a concrete reference deck, or 'my'), else the chosen set
+ok(/const refSet = f\.node\.skirm \? \(you \? you\.set : skirmYou\(\)\) : undefined;/.test(fnSrc('startProFight')) && /startConquestMatch\(f\.map\.id, f\.node\.key, \{skipEnergyCost: true, noAmbush: true, refSet\}\)/.test(fnSrc('startProFight')), '2. the map skirmish plays the chosen set (UI10: or your deck; UI12: the previewed draw)');
 ok(/replace\(\/-\(\?:B\?PRO-\\d\+\|REF\)\$\/, '-SK'\)/.test(fnSrc('findProFight')) && /skirm: !!e\.skirm/.test(fnSrc('proNodeOf')), '2. (UI10) findProFight maps an old PRO / BPRO / X-REF key to the map\'s one skirmish node');
 ok(/xrefKeyOf\(map\.id\)/.test(fnSrc('proMapNodesHTML')) && /ico: '🎯'/.test(fnSrc('proMapNodesHTML')), '2. the X-REF node sits beside the PRO nodes on an admin\'s map');
 ok(/const xk = xrefKeyOf\(id\)/.test(fnSrc('proFightsAdminHTML')) && /adminModeEnabled \? refPlayToggleHTML\(\) : ''/.test(fnSrc('proFightsAdminHTML')), '2. Admin\'s PRO list: the switch and an X-REF row per map');

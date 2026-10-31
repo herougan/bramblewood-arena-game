@@ -458,6 +458,32 @@
   .entrance-account-line{margin:10px auto 0; font-weight:800; font-size:13.5px; text-align:center; color:#eaf6d6; text-shadow:0 1px 2px rgba(0,0,0,.6);}
   .entrance-account-line:not([hidden]){display:flex; align-items:center; justify-content:center; gap:8px;}
   .entrance-account-line img{width:22px; height:22px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 2px #6fbf4a;}
+  /* 2026-10-31 (package UI12, GG4): Start / name / Sign in locked while a sign-in and its cloud save load */
+  .ui12-auth-wait{margin:10px auto 0; font-weight:800; font-size:13.5px; text-align:center; color:#eaf6d6; text-shadow:0 1px 2px rgba(0,0,0,.6);}
+  .ui12-auth-wait:not([hidden])::before{content:''; display:inline-block; width:12px; height:12px; margin-right:8px; vertical-align:-1px; border-radius:50%; border:2px solid rgba(234,246,214,.35); border-top-color:#eaf6d6; animation:ui12Spin .8s linear infinite;}
+  @keyframes ui12Spin{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion: reduce){ .ui12-auth-wait:not([hidden])::before{animation:none;} }
+  .entrance .ui12-locked, .name-prompt .ui12-locked{opacity:.55; cursor:progress; filter:saturate(.6);}
+  /* 2026-10-31 (package UI12, GG10): a skirmish deck's rank, 1 (strongest, gold) to 5+ (grey), as a small hex like the rank emblem */
+  .ui12-skirm-row{display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; margin:3px 0;}
+  .ui12-skirm-id{font-weight:800;}
+  .ui12-drank{position:relative; display:inline-grid; place-items:center; width:22px; height:24px; vertical-align:middle; flex:none;}
+  .ui12-drank i{position:absolute; inset:0; clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); background:var(--drank-bg, #8a8f99); box-shadow:inset 0 0 0 2px rgba(0,0,0,.25);}
+  .ui12-drank b{position:relative; font-size:11px; font-weight:900; line-height:1; color:#fff; text-shadow:0 1px 1px rgba(0,0,0,.55);}
+  .ui12-drank[data-rank="1"]{--drank-bg:linear-gradient(160deg,#ffe27a,#c98a12);}
+  .ui12-drank[data-rank="2"]{--drank-bg:linear-gradient(160deg,#e9eef5,#8e9aab);}
+  .ui12-drank[data-rank="3"]{--drank-bg:linear-gradient(160deg,#f0b27a,#9a5a26);}
+  .ui12-drank[data-rank="4"]{--drank-bg:linear-gradient(160deg,#8fc7a0,#3d7a52);}
+  .ui12-drank[data-rank="5"]{--drank-bg:linear-gradient(160deg,#a7adb8,#5d636e);}
+  .ui12-skirm-reroll{margin-top:4px;}
+  /* 2026-10-31 (package UI12, GG1): the timed "you draw 1 card each turn" tooltip over the deck: no button, it fades by itself */
+  .coach-tip.is-timed{pointer-events:none; transition:opacity .4s ease, transform .4s ease;}
+  .coach-tip.is-timed.is-fading{opacity:0; transform:translateY(4px);}
+  /* 2026-10-31 (package UI12, GG5): T-2's leader Wait steps block clicks without darkening the screen */
+  .coach-shield.is-clear{background:transparent;}
+  /* 2026-10-31 (package UI12, GG6): the Lumber step with Lumber at 0: the pill stays (faded), the bubble keeps its place without its arrow */
+  .coach-tip.no-arrow::after{display:none;}
+  .hud-pill.lumber.is-zero{opacity:.6;}
   /* The sign-in modal must sit above the entrance splash (z 1000), or the splash's own Sign in
      button opens it invisibly underneath (2026-10-02 bug report: "Sign in doesn't work"). */
   #authGateOverlay{z-index:1100;}
@@ -4434,7 +4460,12 @@
     .entrance-fan .ef-card.is-down .ef-flip{transform:rotateY(180deg);}
     .entrance-fan .ef-card.is-swapping{opacity:0 !important; transition:transform .7s cubic-bezier(.2,.9,.3,1), opacity .65s ease;}
     .entrance-fan .ef-card.is-swapping{opacity:0; transform:translate(-50%,-50%) rotate(var(--r)) translateX(var(--x)) translateY(calc(var(--y) + 40px)) scale(.9);}
-    @keyframes efFloat{0%,100%{margin-top:0;} 50%{margin-top:-12px;}}
+    /* 2026-10-31 (package UI12, GG4, owner: "the front screens are laggy"): the float moved margin-top, so the five fan cards were laid out
+       and repainted on the main thread every frame (~950 ms of long tasks per 4 s at 4x CPU throttle); `translate` runs on the compositor.
+       The holo sheen's drift (custom properties, a repaint per frame) is held still on the fan: the sheen shows, it just doesn't wander. */
+    @keyframes efFloat{0%,100%{translate:0 0;} 50%{translate:0 -12px;}}
+    .entrance-fan .ef-card{will-change:translate;}
+    .entrance-fan .card-tile.is-holo{animation:none !important;}
   }
   @media (prefers-reduced-motion: reduce){
     .splash-title .tl{animation:none; opacity:1; transform:none;}
@@ -9698,7 +9729,9 @@
   .pl2-coop-x{position:absolute; top:6px; right:8px; background:none; border:0; font-size:18px; color:var(--ink); cursor:pointer;}
   /* 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO fight's panel: no rewards, no drops, no admin edits (it pays nothing; the decks come from the tool) */
   #conquestNodePanel.pl2-is-pro :is(.cnp-rw, .cnp-drops, .cnp-admin-side){display:none !important;}
-  #conquestNodePanel.is-skirm :is(.cnp-deck, .cnp-deck-locked){display:none !important;} /* 2026-10-31 (UI10, EE2): the map skirmish draws its enemy deck at random: no fixed deck strip */
+  /* 2026-10-31 (UI10, EE2): the map skirmish draws its enemy deck at random: no fixed deck strip. 2026-10-31 (UI12, GG10): the preview draws the
+     deck the Fight button plays (skirmDraw), so its strip shows that deck again; only the locked placeholder stays hidden */
+  #conquestNodePanel.is-skirm .cnp-deck-locked{display:none !important;}
   /* 2026-10-25 (package PL2, owner 00:02 #3 #5): the cards won as one stack (the first in front, the rest behind it, fanned on hover / tap)
      and a rank-won card's flash and ribbon (the emblem and "reward") */
   .rw-cards.pl2-stack{display:grid !important; grid-template-areas:'s'; justify-items:center; justify-content:center !important; position:relative; padding:6px calc(8px + var(--n) * 7px) 4px 8px; outline:none; cursor:pointer;}
@@ -44189,6 +44222,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pref-xref-you": "You play:",
   "ui.ui10-my-deck": "My deck",
   "ui.ui10-other-signin": "Other sign-in",
+  "ui.ui12-loading-save": "Signing in and loading your save…",
+  "ui.ui12-deck-rank-tip": "Deck rank {r} of {n} (1 is the strongest)",
+  "ui.ui12-skirm-special": "with {name} from the map's SPECIAL list",
+  "ui.ui12-skirm-reroll": "New draw",
   "ui.ui10-ra-title": "Rejected art",
   "ui.ui10-ra-sub": "Every card whose art was rejected, with your comment. Open a card to change it or clear the mark.",
   "ui.ui10-ra-open": "Open card",
@@ -51598,7 +51635,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd9d3858aabb6', BUILD_CARD_HASH = 'b59c41c4e18a46aad3bc9f22524b829b63b3a0cac2ab35a90c915936b6dcfa49';
+const BUILD_ID = '5a73eb55b32d', BUILD_CARD_HASH = 'b59c41c4e18a46aad3bc9f22524b829b63b3a0cac2ab35a90c915936b6dcfa49';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -60494,6 +60531,37 @@ let cloudUserEmail = null;
 let cloudUserLabel = null; // Google full name if present, else the email
 let cloudUserAvatar = null; // Google profile photo URL (user_metadata.avatar_url/picture), if any
 let cloudInitPromise = null; // resolves once initCloudSync() has settled (signed in, guest, or offline)
+// 2026-10-31 (package UI12, GG2, owner: signed out and back in with Google in an incognito tab; progress went back to the tutorial and he was
+// asked for a name again). Causes: (1) fix3AfterSignIn pushed this device's fresh save (currencies, card levels, decks, progress blob) right
+// after sign-in, while the account's cloud save was still loading (livePullProgress was not awaited; UI10's Google button called it even
+// before the pull started), and a progress push stamps bramblewood_progress_local_at = now, so the pull that landed after it took the fresh
+// save as the newer one and pushed it again; (2) a failed profiles read was taken for a brand-new account and seeded the cloud from the
+// fresh save; (3) the account's name (profiles.display_name) was never read back, so a wiped device asked for it again; (4) Start / Enter
+// the Grove stayed live while the cloud save loaded, so the tutorial could start on the fresh save.
+// Now every cloud write waits until this account's cloud save has been read into this device (cloudSyncSettled), a progress push never
+// replaces a richer cloud blob (SAVE_GUARD_UI12 below), and the front screens lock while a sign-in or the cloud load is on its way.
+let cloudSyncSettledUid = null; // the account whose cloud save has been read here; until it equals cloudUserId nothing is pushed
+let cloudIdentityJob = null, cloudIdentityJobUid = null; // applySessionIdentity in flight (one per account)
+let cloudAuthBusy = 0, cloudAuthBusyAt = 0; // a sign-in is on its way (Google's button answered, or the page came back from Google)
+function cloudSyncSettled(){ return !!cloudUserId && cloudSyncSettledUid === cloudUserId; }
+function cloudPendingNow(){ if(cloudAuthBusy > 0 && Date.now() - cloudAuthBusyAt > 30000) cloudAuthBusy = 0; return cloudAuthBusy > 0 || !!cloudIdentityJob; } // 30 s: never locked for good
+function cloudAuthBusyAdd(d){ cloudAuthBusy = Math.max(0, cloudAuthBusy + d); if(d > 0) cloudAuthBusyAt = Date.now(); cloudPendingChanged(); }
+function cloudPendingChanged(){ try{ ui12RefreshFrontLock(); }catch(e){} }
+// the page came back from Google's redirect sign-in (tokens or a code in the URL): read at parse time, before the entrance draws
+const ui12OauthReturning = (()=>{ try{ const both = (location.hash||'').replace(/^#/,'&') + '&' + (location.search||'').replace(/^\?/,''); return /(^|&)(access_token|code)=/.test(both); }catch(e){ return false; } })();
+if(ui12OauthReturning){ cloudAuthBusy = 1; cloudAuthBusyAt = Date.now(); }
+let ui12CloudInitDone = false; // initCloudSync has finished (signed in, guest or offline)
+let ui12ExpectCloud = ui12OauthReturning; // this load will bring an account (a stored session or Google's redirect): its save loads first
+const ui12LoadT0 = Date.now();
+// the front screens wait (Start / name locked, the tutorial held back) while this is true; never longer than 30 s after the page loaded
+function ui12CloudLoading(){ return cloudPendingNow() || (ui12ExpectCloud && !ui12CloudInitDone && Date.now() - ui12LoadT0 < 30000); }
+// runs fn once the cloud load is over (at once when nothing is loading); polls, since the load ends on several paths
+function ui12WhenCloudSettles(fn){ if(!ui12CloudLoading()){ fn(); return; } const t0 = Date.now(); const iv = setInterval(()=>{ if(!ui12CloudLoading() || Date.now() - t0 > 30000){ clearInterval(iv); try{ fn(); }catch(e){ console.error(e); } } }, 150); }
+let ui12CloudRetryN = 0;
+function ui12ScheduleCloudRetry(uid){ // the cloud save could not be read: try again (nothing is pushed meanwhile)
+  const wait = ui12CloudRetryN < 6 ? 15000 : 60000; ui12CloudRetryN++;
+  setTimeout(()=>{ if(cloudUserId === uid && !cloudSyncSettled() && cloudSessionUser && cloudSessionUser.id === uid) applySessionIdentity(cloudSessionUser).then(()=>{ if(cloudSyncSettled()) fix3AfterSignIn(true); }); }, wait);
+}
 // The real gate: everything this batch restricts (Raid, packs, cross-device sync) checks THIS,
 // never cloudUserId alone — a bare anonymous session is a real Supabase user row, but it is not
 // what "signed in" means to a player, and must never unlock anything gated behind that word.
@@ -60551,7 +60619,19 @@ function showToast(message, kind){
   setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=> t.remove(), 400); }, 4500);
 }
 let cloudSessionUser = null;
-async function applySessionIdentity(user){
+// 2026-10-31 (package UI12, GG2): one identity job per account at a time (Google's button and onAuthStateChange both reach here); the front
+// screens stay locked while it runs (cloudPendingNow)
+function applySessionIdentity(user){
+  if(cloudIdentityJob && cloudIdentityJobUid === user.id) return cloudIdentityJob;
+  cloudIdentityJobUid = user.id;
+  const job = applySessionIdentityInner(user).catch(e=>{ console.warn('[Bramblewood] cloud load failed', e && e.message || e); })
+    .finally(()=>{ if(cloudIdentityJob === job){ cloudIdentityJob = null; cloudIdentityJobUid = null; } cloudPendingChanged(); });
+  cloudIdentityJob = job; cloudPendingChanged();
+  return job;
+}
+async function applySessionIdentityInner(user){
+  if(cloudSyncSettledUid !== user.id) cloudSyncSettledUid = null; // UI12 (GG2): nothing is pushed for this account until its cloud save is read
+  const uid = user.id;
   cloudSessionUser = user;
   cloudUserId = user.id;
   cloudUserEmail = user.email || null;
@@ -60564,7 +60644,11 @@ async function applySessionIdentity(user){
   // to treating an undefined flag as a real account (only a genuinely anonymous session should
   // ever carry is_anonymous:true in the first place).
   cloudIsAnonymous = user.is_anonymous === true;
-  const { data: existingProfile } = await sbClient.from('profiles').select('id, rating').eq('id', cloudUserId).maybeSingle();
+  // UI12 (GG2): the read's error is checked. A failed read used to look like "no profile" and seeded the cloud from this device's (possibly
+  // fresh) save as if the account were brand new.
+  const { data: existingProfile, error: profileErr } = await sbClient.from('profiles').select('id, rating, display_name').eq('id', uid).maybeSingle();
+  if(cloudUserId !== uid) return; // another account signed in meanwhile
+  if(profileErr){ ui12ScheduleCloudRetry(uid); return; }
   refreshPremiumFlag(); // 2026-10-18 (package Z): the supporter flag, if the server has one (read only; see isPremiumPlayer)
   if(!existingProfile){
     // Brand-new cloud account (anonymous OR a fresh real signup with no prior anonymous session —
@@ -60572,8 +60656,11 @@ async function applySessionIdentity(user){
     // than starting the server row at zero and clobbering real local progress already on this
     // device. Only actually pushes anything once isSignedIn() is true (see cloudPush* below) — a
     // brand-new ANONYMOUS session correctly seeds nothing yet, matching "data saved locally."
-    await sbClient.from('profiles').upsert({ id: cloudUserId, display_name: (myProfile && myProfile.name) || 'Woodland Warrior' }); // 2026-10-16: no rating here: anti-cheat tier 1 (S2) makes rating server-only, and an upsert naming it would be refused whole
+    await sbClient.from('profiles').upsert({ id: uid, display_name: (myProfile && myProfile.name) || 'Woodland Warrior' }); // 2026-10-16: no rating here: anti-cheat tier 1 (S2) makes rating server-only, and an upsert naming it would be refused whole
+    if(cloudUserId !== uid) return;
+    cloudSyncSettledUid = uid; // UI12 (GG2): nothing in the cloud to protect: this device's save seeds it
     if(isSignedIn()) await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]);
+    await livePullProgress();
   } else {
     // Existing cloud account (returning session, an email/Google-linked account signed in fresh,
     // or a plain returning anonymous session): the server is now the source of truth for this
@@ -60584,15 +60671,26 @@ async function applySessionIdentity(user){
     saveRatingLocal();
     // 2026-10-25 (package FIX3, G7): the first sign-in of an account created on this device (its sign-up waited for the email) sends this
     // device's progress up instead of loading the account's empty rows over it
-    if(isSignedIn() && fix3SignupPending(user.id)){ try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]); }catch(e){} }
-    else if(isSignedIn()) await cloudPullState();
+    if(isSignedIn() && fix3SignupPending(uid)){ cloudSyncSettledUid = uid; try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]); }catch(e){} }
+    else {
+      // UI12 (GG2): the account's name comes back with it (a wiped device asked for it again)
+      const nm = String(existingProfile.display_name || '').trim();
+      if(isSignedIn() && nm && nm !== 'Woodland Warrior'){ try{ saveMyProfile(Object.assign({}, myProfile || {}, {name: nm.slice(0, 24)})); markNameChosen(); }catch(e){} }
+      // UI12 (GG2): the whole cloud save (currencies, cards, decks AND the progress blob) is read before anything goes up
+      const okState = isSignedIn() ? await cloudPullState() : true;
+      if(cloudUserId !== uid) return;
+      const okProgress = await livePullProgress();
+      if(cloudUserId !== uid) return;
+      if(okState && okProgress){ cloudSyncSettledUid = uid; ui12CloudRetryN = 0; try{ if(LiveData.progressPushPending) livePushProgress(true); }catch(e){} }
+      else ui12ScheduleCloudRetry(uid);
+    }
   }
-  if(isSignedIn() && fix3SignupPending(user.id)){ fix3SetSignupPending(null); try{ livePushProgress(true); }catch(e){} }
-  livePullProgress();
+  if(cloudSyncSettled() && isSignedIn() && fix3SignupPending(uid)){ fix3SetSignupPending(null); try{ livePushProgress(true); }catch(e){} }
   liveRefreshGhosts('pvp'); liveRefreshGhosts('autobattle');
   // First sign-in (2026-10-13, user: "When signing in for the first time, put the 'enter name' thing front and centre"): a real
   // account that has never picked a name gets the name prompt in the middle of the screen.
-  try{ if(isSignedIn() && !hasChosenName()) setTimeout(()=> openNamePrompt(), 600); }catch(e){}
+  // UI12 (GG2): only once the cloud save (and with it the account's name) has loaded
+  try{ if(cloudSyncSettled() && isSignedIn() && !hasChosenName()) setTimeout(()=>{ if(!hasChosenName()) openNamePrompt(); }, 600); }catch(e){}
 }
 // 2026-10-16 (user: "Min name length in joining the game as anon. Maybe min. 3 characters."): a name needs at least 3
 // characters after trimming, on the entrance form and in the name prompt. Too short (or empty) stays on the form with a line
@@ -60692,6 +60790,10 @@ async function initCloudSync(){
       if(isSignedIn()){ showToast(TX('toast.signed-in-as-your-progress-now', {v1: cloudUserLabel || cloudUserEmail || 'your Google account'}), 'ok'); fix3AfterSignIn(); }
       else showToast(TX('toast.google-sign-in-didn-t-complete', {v1: oauthError ? ': '+oauthError : ''}), 'error');
     }
+    // 2026-10-31 (package UI12, GG3 / GG4): back from Google's redirect: the front screens unlock, and a signed-in player goes straight in
+    ui12CloudInitDone = true;
+    if(ui12OauthReturning) cloudAuthBusyAdd(-1); else cloudPendingChanged();
+    if(ui12OauthReturning && isSignedIn()) try{ ui12EnterAfterSignIn(); }catch(e){}
   }
 }
 function resetCloudIdentity(){
@@ -60722,10 +60824,14 @@ async function signOutAndSwitch(){
   if(real){ try{ Object.keys(localStorage).filter(k=> /^(bramblewood|bw_)/.test(k) && !DEVICE_SETTING_KEYS.test(k)).forEach(k=> localStorage.removeItem(k)); sessionStorage.clear(); }catch(e){} }
   location.reload();
 }
+// 2026-10-31 (package UI12, GG2): says whether the cloud save was read (true) or a read failed (false); a failed read keeps the account
+// unsettled, so nothing from this device goes up over it
 async function cloudPullState(){
-  if(!sbClient || !cloudUserId) return;
+  if(!sbClient || !cloudUserId) return false;
+  let ok = true;
   try{
-    const { data: cur } = await sbClient.from('player_currencies').select('*').eq('profile_id', cloudUserId).maybeSingle();
+    const { data: cur, error: curErr } = await sbClient.from('player_currencies').select('*').eq('profile_id', cloudUserId).maybeSingle();
+    if(curErr) ok = false;
     if(cur){
       myCurrencies = {gold:Number(cur.gold)||0, gems:Number(cur.gems)||0, dust:Number(cur.dust)||0, metal:Number(cur.metal)||0,
         // Raid Points (2026-09-29): synced like the other currencies, not local-only like Energy —
@@ -60747,7 +60853,8 @@ async function cloudPullState(){
     // 2026-10-18 (package NF): each row may carry its copies' levels (the proposed `copies` column); without the column the read
     // falls back to card_id + level as before.
     let { data: unlocks, error: unlocksErr } = await sbClient.from('player_card_unlocks').select(cloudCopiesColumn === false ? 'card_id, level' : 'card_id, level, copies').eq('profile_id', cloudUserId);
-    if(unlocksErr && cloudCopiesColumn !== false && cloudCopiesColumnMissing(unlocksErr)){ cloudCopiesColumn = false; ({ data: unlocks } = await sbClient.from('player_card_unlocks').select('card_id, level').eq('profile_id', cloudUserId)); }
+    if(unlocksErr && cloudCopiesColumn !== false && cloudCopiesColumnMissing(unlocksErr)){ cloudCopiesColumn = false; ({ data: unlocks, error: unlocksErr } = await sbClient.from('player_card_unlocks').select('card_id, level').eq('profile_id', cloudUserId)); }
+    if(unlocksErr) ok = false; // UI12 (GG2)
     if(unlocks && unlocks.length){
       // Each row is now a true unlock record (card_id + level, level possibly 0 for an
       // unlocked-but-not-yet-leveled card) rather than the old level>0-only proxy — see
@@ -60762,8 +60869,9 @@ async function cloudPullState(){
     }
     // 2026-10-19 (package SY, owner: "same account in mobile AND web. They don't see each other's decks!"): the decks merge deck by
     // deck (the newest edit wins, nothing is dropped without a word) instead of the cloud list replacing this device's; see deckSyncPull
-  } catch(e){ /* offline/RLS hiccup — local state stays authoritative for this session */ }
-  try{ await deckSyncPull('load'); }catch(e){}
+  } catch(e){ ok = false; /* offline/RLS hiccup: UI12 (GG2): the account stays unsettled (nothing is pushed) and the load is tried again */ }
+  try{ await deckSyncPull('load'); }catch(e){} // decks merge deck by deck (never dropped), so a failed deck read doesn't hold the rest
+  return ok;
 }
 // Called from the existing save*() functions right after they write to localStorage.
 // Fire-and-forget (never blocks the UI/awaited by callers) and silently no-ops with no cloud
@@ -60784,9 +60892,9 @@ var cloudBlossomsColumn = null; // 2026-10-30 (ECON1): null not known yet; false
 function cloudBlossomsColumnMissing(error){ return !!error && /blossoms/i.test(error.message || ''); }
 function cloudShardsColumnMissing(error){ return !!error && (/raid_shards/i.test(error.message || '') || error.code === 'PGRST204' || error.code === '42703'); }
 function cloudPushCurrencies(){
-  if(!sbClient || !isSignedIn()) return;
+  if(!sbClient || !isSignedIn() || !cloudSyncSettled()) return; // UI12 (GG2): never before this account's cloud save has been read
   if(cloudCurPushQueued) return cloudCurPushQueued;
-  const send = ()=>{ cloudCurPushQueued = null; if(!sbClient || !isSignedIn()) return Promise.resolve();
+  const send = ()=>{ cloudCurPushQueued = null; if(!sbClient || !isSignedIn() || !cloudSyncSettled()) return Promise.resolve();
     const row = { profile_id: cloudUserId, gold: myCurrencies.gold, gems: myCurrencies.gems, dust: myCurrencies.dust, metal: myCurrencies.metal||0, raid_points: myCurrencies.raidPoints||0, raid_points_updated_at: myCurrencies.raidPointsUpdatedAt||new Date().toISOString() };
     // 2026-10-19 (package RC): + the raid trophy shards, in the proposed raid_shards column; a server without it says so once, and the
     // row goes again without it (and without it from then on, this session), as the card copies' column does
@@ -60807,7 +60915,7 @@ function cloudPushCurrencies(){
   return p;
 }
 function cloudPushCardLevels(){
-  if(!sbClient || !isSignedIn()) return;
+  if(!sbClient || !isSignedIn() || !cloudSyncSettled()) return; // UI12 (GG2)
   // Pushes TRUE unlock state (2026-09-22, closing batch #19's own flagged gap): the row set is
   // the union of every id in myUnlockedCardIds (real unlocks, level defaults to 0) and every id
   // with a level>0 in myCardLevels (leveling only ever applies to an already-unlocked card, but
@@ -60831,6 +60939,7 @@ function cloudCopiesColumnMissing(error){ return !!error && (/copies/i.test(erro
 // now: send at once (sign-in / account creation await it); otherwise the push waits DECK_SYNC_DEBOUNCE_MS for more edits.
 function cloudPushDecks(now){
   if(!sbClient || !isSignedIn()) return;
+  if(!cloudSyncSettled()){ deckSyncDirty = true; return; } // UI12 (GG2): kept waiting; sent (merged) once the cloud decks are read
   deckSyncDirty = true; setDeckSyncState('syncing');
   if(deckSyncTimer){ clearTimeout(deckSyncTimer); deckSyncTimer = null; }
   if(now) return deckSyncFlush();
@@ -60957,6 +61066,7 @@ function deckSyncNetError(error){ return !error || error.name === 'TypeError' ||
 function deckSyncFlush(){
   if(deckSyncTimer){ clearTimeout(deckSyncTimer); deckSyncTimer = null; }
   if(!sbClient || !isSignedIn()){ setDeckSyncState('idle'); return Promise.resolve(); }
+  if(!cloudSyncSettled() && !deckSyncPulling){ deckSyncDirty = true; return Promise.resolve(); } // UI12 (GG2): only the load's own merge may send before the account settles
   if(deckSyncInFlight){ deckSyncDirty = true; return deckSyncInFlight; }
   if(deckSyncMerging){ deckSyncDirty = true; return Promise.resolve(); } // a pull is merging: it sends what's waiting when it's done
   deckSyncDirty = false; setDeckSyncState('syncing');
@@ -61082,7 +61192,7 @@ function renderDeckSyncInd(){
   el.title = s === 'synced' ? TX('ui.sy-synced-tip') : s === 'syncing' ? TX('ui.sy-syncing-tip') : TX('ui.sy-offline-tip');
 }
 function cloudPushRating(){
-  if(!sbClient || !isSignedIn()) return;
+  if(!sbClient || !isSignedIn() || !cloudSyncSettled()) return; // UI12 (GG2)
   return sbClient.from('profiles').update({ rating: myRating }).eq('id', cloudUserId).then(()=>{}, ()=>{});
 }
 // Real sign-up, called from the auth-gate modal / Profile tab's email+password form. Two cases,
@@ -61184,8 +61294,17 @@ async function gsiSha256Hex(text){ const buf = await crypto.subtle.digest('SHA-2
 async function gsiHandleCredential(response, rawNonce){
   if(!sbClient) throw new Error('Cloud sync is not available right now.');
   if(!response || !response.credential) throw new Error('Google did not send a sign-in. Try again.');
-  const { error } = await sbClient.auth.signInWithIdToken({ provider: 'google', token: response.credential, nonce: rawNonce });
-  if(error) throw error;
+  // 2026-10-31 (package UI12, GG2 / GG4): the front screens lock from Google's answer until the account's cloud save has loaded; the caller's
+  // onDone runs only after that load (it used to run at once and sync this device's fresh save over the account's)
+  cloudAuthBusyAdd(1);
+  try{
+    const { data, error } = await sbClient.auth.signInWithIdToken({ provider: 'google', token: response.credential, nonce: rawNonce });
+    if(error) throw error;
+    const user = data && (data.user || (data.session && data.session.user));
+    if(user && cloudSyncSettledUid !== user.id) await applySessionIdentity(user); // the same job onAuthStateChange started, or a new one
+    else if(cloudIdentityJob) await cloudIdentityJob;
+    cloudReady = true;
+  } finally { cloudAuthBusyAdd(-1); }
 }
 // mounts Google's button in `host`; resolves true when drawn, false when the script is unavailable (the caller then shows the redirect button)
 async function gsiMountButton(host, onDone, onError){
@@ -61207,7 +61326,10 @@ function fix3AuthSpot(){ const from = (typeof currentTab !== 'undefined' && curr
 function fix3RememberAuthReturn(){ try{ const sp = fix3AuthSpot(); if(sp) sessionStorage.setItem(FIX3_AUTH_RETURN_KEY, JSON.stringify(sp)); }catch(e){} }
 let fix3AfterSignInBusy = false;
 async function fix3AfterSignIn(stay){
-  if(!isSignedIn() || fix3AfterSignInBusy) return; fix3AfterSignInBusy = true;
+  // 2026-10-31 (package UI12, GG2): this sync used to run while the account's cloud save was still loading, and sent this device's fresh
+  // save over it. It waits for the load now, and sends nothing if the load failed (the retry sends it later).
+  if(cloudIdentityJob){ try{ await cloudIdentityJob; }catch(e){} }
+  if(!isSignedIn() || !cloudSyncSettled() || fix3AfterSignInBusy) return; fix3AfterSignInBusy = true;
   try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]); }catch(e){}
   try{ livePushProgress(true); }catch(e){}
   fix3AfterSignInBusy = false;
@@ -65518,14 +65640,47 @@ PROGRESS_KEYS.push('bramblewood_card_sockets_v1', 'bramblewood_materia_v1');
 const PROGRESS_LOCAL_AT_KEY = 'bramblewood_progress_local_at';
 function progressSnapshot(){ const d = {}; PROGRESS_KEYS.forEach(k=>{ try{ const v = localStorage.getItem(k); if(v!=null) d[k] = v; }catch(e){} }); return d; }
 function snapshotHash(d){ return String(hashStr(JSON.stringify(d))); }
+// SAVE_GUARD_UI12:BEGIN (tests/ui12-save-guard-2026-10-31.js evaluates this block)
+// 2026-10-31 (package UI12, GG2): how much progress a blob holds, from values that only ever grow in play (cleared fights, the tutorial
+// flags and stage, player XP). A blob scoring lower than the cloud's is a fresh or emptier save and never replaces it; the cloud's richer
+// blob is loaded instead, whatever the timestamps say (a push stamps "now", which is how a fresh save used to look newer).
+function progressScore(snap){
+  snap = snap || {}; let s = 0;
+  const j = k=>{ try{ return JSON.parse(snap[k] || 'null'); }catch(e){ return null; } };
+  const cq = j('bramblewood_conquest_progress_v1'); if(cq && Array.isArray(cq.completed)) s += 10 * new Set(cq.completed).size;
+  if(snap['bramblewood_arena_tutorial_done'] === '1') s += 5;
+  if(snap['bramblewood_tutorial2_done_v1'] === '1') s += 5;
+  const st = parseInt(snap['bramblewood_arena_tutorial_stage'] || '1', 10); if(st > 1 && st < 100) s += st - 1;
+  const xp = j('bramblewood_player_xp_v1'); if(xp && typeof xp.xp === 'number' && xp.xp > 0) s += Math.floor(xp.xp / 50);
+  return s;
+}
+// 'pull' (load the cloud blob over this device's), 'push' (send this device's) or 'none' (no cloud row and nothing to send)
+function progressPullDecision(o){
+  if(!o.hasRow) return 'push';
+  if(o.shrinkOk) return 'push'; // an admin reset on this device, meant to go up
+  if(o.cloudScore > o.localScore) return 'pull';
+  if(o.localScore > o.cloudScore) return 'push';
+  return o.cloudAt > o.localAt ? 'pull' : 'push';
+}
+function progressPushAllowed(localScore, cloudScore, shrinkOk){ return !!shrinkOk || !(Number(cloudScore) > Number(localScore)); }
+// SAVE_GUARD_UI12:END
+const PROGRESS_SHRINK_OK_KEY = 'bw_progress_shrink_ok'; // set by Admin's resets after the wipe: the smaller blob may replace the cloud's once
+function progressShrinkOk(){ try{ return localStorage.getItem(PROGRESS_SHRINK_OK_KEY) === '1'; }catch(e){ return false; } }
+// UI12 (GG2): true when the cloud blob was read (and loaded or answered), false when the read failed (the account stays unsettled)
 async function livePullProgress(){
-  if(!sbClient || !cloudUserId || LiveData.available===false) return;
+  if(!sbClient || !cloudUserId) return false;
+  if(LiveData.available===false) return true; // no progress table: nothing in the cloud to protect
+  const uid = cloudUserId;
   try{
-    const { data, error } = await sbClient.from('player_progress').select('data, updated_at').eq('profile_id', cloudUserId).maybeSingle();
-    if(error){ if(liveTableMissing(error)) LiveData.available = false; return; }
+    const { data, error } = await sbClient.from('player_progress').select('data, updated_at').eq('profile_id', uid).maybeSingle();
+    if(error){ if(liveTableMissing(error)){ LiveData.available = false; return true; } return false; }
+    if(uid !== cloudUserId) return false;
     LiveData.available = true;
     const localAt = Number(localStorage.getItem(PROGRESS_LOCAL_AT_KEY)||0);
-    if(data && data.data && Date.parse(data.updated_at) > localAt){
+    const hasRow = !!(data && data.data), cloudScore = hasRow ? progressScore(data.data) : 0, localScore = progressScore(progressSnapshot());
+    LiveData.cloudProgress = {uid, score: cloudScore};
+    const decision = progressPullDecision({hasRow, cloudAt: hasRow ? Date.parse(data.updated_at) || 0 : 0, localAt, cloudScore, localScore, shrinkOk: progressShrinkOk()});
+    if(decision === 'pull'){
       Object.entries(data.data).forEach(([k,v])=>{ if(!PROGRESS_KEYS.includes(k) || typeof v!=='string') return; try{
         v = migrateStoredNodeValue(k, v); // 2026-10-14: a blob pushed by an older build still names fights by the old ids (f-1 → 1-1)
         const merge = PROGRESS_MERGE_KEYS[k]; localStorage.setItem(k, merge ? merge(localStorage.getItem(k), v) : v); }catch(e){} });
@@ -65535,19 +65690,33 @@ async function livePullProgress(){
       LiveData.progressPushedHash = snapshotHash(progressSnapshot());
       try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(Date.parse(data.updated_at))); }catch(e){}
       if(!matchState){ try{ if(currentTab==='home') renderHome(); else if(currentTab==='play') renderPlay(); }catch(e){} }
-    } else livePushProgress(true);
-  }catch(e){}
+    } else if(cloudSyncSettled()) livePushProgress(true);
+    else LiveData.progressPushPending = true; // UI12 (GG2): sent once the account settles (applySessionIdentityInner)
+    return true;
+  }catch(e){ return false; }
 }
+let ui12ProgressRepullAt = 0;
 function livePushProgress(force){
   if(!liveCanWrite()) return;
+  if(!cloudSyncSettled()){ LiveData.progressPushPending = true; return; } // UI12 (GG2): never before this account's cloud blob has been read
   const snap = progressSnapshot(), h = snapshotHash(snap);
   if(!force && h===LiveData.progressPushedHash) return;
+  // UI12 (GG2): a blob with less progress than the cloud's is never sent; the cloud's is loaded again instead (at most once a minute)
+  const uid = cloudUserId, score = progressScore(snap), shrinkOk = progressShrinkOk();
+  const cloudScore = LiveData.cloudProgress && LiveData.cloudProgress.uid === uid ? LiveData.cloudProgress.score : 0;
+  if(!progressPushAllowed(score, cloudScore, shrinkOk)){
+    console.warn('[Bramblewood] progress push refused: this device holds less progress than the cloud (' + score + ' < ' + cloudScore + ')');
+    if(Date.now() - ui12ProgressRepullAt > 60000){ ui12ProgressRepullAt = Date.now(); livePullProgress(); }
+    return;
+  }
+  LiveData.progressPushPending = false;
   LiveData.progressPushedHash = h;
   const now = Date.now();
   try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(now)); }catch(e){}
   // 2026-10-18 (R3-WP3): a failed push forgets its hash, so the 20 s tick sends it again instead of treating it as saved
-  sbClient.from('player_progress').upsert({profile_id: cloudUserId, data: snap, updated_at: new Date(now).toISOString()})
-    .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; else if(error && LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; },
+  sbClient.from('player_progress').upsert({profile_id: uid, data: snap, updated_at: new Date(now).toISOString()})
+    .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; else if(error && LiveData.progressPushedHash===h) LiveData.progressPushedHash = null;
+        if(!error && uid === cloudUserId){ LiveData.cloudProgress = {uid, score}; if(shrinkOk) try{ localStorage.removeItem(PROGRESS_SHRINK_OK_KEY); }catch(e){} } },
       ()=>{ if(LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; });
 }
 setInterval(()=>{ try{ livePushProgress(false); }catch(e){} }, 20000);
@@ -72104,6 +72273,9 @@ function mountMapFx(canvas, map){
     (data.c || []).forEach(p=> addHit('crystal', p[0], p[1]));
     (data.b || []).forEach(p=> addHit('bush', p[0], p[1]));
     (data.w || []).forEach(p=> addHit('water', p[0], p[1], p[2], p[3]));
+    // 2026-10-31 (package UI12, GG8, owner: "Only one tree shakes on click; the others should shake too"): trees had no tap spot (only a bush that
+    // happened to sit by one shook); every tree of the map gets one, and shakes like a bush (a larger patch)
+    (data.t || []).forEach(p=> addHit('tree', p[0], p[1]));
     if(mfxSway()){
       const trees = (data.t || []).filter(p=> p[0] > 6 && p[0] < 94 && p[1] > 8 && p[1] < 92), step = Math.max(1, Math.ceil(trees.length / 14));
       trees.filter((_, i)=> i % step === 0).forEach((p, i)=>{
@@ -72140,10 +72312,11 @@ function mountMapFx(canvas, map){
     } else if(sp.kind === 'water'){
       mfxPlay('waterPlop', t, 0.9 + Math.random() * 0.25, 'w:' + sp.x + ',' + sp.y);
       if(vis){ fx('mfx-ripple', px, py, 1000); fx('mfx-ripple r2', px, py, 1200); for(let i = 0; i < 3; i++) fx('mfx-drop', px, py, 800, {'--dx': ((i - 1) * 9 + (Math.random() - 0.5) * 5).toFixed(1) + 'px', '--dy': (-12 - Math.random() * 8).toFixed(1) + 'px'}); }
-    } else if(sp.kind === 'bush'){
-      mfxPlay('bushRustle', t, null, 'b:' + sp.x + ',' + sp.y);
+    } else if(sp.kind === 'bush' || sp.kind === 'tree'){
+      const tree = sp.kind === 'tree';
+      mfxPlay('bushRustle', t, tree ? 0.85 : null, (tree ? 't:' : 'b:') + sp.x + ',' + sp.y);
       if(vis && G && swayLayer._bgLayers && swayLayer._bgLayers.length){
-        const p = mfxPatch(swayLayer, 'mfx-shake', 8, 7); mfxPlacePatch(swayLayer, p, G, sp.x, sp.y); setTimeout(()=> p.remove(), 520);
+        const p = mfxPatch(swayLayer, 'mfx-shake' + (tree ? ' mfx-tree-shake' : ''), tree ? 12 : 8, tree ? 13 : 7); mfxPlacePatch(swayLayer, p, G, sp.x, sp.y); setTimeout(()=> p.remove(), 520);
         for(let i = 0; i < 3; i++) fx('mfx-leaf', cx, cy, 900, {'--dx': ((i - 1) * 14 + (Math.random() - 0.5) * 6).toFixed(1) + 'px', '--dy': (-10 - Math.random() * 12).toFixed(1) + 'px'});
       }
     }
@@ -72171,7 +72344,15 @@ function mountMapFx(canvas, map){
   const iv = setInterval(()=>{ if(!layer.isConnected){ stop(); return; }
     if(layout && swayLayer.parentNode === layout && layout.firstChild !== swayLayer) layout.insertBefore(swayLayer, layout.firstChild); // first = under the time-of-day tint and the weather shader, so the copies are lit like the art
     const g = mfxGeo(canvas); if(g && (!G || g.key !== G.key)) place(); }, 500);
-  function stop(){ clearInterval(iv); swayLayer.remove(); window.removeEventListener('resize', kick); document.removeEventListener('scroll', kick, true); canvas.removeEventListener('click', onClick, true); canvas.removeEventListener('pointermove', onMove); if(window.__bwMapFxStop === stop) window.__bwMapFxStop = null; }
+  // 2026-10-31 (package UI12, GG8, owner: "after clicking a skirmish on the conquest map, the map's trees light up for 1 s"): a click re-draws the map;
+  // the weather shader and the time-of-day tint are moved into the new frame AT ITS START (prepend), above the sway copies, so for up to the
+  // 500 ms tick (about a second on a busy page) the swaying trees sat over the night / dusk tint: bright trees on a dark map. A MutationObserver
+  // puts the sway layer back first in the same task (before the frame is painted), and a resize of the layout re-places the copies at once.
+  let mo = null, ro = null;
+  try{ if(layout && typeof MutationObserver !== 'undefined'){ mo = new MutationObserver(()=>{ if(swayLayer.parentNode === layout && layout.firstChild !== swayLayer) layout.insertBefore(swayLayer, layout.firstChild); });
+    mo.observe(layout, {childList: true}); } }catch(e){}
+  try{ if(typeof ResizeObserver !== 'undefined'){ ro = new ResizeObserver(()=> kick()); if(layout) ro.observe(layout); ro.observe(canvas); } }catch(e){}
+  function stop(){ clearInterval(iv); try{ if(mo) mo.disconnect(); if(ro) ro.disconnect(); }catch(e){} swayLayer.remove(); window.removeEventListener('resize', kick); document.removeEventListener('scroll', kick, true); canvas.removeEventListener('click', onClick, true); canvas.removeEventListener('pointermove', onMove); if(window.__bwMapFxStop === stop) window.__bwMapFxStop = null; }
   window.__bwMapFxStop = stop;
   return layer;
 }
@@ -72698,16 +72879,53 @@ function skirmMapShowcase(mapId){
     return ids[0] || null; }catch(e){ return null; }
 }
 let skirmPending = null; // {key, pick}: the draw of the fight being started, read by proNodeOf
-const SKIRM_YOU_KEY = 'bramblewood_skirm_you_v1';
-function skirmYou(){ let v = null; try{ v = localStorage.getItem(SKIRM_YOU_KEY); }catch(e){} return v && v !== 'my' && refSetIds().includes(v) ? v : 'my'; }
-function setSkirmYou(v){ try{ localStorage.setItem(SKIRM_YOU_KEY, v || 'my'); }catch(e){} }
+// 2026-10-31 (package UI12, GG10, owner: "a random player deck at that level vs a random deck optimised for that map; show the deck's rank 1-5+
+// (lower = stronger)"): the player's side defaults to a random reference deck of the map's level (refDefaultSet: "Reference (Random)", the map's
+// 5 progression decks); Admin can still pick My deck or one reference deck. A new key (v2), so UI10's default ('my') does not stick.
+const SKIRM_YOU_KEY = 'bramblewood_skirm_you_v2';
+function skirmYou(){ if(!adminModeEnabled) return refDefaultSet(); let v = null; try{ v = localStorage.getItem(SKIRM_YOU_KEY); }catch(e){}
+  return v === 'my' ? 'my' : (v && refSetIds().includes(v) ? v : refDefaultSet()); }
+function setSkirmYou(v){ try{ localStorage.setItem(SKIRM_YOU_KEY, v || refDefaultSet()); }catch(e){} skirmDraw = null; }
+// The preview draws both decks (skirmDraw) so the panel shows the decks the Fight button will play, each with its rank: 1 = the strongest of
+// its pool. The enemy's pool is the map's BPRO decks, ranked by their measured score; the player's is the map's reference decks, ranked by
+// battle rating at their levels. A rank past 5 shows as 5+. A new draw after every fight, on "New draw", and when the player's choice changes.
+var skirmDraw = null;
+function skirmRankLabel(r){ return r == null ? '' : (r >= 5 ? '5+' : String(r)); }
+function skirmEnemyRank(list, id){
+  const sorted = (list || []).map((d, i)=> ({id: d.id, s: d.source && d.source.score != null ? +d.source.score : null, i}))
+    .sort((a, b)=> (a.s == null || b.s == null) ? a.i - b.i : (b.s - a.s) || (a.i - b.i));
+  const k = sorted.findIndex(x=> x.id === id); return k < 0 ? null : k + 1;
+}
+function skirmRefRating(parts){ const defs = getCardDefs(); return (parts || []).reduce((t, p)=>{ const d = defs[String(p[0]).split('~')[0]]; return t + (d ? (p[1] | 0) * ratingWeightOf(d) * ratingLevelFactor(+p[2] || 0) : 0); }, 0); }
+function skirmYouDraw(map, node, choice){
+  if(choice === 'my') return {set: 'my', label: TX('ui.ui10-my-deck'), rank: null, of: null};
+  let rs = null; try{ rs = refSetFor(choice, map.id, node); }catch(e){}
+  if(!rs) return {set: choice, label: refSetLabelTX(choice), rank: null, of: null};
+  const mu = refMultiOf(choice);
+  if(!mu) return {set: choice, label: rs.label || refSetLabelTX(choice), rank: null, of: null};
+  const list = (mu.set.decks || {})[rs.deckMap] || [], ratings = list.map(e=> skirmRefRating(e.parts)), mine = ratings[rs.pick - 1];
+  const rank = mine == null ? null : 1 + ratings.filter((r, i)=> r > mine || (r === mine && i < rs.pick - 1)).length;
+  return {set: mu.id + '-' + rs.pick, label: rs.label, rank, of: list.length};
+}
+function skirmDrawFor(map, entry, node){
+  const choice = skirmYou();
+  if(skirmDraw && skirmDraw.key === node.key && skirmDraw.choice === choice) return skirmDraw;
+  const pick = drawSkirmEnemy(map.id, entry); if(!pick) return null;
+  skirmDraw = {key: node.key, choice, enemy: Object.assign({}, pick, {rank: skirmEnemyRank(entry.decks, pick.id), of: (entry.decks || []).length}), you: null};
+  skirmDraw.you = skirmYouDraw(map, node, choice);
+  return skirmDraw;
+}
+function skirmRankHTML(r, of){ if(r == null) return '';
+  const tip = TX('ui.ui12-deck-rank-tip', {r: skirmRankLabel(r), n: of || '?'});
+  return `<span class="ui12-drank" data-rank="${r >= 5 ? '5' : r}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"><i aria-hidden="true"></i><b>${escapeHtml(skirmRankLabel(r))}</b></span>`; }
 const PRO_NODE_CACHE = new Map();
 function proMapEntries(){ return (PRO_SKIRMISHES && PRO_SKIRMISHES.maps) || {}; }
 function proNodeOf(mapId, e, ent){
   const ck = mapId + ':' + e.id; let n = e.skirm ? null : PRO_NODE_CACHE.get(ck); if(n) return n;
   const f = (ent && ent.field) || {}, rules = Object.assign({}, f.rules || {}), ai = CPU_AI_KEYS[((PRO_SKIRMISHES.rule || {}).ai != null ? PRO_SKIRMISHES.rule.ai : 1)] || 'smart';
   let lv = e.level != null ? e.level : 1; { const late = proLateSideLevel(mapId); if(late != null && late > lv) lv = late; } // ENG10 (2026-10-26, PREF-3): a late side map's PRO level
-  const pend = e.skirm && skirmPending && skirmPending.key === e.id ? skirmPending.pick : null; // UI10: the deck drawn for this fight
+  const pend = e.skirm && skirmPending && skirmPending.key === e.id ? skirmPending.pick
+    : (e.skirm && skirmDraw && skirmDraw.key === e.id ? skirmDraw.enemy : null); // UI10: the deck drawn for this fight; UI12 (GG10): else the preview's draw
   n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, skirm: !!e.skirm, deck: Object.assign({}, pend ? pend.deck : (e.deck || {})), enemyLevel: lv,
     leaders: (e.leaders || []).slice(), ai, rules, requires: [], flavor: ''};
   if((e.leaders || [])[0]) n.showcase = e.leaders[0];
@@ -72766,22 +72984,33 @@ function refPlayToggleHTML(){
     <p class="panel-sub">${escapeHtml(TX('ui.pref-toggle-sub'))}</p>`;
 }
 // the skirmish panel's extra row (2026-10-31, UI10, EE2; was X-REF's): who you play (My deck or a reference set) and a line on the enemy
+// 2026-10-31 (package UI12, GG10): both drawn decks with their rank (1 = strongest, 5+), the enemy's id and a SPECIAL card if one was drawn,
+// the player's deck (a random reference deck of the map's level; Admin may pick My deck or one reference deck) and a New draw button
 function xrefPanelHTML(map, node){
-  const cur = skirmYou(), ids = refSetIds(); let rs = null; try{ rs = cur === 'my' || (refMultiOf(cur) && refMultiOf(cur).pick == null) ? null : refSetFor(cur, map.id, node); }catch(e){}
-  return `<div class="pref-xref skirm-you" style="margin:6px 0;"><p class="panel-sub skirm-enemy">${escapeHtml(TX('ui.pref-xref-vs'))} ${escapeHtml(TX('ui.ui10-skirm-enemy'))}</p>
-    <label class="panel-sub">${escapeHtml(TX('ui.pref-xref-you'))} <select data-skirm-you aria-label="${escapeAttr(TX('ui.pref-xref-you'))}"><option value="my" ${cur === 'my' ? 'selected' : ''}>${escapeHtml(TX('ui.ui10-my-deck'))}</option>${ids.map(sid=> `<option value="${escapeAttr(sid)}" ${sid === cur ? 'selected' : ''}>${escapeHtml(refSetLabelTX(sid))}</option>`).join('')}</select></label>
-    ${rs ? `<span class="panel-sub"> · ${escapeHtml(TX('ui.pref-level', {n: rs.set === 'map' || rs.gained == null ? rs.level : '+' + rs.gained}))}</span>` : ''}</div>`;
+  const cur = skirmYou(), ids = refSetIds(), f = findProFight(node.key), dr = f && f.entry ? skirmDrawFor(map, f.entry, node) : null;
+  const defs = getCardDefs(), en = dr && dr.enemy, yo = dr && dr.you;
+  const sp = en && en.special && defs[en.special] ? ` · ${escapeHtml(TX('ui.ui12-skirm-special', {name: defs[en.special].name}))}` : '';
+  const pickHTML = adminModeEnabled ? ` <select data-skirm-you aria-label="${escapeAttr(TX('ui.pref-xref-you'))}"><option value="my" ${cur === 'my' ? 'selected' : ''}>${escapeHtml(TX('ui.ui10-my-deck'))}</option>${ids.map(sid=> `<option value="${escapeAttr(sid)}" ${sid === cur ? 'selected' : ''}>${escapeHtml(refSetLabelTX(sid))}</option>`).join('')}</select>` : '';
+  return `<div class="pref-xref skirm-you ui12-skirm" style="margin:6px 0;">
+    <p class="panel-sub skirm-enemy ui12-skirm-row" data-skirm-side="enemy">${escapeHtml(TX('ui.pref-xref-vs'))} ${en ? `<b class="ui12-skirm-id">${escapeHtml(en.id)}</b> ${skirmRankHTML(en.rank, en.of)}` : ''} <span>${escapeHtml(TX('ui.ui10-skirm-enemy'))}</span>${sp}</p>
+    <p class="panel-sub ui12-skirm-row" data-skirm-side="you"><label>${escapeHtml(TX('ui.pref-xref-you'))}${pickHTML}</label> ${yo ? `<b class="ui12-skirm-id">${escapeHtml(yo.label)}</b> ${skirmRankHTML(yo.rank, yo.of)}` : ''}</p>
+    <button type="button" class="btn small ghost ui12-skirm-reroll" data-skirm-reroll>🎲 ${escapeHtml(TX('ui.ui12-skirm-reroll'))}</button></div>`;
 }
 try{ if(typeof document !== 'undefined'){
   document.addEventListener('change', ev=>{ const t = ev.target; if(!t || !t.matches) return;
     if(t.matches('[data-pref-on]')){ const p = refPlayPrefs(); p.on = !!t.checked; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-on]').forEach(x=>{ x.checked = p.on; }); return; }
-    if(t.matches('[data-skirm-you]')){ setSkirmYou(t.value); return; } // 2026-10-31 (UI10, EE2)
+    if(t.matches('[data-skirm-you]')){ setSkirmYou(t.value); try{ if(currentTab === 'play' && !matchState) renderPlay(); }catch(e){} return; } // 2026-10-31 (UI10, EE2); UI12 (GG10): a new draw for the new choice
     if(t.matches('[data-pref-set]')){ const p = refPlayPrefs(); p.set = t.value; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-set]').forEach(x=>{ x.value = p.set; }); } });
+  // 2026-10-31 (package UI12, GG10): New draw
+  document.addEventListener('click', ev=>{ const b = ev.target && ev.target.closest && ev.target.closest('[data-skirm-reroll]'); if(!b) return; skirmDraw = null; try{ if(currentTab === 'play' && !matchState) renderPlay(); }catch(e){} });
 } }catch(e){}
 // 2026-10-25 (package PL2, PRO-UI, PRO2's notes: "clicking a PRO/BPRO fight opens a skirmish preview"): a PRO or BPRO fight (Admin's list, the
 // trophy nodes on an admin's map, the skirmish editor's row, a #pro= link) opens the map's normal fight panel with that fight picked: its deck
 // strip, field, leader and battle rating, and a Fight button that starts it (startProFight: free, pays nothing). It used to start at once.
-function pl2ProNodeOn(map, key){ if(!map || !PRO_KEY_RE.test(key || '')) return null; const f = findProFight(key); return f && f.map.id === map.id ? f.node : null; }
+function pl2ProNodeOn(map, key){ if(!map || !PRO_KEY_RE.test(key || '')) return null; const f = findProFight(key); if(!f || f.map.id !== map.id) return null;
+  // 2026-10-31 (package UI12, GG10): the map's skirmish draws its decks before the panel is drawn, so its deck strip and battle rating are the drawn deck's
+  if(f.node.skirm && !(skirmDraw && skirmDraw.key === f.node.key && skirmDraw.choice === skirmYou())){ skirmDrawFor(f.map, f.entry, f.node); const f2 = findProFight(key); return f2 ? f2.node : f.node; }
+  return f.node; }
 function pl2ProPreview(key){
   const f = findProFight(key); if(!f){ showToast(TX('ui.pro-unknown', {key: String(key || '')}), 'warn'); return false; }
   if(matchState && !matchState.over){ showToast(TX('ui.pro-busy'), 'warn'); return false; }
@@ -72800,9 +73029,13 @@ function startProFight(key){
   { const o = document.getElementById('skirmishEditorOverlay'); if(o && !o.hidden){ o.hidden = true; o.innerHTML = ''; } }
   playSubTab = 'conquest'; switchTab('play');
   // 2026-10-31 (UI10, EE2): the skirmish draws its enemy now (one BPRO deck of the map, 1 in 4 with a SPECIAL card), and plays your deck ('my') or the chosen reference set
-  let pick = null; if(f.node.skirm){ pick = drawSkirmEnemy(f.map.id, f.entry); skirmPending = pick ? {key: f.node.key, pick} : null; }
-  let ok = false; try{ ok = startConquestMatch(f.map.id, f.node.key, {skipEnergyCost: true, noAmbush: true, refSet: f.node.skirm ? skirmYou() : undefined}); }finally{ skirmPending = null; }
-  if(ok && matchState){ matchState.adminTest = true; matchState.proFight = f.node.key; if(pick) matchState.skirm = {deck: pick.id, special: pick.special || null}; }
+  // 2026-10-31 (package UI12, GG10): the decks the preview showed (skirmDraw) are the decks played; without a preview, a draw now. The player's
+  // side is the drawn reference deck (a concrete "<set>-<i>", so the fight plays the deck whose rank was shown), or My deck ('my')
+  let pick = null, you = null;
+  if(f.node.skirm){ const dr = skirmDrawFor(f.map, f.entry, f.node); if(dr){ pick = dr.enemy; you = dr.you; } else pick = drawSkirmEnemy(f.map.id, f.entry); skirmPending = pick ? {key: f.node.key, pick} : null; }
+  const refSet = f.node.skirm ? (you ? you.set : skirmYou()) : undefined;
+  let ok = false; try{ ok = startConquestMatch(f.map.id, f.node.key, {skipEnergyCost: true, noAmbush: true, refSet}); }finally{ skirmPending = null; skirmDraw = null; }
+  if(ok && matchState){ matchState.adminTest = true; matchState.proFight = f.node.key; if(pick) matchState.skirm = {deck: pick.id, special: pick.special || null, rank: pick.rank != null ? pick.rank : null, you: you ? {set: you.set, rank: you.rank} : null}; }
   return ok;
 }
 // #pro=<key>: the link opens the fight once the page has loaded (and on a later hash change); the hash is cleared so a reload doesn't
@@ -88742,7 +88975,10 @@ function sideResourcePillsHTML(m, p, mine){
   const sfx = mine ? '' : 'Enemy';
   const pill = (cls, id, title, body)=> `<span class="hud-pill ${cls}" id="${id}${sfx}" title="${escapeAttr((mine ? '' : 'Enemy ') + title)}">${body}</span>`;
   const out = [];
-  if((p.lumber||0) > 0) out.push(pill('lumber', 'hudLumberPill', RESOURCE_TOOLTIP.lumber, `${iconHTML('lumber', '🪵')} ${p.lumber}`));
+  // 2026-10-31 (package UI12, GG6, owner: "the Lumber pointer jumps to the top of the screen if Lumber is spent while it shows (the Lumber label was
+  // removed). Keep the label"): while the "where to find it" step (pl-after) is up, your Lumber pill stays, at 0 too
+  const keepLumber = mine && (p.lumber||0) <= 0 && typeof coachOpen !== 'undefined' && coachOpen && coachOpen.tip && coachOpen.tip.id === 'pl-after';
+  if((p.lumber||0) > 0 || keepLumber) out.push(pill('lumber' + (keepLumber ? ' is-zero' : ''), 'hudLumberPill', RESOURCE_TOOLTIP.lumber, `${iconHTML('lumber', '🪵')} ${p.lumber||0}`));
   if((p.stone||0) > 0) out.push(pill('stone', 'hudStonePill', RESOURCE_TOOLTIP.stone, `${iconHTML('stone', '🪨')} ${p.stone}`));
   if((p.gold||0) > 0) out.push(pill('gold', 'hudGoldPill', TX('ui.gold-tip'), `🪙 ${p.gold}`)); // Package TR (2026-10-21): in-fight Gold (Tribute, the Crown's fade)
   if((p.metal||0) > 0) out.push(pill('metal', 'hudMetalPill', 'Metal: some cards cost it; Iron-will units grow with it', `${iconHTML('metal', '🔩')} ${p.metal}`));
@@ -92024,12 +92260,15 @@ const GUIDED_STEPS = [
   // scripted play sets up (tutorialScriptedCpuPlay); it comes after the CPU's play and before that round's fight, with both units'
   // lines drawn (tutCombatLines). Round 5 is the fallback, so the steps after it can't stall. Was: when round >= 3.
   {id:'g-combat', stage:1, block:true, when:m=> tutLessonBoard(m) || m.round>=5, text:TX('coach.cards-hit-the-card-in-front'), anchor:()=> document.getElementById('battlefieldEl')},
-  {id:'g-deck', stage:1, block:true, when:m=> m.round>=4, text:TX('coach.your-deck-you-draw-1-card'), anchor:()=> document.getElementById('deckWidgetBottom')},
+  // 2026-10-31 (package UI12, GG1, owner: "the draw 1 card per turn step becomes a tooltip over the deck that fades after 5 s: no action needed, no
+  // grey-out. The next tutorial step plays as usual, 5 s later"): a timed tip (fadeMs): no shield, no spotlight, no button; it waits COACH_TIMED_GAP_MS
+  // after the step before it closed, and the next step waits until it has faded (coachOpen is held for those 5 s).
+  {id:'g-deck', stage:1, fadeMs:5000, when:m=> m.round>=4 && Date.now() - coachLastClosedAt >= COACH_TIMED_GAP_MS, text:TX('coach.your-deck-you-draw-1-card'), anchor:()=> document.getElementById('deckWidgetBottom')},
   // Leader and Wait (2026-10-13, user: "Playing the leader shows a tutorial about Wait that pauses the battle until OK. Point at
   // the wait timer until it ticks -1 on the next upkeep"): optional steps, they wait for your leader to land.
-  {id:'g-leader-wait', stage:2, block:true, optional:true, when:m=> !!tutLeaderCard(m) && (tutLeaderCard(m).wait||0) > 0,
+  {id:'g-leader-wait', stage:2, block:true, optional:true, noDim:true /* UI12 (GG5) */, when:m=> !!tutLeaderCard(m) && (tutLeaderCard(m).wait||0) > 0,
     text:TX('coach.your-leader-has-to-wait-it'), anchor:()=> tutLeaderWaitEl()},
-  {id:'g-wait-tick', stage:2, action:true, optional:true, when:m=>{ const c = tutLeaderCard(m); if(!c) return false; if(m._leaderWait0 == null) m._leaderWait0 = c.wait||0; return true; },
+  {id:'g-wait-tick', stage:2, action:true, optional:true, noDim:true /* UI12 (GG5) */, when:m=>{ const c = tutLeaderCard(m); if(!c) return false; if(m._leaderWait0 == null) m._leaderWait0 = c.wait||0; return true; },
     done:m=>{ if(m._leaderWait0 == null) return false; const c = tutLeaderCard(m); return !c || (c.wait||0) < m._leaderWait0 || (c.wait||0) === 0; },
     allow:['.coach-tip', '#handStrip', '#rowMine', '#battlefieldEl', '#quitMatchBtn', '#leaderWidget'],
     text:TX('coach.watch-it-go-down-by-1'), anchor:()=> tutLeaderWaitEl()},
@@ -92300,14 +92539,14 @@ function showCoachTip(tip, anchorEl){
   hideCoachTip(); if(tip && tip.id === coachPendingId) coachPendingId = null;
   const b = document.createElement('div');
   b.className = 'coach-tip'+(tip.block?' is-blocking':''); b.setAttribute('role', tip.block ? 'dialog' : 'status');
-  const btnLabel = tip.action ? '' : (tip.block || tip.next ? 'Next ▶' : 'Got it'); // 2026-10-24 (package TT): tip.next = a step that leads to another
+  const btnLabel = tip.action || tip.fadeMs ? '' : (tip.block || tip.next ? 'Next ▶' : 'Got it'); // 2026-10-24 (package TT): tip.next = a step that leads to another; UI12 (GG1): a timed tip has no button
   b.innerHTML = `<div class="coach-text">${keywordizeHTML(tip.html && !(GUIDED_STEPS.includes(tip) && tutorialCfg.steps && tutorialCfg.steps[tip.id]) ? tip.html : escapeHtml(GUIDED_STEPS.includes(tip) ? guidedStepText(tip) : tip.text))}</div>${btnLabel?`<button type="button" class="btn small primary coach-ok">${btnLabel}</button>`:''}`;
   if(tip.block){
     // see-through shield: blocks clicks/drags on the match, but not on the bubble itself
     // 2026-10-03 (explicit: "for the tutorial's first few tutorial guides - user cannot take any
     // action but the one the tutorial wants"): the shield blocks everything, Quit included, until
     // Next. Only the guided tutorial steps ever block; passive tips never do.
-    coachShield = document.createElement('div'); coachShield.className = 'coach-shield';
+    coachShield = document.createElement('div'); coachShield.className = 'coach-shield' + (tip.noDim ? ' is-clear' : ''); // UI12 (GG5): no dark veil either
     coachShield.addEventListener('click', ()=>{ b.classList.remove('nudge'); void b.offsetWidth; b.classList.add('nudge'); });
     document.body.appendChild(coachShield);
   }
@@ -92316,12 +92555,15 @@ function showCoachTip(tip, anchorEl){
   // they should click"): guided steps dim everything but their target and point at it with a bobbing red marker. Neither
   // takes clicks; the shield and tutorialLock decide what can be pressed.
   let spot = null, pointer = null;
-  if(GUIDED_STEPS.includes(tip) || tip.gate){
+  if((GUIDED_STEPS.includes(tip) || tip.gate) && !tip.fadeMs){ // UI12 (GG1): a timed tip dims nothing
     spot = document.createElement('div'); spot.className = 'coach-spotlight'; spot.setAttribute('aria-hidden', 'true');
     pointer = document.createElement('div'); pointer.className = 'coach-pointer' + (tip.action ? ' is-action' : '') + (tip.ring ? ' is-ring' : ''); pointer.setAttribute('aria-hidden', 'true');
     pointer.innerHTML = tip.ring ? '<span class="cp-target"></span>' : '<span class="cp-ring"></span><span class="cp-hand">👆</span>';
     if(tip.ring) spot.classList.add('is-round');
-    document.body.appendChild(spot); document.body.appendChild(pointer);
+    // 2026-10-31 (package UI12, GG5, owner: "after the leader fanfare the screen blinks dark. Remove that darkening"): the leader's Wait steps in T-2
+    // (tip.noDim) keep their bubble and pointer, with no dimming spotlight
+    if(tip.noDim) spot = null;
+    if(spot) document.body.appendChild(spot); document.body.appendChild(pointer);
     b.classList.add('has-spot');
   }
   const place = ()=>{
@@ -92370,12 +92612,18 @@ function showCoachTip(tip, anchorEl){
     if(tip.id === 'g-play') syncCoachPhantom(pointer, {prefer: coachHighlightTile}); // 2026-10-18: the highlighted card (see syncCoachPhantom)
     if(tip.id === 'pl-do') syncCoachPhantom(pointer, {to:'dropDiscard', always:true, pick:()=>{ const el = matchState && pitchLessonSpare(matchState); return el && el !== true ? el : null; }});
     if(tip.id === 'g-combat') tutCombatLines(); // 2026-10-18 (package T): both of your units' attack lines, while the step is up
+    // 2026-10-31 (package UI12, GG6): with your Lumber spent (0) the "where to find it" step keeps its bubble on the Lumber pill and drops only its arrow
+    if(tip.id === 'pl-after' && pointer){ let zero = false; try{ const me = matchState && pitchLessonMine(matchState); zero = !!me && !((me.lumber||0) > 0); }catch(e){} pointer.hidden = zero; b.classList.toggle('no-arrow', zero); }
     b.style.setProperty('--arrow-x', Math.max(14, Math.min(bw-14, r.left + r.width/2 - x))+'px');
   };
   place();
   anchorEl.classList.add('coach-anchor'); if(tip.block) anchorEl.classList.add('coach-locked');
   const tick = setInterval(place, 250);
   coachOpen = {tip, el:b, get anchorEl(){ return anchorEl; }, tick, spot, pointer};
+  // 2026-10-31 (package UI12, GG1): a timed tip counts as seen at once and fades by itself; nothing else shows until it has gone
+  if(tip.fadeMs){ b.classList.add('is-timed'); markCoachSeen(tip.id);
+    coachOpen.fadeT = setTimeout(()=>{ if(!coachOpen || coachOpen.tip !== tip) return; b.classList.add('is-fading');
+      setTimeout(()=>{ if(coachOpen && coachOpen.tip === tip){ hideCoachTip(); setTimeout(maybeShowCoachTip, 60); } }, 400); }, Math.max(0, tip.fadeMs - 400)); }
   // Guided "do this" steps lock everything except what the step asks for (the hand and your
   // board row for "play a card"); a click anywhere else just nudges the tip.
   if(tip.action && (GUIDED_STEPS.includes(tip) || tip.gate)) tutorialLock = {allow: tip.allow || ['.coach-tip', '#handStrip', '#rowMine', '#battlefieldEl'], tip: b, gate: !!tip.gate};
@@ -92477,8 +92725,15 @@ function hideCoachTip(){
   if(coachOpen.tip && coachOpen.tip.id === 'g-combat'){ tutCombatLinesSig = ''; try{ clearFacing(); }catch(e){} } // 2026-10-18 (package T): its lines go with it
   if(coachOpen.spot) coachOpen.spot.remove(); if(coachOpen.pointer) coachOpen.pointer.remove();
   const a = coachOpen.anchorEl; if(a) a.classList.remove('coach-anchor','coach-locked');
+  if(coachOpen.fadeT) clearTimeout(coachOpen.fadeT);
   coachOpen = null;
+  // 2026-10-31 (package UI12, GG1): a timed tutorial tip waits a moment after the tip before it; look again once that time is up
+  coachLastClosedAt = Date.now();
+  try{ if(matchState && matchState.mode === 'tutorial'){ const m = matchState; setTimeout(()=>{ if(matchState === m && !m.over && !coachOpen) maybeShowCoachTip(); }, COACH_TIMED_GAP_MS + 60); } }catch(e){}
 }
+// 2026-10-31 (package UI12, GG1): timed tips (tip.fadeMs): the time since the last tip closed, and the gap a timed tip keeps from it
+var coachLastClosedAt = 0;
+const COACH_TIMED_GAP_MS = 1500;
 /* ============================================================
    Player character, title & colour (2026-10-03, per explicit request: "Titles and colours! You can
    select the title and colour of your character. What is your character? You can choose between a
@@ -106388,7 +106643,8 @@ function renderAchievementsPage(){
 // Admin content (card and map edits, NPC speeches, tutorial setup), device settings, admin mode and your name are kept.
 const RESET_KEEP = /^(bramblewood_arena_(adminmode|devmode|profile|card_overlay|shop_packs_override)|bramblewood_(dialogue_edits_v1|forge_tier_edits_v1|node_edits_v1|tutorial_cfg_v2|map_layout_v1|ui_flags_v1|card_txns_v1))$/;
 const PENDING_MAP_RESET_KEY = 'bw_pending_map_reset';
-function adminWipeProgress(){ try{ Object.keys(localStorage).filter(k=> /^(bramblewood|bw_)/.test(k) && !DEVICE_SETTING_KEYS.test(k) && !RESET_KEEP.test(k)).forEach(k=> localStorage.removeItem(k)); sessionStorage.clear(); }catch(e){} }
+function adminWipeProgress(){ try{ Object.keys(localStorage).filter(k=> /^(bramblewood|bw_)/.test(k) && !DEVICE_SETTING_KEYS.test(k) && !RESET_KEEP.test(k)).forEach(k=> localStorage.removeItem(k)); sessionStorage.clear(); }catch(e){}
+  try{ localStorage.setItem(PROGRESS_SHRINK_OK_KEY, '1'); }catch(e){} } // 2026-10-31 (package UI12, GG2): this reset is meant to replace the cloud blob once (the save guard lets it)
 function adminResetAll(){ adminWipeProgress(); location.reload(); }
 function adminResetCodex(){
   try{ localStorage.removeItem(SEEN_KEY); localStorage.removeItem(DISCOVERED_KEY); }catch(e){}
@@ -107461,9 +107717,10 @@ function renderEntranceAuth(){
   if(myProfile && myProfile.name){
     el.innerHTML = `<p class="entrance-welcome-back">${hasPlayedBefore() ? `Welcome back, <b>${escapeHtml(myProfile.name)}</b>` : `Welcome, <b>${escapeHtml(myProfile.name)}</b>!`} 🌰</p>
       <button class="btn primary big splash-enter" id="startBtn">▶ Start</button>
+      <p class="ui12-auth-wait" id="ui12AuthWait" role="status" aria-live="polite" hidden></p>
       <p class="entrance-account-line" id="entranceAccountLine" hidden></p>`;
     const btn = document.getElementById('startBtn');
-    if(btn) btn.addEventListener('click', triggerEntranceAnimation);
+    if(btn) btn.addEventListener('click', ()=>{ if(ui12CloudLoading()) return; triggerEntranceAnimation(); }); // UI12 (GG4): not while a sign-in loads
   } else {
     el.innerHTML = `<form id="loginForm" class="entrance-login-form" autocomplete="off" novalidate>
         <label class="entrance-name-label" for="loginNameInput">What should we call you?</label>
@@ -107471,6 +107728,7 @@ function renderEntranceAuth(){
         <p class="name-len-msg" id="loginNameMsg" role="alert" aria-live="polite" hidden></p>
         <button type="submit" class="btn primary big splash-enter" id="loginSubmitBtn">🌿 Enter the Grove</button>
       </form>
+      <p class="ui12-auth-wait" id="ui12AuthWait" role="status" aria-live="polite" hidden></p>
       <button type="button" class="btn ghost small entrance-signin-btn" id="entranceSignInBtn">🔑 Sign in</button>
       <p class="entrance-account-line" id="entranceAccountLine" hidden></p>
       <p class="entrance-login-note">${ONLINE_RAID_VISIBLE ? 'No account needed to play — Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync progress, Online Raid, and Shop packs across devices.' : escapeHtml(TX('ui.entrance-login-note'))}</p>`; // 2026-10-18 (R3-WP3): Online Raid named only while it is visible
@@ -107481,6 +107739,7 @@ function renderEntranceAuth(){
     // effect — matches the reported symptom of the button appearing to do nothing.
     function handleLoginSubmit(e){
       if(e) e.preventDefault();
+      if(ui12CloudLoading()) return; // 2026-10-31 (package UI12, GG2 / GG4): no name or tutorial while a sign-in or its cloud save is loading
       try{
         const input = document.getElementById('loginNameInput');
         const raw = (input && input.value || '').trim().slice(0,24);
@@ -107523,9 +107782,37 @@ function renderEntranceAuth(){
     // requireSignIn() no-ops straight to onSuccess when already signed in, this is safe to show
     // unconditionally rather than needing its own signed-in check.
     const signInBtn = document.getElementById('entranceSignInBtn');
-    if(signInBtn) signInBtn.addEventListener('click', ()=> requireSignIn('to sync your progress', renderEntranceAuth));
+    // 2026-10-31 (package UI12, GG3, owner: "after signing in, go straight to the main menu; no second Start press")
+    if(signInBtn) signInBtn.addEventListener('click', ()=>{ if(ui12CloudLoading()) return; requireSignIn('to sync your progress', ui12EnterAfterSignIn); });
   }
   refreshAccountUI();
+  ui12RefreshFrontLock();
+}
+// 2026-10-31 (package UI12, GG4, owner: "lock the Start button and the name field while a Google sign-in is loading; unlock when it finishes
+// or fails"): Start, Enter the Grove, the name field and Sign in are disabled while a sign-in or its cloud save loads, with a line saying so.
+function ui12RefreshFrontLock(){
+  if(typeof document === 'undefined') return;
+  const busy = ui12CloudLoading();
+  ['startBtn', 'loginSubmitBtn', 'loginNameInput', 'entranceSignInBtn'].forEach(id=>{ const el = document.getElementById(id); if(!el) return;
+    el.disabled = busy; el.classList.toggle('ui12-locked', busy); if(busy) el.setAttribute('aria-busy', 'true'); else el.removeAttribute('aria-busy'); });
+  const w = document.getElementById('ui12AuthWait');
+  if(w){ w.hidden = !busy; if(busy) w.textContent = TX('ui.ui12-loading-save'); }
+  const np = document.getElementById('npInput'); if(np){ np.disabled = busy; const b = np.form && np.form.querySelector('button[type=submit]'); if(b) b.disabled = busy; }
+  if(busy && !ui12LockPoll) ui12LockPoll = setInterval(()=>{ if(!ui12CloudLoading()){ clearInterval(ui12LockPoll); ui12LockPoll = null; ui12RefreshFrontLock(); } }, 250);
+}
+var ui12LockPoll = null;
+// GG3: once a sign-in from the front screen has loaded the account's save, go in (no second Start). An account without a name yet takes the
+// Google first name for now; the name prompt asks for the real one over the menu (applySessionIdentityInner).
+function ui12EnterAfterSignIn(){
+  ui12WhenCloudSettles(()=>{
+    const splash = document.getElementById('splashScreen');
+    if(!isSignedIn() || entranceStarted || !splash || splash.hidden) { try{ renderEntranceAuth(); }catch(e){} return; }
+    if(!(myProfile && myProfile.name)){ const g = cloudUserLabel && cloudUserLabel !== cloudUserEmail ? cloudUserLabel.split(' ')[0].slice(0, 24) : '';
+      saveMyProfile(Object.assign({}, myProfile || {}, {name: nameLongEnough(g) ? g : 'Woodland Warrior'}));
+      if(nameLongEnough(g) && cloudSyncSettled() && sbClient) try{ sbClient.from('profiles').update({display_name: g}).eq('id', cloudUserId).then(()=>{}, ()=>{}); }catch(e){} }
+    try{ renderEntranceAuth(); }catch(e){}
+    triggerEntranceAnimation();
+  });
 }
 let entranceStarted = false;
 function triggerEntranceAnimation(instant){
@@ -107577,6 +107864,14 @@ function triggerEntranceAnimation(instant){
     const needsFactionPick =!loadTutorialDone() && !loadFactionChoice() && !loadResumeSnapshot();
     const needsTutorialResume = !loadTutorialDone() && !!loadFactionChoice() && !loadResumeSnapshot();
     function enterTutorialFlow(){ try{ if(matchState) return; if(needsFactionPick && !loadFactionChoice()) showFactionScreen(); else if(needsTutorialResume) beginTutorialStage(loadTutorialStage()); }catch(eTut){ console.error('[Bramblewood] enterTutorialFlow failed, falling back to Home:', eTut); try{ switchTab('home'); }catch(eHome){} } }
+    // 2026-10-31 (package UI12, GG2): while an account's cloud save is still loading, the tutorial waits and the flags are read again
+    // afterwards (the save may say the tutorial is long done)
+    if((needsFactionPick || needsTutorialResume) && ui12CloudLoading()){
+      const inner = enterTutorialFlow;
+      enterTutorialFlow = ()=> ui12WhenCloudSettles(()=>{ try{ healTutorial2Flag(); }catch(e){} if(loadTutorialDone() || matchState) { try{ if(!matchState) switchTab('home'); }catch(e){} return; }
+        const fp = !loadFactionChoice() && !loadResumeSnapshot(), tr = !!loadFactionChoice() && !loadResumeSnapshot();
+        try{ if(fp) showFactionScreen(); else if(tr) beginTutorialStage(loadTutorialStage()); }catch(e){ inner(); } });
+    }
     if(!splash){ if(needsFactionPick || needsTutorialResume) enterTutorialFlow(); else if(!tryResumeAbandonedMatch()){ switchTab('home'); maybeRemindSignIn(); } clearWatchdog(); return; }
     // Render Home UNDERNEATH the still-visible overlay first, so the peel-off/fade genuinely
     // reveals a real page rather than a blank wrap for however long the animation takes.
@@ -107641,6 +107936,10 @@ setTimeout(function runLoader(){ // after this script finishes, so every module-
   try{ seen = sessionStorage.getItem('bramblewood_seen_splash')==='1'; }catch(e){}
   // A reload in the same tab skips the splash but is still a restart of the game — so it still
   // gets the once-per-load sign-in reminder (maybeRemindSignIn itself checks tutorial/sign-in).
+  // 2026-10-31 (package UI12, GG2 / GG3): a load that brings an account (a stored session) loads its save before any tutorial starts; one
+  // that comes back from Google's redirect keeps the front screen (locked) until the save is in, then goes straight in (ui12EnterAfterSignIn)
+  if(hasStoredCloudSession()) ui12ExpectCloud = true;
+  if(ui12OauthReturning && !seen && !hasStoredCloudSession()){ renderEntranceAuth(); try{ dressEntrance(splash); }catch(e){} return; }
   if(seen){ triggerEntranceAnimation(true); return; } // reload in the same tab: straight back in (tutorial / resume / Home)
   // 2026-10-03 ("Once signed in, skip past the front screen, just go straight in"): a returning
   // signed-in player (a saved Supabase session in this browser) never sees the splash at all.
