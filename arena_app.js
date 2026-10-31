@@ -20077,6 +20077,20 @@ function adminArtRejectedGridHTML(){
   const defs = getCardDefs(), ids = artRejectedIds(); if(!ids.length) return `<p class="panel-sub">${escapeHtml(TX('ui.ed-art-filter-none'))}</p>`;
   return `<div class="grid-view admin-manage-grid">${ids.map(id=> `<div class="ed-art-wrap">${cardTileHTML(defs[id], {extraClass:'admin-manage-tile'})}<small class="ed-art-why">🚫 ${escapeHtml(artReviewOf(defs[id]).reason || '-')}</small></div>`).join('')}</div>`;
 }
+// 2026-10-31 (package UI10, owner EE5): Admin's "Rejected art" list: every card with an art rejection (the card editor's 🚫 + reason, card.artReview), its
+// art, name and the owner's comment, and a link that opens the card in the editor. The mark is saved on the card itself (saveCard -> card_overrides.data.artReview
+// for a cloud admin), so the coordinator reads it with read-only SQL: select id, data->'artReview'->>'reason' from card_overrides where data->'artReview' is not null.
+function rejectedArtAdminHTML(){
+  const defs = getCardDefs(), ids = artRejectedIds();
+  const rows = ids.map(id=>{ const d = defs[id], r = artReviewOf(d), when = r.at ? new Date(r.at).toLocaleDateString() : '';
+    return `<li class="ra-row" data-ra-id="${escapeAttr(id)}"><span class="ra-art">${cardTileHTML(d, {extraClass:'admin-manage-tile'})}</span>
+      <span class="ra-text"><b class="ra-name">${escapeHtml(d.name || id)}</b>${when ? ` <small class="ra-when">${escapeHtml(when)}</small>` : ''}<span class="ra-comment">${escapeHtml(r.reason || TX('ui.ui10-ra-no-comment'))}</span>
+      <button type="button" class="btn small ghost ra-open" data-ra-open="${escapeAttr(id)}">✏️ ${escapeHtml(TX('ui.ui10-ra-open'))}</button></span></li>`; }).join('');
+  return `<div class="panel admin-subpanel rejected-art" id="adminRejectedArt"><h3>🚫 ${escapeHtml(TX('ui.ui10-ra-title'))} <small>(${ids.length})</small></h3><p class="panel-sub">${escapeHtml(TX('ui.ui10-ra-sub'))}</p>
+    ${ids.length ? `<ul class="ra-list">${rows}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ed-art-filter-none'))}</p>`}</div>`;
+}
+try{ if(typeof document !== 'undefined') document.addEventListener('click', ev=>{ const b = ev.target && ev.target.closest && ev.target.closest('[data-ra-open]'); if(!b) return; ev.preventDefault();
+  edOpenCardEditor(b.dataset.raOpen, null, ()=>{ try{ if(currentTab === 'admin') renderAdmin(); }catch(e){} }); }); }catch(e){}
 // -- Card editing from the editors (#14: "Let me edit a card in the skirmish editor or deck preview itself"): a ✏️ on each card of the
 // skirmish editor's deck list and of a skirmish's deck preview opens the card editor itself; closing it brings the editor or the map back.
 function edEditCardBtnHTML(id){ return `<button type="button" class="ed-edit-card" data-ed-edit="${escapeAttr(id)}" title="${escapeAttr(TX('ui.ed-edit-card-tip'))}" aria-label="${escapeAttr(TX('ui.ed-edit-card'))}">✏️</button>`; }
@@ -33758,6 +33772,7 @@ function renderAdmin(){
       <button type="button" class="btn small" id="adminFeedbackBtn">💬 Load feedback</button><div id="adminFeedback" class="fb-admin-list"></div></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
       <button type="button" class="btn small" id="adminOpenSkirmishEditorBtn">🗺️ Open the skirmish editor</button></div>
+    ${rejectedArtAdminHTML() /* 2026-10-31 (package UI10, owner EE5): every card whose art was rejected, with the comment */}
     ${proFightsAdminHTML() /* 2026-10-24 (package PRO): the hidden PRO fights, per map */}
     ${adminModeEnabled ? `<div class="panel admin-subpanel"><h3>🃏 ${escapeHtml(TX('ui.mp-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.mp-admin-sub'))}</p>
       <button type="button" class="btn small" id="adminMapCardsBtn">🃏 ${escapeHtml(TX('ui.mp-open'))}</button></div>` : '' /* 2026-10-22 (package MP) */}
