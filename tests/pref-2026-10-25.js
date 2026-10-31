@@ -49,32 +49,33 @@ ok(/function referencePlayerDeck\(deck, level, base, overlay\)\{ return refParts
 
 // ---- 2. P1: X-REF and the switch
 { const re = new RegExp(app.match(/const PRO_KEY_RE = \/(.*?)\/;/)[1]);
-  ok(re.test('3-PRO-1') && re.test('12-BPRO-4') && re.test('2-B-PRO-1') && re.test('3-REF') && re.test('2-B-REF') && !re.test('3-REF-1') && !re.test('REF') && !re.test('3-XREF'), '2. keys: N-PRO-k, N-BPRO-k, N-L-PRO-k and the X-REF fights N-REF / N-L-REF'); }
+  ok(re.test('3-PRO-1') && re.test('12-BPRO-4') && re.test('2-B-PRO-1') && re.test('3-REF') && re.test('2-B-REF') && re.test('3-SK') && re.test('2-B-SK') && !re.test('3-REF-1') && !re.test('REF') && !re.test('3-XREF'), '2. keys: N-PRO-k, N-BPRO-k, N-L-PRO-k and the X-REF fights N-REF / N-L-REF'); }
 { const ents = {mc: {map: 3, pro: [{id: '3-PRO-1'}, {id: '3-PRO-2'}], bpro: [{id: '3-BPRO-1'}]}, mg: {map: 2, side: true, pro: [{id: '2-B-PRO-1'}], bpro: []}};
   const store = {}, localStorage = {getItem: k=> k in store ? store[k] : null, setItem: (k, v)=>{ store[k] = String(v); }};
   const Q = new Function('localStorage', 'adminState', `const REF_DECK_SETS = {ref2: {label: 'Reference-2'}}; const REF_PLAY_KEY = 'p', XREF_VS_KEY = 'v'; const ents = ${JSON.stringify(ents)};
-    function proMapEntries(){ return ents; } ${fnSrc('proEntriesOf')} ${fnSrc('refSetIds')} ${fnSrc('refDefaultSet') /* 2026-10-31 REF5: the default pick (the map reference while no per-map set is baked, as in this stub) */} ${fnSrc('refPlayPrefs')} ${fnSrc('saveRefPlayPrefs')} ${fnSrc('xrefKeyOf')} ${fnSrc('xrefVsFor')} ${fnSrc('setXrefVs')}
+    function proMapEntries(){ return ents; } ${fnSrc('skirmDecksOf')} ${fnSrc('proEntriesOf')} ${fnSrc('refSetIds')} ${fnSrc('refDefaultSet') /* 2026-10-31 REF5: the default pick (the map reference while no per-map set is baked, as in this stub) */} ${fnSrc('refPlayPrefs')} ${fnSrc('saveRefPlayPrefs')} ${fnSrc('xrefKeyOf')} ${fnSrc('xrefVsFor')} ${fnSrc('setXrefVs')}
     function refPlayActive(){ const adminModeEnabled = adminState.on; return !!adminModeEnabled && refPlayPrefs().on; }
     return {refPlayPrefs, saveRefPlayPrefs, refPlayActive, xrefKeyOf, xrefVsFor, setXrefVs};`);
   const admin = {on: true}, F = Q(localStorage, admin);
-  ok(F.xrefKeyOf('mc') === '3-REF' && F.xrefKeyOf('mg') === '2-B-REF', '2. X-REF keys follow the map\'s PRO fight codes (3-REF, a side map 2-B-REF)');
-  ok(F.xrefVsFor('mc') === '3-PRO-1', '2. X-REF faces PRO-1 by default'); F.setXrefVs('mc', '3-BPRO-1'); ok(F.xrefVsFor('mc') === '3-BPRO-1', '2. the picked opponent is kept'); F.setXrefVs('mc', '9-PRO-9'); ok(F.xrefVsFor('mc') === '3-PRO-1', '2. an unknown pick falls back to PRO-1');
+  // 2026-10-31 (package UI10, owner EE2): PRO, BPRO and X-REF became one skirmish per map, "<N>-SK" (a side map 2-B-SK); the old keys still parse (PRO_KEY_RE) and open it
+  ok(F.xrefKeyOf('mc') === null, '2. (UI10) no separate X-REF node: it is part of the map\'s one skirmish');
+  ok(F.xrefVsFor('mc') === '3-SK' && F.xrefVsFor('mg') === '2-B-SK', '2. (UI10) the map\'s one skirmish: 3-SK, a side map 2-B-SK'); F.setXrefVs('mc', '3-BPRO-1'); ok(F.xrefVsFor('mc') === '3-SK', '2. (UI10) an old pick falls back to it');
   ok(!F.refPlayPrefs().on && F.refPlayPrefs().set === 'map' && !F.refPlayActive(), '2. the switch is off by default, the map reference picked');
   F.saveRefPlayPrefs({on: true, set: 'ref2'}); ok(F.refPlayActive() && F.refPlayPrefs().set === 'ref2' && /"on":true/.test(store.p), '2. on and Reference-2 are kept on this device');
   admin.on = false; ok(!F.refPlayActive(), '2. it does nothing outside Admin Mode');
   F.saveRefPlayPrefs({on: true, set: 'ref9'}); ok(F.refPlayPrefs().set === 'map', '2. a set that is gone falls back to the map reference'); }
 { const f = fnSrc('startConquestMatch');
-  ok(/const refPlaySet = \(opts && opts\.refSet\) \|\| \(refPlayActive\(\) \? refPlayPrefs\(\)\.set : null\)/.test(f) && /refPlay = refSetFor\(refPlaySet, mapId, node\)/.test(f), '2. a fight takes the reference set from X-REF or the switch');
+  ok(/const refPlaySet = \(opts && opts\.refSet === 'my'\) \? null[^\n]*: \(opts && opts\.refSet\) \|\| \(refPlayActive\(\) \? refPlayPrefs\(\)\.set : null\)/.test(f) && /refPlay = refSetFor\(refPlaySet, mapId, node\)/.test(f), '2. a fight takes the reference set from the skirmish pick (UI10: or "my" = your deck) or the switch');
   ok(/if\(refPlay && !\(opts && opts\.skipEnergyCost\)\) opts = Object\.assign\(\{\}, opts, \{skipEnergyCost: true\}\)/.test(f) && /if\(!refPlay && !deckSizeOkOrWarn\(\)\) return false/.test(f), '2. free (no Energy), and your own deck\'s size is not checked');
   ok(/refPlay \? refPartsDeck\(refPlay\.parts, referenceBaseDefs\(\), matchDefsOverlay\) : ownedDeckForMatch\(myDeckCounts\)/.test(f), '2. your deck is the set\'s copies at their levels');
   ok(/refPlay \? \(refPlay\.leader && getCardDefs\(\)\[refPlay\.leader\] \? refPlay\.leader : null\)/.test(f), '2. the set\'s leader (none for the map reference)');
   ok(/if\(refPlay\)\{ matchState\.adminTest = true; matchState\.refDeck = \{/.test(f), '2. it pays nothing (adminTest) and is marked refDeck'); }
-ok(/startConquestMatch\(f\.map\.id, f\.node\.key, \{skipEnergyCost: true, noAmbush: true, refSet: f\.xref \? refPlayPrefs\(\)\.set : undefined\}\)/.test(fnSrc('startProFight')), '2. X-REF always plays the chosen set');
-ok(/if\(XREF_KEY_RE\.test\(key \|\| ''\)\) return findXrefFight\(key\)/.test(fnSrc('findProFight')) && /xref: true, xrefVs: e\.id/.test(fnSrc('findXrefFight')), '2. findProFight finds an X-REF fight (the picked PRO\'s node, keyed X-REF)');
+ok(/startConquestMatch\(f\.map\.id, f\.node\.key, \{skipEnergyCost: true, noAmbush: true, refSet: f\.node\.skirm \? skirmYou\(\) : undefined\}\)/.test(fnSrc('startProFight')), '2. the map skirmish plays the chosen set (UI10: or your deck)');
+ok(/replace\(\/-\(\?:B\?PRO-\\d\+\|REF\)\$\/, '-SK'\)/.test(fnSrc('findProFight')) && /skirm: !!e\.skirm/.test(fnSrc('proNodeOf')), '2. (UI10) findProFight maps an old PRO / BPRO / X-REF key to the map\'s one skirmish node');
 ok(/xrefKeyOf\(map\.id\)/.test(fnSrc('proMapNodesHTML')) && /ico: '🎯'/.test(fnSrc('proMapNodesHTML')), '2. the X-REF node sits beside the PRO nodes on an admin\'s map');
 ok(/const xk = xrefKeyOf\(id\)/.test(fnSrc('proFightsAdminHTML')) && /adminModeEnabled \? refPlayToggleHTML\(\) : ''/.test(fnSrc('proFightsAdminHTML')), '2. Admin\'s PRO list: the switch and an X-REF row per map');
 ok(/adminModeEnabled \? refPlayToggleHTML\(\) : '' \/\* 2026-10-25 \(package PREF\)/.test(app), '2. the switch in the Admin Mode panel');
-ok(/selectedNode\.xref \? xrefPanelHTML\(map, selectedNode\) : ''/.test(app) && /data-xref-vs/.test(fnSrc('xrefPanelHTML')), '2. the X-REF panel picks the opponent and the set');
+ok(/selectedNode\.skirm \? xrefPanelHTML\(map, selectedNode\) : ''/.test(app) && /data-skirm-you/.test(fnSrc('xrefPanelHTML')), '2. (UI10) the skirmish panel picks your deck or the set');
 ok(/m\.refDeck \? `<span class="hud-ref-tag"/.test(app) && /TX\('ui\.pref-ref-tag'\)/.test(app), '2. the fight\'s top bar shows REF');
 ok(/'proFight', 'refDeck'/.test(app) && /if\(matchState\.proFight \|\| matchState\.refDeck\) matchState\.adminTest = true/.test(app), '2. a resumed reference-set fight is still unpaid');
 { const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, keys = ['ui.pref-set-map', 'ui.pref-toggle', 'ui.pref-set', 'ui.pref-toggle-sub', 'ui.pref-xref-vs', 'ui.pref-xref-you', 'ui.pref-level', 'ui.pref-xref-node-tip', 'ui.pref-xref-row', 'ui.pref-ref-tag', 'ui.pref-ref-tag-tip', 'ui.pref-result'];

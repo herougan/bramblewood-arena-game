@@ -142,7 +142,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui10-ra-sub": "Every card whose art was rejected, with your comment. Open a card to change it or clear the mark.",
   "ui.ui10-ra-open": "Open card",
   "ui.ui10-ra-no-comment": "(no comment)",
-  "ui.ui10-skirm-enemy": "Enemy: a random deck built from this map's card list.",
+  "ui.ui10-skirm-enemy": "a random deck built from this map's card list.",
   "ui.pref-level": "Level {n}",
   "ui.pref-xref-node-tip": "{key}: the reference deck against this map's PRO decks",
   "ui.pref-xref-row": "Reference deck vs this map's PRO decks",

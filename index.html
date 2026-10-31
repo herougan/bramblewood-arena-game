@@ -13524,7 +13524,7 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
 .ed-art-wrap{display:flex; flex-direction:column; align-items:center; gap:4px; max-width:120px;}
 .rejected-art .ra-list{list-style:none; margin:8px 0 0; padding:0; display:grid; gap:10px; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));} /* 2026-10-31 (UI10, EE5) */
 .rejected-art .ra-row{display:flex; gap:10px; align-items:flex-start; padding:8px; border-radius:10px; background:color-mix(in srgb, var(--surface-2, #333) 70%, transparent);}
-.rejected-art .ra-art{flex:0 0 96px; width:96px;} .rejected-art .ra-art .card-tile{width:96px !important;}
+.rejected-art .ra-art{flex:0 0 var(--card-compact-w); width:var(--card-compact-w);} .rejected-art .ra-art .card-tile{width:var(--card-compact-w) !important;}
 .rejected-art .ra-text{display:flex; flex-direction:column; gap:4px; min-width:0;} .rejected-art .ra-comment{color:#ffb4b4; overflow-wrap:anywhere; white-space:pre-wrap;} .rejected-art .ra-when{opacity:.7;}
 .ed-art-wrap .ed-art-why{font-size:11px; line-height:1.25; color:#ffb4b4; text-align:center; overflow-wrap:anywhere;}
 </style>
@@ -44124,7 +44124,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui10-ra-sub": "Every card whose art was rejected, with your comment. Open a card to change it or clear the mark.",
   "ui.ui10-ra-open": "Open card",
   "ui.ui10-ra-no-comment": "(no comment)",
-  "ui.ui10-skirm-enemy": "Enemy: a random deck built from this map's card list.",
+  "ui.ui10-skirm-enemy": "a random deck built from this map's card list.",
   "ui.pref-level": "Level {n}",
   "ui.pref-xref-node-tip": "{key}: the reference deck against this map's PRO decks",
   "ui.pref-xref-row": "Reference deck vs this map's PRO decks",
@@ -51484,7 +51484,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '27c12ee12943', BUILD_CARD_HASH = 'ed4f312ece4b117733b815a2761e5256307bb024615eb144b509114334854b30';
+const BUILD_ID = '62efc14f043c', BUILD_CARD_HASH = 'ed4f312ece4b117733b815a2761e5256307bb024615eb144b509114334854b30';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -72516,13 +72516,12 @@ const XREF_KEY_RE = /^\d+(?:-[A-Z])?-REF$/; // 2026-10-25 (package PL2, PRO-UI):
 // draws swaps one card for a SPECIAL card of the map's list. The decks come from skirmDecksOf (the one place to point at the owner's rebuilt decks later).
 const SKIRM_SPECIAL_ODDS = 0.25;
 function skirmDecksOf(ent){ const b = (ent && ent.bpro) || []; return b.length ? b : ((ent && ent.pro) || []); } // later: the decks rebuilt from the owner's new map lists
-const SKIRM_ENTRY_CACHE = new WeakMap();
 function proEntriesOf(ent){
-  if(!ent) return []; let e = SKIRM_ENTRY_CACHE.get(ent); if(e !== undefined) return e ? [e] : [];
-  const list = skirmDecksOf(ent); if(!list.length){ SKIRM_ENTRY_CACHE.set(ent, null); return []; }
+  if(!ent) return []; let e = ent._skirm; if(e !== undefined) return e ? [e] : [];
+  const list = skirmDecksOf(ent); if(!list.length){ Object.defineProperty(ent, '_skirm', {value: null, enumerable: false, writable: true}); return []; }
   const key = String(list[0].id).replace(/-B?PRO-\d+$/, '') + '-SK';
   e = {id: key, name: key, level: list[0].level != null ? list[0].level : 1, leaders: [], deck: Object.assign({}, list[0].deck || {}), skirm: true, decks: list};
-  SKIRM_ENTRY_CACHE.set(ent, e); return [e];
+  Object.defineProperty(ent, '_skirm', {value: e, enumerable: false, writable: true}); return [e];
 }
 // the enemy for one fight: a random deck of the map; with chance SKIRM_SPECIAL_ODDS one card of it becomes a SPECIAL card of the map's list (same size, no card past the copy cap)
 function drawSkirmEnemy(mapId, entry, rnd){
@@ -72608,7 +72607,7 @@ function refPlayToggleHTML(){
 // the skirmish panel's extra row (2026-10-31, UI10, EE2; was X-REF's): who you play (My deck or a reference set) and a line on the enemy
 function xrefPanelHTML(map, node){
   const cur = skirmYou(), ids = refSetIds(); let rs = null; try{ rs = cur === 'my' || (refMultiOf(cur) && refMultiOf(cur).pick == null) ? null : refSetFor(cur, map.id, node); }catch(e){}
-  return `<div class="pref-xref skirm-you" style="margin:6px 0;"><p class="panel-sub skirm-enemy">${escapeHtml(TX('ui.ui10-skirm-enemy'))}</p>
+  return `<div class="pref-xref skirm-you" style="margin:6px 0;"><p class="panel-sub skirm-enemy">${escapeHtml(TX('ui.pref-xref-vs'))} ${escapeHtml(TX('ui.ui10-skirm-enemy'))}</p>
     <label class="panel-sub">${escapeHtml(TX('ui.pref-xref-you'))} <select data-skirm-you aria-label="${escapeAttr(TX('ui.pref-xref-you'))}"><option value="my" ${cur === 'my' ? 'selected' : ''}>${escapeHtml(TX('ui.ui10-my-deck'))}</option>${ids.map(sid=> `<option value="${escapeAttr(sid)}" ${sid === cur ? 'selected' : ''}>${escapeHtml(refSetLabelTX(sid))}</option>`).join('')}</select></label>
     ${rs ? `<span class="panel-sub"> · ${escapeHtml(TX('ui.pref-level', {n: rs.set === 'map' || rs.gained == null ? rs.level : '+' + rs.gained}))}</span>` : ''}</div>`;
 }
@@ -72669,7 +72668,7 @@ function proRowHTML(mapId, e, node, opts){
   const vs = e.h2h ? TX('ui.pro-vs1', {elo: (e.h2h.elo >= 0 ? '+' : '') + e.h2h.elo}) : '';
   return `<div class="pro-row" data-pro-key="${escapeAttr(e.id)}"><div class="pro-row-head"><b class="pro-id">🏆 ${escapeHtml(e.id)}</b>${score ? `<span class="pro-stat">${escapeHtml(score)}</span>` : ''}${vs ? `<span class="pro-stat" title="${escapeAttr(e.h2h.p != null ? Math.round(e.h2h.p * 1000) / 10 + '% · ' + e.h2h.n : '')}">${escapeHtml(vs)}</span>` : ''}${lead ? `<span class="pro-stat">${escapeHtml(TX('ui.pro-leader', {name: lead}))}</span>` : ''}
     <span class="pro-acts"><button type="button" class="btn small primary" data-pro-start="${escapeAttr(e.id)}">▶ ${escapeHtml(TX('ui.pro-fight'))}</button>${opts && opts.compact ? '' : `<button type="button" class="btn small ghost" data-pro-copy="${escapeAttr(e.id)}" title="${escapeAttr(proLinkFor(e.id))}">🔗 ${escapeHtml(TX('ui.pro-copy-link'))}</button>`}</span></div>
-    ${opts && opts.compact ? '' : `<div class="pro-deck">${e.skirm ? escapeHtml(TX('ui.ui10-skirm-enemy')) : proDeckLineHTML(node.deck)}</div>`}</div>`;
+    ${opts && opts.compact ? '' : `<div class="pro-deck">${e.skirm ? escapeHtml(TX('ui.pref-xref-vs') + ' ' + TX('ui.ui10-skirm-enemy')) : proDeckLineHTML(node.deck)}</div>`}</div>`;
 }
 function proFightsAdminHTML(){
   const ents = proMapEntries(), ids = Object.keys(ents).sort((a, b)=> (ents[a].map || 0) - (ents[b].map || 0));
@@ -83723,7 +83722,7 @@ function renderMatchUI(){
       ${fieldCondCardHTML(m)}${fieldEffectCardHTML(m)}
       <div class="top-right-stack">
       <div class="top-row-controls">
-        <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>${m.refDeck ? `<span class="hud-ref-tag" style="font-size:10.5px; font-weight:800; letter-spacing:.04em; padding:1px 6px; border-radius:6px; border:1.5px solid currentColor; color:var(--gold, #b8860b); white-space:nowrap; align-self:center;" title="${escapeAttr(TX('ui.pref-ref-tag-tip', {name: m.refDeck.label || ''}))}">${escapeHtml(TX('ui.pref-ref-tag'))}</span>` : '' /* 2026-10-25 (package PREF): playing a reference set */}
+        <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>${m.refDeck ? `<span class="hud-ref-tag" style="font-size:10.5px; font-weight:800; letter-spacing:.04em; padding:1px 6px; border-radius:6px; border:1.5px solid currentColor; color:var(--gold, #b8860b); white-space:nowrap; align-self:center;" title="${escapeAttr(m.refDeck.multi || m.refDeck.pick ? TX('ui.ref5-dealt', {name: m.refDeck.label || ''}) : TX('ui.pref-ref-tag-tip', {name: m.refDeck.label || ''}))}">${escapeHtml(TX('ui.pref-ref-tag'))}</span>` : '' /* 2026-10-25 (package PREF): playing a reference set */}
         <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}" aria-label="Playback speed">${ffBtnLabel(m.speedMult)}</button>
         <button class="btn small" id="battleLogHudBtn" title="Battle log" aria-label="Battle log">📜</button>
         <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}" aria-label="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
