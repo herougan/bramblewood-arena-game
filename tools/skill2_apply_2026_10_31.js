@@ -28,12 +28,12 @@ function factorOf(e, v) { const n = numOf(v); if (e.scale === 'n') { const N = M
 function readTable() { const text = fs.readFileSync(FILE, 'utf8'); return { text, table: JSON.parse(text) }; }
 function writeSkills(text, changed) { // changed: {id: entry}
   const lines = text.split('\n'), start = lines.findIndex(l => /^ "skills": \[/.test(l)); let n = 0;
-  for (let i = start + 1; i < lines.length && !/^ \]/.test(lines[i]); i++) { const m = /^  (\{"id":"([^"]+)".*\})(,?)$/.exec(lines[i]); if (!m || !changed[m[2]]) continue;
-    lines[i] = '  ' + JSON.stringify(changed[m[2]]) + m[3]; n++; }
+  for (let i = start + 1; i < lines.length && !/^ \]/.test(lines[i]); i++) { const m = /^  (\{.*\})(,?)$/.exec(lines[i]); if (!m) continue; let id; try { id = JSON.parse(m[1]).id; } catch (e) { continue; }
+    if (!changed[id]) continue; lines[i] = '  ' + JSON.stringify(changed[id]) + m[2]; n++; }
   if (n !== Object.keys(changed).length) throw new Error(`wrote ${n} of ${Object.keys(changed).length} skill lines`);
   const out = lines.join('\n'); JSON.parse(out); return out;
 }
-function keepWas(e) { if (e.skill2Was) return e; const was = {}; ['value', 'pow', 'appliedAt', 'measuredS', 'measuredConf', 'measuredSE', 'measuredHow'].forEach(k => { if (e[k] != null) was[k] = e[k]; }); e.skill2Was = was; return e; }
+function keepWas(e) { if (e.skill2Was) return e; const was = {}; ['scale', 'value', 'pow', 'appliedAt', 'measuredS', 'measuredConf', 'measuredSE', 'measuredHow'].forEach(k => { if (e[k] != null) was[k] = e[k]; }); e.skill2Was = was; return e; }
 
 // the placebo (tools/skill2_measure_2026_10_31.js item 'placebo': {"skill2Placebo": true}, 1,000 fights): gain (win-rate fraction) and worth
 function placeboOf() { const J = fs.existsSync(MEAS) ? JSON.parse(fs.readFileSync(MEAS, 'utf8')) : { results: {} }, p = J.results.placebo;
@@ -116,8 +116,11 @@ function prices(opt) {
   const byId = {}; Object.values(R).forEach(r => { if (r.kind !== 'measure' || r.class === 'trigger') return; const id = r.id; (byId[id] = byId[id] || []).push(r); });
   const changed = {}, rows = [], kept = [], shChanged = {};
   Object.keys(byId).sort().forEach(id => {
-    const e0 = SK[id]; const pts = byId[id].filter(r => r.class !== 'combo' || SPECIAL[id]).map(r => ({ key: r.key, n: r.n, w: r.nCards, W: r.test.worthRuler.m, ci: r.test.worthRuler, price: r.test.price, fights: r.fights, conf: confOf(r.test.worthRuler) }));
+    // the entry as it was before SKILL2 (its skill2Was), so a re-run gives the same plan; a canon entry as the anchors left it
+    const cur = SK[id], e0 = cur && !cur.canon && cur.skill2Was ? Object.assign(JSON.parse(JSON.stringify(cur)), { pow: undefined }, cur.skill2Was) : cur; if (e0 && e0.pow === undefined) delete e0.pow;
+    const pts = byId[id].filter(r => r.class !== 'combo' || SPECIAL[id]).map(r => ({ key: r.key, n: r.n, w: r.nCards, W: r.test.worthRuler.m, ci: r.test.worthRuler, price: r.test.price, fights: r.fights, conf: confOf(r.test.worthRuler) }));
     if (SH[id] && !e0) { shChanged[id] = pts; return; }
+    if (id === 'anadromous') { kept.push('anadromous: left to ENG15 (coordinator 10-31: reworked and re-priced there)'); return; }
     if (!e0) { kept.push(`${id}: no table entry`); return; }
     if (e0.canon) {
       // a canon entry with one canon point and readings at other N: its curve between and beyond is refitted as v x N^pow through the canon
@@ -166,7 +169,7 @@ function prices(opt) {
   // shorthands (Bounty, Kin Rally, Milling): a `mult` on the shorthand (tools/skill_costs.js: trigger x action x mult), so the shared trigger
   // weight and action value stay
   const shRows = [];
-  Object.keys(shChanged).forEach(id => { const pts = shChanged[id], sh = SH[id]; const old = sh.mult || 1;
+  Object.keys(shChanged).forEach(id => { const pts = shChanged[id], sh = SH[id]; const old = 1; /* the measured prices had no mult */
     const num = pts.reduce((t, p) => t + p.w * p.W * (p.price / old), 0), den = pts.reduce((t, p) => t + p.w * (p.price / old) ** 2, 0), mult = r2(den ? num / den : 1);
     if (CONDITIONAL[id] && mult < old) { shRows.push({ id, kind: 'kept', mult, old }); return; }
     shRows.push({ id, kind: 'set', old, mult, pts }); });
@@ -175,7 +178,7 @@ function prices(opt) {
   const ALIAS = table.aliases || {}, pairs = {};
   Object.values(R).filter(r => r.class === 'trigger' && r.kind === 'measure').forEach(r => { const t = r.test.effects.triggers[0], k = t.on + '>' + (ALIAS[t.do] || t.do); (pairs[k] = pairs[k] || []).push(r); });
   const trRows = [];
-  Object.keys(pairs).sort().forEach(k => { const list = pairs[k].filter(r => Math.abs(r.test.price) > 0.05), old = ((table.pairs || {})[k] || {}).mult || 1; if (!list.length) return;
+  Object.keys(pairs).sort().forEach(k => { const list = pairs[k].filter(r => Math.abs(r.test.price) > 0.05), old = 1; /* the measured prices had no pair mult */ if (!list.length) return;
     // the owner holds the Bee Drone's and the Worker Ant's trigger prices for RECOST1-3's package (RECOST1-5, 10-30 23:25 "hold them")
     const held = list.filter(r => r.cards.some(c => HELD_TRIG.includes(c))); if (held.length) { kept.push(`${k}: held (RECOST1-5: ${held.map(r => r.cards.join(', ')).join('; ')}); measured ${list.map(r => r2(r.test.worthRuler.m) + ' / ' + r.test.price).join(', ')}`); return; }
     const num = list.reduce((t, r) => t + r.nCards * r.test.worthRuler.m * (r.test.price / old), 0), den = list.reduce((t, r) => t + r.nCards * (r.test.price / old) ** 2, 0);

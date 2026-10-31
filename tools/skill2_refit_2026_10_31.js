@@ -31,7 +31,9 @@ const OVER_OK = new Set(['red-dragon', 'white-dragon', 'blue-dragon', 'green-dra
 const HELD = { 'bee-drone': 'RECOST1-5 (owner: hold them)', 'worker-ant': 'RECOST1-5 (owner: hold them)' };
 const WELL_UNDER = 0.6;
 const r2 = v => Math.round(v * 100) / 100;
-const NAMED = require('./skill2_named_2026_10_31.js');
+const NAMED = { edits: {
+  'marshal-of-rivergate': { attack: 4, health: 9, why: 'BUDGET2-5 (owner, via the coordinator): lift to 4/9 (was 2/3, 45% of N)' },
+} };
 
 function verdict(T, c) { const b = T.budget(c), b1 = T.budget(c, { level: 1 });
   let ok0 = true; if (TUT12.has(c.id)) { const st = G.statsAtLevel(c, 0), fx = Object.assign({}, c.effects || {}); Object.keys(c.levelSkills || {}).filter(k => +k > 0).forEach(k => Object.keys(c.levelSkills[k]).forEach(x => delete fx[x]));
@@ -67,6 +69,8 @@ function main() {
       rows.push(Object.assign(base, { kind: 'named', why: named.why, dA: (t.attack || 0) - (c.attack || 0), dH: t.health - c.health, attack: t.attack, health: t.health, to: `${t.attack}/${t.health}`,
         after: { use: w.use, N: w.N, x1: w.x1, x2: w.x2, cap2: w.cap2, verdict: w.over ? 'over' : w.under ? 'under' : 'ok' } })); return; }
     if (vNew.ok) return;
+    // ENG15 (coordinator, 10-31) reworks Anadromous and re-prices it: its carriers are left to that package
+    if ((c.effects || {}).anadromous) { held.push(Object.assign(base, { why: 'Anadromous: ENG15 reworks and re-prices it' })); return; }
     if (!vOld.ok) { counts.outsideBefore++; counts.outsideBeforeIds.push(c.id + (inPlay ? '' : ' (out of play)')); return; }
     counts[inPlay ? 'inPlayPushed' : 'outPushed']++;
     if (HELD[c.id]) { held.push(Object.assign(base, { why: HELD[c.id] })); return; }
