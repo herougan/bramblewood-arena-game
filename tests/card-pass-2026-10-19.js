@@ -52,7 +52,10 @@ const PACK1_OVER = new Set(readJSON('docs/balance/pack1-pools-2026-10-28.json').
 // 2026-10-29 THEME3: lists follow the owner's 23:35/00:10 notes; a card they leave on no list is out of play and skipped, a listed card over its
 // first map's budget waits for the owner's re-fit step (tools/lib_map_pools.js budgetHold: 'unplaced' / 'pending', LISTFIX1's rule)
 const HOLD = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold;
-const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
+// 2026-10-31 SKILL2: the cards its re-fit holds (no stat line fits the re-priced skills: owner call SKILL2-1) and the DECK1-5 lifts it made
+// onto the fair line, over on paper while Flying is priced x1.39 (owner call SKILL2-2): docs/balance/skill2-refit-2026-10-31.json
+const SKILL2 = (()=>{ const j = readJSON('docs/balance/skill2-refit-2026-10-31.json'); return new Set(j.held.map(h=> h.id).concat(j.changes.filter(r=> r.kind === 'named' && r.after.verdict === 'over').map(r=> r.id))); })();
+const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !SKILL2.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
 ok(!over.length, '1. today\'s budget passes for every live card but the owner-call list, the post-balance queue and the held list: ' + over.slice(0, 8).join('; '));
 // the pass's own fits still hold under the costs it was made with (every applied entry back at its prevValue), or the card is queued
 const SCT = JSON.parse(read('canonical/skill-costs.json')); ['skills', 'triggers', 'actions', 'modifiers'].forEach(k=> (SCT[k] || []).forEach(e=>{ if(e.appliedAt) e.value = e.prevValue; }));

@@ -41,7 +41,9 @@ Object.keys(data.maps).forEach(mid=>{
   const pk = map.sub ? map.parent : mid, sub = map.sub ? ((gm.pools[pk] || {}).submaps || {})[mid] || [] : [], prefix = P.proPrefix(gm, map);
   const cap = O.mapRarityCap(gm, map), pool = gm.pools[pk] || {}, own = new Set((pool.cards || []).concat(pool.special || [], Array.isArray(sub) ? sub : (sub.cards || []), ...O.fightsOf(map).map(n=> Object.keys(n.deck))));
   KINDS.forEach(([list, label, mode])=>{ const L = ent[list] || [];
-  ok(L.length >= 1 && L.length <= 4, `1. ${mid}: 1-4 ${label} fights (${L.length})`);
+  // 2026-10-31 (SKILL2, DECK1-2): a map whose list has nothing inside its cap (the Old Bramble) has no BPRO deck (noted in the entry)
+  const noB = list === 'bpro' && !L.length && (ent.notes || []).some(s=> /^SKILL2 BPRO: none/.test(s));
+  ok(noB || (L.length >= 1 && L.length <= 4), `1. ${mid}: 1-4 ${label} fights (${L.length})`);
   L.forEach((e, i)=>{
     ok(e.id === `${prefix}-${label}-${i + 1}` && e.name === e.id, `1. ${mid}: id ${e.id} is ${prefix}-${label}-${i + 1}`);
     ok(e.level === 1, `1. ${e.id}: Level 1`);
@@ -57,7 +59,9 @@ Object.keys(data.maps).forEach(mid=>{
     // 2026-10-30 (package DECK1, owner step 4): the PRO decks of Maps 0-20 and their side maps are DECK1's focused decks (tools/opt/deck1_2026_10_30.js;
     // its own checks: tests/deck1-2026-10-30.js): from a DECK1 search run (tools/bench/bench.js deck, map-true pool), no head-to-head, ordered by
     // their gauntlet score; the optimum / Elo checks below are for decks from optimizer runs
-    const d1 = list === 'pro' && e.source && e.source.mode === 'deck1';
+    // 2026-10-31 (package SKILL2, DECK1-2): the BPRO decks are SKILL2's focused decks from the map's list only (tools/opt/bpro2_2026_10_31.js;
+    // its own checks: tests/skill2-2026-10-31.js), the same shape as DECK1's
+    const d1 = (list === 'pro' && e.source && e.source.mode === 'deck1') || (list === 'bpro' && e.source && e.source.mode === 'bpro2');
     if(d1){ ok(fs.existsSync(path.join(ROOT, e.source.file)), `1. ${e.id}: its DECK1 run exists (${e.source.file})`);
       const run = fs.existsSync(path.join(ROOT, e.source.file)) ? JSON.parse(rd(e.source.file)) : {decks: []};
       ok((run.decks || []).some(x=> O.deckKey(x.deck) === O.deckKey(e.deck) && x.score === e.source.score) && (run.settings || {}).mode === 'map-true', `1. ${e.id}: the deck is a deck of its DECK1 run`);

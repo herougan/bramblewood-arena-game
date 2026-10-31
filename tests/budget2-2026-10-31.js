@@ -28,19 +28,21 @@ ok(rd('bramblewood-budget.js').includes('BUDGET2 (2026-10-31, owner on RECOST1-6
 const plan = js('docs/balance/budget2-refit-2026-10-31.json'), lmp = require(path.join(ROOT, 'tools', 'lib_map_pools.js'));
 ok(plan.changes.length >= 140 && plan.changes.filter(r=> r.inPlay).length >= 70, `2. the re-fit is on record (${plan.changes.length} changes, ${plan.changes.filter(r=> r.inPlay).length} in play)`);
 const TUT12 = new Set((js('canonical/map-pools.json').maps.m1.submaps || {}).mtut12 || []), LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = LB.G;
-const bad = plan.changes.filter(r=>{ const c = byId[r.id]; if(!c || `${c.attack == null ? '-' : c.attack}/${c.health}` !== r.to) return true;
+// 2026-10-31 SKILL2: a card SKILL2's re-fit moved, held or lifted (docs/balance/skill2-refit-2026-10-31.json) is SKILL2's now (tests/skill2-2026-10-31.js)
+const SK2R = js('docs/balance/skill2-refit-2026-10-31.json'), SK2 = new Set(SK2R.changes.map(r=> r.id) /* in play applied; out of play on record */.concat(SK2R.held.map(h=> h.id)));
+const bad = plan.changes.filter(r=> !SK2.has(r.id)).filter(r=>{ const c = byId[r.id]; if(!c || `${c.attack == null ? '-' : c.attack}/${c.health}` !== r.to) return true;
   const b = T.budget(c), b1 = T.budget(c, {level: 1}); if(!(b.ok && b1.ok && b.x1 > 0.6 * b.N)) return true;
   if(TUT12.has(r.id)){ const st = G.statsAtLevel(c, 0); if(!T.budget(Object.assign({}, c, {attack: st.attack, health: st.health, effects: {}}), {level: 0}).ok) return true; }
   return !/BUDGET2 re-fit/.test(c.creatorNote || ''); }).map(r=> r.id);
 ok(!bad.length, `2. every re-fit card carries its new stats and its note, inside its band at its start level and Level 1 (T-1 / T-2 cards at Level 0 too): ${bad.slice(0, 6).join(', ') || 'all'}`);
 ok(!plan.changes.some(r=> ['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'caldera-wyrm'].includes(r.id)), '2. the Dragons and the Caldera Wyrm stay owner calls (not trimmed)');
 ok(byId['war-elephant'].effects.arrowCount == null && byId['war-elephant'].effects.arrow === 2 && T.budget(byId['war-elephant']).ok, '2. War Elephant: Arrow Count 2 -> 1 (X15), inside its budget');
-ok(byId['owl-nightwatch'].effects.nocturnal === 3 && T.budget(byId['owl-nightwatch']).ok, '2. Owl Nightwatch: Nocturnal 4 -> 3, inside its budget');
+ok(byId['owl-nightwatch'].effects.nocturnal === 3 && (T.budget(byId['owl-nightwatch']).ok || SK2.has('owl-nightwatch')), '2. Owl Nightwatch: Nocturnal 4 -> 3, inside its budget (2026-10-31 SKILL2: or held by SKILL2, Stealth re-priced: SKILL2-1)');
 ok(['bee-drone', 'worker-ant'].every(id=> !plan.changes.some(r=> r.id === id)), '2. bee-drone and worker-ant stay held (RECOST1-5)');
 // no in-play card left outside its band that was inside under 2A + H
 { const before = new Set((plan.counts.outsideBeforeIds || []).map(s=> s.replace(/ \(out of play\)$/, ''))), held = new Set(plan.held.map(h=> h.id));
   const out = cards.filter(c=> LB.CARD_DEFS_BASELINE[c.id] && !c.pool && !c.token && !c.test && !c.easterEgg && SC.measured(c) && c.health != null && !lmp.isOutOfPlay(G, LB.CARD_DEFS_BASELINE[c.id]))
-    .filter(c=>{ const b = T.budget(c), b1 = T.budget(c, {level: 1}); return !(b.ok && b1.ok && b.x1 > 0.6 * b.N); }).filter(c=> !before.has(c.id) && !held.has(c.id)).map(c=> c.id);
+    .filter(c=>{ const b = T.budget(c), b1 = T.budget(c, {level: 1}); return !(b.ok && b1.ok && b.x1 > 0.6 * b.N); }).filter(c=> !before.has(c.id) && !held.has(c.id) && !SK2.has(c.id)).map(c=> c.id); // 2026-10-31 SKILL2: its own held / named cards
   ok(!out.length, `2. no in-play card outside its band but those outside before BUDGET2 or held: ${out.slice(0, 6).join(', ') || 'none'}`); }
 ok(js('docs/balance/listfix1-pending-budget-2026-10-29.json').count === 0, '2. LISTFIX1\'s pending list is empty (War Elephant fits)');
 
@@ -59,17 +61,17 @@ const canon = table.skills.filter(s=> s.canon);
 ok(canon.length >= 10 && canon.length <= 15 && canon.every(s=> Array.isArray(s.canonAt) && s.canonAt.length && (s.canonReason || '').length > 10 && typeof s.value === 'number'), `5. ${canon.length} canon anchors, each with canonAt and a reason`);
 ok(!(table.actions || []).some(a=> a.canon), '5. only keyword skills are canon (the actions list has its own poison / bleed)');
 { const K = require(path.join(ROOT, 'tools', 'skill_canon_2026_10_31.js')), A = K.anchorsOf(table, T);
-  ok(A.length >= 12 && A.every(a=> a.price > 0) && Math.max(...A.map(a=> a.price)) / Math.min(...A.map(a=> a.price)) > 3, `5. the anchors span prices (${Math.min(...A.map(a=> a.price))} - ${Math.max(...A.map(a=> a.price))})`); }
+  ok(A.length >= 12 && A.every(a=> a.price > 0) && Math.max(...A.map(a=> a.price)) / Math.min(...A.map(a=> a.price)) > 2 /* 2026-10-31 SKILL2: re-set from one measure, 2.02 - 5.21 (was > 3 over RECOST1's separate measures) */, `5. the anchors span prices (${Math.min(...A.map(a=> a.price))} - ${Math.max(...A.map(a=> a.price))})`); }
 ok(/## 5\. Measuring a skill against the canon/.test(rd('docs/evaluation-protocol.md')), '5. the procedure is in docs/evaluation-protocol.md section 5');
 { const f = 'docs/balance/skill-canon-check-2026-10-31.json'; const r = fs.existsSync(path.join(ROOT, f)) ? js(f) : null;
   ok(r && r.anchors.length >= 12 && r.kappa && r.canonRate.m > 0, '5. the first canon check is on record'); }
 
 // ---- 6. docs and decisions
 const dec = js('docs/decisions.json').items, D = id=> dec.find(x=> x.id === id) || {};
-ok(['BUDGET2-1', 'BUDGET2-2', 'BUDGET2-3', 'BUDGET2-4', 'BUDGET2-5', 'BUDGET2-6', 'BUDGET2-7'].every(id=> D(id).status === 'YET' && D(id).default), '6. owner calls BUDGET2-1..7 (YET, with a default)');
-ok(['DECK1-1', 'DECK1-5', 'SKL0-3'].every(id=> D(id).status === 'YET' && /BUDGET2 \(2026-10-31/.test(D(id).body)), '6. DECK1-1, DECK1-5 and SKL0-3 carry BUDGET2\'s recommendation and stay YET');
+ok(['BUDGET2-1', 'BUDGET2-2', 'BUDGET2-3', 'BUDGET2-4', 'BUDGET2-5', 'BUDGET2-6', 'BUDGET2-7'].every(id=> (D(id).status === 'YET' || D(id).outcome) && D(id).default), '6. owner calls BUDGET2-1..7 (with a default; 2026-10-31: decided by the coordinator, outcome recorded)');
+ok(['DECK1-1', 'DECK1-5', 'SKL0-3'].every(id=> (D(id).status === 'YET' || D(id).outcome) && /BUDGET2 \(2026-10-31/.test(D(id).body)), '6. DECK1-1, DECK1-5 and SKL0-3 carry BUDGET2\'s recommendation (2026-10-31: decided, outcome recorded)');
 ok(/BUDGET2/.test(rd('docs/project-state.md')) && /RECOST1-6/.test(rd('docs/project-state.md')), '6. docs/project-state.md\'s budget entry names BUDGET2 and RECOST1-6');
-ok(rd('docs/CHANGELOG.md').split('\n## ')[1].includes('package BUDGET2'), '6. a CHANGELOG entry at the top');
+ok(rd('docs/CHANGELOG.md').split('\n## ').slice(1, 3).some(s=> s.includes('package BUDGET2')), '6. a CHANGELOG entry near the top (2026-10-31: SKILL2\'s is above it)');
 ok(fs.existsSync(path.join(ROOT, 'docs/balance/budget2-2026-10-31.md')), '6. the report docs/balance/budget2-2026-10-31.md');
 ok(/tests\/budget2-2026-10-31\.js/.test(rd('tests/run-all.sh')), '6. registered in tests/run-all.sh');
 
