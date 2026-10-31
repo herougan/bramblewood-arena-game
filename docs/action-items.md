@@ -4,6 +4,12 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-01 07:41: the owner's notes
+- II1 (applied the owner's "apply" / "deploy"): Release 11-01a deployed. The progress-shrink server guard (supabase/proposed/20261031_progress_shrink_guard.sql) was attempted; Supabase asked for a confirmation that got no answer, so it is NOT applied yet. Retry when the owner can confirm.
+- II2 (CARD-BABY, decision BABY-1): players cannot level Baby cards (packs' free level, upgrades and rewards skip them); enemy decks may field them at a level.
+- II3 (idea BABY-2): a Hatchling skill marking Baby cards that grow into an adult card; ties in with Evomax creatures. Waiting on the owner's rule.
+- II4 (done in the release): the Codex chip for faction:base reads "🌰 Starter"; the card editor's new field is "Card group" (Base / Baby / Faction).
+
 ## 11-01 00:29: the owner's notes (with his Map cards export)
 - HH1 (proposal, data + UI13; done 11-01, not yet released): a card kind beside rarity: Base, Baby, Faction ("Starter" cards you start with are Faction). Baby = eggs, hatchlings, kits, cubs, pups, calves, chicks, fry, Duckling, Compost Grub (list in tools/theme4/plan_2026_11_01.py BABY). Baby cards do not count toward a map list's own / carried numbers, and the Map cards view shows them (today eggs and hatchlings are missing there).
 - HH2 (THEME4, done 11-01): the owner's export folded in road order from Map 0 (docs/balance/owner-map-cards-export-2026-11-01.json -> canonical/map-pools.json and map-review.json, tools/theme4/). A card cut on an earlier map counts as new on the later one. Claude filled the carried slots and flagged over-limit cards "Unlikely" (still on the list; flag + flagWhy in map-review.json).
