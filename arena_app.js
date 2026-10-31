@@ -9621,6 +9621,31 @@ const enteringUids = new Set();
 // literally spawns from inside the spawner and jumps out?") now ALSO get a real origin — see
 // lastDeathOrigin below — closing the one gap the original comment used to carve out here.
 const pendingEntranceOrigins = new Map();
+// 2026-10-31 (package UI8, owner AA5: "spawned cards (Trojan Raider from the Trojan Horse bramble, every On Death / On Attacked spawn) bounce out of
+// their spawner (the bramble or the card) and land in their slot"): where a spawn event's cards come out of, as an entrance origin of kind
+// 'spawn' (the jump-arc branch in renderBoard): the card that triggered it (nearUid, or fromUid), else that side's bramble. A spawn with no
+// spawner on screen (a round-start 'play' from a castle's own spawn has none but the bramble) used to get no origin and just appeared.
+function spawnerOrigin(ev){
+  try{
+    let el = null;
+    if(ev.nearUid != null) el = boardCardEl(ev.nearUid);
+    if(!el && ev.fromUid != null) el = boardCardEl(ev.fromUid);
+    if(!el && ev.side) el = hqTileEl(ev.side);
+    const r = el && el.getBoundingClientRect(); if(!r || !r.width) return null;
+    return {x: r.left + r.width/2, y: r.top + r.height/2, rotate: Math.random()*16 - 8, kind: 'spawn'};
+  }catch(e){ return null; }
+}
+// Record that origin for every card an events list puts on the board without a hand: round-start 'play' events (a castle's spawn) and the
+// 'spawn' events nobody has given an origin yet. Called before the render that draws them (it consumes the origins).
+function noteSpawnOrigins(events){
+  try{ (events || []).forEach(ev=>{
+    if(!ev) return;
+    const uids = ev.type === 'play' ? ((ev.leader || ev.reserve || ev.uid == null) ? [] : [ev.uid]) : ev.type === 'spawn' && ev.cause !== 'shieldCall' ? (ev.placements ? ev.placements.map(p=> p.uid) : (ev.uids || [])) : [];
+    const fresh = uids.filter(u=> u != null && !pendingEntranceOrigins.has(String(u)));
+    if(!fresh.length) return;
+    const o = spawnerOrigin(ev); if(o) fresh.forEach(u=> pendingEntranceOrigins.set(String(u), Object.assign({}, o, {rotate: Math.random()*16 - 8})));
+  }); }catch(e){}
+}
 // Task list item 2 (2026-09-18) — the death-spawn counterpart to the onAttackedSpawn origin
 // above. onDeathSpawn's own 'spawn' event carries no uid for the card that just died (the
 // engine's event shape never needed one before), so rather than a riskier engine change to add
@@ -19241,7 +19266,7 @@ const pointerLight = {x:null, y:null, sx:null, sy:null, type:'mouse', moved:0, t
     P.raf = 0;
     const bf = document.getElementById('battlefieldEl');
     const night = !!(bf && bf.classList.contains('bf-night-cursor')), lantern = !!(bf && bf.classList.contains('bf-lantern'));
-    document.querySelectorAll('.night-cursor-light.is-on').forEach(l=>{ if(!night || l.parentElement !== bf) l.classList.remove('is-on'); });
+    document.querySelectorAll('.night-cursor-light.is-on').forEach(l=>{ if(!(night || lantern) || l.parentElement !== bf) l.classList.remove('is-on'); }); // + the lantern's pool (UI8, 2026-10-31, Z4)
     if(!night && !lantern){ P.last = now; return; } // nothing to light: sleep until the next pointer event or the watch below
     const dt = Math.min(100, Math.max(1, now - (P.last || now))); P.last = now;
     if(P.x != null){ const k = reducedMotion() ? 1 : 1 - Math.pow(1 - 0.22, dt / 16.7); // ease toward the pointer
@@ -19255,7 +19280,9 @@ const pointerLight = {x:null, y:null, sx:null, sy:null, type:'mouse', moved:0, t
       l.classList.toggle('is-on', inside && !touchGone); }
     if(lantern){ const follow = P.x != null && (P.type !== 'touch' || now - P.moved < 4000); // a mouse on the page, or a touch in the last 4 s
       if(px != null && follow){ bf.style.setProperty('--lx', px.toFixed(2) + '%'); bf.style.setProperty('--ly', py.toFixed(2) + '%'); }
-      else if(!reducedMotion()){ const a = (now - P.t0)/5200; bf.style.setProperty('--lx', (50 + Math.cos(a)*30).toFixed(2) + '%'); bf.style.setProperty('--ly', (50 + Math.sin(a*1.4)*22).toFixed(2) + '%'); } }
+      else if(!reducedMotion()){ const a = (now - P.t0)/5200; bf.style.setProperty('--lx', (50 + Math.cos(a)*30).toFixed(2) + '%'); bf.style.setProperty('--ly', (50 + Math.sin(a*1.4)*22).toFixed(2) + '%'); }
+      // 2026-10-31 (package UI8, Z4): the warm pool is a layer under the cards (.night-cursor-light), at the same point as the darkness's clear centre
+      { const l = lightOf(bf); l.style.setProperty('--nx', bf.style.getPropertyValue('--lx') || '50%'); l.style.setProperty('--ny', bf.style.getPropertyValue('--ly') || '45%'); l.classList.add('is-on'); } }
     P.raf = requestAnimationFrame(frame);
   };
   function kick(){ if(!P.raf) P.raf = requestAnimationFrame(frame); }
@@ -31506,20 +31533,20 @@ function showVersusOpener(map, node, myChar, enemyChar){
     <div class="vs-side vs-me">
       <div class="vs-portrait">${avatarHTML(loadAvatar(), 84)}</div>
       <div class="vs-name">${escapeHtml(myProfile ? myProfile.name : 'You')}</div>
-      <div class="vs-sub">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
+      <div class="vs-facts"><div class="vs-facts-row"><span class="vs-pill vs-castle">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</span></div><div class="vs-facts-row"></div></div>
       ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${mainDeckLevel(myDeckCounts, myLeaderId)}</b></div>`; }catch(e){ return ''; } })()}
     </div>
     <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind${isBoss ? ' vis3-kind-boss' : isElite ? ' vis3-kind-elite' : ''}">${map ? escapeHtml(map.icon||'') + ' ' : ''}${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</span></div>
     <div class="vs-side vs-them">
       <div class="vs-portrait vs-rival-ico" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}${isBoss && !/raid|final|world|mega/.test(node.kind || '') ? '<span class="vis3-skull-frame"></span>' : isElite ? '<span class="vis3-elite-frame"></span>' : ''}</div>
       <div class="vs-name">${escapeHtml(node.name)}</div>
-      <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
-      <div class="vs-sub">${castleLineText(node)}</div>
-      ${(()=>{ try{ const L = leadersShownFor(node, map && map.id), defs = getCardDefs(); if(!L.length) return ''; // 2026-10-23 (package LEAD): an elite's or a boss's leader(s), by name and face
-        const face = id=> `<span class="vs-leader-face" aria-hidden="true">${escapeHtml(defs[id].icon || '👑')}</span>`;
-        const text = L.length > 1 ? TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}) : TX('ui.nv-vs-ally-leader', {name: defs[L[0]].name});
-        return `<div class="vs-leaders${L.length > 1 ? ' is-pair' : ''}">${L.slice(0, 2).map(face).join('')}<span>${escapeHtml(text)}</span></div>`; }catch(e){ return ''; } })()}
-      ${(()=>{ try{ const lv = cpuAiLevelForNode(map && map.id, node); return (isBoss || isElite || lv > 0) ? cpuAiPillHTML(lv) : ''; }catch(e){ return ''; } })()}${'' /* the CPU's difficulty (2026-10-18): always for elite / boss fights, else only when it isn't Basic */}
+      <div class="vs-facts">
+        <div class="vs-facts-row"><span class="vs-pill vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</span><span class="vs-pill vs-castle">${castleLineText(node)}</span></div>
+        <div class="vs-facts-row">${(()=>{ try{ const L = leadersShownFor(node, map && map.id), defs = getCardDefs(); if(!L.length) return ''; // 2026-10-23 (package LEAD): an elite's or a boss's leader(s), by name and face
+          const face = id=> `<span class="vs-leader-face" aria-hidden="true">${escapeHtml(defs[id].icon || '👑')}</span>`;
+          const text = L.length > 1 ? TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}) : TX('ui.nv-vs-ally-leader', {name: defs[L[0]].name});
+          return `<span class="vs-pill vs-leaders${L.length > 1 ? ' is-pair' : ''}">${L.slice(0, 2).map(face).join('')}<span>${escapeHtml(text)}</span></span>`; }catch(e){ return ''; } })()}${(()=>{ try{ const lv = cpuAiLevelForNode(map && map.id, node); return (isBoss || isElite || lv > 0) ? cpuAiPillHTML(lv).replace('class="vs-ai-pill', 'class="vs-pill vs-ai-pill') : ''; }catch(e){ return ''; } })()}</div>
+      </div>${'' /* 2026-10-31 (package UI8, owner AA2): the enemy's small facts (type, bramble Health / Armour, leader, CPU) are two even rows of one pill style under the name, the Their-BR box after them, the quote last; the CPU pill's difficulty is always shown for elite / boss fights, else only when it isn't Basic (2026-10-18) */}
       ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
@@ -35213,6 +35240,10 @@ function updateHpRibbon(side, hp){
 // Damage leaves a pale chip of the lost Health that holds a beat (0.14 s) and then drains after the fill (0.5 s), so a hit reads as a bite
 // taken out of the bar; a repair eases up with a short green glint. The number counts to its new value over the same 0.42 s.
 // Reduced motion: written at once.
+// 2026-10-31 (package UI8, owner AA1: "Shield layers (L1, L2 ...) and Health ease into their new size, not jump: 0.25 s; 0.4 s for 5+ damage;
+// 0.7 s for 10+"): the time a bramble bar (Health fill, number, Shield layers) takes to reach its new value, by how many points it moved.
+// Effects Low: 60% of it. (Reduced motion never gets here: the callers write the width at once.)
+function ribEaseMs(points){ const d = Math.abs(Number(points) || 0); const ms = d >= 10 ? 700 : d >= 5 ? 400 : 250; return (typeof fxLevel === 'function' && fxLevel() === 'low') ? Math.round(ms * 0.6) : ms; }
 function pl2RibbonFill(rib, f, side, pct, prevPct){
   const m = matchState; m._ribPct = m._ribPct || {};
   const was = f.dataset.pl2pct != null ? Number(f.dataset.pl2pct) : (m._ribPct[side] != null ? m._ribPct[side] : (prevPct != null ? prevPct : (isFinite(parseFloat(f.style.width)) ? parseFloat(f.style.width) : pct))); // (the first change: the width the bar was drawn at)
@@ -35221,13 +35252,14 @@ function pl2RibbonFill(rib, f, side, pct, prevPct){
   if(reducedMotion() || Math.abs(was - pct) < .05 || !f.animate){ f.style.width = pct.toFixed(1) + '%'; return; }
   f.style.transition = 'none'; f.style.width = pct.toFixed(1) + '%';
   try{ f.getAnimations().forEach(a=> a.cancel()); }catch(e){}
-  f.animate([{width: was.toFixed(2) + '%'}, {width: pct.toFixed(2) + '%'}], {duration: 420, easing: 'cubic-bezier(.22,.8,.3,1)'});
+  const easeMs = ribEaseMs((was - pct) / 100 * ((m.players[side === 'A' ? 1 : 2].hq || {}).maxHp || 0)); // UI8 (2026-10-31, AA1): 0.25 / 0.4 / 0.7 s by the points moved
+  f.animate([{width: was.toFixed(2) + '%'}, {width: pct.toFixed(2) + '%'}], {duration: easeMs, easing: 'cubic-bezier(.22,.8,.3,1)'});
   if(pct < was && track){
     let chip = track.querySelector(':scope > .pl2-hp-chip');
     if(!chip){ chip = document.createElement('span'); chip.className = 'pl2-hp-chip'; chip.setAttribute('aria-hidden', 'true'); track.insertBefore(chip, track.firstChild); }
     const from = chip.getAnimations().length ? Math.max(was, parseFloat(getComputedStyle(chip).width) / Math.max(1, track.clientWidth) * 100) : was;
     chip.getAnimations().forEach(a=> a.cancel());
-    chip.animate([{width: from.toFixed(2) + '%', opacity: 1}, {width: from.toFixed(2) + '%', opacity: 1, offset: .22}, {width: pct.toFixed(2) + '%', opacity: .85}], {duration: 640, easing: 'cubic-bezier(.45,0,.3,1)', fill: 'forwards'});
+    chip.animate([{width: from.toFixed(2) + '%', opacity: 1}, {width: from.toFixed(2) + '%', opacity: 1, offset: .22}, {width: pct.toFixed(2) + '%', opacity: .85}], {duration: Math.max(640, easeMs + 220), easing: 'cubic-bezier(.45,0,.3,1)', fill: 'forwards'});
   }
 }
 // a rebuilt ribbon (hpRibbonHTML) remembers where its bar stood; the next frame eases it from there (and counts its number)
@@ -35247,8 +35279,8 @@ function pl2RibbonNum(n, side, prevHp, hp, max){
   const put = v=>{ n.innerHTML = `${v}<small>/${max}</small>`; };
   cancelAnimationFrame(st.raf);
   if(reducedMotion() || from === hp){ st.shown = hp; put(hp); return; }
-  const t0 = performance.now();
-  const step = now=>{ const k = Math.min(1, (now - t0) / 420), e = 1 - Math.pow(1 - k, 3), v = Math.round(from + (hp - from) * e);
+  const t0 = performance.now(), numMs = ribEaseMs(hp - from); // UI8 (2026-10-31, AA1): the number counts over the same time as the bar
+  const step = now=>{ const k = Math.min(1, (now - t0) / numMs), e = 1 - Math.pow(1 - k, 3), v = Math.round(from + (hp - from) * e);
     if(!n.isConnected){ const n2 = document.querySelector(`[data-hpribbon="${side}"] .bf-hp-num`); if(n2) n = n2; }
     st.shown = v; put(v); if(k < 1) st.raf = requestAnimationFrame(step); };
   put(from); st.raf = requestAnimationFrame(step);
@@ -37645,6 +37677,10 @@ function renderBoard(opts){
             // 2026-10-08 (user: "When I let go, the landing card should have the same orientation"):
             // a dragged card starts its landing at the exact tilt it had in your hand, then settles.
             fromVars = {opacity:1, scale: origin.w && fr.width ? Math.max(.4, Math.min(1.2, origin.w / fr.width)) : .58, x:dx, y: (origin.rotate!=null || origin.fromTile) ? dy : Math.min(dy, -46), rotate: origin.rotate!=null ? origin.rotate : (Math.random()*22-11)};
+            // 2026-10-31 (package UI8, owner AA3: "an enemy card fades into existence above its slot and lands (as if played from their hand)"):
+            // the enemy's card starts see-through high above its row (their hand) and fades in over the first part of its fall; yours
+            // (above) stays fully visible from the release point (the 2026-09-22 zero-delay rule).
+            if(origin.enemyHand) fromVars.opacity = 0;
           } else {
             // "Spawned from a point" (born from the drone, an onDeathSpawn token, etc.) — kept
             // as the more dramatic shrink-and-lunge-in look, unchanged from before. Task list
@@ -37724,10 +37760,12 @@ function renderBoard(opts){
           // back.out(4) overshoot on the settle leg (was back.out(3)) gives the landing a bit more
           // "thud" now that it isn't dragged out as long, matching the "more satisfying" half of
           // the ask.
-          const handDur = Math.max(0.12, dur*0.62);
+          const handDur = Math.max(0.12, dur*0.62) * ((typeof fxLevel === 'function' && fxLevel() === 'low') ? 0.6 : 1); // Effects Low: shorter (UI8)
+          const enemyFade = !!(origin && origin.enemyHand);
           entranceTl
-            .fromTo(el, fromVars, {opacity:1, scale:sharp ? 1.04 : 1.08, x:0, y:0, rotate:0, duration:Math.max(.12, handDur*0.82), ease: sharp ? 'power4.in' : 'power2.in'})
+            .fromTo(el, fromVars, Object.assign({scale:sharp ? 1.04 : 1.08, x:0, y:0, rotate:0, duration:Math.max(.12, handDur*0.82), ease: sharp ? 'power4.in' : 'power2.in'}, enemyFade ? {} : {opacity:1}))
             .to(el, {scale:1, duration:Math.max(.07, handDur*(sharp ? 0.3 : 0.5)), ease: sharp ? 'power3.out' : 'back.out(4)'}, '>-0.02');
+          if(enemyFade) entranceTl.to(el, {opacity:1, duration:Math.max(.08, handDur*0.4), ease:'power1.out'}, 0); // 2026-10-31 (UI8, AA3): fades in as it falls
         } else {
           entranceTl
             .fromTo(el, fromVars, {opacity:1, scale:sharp ? 1.03 : 1.08, x:0, y:0, rotate:0, duration:Math.max(.14, dur*0.85), ease: sharp ? 'power3.in' : 'power2.in'})
@@ -37740,6 +37778,14 @@ function renderBoard(opts){
         // renderMatchUI()-wipe-survivability reason inFlightFlipTimelines/flippingEls are.
         enteringTimelines.set(uid, entranceTl);
         entranceBorn.set(uid, {tl: entranceTl, at: performance.now(), el}); // 2026-10-19 (package RX): the wall-clock watchdog's record
+        // 2026-10-31 (package UI8, AA3/AA5): a card with an origin (your play, the enemy's play from their hand, a spawn out of its spawner)
+        // holds at its first pose until two frames have been drawn, then its clock starts (see handFlightProxy: the main thread is busy
+        // after a play, and the whole 0.15-0.4 s entrance used to run inside that stall). Reduced motion: no flight at all, a short fade.
+        if(origin){
+          if(reducedMotion()) entranceTl.clear().fromTo(el, {opacity:0, x:0, y:0, rotate:0, scale:1}, {opacity:1, duration:.15, ease:'none'}); // no flight, a short fade
+          { entranceTl.pause(); const b0 = entranceBorn.get(uid); if(b0) b0.at = performance.now() + 1500; // until it starts, only a tab that never draws a frame reaches the watchdog
+            armOnFrames(()=>{ if(enteringTimelines.get(uid) !== entranceTl) return; try{ entranceTl.play(0); }catch(e){} const b = entranceBorn.get(uid); if(b && b.tl === entranceTl) b.at = performance.now(); }); }
+        }
       });
       // Single synchronized release for EVERY new card pinned this render. When Flip.from() is
       // ALSO running this render (gsapFlip true), releasing happens from INSIDE its own
@@ -38032,7 +38078,7 @@ function wireBattlefieldPan(){
 function boardAnimationsBusy(){
   try{
     if(inFlightFlipTimelines.some(t=> t && t.isActive && t.isActive())) return true;
-    for(const t of enteringTimelines.values()) if(t && t.isActive && t.isActive()) return true;
+    for(const t of enteringTimelines.values()) if(t && ((t.isActive && t.isActive()) || (t.paused && t.paused()))) return true; // + one still waiting for its first frames (UI8, 2026-10-31)
   }catch(e){}
   return false;
 }
@@ -38829,7 +38875,7 @@ function fightTreatmentClass(pid){ return fightTreatmentKind(pid)==='elite' ? 'e
 function vis3ShieldAmount(c){ return c ? Math.max(0, (Number(c.shield) || 0) + (Number(c.tempHp) || 0) + (Number(c.tempHpR) || 0)) : 0; }
 function vis3ShieldHTML(c){
   const n = vis3ShieldAmount(c); if(!(n > 0)) return '';
-  return `<span class="vis3-shield-num" title="Shield: ${n} temporary Health, spent before its Health">${n}</span>`; // (the old 💠 chip's words: already in lang/ui)
+  return `<span class="vis3-shield-num${n === 1 ? ' is-one' : ''}" title="Shield: ${n} temporary Health, spent before its Health">${n}</span>`; // 2026-10-31 (UI8, Z6): the 💠 is drawn by CSS; at 1 only the icon shows // (the old 💠 chip's words: already in lang/ui)
 }
 function vis3ShieldRefresh(el, c){
   try{ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = tile.querySelector(':scope > .vis3-shield-num:not(.vis4-shield-out)'), html = vis3ShieldHTML(c);
@@ -38852,7 +38898,7 @@ function vis3ShieldRefresh(el, c){
 function vis4ShieldCount(el, from, to, gone){
   if(!el) return; if(el._vis4t) clearInterval(el._vis4t);
   const steps = Math.max(1, from - to), ms = Math.max(40, Math.min(60, Math.round(350 / steps))); let n = from;
-  const fin = ()=>{ el.textContent = String(to); el.title = el.title.replace(/\d+/, String(to)); el.classList.remove('vis3-shield-pop'); void el.offsetWidth; el.classList.add('vis3-shield-pop');
+  const fin = ()=>{ el.textContent = String(to); el.classList.toggle('is-one', to === 1 || (!!gone && from <= 1)); /* UI8 (2026-10-31, Z6): at 1 the number fades, the icon alone */ el.title = el.title.replace(/\d+/, String(to)); el.classList.remove('vis3-shield-pop'); void el.offsetWidth; el.classList.add('vis3-shield-pop');
     if(gone){ el.classList.add('vis4-shield-zero'); setTimeout(()=>{ el.classList.remove('vis3-shield-pop'); el.classList.add('vis4-shield-out'); setTimeout(()=> el.remove(), 470); }, 420); } };
   if(reducedMotion() || steps <= 1){ fin(); return; }
   el._vis4t = setInterval(()=>{ n -= 1; if(n <= to){ clearInterval(el._vis4t); el._vis4t = null; fin(); return; } el.textContent = String(n); }, ms);
@@ -40707,6 +40753,10 @@ function ribbonShieldSync(side, shOverride){
   // breaks: a layer that had some and now has none
   if(prev && motion) f.forEach((v, k)=>{ if(v <= 0 && prev[k] > 0) ribShieldBreakVfx(rib, track, k, prev[k]); });
   if(prev) f.forEach((v, k)=>{ if(v < prev[k]) els[k].getAnimations().forEach(a=> a.cancel()); }); // damage cuts a fill that is still running
+  // 2026-10-31 (package UI8, owner AA1): a layer that lost Shield eases down to its new width (it jumped to it before: the CSS transition on a
+  // width that a redraw had just set). 0.25 s, 0.4 s for 5+ Shield lost, 0.7 s for 10+; Effects Low shorter; reduced motion: at once.
+  if(motion){ els.forEach(e=>{ e.style.transition = 'none'; });
+    if(prev) f.forEach((v, k)=>{ if(v < prev[k] - .001){ const e = els[k]; e.animate([{width: (prev[k] * 100).toFixed(2) + '%'}, {width: (v * 100).toFixed(2) + '%'}], {duration: ribEaseMs((st.sh || 0) - sh), easing: 'cubic-bezier(.22,.8,.3,1)'}); } }); }
   // fills: every layer that grew (all of them, the first time)
   if(motion){
     const grown = []; f.forEach((v, k)=>{ const from = prev ? prev[k] : 0; if(v > from + .001) grown.push({k, from, to: v}); });
@@ -40718,7 +40768,7 @@ function ribbonShieldSync(side, shOverride){
       else st.anim.items.forEach(g=>{ const e = els[g.k]; if(!e || el0 >= g.delay + g.dur || e.getAnimations().length) return;
         e.animate([{width:(g.from * 100).toFixed(2) + '%'}, {width:(g.to * 100).toFixed(2) + '%'}], {duration: g.dur, delay: g.delay - el0, easing:'ease-in-out', fill:'backwards'}); }); }
   } else st.anim = null;
-  st.f = f; st.key = key;
+  st.f = f; st.key = key; st.sh = sh;
 }
 // A Shield layer breaks (2026-10-21, package UI3): a jagged crack across the bar where that layer's edge was, a flash, and a few
 // shards in the layer's colour thrown up and away (the look of the dome's hex shards, castleShield in bramblewood-fx-c.js, small enough for a bar).
@@ -40726,11 +40776,12 @@ function ribShieldBreakVfx(rib, track, k, atFrac){
   const col = ARMOUR_LAYER_COLOURS[Math.min(ARMOUR_LAYER_COLOURS.length - 1, k)], x = Math.max(4, Math.min(96, atFrac * 100));
   const v = document.createElement('span'); v.className = 'bf-sh-break'; v.setAttribute('aria-hidden', 'true'); v.style.left = x.toFixed(1) + '%'; v.style.setProperty('--sh-a', col[0]); v.style.setProperty('--sh-b', col[1]);
   const dir = rib.classList.contains('bf-hp-mine') ? -1 : 1; // shards go away from the bar: up for yours (at the bottom), down for theirs
-  v.innerHTML = `<svg class="bsb-crack" viewBox="0 0 24 24" width="24" height="24"><path d="M12 0 L9 6 L14 9 L8 14 L13 17 L10 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>` +
-    Array.from({length: 9}, (_, i)=> `<i class="bsb-shard" style="--dx:${Math.round((Math.random() * 2 - 1) * 34)}px; --dy:${dir * -Math.round(10 + Math.random() * 26)}px; --rot:${Math.round(Math.random() * 360)}deg; --s:${(.6 + Math.random() * .7).toFixed(2)}"></i>`).join('');
+  // 2026-10-31 (package UI8, owner AA1: "remove the blue electricity line once the Shield is gone"): the zig-zag crack line is gone. It faded out over 0.52 s
+  // and then, with no fill, snapped back to full for the 0.38 s until the span was removed: that was the blue line left on the bar. Only the
+  // shards remain (they already hold their last, invisible frame).
+  v.innerHTML = Array.from({length: 9}, (_, i)=> `<i class="bsb-shard" style="--dx:${Math.round((Math.random() * 2 - 1) * 34)}px; --dy:${dir * -Math.round(10 + Math.random() * 26)}px; --rot:${Math.round(Math.random() * 360)}deg; --s:${(.6 + Math.random() * .7).toFixed(2)}"></i>`).join('');
   rib.appendChild(v);
   if(v.animate){
-    v.querySelector('.bsb-crack').animate([{opacity:0, transform:'scale(.6)'}, {opacity:1, transform:'scale(1)', offset:.18}, {opacity:1, offset:.6}, {opacity:0}], {duration:520, easing:'ease-out'});
     v.querySelectorAll('.bsb-shard').forEach(sh=> sh.animate([{opacity:1, transform:'translate(-50%,-50%) scale(var(--s)) rotate(0)'}, {opacity:0, transform:'translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0) rotate(var(--rot))'}], {duration:520 + Math.random() * 220, easing:'cubic-bezier(.2,.7,.4,1)', fill:'forwards'}));
   }
   setTimeout(()=> v.remove(), 900);
@@ -41292,8 +41343,9 @@ function vis5LeaderSlam(def, enemy, host){ // host: the field's element (the Eff
     const q = bf.getBoundingClientRect(), full = fxAtLeast('med') && !reducedMotion(), none = !fxAtLeast('low');
     const w = document.createElement('div'); w.className = 'vis5-lead' + (enemy ? ' is-enemy' : ' is-mine') + (full ? '' : ' is-calm') + (none ? ' is-bare' : ''); w.setAttribute('aria-hidden', 'true');
     w.style.left = q.left + 'px'; w.style.width = q.width + 'px'; w.style.top = (enemy ? q.top + q.height * 0.27 : q.bottom - q.height * 0.27) + 'px'; w.style.setProperty('--lead-ms', LEADER_CALLOUT_MS + 'ms');
-    let art = ''; try{ art = cardTileHTML(Object.assign({}, def, {icon: def.icon || '👑'}), {inPlay: true}); }catch(e){ art = `<span class="vis5-lead-emoji">${escapeHtml((def && def.icon) || '👑')}</span>`; }
-    w.innerHTML = `<i class="vis5-lead-band"></i><i class="vis5-lead-shock"></i><div class="vis5-lead-art">${art}</div>`;
+    // 2026-10-31 (package UI8, owner Z2: "leader summoned: remove the leader preview in the centre (the leader is clearly visible)"): the big
+    // portrait that slammed into the middle of the field is gone; the band, the ring, the shake and the name banner stay.
+    w.innerHTML = `<i class="vis5-lead-band"></i><i class="vis5-lead-shock"></i>`;
     const b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status'); b.setAttribute('aria-hidden', 'false');
     b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; w.appendChild(b); document.body.appendChild(w); setTimeout(()=> w.remove(), LEADER_CALLOUT_MS);
     if(full) setTimeout(()=>{ try{ battlefieldShake(enemy ? 0.4 : 0.32); }catch(e){} }, Math.round(LEADER_CALLOUT_MS * 0.17)); // the slam lands at 17%
@@ -42175,6 +42227,7 @@ async function resolveRoundCore(opts){
           placements.map(p=>p.uid).forEach(u=> pendingEntranceOrigins.set(String(u), {x:cx, y:cy, rotate: Math.random()*16-8, kind:'spawn'}));
           lastDeathOrigin = null; // one-shot — see its own declaration comment
         }
+        noteSpawnOrigins([ev]); // 2026-10-31 (UI8, AA5): a spawn whose spawner was not found above still comes out of its card or its bramble
         renderBoard({collapseLandingUids:[], attackSpawnLandingUids: spawnUids});
         // Give the entrance fall-in + landing-impact flourish just triggered above a beat to
         // actually be seen (2026-09-17 follow-up, "spawning still does not look animated"):
@@ -42712,6 +42765,7 @@ async function resolveRoundCore(opts){
     { const chilled = drawEvents.filter(ev=> ev.type==='fieldTick' && ev.field==='frozen').map(ev=> ev.uid); if(chilled.length){ m._fieldChilled = chilled; try{ SoundKit.freezeChime(); }catch(e){} } }
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
+    noteSpawnOrigins(drawEvents); // 2026-10-31 (package UI8, AA5): a castle's spawn (the Trojan Horse's Raider) bounces out of its bramble
     try{ fieldGapStamp(drawEvents, m); }catch(e){} // 2026-10-23 (package FX4): two field numbers on one unit, a small gap apart
     const smackSt = m.raidFull ? fightSafe(()=> raidSmackStage(drawEvents, m)) : null; // RAIDFX1 (2026-10-30): the smack's damage lands with the limb
     floatDetachDepth++; try{ drawEvents.forEach(ev=>{ pushLog(ev); if(smackSt && smackSt.defer(ev)) return; renderVfxForEvent(ev); if(smackSt) smackSt.played(ev); }); } finally { floatDetachDepth--; } // numbers survive the re-render below (2026-10-14)
@@ -46022,8 +46076,13 @@ const handFlightsLive = new Set(); // uids whose hand flight is still in the air
 const handFlightDue = new Map(); // uid -> {due, land}: when each flight should be down on the wall clock (2026-10-19, playAnimWatchdog)
 function handFlightSec(leader){
   const mult = (matchState && matchState.speedMult) || 1, hd = Math.max(0.12, entranceCardTweenDur(mult)*0.62);
-  return leader ? Math.max(.3, hd*1.25) : Math.max(.12, hd*.82);
+  const lowFx = (typeof fxLevel === 'function' && fxLevel() === 'low') ? 0.6 : 1; // 2026-10-31 (UI8): Effects Low: a shorter flight
+  return (leader ? Math.max(.3, hd*1.25) : Math.max(.12, hd*.82)) * lowFx;
 }
+// 2026-10-31 (package UI8, AA3): run fn two animation frames from now (the first frame draws the card where the animation starts, the
+// second is the first one on a clock that is really ticking), see handFlightProxy. A background tab never draws: the callers have a
+// timer behind them.
+function armOnFrames(fn){ try{ requestAnimationFrame(()=> requestAnimationFrame(()=>{ try{ fn(); }catch(e){} })); }catch(e){ try{ fn(); }catch(_){} } }
 function handFlightProxy(el, uid, origin){
   if(!el || !origin || !hasGsap() || reducedMotion()) return false;
   const tile = el.querySelector('.card-tile'); if(!tile) return false;
@@ -46067,10 +46126,18 @@ function handFlightProxy(el, uid, origin){
       handFlightDue.set(key + ':squash', {due: performance.now() + (leader ? 320 : 200) + 250, land: ()=>{ try{ if(sq.progress() < 1){ sq.progress(1); return true; } }catch(e){} return false; }, squash: true}); } // the watchdog settles it on time (2026-10-19)
     try{ playLandingImpact(uid); playHandSummonGlow(uid); if(leader) pushNeighborCards(c, {distance:16, durationMs:300}); if(origin.dust) impactDust(c); }catch(e){} };
   place();
-  gsap.to(st, {k:1, duration:fl, ease: leader ? 'back.in(1.6)' : (sharpBoard() ? 'power3.in' : 'power2.in'), onUpdate:place, onComplete:()=>{ place(); gone(true); }});
+  // 2026-10-31 (package UI8, owner AA3 "a played card lands from where you let go of it ... the owner no longer sees it"): the flight
+  // is 0.12-0.2 s long and GSAP's clock is the wall clock, but the main thread is busy for 100-500 ms after a drop (the play's own
+  // redraw, the enemy's reply, the round's render: measured in headless Chromium, the first frame after the drop came 150-500 ms
+  // later, more with each package's added render work). The whole flight ran inside that stall, so the first frame the player saw
+  // was the card already on its slot. The copy now waits at the release point (placed just above, so the first frame shows it
+  // there) and its clock starts two frames later, when frames are really being drawn. The wall-clock watchdog (RX) is re-armed from
+  // that start; until then it only covers a tab that never draws a frame.
+  const tw = gsap.to(st, {k:1, duration:fl, paused:true, ease: leader ? 'back.in(1.6)' : (sharpBoard() ? 'power3.in' : 'power2.in'), onUpdate:place, onComplete:()=>{ place(); gone(true); }});
   // 2026-10-19 (package RX): on the wall clock, the flight lands when it should even if frames stall (playAnimWatchdog lands it)
-  handFlightDue.set(key, {due: performance.now() + fl*1000 + 250, land: ()=>{ if(done) return; st.k = 1; try{ place(); }catch(e){} gone(true); }});
-  setTimeout(()=>{ handFlightDue.delete(key); gone(false); }, fl*1000 + 800); // never left behind
+  handFlightDue.set(key, {due: performance.now() + 1500 + fl*1000 + 250, land: ()=>{ if(done) return; st.k = 1; try{ place(); }catch(e){} gone(true); }});
+  armOnFrames(()=>{ if(done) return; try{ tw.play(0); }catch(e){} const f = handFlightDue.get(key); if(f) f.due = performance.now() + fl*1000 + 250; });
+  setTimeout(()=>{ handFlightDue.delete(key); gone(false); }, 1500 + fl*1000 + 800); // never left behind
   return true;
 }
 // An ally plays a card (2026-10-19, package RX, owner 20:46: "Allies should look like they are playing their cards from hand, in Raid
