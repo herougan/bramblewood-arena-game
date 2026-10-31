@@ -57,15 +57,18 @@ ok(/function stuckFast\(c\)\{ return !!\(c && \(c\.pinned \|\| c\.webbed > 0 \|\
   ok(row && row.plus === 'arrow' && SC.skillCost('bola', 1) === SC.skillCost('arrow', 1) + 2 && SC.skillCost('bola', 2) === SC.skillCost('arrow', 2) + 2, `Bola N = Arrow N + 2 (Bola 1 ${SC.skillCost('bola', 1)}, Bola 2 ${SC.skillCost('bola', 2)})`);
   const ar = costs.skills.find(r=> r.id === 'anadromous'); // 2026-10-31 (package BUDGET2, item 4): at 3A + H the sea half (+1 Attack) is 3 points, the river half (+2 Health) 2; x the salt-water share
 // of the road's fights (0.062): 2.06 -> 2.1
-ok(ar && SC.skillCost('anadromous', true) === 2.1, 'Anadromous costs 2.1 (3 x 0.062 at sea + 2 x 0.938 off it, BUDGET2)'); }
+// 2026-10-31 (package ENG15): the rework (Tide and +1/+1 at sea, a Fry in fresh water, +0/+1 without a Tide) is priced 1.4; tests/eng15-2026-10-31.js
+ok(ar && SC.skillCost('anadromous', true) === 1.4, 'Anadromous costs 1.4 (the ENG15 rework)'); }
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
-  ok(!cards.some(c=> c.effects && (c.effects.bola || c.effects.anadromous)), 'Bola and Anadromous are on no card yet (decision ENG14-4 / ENG14-5)'); }
+  // 2026-10-31 (package ENG15): the owner's picks are in: Net Thrower and the new Bolas Spider (Bola), Wrong-Way Salmon (Anadromous)
+  ok(cards.filter(c=> c.effects && c.effects.bola).map(c=> c.id).sort().join() === 'bolas-spider,net-thrower' && cards.filter(c=> c.effects && c.effects.anadromous).map(c=> c.id).join() === 'wrong-way-salmon', 'Bola on Net Thrower and the Bolas Spider, Anadromous on Wrong-Way Salmon (decisions ENG14-3 / ENG14-4)'); }
 
 // ---- X20 Anadromous -------------------------------------------------------------------------------------------------------------------
-{ const {e, P} = mk({saltMap:true}); const s = put(e, P, 1, 'x-salmon', 0);
-  ok(s.atk + (s.phaseAtk||0) === 3 && s.maxHp === 5, `on a sea map: +1 Attack (${s.atk}+${s.phaseAtk}/${s.maxHp})`); ok(/anadromousSea/.test(s._en5On || ''), 'its pip names the sea half'); }
+// 2026-10-31 (package ENG15, owner Y2): reworked; the sea half now needs a Tide map too (tests/eng15-2026-10-31.js has the three states)
+{ const {e, P} = mk({saltMap:true, tide:true}); const s = put(e, P, 1, 'x-salmon', 0);
+  ok(s.atk + (s.phaseAtk||0) === 3 && s.maxHp === 6, `on a sea map with a Tide: +1/+1 (${s.atk}+${s.phaseAtk}/${s.maxHp})`); ok(/anadromousSea/.test(s._en5On || ''), 'its pip names the sea half'); }
 { const {e, P} = mk({}); const s = put(e, P, 1, 'x-salmon', 0);
-  ok(s.atk + (s.phaseAtk||0) === 2 && s.maxHp === 7 && s.hp === 7, `off the sea: +2 Health (${s.atk}/${s.hp}/${s.maxHp})`); ok(/anadromousRiver/.test(s._en5On || ''), 'its pip names the river half'); }
+  ok(s.atk + (s.phaseAtk||0) === 2 && s.maxHp === 6 && s.hp === 6, `no Tide: +0/+1 (${s.atk}/${s.hp}/${s.maxHp})`); ok(/anadromousDry/.test(s._en5On || ''), 'its pip names the no-Tide state'); }
 { const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = B.G;
   const bio = new Function(app.match(/const MAP_BIOME_OF = \{[^\n]*?\};/)[0] + '\nreturn MAP_BIOME_OF;')(), salt = (app.match(/const EN6_SALT_BIOMES = new Set\((\[[^\]]*\])\);/) || [])[1];
   const sea = Object.keys(bio).filter(k=> ['beach', 'reef'].includes(bio[k])); // (the tools' copy of fightRules lacks the EN6 biome sets, so the page's own tables are read)
@@ -80,7 +83,7 @@ ok(ar && SC.skillCost('anadromous', true) === 2.1, 'Anadromous costs 2.1 (3 x 0.
   const elite = m4.nodes.find(x=> x.kind === 'elite'), skirm = m4.nodes.find(x=> x.kind === 'skirmish');
   const setOf = node=>{ const s = {2: {hq: {}}}; G.applySkirmishSetup(s, node); return s[2]; };
   const boss = G.CONQUEST_MAPS.flatMap(m=> (m.nodes || []).filter(x=> x.kind === 'boss')).find(x=> x.deck);
-  ok(setOf(elite).openingExtra === 1 && setOf(n88).openingExtra === 1 && !setOf(skirm).openingExtra && !(boss && setOf(boss).openingExtra), `elite-kind fights (elite; 8-8 is Map 8's mini-boss, its final elite) give the CPU openingExtra 1; skirmish and boss (${boss && boss.key}) fights none`);
+  ok(setOf(elite).openingExtra === 1 && setOf(n88).openingExtra === (n88.kind === 'miniboss' ? 2 : 1) /* ENG15 (2026-10-31, Y7): a mini-boss +2 */ && !setOf(skirm).openingExtra && !(boss && setOf(boss).openingExtra), `elite-kind fights (elite; 8-8 is Map 8's mini-boss, its final elite) give the CPU openingExtra 1; skirmish and boss (${boss && boss.key}) fights none`);
   const ctx = G.referenceFightSetup('m4', elite); ok(ctx.setup.openingExtra === 1, 'the road sims (referenceFightSetup / playReferenceGame) get it too');
   ok(/if\(ctx\.setup\.openingExtra\) P\[2\]\.openingExtra = ctx\.setup\.openingExtra;/.test(app), 'playReferenceGame copies it onto the CPU'); }
 { const {e, P} = mk(); const pl = e.newPlayer(2, {'x-a': 10}, {id:'st-hq', health:50, effects:{}}); pl.openingExtra = 1; e.draw(pl, 3, 'B', {}, []);
@@ -124,8 +127,10 @@ function cpuTurn(hand, lumber, opts){ const {e, P} = mk({}, 11, {aiAim:true, aiL
   ok(ev.some(x=> x.type === 'discard' && x.defId === 'x-free') && ev.some(x=> x.type === 'play' && x.defId === 'x-big'), 'one short with only a free card beside it: it pitches that card and plays the big one now'); }
 
 // ---- the texts ---------------------------------------------------------------------------------------------------------------------------
-{ const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT; const keys = ['ui.skn-e14-bola', 'ui.e14-sk-bola', 'ui.e14-sk-bola-codex', 'ui.e14-stn-pinned', 'ui.e14-ls-pinned', 'ui.e14-log-pinned', 'ui.e14-log-pinned-skip', 'ui.e14-log-pinned-end', 'ui.skn-e14-anadromous', 'ui.e14-sk-anadromous', 'ui.e14-sk-anadromous-codex', 'ui.fx-mirage'];
-  ok(keys.every(k=> T[k]), 'the ENG14 TX keys exist');
+{ const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT; const keys = ['ui.skn-e14-bola', 'ui.e14-stn-pinned', 'ui.e14-log-pinned', 'ui.e14-log-pinned-skip', 'ui.e14-log-pinned-end', 'ui.skn-e14-anadromous', 'ui.fx-mirage'];
+  // 2026-10-31 (package ENG15): ui.e14-sk-bola, -bola-codex, -ls-pinned (Bola lifts Flying / Evasive) and ui.e14-sk-anadromous(-codex) (the rework)
+  // changed their English, so their language rows wait for the ENG15 translation pass; the rest are checked here
+  ok(keys.concat(['ui.e14-sk-bola', 'ui.e14-sk-bola-codex', 'ui.e14-ls-pinned', 'ui.e14-sk-anadromous', 'ui.e14-sk-anadromous-codex']).every(k=> T[k]), 'the ENG14 TX keys exist');
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(c=>{ const pk = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8'));
     ok(keys.every(k=> pk[T[k]]), `lang/${c}.json has the ENG14 rows`); });
   ok(app.includes("{key:'bola', category:'evergreen'") && app.includes("{key:'anadromous', category:'passive'") && app.includes("Object.assign(SKILL_ICON, {bola:'🪀', anadromous:'🐟', pinDown:'📌'})"), 'arena_app.js: the skill rows, icons, the 📌 status');

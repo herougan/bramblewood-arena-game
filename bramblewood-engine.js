@@ -563,10 +563,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // bramble). A unit it can't hit is passed over: a cage, or an Invisible unit (nothing to swing at). Flying, Evasive and the other
   // dodges still roll on the strike itself (combatHitLands), as they do for any swing.
   // A row swing's target (2026-10-19, package TS): rowTargetAt as the swing's {kind, card, col, reserveRow}, or the bramble.
-  function rowSwingTarget(foe, sl){ const rt = rowTargetAt(foe, sl); return rt ? {kind:'card', card:rt.card, col:sl, reserveRow: rt.row || undefined} : {kind:'hq'}; }
-  function rowTargetAt(foe, sl){
+  function rowSwingTarget(foe, sl, viewer){ const rt = rowTargetAt(foe, sl, viewer); return rt ? {kind:'card', card:rt.card, col:sl, reserveRow: rt.row || undefined} : {kind:'hq'}; }
+  function rowTargetAt(foe, sl, viewer){ // viewer (ENG15, 2026-10-31): a True Sight striker finds an Invisible unit
     if(!foe) return null;
-    const hittable = c=> !!(c && !c.gap && c.hp > 0 && !c.cageOf && !isInvisible(c));
+    const hittable = c=> !!(c && !c.gap && c.hp > 0 && !c.cageOf && !isInvisible(c, viewer));
     const f = allBoardCards(foe).find(c=> c.slot === sl && hittable(c)); if(f) return {card:f, row:0};
     for(let r = 0; r < (foe.reserve || []).length; r++){ const c = foe.reserve[r][sl]; if(hittable(c)) return {card:c, row:r + 1}; }
     return null;
@@ -2299,15 +2299,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Status ticks (Poison, Bleed, Decay, curses) and its own Recoil aren't hits.
   const NOT_A_HIT = new Set(['poison', 'bleed', 'decay', 'curse', 'recoil']);
   function noteHit(card, dmg, dmgType){ if(card && dmg > 0 && !NOT_A_HIT.has(dmgType)) card.lastHitRound = combatNo + (combatDepth > 0 ? 0 : 1); }
-  function cowerMode(c){ const v = effectsOf(c).cower; return !v ? null : (v === 'flee' ? 'flee' : 'shell'); }
+  // Cower N (2026-10-31, package ENG15, owner FF6): effects.cower = N (a number) is a third mode, 'armor': while cowering (no attack this
+  // round) it gains N Armor (cowerArmorOf, in both Armor sums: swings and shots); attacks still reach it. 'shell' and 'flee' are unchanged.
+  // c.cowering is the board's flag (the pip lights while it is set).
+  function cowerMode(c){ const v = effectsOf(c).cower; return !v ? null : (v === 'flee' ? 'flee' : (typeof v === 'number' && v > 0) ? 'armor' : 'shell'); }
+  function cowerArmorOf(c){ if(!c || c.cowerRound !== combatNo || cowerMode(c) !== 'armor') return 0; return Math.max(0, Math.round(Number(effectsOf(c).cower) || 0)); }
   function shelledByCower(c){ return !!c && c.cowerRound === combatNo && cowerMode(c) === 'shell'; }
   function startCower(players, sideOf, events){
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
       upkeepUnitsOf(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf) return; const m = cowerMode(c); /* + a raid's middle / back rows (2026-10-19, RR) */
         if(!m || c.lastHitRound !== combatNo - 1) return;
-        c.cowerRound = combatNo; let healed = 0;
+        c.cowerRound = combatNo; c.cowering = true; let healed = 0; // + c.cowering (ENG15, 2026-10-31): the board's pip
         if(m === 'flee') healed = applyHeal(c, 2, sideOf(pid), events);
-        if(recordEvents && events) events.push({type:'statusFx', kind:'cower', mode:m, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:healed}); }); });
+        if(recordEvents && events) events.push(Object.assign({type:'statusFx', kind:'cower', mode:m, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:healed}, m === 'armor' ? {armor: cowerArmorOf(c)} : {})); }); });
   }
   // Ghost (2026-10-14, user: "Ghost - Can't be affected by Normal Damage"): normal (physical) attacks pass through it. Magic
   // attacks and every other damage type (fire, poison, frost, acid …) still hurt. Ghosts can't Bleed, except by Ichor.
@@ -2702,8 +2706,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
 //     for the rest of the fight. effects.fullMoonGrant = {...}: the skills in the braces from then on instead.
 // The skills in the braces ride on the same grant as Loyal / Usurper (a derived card, given and taken back as the condition turns).
   function grantStats(g){ if(!g || typeof g !== 'object') return [0, 0, null]; const rest = Object.assign({}, g); const x = Number(rest.attack)||0, y = Number(rest.health)||0; delete rest.attack; delete rest.health; return [x, y, Object.keys(rest).length ? rest : null]; }
-  // Anadromous (ENG14, 2026-10-30): 'sea' on a salt-water fight (rules.saltMap), 'river' anywhere else, null without the skill.
-  function anadromousOf(e){ return (e && e.anadromous) ? (rules.saltMap ? 'sea' : 'river') : null; }
+  // Anadromous (ENG14, 2026-10-30; reworked 2026-10-31, package ENG15, owner Y2 / decision ENG14-4: "Tide and +1/+1 in seawater, spawns a 1/1
+  // Fry with Tide in freshwater"; any salty map counts as seawater, the swimming pool is freshwater; "On maps without Tide: no bonus, refunded
+  // as +0/+1"): on a fight with a Tide (rules.tide / highTide, a Tide-spout's, or a standing tide) it is 'sea' when the map is salty
+  // (rules.saltMap) and 'fresh' otherwise; a fight with no Tide is 'dry'. null without the skill.
+  //   sea    +1/+1 and the Tide skill (a grant: Flood and Ebb treat it as a Tide unit)
+  //   fresh  on its death a Fry (1/1 token, Tide: ANAD_FRY) takes its slot
+  //   dry    +0/+1
+  const ANAD_FRY = 'anadromous-fry';
+  function fightHasTide(){ return !!(rules.tide || rules.highTide || permaTide || tideStart !== null); }
+  function anadromousOf(e){ return (e && e.anadromous) ? (!fightHasTide() ? 'dry' : rules.saltMap ? 'sea' : 'fresh') : null; }
   function hasTideGrant(e){ return !!(e && e.tideGrant && typeof e.tideGrant === 'object'); }
   function condStatsOf(c, e, pid, players){
     const pl = players[pid], foe = players[otherId(pid)]; let a = 0, h = 0, grant = null;
@@ -2731,7 +2743,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Anadromous (2026-10-30, package ENG14, owner X20 / ANAD-1: "Get tide benefits +2 Health in non-sea, +1 attack in sea."): on a
       // salt-water fight (rules.saltMap: the beach and reef maps, or a fight that sets it) +1 Attack; everywhere else +2 Health. The map
       // never changes mid-fight, so one of the two is always on; c._en5On names it ('anadromousSea' / 'anadromousRiver') for the chips.
-      const anad = anadromousOf(e); if(anad){ if(anad === 'sea') a += 1; else h += 2; on6.push(anad === 'sea' ? 'anadromousSea' : 'anadromousRiver'); }
+      // ENG15 (2026-10-31, Y2): sea = +1/+1 and Tide; fresh = the Fry on death (no stats); dry = +0/+1. The chips: anadromousSea / anadromousRiver / anadromousDry.
+      const anad = anadromousOf(e); if(anad){ if(anad === 'sea'){ a += 1; h += 1; if(!e.tide) grant = Object.assign(grant || {}, {tide: true}); } else if(anad === 'dry') h += 1; on6.push(anad === 'sea' ? 'anadromousSea' : anad === 'fresh' ? 'anadromousRiver' : 'anadromousDry'); }
       const all = on.concat(on6); c._en5On = all.length ? all.join(',') : ''; }
     a += en6HandAtk(e, pl, foe); // EN6 (2026-10-24): Full Hand / Lean N, yours and the foe's
     // Rage – {…} (2026-10-23, package EN, owner TR-6: "Rage - {...} means the typical effects of Rage, PLUS {...}"): while its Rage is on,
@@ -2835,21 +2848,26 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     c.bloomed = true; c.atk = (c.atk||0) + 1; if(c.baseAtk != null) c.baseAtk += 1; c.maxHp = (c.maxHp||0) + 1; c.hp += 1;
     if(recordEvents && events) events.push({type:'bloom', side:sideOf(pl.id), uid:c.uid, defId:c.defId, failed:true, atk:1, hp:1, copyAtk:0, copyHp:0, lumber:0, slot:c.slot});
   }
+  // ENG15 (2026-10-31, owner FF5, coordinator call from the owner's options a + b): the ORIGINAL keeps trying at every round start where it is
+  // Ready and its conditions hold: no "spent" state after a split or a failed one, and no +1/+1 on a fail (no room: it simply tries again
+  // next round; bloomFail is no longer called). Its copies are tokens (c.token, the token frame), have no Bloom (c.bloomCopy is skipped
+  // here) and arrive with the parent's printed Wait. So growth is at most one copy a Ready round, and the player can answer it.
+  function bloomParentWait(c){ const d = CARD_DEFS[c._condBase || c.defId] || CARD_DEFS[c.defId] || {}; return Math.max(0, Number(d.wait) || 0); }
   function bloomCopyPass(players, sideOf, stats, events){
     let any = false;
     [players[1], players[2]].filter(pl=> pl && inUpkeep(pl)).forEach(pl=>{
       upkeepUnitsOf(pl).slice().forEach(c=>{
-        if(!c || c.gap || !(c.hp > 0) || c.bloomed || c.cageOf || c.stunned) return; // EN5 (2026-10-24, owner BL-1: "the copy can bloom"): a copy blooms too, once (c.bloomed)
+        if(!c || c.gap || !(c.hp > 0) || c.bloomCopy || c.cageOf || c.stunned) return; // ENG15 (2026-10-31, FF5): a copy has no Bloom; the original is never spent (was EN5: once each, c.bloomed)
         if(c.wait > 0 || c.frozen > 0 || dozing(c)) return; // ENG9 (2026-10-26, owner EN7-2: "Bloom can only start 'testing' when the unit is ready")
         const bc = effectsOf(c).bloomCopy; if(!bloomCopyOn(bc, c, pl)) return;
-        if(isParasiteDef(CARD_DEFS[c.defId])){ if(en7ParasiteBloom(players, sideOf, pl, c, bc, stats, events)) any = true; else if(slotMode){ bloomFail(pl, c, sideOf, events); any = true; } return; } // EN7 (2026-10-24, owner 13:12 #2): a Parasite's copy hooks onto an enemy; ENG9: no host, it fails
-        const where = bloomSlotOf(pl, c); if(!where){ bloomFail(pl, c, sideOf, events); any = true; return; } // ENG9 (2026-10-26, owner EN7-2): no room beside it: the split fails, +1/+1 on the unit (was BL-2: it waited)
+        if(isParasiteDef(CARD_DEFS[c.defId])){ if(en7ParasiteBloom(players, sideOf, pl, c, bc, stats, events)) any = true; return; } // EN7 (2026-10-24, owner 13:12 #2): a Parasite's copy hooks onto an enemy; ENG15: no host, it tries again next round
+        const where = bloomSlotOf(pl, c); if(!where) return; // ENG15 (2026-10-31, FF5): no room beside it: it tries again next round (was ENG9: +1/+1 and spent)
         const L = bloomCopyLumber(bc); if(L) pl.lumber = Math.max(0, (pl.lumber||0) - L);
-        c.bloomed = true; // the unit itself gains nothing (owner 19:30); its copy gets the +1/+1
+        // the unit itself gains nothing (owner 19:30) and stays able to bloom (ENG15); its copy gets the +1/+1
         const dmg = Math.max(0, c.maxHp - c.hp), permHp = Math.max(1, c.maxHp - (c.phaseHp||0));
         const nc = makeBoardCard(c._condBase || c.defId);
         nc.atk = (c.atk||0) + 1; nc.baseAtk = (c.baseAtk != null ? c.baseAtk : (c.atk||0)) + 1; nc.maxHp = permHp + 1; nc.hp = Math.max(1, permHp + 1 - dmg);
-        nc.bloomCopy = true; nc.bloomOf = c.uid; applyArrivalPerks(pl, nc);
+        nc.bloomCopy = true; nc.token = true; nc.bloomOf = c.uid; nc.wait = bloomParentWait(c); applyArrivalPerks(pl, nc); // ENG15: a token with the parent's Wait
         let lane = null;
         if(where.row){ rowPut(pl, where.row, where.slot, nc, c); }
         else if(where.lane){ lane = where.lane; pl.row[lane].push(nc); }
@@ -2863,7 +2881,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }); });
     // EN7: the Parasites riding enemy hosts bloom too (they are on no row of their own)
     [1, 2].forEach(pid=>{ const pl = players[pid], foe = players[otherId(pid)]; if(!pl || !foe || !inUpkeep(pl)) return;
-      allLive(foe).forEach(h=>{ const c = h.parasite; if(!c || c.parasitePid !== pid || !(c.hp > 0) || c.bloomed || c.stunned) return;
+      allLive(foe).forEach(h=>{ const c = h.parasite; if(!c || c.parasitePid !== pid || !(c.hp > 0) || c.bloomCopy || c.stunned) return; // ENG15: a copy has no Bloom
         const bc = effectsOf(c).bloomCopy; if(!bloomCopyOn(bc, c, pl)) return;
         if(en7ParasiteBloom(players, sideOf, pl, c, bc, stats, events, h)) any = true; }); });
     if(any){ try{ syncPhaseStats(players, sideOf, events); }catch(e){} }
@@ -2885,10 +2903,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!slotMode) return false; const pid = pl.id, opts = en7ParasiteBloomHosts(players, pid, c, host); if(!opts.length) return false;
     const to = opts.length === 1 ? opts[0] : opts[Math.floor(rnd() * opts.length) % opts.length];
     const L = bloomCopyLumber(bc); if(L) pl.lumber = Math.max(0, (pl.lumber||0) - L);
-    c.bloomed = true;
+    // ENG15 (2026-10-31, FF5): the original is not spent; the copy is a token with no Bloom and the parent's Wait
     const dmg = Math.max(0, c.maxHp - c.hp), permHp = Math.max(1, c.maxHp - (c.phaseHp||0)), nc = makeBoardCard(c._condBase || c.defId);
     nc.atk = (c.atk||0) + 1; nc.baseAtk = (c.baseAtk != null ? c.baseAtk : (c.atk||0)) + 1; nc.maxHp = permHp + 1; nc.hp = Math.max(1, permHp + 1 - dmg);
-    nc.bloomCopy = true; nc.bloomOf = c.uid; nc.parasiteOf = to.uid; nc.parasitePid = pid; nc.slot = to.slot; to.parasite = nc;
+    nc.bloomCopy = true; nc.token = true; nc.wait = bloomParentWait(c); nc.bloomOf = c.uid; nc.parasiteOf = to.uid; nc.parasitePid = pid; nc.slot = to.slot; to.parasite = nc;
     { const st = ensureStat(stats || {}, sideOf(pid), c.defId); st.spawnedTokens = (st.spawnedTokens||0) + 1; }
     if(recordEvents && events){
       events.push({type:'bloom', side:sideOf(pid), uid:c.uid, defId:c.defId, copyUid:nc.uid, atk:0, hp:0, copyAtk:1, copyHp:1, lumber:L, parasite:true, targetUid:to.uid, targetDefId:to.defId, targetSide:sideOf(otherId(pid))});
@@ -2969,7 +2987,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Demolisher N (2026-10-11, user: "structures ... can be destroyed faster with units with the skill Demolisher N -
     // deal N additional damage to structures").
     // Keen Eye (2026-10-11): sees through Changelings and hits them 2 harder.
-    if(attDef && attDef.effects && attDef.effects.keenEye){ const tdK = CARD_DEFS[targetCard.defId]; if(tdK && tdK.effects && tdK.effects.changeling) amt += 2; }
+    // (Keen Eye's +2 against a Changeling is gone: 2026-10-31, package ENG15, FF4: True Sight sees Invisible units and lifts fog instead.)
     if(attDef && attDef.effects && attDef.effects.predator && attCard && targetCard.hp > 0 && effAtk(targetCard) < effAtk(attCard)) amt += w2N(attDef, 'predator'); // Predator N (2026-10-16): +N on prey weaker than it
     amt += shatterBonus(attDef, targetCard); // Shatter N (2026-10-17): +N on a Frozen unit (2026-10-19, GI: or a Brittle one)
     amt += giHitBonus(attDef, targetCard, dmgType) + detonateBonus(attDef, targetCard, dmgType); // Hunter N, Executioner N, Detonate (2026-10-19, package GI)
@@ -3038,7 +3056,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // gone for good.
     const ae = (attDef && attDef.effects) || {};
     const pierceN = (ae.pierce === true || ae.rend || ae.supreme || ae.pulverise /* CONTENT3 (2026-10-26, OWN-Q5): Pulverise ignores Armor */) ? Infinity : /* Pitchfork no longer pierces (2026-10-13 rework) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
-    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + prayerWardOf(targetCard) + sk3ArmorOf(targetCard); /* + Prayer Ward (2026-10-19, package GI); + Shieldwall (2026-10-19, package SK3) */ // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
+    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + prayerWardOf(targetCard) + sk3ArmorOf(targetCard) + cowerArmorOf(targetCard) /* Cower N (ENG15) */; /* + Prayer Ward (2026-10-19, package GI); + Shieldwall (2026-10-19, package SK3) */ // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
     // EN8 (2026-10-24, P24-16: "magic damage ignores Armor; normal damage ignores magic armor"): Armor (and everything nominalArmor sums:
     // Shell, the tide's, Prayer Ward, Shieldwall) takes only from physical damage. Magic and every element (fire / heat, frost / cold, shock,
     // poison, acid, water, decay, dark, holy ...) go past it. Magic Armor N (effects.magicArmor) is the other half: N off each magic or
@@ -3148,7 +3166,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function applyDamage(card, x, o){
     o = o || {};
     const y = roundDmg(x);
-    const dmg = (o.raw || o.crush) ? y : spendTempHp(card, y), tempSoak = y - dmg; // Shell's temporary Health, then a Shield (2026-10-12 / 10-14)
+    // ENG15 (2026-10-31, owner Z6: "Poison skips the Shield and hits Health"): a Poison tick (o.poisonTick: Poison, Toxin, Greater Poison;
+    // no attacker) passes every temporary Health layer (Bolster, Shell's, the Shield) and goes straight to Health.
+    const dmg = (o.raw || o.crush || o.poisonTick) ? y : spendTempHp(card, y), tempSoak = y - dmg; // Shell's temporary Health, then a Shield (2026-10-12 / 10-14)
     if(o.mods && tempSoak > 0) o.mods.push('shield'); // 2026-10-22 (package DN)
     lastHitMods = {uid: card.uid, mods: o.mods || (tempSoak > 0 ? ['shield'] : [])}; // 2026-10-22 (package DN2): every apply sets it (a raw one too), so a tick's event never reads an older hit's marks
     if(o.punishBy !== undefined) sk1NotePunish(card, o.punishBy); // Punish N (2026-10-19, package SK1, flagged)
@@ -3223,7 +3243,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // other damage skills still pass it too (they are not shots).
     if(fo && fo.armor && dmg > 0 && !isMagicDmg(dmgType) && dmgType !== 'true' && !crush){ const ae = (attDef && attDef.effects) || {}, td = CARD_DEFS[card.defId] || {};
       const pierceN = (ae.pierce === true || ae.rend || ae.supreme || ae.pulverise) ? Infinity : (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
-      const nom = Math.max(0, (Number((td.effects || {}).armor) || 0) - (card.armorLoss || 0)) + (card.shellArmor || 0) + tideArmor(card) + prayerWardOf(card) + sk3ArmorOf(card), ar = Math.max(0, nom - pierceN);
+      const nom = Math.max(0, (Number((td.effects || {}).armor) || 0) - (card.armorLoss || 0)) + (card.shellArmor || 0) + tideArmor(card) + prayerWardOf(card) + sk3ArmorOf(card) + cowerArmorOf(card) /* Cower N (ENG15) */, ar = Math.max(0, nom - pierceN);
       if(ar > 0){ const d0 = dmg; dmg = Math.max(0, dmg - ar); if(dmg < d0) mods.push('armor'); } }
     { const ma = magicArmorOf(card); if(ma > 0 && dmg > 0 && isMagicDmg(dmgType) && !crush){ dmg = Math.max(0, dmg - ma); mods.push('magicArmor'); } } // EN8 (P24-16): Magic Armor N off a magic shot or skill; ENG9 (2026-10-26): magic only, not the elements
     if((dmgType === 'physical' || dmgType === 'magic') && shelledByCower(card) && !crush){ if(roundDmg(dmg) > 0) mods.push('immune'); dmg = 0; } // Cower 'shell': arrows and bolts too, not statuses
@@ -3232,7 +3252,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const tick = EXPOSE_TICKS.has(dmgType);
     // sudden death: any hit that lands kills, and from 2026-10-15 a hit soaked to 0 too; status ticks still need to hurt
     const sd = suddenDeath ? (d=> d>0 || (amount > 0 && factor !== 0 && !tick)) : null;
-    const out = applyDamage(card, dmg, {dmgType, crush, mods, noteHit: true, punishBy: tick ? undefined : attUid, suddenDeath: sd,
+    const out = applyDamage(card, dmg, {dmgType, crush, poisonTick: dmgType === 'poison' && !attDefId /* ENG15 (Z6) */, mods, noteHit: true, punishBy: tick ? undefined : attUid, suddenDeath: sd,
       killerUid: attUid, killerDefId: attDefId, wake: true /* Asleep breaks on any flat/ranged damage too */, shell: true /* Shell triggers on arrows and every other hit too (2026-10-12) */}).dmg;
     if(card.equipment && !tick && amount > 0) eq2Wear(card, dmgType === 'acid' ? EQ2_DEF.acidWear : EQ2_DEF.hitWear, dmgType === 'acid' ? 'acid' : 'hit'); // EQ2 (2026-10-24): a shot, bolt or smack wears it too (a status tick does not)
     return out;
@@ -3332,9 +3352,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return reduced;
   }
   function tallyCastleDealt(defPl, n){ const ap = curPlayers && curPlayers[defPl.id===1 ? 2 : 1]; if(ap && n > 0) ap.castleDealt = (ap.castleDealt||0) + n; }
-  function pickRandomEnemyTarget(enemyPl){
+  function pickRandomEnemyTarget(enemyPl, viewer){ // viewer (ENG15, 2026-10-31): the unit aiming; a True Sight unit can pick an Invisible one
     const cards = [];
-    ['left','center','right'].forEach(side=> enemyPl.row[side].forEach(c=>{ if(c.hp>0 && !isInvisible(c) && !(targetExclude && targetExclude.has(c.uid))) cards.push(c); })); // Invisible (2026-10-16): not picked
+    ['left','center','right'].forEach(side=> enemyPl.row[side].forEach(c=>{ if(c.hp>0 && !isInvisible(c, viewer) && !(targetExclude && targetExclude.has(c.uid))) cards.push(c); })); // Invisible (2026-10-16): not picked
     const pool = [...cards.map(c=>({kind:'card', card:c})), {kind:'hq'}];
     const pick = pool[Math.floor(rnd()*pool.length)];
     if(targetExclude && pick.kind==='card') targetExclude.add(pick.card.uid);
@@ -3662,7 +3682,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     lastMissReason = 'evasive';
     if(card && card.diveAloft != null && card.hp > 0){ lastMissReason = card.diveMode === 'tide' ? 'under' : 'aloft'; return false; } // EN7 (2026-10-24): Dive's first turn, out of reach (a Spotter doesn't help)
     const spot = sk3SpottedAgainst(card); // Spotter (2026-10-19, package SK3): the other side has one: True Strike for all, and Invisible is found
-    if(isInvisible(card) && !spot){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): skills can't find it
+    if(isInvisible(card, attDefId) && !spot){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): skills can't find it; + True Sight finds it (ENG15, 2026-10-31)
     // True Strike (2026-10-18): its shots and skills never miss; + 2026-10-18 (owner 23:05): a Legendary dodge still rolls (legendaryDodge)
     const ts = spot || (attDefId != null && !!((CARD_DEFS[attDefId]||{}).effects||{}).trueStrike), dfx = (card && CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects) || {};
     const L = r=> (!ts || legendaryDodge(r, dfx[r])) && !sk1Unhidden(card, r); // Exposed (2026-10-19, package SK1 rework): no hiding dodge (SK1_HIDING); was: no dodge at all
@@ -3673,7 +3693,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(L('tide') && attDefId != null && !(CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects && CARD_DEFS[card.defId].effects.evasive) && tideEvades(card, CARD_DEFS[attDefId])) return rnd() >= 0.5;
     // Canopy Cover (EN5, 2026-10-24): under the trees a ground unit dodges a shot or a skill like Evasive (one roll; not on top of Evasive)
     if(!dfx.evasive && dfx.canopyCover && L('canopyCover') && en5CanopyCover(card)){ lastMissReason = 'canopyCover'; return rnd() >= 0.5; }
-    return L('evasive') ? evasiveGate(card) : true;
+    return L('evasive') && !heldFast(card) /* ENG15 (2026-10-31, Y3): Bola's Pin or a Lasso: no Evasive dodge */ ? evasiveGate(card) : true;
   }
   // Combat dodges (2026-10-02), each an independent 1-in-2 roll, so they stack multiplicatively:
   //   Swift  — dodges combat attacks from non-Swift attackers
@@ -3685,13 +3705,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
     if(defCard.diveAloft != null && defCard.hp > 0){ lastMissReason = defCard.diveMode === 'tide' ? 'under' : 'aloft'; return false; } // EN7 (2026-10-24): Dive's first turn, out of reach
     const spot = sk3Spotted(attCard); // Spotter (2026-10-19, package SK3): True Strike for the side, and Invisible is found
-    if(isInvisible(defCard) && !spot){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): nothing to swing at
+    if(isInvisible(defCard, attCard) && !spot){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): nothing to swing at; + True Sight finds it (ENG15, 2026-10-31)
     // Exposed (2026-10-19, package SK1 rework): its hiding dodges don't roll (sk1Unhidden in L below); Swift, Flying and the fields still do.
     // True Strike (2026-10-18): no dodge or miss roll at all (Illusory included); Invisible, above, still can't be hit.
     // + 2026-10-18 (owner 23:05): except a Legendary dodge (legendaryDodge): L(reason) is false only for True Strike at a plain dodge,
     // and is checked before that dodge's roll, so True Strike draws no random numbers unless a Legendary dodge is in play.
     const L = r=> (!(ad.trueStrike || spot) || legendaryDodge(r, dd[r])) && !sk1Unhidden(defCard, r);
     const webbed = defCard.webbed > 0; // Webbed (2026-10-17): no Evasive, Prey, Tide, canopy, Swift or Flying dodge (Smoke, fog and the rest still count)
+    const held = heldFast(defCard); // ENG15 (2026-10-31, owner Y3): Bola's Pin or a Lasso: no Flying and no Evasive dodge
     // Fencing (2026-10-14, user: "fencing = cannot miss Evade creatures"): a precise blade isn't dodged: no Evade and no Swift roll.
     // A Flyer's dodge still applies (it is out of reach, not quick).
     // + Tide evade (2026-10-16, user: "Evade to non-swimmers for me to test."): the test rule makes a Tide unit in the tide Evasive
@@ -3702,10 +3723,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     //   only when it comes from above or afar: a Flying attacker (en5FromAbove) or a thrown Boomerang / Bananarang. A ground unit's
     //   melee swing is no longer dodged. Shots and skills (dodgeCheck) are ranged, so they keep the 1-in-2 roll.
     const cc5 = !!dd.canopyCover && L('canopyCover') && en5CanopyCover(defCard) && en5FromAbove(ad);
-    if(singleTarget && !webbed && ((dd.evasive && L('evasive')) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd)) || cc5) && !ad.fencing && rnd() < (dd.evasive && defCard.boon === 'snowVeil' ? 2/3 : 0.5)){ lastMissReason = dd.evasive ? 'evasive' : canopySwift(dd) ? 'canopy' : cc5 ? 'canopyCover' : 'evasive'; if(dd.evasive && defCard.boon === 'snowVeil') boonFire(defCard, 'dodge'); return false; } // 2 in 3: Snow Veil, a selfish boon (2026-10-24, DF3) // + Prey (2026-10-16)
+    if(singleTarget && !webbed && ((dd.evasive && L('evasive') && !held) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd)) || cc5) && !ad.fencing && rnd() < (dd.evasive && defCard.boon === 'snowVeil' ? 2/3 : 0.5)){ lastMissReason = dd.evasive ? 'evasive' : canopySwift(dd) ? 'canopy' : cc5 ? 'canopyCover' : 'evasive'; if(dd.evasive && defCard.boon === 'snowVeil') boonFire(defCard, 'dodge'); return false; } // 2 in 3: Snow Veil, a selfish boon (2026-10-24, DF3) // + Prey (2026-10-16)
     if(dd.swift && L('swift') && !webbed && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     // High Canopy (2026-10-16, user: "Flying loses its benefit"): under the treetops a Flyer has nowhere to fly off to: no Flying dodge.
-    if(dd.flying && L('flying') && !webbed && !(defCard.bound > 0) /* ENG9 (OWN-Q1): Bound, it can't fly off */ && defCard.diveExposed !== combatNo /* EQ2 (2026-10-24, owner N21-5): diving, it is exposed */ && canopyMode() !== 'canopy' && !ashyNow() /* Ashy grounds the flyers (2026-10-17) */ && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    if(dd.flying && L('flying') && !webbed && !held /* ENG15: pinned or lassoed */ && !(defCard.bound > 0) /* ENG9 (OWN-Q1): Bound, it can't fly off */ && defCard.diveExposed !== combatNo /* EQ2 (2026-10-24, owner N21-5): diving, it is exposed */ && canopyMode() !== 'canopy' && !ashyNow() /* Ashy grounds the flyers (2026-10-17) */ && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
     // Slippery (2026-10-16, user: "all units have 1/2 to miss"): every swing at a unit can skid off (1 in 2 by default).
     if(L('slippery') && slips()){ lastMissReason = 'slippery'; return false; }
     // Smoke (2026-10-14, Smoke Bomb): an ally hidden in smoke makes attacks at it miss 1 in 2 until the end of the next round.
@@ -5032,7 +5053,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const W2_DEF = {venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, predator:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, nova:3, crystallise:5, cure:2, molting:1};
   const w2N = (src, k)=> numN((src && src.effects ? src.effects : effectsOf(src))[k], W2_DEF[k]);
   function climbs(c){ return !!(c && effectsOf(c).mountainClimber); }
-  function isInvisible(c){ return !!(c && c.hp > 0 && (c.diveAloft != null /* EN7 (2026-10-24): a diver aloft or under can't be found, Exposed or not */ || (c.invisible > 0 && !(c.exposed > 0)))); } // + an Exposed unit can be found (2026-10-19, package SK1)
+  function isInvisible(c, viewer){ return !!(c && c.hp > 0 && (c.diveAloft != null /* EN7 (2026-10-24): a diver aloft or under can't be found, Exposed or not */ || (c.invisible > 0 && !(c.exposed > 0) && !trueSightOf(viewer)))); }
+  // True Sight (2026-10-31, package ENG15, owner FF4 + coordinator call AA4; was Keen Eye, key keenEye kept so saves and decks are untouched):
+  // it sees Invisible units, so its swings, shots and skills can find and hit them (viewer: the unit looking; a defId or a card), and it lifts
+  // the fog around it (FOG_REVEAL_KEYS). Keen Eye's +2 damage against a Changeling is gone. A diver aloft or under is out of reach, not hidden.
+  function trueSightOf(viewer){ if(!viewer) return false; const d = typeof viewer === 'string' ? CARD_DEFS[viewer] : CARD_DEFS[viewer.defId]; return !!(d && d.effects && d.effects.keenEye); } // + an Exposed unit can be found (2026-10-19, package SK1)
   function preyAlert(c){ if(!c || !effectsOf(c).prey || !curPlayers) return false; const foe = curPlayers[otherId(ownerPidOfCard(c))];
     return !!foe && allBoardCards(foe).some(x=> x && !x.gap && x.hp > 0 && effectsOf(x).predator); }
   // Traps and burning ground lie on an empty slot, keyed like the curses (pid + ':s' + slot), until a card is played into it.
@@ -5723,7 +5748,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     t.webbed = Math.max(t.webbed||0, rounds); t._webbedJustSet = true;
     if(recordEvents && events) events.push({type:'statusFx', kind:'webbed', side, attDefId:att.defId, attUid:att.uid, targetSide:tSide, targetDefId:t.defId, targetUid:t.uid, amount:rounds});
   }
-  function stuckFast(c){ return !!(c && (c.pinned || c.webbed > 0 || c.pinDown > 0 /* Bola's Pin (ENG14) */ || sk1Anchored(c))); } // a pinned (Gladiator) or Webbed unit can't be moved; + Anchor (2026-10-19, package SK1)
+  function stuckFast(c){ return !!(c && (c.pinned || c.webbed > 0 || c.pinDown > 0 /* Bola's Pin (ENG14) */ || lassoHeld(c) || lassoHolding(c) /* Lasso, both ends (ENG15) */ || sk1Anchored(c))); } // a pinned (Gladiator) or Webbed unit can't be moved; + Anchor (2026-10-19, package SK1)
   // Bloodlust (2026-10-17 rework, user: "Bloodlust: when this unit kills an opposing unit, it jumps to oppose next available
   // creature* unit if possible. However, it deals 1/2 damage to structures and brambles."): open boards only (packed rows close up
   // on their own). When its swing kills the unit facing it, it leaps to face the nearest enemy creature (not a Structure, not a
@@ -6825,6 +6850,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       let near = null; try{ near = arrowTargetOf(players, playerId, boardCard); }catch(e){ near = null; }
       if(near && (near.cageOf || !(near.hp > 0))) near = null;
       let target = foes.length ? {kind:'card', card: near || foes[Math.floor(rnd()*foes.length)]} : {kind:'hq'};
+      // ENG15 (2026-10-31, owner Z5: "Pounce reaches only the enemies around it (left, centre, right)"): on the slot board it leaps only at
+      // the enemy facing it, else one in the column beside it (left or right, a coin flip when both); none of those three: the bramble.
+      if(slotMode && Number.isInteger(boardCard.slot) && !reserveRowOf(players[playerId], boardCard)){ const foePl = players[otherId(playerId)], sl = boardCard.slot;
+        const at = k=>{ const x = frontCardAt(foePl, k); return x && !x.cageOf && x.hp > 0 && !x.gap ? x : null; };
+        const mid = at(sl), side = [at(sl - 1), at(sl + 1)].filter(Boolean);
+        const pick = mid || (side.length === 2 ? side[Math.floor(rnd() * 2) % 2] : side[0] || null);
+        target = pick ? {kind:'card', card: pick} : {kind:'hq'}; }
       if(target.kind==='card'){ const sh = shieldCall(players[otherId(playerId)], target.card); if(sh) target = {kind:'card', card:sh}; }
       if(target.kind==='card'){ pev.targetUid = target.card.uid; pev.targetDefId = target.card.defId; }
       bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
@@ -6984,7 +7016,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     else if(kind === 'freezeCounter'){ if(c.frozen > 0 || resistFactor(c.defId, 'cold') === 0 || rnd() >= 0.5) return; c.frozen = 1; fx('freeze', 1); } // melts at this round's end, like the frost's chill
     else if(kind === 'shock'){ c.shocked = Math.max(c.shocked||0, 1); c._shockedJustSet = true; fx('shock', 1); }
     else if(kind === 'pin'){ if(!bolaPinnable(c)) return; c.pinDown = 1; c._pinDownJustSet = true; fx('pinDown', 1); } // Bola N (ENG14, 2026-10-30)
+    else if(kind === 'lasso'){ if(!lassoable(c) || lassoHolding(src)) return; c.lassoed = 1; c.lassoBy = src.uid; src.lassoing = c.uid; fx('lasso', 1); } // Lasso N (ENG15, 2026-10-31)
   }
+  // Lasso N (2026-10-31, package ENG15, owner Y3 / decision ENG14-3: "same as Bola but once (On Ready); the two units are tied; if the lassoer
+  // dies the target is released, if the target dies the lasso is released"): once, the first round it is Ready, at Speed 1, it throws Arrow N's
+  // shot (the enemy facing it, else the nearest; Fletcher adds), and a unit it hits is Lassoed (c.lassoed, c.lassoBy = the thrower's uid;
+  // the thrower's c.lassoing = the target's uid). Held, as long as both live: the target can't swing or move (or be moved) and loses its
+  // Flying and Evasive dodges (heldFast, as Bola's Pin); the thrower holds the rope: it can't swing or move either. Both keep their skills,
+  // shots and triggers. Either one dying (or leaving the board) frees the other (checked live: lassoHeld / lassoHolding, and swept at
+  // each upkeep with a statusEnd 'lassoed'). A miss spends the throw. Not on a Structure, a cage, or a unit already Lassoed.
+  function lassoable(c){ return !!c && c.hp > 0 && !(c.lassoed > 0) && !c.cageOf && !isStructureCard(c); }
+  function liveByUid(uid){ if(uid == null || !curPlayers) return null; for(const pid of [1, 2]){ const pl = curPlayers[pid]; if(!pl) continue; const f = upkeepUnitsOf(pl).find(x=> x && x.uid === uid && x.hp > 0 && !x.gap); if(f) return f; } return null; }
+  function lassoHeld(c){ if(!(c && c.lassoed > 0)) return false; const by = liveByUid(c.lassoBy); return !!(by && by.lassoing === c.uid); }
+  function lassoHolding(c){ if(!(c && c.lassoing != null)) return false; const t = liveByUid(c.lassoing); return !!(t && t.lassoed > 0 && t.lassoBy === c.uid); }
+  // Bola's Pin and the Lasso hold (ENG15, 2026-10-31, owner Y3: "Bola also removes Flying and Evade benefits"): no Flying or Evasive dodge.
+  function heldFast(c){ return !!c && (c.pinDown > 0 || lassoHeld(c)); }
+  function lassoSweep(players, sideOf, events){ const prev = curPlayers; curPlayers = players || curPlayers;
+    try{ [1, 2].forEach(pid=>{ const pl = players && players[pid]; if(!pl) return; upkeepUnitsOf(pl).forEach(c=>{ if(!c) return;
+      if(c.lassoed > 0 && !lassoHeld(c)){ c.lassoed = 0; c.lassoBy = null; if(recordEvents && events) events.push({type:'statusEnd', status:'lassoed', side:sideOf(pid), uid:c.uid, defId:c.defId}); }
+      if(c.lassoing != null && !lassoHolding(c)) c.lassoing = null; }); }); } finally { curPlayers = prev; } }
   // Bola's Pin (ENG14, 2026-10-30): not on a unit already Pinned, nor on one that broke free last round or this one (c.pinFreed: the round
   // its Pin was spent or ran out), nor on a Structure or a cage.
   function bolaPinnable(c){ return !!c && c.hp > 0 && !(c.pinDown > 0) && !c.cageOf && !isStructureCard(c) && !(c.pinFreed != null && c.pinFreed >= turnNo - 1); }
@@ -6994,8 +7044,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // longer all go off in one volley before anyone swings. Each shooter's shots are one action at Speed 1 in the round's main
   // order (see pickNextAttacker): after every Speed 2+ swing (Quick, Haste), before the Speed 0 swings. hasShotSkill says who
   // gets that action; fireShotsOf fires one shooter's shots (it re-checks that the shooter can still act at that moment).
-  const SHOT_KEYS = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'spitfire', 'snipe', 'bola' /* ENG14 (2026-10-30, X26) */].concat(Object.keys(BOLT_ELEMENTS));
-  function hasShotSkill(c){ const fx = effectsOf(c); return SHOT_KEYS.some(k=> fx[k] && !(Number(fx[k]) < 0)); }
+  const SHOT_KEYS = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'spitfire', 'snipe', 'bola' /* ENG14 (2026-10-30, X26) */, 'lasso' /* ENG15 (2026-10-31) */].concat(Object.keys(BOLT_ELEMENTS));
+  function hasShotSkill(c){ const fx = effectsOf(c); return SHOT_KEYS.some(k=> fx[k] && !(Number(fx[k]) < 0) && !(k === 'lasso' && c && c.lassoUsed)); } // a thrown Lasso is spent (ENG15)
   function fireArrowVolley(players, sideOf, stats, events){ // every shooter at once (kept for callers outside the round order)
     let fired = false; const kc = {}; // 2026-10-18: its kills are credited
     [1,2].forEach(pid=>{
@@ -7038,6 +7088,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // shots and triggers still work. Claude's call (decision ENG14-3): a unit that broke free of a Pin last round (or this one) can't be
         // pinned again yet, so one Bola costs a unit at most every other swing (as Ice Arrow never keeps a unit locked).
         if(Number(fx.bola) > 0) shots.push({amount: Number(fx.bola) + fl17, dmgType: 'physical', bola: true, status: 'pin'});
+        if(Number(fx.lasso) > 0 && !c.lassoUsed){ c.lassoUsed = true; shots.push({amount: Number(fx.lasso) + fl17, dmgType: 'physical', lasso: true, status: 'lasso'}); } // Lasso N (ENG15, 2026-10-31): once
         if(Number(fx.twinShot) > 0){ const foes = liveFoesOf(enemy); const pool = foes.slice(), picks = [];
           while(picks.length < 2 && pool.length) picks.push(pool.splice(Math.floor(rnd()*pool.length), 1)[0]);
           if(picks.length === 1) picks.push(picks[0]);
@@ -7054,7 +7105,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           shots.push({amount: B.noDamage ? 0 : n, n, dmgType: B.dmgType, bolt: B.element, status: B.status, boltKey: k, at: (k === 'fireBolt' && fx.fireBoltBramble) ? 'hq' : undefined /* EN6: Fire Bolt – bramble */, tip: k === 'fireBolt' ? en7ShotTip(fx, 'fireBolt') : null /* EN7 */}); });
         // Spitfire N (2026-10-16, user: "Spitfire - ?"): a Fire Bolt that doesn't aim: every round while Ready it spits N fire at a
         // random enemy unit (the castle if there are none), and 1 in 2 the flames catch a unit beside it for 1.
-        if(fx.spitfire){ const foes = liveFoesOf(enemy).filter(x=> !isInvisible(x)), n = w2N(def, 'spitfire');
+        if(fx.spitfire){ const foes = liveFoesOf(enemy).filter(x=> !isInvisible(x, c)), n = w2N(def, 'spitfire');
           shots.push({amount:n, n, dmgType:'heat', bolt:'fire', boltKey:'spitfire', spitfire:true, at: foes.length ? foes[Math.floor(rnd()*foes.length)] : 'hq'}); }
         if(shots.length && c.invisible > 0){ c.invisible = 0; if(recordEvents && events) events.push({type:'statusEnd', status:'invisible', side:sideOf(pid), uid:c.uid, defId:c.defId, attacked:true}); } // shooting gives it away (2026-10-16)
         // Snipe N (2026-10-13, user: "Snipe N: If there is no opposing unit, shoot a random enemy for N damage").
@@ -7079,7 +7130,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             target = near ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'}; }
           const tEv = {side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: shot.bolt ? shot.n : shot.amount};
           if(recordEvents && events) events.push(shot.bolt ? Object.assign({type:'bolt', element: shot.bolt, key: shot.boltKey}, tEv)
-            : Object.assign({type:'arrow', fire: !!shot.fire, ice: shot.ice || undefined, twin: shot.twin || undefined, volley: shot.volley || undefined, bola: shot.bola || undefined /* ENG14 */}, tEv));
+            : Object.assign({type:'arrow', fire: !!shot.fire, ice: shot.ice || undefined, twin: shot.twin || undefined, volley: shot.volley || undefined, bola: shot.bola || undefined /* ENG14 */, lasso: shot.lasso || undefined /* ENG15 */}, tEv));
           fired = true;
           if(helmetDeflects(target, sideOf(otherId(pid)), events)) return;
           let hitCard = null; shotBounced = false;
@@ -7123,7 +7174,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }));
       return;
     }
-    const target = pickRandomEnemyTarget(enemy);
+    const target = pickRandomEnemyTarget(enemy, attCard);
     if(!helmetDeflects(target, sideOf(otherId(ownerId)), events)){ const [mAmt, mTip] = en7StatusOnly(eff.tip, amount, target); /* ENG9: counters only */ const mh = fireDamageAction(players, sideOf, ownerId, attCard.defId, mAmt, eff.dmgType, target, stats, events, null, attCard.uid, !fromSky);
       if(mh && mTip && ownerPidOfCard(mh) !== ownerId) en7HitStatuses(attCard, mh, sideOf(ownerId), sideOf(otherId(ownerId)), events, 'shot', mTip); } // EN7 (2026-10-24): Missile N – poison / – bleed
     // resolve any kill this missile caused (separate pass so onDeathSpawn/bounty run in the normal cleanup)
@@ -7328,7 +7379,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           // weighs "the castle" as one more possible pick alongside every live enemy card) —
           // Self/Ally random, and every 'adjacent'/'furthest' mode, never redirect to the HQ.
           if(who==='enemy' && sub==='random'){
-            const r = pickRandomEnemyTarget(enemy);
+            const r = pickRandomEnemyTarget(enemy, boardCard);
             if(r.kind==='card'){ const [dA, dT] = en7StatusOnly(en7TrigTip(t), amount, r); /* ENG9: counters only */ const dh = fireDamageAction(players, sideOf, playerId, boardCard.defId, dA, t.dmgType, {kind:'card', card:r.card}, stats, events, null, boardCard.uid, true); if(dh && dT && ownerPidOfCard(dh) !== playerId) en7HitStatuses(boardCard, dh, mySide, sideOf(otherId(playerId)), events, 'shot', dT); } // a shot: Reflect bounces it (2026-10-17); + EN7 – poison / – bleed
             else { fireDamageAction(players, sideOf, playerId, boardCard.defId, amount, t.dmgType, {kind:'hq'}, stats, events, null, boardCard.uid); }
             break;
@@ -7913,11 +7964,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const free = n=> inSlotCols(n) && !occ.has(n) && n !== sl && !eqRubbleBlocks(ai, n);
     const copyOf = (a, h)=> (a + 1) + (h + 1) * 0.45 + 1.5;
     let v = 0; const bc = (d.effects || {}).bloomCopy;
-    if(bc && !isParasiteDef(d)){ const o = aiBloomOdds(bc, ai); if(o > 0) v += o * AI_BLOOM_W * (free(sl - 1) || free(sl + 1) ? copyOf(Number(d.attack)||0, Number(d.health)||0) : 1.45); }
-    allLive(ai).forEach(c=>{ if(!Number.isInteger(c.slot) || c.bloomed || c.cageOf || Math.abs(c.slot - sl) !== 1) return;
+    // ENG15 (2026-10-31, FF5): a Bloom with no room gets nothing now (it waits; was +1/+1 = 1.45), and a copy has no Bloom
+    if(bc && !isParasiteDef(d)){ const o = aiBloomOdds(bc, ai); if(o > 0) v += o * AI_BLOOM_W * (free(sl - 1) || free(sl + 1) ? copyOf(Number(d.attack)||0, Number(d.health)||0) : 0); }
+    allLive(ai).forEach(c=>{ if(!Number.isInteger(c.slot) || c.bloomCopy || c.cageOf || Math.abs(c.slot - sl) !== 1) return;
       const cb = effectsOf(c).bloomCopy; if(!cb || isParasiteDef(CARD_DEFS[c.defId])) return;
       if(free(c.slot + (c.slot - sl))) return; // still room on its other side
-      const o = aiBloomOdds(cb, ai); if(o > 0) v -= o * AI_BLOOM_W * Math.max(0, copyOf(c.atk||0, c.maxHp||0) - 1.45); });
+      const o = aiBloomOdds(cb, ai); if(o > 0) v -= o * AI_BLOOM_W * copyOf(c.atk||0, c.maxHp||0); });
     return v;
   }
   // The open end slots where this unit wins the fight this round (aiChooseSlot's first check, without the dice), or null.
@@ -8936,7 +8988,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Delegates to fireDamageAction (rather than a hand-rolled copy) so onReady
       // damage/missile hits get the same Evasion gate, Guardian-redirect flag, and
       // attUid-tagged events as every other ranged damage source, for free.
-      const target = pickRandomEnemyTarget(enemy);
+      const target = pickRandomEnemyTarget(enemy, card);
       const amount = (eff.amount==='attack') ? card.atk : eff.amount;
       fireDamageAction(players, sideOf, pl.id, card.defId, amount, eff.dmgType, target, stats, events, killCredit, card.uid, true); // a shot: Reflect bounces it (2026-10-17)
     }
@@ -8969,6 +9021,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     sk1PunishTick(players, sideOf, stats, events); // Punish N (2026-10-19, package SK1, flagged): the round's hitters pay first
     try{ eq2ParasiteTick(players, sideOf, stats, events, true); }catch(e){} // Gorge (ENG10, 2026-10-26, PROP1-3): the second, half-strength feed as the round ends
     bleedFadeAtEnd(players, sideOf, events); // EN3 (2026-10-23): Bleed loses its stack after the round's bleeding, not before
+    lassoSweep(players, sideOf, events); // Lasso (ENG15, 2026-10-31): a hold whose other end is gone is released
     // 2026-10-19 (package TS): in a raid (RESERVE_ACTS) the middle and back rows go through this upkeep too (Shell, Crit, Frenzy, and
     // every status counter: a Frozen or Asleep back-row unit used to stay so for good). Their Wait is not ticked here: a middle /
     // back-row unit counts its Wait down on its action (rowSwing in resolveCombat), as since 2026-10-18. No Explode or On Ready there.
@@ -8986,7 +9039,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // removed 2026-09-29 when Evade/Evasion merged into the stateless Evasive keyword.)
     [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{
       c.critUsed = 0;
-      if(c.cowerRound === combatNo) c.cowerRound = null; // Cower lasts the one round (2026-10-14)
+      if(c.cowerRound === combatNo){ c.cowerRound = null; c.cowering = false; } // Cower lasts the one round (2026-10-14); + the pip's flag (ENG15)
       if(c.bleed > 0 || c.ichorBleed) ghostBleedClamp(c);
       c._frenziedThisRound = false; // Frenzy (2026-09-16): one extra attack per round, resets here just like Crit
     }));
@@ -9378,6 +9431,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         addLumber(foe, bounty); // 2026-09-22: bounty pays Lumber, not Gold
         // uid (2026-09-16, item #3): the dying card's own uid, so the UI can drop the "item drop" VFX from where its tile still is.
         if(recordEvents && events) events.push({type:'bounty', side:side2, amount:bounty, fromDefId:card.defId, uid:card.uid});
+      }
+      if(cdef.effects && anadromousOf(cdef.effects) === 'fresh' && !nulled && CARD_DEFS[ANAD_FRY]){ // Anadromous in freshwater (ENG15, 2026-10-31, Y2): it leaves a Fry
+        spawns.push({pl, side, res, src:card, slot: rv ? null : card.slot, near: card.slot, beside: !!rv, fromUid:card.uid, defId:ANAD_FRY, count:1});
+        ensureStat(stats, mySide, card.defId).spawnedTokens += 1;
       }
       if(cdef.effects && cdef.effects.onDeathSpawn && !nulled){ // + a middle / back row: into that row (res, 2026-10-19 RR)
         spawns.push({pl, side, res, src:card, slot: rv ? null : card.slot, near: card.slot, beside: !!rv /* a reviving unit keeps its slot: the tokens go to a flank (2026-10-19) */, fromUid:card.uid, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
@@ -9861,6 +9918,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card.paralyzed>0 && rnd()<0.5){ skipTurn('paralyzed', card, ownId); handledUids.add(uid); return; } // one fresh coin flip, right here, the only time this card is ever considered this round
             if(card.chained){ skipTurn('chained', card, ownId); handledUids.add(uid); return; }
             if(bolaPinSpend(card)){ skipTurn('pinned', card, ownId); handledUids.add(uid); return; } // Bola's Pin (ENG14, 2026-10-30): this swing is lost
+            if(lassoHeld(card) || lassoHolding(card)){ skipTurn('lassoed', card, ownId); handledUids.add(uid); return; } // Lasso (ENG15, 2026-10-31): tied, either end
             // Bound (2026-10-16): was "can't attack"; ENG9 (2026-10-26, OWN-Q1): it swings at half damage (computeHitDamage) and can't move.
             if(card.cageOf){ handledUids.add(uid); return; } // a cage never acts
             if(card.ritualBase && !ritualMet(players[ownId], card)){ skipTurn('ritual', card, ownId); handledUids.add(uid); return; } // Ritual: not yet
@@ -9897,6 +9955,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.paralyzed>0 && rnd()<0.5){ skipTurn('paralyzed', c, ownId); return false; }
       if(c.chained){ skipTurn('chained', c, ownId); return false; }
       if(bolaPinSpend(c)){ skipTurn('pinned', c, ownId); return false; } // Bola's Pin (ENG14, 2026-10-30)
+      if(lassoHeld(c) || lassoHolding(c)){ skipTurn('lassoed', c, ownId); return false; } // Lasso (ENG15, 2026-10-31)
       if(c.ritualBase && !ritualMet(players[ownId], c)){ skipTurn('ritual', c, ownId); return false; }
       if(c.shellSkip || (c.shellQuiet != null && combatNo <= c.shellQuiet)){ skipTurn('shell', c, ownId); return false; }
       if(c.cowerRound === combatNo){ skipTurn('cower', c, ownId); return false; }
@@ -9917,7 +9976,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // stunned, frozen, chained or turned to stone (a Sleep on hit, a Spore Cloud, a stun) loses its swing now; it used to keep its place
       // in the pool and swing anyway.
       poolMeta.forEach((meta, uid)=>{ const c = meta.att; if(!c || !(c.hp > 0)) return;
-        const why = dozing(c) ? 'asleep' : c.stunned ? 'stunned' : c.frozen > 0 ? 'frozen' : c.chained ? 'chained' : c.petrified ? 'petrified' : c.pinDown > 0 ? 'pinned' : null; // + Bola's Pin laid this round before it swung (ENG14, 2026-10-30)
+        const why = dozing(c) ? 'asleep' : c.stunned ? 'stunned' : c.frozen > 0 ? 'frozen' : c.chained ? 'chained' : c.petrified ? 'petrified' : c.pinDown > 0 ? 'pinned' : (lassoHeld(c) || lassoHolding(c)) ? 'lassoed' : null; // + Bola's Pin laid this round before it swung (ENG14, 2026-10-30); + a Lasso (ENG15)
         if(!why) return; poolMeta.delete(uid); handledUids.add(uid); if(why === 'pinned') bolaPinSpend(c);
         if(why === 'frozen'){ if(!frozeNoted.has(uid)){ frozeNoted.add(uid); skipTurn('frozen', c, meta.attId); } c._frozenJustSet = false; } else skipTurn(why, c, meta.attId); });
       const candidates = [];
@@ -10105,10 +10164,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // enemy front row: Fork / Trident / Pitchfork lines (its column ±1 / ±2 in that row), Crab claws (L / R in that row), Tipsy's
       // drift, Octolash's 8 nearest (in that row), Rook / Bishop lane bonuses, Taunt (a Taunt unit in that row, within a column, draws
       // it), Backstab (the nearest unit in that row; none there: the closest other row's nearest). (Was TS: all of these off.)
-      let rowAim = 0; if(rowSwing){ const rt0 = rowTargetAt(players[a.enemyId], a.slot); rowAim = rt0 ? rt0.row : 0; }
+      let rowAim = 0; if(rowSwing){ const rt0 = rowTargetAt(players[a.enemyId], a.slot, a.att); rowAim = rt0 ? rt0.row : 0; }
       let liveEnemyCols = rowAim ? rowColsOf(players[a.enemyId], rowAim) : combatColumnsOf(players[a.enemyId]);
       // Stealth: ignores normal targeting entirely and always hits the enemy HQ directly.
-      let target = (attDef.effects && (attDef.effects.stealth || (attDef.effects.rainrunner && field && field.id === 'rain'))) ? {kind:'hq'} : rowSwing ? rowSwingTarget(players[a.enemyId], a.slot) : resolveLiveTarget(liveOwnCols, liveEnemyCols, liveSelf.col); // Rainrunner: unblockable in the rain (2026-10-12)
+      let target = (attDef.effects && (attDef.effects.stealth || (attDef.effects.rainrunner && field && field.id === 'rain'))) ? {kind:'hq'} : rowSwing ? rowSwingTarget(players[a.enemyId], a.slot, a.att) : resolveLiveTarget(liveOwnCols, liveEnemyCols, liveSelf.col); // Rainrunner: unblockable in the rain (2026-10-12)
       // Trident / Pitchfork / Octolash (2026-10-12, user: "Maybe Pitchfork is Trident + Pierce. Trident is Sweep ... When a unit
       // with these skills attack Left or Right, but it's the castle - it should hit the castle instead ... Add a new skill
       // Octolash - hit 8 nearest opposing units in front of this unit"). Trident strikes the unit in front and both columns
@@ -10251,7 +10310,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // (A Sweep's side hits go along the struck unit's row (sweepCols); a Wave pushes it along that row (washPush, 2026-10-19 RR).)
       let resTarget = !!(target && target.reserveRow); // a row swing's target in the middle / back row (2026-10-19, TS)
       if(RESERVE_ACTS && target && target.kind === 'hq' && !tipsyMiss && !(attDef.effects && (attDef.effects.stealth || attDef.effects.crabClaws || (attDef.effects.rainrunner && field && field.id === 'rain')))){
-        const rt = rowTargetAt(players[a.enemyId], liveSelf.col);
+        const rt = rowTargetAt(players[a.enemyId], liveSelf.col, a.att);
         if(rt && rt.row > 0){ target = {kind:'card', card:rt.card, col:liveSelf.col, reserveRow:rt.row}; resTarget = true;
           // 2026-10-19 (package RR): "Taunt: units in any row with Taunt draw attacks aimed at their row": the swing now goes at that row,
           // so a Taunt unit there, within a column of it, draws it (as a front-row Taunt unit draws a swing at the front row).

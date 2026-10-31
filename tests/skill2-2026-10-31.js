@@ -31,7 +31,8 @@ const near = (a, b, e) => Math.abs(a - b) <= (e || 0.011);
   const sets = plan.rows.filter(r => r.kind === 'set'); ok(sets.length >= 100, `2. ${sets.length} skill prices set`);
   sets.forEach(r => { const e = SK[r.id]; ok(e && e.value === r.value && (r.pow == null || e.pow === r.pow) && e.scale === r.scale && e.skill2Was, `2. ${r.id}: ${r.value}${r.pow != null ? ' x N^' + r.pow : ''} (${r.scale}) written with its history`); });
   plan.rows.filter(r => r.kind === 'kept').forEach(r => ok(SK[r.id] && SK[r.id].value === r.old, `2. ${r.id}: kept at ${r.old} (${r.note})`));
-  ok(SK.anadromous && SK.anadromous.value === 2.1 && !SK.anadromous.skill2Was, '2. Anadromous left to ENG15 (2.1)');
+  // 2026-10-31 (package ENG15): ENG15 reworked and re-priced it (1.4; SKILL2 left it at 2.1, kept as anadEng14Was)
+  ok(SK.anadromous && SK.anadromous.value === 1.4 && (SK.anadromous.anadEng14Was || {}).value === 2.1 && !SK.anadromous.skill2Was, '2. Anadromous left to ENG15 (2.1 then; ENG15 re-priced it 1.4)');
   ok(near(T.skillCost('fletcher', 1), 3.18) && near(T.skillCost('brood', 2), 7.2) && near(T.skillCost('remember', 1), 5) && near(T.skillCost('remember', 2), 2.02, 0.02), '2. DECK1-1: Fletcher 1 3.18, Brood 2 7.2, Remember 1 / 2 5.0 / 2.0');
   // pairs and shorthand mults
   ok(Object.keys(table.pairs || {}).length === 13, `2. 13 trigger pairs (${Object.keys(table.pairs || {}).length})`);
