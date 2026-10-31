@@ -47521,7 +47521,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // Ambush (2026-09-17): this card's guaranteed-crit, un-dodgeable first strike — the engine
   // flags it via ev.ambush on the 'hit'/'hitHQ' event itself (only true the ONE time it's
   // actually consumed), so this fires exactly once per card's lifetime on the board.
-  if(ev.ambush && attEl){ setTimeout(()=> { SoundKit.ambushTone(); floatText(attEl, '🗡 Ambush!', 'quick'); }, animMs().windup-40); }
+  if(ev.ambush && attEl){ setTimeout(()=> { SoundKit.ambushTone(); floatText(attEl, '🗡 Ambush!', 'quick'); try{ ambushEcho(attEl); }catch(e){} }, animMs().windup-40); } // + the pip's echo (2026-10-31, UI10, EE6)
   // Siege (2026-09-17): bonus flat damage specifically when a swing lands on the castle — cue
   // on the HQ tile itself, right alongside the normal hitHQ damage flash.
   if(ev.type==='hitHQ' && ev.siege && targetEl){ setTimeout(()=> { SoundKit.siegeTone(); floatText(targetEl, '🏰 Siege!', 'debuff'); }, 60); }
@@ -49409,6 +49409,20 @@ function devilPulse(el){
     ring.animate([{opacity:0, transform:'translate(-50%,-50%) scale(1.5)'}, {opacity:.9, transform:'translate(-50%,-50%) scale(.9)', offset:.5}, {opacity:0, transform:'translate(-50%,-50%) scale(.3)'}], {duration:900, easing:'ease-in'});
     setTimeout(done, 950);
   }catch(e){ done(); }
+}
+// 2026-10-31 (package UI10, owner EE6): when an Ambush lands, the unit's 👀 Ambush pip gives off echo rings (ripples): 3 expanding, fading rings over
+// ~0.6 s; 2 over ~0.4 s on Effects Low; none on Effects None or with reduced motion. Rings are fixed-position, pointer-less, removed when done.
+function ambushEcho(cardEl){
+  if(!cardEl || reducedMotion()) return 0; const lv = fxLevel(); if(lv === 'none') return 0;
+  const pip = cardEl.querySelector('.ab-sk[data-sk="ambush"]'), r = (pip && pip.getBoundingClientRect().width > 0 ? pip : cardEl).getBoundingClientRect(); if(!(r.width > 0)) return 0;
+  const n = lv === 'low' ? 2 : 3, ms = lv === 'low' ? 400 : 600, x = r.left + r.width / 2, y = r.top + r.height / 2, size = Math.max(14, Math.min(26, r.width)); let made = 0;
+  for(let i = 0; i < n; i++){
+    const d = document.createElement('div'); d.className = 'ambush-echo-ring'; d.setAttribute('aria-hidden', 'true');
+    Object.assign(d.style, {position:'fixed', left:x + 'px', top:y + 'px', width:size + 'px', height:size + 'px', marginLeft:(-size / 2) + 'px', marginTop:(-size / 2) + 'px', borderRadius:'50%', border:'2px solid #ffe14a', boxShadow:'0 0 6px #ffcf2a', zIndex:9990, pointerEvents:'none', opacity:0});
+    document.body.appendChild(d); made++;
+    try{ const an = d.animate([{opacity:.9, transform:'scale(.6)'}, {opacity:0, transform:'scale(3)'}], {duration:ms, delay:i * Math.round(ms / 5), easing:'ease-out', fill:'both'}); an.onfinish = ()=> d.remove(); setTimeout(()=> d.remove(), ms * 2 + 400); }catch(e){ d.remove(); }
+  }
+  return made;
 }
 function devilPayVfx(ev){
   if(ev && matchState && ['amore', 'amoreBroken', 'lumberBurn', 'fireHit'].includes(ev.type)) return skills2Vfx(ev); // 2026-10-16 (skills 2)
