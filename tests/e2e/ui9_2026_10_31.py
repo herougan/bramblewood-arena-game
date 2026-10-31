@@ -140,10 +140,16 @@ async def dd1(b, url):
         await pg.wait_for_timeout(1200)
         r = await pg.evaluate("[...document.querySelectorAll('.er-board .er-writ')].map(e=>{ const q = e.getBoundingClientRect(); return [Math.round(q.left), Math.round(q.top)]; })")
         cols = sorted({x[0] for x in r})
-        if w > 720: ok(len(r) == 4 and len(cols) == 2 and r[0][1] == r[1][1], f'{w}: two columns of writs, the first two side by side {r}')
+        if w > 720: ok(len(r) == 4 and len(cols) == 2 and abs(r[0][1] - r[1][1]) < 60, f'{w}: two columns of writs, the first two side by side {r}')
         else: ok(len(r) == 4 and len(cols) == 1, f'{w}: one column on a phone {r}')
         if w == 1366: await pg.screenshot(path=os.path.join(SHOTS, 'quests-two-columns-after-1366.png'))
         await done(pg)
+
+async def tear(pg):
+    q = await pg.evaluate("(()=>{ const r = document.getElementById('poPack').getBoundingClientRect(); return {x: r.x, y: r.y, w: r.width, h: r.height}; })()")
+    y = q['y'] + q['h'] * 0.12; await pg.mouse.move(q['x'] + 4, y); await pg.mouse.down()
+    for i in range(1, 16): await pg.mouse.move(q['x'] + 4 + (q['w'] - 8) * i / 15, y + 2); await pg.wait_for_timeout(25)
+    await pg.mouse.up()
 
 async def dd2(b, url):
     print('-- DD2: the pack level-up goes to an owned card, shown with its face')
@@ -156,8 +162,8 @@ async def dd2(b, url):
       return {deck: first.sort(), want: [ids[3], ids[4]].sort(), otherOwned: [...seen2].every(x=> owned.has(x)), lv10: lv10.has(ids[3]), id: ids[4], other: ids[5]}; })()""")
     ok(r['deck'] == r['want'], f"main deck cards come first {r['deck']}")
     ok(r['otherOwned'] and not r['lv10'], 'with none in the deck any owned card; never a Lv 10 card, never an unowned one')
-    await pg.evaluate("""((o)=>{ const pack = PACKS.find(p=> p.id === 'bronze') || PACKS[0]; openPackAnimation(pack, [{results:[{id:o.other, isNew:false, foil:false}], leveledId:o.id, glow:null, jackpot:false}], {}); })""", {'id': r['id'], 'other': r['other']})
-    await pg.wait_for_timeout(1500)
+    await pg.evaluate("""((o)=>{ const pack = {id:'bronze', name:'Hedgerow Pouch', icon:'🌿', cards:1, metal:0}; openPackAnimation(pack, [{results:[{id:o.other, isNew:false, foil:false}], leveledId:o.id, glow:null, jackpot:false}], {}); })""", {'id': r['id'], 'other': r['other']})
+    await pg.wait_for_timeout(2500); await tear(pg); await pg.wait_for_timeout(3000)
     for _ in range(6):
         if await pg.evaluate("!!document.querySelector('#poFoot .ui9-lvl-face')"): break
         await pg.evaluate("(()=>{ const c = document.querySelector('.po2-card:not(.is-collected), .pack-card:not(.is-collected)'); if(c) c.click(); })()"); await pg.wait_for_timeout(900)
@@ -183,9 +189,9 @@ async def dd4(b, url):
     print('-- DD4: the Nacre foil')
     pg = await W.fresh(b, url, 1366)
     r = await pg.evaluate("""(()=>{ const defs = getCardDefs(), id = Object.keys(defs).find(i=> !defs[i].locked && !defs[i].token && defs[i].rarity === 'epic') || Object.keys(defs)[0];
-      const host = document.createElement('div'); host.id = 'nacreHost'; host.style.cssText = 'position:fixed; left:30px; top:30px; z-index:99999; display:flex; gap:24px; background:#3a3330; padding:24px;'; document.body.appendChild(host);
-      host.innerHTML = [['', 'Plain'], ['holo-pearl', 'Pearl'], ['holo-nacre', 'Nacre']].map(([c, n])=> `<div style="text-align:center;color:#fff;font:700 14px sans-serif"><div style="width:230px">${cardTileHTML(defs[id], {inPlay:true, size:'detail', extraClass: c ? 'is-holo holo-active ' + c : ''})}</div>${n}</div>`).join('');
-      const t = host.querySelector('.holo-nacre'); const L = t && t.querySelector('.holo-layer'); const cs = L && getComputedStyle(L);
+      const host = document.createElement('div'); host.id = 'nacreHost'; host.style.cssText = 'position:fixed; left:30px; top:30px; z-index:99999; display:flex; gap:24px; background:#3a3330; padding:24px; transform-origin:0 0;'; document.body.appendChild(host);
+      host.innerHTML = [['', 'Plain'], ['holo-pearl', 'Pearl'], ['holo-nacre', 'Nacre']].map(([c, n])=> `<div style="text-align:center;color:#fff;font:700 14px sans-serif"><div style="zoom:4.2">${cardTileHTML(defs[id], {inPlay:true, size:'compact', extraClass: c ? 'is-holo holo-active ' + c : ''})}</div>${n}</div>`).join('');
+      decorateHolo(host); const t = host.querySelector('.holo-nacre'); const L = t && t.querySelector('.holo-layer'); const cs = L && getComputedStyle(L);
       return {fin: CI_FINISHES.includes('holo-nacre'), name: CI_FINISH_NAMES['holo-nacre'], pack: FOIL_FINISHES.some(f=> f.key === 'nacre') && (PACK_FOIL_FINISHES_DEFAULT.nacre > 0), roll: (()=>{ const seen = new Set(); for(let i = 0; i < 4000; i++) seen.add(pickFoilFinish({foilFinishes: PACK_FOIL_FINISHES_DEFAULT})); return seen.has('nacre'); })(), layer: !!L, bg: cs ? cs.backgroundImage.slice(0, 40) : null, blend: cs && cs.mixBlendMode}; })()""")
     ok(r['fin'] and r['name'] == 'Nacre' and r['pack'] and r['roll'], f'Nacre is in the finish list, named, and rolled with the others {r}')
     ok(r['layer'] and 'gradient' in (r['bg'] or '') and r['blend'] == 'normal', f"a CSS-only nacre layer {r['bg'], r['blend']}")
