@@ -12663,59 +12663,21 @@
     {
      "id": "9-BPRO-1",
      "name": "9-BPRO-1",
-     "focus": "open",
-     "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "tide x10",
-      "heal x7"
-     ],
-     "level": 1,
-     "leaders": [
-      "mangrove-manatee"
-     ],
-     "deck": {
-      "caiman-hatchling": 3,
-      "fiddler-crab-swarm": 4,
-      "mangrove-manatee": 3,
-      "minnow-skitter": 3,
-      "mudpuppy": 4,
-      "sunbittern-strider": 3
-     },
-     "source": {
-      "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
-      "mode": "bpro2",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
-      "score": 0.7792,
-      "ci": [
-       0.7278,
-       0.8306
-      ],
-      "avgLumber": 0.3,
-      "generated": "2026-10-31T04:16:19.107Z"
-     },
-     "h2h": null,
-     "later": []
-    },
-    {
-     "id": "9-BPRO-2",
-     "name": "9-BPRO-2",
      "focus": "big",
      "labels": [
-      "big (12 copies at 1+ Lumber, average 0.6)",
-      "tide x7",
-      "heal x7"
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "tide x11"
      ],
      "level": 1,
      "leaders": [
       "mangrove-manatee"
      ],
      "deck": {
-      "banded-sea-krait": 3,
+      "caiman-hatchling": 4,
       "fiddler-crab-swarm": 4,
+      "mangrove-kingfisher": 1,
       "mangrove-manatee": 3,
-      "mangrove-monitor": 2,
-      "mudpuppy": 4,
+      "mangrove-mudskipper": 4,
       "sunbittern-strider": 4
      },
      "source": {
@@ -12723,13 +12685,50 @@
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
-      "score": 0.7583,
+      "score": 0.775,
       "ci": [
-       0.7061,
-       0.8106
+       0.7236,
+       0.8264
       ],
-      "avgLumber": 0.6,
-      "generated": "2026-10-31T04:16:19.107Z"
+      "avgLumber": 0.4,
+      "generated": "2026-10-31T04:48:33.438Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "9-BPRO-2",
+     "name": "9-BPRO-2",
+     "focus": "swarm",
+     "labels": [
+      "swarm (17 copies at 0 Lumber)",
+      "tide x12",
+      "heal x7"
+     ],
+     "level": 1,
+     "leaders": [
+      "mangrove-manatee"
+     ],
+     "deck": {
+      "caiman-hatchling": 4,
+      "fiddler-crab-swarm": 4,
+      "mangrove-manatee": 3,
+      "mangrove-mudskipper": 1,
+      "minnow-skitter": 4,
+      "mudpuppy": 4
+     },
+     "source": {
+      "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
+      "mode": "bpro2",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
+      "score": 0.7292,
+      "ci": [
+       0.6744,
+       0.784
+      ],
+      "avgLumber": 0.15,
+      "generated": "2026-10-31T04:48:33.438Z"
      },
      "h2h": null,
      "later": []
@@ -12737,10 +12736,10 @@
     {
      "id": "9-BPRO-3",
      "name": "9-BPRO-3",
-     "focus": "swarm",
+     "focus": "family:tide",
      "labels": [
-      "swarm (15 copies at 0 Lumber)",
-      "tide x15"
+      "big (11 copies at 1+ Lumber, average 0.6)",
+      "tide x9"
      ],
      "level": 1,
      "leaders": [
@@ -12750,22 +12749,22 @@
       "caiman-hatchling": 3,
       "fiddler-crab-swarm": 4,
       "mangrove-manatee": 3,
-      "mangrove-monitor": 2,
-      "mangrove-mudskipper": 4,
-      "minnow-skitter": 4
+      "mangrove-monitor": 4,
+      "minnow-skitter": 2,
+      "sunbittern-strider": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
-      "score": 0.7417,
+      "score": 0.7292,
       "ci": [
-       0.6883,
-       0.7951
+       0.6744,
+       0.784
       ],
-      "avgLumber": 0.25,
-      "generated": "2026-10-31T04:16:19.107Z"
+      "avgLumber": 0.55,
+      "generated": "2026-10-31T04:48:33.438Z"
      },
      "h2h": null,
      "later": []
@@ -12773,35 +12772,36 @@
     {
      "id": "9-BPRO-4",
      "name": "9-BPRO-4",
-     "focus": "family:tide",
+     "focus": "open",
      "labels": [
-      "big (11 copies at 1+ Lumber, average 0.6)",
-      "tide x10"
+      "swarm (15 copies at 0 Lumber)",
+      "tide x13",
+      "heal x6"
      ],
      "level": 1,
      "leaders": [
       "mangrove-manatee"
      ],
      "deck": {
-      "archerfish": 4,
-      "mangrove-manatee": 3,
-      "mangrove-monitor": 4,
+      "fiddler-crab-swarm": 4,
+      "fishing-cat": 3,
+      "mangrove-manatee": 2,
       "mangrove-mudskipper": 4,
       "minnow-skitter": 3,
-      "mudpuppy": 2
+      "mudpuppy": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
-      "score": 0.675,
+      "score": 0.6375,
       "ci": [
-       0.6174,
-       0.7326
+       0.5792,
+       0.6958
       ],
-      "avgLumber": 0.55,
-      "generated": "2026-10-31T04:16:19.107Z"
+      "avgLumber": 0.25,
+      "generated": "2026-10-31T04:48:33.438Z"
      },
      "h2h": null,
      "later": []
@@ -12913,7 +12913,7 @@
     "BPRO: 9-BPRO-1 dropped: electric-catfish: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "DECK1: 4 focused decks (9-PRO-1 family:tide, 9-PRO-2 swarm, 9-PRO-3 big, 9-PRO-4 open); the previous PRO decks are under history",
-    "SKILL2 BPRO: 4 focused decks from the map's list (9-BPRO-1 open, 9-BPRO-2 big, 9-BPRO-3 swarm, 9-BPRO-4 family:tide); the previous BPRO decks are under history"
+    "SKILL2 BPRO: 4 focused decks from the map's list (9-BPRO-1 big, 9-BPRO-2 swarm, 9-BPRO-3 family:tide, 9-BPRO-4 open); the previous BPRO decks are under history"
    ],
    "history": [
     {

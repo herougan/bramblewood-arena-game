@@ -1,0 +1,95 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "test",
+ "status": "fail",
+ "started": "2026-10-31T04:35:00.364Z",
+ "finished": "2026-10-31T04:36:25.624Z",
+ "durationSec": 85.3,
+ "args": [],
+ "head": "1106fdbd",
+ "inputs": {
+  "smoke": true,
+  "only": "level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool|budget2|skill2|skill-costs|skill-worth|speed1|bpro|deck1",
+  "full": false,
+  "knownList": 10
+ },
+ "counts": {
+  "tests run": 20,
+  "passed": 9,
+  "failed": 11,
+  "cached": 0
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "card-pass-2026-10-19",
+   "why": "NEW test failure (not in the known list); see docs/balance/pipeline/state/test-*.log"
+  },
+  {
+   "id": "level-curve-2026-10-19",
+   "why": "NEW test failure (not in the known list); see docs/balance/pipeline/state/test-*.log"
+  },
+  {
+   "id": "raid-rb2-2026-10-19",
+   "why": "NEW test failure (not in the known list); see docs/balance/pipeline/state/test-*.log"
+  },
+  {
+   "id": "budget2-2026-10-31",
+   "why": "NEW test failure (not in the known list); see docs/balance/pipeline/state/test-*.log"
+  },
+  {
+   "id": "skill2-2026-10-31",
+   "why": "NEW test failure (not in the known list); see docs/balance/pipeline/state/test-*.log"
+  },
+  {
+   "id": "speed1-2026-10-31",
+   "why": "NEW test failure (not in the known list); see docs/balance/pipeline/state/test-*.log"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/state/test-balance.log"
+ ],
+ "tests": {
+  "passed": 9,
+  "failed": 11,
+  "cached": 0,
+  "runs": [
+   {
+    "label": "smoke",
+    "passed": 5,
+    "failed": 2,
+    "cached": 0,
+    "seconds": 48
+   },
+   {
+    "label": "only level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool|budget2|skill2|skill-costs|skill-worth|speed1|bpro|deck1",
+    "passed": 4,
+    "failed": 9,
+    "cached": 0,
+    "seconds": 36
+   }
+  ],
+  "knownFailures": [
+   "d-2026-10-19",
+   "skill-costs-2026-10-19",
+   "card-pool-2026-10-19",
+   "skill-worth-2026-10-19"
+  ],
+  "newFailures": [
+   "card-pass-2026-10-19",
+   "level-curve-2026-10-19",
+   "raid-rb2-2026-10-19",
+   "budget2-2026-10-31",
+   "skill2-2026-10-31",
+   "speed1-2026-10-31"
+  ],
+  "only": "level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool|budget2|skill2|skill-costs|skill-worth|speed1|bpro|deck1"
+ },
+ "stages": null,
+ "file": "docs/balance/pipeline/test-2026-10-31-1235.json"
+}

@@ -6,7 +6,9 @@
 //   - the card has no fit at all (its skills alone break a cap), or the plan holds it (Anadromous: ENG15; the Dragons; the held Bee Drone / Worker Ant);
 //   - the change is more than 2 stat points (|dAttack| + |dHealth|, config.json refit.maxStatPoints);
 //   - theme clash: the card would change body shape (hitter / balanced / wall) or the fit gives up its last point of Attack;
-//   - a named owner card (config.json refit.ownerCards: BUDGET2-5, DECK1-1, DECK1-5, RECOST1-5).
+//   - a named owner card (config.json refit.ownerCards: BUDGET2-5, DECK1-1, DECK1-5, RECOST1-5);
+//   - the two budgets disagree: the rule works on bramblewood-budget.js as the game reads it (Flying x1.13), but tools/skill_costs.js budget() (tests, bench, hub)
+//     ignores MISS_MULT_BY, so a change the tests would reject is flagged instead of applied (a fix to that file is for its owner).
 // "Pushed out" = inside tolerance under the skill table and budget constants of the last `price` step's snapshot, outside now; a card that was
 // already outside is left alone (the Dragons, eggs, equipment). Out-of-play cards are counted, not touched.
 //   run.sh refit [--dry] [--ids a,b]   (--dry: the plan and the summary, cards.json untouched)
@@ -22,6 +24,7 @@ function classify(r, cfg, byId) {
   if (cfg.ownerCards.includes(r.id)) why.push('named owner card (' + cfg.ownerWhy + ')');
   if ((c.effects || {})[cfg.skipSkills[0]]) why.push(cfg.skipSkills[0] + ': ' + cfg.skipWhy);
   if (pts > cfg.maxStatPoints) why.push(`${pts} stat points change (limit ${cfg.maxStatPoints})`);
+  if (r.plainOk === false) why.push("tools/skill_costs.js budget() (the tests' and the bench's view: a flat x1.5 per half-miss skill, MISS_MULT_BY not read) still puts the new stats outside the band; the game's own check accepts them");
   if (a0 != null && a1 != null && (shapeOf(a0, h0) !== shapeOf(a1, h1) || (a0 >= 1 && a1 < 1))) why.push('theme clash: ' + cfg.themeWhy);
   return { why, pts };
 }

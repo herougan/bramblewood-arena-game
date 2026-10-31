@@ -34,7 +34,7 @@ const NEW = SC.make(NEWT), OLD = SC.make(OLDT);
 // missMult (1.5) and never reads MISS_MULT_BY, which is what the game's sbCheck reads (Flying x1.39 -> x1.13, SKILL2-2). Here the half-miss
 // multiplier is swapped for the budget file's own (BB.missMultOf, with the table's budget as cfg, so an old snapshot's missMultBy applies) and cap 2
 // reads S at CAP2_S_SCALE; the stat terms of both caps scale linearly with m. Left off by default: the SKILL2 plan stays reproducible.
-if (process.env.SKILL2_MISSMULT) [[NEW, NEWT], [OLD, OLDT]].forEach(([T, table]) => { const B = table.budget || {}, f = T.budget;
+if (process.env.SKILL2_MISSMULT) [[NEW, NEWT], [OLD, OLDT]].forEach(([T, table]) => { const B = table.budget || {}, f = T.budget; T.budgetPlain = f; // budgetPlain: tools/skill_costs.js as it is (the tests', the bench's and the hub's view)
   T.budget = function (d, o) { const b = f(d, o), e = (d && d.effects) || {}, mNew = BB.missMultOf(e, B); if (!(b.m > 0) || Math.abs(mNew - b.m) < 1e-9) return b;
     const fz = b.f || 1, q = mNew / b.m, cs = BB.cap2SOf ? BB.cap2SOf(b.S, B) : (b.S * Math.abs(b.S)), x1 = r2(fz * ((b.x1 / fz - b.S) * q + b.S)), x2 = r2(fz * ((b.x2 / fz - cs) * q + cs)), ok = x1 <= b.N && x2 <= b.N2;
     return Object.assign({}, b, { x1, x2, ok, wellUnder: ok && x1 <= b.N * 0.6, m: mNew }); }; });
@@ -113,7 +113,9 @@ function main() {
     { const pts = A => 3 * (+A.attack || 0) + (+A.health || 0), after = { attack: (+c.attack || 0) + f.dA, health: c.health + f.dH };
       if (vNew.over && pts(after) < 0.6 * pts(c)) { held.push(Object.assign(base, { why: 'only ' + after.attack + '/' + after.health + ' fits (cap 2): more than 40% of its stats; held for SKILL2-1' })); return; } }
     const A = c.attack == null ? null : (+c.attack || 0) + f.dA, H = c.health + f.dH;
-    rows.push(Object.assign(base, { kind: vNew.over ? 'trim' : 'lift', dA: f.dA, dH: f.dH, attack: A, health: H, to: `${A == null ? '-' : A}/${H}`, after: { use: f.w.use, N: f.w.N, x1: f.w.x1, x2: f.w.x2, cap2: f.w.cap2 } }));
+    // plainOk (SPEED1): does tools/skill_costs.js budget(), which reads a flat x1.5 per half-miss skill, also accept the new stats? false = the tests' view says over/under
+    const plainOk = !NEW.budgetPlain ? true : (() => { const t = Object.assign({}, c, { attack: A, health: H }), b = NEW.budgetPlain(t), b1 = NEW.budgetPlain(t, { level: 1 }); return !!(b.ok && b1.ok && b.x1 > WELL_UNDER * b.N); })();
+    rows.push(Object.assign(base, { kind: vNew.over ? 'trim' : 'lift', dA: f.dA, dH: f.dH, attack: A, health: H, to: `${A == null ? '-' : A}/${H}`, plainOk, after: { use: f.w.use, N: f.w.N, x1: f.w.x1, x2: f.w.x2, cap2: f.w.cap2 } }));
   });
   const size = r => Math.abs(r.dA || 0) * 3 + Math.abs(r.dH || 0);
   rows.sort((a, b) => (b.inPlay - a.inPlay) || (a.kind < b.kind ? -1 : a.kind > b.kind ? 1 : 0) || size(b) - size(a) || (a.id < b.id ? -1 : 1));

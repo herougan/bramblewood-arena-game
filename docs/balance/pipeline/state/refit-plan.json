@@ -5,7 +5,7 @@
  "counts": {
   "inPlay": 451,
   "outOfPlay": 363,
-  "inPlayPushed": 9,
+  "inPlayPushed": 5,
   "outPushed": 0,
   "outsideBefore": 161,
   "outsideBeforeIds": [
@@ -201,6 +201,7 @@
    "attack": 3,
    "health": 4,
    "to": "3/4",
+   "plainOk": false,
    "after": {
     "use": 0.71,
     "N": 23.43,
@@ -237,6 +238,7 @@
    "attack": 3,
    "health": 2,
    "to": "3/2",
+   "plainOk": false,
    "after": {
     "use": 0.7,
     "N": 19.93,
@@ -273,120 +275,13 @@
    "attack": 3,
    "health": 4,
    "to": "3/4",
+   "plainOk": false,
    "after": {
     "use": 0.7,
     "N": 24.66,
     "x1": 17.23,
     "x2": 15.42,
     "cap2": 0.15
-   }
-  },
-  {
-   "id": "mountain-goat-climber",
-   "name": "Mountain Goat Climber",
-   "rarity": "uncommon",
-   "inPlay": true,
-   "stats": "1/6",
-   "old": {
-    "use": 0.65,
-    "N": 18.99,
-    "x1": 12.33,
-    "S": 0,
-    "verdict": "ok"
-   },
-   "new": {
-    "use": 0.54,
-    "N": 18.99,
-    "x1": 10.17,
-    "x2": 6.78,
-    "N2": 62.91,
-    "S": 0,
-    "verdict": "under"
-   },
-   "kind": "lift",
-   "dA": 0,
-   "dH": 2,
-   "attack": 1,
-   "health": 8,
-   "to": "1/8",
-   "after": {
-    "use": 0.65,
-    "N": 18.99,
-    "x1": 12.43,
-    "x2": 9.04,
-    "cap2": 0.14
-   }
-  },
-  {
-   "id": "swordbill-challenger",
-   "name": "Swordbill Challenger",
-   "rarity": "rare",
-   "inPlay": true,
-   "stats": "1/6",
-   "old": {
-    "use": 0.64,
-    "N": 20.22,
-    "x1": 12.91,
-    "S": 0.4,
-    "verdict": "ok"
-   },
-   "new": {
-    "use": 0.52,
-    "N": 20.22,
-    "x1": 10.57,
-    "x2": 6.82,
-    "N2": 71.32,
-    "S": 0.4,
-    "verdict": "under"
-   },
-   "kind": "lift",
-   "dA": 0,
-   "dH": 2,
-   "attack": 1,
-   "health": 8,
-   "to": "1/8",
-   "after": {
-    "use": 0.63,
-    "N": 20.22,
-    "x1": 12.83,
-    "x2": 9.08,
-    "cap2": 0.13
-   }
-  },
-  {
-   "id": "ash-cloud-condor",
-   "name": "Ash Cloud Condor",
-   "rarity": "rare",
-   "inPlay": true,
-   "stats": "3/3",
-   "old": {
-    "use": 0.71,
-    "N": 26.29,
-    "x1": 18.63,
-    "S": 1.95,
-    "verdict": "ok"
-   },
-   "new": {
-    "use": 0.59,
-    "N": 26.29,
-    "x1": 15.51,
-    "x2": 11.12,
-    "N2": 120.57,
-    "S": 1.95,
-    "verdict": "under"
-   },
-   "kind": "lift",
-   "dA": 0,
-   "dH": 1,
-   "attack": 3,
-   "health": 4,
-   "to": "3/4",
-   "after": {
-    "use": 0.63,
-    "N": 26.29,
-    "x1": 16.64,
-    "x2": 14.51,
-    "cap2": 0.12
    }
   },
   {
@@ -417,6 +312,7 @@
    "attack": 1,
    "health": 6,
    "to": "1/6",
+   "plainOk": true,
    "after": {
     "use": 0.62,
     "N": 17.83,
@@ -453,48 +349,13 @@
    "attack": 1,
    "health": 3,
    "to": "1/3",
+   "plainOk": true,
    "after": {
     "use": 0.65,
     "N": 14.09,
     "x1": 9.19,
     "x2": 4.84,
     "cap2": 0.14
-   }
-  },
-  {
-   "id": "plains-zebra",
-   "name": "Plains Zebra",
-   "rarity": "uncommon",
-   "inPlay": true,
-   "stats": "1/6",
-   "old": {
-    "use": 0.71,
-    "N": 17.36,
-    "x1": 12.33,
-    "S": 0,
-    "verdict": "ok"
-   },
-   "new": {
-    "use": 0.59,
-    "N": 17.36,
-    "x1": 10.17,
-    "x2": 6.78,
-    "N2": 52.57,
-    "S": 0,
-    "verdict": "under"
-   },
-   "kind": "lift",
-   "dA": 0,
-   "dH": 1,
-   "attack": 1,
-   "health": 7,
-   "to": "1/7",
-   "after": {
-    "use": 0.65,
-    "N": 17.36,
-    "x1": 11.3,
-    "x2": 7.91,
-    "cap2": 0.15
    }
   }
  ],

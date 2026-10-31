@@ -15,7 +15,8 @@ const near = (a, b, e)=> Math.abs(a - b) <= (e == null ? 0.011 : e);
 ok(BB.DEFAULTS.attackWeight === 3 && table.budget.attackWeight === 3, '1. attackWeight 3 in bramblewood-budget.js and the skill-costs budget line');
 ok(BB.DEFAULTS.scale === 1.13 && table.budget.scale === 1.13 && BB.DEFAULTS.cap2Mult === 1.57 && table.budget.cap2Mult === 1.57, '1. N x 1.13, cap2Mult 1.57 (2 / 1.13²) in both');
 ok(near(1.57 * 1.13 * 1.13, 2, 0.01), '1. the cap-2 limit is unchanged in absolute terms (1.57 x 1.13² = 2.00)');
-ok(BB.capScores(3, 5, 1, {}, null).x1 === 15 && BB.capScores(3, 5, 1, {}, null).x2 === 16, '1. cap 1 is 3A + H + S (3/5 with S 1: 15), cap 2 A·H + S·|S| (16)');
+// 2026-10-31 (SPEED1, owner SKILL2-1): cap 2 reads S at CAP2_S_SCALE 0.5, (S/2)·|S/2|: 15.25 for S 1; cfg.cap2SScale 1 is the BUDGET2 rule, A·H + S·|S| = 16
+ok(BB.capScores(3, 5, 1, {}, null).x1 === 15 && BB.capScores(3, 5, 1, {}, null).x2 === 15.25 && BB.capScores(3, 5, 1, {}, { cap2SScale: 1 }).x2 === 16, '1. cap 1 is 3A + H + S (3/5 with S 1: 15), cap 2 A·H + (S/2)·|S/2| (15.25; 16 at cap2SScale 1)');
 ok(near(BB.nAt(10, 1), 1.13 * (10 + 1 / 15) * (31 / 30)) && near(BB.nAt(10, 0), 1.13 * 9), '1. N(1) = 1.13 x (Base + 1/15)(1 + 1/30); N(0) = 1.13 x (Base - 1)');
 ok(BB.formulaParts().cap1 === '(3A + H)×m + S ≤ N', '1. the formula text says 3A + H');
 ok(BB.contextS('diurnalGrant', {attack: 1, health: 1}, ()=> 0).inner === 4 && BB.zeitS('nocturnal', {nocturnal: 2}).S === 3.18, '1. braces and the time of day count 3A + H (+1/+1 = 4; Nocturnal 2 = 0.53 x 6)');

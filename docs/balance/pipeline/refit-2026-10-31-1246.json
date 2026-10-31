@@ -1,0 +1,103 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "refit",
+ "status": "ok",
+ "started": "2026-10-31T04:46:37.354Z",
+ "finished": "2026-10-31T04:46:39.586Z",
+ "durationSec": 2.2,
+ "args": [],
+ "head": "1106fdbd",
+ "inputs": {
+  "priceSnapshot": "docs/balance/pipeline/state/skill-costs.before-price.json",
+  "plan": "docs/balance/pipeline/state/refit-plan.json",
+  "cardsSha": "d6d6d29650",
+  "dry": false,
+  "rule": "tools/skill2_refit_2026_10_31.js",
+  "limits": {
+   "maxStatPoints": 2
+  }
+ },
+ "counts": {
+  "in play checked": 451,
+  "pushed out": 5,
+  "rule-clean": 0,
+  "flagged": 5,
+  "out of play (not touched)": 0,
+  "outside before (left)": 161,
+  "applied": 0
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "gold-throated-acolyte",
+   "why": "2/4 -> 3/4 proposed (lift): tools/skill_costs.js budget() (the tests' and the bench's view: a flat x1.5 per half-miss skill, MISS_MULT_BY not read) still puts the new stats outside the band; the game's own check accepts them",
+   "proposal": {
+    "from": "2/4",
+    "to": "3/4",
+    "kind": "lift",
+    "useBefore": 0.81,
+    "useNow": 0.55,
+    "useAfter": 0.71
+   }
+  },
+  {
+   "id": "mangrove-kingfisher",
+   "why": "2/2 -> 3/2 proposed (lift): tools/skill_costs.js budget() (the tests' and the bench's view: a flat x1.5 per half-miss skill, MISS_MULT_BY not read) still puts the new stats outside the band; the game's own check accepts them",
+   "proposal": {
+    "from": "2/2",
+    "to": "3/2",
+    "kind": "lift",
+    "useBefore": 0.76,
+    "useNow": 0.51,
+    "useAfter": 0.7
+   }
+  },
+  {
+   "id": "mirror-moth",
+   "why": "2/4 -> 3/4 proposed (lift): tools/skill_costs.js budget() (the tests' and the bench's view: a flat x1.5 per half-miss skill, MISS_MULT_BY not read) still puts the new stats outside the band; the game's own check accepts them",
+   "proposal": {
+    "from": "2/4",
+    "to": "3/4",
+    "kind": "lift",
+    "useBefore": 0.8,
+    "useNow": 0.54,
+    "useAfter": 0.7
+   }
+  },
+  {
+   "id": "candle-moth",
+   "why": "1/5 -> 1/6 proposed (lift): theme clash: the change moves the card to another body shape (hitter / balanced / wall: Attack / Health 0.4 and up / 0.2-0.4 / below) or takes its last point of Attack",
+   "proposal": {
+    "from": "1/5",
+    "to": "1/6",
+    "kind": "lift",
+    "useBefore": 0.67,
+    "useNow": 0.56,
+    "useAfter": 0.62
+   }
+  },
+  {
+   "id": "daily-post",
+   "why": "1/2 -> 1/3 proposed (lift): theme clash: the change moves the card to another body shape (hitter / balanced / wall: Attack / Health 0.4 and up / 0.2-0.4 / below) or takes its last point of Attack",
+   "proposal": {
+    "from": "1/2",
+    "to": "1/3",
+    "kind": "lift",
+    "useBefore": 0.66,
+    "useNow": 0.57,
+    "useAfter": 0.65
+   }
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/state/refit-plan.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/refit-2026-10-31-1246.json"
+}

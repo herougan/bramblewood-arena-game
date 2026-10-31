@@ -1,12 +1,8 @@
-cards measured: 451 in play, 363 out of play; pushed out by the new prices: 9 in play, 0 out of play; outside before (left): 161
-changes: 9 in play (0 trims, 9 lifts, 0 named), 0 out of play; held 0
+cards measured: 451 in play, 363 out of play; pushed out by the new prices: 5 in play, 0 out of play; outside before (left): 161
+changes: 5 in play (0 trims, 5 lifts, 0 named), 0 out of play; held 0
   IN  lift   gold-throated-acolyte        uncommon      2/4 -> 3/4    use 0.81 -> 0.55 -> 0.71  S 0 -> 0
   IN  lift   mangrove-kingfisher          rare          2/2 -> 3/2    use 0.76 -> 0.51 -> 0.7  S 0 -> 0
   IN  lift   mirror-moth                  rare          2/4 -> 3/4    use 0.8 -> 0.54 -> 0.7  S 0.63 -> 0.63
-  IN  lift   mountain-goat-climber        uncommon      1/6 -> 1/8    use 0.65 -> 0.54 -> 0.65  S 0 -> 0
-  IN  lift   swordbill-challenger         rare          1/6 -> 1/8    use 0.64 -> 0.52 -> 0.63  S 0.4 -> 0.4
-  IN  lift   ash-cloud-condor             rare          3/3 -> 3/4    use 0.71 -> 0.59 -> 0.63  S 1.95 -> 1.95
   IN  lift   candle-moth                  common        1/5 -> 1/6    use 0.67 -> 0.56 -> 0.62  S 0.9 -> 0.9
   IN  lift   daily-post                   common        1/2 -> 1/3    use 0.66 -> 0.57 -> 0.65  S 2.41 -> 2.41
-  IN  lift   plains-zebra                 uncommon      1/6 -> 1/7    use 0.71 -> 0.59 -> 0.65  S 0 -> 0
 wrote docs/balance/pipeline/state/refit-plan.json

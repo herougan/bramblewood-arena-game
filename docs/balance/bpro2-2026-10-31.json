@@ -1818,38 +1818,18 @@
     "bpro": [
      {
       "id": "9-BPRO-1",
-      "focus": "open",
-      "score": 0.7792,
-      "ci": [
-       0.7278,
-       0.8306
-      ],
-      "deck": {
-       "caiman-hatchling": 3,
-       "fiddler-crab-swarm": 4,
-       "mangrove-manatee": 3,
-       "minnow-skitter": 3,
-       "mudpuppy": 4,
-       "sunbittern-strider": 3
-      },
-      "leaders": [
-       "mangrove-manatee"
-      ]
-     },
-     {
-      "id": "9-BPRO-2",
       "focus": "big",
-      "score": 0.7583,
+      "score": 0.775,
       "ci": [
-       0.7061,
-       0.8106
+       0.7236,
+       0.8264
       ],
       "deck": {
-       "banded-sea-krait": 3,
+       "caiman-hatchling": 4,
        "fiddler-crab-swarm": 4,
+       "mangrove-kingfisher": 1,
        "mangrove-manatee": 3,
-       "mangrove-monitor": 2,
-       "mudpuppy": 4,
+       "mangrove-mudskipper": 4,
        "sunbittern-strider": 4
       },
       "leaders": [
@@ -1857,20 +1837,40 @@
       ]
      },
      {
-      "id": "9-BPRO-3",
+      "id": "9-BPRO-2",
       "focus": "swarm",
-      "score": 0.7417,
+      "score": 0.7292,
       "ci": [
-       0.6883,
-       0.7951
+       0.6744,
+       0.784
+      ],
+      "deck": {
+       "caiman-hatchling": 4,
+       "fiddler-crab-swarm": 4,
+       "mangrove-manatee": 3,
+       "mangrove-mudskipper": 1,
+       "minnow-skitter": 4,
+       "mudpuppy": 4
+      },
+      "leaders": [
+       "mangrove-manatee"
+      ]
+     },
+     {
+      "id": "9-BPRO-3",
+      "focus": "family:tide",
+      "score": 0.7292,
+      "ci": [
+       0.6744,
+       0.784
       ],
       "deck": {
        "caiman-hatchling": 3,
        "fiddler-crab-swarm": 4,
        "mangrove-manatee": 3,
-       "mangrove-monitor": 2,
-       "mangrove-mudskipper": 4,
-       "minnow-skitter": 4
+       "mangrove-monitor": 4,
+       "minnow-skitter": 2,
+       "sunbittern-strider": 4
       },
       "leaders": [
        "mangrove-manatee"
@@ -1878,19 +1878,19 @@
      },
      {
       "id": "9-BPRO-4",
-      "focus": "family:tide",
-      "score": 0.675,
+      "focus": "open",
+      "score": 0.6375,
       "ci": [
-       0.6174,
-       0.7326
+       0.5792,
+       0.6958
       ],
       "deck": {
-       "archerfish": 4,
-       "mangrove-manatee": 3,
-       "mangrove-monitor": 4,
+       "fiddler-crab-swarm": 4,
+       "fishing-cat": 3,
+       "mangrove-manatee": 2,
        "mangrove-mudskipper": 4,
        "minnow-skitter": 3,
-       "mudpuppy": 2
+       "mudpuppy": 4
       },
       "leaders": [
        "mangrove-manatee"
@@ -2695,8 +2695,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "my": {
    "id": "my",
@@ -2811,14 +2810,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "swarm",
-     "score": 0.5573,
-     "why": "under 69.9%"
-    }
-   ]
+   }
   },
   "ml": {
    "id": "ml",
@@ -3560,19 +3552,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:bleed",
-     "score": 0.6111,
-     "why": "under 72%"
-    },
-    {
-     "focus": "big",
-     "score": 0.4815,
-     "why": "under 72%"
-    }
-   ]
+   }
   },
   "m9": {
    "id": "m9",
@@ -3661,8 +3641,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "m11": {
    "id": "m11",
@@ -3754,19 +3733,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:flying",
-     "score": 0.5256,
-     "why": "under 63%"
-    },
-    {
-     "focus": "big",
-     "score": 0.5032,
-     "why": "under 63%"
-    }
-   ]
+   }
   },
   "me": {
    "id": "me",
@@ -3859,14 +3826,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.425,
-     "why": "under 50%"
-    }
-   ]
+   }
   },
   "mx": {
    "id": "mx",
@@ -3984,14 +3944,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.5238,
-     "why": "under 73.1%"
-    }
-   ]
+   }
   }
  },
  "rule": {

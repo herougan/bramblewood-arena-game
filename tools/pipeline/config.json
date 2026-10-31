@@ -13,8 +13,8 @@
  },
  "test": {
   "balanceOnly": "level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool|budget2|skill2|skill-costs|skill-worth|speed1|bpro|deck1",
-  "knownFailures": ["d-2026-10-19", "skills2", "skill-costs", "skill-worth", "skill-combos", "card-pool", "skills-sk3", "server-overrides-fold", "raid-reward-card", "ed-2026-10-21"],
-  "knownWhy": "failing before SPEED1 (coordinator's list); reported as known, not as new"
+  "knownFailures": ["d-2026-10-19", "skills2", "skill2-2026-10-31", "level-curve-2026-10-19", "raid-rb2-2026-10-19", "skill-costs", "skill-worth", "skill-combos", "card-pool", "skills-sk3", "server-overrides-fold", "raid-reward-card", "ed-2026-10-21"],
+  "knownWhy": "failing before SPEED1: the coordinator's list, plus skill2-2026-10-31 (its '6. SKILL2-n asked' checks), level-curve-2026-10-19 and raid-rb2-2026-10-19, which also fail on the batch commit 7c0916d9 (run in a copy of it on 2026-10-31); reported as known, not as new"
  },
  "heavy": ["measure", "bake", "tournament", "test", "all"]
 }

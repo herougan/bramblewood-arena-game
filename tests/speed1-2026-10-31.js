@@ -30,7 +30,7 @@ const P = require('../tools/pipeline/lib.js'), K = require('../tools/pipeline/co
 
 // 2. the lock: held by another process -> exit 75 and a message; --wait 1 waits, then gives up; a light step is not blocked
 {
-  const lock = path.join(tmp, 'pipeline.lock'), env = Object.assign({}, process.env, { PIPELINE_LOCK: lock });
+  const lock = path.join(tmp, 'pipeline.lock'), env = Object.assign({}, process.env, { PIPELINE_LOCK: lock }); delete env.PIPELINE_LOCK_HELD; // this test may itself run under run.sh test, which holds the lock
   fs.writeFileSync(lock, "step 'test holder' pid 1\n");
   const holder = cp.spawn('flock', [lock, 'sleep', '8'], { stdio: 'ignore' });
   const until = Date.now() + 3000; while (Date.now() < until) { const r = cp.spawnSync('flock', ['-n', lock, 'true']); if (r.status !== 0) break; }
@@ -68,7 +68,8 @@ const P = require('../tools/pipeline/lib.js'), K = require('../tools/pipeline/co
   const row = (id, stats, attack, health) => ({ id, stats, attack, health });
   ok(!RF.classify(row('a', '3/6', 3, 5), cfg, byId).why.length, 'a 1-point trim that keeps the shape is rule-clean');
   ok(RF.classify(row('a', '3/6', 2, 4), cfg, byId).why.some(w => /stat points/.test(w)), 'a 3-point change is flagged');
-  ok(RF.classify(row('a', '3/2', 2, 4), cfg, byId).why.some(w => /theme clash/.test(w)), '3/2 -> 2/4 (hitter -> balanced) is a theme clash');
+  ok(RF.classify(row('a', '2/5', 1, 5), cfg, byId).why.some(w => /theme clash/.test(w)), '2/5 -> 1/5 (hitter -> balanced) is a theme clash');
+  ok(!RF.classify(row('a', '3/2', 2, 4), cfg, byId).why.length, '3/2 -> 2/4 stays a hitter and is rule-clean');
   ok(RF.classify(row('marshal-of-rivergate', '2/3', 4, 9), cfg, { 'marshal-of-rivergate': {} }).why.some(w => /owner/.test(w)), 'a named owner card is flagged');
   ok(RF.classify(row('an', '2/6', 2, 5), cfg, byId).why.some(w => /anadromous/.test(w)), 'an Anadromous card is left to ENG15');
 }
