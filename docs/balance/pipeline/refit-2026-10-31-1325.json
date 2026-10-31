@@ -1,0 +1,55 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "refit",
+ "status": "ok",
+ "started": "2026-10-31T05:25:56.554Z",
+ "finished": "2026-10-31T05:25:58.763Z",
+ "durationSec": 2.2,
+ "args": [],
+ "head": "30d0a57d",
+ "inputs": {
+  "priceSnapshot": "docs/balance/pipeline/state/skill-costs.before-price.json",
+  "plan": "docs/balance/pipeline/state/refit-plan.json",
+  "cardsSha": "d6d6d29650",
+  "dry": false,
+  "rule": "tools/skill2_refit_2026_10_31.js",
+  "limits": {
+   "maxStatPoints": 2
+  }
+ },
+ "counts": {
+  "in play checked": 451,
+  "pushed out": 1,
+  "rule-clean": 0,
+  "flagged": 1,
+  "out of play (not touched)": 0,
+  "outside before (left)": 166,
+  "applied": 0
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "red-billed-chough",
+   "why": "3/2 -> 2/4 proposed (trim): named owner card (named by an owner decision (BUDGET2-5, DECK1-1, DECK1-5, RECOST1-5, the Dragons): the pipeline proposes, never applies); 3 stat points change (limit 2)",
+   "proposal": {
+    "from": "3/2",
+    "to": "2/4",
+    "kind": "trim",
+    "useBefore": 0.98,
+    "useNow": 1.01,
+    "useAfter": 0.94
+   }
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/state/refit-plan.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/refit-2026-10-31-1325.json"
+}

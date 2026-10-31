@@ -1,10 +1,10 @@
 {
- "savedAt": "2026-10-31T04:12:39.303Z",
+ "savedAt": "2026-10-31T05:25:56.452Z",
  "constants": {
-  "cap2SScale": 1,
+  "cap2SScale": 0.5,
   "missMultBy": {
-   "flying": 1.39,
-   "evasive": 1.37,
+   "flying": 1.13,
+   "evasive": 1.13,
    "shadow": 1.1
   }
  },

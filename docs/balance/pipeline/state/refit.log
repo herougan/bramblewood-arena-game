@@ -1,8 +1,4 @@
-cards measured: 451 in play, 363 out of play; pushed out by the new prices: 5 in play, 0 out of play; outside before (left): 161
-changes: 5 in play (0 trims, 5 lifts, 0 named), 0 out of play; held 0
-  IN  lift   gold-throated-acolyte        uncommon      2/4 -> 3/4    use 0.81 -> 0.55 -> 0.71  S 0 -> 0
-  IN  lift   mangrove-kingfisher          rare          2/2 -> 3/2    use 0.76 -> 0.51 -> 0.7  S 0 -> 0
-  IN  lift   mirror-moth                  rare          2/4 -> 3/4    use 0.8 -> 0.54 -> 0.7  S 0.63 -> 0.63
-  IN  lift   candle-moth                  common        1/5 -> 1/6    use 0.67 -> 0.56 -> 0.62  S 0.9 -> 0.9
-  IN  lift   daily-post                   common        1/2 -> 1/3    use 0.66 -> 0.57 -> 0.65  S 2.41 -> 2.41
+cards measured: 451 in play, 363 out of play; pushed out by the new prices: 1 in play, 0 out of play; outside before (left): 166
+changes: 1 in play (1 trims, 0 lifts, 0 named), 0 out of play; held 0
+  IN  trim   red-billed-chough            common        3/2 -> 2/4    use 0.98 -> 1.01 -> 0.94  S 4 -> 4
 wrote docs/balance/pipeline/state/refit-plan.json

@@ -153,7 +153,7 @@
     function obtainMapOf(d){ const x = withMap(d); return +(x && x.obtainMap) || 0; }
     // The budget rules for a card as printed: {N, S, x1, x2, N2, ok, wellUnder, m, parts, missing}; opts.N stands in for N (v3 checks).
     function budget(d, opts){
-      const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= g('missMult', 1.5); });
+      const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= (BB.missMultFor ? BB.missMultFor(h, Object.assign({missMult: g('missMult', 1.5)}, B)) : g('missMult', 1.5)); }); /* 2026-10-31 (coordinator, SPEED1 finding 1): per-skill half-miss from bramblewood-budget.js MISS_MULT_BY, as the game's sbCheck does; was a flat 1.5 */
       if(BB.canopyMultOf) m *= BB.canopyMultOf(e, B); // Canopy Cover (EN5, 2026-10-24): Evasive's multiplier x its uptime under the trees
       // 2026-10-21 (package BX): an Archer never swings (Archer N: its arrow instead), so its Attack is not part of its strength
       // EN6 (2026-10-24): a Hibernate unit's Attack counts only for the rounds it is awake (bramblewood-budget.js EN6_HIBERNATE_UPTIME)
