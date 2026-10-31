@@ -1,0 +1,73 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "test",
+ "status": "fail",
+ "started": "2026-10-31T04:57:51.830Z",
+ "finished": "2026-10-31T04:59:16.336Z",
+ "durationSec": 84.5,
+ "args": [],
+ "head": "f9417bfb",
+ "inputs": {
+  "smoke": true,
+  "only": "level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool|budget2|skill2|skill-costs|skill-worth|speed1|bpro|deck1",
+  "full": false,
+  "knownList": 13
+ },
+ "counts": {
+  "tests run": 19,
+  "passed": 11,
+  "failed": 8,
+  "cached": 1
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "speed1-2026-10-31",
+   "why": "NEW test failure (not in the known list); see docs/balance/pipeline/state/test-*.log"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/state/test-balance.log"
+ ],
+ "tests": {
+  "passed": 11,
+  "failed": 8,
+  "cached": 1,
+  "runs": [
+   {
+    "label": "smoke",
+    "passed": 6,
+    "failed": 1,
+    "cached": 0,
+    "seconds": 53
+   },
+   {
+    "label": "only level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool|budget2|skill2|skill-costs|skill-worth|speed1|bpro|deck1",
+    "passed": 5,
+    "failed": 7,
+    "cached": 1,
+    "seconds": 30
+   }
+  ],
+  "knownFailures": [
+   "d-2026-10-19",
+   "level-curve-2026-10-19",
+   "card-pool-2026-10-19",
+   "skill-worth-2026-10-19",
+   "skill2-2026-10-31",
+   "skill-costs-2026-10-19",
+   "raid-rb2-2026-10-19"
+  ],
+  "newFailures": [
+   "speed1-2026-10-31"
+  ],
+  "only": "level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool|budget2|skill2|skill-costs|skill-worth|speed1|bpro|deck1"
+ },
+ "stages": null,
+ "file": "docs/balance/pipeline/test-2026-10-31-1257.json"
+}

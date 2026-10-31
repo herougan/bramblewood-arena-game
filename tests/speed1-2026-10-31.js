@@ -41,7 +41,7 @@ const P = require('../tools/pipeline/lib.js'), K = require('../tools/pipeline/co
   ok(b.status === 75 && Date.now() - t0 >= 1800, '--wait 2 waits about 2 s and then exits 75 (' + (Date.now() - t0) + ' ms)');
   const c = cp.spawnSync('bash', ['tools/pipeline/run.sh', 'help'], { cwd: ROOT, env, encoding: 'utf8' });
   ok(c.status === 0 && /measure\|price\|refit/.test(c.stdout), 'help is not blocked');
-  holder.kill(); cp.spawnSync('flock', ['-w', '5', lock, 'true']);
+  holder.kill(); cp.spawnSync('flock', ['-w', '20', lock, 'true']); // the sleep it started ends and frees the lock
   // free lock: the heavy step runs (here it stops at once on an unknown skill, before any game) and writes its summary
   const d = cp.spawnSync('bash', ['tools/pipeline/run.sh', 'measure', '--skills', 'nosuchskill'], { cwd: ROOT, env: Object.assign({}, env, { PIPELINE_OUT: path.join(tmp, 'out2') }), encoding: 'utf8', timeout: 120000 });
   ok(d.status === 1 && /pipeline measure: FAIL/.test(d.stdout), 'with the lock free the step runs; an unknown skill fails the step (exit ' + d.status + ')');
@@ -69,7 +69,7 @@ const P = require('../tools/pipeline/lib.js'), K = require('../tools/pipeline/co
   ok(!RF.classify(row('a', '3/6', 3, 5), cfg, byId).why.length, 'a 1-point trim that keeps the shape is rule-clean');
   ok(RF.classify(row('a', '3/6', 2, 4), cfg, byId).why.some(w => /stat points/.test(w)), 'a 3-point change is flagged');
   ok(RF.classify(row('a', '2/5', 1, 5), cfg, byId).why.some(w => /theme clash/.test(w)), '2/5 -> 1/5 (hitter -> balanced) is a theme clash');
-  ok(!RF.classify(row('a', '3/2', 2, 4), cfg, byId).why.length, '3/2 -> 2/4 stays a hitter and is rule-clean');
+  ok(!RF.classify(row('a', '3/2', 2, 3), cfg, byId).why.length, '3/2 -> 2/3 stays a hitter within 2 points and is rule-clean');
   ok(RF.classify(row('marshal-of-rivergate', '2/3', 4, 9), cfg, { 'marshal-of-rivergate': {} }).why.some(w => /owner/.test(w)), 'a named owner card is flagged');
   ok(RF.classify(row('an', '2/6', 2, 5), cfg, byId).why.some(w => /anadromous/.test(w)), 'an Anadromous card is left to ENG15');
 }
@@ -99,7 +99,7 @@ const P = require('../tools/pipeline/lib.js'), K = require('../tools/pipeline/co
   const rd = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
   ok(/tests\/speed1-2026-10-31\.js/.test(rd('tests/run-all.sh')), 'tests/run-all.sh lists this test');
   const wf = rd('docs/workflows/balance.md');
-  ok(/## Pipeline/.test(wf) && /tools\/pipeline\/run\.sh/.test(wf) && /when to look/i.test(wf), 'docs/workflows/balance.md has the Pipeline section with the commands and when to look');
+  ok(/## Pipeline/.test(wf) && /tools\/pipeline\/run\.sh/.test(wf) && /When an agent should look/.test(wf), 'docs/workflows/balance.md has the Pipeline section with the commands and when to look');
   ok(/package SPEED1/.test(rd('docs/CHANGELOG.md').split('\n').slice(0, 14).join('\n')), 'the CHANGELOG has the SPEED1 entry at the top');
   ['run.sh', 'run.js', 'lib.js', 'measure.js', 'price.js', 'refit.js', 'bake.js', 'tournament.js', 'test.js', 'constants.js', 'config.json'].forEach(f => ok(fs.existsSync(path.join(ROOT, 'tools', 'pipeline', f)), 'tools/pipeline/' + f + ' exists'));
 }

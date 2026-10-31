@@ -1,14 +1,9 @@
 
-✗ d-2026-10-19 (exit 1, 3.1s) — last lines:
+✗ d-2026-10-19 (exit 1, 3.2s) — last lines:
   ✗ its card reward: 20-5 (moved off the Wraith Vents by package RP)
     ✗ no short description reaches 20 words (1):
         werebadger (21): 🐺 Lycanthropy: under {Full Moon}, gain {Regeneration 2, Thorns 2} — Once it happens, it keeps them for the rest of the fight.
     (left for the Prayer / Ecclesia package: 3 lines: When played, deal 4 lightning damage to a random enemy unit, | When played, deal 3 lightning damage to a random enemy unit, | When played, deal 2 lightning damage to a random enemy unit,)
   d-2026-10-19: 74/76 checks passed
 
-✗ card-pass-2026-10-19 (exit 1, 2.3s) — last lines:
-  ✗ 1. today's budget passes for every live card but the owner-call list, the post-balance queue and the held list: mangrove-kingfisher 3/2; gold-throated-acolyte 3/4; mirror-moth 3/4
-    note: the 10-19 retune changed the yardstick's filler cards (warren-scout, fawn-scout, mouse-sapper), so the card pass's records are not replayed
-  card-pass-2026-10-19: 1 of 326 failed
-
-smoke: 5 passed, 2 failed, 0 skipped (passed before on identical inputs) · 48s · slowest: two-player 48s, scenarios 21s, i18n-ui-2026-10-18 14s
+smoke: 6 passed, 1 failed, 0 skipped (passed before on identical inputs) · 53s · slowest: two-player 53s, scenarios 24s, i18n-ui-2026-10-18 16s
