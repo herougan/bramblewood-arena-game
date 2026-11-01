@@ -66,7 +66,8 @@ ok(/const TUT12_SHOWN = new Set\(\[\]\);/.test(app), '2. the T-1 / T-2 mask has 
 { const row = table.skills.find(r=> r.id === 'canopyCover'), S = require(path.join(ROOT, 'tools', 'tut2_canopy_share_2026_10_30.js')).share();
   ok(BB.CANOPY_SHARE === 0.22 && row && row.attackShare === BB.CANOPY_SHARE, `4. Canopy Cover's attack share 0.22 in the budget and the table (${BB.CANOPY_SHARE}, ${row && row.attackShare})`);
   ok(Math.abs(S.share - BB.CANOPY_SHARE) < 0.01, `4. the share still matches the map lists (${S.covered} / ${S.attacks} = ${S.share})`);
-  ok(Math.abs(BB.canopyMultOf({canopyCover: true}) - (1 + 0.37 * 0.4 * 0.22)) < 1e-9 && BB.canopyMultOf({canopyCover: true}) < 1.148, `4. multiplier x${BB.canopyMultOf({canopyCover: true})} (was x1.148)`);
+  // 2026-11-02 (QA1): Evasive's own multiplier is read, not 1.37: the SPEED1 pipeline (2026-10-31, owner SKILL2-2) measured it at x1.16
+  ok(Math.abs(BB.canopyMultOf({canopyCover: true}) - (1 + (BB.missMultFor('evasive') - 1) * 0.4 * 0.22)) < 1e-9 && BB.canopyMultOf({canopyCover: true}) < 1.148, `4. multiplier x${BB.canopyMultOf({canopyCover: true})} (was x1.148)`);
   ok(row && /2026-10-30/.test(row.note) && row.note.includes('just use logic and reduce it, no need to remeasure.') && /162 of 739/.test(row.note), '4. the entry\'s note: date, owner quote, the count'); }
 
 // ---- 5. Slow
