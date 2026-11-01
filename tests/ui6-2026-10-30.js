@@ -25,8 +25,9 @@ ok(pop.length > 2000, 'X2: initPopover found');
 ok(/function popKeyOf\(el\)/.test(pop) && /'u' \+ u\.getAttribute\('data-uid'\)/.test(pop) && /'h' \+ h\.getAttribute\('data-handuid'\)/.test(pop), 'X2: the popover belongs to a card key (unit uid, hand uid, else card id)');
 ok(/if\(!pop\.hidden && popKey && key === popKey\)\{[^}]*\} bindPopSrc\(el\); return; \}/.test(pop), 'X2: a mouseover on the same card\'s new element rebinds, without a new 1 s wait');
 ok(/function rebindPop\(\)/.test(pop) && /elementsFromPoint\(ptX, ptY\)/.test(pop) && /inRect\(popRect, ptX, ptY\)/.test(pop), 'X2: a redraw or a lunge keeps it while the pointer rests on the card\'s spot');
-ok(/if\(!rebindPop\(\)\) closePop\(\);/.test(pop), 'X2: leaving the card (and not on the same card) closes it');
-ok(/TipWatch\.track\(pop, el, \(\)=>\{ if\(!rebindPop\(\)\) closePopLost\(\); \}, \{steady: !!matchState\}\)/.test(pop), 'X2: TipWatch tries to rebind before it closes the popover; no fading with the card in a fight');
+// 2026-11-02 (QA1): UI11 (2026-10-31, FF3) adds a short hold (holdPop) before the close, here and in the TipWatch callback below
+ok(/if\(!rebindPop\(\)(?: && !holdPop\(\))?\) closePop\(\);/.test(pop), 'X2: leaving the card (and not on the same card) closes it');
+ok(/TipWatch\.track\(pop, el, \(\)=>\{ if\(!rebindPop\(\)(?: && !holdPop\(\))?\) closePopLost\(\); \}, \{steady: !!matchState\}\)/.test(pop), 'X2: TipWatch tries to rebind before it closes the popover; no fading with the card in a fight');
 ok(/if\(!\(how && how\.quiet\)\) try\{ fxHook\('cardPop', pop, el\);/.test(pop), 'X2: a quiet reopen plays no pop-in animation');
 ok(/if\(rec\.steady\)\{ tip\.style\.opacity = ''; return; \}/.test(app) && /steady: !!\(opts && opts\.steady\)/.test(app), 'X2: TipWatch.track takes {steady}');
 

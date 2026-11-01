@@ -188,6 +188,8 @@ async def main():
     pg, errs = await fresh(b)
     await pg.evaluate("localStorage.setItem('bramblewood_free_packs_v1', JSON.stringify({bronze:1})); localStorage.setItem('bramblewood_faction_packs_v1', JSON.stringify({otter:1})); location.reload(); 1")
     await pg.wait_for_timeout(1500)
+    # 2026-11-02 (QA1): on a loaded CPU the 14 MB page can take longer than 1.5 s to come back from the reload (ReferenceError CARD_DEFS_BASELINE); wait for it
+    await pg.wait_for_function("typeof CARD_DEFS_BASELINE !== 'undefined' && typeof invalidateCardDefs === 'function'", timeout=60000)
     await pg.evaluate("Object.keys(CARD_DEFS_BASELINE).forEach(id=>{ delete CARD_DEFS_BASELINE[id].unattainable; if(liveCards[id]) delete liveCards[id].unattainable; }); try{ invalidateCardDefs(); }catch(e){} 1")
     for _ in range(60):
         if await pg.evaluate("(JSON.parse(localStorage.getItem('bramblewood_free_packs_v1')||'{}').bronze|0) === 0"): break

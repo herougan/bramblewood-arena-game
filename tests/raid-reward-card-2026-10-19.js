@@ -40,7 +40,8 @@ const defs = {'honeyjoe-brewer': {id:'honeyjoe-brewer', name:'Honeyjoe Brewer', 
 const ctx = {TX, getCardDefs: ()=> defs, escapeHtml: esc, escapeAttr: esc, cardTileHTML: d=> `<div class="card-tile" data-defid="${d.id}"></div>`,
   rarityDef: k=> ({uncommon:{label:'Uncommon', color:'#3fb950'}, rare:{label:'Rare', color:'#58a6ff'}, starter:{label:'Starter', color:'#aaa'}})[k] || {label:'Common', color:'#bbb'},
   raidCardIds: def=> Object.keys(defs).filter(id=> (defs[id].source || {}).kind === 'raid' && defs[id].source.id === def.id),
-  raidBossArt: ()=> '', raidLocale: ()=> 'en', opened: []};
+  raidBossArt: ()=> '', raidLocale: ()=> 'en', opened: [],
+  /* 2026-11-02 (QA1): the spec shows the overall raid rank badge since FIX3 (2026-10-25, G21) */ raidTotalRankBadgeHTML: ()=> '<span class="rank-badge"></span>'};
 vm.createContext(ctx);
 vm.runInContext(['raidRewardFromLabel', 'raidRewardCardInfo', 'raidDropFrom', 'raidRewardCardHTML', 'raidClaimTierLabel', 'raidClaimScreenSpec'].map(fnSrc).join('\n')
   + '\n' + lineOf('const RAID_CLAIM_CUR_WEIGHT') + '\n' + lineOf('const RAID_CLAIM_CARD_WEIGHT') + '\nthis.F = {raidRewardCardHTML, raidDropFrom, raidClaimScreenSpec, raidRewardCardInfo};', ctx);

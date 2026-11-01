@@ -62,7 +62,10 @@ if(process.argv.includes('--measure')){
 ok(map && map.sub && map.parent === 'md' && map.name === 'The Pale Desert' && md && md.name === 'The Glass Dunes', '1. the Pale Desert is a side map of Map 18, the Glass Dunes');
 ok(G.mapNumberOf('mpd') === 18 && G.mapNumberOf('md') === 18, `1. it counts as Map 18 (${G.mapNumberOf('mpd')})`);
 const mdLast = fightsOf(md).slice(-1)[0];
-ok(map.entry && map.entry.after === mdLast.key && map.entry.afterMapCleared === 'md', `1. its entrance follows Map 18's last fight (${map.entry && map.entry.after} = ${mdLast.key}) and waits on the whole map`);
+// 2026-11-02 (QA1): the gate moved with DV7 (2026-10-22, "side-map gates, out of order"): the entrance still follows Map 18's last fight, but it
+// waits on a cleared later main map (Map 19, the Ashen Spurn, 'm3', today), not on Map 18
+const GATE = map.entry && map.entry.afterMapCleared;
+ok(map.entry && map.entry.after === mdLast.key && GATE && G.mapNumberOf(GATE) >= 18, `1. its entrance follows Map 18's last fight (${map.entry && map.entry.after} = ${mdLast.key}) and waits on a whole main map from 18 on (${GATE}, Map ${GATE && G.mapNumberOf(GATE)})`);
 ok(JSON.stringify(map.nodes.map(n=> n.key)) === JSON.stringify(KEYS), '1. nine fights 18-A-1 ... 18-A-9');
 ok(map.nodes.filter(n=> n.kind === 'skirmish').length === 7 && map.nodes[7].kind === 'elite' && map.nodes[8].kind === 'boss', '1. 7 skirmishes, then the elite, then the boss');
 ok(B.MAPS.filter(m=> m.sub && m.parent === 'md')[0] === map, '1. it is the Glass Dunes\' first side map, so its codes are 18-A-*');
@@ -87,12 +90,14 @@ map.nodes.forEach((n, i)=> ok(i === 0 ? !n.requires.length : n.requires.length &
   progress = JSON.parse(JSON.stringify(before)); clear(progress, dunes, 1);
   ok(!H.isMapUnlocked(mpd, progress), '2. still locked with Map 18\'s last fight to go');
   progress = JSON.parse(JSON.stringify(before)); clear(progress, dunes);
-  ok(H.conquestMapCleared('md') && H.isMapUnlocked(mpd, progress), '2. opens once every Map 18 fight is won');
+  // 2026-11-02 (QA1): DV7: the gate map (Map 19 today) must be cleared as well
+  { const gate = byId(mpd.entry.afterMapCleared); if(gate && gate !== dunes){ ok(!H.isMapUnlocked(mpd, progress), `2. Map 18 alone is not enough: it waits on ${gate.id}`); clear(progress, gate); } }
+  ok(H.conquestMapCleared('md') && H.isMapUnlocked(mpd, progress), '2. opens once every Map 18 fight (and its gate map) is won');
   progress = {completed: [], clearedAt: {}}; ok(!H.isMapUnlocked(mpd, progress), '2. a fresh save has it locked');
   // the entrance on the Glass Dunes
   const SUBMAP_CAVES = new Function(constLine('SUBMAP_CAVES') + '\nreturn SUBMAP_CAVES;')();
   const entrances = new Function('CONQUEST_MAPS', 'H', 'SUBMAP_CAVES', 'getFlags', [fn('escapeAttr'), fn('escapeHtml'),
-    'const SUBMAP_EMBLEM_SVG = {}; let conquestLayoutEdit = false;', fn('mainConquestMaps'), fn('mapNumberOf'), 'function decorPos(id, key, fb){ return fb; }', 'function loadDialogueFlags(){ return getFlags(); }',
+    'const SUBMAP_EMBLEM_SVG = {}; let conquestLayoutEdit = false; function flairLairMap(map){ return !!(map && map.finalBoss === true); } /* 2026-11-02 (QA1): the entrances mark a final-boss lair since FLAIR1 */', fn('mainConquestMaps'), fn('mapNumberOf'), 'function decorPos(id, key, fb){ return fb; }', 'function loadDialogueFlags(){ return getFlags(); }',
     'const isMapUnlocked = H.isMapUnlocked, conquestMapCleared = H.conquestMapCleared, conquestNodeId = H.conquestNodeId;', fn('subMapEntrancesHTML')].join('\n') +
     '\nreturn subMapEntrancesHTML;')(MAPS, H, SUBMAP_CAVES, ()=> flags);
   progress = JSON.parse(JSON.stringify(before)); clear(progress, dunes, 1);

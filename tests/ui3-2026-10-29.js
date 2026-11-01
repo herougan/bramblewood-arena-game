@@ -79,8 +79,9 @@ function fnSrc(name){
     const rvFlips = flips, defs = {a: {name: 'Ant'}, b: {name: 'Bee'}, c: {name: 'Cat'}, d: {name: 'Dog'}};
     const main = [{id: 'm1', name: 'Clovermead'}, {id: 'm4', name: 'Sunken Hollow'}];
     const R = {m1: {chosen: [{id: 'a'}, {id: 'b'}], maybe: [{id: 'c'}], cut: []}, m4: {chosen: [{id: 'a'}], maybe: [], cut: [{id: 'd'}]}};
-    const F = new Function('rvFlips', 'getCardDefs', 'mainConquestMaps', 'mapNumberOf', 'mapPoolSections', 'rv1ReviewOf', ex + '\nreturn rv3ExportAll();');
-    return F(rvFlips, ()=> defs, ()=> main, id=> id === 'm1' ? 1 : 4, top=> [{key: 'cards', label: 'Map'}, {key: 'special', label: 'SPECIAL'}], (sec, top)=> sec.key === 'cards' ? R[top] : null);
+    // 2026-11-02 (QA1): the export also lists a SPECIAL section's admin-added cards (rvAddedOf) since UI13 (2026-11-01); none here
+    const F = new Function('rvFlips', 'getCardDefs', 'mainConquestMaps', 'mapNumberOf', 'mapPoolSections', 'rv1ReviewOf', 'rvAddedOf', ex + '\nreturn rv3ExportAll();');
+    return F(rvFlips, ()=> defs, ()=> main, id=> id === 'm1' ? 1 : 4, top=> [{key: 'cards', label: 'Map'}, {key: 'special', label: 'SPECIAL'}], (sec, top)=> sec.key === 'cards' ? R[top] : null, ()=> []);
   };
   const r = run({'m4|cards|d': true, 'm1|cards|a': true});
   const lines = r.text.split('\n');

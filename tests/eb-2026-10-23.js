@@ -54,7 +54,7 @@ const byMap = id=> G.CONQUEST_MAPS.find(m=> m.id === id), node = (mid, k)=> byMa
   const sc4 = G.skirmishCastle(node('m1', '0-4')); ok(sc4.character.id === 'plains-terrace' && sc4.character.effects.firstUnitAtkBonus === 1, '2. 0-4 keeps the +1 Attack to the first unit');
   ok(/const watch = false;/.test(fnSrc('startTutorialMatch')), '2. T-2\'s rival bramble is plain (no Outskirts Watchtower)');
   ok(/myCharacter\.health = earlyBrambleHp\(myCharacter\.health, rivalCharacter\.health\)/.test(fnSrc('startTutorialMatch')), '2. your tutorial bramble starts above the rival\'s');
-  ok(/const myCharacter = earlyHomeBramble\(node, myCastleDef\(\)\)/.test(fnSrc('startConquestMatch')), '2. a Conquest fight on Maps 0-1 gives your bramble the lead');
+  ok(/const myCharacter = (?:refBramble \|\| )?earlyHomeBramble\(node, myCastleDef\(\)\)/.test(fnSrc('startConquestMatch')), /* 2026-11-02 (QA1): a reference set's bramble comes first since PREF (2026-10-25) */ '2. a Conquest fight on Maps 0-1 gives your bramble the lead');
   ok(G.EARLY_BRAMBLE_LEAD === 3 && G.earlyBrambleHp(4, 5) === 8 && G.earlyBrambleHp(15, 6) === 15, '2. earlyBrambleHp = max(yours, enemy total + 3)');
   for(const [mid, k] of [['m1', '0-1'], ['m1', '0-4'], ['mf', '1-1'], ['mf', '1-5']]){ const ctx = G.referenceFightSetup(mid, node(mid, k), {});
     ok(ctx.myCastle.health > ctx.sc.hp + ctx.sc.shield, `2. ${k}: your bramble ${ctx.myCastle.health} > the enemy's ${ctx.sc.hp}+${ctx.sc.shield}`); }

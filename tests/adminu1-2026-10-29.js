@@ -8,14 +8,18 @@ const fs = require('fs'), path = require('path'), cp = require('child_process');
 const ROOT = path.join(__dirname, '..');
 const rd = rel=> fs.readFileSync(path.join(ROOT, rel), 'utf8');
 let fail = 0, checks = 0; const ok = (c, m)=>{ checks++; if(!c){ fail++; console.log('  ✗', m); } };
-const sql = rd('supabase/proposed/20261029_admin_user_list.sql'), code = sql.split('\n').filter(l=> !/^\s*--/.test(l)).join('\n');
-ok(fs.existsSync(path.join(ROOT, 'supabase/proposed/20261029_admin_user_list.sql')), '1. the SQL is in supabase/proposed/');
-ok(!fs.existsSync(path.join(ROOT, 'supabase/migrations/20261029_admin_user_list.sql')), '1. it is not among the applied migrations');
+// 2026-11-02 (QA1): the owner applied it 10-30 (76e0f623) and it moved to supabase/migrations/; the checks read it from wherever it is
+const SQLF = ['supabase/proposed/20261029_admin_user_list.sql', 'supabase/migrations/20261029_admin_user_list.sql'].find(f=> fs.existsSync(path.join(ROOT, f))) || 'supabase/proposed/20261029_admin_user_list.sql';
+const sql = rd(SQLF), code = sql.split('\n').filter(l=> !/^\s*--/.test(l)).join('\n');
+ok(fs.existsSync(path.join(ROOT, SQLF)), '1. the SQL is in supabase/proposed/ (or supabase/migrations/ once applied)');
+// 2026-11-02 (QA1): the owner said "apply it" on 10-30 (76e0f623), so it IS an applied migration now: either still proposed, or applied with its APPLIED header
+const APPLIED = SQLF.startsWith('supabase/migrations/');
+ok(!APPLIED ? !fs.existsSync(path.join(ROOT, 'supabase/migrations/20261029_admin_user_list.sql')) : /^-- APPLIED 2026-10-30/.test(sql), '1. proposed and not applied, or applied on the owner\'s word (APPLIED header)');
 ok(/create or replace function public\.admin_user_list\(\)/i.test(code), '1. defines public.admin_user_list()');
 ok(/security definer/i.test(code) && /set search_path\s*=\s*public/i.test(code), '1. security definer with search_path = public');
 ok(/from public\.app_admins a where a\.user_id = \(select auth\.uid\(\)\)/i.test(code) && /raise exception 'not allowed' using errcode = '42501'/i.test(code), '1. raises unless the caller is in app_admins');
 ok(/revoke all on function public\.admin_user_list\(\) from public, anon;/i.test(code) && /grant execute on function public\.admin_user_list\(\) to authenticated;/i.test(code), '1. revoked from public and anon, granted to authenticated');
-ok(/drop function public\.admin_user_list\(\)/i.test(sql.split('\n').slice(0, 14).join('\n')) && /^-- PROPOSED, NOT APPLIED \(2026-10-29/.test(sql), '1. header: date, purpose, rollback (drop function)');
+ok(/drop function public\.admin_user_list\(\)/i.test(sql.split('\n').slice(0, 14).join('\n')) && (APPLIED ? /Proposed 2026-10-29/.test(sql) : /^-- PROPOSED, NOT APPLIED \(2026-10-29/.test(sql)), '1. header: date, purpose, rollback (drop function)');
 ok(!/\bemail\b|auth\.users|raw_user_meta|phone|encrypted_password|\bidentities\b/i.test(code), '1. no email or auth columns are read');
 { const ret = code.slice(code.indexOf('returns table('), code.indexOf(')\nlanguage')); const cols = ['id', 'display_name', 'created_at', 'last_seen_at', 'rating', 'is_admin', 'cards', 'fights', 'last_fight_at', 'matches'];
   ok(cols.every(c=> new RegExp('\\b' + c + '\\b').test(ret)), '1. returns the listed columns (id, display_name, created_at, last_seen_at, rating, is_admin, cards, fights, last_fight_at, matches)');

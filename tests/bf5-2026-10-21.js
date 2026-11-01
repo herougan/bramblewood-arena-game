@@ -72,7 +72,8 @@ ok(F.rows.length === 13, `6. the fold plan holds the owner's 13 card edits (${F.
 const OE = JSON.parse(read('docs/balance/owner-edits-bf5-2026-10-21.json'));
 ok(OE.rows.length === 13 && OE.rows.every(r=> byId[r.id] && byId[r.id].attack === r.now.stats[0] && byId[r.id].health === r.now.stats[1]), '6. the owner-edit evaluation matches the cards as they are now');
 ok(F.rows.every(r=> /2026-10-21 \(BF5\): the owner's live edit of/.test(byId[r.id].creatorNote || '')), '6. each folded card notes the owner\'s edit');
-const sql = read('supabase/proposed/20261021_clear_folded_overrides_2.sql');
+// 2026-11-02 (QA1): the SQL was applied 10-21 (B13) and moved to supabase/migrations/; read it from there (proposed/ if it is ever back)
+const sql = fs.existsSync(path.join(ROOT, 'supabase/proposed/20261021_clear_folded_overrides_2.sql')) ? read('supabase/proposed/20261021_clear_folded_overrides_2.sql') : read('supabase/migrations/20261021_clear_folded_overrides_2.sql');
 ok(/card_overrides_backup_20261021/.test(sql) && /__cfg:raid:goliath/.test(sql) && /__cfg:tutorial/.test(sql), '6. the proposed SQL backs up and clears the folded rows (cards, nodes, tutorial, raid)');
 
 // 7. docs

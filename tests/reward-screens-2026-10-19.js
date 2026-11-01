@@ -35,6 +35,7 @@ ok(/out\.push\(\{key, cycle:c, reward: rw, mine: st\.contributors\[me\] \|\| 0\}
 ok(/calm = reducedMotion\(\) \|\| !fxAtLeast\('med'\) \|\| !hasGsap\(\)/.test(fnSrc('showRaidClaimScreen')), '1. calm under reduced motion, Effects Off / Low, or no GSAP');
 { const ctx = {TX, CURRENCY_META:{gold:{glyph:'<svg class="coin-ico"></svg>', label:'Maple Leaves'}, dust:{glyph:'✨', label:'Magic Dust'}, metal:{glyph:'🔩', label:'Metal'}},
     getCardDefs: ()=> ({c1:{id:'c1', name:'Ink Squid', rarity:'common'}, c2:{id:'c2', name:'Broodmother', rarity:'legendary'}}), cardTileHTML: d=> `<div class="card-tile">${d.name}</div>`,
+    /* 2026-11-02 (QA1): the spec shows the overall raid rank since FIX3 (2026-10-25, G21): escapeHtml and the badge */ escapeHtml: s=> String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'), raidTotalRankBadgeHTML: ()=> '<span class="rank-badge"></span>',
     raidBossArt: ()=> 'art/raids/goliath.png', rarityDef: k=> ({common:{label:'Common', color:'#bbb'}, legendary:{label:'Legendary', color:'#f0b000'}})[k] || {label:k, color:''}};
   vm.createContext(ctx);
   vm.runInContext([lineOf('const RAID_CLAIM_CUR_WEIGHT'), lineOf('const RAID_CLAIM_CARD_WEIGHT'), fnSrc('raidClaimTierLabel'), fnSrc('raidClaimScreenSpec'), fnSrc('raidLocale') /* 2026-10-19 (package RB): raid numbers in the game's language */,
@@ -150,7 +151,9 @@ async function browser(){
   const EXE = process.env.BW_CHROMIUM || '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell';
   if(!fs.existsSync(EXE) || !fs.existsSync(path.join(ROOT, 'index.html'))){ console.log('  (browser part skipped: no Chromium or index.html)'); return; }
   const URL = 'file://' + path.join(ROOT, 'index.html');
-  const INIT = "localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_tutorial2_done_v1','1'); localStorage.setItem('bramblewood_world_open_v1','1'); sessionStorage.setItem('bramblewood_seen_splash','1');";
+  // 2026-11-02 (QA1): + the RES3 level track marked granted (2026-10-26): the claim's +500 XP levels up, and a level-up's reward pack opened
+  // over the claim screen and took the clicks (the pack opener's overlay intercepted pointer events)
+  const INIT = "localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_tutorial2_done_v1','1'); localStorage.setItem('bramblewood_world_open_v1','1'); sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999}));";
   const CLAIMS = `(()=>{ const def = activeRaidDef(); window.__claimKey = def.id + ':' + Date.now();
     window.raidClaimsFor = ()=> [{key: window.__claimKey, cycle: 1, mine: 48250, reward:{kind:'kill', tier:'top1', base:{gold:400, dust:60, metal:3}, extra:{metal:3, title:'Goliath-Slayer'}}}];
     window.__gold0 = myCurrencies.gold || 0; playSubTab = 'raid'; switchTab('play'); return !!document.querySelector('[data-raid-claim]'); })()`;
@@ -166,13 +169,16 @@ async function browser(){
     await pg.click('[data-raid-claim]'); await pg.waitForTimeout(400);
     const s1 = await pg.evaluate(`(()=>{ const s = document.querySelector('.fxf-rcs'); if(!s) return null; return {calm: s.classList.contains('is-calm'), done: s.classList.contains('is-done'), role: s.getAttribute('role'),
       items: [...s.querySelectorAll('.fxf-rcs-rw')].map(li=> li.className.replace(/fxf-rcs-rw /, '') + '|' + li.textContent.trim()), title: s.querySelector('.fxf-rcs-title').textContent, tier: s.querySelector('.fxf-rcs-tier').textContent.trim(),
-      boss: !!s.querySelector('.fxf-rcs-bossin img'), claimed: !!(JSON.parse(localStorage.getItem('bramblewood_raid_claims_v1') || '{}')[window.__claimKey]), gold: (myCurrencies.gold || 0) - window.__gold0}; })()`);
+      boss: !!s.querySelector('.fxf-rcs-bossin img'), claimed: !!(JSON.parse(localStorage.getItem('bramblewood_raid_claims_v1') || '{}')[window.__claimKey]), gold: (myCurrencies.gold || 0) - window.__gold0,
+      paid: econPayAll('raids', {gold:400, dust:60, metal:6}) /* 2026-11-02 (QA1): raid pay is halved since ECON1 (2026-10-30), shown as paid */}; })()`);
     ok(s1 && s1.role === 'dialog' && !s1.calm && !s1.done, `B1. Claim opens the full claim screen (${JSON.stringify(s1 && {calm:s1.calm, done:s1.done})})`);
-    ok(s1 && s1.items.length === 7, `B1. seven rewards: XP, three currencies, two raid cards, the title (${s1 && s1.items.length})`);
-    ok(s1 && /^w-1 is-xp\|.*\+500XP$/.test(s1.items[0]) && /is-title/.test(s1.items[6]) && /Goliath-Slayer/.test(s1.items[6]), `1. XP first, the title last (${s1 && [s1.items[0], s1.items[6]].join(' / ')})`);
-    ok(s1 && s1.items.some(x=> /is-currency.*\+400.*Maple Leaves/.test(x)) && s1.items.some(x=> /\+60.*Magic Dust/.test(x)) && s1.items.some(x=> /\+6.*Metal/.test(x)) && s1.items.filter(x=> /is-card/.test(x)).length === 2, 'B1. every currency and both cards are on it');
+    // 2026-11-02 (QA1): + the Bonus Raid Ticket a fall at total raid rank A or better pays (TU2 / RK1, 2026-10-23): eight rewards, the title still last
+    const last = s1 ? s1.items[s1.items.length - 1] : '';
+    ok(s1 && s1.items.length === 8 && s1.items.some(x=> /is-item/.test(x)), `B1. eight rewards: XP, three currencies, two raid cards, the Bonus Raid Ticket, the title (${s1 && s1.items.length})`);
+    ok(s1 && /^w-1 is-xp\|.*\+500XP$/.test(s1.items[0]) && /is-title/.test(last) && /Goliath-Slayer/.test(last), `1. XP first, the title last (${s1 && [s1.items[0], last].join(' / ')})`);
+    ok(s1 && s1.items.some(x=> new RegExp('is-currency.*\\+' + s1.paid.gold + '.*Maple Leaves').test(x)) && s1.items.some(x=> x.includes('+' + s1.paid.dust) && /Magic Dust/.test(x)) && s1.items.some(x=> x.includes('+' + s1.paid.metal) && /Metal/.test(x)) && s1.items.filter(x=> /is-card/.test(x)).length === 2, `B1. every currency (as paid: ${s1 && JSON.stringify(s1.paid)}) and both cards are on it`);
     ok(s1 && /has fallen!/.test(s1.title) && s1.tier === 'Top 1%' && s1.boss, 'B1. the title, the Top 1% badge and the Goliath');
-    ok(s1 && s1.claimed && s1.gold === 400, `B1. the claim is recorded and paid (+${s1 && s1.gold} gold)`);
+    ok(s1 && s1.claimed && s1.gold === s1.paid.gold, `B1. the claim is recorded and paid (+${s1 && s1.gold} gold, ${s1 && s1.paid.gold} after ECON1)`);
     await pg.mouse.click(30, 30); await pg.waitForTimeout(300);
     const s2 = await pg.evaluate(`(()=>{ const s = document.querySelector('.fxf-rcs'); return s && {done: s.classList.contains('is-done'), num: s.querySelector('.fxf-rcs-num').textContent, shown: [...s.querySelectorAll('.fxf-rcs-rw')].every(li=> getComputedStyle(li).opacity === '1'), focus: document.activeElement && document.activeElement.classList.contains('fxf-rcs-go')}; })()`);
     ok(s2 && s2.done && s2.num === (48250).toLocaleString('en-US') && s2.shown, `B2. a tap skips to the end: every reward shown, the damage counted (${JSON.stringify(s2)})`);
@@ -201,7 +207,8 @@ async function browser(){
     await ctx.close();
     // boss results: crimson; an elite's are not
     [ctx, pg] = await open();
-    const win = async (kind, tw)=>{ await pg.evaluate(`(()=>{ if(window.matchState){ try{ endMatch(); }catch(e){} } const pair = ${tw ? `[CONQUEST_MAPS.find(m=> m.tower), CONQUEST_MAPS.find(m=> m.tower).nodes[0]]` : `CONQUEST_MAPS.map(m=> [m, m.nodes.find(n=> n.kind === '${kind}')]).find(x=> x[1] && !x[0].sub && !x[0].endless && !x[0].tower)`};
+    // 2026-11-02 (QA1): a fight needs owned copies of the deck's cards since package PG (2026-10-23: "Your deck has 3 Dolphin Knight, but you own 0"), so the page owns them first
+    const win = async (kind, tw)=>{ await pg.evaluate(`(()=>{ if(!window.__qaOwned){ window.__qaOwned = 1; Object.entries(myDeckCounts).forEach(([id, n])=>{ for(let i = 0; i < n; i++) unlockCardForPlayer(id, 'test'); }); } if(window.matchState){ try{ endMatch(); }catch(e){} } const pair = ${tw ? `[CONQUEST_MAPS.find(m=> m.tower), CONQUEST_MAPS.find(m=> m.tower).nodes[0]]` : `CONQUEST_MAPS.map(m=> [m, m.nodes.find(n=> n.kind === '${kind}')]).find(x=> x[1] && !x[0].sub && !x[0].endless && !x[0].tower)`};
         conquestSelectedMap = pair[0].id; playSubTab = 'conquest'; switchTab('play'); startConquestMatch(pair[0].id, pair[1].key, {skipEnergyCost:true, noOpener:true}); adminModeEnabled = true; return 1; })()`);
       await pg.waitForTimeout(1500);
       for(let i = 0; i < 60; i++){ await pg.evaluate("(()=>{ const vs = document.querySelector('.vs-screen'); if(vs) vs.click(); if(document.querySelector('.rr-stage')) document.querySelector('.rr-stage').dispatchEvent(new PointerEvent('pointerdown', {bubbles:true})); if(matchState && !matchState.over && !matchState.resolving) adminAutoWin(); return 1; })()");

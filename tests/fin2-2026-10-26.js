@@ -62,7 +62,7 @@ ok(/sbCheck\(A, D, S, N, M, F, SH\)/.test(src) && /c = sbCheck\(A, D, S, N, M, F
   if(held.length) console.log('  (held, not checked: ' + [...new Set(held)].join(', ') + ')'); }
 ok(fs.existsSync(path.join(ROOT, 'docs', 'balance', 'fin2-shield-refit-2026-10-26.json')), 'c. the re-fit\'s moves are saved');
 { const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'decisions.json'), 'utf8')).items.map(d=> d.id); ok(['FIN2-1', 'FIN2-2'].every(i=> dec.includes(i)), 'decisions FIN2-1, FIN2-2'); }
-ok(/^## 2026-10-26 \(package FIN2/m.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 100000)), 'CHANGELOG entry near the top'); // 2026-10-29 RELFIX3: 100000 (was 40000; the 10-28 / 10-29 packages' entries sit above it)
+ok(/^## 2026-10-26 \(package FIN2/m.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8')), 'CHANGELOG entry'); // 2026-11-02 (QA1): the whole CHANGELOG; the "near the top" window kept going stale as later packages and releases sat above the entry // 2026-10-29 RELFIX3: 100000 (was 40000; the 10-28 / 10-29 packages' entries sit above it)
 
 // ---- browser
 async function browser(){

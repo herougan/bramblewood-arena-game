@@ -54,7 +54,7 @@ ok(/\.battlefield\.bf-tutorial\{background:[^}]*#8fd16a[^}]*\}/.test(tpl), 'bf-t
 }
 
 // --- 5. Tutorial map layout
-const tc = fnSrc('tutSideCentred'), tp = fnSrc('tutPairCentred'), slide = fnSrc('tutMapOpenSlide'), mnp = fnSrc('mapNodePositions');
+const tc = fnSrc('tutSideCentred'), tp = fnSrc('tutPairCentred'), slide = fnSrc('tutMapOpenSlide'), mnp = fnSrc('mapNodePositions') + '\n' + (()=>{ try{ return fnSrc('mapNodePositionsRaw'); }catch(e){ return ''; } })(); // 2026-11-02 (QA1): REVIEW2 (2026-10-29) moved the body into mapNodePositionsRaw (mapNodePositions adds the Ambush on its road)
 ok(tc && tp && slide, 'tutSideCentred, tutPairCentred and tutMapOpenSlide exist');
 ok((mnp.match(/tutSideCentred\(map,/g) || []).length === 2, 'mapNodePositions centres the pair on both paths (with and without layout overrides)');
 {

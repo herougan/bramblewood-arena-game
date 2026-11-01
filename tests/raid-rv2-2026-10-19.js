@@ -75,7 +75,8 @@ ok(/m\.replayReserve = \{\};/.test(src) && /if\(m\.replayReserve\) raidReplayRes
 // ======================= 3. the raid's middle and back rows: +15% =======================
 ok(/\.board-row\.reserve-row\.raid-rows > \.board-card\{transform:scale\(\.966\)/.test(tpl) && Math.abs(0.84 * 1.15 - 0.966) < 0.001, 'the raid\'s reserve cards at .966 (.84 x 1.15)');
 ok(/\.board-row\.reserve-row\.raid-rows\{height:calc\(var\(--match-card-h, 149px\) \* \.966 \+ 8px\) !important;\}/.test(tpl), 'their rows as tall as the cards');
-ok(/reserve-row enemy\$\{m\.raidFull \? ' raid-rows' : ''\}/.test(src) && /reserve-row mine\$\{m\.raidFull \? ' raid-rows' : ''\}/.test(src), 'only a raid\'s reserve rows take the larger size');
+// 2026-11-02 (QA1): a group dungeon's reserve rows have their own class since COOP2 (2026-10-28): m.raidFull ? ' raid-rows' : m.coop ? ' coop-rows' : ''
+ok(/reserve-row enemy\$\{m\.raidFull \? ' raid-rows' : (?:m\.coop \? ' coop-rows' : )?''\}/.test(src) && /reserve-row mine\$\{m\.raidFull \? ' raid-rows' : (?:m\.coop \? ' coop-rows' : )?''\}/.test(src), 'only a raid\'s reserve rows take the larger size');
 
 // ======================= 4. the HP-scaled elders: 100 Health fresh, down to their basic Health =======================
 { const fresh = RaidM.raidState(goliath, [], 0, {cycle:0});

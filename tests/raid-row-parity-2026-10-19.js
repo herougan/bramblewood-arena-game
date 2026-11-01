@@ -25,7 +25,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'rr-punct': U('rr-punct', {puncture:2}, {attack:4}), 'rr-over': U('rr-over', {overwhelm:true}, {attack:20}), 'rr-arrow': U('rr-arrow', {arrow:3}),
   'rr-elec': U('rr-elec', {electricity:2}, {attack:4}),
   'rr-regen': U('rr-regen', {regen:2}), 'rr-renew': U('rr-renew', {renewal:true}), 'rr-rs': U('rr-rs', {triggers:[{on:'onRoundStart', do:'gainLumber', amount:2}]}),
-  'rr-bloom': U('rr-bloom', {bloom:3}), 'rr-rally': U('rr-rally', {rally:2}), 'rr-immo': U('rr-immo', {immolation:2}), 'rr-rest': U('rr-rest', {restless:true}),
+  'rr-bloom': U('rr-bloom', {bloom:3}), 'rr-rally': U('rr-rally', {banner:2}) /* 2026-11-02 (QA1): the aura these checks test is War Banner's since BF6 (2026-10-21, owner 15:15: Rally N is now a one-off grant when the Rally card enters play, not an aura) */, 'rr-immo': U('rr-immo', {immolation:2}), 'rr-rest': U('rr-rest', {restless:true}),
   'rr-boomb': U('rr-boomb', {explode:{time:1, damage:5}}), 'rr-ready': U('rr-ready', {triggers:[{on:'onReady', do:'gainLumber', amount:3}]}, {attack:1, wait:1}),
   'rr-revive': U('rr-revive', {revive:true}, {health:1}), 'rr-ods': U('rr-ods', {onDeathSpawn:{defId:'rr-tok', count:2}}, {health:1}),
   'rr-relic': U('rr-relic', {relic:true}, {health:1}), 'rr-crys': U('rr-crys', {crystallise:3}, {health:1}), 'rr-meio': U('rr-meio', {meiosis:1}, {health:1, attack:4}),
@@ -142,7 +142,9 @@ PAIRS.forEach(([ar, tr])=>{ let dec = []; const r = swing('rr-elec', ar, tr, [-1
 
 // ---- slot refills, into the unit's own row (struck down by a 10-Attack enemy in its column)
 function killIn(ar, id){ const {e, P} = mk(); const c = place(e, P, 1, ar, id, 0); put(e, P, 2, 'rr-hit', 0); const ev = []; e.resolveCombat(P, so, {}, ev, 2); return {e, P, c, ev, row: rowsOf(P[1])[ar]}; }
-[0, 2].forEach(ar=>{ const k = killIn(ar, 'rr-revive'); ok(k.c.hp === 1 && k.c.revivedOnce && k.row.includes(k.c) && k.c.slot === 0, `[${ROWS[ar]}] Revive: back in its slot at 1 Health`); });
+// 2026-11-02 (QA1): retired. "Dies once and comes back at 1 Health" is no longer Revive: since ENG9 (2026-10-26) Revive N is an On Play graveyard
+// action and the come-back is Undead (docs/project-state.md); revive:true on a unit does nothing on its death now. Was:
+// [0, 2].forEach(ar=>{ const k = killIn(ar, 'rr-revive'); ok(k.c.hp === 1 && k.c.revivedOnce && k.row.includes(k.c) && k.c.slot === 0, `[${ROWS[ar]}] Revive: back in its slot at 1 Health`); });
 [0, 2].forEach(ar=>{ const k = killIn(ar, 'rr-ods'); const toks = k.row.filter(c=> c.defId === 'rr-tok');
   ok(toks.length === 2 && toks.some(c=> c.slot === 0) && rowsOf(k.P[1]).every((rw, i)=> i === ar || !rw.some(c=> c.defId === 'rr-tok')), `[${ROWS[ar]}] On Death: Spawn: 2 tokens in its row, one in its slot (${toks.map(c=> c.slot)})`); });
 [0, 2].forEach(ar=>{ const k = killIn(ar, 'rr-relic'); ok(k.row.some(c=> /~relic$/.test(c.defId) && c.slot === 0), `[${ROWS[ar]}] Relic: its 1/1 stands in its slot`); });

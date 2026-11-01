@@ -32,6 +32,7 @@ function load(store){
     getCardDefs: ()=> defs, CONQUEST_MAPS: MAPS, adminModeEnabled: false,
     findConquestNode: (m, k)=>{ const map = MAPS.find(x=> x.id === m), node = map && map.nodes.find(x=> x.key === k); return node ? {map, node} : null; },
     skirmishCode: (m, k)=> k, escapeHtml: s=> String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'),
+    TX: (k, v)=> require(path.join(ROOT, 'bramblewood-texts.js')).TX(k, v), rankEmblemHTML: r=> '<i class="rank-emblem">' + r + '</i>', // 2026-11-02 (QA1): the journal's texts are TX keys now, and it draws the rank emblems
   };
   const names = Object.keys(env);
   // eslint-disable-next-line no-new-func
@@ -89,7 +90,9 @@ ok(egg && egg.source && egg.source.kind === 'quest' && egg.source.id === 'scale-
 // obtainability, with the game's own functions
 { const CARD_DEFS_BASELINE = defs, liveCards = {}, TUTORIAL_REWARD_IDS = []; // eslint-disable-line no-unused-vars
   // eslint-disable-next-line no-eval
-  eval(slice('function cardSourceOf(d){', '// Creature rank') + slice('function isUnattainable(d){', 'function openNodeRewardsEditor') + ';globalThis.__ob = {isUnattainable, cardObtainableFrom};');
+  // 2026-11-02 (QA1): the sliced region now holds build placeholders (__PACK_EXTRAS__, __MAP_REVIEW__, ... filled by assemble_arena.py from
+  // canonical/*.json); they stand in as empty tables here, since obtainability reads the card's own source
+  eval((slice('function cardSourceOf(d){', '// Creature rank') + slice('function isUnattainable(d){', 'function openNodeRewardsEditor')).replace(/\b__[A-Z][A-Z0-9_]*__\b(?=\s*[;,)])/g, '{}') + ';globalThis.__ob = {isUnattainable, cardObtainableFrom};');
   const {isUnattainable: un} = globalThis.__ob;
   ok(!un(egg), '2. the Red Dragon Egg is obtainable (unlockCardForPlayer would refuse it otherwise)');
   ok(!un(defs['dragonscale-mail']) && !un(defs['bark-buckler']), '4. the Blacksmith\'s equipment is obtainable (a craft gave nothing before)');

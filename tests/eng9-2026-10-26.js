@@ -94,7 +94,9 @@ const hits = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid);
 { const {e, P} = mk(61); const b = put(e, P, 1, 'x-bloom', 0); b.bloomKill = true; [-1, 1].forEach(sl=> put(e, P, 1, 'x-wall', sl));
   for(let sl = -4; sl <= 4; sl++) if(!all(P[1]).some(x=> x.slot === sl)) put(e, P, 1, 'x-wall', sl);
   const ev = round(e, P); const f = ev.find(x=> x.type === 'bloom');
-  ok(f && f.failed && b.bloomed && b.atk === 3 && b.maxHp === 21, `E6 no free slot: the bloom fails, +1/+1 on the unit (${b.atk}/${b.maxHp})`); }
+  // 2026-11-02 (QA1): "Bloom keeps trying" (ENG15, 2026-10-31, owner FF5): with no room beside it nothing happens (no failed bloom, no +1/+1,
+  // not spent); it tries again next round. Was ENG9: a failed bloom, +1/+1 on the unit, spent.
+  ok(!f && !b.bloomed && b.atk === 2 && b.maxHp === 20, `E6 no free slot: no bloom this round, the unit unchanged and not spent (${b.atk}/${b.maxHp})`); }
 { const {e, P} = mk(62); const b = put(e, P, 1, 'x-bloomw', 0); b.bloomKill = true; const ev = round(e, P);
   ok(!ev.some(x=> x.type === 'bloom') && !b.bloomed, 'E6 a Waiting unit does not test its Bloom yet'); }
 

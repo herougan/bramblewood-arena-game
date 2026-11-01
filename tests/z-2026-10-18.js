@@ -86,7 +86,7 @@ ok(/const SKIRMISH_KIT_PER_DAY = 3[,;]/.test(src) /* 2026-10-23 (EB): + KIT_DROP
   const locked = P.dungeonSweepBtnHTML(map);
   ok(/is-locked/.test(locked) && /aria-disabled="true"/.test(locked) && /<span class="premium-badge">Premium<\/span>/.test(locked) && locked.includes('title="Sweeping Dailies is a perk for supporters"') /* 2026-10-30 (UI6, X19): the Dailies */, '2. not premium: locked, Premium badge, supporters tooltip');
   ctx.cloudPremium = true; const open = P.dungeonSweepBtnHTML(map);
-  ok(!/is-locked/.test(open) && /aria-haspopup="true"/.test(open) && /Sweep floor 4, your best/.test(open) && /costs 6⚡/.test(open), '2. premium: an open Sweep for floor 4 at its Energy cost');
+  ok(!/is-locked/.test(open) && /aria-haspopup="true"/.test(open) && /Sweep floor 4[,:]/.test(open) && /[Cc]osts 6⚡/.test(open), '2. premium: an open Sweep for floor 4 at its Energy cost'); // 2026-11-02 (QA1): TIP1 (2026-10-30) shortened the tooltip: "Sweep floor 4: the CPU plays it. Costs 6⚡ and a key."
   ok(P.dungeonSweepBtnHTML({id:'mm', endless:true, nodes:map.nodes, best:0}) !== '' , '2. (sanity) a map with a best floor has a button');
   ctx.dungeonBestFloor = ()=> 0; ok(P.dungeonSweepBtnHTML(map) === '', '2. nothing cleared yet: no Sweep'); }
 ok(/sbClient\.from\('profiles'\)\.select\('\*'\)\.eq\('id', cloudUserId\)\.maybeSingle\(\)/.test(fnSrc('refreshPremiumFlag')) && !/\.(update|upsert|insert)\(/.test(fnSrc('refreshPremiumFlag')), '2. the flag is only read from the player\'s own profile row');

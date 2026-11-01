@@ -33,11 +33,12 @@ ok(R.RAID_SCALE_V === 3, 'scale 3');
 { const edit = {id: 'goliath', scaleV: 2, bossHpBonusMax: 50, scoring: {perInFightHp: 1}, parts: [{id: 'left', fight: {castleHp: 420}}, {id: 'tail', fight: {castleHp: 333}}, {id: 'core', fight: {castleHp: 200}}]};
   const m = R.migrateRaidScale(edit, goliath);
   ok(m !== edit && edit.parts[0].fight.castleHp === 420, 'a copy; the saved edit itself untouched');
-  ok(m.scaleV === 3 && m.parts[0].fight.castleHp === 350 && m.parts[1].fight.castleHp === 333 && m.parts[2].fight.castleHp === 200 && m.bossHpBonusMax === 55, 'a scale-2 edit: 420 -> 350, 50 -> 55; its own 333 kept');
+  // 2026-11-02 (QA1): the edit takes the shipped part's bramble, which is canonical/raids.json's (350 at RB2; later raid balance raised it, 780 today)
+  ok(m.scaleV === 3 && m.parts[0].fight.castleHp === part('left').fight.castleHp && m.parts[1].fight.castleHp === 333 && m.parts[2].fight.castleHp === 200 && m.bossHpBonusMax === 55, `a scale-2 edit: 420 -> the shipped ${part('left').fight.castleHp}, 50 -> 55; its own 333 kept`);
   const own = R.migrateRaidScale(Object.assign({}, edit, {bossHpBonusMax: 70}), goliath); ok(own.bossHpBonusMax === 70, 'an elders\' ceiling the admin set stays');
   ok(R.migrateRaidScale(m, goliath) === m, 'a scale-3 edit is left alone');
   const pre = R.migrateRaidScale({id: 'goliath', scoring: {perInFightHp: 15}, bossHpBonusMax: 100, parts: [{id: 'left', bars: 3, barHp: 80000, fight: {castleHp: 420}}]}, goliath);
-  ok(pre.scaleV === 3 && pre.scoring.perInFightHp === 1 && pre.bossHpBonusMax === 55 && pre.parts[0].fight.castleHp === 350, 'a pre-RB edit takes both steps');
+  ok(pre.scaleV === 3 && pre.scoring.perInFightHp === 1 && pre.bossHpBonusMax === 55 && pre.parts[0].fight.castleHp === part('left').fight.castleHp, 'a pre-RB edit takes both steps'); // 2026-11-02 (QA1): the shipped bramble, as above
   const mine = R.migrateRaidScale({id: 'x', scaleV: 2, parts: [{id: 'a', fight: {castleHp: 420}}]}, null); ok(mine.scaleV === 3 && mine.parts[0].fight.castleHp === 420, 'a raid with no shipped twin keeps its bramble'); }
 ok(/fight:\{castleHp:350, deck:\{\}\}\}\);/.test(src), 'the raid editor\'s new part starts on a 350 bramble');
 
