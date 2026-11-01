@@ -1,5 +1,7 @@
 # New cards, package CONTENT3 (2026-10-26): art prompts
 
+**Status 2026-11-02 (package ART5, JJ9):** painted in PixelLab Pro from these prompts, with the house genre prefix: Granite Ox Golem, Phoenix Mushrooms, Marsh-mallow Hare, Sphagnum Vole, Mist-net Otter, Clap-net Trapper, Birdlime Dauber, Static Fennec, Peat-cutter Vole, Magpie Collector, Mother Carrier, Laden Hummingbird. Weapon words reworded before sending: Mother Carrier (darts -> reed quills); Laden Hummingbird (darts -> reed quills). The prompt actually sent sits beside each image in `art/cards/<id>.prompt.txt`.
+
 Fourteen new cards (and the owner's Phoenix Mushrooms, folded in from his live edit): the Sleep-immune card before 7-5 (G5), two Cure cards
 for the swamp (C1), three Otter bird-catchers (C2, C3), two Storm cards (C4), three Lumber and draw cards (C6), the Mother Carrier and its
 token (E16) and the four-legged golem (E17). Each card shows its emoji until it is painted.

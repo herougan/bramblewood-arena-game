@@ -1,5 +1,7 @@
 # New card art briefs (2026-10-21)
 
+**Status 2026-11-02 (package ART5, JJ9):** painted in PixelLab Pro from these prompts, with the house genre prefix: Greyplume Fledgling, Swordbill Challenger, Coffer Mimic, Lava Waders, Ironclaw Fiddler, Dam-Keeper Beaver, Moat Snapper, Briarback Hedgehog, Barkplate Beetle. Weapon words reworded before sending: Swordbill Challenger (fencing foil -> a duelling salute). The prompt actually sent sits beside each image in `art/cards/<id>.prompt.txt`.
+
 One NightCafe prompt per new card. **Nothing was generated and no credits were spent.** Until art is made, the card shows its emoji placeholder.
 
 Rules for these prompts (as in `docs/art/new-cards-2026-10-19-briefs.md`):

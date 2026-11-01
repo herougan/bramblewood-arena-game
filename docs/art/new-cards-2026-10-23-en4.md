@@ -1,5 +1,7 @@
 # New cards, package EN4 (2026-10-23): NightCafe prompts
 
+**Status 2026-11-02 (package ART5, JJ9):** painted in PixelLab Pro from these prompts, with the house genre prefix: Great Skua, Bloodscent Shark, Inland Taipan, Oyster Bank, Musk Ox Matriarch. The prompt actually sent sits beside each image in `art/cards/<id>.prompt.txt`.
+
 Six cards for the three new skills (owner 22:23 #7, 19:27 #4 option B): **Hemorrhage** (its hits double the Bleed a target already has),
 **Greater Poison** (its hits turn the target's Poison into Greater Poison) and **Shore Up** (when it is hit, the allies beside it gain Shield 1).
 Each card shows its emoji until it is painted. Rules for every prompt (CLAUDE.md): a full background, no weapon words, none of the banned words.

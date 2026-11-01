@@ -1,5 +1,7 @@
 # Easter-egg card art briefs (2026-10-19, package EE)
 
+**Status 2026-11-02 (package ART5, JJ9):** painted in PixelLab Pro from these prompts, with the house genre prefix: Terraumbra, Exo-podas, Galactic Condor, Pink Maus, Nyoogle, Habanero Drakon, Kegfuse Panda. The prompt actually sent sits beside each image in `art/cards/<id>.prompt.txt`.
+
 One NightCafe prompt per Easter-egg card. **Nothing was generated and no credits were spent.** Until art is made, each card shows its emoji placeholder (in brackets below).
 
 Rules for these prompts:
