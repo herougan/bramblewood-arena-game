@@ -40,7 +40,7 @@ ok(/\(wind && e\.flying && !ashyNow\(\) && windSideOf\(pid\) === 'tail'\) \? 'ta
   ok(/const lw = e\.flying && bopts && bopts\.live \? liveWindState\(bopts\.live\.pid\) : null;/.test(ab), 'a board Flyer asks liveWindState for its side');
   // 2026-10-24 (package BV, owner 17:01 #4): the wind's marks are one pip now (flyerWindPips): wing + boot, or wing + ×2
   const fw = fnSrc('flyerWindPips'); ok(!!fw && /out\.push\(\.\.\.flyerWindPips\(e, lw\)\)/.test(ab), 'the Flyer\'s pips come from flyerWindPips');
-  ok(/class="ab-windpair wind-live wind-tail"/.test(fw) && /class="ab-windpair wind-live wind-head"/.test(fw) && /<b class="wind-x2">×2<\/b>/.test(fw), 'the wing is lit with its boot (Tailwind) or its ×2 (Headwind) in one pip');
+  ok(/class="ab-windpair wind-live wind-tail"/.test(fw) && /class="ab-windpair wind-live wind-head"/.test(fw) && /<b class="wind-x2 wind-atk-cut">−1⚔<\/b>/.test(fw) /* ENG16 (2026-11-02, WIND-2 a): −1⚔, was ×2 */, 'the wing is lit with its boot (Tailwind) or its −1⚔ (Headwind) in one pip');
   ok(/if\(e\.quick && !\(e\.flying && lw && lw\.k === 'tail'\)\)/.test(fw), 'a Tailwind takes the Flyer\'s own Quick boot into the pair');
   ok(/TX\('ui\.wind-tail-wing'\)/.test(fw) && /TX\('ui\.wind-head-wing'\)/.test(fw) && /TX\('ui\.wind-tail-quick'\)/.test(fw), 'the marks\' titles are TX keys'); }
 ['ui.wind-tail-wing', 'ui.wind-head-wing', 'ui.wind-tail-quick'].forEach(k=> ok(texts.includes('"' + k + '": '), 'TX key ' + k));

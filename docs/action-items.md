@@ -21,15 +21,15 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - JJ14 (UI14): the turn highlight (yellow glow on my side) is offset to the right of the battlefield.
 - JJ15 (UI14): status context pills sit in the card's centre and show the token count (no number when 1).
 - JJ16 (UI14): feature pages (Codex etc.): a top-right nav button straight to the conquest map; the nav bar's margins are uneven (SS#3).
-- JJ17 (ENG16): Milling: turns 1 of your Lumber into 2 Lumber; its skill worth x0.85.
-- JJ18 (ENG16 + report): which maps lack a field effect or combo of their own; give each one (e.g. Aerie Vault: thunderstorm). Wind is too strong: coordinator call below.
-- JJ19 (ENG16): new field effect Quicksand: a creature ending its turn under N Health dies.
+- JJ17 (ENG16; done 11-02, not yet released): Milling: turns 1 of your Lumber into 2 Lumber; its skill worth x0.85.
+- JJ18 (ENG16 + report; done 11-02, not yet released, docs/balance/field-uniqueness-2026-11-02.md): which maps lack a field effect or combo of their own; give each one (e.g. Aerie Vault: thunderstorm). Wind is too strong: coordinator call below.
+- JJ19 (ENG16; done 11-02, not yet released): new field effect Quicksand: a creature ending its turn under N Health dies.
 - JJ20 (UI14): Devilry box: diagrams centred; background a black-grey-black gradient.
 - JJ21 (BAL9): cards still over / under the formula: fix them.
 - JJ22 (BAL9 rule): Map 40+: when the rarity cap cannot fill a 20-card deck, add +1 carried card (lower rarity first), and so on.
 - JJ23 (UI14): Sulfur fumes: light, transparent green gas fading in each turn and out during the fight.
 - JJ24 (BAL9): Kelp Mangroves reference / enemy decks still use Minnow Skitter (cut). Remove cut cards from every deck.
-- JJ25 (ENG16; replaces BABY-1): Baby cards can be levelled 0 -> 1 -> 10. Getting an egg (and at each level-up) offers Hatch or Stay (the egg shakes); staying lets it level as an egg, for Evomax decks.
+- JJ25 (ENG16; replaces BABY-1; done 11-02, not yet released): Baby cards can be levelled 0 -> 1 -> 10. Getting an egg (and at each level-up) offers Hatch or Stay (the egg shakes); staying lets it level as an egg, for Evomax decks.
 - JJ26 (UI14): Blind-eye VFX: fade out after the match start / on-play; darkness and blind effects at 10% opacity.
 - JJ28 (BAL9, owner 00:18): more defenders (Bulwark and similar) as an important part of strategy: measure how many defender cards each map list and deck holds, propose where to add or retune defenders (Bulwark's worth included).
 - JJ27 (ideas): Man o' war; bright algae as blown-up bacteria (Bloom at night); Nautiloid; Bobbit worm; Pistol shrimp; the four-toothed worm; mythic creatures from Map 56+: Unicorn, Sphinx, Griffin.

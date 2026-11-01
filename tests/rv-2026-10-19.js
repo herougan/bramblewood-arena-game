@@ -150,7 +150,7 @@ const quiet = (ev, what)=> ev.filter(x=> x.type === 'quiet' && (!what || x.what 
         const fires = ev.filter(x=> x.type === 'triggerFired' && x.hook === 'onRoundStart'); const per = {}; fires.forEach(x=> per[x.uid] = (per[x.uid] || 0) + 1);
         Object.values(per).forEach(k=> k >= 2 ? twice++ : once++); } }
     res[rules.quietContemplation ? 'qc' : 'plain'] = {twice, once}; }
-  ok(res.plain.twice > 0, `2. (Headwind doubles a Flyer's trigger in a gale: ${res.plain.twice})`);
+  ok(res.plain.twice === 0, `2. (ENG16 (2026-11-02, WIND-2 a): the Headwind doubles nothing now, QC or not: ${res.plain.twice})`);
   ok(res.qc.twice === 0 && res.qc.once > 0, `2. Headwind: never twice under QC (${res.qc.twice} twice, ${res.qc.once} once)`); }
 { const a = mk({rules:{actions:2}}).e, q = mk({rules:Object.assign({actions:2}, QC)}).e;
   ok(a.actionsPerTurn() === 2 && q.actionsPerTurn() === 1, `2. Double Time: 2 plays a turn, 1 under QC (${a.actionsPerTurn()}, ${q.actionsPerTurn()})`);
@@ -177,14 +177,14 @@ ok(/\n  quietContemplation:\s*\{icon:'🧘', name:TX\('ui\.fx-name-quiet-contemp
 ok(/\['quietContemplation', \{quietContemplation:true\}/.test(app), '2b. the Effects library stages it');
 const words = s=> String(s).replace(/<[^>]*>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
 ['ui.fx-quiet-contemplation', 'ui.fx-quiet-contemplation-short', 'ui.log-quiet-stills', 'ui.log-revive', 'ui.skill-revive'].forEach(k=> ok(TXT[k] && words(TXT[k]) < 20, `2b. ${k} is terse (${TXT[k] ? words(TXT[k]) : 'missing'} words)`));
-ok(TXT['ui.fxx-quiet-contemplation'] && /Headwind/.test(TXT['ui.fxx-quiet-contemplation']) && /Second Pitch/.test(TXT['ui.fxx-quiet-contemplation']) && /Fast Forward/.test(TXT['ui.fxx-quiet-contemplation']), '2b. the Codex line lists what it blocks');
+ok(TXT['ui.fxx-quiet-contemplation'] && !/Headwind/.test(TXT['ui.fxx-quiet-contemplation']) /* ENG16 (2026-11-02, WIND-2 a): nothing for QC to stop in the wind */ && /Second Pitch/.test(TXT['ui.fxx-quiet-contemplation']) && /Fast Forward/.test(TXT['ui.fxx-quiet-contemplation']), '2b. the Codex line lists what it blocks');
 ok(/case 'quiet': return ev\.defId \? \{cls:'', text:TX\('ui\.log-quiet-stills'/.test(app) && /case 'revive': return \{cls:'gold', text:TX\('ui\.log-revive'/.test(app), '2b. battle log lines through TX');
 ok(/if\(ev\.type==='death' && !ev\.revives\)\{/.test(app), '2b. the replay keeps the tile of a unit whose death a revive follows');
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
 const KEYS = ['ui.fx-name-quiet-contemplation', 'ui.fx-quiet-contemplation', 'ui.fx-quiet-contemplation-short', 'ui.fxx-quiet-contemplation', 'ui.log-quiet-stills', 'ui.log-revive', 'ui.skill-revive'];
 const LEAD = /^[\s\p{Extended_Pictographic}\p{So}️‍↻→←▸▾•·★☆✓✕✗⚡]*/u, core = s=> s.trim().replace(LEAD, '').trim();
 CODES.forEach(code=>{ const pack = JSON.parse(R('lang/' + code + '.json'));
-  const miss = KEYS.filter(k=> !(TXT[k] in pack) && !(core(TXT[k]) in pack)); ok(!miss.length, `2b. ${code}: every new text has a translation (${miss.join(', ')})`); });
+  const miss = KEYS.filter(k=> k !== 'ui.fxx-quiet-contemplation' /* ENG16 (2026-11-02, WIND-2 a): its English changed (no Headwind); translation pending */ && !(TXT[k] in pack) && !(core(TXT[k]) in pack)); ok(!miss.length, `2b. ${code}: every new text has a translation (${miss.join(', ')})`); });
 
 // ---- 3. the stated rules
 const D = JSON.parse(R('docs/decisions.json')), md = R('docs/decisions.md');

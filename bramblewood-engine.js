@@ -140,7 +140,7 @@ const SK2_DEFAULTS = Object.freeze({
   salvageN: 1, salvageEvery: 3, salvageStone: 1, salvageRange: 1,        // Salvage N, M (owner 21:56): Scavenge for Structures' deaths; M points -> Stone
   repairN: 2, repairBrambleRate: 0.5, repairRange: 1,                    // Repair N: on a structure within 1 column; the bramble at half
   foragingN: 3, foragingBerries: 3, foragingGather: 1,                   // Foraging N: the heal; Berries a full basket holds; Berries a turn
-  millingN: 1, millingAttacks: true,                                     // Milling N: Lumber a turn while Ready; the mill still attacks
+  millingN: 1, millingAttacks: true,                                     // Milling N: Lumber a turn while Ready; the mill still attacks (ENG16, 2026-11-02: N of your Lumber become 2N)
   quarryN: 1, quarryLumber: 1,                                           // Quarry N (SK2b, owner 23:43): pay 1 Lumber, gain N Stone, each turn while Ready
   smelterN: 1, smelterLumber: 2, smelterStone: 2, smelterMetal: 1,       // Smelter N (SK2b): 2 Lumber + 2 Stone -> 1 Metal, up to N times a turn while Ready
   forgeAtk: 1, forgeHp: 0,                                               // Forge Weapon (SK2b, owner Oct 21): the Forged Blade a smith lays (+1/+0; the action's amount wins)
@@ -1306,7 +1306,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // since 2026-10-16, see rollWind), 'gale' =
   // every round. Each strong wind blows the other way from the last one. It acts on Flying units: the side it blows FROM has a
   // Tailwind (its Flyers get a quick extra turn before combat, then their normal one); the side it blows INTO has a Headwind
-  // (its Flyers' skills and triggers go off twice).
+  // (its Flyers' skills and triggers go off twice). ENG16 (2026-11-02, WIND-2 a): now Tailwind = Quick for the round, Headwind = -1 Attack
+  // for the round (headwindAtkCut); no double triggers.
   let windNow = false, windFrom = 0, windGusts = 0, windRound = -1;
   // 2026-10-16 (user: "Wind: The typical wind effect cards say that the wind change is random. Forward, Backward, No Wind, etc."):
   // the wind is a roll each round now, no longer a fixed flip. Windy: 1 in 3 at Player 1's back, 1 in 3 in their
@@ -1348,7 +1349,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function isFlyingCard(c){ const e = c && (CARD_DEFS[c.defId]||{}).effects; return !!(e && e.flying); }
   function headwindDouble(card, pid){ return windNow && isFlyingCard(card) && !ashyNow() && windSideOf(pid) === 'head'; } // Ashy grounds the flyers (2026-10-17)
   // 2026-10-19 (package RV): Headwind's ×2, unless Quiet Contemplation stills it (logged once per doubling it stops).
-  function headwindTwice(card, pid, side, events){ return headwindDouble(card, pid) && !quietStills(card, side, events, 'headwind'); }
+  // ENG16 (2026-11-02, WIND-2 a, owner 11-02: "Wind have been too strong"): the Headwind doubles nothing any more. A Headwind Flyer
+  // swings at -1 Attack instead (headwindAtkCut, read by effAtk); the Tailwind stays Quick. headwindTwice is kept (always false) so the
+  // old call sites (runCustomTriggersAt's On Action, the shots, Snipe) read the same; nothing goes off twice.
+  function headwindTwice(card, pid, side, events){ return false; }
+  // ENG16 (2026-11-02, WIND-2 a): -1 Attack for a Flyer on the side the strong wind blows INTO (not while Ashy grounds it). Live, never
+  // baked into .atk, like Corrode. Quiet Contemplation leaves it alone (a cut is no doubling).
+  function headwindAtkCut(card){ if(!windNow || !card || !isFlyingCard(card) || ashyNow()) return 0; const pid = pidOfLive(card); return (pid && windSideOf(pid) === 'head') ? 1 : 0; }
   // EN2 (2026-10-23, owner 17:01 #15: "Btw on headwind - its not action twice but skills twice! Like arrow. (not passives though)"): what a
   // Headwind doubles is a Flyer's active skills: its Speed-1 shots (Arrow, Fire / Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire), Snipe,
   // and its On Action skills (Archer's Arrow). Its swing, its passives and its other triggers (On Hit, On Death, On Play ...) go once.
@@ -3816,7 +3823,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function dauntOf(card){ const c0 = Math.max(0, (card && card.dauntN)||0); const d = card && card.daunts; if(!d || !d.length) return c0; let t = c0; for(const x of d) if(x.until >= combatNo) t += x.n; return t; } // + Render's Daunt counters (EN8, 2026-10-25)
   function en8DauntUse(card, events, sideOf, pid, why){ if(!card || !(card.dauntN > 0)) return; card.dauntN -= 1; if(recordEvents && events) events.push({type:'statusFx', kind:'dauntFade', side:sideOf ? sideOf(pid) : undefined, targetUid:card.uid, targetDefId:card.defId, left:card.dauntN, why}); }
   function effAtk(card){
-    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) + (card.natureBonus||0) + (card.packBonus||0) + (card.kinBonus||0) + (card.sk1Atk||0) /* Formation / Isolation (SK1) */ + hoardBonus(card) - (card.corrode||0) - dauntOf(card) - sk3StenchOf(card)); // + Hoard N (2026-10-17); - Stench (2026-10-19, package SK3)
+    const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) + (card.natureBonus||0) + (card.packBonus||0) + (card.kinBonus||0) + (card.sk1Atk||0) /* Formation / Isolation (SK1) */ + hoardBonus(card) - (card.corrode||0) - dauntOf(card) - sk3StenchOf(card) - headwindAtkCut(card)); /* - a Headwind (ENG16, 2026-11-02, WIND-2) */ // + Hoard N (2026-10-17); - Stench (2026-10-19, package SK3)
     // Stagger (2026-09-24): applied as a final multiplier on top of Corrode, same relationship
     // Shock's 1.5x has to computeHitDamage's own base-damage calc — floor (not round/ceil) so a
     // staggered hit always rounds toward the weaker outcome, never back up to its pre-stagger value.
@@ -5866,7 +5873,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function fieldPaused(){ return fieldBreakUntil >= 0 && turnNo <= fieldBreakUntil; }
   function fieldBreak(sideOf, pid, card, n, events){ fieldBreakUntil = Math.max(fieldBreakUntil, turnNo + n);
     if(recordEvents && events) events.push({type:'fieldBreak', side:sideOf(pid), defId:card.defId, uid:card.uid, rounds:n, until:fieldBreakUntil}); }
-  function fieldHazardRules(){ return ['swampFever', 'tideSpout', 'leylines2', 'leylines3', 'sulphurFumes', 'ashRain', 'arrowSlits', 'landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'awash', 'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots', 'graspingBriars' /* ENG10 */, 'wildfire' /* FX4 */].filter(k=> rules[k]).concat(volcanoOn() || rules.eruption ? ['volcano'] : []); }
+  function fieldHazardRules(){ return ['swampFever', 'tideSpout', 'leylines2', 'leylines3', 'sulphurFumes', 'ashRain', 'arrowSlits', 'landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'awash', 'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots', 'graspingBriars' /* ENG10 */, 'wildfire' /* FX4 */, 'quicksand' /* ENG16 */].filter(k=> rules[k]).concat(volcanoOn() || rules.eruption ? ['volcano'] : []); }
   // Kin Rally N: On Ally Played (Kin): that ally gets +N/+N. Pack Howl N: On Ally Played (Wolf): Bleed N on the enemy facing it. Both are
   // ordinary On Ally Played triggers (off while Waiting, Stunned, Frozen or Asleep; Confused fumbles; the layer cap) built from the
   // keyword; "that ally" is the trigger's subject (sub:'subject' / 'subjectFacing', and filterKin, in runCustomTriggers).
@@ -7320,6 +7327,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           else if(t.resource==='stone'){ addOre(pl, 'stone', amt); if(recordEvents&&events) events.push({type:'stone', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
           else if(t.resource==='pearl'){ pl.pearls = (pl.pearls||0) + amt; if(recordEvents&&events) events.push({type:'pearl', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); } // EN8 (2026-10-24): Pearl Bed
           else if(t.resource==='devilry'){ pl.devilry += amt; ensureStat(stats,mySide,boardCard.defId).devilryGenerated += amt; if(recordEvents&&events) events.push({type:'devilry', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
+          else if(t.keyword === 'milling'){ // ENG16 (2026-11-02, JJ17, owner: "Milling: turns 1 of your Lumber into 2 Lumber"): N of your Lumber become 2N (net +N); with no Lumber nothing is milled
+            const k = Math.min(amt, Math.max(0, Math.floor(pl.lumber||0))); if(k > 0){ pl.lumber -= k; const got = addLumber(pl, 2*k); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:got - k, mill:k}); } }
           else { addLumber(pl, amt); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); } // default: lumber
           break;
         }
@@ -7901,6 +7910,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(rules.thunderstorm && resistFactor(defId, 'shock') < 1) v += 1;
     if(rules.tangledRoots && e.flying) v += 0.5;
     if(rules.graspingBriars && e.flying) v += 0.5; // ENG10 (2026-10-26): the briars don't reach a Flyer
+    if(rules.quicksand && e.flying) v += 0.5; // ENG16 (2026-11-02, JJ19): the sand doesn't reach a Flyer
     return v; }
   // Can this board unit swing at whatever faces it this round? (2026-10-18, the smartest CPU's look across the board.)
   function aiCanSwing(c){ return !!c && (c.atk || 0) > 0 && !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !dozing(c) && !(c.paralyzed > 0) && !c.cageOf; }
@@ -8684,6 +8694,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Foraging N      each turn while Ready, it gathers 1 Berry (c.sk2Berries, holds 3); at 3 it eats them to heal the most damaged OTHER
   //                   ally for N (3). With nobody hurt it keeps the 3 Berries.
   //   Milling N       the trigger layer's On Turn Start × Gain N Lumber (trigsOf): each turn while Ready, its owner gains N Lumber
+  //                   (ENG16, 2026-11-02, JJ17: it mills N of the owner's Lumber into 2N, net +N, and needs Lumber to do it; see case 'gain')
   //                   (Confused / Slippery can fumble it, as any trigger). It still attacks (SK2.millingAttacks false: it skips its swing).
   //   Salvage N, M    (owner 21:56: "like Scavenge but for structures. but gives Stone!") a Structure dying within 1 gives N salvage points
   //                   (c.sk2Salvage, a chip); every M (effects.salvageEvery, 3) become 1 Stone.
@@ -9205,8 +9216,27 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     }));
     chargeTick(players, sideOf, stats, events, inUpkeep);
+    quicksandTick(players, sideOf, events); // Quicksand (ENG16, 2026-11-02, JJ19): the weak sink as the round ends; the sweep below clears them
     removeDeadCards(players, sideOf, killCredit, stats, events);
     prayerTick(players, sideOf, events); // Prayer tokens (2026-10-19, package E): the survivors pray, ready for their owner's next turn
+  }
+  // ENG16 (2026-11-02, JJ19, owner 11-02: "new field effect Quicksand: a creature ending its turn under N Health dies"): rules.quicksand N
+  // (true = 2). At the end of every round from round 2 (endOfRoundUpkeep, after the round's fighting, ticks and Charges, before its death
+  // sweep), every unit on both sides with less than N Health sinks: it dies (a true death: On Death, Revive and the rest as for any death;
+  // no kill credit). With N = 2 that is every unit left on 1 Health. Flyers are above the sand and Structures stand on footings (the same
+  // exemptions as Tangled Roots / Grasping Briars); a Field Breaker pauses it like the other field hazards. On The Glass Dunes (every fight)
+  // and the Pale Desert's boss (18-A-9, the Quicksand Queen). Events: fieldTick {field:'quicksand', round, n, count} once when anything sinks, then
+  // fieldTick {field:'quicksandSink', side, uid, defId, hp} per unit.
+  const QUICKSAND_N = 2;
+  function quicksandN(){ return fxN(rules.quicksand, QUICKSAND_N); }
+  function quicksandTick(players, sideOf, events){
+    if(!rules.quicksand || turnNo < 2 || fieldPaused()) return;
+    if([1,2].some(pid=> players[pid] && players[pid].hq && players[pid].hq.hp <= 0)) return; // the fight is over
+    const n = quicksandN(), sunk = [];
+    [1,2].forEach(pid=>{ liveUnits(players[pid]).forEach(c=>{ if(c.gap || !(c.hp > 0) || c.hp >= n || effectsOf(c).flying || isStructureCard(c)) return; sunk.push([pid, c]); }); });
+    if(!sunk.length) return;
+    if(recordEvents && events) events.push({type:'fieldTick', field:'quicksand', round:turnNo, n, count:sunk.length});
+    sunk.forEach(([pid, c])=>{ const hp = c.hp; c.hp = 0; if(recordEvents && events) events.push({type:'fieldTick', field:'quicksandSink', side:sideOf(pid), uid:c.uid, defId:c.defId, hp}); });
   }
   // Charge N - {} (2026-10-14, user: "Charge N - {}. A yellow wait timer = N starts on the top right. Charge only starts when the
   // card is ready. When the timer reaches 0, the thing in {} happens."): effects.charge = {n, do:'<action>', ...the action's own
@@ -9770,6 +9800,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!pass){ const flow = tideRising(), wind = isWindy(); // strong wind: the Flyers on the Tailwind side get the extra turn (2026-10-13)
       if(flow || wind) for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
         for(const c of upkeepUnitsOf(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {}; // + a raid's middle / back rows (2026-10-19, RR)
+          // ENG16 (2026-11-02, WIND-2 a): a Headwind Flyer is told it swings at -1 Attack this round (the cut itself lives in effAtk).
+          if(wind && e.flying && !ashyNow() && windSideOf(pid) === 'head' && !(flow && e.swimmer)){ c._speedCombat = combatNo; if(recordEvents && events) events.push({type:'statusFx', kind:'headwind', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:-1}); continue; }
           const why = (flow && e.swimmer && (e.swimmer === 'quickAttack' || (e.swimmerGrant && e.swimmerGrant.fastForward))) ? 'swimmer' : (wind && e.flying && !ashyNow() && windSideOf(pid) === 'tail') ? 'tailwind' : null; if(!why) continue; // no Tailwind while Ashy (2026-10-17)
           // EN2 (2026-10-23, owner 17:34 #15: "Wind doesnt give flyers fast-forwards! Just quick. Fast forwards doesn't allow a 'waiting'
           // unit to attack."): a Tailwind Flyer is Quick this round (its swing at Speed 2, swingSpeedOf: _windQuick), not a Fast Forward

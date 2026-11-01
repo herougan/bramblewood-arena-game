@@ -1385,7 +1385,7 @@ const SK2_LINE = {
   salvage: (v, n, e)=> TX('ui.sk2-salvage', {n: sk2Num(v, 'salvageN'), m: sk2SalvageEvery(e)}),
   repair: v=> TX('ui.sk2-repair', {n: sk2Num(v, 'repairN'), h: sk2RepairBramble(sk2Num(v, 'repairN'))}),
   foraging: v=> TX('ui.sk2-foraging', {n: sk2Num(v, 'foragingN'), b: SK2_UI.foragingBerries}),
-  milling: v=> TX('ui.sk2-milling', {n: sk2Num(v, 'millingN')}),
+  milling: v=> TX('ui.sk2-milling', {n: sk2Num(v, 'millingN'), n2: 2 * sk2Num(v, 'millingN')}), // ENG16 (2026-11-02, JJ17): N Lumber become 2N
   quarry: v=> TX('ui.sk2-quarry', {n: sk2Num(v, 'quarryN'), l: SK2_UI.quarryLumber}),
   smelter: v=>{ const n = sk2Num(v, 'smelterN'); return n === 1 ? TX('ui.sk2-smelter-1', {l: SK2_UI.smelterLumber, s: SK2_UI.smelterStone, m: SK2_UI.smelterMetal}) : TX('ui.sk2-smelter', {n, l: SK2_UI.smelterLumber, s: SK2_UI.smelterStone, m: SK2_UI.smelterMetal}); },
   disarm: ()=> TX('ui.sk2-disarm'),
@@ -9217,7 +9217,7 @@ function abilityBadges(d, bopts){
   // "burst" shape while staying visually distinct from it.
   // 2026-10-18 (package BP): under a strong wind a Flyer's wing lights up like a Tide unit's wave (.wind-live, the .tide-live look); a
   // Tailwind also lights a Quick boot beside it (its own Quick boot when it has one), so the card reads wing + quick; a Headwind marks
-  // the wing ×2 (skills twice). See liveWindState.
+  // the wing ×2 (skills twice). See liveWindState. ENG16 (2026-11-02, WIND-2 a): the Headwind mark is −1⚔ now (no doubling).
   const lw = e.flying && bopts && bopts.live ? liveWindState(bopts.live.pid) : null;
   out.push(...flyerWindPips(e, lw)); // the wing and the Quick boot (2026-10-24, package BV: under the wind they share one pip)
   if(e.swift) out.push(`${iconHTML('swift', '💨')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
@@ -14373,6 +14373,7 @@ function unlockCardForPlayer(id, source, copyOpts){
   grantCardCopy(id, copyOpts);
   if(isTutorialCopySource(source)) tutorialCopyLevel0(id); // 2026-10-19 (package UT): a tutorial reward is a Level 0 copy
   else factionCopyLevel0(id); // 2026-10-23 (package TU2): a faction card's first copies come at Level 0 too (owner N1)
+  if(!isTutorialCopySource(source)){ babyCopyLevel0(id); eggChoiceForNewCopy(id); } // ENG16 (2026-11-02, JJ25): a Baby copy comes at Level 0; an egg asks Hatch or Stay
   noteSighted([id]); // 2026-10-02: getting a card counts as seeing it (Hidden -> Discovered)
   noteGainedForSwap(id, source); // a clearly better card than one in your deck is offered as a swap (2026-10-15, at most 10 ever)
   if(myUnlockedCardIds.has(id)) return false; // already unlocked -- nothing to do, additive-only
@@ -14672,7 +14673,9 @@ function syncBestLevel(id){ const top = topCopyLevel(id); if(top < 0) return; if
 // set every copy). It can lower that copy (a melt, a promotion); myCardLevels[id] follows the best copy.
 function setCopyLevel(id, uid, L){
   copyModelSync(id); const c = copyByUid(id, uid); if(!c) return false;
+  const was = copyLevel(id, c); // ENG16 (2026-11-02, JJ25): an egg that levels up asks Hatch or Stay again
   c.level = Math.max(0, Math.min(LIMIT_BREAK_LEVEL, L|0)); if(c.level > 0) delete c.hatch;
+  if(c.level > was) try{ queueEggChoice(id, c.uid); }catch(e){}
   if(c.free && c.free > c.level) c.free = c.level;
   syncBestLevel(id); saveCardCopies(); saveCardLevels(); try{ invalidateCardDefs(); }catch(e){} return true;
 }
@@ -15041,7 +15044,7 @@ function isQuestOrBaseCard(d){ if(!d) return false; const r = d.rarity || ''; re
 // stops growing at the Iron Forge's cap and the road's own cards take over. Quest and map-reward cards keep x0.5. Enemy decks are not capped.
 const BASE_CARD_LEVEL_CAP = 4;
 function isBaseLevelCapped(d){ if(!d || d.hero || d.token) return false; const r = d.rarity || ''; return r === 'starter' || !!d.basic || !!d.tutorial || cardSourceOf(d).kind === 'base'; }
-function playerLevelCap(defId){ const d = forgeBaseDef(defId); return isBaseLevelCapped(d) ? BASE_CARD_LEVEL_CAP : 10; }
+function playerLevelCap(defId){ const d = forgeBaseDef(defId); return (d && d.kind === 'baby') ? 10 /* ENG16 (2026-11-02, JJ25): a Baby card levels 0 -> 1 -> 10, a starter baby too */ : isBaseLevelCapped(d) ? BASE_CARD_LEVEL_CAP : 10; }
 function levelCostTierMult(defId){ return LEVEL_COST_MULT[cardRarityTier(forgeBaseDef(defId))] || 1; }
 function levelCostMult(defId){
   const d = forgeBaseDef(defId); if(!d) return 1;
@@ -19690,6 +19693,9 @@ Object.assign(FIELD2, {
   // 2026-10-24 (package EN8, LUM-1): rules.windfall, after a Storm round (a Thunderstorm or a strong-wind round) both sides gain 1 Lumber (the
   // engine's en8RoundStart). On the windy maps up to Map 20 (fightRules).
   windfall:     {icon:'🍃', name:TX('ui.fx-name-windfall'), editor:'windfall', short:TX('ui.fx-windfall-short'), text:TX('ui.fx-windfall'), codex:TX('ui.fxx-windfall')},
+  // ENG16 (2026-11-02, JJ19): rules.quicksand N (true = 2): at the end of every round from round 2 a unit under N Health sinks and dies (Flyers and
+  // Structures don't). The engine's quicksandTick. On The Glass Dunes (every fight, mapField) and the Pale Desert's boss, 18-A-9 the Quicksand Queen.
+  quicksand:    {icon:'⏬', name:TX('ui.fx-name-quicksand'), editor:'quicksand', short:TX('ui.fx-quicksand-short', {n: 2}), text:TX('ui.fx-quicksand', {n: 2}), codex:TX('ui.fxx-quicksand')},
   seasons:      {icon:'🍂', name:TX('ui.fx-name-seasons'), editor:'seasons', short:TX('ui.fx-seasons-short'), text:TX('ui.fx-seasons', {n: 6} /* ENG9 (2026-10-26, owner EN6-4): 6 rounds a season */), codex:TX('ui.fxx-seasons')},
 });
 const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-18 (package D): terse
@@ -19854,7 +19860,7 @@ function noteFieldEvent(ev){
   else if(ev.type === 'evaded' && ev.reason === 'sandstorm') hit = markFieldRow('sandstorm'); // 2026-10-15
   else if(ev.type === 'phase' && (ev.phase === 'twilight' || ev.to === 'twilight')) hit = markFieldRow('twilight');
   // Field effects 2 (2026-10-16): each row is learned the first time it does something.
-  else if(ev.type === 'fieldTick' && ['landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots', 'graspingBriars' /* ENG10 */].includes(ev.field)) hit = markFieldRow(ev.field); // + package GI (2026-10-19)
+  else if(ev.type === 'fieldTick' && ['landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots', 'graspingBriars' /* ENG10 */, 'quicksand' /* ENG16 */].includes(ev.field)) hit = markFieldRow(ev.field); // + package GI (2026-10-19)
   else if(ev.type === 'fieldTick' && ev.field === 'leylines') hit = markFieldRow('leylines3');
   else if(ev.type === 'lumber' && ev.leylines && r.leylines2) hit = markFieldRow('leylines2');
   else if(ev.type === 'tide' && r.tide) hit = markFieldRow('tide');
@@ -22958,7 +22964,7 @@ const CONQUEST_MAPS = [
       { key:"7-5", kind:"elite", name:"The Oath Ring", icon:"🪨", rules:{sporeCloud:true}, deck:{"compost-grub":1,"dung-beetle":5,"ant-warrior":4,"truffle-piglet":4,"bee-forager":1,"garden-snail":1,"leafcutter-gardener":2} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 5 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-26 (CONTENT3, G3): hollow-oath-keeper x2 -> truffle-piglet x1 + dung-beetle x1 (the copy caps; on theme) (the Hawthorn Shieldbug, measured first, made the fights far too hard: 7-4 22.5%, 7-5 12.5%) */ /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 36% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */, shieldOverride:4, showcase:"truffle-piglet" /* 2026-10-26 (CONTENT3, G3): was the Hollow Oath-Keeper */ /* 2026-10-23 (LEAD): leader, BR and win rate kept */, hqHp:55, flavor:"A ring of standing stones, and something keeping its promises inside it.", requires:["7-4"] },
       { key:"7-6", kind:"boss", name:"The Morel Monarch", icon:"👑", rules:{sporeCloud:true}, deck:{"owl-nightwatch":5,"planarian-splitter":4,"truffle-piglet":4,"wolf-spider-mother":1,"leafcutter-gardener":4,"compost-grub":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 3 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-26 (CONTENT3, G3): hollow-oath-keeper x3 -> truffle-piglet x2 + leafcutter-gardener x1 (the copy caps; on theme) (the Hawthorn Shieldbug, measured first, made the fights far too hard: 7-4 22.5%, 7-5 12.5%) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 2.5% -> 45% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 81% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */, shieldOverride:18 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"It has been growing here since before the oaks. It is not done growing.", requires:["7-5"] },
     ]},
-  { id:"m4", unlockAfter:"mu", name:"Caves & Alcoves", icon:"🦇", blurb:"Deep beneath the Peak, where sound carries further than light does.", sequential:true,
+  { id:"m4", mapField:{landslide:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Darkness + Landslide on every fight (was 3 fights; Darkness alone is Smugglers' Grotto's) */, unlockAfter:"mu", name:"Caves & Alcoves", icon:"🦇", blurb:"Deep beneath the Peak, where sound carries further than light does.", sequential:true,
     nodes: [
       { key:"8-1", kind:"skirmish", name:"Roost Flurry", icon:"🦇", deck:{"quarry-mole":3,"nightshade-moth":4,"stalactite-golem":2,"star-nosed-mole":3,"subterraneaner":2,"whip-spider":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 80% -> 92.5% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (release fix): RP3 — 8-1 fights with its own first-clear card, the Quarry Mole (BAL3 had swapped it for a Blind Cave Fish) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 100% -> 92% at 50 tune games, target 90 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-23 (RW3, RP3): the Quarry Mole, 8-1's first-clear card, fights here (for the Cave Olm and a Golem) */, flavor:"The first alcove is never empty. Something always roosts first.", requires:[] },
       { key:"8-2", kind:"skirmish", name:"Glowworm Grotto", icon:"🪱", deck:{"blind-cave-fish":1,"stalactite-golem":3,"star-nosed-mole":4,"sulfur-cinder-moth":4,"whip-spider":1,"cave-olm":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 72.5% -> 82.5% at 40 tune games, target 85 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 90% -> 86% at 50 tune games, target 85 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, hqHp:48, flavor:"Lit just brightly enough to see what finds you.", requires:["8-1"] },
@@ -22970,7 +22976,7 @@ const CONQUEST_MAPS = [
       { key:"8-8", kind:"boss", name:"The Stalactite Warden", icon:"🗿", shieldOverride:1, rules:{dark:'pitch'} /* 2026-10-30 (ENG14, owner X6: "The final elite fight 8-8 should be in pitch darkness: (Miss 1-2 instead)"): Pitch Black (1 in 2) over the map's Darkness (1 in 4); fightRules keeps a fight's own dark */, deck:{"cave-olm":4,"stalactite-golem":4,"echo-screecher":1,"vampire-bat":2,"subterraneaner":2,"sulfur-cinder-moth":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 95% -> 85% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 100% -> 88% at 50 tune games, target 40 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, showcase:"stalactite-golem" /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"It has been falling and landing in the same spot for longer than the castle has stood.", requires:["8-7"] },
     ]},
   // The Kelp Mangroves (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
-  { id:"mk", unlockAfter:"m4", name:"The Kelp Mangroves", icon:"🌿", blurb:"Salt water creeps into the swamp — mangrove roots, kelp curtains and smugglers' channels.", sequential:true,
+  { id:"mk", mapField:{tangledRoots:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Tide + Tangled Roots: the mangrove roots on every fight (was 2 fights; Tide alone is Pebble Beach's) */, unlockAfter:"m4", name:"The Kelp Mangroves", icon:"🌿", blurb:"Salt water creeps into the swamp — mangrove roots, kelp curtains and smugglers' channels.", sequential:true,
     nodes: [
       { key:"9-1", kind:"skirmish", name:"Mudflat Skippers", icon:"🐟", deck:{"mangrove-monitor":4,"mangrove-mudskipper":1,"minnow-skitter":4,"mudpuppy":5,"reef-shark":1,"archerfish":1} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 80% -> 80% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, rules:{"tide":true}, flavor:"Fish that walk. Crabs that wave. Nothing here is normal.", requires:[] },
       { key:"9-2", kind:"skirmish", name:"Monitor Roots", icon:"🦎", deck:{"mangrove-mudskipper":5,"minnow-skitter":4,"archerfish":1,"banded-sea-krait":1,"sunbittern-strider":1}, rules:{"tide":true}, flavor:"Something long basks on every root.", requires:["9-1"] },
@@ -22980,7 +22986,7 @@ const CONQUEST_MAPS = [
       { key:"9-6", kind:"elite", name:"Drifting Shell", icon:"🐚", rules:{tangledRoots:true}, deck:{"mangrove-mudskipper":4,"reef-shark":4,"archerfish":3,"sunbittern-strider":2,"mangrove-kingfisher":1,"mangrove-manatee":1,"minnow-skitter":2} /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 96% -> 84% at 50 tune games, target 60 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"An old shell drifts in on every tide and never leaves.", requires:["9-4"] },
       { key:"9-7", kind:"boss", name:"The Kelp Witch", icon:"🧜", deck:{"mangrove-mudskipper":4,"minnow-skitter":3,"sunbittern-strider":2,"mangrove-kingfisher":2,"mangrove-manatee":2,"archerfish":4,"mangrove-monitor":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 52.5% -> 47.5% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 98% -> 68% at 50 tune games, target 40 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 1.9 dropped, the level schedule decides */, flavor:"She speaks for the tide, and the tide is not friendly today.", requires:["9-5","9-6"] },
     ]},
-  { id:"m7", unlockAfter:"mk", name:"Coral Current", icon:"🐠", blurb:"Past the last cliffs, the open sea — deep water, fast currents and the teeth that live in them.", sequential:true,
+  { id:"m7", mapField:{permaTide:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Tide + Perma-tide, the open sea's standing current (Tide alone is Pebble Beach's; Thunderstorm measured 64 -> 49, Wave 41, Leylines I 48, Perma-tide 64) */, unlockAfter:"mk", name:"Coral Current", icon:"🐠", blurb:"Past the last cliffs, the open sea — deep water, fast currents and the teeth that live in them.", sequential:true,
     nodes: [
       { key:"10-1", people:"deep", kind:"skirmish", name:"Clownfish Shoal", icon:"🐟", deck:{"clownfish-scout":5,"kraken-spawnling":4,"parrotfish":5,"swordfish-spearman":1,"orca-vanguard":4,"lions-mane-jelly":1} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 60% -> 72.5% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 70% -> 88% at 50 tune games, target 90 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, hqHp:43, rules:{"tide":true}, flavor:"A shoal this dense usually means something bigger is herding it.", requires:[] },
       { key:"10-2", kind:"skirmish", name:"Moray Ambush", icon:"🐍", deck:{"electric-ray":4,"riptide-eel":1,"great-barracuda":1,"orca-vanguard":4,"kraken-spawnling":4} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 57.5% -> 82.5% at 40 tune games, target 86 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 34% -> 84% at 50 tune games, target 86 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, rules:{"tide":true}, flavor:"The current here is faster than it has any right to be.", requires:["10-1"] },
@@ -23041,7 +23047,7 @@ const CONQUEST_MAPS = [
       { key:"14-8", kind:"boss", name:"The Savanna Warlord", icon:"👑", deck:{"hoopoe-herald":4,"dust-hyena":2,"marula-elephant":3,"pangolin-roller":3,"spitting-cobra":1,"savanna-cheetah":2} /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 58% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */, leaders:["dust-hyena"] /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"Every pack on the grassland answers to one crown.", rules:{firstBlood:2}, requires:["14-7"] },
     ]},
   // The Long Grass (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
-  { id:"ml", unlockAfter:"m5", name:"The Long Grass", icon:"🐎", blurb:"Rolling plains and farm country — horses, hounds and village militia on every road.", sequential:true,
+  { id:"ml", mapField:{tallGrass:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Undergrowth + Tall Grass on every fight (was on 15-3, 15-4; Undergrowth alone was Thistlewood's) */, unlockAfter:"m5", name:"The Long Grass", icon:"🐎", blurb:"Rolling plains and farm country — horses, hounds and village militia on every road.", sequential:true,
     nodes: [
       { key:"15-1", kind:"skirmish", name:"Colt Meadow", icon:"🐴", deck:{"cataphract-destrier":4,"pronghorn-racer":1,"shepherds-bark":3,"warhorse-charger":4,"stable-colt":1,"raccoon-bandit":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 92.5% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, rules:{"undergrowth":true}, flavor:"Young horses running wild, and something chasing them.", requires:[], showcase:"cataphract-destrier" },
       { key:"15-2", kind:"skirmish", name:"Squire Road", icon:"🛡️", deck:{"warhorse-charger":2,"bison-bulldozer":3,"stable-colt":4,"raccoon-bandit":3,"stoat-cutthroat":1,"shepherds-bark":3} /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 96% -> 88% at 50 tune games, target 84 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, rules:{"undergrowth":true}, flavor:"The village sends its squires out to meet you.", requires:["15-1"] },
@@ -23074,7 +23080,7 @@ const CONQUEST_MAPS = [
       { key:"17-8", kind:"boss", name:"The Glacial Ape-King", icon:"👑", shieldOverride:68, deck:{"glacial-ape-king":4,"snow-ermine":4,"ravenous-wolverine":3,"lone-grey-wolf":2,"walrus-icebreaker":2,"frostmoon-howler":1} /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 82% -> 58% at 50 tune games, target 40 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, showcase:"glacial-ape-king" /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"Old enough to remember when the ice was thicker.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"frostWait":3,"frostCount":3,"freezing":true}, requires:["17-7"] },
     ]},
   // The Glass Dunes (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
-  { id:"md", unlockAfter:"m6", name:"The Glass Dunes", icon:"🏜️", // 2026-10-13: Desert theme: Swift, Thorns and Dry throughout
+  { id:"md", mapField:{quicksand:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Windy + Quicksand (JJ19's new field effect; Windy alone was shared with Gannet Cliffs and Ashen Spurn) */, unlockAfter:"m6", name:"The Glass Dunes", icon:"🏜️", // 2026-10-13: Desert theme: Swift, Thorns and Dry throughout
     blurb:"Heat so fierce the sand turns to glass — scorpions, jackals and things that wait under the dunes.", sequential:true,
     nodes: [
       { key:"18-1", kind:"skirmish", name:"Dune Jackals", icon:"🐕", deck:{"komodo-warlord":3,"roadrunner-courier":4,"sandfish":4,"thorny-devil":4,"caustic-scorpion":1,"dromedary":1}, hqHp:229, rules:{"sandstorm":true}, flavor:"They laugh at you from the next dune over.", requires:[] },
@@ -23088,7 +23094,7 @@ const CONQUEST_MAPS = [
     ]},
   // 2026-10-11 (16:20, user: old maps first, new maps after): the Ashen Peak is a main map again, Map 5.
   // Maps 3–4 auto-tuned 2026-10-04 (D18, tools/autotune_map.js) against a deck built from the earlier maps' rewards.
-  { id:"m3", unlockAfter:"md", name:"Ashen Spurn", icon:"🗻", blurb:"Scorched high ground — only the toughest hides make it this far up.", sequential:true,
+  { id:"m3", mapField:{field:"heatwave", heatLevel:1} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Windy + Scorching I on the scorched high ground (Windy alone was shared with Gannet Cliffs and the Glass Dunes; Ash Rain measured 73 -> 58, Ashy 66, Scorching I 68; a fight's own Ash Rain / Ashy stays) */, unlockAfter:"md", name:"Ashen Spurn", icon:"🗻", blurb:"Scorched high ground — only the toughest hides make it this far up.", sequential:true,
     nodes: [
       { key:"19-1", kind:"skirmish", name:"Badger Warband", icon:"🦡", deck:{"cinder-stoker":3,"glacier-wolf-pack":4,"porcupine-roller":2,"fire-salamander":1,"quill-volley":1,"magma-titan":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 80% -> 90% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, hqHp:43, flavor:"They dug in before you even reached the tree line.", requires:[] },
       { key:"19-2", kind:"skirmish", name:"Quill Line", icon:"🦔", deck:{"cinder-stoker":3,"magma-titan":3,"phoenix-fledgling":2,"porcupine-roller":4,"scree-goat":1,"quill-volley":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 97.5% -> 90% at 40 tune games, target 83 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, flavor:"Every approach here has already been staked out.", requires:["19-1"] },
@@ -23161,7 +23167,7 @@ const CONQUEST_MAPS = [
       { key:"23-7", kind:"elite", name:"The Barbican", icon:"🏯", deck:{"mouse-sapper":1,"beetle-battering-ram":3,"howdah-archers":3,"siege-rhino":1,"trebuchet-crew":3,"war-elephant":1,"badger-trench-digger":5} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 4 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 100% -> 98% at 50 tune games, target 60 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 5 dropped, the level schedule decides */, rules:{arrowSlits:true}, flavor:"The gate's own little fortress. The geese have been told nobody gets in. They took it personally.", requires:["23-5","23-6"], fixedPos:{x:76, y:46} },
       { key:"23-8", kind:"boss", name:"Marshal Tuskwell", icon:"👑", deck:{"badger-trench-digger":5,"mouse-sapper":1,"balloon-archer":1,"beetle-battering-ram":2,"war-elephant":1,"siege-rhino":3,"howdah-archers":3} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 4 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 100% -> 94% at 50 tune games, target 40 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, leaders:["marshal-tuskwell","war-elephant"] /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3.35 dropped, the level schedule decides */, hqHp:380, /* 2026-10-17 lumber audit: Testudo Tortoise ×2 → Pack Mule ×2 (Bounty: the army's baggage train) */ /* 2026-10-18: Howdah Archers ×3 → ×2 + the Grovebearer Dragon-Turtle (Legendary, the fight's second card reward; a Map 21+ boss may field a Legendary) */ rules:{arrowSlits:true}, flavor:"The Magnate's marshal has never lost a siege. He has never been on the outside of one before.", requires:["23-7"], fixedPos:{x:90, y:50} },
     ]},
-  { id:"m24", mapField:{arrowSlits:true} /* CONTENT4 (2026-10-28, L2, owner: "It should be a rare thing for a map not to have a field effect"): Arrow Slits on every fight (was 24-1, 24-5, 24-8; Rook's Row measured 74 -> 56%); fightRules sets it where the fight does not set that key */, unlockAfter:"m23", name:"Goldfeather Keep", icon:"🏰", blurb:"Through the gate at last. Inside the walls everything is gilded, guarded and counted, and the Magnate Duck is waiting at the top of the keep.", sequential:true,
+  { id:"m24", mapField:{arrowSlits:true, bishopPath:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): + Bishop's Path, the keep's slanted halls (Arrow Slits alone is the Siege's; Rook's Row measured 77 -> 58, Haunted 80, Bishop's Path 77) */ /* CONTENT4 (2026-10-28, L2, owner: "It should be a rare thing for a map not to have a field effect"): Arrow Slits on every fight (was 24-1, 24-5, 24-8; Rook's Row measured 74 -> 56%); fightRules sets it where the fight does not set that key */, unlockAfter:"m23", name:"Goldfeather Keep", icon:"🏰", blurb:"Through the gate at last. Inside the walls everything is gilded, guarded and counted, and the Magnate Duck is waiting at the top of the keep.", sequential:true,
     nodes: [
       { key:"24-1", kind:"skirmish", name:"Breach the Gate", icon:"🚪", deck:{"duckling-squadron":3,"elderhorn-monarch":4,"goose-sentry":1,"mallard-halberdier":1,"lodge-engineer":1} /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 72% -> 92% at 50 tune games, target 90 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, hqHp:340, rules:{arrowSlits:true}, flavor:"Break the gate and the keep is open. The geese behind it disagree.", requires:[], fixedPos:{x:8, y:56} },
       { key:"24-2", kind:"skirmish", name:"The Bailey", icon:"🦆", deck:{"duckling-squadron":5,"lodge-engineer":1,"goose-sentry":3,"mallard-halberdier":1,"mallard-marauder":1,"elderhorn-monarch":5} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 3 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 56% -> 88% at 50 tune games, target 85 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, hqHp:350, flavor:"The whole garrison drills here. They are very good at drilling.", requires:["24-1"], fixedPos:{x:24, y:34} },
@@ -23272,7 +23278,7 @@ const CONQUEST_MAPS = [
   // Map 14's boss"): a side dungeon under The Morel Hollow that turns up two days after the Morel Monarch is first beaten.
   // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 11 is cleared (afterMapCleared "m10"); its fights count as Map 11 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
   // 2026-10-22 (package DV, owner 00:43: "make them accessible after a certain future map is complete. Don't have to be sequential, an early submap could be unlocked later on but a later submap be unlocked just 1 map after"): opens once Map 8 is cleared (was Map 11); its fights count as Map 8 (shieldMap). docs/map-divvy-2026-10-22.md
-  { id:"mz", sub:true, parent:"mu", shieldMap:8, entry:{x:84, y:70, after:"7-6", afterDays:2, afterMapCleared:"m4", label:"A crack in the roots"}, name:"The Mycelium Deep", icon:"🍄", blurb:"Under the Morel Hollow, the roots go down a long way, and every root is listening.", sequential:true,
+  { id:"mz", mapField:{sporeCloud:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Darkness + Spore Cloud under the Morel Hollow (Darkness alone is Smugglers' Grotto's) */, sub:true, parent:"mu", shieldMap:8, entry:{x:84, y:70, after:"7-6", afterDays:2, afterMapCleared:"m4", label:"A crack in the roots"}, name:"The Mycelium Deep", icon:"🍄", blurb:"Under the Morel Hollow, the roots go down a long way, and every root is listening.", sequential:true,
     nodes: [
       { key:"7-A-1", kind:"skirmish", name:"Root Cellar", icon:"🪱", deck:{"compost-grub":1,"fungal-colossus":5,"garden-snail":1,"worker-ant":1,"planarian-splitter":4,"bombardier-beetle":4} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 8 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL3, BAL2-2): no Rare in a normal side-map skirmish before Map 10: Swarm Matriarch (Rare) -> Bombardier Beetle (Uncommon insect, it leads) */, flavor:"The roots here are hollow. Something has been eating them from the inside.", rewards:{"first":{"gold":90,"dust":10}}, requires:[] },
       { key:"7-A-2", kind:"skirmish", challenge:true, name:"Glowcap Grotto", icon:"🍄", deck:{"honey-bee":1,"hawthorn-shieldbug":5,"ant-scout":1,"bee-forager":1,"garden-snail":1,"dung-beetle":5,"planarian-splitter":3} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 12 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL3, BAL2-2): no Rare in a normal side-map skirmish before Map 10: Wolf Spider Mother (Rare) -> Hawthorn Shieldbug (an Insect, so the Hive Chorus stays on), 69.5% over 200 games (challenge target 70; an Ant Warrior made it 50%) */ /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rules:{"boon":"hiveChorus"} /* 2026-10-24 (BAL2): Wolf Spider Mother (Rare) 4 -> 3; Dung Beetle 3 -> 4 */, flavor:"The caps give off just enough light to see what's watching.", rewards:{first:{gold:100, dust:12}}, requires:["7-A-1"] },
@@ -23282,7 +23288,7 @@ const CONQUEST_MAPS = [
     ]},
   // The Canopy (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 18 is cleared (afterMapCleared "md"); its fights count as Map 18 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
-  { id:"my", mapField:{canopy:true} /* CONTENT4 (2026-10-28, L2, owner: "It should be a rare thing for a map not to have a field effect"): High Canopy: the rainforest roof; fightRules sets it where the fight does not set that key */, sub:true, parent:"m5", shieldMap:18, entry:{x:12, y:76, after:"14-2", afterMapCleared:"md", label:"Into the rainforest"}, name:"The Canopy", icon:"🐆", blurb:"Up in the rainforest roof past the savanna's edge — frogs, sloths, drums and a jaguar's path.", sequential:true,
+  { id:"my", mapField:{canopy:true, field:"rain"} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): + Spring Rain, the rainforest's rain (High Canopy alone is the Redwood Deep's) */ /* CONTENT4 (2026-10-28, L2, owner: "It should be a rare thing for a map not to have a field effect"): High Canopy: the rainforest roof; fightRules sets it where the fight does not set that key */, sub:true, parent:"m5", shieldMap:18, entry:{x:12, y:76, after:"14-2", afterMapCleared:"md", label:"Into the rainforest"}, name:"The Canopy", icon:"🐆", blurb:"Up in the rainforest roof past the savanna's edge — frogs, sloths, drums and a jaguar's path.", sequential:true,
     nodes: [
       { key:"14-A-1", kind:"skirmish", name:"Dart Frogs", icon:"🐸", deck:{"slow-loris":3,"slowpoke-sentinel":5,"termite-mound":5,"toucan-courier":1,"velvet-worm":1,"siege-rhino":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 1 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, flavor:"The brighter the frog, the worse the idea.", requires:[] },
       { key:"14-A-2", kind:"skirmish", name:"Strangler Arch", icon:"🌿", deck:{"ancient-sloth-titan":1,"hoopoe-herald":5,"slowpoke-sentinel":2,"bramblewood-macaque":3,"siege-rhino":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 2 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 82.5% at 40 tune games, target 80 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, flavor:"The vines hold the arch together. They would like to hold you too.", requires:["14-A-1"], showcase:"ancient-sloth-titan" },
@@ -23322,7 +23328,7 @@ const CONQUEST_MAPS = [
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from mw's own cards; tune in the editor.
   // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 9 is cleared (afterMapCleared "mk"); its fights count as Map 9 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
   // 2026-10-22 (package DV, owner 00:43: "make them accessible after a certain future map is complete. Don't have to be sequential, an early submap could be unlocked later on but a later submap be unlocked just 1 map after"): opens once Map 13 is cleared (was Map 9); its fights count as Map 13 (shieldMap). docs/map-divvy-2026-10-22.md
-  { id:"ms", sub:true, parent:"mw", shieldMap:13, entry:{x:70, y:76, after:"5-7", afterMapCleared:"mr", label:"The Sunken Grove"}, name:"The Sunken Grove", icon:"🌳", blurb:"Where the swamp swallowed an old forest. The trees still stand, up to their necks.", sequential:true,
+  { id:"ms", mapField:{tide:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Swamp Fever + Tide: the drowned grove (was on 1 fight; Swamp Fever alone is Gatorback Swamp's) */, sub:true, parent:"mw", shieldMap:13, entry:{x:70, y:76, after:"5-7", afterMapCleared:"mr", label:"The Sunken Grove"}, name:"The Sunken Grove", icon:"🌳", blurb:"Where the swamp swallowed an old forest. The trees still stand, up to their necks.", sequential:true,
     nodes: [
       { key:"5-A-1", kind:"skirmish", name:"Rotting Roots", icon:"🌳", shieldOverride:8, deck:{"echo-keeper":3,"mosquito-cloud":4,"puddle-hopper":2,"snapper-hatchling":3,"grass-viper":1,"baby-horned-capybara":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 2 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 92.5% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, rewards:{"first":{"gold":80,"dust":10}}, requires:[], rules:{"swampFever":25} },
       { key:"5-A-2", kind:"skirmish", challenge:true, enemyLevel:4, showcase:"bog-behemoth", name:"Gator Hollow", icon:"🌳", deck:{"baby-horned-capybara":1,"mangrove-mudskipper":1,"snapper-hatchling":2,"bog-leech":4,"raft-spider":5,"bog-behemoth":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 2 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 95% -> 90% at 40 tune games, target 65 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rewards:{"first":{"gold":100,"dust":13}}, requires:["5-A-1"], rules:{"boon":"risingTide","swampFever":25,"tide":true} /* 2026-10-26 (CONTENT3): owner BAL3-1 "Fix.": the Tide, so Rising Tide can turn on */ },
@@ -23341,7 +23347,7 @@ const CONQUEST_MAPS = [
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from m10's own cards; tune in the editor.
   // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 15 is cleared (afterMapCleared "ml"); its fights count as Map 15 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
-  { id:"mv", sub:true, parent:"m10", shieldMap:15, entry:{x:15, y:61, after:"11-10", afterMapCleared:"ml", label:"The Aerie Vault"}, name:"The Aerie Vault", icon:"🪺", blurb:"The oldest nests on the mountain, built on top of each other for a thousand springs.", sequential:true,
+  { id:"mv", mapField:{thunderstorm:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Gale + Thunderstorm (the owner's example; Gale alone was Eyrie Heights') */, sub:true, parent:"m10", shieldMap:15, entry:{x:15, y:61, after:"11-10", afterMapCleared:"ml", label:"The Aerie Vault"}, name:"The Aerie Vault", icon:"🪺", blurb:"The oldest nests on the mountain, built on top of each other for a thousand springs.", sequential:true,
     nodes: [
       { key:"11-A-1", kind:"skirmish", challenge:true, name:"Cliff Ledge", icon:"🪺", deck:{"chipmunk-hoarder":3,"peak-condor":1,"rockslide-ram":4,"wound-reaver":1,"apollo-butterfly":4,"eyrie-warden":4} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 3 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 62.5% -> 77.5% at 40 tune games, target 80 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rules:{"boon":"skyAmbush"}, rewards:{first:{gold:80, dust:10}}, requires:[] },
       { key:"11-A-2", kind:"skirmish", name:"Feather Drifts", icon:"🪺", deck:{"alpine-avalanche":3,"chipmunk-hoarder":1,"chipmunk-stockpiler":3,"eyrie-warden":4,"golden-eagle-diver":1,"eagle-owl-quartermaster":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 37.5% -> 37.5% at 40 tune games, target 75 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, hqHp:69, rewards:{first:{gold:100, dust:13}}, requires:["11-A-1"] },
@@ -23359,7 +23365,7 @@ const CONQUEST_MAPS = [
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Opens once the Ice Hollow (the Tundra's side map) is cleared. Fights built from m1's own cards; tune in the editor.
   // 2026-10-18 (X3, coordinator): shieldMap 17: the Shield rule counts these come-back-later fights as Map 17 (it opens after the Ice Hollow), not Map 0.
-  { id:"mo", sub:true, parent:"m1", shieldMap:17, entry:{x:62, y:69, after:"0-4", afterMapCleared:"mi", label:"The Old Bramble"}, name:"The Old Bramble", icon:"🌿", blurb:"The thorns around the Outskirts are older than the village. Something waited in them for you to grow strong.", sequential:true,
+  { id:"mo", mapField:{tangledRoots:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Mist + Tangled Roots: the old thorns' roots (was Mist only, as the Outskirts) */, sub:true, parent:"m1", shieldMap:17, entry:{x:62, y:69, after:"0-4", afterMapCleared:"mi", label:"The Old Bramble"}, name:"The Old Bramble", icon:"🌿", blurb:"The thorns around the Outskirts are older than the village. Something waited in them for you to grow strong.", sequential:true,
     nodes: [
       { key:"0-B-1", kind:"skirmish", name:"Thorn Path", icon:"🌿", deck:{"ant-scout":5,"burrow-rabbit":1,"glacier-wolf-pack":1,"otter-kit":1,"pond-duck":1,"cottontail":1,"forager-ant":4} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 7 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 95% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, rewards:{first:{gold:80, dust:10}}, requires:[] },
       { key:"0-B-2", kind:"skirmish", name:"The Briar Ring", icon:"🌿", deck:{"ant-scout":5,"forager-ant":5,"meadow-rabbit":1,"otter-kit":1,"otter-paddler":1,"tunnel-ant":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 5 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, hqHp:53, rewards:{first:{gold:100, dust:13}}, requires:["0-B-1"] },
@@ -23385,7 +23391,7 @@ const CONQUEST_MAPS = [
       { key:"18-A-6", kind:"skirmish", name:"The Salt Pan", icon:"🧂", deck:{"sand-widow":3,"sandfish":5,"caustic-scorpion":4,"rabid-jackal":1,"trapdoor-spider":3,"cinder-gecko":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 3 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 100% -> 82% at 50 tune games, target 69 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, rules:{"field":"heatwave","heatLevel":2,"mirage":true}, rewards:{first:{gold:130, dust:15}}, flavor:"A dry lake so white it hurts to look at, and something glows in the cracks.", requires:["18-A-5"] },
       { key:"18-A-7", kind:"skirmish", name:"Oryx Crossing", icon:"🦌", deck:{"dune-jackal-scout":5,"dromedary":2,"dust-hyena":1,"trapdoor-spider":1,"quicksand-queen":2,"rabid-jackal":1,"stonedrop-vulture":4} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 4 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 92.5% -> 65% at 40 tune games, target 64 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 100% -> 80% at 50 tune games, target 64 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, rules:{"sandstorm":true,"field":"heatwave","heatLevel":2}, rewards:{first:{gold:140, dust:16}}, flavor:"A white herd crossing a white desert. You hear the hooves long before you see a thing.", requires:["18-A-5"] },
       { key:"18-A-8", kind:"elite", name:"The Dry Well", icon:"🪣", deck:{"dust-hyena":1,"pale-oryx":4,"dust-devil-kestrel":2,"cinder-gecko":1,"trapdoor-spider":1,"rabid-jackal":1,"stonedrop-vulture":4,"horned-lizard":4} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 7 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 96% -> 64% at 50 tune games, target 60 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3.5 dropped, the level schedule decides */, rules:{"field":"heatwave","heatLevel":2,"sandstorm":true}, rewards:{first:{gold:180, dust:25}}, flavor:"The last well on the old road has been dry for years. The hyenas guard it anyway.", requires:["18-A-6","18-A-7"] },
-      { key:"18-A-9", kind:"boss", name:"The Quicksand Queen", icon:"👑", deck:{"quicksand-queen":2,"caustic-scorpion":3,"pale-oryx":2,"cinder-gecko":1,"roadrunner-courier":5,"rabid-jackal":1,"trapdoor-spider":1,"stonedrop-vulture":4} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 6 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 72.5% -> 40% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 96% -> 74% at 50 tune games, target 40 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, shieldOverride:82 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, characterId:"last-oasis", rules:{"mirage":true,"field":"heatwave","heatLevel":2}, rewards:{first:{gold:240, dust:35}}, flavor:"Her pit looks like solid ground. Everything that has walked on it agrees, briefly.", requires:["18-A-8"] },
+      { key:"18-A-9", kind:"boss", name:"The Quicksand Queen", icon:"👑", deck:{"quicksand-queen":2,"caustic-scorpion":3,"pale-oryx":2,"cinder-gecko":1,"roadrunner-courier":5,"rabid-jackal":1,"trapdoor-spider":1,"stonedrop-vulture":4} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 6 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 72.5% -> 40% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 96% -> 74% at 50 tune games, target 40 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, shieldOverride:82 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, characterId:"last-oasis", rules:{"mirage":true,"field":"heatwave","heatLevel":2,"quicksand":true} /* ENG16 (2026-11-02, JJ19): the Quicksand Queen fights on Quicksand */, rewards:{first:{gold:240, dust:35}}, flavor:"Her pit looks like solid ground. Everything that has walked on it agrees, briefly.", requires:["18-A-8"] },
     ]},
   // PALE_DESERT:END
 ];
@@ -31007,6 +31013,99 @@ function factionCopyLevel0(id){
     c.level = 0; c.lv0 = 1; if(cardBaseLevel(d) > 0) c.hatch = 1;
     tutorialHatchlingIfAllZero(id); saveCardCopies(); }catch(e){}
 }
+// ==== ENG16 (2026-11-02, JJ25; owner 11-02 00:17, replaces BABY-1): Baby cards level 0 -> 1 -> 10, and an egg asks Hatch or Stay.
+// "Baby cards can be levelled 0 -> 1 -> 10. Getting an egg (and at each level-up) offers Hatch or Stay (the egg shakes); staying lets it level
+// as an egg, for Evomax decks." Built on what was here:
+//   - Level 0 copies are the hatchling marks the tutorial and the faction rule use (c.lv0, c.hatch, hatchlingIds): every new copy of a Baby
+//     card (kind:"baby", canonical/cards.json) comes at Level 0 (babyCopyLevel0); the Nest trains 0 -> 1 with Kibble (finishNurture); the
+//     Forge takes it on to 10 (playerLevelCap: 10 for a Baby card, the starter babies included, no Base cap).
+//   - An egg card (a Baby card with hatchInto: the egg-* cards) asks when you get a copy and whenever that copy goes up a level (setCopyLevel,
+//     finishNurture). The question waits in a small queue (EGG_CHOICE_KEY) until no fight or other dialog is up, so it survives a reload.
+//     Hatch: the egg copy becomes its creature (hatchInto.defId, or a random card of its kind from eggHatchPool, the engine's eggPoolFor rule
+//     limited to cards you could own: map and pack cards), at the egg's level (Level 0 = a hatchling, as the Nest's hatchings). Stay: it stays
+//     an egg and keeps levelling as one. While the question is open the egg card shakes behind the dialog (.egg-choice-bg, eggChoiceCss).
+// In battle an egg still cracks open when Ready (the engine's hatchEggCard); that is unchanged and keeps the card.
+const EGG_CHOICE_KEY = 'bramblewood_egg_choice_v1';
+function isBabyLevelDef(d){ return !!(d && d.kind === 'baby' && !d.token && !d.test); }
+function isEggChoiceDef(d){ return !!(isBabyLevelDef(d) && d.hatchInto); }
+function babyCopyLevel0(id){
+  try{ if(!copyModelOn()) return; const d = copyBaseDef(id); if(!isBabyLevelDef(d)) return;
+    const a = myCardCopies[id] || [], c = a[a.length - 1]; if(!c) return;
+    c.level = 0; c.lv0 = 1; if(cardBaseLevel(d) > 0) c.hatch = 1;
+    tutorialHatchlingIfAllZero(id); saveCardCopies(); }catch(e){}
+}
+function eggChoiceForNewCopy(id){ try{ const a = myCardCopies[id] || [], c = a[a.length - 1]; if(c && c.uid) queueEggChoice(id, c.uid); }catch(e){} }
+function eggChoiceQueue(){ try{ const q = JSON.parse(localStorage.getItem(EGG_CHOICE_KEY) || '[]'); return Array.isArray(q) ? q : []; }catch(e){ return []; } }
+function saveEggChoiceQueue(q){ try{ localStorage.setItem(EGG_CHOICE_KEY, JSON.stringify(q.slice(-20))); }catch(e){} }
+function queueEggChoice(id, uid){
+  if(!id || !uid || !isEggChoiceDef(copyBaseDef(id))) return false;
+  const q = eggChoiceQueue(); if(!q.some(x=> x && x.id === id && x.uid === uid)) q.push({id, uid}); saveEggChoiceQueue(q); scheduleEggChoice(); return true;
+}
+// The creatures an egg can become: its fixed hatch, or the engine's egg rule (a card of the egg's species or archetypes, Common or
+// Uncommon unless the egg is rarer; never a token, egg, leader, spell or hidden card), limited to map and pack cards (cards you can own).
+const EGG_CHOICE_RARITY = ['common','uncommon','quest','rare','veryrare','superrare','epic','heroic','unique','questunique','legendary','mythic'];
+function eggHatchPool(d){
+  if(!d || !d.hatchInto) return []; const defs = getCardDefs();
+  if(d.hatchInto.defId) return defs[d.hatchInto.defId] ? [defs[d.hatchInto.defId]] : [];
+  const h = d.hatchInto, cap = Math.max(EGG_CHOICE_RARITY.indexOf('uncommon'), EGG_CHOICE_RARITY.indexOf(d.rarity || 'common')), want = new Set([].concat(h.species || [], h.archetypes || []));
+  return Object.keys(defs).sort().map(k=> defs[k]).filter(x=> x && !x.token && !x.test && !x.pool && !x.hidden && !x.hero && !x.cardType && !x.field && !x.equip && !x.raid && !x.worldBoss
+    && !x.derivedFrom && !x.hatchInto && !(x.effects && x.effects.leader) && (x.attack|0) > 0 && x.kind !== 'baby'
+    && EGG_CHOICE_RARITY.indexOf(x.rarity) >= 0 && EGG_CHOICE_RARITY.indexOf(x.rarity) <= cap
+    && (()=>{ try{ return ['map', 'pack'].includes(cardSourceOf(x).kind); }catch(e){ return false; } })()
+    && (h.any || (x.species || []).some(t=> want.has(t)) || (x.archetypes || []).some(t=> want.has(t))));
+}
+// Hatch: the egg copy (uid) leaves; one copy of its creature arrives at the egg copy's level. Returns the creature's def, or null.
+function hatchEggCopy(id, uid, pick){
+  const d = copyBaseDef(id) || getCardDefs()[id]; const pool = eggHatchPool(d); if(!pool.length) return null;
+  const a = myCardCopies[id] || [], i = a.findIndex(c=> c && c.uid === uid); if(i < 0) return null;
+  const into = pool[Math.floor((pick != null ? pick : Math.random()) * pool.length)] || pool[0], lv = copyLevel(id, a[i]);
+  a.splice(i, 1); syncBestLevel(id); saveCardCopies();
+  grantCardCopy(into.id);
+  if(!myUnlockedCardIds.has(into.id)){ myUnlockedCardIds.add(into.id); try{ saveUnlockedCardIds(); }catch(e){} }
+  try{ noteSighted([into.id]); }catch(e){}
+  try{ if(copyModelOn()){ const b = myCardCopies[into.id] || [], nc = b[b.length - 1];
+    if(nc){ nc.level = lv; nc.hatchedFrom = id; if(lv < cardBaseLevel(copyBaseDef(into.id))){ nc.hatch = 1; tutorialHatchlingIfAllZero(into.id); } else delete nc.hatch; syncBestLevel(into.id); saveCardCopies(); saveCardLevels(); } } }catch(e){}
+  try{ invalidateCardDefs(); }catch(e){}
+  return into;
+}
+let eggChoiceOpen = false, eggChoiceTimer = null;
+function scheduleEggChoice(ms){ if(typeof document === 'undefined' || typeof setTimeout !== 'function') return; if(eggChoiceTimer) clearTimeout(eggChoiceTimer); eggChoiceTimer = setTimeout(()=>{ eggChoiceTimer = null; showNextEggChoice(); }, ms == null ? 900 : ms); }
+function eggChoiceBusy(){ try{ if(typeof matchState !== 'undefined' && matchState && !matchState.over) return true; return !!document.querySelector('.modal-overlay'); }catch(e){ return true; } }
+async function showNextEggChoice(){
+  if(eggChoiceOpen || typeof document === 'undefined') return;
+  if(eggChoiceBusy()){ scheduleEggChoice(3000); return; }
+  const q = eggChoiceQueue(); let item = null;
+  while(q.length && !item){ const x = q.shift(); if(x && (myCardCopies[x.id] || []).some(c=> c && c.uid === x.uid) && isEggChoiceDef(copyBaseDef(x.id))) item = x; }
+  saveEggChoiceQueue(q); if(!item) return;
+  eggChoiceOpen = true; let k = 'stay';
+  try{ k = await eggChoiceDialog(item.id, item.uid); }catch(e){}
+  const d = getCardDefs()[item.id] || {};
+  if(k === 'hatch'){ const into = hatchEggCopy(item.id, item.uid);
+    if(into){ try{ showToast(TX('ui.egg-choice-hatched', {name: d.name || item.id, adult: into.name}), 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ if(typeof renderCollection === 'function') renderCollection(); }catch(e){} } }
+  else { try{ showToast(TX('ui.egg-choice-stayed', {name: d.name || item.id}), 'info'); }catch(e){} }
+  eggChoiceOpen = false; if(eggChoiceQueue().length) scheduleEggChoice(600);
+}
+function eggChoiceDialog(id, uid){
+  return new Promise(resolve=>{
+    const defs = getCardDefs(), d = defs[id] || {}, c = copyByUid(id, uid), lv = c ? copyLevel(id, c) : 0, pool = eggHatchPool(d);
+    const fixed = d.hatchInto && d.hatchInto.defId ? defs[d.hatchInto.defId] : null;
+    const adult = fixed ? fixed.name : TX('ui.egg-choice-random', {kind: (()=>{ try{ return eggKindLabel(d); }catch(e){ return ''; } })()});
+    const title = TX('ui.egg-choice-title'), body = pool.length ? TX('ui.egg-choice-body', {name: d.name || id, lv, adult}) : TX('ui.egg-choice-body-nohatch', {name: d.name || id, lv});
+    let tile = ''; try{ tile = cardTileHTML(d, {size:'full'}); }catch(e){}
+    const ov = document.createElement('div'); ov.className = 'modal-overlay bw-text-dialog egg-choice-ov';
+    ov.innerHTML = `<div class="egg-choice-bg" aria-hidden="true">${tile}</div><div class="modal egg-choice-modal" role="alertdialog" aria-modal="true" aria-label="${escapeAttr(title)}">
+      <div class="modal-head-row"><h2>🥚 ${escapeHtml(title)}</h2></div>
+      <p class="panel-sub">${escapeHtml(body)}</p>
+      <div class="modal-actions"><button type="button" class="btn ghost" data-k="stay">${escapeHtml(TX('ui.egg-choice-stay'))}</button>${pool.length ? `<button type="button" class="btn primary" data-k="hatch">🐣 ${escapeHtml(TX('ui.egg-choice-hatch'))}</button>` : ''}</div></div>`;
+    document.body.appendChild(ov);
+    const done = k=>{ ov.remove(); resolve(k); };
+    ov.querySelectorAll('[data-k]').forEach(b=> b.onclick = ()=> done(b.dataset.k));
+    ov.onkeydown = e=>{ if(e.key === 'Escape'){ e.stopPropagation(); done('stay'); } };
+    setTimeout(()=>{ try{ (ov.querySelector('.btn.primary') || ov.querySelector('button')).focus(); }catch(e){} }, 30);
+  });
+}
+if(typeof document !== 'undefined' && !document.getElementById('eggChoiceCss')){ try{ const st = document.createElement('style'); st.id = 'eggChoiceCss'; st.textContent = '@keyframes eggChoiceShake{0%,100%{transform:translate(-50%,-50%) rotate(0)}10%{transform:translate(-50%,-50%) rotate(-7deg)}20%{transform:translate(-50%,-50%) rotate(6deg)}30%{transform:translate(-50%,-50%) rotate(-5deg)}40%{transform:translate(-50%,-50%) rotate(4deg)}50%{transform:translate(-50%,-50%) rotate(0)}}.egg-choice-ov .egg-choice-bg{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);opacity:.55;filter:saturate(1.1) blur(.5px);pointer-events:none;z-index:0;animation:eggChoiceShake 1.4s ease-in-out infinite;transform-origin:50% 85%}.egg-choice-ov .egg-choice-modal{position:relative;z-index:1}@media (prefers-reduced-motion: reduce){.egg-choice-ov .egg-choice-bg{animation:none}}'; (document.head || document.documentElement).appendChild(st); }catch(e){} }
+if(typeof document !== 'undefined') scheduleEggChoice(2500); // a question left open by a reload comes back
 // Win/loss modal copy for tutorial-mode matches -- pulled out of renderMatchUI's big template
 // literal so the stage-number/reward-callout logic reads clearly on its own.
 // 2026-10-07 playtest: a 0–30 loss was titled "So Close!". It says so only when it was close.
@@ -33195,6 +33294,8 @@ const FXL_FIELDS = [
     // 2026-10-21 (package FOG): a Mole (Darksight) on the left; the foe in the far column stays fogged until the board changes.
     ['fogOfWar', {fogOfWar:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Mole', icon:'🐀', effects:{darksight:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:3}]}, note:TX('ui.fxl-fog-note')}],
     ['quietContemplation', {quietContemplation:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Alley Cat', icon:'🐈', effects:{twinStrike:true}}}, {role:'ally', slot:-1, def:{name:'Swift Fox', icon:'🦊', effects:{fastForward:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round']}],
+    // ENG16 (2026-11-02, JJ19): Quicksand: the 1-Health Sand Mouse and Dune Beetle sink at the end of round 2; the 1-Health Hawk flies over it.
+    ['quicksand', {quicksand:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Sand Mouse', icon:'🐁', attack:0, health:1}}, {role:'ally', slot:-1, def:{name:'Hawk', icon:'🦅', attack:0, health:1, effects:{flying:true}}}], foes:[{role:'foe', slot:0, def:{name:'Dune Beetle', icon:'🪲', attack:0, health:1}}]}, steps:['round', 'round'], note:TX('ui.fxx-quicksand')}],
   ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> WIND_TEXT.windy, rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: each one rolls its own wind (at your back, in your face or calm).'},
@@ -43658,7 +43759,7 @@ function tideTipLines(k){ return (skillHiddenNow('tide') ? TIDE_TIPS_HIDDEN : TI
 // Wind on the Flyers (2026-10-18, package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)" and
 // "maybe a flying symbol + quick"): what a strong wind gives a Flyer of side pid right now, read the engine's way (rollWind, headwindDouble,
 // the Tailwind pass in resolveCombat): the side the wind blows FROM has a Tailwind (its Flyers get a quick extra turn before combat), the
-// side it blows INTO a Headwind (its Flyers' skills and triggers go off twice). Calm round, no wind field or Ashy (grounded): null.
+// side it blows INTO a Headwind (its Flyers' skills and triggers go off twice; ENG16, 2026-11-02, WIND-2 a: -1 Attack instead). Calm round, no wind field or Ashy (grounded): null.
 // Follows the replay (matchState._windNow, set by the 'wind' event) so the mark changes as the wind is announced; the engine otherwise.
 function liveWindState(pid){
   try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || m.over || !m.engine || (pid !== 1 && pid !== 2)) return null;
@@ -43677,7 +43778,7 @@ function flyerWindPips(e, lw){
   const out = [];
   if(e.flying){
     if(lw && lw.k === 'tail') out.push(`<span class="ab-windpair wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-wing') + ' ' + TX('ui.wind-tail-quick'))}"><span class="ab-wing">${iconHTML('flying', '🪽')}</span><span class="ab-quick ab-wind-quick">${iconHTML('quick', '👢')}</span></span>`);
-    else if(lw) out.push(`<span class="ab-windpair wind-live wind-head" title="${escapeAttr(TX('ui.wind-head-wing'))}"><span class="ab-wing">${iconHTML('flying', '🪽')}</span><b class="wind-x2">×2</b></span>`);
+    else if(lw) out.push(`<span class="ab-windpair wind-live wind-head" title="${escapeAttr(TX('ui.wind-head-wing'))}"><span class="ab-wing">${iconHTML('flying', '🪽')}</span><b class="wind-x2 wind-atk-cut">−1⚔</b></span>`); // ENG16 (2026-11-02, WIND-2 a): −1 Attack, no longer ×2
     else out.push(`<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
   }
   if(e.quick && !(e.flying && lw && lw.k === 'tail')) out.push(`<span class="ab-quick">${iconHTML('quick', '👢')}</span>`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
@@ -43747,7 +43848,7 @@ function windPillHTML(m){
   const w = m && m._windNow; if(!w || m.over) return '';
   if(!w.windy) return bfPillHTML('wind-pill is-calm', '<span class="wind-ico">💨</span>', 'Calm', '', pillTipHTML('Calm', ['No strong wind this round.']), 'Wind: calm');
   const head = w.mine ? 'Wind at your back' : 'Wind in your face';
-  return bfPillHTML('wind-pill is-windy', `<span class="wind-ico">💨<i class="wind-dir">${w.mine ? '⬆' : '⬇'}</i></span>`, head, '', pillTipHTML(head, [w.mine ? 'Your Flyers act first; theirs trigger twice.' : 'Their Flyers act first; yours trigger twice.']), 'Wind ' + (w.mine ? 'at your back' : 'in your face'), 'bf:wind', 'wind');
+  return bfPillHTML('wind-pill is-windy', `<span class="wind-ico">💨<i class="wind-dir">${w.mine ? '⬆' : '⬇'}</i></span>`, head, '', pillTipHTML(head, [w.mine ? TX('ui.wind-pill-back') : TX('ui.wind-pill-face')] /* ENG16 (2026-11-02, WIND-2 a): Quick / -1 Attack, no double triggers */), 'Wind ' + (w.mine ? 'at your back' : 'in your face'), 'bf:wind', 'wind');
 }
 // The Mist (2026-10-15): Map 0's mist is a pill whose hover says only "?"; a misty map further on says what it does (its Environment
 // card says the same).
@@ -43826,7 +43927,7 @@ function matchFieldTileHTML(def, cls, attrs, badges){
 // lasting field rule (the High Tide, the Tide-spout, the darkness, the wind…), fanned in a little stack beside the enemy's Deck.
 // Each card says one short line; hover (or hold) shows that rule in full. The stack keeps the old #fieldCondCard id, so the
 // terrain banner still flies into it and a new row still lights it.
-const FIELD2_BIOME = {quietContemplation:'alpine' /* 2026-10-19: the Quiet Summit */, psychicDampener:'cave', lumberEvery:'forest', firstBlood:'ash', actions:'alpine', collapse:'alpine', midsummer:'desert', dusk:'cave', restless:'cave', awash:'water', lavaSpout:'ash', crushingDepths:'water', hail:'tundra', slippery:'tundra', canopy:'forest', undergrowth:'forest', tallGrass:'forest', glassStorm:'desert', haunted:'cave', landslide:'alpine'}; // 2026-10-16
+const FIELD2_BIOME = {quicksand:'desert' /* ENG16 (2026-11-02) */, quietContemplation:'alpine' /* 2026-10-19: the Quiet Summit */, psychicDampener:'cave', lumberEvery:'forest', firstBlood:'ash', actions:'alpine', collapse:'alpine', midsummer:'desert', dusk:'cave', restless:'cave', awash:'water', lavaSpout:'ash', crushingDepths:'water', hail:'tundra', slippery:'tundra', canopy:'forest', undergrowth:'forest', tallGrass:'forest', glassStorm:'desert', haunted:'cave', landslide:'alpine'}; // 2026-10-16
 function fieldEnvBiome(key){ if(FIELD2_BIOME[key]) return FIELD2_BIOME[key]; return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
 // The field's rows in a fight (2026-10-15): Map 0's Mist is only a pill (its hover says "?"), not a card; a misty map that cares about
 // the moon adds "The Moon is not visible." to its Mist card.
@@ -43866,7 +43967,7 @@ const FIELD_ART = {
   // 2026-10-18: those day rules no longer borrow other cards' scenes; each has its own (tools/make_field_art_2026_10_18.py): the sawmill
   // (Lumber Rush), the fair's stalls and bunting (Timber Fair), the high sun (Midsummer), the violet sunset (Dusk), the wind-tossed night
   // trees (Restless), the red banner at dawn (First Blood), the twin hourglasses (Double Time) and the crumbling cliff (Collapse).
-  fogofwar:{art:'art/fields/misty.png'} /* 2026-10-21 (package FOG): borrows the Mist scene until it has its own */, wildfire:{art:'art/fields/scorching.png'} /* 2026-10-23 (package FX4): borrows Scorching's scene until it has its own */, psychicdampener:{art:'art/fields/psychicdampener.png'}, timber:{art:'art/fields/timberfair.png'}, lumberrush:{art:'art/fields/lumberrush.png'}, midsummer:{art:'art/fields/midsummer.png'},
+  fogofwar:{art:'art/fields/misty.png'} /* 2026-10-21 (package FOG): borrows the Mist scene until it has its own */, wildfire:{art:'art/fields/scorching.png'} /* 2026-10-23 (package FX4): borrows Scorching's scene until it has its own */, quicksand:{art:'art/fields/sandstorm.png'} /* ENG16 (2026-11-02): borrows the Sandstorm scene until it has its own */, psychicdampener:{art:'art/fields/psychicdampener.png'}, timber:{art:'art/fields/timberfair.png'}, lumberrush:{art:'art/fields/lumberrush.png'}, midsummer:{art:'art/fields/midsummer.png'},
   dusk:{art:'art/fields/dusk.png'}, restless:{art:'art/fields/restless.png'}, firstblood:{art:'art/fields/firstblood.png'}, doubletime:{art:'art/fields/doubletime.png'}, collapse:{art:'art/fields/collapse.png'},
 };
 function fieldArtKeyOfRow(row, fr){
@@ -46160,7 +46261,7 @@ function logText(ev){
     // OWN draw (side 'A') still names the card; the enemy's stays generic.
     case 'draw': return {cls:'', text: ev.side==='A' ? `${sideLabel(ev.side)} drew ${nm(ev.defId)}.` : `${sideLabel(ev.side)} drew a card.`};
     case 'phase': return {cls:'', text: ev.phase==='night' ? '🌙 Night falls.' : ev.phase==='twilight' ? '🌆 Twilight: day and night creatures are both awake.' : '☀️ Day breaks.'};
-    case 'wind': return !ev.windy ? {cls:'', text:'🍂 The wind drops for a round.'} : {cls:'', text: `🌬️ Strong wind from side ${ev.from}: Tailwind for its Flyers (Quick), Headwind for the other side's (active skills twice).`};
+    case 'wind': return !ev.windy ? {cls:'', text:'🍂 The wind drops for a round.'} : {cls:'', text: `🌬️ Strong wind from side ${ev.from}: Tailwind for its Flyers (Quick), Headwind for the other side's (−1 Attack).`}; // ENG16 (2026-11-02, WIND-2 a)
     case 'dawn': return {cls:'', text:'🌅 Dawn: both sides draw a card.'};
     case 'remember': return {cls:'gold', text:`🕯️ ${sideLabel(ev.side)} spent ${ev.spent} Echo${ev.spent===1?'':'es'}: ${nm(ev.defId)} returns from the Removal Zone, +${ev.spent}/+${ev.spent}.`};
     case 'cage': return {cls:'', text:`⛓️ ${nm(ev.leaderDefId)} is caged on ${ev.side==='A' ? 'your' : 'the enemy'} board (${ev.hp} HP).`};
@@ -49564,7 +49665,7 @@ function field2Vfx(ev){
 // ==== Package GI (2026-10-19): the board's side of the new skills and field effects (rules in bramblewood-engine.js, the Package GI
 // block): battle-log lines, floats, the Brittle and Prayer Ward badges, the field's hit numbers. Every string is a TX key.
 Object.assign(FIELD2_HIT, {thunderHit:['🌩️', 'lightning']});
-['sporeCloud', 'thunderstorm', 'thunderHit', 'tangledRoots', 'graspingBriars' /* ENG10 */].forEach(k=> FIELD2_OWN_TICKS.add(k));
+['sporeCloud', 'thunderstorm', 'thunderHit', 'tangledRoots', 'graspingBriars' /* ENG10 */, 'quicksand', 'quicksandSink' /* ENG16 */].forEach(k=> FIELD2_OWN_TICKS.add(k));
 function giLogText(ev, nm){
   if(!ev) return null;
   if(ev.type === 'fieldTick'){
@@ -49573,6 +49674,8 @@ function giLogText(ev, nm){
     if(ev.field === 'thunderHit') return {cls:'', text: ev.wet ? TX('ui.log-thunder-hit-wet', {name: nm(ev.defId), dmg: ev.dmg}) : TX('ui.log-thunder-hit', {name: nm(ev.defId), dmg: ev.dmg})};
     if(ev.field === 'tangledRoots') return {cls:'', text:TX('ui.log-tangled-roots')};
     if(ev.field === 'graspingBriars') return {cls:'', text:TX('ui.e10-log-briars')}; // ENG10 (2026-10-26, ENG9-10)
+    if(ev.field === 'quicksand') return {cls:'', text:TX('ui.qs-log', {n: ev.n})}; // ENG16 (2026-11-02, JJ19)
+    if(ev.field === 'quicksandSink') return {cls:'', text:TX('ui.qs-log-sink', {name: nm(ev.defId)})}; // ENG16 (2026-11-02, JJ19)
     return null; }
   if(ev.type === 'statusFx' && ev.field === 'sporeCloud' && ev.kind === 'sleep') return {cls:'', text:TX('ui.log-spore-sleep', {name: nm(ev.targetDefId)})};
   if(ev.type === 'statusFx' && ev.field === 'tangledRoots' && ev.kind === 'webbed') return {cls:'', text:TX('ui.log-roots-grab', {name: nm(ev.targetDefId)})};
@@ -49608,15 +49711,26 @@ function giVfx(ev){
   if(ev.type === 'fieldTick' && ev.field === 'thunderstorm'){ snd('boom'); const bf = document.getElementById('battlefieldEl'); if(bf && !reducedMotion() && fxAtLeast('low')){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } return; }
   if(ev.type === 'fieldTick' && ev.field === 'tangledRoots'){ snd('curse'); return; }
   if(ev.type === 'fieldTick' && ev.field === 'graspingBriars'){ snd('curse'); return; } // ENG10 (2026-10-26)
+  // ENG16 (2026-11-02, JJ19): Quicksand: the sinking card slides down into a sand ring and fades (.qs-sink, qsCss below); "Sinks!" floats
+  if(ev.type === 'fieldTick' && ev.field === 'quicksand'){ snd('thud'); return; }
+  if(ev.type === 'fieldTick' && ev.field === 'quicksandSink'){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc) rc.hp = 0; fl(el, TX('ui.qs-float'), 'debuff');
+    if(el && !reducedMotion()){ el.classList.remove('qs-sink'); void el.offsetWidth; el.classList.add('qs-sink'); } try{ updateCardHpDisplay(ev.uid); }catch(e){} return; }
   if(ev.type === 'statusFx' && ev.kind === 'sunder'){ fl(boardCardEl(ev.targetUid), '🪓', 'debuff'); snd('konk'); return; } // ENG10 (PROP1-1)
   if(ev.type === 'statusFx' && ev.kind === 'dismantle'){ fl(boardCardEl(ev.attUid), ev.ok ? '🧰✓' : '🧰✗', ev.ok ? 'buff' : 'faded'); return; }
 }
 // The Brittle badge, and Prayer Ward's 🧿 while its ward is up (it holds Prayer tokens).
 function giStatusBadges(c, badges){
+  try{ const qn = qsSinkN(c); if(qn) badges.push(`<span class="abadge qs-pip" title="${escapeAttr(TX('ui.qs-pip-tip', {n: qn}))}">⏬</span>`); }catch(e){} // ENG16 (2026-11-02, JJ19): Quicksand will take it at the round's end
   if(c.brittle > 0) badges.push(`<span class="abadge brittle" title="${escapeAttr(TX('ui.brittle-tip', {n: c.brittle}))}">🫙${c.brittle}</span>`);
   const e = ((getCardDefs()[c.defId] || {}).effects) || {};
   if(e.prayerWard && (c.prayerTokens||0) > 0) badges.push(`<span class="abadge prayer-ward" title="${escapeAttr(TX('ui.prayer-ward-tip', {n: numOr(e.prayerWard, 1)}))}">🧿${numOr(e.prayerWard, 1)}</span>`);
 }
+// ENG16 (2026-11-02, JJ19): Quicksand's N when this unit would sink at the round's end (under N Health, not a Flyer or a Structure), else 0.
+// The rule is the engine's quicksandTick; this only marks it (the pip in giStatusBadges).
+function qsSinkN(c){ if(!c || !(c.hp > 0) || !matchState || matchState.over) return 0; const fr = matchFieldRules(matchState) || {}; if(!fr.quicksand) return 0;
+  const n = fr.quicksand === true ? 2 : (Number(fr.quicksand) > 0 ? Number(fr.quicksand) : 2); if(c.hp >= n) return 0;
+  const d = getCardDefs()[c.defId] || {}, e = d.effects || {}; if(e.flying || (Array.isArray(d.archetypes) && d.archetypes.includes('Structure')) || d.type === 'Structure' || d.cardType === 'structure') return 0; return n; }
+if(typeof document !== 'undefined' && !document.getElementById('qsCss')){ try{ const st = document.createElement('style'); st.id = 'qsCss'; st.textContent = '@keyframes qsSink{0%{transform:translateY(0);opacity:1;filter:none}60%{opacity:.85;filter:sepia(.8) saturate(1.4)}100%{transform:translateY(38%) scale(.92);opacity:0;filter:sepia(1) saturate(1.6)}}.board-card.qs-sink .card-tile{animation:qsSink 1s ease-in forwards;box-shadow:0 10px 18px -6px rgba(194,150,80,.9)}.abadge.qs-pip{background:rgba(194,150,80,.35);box-shadow:0 0 0 1px rgba(214,170,90,.8) inset}@media (prefers-reduced-motion: reduce){.board-card.qs-sink .card-tile{animation:none;opacity:.4}}'; (document.head || document.documentElement).appendChild(st); }catch(e){} }
 // ==== Package SK2 (2026-10-19): the board's side of the economy and structure skills (rules: the SK2 block in bramblewood-engine.js):
 // the Berry / scavenge / salvage chips, battle-log lines and floats. Every string is a TX key. A replay card (replayCardLike) carries no
 // SK2 field, so the chips read the round's replay snapshot (m.replayCards, seeded in resolveRoundCore) when the card has none.
@@ -50854,6 +50968,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } }
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
     else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, ev.quick ? '🪁 Tailwind: Quick!' : '🪁 Tailwind!', 'quick'); }
+    else if(ev.kind==='headwind'){ if(el) floatText(el, TX('ui.wind-head-float'), 'debuff'); } // ENG16 (2026-11-02, WIND-2 a): a Headwind Flyer swings at -1 Attack this round
     else if(ev.kind==='bludgeon'){ const t = boardCardEl(ev.targetUid); if(t) floatText(t, '🔨 ' + [ev.atkLost ? '−1⚔' : '', ev.broke ? w2BrokeName(ev.broke) + ' broken' : ''].filter(Boolean).join(' · '), 'debuff'); if(ev.atkLost && rc && rc.atk != null){ rc.atk = Math.max(0, rc.atk - ev.atkLost); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} } } // 2026-10-16: -1 Attack, and any skill
     else if(ev.kind==='shed'){ if(el) floatText(el, ev.molt ? `🦀 +${ev.amount||1}/+${ev.amount||1} · ⏪ +1 Wait` : '🐍 +1/+1', 'heal'); if(ev.molt && rc){ rc.wait = (rc.wait||0) + 1; try{ updateCardWaitDisplay(ev.targetUid, rc.wait); }catch(e){} } } // Molting (2026-10-16): +N/+N and +1 Wait
     else if(ev.kind==='rocket'){ if(el) floatText(el, '🚀 Rocket!', 'quick'); }
@@ -55771,7 +55886,7 @@ function finishNurture(itemId){ const n = nestState(), e = n.eggs.find(x=> x.id 
   n.eggs = n.eggs.filter(x=> x.id !== itemId); saveNestState(n);
   // 2026-10-18 (package NF): one Level-0 copy (the oldest) trains to Level 1; the card's other copies keep their own levels
   // 2026-10-23 (package RW3): per copy again: the oldest Level-0 copy trains to Level 1 (FG had trained every copy)
-  let done = false; if(copyModelOn()){ copyModelSync(e.cardId); const a = myCardCopies[e.cardId] || [], i = a.findIndex(c=> copyLevel(e.cardId, c) === 0); if(i >= 0){ a[i].level = 1; delete a[i].hatch; syncBestLevel(e.cardId); saveCardCopies(); done = true; } }
+  let done = false; if(copyModelOn()){ copyModelSync(e.cardId); const a = myCardCopies[e.cardId] || [], i = a.findIndex(c=> copyLevel(e.cardId, c) === 0); if(i >= 0){ a[i].level = 1; delete a[i].hatch; syncBestLevel(e.cardId); saveCardCopies(); done = true; try{ queueEggChoice(e.cardId, a[i].uid); }catch(err){} /* ENG16 (2026-11-02, JJ25): an egg trained to Level 1 asks Hatch or Stay */ } }
   if(!done) myCardLevels[e.cardId] = Math.max(1, myCardLevels[e.cardId]||0);
   saveCardLevels(); if(hatchlingIds().delete(e.cardId)) saveHatchlings(); return e.cardId; }
 let nestNurturePrefill = null;

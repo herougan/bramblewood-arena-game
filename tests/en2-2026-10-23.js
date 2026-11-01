@@ -89,7 +89,7 @@ const spawn = (e, P, pid, id, side)=>{ e.debugSpawnCard(P, so, pid, id, side || 
 function windRound(id, want, wallId){ for(let s = 1; s <= 80; s++){ const {e, P} = mk(s, {wind:'gale'}); const F = spawn(e, P, 1, id); spawn(e, P, 2, wallId || 'x-wall');
     e.roundStart(P, 1, so, {}, []); if(e.windSideOf(1) !== want) continue; const lum0 = P[1].lumber || 0, ev = []; e.resolveCombat(P, so, {}, ev, 2); return {e, P, F, ev, lum: (P[1].lumber || 0) - lum0}; } return null; }
 { const r = windRound('x-hwfly', 'head');
-  ok(r && r.ev.filter(x=> x.type === 'arrow' && x.uid === r.F.uid).length === 2, `Headwind: Arrow twice (${r && r.ev.filter(x=> x.type === 'arrow' && x.uid === r.F.uid).length})`);
+  ok(r && r.ev.filter(x=> x.type === 'arrow' && x.uid === r.F.uid).length === 1, `Headwind: Arrow once (ENG16 (2026-11-02, WIND-2 a): the Headwind doubles nothing now; -1 Attack instead) (${r && r.ev.filter(x=> x.type === 'arrow' && x.uid === r.F.uid).length})`);
   ok(r && r.lum === 1, `Headwind: its On Round Start trigger (a passive) once (+${r && r.lum} Lumber)`); }
 { const r = windRound('x-hwfly', 'tail'); ok(r && r.ev.filter(x=> x.type === 'arrow' && x.uid === r.F.uid).length === 1, 'no Headwind: Arrow once'); }
 { const r = windRound('x-twfly', 'tail'); const hits = r ? r.ev.filter(x=> (x.type === 'hit' || x.type === 'hitHQ') && x.attUid === r.F.uid).length : -1;

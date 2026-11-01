@@ -60,7 +60,7 @@ const between = (s, a, b)=>{ const i = s.indexOf(a); if(i < 0) return ''; const 
   const ctx = {TX: k=> k, escapeAttr: s=> s, iconHTML: (k, e)=> e}; vm.createContext(ctx); vm.runInContext(f, ctx);
   const tail = ctx.flyerWindPips({flying:true}, {k:'tail'}), head = ctx.flyerWindPips({flying:true}, {k:'head'}), headQ = ctx.flyerWindPips({flying:true, quick:true}, {k:'head'}), tailQ = ctx.flyerWindPips({flying:true, quick:true}, {k:'tail'}), calm = ctx.flyerWindPips({flying:true, quick:true}, null);
   ok(tail.length === 1 && /ab-windpair wind-live wind-tail/.test(tail[0]) && /🪽/.test(tail[0]) && /👢/.test(tail[0]), 'Tailwind: wing + boot in one lit pip');
-  ok(head.length === 1 && /wind-head/.test(head[0]) && /🪽/.test(head[0]) && /×2/.test(head[0]), 'Headwind: wing + ×2 in one lit pip');
+  ok(head.length === 1 && /wind-head/.test(head[0]) && /🪽/.test(head[0]) && /−1⚔/.test(head[0]) /* ENG16 (2026-11-02, WIND-2 a): −1⚔, was ×2 */, 'Headwind: wing + −1⚔ in one lit pip');
   ok(tailQ.length === 1, 'a Quick Flyer\'s own boot joins the Tailwind pair (no second boot)');
   ok(headQ.length === 2 && /class="ab-quick"/.test(headQ[1]), 'Headwind: its own Quick keeps a plain pip');
   ok(calm.length === 2 && !/wind-live/.test(calm.join('')), 'no wind: wing and boot as before');

@@ -13,13 +13,13 @@ let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  âœ
 const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUEST_MAPS;
 
 // ---- 1. mapField
-const WANT = {mf: {undergrowth: true}, mq: {thunderstorm: true}, mu: {sporeCloud: true}, mn: {mirage: true}, mh: {graspingBriars: true}, my: {canopy: true},
-  mi: {slippery: 30}, m9: {ashy: true}, mx: {sulphurFumes: true}, m23: {arrowSlits: true}, m24: {arrowSlits: true}};
+const WANT = {mf: {undergrowth: true}, mq: {thunderstorm: true}, mu: {sporeCloud: true}, mn: {mirage: true}, mh: {graspingBriars: true}, my: {canopy: true, field: 'rain'} /* ENG16 (2026-11-02, JJ18): + Spring Rain */,
+  mi: {slippery: 30}, m9: {ashy: true}, mx: {sulphurFumes: true}, m23: {arrowSlits: true}, m24: {arrowSlits: true, bishopPath: true} /* ENG16 (2026-11-02, JJ18): + Bishop's Path */};
 const fights = m=> m.nodes.filter(nd=> !/tutorial|raidboss/.test(nd.kind || '') && !nd.virtual);
 Object.entries(WANT).forEach(([id, rules])=>{ const m = MAPS.find(x=> x.id === id);
   ok(m && JSON.stringify(m.mapField) === JSON.stringify(rules), `1. ${id} carries mapField ${JSON.stringify(rules)} (${m && JSON.stringify(m.mapField)})`);
   if(m) fights(m).forEach(nd=>{ const r = G.fightRules(id, nd); Object.entries(rules).forEach(([k, v])=> ok(r[k] === ((nd.rules || {})[k] != null ? nd.rules[k] : v), `1. ${id} ${nd.key}: ${k} is on`)); }); });
-ok(MAPS.filter(m=> m.mapField).length === Object.keys(WANT).length + 3 /* 2026-10-28 (BAL7, CONTENT4-4): + the Tundra family's Frigid (mt, m6, m22: field frozen) */, '1. no other map carries a mapField');
+ok(MAPS.filter(m=> m.mapField).length === Object.keys(WANT).length + 3 /* 2026-10-28 (BAL7, CONTENT4-4): + the Tundra family's Frigid (mt, m6, m22: field frozen) */ + 10 /* ENG16 (2026-11-02, JJ18): mo ml mk m7 md m3 mv ms m4 mz (tests/eng16-2026-11-02.js) */, '1. no other map carries a mapField');
 { const m = MAPS.find(x=> x.id === 'mu'), nd = Object.assign({}, fights(m)[0], {rules: {sporeCloud: false}});
   ok(G.fightRules('mu', nd).sporeCloud === false, "1. a fight's own rule wins (false switches the map's effect off)"); }
 ok(/\.mapField; if\(mf\) Object\.keys\(mf\)\.forEach\(k=>\{ if\(r\[k\] == null\) r\[k\] = mf\[k\]; \}\)/.test(R('arena_app.js')), '1. fightRules reads mapField, the fight first');
