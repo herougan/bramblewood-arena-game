@@ -60,7 +60,8 @@ const A = new Function('TX', ['rv2IsCarried', 'rv2TagsOf'].map(fnSrc).join('\n')
 { const t = byId.torch, ids = cards.map(c=> c.numericId).filter(x=> x != null), others = ids.filter((x, i)=> cards[i].id !== 'torch');
   ok(t && t.cardType === 'equipment' && t.rarity === 'common' && JSON.stringify(t.equip) === JSON.stringify({grant: {illuminate: true}}), 'the Torch: common equipment granting Illuminate');
   ok(t && t.numericId === Math.max(...others) + 1 && new Set(ids).size === ids.length, `the next free numericId, unique (${t && t.numericId})`);
-  ok(t && t.awaitingSource === true && t.source && t.source.kind === 'secret' && t.source.id === 'm4', 'a secret card of Caves & Alcoves (m4), awaitingSource until it has art');
+  // 2026-11-02 (CARD5): it has its art now, so awaitingSource is cleared (was: awaitingSource until it has art)
+  ok(t && !t.awaitingSource && t.art && t.source && t.source.kind === 'secret' && t.source.id === 'm4', 'a secret card of Caves & Alcoves (m4), with its art (awaitingSource cleared, CARD5)');
   ok(cards[cards.length - 1].id === 'torch', 'appended at the end of cards.json');
   ok(/\{key:'illuminate', category:'passive'/.test(app), 'Illuminate is an existing keyword (PASSIVE_DEFS)'); }
 { // the engine: the wearer gets Illuminate when the piece takes hold (equip.grant through deriveDef)

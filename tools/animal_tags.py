@@ -194,6 +194,40 @@ MANUAL = {
   'migration-leader': ('duck', None, 'icon', ''), 'duckling-squadron': ('duck', None, 'name', ''), 'duckling': ('duck', None, 'name', ''),
   'pelican-diver': ('pelican', None, 'name', ''), 'roseate-spoonbill': ('spoonbill', None, 'name', ''),
   'mallard-marauder': ('mallard', None, 'name', ''), 'mallard-halberdier': ('mallard', None, 'name', ''),
+  # 2026-11-02 (package CARD5): five newer cards the tool stopped on ("no animal for"); the plant / fungus ones keep the tags they came with
+  'ember-tetra': ('tetra', None, 'name', 'a small fish (species Fish)'),
+  'coffer-mimic': ('hermit crab', 'structure', 'proposed', 'a cave chest that grabs back; proposed: a hermit crab (a borrowed shell, the pincers of its Thorns)'),
+  'pond-algae': ('algae', 'plant', 'name', ''),
+  'hazel-coppice': ('dormouse', 'plant', 'proposed', 'a coppiced hazel; proposed: the hazel dormouse that lives in it, like the Ent\'s owl (was subtype structure: a tree, as the Elder Willow)'),
+  'phoenix-mushrooms': ('mushroom', 'fungus', 'name', ''),
+  # 2026-11-02 (CARD5): tags later packages set in cards.json by hand; without these rows the tool's name / type / icon fallback rewrote them
+  # (talus-pika a hamster, inland-taipan a plain snake, two subtypes dropped)
+  'ironclaw-fiddler': ('fiddler crab', None, 'name', 'kept as set in cards.json'),
+  'barkplate-beetle': ('bark beetle', None, 'name', 'kept as set in cards.json'),
+  'great-skua': ('great skua', None, 'name', 'kept as set in cards.json'),
+  'cane-toad': ('cane toad', None, 'name', 'kept as set in cards.json'),
+  'inland-taipan': ('taipan', None, 'name', 'kept as set in cards.json'),
+  'reefback-turtle': ('sea turtle', None, 'name', 'kept as set in cards.json'),
+  'nutria-reedcutter': ('nutria', None, 'name', 'kept as set in cards.json'),
+  'cone-cutter-squirrel': ('red squirrel', None, 'name', 'kept as set in cards.json'),
+  'talus-pika': ('pika', None, 'name', 'kept as set in cards.json'),
+  'dune-packrat': ('pack rat', None, 'name', 'kept as set in cards.json'),
+  'pumice-beetle': ('dung beetle', None, 'name', 'kept as set in cards.json'),
+  'bog-shrew': ('shrew', None, 'name', 'kept as set in cards.json'),
+  'gnawed-matriarch': ('rat', None, 'name', 'kept as set in cards.json'),
+  'kelpborn-otter': ('sea otter', None, 'name', 'kept as set in cards.json'),
+  'conger-eel': ('eel', None, 'name', 'kept as set in cards.json'),
+  'selkie-wavebinder': ('grey seal', None, 'name', 'kept as set in cards.json'),
+  'carrion-crow': ('crow', None, 'name', 'kept as set in cards.json'),
+  'sleepless-shrew': ('shrew', None, 'name', 'kept as set in cards.json'),
+  'sphagnum-vole': ('water vole', None, 'name', 'kept as set in cards.json'),
+  'gale-swift': ('swift', None, 'name', 'kept as set in cards.json'),
+  'muskrat-reedgatherer': ('muskrat', None, 'name', 'kept as set in cards.json'),
+  'magpie-collector': ('magpie', None, 'name', 'kept as set in cards.json'),
+  'mother-carrier': ('hummingbird', 'structure', 'name', 'kept as set in cards.json'),
+  'granite-ox-golem': ('ox', 'construct', 'name', 'kept as set in cards.json'),
+  'bolas-spider': ('bolas spider', None, 'name', 'kept as set in cards.json'),
+  'anadromous-fry': ('salmon', None, 'name', 'kept as set in cards.json'),
 }
 
 # ---------- name words (longest first) ----------
@@ -304,6 +338,7 @@ GROUP = {'polar bear': 'bear', 'honey badger': 'badger', 'snow leopard': 'leopar
   'kinkajou': 'raccoon', 'binturong': 'civet', 'mongoose': 'mongoose', 'meerkat': 'mongoose', 'tasmanian devil': 'marsupial', 'platypus': 'monotreme',
   'echidna': 'monotreme', 'sea urchin': 'urchin', 'sea cucumber': 'sea cucumber', 'conch': 'snail', 'dolphin': 'dolphin', 'orca': 'dolphin', 'krill': 'shrimp', 'mantis shrimp': 'shrimp', 'crayfish': 'lobster', 'capybara': 'rodent', 'muskrat': 'vole',
   'marmot': 'squirrel', 'chipmunk': 'squirrel', 'gar': 'fish', 'minnow': 'fish', 'trout': 'fish', 'carp': 'fish', 'pike': 'fish', 'guppy': 'fish', 'salmon': 'fish',
+  'tetra': 'fish', 'cane toad': 'frog', 'great skua': 'seabird', 'taipan': 'snake', 'nutria': 'rodent', # 2026-11-02 (package CARD5): the Ember Tetra and the kept hand tags
   'sturgeon': 'fish', 'clownfish': 'fish', 'parrotfish': 'fish', 'lionfish': 'fish', 'wrasse': 'fish', 'pufferfish': 'fish', 'mudskipper': 'fish', 'archerfish': 'fish',
   'swordfish': 'fish', 'sawfish': 'ray', 'barracuda': 'fish', 'piranha': 'fish', 'narwhal': 'whale', 'beluga': 'whale',
   'sandfish': 'lizard', 'eagle': 'eagle', 'condor': 'vulture', 'nightjar': 'nightjar', 'hoopoe': 'hoopoe', 'oilbird': 'nightjar', 'phoenix': 'bird', 'chick': 'bird',

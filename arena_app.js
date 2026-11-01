@@ -2465,7 +2465,10 @@ function roadRarityCap(n, kind, mapId){
   if(n == null || n < 0) return null;
   const k = String(kind || 'skirmish').replace(/^champion$/, 'elite');
   if(k === 'tutorial' || k === 'raidboss') return null;
-  let onSide = false; try{ const mm = mapId && typeof CONQUEST_MAPS !== 'undefined' && CONQUEST_MAPS.find(x=> x.id === mapId); onSide = !!(mm && mm.sub); }catch(e){}
+  let onSide = false; try{ const mm = mapId && typeof CONQUEST_MAPS !== 'undefined' && CONQUEST_MAPS.find(x=> x.id === mapId); onSide = !!(mm && mm.sub);
+    // 2026-11-02 (package CARD5, decision BAL9-5 a): a come-back map flagged capByUnlock (the Old Bramble, off Map 0, opens after the Ice
+    // Hollow at Map 21) caps its fights by the map it opens at (mapUnlockNumberOf), so its Rare / Very Rare list fits (was Map 0's Common).
+    if(mm && mm.capByUnlock && typeof mapUnlockNumberOf === 'function'){ const u = mapUnlockNumberOf(mapId); if(u != null && u > n) n = u; } }catch(e){}
   let up = (/boss/.test(k) || k === 'dungeon') ? 2 : k === 'elite' ? 1 : 0;
   // 2026-10-24 (package BAL3, owner BAL2-2 12:02: "use our agreed philosophy"): a side map follows the main road's steps too (normal skirmish
   // Rare from Map 10, Very Rare from 15; Map 5's elites Uncommon). Was: a side map kept the older steps (Rare 5, Very Rare 10).
@@ -23401,7 +23404,7 @@ const CONQUEST_MAPS = [
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Opens once the Ice Hollow (the Tundra's side map) is cleared. Fights built from m1's own cards; tune in the editor.
   // 2026-10-18 (X3, coordinator): shieldMap 17: the Shield rule counts these come-back-later fights as Map 17 (it opens after the Ice Hollow), not Map 0.
-  { id:"mo", mapField:{tangledRoots:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Mist + Tangled Roots: the old thorns' roots (was Mist only, as the Outskirts) */, sub:true, parent:"m1", shieldMap:17, entry:{x:62, y:69, after:"0-4", afterMapCleared:"mi", label:"The Old Bramble"}, name:"The Old Bramble", icon:"🌿", blurb:"The thorns around the Outskirts are older than the village. Something waited in them for you to grow strong.", sequential:true,
+  { id:"mo", mapField:{tangledRoots:true} /* ENG16 (2026-11-02, JJ18, owner: "which maps lack a field effect or combo of their own; give each one"; docs/balance/field-uniqueness-2026-11-02.md): Mist + Tangled Roots: the old thorns' roots (was Mist only, as the Outskirts) */, sub:true, parent:"m1", shieldMap:17, capByUnlock:true /* 2026-11-02 CARD5 (BAL9-5 a): its fights' rarity cap counts the map it opens at (21), not Map 0 */, entry:{x:62, y:69, after:"0-4", afterMapCleared:"mi", label:"The Old Bramble"}, name:"The Old Bramble", icon:"🌿", blurb:"The thorns around the Outskirts are older than the village. Something waited in them for you to grow strong.", sequential:true,
     nodes: [
       { key:"0-B-1", kind:"skirmish", name:"Thorn Path", icon:"🌿", deck:{"ant-scout":5,"burrow-rabbit":1,"glacier-wolf-pack":1,"otter-kit":1,"pond-duck":1,"cottontail":1,"forager-ant":4} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 7 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 95% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, rewards:{first:{gold:80, dust:10}}, requires:[] },
       { key:"0-B-2", kind:"skirmish", name:"The Briar Ring", icon:"🌿", deck:{"ant-scout":5,"forager-ant":5,"meadow-rabbit":1,"otter-kit":1,"otter-paddler":1,"tunnel-ant":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 5 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, hqHp:53, rewards:{first:{gold:100, dust:13}}, requires:["0-B-1"] },

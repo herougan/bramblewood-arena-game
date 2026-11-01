@@ -3,6 +3,13 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 
+## 2026-11-02 Package CARD5 (card-data follow-ups from QA1 / FIX4 / BAL9; not yet released)
+- **The Old Bramble's fights are capped by Map 21** (BAL9-5 a), the map it opens at, not Map 0's Common: its Rare / Very Rare list now fits its fights (map flag `capByUnlock`, read by `roadRarityCap` through `mapUnlockNumberOf`). Shield and levels unchanged.
+- **Conch Herald back to 1/13** (BAL9-6 a; it measured +10.3 win-rate points a copy, the Pebble Beach outlier). Peak Condor, Red-billed Chough and Caldera Wyrm unchanged.
+- **Torch** (Caves & Alcoves secret): `awaitingSource` cleared; re-fit 1/0 -> 3/3 into its band by the equipment rules (0.62 of N).
+- **First-clear cards back on their maps' lists:** Snapper Hatchling on Gatorback Swamp (5-1), Weaver Bird on Savanna Reaches (14-3).
+- **Animal tags run again:** Ember Tetra (tetra), Coffer Mimic (hermit crab, proposed), Hazel Coppice (dormouse, plant, proposed), Pond Algae, Phoenix Mushrooms; 26 hand-set tags kept in the tool's table so a run no longer rewrites them; the taxonomy got its four missing groups.
+
 ## 2026-11-02 Package FIX4 (bugs from the QA1 health check; not yet released)
 - **PvP stranger plays again:** Collection PvP levelled the stranger (`id@lvN` cards) after the engine was built, so the CPU's first card threw and it never played. `startMatchInner` now picks and levels the stranger (and the Async ghost) before it builds the engine.
 - **Live Ranked no longer freezes after the peer's first move** (regression from the UI12 merge): no lesson or coach tip opens in Live Ranked or while the host replays the peer's move, and a round never waits on one (`maybeShowCoachTip`, `showCoachTip`, `waitForBlockingCoach`).

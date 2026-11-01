@@ -44,13 +44,14 @@ const near = (a, b, e) => Math.abs(a - b) <= (e || 0.011);
 { const R = js('docs/balance/skill2-refit-2026-10-31.json'), cards = js('canonical/cards.json'), by = {}; cards.forEach(c => { by[c.id] = c; });
   const ip = R.changes.filter(r => r.inPlay); ok(ip.length === 47, `3. 47 in-play changes on record (${ip.length})`);
   // 2026-11-02 (BAL9): a card BAL9 re-fit later (JJ5 / JJ21 / JJ12, its note says so) is held to the note only
-  const bal9 = r => /2026-11-02 BAL9/.test((by[r.id] || {}).creatorNote || '');
+  // 2026-11-02 (CARD5, decision BAL9-6 a): Conch Herald back to 1/13, its note says CARD5; held to the note too
+  const bal9 = r => /2026-11-02 (BAL9|CARD5)/.test((by[r.id] || {}).creatorNote || '');
   ip.forEach(r => ok(by[r.id] && (bal9(r) || by[r.id].attack === r.attack) && (bal9(r) || by[r.id].health === r.health) && /SKILL2 re-fit/.test(by[r.id].creatorNote || ''), `3. ${r.id}: ${r.stats} -> ${r.to} applied with its note`));
   R.changes.filter(r => !r.inPlay).forEach(r => ok(by[r.id] && (bal9(r) || `${by[r.id].attack == null ? '-' : by[r.id].attack}/${by[r.id].health}` === r.stats), `3. ${r.id}: out of play, on record only (coordinator: cards.json limited to this package's items)`));
   const st = id => by[id].attack + '/' + by[id].health;
   ok(st('marshal-of-rivergate') === '4/9', '3. BUDGET2-5: Marshal of Rivergate 4/9');
   ok(['eagle-owl-quartermaster 1/6', 'ashbone-ghoul 1/5', 'wolf-spider-mother 2/7', 'grave-grin-hyena 2/10'].every(s => { const [id, v] = s.split(' '); return st(id) === v; }), '3. DECK1-1: Quartermaster 1/6, Ghoul 1/5, Spider Mother 2/7, Hyena 2/10');
-  ok(['peak-condor 4/10', 'hawk-arrowkeeper 2/8', 'red-billed-chough 3/2', 'peregrine-stooper 2/8', 'conch-herald 2/13'].every(s => { const [id, v] = s.split(' '); return st(id) === v; }), '3. DECK1-5: Condor 4/10, Arrowkeeper 2/8, Chough 3/2, Stooper 2/8, Herald 2/13');
+  ok(['peak-condor 4/10', 'hawk-arrowkeeper 2/8', 'red-billed-chough 3/2', 'peregrine-stooper 2/8', 'conch-herald 1/13' /* 2026-11-02 CARD5 (BAL9-6 a): was 2/13 */].every(s => { const [id, v] = s.split(' '); return st(id) === v; }), '3. DECK1-5: Condor 4/10, Arrowkeeper 2/8, Chough 3/2, Stooper 2/8, Herald 1/13 (CARD5)');
   ok(R.held.some(h => h.id === 'ant-warrior') && R.held.filter(h => h.inPlay && /cap|fits/.test(h.why)).length >= 7, '3. the cap-2 cards are held for SKILL2-1');
   const C = js('docs/balance/bench-contrib-global-2026-10-31-skill2-final.json'); ['ashbone-ghoul', 'grave-grin-hyena', 'peak-condor', 'hawk-arrowkeeper', 'red-billed-chough', 'peregrine-stooper', 'conch-herald']
     .forEach(id => { const c = C.cards.find(x => x.id === id); ok(c && Math.abs(c.vsFair) <= 0.015, `3. ${id}: within 1.5 points a copy of the fair line after the re-fit (${c && (c.vsFair * 100).toFixed(1)})`); }); }

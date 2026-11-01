@@ -62,6 +62,9 @@ GROUP_PARENT = {
   'centipede': 'Myriapod', 'millipede': 'Myriapod',
   'worm': 'Annelid', 'leech': 'Annelid',
   'tardigrade': None,
+  # 2026-11-02 (package CARD5): groups new since the last run (animal_tags.py now runs through): Pond Algae, Phoenix Mushrooms (no animal
+  # class: top-level, like the tardigrade), a hamster, the Oyster Bank
+  'algae': None, 'mushroom': None, 'hamster': 'Rodent', 'oyster': 'Mollusc',
 }
 # The classes above the groups (and the game species, which are nodes too).
 CLASS_PARENT = {
