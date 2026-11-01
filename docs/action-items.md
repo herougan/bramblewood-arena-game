@@ -4,6 +4,35 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-02 00:17: the owner's notes (owner asleep; "Decisions - you decide" stands)
+- JJ1 (UI14): VS screen: the pills show for ~1 s, too short to read them all. See JJ8.
+- JJ2 (UI14): after game over, the "..." screen waits 0.3 s too long; cut it.
+- JJ3 (UI14): Cull ("1 bonus water damage to Wet enemies") and similar bonus-damage skills show a second hit effect (a separate number/flash) so the bonus is visible.
+- JJ4 (UI14): admin: edit cards from the post-battle analysis (open the card editor on a card there).
+- JJ5 (BAL9): the owner's feel differs from the formula (e.g. Grey Seal Bull feels overtuned). Find why (formula blind spots: skills, field effects of its maps, deck context) and report; fix the clear ones.
+- JJ6 (UI14): conquest map (owner SS#2): no path links to ambush nodes (4-SK drawn linked between 4-H and 4-5).
+- JJ7 (BAL9): reference decks hold weak / out-of-place cards (Ford Kingfisher, Meadow Frog on Map 6, Crimson Recruit on Map 12; 15-SK reference deck 1 still basic cards). Rebuild them optimised per map: only cards the player could own by then (all unlocks: packs, rewards, first-clears), the map's average field effects, a chosen bramble and leader (starting leader if no other is owned), levelled to the map's average (e.g. Lv 3 at Map 11). Report per map: packs opened and level reached by then.
+- JJ8 (UI14): VS screen (SS#1): one designed card with background and a circular portrait: BR, the skirmish title, the map name; not a set of pills. Long enough to read.
+- JJ9 (ART): PixelLab credits reset: generate the remaining card art (docs/workflows/art.md) while the owner sleeps.
+- JJ10 (UI14): Otter Centurion's returning boomerang as the last hit: show the boomerang striking the bramble and flying back; slow motion on the return while the win animation plays.
+- JJ11 (UI14): N-SK: no "New draw" button; every fight draws both decks at random.
+- JJ12 (BAL9): re-set rarities now the lists are chosen (e.g. Old Shell on Map 2 at most Uncommon); spread each map's cards between its packs and skirmish rewards (random is fine) so the Codex's advancement sort helps balancing.
+- JJ13 (UI14): Brood spawns look like two hatched eggs (🐣) landing on the nearby slots; other spawns come out of the spawner.
+- JJ14 (UI14): the turn highlight (yellow glow on my side) is offset to the right of the battlefield.
+- JJ15 (UI14): status context pills sit in the card's centre and show the token count (no number when 1).
+- JJ16 (UI14): feature pages (Codex etc.): a top-right nav button straight to the conquest map; the nav bar's margins are uneven (SS#3).
+- JJ17 (ENG16): Milling: turns 1 of your Lumber into 2 Lumber; its skill worth x0.85.
+- JJ18 (ENG16 + report): which maps lack a field effect or combo of their own; give each one (e.g. Aerie Vault: thunderstorm). Wind is too strong: coordinator call below.
+- JJ19 (ENG16): new field effect Quicksand: a creature ending its turn under N Health dies.
+- JJ20 (UI14): Devilry box: diagrams centred; background a black-grey-black gradient.
+- JJ21 (BAL9): cards still over / under the formula: fix them.
+- JJ22 (BAL9 rule): Map 40+: when the rarity cap cannot fill a 20-card deck, add +1 carried card (lower rarity first), and so on.
+- JJ23 (UI14): Sulfur fumes: light, transparent green gas fading in each turn and out during the fight.
+- JJ24 (BAL9): Kelp Mangroves reference / enemy decks still use Minnow Skitter (cut). Remove cut cards from every deck.
+- JJ25 (ENG16; replaces BABY-1): Baby cards can be levelled 0 -> 1 -> 10. Getting an egg (and at each level-up) offers Hatch or Stay (the egg shakes); staying lets it level as an egg, for Evomax decks.
+- JJ26 (UI14): Blind-eye VFX: fade out after the match start / on-play; darkness and blind effects at 10% opacity.
+- JJ27 (ideas): Man o' war; bright algae as blown-up bacteria (Bloom at night); Nautiloid; Bobbit worm; Pistol shrimp; the four-toothed worm; mythic creatures from Map 56+: Unicorn, Sphinx, Griffin.
+
 ## 11-01 07:41: the owner's notes
 - II1 (applied the owner's "apply" / "deploy"): Release 11-01a deployed. The progress-shrink server guard (supabase/proposed/20261031_progress_shrink_guard.sql) was attempted; Supabase asked for a confirmation that got no answer, so it is NOT applied yet. Retry when the owner can confirm.
 - II2 (CARD-BABY, decision BABY-1): players cannot level Baby cards (packs' free level, upgrades and rewards skip them); enemy decks may field them at a level.
