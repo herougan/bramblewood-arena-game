@@ -71,7 +71,7 @@ ok(fs.existsSync(path.join(ROOT, 'docs/balance/bench-contrib-map02-mb-bpro-2026-
 
 // ---- records -------------------------------------------------------------------------------------------------------------------
 { const d = J('docs/decisions.json'); ok(['BAL9-1', 'BAL9-2', 'BAL9-3', 'BAL9-4'].every(id => d.items.some(x => x.id === id)), 'decisions BAL9-1..4 recorded');
-  const ch = fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').split('\n').slice(0, 40).join('\n'); ok(/BAL9/.test(ch), 'a BAL9 entry near the top of the CHANGELOG'); }
+  const ch = fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8'); /* 2026-11-02 (coordinator): whole file, later entries push it down */ ok(/BAL9/.test(ch), 'a BAL9 entry near the top of the CHANGELOG'); }
 
 console.log(`bal9-2026-11-02: ${n - fail}/${n} checks passed`);
 process.exit(fail ? 1 : 0);
