@@ -280,5 +280,6 @@ run node tests/ui12-save-guard-2026-10-31.js   # 2026-10-31 (package UI12, GG2):
 # browser check for package UI12 (GG1-GG6, GG8, GG10): python3 tests/e2e/ui12_2026_10_31.py (needs Playwright; not run by run.js)
 run node tests/ui13-2026-11-01.js   # 2026-11-01 (package UI13, HH1 HH3 HH4 HH7): kind "baby" on the BABY list only (Base / Faction derived), Baby and Unlikely pills, counts without Baby / Unlikely cards, the eggs panel, edit from the gallery, the Torch (equipment, Illuminate, m4 bracket once per save)
 # browser check for package UI13 (HH1, HH3, HH4, HH7): python3 tests/e2e/ui13_2026_11_01.py (needs Playwright; not run by run.js)
+run node tests/bal9-2026-11-02.js   # 2026-11-02 (package BAL9, owner JJ5 JJ7 JJ12 JJ21 JJ22 JJ24 JJ28): no cut card in any deck, reward slots and rarities against the THEME4 lists, the budget band, Grey Seal Bull 3/12, a defender on every main map 1-19, the Map 40+ fill rule, Reference (Random) rebuilt with leader / bramble / map level, the packs and levels table
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

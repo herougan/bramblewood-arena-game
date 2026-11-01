@@ -1,0 +1,5 @@
+{"_about": "BAL9 JJ5 (2026-11-02): the clear cases from the Map 2 contribution run (docs/balance/bench-contrib-map02-mb-bpro-2026-11-02-bal9.json: Pebble Beach's own cards, its fights' fields, 300 fights a card). Applied with python3 tools/bal9/apply_cards_2026_11_02.py.",
+ "edits": [
+  {"id": "grey-seal-bull", "set": {"attack": 3, "health": 12}, "note": "4/11 -> 3/12 (owner JJ5: feels overtuned). On Pebble Beach it is the third-strongest card (+6.1 win-rate points a copy against 3.4 for the typical common; z 2.1 over the fair line) though the budget reads it fair: as an Uncommon it gets N 25.3 against the commons' ~16.7 at the same Lumber 1, Tide is on in its home fights, and Guardian is priced 0. -1 Attack +1 Health keeps the guarding bull's wall shape (cap-1 use 0.97 -> 0.89)."},
+  {"id": "pincushion-urchin", "set": {"health": 3}, "note": "2/4 -> 2/3 (owner JJ5's 'similar cards'): +7.3 a copy on Pebble Beach, +3.6 over the fair line at z 7.2: Thorns 2 punishes the map's low-Health commons and Tide is on in its home fights (cap-1 use 0.96 -> 0.90)."}
+ ]}

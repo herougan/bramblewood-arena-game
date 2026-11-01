@@ -1,0 +1,307 @@
+{
+ "_about": "BAL9 JJ12b (2026-11-02): reward slots re-filled against the THEME4 lists; tools/bal9/cards_2026_11_02.js rewards",
+ "built": "2026-11-02",
+ "edits": [
+  {
+   "id": "hedgehog-scout",
+   "set": {
+    "source": {
+     "kind": "pack",
+     "tier": 1
+    }
+   },
+   "note": "reward slot mh:12-5 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+  },
+  {
+   "id": "lyrebird-mimic",
+   "set": {
+    "source": {
+     "kind": "map",
+     "id": "mh",
+     "node": "12-5"
+    }
+   },
+   "note": "the skirmish-exclusive reward of mh:12-5 (was hedgehog-scout: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+  },
+  {
+   "id": "obsidian-scorpion",
+   "set": {
+    "source": {
+     "kind": "pack",
+     "tier": 3
+    }
+   },
+   "note": "reward slot md:18-5 released (first listed on m3 (Map 19), not md); now a basic-pack card"
+  },
+  {
+   "id": "fennec-fox",
+   "set": {
+    "source": {
+     "kind": "map",
+     "id": "md",
+     "node": "18-5"
+    }
+   },
+   "note": "the skirmish-exclusive reward of md:18-5 (was obsidian-scorpion: first listed on m3 (Map 19), not md); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+  }
+ ],
+ "firstPack": [
+  {
+   "key": "mk:9-2",
+   "was": "minnow-skitter",
+   "now": "sunbittern-strider",
+   "why": "on no list (cut by THEME4)"
+  },
+  {
+   "key": "mk:9-4",
+   "was": "mudpuppy",
+   "now": "mangrove-monitor",
+   "why": "on no list (cut by THEME4)"
+  },
+  {
+   "key": "mt:16-2",
+   "was": "frost-hare-sprinter",
+   "now": "cone-cutter-squirrel",
+   "why": "first listed on m6 (Map 17)"
+  }
+ ],
+ "slots": [
+  {
+   "slot": "mh:12-5",
+   "kind": "exclusive",
+   "was": "hedgehog-scout",
+   "why": "on no list (cut by THEME4)",
+   "now": "lyrebird-mimic"
+  },
+  {
+   "slot": "md:18-5",
+   "kind": "exclusive",
+   "was": "obsidian-scorpion",
+   "why": "first listed on m3 (Map 19), not md",
+   "now": "fennec-fox"
+  },
+  {
+   "slot": "mk:9-2",
+   "kind": "first-clear pack card",
+   "was": "minnow-skitter",
+   "why": "on no list (cut by THEME4)",
+   "now": "sunbittern-strider"
+  },
+  {
+   "slot": "mk:9-4",
+   "kind": "first-clear pack card",
+   "was": "mudpuppy",
+   "why": "on no list (cut by THEME4)",
+   "now": "mangrove-monitor"
+  },
+  {
+   "slot": "mt:16-2",
+   "kind": "first-clear pack card",
+   "was": "frost-hare-sprinter",
+   "why": "first listed on m6 (Map 17)",
+   "now": "cone-cutter-squirrel"
+  }
+ ],
+ "dv2": [
+  {
+   "map": 0,
+   "id": "m1",
+   "name": "Bramblewood Outskirts",
+   "newCards": 3,
+   "rule": 1,
+   "exclusiveSlots": 2
+  },
+  {
+   "map": 1,
+   "id": "mf",
+   "name": "Thistlewood",
+   "newCards": 13,
+   "rule": 3,
+   "exclusiveSlots": 2
+  },
+  {
+   "map": 2,
+   "id": "mb",
+   "name": "Pebble Beach",
+   "newCards": 13,
+   "rule": 3,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 3,
+   "id": "mc",
+   "name": "Gannet Cliffs",
+   "newCards": 10,
+   "rule": 3,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 4,
+   "id": "m2",
+   "name": "Sunken Hollow",
+   "newCards": 12,
+   "rule": 3,
+   "exclusiveSlots": 4
+  },
+  {
+   "map": 5,
+   "id": "mw",
+   "name": "Gatorback Swamp",
+   "newCards": 11,
+   "rule": 3,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 6,
+   "id": "m8",
+   "name": "Sable Swampmire",
+   "newCards": 9,
+   "rule": 2,
+   "exclusiveSlots": 4
+  },
+  {
+   "map": 7,
+   "id": "mu",
+   "name": "The Morel Hollow",
+   "newCards": 12,
+   "rule": 3,
+   "exclusiveSlots": 2
+  },
+  {
+   "map": 8,
+   "id": "m4",
+   "name": "Caves & Alcoves",
+   "newCards": 11,
+   "rule": 3,
+   "exclusiveSlots": 4
+  },
+  {
+   "map": 9,
+   "id": "mk",
+   "name": "The Kelp Mangroves",
+   "newCards": 11,
+   "rule": 3,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 10,
+   "id": "m7",
+   "name": "Coral Current",
+   "newCards": 11,
+   "rule": 3,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 11,
+   "id": "m10",
+   "name": "Eyrie Heights",
+   "newCards": 13,
+   "rule": 3,
+   "exclusiveSlots": 4
+  },
+  {
+   "map": 12,
+   "id": "mh",
+   "name": "The Briar Maze",
+   "newCards": 10,
+   "rule": 3,
+   "exclusiveSlots": 4
+  },
+  {
+   "map": 13,
+   "id": "mr",
+   "name": "The Redwood Deep",
+   "newCards": 12,
+   "rule": 3,
+   "exclusiveSlots": 2
+  },
+  {
+   "map": 14,
+   "id": "m5",
+   "name": "Savanna Reaches",
+   "newCards": 10,
+   "rule": 3,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 15,
+   "id": "ml",
+   "name": "The Long Grass",
+   "newCards": 10,
+   "rule": 3,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 16,
+   "id": "mt",
+   "name": "The Pinewood Taiga",
+   "newCards": 11,
+   "rule": 3,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 17,
+   "id": "m6",
+   "name": "Wolfsbane Tundra",
+   "newCards": 12,
+   "rule": 3,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 18,
+   "id": "md",
+   "name": "The Glass Dunes",
+   "newCards": 13,
+   "rule": 3,
+   "exclusiveSlots": 5
+  },
+  {
+   "map": 19,
+   "id": "m3",
+   "name": "Ashen Spurn",
+   "newCards": 9,
+   "rule": 2,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 20,
+   "id": "m11",
+   "name": "The Sundered Peak",
+   "newCards": 15,
+   "rule": 3,
+   "exclusiveSlots": 5
+  },
+  {
+   "map": 21,
+   "id": "m21",
+   "name": "The Quiet Summit",
+   "newCards": 11,
+   "rule": 3,
+   "exclusiveSlots": 2
+  },
+  {
+   "map": 22,
+   "id": "m22",
+   "name": "The Rimefire Caldera",
+   "newCards": 11,
+   "rule": 3,
+   "exclusiveSlots": 3
+  },
+  {
+   "map": 23,
+   "id": "m23",
+   "name": "The Goldfeather Siege",
+   "newCards": 10,
+   "rule": 3,
+   "exclusiveSlots": 2
+  },
+  {
+   "map": 24,
+   "id": "m24",
+   "name": "Goldfeather Keep",
+   "newCards": 12,
+   "rule": 3,
+   "exclusiveSlots": 3
+  }
+ ]
+}

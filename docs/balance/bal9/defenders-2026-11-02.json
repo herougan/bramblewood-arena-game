@@ -1,0 +1,3513 @@
+{
+ "keys": [
+  "bulwark",
+  "guardian",
+  "taunt",
+  "provoke",
+  "shieldwall",
+  "bodyguard",
+  "protector",
+  "intercept",
+  "sentinel",
+  "warden",
+  "shieldAlly",
+  "cover"
+ ],
+ "lists": [
+  {
+   "loc": "m1",
+   "map": 0,
+   "name": "Bramblewood Outskirts",
+   "size": 17,
+   "defenders": [],
+   "share": 0
+  },
+  {
+   "loc": "mtut12",
+   "map": 0,
+   "size": 7,
+   "defenders": [],
+   "share": 0
+  },
+  {
+   "loc": "mtut",
+   "map": 0,
+   "name": "Tutorial",
+   "size": 18,
+   "defenders": [],
+   "share": 0
+  },
+  {
+   "loc": "mo",
+   "map": 0,
+   "name": "The Old Bramble",
+   "size": 13,
+   "defenders": [
+    "dhole-matriarch:guardian"
+   ],
+   "share": 0.07692307692307693
+  },
+  {
+   "loc": "mf",
+   "map": 1,
+   "name": "Thistlewood",
+   "size": 21,
+   "defenders": [
+    "badger-lumberjack:guardian"
+   ],
+   "share": 0.047619047619047616
+  },
+  {
+   "loc": "mq",
+   "map": 1,
+   "name": "Clovermead",
+   "size": 17,
+   "defenders": [
+    "badger-lumberjack:guardian"
+   ],
+   "share": 0.058823529411764705
+  },
+  {
+   "loc": "mb",
+   "map": 2,
+   "name": "Pebble Beach",
+   "size": 18,
+   "defenders": [
+    "badger-lumberjack:guardian",
+    "fiddler-crab-swarm:guardian",
+    "grey-seal-bull:guardian"
+   ],
+   "share": 0.16666666666666666
+  },
+  {
+   "loc": "mp",
+   "map": 2,
+   "name": "Lilypad Reach",
+   "size": 17,
+   "defenders": [
+    "muskrat-lodgekeeper:bulwark",
+    "fiddler-crab-swarm:guardian",
+    "grey-seal-bull:guardian"
+   ],
+   "share": 0.17647058823529413
+  },
+  {
+   "loc": "mg",
+   "map": 2,
+   "name": "Smugglers' Grotto",
+   "size": 19,
+   "defenders": [
+    "grey-seal-bull:guardian",
+    "fiddler-crab-swarm:guardian",
+    "grey-seal-bull:guardian"
+   ],
+   "share": 0.15789473684210525
+  },
+  {
+   "loc": "mc",
+   "map": 3,
+   "name": "Gannet Cliffs",
+   "size": 15,
+   "defenders": [
+    "fiddler-crab-swarm:guardian"
+   ],
+   "share": 0.06666666666666667
+  },
+  {
+   "loc": "m2",
+   "map": 4,
+   "name": "Sunken Hollow",
+   "size": 17,
+   "defenders": [
+    "muskrat-lodgekeeper:bulwark"
+   ],
+   "share": 0.058823529411764705
+  },
+  {
+   "loc": "mw",
+   "map": 5,
+   "name": "Gatorback Swamp",
+   "size": 16,
+   "defenders": [
+    "cypress-root-lurker:guardian",
+    "venomlord-serpent:guardian"
+   ],
+   "share": 0.125
+  },
+  {
+   "loc": "ms",
+   "map": 5,
+   "name": "The Sunken Grove",
+   "size": 16,
+   "defenders": [
+    "venomlord-serpent:guardian",
+    "venomlord-serpent:guardian"
+   ],
+   "share": 0.125
+  },
+  {
+   "loc": "m8",
+   "map": 6,
+   "name": "Sable Swampmire",
+   "size": 15,
+   "defenders": [
+    "venomlord-serpent:guardian",
+    "venomlord-serpent:guardian"
+   ],
+   "share": 0.13333333333333333
+  },
+  {
+   "loc": "mm",
+   "map": 6,
+   "name": "Murgle Mayhem",
+   "size": 9,
+   "defenders": [
+    "venomlord-serpent:guardian"
+   ],
+   "share": 0.1111111111111111
+  },
+  {
+   "loc": "mu",
+   "map": 7,
+   "name": "The Morel Hollow",
+   "size": 19,
+   "defenders": [
+    "hawthorn-shieldbug:guardian"
+   ],
+   "share": 0.05263157894736842
+  },
+  {
+   "loc": "mz",
+   "map": 7,
+   "name": "The Mycelium Deep",
+   "size": 14,
+   "defenders": [
+    "hawthorn-shieldbug:guardian"
+   ],
+   "share": 0.07142857142857142
+  },
+  {
+   "loc": "m4",
+   "map": 8,
+   "name": "Caves & Alcoves",
+   "size": 16,
+   "defenders": [
+    "stalactite-golem:guardian"
+   ],
+   "share": 0.0625
+  },
+  {
+   "loc": "mn",
+   "map": 8,
+   "name": "The Glimmer Depths",
+   "size": 17,
+   "defenders": [
+    "stalactite-golem:guardian"
+   ],
+   "share": 0.058823529411764705
+  },
+  {
+   "loc": "mk",
+   "map": 9,
+   "name": "The Kelp Mangroves",
+   "size": 15,
+   "defenders": [
+    "mangrove-manatee:guardian",
+    "fiddler-crab-swarm:guardian",
+    "proboscis-monkey:taunt"
+   ],
+   "share": 0.2
+  },
+  {
+   "loc": "m7",
+   "map": 10,
+   "name": "Coral Current",
+   "size": 16,
+   "defenders": [
+    "mangrove-manatee:guardian"
+   ],
+   "share": 0.0625
+  },
+  {
+   "loc": "mj",
+   "map": 10,
+   "name": "The Sunken Depths",
+   "size": 16,
+   "defenders": [
+    "mangrove-manatee:guardian"
+   ],
+   "share": 0.0625
+  },
+  {
+   "loc": "m10",
+   "map": 11,
+   "name": "Eyrie Heights",
+   "size": 18,
+   "defenders": [
+    "alpine-marmot:guardian"
+   ],
+   "share": 0.05555555555555555
+  },
+  {
+   "loc": "mv",
+   "map": 11,
+   "name": "The Aerie Vault",
+   "size": 16,
+   "defenders": [
+    "alpine-marmot:guardian"
+   ],
+   "share": 0.0625
+  },
+  {
+   "loc": "muc",
+   "map": 11,
+   "name": "The Undercroft",
+   "size": 96,
+   "defenders": [
+    "dhole-matriarch:guardian",
+    "grizzly-vanguard:guardian",
+    "mangrove-manatee:guardian",
+    "muskrat-lodgekeeper:bulwark"
+   ],
+   "share": 0.041666666666666664
+  },
+  {
+   "loc": "mh",
+   "map": 12,
+   "name": "The Briar Maze",
+   "size": 15,
+   "defenders": [
+    "badger-lumberjack:guardian"
+   ],
+   "share": 0.06666666666666667
+  },
+  {
+   "loc": "mr",
+   "map": 13,
+   "name": "The Redwood Deep",
+   "size": 17,
+   "defenders": [
+    "grizzly-vanguard:guardian"
+   ],
+   "share": 0.058823529411764705
+  },
+  {
+   "loc": "m5",
+   "map": 14,
+   "name": "Savanna Reaches",
+   "size": 16,
+   "defenders": [
+    "marula-elephant:guardian"
+   ],
+   "share": 0.0625
+  },
+  {
+   "loc": "my",
+   "map": 14,
+   "name": "The Canopy",
+   "size": 16,
+   "defenders": [
+    "proboscis-monkey:taunt"
+   ],
+   "share": 0.0625
+  },
+  {
+   "loc": "ml",
+   "map": 15,
+   "name": "The Long Grass",
+   "size": 15,
+   "defenders": [
+    "shepherds-bark:guardian"
+   ],
+   "share": 0.06666666666666667
+  },
+  {
+   "loc": "mt",
+   "map": 16,
+   "name": "The Pinewood Taiga",
+   "size": 15,
+   "defenders": [
+    "dhole-matriarch:guardian"
+   ],
+   "share": 0.06666666666666667
+  },
+  {
+   "loc": "m6",
+   "map": 17,
+   "name": "Wolfsbane Tundra",
+   "size": 17,
+   "defenders": [
+    "glacial-ape-king:guardian"
+   ],
+   "share": 0.058823529411764705
+  },
+  {
+   "loc": "mi",
+   "map": 17,
+   "name": "The Ice Hollow",
+   "size": 13,
+   "defenders": [
+    "glacial-ape-king:guardian"
+   ],
+   "share": 0.07692307692307693
+  },
+  {
+   "loc": "md",
+   "map": 18,
+   "name": "The Glass Dunes",
+   "size": 17,
+   "defenders": [
+    "thorny-devil:guardian"
+   ],
+   "share": 0.058823529411764705
+  },
+  {
+   "loc": "mpd",
+   "map": 18,
+   "name": "The Pale Desert",
+   "size": 15,
+   "defenders": [
+    "thorny-devil:guardian"
+   ],
+   "share": 0.06666666666666667
+  },
+  {
+   "loc": "m3",
+   "map": 19,
+   "name": "Ashen Spurn",
+   "size": 15,
+   "defenders": [
+    "glacial-ape-king:guardian"
+   ],
+   "share": 0.06666666666666667
+  },
+  {
+   "loc": "m9",
+   "map": 19,
+   "name": "Basalt Foundry",
+   "size": 15,
+   "defenders": [],
+   "share": 0
+  },
+  {
+   "loc": "m11",
+   "map": 20,
+   "name": "The Sundered Peak",
+   "size": 20,
+   "defenders": [
+    "ancient-sloth-titan:bulwark",
+    "stalactite-golem:guardian"
+   ],
+   "share": 0.1
+  },
+  {
+   "loc": "me",
+   "map": 20,
+   "name": "Eye of the Volcano",
+   "size": 16,
+   "defenders": [
+    "ancient-sloth-titan:bulwark",
+    "stalactite-golem:guardian"
+   ],
+   "share": 0.125
+  },
+  {
+   "loc": "mx",
+   "map": 20,
+   "name": "Volcano Lair",
+   "size": 21,
+   "defenders": [
+    "ancient-sloth-titan:bulwark",
+    "stalactite-golem:guardian"
+   ],
+   "share": 0.09523809523809523
+  },
+  {
+   "loc": "m21",
+   "map": 21,
+   "name": "The Quiet Summit",
+   "size": 15,
+   "defenders": [
+    "alpine-marmot:guardian"
+   ],
+   "share": 0.06666666666666667
+  },
+  {
+   "loc": "m22",
+   "map": 22,
+   "name": "The Rimefire Caldera",
+   "size": 17,
+   "defenders": [],
+   "share": 0
+  },
+  {
+   "loc": "mlb",
+   "map": 22,
+   "name": "The Long Burrow",
+   "size": 7,
+   "defenders": [],
+   "share": 0
+  },
+  {
+   "loc": "m23",
+   "map": 23,
+   "name": "The Goldfeather Siege",
+   "size": 16,
+   "defenders": [
+    "testudo-tortoise:guardian",
+    "badger-trench-digger:guardian"
+   ],
+   "share": 0.125
+  },
+  {
+   "loc": "m24",
+   "map": 24,
+   "name": "Goldfeather Keep",
+   "size": 16,
+   "defenders": [
+    "goose-sentry:taunt",
+    "great-gate:guardian",
+    "badger-trench-digger:guardian"
+   ],
+   "share": 0.1875
+  }
+ ],
+ "decks": [
+  {
+   "where": "m1:0-1",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "m1:0-2",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "m1:0-3",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "m1:0-4",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mf:1-1",
+   "map": 1,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mf:1-2",
+   "map": 1,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mf:1-3",
+   "map": 1,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mf:1-4",
+   "map": 1,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mf:1-5",
+   "map": 1,
+   "size": 20,
+   "defenders": 1
+  },
+  {
+   "where": "mb:2-1",
+   "map": 2,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "mb:2-2",
+   "map": 2,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "mb:2-3",
+   "map": 2,
+   "size": 17,
+   "defenders": 1
+  },
+  {
+   "where": "mb:2-4",
+   "map": 2,
+   "size": 19,
+   "defenders": 1
+  },
+  {
+   "where": "mb:2-5",
+   "map": 2,
+   "size": 17,
+   "defenders": 4
+  },
+  {
+   "where": "mc:3-1",
+   "map": 3,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mc:3-2",
+   "map": 3,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "mc:3-3",
+   "map": 3,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "mc:3-4",
+   "map": 3,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "mc:3-5",
+   "map": 3,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "mc:3-6",
+   "map": 3,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mc:3-7",
+   "map": 3,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "m2:4-1",
+   "map": 4,
+   "size": 13,
+   "defenders": 0
+  },
+  {
+   "where": "m2:4-2",
+   "map": 4,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m2:4-3",
+   "map": 4,
+   "size": 15,
+   "defenders": 3
+  },
+  {
+   "where": "m2:4-4",
+   "map": 4,
+   "size": 15,
+   "defenders": 3
+  },
+  {
+   "where": "m2:4-5",
+   "map": 4,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "mw:5-1",
+   "map": 5,
+   "size": 13,
+   "defenders": 0
+  },
+  {
+   "where": "mw:5-2",
+   "map": 5,
+   "size": 14,
+   "defenders": 3
+  },
+  {
+   "where": "mw:5-3",
+   "map": 5,
+   "size": 17,
+   "defenders": 2
+  },
+  {
+   "where": "mw:5-4",
+   "map": 5,
+   "size": 18,
+   "defenders": 4
+  },
+  {
+   "where": "mw:5-5",
+   "map": 5,
+   "size": 14,
+   "defenders": 1
+  },
+  {
+   "where": "mw:5-6",
+   "map": 5,
+   "size": 17,
+   "defenders": 2
+  },
+  {
+   "where": "mw:5-7",
+   "map": 5,
+   "size": 19,
+   "defenders": 5
+  },
+  {
+   "where": "m8:6-1",
+   "map": 6,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "m8:6-2",
+   "map": 6,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "m8:6-3",
+   "map": 6,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "m8:6-4",
+   "map": 6,
+   "size": 13,
+   "defenders": 0
+  },
+  {
+   "where": "m8:6-5",
+   "map": 6,
+   "size": 14,
+   "defenders": 2
+  },
+  {
+   "where": "m8:6-6",
+   "map": 6,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "m8:6-7",
+   "map": 6,
+   "size": 12,
+   "defenders": 5
+  },
+  {
+   "where": "m8:6-8",
+   "map": 6,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "mu:7-1",
+   "map": 7,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "mu:7-2",
+   "map": 7,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mu:7-3",
+   "map": 7,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "mu:7-4",
+   "map": 7,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mu:7-5",
+   "map": 7,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "mu:7-6",
+   "map": 7,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "m4:8-1",
+   "map": 8,
+   "size": 16,
+   "defenders": 2
+  },
+  {
+   "where": "m4:8-2",
+   "map": 8,
+   "size": 16,
+   "defenders": 3
+  },
+  {
+   "where": "m4:8-3",
+   "map": 8,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m4:8-4",
+   "map": 8,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "m4:8-5",
+   "map": 8,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "m4:8-6",
+   "map": 8,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "m4:8-7",
+   "map": 8,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m4:8-8",
+   "map": 8,
+   "size": 15,
+   "defenders": 4
+  },
+  {
+   "where": "mk:9-1",
+   "map": 9,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mk:9-2",
+   "map": 9,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "mk:9-3",
+   "map": 9,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "mk:9-4",
+   "map": 9,
+   "size": 16,
+   "defenders": 1
+  },
+  {
+   "where": "mk:9-5",
+   "map": 9,
+   "size": 17,
+   "defenders": 1
+  },
+  {
+   "where": "mk:9-6",
+   "map": 9,
+   "size": 17,
+   "defenders": 1
+  },
+  {
+   "where": "mk:9-7",
+   "map": 9,
+   "size": 19,
+   "defenders": 2
+  },
+  {
+   "where": "m7:10-1",
+   "map": 10,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "m7:10-2",
+   "map": 10,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m7:10-3",
+   "map": 10,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "m7:10-4",
+   "map": 10,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m7:10-5",
+   "map": 10,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "m7:10-6",
+   "map": 10,
+   "size": 11,
+   "defenders": 0
+  },
+  {
+   "where": "m7:10-7",
+   "map": 10,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m7:10-8",
+   "map": 10,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "m7:10-9",
+   "map": 10,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "m10:11-1",
+   "map": 11,
+   "size": 12,
+   "defenders": 5
+  },
+  {
+   "where": "m10:11-2",
+   "map": 11,
+   "size": 13,
+   "defenders": 0
+  },
+  {
+   "where": "m10:11-3",
+   "map": 11,
+   "size": 12,
+   "defenders": 5
+  },
+  {
+   "where": "m10:11-4",
+   "map": 11,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "m10:11-5",
+   "map": 11,
+   "size": 16,
+   "defenders": 5
+  },
+  {
+   "where": "m10:11-6",
+   "map": 11,
+   "size": 14,
+   "defenders": 4
+  },
+  {
+   "where": "m10:11-7",
+   "map": 11,
+   "size": 15,
+   "defenders": 5
+  },
+  {
+   "where": "m10:11-8",
+   "map": 11,
+   "size": 14,
+   "defenders": 2
+  },
+  {
+   "where": "m10:11-9",
+   "map": 11,
+   "size": 19,
+   "defenders": 4
+  },
+  {
+   "where": "m10:11-10",
+   "map": 11,
+   "size": 16,
+   "defenders": 4
+  },
+  {
+   "where": "m10:11-R",
+   "map": 11,
+   "size": 10,
+   "defenders": 0
+  },
+  {
+   "where": "mh:12-1",
+   "map": 12,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mh:12-2",
+   "map": 12,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "mh:12-3",
+   "map": 12,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "mh:12-4",
+   "map": 12,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mh:12-5",
+   "map": 12,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mh:12-6",
+   "map": 12,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mh:12-7",
+   "map": 12,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mr:13-1",
+   "map": 13,
+   "size": 19,
+   "defenders": 4
+  },
+  {
+   "where": "mr:13-2",
+   "map": 13,
+   "size": 16,
+   "defenders": 1
+  },
+  {
+   "where": "mr:13-3",
+   "map": 13,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mr:13-4",
+   "map": 13,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "mr:13-5",
+   "map": 13,
+   "size": 17,
+   "defenders": 1
+  },
+  {
+   "where": "mr:13-6",
+   "map": 13,
+   "size": 17,
+   "defenders": 4
+  },
+  {
+   "where": "mr:13-7",
+   "map": 13,
+   "size": 16,
+   "defenders": 2
+  },
+  {
+   "where": "mr:13-8",
+   "map": 13,
+   "size": 19,
+   "defenders": 2
+  },
+  {
+   "where": "m5:14-1",
+   "map": 14,
+   "size": 16,
+   "defenders": 1
+  },
+  {
+   "where": "m5:14-2",
+   "map": 14,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "m5:14-3",
+   "map": 14,
+   "size": 15,
+   "defenders": 3
+  },
+  {
+   "where": "m5:14-4",
+   "map": 14,
+   "size": 15,
+   "defenders": 4
+  },
+  {
+   "where": "m5:14-5",
+   "map": 14,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "m5:14-6",
+   "map": 14,
+   "size": 17,
+   "defenders": 4
+  },
+  {
+   "where": "m5:14-7",
+   "map": 14,
+   "size": 16,
+   "defenders": 4
+  },
+  {
+   "where": "m5:14-8",
+   "map": 14,
+   "size": 15,
+   "defenders": 3
+  },
+  {
+   "where": "ml:15-1",
+   "map": 15,
+   "size": 15,
+   "defenders": 3
+  },
+  {
+   "where": "ml:15-2",
+   "map": 15,
+   "size": 16,
+   "defenders": 3
+  },
+  {
+   "where": "ml:15-3",
+   "map": 15,
+   "size": 18,
+   "defenders": 2
+  },
+  {
+   "where": "ml:15-4",
+   "map": 15,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "ml:15-5",
+   "map": 15,
+   "size": 20,
+   "defenders": 2
+  },
+  {
+   "where": "ml:15-6",
+   "map": 15,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "ml:15-7",
+   "map": 15,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mt:16-1",
+   "map": 16,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mt:16-2",
+   "map": 16,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "mt:16-3",
+   "map": 16,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mt:16-4",
+   "map": 16,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mt:16-5",
+   "map": 16,
+   "size": 19,
+   "defenders": 1
+  },
+  {
+   "where": "mt:16-6",
+   "map": 16,
+   "size": 18,
+   "defenders": 1
+  },
+  {
+   "where": "mt:16-7",
+   "map": 16,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "m6:17-1",
+   "map": 17,
+   "size": 14,
+   "defenders": 4
+  },
+  {
+   "where": "m6:17-2",
+   "map": 17,
+   "size": 17,
+   "defenders": 4
+  },
+  {
+   "where": "m6:17-3",
+   "map": 17,
+   "size": 13,
+   "defenders": 4
+  },
+  {
+   "where": "m6:17-4",
+   "map": 17,
+   "size": 19,
+   "defenders": 3
+  },
+  {
+   "where": "m6:17-5",
+   "map": 17,
+   "size": 15,
+   "defenders": 4
+  },
+  {
+   "where": "m6:17-6",
+   "map": 17,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "m6:17-7",
+   "map": 17,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "m6:17-8",
+   "map": 17,
+   "size": 16,
+   "defenders": 4
+  },
+  {
+   "where": "md:18-1",
+   "map": 18,
+   "size": 17,
+   "defenders": 4
+  },
+  {
+   "where": "md:18-2",
+   "map": 18,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "md:18-3",
+   "map": 18,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "md:18-4",
+   "map": 18,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "md:18-5",
+   "map": 18,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "md:18-6",
+   "map": 18,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "md:18-7",
+   "map": 18,
+   "size": 12,
+   "defenders": 3
+  },
+  {
+   "where": "m3:19-1",
+   "map": 19,
+   "size": 13,
+   "defenders": 0
+  },
+  {
+   "where": "m3:19-2",
+   "map": 19,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "m3:19-3",
+   "map": 19,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m3:19-4",
+   "map": 19,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "m3:19-5",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "m3:19-6",
+   "map": 19,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "m11:20-1",
+   "map": 20,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "m11:20-2",
+   "map": 20,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "m11:20-3",
+   "map": 20,
+   "size": 14,
+   "defenders": 1
+  },
+  {
+   "where": "m11:20-4",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "m11:20-5",
+   "map": 20,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "m11:20-6",
+   "map": 20,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "m11:20-7",
+   "map": 20,
+   "size": 13,
+   "defenders": 0
+  },
+  {
+   "where": "m11:20-8",
+   "map": 20,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "m11:20-9",
+   "map": 20,
+   "size": 19,
+   "defenders": 4
+  },
+  {
+   "where": "m11:20-10",
+   "map": 20,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m11:20-R",
+   "map": 20,
+   "size": 7,
+   "defenders": 2
+  },
+  {
+   "where": "m21:21-1",
+   "map": 21,
+   "size": 16,
+   "defenders": 1
+  },
+  {
+   "where": "m21:21-2",
+   "map": 21,
+   "size": 19,
+   "defenders": 1
+  },
+  {
+   "where": "m21:21-3",
+   "map": 21,
+   "size": 16,
+   "defenders": 1
+  },
+  {
+   "where": "m21:21-4",
+   "map": 21,
+   "size": 20,
+   "defenders": 1
+  },
+  {
+   "where": "m21:21-5",
+   "map": 21,
+   "size": 15,
+   "defenders": 1
+  },
+  {
+   "where": "m21:21-6",
+   "map": 21,
+   "size": 19,
+   "defenders": 1
+  },
+  {
+   "where": "m22:22-1",
+   "map": 22,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "m22:22-2",
+   "map": 22,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "m22:22-3",
+   "map": 22,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "m22:22-4",
+   "map": 22,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "m22:22-5",
+   "map": 22,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "m22:22-6",
+   "map": 22,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m22:22-7",
+   "map": 22,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "m22:22-8",
+   "map": 22,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "m23:23-1",
+   "map": 23,
+   "size": 12,
+   "defenders": 5
+  },
+  {
+   "where": "m23:23-2",
+   "map": 23,
+   "size": 16,
+   "defenders": 8
+  },
+  {
+   "where": "m23:23-3",
+   "map": 23,
+   "size": 16,
+   "defenders": 3
+  },
+  {
+   "where": "m23:23-4",
+   "map": 23,
+   "size": 17,
+   "defenders": 3
+  },
+  {
+   "where": "m23:23-5",
+   "map": 23,
+   "size": 16,
+   "defenders": 3
+  },
+  {
+   "where": "m23:23-6",
+   "map": 23,
+   "size": 13,
+   "defenders": 5
+  },
+  {
+   "where": "m23:23-7",
+   "map": 23,
+   "size": 17,
+   "defenders": 5
+  },
+  {
+   "where": "m23:23-8",
+   "map": 23,
+   "size": 16,
+   "defenders": 5
+  },
+  {
+   "where": "m24:24-1",
+   "map": 24,
+   "size": 10,
+   "defenders": 1
+  },
+  {
+   "where": "m24:24-2",
+   "map": 24,
+   "size": 16,
+   "defenders": 3
+  },
+  {
+   "where": "m24:24-3",
+   "map": 24,
+   "size": 12,
+   "defenders": 1
+  },
+  {
+   "where": "m24:24-4",
+   "map": 24,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m24:24-5",
+   "map": 24,
+   "size": 15,
+   "defenders": 3
+  },
+  {
+   "where": "m24:24-6",
+   "map": 24,
+   "size": 12,
+   "defenders": 1
+  },
+  {
+   "where": "m24:24-7",
+   "map": 24,
+   "size": 11,
+   "defenders": 1
+  },
+  {
+   "where": "m24:24-8",
+   "map": 24,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "mtut:tutorial",
+   "map": 0,
+   "size": 0,
+   "defenders": 0
+  },
+  {
+   "where": "mtut:tutorial2",
+   "map": 0,
+   "size": 0,
+   "defenders": 0
+  },
+  {
+   "where": "mtut:T-2",
+   "map": 0,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mtut:T-3",
+   "map": 0,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "mtut:T-4",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mq:1-A-1",
+   "map": 1,
+   "size": 13,
+   "defenders": 0
+  },
+  {
+   "where": "mq:1-A-2",
+   "map": 1,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "mq:1-A-3",
+   "map": 1,
+   "size": 10,
+   "defenders": 0
+  },
+  {
+   "where": "mq:1-A-4",
+   "map": 1,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mq:1-A-5",
+   "map": 1,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mp:2-A-1",
+   "map": 2,
+   "size": 13,
+   "defenders": 0
+  },
+  {
+   "where": "mp:2-A-2",
+   "map": 2,
+   "size": 14,
+   "defenders": 4
+  },
+  {
+   "where": "mp:2-A-3",
+   "map": 2,
+   "size": 14,
+   "defenders": 5
+  },
+  {
+   "where": "mp:2-A-4",
+   "map": 2,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "mp:2-A-5",
+   "map": 2,
+   "size": 13,
+   "defenders": 0
+  },
+  {
+   "where": "mp:2-A-6",
+   "map": 2,
+   "size": 17,
+   "defenders": 4
+  },
+  {
+   "where": "mp:2-A-7",
+   "map": 2,
+   "size": 14,
+   "defenders": 2
+  },
+  {
+   "where": "m9:19-A-1",
+   "map": 19,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m9:19-A-2",
+   "map": 19,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m9:19-A-3",
+   "map": 19,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "m9:19-A-4",
+   "map": 19,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m9:19-A-5",
+   "map": 19,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "m9:19-A-6",
+   "map": 19,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m9:19-A-7",
+   "map": 19,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "m9:19-A-8",
+   "map": 19,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "m9:19-A-9",
+   "map": 19,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "m9:19-A-10",
+   "map": 19,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "mj:10-A-1",
+   "map": 10,
+   "size": 10,
+   "defenders": 0
+  },
+  {
+   "where": "mj:10-A-2",
+   "map": 10,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "mj:10-A-3",
+   "map": 10,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "mj:10-A-4",
+   "map": 10,
+   "size": 12,
+   "defenders": 1
+  },
+  {
+   "where": "mj:10-A-5",
+   "map": 10,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mg:2-B-1",
+   "map": 2,
+   "size": 15,
+   "defenders": 6
+  },
+  {
+   "where": "mg:2-B-2",
+   "map": 2,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "mg:2-B-3",
+   "map": 2,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mg:2-B-4",
+   "map": 2,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mz:7-A-1",
+   "map": 7,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mz:7-A-2",
+   "map": 7,
+   "size": 17,
+   "defenders": 5
+  },
+  {
+   "where": "mz:7-A-3",
+   "map": 7,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mz:7-A-4",
+   "map": 7,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "mz:7-A-5",
+   "map": 7,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "my:14-A-1",
+   "map": 14,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "my:14-A-2",
+   "map": 14,
+   "size": 12,
+   "defenders": 1
+  },
+  {
+   "where": "my:14-A-3",
+   "map": 14,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "my:14-A-4",
+   "map": 14,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "my:14-A-5",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "me:20-A-1",
+   "map": 20,
+   "size": 11,
+   "defenders": 0
+  },
+  {
+   "where": "me:20-A-2",
+   "map": 20,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "me:20-A-3",
+   "map": 20,
+   "size": 11,
+   "defenders": 0
+  },
+  {
+   "where": "me:20-A-4",
+   "map": 20,
+   "size": 10,
+   "defenders": 0
+  },
+  {
+   "where": "me:20-A-5",
+   "map": 20,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "me:20-A-6",
+   "map": 20,
+   "size": 11,
+   "defenders": 0
+  },
+  {
+   "where": "me:20-A-7",
+   "map": 20,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "mx:20-B-1",
+   "map": 20,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mx:20-B-2",
+   "map": 20,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mx:20-B-3",
+   "map": 20,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mx:20-B-4",
+   "map": 20,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "ms:5-A-1",
+   "map": 5,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "ms:5-A-2",
+   "map": 5,
+   "size": 14,
+   "defenders": 1
+  },
+  {
+   "where": "ms:5-A-3",
+   "map": 5,
+   "size": 12,
+   "defenders": 0
+  },
+  {
+   "where": "ms:5-A-4",
+   "map": 5,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "mn:8-A-1",
+   "map": 8,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "mn:8-A-2",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "mn:8-A-3",
+   "map": 8,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "mn:8-A-4",
+   "map": 8,
+   "size": 11,
+   "defenders": 0
+  },
+  {
+   "where": "mv:11-A-1",
+   "map": 11,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mv:11-A-2",
+   "map": 11,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "mv:11-A-3",
+   "map": 11,
+   "size": 18,
+   "defenders": 3
+  },
+  {
+   "where": "mv:11-A-4",
+   "map": 11,
+   "size": 16,
+   "defenders": 5
+  },
+  {
+   "where": "mi:17-A-1",
+   "map": 17,
+   "size": 16,
+   "defenders": 4
+  },
+  {
+   "where": "mi:17-A-2",
+   "map": 17,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "mi:17-A-3",
+   "map": 17,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "mi:17-A-4",
+   "map": 17,
+   "size": 16,
+   "defenders": 2
+  },
+  {
+   "where": "mo:0-B-1",
+   "map": 0,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "mo:0-B-2",
+   "map": 0,
+   "size": 14,
+   "defenders": 0
+  },
+  {
+   "where": "mo:0-B-3",
+   "map": 0,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mo:0-B-4",
+   "map": 0,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "mpd:18-A-1",
+   "map": 18,
+   "size": 15,
+   "defenders": 0
+  },
+  {
+   "where": "mpd:18-A-2",
+   "map": 18,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mpd:18-A-3",
+   "map": 18,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mpd:18-A-4",
+   "map": 18,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mpd:18-A-5",
+   "map": 18,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "mpd:18-A-6",
+   "map": 18,
+   "size": 17,
+   "defenders": 0
+  },
+  {
+   "where": "mpd:18-A-7",
+   "map": 18,
+   "size": 16,
+   "defenders": 0
+  },
+  {
+   "where": "mpd:18-A-8",
+   "map": 18,
+   "size": 18,
+   "defenders": 0
+  },
+  {
+   "where": "mpd:18-A-9",
+   "map": 18,
+   "size": 19,
+   "defenders": 0
+  },
+  {
+   "where": "pro 0-PRO-1",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 0-PRO-2",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 0-PRO-3",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 0-BPRO-1",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 0-BPRO-2",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 0-BPRO-3",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 0-B-PRO-1",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 0-B-PRO-2",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 0-B-PRO-3",
+   "map": 0,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 1-PRO-1",
+   "map": 1,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 1-PRO-2",
+   "map": 1,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 1-BPRO-1",
+   "map": 1,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 1-BPRO-2",
+   "map": 1,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 1-A-PRO-1",
+   "map": 1,
+   "size": 20,
+   "defenders": 2
+  },
+  {
+   "where": "pro 1-A-PRO-2",
+   "map": 1,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 1-A-PRO-3",
+   "map": 1,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "bpro 1-A-BPRO-1",
+   "map": 1,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 1-A-BPRO-2",
+   "map": 1,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 2-PRO-1",
+   "map": 2,
+   "size": 20,
+   "defenders": 5
+  },
+  {
+   "where": "pro 2-PRO-2",
+   "map": 2,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 2-PRO-3",
+   "map": 2,
+   "size": 20,
+   "defenders": 8
+  },
+  {
+   "where": "pro 2-PRO-4",
+   "map": 2,
+   "size": 20,
+   "defenders": 6
+  },
+  {
+   "where": "bpro 2-BPRO-1",
+   "map": 2,
+   "size": 20,
+   "defenders": 6
+  },
+  {
+   "where": "bpro 2-BPRO-2",
+   "map": 2,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 2-BPRO-3",
+   "map": 2,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 2-BPRO-4",
+   "map": 2,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 2-B-PRO-1",
+   "map": 2,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 2-B-PRO-2",
+   "map": 2,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 2-B-PRO-3",
+   "map": 2,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 2-B-PRO-4",
+   "map": 2,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 2-B-BPRO-1",
+   "map": 2,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 2-B-BPRO-2",
+   "map": 2,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 2-B-BPRO-3",
+   "map": 2,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "bpro 2-B-BPRO-4",
+   "map": 2,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 2-A-PRO-1",
+   "map": 2,
+   "size": 20,
+   "defenders": 8
+  },
+  {
+   "where": "pro 2-A-PRO-2",
+   "map": 2,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "pro 2-A-PRO-3",
+   "map": 2,
+   "size": 20,
+   "defenders": 8
+  },
+  {
+   "where": "bpro 2-A-BPRO-1",
+   "map": 2,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 2-A-BPRO-2",
+   "map": 2,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "bpro 2-A-BPRO-3",
+   "map": 2,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 3-PRO-1",
+   "map": 3,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 3-PRO-2",
+   "map": 3,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 3-PRO-3",
+   "map": 3,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 3-PRO-4",
+   "map": 3,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 3-BPRO-1",
+   "map": 3,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 3-BPRO-2",
+   "map": 3,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 3-BPRO-3",
+   "map": 3,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 4-PRO-1",
+   "map": 4,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 4-PRO-2",
+   "map": 4,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 4-PRO-3",
+   "map": 4,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 4-PRO-4",
+   "map": 4,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 4-BPRO-1",
+   "map": 4,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 4-BPRO-2",
+   "map": 4,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 4-BPRO-3",
+   "map": 4,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 4-BPRO-4",
+   "map": 4,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 5-PRO-1",
+   "map": 5,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 5-PRO-2",
+   "map": 5,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "pro 5-PRO-3",
+   "map": 5,
+   "size": 20,
+   "defenders": 1
+  },
+  {
+   "where": "pro 5-PRO-4",
+   "map": 5,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 5-BPRO-1",
+   "map": 5,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 5-BPRO-2",
+   "map": 5,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 5-BPRO-3",
+   "map": 5,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 5-BPRO-4",
+   "map": 5,
+   "size": 20,
+   "defenders": 1
+  },
+  {
+   "where": "pro 5-A-PRO-1",
+   "map": 5,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "pro 5-A-PRO-2",
+   "map": 5,
+   "size": 20,
+   "defenders": 8
+  },
+  {
+   "where": "pro 5-A-PRO-3",
+   "map": 5,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 5-A-BPRO-1",
+   "map": 5,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 5-A-BPRO-2",
+   "map": 5,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 5-A-BPRO-3",
+   "map": 5,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 5-A-BPRO-4",
+   "map": 5,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 6-PRO-1",
+   "map": 6,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 6-PRO-2",
+   "map": 6,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 6-PRO-3",
+   "map": 6,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 6-BPRO-1",
+   "map": 6,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 6-BPRO-2",
+   "map": 6,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 6-BPRO-3",
+   "map": 6,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 7-PRO-1",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 7-PRO-2",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 7-PRO-3",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 7-PRO-4",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 7-BPRO-1",
+   "map": 7,
+   "size": 20,
+   "defenders": 1
+  },
+  {
+   "where": "bpro 7-BPRO-2",
+   "map": 7,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 7-BPRO-3",
+   "map": 7,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "bpro 7-BPRO-4",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 7-A-PRO-1",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 7-A-PRO-2",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 7-A-PRO-3",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 7-A-PRO-4",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 7-A-BPRO-1",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 7-A-BPRO-2",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 7-A-BPRO-3",
+   "map": 7,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 7-A-BPRO-4",
+   "map": 7,
+   "size": 20,
+   "defenders": 2
+  },
+  {
+   "where": "pro 8-PRO-1",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 8-PRO-2",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 8-PRO-3",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 8-PRO-4",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 8-BPRO-1",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 8-BPRO-2",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 8-BPRO-3",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 8-BPRO-4",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 8-A-PRO-1",
+   "map": 8,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "pro 8-A-PRO-2",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 8-A-PRO-3",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 8-A-PRO-4",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 8-A-BPRO-1",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 8-A-BPRO-2",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 8-A-BPRO-3",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 8-A-BPRO-4",
+   "map": 8,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 9-PRO-1",
+   "map": 9,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 9-PRO-2",
+   "map": 9,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 9-PRO-3",
+   "map": 9,
+   "size": 20,
+   "defenders": 7
+  },
+  {
+   "where": "pro 9-PRO-4",
+   "map": 9,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 9-BPRO-1",
+   "map": 9,
+   "size": 20,
+   "defenders": 7
+  },
+  {
+   "where": "bpro 9-BPRO-2",
+   "map": 9,
+   "size": 20,
+   "defenders": 7
+  },
+  {
+   "where": "bpro 9-BPRO-3",
+   "map": 9,
+   "size": 20,
+   "defenders": 7
+  },
+  {
+   "where": "bpro 9-BPRO-4",
+   "map": 9,
+   "size": 20,
+   "defenders": 6
+  },
+  {
+   "where": "pro 10-PRO-1",
+   "map": 10,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 10-PRO-2",
+   "map": 10,
+   "size": 20,
+   "defenders": 2
+  },
+  {
+   "where": "bpro 10-BPRO-1",
+   "map": 10,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 10-BPRO-2",
+   "map": 10,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 10-BPRO-3",
+   "map": 10,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "pro 10-A-PRO-1",
+   "map": 10,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "pro 10-A-PRO-2",
+   "map": 10,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 10-A-PRO-3",
+   "map": 10,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 10-A-BPRO-1",
+   "map": 10,
+   "size": 20,
+   "defenders": 1
+  },
+  {
+   "where": "bpro 10-A-BPRO-2",
+   "map": 10,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "bpro 10-A-BPRO-3",
+   "map": 10,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 11-PRO-1",
+   "map": 11,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 11-PRO-2",
+   "map": 11,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 11-PRO-3",
+   "map": 11,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 11-PRO-4",
+   "map": 11,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 11-BPRO-1",
+   "map": 11,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "bpro 11-BPRO-2",
+   "map": 11,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 11-BPRO-3",
+   "map": 11,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 11-A-PRO-1",
+   "map": 11,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 11-A-PRO-2",
+   "map": 11,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 11-A-PRO-3",
+   "map": 11,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 11-A-PRO-4",
+   "map": 11,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 11-A-BPRO-1",
+   "map": 11,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 11-A-BPRO-2",
+   "map": 11,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 11-A-BPRO-3",
+   "map": 11,
+   "size": 20,
+   "defenders": 2
+  },
+  {
+   "where": "pro 12-PRO-1",
+   "map": 12,
+   "size": 20,
+   "defenders": 2
+  },
+  {
+   "where": "pro 12-PRO-2",
+   "map": 12,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 12-PRO-3",
+   "map": 12,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 12-PRO-4",
+   "map": 12,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 12-BPRO-1",
+   "map": 12,
+   "size": 20,
+   "defenders": 1
+  },
+  {
+   "where": "bpro 12-BPRO-2",
+   "map": 12,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 12-BPRO-3",
+   "map": 12,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 13-PRO-1",
+   "map": 13,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 13-PRO-2",
+   "map": 13,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 13-PRO-3",
+   "map": 13,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 13-PRO-4",
+   "map": 13,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 13-BPRO-1",
+   "map": 13,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 13-BPRO-2",
+   "map": 13,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 13-BPRO-3",
+   "map": 13,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 13-BPRO-4",
+   "map": 13,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 14-PRO-1",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 14-PRO-2",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 14-PRO-3",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 14-PRO-4",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 14-BPRO-1",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 14-BPRO-2",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 14-BPRO-3",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 14-BPRO-4",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 14-A-PRO-1",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 14-A-PRO-2",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 14-A-PRO-3",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 14-A-PRO-4",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 14-A-BPRO-1",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 14-A-BPRO-2",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 14-A-BPRO-3",
+   "map": 14,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 15-PRO-1",
+   "map": 15,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 15-PRO-2",
+   "map": 15,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 15-PRO-3",
+   "map": 15,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 15-PRO-4",
+   "map": 15,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 15-BPRO-1",
+   "map": 15,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 15-BPRO-2",
+   "map": 15,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 15-BPRO-3",
+   "map": 15,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 16-PRO-1",
+   "map": 16,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 16-PRO-2",
+   "map": 16,
+   "size": 20,
+   "defenders": 1
+  },
+  {
+   "where": "pro 16-PRO-3",
+   "map": 16,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 16-PRO-4",
+   "map": 16,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 16-BPRO-1",
+   "map": 16,
+   "size": 20,
+   "defenders": 2
+  },
+  {
+   "where": "bpro 16-BPRO-2",
+   "map": 16,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 16-BPRO-3",
+   "map": 16,
+   "size": 20,
+   "defenders": 2
+  },
+  {
+   "where": "bpro 16-BPRO-4",
+   "map": 16,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 17-PRO-1",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 17-PRO-2",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 17-PRO-3",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 17-PRO-4",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 17-BPRO-1",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 17-BPRO-2",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 17-BPRO-3",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 17-BPRO-4",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 17-A-PRO-1",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 17-A-PRO-2",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 17-A-PRO-3",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 17-A-PRO-4",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 17-A-BPRO-1",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 17-A-BPRO-2",
+   "map": 17,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 18-PRO-1",
+   "map": 18,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 18-PRO-2",
+   "map": 18,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 18-PRO-3",
+   "map": 18,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 18-BPRO-1",
+   "map": 18,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 18-BPRO-2",
+   "map": 18,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 18-A-PRO-1",
+   "map": 18,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 18-A-PRO-2",
+   "map": 18,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 18-A-PRO-3",
+   "map": 18,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 18-A-BPRO-1",
+   "map": 18,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 18-A-BPRO-2",
+   "map": 18,
+   "size": 20,
+   "defenders": 2
+  },
+  {
+   "where": "bpro 18-A-BPRO-3",
+   "map": 18,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 18-A-BPRO-4",
+   "map": 18,
+   "size": 20,
+   "defenders": 2
+  },
+  {
+   "where": "pro 19-PRO-1",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 19-PRO-2",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 19-PRO-3",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 19-BPRO-1",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 19-BPRO-2",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 19-A-PRO-1",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 19-A-PRO-2",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 19-A-PRO-3",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 19-A-PRO-4",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 19-A-BPRO-1",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 19-A-BPRO-2",
+   "map": 19,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 20-PRO-1",
+   "map": 20,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "pro 20-PRO-2",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 20-PRO-3",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 20-BPRO-1",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 20-BPRO-2",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 20-A-PRO-1",
+   "map": 20,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "pro 20-A-PRO-2",
+   "map": 20,
+   "size": 20,
+   "defenders": 3
+  },
+  {
+   "where": "pro 20-A-PRO-3",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 20-A-BPRO-1",
+   "map": 20,
+   "size": 20,
+   "defenders": 4
+  },
+  {
+   "where": "bpro 20-A-BPRO-2",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 20-B-PRO-1",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 20-B-PRO-2",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "pro 20-B-PRO-3",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 20-B-BPRO-1",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 20-B-BPRO-2",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  },
+  {
+   "where": "bpro 20-B-BPRO-3",
+   "map": 20,
+   "size": 20,
+   "defenders": 0
+  }
+ ]
+}

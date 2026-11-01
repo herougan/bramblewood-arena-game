@@ -1,0 +1,644 @@
+{
+ "_about": "BAL9 (2026-11-02): every card edit the BAL9 steps applied, pass by pass (tools/bal9/cards_2026_11_02.js --apply)",
+ "passes": [
+  {
+   "step": "rewards",
+   "at": "2026-11-02 (pass 1)",
+   "edits": [
+    {
+     "id": "hedgehog-scout",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mh:12-5 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "lyrebird-mimic",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mh",
+       "node": "12-5"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mh:12-5 (was hedgehog-scout: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3
+      }
+     },
+     "note": "reward slot md:18-5 released (first listed on m3 (Map 19), not md); now a basic-pack card"
+    },
+    {
+     "id": "dune-packrat",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "md",
+       "node": "18-5"
+      }
+     },
+     "note": "the skirmish-exclusive reward of md:18-5 (was obsidian-scorpion: first listed on m3 (Map 19), not md); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "quill-volley",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 4
+      }
+     },
+     "note": "reward slot m3:19-2 released (first listed on m9 (Map 23), not m3); now a basic-pack card"
+    },
+    {
+     "id": "skull-vulture",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m3",
+       "node": "19-2"
+      }
+     },
+     "note": "the skirmish-exclusive reward of m3:19-2 (was quill-volley: first listed on m9 (Map 23), not m3); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "wound-reaver",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 2
+      }
+     },
+     "note": "reward slot mv:11-A-4 released (first listed on m10 (Map 11), not mv); now a basic-pack card"
+    },
+    {
+     "id": "squires-mount",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mv",
+       "node": "11-A-4"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mv:11-A-4 (was wound-reaver: first listed on m10 (Map 11), not mv); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    }
+   ]
+  },
+  {
+   "step": "rarity",
+   "at": "2026-11-02 (pass 1)",
+   "edits": [
+    {
+     "id": "alley-cat",
+     "set": {
+      "rarity": "uncommon",
+      "attack": 1,
+      "health": 2
+     },
+     "from": {
+      "rarity": "rare",
+      "stats": "1/3"
+     },
+     "note": "rarity rare -> uncommon: at most the rarest fight of mp (Map 2), first listed on mp (owner JJ12); re-fit 1/3 -> 1/2 (BUDGET2 fit, cap-1 use 0.95)"
+    },
+    {
+     "id": "octopus-tactician",
+     "set": {
+      "rarity": "uncommon"
+     },
+     "from": {
+      "rarity": "rare",
+      "stats": "5/7"
+     },
+     "note": "rarity rare -> uncommon: at most the rarest fight of mg (Map 2), first listed on mg (owner JJ12)"
+    },
+    {
+     "id": "lucky-hopper",
+     "set": {
+      "rarity": "uncommon"
+     },
+     "from": {
+      "rarity": "rare",
+      "stats": "1/17"
+     },
+     "note": "rarity rare -> uncommon: at most the rarest fight of mq (Map 1), first listed on mq (owner JJ12)"
+    },
+    {
+     "id": "pelican-diver",
+     "set": {
+      "rarity": "uncommon"
+     },
+     "from": {
+      "rarity": "rare",
+      "stats": "2/8"
+     },
+     "note": "rarity rare -> uncommon: at most the rarest fight of mg (Map 2), first listed on mg (owner JJ12)"
+    },
+    {
+     "id": "old-shell",
+     "set": {
+      "rarity": "uncommon",
+      "effects": {
+       "armor": 3,
+       "leader": true
+      },
+      "attack": 2,
+      "health": 18
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "2/19"
+     },
+     "note": "rarity heroic -> uncommon: at most the rarest fight of mb (Map 2), first listed on mb (owner JJ12); keeps leading through the Leader skill; re-fit 2/19 -> 2/18 (BUDGET2 fit, cap-1 use 0.98)"
+    },
+    {
+     "id": "drowned-matriarch",
+     "set": {
+      "rarity": "uncommon",
+      "effects": {
+       "tide": true,
+       "fork": true,
+       "leader": true
+      },
+      "attack": 2,
+      "health": 13
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "2/18"
+     },
+     "note": "rarity heroic -> uncommon: at most the rarest fight of m2 (Map 4), first listed on m2 (owner JJ12); keeps leading through the Leader skill; re-fit 2/18 -> 2/13 (BUDGET2 fit, cap-1 use 0.99)"
+    },
+    {
+     "id": "yeti-chieftain",
+     "set": {
+      "rarity": "veryrare",
+      "effects": {
+       "rage": true,
+       "leader": true
+      },
+      "attack": 4,
+      "health": 20
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "4/22"
+     },
+     "note": "rarity heroic -> veryrare: at most the rarest fight of m3 (Map 19), first listed on m3 (owner JJ12); keeps leading through the Leader skill; re-fit 4/22 -> 4/20 (BUDGET2 fit, cap-1 use 0.97)"
+    },
+    {
+     "id": "echo-matriarch",
+     "set": {
+      "rarity": "rare",
+      "effects": {
+       "flying": true,
+       "nocturnal": true,
+       "onReadyDamage": {
+        "amount": 3,
+        "dmgType": "physical"
+       },
+       "leader": true
+      }
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "2/11"
+     },
+     "note": "rarity heroic -> rare: at most the rarest fight of m4 (Map 8), first listed on m4 (owner JJ12); keeps leading through the Leader skill"
+    },
+    {
+     "id": "pride-queen",
+     "set": {
+      "rarity": "veryrare",
+      "effects": {
+       "quick": true,
+       "leader": true
+      }
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "2/17"
+     },
+     "note": "rarity heroic -> veryrare: at most the rarest fight of m5 (Map 14), first listed on m5 (owner JJ12); keeps leading through the Leader skill"
+    },
+    {
+     "id": "wolfsbane-alpha",
+     "set": {
+      "rarity": "veryrare",
+      "effects": {
+       "bleed": 2,
+       "nocturnal": true,
+       "dirge": 3,
+       "leader": true
+      },
+      "attack": 1,
+      "health": 17
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "1/19"
+     },
+     "note": "rarity heroic -> veryrare: at most the rarest fight of m6 (Map 17), first listed on m6 (owner JJ12); keeps leading through the Leader skill; re-fit 1/19 -> 1/17 (BUDGET2 fit, cap-1 use 0.97)"
+    },
+    {
+     "id": "reef-admiral",
+     "set": {
+      "rarity": "veryrare",
+      "effects": {
+       "evasive": true,
+       "tide": true,
+       "leader": true
+      }
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "2/14"
+     },
+     "note": "rarity heroic -> veryrare: at most the rarest fight of m7 (Map 10), first listed on m7 (owner JJ12); keeps leading through the Leader skill"
+    },
+    {
+     "id": "heron-hag",
+     "set": {
+      "rarity": "rare",
+      "effects": {
+       "flying": true,
+       "poison": 2,
+       "leader": true
+      }
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "2/11"
+     },
+     "note": "rarity heroic -> rare: at most the rarest fight of m8 (Map 6), first listed on m8 (owner JJ12); keeps leading through the Leader skill"
+    },
+    {
+     "id": "ember-revenant",
+     "set": {
+      "rarity": "veryrare"
+     },
+     "from": {
+      "rarity": "epic",
+      "stats": "4/15"
+     },
+     "note": "rarity epic -> veryrare: at most the rarest fight of m9 (Map 19), first listed on m9 (owner JJ12)"
+    },
+    {
+     "id": "triumvirate",
+     "set": {
+      "rarity": "epic",
+      "effects": {
+       "dictator": true,
+       "inspiring": 2,
+       "leader": true
+      }
+     },
+     "from": {
+      "rarity": "unique",
+      "stats": "4/19"
+     },
+     "note": "rarity unique -> epic: at most the rarest fight of m23 (Map 23), first listed on m23 (owner JJ12); keeps leading through the Leader skill"
+    },
+    {
+     "id": "the-gannet-queen",
+     "set": {
+      "rarity": "uncommon",
+      "effects": {
+       "flying": true,
+       "pounce": 2,
+       "leader": true
+      }
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "1/15"
+     },
+     "note": "rarity heroic -> uncommon: at most the rarest fight of mc (Map 3), first listed on mc (owner JJ12); keeps leading through the Leader skill"
+    },
+    {
+     "id": "old-snapjaw",
+     "set": {
+      "rarity": "rare",
+      "effects": {
+       "bleed": 1,
+       "armor": 1,
+       "leader": true
+      },
+      "attack": 4,
+      "health": 17
+     },
+     "from": {
+      "rarity": "heroic",
+      "stats": "4/21"
+     },
+     "note": "rarity heroic -> rare: at most the rarest fight of mw (Map 5), first listed on mw (owner JJ12); keeps leading through the Leader skill; re-fit 4/21 -> 4/17 (BUDGET2 fit, cap-1 use 0.97)"
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "set": {
+      "rarity": "uncommon",
+      "attack": 4,
+      "health": 7
+     },
+     "from": {
+      "rarity": "rare",
+      "stats": "4/9"
+     },
+     "note": "rarity rare -> uncommon: at most the rarest fight of mg (Map 2), first listed on mg (owner JJ12); re-fit 4/9 -> 4/7 (BUDGET2 fit, cap-1 use 0.98)"
+    }
+   ]
+  },
+  {
+   "step": "refit",
+   "at": "2026-11-02 (pass 1, recorded from the cards' notes)",
+   "edits": [
+    {
+     "id": "dolphin-knight",
+     "set": {
+      "attack": 3,
+      "health": 9
+     },
+     "note": "re-fit 4/8 -> 3/9: it read over the budget band (cap-1 use 1.06 of N), now 0.96 (BUDGET2 fit; owner JJ21)"
+    },
+    {
+     "id": "tide-pool-crab",
+     "set": {
+      "attack": 1,
+      "health": 2
+     },
+     "note": "re-fit 1/3 -> 1/2: it read over the budget band (cap-1 use 1.04 of N), now 0.97 (BUDGET2 fit; owner JJ21)"
+    },
+    {
+     "id": "vigil-owl",
+     "set": {
+      "attack": 4,
+      "health": 3
+     },
+     "note": "re-fit 4/4 -> 4/3: it read over the budget band (cap-1 use 1.01 of N), now 0.96 (BUDGET2 fit; owner JJ21)"
+    },
+    {
+     "id": "snail-mail",
+     "set": {
+      "attack": 0,
+      "health": 8
+     },
+     "note": "re-fit 0/1 -> 0/8: it read under the budget band (cap-1 use 0.33 of N), now 0.61 (BUDGET2 fit; owner JJ21)"
+    },
+    {
+     "id": "daily-post",
+     "set": {
+      "attack": 1,
+      "health": 3
+     },
+     "note": "re-fit 1/2 -> 1/3: it read under the budget band (cap-1 use 0.59 of N), now 0.67 (BUDGET2 fit; owner JJ21)"
+    },
+    {
+     "id": "conch-crawler",
+     "set": {
+      "attack": 1,
+      "health": 3
+     },
+     "note": "re-fit 2/2 -> 1/3: it read over the budget band (cap-1 use 1.08 of N), now 0.96 (BUDGET2 fit; owner JJ21)"
+    },
+    {
+     "id": "lunar-howler",
+     "set": {
+      "attack": 2,
+      "health": 1
+     },
+     "note": "re-fit 1/1 -> 2/1: it read under the budget band (cap-1 use 0.55 of N), now 0.65 (BUDGET2 fit; owner JJ21)"
+    },
+    {
+     "id": "salamander-pyromancer",
+     "set": {
+      "attack": 2,
+      "health": 12
+     },
+     "note": "re-fit 2/14 -> 2/12: it read over the budget band (cap-1 use 1.04 of N), now 0.99 (BUDGET2 fit; owner JJ21)"
+    },
+    {
+     "id": "grotto-lobster",
+     "set": {
+      "attack": 3,
+      "health": 14
+     },
+     "note": "re-fit 3/16 -> 3/14: it read over the budget band (cap-1 use 1.04 of N), now 0.97 (BUDGET2 fit; owner JJ21)"
+    },
+    {
+     "id": "rock-pool-starfish",
+     "set": {
+      "attack": 2,
+      "health": 1
+     },
+     "note": "re-fit 1/1 -> 2/1: it read under the budget band (cap-1 use 0.54 of N), now 0.71 (BUDGET2 fit; owner JJ21)"
+    }
+   ]
+  },
+  {
+   "step": "refit",
+   "at": "2026-11-01T16:36:09.713Z",
+   "edits": [
+    {
+     "id": "alley-cat",
+     "set": {
+      "health": 1,
+      "attack": 1
+     },
+     "from": {
+      "id": "alley-cat",
+      "rarity": "uncommon",
+      "stats": "1/2",
+      "verdict": "over",
+      "use": 1.01,
+      "cap2": 0.68
+     },
+     "to": "1/1",
+     "use": 0.94,
+     "note": "re-fit 1/2 -> 1/1: it read over the budget band (cap-1 use 1.01 of N), now 0.94 (BUDGET2 fit; owner JJ21)"
+    }
+   ]
+  },
+  {
+   "step": "rewards (undo)",
+   "at": "2026-11-01T16:44:33.351Z",
+   "why": "the first rewards pass treated a card first listed on a side map of the same main map as misplaced; undone and re-run with the family rule",
+   "edits": [
+    {
+     "id": "hedgehog-scout",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mh",
+       "node": "12-5"
+      }
+     },
+     "note": "",
+     "clearTag": "rewards",
+     "unset": [
+      "unattainable"
+     ]
+    },
+    {
+     "id": "lyrebird-mimic",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 2,
+       "map": "mh"
+      }
+     },
+     "note": "",
+     "clearTag": "rewards",
+     "unset": [
+      "unattainable"
+     ]
+    },
+    {
+     "id": "obsidian-scorpion",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "md",
+       "node": "18-5"
+      }
+     },
+     "note": "",
+     "clearTag": "rewards",
+     "unset": [
+      "unattainable"
+     ]
+    },
+    {
+     "id": "dune-packrat",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3,
+       "map": "md"
+      }
+     },
+     "note": "",
+     "clearTag": "rewards",
+     "unset": [
+      "unattainable"
+     ]
+    },
+    {
+     "id": "quill-volley",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "m3",
+       "node": "19-2"
+      }
+     },
+     "note": "",
+     "clearTag": "rewards",
+     "unset": [
+      "unattainable"
+     ]
+    },
+    {
+     "id": "skull-vulture",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3,
+       "map": "mpd"
+      }
+     },
+     "note": "",
+     "clearTag": "rewards",
+     "unset": [
+      "unattainable"
+     ]
+    },
+    {
+     "id": "wound-reaver",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mv",
+       "node": "11-A-4"
+      }
+     },
+     "note": "",
+     "clearTag": "rewards",
+     "unset": [
+      "unattainable"
+     ]
+    },
+    {
+     "id": "squires-mount",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3,
+       "map": "ml"
+      }
+     },
+     "note": "",
+     "clearTag": "rewards",
+     "unset": [
+      "unattainable"
+     ]
+    }
+   ]
+  },
+  {
+   "step": "rewards",
+   "at": "2026-11-01T16:44:39.010Z",
+   "edits": [
+    {
+     "id": "hedgehog-scout",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 1
+      }
+     },
+     "note": "reward slot mh:12-5 released (on no list (cut by THEME4)); now a basic-pack card on no list (out of play)"
+    },
+    {
+     "id": "lyrebird-mimic",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "mh",
+       "node": "12-5"
+      }
+     },
+     "note": "the skirmish-exclusive reward of mh:12-5 (was hedgehog-scout: on no list (cut by THEME4)); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "set": {
+      "source": {
+       "kind": "pack",
+       "tier": 3
+      }
+     },
+     "note": "reward slot md:18-5 released (first listed on m3 (Map 19), not md); now a basic-pack card"
+    },
+    {
+     "id": "fennec-fox",
+     "set": {
+      "source": {
+       "kind": "map",
+       "id": "md",
+       "node": "18-5"
+      }
+     },
+     "note": "the skirmish-exclusive reward of md:18-5 (was obsidian-scorpion: first listed on m3 (Map 19), not md); a new card of that map, picked at random (seeded) inside the fight's veryrare cap"
+    }
+   ]
+  }
+ ]
+}

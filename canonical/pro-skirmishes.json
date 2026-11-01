@@ -905,10 +905,9 @@
      "leaders": [],
      "deck": {
       "ashbone-ghoul": 3,
-      "fox-sharpshot": 2,
-      "hoopoe-herald": 4,
+      "hoopoe-herald": 5,
       "leafcutter-gardener": 3,
-      "swift-fox": 4,
+      "swift-fox": 5,
       "talus-pika": 4
      },
      "source": {
@@ -925,7 +924,8 @@
       "generated": "2026-10-30T09:57:35.484Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (fox-sharpshot x2); not re-searched"
     },
     {
      "id": "0-B-PRO-3",
@@ -937,12 +937,10 @@
      "level": 1,
      "leaders": [],
      "deck": {
-      "ashbone-ghoul": 3,
-      "dhole-runner": 2,
-      "hoopoe-herald": 3,
-      "jay-pilferer": 4,
-      "mudpuppy": 4,
-      "porcupine-roller": 4
+      "ashbone-ghoul": 5,
+      "dhole-runner": 5,
+      "hoopoe-herald": 5,
+      "porcupine-roller": 5
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map00-mo-2026-10-30.json",
@@ -958,7 +956,8 @@
       "generated": "2026-10-30T09:57:35.484Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (jay-pilferer x4, mudpuppy x4); not re-searched"
     }
    ],
    "bpro": [],
@@ -2329,9 +2328,9 @@
       "bramble-sprout": 4,
       "cricket-drummer": 4,
       "hawthorn-shieldbug": 2,
-      "mudpuppy": 4,
       "planarian-splitter": 4,
-      "slow-worm": 2
+      "slow-worm": 5,
+      "compost-grub": 1
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map01-mq-2026-10-30.json",
@@ -2347,7 +2346,8 @@
       "generated": "2026-10-30T10:03:29.154Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (mudpuppy x4); not re-searched"
     },
     {
      "id": "1-A-PRO-2",
@@ -2726,11 +2726,11 @@
      ],
      "deck": {
       "badger-lumberjack": 2,
-      "beaver-lumberjack": 4,
-      "briarback-hedgehog": 4,
-      "ember-tetra": 4,
+      "beaver-lumberjack": 5,
       "grey-seal-bull": 3,
-      "pincushion-urchin": 3
+      "pincushion-urchin": 3,
+      "oystercatcher": 4,
+      "driftwood-crab": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mb-2026-10-30.json",
@@ -2746,7 +2746,8 @@
       "generated": "2026-10-30T09:51:41.713Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (briarback-hedgehog x4, ember-tetra x4); not re-searched"
     },
     {
      "id": "2-PRO-2",
@@ -2762,12 +2763,12 @@
       "ember-tetra"
      ],
      "deck": {
-      "briarback-hedgehog": 3,
       "cricket-drummer": 3,
       "dormouse": 2,
-      "ember-tetra": 4,
       "pincushion-urchin": 4,
-      "tide-pool-crab": 4
+      "tide-pool-crab": 4,
+      "oystercatcher": 3,
+      "beaver-lumberjack": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mb-2026-10-30.json",
@@ -2783,7 +2784,8 @@
       "generated": "2026-10-30T09:51:41.713Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (briarback-hedgehog x3, ember-tetra x4); not re-searched"
     },
     {
      "id": "2-PRO-3",
@@ -2803,9 +2805,9 @@
       "badger-lumberjack": 4,
       "conch-crawler": 3,
       "duck-paddler": 2,
-      "ember-tetra": 4,
       "grey-seal-bull": 4,
-      "pincushion-urchin": 3
+      "pincushion-urchin": 3,
+      "beaver-lumberjack": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mb-2026-10-30.json",
@@ -2821,7 +2823,8 @@
       "generated": "2026-10-30T09:51:41.713Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (ember-tetra x4); not re-searched"
     },
     {
      "id": "2-PRO-4",
@@ -2837,12 +2840,12 @@
       "grey-seal-bull"
      ],
      "deck": {
-      "beaver-lumberjack": 3,
-      "ember-tetra": 4,
+      "beaver-lumberjack": 5,
       "fiddler-crab-swarm": 2,
       "fleetfootd": 4,
       "grey-seal-bull": 4,
-      "tide-pool-crab": 3
+      "tide-pool-crab": 3,
+      "driftwood-crab": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mb-2026-10-30.json",
@@ -2858,7 +2861,8 @@
       "generated": "2026-10-30T09:51:41.713Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (ember-tetra x4); not re-searched"
     }
    ],
    "bpro": [
@@ -3840,9 +3844,9 @@
       "conch-herald": 3,
       "grey-seal-bull": 4,
       "kittiwake-flock": 4,
-      "mudpuppy": 3,
       "puffin-diver": 2,
-      "trash-panda-trickster": 4
+      "trash-panda-trickster": 4,
+      "driftwood-crab": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mg-2026-10-30.json",
@@ -3858,7 +3862,8 @@
       "generated": "2026-10-30T10:07:39.116Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (mudpuppy x3); not re-searched"
     },
     {
      "id": "2-B-PRO-2",
@@ -3878,9 +3883,9 @@
       "conch-crawler": 4,
       "conch-herald": 2,
       "grey-seal-bull": 4,
-      "mudpuppy": 2,
       "nutria-reedcutter": 4,
-      "trash-panda-trickster": 4
+      "trash-panda-trickster": 4,
+      "driftwood-crab": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mg-2026-10-30.json",
@@ -3896,7 +3901,8 @@
       "generated": "2026-10-30T10:07:39.116Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (mudpuppy x2); not re-searched"
     },
     {
      "id": "2-B-PRO-3",
@@ -3948,12 +3954,12 @@
       "grey-seal-bull"
      ],
      "deck": {
-      "driftwood-crab": 4,
+      "driftwood-crab": 5,
       "grey-seal-bull": 4,
-      "mudpuppy": 3,
       "nutria-reedcutter": 1,
-      "pincushion-urchin": 4,
-      "trash-panda-trickster": 4
+      "pincushion-urchin": 5,
+      "trash-panda-trickster": 4,
+      "tidepool-trapper-crab": 1
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mg-2026-10-30.json",
@@ -3969,7 +3975,8 @@
       "generated": "2026-10-30T10:07:39.116Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (mudpuppy x3); not re-searched"
     }
    ],
    "bpro": [
@@ -4645,11 +4652,10 @@
      ],
      "deck": {
       "box-turtle": 4,
-      "diving-bell-spider": 2,
       "gannet-nestweaver": 4,
       "grey-seal-bull": 4,
       "muskrat-lodgekeeper": 4,
-      "river-mink": 2
+      "pyrenean-desman": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mp-2026-10-30.json",
@@ -4665,7 +4671,8 @@
       "generated": "2026-10-30T10:12:13.728Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (diving-bell-spider x2, river-mink x2); not re-searched"
     },
     {
      "id": "2-A-PRO-2",
@@ -4682,10 +4689,10 @@
      "deck": {
       "box-turtle": 4,
       "grey-seal-bull": 3,
-      "pyrenean-desman": 3,
-      "river-mink": 3,
+      "pyrenean-desman": 4,
       "tidepool-trapper-crab": 3,
-      "water-vole": 4
+      "water-vole": 4,
+      "lodge-engineer": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mp-2026-10-30.json",
@@ -4701,7 +4708,8 @@
       "generated": "2026-10-30T10:12:13.728Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (river-mink x3); not re-searched"
     },
     {
      "id": "2-A-PRO-3",
@@ -4716,12 +4724,12 @@
       "lodge-engineer"
      ],
      "deck": {
-      "diving-bell-spider": 4,
       "driftwood-crab": 3,
       "fiddler-crab-swarm": 4,
       "lodge-engineer": 2,
       "muskrat-lodgekeeper": 4,
-      "nutria-reedcutter": 3
+      "nutria-reedcutter": 3,
+      "pyrenean-desman": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mp-2026-10-30.json",
@@ -4737,7 +4745,8 @@
       "generated": "2026-10-30T10:12:13.728Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (diving-bell-spider x4); not re-searched"
     }
    ],
    "bpro": [
@@ -6265,11 +6274,11 @@
      ],
      "deck": {
       "duck-paddler": 2,
-      "ember-tetra": 4,
       "fire-ant-raft": 4,
-      "muskrat-reedgatherer": 2,
+      "muskrat-reedgatherer": 5,
       "pyrenean-desman": 4,
-      "snapstick-turtle": 4
+      "snapstick-turtle": 4,
+      "beaver-lumberjack": 1
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map04-m2-2026-10-30.json",
@@ -6285,7 +6294,8 @@
       "generated": "2026-10-30T10:18:40.748Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (ember-tetra x4); not re-searched"
     },
     {
      "id": "4-PRO-2",
@@ -6301,11 +6311,11 @@
      ],
      "deck": {
       "conch-crawler": 4,
-      "ember-tetra": 4,
       "fire-ant-raft": 2,
       "gannet-nestweaver": 2,
       "pond-algae": 4,
-      "snapstick-turtle": 4
+      "snapstick-turtle": 4,
+      "pyrenean-desman": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map04-m2-2026-10-30.json",
@@ -6321,7 +6331,8 @@
       "generated": "2026-10-30T10:18:40.748Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (ember-tetra x4); not re-searched"
     },
     {
      "id": "4-PRO-3",
@@ -6339,10 +6350,10 @@
      "deck": {
       "beaver-lumberjack": 2,
       "bramble-sprout": 3,
-      "ember-tetra": 4,
       "gannet-nestweaver": 3,
       "pond-trout": 4,
-      "pyrenean-desman": 4
+      "pyrenean-desman": 4,
+      "fire-ant-raft": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map04-m2-2026-10-30.json",
@@ -6358,7 +6369,8 @@
       "generated": "2026-10-30T10:18:40.748Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (ember-tetra x4); not re-searched"
     },
     {
      "id": "4-PRO-4",
@@ -6376,10 +6388,10 @@
      "deck": {
       "beaver-lumberjack": 3,
       "bramble-sprout": 3,
-      "ember-tetra": 4,
       "fire-ant-raft": 4,
       "gannet-nestweaver": 2,
-      "muskrat-reedgatherer": 4
+      "muskrat-reedgatherer": 4,
+      "pyrenean-desman": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map04-m2-2026-10-30.json",
@@ -6395,7 +6407,8 @@
       "generated": "2026-10-30T10:18:40.748Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (ember-tetra x4); not re-searched"
     }
    ],
    "bpro": [
@@ -7192,8 +7205,8 @@
       "bog-leech": 4,
       "box-turtle": 3,
       "grass-viper": 4,
-      "river-mink": 2,
-      "snapstick-turtle": 4
+      "snapstick-turtle": 4,
+      "anhinga-spearbird": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map05-mw-2026-10-30.json",
@@ -7209,7 +7222,8 @@
       "generated": "2026-10-30T10:21:44.165Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (river-mink x2); not re-searched"
     },
     {
      "id": "5-PRO-2",
@@ -7259,11 +7273,11 @@
      ],
      "deck": {
       "constrictor-coil": 4,
-      "dam-keeper-beaver": 1,
       "gannet-nestweaver": 4,
       "nutria-reedcutter": 4,
       "otter-centurion": 3,
-      "snapstick-turtle": 4
+      "snapstick-turtle": 4,
+      "cypress-root-lurker": 1
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map05-mw-2026-10-30.json",
@@ -7279,7 +7293,8 @@
       "generated": "2026-10-30T10:21:44.165Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (dam-keeper-beaver x1); not re-searched"
     },
     {
      "id": "5-PRO-4",
@@ -8689,10 +8704,10 @@
      "deck": {
       "bogfire-newt": 4,
       "box-turtle": 4,
-      "grass-snake": 3,
-      "marsh-harrier": 3,
+      "marsh-harrier": 4,
       "otter-centurion": 3,
-      "raven-scout": 3
+      "raven-scout": 3,
+      "camouflage-frog": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map06-m8-2026-10-30.json",
@@ -8708,7 +8723,8 @@
       "generated": "2026-10-30T10:28:44.664Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grass-snake x3); not re-searched"
     },
     {
      "id": "6-PRO-2",
@@ -8723,11 +8739,11 @@
      ],
      "deck": {
       "adder-ambusher": 3,
-      "grass-snake": 4,
-      "marsh-harrier": 3,
+      "marsh-harrier": 4,
       "meadow-frog": 4,
       "nutria-reedcutter": 4,
-      "otter-centurion": 2
+      "otter-centurion": 2,
+      "camouflage-frog": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map06-m8-2026-10-30.json",
@@ -8743,7 +8759,8 @@
       "generated": "2026-10-30T10:28:44.664Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (grass-snake x4); not re-searched"
     },
     {
      "id": "6-PRO-3",
@@ -9414,11 +9431,11 @@
      ],
      "deck": {
       "alley-cat": 3,
-      "cottonmouth-matriarch": 3,
       "dung-beetle": 4,
       "nutria-reedcutter": 4,
       "truffle-piglet": 3,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "corpse-flower-beetle": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map07-mu-2026-10-30.json",
@@ -9434,7 +9451,8 @@
       "generated": "2026-10-30T10:31:56.551Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (cottonmouth-matriarch x3); not re-searched"
     },
     {
      "id": "7-PRO-3",
@@ -9452,10 +9470,10 @@
      "deck": {
       "ant-warrior": 4,
       "bogfire-newt": 4,
-      "carrion-beetle": 4,
       "dung-beetle": 2,
       "fire-ant-raft": 3,
-      "tunnel-ant": 3
+      "tunnel-ant": 3,
+      "planarian-splitter": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map07-mu-2026-10-30.json",
@@ -9471,7 +9489,8 @@
       "generated": "2026-10-30T10:31:56.551Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (carrion-beetle x4); not re-searched"
     },
     {
      "id": "7-PRO-4",
@@ -9488,11 +9507,11 @@
      ],
      "deck": {
       "ant-warrior": 4,
-      "carrion-beetle": 3,
       "leafcutter-gardener": 4,
       "otter-centurion": 2,
       "sleepless-shrew": 4,
-      "tunnel-ant": 3
+      "tunnel-ant": 3,
+      "planarian-splitter": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map07-mu-2026-10-30.json",
@@ -9508,7 +9527,8 @@
       "generated": "2026-10-30T10:31:56.551Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (carrion-beetle x3); not re-searched"
     }
    ],
    "bpro": [
@@ -10353,10 +10373,10 @@
      "deck": {
       "ant-warrior": 2,
       "leafcutter-gardener": 4,
-      "mudpuppy": 4,
       "nutria-reedcutter": 4,
       "owl-nightwatch": 4,
-      "wolf-spider-mother": 2
+      "wolf-spider-mother": 2,
+      "sleepless-shrew": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map07-mz-2026-10-30.json",
@@ -10372,7 +10392,8 @@
       "generated": "2026-10-30T10:34:47.120Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (mudpuppy x4); not re-searched"
     },
     {
      "id": "7-A-PRO-3",
@@ -10425,10 +10446,10 @@
      "deck": {
       "alley-cat": 3,
       "ant-warrior": 4,
-      "barkplate-beetle": 4,
       "leafcutter-gardener": 4,
       "otter-centurion": 3,
-      "owl-nightwatch": 2
+      "owl-nightwatch": 2,
+      "fungal-colossus": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map07-mz-2026-10-30.json",
@@ -10444,7 +10465,8 @@
       "generated": "2026-10-30T10:34:47.120Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (barkplate-beetle x4); not re-searched"
     }
    ],
    "bpro": [
@@ -11073,10 +11095,10 @@
      "deck": {
       "ant-warrior": 4,
       "echo-screecher": 1,
-      "raft-spider": 4,
       "star-nosed-mole": 4,
       "vampire-bat": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "sulfur-cinder-moth": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
@@ -11092,7 +11114,8 @@
       "generated": "2026-10-30T10:37:34.627Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (raft-spider x4); not re-searched"
     },
     {
      "id": "8-PRO-3",
@@ -11148,10 +11171,10 @@
      "deck": {
       "ant-warrior": 4,
       "leafcutter-gardener": 4,
-      "raft-spider": 2,
       "trash-panda-trickster": 4,
       "vampire-bat": 3,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "sulfur-cinder-moth": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
@@ -11167,7 +11190,8 @@
       "generated": "2026-10-30T10:37:34.627Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (raft-spider x2); not re-searched"
     }
    ],
    "bpro": [
@@ -11786,9 +11810,9 @@
       "blue-ringed-octopus": 3,
       "lantern-spark-fly": 4,
       "stalactite-golem": 3,
-      "subterraneaner": 4,
       "sulfur-cinder-moth": 3,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "badger-stonemason": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-mn-2026-10-30.json",
@@ -11804,7 +11828,8 @@
       "generated": "2026-10-30T10:40:33.149Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (subterraneaner x4); not re-searched"
     },
     {
      "id": "8-A-PRO-2",
@@ -11825,7 +11850,7 @@
       "lantern-spark-fly": 4,
       "prospector-mole": 4,
       "squires-mount": 3,
-      "subterraneaner": 3
+      "badger-stonemason": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-mn-2026-10-30.json",
@@ -11841,7 +11866,8 @@
       "generated": "2026-10-30T10:40:33.149Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (subterraneaner x3); not re-searched"
     },
     {
      "id": "8-A-PRO-3",
@@ -11856,12 +11882,12 @@
       "badger-stonemason"
      ],
      "deck": {
-      "baby-bat": 2,
-      "badger-stonemason": 3,
-      "glimmer-spider": 3,
+      "badger-stonemason": 4,
+      "glimmer-spider": 4,
       "prospector-mole": 4,
       "star-nosed-mole": 4,
-      "subterraneaner": 4
+      "cave-olm": 2,
+      "whip-spider": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-mn-2026-10-30.json",
@@ -11877,7 +11903,8 @@
       "generated": "2026-10-30T10:40:33.149Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (baby-bat x2, subterraneaner x4); not re-searched"
     },
     {
      "id": "8-A-PRO-4",
@@ -11898,7 +11925,7 @@
       "lantern-spark-fly": 3,
       "prospector-mole": 4,
       "star-nosed-mole": 4,
-      "subterraneaner": 4
+      "badger-stonemason": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-mn-2026-10-30.json",
@@ -11914,7 +11941,8 @@
       "generated": "2026-10-30T10:40:33.149Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (subterraneaner x4); not re-searched"
     }
    ],
    "bpro": [
@@ -12527,9 +12555,9 @@
       "alley-cat": 3,
       "banded-sea-krait": 3,
       "fiddler-crab-swarm": 4,
-      "greater-siren": 3,
-      "minnow-skitter": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "fishing-cat": 3,
+      "mangrove-mudskipper": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map09-mk-2026-10-30.json",
@@ -12545,7 +12573,8 @@
       "generated": "2026-10-30T10:43:32.401Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (greater-siren x3, minnow-skitter x4); not re-searched"
     },
     {
      "id": "9-PRO-2",
@@ -12564,9 +12593,9 @@
       "alley-cat": 3,
       "alligator-gar": 3,
       "caiman-hatchling": 3,
-      "minnow-skitter": 4,
-      "mudpuppy": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "mangrove-mudskipper": 5,
+      "horseshoe-crab": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map09-mk-2026-10-30.json",
@@ -12582,7 +12611,8 @@
       "generated": "2026-10-30T10:43:32.401Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (minnow-skitter x4, mudpuppy x4); not re-searched"
     },
     {
      "id": "9-PRO-3",
@@ -12601,9 +12631,9 @@
       "alligator-gar": 3,
       "fiddler-crab-swarm": 4,
       "mangrove-manatee": 3,
-      "minnow-skitter": 3,
       "sunbittern-strider": 3,
-      "vampire-bat": 4
+      "vampire-bat": 4,
+      "mangrove-mudskipper": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map09-mk-2026-10-30.json",
@@ -12619,7 +12649,8 @@
       "generated": "2026-10-30T10:43:32.401Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (minnow-skitter x3); not re-searched"
     },
     {
      "id": "9-PRO-4",
@@ -12639,8 +12670,8 @@
       "caiman-hatchling": 4,
       "fiddler-crab-swarm": 4,
       "giant-cave-huntsman": 2,
-      "greater-siren": 3,
-      "minnow-skitter": 4
+      "fishing-cat": 3,
+      "mangrove-mudskipper": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map09-mk-2026-10-30.json",
@@ -12656,7 +12687,8 @@
       "generated": "2026-10-30T10:43:32.401Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (greater-siren x3, minnow-skitter x4); not re-searched"
     }
    ],
    "bpro": [
@@ -12713,9 +12745,8 @@
       "caiman-hatchling": 4,
       "fiddler-crab-swarm": 4,
       "mangrove-manatee": 3,
-      "mangrove-mudskipper": 1,
-      "minnow-skitter": 4,
-      "mudpuppy": 4
+      "mangrove-mudskipper": 5,
+      "horseshoe-crab": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
@@ -12731,7 +12762,8 @@
       "generated": "2026-10-31T04:48:33.438Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (minnow-skitter x4, mudpuppy x4); not re-searched"
     },
     {
      "id": "9-BPRO-3",
@@ -12750,8 +12782,8 @@
       "fiddler-crab-swarm": 4,
       "mangrove-manatee": 3,
       "mangrove-monitor": 4,
-      "minnow-skitter": 2,
-      "sunbittern-strider": 4
+      "sunbittern-strider": 4,
+      "mangrove-mudskipper": 2
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
@@ -12767,7 +12799,8 @@
       "generated": "2026-10-31T04:48:33.438Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (minnow-skitter x2); not re-searched"
     },
     {
      "id": "9-BPRO-4",
@@ -12786,9 +12819,9 @@
       "fiddler-crab-swarm": 4,
       "fishing-cat": 3,
       "mangrove-manatee": 2,
-      "mangrove-mudskipper": 4,
-      "minnow-skitter": 3,
-      "mudpuppy": 4
+      "mangrove-mudskipper": 5,
+      "horseshoe-crab": 5,
+      "mangrove-monitor": 1
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
@@ -12804,7 +12837,8 @@
       "generated": "2026-10-31T04:48:33.438Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (minnow-skitter x3, mudpuppy x4); not re-searched"
     }
    ],
    "replaced": [
@@ -13290,8 +13324,8 @@
       "coral-polyp-colony": 4,
       "giant-cave-huntsman": 3,
       "reef-shark": 4,
-      "sea-hare": 2,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "parrotfish": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map10-m7-2026-10-30.json",
@@ -13307,7 +13341,8 @@
       "generated": "2026-10-30T10:45:49.030Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (sea-hare x2); not re-searched"
     },
     {
      "id": "10-PRO-2",
@@ -13325,10 +13360,10 @@
      "deck": {
       "alley-cat": 3,
       "mangrove-manatee": 2,
-      "parrotfish": 4,
+      "parrotfish": 5,
       "pincushion-urchin": 3,
       "riptide-eel": 4,
-      "sea-hare": 4
+      "coral-polyp-colony": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map10-m7-2026-10-30.json",
@@ -13344,7 +13379,8 @@
       "generated": "2026-10-30T10:45:49.030Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (sea-hare x4); not re-searched"
     }
    ],
    "bpro": [
@@ -14274,8 +14310,8 @@
       "giant-cave-huntsman": 3,
       "great-barracuda": 3,
       "mangrove-manatee": 3,
-      "mudpuppy": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "parrotfish": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map10-mj-2026-10-30.json",
@@ -14291,7 +14327,8 @@
       "generated": "2026-10-30T10:49:43.685Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (mudpuppy x4); not re-searched"
     },
     {
      "id": "10-A-PRO-2",
@@ -14312,7 +14349,7 @@
       "electric-ray": 4,
       "nautilus-drifter": 3,
       "otter-centurion": 3,
-      "whale-shark": 3
+      "hagfish-silencer": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map10-mj-2026-10-30.json",
@@ -14328,7 +14365,8 @@
       "generated": "2026-10-30T10:49:43.685Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (whale-shark x3); not re-searched"
     },
     {
      "id": "10-A-PRO-3",
@@ -15070,10 +15108,10 @@
      "deck": {
       "chipmunk-hoarder": 4,
       "eagle-owl-quartermaster": 3,
-      "fulmar-spitter": 2,
       "gannet-nestweaver": 4,
       "peregrine-stooper": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "gangrenous-leech": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map11-m10-2026-10-30.json",
@@ -15089,7 +15127,8 @@
       "generated": "2026-10-30T10:53:32.303Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (fulmar-spitter x2); not re-searched"
     },
     {
      "id": "11-PRO-3",
@@ -16752,9 +16791,9 @@
       "bramble-hoglet": 4,
       "eagle-owl-quartermaster": 3,
       "hawthorn-shieldbug": 2,
-      "hedgehog-scout": 4,
       "hedgerow-shrew": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "dormouse": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map12-mh-2026-10-30.json",
@@ -16770,7 +16809,8 @@
       "generated": "2026-10-30T11:01:13.492Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (hedgehog-scout x4); not re-searched"
     },
     {
      "id": "12-PRO-2",
@@ -16823,11 +16863,11 @@
      ],
      "deck": {
       "eagle-owl-quartermaster": 2,
-      "field-mouse": 4,
+      "field-mouse": 5,
       "field-vole": 4,
       "hedge-weasel": 2,
-      "hedgehog-scout": 4,
-      "mouse-sapper": 4
+      "mouse-sapper": 4,
+      "dormouse": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map12-mh-2026-10-30.json",
@@ -16843,7 +16883,8 @@
       "generated": "2026-10-30T11:01:13.492Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (hedgehog-scout x4); not re-searched"
     },
     {
      "id": "12-PRO-4",
@@ -16859,10 +16900,10 @@
      "deck": {
       "alpine-marmot": 4,
       "eagle-owl-quartermaster": 2,
-      "hedgehog-scout": 4,
       "hedgerow-shrew": 2,
-      "mouse-sapper": 4,
-      "nightjar-drifter": 4
+      "mouse-sapper": 5,
+      "dormouse": 5,
+      "field-mouse": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map12-mh-2026-10-30.json",
@@ -16878,7 +16919,8 @@
       "generated": "2026-10-30T11:01:13.492Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (hedgehog-scout x4); not re-searched"
     }
    ],
    "bpro": [
@@ -16896,10 +16938,10 @@
      "deck": {
       "badger-lumberjack": 1,
       "bramble-hoglet": 4,
-      "field-mouse": 4,
+      "field-mouse": 5,
       "gatling-hog": 3,
-      "hedgehog-scout": 4,
-      "hedgerow-shrew": 4
+      "hedgerow-shrew": 4,
+      "dormouse": 3
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map12-mh-2026-10-31.json",
@@ -16915,7 +16957,8 @@
       "generated": "2026-10-31T03:02:52.856Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (hedgehog-scout x4); not re-searched"
     },
     {
      "id": "12-BPRO-2",
@@ -16931,11 +16974,11 @@
      ],
      "deck": {
       "carrion-crow": 4,
-      "field-mouse": 4,
+      "field-mouse": 5,
       "gatling-hog": 3,
-      "hedgehog-scout": 4,
       "mouse-sapper": 3,
-      "quillguard": 2
+      "quillguard": 2,
+      "dormouse": 3
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map12-mh-2026-10-31.json",
@@ -16951,7 +16994,8 @@
       "generated": "2026-10-31T03:02:52.856Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (hedgehog-scout x4); not re-searched"
     },
     {
      "id": "12-BPRO-3",
@@ -16968,9 +17012,9 @@
       "bramble-hoglet": 4,
       "carrion-crow": 2,
       "gatling-hog": 3,
-      "hedgehog-scout": 4,
       "lyrebird-mimic": 4,
-      "quillguard": 3
+      "quillguard": 3,
+      "dormouse": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map12-mh-2026-10-31.json",
@@ -16986,7 +17030,8 @@
       "generated": "2026-10-31T03:02:52.856Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (hedgehog-scout x4); not re-searched"
     }
    ],
    "replaced": [
@@ -18915,10 +18960,10 @@
      "deck": {
       "grave-grin-hyena": 3,
       "leafcutter-gardener": 4,
-      "lovebird": 4,
       "pangolin-roller": 4,
       "redwood-woodpecker": 2,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "weaver-bird": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map14-my-2026-10-30.json",
@@ -18934,7 +18979,8 @@
       "generated": "2026-10-30T11:11:21.242Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (lovebird x4); not re-searched"
     },
     {
      "id": "14-A-PRO-2",
@@ -19632,9 +19678,9 @@
       "border-collie": 3,
       "dust-hyena": 4,
       "grave-grin-hyena": 4,
-      "stable-colt": 4,
       "stoat-cutthroat": 3,
-      "talon-archer": 2
+      "talon-archer": 2,
+      "hedge-weasel": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map15-ml-2026-10-30.json",
@@ -19650,7 +19696,8 @@
       "generated": "2026-10-30T11:14:54.290Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (stable-colt x4); not re-searched"
     },
     {
      "id": "15-PRO-2",
@@ -19669,8 +19716,8 @@
       "hedge-weasel": 4,
       "raccoon-bandit": 3,
       "squires-mount": 3,
-      "stable-colt": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "bison-bulldozer": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map15-ml-2026-10-30.json",
@@ -19686,7 +19733,8 @@
       "generated": "2026-10-30T11:14:54.290Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (stable-colt x4); not re-searched"
     },
     {
      "id": "15-PRO-3",
@@ -19742,7 +19790,7 @@
       "eagle-owl-quartermaster": 3,
       "lodge-engineer": 2,
       "robin-redbreast": 3,
-      "stable-colt": 4
+      "hedge-weasel": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map15-ml-2026-10-30.json",
@@ -19758,7 +19806,8 @@
       "generated": "2026-10-30T11:14:54.290Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (stable-colt x4); not re-searched"
     }
    ],
    "bpro": [
@@ -19778,8 +19827,8 @@
       "raccoon-bandit": 3,
       "shepherds-bark": 4,
       "squires-mount": 3,
-      "stable-colt": 4,
-      "stoat-cutthroat": 3
+      "stoat-cutthroat": 3,
+      "hedge-weasel": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map15-ml-2026-10-31.json",
@@ -19795,7 +19844,8 @@
       "generated": "2026-10-31T03:08:56.020Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (stable-colt x4); not re-searched"
     },
     {
      "id": "15-BPRO-2",
@@ -19815,7 +19865,7 @@
       "hedgehog-herbalist": 3,
       "raccoon-bandit": 3,
       "squires-mount": 3,
-      "stable-colt": 4
+      "bison-bulldozer": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map15-ml-2026-10-31.json",
@@ -19831,7 +19881,8 @@
       "generated": "2026-10-31T03:08:56.020Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (stable-colt x4); not re-searched"
     },
     {
      "id": "15-BPRO-3",
@@ -19850,7 +19901,7 @@
       "carrion-crow": 4,
       "hedgehog-herbalist": 3,
       "raccoon-bandit": 2,
-      "stable-colt": 4
+      "hedge-weasel": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map15-ml-2026-10-31.json",
@@ -19866,7 +19917,8 @@
       "generated": "2026-10-31T03:08:56.020Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (stable-colt x4); not re-searched"
     }
    ],
    "replaced": [
@@ -21865,11 +21917,11 @@
      ],
      "deck": {
       "frost-hare-sprinter": 4,
-      "frostmoon-howler": 3,
       "ravenous-wolverine": 3,
       "snow-bunting-archer": 3,
       "snow-ermine": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "spitting-spider": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map17-mi-2026-10-30.json",
@@ -21885,7 +21937,8 @@
       "generated": "2026-10-30T11:50:28.204Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (frostmoon-howler x3); not re-searched"
     },
     {
      "id": "17-A-PRO-2",
@@ -21903,10 +21956,10 @@
      "deck": {
       "frost-hare-sprinter": 3,
       "mountain-hare": 3,
-      "musk-ox-calf": 4,
       "snow-bunting-archer": 3,
       "talus-pika": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "spitting-spider": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map17-mi-2026-10-30.json",
@@ -21922,7 +21975,8 @@
       "generated": "2026-10-30T11:50:28.204Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (musk-ox-calf x4); not re-searched"
     },
     {
      "id": "17-A-PRO-3",
@@ -21975,10 +22029,10 @@
      "deck": {
       "ashbone-ghoul": 4,
       "frost-hare-sprinter": 4,
-      "frostmoon-howler": 3,
       "snow-ermine": 4,
       "stoat-cutthroat": 3,
-      "walrus-icebreaker": 2
+      "walrus-icebreaker": 2,
+      "ravenous-wolverine": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map17-mi-2026-10-30.json",
@@ -21994,7 +22048,8 @@
       "generated": "2026-10-30T11:50:28.204Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (frostmoon-howler x3); not re-searched"
     }
    ],
    "bpro": [
@@ -23390,9 +23445,9 @@
       "antlion-pit": 4,
       "dune-packrat": 4,
       "dust-hyena": 4,
-      "glasswing-moth": 4,
       "ibex-rockcaller": 1,
-      "stoat-cutthroat": 3
+      "stoat-cutthroat": 3,
+      "roadrunner-courier": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map18-mpd-2026-10-30.json",
@@ -23408,7 +23463,8 @@
       "generated": "2026-10-30T11:29:40.051Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (glasswing-moth x4); not re-searched"
     }
    ],
    "bpro": [
@@ -24130,9 +24186,9 @@
       "eagle-owl-quartermaster": 3,
       "echidna-quillshot": 2,
       "fire-salamander": 4,
-      "guano-beetle": 4,
-      "porcupine-roller": 4,
-      "stag-beetle": 3
+      "cinder-stoker": 4,
+      "pit-glutton": 3,
+      "talus-pika": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map19-m3-2026-10-30.json",
@@ -24148,7 +24204,8 @@
       "generated": "2026-10-30T11:33:05.427Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (porcupine-roller x4); not re-searched"
     },
     {
      "id": "19-PRO-2",
@@ -24202,8 +24259,8 @@
       "cinder-stoker": 4,
       "fire-salamander": 2,
       "grave-grin-hyena": 4,
-      "porcupine-roller": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "talus-pika": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map19-m3-2026-10-30.json",
@@ -24219,7 +24276,8 @@
       "generated": "2026-10-30T11:33:05.427Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (porcupine-roller x4); not re-searched"
     }
    ],
    "bpro": [
@@ -24235,12 +24293,12 @@
       "hercules-beetle"
      ],
      "deck": {
-      "cinder-stoker": 4,
+      "cinder-stoker": 5,
       "hercules-beetle": 3,
       "obsidian-scorpion": 2,
-      "porcupine-roller": 4,
       "pumice-beetle": 4,
-      "talus-pika": 3
+      "talus-pika": 5,
+      "sulfur-cinder-moth": 1
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map19-m3-2026-10-31.json",
@@ -24256,7 +24314,8 @@
       "generated": "2026-10-31T03:18:16.612Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (porcupine-roller x4); not re-searched"
     },
     {
      "id": "19-BPRO-2",
@@ -24274,8 +24333,8 @@
       "fire-salamander": 4,
       "glacier-wolf-pack": 2,
       "obsidian-scorpion": 3,
-      "porcupine-roller": 3,
-      "pumice-beetle": 4
+      "pumice-beetle": 4,
+      "talus-pika": 3
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map19-m3-2026-10-31.json",
@@ -24291,7 +24350,8 @@
       "generated": "2026-10-31T03:18:16.612Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (porcupine-roller x3); not re-searched"
     }
    ],
    "replaced": [
@@ -24795,9 +24855,9 @@
       "anvilwhisker-otter": 1,
       "cinder-gecko": 4,
       "fire-salamander": 4,
-      "firefly-swarm": 4,
       "grave-grin-hyena": 4,
-      "magma-salamander": 3
+      "magma-salamander": 3,
+      "ore-smelter-mole": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map19-m9-2026-10-30.json",
@@ -24813,7 +24873,8 @@
       "generated": "2026-10-30T11:36:41.475Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (firefly-swarm x4); not re-searched"
     },
     {
      "id": "19-A-PRO-4",
@@ -25382,7 +25443,8 @@
       "pack-mule": 4,
       "pumice-beetle": 4,
       "squires-mount": 3,
-      "stonedrop-vulture": 4
+      "magma-salamander": 3,
+      "pit-glutton": 1
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map20-m11-2026-10-30.json",
@@ -25398,7 +25460,8 @@
       "generated": "2026-10-30T11:41:08.173Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (stonedrop-vulture x4); not re-searched"
     }
    ],
    "bpro": [
@@ -25975,11 +26038,11 @@
      ],
      "deck": {
       "ancient-sloth-titan": 3,
-      "ashbone-ghoul": 4,
-      "baby-bat": 3,
-      "cinder-stoker": 4,
+      "ashbone-ghoul": 5,
+      "cinder-stoker": 5,
       "grave-grin-hyena": 4,
-      "ibex-rockcaller": 2
+      "ibex-rockcaller": 2,
+      "ash-moth": 1
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map20-me-2026-10-30.json",
@@ -25995,7 +26058,8 @@
       "generated": "2026-10-30T11:45:32.901Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (baby-bat x3); not re-searched"
     },
     {
      "id": "20-A-PRO-3",
@@ -26011,11 +26075,11 @@
      ],
      "deck": {
       "ash-cloud-condor": 3,
-      "ashbone-ghoul": 4,
-      "baby-bat": 3,
+      "ashbone-ghoul": 5,
       "obsidian-scorpion": 3,
       "squires-mount": 3,
-      "vampire-bat": 4
+      "vampire-bat": 4,
+      "cinder-stoker": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map20-me-2026-10-30.json",
@@ -26031,7 +26095,8 @@
       "generated": "2026-10-30T11:45:32.901Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (baby-bat x3); not re-searched"
     }
    ],
    "bpro": [
