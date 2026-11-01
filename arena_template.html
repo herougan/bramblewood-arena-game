@@ -14321,6 +14321,100 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 @keyframes ui13TorchGlow{0%,100%{filter:drop-shadow(0 0 3px rgba(255,180,70,.7));} 50%{filter:drop-shadow(0 0 9px rgba(255,150,40,1));}}
 @media (prefers-reduced-motion: reduce){ .ui13-torch.is-lit .ut-stick{animation:none;} }
 /* UI13:END */
+/* UI14 (2026-11-02): the owner's 11-02 00:17 notes (JJ1-JJ26, UI part). */
+/* JJ8 + JJ1: the versus opener's two sides are one designed card each: the fight's battlefield art behind a dark wash, a round portrait, a kicker,
+   the title, the map's name, the BR box, a quiet facts line (text, not pills), the quote, and a bar along the foot for how long it stays up. */
+.vs-opener .vs-side.ui14-vs-card{position:relative; box-sizing:border-box; width:min(360px, 100%); justify-self:center; align-self:center; margin-top:0; gap:8px; padding:18px 20px 24px; border-radius:22px; overflow:hidden; isolation:isolate;
+  background:linear-gradient(180deg, rgba(8,12,8,.30) 0%, rgba(8,10,8,.72) 46%, rgba(6,8,6,.92) 100%), var(--ui14-vs-art, none) center/cover no-repeat, linear-gradient(160deg, #31462c, #182315);
+  border:2px solid rgba(255,220,150,.55); box-shadow:0 18px 44px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08);}
+.vs-opener .vs-them.ui14-vs-card{background:linear-gradient(180deg, rgba(14,6,4,.28) 0%, rgba(16,8,6,.74) 46%, rgba(12,5,4,.93) 100%), var(--ui14-vs-art, none) center/cover no-repeat, linear-gradient(160deg, #5a2a20, #241009);}
+.vs-opener .vs-me.ui14-vs-card{border-color:rgba(170,230,150,.55);}
+.vs-opener.is-boss .vs-them.ui14-vs-card{border-color:#ff7a5a; box-shadow:0 18px 44px rgba(0,0,0,.6), 0 0 34px rgba(255,80,50,.35);}
+.vs-opener.is-elite .vs-them.ui14-vs-card{border-color:#c2a0f0;}
+.vs-opener.is-lair .vs-them.ui14-vs-card{border-color:#ffd76a; box-shadow:0 18px 44px rgba(0,0,0,.6), 0 0 40px rgba(255,150,40,.4);}
+.ui14-vs-kicker{font:800 11px/1.2 system-ui, sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#ffe1a0; opacity:1; padding:3px 12px; border-radius:999px; background:rgba(0,0,0,.42); border:1px solid rgba(255,220,150,.35);}
+.vs-opener .vs-portrait.ui14-vs-round{min-height:0; margin:6px 0 2px;}
+.vs-opener .vs-rival-ico.ui14-vs-round, .vs-opener.is-boss .vs-rival-ico.ui14-vs-round{width:clamp(96px, 9vw, 124px); height:clamp(96px, 9vw, 124px); font-size:clamp(56px, 5.6vw, 76px); border-radius:50%; flex:0 0 auto; box-sizing:border-box;}
+.vs-opener .vs-me .ui14-vs-round .bw-avatar{border-radius:50%;}
+.ui14-vs-card .vs-name{font-size:clamp(22px, 2.4vw, 30px); white-space:normal; overflow-wrap:anywhere;}
+.ui14-vs-map{font:700 clamp(13px, 1.25vw, 15px)/1.25 system-ui, sans-serif; color:#f5e7c4; opacity:.92; margin-top:-4px;}
+.ui14-vs-card .vs-lvl{margin-top:4px;}
+.ui14-vs-facts{display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:3px 14px; max-width:100%; font:600 12px/1.35 system-ui, sans-serif; color:#eadcc0; opacity:.88;}
+.ui14-vs-facts .vs-fact{display:inline-flex; align-items:center; gap:4px; background:none !important; border:0 !important; padding:0 !important; border-radius:0; font:inherit; letter-spacing:0; text-transform:none; color:inherit; min-height:0; white-space:nowrap;}
+.ui14-vs-facts .vs-leader-face{width:18px; height:18px; font-size:12px;}
+.ui14-vs-card .vs-taunt{font-size:clamp(13px, 1.3vw, 15px); margin-top:2px;}
+.ui14-vs-timer{position:absolute; left:0; right:0; bottom:0; height:4px; background:rgba(255,255,255,.12);}
+.ui14-vs-timer > i{position:absolute; inset:0; transform-origin:left center; background:linear-gradient(90deg, #ffd27a, #ff9a52); animation:ui14VsTimer linear forwards;}
+@keyframes ui14VsTimer{from{transform:scaleX(1);} to{transform:scaleX(0);}}
+.vs-opener .vs-mid .vs-mark{margin:0;}
+@media (max-width:560px){
+  .vs-opener:has(.ui14-vs-card){grid-template-rows:auto auto auto; align-content:center; padding:18px 16px; gap:8px;}
+  .vs-opener .vs-side.ui14-vs-card{width:100%; max-width:380px; gap:4px; padding:12px 14px 16px; border-radius:18px;}
+  .vs-opener .vs-me.ui14-vs-card{display:grid; grid-template-columns:auto 1fr auto; grid-template-areas:"pic kick br" "pic name br" "pic map br"; align-items:center; text-align:left; column-gap:12px; row-gap:2px;}
+  .vs-opener .vs-me.ui14-vs-card .ui14-vs-kicker{grid-area:kick; justify-self:start; padding:1px 8px; font-size:10px;}
+  .vs-opener .vs-me.ui14-vs-card .vs-portrait{grid-area:pic; margin:0;} .vs-opener .vs-me.ui14-vs-card .vs-portrait .bw-avatar{width:56px !important; height:56px !important; font-size:31px !important;}
+  .vs-opener .vs-me.ui14-vs-card .vs-name{grid-area:name; font-size:20px;} .vs-opener .vs-me.ui14-vs-card .ui14-vs-map{grid-area:map; margin:0; font-size:12px;}
+  .vs-opener .vs-me.ui14-vs-card .vs-lvl{grid-area:br; margin:0;}
+  .vs-opener .vs-rival-ico.ui14-vs-round, .vs-opener.is-boss .vs-rival-ico.ui14-vs-round{width:84px; height:84px; font-size:50px;}
+  .ui14-vs-card .vs-name{font-size:22px;} .ui14-vs-facts{font-size:11px;} .vs-opener .vs-mid .vs-mark{font-size:44px;}
+}
+@media (prefers-reduced-motion: reduce){ .ui14-vs-timer > i{animation:none;} }
+:where(html[data-fx="none"]) .ui14-vs-timer > i{animation:none;}
+/* JJ20: the Devilry box: a black-grey-black gradient, and its diagrams (Ritual's shape) centred on their own line */
+.mech-wrap.mech-devilry{background:linear-gradient(180deg, #0c0b0c 0%, #3b3a3c 50%, #0c0b0c 100%); border-color:var(--devilry-border); color:#ece6e6;}
+.mech-wrap.mech-devilry li{background:rgba(255,255,255,.07) !important; color:#ece6e6 !important; border-color:rgba(255,255,255,.12) !important;}
+.mech-wrap.mech-devilry li .kw-term, .mech-wrap.mech-devilry li b{color:#f6eeee;}
+.mech-wrap.mech-devilry li .ritual-shape .rs-pt, .mech-wrap.mech-devilry li .ritual-shape .rs-pt b{color:#2b1a1f;}
+.mech-wrap.mech-devilry .ritual-shape svg polygon{fill:rgba(220,60,90,.18); stroke:#e05a74;}
+.mech-wrap .ritual-line{display:block;}
+.mech-wrap .ritual-line .ritual-shape{display:block; margin:6px auto 2px !important;}
+/* JJ16: the top-right nav (🏠 🗺️ 🗝️ ⚙️ energy, account, feedback): one height (32px, 28px on a phone), round icon buttons, and one gap between all of them */
+.topbar{column-gap:10px;}
+.topbar > .home-nav-btn.ne-home-icon{width:32px; height:32px; padding:0 !important; border-radius:50%; justify-content:center; gap:0; box-sizing:border-box; margin:0;}
+.topbar > .home-nav-btn.ne-home-icon .tab-emoji{font-size:16px; line-height:1;}
+.topbar > .dungeon-key-btn{height:32px; padding:0 10px !important; border-radius:999px; box-sizing:border-box; margin:0;}
+.topbar .settings-wrap{display:flex; align-items:center; margin:0;}
+.topbar .settings-btn{width:32px !important; height:32px !important;}
+.topbar .energy-pill, .topbar .account-chip{height:32px; box-sizing:border-box; margin:0;}
+.topbar .feedback-btn{width:32px; height:32px; margin:0;}
+@media (max-width:640px){
+  .topbar{column-gap:6px;}
+  .topbar > .home-nav-btn.ne-home-icon, .topbar .settings-btn, .topbar .feedback-btn{width:28px !important; height:28px !important;}
+  .topbar > .home-nav-btn.ne-home-icon .tab-emoji{font-size:14px;}
+  .topbar > .dungeon-key-btn, .topbar .energy-pill, .topbar .account-chip{height:28px;}
+}
+/* JJ15: the status chips are centred on the card's top edge (centred in the room left of the Wait clock when there is one); Poison shows its stack from 2 */
+.board-card .card-tile .badges-bottom.status-chips{left:50% !important; transform:translate(-50%, -50%) !important; justify-content:center;}
+.board-card .card-tile:has(.waitbadge) .badges-bottom.status-chips{left:calc((100% - max(16px, 22cqw) - 4px) / 2) !important;}
+.board-card .card-tile .status-chips > .abadge.poison.has-n{width:auto; padding:0 calc(var(--sc-h) * .2) !important;}
+/* JJ14: your turn's glow on the battlefield frame (full width, your row down), not on the camera-moved row */
+.ui14-turn-glow{position:absolute; left:0; right:0; bottom:0; pointer-events:none; border-radius:0 0 inherit inherit; background:linear-gradient(to top, rgba(255,215,122,.42), rgba(255,215,122,.14) 55%, rgba(255,215,122,0)); opacity:0; animation:ui14TurnGlow 1.8s ease-out forwards;}
+@keyframes ui14TurnGlow{0%{opacity:0;} 25%{opacity:1;} 100%{opacity:0;}}
+/* JJ26: the sight eyes (shut eye, eye badge) fade out after they first show; the standing darkness and Blind marks are 10% */
+.board-card.ui14-eye-out > .fxb-shut, .board-card.ui14-eye-out > .fxb-eyebadge{opacity:0 !important; transition:opacity .8s ease;}
+.board-card.ui14-eye-gone > .fxb-shut, .board-card.ui14-eye-gone > .fxb-eyebadge{opacity:0 !important; transition:none;}
+.board-card > .fxb-shade{opacity:.14 !important;} /* its own alpha is .72 at the centre: about 10% */
+.board-card.fxb-cantsee.fxb-look-A .card-tile .ico, .board-card.fxb-cantsee.fxb-why-sun.fxb-look-A .card-tile .ico{filter:brightness(.9) !important;}
+.board-card.is-blind .card-tile{filter:brightness(.9);}
+/* JJ23: Sulphur Fumes: pale green gas on the field, in for your turn, out for the fight */
+.ui14-fumes{position:absolute; inset:0; pointer-events:none; overflow:hidden; border-radius:inherit; opacity:0; transition:opacity 1.2s ease;}
+.ui14-fumes.is-in{opacity:1;} .ui14-fumes.no-tr{transition:none;}
+.ui14-fumes > i{position:absolute; width:70%; height:60%; border-radius:50%; background:radial-gradient(closest-side, rgba(170,220,110,.26), rgba(150,205,90,.12) 55%, rgba(140,200,80,0)); filter:blur(6px); animation:ui14Fume 14s ease-in-out infinite alternate;}
+.ui14-fumes > i:nth-child(1){left:-12%; top:30%;} .ui14-fumes > i:nth-child(2){left:30%; top:-8%; animation-duration:18s; animation-delay:-6s;} .ui14-fumes > i:nth-child(3){left:48%; top:42%; animation-duration:16s; animation-delay:-11s;}
+@keyframes ui14Fume{0%{transform:translate(0,0) scale(1);} 100%{transform:translate(8%,-6%) scale(1.12);}}
+@media (prefers-reduced-motion: reduce){ .ui14-fumes > i{animation:none;} }
+:where(html[data-fx="low"]) .ui14-fumes > i{animation:none;}
+/* JJ13: the 🐣 a Brood token hatches from */
+.ui14-brood-egg{font-size:30px; line-height:1; filter:drop-shadow(0 3px 2px rgba(0,0,0,.35));}
+/* JJ10: the boomerang that fells the bramble flies home in slow motion, glowing */
+.sfx-boomerang.ui14-boom-finale{font-size:40px; z-index:9995; filter:drop-shadow(0 0 10px rgba(255,214,110,.95)) drop-shadow(0 0 22px rgba(255,170,60,.6)) drop-shadow(0 3px 2px rgba(0,0,0,.35));}
+/* JJ4: an admin's ✏️ on each board card in the post-battle view */
+.board-card > .ui14-edit{position:absolute; top:-8px; right:-8px; z-index:30; width:28px; height:28px; padding:0; border-radius:50%; border:1px solid var(--surface-border, rgba(0,0,0,.2)); background:var(--surface-2, #fff); color:var(--ink, #222); font-size:13px; line-height:1; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.3);}
+.board-card > .ui14-edit:hover, .board-card > .ui14-edit:focus-visible{background:var(--surface-3, #eee);}
+/* JJ3: a bonus-damage skill's second hit: a smaller number and a quick ring on the card */
+.fx-float.ui14-bonus-num, .ui14-bonus-num{font-size:.82em; filter:drop-shadow(0 0 6px rgba(120,200,255,.75));}
+.board-card.ui14-bonus-flash .card-tile{animation:ui14BonusFlash .4s ease-out;}
+@keyframes ui14BonusFlash{0%{box-shadow:0 0 0 0 rgba(140,210,255,.95);} 60%{box-shadow:0 0 0 7px rgba(140,210,255,.25);} 100%{box-shadow:0 0 0 10px rgba(140,210,255,0);}}
 .rv1-act{min-height:30px; padding:4px 12px; font-size:12px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink);}
 .rv1-bar{gap:8px 14px; margin:6px 0 2px; align-items:flex-start;}
 .rv2-copy{position:relative; display:inline-block;}
@@ -14583,6 +14677,8 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
          anywhere else in the app. Hidden while already on Home (see switchTab()). -->
     <!-- 2026-10-24 (package NE, owner 17:34 #21: "Home is reduced to just an icon as well"): the 🏠 alone; its name stays in title / aria-label. -->
     <button class="home-nav-btn ne-home-icon" id="homeNavBtn" type="button" title="Home" aria-label="Home" hidden><span class="tab-emoji" aria-hidden="true">🏠</span></button>
+    <!-- 2026-11-02 (package UI14, owner JJ16: "feature pages (Codex etc.): a top-right nav button straight to the conquest map"): 🗺️ beside 🏠; ui14SyncMapNav() in arena_app.js. -->
+    <button class="home-nav-btn ne-home-icon ui14-map-nav" id="ui14MapNavBtn" type="button" title="Conquest map" aria-label="Conquest map" hidden><span class="tab-emoji" aria-hidden="true">🗺️</span></button>
     <!-- 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA ... (same throughout)"): the 🗝️ Dungeons key
          beside Home on every other screen; refreshTopbarDungeonKey() in arena_app.js shows it once a daily dungeon is open. -->
     <button class="home-nav-btn dungeon-key-btn" id="dungeonKeyBtnTop" type="button" title="Daily Dungeons" aria-label="Daily Dungeons" hidden><span class="tab-emoji">🗝️</span><span class="dk-n" aria-hidden="true">0</span></button>

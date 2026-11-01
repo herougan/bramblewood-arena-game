@@ -9698,6 +9698,40 @@ function noteSpawnOrigins(events){
     const o = spawnerOrigin(ev); if(o) fresh.forEach(u=> pendingEntranceOrigins.set(String(u), Object.assign({}, o, {rotate: Math.random()*16 - 8})));
   }); }catch(e){}
 }
+// 2026-11-02 (package UI14, owner JJ13: "Brood spawns look like two hatched eggs (🐣) landing on the nearby slots; other spawns come out of the
+// spawner"): the spawns that come with a card's arrival (its play: Brood, Twin, Sprout... spawnBeside, cause triggerSpawn with nearUid) are drawn in
+// the same render as their parent, which has no place on screen yet when the events are read. So the origin is lazy: it names the parent (lazyFrom)
+// and the entrance reads the parent's final slot when it draws (resolveLazyOrigin). A Brood token's origin is kind 'brood': a 🐣 hops from the
+// parent onto the token's slot, lands with a squash, and the token pops out of it (renderBoard's brood branch); any other gets the jump-arc out of
+// its parent as UI8's spawns do. Effects Low / reduced motion: the token just appears (renderBoard skips entrances then).
+function ui14NoteArrivalSpawns(events){
+  const per = {}; // the k-th Brood token of one parent: its egg hops a beat later
+  (events || []).forEach(ev=>{
+    if(!ev || ev.type !== 'spawn' || ev.cause !== 'triggerSpawn' || ev.nearUid == null) return;
+    (ev.uids || []).forEach(u=>{ if(u == null) return; const key = String(u), cur = pendingEntranceOrigins.get(key);
+      if(ev.kind === 'brood'){ const k = per[ev.nearUid] = (per[ev.nearUid] == null ? 0 : per[ev.nearUid] + 1); pendingEntranceOrigins.set(key, {kind: 'brood', lazyFrom: ev.nearUid, rotate: 0, n: k}); }
+      else if(!cur) pendingEntranceOrigins.set(key, {kind: 'spawn', lazyFrom: ev.nearUid, rotate: Math.random()*16 - 8}); });
+  });
+}
+function resolveLazyOrigin(o){
+  if(!o || o.lazyFrom == null || o.x != null) return o;
+  const el = boardCardEl(o.lazyFrom), r = el && el.getBoundingClientRect(); if(!r || !r.width) return null;
+  return Object.assign({}, o, {x: r.left + r.width/2, y: r.top + r.height/2});
+}
+// the 🐣 that carries a Brood token: from the parent's slot (a, screen px) in a hop to the token's slot (b), a squash as it lands; resolves when it lands
+function ui14BroodEggHop(a, b, delayMs){
+  const egg = document.createElement('div'); egg.className = 'sfx ui14-brood-egg'; egg.setAttribute('aria-hidden', 'true'); egg.textContent = '🐣'; document.body.appendChild(egg);
+  const s = {t: 0}, peak = Math.min(a.y, b.y) - 60, dur = .42;
+  gsap.set(egg, {x: a.x, y: a.y, xPercent: -50, yPercent: -50, scale: .5, opacity: 0});
+  const tl = gsap.timeline({delay: (delayMs || 0) / 1000, onComplete: ()=> egg.remove()});
+  tl.to(egg, {opacity: 1, scale: 1, duration: .08})
+    .to(s, {t: 1, duration: dur, ease: 'none', onUpdate: ()=>{ const q = s.t, x = a.x + (b.x - a.x) * q, y = (1-q)*(1-q)*a.y + 2*(1-q)*q*peak + q*q*b.y; gsap.set(egg, {x, y, rotation: (b.x >= a.x ? 1 : -1) * 220 * q}); }}, 0)
+    .to(egg, {scaleX: 1.35, scaleY: .7, duration: .07, ease: 'power2.out'}, dur)
+    .to(egg, {scaleX: 1, scaleY: 1.1, opacity: 0, duration: .22, ease: 'power1.in'}, dur + .07);
+  egg.dataset.landMs = String(Math.round((dur + (delayMs || 0) / 1000) * 1000));
+  setTimeout(()=> egg.remove(), 1600 + (delayMs || 0)); // never left behind (a slow frame, a paused timeline)
+  return Math.round(dur * 1000) + (delayMs || 0);
+}
 // Task list item 2 (2026-09-18) — the death-spawn counterpart to the onAttackedSpawn origin
 // above. onDeathSpawn's own 'spawn' event carries no uid for the card that just died (the
 // engine's event shape never needed one before), so rather than a riskier engine change to add
@@ -24966,15 +25000,15 @@ function xrefPanelHTML(map, node){
   return `<div class="pref-xref skirm-you ui12-skirm" style="margin:6px 0;">
     <p class="panel-sub skirm-enemy ui12-skirm-row" data-skirm-side="enemy">${escapeHtml(TX('ui.pref-xref-vs'))} ${en ? `<b class="ui12-skirm-id">${escapeHtml(en.id)}</b> ${skirmRankHTML(en.rank, en.of)}` : ''} <span>${escapeHtml(TX('ui.ui10-skirm-enemy'))}</span>${sp}</p>
     <p class="panel-sub ui12-skirm-row" data-skirm-side="you"><label>${escapeHtml(TX('ui.pref-xref-you'))}${pickHTML}</label> ${yo ? `<b class="ui12-skirm-id">${escapeHtml(yo.label)}</b> ${skirmRankHTML(yo.rank, yo.of)}` : ''}</p>
-    <button type="button" class="btn small ghost ui12-skirm-reroll" data-skirm-reroll>🎲 ${escapeHtml(TX('ui.ui12-skirm-reroll'))}</button></div>`;
+  </div>`; // 2026-11-02 (package UI14, owner JJ11: "N-SK: no 'New draw' button; every fight draws both decks at random"): the 🎲 New draw button is gone; the
+  // draw shown is the one the Fight button plays, and every fight (Fight, Play again) starts from a fresh draw of both decks (startProFight clears skirmDraw)
 }
 try{ if(typeof document !== 'undefined'){
   document.addEventListener('change', ev=>{ const t = ev.target; if(!t || !t.matches) return;
     if(t.matches('[data-pref-on]')){ const p = refPlayPrefs(); p.on = !!t.checked; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-on]').forEach(x=>{ x.checked = p.on; }); return; }
     if(t.matches('[data-skirm-you]')){ setSkirmYou(t.value); try{ if(currentTab === 'play' && !matchState) renderPlay(); }catch(e){} return; } // 2026-10-31 (UI10, EE2); UI12 (GG10): a new draw for the new choice
     if(t.matches('[data-pref-set]')){ const p = refPlayPrefs(); p.set = t.value; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-set]').forEach(x=>{ x.value = p.set; }); } });
-  // 2026-10-31 (package UI12, GG10): New draw
-  document.addEventListener('click', ev=>{ const b = ev.target && ev.target.closest && ev.target.closest('[data-skirm-reroll]'); if(!b) return; skirmDraw = null; try{ if(currentTab === 'play' && !matchState) renderPlay(); }catch(e){} });
+  // (2026-10-31, UI12, GG10: the New draw button's listener; removed 2026-11-02, UI14, JJ11)
 } }catch(e){}
 // 2026-10-25 (package PL2, PRO-UI, PRO2's notes: "clicking a PRO/BPRO fight opens a skirmish preview"): a PRO or BPRO fight (Admin's list, the
 // trophy nodes on an admin's map, the skirmish editor's row, a #pro= link) opens the map's normal fight panel with that fight picked: its deck
@@ -25057,9 +25091,29 @@ function proMapNodesHTML(map, positions){
   // 2026-10-25 (package FIX3, found by e2e/rw6 at 390): with the BPRO and X-REF nodes a map has up to 9 of them; in one line they ran past the
   // map's edge and piled up on the clamp. They wrap onto a second line (and a third) when the first is full, inside 8-92% of the map.
   const room = dir > 0 ? 92 - (base.x + 9) : (base.x - 9) - 8, perRow = Math.max(3, Math.floor(Math.max(0, room) / 8) + 1), up = base.y > 70 ? -1 : 1;
+  const free = ui14ProSpots(map, positions, base, all.length); // UI14 (JJ6): off every road, so no skirmish node looks linked
   return all.map((e, i)=>{ const col = i % perRow, row = Math.floor(i / perRow);
-    const x = Math.max(8, Math.min(92, base.x + dir * (9 + col * 8))), y = Math.max(8, Math.min(90, base.y + up * (11 + row * 10)));
+    const x = free[i] ? free[i].x : Math.max(8, Math.min(92, base.x + dir * (9 + col * 8))), y = free[i] ? free[i].y : Math.max(8, Math.min(90, base.y + up * (11 + row * 10)));
     return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(e.tip)}" aria-label="${escapeAttr(e.tip)}"><span class="mpr-ico" aria-hidden="true">${e.ico}</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span></button>`; }).join('');
+}
+// 2026-11-02 (package UI14, owner JJ6: "no path links to ambush nodes (4-SK drawn linked between 4-H and 4-5)"; skirmish and ambush nodes get no
+// path links): the map's skirmish node (N-SK, and the X-REF one) sat a fixed step from the reward node, which on some layouts is right on the road
+// between two fights, so it read as a stop on that road. Its spot is now the nearest one around the reward node that keeps clear of every road
+// (as drawn: requires links, no Ambush) and of every fight. Map %, the same units as positions; null where no clear spot is found (old step).
+function ui14ProSpots(map, positions, base, n){
+  const out = []; if(!map || !positions || !n) return out;
+  const idx = {}; map.nodes.forEach((nd, i)=> idx[nd.key] = i);
+  const segs = [], pts = [];
+  map.nodes.forEach((nd, i)=>{ const P = positions[i]; if(!P) return; pts.push(P); if(nd.ambush) return;
+    const reqs = Array.isArray(nd.requires) ? nd.requires : (i > 0 ? [map.nodes[i-1].key] : []);
+    reqs.forEach(k=>{ const j = idx[k]; if(j === undefined || map.nodes[j].ambush || !positions[j]) return; segs.push([positions[j], P]); }); });
+  const segDist = (p, a, b)=>{ const dx = b.x - a.x, dy = b.y - a.y, L = dx*dx + dy*dy; let t = L ? ((p.x - a.x)*dx + (p.y - a.y)*dy) / L : 0; t = Math.max(0, Math.min(1, t)); return Math.hypot(p.x - (a.x + t*dx), p.y - (a.y + t*dy)); };
+  const cands = []; [11, 14, 18, 23, 29].forEach(r=>{ for(let k = 0; k < 16; k++){ const a = k * Math.PI / 8 + (r % 2 ? Math.PI / 16 : 0); cands.push({x: base.x + Math.cos(a) * r, y: base.y + Math.sin(a) * r * 1.1}); } });
+  for(let i = 0; i < n; i++){
+    const pick = cands.find(c=> c.x >= 8 && c.x <= 92 && c.y >= 8 && c.y <= 90 && segs.every(s=> segDist(c, s[0], s[1]) >= 6) && pts.every(p=> Math.hypot(c.x - p.x, c.y - p.y) >= 9) && out.every(o=> !o || Math.hypot(c.x - o.x, c.y - o.y) >= 8));
+    out.push(pick ? {x: +pick.x.toFixed(2), y: +pick.y.toFixed(2)} : null);
+  }
+  return out;
 }
 function proEditorRowHTML(mapId){
   const nodes = proFightsOf(mapId); if(!nodes.length) return '';
@@ -32013,6 +32067,13 @@ function vis3NodeFrameHTML(node){
   if(b === 'elite' && node.kind !== 'dungeon') return '<span class="vis3-elite-frame" aria-hidden="true"></span>';
   return '';
 }
+// 2026-11-02 (package UI14, owner JJ1: "the pills show for ~1 s, too short to read them all"): how long the opener stays up. Skirmish 1.7 s -> 3.4 s,
+// elite 3.8 s, boss 2.6 s -> 4.2 s, the Dragon Lair 4.3 s -> 5 s; a quick retry of the same rival (within 5 min) still gets a short 1.2 s beat. A tap skips.
+function ui14OpenerHold(map, node, isBoss, isElite, lair){
+  const key = (map ? map.id : '') + ':' + (node && node.key), now = Date.now(), last = showVersusOpener.last;
+  const repeat = !!(last && last.key === key && now - last.t < 5*60*1000); showVersusOpener.last = {key, t: now}; ui14OpenerHold.repeat = repeat;
+  return repeat ? 1200 : lair ? 5000 : isBoss ? 4200 : isElite ? 3800 : 3400;
+}
 function showVersusOpener(map, node, myChar, enemyChar){
   const host = document.getElementById('view-play'); if(!host || !node) return;
   host.querySelectorAll('.vs-opener').forEach(e=> e.remove());
@@ -32025,34 +32086,46 @@ function showVersusOpener(map, node, myChar, enemyChar){
   const el = document.createElement('div');
   el.className = 'vs-opener' + (isBoss ? ' is-boss' : isElite ? ' is-elite' : '') + (lair ? ' is-lair' : '');
   el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', `You versus ${node.name}`);
+  // 2026-11-02 (package UI14, owner JJ8 + JJ1: "one designed card with background and a circular portrait: BR, the skirmish title, the map name; not a
+  // set of pills. Long enough to read."): each side is one card. The rival's card has the fight's own battlefield art behind it, a round portrait
+  // (the old .vs-portrait min-height stretched it into an oval), the code and kind as a kicker, the fight's name as the title, the map's name, the
+  // BR box, then one quiet line of small facts (people, bramble, leaders, CPU: text, not pills) and the quote. A bar along the card's foot shows
+  // how long it stays up (ui14OpenerHold); a tap still skips.
+  const bgArt = (()=>{ try{ const bf = document.getElementById('battlefieldEl'); const u = bf && (/url\("?([^")]+)"?\)/.exec(getComputedStyle(bf).backgroundImage) || [])[1]; return u || ''; }catch(e){ return ''; } })();
+  const bgStyle = bgArt ? ` style="--ui14-vs-art:url('${escapeAttr(bgArt)}')"` : '';
+  const facts = (()=>{ const out = [];
+    try{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; out.push(`<span class="vs-fact vs-people">${pp.icon} ${escapeHtml(pp.name)}</span>`); }catch(e){}
+    try{ out.push(`<span class="vs-fact vs-castle">${castleLineText(node)}</span>`); }catch(e){}
+    try{ const L = leadersShownFor(node, map && map.id), defs = getCardDefs(); if(L.length){ // 2026-10-23 (package LEAD): an elite's or a boss's leader(s), by name and face
+      const face = id=> `<span class="vs-leader-face" aria-hidden="true">${escapeHtml(defs[id].icon || '👑')}</span>`;
+      const text = L.length > 1 ? TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}) : TX('ui.nv-vs-ally-leader', {name: defs[L[0]].name});
+      out.push(`<span class="vs-fact vs-leaders${L.length > 1 ? ' is-pair' : ''}">${L.slice(0, 2).map(face).join('')}<span>${escapeHtml(text)}</span></span>`); } }catch(e){}
+    try{ const lv = cpuAiLevelForNode(map && map.id, node); if(isBoss || isElite || lv > 0) out.push(cpuAiPillHTML(lv).replace('<div class="vs-ai-pill', '<span class="vs-fact vs-ai-pill').replace(/<\/div>$/, '</span>')); }catch(e){}
+    return out.join(''); })();
+  const hold = ui14OpenerHold(map, node, isBoss, isElite, lair);
   el.innerHTML = `
-    <div class="vs-side vs-me">
-      <div class="vs-portrait">${avatarHTML(loadAvatar(), 84)}</div>
+    <div class="vs-side vs-me ui14-vs-card"${bgStyle}>
+      <div class="ui14-vs-kicker">${escapeHtml(TX('ui.ui14-vs-you-kicker'))}</div>
+      <div class="vs-portrait ui14-vs-round">${avatarHTML(loadAvatar(), 84)}</div>
       <div class="vs-name">${escapeHtml(myProfile ? myProfile.name : 'You')}</div>
-      <div class="vs-facts"><div class="vs-facts-row"><span class="vs-pill vs-castle">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</span></div><div class="vs-facts-row"></div></div>
+      <div class="ui14-vs-map">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
       ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${mainDeckLevel(myDeckCounts, myLeaderId)}</b></div>`; }catch(e){ return ''; } })()}
     </div>
-    <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind${isBoss ? ' vis3-kind-boss' : isElite ? ' vis3-kind-elite' : ''}">${map ? escapeHtml(map.icon||'') + ' ' : ''}${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</span></div>
-    <div class="vs-side vs-them">
-      <div class="vs-portrait vs-rival-ico" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}${isBoss && !/raid|final|world|mega/.test(node.kind || '') ? '<span class="vis3-skull-frame"></span>' : isElite ? '<span class="vis3-elite-frame"></span>' : ''}</div>
+    <div class="vs-mid"><span class="vs-mark">VS</span></div>
+    <div class="vs-side vs-them ui14-vs-card"${bgStyle}>
+      <div class="ui14-vs-kicker vs-kind${isBoss ? ' vis3-kind-boss' : isElite ? ' vis3-kind-elite' : ''}">${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</div>
+      <div class="vs-portrait vs-rival-ico ui14-vs-round" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}${isBoss && !/raid|final|world|mega/.test(node.kind || '') ? '<span class="vis3-skull-frame"></span>' : isElite ? '<span class="vis3-elite-frame"></span>' : ''}</div>
       <div class="vs-name">${escapeHtml(node.name)}</div>
-      <div class="vs-facts">
-        <div class="vs-facts-row"><span class="vs-pill vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</span><span class="vs-pill vs-castle">${castleLineText(node)}</span></div>
-        <div class="vs-facts-row">${(()=>{ try{ const L = leadersShownFor(node, map && map.id), defs = getCardDefs(); if(!L.length) return ''; // 2026-10-23 (package LEAD): an elite's or a boss's leader(s), by name and face
-          const face = id=> `<span class="vs-leader-face" aria-hidden="true">${escapeHtml(defs[id].icon || '👑')}</span>`;
-          const text = L.length > 1 ? TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}) : TX('ui.nv-vs-ally-leader', {name: defs[L[0]].name});
-          return `<span class="vs-pill vs-leaders${L.length > 1 ? ' is-pair' : ''}">${L.slice(0, 2).map(face).join('')}<span>${escapeHtml(text)}</span></span>`; }catch(e){ return ''; } })()}${(()=>{ try{ const lv = cpuAiLevelForNode(map && map.id, node); return (isBoss || isElite || lv > 0) ? cpuAiPillHTML(lv).replace('class="vs-ai-pill', 'class="vs-pill vs-ai-pill') : ''; }catch(e){ return ''; } })()}</div>
-      </div>${'' /* 2026-10-31 (package UI8, owner AA2): the enemy's small facts (type, bramble Health / Armour, leader, CPU) are two even rows of one pill style under the name, the Their-BR box after them, the quote last; the CPU pill's difficulty is always shown for elite / boss fights, else only when it isn't Basic (2026-10-18) */}
+      ${map ? `<div class="ui14-vs-map">${escapeHtml(map.icon || '')} ${escapeHtml(map.name || '')}</div>` : ''}
       ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
+      ${facts ? `<div class="vs-facts ui14-vs-facts">${facts}</div>` : ''}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
+      <i class="ui14-vs-timer" aria-hidden="true"><i style="animation-duration:${hold}ms"></i></i>
     </div>
     ${lair ? flairLairBannerHTML() : ''}<div class="vs-skip">Tap to skip</div>`;
   host.appendChild(el);
   // a quick retry of the same rival gets a shorter beat
-  const key = (map ? map.id : '') + ':' + node.key, now = Date.now();
-  const repeat = showVersusOpener.last && showVersusOpener.last.key===key && now - showVersusOpener.last.t < 5*60*1000;
-  showVersusOpener.last = {key, t: now};
-  const hold = repeat ? 900 : lair ? 4300 : (isBoss ? 2600 : 1700); // FLAIR1: the lair's opener holds longer (a quick retry still gets the short beat); a tap skips it as ever
+  const repeat = ui14OpenerHold.repeat; // UI14: ui14OpenerHold (above) keeps the quick-retry memory and the hold
   let gone = false;
   const close = ()=>{ if(gone) return; gone = true; el.classList.add('is-leaving'); setTimeout(()=> el.remove(), 380); if(isBoss) setTimeout(()=> bossEntrance(node, lair), 360); };
   el.addEventListener('click', close);
@@ -36600,7 +36673,23 @@ function renderMatchUI(){
   try{ [['A', m.players[1]], ['B', m.players[2]]].forEach(([s, p])=>{ const t = hqTileEl(s); if(!t || !p || !p.hq) return;
     const hp = (m.resolving && m.displayHqHp && m.displayHqHp[s] != null) ? m.displayHqHp[s] : p.hq.hp; if(crackStage(hp, p.hq.maxHp) > 0) pfxCastleCracks(t, hp, p.hq.maxHp, false); }); }catch(e){}
   setTimeout(maybeShowCoachTip, 600); setTimeout(maybeShowCoachTip, 2200); setTimeout(maybeShowCoachTip, 4500); // an open tip stays put across re-renders (2026-10-05); the later tries catch anchors that weren't up yet (the versus opener)
+  try{ ui14PostBattleEditBtns(m); }catch(e){} // 2026-11-02 (package UI14, JJ4)
+  try{ ui14SyncFumes(m); }catch(e){} // 2026-11-02 (package UI14, JJ23): the fumes fade back in for your turn
 }
+// 2026-11-02 (package UI14, owner JJ4: "admin: edit cards from the post-battle analysis (open the card editor on a card there)"): once the results
+// are closed to look at the final board (👀), an admin gets a ✏️ on every card on the board, both sides, a token's too when it has a card of its
+// own. It opens the card editor UI13 gave the Map cards gallery (edOpenCardEditor); the board is drawn again from the saved card on close.
+function ui14PostBattleEditBtns(m){
+  if(!m || !m.over || !m.winModalDismissed || !adminModeEnabled) return;
+  const defs = getCardDefs();
+  document.querySelectorAll('#battlefieldEl .board-card[data-uid]').forEach(bc=>{
+    if(bc.querySelector(':scope > .ui14-edit')) return;
+    const c = currentCardByUid(Number(bc.getAttribute('data-uid'))), id = c && c.defId; if(!id || !defs[id]) return;
+    bc.insertAdjacentHTML('beforeend', `<button type="button" class="ui14-edit" data-ui14-edit="${escapeAttr(id)}" title="${escapeAttr(TX('ui.ed-edit-card-tip'))}" aria-label="${escapeAttr(TX('ui.ed-edit-card'))}">✏️</button>`);
+  });
+}
+try{ if(typeof document !== 'undefined') document.addEventListener('click', ev=>{ const b = ev.target && ev.target.closest && ev.target.closest('[data-ui14-edit]'); if(!b) return;
+  ev.preventDefault(); ev.stopPropagation(); edOpenCardEditor(b.dataset.ui14Edit, null, ()=>{ try{ if(matchState && matchState.over) renderMatchUI(); }catch(e){} }); }, true); }catch(e){}
 // 2026-09-17 follow-up ("when there's no cards to play, instead auto skip. w 0.5s break."):
 // "nothing to play" deliberately means no MEANINGFUL action is available at all, not just "no
 // affordable card" — discarding an unaffordable card for its pitch yield (Lumber by default,
@@ -38140,8 +38229,11 @@ function renderBoard(opts){
         let isHandPlay = false, handFlight = null; // handFlight: your own play flies in as a page-level copy (2026-10-17, see handFlightProxy)
         // Set below only for a genuine spawn-origin entrance (born from a spawner structure/
         // drone) — see the jump-arc timeline branch further down for what this drives.
-        let spawnPeakVars = null;
-        const origin = pendingEntranceOrigins.get(String(uid));
+        let spawnPeakVars = null, broodHop = null; // broodHop: UI14 (JJ13), a Brood token hatching from a 🐣
+        let origin = pendingEntranceOrigins.get(String(uid));
+        if(origin && origin.lazyFrom != null){ const o2 = resolveLazyOrigin(origin); if(!o2) pendingEntranceOrigins.delete(String(uid)); origin = o2; } // UI14 (JJ13): the parent's final slot
+        if(origin && origin.kind === 'brood'){ const fr = el.getBoundingClientRect(); broodHop = {a: {x: origin.x, y: origin.y}, b: {x: fr.left + fr.width/2, y: fr.top + fr.height/2}, n: origin.n || 0};
+          fromVars = {opacity:0, scale:.3, x:0, y:0, rotate:0}; pendingEntranceOrigins.delete(String(uid)); origin = null; }
         if(origin){
           const fr = el.getBoundingClientRect();
           // 2026-10-17 (user: "When playing a card, make it look like it came from my hand ... (When playing the 3rd card from the centre,
@@ -38237,6 +38329,14 @@ function renderBoard(opts){
           // Flip leaves alone) at its slot and takes over the moment the copy arrives, its face squashing into place (the leader
           // harder, a stomp). This timeline only holds the card's "entering" state for that long.
           entranceTl.set(el, {opacity:1, x:0, y:0, rotate:0, scale:1}, 0).to({}, {duration: handFlightSec(!!handFlight.leader) + .25});
+        } else if(broodHop){
+          // UI14 (JJ13): the 🐣 hops from the parent onto this slot (the second egg a beat later), and the token pops out of it as it lands
+          const calm = reducedMotion() || !fxAtLeast('low'); // reduced motion / Effects None: no hop, the token fades in where it lands
+          const landMs = calm ? 0 : ui14BroodEggHop(broodHop.a, broodHop.b, broodHop.n * 90);
+          entranceTl.set(el, calm ? {opacity:0, scale:1, x:0, y:0, rotate:0} : fromVars, 0)
+            .to(el, {opacity:1, scale:1.12, duration:.16, ease:'power2.out'}, landMs / 1000)
+            .to(el, {scale:1, duration:.22, ease:'back.out(3)'});
+          el.dataset.ui14Brood = '1'; // for the e2e check
         } else if(spawnPeakVars){
           // Jump-arc: launch (fast start, decelerating as it nears the peak — like leaving the
           // ground) then fall-and-land (accelerating back down — like gravity), instead of one
@@ -38326,6 +38426,7 @@ function renderBoard(opts){
   const hadNewEntrants = newBoardEls.length>0;
   fitBattlefieldZoom();
   try{ fxHook('boardRendered', matchState); }catch(e){} // FX batch B (2026-10-15): who can't see in the dark, the forecast pill
+  try{ ui14EyeFade(); setTimeout(ui14EyeFade, 120); setTimeout(ui14EyeFade, 900); }catch(e){} // 2026-11-02 (package UI14, JJ26): the sight eyes fade out
   try{ syncTideScene(matchState); }catch(e){} // the standing Tide: the wet look on new cards (2026-10-18)
   try{ syncUnitLightPools(); }catch(e){} // unit light in the dark (2026-10-15)
   // Bugfix (2026-09-17, root cause of the residual small stuck-transform matrices test_v24
@@ -39638,10 +39739,16 @@ function eng15CowerChip(e, on){
   const lit = on ? ' style="color:#2a7fc0;background:rgba(90,180,255,.28);border-radius:999px;box-shadow:0 0 0 1.5px rgba(108,200,255,.9),0 0 8px rgba(108,200,255,.6);padding:0 2px"' : '';
   return `<span class="ab-cower${on ? ' cower-live' : ''}" title="${escapeAttr(tip)}"${lit}>${iconHTML('cower', '🫣')}${on && n ? `<small class="cower-n">🛡${n}</small>` : ''}</span>`;
 }
-function ui7PoisonChip(c){ const t = escapeAttr(TX('ui.ui7-poison-tip', {n: c.poison})); return `<span class="abadge poison" title="${t}" aria-label="${t}">☠</span>`; }
+// 2026-11-02 (package UI14, owner JJ15: status pills "show the token count (no number when 1)"): Poison shows its stack again from 2 up (UI7 had the icon alone)
+function ui7PoisonChip(c){ const t = escapeAttr(TX('ui.ui7-poison-tip', {n: c.poison})), n = Math.round(c.poison) || 0; return `<span class="abadge poison${n > 1 ? ' has-n' : ''}" title="${t}" aria-label="${t}">☠${n > 1 ? n : ''}</span>`; }
 const STATUS_CHIP_SLOTS = [2, 3, 4];
+// 2026-11-02 (package UI14, owner JJ15: "status context pills sit in the card's centre and show the token count (no number when 1)"): one rule for every
+// status chip, here where both paths build the strip: a count of 1 is dropped (the icon alone says it), larger counts stay; a +N / -N (a bonus,
+// not a count) is left as it is. The strip itself is centred on the card's top edge (CSS, UI14 block).
+function ui14ChipCount(b){ return String(b).replace(/([^\d+\-−])1<\/span>$/, '$1</span>'); }
 function statusChipsHTML(badges){
   if(!badges || !badges.length) return '';
+  badges = badges.map(ui14ChipCount);
   const n = badges.length, over = STATUS_CHIP_SLOTS.filter(k=> n > k);
   const more = over.length ? `<span class="sc-more" aria-hidden="true" ${over.map(k=> `data-m${k}="+${n - k + 1}"`).join(' ')}></span>` : '';
   return `<div class="badges-bottom status-chips${over.map(k=> ' o' + k).join('')}">${badges.join('')}${more}</div>`;
@@ -40166,6 +40273,7 @@ function aiActNow(){
   // the top of their row, in the middle, so every enemy play flies in from there (not from wherever a default put it).
   try{ const re = document.getElementById('rowEnemy'); if(re){ const r = re.getBoundingClientRect();
     events.filter(ev=> ev.type==='play' && ev.side==='B' && ev.uid!=null).forEach(ev=> pendingEntranceOrigins.set(String(ev.uid), {x: r.left + r.width/2, y: Math.max(-60, r.top - 150), rotate: 0, kind:'hand', enemyHand:true})); } }catch(e){}
+  fightSafe(()=> ui14NoteArrivalSpawns(events), 'ui14NoteArrivalSpawns'); // 2026-11-02 (package UI14, JJ13)
   now.concat(later.filter(ev=> ARRIVAL_NOW.has(ev.type))).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'ai event ' + ev.type)); // 2026-10-16: never stops the turn
   m.aiArrivalEvents = deferred;
   fightSafe(()=> holdArrivalDead(m, prePos, deferred, events) /* 2026-10-29 (UI2, R3) */, 'holdArrivalDead');
@@ -40417,6 +40525,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   // origin capture.
   playEv = events.find(ev=>ev.type==='play');
   if(capturedHandOrigin && playEv) pendingEntranceOrigins.set(String(playEv.uid), capturedHandOrigin);
+  fightSafe(()=> ui14NoteArrivalSpawns(events), 'ui14NoteArrivalSpawns'); // 2026-11-02 (package UI14, JJ13): Brood eggs, and the other arrival spawns out of their card
   // 2026-10-15 (user: "Pounce doesnt have an animation i think. It should show this: After playing, the card just lands ON the enemy
   // it would hit, then it jumps back."): the pounce and its hit were replayed in the same tick as the play, before the card was on
   // the board, so there was nothing to leap and the number just appeared. Like the enemy's arrivals (aiActNow), they now wait until
@@ -42460,6 +42569,7 @@ async function resolveRoundCore(opts){
   if(m.forcedWinner == null && !retry) await waitForMatchFx(m);
   if(matchState !== m || m.over || m.resolving) return;
   m.resolving = true; document.documentElement.classList.add('bw-resolving'); syncFightTimeScale(m); updateControlsDisabled(); // m.speedMult is a persistent per-match setting -- not reset each round
+  fightSafe(()=> ui14SyncFumes(m), 'ui14SyncFumes'); // 2026-11-02 (package UI14, JJ23): the fumes fade out for the fight
   const events = [];
   // Progressive castle HP (2026-09-16): capture each HQ's HP BEFORE this round's combat is
   // resolved, so the bar can be stepped down hit-by-hit as each hitHQ event plays out below,
@@ -43312,10 +43422,57 @@ async function resolveRoundCore(opts){
   if(m._raidAlliesDue){ m._raidAlliesDue = false; if(m.raidFull && !m.over && matchState === m) try{ raidAlliesTurn(m, null); }catch(e){} } // 2026-10-19 (RV2)
   if(m._fieldChilled){ const ids = m._fieldChilled; m._fieldChilled = null; const wait = coldWaveVfx(m); setTimeout(()=> ids.forEach(icePulseVfx), 120 + wait); }
   // Your-turn lane glow (2026-10-03, effects experiment #5): a soft pulse along your row.
-  if(!m.over){ const row = document.getElementById('rowMine'); if(row){ row.classList.remove('turn-glow'); void row.offsetWidth; row.classList.add('turn-glow'); setTimeout(()=> row.classList.remove('turn-glow'), 1800); } }
+  if(!m.over) fightSafe(()=> ui14TurnGlow(), 'ui14TurnGlow'); // 2026-11-02 (package UI14, JJ14): was the #rowMine.turn-glow inset shadow
   if(!m.over && m.raidRoundCap) try{ u3TurnFlash(m); }catch(e){} // 2026-10-19 (package U3): the turn meter ticks as your turn starts
   if(!m.over && document.querySelector('.bounty-bubble')) bountyPeek(); // bounty bubbles show for 3s as your turn starts
   syncBountyHolding();
+}
+// 2026-11-02 (package UI14, owner JJ14: "the turn highlight (yellow glow on my side) is offset to the right of the battlefield"): the glow was an
+// inset shadow on #rowMine, which lives inside the camera (#battlefieldInner: zoomed on a wide board, leaned toward the action), so it sat wherever the
+// camera had left the row, often right of the field. It is now a layer on the battlefield frame itself: the frame's full width, from your row's top
+// to the frame's foot, fading in and out (opacity only; none at Effects None).
+// 2026-11-02 (package UI14, owner JJ26: "Blind-eye VFX: fade out after the match start / on-play; darkness and blind effects at 10% opacity"):
+// FX B's sight marks on a unit that can't see (the shut eye over the art and the small eye badge, bramblewood-fx-b.js markSight) stayed on for the
+// whole fight. Each unit's marks now show for UI14_EYE_MS after they first appear (the fight's start, the unit's play, or a new reason: night
+// falls, it goes Blind), then fade out (.ui14-eye-out); a redraw of the board does not bring them back (.ui14-eye-gone, no fade). Remembered per
+// unit and reason. The darkening that stays is 10% (CSS, UI14 block).
+const UI14_EYE_MS = 2400, ui14EyeSeen = new Map();
+function ui14EyeFade(){
+  const now = Date.now();
+  document.querySelectorAll('#battlefieldEl .board-card[data-uid]').forEach(bc=>{
+    if(!bc.querySelector(':scope > .fxb-shut, :scope > .fxb-eyebadge')){ bc.classList.remove('ui14-eye-out', 'ui14-eye-gone'); return; }
+    const key = bc.getAttribute('data-uid') + '|' + (bc.dataset.fxbSight || ''), t0 = ui14EyeSeen.get(key);
+    if(t0 == null){ ui14EyeSeen.set(key, now); if(ui14EyeSeen.size > 400) ui14EyeSeen.clear(); bc.classList.remove('ui14-eye-out', 'ui14-eye-gone');
+      setTimeout(()=>{ if(bc.isConnected && (bc.getAttribute('data-uid') + '|' + (bc.dataset.fxbSight || '')) === key) bc.classList.add('ui14-eye-out'); }, UI14_EYE_MS); }
+    else if(now - t0 >= UI14_EYE_MS && !bc.classList.contains('ui14-eye-out')) bc.classList.add('ui14-eye-gone');
+  });
+}
+// 2026-11-02 (package UI14, owner JJ23: "Sulfur fumes: light, transparent green gas fading in each turn and out during the fight"): a fight under
+// Sulphur Fumes (its rules, fightRules) gets a layer of pale green gas on the battlefield frame: it fades in as your turn opens and out while the
+// round is fought (m.resolving), every turn. Three soft clouds drift slowly; Effects Low keeps the gas still, reduced motion too (CSS); None: no layer.
+function ui14FumesOn(m){
+  if(!m || m.over) return false; if(m._ui14Fumes != null) return m._ui14Fumes;
+  let on = false; try{ const cn = m.conquestNode, f = cn && findConquestNode(cn.mapId, cn.nodeId); on = !!(f && f.node && fightRules(cn.mapId, f.node).sulphurFumes); }catch(e){}
+  m._ui14Fumes = on; return on;
+}
+function ui14SyncFumes(m){
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  let g = bf.querySelector(':scope > .ui14-fumes');
+  if(!m || !ui14FumesOn(m) || !fxAtLeast('low')){ if(g) g.remove(); return; }
+  if(!g){ g = document.createElement('div'); g.className = 'ui14-fumes'; g.setAttribute('aria-hidden', 'true'); g.innerHTML = '<i></i><i></i><i></i>'; bf.prepend(g);
+    if(m._ui14FumesIn && !m.resolving){ g.classList.add('no-tr', 'is-in'); requestAnimationFrame(()=> g.classList.remove('no-tr')); return; } } // a redraw within the turn: already in, no new fade
+  const want = !m.resolving;
+  if(want && !g.classList.contains('is-in')){ void g.offsetWidth; requestAnimationFrame(()=> g.classList.add('is-in')); }
+  else if(!want) g.classList.remove('is-in');
+  m._ui14FumesIn = want;
+}
+function ui14TurnGlow(){
+  const bf = document.getElementById('battlefieldEl'), row = document.getElementById('rowMine'); if(!bf || !row || !fxAtLeast('low')) return;
+  bf.querySelectorAll(':scope > .ui14-turn-glow').forEach(e=> e.remove());
+  const b = bf.getBoundingClientRect(), r = row.getBoundingClientRect(); if(!b.height) return;
+  const top = Math.max(0, Math.min(b.height * 0.75, r.top - b.top));
+  const g = document.createElement('div'); g.className = 'ui14-turn-glow'; g.setAttribute('aria-hidden', 'true'); g.style.top = Math.round(top) + 'px';
+  bf.prepend(g); setTimeout(()=> g.remove(), 1900); // first child: under the board's rows, over the field's art
 }
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 // Card drag trail (2026-10-06, effects "Coming next"): a faint sparkle trail follows a hand card
@@ -45152,7 +45309,10 @@ async function showEndSign(m){
   const mult = Math.min(2, m.speedMult || 1);
   // 2026-10-08 review: the board re-renders right after this sign, replacing the tossed cards, so let
   // the last winner land first (the toss is the payoff; it is not shortened by fast-forward).
-  await sleep(Math.max(Math.round((m.endReason === 'forfeit' ? 1600 : 1700)/mult), tossMs)); // 2026-10-10: a forfeit's sign holds 0.1 s less
+  // 2026-11-02 (package UI14, owner JJ2: "after game over, the '...' screen waits 0.3 s too long; cut it"): the end sign's hold is 0.3 s shorter
+  // (1.7 s -> 1.4 s, a forfeit 1.6 s -> 1.3 s), and so is the wait for the toss (the board is kept under the results since UI4, so the last
+  // winner still lands, under them).
+  await sleep(Math.max(Math.round((m.endReason === 'forfeit' ? 1300 : 1400)/mult), tossMs - 300)); // 2026-10-10: a forfeit's sign holds 0.1 s less
   el.classList.add('fight-sign-out');
   await sleep(220); el.remove();
 }
@@ -47981,6 +48141,39 @@ function flashDmg(uid, dmg, blocked, dmgType, crit, mods, attDefId){ // + attDef
   hitExplosionVfx(uid, dmgType, attDefId);
   try{ const c = currentCardByUid(uid), d = c && getCardDefs()[c.defId]; if(d && d.effects && d.effects.flying && !blocked){ featherBurst(el); SoundKit.featherFlutter(); } }catch(e){}
 }
+// 2026-11-02 (package UI14, owner JJ3: "Cull ('1 bonus water damage to Wet enemies') and similar bonus-damage skills show a second hit effect (a
+// separate number/flash) so the bonus is visible"): display only, the engine's damage is untouched. The engine adds Cull (hunter) and Executioner
+// to the hit before Armor (giHitBonus) and its event carries only the total, so the board works the bonus out again from the replay's snapshot of
+// the target as it was before this hit (rc: Health, Poison, Bleed, Exploit...) and the engine's own tests (hunterVsOf, sk3Weak, sk3ExecLow,
+// wetCountOf). The hit's number then shows the rest, and a moment later the bonus pops as a second, smaller number with its own flash: in water
+// for a Wet target (the skill says "bonus water damage"), else in the hit's own type. Split only when the hit got more through than the bonus.
+function ui14HitBonus(ev){
+  const m = matchState; if(!m || !ev || ev.source || ev.armorBlocked || ev.targetUid == null || !(ev.dmg > 0)) return null;
+  const e = (getCardDefs()[ev.attDefId] || {}).effects || {}; if(!e.hunter && !e.executioner) return null;
+  const rc = m.replayCards && m.replayCards[ev.targetUid]; if(!rc || !(rc.hp > 0)) return null;
+  const E = m.engine || {}, num = v=> v === true ? 1 : Math.max(0, Number(v) || 0);
+  let live = null; try{ [1, 2].forEach(pid=> ['left', 'center', 'right'].forEach(s=> (m.players[pid].row[s] || []).forEach(c=>{ if(c.uid === ev.targetUid) live = c; }))); }catch(e2){}
+  const t = Object.assign({}, live || {}, rc, {uid: ev.targetUid, defId: rc.defId || ev.targetDefId});
+  let n = 0, wet = false;
+  if(e.hunter){ const vs = E.hunterVsOf ? E.hunterVsOf(e) : 'weak';
+    const marked = vs === 'weak' ? !!(E.sk3Weak && E.sk3Weak(t)) : vs === 'bleed' ? t.bleed > 0 : vs === 'exposed' ? t.exposed > 0
+      : vs === 'wet' ? !!(E.wetCountOf && E.wetCountOf(live || t) > 0) : (t.poison > 0 || t.gpoison > 0);
+    if(marked){ n += num(e.hunter); wet = vs === 'wet'; } }
+  if(e.executioner && E.sk3ExecLow && E.sk3ExecLow(t)) n += num(e.executioner);
+  n = Math.round(n);
+  if(!(n > 0) || !(ev.dmg > n)) return null;
+  return {n, type: wet ? 'water' : ev.dmgType, kind: e.hunter ? 'hunter' : 'executioner'};
+}
+function ui14BonusHitVfx(uid, bon){
+  const wait = Math.round(240 / Math.min(2, (matchState && matchState.speedMult) || 1));
+  setTimeout(()=>{ const el = boardCardEl(uid); if(!el) return;
+    dnFloat(el, bon.n, {type: bon.type, fit: true, addCls: 'ui14-bonus-num', silent: true});
+    try{ SoundKit.at(el, ()=> SoundKit.hitAt(bon.n, false)); }catch(e){}
+    if(fxAtLeast('low') && !reducedMotion()){ el.classList.remove('ui14-bonus-flash'); void el.offsetWidth; el.classList.add('ui14-bonus-flash'); setTimeout(()=> el.classList.remove('ui14-bonus-flash'), 420);
+      try{ recoilEl(el, 0.5); }catch(e){} }
+    el.dataset.ui14Bonus = String(bon.n); // for the e2e check
+  }, wait);
+}
 // Keyword cues derived straight from the card's own definition — Quick/Stealth/Reload/
 // Shell/Rage don't need any new engine-side event flags at all, because whether they
 // apply is fully determined by which keyword the attacker/target card carries, which
@@ -50060,18 +50253,30 @@ function en2BoomCastleReturn(home, castle, unitEl, o){
   o = o || {}; if(!hasGsap() || reducedMotion() || !fxAtLeast('low') || !home){ o.onImpact && o.onImpact(); return; }
   const a = en2Ctr(home), b = en2Ctr(castle), key = o.key != null ? String(o.key) : null, th = key ? EN2_BOOM[key] : null;
   const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, ux = th ? th.ux : dx/L, uy = th ? th.uy : dy/L, D = Math.max(innerWidth, innerHeight) * 1.1;
-  const out = (o.flight || 520)/1000, v = L / out, inT = Math.min(.45, D / v), u = unitEl ? en2Ctr(unitEl) : null, toU = u ? Math.max(.12, Math.hypot(u.x - b.x, u.y - b.y) / v) : 0, homeT = out * 1.1;
-  const bm = en2Layer('🪃'); gsap.set(bm, {x:b.x + ux*D, y:b.y + uy*D, xPercent:-50, yPercent:-50});
+  // 2026-11-02 (package UI14, owner JJ10: "Otter Centurion's returning boomerang as the last hit: show the boomerang striking the bramble and flying
+  // back; slow motion on the return while the win animation plays"): o.finale (the return's blow fells the bramble) gives the strike a bigger ring
+  // and a short hit-stop, and the flight home plays in slow motion (3.4x as long, a glowing trail) over the castle's fall and the Victory sign.
+  const fin = !!o.finale;
+  const out = (o.flight || 520)/1000, v = L / out, inT = Math.min(.45, D / v), u = unitEl ? en2Ctr(unitEl) : null, toU = u ? Math.max(.12, Math.hypot(u.x - b.x, u.y - b.y) / v) : 0, homeT = out * 1.1 * (fin ? 3.4 : 1);
+  const bm = en2Layer('🪃', fin ? 'sfx-boomerang ui14-boom-finale' : null); gsap.set(bm, {x:b.x + ux*D, y:b.y + uy*D, xPercent:-50, yPercent:-50});
+  if(fin){ bm.dataset.ui14Finale = '1'; window.__ui14BoomFinale = {at: Date.now(), homeMs: Math.round(homeT * 1000)}; }
   if(key) EN2_BOOM_FLIGHTS[key] = Date.now() + Math.round((inT + toU + homeT + .5)*1000);
   const tl = gsap.timeline({onComplete:()=>{ bm.remove(); if(key){ delete EN2_BOOM_FLIGHTS[key]; delete EN2_BOOM[key]; } }});
   tl.to(bm, {x:b.x, y:b.y, duration:inT, ease:'none'})
-    .to(bm, {rotation:`+=${360*7}`, duration:inT + toU + homeT, ease:'none'}, 0)
-    .add(()=>{ en2Knock(castle, uy < 0 ? 90 : -90, .8); en2Ring(b.x, b.y, 60); o.onImpact && o.onImpact(); }, inT);
+    .to(bm, {rotation:`+=${360*(fin ? 12 : 7)}`, duration:inT + toU + homeT, ease:'none'}, 0)
+    .add(()=>{ en2Knock(castle, uy < 0 ? 90 : -90, fin ? 1.3 : .8); en2Ring(b.x, b.y, fin ? 120 : 60); if(fin){ try{ hitStop(110); }catch(e){} } o.onImpact && o.onImpact(); }, inT);
   let t0 = inT;
   if(u){ tl.to(bm, {x:u.x, y:u.y, duration:toU, ease:'none'}, t0).add(()=>{ en2Knock(unitEl, uy < 0 ? 90 : -90, .9); }, t0 + toU); t0 += toU; }
   const from = u || b, m1 = {x:(from.x + a.x)/2 + (a.y - from.y)*0.22, y:(from.y + a.y)/2 - (a.x - from.x)*0.22}, s = {t:0};
   tl.to(s, {t:1, duration:homeT, ease:'power1.out', onUpdate:()=>{ const q = s.t, x = (1-q)*(1-q)*from.x + 2*(1-q)*q*m1.x + q*q*a.x, y = (1-q)*(1-q)*from.y + 2*(1-q)*q*m1.y + q*q*a.y; gsap.set(bm, {x, y}); }}, t0)
     .add(()=>{ en2Ring(a.x, a.y, 54); en2Knock(home, 90, .45); }, t0 + homeT).to(bm, {scale:.55, opacity:0, duration:.16}, t0 + homeT);
+}
+// UI14 (JJ10): does this return's blow fell the bramble? The board's shown Health (displayHqHp, not yet lowered by this blow) minus the blow,
+// and the engine's own result (that bramble is down at the end of the round).
+function ui14BoomLethal(ev){
+  try{ const m = matchState; if(!m || !ev || !ev.boomerang) return false; const pid = ev.targetSide === 'A' ? 1 : 2, hq = m.players[pid] && m.players[pid].hq; if(!hq || hq.hp > 0) return false;
+    const shown = m.displayHqHp && m.displayHqHp[ev.targetSide] != null ? m.displayHqHp[ev.targetSide] : null;
+    return shown == null ? true : shown - (ev.dmg || 0) <= 0; }catch(e){ return false; }
 }
 // Owner 17:34 #2: with its thrower gone, the boomerang still comes home: one flight from past its far target, through it, to the unit now
 // in the thrower's slot (homeUid: hit, or caught by a Boomerang unit) or the side's own bramble. The far and home hits' own events only
@@ -50651,7 +50856,9 @@ function renderVfxForEvent(ev){
         if(typeof maybeSpeakHQ==='function') maybeSpeakHQ(ev.targetSide, 'castleOnHit');
       }
       else {
-        flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush, ev.mods, ev.attDefId); // + the mark (DN, 2026-10-22); + the attacker, a Fencer's 🤺 (GD2)
+        { const bon = ev.type === 'hit' ? fightSafe(()=> ui14HitBonus(ev), 'ui14HitBonus') : null; // UI14 (JJ3): Cull and the like show their bonus as a second hit
+          flashDmg(ev.targetUid, bon ? ev.dmg - bon.n : ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush, ev.mods, ev.attDefId); // + the mark (DN, 2026-10-22); + the attacker, a Fencer's 🤺 (GD2)
+          if(bon) ui14BonusHitVfx(ev.targetUid, bon); }
         armorBadgeGlow(targetEl, ev); // 2026-10-15
         // Mirror the engine's own per-hit mutations into the replay snapshot (items #8/#9):
         // subtract this hit's damage, then — same gate as the engine (defCard.hp>0) — if the
@@ -50737,7 +50944,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='hit' && !ev.source){ try{ const defs = getCardDefs(), ad = defs[ev.attDefId], td = defs[ev.targetDefId];
     if(ad && td && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t && !ev.viaCastle /* EN2: the castle return's flight (en2BoomCastleReturn) already passes through this unit */){ SoundKit.boomerangWhirr(); const key = String(ev.attUid); if((ev.boomerang && !ev.friendly) || (matchState && matchState.boomerangBack === key)){ if(matchState) matchState.boomerangBack = null; (SkillFX.boomerangReturn || SkillFX.boomerang)(a, t, {flight:420, key}); } else (SkillFX.boomerangThrow || SkillFX.boomerang)(a, t, {flight:420, key}); } } }catch(e){} } // key (2026-10-17): the return retraces this throw
   // A boomerang thrown at the castle bounces off it and flies out the top (2026-10-13).
-  if(ev.type==='hitHQ' && !ev.source){ try{ const ad = getCardDefs()[ev.attDefId]; if(ad && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerangCastle){ const a = boardCardEl(ev.attUid), c = hqTileEl(ev.targetSide || 'B'); if(a && c){ SoundKit.boomerangWhirr(); const key = String(ev.attUid); if(ev.boomerang || (matchState && matchState.boomerangBack === key)){ if(matchState) matchState.boomerangBack = null; en2BoomCastleReturn(a, c, ev.thenUid != null ? boardCardEl(ev.thenUid) : null, {flight:420, key}); } else en2BoomCastleThrow(a, c, {flight:420, key}); } /* EN2 (2026-10-23, owner 13:16 #9): it flies on past the bramble at the same speed, and comes back the same way: the bramble, then the unit in its lane, then home */ } }catch(e){} }
+  if(ev.type==='hitHQ' && !ev.source){ try{ const ad = getCardDefs()[ev.attDefId]; if(ad && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerangCastle){ const a = boardCardEl(ev.attUid), c = hqTileEl(ev.targetSide || 'B'); if(a && c){ SoundKit.boomerangWhirr(); const key = String(ev.attUid); if(ev.boomerang || (matchState && matchState.boomerangBack === key)){ if(matchState) matchState.boomerangBack = null; en2BoomCastleReturn(a, c, ev.thenUid != null ? boardCardEl(ev.thenUid) : null, {flight:420, key, finale: ui14BoomLethal(ev)}); /* UI14 (JJ10): the last hit's return in slow motion */ } else en2BoomCastleThrow(a, c, {flight:420, key}); } /* EN2 (2026-10-23, owner 13:16 #9): it flies on past the bramble at the same speed, and comes back the same way: the bramble, then the unit in its lane, then home */ } }catch(e){} }
   // Boomerang return (2026-10-12): the next hit from this unit is the boomerang flying home.
   // 2026-10-17 (user: "2 boomerangs come back by the way - this is wrong. Only 1 should come back."): the cause was two looks for one
   // return. This event also played FX.A.boomerangInbound (a boomerang swinging in from the edge of the field to hang by its thrower),
@@ -59580,6 +59787,7 @@ function switchTab(tab){
   const homeBtn = document.getElementById('homeNavBtn');
   if(homeBtn) homeBtn.hidden = (tab==='home');
   try{ refreshTopbarDungeonKey(tab); }catch(e){} // 2026-10-16 (user: "the daily dungeon key logo ... beside HOME ... (same throughout)")
+  try{ ui14SyncMapNav(tab); }catch(e){} // 2026-11-02 (package UI14, JJ16)
   // Item #275 (2026-09-20, "the header is unnecessary on the home page"... "Home button should
   // be renamed 'Back'... on the same line as the sub nav bar. Same for settings... the logo and
   // title name row can be left out of the header"): the Home page already has its own inline
@@ -59593,6 +59801,21 @@ function switchTab(tab){
   }
 }
 document.getElementById('homeNavBtn').addEventListener('click', ()=> switchTab('home'));
+// 2026-11-02 (package UI14, owner JJ16): the topbar's 🗺️ goes straight to the conquest map (the map you were on), from any feature page (Codex,
+// Deck, Forge, Profile...). Shown where 🏠 is, once the conquest map is open (Tutorial done); not on Home or Play, which have their own way there.
+function ui14SyncMapNav(tab){
+  const b = document.getElementById('ui14MapNavBtn'); if(!b) return;
+  let open = true; try{ open = !!loadTutorialDone(); }catch(e){}
+  const t = TX('ui.ui14-map-nav'); b.title = t; b.setAttribute('aria-label', t);
+  b.hidden = !open || tab === 'home' || tab === 'play';
+}
+function ui14GoToMap(){
+  if(typeof matchState !== 'undefined' && matchState && !matchState.over) return;
+  try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){}
+  playSubTab = 'conquest'; try{ playerStatsOpen = false; }catch(e){} try{ conquestWorldView = false; }catch(e){}
+  if(currentTab !== 'play') switchTab('play'); else renderPlay();
+}
+document.getElementById('ui14MapNavBtn').addEventListener('click', ui14GoToMap);
 // Energy HUD (2026-09-22): the topbar pill is always in the DOM (unlike per-tab currency rows),
 // so one ticking interval keeps its countdown live everywhere, not just on tabs that re-render.
 refreshEnergyHud();

@@ -4,6 +4,23 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 
 
+## 2026-11-02 Package UI14 (owner 11-02 00:17: JJ1 JJ2 JJ3 JJ4 JJ6 JJ8 JJ10 JJ11 JJ13 JJ14 JJ15 JJ16 JJ20 JJ23 JJ26; not yet released)
+- **JJ8 + JJ1 (versus opener):** each side is one card: the fight's battlefield art behind a dark wash, a round portrait (the old min-height stretched it into an oval), the code and kind as a kicker, the fight's name, the map's name, the BR box, one quiet facts line (people, bramble, leaders, CPU: text, not pills) and the quote, with a bar along the foot. It holds 3.4 s (elite 3.8, boss 4.2, Dragon Lair 5; a quick retry 1.2 s); a tap skips. Phone: your card is a compact row above VS.
+- **JJ2:** the Victory / Defeat sign holds 1.4 s (was 1.7 s; a forfeit 1.3 s), and the toss wait 0.3 s less.
+- **JJ3 (display only):** a hit from a Cull (hunter) or Executioner unit that got its bonus shows the rest as the hit's number and the bonus a moment later as a second, smaller number with a ring on the card (in water for a Wet target). Worked out on the board from the replay's snapshot and the engine's own tests (hunterVsOf, sk3Weak, sk3ExecLow, wetCountOf); the engine is untouched.
+- **JJ4 (admin):** in the post-battle view (results closed with 👀) every board card has a ✏️ that opens the card editor (UI13's edOpenCardEditor); the board redraws on close.
+- **JJ6:** the map's N-SK (and X-REF) node takes the nearest spot around the reward node that keeps clear of every road and fight (ui14ProSpots), so it never sits on a road and reads as linked (Map 4's 4-SK sat between 4-H and 4-5 on some layouts).
+- **JJ10:** a Boomerang return that fells the bramble strikes it with a bigger ring and a short hit-stop, then flies home in slow motion (3.4x, glowing) over the castle's fall and the Victory sign.
+- **JJ11:** N-SK's 🎲 New draw button is gone; the drawn decks are the ones the Fight button plays and every fight draws both decks afresh.
+- **JJ13:** a Brood token arrives from a 🐣 that hops from its parent onto its slot (the second a beat later); other arrival spawns (Twin, Sprout...) jump out of their parent's slot (lazy origins read when the board draws).
+- **JJ14:** your turn's glow is a layer on the battlefield frame (its full width, from your row down) instead of an inset shadow on the camera-moved row, which sat right of the field.
+- **JJ15:** status chips are centred on the card's top edge (left of the Wait clock when there is one); a count of 1 is not written, larger counts are, Poison included (from 2).
+- **JJ16:** the topbar on feature pages has a 🗺️ beside 🏠 that opens the conquest map; 🏠 🗺️ 🗝️ ⚙️, the energy pill, the account chip and feedback share one height (32px, 28px on a phone) and one gap.
+- **JJ20:** the Devilry box is a black-grey-black gradient, and Ritual's shape sits centred on its own line.
+- **JJ23:** a fight under Sulphur Fumes gets pale green gas on the field that fades in for your turn and out while the round is fought (still at Effects Low and under reduced motion; none at Effects None).
+- **JJ26:** FX B's sight marks (shut eye, eye badge) show for 2.4 s when they first appear (fight start, a play, a new reason) and fade out; a redraw does not bring them back. The standing darkness on the card and the Blind tile are 10%.
+- Tests: `tests/e2e/ui14_2026_11_02.py` (every item at 1366 and 390); ui12's GG10 check updated for JJ11. New text keys: `ui.ui14-vs-you-kicker`, `ui.ui14-map-nav` (English only).
+
 ## 2026-11-01 Release 11-01a (UI10, UI11, ENG15, UI12, THEME4, UI13; prepared, deploys on the owner's OK)
 - One release for the owner's 10-31 / 11-01 notes: Google's own sign-in button and the save guard (GG2), one skirmish per map with ranked decks, Shield chip and context pips, True Sight / Bloom / Cower N / Poison past Shield / Bola / Lasso / Anadromous, the tutorial tooltip and fixes, the owner's map lists (THEME4), Baby cards, Unlikely flags, editing from Map cards, the Torch. Tests: smoke (known d-2026-10-19 only), ui8-ui13 e2e all passing on the merged batch.
 ## 2026-11-01 Package UI13 (owner HH1, HH3, HH4, HH7; not yet released)

@@ -2935,6 +2935,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui13-kind-tip-baby": "Card group: Baby (an egg or a young animal)",
   "ui.ui13-kind-tip-faction": "Card group: Faction (a card of your side)",
   "ui.ui13-kind-edit-tip": "Base or Faction follows the card's faction; choose Baby for eggs and young animals.",
+  "ui.ui14-vs-you-kicker": "Your deck",
+  "ui.ui14-map-nav": "Conquest map",
   "map.ui13-torch-tip": "A torch in a bracket, lit by the fire pit. Take it",
   "map.ui13-torch-dark": "Something hangs on the wall, too dark to see",
   "map.ui13-torch-taken": "An empty torch bracket",
