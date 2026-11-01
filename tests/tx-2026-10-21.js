@@ -78,10 +78,13 @@ const fire = (e, P, c)=> e.debugFireTrigger(P, so, c.uid, 'onRoundStart', {}, []
   e.resolveCombat(P, so, {}, [], 1);
   ok(A.kinBonus === 2 && !B.kinBonus && M.kinBonus === 2, `3. Kinship Bird lifts the eagle and the Changeling, not the otter (${A.kinBonus}, ${B.kinBonus}, ${M.kinBonus})`); }
 // Swarm
-{ const {e, P} = mk(); const S = put(e, P, 1, 'tx-swarm'); put(e, P, 1, 'tx-eagle', 'right'); put(e, P, 1, 'tx-otter'); put(e, P, 1, 'tx-mimic', 'right');
-  ok(e.swarmBonusOf(P, S) === 2, `3. Swarm (shares a type): the eagle and the Changeling count, the otter not (${e.swarmBonusOf(P, S)})`); }
-{ const {e, P} = mk(); const S = put(e, P, 1, 'tx-swarmT'); put(e, P, 1, 'tx-eagle', 'right'); put(e, P, 1, 'tx-owl'); put(e, P, 1, 'tx-bird', 'right');
-  ok(e.swarmBonusOf(P, S) === 2, `3. Swarm Raptor: the eagle and the owl count (raptors by animal), the plain Bird not (${e.swarmBonusOf(P, S)})`); }
+// 2026-11-02 (BAL10): EN2 (2026-10-23, owner 17:34 #18 "The swarm doesnt look at phyla, only type") made Swarm compare Types only (the
+// archetypes and their ancestors, engine swarmTypeShares / swarmTypeIsAny), never species or animal: the eagle (Mountain-typed, species Bird)
+// and the owl no longer count for a Bird or Raptor swarm. These checks follow the engine.
+{ const {e, P} = mk(); const S = put(e, P, 1, 'tx-swarm'); put(e, P, 1, 'tx-bird', 'right'); put(e, P, 1, 'tx-eagle', 'right'); put(e, P, 1, 'tx-otter'); put(e, P, 1, 'tx-mimic', 'right');
+  ok(e.swarmBonusOf(P, S) === 2, `3. Swarm (shares a Type): the Bird-typed unit and the Changeling count; the eagle (species Bird, typed Mountain) and the otter not (${e.swarmBonusOf(P, S)})`); }
+{ const {e, P} = mk(); const S = put(e, P, 1, 'tx-swarmT'); put(e, P, 1, 'tx-eagle', 'right'); put(e, P, 1, 'tx-owl'); put(e, P, 1, 'tx-bird', 'right'); put(e, P, 1, 'tx-mimic', 'right');
+  ok(e.swarmBonusOf(P, S) === 1, `3. Swarm Raptor: picked Types only; raptors by animal (eagle, owl) and the plain Bird do not count, the Changeling does (${e.swarmBonusOf(P, S)})`); }
 // a trigger's type filter (On Ally Spawn, Bird only)
 { const {e, P} = mk(); const W = put(e, P, 1, 'tx-watch'); put(e, P, 1, 'tx-eagle', 'right'); const a1 = W.atk; put(e, P, 1, 'tx-otter'); const a2 = W.atk; put(e, P, 1, 'tx-mimic', 'right'); const a3 = W.atk;
   ok(a1 === 1 && a2 === 1 && a3 === 2, `3. a Bird type filter fires for the eagle and the Changeling, not the otter (${a1}, ${a2}, ${a3})`); }
@@ -101,7 +104,8 @@ ok(T.isA({archetypes:[], subtype:'changeling'}, 'Wolf'), '3. ...by its subtype t
   ok(!/subjArchetypes/.test(src) && /if\(!txIsA\(subjDef, t\.filterArchetype\)\) return;/.test(src), '3. the trigger type filter asks the taxonomy');
   ok(/function sharesType\(a, b\)\{[^\n]*return txShares\(da, db\); \}/.test(src), '3. Kin (sharesType) asks the taxonomy');
   ok(/if\(txIsA\(d, t\)\)\{ a \+= kin\[t\]\[0\]/.test(src), '3. Kinship asks the taxonomy');
-  ok(/picked \? txIsAny\(d, picked\) : txShares\(def, d\)/.test(src), '3. Swarm asks the taxonomy'); }
+  // 2026-11-02 (BAL10): since EN2 Swarm asks the taxonomy through swarmTypeIsAny / swarmTypeShares (Types and their ancestors only)
+  ok(/picked \? swarmTypeIsAny\(d, picked\) : swarmTypeShares\(def, d\)/.test(src) && /function swarmTypeKeys\(d\)\{[\s\S]{0,300}TAXONOMY\.ancestors\(t\)/.test(src), '3. Swarm asks the taxonomy (Types and their ancestors)'); }
 
 // ---- 5-7. the app side, on the real arena_app.js
 const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');

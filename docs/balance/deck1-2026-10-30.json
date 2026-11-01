@@ -202,140 +202,106 @@
    "side": "m1",
    "name": "The Old Bramble",
    "opens": 21,
-   "cap": "common",
-   "anchor": [],
-   "anchorMin": 0,
-   "anchorDropped": [
-    "ent: rare is over the map's rarity cap (common)",
-    "echidna-quillshot: veryrare is over the map's rarity cap (common)",
-    "dhole-matriarch: veryrare is over the map's rarity cap (common)",
-    "shimmerwing-stag: veryrare is over the map's rarity cap (common)",
-    "thorn-shrike: rare is over the map's rarity cap (common)",
-    "gatling-hog: rare is over the map's rarity cap (common)",
-    "quillguard: rare is over the map's rarity cap (common)",
-    "lucky-hopper: rare is over the map's rarity cap (common)",
-    "sergeant-bramblefox: rare is over the map's rarity cap (common)",
-    "bramblewood-lynx: rare is over the map's rarity cap (common)",
-    "wolf-spider-mother: rare is over the map's rarity cap (common)",
-    "taiga-lynx: rare is over the map's rarity cap (common)",
-    "hedgehog-herbalist: rare is over the map's rarity cap (common)"
+   "cap": "superrare",
+   "anchor": [
+    "bramblewood-lynx",
+    "dhole-matriarch",
+    "echidna-quillshot",
+    "ent",
+    "gatling-hog",
+    "hedgehog-herbalist",
+    "lucky-hopper",
+    "quillguard",
+    "sergeant-bramblefox",
+    "shimmerwing-stag",
+    "taiga-lynx",
+    "thorn-shrike",
+    "wolf-spider-mother"
    ],
+   "anchorMin": 10,
+   "anchorDropped": [],
    "heldTheme": [
     "dhole-runner",
     "swamp-rabbit",
+    "cunning-vixen",
     "fox-sharpshot",
-    "mountain-hare",
-    "fungus-gnat-cloud",
-    "woodcock-lookout",
-    "springtail-hopper",
-    "leopard-slug",
-    "red-backed-salamander",
-    "swift-fox",
-    "jay-pilferer",
-    "seed-cache-squirrel"
+    "lyrebird-mimic",
+    "mountain-hare"
    ],
    "heldStrong": [
+    "eagle-owl-quartermaster",
     "ashbone-ghoul",
-    "alpine-marmot",
-    "hoopoe-herald",
-    "talus-pika",
-    "mudpuppy",
-    "dung-beetle",
-    "bee-forager",
-    "porcupine-roller",
-    "hedgehog-scout",
-    "nutria-reedcutter",
-    "gannet-nestweaver",
-    "leafcutter-gardener"
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount",
+    "ibex-rockcaller"
    ],
    "pool": [
-    "alpine-marmot",
     "ashbone-ghoul",
-    "bee-forager",
+    "bramblewood-lynx",
+    "cunning-vixen",
+    "dhole-matriarch",
     "dhole-runner",
-    "dung-beetle",
+    "eagle-owl-quartermaster",
+    "echidna-quillshot",
+    "ent",
     "fox-sharpshot",
-    "fungus-gnat-cloud",
-    "gannet-nestweaver",
-    "hedgehog-scout",
-    "hoopoe-herald",
-    "jay-pilferer",
-    "leafcutter-gardener",
-    "leopard-slug",
+    "gatling-hog",
+    "grave-grin-hyena",
+    "hedgehog-herbalist",
+    "ibex-rockcaller",
+    "lucky-hopper",
+    "lyrebird-mimic",
     "mountain-hare",
-    "mudpuppy",
-    "nutria-reedcutter",
-    "porcupine-roller",
-    "red-backed-salamander",
-    "seed-cache-squirrel",
-    "springtail-hopper",
+    "quillguard",
+    "sergeant-bramblefox",
+    "shimmerwing-stag",
+    "squires-mount",
+    "stoat-cutthroat",
     "swamp-rabbit",
-    "swift-fox",
-    "talus-pika",
-    "woodcock-lookout"
+    "taiga-lynx",
+    "thorn-shrike",
+    "wolf-spider-mother"
    ],
    "fightOnly": [
-    "burrow-rabbit",
-    "duckling",
-    "elder-willow",
-    "ent",
-    "forager-ant",
-    "glacier-wolf-pack",
-    "meadow-rabbit",
-    "otter-kit",
-    "otter-paddler",
-    "pond-duck",
-    "silver-minnow",
-    "thornwood-palisade",
-    "trash-panda-trickster",
-    "tunnel-ant"
+    "trash-panda-trickster"
    ],
    "focuses": [
-    "economy",
     "big",
     "swarm",
+    "family:evasion",
     "open"
    ],
    "focusesAvailable": [
     "open",
     "big",
-    "economy",
     "swarm",
     "family:evasion",
-    "family:flying"
+    "family:ranged"
    ],
    "facts": {
     "listSize": 13,
-    "anchor": 0,
+    "anchor": 13,
     "cost": {
      "min": 0,
-     "max": 1,
-     "avg": 0.21,
+     "max": 2,
+     "avg": 1,
      "curve": {
-      "0": 19,
-      "1": 5
+      "0": 1,
+      "1": 11,
+      "2": 1
      }
     },
-    "generators": [
-     "gannet-nestweaver",
-     "leafcutter-gardener",
-     "nutria-reedcutter",
-     "talus-pika"
-    ],
+    "generators": [],
     "stoneMetal": [],
     "families": [
-     "evasion 3",
-     "flying 3"
+     "evasion 5",
+     "ranged 4"
     ],
-    "high": []
+    "high": [
+     "dhole-matriarch"
+    ]
    },
-   "leftOut": [
-    {
-     "focus": "swarm",
-     "score": 0.6964,
-     "why": "under 74.3%"
-    }
-   ],
    "result": {
     "file": "docs/balance/deck1/bench-deck-map00-mo-2026-10-30.json",
     "pro": [

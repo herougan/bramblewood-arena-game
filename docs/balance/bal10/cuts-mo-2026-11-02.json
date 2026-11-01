@@ -1,0 +1,94 @@
+{
+ "_about": "BAL9 JJ24 (2026-11-02): cut cards swapped out of every road and PRO deck; tools/bal9/decks_2026_11_02.js cuts",
+ "built": "2026-11-02",
+ "cutCards": [
+  "porcupine-roller",
+  "seed-cache-squirrel",
+  "thornwood-palisade"
+ ],
+ "refDeckCuts": [],
+ "rows": [
+  {
+   "where": "node mo:0-B-3",
+   "map": 0,
+   "loc": "mo",
+   "key": "0-B-3",
+   "before": {
+    "meadow-rabbit": 1,
+    "pond-duck": 1,
+    "trash-panda-trickster": 1,
+    "thornwood-palisade": 3,
+    "cottontail": 1,
+    "ant-scout": 5,
+    "forager-ant": 4
+   },
+   "after": {
+    "meadow-rabbit": 1,
+    "pond-duck": 1,
+    "trash-panda-trickster": 1,
+    "cottontail": 1,
+    "ant-scout": 5,
+    "forager-ant": 5,
+    "bramblewood-lynx": 1,
+    "gatling-hog": 1
+   },
+   "moves": [
+    {
+     "cut": "thornwood-palisade",
+     "copies": 3,
+     "to": {
+      "bramblewood-lynx": 1,
+      "gatling-hog": 1,
+      "forager-ant": 1
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "pro 0-B-PRO-1",
+   "map": 0,
+   "loc": "mo",
+   "pro": {
+    "kind": "pro",
+    "id": "0-B-PRO-1"
+   },
+   "before": {
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 2,
+    "porcupine-roller": 3,
+    "seed-cache-squirrel": 4,
+    "swift-fox": 4,
+    "talus-pika": 4
+   },
+   "after": {
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 2,
+    "swift-fox": 4,
+    "talus-pika": 4,
+    "thorn-shrike": 3,
+    "gatling-hog": 3,
+    "bramblewood-lynx": 1
+   },
+   "moves": [
+    {
+     "cut": "porcupine-roller",
+     "copies": 3,
+     "to": {
+      "thorn-shrike": 3
+     },
+     "left": 0
+    },
+    {
+     "cut": "seed-cache-squirrel",
+     "copies": 4,
+     "to": {
+      "gatling-hog": 3,
+      "bramblewood-lynx": 1
+     },
+     "left": 0
+    }
+   ]
+  }
+ ]
+}

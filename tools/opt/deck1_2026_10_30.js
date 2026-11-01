@@ -38,6 +38,9 @@ function mapsUpTo20(gm, want) {
     .sort((a, b) => G.mapNumberOf(a.id) - G.mapNumberOf(b.id) || (a.sub ? 1 : 0) - (b.sub ? 1 : 0) || (a.id < b.id ? -1 : 1));
 }
 function ownSubList(gm, m) { const pe = gm.pools[m.parent] || {}, l = (pe.submaps || {})[m.id]; return Array.isArray(l) ? l : l && l.cards || null; }
+// 2026-11-02 (BAL10): --map/--maps also take map ids (e.g. --map mo), so one side map can be re-planned / re-applied without touching its
+// parent (the Old Bramble shares Map 0's number with m1)
+function selectMaps(gm, spec) { if (spec != null && /[a-z]/i.test(String(spec))) { const ids = new Set(String(spec).split(',')); return mapsUpTo20(gm, null).filter(m => ids.has(m.id)); } return mapsUpTo20(gm, mapRange(spec)); }
 function mapRange(spec) { if (spec == null) return null; const out = new Set(); String(spec).split(',').forEach(p => { const m = /^(\d+)-(\d+)$/.exec(p); if (m) { for (let i = +m[1]; i <= +m[2]; i++) out.add(i); } else out.add(+p); }); return out; }
 const uniq = a => [...new Set(a)];
 
@@ -105,7 +108,7 @@ async function main(argv) {
   const gm = O.loadGame(ROOT), G = gm.G, rules = O.loadRules(ROOT);
   if (cmd === 'plan') {
     const j = readPlan(), contrib = loadContrib(); j.about = ABOUT; j.rule = Object.assign({}, RULE, { anchorMin: ANCHOR_MIN, heldTheme: HELD_THEME, heldStrong: HELD_STRONG, level: LEVEL, budget: BUDGET, finalGames: FINAL });
-    for (const m of mapsUpTo20(gm, mapRange(opt.maps))) { const old = j.maps[m.id] || {}; j.maps[m.id] = Object.assign(planMap(gm, m, rules, contrib), old.result ? { result: old.result } : {});
+    for (const m of selectMaps(gm, opt.maps)) { const old = j.maps[m.id] || {}; j.maps[m.id] = Object.assign(planMap(gm, m, rules, contrib), old.result ? { result: old.result } : {});
       const x = j.maps[m.id]; console.log(`${x.side ? '  side' : 'Map'} ${x.num} ${x.id} ${x.name}: anchor ${x.anchor.length}, pool ${x.pool.length}, cost ${x.facts.cost.min}-${x.facts.cost.max} (avg ${x.facts.cost.avg}), gens ${x.facts.generators.length}, s/m ${x.facts.stoneMetal.length}; focuses ${x.focuses.join(', ')}`); }
     writePlan(j); console.log('-> ' + path.relative(ROOT, PLAN)); return;
   }
@@ -126,7 +129,7 @@ async function main(argv) {
 // ---------------------------------------------------------------- apply: the decks become the map's PRO decks
 function apply(gm, opt) {
   const G = gm.G, j = readPlan(), file = JSON.parse(fs.readFileSync(PRO_FILE, 'utf8')), ren = P.renamedIds(gm), invalid = [];
-  for (const m of mapsUpTo20(gm, mapRange(opt.maps))) {
+  for (const m of selectMaps(gm, opt.maps)) {
     const f = outFileOf(gm, m); if (!fs.existsSync(f)) { console.log(m.id + ': no run yet'); continue; }
     const res = JSON.parse(fs.readFileSync(f, 'utf8')), x = j.maps[m.id], pools = deck1Pools(gm, m), field = P.averageField(gm, m);
     const old = file.maps[m.id] || null;

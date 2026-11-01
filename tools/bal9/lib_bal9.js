@@ -22,9 +22,9 @@ function firstPackTable(src) {
   src.slice(a, b).split('\n').forEach(l => { const m = /^\s*'([^']+)':\s*'([^']+)'/.exec(l); if (m) out[m[1]] = m[2]; });
   return out;
 }
-// Locations whose lists BAL9 leaves alone: the tutorial side map (packs skip it) and the Old Bramble (its fights sit at Map 0's Common cap
-// though it opens at Map 21: an open question, reported).
-const SKIP_LOCS = new Set(['mtut', 'mtut12', 'mo']);
+// Locations whose lists BAL9 leaves alone: the tutorial side map (packs skip it). 2026-11-02 (BAL10): the Old Bramble (mo) is no longer
+// skipped: BAL9-5 is decided (CARD5 caps its fights by Map 21, the map it opens at), so its list fits its fights' cap.
+const SKIP_LOCS = new Set(['mtut', 'mtut12']);
 const step = r => game().G.roadRarityStep(r);
 // a fight's rarity cap (the game's roadRarityCap: a side map's fights by its own map number)
 function nodeCap(loc, node) { const { G } = game(); return G.roadRarityCap(G.mapNumberOf(loc), (node && node.kind) || 'skirmish', loc); }

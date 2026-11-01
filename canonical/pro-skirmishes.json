@@ -838,10 +838,11 @@
      "deck": {
       "hoopoe-herald": 3,
       "leafcutter-gardener": 2,
-      "porcupine-roller": 3,
-      "seed-cache-squirrel": 4,
       "swift-fox": 4,
-      "talus-pika": 4
+      "talus-pika": 4,
+      "thorn-shrike": 3,
+      "gatling-hog": 3,
+      "bramblewood-lynx": 1
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map00-mo-2026-10-30.json",
@@ -857,7 +858,8 @@
       "generated": "2026-10-30T09:57:35.484Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (porcupine-roller x3, seed-cache-squirrel x4); not re-searched"
     },
     {
      "id": "0-B-PRO-2",
