@@ -79,14 +79,16 @@ async def run(b, url, w):
       const ring = document.querySelector('.board-card .vis3-trap-ring'), drops = ring ? ring.querySelectorAll('i').length : 0, anim = ring ? getComputedStyle(ring.querySelector('i')).animationName : '';
       const card = uid=> document.querySelector('.board-card[data-uid="' + uid + '"]');
       return {rings: document.querySelectorAll('.vis3-trap-ring').length, drops, anim}; })()""")
-    ok(r['rings'] >= 2 and r['drops'] == 8 and r['anim'] == 'vis3TrapFall', f"V1. a trapped slot has the falling ring (8 drops) on both rows {r}")
+    # FIX4 (2026-11-02): UI9 (2026-10-31) renamed the drops' keyframes to ui9TrapFall
+    ok(r['rings'] >= 2 and r['drops'] == 8 and r['anim'] in ('vis3TrapFall', 'ui9TrapFall'), f"V1. a trapped slot has the falling ring (8 drops) on both rows {r}")
     await pg.wait_for_timeout(500)
     await shot(pg, 'board-trap-token-shield', w, '#battlefieldEl', 4)
     r = await pg.evaluate(f"""(()=>{{ const card = uid=> document.querySelector('.board-card[data-uid="' + uid + '"]');
-      const sh = card({u['1:-1']}), num = sh && sh.querySelector('.vis3-shield-num'), shell = card({u['2:-1']}), sn = shell && shell.querySelector('.vis3-shield-num');
+      /* 2026-11-02 (FIX4): the Shield number is UI11's chip now (FF1, 2026-10-31: .badges .ab-unit-shield.is-live, its number in data-shield / .shield-n) */
+      const SH = '.card-tile .badges .ab-unit-shield.is-live', sh = card({u['1:-1']}), chipA = sh && sh.querySelector(SH), num = chipA && chipA.querySelector('.shield-n'), shell = card({u['2:-1']}), chipB = shell && shell.querySelector(SH), sn = chipB && chipB.querySelector('.shield-n');
       const plain = card({u['1:0']}), und = card({u['1:1']});
-      return {{bloomTok: plain.classList.contains('is-token'), undeadTok: und.classList.contains('is-token'), shieldNum: num ? num.textContent : null, color: num ? getComputedStyle(num).color : null,
-        chip: !!document.querySelector('.abadge.unit-shield'), shellNum: sn ? sn.textContent : null, bars: [...document.querySelectorAll('.eq2-hpbar')].filter(b=> b.offsetWidth > 0).length}}; }})()""")
+      return {{bloomTok: plain.classList.contains('is-token'), undeadTok: und.classList.contains('is-token'), shieldNum: chipA ? chipA.dataset.shield : null, color: num ? getComputedStyle(num).color : null,
+        chip: !!document.querySelector('.abadge.unit-shield'), shellNum: chipB ? chipB.dataset.shield : null, bars: [...document.querySelectorAll('.eq2-hpbar')].filter(b=> b.offsetWidth > 0).length}}; }})()""")
     ok(r['bloomTok'] and r['undeadTok'], f"V2. the Bloom copy and the Undead token wear is-token {r['bloomTok']} {r['undeadTok']}")
     # 2026-10-26 (package FIN1, VIS3-1): a board token wears a pale wash over its art (the .ico ::after), in the light and in the dark theme; a plain card has none.
     for theme in ('light', 'dark'):
@@ -98,11 +100,12 @@ async def run(b, url, w):
         await pg.wait_for_timeout(200)
         await shot(pg, 'board-token-wash-' + theme, w, '#battlefieldEl', 4)
     await pg.evaluate("document.documentElement.removeAttribute('data-theme')")
-    ok(r['shieldNum'] == '3' and r['color'] and 'rgb(143, 210, 255)' in r['color'] and not r['chip'], f"V3. Shield 3 is a blue number on the card, no 💠 chip {r}")
+    # FIX4 (2026-11-02): UI11's chip number is #9ed8ff
+    ok(r['shieldNum'] == '3' and r['color'] and 'rgb(158, 216, 255)' in r['color'] and not r['chip'], f"V3. Shield 3 is a blue number on the card, no 💠 chip {r}")
     ok(r['shellNum'] == '2' and r['bars'] == 0, f"V3. Shell's temporary Health is the blue number too; no Health bar shows {r['shellNum']} {r['bars']}")
     # the live refresh: the shield drops 3 -> 1, then breaks
     r = await pg.evaluate(f"""(async()=>{{ const m = matchState, c = m.engine.allBoardCards(m.players[1]).find(x=> x.uid === {u['1:-1']}); const el = document.querySelector('.board-card[data-uid="{u['1:-1']}"]');
-      c.shield = 1; updateCardStatusDisplay({u['1:-1']}); await new Promise(r=> setTimeout(r, 400)); const a = (el.querySelector('.vis3-shield-num')||{{}}).textContent;
+      c.shield = 1; updateCardStatusDisplay({u['1:-1']}); await new Promise(r=> setTimeout(r, 400)); const a = ((el.querySelector('.card-tile .badges .ab-unit-shield.is-live')||{{}}).dataset||{{}}).shield; /* FIX4 (2026-11-02): UI11's chip */
       // 2026-10-27 (package VIS4, K7): the number counts down (read it 0.4 s on); the hit's look is VIS4's rectangle (.vis4-shield-rect, its
       // own 12 px corners; FX.A's dome is no longer drawn), and it waits for the blow (windup + impactPad) while a round plays
       const am = animMs(); renderVfxForEvent({{type:'shieldSoak', uid:{u['1:-1']}, defId:c.defId, soaked:2, left:1}}); await new Promise(r=> setTimeout(r, am.windup + am.impactPad + 120));

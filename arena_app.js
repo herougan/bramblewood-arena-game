@@ -35302,21 +35302,8 @@ function startMatchInner(mode, opts, standardDeck){
   const arenaRuleset = todaysArenaRuleset();
   const arenaMode = opts.caged ? 'open' : (arenaRuleset.battleMode || 'open'); // Caged Fight needs fixed slots
   const myFightDeck = standardDeck ? myDeckCounts : ownedDeckForMatch(myDeckCounts); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, rules: arenaRuleset.rules, battleMode: arenaMode});
-  const sideOf = id=> id===1?'A':'B';
-  const myCharacter = myCastleDef();
-  const DEFAULT_DECK = {'otter-centurion':3,'bee-knight':5,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1} /* 2026-10-23 (release 10-23): within PG's copy limits (Rare 3, Common 5) */;
-  // 'ai' (Arena's "vs AI" quick match) gets a freshly randomized deck every match — see
-  // randomAiDeck above. 'pc' (local pass-and-play) and 'async' keep DEFAULT_DECK as a neutral
-  // placeholder second hand, since those modes are two humans, not the AI opponent this request
-  // was about.
-  // Gauntlet (#274) reuses the exact same "fresh random AI deck every fight" treatment as
-  // ordinary Arena "vs AI" — the streak-run part is entirely in the win/loss handling
-  // (resolveRound's mode==='gauntlet' branch below), not in how the opponent is built.
-  const players = {
-    1: engine.newPlayer(1, myFightDeck, myCharacter),
-    2: null,
-  };
+  // 2026-11-02 (FIX4): the stranger (PvP) and the ghost (async) are picked and levelled BEFORE the engine is built: pvpLevelStranger adds
+  // id@lvN defs to matchDefsOverlay, and an engine built first never knew them, so the CPU's first card threw (reading 'cost') and it never played.
   let asyncGhost = null, asyncStage = null;
   if(mode==='pvp'){
     if(!Ghosts) return;
@@ -35336,6 +35323,21 @@ function startMatchInner(mode, opts, standardDeck){
     asyncGhost = Ghosts.pickOpponent(asyncStagePool(asyncStage), currentMatchSeed, run.faced);
     if(asyncGhost){ run.faced = (run.faced||[]).concat([asyncGhost.owner]); saveAsyncRun(run); }
   }
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, rules: arenaRuleset.rules, battleMode: arenaMode});
+  const sideOf = id=> id===1?'A':'B';
+  const myCharacter = myCastleDef();
+  const DEFAULT_DECK = {'otter-centurion':3,'bee-knight':5,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1} /* 2026-10-23 (release 10-23): within PG's copy limits (Rare 3, Common 5) */;
+  // 'ai' (Arena's "vs AI" quick match) gets a freshly randomized deck every match — see
+  // randomAiDeck above. 'pc' (local pass-and-play) and 'async' keep DEFAULT_DECK as a neutral
+  // placeholder second hand, since those modes are two humans, not the AI opponent this request
+  // was about.
+  // Gauntlet (#274) reuses the exact same "fresh random AI deck every fight" treatment as
+  // ordinary Arena "vs AI" — the streak-run part is entirely in the win/loss handling
+  // (resolveRound's mode==='gauntlet' branch below), not in how the opponent is built.
+  const players = {
+    1: engine.newPlayer(1, myFightDeck, myCharacter),
+    2: null,
+  };
   players[2] = engine.newPlayer(2, (mode==='ai'||mode==='gauntlet') ? randomAiDeck() : (asyncGhost ? asyncGhost.deck : DEFAULT_DECK), brambleChar(CHARACTER_DEFS['castle'])); // BF5: at BRAMBLE_SCALE
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length}; // item #65: "Deck" tile shows X/Y — captured before the opening draw
   const stats = {};
@@ -44774,6 +44776,10 @@ function tutorialAllyRemarks(m){
 function maybeShowCoachTip(){
   const m = matchState;
   if(m && m.fxLib) return; // 🔬 no coaching on the Effects library's stage (2026-10-14)
+  // 2026-11-02 (FIX4): no lessons or coach tips in Live Ranked, and never while the host replays the peer's move: the Triggers lesson
+  // (tl-what, a pause tip) held the host's replayed play (replayLiveIntent -> playCardByUid -> waitForBlockingCoach), m.liveReplaying
+  // stayed true and the match froze after the peer's first move (a regression from the UI12 merge).
+  if(m && (m.mode === 'liveRanked' || m.liveReplaying)) return;
   try{ tutorialAllyRemarks(m); }catch(e){}
   try{ if(m && !m.resolving && m.mode !== 'tutorial') lumberDrawNudges(m); }catch(e){}
   // The shield (2026-10-13, user: "On Map 0-4, teach the player about the shield value"): the first enemy castle with a shield.
@@ -44812,6 +44818,7 @@ function maybeShowCoachTip(){
 let coachPendingId = null;
 async function waitForBlockingCoach(m){
   if(!m || m.adminTest || !COACH_MODES.has(m.mode)) return;
+  if(m.mode === 'liveRanked' || m.liveReplaying) return; // 2026-11-02 (FIX4): a live match never waits on a tip (see maybeShowCoachTip)
   try{ maybeShowCoachTip(); }catch(e){}
   if(!(coachOpen && coachOpen.tip && (coachOpen.tip.block || coachOpen.tip.pause))) return;
   m._coachWait = true; document.documentElement.classList.add('bw-coach-wait');
@@ -44820,6 +44827,7 @@ async function waitForBlockingCoach(m){
   await sleep(250);
 }
 function showCoachTip(tip, anchorEl){
+  if(matchState && (matchState.mode === 'liveRanked' || matchState.liveReplaying)) return; // 2026-11-02 (FIX4): no tip of any kind in Live Ranked (see maybeShowCoachTip)
   if(matchState && matchState.over && !matchState.winModalDismissed && tip && !/^(leader|rank)/.test(tip.id||'')) return; // never over the results
   hideCoachTip(); if(tip && tip.id === coachPendingId) coachPendingId = null;
   const b = document.createElement('div');
@@ -46275,10 +46283,11 @@ function rewardCardsReveal(){
     const lock = card.querySelector('.rw-lock'), at = t0 + i*0.9*pace;
     gsap.set(card.querySelector('.card-tile'), {filter:'grayscale(.8) brightness(.7)'});
     const tl = gsap.timeline({delay:at}); tl.timeScale(1/pace);
-    tl.add(()=>{ splash(card, 'Card unlocked!', 'is-unlock'); try{ SoundKit.unlockChime ? SoundKit.unlockChime() : SoundKit.quick && SoundKit.quick(); }catch(e){} })
-      .to(lock, {rotation:-14, duration:.06, repeat:5, yoyo:true, ease:'sine.inOut'}, .1)
-      .add(()=>{ lock.classList.add('broken'); try{ SoundKit.lockBreak && SoundKit.lockBreak(); }catch(e){} lockShards(lock); }, .5)
-      .to(card.querySelector('.card-tile'), {filter:'grayscale(0) brightness(1.35)', duration:.25, ease:'power2.out'}, .5)
+    tl.add(()=>{ splash(card, 'Card unlocked!', 'is-unlock'); try{ SoundKit.unlockChime ? SoundKit.unlockChime() : SoundKit.quick && SoundKit.quick(); }catch(e){} });
+    // 2026-11-02 (FIX4): a .rw-base-copy tile (a base copy, no padlock) has no .rw-lock; lock.classList threw and broke the reveal. No lock, no padlock steps.
+    if(lock) tl.to(lock, {rotation:-14, duration:.06, repeat:5, yoyo:true, ease:'sine.inOut'}, .1)
+      .add(()=>{ lock.classList.add('broken'); try{ SoundKit.lockBreak && SoundKit.lockBreak(); }catch(e){} lockShards(lock); }, .5);
+    tl.to(card.querySelector('.card-tile'), {filter:'grayscale(0) brightness(1.35)', duration:.25, ease:'power2.out'}, .5)
       .to(card.querySelector('.card-tile'), {filter:'grayscale(0) brightness(1)', duration:.4, ease:'power1.out', clearProps:'filter'}, .75)
       .fromTo(card, {scale:1}, {scale:1.08, duration:.18, yoyo:true, repeat:1, ease:'power2.out', clearProps:'scale'}, .5)
       .add(()=>{ card.classList.add('unlocked'); if(card.classList.contains('is-first-seen')) card.classList.add('shown'); }, .8); // a won card seen for the first time also gets NEW! (2026-10-17)

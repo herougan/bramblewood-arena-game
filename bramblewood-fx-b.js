@@ -22,7 +22,7 @@
      at night) against glowing eyes for Darksight and a warm light pool round a Lantern, the Lantern guttering out,
      Lantern / Keen Sense saves, Shade and Shadow at night, Beware's red eyes, Devilry stars, and three planned looks.
    - Weather & time: day breaks, dawn, dusk, twilight (with the toast fixed in arena_app.js), the realtime clock, moon
-     phases (three looks), ebb, high tide, perma-tide current, Moonpull, wind gust / calm / swap, Headwind echo,
+     phases (three looks), ebb, high tide, perma-tide current, Moonpull, wind gust / calm / swap, Headwind slow (was Headwind echo; FIX4, 2026-11-02),
      rain starting and stopping on the map, the initiative coin, and the planned Syzygy / Eclipse.
    - Fields: a board-wide wash per field card, the field ending, the map field returning, Frigid's icicles and the
      frost sliding off native units, Spring Rain's drizzle, Thick Fog banks and Full Moon light while they last, the
@@ -1144,11 +1144,12 @@ M.windTurn = function(host, opts){
     later(()=>{ if(ov.isConnected){ tl.progress(1); } }, (total + 1.5)*1000); // never left on the board
   });
 };
-// Headwind: a Flyer's skill or trigger goes off twice (wt-headwind): a rune echo is blown off the card sideways.
+// Headwind (wt-headwind): 2026-11-02 (FIX4, decision WIND-2 a): a Headwind Flyer swings at -1 Attack for the round and nothing goes off twice
+// (ENG16). The cue showed a ×2 rune echo; it now shows a −1 rune pushed back off the card by the wind streaks. Name kept for the Effects Lab.
 css('echo', `.fxb-rune{position:absolute; left:50%; top:45%; width:46px; height:46px; margin:-23px; border-radius:50%; border:2px dashed rgba(255,255,255,.9); box-shadow:0 0 10px rgba(180,230,255,.8); display:grid; place-items:center; color:#fff; font:900 16px/1 system-ui;}`);
 M.headwindEcho = function(el, opts){
   opts = opts || {}; const r = rectOf(el); if(!r) return Promise.resolve(); const dir = opts.dir || (isMineEl(el) ? -1 : 1);
-  const box = over(r, ''); box.style.overflow = 'visible'; const rs = bits(box, 2, ()=> ({cls:'fxb-rune', text:'×2'}));
+  const box = over(r, ''); box.style.overflow = 'visible'; const rs = bits(box, 2, ()=> ({cls:'fxb-rune', text:'−1'}));
   const st = bits(box, 5, i=> ({cls:'fxb-streak', style:`left:20%; top:${20 + i*14}%; width:40px;`}));
   return run([box], opts, (t)=>{
     t.fromTo(rs[0], {scale:.3, opacity:0}, {scale:1, opacity:1, duration:.2, ease:'back.out(2)'}).to(rs[0], {opacity:0, duration:.3}, '+=.2')
@@ -1535,6 +1536,7 @@ M.onEvent = function(ev, env){
   case 'statusFx': {
     const t = el(ev.targetUid);
     if(ev.kind === 'poison' && t) M.poisonApply(t);
+    else if(ev.kind === 'headwind'){ if(t && med) M.headwindEcho(t); } // FIX4 (2026-11-02, WIND-2 a): the Headwind's −1 Attack
     else if(ev.kind === 'bleed' && t) M.bleedApply(t);
     else if(ev.kind === 'thaw' && t) M.thawDrip(t, {left:ev.left|0});
     // 2026-10-15 (Exposed rework: +1 from each of its next N hits): the engine says when a hit uses one up ('exposedHit', sent just
@@ -1605,10 +1607,8 @@ M.onEvent = function(ev, env){
     // wind lines turn instead (M.windTurn, started by syncWindField in arena_app.js when the layer changes direction).
     if(mo.windFrom && mo.windFrom !== from && med){ /* the turn is the cue */ } else if(med) M.windGust(bf, {from});
     mo.windFrom = from; break; }
-  case 'triggerFired': {
-    const w = m && m._windNow; if(!w || !w.windy || !effOf(defs, ev.defId).flying) break;
-    const unitMine = isMineSide(m, ev.side); if(unitMine !== !!w.mine){ const t = el(ev.uid); if(t) M.headwindEcho(t); } // the side the wind blows INTO has the Headwind
-    break; }
+  // 2026-11-02 (FIX4, WIND-2 a): a Headwind Flyer's trigger no longer plays the ×2 echo (nothing doubles); the −1 cue plays on the engine's
+  // statusFx 'headwind' event (see case 'statusFx' above), beside the app's "Headwind: −1⚔" float.
   case 'fieldSet': if(med) M.fieldSet(bf, {field:ev.field}); env.at(700, ()=> M.fieldLayer(document.getElementById('battlefieldEl'), ev.field)); break;
   case 'fieldEnd': {
     if(med) M.fieldEnd(bf, {field:ev.field}); M.fieldLayer(bf, null);

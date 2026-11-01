@@ -6069,9 +6069,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // like Kinship), Amplifier (the neighbours' card copies). Shieldwall and Spotter are read live (sk3ArmorOf, sk3Spotted).
   function sk3Sync(players){
     [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl || !pl.row) return;
-      const live = allBoardCards(pl).filter(sk3Live), fx = c=> effectsOf(c);
+      // 2026-11-02 (FIX4): War Banner and Herald reach every row, as Amplifier does (package RR: a middle / back-row unit's skills work as at
+      // the front). They read the front row only, so in a raid or a group dungeon a back-row Banner gave nothing and a back-row unit got nothing.
+      const fx = c=> effectsOf(c), liveAll = upkeepUnitsOf(pl).filter(sk3Live) /* + a raid's middle / back rows (GD2) */, live = liveAll;
       let bannerSum = 0; live.forEach(c=>{ if(fx(c).banner) bannerSum += sk3N(fx(c), 'banner'); });
-      const amp = new Map(), liveAll = upkeepUnitsOf(pl).filter(sk3Live) /* + a raid's middle / back rows (GD2) */; liveAll.forEach(c=>{ const e = fx(c); if(!e.amplifier) return; const n = sk3N(sk3BaseFx(c), 'amplifier'); sk3Beside(pl, c).forEach(x=> amp.set(x, (amp.get(x)||0) + n)); });
+      const amp = new Map(); liveAll.forEach(c=>{ const e = fx(c); if(!e.amplifier) return; const n = sk3N(sk3BaseFx(c), 'amplifier'); sk3Beside(pl, c).forEach(x=> amp.set(x, (amp.get(x)||0) + n)); });
       liveAll.forEach(c=>{ const want = Math.min(SK3_DEF.ampCap, amp.get(c) || 0); if((c._sk3Amp||0) !== want){ c._sk3Amp = want; sk3Apply(c); } });
       // 2026-10-21 (package BF6, owner 15:15: "War Banner: passive increase in attack while this unit is present"): War Banner is Attack
       // only now (+N/+0, the old passive Rally's aura); Herald keeps +N/+N.
@@ -8426,8 +8428,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const saved = aiAim && ai._aiSave && ai._aiSave.last === turnNo ? ai.hand.find(h=> h.uid === ai._aiSave.uid) : null; // ENG14 (X24): the card it saves for is kept
       const target = saved || (ai.hand.length > 1 ? ai.hand.reduce((a, b)=> (need(b) < need(a) || (need(b) === need(a) && cardValue(b.defId) > cardValue(a.defId))) ? b : a) : null);
       const pool = ai.hand.filter(hc=> hc !== target);
-      const worst = pitchPick(pool);
-      aiPitch(players, sideOf, aiId, worst, stats, events); // 2026-10-18: the player's pitch rules (was a flat +1 Lumber)
+      // 2026-11-02 (FIX4): the card it saves for may be its only card; pitchPick([]) threw "Reduce of empty array" and stopped the turn. No pool, no pitch.
+      if(pool.length) aiPitch(players, sideOf, aiId, pitchPick(pool), stats, events); // 2026-10-18: the player's pitch rules (was a flat +1 Lumber)
     } else if(!ai.hand.length){
       // 2026-09-25 (explicit user request, "when he runs out of cards, he just plays Bee
       // Tanks"): a completely empty hand used to mean the AI did nothing at all that turn —

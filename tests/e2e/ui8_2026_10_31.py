@@ -132,14 +132,16 @@ async def aa2(b, url, shots):
         await pg.wait_for_timeout(500)
         r = await pg.evaluate("""(()=>{ const q = (s, root)=>{ const e = (root || document).querySelector(s); if(!e) return null; const r = e.getBoundingClientRect(); return {l: r.left, t: r.top, w: r.width, h: r.height, cx: r.left + r.width/2}; };
           const them = document.querySelector('.vs-them'); if(!them) return {none: true}; const tr = them.getBoundingClientRect(); const pills = [...them.querySelectorAll('.vs-pill')].map(e=> { const r = e.getBoundingClientRect(); return {h: Math.round(r.height), cx: r.left + r.width/2, l: r.left, r: r.right}; });
-          const order = [...them.children].map(e=> e.className.split(' ')[0]);
-          return {order, pills, col: tr.left + tr.width/2, sideL: tr.left, sideR: tr.right, meBr: q('.vs-me .vs-lvl'), themBr: q('.vs-them .vs-lvl'), name: q('.vs-them .vs-name'), sw: document.documentElement.scrollWidth, vw: innerWidth, taunt: q('.vs-them .vs-taunt'), br2: q('.vs-them .vs-lvl')}; })()""")
+          const order = [...them.children].map(e=> e.className.split(' ')[0]); const facts = [...them.querySelectorAll('.vs-facts .vs-fact')].map(e=> { const r = e.getBoundingClientRect(); return {l: r.left, r: r.right}; });
+          return {order, pills, facts, col: tr.left + tr.width/2, sideL: tr.left, sideR: tr.right, meBr: q('.vs-me .vs-lvl'), themBr: q('.vs-them .vs-lvl'), name: q('.vs-them .vs-name'), sw: document.documentElement.scrollWidth, vw: innerWidth, taunt: q('.vs-them .vs-taunt'), br2: q('.vs-them .vs-lvl')}; })()""")
         if r.get('none'): ok(False, 'the VS opener opened'); await ctx.close(); continue
-        ok(r['order'] == ['vs-portrait', 'vs-name', 'vs-facts', 'vs-lvl', 'vs-taunt'], f"the right side is portrait, name, facts, BR box, quote {r['order']}")
-        ok(len(r['pills']) >= 3 and max(p['h'] for p in r['pills']) - min(p['h'] for p in r['pills']) <= 6, f"every small fact is one pill style (heights within 6 px; the leader pill has a round face) {[p['h'] for p in r['pills']]}")
-        ok(all(p['l'] >= r['sideL'] - 1 and p['r'] <= r['sideR'] + 1 for p in r['pills']), 'the pills stay inside the column')
+        # 2026-11-02 (FIX4): UI14 (JJ8, 2026-11-02) redrew each side as one card: kicker, round portrait, name, map, BR box, a facts line (text,
+        # no pills), the quote, a timer bar. These checks follow that markup; the pill-height and level-BR checks were AA2's pill design and are gone.
+        want = ['ui14-vs-kicker', 'vs-portrait', 'vs-name', 'ui14-vs-map', 'vs-lvl', 'vs-facts', 'vs-taunt', 'ui14-vs-timer']
+        ok([c for c in r['order'] if c != 'ui14-vs-map'] == [c for c in want if c != 'ui14-vs-map'], f"the right side is kicker, portrait, name, (map), BR box, facts, quote, timer {r['order']}")
+        ok(len(r['pills']) == 0 and len(r['facts']) >= 2, f"the small facts are one text line, not pills (pills {len(r['pills'])}, facts {len(r['facts'])})")
+        ok(all(p['l'] >= r['sideL'] - 1 and p['r'] <= r['sideR'] + 1 for p in r['facts']), 'the facts stay inside the column')
         ok(abs(r['themBr']['cx'] - r['col']) < 4 and abs(r['name']['cx'] - r['col']) < 4, 'the name and the BR box are centred on the column')
-        if w > 600: ok(abs(r['themBr']['t'] - r['meBr']['t']) < 12, f"the two BR boxes are level {round(r['meBr']['t']), round(r['themBr']['t'])}")
         ok(r['sw'] <= r['vw'], f"no sideways scroll {r['sw']} / {r['vw']}")
         if shots: await pg.screenshot(path=os.path.join(SHOTS, f'vs-after-{w}.png'))
         await ctx.close()

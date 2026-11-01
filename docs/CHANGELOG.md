@@ -3,6 +3,15 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 
+## 2026-11-02 Package FIX4 (bugs from the QA1 health check; not yet released)
+- **PvP stranger plays again:** Collection PvP levelled the stranger (`id@lvN` cards) after the engine was built, so the CPU's first card threw and it never played. `startMatchInner` now picks and levels the stranger (and the Async ghost) before it builds the engine.
+- **Live Ranked no longer freezes after the peer's first move** (regression from the UI12 merge): no lesson or coach tip opens in Live Ranked or while the host replays the peer's move, and a round never waits on one (`maybeShowCoachTip`, `showCoachTip`, `waitForBlockingCoach`).
+- **CPU pitch crash:** a CPU whose only card is the one it saves for no longer throws ("Reduce of empty array") in `aiTakeTurnOnce`; with nothing else in hand it pitches nothing.
+- **War Banner / Herald reach every row** in raids and group dungeons (`sk3Sync` reads `upkeepUnitsOf`, as Amplifier does; package RR's rule). Solo boards unchanged.
+- **Reward reveal:** a base-copy tile (`.rw-base-copy`, no padlock) no longer breaks the reveal (`rewardCardsReveal` skips the padlock steps).
+- **Headwind cue (WIND-2 a):** the ×2 "echo" on a Headwind Flyer's triggers is gone; the cue is a −1 rune on the engine's `headwind` event. `docs/effects-catalogue.md` Wind text matches the engine.
+- Tests: `tests/fix4-2026-11-02.js` (engine), `tests/e2e/fix4_2026_11_02.py` (browser); stale selectors in the vis3 / vis4 / ui8 browser tests follow the UI11 Shield chip, UI9 trap keyframes and the UI14 VS card; `live_two_player.py` waits for the mirror to catch up. Decisions ENG16-1..4, WIND-2, IDEA-11-02, BABY-1, BABY-2, RELICT-1, COOP3-4 moved to group `game`. Regenerated: `bramblewood-taxonomy.js`, the emoji scan, sets and atlases.
+
 ## 2026-11-02 Package LANG3 (translation pass for UI7-UI14, ENG15, ENG16; not yet released)
 - **Translated** into all 12 languages (`tools/i18n_2026_11_02_lang3.py`): the cards Bolas Spider, Fry and Torch (names and flavour), wind (Headwind -1 Attack), Milling, Bloom, Pounce, Cower, True Sight, Lasso, Pinned, Anadromous, Quicksand, the egg's Hatch or Stay, the Unlikely / Baby / Card group labels, the Torch, the SPECIAL picker, Rejected art, Nacre. Dead rows dropped with `tools/i18n_refresh.py --write`. Tagalog, Tamil, Japanese and Korean want a native read.
 

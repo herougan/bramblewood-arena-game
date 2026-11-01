@@ -93,6 +93,15 @@ async def run_match(browser, abandon=False):
                 hs, ps = await host.evaluate(STATE_JS), await peer.evaluate(STATE_JS)
                 if not hs['over'] and not (await host.evaluate("matchState.resolving")):
                     same = ps and all(ps[k]==hs[k] for k in ('round','hp','b1','b2'))
+                    # 2026-11-02 (FIX4): the host applies the peer's move first and broadcasts when its replay ends (replayLiveIntent);
+                    # on a busy box the snapshot could land in between. The mirror must catch up: retry for up to 4 s before failing.
+                    for _ in range(16):
+                        if same: break
+                        if os.environ.get('BW_DEBUG'): print('    (waiting for the mirror)', await host.evaluate("JSON.stringify({rep: !!matchState.liveReplaying, c: !!matchState._committing, u: !!matchState._upkeep, cw: !!matchState._coachWait, tip: coachOpen && coachOpen.tip && coachOpen.tip.id})"))
+                        await peer.wait_for_timeout(250)
+                        hs, ps = await host.evaluate(STATE_JS), await peer.evaluate(STATE_JS)
+                        if hs is None or hs['over'] or await host.evaluate("matchState.resolving"): same = True; break
+                        same = ps and all(ps[k]==hs[k] for k in ('round','hp','b1','b2'))
                     check(same, f'round {hs["round"]}: peer mirror == host state\n     host {hs}\n     peer {ps}')
                 last_round = hs['round']
             if hs['over']: break

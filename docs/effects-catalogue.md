@@ -651,7 +651,7 @@ The rules as built (engine: `bloodlustGain`, `useExposed`, `dodgeCheck` / `comba
   while it is Exposed, attacks at it can't miss (no Evasive, Swift, Flying, Smoke, Fog or Shadow dodge, no Blind or darkness miss).
   Poison, Bleed, Decay, curse and Chilli ticks aren't hits.
 - **Pounce N**: unchanged in the engine: one hit of N on one random enemy unit (the castle with none). Windy / Gale never doubled it
-  (Headwind doubles a Flyer's active skills, and Pounce is not one; since EN2, 2026-10-23, its other triggers go once: see the EN2 section).
+  (since WIND-2 a, 2026-11-02, a Headwind doubles nothing: it is -1 Attack for the Flyers; see Wind in the EN2 section).
 
 ## 2026-10-17 additions: the Effects Lab catches up with 10-16 and 10-17
 
@@ -926,9 +926,9 @@ it), else the side's own bramble; the `boomerangReturn` event names `homeUid` / 
 (`en2BoomOrphanFlight`). Price: 3 → 1.9 (Bananarang too).
 
 **Wind.** Tailwind: the side's Flyers are Quick for the round (their swing at Speed 2, `_windQuick`); no Fast Forward turn, so a Waiting Flyer
-still waits. Headwind: a Flyer's active skills go off twice: its Speed-1 shots (Arrow, Fire / Ice Arrow, Twin Shot, Volley, the Bolts,
-Spitfire), Snipe, and its On Action skills (Archer). Its swing, passives and other triggers (On Hit, On Death, On Play, On Round Start ...) go
-once (`HEADWIND_HOOKS`).
+still waits. Headwind: the side's Flyers get -1 Attack for the round (`headwindAtkCut`, read live by `effAtk`, never baked into the card; the
+board floats "Headwind: −1⚔" on the `statusFx` `headwind` event). Nothing goes off twice (`headwindTwice` is always false). While Ashy grounds the
+Flyers there is no Tailwind or Headwind. 2026-11-02 (FIX4, decision WIND-2 a, built in ENG16; was: a Headwind Flyer's active skills went off twice).
 
 **Swarm** counts allies by Type only: the archetypes a card lists and the wider Types above them (Coral Reef is Ocean is Aquatic), never its
 species or animal (`swarmTypeShares`). Structures never count. The board's Attack follows the replay: as an ally dies mid-round the Swarm

@@ -124,7 +124,7 @@ async def run(b, url, w):
         # ---- K7: a real round. Yours: Shield 1 at slot 0 (theirs at 0 hits it for 2: the Shield breaks), Shield 3 at slot 1 (hit for 2: 3 -> 1).
         pg = await fresh(b, url, w)
         u = await pg.evaluate(V.BOARD + "([['otter-kit', 0, 9, {shield: 1}], ['otter-kit', 1, 9, {shield: 3}]], [['otter-kit', 0, 9], ['otter-kit', 1, 9]])")
-        frames, log = await record_round(pg, w, 'shield', 'shieldSoak', 4200, f"""(()=>{{ const num = uid=> {{ const e = document.querySelector('.board-card[data-uid="' + uid + '"] .card-tile > .vis3-shield-num'); return e ? e.textContent + (e.classList.contains('vis4-shield-out') ? 'o' : '') : ''; }};
+        frames, log = await record_round(pg, w, 'shield', 'shieldSoak', 4200, f"""(()=>{{ const num = uid=> {{ const e = document.querySelector('.board-card[data-uid="' + uid + '"] .card-tile .badges .ab-unit-shield.is-live'); return e ? e.dataset.shield + (e.classList.contains('vis4-shield-out') ? 'o' : '') : ''; /* FIX4 (2026-11-02): UI11's Shield chip (FF1) */ }};
           return {{a: num({u['1:0']}), b: num({u['1:1']}), rect: document.querySelectorAll('.vis4-shield-rect').length, pane: document.querySelectorAll('.vis4-shield-pane').length, dome: document.querySelectorAll('.fxa-dome').length, crack: document.querySelectorAll('body > svg path[stroke="#fff"]').length}}; }})()""")
         ev = [x for x in log if x[1] == 'ev']; si = [i for i, x in enumerate(ev) if x[2].startswith('shieldSoak')]
         ok(len(si) == 2, f"K7. two Shields soak in the real round {[x[2] for x in ev]}")
@@ -134,7 +134,7 @@ async def run(b, url, w):
         ok(any(f['a'] in ('0', '0o') for f in frames), f"K7. the broken Shield's number shows 0 before it goes {[(f['t'], f['a']) for f in frames]}")
         seq_b = [f['b'] for f in frames]
         ok('1' in seq_b and seq_b.index('1') > 0, f"K7. the other counts down to 1 {[(f['t'], f['b']) for f in frames]}")
-        end = await pg.evaluate(f"""(()=>{{ const q = uid=> {{ const e = document.querySelector('.board-card[data-uid="' + uid + '"] .card-tile > .vis3-shield-num'); return e ? e.textContent : ''; }}; return [q({u['1:0']}), q({u['1:1']})]; }})()""")
+        end = await pg.evaluate(f"""(()=>{{ const q = uid=> {{ const e = document.querySelector('.board-card[data-uid="' + uid + '"] .card-tile .badges .ab-unit-shield.is-live:not(.vis4-shield-out)'); return e ? e.dataset.shield : ''; /* FIX4 (2026-11-02): UI11's chip */ }}; return [q({u['1:0']}), q({u['1:1']})]; }})()""")
         ok(end == ['', '1'], f"K7. after the round: no number on the broken one, 1 on the other {end}")
         sheet(frames, 'shield-real-frames', w)
         await close(pg)
