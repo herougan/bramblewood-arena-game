@@ -31,6 +31,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - JJ24 (BAL9): Kelp Mangroves reference / enemy decks still use Minnow Skitter (cut). Remove cut cards from every deck.
 - JJ25 (ENG16; replaces BABY-1): Baby cards can be levelled 0 -> 1 -> 10. Getting an egg (and at each level-up) offers Hatch or Stay (the egg shakes); staying lets it level as an egg, for Evomax decks.
 - JJ26 (UI14): Blind-eye VFX: fade out after the match start / on-play; darkness and blind effects at 10% opacity.
+- JJ28 (BAL9, owner 00:18): more defenders (Bulwark and similar) as an important part of strategy: measure how many defender cards each map list and deck holds, propose where to add or retune defenders (Bulwark's worth included).
 - JJ27 (ideas): Man o' war; bright algae as blown-up bacteria (Bloom at night); Nautiloid; Bobbit worm; Pistol shrimp; the four-toothed worm; mythic creatures from Map 56+: Unicorn, Sphinx, Griffin.
 
 ## 11-01 07:41: the owner's notes
