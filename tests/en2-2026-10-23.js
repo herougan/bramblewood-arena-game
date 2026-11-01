@@ -136,7 +136,8 @@ function windRound(id, want, wallId){ for(let s = 1; s <= 80; s++){ const {e, P}
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8')), cp = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', 'cards', code + '.json'), 'utf8'));
     ok(keys.every(k=> p[k]) && cp['Ironclaw Fiddler'], `lang ${code}: EN2 texts and the card name`); });
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8');
-  ok(/Guardian and Taunt reach different units/.test(cat) && /HEADWIND_HOOKS/.test(cat), 'docs/effects-catalogue.md: Guardian vs Taunt, the wind'); }
+  // 2026-11-02 (FIX4, WIND-2 a): the Headwind no longer doubles skills (HEADWIND_HOOKS); the catalogue names its -1 Attack (headwindAtkCut)
+  ok(/Guardian and Taunt reach different units/.test(cat) && /headwindAtkCut/.test(cat),'docs/effects-catalogue.md: Guardian vs Taunt, the wind'); }
 
 console.log(`en2-2026-10-23: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);
