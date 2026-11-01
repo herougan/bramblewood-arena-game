@@ -1,7 +1,7 @@
 {
  "about": "Hidden PRO fights per main map and side map (package PRO, owner 2026-10-24 00:28; PRO2 21:20; PRO3 2026-10-25: side maps as N-L-PRO-k, faction cards left out). N-PRO-k: the best decks of the deck optimizer's map-true runs (the map's own cards + what a player holds by then, within the map's rarity cap); N-BPRO-k (Basic Pro, under `bpro`): its bpro runs (only the map's own pool, within the cap). Written by tools/opt/pro_skirmishes.js --apply; baked into the game by assemble_arena.py (the `pro` list; `bpro` waits for the PRO preview package). Not on the road, no progress, no rewards.",
  "version": 2,
- "updated": "2026-10-31",
+ "updated": "2026-10-30",
  "tool": "tools/opt/pro_skirmishes.js 1.2.0 (2026-10-25, PRO3)",
  "rule": {
   "games": 400,
@@ -830,70 +830,100 @@
      "name": "0-B-PRO-1",
      "focus": "big",
      "labels": [
-      "big (8 copies at 1 Lumber, average 0.4)",
-      "economy (6 resource makers)"
-     ],
-     "level": 1,
-     "leaders": [],
-     "deck": {
-      "hoopoe-herald": 3,
-      "leafcutter-gardener": 2,
-      "swift-fox": 4,
-      "talus-pika": 4,
-      "thorn-shrike": 3,
-      "gatling-hog": 3,
-      "bramblewood-lynx": 1
-     },
-     "source": {
-      "file": "docs/balance/deck1/bench-deck-map00-mo-2026-10-30.json",
-      "mode": "deck1",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mo --pool alpine-marmot,ashbone-ghoul,bee-forager,dhole-runner,dung-beetle,fox-sharpshot,fungus-gnat-cloud,gannet-nestweaver,hedgehog-scout,hoopoe-herald,jay-pilferer,leafcutter-gardener,leopard-slug,mountain-hare,mudpuppy,nutria-reedcutter,porcupine-roller,red-backed-salamander,seed-cache-squirrel,springtail-hopper,swamp-rabbit,swift-fox,talus-pika,woodcock-lookout --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --level 1 --mode map-true",
-      "score": 0.8929,
-      "ci": [
-       0.8509,
-       0.9348
-      ],
-      "avgLumber": 0.4,
-      "generated": "2026-10-30T09:57:35.484Z"
-     },
-     "h2h": null,
-     "later": [],
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list (porcupine-roller x3, seed-cache-squirrel x4); not re-searched"
-    },
-    {
-     "id": "0-B-PRO-2",
-     "name": "0-B-PRO-2",
-     "focus": "economy",
-     "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "economy (7 resource makers)"
+      "big (9 copies at 1+ Lumber, average 0.5)"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
       "ashbone-ghoul": 4,
-      "hoopoe-herald": 4,
-      "leafcutter-gardener": 4,
-      "swift-fox": 4,
-      "talus-pika": 4
+      "bramblewood-lynx": 3,
+      "ent": 3,
+      "mountain-hare": 4,
+      "sergeant-bramblefox": 3,
+      "wolf-spider-mother": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map00-mo-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mo --pool alpine-marmot,ashbone-ghoul,bee-forager,dhole-runner,dung-beetle,fox-sharpshot,fungus-gnat-cloud,gannet-nestweaver,hedgehog-scout,hoopoe-herald,jay-pilferer,leafcutter-gardener,leopard-slug,mountain-hare,mudpuppy,nutria-reedcutter,porcupine-roller,red-backed-salamander,seed-cache-squirrel,springtail-hopper,swamp-rabbit,swift-fox,talus-pika,woodcock-lookout --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --level 1 --mode map-true",
-      "score": 0.8512,
+      "reproduce": "node tools/bench/bench.js deck --map mo --pool ashbone-ghoul,bramblewood-lynx,cunning-vixen,dhole-matriarch,dhole-runner,eagle-owl-quartermaster,echidna-quillshot,ent,fox-sharpshot,gatling-hog,grave-grin-hyena,hedgehog-herbalist,ibex-rockcaller,lucky-hopper,lyrebird-mimic,mountain-hare,quillguard,sergeant-bramblefox,shimmerwing-stag,squires-mount,stoat-cutthroat,swamp-rabbit,taiga-lynx,thorn-shrike,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus big,swarm,family:evasion,open --anchor bramblewood-lynx,dhole-matriarch,echidna-quillshot,ent,gatling-hog,hedgehog-herbalist,lucky-hopper,quillguard,sergeant-bramblefox,shimmerwing-stag,taiga-lynx,thorn-shrike,wolf-spider-mother --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.7619,
       "ci": [
-       0.8014,
-       0.901
+       0.7005,
+       0.8233
       ],
-      "avgLumber": 0.3,
-      "generated": "2026-10-30T09:57:35.484Z"
+      "avgLumber": 0.45,
+      "generated": "2026-11-01T23:07:44.549Z"
      },
      "h2h": null,
-     "later": [],
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (fox-sharpshot x2); not re-searched"
+     "later": []
+    },
+    {
+     "id": "0-B-PRO-2",
+     "name": "0-B-PRO-2",
+     "focus": "open",
+     "labels": [
+      "big (10 copies at 1+ Lumber, average 0.5)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "ent": 3,
+      "grave-grin-hyena": 4,
+      "hedgehog-herbalist": 3,
+      "lucky-hopper": 4,
+      "mountain-hare": 3,
+      "squires-mount": 3
+     },
+     "source": {
+      "file": "docs/balance/deck1/bench-deck-map00-mo-2026-10-30.json",
+      "mode": "deck1",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map mo --pool ashbone-ghoul,bramblewood-lynx,cunning-vixen,dhole-matriarch,dhole-runner,eagle-owl-quartermaster,echidna-quillshot,ent,fox-sharpshot,gatling-hog,grave-grin-hyena,hedgehog-herbalist,ibex-rockcaller,lucky-hopper,lyrebird-mimic,mountain-hare,quillguard,sergeant-bramblefox,shimmerwing-stag,squires-mount,stoat-cutthroat,swamp-rabbit,taiga-lynx,thorn-shrike,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus big,swarm,family:evasion,open --anchor bramblewood-lynx,dhole-matriarch,echidna-quillshot,ent,gatling-hog,hedgehog-herbalist,lucky-hopper,quillguard,sergeant-bramblefox,shimmerwing-stag,taiga-lynx,thorn-shrike,wolf-spider-mother --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.7321,
+      "ci": [
+       0.6701,
+       0.7942
+      ],
+      "avgLumber": 0.5,
+      "generated": "2026-11-01T23:07:44.549Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "0-B-PRO-3",
+     "name": "0-B-PRO-3",
+     "focus": "family:evasion",
+     "labels": [
+      "big (9 copies at 1+ Lumber, average 0.5)",
+      "evasion x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "bramblewood-lynx": 3,
+      "ent": 3,
+      "hedgehog-herbalist": 3,
+      "mountain-hare": 4,
+      "swamp-rabbit": 4,
+      "thorn-shrike": 3
+     },
+     "source": {
+      "file": "docs/balance/deck1/bench-deck-map00-mo-2026-10-30.json",
+      "mode": "deck1",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map mo --pool ashbone-ghoul,bramblewood-lynx,cunning-vixen,dhole-matriarch,dhole-runner,eagle-owl-quartermaster,echidna-quillshot,ent,fox-sharpshot,gatling-hog,grave-grin-hyena,hedgehog-herbalist,ibex-rockcaller,lucky-hopper,lyrebird-mimic,mountain-hare,quillguard,sergeant-bramblefox,shimmerwing-stag,squires-mount,stoat-cutthroat,swamp-rabbit,taiga-lynx,thorn-shrike,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus big,swarm,family:evasion,open --anchor bramblewood-lynx,dhole-matriarch,echidna-quillshot,ent,gatling-hog,hedgehog-herbalist,lucky-hopper,quillguard,sergeant-bramblefox,shimmerwing-stag,taiga-lynx,thorn-shrike,wolf-spider-mother --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.6429,
+      "ci": [
+       0.5762,
+       0.7095
+      ],
+      "avgLumber": 0.45,
+      "generated": "2026-11-01T23:07:44.549Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ],
    "bpro": [],
@@ -1129,8 +1159,8 @@
     "BPRO: 0-B-BPRO-2 dropped: beetle-grunt: not in the map's own pool (BPRO); cobalt-talon-fledgling: not in the map's own pool (BPRO); farm-dog: not in the map's own pool (BPRO); feral-tomcat: not in the map's own pool (BPRO); fox-kit: not in the map's own pool (BPRO); paper-wasp: not in the map's own pool (BPRO); pond-trout: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "BPRO: left out (-129 Elo below the band): ant-scout:5,bee-knight:1,burrow-rabbit:1,cottontail:3,forage...",
-    "DECK1: 3 focused decks (0-B-PRO-1 big, 0-B-PRO-2 economy, 0-B-PRO-3 open); the previous PRO decks are under history",
-    "SKILL2 BPRO: none (no card of the list is inside the map's rarity cap (common)); the previous BPRO decks are under history"
+    "SKILL2 BPRO: none (no card of the list is inside the map's rarity cap (common)); the previous BPRO decks are under history",
+    "DECK1: 3 focused decks (0-B-PRO-1 big, 0-B-PRO-2 open, 0-B-PRO-3 family:evasion); the previous PRO decks are under history"
    ],
    "history": [
     {

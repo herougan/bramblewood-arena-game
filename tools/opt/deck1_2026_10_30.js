@@ -156,7 +156,8 @@ function apply(gm, opt) {
   }
   const order = Object.keys(file.maps).sort((a, b) => file.maps[a].map - file.maps[b].map || (file.maps[a].side ? 1 : 0) - (file.maps[b].side ? 1 : 0) || (a < b ? -1 : 1)), maps2 = {}; order.forEach(k => { maps2[k] = file.maps[k]; }); file.maps = maps2;
   file.updated = DATE; file.deck1 = { rule: Object.assign({}, RULE, { anchorMin: ANCHOR_MIN }), tool: 'tools/opt/deck1_2026_10_30.js', note: 'PRO decks of Maps 0-20 and their side maps with their own list rebuilt by DECK1 (owner step 4); BPRO decks unchanged (decision DECK1-2).' };
-  j.invalidOld = invalid;
+  // 2026-11-02 (BAL10): a re-apply of some maps keeps the other maps' invalidOld rows
+  const doneIds = new Set(selectMaps(gm, opt.maps).map(m => m.id)); j.invalidOld = (j.invalidOld || []).filter(v => !doneIds.has(v.map)).concat(invalid);
   if (opt.dry) { console.log(JSON.stringify(invalid.filter(v => v.offList.length), null, 1)); return; }
   fs.writeFileSync(PRO_FILE, JSON.stringify(file, null, 1) + '\n'); writePlan(j); console.log('-> ' + path.relative(ROOT, PRO_FILE) + ' (rebuild the game to bake it in)');
 }

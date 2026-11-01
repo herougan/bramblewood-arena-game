@@ -309,69 +309,69 @@
       "id": "0-B-PRO-1",
       "focus": "big",
       "labels": [
-       "big (8 copies at 1 Lumber, average 0.4)",
-       "economy (6 resource makers)"
+       "big (9 copies at 1+ Lumber, average 0.5)"
       ],
-      "score": 0.8929,
+      "score": 0.7619,
       "ci": [
-       0.8509,
-       0.9348
+       0.7005,
+       0.8233
       ],
       "deck": {
-       "hoopoe-herald": 3,
-       "leafcutter-gardener": 2,
-       "porcupine-roller": 3,
-       "seed-cache-squirrel": 4,
-       "swift-fox": 4,
-       "talus-pika": 4
+       "ashbone-ghoul": 4,
+       "bramblewood-lynx": 3,
+       "ent": 3,
+       "mountain-hare": 4,
+       "sergeant-bramblefox": 3,
+       "wolf-spider-mother": 3
       },
       "leaders": []
      },
      {
       "id": "0-B-PRO-2",
-      "focus": "economy",
+      "focus": "open",
       "labels": [
-       "swarm (14 copies at 0 Lumber)",
-       "economy (7 resource makers)"
+       "big (10 copies at 1+ Lumber, average 0.5)"
       ],
-      "score": 0.8512,
+      "score": 0.7321,
       "ci": [
-       0.8014,
-       0.901
+       0.6701,
+       0.7942
       ],
       "deck": {
-       "ashbone-ghoul": 3,
-       "fox-sharpshot": 2,
-       "hoopoe-herald": 4,
-       "leafcutter-gardener": 3,
-       "swift-fox": 4,
-       "talus-pika": 4
+       "ent": 3,
+       "grave-grin-hyena": 4,
+       "hedgehog-herbalist": 3,
+       "lucky-hopper": 4,
+       "mountain-hare": 3,
+       "squires-mount": 3
       },
       "leaders": []
      },
      {
       "id": "0-B-PRO-3",
-      "focus": "open",
+      "focus": "family:evasion",
       "labels": [
-       "swarm (14 copies at 0 Lumber)"
+       "big (9 copies at 1+ Lumber, average 0.5)",
+       "evasion x8"
       ],
-      "score": 0.8006,
+      "score": 0.6429,
       "ci": [
-       0.7438,
-       0.8574
+       0.5762,
+       0.7095
       ],
       "deck": {
-       "ashbone-ghoul": 3,
-       "dhole-runner": 2,
-       "hoopoe-herald": 3,
-       "jay-pilferer": 4,
-       "mudpuppy": 4,
-       "porcupine-roller": 4
+       "bramblewood-lynx": 3,
+       "ent": 3,
+       "hedgehog-herbalist": 3,
+       "mountain-hare": 4,
+       "swamp-rabbit": 4,
+       "thorn-shrike": 3
       },
       "leaders": []
      }
     ]
-   }
+   },
+   "leftOut": []
   },
   "mf": {
    "id": "mf",
@@ -7739,34 +7739,6 @@
    "offList": [
     "beetle-grunt: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
     "fox-kit: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
-   ]
-  },
-  {
-   "map": "mo",
-   "id": "0-B-BPRO-1",
-   "kind": "bpro",
-   "cards": 9,
-   "over64": true,
-   "offList": []
-  },
-  {
-   "map": "mo",
-   "id": "0-B-BPRO-2",
-   "kind": "bpro",
-   "cards": 11,
-   "over64": true,
-   "offList": [
-    "elder-willow: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
-   ]
-  },
-  {
-   "map": "mo",
-   "id": "0-B-BPRO-3",
-   "kind": "bpro",
-   "cards": 10,
-   "over64": true,
-   "offList": [
-    "elder-willow: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
    ]
   },
   {
