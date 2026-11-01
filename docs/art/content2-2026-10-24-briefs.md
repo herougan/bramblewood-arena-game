@@ -1,5 +1,7 @@
 # New cards, package CONTENT2 (2026-10-24): art prompts
 
+**Status 2026-11-02 (package ART5, JJ9):** painted in PixelLab Pro from these prompts, with the house genre prefix: Hollow-belly Rat, Termite Forager, Gravel Mole, Bog Shrew, Mire Rat, Gnawed Matriarch, Kelpborn Otter, Conger Eel, Selkie Wavebinder. The prompt actually sent sits beside each image in `art/cards/<id>.prompt.txt`.
+
 Eighteen cards: eight Lumber gatherers (one per biome that had none, owner 13:12 #8), the Stone loop (two Stone gatherers and the Badger
 Stonemason), four Gnawed and three Tidefolk cards (the lore bible's thin sub-factions). Each card shows its emoji until it is painted.
 Rules for every prompt (CLAUDE.md): a full background, no weapon words, none of the banned words. Style: `docs/style-guideline.md`,

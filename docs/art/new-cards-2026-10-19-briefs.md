@@ -1,5 +1,7 @@
 # New card art briefs (2026-10-19)
 
+**Status 2026-11-02 (package ART5, JJ9):** painted in PixelLab Pro from these prompts, with the house genre prefix: Armory, Petrified Tree, Crowbar, Bucketknee Wolf, Frost Slick, Magma Vent, Bog Seep, Miasma, Rockfall, Grave Call, Smoke Screen, Magnet, Glintsnatch Magpie. Weapon words reworded before sending: Armory (feathered sticks -> reed poles); Bucketknee Wolf (stick in the knee -> bandaged knee); Glintsnatch Magpie (blade -> silver trinket). The prompt actually sent sits beside each image in `art/cards/<id>.prompt.txt`.
+
 One NightCafe prompt per new card. **Nothing was generated and no credits were spent.** Until art is made, each card shows its emoji placeholder (in brackets below). Packages append their cards here (SK2, EQ ...).
 
 Rules for these prompts (as in `docs/art/easter-egg-art-briefs.md`):

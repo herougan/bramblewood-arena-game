@@ -4,6 +4,11 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 
 
+## 2026-11-02 Package ART5 (owner JJ9; not yet released)
+- **Every card has art now** (test cards aside): 121 new PixelLab Pro portraits after the monthly reset, map cards first (Hollow-belly Rat, Rock Pool Starfish, Anhinga Spearbird, Proboscis Monkey, Horseshoe Crab, Armory, Beluga, Granite Ox Golem), then Torch, Bolas Spider and Fry, then the rest (the Easter eggs, slot hazards, spells, the Gnawed and Tidefolk, the bird-catcher otters, the Mother Carrier and more). 4 of them (Sanderling, Roseate Spoonbill, Water Scorpion, Wallcreeper) are pool candidates, so the game won't show them until they go live.
+- Each image is one of four variants, picked after a visual check against the style guide (genre by stats, natural anatomy, a full background, different from sibling cards). PixelLab's thin frame is trimmed, then the image is scaled with nearest-neighbour to 256 px (≤256 colours) in art/cards/<id>.png, with the prompt sent in art/cards/<id>.prompt.txt; the data URI goes in the card's `art` field. Fungus Gnat Cloud was redone once (the first try drew mammals). No art had been rejected (card_overrides has no artReview rows).
+- PixelLab: 1,220 of the month's 5,000 generations used (122 jobs × 10), no paid credits. The art status lines are in the docs/art briefs; docs/art/art-reuse-map.md is regenerated.
+
 ## 2026-11-01 Release 11-01a (UI10, UI11, ENG15, UI12, THEME4, UI13; prepared, deploys on the owner's OK)
 - One release for the owner's 10-31 / 11-01 notes: Google's own sign-in button and the save guard (GG2), one skirmish per map with ranked decks, Shield chip and context pips, True Sight / Bloom / Cower N / Poison past Shield / Bola / Lasso / Anadromous, the tutorial tooltip and fixes, the owner's map lists (THEME4), Baby cards, Unlikely flags, editing from Map cards, the Torch. Tests: smoke (known d-2026-10-19 only), ui8-ui13 e2e all passing on the merged batch.
 ## 2026-11-01 Package UI13 (owner HH1, HH3, HH4, HH7; not yet released)

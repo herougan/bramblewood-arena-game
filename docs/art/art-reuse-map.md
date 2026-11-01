@@ -2,259 +2,176 @@
 
 The owner, 09:52: *"After we re-divvy out units, we will try to reuse 99% of the art."*
 
-This lists every unit in `canonical/unit-themes.json`: 727 live, 4 in the pool and 109 proposed later versions. For each one it gives the existing art file it keeps. Built by `python3 tools/art_reuse_map.py`.
+This lists every unit in `canonical/unit-themes.json`: 792 live, 4 in the pool and 135 proposed later versions. For each one it gives the existing art file it keeps. Built by `python3 tools/art_reuse_map.py`.
 
 ## Summary
 
-- **806 of 840 units (96.0%) keep existing art.**
-  - 621 have art of their own.
-  - 81 proposed versions keep their base card's art.
-  - 104 have no art of their own yet. Another card's art of the same animal (or the same kind) stands in for now.
-- **34 have no usable match** and need new art. They are flagged below: 30 of them have a loose stand-in of the same species field (a different animal), 4 have nothing.
+- **931 of 931 units (100.0%) keep existing art.**
+  - 796 have art of their own.
+  - 135 proposed versions keep their base card's art.
+  - 0 have no art of their own yet. Another card's art of the same animal (or the same kind) stands in for now.
+- **0 have no usable match** and need new art. They are flagged below: 0 of them have a loose stand-in of the same species field (a different animal), 0 have nothing.
 - The raid's boss units (the Leviathan Elder and the Kraken Brute) borrow their base card's art. Their own epic art is briefed in `docs/art/raid-elder-art-brief.md`.
 
 "Own" art is a file in `art/cards/`, or the art embedded in `cards.json`. The build writes the embedded art to `assets/cards/<id>.webp`. A stand-in is only a placeholder: the card shows another creature's picture until its own is made.
 
-## No usable match (34)
+## No usable match (0)
 
-| Unit | Status | Animal | Note |
-|---|---|---|---|
-| Water Vole (`water-vole`) | live | vole | NO USABLE MATCH (needs new art); the nearest, loosely: Acorn Chipmunk (chipmunk): `art/cards/acorn-chipmunk.png` |
-| Pine Marten (`pine-marten`) | live | pine marten | NO USABLE MATCH (needs new art); the nearest, loosely: Badger Berserker (badger): `art/cards/badger-berserker.png` |
-| Hedgerow Shrew (`hedgerow-shrew`) | live | shrew | NO USABLE MATCH (needs new art); the nearest, loosely: Chained Binturong (binturong): `art/cards/chained-binturong.png` |
-| Field Vole (`field-vole`) | live | vole | NO USABLE MATCH (needs new art); the nearest, loosely: Acorn Chipmunk (chipmunk): `art/cards/acorn-chipmunk.png` |
-| Pincushion Urchin (`pincushion-urchin`) | live | sea urchin | NO USABLE MATCH (needs new art); the nearest, loosely: Sea Cucumber (sea cucumber): `art/cards/sea-cucumber.png` |
-| Rock Pool Starfish (`rock-pool-starfish`) | live | starfish | NO USABLE MATCH (needs new art); the nearest, loosely: Sea Cucumber (sea cucumber): `art/cards/sea-cucumber.png` |
-| Limpet Clinger (`limpet-clinger`) | live | limpet | NO USABLE MATCH (needs new art); the nearest, loosely: Abyss Lantern Squid (squid): `art/cards/abyss-lantern-squid.png` |
-| Muskrat Lodgekeeper (`muskrat-lodgekeeper`) | live | muskrat | NO USABLE MATCH (needs new art); the nearest, loosely: Acorn Chipmunk (chipmunk): `art/cards/acorn-chipmunk.png` |
-| Water Shrew (`water-shrew`) | live | shrew | NO USABLE MATCH (needs new art); the nearest, loosely: Chained Binturong (binturong): `art/cards/chained-binturong.png` |
-| Leopard Slug (`leopard-slug`) | live | leopard slug | NO USABLE MATCH (needs new art); the nearest, loosely: Abyss Lantern Squid (squid): `art/cards/abyss-lantern-squid.png` |
-| Fungus Gnat Cloud (`fungus-gnat-cloud`) | live | fungus gnat | NO USABLE MATCH (needs new art); the nearest, loosely: Amber Cicada (cicada): `art/cards/amber-cicada.png` |
-| Springtail Hopper (`springtail-hopper`) | live | springtail | NO USABLE MATCH (needs new art); the nearest, loosely: Amber Cicada (cicada): `art/cards/amber-cicada.png` |
-| Cave Pseudoscorpion (`cave-pseudoscorpion`) | live | pseudoscorpion | NO USABLE MATCH (needs new art); the nearest, loosely: Caustic Scorpion (scorpion): `cards.json (embedded; built to assets/cards/caustic-scorpion.webp)` |
-| Whip Spider (`whip-spider`) | live | whip spider | NO USABLE MATCH (needs new art); the nearest, loosely: Caustic Scorpion (scorpion): `cards.json (embedded; built to assets/cards/caustic-scorpion.webp)` |
-| Horseshoe Crab (`horseshoe-crab`) | live | horseshoe crab | NO USABLE MATCH (needs new art); the nearest, loosely: Caustic Scorpion (scorpion): `cards.json (embedded; built to assets/cards/caustic-scorpion.webp)` |
-| Sea Hare (`sea-hare`) | live | sea slug | NO USABLE MATCH (needs new art); the nearest, loosely: Abyss Lantern Squid (squid): `art/cards/abyss-lantern-squid.png` |
-| Mangrove Manatee (`mangrove-manatee`) | live | manatee | NO USABLE MATCH (needs new art); the nearest, loosely: Chained Binturong (binturong): `art/cards/chained-binturong.png` |
-| Crown-of-thorns Star (`crown-of-thorns-star`) | live | starfish | NO USABLE MATCH (needs new art); the nearest, loosely: Sea Cucumber (sea cucumber): `art/cards/sea-cucumber.png` |
-| Giant Clam (`giant-clam`) | live | giant clam | NO USABLE MATCH (needs new art); the nearest, loosely: Abyss Lantern Squid (squid): `art/cards/abyss-lantern-squid.png` |
-| Hawthorn Shieldbug (`hawthorn-shieldbug`) | live | shieldbug | NO USABLE MATCH (needs new art); the nearest, loosely: Amber Cicada (cicada): `art/cards/amber-cicada.png` |
-| Arctic Tern (`arctic-tern`) | live | arctic tern | NO USABLE MATCH (needs new art); the nearest, loosely: Abbey Goose (goose): `art/cards/abbey-goose.png` |
-| Lemming Swarm (`lemming-swarm`) | live | lemming | NO USABLE MATCH (needs new art); the nearest, loosely: Acorn Chipmunk (chipmunk): `art/cards/acorn-chipmunk.png` |
-| Exo-podas (`exo-podas`) | live | Insect | NO USABLE MATCH: needs new art |
-| Nyoogle (`nyoogle`) | live | Critter | NO USABLE MATCH: needs new art |
-| Habanero Drakon (`tobasco-drakon`) | live | Drake | NO USABLE MATCH: needs new art |
-| Kegfuse Panda (`demo-panda`) | live | Panda | NO USABLE MATCH: needs new art |
-| Shardclaw Pseudoscorpion (`dire-cave-pseudoscorpion`) | proposed | pseudoscorpion | NO USABLE MATCH (needs new art); the nearest, loosely: Caustic Scorpion (scorpion): `cards.json (embedded; built to assets/cards/caustic-scorpion.webp)` |
-| Grandmother Whip Spider (`elder-whip-spider`) | proposed | whip spider | NO USABLE MATCH (needs new art); the nearest, loosely: Caustic Scorpion (scorpion): `cards.json (embedded; built to assets/cards/caustic-scorpion.webp)` |
-| Needlebed Urchin (`dire-pincushion-urchin`) | proposed | sea urchin | NO USABLE MATCH (needs new art); the nearest, loosely: Sea Cucumber (sea cucumber): `art/cards/sea-cucumber.png` |
-| Coralplate Horseshoe Crab (`dire-horseshoe-crab`) | proposed | horseshoe crab | NO USABLE MATCH (needs new art); the nearest, loosely: Caustic Scorpion (scorpion): `cards.json (embedded; built to assets/cards/caustic-scorpion.webp)` |
-| Current Sea-Cow (`dire-mangrove-manatee`) | proposed | manatee | NO USABLE MATCH (needs new art); the nearest, loosely: Chained Binturong (binturong): `art/cards/chained-binturong.png` |
-| Shadowbough Marten (`dire-pine-marten`) | proposed | pine marten | NO USABLE MATCH (needs new art); the nearest, loosely: Badger Berserker (badger): `art/cards/badger-berserker.png` |
-| Oldwood Leopard Slug (`dire-leopard-slug`) | proposed | leopard slug | NO USABLE MATCH (needs new art); the nearest, loosely: Abyss Lantern Squid (squid): `art/cards/abyss-lantern-squid.png` |
-| Rootlodge Muskrat (`dire-muskrat-lodgekeeper`) | proposed | muskrat | NO USABLE MATCH (needs new art); the nearest, loosely: Acorn Chipmunk (chipmunk): `art/cards/acorn-chipmunk.png` |
+None.
 
-## Stand-ins: no own art yet (104)
+## Stand-ins: no own art yet (0)
 
 | Unit | Status | Animal | Uses for now |
 |---|---|---|---|
-| Fen Mink (`fen-mink`) | live | mink | `art/cards/frostbitten-wolverine.png`: same kind: Frostbitten Wolverine (wolverine), until it has its own |
-| Tidepool Trapper Crab (`tidepool-trapper-crab`) | live | crab | `art/cards/sulfur-vent-crab.png`: same animal: Sulfur Vent Crab (crab), until it has its own |
-| Grave-Grin Hyena (`grave-grin-hyena`) | live | hyena | `art/cards/ashbone-ghoul.png`: same animal: Ashbone Ghoul (hyena), until it has its own |
-| Bogfire Newt (`bogfire-newt`) | live | newt | `art/cards/marsh-wisp.png`: same animal: Marsh Wisp (newt), until it has its own |
-| Plague Gnat Cloud (`plague-gnat-cloud`) | live | gnat | `art/cards/carrion-fly-swarm.png`: same kind: Carrion Fly Swarm (carrion fly), until it has its own |
-| Glasswing Moth (`glasswing-moth`) | live | moth | `art/cards/ash-moth.png`: same animal: Ash Moth (moth), until it has its own |
-| Rivergate Drummer (`rivergate-drummer`) | live | otter | `art/cards/fleetfootd.png`: same animal: Fleetfoot'd (otter), until it has its own |
-| Frostmoon Howler (`frostmoon-howler`) | live | wolf | `art/cards/alpha-howler.png`: same animal: Alpha Howler (wolf), until it has its own |
-| Chapel Tortoise (`chapel-tortoise`) | live | tortoise | `art/cards/elder-tortoise.png`: same animal: Elder Tortoise (tortoise), until it has its own |
-| Weathervane Swift (`weathervane-swift`) | live | swift | `art/cards/gale-sprite.png`: same animal: Gale Sprite (swift), until it has its own |
-| Pall Wraith (`pall-wraith`) | live | raven | `art/cards/bone-diviner.png`: same animal: Bone Diviner (raven), until it has its own |
-| Sandfish (`sandfish`) | live | sandfish skink | `art/cards/cinder-gecko.png`: same kind: Cinder Gecko (gecko), until it has its own |
-| Pale Oryx (`pale-oryx`) | live | oryx | `art/cards/pronghorn-racer.png`: same kind: Pronghorn Racer (pronghorn), until it has its own |
-| Quicksand Queen (`quicksand-queen`) | live | ant | `art/cards/ant-hill.png`: same animal: Ant Hill (ant), until it has its own |
-| River Mink (`river-mink`) | live | mink | `art/cards/frostbitten-wolverine.png`: same kind: Frostbitten Wolverine (wolverine), until it has its own |
-| Signal Crayfish (`signal-crayfish`) | live | crayfish | `art/cards/grotto-lobster.png`: same kind: Grotto Lobster (lobster), until it has its own |
-| Woodcock Lookout (`woodcock-lookout`) | live | woodcock | `art/cards/mudflat-godwit.png`: same kind: Mudflat Godwit (godwit), until it has its own |
-| Grass Snake (`grass-snake`) | live | grass snake | `art/cards/adder-ambusher.png`: same kind: Adder Ambusher (adder), until it has its own |
-| Ladybird Guard (`ladybird-guard`) | live | ladybird | `art/cards/beetle-battering-ram.png`: same kind: Beetle Battering-Ram (beetle), until it has its own |
-| Stag Beetle (`stag-beetle`) | live | stag beetle | `art/cards/beetle-battering-ram.png`: same kind: Beetle Battering-Ram (beetle), until it has its own |
-| Slow-worm (`slow-worm`) | live | slow-worm | `art/cards/cinder-gecko.png`: same kind: Cinder Gecko (gecko), until it has its own |
-| Robin Redbreast (`robin-redbreast`) | live | robin | `art/cards/chapel-sparrow.png`: same kind: Chapel Sparrow (sparrow), until it has its own |
-| Oystercatcher (`oystercatcher`) | live | oystercatcher | `art/cards/mudflat-godwit.png`: same kind: Mudflat Godwit (godwit), until it has its own |
-| Sanderling (`sanderling`) | pool | sanderling | `art/cards/mudflat-godwit.png`: same kind: Mudflat Godwit (godwit), until it has its own |
-| Grey Seal Bull (`grey-seal-bull`) | live | grey seal | `art/cards/harbor-seal.png`: same kind: Harbor Seal (harbor seal), until it has its own |
-| Puffin Diver (`puffin-diver`) | live | puffin | `art/cards/ice-petrel.png`: same kind: Ice Petrel (petrel), until it has its own |
-| Razorbill (`razorbill`) | live | razorbill | `art/cards/ice-petrel.png`: same kind: Ice Petrel (petrel), until it has its own |
-| Kittiwake Flock (`kittiwake-flock`) | live | kittiwake | `art/cards/gull-thief.png`: same kind: Gull Thief (gull), until it has its own |
-| Peregrine Stooper (`peregrine-stooper`) | live | peregrine falcon | `art/cards/dust-devil-kestrel.png`: same kind: Dust-devil Kestrel (kestrel), until it has its own |
-| Fulmar Spitter (`fulmar-spitter`) | live | fulmar | `art/cards/ice-petrel.png`: same kind: Ice Petrel (petrel), until it has its own |
-| Red-billed Chough (`red-billed-chough`) | live | chough | `art/cards/bone-diviner.png`: same kind: Bone Diviner (raven), until it has its own |
-| Pyrenean Desman (`pyrenean-desman`) | live | desman | `art/cards/ore-smelter-mole.png`: same kind: Ore-Smelter Mole (mole), until it has its own |
-| Great Crested Grebe (`great-crested-grebe`) | live | grebe | `art/cards/abbey-goose.png`: same kind: Abbey Goose (goose), until it has its own |
-| Old Sturgeon (`old-sturgeon`) | live | sturgeon | `art/cards/archerfish.png`: same kind: Archerfish (archerfish), until it has its own |
-| Diving Bell Spider (`diving-bell-spider`) | live | diving bell spider | `art/cards/gallery-orb-weaver.png`: same kind: Gallery Orb-Weaver (orb-weaver spider), until it has its own |
-| Alligator Gar (`alligator-gar`) | live | gar | `art/cards/archerfish.png`: same kind: Archerfish (archerfish), until it has its own |
-| Swamp Rabbit (`swamp-rabbit`) | live | rabbit | `art/cards/buck-brawler.png`: same animal: Buck Brawler (rabbit), until it has its own |
-| Mosquito Cloud (`mosquito-cloud`) | live | mosquito | `art/cards/carrion-fly-swarm.png`: same kind: Carrion Fly Swarm (carrion fly), until it has its own |
-| Fire Ant Raft (`fire-ant-raft`) | live | fire ant | `art/cards/ant-hill.png`: same kind: Ant Hill (ant), until it has its own |
-| Anhinga Spearbird (`anhinga-spearbird`) | live | anhinga | `art/cards/battlement-heron.png`: same kind: Battlement Heron (heron), until it has its own |
-| Roseate Spoonbill (`roseate-spoonbill`) | pool | spoonbill | `art/cards/battlement-heron.png`: same kind: Battlement Heron (heron), until it has its own |
-| Booming Bittern (`booming-bittern`) | live | bittern | `art/cards/battlement-heron.png`: same kind: Battlement Heron (heron), until it has its own |
-| Giant Water Bug (`giant-water-bug`) | live | water bug | `art/cards/puddle-skimmer.png`: same kind: Puddle Skimmer (pond skater), until it has its own |
-| Water Scorpion (`water-scorpion`) | pool | water scorpion | `art/cards/puddle-skimmer.png`: same kind: Puddle Skimmer (pond skater), until it has its own |
-| Greater Siren (`greater-siren`) | live | siren | `art/cards/cave-olm.png`: same kind: Cave Olm (olm), until it has its own |
-| Marsh Harrier (`marsh-harrier`) | live | harrier | `art/cards/fire-hawk.png`: same kind: Fire Hawk (kite), until it has its own |
-| Raft Spider (`raft-spider`) | live | raft spider | `art/cards/gallery-orb-weaver.png`: same kind: Gallery Orb-Weaver (orb-weaver spider), until it has its own |
-| Wolf Spider Mother (`wolf-spider-mother`) | live | wolf spider | `art/cards/gallery-orb-weaver.png`: same kind: Gallery Orb-Weaver (orb-weaver spider), until it has its own |
-| Truffle Piglet (`truffle-piglet`) | live | pig | `art/cards/basalt-boar.png`: same kind: Basalt Boar (boar), until it has its own |
-| Red-backed Salamander (`red-backed-salamander`) | live | salamander | `art/cards/cinder-stoker.png`: same animal: Cinder Stoker (salamander), until it has its own |
-| Cave Cricket (`cave-cricket`) | live | cave cricket | `art/cards/cricket-drummer.png`: same kind: Cricket Drummer (cricket), until it has its own |
-| Ghost Crayfish (`ghost-crayfish`) | live | crayfish | `art/cards/grotto-lobster.png`: same kind: Grotto Lobster (lobster), until it has its own |
-| Cave Swiftlet (`cave-swiftlet`) | live | swiftlet | `art/cards/gale-sprite.png`: same kind: Gale Sprite (swift), until it has its own |
-| Giant Cave Huntsman (`giant-cave-huntsman`) | live | huntsman spider | `art/cards/gallery-orb-weaver.png`: same kind: Gallery Orb-Weaver (orb-weaver spider), until it has its own |
-| Guano Beetle (`guano-beetle`) | live | beetle | `art/cards/beetle-battering-ram.png`: same animal: Beetle Battering-Ram (beetle), until it has its own |
-| Banded Sea Krait (`banded-sea-krait`) | live | sea krait | `art/cards/adder-ambusher.png`: same kind: Adder Ambusher (adder), until it has its own |
-| Fishing Cat (`fishing-cat`) | live | fishing cat | `cards.json (embedded; built to assets/cards/alley-cat.webp)`: same kind: Alley Cat (cat), until it has its own |
-| Proboscis Monkey (`proboscis-monkey`) | live | proboscis monkey | `art/cards/bramblewood-macaque.png`: same kind: Bramblewood Macaque (macaque), until it has its own |
-| Yellow-bellied Sea Snake (`yellow-bellied-sea-snake`) | live | sea snake | `art/cards/adder-ambusher.png`: same kind: Adder Ambusher (adder), until it has its own |
-| Parrotfish (`parrotfish`) | live | parrotfish | `art/cards/archerfish.png`: same kind: Archerfish (archerfish), until it has its own |
-| Lionfish (`lionfish`) | live | lionfish | `art/cards/archerfish.png`: same kind: Archerfish (archerfish), until it has its own |
-| Great Barracuda (`great-barracuda`) | live | barracuda | `art/cards/archerfish.png`: same kind: Archerfish (archerfish), until it has its own |
-| Whale Shark (`whale-shark`) | live | whale shark | `art/cards/coral-reef-shark.png`: same kind: Coral Reef Shark (shark), until it has its own |
-| Chamois Leaper (`chamois-leaper`) | live | chamois | `art/cards/fumarole-ibex.png`: same kind: Fumarole Ibex (ibex), until it has its own |
-| Alpine Swift (`alpine-swift`) | live | swift | `art/cards/gale-sprite.png`: same animal: Gale Sprite (swift), until it has its own |
-| Wallcreeper (`wallcreeper`) | pool | wallcreeper | `art/cards/chapel-sparrow.png`: same kind: Chapel Sparrow (sparrow), until it has its own |
-| Alpine Salamander (`alpine-salamander`) | live | salamander | `art/cards/cinder-stoker.png`: same animal: Cinder Stoker (salamander), until it has its own |
-| Apollo Butterfly (`apollo-butterfly`) | live | butterfly | `art/cards/clover-butterfly.png`: same animal: Clover Butterfly (butterfly), until it has its own |
-| Mountain Hare (`mountain-hare`) | live | hare | `art/cards/frost-hare-sprinter.png`: same animal: Frost Hare Sprinter (hare), until it has its own |
-| Thorn Shrike (`thorn-shrike`) | live | shrike | `art/cards/chapel-sparrow.png`: same kind: Chapel Sparrow (sparrow), until it has its own |
-| Hedge Weasel (`hedge-weasel`) | live | weasel | `art/cards/frostbitten-wolverine.png`: same kind: Frostbitten Wolverine (wolverine), until it has its own |
-| Muntjac Barker (`muntjac-barker`) | live | muntjac | `art/cards/antler-skirmisher.png`: same kind: Antler Skirmisher (deer), until it has its own |
-| Anvil Thrush (`anvil-thrush`) | live | thrush | `art/cards/chapel-sparrow.png`: same kind: Chapel Sparrow (sparrow), until it has its own |
-| Garden Tiger Moth (`garden-tiger-moth`) | live | moth | `art/cards/ash-moth.png`: same animal: Ash Moth (moth), until it has its own |
-| Polar Bear (`polar-bear`) | live | polar bear | `art/cards/alpine-avalanche.png`: same animal: Alpine Avalanche (polar bear), until it has its own |
-| Harp Seal Pup (`harp-seal-pup`) | live | harp seal | `art/cards/harbor-seal.png`: same kind: Harbor Seal (harbor seal), until it has its own |
-| Beluga (`beluga`) | live | beluga | `art/cards/fathom-leviathan.png`: same kind: Fathom Leviathan (whale), until it has its own |
-| Krill Swarm (`krill-swarm`) | live | krill | `art/cards/mantis-shrimp.png`: same kind: Mantis Shrimp (mantis shrimp), until it has its own |
-| Greenland Shark (`greenland-shark`) | live | greenland shark | `art/cards/coral-reef-shark.png`: same kind: Coral Reef Shark (shark), until it has its own |
-| Ringed Seal (`ringed-seal`) | live | ringed seal | `art/cards/harbor-seal.png`: same kind: Harbor Seal (harbor seal), until it has its own |
-| Woodland Caribou (`woodland-caribou`) | live | caribou | `art/cards/antler-skirmisher.png`: same kind: Antler Skirmisher (deer), until it has its own |
-| Musk Ox Calf (`musk-ox-calf`) | live | musk ox | `art/cards/tundra-musk-ox.png`: same animal: Tundra Musk Ox (musk ox), until it has its own |
-| Galactic Condor (`galactic-condor`) | live | Condor | `cards.json (embedded; built to assets/cards/ash-cloud-condor.webp)`: same kind: Ash Cloud Condor (condor), until it has its own |
-| Pink Maus (`pink-maus`) | live | Mouse | `art/cards/balloon-archer.png`: same kind: Balloon Archer (mouse), until it has its own |
-| Old Pale Crayfish (`elder-ghost-crayfish`) | proposed | crayfish | `art/cards/grotto-lobster.png`: same kind: Grotto Lobster (lobster), until it has its own |
-| Breakwater Seal Bull (`dire-grey-seal-bull`) | proposed | grey seal | `art/cards/harbor-seal.png`: same kind: Harbor Seal (harbor seal), until it has its own |
-| Old Brood Wolf Spider (`elder-wolf-spider-mother`) | proposed | wolf spider | `art/cards/gallery-orb-weaver.png`: same kind: Gallery Orb-Weaver (orb-weaver spider), until it has its own |
-| Deep-Truffle Hog (`dire-truffle-piglet`) | proposed | pig | `art/cards/basalt-boar.png`: same kind: Basalt Boar (boar), until it has its own |
-| Grand Proboscis Monkey (`elder-proboscis-monkey`) | proposed | proboscis monkey | `art/cards/bramblewood-macaque.png`: same kind: Bramblewood Macaque (macaque), until it has its own |
-| Thornbreast Robin (`dire-robin-redbreast`) | proposed | robin | `art/cards/chapel-sparrow.png`: same kind: Chapel Sparrow (sparrow), until it has its own |
-| Brambleshade Slow-worm (`dire-slow-worm`) | proposed | slow-worm | `art/cards/cinder-gecko.png`: same kind: Cinder Gecko (gecko), until it has its own |
-| Summit Salamander (`dire-alpine-salamander`) | proposed | salamander | `art/cards/cinder-stoker.png`: same animal: Cinder Stoker (salamander), until it has its own |
-| Summit Apollo (`dire-apollo-butterfly`) | proposed | butterfly | `art/cards/clover-butterfly.png`: same animal: Clover Butterfly (butterfly), until it has its own |
-| Old Summit Chamois (`elder-chamois-leaper`) | proposed | chamois | `art/cards/fumarole-ibex.png`: same kind: Fumarole Ibex (ibex), until it has its own |
-| Kelp Bell Spider (`dire-diving-bell-spider`) | proposed | diving bell spider | `art/cards/gallery-orb-weaver.png`: same kind: Gallery Orb-Weaver (orb-weaver spider), until it has its own |
-| Kelp Signal Crayfish (`dire-signal-crayfish`) | proposed | crayfish | `art/cards/grotto-lobster.png`: same kind: Grotto Lobster (lobster), until it has its own |
-| Old Brook Desman (`elder-pyrenean-desman`) | proposed | desman | `art/cards/ore-smelter-mole.png`: same kind: Ore-Smelter Mole (mole), until it has its own |
-| Kelp Water Snake (`dire-grass-snake`) | proposed | grass snake | `art/cards/adder-ambusher.png`: same kind: Adder Ambusher (adder), until it has its own |
-| Mangrove Bogfire Newt (`dire-bogfire-newt`) | proposed | newt | `art/cards/marsh-wisp.png`: same animal: Marsh Wisp (newt), until it has its own |
-| Kelp Raft Spider (`dire-raft-spider`) | proposed | raft spider | `art/cards/gallery-orb-weaver.png`: same kind: Gallery Orb-Weaver (orb-weaver spider), until it has its own |
-| Old Anhinga (`elder-anhinga-spearbird`) | proposed | anhinga | `art/cards/battlement-heron.png`: same kind: Battlement Heron (heron), until it has its own |
-| Swampmire Gar (`dire-alligator-gar`) | proposed | gar | `art/cards/archerfish.png`: same kind: Archerfish (archerfish), until it has its own |
-| Grand Fire Ant Raft (`elder-fire-ant-raft`) | proposed | fire ant | `art/cards/ant-hill.png`: same kind: Ant Hill (ant), until it has its own |
-| Swampmire Mink (`dire-fen-mink`) | proposed | mink | `art/cards/frostbitten-wolverine.png`: same kind: Frostbitten Wolverine (wolverine), until it has its own |
 
-## Proposed later versions: their base's art (81)
+## Proposed later versions: their base's art (135)
 
 | Proposed name | Internal | Keeps |
 |---|---|---|
 | Peakroot Olm | `dire-cave-olm` | `art/cards/cave-olm.png` (its base, Cave Olm) |
-| Crag Oilbird | `dire-oilbird` | `art/cards/oilbird.png` (its base, Oilbird) |
-| Glimmer Vent Crab | `dire-sulfur-vent-crab` | `art/cards/sulfur-vent-crab.png` (its base, Sulfur Vent Crab) |
+| Sundered Whip Spider | `dire-whip-spider` | `art/cards/whip-spider.png` (its base, Whip Spider) |
+| Sundered Gallery Orb-Weaver | `elder-gallery-orb-weaver` | `art/cards/gallery-orb-weaver.png` (its base, Gallery Orb-Weaver) |
+| Sundered Ghost Crayfish | `dire-ghost-crayfish` | `art/cards/ghost-crayfish.png` (its base, Ghost Crayfish) |
 | Glimmerdeep Cavefish | `dire-blind-cave-fish` | `art/cards/blind-cave-fish.png` (its base, Blind Cave Fish) |
-| Starceiling Glowworms | `dire-glowworm-cluster` | `art/cards/glowworm-cluster.png` (its base, Glowworm Cluster) |
-| Grand Cinder Moth | `elder-sulfur-cinder-moth` | `art/cards/sulfur-cinder-moth.png` (its base, Sulfur Cinder Moth) |
-| Peak Bat Cloud | `dire-cave-bat-swarm` | `art/cards/cave-bat-swarm.png` (its base, Cave Bat Swarm) |
-| Grey Echo-Screecher | `elder-echo-screecher` | `art/cards/echo-screecher.png` (its base, Echo Screecher) |
+| Sundered Sulfur Cinder Moth | `dire-sulfur-cinder-moth` | `art/cards/sulfur-cinder-moth.png` (its base, Sulfur Cinder Moth) |
+| Sundered Beetle Grunt | `elder-beetle-grunt` | `art/cards/beetle-grunt.png` (its base, Beetle Grunt) |
+| Sundered Echo Screecher | `dire-echo-screecher` | `art/cards/echo-screecher.png` (its base, Echo Screecher) |
+| Sundered Subterraneaner | `elder-subterraneaner` | `art/cards/subterraneaner.png` (its base, Subterraneaner) |
 | Glimmer Octopus Admiral | `dire-octopus-tactician` | `art/cards/octopus-tactician.png` (its base, Octopus Tactician) |
 | Ironcoil Millipede | `dire-millipede-hauler` | `art/cards/millipede-hauler.png` (its base, Millipede Hauler) |
 | Stormdiver Eagle | `dire-golden-eagle-diver` | `art/cards/golden-eagle-diver.png` (its base, Golden Eagle Diver) |
-| Grand Summit Condor | `elder-peak-condor` | `art/cards/peak-condor.png` (its base, Peak Condor) |
-| Eyrie Snowslide | `dire-alpine-avalanche` | `art/cards/alpine-avalanche.png` (its base, Alpine Avalanche) |
-| Ledgehorn Goat | `dire-mountain-goat-climber` | `art/cards/mountain-goat-climber.png` (its base, Mountain Goat Climber) |
-| Kelp Gull Corsair | `dire-gull-thief` | `art/cards/gull-thief.png` (its base, Gull Thief) |
-| Old Floe Pelican | `elder-pelican-diver` | `art/cards/pelican-diver.png` (its base, Pelican Diver) |
-| Kelpshell Crab | `dire-tide-pool-crab` | `art/cards/tide-pool-crab.png` (its base, Tide Pool Crab) |
-| Grand Fiddler Host | `elder-fiddler-crab-swarm` | `art/cards/fiddler-crab-swarm.png` (its base, Fiddler Crab Swarm) |
+| Quiet Puffin Diver | `elder-puffin-diver` | `art/cards/puffin-diver.png` (its base, Puffin Diver) |
+| Kelp Kittiwake Flock | `dire-kittiwake-flock` | `art/cards/kittiwake-flock.png` (its base, Kittiwake Flock) |
+| Wolfsbane Fulmar Spitter | `elder-fulmar-spitter` | `art/cards/fulmar-spitter.png` (its base, Fulmar Spitter) |
+| Kelp Fiddler Crab Swarm | `dire-fiddler-crab-swarm` | `art/cards/fiddler-crab-swarm.png` (its base, Fiddler Crab Swarm) |
+| Wolfsbane Tidepool Trapper Crab | `elder-tidepool-trapper-crab` | `art/cards/tidepool-trapper-crab.png` (its base, Tidepool Trapper Crab) |
 | Undertow Eel | `dire-riptide-eel` | `art/cards/riptide-eel.png` (its base, Riptide Eel) |
+| Breakwater Seal Bull | `dire-grey-seal-bull` | `art/cards/grey-seal-bull.png` (its base, Grey Seal Bull) |
 | Spiral-Fort Conch | `dire-conch-crawler` | `art/cards/conch-crawler.png` (its base, Conch Crawler) |
-| Bone-Dune Scorpion | `dire-caustic-scorpion` | `cards.json (embedded; built to assets/cards/caustic-scorpion.webp)` (its base, Caustic Scorpion) |
-| Alcove Trapdoor Spider | `dire-trapdoor-spider` | `art/cards/trapdoor-spider.png` (its base, Trapdoor Spider) |
-| Alcove Nightjar | `dire-nightjar-drifter` | `art/cards/nightjar-drifter.png` (its base, Nightjar Drifter) |
-| Deepcap Colossus | `dire-fungal-colossus` | `art/cards/fungal-colossus.png` (its base, Fungal Colossus) |
-| Gloamshade Moth | `dire-nightshade-moth` | `art/cards/nightshade-moth.png` (its base, Nightshade Moth) |
-| Old Monarch Bladewing | `elder-monarch-wingblade` | `art/cards/monarch-wingblade.png` (its base, Monarch Wingblade) |
-| Thornshoot Sprout | `dire-bramble-sprout` | `art/cards/bramble-sprout.png` (its base, Bramble Sprout) |
-| Rootbound Oath-Keeper | `dire-hollow-oath-keeper` | `art/cards/hollow-oath-keeper.png` (its base, Hollow Oath-Keeper) |
+| Wolfsbane Oyster Bank | `elder-oyster-bank` | `art/cards/oyster-bank.png` (its base, Oyster Bank) |
+| Needlebed Urchin | `dire-pincushion-urchin` | `art/cards/pincushion-urchin.png` (its base, Pincushion Urchin) |
+| Pale Obsidian Scorpion | `dire-obsidian-scorpion` | `art/cards/obsidian-scorpion.png` (its base, Obsidian Scorpion) |
+| Pale Caustic Scorpion | `elder-caustic-scorpion` | `cards.json (embedded; built to assets/cards/caustic-scorpion.webp)` (its base, Caustic Scorpion) |
+| Pale Roadrunner Courier | `dire-roadrunner-courier` | `art/cards/roadrunner-courier.png` (its base, Roadrunner Courier) |
+| Pale Antlion Pit | `dire-antlion-pit` | `art/cards/antlion-pit.png` (its base, Antlion Pit) |
+| Pale Dromedary | `dire-dromedary` | `art/cards/dromedary.png` (its base, Dromedary) |
+| Pale Fennec Fox | `elder-fennec-fox` | `art/cards/fennec-fox.png` (its base, Fennec Fox) |
+| Pale Sandfish | `dire-sandfish` | `art/cards/sandfish.png` (its base, Sandfish) |
+| Pale Frillneck Duelist | `elder-frillneck-duelist` | `art/cards/frillneck-duelist.png` (its base, Frillneck Duelist) |
+| Caves Wolf Spider Mother | `dire-wolf-spider-mother` | `art/cards/wolf-spider-mother.png` (its base, Wolf Spider Mother) |
+| Caves Owl Nightwatch | `dire-owl-nightwatch` | `art/cards/owl-nightwatch.png` (its base, Owl Nightwatch) |
+| Caves Dung Beetle | `dire-dung-beetle` | `art/cards/dung-beetle.png` (its base, Dung Beetle) |
+| Deep-Truffle Hog | `dire-truffle-piglet` | `art/cards/truffle-piglet.png` (its base, Truffle Piglet) |
 | Mouldering Grub | `dire-compost-grub` | `art/cards/compost-grub.png` (its base, Compost Grub) |
-| Old Bloat Leech | `elder-gangrenous-leech` | `art/cards/gangrenous-leech.png` (its base, Gangrenous Leech) |
 | Cloudbeak Toucan | `dire-toucan-courier` | `art/cards/toucan-courier.png` (its base, Toucan Courier) |
+| Sundered Glasswing Butterfly | `dire-glasswing-butterfly` | `art/cards/glasswing-butterfly.png` (its base, Glasswing Butterfly) |
 | Peakbreaker Gorilla | `dire-ironback-gorilla` | `art/cards/ironback-gorilla.png` (its base, Ironback Gorilla) |
 | Carrion Bloom | `dire-rafflesia` | `art/cards/rafflesia.png` (its base, Rafflesia) |
-| Coral Sunbittern | `dire-sunbittern-strider` | `art/cards/sunbittern-strider.png` (its base, Sunbittern Strider) |
-| Old Tideflat Godwit | `elder-mudflat-godwit` | `art/cards/mudflat-godwit.png` (its base, Mudflat Godwit) |
+| Goldfeather Stable Colt | `dire-stable-colt` | `art/cards/stable-colt.png` (its base, Stable Colt) |
+| Goldfeather Warhorse Charger | `elder-warhorse-charger` | `art/cards/warhorse-charger.png` (its base, Warhorse Charger) |
+| Coral Mangrove Kingfisher | `dire-mangrove-kingfisher` | `art/cards/mangrove-kingfisher.png` (its base, Mangrove Kingfisher) |
+| Coral Ironclaw Fiddler | `dire-ironclaw-fiddler` | `art/cards/ironclaw-fiddler.png` (its base, Ironclaw Fiddler) |
 | Current Mudskipper | `dire-mangrove-mudskipper` | `art/cards/mangrove-mudskipper.png` (its base, Mangrove Mudskipper) |
-| Scarred Reef Shark | `elder-reef-shark` | `art/cards/reef-shark.png` (its base, Reef Shark) |
-| Deepchamber Nautilus | `dire-nautilus-drifter` | `art/cards/nautilus-drifter.png` (its base, Nautilus Drifter) |
+| Coral Archerfish | `elder-archerfish` | `art/cards/archerfish.png` (its base, Archerfish) |
+| Current Sea-Cow | `dire-mangrove-manatee` | `art/cards/mangrove-manatee.png` (its base, Mangrove Manatee) |
+| Coral Fishing Cat | `elder-fishing-cat` | `art/cards/fishing-cat.png` (its base, Fishing Cat) |
+| Coral Sea Hare | `dire-sea-hare` | `art/cards/sea-hare.png` (its base, Sea Hare) |
 | Reefwalker Monitor | `dire-mangrove-monitor` | `art/cards/mangrove-monitor.png` (its base, Mangrove Monitor) |
-| Current Spirit | `dire-tide-spirit` | `art/cards/tide-spirit.png` (its base, Tide Spirit) |
-| Bramble Bog-Hopper | `dire-puddle-hopper` | `art/cards/puddle-hopper.png` (its base, Puddle Hopper) |
-| Old Meadow Croaker | `elder-meadow-frog` | `art/cards/meadow-frog.png` (its base, Meadow Frog) |
-| Old Bramble Crow | `elder-field-crow` | `art/cards/field-crow.png` (its base, Field Crow) |
-| Sporeburst Puffball | `dire-puffball-bombardier` | `art/cards/puffball-bombardier.png` (its base, Puffball Bombardier) |
+| Redwood Quill-Thorn Boar | `dire-quill-thorn-boar` | `art/cards/quill-thorn-boar.png` (its base, Quill-Thorn Boar) |
+| Old Meadow Frog | `dire-meadow-frog` | `art/cards/meadow-frog.png` (its base, Meadow Frog) |
+| Old Lyrebird Mimic | `dire-lyrebird-mimic` | `art/cards/lyrebird-mimic.png` (its base, Lyrebird Mimic) |
+| Old Woodpecker Sapper | `elder-woodpecker-sapper` | `art/cards/woodpecker-sapper.png` (its base, Woodpecker Sapper) |
 | Rootdelve Ant | `dire-tunnel-ant` | `art/cards/tunnel-ant.png` (its base, Tunnel Ant) |
-| Old Bramble Drummer | `elder-cricket-drummer` | `art/cards/cricket-drummer.png` (its base, Cricket Drummer) |
-| Grand Dormouse | `elder-dormouse` | `art/cards/dormouse.png` (its base, Dormouse) |
-| Bramblewatch Ent | `dire-ent` | `cards.json (embedded; built to assets/cards/ent.webp)` (its base, Ent) |
+| Old Leafcutter Gardener | `elder-leafcutter-gardener` | `art/cards/leafcutter-gardener.png` (its base, Leafcutter Gardener) |
+| Old Bison Bulldozer | `dire-bison-bulldozer` | `art/cards/bison-bulldozer.png` (its base, Bison Bulldozer) |
+| Old Hedge Weasel | `elder-hedge-weasel` | `art/cards/hedge-weasel.png` (its base, Hedge Weasel) |
+| Old Moonshell Snail | `dire-moonshell-snail` | `art/cards/moonshell-snail.png` (its base, Moonshell Snail) |
+| Old Leopard Slug | `elder-leopard-slug` | `art/cards/leopard-slug.png` (its base, Leopard Slug) |
+| Thornshoot Sprout | `dire-bramble-sprout` | `art/cards/bramble-sprout.png` (its base, Bramble Sprout) |
 | Old Heartwood | `elder-heartwood-treant` | `art/cards/heartwood-treant.png` (its base, Heartwood Treant) |
-| Summit Eagle-Owl | `dire-eagle-owl-quartermaster` | `art/cards/eagle-owl-quartermaster.png` (its base, Eagle-Owl Quartermaster) |
-| Grand Eyrie Warden | `elder-eyrie-warden` | `art/cards/eyrie-warden.png` (its base, Eyrie Warden) |
+| Brambleshade Slow-worm | `dire-slow-worm` | `art/cards/slow-worm.png` (its base, Slow-worm) |
+| Rootbound Oath-Keeper | `dire-hollow-oath-keeper` | `art/cards/hollow-oath-keeper.png` (its base, Hollow Oath-Keeper) |
+| Old Tunnel Wyrm | `dire-tunnel-wyrm` | `cards.json (embedded; built to assets/cards/tunnel-wyrm.webp)` (its base, Tunnel Wyrm) |
+| Summit Salamander | `dire-alpine-salamander` | `art/cards/alpine-salamander.png` (its base, Alpine Salamander) |
+| Quiet Eyrie Warden | `dire-eyrie-warden` | `art/cards/eyrie-warden.png` (its base, Eyrie Warden) |
+| Grand Summit Condor | `elder-peak-condor` | `art/cards/peak-condor.png` (its base, Peak Condor) |
+| Summit Apollo | `dire-apollo-butterfly` | `art/cards/apollo-butterfly.png` (its base, Apollo Butterfly) |
 | Summit Marmot | `dire-alpine-marmot` | `art/cards/alpine-marmot.png` (its base, Alpine Marmot) |
+| Quiet Mountain Goat Climber | `elder-mountain-goat-climber` | `art/cards/mountain-goat-climber.png` (its base, Mountain Goat Climber) |
 | Scarstone Reaver | `dire-wound-reaver` | `art/cards/wound-reaver.png` (its base, Wound Reaver) |
-| Rimefire Stonedrop | `dire-stonedrop-vulture` | `art/cards/stonedrop-vulture.png` (its base, Stonedrop Vulture) |
+| Alcove Trapdoor Spider | `dire-trapdoor-spider` | `art/cards/trapdoor-spider.png` (its base, Trapdoor Spider) |
+| Pinewood Redwood Woodpecker | `dire-redwood-woodpecker` | `art/cards/redwood-woodpecker.png` (its base, Redwood Woodpecker) |
+| Pinewood Stag Knight | `dire-stag-knight` | `art/cards/stag-knight.png` (its base, Stag Knight) |
+| Old Fawn Scout | `elder-fawn-scout` | `art/cards/fawn-scout.png` (its base, Fawn Scout) |
 | Sunken Hermit Crab | `dire-open-ocean-hermit-crab` | `art/cards/open-ocean-hermit-crab.png` (its base, Open-Ocean Hermit Crab) |
-| Sunken Clownfish | `dire-clownfish-scout` | `art/cards/clownfish-scout.png` (its base, Clownfish Scout) |
-| Old Wreck Shark | `elder-coral-reef-shark` | `art/cards/coral-reef-shark.png` (its base, Coral Reef Shark) |
-| Grand Narwhal | `elder-narwhal-lancer` | `art/cards/narwhal-lancer.png` (its base, Narwhal Lancer) |
-| Kraken Yearling | `dire-kraken-spawnling` | `art/cards/kraken-spawnling.png` (its base, Kraken Spawnling) |
-| Mossveil Frog | `dire-camouflage-frog` | `art/cards/camouflage-frog.png` (its base, Camouflage Frog) |
-| Old Lotus Frog | `elder-lotus-frog` | `art/cards/lotus-frog.png` (its base, Lotus Frog) |
-| Bramble Pond Drake | `dire-pond-paddler` | `art/cards/pond-paddler.png` (its base, Pond Paddler) |
+| Sunken Mantis Shrimp | `elder-mantis-shrimp` | `art/cards/mantis-shrimp.png` (its base, Mantis Shrimp) |
+| Scarred Reef Shark | `elder-reef-shark` | `art/cards/reef-shark.png` (its base, Reef Shark) |
+| Sunken Dolphin Knight | `elder-dolphin-knight` | `art/cards/dolphin-knight.png` (its base, Dolphin Knight) |
+| Sunken Yellow-bellied Sea Snake | `dire-yellow-bellied-sea-snake` | `art/cards/yellow-bellied-sea-snake.png` (its base, Yellow-bellied Sea Snake) |
+| Kelp Lotus Frog | `dire-lotus-frog` | `art/cards/lotus-frog.png` (its base, Lotus Frog) |
+| Old Ferry Toll-Frog | `elder-ferry-toll-frog` | `art/cards/ferry-toll-frog.png` (its base, Ferry Toll-Frog) |
+| Kelp Bell Spider | `dire-diving-bell-spider` | `art/cards/diving-bell-spider.png` (its base, Diving Bell Spider) |
+| Coral Sunbittern | `dire-sunbittern-strider` | `art/cards/sunbittern-strider.png` (its base, Sunbittern Strider) |
 | Old Ford Kingfisher | `elder-ford-kingfisher` | `art/cards/ford-kingfisher.png` (its base, Ford Kingfisher) |
-| Kelp Manta | `dire-reef-manta-glider` | `art/cards/reef-manta-glider.png` (its base, Reef Manta Glider) |
-| Old Silverside | `elder-minnow-skitter` | `art/cards/minnow-skitter.png` (its base, Minnow Skitter) |
+| Kelp Signal Crayfish | `dire-signal-crayfish` | `art/cards/signal-crayfish.png` (its base, Signal Crayfish) |
+| Old Shallows Fry | `dire-shallows-fry` | `art/cards/shallows-fry.png` (its base, Shallows Fry) |
+| Old Pufferfish Bulwark | `elder-pufferfish-bulwark` | `art/cards/pufferfish-bulwark.png` (its base, Pufferfish Bulwark) |
 | Kelp Mayfly | `dire-mayfly-dancer` | `art/cards/mayfly-dancer.png` (its base, Mayfly Dancer) |
-| Mirage Cuttlefish | `dire-cuttlefish-illusionist` | `art/cards/cuttlefish-illusionist.png` (its base, Cuttlefish Illusionist) |
-| Old Mangrove Behemoth | `elder-bog-behemoth` | `art/cards/bog-behemoth.png` (its base, Bog Behemoth) |
-| Mangrove Raven | `dire-raven-scout` | `art/cards/raven-scout.png` (its base, Raven Scout) |
+| Rootlodge Muskrat | `dire-muskrat-lodgekeeper` | `art/cards/muskrat-lodgekeeper.png` (its base, Muskrat Lodgekeeper) |
+| Old Water Vole | `elder-water-vole` | `art/cards/water-vole.png` (its base, Water Vole) |
+| Kelp Water Snake | `dire-grass-snake` | `art/cards/grass-snake.png` (its base, Grass Snake) |
+| Old Planarian Splitter | `dire-planarian-splitter` | `art/cards/planarian-splitter.png` (its base, Planarian Splitter) |
+| Canopy Hoopoe Herald | `dire-hoopoe-herald` | `art/cards/hoopoe-herald.png` (its base, Hoopoe Herald) |
+| Goldfeather Weaver Bird | `elder-weaver-bird` | `art/cards/weaver-bird.png` (its base, Weaver Bird) |
+| Canopy Termite Forager | `dire-termite-forager` | `art/cards/termite-forager.png` (its base, Termite Forager) |
+| Canopy Marula Elephant | `dire-marula-elephant` | `art/cards/marula-elephant.png` (its base, Marula Elephant) |
+| Goldfeather Pangolin Roller | `elder-pangolin-roller` | `art/cards/pangolin-roller.png` (its base, Pangolin Roller) |
+| Bramble Bog-Hopper | `dire-puddle-hopper` | `art/cards/puddle-hopper.png` (its base, Puddle Hopper) |
+| Kelp Bogfire Newt | `elder-bogfire-newt` | `art/cards/bogfire-newt.png` (its base, Bogfire Newt) |
+| Kelp Raft Spider | `dire-raft-spider` | `art/cards/raft-spider.png` (its base, Raft Spider) |
+| Kelp Booming Bittern | `dire-booming-bittern` | `art/cards/booming-bittern.png` (its base, Booming Bittern) |
+| Kelp Raven Scout | `elder-raven-scout` | `art/cards/raven-scout.png` (its base, Raven Scout) |
+| Swampmire Gar | `dire-alligator-gar` | `art/cards/alligator-gar.png` (its base, Alligator Gar) |
 | Mangrove-o'-Wisp | `dire-willow-o-wisp` | `art/cards/willow-o-wisp.png` (its base, Willow-o'-Wisp) |
+| Kelp Nightshade Moth | `elder-nightshade-moth` | `art/cards/nightshade-moth.png` (its base, Nightshade Moth) |
+| Kelp Vampire Bat | `dire-vampire-bat` | `art/cards/vampire-bat.png` (its base, Vampire Bat) |
+| Kelp Fen Mink | `elder-fen-mink` | `art/cards/fen-mink.png` (its base, Fen Mink) |
 | Swampmire Root Lurker | `dire-cypress-root-lurker` | `art/cards/cypress-root-lurker.png` (its base, Cypress Root Lurker) |
 | Swampmire Constrictor | `dire-constrictor-coil` | `art/cards/constrictor-coil.png` (its base, Constrictor Coil) |
-| Venom Patriarch | `elder-venomlord-serpent` | `art/cards/venomlord-serpent.png` (its base, Venomlord Serpent) |
+| Kelp Swamp Alligator | `elder-swamp-alligator` | `art/cards/swamp-alligator.png` (its base, Swamp Alligator) |
 | Mangrove Wisp | `dire-marsh-wisp` | `art/cards/marsh-wisp.png` (its base, Marsh Wisp) |
-| Old Echo Keeper | `elder-echo-keeper` | `art/cards/echo-keeper.png` (its base, Echo Keeper) |
+| Kelp Bog Revenant | `elder-bog-revenant` | `art/cards/bog-revenant.png` (its base, Bog Revenant) |
 | Swampmire Leech | `dire-bog-leech` | `art/cards/bog-leech.png` (its base, Bog Leech) |
-| Tundra Moon Howler | `dire-lunar-howler` | `art/cards/lunar-howler.png` (its base, Lunar Howler) |
-| Rimefire Wolf Pack | `dire-glacier-wolf-pack` | `cards.json (embedded; built to assets/cards/glacier-wolf-pack.webp)` (its base, Glacier Wolf Pack) |
-| Old Rimefire Wolverine | `elder-frostbitten-wolverine` | `art/cards/frostbitten-wolverine.png` (its base, Frostbitten Wolverine) |
-| Peak Ash Condor | `dire-ash-cloud-condor` | `cards.json (embedded; built to assets/cards/ash-cloud-condor.webp)` (its base, Ash Cloud Condor) |
-| Peak Gorge Wyrm | `dire-gorge-wyrm` | `art/cards/gorge-wyrm.png` (its base, Gorge Wyrm) |
+| Old Bloat Leech | `elder-gangrenous-leech` | `art/cards/gangrenous-leech.png` (its base, Gangrenous Leech) |
+| Wolfsbane Bramblewood Lynx | `dire-bramblewood-lynx` | `cards.json (embedded; built to assets/cards/bramblewood-lynx.webp)` (its base, Bramblewood Lynx) |
+| Rimefire Snowshoe Hare | `elder-snowshoe-hare` | `art/cards/snowshoe-hare.png` (its base, Snowshoe Hare) |
+| Wolfsbane Pinecone Sapper | `dire-pinecone-sapper` | `art/cards/pinecone-sapper.png` (its base, Pinecone Sapper) |
+| Rimefire Ashwing Ptarmigan | `dire-ashwing-ptarmigan` | `art/cards/ashwing-ptarmigan.png` (its base, Ashwing Ptarmigan) |
+| Rimefire Arctic Tern | `elder-arctic-tern` | `art/cards/arctic-tern.png` (its base, Arctic Tern) |
+| Rimefire Snow Ermine | `dire-snow-ermine` | `art/cards/snow-ermine.png` (its base, Snow Ermine) |
+| Rimefire Ravenous Wolverine | `elder-ravenous-wolverine` | `art/cards/ravenous-wolverine.png` (its base, Ravenous Wolverine) |
+| Goldfeather Webspire Sentinel | `dire-webspire-sentinel` | `art/cards/webspire-sentinel.png` (its base, Webspire Sentinel) |
+| Goldfeather Mallard Marauder | `dire-mallard-marauder` | `art/cards/mallard-marauder.png` (its base, Mallard Marauder) |
+| Goldfeather Beetle Battering-Ram | `dire-beetle-battering-ram` | `art/cards/beetle-battering-ram.png` (its base, Beetle Battering-Ram) |
+| Goldfeather Paper Wasp | `elder-paper-wasp` | `art/cards/paper-wasp.png` (its base, Paper Wasp) |
+| Goldfeather War Panther | `dire-war-panther` | `cards.json (embedded; built to assets/cards/war-panther.webp)` (its base, War Panther) |
+| Goldfeather Margay | `elder-margay` | `art/cards/margay.png` (its base, Margay) |
+| Sundered Cinder Stoker | `dire-cinder-stoker` | `art/cards/cinder-stoker.png` (its base, Cinder Stoker) |
+| Sundered Fire Salamander | `elder-fire-salamander` | `art/cards/fire-salamander.png` (its base, Fire Salamander) |
+| Glimmer Vent Crab | `dire-sulfur-vent-crab` | `art/cards/sulfur-vent-crab.png` (its base, Sulfur Vent Crab) |
+| Sundered Ember Tetra | `dire-ember-tetra` | `art/cards/ember-tetra.png` (its base, Ember Tetra) |
+| Sundered Pumice Beetle | `dire-pumice-beetle` | `art/cards/pumice-beetle.png` (its base, Pumice Beetle) |
+| Sundered Firefly Swarm | `elder-firefly-swarm` | `art/cards/firefly-swarm.png` (its base, Firefly Swarm) |
+| Sundered Pall Wraith | `dire-pall-wraith` | `art/cards/pall-wraith.png` (its base, Pall Wraith) |
 
 ## Non-player units
 
 | Unit | Kind | Art |
 |---|---|---|
 | Kraken Brute (`kraken-spawnling~boss`) | raid-boss-unit | `art/cards/kraken-spawnling.png` (its base card; wants its own epic art (docs/art/raid-elder-art-brief.md)) |
+| Vampyre Matriarch (`vampire-squid~boss`) | raid-boss-unit | `art/cards/vampire-squid.png` (its base card; wants its own epic art (docs/art/raid-elder-art-brief.md)) |
 | Leviathan Elder (`humpback-elder~boss`) | raid-boss-unit | `art/cards/humpback-elder.png` (its base card; wants its own epic art (docs/art/raid-elder-art-brief.md)) |
+| Broodmother Ascendant (`goliath-broodmother~boss`) | raid-boss-unit | `art/cards/goliath-broodmother.png` (its base card; wants its own epic art (docs/art/raid-elder-art-brief.md)) |
 | The Drowned Colossus (`the-drowned-colossus`) | raid-boss | `art/raids/the-drowned-colossus.png` (raid boss portrait) |
 | The Frost Yeti King (`the-frost-yeti-king`) | raid-boss | `art/raids/the-frost-yeti-king.png` (raid boss portrait) |
 | The Deep Troll King (`the-deep-troll-king`) | raid-boss | `art/raids/the-deep-troll-king.png` (raid boss portrait) |
@@ -269,7 +186,7 @@ This lists every unit in `canonical/unit-themes.json`: 727 live, 4 in the pool a
 | The Warhorse Sovereign (`the-warhorse-sovereign`) | raid-boss | `art/raids/the-warhorse-sovereign.png` (raid boss portrait) |
 | The Cave Warlord (`the-cave-warlord`) | raid-boss | `art/raids/the-cave-warlord.png` (raid boss portrait) |
 
-## Units with their own art (621)
+## Units with their own art (796)
 
 | Unit | Status | Animal | File |
 |---|---|---|---|
@@ -372,7 +289,7 @@ This lists every unit in `canonical/unit-themes.json`: 727 live, 4 in the pool a
 | Stable Colt (`stable-colt`) | live | horse | `art/cards/stable-colt.png` |
 | Squire's Mount (`squires-mount`) | live | horse | `art/cards/squires-mount.png` |
 | Warhorse Charger (`warhorse-charger`) | live | horse | `art/cards/warhorse-charger.png` |
-| Cataphract Destrier (`cataphract-destrier`) | live | horse | `art/cards/cataphract-destrier.png` |
+| Gilded Roadwarden (`cataphract-destrier`) | live | horse | `art/cards/cataphract-destrier.png` |
 | Puddle Hopper (`puddle-hopper`) | live | frog | `art/cards/puddle-hopper.png` |
 | Poison Dart Croaker (`poison-dart-croaker`) | live | frog | `art/cards/poison-dart-croaker.png` |
 | Bog Behemoth (`bog-behemoth`) | live | frog | `art/cards/bog-behemoth.png` |
@@ -514,6 +431,16 @@ This lists every unit in `canonical/unit-themes.json`: 727 live, 4 in the pool a
 | Maggot (`maggot-swarmling`) | live | maggot | `art/cards/maggot-swarmling.png` |
 | Rot-Swollen Carcass (`rot-swollen-carcass`) | live | maggot | `art/cards/rot-swollen-carcass.png` |
 | King Maker (`king-maker`) | live | fox | `art/cards/king-maker.png` |
+| Fen Mink (`fen-mink`) | live | mink | `art/cards/fen-mink.png` |
+| Tidepool Trapper Crab (`tidepool-trapper-crab`) | live | crab | `art/cards/tidepool-trapper-crab.png` |
+| Grave-Grin Hyena (`grave-grin-hyena`) | live | hyena | `art/cards/grave-grin-hyena.png` |
+| Bogfire Newt (`bogfire-newt`) | live | newt | `art/cards/bogfire-newt.png` |
+| Plague Gnat Cloud (`plague-gnat-cloud`) | live | gnat | `art/cards/plague-gnat-cloud.png` |
+| Glasswing Moth (`glasswing-moth`) | live | moth | `art/cards/glasswing-moth.png` |
+| Rivergate Drummer (`rivergate-drummer`) | live | otter | `art/cards/rivergate-drummer.png` |
+| Frostmoon Howler (`frostmoon-howler`) | live | wolf | `art/cards/frostmoon-howler.png` |
+| Chapel Tortoise (`chapel-tortoise`) | live | tortoise | `art/cards/chapel-tortoise.png` |
+| Weathervane Swift (`weathervane-swift`) | live | swift | `art/cards/weathervane-swift.png` |
 | Otter Kit (`otter-kit`) | live | otter | `art/cards/otter-kit.png` |
 | Otter Paddler (`otter-paddler`) | live | otter | `art/cards/otter-paddler.png` |
 | Otter Guard (`otter-guard`) | live | otter | `art/cards/otter-guard.png` |
@@ -681,10 +608,11 @@ This lists every unit in `canonical/unit-themes.json`: 727 live, 4 in the pool a
 | Ashbone Ghoul (`ashbone-ghoul`) | live | hyena | `art/cards/ashbone-ghoul.png` |
 | Cinder Skeleton (`cinder-skeleton`) | live | horse | `art/cards/cinder-skeleton.png` |
 | Magma Wraith (`magma-wraith`) | live | wolf | `art/cards/magma-wraith.png` |
+| Pall Wraith (`pall-wraith`) | live | raven | `art/cards/pall-wraith.png` |
 | Obsidian Lich (`obsidian-lich`) | live | lizard | `art/cards/obsidian-lich.png` |
 | Ember Revenant (`ember-revenant`) | live | boar | `art/cards/ember-revenant.png` |
 | Meerkat Wayfarer (`meerkat-wayfarer`) | live | meerkat | `art/cards/meerkat-wayfarer.png` |
-| Creeper (`creeper`) | live | Beetle | `art/cards/creeper.png` |
+| Creeper (`creeper`) | live | beetle | `art/cards/creeper.png` |
 | Pigeon Peon (`pigeon-peon`) | live | pigeon | `art/cards/pigeon-peon.png` |
 | Marching Elephant (`marching-elephant`) | live | elephant | `art/cards/marching-elephant.png` |
 | Siege Rhino (`siege-rhino`) | live | rhino | `art/cards/siege-rhino.png` |
@@ -894,3 +822,167 @@ This lists every unit in `canonical/unit-themes.json`: 727 live, 4 in the pool a
 | Ashmantle Fiend (`ashmantle-fiend`) | live | bat | `art/cards/ashmantle-fiend.png` |
 | Grotto Lobster (`grotto-lobster`) | live | lobster | `art/cards/grotto-lobster.png` |
 | Amber Cicada (`amber-cicada`) | live | cicada | `art/cards/amber-cicada.png` |
+| Sandfish (`sandfish`) | live | sandfish skink | `art/cards/sandfish.png` |
+| Pale Oryx (`pale-oryx`) | live | oryx | `art/cards/pale-oryx.png` |
+| Quicksand Queen (`quicksand-queen`) | live | ant | `art/cards/quicksand-queen.png` |
+| Water Vole (`water-vole`) | live | vole | `art/cards/water-vole.png` |
+| River Mink (`river-mink`) | live | mink | `art/cards/river-mink.png` |
+| Signal Crayfish (`signal-crayfish`) | live | crayfish | `art/cards/signal-crayfish.png` |
+| Pine Marten (`pine-marten`) | live | pine marten | `art/cards/pine-marten.png` |
+| Woodcock Lookout (`woodcock-lookout`) | live | woodcock | `art/cards/woodcock-lookout.png` |
+| Grass Snake (`grass-snake`) | live | grass snake | `art/cards/grass-snake.png` |
+| Ladybird Guard (`ladybird-guard`) | live | ladybird | `art/cards/ladybird-guard.png` |
+| Hedgerow Shrew (`hedgerow-shrew`) | live | shrew | `art/cards/hedgerow-shrew.png` |
+| Stag Beetle (`stag-beetle`) | live | stag beetle | `art/cards/stag-beetle.png` |
+| Slow-worm (`slow-worm`) | live | slow-worm | `art/cards/slow-worm.png` |
+| Robin Redbreast (`robin-redbreast`) | live | robin | `art/cards/robin-redbreast.png` |
+| Field Vole (`field-vole`) | live | vole | `art/cards/field-vole.png` |
+| Pincushion Urchin (`pincushion-urchin`) | live | sea urchin | `art/cards/pincushion-urchin.png` |
+| Rock Pool Starfish (`rock-pool-starfish`) | live | starfish | `art/cards/rock-pool-starfish.png` |
+| Oystercatcher (`oystercatcher`) | live | oystercatcher | `art/cards/oystercatcher.png` |
+| Sanderling (`sanderling`) | pool | sanderling | `art/cards/sanderling.png` |
+| Grey Seal Bull (`grey-seal-bull`) | live | grey seal | `art/cards/grey-seal-bull.png` |
+| Limpet Clinger (`limpet-clinger`) | live | limpet | `art/cards/limpet-clinger.png` |
+| Puffin Diver (`puffin-diver`) | live | puffin | `art/cards/puffin-diver.png` |
+| Razorbill (`razorbill`) | live | razorbill | `art/cards/razorbill.png` |
+| Kittiwake Flock (`kittiwake-flock`) | live | kittiwake | `art/cards/kittiwake-flock.png` |
+| Peregrine Stooper (`peregrine-stooper`) | live | peregrine falcon | `art/cards/peregrine-stooper.png` |
+| Fulmar Spitter (`fulmar-spitter`) | live | fulmar | `art/cards/fulmar-spitter.png` |
+| Red-billed Chough (`red-billed-chough`) | live | chough | `art/cards/red-billed-chough.png` |
+| Muskrat Lodgekeeper (`muskrat-lodgekeeper`) | live | muskrat | `art/cards/muskrat-lodgekeeper.png` |
+| Water Shrew (`water-shrew`) | live | shrew | `art/cards/water-shrew.png` |
+| Pyrenean Desman (`pyrenean-desman`) | live | desman | `art/cards/pyrenean-desman.png` |
+| Great Crested Grebe (`great-crested-grebe`) | live | grebe | `art/cards/great-crested-grebe.png` |
+| Old Sturgeon (`old-sturgeon`) | live | sturgeon | `art/cards/old-sturgeon.png` |
+| Diving Bell Spider (`diving-bell-spider`) | live | diving bell spider | `art/cards/diving-bell-spider.png` |
+| Alligator Gar (`alligator-gar`) | live | gar | `art/cards/alligator-gar.png` |
+| Swamp Rabbit (`swamp-rabbit`) | live | rabbit | `art/cards/swamp-rabbit.png` |
+| Mosquito Cloud (`mosquito-cloud`) | live | mosquito | `art/cards/mosquito-cloud.png` |
+| Fire Ant Raft (`fire-ant-raft`) | live | fire ant | `art/cards/fire-ant-raft.png` |
+| Anhinga Spearbird (`anhinga-spearbird`) | live | anhinga | `art/cards/anhinga-spearbird.png` |
+| Roseate Spoonbill (`roseate-spoonbill`) | pool | spoonbill | `art/cards/roseate-spoonbill.png` |
+| Booming Bittern (`booming-bittern`) | live | bittern | `art/cards/booming-bittern.png` |
+| Giant Water Bug (`giant-water-bug`) | live | water bug | `art/cards/giant-water-bug.png` |
+| Water Scorpion (`water-scorpion`) | pool | water scorpion | `art/cards/water-scorpion.png` |
+| Greater Siren (`greater-siren`) | live | siren | `art/cards/greater-siren.png` |
+| Marsh Harrier (`marsh-harrier`) | live | harrier | `art/cards/marsh-harrier.png` |
+| Raft Spider (`raft-spider`) | live | raft spider | `art/cards/raft-spider.png` |
+| Leopard Slug (`leopard-slug`) | live | leopard slug | `art/cards/leopard-slug.png` |
+| Wolf Spider Mother (`wolf-spider-mother`) | live | wolf spider | `art/cards/wolf-spider-mother.png` |
+| Truffle Piglet (`truffle-piglet`) | live | pig | `art/cards/truffle-piglet.png` |
+| Fungus Gnat Cloud (`fungus-gnat-cloud`) | live | fungus gnat | `art/cards/fungus-gnat-cloud.png` |
+| Springtail Hopper (`springtail-hopper`) | live | springtail | `art/cards/springtail-hopper.png` |
+| Red-backed Salamander (`red-backed-salamander`) | live | salamander | `art/cards/red-backed-salamander.png` |
+| Cave Cricket (`cave-cricket`) | live | cave cricket | `art/cards/cave-cricket.png` |
+| Ghost Crayfish (`ghost-crayfish`) | live | crayfish | `art/cards/ghost-crayfish.png` |
+| Cave Swiftlet (`cave-swiftlet`) | live | swiftlet | `art/cards/cave-swiftlet.png` |
+| Cave Pseudoscorpion (`cave-pseudoscorpion`) | live | pseudoscorpion | `art/cards/cave-pseudoscorpion.png` |
+| Whip Spider (`whip-spider`) | live | whip spider | `art/cards/whip-spider.png` |
+| Giant Cave Huntsman (`giant-cave-huntsman`) | live | huntsman spider | `art/cards/giant-cave-huntsman.png` |
+| Guano Beetle (`guano-beetle`) | live | beetle | `art/cards/guano-beetle.png` |
+| Banded Sea Krait (`banded-sea-krait`) | live | sea krait | `art/cards/banded-sea-krait.png` |
+| Fishing Cat (`fishing-cat`) | live | fishing cat | `art/cards/fishing-cat.png` |
+| Proboscis Monkey (`proboscis-monkey`) | live | proboscis monkey | `art/cards/proboscis-monkey.png` |
+| Horseshoe Crab (`horseshoe-crab`) | live | horseshoe crab | `art/cards/horseshoe-crab.png` |
+| Sea Hare (`sea-hare`) | live | sea slug | `art/cards/sea-hare.png` |
+| Mangrove Manatee (`mangrove-manatee`) | live | manatee | `art/cards/mangrove-manatee.png` |
+| Yellow-bellied Sea Snake (`yellow-bellied-sea-snake`) | live | sea snake | `art/cards/yellow-bellied-sea-snake.png` |
+| Crown-of-thorns Star (`crown-of-thorns-star`) | live | starfish | `art/cards/crown-of-thorns-star.png` |
+| Parrotfish (`parrotfish`) | live | parrotfish | `art/cards/parrotfish.png` |
+| Lionfish (`lionfish`) | live | lionfish | `art/cards/lionfish.png` |
+| Giant Clam (`giant-clam`) | live | giant clam | `art/cards/giant-clam.png` |
+| Great Barracuda (`great-barracuda`) | live | barracuda | `art/cards/great-barracuda.png` |
+| Whale Shark (`whale-shark`) | live | whale shark | `art/cards/whale-shark.png` |
+| Chamois Leaper (`chamois-leaper`) | live | chamois | `art/cards/chamois-leaper.png` |
+| Alpine Swift (`alpine-swift`) | live | swift | `art/cards/alpine-swift.png` |
+| Wallcreeper (`wallcreeper`) | pool | wallcreeper | `art/cards/wallcreeper.png` |
+| Alpine Salamander (`alpine-salamander`) | live | salamander | `art/cards/alpine-salamander.png` |
+| Apollo Butterfly (`apollo-butterfly`) | live | butterfly | `art/cards/apollo-butterfly.png` |
+| Mountain Hare (`mountain-hare`) | live | hare | `art/cards/mountain-hare.png` |
+| Thorn Shrike (`thorn-shrike`) | live | shrike | `art/cards/thorn-shrike.png` |
+| Hedge Weasel (`hedge-weasel`) | live | weasel | `art/cards/hedge-weasel.png` |
+| Hawthorn Shieldbug (`hawthorn-shieldbug`) | live | shieldbug | `art/cards/hawthorn-shieldbug.png` |
+| Muntjac Barker (`muntjac-barker`) | live | muntjac | `art/cards/muntjac-barker.png` |
+| Anvil Thrush (`anvil-thrush`) | live | thrush | `art/cards/anvil-thrush.png` |
+| Garden Tiger Moth (`garden-tiger-moth`) | live | moth | `art/cards/garden-tiger-moth.png` |
+| Polar Bear (`polar-bear`) | live | polar bear | `art/cards/polar-bear.png` |
+| Harp Seal Pup (`harp-seal-pup`) | live | harp seal | `art/cards/harp-seal-pup.png` |
+| Beluga (`beluga`) | live | beluga | `art/cards/beluga.png` |
+| Arctic Tern (`arctic-tern`) | live | arctic tern | `art/cards/arctic-tern.png` |
+| Lemming Swarm (`lemming-swarm`) | live | lemming | `art/cards/lemming-swarm.png` |
+| Krill Swarm (`krill-swarm`) | live | krill | `art/cards/krill-swarm.png` |
+| Greenland Shark (`greenland-shark`) | live | greenland shark | `art/cards/greenland-shark.png` |
+| Ringed Seal (`ringed-seal`) | live | ringed seal | `art/cards/ringed-seal.png` |
+| Woodland Caribou (`woodland-caribou`) | live | caribou | `art/cards/woodland-caribou.png` |
+| Musk Ox Calf (`musk-ox-calf`) | live | musk ox | `art/cards/musk-ox-calf.png` |
+| Exo-podas (`exo-podas`) | live | insect | `art/cards/exo-podas.png` |
+| Galactic Condor (`galactic-condor`) | live | condor | `art/cards/galactic-condor.png` |
+| Pink Maus (`pink-maus`) | live | mouse | `art/cards/pink-maus.png` |
+| Nyoogle (`nyoogle`) | live | cat | `art/cards/nyoogle.png` |
+| Habanero Drakon (`tobasco-drakon`) | live | dragon | `art/cards/tobasco-drakon.png` |
+| Kegfuse Panda (`demo-panda`) | live | panda | `art/cards/demo-panda.png` |
+| Petrified Tree (`petrified-tree`) | live | owl | `art/cards/petrified-tree.png` |
+| Bucketknee Wolf (`bucketknee-wolf`) | live | wolf | `art/cards/bucketknee-wolf.png` |
+| Armory (`armory`) | live | beaver | `art/cards/armory.png` |
+| Anvilwhisker Otter (`anvilwhisker-otter`) | live | otter | `art/cards/anvilwhisker-otter.png` |
+| Glintsnatch Magpie (`glintsnatch-magpie`) | live | magpie | `art/cards/glintsnatch-magpie.png` |
+| Greyplume Fledgling (`greyplume-fledgling`) | live | hummingbird | `art/cards/greyplume-fledgling.png` |
+| Swordbill Challenger (`swordbill-challenger`) | live | hummingbird | `art/cards/swordbill-challenger.png` |
+| Ember Tetra (`ember-tetra`) | live |  | `art/cards/ember-tetra.png` |
+| Coffer Mimic (`coffer-mimic`) | live |  | `art/cards/coffer-mimic.png` |
+| Ironclaw Fiddler (`ironclaw-fiddler`) | live | fiddler crab | `art/cards/ironclaw-fiddler.png` |
+| Pond Algae (`pond-algae`) | live | algae | `art/cards/pond-algae.png` |
+| Dam-Keeper Beaver (`dam-keeper-beaver`) | live | beaver | `art/cards/dam-keeper-beaver.png` |
+| Moat Snapper (`moat-snapper`) | live | snapping turtle | `art/cards/moat-snapper.png` |
+| Briarback Hedgehog (`briarback-hedgehog`) | live | hedgehog | `art/cards/briarback-hedgehog.png` |
+| Barkplate Beetle (`barkplate-beetle`) | live | bark beetle | `art/cards/barkplate-beetle.png` |
+| Great Skua (`great-skua`) | live | great skua | `art/cards/great-skua.png` |
+| Bloodscent Shark (`bloodscent-shark`) | live | shark | `art/cards/bloodscent-shark.png` |
+| Cane Toad (`cane-toad`) | live | cane toad | `art/cards/cane-toad.png` |
+| Inland Taipan (`inland-taipan`) | live | taipan | `art/cards/inland-taipan.png` |
+| Oyster Bank (`oyster-bank`) | live | oyster | `art/cards/oyster-bank.png` |
+| Musk Ox Matriarch (`musk-ox-matriarch`) | live | musk ox | `art/cards/musk-ox-matriarch.png` |
+| Clinging Leech (`clinging-leech`) | live | leech | `art/cards/clinging-leech.png` |
+| Barnacle Bulwark (`barnacle-bulwark`) | live | crab | `art/cards/barnacle-bulwark.png` |
+| Reefback Turtle (`reefback-turtle`) | live | sea turtle | `art/cards/reefback-turtle.png` |
+| Driftwood Crab (`driftwood-crab`) | live | crab | `art/cards/driftwood-crab.png` |
+| Gannet Nestweaver (`gannet-nestweaver`) | live | gannet | `art/cards/gannet-nestweaver.png` |
+| Nutria Reedcutter (`nutria-reedcutter`) | live | nutria | `art/cards/nutria-reedcutter.png` |
+| Redwood Woodpecker (`redwood-woodpecker`) | live | woodpecker | `art/cards/redwood-woodpecker.png` |
+| Termite Forager (`termite-forager`) | live | termite | `art/cards/termite-forager.png` |
+| Cone-cutter Squirrel (`cone-cutter-squirrel`) | live | red squirrel | `art/cards/cone-cutter-squirrel.png` |
+| Talus Pika (`talus-pika`) | live | pika | `art/cards/talus-pika.png` |
+| Dune Packrat (`dune-packrat`) | live | pack rat | `art/cards/dune-packrat.png` |
+| Gravel Mole (`gravel-mole`) | live | mole | `art/cards/gravel-mole.png` |
+| Badger Stonemason (`badger-stonemason`) | live | badger | `art/cards/badger-stonemason.png` |
+| Pumice Beetle (`pumice-beetle`) | live | dung beetle | `art/cards/pumice-beetle.png` |
+| Bog Shrew (`bog-shrew`) | live | shrew | `art/cards/bog-shrew.png` |
+| Mire Rat (`mire-rat`) | live | rat | `art/cards/mire-rat.png` |
+| Hollow-belly Rat (`hollow-belly-rat`) | live | rat | `art/cards/hollow-belly-rat.png` |
+| Gnawed Matriarch (`gnawed-matriarch`) | live | rat | `art/cards/gnawed-matriarch.png` |
+| Kelpborn Otter (`kelpborn-otter`) | live | sea otter | `art/cards/kelpborn-otter.png` |
+| Conger Eel (`conger-eel`) | live | eel | `art/cards/conger-eel.png` |
+| Selkie Wavebinder (`selkie-wavebinder`) | live | grey seal | `art/cards/selkie-wavebinder.png` |
+| Marmot Stonecutter (`marmot-stonecutter`) | live | marmot | `art/cards/marmot-stonecutter.png` |
+| Prospector Mole (`prospector-mole`) | live | mole | `art/cards/prospector-mole.png` |
+| Beaver Feller (`beaver-feller`) | live | beaver | `art/cards/beaver-feller.png` |
+| Salvager Hermit Crab (`salvager-hermit-crab`) | live | hermit crab | `art/cards/salvager-hermit-crab.png` |
+| Carrion Crow (`carrion-crow`) | live | crow | `art/cards/carrion-crow.png` |
+| Hazel Coppice (`hazel-coppice`) | live |  | `art/cards/hazel-coppice.png` |
+| Beachcomber Sanderling (`beachcomber-sanderling`) | live | sanderling | `art/cards/beachcomber-sanderling.png` |
+| Moonshell Snail (`moonshell-snail`) | live | snail | `art/cards/moonshell-snail.png` |
+| Phoenix Mushrooms (`phoenix-mushrooms`) | live | mushroom | `art/cards/phoenix-mushrooms.png` |
+| Sleepless Shrew (`sleepless-shrew`) | live | shrew | `art/cards/sleepless-shrew.png` |
+| Marsh-mallow Hare (`marsh-mallow-hare`) | live | hare | `art/cards/marsh-mallow-hare.png` |
+| Sphagnum Vole (`sphagnum-vole`) | live | water vole | `art/cards/sphagnum-vole.png` |
+| Mist-net Otter (`mist-net-otter`) | live | otter | `art/cards/mist-net-otter.png` |
+| Clap-net Trapper (`clap-net-trapper`) | live | otter | `art/cards/clap-net-trapper.png` |
+| Birdlime Dauber (`birdlime-dauber`) | live | otter | `art/cards/birdlime-dauber.png` |
+| Gale Swift (`gale-swift`) | live | swift | `art/cards/gale-swift.png` |
+| Static Fennec (`static-fennec`) | live | fennec fox | `art/cards/static-fennec.png` |
+| Muskrat Reedgatherer (`muskrat-reedgatherer`) | live | muskrat | `art/cards/muskrat-reedgatherer.png` |
+| Peat-cutter Vole (`peat-cutter-vole`) | live | vole | `art/cards/peat-cutter-vole.png` |
+| Magpie Collector (`magpie-collector`) | live | magpie | `art/cards/magpie-collector.png` |
+| Mother Carrier (`mother-carrier`) | live | hummingbird | `art/cards/mother-carrier.png` |
+| Laden Hummingbird (`laden-hummingbird`) | live | hummingbird | `art/cards/laden-hummingbird.png` |
+| Granite Ox Golem (`granite-ox-golem`) | live | ox | `art/cards/granite-ox-golem.png` |
