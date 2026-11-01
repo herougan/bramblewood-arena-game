@@ -281,5 +281,6 @@ run node tests/ui12-save-guard-2026-10-31.js   # 2026-10-31 (package UI12, GG2):
 run node tests/ui13-2026-11-01.js   # 2026-11-01 (package UI13, HH1 HH3 HH4 HH7): kind "baby" on the BABY list only (Base / Faction derived), Baby and Unlikely pills, counts without Baby / Unlikely cards, the eggs panel, edit from the gallery, the Torch (equipment, Illuminate, m4 bracket once per save)
 # browser check for package UI13 (HH1, HH3, HH4, HH7): python3 tests/e2e/ui13_2026_11_01.py (needs Playwright; not run by run.js)
 run node tests/eng16-2026-11-02.js   # 2026-11-02 (package ENG16, owner JJ17 JJ18 JJ19 JJ25, WIND-2): wind Tailwind Quick / Headwind -1 Attack (no doubling), Milling 1 Lumber -> 2 (x0.85), Quicksand, a field effect or combo of its own per map, Baby cards 0 -> 1 -> 10 and the egg's Hatch or Stay
+# browser check for package UI14 (JJ1-JJ4, JJ6, JJ8, JJ10, JJ11, JJ13-JJ16, JJ20, JJ23, JJ26): python3 tests/e2e/ui14_2026_11_02.py (needs Playwright; not run by run.js)
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

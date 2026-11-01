@@ -123,9 +123,8 @@ async def gg10(b, url, w):
     ok(r is not None and r['sel'] == r['def'] and r['draw']['y'].startswith(r['def'] + '-'), f'the player side defaults to a random reference deck of the level ({r and r["sel"]}, drew {r and r["draw"]["y"]})')
     ok(r is not None and r['strip'] == sorted(k for k, v in r['draw']['deck'].items() if v > 0), f'the deck strip shows the drawn enemy deck {r and r["strip"]} vs {r and sorted(r["draw"]["deck"])}')
     await pg.screenshot(path=shot('gg10-preview', w))
-    # New draw keeps the panel; My deck stays an Admin choice
-    await pg.evaluate("document.querySelector('[data-skirm-reroll]').click()"); await pg.wait_for_timeout(700)
-    ok(await pg.evaluate("!!document.querySelector('.ui12-skirm [data-skirm-side=enemy] .ui12-drank')"), 'New draw draws again')
+    # 2026-11-02 (UI14, JJ11): no New draw button any more (every fight draws both decks); My deck stays an Admin choice
+    ok(await pg.evaluate("!document.querySelector('[data-skirm-reroll]') && !!document.querySelector('.ui12-skirm [data-skirm-side=enemy] .ui12-drank')"), 'no New draw button; the drawn enemy keeps its rank')
     await pg.evaluate("(()=>{ const s = document.querySelector('[data-skirm-you]'); s.value = 'my'; s.dispatchEvent(new Event('change', {bubbles: true})); })()"); await pg.wait_for_timeout(700)
     r2 = await pg.evaluate("({sel: (document.querySelector('[data-skirm-you]') || {}).value, you: (document.querySelector('.ui12-skirm [data-skirm-side=you] .ui12-skirm-id') || {}).textContent, rank: !!document.querySelector('.ui12-skirm [data-skirm-side=you] .ui12-drank')})")
     ok(r2['sel'] == 'my' and r2['you'] == 'My deck' and not r2['rank'], f'Admin can pick My deck (no rank on it) {r2}')
