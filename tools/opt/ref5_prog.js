@@ -114,6 +114,8 @@ function maxForgeLevel(gm, id, tier, mapNo) {
 
 // ---------------------------------------------------------------- the player
 function mainMaps(G) { return G.CONQUEST_MAPS.filter(m => !m.sub && !m.reserved && G.mapNumberOf(m.id) != null).sort((a, b) => G.mapNumberOf(a.id) - G.mapNumberOf(b.id)); }
+const LMP_BAL9 = require(path.join(ROOT, 'tools', 'lib_map_pools.js'));
+function outOfPlay(id) { const gm = game(), d = gm.D[id]; if (!d || gm.G.cardSourceOf(d).kind === 'base' || d.rarity === 'starter') return false; try { return LMP_BAL9.isOutOfPlay(gm.G, d); } catch (e) { return false; } }
 function fieldable(gm, id) { const d = gm.D[id]; return !!d && !d.token && !d.test && !d.hero && !d.hallOfFame && !d.pool && id !== 'wandering-traveller' && d.cardType !== 'materia' && !(d.cardType === 'equipment' || d.equip); }
 function baseKind(k) { return ({ champion: 'elite', miniboss: 'elite', subboss: 'boss', dungeon: 'elite', worldboss: 'raidboss', megaraid: 'raidboss' })[k] || k; }
 
@@ -129,7 +131,7 @@ function walk(seed, upTo, decks, opts) {
   const rnd = mulberry(fnv('ref5|' + seed)); rt.rnd = rnd; rt.owned = {};
   const st = { owned: {}, unlimited: new Set(), level: {}, wallet: { gold: 0, gems: 0, dust: 0 }, packBank: { gold: 0, gems: 0 }, forgeBank: { gold: 0, dust: 0 }, idleDust: 0, xp: 0, plLevel: 0, tier: 1, forgeTierBought: [],
     log: [], trailPts: 0, trailClaimed: 0, trailMonth: 0, milestones: new Set(), freeLevels: 0 };
-  const own = (id, n, why) => { if (!D[id] || !fieldable(gm, id)) return; st.owned[id] = (st.owned[id] || 0) + (n || 1); rt.owned[id] = st.owned[id]; if (st.level[id] == null) st.level[id] = G.cardBaseLevel(D[id]); cur.cards.push(id); if (why) cur.why[why] = (cur.why[why] || 0) + (n || 1); };
+  const own = (id, n, why) => { if (!D[id] || !fieldable(gm, id) || outOfPlay(id)) return; /* 2026-11-02 (BAL9): a card out of play (no list, e.g. an unattainable pack card the base track drew) is never owned */ st.owned[id] = (st.owned[id] || 0) + (n || 1); rt.owned[id] = st.owned[id]; if (st.level[id] == null) st.level[id] = G.cardBaseLevel(D[id]); cur.cards.push(id); if (why) cur.why[why] = (cur.why[why] || 0) + (n || 1); };
   const earn = (w, why) => { ['gold', 'gems', 'dust'].forEach(k => { const v = (w[k] || 0) * MULT; if (!v) return; cur.earned[k] = (cur.earned[k] || 0) + v; st.packBank.gold += k === 'gold' ? v * PACK_SHARE / MULT : 0; st.packBank.gems += k === 'gems' ? v * PACK_SHARE / MULT : 0;
     if (k === 'gold' || k === 'dust') st.forgeBank[k] += v * FORGE_SHARE / MULT; if (k === 'dust') st.idleDust += v * PACK_SHARE / MULT; }); if (why) cur.src[why] = cur.src[why] || {}, ['gold', 'gems', 'dust'].forEach(k => { if (w[k]) cur.src[why][k] = (cur.src[why][k] || 0) + w[k]; }); };
   // a pack as purchasePackOnce opens it: the cards, the bonus copies, the free level-up
@@ -279,7 +281,7 @@ function cmdCollect(argv) {
     if (bad.length) throw new Error(`Map ${mapNo} seed ${s}: the optimum breaks the collection: ${bad.join(', ')}`);
     const st = walk(s, mapNo, n => n === mapNo ? counts : chosenDeck(set, n, s), { finish: true });
     const parts = Object.keys(counts).sort().map(id => [id, counts[id], levelOf(gm, st, id, mapNo)]);
-    list.push({ seed: s, counts, parts, leader: chooseLeader(gm, p.pool, mapNo), bramble: chooseBramble(gm, mapNo) }); // BAL9 (JJ7) runs.push({ seed: s, file: rel, score: best.score, ci: best.ci, pool: p.size, forgeTier: st.tier, forgeBank: { gold: Math.round(st.forgeBank.gold), dust: Math.round(st.forgeBank.dust) } });
+    list.push({ seed: s, counts, parts, leader: chooseLeader(gm, p.pool, mapNo), bramble: chooseBramble(gm, mapNo) }); /* BAL9 (JJ7): + leader, bramble */ runs.push({ seed: s, file: rel, score: best.score, ci: best.ci, pool: p.size, forgeTier: st.tier, forgeBank: { gold: Math.round(st.forgeBank.gold), dust: Math.round(st.forgeBank.dust) } });
   }
   set.id = 'prog'; set.label = 'Reference (Random)'; set.bake = true; set.decksPerMap = SEEDS.length;
   set.note = 'Package REF5 (owner 10-28 22:50 / 10-30): per main map, 5 decks, each the optimizer\'s best deck from one seeded player\'s collection (first clears, faction track, level track, Trail free lane, map packs and the packs 1.0x of the Leaves bought; tools/opt/ref5_prog.js), at the map\'s reference level (BAL9, 2026-11-02, owner JJ7: referencePlayerLevel, rounded; REF5 had the levels 0.5x of the resources bought in the Forge), with a leader and a bramble the player owns by then (BAL9). parts: [card, copies, absolute level]. A side map plays the decks of the map it opens on. Baked into arena_app.js by tools/opt/ref_decks.js; the game deals one at random ("Reference (Random)").';

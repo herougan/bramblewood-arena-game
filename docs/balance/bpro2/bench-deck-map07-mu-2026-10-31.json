@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-10-31T02:48:38.508Z",
- "fingerprint": "6eb8b2ec0b65",
+ "generated": "2026-11-01T21:21:05.443Z",
+ "fingerprint": "ed5419f9498e",
  "map": {
   "id": "mu",
   "num": 7,
@@ -10,12 +10,13 @@
  "level": 1,
  "pool": [
   "adder-ambusher",
-  "ant-warrior",
   "bogfire-newt",
   "bombardier-beetle",
   "cane-toad",
   "compost-grub",
+  "corpse-flower-beetle",
   "dung-beetle",
+  "earthworm",
   "fungal-colossus",
   "garden-snail",
   "hawthorn-shieldbug",
@@ -23,17 +24,20 @@
   "owl-nightwatch",
   "planarian-splitter",
   "sleepless-shrew",
+  "slow-worm",
   "truffle-piglet",
-  "wolf-spider-mother"
+  "wolf-spider-mother",
+  "worker-ant"
  ],
  "poolNames": [
   "Adder Ambusher",
-  "Ant Warrior",
   "Bogfire Newt",
   "Bombardier Beetle",
   "Cane Toad",
   "Compost Grub",
+  "Corpse-flower Beetle",
   "Dung Beetle",
+  "Earthworm",
   "Fungal Colossus",
   "Garden Snail",
   "Hawthorn Shieldbug",
@@ -41,8 +45,10 @@
   "Owl Nightwatch",
   "Planarian Splitter",
   "Sleepless Shrew",
+  "Slow-worm",
   "Truffle Piglet",
-  "Wolf Spider Mother"
+  "Wolf Spider Mother",
+  "Worker Ant"
  ],
  "rule": {
   "maxUnique": 6,
@@ -122,6 +128,7 @@
     "adder-ambusher",
     "bombardier-beetle",
     "cane-toad",
+    "corpse-flower-beetle",
     "fungal-colossus",
     "hawthorn-shieldbug",
     "owl-nightwatch",
@@ -135,13 +142,15 @@
    "id": "swarm",
    "label": "swarm (0-Lumber cards)",
    "cards": [
-    "ant-warrior",
     "bogfire-newt",
     "compost-grub",
     "dung-beetle",
+    "earthworm",
     "garden-snail",
     "leafcutter-gardener",
-    "sleepless-shrew"
+    "sleepless-shrew",
+    "slow-worm",
+    "worker-ant"
    ],
    "need": 14
   },
@@ -157,71 +166,50 @@
    "focus": "economy",
    "steps": 5,
    "moves": 2,
-   "games": 1584,
+   "games": 1692,
    "apartFromEarlier": null
   },
   {
    "focus": "big",
    "steps": 6,
    "moves": 2,
-   "games": 1602,
-   "apartFromEarlier": 7
+   "games": 1710,
+   "apartFromEarlier": 15
   },
   {
    "focus": "swarm",
-   "steps": 5,
-   "moves": 5,
-   "games": 1620,
-   "apartFromEarlier": 6
+   "steps": 6,
+   "moves": 3,
+   "games": 1710,
+   "apartFromEarlier": 11
   },
   {
    "focus": "open",
    "steps": 5,
    "moves": 3,
-   "games": 1602,
-   "apartFromEarlier": 8
+   "games": 1584,
+   "apartFromEarlier": 11
   }
  ],
  "apart": 6,
- "seconds": 87,
- "games": 6984,
+ "seconds": 112,
+ "games": 7272,
  "decks": [
   {
-   "focus": "swarm",
+   "focus": "economy",
    "labels": [
-    "swarm (15 copies at 0 Lumber)",
-    "economy (4 resource makers)"
+    "big (11 copies at 1+ Lumber, average 0.6)",
+    "economy (8 resource makers)"
    ],
    "deck": {
-    "ant-warrior": 4,
-    "bombardier-beetle": 4,
-    "compost-grub": 3,
-    "dung-beetle": 4,
-    "hawthorn-shieldbug": 1,
-    "leafcutter-gardener": 4
+    "dung-beetle": 3,
+    "leafcutter-gardener": 4,
+    "owl-nightwatch": 4,
+    "slow-worm": 2,
+    "truffle-piglet": 4,
+    "wolf-spider-mother": 3
    },
    "cards": [
-    {
-     "id": "ant-warrior",
-     "name": "Ant Warrior",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "bombardier-beetle",
-     "name": "Bombardier Beetle",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "dung-beetle",
-     "name": "Dung Beetle",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
     {
      "id": "leafcutter-gardener",
      "name": "Leafcutter Gardener",
@@ -230,123 +218,8 @@
      "rarity": "common"
     },
     {
-     "id": "compost-grub",
-     "name": "Compost Grub",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "hawthorn-shieldbug",
-     "name": "Hawthorn Shieldbug",
-     "copies": 1,
-     "cost": 1,
-     "rarity": "common"
-    }
-   ],
-   "score": 0.8287,
-   "ci": [
-    0.7805,
-    0.8769
-   ],
-   "avgLumber": 0.25,
-   "avgWait": 0.45,
-   "curve": {
-    "0": 15,
-    "1": 5
-   },
-   "resourceMakers": 4,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:7-1",
-     "label": "vs 7-1 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:7-2",
-     "label": "vs 7-2 skirmish's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:7-3",
-     "label": "vs 7-3 skirmish's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:7-4",
-     "label": "vs 7-4 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:7-5",
-     "label": "vs 7-5 elite's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:7-6",
-     "label": "vs 7-6 miniboss's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 7-1's field",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road7",
-     "label": "vs reference deck (Map 7) under 7-2's field",
-     "p": 0.625,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
-     "p": 0.9583,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 8
-  },
-  {
-   "focus": "economy",
-   "labels": [
-    "big (12 copies at 1+ Lumber, average 0.6)",
-    "economy (7 resource makers)"
-   ],
-   "deck": {
-    "ant-warrior": 4,
-    "bombardier-beetle": 4,
-    "garden-snail": 1,
-    "hawthorn-shieldbug": 4,
-    "leafcutter-gardener": 3,
-    "truffle-piglet": 4
-   },
-   "cards": [
-    {
-     "id": "ant-warrior",
-     "name": "Ant Warrior",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "bombardier-beetle",
-     "name": "Bombardier Beetle",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "hawthorn-shieldbug",
-     "name": "Hawthorn Shieldbug",
+     "id": "owl-nightwatch",
+     "name": "Owl Nightwatch",
      "copies": 4,
      "cost": 1,
      "rarity": "common"
@@ -359,125 +232,124 @@
      "rarity": "uncommon"
     },
     {
-     "id": "leafcutter-gardener",
-     "name": "Leafcutter Gardener",
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
      "copies": 3,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "garden-snail",
-     "name": "Garden Snail",
-     "copies": 1,
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "slow-worm",
+     "name": "Slow-worm",
+     "copies": 2,
      "cost": 0,
-     "rarity": "starter"
+     "rarity": "common"
     }
    ],
-   "score": 0.7824,
+   "score": 0.838,
    "ci": [
-    0.7334,
-    0.8314
+    0.7945,
+    0.8814
    ],
-   "avgLumber": 0.6,
-   "avgWait": 0.8,
+   "avgLumber": 0.55,
+   "avgWait": 0.65,
    "curve": {
-    "0": 8,
-    "1": 12
+    "0": 9,
+    "1": 11
    },
-   "resourceMakers": 7,
+   "resourceMakers": 8,
    "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:7-1",
      "label": "vs 7-1 skirmish's deck",
-     "p": 0.9167,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-2",
      "label": "vs 7-2 skirmish's deck",
-     "p": 0.4583,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-3",
      "label": "vs 7-3 skirmish's deck",
-     "p": 0.875,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-4",
      "label": "vs 7-4 skirmish's deck",
-     "p": 0.9167,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-5",
      "label": "vs 7-5 elite's deck",
-     "p": 0.8333,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-6",
      "label": "vs 7-6 miniboss's deck",
-     "p": 0.4583,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 7-1's field",
-     "p": 0.875,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|ref:road7",
      "label": "vs reference deck (Map 7) under 7-2's field",
-     "p": 0.7083,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 11
+   "copiesApartFromOpen": 12
   },
   {
-   "focus": "big",
+   "focus": "open",
    "labels": [
-    "big (10 copies at 1+ Lumber, average 0.5)",
-    "economy (4 resource makers)"
+    "big (9 copies at 1+ Lumber, average 0.5)"
    ],
    "deck": {
-    "ant-warrior": 4,
+    "bogfire-newt": 4,
     "bombardier-beetle": 3,
-    "compost-grub": 2,
-    "hawthorn-shieldbug": 3,
-    "leafcutter-gardener": 4,
-    "owl-nightwatch": 4
+    "corpse-flower-beetle": 3,
+    "leafcutter-gardener": 3,
+    "slow-worm": 4,
+    "wolf-spider-mother": 3
    },
    "cards": [
     {
-     "id": "ant-warrior",
-     "name": "Ant Warrior",
+     "id": "bogfire-newt",
+     "name": "Bogfire Newt",
      "copies": 4,
      "cost": 0,
      "rarity": "uncommon"
     },
     {
-     "id": "leafcutter-gardener",
-     "name": "Leafcutter Gardener",
+     "id": "slow-worm",
+     "name": "Slow-worm",
      "copies": 4,
      "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "owl-nightwatch",
-     "name": "Owl Nightwatch",
-     "copies": 4,
-     "cost": 1,
      "rarity": "common"
     },
     {
@@ -488,50 +360,57 @@
      "rarity": "uncommon"
     },
     {
-     "id": "hawthorn-shieldbug",
-     "name": "Hawthorn Shieldbug",
+     "id": "corpse-flower-beetle",
+     "name": "Corpse-flower Beetle",
      "copies": 3,
      "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 3,
+     "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "compost-grub",
-     "name": "Compost Grub",
-     "copies": 2,
-     "cost": 0,
-     "rarity": "common"
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
     }
    ],
-   "score": 0.7731,
+   "score": 0.7454,
    "ci": [
-    0.7221,
-    0.8242
+    0.696,
+    0.7948
    ],
-   "avgLumber": 0.5,
-   "avgWait": 0.65,
+   "avgLumber": 0.45,
+   "avgWait": 1.15,
    "curve": {
-    "0": 10,
-    "1": 10
+    "0": 11,
+    "1": 9
    },
-   "resourceMakers": 4,
+   "resourceMakers": 3,
    "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:7-1",
      "label": "vs 7-1 skirmish's deck",
-     "p": 0.875,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-2",
      "label": "vs 7-2 skirmish's deck",
-     "p": 0.5833,
+     "p": 0.4167,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-3",
      "label": "vs 7-3 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.75,
      "n": 24
     },
     {
@@ -543,13 +422,13 @@
     {
      "entry": "mirror|fight:7-5",
      "label": "vs 7-5 elite's deck",
-     "p": 0.8333,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-6",
      "label": "vs 7-6 miniboss's deck",
-     "p": 0.6667,
+     "p": 0.2917,
      "n": 24
     },
     {
@@ -561,7 +440,7 @@
     {
      "entry": "mirror|ref:road7",
      "label": "vs reference deck (Map 7) under 7-2's field",
-     "p": 0.4167,
+     "p": 0.875,
      "n": 24
     },
     {
@@ -571,35 +450,28 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 9
+   "copiesApartFromOpen": 0
   },
   {
-   "focus": "open",
+   "focus": "swarm",
    "labels": [
-    "big (11 copies at 1+ Lumber, average 0.6)"
+    "swarm (15 copies at 0 Lumber)"
    ],
    "deck": {
-    "adder-ambusher": 3,
-    "ant-warrior": 4,
-    "bombardier-beetle": 4,
+    "compost-grub": 4,
+    "corpse-flower-beetle": 3,
     "dung-beetle": 4,
-    "garden-snail": 1,
-    "owl-nightwatch": 4
+    "sleepless-shrew": 3,
+    "slow-worm": 4,
+    "wolf-spider-mother": 2
    },
    "cards": [
     {
-     "id": "ant-warrior",
-     "name": "Ant Warrior",
+     "id": "compost-grub",
+     "name": "Compost Grub",
      "copies": 4,
      "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "bombardier-beetle",
-     "name": "Bombardier Beetle",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
+     "rarity": "common"
     },
     {
      "id": "dung-beetle",
@@ -609,37 +481,44 @@
      "rarity": "common"
     },
     {
-     "id": "owl-nightwatch",
-     "name": "Owl Nightwatch",
+     "id": "slow-worm",
+     "name": "Slow-worm",
      "copies": 4,
-     "cost": 1,
+     "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "adder-ambusher",
-     "name": "Adder Ambusher",
+     "id": "corpse-flower-beetle",
+     "name": "Corpse-flower Beetle",
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
     },
     {
-     "id": "garden-snail",
-     "name": "Garden Snail",
-     "copies": 1,
+     "id": "sleepless-shrew",
+     "name": "Sleepless Shrew",
+     "copies": 3,
      "cost": 0,
-     "rarity": "starter"
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
     }
    ],
-   "score": 0.7407,
+   "score": 0.6991,
    "ci": [
-    0.6865,
-    0.795
+    0.6476,
+    0.7505
    ],
-   "avgLumber": 0.55,
+   "avgLumber": 0.25,
    "avgWait": 0.75,
    "curve": {
-    "0": 9,
-    "1": 11
+    "0": 15,
+    "1": 5
    },
    "resourceMakers": 0,
    "families": [],
@@ -647,19 +526,147 @@
     {
      "entry": "mirror|fight:7-1",
      "label": "vs 7-1 skirmish's deck",
-     "p": 0.75,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-2",
      "label": "vs 7-2 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-3",
      "label": "vs 7-3 skirmish's deck",
-     "p": 0.7083,
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-4",
+     "label": "vs 7-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-5",
+     "label": "vs 7-5 elite's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-6",
+     "label": "vs 7-6 miniboss's deck",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.5)"
+   ],
+   "deck": {
+    "compost-grub": 4,
+    "corpse-flower-beetle": 3,
+    "leafcutter-gardener": 2,
+    "planarian-splitter": 4,
+    "wolf-spider-mother": 3,
+    "worker-ant": 4
+   },
+   "cards": [
+    {
+     "id": "compost-grub",
+     "name": "Compost Grub",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "planarian-splitter",
+     "name": "Planarian Splitter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "worker-ant",
+     "name": "Worker Ant",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "corpse-flower-beetle",
+     "name": "Corpse-flower Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6759,
+   "ci": [
+    0.621,
+    0.7309
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.65,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 2,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-1",
+     "label": "vs 7-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-2",
+     "label": "vs 7-2 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-3",
+     "label": "vs 7-3 skirmish's deck",
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -671,36 +678,36 @@
     {
      "entry": "mirror|fight:7-5",
      "label": "vs 7-5 elite's deck",
-     "p": 0.875,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:7-6",
      "label": "vs 7-6 miniboss's deck",
-     "p": 0.375,
+     "p": 0.2083,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 7-1's field",
-     "p": 0.875,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|ref:road7",
      "label": "vs reference deck (Map 7) under 7-2's field",
-     "p": 0.625,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
-     "p": 0.875,
+     "p": 0.6667,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 0
+   "copiesApartFromOpen": 12
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,ant-warrior,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,dung-beetle,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,truffle-piglet,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,corpse-flower-beetle,dung-beetle,earthworm,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,slow-worm,truffle-piglet,wolf-spider-mother,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
 }

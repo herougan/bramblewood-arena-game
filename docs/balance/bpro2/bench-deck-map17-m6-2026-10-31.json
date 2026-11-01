@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-10-31T03:12:00.776Z",
- "fingerprint": "6eb8b2ec0b65",
+ "generated": "2026-11-01T21:50:32.483Z",
+ "fingerprint": "ed5419f9498e",
  "map": {
   "id": "m6",
   "num": 17,
@@ -10,6 +10,7 @@
  "level": 1,
  "pool": [
   "alpha-howler",
+  "beluga",
   "cone-cutter-squirrel",
   "frost-hare-sprinter",
   "glacial-ape-king",
@@ -22,10 +23,13 @@
   "snow-ermine",
   "spitting-spider",
   "talus-pika",
-  "walrus-icebreaker"
+  "walrus-icebreaker",
+  "wolfsbane-alpha",
+  "woodland-caribou"
  ],
  "poolNames": [
   "Alpha Howler",
+  "Beluga",
   "Cone-cutter Squirrel",
   "Frost Hare Sprinter",
   "Glacial Ape-King",
@@ -38,7 +42,9 @@
   "Snow Ermine",
   "Spitting Spider",
   "Talus Pika",
-  "Walrus Icebreaker"
+  "Walrus Icebreaker",
+  "Wolfsbane Alpha",
+  "Woodland Caribou"
  ],
  "rule": {
   "maxUnique": 6,
@@ -156,51 +162,59 @@
   {
    "focus": "economy",
    "steps": 4,
-   "moves": 3,
-   "games": 1650,
+   "moves": 2,
+   "games": 1540,
    "apartFromEarlier": null
   },
   {
    "focus": "swarm",
-   "steps": 4,
+   "steps": 6,
    "moves": 3,
-   "games": 1606,
-   "apartFromEarlier": 7
+   "games": 1628,
+   "apartFromEarlier": 6
   },
   {
    "focus": "family:evasion",
-   "steps": 5,
+   "steps": 4,
    "moves": 2,
-   "games": 1826,
+   "games": 1650,
    "apartFromEarlier": 6
   },
   {
    "focus": "open",
    "steps": 4,
-   "moves": 4,
-   "games": 1562,
-   "apartFromEarlier": 7
+   "moves": 3,
+   "games": 1628,
+   "apartFromEarlier": 6
   }
  ],
  "apart": 6,
- "seconds": 92,
- "games": 7348,
+ "seconds": 145,
+ "games": 7150,
  "decks": [
   {
-   "focus": "economy",
+   "focus": "swarm",
    "labels": [
-    "economy (7 resource makers)",
-    "evasion x8"
+    "swarm (14 copies at 0 Lumber)",
+    "economy (8 resource makers)",
+    "evasion x10"
    ],
    "deck": {
-    "cone-cutter-squirrel": 3,
+    "cone-cutter-squirrel": 4,
+    "frost-hare-sprinter": 2,
     "harbor-seal": 4,
-    "ravenous-wolverine": 3,
+    "ravenous-wolverine": 2,
     "snow-ermine": 4,
-    "talus-pika": 4,
-    "walrus-icebreaker": 2
+    "talus-pika": 4
    },
    "cards": [
+    {
+     "id": "cone-cutter-squirrel",
+     "name": "Cone-cutter Squirrel",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "harbor-seal",
      "name": "Harbor Seal",
@@ -223,56 +237,49 @@
      "rarity": "common"
     },
     {
-     "id": "cone-cutter-squirrel",
-     "name": "Cone-cutter Squirrel",
-     "copies": 3,
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "copies": 2,
      "cost": 0,
      "rarity": "common"
     },
     {
      "id": "ravenous-wolverine",
      "name": "Ravenous Wolverine",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "walrus-icebreaker",
-     "name": "Walrus Icebreaker",
      "copies": 2,
      "cost": 1,
-     "rarity": "veryrare"
+     "rarity": "rare"
     }
    ],
-   "score": 0.7727,
+   "score": 0.803,
    "ci": [
-    0.7243,
-    0.8212
+    0.758,
+    0.8481
    ],
-   "avgLumber": 0.45,
-   "avgWait": 0.55,
+   "avgLumber": 0.3,
+   "avgWait": 0.4,
    "curve": {
-    "0": 11,
-    "1": 9
+    "0": 14,
+    "1": 6
    },
-   "resourceMakers": 7,
+   "resourceMakers": 8,
    "families": [
     {
      "f": "evasion",
-     "n": 8
+     "n": 10
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:17-1",
      "label": "vs 17-1 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-2",
      "label": "vs 17-2 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -284,13 +291,13 @@
     {
      "entry": "mirror|fight:17-4",
      "label": "vs 17-4 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-5",
      "label": "vs 17-5 elite's deck",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -302,7 +309,7 @@
     {
      "entry": "mirror|fight:17-7",
      "label": "vs 17-7 elite's deck",
-     "p": 0.625,
+     "p": 0.5833,
      "n": 24
     },
     {
@@ -314,40 +321,48 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 17-1's field",
-     "p": 0.75,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|ref:road17",
      "label": "vs reference deck (Map 17) under 17-2's field",
-     "p": 0.8333,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
-     "p": 0.7083,
+     "p": 0.7917,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 10
+   "copiesApartFromOpen": 6
   },
   {
-   "focus": "swarm",
+   "focus": "economy",
    "labels": [
-    "swarm (15 copies at 0 Lumber)",
-    "economy (4 resource makers)",
-    "evasion x13"
+    "swarm (16 copies at 0 Lumber)",
+    "economy (8 resource makers)",
+    "evasion x8",
+    "cold x6"
    ],
    "deck": {
-    "frost-hare-sprinter": 3,
-    "harbor-seal": 2,
+    "cone-cutter-squirrel": 4,
     "mountain-hare": 4,
-    "ravenous-wolverine": 3,
+    "ravenous-wolverine": 2,
     "snow-ermine": 4,
-    "talus-pika": 4
+    "talus-pika": 4,
+    "walrus-icebreaker": 2
    },
    "cards": [
+    {
+     "id": "cone-cutter-squirrel",
+     "name": "Cone-cutter Squirrel",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "mountain-hare",
      "name": "Mountain Hare",
@@ -370,6 +385,309 @@
      "rarity": "common"
     },
     {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7992,
+   "ci": [
+    0.7526,
+    0.8459
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 8,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 8
+    },
+    {
+     "f": "cold",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-1",
+     "label": "vs 17-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-2",
+     "label": "vs 17-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-3",
+     "label": "vs 17-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-4",
+     "label": "vs 17-4 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-5",
+     "label": "vs 17-5 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-6",
+     "label": "vs 17-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-7",
+     "label": "vs 17-7 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-8",
+     "label": "vs 17-8 miniboss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 17-2's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 8
+  },
+  {
+   "focus": "family:evasion",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "evasion x12",
+    "cold x8"
+   ],
+   "deck": {
+    "frost-hare-sprinter": 4,
+    "mountain-hare": 4,
+    "snow-bunting-archer": 2,
+    "snow-ermine": 4,
+    "talus-pika": 4,
+    "walrus-icebreaker": 2
+   },
+   "cards": [
+    {
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-bunting-archer",
+     "name": "Snow Bunting Archer",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7457,
+    0.8376
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.3,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 12
+    },
+    {
+     "f": "cold",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-1",
+     "label": "vs 17-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-2",
+     "label": "vs 17-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-3",
+     "label": "vs 17-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-4",
+     "label": "vs 17-4 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-5",
+     "label": "vs 17-5 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-6",
+     "label": "vs 17-6 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-7",
+     "label": "vs 17-7 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-8",
+     "label": "vs 17-8 miniboss's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 17-2's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 9
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "economy (8 resource makers)",
+    "evasion x7"
+   ],
+   "deck": {
+    "beluga": 3,
+    "cone-cutter-squirrel": 4,
+    "frost-hare-sprinter": 3,
+    "lone-grey-wolf": 2,
+    "snow-ermine": 4,
+    "talus-pika": 4
+   },
+   "cards": [
+    {
+     "id": "cone-cutter-squirrel",
+     "name": "Cone-cutter Squirrel",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
      "id": "frost-hare-sprinter",
      "name": "Frost Hare Sprinter",
      "copies": 3,
@@ -377,49 +695,42 @@
      "rarity": "common"
     },
     {
-     "id": "ravenous-wolverine",
-     "name": "Ravenous Wolverine",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "harbor-seal",
-     "name": "Harbor Seal",
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
      "copies": 2,
      "cost": 1,
-     "rarity": "common"
+     "rarity": "veryrare"
     }
    ],
-   "score": 0.7311,
+   "score": 0.7197,
    "ci": [
-    0.6839,
-    0.7782
+    0.6681,
+    0.7713
    ],
    "avgLumber": 0.25,
-   "avgWait": 0.1,
+   "avgWait": 0.7,
    "curve": {
     "0": 15,
     "1": 5
    },
-   "resourceMakers": 4,
+   "resourceMakers": 8,
    "families": [
     {
      "f": "evasion",
-     "n": 13
+     "n": 7
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:17-1",
      "label": "vs 17-1 skirmish's deck",
-     "p": 1,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-2",
      "label": "vs 17-2 skirmish's deck",
-     "p": 0.875,
+     "p": 0.7917,
      "n": 24
     },
     {
@@ -437,188 +748,37 @@
     {
      "entry": "mirror|fight:17-5",
      "label": "vs 17-5 elite's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-6",
-     "label": "vs 17-6 elite's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-7",
-     "label": "vs 17-7 elite's deck",
-     "p": 0.5,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-8",
-     "label": "vs 17-8 miniboss's deck",
-     "p": 0.5417,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 17-1's field",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road17",
-     "label": "vs reference deck (Map 17) under 17-2's field",
-     "p": 0.3333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
-     "p": 0.8333,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 9
-  },
-  {
-   "focus": "open",
-   "labels": [
-    "economy (4 resource makers)",
-    "evasion x8",
-    "cold x6"
-   ],
-   "deck": {
-    "frost-hare-sprinter": 4,
-    "lone-grey-wolf": 2,
-    "snow-bunting-archer": 4,
-    "snow-ermine": 4,
-    "talus-pika": 4,
-    "walrus-icebreaker": 2
-   },
-   "cards": [
-    {
-     "id": "frost-hare-sprinter",
-     "name": "Frost Hare Sprinter",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "snow-bunting-archer",
-     "name": "Snow Bunting Archer",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "snow-ermine",
-     "name": "Snow Ermine",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "talus-pika",
-     "name": "Talus Pika",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "lone-grey-wolf",
-     "name": "Lone Grey Wolf",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "veryrare"
-    },
-    {
-     "id": "walrus-icebreaker",
-     "name": "Walrus Icebreaker",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "veryrare"
-    }
-   ],
-   "score": 0.6932,
-   "ci": [
-    0.6411,
-    0.7453
-   ],
-   "avgLumber": 0.4,
-   "avgWait": 0.6,
-   "curve": {
-    "0": 12,
-    "1": 8
-   },
-   "resourceMakers": 4,
-   "families": [
-    {
-     "f": "evasion",
-     "n": 8
-    },
-    {
-     "f": "cold",
-     "n": 6
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:17-1",
-     "label": "vs 17-1 skirmish's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-2",
-     "label": "vs 17-2 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-3",
-     "label": "vs 17-3 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-4",
-     "label": "vs 17-4 skirmish's deck",
-     "p": 0.4583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-5",
-     "label": "vs 17-5 elite's deck",
      "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-6",
      "label": "vs 17-6 elite's deck",
-     "p": 0.6667,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-7",
      "label": "vs 17-7 elite's deck",
-     "p": 0.4583,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:17-8",
      "label": "vs 17-8 miniboss's deck",
-     "p": 0.5,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 17-1's field",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:road17",
      "label": "vs reference deck (Map 17) under 17-2's field",
-     "p": 0.7917,
+     "p": 0.6667,
      "n": 24
     },
     {
@@ -629,152 +789,7 @@
     }
    ],
    "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "family:evasion",
-   "labels": [
-    "evasion x12"
-   ],
-   "deck": {
-    "frost-hare-sprinter": 4,
-    "harbor-seal": 4,
-    "ravenous-wolverine": 3,
-    "snow-bunting-archer": 3,
-    "snow-ermine": 4,
-    "talus-pika": 2
-   },
-   "cards": [
-    {
-     "id": "frost-hare-sprinter",
-     "name": "Frost Hare Sprinter",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "harbor-seal",
-     "name": "Harbor Seal",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "snow-ermine",
-     "name": "Snow Ermine",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "ravenous-wolverine",
-     "name": "Ravenous Wolverine",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "snow-bunting-archer",
-     "name": "Snow Bunting Archer",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "talus-pika",
-     "name": "Talus Pika",
-     "copies": 2,
-     "cost": 0,
-     "rarity": "common"
-    }
-   ],
-   "score": 0.678,
-   "ci": [
-    0.625,
-    0.7311
-   ],
-   "avgLumber": 0.5,
-   "avgWait": 0.35,
-   "curve": {
-    "0": 10,
-    "1": 10
-   },
-   "resourceMakers": 2,
-   "families": [
-    {
-     "f": "evasion",
-     "n": 12
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:17-1",
-     "label": "vs 17-1 skirmish's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-2",
-     "label": "vs 17-2 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-3",
-     "label": "vs 17-3 skirmish's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-4",
-     "label": "vs 17-4 skirmish's deck",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-5",
-     "label": "vs 17-5 elite's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-6",
-     "label": "vs 17-6 elite's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-7",
-     "label": "vs 17-7 elite's deck",
-     "p": 0.4583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:17-8",
-     "label": "vs 17-8 miniboss's deck",
-     "p": 0.4583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 17-1's field",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road17",
-     "label": "vs reference deck (Map 17) under 17-2's field",
-     "p": 0.5,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field",
-     "p": 0.5833,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 7
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map m6 --pool alpha-howler,cone-cutter-squirrel,frost-hare-sprinter,glacial-ape-king,harbor-seal,lone-grey-wolf,mountain-hare,polar-bear,ravenous-wolverine,snow-bunting-archer,snow-ermine,spitting-spider,talus-pika,walrus-icebreaker --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,swarm,family:evasion,open --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map m6 --pool alpha-howler,beluga,cone-cutter-squirrel,frost-hare-sprinter,glacial-ape-king,harbor-seal,lone-grey-wolf,mountain-hare,polar-bear,ravenous-wolverine,snow-bunting-archer,snow-ermine,spitting-spider,talus-pika,walrus-icebreaker,wolfsbane-alpha,woodland-caribou --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,swarm,family:evasion,open --level 1 --mode map-true"
 }

@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-10-31T04:48:33.438Z",
- "fingerprint": "4263c372eaf7",
+ "generated": "2026-11-01T21:27:27.921Z",
+ "fingerprint": "ed5419f9498e",
  "map": {
   "id": "mk",
   "num": 9,
@@ -12,34 +12,34 @@
   "archerfish",
   "banded-sea-krait",
   "booming-bittern",
-  "caiman-hatchling",
   "crocodile-ambusher",
   "fiddler-crab-swarm",
   "fishing-cat",
+  "horseshoe-crab",
   "mangrove-kingfisher",
   "mangrove-manatee",
   "mangrove-monitor",
   "mangrove-mudskipper",
-  "minnow-skitter",
-  "mudpuppy",
+  "proboscis-monkey",
   "reef-shark",
+  "sea-turtle-elder",
   "sunbittern-strider"
  ],
  "poolNames": [
   "Archerfish",
   "Banded Sea Krait",
   "Booming Bittern",
-  "Caiman Hatchling",
   "Crocodile Ambusher",
   "Fiddler Crab Swarm",
   "Fishing Cat",
+  "Horseshoe Crab",
   "Mangrove Kingfisher",
   "Mangrove Manatee",
   "Mangrove Monitor",
   "Mangrove Mudskipper",
-  "Minnow Skitter",
-  "Mudpuppy",
+  "Proboscis Monkey",
   "Reef Shark",
+  "Sea Turtle Elder",
   "Sunbittern Strider"
  ],
  "rule": {
@@ -118,25 +118,16 @@
     "booming-bittern",
     "crocodile-ambusher",
     "fishing-cat",
+    "horseshoe-crab",
     "mangrove-kingfisher",
     "mangrove-manatee",
     "mangrove-monitor",
+    "proboscis-monkey",
     "reef-shark",
+    "sea-turtle-elder",
     "sunbittern-strider"
    ],
    "need": 8
-  },
-  {
-   "id": "swarm",
-   "label": "swarm (0-Lumber cards)",
-   "cards": [
-    "caiman-hatchling",
-    "fiddler-crab-swarm",
-    "mangrove-mudskipper",
-    "minnow-skitter",
-    "mudpuppy"
-   ],
-   "need": 14
   },
   {
    "id": "family:tide",
@@ -145,8 +136,19 @@
     "fiddler-crab-swarm",
     "mangrove-manatee",
     "mangrove-mudskipper",
-    "minnow-skitter",
-    "reef-shark"
+    "proboscis-monkey",
+    "reef-shark",
+    "sea-turtle-elder"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "fiddler-crab-swarm",
+    "horseshoe-crab",
+    "sea-turtle-elder"
    ],
    "need": 8
   },
@@ -161,58 +163,52 @@
   {
    "focus": "big",
    "steps": 5,
-   "moves": 2,
-   "games": 1780,
+   "moves": 1,
+   "games": 1700,
    "apartFromEarlier": null
   },
   {
-   "focus": "swarm",
+   "focus": "family:tide",
    "steps": 5,
-   "moves": 0,
-   "games": 1520,
-   "apartFromEarlier": 8
+   "moves": 3,
+   "games": 1500,
+   "apartFromEarlier": 6
   },
   {
-   "focus": "family:tide",
-   "steps": 4,
-   "moves": 4,
-   "games": 1520,
-   "apartFromEarlier": 6
+   "focus": "family:armor",
+   "steps": 5,
+   "moves": 5,
+   "games": 1760,
+   "apartFromEarlier": 8
   },
   {
    "focus": "open",
    "steps": 5,
-   "moves": 1,
-   "games": 1760,
-   "apartFromEarlier": 6
+   "moves": 3,
+   "games": 1680,
+   "apartFromEarlier": 7
   }
  ],
  "apart": 6,
- "seconds": 103,
- "games": 7220,
+ "seconds": 97,
+ "games": 7280,
  "decks": [
   {
    "focus": "big",
    "labels": [
-    "big (8 copies at 1+ Lumber, average 0.4)",
-    "tide x11"
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "tide x15",
+    "guard x11"
    ],
    "deck": {
-    "caiman-hatchling": 4,
     "fiddler-crab-swarm": 4,
-    "mangrove-kingfisher": 1,
     "mangrove-manatee": 3,
+    "mangrove-monitor": 1,
     "mangrove-mudskipper": 4,
+    "proboscis-monkey": 4,
     "sunbittern-strider": 4
    },
    "cards": [
-    {
-     "id": "caiman-hatchling",
-     "name": "Caiman Hatchling",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
     {
      "id": "fiddler-crab-swarm",
      "name": "Fiddler Crab Swarm",
@@ -226,6 +222,13 @@
      "copies": 4,
      "cost": 0,
      "rarity": "common"
+    },
+    {
+     "id": "proboscis-monkey",
+     "name": "Proboscis Monkey",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
     },
     {
      "id": "sunbittern-strider",
@@ -242,28 +245,32 @@
      "rarity": "rare"
     },
     {
-     "id": "mangrove-kingfisher",
-     "name": "Mangrove Kingfisher",
+     "id": "mangrove-monitor",
+     "name": "Mangrove Monitor",
      "copies": 1,
      "cost": 1,
-     "rarity": "rare"
+     "rarity": "common"
     }
    ],
-   "score": 0.775,
+   "score": 0.7917,
    "ci": [
-    0.7236,
-    0.8264
+    0.7439,
+    0.8394
    ],
-   "avgLumber": 0.4,
-   "avgWait": 0.65,
+   "avgLumber": 0.6,
+   "avgWait": 0.9,
    "curve": {
-    "0": 12,
-    "1": 8
+    "0": 8,
+    "1": 12
    },
    "resourceMakers": 0,
    "families": [
     {
      "f": "tide",
+     "n": 15
+    },
+    {
+     "f": "guard",
      "n": 11
     }
    ],
@@ -277,7 +284,7 @@
     {
      "entry": "mirror|fight:9-2",
      "label": "vs 9-2 skirmish's deck",
-     "p": 0.7917,
+     "p": 0.625,
      "n": 24
     },
     {
@@ -289,13 +296,13 @@
     {
      "entry": "mirror|fight:9-4",
      "label": "vs 9-4 skirmish's deck",
-     "p": 0.7083,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-5",
      "label": "vs 9-5 elite's deck",
-     "p": 0.875,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -307,7 +314,7 @@
     {
      "entry": "mirror|fight:9-7",
      "label": "vs 9-7 miniboss's deck",
-     "p": 0.625,
+     "p": 0.7917,
      "n": 24
     },
     {
@@ -319,40 +326,40 @@
     {
      "entry": "mirror|ref:road9",
      "label": "vs reference deck (Map 9) under 9-2's field",
-     "p": 0.6667,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
-     "p": 0.6667,
+     "p": 0.4583,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 10
+   "copiesApartFromOpen": 7
   },
   {
-   "focus": "swarm",
+   "focus": "family:tide",
    "labels": [
-    "swarm (17 copies at 0 Lumber)",
-    "tide x12",
-    "heal x7"
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "tide x11",
+    "guard x7"
    ],
    "deck": {
-    "caiman-hatchling": 4,
+    "banded-sea-krait": 4,
+    "booming-bittern": 2,
     "fiddler-crab-swarm": 4,
     "mangrove-manatee": 3,
-    "mangrove-mudskipper": 1,
-    "minnow-skitter": 4,
-    "mudpuppy": 4
+    "mangrove-mudskipper": 4,
+    "sunbittern-strider": 3
    },
    "cards": [
     {
-     "id": "caiman-hatchling",
-     "name": "Caiman Hatchling",
+     "id": "banded-sea-krait",
+     "name": "Banded Sea Krait",
      "copies": 4,
-     "cost": 0,
-     "rarity": "common"
+     "cost": 1,
+     "rarity": "uncommon"
     },
     {
      "id": "fiddler-crab-swarm",
@@ -362,15 +369,8 @@
      "rarity": "common"
     },
     {
-     "id": "minnow-skitter",
-     "name": "Minnow Skitter",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "mudpuppy",
-     "name": "Mudpuppy",
+     "id": "mangrove-mudskipper",
+     "name": "Mangrove Mudskipper",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
@@ -383,32 +383,39 @@
      "rarity": "rare"
     },
     {
-     "id": "mangrove-mudskipper",
-     "name": "Mangrove Mudskipper",
-     "copies": 1,
-     "cost": 0,
-     "rarity": "common"
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "booming-bittern",
+     "name": "Booming Bittern",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
     }
    ],
-   "score": 0.7292,
+   "score": 0.7583,
    "ci": [
-    0.6744,
-    0.784
+    0.707,
+    0.8096
    ],
-   "avgLumber": 0.15,
-   "avgWait": 0.65,
+   "avgLumber": 0.6,
+   "avgWait": 0.9,
    "curve": {
-    "0": 17,
-    "1": 3
+    "0": 8,
+    "1": 12
    },
    "resourceMakers": 0,
    "families": [
     {
      "f": "tide",
-     "n": 12
+     "n": 11
     },
     {
-     "f": "heal",
+     "f": "guard",
      "n": 7
     }
    ],
@@ -416,25 +423,25 @@
     {
      "entry": "mirror|fight:9-1",
      "label": "vs 9-1 skirmish's deck",
-     "p": 0.7917,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-2",
      "label": "vs 9-2 skirmish's deck",
-     "p": 0.7083,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-3",
      "label": "vs 9-3 skirmish's deck",
-     "p": 0.7083,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-4",
      "label": "vs 9-4 skirmish's deck",
-     "p": 0.625,
+     "p": 1,
      "n": 24
     },
     {
@@ -446,7 +453,7 @@
     {
      "entry": "mirror|fight:9-6",
      "label": "vs 9-6 elite's deck",
-     "p": 0.8333,
+     "p": 0.6667,
      "n": 24
     },
     {
@@ -458,13 +465,13 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 9-1's field",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|ref:road9",
      "label": "vs reference deck (Map 9) under 9-2's field",
-     "p": 0.6667,
+     "p": 0.625,
      "n": 24
     },
     {
@@ -474,23 +481,31 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 6
+   "copiesApartFromOpen": 8
   },
   {
-   "focus": "family:tide",
+   "focus": "open",
    "labels": [
-    "big (11 copies at 1+ Lumber, average 0.6)",
-    "tide x9"
+    "big (15 copies at 1+ Lumber, average 0.8)",
+    "tide x12",
+    "guard x11"
    ],
    "deck": {
-    "caiman-hatchling": 3,
+    "banded-sea-krait": 4,
     "fiddler-crab-swarm": 4,
     "mangrove-manatee": 3,
     "mangrove-monitor": 4,
-    "minnow-skitter": 2,
-    "sunbittern-strider": 4
+    "mangrove-mudskipper": 1,
+    "proboscis-monkey": 4
    },
    "cards": [
+    {
+     "id": "banded-sea-krait",
+     "name": "Banded Sea Krait",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
     {
      "id": "fiddler-crab-swarm",
      "name": "Fiddler Crab Swarm",
@@ -506,18 +521,11 @@
      "rarity": "common"
     },
     {
-     "id": "sunbittern-strider",
-     "name": "Sunbittern Strider",
+     "id": "proboscis-monkey",
+     "name": "Proboscis Monkey",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
-    },
-    {
-     "id": "caiman-hatchling",
-     "name": "Caiman Hatchling",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
     },
     {
      "id": "mangrove-manatee",
@@ -527,66 +535,70 @@
      "rarity": "rare"
     },
     {
-     "id": "minnow-skitter",
-     "name": "Minnow Skitter",
-     "copies": 2,
+     "id": "mangrove-mudskipper",
+     "name": "Mangrove Mudskipper",
+     "copies": 1,
      "cost": 0,
      "rarity": "common"
     }
    ],
-   "score": 0.7292,
+   "score": 0.7417,
    "ci": [
-    0.6744,
-    0.784
+    0.6891,
+    0.7942
    ],
-   "avgLumber": 0.55,
-   "avgWait": 0.85,
+   "avgLumber": 0.75,
+   "avgWait": 1.05,
    "curve": {
-    "0": 9,
-    "1": 11
+    "0": 5,
+    "1": 15
    },
    "resourceMakers": 0,
    "families": [
     {
      "f": "tide",
-     "n": 9
+     "n": 12
+    },
+    {
+     "f": "guard",
+     "n": 11
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:9-1",
      "label": "vs 9-1 skirmish's deck",
-     "p": 0.7917,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-2",
      "label": "vs 9-2 skirmish's deck",
-     "p": 0.75,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-3",
      "label": "vs 9-3 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-4",
      "label": "vs 9-4 skirmish's deck",
-     "p": 0.5417,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-5",
      "label": "vs 9-5 elite's deck",
-     "p": 0.8333,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-6",
      "label": "vs 9-6 elite's deck",
-     "p": 0.6667,
+     "p": 0.875,
      "n": 24
     },
     {
@@ -598,38 +610,38 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 9-1's field",
-     "p": 0.9167,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|ref:road9",
      "label": "vs reference deck (Map 9) under 9-2's field",
-     "p": 0.75,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
-     "p": 0.7083,
+     "p": 0.4167,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 12
+   "copiesApartFromOpen": 0
   },
   {
-   "focus": "open",
+   "focus": "family:armor",
    "labels": [
-    "swarm (15 copies at 0 Lumber)",
+    "big (12 copies at 1+ Lumber, average 0.7)",
     "tide x13",
-    "heal x6"
+    "armor x8"
    ],
    "deck": {
     "fiddler-crab-swarm": 4,
-    "fishing-cat": 3,
-    "mangrove-manatee": 2,
+    "horseshoe-crab": 4,
+    "mangrove-manatee": 3,
+    "mangrove-monitor": 3,
     "mangrove-mudskipper": 4,
-    "minnow-skitter": 3,
-    "mudpuppy": 4
+    "reef-shark": 2
    },
    "cards": [
     {
@@ -640,6 +652,13 @@
      "rarity": "common"
     },
     {
+     "id": "horseshoe-crab",
+     "name": "Horseshoe Crab",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
      "id": "mangrove-mudskipper",
      "name": "Mangrove Mudskipper",
      "copies": 4,
@@ -647,44 +666,38 @@
      "rarity": "common"
     },
     {
-     "id": "mudpuppy",
-     "name": "Mudpuppy",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "fishing-cat",
-     "name": "Fishing Cat",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "minnow-skitter",
-     "name": "Minnow Skitter",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
      "id": "mangrove-manatee",
      "name": "Mangrove Manatee",
-     "copies": 2,
+     "copies": 3,
      "cost": 1,
      "rarity": "rare"
+    },
+    {
+     "id": "mangrove-monitor",
+     "name": "Mangrove Monitor",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "reef-shark",
+     "name": "Reef Shark",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "common"
     }
    ],
-   "score": 0.6375,
+   "score": 0.5917,
    "ci": [
-    0.5792,
-    0.6958
+    0.5314,
+    0.6519
    ],
-   "avgLumber": 0.25,
-   "avgWait": 0.65,
+   "avgLumber": 0.7,
+   "avgWait": 1.1,
    "curve": {
-    "0": 15,
-    "1": 5
+    "0": 8,
+    "1": 10,
+    "2": 2
    },
    "resourceMakers": 0,
    "families": [
@@ -693,21 +706,25 @@
      "n": 13
     },
     {
-     "f": "heal",
-     "n": 6
+     "f": "armor",
+     "n": 8
+    },
+    {
+     "f": "guard",
+     "n": 7
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:9-1",
      "label": "vs 9-1 skirmish's deck",
-     "p": 0.375,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-2",
      "label": "vs 9-2 skirmish's deck",
-     "p": 0.5417,
+     "p": 0.4167,
      "n": 24
     },
     {
@@ -719,31 +736,31 @@
     {
      "entry": "mirror|fight:9-4",
      "label": "vs 9-4 skirmish's deck",
-     "p": 0.5833,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-5",
      "label": "vs 9-5 elite's deck",
-     "p": 0.7917,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-6",
      "label": "vs 9-6 elite's deck",
-     "p": 0.75,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-7",
      "label": "vs 9-7 miniboss's deck",
-     "p": 0.7917,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 9-1's field",
-     "p": 0.7917,
+     "p": 0.7083,
      "n": 24
     },
     {
@@ -755,12 +772,12 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
-     "p": 0.5,
+     "p": 0.4583,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 0
+   "copiesApartFromOpen": 9
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,proboscis-monkey,reef-shark,sea-turtle-elder,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,family:tide,family:armor,open --level 1 --mode map-true"
 }

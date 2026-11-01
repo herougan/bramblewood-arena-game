@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-10-31T02:37:46.784Z",
- "fingerprint": "6eb8b2ec0b65",
+ "generated": "2026-11-01T21:05:03.927Z",
+ "fingerprint": "ed5419f9498e",
  "map": {
   "id": "mg",
   "num": 2,
@@ -11,11 +11,17 @@
  "pool": [
   "conch-crawler",
   "conch-herald",
+  "driftwood-crab",
   "fiddler-crab-swarm",
+  "gallery-orb-weaver",
   "grey-seal-bull",
   "gull-thief",
+  "octopus-tactician",
+  "old-shell",
   "open-ocean-hermit-crab",
+  "pelican-diver",
   "pincushion-urchin",
+  "rock-pool-starfish",
   "sea-turtle-elder",
   "tide-pool-crab",
   "tidepool-trapper-crab",
@@ -24,11 +30,17 @@
  "poolNames": [
   "Conch Crawler",
   "Conch Herald",
+  "Driftwood Crab",
   "Fiddler Crab Swarm",
+  "Gallery Orb-Weaver",
   "Grey Seal Bull",
   "Gull Thief",
+  "Octopus Tactician",
+  "The Old Shell",
   "Open-Ocean Hermit Crab",
+  "Pelican Diver",
   "Pincushion Urchin",
+  "Rock Pool Starfish",
   "Sea Turtle Elder",
   "Tide Pool Crab",
   "Tidepool Trapper Crab",
@@ -90,6 +102,7 @@
    "id": "economy",
    "label": "economy (resource makers)",
    "cards": [
+    "driftwood-crab",
     "gull-thief",
     "trash-panda-trickster"
    ],
@@ -100,7 +113,11 @@
    "label": "big (1+ Lumber cards)",
    "cards": [
     "conch-herald",
+    "gallery-orb-weaver",
     "grey-seal-bull",
+    "octopus-tactician",
+    "old-shell",
+    "pelican-diver",
     "sea-turtle-elder"
    ],
    "need": 8
@@ -110,10 +127,12 @@
    "label": "swarm (0-Lumber cards)",
    "cards": [
     "conch-crawler",
+    "driftwood-crab",
     "fiddler-crab-swarm",
     "gull-thief",
     "open-ocean-hermit-crab",
     "pincushion-urchin",
+    "rock-pool-starfish",
     "tide-pool-crab",
     "tidepool-trapper-crab",
     "trash-panda-trickster"
@@ -130,60 +149,53 @@
  "searches": [
   {
    "focus": "economy",
-   "steps": 8,
-   "moves": 3,
-   "games": 1708,
+   "steps": 6,
+   "moves": 2,
+   "games": 1526,
    "apartFromEarlier": null
   },
   {
    "focus": "big",
    "steps": 7,
    "moves": 3,
-   "games": 1666,
+   "games": 1680,
    "apartFromEarlier": 11
   },
   {
    "focus": "swarm",
-   "steps": 6,
-   "moves": 3,
-   "games": 1526,
-   "apartFromEarlier": 9
+   "steps": 7,
+   "moves": 4,
+   "games": 1638,
+   "apartFromEarlier": 10
   },
   {
    "focus": "open",
-   "steps": 11,
-   "moves": 3,
-   "games": 1638,
-   "apartFromEarlier": 8
+   "steps": 7,
+   "moves": 5,
+   "games": 1722,
+   "apartFromEarlier": 13
   }
  ],
  "apart": 6,
- "seconds": 96,
- "games": 6986,
+ "seconds": 435,
+ "games": 7014,
  "decks": [
   {
    "focus": "big",
    "labels": [
     "big (8 copies at 1+ Lumber, average 0.4)",
-    "economy (4 resource makers)",
-    "tide x16",
-    "guard x12"
+    "economy (8 resource makers)",
+    "tide x8"
    ],
    "deck": {
-    "conch-crawler": 4,
     "conch-herald": 4,
-    "grey-seal-bull": 4,
-    "tide-pool-crab": 4,
+    "fiddler-crab-swarm": 1,
+    "gallery-orb-weaver": 4,
+    "gull-thief": 4,
+    "pincushion-urchin": 3,
     "trash-panda-trickster": 4
    },
    "cards": [
-    {
-     "id": "conch-crawler",
-     "name": "Conch Crawler",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
     {
      "id": "conch-herald",
      "name": "Conch Herald",
@@ -192,15 +204,15 @@
      "rarity": "uncommon"
     },
     {
-     "id": "grey-seal-bull",
-     "name": "Grey Seal Bull",
+     "id": "gallery-orb-weaver",
+     "name": "Gallery Orb-Weaver",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
     },
     {
-     "id": "tide-pool-crab",
-     "name": "Tide Pool Crab",
+     "id": "gull-thief",
+     "name": "Gull Thief",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
@@ -211,31 +223,37 @@
      "copies": 4,
      "cost": 0,
      "rarity": "common"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
     }
    ],
-   "score": 0.7976,
+   "score": 0.8274,
    "ci": [
-    0.7405,
-    0.8548
+    0.7747,
+    0.88
    ],
    "avgLumber": 0.4,
-   "avgWait": 0.8,
+   "avgWait": 0.55,
    "curve": {
     "0": 12,
     "1": 8
    },
-   "resourceMakers": 4,
+   "resourceMakers": 8,
    "families": [
     {
      "f": "tide",
-     "n": 16
-    },
-    {
-     "f": "guard",
-     "n": 12
-    },
-    {
-     "f": "armor",
      "n": 8
     }
    ],
@@ -249,25 +267,25 @@
     {
      "entry": "mirror|fight:2-B-2",
      "label": "vs 2-B-2 elite's deck",
-     "p": 0.7917,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-B-3",
      "label": "vs 2-B-3 elite's deck",
-     "p": 0.7917,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-B-4",
      "label": "vs 2-B-4 elite's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 2-B-1's field",
-     "p": 0.9167,
+     "p": 1,
      "n": 24
     },
     {
@@ -279,52 +297,39 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 8
+   "copiesApartFromOpen": 13
   },
   {
-   "focus": "open",
+   "focus": "swarm",
    "labels": [
-    "swarm (16 copies at 0 Lumber)",
-    "economy (4 resource makers)",
-    "tide x16",
+    "swarm (17 copies at 0 Lumber)",
+    "economy (6 resource makers)",
+    "tide x10",
     "armor x8"
    ],
    "deck": {
-    "conch-herald": 4,
-    "fiddler-crab-swarm": 4,
-    "pincushion-urchin": 4,
+    "conch-herald": 3,
+    "driftwood-crab": 2,
+    "pincushion-urchin": 3,
     "tide-pool-crab": 4,
+    "tidepool-trapper-crab": 4,
     "trash-panda-trickster": 4
    },
    "cards": [
     {
-     "id": "conch-herald",
-     "name": "Conch Herald",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "fiddler-crab-swarm",
-     "name": "Fiddler Crab Swarm",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "pincushion-urchin",
-     "name": "Pincushion Urchin",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
      "id": "tide-pool-crab",
      "name": "Tide Pool Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "tidepool-trapper-crab",
+     "name": "Tidepool Trapper Crab",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
@@ -335,24 +340,45 @@
      "copies": 4,
      "cost": 0,
      "rarity": "common"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
     }
    ],
-   "score": 0.7738,
+   "score": 0.8095,
    "ci": [
-    0.7151,
-    0.8325
+    0.7562,
+    0.8629
    ],
-   "avgLumber": 0.2,
+   "avgLumber": 0.15,
    "avgWait": 0.4,
    "curve": {
-    "0": 16,
-    "1": 4
+    "0": 17,
+    "1": 3
    },
-   "resourceMakers": 4,
+   "resourceMakers": 6,
    "families": [
     {
      "f": "tide",
-     "n": 16
+     "n": 10
     },
     {
      "f": "armor",
@@ -369,19 +395,19 @@
     {
      "entry": "mirror|fight:2-B-2",
      "label": "vs 2-B-2 elite's deck",
-     "p": 0.75,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-B-3",
      "label": "vs 2-B-3 elite's deck",
-     "p": 0.7917,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-B-4",
      "label": "vs 2-B-4 elite's deck",
-     "p": 0.8333,
+     "p": 1,
      "n": 24
     },
     {
@@ -403,24 +429,32 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 0
+   "copiesApartFromOpen": 13
   },
   {
-   "focus": "swarm",
+   "focus": "open",
    "labels": [
-    "swarm (15 copies at 0 Lumber)",
-    "economy (7 resource makers)",
-    "tide x13"
+    "big (8 copies at 1+ Lumber, average 0.5)",
+    "economy (4 resource makers)",
+    "tide x12",
+    "armor x9"
    ],
    "deck": {
-    "conch-herald": 2,
-    "grey-seal-bull": 3,
-    "gull-thief": 3,
+    "conch-crawler": 4,
+    "conch-herald": 3,
     "open-ocean-hermit-crab": 4,
-    "pincushion-urchin": 4,
+    "pelican-diver": 4,
+    "sea-turtle-elder": 1,
     "trash-panda-trickster": 4
    },
    "cards": [
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "open-ocean-hermit-crab",
      "name": "Open-Ocean Hermit Crab",
@@ -429,11 +463,11 @@
      "rarity": "common"
     },
     {
-     "id": "pincushion-urchin",
-     "name": "Pincushion Urchin",
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
      "copies": 4,
-     "cost": 0,
-     "rarity": "common"
+     "cost": 1,
+     "rarity": "uncommon"
     },
     {
      "id": "trash-panda-trickster",
@@ -443,74 +477,72 @@
      "rarity": "common"
     },
     {
-     "id": "grey-seal-bull",
-     "name": "Grey Seal Bull",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "gull-thief",
-     "name": "Gull Thief",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
      "id": "conch-herald",
      "name": "Conch Herald",
-     "copies": 2,
+     "copies": 3,
      "cost": 1,
      "rarity": "uncommon"
+    },
+    {
+     "id": "sea-turtle-elder",
+     "name": "Sea Turtle Elder",
+     "copies": 1,
+     "cost": 2,
+     "rarity": "common"
     }
    ],
-   "score": 0.7619,
+   "score": 0.7857,
    "ci": [
-    0.7049,
-    0.8189
+    0.7265,
+    0.8449
    ],
-   "avgLumber": 0.25,
-   "avgWait": 0.6,
+   "avgLumber": 0.45,
+   "avgWait": 0.7,
    "curve": {
-    "0": 15,
-    "1": 5
+    "0": 12,
+    "1": 7,
+    "2": 1
    },
-   "resourceMakers": 7,
+   "resourceMakers": 4,
    "families": [
     {
      "f": "tide",
-     "n": 13
+     "n": 12
+    },
+    {
+     "f": "armor",
+     "n": 9
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:2-B-1",
      "label": "vs 2-B-1 skirmish's deck",
-     "p": 0.625,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-B-2",
      "label": "vs 2-B-2 elite's deck",
-     "p": 0.5,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-B-3",
      "label": "vs 2-B-3 elite's deck",
-     "p": 0.8333,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-B-4",
      "label": "vs 2-B-4 elite's deck",
-     "p": 0.9583,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 2-B-1's field",
-     "p": 0.9583,
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -522,32 +554,38 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 10
+   "copiesApartFromOpen": 0
   },
   {
    "focus": "economy",
    "labels": [
-    "swarm (16 copies at 0 Lumber)",
-    "economy (6 resource makers)",
-    "tide x11",
-    "armor x6"
+    "big (11 copies at 1+ Lumber, average 0.7)",
+    "economy (8 resource makers)",
+    "flying x8"
    ],
    "deck": {
-    "conch-crawler": 3,
-    "conch-herald": 4,
+    "driftwood-crab": 4,
+    "fiddler-crab-swarm": 1,
+    "gallery-orb-weaver": 4,
     "gull-thief": 4,
-    "pincushion-urchin": 4,
-    "tidepool-trapper-crab": 3,
-    "trash-panda-trickster": 2
+    "octopus-tactician": 3,
+    "pelican-diver": 4
    },
    "cards": [
     {
-     "id": "conch-herald",
-     "name": "Conch Herald",
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "name": "Gallery Orb-Weaver",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
@@ -560,85 +598,75 @@
      "rarity": "common"
     },
     {
-     "id": "pincushion-urchin",
-     "name": "Pincushion Urchin",
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
      "copies": 4,
-     "cost": 0,
-     "rarity": "common"
+     "cost": 1,
+     "rarity": "uncommon"
     },
     {
-     "id": "conch-crawler",
-     "name": "Conch Crawler",
+     "id": "octopus-tactician",
+     "name": "Octopus Tactician",
      "copies": 3,
-     "cost": 0,
-     "rarity": "common"
+     "cost": 2,
+     "rarity": "uncommon"
     },
     {
-     "id": "tidepool-trapper-crab",
-     "name": "Tidepool Trapper Crab",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "trash-panda-trickster",
-     "name": "Trash Panda Trickster",
-     "copies": 2,
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 1,
      "cost": 0,
      "rarity": "common"
     }
    ],
-   "score": 0.7024,
+   "score": 0.5923,
    "ci": [
-    0.6425,
-    0.7622
+    0.5249,
+    0.6596
    ],
-   "avgLumber": 0.2,
-   "avgWait": 0.55,
+   "avgLumber": 0.7,
+   "avgWait": 0.9,
    "curve": {
-    "0": 16,
-    "1": 4
+    "0": 9,
+    "1": 8,
+    "2": 3
    },
-   "resourceMakers": 6,
+   "resourceMakers": 8,
    "families": [
     {
-     "f": "tide",
-     "n": 11
-    },
-    {
-     "f": "armor",
-     "n": 6
+     "f": "flying",
+     "n": 8
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:2-B-1",
      "label": "vs 2-B-1 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-B-2",
      "label": "vs 2-B-2 elite's deck",
-     "p": 0.5833,
+     "p": 0.6458,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-B-3",
      "label": "vs 2-B-3 elite's deck",
-     "p": 0.8333,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-B-4",
      "label": "vs 2-B-4 elite's deck",
-     "p": 0.875,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 2-B-1's field",
-     "p": 0.875,
+     "p": 0.7917,
      "n": 24
     },
     {
@@ -650,12 +678,12 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
-     "p": 0.875,
+     "p": 0.75,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 10
+   "copiesApartFromOpen": 16
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map mg --pool conch-crawler,conch-herald,fiddler-crab-swarm,grey-seal-bull,gull-thief,open-ocean-hermit-crab,pincushion-urchin,sea-turtle-elder,tide-pool-crab,tidepool-trapper-crab,trash-panda-trickster --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map mg --pool conch-crawler,conch-herald,driftwood-crab,fiddler-crab-swarm,gallery-orb-weaver,grey-seal-bull,gull-thief,octopus-tactician,old-shell,open-ocean-hermit-crab,pelican-diver,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tide-pool-crab,tidepool-trapper-crab,trash-panda-trickster --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
 }

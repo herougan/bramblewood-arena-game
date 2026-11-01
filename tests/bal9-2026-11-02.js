@@ -46,7 +46,7 @@ ok(fs.existsSync(path.join(ROOT, 'docs/balance/bench-contrib-map02-mb-bpro-2026-
   const mains = o.lists.filter(l => l.map >= 1 && l.map <= 19 && !/^m(tut|o)/.test(l.loc) && !l.loc.includes('_')).filter(l => J('canonical/map-pools.json').maps[l.loc]);
   ok(mains.every(l => l.defenders.length > 0), `JJ28 every main map 1-19 has a defender on its list (${mains.filter(l => !l.defenders.length).map(l => l.loc).join(', ') || mains.length + ' maps'})`);
   const plan = J('docs/balance/bal9/defenders-plan-2026-11-02.json'); ok(plan.edits.length >= 8 && plan.edits.every(e => C[e.id].effects.guardian === true), `JJ28 the Guardian walls are applied (${plan.edits.length})`);
-  const sk = J('canonical/skill-costs.json').find(x => x.id === 'bulwark'); ok(sk && sk.pow > 0 && sk.pow < 1, `JJ28 Bulwark is priced by its measured curve (v x N^${sk && sk.pow})`); }
+  const sk = J('canonical/skill-costs.json').skills.find(x => x.id === 'bulwark'); ok(sk && sk.pow > 0 && sk.pow < 1, `JJ28 Bulwark is priced by its measured curve (v x N^${sk && sk.pow})`); }
 
 // ---- JJ22: the Map 40+ deck-fill rule ------------------------------------------------------------------------------------------
 { const L = require(path.join(ROOT, 'tools', 'bal9', 'lib_bal9.js')), step = r => ['common', 'uncommon', 'rare', 'veryrare'].indexOf(r);

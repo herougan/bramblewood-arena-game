@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-10-31T02:33:21.322Z",
- "fingerprint": "6eb8b2ec0b65",
+ "generated": "2026-11-01T20:46:18.553Z",
+ "fingerprint": "ed5419f9498e",
  "map": {
   "id": "mf",
   "num": 1,
@@ -9,7 +9,6 @@
  },
  "level": 1,
  "pool": [
-  "ant-hill",
   "ant-scout",
   "badger-lumberjack",
   "bee-forager",
@@ -23,6 +22,8 @@
   "field-mouse",
   "field-vole",
   "hedgerow-shrew",
+  "hollow-belly-rat",
+  "honey-bee",
   "meadow-rabbit",
   "owl-sentinel",
   "robin-redbreast",
@@ -30,7 +31,6 @@
   "woodcock-lookout"
  ],
  "poolNames": [
-  "Ant Hill",
   "Ant Scout",
   "Badger Lumberjack",
   "Bee Forager",
@@ -44,6 +44,8 @@
   "Field Mouse",
   "Field Vole",
   "Hedgerow Shrew",
+  "Hollow-belly Rat",
+  "Honey Bee",
   "Meadow Rabbit",
   "Owl Sentinel",
   "Robin Redbreast",
@@ -111,9 +113,9 @@
    "id": "big",
    "label": "big (1+ Lumber cards)",
    "cards": [
-    "ant-hill",
     "badger-lumberjack",
     "chipmunk-cavalry",
+    "hollow-belly-rat",
     "owl-sentinel"
    ],
    "need": 8
@@ -133,6 +135,7 @@
     "field-mouse",
     "field-vole",
     "hedgerow-shrew",
+    "honey-bee",
     "meadow-rabbit",
     "robin-redbreast",
     "slow-worm",
@@ -145,6 +148,7 @@
    "label": "flying (skill family)",
    "cards": [
     "bee-forager",
+    "honey-bee",
     "owl-sentinel",
     "robin-redbreast"
    ],
@@ -160,185 +164,72 @@
  "searches": [
   {
    "focus": "big",
-   "steps": 6,
-   "moves": 2,
-   "games": 1632,
+   "steps": 7,
+   "moves": 4,
+   "games": 1760,
    "apartFromEarlier": null
   },
   {
    "focus": "swarm",
-   "steps": 5,
+   "steps": 6,
    "moves": 2,
-   "games": 1536,
+   "games": 1664,
    "apartFromEarlier": 16
   },
   {
    "focus": "family:flying",
    "steps": 6,
-   "moves": 4,
-   "games": 1728,
-   "apartFromEarlier": 14
+   "moves": 3,
+   "games": 1712,
+   "apartFromEarlier": 10
   },
   {
    "focus": "open",
-   "steps": 5,
-   "moves": 2,
-   "games": 1536,
-   "apartFromEarlier": 8
+   "steps": 6,
+   "moves": 3,
+   "games": 1648,
+   "apartFromEarlier": 10
   }
  ],
  "apart": 6,
- "seconds": 67,
- "games": 6944,
+ "seconds": 153,
+ "games": 7296,
  "decks": [
   {
-   "focus": "swarm",
+   "focus": "open",
    "labels": [
-    "swarm (19 copies at 0 Lumber)"
+    "swarm (16 copies at 0 Lumber)",
+    "strike-first x7"
    ],
    "deck": {
-    "chipmunk-skirmisher": 3,
-    "cottontail": 4,
-    "dormouse": 4,
-    "field-vole": 4,
-    "hedgerow-shrew": 4,
-    "owl-sentinel": 1
+    "chipmunk-cavalry": 4,
+    "chipmunk-skirmisher": 4,
+    "cricket-drummer": 4,
+    "field-mouse": 4,
+    "hedgerow-shrew": 3,
+    "meadow-rabbit": 1
    },
    "cards": [
     {
-     "id": "cottontail",
-     "name": "Cottontail",
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
      "copies": 4,
-     "cost": 0,
-     "rarity": "starter"
-    },
-    {
-     "id": "dormouse",
-     "name": "Dormouse",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "field-vole",
-     "name": "Field Vole",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "hedgerow-shrew",
-     "name": "Hedgerow Shrew",
-     "copies": 4,
-     "cost": 0,
+     "cost": 1,
      "rarity": "common"
     },
     {
      "id": "chipmunk-skirmisher",
      "name": "Chipmunk Skirmisher",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "owl-sentinel",
-     "name": "Owl Sentinel",
-     "copies": 1,
-     "cost": 1,
-     "rarity": "common"
-    }
-   ],
-   "score": 0.7292,
-   "ci": [
-    0.6719,
-    0.7864
-   ],
-   "avgLumber": 0.05,
-   "avgWait": 0.1,
-   "curve": {
-    "0": 19,
-    "1": 1
-   },
-   "resourceMakers": 0,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:1-1",
-     "label": "vs 1-1 skirmish's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:1-2",
-     "label": "vs 1-2 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:1-3",
-     "label": "vs 1-3 skirmish's deck",
-     "p": 0.625,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:1-4",
-     "label": "vs 1-4 skirmish's deck",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:1-5",
-     "label": "vs 1-5 elite's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 1-1's field",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road1",
-     "label": "vs reference deck (Map 1) under 1-2's field",
-     "p": 0.375,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
-     "p": 0.9583,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 8
-  },
-  {
-   "focus": "open",
-   "labels": [
-    "swarm (20 copies at 0 Lumber)"
-   ],
-   "deck": {
-    "bramble-sprout": 4,
-    "cottontail": 4,
-    "field-mouse": 4,
-    "field-vole": 4,
-    "hedgerow-shrew": 4
-   },
-   "cards": [
-    {
-     "id": "bramble-sprout",
-     "name": "Bramble Sprout",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "cottontail",
-     "name": "Cottontail",
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
      "copies": 4,
      "cost": 0,
-     "rarity": "starter"
+     "rarity": "common"
     },
     {
      "id": "field-mouse",
@@ -348,86 +239,92 @@
      "rarity": "common"
     },
     {
-     "id": "field-vole",
-     "name": "Field Vole",
-     "copies": 4,
+     "id": "hedgerow-shrew",
+     "name": "Hedgerow Shrew",
+     "copies": 3,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "hedgerow-shrew",
-     "name": "Hedgerow Shrew",
-     "copies": 4,
+     "id": "meadow-rabbit",
+     "name": "Meadow Rabbit",
+     "copies": 1,
      "cost": 0,
-     "rarity": "common"
+     "rarity": "starter"
     }
    ],
-   "score": 0.6979,
+   "score": 0.8385,
    "ci": [
-    0.6398,
-    0.756
+    0.7924,
+    0.8847
    ],
-   "avgLumber": 0,
+   "avgLumber": 0.2,
    "avgWait": 0,
    "curve": {
-    "0": 20
+    "0": 16,
+    "1": 4
    },
    "resourceMakers": 0,
-   "families": [],
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 7
+    }
+   ],
    "perOpponent": [
     {
      "entry": "mirror|fight:1-1",
      "label": "vs 1-1 skirmish's deck",
-     "p": 0.75,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-2",
      "label": "vs 1-2 skirmish's deck",
-     "p": 0.75,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-3",
      "label": "vs 1-3 skirmish's deck",
-     "p": 0.625,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-4",
      "label": "vs 1-4 skirmish's deck",
-     "p": 0.5417,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-5",
      "label": "vs 1-5 elite's deck",
-     "p": 0.7083,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 1-1's field",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|ref:road1",
      "label": "vs reference deck (Map 1) under 1-2's field",
-     "p": 0.2917,
+     "p": 0.4167,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     }
    ],
    "copiesApartFromOpen": 0
   },
   {
-   "focus": "family:flying",
+   "focus": "swarm",
    "labels": [
     "swarm (16 copies at 0 Lumber)",
     "swarm x8",
@@ -437,8 +334,8 @@
     "ant-scout": 4,
     "bee-forager": 4,
     "chipmunk-cavalry": 4,
-    "cottontail": 4,
-    "robin-redbreast": 4
+    "cricket-drummer": 4,
+    "honey-bee": 4
    },
    "cards": [
     {
@@ -463,24 +360,24 @@
      "rarity": "common"
     },
     {
-     "id": "cottontail",
-     "name": "Cottontail",
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "honey-bee",
+     "name": "Honey Bee",
      "copies": 4,
      "cost": 0,
      "rarity": "starter"
-    },
-    {
-     "id": "robin-redbreast",
-     "name": "Robin Redbreast",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
     }
    ],
-   "score": 0.5,
+   "score": 0.8229,
    "ci": [
-    0.4314,
-    0.5686
+    0.7706,
+    0.8752
    ],
    "avgLumber": 0.2,
    "avgWait": 0,
@@ -503,75 +400,199 @@
     {
      "entry": "mirror|fight:1-1",
      "label": "vs 1-1 skirmish's deck",
-     "p": 0.4167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-2",
      "label": "vs 1-2 skirmish's deck",
-     "p": 0.375,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-3",
      "label": "vs 1-3 skirmish's deck",
-     "p": 0.375,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-4",
      "label": "vs 1-4 skirmish's deck",
-     "p": 0.4167,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-5",
      "label": "vs 1-5 elite's deck",
-     "p": 0.6667,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 1-1's field",
-     "p": 0.6667,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|ref:road1",
      "label": "vs reference deck (Map 1) under 1-2's field",
-     "p": 0.4583,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
-     "p": 0.625,
+     "p": 0.9167,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 16
+   "copiesApartFromOpen": 12
   },
   {
    "focus": "big",
    "labels": [
-    "big (8 copies at 1+ Lumber, average 0.6)"
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "economy (4 resource makers)",
+    "strike-first x7"
    ],
    "deck": {
-    "ant-hill": 4,
-    "ant-scout": 2,
+    "badger-lumberjack": 4,
     "chipmunk-cavalry": 4,
-    "dormouse": 4,
-    "field-mouse": 4,
-    "woodcock-lookout": 2
+    "cottontail": 2,
+    "field-mouse": 3,
+    "field-vole": 4,
+    "hedgerow-shrew": 3
    },
    "cards": [
     {
-     "id": "ant-hill",
-     "name": "Ant Hill",
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
      "copies": 4,
-     "cost": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "copies": 4,
+     "cost": 1,
      "rarity": "common"
     },
+    {
+     "id": "field-vole",
+     "name": "Field Vole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "field-mouse",
+     "name": "Field Mouse",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hedgerow-shrew",
+     "name": "Hedgerow Shrew",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cottontail",
+     "name": "Cottontail",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.6667,
+   "ci": [
+    0.6071,
+    0.7262
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.2,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-1",
+     "label": "vs 1-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-2",
+     "label": "vs 1-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-3",
+     "label": "vs 1-3 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-4",
+     "label": "vs 1-4 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-5",
+     "label": "vs 1-5 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road1",
+     "label": "vs reference deck (Map 1) under 1-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "flying x8",
+    "swarm x6"
+   ],
+   "deck": {
+    "bee-forager": 2,
+    "chipmunk-cavalry": 4,
+    "dormouse": 4,
+    "field-vole": 4,
+    "honey-bee": 4,
+    "robin-redbreast": 2
+   },
+   "cards": [
     {
      "id": "chipmunk-cavalry",
      "name": "Chipmunk Cavalry",
@@ -587,93 +608,108 @@
      "rarity": "common"
     },
     {
-     "id": "field-mouse",
-     "name": "Field Mouse",
+     "id": "field-vole",
+     "name": "Field Vole",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "ant-scout",
-     "name": "Ant Scout",
+     "id": "honey-bee",
+     "name": "Honey Bee",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
      "copies": 2,
      "cost": 0,
      "rarity": "starter"
     },
     {
-     "id": "woodcock-lookout",
-     "name": "Woodcock Lookout",
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
      "copies": 2,
      "cost": 0,
-     "rarity": "common"
+     "rarity": "uncommon"
     }
    ],
-   "score": 0.4427,
+   "score": 0.6146,
    "ci": [
-    0.379,
-    0.5064
+    0.5487,
+    0.6805
    ],
-   "avgLumber": 0.6,
-   "avgWait": 0.7,
+   "avgLumber": 0.2,
+   "avgWait": 0,
    "curve": {
-    "0": 12,
-    "1": 4,
-    "2": 4
+    "0": 16,
+    "1": 4
    },
    "resourceMakers": 0,
-   "families": [],
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    },
+    {
+     "f": "swarm",
+     "n": 6
+    }
+   ],
    "perOpponent": [
     {
      "entry": "mirror|fight:1-1",
      "label": "vs 1-1 skirmish's deck",
-     "p": 0.375,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-2",
      "label": "vs 1-2 skirmish's deck",
-     "p": 0.3333,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-3",
      "label": "vs 1-3 skirmish's deck",
-     "p": 0.375,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-4",
      "label": "vs 1-4 skirmish's deck",
-     "p": 0.1667,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|fight:1-5",
      "label": "vs 1-5 elite's deck",
-     "p": 0.625,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 1-1's field",
-     "p": 0.7083,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|ref:road1",
      "label": "vs reference deck (Map 1) under 1-2's field",
-     "p": 0.2083,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
-     "p": 0.75,
+     "p": 0.875,
      "n": 24
     }
    ],
    "copiesApartFromOpen": 16
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map mf --pool ant-hill,ant-scout,badger-lumberjack,bee-forager,bramble-sprout,chipmunk-cavalry,chipmunk-skirmisher,compost-grub,cottontail,cricket-drummer,dormouse,field-mouse,field-vole,hedgerow-shrew,meadow-rabbit,owl-sentinel,robin-redbreast,slow-worm,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:flying,open --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map mf --pool ant-scout,badger-lumberjack,bee-forager,bramble-sprout,chipmunk-cavalry,chipmunk-skirmisher,compost-grub,cottontail,cricket-drummer,dormouse,field-mouse,field-vole,hedgerow-shrew,hollow-belly-rat,honey-bee,meadow-rabbit,owl-sentinel,robin-redbreast,slow-worm,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:flying,open --level 1 --mode map-true"
 }

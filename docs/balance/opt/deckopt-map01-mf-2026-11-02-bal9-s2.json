@@ -1,0 +1,1127 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+ "generated": "2026-11-01T17:28:08.592Z",
+ "map": {
+  "id": "mf",
+  "num": 1,
+  "name": "Thistlewood"
+ },
+ "level": 0,
+ "settings": {
+  "mode": "prog",
+  "seedRef": true,
+  "faction": false,
+  "rarityCap": "map",
+  "cap": null,
+  "seed": "ref5-s2",
+  "budget": 2000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 1,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 8,
+  "children": 16,
+  "g0": 2,
+  "gmax": 8,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mf --seed ref5-s2 --budget 2000 --final-games 4 --method ga --level ref --cross-share 0 --road-weight 0.25 --restarts 1 --ladder none --mode prog --seed-ref --prog-seed 2 --pool-file docs/balance/ref/ref5-prog-pools.json",
+ "pools": {
+  "mode": "prog",
+  "cap": null,
+  "subsOpen": [],
+  "phase1": 55,
+  "mapCards": [],
+  "owned": [
+   "acorn-chipmunk",
+   "ant-scout",
+   "beaver-lumberjack",
+   "bee-drone",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "burrow-rabbit",
+   "chipmunk-forager",
+   "chipmunk-skirmisher",
+   "clap-net-trapper",
+   "cobalt-talon-fledgling",
+   "cottontail",
+   "crimson-wing-recruit",
+   "crossed-eyes",
+   "dominion-nestguard",
+   "duck-paddler",
+   "duckling",
+   "earthworm",
+   "ferry-toll-frog",
+   "fleetfootd",
+   "forager-ant",
+   "ford-kingfisher",
+   "garden-snail",
+   "greyplume-fledgling",
+   "guppy",
+   "harvest-mouse",
+   "honey-bee",
+   "house-cat",
+   "hummingbird-needler",
+   "meadow-frog",
+   "meadow-rabbit",
+   "meerkat-wayfarer",
+   "mosswing-laborer",
+   "otter-centurion",
+   "otter-guard",
+   "otter-kit",
+   "otter-paddler",
+   "otter-shieldback",
+   "phoenix-mushrooms",
+   "pond-duck",
+   "pond-trout",
+   "rabbit-kit",
+   "river-carp",
+   "rivergate-recruit",
+   "riverwing-envoy",
+   "sheep",
+   "shell-cracker",
+   "silver-minnow",
+   "soldier-ant",
+   "sparrow-chick",
+   "sunfeather-scout",
+   "terrier-pup",
+   "tunnel-ant",
+   "worker-ant"
+  ],
+  "phase2": 55,
+  "wholeSpectrum": 55,
+  "excluded": []
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "meadow-forest",
+   "kinBiomes": [
+    "long-grass",
+    "maze-briar",
+    "redwood"
+   ],
+   "terrainTypes": [
+    "Flora",
+    "Forest",
+    "Rainforest",
+    "Taiga"
+   ],
+   "mapTypes": [
+    "Bee 2",
+    "Bird 3",
+    "Chipmunk 2",
+    "Field 4",
+    "Insect 4",
+    "Lagomorph 2",
+    "Mouse 4",
+    "Rabbit 2",
+    "Rodent 6"
+   ],
+   "mapMechanics": [
+    "ranged 2",
+    "strike-first 2",
+    "swarm 3"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "phase:cycle",
+    "undergrowth",
+    "woods"
+   ],
+   "coreCards": 21
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: not in player 2's collection",
+    "n": 765,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "acacia-giraffe",
+     "adder-ambusher",
+     "alley-cat"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:1-1",
+   "kind": "mirror",
+   "node": "1-1",
+   "label": "vs 1-1 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, undergrowth, woods"
+  },
+  {
+   "key": "mirror|fight:1-2",
+   "kind": "mirror",
+   "node": "1-2",
+   "label": "vs 1-2 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods"
+  },
+  {
+   "key": "mirror|fight:1-3",
+   "kind": "mirror",
+   "node": "1-3",
+   "label": "vs 1-3 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods"
+  },
+  {
+   "key": "mirror|fight:1-4",
+   "kind": "mirror",
+   "node": "1-4",
+   "label": "vs 1-4 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods"
+  },
+  {
+   "key": "mirror|fight:1-5",
+   "kind": "mirror",
+   "node": "1-5",
+   "label": "vs 1-5 elite's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T2 (Regen 1), undergrowth, woods"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "1-1",
+   "label": "vs reference starter deck under 1-1's field",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, undergrowth, woods"
+  },
+  {
+   "key": "mirror|ref:road1",
+   "kind": "mirror",
+   "node": "1-2",
+   "label": "vs reference deck (Map 1) under 1-2's field",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "1-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods"
+  },
+  {
+   "key": "road|1-1",
+   "kind": "road",
+   "node": "1-1",
+   "label": "1-1 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, undergrowth, woods"
+  },
+  {
+   "key": "road|1-2",
+   "kind": "road",
+   "node": "1-2",
+   "label": "1-2 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods"
+  },
+  {
+   "key": "road|1-3",
+   "kind": "road",
+   "node": "1-3",
+   "label": "1-3 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods"
+  },
+  {
+   "key": "road|1-4",
+   "kind": "road",
+   "node": "1-4",
+   "label": "1-4 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods"
+  },
+  {
+   "key": "road|1-5",
+   "kind": "road",
+   "node": "1-5",
+   "label": "1-5 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T2 (Regen 1), undergrowth, woods"
+  },
+  {
+   "key": "neutral|fight:1-1",
+   "kind": "mirror",
+   "node": "1-1",
+   "label": "vs 1-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:1-2",
+   "kind": "mirror",
+   "node": "1-2",
+   "label": "vs 1-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:1-3",
+   "kind": "mirror",
+   "node": "1-3",
+   "label": "vs 1-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:1-4",
+   "kind": "mirror",
+   "node": "1-4",
+   "label": "vs 1-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:1-5",
+   "kind": "mirror",
+   "node": "1-5",
+   "label": "vs 1-5 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "1-1",
+   "label": "vs reference starter deck under 1-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road1",
+   "kind": "mirror",
+   "node": "1-2",
+   "label": "vs reference deck (Map 1) under 1-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "1-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 2814,
+  "seconds": 149.2,
+  "gamesPerSecond": 18.9,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 2574,
+   "gens": 2,
+   "restarts": 1,
+   "runs": [
+    {
+     "best": "bee-forager:4,bee-knight:1,crimson-wing-recruit:2,duck-paddler:5,duckling:1,soldier-ant:4,tunnel-ant:3",
+     "f": 0.875,
+     "gens": 2,
+     "games": 2574,
+     "top": [
+      "bee-forager:4,bee-knight:1,crimson-wing-recruit:2,duck-paddler:5,duckling:1,soldier-ant:4,tunnel-ant:3",
+      "acorn-chipmunk:1,bee-forager:4,chipmunk-skirmisher:1,crimson-wing-recruit:1,duck-paddler:5,soldier-ant:5,tunnel-ant:3",
+      "acorn-chipmunk:2,bee-forager:4,crimson-wing-recruit:1,duck-paddler:2,honey-bee:1,otter-paddler:1,river-carp:1,shell-cracker:1,soldier-ant:5,tunnel-ant:2",
+      "bee-forager:4,crimson-wing-recruit:4,duck-paddler:1,duckling:1,otter-paddler:2,pond-trout:1,soldier-ant:4,tunnel-ant:3"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "bee-forager": 4,
+    "bee-knight": 1,
+    "crimson-wing-recruit": 2,
+    "duck-paddler": 5,
+    "duckling": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3
+   },
+   "cards": [
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 5,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bee-knight",
+     "name": "Bee Knight",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.875,
+   "ci": [
+    0.811,
+    0.939
+   ],
+   "mirror": 0.875,
+   "road": 0.875,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:1-1",
+     "label": "vs 1-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:1-2",
+     "label": "vs 1-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:1-3",
+     "label": "vs 1-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:1-4",
+     "label": "vs 1-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:1-5",
+     "label": "vs 1-5 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:road1",
+     "label": "vs reference deck (Map 1) under 1-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "road|1-1",
+     "label": "1-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "road|1-2",
+     "label": "1-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "road|1-3",
+     "label": "1-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "road|1-4",
+     "label": "1-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.625,
+     "lo": 0.306,
+     "hi": 0.863,
+     "n": 8
+    },
+    {
+     "entry": "road|1-5",
+     "label": "1-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "neutral|fight:1-1",
+     "label": "vs 1-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:1-2",
+     "label": "vs 1-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:1-3",
+     "label": "vs 1-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.5,
+     "lo": 0.15,
+     "hi": 0.85,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:1-4",
+     "label": "vs 1-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:1-5",
+     "label": "vs 1-5 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 1-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:road1",
+     "label": "vs reference deck (Map 1) under 1-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.5,
+     "lo": 0.15,
+     "hi": 0.85,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.875,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "bee-forager": 4,
+    "bee-knight": 1,
+    "crimson-wing-recruit": 2,
+    "duck-paddler": 5,
+    "duckling": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3
+   },
+   "cards": [
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 5,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bee-knight",
+     "name": "Bee Knight",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.875,
+   "ci": [
+    0.811,
+    0.939
+   ],
+   "copiesApartFromOptimum": 0
+  }
+ ],
+ "optimaH2H": [
+  [
+   null
+  ]
+ ],
+ "optimaConsidered": 4,
+ "ladder": null,
+ "road": [
+  {
+   "node": "1-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 1,
+   "ci": [
+    0.676,
+    1
+   ],
+   "n": 8
+  },
+  {
+   "node": "1-2",
+   "kind": "skirmish",
+   "target": 0.8,
+   "optimum": 1,
+   "ci": [
+    0.676,
+    1
+   ],
+   "n": 8
+  },
+  {
+   "node": "1-3",
+   "kind": "skirmish",
+   "target": 0.7,
+   "optimum": 0.875,
+   "ci": [
+    0.529,
+    0.978
+   ],
+   "n": 8
+  },
+  {
+   "node": "1-4",
+   "kind": "skirmish",
+   "target": 0.6,
+   "optimum": 0.625,
+   "ci": [
+    0.306,
+    0.863
+   ],
+   "n": 8
+  },
+  {
+   "node": "1-5",
+   "kind": "elite",
+   "target": 0.4,
+   "optimum": 0.875,
+   "ci": [
+    0.529,
+    0.978
+   ],
+   "n": 8
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:1-1",
+   "node": "1-1",
+   "rules": "aiGuardLethal, phase cycle, undergrowth, woods",
+   "withField": 0.75,
+   "noField": 0.75,
+   "delta": 0,
+   "ci": [
+    -0.52,
+    0.52
+   ]
+  },
+  {
+   "opponent": "fight:1-2",
+   "node": "1-2",
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods",
+   "withField": 0.75,
+   "noField": 0.75,
+   "delta": 0,
+   "ci": [
+    -0.52,
+    0.52
+   ]
+  },
+  {
+   "opponent": "fight:1-3",
+   "node": "1-3",
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods",
+   "withField": 0.875,
+   "noField": 0.5,
+   "delta": 0.375,
+   "ci": [
+    -0.166,
+    0.916
+   ]
+  },
+  {
+   "opponent": "fight:1-4",
+   "node": "1-4",
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods",
+   "withField": 0.875,
+   "noField": 0.75,
+   "delta": 0.125,
+   "ci": [
+    -0.357,
+    0.607
+   ]
+  },
+  {
+   "opponent": "fight:1-5",
+   "node": "1-5",
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T2 (Regen 1), undergrowth, woods",
+   "withField": 0.875,
+   "noField": 1,
+   "delta": -0.125,
+   "ci": [
+    -0.354,
+    0.104
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "1-1",
+   "rules": "aiGuardLethal, phase cycle, undergrowth, woods",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "ref:road1",
+   "node": "1-2",
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods",
+   "withField": 0.875,
+   "noField": 0.5,
+   "delta": 0.375,
+   "ci": [
+    -0.166,
+    0.916
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "1-3",
+   "rules": "aiGuardLethal, phase cycle, terrain Old Woods T1, undergrowth, woods",
+   "withField": 1,
+   "noField": 0.75,
+   "delta": 0.25,
+   "ci": [
+    -0.174,
+    0.674
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:1-1",
+   "label": "1-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "1-1",
+   "target": 0.9,
+   "h2h": 0.75,
+   "h2hCI": [
+    0.409,
+    0.929
+   ],
+   "elo": 191,
+   "eloCI": [
+    -64,
+    445
+   ],
+   "n": 8,
+   "asPlayer": 0.507,
+   "optimumSame": 0.888,
+   "pointsBelow": 38.1,
+   "pointsCI": 12.3
+  },
+  {
+   "opponent": "fight:1-2",
+   "label": "1-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "1-2",
+   "target": 0.8,
+   "h2h": 0.75,
+   "h2hCI": [
+    0.409,
+    0.929
+   ],
+   "elo": 191,
+   "eloCI": [
+    -64,
+    445
+   ],
+   "n": 8,
+   "asPlayer": 0.583,
+   "optimumSame": 0.888,
+   "pointsBelow": 30.5,
+   "pointsCI": 15.9
+  },
+  {
+   "opponent": "fight:1-3",
+   "label": "1-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "1-3",
+   "target": 0.7,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.529,
+    0.978
+   ],
+   "elo": 338,
+   "eloCI": [
+    20,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.479,
+   "optimumSame": 0.875,
+   "pointsBelow": 39.6,
+   "pointsCI": 16.1
+  },
+  {
+   "opponent": "fight:1-4",
+   "label": "1-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "1-4",
+   "target": 0.6,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.529,
+    0.978
+   ],
+   "elo": 338,
+   "eloCI": [
+    20,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.714,
+   "optimumSame": 0.875,
+   "pointsBelow": 16.1,
+   "pointsCI": 12.5
+  },
+  {
+   "opponent": "fight:1-5",
+   "label": "1-5 elite's deck",
+   "kind": "elite",
+   "node": "1-5",
+   "target": 0.4,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.529,
+    0.978
+   ],
+   "elo": 338,
+   "eloCI": [
+    20,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.352,
+   "optimumSame": 0.875,
+   "pointsBelow": 52.3,
+   "pointsCI": 10.5
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 1-1's field",
+   "kind": "reference",
+   "node": "1-1",
+   "target": null,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.241,
+   "optimumSame": 0.862,
+   "pointsBelow": 62.1,
+   "pointsCI": 15.2
+  },
+  {
+   "opponent": "ref:road1",
+   "label": "reference deck (Map 1) under 1-2's field",
+   "kind": "reference",
+   "node": "1-2",
+   "target": null,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.529,
+    0.978
+   ],
+   "elo": 338,
+   "eloCI": [
+    20,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.921,
+   "optimumSame": 0.875,
+   "pointsBelow": -4.6,
+   "pointsCI": 12.5
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 1-3's field",
+   "kind": "reference",
+   "node": "1-3",
+   "target": null,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.317,
+   "optimumSame": 0.862,
+   "pointsBelow": 54.5,
+   "pointsCI": 18.3
+  }
+ ]
+}

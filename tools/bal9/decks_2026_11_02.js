@@ -41,16 +41,18 @@ const pen = c => (PREFER && !PREFER.has(c) ? 3 : 0);
 function poolFor(m) { const parent = m.sub ? m.parent : null; const p = LP.fightPool(pools, m.id, parent); return p ? [...p] : []; }
 
 // swap the cut copies of `deck`; cand = the fight's list; cap = rarity cap; check(deck) -> true when the deck is acceptable (K14)
-function swapDeck(deck, cand, cap, check, keep) {
+// rule (PRO decks, DECK1 6/4): {maxCopies, maxUnique}: no card past maxCopies, no new card once the deck holds maxUnique different ones
+function swapDeck(deck, cand, cap, check, keep, rule) {
+  rule = rule || {}; const capR = c => Math.min(capOf(c), rule.maxCopies || 99), roomNew = c => out[c] || !rule.maxUnique || Object.keys(out).length < rule.maxUnique;
   const out = Object.assign({}, deck), moves = [], cuts = Object.keys(deck).filter(isCut);
   if (!cuts.length) return null;
   for (const id of cuts) {
     let k = out[id]; delete out[id];
     const opts = cand.filter(c => D[c] && !isCut(c) && !D[c].token && L.step(D[c].rarity) <= L.step(cap) && c !== id && !otherReward(c, keep)).sort((a, b) => (dist(id, a) + pen(a)) - (dist(id, b) + pen(b)) || ((out[b] ? 1 : 0) - (out[a] ? 1 : 0)) || (a < b ? -1 : 1));
     const got = [];
-    for (const c of opts) { if (!k) break; while (k && (out[c] || 0) < capOf(c)) { out[c] = (out[c] || 0) + 1; if (check && !check(out)) { out[c]--; if (!out[c]) delete out[c]; break; } k--; got.push(c); } }
+    for (const c of opts) { if (!k) break; while (k && (out[c] || 0) < capR(c) && roomNew(c)) { out[c] = (out[c] || 0) + 1; if (check && !check(out)) { out[c]--; if (!out[c]) delete out[c]; break; } k--; got.push(c); } }
     // nothing on the list takes them: the deck's own cards (most copies first) up to their caps
-    if (k) { Object.keys(out).sort((a, b) => out[b] - out[a]).forEach(c => { while (k && out[c] < capOf(c)) { out[c]++; if (check && !check(out)) { out[c]--; break; } k--; got.push(c); } }); }
+    if (k) { Object.keys(out).sort((a, b) => out[b] - out[a]).forEach(c => { while (k && out[c] < capR(c)) { out[c]++; if (check && !check(out)) { out[c]--; break; } k--; got.push(c); } }); }
     const tally = {}; got.forEach(c => { tally[c] = (tally[c] || 0) + 1; });
     moves.push({ cut: id, copies: deck[id], to: tally, left: k });
   }
@@ -142,6 +144,20 @@ function cmdFill(no) {
   console.log(`Map ${no} ${m.name}: cap ${cap}, own cards inside it ${own.length}; deck ${JSON.stringify(r.deck)}; carried in ${r.added.join(', ') || 'none'}; short ${r.short}`);
 }
 
+// PRO decks again from their original decks (the cuts plans' `before`) under DECK1's 6/4 rule (at most 4 copies, 6 different cards): the first
+// swap of 11-02 let a PRO deck reach 5 copies of a Common or 7 different cards
+function cmdProRedo() {
+  const pro = JSON.parse(fs.readFileSync(PRO, 'utf8')), orig = {};
+  ['cuts-pass1', 'cuts'].forEach(f => { const p = L.readJson(path.join(OUTDIR, `${f}-${DATE}.json`), { rows: [] }); p.rows.filter(r => r.pro && r.pro.kind === 'pro').forEach(r => { if (!orig[r.pro.id]) orig[r.pro.id] = r.before; }); });
+  const rows = [];
+  for (const [mid, e] of Object.entries(pro.maps || {})) { const m = byMap(mid); if (!m) continue; const cand = poolFor(m); CUT_LOC = mid; PREFER = null;
+    for (const x of (e.pro || [])) { const b = orig[x.id]; if (!b) continue; const cap = (x.source && x.source.cap) || G.roadRarityCap(G.mapNumberOf(mid), 'boss', mid) || 'mythic';
+      const r = swapDeck(b, cand, cap, null, new Set(), { maxCopies: 4, maxUnique: 6 }); if (!r) continue;
+      x.deck = r.deck; x.bal9 = `2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (${r.moves.map(v => v.cut + ' x' + v.copies).join(', ')}); not re-searched`;
+      rows.push({ where: 'pro ' + x.id, map: G.mapNumberOf(mid), loc: mid, pro: { kind: 'pro', id: x.id }, before: b, after: r.deck, moves: r.moves }); } }
+  fs.writeFileSync(PRO, JSON.stringify(pro, null, 1) + '\n'); L.writeJson(path.join(OUTDIR, `cuts-pro-${DATE}.json`), { _about: 'BAL9 JJ24 (2026-11-02): the PRO decks\' cut-card swaps redone from the original decks under the 6/4 rule; tools/bal9/decks_2026_11_02.js pro-redo', rows });
+  const short = rows.filter(r => r.moves.some(v => v.left)); console.log(`PRO decks redone: ${rows.length}; short of 20: ${short.map(r => r.where).join(', ') || 'none'}`);
+}
 // put the road decks of the applied plan back to their `before` (to run the swap again from the original decks)
 function cmdRestore() {
   const plan = L.readJson(path.join(OUTDIR, `cuts-${DATE}.json`)); let s = fs.readFileSync(APP, 'utf8'), n = 0;
@@ -155,6 +171,7 @@ function cmdRestore() {
 }
 const cmd = require.main === module ? process.argv[2] : null, apply = process.argv.includes("--apply");
 if (cmd === 'restore') cmdRestore();
+else if (cmd === 'pro-redo') cmdProRedo();
 else if (cmd === 'cuts') cmdCuts(apply);
 else if (cmd === 'defenders') { const o = cmdDefenders(process.argv.includes('--json')); o.lists.forEach(l => console.log(`${String(l.map).padStart(3)} ${l.loc.padEnd(6)} ${String(l.name).padEnd(24)} ${l.defenders.length}/${l.size}  ${l.defenders.join(', ')}`)); }
 else if (cmd === 'fill') cmdFill(+process.argv[process.argv.indexOf('--map') + 1]);
