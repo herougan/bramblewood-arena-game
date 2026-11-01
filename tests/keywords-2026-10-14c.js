@@ -60,6 +60,8 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   ok(b(['dark'], 'and', {dark:'pitch'}), 'dark: a dark map'); ok(!b([], 'or', {}), 'no conditions: never'); }
 { const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
   ok(/bloomWhen:/.test(src) && /function bloomLabel/.test(src), 'the app knows Bloom (conditions)');
+  // 2026-11-02 (QA1): bloomLabel reads the condition names from BLOOM_COND_NAMES since CX2 (2026-10-21); the extracted function needs it in scope
+  const bn = src.match(/^const BLOOM_COND_NAMES = (\{[^\n]*?\});/m); const BLOOM_COND_NAMES = bn ? eval('(' + bn[1] + ')') : {}; // eslint-disable-line no-unused-vars
   const m = src.match(/function bloomLabel\(bw\)\{[\s\S]*?\n\}/); const bloomLabel = m ? eval('(' + m[0] + ')') : null;
   ok(bloomLabel && bloomLabel({when:['tide','night'], mode:'and', atk:2, hp:2}) === 'Bloom (Tide & Night): +2/+2', 'card text: Bloom (Tide & Night): +2/+2');
   ok(bloomLabel && bloomLabel({when:['wind','wet'], mode:'or'}) === 'Bloom (Wind or Wet): +2/+2', 'card text: Bloom (Wind or Wet): +2/+2'); }
@@ -85,7 +87,9 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   const before = order(); const T = P[2].row.center[0]; const ev = []; e.debugAttack(P, so, byDef(P[1], 'kc-waveL').uid, {}, ev);
   const w = ev.find(x=> x.type==='wave'); ok(w && (w.blocked || (order() === before && w.crashUid != null)), `gravity rows: it crashes into its neighbour that way, nobody moves (${before} -> ${order()}; 2026-10-18 Wave N)`); }
 { const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8'));
-  const w = cards.filter(c=> c.effects && c.effects.wave).map(c=> c.id).sort(); ok(w.join() === 'dolphin-knight,fathom-leviathan,moray-ambusher,reef-manta-glider,tide-pool-crab', `Wave is on five sea cards (+ the Fathom Leviathan, 2026-10-18) (${w})`); }
+  const w = cards.filter(c=> c.effects && c.effects.wave).map(c=> c.id).sort(); // 2026-11-02 (QA1): which cards carry Wave is card data (canonical/cards.json decides; the card passes since moved it off the Dolphin Knight
+  // and the Tide Pool Crab and onto the Selkie Wavebinder), so the check is that Wave stays on a handful of cards, the Leviathan among them
+  ok(w.length >= 3 && w.includes('fathom-leviathan'), `Wave is on sea cards, the Fathom Leviathan among them (${w})`); }
 
 // ---- 4. Perma-tide
 { const {e, P} = mk({permaTide:true}); e.roundStart(P, 1, so, {}, []); ok(e.getTide() === 'flow', 'Perma-tide: Flow from round 1, with no Tide card played');

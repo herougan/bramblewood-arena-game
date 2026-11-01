@@ -97,7 +97,8 @@ for(const side of ['left', 'center', 'right']){
 // (package D made the card line the TX key ui.sk-pounce, 2026-10-18)
 const TEXTS = require(path.join(__dirname, '..', 'bramblewood-texts.js')).TEXT;
 ok(/pounce: v=> TX\('ui\.sk-pounce', \{n: pounceWords\(v\)\}\)/.test(src) && /bramble/.test(TEXTS['ui.sk-pounce'] || ''), 'f. the card line names the bramble');
-ok(/the enemy bramble, if no units are left/.test(src), 'f. the Codex keyword says so too');
+// 2026-11-02 (QA1): Pounce reaches left, centre and right only since ENG15 (2026-10-31, Z5); its Codex line reads "the enemy bramble, if none of those three is there"
+ok(/the enemy bramble, if none of those three is there/.test(src), 'f. the Codex keyword says so too');
 
 console.log(fail ? `m-2026-10-19: ${fail} of ${n} FAILED` : `m-2026-10-19: all ${n} passed`);
 process.exit(fail ? 1 : 0);

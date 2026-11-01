@@ -17,7 +17,8 @@ ok(/ui7NoNum = !!\(bopts && bopts\.live\) && k === 'regen'/.test(app), 'Y1 the R
 ['ui.ui7-poison-tip', 'ui.ui7-poison-skill-tip', 'ui.ui7-regen-tip'].forEach(k=> ok(new RegExp('"' + k.replace(/\./g, '\\.') + '": ".*\\{n\\}').test(tx), 'Y1 TX key ' + k + ' carries the exact value'));
 ok(/status-chips > \.abadge\{gap:0 !important;\}/.test(css), 'Y1 the number sits tight to its icon in a status chip');
 // the shield badge is not touched
-ok(/vis3ShieldHTML\(c\)/.test(app) && /title="Shield: \$\{n\} temporary Health, spent before its Health">\$\{n\}<\/span>/.test(app), 'Y1 the Shield number is as it was');
+// 2026-11-02 (QA1): UI11 (2026-10-31, FF1) made the Shield a chip (vis3ShieldHTML(c, amt)): the icon, then the number in <b class="shield-n">; same title, same number
+ok(/vis3ShieldHTML\((?:c|null), [^)]*\)|vis3ShieldHTML\(c\)/.test(app) && /title="Shield: \$\{n\} temporary Health, spent before its Health">(?:\$\{iconHTML\('shield', '[^']*'\)\}<b class="shield-n">)?\$\{n\}(?:<\/b>)?<\/span>/.test(app), 'Y1 the Shield number is as it was');
 
 // ---- Y4: HELD_STATUSES and ui7IsHeld, run on stubs
 { const m = /const HELD_STATUSES = (\[[^\]]*\]);\s*\nfunction ui7IsHeld\(c\)\{[^\n]*\}/.exec(app);
