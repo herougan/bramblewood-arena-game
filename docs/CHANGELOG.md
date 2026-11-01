@@ -3,6 +3,8 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 
+## 2026-11-02 Package LANG3 (translation pass for UI7-UI14, ENG15, ENG16; not yet released)
+- **Translated** into all 12 languages (`tools/i18n_2026_11_02_lang3.py`): the cards Bolas Spider, Fry and Torch (names and flavour), wind (Headwind -1 Attack), Milling, Bloom, Pounce, Cower, True Sight, Lasso, Pinned, Anadromous, Quicksand, the egg's Hatch or Stay, the Unlikely / Baby / Card group labels, the Torch, the SPECIAL picker, Rejected art, Nacre. Dead rows dropped with `tools/i18n_refresh.py --write`. Tagalog, Tamil, Japanese and Korean want a native read.
 
 ## 2026-11-02 Package ENG16 (owner JJ17, JJ18, JJ19, JJ25, decision WIND-2; not yet released)
 - **Wind (WIND-2 a):** a Tailwind Flyer is Quick for the round (as before); a Headwind Flyer now swings at **-1 Attack** for the round (`headwindAtkCut` in `effAtk`; a "Headwind: −1⚔" float and a −1⚔ wing pip). Nothing goes off twice any more (`headwindTwice` is always false). The roll is unchanged: Windy 1/3 back, 1/3 face, 1/3 calm; Gale either way. Texts: `ui.fx-windy`, `ui.fxx-windy`, `ui.fx-gale`, `ui.wind-head-wing`, the wind pill (`ui.wind-pill-back` / `-face`), the battle log; Quiet Contemplation's list drops the Headwind.
