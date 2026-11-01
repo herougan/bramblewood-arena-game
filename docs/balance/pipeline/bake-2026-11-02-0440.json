@@ -1,0 +1,343 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "bake",
+ "status": "ok",
+ "started": "2026-11-01T20:40:51.086Z",
+ "finished": "2026-11-01T22:08:57.106Z",
+ "durationSec": 5286,
+ "args": [
+  "--bpro-all",
+  "--wait"
+ ],
+ "head": "064aa87a",
+ "inputs": {
+  "rebake": "applied",
+  "bproMaps": 35,
+  "stale": [
+   "m1",
+   "mf",
+   "mq",
+   "mb",
+   "mg",
+   "mp",
+   "mc",
+   "m2",
+   "mw",
+   "ms",
+   "m8",
+   "mu",
+   "mz",
+   "m4",
+   "mn",
+   "mk",
+   "m7",
+   "mj",
+   "m10",
+   "mv",
+   "mh",
+   "mr",
+   "m5",
+   "my",
+   "ml",
+   "mt",
+   "m6",
+   "mi",
+   "md",
+   "mpd",
+   "m3",
+   "m9",
+   "m11",
+   "me",
+   "mx"
+  ],
+  "budgetGames": 6000,
+  "engine": "6cc443b401",
+  "cards": "72be6e5d4c"
+ },
+ "counts": {
+  "fields re-baked": 0,
+  "leaders re-baked": 8,
+  "BPRO maps": 35,
+  "BPRO maps stale": 35,
+  "BPRO maps rebuilt": 35
+ },
+ "changed": [
+  {
+   "id": "2-PRO-2",
+   "field": "leader",
+   "old": "ember-tetra",
+   "new": "cricket-drummer"
+  },
+  {
+   "id": "4-PRO-2",
+   "field": "leader",
+   "old": "fire-ant-raft",
+   "new": "pyrenean-desman"
+  },
+  {
+   "id": "4-PRO-4",
+   "field": "leader",
+   "old": "fire-ant-raft",
+   "new": "pyrenean-desman"
+  },
+  {
+   "id": "5-PRO-1",
+   "field": "leader",
+   "old": "alley-cat",
+   "new": "anhinga-spearbird"
+  },
+  {
+   "id": "7-PRO-2",
+   "field": "leader",
+   "old": "cottonmouth-matriarch",
+   "new": "corpse-flower-beetle"
+  },
+  {
+   "id": "9-PRO-1",
+   "field": "leader",
+   "old": "greater-siren",
+   "new": "fishing-cat"
+  },
+  {
+   "id": "10-A-PRO-2",
+   "field": "leader",
+   "old": "whale-shark",
+   "new": "nautilus-drifter"
+  },
+  {
+   "id": "17-A-PRO-1",
+   "field": "leader",
+   "old": "frostmoon-howler",
+   "new": "wolf-spider-mother"
+  },
+  {
+   "id": "BPRO m1",
+   "field": "best deck score",
+   "old": 0.75,
+   "new": 0.7292
+  },
+  {
+   "id": "BPRO mf",
+   "field": "best deck score",
+   "old": 0.7292,
+   "new": 0.8385
+  },
+  {
+   "id": "BPRO mq",
+   "field": "best deck score",
+   "old": 0.5313,
+   "new": 0.6615
+  },
+  {
+   "id": "BPRO mb",
+   "field": "best deck score",
+   "old": 0.8125,
+   "new": 0.8385
+  },
+  {
+   "id": "BPRO mg",
+   "field": "best deck score",
+   "old": 0.7976,
+   "new": 0.8274
+  },
+  {
+   "id": "BPRO mp",
+   "field": "best deck score",
+   "old": 0.8333,
+   "new": 0.8417
+  },
+  {
+   "id": "BPRO mc",
+   "field": "best deck score",
+   "old": 0.8667,
+   "new": 0.8333
+  },
+  {
+   "id": "BPRO m2",
+   "field": "best deck score",
+   "old": 0.9219,
+   "new": 0.8958
+  },
+  {
+   "id": "BPRO mw",
+   "field": "best deck score",
+   "old": 0.8333,
+   "new": 0.8625
+  },
+  {
+   "id": "BPRO ms",
+   "field": "best deck score",
+   "old": 0.75,
+   "new": 0.7679
+  },
+  {
+   "id": "BPRO m8",
+   "field": "best deck score",
+   "old": 0.9356,
+   "new": 0.9167
+  },
+  {
+   "id": "BPRO mu",
+   "field": "best deck score",
+   "old": 0.8287,
+   "new": 0.838
+  },
+  {
+   "id": "BPRO mz",
+   "field": "best deck score",
+   "old": 0.8229,
+   "new": 0.8385
+  },
+  {
+   "id": "BPRO m4",
+   "field": "best deck score",
+   "old": 0.7803,
+   "new": 0.8939
+  },
+  {
+   "id": "BPRO mn",
+   "field": "best deck score",
+   "old": 0.8095,
+   "new": 0.8571
+  },
+  {
+   "id": "BPRO mk",
+   "field": "best deck score",
+   "old": 0.775,
+   "new": 0.7917
+  },
+  {
+   "id": "BPRO m7",
+   "field": "best deck score",
+   "old": 0.8681,
+   "new": 0.8802
+  },
+  {
+   "id": "BPRO mj",
+   "field": "best deck score",
+   "old": 0.9505,
+   "new": 0.9036
+  },
+  {
+   "id": "BPRO m10",
+   "field": "best deck score",
+   "old": 0.9647,
+   "new": 0.9551
+  },
+  {
+   "id": "BPRO mv",
+   "field": "best deck score",
+   "old": 0.8274,
+   "new": 0.8333
+  },
+  {
+   "id": "BPRO mh",
+   "field": "best deck score",
+   "old": 0.775,
+   "new": 0.6667
+  },
+  {
+   "id": "BPRO mr",
+   "field": "best deck score",
+   "old": 0.8674,
+   "new": 0.8598
+  },
+  {
+   "id": "BPRO m5",
+   "field": "best deck score",
+   "old": 0.8826,
+   "new": 0.9015
+  },
+  {
+   "id": "BPRO my",
+   "field": "best deck score",
+   "old": 0.849,
+   "new": 0.7708
+  },
+  {
+   "id": "BPRO ml",
+   "field": "best deck score",
+   "old": 0.8125,
+   "new": 0.7875
+  },
+  {
+   "id": "BPRO mt",
+   "field": "best deck score",
+   "old": 0.8292,
+   "new": 0.8063
+  },
+  {
+   "id": "BPRO m6",
+   "field": "best deck score",
+   "old": 0.7727,
+   "new": 0.803
+  },
+  {
+   "id": "BPRO mi",
+   "field": "best deck score",
+   "old": 0.7143,
+   "new": 0.8393
+  },
+  {
+   "id": "BPRO md",
+   "field": "best deck score",
+   "old": 0.875,
+   "new": 0.925
+  },
+  {
+   "id": "BPRO mpd",
+   "field": "best deck score",
+   "old": 0.7361,
+   "new": 0.8854
+  },
+  {
+   "id": "BPRO m3",
+   "field": "best deck score",
+   "old": 0.8704,
+   "new": 0.8796
+  },
+  {
+   "id": "BPRO m9",
+   "field": "best deck score",
+   "old": 0.8494,
+   "new": 0.8846
+  },
+  {
+   "id": "BPRO m11",
+   "field": "best deck score",
+   "old": 0.7804,
+   "new": 0.7548
+  },
+  {
+   "id": "BPRO me",
+   "field": "best deck score",
+   "old": 0.6042,
+   "new": 0.725
+  },
+  {
+   "id": "BPRO mx",
+   "field": "best deck score",
+   "old": 0.881,
+   "new": 0.8988
+  }
+ ],
+ "flagged": [
+  {
+   "id": "BPRO mh",
+   "why": "best score fell 0.775 -> 0.6667"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [],
+ "files": [
+  "canonical/pro-skirmishes.json",
+  "docs/balance/bpro2/",
+  "docs/balance/pipeline/state/bake-inputs.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/bake-2026-11-02-0440.json"
+}

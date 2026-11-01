@@ -1,2 +1,37 @@
-mk: 9-BPRO-1 big 0.775; 9-BPRO-2 swarm 0.7292; 9-BPRO-3 family:tide 0.7292; 9-BPRO-4 open 0.6375
+m1: 0-BPRO-1 open 0.7292; 0-BPRO-2 family:flying 0.6667
+mo: no BPRO (no card of the list is inside the map's rarity cap (common))
+mf: 1-BPRO-1 open 0.8385; 1-BPRO-2 swarm 0.8229
+mq: 1-A-BPRO-1 swarm 0.6615; 1-A-BPRO-2 open 0.5938
+mb: 2-BPRO-1 economy 0.8385; 2-BPRO-2 swarm 0.8229; 2-BPRO-3 big 0.7656; 2-BPRO-4 open 0.7604
+mg: 2-B-BPRO-1 big 0.8274; 2-B-BPRO-2 swarm 0.8095; 2-B-BPRO-3 open 0.7857
+mp: 2-A-BPRO-1 swarm 0.8417; 2-A-BPRO-2 open 0.8083; 2-A-BPRO-3 economy 0.7625
+mc: 3-BPRO-1 economy 0.8333; 3-BPRO-2 open 0.8167; 3-BPRO-3 big 0.7958; 3-BPRO-4 swarm 0.6896
+m2: 4-BPRO-1 open 0.8958; 4-BPRO-2 swarm 0.8854; 4-BPRO-3 economy 0.8281; 4-BPRO-4 big 0.7969
+mw: 5-BPRO-1 economy 0.8625; 5-BPRO-2 swarm 0.8625; 5-BPRO-3 big 0.7833; 5-BPRO-4 open 0.7708
+ms: 5-A-BPRO-1 swarm 0.7679; 5-A-BPRO-2 open 0.7679
+m8: 6-BPRO-1 family:poison 0.9167; 6-BPRO-2 swarm 0.8977; 6-BPRO-3 open 0.8144; 6-BPRO-4 big 0.7841
+mu: 7-BPRO-1 economy 0.838; 7-BPRO-2 open 0.7454; 7-BPRO-3 swarm 0.6991
+mz: 7-A-BPRO-1 economy 0.8385; 7-A-BPRO-2 open 0.7969; 7-A-BPRO-3 swarm 0.7917; 7-A-BPRO-4 big 0.75
+m4: 8-BPRO-1 open 0.8939; 8-BPRO-2 family:flying 0.8598; 8-BPRO-3 swarm 0.8409; 8-BPRO-4 big 0.8258
+mn: 8-A-BPRO-1 swarm 0.8571; 8-A-BPRO-2 big 0.8036; 8-A-BPRO-3 open 0.7857; 8-A-BPRO-4 economy 0.7381
+mk: 9-BPRO-1 big 0.7917; 9-BPRO-2 family:tide 0.7583; 9-BPRO-3 open 0.7417
+m7: 10-BPRO-1 open 0.8802; 10-BPRO-2 swarm 0.8646; 10-BPRO-3 family:tide 0.816
+mj: 10-A-BPRO-1 economy 0.9036; 10-A-BPRO-2 family:tide 0.888; 10-A-BPRO-3 open 0.8802
+m10: 11-BPRO-1 open 0.9551; 11-BPRO-2 economy 0.891; 11-BPRO-3 swarm 0.859
+mv: 11-A-BPRO-1 family:flying 0.8333; 11-A-BPRO-2 open 0.7679; 11-A-BPRO-3 swarm 0.7619
+mh: 12-BPRO-1 open 0.6667; 12-BPRO-2 big 0.6375; 12-BPRO-3 economy 0.6125; 12-BPRO-4 swarm 0.5667
+mr: 13-BPRO-1 big 0.8598; 13-BPRO-2 swarm 0.8144; 13-BPRO-3 economy 0.8068; 13-BPRO-4 open 0.7311
+m5: 14-BPRO-1 big 0.9015; 14-BPRO-2 swarm 0.8939; 14-BPRO-3 open 0.8523; 14-BPRO-4 economy 0.8485
+my: 14-A-BPRO-1 big 0.7708; 14-A-BPRO-2 economy 0.7188
+ml: 15-BPRO-1 economy 0.7875; 15-BPRO-2 open 0.6917
+mt: 16-BPRO-1 open 0.8063; 16-BPRO-2 economy 0.7229; 16-BPRO-3 big 0.7125
+m6: 17-BPRO-1 swarm 0.803; 17-BPRO-2 economy 0.7992; 17-BPRO-3 family:evasion 0.7917; 17-BPRO-4 open 0.7197
+mi: 17-A-BPRO-1 open 0.8393; 17-A-BPRO-2 family:evasion 0.7738
+md: 18-BPRO-1 open 0.925; 18-BPRO-2 economy 0.8583
+mpd: 18-A-BPRO-1 economy 0.8854; 18-A-BPRO-2 big 0.875; 18-A-BPRO-3 open 0.8056; 18-A-BPRO-4 family:poison 0.7986
+m3: 19-BPRO-1 open 0.8796; 19-BPRO-2 economy 0.8542; 19-BPRO-3 family:bleed 0.7361
+m9: 19-A-BPRO-1 swarm 0.8846; 19-A-BPRO-2 big 0.7917; 19-A-BPRO-3 open 0.766
+m11: 20-BPRO-1 economy 0.7548; 20-BPRO-2 open 0.7484; 20-BPRO-3 family:flying 0.6651
+me: 20-A-BPRO-1 open 0.725; 20-A-BPRO-2 family:flying 0.5292
+mx: 20-B-BPRO-1 swarm 0.8988; 20-B-BPRO-2 open 0.7917; 20-B-BPRO-3 family:fire 0.756
 -> canonical/pro-skirmishes.json (rebuild the game to bake it in)

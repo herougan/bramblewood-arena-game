@@ -1,0 +1,128 @@
+{
+ "_about": "BAL9 JJ28 (2026-11-02): one Guardian wall for each main map 1-19 whose list has no defender; tools/bal9/defenders_2026_11_02.js",
+ "built": "2026-11-02",
+ "edits": [
+  {
+   "id": "badger-lumberjack",
+   "map": 1,
+   "mapName": "Thistlewood",
+   "set": {
+    "effects": {
+     "lumberjack": true,
+     "guardian": true
+    }
+   },
+   "note": "+ Guardian (owner JJ28: more defenders): Thistlewood (Map 1) had no defender on its list; its sturdiest wall (1/11) now guards its neighbours. Guardian is priced 0 (SKILL2 measure -0.41), so its stats stay"
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "map": 3,
+   "mapName": "Gannet Cliffs",
+   "set": {
+    "effects": {
+     "tide": true,
+     "crabClaws": true,
+     "guardian": true
+    }
+   },
+   "note": "+ Guardian (owner JJ28: more defenders): Gannet Cliffs (Map 3) had no defender on its list; its sturdiest wall (1/8) now guards its neighbours. Guardian is priced 0 (SKILL2 measure -0.41), so its stats stay"
+  },
+  {
+   "id": "venomlord-serpent",
+   "map": 6,
+   "mapName": "Sable Swampmire",
+   "set": {
+    "effects": {
+     "poison": 3,
+     "guardian": true
+    }
+   },
+   "note": "+ Guardian (owner JJ28: more defenders): Sable Swampmire (Map 6) had no defender on its list; its sturdiest wall (1/22) now guards its neighbours. Guardian is priced 0 (SKILL2 measure -0.41), so its stats stay"
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "map": 7,
+   "mapName": "The Morel Hollow",
+   "set": {
+    "effects": {
+     "armor": 1,
+     "guardian": true
+    }
+   },
+   "note": "+ Guardian (owner JJ28: more defenders): The Morel Hollow (Map 7) had no defender on its list; its sturdiest wall (2/12) now guards its neighbours. Guardian is priced 0 (SKILL2 measure -0.41), so its stats stay"
+  },
+  {
+   "id": "stalactite-golem",
+   "map": 8,
+   "mapName": "Caves & Alcoves",
+   "set": {
+    "effects": {
+     "shell": 4,
+     "guardian": true
+    }
+   },
+   "note": "+ Guardian (owner JJ28: more defenders): Caves & Alcoves (Map 8) had no defender on its list; its sturdiest wall (1/21) now guards its neighbours. Guardian is priced 0 (SKILL2 measure -0.41), so its stats stay"
+  },
+  {
+   "id": "grizzly-vanguard",
+   "map": 13,
+   "mapName": "The Redwood Deep",
+   "set": {
+    "effects": {
+     "sweep": 2,
+     "guardian": true
+    }
+   },
+   "note": "+ Guardian (owner JJ28: more defenders): The Redwood Deep (Map 13) had no defender on its list; its sturdiest wall (1/19) now guards its neighbours. Guardian is priced 0 (SKILL2 measure -0.41), so its stats stay"
+  },
+  {
+   "id": "marula-elephant",
+   "map": 14,
+   "mapName": "Savanna Reaches",
+   "set": {
+    "effects": {
+     "drunk": true,
+     "guardian": true
+    }
+   },
+   "note": "+ Guardian (owner JJ28: more defenders): Savanna Reaches (Map 14) had no defender on its list; its sturdiest wall (4/20) now guards its neighbours. Guardian is priced 0 (SKILL2 measure -0.41), so its stats stay"
+  },
+  {
+   "id": "dhole-matriarch",
+   "map": 16,
+   "mapName": "The Pinewood Taiga",
+   "set": {
+    "effects": {
+     "packLeader": true,
+     "guardian": true
+    }
+   },
+   "note": "+ Guardian (owner JJ28: more defenders): The Pinewood Taiga (Map 16) had no defender on its list; its sturdiest wall (4/21) now guards its neighbours. Guardian is priced 0 (SKILL2 measure -0.41), so its stats stay"
+  },
+  {
+   "id": "glacial-ape-king",
+   "map": 17,
+   "mapName": "Wolfsbane Tundra",
+   "set": {
+    "effects": {
+     "earthquake": 4,
+     "guardian": true
+    }
+   },
+   "note": "+ Guardian (owner JJ28: more defenders): Wolfsbane Tundra (Map 17) had no defender on its list; its sturdiest wall (6/40) now guards its neighbours. Guardian is priced 0 (SKILL2 measure -0.41), so its stats stay"
+  },
+  {
+   "id": "thorny-devil",
+   "map": 18,
+   "mapName": "The Glass Dunes",
+   "set": {
+    "effects": {
+     "thorns": 2,
+     "guardian": true
+    }
+   },
+   "note": "+ Guardian (owner JJ28: more defenders): The Glass Dunes (Map 18) had no defender on its list; its sturdiest wall (1/20) now guards its neighbours. Guardian is priced 0 (SKILL2 measure -0.41), so its stats stay"
+  }
+ ],
+ "none": []
+}

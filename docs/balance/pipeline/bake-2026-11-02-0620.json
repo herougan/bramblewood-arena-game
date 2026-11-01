@@ -1,0 +1,32 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "bake",
+ "status": "ok",
+ "started": "2026-11-01T22:20:26.853Z",
+ "finished": "2026-11-01T22:20:28.397Z",
+ "durationSec": 1.5,
+ "args": [
+  "--no-bpro"
+ ],
+ "head": "064aa87a",
+ "inputs": {},
+ "counts": {
+  "fields re-baked": 0,
+  "leaders re-baked": 0
+ },
+ "changed": [],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [
+  "BPRO rebuild skipped (--no-bpro)"
+ ],
+ "files": [
+  "canonical/pro-skirmishes.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/bake-2026-11-02-0620.json"
+}

@@ -283,5 +283,6 @@ run node tests/ui13-2026-11-01.js   # 2026-11-01 (package UI13, HH1 HH3 HH4 HH7)
 run node tests/eng16-2026-11-02.js   # 2026-11-02 (package ENG16, owner JJ17 JJ18 JJ19 JJ25, WIND-2): wind Tailwind Quick / Headwind -1 Attack (no doubling), Milling 1 Lumber -> 2 (x0.85), Quicksand, a field effect or combo of its own per map, Baby cards 0 -> 1 -> 10 and the egg's Hatch or Stay
 # browser check for package UI14 (JJ1-JJ4, JJ6, JJ8, JJ10, JJ11, JJ13-JJ16, JJ20, JJ23, JJ26): python3 tests/e2e/ui14_2026_11_02.py (needs Playwright; not run by run.js)
 run node tests/fix4-2026-11-02.js   # 2026-11-02 (package FIX4, QA1 health check): the CPU whose only card is the one it saves for doesn't throw in its pitch; War Banner / Herald reach every row in a raid; the PvP stranger is levelled before the engine is built (browser: tests/e2e/fix4_2026_11_02.py)
+run node tests/bal9-2026-11-02.js   # 2026-11-02 (package BAL9, owner JJ5 JJ7 JJ12 JJ21 JJ22 JJ24 JJ28): no cut card in any deck, reward slots and rarities against the THEME4 lists, the budget band, Grey Seal Bull 3/12, a defender on every main map 1-19, the Map 40+ fill rule, Reference (Random) rebuilt with leader / bramble / map level, the packs and levels table
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

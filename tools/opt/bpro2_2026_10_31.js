@@ -26,12 +26,28 @@ const PRIORITY = ['stone/metal', 'economy', 'big', 'swarm'];
 const uniq = a => [...new Set(a)];
 function mapRange(spec) { if (spec == null) return null; const out = new Set(); String(spec).split(',').forEach(p => { const m = /^(\d+)-(\d+)$/.exec(p); if (m) { for (let i = +m[1]; i <= +m[2]; i++) out.add(i); } else out.add(+p); }); return out; }
 
+const BAL9 = require('../bal9/lib_bal9.js'), CARRY_FROM = 40;
+// the cards a map may carry (BAL9, JJ22): earlier main maps' list cards inside the map's cap, the nearest map first
+function carriedFor(gm, map, cap, own) {
+  const G = gm.G, no = G.mapNumberOf(map.id), pools = BAL9.game().pools, LP = BAL9.game().LP, out = [];
+  G.CONQUEST_MAPS.filter(m => !m.sub && !m.reserved && G.mapNumberOf(m.id) != null && G.mapNumberOf(m.id) < no).sort((a, b) => G.mapNumberOf(b.id) - G.mapNumberOf(a.id))
+    .forEach(m => { const e = LP.normalizeEntry((pools.maps || {})[m.id] || {}); e.cards.forEach(id => { const d = gm.D[id]; if (d && !own.includes(id) && !out.includes(id) && (!cap || G.roadRarityStep(d.rarity) <= G.roadRarityStep(cap))) out.push(id); }); });
+  return out;
+}
 function planMap(gm, map, rules) {
   const G = gm.G, p = D1.deck1Pools(gm, map), pool = p.anchor.slice().sort();
   const base = { id: map.id, num: G.mapNumberOf(map.id), side: map.sub ? map.parent : null, name: map.name, cap: p.cap, pool, anchorDropped: p.anchorDropped, fightOnly: p.fightOnly };
   if (!pool.length) return Object.assign(base, { focuses: [], none: 'no card of the list is inside the map\'s rarity cap (' + p.cap + ')' });
   const room = f => f.cards.reduce((t, id) => t + Math.min(RULE.maxCopies, O.capOf(gm, id)), 0);
-  const total = pool.reduce((t, id) => t + Math.min(RULE.maxCopies, O.capOf(gm, id)), 0);
+  let total = pool.reduce((t, id) => t + Math.min(RULE.maxCopies, O.capOf(gm, id)), 0);
+  // 2026-11-02 (BAL9, owner JJ22: "Map 40+: when the rarity cap cannot fill a 20-card deck, add +1 carried card (lower rarity first), and so on"):
+  // from Map 40 a list that cannot fill 20 cards under its cap takes one carried card at a time (earlier main maps' list cards inside the cap,
+  // the lowest rarity first, then the nearest map first) until it can (tools/bal9/lib_bal9.js fillDeckToSize, the rule's one copy).
+  if (base.num >= CARRY_FROM && (total < RULE.size || pool.length < Math.ceil(RULE.size / RULE.maxCopies))) {
+    const carried = carriedFor(gm, map, p.cap, pool), room = id => Math.min(RULE.maxCopies, O.capOf(gm, id));
+    const r = BAL9.fillDeckToSize({}, { size: RULE.size, capOf: room, own: pool, carried: carried.map(id => ({ id, rarity: gm.D[id].rarity })) });
+    if (r.added.length) { pool.push(...r.added); base.carriedIn = r.added; total = pool.reduce((t, id) => t + room(id), 0); }
+  }
   if (total < RULE.size || pool.length < Math.ceil(RULE.size / RULE.maxCopies)) return Object.assign(base, { focuses: [], none: `the list cannot fill 20 cards under 6 different / 4 copies (${pool.length} cards, ${total} copies)` });
   const all = T3.focusesFor(gm, pool, rules, null), have = id => all.find(f => f.id === id), fit = f => f && f.cards && room(f) >= f.need;
   const chosen = PRIORITY.map(have).filter(fit), fam = all.filter(f => /^family:/.test(f.id) && fit(f));
@@ -45,7 +61,7 @@ function outFileOf(gm, map) { return path.join(OUTDIR, `bench-deck-map${String(g
 function bproProblems(gm, map, deck, pools) {
   const p = pools || D1.deck1Pools(gm, map), out = [], ids = Object.keys(deck).filter(id => deck[id] > 0);
   if (ids.length > RULE.maxUnique) out.push(`${ids.length} different cards (at most ${RULE.maxUnique})`);
-  ids.forEach(id => { if (deck[id] > RULE.maxCopies) out.push(`${id} x${deck[id]} (at most ${RULE.maxCopies})`); if (!p.anchor.includes(id)) out.push(id + ': not on the map\'s list (' + (p.rule(id) || 'held, not listed') + ')'); });
+  ids.forEach(id => { if (deck[id] > RULE.maxCopies) out.push(`${id} x${deck[id]} (at most ${RULE.maxCopies})`); if (!p.anchor.includes(id) && !(p.carriedIn || []).includes(id)) out.push(id + ': not on the map\'s list (' + (p.rule(id) || 'held, not listed') + ')'); });
   return out;
 }
 
@@ -109,5 +125,5 @@ function checkAll(gm) {
       if (!e.focus) out.push(e.id + ': no focus'); if (!(e.source && e.source.mode === 'bpro2')) out.push(e.id + ': not a SKILL2 BPRO deck'); }); });
   return out;
 }
-module.exports = { planMap, bproProblems, checkAll, RULE };
+module.exports = { planMap, bproProblems, checkAll, RULE, carriedFor, CARRY_FROM }; // + BAL9 (JJ22)
 if (require.main === module) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

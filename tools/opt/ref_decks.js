@@ -35,7 +35,7 @@ function readSets(root) {
         decks[m] = list.map((e, i) => { const c = e.counts || {}, tot = Object.values(c).reduce((t, k) => t + (k | 0), 0), pt = (e.parts || []).reduce((t, p) => t + (p[1] | 0), 0);
           Object.keys(c).filter(id => !known.has(id)).forEach(id => problems.push(f + ': Map ' + m + ' deck ' + (i + 1) + ': unknown card ' + id));
           if (tot !== 20) problems.push(f + ': Map ' + m + ' deck ' + (i + 1) + ': ' + tot + ' cards (a deck is 20)'); if (pt !== tot) problems.push(f + ': Map ' + m + ' deck ' + (i + 1) + ': parts hold ' + pt + ' copies, counts ' + tot);
-          return { seed: e.seed, counts: c, parts: e.parts || [] }; }); });
+          return Object.assign({ seed: e.seed, counts: c, parts: e.parts || [] }, e.leader ? { leader: e.leader } : {}, e.bramble ? { bramble: e.bramble } : {}); }); }); // 2026-11-02 (BAL9, JJ7): + each deck's leader and bramble
       sets[j.id] = { id: j.id, label: j.label || j.id, file: 'docs/balance/ref/' + f, perMap: true, n, decks }; return;
     }
     if (j.decks && !j.counts) {
