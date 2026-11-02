@@ -1,0 +1,9704 @@
+{
+ "about": "BAL13 card flags (tools/bal13/card_flags_2026_11_02.js); flags only",
+ "road": "summary-2026-11-02-led",
+ "games": 24,
+ "gap": 20,
+ "fights": [
+  {
+   "leader": "old-snapjaw",
+   "code": "0-B-1",
+   "map": "mo",
+   "mapNo": 0,
+   "side": true,
+   "mapName": "The Old Bramble",
+   "key": "0-B-1",
+   "name": "Thorn Path",
+   "kind": "skirmish",
+   "measured": 67.5,
+   "target": 90,
+   "easy": false,
+   "base": 79.2,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "forager-ant",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 95.8
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "ant-scout",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "otter-kit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "forager-ant",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 95.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "forager-ant",
+      "step": 1,
+      "dA": 0,
+      "dH": -3,
+      "win": 95.8
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "forager-ant",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 95.8
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 87.5
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    "enough": true
+   },
+   "ms": 12057
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "0-B-2",
+   "map": "mo",
+   "mapNo": 0,
+   "side": true,
+   "mapName": "The Old Bramble",
+   "key": "0-B-2",
+   "name": "The Briar Ring",
+   "kind": "skirmish",
+   "measured": 20,
+   "target": 75,
+   "easy": false,
+   "base": 25,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "ant-scout",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 54.2
+    },
+    {
+     "side": "enemy",
+     "id": "forager-ant",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 41.7
+    },
+    {
+     "side": "enemy",
+     "id": "otter-kit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 33.3
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 33.3
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 33.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "ant-scout",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 54.2
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "ant-scout",
+      "step": 1,
+      "dA": 0,
+      "dH": -3,
+      "win": 54.2
+     },
+     {
+      "side": "enemy",
+      "id": "ant-scout",
+      "step": 2,
+      "dA": 0,
+      "dH": -6,
+      "win": 58.3
+     },
+     {
+      "side": "enemy",
+      "id": "ant-scout",
+      "step": 3,
+      "dA": 0,
+      "dH": -9,
+      "win": 58.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "ant-scout",
+     "step": 3,
+     "dA": 0,
+     "dH": -9,
+     "win": 58.3
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 33.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 33.3
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 41.7
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 50
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 50
+    },
+    "enough": false
+   },
+   "ms": 11832
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "0-B-4",
+   "map": "mo",
+   "mapNo": 0,
+   "side": true,
+   "mapName": "The Old Bramble",
+   "key": "0-B-4",
+   "name": "The Old Bramble",
+   "kind": "boss",
+   "measured": 15,
+   "target": 40,
+   "easy": false,
+   "base": 16.7,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "ent",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 29.2
+    },
+    {
+     "side": "enemy",
+     "id": "ant-scout",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 29.2
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 29.2
+    },
+    {
+     "side": "player",
+     "id": "electric-ray",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 29.2
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "ent",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "ent",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 37.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "ent",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 37.5
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "enough": true
+   },
+   "ms": 17735
+  },
+  {
+   "leader": "wandering-traveller",
+   "code": "1-3",
+   "map": "mf",
+   "mapNo": 1,
+   "side": false,
+   "mapName": "Thistlewood",
+   "key": "1-3",
+   "name": "Burrow Line",
+   "kind": "skirmish",
+   "measured": 95,
+   "target": 70,
+   "easy": true,
+   "base": 95.8,
+   "tries": [
+    {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "field-mouse",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "dormouse",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "bramble-sprout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "field-vole",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "field-mouse",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "field-mouse",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 83.3
+     },
+     {
+      "side": "enemy",
+      "id": "field-mouse",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "enemy",
+      "id": "field-mouse",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 41.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "field-mouse",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 41.7
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 79.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "bee-forager",
+      "step": 1,
+      "dA": 0,
+      "dH": -3,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "bee-forager",
+      "step": 2,
+      "dA": 0,
+      "dH": -6,
+      "win": 87.5
+     },
+     {
+      "side": "player",
+      "id": "bee-forager",
+      "step": 3,
+      "dA": 0,
+      "dH": -9,
+      "win": 87.5
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 3,
+     "dA": 0,
+     "dH": -9,
+     "win": 87.5
+    },
+    "enough": false
+   },
+   "ms": 7157
+  },
+  {
+   "leader": "wandering-traveller",
+   "code": "1-4",
+   "map": "mf",
+   "mapNo": 1,
+   "side": false,
+   "mapName": "Thistlewood",
+   "key": "1-4",
+   "name": "Sapper Hedge",
+   "kind": "skirmish",
+   "measured": 95,
+   "target": 60,
+   "easy": true,
+   "base": 95.8,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "dormouse",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "field-vole",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "bramble-sprout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "field-mouse",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "meadow-frog",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "dormouse",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "dormouse",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "enemy",
+      "id": "dormouse",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "enemy",
+      "id": "dormouse",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 33.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "dormouse",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 33.3
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 83.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "bee-forager",
+      "step": 1,
+      "dA": 0,
+      "dH": -3,
+      "win": 83.3
+     },
+     {
+      "side": "player",
+      "id": "bee-forager",
+      "step": 2,
+      "dA": 0,
+      "dH": -6,
+      "win": 100
+     },
+     {
+      "side": "player",
+      "id": "bee-forager",
+      "step": 3,
+      "dA": 0,
+      "dH": -9,
+      "win": 100
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 3,
+     "dA": 0,
+     "dH": -9,
+     "win": 100
+    },
+    "enough": false
+   },
+   "ms": 5922
+  },
+  {
+   "leader": "wandering-traveller",
+   "code": "1-5",
+   "map": "mf",
+   "mapNo": 1,
+   "side": false,
+   "mapName": "Thistlewood",
+   "key": "1-5",
+   "name": "The Thistle Baron",
+   "kind": "elite",
+   "measured": 100,
+   "target": 40,
+   "easy": true,
+   "base": 95.8,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "hedgerow-shrew",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "enemy",
+     "id": "bramble-sprout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "compost-grub",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "badger-lumberjack",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 91.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "hedgerow-shrew",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 62.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "hedgerow-shrew",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 62.5
+     },
+     {
+      "side": "enemy",
+      "id": "hedgerow-shrew",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 41.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "hedgerow-shrew",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 41.7
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "soldier-ant",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 91.7
+     },
+     {
+      "side": "player",
+      "id": "soldier-ant",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 87.5
+     },
+     {
+      "side": "player",
+      "id": "soldier-ant",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 83.3
+    },
+    "enough": false
+   },
+   "ms": 7907
+  },
+  {
+   "leader": "the-gannet-queen",
+   "code": "1-A-1",
+   "map": "mq",
+   "mapNo": 1,
+   "side": true,
+   "mapName": "Clovermead",
+   "key": "1-A-1",
+   "name": "Clover Patch",
+   "kind": "skirmish",
+   "measured": 55,
+   "target": 90,
+   "easy": false,
+   "base": 62.5,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "field-vole",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "hedgerow-shrew",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "eagle-owl-quartermaster",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "field-vole",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 83.3
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "field-vole",
+      "step": 1,
+      "dA": 0,
+      "dH": -3,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "field-vole",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 83.3
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "eagle-owl-quartermaster",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "eagle-owl-quartermaster",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "eagle-owl-quartermaster",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "enough": true
+   },
+   "ms": 7636
+  },
+  {
+   "leader": "the-gannet-queen",
+   "code": "1-A-4",
+   "map": "mq",
+   "mapNo": 1,
+   "side": true,
+   "mapName": "Clovermead",
+   "key": "1-A-4",
+   "name": "Harvest Mice",
+   "kind": "skirmish",
+   "measured": 37.5,
+   "target": 60,
+   "easy": false,
+   "base": 45.8,
+   "tries": [
+    {
+     "side": "player",
+     "id": "eagle-owl-quartermaster",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "field-mouse",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "enemy",
+     "id": "field-vole",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 45.8
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "field-mouse",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "field-mouse",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 62.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "field-mouse",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "eagle-owl-quartermaster",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "eagle-owl-quartermaster",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "player",
+      "id": "eagle-owl-quartermaster",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 91.7
+     },
+     {
+      "side": "player",
+      "id": "eagle-owl-quartermaster",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 95.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "eagle-owl-quartermaster",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 95.8
+    },
+    "enough": false
+   },
+   "ms": 10340
+  },
+  {
+   "leader": "old-shell",
+   "code": "2-4",
+   "map": "mb",
+   "mapNo": 2,
+   "side": false,
+   "mapName": "Pebble Beach",
+   "key": "2-4",
+   "name": "Pelican Point",
+   "kind": "skirmish",
+   "measured": 95,
+   "target": 60,
+   "easy": true,
+   "base": 79.2,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "open-ocean-hermit-crab",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "sea-turtle-elder",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "tide-pool-crab",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "conch-herald",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "grey-seal-bull",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "open-ocean-hermit-crab",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "open-ocean-hermit-crab",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "enemy",
+      "id": "open-ocean-hermit-crab",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "enemy",
+      "id": "open-ocean-hermit-crab",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 41.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "open-ocean-hermit-crab",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 41.7
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "bee-forager",
+      "step": 1,
+      "dA": 0,
+      "dH": -3,
+      "win": 70.8
+     },
+     {
+      "side": "player",
+      "id": "bee-forager",
+      "step": 2,
+      "dA": 0,
+      "dH": -6,
+      "win": 70.8
+     },
+     {
+      "side": "player",
+      "id": "bee-forager",
+      "step": 3,
+      "dA": 0,
+      "dH": -9,
+      "win": 70.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 3,
+     "dA": 0,
+     "dH": -9,
+     "win": 70.8
+    },
+    "enough": false
+   },
+   "ms": 8868
+  },
+  {
+   "leader": "old-shell",
+   "code": "2-5",
+   "map": "mb",
+   "mapNo": 2,
+   "side": false,
+   "mapName": "Pebble Beach",
+   "key": "2-5",
+   "name": "The Old Shell",
+   "kind": "elite",
+   "measured": 62.5,
+   "target": 40,
+   "easy": true,
+   "base": 45.8,
+   "tries": [
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 33.3
+    },
+    {
+     "side": "enemy",
+     "id": "fiddler-crab-swarm",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "tidepool-trapper-crab",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "grey-seal-bull",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    {
+     "side": "enemy",
+     "id": "open-ocean-hermit-crab",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "enemy",
+     "id": "pincushion-urchin",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "fiddler-crab-swarm",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "fiddler-crab-swarm",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 37.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "fiddler-crab-swarm",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 33.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 33.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 33.3
+    },
+    "enough": true
+   },
+   "ms": 10686
+  },
+  {
+   "leader": "old-shell",
+   "code": "2-A-1",
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "mapName": "Lilypad Reach",
+   "key": "2-A-1",
+   "name": "Lily Hop",
+   "kind": "skirmish",
+   "measured": 67.5,
+   "target": 90,
+   "easy": false,
+   "base": 62.5,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "tidepool-trapper-crab",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "sea-turtle-elder",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "water-vole",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 70.8
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "tidepool-trapper-crab",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 79.2
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "tidepool-trapper-crab",
+      "step": 1,
+      "dA": 0,
+      "dH": -3,
+      "win": 79.2
+     },
+     {
+      "side": "enemy",
+      "id": "tidepool-trapper-crab",
+      "step": 2,
+      "dA": 0,
+      "dH": -6,
+      "win": 100
+     },
+     {
+      "side": "enemy",
+      "id": "tidepool-trapper-crab",
+      "step": 3,
+      "dA": 0,
+      "dH": -9,
+      "win": 100
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "tidepool-trapper-crab",
+     "step": 3,
+     "dA": 0,
+     "dH": -9,
+     "win": 100
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 87.5
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 87.5
+    },
+    "enough": true
+   },
+   "ms": 17984
+  },
+  {
+   "leader": "old-shell",
+   "code": "2-A-3",
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "mapName": "Lilypad Reach",
+   "key": "2-A-3",
+   "name": "Beaver Dam",
+   "kind": "skirmish",
+   "measured": 100,
+   "target": 78,
+   "easy": true,
+   "base": 91.7,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "tidepool-trapper-crab",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 29.2
+    },
+    {
+     "side": "enemy",
+     "id": "fiddler-crab-swarm",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "old-sturgeon",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "river-carp",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "tidepool-trapper-crab",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 29.2
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "tidepool-trapper-crab",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 29.2
+     },
+     {
+      "side": "enemy",
+      "id": "tidepool-trapper-crab",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 4.2
+     },
+     {
+      "side": "enemy",
+      "id": "tidepool-trapper-crab",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 0
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "tidepool-trapper-crab",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 0
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 91.7
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 2,
+     "dA": -1,
+     "dH": -3,
+     "win": 83.3
+    },
+    "enough": true
+   },
+   "ms": 18681
+  },
+  {
+   "leader": "old-shell",
+   "code": "2-A-5",
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "mapName": "Lilypad Reach",
+   "key": "2-A-5",
+   "name": "Croaker Chorus",
+   "kind": "elite",
+   "measured": 15,
+   "target": 66,
+   "easy": false,
+   "base": 8.3,
+   "tries": [
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 33.3
+    },
+    {
+     "side": "enemy",
+     "id": "poison-dart-croaker",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "enemy",
+     "id": "tidepool-trapper-crab",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 20.8
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "enemy",
+     "id": "mangrove-mudskipper",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 16.7
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 16.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "poison-dart-croaker",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 20.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "poison-dart-croaker",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 20.8
+     },
+     {
+      "side": "enemy",
+      "id": "poison-dart-croaker",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 20.8
+     },
+     {
+      "side": "enemy",
+      "id": "poison-dart-croaker",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 33.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "poison-dart-croaker",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 33.3
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 33.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 33.3
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 66.7
+    },
+    "enough": true
+   },
+   "ms": 12048
+  },
+  {
+   "leader": "old-shell",
+   "code": "2-A-6",
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "mapName": "Lilypad Reach",
+   "key": "2-A-6",
+   "name": "The Lodge",
+   "kind": "elite",
+   "measured": 15,
+   "target": 60,
+   "easy": false,
+   "base": 16.7,
+   "tries": [
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "lodge-engineer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 33.3
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 29.2
+    },
+    {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 29.2
+    },
+    {
+     "side": "enemy",
+     "id": "fiddler-crab-swarm",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 25
+    },
+    {
+     "side": "enemy",
+     "id": "river-carp",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 20.8
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "lodge-engineer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 33.3
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "lodge-engineer",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 33.3
+     },
+     {
+      "side": "enemy",
+      "id": "lodge-engineer",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "lodge-engineer",
+     "step": 2,
+     "dA": -2,
+     "dH": 0,
+     "win": 66.7
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 37.5
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 45.8
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 66.7
+    },
+    "enough": true
+   },
+   "ms": 18967
+  },
+  {
+   "leader": "old-shell",
+   "code": "2-B-4",
+   "map": "mg",
+   "mapNo": 2,
+   "side": true,
+   "mapName": "Smugglers' Grotto",
+   "key": "2-B-4",
+   "name": "The Grotto Keeper",
+   "kind": "elite",
+   "measured": 75,
+   "target": 40,
+   "easy": true,
+   "base": 79.2,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "pelican-diver",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "enemy",
+     "id": "open-ocean-hermit-crab",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "octopus-tactician",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "gull-thief",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "tidepool-trapper-crab",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "pelican-diver",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "pelican-diver",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 58.3
+     },
+     {
+      "side": "enemy",
+      "id": "pelican-diver",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 37.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "pelican-diver",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 37.5
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 66.7
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 66.7
+    },
+    "enough": false
+   },
+   "ms": 9985
+  },
+  {
+   "leader": "the-gannet-queen",
+   "code": "3-5",
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "mapName": "Gannet Cliffs",
+   "key": "3-5",
+   "name": "Eagle Stoop",
+   "kind": "elite",
+   "measured": 90,
+   "target": 66,
+   "easy": true,
+   "base": 91.7,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "kittiwake-flock",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "enemy",
+     "id": "mountain-goat-climber",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "peak-condor",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "golden-eagle-diver",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "peregrine-stooper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "kittiwake-flock",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "kittiwake-flock",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 58.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "kittiwake-flock",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-guard",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 83.3
+     },
+     {
+      "side": "player",
+      "id": "otter-guard",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "player",
+      "id": "otter-guard",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 75
+    },
+    "enough": false
+   },
+   "ms": 8390
+  },
+  {
+   "leader": "drowned-matriarch",
+   "code": "4-5",
+   "map": "m2",
+   "mapNo": 4,
+   "side": false,
+   "mapName": "Sunken Hollow",
+   "key": "4-5",
+   "name": "The Drowned Colossus",
+   "kind": "elite",
+   "measured": 72.5,
+   "target": 40,
+   "easy": true,
+   "base": 62.5,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "pyrenean-desman",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    {
+     "side": "enemy",
+     "id": "stone-turtle-warden",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 54.2
+    },
+    {
+     "side": "enemy",
+     "id": "snapstick-turtle",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "pyrenean-desman",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "pyrenean-desman",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 41.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "pyrenean-desman",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 29.2
+     },
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 20.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 20.8
+    },
+    "enough": false
+   },
+   "ms": 9776
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "5-4",
+   "map": "mw",
+   "mapNo": 5,
+   "side": false,
+   "mapName": "Gatorback Swamp",
+   "key": "5-4",
+   "name": "Snapping Reeds",
+   "kind": "skirmish",
+   "measured": 97.5,
+   "target": 72,
+   "easy": true,
+   "base": 95.8,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "grass-viper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "cypress-root-lurker",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "swamp-alligator",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "nutria-reedcutter",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "player",
+     "id": "rabbit-kit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "grass-viper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "grass-viper",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "grass-viper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-guard",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 91.7
+     },
+     {
+      "side": "player",
+      "id": "otter-guard",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 95.8
+     },
+     {
+      "side": "player",
+      "id": "otter-guard",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 95.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 95.8
+    },
+    "enough": false
+   },
+   "ms": 9463
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "5-5",
+   "map": "mw",
+   "mapNo": 5,
+   "side": false,
+   "mapName": "Gatorback Swamp",
+   "key": "5-5",
+   "name": "Gator Slide",
+   "kind": "elite",
+   "measured": 95,
+   "target": 66,
+   "easy": true,
+   "base": 91.7,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "snapper-hatchling",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 54.2
+    },
+    {
+     "side": "player",
+     "id": "meadow-frog",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "crocodile-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "bog-leech",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "venomlord-serpent",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "snapper-hatchling",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 54.2
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "snapper-hatchling",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 54.2
+     },
+     {
+      "side": "enemy",
+      "id": "snapper-hatchling",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 20.8
+     },
+     {
+      "side": "enemy",
+      "id": "snapper-hatchling",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 4.2
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "snapper-hatchling",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 4.2
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "meadow-frog",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "meadow-frog",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 83.3
+     },
+     {
+      "side": "player",
+      "id": "meadow-frog",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 83.3
+     },
+     {
+      "side": "player",
+      "id": "meadow-frog",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "meadow-frog",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 66.7
+    },
+    "enough": true
+   },
+   "ms": 9166
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "5-7",
+   "map": "mw",
+   "mapNo": 5,
+   "side": false,
+   "mapName": "Gatorback Swamp",
+   "key": "5-7",
+   "name": "Old Snapjaw",
+   "kind": "boss",
+   "measured": 65,
+   "target": 40,
+   "easy": true,
+   "base": 62.5,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "grass-viper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 41.7
+    },
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "enemy",
+     "id": "constrictor-coil",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "meadow-frog",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "grass-viper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "grass-viper",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 37.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "grass-viper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 37.5
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "enough": true
+   },
+   "ms": 8243
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "5-A-1",
+   "map": "ms",
+   "mapNo": 5,
+   "side": true,
+   "mapName": "The Sunken Grove",
+   "key": "5-A-1",
+   "name": "Rotting Roots",
+   "kind": "skirmish",
+   "measured": 52.5,
+   "target": 90,
+   "easy": false,
+   "base": 41.7,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "caiman-hatchling",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "player",
+     "id": "lyrebird-mimic",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "snapper-hatchling",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 66.7
+    },
+    {
+     "side": "player",
+     "id": "great-barracuda",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 54.2
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "caiman-hatchling",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "caiman-hatchling",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 91.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "caiman-hatchling",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 66.7
+     },
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 79.2
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 79.2
+    },
+    "enough": false
+   },
+   "ms": 8315
+  },
+  {
+   "leader": "heron-hag",
+   "code": "6-4",
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "mapName": "Sable Swampmire",
+   "key": "6-4",
+   "name": "Root Snare",
+   "kind": "skirmish",
+   "measured": 100,
+   "target": 75,
+   "easy": true,
+   "base": 100,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "constrictor-coil",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    {
+     "side": "enemy",
+     "id": "marsh-wisp",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    {
+     "side": "enemy",
+     "id": "bogfire-newt",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    {
+     "side": "enemy",
+     "id": "cane-toad",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    {
+     "side": "enemy",
+     "id": "booming-bittern",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 100
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "constrictor-coil",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "constrictor-coil",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 100
+     },
+     {
+      "side": "enemy",
+      "id": "constrictor-coil",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 100
+     },
+     {
+      "side": "enemy",
+      "id": "constrictor-coil",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 91.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "constrictor-coil",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 91.7
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 100
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 100
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 95.8
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 100
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 100
+    },
+    "enough": false
+   },
+   "ms": 8157
+  },
+  {
+   "leader": "heron-hag",
+   "code": "6-5",
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "mapName": "Sable Swampmire",
+   "key": "6-5",
+   "name": "Venomlord's Coil",
+   "kind": "elite",
+   "measured": 97.5,
+   "target": 70,
+   "easy": true,
+   "base": 95.8,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "newt-doctor",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "marsh-wisp",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "booming-bittern",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "raven-scout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "newt-doctor",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "newt-doctor",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "newt-doctor",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "burrow-rabbit",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "burrow-rabbit",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 87.5
+     },
+     {
+      "side": "player",
+      "id": "burrow-rabbit",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 87.5
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 87.5
+    },
+    "enough": false
+   },
+   "ms": 8893
+  },
+  {
+   "leader": "heron-hag",
+   "code": "6-6",
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "mapName": "Sable Swampmire",
+   "key": "6-6",
+   "name": "Crocodile Run",
+   "kind": "elite",
+   "measured": 97.5,
+   "target": 65,
+   "easy": true,
+   "base": 100,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "bogfire-newt",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "camouflage-frog",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "booming-bittern",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "enemy",
+     "id": "marsh-wisp",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95.8
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "bogfire-newt",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "bogfire-newt",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 70.8
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "bogfire-newt",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 83.3
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 83.3
+    },
+    "enough": false
+   },
+   "ms": 9379
+  },
+  {
+   "leader": "heron-hag",
+   "code": "6-7",
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "mapName": "Sable Swampmire",
+   "key": "6-7",
+   "name": "Adder Gauntlet",
+   "kind": "elite",
+   "measured": 82.5,
+   "target": 60,
+   "easy": true,
+   "base": 83.3,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "marsh-wisp",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "venomlord-serpent",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "meadow-frog",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "adder-ambusher",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "enemy",
+      "id": "adder-ambusher",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "enemy",
+      "id": "adder-ambusher",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 70.8
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "adder-ambusher",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 70.8
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 83.3
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 83.3
+    },
+    "enough": false
+   },
+   "ms": 7575
+  },
+  {
+   "leader": "heron-hag",
+   "code": "6-8",
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "mapName": "Sable Swampmire",
+   "key": "6-8",
+   "name": "The Alligator King",
+   "kind": "miniboss",
+   "measured": 75,
+   "target": 40,
+   "easy": true,
+   "base": 54.2,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 41.7
+    },
+    {
+     "side": "enemy",
+     "id": "lamprey",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "enemy",
+     "id": "marsh-wisp",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "adder-ambusher",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 20.8
+     },
+     {
+      "side": "enemy",
+      "id": "adder-ambusher",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 25
+     },
+     {
+      "side": "enemy",
+      "id": "adder-ambusher",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 12.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "adder-ambusher",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 12.5
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 20.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 20.8
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 20.8
+     },
+     {
+      "side": "player",
+      "id": "cricket-drummer",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 25
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 25
+    },
+    "enough": false
+   },
+   "ms": 11175
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "7-A-1",
+   "map": "mz",
+   "mapNo": 7,
+   "side": true,
+   "mapName": "The Mycelium Deep",
+   "key": "7-A-1",
+   "name": "Root Cellar",
+   "kind": "skirmish",
+   "measured": 67.5,
+   "target": 90,
+   "easy": false,
+   "base": 75,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "bombardier-beetle",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "planarian-splitter",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "compost-grub",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "garden-snail",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 75
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "bombardier-beetle",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "bombardier-beetle",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 87.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "bombardier-beetle",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "enough": true
+   },
+   "ms": 10982
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "7-A-4",
+   "map": "mz",
+   "mapNo": 7,
+   "side": true,
+   "mapName": "The Mycelium Deep",
+   "key": "7-A-4",
+   "name": "The Rot Heart",
+   "kind": "elite",
+   "measured": 85,
+   "target": 60,
+   "easy": true,
+   "base": 79.2,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "sleepless-shrew",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    {
+     "side": "enemy",
+     "id": "planarian-splitter",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "bombardier-beetle",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "garden-snail",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "sleepless-shrew",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "sleepless-shrew",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 41.7
+     },
+     {
+      "side": "enemy",
+      "id": "sleepless-shrew",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 41.7
+     },
+     {
+      "side": "enemy",
+      "id": "sleepless-shrew",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 8.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "sleepless-shrew",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 8.3
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-guard",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "player",
+      "id": "otter-guard",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "otter-guard",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 75
+    },
+    "enough": false
+   },
+   "ms": 13771
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "7-A-5",
+   "map": "mz",
+   "mapNo": 7,
+   "side": true,
+   "mapName": "The Mycelium Deep",
+   "key": "7-A-5",
+   "name": "The Mycelium Mind",
+   "kind": "boss",
+   "measured": 90,
+   "target": 40,
+   "easy": true,
+   "base": 83.3,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "planarian-splitter",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "enemy",
+     "id": "rootworm-colony",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "fungal-colossus",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "planarian-splitter",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "planarian-splitter",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 58.3
+     },
+     {
+      "side": "enemy",
+      "id": "planarian-splitter",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 45.8
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "planarian-splitter",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 45.8
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 83.3
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 70.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 70.8
+    },
+    "enough": false
+   },
+   "ms": 10312
+  },
+  {
+   "leader": "echo-matriarch",
+   "code": "8-4",
+   "map": "m4",
+   "mapNo": 8,
+   "side": false,
+   "mapName": "Caves & Alcoves",
+   "key": "8-4",
+   "name": "Echo Chamber",
+   "kind": "skirmish",
+   "measured": 100,
+   "target": 75,
+   "easy": true,
+   "base": 100,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "whip-spider",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "gallery-orb-weaver",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95.8
+    },
+    {
+     "side": "enemy",
+     "id": "blind-cave-fish",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    {
+     "side": "enemy",
+     "id": "stalactite-golem",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    {
+     "side": "enemy",
+     "id": "hollow-belly-rat",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 100
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "whip-spider",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "whip-spider",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 87.5
+     },
+     {
+      "side": "enemy",
+      "id": "whip-spider",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 79.2
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "whip-spider",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 79.2
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 100
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 100
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 100
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 100
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 100
+    },
+    "enough": false
+   },
+   "ms": 5633
+  },
+  {
+   "leader": "echo-matriarch",
+   "code": "8-6",
+   "map": "m4",
+   "mapNo": 8,
+   "side": false,
+   "mapName": "Caves & Alcoves",
+   "key": "8-6",
+   "name": "Glowworm Deep",
+   "kind": "skirmish",
+   "measured": 92.5,
+   "target": 65,
+   "easy": true,
+   "base": 83.3,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "gallery-orb-weaver",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "blind-cave-fish",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "whip-spider",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "cave-olm",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "muskrat-lodgekeeper",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 79.2
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "gallery-orb-weaver",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "gallery-orb-weaver",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 70.8
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "gallery-orb-weaver",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 70.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 2,
+     "dA": -2,
+     "dH": 0,
+     "win": 70.8
+    },
+    "enough": true
+   },
+   "ms": 6384
+  },
+  {
+   "leader": "echo-matriarch",
+   "code": "8-7",
+   "map": "m4",
+   "mapNo": 8,
+   "side": false,
+   "mapName": "Caves & Alcoves",
+   "key": "8-7",
+   "name": "The Roost Above",
+   "kind": "elite",
+   "measured": 82.5,
+   "target": 60,
+   "easy": true,
+   "base": 79.2,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "blind-cave-fish",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    {
+     "side": "enemy",
+     "id": "giant-cave-huntsman",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "player",
+     "id": "muskrat-lodgekeeper",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 70.8
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "hollow-belly-rat",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "blind-cave-fish",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "blind-cave-fish",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 41.7
+     },
+     {
+      "side": "enemy",
+      "id": "blind-cave-fish",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 29.2
+     },
+     {
+      "side": "enemy",
+      "id": "blind-cave-fish",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 29.2
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "blind-cave-fish",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 29.2
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "soldier-ant",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "player",
+      "id": "soldier-ant",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 2,
+     "dA": -1,
+     "dH": -3,
+     "win": 66.7
+    },
+    "enough": true
+   },
+   "ms": 8280
+  },
+  {
+   "leader": "echo-matriarch",
+   "code": "8-A-2",
+   "map": "mn",
+   "mapNo": 8,
+   "side": true,
+   "mapName": "The Glimmer Depths",
+   "key": "8-A-2",
+   "name": "The Echo Pool",
+   "kind": "skirmish",
+   "measured": 100,
+   "target": 75,
+   "easy": true,
+   "base": 100,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "echo-screecher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "enemy",
+     "id": "glimmer-spider",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "enemy",
+     "id": "whip-spider",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95.8
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 95.8
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 95.8
+    },
+    {
+     "side": "enemy",
+     "id": "bat-swarmling",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "echo-screecher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "echo-screecher",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 91.7
+     },
+     {
+      "side": "enemy",
+      "id": "echo-screecher",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 87.5
+     },
+     {
+      "side": "enemy",
+      "id": "echo-screecher",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 79.2
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "echo-screecher",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 79.2
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 95.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 95.8
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 100
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 100
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 100
+    },
+    "enough": false
+   },
+   "ms": 12155
+  },
+  {
+   "leader": "echo-matriarch",
+   "code": "8-A-3",
+   "map": "mn",
+   "mapNo": 8,
+   "side": true,
+   "mapName": "The Glimmer Depths",
+   "key": "8-A-3",
+   "name": "Shard Gallery",
+   "kind": "skirmish",
+   "measured": 97.5,
+   "target": 50,
+   "easy": true,
+   "base": 83.3,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "sulfur-cinder-moth",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "echo-screecher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "cave-olm",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "golden-eagle-diver",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "wolf-spider-mother",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "sulfur-cinder-moth",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "sulfur-cinder-moth",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "enemy",
+      "id": "sulfur-cinder-moth",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 45.8
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "sulfur-cinder-moth",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 45.8
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 83.3
+    },
+    "enough": false
+   },
+   "ms": 16146
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "9-5",
+   "map": "mk",
+   "mapNo": 9,
+   "side": false,
+   "mapName": "The Kelp Mangroves",
+   "key": "9-5",
+   "name": "Moray Den",
+   "kind": "elite",
+   "measured": 32.5,
+   "target": 66,
+   "easy": false,
+   "base": 33.3,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "mangrove-monitor",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    {
+     "side": "enemy",
+     "id": "mangrove-manatee",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "player",
+     "id": "terrier-pup",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "mangrove-monitor",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "mangrove-monitor",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "enemy",
+      "id": "mangrove-monitor",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 45.8
+     },
+     {
+      "side": "enemy",
+      "id": "mangrove-monitor",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 45.8
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "mangrove-monitor",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 45.8
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 45.8
+     },
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 41.7
+     },
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 58.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 58.3
+    },
+    "enough": true
+   },
+   "ms": 7023
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "9-6",
+   "map": "mk",
+   "mapNo": 9,
+   "side": false,
+   "mapName": "The Kelp Mangroves",
+   "key": "9-6",
+   "name": "Drifting Shell",
+   "kind": "elite",
+   "measured": 17.5,
+   "target": 60,
+   "easy": false,
+   "base": 29.2,
+   "tries": [
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "enemy",
+     "id": "mangrove-manatee",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 41.7
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 41.7
+    },
+    {
+     "side": "enemy",
+     "id": "mangrove-monitor",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "horseshoe-crab",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 33.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "mangrove-manatee",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 41.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "mangrove-manatee",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 41.7
+     },
+     {
+      "side": "enemy",
+      "id": "mangrove-manatee",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 41.7
+     },
+     {
+      "side": "enemy",
+      "id": "mangrove-manatee",
+      "step": 3,
+      "dA": -3,
+      "dH": 0,
+      "win": 37.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "mangrove-manatee",
+     "step": 3,
+     "dA": -3,
+     "dH": 0,
+     "win": 37.5
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 45.8
+     },
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 41.7
+     },
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 58.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 58.3
+    },
+    "enough": true
+   },
+   "ms": 8954
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "9-7",
+   "map": "mk",
+   "mapNo": 9,
+   "side": false,
+   "mapName": "The Kelp Mangroves",
+   "key": "9-7",
+   "name": "The Kelp Witch",
+   "kind": "miniboss",
+   "measured": 5,
+   "target": 40,
+   "easy": false,
+   "base": 12.5,
+   "tries": [
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 29.2
+    },
+    {
+     "side": "enemy",
+     "id": "proboscis-monkey",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 25
+    },
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "player",
+     "id": "terrier-pup",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "enemy",
+     "id": "mangrove-manatee",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 12.5
+    },
+    {
+     "side": "enemy",
+     "id": "mangrove-monitor",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 12.5
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "proboscis-monkey",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 25
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "proboscis-monkey",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 25
+     },
+     {
+      "side": "enemy",
+      "id": "proboscis-monkey",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 29.2
+     },
+     {
+      "side": "enemy",
+      "id": "proboscis-monkey",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 29.2
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "proboscis-monkey",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 29.2
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 29.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 29.2
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 45.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 45.8
+    },
+    "enough": true
+   },
+   "ms": 6864
+  },
+  {
+   "leader": "reef-admiral",
+   "code": "10-7",
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "mapName": "Coral Current",
+   "key": "10-7",
+   "name": "Eel Nest",
+   "kind": "elite",
+   "measured": 97.5,
+   "target": 64.3,
+   "easy": true,
+   "base": 83.3,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "swordfish-spearman",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "riptide-eel",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "coral-reef-shark",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "orca-vanguard",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "wolf-spider-mother",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "swordfish-spearman",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "swordfish-spearman",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 70.8
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "swordfish-spearman",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 83.3
+     },
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 83.3
+     },
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 75
+    },
+    "enough": false
+   },
+   "ms": 5184
+  },
+  {
+   "leader": "reef-admiral",
+   "code": "10-9",
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "mapName": "Coral Current",
+   "key": "10-9",
+   "name": "The Orca Vanguard King",
+   "kind": "boss",
+   "measured": 75,
+   "target": 40,
+   "easy": true,
+   "base": 75,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "clownfish-scout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "enemy",
+     "id": "parrotfish",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 54.2
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "player",
+     "id": "mangrove-kingfisher",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "enemy",
+     "id": "riptide-eel",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    },
+    {
+     "side": "enemy",
+     "id": "swordfish-spearman",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "clownfish-scout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "clownfish-scout",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "enemy",
+      "id": "clownfish-scout",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 33.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "clownfish-scout",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 33.3
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 62.5
+     },
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 50
+     },
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 54.2
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 54.2
+    },
+    "enough": false
+   },
+   "ms": 9255
+  },
+  {
+   "leader": "reef-admiral",
+   "code": "10-A-4",
+   "map": "mj",
+   "mapNo": 10,
+   "side": true,
+   "mapName": "The Sunken Depths",
+   "key": "10-A-4",
+   "name": "The Undertow",
+   "kind": "elite",
+   "measured": 27.5,
+   "target": 60,
+   "easy": false,
+   "base": 16.7,
+   "tries": [
+    {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "riptide-eel",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "enemy",
+     "id": "glass-octopus",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "enemy",
+     "id": "mangrove-manatee",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "player",
+     "id": "wolf-spider-mother",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "enemy",
+     "id": "silver-minnow",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 16.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "riptide-eel",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 20.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "riptide-eel",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 20.8
+     },
+     {
+      "side": "enemy",
+      "id": "riptide-eel",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 33.3
+     },
+     {
+      "side": "enemy",
+      "id": "riptide-eel",
+      "step": 3,
+      "dA": -3,
+      "dH": 0,
+      "win": 33.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "riptide-eel",
+     "step": 3,
+     "dA": -3,
+     "dH": 0,
+     "win": 33.3
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 37.5
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "burrow-rabbit",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 37.5
+     },
+     {
+      "side": "player",
+      "id": "burrow-rabbit",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "player",
+      "id": "burrow-rabbit",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 50
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 50
+    },
+    "enough": false
+   },
+   "ms": 9800
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "11-5",
+   "map": "m10",
+   "mapNo": 11,
+   "side": false,
+   "mapName": "Eyrie Heights",
+   "key": "11-5",
+   "name": "West Ledge",
+   "kind": "elite",
+   "measured": 50,
+   "target": 75,
+   "easy": false,
+   "base": 37.5,
+   "tries": [
+    {
+     "side": "player",
+     "id": "crimson-wing-recruit",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "enemy",
+     "id": "alpine-swift",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "wolf-spider-mother",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "muskrat-lodgekeeper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "enemy",
+     "id": "eyrie-warden",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "enemy",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 41.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "alpine-swift",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "alpine-swift",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "enemy",
+      "id": "alpine-swift",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 37.5
+     },
+     {
+      "side": "enemy",
+      "id": "alpine-swift",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 37.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "alpine-swift",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 37.5
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "crimson-wing-recruit",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "crimson-wing-recruit",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 58.3
+     },
+     {
+      "side": "player",
+      "id": "crimson-wing-recruit",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 54.2
+     },
+     {
+      "side": "player",
+      "id": "crimson-wing-recruit",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 91.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "crimson-wing-recruit",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 91.7
+    },
+    "enough": false
+   },
+   "ms": 13141
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "11-8",
+   "map": "m10",
+   "mapNo": 11,
+   "side": false,
+   "mapName": "Eyrie Heights",
+   "key": "11-8",
+   "name": "Summit Approach",
+   "kind": "elite",
+   "measured": 37.5,
+   "target": 63.8,
+   "easy": false,
+   "base": 45.8,
+   "tries": [
+    {
+     "side": "player",
+     "id": "muskrat-lodgekeeper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    },
+    {
+     "side": "enemy",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "enemy",
+     "id": "eyrie-warden",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "player",
+     "id": "wolf-spider-mother",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "player",
+     "id": "crimson-wing-recruit",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "player",
+     "id": "echo-screecher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "ibex-rockcaller",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 62.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "muskrat-lodgekeeper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "muskrat-lodgekeeper",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "muskrat-lodgekeeper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    },
+    "enough": true
+   },
+   "ms": 10265
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "12-2",
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "mapName": "The Briar Maze",
+   "key": "12-2",
+   "name": "Quill Path",
+   "kind": "skirmish",
+   "measured": 60,
+   "target": 84,
+   "easy": false,
+   "base": 62.5,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "lyrebird-mimic",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "player",
+     "id": "eagle-owl-quartermaster",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "mouse-sapper",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 66.7
+    },
+    {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    },
+    {
+     "side": "enemy",
+     "id": "dormouse",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "enemy",
+     "id": "hedge-weasel",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "lyrebird-mimic",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "lyrebird-mimic",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "enemy",
+      "id": "lyrebird-mimic",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "enemy",
+      "id": "lyrebird-mimic",
+      "step": 3,
+      "dA": -3,
+      "dH": 0,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "lyrebird-mimic",
+     "step": 3,
+     "dA": -3,
+     "dH": 0,
+     "win": 75
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "eagle-owl-quartermaster",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "eagle-owl-quartermaster",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "player",
+      "id": "eagle-owl-quartermaster",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 79.2
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "eagle-owl-quartermaster",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 79.2
+    },
+    "enough": true
+   },
+   "ms": 9510
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "13-5",
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "mapName": "The Redwood Deep",
+   "key": "13-5",
+   "name": "Badger Setts",
+   "kind": "elite",
+   "measured": 42.5,
+   "target": 70,
+   "easy": false,
+   "base": 37.5,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "fox-kit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "shimmerwing-stag",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "enemy",
+     "id": "fawn-scout",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "enemy",
+     "id": "woodpecker-sapper",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 41.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "fox-kit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "fox-kit",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "fox-kit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "alpine-marmot",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "player",
+      "id": "alpine-marmot",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "player",
+      "id": "alpine-marmot",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 45.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 45.8
+    },
+    "enough": false
+   },
+   "ms": 9966
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "13-7",
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "mapName": "The Redwood Deep",
+   "key": "13-7",
+   "name": "The King's Den",
+   "kind": "elite",
+   "measured": 37.5,
+   "target": 60,
+   "easy": false,
+   "base": 41.7,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "fox-kit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "fawn-scout",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "enemy",
+     "id": "bramblewood-lynx",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 54.2
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 54.2
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "fox-kit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "fox-kit",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "enemy",
+      "id": "fox-kit",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 70.8
+     },
+     {
+      "side": "enemy",
+      "id": "fox-kit",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "fox-kit",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 66.7
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 54.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 54.2
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 54.2
+    },
+    "enough": true
+   },
+   "ms": 11100
+  },
+  {
+   "leader": "pride-queen",
+   "code": "14-A-1",
+   "map": "my",
+   "mapNo": 14,
+   "side": true,
+   "mapName": "The Canopy",
+   "key": "14-A-1",
+   "name": "Dart Frogs",
+   "kind": "skirmish",
+   "measured": 2.5,
+   "target": 90,
+   "easy": false,
+   "base": 0,
+   "tries": [
+    {
+     "side": "player",
+     "id": "electric-ray",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 8.3
+    },
+    {
+     "side": "enemy",
+     "id": "weaver-bird",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 4.2
+    },
+    {
+     "side": "enemy",
+     "id": "pangolin-roller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 4.2
+    },
+    {
+     "side": "enemy",
+     "id": "apollo-butterfly",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 4.2
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 4.2
+    },
+    {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 4.2
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "weaver-bird",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 4.2
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "weaver-bird",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 4.2
+     },
+     {
+      "side": "enemy",
+      "id": "weaver-bird",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 4.2
+     },
+     {
+      "side": "enemy",
+      "id": "weaver-bird",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 4.2
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "weaver-bird",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 4.2
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "electric-ray",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 8.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "electric-ray",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 8.3
+     },
+     {
+      "side": "player",
+      "id": "electric-ray",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 16.7
+     },
+     {
+      "side": "player",
+      "id": "electric-ray",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 16.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "electric-ray",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 16.7
+    },
+    "enough": false
+   },
+   "ms": 14834
+  },
+  {
+   "leader": "pride-queen",
+   "code": "14-A-3",
+   "map": "my",
+   "mapNo": 14,
+   "side": true,
+   "mapName": "The Canopy",
+   "key": "14-A-3",
+   "name": "Sloth Boughs",
+   "kind": "skirmish",
+   "measured": 17.5,
+   "target": 70,
+   "easy": false,
+   "base": 12.5,
+   "tries": [
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 33.3
+    },
+    {
+     "side": "enemy",
+     "id": "kinkajou-lurker",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 25
+    },
+    {
+     "side": "player",
+     "id": "electric-ray",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 25
+    },
+    {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "enemy",
+     "id": "leafcutter-gardener",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 16.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "kinkajou-lurker",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 25
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "kinkajou-lurker",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 25
+     },
+     {
+      "side": "enemy",
+      "id": "kinkajou-lurker",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 29.2
+     },
+     {
+      "side": "enemy",
+      "id": "kinkajou-lurker",
+      "step": 3,
+      "dA": -3,
+      "dH": 0,
+      "win": 20.8
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "kinkajou-lurker",
+     "step": 3,
+     "dA": -3,
+     "dH": 0,
+     "win": 20.8
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 79.2
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 79.2
+    },
+    "enough": false
+   },
+   "ms": 18453
+  },
+  {
+   "leader": "pride-queen",
+   "code": "14-A-5",
+   "map": "my",
+   "mapNo": 14,
+   "side": true,
+   "mapName": "The Canopy",
+   "key": "14-A-5",
+   "name": "The Jaguar's Path",
+   "kind": "boss",
+   "measured": 2.5,
+   "target": 40,
+   "easy": false,
+   "base": 4.2,
+   "tries": [
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 25
+    },
+    {
+     "side": "enemy",
+     "id": "hoopoe-herald",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 16.7
+    },
+    {
+     "side": "enemy",
+     "id": "pangolin-roller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 12.5
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 12.5
+    },
+    {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 12.5
+    },
+    {
+     "side": "player",
+     "id": "electric-ray",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 8.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "hoopoe-herald",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 16.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "hoopoe-herald",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 16.7
+     },
+     {
+      "side": "enemy",
+      "id": "hoopoe-herald",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 12.5
+     },
+     {
+      "side": "enemy",
+      "id": "hoopoe-herald",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 12.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "hoopoe-herald",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 12.5
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 25
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 25
+     },
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 37.5
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 37.5
+    },
+    "enough": true
+   },
+   "ms": 20972
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "15-2",
+   "map": "ml",
+   "mapNo": 15,
+   "side": false,
+   "mapName": "The Long Grass",
+   "key": "15-2",
+   "name": "Squire Road",
+   "kind": "skirmish",
+   "measured": 60,
+   "target": 84,
+   "easy": false,
+   "base": 79.2,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "stoat-cutthroat",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "warhorse-charger",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "hedge-weasel",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "border-collie",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "player",
+     "id": "fawn-scout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "stoat-cutthroat",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "stoat-cutthroat",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 87.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "stoat-cutthroat",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "enough": true
+   },
+   "ms": 9310
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "15-3",
+   "map": "ml",
+   "mapNo": 15,
+   "side": false,
+   "mapName": "The Long Grass",
+   "key": "15-3",
+   "name": "Stoat Ambush",
+   "kind": "skirmish",
+   "measured": 50,
+   "target": 78,
+   "easy": false,
+   "base": 33.3,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "stoat-cutthroat",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "fawn-scout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "enemy",
+     "id": "shepherds-bark",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "enemy",
+     "id": "bison-bulldozer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "raccoon-bandit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "stoat-cutthroat",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "stoat-cutthroat",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "enemy",
+      "id": "stoat-cutthroat",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 70.8
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "stoat-cutthroat",
+     "step": 2,
+     "dA": -2,
+     "dH": 0,
+     "win": 70.8
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "fawn-scout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "fawn-scout",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "player",
+      "id": "fawn-scout",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 54.2
+     },
+     {
+      "side": "player",
+      "id": "fawn-scout",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 70.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "fawn-scout",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 70.8
+    },
+    "enough": true
+   },
+   "ms": 8992
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "16-2",
+   "map": "mt",
+   "mapNo": 16,
+   "side": false,
+   "mapName": "The Pinewood Taiga",
+   "key": "16-2",
+   "name": "Pinecone Drop",
+   "kind": "skirmish",
+   "measured": 60,
+   "target": 84,
+   "easy": false,
+   "base": 91.7,
+   "tries": [
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    {
+     "side": "player",
+     "id": "wolf-spider-mother",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    {
+     "side": "player",
+     "id": "fawn-scout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95.8
+    },
+    {
+     "side": "enemy",
+     "id": "frost-hare-sprinter",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "enemy",
+     "id": "snowshoe-hare",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 91.7
+    },
+    {
+     "side": "enemy",
+     "id": "wolf-pack-runner",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "frost-hare-sprinter",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "frost-hare-sprinter",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 91.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "frost-hare-sprinter",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 100
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 100
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 100
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 100
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 100
+    },
+    "enough": false
+   },
+   "ms": 12058
+  },
+  {
+   "leader": "wolfsbane-alpha",
+   "code": "17-7",
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "mapName": "Wolfsbane Tundra",
+   "key": "17-7",
+   "name": "Alpha Howler's Den",
+   "kind": "elite",
+   "measured": 10,
+   "target": 60,
+   "easy": false,
+   "base": 4.2,
+   "tries": [
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20.8
+    },
+    {
+     "side": "enemy",
+     "id": "walrus-icebreaker",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 16.7
+    },
+    {
+     "side": "player",
+     "id": "electric-ray",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 12.5
+    },
+    {
+     "side": "enemy",
+     "id": "talus-pika",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 8.3
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 8.3
+    },
+    {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 8.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "walrus-icebreaker",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 16.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "walrus-icebreaker",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 16.7
+     },
+     {
+      "side": "enemy",
+      "id": "walrus-icebreaker",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 20.8
+     },
+     {
+      "side": "enemy",
+      "id": "walrus-icebreaker",
+      "step": 3,
+      "dA": -3,
+      "dH": 0,
+      "win": 33.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "walrus-icebreaker",
+     "step": 3,
+     "dA": -3,
+     "dH": 0,
+     "win": 33.3
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 20.8
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 33.3
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 45.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 45.8
+    },
+    "enough": false
+   },
+   "ms": 22824
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "18-6",
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "mapName": "The Glass Dunes",
+   "key": "18-6",
+   "name": "Komodo Wallow",
+   "kind": "elite",
+   "measured": 92.5,
+   "target": 60,
+   "easy": true,
+   "base": 79.2,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "sandfish",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "sand-widow",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "roadrunner-courier",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "dust-devil-kestrel",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "komodo-warlord",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "player",
+     "id": "echo-screecher",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "sandfish",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "sandfish",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 70.8
+     },
+     {
+      "side": "enemy",
+      "id": "sandfish",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 58.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "sandfish",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 58.3
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "echo-screecher",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "echo-screecher",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "player",
+      "id": "echo-screecher",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 62.5
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "echo-screecher",
+     "step": 2,
+     "dA": -1,
+     "dH": -3,
+     "win": 62.5
+    },
+    "enough": true
+   },
+   "ms": 19870
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "18-7",
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "mapName": "The Glass Dunes",
+   "key": "18-7",
+   "name": "The Sand Widow Queen",
+   "kind": "miniboss",
+   "measured": 80,
+   "target": 40,
+   "easy": true,
+   "base": 66.7,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "dromedary",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 54.2
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "enemy",
+     "id": "thorny-devil",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "enemy",
+     "id": "sand-widow",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "dromedary",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "dromedary",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "enemy",
+      "id": "dromedary",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 29.2
+     },
+     {
+      "side": "enemy",
+      "id": "dromedary",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 12.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "dromedary",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 12.5
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 54.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 54.2
+     },
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 45.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 2,
+     "dA": -1,
+     "dH": -3,
+     "win": 45.8
+    },
+    "enough": true
+   },
+   "ms": 17750
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "18-A-1",
+   "map": "mpd",
+   "mapNo": 18,
+   "side": true,
+   "mapName": "The Pale Desert",
+   "key": "18-A-1",
+   "name": "Bleached Flats",
+   "kind": "skirmish",
+   "measured": 67.5,
+   "target": 90,
+   "easy": false,
+   "base": 66.7,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "roadrunner-courier",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "sandfish",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "skull-vulture",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "trapdoor-spider",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "roadrunner-courier",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "roadrunner-courier",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "enemy",
+      "id": "roadrunner-courier",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "enemy",
+      "id": "roadrunner-courier",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "roadrunner-courier",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 75
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 83.3
+    },
+    "enough": true
+   },
+   "ms": 8504
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "18-A-2",
+   "map": "mpd",
+   "mapNo": 18,
+   "side": true,
+   "mapName": "The Pale Desert",
+   "key": "18-A-2",
+   "name": "Mirage Jackals",
+   "kind": "skirmish",
+   "measured": 60,
+   "target": 85.7,
+   "easy": false,
+   "base": 54.2,
+   "tries": [
+    {
+     "side": "player",
+     "id": "talon-archer",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    },
+    {
+     "side": "enemy",
+     "id": "sand-widow",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "player",
+     "id": "walrus-icebreaker",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "enemy",
+     "id": "trapdoor-spider",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "enemy",
+     "id": "skull-vulture",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "sand-widow",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "sand-widow",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 62.5
+     },
+     {
+      "side": "enemy",
+      "id": "sand-widow",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 70.8
+     },
+     {
+      "side": "enemy",
+      "id": "sand-widow",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "sand-widow",
+     "step": 3,
+     "dA": -1,
+     "dH": -6,
+     "win": 66.7
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "talon-archer",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "talon-archer",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 66.7
+     },
+     {
+      "side": "player",
+      "id": "talon-archer",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 66.7
+     },
+     {
+      "side": "player",
+      "id": "talon-archer",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 62.5
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "talon-archer",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 62.5
+    },
+    "enough": false
+   },
+   "ms": 12582
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "18-A-5",
+   "map": "mpd",
+   "mapNo": 18,
+   "side": true,
+   "mapName": "The Pale Desert",
+   "key": "18-A-5",
+   "name": "Vulture Road",
+   "kind": "skirmish",
+   "measured": 47.5,
+   "target": 72.9,
+   "easy": false,
+   "base": 45.8,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "dromedary",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "enemy",
+     "id": "skull-vulture",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    {
+     "side": "enemy",
+     "id": "trapdoor-spider",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 54.2
+    },
+    {
+     "side": "enemy",
+     "id": "dune-packrat",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 54.2
+    },
+    {
+     "side": "player",
+     "id": "talon-archer",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 54.2
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "dromedary",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 62.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "dromedary",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 62.5
+     },
+     {
+      "side": "enemy",
+      "id": "dromedary",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "dromedary",
+     "step": 2,
+     "dA": -1,
+     "dH": -3,
+     "win": 75
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 58.3
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 58.3
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 66.7
+    },
+    "enough": true
+   },
+   "ms": 10141
+  },
+  {
+   "leader": "yeti-chieftain",
+   "code": "19-4",
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "mapName": "Ashen Spurn",
+   "key": "19-4",
+   "name": "Sky Marks",
+   "kind": "elite",
+   "measured": 92.5,
+   "target": 67.5,
+   "easy": true,
+   "base": 87.5,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "magma-titan",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "yeti",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "fire-salamander",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "cinder-stoker",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "pit-glutton",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "magma-titan",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "magma-titan",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 83.3
+     },
+     {
+      "side": "enemy",
+      "id": "magma-titan",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 87.5
+     },
+     {
+      "side": "enemy",
+      "id": "magma-titan",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 83.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "magma-titan",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 83.3
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "ibex-rockcaller",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 87.5
+     },
+     {
+      "side": "player",
+      "id": "ibex-rockcaller",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 87.5
+     },
+     {
+      "side": "player",
+      "id": "ibex-rockcaller",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 75
+    },
+    "enough": true
+   },
+   "ms": 14055
+  },
+  {
+   "leader": "yeti-chieftain",
+   "code": "19-5",
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "mapName": "Ashen Spurn",
+   "key": "19-5",
+   "name": "Sky Scraper Sentinel",
+   "kind": "elite",
+   "measured": 87.5,
+   "target": 60,
+   "easy": true,
+   "base": 91.7,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "cinder-stoker",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "enemy",
+     "id": "phoenix-fledgling",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70.8
+    },
+    {
+     "side": "enemy",
+     "id": "pumice-beetle",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "talon-archer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "echo-screecher",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 83.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "cinder-stoker",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 62.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "cinder-stoker",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 62.5
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "cinder-stoker",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 62.5
+    },
+    "enough": true
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "ibex-rockcaller",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "ibex-rockcaller",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 83.3
+     },
+     {
+      "side": "player",
+      "id": "ibex-rockcaller",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 66.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 66.7
+    },
+    "enough": true
+   },
+   "ms": 14569
+  },
+  {
+   "leader": "yeti-chieftain",
+   "code": "19-A-3",
+   "map": "m9",
+   "mapNo": 19,
+   "side": true,
+   "mapName": "Basalt Foundry",
+   "key": "19-A-3",
+   "name": "Slag Runners",
+   "kind": "skirmish",
+   "measured": 50,
+   "target": 72.5,
+   "easy": false,
+   "base": 75,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "cinder-stoker",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 87.5
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "player",
+     "id": "alpine-marmot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "tide-spirit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "phoenix-fledgling",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "echidna-quillshot",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "cinder-stoker",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 87.5
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "cinder-stoker",
+      "step": 1,
+      "dA": 0,
+      "dH": -3,
+      "win": 87.5
+     },
+     {
+      "side": "enemy",
+      "id": "cinder-stoker",
+      "step": 2,
+      "dA": 0,
+      "dH": -6,
+      "win": 91.7
+     },
+     {
+      "side": "enemy",
+      "id": "cinder-stoker",
+      "step": 3,
+      "dA": 0,
+      "dH": -9,
+      "win": 91.7
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "cinder-stoker",
+     "step": 3,
+     "dA": 0,
+     "dH": -9,
+     "win": 91.7
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 87.5
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 2,
+     "dA": 2,
+     "dH": 0,
+     "win": 75
+    },
+    "enough": true
+   },
+   "ms": 13365
+  },
+  {
+   "leader": "yeti-chieftain",
+   "code": "19-A-9",
+   "map": "m9",
+   "mapNo": 19,
+   "side": true,
+   "mapName": "Basalt Foundry",
+   "key": "19-A-9",
+   "name": "The Pyroclast Wyrm",
+   "kind": "elite",
+   "measured": 32.5,
+   "target": 60,
+   "easy": false,
+   "base": 25,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "magma-salamander",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "player",
+     "id": "obsidian-scorpion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    },
+    {
+     "side": "enemy",
+     "id": "ember-jackal",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "cinder-stoker",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 33.3
+    },
+    {
+     "side": "player",
+     "id": "fawn-scout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 33.3
+    },
+    {
+     "side": "player",
+     "id": "echo-screecher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 33.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "magma-salamander",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 45.8
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "magma-salamander",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 45.8
+     },
+     {
+      "side": "enemy",
+      "id": "magma-salamander",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "enemy",
+      "id": "magma-salamander",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 50
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "magma-salamander",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 50
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "obsidian-scorpion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "obsidian-scorpion",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 45.8
+     },
+     {
+      "side": "player",
+      "id": "obsidian-scorpion",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 41.7
+     },
+     {
+      "side": "player",
+      "id": "obsidian-scorpion",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 58.3
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "obsidian-scorpion",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 58.3
+    },
+    "enough": true
+   },
+   "ms": 12969
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "20-10",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "mapName": "The Sundered Peak",
+   "key": "20-10",
+   "name": "The Cave Warlord",
+   "kind": "worldboss",
+   "measured": 97.5,
+   "target": 40,
+   "easy": true,
+   "base": 95.8,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "magma-salamander",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "ashbone-ghoul",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    },
+    {
+     "side": "enemy",
+     "id": "woodland-brawler",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
+    },
+    {
+     "side": "player",
+     "id": "walrus-icebreaker",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "enemy",
+     "id": "cave-warlord",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95.8
+    },
+    {
+     "side": "enemy",
+     "id": "pit-glutton",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95.8
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "magma-salamander",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "magma-salamander",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "enemy",
+      "id": "magma-salamander",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 62.5
+     },
+     {
+      "side": "enemy",
+      "id": "magma-salamander",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 50
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "magma-salamander",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 50
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "walrus-icebreaker",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 91.7
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "walrus-icebreaker",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 91.7
+     },
+     {
+      "side": "player",
+      "id": "walrus-icebreaker",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 100
+     },
+     {
+      "side": "player",
+      "id": "walrus-icebreaker",
+      "step": 3,
+      "dA": -3,
+      "dH": 0,
+      "win": 95.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "walrus-icebreaker",
+     "step": 3,
+     "dA": -3,
+     "dH": 0,
+     "win": 95.8
+    },
+    "enough": false
+   },
+   "ms": 20710
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "20-4",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "mapName": "The Sundered Peak",
+   "key": "20-4",
+   "name": "Shrine Steps",
+   "kind": "skirmish",
+   "measured": 90,
+   "target": 67.1,
+   "easy": true,
+   "base": 95.8,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "magma-wraith",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "enemy",
+     "id": "magma-salamander",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    },
+    {
+     "side": "enemy",
+     "id": "cave-warlord",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95.8
+    },
+    {
+     "side": "enemy",
+     "id": "ashbone-ghoul",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95.8
+    },
+    {
+     "side": "enemy",
+     "id": "cinder-stoker",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95.8
+    },
+    {
+     "side": "enemy",
+     "id": "fumarole-ibex",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95.8
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "magma-wraith",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 91.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "magma-wraith",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 91.7
+     },
+     {
+      "side": "enemy",
+      "id": "magma-wraith",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 87.5
+     },
+     {
+      "side": "enemy",
+      "id": "magma-wraith",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 50
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "magma-wraith",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 50
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 95.8
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 95.8
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 91.7
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 91.7
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 91.7
+    },
+    "enough": false
+   },
+   "ms": 15895
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "20-9",
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "mapName": "The Sundered Peak",
+   "key": "20-9",
+   "name": "The Ancient Sloth Titan",
+   "kind": "boss",
+   "measured": 87.5,
+   "target": 50,
+   "easy": true,
+   "base": 87.5,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "ashbone-ghoul",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "ossuary-lammergeier",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    {
+     "side": "enemy",
+     "id": "pack-mule",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "ash-cloud-condor",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "player",
+     "id": "obsidian-scorpion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    {
+     "side": "enemy",
+     "id": "pit-glutton",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 83.3
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "ashbone-ghoul",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 75
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "ashbone-ghoul",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "enemy",
+      "id": "ashbone-ghoul",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 58.3
+     },
+     {
+      "side": "enemy",
+      "id": "ashbone-ghoul",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 58.3
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "ashbone-ghoul",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 58.3
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "obsidian-scorpion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 79.2
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "obsidian-scorpion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 79.2
+     },
+     {
+      "side": "player",
+      "id": "obsidian-scorpion",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 75
+     },
+     {
+      "side": "player",
+      "id": "obsidian-scorpion",
+      "step": 3,
+      "dA": -3,
+      "dH": 0,
+      "win": 75
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "obsidian-scorpion",
+     "step": 3,
+     "dA": -3,
+     "dH": 0,
+     "win": 75
+    },
+    "enough": false
+   },
+   "ms": 27398
+  },
+  {
+   "leader": "old-snapjaw",
+   "code": "20-A-4",
+   "map": "me",
+   "mapNo": 20,
+   "side": true,
+   "mapName": "Eye of the Volcano",
+   "key": "20-A-4",
+   "name": "Heart of the Mountain",
+   "kind": "dungeon",
+   "measured": 77.5,
+   "target": 35.5,
+   "easy": true,
+   "base": 75,
+   "tries": [
+    {
+     "side": "enemy",
+     "id": "magma-wraith",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 16.7
+    },
+    {
+     "side": "enemy",
+     "id": "ashbone-ghoul",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "enemy",
+     "id": "cinder-stoker",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 62.5
+    },
+    {
+     "side": "enemy",
+     "id": "cinder-skeleton",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 66.7
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 66.7
+    },
+    {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 66.7
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "magma-wraith",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 16.7
+    },
+    "ladder": [
+     {
+      "side": "enemy",
+      "id": "magma-wraith",
+      "step": 1,
+      "dA": 1,
+      "dH": 0,
+      "win": 16.7
+     },
+     {
+      "side": "enemy",
+      "id": "magma-wraith",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 8.3
+     },
+     {
+      "side": "enemy",
+      "id": "magma-wraith",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 4.2
+     }
+    ],
+    "suggestion": {
+     "side": "enemy",
+     "id": "magma-wraith",
+     "step": 3,
+     "dA": 3,
+     "dH": 0,
+     "win": 4.2
+    },
+    "enough": false
+   },
+   "player": {
+    "driver": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 66.7
+    },
+    "ladder": [
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 1,
+      "dA": -1,
+      "dH": 0,
+      "win": 66.7
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 2,
+      "dA": -2,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 20.8
+     }
+    ],
+    "suggestion": {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 3,
+     "dA": -2,
+     "dH": -3,
+     "win": 20.8
+    },
+    "enough": false
+   },
+   "ms": 14612
+  }
+ ],
+ "multi": [
+  {
+   "side": "player",
+   "id": "otter-centurion",
+   "fights": [
+    "0-B-1 (hard)",
+    "0-B-2 (hard)",
+    "0-B-4 (hard)",
+    "2-B-4 (easy)",
+    "5-7 (easy)",
+    "6-7 (easy)",
+    "7-A-5 (easy)",
+    "8-4 (easy)",
+    "8-6 (easy)",
+    "8-A-2 (easy)",
+    "8-A-3 (easy)",
+    "9-7 (hard)",
+    "14-A-3 (hard)",
+    "15-2 (hard)",
+    "16-2 (hard)",
+    "17-7 (hard)",
+    "18-A-1 (hard)",
+    "18-A-5 (hard)",
+    "19-A-3 (hard)",
+    "20-4 (easy)",
+    "20-A-4 (easy)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "cricket-drummer",
+   "fights": [
+    "2-A-1 (hard)",
+    "2-A-3 (easy)",
+    "2-A-5 (hard)",
+    "2-A-6 (hard)",
+    "6-4 (easy)",
+    "6-6 (easy)",
+    "6-8 (easy)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "adder-ambusher",
+   "fights": [
+    "5-A-1 (hard)",
+    "10-7 (easy)",
+    "10-9 (easy)",
+    "13-7 (hard)",
+    "14-A-5 (hard)",
+    "18-7 (easy)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "tunnel-ant",
+   "fights": [
+    "2-5 (easy)",
+    "4-5 (easy)",
+    "7-A-1 (hard)",
+    "9-5 (hard)",
+    "9-6 (hard)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "bee-forager",
+   "fights": [
+    "1-3 (easy)",
+    "1-4 (easy)",
+    "2-4 (easy)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "eagle-owl-quartermaster",
+   "fights": [
+    "1-A-1 (hard)",
+    "1-A-4 (hard)",
+    "12-2 (hard)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "otter-guard",
+   "fights": [
+    "3-5 (easy)",
+    "5-4 (easy)",
+    "7-A-4 (easy)"
+   ]
+  },
+  {
+   "side": "enemy",
+   "id": "field-mouse",
+   "fights": [
+    "1-3 (easy)",
+    "1-A-4 (hard)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "soldier-ant",
+   "fights": [
+    "1-5 (easy)",
+    "8-7 (easy)"
+   ]
+  },
+  {
+   "side": "enemy",
+   "id": "tidepool-trapper-crab",
+   "fights": [
+    "2-A-1 (hard)",
+    "2-A-3 (easy)"
+   ]
+  },
+  {
+   "side": "enemy",
+   "id": "grass-viper",
+   "fights": [
+    "5-4 (easy)",
+    "5-7 (easy)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "burrow-rabbit",
+   "fights": [
+    "6-5 (easy)",
+    "10-A-4 (hard)"
+   ]
+  },
+  {
+   "side": "enemy",
+   "id": "adder-ambusher",
+   "fights": [
+    "6-7 (easy)",
+    "6-8 (easy)"
+   ]
+  },
+  {
+   "side": "enemy",
+   "id": "fox-kit",
+   "fights": [
+    "13-5 (hard)",
+    "13-7 (hard)"
+   ]
+  },
+  {
+   "side": "enemy",
+   "id": "stoat-cutthroat",
+   "fights": [
+    "15-2 (hard)",
+    "15-3 (hard)"
+   ]
+  },
+  {
+   "side": "enemy",
+   "id": "dromedary",
+   "fights": [
+    "18-7 (easy)",
+    "18-A-5 (hard)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "ibex-rockcaller",
+   "fights": [
+    "19-4 (easy)",
+    "19-5 (easy)"
+   ]
+  },
+  {
+   "side": "enemy",
+   "id": "cinder-stoker",
+   "fights": [
+    "19-5 (easy)",
+    "19-A-3 (hard)"
+   ]
+  },
+  {
+   "side": "enemy",
+   "id": "magma-salamander",
+   "fights": [
+    "19-A-9 (hard)",
+    "20-10 (easy)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "obsidian-scorpion",
+   "fights": [
+    "19-A-9 (hard)",
+    "20-9 (easy)"
+   ]
+  },
+  {
+   "side": "enemy",
+   "id": "magma-wraith",
+   "fights": [
+    "20-4 (easy)",
+    "20-A-4 (easy)"
+   ]
+  }
+ ]
+}
