@@ -8735,7 +8735,10 @@ function equipTimeBadgeHTML(d){ if(!d || d.cardType !== 'equipment') return '';
   const n = equipTimeOf(d), tip = TX('ui.c3-equip-time', {n}) + (d.equip && d.equip.tamperProof ? ' · ' + TX('ui.c3-tamper') : ''), spin = (()=>{ try{ return reducedMotion(); }catch(e){ return true; } })() ? '' : 'animation:c3EqSpin 6s linear infinite;';
   return `<span class="c3-eq-time" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" role="img" style="position:absolute; z-index:5; top:3px; right:3px; display:flex; align-items:center; gap:1px; padding:1px 4px; border-radius:9px; background:#1d1a14d9; color:#ffe7a8; font:700 clamp(8px, 9cqw, 12px)/1.2 system-ui, sans-serif; box-shadow:0 0 0 1px #c9a24a;"><span style="display:inline-block; ${spin}">⚔️</span>${n}${d.equip && d.equip.tamperProof ? '🔒' : ''}</span>`; }
 if(typeof document !== 'undefined' && !document.getElementById('c3EqSpinCss')){ try{ const st = document.createElement('style'); st.id = 'c3EqSpinCss'; st.textContent = '@keyframes c3EqSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}'; (document.head || document.documentElement).appendChild(st); }catch(e){} }
+const SOCKET_REVEAL_MAP = 45; // 2026-11-02 (package UI15, owner #4): "The diamonds on cards are gem sockets! Leave them invisible till we discover that technology at Map 45+."
+function socketsRevealed(){ try{ if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled && adminAllowed()) return true; }catch(e){} try{ return furthestMapReached() >= SOCKET_REVEAL_MAP; }catch(e){ return false; } }
 function socketSlotHTML(d){
+  if(!socketsRevealed()) return ''; // 2026-11-02 (package UI15): hidden until Map 45 (Admin mode still previews them)
   let n = 0; try{ n = typeof socketSlotsOf === 'function' ? socketSlotsOf(d) : 0; }catch(e){ n = 0; } if(!(n > 0)) return '';
   // CONTENT3 (2026-10-26, E14): one diamond per socket (Socket N adds them), stacked down the right edge; each shows its gem
   const gems = d.socketGem && typeof gemParts === 'function' ? gemParts(d.socketGem) : [];
@@ -10116,7 +10119,7 @@ function openCardDetail(defId, opts){
       <span class="cdt-cost"><b>${d.cost||0}</b><small>🪵 Cost</small></span>
       <span class="cdt-wait"><b>${d.wait||0}</b><small>⏳ Wait</small></span>
     </div>`;
-  overlay.innerHTML = `<div class="modal card-detail-card ${spawnIds.length ? 'has-spawns' : ''}">
+  overlay.innerHTML = `<div class="modal card-detail-card ${spawnIds.length ? 'has-spawns' : ''} ${mechLine === 'devilry' || mechLine === 'grace' ? 'cd-grp-' + mechLine : ''}">
       <button type="button" class="modal-close-btn cd-x-solo" id="cdCloseXBtn" title="Close" aria-label="Close">✕</button>
       <div class="cd-grid">
       ${'' /* 2026-10-30 (package CS-C): the card is the Detail card (tilt, drag sideways to spin, tap to flip to its back) with the Inspector's

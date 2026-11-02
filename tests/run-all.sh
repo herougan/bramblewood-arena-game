@@ -290,3 +290,4 @@ run node tests/content7-2026-11-02.js   # 2026-11-02 (package CONTENT7, owner ID
 run node tests/fix5-2026-11-02.js   # 2026-11-02 (package FIX5, owner 21:12): the board keeps Swarm / Pack / Kinship / Formation / tide Attack when the fight is decided (the deciding render reads live units, not the replay snapshot) (browser: tests/e2e/fix5_2026_11_02.py)
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
+# browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)
