@@ -3785,5 +3785,20 @@
  "Full Moon: a full-moon night": "Lua cheia: uma noite de lua cheia",
  "Rain: it is raining": "Chuva: está chovendo",
  "Sunny: day or Twilight, with no rain, fog or darkness": "Ensolarado: de dia ou no Crepúsculo, sem chuva, neblina ou escuridão",
- "Killed an enemy: this unit has killed an enemy unit in this fight": "Matou um inimigo: esta unidade matou uma unidade inimiga nesta luta"
+ "Killed an enemy: this unit has killed an enemy unit in this fight": "Matou um inimigo: esta unidade matou uma unidade inimiga nesta luta",
+ "Reference {i} of {n}: {name}": "Referência {i} de {n}: {name}",
+ "Flock": "Revoada",
+ "Hive": "Colmeia",
+ "School": "Cardume",
+ "Pack": "Matilha",
+ "Pride": "Bando",
+ "Warren": "Toca",
+ "Clan": "Clã",
+ "Brood": "Ninhada",
+ "Troop": "Tropa",
+ "Camp": "Acampamento",
+ "Swarm": "Enxame",
+ "Wall": "Muralha",
+ "Raiders": "Saqueadores",
+ "Band": "Grupo"
 }

@@ -3783,5 +3783,20 @@
  "Full Moon: a full-moon night": "满月：满月之夜",
  "Rain: it is raining": "雨：正在下雨",
  "Sunny: day or Twilight, with no rain, fog or darkness": "晴朗：白天或黄昏，且无雨、无雾、无黑暗",
- "Killed an enemy: this unit has killed an enemy unit in this fight": "击杀过敌人：这个单位在本场战斗中击杀过敌方单位"
+ "Killed an enemy: this unit has killed an enemy unit in this fight": "击杀过敌人：这个单位在本场战斗中击杀过敌方单位",
+ "Reference {i} of {n}: {name}": "参考 {i}/{n}：{name}",
+ "Flock": "鸟群",
+ "Hive": "蜂巢",
+ "School": "鱼群",
+ "Pack": "狼群",
+ "Pride": "狮群",
+ "Warren": "兔窝",
+ "Clan": "氏族",
+ "Brood": "一窝",
+ "Troop": "部队",
+ "Camp": "营地",
+ "Swarm": "虫群",
+ "Wall": "壁垒",
+ "Raiders": "掠袭者",
+ "Band": "帮"
 }

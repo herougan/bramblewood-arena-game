@@ -3786,5 +3786,20 @@
  "Full Moon: a full-moon night": "보름달: 보름달 밤",
  "Rain: it is raining": "비: 비가 옴",
  "Sunny: day or Twilight, with no rain, fog or darkness": "맑음: 낮 또는 황혼, 비·안개·어둠 없음",
- "Killed an enemy: this unit has killed an enemy unit in this fight": "적을 처치함: 이 유닛이 이번 전투에서 적 유닛을 처치함"
+ "Killed an enemy: this unit has killed an enemy unit in this fight": "적을 처치함: 이 유닛이 이번 전투에서 적 유닛을 처치함",
+ "Reference {i} of {n}: {name}": "참고 {i}/{n}: {name}",
+ "Flock": "새떼",
+ "Hive": "벌집",
+ "School": "물고기 떼",
+ "Pack": "무리",
+ "Pride": "사자 무리",
+ "Warren": "굴",
+ "Clan": "씨족",
+ "Brood": "한배",
+ "Troop": "부대",
+ "Camp": "야영지",
+ "Swarm": "떼",
+ "Wall": "성벽",
+ "Raiders": "약탈자",
+ "Band": "패거리"
 }

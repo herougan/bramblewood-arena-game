@@ -44433,7 +44433,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=bd08b472d2", "es": "assets/lang/es.js?v=86e65a0112", "fr": "assets/lang/fr.js?v=53c5f42096", "id": "assets/lang/id.js?v=09ca58a5d5", "it": "assets/lang/it.js?v=4759467305", "ja": "assets/lang/ja.js?v=40ca022029", "ko": "assets/lang/ko.js?v=270d56f360", "pt": "assets/lang/pt.js?v=6e6b44ddb2", "ta": "assets/lang/ta.js?v=7ae34e0404", "tl": "assets/lang/tl.js?v=4a76ab1a6c", "zh-Hans": "assets/lang/zh-Hans.js?v=ad8f534b12", "zh-Hant": "assets/lang/zh-Hant.js?v=7f1cd98948"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=9241e82fe4", "es": "assets/lang/es.js?v=d9875ecb65", "fr": "assets/lang/fr.js?v=8e6acbeaa6", "id": "assets/lang/id.js?v=0b9f49ae91", "it": "assets/lang/it.js?v=bab0feccaf", "ja": "assets/lang/ja.js?v=4489e5f1f5", "ko": "assets/lang/ko.js?v=eb57585630", "pt": "assets/lang/pt.js?v=a5eb67897c", "ta": "assets/lang/ta.js?v=f21aea609e", "tl": "assets/lang/tl.js?v=e2ab2e4bff", "zh-Hans": "assets/lang/zh-Hans.js?v=de02112f6d", "zh-Hant": "assets/lang/zh-Hant.js?v=a62fe66f5f"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -52386,7 +52386,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '938ca42db318', BUILD_CARD_HASH = '28b7075bcf8274c7a5559621b9341bcd17b9736d4ecb2cfa9f06bbf132c1ebd4';
+const BUILD_ID = 'b4574c567d8e', BUILD_CARD_HASH = '28b7075bcf8274c7a5559621b9341bcd17b9736d4ecb2cfa9f06bbf132c1ebd4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;

@@ -3782,5 +3782,20 @@
  "Full Moon: a full-moon night": "Vollmond: eine Vollmondnacht",
  "Rain: it is raining": "Regen: es regnet",
  "Sunny: day or Twilight, with no rain, fog or darkness": "Sonnig: Tag oder Dämmerung, ohne Regen, Nebel oder Dunkelheit",
- "Killed an enemy: this unit has killed an enemy unit in this fight": "Hat einen Gegner getötet: diese Einheit hat in diesem Kampf eine gegnerische Einheit getötet"
+ "Killed an enemy: this unit has killed an enemy unit in this fight": "Hat einen Gegner getötet: diese Einheit hat in diesem Kampf eine gegnerische Einheit getötet",
+ "Reference {i} of {n}: {name}": "Referenz {i} von {n}: {name}",
+ "Flock": "Schar",
+ "Hive": "Stock",
+ "School": "Fischschwarm",
+ "Pack": "Rudel",
+ "Pride": "Löwenrudel",
+ "Warren": "Bau",
+ "Clan": "Clan",
+ "Brood": "Brut",
+ "Troop": "Trupp",
+ "Camp": "Lager",
+ "Swarm": "Schwarm",
+ "Wall": "Wall",
+ "Raiders": "Plünderer",
+ "Band": "Bande"
 }

@@ -3784,5 +3784,20 @@
  "Full Moon: a full-moon night": "Kabilugan ng buwan: gabing kabilugan ng buwan",
  "Rain: it is raining": "Ulan: umuulan",
  "Sunny: day or Twilight, with no rain, fog or darkness": "Maaraw: araw o Takipsilim, walang ulan, hamog o dilim",
- "Killed an enemy: this unit has killed an enemy unit in this fight": "Nakapatay ng kalaban: nakapatay ang yunit na ito ng kalabang yunit sa labanang ito"
+ "Killed an enemy: this unit has killed an enemy unit in this fight": "Nakapatay ng kalaban: nakapatay ang yunit na ito ng kalabang yunit sa labanang ito",
+ "Reference {i} of {n}: {name}": "Sanggunian {i} sa {n}: {name}",
+ "Flock": "Kawan",
+ "Hive": "Pukyutan",
+ "School": "Kumpol",
+ "Pack": "Pangkat",
+ "Pride": "Angkan",
+ "Warren": "Lungga",
+ "Clan": "Angkan",
+ "Brood": "Inakay",
+ "Troop": "Tropa",
+ "Camp": "Kampo",
+ "Swarm": "Kuyog",
+ "Wall": "Pader",
+ "Raiders": "Mandarambong",
+ "Band": "Pangkat"
 }

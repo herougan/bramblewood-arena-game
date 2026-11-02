@@ -3783,5 +3783,20 @@
  "Full Moon: a full-moon night": "満月：満月の夜",
  "Rain: it is raining": "雨：雨が降っている",
  "Sunny: day or Twilight, with no rain, fog or darkness": "晴れ：昼か薄明で、雨・霧・暗闇がない",
- "Killed an enemy: this unit has killed an enemy unit in this fight": "敵を倒した：このユニットがこの戦いで敵ユニットを倒している"
+ "Killed an enemy: this unit has killed an enemy unit in this fight": "敵を倒した：このユニットがこの戦いで敵ユニットを倒している",
+ "Reference {i} of {n}: {name}": "参考デッキ {i}/{n}：{name}",
+ "Flock": "群れ",
+ "Hive": "巣箱",
+ "School": "魚群",
+ "Pack": "群狼",
+ "Pride": "獅子の群れ",
+ "Warren": "巣穴",
+ "Clan": "一族",
+ "Brood": "一腹",
+ "Troop": "部隊",
+ "Camp": "野営地",
+ "Swarm": "大群",
+ "Wall": "城壁",
+ "Raiders": "略奪者",
+ "Band": "一団"
 }
