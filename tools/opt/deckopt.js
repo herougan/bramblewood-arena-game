@@ -36,7 +36,8 @@
 // decides how many generations fit. Checkpoints (--ckpt-dir, default <tmp>/deckopt) after every generation; --resume picks up there.
 // Engine hooks: none needed. Two harness notes (reported, not changed): the game's playReferenceGame gives the reference player the
 // engine's default Bee Tank fallback once its hand and deck are empty (its loopCards is unset; the CPU side's is []), so here both
-// sides get [] (--bee-tank restores the game's harness), and the reference harness has no player leader, so neither has one here.
+// sides get [] (--bee-tank restores the game's harness). Leaders: none by default; FIX6 (2026-11-02): `--leader <id>` deals your seat that
+// leader the way the game's harness now does (G.dealPlayerLeader, playReferenceGame), the fair mirrors stay leaderless.
 // Packaging (owner: "a constructed exe"): tools/opt/build-exe.sh makes one executable with Node's Single Executable Applications; the
 // GitHub Actions workflow .github/workflows/deckopt.yml runs this on GitHub's free runners (manual dispatch) and uploads the results.
 //
@@ -303,6 +304,7 @@ function playOne(gm, spec, ctx, deck, g) {
   const d1 = mirror ? (aFirst ? mine : ctx.oppMine) : mine, d2 = mirror ? (aFirst ? ctx.oppMine : mine) : ctx.enemyDeck;
   const P = { 1: engine.newPlayer(1, d1, ctx.myCastle), 2: engine.newPlayer(2, d2, mirror ? ctx.myCastle : ctx.sc.character) };
   P[2].loopCards = []; if (!spec.beeTank) P[1].loopCards = [];
+  if (spec.leader && !mirror) G.dealPlayerLeader(P[1], spec.leader, ctx.defs); // FIX6 (2026-11-02): --leader <id> gives your seat that leader, as the game deals it (mirrors stay leaderless)
   if (!mirror) { Object.assign(P[2].hq, ctx.setup.hq); if (ctx.setup.hq.shieldLayers) P[2].hq.shieldLayers = ctx.setup.hq.shieldLayers.slice(); if (ctx.setup.reserveLeaders) P[2].reserveLeaders = ctx.setup.reserveLeaders.slice(); }
   engine.draw(P[1], 3, 'A', st, null); engine.draw(P[2], 3, 'B', st, null);
   let r = 1, over = false, lastSig = null, stalled = 0;
@@ -621,7 +623,7 @@ function parseArgs(argv) {
       case '--neighbours': case '--neighbors': o.neighbours = +take(); break; case '--patience': o.patience = +take(); break; case '--dgmax': o.dgmax = +take(); break;
       case '--pop': o.pop = +take(); break; case '--children': o.children = +take(); break; case '--g0': o.g0 = +take(); break; case '--gmax': o.gmax = +take(); break;
       case '--screen-copies': o.screenCopies = +take(); break; case '--screen-max': o.screenMax = +take(); break; case '--final-games': o.finalGames = +take(); break; case '--final-share': o.finalShare = +take(); break;
-      case '--level': { const v = take(); o.level = v === 'ref' ? null : +v; break; } case '--bee-tank': o.beeTank = true; break;
+      case '--level': { const v = take(); o.level = v === 'ref' ? null : +v; break; } case '--bee-tank': o.beeTank = true; break; case '--leader': o.leader = take(); break; /* FIX6 (2026-11-02) */
       case '--distinct-radius': o.distinctRadius = +take(); break; case '--distinct-window': o.distinctWindow = +take(); break; case '--distinct-max': o.distinctMax = +take(); break; case '--h2h-games': o.h2hGames = +take(); break;
       case '--ladder': { const v = take(); o.ladder = v === 'none' ? [] : v.split(',').map(Number).filter(x => x > 0); break; } case '--no-ladder': o.ladder = []; break;
       case '--ladder-core': o.ladderCore = +take(); break; case '--ladder-core-min': o.ladderCoreMin = +take(); break; case '--redo': o.redo = take().split(','); break; case '--ladder-games': o.ladderGames = +take(); break; case '--ladder-walks': o.ladderWalks = +take(); break; case '--ladder-tol': o.ladderTol = +take(); break;
@@ -688,9 +690,9 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
   const cands = candidatesFor(gm, map, pools, rules);
   const p2pool = o.crossPool === 'rules' ? uniq(pools.p1.concat(cands.list.map(c => c.id))).sort() : pools.all;
   const level = o.level != null ? o.level : G.referenceFightSetup(map.id, fights[0], { deck: {} }).ref.level;
-  const entries = buildEntries(gm, map, o), spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank, levels: (typeof pools !== 'undefined' && pools && pools.levels) || null }; // REF5: prog's own card levels
+  const entries = buildEntries(gm, map, o), spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank, leader: o.leader || null, levels: (typeof pools !== 'undefined' && pools && pools.levels) || null }; // REF5: prog's own card levels
   const main = entries.map((e, i) => i).filter(i => !entries[i].neutral);
-  const ckFile = path.join(o.ckptDir, 'deckopt2-' + map.id + '-' + fnv(JSON.stringify([VERSION, o.seed, o.mode, o.rarityCap, o.faction ? 'faction' : '', pools.p1, o.budget, o.minutes, o.method, o.restarts, o.nicheRadius, o.nicheCap, o.neighbours, o.patience, o.dgmax, o.roadWeight, o.ai, o.owned, o.crossPool, o.crossShare, o.submaps, o.pop, o.children, o.g0, o.gmax, level, o.beeTank, o.screenCopies, o.finalGames, o.ladder, o.ladderCore, p2pool, entries.map(e => e.key)].concat(o.seedRef ? ['seed-ref'] : []))).toString(36) + '.json');
+  const ckFile = path.join(o.ckptDir, 'deckopt2-' + map.id + '-' + fnv(JSON.stringify([VERSION, o.seed, o.mode, o.rarityCap, o.faction ? 'faction' : '', pools.p1, o.budget, o.minutes, o.method, o.restarts, o.nicheRadius, o.nicheCap, o.neighbours, o.patience, o.dgmax, o.roadWeight, o.ai, o.owned, o.crossPool, o.crossShare, o.submaps, o.pop, o.children, o.g0, o.gmax, level, o.beeTank, o.screenCopies, o.finalGames, o.ladder, o.ladderCore, p2pool, entries.map(e => e.key)].concat(o.seedRef ? ['seed-ref'] : []).concat(o.leader ? ['leader:' + o.leader] : []))).toString(36) + '.json');
   let S = null; if (o.resume && fs.existsSync(ckFile)) { S = JSON.parse(fs.readFileSync(ckFile, 'utf8')); log('  resumed from ' + ckFile + ' (stages done: ' + Object.keys(S.stages).join(', ') + ')'); }
   if (!S) S = { rng: fnv(o.seed + '|' + map.id), stages: {}, stats: {}, hstats: {}, credit: {}, rngAt: {} };
   // --redo ladder (or any stage): run that stage again from the generator state it started with (as a fresh run would)
@@ -775,7 +777,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
     await ensure(ev, stats, optima.map(deckFromKey), FG, main);
     return { FG, optimum: opt, optima, candidatesConsidered: pool.length }; });
   // ---- head to head: the distinct optima's round robin, and the difficulty ladder against the optimum
-  const hEntries = h2hEntries(map, fin.optima.map(deckFromKey)), hSpec = { mapId: map.id, level, entries: hEntries, seed: o.seed + '|h2h', ai: o.ai, beeTank: o.beeTank, levels: pools.levels || null };
+  const hEntries = h2hEntries(map, fin.optima.map(deckFromKey)), hSpec = { mapId: map.id, level, entries: hEntries, seed: o.seed + '|h2h', ai: o.ai, beeTank: o.beeTank, leader: o.leader || null, levels: pools.levels || null };
   hX = { gm, ev, stats: new Stats(hEntries.length, S.hstats), entries: hEntries, main: idxOf(hEntries, 0), o, log, t0 };
   const needH = !S.stages.h2h || (o.ladder.length && !S.stages.ladder);
   if (needH) await ev.setup(hSpec);
@@ -889,7 +891,7 @@ async function compareMap(gm, ev, map, o, log) {
   const t0 = Date.now(), pools = poolsFor(gm, map, o), fights = fightsOf(map), G = gm.G;
   const level = o.level != null ? o.level : G.referenceFightSetup(map.id, fights[0], { deck: {} }).ref.level;
   const entries = buildEntries(gm, map, o), main = entries.map((e, i) => i).filter(i => !entries[i].neutral), B = o.budget || 12000, res = {};
-  const spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank, levels: (typeof pools !== 'undefined' && pools && pools.levels) || null }; // REF5: prog's own card levels await ev.setup(spec);
+  const spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank, leader: o.leader || null, levels: (typeof pools !== 'undefined' && pools && pools.levels) || null }; // REF5: prog's own card levels await ev.setup(spec);
   for (const m of ['ga', 'descent']) {
     const rng = mulberry(fnv(o.seed + '|' + map.id)), X = { gm, ev, stats: new Stats(entries.length), entries, main, o, log, t0: Date.now() }, credit = {};
     const seeds = seedDecks(gm, entries, pools.p1, rng, credit, o.pop * 2), t = Date.now();
