@@ -63,7 +63,7 @@ if(m){ const [my1, rv1, my2, rv2] = m.slice(1).map(x=> JSON.parse(x));
     Object.keys(R.tutorialPlainDeck(dk, 1)).forEach(id=>{ const d = overlay[id] || base[id]; ok(d && Object.keys(d.effects || {}).filter(k=> d.effects[k] !== false).length === 0, `2. ${nm}: ${id} fights with no skill`); }); });
   ok(!('honey-bee' in my2) && Object.values(my2).reduce((a, b)=> a + b, 0) === 15, '2. your T-2 deck lost the Honey Bee and kept its 15 cards');
   ok(JSON.stringify(my2) === '{"duckling":1,"pond-duck":3,"cottontail":2,"pond-trout":3,"silver-minnow":1,"acorn-chipmunk":3,"chipmunk-forager":2}', '2. your T-2 deck: the Honey Bee became a Pond Duck');
-  const sql = fs.readFileSync(path.join(ROOT, 'supabase/proposed/20261030_tutorial_t1t2_decks.sql'), 'utf8');
+  const sql = fs.readFileSync(path.join(ROOT, 'supabase/migrations/20261030_tutorial_t1t2_decks.sql' /* 2026-11-02: applied (TUT2-1), moved from supabase/proposed */), 'utf8');
   const upd = (sql.match(/^update card_overrides[\s\S]*?;$/gm) || []);
   ok(upd.length === 2 && upd.every(u=> /where id = '__cfg:tutorial'/.test(u) && /and deleted = false/.test(u) && /and data #> '\{cfg,(rivalDeck2|myDeck2)\}' = /.test(u)), '2. SQL: two guarded updates on __cfg:tutorial (rivalDeck2, myDeck2)');
   const mine = upd.find(u=> /\{cfg,myDeck2\}',\s*'/.test(u));
