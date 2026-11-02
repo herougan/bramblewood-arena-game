@@ -350,7 +350,10 @@ function createSession(opts){
   function send(t, body){ if(S.closed) return; const msg = Object.assign({t, from: me.peerId, epoch: S.epoch}, body || {}); T0.send(msg); return msg; }
   function mySeat(){ if(!S.room) return null; const i = S.room.seats.findIndex(x=> x && x.peerId === me.peerId); return i >= 0 ? i : null; }
   function humans(room){ return (room || S.room).seats.map((x, i)=> x && !x.cpu ? i : -1).filter(i=> i >= 0); }
-  function seatOf(p, connected){ return {peerId: p.peerId, name: p.name || '', deck: p.deck || {}, leader: p.leader || null, castle: p.castle || null, castleHp: p.castleHp || 20, ready: false, cpu: false, connected: connected !== false}; }
+  function seatOf(p, connected){ return {peerId: p.peerId, name: p.name || '', deck: p.deck || {}, leader: p.leader || null, castle: p.castle || null, castleHp: p.castleHp || 20, avatar: avatarOf(p), ready: false, cpu: false, connected: connected !== false}; }
+  // 2026-11-03 (package ENG18, coordinator on UI16-4): a seat keeps its player's profile look (the bramblewood_avatar record: character, colour,
+  // background, border, font, prefix, suffix...), so the lobby can draw the other players' seats. A plain small object, or null.
+  function avatarOf(p){ const a = p && p.avatar; if(!a || typeof a !== 'object') return null; try{ const j = JSON.stringify(a); return j.length <= 2000 ? JSON.parse(j) : null; }catch(e){ return null; } }
   function newRoom(){ const seats = Array(N).fill(null); seats[0] = seatOf(me, true); return {code: S.code, hostId: me.peerId, typeId, players: N, status: 'lobby', seats, epoch: S.epoch}; }
   function broadcastRoster(){ if(!S.isHost) return; S.room.epoch = S.epoch; send('roster', {room: S.room}); emit('roster', S.room); }
   function seenNow(id){ S.lastSeen[id] = clock.now(); }
@@ -359,7 +362,7 @@ function createSession(opts){
   // ---- lobby (host). Seats fill in order (the host is 0); a seat left empty at Start is a CPU ally.
   function addHuman(p){
     const room = S.room, at = room.seats.findIndex(x=> x && x.peerId === p.peerId);
-    if(at >= 0){ Object.assign(room.seats[at], {name: p.name || room.seats[at].name, deck: p.deck || room.seats[at].deck, leader: p.leader || room.seats[at].leader, castle: p.castle || room.seats[at].castle, castleHp: p.castleHp || room.seats[at].castleHp, connected: true}); return at; }
+    if(at >= 0){ Object.assign(room.seats[at], {name: p.name || room.seats[at].name, deck: p.deck || room.seats[at].deck, leader: p.leader || room.seats[at].leader, castle: p.castle || room.seats[at].castle, castleHp: p.castleHp || room.seats[at].castleHp, avatar: avatarOf(p) || room.seats[at].avatar || null, connected: true}); return at; }
     if(humans(room).length >= S.maxHumans) return null;
     const free = room.seats.findIndex((x, i)=> i > 0 && (!x || x.cpu)); if(free < 0) return null;
     room.seats[free] = seatOf(p, true); return free;
@@ -588,12 +591,12 @@ function createSession(opts){
 
   // ---- open / join / leave
   if(S.isHost){ S.room = newRoom(); emit('roster', S.room); }
-  else { send('hello', {peer: {name: me.name, deck: me.deck, leader: me.leader, castle: me.castle, castleHp: me.castleHp}}); }
+  else { send('hello', {peer: {name: me.name, deck: me.deck, leader: me.leader, castle: me.castle, castleHp: me.castleHp, avatar: me.avatar || null}}); }
   function setReady(on, deck, leader){ const seat = mySeat(); if(seat == null){ S.pendingReady = {on: !!on, deck: deck || null}; return; } if(deck) me.deck = deck;
     if(S.isHost){ S.room.seats[seat].ready = !!on; if(deck) S.room.seats[seat].deck = deck; if(leader !== undefined) S.room.seats[seat].leader = leader; broadcastRoster(); } else send('ready', {ready: !!on, deck: deck || null, leader}); }
   function leave(){ if(S.closed) return; send('leave', {host: S.isHost}); close(); }
   function close(){ S.closed = true; clearBatch(); clearCpu(); if(S.timers.ping) clock.clearInterval(S.timers.ping); try{ T0.close(); }catch(e){} }
-  function rejoinHello(){ S.lastSeen = {}; send('hello', {peer: {name: me.name, deck: me.deck, leader: me.leader, castle: me.castle, castleHp: me.castleHp}}); }
+  function rejoinHello(){ S.lastSeen = {}; send('hello', {peer: {name: me.name, deck: me.deck, leader: me.leader, castle: me.castle, castleHp: me.castleHp, avatar: me.avatar || null}}); }
   Object.assign(S, {mySeat, setReady, canStart, start, claim, nextFloor, leave, close, rejoinHello, tick, flush, _onMsg: onMsg, humansIn: ()=> S.room ? humans() : [],
     myAutoPlay: maybeAutoPlay, seatDone: i=> S.T ? seatDone(S.T, i) : false});
   return S;

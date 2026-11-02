@@ -3618,6 +3618,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   adjacentOf(pl, card)     [left, right, in front, behind] (non-null, no gaps; dead units are the caller's to drop)
   // Skills on it: Guardian, Spellward, Formation, Haste, Shieldwall, Amplifier, Immolation, Irradiated, Inspiring, Friction,
   // Proliferate, Electricity, Chain Lightning, Dragon Lightning, Spitfire's splash, and a trigger's Adjacent Ally target.
+  // 2026-11-02 (ENG18, owner 19:56: "Adjacent in front, behind, left, right. Surrounding includes corners."): the owner's words for this
+  // helper and surroundingOwnOf. A group dungeon's table (bramblewood-coop.js) is built with reserveActs, so its rows count here as a
+  // raid's do. Every skill that reads neighbours, and which of these it uses: docs/eng18-adjacency-2026-11-02.md. Left / right only, by
+  // design or pending a call: Shore Up, Pack chains, the splash shapes (besideOf), spawn placement (nearestFreeSlot), calls ENG18-1..5.
   function columnNeighboursOf(pl, card, r){ // [in front, behind] for a unit in row r (0 front, 1 middle, 2 back); [] off the raid board
     if(!RESERVE_ACTS || !slotMode || !pl || !pl.reserve || !card || !Number.isInteger(card.slot)) return [];
     const at = rr=> rr === 0 ? allBoardCards(pl).find(c=> c.slot === card.slot) : (pl.reserve[rr - 1] || {})[card.slot];
@@ -4783,7 +4787,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function evoStageOf(d){ const e = (d && d.effects) || {}; return e.evoluteOmega ? 3 : e.evoluteAlpha ? 2 : e.evolute ? 1 : 0; }
   function isEvoluteDef(defId){ return evoStageOf(CARD_DEFS[defId]) > 0; }
   // Hatchling (2026-11-02, package ENG17, owner BABY-2 11-02 14:10: "Hatchling ... just does what we wanted Fodder to do."): the Baby cards'
-  // skill (card group Baby, from Level 1: canonical/cards.json levelSkills) is EV-6's Fodder: a plain Stem (+1/+2 to the evolute played
+  // skill (card group Baby, from Level 0 since ENG18 / BASELVL-1, was Level 1: canonical/cards.json levelSkills) is EV-6's Fodder: a plain Stem (+1/+2 to the evolute played
   // onto it). `fodder` (an older name) reads as Hatchling.
   function isStemDef(d){ const e = (d && d.effects) || {}; return !!(e.stem || e.chrysalis || e.hatchling || e.fodder || (e.stemGrant && typeof e.stemGrant === 'object')); }
   function evoShares(a, b){
