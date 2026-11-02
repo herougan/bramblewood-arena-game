@@ -115,7 +115,51 @@ async def board(b, url, w):
     ok(h is not None and h['zw'] > h['zf'], f'a hand / catalogue tile has the clock above the frame too {h}')
     await done(pg)
 
-PARTS = {'deck': deck, 'detail': detail, 'board': board}
+# ---------------------------------------------------------------- board camera: the cards span the frame; icons
+SPAN = """(()=>{ const bf = document.querySelector('.battlefield'), br = bf.getBoundingClientRect(); let lo = 1e9, hi = -1e9, n = 0;
+  document.querySelectorAll('#rowMine .board-card[data-uid], #rowEnemy .board-card[data-uid]').forEach(el=>{ const r = el.querySelector('.card-tile').getBoundingClientRect(); lo = Math.min(lo, r.left); hi = Math.max(hi, r.right); n++; });
+  return {n, left: +(lo - br.left).toFixed(1), right: +(br.right - hi).toFixed(1), w: +br.width.toFixed(1), scale: battlefieldScale}; })()"""
+async def zoom(b, url, w):
+    print(f'-- board camera: the cards span the board edge to edge ({w})')
+    pg = await W.fresh(b, url, w)
+    await pg.add_style_tag(content=NOTOAST)
+    if w > 700: await pg.set_viewport_size({'width': 1471 if w == 1366 else w, 'height': 760})  # a wide, short desktop window like the owner's screenshot (cards are sized by the height, the width is left over)
+    mine = "[['otter-kit', -2, 9], ['otter-kit', -1, 9], ['otter-kit', 0, 9], ['otter-kit', 1, 9], ['otter-kit', 2, 9]]"
+    await pg.evaluate(V.BOARD + f"({mine}, [['otter-kit', -1, 5], ['otter-kit', 0, 5], ['otter-kit', 1, 5]])")
+    # the owner's frame had slack above and below its rows (about 100 px at 1471 wide); a min-height gives this one the same
+    await pg.evaluate("(()=>{ document.querySelector('.battlefield').style.minHeight = (document.querySelector('.battlefield').offsetHeight + 70) + 'px'; try{ fitBattlefieldZoomNow(true); }catch(e){} })()"); await pg.wait_for_timeout(1200)
+    r = await pg.evaluate(SPAN)
+    ok(r['n'] >= 8 and r['left'] >= -2 and r['right'] >= -2, f'every card is inside the frame {r}')
+    if w > 700: ok(r['scale'] > 1.1, f'five-wide board: zoomed in to what the frame\'s height allows (the cards span it as far as the height lets them) {r}')
+    else: ok(max(r['left'], r['right']) <= r['w'] * 0.13, f'five-wide board: the outer cards sit within 13% of the frame edges {r}')
+    bb = await (await pg.query_selector('.battlefield')).bounding_box()
+    await pg.screenshot(path=shot('board-zoom-5', w), clip={'x': max(0, bb['x']), 'y': max(0, bb['y']), 'width': min(w, bb['width']), 'height': min(bb['height'], 700)})
+    # a unit lands further out, then one leaves: the camera follows
+    await pg.evaluate("""(()=>{ const m = matchState, e = m.engine, pl = m.players[1]; const c = e.makeBoardCard('otter-kit'); c.wait = 0; c.hp = c.maxHp = 9; c.slot = 4; pl.row.right.push(c); pl.row.right.sort((a, b)=> a.slot - b.slot); e.syncSlots(pl); renderMatchUI(); })()""")
+    await pg.wait_for_timeout(3200)
+    await pg.evaluate('fitBattlefieldZoomNow(true)'); await pg.wait_for_timeout(900)
+    r2 = await pg.evaluate(SPAN)
+    ok(w < 700 or r2['scale'] < r['scale'] - 0.03 or r2['scale'] <= 1.05, f'a unit at the edge zooms the board out a step {r["scale"]:.2f} -> {r2["scale"]:.2f}')
+    ok(r2['left'] >= -2 and r2['right'] >= -2, f'still every card inside the frame {r2}')
+    await pg.screenshot(path=shot('board-zoom-9', w), clip={'x': max(0, bb['x']), 'y': max(0, bb['y']), 'width': min(w, bb['width']), 'height': min(bb['height'], 700)})
+    await pg.evaluate("""(()=>{ const m = matchState, pl = m.players[1]; pl.row.right = pl.row.right.filter(c=> c.slot < 4); m.engine.syncSlots(pl); renderMatchUI(); fitBattlefieldZoomNow(true); })()"""); await pg.wait_for_timeout(900)
+    r3 = await pg.evaluate(SPAN)
+    ok(r3['left'] >= -2 and r3['right'] >= -2, f'and every card is still inside the frame after it leaves {r3}')
+    print(f'      (scale after the unit leaves {r3["scale"]:.2f}; five-wide was {r["scale"]:.2f})')
+    await done(pg)
+
+async def icons(b, url, w):
+    print(f'-- skill icons ({w})')
+    pg = await W.fresh(b, url, w)
+    r = await pg.evaluate("({pb: SKILL_ICON.poisonBarbs, cr: SKILL_ICON.creative, th: SKILL_ICON.thorns})")
+    ok(r['pb'] == '🪛' and r['cr'] == '⌘' and r['th'] == '🌵', f'Poison Barbs 🪛, Creative ⌘, Thorns unchanged {r}')
+    await pg.evaluate("""(()=>{ const d = document.createElement('div'); d.id = 'ui15icons'; d.style.cssText = 'position:fixed; left:10px; top:10px; z-index:99999; background:#26211a; color:#fff; padding:8px; display:flex; gap:10px; font-size:14px';
+      d.innerHTML = ['thorns', 'poisonBarbs', 'creative'].map(k=> `<span class="abadge" style="display:inline-flex; align-items:center; gap:3px">${iconHTML(k.toLowerCase(), SKILL_ICON[k])}3 <small>${k}</small></span>`).join(''); document.body.appendChild(d); })()""")
+    await pg.wait_for_timeout(500)
+    await pg.screenshot(path=shot('skill-icons', w), clip={'x': 0, 'y': 0, 'width': min(w, 420), 'height': 60})
+    await done(pg)
+
+PARTS = {'deck': deck, 'detail': detail, 'board': board, 'zoom': zoom, 'icons': icons}
 
 def serve_dir(d):
     class Q(http.server.SimpleHTTPRequestHandler):

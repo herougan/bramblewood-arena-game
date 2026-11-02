@@ -332,7 +332,7 @@ Object.assign(SKILL_ICON, {iceArrow:'🧊🏹', twinShot:'🏹🏹', volley:'�
 Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌', keenSense:'👃'});
 Object.assign(SKILL_ICON, {chainLightning:'🌩️'}); // 2026-10-17: Chain Lightning
 SKILL_ICON.rebuild = '🔨🏰'; // Rebuild N (2026-10-17; 🧱 alone is Bulwark's)
-SKILL_ICON.creative = '🎨'; // 2026-10-18 (package U, user: "New skills: Creative - not sure what it does yet, but it gives Creativity counters to cards somehow")
+SKILL_ICON.creative = '⌘'; // 2026-11-02 (package UI15, owner): was 🎨; // 2026-10-18 (package U, user: "New skills: Creative - not sure what it does yet, but it gives Creativity counters to cards somehow")
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
 // because 💨 is Swift's, 🌫️ Shade's and 🫧 Poison's, with 💣💨 where only text fits.
 Object.assign(SKILL_ICON, {psychic:'💭', smokeBomb:'💣💨'});
@@ -1905,7 +1905,7 @@ sk1Patch(PASSIVE_DEFS, 'dive', {codexNote:TX('ui.eng9-dive-codex')});
 sk1Patch(PASSIVE_DEFS, 'bloomCopy', {codexNote:TX('ui.eng9-bloom-codex')});
 sk1Patch(PASSIVE_DEFS, 'season', {codexNote:TX('ui.eng9-season-codex')});
 // (the Spit labels and Charge's line: ENG10's block below, 2026-10-26: the element alone, and Charge recharging again)
-Object.assign(SKILL_ICON, {undead:'↺', revive:'🪦', poisonBarbs:'🌵', stockpile:'🪵'});
+Object.assign(SKILL_ICON, {undead:'↺', revive:'🪦', poisonBarbs:'🪛', stockpile:'🪵'});
 // ==== Package CONTENT3 (2026-10-26; rules in bramblewood-engine.js, prices in canonical/skill-costs.json): the new skills' lines.
 //   Wakeful (G5)      never falls Asleep (a Sleep hit, the Spore Cloud)       Pulverise (OWN-Q5)  ignores Armor, breaks Armor / Magic Armor /
 //   Socket N (E14)    N more gem sockets on each copy (the Forge's Socket tab)                     equipment, double damage to Structures
@@ -38677,7 +38677,7 @@ function battlefieldTransformCSS(){
   const total = Math.max(lo, Math.min(hi, battlefieldLeanX + battlefieldPanX));
   battlefieldPanX = total - battlefieldLeanX;
   scheduleBfDividerFit();
-  if(battlefieldScale>=0.995 && Math.abs(total)<0.5 && Math.abs(battlefieldTilt)<0.05 && Math.abs(battlefieldCenterY)<0.5) return '';
+  if(Math.abs(battlefieldScale-1)<0.005 /* 2026-11-02 (UI15): the board can zoom in now, so 'at least .995' no longer means 1:1 */ && Math.abs(total)<0.5 && Math.abs(battlefieldTilt)<0.05 && Math.abs(battlefieldCenterY)<0.5) return '';
   // translateX/translateY come BEFORE scale so they read in real (unscaled) screen px; the turn sits between them.
   const turn = Math.abs(battlefieldTilt)>=0.05 ? ` perspective(1800px) rotateY(${battlefieldTilt.toFixed(2)}deg)` : '';
   return `translateX(${total.toFixed(1)}px) translateY(${battlefieldCenterY.toFixed(1)}px)${turn} scale(${battlefieldScale.toFixed(3)})`;
@@ -39296,6 +39296,26 @@ function fitBattlefieldZoomNowCore(instant){
   const m = needsZoom ? measure() : baseline;
 
   const lean = raidCols ? null : measureBoardLean(inner, m.containerWidth); // the raid's camera doesn't lean toward the cards (2026-10-18)
+  // 2026-11-02 (package UI15, owner ss6: "Example of space not well used again. The screen should be zoomed in such that the cards are left
+  // border to right border!"): when the units fit with room to spare, the board zooms IN until the columns they stand in span the frame
+  // from edge to edge (3% margin), as far as the frame's height lets the rows grow (and at most 2.4x), and follows as units come and go
+  // (every render calls this; smoothIfChanged eases it). The raid and the phone's fill mode size their own cards (mb2Fit*), so they keep 1:1 here.
+  let zoomIn = 1;
+  if(m.scale>=0.995 && !raidCols && !mb2Span && !isDragging){
+    const frameH = mb2FrameInnerHeight(battlefield), natH = inner.offsetHeight || 1, wScale = m.containerWidth > 0 && neededWidth > 0 ? m.containerWidth / neededWidth : 1;
+    zoomIn = Math.min(wScale * 0.97, frameH / natH, 2.4);
+    if(!(zoomIn > 1.04)) zoomIn = 1;
+  }
+  if(zoomIn > 1){
+    const natH = inner.offsetHeight || 1, frameH = mb2FrameInnerHeight(battlefield);
+    smoothIfChanged(()=>{
+      battlefieldScale = zoomIn; battlefieldCenterY = (frameH - natH * zoomIn) / 2; battlefieldPanX = 0; battlefieldPanMaxX = 0;
+      setBoardLean(lean, zoomIn, 0);
+      applyBattlefieldTransform();
+    });
+    battlefield.classList.remove('pannable', 'panning');
+    return;
+  }
   if(m.scale>=0.995){ // fits already (both dimensions, at whichever width this landed on) — stay at 1:1, no zoom
     smoothIfChanged(()=>{
       battlefieldScale = 1; battlefieldCenterY = 0; battlefieldPanX = 0; battlefieldPanMaxX = 0;

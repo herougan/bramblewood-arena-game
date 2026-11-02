@@ -8,6 +8,8 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Card detail:** Devilry's Ritual numbers read on the dark box (light pills, dark digits in any theme); the page takes a tone from the card's group: Devilry a darker wash, Ecclesia (Grace) a whiter linen weave. The diagram was already centred on its box in the current build (measured 2 px at 1366 and 390).
 - **The Wait clock sits above the rarity / Supreme frame glow** on the board and in hand (it had the same layer, and the glow was drawn later).
 - **Shell armor pips are centred on the card:** the pop-in animation replaced the `translateX(-50%)`, leaving them 21 px right of centre; now `translate:-50% 0`.
+- **The board zooms in to fill its frame (owner ss6):** when the units' columns are narrower than the frame, the camera zooms IN (up to 2.4x, 3% margin) until they span it left to right, as far as the frame's height lets the rows grow, and follows as units come and go. The raid and the phone keep their own card fitting (they already span the frame). Also fixed `battlefieldTransformCSS`, which dropped any scale of 0.995 or more.
+- **Icons:** Poison Barbs 🪛 (was the same 🌵 as Thorns); Creative ⌘ (was 🎨; the Creativity counter's float text keeps 🎨).
 - Check: `python3 tests/e2e/ui15_2026_11_02.py` (before / after shots in `docs/screens/ui15/`).
 
 ## 2026-11-02 Package FIX5 (owner 21:12: "Dynamic values shouldn't reset on victory. for example swarm bonus is removed on victory.")
