@@ -14,7 +14,8 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json')
 const L = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = L.G;
 const lsCards = cards.filter(c=> c.levelSkills && Object.keys(c.levelSkills).some(k=> +k > 0));
 const lvSkillKeys = c=> { const s = new Set(); Object.keys(c.levelSkills || {}).filter(k=> +k > 0).forEach(k=> Object.keys(c.levelSkills[k]).forEach(x=> s.add(x))); return [...s]; };
-const hasLv1Fx = (fx, c)=> lvSkillKeys(c).filter(k=> fx && fx[k] !== undefined && fx[k] !== false && k !== 'stem');
+const LV_ONLY = new Set(['stem', 'hatchling']); // 2026-11-02 (ENG17): Hatchling, like the babies' Stem before it, lives in levelSkills only (not in effects)
+const hasLv1Fx = (fx, c)=> lvSkillKeys(c).filter(k=> fx && fx[k] !== undefined && fx[k] !== false && !LV_ONLY.has(k));
 ok(byId['bee-knight'] && byId['bee-knight'].effects.flying && byId['bee-knight'].effects.swarm, '0. fixture: the Bee Knight holds Flying + Swarm in `effects` (the full set), which arrive at Level 1');
 
 // ---- 1. the builders, on the real code
@@ -31,7 +32,7 @@ lsCards.forEach(c=>{ const b = base[c.id], keys = lvSkillKeys(c);
   // the helper
   const f0 = R.effectsAtLevel(b, 0), f1 = R.effectsAtLevel(b, 1);
   ok(!hasLv1Fx(f0, c).length, `1. effectsAtLevel(${c.id}, 0) has none of ${keys.join(',')} (${JSON.stringify(f0)})`);
-  ok(keys.filter(k=> k !== 'stem').every(k=> !(k in (b.effects || {})) || f1[k] === b.effects[k] || f1[k] === c.levelSkills[1][k]), `1. effectsAtLevel(${c.id}, 1) has them back (${JSON.stringify(f1)})`);
+  ok(keys.filter(k=> !LV_ONLY.has(k)).every(k=> !(k in (b.effects || {})) || f1[k] === b.effects[k] || f1[k] === c.levelSkills[1][k]), `1. effectsAtLevel(${c.id}, 1) has them back (${JSON.stringify(f1)})`);
   // a reference-deck copy at Level 0, an editor def at Level 0, an EB / editor Level 0 enemy copy, the tutorial's copy
   const rp = R.refPartsDeck([[c.id, 1, 0]], base, {}), ro = {}; R.refPartsDeck([[c.id, 1, 0]], base, ro);
   // refPartsDeck keeps a card as it is when its own level is >= the asked one; only a card whose base level is above 0 gets a copy, so check the ones it builds
@@ -42,7 +43,7 @@ lsCards.forEach(c=>{ const b = base[c.id], keys = lvSkillKeys(c);
   const out = R.levelledEnemyDeck({cardLevels: {[c.id]: 0}}, {[c.id]: 2}), ek = Object.keys(out);
   ok(ek.length === 1 && ek[0] === c.id + '@lv0' && !hasLv1Fx(overlay[ek[0]].effects, c).length, `1. levelledEnemyDeck: the Level 0 enemy copy of ${c.id} (${ek.join(',')}) has no Level 1 skill (${JSON.stringify(overlay[ek[0]] && overlay[ek[0]].effects)})`);
   const out1 = R.levelledEnemyDeck({cardLevels: {[c.id]: 1}}, {[c.id]: 2}); const k1 = Object.keys(out1)[0];
-  ok(hasLv1Fx(overlay[k1].effects, c).length === keys.filter(k=> k !== 'stem' && (c.effects || {})[k] !== undefined).length, `1. levelledEnemyDeck: the Level 1 enemy copy of ${c.id} keeps them`);
+  ok(hasLv1Fx(overlay[k1].effects, c).length === keys.filter(k=> !LV_ONLY.has(k) && (c.effects || {})[k] !== undefined).length, `1. levelledEnemyDeck: the Level 1 enemy copy of ${c.id} keeps them`);
   Object.keys(overlay).forEach(k=> delete overlay[k]);
   const t0 = R.tutorialLevel0Def(c.id); if(t0) ok(!hasLv1Fx(t0.effects, c).length, `1. tutorialLevel0Def(${c.id}) has no Level 1 skill`); });
 // source guards for the builders the vm cannot run whole: every one goes through effectsAtLevel

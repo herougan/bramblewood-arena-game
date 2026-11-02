@@ -3,6 +3,13 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 
+## 2026-11-02 Package ENG17 (owner COOP3-3 and BABY-2, 11-02 14:10 / 14:26; not yet released)
+- **Co-op dungeons: your starting slot is yours** (COOP3-3): in a co-op / multiplayer dungeon each player's row centre can only be played into by that player; an ally or a CPU ally never plays there and the "+" targets don't offer it. Every other cell follows W10 (beside one of your own units). This replaces W10's interim rule (an ally in your centre opened the slots beside it), kept only as a safety net for a unit pulled into your centre. Raids are unchanged (owner 14:26: raids are CPU only). Engine `ownedCells(pl, mine, homeRow, otherHomes)`.
+- **Hatchling** 🐣 (BABY-2: "It just does what we wanted Fodder to do."): every Baby card (21, the eggs included) has Hatchling from Level 1 (`levelSkills`); it is EV-6's Fodder, a plain Stem, so an Evomax evolute played onto it gains +1/+2. The Fire Drake Hatchling's and Harp Seal Pup's Stem-at-Level-1 became Hatchling; old overrides with a Baby's Level 1 Stem or a `fodder` key read as Hatchling. Shown "?" until Map 15 and by name only until Map 20, as Stem. Priced as a Stem (skill-costs `hatchling` 2, theoretical); the budget does not read level skills, so no card's stats or checks moved. Not the egg's Hatch / Stay (ENG16). Duckling Squadron (not a Baby card) keeps its Stem at Level 1.
+- Texts: `ui.skn-hatchling`, `ui.sk-hatchling`, `ui.sk-hatchling-codex` (English; translations needed).
+- Tests: new `tests/eng17-2026-11-02.js`; `tests/coop3-2026-10-30.js` (the ally's row centre is no longer a cell behind your unit), `tests/en-2026-10-23.js`, `tests/tut3-2026-10-30.js`, `tests/keywords-2026-10-15e.js` follow Hatchling.
+
+
 ## 2026-11-02 Release 11-02a (UI14, ENG16, ART5, LANG3, QA1, FIX4, BAL9, CARD5, BAL10; prepared, deploys on the owner's OK)
 - One release for the owner's 11-02 notes (JJ1-JJ28) and the overnight work: the VS card, boomerang finisher, random N-SK draws, status pills, Quicksand, a field of its own per map, Milling 1->2, wind rebalanced (WIND-2 a), Baby cards levelled with Hatch / Stay, 121 new card art, 12 language packs updated; PvP stranger and Live Ranked fixed, War Banner on every row in raids; rarities re-set to the map lists, cut cards out of every deck, Guardian on a wall per map, reference and BPRO decks rebuilt, skill prices re-measured, 111 road fights retuned (BAL10). Tests: smoke (known d-2026-10-19 only), e2e qa1 34/34, fix4, ui14, ui13, live two-player all pass.
 

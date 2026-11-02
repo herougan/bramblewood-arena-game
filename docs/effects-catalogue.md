@@ -1396,3 +1396,16 @@ tick; `draw`'s `openingExtra`; `AI_PLAN_*`, `aiSavePlan`, `aiLosingBadly`, `aiFr
 |---|---|---|---|
 | ➰ Lasso | the arrow flight, then `SkillFX.vineBind` on the target | "➰ Lassoed", the ➰ status badge | `arrow {lasso}`, `statusFx lasso`, `skipTurn lassoed`, `statusEnd lassoed` |
 | 🫣 Cower N | `SkillFX.fearShiver`, the lit cower pip | "🫣 +N🛡" | `statusFx cower {mode:'armor'}` |
+
+
+## 2026-11-02 additions (package ENG17): Hatchling, the co-op starting slot
+- **Hatchling** 🐣 (`hatchling`, owner BABY-2: "It just does what we wanted Fodder to do."): every Baby card (card group Baby, `kind: 'baby'`,
+  the eggs too) carries it from Level 1 (`levelSkills {"1": {"hatchling": true}}`; a Level 0 copy has none). It is EV-6's Fodder: a plain
+  Stem (`isStemDef`), so an Evomax evolute played onto it gains +1/+2 (`evoluteMerge`), and the CPU's evolute base pick counts it as a Stem.
+  It only matters when an evolute is in play (Map 20+). Name and help "?" until Map 15, the name only until Map 20 (`SKILL_REVEAL_MAP`, as
+  Stem). Not the egg's Hatch / Stay (ENG16: that is the egg copy's level-up choice). An older card whose Baby carries Stem at Level 1, or a
+  `fodder` key, reads as Hatchling (`eng17MigrateHatchling`). Price: a Stem's (skill-costs `hatchling` 2, theoretical); the stat budget does
+  not read `levelSkills`, so no card moved. The evolve look is the Stem's (`evolve {stem}`).
+- **Co-op starting slot** (owner COOP3-3): in the duo dungeon each player's row centre is that player's alone (`ownedCells(..., homeRow,
+  otherHomes)`: the other players' row centres are never a cell). An ally or a CPU ally can't play there, the "+" targets don't show it, and
+  every other free cell follows W10's rule. Raids are unchanged (each player plays into their own row).
