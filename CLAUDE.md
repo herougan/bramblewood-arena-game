@@ -60,5 +60,6 @@ Docs named `*-2026-10-*.md` are dated snapshots (history). When one disagrees wi
   - a cheaper model for UI from a clear spec, translations, docs and data edits;
   - the Explore agent for lookups.
 - Code comments: a date and the reason, in the existing style. Each package adds a short entry at the top of `docs/CHANGELOG.md`.
-- Owner-facing reports: short, player-visible changes first, then decisions the owner needs to make. New owner calls go into `docs/decisions.json`.
+- Owner-facing reports: short, player-visible changes first, then decisions the owner needs to make.
+- Every owner-facing report ends with a short balancing status (owner 2026-11-02 19:52: "always summarise balancing status everytime. that's our focus"): road fights in band / within 10 / beyond 20, the worst maps, open balance decisions, what runs next. New owner calls go into `docs/decisions.json`.
 - Project docs: write only canonical or decision docs there. Every write clears the cache for every chat in the Project.
