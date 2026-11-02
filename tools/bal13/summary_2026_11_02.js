@@ -29,6 +29,7 @@ const argv = process.argv.slice(2), arg = (k, d) => { const i = argv.indexOf(k);
 const DATE = arg('--date', new Date().toISOString().slice(0, 10)), GAMES = +arg('--games', 12), RGAMES = +arg('--road-games', 20), SGAMES = +arg('--strong-games', 40), W = +arg('--workers', 2);
 // 2026-11-02 (coordinator 20:19, owner): the Map reference should win at most 15% against the map's strongest deck (its BPRO-1); a map above it is flagged
 const STRONG_CAP = 0.15;
+const ENGINE_NOTE = arg('--engine-note', '') ? ', ' + arg('--engine-note', '') : ''; // e.g. "and ENG20's rules (fire / water counters, Remember once, CPU Devour ...)"
 const OUTDIR = path.join(ROOT, 'docs', 'balance', 'bal13'), STATE = path.join(OUTDIR, 'state');
 const LADDER = path.join(ROOT, 'docs', 'balance', 'ref', 'ref-ladder.json'), PRO_FILE = path.join(ROOT, 'canonical', 'pro-skirmishes.json');
 const fnv = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
@@ -44,6 +45,13 @@ function fingerprint() {
   const files = ['arena_app.js', 'bramblewood-engine.js', 'canonical/cards.json', 'bramblewood-budget.js', 'canonical/pro-skirmishes.json', 'docs/balance/ref/ref-ladder.json'].map(f => sha(fs.readFileSync(path.join(ROOT, f), 'utf8')));
   return sha(JSON.stringify([VERSION, files, sha(fs.readFileSync(path.join(__dirname, 'lib_leader_2026_11_02.js'), 'utf8')), ROAD_TAG, GAMES, RGAMES, SGAMES]));
 }
+// ENG20-5 (owner, 2026-11-03): the road check of the volcano, sea and Remember fights. A fight's tags: volcano (its rules: hotMap, eruption,
+// lavaSpout, volcano), sea (tide, saltMap, permaTide, highTide), remember (an enemy or Map reference deck holds a Remember card)
+const REMEMBER = ['marsh-wisp', 'bog-revenant', 'the-unremembered', 'ashbone-ghoul'];
+function fightTags(G, mapId, node) { let r = {}; try { r = G.fightRules(mapId, node) || {}; } catch (e) {} const t = [];
+  if (r.hotMap || r.eruption || r.lavaSpout || r.volcano) t.push('volcano'); if (r.tide || r.saltMap || r.permaTide || r.highTide) t.push('sea');
+  let mine = {}; try { mine = G.referenceDeckFor(mapId, node).deck || {}; } catch (e) {}
+  if (REMEMBER.some(id => (node.deck || {})[id] || mine[id])) t.push('remember'); return t; }
 // one map: (a) and (b)
 function mapRow(gm, id, L, ent, rows, ai) {
   const G = gm.G, map = G.CONQUEST_MAPS.find(m => m.id === id), decks = L.decks.slice().sort((a, b) => a.rank - b.rank), t0 = Date.now();
@@ -60,8 +68,8 @@ function mapRow(gm, id, L, ent, rows, ai) {
     const x = LL.simulateLed(gm, id, node, RGAMES, { seed0: 9100, deck }, leader); return { key: r.key, code: r.code, win: x.win, target: r.target / 100 }; });
   const weak = road(decks[0].counts), strong = road(decks[decks.length - 1].counts);
   // (c) the Map reference against the road WITH its leader: the road measure's fights, 40 games, its seeds (9100 + 37g)
-  const roadLed = mine.map(r => { const node = map.nodes.find(n => n.key === r.key); G.NODE_MAP_HINT.set(node, id); const x = LL.simulateLed(gm, id, node, 40, { seed0: 9100 }, leader);
-    const win = Math.round(x.win * 1000) / 10; return Object.assign({}, r, { win, noLeaderWin: r.win, leader, leaderPlayed: x.leaderPlayed, green: win > r.hi + 1e-9 ? 'easy' : win < r.lo - 1e-9 ? 'hard' : 'green', ms: undefined, deck: undefined }); });
+  const roadLed = mine.map(r => { const node = map.nodes.find(n => n.key === r.key); G.NODE_MAP_HINT.set(node, id); const x = LL.simulateLed(gm, id, node, 40, { seed0: 9100 }, leader), tags = fightTags(G, id, node);
+    const win = Math.round(x.win * 1000) / 10; return Object.assign({}, r, { win, noLeaderWin: r.win, leader, tags, green: win > r.hi + 1e-9 ? 'easy' : win < r.lo - 1e-9 ? 'hard' : 'green', ms: undefined, deck: undefined }); });
   const code = ((map.nodes || []).find(n => n.code) || {}).code || mine.map(r => r.code)[0] || '', label = map.sub && /^\d+-[A-Z]+-/.test(code) ? code.replace(/-\d+$/, '') : String(L.map);
   return { id, map: L.map, label, side: L.side, name: L.name, fights: mine.length, leader, mapRefStrong, roadLed,
     wpro: { n: wpro.length, opps: [...new Set(wpro.map(x => x.opp))], mean: mean(wpro.map(x => x.win)), byRank: decks.map(d => mean(wpro.filter(x => x.rank === d.rank).map(x => x.win))) },
@@ -89,8 +97,8 @@ function report(fp, ids) {
   const gap = r => r.win - r.target, all = rows.length, green = rows.filter(r => r.green === 'green').length, w10 = rows.filter(r => Math.abs(gap(r)) <= 10).length, o20 = rows.filter(r => Math.abs(gap(r)) > 20);
   const f = x => x == null ? '-' : String(pc(x)), g = (x, t) => x == null ? '-' : `${pc(x)} (${x - t >= 0 ? '+' : ''}${Math.round((x - t) * 100)})`;
   const L = [`# Balance summary, ${DATE}`, '', `Tool: \`node tools/bal13/summary_2026_11_02.js --road ${ROAD_TAG} --games ${GAMES} --road-games ${RGAMES}\` (${VERSION}). Reference ladder: \`docs/balance/ref/ref-ladder.json\` (${lad.built}, 10 decks a map, rank 1 weakest .. rank 10 strongest). Road measure: \`docs/balance/skirmish-pass-${ROAD_TAG}.jsonl\` (the Map reference, 40 games a fight, seeds 9100 + 37g). Procedure: \`docs/evaluation-protocol.md\` section 4a.`, '',
-    `**Leaders:** every number here is played WITH leaders (owner 2026-11-02 21:37). The enemy decks keep their own (the game's skirmish / PRO leaders). Your seat plays the leader a player holds at the map (tools/bal13/lib_leader_2026_11_02.js leaderFor: the strongest card that may lead in the map-true pool, else the Wandering Traveller), summoned by your seat's AI as the CPU summons its own; the per-map leader is in the table. This stands in for FIX6's leader-dealing helper.`, '',
-    `## Road totals (the Map reference, with its leader)`, '', `${all} road fights: **${green} in the green band** (target +/- 8), ${w10} within 10 points, **${o20.length} beyond 20 points**. Without a leader (the standard road measure, \`skirmish-pass-${ROAD_TAG}.jsonl\`): ${nl.green} green, ${nl.w10} within 10, ${nl.o20} beyond 20.${rows.some(r => r.noLeader) ? ' (' + rows.filter(r => r.noLeader).length + ' fights of maps with no ladder entry keep their no-leader reading.)' : ''}`, '',
+    `**Engine:** the game as merged on this branch (includes FIX6's leaders${ENGINE_NOTE}). **Leaders:** every number here is played WITH leaders (owner 2026-11-02 21:37). The enemy decks keep their own (the game's skirmish / PRO leaders). Your seat plays the leader a player holds at the map (tools/bal13/lib_leader_2026_11_02.js leaderFor: the strongest card that may lead in the map-true pool, else the Wandering Traveller), summoned by your seat's AI as the CPU summons its own; the per-map leader is in the table. This stands in for FIX6's leader-dealing helper.`, '',
+    `## Road totals (the Map reference, with its leader)`, '', `${all} road fights: **${green} in the green band** (target +/- 8), ${w10} within 10 points, **${o20.length} beyond 20 points**. Without a leader (the standard road measure, \`skirmish-pass-${ROAD_TAG}.jsonl\`${arg('--road-note', '') ? ', ' + arg('--road-note', '') : ''}): ${nl.green} green, ${nl.w10} within 10, ${nl.o20} beyond 20.${rows.some(r => r.noLeader) ? ' (' + rows.filter(r => r.noLeader).length + ' fights of maps with no ladder entry keep their no-leader reading.)' : ''}`, '',
     `## Per map`, '', `(a) the ladder's mean win rate against the map's WPRO decks (its weakest decks) and its BPRO decks (its strongest), ${GAMES} games a pairing (10 decks x each WPRO / BPRO deck). (b) the weakest (rank 1) and strongest (rank 10) ladder deck against the map's road fights, ${RGAMES} games a fight (the gap to the mean road target in points), beside the Map reference (40 games a fight).`, '',
     `Flag (owner 2026-11-02 20:19): the Map reference should win at most ${pc(STRONG_CAP)}% against the map's strongest deck (BPRO-1, ${SGAMES} games); "OVER" marks a map above it.`, '',
     '| Map | Your leader | (a) vs WPRO | (a) vs BPRO | Map ref vs BPRO-1 | Flag | (b) weakest ref vs road | (b) strongest ref vs road | Map reference vs road | Road target | Green / fights |', '|---|---|---|---|---|---|---|---|---|---|---|'];
@@ -99,6 +107,11 @@ function report(fp, ids) {
   const mm = k => mean(per.map(p => p[k].mean).filter(x => x != null)), mr = k => mean(per.map(p => p.road[k]).filter(x => x != null));
   const over = per.filter(p => p.mapRefStrong && p.mapRefStrong.win > STRONG_CAP + 1e-9);
   L.push(`| **All maps (mean)** | | ${f(mm('wpro'))} | ${f(mm('bpro'))} | ${f(mean(per.filter(p => p.mapRefStrong).map(p => p.mapRefStrong.win)))} | ${over.length} OVER | ${f(mr('weakest'))} | ${f(mr('strongest'))} | ${f(mr('mapRef'))} | ${f(mr('target'))} | ${green} / ${all} |`);
+  const tagged = rows.filter(r => (r.tags || []).length), ladTxt = r => { const a = Math.abs(gap(r)); return a <= 5 ? 'ideal' : a <= 10 ? 'acceptable' : a <= 15 ? 'less liked' : a <= 20 ? 'starting to be unacceptable' : 'unacceptable'; };
+  L.push('', `## ENG20-5 road check: volcano, sea and Remember fights (${tagged.length})`, '', 'The fights whose rules are a volcano map (hotMap, eruption, lava spouts) or a sea map (tide, salt, high tide), or whose enemy deck or Map reference deck holds a Remember card (Wisp Newt, Revenant Bog Turtle, Unremembered Heron, Ashbone Ghoul). The Map reference with its leader, 40 games; no deck was changed (cards with a gap over 20 are in the card flags).', '',
+    '| Fight | Map | Tags | Win | Target | Gap | Reading |', '|---|---|---|---|---|---|---|');
+  tagged.sort((a, b) => a.mapNo - b.mapNo || (a.code < b.code ? -1 : 1)).forEach(r => L.push(`| ${r.code} ${r.name} | ${r.mapNo}${r.side ? ' ' + r.map : ''} ${r.mapName} | ${r.tags.join(', ')} | ${r.win} | ${Math.round(r.target * 10) / 10} | ${gap(r) > 0 ? '+' : ''}${Math.round(gap(r))} | ${ladTxt(r)}${Math.abs(gap(r)) > 8 ? (gap(r) > 0 ? ', too easy' : ', too hard') : ''} |`));
+  ['volcano', 'sea', 'remember'].forEach(t => { const x = tagged.filter(r => r.tags.includes(t)); L.push(`- ${t}: ${x.length} fights, ${x.filter(r => r.green === 'green').length} green, ${x.filter(r => Math.abs(gap(r)) > 20).length} beyond 20, mean gap ${x.length ? Math.round(mean(x.map(gap)) * 10) / 10 : '-'}`); });
   L.push('', `## Fights more than 20 points off (${o20.length})`, '', '| Fight | Map | Kind | Win | Target | Gap |', '|---|---|---|---|---|---|');
   o20.sort((a, b) => Math.abs(gap(b)) - Math.abs(gap(a))).forEach(r => L.push(`| ${r.code} ${r.name} | ${r.mapNo}${r.side ? ' ' + r.map : ''} ${r.mapName} | ${r.kind} | ${r.win} | ${Math.round(r.target * 10) / 10} | ${gap(r) > 0 ? '+' : ''}${Math.round(gap(r))} (${gap(r) > 0 ? 'too easy' : 'too hard'}) |`));
   const missing = ids.filter(id => !per.some(p => p.id === id)); if (missing.length) L.push('', 'Not measured (no state): ' + missing.join(', '));

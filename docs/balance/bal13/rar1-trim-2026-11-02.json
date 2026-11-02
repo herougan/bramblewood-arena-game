@@ -1696,24 +1696,34 @@
     "wolf-spider-mother": 3
    },
    "after": {
-    "bee-forager": 4,
     "dung-beetle": 4,
     "echo-matriarch": 3,
     "giant-cave-huntsman": 3,
     "vampire-bat": 3,
-    "wolf-spider-mother": 3
+    "wolf-spider-mother": 3,
+    "blind-cave-fish": 4
    },
    "moves": [
+    {
+     "out": "bee-forager",
+     "copies": 3,
+     "to": {
+      "blind-cave-fish": 3
+     },
+     "left": 0
+    },
     {
      "out": "vampire-bat",
      "copies": 1,
      "to": {
-      "bee-forager": 1
+      "blind-cave-fish": 1
      },
      "left": 0
     }
    ],
-   "whole": []
+   "whole": [
+    "bee-forager"
+   ]
   },
   {
    "where": "pro 8-PRO-2",
@@ -3445,5 +3455,5 @@
    "cap": "rare"
   }
  ],
- "note": "road rows from the first trim pass (33 written; the 9 Undercroft floors are dealt from the trimmed road decks), PRO rows from the second (anchor-first, leader-safe)"
+ "note": "road rows from the first trim pass (33 written; the 9 Undercroft floors are dealt from the trimmed road decks), PRO rows from the second (anchor-first, leader-safe); PRO rows: anchor rule kept (8-PRO-1)"
 }

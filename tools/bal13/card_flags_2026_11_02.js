@@ -20,6 +20,8 @@ const fs = require('fs'), path = require('path'), cp = require('child_process');
 const ROOT = path.resolve(__dirname, '..', '..');
 const argv = process.argv.slice(2), arg = (k, d) => { const i = argv.indexOf(k); return i >= 0 ? argv[i + 1] : d; };
 const TAG = arg('--road', null), GAMES = +arg('--games', 40), GAP = +arg('--gap', 20), W = +arg('--workers', 2), SEED = 7300;
+// the game's fingerprint (app, engine, cards, budget, the leader picker): a cached fight is replayed when any of them changes
+const FP = require('crypto').createHash('sha1').update(['arena_app.js', 'bramblewood-engine.js', 'canonical/cards.json', 'bramblewood-budget.js', 'tools/bal13/lib_leader_2026_11_02.js'].map(f => fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\n')).digest('hex').slice(0, 10);
 const OUTDIR = path.join(ROOT, 'docs', 'balance', 'bal13'), STATE = path.join(OUTDIR, 'state'), DATE = '2026-11-02';
 if (!TAG) { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 20).map(l => l.replace(/^\/\/ ?/, '')).join('\n')); process.exit(1); }
 const rows = (() => { const by = {}; fs.readFileSync(path.join(ROOT, 'docs', 'balance', `skirmish-pass-${TAG}.jsonl`), 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l)).forEach(r => { by[r.map + ':' + r.key] = r; });
@@ -51,13 +53,13 @@ function fightFlags(gm, r) {
 }
 function runShard(i, n) {
   const gm = require(path.join(ROOT, 'tools', 'opt', 'deckopt.js')).loadGame(ROOT); fs.mkdirSync(STATE, { recursive: true });
-  rows.filter((r, k) => k % n === i).forEach(r => { const f = path.join(STATE, `flags-led-${TAG}-${GAMES}-${r.map}-${r.key}.json`); if (fs.existsSync(f)) return;
+  rows.filter((r, k) => k % n === i).forEach(r => { const f = path.join(STATE, `flags-${FP}-${GAMES}-${r.win > r.target ? "easy" : "hard"}-${r.map}-${r.key}.json`); if (fs.existsSync(f)) return;
     const x = fightFlags(gm, r); fs.writeFileSync(f, JSON.stringify(x) + '\n'); console.log(r.code, r.win, '->', x.enemy && x.enemy.driver.id, x.enemy && x.enemy.suggestion.win, '|', x.player && x.player.driver.id, x.player && x.player.suggestion.win, Math.round(x.ms / 1000) + 's'); });
 }
 function report() {
   const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), D = B.CARD_DEFS_BASELINE, nm = id => (D[id] || {}).name || id;
   const line = (id, s) => { const d = D[id] || {}, a = +d.attack || 0, h = +d.health || 0; return `${a}/${h} -> ${Math.max(0, a + s.dA)}/${Math.max(1, h + s.dH)}`; };
-  const all = rows.map(r => { const f = path.join(STATE, `flags-led-${TAG}-${GAMES}-${r.map}-${r.key}.json`); return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null; }).filter(Boolean);
+  const all = rows.map(r => { const f = path.join(STATE, `flags-${FP}-${GAMES}-${r.win > r.target ? "easy" : "hard"}-${r.map}-${r.key}.json`); return fs.existsSync(f) ? Object.assign(JSON.parse(fs.readFileSync(f, 'utf8')), { measured: r.win, target: r.target, easy: r.win > r.target }) : null; }).filter(Boolean); // a fight's flags do not depend on the road file: its reading and band come from this one
   const L = [`# Card flags for the fights more than ${GAP} points off, ${DATE}`, '', 'Package BAL13 (owner 2026-11-02 20:19: "The only thing that should change is the card. But we shouldn\'t choose new cards."). **Flags only**: no card or deck was changed. The owner changes cards.', '',
     `Tool: \`node tools/bal13/card_flags_2026_11_02.js --road ${TAG} --games ${GAMES}\`. The fights: the road measure \`docs/balance/skirmish-pass-${TAG}.jsonl\` (the Map reference, 40 games a fight). Each card of the fight, on both sides, one 3A + H step (1 Attack, or 3 Health on a 1-Attack card) in the direction that closes the gap, ${GAMES} games on the tune seeds (7300 + 37g); the driver (the card whose step moves the fight most) then at 2 and 3 steps; the suggestion is the smallest that lands in the green band (target +/- 8). Stat lines are the card as printed (the fight plays the levelled copy with the same step). A player-deck card is in the Map reference's deck: changing it moves every fight that deck plays. **With leaders** (owner 21:37): the enemy keeps its own; your seat plays the leader a player holds at the map (tools/bal13/lib_leader_2026_11_02.js; column "Your leader").`, '',
     '| Fight | Your leader | Win / target | Enemy driver | Suggested line (enemy) | Reaches | Player-deck driver | Suggested line (player) | Reaches |', '|---|---|---|---|---|---|---|---|---|'];

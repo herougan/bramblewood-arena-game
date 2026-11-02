@@ -11666,12 +11666,12 @@
       "giant-cave-huntsman"
      ],
      "deck": {
-      "bee-forager": 4,
       "dung-beetle": 4,
       "echo-matriarch": 3,
       "giant-cave-huntsman": 3,
       "vampire-bat": 3,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "blind-cave-fish": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
@@ -11688,7 +11688,7 @@
      },
      "h2h": null,
      "later": [],
-     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): vampire-bat -1 -> bee-forager x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): bee-forager -3 -> blind-cave-fish x3; vampire-bat -1 -> blind-cave-fish x1 (bee-forager left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "8-PRO-2",

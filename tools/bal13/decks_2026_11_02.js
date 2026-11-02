@@ -132,6 +132,10 @@ function trimPlan() {
           if (victim) { whole.push(victim); ex2[victim] = x.deck[victim]; } });
         Object.keys(extra).forEach(id => { if (ex2[id] == null) ex2[id] = extra[id]; }); // the card leaving whole goes first, so its slot is free for the extra copies
         r = swapOut(x.deck, ex2, poolFor(m), cap, null, new Set(), rule); }
+      // DECK1's anchor rule (at least 10 copies from the map's list): when the trim left it short, a non-list card (not the leader) leaves whole
+      const A = anchorOf(m), ac = d => A ? Object.keys(d).reduce((t, id) => t + (A.has(id) ? d[id] : 0), 0) : 0;
+      if (A && ac(r.deck) < Math.min(10, ac(x.deck))) { const victim = Object.keys(x.deck).filter(id => !A.has(id) && !lead.has(id) && !extra[id]).sort((a, b) => x.deck[a] - x.deck[b])[0];
+        if (victim) { const ex3 = Object.assign({ [victim]: x.deck[victim] }, extra), r3 = swapOut(x.deck, ex3, poolFor(m), cap, null, new Set(), rule); if (ac(r3.deck) > ac(r.deck) && !r3.moves.some(v => v.left)) { r = r3; whole = whole.concat([victim]); } } }
       rows.push({ where: `${kind} ${x.id}`, map: no, loc: mid, pro: { kind, id: x.id }, before: x.deck, after: r.deck, moves: r.moves, whole });
     }
   }

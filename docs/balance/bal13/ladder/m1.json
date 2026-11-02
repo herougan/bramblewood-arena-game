@@ -1,0 +1,590 @@
+{
+ "about": "BAL13 reference ladder build for one map (tools/bal13/ladder_2026_11_02.js build); `collect` writes the chosen decks to docs/balance/ref/ref-ladder.json",
+ "tool": "1.1.0 (2026-11-02, BAL13: with leaders)",
+ "fingerprint": "fcd8d66ed514",
+ "built": "2026-11-02T13:43:40.727Z",
+ "map": {
+  "id": "m1",
+  "num": 0,
+  "name": "Bramblewood Outskirts",
+  "side": false
+ },
+ "pool": 39,
+ "leader": "wandering-traveller",
+ "strength": "bench-contrib-global-2026-10-30-final.json",
+ "settings": {
+  "games": 6,
+  "cands": 24,
+  "seed0": 5300,
+  "maxUnique": 12,
+  "maxCopies": 99,
+  "apart": 4
+ },
+ "fights": [
+  "0-1",
+  "0-2",
+  "0-3",
+  "0-4"
+ ],
+ "chosen": [
+  {
+   "rank": 1,
+   "counts": {
+    "harvest-mouse": 4,
+    "mosswing-laborer": 5,
+    "garden-snail": 4,
+    "chipmunk-forager": 4,
+    "earthworm": 3
+   },
+   "from": "sampled q=0.00",
+   "selectWin": 37.5,
+   "pred": 0.384,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 0,
+    "0-3": 0,
+    "0-4": 50
+   }
+  },
+  {
+   "rank": 2,
+   "counts": {
+    "chipmunk-forager": 3,
+    "sheep": 3,
+    "bee-sentry": 3,
+    "garden-snail": 5,
+    "mosswing-laborer": 3,
+    "forager-ant": 3
+   },
+   "from": "sampled q=0.09",
+   "selectWin": 45.8,
+   "pred": 0.454,
+   "perFight": {
+    "0-1": 66.7,
+    "0-2": 50,
+    "0-3": 33.3,
+    "0-4": 33.3
+   }
+  },
+  {
+   "rank": 3,
+   "counts": {
+    "duckling": 1,
+    "harvest-mouse": 3,
+    "earthworm": 1,
+    "mosswing-laborer": 3,
+    "guppy": 3,
+    "garden-snail": 3,
+    "chipmunk-forager": 3,
+    "greyplume-fledgling": 3
+   },
+   "from": "sampled q=0.04",
+   "selectWin": 54.2,
+   "pred": 0.432,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 66.7,
+    "0-3": 0,
+    "0-4": 50
+   }
+  },
+  {
+   "rank": 4,
+   "counts": {
+    "duckling": 2,
+    "mosswing-laborer": 3,
+    "earthworm": 2,
+    "guppy": 2,
+    "bee-knight": 3,
+    "sheep": 1,
+    "silver-minnow": 2,
+    "bee-sentry": 5
+   },
+   "from": "sampled q=0.13",
+   "selectWin": 66.7,
+   "pred": 0.464,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 66.7,
+    "0-3": 16.7,
+    "0-4": 83.3
+   }
+  },
+  {
+   "rank": 5,
+   "counts": {
+    "harvest-mouse": 1,
+    "chipmunk-forager": 3,
+    "silver-minnow": 3,
+    "duckling": 4,
+    "bee-knight": 3,
+    "forager-ant": 1,
+    "soldier-ant": 3,
+    "otter-kit": 2
+   },
+   "from": "sampled q=0.22",
+   "selectWin": 66.7,
+   "pred": 0.56,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 33.3,
+    "0-3": 50,
+    "0-4": 83.3
+   }
+  },
+  {
+   "rank": 6,
+   "counts": {
+    "honey-bee": 5,
+    "otter-paddler": 2,
+    "forager-ant": 2,
+    "worker-ant": 3,
+    "bee-knight": 5,
+    "meadow-frog": 3
+   },
+   "from": "sampled q=0.43",
+   "selectWin": 70.8,
+   "pred": 0.78,
+   "perFight": {
+    "0-1": 83.3,
+    "0-2": 66.7,
+    "0-3": 50,
+    "0-4": 83.3
+   }
+  },
+  {
+   "rank": 7,
+   "counts": {
+    "mosswing-laborer": 4,
+    "silver-minnow": 5,
+    "duckling": 4,
+    "sheep": 5,
+    "greyplume-fledgling": 2
+   },
+   "from": "sampled q=0.17",
+   "selectWin": 79.2,
+   "pred": 0.458,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 66.7,
+    "0-3": 66.7,
+    "0-4": 83.3
+   }
+  },
+  {
+   "rank": 8,
+   "counts": {
+    "cobalt-talon-fledgling": 5,
+    "otter-kit": 2,
+    "meadow-frog": 2,
+    "crossed-eyes": 1,
+    "crimson-wing-recruit": 2,
+    "chipmunk-forager": 3,
+    "honey-bee": 1,
+    "cottontail": 4
+   },
+   "from": "sampled q=0.48",
+   "selectWin": 87.5,
+   "pred": 0.85,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 100,
+    "0-3": 66.7,
+    "0-4": 83.3
+   }
+  },
+  {
+   "rank": 9,
+   "counts": {
+    "cottontail": 3,
+    "meadow-frog": 3,
+    "feral-tomcat": 1,
+    "chipmunk-skirmisher": 3,
+    "cobalt-talon-fledgling": 3,
+    "acorn-chipmunk": 2,
+    "meadow-rabbit": 5
+   },
+   "from": "sampled q=0.70",
+   "selectWin": 91.7,
+   "pred": 0.993,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 100,
+    "0-3": 83.3,
+    "0-4": 83.3
+   }
+  },
+  {
+   "rank": 10,
+   "counts": {
+    "meadow-frog": 4,
+    "bee-sentry": 2,
+    "greyplume-fledgling": 1,
+    "ant-scout": 4,
+    "worker-ant": 4,
+    "otter-kit": 5
+   },
+   "from": "sampled q=0.35",
+   "selectWin": 100,
+   "pred": 0.784,
+   "perFight": {
+    "0-1": 100,
+    "0-2": 100,
+    "0-3": 100,
+    "0-4": 100
+   }
+  }
+ ],
+ "candidates": [
+  {
+   "from": "0-PRO-1",
+   "win": 100,
+   "pred": 1.039,
+   "counts": {
+    "ant-scout": 4,
+    "bee-forager": 4,
+    "chipmunk-skirmisher": 4,
+    "honey-bee": 4,
+    "soldier-ant": 1,
+    "terrier-pup": 3
+   }
+  },
+  {
+   "from": "0-PRO-2",
+   "win": 100,
+   "pred": 1.004,
+   "counts": {
+    "bee-sentry": 2,
+    "chipmunk-skirmisher": 2,
+    "duck-paddler": 4,
+    "river-carp": 4,
+    "terrier-pup": 4,
+    "worker-ant": 4
+   }
+  },
+  {
+   "from": "sampled q=0.00",
+   "win": 37.5,
+   "pred": 0.384,
+   "counts": {
+    "harvest-mouse": 4,
+    "mosswing-laborer": 5,
+    "garden-snail": 4,
+    "chipmunk-forager": 4,
+    "earthworm": 3
+   }
+  },
+  {
+   "from": "sampled q=0.04",
+   "win": 54.2,
+   "pred": 0.432,
+   "counts": {
+    "duckling": 1,
+    "harvest-mouse": 3,
+    "earthworm": 1,
+    "mosswing-laborer": 3,
+    "guppy": 3,
+    "garden-snail": 3,
+    "chipmunk-forager": 3,
+    "greyplume-fledgling": 3
+   }
+  },
+  {
+   "from": "sampled q=0.09",
+   "win": 45.8,
+   "pred": 0.454,
+   "counts": {
+    "chipmunk-forager": 3,
+    "sheep": 3,
+    "bee-sentry": 3,
+    "garden-snail": 5,
+    "mosswing-laborer": 3,
+    "forager-ant": 3
+   }
+  },
+  {
+   "from": "sampled q=0.13",
+   "win": 66.7,
+   "pred": 0.464,
+   "counts": {
+    "duckling": 2,
+    "mosswing-laborer": 3,
+    "earthworm": 2,
+    "guppy": 2,
+    "bee-knight": 3,
+    "sheep": 1,
+    "silver-minnow": 2,
+    "bee-sentry": 5
+   }
+  },
+  {
+   "from": "sampled q=0.17",
+   "win": 79.2,
+   "pred": 0.458,
+   "counts": {
+    "mosswing-laborer": 4,
+    "silver-minnow": 5,
+    "duckling": 4,
+    "sheep": 5,
+    "greyplume-fledgling": 2
+   }
+  },
+  {
+   "from": "sampled q=0.22",
+   "win": 66.7,
+   "pred": 0.56,
+   "counts": {
+    "harvest-mouse": 1,
+    "chipmunk-forager": 3,
+    "silver-minnow": 3,
+    "duckling": 4,
+    "bee-knight": 3,
+    "forager-ant": 1,
+    "soldier-ant": 3,
+    "otter-kit": 2
+   }
+  },
+  {
+   "from": "sampled q=0.26",
+   "win": 75,
+   "pred": 0.648,
+   "counts": {
+    "chipmunk-forager": 3,
+    "duckling": 2,
+    "worker-ant": 2,
+    "bee-knight": 1,
+    "ant-scout": 3,
+    "otter-kit": 5,
+    "greyplume-fledgling": 4
+   }
+  },
+  {
+   "from": "sampled q=0.30",
+   "win": 95.8,
+   "pred": 0.657,
+   "counts": {
+    "chipmunk-forager": 5,
+    "house-cat": 2,
+    "silver-minnow": 3,
+    "meadow-frog": 4,
+    "forager-ant": 1,
+    "greyplume-fledgling": 2,
+    "bee-sentry": 3
+   }
+  },
+  {
+   "from": "sampled q=0.35",
+   "win": 100,
+   "pred": 0.784,
+   "counts": {
+    "meadow-frog": 4,
+    "bee-sentry": 2,
+    "greyplume-fledgling": 1,
+    "ant-scout": 4,
+    "worker-ant": 4,
+    "otter-kit": 5
+   }
+  },
+  {
+   "from": "sampled q=0.39",
+   "win": 66.7,
+   "pred": 0.742,
+   "counts": {
+    "worker-ant": 1,
+    "ant-scout": 1,
+    "guppy": 3,
+    "crimson-wing-recruit": 5,
+    "crossed-eyes": 5,
+    "house-cat": 2,
+    "sheep": 3
+   }
+  },
+  {
+   "from": "sampled q=0.43",
+   "win": 70.8,
+   "pred": 0.78,
+   "counts": {
+    "honey-bee": 5,
+    "otter-paddler": 2,
+    "forager-ant": 2,
+    "worker-ant": 3,
+    "bee-knight": 5,
+    "meadow-frog": 3
+   }
+  },
+  {
+   "from": "sampled q=0.48",
+   "win": 87.5,
+   "pred": 0.85,
+   "counts": {
+    "cobalt-talon-fledgling": 5,
+    "otter-kit": 2,
+    "meadow-frog": 2,
+    "crossed-eyes": 1,
+    "crimson-wing-recruit": 2,
+    "chipmunk-forager": 3,
+    "honey-bee": 1,
+    "cottontail": 4
+   }
+  },
+  {
+   "from": "sampled q=0.52",
+   "win": 95.8,
+   "pred": 0.858,
+   "counts": {
+    "greyplume-fledgling": 1,
+    "meadow-frog": 1,
+    "cottontail": 4,
+    "crossed-eyes": 3,
+    "honey-bee": 5,
+    "ant-scout": 4,
+    "forager-ant": 2
+   }
+  },
+  {
+   "from": "sampled q=0.57",
+   "win": 79.2,
+   "pred": 0.914,
+   "counts": {
+    "cobalt-talon-fledgling": 2,
+    "cottontail": 5,
+    "crimson-wing-recruit": 4,
+    "honey-bee": 4,
+    "worker-ant": 5
+   }
+  },
+  {
+   "from": "sampled q=0.61",
+   "win": 95.8,
+   "pred": 0.976,
+   "counts": {
+    "otter-paddler": 1,
+    "burrow-rabbit": 4,
+    "honey-bee": 2,
+    "crossed-eyes": 2,
+    "meadow-frog": 3,
+    "meerkat-wayfarer": 4,
+    "pond-trout": 4
+   }
+  },
+  {
+   "from": "sampled q=0.65",
+   "win": 83.3,
+   "pred": 0.999,
+   "counts": {
+    "meadow-rabbit": 5,
+    "burrow-rabbit": 3,
+    "pond-duck": 3,
+    "otter-paddler": 3,
+    "crimson-wing-recruit": 1,
+    "meerkat-wayfarer": 5
+   }
+  },
+  {
+   "from": "sampled q=0.70",
+   "win": 91.7,
+   "pred": 0.993,
+   "counts": {
+    "cottontail": 3,
+    "meadow-frog": 3,
+    "feral-tomcat": 1,
+    "chipmunk-skirmisher": 3,
+    "cobalt-talon-fledgling": 3,
+    "acorn-chipmunk": 2,
+    "meadow-rabbit": 5
+   }
+  },
+  {
+   "from": "sampled q=0.74",
+   "win": 100,
+   "pred": 1.063,
+   "counts": {
+    "acorn-chipmunk": 4,
+    "burrow-rabbit": 5,
+    "pond-duck": 3,
+    "honey-bee": 1,
+    "bee-forager": 2,
+    "cottontail": 3,
+    "feral-tomcat": 2
+   }
+  },
+  {
+   "from": "sampled q=0.78",
+   "win": 91.7,
+   "pred": 1.051,
+   "counts": {
+    "duck-paddler": 4,
+    "burrow-rabbit": 5,
+    "cottontail": 5,
+    "feral-tomcat": 3,
+    "otter-paddler": 3
+   }
+  },
+  {
+   "from": "sampled q=0.83",
+   "win": 95.8,
+   "pred": 1.046,
+   "counts": {
+    "beaver-lumberjack": 5,
+    "chipmunk-skirmisher": 5,
+    "feral-tomcat": 2,
+    "duck-paddler": 3,
+    "pond-duck": 5
+   }
+  },
+  {
+   "from": "sampled q=0.87",
+   "win": 100,
+   "pred": 1.084,
+   "counts": {
+    "terrier-pup": 2,
+    "duck-paddler": 1,
+    "burrow-rabbit": 5,
+    "feral-tomcat": 4,
+    "honey-bee": 2,
+    "fox-kit": 3,
+    "acorn-chipmunk": 3
+   }
+  },
+  {
+   "from": "sampled q=0.91",
+   "win": 95.8,
+   "pred": 1.07,
+   "counts": {
+    "beaver-lumberjack": 4,
+    "terrier-pup": 3,
+    "chipmunk-skirmisher": 4,
+    "duck-paddler": 4,
+    "feral-tomcat": 5
+   }
+  },
+  {
+   "from": "sampled q=0.96",
+   "win": 100,
+   "pred": 1.137,
+   "counts": {
+    "duck-paddler": 5,
+    "chipmunk-skirmisher": 2,
+    "meadow-rabbit": 4,
+    "river-carp": 4,
+    "fox-kit": 5
+   }
+  },
+  {
+   "from": "sampled q=1.00",
+   "win": 91.7,
+   "pred": 1.143,
+   "counts": {
+    "bee-forager": 5,
+    "chipmunk-skirmisher": 3,
+    "burrow-rabbit": 1,
+    "beaver-lumberjack": 4,
+    "duck-paddler": 2,
+    "meadow-rabbit": 2,
+    "feral-tomcat": 1,
+    "terrier-pup": 2
+   }
+  }
+ ],
+ "ms": 88869
+}
