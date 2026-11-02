@@ -242,6 +242,12 @@ const MAP_POOLS = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 
 const NORM_POOL = (()=>{ try{ return require('./lib_map_pools.js').normalizeEntry; }catch(e){ return x=> x; } })();
 function mapPoolOf(f){ if(f._pool) return f._pool; const main = f.m.sub ? f.m.parent : f.m.id, e = NORM_POOL(MAP_POOLS[main] || {});
   return (f._pool = new Set([...(e.cards || []), ...(f.m.sub ? ((e.submaps || {})[f.m.id] || []) : []), ...(e.special || [])])); }
+// 2026-11-02 (package BAL10): --strict, for a retune after BAL9's cut-card rule and BAL7's K14 rule: a card coming in must be on the fight's
+// own list (tools/lib_map_pools.js fightPool: a side map's SUBMAP + SPECIAL, not its parent's MAP tier, which --pool allows), and a move may
+// not add a K14 problem (tools/bal7_k14_decks_2026_10_28.js violations: a card not unique to the map at most 1 copy, 6 such copies in all)
+const STRICT = argv.includes('--strict');
+let K14T = null; const k14Count = (f, deck)=>{ K14T = K14T || require('./bal7_k14_decks_2026_10_28.js'); return K14T.violations(f, deck).length; };
+function strictPoolOf(f){ if(f._spool) return f._spool; const LPm = require('./lib_map_pools.js'); return (f._spool = LPm.fightPool({maps: MAP_POOLS}, f.map, f.m.sub ? f.m.parent : null) || new Set()); }
 function distinctOk(f, deck, was){ if(!DISTINCT) return true; const n = Object.keys(deck).length, n0 = Object.keys(was).length;
   if(f.kind === 'skirmish') return n >= Math.min(5, n0) && n <= (n0 >= 7 ? n0 : 6); // a deck over 7 may only shrink
   return n >= Math.min(5, n0) && n <= Math.max(8, n0); }
@@ -373,6 +379,7 @@ function curveTune(f, band, steps){
         if(f.code === '18-A-9' && mv.inn === 'quicksand-queen') continue; // 2026-10-19 (BF3): one Queen leads her own fight (tests/pale-desert-2026-10-19.js 3)
         if(mv.inn && TH && TH.offThemeFor(f.map, f.n, mv.inn)) continue; // 2026-10-19 (TH): "more copies" of a capped card (Gannet Cliffs' Pelican Divers) too
         if(POOL_ONLY && mv.inn && !node.deck[mv.inn] && !mapPoolOf(f).has(mv.inn)) continue; // BAL3 --pool
+        if(STRICT && mv.inn && !node.deck[mv.inn] && !strictPoolOf(f).has(mv.inn)) continue; // BAL10 --strict: the fight's own list only
         let nd = applyMove(node.deck, mv);
         // BAL3 --distinct: a part swap that would add a different card becomes a whole swap (every copy of the card going out; the card coming
         // in takes as many as its copy cap allows)
@@ -384,6 +391,7 @@ function curveTune(f, band, steps){
         if(!distinctOk(f, nd, f.n.deck)) continue; // BAL3 --distinct (against the fight's deck as it was)
         if(f.n.rules && f.n.rules.boon && E.selfishBoonCount && !E.selfishBoonCount(CARD_DEFS_BASELINE, nd, f.n.rules.boon).on) continue; // BAL3: a challenge deck keeps its selfish boon on (DF3)
         if(Object.entries(nd).some(([id, k])=> k > G.maxCopiesForRarity(CARD_DEFS_BASELINE[id].rarity))) continue; // the copy ladder (BAL2)
+        if(STRICT && k14Count(f, nd) > k14Count(f, node.deck)) continue; // BAL10 --strict: BAL7's K14 rule may not get worse
         const nn = Object.assign({}, node, {deck: nd}), r = T(nn, mv);
         if(!best || P(r, easy) < P(best.r, easy)) best = {mv, nn, r};
         if(good(best.r.win)) break;
