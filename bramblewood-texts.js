@@ -147,6 +147,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui10-ra-open": "Open card",
   "ui.ui10-ra-no-comment": "(no comment)",
   "ui.ui10-skirm-enemy": "a random deck built from this map's card list.",
+  "ui.bal11-wk-enemy": "a weak deck built from this map's card list, for practice.",
+  "ui.bal11-wk-node-tip": "{key}: practice fight against a weak deck of this map. No rewards. Tap to start.",
   "ui.pref-level": "Level {n}",
   "ui.pref-xref-node-tip": "{key}: the reference deck against this map's PRO decks",
   "ui.pref-xref-row": "Reference deck vs this map's PRO decks",

@@ -512,6 +512,100 @@ if(CMD === 'moves'){ // 2026-10-24 (package BAL3): the curve's candidate moves f
   for(const f of todo){ const b = before.find(r=> r.map === f.map && r.key === f.key) || {win: null}, t = Date.now(), band = fightBand(f), fx = curveTune(f, band, +opt('steps', 6));
     fs.appendFileSync(OUT, JSON.stringify(Object.assign(rowOf(f, {}), {before: b.win == null ? fx.trail[0].win : b.win, target: band.t * 100, lo: band.lo * 100, hi: band.hi * 100, role: band.role, ms: Date.now() - t}, fx)) + '\n');
     console.log(f.code, b.win, '-> target', Math.round(band.t * 100), ':', fx.after.win, fx.good ? 'green' : 'OFF', JSON.stringify(fx.moves), fx.shieldOverride, fx.hqHp); }
+} else if(CMD === 'weak'){
+  // 2026-11-02 (package BAL11, owner on BAL10-6, 14:10: "help me create the worse deck given the cards in the map list (excluding babies
+  // etc.)"): every fight of --from more than --gap (default 20) points under its road-curve target gets its enemy deck built again from its
+  // own list (tools/lib_map_pools.js fightPool, as curve --strict), choosing the deck that brings it into its band: deliberately weaker cards.
+  //   node tools/skirmish_pass.js weak [games=40] --from=<tag> --fixes=<name> [--gap=20] [--contrib=<tag>] [--only=...] [--maxmap=20] [shard nshards]
+  // The rules: no Baby card (kind baby), no egg, no token, test or leader-only card, within the road's rarity cap, never another fight's
+  // reward card; the fight's leaders, first-clear cards and showcase keep their copies; the deck keeps its size; 5-6 different cards in a
+  // skirmish (7 only where it had 7), 5..max(8, n) in an elite / boss; the copy ladder and the top-rank caps; BAL7's K14 (a card not unique to
+  // the map at most 1 copy, 6 such copies in all) may not get worse. A card's strength: its per-copy contribution in the map's own context
+  // (docs/balance/bench-contrib-map*-<map>-*<contrib tag>.json, tools/bench/bench.js contrib --map <id> --all), else the card pass's score.
+  // The search: up to 600 legal decks sampled across the strength scale, ordered by predicted strength (copies x per-copy contribution), a
+  // bisection between the weakest and the current deck measured on the tune seeds (TUNE_SEED + 37g), then up to 3 one-card steps while the
+  // fight is still off its band; a step must close the gap by 2+ points. When the weakest legal deck is still too hard, the weakest deck
+  // without K14 is measured too, so a fight K14 alone blocks is reported (k14Blocks) and not changed past K14.
+  const before = readJsonl(path.join(OUTDIR, `skirmish-pass-${opt('from', 'bal11-before')}.jsonl`)), GAP = +opt('gap', 20);
+  const OUT = path.join(OUTDIR, opt('fixes', 'bal11-weak') + '.jsonl'), done = new Set(readJsonl(OUT).map(r=> r.map + ':' + r.key));
+  const K14 = require('./bal7_k14_decks_2026_10_28.js'), defs = CARD_DEFS_BASELINE, BB_RANK = require(path.join(ROOT, 'bramblewood-budget.js'));
+  const H32 = s=>{ let h = 2166136261; for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+  const CTAG = opt('contrib', '2026-11-02-bal11'), contribOf = {};
+  const contribFor = mapId=>{ if(contribOf[mapId] !== undefined) return contribOf[mapId]; let m = null;
+    const f = fs.readdirSync(OUTDIR).filter(n=> new RegExp(`^bench-contrib-map\\d+-${mapId}-.*${CTAG}\\.json$`).test(n)).sort().pop();
+    if(f){ m = {}; JSON.parse(fs.readFileSync(path.join(OUTDIR, f), 'utf8')).cards.forEach(c=>{ m[c.id] = c.perCopy; }); } return (contribOf[mapId] = m); };
+  const rowOfBefore = f=> before.find(r=> r.map === f.map && r.key === f.key);
+  const todo = all.filter(f=>{ const b = rowOfBefore(f); if(!b || f.endless) return false; const bd = bandOf(f, b.win); return bd.curve && b.win - bd.target < -GAP; })
+    .filter((f, i)=> i % NSH === SHARD && !done.has(f.map + ':' + f.key));
+  console.log('fights more than', GAP, 'points too hard:', todo.length);
+  const capCopies = id=> G.maxCopiesForRarity(defs[id].rarity);
+  for(const f of todo){
+    const t0 = Date.now(), b = rowOfBefore(f), band = fightBand(f), want = band.t * 100, lo = band.lo * 100, hi = band.hi * 100, AIM = Math.min(4, (hi - lo) / 2 - 1);
+    const off = w=> Math.abs(w - want), good = w=> off(w) <= AIM && w >= lo && w <= hi, deck0 = Object.assign({}, f.n.deck), size = deckSize(deck0), n0 = Object.keys(deck0).length;
+    let leaders = []; try{ leaders = G.skirmishLeadersOf(f.n, f.map) || []; }catch(e){}
+    const kept = {}; Object.keys(deck0).forEach(id=>{ if(leaders.includes(id) || firstClearOf(f).has(id) || id === f.n.showcase || KEEP.has(id)) kept[id] = deck0[id]; });
+    const cmap = contribFor(f.map) || (f.m.sub ? contribFor(f.m.parent) : null);
+    const str = id=> cmap && cmap[id] != null ? cmap[id] : (strengthOf(id) - 50) / 1000; // the card pass's scale only where the map has no measure
+    const U = K14.uniqueOf(f.map), nonUnique = id=> !U.has(id) && !leaders.includes(id);
+    const pool = [...strictPoolOf(f)].filter(id=>{ const c = defs[id]; return c && !c.token && !c.test && c.kind !== 'baby' && !/^egg-/.test(id) && !(c.effects || {}).leader && playableCard(c)
+      && G.roadRarityOk(c.rarity, f.mapNo, f.kind, f.map) && !otherFightsReward(f, id) && !kept[id]; }).sort((x, y)=> str(x) - str(y));
+    const dMin = Math.min(5, n0), dMax = f.kind === 'skirmish' ? (n0 >= 7 ? n0 : 6) : Math.max(8, n0);
+    const legal = (d, k14)=>{ const ids = Object.keys(d); if(ids.length < dMin || ids.length > dMax || deckSize(d) !== size) return false;
+      if(ids.some(id=> d[id] > capCopies(id))) return false;
+      try{ if(BB_RANK && BB_RANK.deckRankBlock && ids.some(id=> BB_RANK.deckRankBlock(Object.assign({}, d, {[id]: d[id] - 1}), id, defs, leaders))) return false; }catch(e){}
+      return !k14 || K14.violations(f, d).length <= K14.violations(f, deck0).length; };
+    const pred = d=> Object.entries(d).reduce((t, [id, k])=> t + k * str(id), 0);
+    const rng = E.mulberry32(H32(f.map + ':' + f.key));
+    // one sampled deck: the kept cards, then cards drawn around a strength quantile q, their copies spread at random up to their caps
+    const sample = (q, k14)=>{ const d = Object.assign({}, kept), nPick = dMin + Math.floor(rng() * (dMax - dMin + 1)) - Object.keys(d).length; if(nPick < 0 || !pool.length) return null;
+      const w = pool.map((id, i)=> Math.exp(-Math.pow(i / Math.max(1, pool.length - 1) - q, 2) / 0.04) * (0.5 + rng())), picked = [];
+      for(let j = 0; j < nPick; j++){ let tot = 0, r; w.forEach((x, i)=>{ if(!picked.includes(i)) tot += x; }); r = rng() * tot;
+        for(let i = 0; i < pool.length; i++){ if(picked.includes(i)) continue; r -= w[i]; if(r <= 0){ picked.push(i); break; } } }
+      const ids = picked.map(i=> pool[i]); if(!ids.length && deckSize(d) !== size) return null;
+      const capOf = id=> k14 && nonUnique(id) ? 1 : capCopies(id); ids.forEach(id=> d[id] = 1);
+      let room = size - deckSize(d), guard = 0; if(room < 0) return null;
+      while(room > 0 && guard++ < 200){ const open = ids.filter(id=> d[id] < capOf(id)); if(!open.length) return null; const id = open[Math.floor(rng() * open.length)]; d[id]++; room--; }
+      if(k14){ const tot = Object.keys(d).filter(nonUnique).reduce((t, id)=> t + d[id], 0); if(tot > 6 && tot > Object.keys(deck0).filter(nonUnique).reduce((t, id)=> t + deck0[id], 0)) return null; }
+      return legal(d, k14) ? d : null; };
+    const pickSet = k14=>{ const seen = new Set(), out = []; for(let i = 0; i < 1500 && out.length < 600; i++){ const d = sample(rng(), k14); if(!d) continue; const key = JSON.stringify(Object.keys(d).sort().map(id=> [id, d[id]])); if(seen.has(key)) continue; seen.add(key); out.push({d, p: pred(d)}); }
+      return out.sort((x, y)=> x.p - y.p); };
+    const T = (d, what)=> Object.assign(measure(f, Object.assign({}, f.n, {deck: d}), N, TUNE_SEED), {what});
+    const trail = [], start = T(deck0, 'start'); trail.push({what: 'start', win: start.win, p: Math.round(pred(deck0) * 1000) / 1000});
+    let best = {d: deck0, r: start};
+    const keepBest = (d, r)=>{ trail.push({what: r.what, win: r.win, p: Math.round(pred(d) * 1000) / 1000, deck: d}); if(off(r.win) < off(best.r.win)) best = {d, r}; };
+    const cands = pickSet(true).filter(c=> c.p < pred(deck0) + 1e-9 || start.win > want);
+    let k14Blocks = null, weakest = null;
+    if(!cands.length && !good(start.win)){ // no deck of the list fills the fight under K14 (a side map's list is mostly not map-unique): what would it reach without K14?
+      const free = pickSet(false); if(free.length){ const r = T(free[0].d, 'weakest without K14 (no K14-legal deck)'); trail.push({what: r.what, win: r.win, p: Math.round(free[0].p * 1000) / 1000, deck: free[0].d});
+        k14Blocks = {win: r.win, reaches: r.win >= lo, deck: free[0].d, noLegalDeck: true}; } }
+    if(cands.length && !good(start.win)){
+      const easy = start.win > want; let a = 0, z = cands.length - 1;
+      if(!easy){ // too hard: the weakest legal deck first (is the band reachable at all?), then bisect between it and the current deck
+        weakest = T(cands[0].d, 'weakest legal'); keepBest(cands[0].d, weakest);
+        if(weakest.win < want - AIM){ // still too hard with the weakest legal deck: would the band be reachable without K14?
+          const free = pickSet(false); if(free.length && free[0].p < cands[0].p - 1e-9){ const r = T(free[0].d, 'weakest without K14'); trail.push({what: r.what, win: r.win, p: Math.round(free[0].p * 1000) / 1000, deck: free[0].d});
+            k14Blocks = {win: r.win, reaches: r.win >= lo, deck: free[0].d}; }
+        } else { z = cands.length - 1; a = 0; let it = 0;
+          while(z - a > 1 && it++ < 6 && !good(best.r.win)){ const mid = Math.floor((a + z) / 2), r = T(cands[mid].d, 'bisect ' + mid + '/' + cands.length); keepBest(cands[mid].d, r);
+            if(r.win > want) a = mid; else z = mid; } }
+      }
+      // one-card steps around the best deck: its strongest movable card for a weaker list card (too hard) or the reverse (too easy)
+      for(let step = 0; step < 3 && !good(best.r.win); step++){
+        const tooHard = best.r.win < want, d = best.d, movable = Object.keys(d).filter(id=> !kept[id]).sort((x, y)=> tooHard ? str(y) - str(x) : str(x) - str(y)).slice(0, 2);
+        const ins = pool.filter(id=> !d[id]).sort((x, y)=> tooHard ? str(x) - str(y) : str(y) - str(x)).slice(0, 3); let stepBest = null;
+        for(const out of movable) for(const inn of ins){ const nd = Object.assign({}, d), k = nd[out]; delete nd[out]; const cap = nonUnique(inn) ? 1 : capCopies(inn); nd[inn] = Math.min(k, cap);
+          let room = size - deckSize(nd); for(const id of Object.keys(nd).filter(x=> !kept[x]).sort((x, y)=> tooHard ? str(x) - str(y) : str(y) - str(x))){ if(room <= 0) break; const c = nonUnique(id) ? 1 : capCopies(id), add = Math.min(room, c - nd[id]); if(add > 0){ nd[id] += add; room -= add; } }
+          if(room !== 0 || !legal(nd, true)) continue; const r = T(nd, `step: ${out} -> ${inn}`); trail.push({what: r.what, win: r.win, p: Math.round(pred(nd) * 1000) / 1000});
+          if(!stepBest || off(r.win) < off(stepBest.r.win)) stepBest = {d: nd, r}; if(good(r.win)) break; }
+        if(!stepBest || off(stepBest.r.win) > off(best.r.win) - 2) break; best = stepBest;
+      }
+    }
+    const changed = best.d !== deck0 && off(best.r.win) <= off(start.win) - 2;
+    const row = Object.assign(rowOf(f, {}), {before: b.win, target: want, lo, hi, role: band.role, ms: Date.now() - t0, tool: 'weak', start: start.win, contrib: cmap ? CTAG : 'strengthOf',
+      pool: pool.length, candidates: cands.length, kept, deck: changed ? best.d : null, after: changed ? best.r : start, good: good(best.r.win), weakest: weakest && weakest.win, k14Blocks, trail});
+    fs.appendFileSync(OUT, JSON.stringify(row) + '\n');
+    console.log(f.code, 'before', b.win, 'tune start', start.win, '-> target', Math.round(want), ':', row.after.win, row.good ? 'green' : 'OFF', 'weakest', weakest && weakest.win, k14Blocks ? 'K14-free ' + k14Blocks.win : '', Math.round((Date.now() - t0) / 1000) + 's');
+  }
 } else if(CMD === 'snapshot'){
   // node tools/skirmish_pass.js snapshot --out=road-curve-nodes-after (2026-10-19, R2): every fight's CPU deck, overrides and bramble as
   // the game builds it, to docs/balance/<out>.json (tools/road_curve_xlsx.py diffs two of them for "what changed")

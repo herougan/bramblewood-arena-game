@@ -24859,7 +24859,7 @@ function findConquestNode(mapId, nodeKey){
 // map's row) and a link #pro=<key> (e.g. #pro=3-PRO-1). Owner calls PRO-1 (reveal them after a map's boss; default No) and PRO-2 (a
 // cosmetic flag for a win; default none).
 const PRO_SKIRMISHES = __PRO_SKIRMISHES__;
-const PRO_KEY_RE = /^\d+(?:-[A-Z])?-(?:B?PRO-\d+|REF|SK)$/; // 2026-10-31 (UI10): + the map's one skirmish, N-SK // 2026-10-25 (package PREF): + a map's X-REF fight (N-REF, N-L-REF)
+const PRO_KEY_RE = /^\d+(?:-[A-Z])?-(?:B?PRO-\d+|REF|SK|WK)$/; // 2026-11-02 (BAL11): + the map's weak skirmish, N-WK // 2026-10-31 (UI10): + the map's one skirmish, N-SK // 2026-10-25 (package PREF): + a map's X-REF fight (N-REF, N-L-REF)
 const XREF_KEY_RE = /^\d+(?:-[A-Z])?-REF$/; // 2026-10-25 (package PL2, PRO-UI): + the BPRO fights (N-BPRO-k); (PRO3) + a side map's own, N-L-PRO-k (e.g. 2-B-PRO-1)
 // both kinds of a map's entry, PRO first (2026-10-25, PL2)
 // 2026-10-31 (package UI10, owner EE2): PRO and BPRO fights are ONE skirmish per map ("<N>-SK"): you play your deck or a reference deck, the enemy is a
@@ -24867,12 +24867,19 @@ const XREF_KEY_RE = /^\d+(?:-[A-Z])?-REF$/; // 2026-10-25 (package PL2, PRO-UI):
 // draws swaps one card for a SPECIAL card of the map's list. The decks come from skirmDecksOf (the one place to point at the owner's rebuilt decks later).
 const SKIRM_SPECIAL_ODDS = 0.25;
 function skirmDecksOf(ent){ const b = (ent && ent.bpro) || []; return b.length ? b : ((ent && ent.pro) || []); } // later: the decks rebuilt from the owner's new map lists
+// 2026-11-02 (package BAL11, owner 14:26: "for every N-SK, there is a N-WK (weak)"): a map with WPRO decks (the weakest legal decks of its list,
+// tools/opt/wpro_2026_11_02.js) gets a second skirmish, "<N>-WK", beside N-SK: the same flow (a random draw of the map's weak decks, your deck or a
+// reference set, free, no rewards), an easy practice fight. No SPECIAL card is swapped into a weak draw.
+function skirmWeakDecksOf(ent){ return (ent && ent.wpro) || []; }
 function proEntriesOf(ent){
-  if(!ent) return []; let e = ent._skirm; if(e !== undefined) return e ? [e] : [];
-  const list = skirmDecksOf(ent); if(!list.length){ Object.defineProperty(ent, '_skirm', {value: null, enumerable: false, writable: true}); return []; }
-  const key = String(list[0].id).replace(/-B?PRO-\d+$/, '') + '-SK';
-  e = {id: key, name: key, level: list[0].level != null ? list[0].level : 1, leaders: [], deck: Object.assign({}, list[0].deck || {}), skirm: true, decks: list};
-  Object.defineProperty(ent, '_skirm', {value: e, enumerable: false, writable: true}); return [e];
+  if(!ent) return []; let e = ent._skirm; if(e !== undefined) return e || [];
+  const list = skirmDecksOf(ent), out = [];
+  if(list.length){ const key = String(list[0].id).replace(/-B?PRO-\d+$/, '') + '-SK';
+    out.push({id: key, name: key, level: list[0].level != null ? list[0].level : 1, leaders: [], deck: Object.assign({}, list[0].deck || {}), skirm: true, decks: list}); }
+  const weak = skirmWeakDecksOf(ent);
+  if(weak.length){ const key = String(weak[0].id).replace(/-WPRO-\d+$/, '') + '-WK'; // BAL11: N-WK
+    out.push({id: key, name: key, level: weak[0].level != null ? weak[0].level : 1, leaders: [], deck: Object.assign({}, weak[0].deck || {}), skirm: true, weak: true, decks: weak}); }
+  Object.defineProperty(ent, '_skirm', {value: out.length ? out : null, enumerable: false, writable: true}); return out;
 }
 // the enemy for one fight: a random deck of the map; with chance SKIRM_SPECIAL_ODDS one card of it becomes a SPECIAL card of the map's list (same size, no card past the copy cap)
 function drawSkirmEnemy(mapId, entry, rnd){
@@ -24881,7 +24888,7 @@ function drawSkirmEnemy(mapId, entry, rnd){
   try{
     const defs = getCardDefs(), cap = Math.max(1, ((PRO_SKIRMISHES && PRO_SKIRMISHES.rule) || {}).maxCopies || 4);
     const pool = (mpEntry(mpTopOf(mapId)).special || []).filter(id=> defs[id] && (deck[id] || 0) < cap && !(defs[id].effects && defs[id].effects.leader));
-    if(pool.length && rnd() < SKIRM_SPECIAL_ODDS){
+    if(pool.length && !(entry && entry.weak) && rnd() < SKIRM_SPECIAL_ODDS){ // BAL11 (2026-11-02): never in a weak draw (N-WK)
       const copies = Object.keys(deck).flatMap(id=> Array(deck[id] | 0).fill(id)); // one random copy out, so a card with more copies is likelier to be the one swapped
       if(copies.length){ const out = copies[Math.floor(rnd() * copies.length)], sp = pool[Math.floor(rnd() * pool.length)];
         deck[out]--; if(deck[out] <= 0) delete deck[out]; deck[sp] = (deck[sp] || 0) + 1; special = sp; } }
@@ -24943,7 +24950,7 @@ function proNodeOf(mapId, e, ent){
   let lv = e.level != null ? e.level : 1; { const late = proLateSideLevel(mapId); if(late != null && late > lv) lv = late; } // ENG10 (2026-10-26, PREF-3): a late side map's PRO level
   const pend = e.skirm && skirmPending && skirmPending.key === e.id ? skirmPending.pick
     : (e.skirm && skirmDraw && skirmDraw.key === e.id ? skirmDraw.enemy : null); // UI10: the deck drawn for this fight; UI12 (GG10): else the preview's draw
-  n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, skirm: !!e.skirm, deck: Object.assign({}, pend ? pend.deck : (e.deck || {})), enemyLevel: lv,
+  n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: e.weak ? '🌱' : '🏆', pro: true, skirm: !!e.skirm, weak: !!e.weak /* BAL11: N-WK */, deck: Object.assign({}, pend ? pend.deck : (e.deck || {})), enemyLevel: lv,
     leaders: (e.leaders || []).slice(), ai, rules, requires: [], flavor: ''};
   if((e.leaders || [])[0]) n.showcase = e.leaders[0];
   if(e.skirm){ const sc = skirmMapShowcase(mapId); if(sc) n.mapShowcase = sc; } // 2026-10-31 (UI11, UI10 leftover): the panel's big card is the map's showcase
@@ -25009,7 +25016,7 @@ function xrefPanelHTML(map, node){
   const sp = en && en.special && defs[en.special] ? ` · ${escapeHtml(TX('ui.ui12-skirm-special', {name: defs[en.special].name}))}` : '';
   const pickHTML = adminModeEnabled ? ` <select data-skirm-you aria-label="${escapeAttr(TX('ui.pref-xref-you'))}"><option value="my" ${cur === 'my' ? 'selected' : ''}>${escapeHtml(TX('ui.ui10-my-deck'))}</option>${ids.map(sid=> `<option value="${escapeAttr(sid)}" ${sid === cur ? 'selected' : ''}>${escapeHtml(refSetLabelTX(sid))}</option>`).join('')}</select>` : '';
   return `<div class="pref-xref skirm-you ui12-skirm" style="margin:6px 0;">
-    <p class="panel-sub skirm-enemy ui12-skirm-row" data-skirm-side="enemy">${escapeHtml(TX('ui.pref-xref-vs'))} ${en ? `<b class="ui12-skirm-id">${escapeHtml(en.id)}</b> ${skirmRankHTML(en.rank, en.of)}` : ''} <span>${escapeHtml(TX('ui.ui10-skirm-enemy'))}</span>${sp}</p>
+    <p class="panel-sub skirm-enemy ui12-skirm-row" data-skirm-side="enemy">${escapeHtml(TX('ui.pref-xref-vs'))} ${en ? `<b class="ui12-skirm-id">${escapeHtml(en.id)}</b> ${skirmRankHTML(en.rank, en.of)}` : ''} <span>${escapeHtml(TX(node.weak ? 'ui.bal11-wk-enemy' : 'ui.ui10-skirm-enemy'))}</span>${sp}</p>
     <p class="panel-sub ui12-skirm-row" data-skirm-side="you"><label>${escapeHtml(TX('ui.pref-xref-you'))}${pickHTML}</label> ${yo ? `<b class="ui12-skirm-id">${escapeHtml(yo.label)}</b> ${skirmRankHTML(yo.rank, yo.of)}` : ''}</p>
   </div>`; // 2026-11-02 (package UI14, owner JJ11: "N-SK: no 'New draw' button; every fight draws both decks at random"): the 🎲 New draw button is gone; the
   // draw shown is the one the Fight button plays, and every fight (Fight, Play again) starts from a fresh draw of both decks (startProFight clears skirmDraw)
@@ -25079,7 +25086,7 @@ function proRowHTML(mapId, e, node, opts){
   const vs = e.h2h ? TX('ui.pro-vs1', {elo: (e.h2h.elo >= 0 ? '+' : '') + e.h2h.elo}) : '';
   return `<div class="pro-row" data-pro-key="${escapeAttr(e.id)}"><div class="pro-row-head"><b class="pro-id">🏆 ${escapeHtml(e.id)}</b>${score ? `<span class="pro-stat">${escapeHtml(score)}</span>` : ''}${vs ? `<span class="pro-stat" title="${escapeAttr(e.h2h.p != null ? Math.round(e.h2h.p * 1000) / 10 + '% · ' + e.h2h.n : '')}">${escapeHtml(vs)}</span>` : ''}${lead ? `<span class="pro-stat">${escapeHtml(TX('ui.pro-leader', {name: lead}))}</span>` : ''}
     <span class="pro-acts"><button type="button" class="btn small primary" data-pro-start="${escapeAttr(e.id)}">▶ ${escapeHtml(TX('ui.pro-fight'))}</button>${opts && opts.compact ? '' : `<button type="button" class="btn small ghost" data-pro-copy="${escapeAttr(e.id)}" title="${escapeAttr(proLinkFor(e.id))}">🔗 ${escapeHtml(TX('ui.pro-copy-link'))}</button>`}</span></div>
-    ${opts && opts.compact ? '' : `<div class="pro-deck">${e.skirm ? escapeHtml(TX('ui.pref-xref-vs') + ' ' + TX('ui.ui10-skirm-enemy')) : proDeckLineHTML(node.deck)}</div>`}</div>`;
+    ${opts && opts.compact ? '' : `<div class="pro-deck">${e.skirm ? escapeHtml(TX('ui.pref-xref-vs') + ' ' + TX(e.weak ? 'ui.bal11-wk-enemy' : 'ui.ui10-skirm-enemy')) : proDeckLineHTML(node.deck)}</div>`}</div>`;
 }
 function proFightsAdminHTML(){
   const ents = proMapEntries(), ids = Object.keys(ents).sort((a, b)=> (ents[a].map || 0) - (ents[b].map || 0));
@@ -25098,7 +25105,7 @@ function proMapNodesHTML(map, positions){
   const ent = proMapEntries()[map.id]; if(!ent || !proEntriesOf(ent).length) return '';
   const key = mapRewardNodeKey(map), ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
   const dir = base.x > 62 ? -1 : 1, list = proEntriesOf(ent); // PL2: + the BPRO nodes
-  const xk = xrefKeyOf(map.id), all = list.map(e=> ({id: e.id, ico: '🏆', tip: TX('ui.rw6-pro-node-tip', {key: e.id})})).concat(xk ? [{id: xk, ico: '🎯', tip: TX('ui.pref-xref-node-tip', {key: xk})}] : []); // PREF (2026-10-25): + the map's X-REF node
+  const xk = xrefKeyOf(map.id), all = list.map(e=> ({id: e.id, ico: e.weak ? '🌱' : '🏆', tip: TX(e.weak ? 'ui.bal11-wk-node-tip' : 'ui.rw6-pro-node-tip', {key: e.id})})) /* BAL11 (2026-11-02): + N-WK */.concat(xk ? [{id: xk, ico: '🎯', tip: TX('ui.pref-xref-node-tip', {key: xk})}] : []); // PREF (2026-10-25): + the map's X-REF node
   // 2026-10-25 (package FIX3, found by e2e/rw6 at 390): with the BPRO and X-REF nodes a map has up to 9 of them; in one line they ran past the
   // map's edge and piled up on the clamp. They wrap onto a second line (and a third) when the first is full, inside 8-92% of the map.
   const room = dir > 0 ? 92 - (base.x + 9) : (base.x - 9) - 8, perRow = Math.max(3, Math.floor(Math.max(0, room) / 8) + 1), up = base.y > 70 ? -1 : 1;

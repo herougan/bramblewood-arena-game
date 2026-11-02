@@ -5,9 +5,9 @@
  "counts": {
   "inPlay": 469,
   "outOfPlay": 347,
-  "inPlayPushed": 0,
+  "inPlayPushed": 1,
   "outPushed": 6,
-  "outsideBefore": 147,
+  "outsideBefore": 146,
   "outsideBeforeIds": [
    "war-hound (out of play)",
    "armored-mastiff (out of play)",
@@ -26,7 +26,6 @@
    "hollow-oath-keeper (out of play)",
    "tundra-musk-ox (out of play)",
    "ice-crevasse-wolf (out of play)",
-   "moray-ambusher (out of play)",
    "alpine-avalanche (out of play)",
    "rockslide-ram (out of play)",
    "peak-condor",
@@ -35,7 +34,6 @@
    "trickster-fox (out of play)",
    "sandstorm-roc (out of play)",
    "porcupine-roller (out of play)",
-   "raccoon-nightcrew (out of play)",
    "pack-rat-looter (out of play)",
    "basalt-boar (out of play)",
    "coral-current-eel (out of play)",
@@ -68,6 +66,7 @@
    "tempering-stone (out of play)",
    "tailwind (out of play)",
    "bramble-gauntlet (out of play)",
+   "conch-herald",
    "quarry-troll (out of play)",
    "pall-wraith (out of play)",
    "abyssal-ink (out of play)",
@@ -159,6 +158,43 @@
   ]
  },
  "changes": [
+  {
+   "id": "glass-octopus",
+   "name": "Glass Octopus",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "4/9",
+   "old": {
+    "use": 0.99,
+    "N": 29.04,
+    "x1": 28.7,
+    "S": 7.7,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.1,
+    "N": 29.04,
+    "x1": 31.94,
+    "x2": 65.92,
+    "N2": 147.11,
+    "S": 10.94,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 0,
+   "attack": 3,
+   "health": 9,
+   "to": "3/9",
+   "plainOk": true,
+   "after": {
+    "use": 1,
+    "N": 29.04,
+    "x1": 28.94,
+    "x2": 56.92,
+    "cap2": 0.39
+   }
+  },
   {
    "id": "moonlit-hare",
    "name": "Moonlit Hare",

@@ -1,5 +1,6 @@
-cards measured: 469 in play, 347 out of play; pushed out by the new prices: 0 in play, 6 out of play; outside before (left): 147
-changes: 0 in play (0 trims, 0 lifts, 0 named), 6 out of play; held 0
+cards measured: 469 in play, 347 out of play; pushed out by the new prices: 1 in play, 6 out of play; outside before (left): 146
+changes: 1 in play (1 trims, 0 lifts, 0 named), 6 out of play; held 0
+  IN  trim   glass-octopus                rare          4/9 -> 3/9    use 0.99 -> 1.1 -> 1  S 7.7 -> 10.94
   out lift   moonlit-hare                 uncommon      1/1 -> 3/1    use 0.67 -> 0.36 -> 0.7  S 8 -> 2.46
   out trim   courier-pigeon               common        2/2 -> 1/2    use 0.91 -> 1.1 -> 0.83  S 2.41 -> 4.86
   out trim   baby-horned-capybara         common        2/8 -> 2/7    use 1 -> 1.01 -> 0.95  S 2.68 -> 2.86

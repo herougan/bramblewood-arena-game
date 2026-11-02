@@ -9,101 +9,95 @@
    "opens": 0,
    "cap": "common",
    "anchor": [
-    "ant-hill",
     "ant-scout",
     "beaver-lumberjack",
     "bee-forager",
-    "bee-knight",
     "bee-sentry",
+    "chipmunk-forager",
     "chipmunk-skirmisher",
     "cottontail",
     "crossed-eyes",
+    "duck-paddler",
+    "duckling",
+    "earthworm",
+    "honey-bee",
     "house-cat",
-    "owl-sentinel",
-    "terrier-pup"
+    "silver-minnow",
+    "soldier-ant",
+    "terrier-pup",
+    "worker-ant"
    ],
    "anchorMin": 10,
    "anchorDropped": [],
    "heldTheme": [
-    "forager-ant",
-    "worker-ant",
+    "bee-knight",
     "acorn-chipmunk",
+    "forager-ant",
+    "pond-duck",
     "burrow-rabbit",
-    "harvest-mouse"
+    "cobalt-talon-fledgling"
    ],
    "heldStrong": [
+    "river-carp",
+    "meadow-rabbit",
     "pond-trout",
     "otter-paddler",
     "meerkat-wayfarer",
-    "meadow-frog",
-    "crimson-wing-recruit",
-    "greyplume-fledgling"
+    "meadow-frog"
    ],
    "pool": [
     "acorn-chipmunk",
-    "ant-hill",
     "ant-scout",
     "beaver-lumberjack",
     "bee-forager",
     "bee-knight",
     "bee-sentry",
     "burrow-rabbit",
+    "chipmunk-forager",
     "chipmunk-skirmisher",
+    "cobalt-talon-fledgling",
     "cottontail",
-    "crimson-wing-recruit",
     "crossed-eyes",
+    "duck-paddler",
+    "duckling",
+    "earthworm",
     "forager-ant",
-    "greyplume-fledgling",
-    "harvest-mouse",
+    "honey-bee",
     "house-cat",
     "meadow-frog",
+    "meadow-rabbit",
     "meerkat-wayfarer",
     "otter-paddler",
-    "owl-sentinel",
+    "pond-duck",
     "pond-trout",
+    "river-carp",
+    "silver-minnow",
+    "soldier-ant",
     "terrier-pup",
     "worker-ant"
    ],
    "fightOnly": [
-    "beetle-grunt",
-    "chipmunk-forager",
-    "cobalt-talon-fledgling",
-    "duck-paddler",
-    "duckling",
     "feral-tomcat",
-    "fox-kit",
-    "garden-snail",
-    "honey-bee",
-    "meadow-rabbit",
-    "otter-kit",
-    "pond-duck",
-    "river-carp",
-    "silver-minnow"
+    "fox-kit"
    ],
    "focuses": [
-    "big",
-    "swarm",
     "family:flying",
     "open"
    ],
    "focusesAvailable": [
     "open",
-    "big",
     "economy",
-    "swarm",
     "family:flying"
    ],
    "facts": {
-    "listSize": 12,
-    "anchor": 12,
+    "listSize": 17,
+    "anchor": 17,
     "cost": {
      "min": 0,
-     "max": 2,
-     "avg": 0.25,
+     "max": 0,
+     "avg": 0,
      "curve": {
-      "0": 10,
-      "1": 1,
-      "2": 1
+      "0": 17
      }
     },
     "generators": [
@@ -111,19 +105,10 @@
     ],
     "stoneMetal": [],
     "families": [
-     "flying 6"
+     "flying 5"
     ],
-    "high": [
-     "ant-hill"
-    ]
+    "high": []
    },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.4236,
-     "why": "under 64.2%"
-    }
-   ],
    "result": {
     "file": "docs/balance/deck1/bench-deck-map00-m1-2026-10-30.json",
     "pro": [
@@ -777,16 +762,17 @@
     "fiddler-crab-swarm",
     "grey-seal-bull",
     "gull-thief",
+    "old-shell",
     "open-ocean-hermit-crab",
     "oystercatcher",
     "pincushion-urchin",
+    "rock-pool-starfish",
     "sea-turtle-elder",
-    "tide-pool-crab",
     "tidepool-trapper-crab"
    ],
    "anchorMin": 10,
    "anchorDropped": [
-    "old-shell: heroic is over the map's rarity cap (uncommon)"
+    "dolphin-knight: rare is over the map's rarity cap (uncommon)"
    ],
    "heldTheme": [
     "woodcock-lookout",
@@ -797,14 +783,15 @@
     "garden-snail"
    ],
    "heldStrong": [
+    "alley-cat",
     "bee-forager",
     "duck-paddler",
     "river-carp",
     "terrier-pup",
-    "burrow-rabbit",
-    "dormouse"
+    "burrow-rabbit"
    ],
    "pool": [
+    "alley-cat",
     "badger-lumberjack",
     "beaver-lumberjack",
     "bee-forager",
@@ -814,7 +801,6 @@
     "conch-crawler",
     "conch-herald",
     "cricket-drummer",
-    "dormouse",
     "driftwood-crab",
     "duck-paddler",
     "ember-tetra",
@@ -823,19 +809,20 @@
     "garden-snail",
     "grey-seal-bull",
     "gull-thief",
+    "old-shell",
     "open-ocean-hermit-crab",
     "oystercatcher",
     "pincushion-urchin",
     "river-carp",
     "robin-redbreast",
+    "rock-pool-starfish",
     "sea-turtle-elder",
     "terrier-pup",
-    "tide-pool-crab",
     "tidepool-trapper-crab",
     "woodcock-lookout"
    ],
    "fightOnly": [
-    "rock-pool-starfish"
+    "tide-pool-crab"
    ],
    "focuses": [
     "economy",
@@ -852,15 +839,15 @@
     "family:armor"
    ],
    "facts": {
-    "listSize": 13,
-    "anchor": 16,
+    "listSize": 14,
+    "anchor": 17,
     "cost": {
      "min": 0,
      "max": 2,
-     "avg": 0.38,
+     "avg": 0.41,
      "curve": {
       "0": 11,
-      "1": 4,
+      "1": 5,
       "2": 1
      }
     },
@@ -879,7 +866,6 @@
      "sea-turtle-elder"
     ]
    },
-   "leftOut": [],
    "result": {
     "file": "docs/balance/deck1/bench-deck-map02-mb-2026-10-30.json",
     "pro": [
@@ -1879,8 +1865,9 @@
    "cap": "rare",
    "anchor": [
     "alligator-gar",
+    "anhinga-spearbird",
     "bog-leech",
-    "caiman-hatchling",
+    "box-turtle",
     "constrictor-coil",
     "crocodile-ambusher",
     "cypress-root-lurker",
@@ -1889,20 +1876,18 @@
     "grass-viper",
     "muskrat-reedgatherer",
     "nutria-reedcutter",
+    "old-snapjaw",
     "snapper-hatchling",
     "snapstick-turtle",
     "swamp-alligator",
     "venomlord-serpent"
    ],
    "anchorMin": 10,
-   "anchorDropped": [
-    "old-snapjaw: heroic is over the map's rarity cap (rare)"
-   ],
+   "anchorDropped": [],
    "heldTheme": [
-    "box-turtle",
     "muskrat-lodgekeeper",
-    "water-vole",
     "dam-keeper-beaver",
+    "water-vole",
     "river-mink",
     "guppy"
    ],
@@ -1917,10 +1902,10 @@
    "pool": [
     "alley-cat",
     "alligator-gar",
+    "anhinga-spearbird",
     "bee-forager",
     "bog-leech",
     "box-turtle",
-    "caiman-hatchling",
     "constrictor-coil",
     "crocodile-ambusher",
     "cypress-root-lurker",
@@ -1934,6 +1919,7 @@
     "muskrat-lodgekeeper",
     "muskrat-reedgatherer",
     "nutria-reedcutter",
+    "old-snapjaw",
     "otter-centurion",
     "pyrenean-desman",
     "river-mink",
@@ -1944,9 +1930,7 @@
     "water-vole"
    ],
    "fightOnly": [
-    "grass-snake",
-    "moat-snapper",
-    "raft-spider"
+    "caiman-hatchling"
    ],
    "focuses": [
     "economy",
@@ -1963,16 +1947,16 @@
     "family:bleed"
    ],
    "facts": {
-    "listSize": 13,
-    "anchor": 15,
+    "listSize": 14,
+    "anchor": 17,
     "cost": {
      "min": 0,
      "max": 3,
-     "avg": 0.87,
+     "avg": 0.94,
      "curve": {
       "0": 7,
-      "1": 4,
-      "2": 3,
+      "1": 5,
+      "2": 4,
       "3": 1
      }
     },
@@ -1983,16 +1967,16 @@
     "stoneMetal": [],
     "families": [
      "tide 9",
-     "bleed 3"
+     "bleed 4"
     ],
     "high": [
      "constrictor-coil",
      "crocodile-ambusher",
+     "old-snapjaw",
      "swamp-alligator",
      "venomlord-serpent"
     ]
    },
-   "leftOut": [],
    "result": {
     "file": "docs/balance/deck1/bench-deck-map05-mw-2026-10-30.json",
     "pro": [
@@ -2307,11 +2291,11 @@
    "anchor": [
     "adder-ambusher",
     "alligator-gar",
-    "bogfire-newt",
     "booming-bittern",
     "camouflage-frog",
-    "cane-toad",
     "constrictor-coil",
+    "heron-hag",
+    "lamprey",
     "marsh-harrier",
     "marsh-wisp",
     "newt-doctor",
@@ -2321,16 +2305,14 @@
     "venomlord-serpent"
    ],
    "anchorMin": 10,
-   "anchorDropped": [
-    "heron-hag: heroic is over the map's rarity cap (rare)"
-   ],
+   "anchorDropped": [],
    "heldTheme": [
     "anhinga-spearbird",
     "fire-ant-raft",
-    "caiman-hatchling",
     "grass-snake",
     "raft-spider",
-    "meadow-frog"
+    "meadow-frog",
+    "fen-mink"
    ],
    "heldStrong": [
     "otter-centurion",
@@ -2346,17 +2328,17 @@
     "alligator-gar",
     "anhinga-spearbird",
     "bee-forager",
-    "bogfire-newt",
     "booming-bittern",
     "box-turtle",
-    "caiman-hatchling",
     "camouflage-frog",
-    "cane-toad",
     "constrictor-coil",
     "driftwood-crab",
+    "fen-mink",
     "fire-ant-raft",
     "gannet-nestweaver",
     "grass-snake",
+    "heron-hag",
+    "lamprey",
     "marsh-harrier",
     "marsh-wisp",
     "meadow-frog",
@@ -2369,7 +2351,8 @@
     "venomlord-serpent"
    ],
    "fightOnly": [
-    "mire-witch-heron"
+    "bogfire-newt",
+    "cane-toad"
    ],
    "focuses": [
     "economy",
@@ -2382,20 +2365,20 @@
     "big",
     "economy",
     "swarm",
-    "family:poison",
-    "family:tide"
+    "family:flying",
+    "family:poison"
    ],
    "facts": {
-    "listSize": 13,
+    "listSize": 12,
     "anchor": 14,
     "cost": {
      "min": 0,
      "max": 3,
      "avg": 0.93,
      "curve": {
-      "0": 5,
-      "1": 6,
-      "2": 2,
+      "0": 4,
+      "1": 8,
+      "2": 1,
       "3": 1
      }
     },
@@ -2404,22 +2387,14 @@
     ],
     "stoneMetal": [],
     "families": [
-     "poison 6",
-     "tide 5"
+     "flying 5",
+     "poison 5"
     ],
     "high": [
-     "cane-toad",
      "constrictor-coil",
      "venomlord-serpent"
     ]
    },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.625,
-     "why": "under 74.4%"
-    }
-   ],
    "result": {
     "file": "docs/balance/deck1/bench-deck-map06-m8-2026-10-30.json",
     "pro": [
@@ -2506,12 +2481,13 @@
    "cap": "rare",
    "anchor": [
     "adder-ambusher",
-    "ant-warrior",
     "bogfire-newt",
     "bombardier-beetle",
     "cane-toad",
     "compost-grub",
+    "corpse-flower-beetle",
     "dung-beetle",
+    "earthworm",
     "fungal-colossus",
     "garden-snail",
     "hawthorn-shieldbug",
@@ -2519,18 +2495,20 @@
     "owl-nightwatch",
     "planarian-splitter",
     "sleepless-shrew",
+    "slow-worm",
     "truffle-piglet",
-    "wolf-spider-mother"
+    "wolf-spider-mother",
+    "worker-ant"
    ],
    "anchorMin": 10,
    "anchorDropped": [],
    "heldTheme": [
     "fire-ant-raft",
-    "worker-ant",
     "carrion-beetle",
-    "tunnel-ant",
     "cottonmouth-matriarch",
-    "giant-water-bug"
+    "bee-forager",
+    "tunnel-ant",
+    "anaconda-coil"
    ],
    "heldStrong": [
     "otter-centurion",
@@ -2543,18 +2521,20 @@
    "pool": [
     "adder-ambusher",
     "alley-cat",
-    "ant-warrior",
+    "anaconda-coil",
+    "bee-forager",
     "bogfire-newt",
     "bombardier-beetle",
     "cane-toad",
     "carrion-beetle",
     "compost-grub",
+    "corpse-flower-beetle",
     "cottonmouth-matriarch",
     "dung-beetle",
+    "earthworm",
     "fire-ant-raft",
     "fungal-colossus",
     "garden-snail",
-    "giant-water-bug",
     "hawthorn-shieldbug",
     "leafcutter-gardener",
     "mudpuppy",
@@ -2565,14 +2545,14 @@
     "planarian-splitter",
     "raven-scout",
     "sleepless-shrew",
+    "slow-worm",
     "truffle-piglet",
     "tunnel-ant",
     "wolf-spider-mother",
     "worker-ant"
    ],
    "fightOnly": [
-    "bee-forager",
-    "honey-bee"
+    "ant-warrior"
    ],
    "focuses": [
     "economy",
@@ -2586,18 +2566,18 @@
     "economy",
     "swarm",
     "family:poison",
-    "family:armor"
+    "family:flying"
    ],
    "facts": {
-    "listSize": 15,
-    "anchor": 16,
+    "listSize": 18,
+    "anchor": 19,
     "cost": {
      "min": 0,
      "max": 2,
-     "avg": 0.69,
+     "avg": 0.63,
      "curve": {
-      "0": 7,
-      "1": 7,
+      "0": 9,
+      "1": 8,
       "2": 2
      }
     },
@@ -2607,15 +2587,14 @@
     ],
     "stoneMetal": [],
     "families": [
-     "poison 7",
-     "armor 2"
+     "poison 6",
+     "flying 3"
     ],
     "high": [
      "cane-toad",
      "fungal-colossus"
     ]
    },
-   "leftOut": [],
    "result": {
     "file": "docs/balance/deck1/bench-deck-map07-mu-2026-10-30.json",
     "pro": [
@@ -2949,33 +2928,32 @@
    "opens": 8,
    "cap": "rare",
    "anchor": [
-    "ant-warrior",
-    "badger-stonemason",
     "blind-cave-fish",
     "cave-olm",
+    "echo-matriarch",
     "echo-screecher",
+    "gallery-orb-weaver",
     "giant-cave-huntsman",
+    "grotto-lobster",
+    "hollow-belly-rat",
+    "malachite-golem",
     "octopus-tactician",
     "pelican-diver",
     "quarry-mole",
     "stalactite-golem",
     "star-nosed-mole",
     "sulfur-cinder-moth",
-    "trash-panda-trickster",
-    "vampire-bat",
-    "whip-spider"
+    "vampire-bat"
    ],
    "anchorMin": 10,
-   "anchorDropped": [
-    "echo-matriarch: heroic is over the map's rarity cap (rare)"
-   ],
+   "anchorDropped": [],
    "heldTheme": [
-    "leafcutter-gardener",
-    "mayfly-dancer",
-    "fire-ant-raft",
+    "alligator-gar",
     "raft-spider",
     "diving-bell-spider",
-    "worker-ant"
+    "puffin-diver",
+    "pincushion-urchin",
+    "rock-pool-starfish"
    ],
    "heldStrong": [
     "wolf-spider-mother",
@@ -2987,82 +2965,78 @@
    ],
    "pool": [
     "alley-cat",
-    "ant-warrior",
-    "badger-stonemason",
+    "alligator-gar",
     "blind-cave-fish",
     "cave-olm",
     "diving-bell-spider",
+    "echo-matriarch",
     "echo-screecher",
-    "fire-ant-raft",
+    "gallery-orb-weaver",
     "giant-cave-huntsman",
-    "leafcutter-gardener",
-    "mayfly-dancer",
+    "grotto-lobster",
+    "hollow-belly-rat",
+    "malachite-golem",
     "mudpuppy",
     "newt-doctor",
     "octopus-tactician",
     "otter-centurion",
     "pelican-diver",
+    "pincushion-urchin",
     "planarian-splitter",
+    "puffin-diver",
     "quarry-mole",
     "raft-spider",
+    "rock-pool-starfish",
     "stalactite-golem",
     "star-nosed-mole",
     "sulfur-cinder-moth",
-    "trash-panda-trickster",
     "vampire-bat",
-    "whip-spider",
-    "wolf-spider-mother",
-    "worker-ant"
+    "wolf-spider-mother"
    ],
    "fightOnly": [
-    "baby-bat",
-    "ghost-crayfish",
-    "millipede-hauler",
-    "nightshade-moth",
-    "subterraneaner"
+    "whip-spider"
    ],
    "focuses": [
-    "economy",
     "big",
     "swarm",
+    "family:tide",
     "open"
    ],
    "focusesAvailable": [
     "open",
     "big",
-    "economy",
+    "stone/metal",
     "swarm",
-    "family:flying",
-    "family:tide"
+    "family:tide",
+    "family:flying"
    ],
    "facts": {
     "listSize": 14,
-    "anchor": 15,
+    "anchor": 16,
     "cost": {
      "min": 0,
      "max": 2,
-     "avg": 0.73,
+     "avg": 0.94,
      "curve": {
-      "0": 6,
-      "1": 7,
-      "2": 2
+      "0": 4,
+      "1": 9,
+      "2": 3
      }
     },
-    "generators": [
-     "badger-stonemason",
-     "trash-panda-trickster"
+    "generators": [],
+    "stoneMetal": [
+     "malachite-golem (stone 1)"
     ],
-    "stoneMetal": [],
     "families": [
-     "flying 5",
-     "tide 5"
+     "tide 8",
+     "flying 6"
     ],
     "high": [
+     "malachite-golem",
      "octopus-tactician",
      "stalactite-golem"
     ]
    },
-   "leftOut": [],
    "result": {
     "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
     "pro": [
@@ -3411,69 +3385,67 @@
     "archerfish",
     "banded-sea-krait",
     "booming-bittern",
-    "caiman-hatchling",
     "crocodile-ambusher",
     "fiddler-crab-swarm",
     "fishing-cat",
+    "horseshoe-crab",
     "mangrove-kingfisher",
     "mangrove-manatee",
     "mangrove-monitor",
     "mangrove-mudskipper",
-    "minnow-skitter",
-    "mudpuppy",
+    "proboscis-monkey",
     "reef-shark",
+    "sea-turtle-elder",
     "sunbittern-strider"
    ],
    "anchorMin": 10,
    "anchorDropped": [],
    "heldTheme": [
-    "greater-siren",
     "alligator-gar",
     "great-crested-grebe",
     "shallows-fry",
-    "anhinga-spearbird",
-    "pincushion-urchin"
+    "moat-snapper",
+    "pincushion-urchin",
+    "guppy"
    ],
    "heldStrong": [
     "wolf-spider-mother",
     "otter-centurion",
     "alley-cat",
+    "mudpuppy",
     "newt-doctor",
-    "giant-cave-huntsman",
-    "vampire-bat"
+    "giant-cave-huntsman"
    ],
    "pool": [
     "alley-cat",
     "alligator-gar",
-    "anhinga-spearbird",
     "archerfish",
     "banded-sea-krait",
     "booming-bittern",
-    "caiman-hatchling",
     "crocodile-ambusher",
     "fiddler-crab-swarm",
     "fishing-cat",
     "giant-cave-huntsman",
     "great-crested-grebe",
-    "greater-siren",
+    "guppy",
+    "horseshoe-crab",
     "mangrove-kingfisher",
     "mangrove-manatee",
     "mangrove-monitor",
     "mangrove-mudskipper",
-    "minnow-skitter",
+    "moat-snapper",
     "mudpuppy",
     "newt-doctor",
     "otter-centurion",
     "pincushion-urchin",
+    "proboscis-monkey",
     "reef-shark",
+    "sea-turtle-elder",
     "shallows-fry",
     "sunbittern-strider",
-    "vampire-bat",
     "wolf-spider-mother"
    ],
-   "fightOnly": [
-    "mudflat-godwit"
-   ],
+   "fightOnly": [],
    "focuses": [
     "big",
     "swarm",
@@ -3485,7 +3457,7 @@
     "big",
     "swarm",
     "family:tide",
-    "family:heal"
+    "family:armor"
    ],
    "facts": {
     "listSize": 15,
@@ -3493,25 +3465,25 @@
     "cost": {
      "min": 0,
      "max": 2,
-     "avg": 0.8,
+     "avg": 1.07,
      "curve": {
-      "0": 5,
-      "1": 8,
-      "2": 2
+      "0": 2,
+      "1": 10,
+      "2": 3
      }
     },
     "generators": [],
     "stoneMetal": [],
     "families": [
-     "tide 10",
-     "heal 4"
+     "tide 11",
+     "armor 5"
     ],
     "high": [
      "crocodile-ambusher",
-     "reef-shark"
+     "reef-shark",
+     "sea-turtle-elder"
     ]
    },
-   "leftOut": [],
    "result": {
     "file": "docs/balance/deck1/bench-deck-map09-mk-2026-10-30.json",
     "pro": [
@@ -5569,11 +5541,11 @@
     "cone-cutter-squirrel",
     "dhole-matriarch",
     "dhole-runner",
-    "fawn-scout",
-    "frost-hare-sprinter",
+    "lunar-howler",
     "pinecone-sapper",
     "redwood-woodpecker",
     "snowshoe-hare",
+    "swift-fox",
     "taiga-lynx",
     "wolf-pack-runner",
     "woodland-caribou"
@@ -5584,8 +5556,8 @@
     "mountain-hare",
     "muntjac-barker",
     "margay",
-    "swamp-rabbit",
     "woodpecker-sapper",
+    "cunning-vixen",
     "alley-cat"
    ],
    "heldStrong": [
@@ -5603,13 +5575,13 @@
     "boreal-elk",
     "bramblewood-lynx",
     "cone-cutter-squirrel",
+    "cunning-vixen",
     "dhole-matriarch",
     "dhole-runner",
     "eagle-owl-quartermaster",
-    "fawn-scout",
-    "frost-hare-sprinter",
     "grave-grin-hyena",
     "ibex-rockcaller",
+    "lunar-howler",
     "margay",
     "mountain-hare",
     "muntjac-barker",
@@ -5618,7 +5590,7 @@
     "snowshoe-hare",
     "squires-mount",
     "stoat-cutthroat",
-    "swamp-rabbit",
+    "swift-fox",
     "taiga-lynx",
     "wolf-pack-runner",
     "wolf-spider-mother",
@@ -5626,7 +5598,7 @@
     "woodpecker-sapper"
    ],
    "fightOnly": [
-    "trickster-fox"
+    "frost-hare-sprinter"
    ],
    "focuses": [
     "economy",
@@ -5648,10 +5620,10 @@
     "cost": {
      "min": 0,
      "max": 2,
-     "avg": 0.93,
+     "avg": 1.07,
      "curve": {
-      "0": 5,
-      "1": 6,
+      "0": 3,
+      "1": 8,
       "2": 4
      }
     },
@@ -5661,7 +5633,7 @@
     ],
     "stoneMetal": [],
     "families": [
-     "evasion 6",
+     "evasion 5",
      "cleave 3"
     ],
     "high": [
@@ -5671,7 +5643,6 @@
      "dhole-matriarch"
     ]
    },
-   "leftOut": [],
    "result": {
     "file": "docs/balance/deck1/bench-deck-map16-mt-2026-10-30.json",
     "pro": [
@@ -6231,9 +6202,10 @@
     "dust-devil-kestrel",
     "dust-hyena",
     "fennec-fox",
+    "glass-golem",
+    "hollow-belly-rat",
     "komodo-warlord",
     "meerkat-burrower",
-    "obsidian-scorpion",
     "roadrunner-courier",
     "sand-widow",
     "sandfish",
@@ -6269,15 +6241,16 @@
     "dust-hyena",
     "eagle-owl-quartermaster",
     "fennec-fox",
+    "glass-golem",
     "glimmer-spider",
     "grave-grin-hyena",
+    "hollow-belly-rat",
     "ibex-rockcaller",
     "komodo-warlord",
     "lovebird",
     "meerkat-burrower",
     "mongoose-duelist",
     "monitor-rambler",
-    "obsidian-scorpion",
     "roadrunner-courier",
     "sand-widow",
     "sandfish",
@@ -6289,6 +6262,7 @@
     "wolf-spider-mother"
    ],
    "fightOnly": [
+    "obsidian-scorpion",
     "trapdoor-spider"
    ],
    "focuses": [
@@ -6303,18 +6277,18 @@
     "economy",
     "swarm",
     "family:poison",
-    "family:armor"
+    "family:night"
    ],
    "facts": {
-    "listSize": 15,
-    "anchor": 16,
+    "listSize": 16,
+    "anchor": 17,
     "cost": {
      "min": 0,
      "max": 3,
-     "avg": 1.13,
+     "avg": 1.12,
      "curve": {
       "0": 1,
-      "1": 13,
+      "1": 14,
       "2": 1,
       "3": 1
      }
@@ -6325,21 +6299,14 @@
     ],
     "stoneMetal": [],
     "families": [
-     "poison 6",
-     "armor 2"
+     "poison 5",
+     "night 2"
     ],
     "high": [
      "komodo-warlord",
      "sand-widow"
     ]
    },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.7542,
-     "why": "under 83.8%"
-    }
-   ],
    "result": {
     "file": "docs/balance/deck1/bench-deck-map18-md-2026-10-30.json",
     "pro": [
