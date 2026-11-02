@@ -51890,7 +51890,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '12aeda9af9b2', BUILD_CARD_HASH = '43203d98922d0b4cb39597490a944c605b07be0c217254aece2102490dc75d29';
+const BUILD_ID = '7ae33a4d849a', BUILD_CARD_HASH = '43203d98922d0b4cb39597490a944c605b07be0c217254aece2102490dc75d29';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -57440,7 +57440,7 @@ function abilityBadges(d, bopts){
   if(e.changeling) out.push(`${iconHTML('changeling', '🎭')}`);
   if(e.keenEye) out.push(`${iconHTML('keen-eye', '👁️')}`);
   if(e.primed) out.push(`${iconHTML('primed', '🔋')}`);
-  if(e.drunk) out.push(`${iconHTML('drunk', '🍺')}`); if(e.purblind) out.push(`${iconHTML('purblind', '🕶️')}`); if(e.scatterbrained) out.push(`${iconHTML('scatterbrained', '❓')}`);
+  if(e.drunk) out.push(`${iconHTML('drunk', '🍺')}`); if(e.purblind && !(bopts && bopts.live && bopts.live.blind > 0)) out.push(`${iconHTML('purblind', '🕶️')}`); /* 2026-11-02 (owner SS#1 21:37: "Blind has redundant context pips. Just use the above one."): on the board a Purblind unit already shows its Blind status pip, so the trait pip only shows outside a fight or while it is not Blind */ if(e.scatterbrained) out.push(`${iconHTML('scatterbrained', '❓')}`);
   if(e.tipsy) out.push(`${iconHTML('tipsy', '🍺')}${e.tipsy.chance||''}%`); if(e.confuse) out.push(`${iconHTML('confuse', '❓')}${e.confuse.chance||''}%`);
   if(e.overwhelm) out.push(`${iconHTML('overwhelm', '🐘')}`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),

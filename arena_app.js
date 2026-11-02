@@ -9169,7 +9169,7 @@ function abilityBadges(d, bopts){
   if(e.changeling) out.push(`${iconHTML('changeling', '🎭')}`);
   if(e.keenEye) out.push(`${iconHTML('keen-eye', '👁️')}`);
   if(e.primed) out.push(`${iconHTML('primed', '🔋')}`);
-  if(e.drunk) out.push(`${iconHTML('drunk', '🍺')}`); if(e.purblind) out.push(`${iconHTML('purblind', '🕶️')}`); if(e.scatterbrained) out.push(`${iconHTML('scatterbrained', '❓')}`);
+  if(e.drunk) out.push(`${iconHTML('drunk', '🍺')}`); if(e.purblind && !(bopts && bopts.live && bopts.live.blind > 0)) out.push(`${iconHTML('purblind', '🕶️')}`); /* 2026-11-02 (owner SS#1 21:37: "Blind has redundant context pips. Just use the above one."): on the board a Purblind unit already shows its Blind status pip, so the trait pip only shows outside a fight or while it is not Blind */ if(e.scatterbrained) out.push(`${iconHTML('scatterbrained', '❓')}`);
   if(e.tipsy) out.push(`${iconHTML('tipsy', '🍺')}${e.tipsy.chance||''}%`); if(e.confuse) out.push(`${iconHTML('confuse', '❓')}${e.confuse.chance||''}%`);
   if(e.overwhelm) out.push(`${iconHTML('overwhelm', '🐘')}`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
