@@ -153,6 +153,23 @@ const playable = (T, s)=> C.seatData(T, s).hand.find(h=> T.E.canPlay(C.seatData(
     ok(eng18.length >= 4 && eng18.every(x=> x.group === 'game' && x.status === 'YET' && Array.isArray(x.options) && x.options.length >= 2 && x.default), `decisions ENG18-n filed, group game, with options (${eng18.length})`);
   }
 
+  // ---- 7. UI16-4: a seat keeps its player's profile look (avatar), sent by the joining player
+  {
+    const hub = C.createHub({defer: fn=> setImmediate(fn)}), clock = fakeClock();
+    const av = {character: 'otter', color: 'acorn', title: 'newcomer', background: 'dusk', border: 'vine', font: 'serif', prefix: 'Brave', suffix: 'of the Pond'};
+    const host = C.createSession({transport: hub.connect('h'), me: {peerId: 'h', name: 'Hazel', deck: {'cave-cricket': 20}, avatar: {character: 'mouse'}}, host: true, code: 'AVA001', typeId: 'hollow', deps, clock, seed: 5});
+    await settle(hub);
+    const pip = C.createSession({transport: hub.connect('p'), me: {peerId: 'p', name: 'Pip', deck: {'cave-cricket': 20}, avatar: av}, host: false, code: 'AVA001', typeId: 'hollow', deps, clock, seed: 5});
+    await settle(hub, 10);
+    const seats = host.room && host.room.seats || [];
+    ok(seats[0] && seats[0].avatar && seats[0].avatar.character === 'mouse', 'the host\'s seat carries its avatar');
+    ok(seats[1] && seats[1].avatar && JSON.stringify(seats[1].avatar) === JSON.stringify(av), `the joining player's avatar reaches the host's seat (${JSON.stringify(seats[1] && seats[1].avatar)})`);
+    ok(pip.room && pip.room.seats[1] && pip.room.seats[1].avatar && pip.room.seats[1].avatar.suffix === 'of the Pond', 'and the roster carries it back to every page');
+    const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
+    ok(/castleHp: gdCastleHp\(\), avatar: \(\(\)=>\{ try\{ return loadAvatar\(\); \}/.test(app), 'the page sends loadAvatar() with the join (gdBegin, used by gdJoin)');
+    host.close(); pip.close();
+  }
+
   // ---- 6. BASELVL-1 (owner 20:19: "Baby cards start at level 0"): base Level 0 for every Baby card, Hatchling at Level 0
   {
     const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = B.G, D = B.CARD_DEFS_BASELINE;
