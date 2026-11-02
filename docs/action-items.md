@@ -4,6 +4,17 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-02 14:10: the owner's decisions
+- KK1 (BAL11): too-hard road fights: build the enemy deck from the fight's own map list, weaker on purpose, no Baby cards (BAL10-6).
+- KK2 (BAL11): find why the optimised decks are too strong: flag the over-tuned cards (e.g. Stealth against low bramble Health, a Nocturnal +4/+0 card) and fix the budget's blind spot, not the cards (BAL-ROLES).
+- KK3 (BAL11): rebuild the PRO decks that still hold cut cards (Maps 0, 2, 5, 6, 7, 8, 16, 18).
+- KK4 (CONTENT6): no pure elementals: every elemental gets an animal form fitting its element (rename, animal tag, art queued).
+- KK5 (CONTENT6): Savanna Reaches: cut the carried card(s) of the most over-represented animal type.
+- KK6 (ENG17): co-op: only a player may play into their own row's starting slot; every other slot is open to either (COOP3-3).
+- KK7 (ENG17): Hatchling replaces Fodder on Baby cards: it does what Fodder was meant to do for Evomax (BABY-2).
+- KK8 (done 11-02): Supabase progress guard applied (trigger guard_progress_shrink is on). RECOST1-5 closed (owner recosts). Coffer Mimic as hermit crab OK'd. COOP3-4 OK'd.
+- KK9 (done 11-02, BAL-ROLES): balance roles written into docs/workflows/balance.md; Conch Herald back to the owner's 2/13, Pincushion Urchin back to 2/4.
+
 ## 11-02 00:17: the owner's notes (owner asleep; "Decisions - you decide" stands)
 - JJ1 (UI14; done 11-02, not yet released): VS screen: the pills show for ~1 s, too short to read them all. See JJ8.
 - JJ2 (UI14; done 11-02, not yet released): after game over, the "..." screen waits 0.3 s too long; cut it.
