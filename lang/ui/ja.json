@@ -483,7 +483,6 @@
  "Asked by": "依頼者",
  "Asleep": "睡眠",
  "Asleep for most of the war. Awake for the important part.": "戦のほとんどは眠っている。大事なところでは起きている。",
- "Assembled from castle rubble and something that might be actual magic. Nothing soaks in.": "お城のがれきと、本物の魔法かもしれない何かで組み上げられている。何もしみこまない。",
  "Async Arena": "非同期アリーナ",
  "At dusk it is a voice in the canopy. At night it is barely a voice.": "夕暮れには樹冠の中の声。夜にはかろうじて声。",
  "At full Health, gains +{v1} max Health every upkeep.": "体力満タンなら、アップキープごとに最大体力+{v1}。",
@@ -560,7 +559,6 @@
  "Barding, blinders, and absolutely no intention of slowing down for the enemy line.": "馬鎧、目隠し、そして敵の戦列のために速度を落とす気はまったくない。",
  "Barely a seedling. Somehow already armed.": "まだほんの苗木。なのに、もう武装している。",
  "Barely bigger than a coin, already wearing full plate. Give it a few decades.": "硬貨ほどの大きさしかないのに、もう全身鎧。何十年か待ってあげて。",
- "Barely more than a floating spark, and everything standing next to it gets singed.": "浮かぶ火花とほとんど変わらないのに、隣に立つものはみんな焦げる。",
  "Bark Skin": "樹皮の肌",
  "Bark, armour, shield: it is all just wood to a woodpecker.": "樹皮も、鎧も、盾も、キツツキにとってはみんなただの木。",
  "Barks the orders, then runs in first anyway.": "命令を吠え、それでも自分が真っ先に走りこむ。",
@@ -1568,7 +1566,6 @@
  "Fork: one swing, its claws hit left and right, or just the one in front": "フォーク：一振りで、爪が左右を打つ。または正面だけ",
  "Fork: one swing, left and right, or just the one in front": "フォーク：一振りで左右、または正面だけ",
  "Form ranks! Outsider on the bridge.": "隊列を組め！ 橋によそ者だ。",
- "Formless, patient, and impossible to properly hit.": "形がなく、辛抱強く、まともに当てるのは不可能。",
  "Forty sieges, forty wins, and a howdah with a little flag on it for each.": "四十の攻城戦、四十の勝利、そしてその一つ一つに小旗を立てた象かご。",
  "Forty winters patching the dam. The bramble is just a dam that argues back.": "四十の冬、ダムを繕ってきた。砦なんて、口答えするダムにすぎない。",
  "Found something shiny in the battlefield rubble. Sold it back to you.": "戦場のがれきで光るものを見つけた。それをあなたに売り戻した。",
@@ -4956,5 +4953,8 @@
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ {v1}が{v2}を{v3}へ隣のユニットに叩きつけた！",
  "＋ Add": "＋ 追加",
  "＋ Befriend": "＋ 友だちになる",
- "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "プレイ時：正面の敵ユニット（いなければ左右どちらかの隣）に飛びかかり{v1}ダメージ（3つとも不在なら敵のいばら）。着地した瞬間に発動し、待機中かどうかは問わない。"
+ "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "プレイ時：正面の敵ユニット（いなければ左右どちらかの隣）に飛びかかり{v1}ダメージ（3つとも不在なら敵のいばら）。着地した瞬間に発動し、待機中かどうかは問わない。",
+ "Barely more than a spark with wings, and everything standing next to it gets singed.": "羽の生えた火花とほとんど変わらないのに、隣に立つものはみんな焦げる。",
+ "Half wave, half seahorse: patient, and impossible to properly hit.": "半分は波、半分はタツノオトシゴ。辛抱強く、まともに当てるのは不可能。",
+ "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "お城のがれきと、本物の魔法かもしれない何かでできたリクガメ。何もしみこまない。"
 }

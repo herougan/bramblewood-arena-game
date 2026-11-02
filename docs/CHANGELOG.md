@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-02 Package CONTENT6 (owner 11-02 14:10: no pure elementals; Savanna list; not yet released)
+- **No pure elementals:** twelve cards whose art showed no animal now take one, named so it shows (ids, stats and skills unchanged): Ember Wisp -> Ember Firefly, Tide Spirit -> Tide Seahorse, Stormcaller -> Stormcaller Owl, Magma Titan -> Magma Rhino, Rimeheart Colossus -> Rimeheart Mammoth, Marsh Wisp -> Wisp Newt, Bog Revenant -> Revenant Bog Turtle, The Unremembered -> Unremembered Heron, Stoneheart Golem -> Stoneheart Tortoise, Stalactite Golem -> Stalactite Pill Bug, Iron Warden -> Iron Badger, Blackmass Acolyte -> Blackmass Rat. The four "proposed: a gorilla" golems got animals that fit their element (tortoise, pill bug, rhino, mammoth). Three flavour lines follow the new form. Each card is marked Art rejected (`artReview`) with prompts in `docs/art/content6-2026-11-02-briefs.md`; nothing generated. Names and flavours in all 12 languages (`tools/i18n_2026_11_02_content6.py`; the old keys removed).
+- **Savanna Reaches (m5):** Leafcutter Gardener (ant, the most-listed group among its carried cards) cut from the list (still on The Savanna side map and Map 7); its copies in 14-2 and 14-7 are House Cat. The list is now 11 own + 3 carried (CONTENT6-1).
+- Tools re-run: `animal_tags.py`, `type_taxonomy.py`, LISTFIX1 cards, forge curve maps. Test: `tests/e2e/lead_2026_10_23.py` names Iron Badger.
+
 
 ## 2026-11-02 Release 11-02a (UI14, ENG16, ART5, LANG3, QA1, FIX4, BAL9, CARD5, BAL10; prepared, deploys on the owner's OK)
 - One release for the owner's 11-02 notes (JJ1-JJ28) and the overnight work: the VS card, boomerang finisher, random N-SK draws, status pills, Quicksand, a field of its own per map, Milling 1->2, wind rebalanced (WIND-2 a), Baby cards levelled with Hatch / Stay, 121 new card art, 12 language packs updated; PvP stranger and Live Ranked fixed, War Banner on every row in raids; rarities re-set to the map lists, cut cards out of every deck, Guardian on a wall per map, reference and BPRO decks rebuilt, skill prices re-measured, 111 road fights retuned (BAL10). Tests: smoke (known d-2026-10-19 only), e2e qa1 34/34, fix4, ui14, ui13, live two-player all pass.

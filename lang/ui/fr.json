@@ -483,7 +483,6 @@
  "Asked by": "Demandée par",
  "Asleep": "Endormie",
  "Asleep for most of the war. Awake for the important part.": "Endormi pendant presque toute la guerre. Réveillé pour le moment important.",
- "Assembled from castle rubble and something that might be actual magic. Nothing soaks in.": "Assemblé à partir de gravats du château et de quelque chose qui pourrait être de la vraie magie. Rien ne pénètre.",
  "Async Arena": "Arène asynchrone",
  "At dusk it is a voice in the canopy. At night it is barely a voice.": "Au crépuscule, c’est une voix dans la canopée. La nuit, à peine une voix.",
  "At full Health, gains +{v1} max Health every upkeep.": "À pleine Santé, gagne +{v1} Santé max à chaque entretien.",
@@ -560,7 +559,6 @@
  "Barding, blinders, and absolutely no intention of slowing down for the enemy line.": "Barde, œillères, et aucune intention de ralentir pour la ligne ennemie.",
  "Barely a seedling. Somehow already armed.": "À peine une pousse. Et pourtant déjà armé.",
  "Barely bigger than a coin, already wearing full plate. Give it a few decades.": "À peine plus grand qu’une pièce, déjà en armure complète. Donnez-lui quelques décennies.",
- "Barely more than a floating spark, and everything standing next to it gets singed.": "À peine plus qu’une étincelle flottante, et tout ce qui est à côté est roussi.",
  "Bark Skin": "Peau d’écorce",
  "Bark, armour, shield: it is all just wood to a woodpecker.": "Écorce, armure, bouclier : pour un pic, tout ça, c’est du bois.",
  "Barks the orders, then runs in first anyway.": "Aboie les ordres, puis fonce le premier quand même.",
@@ -1568,7 +1566,6 @@
  "Fork: one swing, its claws hit left and right, or just the one in front": "Fourche : un coup, ses griffes frappent à gauche et à droite, ou seulement en face",
  "Fork: one swing, left and right, or just the one in front": "Fourche : un coup, à gauche et à droite, ou seulement en face",
  "Form ranks! Outsider on the bridge.": "En rangs ! Un étranger sur le pont.",
- "Formless, patient, and impossible to properly hit.": "Informe, patient, et impossible à frapper correctement.",
  "Forty sieges, forty wins, and a howdah with a little flag on it for each.": "Quarante sièges, quarante victoires, et un palanquin avec un petit drapeau pour chacune.",
  "Forty winters patching the dam. The bramble is just a dam that argues back.": "Quarante hivers à colmater le barrage. La ronce n'est qu'un barrage qui répond.",
  "Found something shiny in the battlefield rubble. Sold it back to you.": "A trouvé quelque chose de brillant dans les gravats du champ de bataille. Vous l’a revendu.",
@@ -4956,5 +4953,8 @@
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ {v1} projette {v2} {v3} contre l’unité d’à côté !",
  "＋ Add": "＋ Ajouter",
  "＋ Befriend": "＋ Se lier d’amitié",
- "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "À la pose : bondit sur l'unité ennemie en face (sinon sur une voisine, à gauche ou à droite) pour {v1} dégâts (le roncier ennemi si aucune des trois n'est là). Se déclenche à l'instant où elle est posée, en Attente ou non."
+ "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "À la pose : bondit sur l'unité ennemie en face (sinon sur une voisine, à gauche ou à droite) pour {v1} dégâts (le roncier ennemi si aucune des trois n'est là). Se déclenche à l'instant où elle est posée, en Attente ou non.",
+ "Barely more than a spark with wings, and everything standing next to it gets singed.": "À peine plus qu’une étincelle ailée, et tout ce qui est à côté est roussi.",
+ "Half wave, half seahorse: patient, and impossible to properly hit.": "Moitié vague, moitié hippocampe : patient, et impossible à frapper correctement.",
+ "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "Une tortue de gravats du château et de quelque chose qui pourrait être de la vraie magie. Rien ne pénètre."
 }

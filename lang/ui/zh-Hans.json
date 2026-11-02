@@ -483,7 +483,6 @@
  "Asked by": "委托人",
  "Asleep": "睡眠",
  "Asleep for most of the war. Awake for the important part.": "战争的大部分时间都在睡觉。重要的时候醒着。",
- "Assembled from castle rubble and something that might be actual magic. Nothing soaks in.": "用城堡的瓦砾和某种可能是真魔法的东西拼成。什么都渗不进去。",
  "Async Arena": "异步竞技场",
  "At dusk it is a voice in the canopy. At night it is barely a voice.": "黄昏时，它是树冠里的一个声音。夜里，几乎算不上声音。",
  "At full Health, gains +{v1} max Health every upkeep.": "生命满时，每个维持阶段 +{v1} 生命上限。",
@@ -560,7 +559,6 @@
  "Barding, blinders, and absolutely no intention of slowing down for the enemy line.": "马甲、眼罩，完全没打算为敌方阵线减速。",
  "Barely a seedling. Somehow already armed.": "还只是株幼苗。不知怎么已经武装起来了。",
  "Barely bigger than a coin, already wearing full plate. Give it a few decades.": "才比硬币大一点，已经穿上了全身甲。给它几十年吧。",
- "Barely more than a floating spark, and everything standing next to it gets singed.": "不过是一点漂浮的火花，站在它旁边的一切都会被烤焦。",
  "Bark Skin": "树皮之肤",
  "Bark, armour, shield: it is all just wood to a woodpecker.": "树皮、护甲、盾牌：对啄木鸟来说全都只是木头。",
  "Barks the orders, then runs in first anyway.": "吼着下命令，然后自己照样第一个冲上去。",
@@ -1568,7 +1566,6 @@
  "Fork: one swing, its claws hit left and right, or just the one in front": "叉击：一击，它的爪子同时攻击左右两边，或只攻击正面",
  "Fork: one swing, left and right, or just the one in front": "叉击：一击，攻击左右两边，或只攻击正面",
  "Form ranks! Outsider on the bridge.": "列队！桥上有外来者。",
- "Formless, patient, and impossible to properly hit.": "无形，耐心，根本打不中。",
  "Forty sieges, forty wins, and a howdah with a little flag on it for each.": "四十次围城，四十场胜利，象轿上为每一场插着一面小旗。",
  "Forty winters patching the dam. The bramble is just a dam that argues back.": "修补水坝四十个冬天。荆棘不过是一座会顶嘴的水坝。",
  "Found something shiny in the battlefield rubble. Sold it back to you.": "在战场的瓦砾里找到了一样闪亮的东西。又把它卖回给了你。",
@@ -4956,5 +4953,8 @@
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ {v1} 把 {v2} 向{v3}猛撞到旁边的单位上！",
  "＋ Add": "＋ 添加",
  "＋ Befriend": "＋ 交个朋友",
- "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "打出时：扑向正对面的敌方单位（没有则扑向左边或右边相邻的一个），造成 {v1} 点伤害（三者都没有时，打敌方荆棘丛）。落地的瞬间立刻触发，无论是否在等待中。"
+ "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "打出时：扑向正对面的敌方单位（没有则扑向左边或右边相邻的一个），造成 {v1} 点伤害（三者都没有时，打敌方荆棘丛）。落地的瞬间立刻触发，无论是否在等待中。",
+ "Barely more than a spark with wings, and everything standing next to it gets singed.": "不过是一点长了翅膀的火花，站在它旁边的一切都会被烤焦。",
+ "Half wave, half seahorse: patient, and impossible to properly hit.": "一半是浪，一半是海马：耐心，根本打不中。",
+ "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "一只用城堡瓦砾和某种可能是真魔法的东西拼成的陆龟。什么都渗不进去。"
 }

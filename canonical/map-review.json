@@ -2559,11 +2559,6 @@
      "by": "kept"
     },
     {
-     "id": "leafcutter-gardener",
-     "why": "Carried from The Morel Hollow (Map 7); kin biome (Jungle canopy); the list's resource maker",
-     "by": "kept"
-    },
-    {
      "id": "mouse-sapper",
      "why": "Carried from The Briar Maze (Map 12); kin biome (Village & keep)",
      "by": "kept"
@@ -2595,6 +2590,11 @@
     }
    ],
    "cut": [
+    {
+     "id": "leafcutter-gardener",
+     "why": "Owner 11-02 (CONTENT6): cut from the carried cards toward balancing animals per type (ant, the most-listed animal group of the carried four); still on the Savanna side map (my) and Map 7",
+     "by": "owner"
+    },
     {
      "id": "weaver-bird",
      "why": "Owner 11-01: cut",
