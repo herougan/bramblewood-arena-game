@@ -1,7 +1,7 @@
 {
  "about": "Hidden PRO fights per main map and side map (package PRO, owner 2026-10-24 00:28; PRO2 21:20; PRO3 2026-10-25: side maps as N-L-PRO-k, faction cards left out). N-PRO-k: the best decks of the deck optimizer's map-true runs (the map's own cards + what a player holds by then, within the map's rarity cap); N-BPRO-k (Basic Pro, under `bpro`): its bpro runs (only the map's own pool, within the cap). Written by tools/opt/pro_skirmishes.js --apply; baked into the game by assemble_arena.py (the `pro` list; `bpro` waits for the PRO preview package). Not on the road, no progress, no rewards.",
  "version": 2,
- "updated": "2026-10-30",
+ "updated": "2026-10-31",
  "tool": "tools/opt/pro_skirmishes.js 1.2.0 (2026-10-25, PRO3)",
  "rule": {
   "games": 400,
@@ -808,6 +808,7 @@
     "rules": {
      "misty": true,
      "phase": "off",
+     "tangledRoots": true,
      "woods": true
     },
     "terrain": {
@@ -822,7 +823,7 @@
     ],
     "boss": "0-B-4",
     "ties": [],
-    "summary": "misty, phase off, woods, terrain Old Woods T1"
+    "summary": "misty, phase off, tangledRoots, woods, terrain Old Woods T1"
    },
    "pro": [
     {
@@ -1482,6 +1483,31 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "misty": true,
+       "phase": "off",
+       "woods": true
+      },
+      "terrain": {
+       "biome": "forest",
+       "tier": 1
+      },
+      "fights": [
+       "0-B-1",
+       "0-B-2",
+       "0-B-3",
+       "0-B-4"
+      ],
+      "boss": "0-B-4",
+      "ties": [],
+      "summary": "misty, phase off, woods, terrain Old Woods T1"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -7975,7 +8001,8 @@
     "rules": {
      "aiGuardLethal": true,
      "phase": "cycle",
-     "swampFever": 25
+     "swampFever": 25,
+     "tide": true
     },
     "terrain": {
      "biome": "swamp",
@@ -7989,7 +8016,7 @@
     ],
     "boss": "5-A-4",
     "ties": [],
-    "summary": "aiGuardLethal, phase cycle, swampFever 25, terrain Sucking Mire T1"
+    "summary": "aiGuardLethal, phase cycle, swampFever 25, tide, terrain Sucking Mire T1"
    },
    "pro": [
     {
@@ -8622,6 +8649,31 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "cycle",
+       "swampFever": 25
+      },
+      "terrain": {
+       "biome": "swamp",
+       "tier": 1
+      },
+      "fights": [
+       "5-A-1",
+       "5-A-2",
+       "5-A-3",
+       "5-A-4"
+      ],
+      "boss": "5-A-4",
+      "ties": [],
+      "summary": "aiGuardLethal, phase cycle, swampFever 25, terrain Sucking Mire T1"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -10277,6 +10329,7 @@
      "aiGuardLethal": true,
      "dark": "dark",
      "phase": "off",
+     "sporeCloud": true,
      "woods": true
     },
     "terrain": {
@@ -10292,7 +10345,7 @@
     ],
     "boss": "7-A-5",
     "ties": [],
-    "summary": "aiGuardLethal, dark dark, phase off, woods, terrain Old Woods T2 (Regen 1)"
+    "summary": "aiGuardLethal, dark dark, phase off, sporeCloud, woods, terrain Old Woods T2 (Regen 1)"
    },
    "pro": [
     {
@@ -10981,6 +11034,33 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "dark": "dark",
+       "phase": "off",
+       "woods": true
+      },
+      "terrain": {
+       "biome": "forest",
+       "tier": 2
+      },
+      "fights": [
+       "7-A-1",
+       "7-A-2",
+       "7-A-3",
+       "7-A-4",
+       "7-A-5"
+      ],
+      "boss": "7-A-5",
+      "ties": [],
+      "summary": "aiGuardLethal, dark dark, phase off, woods, terrain Old Woods T2 (Regen 1)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -10991,6 +11071,7 @@
     "rules": {
      "aiGuardLethal": true,
      "dark": "dark",
+     "landslide": true,
      "phase": "off"
     },
     "terrain": {
@@ -11009,7 +11090,7 @@
     ],
     "boss": "8-8",
     "ties": [],
-    "summary": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T1"
+    "summary": "aiGuardLethal, dark dark, landslide, phase off, terrain Deep Dark T1"
    },
    "pro": [
     {
@@ -11733,6 +11814,35 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "dark": "dark",
+       "phase": "off"
+      },
+      "terrain": {
+       "biome": "cave",
+       "tier": 1
+      },
+      "fights": [
+       "8-1",
+       "8-2",
+       "8-3",
+       "8-4",
+       "8-5",
+       "8-6",
+       "8-7",
+       "8-8"
+      ],
+      "boss": "8-8",
+      "ties": [],
+      "summary": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T1"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -12486,6 +12596,7 @@
      "aiGuardLethal": true,
      "phase": "cycle",
      "saltMap": true,
+     "tangledRoots": true,
      "tide": true,
      "wet": true
     },
@@ -12506,7 +12617,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"reef\",\"tier\":1} / {\"biome\":\"reef\",\"tier\":2}), the boss's (9-7)"
     ],
-    "summary": "aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Coral Shelf T2 (Thorns 1)"
+    "summary": "aiGuardLethal, phase cycle, saltMap, tangledRoots, tide, wet, terrain Coral Shelf T2 (Thorns 1)"
    },
    "pro": [
     {
@@ -13216,6 +13327,38 @@
       ]
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "cycle",
+       "saltMap": true,
+       "tide": true,
+       "wet": true
+      },
+      "terrain": {
+       "biome": "reef",
+       "tier": 2
+      },
+      "fights": [
+       "9-1",
+       "9-2",
+       "9-3",
+       "9-4",
+       "9-5",
+       "9-6",
+       "9-7"
+      ],
+      "boss": "9-7",
+      "ties": [
+       "terrain: a tie ({\"biome\":\"reef\",\"tier\":1} / {\"biome\":\"reef\",\"tier\":2}), the boss's (9-7)"
+      ],
+      "summary": "aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Coral Shelf T2 (Thorns 1)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -13225,6 +13368,7 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
+     "permaTide": true,
      "phase": "cycle",
      "saltMap": true,
      "tide": true,
@@ -13247,7 +13391,7 @@
     ],
     "boss": "10-9",
     "ties": [],
-    "summary": "aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Coral Shelf T1"
+    "summary": "aiGuardLethal, permaTide, phase cycle, saltMap, tide, wet, terrain Coral Shelf T1"
    },
    "pro": [
     {
@@ -14203,6 +14347,38 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "cycle",
+       "saltMap": true,
+       "tide": true,
+       "wet": true
+      },
+      "terrain": {
+       "biome": "reef",
+       "tier": 1
+      },
+      "fights": [
+       "10-1",
+       "10-2",
+       "10-3",
+       "10-4",
+       "10-5",
+       "10-6",
+       "10-7",
+       "10-8",
+       "10-9"
+      ],
+      "boss": "10-9",
+      "ties": [],
+      "summary": "aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Coral Shelf T1"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -15796,6 +15972,7 @@
     "rules": {
      "aiGuardLethal": true,
      "phase": "cycle",
+     "thunderstorm": true,
      "wind": "gale",
      "windfall": true
     },
@@ -15811,7 +15988,7 @@
     ],
     "boss": "11-A-4",
     "ties": [],
-    "summary": "aiGuardLethal, phase cycle, wind gale, windfall, terrain High Crags T1"
+    "summary": "aiGuardLethal, phase cycle, thunderstorm, wind gale, windfall, terrain High Crags T1"
    },
    "pro": [
     {
@@ -16698,6 +16875,32 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "cycle",
+       "wind": "gale",
+       "windfall": true
+      },
+      "terrain": {
+       "biome": "alpine",
+       "tier": 1
+      },
+      "fights": [
+       "11-A-1",
+       "11-A-2",
+       "11-A-3",
+       "11-A-4"
+      ],
+      "boss": "11-A-4",
+      "ties": [],
+      "summary": "aiGuardLethal, phase cycle, wind gale, windfall, terrain High Crags T1"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -18909,6 +19112,7 @@
     "rules": {
      "aiGuardLethal": true,
      "canopy": true,
+     "field": "rain",
      "phase": "cycle",
      "woods": true
     },
@@ -18927,7 +19131,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"forest\",\"tier\":1} / {\"biome\":\"forest\",\"tier\":2}), the boss's (14-A-5)"
     ],
-    "summary": "aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods T2 (Regen 1)"
+    "summary": "aiGuardLethal, canopy, field rain, phase cycle, woods, terrain Old Woods T2 (Regen 1)"
    },
    "pro": [
     {
@@ -19581,6 +19785,35 @@
        ]
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "canopy": true,
+       "phase": "cycle",
+       "woods": true
+      },
+      "terrain": {
+       "biome": "forest",
+       "tier": 2
+      },
+      "fights": [
+       "14-A-1",
+       "14-A-2",
+       "14-A-3",
+       "14-A-4",
+       "14-A-5"
+      ],
+      "boss": "14-A-5",
+      "ties": [
+       "terrain: a tie ({\"biome\":\"forest\",\"tier\":1} / {\"biome\":\"forest\",\"tier\":2}), the boss's (14-A-5)"
+      ],
+      "summary": "aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods T2 (Regen 1)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -19591,6 +19824,7 @@
     "rules": {
      "aiGuardLethal": true,
      "phase": "cycle",
+     "tallGrass": true,
      "undergrowth": true
     },
     "terrain": {
@@ -19610,7 +19844,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"meadow\",\"tier\":1} / {\"biome\":\"meadow\",\"tier\":2}), the boss's (15-7)"
     ],
-    "summary": "aiGuardLethal, phase cycle, undergrowth, terrain Open Meadow T2 (Healing 1)"
+    "summary": "aiGuardLethal, phase cycle, tallGrass, undergrowth, terrain Open Meadow T2 (Healing 1)"
    },
    "pro": [
     {
@@ -20404,6 +20638,36 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "cycle",
+       "undergrowth": true
+      },
+      "terrain": {
+       "biome": "meadow",
+       "tier": 2
+      },
+      "fights": [
+       "15-1",
+       "15-2",
+       "15-3",
+       "15-4",
+       "15-5",
+       "15-6",
+       "15-7"
+      ],
+      "boss": "15-7",
+      "ties": [
+       "terrain: a tie ({\"biome\":\"meadow\",\"tier\":1} / {\"biome\":\"meadow\",\"tier\":2}), the boss's (15-7)"
+      ],
+      "summary": "aiGuardLethal, phase cycle, undergrowth, terrain Open Meadow T2 (Healing 1)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -22596,6 +22860,7 @@
     "rules": {
      "aiGuardLethal": true,
      "phase": "cycle",
+     "quicksand": true,
      "sandstorm": true,
      "weatherMap": true,
      "wind": "windy",
@@ -22618,7 +22883,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"savanna\",\"tier\":1} / {\"biome\":\"savanna\",\"tier\":2}), the boss's (18-7)"
     ],
-    "summary": "aiGuardLethal, phase cycle, sandstorm, weatherMap, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)"
+    "summary": "aiGuardLethal, phase cycle, quicksand, sandstorm, weatherMap, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)"
    },
    "pro": [
     {
@@ -23213,6 +23478,39 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "cycle",
+       "sandstorm": true,
+       "weatherMap": true,
+       "wind": "windy",
+       "windfall": true
+      },
+      "terrain": {
+       "biome": "savanna",
+       "tier": 2
+      },
+      "fights": [
+       "18-1",
+       "18-2",
+       "18-3",
+       "18-4",
+       "18-5",
+       "18-6",
+       "18-7"
+      ],
+      "boss": "18-7",
+      "ties": [
+       "terrain: a tie ({\"biome\":\"savanna\",\"tier\":1} / {\"biome\":\"savanna\",\"tier\":2}), the boss's (18-7)"
+      ],
+      "summary": "aiGuardLethal, phase cycle, sandstorm, weatherMap, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -24039,6 +24337,8 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
+     "field": "heatwave",
+     "heatLevel": 1,
      "hotMap": true,
      "phase": "cycle",
      "wind": "windy",
@@ -24058,7 +24358,7 @@
     ],
     "boss": "19-6",
     "ties": [],
-    "summary": "aiGuardLethal, hotMap, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)"
+    "summary": "aiGuardLethal, field heatwave, heatLevel 1, hotMap, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)"
    },
    "pro": [
     {
@@ -24657,6 +24957,35 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "hotMap": true,
+       "phase": "cycle",
+       "wind": "windy",
+       "windfall": true
+      },
+      "terrain": {
+       "biome": "ash",
+       "tier": 2
+      },
+      "fights": [
+       "19-1",
+       "19-2",
+       "19-3",
+       "19-4",
+       "19-5",
+       "19-6"
+      ],
+      "boss": "19-6",
+      "ties": [],
+      "summary": "aiGuardLethal, hotMap, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },

@@ -1,0 +1,3 @@
+TypeError: Cannot read properties of null (reading 'length')
+    at Object.main (/home/claude/bramblewood-arena-game/.claude/worktrees/agent-a5ddd6b6e7a6bfed3/tools/bench/deck.js:155:100)
+    at async main (/home/claude/bramblewood-arena-game/.claude/worktrees/agent-a5ddd6b6e7a6bfed3/tools/opt/bpro2_2026_10_31.js:86:7)

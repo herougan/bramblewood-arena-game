@@ -80,36 +80,44 @@
       "leaders": []
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mo": {
    "id": "mo",
    "num": 0,
    "side": "m1",
    "name": "The Old Bramble",
-   "cap": "common",
-   "pool": [],
-   "anchorDropped": [
-    "ent: rare is over the map's rarity cap (common)",
-    "echidna-quillshot: veryrare is over the map's rarity cap (common)",
-    "dhole-matriarch: veryrare is over the map's rarity cap (common)",
-    "shimmerwing-stag: veryrare is over the map's rarity cap (common)",
-    "thorn-shrike: rare is over the map's rarity cap (common)",
-    "gatling-hog: rare is over the map's rarity cap (common)",
-    "quillguard: rare is over the map's rarity cap (common)",
-    "lucky-hopper: uncommon is over the map's rarity cap (common)",
-    "sergeant-bramblefox: rare is over the map's rarity cap (common)",
-    "bramblewood-lynx: rare is over the map's rarity cap (common)",
-    "wolf-spider-mother: rare is over the map's rarity cap (common)",
-    "taiga-lynx: rare is over the map's rarity cap (common)",
-    "hedgehog-herbalist: rare is over the map's rarity cap (common)"
+   "cap": "superrare",
+   "pool": [
+    "bramblewood-lynx",
+    "dhole-matriarch",
+    "echidna-quillshot",
+    "ent",
+    "gatling-hog",
+    "hedgehog-herbalist",
+    "lucky-hopper",
+    "quillguard",
+    "sergeant-bramblefox",
+    "shimmerwing-stag",
+    "taiga-lynx",
+    "thorn-shrike",
+    "wolf-spider-mother"
    ],
+   "anchorDropped": [],
    "fightOnly": [
     "trash-panda-trickster"
    ],
-   "focuses": [],
-   "none": "no card of the list is inside the map's rarity cap (common)"
+   "focuses": [
+    "big",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "swarm",
+    "family:evasion",
+    "family:ranged"
+   ]
   },
   "mf": {
    "id": "mf",
@@ -194,19 +202,7 @@
       "leaders": []
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.6667,
-     "why": "under 68.9%"
-    },
-    {
-     "focus": "family:flying",
-     "score": 0.6146,
-     "why": "under 68.9%"
-    }
-   ]
+   }
   },
   "mq": {
    "id": "mq",
@@ -289,19 +285,7 @@
       "leaders": []
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:flying",
-     "score": 0.4219,
-     "why": "under 51.1%"
-    },
-    {
-     "focus": "big",
-     "score": 0.4115,
-     "why": "under 51.1%"
-    }
-   ]
+   }
   },
   "mb": {
    "id": "mb",
@@ -432,8 +416,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mg": {
    "id": "mg",
@@ -542,14 +525,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "economy",
-     "score": 0.5923,
-     "why": "under 67.7%"
-    }
-   ]
+   }
   },
   "mp": {
    "id": "mp",
@@ -658,14 +634,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.5333,
-     "why": "under 69.2%"
-    }
-   ]
+   }
   },
   "mc": {
    "id": "mc",
@@ -792,8 +761,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "m2": {
    "id": "m2",
@@ -920,8 +888,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mw": {
    "id": "mw",
@@ -943,14 +910,14 @@
     "muskrat-reedgatherer",
     "nutria-reedcutter",
     "old-snapjaw",
+    "snapper-hatchling",
     "snapstick-turtle",
     "swamp-alligator",
     "venomlord-serpent"
    ],
    "anchorDropped": [],
    "fightOnly": [
-    "caiman-hatchling",
-    "snapper-hatchling"
+    "caiman-hatchling"
    ],
    "focuses": [
     "economy",
@@ -963,8 +930,8 @@
     "big",
     "economy",
     "swarm",
-    "family:armor",
-    "family:bleed"
+    "family:tide",
+    "family:armor"
    ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map05-mw-2026-10-31.json",
@@ -1049,8 +1016,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "ms": {
    "id": "ms",
@@ -1135,19 +1101,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:armor",
-     "score": 0.6131,
-     "why": "under 61.8%"
-    },
-    {
-     "focus": "big",
-     "score": 0.5833,
-     "why": "under 61.8%"
-    }
-   ]
+   }
   },
   "m8": {
    "id": "m8",
@@ -1274,8 +1228,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mu": {
    "id": "mu",
@@ -1386,14 +1339,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.6759,
-     "why": "under 68.8%"
-    }
-   ]
+   }
   },
   "mz": {
    "id": "mz",
@@ -1519,8 +1465,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "m4": {
    "id": "m4",
@@ -1648,8 +1593,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mn": {
    "id": "mn",
@@ -1777,8 +1721,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mk": {
    "id": "mk",
@@ -1882,14 +1825,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:armor",
-     "score": 0.5917,
-     "why": "under 64.2%"
-    }
-   ]
+   }
   },
   "m7": {
    "id": "m7",
@@ -1994,14 +1930,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.6597,
-     "why": "under 73%"
-    }
-   ]
+   }
   },
   "mj": {
    "id": "mj",
@@ -2110,14 +2039,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.6927,
-     "why": "under 75.4%"
-    }
-   ]
+   }
   },
   "m10": {
    "id": "m10",
@@ -2227,14 +2149,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.7212,
-     "why": "under 80.5%"
-    }
-   ]
+   }
   },
   "mv": {
    "id": "mv",
@@ -2341,14 +2256,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.5952,
-     "why": "under 68.3%"
-    }
-   ]
+   }
   },
   "mh": {
    "id": "mh",
@@ -2473,8 +2381,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mr": {
    "id": "mr",
@@ -2601,8 +2508,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "m5": {
    "id": "m5",
@@ -2625,7 +2531,8 @@
     "pride-queen",
     "savanna-cheetah",
     "spitting-cobra",
-    "springbok-pronker"
+    "springbok-pronker",
+    "weaver-bird"
    ],
    "anchorDropped": [],
    "fightOnly": [],
@@ -2727,8 +2634,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "my": {
    "id": "my",
@@ -2817,19 +2723,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "open",
-     "score": 0.5573,
-     "why": "under 62.1%"
-    },
-    {
-     "focus": "swarm",
-     "score": 0.5365,
-     "why": "under 62.1%"
-    }
-   ]
+   }
   },
   "ml": {
    "id": "ml",
@@ -2913,14 +2807,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:strike-first",
-     "score": 0.55,
-     "why": "under 63.8%"
-    }
-   ]
+   }
   },
   "mt": {
    "id": "mt",
@@ -3027,14 +2914,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:cleave",
-     "score": 0.4438,
-     "why": "under 65.6%"
-    }
-   ]
+   }
   },
   "m6": {
    "id": "m6",
@@ -3161,8 +3041,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mi": {
    "id": "mi",
@@ -3243,8 +3122,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "md": {
    "id": "md",
@@ -3333,19 +3211,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:poison",
-     "score": 0.75,
-     "why": "under 77.5%"
-    },
-    {
-     "focus": "big",
-     "score": 0.5583,
-     "why": "under 77.5%"
-    }
-   ]
+   }
   },
   "mpd": {
    "id": "mpd",
@@ -3470,8 +3336,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "m3": {
    "id": "m3",
@@ -3579,14 +3444,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.4491,
-     "why": "under 73%"
-    }
-   ]
+   }
   },
   "m9": {
    "id": "m9",
@@ -3690,8 +3548,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "m11": {
    "id": "m11",
@@ -3801,14 +3658,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.4904,
-     "why": "under 60.5%"
-    }
-   ]
+   }
   },
   "me": {
    "id": "me",
@@ -3895,14 +3745,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.4083,
-     "why": "under 57.5%"
-    }
-   ]
+   }
   },
   "mx": {
    "id": "mx",
@@ -4017,14 +3860,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.4286,
-     "why": "under 74.9%"
-    }
-   ]
+   }
   }
  },
  "rule": {

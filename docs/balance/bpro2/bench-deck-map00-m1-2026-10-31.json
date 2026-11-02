@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T20:43:43.856Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T02:31:05.544Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "m1",
   "num": 0,
@@ -113,38 +113,162 @@
  "searches": [
   {
    "focus": "family:flying",
-   "steps": 19,
-   "moves": 6,
-   "games": 3060,
+   "steps": 16,
+   "moves": 7,
+   "games": 3144,
    "apartFromEarlier": null
   },
   {
    "focus": "open",
-   "steps": 16,
-   "moves": 7,
-   "games": 3180,
-   "apartFromEarlier": 11
+   "steps": 15,
+   "moves": 4,
+   "games": 3000,
+   "apartFromEarlier": 10
   }
  ],
  "apart": 6,
- "seconds": 166,
- "games": 6432,
+ "seconds": 68,
+ "games": 6336,
  "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm x12",
+    "flying x8"
+   ],
+   "deck": {
+    "ant-scout": 4,
+    "bee-forager": 4,
+    "chipmunk-skirmisher": 2,
+    "honey-bee": 4,
+    "soldier-ant": 4,
+    "worker-ant": 2
+   },
+   "cards": [
+    {
+     "id": "ant-scout",
+     "name": "Ant Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "honey-bee",
+     "name": "Honey Bee",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "chipmunk-skirmisher",
+     "name": "Chipmunk Skirmisher",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "worker-ant",
+     "name": "Worker Ant",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.7847,
+   "ci": [
+    0.7234,
+    0.846
+   ],
+   "avgLumber": 0,
+   "avgWait": 0.2,
+   "curve": {
+    "0": 20
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "swarm",
+     "n": 12
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
   {
    "focus": "open",
    "labels": [
-    "swarm x7",
-    "flying x6"
+    "swarm x8"
    ],
    "deck": {
-    "ant-scout": 3,
+    "ant-scout": 4,
     "bee-forager": 4,
     "chipmunk-skirmisher": 4,
-    "earthworm": 4,
-    "honey-bee": 2,
-    "house-cat": 3
+    "cottontail": 4,
+    "terrier-pup": 4
    },
    "cards": [
+    {
+     "id": "ant-scout",
+     "name": "Ant Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
     {
      "id": "bee-forager",
      "name": "Bee Forager",
@@ -160,38 +284,24 @@
      "rarity": "common"
     },
     {
-     "id": "earthworm",
-     "name": "Earthworm",
+     "id": "cottontail",
+     "name": "Cottontail",
      "copies": 4,
      "cost": 0,
      "rarity": "starter"
     },
     {
-     "id": "ant-scout",
-     "name": "Ant Scout",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "starter"
-    },
-    {
-     "id": "house-cat",
-     "name": "House Cat",
-     "copies": 3,
+     "id": "terrier-pup",
+     "name": "Terrier Pup",
+     "copies": 4,
      "cost": 0,
      "rarity": "common"
-    },
-    {
-     "id": "honey-bee",
-     "name": "Honey Bee",
-     "copies": 2,
-     "cost": 0,
-     "rarity": "starter"
     }
    ],
-   "score": 0.7292,
+   "score": 0.7014,
    "ci": [
-    0.6626,
-    0.7958
+    0.6327,
+    0.7701
    ],
    "avgLumber": 0,
    "avgWait": 0,
@@ -202,129 +312,6 @@
    "families": [
     {
      "f": "swarm",
-     "n": 7
-    },
-    {
-     "f": "flying",
-     "n": 6
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:0-1",
-     "label": "vs 0-1 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:0-2",
-     "label": "vs 0-2 skirmish's deck",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:0-3",
-     "label": "vs 0-3 skirmish's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:0-4",
-     "label": "vs 0-4 skirmish's deck",
-     "p": 0.4583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 0-1's field",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
-     "p": 0.875,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "family:flying",
-   "labels": [
-    "swarm x9",
-    "flying x8"
-   ],
-   "deck": {
-    "ant-scout": 3,
-    "bee-forager": 4,
-    "duckling": 3,
-    "honey-bee": 4,
-    "soldier-ant": 2,
-    "worker-ant": 4
-   },
-   "cards": [
-    {
-     "id": "bee-forager",
-     "name": "Bee Forager",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "starter"
-    },
-    {
-     "id": "honey-bee",
-     "name": "Honey Bee",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "starter"
-    },
-    {
-     "id": "worker-ant",
-     "name": "Worker Ant",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "starter"
-    },
-    {
-     "id": "ant-scout",
-     "name": "Ant Scout",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "starter"
-    },
-    {
-     "id": "duckling",
-     "name": "Duckling",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "starter"
-    },
-    {
-     "id": "soldier-ant",
-     "name": "Soldier Ant",
-     "copies": 2,
-     "cost": 0,
-     "rarity": "common"
-    }
-   ],
-   "score": 0.6667,
-   "ci": [
-    0.595,
-    0.7384
-   ],
-   "avgLumber": 0,
-   "avgWait": 0.1,
-   "curve": {
-    "0": 20
-   },
-   "resourceMakers": 0,
-   "families": [
-    {
-     "f": "swarm",
-     "n": 9
-    },
-    {
-     "f": "flying",
      "n": 8
     }
    ],
@@ -338,25 +325,25 @@
     {
      "entry": "mirror|fight:0-2",
      "label": "vs 0-2 skirmish's deck",
-     "p": 0.5833,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:0-3",
      "label": "vs 0-3 skirmish's deck",
-     "p": 0.5833,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:0-4",
      "label": "vs 0-4 skirmish's deck",
-     "p": 0.4167,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 0-1's field",
-     "p": 0.6667,
+     "p": 0.7917,
      "n": 24
     },
     {
@@ -366,7 +353,7 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 11
+   "copiesApartFromOpen": 0
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map m1 --pool ant-scout,beaver-lumberjack,bee-forager,bee-sentry,chipmunk-forager,chipmunk-skirmisher,cottontail,crossed-eyes,duck-paddler,duckling,earthworm,honey-bee,house-cat,silver-minnow,soldier-ant,terrier-pup,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus family:flying,open --level 1 --mode map-true"

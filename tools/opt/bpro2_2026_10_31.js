@@ -49,6 +49,10 @@ function planMap(gm, map, rules) {
     if (r.added.length) { pool.push(...r.added); base.carriedIn = r.added; total = pool.reduce((t, id) => t + room(id), 0); }
   }
   if (total < RULE.size || pool.length < Math.ceil(RULE.size / RULE.maxCopies)) return Object.assign(base, { focuses: [], none: `the list cannot fill 20 cards under 6 different / 4 copies (${pool.length} cards, ${total} copies)` });
+  // 2026-11-02 (BAL10): the best 6 cards' copy caps must reach 20 too (the Old Bramble, capped by Map 21 since CARD5: one Uncommon at 4 and
+  // Rares at 3 give 4 + 5 x 3 = 19), or the focused search finds no legal deck and stops on a null focus list
+  const top6 = pool.map(id => Math.min(RULE.maxCopies, O.capOf(gm, id))).sort((a, b) => b - a).slice(0, RULE.maxUnique).reduce((t, k) => t + k, 0);
+  if (top6 < RULE.size) return Object.assign(base, { focuses: [], none: `6 different cards hold at most ${top6} copies under the rarity copy caps (4 copies at most): no 20-card deck` });
   const all = T3.focusesFor(gm, pool, rules, null), have = id => all.find(f => f.id === id), fit = f => f && f.cards && room(f) >= f.need;
   const chosen = PRIORITY.map(have).filter(fit), fam = all.filter(f => /^family:/.test(f.id) && fit(f));
   return Object.assign(base, { focuses: chosen.concat(fam).slice(0, MAX_FOCUS).map(f => f.id).concat(['open']), focusesAvailable: all.map(f => f.id) });

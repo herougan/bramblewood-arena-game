@@ -1,5 +1,5 @@
 Map 0 m1 Bramblewood Outskirts: list 17; focuses family:flying, open
-  side 0 mo The Old Bramble: list 0; NONE: no card of the list is inside the map's rarity cap (common)
+  side 0 mo The Old Bramble: list 13; focuses big, open
 Map 1 mf Thistlewood: list 20; focuses big, swarm, family:flying, open
   side 1 mq Clovermead: list 16; focuses big, swarm, family:flying, open
 Map 2 mb Pebble Beach: list 17; focuses economy, big, swarm, open
@@ -7,7 +7,7 @@ Map 2 mb Pebble Beach: list 17; focuses economy, big, swarm, open
   side 2 mp Lilypad Reach: list 17; focuses economy, big, swarm, open
 Map 3 mc Gannet Cliffs: list 15; focuses economy, big, swarm, open
 Map 4 m2 Sunken Hollow: list 17; focuses economy, big, swarm, open
-Map 5 mw Gatorback Swamp: list 16; focuses economy, big, swarm, open
+Map 5 mw Gatorback Swamp: list 17; focuses economy, big, swarm, open
   side 5 ms The Sunken Grove: list 15; focuses big, swarm, family:armor, open
 Map 6 m8 Sable Swampmire: list 14; focuses big, swarm, family:poison, open
 Map 7 mu The Morel Hollow: list 19; focuses economy, big, swarm, open
@@ -21,7 +21,7 @@ Map 11 m10 Eyrie Heights: list 18; focuses economy, big, swarm, open
   side 11 mv The Aerie Vault: list 15; focuses big, swarm, family:flying, open
 Map 12 mh The Briar Maze: list 15; focuses economy, big, swarm, open
 Map 13 mr The Redwood Deep: list 17; focuses economy, big, swarm, open
-Map 14 m5 Savanna Reaches: list 15; focuses economy, big, swarm, open
+Map 14 m5 Savanna Reaches: list 16; focuses economy, big, swarm, open
   side 14 my The Canopy: list 16; focuses economy, big, swarm, open
 Map 15 ml The Long Grass: list 15; focuses economy, family:strike-first, open
 Map 16 mt The Pinewood Taiga: list 15; focuses economy, big, family:cleave, open

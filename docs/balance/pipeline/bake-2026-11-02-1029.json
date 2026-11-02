@@ -1,0 +1,146 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "bake",
+ "status": "fail",
+ "started": "2026-11-02T02:29:53.316Z",
+ "finished": "2026-11-02T02:31:08.321Z",
+ "durationSec": 75,
+ "args": [
+  "--minutes",
+  "100"
+ ],
+ "head": "5460fa76",
+ "inputs": {
+  "rebake": "applied",
+  "bproMaps": 36,
+  "stale": [
+   "m1",
+   "mo",
+   "mf",
+   "mq",
+   "mb",
+   "mg",
+   "mp",
+   "mc",
+   "m2",
+   "mw",
+   "ms",
+   "m8",
+   "mu",
+   "mz",
+   "m4",
+   "mn",
+   "mk",
+   "m7",
+   "mj",
+   "m10",
+   "mv",
+   "mh",
+   "mr",
+   "m5",
+   "my",
+   "ml",
+   "mt",
+   "m6",
+   "mi",
+   "md",
+   "mpd",
+   "m3",
+   "m9",
+   "m11",
+   "me",
+   "mx"
+  ],
+  "budgetGames": 6000,
+  "engine": "4377e88162",
+  "cards": "662b018bc9"
+ },
+ "counts": {
+  "fields re-baked": 11,
+  "leaders re-baked": 0,
+  "BPRO maps": 36,
+  "BPRO maps stale": 36
+ },
+ "changed": [
+  {
+   "id": "mo",
+   "field": "field",
+   "old": "misty, phase off, woods, terrain Old Woods T1",
+   "new": "misty, phase off, tangledRoots, woods, terrain Old Woods T1"
+  },
+  {
+   "id": "ms",
+   "field": "field",
+   "old": "aiGuardLethal, phase cycle, swampFever 25, terrain Sucking M",
+   "new": "aiGuardLethal, phase cycle, swampFever 25, tide, terrain Suc"
+  },
+  {
+   "id": "mz",
+   "field": "field",
+   "old": "aiGuardLethal, dark dark, phase off, woods, terrain Old Wood",
+   "new": "aiGuardLethal, dark dark, phase off, sporeCloud, woods, terr"
+  },
+  {
+   "id": "m4",
+   "field": "field",
+   "old": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T1",
+   "new": "aiGuardLethal, dark dark, landslide, phase off, terrain Deep"
+  },
+  {
+   "id": "mk",
+   "field": "field",
+   "old": "aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Cora",
+   "new": "aiGuardLethal, phase cycle, saltMap, tangledRoots, tide, wet"
+  },
+  {
+   "id": "m7",
+   "field": "field",
+   "old": "aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Cora",
+   "new": "aiGuardLethal, permaTide, phase cycle, saltMap, tide, wet, t"
+  },
+  {
+   "id": "mv",
+   "field": "field",
+   "old": "aiGuardLethal, phase cycle, wind gale, windfall, terrain Hig",
+   "new": "aiGuardLethal, phase cycle, thunderstorm, wind gale, windfal"
+  },
+  {
+   "id": "my",
+   "field": "field",
+   "old": "aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods",
+   "new": "aiGuardLethal, canopy, field rain, phase cycle, woods, terra"
+  },
+  {
+   "id": "ml",
+   "field": "field",
+   "old": "aiGuardLethal, phase cycle, undergrowth, terrain Open Meadow",
+   "new": "aiGuardLethal, phase cycle, tallGrass, undergrowth, terrain "
+  },
+  {
+   "id": "md",
+   "field": "field",
+   "old": "aiGuardLethal, phase cycle, sandstorm, weatherMap, wind wind",
+   "new": "aiGuardLethal, phase cycle, quicksand, sandstorm, weatherMap"
+  },
+  {
+   "id": "m3",
+   "field": "field",
+   "old": "aiGuardLethal, hotMap, phase cycle, wind windy, windfall, te",
+   "new": "aiGuardLethal, field heatwave, heatLevel 1, hotMap, phase cy"
+  }
+ ],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [
+  "error: BPRO run mo failed: TypeError: Cannot read properties of null (reading 'length') /     at Object.main (/home/claude/bramblewood-arena-game/.claude/worktrees/agent-a5ddd6b6e7a6bfed3/tools/bench/deck.js:155:100) /     at async main (/home/claude/bramblewood-arena-game/.claude/worktrees/agent-a5ddd6b6e"
+ ],
+ "files": [
+  "canonical/pro-skirmishes.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/bake-2026-11-02-1029.json"
+}
