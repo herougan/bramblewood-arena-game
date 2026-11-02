@@ -2426,7 +2426,7 @@
       "field-vole": 4,
       "hawthorn-shieldbug": 4,
       "slow-worm": 3,
-      "vampire-bat": 2
+      "robin-redbreast": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map01-mq-2026-10-30.json",
@@ -2442,7 +2442,8 @@
       "generated": "2026-10-30T10:03:29.154Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13cap": "2026-11-03 (BAL13, BAL12-6 / RAR-1): vampire-bat x2 -> robin-redbreast x2 (over the deck's uncommon cap); not re-searched"
     },
     {
      "id": "1-A-PRO-3",
@@ -13370,7 +13371,7 @@
      ],
      "level": 1,
      "leaders": [
-      "proboscis-monkey"
+      "vampire-bat"
      ],
      "deck": {
       "fiddler-crab-swarm": 4,
@@ -15343,7 +15344,7 @@
      ],
      "level": 1,
      "leaders": [
-      "mangrove-manatee"
+      "nautilus-drifter"
      ],
      "deck": {
       "blue-ringed-octopus": 3,
@@ -15417,7 +15418,7 @@
      ],
      "level": 1,
      "leaders": [
-      "mangrove-manatee"
+      "nautilus-drifter"
      ],
      "deck": {
       "clownfish-scout": 4,
@@ -20291,7 +20292,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "pangolin-roller"
      ],
      "deck": {
       "grave-grin-hyena": 3,
@@ -20329,7 +20330,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "pangolin-roller"
      ],
      "deck": {
       "grave-grin-hyena": 4,
@@ -20440,7 +20441,7 @@
      ],
      "level": 1,
      "leaders": [
-      "lyrebird-mimic"
+      "pangolin-roller"
      ],
      "deck": {
       "hoopoe-herald": 3,
@@ -20477,7 +20478,7 @@
      ],
      "level": 1,
      "leaders": [
-      "lyrebird-mimic"
+      "pangolin-roller"
      ],
      "deck": {
       "apollo-butterfly": 4,
@@ -24467,7 +24468,7 @@
      ],
      "level": 1,
      "leaders": [
-      "caustic-scorpion"
+      "dune-packrat"
      ],
      "deck": {
       "antlion-pit": 2,
@@ -24503,7 +24504,7 @@
      ],
      "level": 1,
      "leaders": [
-      "caustic-scorpion"
+      "dune-packrat"
      ],
      "deck": {
       "antlion-pit": 4,
@@ -25977,15 +25978,15 @@
      ],
      "level": 1,
      "leaders": [
-      "echidna-quillshot"
+      "pit-glutton"
      ],
      "deck": {
       "eagle-owl-quartermaster": 3,
-      "echidna-quillshot": 1,
       "fire-salamander": 4,
       "cinder-stoker": 4,
       "talus-pika": 4,
-      "pumice-beetle": 4
+      "pumice-beetle": 4,
+      "pit-glutton": 1
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map19-m3-2026-10-30.json",
@@ -26003,7 +26004,8 @@
      "h2h": null,
      "later": [],
      "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (guano-beetle x4, porcupine-roller x4, stag-beetle x3); not re-searched",
-     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pit-glutton -3 -> pumice-beetle x3; echidna-quillshot -1 -> pumice-beetle x1 (pit-glutton left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pit-glutton -3 -> pumice-beetle x3; echidna-quillshot -1 -> pumice-beetle x1 (pit-glutton left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched",
+     "bal13cap": "2026-11-03 (BAL13, BAL12-6 / RAR-1): echidna-quillshot x1 -> pit-glutton x1 (over the deck's veryrare cap); not re-searched"
     },
     {
      "id": "19-PRO-2",
@@ -26123,15 +26125,15 @@
      ],
      "level": 1,
      "leaders": [
-      "echidna-quillshot"
+      "pit-glutton"
      ],
      "deck": {
-      "echidna-quillshot": 1,
       "obsidian-scorpion": 3,
       "pumice-beetle": 4,
       "sulfur-cinder-moth": 4,
       "talus-pika": 4,
-      "glacier-wolf-pack": 4
+      "glacier-wolf-pack": 4,
+      "pit-glutton": 1
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map19-m3-2026-10-31.json",
@@ -26148,7 +26150,8 @@
      },
      "h2h": null,
      "later": [],
-     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): hercules-beetle -3 -> glacier-wolf-pack x3; echidna-quillshot -1 -> glacier-wolf-pack x1 (hercules-beetle left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): hercules-beetle -3 -> glacier-wolf-pack x3; echidna-quillshot -1 -> glacier-wolf-pack x1 (hercules-beetle left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched",
+     "bal13cap": "2026-11-03 (BAL13, BAL12-6 / RAR-1): echidna-quillshot x1 -> pit-glutton x1 (over the deck's veryrare cap); not re-searched"
     }
    ],
    "replaced": [
@@ -26639,7 +26642,7 @@
      ],
      "level": 1,
      "leaders": [
-      "badger-berserker"
+      "tide-spirit"
      ],
      "deck": {
       "ashbone-ghoul": 4,
@@ -26787,7 +26790,7 @@
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "magma-salamander"
      ],
      "deck": {
       "cinder-gecko": 3,
@@ -26823,7 +26826,7 @@
      ],
      "level": 1,
      "leaders": [
-      "hercules-beetle"
+      "tide-spirit"
      ],
      "deck": {
       "ashbone-ghoul": 4,
@@ -27301,7 +27304,7 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "magma-salamander"
      ],
      "deck": {
       "ancient-sloth-titan": 4,
@@ -27373,7 +27376,7 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "magma-salamander"
      ],
      "deck": {
       "gorge-wyrm": 4,
@@ -28799,7 +28802,7 @@
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "magma-salamander"
      ],
      "deck": {
       "ashbone-ghoul": 4,
@@ -28837,7 +28840,7 @@
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "tide-spirit"
      ],
      "deck": {
       "ember-jackal": 3,
@@ -28876,7 +28879,7 @@
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "tide-spirit"
      ],
      "deck": {
       "ashbone-ghoul": 4,
@@ -28912,7 +28915,7 @@
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "magma-salamander"
      ],
      "deck": {
       "ash-moth": 4,

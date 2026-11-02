@@ -33,7 +33,7 @@ const maps = G.CONQUEST_MAPS;
 // worktree's cards.json does not have them yet, so the new rarities are hard-coded here for the copy-cap trim (`trim`) and the swap's caps.
 const RAR1 = { 'beetle-battering-ram': 'veryrare', 'siege-rhino': 'veryrare', 'nautilus-drifter': 'veryrare', 'tide-spirit': 'veryrare', 'trapdoor-spider': 'veryrare', 'magma-salamander': 'veryrare',
   'echidna-quillshot': 'superrare', 'pangolin-roller': 'rare', 'vampire-bat': 'rare', 'dune-packrat': 'rare', 'coral-polyp-colony': 'uncommon', 'thorny-devil': 'uncommon', 'dung-beetle': 'uncommon' };
-const rarityOf = id => RAR1[id] || (D[id] || {}).rarity;
+const rarityOf = id => (D[id] || {}).rarity; // 2026-11-03: BAL12 merged, cards.json has the RAR-1 rarities (RAR1 stays as the list)
 const capOf = id => G.maxCopiesForRarity(rarityOf(id));
 const stat = id => { const d = D[id] || {}; return 2 * (+d.attack || 0) + (+d.health || 0); };
 const dist = (a, b) => { const x = D[a] || {}, y = D[b] || {}; return 3 * Math.abs((+x.cost || 0) - (+y.cost || 0)) + Math.abs((+x.wait || 0) - (+y.wait || 0)) + Math.abs(stat(a) - stat(b)) / 3 + 2 * Math.abs(((+x.stoneCost || 0) + (+x.metalCost || 0)) - ((+y.stoneCost || 0) + (+y.metalCost || 0)))
@@ -107,7 +107,7 @@ function trimPlan() {
     if (m.tower || m.reserved) continue; const no = G.mapNumberOf(m.id); if (no == null) continue;
     for (const n of m.nodes || []) {
       if (!n.deck) continue; const cap = G.roadRarityCap(no, n.kind || 'skirmish', m.id) || 'mythic';
-      Object.keys(n.deck).filter(id => RAR1[id] && L.step(RAR1[id]) > L.step(cap)).forEach(id => overCap.push({ where: `node ${m.id}:${n.key}`, map: no, card: id, rarity: RAR1[id], cap }));
+      Object.keys(n.deck).filter(id => RAR1[id] && !m.endless && L.step(rarityOf(id)) > L.step(cap)).forEach /* the RAR-1 cards only; the endless dungeons' floors are dealt from themes */(id => overCap.push({ where: `node ${m.id}:${n.key}`, map: no, loc: m.id, key: n.key, card: id, rarity: rarityOf(id), cap, copies: n.deck[id], kept: firstClearOf(m, n).has(id) || explicitLeaders(n).has(id) }));
       const extra = {}; Object.keys(n.deck).forEach(id => { const x = n.deck[id] - capOf(id); if (x > 0 && D[id]) extra[id] = x; }); if (!Object.keys(extra).length) continue;
       const keep = new Set([...firstClearOf(m, n), ...explicitLeaders(n)]), f = F[m.id + ':' + n.key];
       const VV = d => f ? K14.violations(Object.assign({}, f, { n: Object.assign({}, f.n, { deck: d }) }), d) : [];
@@ -146,7 +146,7 @@ function anchorOf(m) { if (_anchor[m.id]) return _anchor[m.id]; try { const O = 
 // a changed PRO deck's showcase leader follows its deck (tools/opt/pro_skirmishes.js leadersFor, as the PRO bake sets it)
 function refreshLeaders(pro) { const O = require(path.join(ROOT, 'tools', 'opt', 'deckopt.js')), P = require(path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js')); _gm = _gm || O.loadGame(ROOT); let n = 0;
   for (const [mid, e] of Object.entries(pro.maps || {})) { const m = maps.find(x => x.id === mid); if (!m) continue;
-    for (const kind of ['pro', 'bpro', 'wpro']) for (const x of (e[kind] || [])) { if (!x.bal13 && !x.bal13trim) continue; const l = P.leadersFor(_gm, m, x.deck); if (JSON.stringify(l) !== JSON.stringify(x.leaders || [])) { x.leaders = l; n++; } } }
+    for (const kind of ['pro', 'bpro', 'wpro']) for (const x of (e[kind] || [])) { if (!x.bal13 && !x.bal13trim && !x.bal13cap) continue; const l = P.leadersFor(_gm, m, x.deck); if (JSON.stringify(l) !== JSON.stringify(x.leaders || [])) { x.leaders = l; n++; } } }
   return n; }
 function deckLit(orig, deck, note) { const dbl = orig.includes('"'); const j = JSON.stringify(deck); return 'deck:' + (dbl ? j : j.replace(/"/g, "'")) + ' /* ' + note + ' */'; }
 function mainTrim(argv) {
@@ -177,8 +177,55 @@ function mainTrim(argv) {
   L.writeJson(path.join(OUTDIR, `rar1-trim-${DATE}.json`), { _about: 'BAL13 (2026-11-02, coordinator 20:19): RAR-1 copy-cap trims of the road and PRO decks; tools/bal13/decks_2026_11_02.js trim', rar1: RAR1, rows, overCap });
   console.log(`written: ${n} road decks, ${rows.filter(r => r.pro).length} PRO decks -> docs/balance/bal13/rar1-trim-${DATE}.json`);
 }
+// 2026-11-03 (BAL13, coordinator for BAL12-6): a road fight's copies of a card above the fight's rarity cap (roadRarityCap; RAR-1 raised 13
+// cards) go to the nearest card of the fight's list within the cap (the same swap; size, K14 kept). A card that is the fight's own first-clear
+// card or explicit leader is not swapped: it is listed for the owner (a card-data call).
+function mainOvercap(argv) {
+  const apply = argv.includes('--apply'), check = argv.includes('--check'), F = {}, rows = [], flagged = [];
+  K14.fights().forEach(f => { F[f.map + ':' + f.key] = f; });
+  const { overCap } = trimPlan();
+  const byNode = {}; overCap.forEach(o => { (byNode[o.loc + ':' + o.key] = byNode[o.loc + ':' + o.key] || []).push(o); });
+  for (const [k, list] of Object.entries(byNode)) {
+    const [loc, key] = [k.slice(0, k.indexOf(':')), k.slice(k.indexOf(':') + 1)], m = maps.find(x => x.id === loc), n = m.nodes.find(x => x.key === key), no = G.mapNumberOf(loc);
+    list.filter(o => o.kept).forEach(o => flagged.push(o)); const go = list.filter(o => !o.kept).map(o => o.card); if (!go.length) continue;
+    const cap = G.roadRarityCap(no, n.kind || 'skirmish', loc) || 'mythic', f = F[k], keep = new Set([...firstClearOf(m, n), ...explicitLeaders(n)]);
+    const VV = d => f ? K14.violations(Object.assign({}, f, { n: Object.assign({}, f.n, { deck: d }) }), d) : [];
+    const nu = d => { const x = VV(d).map(s => /^(\d+) non-unique copies$/.exec(s)).find(Boolean); return x ? +x[1] : 0; };
+    const v0 = VV(n.deck).length, nu0 = nu(n.deck), chk = f ? (d => VV(d).length <= v0 && nu(d) <= Math.max(6, nu0)) : null;
+    const r = swapOut(n.deck, go, poolFor(m), cap, chk, keep);
+    rows.push({ where: 'node ' + k, map: no, loc, key, kind: n.kind || 'skirmish', cap, before: n.deck, after: r.deck, moves: r.moves });
+  }
+  const txt = v => `${v.out} x${v.copies} -> ${Object.entries(v.to).map(([c, kk]) => c + ' x' + kk).join(' + ') || '-'}${v.left ? ' (' + v.left + ' left)' : ''}`;
+  console.log(`road fights with a card over their rarity cap: ${rows.length} to swap, ${flagged.length} kept and flagged`);
+  rows.forEach(r => console.log(`  ${r.where.padEnd(22)} cap ${r.cap}: ${r.moves.map(txt).join('; ')}`)); flagged.forEach(o => console.log(`  flagged (first-clear / leader): ${o.where} ${o.card} (${o.rarity} > ${o.cap})`));
+  if (check) { if (rows.length) process.exit(1); console.log('clean'); return; }
+  if (!apply) return;
+  let src = fs.readFileSync(APP, 'utf8'), n = 0; const a = src.indexOf('const CONQUEST_MAPS = ['), b = src.indexOf('\n];', a); let body = src.slice(a, b);
+  for (const r of rows) { const note = `2026-11-03 (BAL13, BAL12-6 / RAR-1): ${r.moves.map(v => v.out).join(', ')} over the fight's rarity cap (${r.cap}), copies to the list's nearest within it (tools/bal13/decks_2026_11_02.js overcap)`;
+    const re = new RegExp(`\\{ ?key:\\s*['"]${r.key.replace(/[-]/g, '\\-')}['"],[^\\n]*`), mm = re.exec(body); if (!mm) { console.log('not found: ' + r.where); continue; }
+    const line = mm[0].replace(/deck:\{[^}]*\}/, d => deckLit(d, r.after, note)); body = body.replace(mm[0], () => line); n++; }
+  src = src.slice(0, a) + body + src.slice(b); fs.writeFileSync(APP, src);
+  L.writeJson(path.join(OUTDIR, 'overcap-2026-11-03.json'), { _about: 'BAL13 (2026-11-03, BAL12-6): RAR-1 cards over their road fight\'s rarity cap swapped; tools/bal13/decks_2026_11_02.js overcap', rows, flagged });
+  console.log(`written: ${n} road decks -> docs/balance/bal13/overcap-2026-11-03.json`);
+}
+// the same for the PRO / BPRO / WPRO decks: a card above the deck's own rarity cap (source.cap) goes to the list's nearest within it (6/4, the
+// map's list first); the showcase leader follows the deck
+function mainOvercapPro(argv) {
+  const apply = argv.includes('--apply'), pro = JSON.parse(fs.readFileSync(PRO, 'utf8')), rows = [];
+  for (const [mid, e] of Object.entries(pro.maps || {})) { const m = maps.find(x => x.id === mid); if (!m) continue; const no = G.mapNumberOf(mid);
+    for (const kind of ['pro', 'bpro', 'wpro']) for (const x of (e[kind] || [])) { const cap = (x.source && x.source.cap) || G.roadRarityCap(no, 'boss', mid) || 'mythic';
+      const bad = Object.keys(x.deck).filter(id => D[id] && L.step(rarityOf(id)) > L.step(cap)); if (!bad.length) continue;
+      const r = swapOut(x.deck, bad, poolFor(m), cap, null, new Set(), { maxCopies: 4, maxUnique: 6, prefer: anchorOf(m) });
+      rows.push({ where: `${kind} ${x.id}`, loc: mid, pro: { kind, id: x.id }, cap, before: x.deck, after: r.deck, moves: r.moves });
+      if (apply) { x.deck = r.deck; x.bal13cap = `2026-11-03 (BAL13, BAL12-6 / RAR-1): ${r.moves.map(v => v.out + ' x' + v.copies + ' -> ' + Object.entries(v.to).map(([c, k]) => c + ' x' + k).join(' + ') + (v.left ? ' (' + v.left + ' left)' : '')).join('; ')} (over the deck's ${cap} cap); not re-searched`; } } }
+  rows.forEach(r => console.log(`  ${r.where.padEnd(18)} cap ${r.cap}: ${r.moves.map(v => v.out + ' x' + v.copies + ' -> ' + JSON.stringify(v.to) + (v.left ? ' LEFT ' + v.left : '')).join('; ')}`));
+  if (!apply) return; console.log('PRO leaders refreshed: ' + refreshLeaders(pro)); fs.writeFileSync(PRO, JSON.stringify(pro, null, 1) + '\n');
+  const f = path.join(OUTDIR, 'overcap-2026-11-03.json'), j = L.readJson(f, { rows: [], flagged: [] }); j.proRows = rows; L.writeJson(f, j); console.log('written: ' + rows.length + ' PRO decks');
+}
 function main(argv) {
   if (argv[0] === 'trim') return mainTrim(argv.slice(1));
+  if (argv[0] === 'overcap-pro') return mainOvercapPro(argv.slice(1));
+  if (argv[0] === 'overcap') return mainOvercap(argv.slice(1));
   const apply = argv.includes('--apply'), check = argv.includes('--check'), { rows, kept, pro } = plan();
   const txt = v => `${v.out} x${v.copies} -> ${Object.entries(v.to).map(([c, k]) => c + ' x' + k).join(' + ') || '-'}${v.left ? ' (' + v.left + ' left)' : ''}`;
   console.log(`decks holding Beetle Battering-Ram / Siege Rhino / Hercules Beetle before their priced map: ${rows.length} (road ${rows.filter(r => !r.pro).length}, PRO/BPRO/WPRO ${rows.filter(r => r.pro).length}); kept ${kept.length}`);

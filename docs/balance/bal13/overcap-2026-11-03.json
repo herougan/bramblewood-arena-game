@@ -1,0 +1,476 @@
+{
+ "_about": "BAL13 (2026-11-03, BAL12-6): RAR-1 cards over their road fight's rarity cap swapped; tools/bal13/decks_2026_11_02.js overcap",
+ "rows": [
+  {
+   "where": "node m3:19-3",
+   "map": 19,
+   "loc": "m3",
+   "key": "19-3",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "glacier-wolf-pack": 1,
+    "yeti": 3,
+    "fire-salamander": 4,
+    "quill-volley": 1,
+    "echidna-quillshot": 1,
+    "cinder-stoker": 2,
+    "magma-titan": 2
+   },
+   "after": {
+    "glacier-wolf-pack": 1,
+    "yeti": 3,
+    "fire-salamander": 4,
+    "quill-volley": 1,
+    "cinder-stoker": 2,
+    "magma-titan": 2,
+    "pit-glutton": 1
+   },
+   "moves": [
+    {
+     "out": "echidna-quillshot",
+     "copies": 1,
+     "to": {
+      "pit-glutton": 1
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "node m3:19-4",
+   "map": 19,
+   "loc": "m3",
+   "key": "19-4",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "magma-titan": 4,
+    "fire-salamander": 1,
+    "echidna-quillshot": 1,
+    "yeti": 4,
+    "cinder-stoker": 3,
+    "pumice-beetle": 2
+   },
+   "after": {
+    "magma-titan": 4,
+    "fire-salamander": 1,
+    "yeti": 4,
+    "cinder-stoker": 3,
+    "pumice-beetle": 2,
+    "pit-glutton": 1
+   },
+   "moves": [
+    {
+     "out": "echidna-quillshot",
+     "copies": 1,
+     "to": {
+      "pit-glutton": 1
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "node m3:19-5",
+   "map": 19,
+   "loc": "m3",
+   "key": "19-5",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "cinder-stoker": 4,
+    "phoenix-fledgling": 3,
+    "yeti": 4,
+    "quill-volley": 1,
+    "echidna-quillshot": 1,
+    "magma-titan": 4,
+    "pumice-beetle": 2,
+    "talus-pika": 1
+   },
+   "after": {
+    "cinder-stoker": 4,
+    "phoenix-fledgling": 3,
+    "yeti": 4,
+    "quill-volley": 1,
+    "magma-titan": 4,
+    "pumice-beetle": 2,
+    "talus-pika": 1,
+    "pit-glutton": 1
+   },
+   "moves": [
+    {
+     "out": "echidna-quillshot",
+     "copies": 1,
+     "to": {
+      "pit-glutton": 1
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "node m9:19-A-5",
+   "map": 19,
+   "loc": "m9",
+   "key": "19-A-5",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "echidna-quillshot": 1,
+    "ore-smelter-mole": 1,
+    "magma-salamander": 1,
+    "phoenix-fledgling": 5,
+    "ember-jackal": 1,
+    "anvilwhisker-otter": 1,
+    "cinder-stoker": 1,
+    "tide-spirit": 1
+   },
+   "after": {
+    "ore-smelter-mole": 1,
+    "magma-salamander": 2,
+    "phoenix-fledgling": 5,
+    "ember-jackal": 1,
+    "anvilwhisker-otter": 1,
+    "cinder-stoker": 1,
+    "tide-spirit": 1
+   },
+   "moves": [
+    {
+     "out": "echidna-quillshot",
+     "copies": 1,
+     "to": {
+      "magma-salamander": 1
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "node m9:19-A-9",
+   "map": 19,
+   "loc": "m9",
+   "key": "19-A-9",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "echidna-quillshot": 1,
+    "ember-jackal": 1,
+    "phoenix-fledgling": 5,
+    "anvilwhisker-otter": 1,
+    "ore-smelter-mole": 1,
+    "cinder-stoker": 3,
+    "ashbone-ghoul": 1,
+    "magma-salamander": 1
+   },
+   "after": {
+    "ember-jackal": 1,
+    "phoenix-fledgling": 5,
+    "anvilwhisker-otter": 1,
+    "ore-smelter-mole": 1,
+    "cinder-stoker": 3,
+    "ashbone-ghoul": 1,
+    "magma-salamander": 2
+   },
+   "moves": [
+    {
+     "out": "echidna-quillshot",
+     "copies": 1,
+     "to": {
+      "magma-salamander": 1
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "node mz:7-A-3",
+   "map": 7,
+   "loc": "mz",
+   "key": "7-A-3",
+   "kind": "elite",
+   "cap": "rare",
+   "before": {
+    "trapdoor-spider": 2,
+    "sleepless-shrew": 5,
+    "planarian-splitter": 4,
+    "garden-snail": 1,
+    "fungal-colossus": 4,
+    "ant-warrior": 1
+   },
+   "after": {
+    "sleepless-shrew": 5,
+    "planarian-splitter": 4,
+    "garden-snail": 1,
+    "fungal-colossus": 4,
+    "ant-warrior": 3
+   },
+   "moves": [
+    {
+     "out": "trapdoor-spider",
+     "copies": 2,
+     "to": {
+      "ant-warrior": 2
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "node mz:7-A-5",
+   "map": 7,
+   "loc": "mz",
+   "key": "7-A-5",
+   "kind": "boss",
+   "cap": "rare",
+   "before": {
+    "trapdoor-spider": 2,
+    "fungal-colossus": 4,
+    "rootworm-colony": 5,
+    "garden-snail": 1,
+    "planarian-splitter": 3
+   },
+   "after": {
+    "fungal-colossus": 4,
+    "rootworm-colony": 5,
+    "garden-snail": 1,
+    "planarian-splitter": 4,
+    "ant-warrior": 1
+   },
+   "moves": [
+    {
+     "out": "trapdoor-spider",
+     "copies": 2,
+     "to": {
+      "planarian-splitter": 1,
+      "ant-warrior": 1
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "node mn:8-A-1",
+   "map": 8,
+   "loc": "mn",
+   "key": "8-A-1",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "bat-swarmling": 1,
+    "blind-cave-fish": 3,
+    "vampire-bat": 3,
+    "cave-olm": 5,
+    "prospector-mole": 1,
+    "whip-spider": 1
+   },
+   "after": {
+    "bat-swarmling": 1,
+    "blind-cave-fish": 3,
+    "cave-olm": 5,
+    "prospector-mole": 1,
+    "whip-spider": 4
+   },
+   "moves": [
+    {
+     "out": "vampire-bat",
+     "copies": 3,
+     "to": {
+      "whip-spider": 3
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "node mn:8-A-2",
+   "map": 8,
+   "loc": "mn",
+   "key": "8-A-2",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "bat-swarmling": 1,
+    "echo-screecher": 3,
+    "badger-stonemason": 4,
+    "vampire-bat": 3,
+    "glimmer-spider": 2,
+    "prospector-mole": 2,
+    "blind-cave-fish": 4,
+    "whip-spider": 1
+   },
+   "after": {
+    "bat-swarmling": 1,
+    "echo-screecher": 3,
+    "badger-stonemason": 4,
+    "glimmer-spider": 2,
+    "prospector-mole": 2,
+    "blind-cave-fish": 4,
+    "whip-spider": 4
+   },
+   "moves": [
+    {
+     "out": "vampire-bat",
+     "copies": 3,
+     "to": {
+      "whip-spider": 3
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "node mn:8-A-3",
+   "map": 8,
+   "loc": "mn",
+   "key": "8-A-3",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "sulfur-cinder-moth": 4,
+    "echo-screecher": 3,
+    "vampire-bat": 3,
+    "blind-cave-fish": 3,
+    "whip-spider": 4,
+    "cave-olm": 2
+   },
+   "after": {
+    "sulfur-cinder-moth": 4,
+    "echo-screecher": 3,
+    "blind-cave-fish": 3,
+    "whip-spider": 4,
+    "cave-olm": 5
+   },
+   "moves": [
+    {
+     "out": "vampire-bat",
+     "copies": 3,
+     "to": {
+      "cave-olm": 3
+     },
+     "left": 0
+    }
+   ]
+  }
+ ],
+ "flagged": [
+  {
+   "where": "node m3:19-6",
+   "map": 19,
+   "loc": "m3",
+   "key": "19-6",
+   "card": "echidna-quillshot",
+   "rarity": "superrare",
+   "cap": "veryrare",
+   "copies": 1,
+   "kept": true
+  }
+ ],
+ "proRows": [
+  {
+   "where": "pro 1-A-PRO-2",
+   "loc": "mq",
+   "pro": {
+    "kind": "pro",
+    "id": "1-A-PRO-2"
+   },
+   "cap": "uncommon",
+   "before": {
+    "cricket-drummer": 4,
+    "field-mouse": 3,
+    "field-vole": 4,
+    "hawthorn-shieldbug": 4,
+    "slow-worm": 3,
+    "vampire-bat": 2
+   },
+   "after": {
+    "cricket-drummer": 4,
+    "field-mouse": 3,
+    "field-vole": 4,
+    "hawthorn-shieldbug": 4,
+    "slow-worm": 3,
+    "robin-redbreast": 2
+   },
+   "moves": [
+    {
+     "out": "vampire-bat",
+     "copies": 2,
+     "to": {
+      "robin-redbreast": 2
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "pro 19-PRO-1",
+   "loc": "m3",
+   "pro": {
+    "kind": "pro",
+    "id": "19-PRO-1"
+   },
+   "cap": "veryrare",
+   "before": {
+    "eagle-owl-quartermaster": 3,
+    "echidna-quillshot": 1,
+    "fire-salamander": 4,
+    "cinder-stoker": 4,
+    "talus-pika": 4,
+    "pumice-beetle": 4
+   },
+   "after": {
+    "eagle-owl-quartermaster": 3,
+    "fire-salamander": 4,
+    "cinder-stoker": 4,
+    "talus-pika": 4,
+    "pumice-beetle": 4,
+    "pit-glutton": 1
+   },
+   "moves": [
+    {
+     "out": "echidna-quillshot",
+     "copies": 1,
+     "to": {
+      "pit-glutton": 1
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "bpro 19-BPRO-2",
+   "loc": "m3",
+   "pro": {
+    "kind": "bpro",
+    "id": "19-BPRO-2"
+   },
+   "cap": "veryrare",
+   "before": {
+    "echidna-quillshot": 1,
+    "obsidian-scorpion": 3,
+    "pumice-beetle": 4,
+    "sulfur-cinder-moth": 4,
+    "talus-pika": 4,
+    "glacier-wolf-pack": 4
+   },
+   "after": {
+    "obsidian-scorpion": 3,
+    "pumice-beetle": 4,
+    "sulfur-cinder-moth": 4,
+    "talus-pika": 4,
+    "glacier-wolf-pack": 4,
+    "pit-glutton": 1
+   },
+   "moves": [
+    {
+     "out": "echidna-quillshot",
+     "copies": 1,
+     "to": {
+      "pit-glutton": 1
+     },
+     "left": 0
+    }
+   ]
+  }
+ ]
+}
