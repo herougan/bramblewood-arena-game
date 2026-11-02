@@ -1920,6 +1920,14 @@ Object.assign(SKILL_ICON, {wakeful:'👁️', pulverise:'🔨', socket:'💎'});
 // On no live card yet (the owner places it).
 PASSIVE_DEFS.push({key:'slow', category:'passive', label:TX('ui.eng13-slow-name'), kind:'boolean', desc:()=> TX('ui.eng13-slow')});
 Object.assign(SKILL_ICON, {slow:'🐌'});
+// ==== Package ENG20 (2026-11-02, owner 22:44 #3 and 22:47; rules in bramblewood-engine.js, the Package ENG20 block; prices in
+// canonical/skill-costs.json): Stop, Drop and Roll (rolls instead of catching fire, Wait +1), Glean (every Berry on the board -> +1 Shield
+// each) and Lumber Feast N (eats up to N of your Lumber as it arrives, +1/+1 each). On no live card yet (the owner places them, ENG20-3 / -8).
+PASSIVE_DEFS.push(
+  {key:'dropRoll', category:'passive', label:TX('ui.eng20-droproll-name'), kind:'boolean', desc:()=> TX('ui.eng20-droproll')},
+  {key:'glean', category:'passive', label:TX('ui.eng20-glean-name'), kind:'boolean', desc:()=> TX('ui.eng20-glean')},
+  {key:'lumberFeast', category:'passive', label:TX('ui.eng20-feast-name'), kind:'number', min:1, defaultValue:3, desc:v=> TX('ui.eng20-feast', {n: numOr(v, 3)}), get:e=> e.lumberFeast ? numOr(e.lumberFeast, 3) : undefined});
+Object.assign(SKILL_ICON, {dropRoll:'🤸', glean:'🫐', lumberFeast:'🪵'});
 // ==== Package ENG10 (2026-10-26, the owner's 10-26 11:19 answers; rules in bramblewood-engine.js, prices in canonical/skill-costs.json and
 // bramblewood-budget.js): the lines, the card editor's rows and the Codex for
 //   the elemental spits named by their element alone (ENG9-3: Cinder, Acid, Venom, Ice, Spark; Ember is a gem, Frost a skill)
@@ -3171,6 +3179,7 @@ PASSIVE_DEFS.push(
 Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
 Object.assign(SKILL_TEXT, {wakeful: ()=> TX('ui.c3-wakeful'), pulverise: ()=> TX('ui.c3-pulverise'), socket: v=> TX('ui.c3-socket', {n: numOr(v, 1)})}); // CONTENT3 (2026-10-26)
 Object.assign(SKILL_TEXT, {slow: ()=> TX('ui.eng13-slow')}); // ENG13 (2026-10-29)
+Object.assign(SKILL_TEXT, {dropRoll: ()=> TX('ui.eng20-droproll'), glean: ()=> TX('ui.eng20-glean'), lumberFeast: v=> TX('ui.eng20-feast', {n: numOr(v, 3)})}); // ENG20 (2026-11-02)
 // ==== Package ENG14 (2026-10-30, owner 10-30 23:25 X20 / X26; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
 //   Bola N (X26)        Arrow N's shot; a unit it hits is Pinned for its next turn (no swing, no move; its skills still work)
 //   Anadromous (ANAD-1) +1 Attack on a salt-water map (rules.saltMap: beach, reef), +2 Health anywhere else
@@ -3405,6 +3414,9 @@ function describeEffects(def, liveCard, opt){
       // 2026-10-15 (user: "It should be Swimmer - On tide, { ... }"): a Swimmer reads as Swimmer, never as Tide.
       if(p.key==='swimmer'){ lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('swimmer')}Swimmer – ${lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide'}, ${lt.bonus}</span>` : `${ic('swimmer')}${swimmerLine(e)}`); return; }
       lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('tide')}${lt.name} – ${lt.bonus}</span>` : `${ic('tide')}Tide — ${skillText(p, v, e)}`); return; }
+    // ENG20-1 (2026-11-02, owner 22:44: "Remember can only trigger once per card, then the skill desc becomes redded out"): a unit that came back
+    // by Remember shows the line struck, with the used tag (its pip is gone from the strip, abilityBadges).
+    if(p.key==='remember' && liveCard){ const lc = currentCardByUidSafe(liveCard.uid) || liveCard; if(lc && lc.rememberSpent){ lines.push(`<span class="sk-used" title="${escapeAttr(TX('ui.eng20-remember-used'))}">${ic('remember')}${p.label}${valSuffix(v)} — ${skillText(p, v, e)}</span> <b class="sk-used-tag">${escapeHtml(TX('ui.eng20-used'))}</b>`); return; } }
     if(p.key==='pounce' && !pounceMode(e.pounce)){ lines.push(`${ic('pounce')}Pounce${valSuffix(numOr(e.pounce, 1))} — ${SKILL_TEXT.pounce(e.pounce)}`); return; }
     if(p.key==='pounce'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; // 2026-10-16 (user: "Pounce <Att> or <Hp>")
       const pm = pounceMode(e.pounce), now = lc ? (lc.pounceN != null ? lc.pounceN : pm === 'attack' ? (lc.atk||0) : (lc.hp||0)) : null;
@@ -8998,6 +9010,7 @@ CHIP_FALLBACK_SKILLS.push('mimic'); // Package MT (2026-10-21): Mimic's chip (�
 CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
 CHIP_FALLBACK_SKILLS.push('evolute', 'evoluteAlpha', 'evoluteOmega', 'stem', 'chrysalis'); // Package EV (2026-10-21): 🧬 / 🧬α / 🧬Ω, 🌱, 🐛
 CHIP_FALLBACK_SKILLS.push('hatchling'); // Package ENG17 (2026-11-02): 🐣
+CHIP_FALLBACK_SKILLS.push('dropRoll', 'glean', 'lumberFeast'); // Package ENG20 (2026-11-02): 🤸, 🫐, 🪵N
 CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 🪙
 // 2026-10-30 (coordinator; owner 21:35: "When the Sun's active, Diurnal symbol becomes highlighted, like tide. When it's night, nocturnal symbol gets
 // highlighted."): a board card's Diurnal / Nocturnal chip takes the live Tide look while its bonus applies (the engine's zeitPhase: a dark fight counts
@@ -9029,6 +9042,8 @@ function ui11BloomImpossible(bw, bopts){
 }
 // 2026-10-31 (package UI11, FF5; owner: the Bloom chip's 🌸 sits off centre): UI7 pulled every skill icon's right edge in (margin-right -.16em) to tuck its number closer, which
 // pushed a chip with the icon alone off centre. A chip with no number is marked (.is-icon-only) and keeps no such pull.
+// ENG20-1 (2026-11-02): is this board card's Remember used (it came back once)? Live engine card first, then the replay's copy.
+function en20RememberSpent(bopts){ try{ const lv = bopts && bopts.live; if(!lv || lv.uid == null) return false; const lc = currentCardByUidSafe(lv.uid); return !!((lc && lc.rememberSpent) || lv.rememberSpent); }catch(e){ return false; } }
 function ui11IconOnly(html){ try{ return String(html).replace(/<[^>]*>/g, '').replace(/[\s\uFE0F\u200D]|\p{Extended_Pictographic}/gu, '') === '' ? ' is-icon-only' : ''; }catch(e){ return ''; } }
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
@@ -9272,6 +9287,7 @@ function abilityBadges(d, bopts){
   // (Nocturnal, Bleed, Regen, Guardian, Stealth, Arrow, Crit…), so the card looked as if it had no skill. Each now gets its icon,
   // plus its number when it is more than 1. Skills that carry two numbers (Freeze, Sleep…) show the icon alone.
   CHIP_FALLBACK_SKILLS.forEach(k=>{ const v = e[k]; if(!v) return;
+    if(k === 'remember' && en20RememberSpent(bopts)) return; // ENG20-1 (2026-11-02): a used Remember's pip is gone
     if(k === 'magic') return; // 2026-10-21 (package BX, owner: "For magic units, dont have to have the magic context label since it's obvious from their attack label")
     const ui7NoNum = !!(bopts && bopts.live) && k === 'regen'; // 2026-10-31 (package UI7, owner Y1): Regeneration on a board card is the icon alone (the value is in the tooltip)
     const ui7Tip = ui7NoNum ? escapeAttr(TX('ui.ui7-regen-tip', {n: v})) : '';
@@ -19473,6 +19489,11 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
   if(r.permaTide == null && RAPIDS_MAPS.has(mid) && node){ r.permaTide = true; if(r.rapids == null) r.rapids = true; } // River Rapids (2026-10-16)
   if(r.wet == null && mid && wetMap(mid)) r.wet = true;
   if(r.wind == null && WINDY_MAPS[mid]) r.wind = WINDY_MAPS[mid]; // strong wind on the high, open maps (2026-10-13)
+  // ENG20-4 (2026-11-02, owner 22:44: "only more advanced later on field effects can have sidewind"): from Map 30 a windy fight's strong gusts can
+  // be heavy or blow across (the engine's rules.heavyWind / rules.crosswind); a fight's own rules win. No fixed field names them (decision ENG20-4).
+  // From ENG20_WIND_FROM_MAP a quarter of strong gusts are heavy and 15% blow across (both: a Heavy Crosswind). Local, so the balance tools that lift fightRules see it.
+  const ENG20_WIND_FROM_MAP = 30, ENG20_WIND = {heavy: 0.25, cross: 0.15};
+  if(r.wind && mid && node){ const mn = mapNumberOf(mid); if(mn != null && mn >= ENG20_WIND_FROM_MAP){ if(r.heavyWind == null) r.heavyWind = ENG20_WIND.heavy; if(r.crosswind == null) r.crosswind = ENG20_WIND.cross; } }
   if(r.dark == null && DARK_MAPS.has(mid)) r.dark = DARK_MAPS.get(mid); // complete darkness: only Darksight sees (2026-10-13)
   // High tide (2026-10-12): boss and elite fights on the water maps run Ebb, Flow, Ebb, High tide.
   if(r.highTide == null && !r.permaTide && node && /boss|elite|champion/.test(node.kind || '') && (typeof MAP_MUSIC !== 'undefined' && MAP_MUSIC[mid] === 'map_water')) r.highTide = true;
@@ -19779,8 +19800,9 @@ function fieldConditionRows(r){
   else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(), '', TX('ui.fx-scorched-short'), TX('ui.fxx-scorched')); // 2026-10-23 (FX3): was `Burns a unit a side for ${r.eruption}` (the map's 2 / 3 / 5)
   // 2026-10-16 (user: "Should sandstorm also have windy rules? I think so."): a Sandstorm or Glass-storm brings Windy's wind (unless the fight sets one).
   const wind = r.wind || ((r.sandstorm || r.glassStorm) ? 'windy' : null);
-  if(wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale, WIND_CODEX.gale);
-  else if(wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy, WIND_CODEX.windy);
+  const en20W = (Number(r.heavyWind) > 0 || Number(r.crosswind) > 0) ? ' ' + TX('ui.eng20-wind-codex') : ''; // ENG20-4 (2026-11-02): heavy and cross gusts, Map 30+
+  if(wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale, WIND_CODEX.gale + en20W);
+  else if(wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy, WIND_CODEX.windy + en20W);
   // 2026-10-18 (package D): the owner's plain line on the face and in the detail; a Cast Darkness unit's dark says it lifts with it.
   const darkCast = r.darkCast ? ' ' + TX('ui.field-dark-cast') : '';
   if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', DARK_LEVEL_TEXT.absolute, '', DARK_LEVEL_TEXT.absolute, DARK_CODEX_TEXT);
@@ -37592,7 +37614,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -39821,7 +39843,7 @@ function boardCardHTML(c, defs, opts){
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
   if(c.shocked>0) badges.push(`<span class="abadge shock">🌩${c.shocked}</span>`);
-  if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`); w2StatusBadges(c, badges); // Bound, Toxin, Invisible, Invincible (2026-10-16)
+  if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`); w2StatusBadges(c, badges); en20StatusBadges(c, badges); /* ENG20: water counters, Burn */ // Bound, Toxin, Invisible, Invincible (2026-10-16)
   { const dn = (c.daunts||[]).reduce((t, x)=> t + (x.n||0), 0); if(dn > 0) badges.push(`<span class="abadge daunt" title="Daunted: −${dn} Attack until the end of next round">😨${dn}</span>`); }
   if(c.dauntN > 0) badges.push(`<span class="abadge daunt en8-daunt" title="${escapeAttr(TX('ui.en8-daunt-badge', {n: c.dauntN}))}">😨${c.dauntN}</span>`); // EN8 (2026-10-25): Render's Daunt counters
   if(c.staggered>0) badges.push(`<span class="abadge stagger">💢${c.staggered}</span>`);
@@ -39922,6 +39944,10 @@ function eng15CowerChip(e, on){
 }
 // 2026-11-02 (package UI14, owner JJ15: status pills "show the token count (no number when 1)"): Poison shows its stack again from 2 up (UI7 had the icon alone)
 function ui7PoisonChip(c){ const t = escapeAttr(TX('ui.ui7-poison-tip', {n: c.poison})), n = Math.round(c.poison) || 0; return `<span class="abadge poison${n > 1 ? ' has-n' : ''}" title="${t}" aria-label="${t}">☠${n > 1 ? n : ''}</span>`; }
+// ENG20-2 (2026-11-02, owner 22:44: "Show the counters as pips"): a unit's water counters (💧N) and Burn (🔥, the rounds left in the tooltip).
+function en20StatusBadges(c, badges){ if(!c || !badges) return;
+  if(c.water > 0){ const t = escapeAttr(TX('ui.eng20-water-tip', {n: c.water})); badges.push(`<span class="abadge en20-water" title="${t}" aria-label="${t}">💧${c.water}</span>`); }
+  if(c.burn > 0){ const t = escapeAttr(TX('ui.eng20-burn-tip', {n: c.burn})); badges.push(`<span class="abadge en20-burn" title="${t}" aria-label="${t}">🔥${c.burn}</span>`); } }
 const STATUS_CHIP_SLOTS = [2, 3, 4];
 // 2026-11-02 (package UI14, owner JJ15: "status context pills sit in the card's centre and show the token count (no number when 1)"): one rule for every
 // status chip, here where both paths build the strip: a count of 1 is dropped (the icon alone says it), larger counts stay; a +N / -N (a bonus,
@@ -40488,6 +40514,37 @@ function syncWindField(m){
     else W.windFieldClear(bf);
   }catch(e){}
 }
+// ENG20 (2026-11-02): the board side of the Package ENG20 rules. Each statusFx kind keeps the replay copy (rc) in step and floats its number.
+function en20StatusFx(ev, el, rc){ try{
+  const k = ev.kind; if(!/^en20|^crosswind$/.test(k || '')) return;
+  if(k === 'en20Soak'){ if(rc) rc.water = ev.total; if(el) floatText(el, '💧+' + ev.amount, 'buff'); }
+  else if(k === 'en20Dry'){ if(rc) rc.water = ev.total; if(el) floatText(el, '💧−' + ev.amount, 'debuff'); }
+  else if(k === 'en20Ignite'){ if(rc) rc.burn = ev.total; if(el) floatText(el, '🔥 ' + TX('ui.eng20-float-burn'), 'debuff'); }
+  else if(k === 'en20Douse'){ if(rc) rc.burn = 0; if(el) floatText(el, '💧 ' + TX('ui.eng20-float-douse'), 'heal'); }
+  else if(k === 'en20Roll'){ if(rc) rc.wait = (rc.wait||0) + (ev.amount||1); if(el){ floatText(el, '🤸 ' + TX('ui.eng20-float-roll'), 'quick'); try{ if(hasGsap() && !reducedMotion() && fxAtLeast('low')) gsap.fromTo(el, {rotation:0}, {rotation:360, duration:.6, ease:'power2.inOut', clearProps:'rotation'}); }catch(e){} } }
+  else if(k === 'en20Glean'){ (ev.from || []).forEach(f=>{ const r = matchState && matchState.replayCards && matchState.replayCards[f.uid]; if(r) r.sk2Berries = 0; const fe = boardCardEl(f.uid); if(fe) floatText(fe, '🫐−' + f.n, 'debuff'); }); if(el) floatText(el, '🫐→💠' + ev.amount, 'buff'); }
+  else if(k === 'en20LumberFeast'){ if(rc){ rc.atk = (rc.atk||0) + ev.amount; rc.hp = (rc.hp||0) + ev.amount; rc.maxHp = (rc.maxHp||0) + ev.amount; } if(el) floatText(el, `🪵−${ev.amount} +${ev.amount}/+${ev.amount}`, 'buff'); try{ updateCardAtkDisplay(ev.targetUid); updateCardHpDisplay(ev.targetUid); }catch(e){} }
+  else if(k === 'crosswind'){ if(el) floatText(el, '🌬️ +0/' + ev.amount, 'buff'); }
+  updateCardStatusDisplay(ev.targetUid);
+}catch(e){} }
+// ENG20-1 (2026-11-02, owner 22:44: "No animation for remember. Should have, and should involve candlesticks."): as a card comes back by
+// Remember, a brass candlestick rises over it, its flame catches and flickers, a warm glow washes the card, then it fades (about 1.6 s).
+// Drawn (the 🕯️ emoji is a bare candle on many devices). GSAP like the other skill looks; Low effects and reduced motion keep the float only.
+const EN20_CANDLE_SVG = '<svg viewBox="0 0 40 72" width="100%" height="100%" aria-hidden="true"><ellipse cx="20" cy="68" rx="15" ry="3.4" fill="#7a5418"/><path d="M8 66 Q20 58 32 66 Z" fill="#c8932e" stroke="#7a5418" stroke-width="1"/><rect x="17.5" y="44" width="5" height="17" rx="1.5" fill="#d9a640" stroke="#7a5418" stroke-width="1"/><path d="M10 44 Q20 49 30 44 L28 41 L12 41 Z" fill="#c8932e" stroke="#7a5418" stroke-width="1"/><rect x="14" y="18" width="12" height="23" rx="2" fill="#f4ead2" stroke="#b9a57a" stroke-width="1"/><path d="M14 22 Q17 25 16 30" stroke="#e3d4ae" stroke-width="1.4" fill="none"/><line x1="20" y1="18" x2="20" y2="14" stroke="#3a2a14" stroke-width="1.2"/><g class="en20-flame"><path d="M20 2 C25 8 25 13 20 16 C15 13 15 8 20 2 Z" fill="#ffb238"/><path d="M20 6 C22.6 9.5 22.6 12.5 20 14.4 C17.4 12.5 17.4 9.5 20 6 Z" fill="#fff2b0"/></g></svg>';
+function en20CandleVfx(el){
+  if(!el || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  try{ const b = el.getBoundingClientRect(); if(!b.width) return;
+    const w = Math.max(26, Math.min(46, b.width * 0.38)), h = w * 1.8, c = document.createElement('div'); c.className = 'en20-candle'; c.setAttribute('aria-hidden', 'true');
+    c.style.cssText = `position:fixed; left:0; top:0; width:${w}px; height:${h}px; pointer-events:none; z-index:62; filter:drop-shadow(0 0 10px rgba(255,190,90,.75));`;
+    c.innerHTML = EN20_CANDLE_SVG; document.body.appendChild(c);
+    gsap.set(c, {x: b.left + b.width/2 - w/2, y: b.top - h*0.55, opacity:0, scale:.6, transformOrigin:'50% 100%'});
+    const fl = c.querySelector('.en20-flame'); if(fl) gsap.set(fl, {transformOrigin:'50% 90%', scale:0});
+    const tl = gsap.timeline({onComplete: ()=> c.remove()});
+    tl.to(c, {opacity:1, scale:1, y:'-=10', duration:.35, ease:'back.out(1.6)'});
+    if(fl) tl.to(fl, {scale:1, duration:.25, ease:'power2.out'}).to(fl, {scaleY:1.18, scaleX:.9, duration:.12, yoyo:true, repeat:5, ease:'sine.inOut'});
+    tl.to(c, {opacity:0, y:'-=14', duration:.45, ease:'power1.in'}, '+=.15');
+    gsap.fromTo(el, {filter:'brightness(1) sepia(0)'}, {filter:'brightness(1.25) sepia(.35)', duration:.4, yoyo:true, repeat:1, ease:'sine.inOut', clearProps:'filter'});
+  }catch(e){} }
 // Full Moon field (2026-10-15): is it up, and its howl's look: the field card's moon glows silver and a cold ring of light
 // rolls out across the top of the board.
 function fullMoonFieldUp(m){ try{ const f = m && m.engine && m.engine.getField && m.engine.getField(); return !!(f && f.id === 'moon'); }catch(e){ return false; } }
@@ -41653,7 +41710,7 @@ function updateCardStatusDisplay(uid){
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
   if(c.shocked>0) badges.push(`<span class="abadge shock">🌩${c.shocked}</span>`);
-  if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`); w2StatusBadges(c, badges); // Bound, Toxin, Invisible, Invincible (2026-10-16)
+  if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`); w2StatusBadges(c, badges); en20StatusBadges(c, badges); /* ENG20: water counters, Burn */ // Bound, Toxin, Invisible, Invincible (2026-10-16)
   if(c.staggered>0) badges.push(`<span class="abadge stagger">💢${c.staggered}</span>`);
   if(c.irradiation>0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}">☢️${c.irradiation}</span>`); // 2026-10-14
   // Shield (a unit's own temporary Health) and a Durian eater's extra Thorns (2026-10-14).
@@ -42794,7 +42851,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -44100,9 +44157,18 @@ const TIDE_EVADE_TIP = 'Tide evade (test): Tide units are Evasive against attack
 function tideEvadeLive(m){ try{ return !!(m && m.engine && m.engine.tideEvadeOn && m.engine.tideEvadeOn()); }catch(e){ return false; } }
 // The wind this round (from the last 'wind' event, kept on the match so a re-render keeps it): 💨 with a small ⬆ (at your back) or
 // ⬇ (in your face) stacked on it; a calm round between gusts is a faded 💨.
+// ENG20 (2026-11-02, owner 22:49: "The wind symbol, when calm, should show something else. Maybe a tranquil air symbol."): a calm round shows
+// still air (EN20_STILL_AIR_SVG: three level, gently curved lines, no gust and no arrow), titled "Calm: no wind". ENG20-4: a heavy gust doubles
+// the arrow (⇈ / ⇊); a Crosswind blows across (↔, heavy ⇔) and says what it gives the Flyers.
+const EN20_STILL_AIR_SVG = '<svg class="wind-still" viewBox="0 0 24 16" width="1.15em" height="0.8em" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".8"><path d="M3 4 Q12 2.6 21 4"/><path d="M5 8 Q12 6.8 19 8"/><path d="M3 12 Q12 10.6 21 12"/></g></svg>';
 function windPillHTML(m){
   const w = m && m._windNow; if(!w || m.over) return '';
-  if(!w.windy) return bfPillHTML('wind-pill is-calm', '<span class="wind-ico">💨</span>', 'Calm', '', pillTipHTML('Calm', ['No strong wind this round.']), 'Wind: calm');
+  if(!w.windy){ const calm = TX('ui.eng20-wind-calm'), tip = TX('ui.eng20-wind-calm-tip'); return bfPillHTML('wind-pill is-calm', `<span class="wind-ico is-still">${EN20_STILL_AIR_SVG}</span>`, calm, '', pillTipHTML(calm, [tip]), tip); }
+  const k = w.kind || 'normal';
+  if(k === 'cross' || k === 'heavyCross'){ const hv = k === 'heavyCross', head = TX(hv ? 'ui.eng20-wind-heavy-cross-name' : 'ui.eng20-wind-cross-name');
+    return bfPillHTML('wind-pill is-windy is-cross', `<span class="wind-ico">💨<i class="wind-dir">${hv ? '⇔' : '↔'}</i></span>`, head, '', pillTipHTML(head, [TX(hv ? 'ui.eng20-wind-heavy-cross' : 'ui.eng20-wind-cross')]), head, 'bf:wind', 'wind'); }
+  if(k === 'heavy'){ const head = TX(w.mine ? 'ui.eng20-wind-heavy-back' : 'ui.eng20-wind-heavy-face');
+    return bfPillHTML('wind-pill is-windy is-heavy', `<span class="wind-ico">💨<i class="wind-dir">${w.mine ? '⇈' : '⇊'}</i></span>`, head, '', pillTipHTML(head, [TX(w.mine ? 'ui.eng20-wind-heavy-tail' : 'ui.eng20-wind-heavy-head')]), head, 'bf:wind', 'wind'); }
   const head = w.mine ? 'Wind at your back' : 'Wind in your face';
   return bfPillHTML('wind-pill is-windy', `<span class="wind-ico">💨<i class="wind-dir">${w.mine ? '⬆' : '⬇'}</i></span>`, head, '', pillTipHTML(head, [w.mine ? TX('ui.wind-pill-back') : TX('ui.wind-pill-face')] /* ENG16 (2026-11-02, WIND-2 a): Quick / -1 Attack, no double triggers */), 'Wind ' + (w.mine ? 'at your back' : 'in your face'), 'bf:wind', 'wind');
 }
@@ -46772,6 +46838,7 @@ function logText(ev){
     case 'avalanche': return {cls:'', text:`🏔️ ${nm(ev.attDefId)}'s Avalanche buries ${(ev.hits||[]).length} enemy unit${(ev.hits||[]).length===1?'':'s'}: ${ev.n} cold damage and +1 Wait.`};
     case 'tsunami': return {cls:'', text:`🌊 ${nm(ev.attDefId)}'s Tsunami washes the enemy back (+1 Wait)${(ev.hits||[]).length ? `; ${(ev.hits||[]).length} that can't swim take${(ev.hits||[]).length===1?'s':''} ${ev.n}` : ''}.${ev.tideStarted ? ' The Tide starts.' : ''}`};
     case 'dragonLightning': return {cls:'', text:`🐉⚡ Red lightning from ${nm(ev.attDefId)} strikes ${(ev.uids||[]).length} unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} each!`};
+    case 'burnTick': return {cls:'poison', text: '🔥 ' + TX('ui.eng20-log-burn', {name: nm(ev.defId), n: ev.dmg||0})}; // ENG20-2 (2026-11-02)
     case 'witherTick': return {cls:'poison', text:`💀 ${nm(ev.defId)} withers: −${ev.n} max Health${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the Wither fades)'}.`};
     case 'hatch': return {cls:'', text:`🥚 ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.fromDefId)} cracks open: out comes ${nm(ev.defId)}!`};
     case 'wave': { const who = ev.awash ? 'The Wave' : `${nm(ev.attDefId)}'s Wave`, cols = ev.cols > 1 ? ` ${ev.cols} columns` : ''; // + Awash, the bob and the bounce (2026-10-17)
@@ -48983,6 +49050,8 @@ function fifthPassVfx(ev){
     if(!(ev.uids||[]).length) sfx('shockTone');
   }
   if(ev.type==='statusFx' && ev.kind==='wither'){ const el = boardCardEl(ev.targetUid); if(el){ try{ floatText(el, '💀 Wither', 'debuff'); }catch(e){} witherSmokeVfx(el); } }
+  if(ev.type==='burnTick'){ const rc = matchState.replayCards && matchState.replayCards[ev.uid]; if(rc){ rc.hp = Math.max(0, (rc.hp||0) - (ev.dmg||0)); rc.burn = ev.left|0; } // ENG20-2 (2026-11-02): Burn's tick
+    try{ updateCardHpDisplay(ev.uid); updateCardStatusDisplay(ev.uid); }catch(e){} const el = boardCardEl(ev.uid); if(el){ try{ floatText(el, '🔥' + (ev.dmg||0), 'debuff'); }catch(e){} } }
   if(ev.type==='witherTick'){ const rc = matchState.replayCards && matchState.replayCards[ev.uid]; if(rc){ rc.maxHp = Math.max(0, (rc.maxHp||0) - ev.n); rc.hp = Math.max(0, Math.min(rc.maxHp, (rc.hp||0) - ev.n)); }
     try{ updateCardHpDisplay(ev.uid); }catch(e){} const el = boardCardEl(ev.uid); if(el){ try{ floatText(el, '💀 −' + ev.n, 'debuff'); }catch(e){} witherSmokeVfx(el); } }
   // Mimic (2026-10-21, package MT): the unit takes its copy's card and stats; the look is Twin's mirror sheen (bramblewood-fx-c.js, 'mimic').
@@ -51268,6 +51337,7 @@ function renderVfxForEvent(ev){
       else if(ON_SELF[ev.kind]) maybeEmote(ev.attUid, ON_SELF[ev.kind]); }
     const el = boardCardEl(ev.targetUid);
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
+    en20StatusFx(ev, el, rc); // ENG20 (2026-11-02): water, fire, Burn, the roll, Glean, Lumber Feast, the Crosswind
     if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, TX('ui.en7-float-poison', {n: ev.amount}), 'poison') /* EN7 (2026-10-24, owner 13:12 #7): "🤢N", was "+N☠"; PL2 (2026-10-25, owner 00:02 #4): "☠N" */; if(rc) rc.poison = (rc.poison||0) + ev.amount; }
     // 2026-10-14 (fourth pass): a freeze counter melts (the snowflakes fade with the last one), Nullify, Sacrifice.
     if(ev.kind==='thaw'){ if(rc) rc.frozen = Math.max(0, ev.left|0); if(el && !ev.left) floatText(el, '❄ Thawed', 'heal'); updateCardStatusDisplay(ev.targetUid); }
@@ -51280,8 +51350,8 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; rc.tempHp = ev.amount; } try{ SoundKit.shellUp(); }catch(e){} if(el){ el.classList.remove('shell-sweep'); void el.offsetWidth; el.classList.add('shell-sweep'); setTimeout(()=> el.classList.remove('shell-sweep'), 900); setTimeout(()=> floatText(el, '🐢 Shell!', 'heal slow'), 450); } }
     else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } }
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
-    else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, ev.quick ? '🪁 Tailwind: Quick!' : '🪁 Tailwind!', 'quick'); }
-    else if(ev.kind==='headwind'){ if(el) floatText(el, TX('ui.wind-head-float'), 'debuff'); } // ENG16 (2026-11-02, WIND-2 a): a Headwind Flyer swings at -1 Attack this round
+    else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, ev.heavy ? '🪁 ' + TX('ui.eng20-float-heavy-tail') : ev.quick ? '🪁 Tailwind: Quick!' : '🪁 Tailwind!', 'quick'); }
+    else if(ev.kind==='headwind'){ if(el) floatText(el, ev.heavy ? '🌬️ ' + TX('ui.eng20-float-heavy-head') : TX('ui.wind-head-float'), 'debuff'); } /* ENG20-4: heavy */ // ENG16 (2026-11-02, WIND-2 a): a Headwind Flyer swings at -1 Attack this round
     else if(ev.kind==='bludgeon'){ const t = boardCardEl(ev.targetUid); if(t) floatText(t, '🔨 ' + [ev.atkLost ? '−1⚔' : '', ev.broke ? w2BrokeName(ev.broke) + ' broken' : ''].filter(Boolean).join(' · '), 'debuff'); if(ev.atkLost && rc && rc.atk != null){ rc.atk = Math.max(0, rc.atk - ev.atkLost); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} } } // 2026-10-16: -1 Attack, and any skill
     else if(ev.kind==='shed'){ if(el) floatText(el, ev.molt ? `🦀 +${ev.amount||1}/+${ev.amount||1} · ⏪ +1 Wait` : '🐍 +1/+1', 'heal'); if(ev.molt && rc){ rc.wait = (rc.wait||0) + 1; try{ updateCardWaitDisplay(ev.targetUid, rc.wait); }catch(e){} } } // Molting (2026-10-16): +N/+N and +1 Wait
     else if(ev.kind==='rocket'){ if(el) floatText(el, '🚀 Rocket!', 'quick'); }
@@ -51742,7 +51812,8 @@ function renderVfxForEvent(ev){
     if(ev.field==='eruption'){ try{ const bf = document.getElementById('battlefieldEl'); if(bf && fxAtLeast('low')){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } SoundKit.boom ? SoundKit.boom() : null; }catch(e){}
       if(el){ el.classList.add('erupt-hit'); setTimeout(()=> el.classList.remove('erupt-hit'), 900); eruptionGeyserVfx(el); } }
     if(ev.field==='immolation'){ const src = boardCardEl(ev.srcUid); if(src){ src.classList.add('immolate-pulse'); setTimeout(()=> src.classList.remove('immolate-pulse'), 900); } } }
-  if(ev.type==='remember' && ev.uid != null){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} }
+  if(ev.type==='remember' && ev.uid != null){ const el = boardCardEl(ev.uid); const rcR = matchState && matchState.replayCards && matchState.replayCards[ev.uid]; if(rcR) rcR.rememberSpent = true; /* ENG20-1 */
+    if(el){ try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} en20CandleVfx(el); } } // ENG20-1 (2026-11-02, owner: "should involve candlesticks")
   if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') showToast(TX('toast.your-leader-is-free'), 'ok'); }
   if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ dnFloat(el, ev.dmg, {type:'curse', mods: ev.mods}); }catch(e){} } /* DN2 */
   if(ev.type==='wash'){ try{ washPushVfx(ev); }catch(e){}
@@ -51753,7 +51824,7 @@ function renderVfxForEvent(ev){
   // the upkeep to play out; the day / night turn and a state skill turning on or off now redraw them at once.
   if(ev.type==='phase' || ev.type==='moon' || (ev.type==='statusFx' && (ev.kind==='stateSkill' || ev.kind==='phaseGrow' || ev.kind==='phaseFade'))) pl1HandPreviewSoon();
   // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
-  if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine};
+  if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine, kind: ev.kind || null /* ENG20-4 */};
       if(matchState && ev.windy) matchState._windLastMine = mine;
       const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } syncWindField(matchState); syncWindBadges(); }catch(e){} } // + the wind layer (2026-10-15); + the Flyers' wind marks (2026-10-18, BP)
   if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
