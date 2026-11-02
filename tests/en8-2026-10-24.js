@@ -27,7 +27,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'x-fire': U('x-fire', {}, {attack:5, health:500, dmgType:'heat'}), 'x-mag': U('x-mag', {magic:true}, {attack:5, health:500}), 'x-phys': U('x-phys', {}, {attack:5, health:500}),
   'x-ramp': U('x-ramp', {rampart:true}, {attack:0, health:500, wait:0 /* 2026-10-26 (ENG9, owner EN8-8): a Guardian / Rampart blocks only while Ready, so Wait 0 (0 Attack: it never swings) */}), 'x-struct': U('x-struct', {}, {attack:0, health:50, wait:9, archetypes:['Structure']}),
   'x-sc': U('x-sc', {stonecutter:1}, {attack:0, health:500, wait:0}), 'x-pro': U('x-pro', {prospector:1}, {attack:9, health:500}), 'x-fel': U('x-fel', {felling:2}, {attack:9, health:500}),
-  'x-pearl': U('x-pearl', {pearlBed:2}, {attack:0, health:50, wait:1}), 'x-pearl0': U('x-pearl0', {pearlBed:1}, {attack:0, health:50, wait:0}),
+  'x-pearl': U('x-pearl', {pearl:2}, {attack:0, health:50, wait:1}), 'x-pearl0': U('x-pearl0', {pearl:1}, {attack:0, health:50, wait:0}), // ENG19 (2026-11-02): the On Ready rule is Pearl now (Pearl Bed pays every turn: tests/eng19-2026-11-02.js)
   'x-scav': U('x-scav', {scavenge:1}, {attack:0, health:500, wait:3}), 'x-salv': U('x-salv', {salvage:1}, {attack:0, health:500, wait:3}),
   'x-cop': U('x-cop', {coppice:1}, {attack:0, health:60, wait:0, archetypes:['Structure']}), 'x-drift': U('x-drift', {driftwood:1}, {attack:0, health:60, wait:0}),
   'x-render': U('x-render', {render:{trigger:'onSpawn', amount:3}}, {attack:0, health:500, wait:9}), 'x-shooter': U('x-shooter', {triggers:[{on:'perTurn', do:'damage', amount:4, who:'enemy', sub:'facing'}]}, {attack:5, health:500}),
@@ -119,9 +119,9 @@ for(const lv of [0, 1, 2]){
   ok(st[st.length - 1] === 3 && st[0] !== st[1], `Stonecutter 1: +1 Stone every second Ready turn (Stone over 6 turns: ${st.join(',')})`); }
 { const {e, P} = mk(72); put(e, P, 1, 'x-pro', 0); put(e, P, 2, 'x-weak', 0); round(e, P, 1); ok((P[1].metal||0) === 1, `Prospector 1: a kill gives 1 Metal (${P[1].metal})`); }
 { const {e, P} = mk(73); put(e, P, 1, 'x-fel', 0); put(e, P, 2, 'x-weak', 0); const l0 = P[1].lumber; round(e, P, 1); ok(P[1].lumber - l0 === 2, `Felling 2: a kill gives 2 Lumber (${P[1].lumber - l0})`); }
-{ const {e, P} = mk(74); put(e, P, 1, 'x-pearl0', 0); ok((P[1].pearls||0) === 1, `Pearl Bed 1 on a Wait-0 card: +1 Pearl as it lands Ready (${P[1].pearls})`);
+{ const {e, P} = mk(74); put(e, P, 1, 'x-pearl0', 0); ok((P[1].pearls||0) === 1, `Pearl 1 (Pearl Bed before ENG19) on a Wait-0 card: +1 Pearl as it lands Ready (${P[1].pearls})`);
   put(e, P, 1, 'x-pearl', 1); put(e, P, 2, 'x-wall', 0); for(let r = 1; r <= 2; r++) round(e, P, 1);
-  ok((P[1].pearls||0) === 3, `Pearl Bed 2 with Wait 1: +2 Pearls when it becomes Ready (${P[1].pearls})`); }
+  ok((P[1].pearls||0) === 3, `Pearl 2 (Pearl Bed before ENG19) with Wait 1: +2 Pearls when it becomes Ready (${P[1].pearls})`); }
 { const {e, P} = mk(75); P[1].pearls = 3; P[1].lumber = 0; P[1].stone = 1; hand(P, 1, ['x-stone2']); fresh(P);
   ok(e.canPlay(P[1], 'x-stone2', null), 'cost 1 Lumber + 2 Stone with 0 Lumber, 1 Stone and 3 Pearls: playable');
   const uid = P[1].hand[0].uid; e.placeCard(P, so, 1, uid, 0, {}, []);

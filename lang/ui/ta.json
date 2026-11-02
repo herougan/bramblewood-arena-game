@@ -29,7 +29,7 @@
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 மரக்கட்டை, +1 கல்; அனைவருக்கும் 1 சேதம்",
  "+1 starting Lumber.": "+1 தொடக்க மரக்கட்டை.",
  "+1 🪵 every {v1} rounds": "ஒவ்வொரு {v1} சுற்றுகளுக்கும் +1 🪵",
- "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "அதனுடன் ஒரு வகையைப் பகிரும் ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல். கட்டடங்கள் கணக்கில் இல்லை.",
+ "+{v1} Attack for every ally that shares a type with it.": "அதனுடன் ஒரு வகையைப் பகிரும் ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல்.",
  "+{v1} Dust": "+{v1} தூசி",
  "+{v1} Energy from a capsule.": "ஒரு குப்பியிலிருந்து +{v1} ஆற்றல்.",
  "+{v1} Energy. Come back tomorrow for more.": "+{v1} ஆற்றல். மேலும் பெற நாளை வா.",

@@ -29,7 +29,7 @@
  "+1 Lumber, +1 Stone; 1 damage to all": "목재 +1, 돌 +1; 모두에게 1 피해",
  "+1 starting Lumber.": "시작 목재 +1.",
  "+1 🪵 every {v1} rounds": "{v1}라운드마다 +1 🪵",
- "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "타입을 공유하는 아군 하나마다 공격 +{v1}. 건축물은 세지 않습니다.",
+ "+{v1} Attack for every ally that shares a type with it.": "타입을 공유하는 아군 하나마다 공격 +{v1}.",
  "+{v1} Dust": "가루 +{v1}",
  "+{v1} Energy from a capsule.": "캡슐로 에너지 +{v1}.",
  "+{v1} Energy. Come back tomorrow for more.": "에너지 +{v1}. 내일 또 와요.",

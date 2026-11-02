@@ -592,6 +592,17 @@ const BLOOM_COPY_COND_NAMES = Object.assign({}, BLOOM_COND_NAMES, {kill: TX('ui.
 function bloomCopyWhenText(bc){ bc = bc || {}; const w = (Array.isArray(bc.when) ? bc.when : [bc.when]).filter(Boolean).map(k=> BLOOM_COPY_COND_NAMES[k] || k);
   const L = Math.max(0, Math.round(Number(bc.lumber) || 0)); return (w.join(bc.mode === 'or' ? ' or ' : ' & ') || '?') + (L ? ' + ' + TX('ui.bl-lumber', {n: L}) : ''); }
 function bloomCopyLabel(bc){ return TX('ui.bl-head', {when: bloomCopyWhenText(bc)}); }
+// ENG19 (2026-11-02, owner 22:26: "Bloom's text needs tooltip on how to fill. E.g. Wet and Dark and Something dies."): what each of a card's own
+// Bloom conditions means (the engine's bloomCond / bloomCopyOn), for the chip's tooltip and the skill line: "Blooms when all of these hold: ...".
+const ENG19_BLOOM_KEYS = ['tide', 'ebb', 'night', 'day', 'twilight', 'wind', 'wet', 'dark', 'heat', 'frost', 'fullmoon', 'rain', 'sunny', 'kill'];
+function eng19BloomFillText(bc){ bc = bc || {}; const w = (Array.isArray(bc.when) ? bc.when : [bc.when]).filter(Boolean).map(x=> String(x).toLowerCase().replace(/\s+/g, ''));
+  if(!w.length) return ''; const parts = w.map(k=> ENG19_BLOOM_KEYS.includes(k) ? TX('ui.eng19-bc-' + k) : (BLOOM_COPY_COND_NAMES[k] || k));
+  const L = Math.max(0, Math.round(Number(bc.lumber) || 0)); if(L) parts.push(TX('ui.eng19-bloom-lumber', {n: L}));
+  return TX(bc.mode === 'or' && !L ? 'ui.eng19-bloom-any' : 'ui.eng19-bloom-all', {list: parts.join('; ')}); }
+// ENG19 (2026-11-02, owner #15): Grant Shield's line, its groups in order
+function eng19GrantShieldText(t){ t = t || {}; const out = [];
+  [['amount', 'self'], ['adjacent', 'adjacent'], ['surrounding', 'surrounding'], ['allies', 'allies']].forEach(([f, k])=>{ const n = Number(t[f]); if(n > 0) out.push(TX('ui.eng19-gs-' + k, {n})); });
+  return out.join(', '); }
 function bloomCopyToText(bc){ bc = bc || {}; const w = (Array.isArray(bc.when) ? bc.when : [bc.when]).filter(Boolean).map(k=> k === 'kill' ? 'Kill' : (BLOOM_COND_NAMES[k] || k)); const L = Math.max(0, Math.round(Number(bc.lumber) || 0));
   return (w.join(bc.mode === 'or' ? ' or ' : ' & ')) + (L ? ` + ${L} Lumber` : ''); }
 function parseBloomCopyText(v){ if(v && typeof v === 'object' && !Array.isArray(v)) return v.when ? v : null;
@@ -733,7 +744,7 @@ const PASSIVE_DEFS = [
   {key:'immolation', category:'passive', label:'Immolation', kind:'number', min:0, desc:v=>`At the start of every round it deals ${v} fire damage to the units adjacent to it and to the enemy facing it.`} /* 2026-10-22 (GD2, GD-1): "adjacent" */, // 2026-10-12, the world boss
   // Swarm keyword family (2026-10-09; not an archetype, 2026-10-13): strength in numbers; Cleave and Swipe are its answer.
   // Swarm N (2026-10-12, user: "Swarm N: Default 1 if not stated on the card"): N per ally, stored as swarmN.
-  {key:'swarm', category:'passive', label:'Swarm', kind:'types', numberKey:'swarmN', desc:(v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}. Structures don't count.` : `+${n||1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant). Structures don't count.` /* + Structures don't count (EN, 2026-10-23, owner 01:57 note 10) */,
+  {key:'swarm', category:'passive', label:'Swarm', kind:'types', numberKey:'swarmN', desc:(v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant).` /* ENG19 (2026-11-02, owner 22:15 #6): Structures count (EN's 'they don't' line is gone) */,
     get:e=> e.swarm ? (Array.isArray(e.swarm) && e.swarm.length ? e.swarm.slice() : true) : undefined,
     apply:(e,v,n)=>{ e.swarm = Array.isArray(v) && v.length ? v.slice() : true; const k = Number(n)||1; if(k > 1) e.swarmN = k; }},
   // Hive Mind retired (2026-10-15, user: "I don't like Hive Mind as a skill."): hidden from "+ Add Skill" (hidden) and from every
@@ -859,7 +870,7 @@ const PASSIVE_DEFS = [
   // Bloom – {conditions} (2026-10-23, package BL; owner 11:23 and 17:34 #3): once, the first round its conditions hold, a copy of it
   // beside it with +1/+1 (owner 19:30: the unit itself unchanged) (see bloomCopyPass in bramblewood-engine.js). Priced by bramblewood-budget.js (bloomOdds).
   {key:'bloomCopy', category:'passive', label:'Bloom', kind:'text', placeholder:'Wet & Sunny  ·  Wet & Kill  ·  Wet & Sunny + 1 Lumber',
-    desc:(v, n, e)=>{ const bc = (e && e.bloomCopy) || parseBloomCopyText(v) || {when:['wet','sunny']}; return TX(Math.round(Number(bc.lumber)||0) ? 'ui.bl-desc-lumber' : 'ui.bl-desc', {when: bloomCopyWhenText(Object.assign({}, bc, {lumber: 0})), n: Math.round(Number(bc.lumber)||0)}); },
+    desc:(v, n, e)=>{ const bc = (e && e.bloomCopy) || parseBloomCopyText(v) || {when:['wet','sunny']}; return TX(Math.round(Number(bc.lumber)||0) ? 'ui.bl-desc-lumber' : 'ui.bl-desc', {when: bloomCopyWhenText(Object.assign({}, bc, {lumber: 0})), n: Math.round(Number(bc.lumber)||0)}) + ' ' + eng19BloomFillText(bc); }, // + ENG19 (2026-11-02, owner 22:26): what fills it
     codexNote: TX('ui.bl-codex'),
     get:e=> e.bloomCopy ? bloomCopyToText(e.bloomCopy) : undefined, apply:(e, v)=>{ const b = parseBloomCopyText(v); if(b) e.bloomCopy = b; }},
   // Wave (user: "Sea creatures might have more skills related to water. Such as pushing creatures left or right - waves.").
@@ -1622,6 +1633,9 @@ const ACTION_DEFS = [
   {key:'cleanse', label:'Cleanse', fields:['amount','who','sub','targets'], desc:"Cleanse N: remove up to N harmful counters from the chosen target (this card by default): a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
   // Shield (2026-10-14, user: "As an action - On X, Shield N"): N Shield (temporary Health) on itself, an ally, or every ally (sub All).
   {key:'shield', label:'Shield', fields:['amount','who','sub','targets'], whoOptions:['self','ally','kin'], subOptions:['adjacent','random','furthest','all'], desc:'Give Shield N: temporary Health that soaks damage before Health does and never comes back once spent (not Armor). This card by default; Ally + All shields every ally, Kin + All every one of your Kin.'},
+  // Grant Shield (ENG19, 2026-11-02, owner 22:15 #15): one number per group (itself / adjacent / around it / every ally), any together. Engine:
+  // the 'grantShield' action; prices: canonical/skill-costs.json grantShield(.adjacent / .surrounding / .allies). On no card yet (decision ENG19-2).
+  {key:'grantShield', get label(){ return TX('ui.eng19-act-grant-shield'); }, fields:['amount', 'gsAdjacent', 'gsSurrounding', 'gsAllies'], get desc(){ return TX('ui.eng19-act-grant-shield-desc'); }},
   // Fire on hit (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. (Meant for Map 20)").
   // The Burn 1 Lumber step is the trigger's "Pay" field (t.cost = 'burnLumber'), open to every action ("Burn 1 Lumber, Heal ally N").
   {key:'fireHit', label:'Fire on hit', fields:['amount'], desc:"Pair with On Attack: this attack's hit also deals N fire damage to what it hits (a unit, or the bramble)."},
@@ -1862,12 +1876,15 @@ function eng17MigrateHatchling(c, baseline){
 }
 // EN8 (2026-10-24, owner 22:28 #2, LUM-1): the resource skills (rules: the EN8 block in bramblewood-engine.js; prices: canonical/skill-costs.json,
 // the owner's 4-round rule). Each number defaults to 1. Scavenge and Salvage keep SK2's names with LUM-1's plain rules (no points).
-const EN8_UI = {stonecutterN:1, stonecutterEvery:2, prospectorN:1, fellingN:1, pearlBedN:1, salvageN:1, salvageMult:2, scavengeN:1, coppiceN:1, driftwoodN:1, windfallLumber:1}; // the engine's EN8_DEF
+const EN8_UI = {stonecutterN:1, stonecutterEvery:2, prospectorN:1, fellingN:1, pearlBedN:1, pearlN:1 /* ENG19 */, salvageN:1, salvageMult:2, scavengeN:1, coppiceN:1, driftwoodN:1, windfallLumber:1}; // the engine's EN8_DEF
 PASSIVE_DEFS.push(
   {key:'stonecutter', category:'passive', label:TX('ui.skn-stonecutter'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-stonecutter', {n: numOr(v, 1), k: EN8_UI.stonecutterEvery}), codexNote:TX('ui.en8-stonecutter-codex')},
   {key:'prospector', category:'passive', label:TX('ui.skn-prospector'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-prospector', {n: numOr(v, 1)}), codexNote:TX('ui.en8-prospector-codex')},
   {key:'felling', category:'passive', label:TX('ui.skn-felling'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-felling', {n: numOr(v, 1)}), codexNote:TX('ui.en8-felling-codex')},
-  {key:'pearlBed', category:'passive', label:TX('ui.skn-pearl-bed'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-pearl-bed', {n: numOr(v, 1)}), codexNote:TX('ui.en8-pearl-bed-codex')},
+  {key:'pearlBed', category:'passive', label:TX('ui.skn-pearl-bed'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-pearl-bed', {n: numOr(v, 1)}), codexNote:TX('ui.eng19-pearl-bed-codex')}, // ENG19 (2026-11-02, owner #5): every turn while Ready (was On Ready, once: now Pearl)
+  {key:'pearl', category:'passive', label:TX('ui.skn-pearl'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng19-pearl', {n: numOr(v, 1)}), codexNote:TX('ui.eng19-pearl-codex')}, // ENG19: On Ready, once
+  // Majesty N (ENG19, 2026-11-02, owner #13; decision ENG19-1, option a): the enemy units facing it swing at -N Attack (the engine's majestyCut). On no card yet.
+  {key:'majesty', category:'passive', label:TX('ui.skn-majesty'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng19-majesty', {n: numOr(v, 1)}), codexNote:TX('ui.eng19-majesty-codex')},
   {key:'coppice', category:'passive', label:TX('ui.skn-coppice'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-coppice', {n: numOr(v, 1)}), codexNote:TX('ui.en8-coppice-codex')},
   {key:'driftwood', category:'passive', label:TX('ui.skn-driftwood'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-driftwood', {n: numOr(v, 1)}), codexNote:TX('ui.en8-driftwood-codex')},
   {key:'magicArmor', category:'passive', label:TX('ui.skn-magic-armor'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-magic-armor', {n: numOr(v, 1)}), codexNote:TX('ui.en8-magic-armor-codex')});
@@ -1876,7 +1893,7 @@ sk1Patch(PASSIVE_DEFS, 'salvage', {kind:'number', min:1, defaultValue:1, desc:v=
 // P24-16 (Armor is physical only) and P24-15 (a Guardian never steps in for a Thorns unit): the two lines say so
 sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.en8-armor', {n: v})});
 sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.en8-guardian')});
-Object.assign(SKILL_ICON, {stonecutter:'⛏️', prospector:'🪙', felling:'🪓', pearlBed:'🦪', coppice:'🌳', driftwood:'🪵', magicArmor:'🔮'});
+Object.assign(SKILL_ICON, {pearl:'⚪', majesty:'👑' /* ENG19 */, stonecutter:'⛏️', prospector:'🪙', felling:'🪓', pearlBed:'🦪', coppice:'🌳', driftwood:'🪵', magicArmor:'🔮'});
 // A card's mysterySkills (EN8, owner 21:20 #7: "one of the fodder skills can be a ? for now"): those skills read "?" on the card and in its
 // detail until their era (the Cocoon's Chrysalis: the Evomax maps). The rules still hold them (no evolute exists before Map 20).
 function en8Mystery(def, k){ return !!(def && Array.isArray(def.mysterySkills) && def.mysterySkills.includes(k)) && (!SKILL_REVEAL_MAP[k] || skillHiddenNow(k)); } // ENG9 (2026-10-26): a gated skill (SKILL_REVEAL_MAP) follows its gate
@@ -3071,7 +3088,7 @@ const SKILL_DEFS_ONLY_LINES = ['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 
 Object.assign(SKILL_TEXT, {
   converge: v=> `When it becomes Ready, ${v === 'ally' ? 'your units close' : v === 'both' ? 'the units on both sides close' : "the enemy's units close"} their gaps toward the centre.`,
   defiance: (v, n)=> `+${n||1} Attack for every enemy unit that is ${Array.isArray(v) && v.length ? v.join(' or ') : 'of its chosen type'}.`,
-  swarm: (v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}. Structures don't count.` : `+${n||1} Attack for every ally that shares a type with it. Structures don't count.`, // + Structures don't count (EN, 2026-10-23, owner 01:57 note 10)
+  swarm: (v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it.`, // ENG19 (2026-11-02, owner 22:15 #6: "Structures do count, so remove that phrase")
   crepuscular: v=> { const [a, h] = phaseVals(v); return TX('ui.sk-crepuscular', {a, h}); }, // CX2 (2026-10-21): by day and at night, both in Twilight
   sunshy: ()=> `Blind by day.`,
   nightblind: ()=> `Blind at night, unless an Illuminate unit lights your side (or faces it).`, // 2026-10-17
@@ -8945,7 +8962,7 @@ function triggerActionEmoji(t){
     case 'stun': return '💫';
     case 'stunPlayer': return '🚫';
     case 'heal': return '💚';
-    case 'shield': return '💠';
+    case 'shield': case 'grantShield': return '💠'; // + Grant Shield (ENG19)
     case 'rebuild': return '🔨'; // Rebuild castle (2026-10-17)
     case 'cleanse': return '🫧';
     case 'addWait': return '⏳';
@@ -9116,7 +9133,7 @@ function abilityBadges(d, bopts){
   // every two-glyph chip is one .ab-pair (the second glyph tucked over the first), Moonpull, Supreme Tide and Twin Strike included.
   if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
-  if(e.bloomCopy && !(bopts && bopts.live && (bopts.live.bloomed || bopts.live.bloomCopy)) && !ui11BloomImpossible(e.bloomCopy, bopts)){ /* 2026-10-31 (UI11, FF1): a Bloom that is spent, or that a copy does not have, shows no chip on the board */ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : ''))}">🌸</span>`); } // BL (2026-10-23)
+  if(e.bloomCopy && !(bopts && bopts.live && (bopts.live.bloomed || bopts.live.bloomCopy)) && !ui11BloomImpossible(e.bloomCopy, bopts)){ /* 2026-10-31 (UI11, FF1): a Bloom that is spent, or that a copy does not have, shows no chip on the board */ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : '') + '\n' + eng19BloomFillText(e.bloomCopy) /* ENG19 (2026-11-02, owner 22:26): how it fills */)}">🌸</span>`); } // BL (2026-10-23)
   if(e.bloomWhen && !ui11BloomImpossible(e.bloomWhen, bopts)){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
   if(e.wave){ const w = waveParts(undefined, e); out.push(`<span title="Wave${w.n > 1 ? ' ' + w.n : ''}: its hits push the unit ${w.n === 1 ? 'one column' : w.n + ' columns'} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right' : w.way}; a crash hurts both">〰️${w.n > 1 ? n1(w.n) : ''}</span>`); } // Wave N (2026-10-18)
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
@@ -11682,6 +11699,7 @@ function readTriggerRow(row){
   if(on==='perTurn' && turnOfEl && turnOfEl.value!=='both') t.turnOf = turnOfEl.value;
   const whileWaitingEl = row.querySelector('[data-t="whileWaiting"]');
   if(whileWaitingEl && whileWaitingEl.checked) t.whileWaiting = true;
+  ['adjacent', 'surrounding', 'allies'].forEach(k=>{ const el = row.querySelector(`[data-t="${k}"]`); if(el && el.value !== '' && Number(el.value) > 0) t[k] = Number(el.value); }); // ENG19: Grant Shield's groups
   const countEl = row.querySelector('[data-t="count"]');
   if(countEl && countEl.value!=='') t.count = Number(countEl.value)||1;
   const dmgEl = row.querySelector('[data-t="dmgType"]');
@@ -11787,6 +11805,7 @@ function triggerPreviewText(t){
     case 'swapPositions': doText = `swap two random enemy units' positions`; break;
     case 'heal': doText = `heal ${t.who && t.who!=='self' ? whoTarget : 'itself'} for ${amt} (stanching Bleed first, capped at max HP)`; break; // 2026-10-16; 2026-10-18 (audit 4): heals no longer touch Poison, only Bleed
     case 'shield': doText = `give ${t.who === 'ally' && t.sub === 'all' ? 'every ally' : t.who && t.who!=='self' ? whoTarget : 'itself'} ${amt} Shield (temporary Health)`; break; // 2026-10-14
+    case 'grantShield': doText = eng19GrantShieldText(t) || FILL; break; // ENG19 (2026-11-02)
     case 'mindControl': doText = `take control of a ${t.sub||'random'} enemy unit`; break;
     case 'stunPlayer': doText = `make the enemy player skip ${t.count>1 ? t.count + ' turns' : 'their turn'}`; break;
     case 'cleanse': { const w = t.who && t.who!=='self' ? whoTarget : 'itself'; doText = t.amount ? `cleanse ${t.amount} ailment${t.amount===1?'':'s'} from ${w} (curses first)` : `cleanse ${w} of every ailment`; break; }
@@ -11833,6 +11852,7 @@ function actionFieldsHTML(t,i){
   if(aDef.fields.includes('nameMatch')) html += `<input type="text" placeholder="card name" class="w-110" data-t="nameMatch" data-i="${i}" value="${escapeAttr(t.nameMatch||'')}">`;
   if(aDef.fields.includes('matchMode')) html += `<select data-t="matchMode" data-i="${i}"><option value="exact" ${t.matchMode==='exact'?'selected':''}>exact name</option><option value="contains" ${t.matchMode!=='exact'?'selected':''}>name contains…</option></select>`;
   if(aDef.fields.includes('count')) html += `<input type="number" placeholder="count" class="w-56" data-t="count" data-i="${i}" value="${t.count||1}">`;
+  [['gsAdjacent', 'adjacent'], ['gsSurrounding', 'surrounding'], ['gsAllies', 'allies']].forEach(([f, k])=>{ if(aDef.fields.includes(f)) html += `<input type="number" min="0" placeholder="${k}" title="${k}" class="w-64" data-t="${k}" data-i="${i}" value="${t[k]!=null?t[k]:''}">`; }); // ENG19: Grant Shield's groups
   if(aDef.fields.includes('dmgType')) html += `<select data-t="dmgType" data-i="${i}">${[...DMG_TYPES].sort().map(dt=>`<option value="${dt}" ${(t.dmgType===dt||(!t.dmgType&&dt==='physical'))?'selected':''}>${dmgTypeOptLabel(dt)}</option>`).join('')}</select>`;
   // Gain's resource picker (2026-09-30, new — see the 'gain' ACTION_DEFS entry's own comment).
   if(aDef.fields.includes('resource')){
@@ -40250,6 +40270,10 @@ function ui5TideHandFx(m, strip){
     m._ui5TideSeen = now;
   }catch(err){}
 }
+// ENG19 (2026-11-02, owner #12): while the round replays, the cards drawn in it wait (m._eng19HandHold) until their own 'draw' event plays.
+function eng19HandHeld(m, uid){ return !!(m && m.resolving && m._eng19HandHold && m._eng19HandHold.has(uid)); }
+function eng19DrawShown(ev){ const m = matchState; if(!m || !m._eng19HandHold || ev.uid == null || !m._eng19HandHold.has(ev.uid)) return;
+  m._eng19HandHold.delete(ev.uid); try{ renderHand(); }catch(e){} }
 function renderHand(){
   try{ setTimeout(syncHandScroll, 0); }catch(e){}
   try{ setTimeout(syncLeaderAfford, 0); }catch(e){}
@@ -40272,7 +40296,7 @@ function renderHand(){
     else if(m._tutHlUid == null){ const first = me.hand.find(isHlCard); if(first) m._tutHlUid = first.uid; }
   }
   strip.style.setProperty('--hand-n', String(Math.max(1, me.hand.length))); // 2026-10-19 (package MB2): a phone's hand overlaps to fit (CSS)
-  strip.innerHTML = me.hand.filter(hc=> !(m.coop && gdPendingUid(m, hc.uid))).map(hc=>{ // + COOP2 (2026-10-28): a card I claimed a slot for waits there, not in my hand
+  strip.innerHTML = me.hand.filter(hc=> !(m.coop && gdPendingUid(m, hc.uid)) && !eng19HandHeld(m, hc.uid) /* ENG19 (#12) */).map(hc=>{ // + COOP2 (2026-10-28): a card I claimed a slot for waits there, not in my hand
     let d = defs[hc.defId]; if(!d) return '';
     // Consternation (2026-10-16, user: "cards in the hand lose 1/1 every upkeep"): the hand card shows what it has left.
     if(hc.consterned > 0) d = Object.assign({}, d, {attack: Math.max(0, (d.attack|0) - hc.consterned), health: Math.max(1, (d.health|0) - hc.consterned)});
@@ -42762,7 +42786,12 @@ async function resolveRoundCore(opts){
   setupEnemyBehaviour(m);
   // Forfeit (and anything else that ends the match without a combat round) sets m.forcedWinner
   // and calls resolveRound: skip combat, go straight to the normal end-of-match handling.
+  // ENG19 (2026-11-02, owner 22:15 #12: "You should immediately draw a card. For now, it looks like the draw happens on your next turn."): a card
+  // you draw during the fight (an On Attack draw, a Dawn draw) is held out of the hand strip until its 'draw' event plays (eng19DrawShown),
+  // so it lands in your hand as it is drawn; before, the hand only redrew after the round, beside the next turn's draw.
+  const eng19HandPid = viewerHandPid(m), eng19Before = new Set(((m.players[eng19HandPid] || {}).hand || []).map(h=> h.uid));
   let over = (m.forcedWinner!=null) ? true : (opts && opts.run) ? !!opts.run(events) : m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.mode==='pvp' ? 2 : (m.round%2===0 ? 1 : 2));
+  m._eng19HandHold = new Set(((m.players[eng19HandPid] || {}).hand || []).map(h=> h.uid).filter(u=> !eng19Before.has(u))); // ENG19 (#12)
   m._rrCombatDone = true; m._needsCommit = false; m._rrFails = 0; // 2026-10-16: the round is fought (see resolveRound's recovery)
   // Wait-timer rework (2026-09-20, per explicit request: "decrement at start of turn (not end of
   // combat), with a pulsing zoom-in 'next turn' banner and sequential... decrement animation"):
@@ -49634,7 +49663,11 @@ function eq2Vfx(ev){
       const el = boardCardEl(ev.uid); eq2Shatter(el, (defs[ev.equipDefId] || {}).icon); fl(el, TX('ui.eq2-break'), 'debuff'); snd('lockBreak');
       try{ updateCardAtkDisplay(ev.uid); updateCardHpDisplay(ev.uid); }catch(e){} eq2Refresh(ev.uid); return; }
     case 'equipDrop': { const rc = eq2Rc(ev.fromUid); if(rc){ rc.equipment = null; rc.equipOn = false; rc.equipDur = null; } return; }
-    case 'tempSoak': { const rc = eq2Rc(ev.uid); if(rc) rc.tempHpR = ev.left; eq2Refresh(ev.uid); return; }
+    case 'tempSoak': { const rc = eq2Rc(ev.uid); if(rc){ if(ev.pool === 'shell') rc.tempHp = ev.left; else rc.tempHpR = ev.left; } eq2Refresh(ev.uid);
+      // ENG19 (2026-11-02, owner 22:15 #14): the 💠 number (Shield + Shell's and Bolster's temporary Health) steps down as the blow lands, as a
+      // Shield's soak does (shieldSoak); before, Shell's and Bolster's soaks left it at its round-start number until the round's end repaint.
+      { const m = matchState, am = animMs(), at = m && m.resolving ? am.windup + am.impactPad : 0; setTimeout(()=>{ try{ updateCardStatusDisplay(ev.uid); }catch(e){} }, at); }
+      return; }
     case 'dive': { const el = boardCardEl(ev.attUid); if(ev.strike){ en7Strike(ev); return; } /* EN7 (2026-10-24): the strike out of the sky / the water */ if(el){ el.classList.remove('eq2-diving'); void el.offsetWidth; el.classList.add('eq2-diving'); setTimeout(()=> el.classList.remove('eq2-diving'), 700); }
       fl(el, TX('ui.eq2-dive-float', {n: ev.bonus}), 'quick'); snd('featherFlutter'); return; }
     case 'parasiteAttach': { const rc = eq2Rc(ev.targetUid); if(rc) rc.parasite = {uid: ev.uid, defId: ev.defId, atk: ev.atk, hp: ev.hp, maxHp: ev.maxHp, wait: ev.wait};
@@ -51220,8 +51253,8 @@ function renderVfxForEvent(ev){
     if(ev.kind==='surge'){ try{ SoundKit.rageRoar ? SoundKit.rageRoar() : SoundKit.swipeTone(); }catch(e){} if(el){ floatText(el, `🌋 +${ev.atk}/+${ev.hp}`, 'heal slow'); el.classList.add('surge-glow'); setTimeout(()=> el.classList.remove('surge-glow'), 1400); } }
     // 2026-10-12 (09:48, user: "The shell words comes out too fast. And don't say anything just say Shell!. There should be
     // animation across the card over 0.5s"): a pale-blue shell sweeps up the card over half a second, then "Shell!".
-    else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; rc.tempHp = ev.amount; } try{ SoundKit.shellUp(); }catch(e){} if(el){ el.classList.remove('shell-sweep'); void el.offsetWidth; el.classList.add('shell-sweep'); setTimeout(()=> el.classList.remove('shell-sweep'), 900); setTimeout(()=> floatText(el, '🐢 Shell!', 'heal slow'), 450); } }
-    else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } }
+    else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; rc.tempHp = ev.amount; } try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} /* ENG19 (2026-11-02, #14): its 💠 number shows at once */ try{ SoundKit.shellUp(); }catch(e){} if(el){ el.classList.remove('shell-sweep'); void el.offsetWidth; el.classList.add('shell-sweep'); setTimeout(()=> el.classList.remove('shell-sweep'), 900); setTimeout(()=> floatText(el, '🐢 Shell!', 'heal slow'), 450); } }
+    else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} /* ENG19 (#14) */ }
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
     else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, ev.quick ? '🪁 Tailwind: Quick!' : '🪁 Tailwind!', 'quick'); }
     else if(ev.kind==='headwind'){ if(el) floatText(el, TX('ui.wind-head-float'), 'debuff'); } // ENG16 (2026-11-02, WIND-2 a): a Headwind Flyer swings at -1 Attack this round
@@ -51737,7 +51770,7 @@ function renderVfxForEvent(ev){
       setTimeout(()=>{ if(document.getElementById(pillId)) resourceGainVfx(from || document.getElementById(pillId).getBoundingClientRect(), [{amount:ev.amount, glyph:'🪵', pillId}]);
         else if(src && src.isConnected) floatText(src, `+${ev.amount} 🪵`, 'gold'); }, 380); } }
   if(ev.type==='exile') SoundKit.exile();
-  if(ev.type==='draw') SoundKit.draw();
+  if(ev.type==='draw'){ SoundKit.draw(); eng19DrawShown(ev); }
   if(ev.type==='overdraw'){ SoundKit.draw(); animateOverdraw(ev); }
   // Chronos wait-countdown (2026-09-17): the ordinary per-round tick — ring redraws to the
   // new remaining fraction, a quick pulse, and a small clock-tick sound.

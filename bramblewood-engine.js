@@ -293,7 +293,8 @@ const TRIGGER_LAYER_CAP = 5;
 const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild','positionBeam','duplicate','devourGrave','buffAll','stench','silence','stymie','exhaust','petrify','vulnerable','barrage','smokeScreen','magnet']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17), Position Beam (2026-10-19, package EE)
 ACTION_KEYS.push('forgeWeapon', 'disarm', 'revive' /* ENG9 (2026-10-26): Revive N, the action */); // Package SK2b (2026-10-19 / owner Oct 21): a smith lays a weapon; Disarm takes one
 ACTION_KEYS.push('exploit', 'poisonTick', 'pulse'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N; + Pulse N (EN4, 2026-10-23: Poison Tick is retired, it reads as Pulse)
-ACTION_KEYS.push('arrow'); // Package BX (2026-10-21): Arrow N as an action (the Arrow skill's shot: the enemy facing it, else the nearest, else the bramble)
+ACTION_KEYS.push('arrow');
+ACTION_KEYS.push('grantShield'); // ENG19 (2026-11-02, owner #15): Grant Shield, itself / adjacent / surrounding / every ally // Package BX (2026-10-21): Arrow N as an action (the Arrow skill's shot: the enemy facing it, else the nearest, else the bramble)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -718,9 +719,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'overdraw', side, defId, lumber:1});
         continue;
       }
-      player.hand.push({uid:uidCounter++, defId});
+      const hc = {uid:uidCounter++, defId}; player.hand.push(hc);
       ensureStat(stats, side, defId).drawn++;
-      if(recordEvents && events) events.push({type:'draw', side, defId});
+      if(recordEvents && events) events.push({type:'draw', side, defId, uid:hc.uid}); // + uid (ENG19, 2026-11-02): the replay shows a card drawn mid-round as its draw plays (#12)
     }
     if(opening) vanguardOpening(player, side, stats, events);
   }
@@ -1043,7 +1044,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-17 (user: "Some skirmishes near vents have 'Hazardous Gas' field effect. Since poison is already used, think of something else."):
   // rules.sulphurFumes N (default 1): from round 2, at the start of every round every unit that doesn't resist fire, isn't Dry and isn't
   // Flying is Choking for that round: −N Attack on everything it deals (never below 0). No poison, no damage: just a weaker round.
-  function chokeOf(card){ return (card && rules.sulphurFumes && card.chokeRound === turnNo) ? (card.chokeN || 1) : 0; }
+  function chokeOf(card){ return ((card && rules.sulphurFumes && card.chokeRound === turnNo) ? (card.chokeN || 1) : 0) + majestyCut(card); } // + Majesty (ENG19)
+  // Majesty N (ENG19, 2026-11-02, owner 22:15 #13: "New skill Majesty (also for dragons)"; decision ENG19-1, option a, on no card yet): while a
+  // Ready Majesty unit stands, the enemy units facing it (its column and the columns either side of it) swing at -N Attack, never below 0.
+  // Several Majesty units do not stack on one foe: the biggest N counts. It rides on chokeOf, so it cuts every swing the way the Sulphur
+  // Fumes' choke does (a unit, the bramble, the board's shown Attack), not Thorns or a skill's damage.
+  const MAJESTY_DEF = 1, MAJESTY_REACH = 1;
+  function majestyCut(card){
+    if(!card || !curPlayers) return 0;
+    let pid = 0; for(const p of [1,2]){ const pl = curPlayers[p]; if(pl && pl.row && allBoardCards(pl).includes(card)){ pid = p; break; } } if(!pid) return 0;
+    const foe = curPlayers[otherId(pid)]; if(!foe || !foe.row) return 0;
+    const kings = allBoardCards(foe).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !(c.wait > 0) && effectsOf(c).majesty); if(!kings.length) return 0;
+    const myCol = columnOfCard(curPlayers[pid], card.uid); if(myCol == null) return 0;
+    let n = 0; kings.forEach(k=>{ const kc = columnOfCard(foe, k.uid); if(kc != null && Math.abs(kc - myCol) <= MAJESTY_REACH) n = Math.max(n, numN(effectsOf(k).majesty, MAJESTY_DEF)); });
+    return n; }
   // 2026-10-17 (user: "new ones like Ash Rain and Ashy (volcano explosion)"): rules.ashRain N (default 1): from round 2, ash falls every round:
   // both castles take N (never below 1), and the ash dims the sun: day bonuses are halved, as under Cloudy.
   // rules.ashy: the ground is Ashy all fight. rules.ashyAfterEruption: after the volcano's Eruption the ground is Ashy for that round and
@@ -2146,7 +2160,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Swarm (reworked 2026-10-10, user: "Deal +1 damage extra per ally unit that shares a type with this unit"): +1 for
   // every other living ally that shares at least one type (archetype) with it. Any ally counts, Swarm or not.
   // EN2 (2026-10-23): the Types a card is for Swarm: its archetypes and their ancestors in the taxonomy (no species, no animal). A
-  // Shapeshifter is every Structure (Swarm never counts Structures anyway).
+  // Shapeshifter is every Structure. ENG19 (2026-11-02, owner 22:15 #6: "Swarm: Structures do count"): an allied Structure that shares a Type counts.
   function swarmTypeKeys(d){ const key = t=> TAXONOMY ? TAXONOMY.key(t) : String(t).trim().toLowerCase(), out = new Set();
     ((d && d.archetypes) || []).forEach(t=>{ if(TAXONOMY) TAXONOMY.ancestors(t).forEach(x=> out.add(x)); else out.add(key(t)); }); return out; }
   function swarmTypeIsAny(d, list){ const key = t=> TAXONOMY ? TAXONOMY.key(t) : String(t).trim().toLowerCase(); const s = swarmTypeKeys(d); return [...list].some(T=> s.has(key(T))); }
@@ -2170,7 +2184,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Insect species no longer count for each other unless both list a shared Type). swarmTypeShares / swarmTypeIsAny below.
     const shares = c=>{ const d = CARD_DEFS[c.defId] || {}; return (!picked && mimic) || !!(d.effects && (d.effects.changeling || d.effects.growth)) || txChangeling(d) || (picked ? swarmTypeIsAny(d, picked) : swarmTypeShares(def, d)); };
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue; const all = [...pl.row.left, ...pl.row.center, ...pl.row.right];
-      if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && !isStructureCard(c) && shares(c)).length * per * (card.boon === 'hiveChorus' ? 2 : 1); } // x2: Hive Chorus, a selfish boon (2026-10-24, DF3) // 2026-10-23 (package EN, owner 01:57 note 10: "Swarm doesn't count structures.")
+      if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && shares(c)).length * per * (card.boon === 'hiveChorus' ? 2 : 1); } // x2: Hive Chorus, a selfish boon (2026-10-24, DF3) // 2026-10-23 (package EN, owner 01:57 note 10: "Swarm doesn't count structures."); ENG19 (2026-11-02, owner 22:15 #6: "Structures do count"): the Structure filter is gone
     return 0;
   }
   // EN2 (2026-10-23, owner 17:34 #22: "dynamic changes to stats (and visualisation) are applied immediately. so as you lose or gain ants
@@ -2264,7 +2278,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function spendTempHp(card, dmg){
     if(card.tempHpR > 0 && dmg > 0){ const s1 = Math.min(card.tempHpR, dmg); card.tempHpR -= s1; dmg -= s1; // EQ2 (2026-10-24): the round's temporary Health (Bolster N) goes first
       if(recordEvents && shieldEvents) shieldEvents.push({type:'tempSoak', uid:card.uid, defId:card.defId, soaked:s1, left:card.tempHpR}); }
-    if(card.tempHp > 0 && dmg > 0){ const s2 = Math.min(card.tempHp, dmg); card.tempHp -= s2; dmg -= s2; }
+    if(card.tempHp > 0 && dmg > 0){ const s2 = Math.min(card.tempHp, dmg); card.tempHp -= s2; dmg -= s2;
+      // ENG19 (2026-11-02, owner 22:15 #14: "Is the shield pip '4' dynamic now?"): Shell's temporary Health soaked with no event, so the
+      // board's 💠 number (Shield + Shell's and Bolster's temporary Health) held until the round's end repaint. Now it has its own tempSoak.
+      if(recordEvents && shieldEvents) shieldEvents.push({type:'tempSoak', pool:'shell', uid:card.uid, defId:card.defId, soaked:s2, left:card.tempHp}); }
     // Shield (2026-10-14, user: "Not the same as armour, just temp HP"): soaks what Shell's temporary Health didn't, and never heals back.
     if(card.shield > 0 && dmg > 0){ const s3 = Math.min(card.shield, dmg); card.shield -= s3; dmg -= s3;
       if(recordEvents && shieldEvents) shieldEvents.push({type:'shieldSoak', uid:card.uid, defId:card.defId, soaked:s3, left:card.shield}); }
@@ -5905,8 +5922,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Stonecutter N   every 2nd turn while Ready: +N Stone (On Turn Start x Gain, t.every 2; Heavy Metal adds to it)
   //   Prospector N    On Kill: +N Metal (Heavy Metal adds to it)
   //   Felling N       On Kill: +N Lumber (Lumberjack adds to it)
-  //   Pearl Bed N     On Ready: +N Pearl (the Shellfish). A Pearl pays 1 Lumber or 1 Stone: when a card's Lumber or Stone can't be met,
-  //                   Pearls fill in (canPlay / pearlSettle). The CPU counts them (aiResourceGap).
+  //   Pearl N         On Ready: +N Pearl, once (a Wait 0 card: On Play). A Pearl pays 1 Lumber or 1 Stone: when a card's Lumber or Stone
+  //                   can't be met, Pearls fill in (canPlay / pearlSettle). The CPU counts them (aiResourceGap).
+  //   Pearl Bed N     every turn while Ready: +N Pearl (On Turn Start x Gain).
+  //   ENG19 (2026-11-02, owner 22:15 #5: "Pearl - On Ready, Pearl Bed - Every turn (readied)"): until now Pearl Bed was the On Ready skill
+  //   (once) and there was no Pearl; Pearl takes that rule and Pearl Bed pays every turn it is Ready.
   //   Salvage N       when another of your Structures dies: +2N Lumber (en8DeathFeed; always on, Waiting too)
   //   Scavenge N      when another of your units dies: +N Lumber (en8DeathFeed; tokens count; always on)
   //   Coppice N       a round it took no damage: +N Lumber at the next round's start (from its second round on the field)
@@ -5915,18 +5935,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //                   round), both sides +1 Lumber
   // (Salvage and Scavenge were package SK2's point counters, on no card: Scavenge N, M = M points within reach -> 1 Lumber; Salvage the
   // same for Structures -> Stone. LUM-1 gave both names the plain rules above; SK2_SCAV is retired.)
-  const EN8_DEF = {stonecutterN:1, stonecutterEvery:2, prospectorN:1, fellingN:1, pearlBedN:1, salvageN:1, salvageMult:2, scavengeN:1, coppiceN:1, driftwoodN:1, windfallLumber:1};
+  const EN8_DEF = {stonecutterN:1, stonecutterEvery:2, prospectorN:1, fellingN:1, pearlBedN:1, pearlN:1 /* ENG19 */, salvageN:1, salvageMult:2, scavengeN:1, coppiceN:1, driftwoodN:1, windfallLumber:1};
   let en8TrigMemo = null;
   function en8Trigs(e, list, def){
-    if(!e || !(e.stonecutter || e.prospector || e.felling || e.pearlBed || e.stockpile || e.revive)) return list;
-    const waits = !!(def && Number(def.wait) > 0); // Pearl Bed: a Wait 0 card is Ready as it lands (the engine fires no On Ready for it), so it pays On Play
-    if(!en8TrigMemo) en8TrigMemo = new WeakMap(); const key = [e.stonecutter, e.prospector, e.felling, e.pearlBed, e.stockpile, e.revive, waits].join('|'), m = en8TrigMemo.get(e);
+    if(!e || !(e.stonecutter || e.prospector || e.felling || e.pearlBed || e.pearl || e.stockpile || e.revive)) return list;
+    const waits = !!(def && Number(def.wait) > 0); // Pearl (ENG19; Pearl Bed before): a Wait 0 card is Ready as it lands (the engine fires no On Ready for it), so it pays On Play
+    if(!en8TrigMemo) en8TrigMemo = new WeakMap(); const key = [e.stonecutter, e.prospector, e.felling, e.pearlBed, e.pearl, e.stockpile, e.revive, waits].join('|'), m = en8TrigMemo.get(e);
     if(m && m.src === list && m.key === key) return m.out;
     const out = list.slice(), N = (k, d)=> numN(e[k], d);
     if(e.stonecutter) out.push({on:'perTurn', do:'gain', resource:'stone', amount:N('stonecutter', EN8_DEF.stonecutterN), every:EN8_DEF.stonecutterEvery, keyword:'stonecutter'});
     if(e.prospector) out.push({on:'onKill', do:'gain', resource:'metal', amount:N('prospector', EN8_DEF.prospectorN), keyword:'prospector'});
     if(e.felling) out.push({on:'onKill', do:'gain', resource:'lumber', amount:N('felling', EN8_DEF.fellingN), keyword:'felling'});
-    if(e.pearlBed) out.push({on: waits ? 'onReady' : 'onSpawn', do:'gain', resource:'pearl', amount:N('pearlBed', EN8_DEF.pearlBedN), keyword:'pearlBed'});
+    if(e.pearl) out.push({on: waits ? 'onReady' : 'onSpawn', do:'gain', resource:'pearl', amount:N('pearl', EN8_DEF.pearlN), keyword:'pearl'}); // ENG19 (2026-11-02): Pearl, On Ready once (Pearl Bed's old rule)
+    if(e.pearlBed) out.push({on:'perTurn', do:'gain', resource:'pearl', amount:N('pearlBed', EN8_DEF.pearlBedN), keyword:'pearlBed'}); // ENG19 (2026-11-02, owner #5): Pearl Bed, every turn while Ready (was On Ready, once)
     // Stockpile N (ENG9, 2026-10-26, owner EN6-6: "On ready ... is a classic. We need a named skill for this"): On Ready, gain N Lumber, once
     // (its first upkeep Ready; a Wait 0 unit's first upkeep since ENG9). Then it leaves the card (spendOnReady). Name: call ENG9-2.
     if(e.revive) out.push({on:'onSpawn', do:'revive', count:N('revive', 1), keyword:'revive'}); // Revive N (ENG9): On Play, the action (reviveFromGrave)
@@ -7247,6 +7268,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'shoreUp', side:sideOf(pid), uid:boardCard.uid, defId:boardCard.defId, targets:nb.map(c=> c.uid)});
     nb.forEach(c=> grantShield(pid, boardCard, c, 1, sideOf, events));
   }
+  // ENG19 (2026-11-02, owner 22:15 #12: "On attack triggers happen after attack. For example draw. You should immediately draw a card."):
+  // a unit's On Attack triggers used to go off as it committed to the swing, before the blow. Now resolveCombat runs them in two steps:
+  // 'pre' (before the blow) only Fire on hit, which loads this very swing; 'post' (right after the swing and its answers: Thorns, a
+  // counter, Sweep / Fork prongs) everything else: a draw lands in the hand then, a heal mends what the blow back cost it, a Silence /
+  // Petrify lands after the hit. A unit that died in its own swing ('postDead') still draws, gains and hits, but nothing it gives itself.
+  // Outside the swing (onAttackPhase null) every On Attack trigger goes off as before.
+  let onAttackPhase = null;
+  const ON_ATTACK_SELF = ['heal', 'buff', 'buffAttack', 'buffHealth', 'shield', 'grantShield', 'cleanse'];
+  function onAttackGoes(t){ const pre = t.do === 'fireHit'; if(onAttackPhase === 'pre') return pre; if(pre) return false;
+    if(onAttackPhase === 'postDead') return !(ON_ATTACK_SELF.includes(t.do) && (!t.who || t.who === 'self') && !t.adjacent && !t.surrounding && !t.allies);
+    return true; }
+  function runOnAttackPost(players, sideOf, a, attDef, stats, events){
+    const prev = onAttackPhase; onAttackPhase = a.att.hp > 0 ? 'post' : 'postDead';
+    try{ runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events); } finally { onAttackPhase = prev; } }
   function runCustomTriggers(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
     if(hook === 'onAttacked') en4ShoreUp(players, sideOf, boardCard, events); // EN4 (2026-10-23): Shore Up
     const trigs = trigsOf(def); if(!trigs.length) return; // 2026-10-19 (package GI): + the Kin Rally / Pack Howl keywords' own triggers
@@ -7272,6 +7307,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // it does on its own turn) are doubled here; reactive and passive triggers (On Hit, On Death, On Play, On Round Start ...) go off once.
     const reps0 = (HEADWIND_HOOKS.has(hook) && trigs.some(t=> t.on===hook) && headwindTwice(boardCard, playerId, mySide, events)) ? 2 : 1;
     for(let rep0 = 0; rep0 < reps0; rep0++) trigs.filter(t=>t.on===hook).forEach((t, i)=>{
+      if(hook === 'onAttack' && onAttackPhase && !onAttackGoes(t)) return; // ENG19 (2026-11-02, #12): On Attack goes off after the swing (onAttackPhase)
       // Generic "once" flag: this exact trigger fires at most once for this
       // specific board-card INSTANCE (not the card definition, so every copy
       // of a card in play gets its own one-time use).
@@ -7484,6 +7520,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const who = t.who === 'allies' ? 'ally' : (t.who || 'self'), sub = t.who === 'allies' ? 'all' : (t.sub || 'random');
           if(who === 'ally' && sub === 'all') physicalRowOrder(pl).filter(c=> c && !c.gap && c.hp > 0 && c.uid !== boardCard.uid && kinOk(boardCard, c)).forEach(c=> grantShield(playerId, boardCard, c, n, sideOf, events));
           else { const tg = who === 'self' ? {card:boardCard} : resolveGeneralTarget(players, playerId, boardCard, who === 'enemy' ? 'ally' : who, sub); if(tg && tg.card) grantShield(playerId, boardCard, tg.card, n, sideOf, events); }
+          break;
+        }
+        // Grant Shield (ENG19, 2026-11-02, owner 22:15 #15: "Invent a new (skill) action that increases the shield of <Target(s)> by N. It would
+        // be epic to have a card give +3 Shields all On Play"). One number per target group, any of them together, each priced on its own
+        // (canonical/skill-costs.json grantShield, grantShield.adjacent / .surrounding / .allies):
+        //   amount N       itself
+        //   adjacent N     each ally adjacent to it (owner 11-02: front, behind, left, right: adjacentOf)
+        //   surrounding N  each ally around it, corners too (surroundingOwnOf on a slot board; off one, its row's neighbours)
+        //   allies N       every ally on its side, itself included
+        // A unit gets one group's N at most (the biggest): "allies 3" with "adjacent 2" gives a neighbour 3, not 5.
+        case 'grantShield': {
+          const want = new Map(), give = (c, n)=>{ if(c && !c.gap && c.hp > 0 && !c.cageOf && n > 0) want.set(c, Math.max(want.get(c) || 0, n)); };
+          const n0 = Math.max(0, Number(t.amount)||0), nA = Math.max(0, Number(t.adjacent)||0), nS = Math.max(0, Number(t.surrounding)||0), nAll = Math.max(0, Number(t.allies)||0);
+          if(boardCard && boardCard.kind !== 'hq'){ if(n0) give(boardCard, n0);
+            if(nA) adjacentOf(pl, boardCard).forEach(c=> give(c, nA));
+            if(nS){ const ring = slotMode && Number.isInteger(boardCard.slot) ? surroundingOwnOf(pl, boardCard) : adjacentOf(pl, boardCard); ring.forEach(c=> { if(c !== boardCard) give(c, nS); }); } }
+          if(nAll && pl) liveRowsOf(pl).forEach(c=> give(c, nAll));
+          want.forEach((n, c)=> grantShield(playerId, boardCard, c, n, sideOf, events));
           break;
         }
         // Rebuild castle N (2026-10-17, the Rebuild skill's action form): restore N Health to this card's own castle (its Attack or
@@ -9256,14 +9310,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // N, so it repeats every N rounds. It holds (doesn't count) while the unit is Waiting, Stunned, Frozen or Asleep.
   // ENG9 (2026-10-26, owner G23: "once used, remove Fireball"): a unit's one-shot On Ready skills, once they have gone off, leave its own copy
   // of the card (patchUnitDef: the board, its detail and the log show it without them): On Ready damage, an On Ready Missile or Render,
-  // Rocket, Fireball, Meteor, Chilli, Converge, Stockpile, an On Ready Pearl Bed and its On Ready triggers. Event skillSpent {keys}.
+  // Rocket, Fireball, Meteor, Chilli, Converge, Stockpile, an On Ready Pearl (Pearl Bed before ENG19) and its On Ready triggers. Event skillSpent {keys}.
   const ONE_SHOT_READY = ['onReadyDamage', 'rocket', 'fireball', 'meteor', 'chilli', 'converge', 'stockpile'];
   function spendOnReady(c, side, events){
     const e = effectsOf(c), patch = {}, keys = [];
     const off = k=>{ const v = e[k]; patch[k] = typeof v === 'number' ? 0 : (v && typeof v === 'object') ? null : false; keys.push(k); };
     ONE_SHOT_READY.forEach(k=>{ if(e[k]) off(k); });
     ['missile', 'render'].forEach(k=>{ if(e[k] && typeof e[k] === 'object' && e[k].trigger === 'onReady') off(k); });
-    if(e.pearlBed && (CARD_DEFS[c.defId]||{}).wait > 0) off('pearlBed');
+    if(e.pearl && (CARD_DEFS[c.defId]||{}).wait > 0) off('pearl'); // ENG19 (2026-11-02): Pearl is the once skill; Pearl Bed pays every turn and stays
     if(Array.isArray(e.triggers) && e.triggers.some(t=> t && t.on === 'onReady')){ patch.triggers = e.triggers.filter(t=> !(t && t.on === 'onReady')); keys.push('triggers:onReady'); }
     if(!keys.length) return;
     patchUnitDef(c, patch);
@@ -10169,7 +10223,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // a permanent Attack buff it grants takes effect starting NEXT round, not retroactively.
       a.att._fireHit = 0; // Fire on hit (2026-10-16): an On Attack trigger may load this swing with extra fire damage
       runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAction', stats, events); // Package BX (2026-10-21): On Action, its turn
-      runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events);
+      { const prev = onAttackPhase; onAttackPhase = 'pre'; try{ runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events); } finally { onAttackPhase = prev; } } // ENG19 (2026-11-02, #12): only Fire on hit here; the rest after the swing (runOnAttackPost)
       // Bleed: attacking at all ticks this card's own bleed stacks, whether or not the attack
       // finds/lands on a target.
       bleedTick(sideOf, a.attId, a.att, stats, events, 'attack');
@@ -10361,7 +10415,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(tt && tt.card.uid !== rt.card.uid){ target = {kind:'card', card:tt.card, col:tt.col, reserveRow:rt.row}; tauntDrew = tt;
               if(recordEvents && events) events.push({type:'statusFx', kind:'taunted', side:sideOf(a.enemyId), attDefId:tt.card.defId, attUid:tt.card.uid, targetSide:sideOf(a.attId), targetDefId:a.att.defId, targetUid:a.att.uid}); } } }
       }
-      if(!target || tipsyMiss){ pending = pickNextAttacker(); continue; }
+      if(!target || tipsyMiss){ runOnAttackPost(players, sideOf, a, attDef, stats, events); /* ENG19 (#12): its swing found nothing or went wide: On Attack still goes off, as before */ pending = pickNextAttacker(); continue; }
       if(a.att.invisible > 0){ a.att.invisible = 0; if(recordEvents && events) events.push({type:'statusEnd', status:'invisible', side:sideOf(a.attId), uid:a.att.uid, defId:a.att.defId, attacked:true}); } // Invisible (2026-10-16): attacking gives it away
       const dmgType = (a.att.chilli > 0 && attackDmgType(attDef) !== 'magic') ? 'heat' : attackDmgType(attDef); // Magic (2026-10-14): effects.magic swings magic damage; Chilli (2026-10-15): fire
       const mySide = sideOf(a.attId);
@@ -10860,6 +10914,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'frenzy', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, twin:true, coffee:true});
         frenziedAgain = true;
       }
+      runOnAttackPost(players, sideOf, a, attDef, stats, events); // ENG19 (2026-11-02, owner #12): On Attack, right after the swing (a draw is in hand now)
       // Live reflow, per-attacker (see reflowAfterKills' comment above): whatever this turn's
       // swing (primary hit, Sweep/Swipe continuations, or Thorns counter-damage) just killed
       // gets cleaned up and collapsed toward the gap right now, before the next attacker in

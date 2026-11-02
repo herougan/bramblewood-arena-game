@@ -931,7 +931,7 @@ board floats "Headwind: −1⚔" on the `statusFx` `headwind` event). Nothing go
 Flyers there is no Tailwind or Headwind. 2026-11-02 (FIX4, decision WIND-2 a, built in ENG16; was: a Headwind Flyer's active skills went off twice).
 
 **Swarm** counts allies by Type only: the archetypes a card lists and the wider Types above them (Coral Reef is Ocean is Aquatic), never its
-species or animal (`swarmTypeShares`). Structures never count. The board's Attack follows the replay: as an ally dies mid-round the Swarm
+species or animal (`swarmTypeShares`). Structures that share a Type count (ENG19, 2026-11-02; EN to ENG19 they didn't). The board's Attack follows the replay: as an ally dies mid-round the Swarm
 unit's number drops at once (`liveSwarmBonus` reads the replay's living units), and each swing puts the Attack the engine used on the
 attacker's plate (`liveAtk` on its hit).
 
@@ -1233,7 +1233,8 @@ The rules as built (engine: the EN8 block after `trigsOf`, `aiUsefulNow` / `aiLe
 | ⛏️ Stonecutter N | `stonecutter` | every 2nd Ready turn: +N Stone (On Turn Start x Gain with `t.every 2`) | 1.8 / N |
 | 🪙 Prospector N | `prospector` | On Kill: +N Metal | 1.2 / N |
 | 🪓 Felling N | `felling` | On Kill: +N Lumber | 0.8 / N |
-| 🦪 Pearl Bed N | `pearlBed` | On Ready (a Wait 0 card: On Play): +N Pearl | 0.9 / N |
+| ⚪ Pearl N | `pearl` | On Ready, once (a Wait 0 card: On Play): +N Pearl (ENG19; Pearl Bed's rule before) | 0.9 / N |
+| 🦪 Pearl Bed N | `pearlBed` | every turn while Ready (On Turn Start): +N Pearl (ENG19; On Ready once before) | 0.9 / N (re-price: ENG19-3) |
 | 🌳 Coppice N | `coppice` | a round it took no damage: +N Lumber at the next round's start (from its 2nd round) | 1.1 / N |
 | 🪵 Driftwood N | `driftwood` | at an Ebb round's start on a beach map (`rules.beachMap`): +N Lumber | 0.75 / N |
 | 🦝 Scavenge N | `scavenge` | another of your units dies: +N Lumber (always on) | 1.5 / N |
@@ -1241,7 +1242,7 @@ The rules as built (engine: the EN8 block after `trigsOf`, `aiUsefulNow` / `aiLe
 | 🍃 Windfall (field) | `rules.windfall` | after a Storm round (a Thunderstorm or a strong-wind round), both sides +1 Lumber; on the windy maps up to Map 20 | - |
 
   (Scavenge and Salvage were SK2's point counters, on no card; their names now carry LUM-1's plain rules.)
-- **Pearls** ⚪ (`pl.pearls`): Shellfish grow them (Pearl Bed). When a card's Lumber or Stone can't be met, Pearls make up the rest
+- **Pearls** ⚪ (`pl.pearls`): Shellfish grow them (Pearl, Pearl Bed). When a card's Lumber or Stone can't be met, Pearls make up the rest
   (`canPlay` counts them, `pearlSettle` pays them after the Lumber / Stone). The CPU counts them too. Event `pearl {amount}`.
 - **Render N → Daunt counters** (owner 00:02 #2, 2026-10-25; `fireRender`, `en8DauntUse`): Render N now puts N Daunt counters on the enemy
   facing it (`card.dauntN`; was: it lost N Attack for good). Each counter is -1 Attack (`dauntOf`, with Daunt N's on-hit marks) and -1 on
@@ -1409,3 +1410,24 @@ tick; `draw`'s `openingExtra`; `AI_PLAN_*`, `aiSavePlan`, `aiLosingBadly`, `aiFr
 - **Co-op starting slot** (owner COOP3-3): in the duo dungeon each player's row centre is that player's alone (`ownedCells(..., homeRow,
   otherHomes)`: the other players' row centres are never a cell). An ally or a CPU ally can't play there, the "+" targets don't show it, and
   every other free cell follows W10's rule. Raids are unchanged (each player plays into their own row).
+
+## 2026-11-02 additions (package ENG19): Pearl and Pearl Bed, Swarm counts Structures, On Attack after the swing, Majesty, Grant Shield, the live 💠 number, Bloom's tooltip
+
+- **Pearl N / Pearl Bed N** (owner 22:15 #5): `pearl` is On Ready, once (+N Pearl; a Wait 0 card: as it is played), the rule Pearl Bed had.
+  `pearlBed` now pays +N Pearl at the start of every turn the unit is Ready (`perTurn` trigger, `en8Trigs`). Spent chip: Pearl (`spendOnReady`).
+- **Swarm** (#6): an allied Structure that shares a Type counts (the `isStructureCard` filter in `swarmBonus` is gone). Power change: ENG19-4.
+- **On Attack** (#12): the triggers go off right after the swing (and its answers: Thorns, a counter, Sweep / Fork prongs), not as the unit
+  commits to it (`onAttackPhase`, `runOnAttackPost`). Fire on hit stays before the blow (it loads that swing). A swing that finds nothing
+  still fires them. A unit that died in its own swing still draws / gains / hits, but gives itself nothing (heal, buff, shield, cleanse).
+  A draw lands in the hand at once: the page holds the round's drawn cards out of the hand strip until their `draw {uid}` event plays.
+- **Majesty N** (`majesty`, #13, decision ENG19-1 option a; on no card): while it is Ready, the enemy units facing it (its column and the
+  columns beside it) swing at −N Attack (`majestyCut`, inside `chokeOf`); several do not stack (the biggest N). Price 3.4 / N.
+- **Grant Shield** (action `grantShield`, #15; on no card, candidates in ENG19-2): `amount` N to itself, `adjacent` N to each adjacent ally
+  (front, behind, left, right: `adjacentOf`), `surrounding` N to each ally around it, corners too (`surroundingOwnOf`), `allies` N to every
+  ally, itself included. Any together; a unit gets the biggest one. Prices: 0.4 / 0.56 / 0.64 / 1.2 a point (skill-costs `grantShield*`).
+  On Play, +3 to every ally: 3.78 S.
+- **The 💠 number** (#14): Shield + Shell's and Bolster's temporary Health (`vis3ShieldAmount`). It now steps down as Shell's temporary
+  Health soaks a blow (engine `tempSoak {pool:'shell'}`), and as Bolster's does; before, only a Shield soak moved it mid-round. Shell's
+  crystals over the Health are its +Armor (flat, they don't break).
+- **Bloom's tooltip** (owner 22:26): the 🌸 chip and the skill line say what fills it, from the card's own conditions
+  (`eng19BloomFillText`: "Blooms when all of these hold: Wet: rain, the tide coming in, or a beach, river or sea map; Killed an enemy ...").
