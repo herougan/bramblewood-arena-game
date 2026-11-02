@@ -7,9 +7,11 @@ const rd = p=> fs.readFileSync(path.join(ROOT, p), 'utf8'); let checks = 0, fail
 const ok = (c, m)=>{ checks++; if(!c){ fail++; console.log('FAIL ' + m); } };
 const cards = JSON.parse(rd('canonical/cards.json')), by = id=> cards.find(c=> c.id === id), pools = JSON.parse(rd('canonical/map-pools.json')).maps;
 const R = require(path.join(ROOT, 'tools', 'skill2_refit_2026_10_31.js')), LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = LB.G;
-const PLACE = {mb:['bloodworm', 'moon-jelly'], m2:['lions-mane-jelly', 'pistol-shrimp'], mk:['man-o-war'], m7:['nautiloid', 'supernova-jelly']};
+// coordinator, same day: held to the owner's 8-11 own rule, so only the three jellyfish are placed; Bloodworm, Pistol Shrimp, Man o' War and Nautiloid are unlisted again
+const PLACE = {mb:['moon-jelly'], m2:['lions-mane-jelly'], m7:['supernova-jelly']};
+const BACK = {bloodworm:[2, 6], 'pistol-shrimp':[4, 4], 'man-o-war':[3, 13], nautiloid:[3, 14]};
 const listed = id=> Object.entries(pools).filter(([k, m])=> m.cards.includes(id)).map(([k])=> k);
-// 1. the rename
+// 1. the rename (the test header's "seven" is now three: see PLACE)
 const d = by('night-algae');
 ok(d.name === 'Dinoflagellates' && d.animal === 'algae' && d.subtype === 'plant' && (d.species || []).join() === by('pond-algae').species.join(), 'night-algae is Dinoflagellates: animal algae, plant, species as Pond Algae');
 ok(d.awaitingSource && d.unattainable && !listed('night-algae').length, 'Dinoflagellates stays unlisted');
@@ -27,11 +29,14 @@ for(const [m, ids] of Object.entries(PLACE)){
     ok(c.source && c.source.kind === 'pack' && c.source.map === m, id + ' source is a pack card of ' + m);
     const v = R.verdict(R.NEW, c); ok(v.ok, `${id} inside the budget band at its list's term (${v.use} of N ${v.N})`);
     ok(!G.isUnattainable || !G.isUnattainable(LB.CARD_DEFS_BASELINE[id]), id + ' obtainable in the game'); } }
+// own cards (not on an earlier map's list) of the four maps: 8-11, total at most 16
+{ const order = Object.keys(pools), seen = new Set(); for(const k of order){ const own = pools[k].cards.filter(x=> !seen.has(x)); pools[k].cards.forEach(x=> seen.add(x)); if(['mb', 'm2', 'mk', 'm7'].includes(k)) ok(own.length >= 8 && own.length <= 11, `${k} holds ${own.length} own cards (8-11)`); } }
+for(const [id, [a, h]] of Object.entries(BACK)){ const c = by(id); ok(c.awaitingSource && c.unattainable && !listed(id).length && !c.source && c.attack === a && c.health === h, `${id} unlisted again with its CONTENT7 line ${a}/${h}`); }
 // rarity caps: no card above its map's boss cap
-const capMap = {mb:2, m2:4, mk:9, m7:10};
+const capMap = {mb:2, m2:4, m7:10};
 for(const [m, ids] of Object.entries(PLACE)) for(const id of ids){ const cap = G.roadRarityCap(capMap[m], 'miniboss', m); ok(G.roadRarityOk(by(id).rarity, capMap[m], 'worldboss', m) || !cap, `${id} (${by(id).rarity}) within the rarity cap of ${m}`); }
 // re-fit stays within 2 of the CONTENT7 line
-const WAS = {bloodworm:[2, 6], 'moon-jelly':[3, 3], 'lions-mane-jelly':[1, 16], 'pistol-shrimp':[4, 4], 'man-o-war':[3, 13], nautiloid:[3, 14], 'supernova-jelly':[2, 9]};
+const WAS = {'moon-jelly':[3, 3], 'lions-mane-jelly':[1, 16], 'supernova-jelly':[2, 9]};
 for(const [id, [a, h]] of Object.entries(WAS)){ const c = by(id); ok(Math.abs(c.attack - a) <= 2 && Math.abs(c.health - h) <= 2, `${id} ${c.attack}/${c.health} within 2 a stat of ${a}/${h}`); }
 // 3. the packs
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];

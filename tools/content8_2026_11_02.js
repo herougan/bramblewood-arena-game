@@ -2,7 +2,7 @@
 // CONTENT8 (2026-11-02, owner 21:12 on CONTENT7-1 / CONTENT7-3; hub KK16 + KK17): "Dinoflagellates (algae). Type = algae, phyla - flora.
 // Only put cards if they are not at map card cap. Oo I want jellyfish in the game."
 //   1. rename: Bright Night Algae (id night-algae) -> Dinoflagellates, animal 'algae' (as Pond Algae), plant subtype, new flavour
-//   2. place seven sea / jellyfish cards on the map lists (canonical/map-pools.json), only on maps under their card cap (main 8-11 own +
+//   2. place three jellyfish cards (first cut placed seven; see PLACE) on the map lists (canonical/map-pools.json), only on maps under their card cap (main 8-11 own +
 //      4-5 carried, 12-16 in all, decision THEME1-1): Pebble Beach (mb, Map 2): Bloodworm, Moon Jelly; Sunken Hollow (m2, Map 4): Lion's Mane
 //      Jelly, Pistol Shrimp; Kelp Mangroves (mk, Map 9): Man o' War; Coral Current (m7, Map 10): Nautiloid, Supernova Jelly.
 //      Bobbit Worm and Dinoflagellates stay unlisted. A placed card loses awaitingSource / unattainable and gets a basic-pack source
@@ -15,11 +15,12 @@ const fs = require('fs'), path = require('path'), ROOT = path.join(__dirname, '.
 const CARDS = path.join(ROOT, 'canonical', 'cards.json'), POOLS = path.join(ROOT, 'canonical', 'map-pools.json');
 const pyDump = v=> JSON.stringify(v, null, 2).replace(/[\u0080-￿]/g, ch=> '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0')) + '\n';
 const PLACE = [
-  {map:'mb', n:2, tier:1, ids:['bloodworm', 'moon-jelly']},
-  {map:'m2', n:4, tier:1, ids:['lions-mane-jelly', 'pistol-shrimp']},
-  {map:'mk', n:9, tier:2, ids:['man-o-war']},
-  {map:'m7', n:10, tier:2, ids:['nautiloid', 'supernova-jelly']},
+  {map:'mb', n:2, tier:1, ids:['moon-jelly']},
+  {map:'m2', n:4, tier:1, ids:['lions-mane-jelly']},
+  {map:'m7', n:10, tier:2, ids:['supernova-jelly']},
 ];
+// 2026-11-02 (coordinator, same day): held to the owner's 8-11 own rule, so Bloodworm, Pistol Shrimp, Nautiloid and Man o' War went back off the lists
+// (unlisted as CONTENT7 had them, their CONTENT7 lines restored); each of the four maps holds 11 own cards. Only the three jellyfish stay placed.
 const FLAVOR = 'Each wave breaks in blue sparks. Come dark, the bay lights up and there are two.';
 const NOTE_RENAME = '2026-11-02 (package CONTENT8, owner 21:12, CONTENT7-3: "Dinoflagellates (algae). Type = algae, phyla - flora."): was Bright Night Algae (glowing bacterium); now Dinoflagellates, animal algae, plant subtype, as Pond Algae. Unlisted: no room on any map list (KK17).';
 

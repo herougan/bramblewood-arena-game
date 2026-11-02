@@ -34984,8 +34984,8 @@
     "icon": "\ud83e\udeb1",
     "cost": 0,
     "wait": 1,
-    "attack": 1,
-    "health": 5,
+    "attack": 2,
+    "health": 6,
     "rarity": "common",
     "locked": true,
     "test": false,
@@ -35007,12 +35007,9 @@
     "flavor": "Four black jaws fold out of a pink body, and the tide flats suddenly feel very wide.",
     "numericId": 9184,
     "uuid": "fff16f09-b2e3-513a-8166-a1db0e656aa9",
-    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home Pebble Beach (Map 2) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 2): S 4.74, N 17.18, 3A + H + S 16.74: 2/6. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md. 2026-11-02 (package CONTENT8, owner 21:12, CONTENT7-1 / KK17): placed on the mb list (Map 2); awaitingSource / unattainable cleared; source pack 1. Re-fit to the mb list (Map 2) budget term (CONTENT8): 2/6 -> 1/5 (cap-1 use 1.01 -> 0.77 of N 16.72).",
-    "source": {
-      "kind": "pack",
-      "tier": 1,
-      "map": "mb"
-    }
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home Pebble Beach (Map 2) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 2): S 4.74, N 17.18, 3A + H + S 16.74: 2/6. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
   },
   {
     "id": "night-algae",
@@ -35092,7 +35089,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 3,
-    "health": 11,
+    "health": 13,
     "rarity": "rare",
     "locked": true,
     "test": false,
@@ -35114,12 +35111,9 @@
     "flavor": "Not one animal but many, sailing on one blue bubble. Its streamers outrun the ship that sees it.",
     "numericId": 9187,
     "uuid": "8e898d98-3e37-543e-878d-354dd04d39fd",
-    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home the Kelp Mangroves (Map 9) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity rare, map term Map 9): S 5.85, N 28.1, 3A + H + S 27.85: 3/13. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md. 2026-11-02 (package CONTENT8, owner 21:12, CONTENT7-1 / KK17): placed on the mk list (Map 9); awaitingSource / unattainable cleared; source pack 2. Re-fit to the mk list (Map 9) budget term (CONTENT8): 3/13 -> 3/11 (cap-1 use 1.06 -> 0.99 of N 26.58).",
-    "source": {
-      "kind": "pack",
-      "tier": 2,
-      "map": "mk"
-    }
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home the Kelp Mangroves (Map 9) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity rare, map term Map 9): S 5.85, N 28.1, 3A + H + S 27.85: 3/13. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
   },
   {
     "id": "nautiloid",
@@ -35128,7 +35122,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 3,
-    "health": 13,
+    "health": 14,
     "rarity": "rare",
     "locked": true,
     "test": false,
@@ -35150,12 +35144,9 @@
     "flavor": "Its shell was a straight spear long before shells learned to curl. The oldest hunter in the Current.",
     "numericId": 9188,
     "uuid": "3ff26f2c-8f66-5529-9fa1-c3064b58e7f1",
-    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home Coral Current (Map 10) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity rare, map term Map 10): S 4.59, N 28.34, 3A + H + S 27.59: 3/14. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md. 2026-11-02 (package CONTENT8, owner 21:12, CONTENT7-1 / KK17): placed on the m7 list (Map 10); awaitingSource / unattainable cleared; source pack 2. Re-fit to the m7 list (Map 10) budget term (CONTENT8): 3/14 -> 3/13 (cap-1 use 1.02 -> 0.98 of N 26.58).",
-    "source": {
-      "kind": "pack",
-      "tier": 2,
-      "map": "m7"
-    }
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home Coral Current (Map 10) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity rare, map term Map 10): S 4.59, N 28.34, 3A + H + S 27.59: 3/14. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
   },
   {
     "id": "pistol-shrimp",
@@ -35185,12 +35176,9 @@
     "flavor": "One claw snaps shut so fast the water boils. What was in front of it sits down for a while.",
     "numericId": 9189,
     "uuid": "ac2d1dc8-89e6-5dd4-9bb6-cfa9151816bb",
-    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home Coral Current (Map 10) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 10): S 3.82, N 22.79, 3A + H + S 19.82: 4/4. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md. 2026-11-02 (package CONTENT8, owner 21:12, CONTENT7-1 / KK17): placed on the m2 list (Map 4); awaitingSource / unattainable cleared; source pack 1.",
-    "source": {
-      "kind": "pack",
-      "tier": 1,
-      "map": "m2"
-    }
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home Coral Current (Map 10) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 10): S 3.82, N 22.79, 3A + H + S 19.82: 4/4. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
   },
   {
     "id": "unicorn",
