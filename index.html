@@ -51890,7 +51890,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '7ae33a4d849a', BUILD_CARD_HASH = '43203d98922d0b4cb39597490a944c605b07be0c217254aece2102490dc75d29';
+const BUILD_ID = 'b9b723b237cc', BUILD_CARD_HASH = '43203d98922d0b4cb39597490a944c605b07be0c217254aece2102490dc75d29';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -89950,15 +89950,15 @@ function currentCardByUid(uid){
   // the correct value AT THAT POINT in the replay for every card — survivors and cards
   // that are about to die alike — not just whichever cards happen to still be standing
   // once the whole round is already over.
-  if(m.replayCards && m.replayCards[uid]) return m.replayCards[uid];
-  for(const pid of [1,2]){
-    const pl = m.players[pid];
-    for(const side of ['left','center','right']){
-      const c = pl.row[side].find(x=>x.uid===uid);
-      if(c) return c;
-    }
-  }
-  return null;
+  // FIX5 (2026-11-02, owner 21:12: "Dynamic values shouldn't reset on victory. for example swarm bonus is removed on victory."): the
+  // snapshot is the replay's alone. Once the replay is over (m.replayRows cleared by resolveRound's final sync) a unit still on the board is
+  // read live; the snapshot only answers for a unit that is gone. The deciding round's last render (m.ending, pl2ReconcileRow) used to patch
+  // every kept unit from the round-start snapshot, which has no uid (so Swarm counted 0) and older Pack / Kinship / phase numbers.
+  // pl2ReconcileRow passes the uid as the element's data-uid (a string), so that lookup compares as text.
+  const live = loose=>{ for(const pid of [1,2]){ const pl = m.players[pid]; if(!pl) continue;
+    for(const side of ['left','center','right']){ const c = (pl.row[side]||[]).find(x=> loose ? String(x.uid)===String(uid) : x.uid===uid); if(c) return c; } } return null; };
+  if(m.replayCards && m.replayCards[uid]){ if(m.replayRows) return m.replayCards[uid]; return live(true) || m.replayCards[uid]; }
+  return live(false);
 }
 // Attack amplification (2026-10-11, user: "The enhanced stats shouldn't be blue ... thresholds for how to amplify the
 // attack label ... 1.5x, 2x, 2.5x etc. redder and more glowy"): a buffed attack stays red and heats up in steps.
@@ -89997,8 +89997,12 @@ function atkPlateCls(d){ const k = atkElementOf(d); return k ? ' atk-' + (k === 
 function updateCardAtkDisplay(uid){
   const el = boardCardEl(uid); const c = currentCardByUid(uid); if(!el || !c) return;
   const a = el.querySelector('.stats .atk'); if(!a) return;
-  const d = getCardDefs()[c.defId] || {}; let tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.inspired||0) + liveSwarmBonus(c) + pl1AuraAtk(c) /* PL1 (2026-10-24, P24-12) */;
-  if(isTideDefApp(d) && matchState && matchState.engine && matchState.engine.getTide && matchState.engine.getTide()==='flow' && matchHasTide(matchState)) tot += 1;
+  // FIX5 (2026-11-02, owner 21:12): the same sum as the board card's own render (boardCardHTML's effAtk): Formation / Isolation (sk1Atk) and
+  // High tide's +2 were left out here, and a replay snapshot carries no uid, so Swarm is asked by this uid. This patch is what the deciding
+  // round's last render (pl2ReconcileRow) shows under the end sign.
+  const d = getCardDefs()[c.defId] || {}; let tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.sk1Atk||0) + (c.inspired||0) + ((d.effects||{}).swarm ? liveSwarmBonus(c.uid != null ? c : Object.assign({}, c, {uid})) : 0) + pl1AuraAtk(c) /* PL1 (2026-10-24, P24-12) */;
+  const tideNow = (isTideDefApp(d) && !((d.effects||{}).tideGrant && !(d.effects||{}).supremeTide) && matchState && matchState.engine && matchState.engine.getTide && matchHasTide(matchState)) ? matchState.engine.getTide() : null;
+  tot += tideNow === 'flow' ? 1 : tideNow === 'high' ? 2 : 0;
   if((d.effects||{}).rage && c.maxHp > 0 && c.hp / c.maxHp < 0.5) tot *= 2;
   pl2SetStat(a, atkLabelHTML(tot, d.attack, d), {any:true}); // PL2 (2026-10-25, owner 22:28 #5): a changed Attack bounces
   a.classList.toggle('is-atk-zero', (Number(d.attack)||0) <= 0 && tot <= 0); // 2026-10-21 (package UI3): back when a buff lifts it above 0
