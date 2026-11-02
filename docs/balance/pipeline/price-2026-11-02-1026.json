@@ -1,0 +1,833 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "price",
+ "status": "ok",
+ "started": "2026-11-02T02:26:07.448Z",
+ "finished": "2026-11-02T02:26:08.034Z",
+ "durationSec": 0.6,
+ "args": [],
+ "head": "5e4750ab",
+ "inputs": {
+  "measures": "docs/balance/pipeline/state/merged-measures.json",
+  "skill2Items": 231,
+  "pipelineItems": 242,
+  "mapRecordedOnly": 0,
+  "constantsBefore": {
+   "cap2SScale": 0.5,
+   "flying": 1.17,
+   "evasive": 1.16,
+   "shadow": 1.1
+  },
+  "setConst": {},
+  "dry": false,
+  "halfMiss": {
+   "evasive": {
+    "measured": 1.18,
+    "lo": 1.17,
+    "hi": 1.2,
+    "now": 1.16,
+    "statBase": 20.83,
+    "worth": 3.832,
+    "from": "SKILL2 measures",
+    "fingerprint": "ea6e5bcc7b96"
+   },
+   "flying": {
+    "measured": 1.19,
+    "lo": 1.18,
+    "hi": 1.2,
+    "now": 1.17,
+    "statBase": 20.83,
+    "worth": 3.9743,
+    "from": "SKILL2 measures",
+    "fingerprint": "ea6e5bcc7b96"
+   }
+  }
+ },
+ "counts": {
+  "skills set": 111,
+  "kept": 48,
+  "canon (curve kept)": 4,
+  "table entries changed": 125,
+  "trigger pairs": 12
+ },
+ "changed": [
+  {
+   "id": "undead",
+   "field": "value",
+   "old": "2.14",
+   "new": "1.7"
+  },
+  {
+   "id": "stockpile",
+   "field": "value",
+   "old": "3.04^0.672",
+   "new": "4.33^0.202"
+  },
+  {
+   "id": "acidBolt",
+   "field": "value",
+   "old": "6.3",
+   "new": "5.36"
+  },
+  {
+   "id": "ambush",
+   "field": "value",
+   "old": "1.04^0.884",
+   "new": "0.79^1.049"
+  },
+  {
+   "id": "arrow",
+   "field": "value",
+   "old": "4.02^0.646",
+   "new": "4.43^0.234"
+  },
+  {
+   "id": "avalanche",
+   "field": "value",
+   "old": "6.81",
+   "new": "5.23"
+  },
+  {
+   "id": "backstab",
+   "field": "value",
+   "old": "0.7^1.138",
+   "new": "1.04^0.81"
+  },
+  {
+   "id": "berserk",
+   "field": "value",
+   "old": "2.33",
+   "new": "2.4"
+  },
+  {
+   "id": "boomerang",
+   "field": "value",
+   "old": "1.97",
+   "new": "2.29"
+  },
+  {
+   "id": "brood",
+   "field": "value",
+   "old": "3.6",
+   "new": "3.96^0.417"
+  },
+  {
+   "id": "bulldoze",
+   "field": "value",
+   "old": "2.31",
+   "new": "1.95"
+  },
+  {
+   "id": "bulwark",
+   "field": "value",
+   "old": "5.62^0.325",
+   "new": "4.87^0.093"
+  },
+  {
+   "id": "charge",
+   "field": "value",
+   "old": "3.66",
+   "new": "4.04"
+  },
+  {
+   "id": "coffee",
+   "field": "value",
+   "old": "2.08^-1",
+   "new": "1.93^-1"
+  },
+  {
+   "id": "confuse",
+   "field": "value",
+   "old": "1.87",
+   "new": "1.31"
+  },
+  {
+   "id": "corrode",
+   "field": "value",
+   "old": "1.8",
+   "new": "1.83"
+  },
+  {
+   "id": "cower",
+   "field": "value",
+   "old": "-0.67",
+   "new": "-0.84"
+  },
+  {
+   "id": "daunt",
+   "field": "value",
+   "old": "1.89^0.714",
+   "new": "2.04^0.555"
+  },
+  {
+   "id": "decay",
+   "field": "value",
+   "old": "4.76",
+   "new": "4.91"
+  },
+  {
+   "id": "devour",
+   "field": "value",
+   "old": "4",
+   "new": "1.21"
+  },
+  {
+   "id": "drunk",
+   "field": "value",
+   "old": "-3.25",
+   "new": "-3.07"
+  },
+  {
+   "id": "earthquake",
+   "field": "value",
+   "old": "0.35^0.961",
+   "new": "1.03^0.304"
+  },
+  {
+   "id": "esprit",
+   "field": "value",
+   "old": "2.52^0.488",
+   "new": "2.37^0.638"
+  },
+  {
+   "id": "explode",
+   "field": "value",
+   "old": "4.16",
+   "new": "3.98"
+  },
+  {
+   "id": "expose",
+   "field": "value",
+   "old": "0.07",
+   "new": "0.09"
+  },
+  {
+   "id": "fastForward",
+   "field": "value",
+   "old": "2.95",
+   "new": "3.04"
+  },
+  {
+   "id": "fireArrow",
+   "field": "value",
+   "old": "4.01^0.651",
+   "new": "4.43^0.23"
+  },
+  {
+   "id": "fireball",
+   "field": "value",
+   "old": "2",
+   "new": "1.1"
+  },
+  {
+   "id": "fletcher",
+   "field": "value",
+   "old": "3.18",
+   "new": "2.22"
+  },
+  {
+   "id": "freeze",
+   "field": "value",
+   "old": "1.84",
+   "new": "1.35"
+  },
+  {
+   "id": "frenzy",
+   "field": "value",
+   "old": "0.32",
+   "new": "0.51"
+  },
+  {
+   "id": "gash",
+   "field": "value",
+   "old": "1.33",
+   "new": "1.21"
+  },
+  {
+   "id": "greaterPoison",
+   "field": "value",
+   "old": "3.85",
+   "new": "4.29"
+  },
+  {
+   "id": "breach",
+   "field": "value",
+   "old": "2.07",
+   "new": "2.25"
+  },
+  {
+   "id": "canopyCover",
+   "field": "value",
+   "old": "0.09",
+   "new": "0.02"
+  },
+  {
+   "id": "foeScarcity",
+   "field": "value",
+   "old": "2.91",
+   "new": "3.07"
+  },
+  {
+   "id": "haste",
+   "field": "value",
+   "old": "2.72",
+   "new": "2.55"
+  },
+  {
+   "id": "healing",
+   "field": "value",
+   "old": "4.25",
+   "new": "4.26"
+  },
+  {
+   "id": "helmet",
+   "field": "value",
+   "old": "0.26",
+   "new": "0.28"
+  },
+  {
+   "id": "hoard",
+   "field": "value",
+   "old": "2.12^-2.32",
+   "new": "1.6^-2.8"
+  },
+  {
+   "id": "hunter",
+   "field": "value",
+   "old": "0.28",
+   "new": "0.75^-1.975"
+  },
+  {
+   "id": "iceArrow",
+   "field": "value",
+   "old": "5.83^0.262",
+   "new": "5.21^0.325"
+  },
+  {
+   "id": "iceBolt",
+   "field": "value",
+   "old": "3.5",
+   "new": "3.26"
+  },
+  {
+   "id": "illuminate",
+   "field": "value",
+   "old": "0.31",
+   "new": "0.36"
+  },
+  {
+   "id": "inspiring",
+   "field": "value",
+   "old": "3.13^0.58",
+   "new": "3.13^0.626"
+  },
+  {
+   "id": "invisible",
+   "field": "value",
+   "old": "0.71",
+   "new": "0.77"
+  },
+  {
+   "id": "ironWill",
+   "field": "value",
+   "old": "0.14",
+   "new": "0.02"
+  },
+  {
+   "id": "keenSense",
+   "field": "value",
+   "old": "1.63",
+   "new": "0.37"
+  },
+  {
+   "id": "loneWolf",
+   "field": "value",
+   "old": "2.84",
+   "new": "2.55"
+  },
+  {
+   "id": "lumberjack",
+   "field": "value",
+   "old": "3.56",
+   "new": "4.36"
+  },
+  {
+   "id": "meiosis",
+   "field": "value",
+   "old": "4.5",
+   "new": "4.49"
+  },
+  {
+   "id": "midas",
+   "field": "value",
+   "old": "1.21^0.622",
+   "new": "1.52^0.465"
+  },
+  {
+   "id": "mighty",
+   "field": "value",
+   "old": "5.05",
+   "new": "4.83"
+  },
+  {
+   "id": "moonborn",
+   "field": "value",
+   "old": "4",
+   "new": "1.23"
+  },
+  {
+   "id": "nightblind",
+   "field": "value",
+   "old": "-2.63",
+   "new": "-3.29"
+  },
+  {
+   "id": "nullify",
+   "field": "value",
+   "old": "0",
+   "new": "0.49"
+  },
+  {
+   "id": "octolash",
+   "field": "value",
+   "old": "8.32",
+   "new": "6.85"
+  },
+  {
+   "id": "onDeathSpawn",
+   "field": "value",
+   "old": "4.17",
+   "new": "4.14"
+  },
+  {
+   "id": "onReadyDamage",
+   "field": "value",
+   "old": "4.13",
+   "new": "3.85"
+  },
+  {
+   "id": "overwhelm",
+   "field": "value",
+   "old": "0.57",
+   "new": "0.34"
+  },
+  {
+   "id": "pack",
+   "field": "value",
+   "old": "2.91",
+   "new": "2.55"
+  },
+  {
+   "id": "perforate",
+   "field": "value",
+   "old": "2.97",
+   "new": "2.62"
+  },
+  {
+   "id": "pierce",
+   "field": "value",
+   "old": "0.25^0.538",
+   "new": "0.26^0.465"
+  },
+  {
+   "id": "poisonBolt",
+   "field": "value",
+   "old": "2.99",
+   "new": "2.6"
+  },
+  {
+   "id": "pounce",
+   "field": "value",
+   "old": "1.66^0.684",
+   "new": "1.74^0.619"
+  },
+  {
+   "id": "predator",
+   "field": "value",
+   "old": "1.04",
+   "new": "1.05"
+  },
+  {
+   "id": "prey",
+   "field": "value",
+   "old": "0.05",
+   "new": "0.15"
+  },
+  {
+   "id": "reach",
+   "field": "value",
+   "old": "0.76",
+   "new": "0.62"
+  },
+  {
+   "id": "reflect",
+   "field": "value",
+   "old": "0.63",
+   "new": "0.68"
+  },
+  {
+   "id": "regen",
+   "field": "value",
+   "old": "2.19^0.657",
+   "new": "2.37^0.54"
+  },
+  {
+   "id": "relic",
+   "field": "value",
+   "old": "1.39",
+   "new": "1.13"
+  },
+  {
+   "id": "reload",
+   "field": "value",
+   "old": "-5.15",
+   "new": "-5.71"
+  },
+  {
+   "id": "remember",
+   "field": "value",
+   "old": "5^-1.308",
+   "new": "4.92^-0.989"
+  },
+  {
+   "id": "renewal",
+   "field": "value",
+   "old": "0.14",
+   "new": "0.04"
+  },
+  {
+   "id": "rocket",
+   "field": "value",
+   "old": "1.73",
+   "new": "1.65"
+  },
+  {
+   "id": "sap",
+   "field": "value",
+   "old": "2.77",
+   "new": "2.82"
+  },
+  {
+   "id": "scar",
+   "field": "value",
+   "old": "1.42",
+   "new": "1.82"
+  },
+  {
+   "id": "scare",
+   "field": "value",
+   "old": "2.02",
+   "new": "1.96"
+  },
+  {
+   "id": "scatterbrained",
+   "field": "value",
+   "old": "-5.71",
+   "new": "-6.4"
+  },
+  {
+   "id": "scavenge",
+   "field": "value",
+   "old": "2.67",
+   "new": "3.56"
+  },
+  {
+   "id": "shatter",
+   "field": "value",
+   "old": "0.06",
+   "new": "0.03"
+  },
+  {
+   "id": "shell",
+   "field": "value",
+   "old": "1.99^0.449",
+   "new": "2.1^0.375"
+  },
+  {
+   "id": "shield",
+   "field": "value",
+   "old": "2.62",
+   "new": "2.51"
+  },
+  {
+   "id": "siege",
+   "field": "value",
+   "old": "0.86^0.899",
+   "new": "0.62^1.036"
+  },
+  {
+   "id": "sonar",
+   "field": "value",
+   "old": "0.31",
+   "new": "0.58"
+  },
+  {
+   "id": "speed",
+   "field": "value",
+   "old": "0.89",
+   "new": "0.84"
+  },
+  {
+   "id": "spitfire",
+   "field": "value",
+   "old": "5.02",
+   "new": "4.95"
+  },
+  {
+   "id": "stealth",
+   "field": "value",
+   "old": "4.1",
+   "new": "3.64"
+  },
+  {
+   "id": "strangle",
+   "field": "value",
+   "old": "3.91",
+   "new": "4.04"
+  },
+  {
+   "id": "stunOnHit",
+   "field": "value",
+   "old": "2.21",
+   "new": "1.91"
+  },
+  {
+   "id": "sturdy",
+   "field": "value",
+   "old": "2.96",
+   "new": "2.93"
+  },
+  {
+   "id": "swarm",
+   "field": "value",
+   "old": "2.97",
+   "new": "3.09"
+  },
+  {
+   "id": "sweep",
+   "field": "value",
+   "old": "3.52^0.454",
+   "new": "4.22^0.191"
+  },
+  {
+   "id": "swipe",
+   "field": "value",
+   "old": "4.41",
+   "new": "4.87"
+  },
+  {
+   "id": "tangle",
+   "field": "value",
+   "old": "2.43",
+   "new": "2.07"
+  },
+  {
+   "id": "thorns",
+   "field": "value",
+   "old": "2.68^0.768",
+   "new": "2.86^0.58"
+  },
+  {
+   "id": "tornado",
+   "field": "value",
+   "old": "1.12",
+   "new": "0.91"
+  },
+  {
+   "id": "trap",
+   "field": "value",
+   "old": "0.82^0.681",
+   "new": "1.34^0.375"
+  },
+  {
+   "id": "trident",
+   "field": "value",
+   "old": "4.04",
+   "new": "3.82"
+  },
+  {
+   "id": "twinShot",
+   "field": "value",
+   "old": "5.47",
+   "new": "5.17"
+  },
+  {
+   "id": "twinStrike",
+   "field": "value",
+   "old": "6.99",
+   "new": "5.11"
+  },
+  {
+   "id": "vanguard",
+   "field": "value",
+   "old": "1.35",
+   "new": "1.8"
+  },
+  {
+   "id": "venomous",
+   "field": "value",
+   "old": "2.4^0.887",
+   "new": "2.55^0.929"
+  },
+  {
+   "id": "volley",
+   "field": "value",
+   "old": "6.27^0.405",
+   "new": "5.39^0.581"
+  },
+  {
+   "id": "wave",
+   "field": "value",
+   "old": "2.72",
+   "new": "2.57"
+  },
+  {
+   "id": "weaken",
+   "field": "value",
+   "old": "1",
+   "new": "3.12"
+  },
+  {
+   "id": "wither",
+   "field": "value",
+   "old": "2.9",
+   "new": "3.04"
+  },
+  {
+   "id": "weaponMaster",
+   "field": "value",
+   "old": "3",
+   "new": "0.37"
+  },
+  {
+   "id": "king",
+   "field": "value",
+   "old": "2.75",
+   "new": "2.31"
+  },
+  {
+   "id": "bola",
+   "field": "value",
+   "old": "2",
+   "new": "5.58"
+  },
+  {
+   "id": "shorthand bounty",
+   "field": "mult",
+   "old": 0.88,
+   "new": 1.27
+  },
+  {
+   "id": "shorthand kinRally",
+   "field": "mult",
+   "old": 0.45,
+   "new": 0.9
+  },
+  {
+   "id": "shorthand milling",
+   "field": "mult",
+   "old": 1.31,
+   "new": 0.93
+  },
+  {
+   "id": "pair onAllyPlayed>reduceWaitOfSpawned",
+   "field": "mult",
+   "old": 0.75,
+   "new": 0.7
+  },
+  {
+   "id": "pair onAttack>buff",
+   "field": "mult",
+   "old": 1.03,
+   "new": 0.92
+  },
+  {
+   "id": "pair onAttack>heal",
+   "field": "mult",
+   "old": 8.24,
+   "new": 0.84
+  },
+  {
+   "id": "pair onDeath>damage",
+   "field": "mult",
+   "old": 1.51,
+   "new": 0.94
+  },
+  {
+   "id": "pair onKill>gain",
+   "field": "mult",
+   "old": 1.16,
+   "new": 1.05
+  },
+  {
+   "id": "pair onReady>damage",
+   "field": "mult",
+   "old": 2.53,
+   "new": 1.2
+  },
+  {
+   "id": "pair onReady>gain",
+   "field": "mult",
+   "old": 2.19,
+   "new": 1.15
+  },
+  {
+   "id": "pair onSpawn>addWait",
+   "field": "mult",
+   "old": 0.33,
+   "new": 1.04
+  },
+  {
+   "id": "pair onSpawn>drawCard",
+   "field": "mult",
+   "old": 0.56,
+   "new": 1.13
+  },
+  {
+   "id": "pair onSpawn>gain",
+   "field": "mult",
+   "old": 1.39,
+   "new": 1.12
+  },
+  {
+   "id": "pair onSpawn>magnet",
+   "field": "mult",
+   "old": 1.2,
+   "new": 0.93
+  },
+  {
+   "id": "pair perTurn>spawnCard",
+   "field": "mult",
+   "old": 1.27,
+   "new": 0.95
+  }
+ ],
+ "flagged": [
+  {
+   "id": "evasive multiplier",
+   "why": "measures imply x1.18 [1.17, 1.2] on stat terms of 20.83, the budget has x1.16 (an owner call: --set-const evasive=1.18)"
+  },
+  {
+   "id": "flying multiplier",
+   "why": "measures imply x1.19 [1.18, 1.2] on stat terms of 20.83, the budget has x1.17 (an owner call: --set-const flying=1.19)"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [
+  "record: armor=3: measured 4.58 [4.35, 4.76], the canon curve gives 5.56 (kept: two canon points fix the curve)",
+  "record: armor=4: measured 4.95 [4.64, 5.52], the canon curve gives 6.75 (kept: two canon points fix the curve)",
+  "record: armor=5: measured 5.01 [4.75, 5.58], the canon curve gives 7.84 (kept: two canon points fix the curve)",
+  "record: poison=3: measured 5.01 [4.86, 5.12], the canon curve gives 6.35 (kept: two canon points fix the curve)"
+ ],
+ "files": [
+  "docs/balance/pipeline/state/price-plan.json",
+  "docs/balance/pipeline/state/merged-measures.json",
+  "canonical/skill-costs.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/price-2026-11-02-1026.json"
+}

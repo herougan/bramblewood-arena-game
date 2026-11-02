@@ -1,0 +1,62 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "refit",
+ "status": "ok",
+ "started": "2026-11-02T02:28:49.522Z",
+ "finished": "2026-11-02T02:28:51.518Z",
+ "durationSec": 2,
+ "args": [
+  "--dry"
+ ],
+ "head": "5e4750ab",
+ "inputs": {
+  "priceSnapshot": "docs/balance/pipeline/state/skill-costs.before-price.json",
+  "plan": "docs/balance/pipeline/state/refit-plan.json",
+  "cardsSha": "c54b6be54b",
+  "dry": true,
+  "rule": "tools/skill2_refit_2026_10_31.js",
+  "limits": {
+   "maxStatPoints": 2
+  }
+ },
+ "counts": {
+  "in play checked": 469,
+  "pushed out": 1,
+  "rule-clean": 0,
+  "flagged": 2,
+  "out of play (not touched)": 6,
+  "outside before (left)": 147,
+  "applied": 0
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "corpse-flower-beetle",
+   "why": "4/11 -> 4/10 proposed (trim): theme clash: the change moves the card to another body shape (hitter / balanced / wall: Attack / Health 0.4 and up / 0.2-0.4 / below) or takes its last point of Attack",
+   "proposal": {
+    "from": "4/11",
+    "to": "4/10",
+    "kind": "trim",
+    "useBefore": 1,
+    "useNow": 1,
+    "useAfter": 0.96
+   }
+  },
+  {
+   "id": "wrong-way-salmon",
+   "why": "held: Anadromous: ENG15 reworks and re-prices it (1/11, use 1.01)",
+   "proposal": null
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/state/refit-plan.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/refit-2026-11-02-1028.json"
+}

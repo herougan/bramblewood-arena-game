@@ -1,0 +1,74 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "refit",
+ "status": "ok",
+ "started": "2026-11-02T02:27:54.795Z",
+ "finished": "2026-11-02T02:27:56.563Z",
+ "durationSec": 1.8,
+ "args": [
+  "--dry"
+ ],
+ "head": "5e4750ab",
+ "inputs": {
+  "priceSnapshot": "docs/balance/pipeline/state/skill-costs.before-price.json",
+  "plan": "docs/balance/pipeline/state/refit-plan.json",
+  "cardsSha": "7a5248f919",
+  "dry": true,
+  "rule": "tools/skill2_refit_2026_10_31.js",
+  "limits": {
+   "maxStatPoints": 2
+  }
+ },
+ "counts": {
+  "in play checked": 469,
+  "pushed out": 2,
+  "rule-clean": 0,
+  "flagged": 3,
+  "out of play (not touched)": 6,
+  "outside before (left)": 147,
+  "applied": 0
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "lunar-howler",
+   "why": "2/1 -> 5/1 proposed (lift): 3 stat points change (limit 2)",
+   "proposal": {
+    "from": "2/1",
+    "to": "5/1",
+    "kind": "lift",
+    "useBefore": 0.65,
+    "useNow": 0.37,
+    "useAfter": 0.67
+   }
+  },
+  {
+   "id": "corpse-flower-beetle",
+   "why": "4/11 -> 4/10 proposed (trim): theme clash: the change moves the card to another body shape (hitter / balanced / wall: Attack / Health 0.4 and up / 0.2-0.4 / below) or takes its last point of Attack",
+   "proposal": {
+    "from": "4/11",
+    "to": "4/10",
+    "kind": "trim",
+    "useBefore": 1,
+    "useNow": 1,
+    "useAfter": 0.96
+   }
+  },
+  {
+   "id": "wrong-way-salmon",
+   "why": "held: Anadromous: ENG15 reworks and re-prices it (1/11, use 1.01)",
+   "proposal": null
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/state/refit-plan.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/refit-2026-11-02-1027.json"
+}
