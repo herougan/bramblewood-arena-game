@@ -655,7 +655,6 @@
  "Earned from their elites on the road.": "Ganhos das suas elites pela estrada.",
  "Ecclesia · Grace": "Ecclesia · Graça",
  "Echoing Wood": "Bosque do eco",
- "Edit your character ({v1})": "Editar a tua personagem ({v1})",
  "Egg: cracks open into a random {v1} card when Ready": "Ovo: abre-se numa carta {v1} aleatória quando está Pronto",
  "Eight scales, one dragon": "Oito escamas, um dragão",
  "Eight scales. Lay them side by side and look: one hide, one dragon.": "Oito escamas. Põe-nas lado a lado e olha: uma pele, um dragão.",
@@ -1271,7 +1270,6 @@
  "Molten gold": "Ouro fundido",
  "Moonpull: when it arrives, the Tide comes in": "Atração lunar: quando chega, a Maré sobe",
  "more cards!": "cartas a mais!",
- "More characters and titles unlock as you win. Outfits are on the way.": "Mais personagens e títulos desbloqueiam-se ao venceres. Os trajes vêm a caminho.",
  "More diggers. Deeper setts.": "Mais escavadores. Tocas mais fundas.",
  "More folk to befriend": "Mais gente para fazer amizade",
  "More for {v1}": "Mais para {v1}",
@@ -1368,7 +1366,6 @@
  "No skirmishes with a deck on this map.": "Nenhuma escaramuça com baralho neste mapa.",
  "No special abilities — a plain stat card.": "Sem habilidades especiais — uma simples carta de atributos.",
  "No special effect": "Sem efeito especial",
- "No strong wind this round.": "Sem vento forte nesta ronda.",
  "No tickets. It starts at a battle rating of {v1} and every floor is {v2} higher; its cards go past Level 10, up to {v3}.": "Sem bilhetes. Começa numa classificação de batalha de {v1} e cada piso é {v2} mais alto; as cartas vão além do Nível 10, até {v3}.",
  "No wins this time": "Nenhuma vitória desta vez",
  "Nobody had anything left to play and the board stopped changing.": "Ninguém tinha mais nada para jogar e o tabuleiro deixou de mudar.",
@@ -2263,7 +2260,6 @@
  "Win {v1} PvP match{s}": "Vence {v1} partida(s) PvP",
  "Wind at your back": "Vento pelas costas",
  "Wind in your face": "Vento de frente",
- "Wind: calm": "Vento: calmo",
  "Wins": "Vitórias",
  "Wins this run": "Vitórias nesta expedição",
  "wins · {v1} losses · {v2} fights": "vitórias · {v1} derrotas · {v2} batalhas",
@@ -2516,7 +2512,6 @@
  "Half wave, half seahorse: patient, and impossible to properly hit.": "Metade onda, metade cavalo-marinho: paciente, e impossível de acertar direito.",
  "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "Uma tartaruga de entulho do castelo e de algo que pode ser magia de verdade. Nada penetra.",
  "Four black jaws fold out of a pink body, and the tide flats suddenly feel very wide.": "Quatro mandíbulas negras saem de um corpo rosado, e a maré vazia de repente parece enorme.",
- "A glowing bacterium, blown up to the size of a barrel. Come dark, the bay lights up and there are two.": "Uma bactéria luminosa, inchada até o tamanho de um barril. Ao escurecer, a baía se ilumina e passam a ser duas.",
  "It lies buried in the sand with one feeler out. The snap is over before the sand settles.": "Fica enterrado na areia com uma antena de fora. O bote termina antes de a areia assentar.",
  "Not one animal but many, sailing on one blue bubble. Its streamers outrun the ship that sees it.": "Não é um animal, mas muitos, navegando numa só bolha azul. Seus filamentos ultrapassam o navio que os avista.",
  "Its shell was a straight spear long before shells learned to curl. The oldest hunter in the Current.": "Sua concha era uma lança reta muito antes de as conchas aprenderem a se enrolar. O caçador mais antigo da Corrente.",
@@ -2525,5 +2520,6 @@
  "It asks one question. Answering is not the dangerous part.": "Faz uma única pergunta. Responder não é a parte perigosa.",
  "Half eagle, half lion, and it never once chose between the two.": "Metade águia, metade leão, e nunca escolheu entre os dois.",
  "You hear the whirlwind before you see the swift. Mostly you just hear it.": "Ouve-se o redemoinho antes de ver o andorinhão. Quase sempre, só se ouve.",
- "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.": "Começou como uma bola de neve. Ninguém concorda sobre de quem foi a culpa, muito menos o urso."
+ "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.": "Começou como uma bola de neve. Ninguém concorda sobre de quem foi a culpa, muito menos o urso.",
+ "Each wave breaks in blue sparks. Come dark, the bay lights up and there are two.": "Cada onda se desfaz em faíscas azuis. Ao escurecer, a baía se ilumina e passam a ser duas."
 }

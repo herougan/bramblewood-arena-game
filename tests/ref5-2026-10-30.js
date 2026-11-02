@@ -34,7 +34,7 @@ ok(!bad.length, '1. every deck: 20 cards, inside its seed\'s collection (cards a
   ok(r.status === 0 && /up to date/.test(r.stdout), '2. arena_app.js REF_DECK_SETS matches docs/balance/ref (ref_decks.js --check) ' + (r.stdout || '').trim().split('\n').pop()); }
 ok(fs.existsSync(path.join(ROOT, 'index.html')) && rd('index.html').includes('"prog":{"id":"prog"'), '2. index.html is built with the prog set');
 const B = require(path.join(ROOT, 'tools/lib_bramble.js')), G = B.G;
-ok(JSON.stringify(G.refSetIds()) === JSON.stringify(['prog', 'prog-1', 'prog-2', 'prog-3', 'prog-4', 'prog-5', 'map', 'ref2']), '2. the picker: Reference (Random), Reference 1-5 of 5, the map\'s, Reference-2 ' + JSON.stringify(G.refSetIds()));
+ok(JSON.stringify(G.refSetIds().filter(id=> !/^ladder(-\d+)?$/.test(id)) /* 2026-11-02 (BAL13): the ladder comes first (tests/bal13-2026-11-02.js) */) === JSON.stringify(['prog', 'prog-1', 'prog-2', 'prog-3', 'prog-4', 'prog-5', 'map', 'ref2']), '2. the picker: Reference (Random), Reference 1-5 of 5, the map\'s, Reference-2 ' + JSON.stringify(G.refSetIds()));
 { const m7 = G.CONQUEST_MAPS.find(m=> !m.sub && G.mapNumberOf(m.id) === 7), n = m7.nodes.find(x=> x.deck && Object.keys(x.deck).length);
   const seen = new Set(); for(let i = 0; i < 80; i++){ const r = G.refSetFor('prog', m7.id, n); seen.add(r.pick); if(r.of !== 5 || r.multi !== 'prog') seen.add('bad'); }
   ok(seen.size === 5 && !seen.has('bad'), '2. Reference (Random) deals each of Map 7\'s five decks (80 starts): ' + [...seen].sort().join(','));

@@ -69,24 +69,24 @@
   {
    "id": "armor",
    "kind": "canon",
-   "note": "armor=3: measured 4.58 [4.35, 4.76], the canon curve gives 5.56 (kept: two canon points fix the curve)"
+   "note": "armor=3: measured 4.58 [4.35, 4.76], the canon curve gives 4.85 (kept: two canon points fix the curve)"
   },
   {
    "id": "armor",
    "kind": "canon",
-   "note": "armor=4: measured 4.95 [4.64, 5.52], the canon curve gives 6.75 (kept: two canon points fix the curve)"
+   "note": "armor=4: measured 4.95 [4.64, 5.52], the canon curve gives 5.88 (kept: two canon points fix the curve)"
   },
   {
    "id": "armor",
    "kind": "canon",
-   "note": "armor=5: measured 5.01 [4.75, 5.58], the canon curve gives 7.84 (kept: two canon points fix the curve)"
+   "note": "armor=5: measured 5.01 [4.75, 5.58], the canon curve gives 6.83 (kept: two canon points fix the curve)"
   },
   {
    "id": "arrow",
    "kind": "set",
    "old": 3,
-   "value": 4.43,
-   "pow": 0.234,
+   "value": 4.26,
+   "pow": 0.291,
    "scale": "n",
    "conf": "high",
    "pts": [
@@ -94,13 +94,13 @@
      "key": "arrow=1",
      "n": 1,
      "w": 3,
-     "W": 4.4313,
+     "W": 4.2583,
      "ci": {
-      "m": 4.4313,
-      "lo": 4.0189,
-      "hi": 4.7
+      "m": 4.2583,
+      "lo": 3.6795,
+      "hi": 4.7569
      },
-     "price": 4.02,
+     "price": 4.43,
      "fights": 200,
      "conf": "high"
     },
@@ -119,7 +119,7 @@
      "conf": "high"
     }
    ],
-   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 9.04): scale n, v x N^pow"
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 7.41): scale n, v x N^pow"
   },
   {
    "id": "avalanche",
@@ -288,7 +288,7 @@
    "id": "breach",
    "kind": "set",
    "old": 1.9,
-   "value": 2.25,
+   "value": 3.03,
    "scale": "n",
    "conf": "high",
    "pts": [
@@ -296,13 +296,13 @@
      "key": "breach=2",
      "n": 2,
      "w": 1,
-     "W": 4.5077,
+     "W": 6.0612,
      "ci": {
-      "m": 4.5077,
-      "lo": 4.0714,
-      "hi": 4.741
+      "m": 6.0612,
+      "lo": 5.5138,
+      "hi": 6.7709
      },
-     "price": 4.14,
+     "price": 9,
      "fights": 200,
      "conf": "high"
     }
@@ -313,8 +313,8 @@
    "id": "brood",
    "kind": "set",
    "old": 2.2,
-   "value": 3.96,
-   "pow": 0.417,
+   "value": 4.28,
+   "pow": 0.302,
    "scale": "n",
    "conf": "high",
    "pts": [
@@ -336,18 +336,18 @@
      "key": "brood=1",
      "n": 1,
      "w": 1,
-     "W": 3.9555,
+     "W": 4.2837,
      "ci": {
-      "m": 3.9555,
-      "lo": 3.2128,
-      "hi": 4.4414
+      "m": 4.2837,
+      "lo": 3.5244,
+      "hi": 5.0406
      },
-     "price": 3.6,
+     "price": 3.96,
      "fights": 200,
      "conf": "high"
     }
    ],
-   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 1.38): scale n, v x N^pow"
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 2.16): scale n, v x N^pow"
   },
   {
    "id": "bulldoze",
@@ -1311,7 +1311,7 @@
    "id": "fletcher",
    "kind": "set",
    "old": 0,
-   "value": 2.22,
+   "value": 3.19,
    "scale": "n",
    "conf": "high",
    "pts": [
@@ -1319,13 +1319,13 @@
      "key": "arrow=1+fletcher=1",
      "n": 1,
      "w": 1,
-     "W": 6.651,
+     "W": 7.4447,
      "ci": {
-      "m": 6.651,
-      "lo": 5.7275,
-      "hi": 7.4508
+      "m": 7.4447,
+      "lo": 6.6407,
+      "hi": 8.3616
      },
-     "price": 7.2,
+     "price": 6.65,
      "fights": 200,
      "conf": "high"
     },
@@ -1344,7 +1344,7 @@
      "conf": "high"
     }
    ],
-   "why": "(Arrow 1 + Fletcher 1) 6.65 - Arrow 1 4.43, the Quartermaster's pair (DECK1-1); on carriers with no arrow of their own 0.37"
+   "why": "(Arrow 1 + Fletcher 1) 7.44 - Arrow 1 4.26, the Quartermaster's pair (DECK1-1); on carriers with no arrow of their own 0.37"
   },
   {
    "id": "foePlenty",
@@ -1998,10 +1998,10 @@
   {
    "id": "inspiring",
    "kind": "set",
-   "old": 3.13,
-   "oldPow": 0.58,
-   "value": 3.13,
-   "pow": 0.626,
+   "old": 3.3,
+   "oldPow": 0.626,
+   "value": 3.3,
+   "pow": 0.549,
    "scale": "n",
    "conf": "canon",
    "pts": [
@@ -2020,7 +2020,7 @@
      "conf": "high"
     }
    ],
-   "why": "2026-10-31 (SKILL2): the canon point inspiring 1 = 3.13 kept (3.13); the curve v x N^pow refitted through it from inspiring=2 4.83 [4.48, 4.91] (was n pow 0.58, which gave 4.68)"
+   "why": "2026-10-31 (SKILL2): the canon point inspiring 1 = 3.3 kept (3.3); the curve v x N^pow refitted through it from inspiring=2 4.83 [4.48, 4.91] (was n pow 0.626, which gave 5.09)"
   },
   {
    "id": "invisible",
@@ -2812,7 +2812,7 @@
   {
    "id": "poison",
    "kind": "canon",
-   "note": "poison=3: measured 5.01 [4.86, 5.12], the canon curve gives 6.35 (kept: two canon points fix the curve)"
+   "note": "poison=3: measured 5.01 [4.86, 5.12], the canon curve gives 6.98 (kept: two canon points fix the curve)"
   },
   {
    "id": "poisonBolt",
@@ -2842,10 +2842,10 @@
   {
    "id": "pounce",
    "kind": "set",
-   "old": 1.66,
-   "oldPow": 0.684,
-   "value": 1.74,
-   "pow": 0.619,
+   "old": 1.93,
+   "oldPow": 0.619,
+   "value": 2.11,
+   "pow": 0.488,
    "scale": "n",
    "conf": "canon",
    "pts": [
@@ -2892,7 +2892,7 @@
      "conf": "high"
     }
    ],
-   "why": "2026-10-31 (SKILL2): the canon point pounce 2 = 2.67 kept (2.67); the curve v x N^pow refitted through it from pounce=3 3.43 [2.81, 4.28]; pounce=5 4.89 [4.56, 4.98]; pounce=6 5.12 [4.94, 5.59] (was n pow 0.684, which gave 3.52 / 4.99 / 5.65)"
+   "why": "2026-10-31 (SKILL2): the canon point pounce 2 = 2.96 kept (2.96); the curve v x N^pow refitted through it from pounce=3 3.43 [2.81, 4.28]; pounce=5 4.89 [4.56, 4.98]; pounce=6 5.12 [4.94, 5.59] (was n pow 0.619, which gave 3.81 / 5.23 / 5.85)"
   },
   {
    "id": "prayer",
@@ -3158,10 +3158,10 @@
   {
    "id": "regen",
    "kind": "set",
-   "old": 2.19,
-   "oldPow": 0.657,
-   "value": 2.37,
-   "pow": 0.54,
+   "old": 2,
+   "oldPow": 0.54,
+   "value": 2.26,
+   "pow": 0.362,
    "scale": "n",
    "conf": "canon",
    "pts": [
@@ -3194,7 +3194,7 @@
      "conf": "high"
     }
    ],
-   "why": "2026-10-31 (SKILL2): the canon point regen 2 = 3.45 kept (3.45); the curve v x N^pow refitted through it from regen=1 2.37 [1.88, 2.67]; regen=3 4.22 [3.82, 4.48] (was n pow 0.657, which gave 2.19 / 4.51)"
+   "why": "2026-10-31 (SKILL2): the canon point regen 2 = 2.91 kept (2.9); the curve v x N^pow refitted through it from regen=1 2.37 [1.88, 2.67]; regen=3 4.22 [3.82, 4.48] (was n pow 0.54, which gave 2 / 3.62)"
   },
   {
    "id": "relic",
@@ -3580,10 +3580,10 @@
   {
    "id": "shell",
    "kind": "set",
-   "old": 1.99,
-   "oldPow": 0.449,
-   "value": 2.1,
-   "pow": 0.375,
+   "old": 1.74,
+   "oldPow": 0.375,
+   "value": 1.64,
+   "pow": 0.464,
    "scale": "n",
    "conf": "canon",
    "pts": [
@@ -3616,7 +3616,7 @@
      "conf": "high"
     }
    ],
-   "why": "2026-10-31 (SKILL2): the canon point shell 2 = 2.72 kept (2.72); the curve v x N^pow refitted through it from shell=1 1.45 [1.03, 2.07]; shell=4 2.94 [2.59, 3.35] (was n pow 0.449, which gave 1.99 / 3.71)"
+   "why": "2026-10-31 (SKILL2): the canon point shell 2 = 2.26 kept (2.26); the curve v x N^pow refitted through it from shell=1 1.45 [1.03, 2.07]; shell=4 2.94 [2.59, 3.35] (was n pow 0.375, which gave 1.74 / 2.93)"
   },
   {
    "id": "shield",
@@ -3661,8 +3661,8 @@
    "id": "siege",
    "kind": "set",
    "old": 0.39,
-   "value": 0.62,
-   "pow": 1.036,
+   "value": 0.85,
+   "pow": 0.851,
    "scale": "n",
    "conf": "high",
    "pts": [
@@ -3670,13 +3670,13 @@
      "key": "siege=4",
      "n": 4,
      "w": 2,
-     "W": 2.51,
+     "W": 2.97,
      "ci": {
-      "m": 2.51,
-      "lo": 1.9248,
-      "hi": 3.0058
+      "m": 2.97,
+      "lo": 2.4091,
+      "hi": 3.46
      },
-     "price": 2.99,
+     "price": 2.61,
      "fights": 200,
      "conf": "high"
     },
@@ -3684,13 +3684,13 @@
      "key": "siege=1",
      "n": 1,
      "w": 1,
-     "W": 0.6159,
+     "W": 0.9672,
      "ci": {
-      "m": 0.6159,
-      "lo": 0.3501,
-      "hi": 1.0242
+      "m": 0.9672,
+      "lo": 0.658,
+      "hi": 1.4448
      },
-     "price": 0.86,
+     "price": 0.62,
      "fights": 200,
      "conf": "high"
     },
@@ -3723,7 +3723,7 @@
      "conf": "high"
     }
    ],
-   "why": "a power curve fits its 4 N better than its 'half' scale (squared error 0.06 vs 0.48): scale n, v x N^pow"
+   "why": "a power curve fits its 4 N better than its 'half' scale (squared error 0.2 vs 0.57): scale n, v x N^pow"
   },
   {
    "id": "sonar",
@@ -3804,7 +3804,7 @@
    "id": "stealth",
    "kind": "set",
    "old": 2,
-   "value": 3.64,
+   "value": 6.88,
    "scale": "half",
    "conf": "high",
    "pts": [
@@ -3812,13 +3812,13 @@
      "key": "stealth",
      "n": true,
      "w": 3,
-     "W": 3.6397,
+     "W": 6.8845,
      "ci": {
-      "m": 3.6397,
-      "lo": 2.8505,
-      "hi": 4.3511
+      "m": 6.8845,
+      "lo": 6.1986,
+      "hi": 7.6232
      },
-     "price": 4.1,
+     "price": 7.28,
      "fights": 200,
      "conf": "high"
     }
@@ -4014,10 +4014,10 @@
   {
    "id": "sweep",
    "kind": "set",
-   "old": 3.52,
-   "oldPow": 0.454,
-   "value": 4.22,
-   "pow": 0.191,
+   "old": 4.45,
+   "oldPow": 0.191,
+   "value": 4.72,
+   "pow": 0.105,
    "scale": "n",
    "conf": "canon",
    "pts": [
@@ -4064,7 +4064,7 @@
      "conf": "high"
     }
    ],
-   "why": "2026-10-31 (SKILL2): the canon point sweep 2 = 4.82 kept (4.82); the curve v x N^pow refitted through it from sweep=3 5.08 [4.89, 5.28]; sweep=4 5.42 [5.1, 6.2]; sweep=5 6.06 [5.3, 6.8] (was n pow 0.454, which gave 5.8 / 6.61 / 7.31)"
+   "why": "2026-10-31 (SKILL2): the canon point sweep 2 = 5.08 kept (5.08); the curve v x N^pow refitted through it from sweep=3 5.08 [4.89, 5.28]; sweep=4 5.42 [5.1, 6.2]; sweep=5 6.06 [5.3, 6.8] (was n pow 0.191, which gave 5.49 / 5.8 / 6.05)"
   },
   {
    "id": "swipe",

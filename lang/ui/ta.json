@@ -655,7 +655,6 @@
  "Earned from their elites on the road.": "சாலையில் அவர்களின் உயர்நிலையினரிடமிருந்து பெறலாம்.",
  "Ecclesia · Grace": "எக்லீசியா · அருள்",
  "Echoing Wood": "எதிரொலிக்கும் காடு",
- "Edit your character ({v1})": "உன் கதாபாத்திரத்தைத் திருத்து ({v1})",
  "Egg: cracks open into a random {v1} card when Ready": "முட்டை: தயாரானதும் ஒரு சீரற்ற {v1} அட்டையாக உடைகிறது",
  "Eight scales, one dragon": "எட்டுச் செதில்கள், ஒரு டிராகன்",
  "Eight scales. Lay them side by side and look: one hide, one dragon.": "எட்டுச் செதில்கள். அவற்றை அருகருகே வைத்துப் பார்: ஒரு தோல், ஒரு டிராகன்.",
@@ -1271,7 +1270,6 @@
  "Molten gold": "உருகிய தங்கம்",
  "Moonpull: when it arrives, the Tide comes in": "நிலவீர்ப்பு: இது வரும்போது, அலை ஏறுகிறது",
  "more cards!": "இன்னும் அட்டைகள்!",
- "More characters and titles unlock as you win. Outfits are on the way.": "நீ வெல்லும்போது மேலும் கதாபாத்திரங்களும் பட்டங்களும் திறக்கும். உடைகள் வந்துகொண்டிருக்கின்றன.",
  "More diggers. Deeper setts.": "இன்னும் தோண்டுபவர்கள். இன்னும் ஆழமான வளைகள்.",
  "More folk to befriend": "நட்பாக இன்னும் பலர்",
  "More for {v1}": "{v1} க்கு மேலும்",
@@ -1368,7 +1366,6 @@
  "No skirmishes with a deck on this map.": "இந்த வரைபடத்தில் அடுக்கு உள்ள சிறு மோதல்கள் இல்லை.",
  "No special abilities — a plain stat card.": "சிறப்புத் திறன்கள் இல்லை — ஒரு சாதாரண மதிப்பு அட்டை.",
  "No special effect": "சிறப்பு விளைவு இல்லை",
- "No strong wind this round.": "இந்தச் சுற்றில் வலுவான காற்று இல்லை.",
  "No tickets. It starts at a battle rating of {v1} and every floor is {v2} higher; its cards go past Level 10, up to {v3}.": "டிக்கெட்டுகள் இல்லை. போர் மதிப்பீடு {v1} இல் தொடங்கி ஒவ்வொரு தளமும் {v2} அதிகம்; அதன் அட்டைகள் நிலை 10-ஐத் தாண்டி {v3} வரை செல்லும்.",
  "No wins this time": "இந்த முறை வெற்றிகள் இல்லை",
  "Nobody had anything left to play and the board stopped changing.": "யாரிடமும் ஆட எதுவும் இல்லை, பலகை மாறுவது நின்றுவிட்டது.",
@@ -2263,7 +2260,6 @@
  "Win {v1} PvP match{s}": "{v1} PvP ஆட்டங்களை வெல்",
  "Wind at your back": "உன் முதுகுக்குப் பின் காற்று",
  "Wind in your face": "உன் முகத்தில் காற்று",
- "Wind: calm": "காற்று: அமைதி",
  "Wins": "வெற்றிகள்",
  "Wins this run": "இந்தப் பயணத்தின் வெற்றிகள்",
  "wins · {v1} losses · {v2} fights": "வெற்றிகள் · {v1} தோல்விகள் · {v2} போர்கள்",
@@ -2516,7 +2512,6 @@
  "Half wave, half seahorse: patient, and impossible to properly hit.": "பாதி அலை, பாதி கடற்குதிரை: பொறுமையானது, சரியாக அடிக்கவே முடியாது.",
  "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "கோட்டை இடிபாடுகளாலும் உண்மையான மாயமாக இருக்கக்கூடிய ஏதோ ஒன்றாலும் ஆன ஆமை. எதுவும் உள்ளே இறங்காது.",
  "Four black jaws fold out of a pink body, and the tide flats suddenly feel very wide.": "இளஞ்சிவப்பு உடலிலிருந்து நான்கு கருப்பு தாடைகள் விரிகின்றன; ஓதச் சமவெளி திடீரென மிக விசாலமாகத் தோன்றுகிறது.",
- "A glowing bacterium, blown up to the size of a barrel. Come dark, the bay lights up and there are two.": "பீப்பாய் அளவுக்கு ஊதிப் பெருத்த ஒளிரும் பாக்டீரியா. இருட்டியதும் வளைகுடா ஒளிர்கிறது; இப்போது இரண்டு.",
  "It lies buried in the sand with one feeler out. The snap is over before the sand settles.": "ஒரு உணர்கொம்பு மட்டும் வெளியே தெரிய, மணலில் புதைந்து கிடக்கும். மணல் அடங்குவதற்குள் கடி முடிந்துவிடும்.",
  "Not one animal but many, sailing on one blue bubble. Its streamers outrun the ship that sees it.": "ஒரே விலங்கு அல்ல, பல; ஒரே நீல நீர்க்குமிழியில் பயணிக்கின்றன. அதைக் காணும் கப்பலையே அதன் இழைகள் முந்திவிடும்.",
  "Its shell was a straight spear long before shells learned to curl. The oldest hunter in the Current.": "சங்குகள் சுருள கற்றுக்கொள்வதற்கு வெகு முன்பே, இதன் ஓடு நேரான ஈட்டியாக இருந்தது. நீரோட்டத்தின் மிகப் பழைய வேட்டைக்காரன்.",
@@ -2525,5 +2520,6 @@
  "It asks one question. Answering is not the dangerous part.": "அது ஒரே ஒரு கேள்வி கேட்கும். பதில் சொல்வது ஆபத்தான பகுதி அல்ல.",
  "Half eagle, half lion, and it never once chose between the two.": "பாதி கழுகு, பாதி சிங்கம்; இரண்டில் ஒன்றையும் அது ஒருபோதும் தேர்ந்தெடுக்கவில்லை.",
  "You hear the whirlwind before you see the swift. Mostly you just hear it.": "உழவாரனைப் பார்க்கும் முன்பே சுழற்காற்றைக் கேட்பீர்கள். பெரும்பாலும் கேட்பது மட்டுமே.",
- "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.": "இது ஒரு பனிப்பந்தாகத் தொடங்கியது. யார் தவறு என்பதில் யாருக்கும் உடன்பாடு இல்லை; கரடிக்கே இல்லை."
+ "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.": "இது ஒரு பனிப்பந்தாகத் தொடங்கியது. யார் தவறு என்பதில் யாருக்கும் உடன்பாடு இல்லை; கரடிக்கே இல்லை.",
+ "Each wave breaks in blue sparks. Come dark, the bay lights up and there are two.": "ஒவ்வொரு அலையும் நீலத் தீப்பொறிகளாக உடைகிறது. இருட்டியதும் வளைகுடா ஒளிர்கிறது; இப்போது இரண்டு."
 }

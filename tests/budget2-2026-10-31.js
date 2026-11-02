@@ -44,8 +44,9 @@ ok(byId['owl-nightwatch'].effects.nocturnal === 3 && (T.budget(byId['owl-nightwa
 ok(['bee-drone', 'worker-ant'].every(id=> !plan.changes.some(r=> r.id === id)), '2. bee-drone and worker-ant stay held (RECOST1-5)');
 // no in-play card left outside its band that was inside under 2A + H
 { const before = new Set((plan.counts.outsideBeforeIds || []).map(s=> s.replace(/ \(out of play\)$/, ''))), held = new Set(plan.held.map(h=> h.id));
+  const BAL12H = new Set((js('docs/balance/bal12/refit-2026-11-02.json').held || []).map(h=> h.id));
   const out = cards.filter(c=> LB.CARD_DEFS_BASELINE[c.id] && !c.pool && !c.token && !c.test && !c.easterEgg && SC.measured(c) && c.health != null && !lmp.isOutOfPlay(G, LB.CARD_DEFS_BASELINE[c.id]))
-    .filter(c=>{ const b = T.budget(c), b1 = T.budget(c, {level: 1}); return !(b.ok && b1.ok && b.x1 > 0.6 * b.N); }).filter(c=> !before.has(c.id) && !held.has(c.id) && !SK2.has(c.id)).map(c=> c.id); // 2026-10-31 SKILL2: its own held / named cards
+    .filter(c=>{ const b = T.budget(c), b1 = T.budget(c, {level: 1}); return !(b.ok && b1.ok && b.x1 > 0.6 * b.N); }).filter(c=> !before.has(c.id) && !held.has(c.id) && !SK2.has(c.id) && !BAL12H.has(c.id)).map(c=> c.id); // 2026-10-31 SKILL2: its own held / named cards; 2026-11-02 BAL12: the cards its re-fit held (BAL12-1)
   ok(!out.length, `2. no in-play card outside its band but those outside before BUDGET2 or held: ${out.slice(0, 6).join(', ') || 'none'}`); }
 ok(js('docs/balance/listfix1-pending-budget-2026-10-29.json').count === 0, '2. LISTFIX1\'s pending list is empty (War Elephant fits)');
 

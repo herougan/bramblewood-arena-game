@@ -2426,7 +2426,7 @@
       "field-vole": 4,
       "hawthorn-shieldbug": 4,
       "slow-worm": 3,
-      "vampire-bat": 2
+      "robin-redbreast": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map01-mq-2026-10-30.json",
@@ -2442,7 +2442,8 @@
       "generated": "2026-10-30T10:03:29.154Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13cap": "2026-11-03 (BAL13, BAL12-6 / RAR-1): vampire-bat x2 -> robin-redbreast x2 (over the deck's uncommon cap); not re-searched"
     },
     {
      "id": "1-A-PRO-3",
@@ -5641,7 +5642,7 @@
      ],
      "level": 1,
      "leaders": [
-      "the-gannet-queen"
+      "conch-herald"
      ],
      "deck": {
       "conch-herald": 4,
@@ -11666,12 +11667,12 @@
       "giant-cave-huntsman"
      ],
      "deck": {
-      "bee-forager": 3,
       "dung-beetle": 4,
       "echo-matriarch": 3,
       "giant-cave-huntsman": 3,
-      "vampire-bat": 4,
-      "wolf-spider-mother": 3
+      "vampire-bat": 3,
+      "wolf-spider-mother": 3,
+      "blind-cave-fish": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
@@ -11687,7 +11688,8 @@
       "generated": "2026-11-02T09:00:24.107Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): bee-forager -3 -> blind-cave-fish x3; vampire-bat -1 -> blind-cave-fish x1 (bee-forager left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "8-PRO-2",
@@ -11707,8 +11709,8 @@
       "echo-screecher": 3,
       "newt-doctor": 4,
       "puffin-diver": 2,
-      "sulfur-cinder-moth": 3,
-      "vampire-bat": 4
+      "sulfur-cinder-moth": 4,
+      "vampire-bat": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
@@ -11724,7 +11726,8 @@
       "generated": "2026-11-02T09:00:24.107Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): vampire-bat -1 -> sulfur-cinder-moth x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "8-PRO-3",
@@ -11781,8 +11784,8 @@
       "echo-screecher": 3,
       "newt-doctor": 4,
       "otter-centurion": 2,
-      "star-nosed-mole": 3,
-      "vampire-bat": 4
+      "star-nosed-mole": 4,
+      "vampire-bat": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
@@ -11798,7 +11801,8 @@
       "generated": "2026-11-02T09:00:24.107Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): vampire-bat -1 -> star-nosed-mole x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "bpro": [
@@ -11856,9 +11860,9 @@
       "cave-olm": 4,
       "echo-matriarch": 3,
       "echo-screecher": 3,
-      "grotto-lobster": 2,
+      "grotto-lobster": 3,
       "sulfur-cinder-moth": 4,
-      "vampire-bat": 4
+      "vampire-bat": 3
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map08-m4-2026-10-31.json",
@@ -11874,7 +11878,8 @@
       "generated": "2026-11-02T02:54:59.306Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): vampire-bat -1 -> grotto-lobster x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "8-BPRO-3",
@@ -11931,8 +11936,8 @@
       "cave-olm": 4,
       "echo-matriarch": 3,
       "echo-screecher": 3,
-      "star-nosed-mole": 2,
-      "vampire-bat": 4
+      "star-nosed-mole": 3,
+      "vampire-bat": 3
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map08-m4-2026-10-31.json",
@@ -11948,7 +11953,8 @@
       "generated": "2026-11-02T02:54:59.306Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): vampire-bat -1 -> star-nosed-mole x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "replaced": [
@@ -12634,9 +12640,9 @@
       "badger-stonemason": 4,
       "echo-matriarch": 3,
       "lantern-spark-fly": 4,
-      "prospector-mole": 1,
+      "prospector-mole": 2,
       "star-nosed-mole": 4,
-      "vampire-bat": 4
+      "vampire-bat": 3
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map08-mn-2026-10-31.json",
@@ -12652,7 +12658,8 @@
       "generated": "2026-11-02T02:57:15.441Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): vampire-bat -1 -> prospector-mole x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "8-A-BPRO-2",
@@ -13364,14 +13371,14 @@
      ],
      "level": 1,
      "leaders": [
-      "proboscis-monkey"
+      "vampire-bat"
      ],
      "deck": {
       "fiddler-crab-swarm": 4,
       "mangrove-mudskipper": 4,
       "newt-doctor": 3,
-      "proboscis-monkey": 2,
-      "vampire-bat": 4,
+      "proboscis-monkey": 3,
+      "vampire-bat": 3,
       "water-vole": 3
      },
      "source": {
@@ -13388,7 +13395,8 @@
       "generated": "2026-11-02T09:01:54.627Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): vampire-bat -1 -> proboscis-monkey x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "9-PRO-4",
@@ -15259,12 +15267,12 @@
       "nautilus-drifter"
      ],
      "deck": {
-      "blue-ringed-octopus": 3,
       "coral-polyp-colony": 4,
       "electric-ray": 4,
-      "nautilus-drifter": 3,
+      "nautilus-drifter": 2,
       "otter-centurion": 3,
-      "hagfish-silencer": 3
+      "hagfish-silencer": 3,
+      "riptide-eel": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map10-mj-2026-10-30.json",
@@ -15281,7 +15289,8 @@
      },
      "h2h": null,
      "later": [],
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (whale-shark x3); not re-searched"
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (whale-shark x3); not re-searched",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): blue-ringed-octopus -3 -> riptide-eel x3; nautilus-drifter -1 -> riptide-eel x1 (blue-ringed-octopus left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "10-A-PRO-3",
@@ -15298,9 +15307,9 @@
       "nautilus-drifter"
      ],
      "deck": {
-      "coral-polyp-colony": 3,
+      "coral-polyp-colony": 4,
       "kraken-spawnling": 3,
-      "nautilus-drifter": 3,
+      "nautilus-drifter": 2,
       "newt-doctor": 4,
       "otter-centurion": 3,
       "parrotfish": 4
@@ -15319,7 +15328,8 @@
       "generated": "2026-10-30T10:49:43.685Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): nautilus-drifter -1 -> coral-polyp-colony x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "bpro": [
@@ -15334,15 +15344,15 @@
      ],
      "level": 1,
      "leaders": [
-      "mangrove-manatee"
+      "nautilus-drifter"
      ],
      "deck": {
       "blue-ringed-octopus": 3,
       "clownfish-scout": 4,
-      "coral-polyp-colony": 3,
+      "coral-polyp-colony": 4,
       "electric-ray": 4,
       "mangrove-manatee": 3,
-      "nautilus-drifter": 3
+      "nautilus-drifter": 2
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map10-mj-2026-10-31.json",
@@ -15358,7 +15368,8 @@
       "generated": "2026-11-02T03:01:49.196Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): nautilus-drifter -1 -> coral-polyp-colony x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "10-A-BPRO-2",
@@ -15407,14 +15418,14 @@
      ],
      "level": 1,
      "leaders": [
-      "mangrove-manatee"
+      "nautilus-drifter"
      ],
      "deck": {
-      "clownfish-scout": 3,
+      "clownfish-scout": 4,
       "coral-polyp-colony": 4,
       "hagfish-silencer": 3,
       "mangrove-manatee": 3,
-      "nautilus-drifter": 3,
+      "nautilus-drifter": 2,
       "parrotfish": 4
      },
      "source": {
@@ -15431,7 +15442,8 @@
       "generated": "2026-11-02T03:01:49.196Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): nautilus-drifter -1 -> clownfish-scout x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "replaced": [
@@ -19509,8 +19521,8 @@
       "grave-grin-hyena": 4,
       "ibex-rockcaller": 2,
       "leafcutter-gardener": 4,
-      "pangolin-roller": 4,
-      "savanna-cheetah": 2
+      "savanna-cheetah": 2,
+      "mouse-sapper": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map14-m5-2026-10-30.json",
@@ -19526,7 +19538,8 @@
       "generated": "2026-10-30T11:07:24.617Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pangolin-roller -4 -> mouse-sapper x4 (pangolin-roller left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "14-PRO-3",
@@ -19544,8 +19557,8 @@
       "grave-grin-hyena": 4,
       "hoopoe-herald": 4,
       "ibex-rockcaller": 2,
-      "lyrebird-mimic": 3,
-      "pangolin-roller": 4
+      "lyrebird-mimic": 4,
+      "pangolin-roller": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map14-m5-2026-10-30.json",
@@ -19561,7 +19574,8 @@
       "generated": "2026-10-30T11:07:24.617Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pangolin-roller -1 -> lyrebird-mimic x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "14-PRO-4",
@@ -19572,7 +19586,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "pangolin-roller"
      ],
      "deck": {
       "grave-grin-hyena": 4,
@@ -19651,9 +19665,9 @@
       "carrion-crow": 4,
       "grave-grin-hyena": 4,
       "house-cat": 4,
-      "pangolin-roller": 4,
       "pride-queen": 2,
-      "savanna-cheetah": 2
+      "savanna-cheetah": 2,
+      "mouse-sapper": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map14-m5-2026-10-31.json",
@@ -19670,7 +19684,8 @@
      },
      "h2h": null,
      "later": [],
-     "note": "2026-11-02 (release 11-02a merge): leafcutter-gardener x4 swapped for house-cat (CONTENT6 cut it from m5's list; House Cat is the nearest m5 card by Lumber / Wait / 2A+H / rarity, BAL9's cut-card rule). The score and labels are from before the swap; re-run DECK1 for m5 to refresh them."
+     "note": "2026-11-02 (release 11-02a merge): leafcutter-gardener x4 swapped for house-cat (CONTENT6 cut it from m5's list; House Cat is the nearest m5 card by Lumber / Wait / 2A+H / rarity, BAL9's cut-card rule). The score and labels are from before the swap; re-run DECK1 for m5 to refresh them.",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pangolin-roller -4 -> mouse-sapper x4 (pangolin-roller left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "14-BPRO-3",
@@ -19686,9 +19701,9 @@
      ],
      "deck": {
       "carrion-crow": 3,
-      "dust-hyena": 3,
+      "dust-hyena": 4,
       "house-cat": 4,
-      "pangolin-roller": 4,
+      "pangolin-roller": 3,
       "savanna-cheetah": 2,
       "weaver-bird": 4
      },
@@ -19707,7 +19722,8 @@
      },
      "h2h": null,
      "later": [],
-     "note": "2026-11-02 (release 11-02a merge): leafcutter-gardener x4 swapped for house-cat (CONTENT6 cut it from m5's list; House Cat is the nearest m5 card by Lumber / Wait / 2A+H / rarity, BAL9's cut-card rule). The score and labels are from before the swap; re-run DECK1 for m5 to refresh them."
+     "note": "2026-11-02 (release 11-02a merge): leafcutter-gardener x4 swapped for house-cat (CONTENT6 cut it from m5's list; House Cat is the nearest m5 card by Lumber / Wait / 2A+H / rarity, BAL9's cut-card rule). The score and labels are from before the swap; re-run DECK1 for m5 to refresh them.",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pangolin-roller -1 -> dust-hyena x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "14-BPRO-4",
@@ -19722,10 +19738,10 @@
       "pride-queen"
      ],
      "deck": {
-      "dust-hyena": 2,
+      "dust-hyena": 3,
       "hoopoe-herald": 4,
       "house-cat": 4,
-      "pangolin-roller": 4,
+      "pangolin-roller": 3,
       "pride-queen": 2,
       "springbok-pronker": 4
      },
@@ -19744,7 +19760,8 @@
      },
      "h2h": null,
      "later": [],
-     "note": "2026-11-02 (release 11-02a merge): leafcutter-gardener x4 swapped for house-cat (CONTENT6 cut it from m5's list; House Cat is the nearest m5 card by Lumber / Wait / 2A+H / rarity, BAL9's cut-card rule). The score and labels are from before the swap; re-run DECK1 for m5 to refresh them."
+     "note": "2026-11-02 (release 11-02a merge): leafcutter-gardener x4 swapped for house-cat (CONTENT6 cut it from m5's list; House Cat is the nearest m5 card by Lumber / Wait / 2A+H / rarity, BAL9's cut-card rule). The score and labels are from before the swap; re-run DECK1 for m5 to refresh them.",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pangolin-roller -1 -> dust-hyena x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "replaced": [
@@ -20275,13 +20292,13 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "pangolin-roller"
      ],
      "deck": {
       "grave-grin-hyena": 3,
       "leafcutter-gardener": 4,
-      "pangolin-roller": 4,
-      "redwood-woodpecker": 2,
+      "pangolin-roller": 3,
+      "redwood-woodpecker": 3,
       "wolf-spider-mother": 3,
       "weaver-bird": 4
      },
@@ -20300,7 +20317,8 @@
      },
      "h2h": null,
      "later": [],
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (lovebird x4); not re-searched"
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (lovebird x4); not re-searched",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pangolin-roller -1 -> redwood-woodpecker x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "14-A-PRO-2",
@@ -20312,15 +20330,15 @@
      ],
      "level": 1,
      "leaders": [
-      "hercules-beetle"
+      "pangolin-roller"
      ],
      "deck": {
       "grave-grin-hyena": 4,
-      "hercules-beetle": 2,
       "hoopoe-herald": 3,
       "leafcutter-gardener": 4,
-      "pangolin-roller": 4,
-      "wolf-spider-mother": 3
+      "pangolin-roller": 3,
+      "wolf-spider-mother": 3,
+      "proboscis-monkey": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map14-my-2026-10-30.json",
@@ -20336,7 +20354,9 @@
       "generated": "2026-10-30T11:11:21.242Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13": "2026-11-02 (BAL13, owner 19:56 on BAL11-3 b): hercules-beetle x2 -> proboscis-monkey x2 (the card is priced for a later map; the list's nearest by Lumber, Wait, 2A+H under the 6/4 rule); not re-searched",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pangolin-roller -1 -> proboscis-monkey x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "14-A-PRO-3",
@@ -20421,15 +20441,15 @@
      ],
      "level": 1,
      "leaders": [
-      "hercules-beetle"
+      "pangolin-roller"
      ],
      "deck": {
-      "hercules-beetle": 2,
       "hoopoe-herald": 3,
       "leafcutter-gardener": 4,
       "lyrebird-mimic": 4,
-      "pangolin-roller": 4,
-      "redwood-woodpecker": 3
+      "pangolin-roller": 3,
+      "redwood-woodpecker": 4,
+      "proboscis-monkey": 2
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map14-my-2026-10-31.json",
@@ -20445,7 +20465,9 @@
       "generated": "2026-11-02T03:12:51.502Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13": "2026-11-02 (BAL13, owner 19:56 on BAL11-3 b): hercules-beetle x2 -> redwood-woodpecker x1 + proboscis-monkey x1 (the card is priced for a later map; the list's nearest by Lumber, Wait, 2A+H under the 6/4 rule); not re-searched",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pangolin-roller -1 -> proboscis-monkey x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "14-A-BPRO-2",
@@ -20456,14 +20478,15 @@
      ],
      "level": 1,
      "leaders": [
-      "lyrebird-mimic"
+      "pangolin-roller"
      ],
      "deck": {
       "apollo-butterfly": 4,
       "hoopoe-herald": 4,
       "lyrebird-mimic": 4,
-      "pangolin-roller": 4,
-      "weaver-bird": 4
+      "pangolin-roller": 3,
+      "weaver-bird": 4,
+      "proboscis-monkey": 1
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map14-my-2026-10-31.json",
@@ -20479,7 +20502,8 @@
       "generated": "2026-11-02T03:12:51.502Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pangolin-roller -1 -> proboscis-monkey x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "14-A-BPRO-3",
@@ -20491,15 +20515,15 @@
      ],
      "level": 1,
      "leaders": [
-      "hercules-beetle"
+      "jaguar-stalker"
      ],
      "deck": {
       "apollo-butterfly": 2,
-      "hercules-beetle": 3,
       "hoopoe-herald": 4,
       "jaguar-stalker": 3,
       "kinkajou-lurker": 4,
-      "leafcutter-gardener": 4
+      "leafcutter-gardener": 4,
+      "pangolin-roller": 3
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map14-my-2026-10-31.json",
@@ -20515,7 +20539,8 @@
       "generated": "2026-11-02T03:12:51.502Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13": "2026-11-02 (BAL13, owner 19:56 on BAL11-3 b): hercules-beetle x3 -> pangolin-roller x3 (the card is priced for a later map; the list's nearest by Lumber, Wait, 2A+H under the 6/4 rule); not re-searched"
     }
    ],
    "replaced": [
@@ -24340,11 +24365,11 @@
      ],
      "deck": {
       "antlion-pit": 4,
-      "dune-packrat": 4,
       "dust-hyena": 4,
       "ibex-rockcaller": 2,
       "thorny-devil": 4,
-      "walrus-icebreaker": 2
+      "walrus-icebreaker": 2,
+      "bison-bulldozer": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map18-md-2026-10-30.json",
@@ -24360,7 +24385,8 @@
       "generated": "2026-11-02T09:04:24.450Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): dune-packrat -4 -> bison-bulldozer x4 (dune-packrat left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "18-PRO-2",
@@ -24406,7 +24432,7 @@
      ],
      "level": 1,
      "leaders": [
-      "caustic-scorpion"
+      "thorny-devil"
      ],
      "deck": {
       "bison-bulldozer": 4,
@@ -24442,13 +24468,13 @@
      ],
      "level": 1,
      "leaders": [
-      "caustic-scorpion"
+      "dune-packrat"
      ],
      "deck": {
       "antlion-pit": 2,
       "caustic-scorpion": 4,
-      "dromedary": 2,
-      "dune-packrat": 4,
+      "dromedary": 3,
+      "dune-packrat": 3,
       "fennec-fox": 4,
       "thorny-devil": 4
      },
@@ -24466,7 +24492,8 @@
       "generated": "2026-11-02T03:20:59.026Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): dune-packrat -1 -> dromedary x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "18-BPRO-2",
@@ -24477,14 +24504,14 @@
      ],
      "level": 1,
      "leaders": [
-      "caustic-scorpion"
+      "dune-packrat"
      ],
      "deck": {
       "antlion-pit": 4,
       "caustic-scorpion": 1,
       "dromedary": 4,
-      "dune-packrat": 4,
-      "dust-hyena": 3,
+      "dune-packrat": 3,
+      "dust-hyena": 4,
       "thorny-devil": 4
      },
      "source": {
@@ -24501,7 +24528,8 @@
       "generated": "2026-11-02T03:20:59.026Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): dune-packrat -1 -> dust-hyena x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "18-BPRO-3",
@@ -24512,7 +24540,7 @@
      ],
      "level": 1,
      "leaders": [
-      "caustic-scorpion"
+      "thorny-devil"
      ],
      "deck": {
       "caustic-scorpion": 4,
@@ -25067,8 +25095,8 @@
      ],
      "deck": {
       "antlion-pit": 3,
-      "dune-packrat": 4,
-      "dust-hyena": 3,
+      "dune-packrat": 3,
+      "dust-hyena": 4,
       "grave-grin-hyena": 4,
       "roadrunner-courier": 4,
       "squires-mount": 2
@@ -25087,7 +25115,8 @@
       "generated": "2026-10-30T11:29:40.051Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): dune-packrat -1 -> dust-hyena x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "18-A-PRO-2",
@@ -25139,9 +25168,9 @@
      ],
      "deck": {
       "antlion-pit": 4,
-      "dune-packrat": 4,
+      "dune-packrat": 3,
       "dust-hyena": 4,
-      "ibex-rockcaller": 1,
+      "ibex-rockcaller": 2,
       "stoat-cutthroat": 3,
       "roadrunner-courier": 4
      },
@@ -25160,7 +25189,8 @@
      },
      "h2h": null,
      "later": [],
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (glasswing-moth x4); not re-searched"
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (glasswing-moth x4); not re-searched",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): dune-packrat -1 -> ibex-rockcaller x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "bpro": [
@@ -25178,11 +25208,11 @@
      ],
      "deck": {
       "antlion-pit": 4,
-      "dune-packrat": 4,
       "dust-hyena": 4,
       "quicksand-queen": 2,
       "thorny-devil": 4,
-      "trapdoor-spider": 2
+      "trapdoor-spider": 2,
+      "skull-vulture": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map18-mpd-2026-10-31.json",
@@ -25198,7 +25228,8 @@
       "generated": "2026-11-02T03:22:33.955Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): dune-packrat -4 -> skull-vulture x4 (dune-packrat left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "18-A-BPRO-2",
@@ -25214,11 +25245,11 @@
      ],
      "deck": {
       "antlion-pit": 3,
-      "dune-packrat": 4,
+      "dune-packrat": 3,
       "dust-devil-kestrel": 2,
       "roadrunner-courier": 4,
       "thorny-devil": 4,
-      "trapdoor-spider": 3
+      "dust-hyena": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map18-mpd-2026-10-31.json",
@@ -25234,7 +25265,8 @@
       "generated": "2026-11-02T03:22:33.955Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): trapdoor-spider -3 -> dust-hyena x3; dune-packrat -1 -> dust-hyena x1 (trapdoor-spider left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "18-A-BPRO-3",
@@ -25288,10 +25320,10 @@
      "deck": {
       "caustic-scorpion": 2,
       "dust-hyena": 4,
-      "sand-widow": 3,
+      "sand-widow": 4,
       "sandfish": 4,
       "thorny-devil": 4,
-      "trapdoor-spider": 3
+      "trapdoor-spider": 2
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map18-mpd-2026-10-31.json",
@@ -25307,7 +25339,8 @@
       "generated": "2026-11-02T03:22:33.955Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): trapdoor-spider -1 -> sand-widow x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "replaced": [
@@ -25945,15 +25978,15 @@
      ],
      "level": 1,
      "leaders": [
-      "echidna-quillshot"
+      "pit-glutton"
      ],
      "deck": {
       "eagle-owl-quartermaster": 3,
-      "echidna-quillshot": 2,
       "fire-salamander": 4,
       "cinder-stoker": 4,
       "talus-pika": 4,
-      "pit-glutton": 3
+      "pumice-beetle": 4,
+      "pit-glutton": 1
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map19-m3-2026-10-30.json",
@@ -25970,7 +26003,9 @@
      },
      "h2h": null,
      "later": [],
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (guano-beetle x4, porcupine-roller x4, stag-beetle x3); not re-searched"
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (guano-beetle x4, porcupine-roller x4, stag-beetle x3); not re-searched",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): pit-glutton -3 -> pumice-beetle x3; echidna-quillshot -1 -> pumice-beetle x1 (pit-glutton left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched",
+     "bal13cap": "2026-11-03 (BAL13, BAL12-6 / RAR-1): echidna-quillshot x1 -> pit-glutton x1 (over the deck's veryrare cap); not re-searched"
     },
     {
      "id": "19-PRO-2",
@@ -26090,15 +26125,15 @@
      ],
      "level": 1,
      "leaders": [
-      "echidna-quillshot"
+      "pit-glutton"
      ],
      "deck": {
-      "echidna-quillshot": 2,
-      "hercules-beetle": 3,
       "obsidian-scorpion": 3,
       "pumice-beetle": 4,
       "sulfur-cinder-moth": 4,
-      "talus-pika": 4
+      "talus-pika": 4,
+      "glacier-wolf-pack": 4,
+      "pit-glutton": 1
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map19-m3-2026-10-31.json",
@@ -26114,7 +26149,9 @@
       "generated": "2026-11-02T03:24:05.627Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): hercules-beetle -3 -> glacier-wolf-pack x3; echidna-quillshot -1 -> glacier-wolf-pack x1 (hercules-beetle left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched",
+     "bal13cap": "2026-11-03 (BAL13, BAL12-6 / RAR-1): echidna-quillshot x1 -> pit-glutton x1 (over the deck's veryrare cap); not re-searched"
     }
    ],
    "replaced": [
@@ -26605,14 +26642,14 @@
      ],
      "level": 1,
      "leaders": [
-      "badger-berserker"
+      "tide-spirit"
      ],
      "deck": {
       "ashbone-ghoul": 4,
-      "badger-berserker": 2,
+      "badger-berserker": 3,
       "cinder-gecko": 4,
       "grave-grin-hyena": 4,
-      "tide-spirit": 3,
+      "tide-spirit": 2,
       "wolf-spider-mother": 3
      },
      "source": {
@@ -26629,7 +26666,8 @@
       "generated": "2026-10-30T11:36:41.475Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): tide-spirit -1 -> badger-berserker x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "19-A-PRO-2",
@@ -26680,11 +26718,11 @@
       "magma-salamander"
      ],
      "deck": {
-      "anvilwhisker-otter": 1,
+      "anvilwhisker-otter": 2,
       "cinder-gecko": 4,
       "fire-salamander": 4,
       "grave-grin-hyena": 4,
-      "magma-salamander": 3,
+      "magma-salamander": 2,
       "ore-smelter-mole": 4
      },
      "source": {
@@ -26702,7 +26740,8 @@
      },
      "h2h": null,
      "later": [],
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (firefly-swarm x4); not re-searched"
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (firefly-swarm x4); not re-searched",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): magma-salamander -1 -> anvilwhisker-otter x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "19-A-PRO-4",
@@ -26751,15 +26790,15 @@
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "magma-salamander"
      ],
      "deck": {
       "cinder-gecko": 3,
       "cinder-stoker": 4,
       "ember-jackal": 3,
       "fire-salamander": 4,
-      "magma-salamander": 3,
-      "tide-spirit": 3
+      "magma-salamander": 2,
+      "ore-smelter-mole": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map19-m9-2026-10-31.json",
@@ -26775,7 +26814,8 @@
       "generated": "2026-11-02T03:25:37.193Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): tide-spirit -3 -> ore-smelter-mole x3; magma-salamander -1 -> ore-smelter-mole x1 (tide-spirit left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "19-A-BPRO-2",
@@ -26786,15 +26826,15 @@
      ],
      "level": 1,
      "leaders": [
-      "hercules-beetle"
+      "tide-spirit"
      ],
      "deck": {
       "ashbone-ghoul": 4,
-      "cinder-gecko": 3,
+      "cinder-gecko": 4,
       "cinder-stoker": 4,
       "ember-jackal": 3,
       "hercules-beetle": 3,
-      "tide-spirit": 3
+      "tide-spirit": 2
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map19-m9-2026-10-31.json",
@@ -26810,7 +26850,8 @@
       "generated": "2026-11-02T03:25:37.193Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): tide-spirit -1 -> cinder-gecko x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "19-A-BPRO-3",
@@ -26824,11 +26865,11 @@
       "yeti-chieftain"
      ],
      "deck": {
-      "ashbone-ghoul": 3,
+      "ashbone-ghoul": 4,
       "cinder-gecko": 4,
       "cinder-stoker": 4,
       "fire-salamander": 4,
-      "tide-spirit": 3,
+      "tide-spirit": 2,
       "yeti-chieftain": 2
      },
      "source": {
@@ -26845,7 +26886,8 @@
       "generated": "2026-11-02T03:25:37.193Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): tide-spirit -1 -> ashbone-ghoul x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "replaced": [
@@ -27262,13 +27304,13 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "magma-salamander"
      ],
      "deck": {
-      "ancient-sloth-titan": 3,
+      "ancient-sloth-titan": 4,
       "ashbone-ghoul": 4,
       "grave-grin-hyena": 4,
-      "magma-salamander": 3,
+      "magma-salamander": 2,
       "squires-mount": 3,
       "wolf-spider-mother": 3
      },
@@ -27286,7 +27328,8 @@
       "generated": "2026-10-30T11:41:08.173Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): magma-salamander -1 -> ancient-sloth-titan x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "20-PRO-2",
@@ -27333,15 +27376,15 @@
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "magma-salamander"
      ],
      "deck": {
-      "gorge-wyrm": 3,
+      "gorge-wyrm": 4,
       "lantern-spark-fly": 3,
       "pack-mule": 4,
       "pumice-beetle": 4,
       "squires-mount": 3,
-      "magma-salamander": 3
+      "magma-salamander": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map20-m11-2026-10-30.json",
@@ -27358,7 +27401,8 @@
      },
      "h2h": null,
      "later": [],
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (stonedrop-vulture x4); not re-searched"
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (stonedrop-vulture x4); not re-searched",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): magma-salamander -1 -> gorge-wyrm x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "bpro": [
@@ -27376,10 +27420,10 @@
      "deck": {
       "cinder-skeleton": 4,
       "cinder-stoker": 4,
-      "magma-salamander": 3,
       "ossuary-lammergeier": 1,
       "pack-mule": 4,
-      "pumice-beetle": 4
+      "pumice-beetle": 4,
+      "pit-glutton": 3
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map20-m11-2026-10-31.json",
@@ -27395,7 +27439,8 @@
       "generated": "2026-11-02T03:28:11.253Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): magma-salamander -3 -> pit-glutton x3 (magma-salamander left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "20-BPRO-2",
@@ -28008,8 +28053,8 @@
       "ashbone-ghoul": 4,
       "obsidian-scorpion": 3,
       "squires-mount": 3,
-      "vampire-bat": 4,
-      "cinder-stoker": 3
+      "vampire-bat": 3,
+      "cinder-stoker": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map20-me-2026-10-30.json",
@@ -28026,7 +28071,8 @@
      },
      "h2h": null,
      "later": [],
-     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (baby-bat x3); not re-searched"
+     "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (baby-bat x3); not re-searched",
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): vampire-bat -1 -> cinder-stoker x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "bpro": [
@@ -28725,9 +28771,9 @@
       "ashbone-ghoul": 4,
       "cinder-skeleton": 4,
       "eagle-owl-quartermaster": 3,
-      "magma-salamander": 3,
+      "magma-salamander": 2,
       "pack-mule": 4,
-      "stoat-cutthroat": 2
+      "stoat-cutthroat": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map20-mx-2026-10-30.json",
@@ -28743,7 +28789,8 @@
       "generated": "2026-10-30T11:54:09.492Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): magma-salamander -1 -> stoat-cutthroat x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "20-B-PRO-2",
@@ -28755,15 +28802,15 @@
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "magma-salamander"
      ],
      "deck": {
       "ashbone-ghoul": 4,
-      "cave-olm": 3,
+      "cave-olm": 4,
       "ember-jackal": 3,
-      "magma-salamander": 3,
+      "magma-salamander": 2,
       "pack-mule": 4,
-      "tide-spirit": 3
+      "obsidian-scorpion": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map20-mx-2026-10-30.json",
@@ -28779,7 +28826,8 @@
       "generated": "2026-10-30T11:54:09.492Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): tide-spirit -3 -> obsidian-scorpion x3; magma-salamander -1 -> cave-olm x1 (tide-spirit left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "20-B-PRO-3",
@@ -28792,15 +28840,15 @@
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "tide-spirit"
      ],
      "deck": {
       "ember-jackal": 3,
       "fire-salamander": 4,
-      "magma-salamander": 3,
       "magma-wraith": 4,
       "pack-mule": 4,
-      "tide-spirit": 2
+      "tide-spirit": 2,
+      "obsidian-scorpion": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map20-mx-2026-10-30.json",
@@ -28816,7 +28864,8 @@
       "generated": "2026-10-30T11:54:09.492Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): magma-salamander -3 -> obsidian-scorpion x3 (magma-salamander left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "bpro": [
@@ -28830,15 +28879,15 @@
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "tide-spirit"
      ],
      "deck": {
-      "ashbone-ghoul": 3,
+      "ashbone-ghoul": 4,
       "cinder-stoker": 4,
       "ember-jackal": 3,
       "obsidian-scorpion": 3,
       "pack-mule": 4,
-      "tide-spirit": 3
+      "tide-spirit": 2
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map20-mx-2026-10-31.json",
@@ -28854,7 +28903,8 @@
       "generated": "2026-11-02T03:31:56.244Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): tide-spirit -1 -> ashbone-ghoul x1 (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     },
     {
      "id": "20-B-BPRO-2",
@@ -28865,15 +28915,15 @@
      ],
      "level": 1,
      "leaders": [
-      "ember-jackal"
+      "magma-salamander"
      ],
      "deck": {
-      "ash-moth": 3,
+      "ash-moth": 4,
       "cinder-stoker": 4,
       "ember-jackal": 3,
-      "magma-salamander": 3,
+      "magma-salamander": 2,
       "pack-mule": 4,
-      "tide-spirit": 3
+      "obsidian-scorpion": 3
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map20-mx-2026-10-31.json",
@@ -28889,7 +28939,8 @@
       "generated": "2026-11-02T03:31:56.244Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13trim": "2026-11-02 (BAL13, RAR-1 copy caps): tide-spirit -3 -> obsidian-scorpion x3; magma-salamander -1 -> ash-moth x1 (tide-spirit left the deck whole: no room under 6/4) (the list's nearest under the 6/4 rule, the map's list first); not re-searched"
     }
    ],
    "replaced": [

@@ -1431,3 +1431,30 @@ tick; `draw`'s `openingExtra`; `AI_PLAN_*`, `aiSavePlan`, `aiLosingBadly`, `aiFr
   crystals over the Health are its +Armor (flat, they don't break).
 - **Bloom's tooltip** (owner 22:26): the 🌸 chip and the skill line say what fills it, from the card's own conditions
   (`eng19BloomFillText`: "Blooms when all of these hold: Wet: rain, the tide coming in, or a beach, river or sea map; Killed an enemy ...").
+
+## 2026-11-02 additions (package ENG18): Adjacent and Surrounding, the CPU ally re-plans
+- **Adjacent** (owner 19:56: "Adjacent in front, behind, left, right. Surrounding includes corners."): the 4 places directly left, right, in
+  front of and behind a unit (`adjacentOf`). In front / behind count only where every row fights: raids and group dungeons (both built with
+  `reserveActs`); a one-row fight's adjacent is left / right. **Surrounding**: those plus the 4 diagonals (`surroundingOwnOf`, `sk2Near`).
+  Both are Codex terms (`ui.eng18-term-adjacent`, `ui.term-surrounding`). Every skill that reads neighbours, what it does and whether its
+  text matches: `docs/eng18-adjacency-2026-11-02.md`. Not adjacent by design or pending a call: Shore Up and Pack (left / right), the splash
+  shapes (Fireball, Meteor, Rocket, Cleave: columns), tokens "beside it" (the nearest free slot, BF6), calls ENG18-1..5.
+- **CPU ally re-plans** (COOP3-1): a CPU ally in a group dungeon picks its play when its timer fires (`CoopM.cpuChoice`), from the board as
+  it is then, so a play you make first is always taken into account (a cell you took: it picks another one of its own network).
+
+## 2026-11-02 additions (package ENG20): Remember's candlestick, water and Burn, Stop Drop and Roll, Glean, Lumber Feast, heavy and cross winds
+- **Remember** fires once a card (`rememberSpent` on the unit and its zone entry); the board strikes its line, drops its pip, and a candlestick rises (`en20CandleVfx`).
+- **Water counters** (`c.water`, 💧N pip) and **Burn** (`c.burn`, 🔥N pip): `en20Elements` in `applyDamage`, the tide's `en20TideWater`, Burn's `en20BurnTicks` (event `burnTick`).
+- **Stop, Drop and Roll** (`dropRoll`): the unit spins once (GSAP rotation) with "🤸 Stop, drop and roll!".
+- **Glean** (`glean`): "🫐−N" off each unit it takes from, "🫐→💠N" on itself, then the Shield's own look. **Lumber Feast** (`lumberFeast`): "🪵−N +N/+N".
+- **Winds**: the field's wind streaks as before; floats "🌬️ Heavy Headwind: −2⚔", "🪁 Heavy Tailwind!", "🌬️ +0/N" (Crosswind). Pill: ⇈ / ⇊ heavy, ↔ / ⇔ across, still-air lines when calm.
+
+| Effect | Look | What plays | Events |
+|---|---|---|---|
+| 🕯️ Remember | `en20CandleVfx` (drawn candlestick, flame flicker, warm wash) | "🕯️ +N/+N" | `remember` |
+| 💧 Soak / dry | floating number | "💧+N" / "💧−N", the 💧 pip | `statusFx en20Soak`, `en20Dry` |
+| 🔥 Burn | floating text, the 🔥 pip | "🔥 Burning", each tick "🔥1" | `statusFx en20Ignite`, `burnTick`, `statusFx en20Douse` |
+| 🤸 Stop, Drop and Roll | a full spin of the card | "🤸 Stop, drop and roll!" | `statusFx en20Roll` |
+| 🫐 Glean | floats on the givers and the gleaner | "🫐→💠N" | `statusFx en20Glean`, `statusFx unitShield` |
+| 🪵 Lumber Feast | floating text | "🪵−N +N/+N" | `statusFx en20LumberFeast` |
+| 🌬️ Heavy / cross wind | the wind pill | the floats above | `wind {kind}`, `statusFx headwind {heavy}`, `tailwind {heavy}`, `crosswind` |

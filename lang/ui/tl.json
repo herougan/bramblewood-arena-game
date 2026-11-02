@@ -655,7 +655,6 @@
  "Earned from their elites on the road.": "Nakukuha mula sa mga elite nila sa daan.",
  "Ecclesia · Grace": "Ecclesia · Biyaya",
  "Echoing Wood": "Umaalingawngaw na Gubat",
- "Edit your character ({v1})": "I-edit ang karakter mo ({v1})",
  "Egg: cracks open into a random {v1} card when Ready": "Itlog: napipisa sa isang random na {v1} card kapag Handa",
  "Eight scales, one dragon": "Walong kaliskis, isang dragon",
  "Eight scales. Lay them side by side and look: one hide, one dragon.": "Walong kaliskis. Ilatag nang magkakatabi at tingnan: isang balat, isang dragon.",
@@ -1271,7 +1270,6 @@
  "Molten gold": "Tunaw na ginto",
  "Moonpull: when it arrives, the Tide comes in": "Hila ng Buwan: pagdating nito, tumataog ang Alon",
  "more cards!": "pang card!",
- "More characters and titles unlock as you win. Outfits are on the way.": "Mas marami pang karakter at titulo ang mabubuksan habang nananalo ka. Paparating na ang mga kasuotan.",
  "More diggers. Deeper setts.": "Mas maraming manghuhukay. Mas malalim na lungga.",
  "More folk to befriend": "Iba pang puwedeng kaibiganin",
  "More for {v1}": "Higit pa para kay {v1}",
@@ -1368,7 +1366,6 @@
  "No skirmishes with a deck on this map.": "Walang sagupaang may deck sa mapang ito.",
  "No special abilities — a plain stat card.": "Walang espesyal na kakayahan — isang simpleng stat card.",
  "No special effect": "Walang espesyal na epekto",
- "No strong wind this round.": "Walang malakas na hangin sa round na ito.",
  "No tickets. It starts at a battle rating of {v1} and every floor is {v2} higher; its cards go past Level 10, up to {v3}.": "Walang tiket. Nagsisimula sa battle rating na {v1} at {v2} na mas mataas ang bawat palapag; lumalampas sa Level 10 ang mga card nito, hanggang {v3}.",
  "No wins this time": "Walang panalo ngayon",
  "Nobody had anything left to play and the board stopped changing.": "Wala nang may maipaglalaro at tumigil na sa pagbabago ang board.",
@@ -2263,7 +2260,6 @@
  "Win {v1} PvP match{s}": "Manalo sa {v1} PvP na laro",
  "Wind at your back": "Hanging nasa likuran mo",
  "Wind in your face": "Hanging sumasalubong",
- "Wind: calm": "Hangin: kalmado",
  "Wins": "Panalo",
  "Wins this run": "Mga panalo sa takbong ito",
  "wins · {v1} losses · {v2} fights": "panalo · {v1} talo · {v2} laban",
@@ -2516,7 +2512,6 @@
  "Half wave, half seahorse: patient, and impossible to properly hit.": "Kalahating alon, kalahating kabayong-dagat: matiyaga, at imposibleng matamaan nang maayos.",
  "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "Isang pagong na gawa sa guho ng kastilyo at sa isang bagay na baka tunay na mahika. Walang tumatagos.",
  "Four black jaws fold out of a pink body, and the tide flats suddenly feel very wide.": "Apat na itim na panga ang lumalabas sa kulay-rosas na katawan, at biglang napakalawak ng baybayin.",
- "A glowing bacterium, blown up to the size of a barrel. Come dark, the bay lights up and there are two.": "Isang kumikinang na bakterya, pinalaki hanggang sa laki ng bariles. Paglubog ng araw, nagliliwanag ang look at dalawa na ito.",
  "It lies buried in the sand with one feeler out. The snap is over before the sand settles.": "Nakabaon ito sa buhangin, may isang galamay na nakalabas. Tapos na ang kagat bago pa tumigil ang buhangin.",
  "Not one animal but many, sailing on one blue bubble. Its streamers outrun the ship that sees it.": "Hindi isang hayop kundi marami, naglalayag sa iisang asul na bula. Nahihigitan ng mga galamay nito ang barkong nakakakita rito.",
  "Its shell was a straight spear long before shells learned to curl. The oldest hunter in the Current.": "Tuwid na sibat ang kabibe nito bago pa natutong pumulupot ang mga kabibe. Ang pinakamatandang mangangaso sa Agos.",
@@ -2525,5 +2520,6 @@
  "It asks one question. Answering is not the dangerous part.": "Isang tanong lang ang ibinibigay nito. Hindi ang pagsagot ang mapanganib.",
  "Half eagle, half lion, and it never once chose between the two.": "Kalahating agila, kalahating leon, at hindi ito kailanman pumili sa dalawa.",
  "You hear the whirlwind before you see the swift. Mostly you just hear it.": "Maririnig mo ang ipu-ipo bago mo makita ang layang-layang. Madalas, naririnig mo lang.",
- "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.": "Nagsimula ito bilang snowball. Walang magkasundo kung kaninong kasalanan iyon, lalo na ang oso."
+ "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.": "Nagsimula ito bilang snowball. Walang magkasundo kung kaninong kasalanan iyon, lalo na ang oso.",
+ "Each wave breaks in blue sparks. Come dark, the bay lights up and there are two.": "Bawat alon ay nagiging asul na kislap. Paglubog ng araw, nagliliwanag ang look at dalawa na ito."
 }

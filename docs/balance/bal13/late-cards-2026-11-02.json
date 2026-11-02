@@ -1,0 +1,278 @@
+{
+ "_about": "BAL13 item 1 (2026-11-02, owner 19:56 on BAL11-3 b): the late-priced cards swapped out of the earlier fights' decks; tools/bal13/decks_2026_11_02.js",
+ "late": {
+  "beetle-battering-ram": 23,
+  "siege-rhino": 23,
+  "hercules-beetle": 18
+ },
+ "rows": [
+  {
+   "where": "node mz:7-A-4",
+   "map": 7,
+   "loc": "mz",
+   "key": "7-A-4",
+   "kind": "elite",
+   "before": {
+    "beetle-battering-ram": 1,
+    "garden-snail": 1,
+    "fungal-colossus": 4,
+    "sleepless-shrew": 5,
+    "planarian-splitter": 3
+   },
+   "after": {
+    "garden-snail": 1,
+    "fungal-colossus": 4,
+    "sleepless-shrew": 5,
+    "planarian-splitter": 3,
+    "bombardier-beetle": 1
+   },
+   "moves": [
+    {
+     "out": "beetle-battering-ram",
+     "copies": 1,
+     "to": {
+      "bombardier-beetle": 1
+     },
+     "left": 0
+    }
+   ],
+   "k14": {
+    "before": [],
+    "after": []
+   }
+  },
+  {
+   "where": "node my:14-A-1",
+   "map": 14,
+   "loc": "my",
+   "key": "14-A-1",
+   "kind": "skirmish",
+   "before": {
+    "siege-rhino": 1,
+    "hoopoe-herald": 5,
+    "leafcutter-gardener": 1,
+    "weaver-bird": 5,
+    "camouflage-frog": 1,
+    "pangolin-roller": 2,
+    "apollo-butterfly": 1
+   },
+   "after": {
+    "hoopoe-herald": 5,
+    "leafcutter-gardener": 1,
+    "weaver-bird": 5,
+    "camouflage-frog": 1,
+    "pangolin-roller": 3,
+    "apollo-butterfly": 1
+   },
+   "moves": [
+    {
+     "out": "siege-rhino",
+     "copies": 1,
+     "to": {
+      "pangolin-roller": 1
+     },
+     "left": 0
+    }
+   ],
+   "k14": {
+    "before": [],
+    "after": []
+   }
+  },
+  {
+   "where": "node my:14-A-4",
+   "map": 14,
+   "loc": "my",
+   "key": "14-A-4",
+   "kind": "elite",
+   "before": {
+    "jaguar-stalker": 3,
+    "hercules-beetle": 3,
+    "dust-hyena": 4,
+    "siege-rhino": 2,
+    "vampire-bat": 1,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1
+   },
+   "after": {
+    "jaguar-stalker": 3,
+    "hercules-beetle": 3,
+    "dust-hyena": 4,
+    "vampire-bat": 1,
+    "pangolin-roller": 4,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1
+   },
+   "moves": [
+    {
+     "out": "siege-rhino",
+     "copies": 2,
+     "to": {
+      "pangolin-roller": 1,
+      "redwood-woodpecker": 1
+     },
+     "left": 0
+    }
+   ],
+   "k14": {
+    "before": [],
+    "after": []
+   }
+  },
+  {
+   "where": "node my:14-A-5",
+   "map": 14,
+   "loc": "my",
+   "key": "14-A-5",
+   "kind": "boss",
+   "before": {
+    "siege-rhino": 3,
+    "grave-grin-hyena": 2,
+    "springbok-pronker": 2,
+    "weaver-bird": 5,
+    "hoopoe-herald": 5,
+    "camouflage-frog": 1,
+    "jaguar-stalker": 2
+   },
+   "after": {
+    "grave-grin-hyena": 2,
+    "springbok-pronker": 2,
+    "weaver-bird": 5,
+    "hoopoe-herald": 5,
+    "camouflage-frog": 1,
+    "jaguar-stalker": 3,
+    "pangolin-roller": 2
+   },
+   "moves": [
+    {
+     "out": "siege-rhino",
+     "copies": 3,
+     "to": {
+      "jaguar-stalker": 1,
+      "pangolin-roller": 2
+     },
+     "left": 0
+    }
+   ],
+   "k14": {
+    "before": [],
+    "after": []
+   }
+  },
+  {
+   "where": "pro 14-A-PRO-2",
+   "map": 14,
+   "loc": "my",
+   "pro": {
+    "kind": "pro",
+    "id": "14-A-PRO-2"
+   },
+   "before": {
+    "grave-grin-hyena": 4,
+    "hercules-beetle": 2,
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 4,
+    "pangolin-roller": 4,
+    "wolf-spider-mother": 3
+   },
+   "after": {
+    "grave-grin-hyena": 4,
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 4,
+    "pangolin-roller": 4,
+    "wolf-spider-mother": 3,
+    "proboscis-monkey": 2
+   },
+   "moves": [
+    {
+     "out": "hercules-beetle",
+     "copies": 2,
+     "to": {
+      "proboscis-monkey": 2
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "bpro 14-A-BPRO-1",
+   "map": 14,
+   "loc": "my",
+   "pro": {
+    "kind": "bpro",
+    "id": "14-A-BPRO-1"
+   },
+   "before": {
+    "hercules-beetle": 2,
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 4,
+    "lyrebird-mimic": 4,
+    "pangolin-roller": 4,
+    "redwood-woodpecker": 3
+   },
+   "after": {
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 4,
+    "lyrebird-mimic": 4,
+    "pangolin-roller": 4,
+    "redwood-woodpecker": 4,
+    "proboscis-monkey": 1
+   },
+   "moves": [
+    {
+     "out": "hercules-beetle",
+     "copies": 2,
+     "to": {
+      "redwood-woodpecker": 1,
+      "proboscis-monkey": 1
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "bpro 14-A-BPRO-3",
+   "map": 14,
+   "loc": "my",
+   "pro": {
+    "kind": "bpro",
+    "id": "14-A-BPRO-3"
+   },
+   "before": {
+    "apollo-butterfly": 2,
+    "hercules-beetle": 3,
+    "hoopoe-herald": 4,
+    "jaguar-stalker": 3,
+    "kinkajou-lurker": 4,
+    "leafcutter-gardener": 4
+   },
+   "after": {
+    "apollo-butterfly": 2,
+    "hoopoe-herald": 4,
+    "jaguar-stalker": 3,
+    "kinkajou-lurker": 4,
+    "leafcutter-gardener": 4,
+    "pangolin-roller": 3
+   },
+   "moves": [
+    {
+     "out": "hercules-beetle",
+     "copies": 3,
+     "to": {
+      "pangolin-roller": 3
+     },
+     "left": 0
+    }
+   ]
+  }
+ ],
+ "kept": [
+  {
+   "where": "node my:14-A-4",
+   "map": 14,
+   "card": "hercules-beetle",
+   "copies": 3,
+   "why": "the fight's own first-clear card"
+  }
+ ]
+}

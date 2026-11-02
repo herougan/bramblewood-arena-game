@@ -1,0 +1,51 @@
+{
+ "tool": "tools/bal12/tempo_cap2_2026_11_02.js pool",
+ "generated": "2026-11-02T15:16:01.845Z",
+ "files": [
+  {
+   "file": "docs/balance/bench-contrib-global-2026-10-30-inplay.json",
+   "context": "global",
+   "fights": 200,
+   "slope": -0.0007,
+   "T": {
+    "n": 12,
+    "vsFair": 0.0191,
+    "se": 0.0064,
+    "N": 17.76,
+    "cards": [
+     "fawn-scout",
+     "raven-scout",
+     "otter-scout",
+     "pike-lancer",
+     "tide-spirit",
+     "colony",
+     "otter-centurion",
+     "riverstone-slinger",
+     "vampire-bat",
+     "raccoon-bandit",
+     "swordbill-challenger",
+     "ruby-throat-duelist"
+    ]
+   },
+   "R": {
+    "n": 100,
+    "vsFair": 0.0122,
+    "se": 0.0024
+   },
+   "statPoints": 13.92,
+   "excessPoints": 1.14,
+   "share": 0.0822,
+   "shareSE": 0.0817
+  }
+ ],
+ "pooled": {
+  "share": 0.0822,
+  "se": 0.0817,
+  "lo": -0.0779,
+  "hi": 0.2423,
+  "cap2Tighter": 0.1576,
+  "cap2TighterLo": 0,
+  "cap2TighterHi": 0.4259
+ },
+ "why": "T = Rare+, Lumber 0, Wait <= 1 (current cards.json rarities); R = Rare+ that pay Lumber or wait 2+; share = (T - R distance from the fair line, a copy) / the stat yardstick a copy / T's mean 3A + H; cap 2 tighter by 1 - (1 - share)^2"
+}

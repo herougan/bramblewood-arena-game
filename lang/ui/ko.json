@@ -655,7 +655,6 @@
  "Earned from their elites on the road.": "길 위의 그들 엘리트에게서 얻어요.",
  "Ecclesia · Grace": "에클레시아 · 은총",
  "Echoing Wood": "메아리 숲",
- "Edit your character ({v1})": "내 캐릭터 편집({v1})",
  "Egg: cracks open into a random {v1} card when Ready": "알: 행동 가능해지면 무작위 {v1} 카드로 깨어나요",
  "Eight scales, one dragon": "비늘 여덟, 용 하나",
  "Eight scales. Lay them side by side and look: one hide, one dragon.": "비늘 여덟 장. 나란히 놓고 봐요. 가죽 하나, 용 한 마리.",
@@ -1271,7 +1270,6 @@
  "Molten gold": "녹은 금",
  "Moonpull: when it arrives, the Tide comes in": "달의 인력: 도착하면 물결이 밀려와요",
  "more cards!": "장 더!",
- "More characters and titles unlock as you win. Outfits are on the way.": "이길수록 캐릭터와 칭호가 더 열려요. 의상도 준비 중이에요.",
  "More diggers. Deeper setts.": "더 많은 굴착꾼. 더 깊은 굴.",
  "More folk to befriend": "친구 맺을 이들 더 보기",
  "More for {v1}": "{v1} 더 보기",
@@ -1368,7 +1366,6 @@
  "No skirmishes with a deck on this map.": "이 맵에는 덱이 있는 소규모 전투가 없어요.",
  "No special abilities — a plain stat card.": "특수 능력 없음 — 단순한 능력치 카드.",
  "No special effect": "특수 효과 없음",
- "No strong wind this round.": "이번 라운드엔 강한 바람이 없어요.",
  "No tickets. It starts at a battle rating of {v1} and every floor is {v2} higher; its cards go past Level 10, up to {v3}.": "티켓 없음. 전투 등급 {v1}에서 시작해 층마다 {v2}씩 높아지고, 카드는 레벨 10을 넘어 {v3}까지 올라가요.",
  "No wins this time": "이번엔 승리 없음",
  "Nobody had anything left to play and the board stopped changing.": "아무도 낼 게 없었고 판이 더는 바뀌지 않았어요.",
@@ -2263,7 +2260,6 @@
  "Win {v1} PvP match{s}": "PvP 경기 {v1}회 승리",
  "Wind at your back": "등 뒤에서 부는 바람",
  "Wind in your face": "맞바람",
- "Wind: calm": "바람: 잔잔함",
  "Wins": "승리",
  "Wins this run": "이번 도전 승리",
  "wins · {v1} losses · {v2} fights": "승 · {v1}패 · 전투 {v2}회",
@@ -2516,7 +2512,6 @@
  "Half wave, half seahorse: patient, and impossible to properly hit.": "반은 파도, 반은 해마. 끈기 있고, 제대로 맞히기란 불가능하다.",
  "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "성의 잔해와 진짜 마법일지도 모르는 무언가로 빚은 거북. 아무것도 스며들지 않는다.",
  "Four black jaws fold out of a pink body, and the tide flats suddenly feel very wide.": "분홍빛 몸에서 검은 턱 네 개가 펼쳐지면, 갯벌이 갑자기 아주 넓게 느껴진다.",
- "A glowing bacterium, blown up to the size of a barrel. Come dark, the bay lights up and there are two.": "통만 하게 부풀어 오른 빛나는 세균. 어두워지면 만이 환해지고, 둘이 된다.",
  "It lies buried in the sand with one feeler out. The snap is over before the sand settles.": "모래에 묻혀 더듬이 하나만 내놓고 있다. 모래가 가라앉기도 전에 낚아채기는 끝나 있다.",
  "Not one animal but many, sailing on one blue bubble. Its streamers outrun the ship that sees it.": "한 마리가 아니라 여러 마리가 파란 부레 하나로 항해한다. 그 촉수는 자신을 본 배보다 빠르다.",
  "Its shell was a straight spear long before shells learned to curl. The oldest hunter in the Current.": "껍데기가 말리는 법을 배우기 훨씬 전부터 그 껍데기는 곧은 창이었다. 해류에서 가장 오래된 사냥꾼.",
@@ -2525,5 +2520,6 @@
  "It asks one question. Answering is not the dangerous part.": "질문은 단 하나. 대답하는 것은 위험한 부분이 아니다.",
  "Half eagle, half lion, and it never once chose between the two.": "반은 독수리, 반은 사자. 둘 중 하나를 고른 적은 한 번도 없다.",
  "You hear the whirlwind before you see the swift. Mostly you just hear it.": "칼새를 보기 전에 회오리 소리부터 들린다. 대개는 소리만 들린다.",
- "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.": "시작은 눈덩이 하나였다. 누구 탓인지 아무도 모르고, 곰 자신은 더더욱 모른다."
+ "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.": "시작은 눈덩이 하나였다. 누구 탓인지 아무도 모르고, 곰 자신은 더더욱 모른다.",
+ "Each wave breaks in blue sparks. Come dark, the bay lights up and there are two.": "파도가 부서질 때마다 푸른 불꽃이 튄다. 어두워지면 만이 환해지고, 둘이 된다."
 }

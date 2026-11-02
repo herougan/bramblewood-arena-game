@@ -1,0 +1,15 @@
+{"_about": "BAL12 (2026-11-02): RAR-1 (owner 20:19 \"apply RAR-1\"): 13 cards one rarity step up, stats unchanged here (the BAL12 re-fit then reads them at their new rarity); docs/balance/rarity-2026-11-02.md. Applied with python3 tools/bal12/apply_cards_2026_11_02.py.", "edits": [
+{"id": "beetle-battering-ram", "set": {"rarity": "veryrare"}, "note": "RAR-1 (owner 20:19): Rare -> Very Rare"},
+{"id": "siege-rhino", "set": {"rarity": "veryrare"}, "note": "RAR-1 (owner 20:19): Rare -> Very Rare"},
+{"id": "pangolin-roller", "set": {"rarity": "rare"}, "note": "RAR-1 (owner 20:19): Uncommon -> Rare"},
+{"id": "echidna-quillshot", "set": {"rarity": "superrare"}, "note": "RAR-1 (owner 20:19): Very Rare -> Super Rare"},
+{"id": "nautilus-drifter", "set": {"rarity": "veryrare"}, "note": "RAR-1 (owner 20:19): Rare -> Very Rare"},
+{"id": "tide-spirit", "set": {"rarity": "veryrare"}, "note": "RAR-1 (owner 20:19): Rare -> Very Rare (Tide Seahorse)"},
+{"id": "trapdoor-spider", "set": {"rarity": "veryrare"}, "note": "RAR-1 (owner 20:19): Rare -> Very Rare"},
+{"id": "magma-salamander", "set": {"rarity": "veryrare"}, "note": "RAR-1 (owner 20:19): Rare -> Very Rare"},
+{"id": "coral-polyp-colony", "set": {"rarity": "uncommon"}, "note": "RAR-1 (owner 20:19): Common -> Uncommon"},
+{"id": "thorny-devil", "set": {"rarity": "uncommon"}, "note": "RAR-1 (owner 20:19): Common -> Uncommon"},
+{"id": "dung-beetle", "set": {"rarity": "uncommon"}, "note": "RAR-1 (owner 20:19): Common -> Uncommon"},
+{"id": "vampire-bat", "set": {"rarity": "rare"}, "note": "RAR-1 (owner 20:19): Uncommon -> Rare"},
+{"id": "dune-packrat", "set": {"rarity": "rare"}, "note": "RAR-1 (owner 20:19): Uncommon -> Rare"}
+]}

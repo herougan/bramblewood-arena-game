@@ -167,13 +167,13 @@ async def run(b, url, w):
     ok(r['sting'], 'V5. SoundKit.bossSting exists')
     await shot(pg, 'map5-boss-elite', w, '.conquest-map-canvas', 0)
     r = await pg.evaluate("""(()=>{ const f = findConquestNode('mw', '5-7'); showVersusOpener(f.map, f.node, CHARACTER_DEFS.castle, null); const el = document.querySelector('.vs-opener');
-      return {boss: !!(el && el.classList.contains('is-boss')), frame: !!(el && el.querySelector('.vs-rival-ico .vis3-skull-frame')), kind: el ? el.querySelector('.vs-kind').className : ''}; })()""")
+      return {boss: !!(el && el.classList.contains('is-boss')), frame: !!(el && el.querySelector('.vs-rival-ico .vis3-skull-frame, .ui16-vs-art')) /* 2026-11-02 (UI16, note 9): a boss with a leader shows its art, not the framed portrait */, kind: el ? el.querySelector('.vs-kind').className : ''}; })()""")
     await pg.wait_for_timeout(900)
     ok(r['boss'] and r['frame'] and 'vis3-kind-boss' in r['kind'], f"V5. the boss opener has the skull frame and a red BOSS {r}")
     await shot(pg, 'vs-boss-5-7', w)
     await pg.wait_for_timeout(2600)
     r = await pg.evaluate("""(()=>{ const f = findConquestNode('mw', '5-5'); showVersusOpener(f.map, f.node, CHARACTER_DEFS.castle, null); const el = document.querySelector('.vs-opener');
-      return {elite: !!(el && el.querySelector('.vs-rival-ico .vis3-elite-frame'))}; })()""")
+      return {elite: !!(el && el.querySelector('.vs-rival-ico .vis3-elite-frame, .ui16-vs-art')) /* 2026-11-02 (UI16, note 9) */}; })()""")
     await pg.wait_for_timeout(900)
     ok(r['elite'], f"V5. an elite opener has its smaller mark {r}")
     await shot(pg, 'vs-elite-5-5', w)

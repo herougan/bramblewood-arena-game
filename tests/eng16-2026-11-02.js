@@ -48,7 +48,7 @@ function windRound(id, want, wallId){ for(let s = 1; s <= 120; s++){ const {e, P
   const t = {tail:0, head:0, calm:0}; const {e, P} = mk(77, {wind:'windy'}); spawn(e, P, 1, 'x-wall'); spawn(e, P, 2, 'x-wall');
   for(let r = 1; r <= 1500; r++){ e.roundStart(P, r, so, {}, []); const w = e.windSideOf(1); t[w || 'calm']++; }
   ok(Object.values(t).every(v=> Math.abs(v / 1500 - 1/3) < 0.05), `WIND-2: Windy rolls 1/3 each way or calm (${JSON.stringify(t)})`); }
-ok(/function headwindTwice\(card, pid, side, events\)\{ return false; \}/.test(eng) && /- headwindAtkCut\(card\)\)/.test(eng), 'WIND-2: the engine: headwindTwice is off, effAtk takes the Headwind cut');
+ok(/function headwindTwice\(card, pid, side, events\)\{ if\(!\(isHeavyWind\(\) && headwindDouble\(card, pid\)\)\) return false;/.test(eng) /* 2026-11-02 (ENG20-4): off but for a Heavy Headwind */ && /- headwindAtkCut\(card\)\)/.test(eng), 'WIND-2: the engine: headwindTwice is off, effAtk takes the Headwind cut');
 ['ui.fx-windy', 'ui.fxx-windy', 'ui.fx-gale', 'ui.wind-head-wing', 'ui.wind-pill-back', 'ui.wind-pill-face'].forEach(k=>
   ok(TXT[k] && /-1 Attack/.test(TXT[k]) && !/twice/.test(TXT[k]), `WIND-2: ${k} says -1 Attack, not twice`));
 ok(!/Headwind/.test(TXT['ui.fxx-quiet-contemplation']), 'WIND-2: Quiet Contemplation no longer lists the Headwind (nothing to stop)');
@@ -138,7 +138,7 @@ ok(['ui.egg-choice-title', 'ui.egg-choice-body', 'ui.egg-choice-hatch', 'ui.egg-
 }
 { const dj = J('docs/decisions.json'), by = Object.fromEntries(dj.items.map(x=> [x.id, x]));
   ok(['ENG16-1', 'ENG16-2', 'ENG16-3', 'ENG16-4'].every(id=> by[id] && by[id].status === 'DONE'), 'decisions: ENG16-1 .. 4 recorded');
-  ok(/ENG16/.test(R('docs/CHANGELOG.md').slice(0, 4000)), 'the CHANGELOG entry'); }
+  ok(/ENG16/.test(R('docs/CHANGELOG.md').slice(0, 30000)), 'the CHANGELOG entry'); } // 2026-11-02 (ENG20): later entries sit above it
 
 console.log(`eng16-2026-11-02: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

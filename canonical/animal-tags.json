@@ -68,8 +68,8 @@
   "cards": 906,
   "creatures": 807,
   "tagged": 809,
-  "animals": 367,
-  "groups": 146,
+  "animals": 366,
+  "groups": 145,
   "withSubtype": 110,
   "proposed": 22,
   "subtype": {
@@ -9501,14 +9501,14 @@
   },
   {
    "id": "night-algae",
-   "name": "Bright Night Algae",
+   "name": "Dinoflagellates",
    "icon": "✨",
    "creature": true,
-   "animal": "glowing bacterium",
-   "group": "bacterium",
+   "animal": "algae",
+   "group": "algae",
    "subtype": "plant",
    "how": "name",
-   "note": "2026-11-02 CONTENT7 (owner IDEA-11-02): blown-up glowing bacteria; Bloom at night; plant subtype as Pond Algae"
+   "note": "2026-11-02 CONTENT8 (owner CONTENT7-3): Dinoflagellates, type algae, phylum flora, as Pond Algae (was a glowing bacterium, CONTENT7)"
   },
   {
    "id": "bobbit-worm",

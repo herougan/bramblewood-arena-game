@@ -198,7 +198,7 @@ MANUAL = {
   'ember-tetra': ('tetra', None, 'name', 'a small fish (species Fish)'),
   'coffer-mimic': ('hermit crab', 'structure', 'proposed', 'a cave chest that grabs back; proposed: a hermit crab (a borrowed shell, the pincers of its Thorns)'),
   'pond-algae': ('algae', 'plant', 'name', ''),
-  'night-algae': ('glowing bacterium', 'plant', 'name', '2026-11-02 CONTENT7 (owner IDEA-11-02): blown-up glowing bacteria; Bloom at night; plant subtype as Pond Algae'),
+  'night-algae': ('algae', 'plant', 'name', '2026-11-02 CONTENT8 (owner CONTENT7-3): Dinoflagellates, type algae, phylum flora, as Pond Algae (was a glowing bacterium, CONTENT7)'),
   'unicorn': ('horse', 'mythic', 'name', '2026-11-02 CONTENT7: a horse with one horn (Mythic, Map 56+)'),
   'hazel-coppice': ('dormouse', 'plant', 'proposed', 'a coppiced hazel; proposed: the hazel dormouse that lives in it, like the Ent\'s owl (was subtype structure: a tree, as the Elder Willow)'),
   'phoenix-mushrooms': ('mushroom', 'fungus', 'name', ''),

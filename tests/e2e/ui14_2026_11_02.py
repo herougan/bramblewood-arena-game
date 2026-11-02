@@ -42,8 +42,10 @@ async def jj8(b, url, w):
     await pg.evaluate("""(()=>{ window.__vsLife = {}; new MutationObserver(()=>{ const on = !!document.querySelector('.vs-opener'), t = performance.now(); if(on && !__vsLife.a) __vsLife.a = t; if(!on && __vsLife.a && !__vsLife.b) __vsLife.b = t; }).observe(document.body, {childList: true, subtree: true});
       switchTab('play'); showVersusOpener.last = null; startConquestMatch('mw', '5-5', {skipEnergyCost:true}); })()"""); await pg.wait_for_timeout(900)
     r = await pg.evaluate("""(()=>{ const el = document.querySelector('.vs-opener'); if(!el) return null; const them = el.querySelector('.vs-them'), me = el.querySelector('.vs-me');
-      const pic = them.querySelector('.vs-rival-ico'), pr = pic.getBoundingClientRect(), cs = getComputedStyle(pic), f = findConquestNode('mw', '5-5');
-      return {card: them.classList.contains('ui14-vs-card') && me.classList.contains('ui14-vs-card'), bg: getComputedStyle(them).backgroundImage, round: Math.abs(pr.width - pr.height) < 1.5 && cs.borderRadius.startsWith('50%') || cs.borderRadius === '50%',
+      // 2026-11-02 (package UI16, note 9): a rival with a leader shows the leader's and the bramble's art (.ui16-vs-art) in place of the round
+      // portrait, and no facts line; the round-portrait check runs on the player's own portrait, which keeps it
+      const art = !!them.querySelector('.ui16-vs-art .ui16-vs-fig.is-leader'), pic = them.querySelector('.vs-rival-ico') || me.querySelector('.vs-portrait .bw-avatar'), pr = pic.getBoundingClientRect(), cs = getComputedStyle(pic), f = findConquestNode('mw', '5-5');
+      return {art, card: them.classList.contains('ui14-vs-card') && me.classList.contains('ui14-vs-card'), bg: getComputedStyle(them).backgroundImage, round: Math.abs(pr.width - pr.height) < 1.5 && cs.borderRadius.startsWith('50%') || cs.borderRadius === '50%',
         name: them.querySelector('.vs-name').textContent.trim(), want: f.node.name, map: (them.querySelector('.ui14-vs-map') || {}).textContent || '', mapName: f.map.name,
         kick: (them.querySelector('.ui14-vs-kicker') || {}).textContent || '', br: !!them.querySelector('.vs-lvl b'), myBr: !!me.querySelector('.vs-lvl b'), pills: el.querySelectorAll('.vs-pill').length,
         facts: [...them.querySelectorAll('.ui14-vs-facts .vs-fact')].length, quote: !!them.querySelector('.vs-taunt'), timer: !!them.querySelector('.ui14-vs-timer > i'), skull: !!them.querySelector('.vis3-elite-frame'),
@@ -52,7 +54,7 @@ async def jj8(b, url, w):
     ok(r is not None and 'url(' in r['bg'], f'the rival card has the battlefield art behind it ({(r or {}).get("bg", "")[:80]})')
     ok(r is not None and r['round'], 'the portrait is round (width = height, radius 50%)')
     ok(r is not None and r['name'] == r['want'] and r['mapName'] in r['map'] and '5-5' in r['kick'], f'title, map name and code: {r and (r["name"], r["map"], r["kick"])}')
-    ok(r is not None and r['br'] and r['myBr'] and r['pills'] == 0 and r['facts'] >= 2 and r['quote'] and r['timer'] and r['skull'], f'BR boxes, no pills, a facts line, the quote, the timer, the elite frame {r}')
+    ok(r is not None and r['br'] and r['myBr'] and r['pills'] == 0 and r['facts'] == 0 and r['quote'] and r['timer'] and (r['skull'] or r['art']), f'BR boxes, no pills, no facts line (UI16), the quote, the timer, the elite frame or the leader art {r}')
     ok(r is not None and r['sw'] <= r['vw'], 'no sideways scroll')
     await pg.add_style_tag(content='.vs-opener{animation:none !important; opacity:1 !important;} .vs-opener *{animation-play-state:paused !important;} .vs-opener .vs-side, .vs-opener .vs-mark, .vs-opener .vs-taunt{animation:none !important; opacity:1 !important; transform:none !important;}')
     await pg.screenshot(path=shot('jj8-vs-card', w))
