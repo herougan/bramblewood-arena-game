@@ -58,7 +58,7 @@ async def run(b, url, w):
     await shot(pg, 'vs-elite-14-7', w)
     await pg.wait_for_timeout(2600)
     r = await vs(pg, 'm24', '24-8'); await pg.wait_for_timeout(1000)
-    ok(r['shown'] and r['leaders'] and 'Magnate Duck' in r['leaders'] and 'Iron Warden' in r['leaders'] and r['faces'] == 2, f"24-8 (paired boss): the VS opener names both leaders {r}")
+    ok(r['shown'] and r['leaders'] and 'Magnate Duck' in r['leaders'] and 'Iron Badger' in r['leaders'] and r['faces'] == 2, f"24-8 (paired boss): the VS opener names both leaders {r}")  # 2026-11-02 (CONTENT6): Iron Warden renamed Iron Badger
     await shot(pg, 'vs-pair-24-8', w)
     await pg.wait_for_timeout(3200)
     await pg.evaluate(OPEN, ['m24', '24-8']); await pg.wait_for_timeout(500)

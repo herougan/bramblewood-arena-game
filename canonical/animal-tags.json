@@ -71,7 +71,7 @@
   "animals": 365,
   "groups": 145,
   "withSubtype": 108,
-  "proposed": 33,
+  "proposed": 22,
   "subtype": {
    "changeling": 3,
    "conjured": 3,
@@ -90,12 +90,12 @@
    "were": 2
   },
   "how": {
-   "art": 60,
+   "art": 59,
    "ee": 8,
    "flavor": 15,
    "icon": 32,
-   "name": 589,
-   "proposed": 33,
+   "name": 601,
+   "proposed": 22,
    "type": 61
   },
   "topGroups": {
@@ -104,8 +104,8 @@
    "fish": 26,
    "beetle": 21,
    "fox": 18,
+   "turtle": 17,
    "cat": 16,
-   "turtle": 16,
    "bat": 16,
    "rabbit": 16,
    "salamander": 16,
@@ -125,10 +125,10 @@
    "badger": 11,
    "squirrel": 11,
    "crab": 11,
-   "ape": 10,
    "deer": 10,
    "bee": 9,
-   "dog": 9
+   "dog": 9,
+   "boar": 9
   }
  },
  "ownerCalls": [
@@ -154,27 +154,6 @@
    "why": "art is a willow with a face; proposed: a heron (the willow by the water)"
   },
   {
-   "id": "ember-wisp",
-   "name": "Ember Wisp",
-   "animal": "firefly",
-   "subtype": "elemental",
-   "why": "art is a floating spark with a face; proposed: a firefly"
-  },
-  {
-   "id": "stoneheart-golem",
-   "name": "Stoneheart Golem",
-   "animal": "gorilla",
-   "subtype": "construct",
-   "why": "art is a stone golem; proposed: a gorilla (its build)"
-  },
-  {
-   "id": "stormcaller",
-   "name": "Stormcaller",
-   "animal": "owl",
-   "subtype": "elemental",
-   "why": "art is a storm cloud with eyes; proposed: an owl (round, glaring, flies at night)"
-  },
-  {
    "id": "venomlord-serpent",
    "name": "Venomlord Serpent",
    "animal": "viper",
@@ -196,53 +175,11 @@
    "why": "art is a root face in the water; proposed: an alligator (lurks in the swamp)"
   },
   {
-   "id": "stalactite-golem",
-   "name": "Stalactite Golem",
-   "animal": "gorilla",
-   "subtype": "construct",
-   "why": "art is a crystal cave golem; proposed: a gorilla"
-  },
-  {
    "id": "pinecone-sapper",
    "name": "Pinecone Sapper",
    "animal": "pangolin",
    "subtype": "plant",
    "why": "art is a pinecone with eyes; proposed: a pangolin (scales like a cone)"
-  },
-  {
-   "id": "magma-titan",
-   "name": "Magma Titan",
-   "animal": "gorilla",
-   "subtype": "elemental",
-   "why": "art is a hunched lava golem; proposed: a gorilla (its stance)"
-  },
-  {
-   "id": "marsh-wisp",
-   "name": "Marsh Wisp",
-   "animal": "newt",
-   "subtype": "ghost",
-   "why": "art is a blue wisp; proposed: a newt (the marsh it haunts)"
-  },
-  {
-   "id": "bog-revenant",
-   "name": "Bog Revenant",
-   "animal": "bog turtle",
-   "subtype": "undead",
-   "why": "art is a mossy drowned shape; proposed: a bog turtle (\"the mire keeps what it drowns\")"
-  },
-  {
-   "id": "the-unremembered",
-   "name": "The Unremembered",
-   "animal": "heron",
-   "subtype": "ghost",
-   "why": "art is a faceless water-shade; proposed: a heron (the swamp's tall silhouette)"
-  },
-  {
-   "id": "blackmass-acolyte",
-   "name": "Blackmass Acolyte",
-   "animal": "rat",
-   "subtype": "fiend",
-   "why": "art is a hooded shadow; proposed: a rat (the cult's hooded acolyte)"
   },
   {
    "id": "dread-bell",
@@ -287,13 +224,6 @@
    "why": "art is a wooden giant; proposed: a bear"
   },
   {
-   "id": "iron-warden",
-   "name": "Iron Warden",
-   "animal": "badger",
-   "subtype": "construct",
-   "why": "art is a walking suit of iron; proposed: a badger (the forge folk)"
-  },
-  {
    "id": "pall-wraith",
    "name": "Pall Wraith",
    "animal": "raven",
@@ -327,13 +257,6 @@
    "animal": "toad",
    "subtype": "fungus",
    "why": "art is a puffball with a face; proposed: a toad (toadstool)"
-  },
-  {
-   "id": "rimeheart-colossus",
-   "name": "Rimeheart Colossus",
-   "animal": "gorilla",
-   "subtype": "elemental",
-   "why": "art is a half-ice, half-lava giant; proposed: a gorilla, like the Magma Titan"
   },
   {
    "id": "great-gate",
@@ -802,36 +725,36 @@
   },
   {
    "id": "ember-wisp",
-   "name": "Ember Wisp",
+   "name": "Ember Firefly",
    "icon": "🔥",
    "creature": true,
    "animal": "firefly",
    "group": "beetle",
    "subtype": "elemental",
-   "how": "proposed",
-   "note": "art is a floating spark with a face; proposed: a firefly"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed from Ember Wisp; art (a spark with a face) queued for a firefly"
   },
   {
    "id": "tide-spirit",
-   "name": "Tide Spirit",
+   "name": "Tide Seahorse",
    "icon": "💧",
    "creature": true,
    "animal": "seahorse",
    "group": "seahorse",
    "subtype": "elemental",
-   "how": "art",
-   "note": "a wave curled into a seahorse head"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed from Tide Spirit; art (a wave with a head) queued for a seawater seahorse"
   },
   {
    "id": "stoneheart-golem",
-   "name": "Stoneheart Golem",
+   "name": "Stoneheart Tortoise",
    "icon": "🪨",
    "creature": true,
-   "animal": "gorilla",
-   "group": "ape",
+   "animal": "tortoise",
+   "group": "turtle",
    "subtype": "construct",
-   "how": "proposed",
-   "note": "art is a stone golem; proposed: a gorilla (its build)"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed Stoneheart Tortoise (was proposed: a gorilla); art (a stone golem) queued"
   },
   {
    "id": "gale-sprite",
@@ -846,14 +769,14 @@
   },
   {
    "id": "stormcaller",
-   "name": "Stormcaller",
+   "name": "Stormcaller Owl",
    "icon": "⚡",
    "creature": true,
    "animal": "owl",
    "group": "owl",
    "subtype": "elemental",
-   "how": "proposed",
-   "note": "art is a storm cloud with eyes; proposed: an owl (round, glaring, flies at night)"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed Stormcaller Owl; art (a storm cloud with eyes) queued for a storm-cloud owl"
   },
   {
    "id": "minnow-skitter",
@@ -2052,14 +1975,14 @@
   },
   {
    "id": "stalactite-golem",
-   "name": "Stalactite Golem",
+   "name": "Stalactite Pill Bug",
    "icon": "🗿",
    "creature": true,
-   "animal": "gorilla",
-   "group": "ape",
+   "animal": "pill bug",
+   "group": "woodlouse",
    "subtype": "construct",
-   "how": "proposed",
-   "note": "art is a crystal cave golem; proposed: a gorilla"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed Stalactite Pill Bug (was proposed: a gorilla); art (a crystal golem) queued"
   },
   {
    "id": "glowworm-cluster",
@@ -2687,14 +2610,14 @@
   },
   {
    "id": "magma-titan",
-   "name": "Magma Titan",
+   "name": "Magma Rhino",
    "icon": "🗿",
    "creature": true,
-   "animal": "gorilla",
-   "group": "ape",
+   "animal": "rhino",
+   "group": "rhino",
    "subtype": "elemental",
-   "how": "proposed",
-   "note": "art is a hunched lava golem; proposed: a gorilla (its stance)"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed from Magma Titan (was proposed: a gorilla); art (a lava golem) queued for a lava rhino"
   },
   {
    "id": "phoenix-fledgling",
@@ -4209,36 +4132,36 @@
   },
   {
    "id": "marsh-wisp",
-   "name": "Marsh Wisp",
+   "name": "Wisp Newt",
    "icon": "👻",
    "creature": true,
    "animal": "newt",
    "group": "salamander",
    "subtype": "ghost",
-   "how": "proposed",
-   "note": "art is a blue wisp; proposed: a newt (the marsh it haunts)"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed Wisp Newt; art (a blue wisp) queued for a ghost newt"
   },
   {
    "id": "bog-revenant",
-   "name": "Bog Revenant",
+   "name": "Revenant Bog Turtle",
    "icon": "🧟",
    "creature": true,
    "animal": "bog turtle",
    "group": "turtle",
    "subtype": "undead",
-   "how": "proposed",
-   "note": "art is a mossy drowned shape; proposed: a bog turtle (\"the mire keeps what it drowns\")"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed Revenant Bog Turtle; art (a mossy drowned shape) queued for a drowned bog turtle"
   },
   {
    "id": "the-unremembered",
-   "name": "The Unremembered",
+   "name": "Unremembered Heron",
    "icon": "🕯️",
    "creature": true,
    "animal": "heron",
    "group": "heron",
    "subtype": "ghost",
-   "how": "proposed",
-   "note": "art is a faceless water-shade; proposed: a heron (the swamp's tall silhouette)"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed Unremembered Heron; art (a faceless water-shade) queued for a ghost heron"
   },
   {
    "id": "cinder-imp",
@@ -4286,14 +4209,14 @@
   },
   {
    "id": "blackmass-acolyte",
-   "name": "Blackmass Acolyte",
+   "name": "Blackmass Rat",
    "icon": "🕯️",
    "creature": true,
    "animal": "rat",
    "group": "rat",
    "subtype": "fiend",
-   "how": "proposed",
-   "note": "art is a hooded shadow; proposed: a rat (the cult's hooded acolyte)"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed Blackmass Rat; art (a hooded shadow) queued for a hooded rat"
   },
   {
    "id": "dread-bell",
@@ -5296,14 +5219,14 @@
   },
   {
    "id": "iron-warden",
-   "name": "Iron Warden",
+   "name": "Iron Badger",
    "icon": "🛡️",
    "creature": true,
    "animal": "badger",
    "group": "badger",
    "subtype": "construct",
-   "how": "proposed",
-   "note": "art is a walking suit of iron; proposed: a badger (the forge folk)"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed Iron Badger; art (a walking suit of iron) queued for an iron-plated badger"
   },
   {
    "id": "badger-lumberjack",
@@ -7491,14 +7414,14 @@
   },
   {
    "id": "rimeheart-colossus",
-   "name": "Rimeheart Colossus",
+   "name": "Rimeheart Mammoth",
    "icon": "🗿",
    "creature": true,
-   "animal": "gorilla",
-   "group": "ape",
+   "animal": "mammoth",
+   "group": "elephant",
    "subtype": "elemental",
-   "how": "proposed",
-   "note": "art is a half-ice, half-lava giant; proposed: a gorilla, like the Magma Titan"
+   "how": "name",
+   "note": "2026-11-02 CONTENT6 (owner: no pure elementals): renamed from Rimeheart Colossus (was proposed: a gorilla); art (an ice and lava giant) queued for a mammoth"
   },
   {
    "id": "war-elephant",

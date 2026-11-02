@@ -483,7 +483,6 @@
  "Asked by": "Erbeten von",
  "Asleep": "Schlafend",
  "Asleep for most of the war. Awake for the important part.": "Verschläft den größten Teil des Krieges. Wach für den wichtigen Teil.",
- "Assembled from castle rubble and something that might be actual magic. Nothing soaks in.": "Zusammengesetzt aus Burgschutt und etwas, das echte Magie sein könnte. Nichts dringt ein.",
  "Async Arena": "Async-Arena",
  "At dusk it is a voice in the canopy. At night it is barely a voice.": "In der Dämmerung ist es eine Stimme im Blätterdach. Nachts kaum noch eine Stimme.",
  "At full Health, gains +{v1} max Health every upkeep.": "Bei vollem Leben erhält sie in jeder Unterhaltsphase +{v1} max. Leben.",
@@ -560,7 +559,6 @@
  "Barding, blinders, and absolutely no intention of slowing down for the enemy line.": "Harnisch, Scheuklappen und absolut nicht die Absicht, für die gegnerische Linie langsamer zu werden.",
  "Barely a seedling. Somehow already armed.": "Kaum ein Setzling. Irgendwie schon bewaffnet.",
  "Barely bigger than a coin, already wearing full plate. Give it a few decades.": "Kaum größer als eine Münze und schon in voller Rüstung. Gib ihm ein paar Jahrzehnte.",
- "Barely more than a floating spark, and everything standing next to it gets singed.": "Kaum mehr als ein schwebender Funke, und alles neben ihm wird angesengt.",
  "Bark Skin": "Rindenhaut",
  "Bark, armour, shield: it is all just wood to a woodpecker.": "Rinde, Rüstung, Schild: Für einen Specht ist das alles nur Holz.",
  "Barks the orders, then runs in first anyway.": "Bellt die Befehle und rennt dann trotzdem als Erster los.",
@@ -1568,7 +1566,6 @@
  "Fork: one swing, its claws hit left and right, or just the one in front": "Gabel: ein Schwung, ihre Klauen treffen links und rechts, oder nur das Ziel vorn",
  "Fork: one swing, left and right, or just the one in front": "Gabel: ein Schwung, links und rechts, oder nur das Ziel vorn",
  "Form ranks! Outsider on the bridge.": "In Reih und Glied! Fremde auf der Brücke.",
- "Formless, patient, and impossible to properly hit.": "Formlos, geduldig und unmöglich richtig zu treffen.",
  "Forty sieges, forty wins, and a howdah with a little flag on it for each.": "Vierzig Belagerungen, vierzig Siege, und eine Sänfte mit je einem Fähnchen dafür.",
  "Forty winters patching the dam. The bramble is just a dam that argues back.": "Vierzig Winter hat er den Damm geflickt. Der Dorn ist nur ein Damm, der widerspricht.",
  "Found something shiny in the battlefield rubble. Sold it back to you.": "Hat im Schutt des Schlachtfelds etwas Glänzendes gefunden. Hat es dir zurückverkauft.",
@@ -4956,5 +4953,8 @@
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ {v1} schleudert {v2} {v3} gegen die Einheit daneben!",
  "＋ Add": "＋ Hinzufügen",
  "＋ Befriend": "＋ Anfreunden",
- "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "Beim Ausspielen: springt die gegnerische Einheit gegenüber an (sonst eine daneben, links oder rechts) für {v1} Schaden (die gegnerische Dornenhecke, wenn keine der drei da ist). Wirkt in dem Moment, in dem sie landet, ob sie wartet oder nicht."
+ "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "Beim Ausspielen: springt die gegnerische Einheit gegenüber an (sonst eine daneben, links oder rechts) für {v1} Schaden (die gegnerische Dornenhecke, wenn keine der drei da ist). Wirkt in dem Moment, in dem sie landet, ob sie wartet oder nicht.",
+ "Barely more than a spark with wings, and everything standing next to it gets singed.": "Kaum mehr als ein Funke mit Flügeln, und alles neben ihm wird angesengt.",
+ "Half wave, half seahorse: patient, and impossible to properly hit.": "Halb Welle, halb Seepferdchen: geduldig und unmöglich richtig zu treffen.",
+ "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "Eine Schildkröte aus Burgschutt und etwas, das echte Magie sein könnte. Nichts dringt ein."
 }

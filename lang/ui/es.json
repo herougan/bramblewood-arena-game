@@ -483,7 +483,6 @@
  "Asked by": "Pedido por",
  "Asleep": "Dormida",
  "Asleep for most of the war. Awake for the important part.": "Dormido casi toda la guerra. Despierto para la parte importante.",
- "Assembled from castle rubble and something that might be actual magic. Nothing soaks in.": "Montado con escombros del castillo y algo que podría ser magia de verdad. Nada le cala.",
  "Async Arena": "Arena asíncrona",
  "At dusk it is a voice in the canopy. At night it is barely a voice.": "Al anochecer es una voz en el dosel. De noche, apenas una voz.",
  "At full Health, gains +{v1} max Health every upkeep.": "Con la Salud completa, gana +{v1} de Salud máx. en cada mantenimiento.",
@@ -560,7 +559,6 @@
  "Barding, blinders, and absolutely no intention of slowing down for the enemy line.": "Barda, anteojeras y ninguna intención de frenar por la línea enemiga.",
  "Barely a seedling. Somehow already armed.": "Apenas un plantón. Y de algún modo ya armado.",
  "Barely bigger than a coin, already wearing full plate. Give it a few decades.": "Apenas más grande que una moneda y ya con armadura completa. Dale unas décadas.",
- "Barely more than a floating spark, and everything standing next to it gets singed.": "Apenas una chispa flotante, y todo lo que tiene al lado se chamusca.",
  "Bark Skin": "Piel de corteza",
  "Bark, armour, shield: it is all just wood to a woodpecker.": "Corteza, armadura, escudo: para un pájaro carpintero, todo es madera.",
  "Barks the orders, then runs in first anyway.": "Ladra las órdenes y luego entra corriendo el primero de todos modos.",
@@ -1568,7 +1566,6 @@
  "Fork: one swing, its claws hit left and right, or just the one in front": "Horquilla: un golpe, sus garras golpean a izquierda y derecha, o solo al de enfrente",
  "Fork: one swing, left and right, or just the one in front": "Horquilla: un golpe, izquierda y derecha, o solo al de enfrente",
  "Form ranks! Outsider on the bridge.": "¡En formación! Forastera en el puente.",
- "Formless, patient, and impossible to properly hit.": "Informe, paciente e imposible de golpear como es debido.",
  "Forty sieges, forty wins, and a howdah with a little flag on it for each.": "Cuarenta asedios, cuarenta victorias, y un palanquín con una banderita por cada uno.",
  "Forty winters patching the dam. The bramble is just a dam that argues back.": "Cuarenta inviernos remendando la presa. La zarza es solo una presa que replica.",
  "Found something shiny in the battlefield rubble. Sold it back to you.": "Encontró algo brillante entre los escombros del campo de batalla. Te lo revendió.",
@@ -4956,5 +4953,8 @@
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ ¡{v1} estampa a {v2} {v3} contra la unidad de al lado!",
  "＋ Add": "＋ Añadir",
  "＋ Befriend": "＋ Hacerse amigos",
- "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "Al jugarla: salta sobre la unidad enemiga de enfrente (si no, sobre una contigua, a izquierda o derecha) por {v1} de daño (el zarzal enemigo, si no hay ninguna de las tres). Se activa en el instante en que cae, esté en Espera o no."
+ "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "Al jugarla: salta sobre la unidad enemiga de enfrente (si no, sobre una contigua, a izquierda o derecha) por {v1} de daño (el zarzal enemigo, si no hay ninguna de las tres). Se activa en el instante en que cae, esté en Espera o no.",
+ "Barely more than a spark with wings, and everything standing next to it gets singed.": "Apenas una chispa con alas, y todo lo que tiene al lado se chamusca.",
+ "Half wave, half seahorse: patient, and impossible to properly hit.": "Mitad ola, mitad caballito de mar: paciente e imposible de golpear como es debido.",
+ "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "Una tortuga de escombros del castillo y algo que podría ser magia de verdad. Nada le cala."
 }
