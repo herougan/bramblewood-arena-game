@@ -1409,3 +1409,21 @@ tick; `draw`'s `openingExtra`; `AI_PLAN_*`, `aiSavePlan`, `aiLosingBadly`, `aiFr
 - **Co-op starting slot** (owner COOP3-3): in the duo dungeon each player's row centre is that player's alone (`ownedCells(..., homeRow,
   otherHomes)`: the other players' row centres are never a cell). An ally or a CPU ally can't play there, the "+" targets don't show it, and
   every other free cell follows W10's rule. Raids are unchanged (each player plays into their own row).
+
+
+## 2026-11-02 additions (package ENG20): Remember's candlestick, water and Burn, Stop Drop and Roll, Glean, Lumber Feast, heavy and cross winds
+- **Remember** fires once a card (`rememberSpent` on the unit and its zone entry); the board strikes its line, drops its pip, and a candlestick rises (`en20CandleVfx`).
+- **Water counters** (`c.water`, 💧N pip) and **Burn** (`c.burn`, 🔥N pip): `en20Elements` in `applyDamage`, the tide's `en20TideWater`, Burn's `en20BurnTicks` (event `burnTick`).
+- **Stop, Drop and Roll** (`dropRoll`): the unit spins once (GSAP rotation) with "🤸 Stop, drop and roll!".
+- **Glean** (`glean`): "🫐−N" off each unit it takes from, "🫐→💠N" on itself, then the Shield's own look. **Lumber Feast** (`lumberFeast`): "🪵−N +N/+N".
+- **Winds**: the field's wind streaks as before; floats "🌬️ Heavy Headwind: −2⚔", "🪁 Heavy Tailwind!", "🌬️ +0/N" (Crosswind). Pill: ⇈ / ⇊ heavy, ↔ / ⇔ across, still-air lines when calm.
+
+| Effect | Look | What plays | Events |
+|---|---|---|---|
+| 🕯️ Remember | `en20CandleVfx` (drawn candlestick, flame flicker, warm wash) | "🕯️ +N/+N" | `remember` |
+| 💧 Soak / dry | floating number | "💧+N" / "💧−N", the 💧 pip | `statusFx en20Soak`, `en20Dry` |
+| 🔥 Burn | floating text, the 🔥 pip | "🔥 Burning", each tick "🔥1" | `statusFx en20Ignite`, `burnTick`, `statusFx en20Douse` |
+| 🤸 Stop, Drop and Roll | a full spin of the card | "🤸 Stop, drop and roll!" | `statusFx en20Roll` |
+| 🫐 Glean | floats on the givers and the gleaner | "🫐→💠N" | `statusFx en20Glean`, `statusFx unitShield` |
+| 🪵 Lumber Feast | floating text | "🪵−N +N/+N" | `statusFx en20LumberFeast` |
+| 🌬️ Heavy / cross wind | the wind pill | the floats above | `wind {kind}`, `statusFx headwind {heavy}`, `tailwind {heavy}`, `crosswind` |

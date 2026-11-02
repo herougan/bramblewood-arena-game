@@ -22,6 +22,8 @@ Source for all of it: `bramblewood-engine.js` (the engine decides); player wordi
 - **Exact numbers inside, one rounding at the end.** A hit is rounded once, half up, when it lands on the board; nothing rounds while it passes between functions. A half of 1 is 1, so Resist, Ghost, Atheist and the Psychic Dampener never stop a 1. [FX2, FX2-3; engine `roundDmg`]
 - **Status-type attacks deal only counters, not damage as well:** a "– poison / – bleed" shot or action at a unit gives its N as counters and no damage (at a bramble it deals its N). Poison Barbs N: Thorns that poison. **Built (ENG9, 2026-10-26).** [owner note #40, 10-25 17:53; no decision id]
 - **Bleed fades at the round's end, after it bleeds.** [EN3-2]
+- **Water counters and Burn:** a unit holds up to 3 water counters; water damage adds counters equal to the damage and puts Burn out; the tide fills a dry unit in the water (Flood / High Tide 2, Ebb 1, Swimmer / Tide units only in an Ebb) and counters stay until fire dries them. Wet = its counters (a Swimmer / Tide unit at least 1) + 1 under Rain. A fire hit dries 1 counter a point, then, from a unit's swing, shot or skill, sets it Burning (1 fire at each of the next 2 round starts, refreshed, never stacked); field fire lights nothing; fire-resistant units never burn. **Built (ENG20, 2026-11-02).** [owner 2026-11-02 22:44; ENG20-1]
+- **A +0/N buff ending never kills, and damage eats the buff first:** when an aura's Health (Nature's Force, Kinship, Pack, Formation, Herald, the Crosswind; the Zeitgeber / state Health and equipment already) shrinks, the unit keeps its Health up to the new maximum, never below 1. Debuffs and Wither can still kill. **Built (ENG20, 2026-11-02).** [owner 2026-11-02 22:44; ENG20-3]
 - **Greater Poison deals 1 per stack each round and the stack never wears down;** only Cure removes it (plain Poison still wears down). [EN4-2]
 - **Daunt (Weakness) counters fall off one per damage action** (a swing, an Arrow, a damage skill), not at round end or on other skills. **Built (ENG9, 2026-10-26).** [EN8-11]
 - **Cure removes Poison only; Heal restores Health only; Cleanse (Renewal) removes the physical debuffs.** [rules 10-21 SK1]
@@ -93,6 +95,9 @@ Each keyword's price lives in `canonical/skill-costs.json`; its behaviour in the
 - **Threshold skills, Name N – {…} (plain +2/+2):** Requiem (deaths, both sides, 5), Dirge (yours, 3), Carnage (the enemy's, 3), Muster (your units, 6), Beset (the enemy's units, 6), Throng (the field, 10); priced by measured uptime (`bramblewood-budget.js` thrS). One card each on Maps 0-20. **Built (ENG10, 2026-10-26).** [PROP1-4]
 - **Wakeful (G5): it never falls Asleep** (a Sleep hit, the Spore Cloud). **Built (CONTENT3, 2026-10-26)**, priced 0.5; the Sleepless Shrew, 7-4's first-clear card.
 - **A Sandstorm is a Storm for Storm cards; the blinding Sandstorm (`sandstorm: 'blind'`) makes every unit Blind but Dry / Keen Sense / Sonar ones.** **Built (CONTENT3, 2026-10-26)**; on 18-4. [owner EN8-7 / C4]
+- **Remember fires once a card:** the unit that came back carries the mark into the zones, never returns again; on the board its line is struck (used) and its pip gone; a candlestick rises when it fires. **Built (ENG20, 2026-11-02).** [owner 2026-11-02 22:44]
+- **King Slayer's bonus hits leaders too** (either side: the summoned leader, the Gladiator leader, a Leader-skill card), beside Kings, Royalty and the crowned unit. **Built (ENG20, 2026-11-02).** [owner 2026-11-02 22:44]
+- **Stop, Drop and Roll** (rolls instead of Burning, Wait +1; 0.2), **Glean** (every Berry on the board -> +1 Shield each; 0.3) and **Lumber Feast N** (eats up to N of your Lumber as it arrives, +1/+1 each; 0.7 a point): **built (ENG20, 2026-11-02), on no card** (owner picks, ENG20-2). [owner 2026-11-02 22:44; owner 22:47]
 - **Gorge (the old Fester key):** a hooked Parasite feeds a second time at round end, at half its Attack; the Gangrenous Leech is a Parasite with it. **Built (ENG10, 2026-10-26).** [OWN-Q4, PROP1-3]
 
 ## 3. Resources
@@ -167,9 +172,12 @@ Canonical: `canonical/map-pools.json` (card pools), the maps in `arena_app.js`, 
 - **Field effects that hand out units act per player:** Mirage gives each player (co-op seat, raid ally, each side) its own Illusion a round. **Built (ENG14, 2026-10-30).** [owner X10]
 - **Raid bosses sit near 20% win rate** and are rebalanced from where players unlock the raid. [RW2-4; tuning guide section 10]
 
+- **Heavy and cross winds:** a Heavy Headwind is -2 Attack with the Flyers' active skills twice; a Heavy Tailwind is Quick + one Fast Forward; a Crosswind gives every Flyer on both sides +0/2 for the round (Heavy +0/5), no back or face. Only from Map 30 (a strong gust 1 in 4 heavy, 15% across); no windy map is that far yet. The calm wind pill shows still air. **Built (ENG20, 2026-11-02).** [owner 2026-11-02 22:44; owner 22:49; ENG20-4]
+
 ## 6. CPU
 
 Source: `bramblewood-engine.js` (the AI) and `bramblewood-autobattle.js`.
+- **The CPU feeds a Devourer when it beats the turn's play:** nothing else playable (then before the pitch), or the gain beats its best play, or a 4+ card hand and the gain is half of it; the healthiest unfed Devourer, an unaffordable or least valuable card as food, never a leader card or a Devourer at 2 Health. Every CPU level. **Built (ENG20, 2026-11-02).** [owner 2026-11-02 22:44]
 - **The CPU has no side preference and likes the middle lanes;** with no kill or trade it weights slots facing or beside your units. [EN2-2]
 - **The lethal guard stays at every CPU level** (from Map 1): when your Ready units would swing into open columns for its bramble's Health and Shield, it plays the unit that blocks the most. [EN8-8]
 - **Every level pitches before it plays** (nothing useful: its least valuable card; an unaffordable card with 3+ in hand: a spare). [EN8-8]

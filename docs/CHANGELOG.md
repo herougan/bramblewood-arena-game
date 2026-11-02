@@ -11,6 +11,27 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Dropped by the owner at 20:19: rebuilding too-easy road decks stronger (item 4); nothing of it was applied.
 - Tests: new `tests/bal13-2026-11-02.js`; `tests/pro-2026-10-23.js` accepts a deck swapped by BAL13 (as BAL9's).
 
+## 2026-11-02 Package ART6 (owner 22:47: use PixelLab for the remaining art)
+- **Art generated, not yet in the game:** all 21 CONTENT6 / CONTENT7 cards are painted in the owner's PixelLab gallery (four variants each); no files downloaded or imported, `artReview` unchanged until the owner OKs the download. List: `docs/art/art6-pixellab-gallery-2026-11-02.md`.
+## 2026-11-02 Package UI15 (owner 22:15 #3 #4 #8 #11 #14)
+- **Deck editor:** the xN count pips of Your Loadout sit 4 px closer to their card; a hovered card lifts 4.5 px (was 3) and eases there over 0.2 s.
+- **Gem sockets are hidden until Map 45:** the diamond on a card's edge (the socket) shows only once the player has reached Map 45 (`furthestMapReached()`); Admin mode still previews it. The Forge, the card detail's socket line and the engine are untouched.
+- **Card detail:** Devilry's Ritual numbers read on the dark box (light pills, dark digits in any theme); the page takes a tone from the card's group: Devilry a darker wash, Ecclesia (Grace) a whiter linen weave. The diagram was already centred on its box in the current build (measured 2 px at 1366 and 390).
+- **The Wait clock sits above the rarity / Supreme frame glow** on the board and in hand (it had the same layer, and the glow was drawn later).
+- **Shell armor pips are centred on the card:** the pop-in animation replaced the `translateX(-50%)`, leaving them 21 px right of centre; now `translate:-50% 0`.
+- **The board zooms in to fill its frame (owner ss6):** when the units' columns are narrower than the frame, the camera zooms IN (up to 2.4x, 3% margin) until they span it left to right, as far as the frame's height lets the rows grow, and follows as units come and go. The raid and the phone keep their own card fitting (they already span the frame). Also fixed `battlefieldTransformCSS`, which dropped any scale of 0.995 or more.
+- **Icons:** Poison Barbs 🪛 (was the same 🌵 as Thorns); Creative ⌘ (was 🎨; the Creativity counter's float text keeps 🎨).
+- Check: `python3 tests/e2e/ui15_2026_11_02.py` (before / after shots in `docs/screens/ui15/`).
+
+## 2026-11-02 Package ENG20 (owner 22:44 notes 1-7, 22:47, 22:49)
+- **Remember fires once a card:** the returned unit's Remember line is struck (used) and its pip gone; a brass candlestick rises over it, its flame flickers (`en20CandleVfx`).
+- **Fire and water:** water damage adds water counters (💧N pip, at most 3) and puts fire out; Flood fills a dry unit to 2, Ebb a dry Swimmer to 1, and the counters stay; fire dries 1 a point, then a unit's fire sets the target Burning (🔥 pip: 1 fire for 2 rounds). Wet is the counters now (+ Rain), so a land unit stays Wet after the Flood.
+- **New skills, on no card:** Stop, Drop and Roll 🤸 (rolls instead of burning, Wait +1), Glean 🫐 (every Berry on the board -> +1 Shield each), Lumber Feast N 🪵 (eats up to N of your Lumber, +1/+1 each). Prices in `canonical/skill-costs.json`; carriers: ENG20-2.
+- **Heavy Headwind / Heavy Tailwind / Crosswind / Heavy Crosswind** (Map 30+ only, so dormant today, ENG20-4); the wind pill shows ⇈ ⇊ ↔ ⇔, and a calm round shows still air, 'Calm: no wind'.
+- **A +0/N buff ending never kills; damage eats the buff first** (Nature's Force, Kinship, Pack, Formation, Herald, the Crosswind).
+- **The CPU uses Devour** when it beats its play (was a 40% coin flip); **King Slayer** hits leaders too.
+- Tests: `tests/eng20-2026-11-02.js`. Texts: `tools/i18n_2026_11_02_eng20.py` (27 rows x 12 packs). Decisions ENG20-1..5.
+- Golden: `tests/card-matrix.js` 0 failures, 1844 golden diffs (not accepted here): Burn ticks (`burnTick`) and the fire / water status events on the fire and water cards' pairings (of the 25 listed, 24 have a fire card), the CPU's Devour no longer using a coin flip. To accept with the batch's `--update` after review.
 ## 2026-11-02 Package FIX5 (owner 21:12: "Dynamic values shouldn't reset on victory. for example swarm bonus is removed on victory.")
 - **The board keeps its numbers when the fight is decided (win or defeat):** a Swarm unit's Attack no longer drops back to its printed value under the Victory / Defeat sign. Cause: the round that decides the match ends with a patch-in-place render (PL2's `pl2ReconcileRow`), which read each unit from the replay's round-start snapshot. That snapshot has no uid (so Swarm counted no allies) and holds the round-start Pack / Kinship / Nature's Force / phase / Rally numbers, and `updateCardAtkDisplay` left out Formation / Isolation and High tide's +2. Now `currentCardByUid` reads a unit still on the board live once the replay is over (the snapshot only for a unit that is gone; a `data-uid` string matches), and `updateCardAtkDisplay` sums what `boardCardHTML` sums. Display only: no battle result, reward or engine change (the engine was checked: it clears nothing at the match's end).
 - Tests: `tests/fix5-2026-11-02.js` (engine keeps Swarm / Pack after a deciding round; source shape), browser `tests/e2e/fix5_2026_11_02.py` (Swarm, Pack + Swarm, Kinship + Swarm wins and a Swarm defeat, Attack / Health per frame; shots `tests/e2e/shots/fix5_win.png`, `fix5_defeat.png`).
