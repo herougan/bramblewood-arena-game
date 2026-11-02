@@ -17659,7 +17659,7 @@
     "id": "conch-herald",
     "name": "Conch Herald",
     "icon": "\ud83d\udc1a",
-    "attack": 1,
+    "attack": 2,
     "health": 13,
     "archetypes": [
       "Coastal"
@@ -28734,7 +28734,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 3,
+    "health": 4,
     "rarity": "common",
     "species": [
       "Echinoderm"

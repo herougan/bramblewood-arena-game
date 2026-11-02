@@ -2,6 +2,12 @@
 
 For the budget formula, card retunes, the road and difficulty curves, raid tuning and win-rate measurement. The owner wants the strongest model for balance work.
 
+## Roles: who balances what (owner, 2026-11-02 14:13, decision BAL-ROLES)
+- Claude does the rough first pass only: fit each card's stats to its power budget (N(L) in `bramblewood-budget.js`), and optimise decks from the cards already chosen. It may suggest a short list of card picks / cuts per map.
+- The owner chooses the cards on each list and re-tunes cards by feel.
+- When a card plays stronger or weaker than its budget says, do not change it. Flag it, and work out why the skill budget misses it (field, bramble Health, synergy, trigger pricing...). Fixing the budget is the priority.
+- Never re-tune an owner-set card. Budget fits that move it go to the owner as a flag.
+
 ## Files you need
 - `bramblewood-budget.js`: N(L) and the stat checks. It is the source of truth for the formula.
 - `bramblewood-engine.js`: simulations run the real engine headless through `tests/lib/harness.js`.

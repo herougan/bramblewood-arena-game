@@ -1,3 +1,4 @@
+-- 2026-11-02: APPLIED to the live database (owner "apply it" 11-02 14:10; migration progress_shrink_guard_20261102). Trigger guard_progress_shrink is on.
 -- 2026-10-31 (package UI12, GG2): server-side guard for player_progress. PROPOSED: apply only after the owner says "apply it".
 --
 -- Why: a fresh or emptier device save could replace a richer cloud save (the owner lost his progress after signing out and back in with

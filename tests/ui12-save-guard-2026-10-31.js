@@ -213,7 +213,7 @@ const settle = async w=>{ for(let i = 0; i < 40; i++){ await sleep(30); if(!w.$.
   ok(/needsFactionPick \|\| needsTutorialResume\) && ui12CloudLoading\(\)/.test(src), 'the tutorial waits for the cloud load');
   ok(/if\(ui12OauthReturning\) cloudAuthBusyAdd\(-1\)/.test(src) && /ui12OauthReturning && isSignedIn\(\)\) try\{ ui12EnterAfterSignIn\(\)/.test(src), 'the redirect return unlocks and goes in');
   ok(!!TEXT['ui.ui12-loading-save'], 'TX ui.ui12-loading-save');
-  ok(fs.existsSync(path.join(ROOT, 'supabase/proposed/20261031_progress_shrink_guard.sql')), 'the server-side guard is filed in supabase/proposed (not applied)');
+  ok(fs.existsSync(path.join(ROOT, 'supabase/migrations/20261102_progress_shrink_guard.sql')), 'the server-side guard is applied and filed in supabase/migrations'); // 2026-11-02 (coordinator): applied on the owner's "apply it"
 
   console.log(fail ? `ui12-save-guard: ${fail} of ${n} checks failed` : `ui12-save-guard: all ${n} checks passed`);
   process.exit(fail ? 1 : 0);
