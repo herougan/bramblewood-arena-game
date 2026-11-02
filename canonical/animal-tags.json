@@ -65,12 +65,12 @@
   }
  ],
  "counts": {
-  "cards": 897,
-  "creatures": 798,
-  "tagged": 800,
-  "animals": 365,
-  "groups": 145,
-  "withSubtype": 108,
+  "cards": 906,
+  "creatures": 807,
+  "tagged": 809,
+  "animals": 367,
+  "groups": 146,
+  "withSubtype": 110,
   "proposed": 22,
   "subtype": {
    "changeling": 3,
@@ -82,8 +82,8 @@
    "ghost": 4,
    "glitch": 1,
    "mutant": 5,
-   "mythic": 15,
-   "plant": 14,
+   "mythic": 16,
+   "plant": 15,
    "spirit": 7,
    "structure": 16,
    "undead": 5,
@@ -93,10 +93,10 @@
    "art": 59,
    "ee": 8,
    "flavor": 15,
-   "icon": 32,
-   "name": 601,
+   "icon": 36,
+   "name": 603,
    "proposed": 22,
-   "type": 61
+   "type": 64
   },
   "topGroups": {
    "otter": 32,
@@ -128,7 +128,7 @@
    "deer": 10,
    "bee": 9,
    "dog": 9,
-   "boar": 9
+   "worm": 9
   }
  },
  "ownerCalls": [
@@ -758,7 +758,7 @@
   },
   {
    "id": "gale-sprite",
-   "name": "Gale Sprite",
+   "name": "Whirlwind Swift",
    "icon": "💨",
    "creature": true,
    "animal": "swift",
@@ -1873,7 +1873,7 @@
   },
   {
    "id": "alpine-avalanche",
-   "name": "Alpine Avalanche",
+   "name": "Avalanche Bear",
    "icon": "🏔️",
    "creature": true,
    "animal": "polar bear",
@@ -9488,6 +9488,98 @@
    "group": null,
    "subtype": null,
    "how": "none"
+  },
+  {
+   "id": "bloodworm",
+   "name": "Bloodworm",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "worm",
+   "group": "worm",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "night-algae",
+   "name": "Bright Night Algae",
+   "icon": "✨",
+   "creature": true,
+   "animal": "glowing bacterium",
+   "group": "bacterium",
+   "subtype": "plant",
+   "how": "name",
+   "note": "2026-11-02 CONTENT7 (owner IDEA-11-02): blown-up glowing bacteria; Bloom at night; plant subtype as Pond Algae"
+  },
+  {
+   "id": "bobbit-worm",
+   "name": "Bobbit Worm",
+   "icon": "🪱",
+   "creature": true,
+   "animal": "worm",
+   "group": "worm",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "man-o-war",
+   "name": "Man o' War",
+   "icon": "🪼",
+   "creature": true,
+   "animal": "jellyfish",
+   "group": "jellyfish",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "nautiloid",
+   "name": "Nautiloid",
+   "icon": "🐚",
+   "creature": true,
+   "animal": "octopus",
+   "group": "octopus",
+   "subtype": null,
+   "how": "type"
+  },
+  {
+   "id": "pistol-shrimp",
+   "name": "Pistol Shrimp",
+   "icon": "🦐",
+   "creature": true,
+   "animal": "shrimp",
+   "group": "shrimp",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "unicorn",
+   "name": "Unicorn",
+   "icon": "🦄",
+   "creature": true,
+   "animal": "horse",
+   "group": "horse",
+   "subtype": "mythic",
+   "how": "name",
+   "note": "2026-11-02 CONTENT7: a horse with one horn (Mythic, Map 56+)"
+  },
+  {
+   "id": "sphinx",
+   "name": "Sphinx",
+   "icon": "🦁",
+   "creature": true,
+   "animal": "lion",
+   "group": "big cat",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "griffin",
+   "name": "Griffin",
+   "icon": "🦅",
+   "creature": true,
+   "animal": "eagle",
+   "group": "eagle",
+   "subtype": null,
+   "how": "icon"
   }
  ]
 }

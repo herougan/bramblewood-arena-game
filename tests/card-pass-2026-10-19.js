@@ -133,7 +133,7 @@ const md = read('docs/card-pass-2026-10-19.md');
 ok(fs.existsSync(path.join(ROOT, 'docs', 'card-pass-2026-10-19.xlsx')), '5. the spreadsheet');
 ok(ST.every(([id])=> md.includes(defs[id].name)), '5. the doc lists every changed card');
 // 2026-11-02 (CONTENT6, owner: no pure elementals): four of them were renamed; the dated doc keeps the names they had
-const OLD_NAME = {'rimeheart-colossus': 'Rimeheart Colossus', 'ember-wisp': 'Ember Wisp', 'stoneheart-golem': 'Stoneheart Golem', 'stormcaller': 'Stormcaller'};
+const OLD_NAME = {'rimeheart-colossus': 'Rimeheart Colossus', 'ember-wisp': 'Ember Wisp', 'stoneheart-golem': 'Stoneheart Golem', 'stormcaller': 'Stormcaller', 'gale-sprite': 'Gale Sprite', 'alpine-avalanche': 'Alpine Avalanche'}; // + 2026-11-02 (CONTENT7, owner CONTENT6-2 b): Whirlwind Swift, Avalanche Bear
 ok(Object.keys(P.SOURCELESS).every(id=> md.includes(defs[id].name) || md.includes(OLD_NAME[id] || '\u0000')), '5. the doc lists the cards that stay sourceless');
 ok(read('docs/CHANGELOG.md').includes('package CB'), '5. a CHANGELOG entry near the top'); // 2026-11-02 (coordinator): whole file, the window kept moving; 2026-10-19 (LV): later packages' entries sit above it (BF2: 100,000 characters; 2026-10-21 (RP): 150,000; BF5 10-21: 250,000, the later packages pushed it down; BAL7 10-28: 260,000; PACK1 10-28: 275,000; 2026-10-29 RELFIX3: 300,000, SKL0 / REVIEW1 / RELFIX3 pushed it down; 2026-10-30 TUT3: 320,000, the TUT2 / UI4 / TUT3 entries pushed it down; 2026-10-30 ENG14: 360,000, the batch's TIP1 / RAIDFX1 / ENG14 entries pushed it to 320,667)
 

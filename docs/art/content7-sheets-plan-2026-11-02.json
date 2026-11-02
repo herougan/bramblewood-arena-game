@@ -1,0 +1,84 @@
+{
+ "note": "CONTENT7 (2026-11-02): sheet plan in the ART2 shape (docs/art/art2-plan-2026-10-29.json). Each sheet = one 2x2 image; prompt = base + the four subjects (TL, TR, BL, BR). Nothing generated: see docs/art/content7-2026-11-02-briefs.md. Sheets C7-03..C7-06 repaint the CONTENT6 cards marked Art rejected (blackmass-acolyte is the 21st card, alone on C7-06 with room for a fourth).",
+ "base": "Generate one square image: a 2x2 grid of four separate square game-card illustrations of equal size, separated by thin plain gaps, no frames, no text. Style for all four: pixel art, 32-bit era game sprite style, crisp hard edges, limited palette, dark 1-pixel outline, soft light from the upper left, warm muted woodland colours (moss green, bark brown, river teal, berry red) with one bright accent, cute expressive animal character with a slightly large head, clean readable silhouette, full-body character in a small scene, centred, slight low angle, simple painterly background in every panel, no text, no watermark, no signature.",
+ "sheets": {
+  "C7-01": {
+   "ids": [
+    "bloodworm",
+    "night-algae",
+    "bobbit-worm",
+    "man-o-war"
+   ],
+   "subjects": [
+    "A fat pink bristly worm half out of its burrow in wet sand, four small black jaws unfolded from its head, a tide flat at low tide with shining puddles and wet pebbles, gulls in the sky and a pale evening sun behind",
+    "A round glowing blue-green blob of algae the size of a barrel with a sleepy face, floating in a calm mangrove bay at night, a second smaller glow splitting off beside it, dark mangrove roots and bright stars behind",
+    "A long iridescent purple worm buried in coral sand with only its head and one pale feeler showing, jaws just opening, a small fish swimming close by, a shallow mangrove seabed with sea grass and sunlit water above",
+    "A Portuguese man o' war jellyfish with a glossy blue and pink gas float like a little sail, long curling blue tentacles trailing under the water, drifting on a bright open sea with small waves, distant coast with mangrove trees and a clear morning sky behind"
+   ]
+  },
+  "C7-02": {
+   "ids": [
+    "nautiloid",
+    "pistol-shrimp",
+    "unicorn",
+    "sphinx"
+   ],
+   "subjects": [
+    "An ancient nautiloid with a long straight cone-shaped shell banded in orange and cream, tentacles spread forward, gliding over a coral reef, drifting sea lilies and shells on the sandy floor, blue water with light rays behind",
+    "A small red-orange shrimp with one huge oversized claw snapping shut, a glowing bubble flashing between the claw tips, sitting at the mouth of a burrow in a sandy reef floor, a goby fish beside it, coral and sunlit water behind",
+    "A graceful white horse with a long spiralled pearl horn glowing softly, standing in a flower meadow where the grass lifts back up around its hooves, a clear spring stream and tall old trees behind, golden morning light",
+    "A great lion with a calm wise face and a gold headcloth and collar lying like a statue, glowing amber eyes, tall sandstone ruins and a few palm trees around it, a desert dusk with a huge pale moon behind"
+   ]
+  },
+  "C7-03": {
+   "ids": [
+    "griffin",
+    "ember-wisp",
+    "tide-spirit",
+    "stormcaller"
+   ],
+   "subjects": [
+    "A griffin with a golden eagle head and broad feathered wings and a tawny lion body, diving down from a mountain ledge with wings spread, snow-capped peaks and drifting clouds behind, bright blue sky",
+    "A small firefly whose body is a glowing coal and whose wings are thin curls of flame, hovering over tall dry grass at night, a few singed grass stalks curling beside it, dark pine forest and stars behind",
+    "A large seahorse made of curling clear seawater, its mane a white foam crest, rising out of a tide pool among dark volcanic rocks, spray and bubbles around it, steam drifting from the warm shore, soft evening light",
+    "A round owl made of dark grey storm cloud with glowing yellow eyes, perched on a lone dead branch on a hilltop, one bright white-blue bolt of lightning striking the ground beside it, rain sweeping across a moor below"
+   ]
+  },
+  "C7-04": {
+   "ids": [
+    "magma-titan",
+    "rimeheart-colossus",
+    "marsh-wisp",
+    "bog-revenant"
+   ],
+   "subjects": [
+    "A heavy rhino whose hide is cooling black lava with bright orange cracks glowing between the plates, standing firm on a volcanic slope, smoke rising from the ground, a red glowing crater behind",
+    "A huge woolly mammoth split down the middle, its left half pale blue glacier ice with frost in its fur, its right half glowing lava rock, walking through a snowy caldera where the snow steams under its feet, a smoking volcano rim behind",
+    "A small see-through newt glowing pale blue like a will-o'-the-wisp, floating above a dark swamp pool next to two lit candles on a mossy stump, cattails and hanging moss, night mist",
+    "A bog turtle climbing out of black peat water, its shell thick with dripping moss, reeds and duckweed, faint glowing green eyes, a misty swamp with crooked trees at dusk"
+   ]
+  },
+  "C7-05": {
+   "ids": [
+    "the-unremembered",
+    "stoneheart-golem",
+    "stalactite-golem",
+    "iron-warden"
+   ],
+   "subjects": [
+    "A tall grey heron, faded and half see-through like a memory, standing still in shallow swamp water among reeds, one lit candle on a lily pad at its feet, fog over the water, pale moonlight",
+    "A big tortoise built from grey castle stones and broken battlement blocks, a glowing orange heart shape set in its chest, plodding across a castle courtyard of fallen masonry, a tall keep with gold banners behind, sunny day",
+    "A giant pill bug whose shell plates are pale blue cave crystal, half curled up after dropping from the cave ceiling, crystals and stalactites hanging above, a dim glowing cave pool behind",
+    "A stout badger made of riveted iron plates with a striped iron face, standing tall and proud in a stone forge hall, scrap metal pieces at its feet, a glowing orange forge behind"
+   ]
+  },
+  "C7-06": {
+   "ids": [
+    "blackmass-acolyte"
+   ],
+   "subjects": [
+    "A thin rat in a long black hooded robe carrying a purple-flamed candle, walking down a ruined chapel aisle where the floor stones darken behind its steps, broken stained glass and cobwebs, dim purple light"
+   ]
+  }
+ }
+}

@@ -198,6 +198,8 @@ MANUAL = {
   'ember-tetra': ('tetra', None, 'name', 'a small fish (species Fish)'),
   'coffer-mimic': ('hermit crab', 'structure', 'proposed', 'a cave chest that grabs back; proposed: a hermit crab (a borrowed shell, the pincers of its Thorns)'),
   'pond-algae': ('algae', 'plant', 'name', ''),
+  'night-algae': ('glowing bacterium', 'plant', 'name', '2026-11-02 CONTENT7 (owner IDEA-11-02): blown-up glowing bacteria; Bloom at night; plant subtype as Pond Algae'),
+  'unicorn': ('horse', 'mythic', 'name', '2026-11-02 CONTENT7: a horse with one horn (Mythic, Map 56+)'),
   'hazel-coppice': ('dormouse', 'plant', 'proposed', 'a coppiced hazel; proposed: the hazel dormouse that lives in it, like the Ent\'s owl (was subtype structure: a tree, as the Elder Willow)'),
   'phoenix-mushrooms': ('mushroom', 'fungus', 'name', ''),
   # 2026-11-02 (CARD5): tags later packages set in cards.json by hand; without these rows the tool's name / type / icon fallback rewrote them
