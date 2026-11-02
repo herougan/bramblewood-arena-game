@@ -12,8 +12,10 @@ for(const [id, [rar, map]] of Object.entries(IDS)){ const c = by(id); ok(c, id +
   ok(c.rarity === rar, id + ' rarity ' + rar); ok(c.animal && c.species && c.species.length, id + ' has an animal and species');
   const b = T.budget(Object.assign({}, c, {obtainMap:map}), {level:1}); ok(b.ok && b.x1 <= b.N, `${id} inside the budget at Map ${map} (${b.x1} / ${b.N})`);
   ok(Object.keys(c.effects).filter(k=> !['flying', 'tide'].includes(k)).length <= 2, id + ' two skills at most');
-  ok(c.awaitingSource && c.unattainable, id + ' unlisted (awaitingSource + unattainable)');
-  ok(!Object.values(pools).some(m=> (m.cards || m).includes(id) || Object.values(m.submaps || {}).some(l=> l.includes(id)) || (m.special || []).includes(id)), id + ' on no map list');
+  // 2026-11-02 (package CONTENT8, owner 21:12): Bloodworm, Man o' War, Nautiloid and Pistol Shrimp are placed on map lists (tests/content8-2026-11-02.js); the rest stay unlisted
+  const PLACED8 = ['bloodworm', 'man-o-war', 'nautiloid', 'pistol-shrimp'].includes(id);
+  if(!PLACED8){ ok(c.awaitingSource && c.unattainable, id + ' unlisted (awaitingSource + unattainable)');
+    ok(!Object.values(pools).some(m=> (m.cards || m).includes(id) || Object.values(m.submaps || {}).some(l=> l.includes(id)) || (m.special || []).includes(id)), id + ' on no map list'); }
   ok(!nums.has(c.numericId) && cards.filter(x=> x.numericId === c.numericId).length === 1, id + ' numericId unique'); nums.add(c.numericId);
   if(rar === 'mythic') ok(/MARKED FOR MAP 56\+/.test(c.creatorNote), id + ' marked for Map 56+'); }
 ok(by('night-algae').effects.bloomCopy.when.join() === 'night', 'Bright Night Algae blooms at night');

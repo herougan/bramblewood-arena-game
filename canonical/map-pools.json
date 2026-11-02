@@ -18,7 +18,7 @@
    "special": ["meadow-rabbit", "cottontail", "ant-scout", "compost-grub"]
   },
   "mb": {
-   "cards": ["conch-herald", "open-ocean-hermit-crab", "pincushion-urchin", "conch-crawler", "gull-thief", "sea-turtle-elder", "badger-lumberjack", "beaver-lumberjack", "bramble-sprout", "cricket-drummer", "driftwood-crab", "oystercatcher", "rock-pool-starfish", "dolphin-knight"],
+   "cards": ["conch-herald", "open-ocean-hermit-crab", "pincushion-urchin", "conch-crawler", "gull-thief", "sea-turtle-elder", "badger-lumberjack", "beaver-lumberjack", "bramble-sprout", "cricket-drummer", "driftwood-crab", "oystercatcher", "rock-pool-starfish", "dolphin-knight", "bloodworm", "moon-jelly"],
    "submaps": {
     "mp": ["riverworks-bastion", "lodge-engineer", "old-sturgeon", "water-shrew", "box-turtle", "muskrat-lodgekeeper", "platypus-spur", "pyrenean-desman", "snapstick-turtle", "water-vole", "muskrat-reedgatherer", "alley-cat", "pond-algae"],
     "mg": ["octopus-tactician", "trash-panda-trickster", "pelican-diver", "open-ocean-hermit-crab", "gull-thief", "pincushion-urchin", "tide-pool-crab", "tidepool-trapper-crab", "grey-seal-bull", "sea-turtle-elder", "conch-crawler", "conch-herald", "gallery-orb-weaver", "driftwood-crab", "rock-pool-starfish"]
@@ -31,7 +31,7 @@
    "special": ["hawk-arrowkeeper", "the-gannet-queen"]
   },
   "m2": {
-   "cards": ["snapstick-turtle", "muskrat-lodgekeeper", "platypus-spur", "water-shrew", "water-vole", "box-turtle", "pyrenean-desman", "muskrat-reedgatherer", "beaver-lumberjack", "fire-ant-raft", "pond-algae", "duck-paddler", "field-vole", "slow-worm"],
+   "cards": ["snapstick-turtle", "muskrat-lodgekeeper", "platypus-spur", "water-shrew", "water-vole", "box-turtle", "pyrenean-desman", "muskrat-reedgatherer", "beaver-lumberjack", "fire-ant-raft", "pond-algae", "duck-paddler", "field-vole", "slow-worm", "lions-mane-jelly", "pistol-shrimp"],
    "submaps": {},
    "special": ["stone-turtle-warden", "old-sturgeon", "drowned-matriarch"]
   },
@@ -64,12 +64,12 @@
    "special": ["blind-cave-fish", "echo-matriarch"]
   },
   "mk": {
-   "cards": ["mangrove-kingfisher", "mangrove-manatee", "banded-sea-krait", "mangrove-mudskipper", "archerfish", "mangrove-monitor", "reef-shark", "sunbittern-strider", "fishing-cat", "crocodile-ambusher", "booming-bittern", "fiddler-crab-swarm", "proboscis-monkey", "horseshoe-crab", "sea-turtle-elder"],
+   "cards": ["mangrove-kingfisher", "mangrove-manatee", "banded-sea-krait", "mangrove-mudskipper", "archerfish", "mangrove-monitor", "reef-shark", "sunbittern-strider", "fishing-cat", "crocodile-ambusher", "booming-bittern", "fiddler-crab-swarm", "proboscis-monkey", "horseshoe-crab", "sea-turtle-elder", "man-o-war"],
    "submaps": {},
    "special": []
   },
   "m7": {
-   "cards": ["colossal-squid", "electric-ray", "great-barracuda", "clownfish-scout", "parrotfish", "riptide-eel", "coral-reef-shark", "kraken-spawnling", "swordfish-spearman", "coral-polyp-colony", "reef-shark", "banded-sea-krait", "mangrove-manatee", "open-ocean-hermit-crab"],
+   "cards": ["colossal-squid", "electric-ray", "great-barracuda", "clownfish-scout", "parrotfish", "riptide-eel", "coral-reef-shark", "kraken-spawnling", "swordfish-spearman", "coral-polyp-colony", "reef-shark", "banded-sea-krait", "mangrove-manatee", "open-ocean-hermit-crab", "nautiloid", "supernova-jelly"],
    "submaps": {
     "mj": ["blue-ringed-octopus", "orca-vanguard", "nautilus-drifter", "clownfish-scout", "kraken-spawnling", "parrotfish", "coral-reef-shark", "mangrove-manatee", "riptide-eel", "colossal-squid", "coral-polyp-colony", "electric-ray", "great-barracuda", "hagfish-silencer"]
    },
