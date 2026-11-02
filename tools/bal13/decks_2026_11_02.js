@@ -249,4 +249,4 @@ function main(argv) {
   console.log(`written: ${n} road decks, ${rows.filter(r => r.pro).length} PRO decks -> docs/balance/bal13/late-cards-${DATE}.json`);
 }
 if (require.main === module) main(process.argv.slice(2));
-module.exports = { LATE, lateFor, plan, trimPlan, RAR1, rarityOf };
+module.exports = { LATE, lateFor, plan, trimPlan, RAR1, rarityOf, swapOut };

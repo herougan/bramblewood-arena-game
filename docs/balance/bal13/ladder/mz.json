@@ -226,13 +226,14 @@
    "rank": 10,
    "counts": {
     "chipmunk-cavalry": 1,
-    "dung-beetle": 5,
+    "dung-beetle": 4,
     "guppy": 1,
     "house-cat": 1,
     "otter-centurion": 3,
     "platypus-spur": 1,
     "soldier-ant": 5,
-    "wolf-spider-mother": 3
+    "wolf-spider-mother": 3,
+    "ant-warrior": 1
    },
    "from": "Pool reference (ref-pool)",
    "selectWin": 90,
@@ -243,7 +244,8 @@
     "7-A-3": 83.3,
     "7-A-4": 100,
     "7-A-5": 100
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): dung-beetle -1 -> ant-warrior x1"
   }
  ],
  "candidates": [

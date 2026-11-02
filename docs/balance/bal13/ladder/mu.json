@@ -169,7 +169,8 @@
     "ant-warrior": 4,
     "hedgerow-shrew": 2,
     "raven-scout": 2,
-    "dung-beetle": 5
+    "dung-beetle": 4,
+    "fleetfootd": 1
    },
    "from": "sampled q=1.00",
    "selectWin": 58.3,
@@ -181,7 +182,8 @@
     "7-4": 33.3,
     "7-5": 66.7,
     "7-6": 33.3
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): dung-beetle -1 -> fleetfootd x1"
   },
   {
    "rank": 8,

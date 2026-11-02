@@ -161,7 +161,8 @@
     "redwood-woodpecker": 4,
     "weaver-bird": 5,
     "obsidian-scorpion": 1,
-    "magma-salamander": 3
+    "magma-salamander": 2,
+    "bramblewood-lynx": 1
    },
    "from": "sampled q=0.96",
    "selectWin": 41.7,
@@ -171,7 +172,8 @@
     "17-A-2": 50,
     "17-A-3": 33.3,
     "17-A-4": 0
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): magma-salamander -1 -> bramblewood-lynx x1"
   },
   {
    "rank": 8,
@@ -179,8 +181,9 @@
     "spitting-spider": 4,
     "apollo-butterfly": 4,
     "taiga-lynx": 3,
-    "dung-beetle": 5,
-    "cottontail": 4
+    "dung-beetle": 4,
+    "cottontail": 4,
+    "fleetfootd": 1
    },
    "from": "sampled q=0.74",
    "selectWin": 45.8,
@@ -190,7 +193,8 @@
     "17-A-2": 50,
     "17-A-3": 100,
     "17-A-4": 16.7
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): dung-beetle -1 -> fleetfootd x1"
   },
   {
    "rank": 9,

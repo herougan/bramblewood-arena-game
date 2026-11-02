@@ -130,12 +130,13 @@
   {
    "rank": 5,
    "counts": {
-    "dung-beetle": 5,
+    "dung-beetle": 4,
     "swordfish-spearman": 3,
     "tunnel-ant": 3,
     "mountain-hare": 4,
     "raven-scout": 3,
-    "archerfish": 2
+    "archerfish": 2,
+    "fleetfootd": 1
    },
    "from": "sampled q=1.00",
    "selectWin": 37.5,
@@ -149,7 +150,8 @@
     "14-6": 33.3,
     "14-7": 16.7,
     "14-8": 0
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): dung-beetle -1 -> fleetfootd x1"
   },
   {
    "rank": 6,

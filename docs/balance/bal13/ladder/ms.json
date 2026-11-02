@@ -219,10 +219,11 @@
    "counts": {
     "muskrat-reedgatherer": 3,
     "hedgehog-herbalist": 3,
-    "vampire-bat": 4,
+    "vampire-bat": 3,
     "leafcutter-gardener": 5,
     "swordfish-spearman": 3,
-    "gannet-nestweaver": 2
+    "gannet-nestweaver": 2,
+    "otter-centurion": 1
    },
    "from": "sampled q=1.00",
    "selectWin": 95.8,
@@ -232,7 +233,8 @@
     "5-A-2": 100,
     "5-A-3": 100,
     "5-A-4": 83.3
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): vampire-bat -1 -> otter-centurion x1"
   }
  ],
  "candidates": [

@@ -214,11 +214,11 @@
    "rank": 9,
    "counts": {
     "eagle-owl-quartermaster": 3,
-    "echidna-quillshot": 1,
     "fire-salamander": 4,
     "cinder-stoker": 4,
     "talus-pika": 4,
-    "pumice-beetle": 4
+    "pumice-beetle": 4,
+    "anaconda-coil": 1
    },
    "from": "19-PRO-1",
    "selectWin": 69.4,
@@ -230,7 +230,8 @@
     "19-4": 100,
     "19-5": 66.7,
     "19-6": 16.7
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): echidna-quillshot -1 -> anaconda-coil x1"
   },
   {
    "rank": 10,

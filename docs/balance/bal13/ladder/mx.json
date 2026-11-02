@@ -195,11 +195,12 @@
     "stoat-cutthroat": 3,
     "muskrat-reedgatherer": 4,
     "ibex-rockcaller": 2,
-    "magma-salamander": 3,
+    "magma-salamander": 2,
     "planarian-splitter": 2,
     "terrier-pup": 4,
     "newt-doctor": 1,
-    "chipmunk-hoarder": 1
+    "chipmunk-hoarder": 1,
+    "tide-spirit": 1
    },
    "from": "sampled q=1.00",
    "selectWin": 33.3,
@@ -209,7 +210,8 @@
     "20-B-2": 33.3,
     "20-B-3": 66.7,
     "20-B-4": 33.3
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): magma-salamander -1 -> tide-spirit x1"
   },
   {
    "rank": 10,

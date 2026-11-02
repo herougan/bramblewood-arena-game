@@ -165,5 +165,17 @@ function check() {
     for (let i = 1; i < L.decks.length; i++) if (L.decks[i].selectWin < L.decks[i - 1].selectWin) probs.push(`${e.id}: ranks out of order at ${i + 1}`); }
   probs.forEach(p => console.log('problem: ' + p)); console.log(probs.length ? probs.length + ' problems' : 'ok: ' + Object.keys(set.ladder).length + ' maps, ' + RANKS + ' decks each'); if (probs.length) process.exit(1);
 }
-if (require.main === module) { if (CMD === 'build') build(); else if (CMD === 'collect') collect(); else if (CMD === 'check') check(); else console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 29).map(l => l.replace(/^\/\/ ?/, '')).join('\n')); }
+// 2026-11-03 (BAL13, after BAL12's RAR-1 rarities): a chosen deck that left the map's pool (a card now over the map's rarity cap) or holds more
+// copies than its new copy cap gives those copies to the pool's nearest card (tools/bal13/decks_2026_11_02.js swapOut, Lumber / Wait / 2A + H);
+// the build files are rewritten (each changed deck notes it), then `collect` again. Their selectWin is from before the swap.
+function fix() {
+  const gm = game(), DK = require('./decks_2026_11_02.js'); let n = 0;
+  for (const e of entries()) { const f = path.join(OUTDIR, e.id + '.json'); if (!fs.existsSync(f)) continue; const j = JSON.parse(fs.readFileSync(f, 'utf8')), map = gm.G.CONQUEST_MAPS.find(m => m.id === e.id), pool = poolOf(gm, map), P = new Set(pool);
+    const cap = O.mapRarityCap(gm, map, 'map'); let ch = false;
+    j.chosen.forEach(c => { if (legal(gm, c.counts, pool)) return; const take = {}; Object.keys(c.counts).forEach(id => { if (!P.has(id)) take[id] = c.counts[id]; else if (c.counts[id] > capOf(gm, id)) take[id] = c.counts[id] - capOf(gm, id); });
+      const r = DK.swapOut(c.counts, take, pool, cap, d => true, new Set(), { maxUnique: MAX_UNIQUE }); if (legal(gm, r.deck, pool)) { c.fixed = '2026-11-03 (BAL13, RAR-1): ' + r.moves.map(v => v.out + ' -' + v.copies + ' -> ' + Object.entries(v.to).map(([x, k]) => x + ' x' + k).join(' + ')).join('; '); c.counts = r.deck; ch = true; n++; } else console.log('still not legal: ' + e.id + ' rank ' + c.rank); });
+    if (ch) fs.writeFileSync(f, JSON.stringify(j, null, 1) + '\n'); }
+  console.log('fixed ' + n + ' decks');
+}
+if (require.main === module) { if (CMD === 'build') build(); else if (CMD === 'collect') collect(); else if (CMD === 'check') check(); else if (CMD === 'fix') fix(); else console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 29).map(l => l.replace(/^\/\/ ?/, '')).join('\n')); }
 module.exports = { poolOf, legal, roadFights, entries, SET, RANKS };

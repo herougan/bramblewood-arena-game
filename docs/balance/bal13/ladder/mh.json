@@ -176,9 +176,10 @@
     "giant-cave-huntsman": 3,
     "cave-olm": 5,
     "river-carp": 2,
-    "dung-beetle": 5,
+    "dung-beetle": 4,
     "coral-polyp-colony": 3,
-    "mangrove-manatee": 2
+    "mangrove-manatee": 2,
+    "fleetfootd": 1
    },
    "from": "sampled q=0.91",
    "selectWin": 64.3,
@@ -191,7 +192,8 @@
     "12-5": 83.3,
     "12-6": 66.7,
     "12-7": 16.7
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): dung-beetle -1 -> fleetfootd x1"
   },
   {
    "rank": 8,
@@ -224,10 +226,11 @@
    "counts": {
     "echo-screecher": 3,
     "raven-scout": 3,
-    "dung-beetle": 5,
+    "dung-beetle": 4,
     "planarian-splitter": 4,
     "blue-ringed-octopus": 3,
-    "parrotfish": 2
+    "parrotfish": 2,
+    "fleetfootd": 1
    },
    "from": "sampled q=1.00",
    "selectWin": 83.3,
@@ -240,7 +243,8 @@
     "12-5": 83.3,
     "12-6": 100,
     "12-7": 83.3
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): dung-beetle -1 -> fleetfootd x1"
   },
   {
    "rank": 10,

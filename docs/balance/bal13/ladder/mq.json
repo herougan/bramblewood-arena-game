@@ -181,12 +181,12 @@
    "rank": 8,
    "counts": {
     "alley-cat": 3,
-    "vampire-bat": 2,
     "nutria-reedcutter": 4,
     "mangrove-monitor": 2,
     "pyrenean-desman": 1,
     "apollo-butterfly": 4,
-    "planarian-splitter": 4
+    "planarian-splitter": 4,
+    "coral-polyp-colony": 2
    },
    "from": "sampled q=1.00",
    "selectWin": 66.7,
@@ -197,7 +197,8 @@
     "1-A-3": 100,
     "1-A-4": 50,
     "1-A-5": 66.7
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): vampire-bat -2 -> coral-polyp-colony x2"
   },
   {
    "rank": 9,
@@ -228,7 +229,7 @@
     "field-vole": 4,
     "hawthorn-shieldbug": 4,
     "slow-worm": 3,
-    "vampire-bat": 2
+    "coral-polyp-colony": 2
    },
    "from": "1-A-PRO-2",
    "selectWin": 90,
@@ -239,7 +240,8 @@
     "1-A-3": 100,
     "1-A-4": 83.3,
     "1-A-5": 83.3
-   }
+   },
+   "fixed": "2026-11-03 (BAL13, RAR-1): vampire-bat -2 -> coral-polyp-colony x2"
   }
  ],
  "candidates": [

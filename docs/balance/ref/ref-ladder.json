@@ -2346,28 +2346,23 @@
      "rank": 8,
      "name": {
       "lead": "planarian-splitter",
-      "tactic": "swarm",
-      "n": 3
+      "tactic": "camp",
+      "n": 1
      },
-     "title": "Planarian Splitter Swarm III",
+     "title": "Planarian Splitter Camp",
      "counts": {
       "alley-cat": 3,
-      "vampire-bat": 2,
       "nutria-reedcutter": 4,
       "mangrove-monitor": 2,
       "pyrenean-desman": 1,
       "apollo-butterfly": 4,
-      "planarian-splitter": 4
+      "planarian-splitter": 4,
+      "coral-polyp-colony": 2
      },
      "parts": [
       [
        "alley-cat",
        3,
-       3
-      ],
-      [
-       "vampire-bat",
-       2,
        3
       ],
       [
@@ -2393,6 +2388,11 @@
       [
        "planarian-splitter",
        4,
+       3
+      ],
+      [
+       "coral-polyp-colony",
+       2,
        3
       ]
      ],
@@ -2466,7 +2466,7 @@
       "field-vole": 4,
       "hawthorn-shieldbug": 4,
       "slow-worm": 3,
-      "vampire-bat": 2
+      "coral-polyp-colony": 2
      },
      "parts": [
       [
@@ -2495,7 +2495,7 @@
        3
       ],
       [
-       "vampire-bat",
+       "coral-polyp-colony",
        2,
        3
       ]
@@ -6418,10 +6418,11 @@
      "counts": {
       "muskrat-reedgatherer": 3,
       "hedgehog-herbalist": 3,
-      "vampire-bat": 4,
+      "vampire-bat": 3,
       "leafcutter-gardener": 5,
       "swordfish-spearman": 3,
-      "gannet-nestweaver": 2
+      "gannet-nestweaver": 2,
+      "otter-centurion": 1
      },
      "parts": [
       [
@@ -6436,7 +6437,7 @@
       ],
       [
        "vampire-bat",
-       4,
+       3,
        3
       ],
       [
@@ -6452,6 +6453,11 @@
       [
        "gannet-nestweaver",
        2,
+       3
+      ],
+      [
+       "otter-centurion",
+       1,
        3
       ]
      ],
@@ -7332,18 +7338,19 @@
     {
      "rank": 7,
      "name": {
-      "lead": "dung-beetle",
+      "lead": "ant-warrior",
       "tactic": "hive",
       "n": 1
      },
-     "title": "Dung Beetle Hive",
+     "title": "Ant Warrior Hive",
      "counts": {
       "newt-doctor": 4,
       "truffle-piglet": 3,
       "ant-warrior": 4,
       "hedgerow-shrew": 2,
       "raven-scout": 2,
-      "dung-beetle": 5
+      "dung-beetle": 4,
+      "fleetfootd": 1
      },
      "parts": [
       [
@@ -7373,7 +7380,12 @@
       ],
       [
        "dung-beetle",
-       5,
+       4,
+       0
+      ],
+      [
+       "fleetfootd",
+       1,
        0
       ]
      ],
@@ -8079,20 +8091,21 @@
     {
      "rank": 10,
      "name": {
-      "lead": "dung-beetle",
+      "lead": "soldier-ant",
       "tactic": "hive",
       "n": 1
      },
-     "title": "Dung Beetle Hive",
+     "title": "Soldier Ant Hive",
      "counts": {
       "chipmunk-cavalry": 1,
-      "dung-beetle": 5,
+      "dung-beetle": 4,
       "guppy": 1,
       "house-cat": 1,
       "otter-centurion": 3,
       "platypus-spur": 1,
       "soldier-ant": 5,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "ant-warrior": 1
      },
      "parts": [
       [
@@ -8102,7 +8115,7 @@
       ],
       [
        "dung-beetle",
-       5,
+       4,
        0
       ],
       [
@@ -8133,6 +8146,11 @@
       [
        "wolf-spider-mother",
        3,
+       0
+      ],
+      [
+       "ant-warrior",
+       1,
        0
       ]
      ],
@@ -10534,11 +10552,11 @@
     {
      "rank": 10,
      "name": {
-      "lead": "reef-shark",
+      "lead": "coral-polyp-colony",
       "tactic": "school",
       "n": 1
      },
-     "title": "Reef Shark School",
+     "title": "Coral Polyp Colony School",
      "counts": {
       "clownfish-scout": 4,
       "coral-polyp-colony": 4,
@@ -11089,11 +11107,11 @@
     {
      "rank": 10,
      "name": {
-      "lead": "newt-doctor",
+      "lead": "coral-polyp-colony",
       "tactic": "school",
       "n": 1
      },
-     "title": "Newt Doctor School",
+     "title": "Coral Polyp Colony School",
      "counts": {
       "coral-polyp-colony": 4,
       "kraken-spawnling": 3,
@@ -12637,9 +12655,10 @@
       "giant-cave-huntsman": 3,
       "cave-olm": 5,
       "river-carp": 2,
-      "dung-beetle": 5,
+      "dung-beetle": 4,
       "coral-polyp-colony": 3,
-      "mangrove-manatee": 2
+      "mangrove-manatee": 2,
+      "fleetfootd": 1
      },
      "parts": [
       [
@@ -12659,7 +12678,7 @@
       ],
       [
        "dung-beetle",
-       5,
+       4,
        3
       ],
       [
@@ -12670,6 +12689,11 @@
       [
        "mangrove-manatee",
        2,
+       3
+      ],
+      [
+       "fleetfootd",
+       1,
        3
       ]
      ],
@@ -12750,18 +12774,19 @@
     {
      "rank": 9,
      "name": {
-      "lead": "dung-beetle",
+      "lead": "planarian-splitter",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Dung Beetle Swarm",
+     "title": "Planarian Splitter Swarm",
      "counts": {
       "echo-screecher": 3,
       "raven-scout": 3,
-      "dung-beetle": 5,
+      "dung-beetle": 4,
       "planarian-splitter": 4,
       "blue-ringed-octopus": 3,
-      "parrotfish": 2
+      "parrotfish": 2,
+      "fleetfootd": 1
      },
      "parts": [
       [
@@ -12776,7 +12801,7 @@
       ],
       [
        "dung-beetle",
-       5,
+       4,
        3
       ],
       [
@@ -12792,6 +12817,11 @@
       [
        "parrotfish",
        2,
+       3
+      ],
+      [
+       "fleetfootd",
+       1,
        3
       ]
      ],
@@ -13641,22 +13671,23 @@
      "rank": 5,
      "name": {
       "lead": "dung-beetle",
-      "tactic": "hive",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Dung Beetle Hive",
+     "title": "Dung Beetle Swarm",
      "counts": {
-      "dung-beetle": 5,
+      "dung-beetle": 4,
       "swordfish-spearman": 3,
       "tunnel-ant": 3,
       "mountain-hare": 4,
       "raven-scout": 3,
-      "archerfish": 2
+      "archerfish": 2,
+      "fleetfootd": 1
      },
      "parts": [
       [
        "dung-beetle",
-       5,
+       4,
        3
       ],
       [
@@ -13682,6 +13713,11 @@
       [
        "archerfish",
        2,
+       3
+      ],
+      [
+       "fleetfootd",
+       1,
        3
       ]
      ],
@@ -17418,7 +17454,8 @@
       "redwood-woodpecker": 4,
       "weaver-bird": 5,
       "obsidian-scorpion": 1,
-      "magma-salamander": 3
+      "magma-salamander": 2,
+      "bramblewood-lynx": 1
      },
      "parts": [
       [
@@ -17453,13 +17490,18 @@
       ],
       [
        "magma-salamander",
-       2,
+       1,
        4
       ],
       [
        "magma-salamander",
        1,
        5
+      ],
+      [
+       "bramblewood-lynx",
+       1,
+       4
       ]
      ],
      "leader": "wolfsbane-alpha",
@@ -17469,17 +17511,18 @@
     {
      "rank": 8,
      "name": {
-      "lead": "dung-beetle",
+      "lead": "spitting-spider",
       "tactic": "hive",
       "n": 1
      },
-     "title": "Dung Beetle Hive",
+     "title": "Spitting Spider Hive",
      "counts": {
       "spitting-spider": 4,
       "apollo-butterfly": 4,
       "taiga-lynx": 3,
-      "dung-beetle": 5,
-      "cottontail": 4
+      "dung-beetle": 4,
+      "cottontail": 4,
+      "fleetfootd": 1
      },
      "parts": [
       [
@@ -17504,7 +17547,7 @@
       ],
       [
        "dung-beetle",
-       5,
+       4,
        4
       ],
       [
@@ -17516,6 +17559,11 @@
        "cottontail",
        1,
        5
+      ],
+      [
+       "fleetfootd",
+       1,
+       4
       ]
      ],
      "leader": "wolfsbane-alpha",
@@ -20036,11 +20084,11 @@
      "title": "Fire Salamander Brood",
      "counts": {
       "eagle-owl-quartermaster": 3,
-      "echidna-quillshot": 1,
       "fire-salamander": 4,
       "cinder-stoker": 4,
       "talus-pika": 4,
-      "pumice-beetle": 4
+      "pumice-beetle": 4,
+      "anaconda-coil": 1
      },
      "parts": [
       [
@@ -20054,11 +20102,6 @@
        4
       ],
       [
-       "echidna-quillshot",
-       1,
-       4
-      ],
-      [
        "fire-salamander",
        1,
        3
@@ -20090,13 +20133,18 @@
       ],
       [
        "pumice-beetle",
-       2,
+       1,
        3
       ],
       [
        "pumice-beetle",
-       2,
+       3,
        4
+      ],
+      [
+       "anaconda-coil",
+       1,
+       3
       ]
      ],
      "leader": "yeti-chieftain",
@@ -21654,11 +21702,11 @@
     {
      "rank": 10,
      "name": {
-      "lead": "alley-cat",
+      "lead": "thorny-devil",
       "tactic": "brood",
       "n": 1
      },
-     "title": "Alley Cat Brood",
+     "title": "Thorny Devil Brood",
      "counts": {
       "alley-cat": 4,
       "swordfish-spearman": 3,
@@ -22889,11 +22937,12 @@
       "stoat-cutthroat": 3,
       "muskrat-reedgatherer": 4,
       "ibex-rockcaller": 2,
-      "magma-salamander": 3,
+      "magma-salamander": 2,
       "planarian-splitter": 2,
       "terrier-pup": 4,
       "newt-doctor": 1,
-      "chipmunk-hoarder": 1
+      "chipmunk-hoarder": 1,
+      "tide-spirit": 1
      },
      "parts": [
       [
@@ -22918,7 +22967,7 @@
       ],
       [
        "magma-salamander",
-       3,
+       2,
        4
       ],
       [
@@ -22943,6 +22992,11 @@
       ],
       [
        "chipmunk-hoarder",
+       1,
+       4
+      ],
+      [
+       "tide-spirit",
        1,
        4
       ]
