@@ -1,0 +1,265 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:01:24.396Z",
+ "map": {
+  "id": "m7",
+  "num": 10,
+  "name": "Coral Current"
+ },
+ "level": 1,
+ "pool": [
+  "banded-sea-krait",
+  "clownfish-scout",
+  "colossal-squid",
+  "coral-polyp-colony",
+  "coral-reef-shark",
+  "electric-ray",
+  "great-barracuda",
+  "kraken-spawnling",
+  "mangrove-manatee",
+  "open-ocean-hermit-crab",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-admiral",
+  "reef-shark",
+  "riptide-eel",
+  "swordfish-spearman"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|m7",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:10-1",
+   "label": "vs 10-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:10-2",
+   "label": "vs 10-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:10-3",
+   "label": "vs 10-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:10-4",
+   "label": "vs 10-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:10-5",
+   "label": "vs 10-5 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:10-6",
+   "label": "vs 10-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:10-7",
+   "label": "vs 10-7 elite's deck"
+  },
+  {
+   "key": "mirror|fight:10-8",
+   "label": "vs 10-8 elite's deck"
+  },
+  {
+   "key": "mirror|fight:10-9",
+   "label": "vs 10-9 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 10-1's field"
+  },
+  {
+   "key": "mirror|ref:road10",
+   "label": "vs reference deck (Map 10) under 10-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field"
+  }
+ ],
+ "steps": 3,
+ "moves": 0,
+ "games": 2112,
+ "seconds": 17,
+ "weak": [
+  {
+   "deck": {
+    "banded-sea-krait": 4,
+    "colossal-squid": 2,
+    "electric-ray": 2,
+    "kraken-spawnling": 4,
+    "orca-vanguard": 4,
+    "reef-shark": 4
+   },
+   "score": 0.066,
+   "ci": [
+    0.0434,
+    0.0885
+   ],
+   "vsRef": 0,
+   "refWins": 1,
+   "labels": [
+    "big (10 copies at 3+ Lumber, average 2.3)",
+    "tide x10",
+    "cleave x10"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-1",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-2",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-4",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-5",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-6",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-7",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-8",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-9",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road10",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "10-BPRO-1",
+  "deck": {
+   "clownfish-scout": 3,
+   "coral-polyp-colony": 4,
+   "electric-ray": 4,
+   "kraken-spawnling": 3,
+   "parrotfish": 3,
+   "swordfish-spearman": 3
+  },
+  "score": 0.8125,
+  "ci": [
+   0.7732,
+   0.8518
+  ],
+  "vsRef": 0.5694,
+  "refWins": 0.4306,
+  "labels": [
+   "economy (4 resource makers)",
+   "tide x13",
+   "cleave x6"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:10-1",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-2",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-3",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-4",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-5",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-6",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-7",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-8",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-9",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road10",
+    "p": 0.375,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.4167,
+    "n": 24
+   }
+  ]
+ }
+}

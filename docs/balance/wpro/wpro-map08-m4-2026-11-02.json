@@ -1,6 +1,6 @@
 {
  "tool": "tools/opt/wpro_2026_11_02.js",
- "generated": "2026-11-02T08:00:10.499Z",
+ "generated": "2026-11-02T08:19:55.164Z",
  "map": {
   "id": "m4",
   "num": 8,
@@ -33,7 +33,7 @@
  },
  "settings": {
   "seed": "wpro|m4",
-  "budget": 1200,
+  "budget": 4000,
   "finalGames": 24,
   "apart": 6
  },
@@ -83,35 +83,36 @@
    "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field"
   }
  ],
- "steps": 3,
- "moves": 2,
- "games": 2024,
- "seconds": 40,
+ "steps": 11,
+ "moves": 6,
+ "games": 4840,
+ "seconds": 79,
  "weak": [
   {
    "deck": {
-    "hollow-belly-rat": 4,
+    "blind-cave-fish": 4,
+    "hollow-belly-rat": 2,
     "malachite-golem": 3,
     "octopus-tactician": 4,
     "pelican-diver": 3,
-    "stalactite-golem": 4,
-    "sulfur-cinder-moth": 2
+    "stalactite-golem": 4
    },
-   "score": 0.2727,
+   "score": 0.197,
    "ci": [
-    0.2225,
-    0.3229
+    0.1529,
+    0.241
    ],
-   "vsRef": 0.125,
-   "refWins": 0.875,
+   "vsRef": 0.0694,
+   "refWins": 0.9306,
    "labels": [
-    "big (20 copies at 1+ Lumber, average 1.6)",
+    "big (16 copies at 1+ Lumber, average 1.4)",
+    "tide x8",
     "armor x7"
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:8-1",
-     "p": 0.4583,
+     "p": 0.2917,
      "n": 24
     },
     {
@@ -121,100 +122,101 @@
     },
     {
      "entry": "mirror|fight:8-3",
-     "p": 0.5,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-4",
-     "p": 0.2917,
+     "p": 0.125,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-5",
-     "p": 0.2083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-6",
-     "p": 0.3333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-7",
-     "p": 0.5,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-8",
      "p": 0.2917,
      "n": 24
     },
     {
-     "entry": "mirror|ref:starter",
+     "entry": "mirror|fight:8-6",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
      "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0,
      "n": 24
     },
     {
      "entry": "mirror|ref:road8",
-     "p": 0.0833,
+     "p": 0.0417,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
-     "p": 0.2083,
+     "p": 0.1667,
      "n": 24
     }
    ]
   },
   {
    "deck": {
-    "giant-cave-huntsman": 2,
     "hollow-belly-rat": 4,
     "malachite-golem": 3,
+    "octopus-tactician": 2,
     "pelican-diver": 3,
-    "quarry-mole": 4,
-    "stalactite-golem": 4
+    "stalactite-golem": 4,
+    "sulfur-cinder-moth": 4
    },
-   "score": 0.4034,
+   "score": 0.3106,
    "ci": [
-    0.3512,
-    0.4556
+    0.2611,
+    0.3601
    ],
-   "vsRef": 0.1667,
-   "refWins": 0.8333,
+   "vsRef": 0.0972,
+   "refWins": 0.9028,
    "labels": [
     "big (20 copies at 1+ Lumber, average 1.4)",
-    "armor x7"
+    "armor x7",
+    "flying x7"
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:8-1",
-     "p": 0.75,
+     "p": 0.4167,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-2",
-     "p": 0.2083,
+     "p": 0.0833,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-3",
-     "p": 0.75,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-4",
-     "p": 0.375,
+     "p": 0.25,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-5",
-     "p": 0.5417,
+     "p": 0.25,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-6",
-     "p": 0.4583,
+     "p": 0.5,
      "n": 24
     },
     {
@@ -224,22 +226,22 @@
     },
     {
      "entry": "mirror|fight:8-8",
-     "p": 0.2292,
+     "p": 0.2917,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
-     "p": 0.0833,
+     "p": 0.0417,
      "n": 24
     },
     {
      "entry": "mirror|ref:road8",
-     "p": 0.3333,
+     "p": 0.125,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
-     "p": 0.0833,
+     "p": 0.125,
      "n": 24
     }
    ]

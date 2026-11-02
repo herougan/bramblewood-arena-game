@@ -69,6 +69,6 @@ Guardian priced 0 (Mangrove Manatee, Thorny Devil, Grey Seal Bull before); Trap 
 its home map (`run.sh measure --skills freeze,shatter --map m6`, `guardian --map mj`) and raise to the reading (the CONDITIONAL rule).
 
 ## Cards re-fitted to the fixed budget (BAL11-2; each stat within 2)
-Owl Nightwatch 1/5 -> 1/3, Beetle Battering-Ram 4/11 -> 3/9, Moray Ambusher 4/5 -> 3/3, Raccoon Nightcrew 3/6 -> 2/4 (the last two were
-already over their budget before the fix). Flagged, not changed (no fit within 2 a stat that keeps the body shape): Subterraneaner 4/8
+Owl Nightwatch 1/5 -> 1/3, Beetle Battering-Ram 4/11 -> 3/9. Moray Ambusher (4/5) and Raccoon Nightcrew (3/6), over their budget before
+the fix and further now, are out of play (on no list) and were left. Flagged, not changed (no fit within 2 a stat that keeps the body shape): Subterraneaner 4/8
 (fits at 2/6 or 3/3), Glass Octopus 4/9 (3/9, a raid card), Badger Sapper 3/15 (2/14). No owner-named card moved.

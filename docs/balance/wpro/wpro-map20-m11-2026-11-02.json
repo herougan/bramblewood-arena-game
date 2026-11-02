@@ -1,0 +1,280 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:09:15.277Z",
+ "map": {
+  "id": "m11",
+  "num": 20,
+  "name": "The Sundered Peak"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-cloud-condor",
+  "ash-moth",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "glacier-wolf-pack",
+  "gorge-wyrm",
+  "magma-salamander",
+  "magma-wraith",
+  "ossuary-lammergeier",
+  "pack-mule",
+  "pit-glutton",
+  "pumice-beetle",
+  "stalactite-golem",
+  "vampire-roost",
+  "woodland-brawler"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|m11",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-1",
+   "label": "vs 20-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:20-2",
+   "label": "vs 20-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:20-3",
+   "label": "vs 20-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:20-4",
+   "label": "vs 20-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:20-5",
+   "label": "vs 20-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:20-6",
+   "label": "vs 20-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:20-7",
+   "label": "vs 20-7 elite's deck"
+  },
+  {
+   "key": "mirror|fight:20-8",
+   "label": "vs 20-8 elite's deck"
+  },
+  {
+   "key": "mirror|fight:20-9",
+   "label": "vs 20-9 boss's deck"
+  },
+  {
+   "key": "mirror|fight:20-10",
+   "label": "vs 20-10 worldboss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-1's field"
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field"
+  }
+ ],
+ "steps": 2,
+ "moves": 0,
+ "games": 1768,
+ "seconds": 37,
+ "weak": [
+  {
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "ash-cloud-condor": 3,
+    "deep-cave-troll": 4,
+    "glacier-wolf-pack": 4,
+    "gorge-wyrm": 4,
+    "stalactite-golem": 1
+   },
+   "score": 0.0256,
+   "ci": [
+    0.0081,
+    0.0432
+   ],
+   "vsRef": 0.0139,
+   "refWins": 0.9861,
+   "labels": [
+    "big (12 copies at 3+ Lumber, average 2.5)",
+    "siege x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-1",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-2",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-3",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-4",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-5",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-6",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-7",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-8",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-9",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-10",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.0417,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "20-BPRO-1",
+  "deck": {
+   "cinder-skeleton": 4,
+   "cinder-stoker": 4,
+   "magma-salamander": 3,
+   "ossuary-lammergeier": 1,
+   "pack-mule": 4,
+   "pumice-beetle": 4
+  },
+  "score": 0.6971,
+  "ci": [
+   0.6534,
+   0.7409
+  ],
+  "vsRef": 0.6528,
+  "refWins": 0.3472,
+  "labels": [
+   "economy (8 resource makers)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:20-1",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-2",
+    "p": 0.7083,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-3",
+    "p": 0.8958,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-4",
+    "p": 0.5,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-5",
+    "p": 0.7083,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-6",
+    "p": 0.7917,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-7",
+    "p": 0.4583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-8",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-9",
+    "p": 0.7917,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-10",
+    "p": 0.5417,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road20",
+    "p": 0.0833,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.875,
+    "n": 24
+   }
+  ]
+ }
+}

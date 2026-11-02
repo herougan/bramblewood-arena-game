@@ -1,0 +1,220 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:08:08.485Z",
+ "map": {
+  "id": "m3",
+  "num": 19,
+  "name": "Ashen Spurn"
+ },
+ "level": 1,
+ "pool": [
+  "cinder-stoker",
+  "echidna-quillshot",
+  "fire-salamander",
+  "glacial-ape-king",
+  "glacier-wolf-pack",
+  "granite-ox-golem",
+  "hercules-beetle",
+  "magma-titan",
+  "obsidian-scorpion",
+  "pit-glutton",
+  "pumice-beetle",
+  "sulfur-cinder-moth",
+  "talus-pika",
+  "yeti",
+  "yeti-chieftain"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|m3",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:19-1",
+   "label": "vs 19-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:19-2",
+   "label": "vs 19-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:19-3",
+   "label": "vs 19-3 elite's deck"
+  },
+  {
+   "key": "mirror|fight:19-4",
+   "label": "vs 19-4 elite's deck"
+  },
+  {
+   "key": "mirror|fight:19-5",
+   "label": "vs 19-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:19-6",
+   "label": "vs 19-6 miniboss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 19-1's field"
+  },
+  {
+   "key": "mirror|ref:road19",
+   "label": "vs reference deck (Map 19) under 19-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field"
+  }
+ ],
+ "steps": 4,
+ "moves": 1,
+ "games": 1692,
+ "seconds": 24,
+ "weak": [
+  {
+   "deck": {
+    "fire-salamander": 4,
+    "glacial-ape-king": 4,
+    "glacier-wolf-pack": 4,
+    "granite-ox-golem": 1,
+    "magma-titan": 4,
+    "pit-glutton": 3
+   },
+   "score": 0.0787,
+   "ci": [
+    0.044,
+    0.1134
+   ],
+   "vsRef": 0.0417,
+   "refWins": 0.9583,
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 2.3)",
+    "bleed x8",
+    "fire x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "19-BPRO-1",
+  "deck": {
+   "cinder-stoker": 4,
+   "hercules-beetle": 3,
+   "obsidian-scorpion": 2,
+   "pit-glutton": 3,
+   "pumice-beetle": 4,
+   "talus-pika": 4
+  },
+  "score": 0.8935,
+  "ci": [
+   0.8627,
+   0.9243
+  ],
+  "vsRef": 0.7083,
+  "refWins": 0.2917,
+  "labels": [
+   "economy (8 resource makers)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:19-1",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-2",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-3",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-4",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-5",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-6",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road19",
+    "p": 0.3333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.7917,
+    "n": 24
+   }
+  ]
+ }
+}

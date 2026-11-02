@@ -70,7 +70,10 @@ function apply(gm, opt) {
   for (const m of selectMaps(gm, opt.maps)) { const f = outFileOf(gm, m), ent = file.maps[m.id]; if (!ent || !fs.existsSync(f)) continue;
     const res = JSON.parse(fs.readFileSync(f, 'utf8')); if (res.none) { ent.wpro = []; continue; }
     const pre = P.proPrefix(gm, m);
-    ent.wpro = res.weak.map((w, i) => ({ id: `${pre}-WPRO-${i + 1}`, name: `${pre}-WPRO-${i + 1}`, focus: 'weak', labels: w.labels, level: LEVEL, leaders: [], deck: w.deck,
+    // the second deck only when it is weak too: at most max(30%, the weakest + 10 points)
+    const sorted = res.weak.slice().sort((a, b) => a.score - b.score); // by the final's score (the search picked them at 8 games an entry)
+    const weak = sorted.filter((w, i) => i === 0 || w.score <= Math.max(0.3, sorted[0].score + 0.1));
+    ent.wpro = weak.map((w, i) => ({ id: `${pre}-WPRO-${i + 1}`, name: `${pre}-WPRO-${i + 1}`, focus: 'weak', labels: w.labels, level: LEVEL, leaders: [], deck: w.deck,
       source: { file: path.relative(ROOT, f), mode: 'wpro', tool: res.tool, score: w.score, ci: w.ci, refWins: w.refWins, generated: res.generated }, h2h: null, later: [] }));
     n++; console.log(`${m.id}: ${ent.wpro.map(w => w.id + ' ' + w.source.score).join('; ')}`); }
   file.wpro = { rule: Object.assign({}, RULE, { noBaby: true }), tool: 'tools/opt/wpro_2026_11_02.js', note: 'BAL11 (owner 11-02 14:26): the weakest legal decks of each map\'s list (no Baby cards), on BPRO\'s gauntlet; the N-WK fight draws from them.' };
@@ -87,8 +90,8 @@ function checkAll(gm) {
 function summary(gm, opt) {
   const rows = ['| Map | Strong (BPRO-1) deck win | Map reference vs strong | Weak (WPRO-1) deck win | Map reference vs weak | Weak deck |', '|---|---|---|---|---|---|'];
   for (const m of D1.mapsUpTo20(gm, null)) { const f = outFileOf(gm, m); if (!fs.existsSync(f)) continue; const r = JSON.parse(fs.readFileSync(f, 'utf8')), pc = x => x == null ? '-' : Math.round(x * 1000) / 10 + '%';
-    if (r.none) { rows.push(`| ${r.map.num} ${m.sub ? m.id + ' ' : ''}${m.name} | - | - | - | - | none: ${r.none} |`); continue; }
-    const w = r.weak[0], s = r.strong; rows.push(`| ${r.map.num} ${m.sub ? m.id + ' ' : ''}${m.name} | ${s ? pc(s.score) : '-'} | ${s ? pc(s.refWins) : '-'} | ${pc(w.score)} | ${pc(w.refWins)} | ${Object.entries(w.deck).map(([k, v]) => v + 'x ' + (gm.D[k] || {}).name).join(', ')} |`); }
+    if (r.none) { rows.push(`| ${gm.G.mapNumberOf(m.id)} ${m.sub ? m.id + ' ' : ''}${m.name} | - | - | - | - | none: ${r.none} |`); continue; }
+    const w = r.weak.slice().sort((a, b) => a.score - b.score)[0], s = r.strong; rows.push(`| ${gm.G.mapNumberOf(m.id)} ${m.sub ? m.id + ' ' : ''}${m.name} | ${s ? pc(s.score) : '-'} | ${s ? pc(s.refWins) : '-'} | ${pc(w.score)} | ${pc(w.refWins)} | ${Object.entries(w.deck).map(([k, v]) => v + 'x ' + (gm.D[k] || {}).name).join(', ')} |`); }
   const txt = rows.join('\n'); if (opt.md) fs.writeFileSync(opt.md, txt + '\n'); console.log(txt);
 }
 async function main(argv) {

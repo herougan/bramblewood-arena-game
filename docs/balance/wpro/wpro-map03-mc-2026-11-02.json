@@ -1,6 +1,6 @@
 {
  "tool": "tools/opt/wpro_2026_11_02.js",
- "generated": "2026-11-02T07:34:14.106Z",
+ "generated": "2026-11-02T08:17:24.889Z",
  "map": {
   "id": "mc",
   "num": 3,
@@ -32,7 +32,7 @@
  },
  "settings": {
   "seed": "wpro|mc",
-  "budget": 1200,
+  "budget": 4000,
   "finalGames": 24,
   "apart": 6
  },
@@ -78,11 +78,84 @@
    "label": "vs expected player deck (expectedPlayerDeck) under 3-3's field"
   }
  ],
- "steps": 3,
- "moves": 1,
- "games": 1800,
- "seconds": 32,
+ "steps": 13,
+ "moves": 6,
+ "games": 4680,
+ "seconds": 89,
  "weak": [
+  {
+   "deck": {
+    "gannet-nestweaver": 4,
+    "gull-thief": 4,
+    "razorbill": 4,
+    "red-billed-chough": 4,
+    "the-gannet-queen": 4
+   },
+   "score": 0.1542,
+   "ci": [
+    0.1125,
+    0.1958
+   ],
+   "vsRef": 0.2639,
+   "refWins": 0.7361,
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)",
+    "economy (8 resource makers)",
+    "flying x20"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:3-1",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-2",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-3",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-4",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-5",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-6",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-7",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.25,
+     "n": 24
+    }
+   ]
+  },
   {
    "deck": {
     "gull-thief": 4,
@@ -152,80 +225,6 @@
     {
      "entry": "mirror|ref:expected",
      "p": 0.3333,
-     "n": 24
-    }
-   ]
-  },
-  {
-   "deck": {
-    "gannet-nestweaver": 2,
-    "hawk-arrowkeeper": 4,
-    "peregrine-stooper": 4,
-    "puffin-diver": 4,
-    "razorbill": 2,
-    "the-gannet-queen": 4
-   },
-   "score": 0.4208,
-   "ci": [
-    0.3646,
-    0.4771
-   ],
-   "vsRef": 0.4167,
-   "refWins": 0.5833,
-   "labels": [
-    "big (18 copies at 1+ Lumber, average 1.1)",
-    "flying x20",
-    "strike-first x8"
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:3-1",
-     "p": 0.2917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:3-2",
-     "p": 0.625,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:3-3",
-     "p": 0.4583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:3-4",
-     "p": 0.1667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:3-5",
-     "p": 0.5417,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:3-6",
-     "p": 0.5,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:3-7",
-     "p": 0.375,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road3",
-     "p": 0,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "p": 0.4583,
      "n": 24
     }
    ]

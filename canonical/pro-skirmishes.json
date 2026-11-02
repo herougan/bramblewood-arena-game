@@ -761,6 +761,40 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "0-WPRO-1",
+     "name": "0-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "midrange (average 0.0 Lumber)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "beaver-lumberjack": 3,
+      "bee-forager": 1,
+      "bee-sentry": 4,
+      "chipmunk-forager": 4,
+      "earthworm": 4,
+      "worker-ant": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map00-m1-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0694,
+      "ci": [
+       0.0299,
+       0.109
+      ],
+      "refWins": 0.875,
+      "generated": "2026-11-02T07:31:20.800Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mo": {
@@ -1473,7 +1507,8 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
-   ]
+   ],
+   "wpro": []
   },
   "mf": {
    "map": 1,
@@ -2279,6 +2314,41 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "1-WPRO-1",
+     "name": "1-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (14 copies at 1 Lumber, average 0.7)",
+      "economy (4 resource makers)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "badger-lumberjack": 4,
+      "chipmunk-cavalry": 2,
+      "field-vole": 2,
+      "hollow-belly-rat": 4,
+      "meadow-rabbit": 4,
+      "owl-sentinel": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map01-mf-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0781,
+      "ci": [
+       0.0418,
+       0.1144
+      ],
+      "refWins": 0.8333,
+      "generated": "2026-11-02T07:31:45.737Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mq": {
@@ -2674,6 +2744,40 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "1-A-WPRO-1",
+     "name": "1-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.8)",
+      "economy (4 resource makers)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "ant-hill": 4,
+      "badger-lumberjack": 4,
+      "cottontail": 4,
+      "lucky-hopper": 4,
+      "slow-worm": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map01-mq-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0885,
+      "ci": [
+       0.0519,
+       0.1252
+      ],
+      "refWins": 0.8056,
+      "generated": "2026-11-02T07:32:10.591Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mb": {
@@ -2710,7 +2814,6 @@
      "focus": "open",
      "labels": [
       "swarm (16 copies at 0 Lumber)",
-      "economy (4 resource makers)",
       "tide x10"
      ],
      "level": 1,
@@ -2718,25 +2821,25 @@
       "conch-herald"
      ],
      "deck": {
-      "alley-cat": 2,
-      "burrow-rabbit": 4,
-      "conch-crawler": 2,
       "conch-herald": 4,
-      "driftwood-crab": 4,
-      "ember-tetra": 4
+      "cricket-drummer": 4,
+      "driftwood-crab": 2,
+      "fleetfootd": 2,
+      "open-ocean-hermit-crab": 4,
+      "river-carp": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mb-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mb --pool alley-cat,badger-lumberjack,beaver-lumberjack,bee-forager,bramble-sprout,briarback-hedgehog,burrow-rabbit,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,duck-paddler,ember-tetra,fiddler-crab-swarm,fleetfootd,garden-snail,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,river-carp,robin-redbreast,rock-pool-starfish,sea-turtle-elder,terrier-pup,tidepool-trapper-crab,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor badger-lumberjack,beaver-lumberjack,bramble-sprout,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,fiddler-crab-swarm,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tidepool-trapper-crab --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.9167,
+      "reproduce": "node tools/bench/bench.js deck --map mb --pool alley-cat,badger-lumberjack,beaver-lumberjack,bee-forager,bramble-sprout,burrow-rabbit,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,duck-paddler,fiddler-crab-swarm,fleetfootd,garden-snail,grey-seal-bull,gull-thief,guppy,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,river-carp,robin-redbreast,rock-pool-starfish,sea-turtle-elder,terrier-pup,tidepool-trapper-crab,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor badger-lumberjack,beaver-lumberjack,bramble-sprout,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,fiddler-crab-swarm,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tidepool-trapper-crab --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.8073,
       "ci": [
-       0.8832,
-       0.9501
+       0.7578,
+       0.8567
       ],
       "avgLumber": 0.2,
-      "generated": "2026-11-02T07:45:50.158Z"
+      "generated": "2026-11-02T08:55:21.014Z"
      },
      "h2h": null,
      "later": []
@@ -2747,32 +2850,33 @@
      "focus": "big",
      "labels": [
       "big (8 copies at 1+ Lumber, average 0.4)",
-      "tide x12"
+      "economy (8 resource makers)",
+      "tide x10"
      ],
      "level": 1,
      "leaders": [
       "conch-herald"
      ],
      "deck": {
-      "beaver-lumberjack": 2,
-      "bee-forager": 2,
-      "briarback-hedgehog": 4,
+      "badger-lumberjack": 4,
+      "beaver-lumberjack": 4,
       "conch-herald": 4,
-      "ember-tetra": 4,
+      "duck-paddler": 2,
+      "fleetfootd": 2,
       "pincushion-urchin": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mb-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mb --pool alley-cat,badger-lumberjack,beaver-lumberjack,bee-forager,bramble-sprout,briarback-hedgehog,burrow-rabbit,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,duck-paddler,ember-tetra,fiddler-crab-swarm,fleetfootd,garden-snail,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,river-carp,robin-redbreast,rock-pool-starfish,sea-turtle-elder,terrier-pup,tidepool-trapper-crab,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor badger-lumberjack,beaver-lumberjack,bramble-sprout,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,fiddler-crab-swarm,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tidepool-trapper-crab --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.9063,
+      "reproduce": "node tools/bench/bench.js deck --map mb --pool alley-cat,badger-lumberjack,beaver-lumberjack,bee-forager,bramble-sprout,burrow-rabbit,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,duck-paddler,fiddler-crab-swarm,fleetfootd,garden-snail,grey-seal-bull,gull-thief,guppy,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,river-carp,robin-redbreast,rock-pool-starfish,sea-turtle-elder,terrier-pup,tidepool-trapper-crab,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor badger-lumberjack,beaver-lumberjack,bramble-sprout,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,fiddler-crab-swarm,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tidepool-trapper-crab --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.7604,
       "ci": [
-       0.8714,
-       0.9411
+       0.7104,
+       0.8104
       ],
       "avgLumber": 0.4,
-      "generated": "2026-11-02T07:45:50.158Z"
+      "generated": "2026-11-02T08:55:21.014Z"
      },
      "h2h": null,
      "later": []
@@ -2782,7 +2886,7 @@
      "name": "2-PRO-3",
      "focus": "economy",
      "labels": [
-      "swarm (16 copies at 0 Lumber)",
+      "swarm (14 copies at 0 Lumber)",
       "economy (6 resource makers)",
       "tide x12"
      ],
@@ -2791,25 +2895,25 @@
       "conch-herald"
      ],
      "deck": {
-      "beaver-lumberjack": 2,
+      "badger-lumberjack": 2,
+      "bramble-sprout": 2,
       "conch-herald": 4,
-      "ember-tetra": 4,
+      "fleetfootd": 4,
       "gull-thief": 4,
-      "pincushion-urchin": 4,
-      "terrier-pup": 2
+      "pincushion-urchin": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mb-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mb --pool alley-cat,badger-lumberjack,beaver-lumberjack,bee-forager,bramble-sprout,briarback-hedgehog,burrow-rabbit,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,duck-paddler,ember-tetra,fiddler-crab-swarm,fleetfootd,garden-snail,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,river-carp,robin-redbreast,rock-pool-starfish,sea-turtle-elder,terrier-pup,tidepool-trapper-crab,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor badger-lumberjack,beaver-lumberjack,bramble-sprout,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,fiddler-crab-swarm,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tidepool-trapper-crab --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.8698,
+      "reproduce": "node tools/bench/bench.js deck --map mb --pool alley-cat,badger-lumberjack,beaver-lumberjack,bee-forager,bramble-sprout,burrow-rabbit,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,duck-paddler,fiddler-crab-swarm,fleetfootd,garden-snail,grey-seal-bull,gull-thief,guppy,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,river-carp,robin-redbreast,rock-pool-starfish,sea-turtle-elder,terrier-pup,tidepool-trapper-crab,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor badger-lumberjack,beaver-lumberjack,bramble-sprout,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,fiddler-crab-swarm,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tidepool-trapper-crab --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.7552,
       "ci": [
-       0.8278,
-       0.9118
+       0.7041,
+       0.8063
       ],
-      "avgLumber": 0.2,
-      "generated": "2026-11-02T07:45:50.158Z"
+      "avgLumber": 0.3,
+      "generated": "2026-11-02T08:55:21.014Z"
      },
      "h2h": null,
      "later": []
@@ -2819,34 +2923,34 @@
      "name": "2-PRO-4",
      "focus": "swarm",
      "labels": [
-      "swarm (20 copies at 0 Lumber)",
-      "economy (4 resource makers)",
-      "tide x12"
+      "swarm (14 copies at 0 Lumber)",
+      "tide x16",
+      "armor x8"
      ],
      "level": 1,
      "leaders": [
-      "ember-tetra"
+      "grey-seal-bull"
      ],
      "deck": {
-      "burrow-rabbit": 3,
-      "driftwood-crab": 4,
-      "ember-tetra": 4,
+      "bee-forager": 2,
       "fiddler-crab-swarm": 4,
-      "pincushion-urchin": 4,
-      "terrier-pup": 1
+      "fleetfootd": 4,
+      "grey-seal-bull": 4,
+      "open-ocean-hermit-crab": 4,
+      "oystercatcher": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map02-mb-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mb --pool alley-cat,badger-lumberjack,beaver-lumberjack,bee-forager,bramble-sprout,briarback-hedgehog,burrow-rabbit,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,duck-paddler,ember-tetra,fiddler-crab-swarm,fleetfootd,garden-snail,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,river-carp,robin-redbreast,rock-pool-starfish,sea-turtle-elder,terrier-pup,tidepool-trapper-crab,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor badger-lumberjack,beaver-lumberjack,bramble-sprout,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,fiddler-crab-swarm,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tidepool-trapper-crab --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.8542,
+      "reproduce": "node tools/bench/bench.js deck --map mb --pool alley-cat,badger-lumberjack,beaver-lumberjack,bee-forager,bramble-sprout,burrow-rabbit,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,duck-paddler,fiddler-crab-swarm,fleetfootd,garden-snail,grey-seal-bull,gull-thief,guppy,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,river-carp,robin-redbreast,rock-pool-starfish,sea-turtle-elder,terrier-pup,tidepool-trapper-crab,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor badger-lumberjack,beaver-lumberjack,bramble-sprout,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,fiddler-crab-swarm,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tidepool-trapper-crab --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.6667,
       "ci": [
-       0.8114,
-       0.8969
+       0.6083,
+       0.7251
       ],
-      "avgLumber": 0,
-      "generated": "2026-11-02T07:45:50.158Z"
+      "avgLumber": 0.3,
+      "generated": "2026-11-02T08:55:21.014Z"
      },
      "h2h": null,
      "later": []
@@ -3793,6 +3897,74 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
     }
+   ],
+   "wpro": [
+    {
+     "id": "2-WPRO-1",
+     "name": "2-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.8)",
+      "armor x12",
+      "tide x12"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "fiddler-crab-swarm": 4,
+      "old-shell": 4,
+      "oystercatcher": 4,
+      "rock-pool-starfish": 4,
+      "sea-turtle-elder": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map02-mb-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0937,
+      "ci": [
+       0.0537,
+       0.1338
+      ],
+      "refWins": 0.9583,
+      "generated": "2026-11-02T07:32:35.335Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "2-WPRO-2",
+     "name": "2-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.8)",
+      "tide x12",
+      "armor x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "cricket-drummer": 4,
+      "grey-seal-bull": 4,
+      "old-shell": 4,
+      "rock-pool-starfish": 4,
+      "sea-turtle-elder": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map02-mb-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1406,
+      "ci": [
+       0.0938,
+       0.1875
+      ],
+      "refWins": 0.8889,
+      "generated": "2026-11-02T07:32:35.335Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mg": {
@@ -4558,6 +4730,75 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "2-B-WPRO-1",
+     "name": "2-B-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.2)",
+      "tide x12",
+      "armor x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "octopus-tactician": 4,
+      "old-shell": 4,
+      "pelican-diver": 4,
+      "rock-pool-starfish": 4,
+      "sea-turtle-elder": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map02-mg-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0536,
+      "ci": [
+       0.0215,
+       0.0856
+      ],
+      "refWins": 0.9722,
+      "generated": "2026-11-02T07:33:05.985Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "2-B-WPRO-2",
+     "name": "2-B-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (14 copies at 1+ Lumber, average 1.0)",
+      "armor x14",
+      "tide x12"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "fiddler-crab-swarm": 2,
+      "octopus-tactician": 2,
+      "old-shell": 4,
+      "open-ocean-hermit-crab": 4,
+      "pelican-diver": 4,
+      "sea-turtle-elder": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map02-mg-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.244,
+      "ci": [
+       0.1854,
+       0.3027
+      ],
+      "refWins": 0.8194,
+      "generated": "2026-11-02T07:33:05.985Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mp": {
@@ -5132,6 +5373,41 @@
        ]
       }
      ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "2-A-WPRO-1",
+     "name": "2-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "economy (4 resource makers)",
+      "guard x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "grey-seal-bull": 4,
+      "lodge-engineer": 4,
+      "old-shell": 4,
+      "platypus-spur": 4,
+      "riverworks-bastion": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map02-mp-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1167,
+      "ci": [
+       0.0773,
+       0.156
+      ],
+      "refWins": 0.9583,
+      "generated": "2026-11-02T07:33:41.990Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -6189,6 +6465,74 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "3-WPRO-1",
+     "name": "3-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (8 copies at 1+ Lumber, average 0.6)",
+      "economy (8 resource makers)",
+      "flying x20"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "gannet-nestweaver": 4,
+      "gull-thief": 4,
+      "razorbill": 4,
+      "red-billed-chough": 4,
+      "the-gannet-queen": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map03-mc-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1542,
+      "ci": [
+       0.1125,
+       0.1958
+      ],
+      "refWins": 0.7361,
+      "generated": "2026-11-02T08:17:24.889Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "3-WPRO-2",
+     "name": "3-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.0)",
+      "economy (4 resource makers)",
+      "flying x20"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "gull-thief": 4,
+      "hawk-arrowkeeper": 4,
+      "puffin-diver": 4,
+      "razorbill": 4,
+      "the-gannet-queen": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map03-mc-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1958,
+      "ci": [
+       0.1494,
+       0.2423
+      ],
+      "refWins": 0.7083,
+      "generated": "2026-11-02T08:17:24.889Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "m2": {
@@ -7126,6 +7470,76 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
     }
+   ],
+   "wpro": [
+    {
+     "id": "4-WPRO-1",
+     "name": "4-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (19 copies at 1+ Lumber, average 1.1)",
+      "tide x15",
+      "armor x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "muskrat-lodgekeeper": 4,
+      "old-sturgeon": 4,
+      "platypus-spur": 4,
+      "pond-algae": 1,
+      "snapstick-turtle": 4,
+      "stone-turtle-warden": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map04-m2-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1979,
+      "ci": [
+       0.1447,
+       0.2511
+      ],
+      "refWins": 0.7778,
+      "generated": "2026-11-02T08:18:36.466Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "4-WPRO-2",
+     "name": "4-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (15 copies at 1+ Lumber, average 0.9)",
+      "tide x11",
+      "armor x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "field-vole": 1,
+      "muskrat-lodgekeeper": 3,
+      "old-sturgeon": 4,
+      "platypus-spur": 4,
+      "slow-worm": 4,
+      "stone-turtle-warden": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map04-m2-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.2083,
+      "ci": [
+       0.1536,
+       0.2631
+      ],
+      "refWins": 0.8333,
+      "generated": "2026-11-02T08:18:36.466Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mw": {
@@ -7864,6 +8278,40 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
     }
+   ],
+   "wpro": [
+    {
+     "id": "5-WPRO-1",
+     "name": "5-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (12 copies at 2+ Lumber, average 1.8)",
+      "guard x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "anhinga-spearbird": 4,
+      "constrictor-coil": 4,
+      "crocodile-ambusher": 4,
+      "cypress-root-lurker": 4,
+      "venomlord-serpent": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map05-mw-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0792,
+      "ci": [
+       0.0475,
+       0.1108
+      ],
+      "refWins": 0.9861,
+      "generated": "2026-11-02T07:35:07.660Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "ms": {
@@ -8585,6 +9033,39 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
+   ],
+   "wpro": [
+    {
+     "id": "5-A-WPRO-1",
+     "name": "5-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (16 copies at 2+ Lumber, average 2.0)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "anhinga-spearbird": 4,
+      "constrictor-coil": 4,
+      "crocodile-ambusher": 4,
+      "swamp-alligator": 4,
+      "venomlord-serpent": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map05-ms-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.006,
+      "ci": [
+       -0.0075,
+       0.0194
+      ],
+      "refWins": 0.9861,
+      "generated": "2026-11-02T07:35:28.865Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "m8": {
@@ -8617,10 +9098,10 @@
     {
      "id": "6-PRO-1",
      "name": "6-PRO-1",
-     "focus": "swarm",
+     "focus": "economy",
      "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "economy (10 resource makers)"
+      "economy (8 resource makers)",
+      "poison x6"
      ],
      "level": 1,
      "leaders": [
@@ -8628,24 +9109,24 @@
      ],
      "deck": {
       "adder-ambusher": 3,
-      "box-turtle": 4,
-      "constrictor-coil": 3,
+      "camouflage-frog": 2,
       "driftwood-crab": 4,
-      "gannet-nestweaver": 2,
+      "heron-hag": 3,
+      "newt-doctor": 4,
       "nutria-reedcutter": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map06-m8-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m8 --pool adder-ambusher,alley-cat,alligator-gar,anhinga-spearbird,bee-forager,booming-bittern,box-turtle,camouflage-frog,constrictor-coil,driftwood-crab,fen-mink,fire-ant-raft,gannet-nestweaver,grass-snake,heron-hag,lamprey,marsh-harrier,marsh-wisp,meadow-frog,newt-doctor,nutria-reedcutter,otter-centurion,poison-dart-croaker,raft-spider,raven-scout,venomlord-serpent --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,alligator-gar,booming-bittern,camouflage-frog,constrictor-coil,heron-hag,lamprey,marsh-harrier,marsh-wisp,newt-doctor,nutria-reedcutter,poison-dart-croaker,raven-scout,venomlord-serpent --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.9545,
+      "reproduce": "node tools/bench/bench.js deck --map m8 --pool adder-ambusher,alley-cat,alligator-gar,anhinga-spearbird,bee-forager,booming-bittern,box-turtle,camouflage-frog,constrictor-coil,driftwood-crab,fen-mink,fire-ant-raft,gannet-nestweaver,guppy,heron-hag,lamprey,marsh-harrier,marsh-wisp,meadow-frog,newt-doctor,nutria-reedcutter,otter-centurion,poison-dart-croaker,raven-scout,venomlord-serpent,water-vole --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,alligator-gar,booming-bittern,camouflage-frog,constrictor-coil,heron-hag,lamprey,marsh-harrier,marsh-wisp,newt-doctor,nutria-reedcutter,poison-dart-croaker,raven-scout,venomlord-serpent --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.9318,
       "ci": [
-       0.9324,
-       0.9767
+       0.9055,
+       0.9581
       ],
-      "avgLumber": 0.45,
-      "generated": "2026-11-02T07:49:33.599Z"
+      "avgLumber": 0.4,
+      "generated": "2026-11-02T08:57:13.780Z"
      },
      "h2h": null,
      "later": []
@@ -8653,9 +9134,10 @@
     {
      "id": "6-PRO-2",
      "name": "6-PRO-2",
-     "focus": "economy",
+     "focus": "swarm",
      "labels": [
-      "economy (10 resource makers)"
+      "swarm (14 copies at 0 Lumber)",
+      "economy (4 resource makers)"
      ],
      "level": 1,
      "leaders": [
@@ -8663,24 +9145,24 @@
      ],
      "deck": {
       "adder-ambusher": 3,
-      "alligator-gar": 3,
-      "booming-bittern": 4,
-      "driftwood-crab": 4,
-      "gannet-nestweaver": 3,
-      "nutria-reedcutter": 3
+      "anhinga-spearbird": 3,
+      "meadow-frog": 4,
+      "newt-doctor": 3,
+      "nutria-reedcutter": 4,
+      "raven-scout": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map06-m8-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m8 --pool adder-ambusher,alley-cat,alligator-gar,anhinga-spearbird,bee-forager,booming-bittern,box-turtle,camouflage-frog,constrictor-coil,driftwood-crab,fen-mink,fire-ant-raft,gannet-nestweaver,grass-snake,heron-hag,lamprey,marsh-harrier,marsh-wisp,meadow-frog,newt-doctor,nutria-reedcutter,otter-centurion,poison-dart-croaker,raft-spider,raven-scout,venomlord-serpent --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,alligator-gar,booming-bittern,camouflage-frog,constrictor-coil,heron-hag,lamprey,marsh-harrier,marsh-wisp,newt-doctor,nutria-reedcutter,poison-dart-croaker,raven-scout,venomlord-serpent --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.9091,
+      "reproduce": "node tools/bench/bench.js deck --map m8 --pool adder-ambusher,alley-cat,alligator-gar,anhinga-spearbird,bee-forager,booming-bittern,box-turtle,camouflage-frog,constrictor-coil,driftwood-crab,fen-mink,fire-ant-raft,gannet-nestweaver,guppy,heron-hag,lamprey,marsh-harrier,marsh-wisp,meadow-frog,newt-doctor,nutria-reedcutter,otter-centurion,poison-dart-croaker,raven-scout,venomlord-serpent,water-vole --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,alligator-gar,booming-bittern,camouflage-frog,constrictor-coil,heron-hag,lamprey,marsh-harrier,marsh-wisp,newt-doctor,nutria-reedcutter,poison-dart-croaker,raven-scout,venomlord-serpent --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.9205,
       "ci": [
-       0.8793,
-       0.9389
+       0.8911,
+       0.9498
       ],
-      "avgLumber": 0.5,
-      "generated": "2026-11-02T07:49:33.599Z"
+      "avgLumber": 0.3,
+      "generated": "2026-11-02T08:57:13.780Z"
      },
      "h2h": null,
      "later": []
@@ -8690,8 +9172,8 @@
      "name": "6-PRO-3",
      "focus": "open",
      "labels": [
-      "economy (8 resource makers)",
-      "flying x8"
+      "tide x10",
+      "poison x7"
      ],
      "level": 1,
      "leaders": [
@@ -8699,24 +9181,24 @@
      ],
      "deck": {
       "alligator-gar": 3,
-      "constrictor-coil": 4,
-      "gannet-nestweaver": 4,
-      "marsh-harrier": 4,
-      "nutria-reedcutter": 4,
-      "raft-spider": 1
+      "fire-ant-raft": 4,
+      "heron-hag": 3,
+      "marsh-wisp": 4,
+      "otter-centurion": 3,
+      "water-vole": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map06-m8-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m8 --pool adder-ambusher,alley-cat,alligator-gar,anhinga-spearbird,bee-forager,booming-bittern,box-turtle,camouflage-frog,constrictor-coil,driftwood-crab,fen-mink,fire-ant-raft,gannet-nestweaver,grass-snake,heron-hag,lamprey,marsh-harrier,marsh-wisp,meadow-frog,newt-doctor,nutria-reedcutter,otter-centurion,poison-dart-croaker,raft-spider,raven-scout,venomlord-serpent --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,alligator-gar,booming-bittern,camouflage-frog,constrictor-coil,heron-hag,lamprey,marsh-harrier,marsh-wisp,newt-doctor,nutria-reedcutter,poison-dart-croaker,raven-scout,venomlord-serpent --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.8598,
+      "reproduce": "node tools/bench/bench.js deck --map m8 --pool adder-ambusher,alley-cat,alligator-gar,anhinga-spearbird,bee-forager,booming-bittern,box-turtle,camouflage-frog,constrictor-coil,driftwood-crab,fen-mink,fire-ant-raft,gannet-nestweaver,guppy,heron-hag,lamprey,marsh-harrier,marsh-wisp,meadow-frog,newt-doctor,nutria-reedcutter,otter-centurion,poison-dart-croaker,raven-scout,venomlord-serpent,water-vole --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,alligator-gar,booming-bittern,camouflage-frog,constrictor-coil,heron-hag,lamprey,marsh-harrier,marsh-wisp,newt-doctor,nutria-reedcutter,poison-dart-croaker,raven-scout,venomlord-serpent --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.875,
       "ci": [
-       0.8259,
-       0.8938
+       0.8435,
+       0.9065
       ],
-      "avgLumber": 0.8,
-      "generated": "2026-11-02T07:49:33.599Z"
+      "avgLumber": 0.5,
+      "generated": "2026-11-02T08:57:13.780Z"
      },
      "h2h": null,
      "later": []
@@ -9078,7 +9560,7 @@
     "BPRO: 6-BPRO-1 dropped: anaconda-coil: not in the map's own pool (BPRO); cottonmouth-matriarch: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "SKILL2 BPRO: 4 focused decks from the map's list (6-BPRO-1 swarm, 6-BPRO-2 family:poison, 6-BPRO-3 open, 6-BPRO-4 big); the previous BPRO decks are under history",
-    "DECK1: 3 focused decks (6-PRO-1 swarm, 6-PRO-2 economy, 6-PRO-3 open); the previous PRO decks are under history"
+    "DECK1: 3 focused decks (6-PRO-1 economy, 6-PRO-2 swarm, 6-PRO-3 open); the previous PRO decks are under history"
    ],
    "history": [
     {
@@ -9311,6 +9793,40 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "6-WPRO-1",
+     "name": "6-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (8 copies at 2+ Lumber, average 1.6)",
+      "evasion x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "booming-bittern": 4,
+      "camouflage-frog": 4,
+      "constrictor-coil": 4,
+      "lamprey": 4,
+      "venomlord-serpent": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map06-m8-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1231,
+      "ci": [
+       0.0937,
+       0.1525
+      ],
+      "refWins": 1,
+      "generated": "2026-11-02T07:35:56.797Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mu": {
@@ -9343,36 +9859,36 @@
     {
      "id": "7-PRO-1",
      "name": "7-PRO-1",
-     "focus": "open",
+     "focus": "big",
      "labels": [
       "big (11 copies at 1+ Lumber, average 0.6)",
       "economy (4 resource makers)",
-      "swarm x7"
+      "evasion x7"
      ],
      "level": 1,
      "leaders": [
       "tunnel-ant"
      ],
      "deck": {
-      "bee-forager": 4,
+      "bee-forager": 1,
       "bombardier-beetle": 4,
-      "mudpuppy": 3,
-      "truffle-piglet": 4,
-      "tunnel-ant": 3,
-      "worker-ant": 2
+      "dung-beetle": 4,
+      "nutria-reedcutter": 4,
+      "owl-nightwatch": 4,
+      "tunnel-ant": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map07-mu-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,alley-cat,anaconda-coil,bee-forager,bogfire-newt,bombardier-beetle,cane-toad,carrion-beetle,compost-grub,corpse-flower-beetle,cottonmouth-matriarch,dung-beetle,earthworm,fire-ant-raft,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,mudpuppy,newt-doctor,nutria-reedcutter,otter-centurion,owl-nightwatch,planarian-splitter,raven-scout,sleepless-shrew,slow-worm,truffle-piglet,tunnel-ant,wolf-spider-mother,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,corpse-flower-beetle,dung-beetle,earthworm,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,slow-worm,truffle-piglet,wolf-spider-mother,worker-ant --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.9306,
+      "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,alley-cat,bee-forager,bogfire-newt,bombardier-beetle,box-turtle,cane-toad,compost-grub,corpse-flower-beetle,driftwood-crab,dung-beetle,earthworm,fire-ant-raft,fungal-colossus,gannet-nestweaver,garden-snail,hawthorn-shieldbug,leafcutter-gardener,newt-doctor,nutria-reedcutter,otter-centurion,owl-nightwatch,planarian-splitter,raven-scout,sleepless-shrew,slow-worm,truffle-piglet,tunnel-ant,wolf-spider-mother,woodcock-lookout,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,corpse-flower-beetle,dung-beetle,earthworm,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,slow-worm,truffle-piglet,wolf-spider-mother,worker-ant --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.912,
       "ci": [
-       0.8979,
-       0.9632
+       0.8766,
+       0.9475
       ],
       "avgLumber": 0.55,
-      "generated": "2026-11-02T07:51:36.276Z"
+      "generated": "2026-11-02T08:59:04.380Z"
      },
      "h2h": null,
      "later": []
@@ -9380,9 +9896,9 @@
     {
      "id": "7-PRO-2",
      "name": "7-PRO-2",
-     "focus": "economy",
+     "focus": "open",
      "labels": [
-      "big (11 copies at 1+ Lumber, average 0.6)",
+      "big (8 copies at 1+ Lumber, average 0.4)",
       "economy (8 resource makers)"
      ],
      "level": 1,
@@ -9390,25 +9906,25 @@
       "corpse-flower-beetle"
      ],
      "deck": {
-      "bombardier-beetle": 4,
-      "corpse-flower-beetle": 3,
+      "adder-ambusher": 3,
+      "corpse-flower-beetle": 2,
+      "dung-beetle": 4,
       "leafcutter-gardener": 4,
       "nutria-reedcutter": 4,
-      "owl-nightwatch": 4,
-      "sleepless-shrew": 1
+      "wolf-spider-mother": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map07-mu-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,alley-cat,anaconda-coil,bee-forager,bogfire-newt,bombardier-beetle,cane-toad,carrion-beetle,compost-grub,corpse-flower-beetle,cottonmouth-matriarch,dung-beetle,earthworm,fire-ant-raft,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,mudpuppy,newt-doctor,nutria-reedcutter,otter-centurion,owl-nightwatch,planarian-splitter,raven-scout,sleepless-shrew,slow-worm,truffle-piglet,tunnel-ant,wolf-spider-mother,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,corpse-flower-beetle,dung-beetle,earthworm,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,slow-worm,truffle-piglet,wolf-spider-mother,worker-ant --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.8426,
+      "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,alley-cat,bee-forager,bogfire-newt,bombardier-beetle,box-turtle,cane-toad,compost-grub,corpse-flower-beetle,driftwood-crab,dung-beetle,earthworm,fire-ant-raft,fungal-colossus,gannet-nestweaver,garden-snail,hawthorn-shieldbug,leafcutter-gardener,newt-doctor,nutria-reedcutter,otter-centurion,owl-nightwatch,planarian-splitter,raven-scout,sleepless-shrew,slow-worm,truffle-piglet,tunnel-ant,wolf-spider-mother,woodcock-lookout,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,corpse-flower-beetle,dung-beetle,earthworm,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,slow-worm,truffle-piglet,wolf-spider-mother,worker-ant --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.8843,
       "ci": [
-       0.7982,
-       0.887
+       0.8436,
+       0.9249
       ],
-      "avgLumber": 0.55,
-      "generated": "2026-11-02T07:51:36.276Z"
+      "avgLumber": 0.4,
+      "generated": "2026-11-02T08:59:04.380Z"
      },
      "h2h": null,
      "later": []
@@ -9416,35 +9932,74 @@
     {
      "id": "7-PRO-3",
      "name": "7-PRO-3",
-     "focus": "big",
+     "focus": "economy",
      "labels": [
-      "big (10 copies at 1+ Lumber, average 0.5)",
+      "swarm (14 copies at 0 Lumber)",
+      "economy (6 resource makers)",
+      "poison x7",
       "swarm x7"
      ],
      "level": 1,
      "leaders": [
-      "tunnel-ant"
+      "adder-ambusher"
      ],
      "deck": {
+      "adder-ambusher": 3,
       "bee-forager": 4,
-      "bogfire-newt": 2,
-      "carrion-beetle": 3,
-      "hawthorn-shieldbug": 4,
-      "slow-worm": 4,
+      "bogfire-newt": 4,
+      "driftwood-crab": 2,
+      "leafcutter-gardener": 4,
       "tunnel-ant": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map07-mu-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,alley-cat,anaconda-coil,bee-forager,bogfire-newt,bombardier-beetle,cane-toad,carrion-beetle,compost-grub,corpse-flower-beetle,cottonmouth-matriarch,dung-beetle,earthworm,fire-ant-raft,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,mudpuppy,newt-doctor,nutria-reedcutter,otter-centurion,owl-nightwatch,planarian-splitter,raven-scout,sleepless-shrew,slow-worm,truffle-piglet,tunnel-ant,wolf-spider-mother,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,corpse-flower-beetle,dung-beetle,earthworm,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,slow-worm,truffle-piglet,wolf-spider-mother,worker-ant --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.8426,
+      "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,alley-cat,bee-forager,bogfire-newt,bombardier-beetle,box-turtle,cane-toad,compost-grub,corpse-flower-beetle,driftwood-crab,dung-beetle,earthworm,fire-ant-raft,fungal-colossus,gannet-nestweaver,garden-snail,hawthorn-shieldbug,leafcutter-gardener,newt-doctor,nutria-reedcutter,otter-centurion,owl-nightwatch,planarian-splitter,raven-scout,sleepless-shrew,slow-worm,truffle-piglet,tunnel-ant,wolf-spider-mother,woodcock-lookout,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,corpse-flower-beetle,dung-beetle,earthworm,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,slow-worm,truffle-piglet,wolf-spider-mother,worker-ant --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.8519,
       "ci": [
-       0.7965,
-       0.8887
+       0.8076,
+       0.8961
       ],
-      "avgLumber": 0.5,
-      "generated": "2026-11-02T07:51:36.276Z"
+      "avgLumber": 0.3,
+      "generated": "2026-11-02T08:59:04.380Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "7-PRO-4",
+     "name": "7-PRO-4",
+     "focus": "swarm",
+     "labels": [
+      "swarm (14 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "swarm x7"
+     ],
+     "level": 1,
+     "leaders": [
+      "fire-ant-raft"
+     ],
+     "deck": {
+      "bee-forager": 4,
+      "box-turtle": 3,
+      "compost-grub": 3,
+      "fire-ant-raft": 3,
+      "hawthorn-shieldbug": 3,
+      "leafcutter-gardener": 4
+     },
+     "source": {
+      "file": "docs/balance/deck1/bench-deck-map07-mu-2026-10-30.json",
+      "mode": "deck1",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map mu --pool adder-ambusher,alley-cat,bee-forager,bogfire-newt,bombardier-beetle,box-turtle,cane-toad,compost-grub,corpse-flower-beetle,driftwood-crab,dung-beetle,earthworm,fire-ant-raft,fungal-colossus,gannet-nestweaver,garden-snail,hawthorn-shieldbug,leafcutter-gardener,newt-doctor,nutria-reedcutter,otter-centurion,owl-nightwatch,planarian-splitter,raven-scout,sleepless-shrew,slow-worm,truffle-piglet,tunnel-ant,wolf-spider-mother,woodcock-lookout,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,corpse-flower-beetle,dung-beetle,earthworm,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,slow-worm,truffle-piglet,wolf-spider-mother,worker-ant --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.838,
+      "ci": [
+       0.7956,
+       0.8803
+      ],
+      "avgLumber": 0.3,
+      "generated": "2026-11-02T08:59:04.380Z"
      },
      "h2h": null,
      "later": []
@@ -9830,7 +10385,7 @@
     "BPRO: 7-BPRO-2 dropped: fungus-gnat-cloud: not in the map's own pool (BPRO); pine-marten: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "SKILL2 BPRO: 3 focused decks from the map's list (7-BPRO-1 economy, 7-BPRO-2 big, 7-BPRO-3 open); the previous BPRO decks are under history",
-    "DECK1: 3 focused decks (7-PRO-1 open, 7-PRO-2 economy, 7-PRO-3 big); the previous PRO decks are under history"
+    "DECK1: 4 focused decks (7-PRO-1 big, 7-PRO-2 open, 7-PRO-3 economy, 7-PRO-4 swarm); the previous PRO decks are under history"
    ],
    "history": [
     {
@@ -10185,6 +10740,73 @@
       ]
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
+    }
+   ],
+   "wpro": [
+    {
+     "id": "7-WPRO-1",
+     "name": "7-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "midrange (average 0.7 Lumber)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "cane-toad": 3,
+      "earthworm": 4,
+      "fungal-colossus": 4,
+      "garden-snail": 4,
+      "slow-worm": 3,
+      "worker-ant": 2
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map07-mu-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0185,
+      "ci": [
+       0.0001,
+       0.0369
+      ],
+      "refWins": 0.9861,
+      "generated": "2026-11-02T07:36:28.606Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "7-WPRO-2",
+     "name": "7-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.2)",
+      "swarm x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "cane-toad": 4,
+      "earthworm": 4,
+      "fungal-colossus": 4,
+      "hawthorn-shieldbug": 2,
+      "owl-nightwatch": 3,
+      "wolf-spider-mother": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map07-mu-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0648,
+      "ci": [
+       0.034,
+       0.0957
+      ],
+      "refWins": 0.9167,
+      "generated": "2026-11-02T07:36:28.606Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -10932,6 +11554,73 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
+   ],
+   "wpro": [
+    {
+     "id": "7-A-WPRO-1",
+     "name": "7-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (19 copies at 1+ Lumber, average 1.1)",
+      "swarm x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "fungal-colossus": 4,
+      "hawthorn-shieldbug": 4,
+      "leafcutter-gardener": 1,
+      "planarian-splitter": 4,
+      "rootworm-colony": 4,
+      "wolf-spider-mother": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map07-mz-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.151,
+      "ci": [
+       0.109,
+       0.1931
+      ],
+      "refWins": 0.8194,
+      "generated": "2026-11-02T07:36:56.431Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "7-A-WPRO-2",
+     "name": "7-A-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (18 copies at 1+ Lumber, average 1.0)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "bombardier-beetle": 4,
+      "dung-beetle": 2,
+      "fungal-colossus": 2,
+      "hawthorn-shieldbug": 4,
+      "planarian-splitter": 4,
+      "rootworm-colony": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map07-mz-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1719,
+      "ci": [
+       0.124,
+       0.2198
+      ],
+      "refWins": 0.7778,
+      "generated": "2026-11-02T07:36:56.431Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "m4": {
@@ -10966,35 +11655,36 @@
     {
      "id": "8-PRO-1",
      "name": "8-PRO-1",
-     "focus": "open",
+     "focus": "big",
      "labels": [
-      "big (10 copies at 1+ Lumber, average 0.5)",
-      "swarm x6"
+      "big (9 copies at 1+ Lumber, average 0.5)",
+      "flying x10",
+      "night x7"
      ],
      "level": 1,
      "leaders": [
-      "grotto-lobster"
+      "giant-cave-huntsman"
      ],
      "deck": {
-      "grotto-lobster": 3,
-      "mudpuppy": 4,
-      "pincushion-urchin": 3,
-      "star-nosed-mole": 3,
-      "sulfur-cinder-moth": 4,
+      "bee-forager": 3,
+      "dung-beetle": 4,
+      "echo-matriarch": 3,
+      "giant-cave-huntsman": 3,
+      "vampire-bat": 4,
       "wolf-spider-mother": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,blind-cave-fish,cave-olm,diving-bell-spider,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,mudpuppy,newt-doctor,octopus-tactician,otter-centurion,pelican-diver,pincushion-urchin,planarian-splitter,puffin-diver,quarry-mole,raft-spider,rock-pool-starfish,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.9621,
+      "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,bee-forager,blind-cave-fish,bombardier-beetle,cave-olm,dung-beetle,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,newt-doctor,octopus-tactician,otter-centurion,pelican-diver,pincushion-urchin,planarian-splitter,puffin-diver,quarry-mole,rock-pool-starfish,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:flying,open --anchor blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.9773,
       "ci": [
-       0.9394,
-       0.9849
+       0.9595,
+       0.9951
       ],
-      "avgLumber": 0.5,
-      "generated": "2026-11-02T07:53:16.535Z"
+      "avgLumber": 0.45,
+      "generated": "2026-11-02T09:00:24.107Z"
      },
      "h2h": null,
      "later": []
@@ -11002,36 +11692,36 @@
     {
      "id": "8-PRO-2",
      "name": "8-PRO-2",
-     "focus": "big",
+     "focus": "family:flying",
      "labels": [
-      "big (10 copies at 1+ Lumber, average 0.5)",
-      "flying x11",
-      "night x9"
+      "big (8 copies at 1+ Lumber, average 0.4)",
+      "flying x16",
+      "night x7"
      ],
      "level": 1,
      "leaders": [
-      "grotto-lobster"
+      "echo-screecher"
      ],
      "deck": {
-      "blind-cave-fish": 2,
-      "echo-matriarch": 3,
-      "grotto-lobster": 3,
-      "star-nosed-mole": 4,
-      "sulfur-cinder-moth": 4,
+      "bee-forager": 4,
+      "echo-screecher": 3,
+      "newt-doctor": 4,
+      "puffin-diver": 2,
+      "sulfur-cinder-moth": 3,
       "vampire-bat": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,blind-cave-fish,cave-olm,diving-bell-spider,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,mudpuppy,newt-doctor,octopus-tactician,otter-centurion,pelican-diver,pincushion-urchin,planarian-splitter,puffin-diver,quarry-mole,raft-spider,rock-pool-starfish,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.9583,
+      "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,bee-forager,blind-cave-fish,bombardier-beetle,cave-olm,dung-beetle,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,newt-doctor,octopus-tactician,otter-centurion,pelican-diver,pincushion-urchin,planarian-splitter,puffin-diver,quarry-mole,rock-pool-starfish,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:flying,open --anchor blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.9242,
       "ci": [
-       0.9344,
-       0.9822
+       0.8948,
+       0.9537
       ],
-      "avgLumber": 0.5,
-      "generated": "2026-11-02T07:53:16.535Z"
+      "avgLumber": 0.4,
+      "generated": "2026-11-02T09:00:24.107Z"
      },
      "h2h": null,
      "later": []
@@ -11039,35 +11729,36 @@
     {
      "id": "8-PRO-3",
      "name": "8-PRO-3",
-     "focus": "swarm",
+     "focus": "open",
      "labels": [
-      "swarm (15 copies at 0 Lumber)",
-      "heal x7"
+      "big (10 copies at 1+ Lumber, average 0.5)",
+      "siege x6",
+      "flying x6"
      ],
      "level": 1,
      "leaders": [
-      "octopus-tactician"
+      "echo-matriarch"
      ],
      "deck": {
-      "cave-olm": 4,
-      "mudpuppy": 3,
-      "octopus-tactician": 1,
-      "pelican-diver": 4,
-      "pincushion-urchin": 4,
+      "dung-beetle": 3,
+      "echo-matriarch": 3,
+      "echo-screecher": 3,
+      "otter-centurion": 3,
+      "quarry-mole": 4,
       "star-nosed-mole": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,blind-cave-fish,cave-olm,diving-bell-spider,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,mudpuppy,newt-doctor,octopus-tactician,otter-centurion,pelican-diver,pincushion-urchin,planarian-splitter,puffin-diver,quarry-mole,raft-spider,rock-pool-starfish,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.9356,
+      "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,bee-forager,blind-cave-fish,bombardier-beetle,cave-olm,dung-beetle,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,newt-doctor,octopus-tactician,otter-centurion,pelican-diver,pincushion-urchin,planarian-splitter,puffin-diver,quarry-mole,rock-pool-starfish,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:flying,open --anchor blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.9205,
       "ci": [
-       0.9067,
-       0.9645
+       0.8892,
+       0.9517
       ],
-      "avgLumber": 0.3,
-      "generated": "2026-11-02T07:53:16.535Z"
+      "avgLumber": 0.5,
+      "generated": "2026-11-02T09:00:24.107Z"
      },
      "h2h": null,
      "later": []
@@ -11075,36 +11766,36 @@
     {
      "id": "8-PRO-4",
      "name": "8-PRO-4",
-     "focus": "family:tide",
+     "focus": "swarm",
      "labels": [
-      "swarm (18 copies at 0 Lumber)",
-      "night x10",
-      "tide x8"
+      "swarm (17 copies at 0 Lumber)",
+      "flying x7",
+      "night x7"
      ],
      "level": 1,
      "leaders": [
-      "echo-screecher"
+      "otter-centurion"
      ],
      "deck": {
-      "blind-cave-fish": 4,
-      "echo-screecher": 2,
-      "mudpuppy": 4,
-      "pincushion-urchin": 4,
-      "star-nosed-mole": 2,
+      "alley-cat": 4,
+      "echo-screecher": 3,
+      "newt-doctor": 4,
+      "otter-centurion": 2,
+      "star-nosed-mole": 3,
       "vampire-bat": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,blind-cave-fish,cave-olm,diving-bell-spider,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,mudpuppy,newt-doctor,octopus-tactician,otter-centurion,pelican-diver,pincushion-urchin,planarian-splitter,puffin-diver,quarry-mole,raft-spider,rock-pool-starfish,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.9205,
+      "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,bee-forager,blind-cave-fish,bombardier-beetle,cave-olm,dung-beetle,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,newt-doctor,octopus-tactician,otter-centurion,pelican-diver,pincushion-urchin,planarian-splitter,puffin-diver,quarry-mole,rock-pool-starfish,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:flying,open --anchor blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.8826,
       "ci": [
-       0.889,
-       0.9519
+       0.8457,
+       0.9195
       ],
-      "avgLumber": 0.1,
-      "generated": "2026-11-02T07:53:16.535Z"
+      "avgLumber": 0.15,
+      "generated": "2026-11-02T09:00:24.107Z"
      },
      "h2h": null,
      "later": []
@@ -11540,7 +12231,7 @@
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "BPRO: left out (-119 Elo below the band): baby-bat:5,echo-screecher:1,millipede-hauler:2,sulfur-cinder...",
     "SKILL2 BPRO: 4 focused decks from the map's list (8-BPRO-1 big, 8-BPRO-2 family:flying, 8-BPRO-3 open, 8-BPRO-4 swarm); the previous BPRO decks are under history",
-    "DECK1: 4 focused decks (8-PRO-1 open, 8-PRO-2 big, 8-PRO-3 swarm, 8-PRO-4 family:tide); the previous PRO decks are under history"
+    "DECK1: 4 focused decks (8-PRO-1 big, 8-PRO-2 family:flying, 8-PRO-3 open, 8-PRO-4 swarm); the previous PRO decks are under history"
    ],
    "history": [
     {
@@ -11710,6 +12401,42 @@
       "summary": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T1"
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
+    }
+   ],
+   "wpro": [
+    {
+     "id": "8-WPRO-1",
+     "name": "8-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (16 copies at 1+ Lumber, average 1.4)",
+      "tide x8",
+      "armor x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "blind-cave-fish": 4,
+      "hollow-belly-rat": 2,
+      "malachite-golem": 3,
+      "octopus-tactician": 4,
+      "pelican-diver": 3,
+      "stalactite-golem": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map08-m4-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.197,
+      "ci": [
+       0.1529,
+       0.241
+      ],
+      "refWins": 0.9306,
+      "generated": "2026-11-02T08:19:55.164Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -12448,6 +13175,77 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "8-A-WPRO-1",
+     "name": "8-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (17 copies at 1+ Lumber, average 1.2)",
+      "economy (4 resource makers)",
+      "armor x7",
+      "night x6"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "badger-stonemason": 4,
+      "blind-cave-fish": 3,
+      "echo-screecher": 3,
+      "malachite-golem": 3,
+      "quarry-mole": 3,
+      "stalactite-golem": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map08-mn-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0119,
+      "ci": [
+       -0.0054,
+       0.0292
+      ],
+      "refWins": 1,
+      "generated": "2026-11-02T08:00:42.104Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "8-A-WPRO-2",
+     "name": "8-A-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.4)",
+      "economy (4 resource makers)",
+      "armor x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "badger-stonemason": 4,
+      "echo-screecher": 3,
+      "giant-cave-huntsman": 3,
+      "malachite-golem": 3,
+      "stalactite-golem": 4,
+      "whip-spider": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map08-mn-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0298,
+      "ci": [
+       0.0039,
+       0.0556
+      ],
+      "refWins": 0.9861,
+      "generated": "2026-11-02T08:00:42.104Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mk": {
@@ -12485,34 +13283,35 @@
     {
      "id": "9-PRO-1",
      "name": "9-PRO-1",
-     "focus": "family:tide",
+     "focus": "swarm",
      "labels": [
-      "tide x14"
+      "swarm (14 copies at 0 Lumber)",
+      "tide x10"
      ],
      "level": 1,
      "leaders": [
       "sunbittern-strider"
      ],
      "deck": {
-      "guppy": 4,
-      "mangrove-mudskipper": 4,
-      "newt-doctor": 2,
-      "proboscis-monkey": 3,
-      "shallows-fry": 3,
+      "archerfish": 2,
+      "fiddler-crab-swarm": 4,
+      "guppy": 3,
+      "newt-doctor": 4,
+      "pincushion-urchin": 3,
       "sunbittern-strider": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map09-mk-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,great-crested-grebe,guppy,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,moat-snapper,mudpuppy,newt-doctor,otter-centurion,pincushion-urchin,proboscis-monkey,reef-shark,sea-turtle-elder,shallows-fry,sunbittern-strider,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,proboscis-monkey,reef-shark,sea-turtle-elder,sunbittern-strider --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.8792,
+      "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,guppy,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,muskrat-lodgekeeper,newt-doctor,otter-centurion,pincushion-urchin,proboscis-monkey,puffin-diver,reef-shark,sea-turtle-elder,sunbittern-strider,vampire-bat,water-vole,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,proboscis-monkey,reef-shark,sea-turtle-elder,sunbittern-strider --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.9083,
       "ci": [
-       0.8411,
-       0.9172
+       0.874,
+       0.9427
       ],
-      "avgLumber": 0.35,
-      "generated": "2026-11-02T07:54:46.536Z"
+      "avgLumber": 0.3,
+      "generated": "2026-11-02T09:01:54.627Z"
      },
      "h2h": null,
      "later": []
@@ -12522,34 +13321,34 @@
      "name": "9-PRO-2",
      "focus": "big",
      "labels": [
-      "big (11 copies at 1+ Lumber, average 0.6)",
-      "tide x12",
-      "guard x7"
+      "big (10 copies at 1+ Lumber, average 0.5)",
+      "tide x16",
+      "armor x7"
      ],
      "level": 1,
      "leaders": [
       "mangrove-manatee"
      ],
      "deck": {
-      "archerfish": 4,
+      "alligator-gar": 3,
       "fiddler-crab-swarm": 4,
       "mangrove-manatee": 3,
       "mangrove-mudskipper": 4,
-      "shallows-fry": 1,
-      "sunbittern-strider": 4
+      "sunbittern-strider": 4,
+      "water-vole": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map09-mk-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,great-crested-grebe,guppy,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,moat-snapper,mudpuppy,newt-doctor,otter-centurion,pincushion-urchin,proboscis-monkey,reef-shark,sea-turtle-elder,shallows-fry,sunbittern-strider,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,proboscis-monkey,reef-shark,sea-turtle-elder,sunbittern-strider --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.875,
+      "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,guppy,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,muskrat-lodgekeeper,newt-doctor,otter-centurion,pincushion-urchin,proboscis-monkey,puffin-diver,reef-shark,sea-turtle-elder,sunbittern-strider,vampire-bat,water-vole,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,proboscis-monkey,reef-shark,sea-turtle-elder,sunbittern-strider --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.8792,
       "ci": [
-       0.8365,
-       0.9135
+       0.8436,
+       0.9147
       ],
-      "avgLumber": 0.55,
-      "generated": "2026-11-02T07:54:46.536Z"
+      "avgLumber": 0.5,
+      "generated": "2026-11-02T09:01:54.627Z"
      },
      "h2h": null,
      "later": []
@@ -12557,35 +13356,36 @@
     {
      "id": "9-PRO-3",
      "name": "9-PRO-3",
-     "focus": "swarm",
+     "focus": "family:tide",
      "labels": [
-      "swarm (15 copies at 0 Lumber)",
-      "tide x12"
+      "swarm (18 copies at 0 Lumber)",
+      "tide x13",
+      "guard x6"
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "proboscis-monkey"
      ],
      "deck": {
-      "banded-sea-krait": 2,
       "fiddler-crab-swarm": 4,
       "mangrove-mudskipper": 4,
       "newt-doctor": 3,
-      "shallows-fry": 4,
-      "wolf-spider-mother": 3
+      "proboscis-monkey": 2,
+      "vampire-bat": 4,
+      "water-vole": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map09-mk-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,great-crested-grebe,guppy,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,moat-snapper,mudpuppy,newt-doctor,otter-centurion,pincushion-urchin,proboscis-monkey,reef-shark,sea-turtle-elder,shallows-fry,sunbittern-strider,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,proboscis-monkey,reef-shark,sea-turtle-elder,sunbittern-strider --anchor-min 10 --level 1 --mode map-true",
+      "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,guppy,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,muskrat-lodgekeeper,newt-doctor,otter-centurion,pincushion-urchin,proboscis-monkey,puffin-diver,reef-shark,sea-turtle-elder,sunbittern-strider,vampire-bat,water-vole,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,proboscis-monkey,reef-shark,sea-turtle-elder,sunbittern-strider --anchor-min 10 --level 1 --mode map-true",
       "score": 0.875,
       "ci": [
-       0.8375,
-       0.9125
+       0.8384,
+       0.9116
       ],
-      "avgLumber": 0.25,
-      "generated": "2026-11-02T07:54:46.536Z"
+      "avgLumber": 0.1,
+      "generated": "2026-11-02T09:01:54.627Z"
      },
      "h2h": null,
      "later": []
@@ -12595,34 +13395,33 @@
      "name": "9-PRO-4",
      "focus": "open",
      "labels": [
-      "swarm (14 copies at 0 Lumber)",
-      "tide x13",
-      "heal x7"
+      "big (10 copies at 1+ Lumber, average 0.5)",
+      "tide x11"
      ],
      "level": 1,
      "leaders": [
-      "mangrove-manatee"
+      "otter-centurion"
      ],
      "deck": {
-      "alligator-gar": 3,
-      "fiddler-crab-swarm": 3,
-      "mangrove-manatee": 3,
-      "mangrove-mudskipper": 4,
-      "mudpuppy": 4,
-      "otter-centurion": 3
+      "mangrove-monitor": 2,
+      "otter-centurion": 3,
+      "pincushion-urchin": 4,
+      "proboscis-monkey": 4,
+      "sunbittern-strider": 4,
+      "water-vole": 3
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map09-mk-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,great-crested-grebe,guppy,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,moat-snapper,mudpuppy,newt-doctor,otter-centurion,pincushion-urchin,proboscis-monkey,reef-shark,sea-turtle-elder,shallows-fry,sunbittern-strider,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,proboscis-monkey,reef-shark,sea-turtle-elder,sunbittern-strider --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.875,
+      "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,guppy,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,muskrat-lodgekeeper,newt-doctor,otter-centurion,pincushion-urchin,proboscis-monkey,puffin-diver,reef-shark,sea-turtle-elder,sunbittern-strider,vampire-bat,water-vole,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,proboscis-monkey,reef-shark,sea-turtle-elder,sunbittern-strider --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.8083,
       "ci": [
-       0.8383,
-       0.9117
+       0.7627,
+       0.854
       ],
-      "avgLumber": 0.3,
-      "generated": "2026-11-02T07:54:46.536Z"
+      "avgLumber": 0.5,
+      "generated": "2026-11-02T09:01:54.627Z"
      },
      "h2h": null,
      "later": []
@@ -12884,7 +13683,7 @@
     "BPRO: 9-BPRO-1 dropped: electric-catfish: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "SKILL2 BPRO: 4 focused decks from the map's list (9-BPRO-1 big, 9-BPRO-2 open, 9-BPRO-3 family:tide, 9-BPRO-4 family:armor); the previous BPRO decks are under history",
-    "DECK1: 4 focused decks (9-PRO-1 family:tide, 9-PRO-2 big, 9-PRO-3 swarm, 9-PRO-4 open); the previous PRO decks are under history"
+    "DECK1: 4 focused decks (9-PRO-1 swarm, 9-PRO-2 big, 9-PRO-3 family:tide, 9-PRO-4 open); the previous PRO decks are under history"
    ],
    "history": [
     {
@@ -13252,6 +14051,74 @@
       "summary": "aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Coral Shelf T2 (Thorns 1)"
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
+    }
+   ],
+   "wpro": [
+    {
+     "id": "9-WPRO-1",
+     "name": "9-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.6)",
+      "tide x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "archerfish": 2,
+      "crocodile-ambusher": 4,
+      "mangrove-kingfisher": 3,
+      "mangrove-monitor": 3,
+      "reef-shark": 4,
+      "sea-turtle-elder": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map09-mk-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.2125,
+      "ci": [
+       0.1643,
+       0.2607
+      ],
+      "refWins": 0.9306,
+      "generated": "2026-11-02T08:20:52.972Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "9-WPRO-2",
+     "name": "9-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.6)",
+      "tide x11"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "archerfish": 4,
+      "crocodile-ambusher": 4,
+      "fishing-cat": 1,
+      "proboscis-monkey": 3,
+      "reef-shark": 4,
+      "sea-turtle-elder": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map09-mk-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.225,
+      "ci": [
+       0.1779,
+       0.2721
+      ],
+      "refWins": 0.8889,
+      "generated": "2026-11-02T08:20:52.972Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -14271,6 +15138,42 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
+   ],
+   "wpro": [
+    {
+     "id": "10-WPRO-1",
+     "name": "10-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (10 copies at 3+ Lumber, average 2.3)",
+      "tide x10",
+      "cleave x10"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "banded-sea-krait": 4,
+      "colossal-squid": 2,
+      "electric-ray": 2,
+      "kraken-spawnling": 4,
+      "orca-vanguard": 4,
+      "reef-shark": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map10-m7-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.066,
+      "ci": [
+       0.0434,
+       0.0885
+      ],
+      "refWins": 1,
+      "generated": "2026-11-02T08:01:24.396Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mj": {
@@ -15044,6 +15947,76 @@
       ]
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
+    }
+   ],
+   "wpro": [
+    {
+     "id": "10-A-WPRO-1",
+     "name": "10-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (10 copies at 3+ Lumber, average 2.1)",
+      "tide x13",
+      "cleave x10"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "colossal-squid": 2,
+      "electric-ray": 3,
+      "great-barracuda": 3,
+      "kraken-spawnling": 4,
+      "orca-vanguard": 4,
+      "riptide-eel": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map10-mj-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.2969,
+      "ci": [
+       0.2405,
+       0.3532
+      ],
+      "refWins": 0.9583,
+      "generated": "2026-11-02T08:21:44.867Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "10-A-WPRO-2",
+     "name": "10-A-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (8 copies at 3+ Lumber, average 1.8)",
+      "cleave x8",
+      "tide x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "blue-ringed-octopus": 3,
+      "electric-ray": 4,
+      "great-barracuda": 3,
+      "hagfish-silencer": 2,
+      "kraken-spawnling": 4,
+      "orca-vanguard": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map10-mj-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.3828,
+      "ci": [
+       0.3259,
+       0.4398
+      ],
+      "refWins": 0.8611,
+      "generated": "2026-11-02T08:21:44.867Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -15850,6 +16823,76 @@
        "later": []
       }
      ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "11-WPRO-1",
+     "name": "11-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "economy (5 resource makers)",
+      "flying x10",
+      "strike-first x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "alpine-swift": 4,
+      "apollo-butterfly": 4,
+      "chamois-leaper": 3,
+      "chipmunk-hoarder": 3,
+      "gangrenous-leech": 4,
+      "gannet-nestweaver": 2
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map11-m10-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.2639,
+      "ci": [
+       0.2203,
+       0.3075
+      ],
+      "refWins": 0.6944,
+      "generated": "2026-11-02T08:23:06.332Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "11-WPRO-2",
+     "name": "11-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "swarm (16 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "flying x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "alpine-swift": 3,
+      "apollo-butterfly": 4,
+      "chipmunk-hoarder": 4,
+      "gale-swift": 1,
+      "gangrenous-leech": 4,
+      "mountain-hare": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map11-m10-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.3542,
+      "ci": [
+       0.3064,
+       0.4019
+      ],
+      "refWins": 0.625,
+      "generated": "2026-11-02T08:23:06.332Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -16792,6 +17835,75 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
+   ],
+   "wpro": [
+    {
+     "id": "11-A-WPRO-1",
+     "name": "11-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "economy (4 resource makers)",
+      "flying x6"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "alpine-swift": 2,
+      "apollo-butterfly": 4,
+      "chamois-leaper": 3,
+      "chipmunk-hoarder": 4,
+      "swamp-alligator": 4,
+      "vigil-owl": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map11-mv-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.2411,
+      "ci": [
+       0.1903,
+       0.2918
+      ],
+      "refWins": 0.6111,
+      "generated": "2026-11-02T08:24:42.879Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "11-A-WPRO-2",
+     "name": "11-A-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "economy (4 resource makers)",
+      "flying x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "alpine-marmot": 3,
+      "alpine-swift": 4,
+      "apollo-butterfly": 4,
+      "chipmunk-hoarder": 4,
+      "gangrenous-leech": 2,
+      "vigil-owl": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map11-mv-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.256,
+      "ci": [
+       0.2028,
+       0.3091
+      ],
+      "refWins": 0.625,
+      "generated": "2026-11-02T08:24:42.879Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mh": {
@@ -17420,6 +18532,72 @@
        "later": []
       }
      ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "12-WPRO-1",
+     "name": "12-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (17 copies at 1+ Lumber, average 1.1)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "ant-hill": 4,
+      "cunning-vixen": 4,
+      "gatling-hog": 3,
+      "hedge-weasel": 3,
+      "lyrebird-mimic": 4,
+      "thorn-shrike": 2
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map12-mh-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.225,
+      "ci": [
+       0.1747,
+       0.2753
+      ],
+      "refWins": 0.7639,
+      "generated": "2026-11-02T08:25:55.438Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "12-WPRO-2",
+     "name": "12-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.0)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "cunning-vixen": 4,
+      "gatling-hog": 3,
+      "lyrebird-mimic": 4,
+      "mouse-sapper": 4,
+      "quill-thorn-boar": 3,
+      "thorn-shrike": 2
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map12-mh-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.2875,
+      "ci": [
+       0.2342,
+       0.3408
+      ],
+      "refWins": 0.6667,
+      "generated": "2026-11-02T08:25:55.438Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -18182,6 +19360,71 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "13-WPRO-1",
+     "name": "13-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.8)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "berserker-boar": 3,
+      "cunning-vixen": 1,
+      "grizzly-vanguard": 4,
+      "quillback-elder": 4,
+      "stag-knight": 4,
+      "swift-fox": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map13-mr-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0227,
+      "ci": [
+       0.0046,
+       0.0408
+      ],
+      "refWins": 0.9861,
+      "generated": "2026-11-02T08:03:52.449Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "13-WPRO-2",
+     "name": "13-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.4)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "berserker-boar": 4,
+      "grizzly-vanguard": 4,
+      "owl-nightwatch": 4,
+      "swift-fox": 4,
+      "tasmanian-devil": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map13-mr-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0909,
+      "ci": [
+       0.0573,
+       0.1246
+      ],
+      "refWins": 0.9028,
+      "generated": "2026-11-02T08:03:52.449Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "m5": {
@@ -18920,6 +20163,72 @@
        "later": []
       }
      ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "14-WPRO-1",
+     "name": "14-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (18 copies at 1+ Lumber, average 1.3)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "acacia-giraffe": 3,
+      "carrion-crow": 2,
+      "marula-elephant": 4,
+      "mouse-sapper": 4,
+      "spitting-cobra": 3,
+      "springbok-pronker": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map14-m5-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.3902,
+      "ci": [
+       0.3378,
+       0.4425
+      ],
+      "refWins": 0.8194,
+      "generated": "2026-11-02T08:26:54.845Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "14-WPRO-2",
+     "name": "14-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (19 copies at 1+ Lumber, average 1.4)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "acacia-giraffe": 4,
+      "dust-hyena": 1,
+      "marula-elephant": 4,
+      "mouse-sapper": 4,
+      "spitting-cobra": 3,
+      "weaver-bird": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map14-m5-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.4129,
+      "ci": [
+       0.3599,
+       0.4659
+      ],
+      "refWins": 0.7639,
+      "generated": "2026-11-02T08:26:54.845Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -19667,6 +20976,73 @@
       "summary": "aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods T2 (Regen 1)"
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
+    }
+   ],
+   "wpro": [
+    {
+     "id": "14-A-WPRO-1",
+     "name": "14-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (16 copies at 1 Lumber, average 0.8)",
+      "tide x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "apollo-butterfly": 4,
+      "camouflage-frog": 4,
+      "jaguar-stalker": 3,
+      "pride-queen": 2,
+      "proboscis-monkey": 4,
+      "spitting-cobra": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map14-my-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1406,
+      "ci": [
+       0.1061,
+       0.1751
+      ],
+      "refWins": 0.9167,
+      "generated": "2026-11-02T08:05:01.804Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "14-A-WPRO-2",
+     "name": "14-A-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (12 copies at 1 Lumber, average 0.6)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "apollo-butterfly": 4,
+      "hoopoe-herald": 4,
+      "jaguar-stalker": 3,
+      "proboscis-monkey": 4,
+      "redwood-woodpecker": 2,
+      "spitting-cobra": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map14-my-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1719,
+      "ci": [
+       0.1374,
+       0.2064
+      ],
+      "refWins": 0.9028,
+      "generated": "2026-11-02T08:05:01.804Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -20559,6 +21935,40 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
+   ],
+   "wpro": [
+    {
+     "id": "15-WPRO-1",
+     "name": "15-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (4 copies at 3+ Lumber, average 1.8)",
+      "strike-first x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "bison-bulldozer": 4,
+      "cataphract-destrier": 4,
+      "pronghorn-racer": 4,
+      "shepherds-bark": 4,
+      "warhorse-charger": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map15-ml-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0583,
+      "ci": [
+       0.0301,
+       0.0866
+      ],
+      "refWins": 1,
+      "generated": "2026-11-02T08:05:24.682Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mt": {
@@ -21174,6 +22584,41 @@
        "later": []
       }
      ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "16-WPRO-1",
+     "name": "16-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.6)",
+      "cleave x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "alpha-howler": 4,
+      "berserker-boar": 4,
+      "boreal-elk": 4,
+      "lunar-howler": 3,
+      "swift-fox": 3,
+      "woodland-caribou": 2
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map16-mt-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.05,
+      "ci": [
+       0.0243,
+       0.0757
+      ],
+      "refWins": 1,
+      "generated": "2026-11-02T08:05:41.874Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -21905,6 +23350,41 @@
        "later": []
       }
      ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "17-WPRO-1",
+     "name": "17-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (2 copies at 3+ Lumber, average 1.5)",
+      "ranged x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "alpha-howler": 4,
+      "glacial-ape-king": 2,
+      "harbor-seal": 4,
+      "lone-grey-wolf": 2,
+      "snow-bunting-archer": 4,
+      "spitting-spider": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map17-m6-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1932,
+      "ci": [
+       0.1503,
+       0.236
+      ],
+      "refWins": 1,
+      "generated": "2026-11-02T08:06:07.722Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -22739,6 +24219,76 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
     }
+   ],
+   "wpro": [
+    {
+     "id": "17-A-WPRO-1",
+     "name": "17-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (4 copies at 3+ Lumber, average 1.6)",
+      "ranged x7",
+      "tide x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "glacial-ape-king": 4,
+      "greenland-shark": 3,
+      "harbor-seal": 4,
+      "lone-grey-wolf": 2,
+      "snow-bunting-archer": 3,
+      "spitting-spider": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map17-mi-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1429,
+      "ci": [
+       0.0909,
+       0.1948
+      ],
+      "refWins": 0.8889,
+      "generated": "2026-11-02T08:06:31.126Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "17-A-WPRO-2",
+     "name": "17-A-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (4 copies at 3+ Lumber, average 1.4)",
+      "tide x7",
+      "evasion x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "frost-hare-sprinter": 3,
+      "glacial-ape-king": 4,
+      "greenland-shark": 3,
+      "harbor-seal": 4,
+      "snow-bunting-archer": 4,
+      "wolfsbane-alpha": 2
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map17-mi-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1488,
+      "ci": [
+       0.096,
+       0.2017
+      ],
+      "refWins": 0.875,
+      "generated": "2026-11-02T08:06:31.126Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "md": {
@@ -22777,34 +24327,34 @@
     {
      "id": "18-PRO-1",
      "name": "18-PRO-1",
-     "focus": "open",
+     "focus": "economy",
      "labels": [
-      "economy (4 resource makers)"
+      "economy (8 resource makers)"
      ],
      "level": 1,
      "leaders": [
-      "eagle-owl-quartermaster"
+      "walrus-icebreaker"
      ],
      "deck": {
       "antlion-pit": 4,
+      "dune-packrat": 4,
       "dust-hyena": 4,
-      "eagle-owl-quartermaster": 2,
-      "mongoose-duelist": 4,
-      "monitor-rambler": 3,
-      "thorny-devil": 3
+      "ibex-rockcaller": 2,
+      "thorny-devil": 4,
+      "walrus-icebreaker": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map18-md-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map md --pool antlion-pit,banded-sea-krait,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,eagle-owl-quartermaster,fennec-fox,glass-golem,glimmer-spider,grave-grin-hyena,hollow-belly-rat,ibex-rockcaller,komodo-warlord,lovebird,meerkat-burrower,mongoose-duelist,monitor-rambler,roadrunner-courier,sand-widow,sandfish,spitting-cobra,squires-mount,stoat-cutthroat,thorny-devil,walrus-icebreaker,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,family:poison,open --anchor antlion-pit,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,fennec-fox,glass-golem,hollow-belly-rat,komodo-warlord,meerkat-burrower,roadrunner-courier,sand-widow,sandfish,spitting-cobra,thorny-devil --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.95,
+      "reproduce": "node tools/bench/bench.js deck --map md --pool antlion-pit,banded-sea-krait,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,eagle-owl-quartermaster,fennec-fox,gallery-orb-weaver,glass-golem,glimmer-spider,grave-grin-hyena,hollow-belly-rat,ibex-rockcaller,komodo-warlord,meerkat-burrower,peregrine-stooper,roadrunner-courier,sand-widow,sandfish,spitting-cobra,squires-mount,stoat-cutthroat,thorny-devil,walrus-icebreaker,weaver-bird,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,family:poison,open --anchor antlion-pit,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,fennec-fox,glass-golem,hollow-belly-rat,komodo-warlord,meerkat-burrower,roadrunner-courier,sand-widow,sandfish,spitting-cobra,thorny-devil --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.975,
       "ci": [
-       0.9228,
-       0.9772
+       0.9552,
+       0.9948
       ],
       "avgLumber": 0.8,
-      "generated": "2026-11-02T07:59:28.787Z"
+      "generated": "2026-11-02T09:04:24.450Z"
      },
      "h2h": null,
      "later": []
@@ -22812,36 +24362,34 @@
     {
      "id": "18-PRO-2",
      "name": "18-PRO-2",
-     "focus": "family:poison",
+     "focus": "open",
      "labels": [
-      "big (4 copies at 2+ Lumber, average 1.2)",
-      "economy (4 resource makers)",
-      "poison x8"
+      "midrange (average 1.0 Lumber)"
      ],
      "level": 1,
      "leaders": [
-      "walrus-icebreaker"
+      "ibex-rockcaller"
      ],
      "deck": {
-      "caustic-scorpion": 4,
-      "dune-packrat": 4,
+      "antlion-pit": 4,
+      "bison-bulldozer": 4,
+      "dromedary": 4,
       "eagle-owl-quartermaster": 2,
-      "mongoose-duelist": 4,
-      "sand-widow": 4,
-      "walrus-icebreaker": 2
+      "ibex-rockcaller": 2,
+      "roadrunner-courier": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map18-md-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map md --pool antlion-pit,banded-sea-krait,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,eagle-owl-quartermaster,fennec-fox,glass-golem,glimmer-spider,grave-grin-hyena,hollow-belly-rat,ibex-rockcaller,komodo-warlord,lovebird,meerkat-burrower,mongoose-duelist,monitor-rambler,roadrunner-courier,sand-widow,sandfish,spitting-cobra,squires-mount,stoat-cutthroat,thorny-devil,walrus-icebreaker,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,family:poison,open --anchor antlion-pit,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,fennec-fox,glass-golem,hollow-belly-rat,komodo-warlord,meerkat-burrower,roadrunner-courier,sand-widow,sandfish,spitting-cobra,thorny-devil --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.8604,
+      "reproduce": "node tools/bench/bench.js deck --map md --pool antlion-pit,banded-sea-krait,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,eagle-owl-quartermaster,fennec-fox,gallery-orb-weaver,glass-golem,glimmer-spider,grave-grin-hyena,hollow-belly-rat,ibex-rockcaller,komodo-warlord,meerkat-burrower,peregrine-stooper,roadrunner-courier,sand-widow,sandfish,spitting-cobra,squires-mount,stoat-cutthroat,thorny-devil,walrus-icebreaker,weaver-bird,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,family:poison,open --anchor antlion-pit,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,fennec-fox,glass-golem,hollow-belly-rat,komodo-warlord,meerkat-burrower,roadrunner-courier,sand-widow,sandfish,spitting-cobra,thorny-devil --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.9521,
       "ci": [
-       0.8195,
-       0.9014
+       0.9257,
+       0.9785
       ],
-      "avgLumber": 1.2,
-      "generated": "2026-11-02T07:59:28.787Z"
+      "avgLumber": 1,
+      "generated": "2026-11-02T09:04:24.450Z"
      },
      "h2h": null,
      "later": []
@@ -22849,34 +24397,33 @@
     {
      "id": "18-PRO-3",
      "name": "18-PRO-3",
-     "focus": "economy",
+     "focus": "family:poison",
      "labels": [
-      "economy (6 resource makers)"
+      "poison x8"
      ],
      "level": 1,
      "leaders": [
-      "squires-mount"
+      "caustic-scorpion"
      ],
      "deck": {
-      "antlion-pit": 4,
-      "caustic-scorpion": 3,
+      "bison-bulldozer": 4,
+      "caustic-scorpion": 4,
       "dromedary": 4,
-      "dune-packrat": 2,
-      "dust-hyena": 4,
-      "squires-mount": 3
+      "glimmer-spider": 4,
+      "thorny-devil": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map18-md-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map md --pool antlion-pit,banded-sea-krait,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,eagle-owl-quartermaster,fennec-fox,glass-golem,glimmer-spider,grave-grin-hyena,hollow-belly-rat,ibex-rockcaller,komodo-warlord,lovebird,meerkat-burrower,mongoose-duelist,monitor-rambler,roadrunner-courier,sand-widow,sandfish,spitting-cobra,squires-mount,stoat-cutthroat,thorny-devil,walrus-icebreaker,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,family:poison,open --anchor antlion-pit,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,fennec-fox,glass-golem,hollow-belly-rat,komodo-warlord,meerkat-burrower,roadrunner-courier,sand-widow,sandfish,spitting-cobra,thorny-devil --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.85,
+      "reproduce": "node tools/bench/bench.js deck --map md --pool antlion-pit,banded-sea-krait,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,eagle-owl-quartermaster,fennec-fox,gallery-orb-weaver,glass-golem,glimmer-spider,grave-grin-hyena,hollow-belly-rat,ibex-rockcaller,komodo-warlord,meerkat-burrower,peregrine-stooper,roadrunner-courier,sand-widow,sandfish,spitting-cobra,squires-mount,stoat-cutthroat,thorny-devil,walrus-icebreaker,weaver-bird,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,family:poison,open --anchor antlion-pit,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,fennec-fox,glass-golem,hollow-belly-rat,komodo-warlord,meerkat-burrower,roadrunner-courier,sand-widow,sandfish,spitting-cobra,thorny-devil --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.9458,
       "ci": [
-       0.811,
-       0.889
+       0.9204,
+       0.9713
       ],
-      "avgLumber": 0.8,
-      "generated": "2026-11-02T07:59:28.787Z"
+      "avgLumber": 1,
+      "generated": "2026-11-02T09:04:24.450Z"
      },
      "h2h": null,
      "later": []
@@ -23279,7 +24826,7 @@
     "BPRO: 18-BPRO-4 dropped: glasswing-moth: not in the map's own pool (BPRO); inland-taipan: not in the map's own pool (BPRO); tarantula-hawk: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "SKILL2 BPRO: 3 focused decks from the map's list (18-BPRO-1 open, 18-BPRO-2 economy, 18-BPRO-3 family:poison); the previous BPRO decks are under history",
-    "DECK1: 3 focused decks (18-PRO-1 open, 18-PRO-2 family:poison, 18-PRO-3 economy); the previous PRO decks are under history"
+    "DECK1: 3 focused decks (18-PRO-1 economy, 18-PRO-2 open, 18-PRO-3 family:poison); the previous PRO decks are under history"
    ],
    "history": [
     {
@@ -23436,6 +24983,40 @@
       "summary": "aiGuardLethal, phase cycle, sandstorm, weatherMap, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)"
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
+    }
+   ],
+   "wpro": [
+    {
+     "id": "18-WPRO-1",
+     "name": "18-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (4 copies at 2+ Lumber, average 1.3)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "dust-hyena": 3,
+      "fennec-fox": 4,
+      "hollow-belly-rat": 4,
+      "komodo-warlord": 4,
+      "meerkat-burrower": 2,
+      "spitting-cobra": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map18-md-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1667,
+      "ci": [
+       0.1277,
+       0.2056
+      ],
+      "refWins": 0.625,
+      "generated": "2026-11-02T08:28:27.120Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -24253,6 +25834,73 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "18-A-WPRO-1",
+     "name": "18-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.2)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "dromedary": 4,
+      "fennec-fox": 3,
+      "roadrunner-courier": 4,
+      "sand-widow": 4,
+      "sandfish": 1,
+      "skull-vulture": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map18-mpd-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.3819,
+      "ci": [
+       0.329,
+       0.4349
+      ],
+      "refWins": 0.7778,
+      "generated": "2026-11-02T08:29:29.096Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "18-A-WPRO-2",
+     "name": "18-A-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.2)",
+      "poison x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "caustic-scorpion": 4,
+      "dromedary": 3,
+      "dust-devil-kestrel": 2,
+      "fennec-fox": 4,
+      "sand-widow": 4,
+      "skull-vulture": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map18-mpd-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.4444,
+      "ci": [
+       0.3894,
+       0.4995
+      ],
+      "refWins": 0.6667,
+      "generated": "2026-11-02T08:29:29.096Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "m3": {
@@ -24875,6 +26523,42 @@
      },
      "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
+   ],
+   "wpro": [
+    {
+     "id": "19-WPRO-1",
+     "name": "19-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (8 copies at 3+ Lumber, average 2.3)",
+      "bleed x8",
+      "fire x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "fire-salamander": 4,
+      "glacial-ape-king": 4,
+      "glacier-wolf-pack": 4,
+      "granite-ox-golem": 1,
+      "magma-titan": 4,
+      "pit-glutton": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map19-m3-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0787,
+      "ci": [
+       0.044,
+       0.1134
+      ],
+      "refWins": 0.9583,
+      "generated": "2026-11-02T08:08:08.485Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "m9": {
@@ -25489,6 +27173,41 @@
        "later": []
       }
      ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "19-A-WPRO-1",
+     "name": "19-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (20 copies at 1+ Lumber, average 1.4)",
+      "flying x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "anvilwhisker-otter": 4,
+      "ash-cloud-condor": 3,
+      "fire-salamander": 3,
+      "hercules-beetle": 3,
+      "phoenix-fledgling": 4,
+      "quill-volley": 3
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map19-m9-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.1186,
+      "ci": [
+       0.0838,
+       0.1533
+      ],
+      "refWins": 0.9444,
+      "generated": "2026-11-02T08:08:38.567Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -26128,6 +27847,41 @@
        "later": []
       }
      ]
+    }
+   ],
+   "wpro": [
+    {
+     "id": "20-WPRO-1",
+     "name": "20-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (12 copies at 3+ Lumber, average 2.5)",
+      "siege x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "ancient-sloth-titan": 4,
+      "ash-cloud-condor": 3,
+      "deep-cave-troll": 4,
+      "glacier-wolf-pack": 4,
+      "gorge-wyrm": 4,
+      "stalactite-golem": 1
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map20-m11-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0256,
+      "ci": [
+       0.0081,
+       0.0432
+      ],
+      "refWins": 0.9861,
+      "generated": "2026-11-02T08:09:15.277Z"
+     },
+     "h2h": null,
+     "later": []
     }
    ]
   },
@@ -26887,6 +28641,41 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "20-A-WPRO-1",
+     "name": "20-A-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (8 copies at 3+ Lumber, average 2.1)",
+      "guard x6"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "ancient-sloth-titan": 4,
+      "ash-cloud-condor": 3,
+      "deep-cave-troll": 4,
+      "magma-wraith": 3,
+      "stalactite-golem": 2,
+      "vampire-roost": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map20-me-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0625,
+      "ci": [
+       0.0332,
+       0.0918
+      ],
+      "refWins": 1,
+      "generated": "2026-11-02T08:09:46.170Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   },
   "mx": {
@@ -27583,6 +29372,73 @@
       }
      ]
     }
+   ],
+   "wpro": [
+    {
+     "id": "20-B-WPRO-1",
+     "name": "20-B-WPRO-1",
+     "focus": "weak",
+     "labels": [
+      "big (14 copies at 2+ Lumber, average 1.9)",
+      "guard x7"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "ancient-sloth-titan": 4,
+      "ash-cloud-condor": 3,
+      "deep-cave-troll": 3,
+      "ember-centipede": 3,
+      "stalactite-golem": 3,
+      "vampire-roost": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map20-mx-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0179,
+      "ci": [
+       -0.0027,
+       0.0384
+      ],
+      "refWins": 1,
+      "generated": "2026-11-02T08:10:11.664Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "20-B-WPRO-2",
+     "name": "20-B-WPRO-2",
+     "focus": "weak",
+     "labels": [
+      "big (14 copies at 2+ Lumber, average 2.2)"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "ancient-sloth-titan": 4,
+      "ash-cloud-condor": 3,
+      "deep-cave-troll": 2,
+      "magma-titan": 4,
+      "obsidian-scorpion": 3,
+      "vampire-roost": 4
+     },
+     "source": {
+      "file": "docs/balance/wpro/wpro-map20-mx-2026-11-02.json",
+      "mode": "wpro",
+      "tool": "tools/opt/wpro_2026_11_02.js",
+      "score": 0.0357,
+      "ci": [
+       0.0079,
+       0.0635
+      ],
+      "refWins": 0.9583,
+      "generated": "2026-11-02T08:10:11.664Z"
+     },
+     "h2h": null,
+     "later": []
+    }
    ]
   }
  },
@@ -27605,5 +29461,15 @@
   },
   "tool": "tools/opt/bpro2_2026_10_31.js",
   "note": "BPRO decks of Maps 0-20 and their side maps with their own list rebuilt by SKILL2 (decision DECK1-2): 6 different cards, 4 copies, only the map's list."
+ },
+ "wpro": {
+  "rule": {
+   "maxUnique": 6,
+   "maxCopies": 4,
+   "size": 20,
+   "noBaby": true
+  },
+  "tool": "tools/opt/wpro_2026_11_02.js",
+  "note": "BAL11 (owner 11-02 14:26): the weakest legal decks of each map's list (no Baby cards), on BPRO's gauntlet; the N-WK fight draws from them."
  }
 }

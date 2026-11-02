@@ -1,0 +1,308 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:28:27.120Z",
+ "map": {
+  "id": "md",
+  "num": 18,
+  "name": "The Glass Dunes"
+ },
+ "level": 1,
+ "pool": [
+  "antlion-pit",
+  "bison-bulldozer",
+  "caustic-scorpion",
+  "dromedary",
+  "dune-packrat",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "fennec-fox",
+  "glass-golem",
+  "hollow-belly-rat",
+  "komodo-warlord",
+  "meerkat-burrower",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "spitting-cobra",
+  "thorny-devil"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|md",
+  "budget": 4000,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:18-1",
+   "label": "vs 18-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-2",
+   "label": "vs 18-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-3",
+   "label": "vs 18-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-4",
+   "label": "vs 18-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-5",
+   "label": "vs 18-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:18-6",
+   "label": "vs 18-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:18-7",
+   "label": "vs 18-7 miniboss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 18-1's field"
+  },
+  {
+   "key": "mirror|ref:road18",
+   "label": "vs reference deck (Map 18) under 18-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field"
+  }
+ ],
+ "steps": 13,
+ "moves": 8,
+ "games": 4700,
+ "seconds": 92,
+ "weak": [
+  {
+   "deck": {
+    "dust-hyena": 3,
+    "fennec-fox": 4,
+    "hollow-belly-rat": 4,
+    "komodo-warlord": 4,
+    "meerkat-burrower": 2,
+    "spitting-cobra": 3
+   },
+   "score": 0.1667,
+   "ci": [
+    0.1277,
+    0.2056
+   ],
+   "vsRef": 0.375,
+   "refWins": 0.625,
+   "labels": [
+    "big (4 copies at 2+ Lumber, average 1.3)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.4583,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "antlion-pit": 1,
+    "dune-packrat": 4,
+    "hollow-belly-rat": 4,
+    "komodo-warlord": 4,
+    "sand-widow": 4,
+    "spitting-cobra": 3
+   },
+   "score": 0.3333,
+   "ci": [
+    0.2789,
+    0.3878
+   ],
+   "vsRef": 0.4028,
+   "refWins": 0.5972,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)",
+    "economy (4 resource makers)",
+    "poison x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.5,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "18-BPRO-1",
+  "deck": {
+   "antlion-pit": 2,
+   "caustic-scorpion": 4,
+   "dromedary": 2,
+   "dune-packrat": 4,
+   "fennec-fox": 4,
+   "thorny-devil": 4
+  },
+  "score": 0.9417,
+  "ci": [
+   0.9135,
+   0.9698
+  ],
+  "vsRef": 0.9028,
+  "refWins": 0.0972,
+  "labels": [
+   "economy (4 resource makers)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:18-1",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-2",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-3",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-4",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-5",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-6",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-7",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road18",
+    "p": 0.75,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.9583,
+    "n": 24
+   }
+  ]
+ }
+}

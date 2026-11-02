@@ -1,0 +1,276 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:08:38.567Z",
+ "map": {
+  "id": "m9",
+  "num": 19,
+  "name": "Basalt Foundry"
+ },
+ "level": 1,
+ "pool": [
+  "anvilwhisker-otter",
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "ember-revenant",
+  "fire-salamander",
+  "hercules-beetle",
+  "magma-salamander",
+  "ore-smelter-mole",
+  "phoenix-fledgling",
+  "quill-volley",
+  "tide-spirit",
+  "yeti-chieftain"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|m9",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:19-A-1",
+   "label": "vs 19-A-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:19-A-2",
+   "label": "vs 19-A-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:19-A-3",
+   "label": "vs 19-A-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:19-A-4",
+   "label": "vs 19-A-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:19-A-5",
+   "label": "vs 19-A-5 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:19-A-6",
+   "label": "vs 19-A-6 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:19-A-7",
+   "label": "vs 19-A-7 elite's deck"
+  },
+  {
+   "key": "mirror|fight:19-A-8",
+   "label": "vs 19-A-8 elite's deck"
+  },
+  {
+   "key": "mirror|fight:19-A-9",
+   "label": "vs 19-A-9 elite's deck"
+  },
+  {
+   "key": "mirror|fight:19-A-10",
+   "label": "vs 19-A-10 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 19-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road23",
+   "label": "vs reference deck (Map 23) under 19-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 19-A-3's field"
+  }
+ ],
+ "steps": 3,
+ "moves": 0,
+ "games": 2184,
+ "seconds": 30,
+ "weak": [
+  {
+   "deck": {
+    "anvilwhisker-otter": 4,
+    "ash-cloud-condor": 3,
+    "fire-salamander": 3,
+    "hercules-beetle": 3,
+    "phoenix-fledgling": 4,
+    "quill-volley": 3
+   },
+   "score": 0.1186,
+   "ci": [
+    0.0838,
+    0.1533
+   ],
+   "vsRef": 0.0556,
+   "refWins": 0.9444,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)",
+    "flying x7"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-A-1",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-2",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-3",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-4",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-5",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-6",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-7",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-8",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-9",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-10",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.0833,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "19-A-BPRO-1",
+  "deck": {
+   "cinder-gecko": 3,
+   "cinder-stoker": 4,
+   "ember-jackal": 3,
+   "fire-salamander": 4,
+   "magma-salamander": 3,
+   "tide-spirit": 3
+  },
+  "score": 0.9487,
+  "ci": [
+   0.9245,
+   0.9729
+  ],
+  "vsRef": 0.9167,
+  "refWins": 0.0833,
+  "labels": [
+   "big (10 copies at 1+ Lumber, average 0.5)",
+   "fire x7"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:19-A-1",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-A-2",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-A-3",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-A-4",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-A-5",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-A-6",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-A-7",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-A-8",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-A-9",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:19-A-10",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road23",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.875,
+    "n": 24
+   }
+  ]
+ }
+}

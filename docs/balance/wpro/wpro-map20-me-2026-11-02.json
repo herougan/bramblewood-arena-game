@@ -1,0 +1,234 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:09:46.170Z",
+ "map": {
+  "id": "me",
+  "num": 20,
+  "name": "Eye of the Volcano"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-cloud-condor",
+  "ash-moth",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "magma-wraith",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pack-mule",
+  "stalactite-golem",
+  "the-contradiction",
+  "vampire-roost",
+  "woodland-brawler"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|me",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-A-1",
+   "label": "vs 20-A-1 elite's deck"
+  },
+  {
+   "key": "mirror|fight:20-A-2",
+   "label": "vs 20-A-2 elite's deck"
+  },
+  {
+   "key": "mirror|fight:20-A-3",
+   "label": "vs 20-A-3 elite's deck"
+  },
+  {
+   "key": "mirror|fight:20-A-4",
+   "label": "vs 20-A-4 dungeon's deck"
+  },
+  {
+   "key": "mirror|fight:20-A-5",
+   "label": "vs 20-A-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:20-A-6",
+   "label": "vs 20-A-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:20-A-7",
+   "label": "vs 20-A-7 elite's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field"
+  }
+ ],
+ "steps": 3,
+ "moves": 1,
+ "games": 1660,
+ "seconds": 31,
+ "weak": [
+  {
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "ash-cloud-condor": 3,
+    "deep-cave-troll": 4,
+    "magma-wraith": 3,
+    "stalactite-golem": 2,
+    "vampire-roost": 4
+   },
+   "score": 0.0625,
+   "ci": [
+    0.0332,
+    0.0918
+   ],
+   "vsRef": 0,
+   "refWins": 1,
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 2.1)",
+    "guard x6"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-A-1",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-2",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-3",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-4",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-5",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-6",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-A-7",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "20-A-BPRO-1",
+  "deck": {
+   "ashbone-ghoul": 4,
+   "cinder-skeleton": 4,
+   "cinder-stoker": 4,
+   "obsidian-scorpion": 2,
+   "pack-mule": 4,
+   "woodland-brawler": 2
+  },
+  "score": 0.8667,
+  "ci": [
+   0.8307,
+   0.9026
+  ],
+  "vsRef": 0.7361,
+  "refWins": 0.2639,
+  "labels": [
+   "economy (4 resource makers)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:20-A-1",
+    "p": 0.7083,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-A-2",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-A-3",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-A-4",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-A-5",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-A-6",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-A-7",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road20",
+    "p": 0.375,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.8333,
+    "n": 24
+   }
+  ]
+ }
+}

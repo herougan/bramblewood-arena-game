@@ -1,0 +1,251 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:06:31.126Z",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow"
+ },
+ "level": 1,
+ "pool": [
+  "frost-hare-sprinter",
+  "glacial-ape-king",
+  "greenland-shark",
+  "harbor-seal",
+  "lone-grey-wolf",
+  "polar-bear",
+  "ravenous-wolverine",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "talus-pika",
+  "walrus-icebreaker",
+  "wolfsbane-alpha"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mi",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:17-A-1",
+   "label": "vs 17-A-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:17-A-2",
+   "label": "vs 17-A-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:17-A-3",
+   "label": "vs 17-A-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:17-A-4",
+   "label": "vs 17-A-4 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 17-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road21",
+   "label": "vs reference deck (Map 21) under 17-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field"
+  }
+ ],
+ "steps": 5,
+ "moves": 4,
+ "games": 1680,
+ "seconds": 23,
+ "weak": [
+  {
+   "deck": {
+    "glacial-ape-king": 4,
+    "greenland-shark": 3,
+    "harbor-seal": 4,
+    "lone-grey-wolf": 2,
+    "snow-bunting-archer": 3,
+    "spitting-spider": 4
+   },
+   "score": 0.1429,
+   "ci": [
+    0.0909,
+    0.1948
+   ],
+   "vsRef": 0.1111,
+   "refWins": 0.8889,
+   "labels": [
+    "big (4 copies at 3+ Lumber, average 1.6)",
+    "ranged x7",
+    "tide x7"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.1667,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "frost-hare-sprinter": 3,
+    "glacial-ape-king": 4,
+    "greenland-shark": 3,
+    "harbor-seal": 4,
+    "snow-bunting-archer": 4,
+    "wolfsbane-alpha": 2
+   },
+   "score": 0.1488,
+   "ci": [
+    0.096,
+    0.2017
+   ],
+   "vsRef": 0.125,
+   "refWins": 0.875,
+   "labels": [
+    "big (4 copies at 3+ Lumber, average 1.4)",
+    "tide x7",
+    "evasion x7"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.25,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "17-A-BPRO-1",
+  "deck": {
+   "frost-hare-sprinter": 4,
+   "snow-bunting-archer": 2,
+   "snow-ermine": 4,
+   "spitting-spider": 4,
+   "talus-pika": 4,
+   "wolfsbane-alpha": 2
+  },
+  "score": 0.7798,
+  "ci": [
+   0.722,
+   0.8376
+  ],
+  "vsRef": 0.7083,
+  "refWins": 0.2917,
+  "labels": [
+   "economy (4 resource makers)",
+   "evasion x8",
+   "ranged x6"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:17-A-1",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:17-A-2",
+    "p": 0.7083,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:17-A-3",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:17-A-4",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road21",
+    "p": 0.4167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.8333,
+    "n": 24
+   }
+  ]
+ }
+}

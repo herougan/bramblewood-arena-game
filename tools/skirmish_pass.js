@@ -539,6 +539,7 @@ if(CMD === 'moves'){ // 2026-10-24 (package BAL3): the curve's candidate moves f
     .filter((f, i)=> i % NSH === SHARD && !done.has(f.map + ':' + f.key));
   console.log('fights more than', GAP, 'points too hard:', todo.length);
   const capCopies = id=> G.maxCopiesForRarity(defs[id].rarity);
+  const FAMILY_DECKS = f=> f._fam || (f._fam = new Set(MAPS.filter(mm=> mm === f.m || mm.id === f.map).flatMap(mm=> mm.nodes.flatMap(x=> Object.keys(x.deck || {})))));
   for(const f of todo){
     const t0 = Date.now(), b = rowOfBefore(f), band = fightBand(f), want = band.t * 100, lo = band.lo * 100, hi = band.hi * 100, AIM = Math.min(4, (hi - lo) / 2 - 1);
     const off = w=> Math.abs(w - want), good = w=> off(w) <= AIM && w >= lo && w <= hi, deck0 = Object.assign({}, f.n.deck), size = deckSize(deck0), n0 = Object.keys(deck0).length;
@@ -546,14 +547,21 @@ if(CMD === 'moves'){ // 2026-10-24 (package BAL3): the curve's candidate moves f
     const kept = {}; Object.keys(deck0).forEach(id=>{ if(leaders.includes(id) || firstClearOf(f).has(id) || id === f.n.showcase || KEEP.has(id)) kept[id] = deck0[id]; });
     const cmap = contribFor(f.map) || (f.m.sub ? contribFor(f.m.parent) : null);
     const str = id=> cmap && cmap[id] != null ? cmap[id] : (strengthOf(id) - 50) / 1000; // the card pass's scale only where the map has no measure
-    const U = K14.uniqueOf(f.map), nonUnique = id=> !U.has(id) && !leaders.includes(id);
+    const k14Exempt = f.map === 'm1' || /^T-/.test(f.key || ''); // BAL7-2: Map 0 and the tutorial's come-back fights are not under K14
+    const U = K14.uniqueOf(f.map), nonUnique = id=> !k14Exempt && !U.has(id) && !leaders.includes(id);
     const pool = [...strictPoolOf(f)].filter(id=>{ const c = defs[id]; return c && !c.token && !c.test && c.kind !== 'baby' && !/^egg-/.test(id) && !(c.effects || {}).leader && playableCard(c)
-      && G.roadRarityOk(c.rarity, f.mapNo, f.kind, f.map) && !otherFightsReward(f, id) && !kept[id]; }).sort((x, y)=> str(x) - str(y));
+      && G.roadRarityOk(c.rarity, f.mapNo, f.kind, f.map) && !otherFightsReward(f, id) && !kept[id]
+      && !(!(c.source && c.source.kind) && c.rarity !== 'starter' && !FAMILY_DECKS(f).has(id)); }).sort((x, y)=> str(x) - str(y)); // an enemy-only card new to the map's fights would stop being another map's own (K14 uniqueOf)
     const dMin = Math.min(5, n0), dMax = f.kind === 'skirmish' ? (n0 >= 7 ? n0 : 6) : Math.max(8, n0);
     const legal = (d, k14)=>{ const ids = Object.keys(d); if(ids.length < dMin || ids.length > dMax || deckSize(d) !== size) return false;
       if(ids.some(id=> d[id] > capCopies(id))) return false;
       try{ if(BB_RANK && BB_RANK.deckRankBlock && ids.some(id=> BB_RANK.deckRankBlock(Object.assign({}, d, {[id]: d[id] - 1}), id, defs, leaders))) return false; }catch(e){}
-      return !k14 || K14.violations(f, d).length <= K14.violations(f, deck0).length; };
+      if(f.n.rules && f.n.rules.boon && E.selfishBoonCount && !E.selfishBoonCount(defs, d, f.n.rules.boon).on) return false; // a challenge deck keeps its selfish boon on (DF3)
+      // K14 may not get worse: no more problems, and no more non-unique copies than the deck had (when it had more than 6)
+      const nuTot = x=> Object.keys(x).filter(nonUnique).reduce((t, id)=> t + x[id], 0);
+      // K14's leaders are the deck's own (an Auto leader moves with the deck, and a leader is exempt), so each deck is checked as its own node
+      const viol = x=> K14.violations(Object.assign({}, f, {n: Object.assign({}, f.n, {deck: x})}), x);
+      return !k14 || k14Exempt || (viol(d).length <= viol(deck0).length && nuTot(d) <= Math.max(6, nuTot(deck0))); };
     const pred = d=> Object.entries(d).reduce((t, [id, k])=> t + k * str(id), 0);
     const rng = E.mulberry32(H32(f.map + ':' + f.key));
     // one sampled deck: the kept cards, then cards drawn around a strength quantile q, their copies spread at random up to their caps

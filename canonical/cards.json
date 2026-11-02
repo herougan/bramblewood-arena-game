@@ -5028,8 +5028,8 @@
     "icon": "\ud83d\udc0d",
     "cost": 1,
     "wait": 2,
-    "attack": 3,
-    "health": 3,
+    "attack": 4,
+    "health": 5,
     "archetypes": [
       "Coral Reef"
     ],
@@ -5053,7 +5053,7 @@
     ],
     "animal": "moray eel",
     "unattainable": true,
-    "creatorNote": "2026-10-17 (balance pass): 6/12 -> 7/14 (win-rate: below its band (35-60%)). 2026-10-18 (balance pass 2): 7/14 -> 8/14 (below its band (35-60%); Wave card, checked against today's rules; 15% -> 25% at 40 games). 2026-10-21 (BF5, two skills at most): cut tide; keeps stealth + wave. 2026-10-19 halve (BF5): was 8/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/6. 2026-10-21 (TR, owner HB2-1: Flying, Tide, Diurnal and Nocturnal don't count toward two skills): tide back (BF5 cut it only because one of these counted). 2026-10-21 TR (re-fit by formula): was 2/12 (flag: its skills leave no room; at the floor of its shape, skills kept). 2026-10-21 human pass I (owner's hub skill costs): 1/1 -> 5/5. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 5/5 (cap-1 use 0.98 of N under 2A + H, 1.08 under 3A + H, now 0.95). 2026-11-02 BAL11 budget fit: 4/5 -> 3/3, Stealth priced at the road's bramble Health (x2); it was already over its budget (cap-1 use 1.04) (docs/balance/bal11/; decision BAL11-2)."
+    "creatorNote": "2026-10-17 (balance pass): 6/12 -> 7/14 (win-rate: below its band (35-60%)). 2026-10-18 (balance pass 2): 7/14 -> 8/14 (below its band (35-60%); Wave card, checked against today's rules; 15% -> 25% at 40 games). 2026-10-21 (BF5, two skills at most): cut tide; keeps stealth + wave. 2026-10-19 halve (BF5): was 8/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/6. 2026-10-21 (TR, owner HB2-1: Flying, Tide, Diurnal and Nocturnal don't count toward two skills): tide back (BF5 cut it only because one of these counted). 2026-10-21 TR (re-fit by formula): was 2/12 (flag: its skills leave no room; at the floor of its shape, skills kept). 2026-10-21 human pass I (owner's hub skill costs): 1/1 -> 5/5. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 5/5 (cap-1 use 0.98 of N under 2A + H, 1.08 under 3A + H, now 0.95)."
   },
   {
     "id": "sea-turtle-elder",
@@ -7063,8 +7063,8 @@
     "icon": "\ud83e\udd9d",
     "cost": 1,
     "wait": 1,
-    "attack": 2,
-    "health": 4,
+    "attack": 3,
+    "health": 6,
     "archetypes": [
       "Raccoon"
     ],
@@ -7086,7 +7086,7 @@
     ],
     "animal": "raccoon",
     "unattainable": true,
-    "creatorNote": "2026-10-17 (balance pass): 7/12 -> 8/12 (win-rate: below its band (35-60%)). 2026-10-19 (card pass, package CB): source: 15-3 Stoat Ambush (skirmish, The Long Grass) (it fights there; 1 fight(s) field it). 2026-10-19 halve (BF5): was 8/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/5. 2026-10-21 human pass I (owner's hub skill costs): 4/6 -> 4/7. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 4/7 -> 4/8. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 4/8 -> 4/9. 2026-10-28 BAL7 M1 re-balance (contribution 9.4, +11.3 vs its band): 4/9 -> 3/7. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 3/7 (cap-1 use 0.96 of N under 2A + H, 1.03 under 3A + H, now 0.98). 2026-11-02 BAL11 budget fit: 3/6 -> 2/4, Stealth priced at the road's bramble Health (x2); it was already over its budget (cap-1 use 1.06) (docs/balance/bal11/; decision BAL11-2).",
+    "creatorNote": "2026-10-17 (balance pass): 7/12 -> 8/12 (win-rate: below its band (35-60%)). 2026-10-19 (card pass, package CB): source: 15-3 Stoat Ambush (skirmish, The Long Grass) (it fights there; 1 fight(s) field it). 2026-10-19 halve (BF5): was 8/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/5. 2026-10-21 human pass I (owner's hub skill costs): 4/6 -> 4/7. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 4/7 -> 4/8. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 4/8 -> 4/9. 2026-10-28 BAL7 M1 re-balance (contribution 9.4, +11.3 vs its band): 4/9 -> 3/7. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 3/7 (cap-1 use 0.96 of N under 2A + H, 1.03 under 3A + H, now 0.98).",
     "source": {
       "kind": "pack",
       "tier": 3,

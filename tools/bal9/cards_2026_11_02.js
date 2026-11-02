@@ -146,6 +146,8 @@ function cmdRarity(apply) {
 const OWNER_NOTE = /owner[^.]{0,60}\b(set|tune|tuned|chose|picked|asked for|wants?)\b[^.]{0,40}\b(stat|attack|health|\d+\/\d+)/i;
 function cmdRefit(apply) {
   const cards = plainCards(), edits = [], listed = [];
+  // 2026-11-02 (package BAL11): the cards its budget fit held for the owner (Stealth / Breach at the road's bramble Health)
+  const BAL11_HELD = new Set(((() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal11', 'refit-2026-11-02.json'), 'utf8')).held; } catch (e) { return []; } })()).map(h => h.id));
   const owner = new Set(CFG.refit.ownerCards);
   for (const c of cards) {
     const d = D[c.id]; if (!d || c.pool || c.token || c.test || c.health == null) continue;
@@ -154,6 +156,7 @@ function cmdRefit(apply) {
     const base = { id: c.id, rarity: c.rarity, stats: `${c.attack == null ? '-' : c.attack}/${c.health}`, verdict: v.over ? 'over' : 'under', use: v.use, cap2: v.cap2 };
     if (/^egg-/.test(c.id) || (c.effects || {}).egg || isEquip(d) || c.cardType === 'equipment') { listed.push(Object.assign(base, { why: 'egg / equipment: priced its own way (read well under by design)' })); continue; }
     if (owner.has(c.id)) { listed.push(Object.assign(base, { why: 'named owner card (' + CFG.refit.ownerWhy + ')' })); continue; }
+    if (BAL11_HELD.has(c.id)) { listed.push(Object.assign(base, { why: 'held for the owner by BAL11 (decision BAL11-2: no fit within 2 a stat keeps its body shape; docs/balance/bal11/refit-2026-11-02.json)' })); continue; } // 2026-11-02 (BAL11)
     if (OWNER_NOTE.test(c.creatorNote || '')) { listed.push(Object.assign(base, { why: 'creatorNote: the owner set it ("' + ((c.creatorNote || '').match(OWNER_NOTE) || [''])[0].slice(0, 90) + '")' })); continue; }
     if ((c.effects || {}).anadromous) { listed.push(Object.assign(base, { why: 'Anadromous: ENG15 prices it' })); continue; }
     const f = fitCard(c);

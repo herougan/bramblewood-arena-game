@@ -30,7 +30,14 @@ if (CMD === 'filter') {
     else {
       const old = f.n.deck, pool = LP.fightPool(pools, f.map, f.m.sub ? f.m.parent : null) || new Set();
       Object.keys(x.deck).filter(id => !old[id] && !pool.has(id)).forEach(id => why.push(`${id} is not on the fight's list`));
-      const v0 = K.violations(f, old).length, v1 = K.violations(f, x.deck).length; if (v1 > v0) why.push(`K14: ${v0} -> ${v1} problems (${K.violations(f, x.deck).join('; ')})`);
+      // 2026-11-02 (BAL11): each deck with its own leaders (an Auto leader moves with the deck and is exempt from K14)
+      const VV = d => K.violations(Object.assign({}, f, { n: Object.assign({}, f.n, { deck: d }) }), d);
+      const v0 = VV(old).length, v1 = VV(x.deck).length; if (v1 > v0) why.push(`K14: ${v0} -> ${v1} problems (${VV(x.deck).join('; ')})`);
+      // 2026-11-02 (BAL11): nor more non-unique copies (a deck already over 6 may not add one), and a challenge deck keeps its selfish boon on
+      const nu = d => { const m = VV(d).map(s => /^(\d+) non-unique copies$/.exec(s)).find(Boolean); return m ? +m[1] : 0; };
+      if (nu(x.deck) > Math.max(6, nu(old))) why.push(`K14: ${nu(old)} -> ${nu(x.deck)} non-unique copies`);
+      const E = require(path.join(ROOT, 'bramblewood-engine.js')), D = require(path.join(ROOT, 'tools', 'lib_bramble.js')).CARD_DEFS_BASELINE, bn = f.n.rules && f.n.rules.boon;
+      if (bn && E.selfishBoonCount && E.selfishBoonCount(D, old, bn).on && !E.selfishBoonCount(D, x.deck, bn).on) why.push(`its ${bn} boon goes off`);
     }
     const before = x.before, after = x.after && x.after.win, t = x.target;
     if (after == null || Math.abs(after - t) > Math.abs(before - t) - 2) why.push(`gap ${Math.round(Math.abs(before - t))} -> ${after == null ? '?' : Math.round(Math.abs(after - t))} (needs 2+ points closer)`);

@@ -32,7 +32,8 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
 // ---- JJ21: the budget band -----------------------------------------------------------------------------------------------------
 { const r = run(['tools/bal9/cards_2026_11_02.js', 'refit', '--check']);
   ok(/^re-fit: 0;/.test(r.split('\n')[0]), `JJ21 no in-play card outside the band but the listed ones (${r.split('\n')[0]})`);
-  const listed = r.split('\n').filter(l => /^\s+listed /.test(l)), why = l => /egg \/ equipment|named owner card/.test(l);
+  // 2026-11-02 (BAL11): + the cards BAL11's budget fit held for the owner (decision BAL11-2, docs/balance/bal11/refit-2026-11-02.json)
+  const listed = r.split('\n').filter(l => /^\s+listed /.test(l)), why = l => /egg \/ equipment|named owner card|held for the owner by BAL11/.test(l);
   ok(listed.length > 0 && listed.every(why), `JJ21 the cards left outside are eggs, equipment and the owner's named cards (${listed.filter(l => !why(l)).map(l => l.trim().split(' ')[1]).join(', ') || listed.length})`);
   const obtain = run(['tools/forge_curve_2026_10_19.js', 'maps', '--check']); ok(/current/.test(obtain), 'JJ21 canonical/card-obtain-maps.json is current'); }
 

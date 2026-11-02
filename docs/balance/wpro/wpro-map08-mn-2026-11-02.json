@@ -1,0 +1,256 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:00:42.104Z",
+ "map": {
+  "id": "mn",
+  "num": 8,
+  "name": "The Glimmer Depths"
+ },
+ "level": 1,
+ "pool": [
+  "badger-stonemason",
+  "blind-cave-fish",
+  "cave-olm",
+  "echo-matriarch",
+  "echo-screecher",
+  "giant-cave-huntsman",
+  "glimmer-spider",
+  "grotto-lobster",
+  "lantern-spark-fly",
+  "malachite-golem",
+  "prospector-mole",
+  "quarry-mole",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "sulfur-cinder-moth",
+  "vampire-bat",
+  "whip-spider"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mn",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:8-A-1",
+   "label": "vs 8-A-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:8-A-2",
+   "label": "vs 8-A-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:8-A-3",
+   "label": "vs 8-A-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:8-A-4",
+   "label": "vs 8-A-4 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 8-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road16",
+   "label": "vs reference deck (Map 16) under 8-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field"
+  }
+ ],
+ "steps": 5,
+ "moves": 3,
+ "games": 1638,
+ "seconds": 32,
+ "weak": [
+  {
+   "deck": {
+    "badger-stonemason": 4,
+    "blind-cave-fish": 3,
+    "echo-screecher": 3,
+    "malachite-golem": 3,
+    "quarry-mole": 3,
+    "stalactite-golem": 4
+   },
+   "score": 0.0119,
+   "ci": [
+    -0.0054,
+    0.0292
+   ],
+   "vsRef": 0,
+   "refWins": 1,
+   "labels": [
+    "big (17 copies at 1+ Lumber, average 1.2)",
+    "economy (4 resource makers)",
+    "armor x7",
+    "night x6"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "badger-stonemason": 4,
+    "echo-screecher": 3,
+    "giant-cave-huntsman": 3,
+    "malachite-golem": 3,
+    "stalactite-golem": 4,
+    "whip-spider": 3
+   },
+   "score": 0.0298,
+   "ci": [
+    0.0039,
+    0.0556
+   ],
+   "vsRef": 0.0139,
+   "refWins": 0.9861,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)",
+    "economy (4 resource makers)",
+    "armor x7"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "8-A-BPRO-1",
+  "deck": {
+   "badger-stonemason": 4,
+   "echo-matriarch": 3,
+   "lantern-spark-fly": 4,
+   "prospector-mole": 1,
+   "star-nosed-mole": 4,
+   "vampire-bat": 4
+  },
+  "score": 0.7679,
+  "ci": [
+   0.7101,
+   0.8257
+  ],
+  "vsRef": 0.7083,
+  "refWins": 0.2917,
+  "labels": [
+   "economy (5 resource makers)",
+   "flying x11",
+   "night x7"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:8-A-1",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:8-A-2",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:8-A-3",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:8-A-4",
+    "p": 0.5833,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road16",
+    "p": 0.4167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.8333,
+    "n": 24
+   }
+  ]
+ }
+}

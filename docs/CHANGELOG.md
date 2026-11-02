@@ -3,6 +3,12 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 
+## 2026-11-02 Package BAL11 (too-hard road fights, budget blind spots, strong / weak decks; not yet released)
+- **Road enemy decks rebuilt weaker from each fight's own list** (owner on BAL10-6; no Baby cards; leaders, first-clear cards and sizes kept; K14 kept): 67 fights, `tools/skirmish_pass.js weak`. Fights in the green band 77 -> 107 of 226, beyond 20 points 87 -> 47 (`docs/balance/bal11/road-2026-11-02.md`). The rest, and the fights K14 blocks, are decision BAL11-1.
+- **N-WK practice skirmish** (owner 14:26): each map with BPRO decks also has its weakest legal decks (WPRO, `tools/opt/wpro_2026_11_02.js`, `canonical/pro-skirmishes.json` wpro) and an N-WK node beside N-SK that draws from them (no SPECIAL swap). Strong / weak win rates per map: `docs/balance/bal11/strong-weak-2026-11-02.md`. BPRO decks rebuilt without Baby cards for the Redwood Deep, the Sunken Grove, the Morel Hollow and the Mycelium Deep.
+- **Budget fixes** (BAL11-2): Stealth and Breach priced at the road's 15-Health bramble (x2; they were measured at 30), the time of day at the card's home share (`bramblewood-budget.js` ZEIT_HOME_WEIGHT, `canonical/skill-costs.json` zeitHome, `tools/skill_costs.js`). Re-fit: Owl Nightwatch 1/3, Beetle Battering-Ram 3/9; held for the owner: Glass Octopus, Subterraneaner, Badger Sapper. Blind spots and proposals: `docs/balance/bal11/blind-spots-2026-11-02.md` (BAL11-3, BAL11-4); suggestions per hard map: `suggestions-2026-11-02.md`.
+- **PRO decks** re-run by DECK1 for Maps 0, 2, 5, 6, 7, 8, 9, 16, 18 (no cut card left; `tests/deck1-2026-10-30.js` passes).
+
 ## 2026-11-02 Release 11-02a (UI14, ENG16, ART5, LANG3, QA1, FIX4, BAL9, CARD5, BAL10; prepared, deploys on the owner's OK)
 - One release for the owner's 11-02 notes (JJ1-JJ28) and the overnight work: the VS card, boomerang finisher, random N-SK draws, status pills, Quicksand, a field of its own per map, Milling 1->2, wind rebalanced (WIND-2 a), Baby cards levelled with Hatch / Stay, 121 new card art, 12 language packs updated; PvP stranger and Live Ranked fixed, War Banner on every row in raids; rarities re-set to the map lists, cut cards out of every deck, Guardian on a wall per map, reference and BPRO decks rebuilt, skill prices re-measured, 111 road fights retuned (BAL10). Tests: smoke (known d-2026-10-19 only), e2e qa1 34/34, fix4, ui14, ui13, live two-player all pass.
 

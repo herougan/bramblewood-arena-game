@@ -1,0 +1,269 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:05:01.804Z",
+ "map": {
+  "id": "my",
+  "num": 14,
+  "name": "The Canopy"
+ },
+ "level": 1,
+ "pool": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "hercules-beetle",
+  "hoopoe-herald",
+  "jaguar-stalker",
+  "kinkajou-lurker",
+  "leafcutter-gardener",
+  "lyrebird-mimic",
+  "pangolin-roller",
+  "poison-dart-croaker",
+  "pride-queen",
+  "proboscis-monkey",
+  "redwood-woodpecker",
+  "spitting-cobra",
+  "vampire-bat",
+  "weaver-bird"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|my",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:14-A-1",
+   "label": "vs 14-A-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:14-A-2",
+   "label": "vs 14-A-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:14-A-3",
+   "label": "vs 14-A-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:14-A-4",
+   "label": "vs 14-A-4 elite's deck"
+  },
+  {
+   "key": "mirror|fight:14-A-5",
+   "label": "vs 14-A-5 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 14-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road18",
+   "label": "vs reference deck (Map 18) under 14-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field"
+  }
+ ],
+ "steps": 4,
+ "moves": 3,
+ "games": 1696,
+ "seconds": 42,
+ "weak": [
+  {
+   "deck": {
+    "apollo-butterfly": 4,
+    "camouflage-frog": 4,
+    "jaguar-stalker": 3,
+    "pride-queen": 2,
+    "proboscis-monkey": 4,
+    "spitting-cobra": 3
+   },
+   "score": 0.1406,
+   "ci": [
+    0.1061,
+    0.1751
+   ],
+   "vsRef": 0.0833,
+   "refWins": 0.9167,
+   "labels": [
+    "big (16 copies at 1 Lumber, average 0.8)",
+    "tide x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.0417,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 4,
+    "hoopoe-herald": 4,
+    "jaguar-stalker": 3,
+    "proboscis-monkey": 4,
+    "redwood-woodpecker": 2,
+    "spitting-cobra": 3
+   },
+   "score": 0.1719,
+   "ci": [
+    0.1374,
+    0.2064
+   ],
+   "vsRef": 0.0972,
+   "refWins": 0.9028,
+   "labels": [
+    "big (12 copies at 1 Lumber, average 0.6)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.0417,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "14-A-BPRO-1",
+  "deck": {
+   "hercules-beetle": 2,
+   "hoopoe-herald": 3,
+   "leafcutter-gardener": 4,
+   "lyrebird-mimic": 4,
+   "pangolin-roller": 4,
+   "redwood-woodpecker": 3
+  },
+  "score": 0.8359,
+  "ci": [
+   0.7874,
+   0.8845
+  ],
+  "vsRef": 0.8958,
+  "refWins": 0.1042,
+  "labels": [
+   "big (13 copies at 1 Lumber, average 0.7)",
+   "economy (7 resource makers)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:14-A-1",
+    "p": 0.5417,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:14-A-2",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:14-A-3",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:14-A-4",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:14-A-5",
+    "p": 0.7083,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road18",
+    "p": 0.9792,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.7917,
+    "n": 24
+   }
+  ]
+ }
+}
