@@ -1,7 +1,7 @@
 {
  "_about": "SPEED1 (2026-10-31): the pipeline's fixed rules. Edit here, not in the steps.",
  "schema": "bramblewood-pipeline/1",
- "measure": { "stages": [200, 400, 700, 1000], "seLow": 0.3, "seRel": 0.15, "why": "a variant stops when the 95% interval of its worth (the ruler) is as narrow as tools/skill2_apply_2026_10_31.js confOf calls 'high': se <= max(seLow, seRel x |worth|), se = width / 3.92" },
+ "measure": { "stages": [200, 400, 700, 1000], "bramble": 15, "brambleWhy": "2026-11-02 (BAL12, owner BAL11-2 a): measured at the road's bramble Health (arena_app.js BRAMBLE_SCALE 0.5 x 30); --bramble 30 for the old context", "seLow": 0.3, "seRel": 0.15, "why": "a variant stops when the 95% interval of its worth (the ruler) is as narrow as tools/skill2_apply_2026_10_31.js confOf calls 'high': se <= max(seLow, seRel x |worth|), se = width / 3.92" },
  "refit": {
   "maxStatPoints": 2,
   "ownerCards": ["marshal-of-rivergate", "peak-condor", "hawk-arrowkeeper", "red-billed-chough", "peregrine-stooper", "conch-herald", "eagle-owl-quartermaster", "ashbone-ghoul", "wolf-spider-mother", "grave-grin-hyena", "bee-drone", "worker-ant", "red-dragon", "white-dragon", "blue-dragon", "green-dragon", "black-dragon", "caldera-wyrm"],

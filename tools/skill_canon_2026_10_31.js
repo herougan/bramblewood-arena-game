@@ -10,7 +10,7 @@
 // Options: --games M (paired fights a variant, default 200), --carriers a,b,c (default: 6 vanilla cards of the pool nearest their full
 // budget, a Common and an Uncommon / Rare in each of three shapes: hitter, balanced, wall), --map N (a map's context: its fields, level, pool; default the global one), --name X (the file
 // name), --save (docs/balance/skill-canon-<name>-<tag>.json + .md), --workers N, --seed S, --copies k (the bench's slot, default 6),
-// --cache-dir D. Games are the bench's (tools/bench/lib.js): cached by the game's fingerprint, so a stopped run resumes by re-running it and
+// --cache-dir D, --bramble H (both brambles' Health, default 30; BAL12 2026-11-02: the road's is 15). Games are the bench's (tools/bench/lib.js): cached by the game's fingerprint, so a stopped run resumes by re-running it and
 // the anchors' games are shared by every later measurement in the same context (same cards, engine and budget).
 //
 // The method (each fight i is played by every variant with the same decks, field and engine seed: common random numbers):
@@ -97,7 +97,7 @@ async function run(o) {
     const loo = anchors.map((a, j) => { const w = est(ix => meanOf(DA[j], ix) / rateOf(ix, j)), ws = est(ix => meanOf(DA[j], ix) / statRate(ix));
       return Object.assign({}, a, { gain: L.r4(dm[j]), worth: w, worthStat: ws, off: !(a.price >= w.lo && a.price <= w.hi), offStat: !(a.price >= ws.lo && a.price <= ws.hi) }); });
     const res = { tool: 'tools/skill_canon_2026_10_31.js ' + VERSION, generated: new Date().toISOString(), fingerprint: L.fingerprint(),
-      context: { name: X.name, level: X.level, copies: X.k, fights: M, pool: X.pool.length, fields: X.fields.length, seed: X.seed }, carriers, attackWeight: AW,
+      context: { name: X.name, level: X.level, copies: X.k, fights: M, pool: X.pool.length, fields: X.fields.length, seed: X.seed, bramble: X.bramble /* BAL12 (2026-11-02): --bramble H */ }, carriers, attackWeight: AW,
       canonRate: r, lsqRate: rl, statRate: rs, kappa, attackInHealth: aInH, line: { r2: L.r4(sst ? 1 - ssr / sst : null) }, placebo: o.placebo !== false ? { effects: PLACEBO, gain: L.r4(meanOf(D0)), worthStat: est(ix => meanOf(D0, ix) / statRate(ix)) } : null, anchors: loo,
       outside: loo.filter(a => a.off).map(a => a.key) };
     // the ruler: the anchors sorted by their gain, their prices made non-decreasing in gain (pool-adjacent-violators), and a gain read off

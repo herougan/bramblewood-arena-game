@@ -1,0 +1,51 @@
+global-b15: pool 768 cards, mean Lumber cost 0.8581, level 1, 18 variants x 300
+  175/900 games, 2.3/s, about 5 min left
+  650/900 games, 4.8/s, about 1 min left
+  played 900 games in 161 s
+  stat point 2.90 win-rate pts; onReadyGold=1 6.1244 [4.8439, 8.4776]; T:onReady>gain 3 6.2392 [4.9828, 8.538]
+map02-mb-bpro-b15: pool 17 cards, mean Lumber cost 0.3529, level 0, 18 variants x 300
+  525/5400 games, 8.3/s, about 10 min left
+  1125/5400 games, 9.1/s, about 8 min left
+  1925/5400 games, 10.4/s, about 6 min left
+  2800/5400 games, 11.4/s, about 4 min left
+  3525/5400 games, 11.3/s, about 3 min left
+  4025/5400 games, 10.8/s, about 2 min left
+  4425/5400 games, 10.2/s, about 2 min left
+  4775/5400 games, 9.6/s, about 1 min left
+  5350/5400 games, 9.6/s, about 0 min left
+  played 5400 games in 562 s
+  stat point 3.72 win-rate pts; onReadyGold=1 2.209 [1.4641, 3.1765]; T:onReady>gain 3 2.5672 [1.791, 3.6748]
+map07-mz-bpro-b15: pool 23 cards, mean Lumber cost 0.6087, level 0, 18 variants x 300
+  525/5400 games, 8.7/s, about 9 min left
+  1000/5400 games, 8.0/s, about 9 min left
+  1550/5400 games, 8.2/s, about 8 min left
+  2100/5400 games, 8.4/s, about 7 min left
+  2600/5400 games, 8.4/s, about 6 min left
+  3025/5400 games, 8.1/s, about 5 min left
+  3675/5400 games, 8.5/s, about 3 min left
+  4350/5400 games, 8.7/s, about 2 min left
+  4950/5400 games, 8.7/s, about 1 min left
+  5225/5400 games, 8.3/s, about 0 min left
+  played 5400 games in 659 s
+  stat point 2.78 win-rate pts; onReadyGold=1 6.4 [4.597, 9.4035]; T:onReady>gain 3 6 [4.2899, 8.7895]
+map10-m7-bpro-b15: pool 15 cards, mean Lumber cost 1.3333, level 0, 18 variants x 300
+  900/5400 games, 14.6/s, about 5 min left
+  1975/5400 games, 16.3/s, about 4 min left
+  2925/5400 games, 15.7/s, about 3 min left
+  3825/5400 games, 15.4/s, about 2 min left
+  4825/5400 games, 15.7/s, about 1 min left
+  played 5400 games in 348 s
+  stat point 1.89 win-rate pts; onReadyGold=1 6.5 [4.8706, 9.9592]; T:onReady>gain 3 7.6176 [5.617, 11.4737]
+map10-mj-bpro-b15: pool 22 cards, mean Lumber cost 1.2273, level 3, 18 variants x 300
+  500/5400 games, 8.1/s, about 10 min left
+  1375/5400 games, 10.9/s, about 6 min left
+  2175/5400 games, 11.7/s, about 5 min left
+  2875/5400 games, 11.6/s, about 4 min left
+  3550/5400 games, 11.3/s, about 3 min left
+  4000/5400 games, 10.7/s, about 2 min left
+  4450/5400 games, 10.2/s, about 2 min left
+  4900/5400 games, 9.7/s, about 1 min left
+  5300/5400 games, 9.3/s, about 0 min left
+  played 5400 games in 581 s
+  stat point 3.10 win-rate pts; onReadyGold=1 6.1883 [4.5598, 8.6933]; T:onReady>gain 3 6.4753 [4.6928, 9.2422]
+fit: mult = 1 + 1.0273 (se 0.1184) x (mean cost - 0.8581)
