@@ -71,7 +71,10 @@ const P = require('../tools/pipeline/lib.js'), K = require('../tools/pipeline/co
   ok(RF.classify(row('a', '2/5', 1, 5), cfg, byId).why.some(w => /theme clash/.test(w)), '2/5 -> 1/5 (hitter -> balanced) is a theme clash');
   ok(!RF.classify(row('a', '3/2', 2, 3), cfg, byId).why.length, '3/2 -> 2/3 stays a hitter within 2 points and is rule-clean');
   ok(RF.classify(row('marshal-of-rivergate', '2/3', 4, 9), cfg, { 'marshal-of-rivergate': {} }).why.some(w => /owner/.test(w)), 'a named owner card is flagged');
-  ok(RF.classify(row('an', '2/6', 2, 5), cfg, byId).why.some(w => /anadromous/.test(w)), 'an Anadromous card is left to ENG15');
+  // 2026-11-02 (BAL10): ENG15 shipped (Anadromous re-priced 2.1 -> 1.4), so config.json skipSkills is empty and an Anadromous card is re-fit
+  // like any other; the skip itself still works for a skill listed there
+  ok(!RF.classify(row('an', '2/6', 2, 5), cfg, byId).why.some(w => /anadromous/.test(w)), 'an Anadromous card is no longer held (ENG15 shipped)');
+  ok(RF.classify(row('an', '2/6', 2, 5), Object.assign({}, cfg, { skipSkills: ['anadromous'] }), byId).why.some(w => /anadromous/.test(w)), 'a skill in skipSkills is still held');
 }
 
 // 5. the test step parses the runner's own line
