@@ -3690,5 +3690,10 @@
  "🧰 {att} tries to dismantle an enemy piece, but it holds.": "🧰 {att} 試圖拆解敵方裝備，但它撐住了。",
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 流血：這張卡每次攻擊或使用技能都會受傷。每回合結束時，在流過血之後，層數減 1；淨化可移除。",
  "🪓 {att} sunders {name}'s equipment.": "🪓 {att} 劈裂了 {name} 的裝備。",
- "🪦 {name} comes back from the graveyard.": "🪦 {name} 從墓地歸來。"
+ "🪦 {name} comes back from the graveyard.": "🪦 {name} 從墓地歸來。",
+ "a weak deck built from this map's card list, for practice.": "用本地圖卡牌列表組成的弱牌組，供練習。",
+ "{key}: practice fight against a weak deck of this map. No rewards. Tap to start.": "{key}：對陣本地圖弱牌組的練習戰。無獎勵。點擊開始。",
+ "Hatchling": "雛崽",
+ "A young one an evolute can grow from: an evolute played onto it gains +1/+2. From Level 1.": "可由進化體成長而來的幼崽：打在牠身上的進化體獲得 +1/+2。1 級起。",
+ "Every Baby card has it from Level 1. It only matters when you play an Evomax evolute (Evolute) onto it; it is not the egg's Hatch or Stay.": "每張幼崽卡從 1 級起都有牠。只有把 Evomax 進化體（進化）打在牠身上時才有用；牠不是蛋的孵化或留下。"
 }

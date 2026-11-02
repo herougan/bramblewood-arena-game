@@ -3691,5 +3691,10 @@
  "🧰 {att} tries to dismantle an enemy piece, but it holds.": "🧰 Sinubukan ni {att} na kalasin ang piyesa ng kalaban, pero matibay ito.",
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 Dumudugo: napipinsala ang card na ito tuwing aatake o gagamit ng kakayahan. Sa dulo ng bawat round, pagkatapos nitong dumugo, bumababa nang 1 ang patong; inaalis ito ng Paglilinis.",
  "🪓 {att} sunders {name}'s equipment.": "🪓 Binibiyak ni {att} ang kagamitan ni {name}.",
- "🪦 {name} comes back from the graveyard.": "🪦 Bumalik si {name} mula sa libingan."
+ "🪦 {name} comes back from the graveyard.": "🪦 Bumalik si {name} mula sa libingan.",
+ "a weak deck built from this map's card list, for practice.": "mahinang deck na binuo mula sa listahan ng card ng mapang ito, para sa pagsasanay.",
+ "{key}: practice fight against a weak deck of this map. No rewards. Tap to start.": "{key}: pagsasanay na laban kontra sa mahinang deck ng mapang ito. Walang gantimpala. I-tap para magsimula.",
+ "Hatchling": "Bagong Pisa",
+ "A young one an evolute can grow from: an evolute played onto it gains +1/+2. From Level 1.": "Isang batang maaaring pagmulan ng evolute: ang evolute na nilaro rito ay makakakuha ng +1/+2. Mula Level 1.",
+ "Every Baby card has it from Level 1. It only matters when you play an Evomax evolute (Evolute) onto it; it is not the egg's Hatch or Stay.": "Taglay ito ng bawat Baby card mula Level 1. Mahalaga lang ito kapag naglaro ka ng Evomax evolute (Evolute) dito; hindi ito ang Hatch o Stay ng itlog."
 }

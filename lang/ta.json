@@ -3693,5 +3693,10 @@
  "🧰 {att} tries to dismantle an enemy piece, but it holds.": "🧰 {att} ஒரு எதிரிக் கருவியைப் பிரிக்க முயல்கிறது, ஆனால் அது தாங்குகிறது.",
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 இரத்தக்கசிவு: இந்த அட்டை தாக்கும்போதும் திறனைப் பயன்படுத்தும்போதும் சேதம் அடையும். ஒவ்வொரு சுற்றின் முடிவிலும், கசிந்த பிறகு, அடுக்கு 1 குறையும்; தூய்மையாக்கல் நீக்கும்.",
  "🪓 {att} sunders {name}'s equipment.": "🪓 {att} {name} இன் கருவியைப் பிளக்கிறது.",
- "🪦 {name} comes back from the graveyard.": "🪦 {name} கல்லறையிலிருந்து திரும்புகிறது."
+ "🪦 {name} comes back from the graveyard.": "🪦 {name} கல்லறையிலிருந்து திரும்புகிறது.",
+ "a weak deck built from this map's card list, for practice.": "இந்த வரைபடத்தின் அட்டைப் பட்டியலிலிருந்து பயிற்சிக்காக அமைத்த பலவீனமான தளம்.",
+ "{key}: practice fight against a weak deck of this map. No rewards. Tap to start.": "{key}: இந்த வரைபடத்தின் பலவீனமான தளத்துக்கு எதிரான பயிற்சிப் போர். பரிசுகள் இல்லை. தொடங்கத் தட்டவும்.",
+ "Hatchling": "குஞ்சு",
+ "A young one an evolute can grow from: an evolute played onto it gains +1/+2. From Level 1.": "ஓர் எவல்யூட் வளரக்கூடிய இளம் உயிர்: இதன் மேல் விளையாடும் எவல்யூட் +1/+2 பெறும். நிலை 1 முதல்.",
+ "Every Baby card has it from Level 1. It only matters when you play an Evomax evolute (Evolute) onto it; it is not the egg's Hatch or Stay.": "ஒவ்வொரு குழந்தை அட்டையிலும் நிலை 1 முதல் இது உண்டு. இதன் மேல் Evomax எவல்யூட்டை (எவல்யூட்) விளையாடும்போது மட்டுமே இது முக்கியம்; இது முட்டையின் பொரித்தல் அல்லது தங்குதல் அல்ல."
 }

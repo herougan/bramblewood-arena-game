@@ -3692,5 +3692,10 @@
  "🧰 {att} tries to dismantle an enemy piece, but it holds.": "🧰 {att} mencoba membongkar perlengkapan musuh, tapi bertahan.",
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 Berdarah: kartu ini menerima kerusakan setiap kali menyerang atau memakai kemampuan. Di akhir setiap ronde, setelah berdarah, tumpukannya turun 1; Pembersihan menghapusnya.",
  "🪓 {att} sunders {name}'s equipment.": "🪓 {att} membelah perlengkapan {name}.",
- "🪦 {name} comes back from the graveyard.": "🪦 {name} kembali dari kuburan."
+ "🪦 {name} comes back from the graveyard.": "🪦 {name} kembali dari kuburan.",
+ "a weak deck built from this map's card list, for practice.": "dek lemah yang disusun dari daftar kartu peta ini, untuk latihan.",
+ "{key}: practice fight against a weak deck of this map. No rewards. Tap to start.": "{key}: pertarungan latihan melawan dek lemah peta ini. Tanpa hadiah. Ketuk untuk mulai.",
+ "Hatchling": "Tetasan",
+ "A young one an evolute can grow from: an evolute played onto it gains +1/+2. From Level 1.": "Anak muda tempat evolute bisa tumbuh: evolute yang dimainkan di atasnya mendapat +1/+2. Sejak Level 1.",
+ "Every Baby card has it from Level 1. It only matters when you play an Evomax evolute (Evolute) onto it; it is not the egg's Hatch or Stay.": "Setiap kartu Bayi memilikinya sejak Level 1. Ini hanya berarti saat kamu memainkan evolute Evomax (Evolute) di atasnya; ini bukan Menetas atau Tinggal milik telur."
 }

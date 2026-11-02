@@ -3693,5 +3693,10 @@
  "🧰 {att} tries to dismantle an enemy piece, but it holds.": "🧰 {att}이(가) 적 장비를 해체하려 하지만 버팁니다.",
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 출혈: 이 카드는 공격하거나 스킬을 쓸 때마다 피해를 받습니다. 매 라운드가 끝날 때, 피를 흘린 뒤에 중첩이 1 줄어듭니다. 정화로 없앱니다.",
  "🪓 {att} sunders {name}'s equipment.": "🪓 {att}이(가) {name}의 장비를 쪼갭니다.",
- "🪦 {name} comes back from the graveyard.": "🪦 {name}이(가) 무덤에서 돌아옵니다."
+ "🪦 {name} comes back from the graveyard.": "🪦 {name}이(가) 무덤에서 돌아옵니다.",
+ "a weak deck built from this map's card list, for practice.": "이 맵의 카드 목록으로 만든 연습용 약한 덱.",
+ "{key}: practice fight against a weak deck of this map. No rewards. Tap to start.": "{key}: 이 맵의 약한 덱과 붙는 연습전. 보상 없음. 탭하여 시작.",
+ "Hatchling": "새끼",
+ "A young one an evolute can grow from: an evolute played onto it gains +1/+2. From Level 1.": "진화체가 자라날 수 있는 어린 개체: 그 위에 낸 진화체는 +1/+2를 얻습니다. 레벨 1부터.",
+ "Every Baby card has it from Level 1. It only matters when you play an Evomax evolute (Evolute) onto it; it is not the egg's Hatch or Stay.": "모든 아기 카드가 레벨 1부터 가집니다. Evomax 진화체(진화)를 그 위에 낼 때만 의미가 있으며, 알의 부화나 머무르기와는 다릅니다."
 }

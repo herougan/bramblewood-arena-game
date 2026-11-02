@@ -39,7 +39,8 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
 
 // ---- JJ5: Grey Seal Bull and the urchin ---------------------------------------------------------------------------------------
 ok(C['grey-seal-bull'].attack === 3 && C['grey-seal-bull'].health === 12, `JJ5 Grey Seal Bull 3/12 (${C['grey-seal-bull'].attack}/${C['grey-seal-bull'].health})`);
-ok(C['pincushion-urchin'].attack === 2 && C['pincushion-urchin'].health === 3, 'JJ5 Pincushion Urchin 2/3');
+// 2026-11-02 (release 11-02a): BAL9's 2/3 was reverted to the owner-set 2/4 (BAL-ROLES: Claude does not re-tune owner-set cards)
+ok(C['pincushion-urchin'].attack === 2 && C['pincushion-urchin'].health === 4, 'JJ5 Pincushion Urchin 2/4 (owner-set, BAL-ROLES)');
 ok(fs.existsSync(path.join(ROOT, 'docs/balance/bench-contrib-map02-mb-bpro-2026-11-02-bal9.json')), 'JJ5 the Map 2 contribution run is on file');
 
 // ---- JJ28: a defender on every main map 1-19 -----------------------------------------------------------------------------------

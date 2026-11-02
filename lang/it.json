@@ -3692,5 +3692,10 @@
  "🧰 {att} tries to dismantle an enemy piece, but it holds.": "🧰 {att} prova a smantellare un pezzo nemico, ma regge.",
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 Sanguinamento: questa carta subisce danni ogni volta che attacca o usa un'abilità. Alla fine di ogni turno, dopo aver sanguinato, l'accumulo scende di 1; Purificare lo toglie.",
  "🪓 {att} sunders {name}'s equipment.": "🪓 {att} spacca l'equipaggiamento di {name}.",
- "🪦 {name} comes back from the graveyard.": "🪦 {name} torna dal cimitero."
+ "🪦 {name} comes back from the graveyard.": "🪦 {name} torna dal cimitero.",
+ "a weak deck built from this map's card list, for practice.": "un mazzo debole costruito con la lista di carte di questa mappa, per allenarsi.",
+ "{key}: practice fight against a weak deck of this map. No rewards. Tap to start.": "{key}: scontro di allenamento contro un mazzo debole di questa mappa. Nessuna ricompensa. Tocca per iniziare.",
+ "Hatchling": "Cucciolo",
+ "A young one an evolute can grow from: an evolute played onto it gains +1/+2. From Level 1.": "Un piccolo da cui può crescere un’evoluzione: un’evoluzione giocata sopra ottiene +1/+2. Dal livello 1.",
+ "Every Baby card has it from Level 1. It only matters when you play an Evomax evolute (Evolute) onto it; it is not the egg's Hatch or Stay.": "Ogni carta Cucciolo ce l’ha dal livello 1. Conta solo quando ci giochi sopra un’evoluzione Evomax (Evoluzione); non è la Schiusa né il Resta dell’uovo."
 }

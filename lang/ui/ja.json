@@ -4955,5 +4955,6 @@
  "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "プレイ時：正面の敵ユニット（いなければ左右どちらかの隣）に飛びかかり{v1}ダメージ（3つとも不在なら敵のいばら）。着地した瞬間に発動し、待機中かどうかは問わない。",
  "Barely more than a spark with wings, and everything standing next to it gets singed.": "羽の生えた火花とほとんど変わらないのに、隣に立つものはみんな焦げる。",
  "Half wave, half seahorse: patient, and impossible to properly hit.": "半分は波、半分はタツノオトシゴ。辛抱強く、まともに当てるのは不可能。",
- "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "お城のがれきと、本物の魔法かもしれない何かでできたリクガメ。何もしみこまない。"
+ "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "お城のがれきと、本物の魔法かもしれない何かでできたリクガメ。何もしみこまない。",
+ "The Rimeheart Mammoth": "霜心のマンモス"
 }

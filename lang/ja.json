@@ -3690,5 +3690,10 @@
  "🧰 {att} tries to dismantle an enemy piece, but it holds.": "🧰 {att}は敵の装備を分解しようとするが、持ちこたえた。",
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 出血：このカードは攻撃やスキル使用のたびにダメージを受ける。各ラウンドの終了時、出血した後に重ねが1減る。浄化で消える。",
  "🪓 {att} sunders {name}'s equipment.": "🪓 {att}が{name}の装備を断ち割る。",
- "🪦 {name} comes back from the graveyard.": "🪦 {name}が墓地から戻ってきた。"
+ "🪦 {name} comes back from the graveyard.": "🪦 {name}が墓地から戻ってきた。",
+ "a weak deck built from this map's card list, for practice.": "このマップのカードリストで組んだ練習用の弱いデッキ。",
+ "{key}: practice fight against a weak deck of this map. No rewards. Tap to start.": "{key}：このマップの弱いデッキとの練習戦。報酬なし。タップで開始。",
+ "Hatchling": "ひな",
+ "A young one an evolute can grow from: an evolute played onto it gains +1/+2. From Level 1.": "進化体が育つもとになる幼体：この上に出した進化体は+1/+2を得る。レベル1から。",
+ "Every Baby card has it from Level 1. It only matters when you play an Evomax evolute (Evolute) onto it; it is not the egg's Hatch or Stay.": "ベビーカードはすべてレベル1から持っている。Evomaxの進化体（進化）をこの上に出したときだけ意味がある。卵の孵化や留まるとは別物。"
 }

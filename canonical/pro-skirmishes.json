@@ -19650,7 +19650,7 @@
      "deck": {
       "carrion-crow": 4,
       "grave-grin-hyena": 4,
-      "leafcutter-gardener": 4,
+      "house-cat": 4,
       "pangolin-roller": 4,
       "pride-queen": 2,
       "savanna-cheetah": 2
@@ -19669,7 +19669,8 @@
       "generated": "2026-11-02T03:10:31.052Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "note": "2026-11-02 (release 11-02a merge): leafcutter-gardener x4 swapped for house-cat (CONTENT6 cut it from m5's list; House Cat is the nearest m5 card by Lumber / Wait / 2A+H / rarity, BAL9's cut-card rule). The score and labels are from before the swap; re-run DECK1 for m5 to refresh them."
     },
     {
      "id": "14-BPRO-3",
@@ -19686,7 +19687,7 @@
      "deck": {
       "carrion-crow": 3,
       "dust-hyena": 3,
-      "leafcutter-gardener": 4,
+      "house-cat": 4,
       "pangolin-roller": 4,
       "savanna-cheetah": 2,
       "weaver-bird": 4
@@ -19705,7 +19706,8 @@
       "generated": "2026-11-02T03:10:31.052Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "note": "2026-11-02 (release 11-02a merge): leafcutter-gardener x4 swapped for house-cat (CONTENT6 cut it from m5's list; House Cat is the nearest m5 card by Lumber / Wait / 2A+H / rarity, BAL9's cut-card rule). The score and labels are from before the swap; re-run DECK1 for m5 to refresh them."
     },
     {
      "id": "14-BPRO-4",
@@ -19722,7 +19724,7 @@
      "deck": {
       "dust-hyena": 2,
       "hoopoe-herald": 4,
-      "leafcutter-gardener": 4,
+      "house-cat": 4,
       "pangolin-roller": 4,
       "pride-queen": 2,
       "springbok-pronker": 4
@@ -19741,7 +19743,8 @@
       "generated": "2026-11-02T03:10:31.052Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "note": "2026-11-02 (release 11-02a merge): leafcutter-gardener x4 swapped for house-cat (CONTENT6 cut it from m5's list; House Cat is the nearest m5 card by Lumber / Wait / 2A+H / rarity, BAL9's cut-card rule). The score and labels are from before the swap; re-run DECK1 for m5 to refresh them."
     }
    ],
    "replaced": [

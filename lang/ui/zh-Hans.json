@@ -4955,5 +4955,6 @@
  "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "打出时：扑向正对面的敌方单位（没有则扑向左边或右边相邻的一个），造成 {v1} 点伤害（三者都没有时，打敌方荆棘丛）。落地的瞬间立刻触发，无论是否在等待中。",
  "Barely more than a spark with wings, and everything standing next to it gets singed.": "不过是一点长了翅膀的火花，站在它旁边的一切都会被烤焦。",
  "Half wave, half seahorse: patient, and impossible to properly hit.": "一半是浪，一半是海马：耐心，根本打不中。",
- "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "一只用城堡瓦砾和某种可能是真魔法的东西拼成的陆龟。什么都渗不进去。"
+ "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "一只用城堡瓦砾和某种可能是真魔法的东西拼成的陆龟。什么都渗不进去。",
+ "The Rimeheart Mammoth": "霜心猛犸"
 }
