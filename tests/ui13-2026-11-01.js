@@ -59,10 +59,12 @@ const A = new Function('TX', ['rv2IsCarried', 'rv2TagsOf'].map(fnSrc).join('\n')
 // ---- 3. HH4 Torch --------------------------------------------------------------------------------------------------------------
 { const t = byId.torch, ids = cards.map(c=> c.numericId).filter(x=> x != null), others = ids.filter((x, i)=> cards[i].id !== 'torch');
   ok(t && t.cardType === 'equipment' && t.rarity === 'common' && JSON.stringify(t.equip) === JSON.stringify({grant: {illuminate: true}}), 'the Torch: common equipment granting Illuminate');
-  ok(t && t.numericId === Math.max(...others) + 1 && new Set(ids).size === ids.length, `the next free numericId, unique (${t && t.numericId})`);
+  // 2026-11-03 (release 11-03a): CONTENT7 appended nine cards after the Torch, so it is no longer the highest id or the last entry
+  { const ti = cards.findIndex(c=> c.id === 'torch'), before = cards.slice(0, ti).map(c=> c.numericId).filter(x=> x != null);
+    ok(t && t.numericId === Math.max(...before) + 1 && new Set(ids).size === ids.length, `the next free numericId when it was added, unique (${t && t.numericId})`);
   // 2026-11-02 (CARD5): it has its art now, so awaitingSource is cleared (was: awaitingSource until it has art)
   ok(t && !t.awaitingSource && t.art && t.source && t.source.kind === 'secret' && t.source.id === 'm4', 'a secret card of Caves & Alcoves (m4), with its art (awaitingSource cleared, CARD5)');
-  ok(cards[cards.length - 1].id === 'torch', 'appended at the end of cards.json');
+    ok(ti >= 0 && cards.slice(ti + 1).every(c=> c.numericId == null || c.numericId > t.numericId), 'appended after every older card (later cards follow it)'); }
   ok(/\{key:'illuminate', category:'passive'/.test(app), 'Illuminate is an existing keyword (PASSIVE_DEFS)'); }
 { // the engine: the wearer gets Illuminate when the piece takes hold (equip.grant through deriveDef)
   const E = H.Engine, so = id=> id === 1 ? 'A' : 'B';

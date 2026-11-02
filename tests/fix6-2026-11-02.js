@@ -101,6 +101,6 @@ function game(ctx, g, deal){
 
 // The package's paperwork
 { const ds = rd('docs/decisions.json'); ['FIX6-1', 'FIX6-2', 'FIX6-3'].forEach(d=> ok(ds.includes('"id": "' + d + '"'), d + ' in decisions.json'));
-  ok(/Package FIX6/.test(rd('docs/CHANGELOG.md').slice(0, 6000)), 'CHANGELOG entry at the top'); }
+  ok(/Package FIX6/.test(rd('docs/CHANGELOG.md')), 'CHANGELOG entry (2026-11-03: later packages sit above it, so the whole file is read)'); }
 
 console.log(`fix6-2026-11-02: ${checks - fail}/${checks} passed`); process.exit(fail ? 1 : 0);

@@ -23659,8 +23659,8 @@ const TOWER_LEVEL_CAP = 20, TOWER_BR_START = 555, TOWER_BR_STEP = 25, TOWER_FLOO
 // Heroics, joined by the Fire Drake Hatchling; the three Uncommons (Octopus Tactician, Drowned Matriarch, Old Shell) left the Tower. The boss pool keeps its dragons, now Mythic,
 // Divine and Ancient beside the Blue Dragon and the Old Willow (decision FIX6-3). Unique is empty (no Unique card qualifies today).
 const TOWER_POOLS = {
-  rare: ['malachite-golem', 'marching-elephant', 'siege-rhino', 'ironback-gorilla', 'vampire-squid', 'obsidian-lich', 'badger-berserker', 'old-snapjaw'],
-  veryrare: ['ur-elk', 'shimmerwing-stag', 'woodland-brawler', 'lone-grey-wolf', 'ember-revenant', 'yeti-chieftain', 'pride-queen', 'wolfsbane-alpha'],
+  rare: ['malachite-golem', 'marching-elephant', 'ironback-gorilla', 'vampire-squid', 'obsidian-lich', 'badger-berserker', 'old-snapjaw'],
+  veryrare: ['ur-elk', 'shimmerwing-stag', 'woodland-brawler', 'lone-grey-wolf', 'ember-revenant', 'yeti-chieftain', 'pride-queen', 'wolfsbane-alpha', 'siege-rhino' /* 2026-11-03 (release 11-03a): Very Rare since RAR-1 (BAL12) */],
   epic: ['ironmaw-warwolf', 'marshal-of-rivergate', 'irradiated-couatl', 'the-sixfold', 'iron-warden', 'the-contradiction', 'triumvirate'],
   heroic: ['rivergate-tribune', 'sunspire-sky-sovereign', 'caldera-wyrm', 'fire-drake-hatchling'], // + the Fire Drake Hatchling (Heroic, 20-B-4 like the Wyrm): the top floors had too few Heroics to reach their rating
   unique: [],

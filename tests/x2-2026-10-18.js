@@ -34,12 +34,13 @@ function toTide(e, P, want){ for(let r = 1; r < 9 && e.getTide() !== want; r++) 
 { const {e, P} = mk({tide:true}); const L = put(e, P, 1, 'x2-land'), S = put(e, P, 1, 'x2-swim'), T = put(e, P, 2, 'x2-tide'), F = put(e, P, 2, 'x2-fly');
   ok(e.getTide() === null && e.wetCountOf(L) === 0 && e.wetCountOf(S) === 1 && e.wetCountOf(F) === 0, 'no tide yet: a land unit is dry, a Swimmer is in the water');
   ok(toTide(e, P, 'flow'), 'the Tide reaches Flood');
-  ok(e.wetCountOf(L) === 1, 'Flood: a land unit is Wet');
-  ok(e.wetCountOf(S) === 1 && e.wetCountOf(T) === 1, 'Flood: a Swimmer and a Tide unit are Wet (one counter: in the water)');
+  // 2026-11-03 (release 11-03a): ENG20's water counters (owner 22:44: "Tide and Ebb add a water counter if the card doesn't have counters - flood up to max 2"): a Flood gives a dry unit in the water 2 counters at the round's start, and counters stay until fire dries them (decision ENG20-1)
+  ok(e.wetCountOf(L) === 2, 'Flood: a land unit is Wet (2 counters)');
+  ok(e.wetCountOf(S) === 2 && e.wetCountOf(T) === 2, 'Flood: a Swimmer and a Tide unit are Wet (2 counters)');
   ok(e.wetCountOf(F) === 0, 'Flood: a flyer stays dry');
-  const N = put(e, P, 1, 'x2-land'); ok(e.wetCountOf(N) === 1, 'a land unit that arrives in a Flood is Wet at once');
+  const N = put(e, P, 1, 'x2-land'); ok(e.wetCountOf(N) === 0, 'a land unit that arrives in a Flood is dry until the next round starts (ENG20)');
   ok(toTide(e, P, 'ebb'), 'then Ebb');
-  ok(e.wetCountOf(L) === 0 && e.wetCountOf(N) === 0, 'Ebb: the land units dry out');
+  ok(e.wetCountOf(L) === 2, 'Ebb: a land unit keeps its counters (they stay until fire dries them, ENG20-1)');
   ok(e.wetCountOf(S) === 1 && e.wetCountOf(T) === 1, 'Ebb: Swimmers and Tide units stay Wet');
   e.setField('rain', 3); ok(e.wetCountOf(F) === 1 && e.wetCountOf(S) === 2 && e.wetCountOf(L) === 1, 'Rain still adds a counter for everyone, flyers too');
   ok(e.wetCountOf({kind:'hq'}) === 0, 'a castle is never Wet'); }

@@ -262,7 +262,8 @@ ok(fieldRun(0, 4) === false, 'Spring Rain: the CPU holds it when it would heal y
   ok(/const aiLevel = cpuAiLevelForNode\(mapId, node\);/.test(src) && /rules: fightRules\(mapId, node\), aiLevel\}/.test(src), "startConquestMatch gives the engine the fight's level");
   // 2026-10-21 (package TT): package ED put 'matchUid' first in RESUME_FIELDS; 'aiLevel' is still saved
   ok(/m\.engine\.setAiLevel\(cpuAiLevelOfMatch\(m\)\)/.test(src) && /const RESUME_FIELDS = \['matchUid' \/\*[^*]*\*\/, 'aiLevel',/.test(src), "the CPU's turn applies the match's level (a resumed fight too)");
-  ok(/cpuAiPillHTML\(lv\)/.test(src), 'the VS opener shows the CPU difficulty pill'); }
+  // 2026-11-03 (release 11-03a): UI16 (owner 22:15 #9: "Not including info like 'Wild Beasts' or 'Smart CPU'") took the CPU line off the versus card
+  { const vo = (src.match(/function showVersusOpener[\s\S]*?\n}\n/) || [''])[0]; ok(vo && !/cpuAiPillHTML\(lv\)/.test(vo), 'the VS opener no longer shows the CPU difficulty pill (UI16)'); } }
 
 console.log(fail ? `engine-parity-2026-10-18: ${fail} of ${n} FAILED` : `engine-parity-2026-10-18: all ${n} passed`);
 process.exit(fail ? 1 : 0);

@@ -61,7 +61,8 @@ for(const key of Object.keys(PAIRS)){
 // --- 5. shown to the player: elites and bosses, not skirmishes
 { ok(/function leadersShownFor\(node, mapId\)/.test(src), 'leadersShownFor exists');
   const opener = src.slice(src.indexOf('function showVersusOpener('), src.indexOf('function showVersusOpener(') + 6000);
-  ok(/leadersShownFor\(node, map && map\.id\)/.test(opener) && /ui\.lead-vs-leaders/.test(opener) && /ui\.nv-vs-ally-leader/.test(opener), 'the VS opener names the leader(s)');
+  // 2026-11-03 (release 11-03a): UI16 (owner 22:15 #9) shows the leader as its card art with a Leader label and its name (ui16VsArtStageHTML)
+ok(/ui16VsArtStageHTML/.test(opener) && /leadersShownFor\(node, map && map\.id\)/.test(src) && /ui\.ui16-vs-leader/.test(src), 'the VS opener names the leader(s) (UI16: leader art with its name)');
   ok(/cnp-pair/.test(src) && /leadersShownFor\(selectedNode, map\.id\)/.test(src), 'the map panel shows a paired boss\'s two leaders');
   ok(/\.vs-leaders\{/.test(tpl) && /\.cnp-pair\{/.test(tpl), 'their styles are in the template');
   // evaluate leadersShownFor against the real data
