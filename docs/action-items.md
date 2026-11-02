@@ -18,7 +18,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - KK10 (BAL11, owner 14:26): every map gets both a super strong and a super weak deck from its own list under its field effects; an N-WK (weak) skirmish next to every N-SK.
 - KK11 (ENG17, owner 14:26): the reserved starting slot applies to co-op / multiplayer dungeons only; raids unchanged (always CPU for now).
 - KK12 (owner 14:26 "apply it"): BRUP-5 Briar Blossoms column. First apply attempt waited on the Supabase confirmation prompt and timed out; not applied yet.
-- KK13 (owner 14:26): go live once KK1-KK11 are merged.
+- KK13 (owner 14:26): go live once KK1-KK11 are merged. DONE: Release 11-02a live 2026-11-02 (106ea8f2).
+- KK14 (found at the 11-02a release): since ENG17, `tests/opt-2026-10-23.js` fails "--redo ladder repeats the ladder exactly" (3 of 3 runs; passes at 66e27c8d). A replay of the optimizer's ladder walks a different path once Baby cards are Stems (Hatchling). Tool-only, the game is unaffected. Next: find the order-dependent step in tools/opt/deckopt.js (levelled '@p' defs, mineFor) and make it deterministic.
+- KK15: `tests/e2e/ui14_2026_11_02.py` is flaky under load (a different check fails each loaded run; the Brood check passed 4 of 4 runs alone). Make its waits robust.
 
 ## 11-02 00:17: the owner's notes (owner asleep; "Decisions - you decide" stands)
 - JJ1 (UI14; done 11-02, not yet released): VS screen: the pills show for ~1 s, too short to read them all. See JJ8.
