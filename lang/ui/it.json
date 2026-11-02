@@ -1368,7 +1368,6 @@
  "No skirmishes with a deck on this map.": "Nessuna schermaglia con un mazzo su questa mappa.",
  "No special abilities — a plain stat card.": "Nessuna abilità speciale: una semplice carta di statistiche.",
  "No special effect": "Nessun effetto speciale",
- "No strong wind this round.": "Niente vento forte in questo round.",
  "No tickets. It starts at a battle rating of {v1} and every floor is {v2} higher; its cards go past Level 10, up to {v3}.": "Niente biglietti. Inizia a una valutazione di battaglia di {v1} e ogni piano è {v2} più in alto; le sue carte vanno oltre il Livello 10, fino a {v3}.",
  "No wins this time": "Nessuna vittoria stavolta",
  "Nobody had anything left to play and the board stopped changing.": "Nessuno aveva più niente da giocare e il tavolo ha smesso di cambiare.",
@@ -2263,7 +2262,6 @@
  "Win {v1} PvP match{s}": "Vinci {v1} partite PvP",
  "Wind at your back": "Vento alle spalle",
  "Wind in your face": "Vento in faccia",
- "Wind: calm": "Vento: calma",
  "Wins": "Vittorie",
  "Wins this run": "Vittorie in questa corsa",
  "wins · {v1} losses · {v2} fights": "vittorie · {v1} sconfitte · {v2} battaglie",
@@ -2514,5 +2512,16 @@
  "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "Alla giocata: balza sull'unità nemica di fronte (altrimenti su una accanto, a sinistra o a destra) per {v1} danni (il rovo nemico, se non c'è nessuna delle tre). Scatta nel momento in cui atterra, in Attesa o no.",
  "Barely more than a spark with wings, and everything standing next to it gets singed.": "Poco più di una scintilla con le ali, e tutto ciò che le sta accanto si strina.",
  "Half wave, half seahorse: patient, and impossible to properly hit.": "Metà onda, metà cavalluccio marino: paziente, e impossibile da colpire davvero.",
- "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "Una testuggine di macerie del castello e di qualcosa che potrebbe essere vera magia. Niente penetra."
+ "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "Una testuggine di macerie del castello e di qualcosa che potrebbe essere vera magia. Niente penetra.",
+ "Four black jaws fold out of a pink body, and the tide flats suddenly feel very wide.": "Quattro mascelle nere si aprono da un corpo rosa, e la battigia sembra all’improvviso molto ampia.",
+ "A glowing bacterium, blown up to the size of a barrel. Come dark, the bay lights up and there are two.": "Un batterio luminoso, gonfiato fino a diventare grande come una botte. Quando fa buio la baia si illumina e ce ne sono due.",
+ "It lies buried in the sand with one feeler out. The snap is over before the sand settles.": "Giace sepolto nella sabbia con una sola antenna fuori. Lo scatto è finito prima che la sabbia si posi.",
+ "Not one animal but many, sailing on one blue bubble. Its streamers outrun the ship that sees it.": "Non un animale ma molti, che navigano su un’unica bolla azzurra. I suoi filamenti superano la nave che li avvista.",
+ "Its shell was a straight spear long before shells learned to curl. The oldest hunter in the Current.": "Il suo guscio era una lancia dritta molto prima che i gusci imparassero ad arrotolarsi. Il più antico cacciatore della Corrente.",
+ "One claw snaps shut so fast the water boils. What was in front of it sits down for a while.": "Una chela scatta così veloce che l’acqua bolle. Ciò che le stava davanti si siede per un po’.",
+ "Where it steps, the grass stands up again. Where it is struck, nothing stays wounded for long.": "Dove posa lo zoccolo, l’erba si rialza. Dove viene colpito, nessuna ferita dura a lungo.",
+ "It asks one question. Answering is not the dangerous part.": "Fa una sola domanda. Rispondere non è la parte pericolosa.",
+ "Half eagle, half lion, and it never once chose between the two.": "Metà aquila, metà leone, e non ha mai scelto tra i due.",
+ "You hear the whirlwind before you see the swift. Mostly you just hear it.": "Si sente il vortice prima di vedere il rondone. Per lo più si sente soltanto.",
+ "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.": "È cominciata come una palla di neve. Nessuno è d’accordo su di chi sia la colpa, tantomeno l’orso."
 }

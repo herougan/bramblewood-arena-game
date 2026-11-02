@@ -49,7 +49,10 @@ function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setF
 { const r = elec('lt-wall', {}, 'rain'); ok(r.T.hp === 49 && r.N.hp === 47, `the Rain: everyone 1 counter; the target's melee hit (physical) gets nothing (${r.T.hp}, ${r.N.hp})`); }
 { const r = elec('lt-swim', {}, 'rain'); ok(r.N.hp === 46, `a Swimmer in the Rain: 2 counters, 2 + 2 (${r.N.hp})`); }
 { const r = elec('lt-swim', {permaTide:true}, 'rain'); ok(r.N.hp === 46, `a Swimmer in the Rain with the Tide in: 2 counters (in the water, Rain; 2026-10-18 owner 15:05), 2 + 2 (${r.N.hp})`); }
-{ const r = elec('lt-wall', {permaTide:true}); ok(r.N.hp === 47, `the Tide in (Flood) wets everyone: 1 counter (${r.N.hp})`); }
+// 2026-11-02 (package ENG20, owner 22:44): the tide gives water counters at a round's start (Flood: 2 to a dry unit), no live +1; a fresh board has none yet.
+{ const r = elec('lt-wall', {permaTide:true}); ok(r.N.hp === 48, `a fresh board in a Flood: no counter until the round starts (${r.N.hp})`); }
+{ const {e, P} = mk(4, {permaTide:true}); const T = put(e, P, 2, 'lt-wall', 0), N = put(e, P, 2, 'lt-wall', 1); const X = put(e, P, 1, 'lt-elec', 0); e.roundStart(P, 1, so, {}, []);
+  e.debugAttack(P, so, X.uid, {}, []); ok(N.water === 2 && N.hp === 46, `the Flood gives a dry land unit 2 water counters: the arc 2 + 2 (${N.water}, ${N.hp})`); }
 { const r = elec('lt-wall'); const el = r.ev.find(x=> x.type === 'electricity'); ok(el && !('wetTarget' in el) && !el.wetArc, 'the electricity event no longer carries wetTarget'); }
 // A melee attacker whose damage type is shock: the Wet rule reads computeHitDamage too.
 { const {e, P} = mk(2); const T = put(e, P, 2, 'lt-swim', 0); const X = put(e, P, 1, 'lt-shockA', 0); const ev = []; e.debugAttack(P, so, X.uid, {}, ev);

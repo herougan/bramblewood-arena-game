@@ -1368,7 +1368,6 @@
  "No skirmishes with a deck on this map.": "Tidak ada pertempuran kecil dengan dek di peta ini.",
  "No special abilities — a plain stat card.": "Tanpa kemampuan khusus — kartu statistik biasa.",
  "No special effect": "Tanpa efek khusus",
- "No strong wind this round.": "Tak ada angin kencang di ronde ini.",
  "No tickets. It starts at a battle rating of {v1} and every floor is {v2} higher; its cards go past Level 10, up to {v3}.": "Tanpa tiket. Dimulai dari peringkat tempur {v1} dan setiap lantai {v2} lebih tinggi; kartunya melampaui Level 10, hingga {v3}.",
  "No wins this time": "Tak ada kemenangan kali ini",
  "Nobody had anything left to play and the board stopped changing.": "Tak ada yang punya apa pun untuk dimainkan dan papan berhenti berubah.",
@@ -2263,7 +2262,6 @@
  "Win {v1} PvP match{s}": "Menangkan {v1} pertandingan PvP",
  "Wind at your back": "Angin dari belakang",
  "Wind in your face": "Angin dari depan",
- "Wind: calm": "Angin: tenang",
  "Wins": "Menang",
  "Wins this run": "Kemenangan penjelajahan ini",
  "wins · {v1} losses · {v2} fights": "menang · {v1} kalah · {v2} pertarungan",
@@ -2514,5 +2512,16 @@
  "On Play: pounces on the enemy unit facing it (else one beside it, left or right) for {v1} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.": "Saat Dimainkan: menerkam unit musuh di hadapannya (jika tidak ada, yang di sebelahnya, kiri atau kanan) dengan {v1} kerusakan (semak musuh, jika ketiganya tidak ada). Aktif saat ia mendarat, sedang Menunggu atau tidak.",
  "Barely more than a spark with wings, and everything standing next to it gets singed.": "Tak lebih dari percikan api bersayap, dan semua yang berdiri di sebelahnya hangus.",
  "Half wave, half seahorse: patient, and impossible to properly hit.": "Setengah ombak, setengah kuda laut: sabar, dan mustahil dipukul dengan benar.",
- "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "Kura-kura dari puing kastel dan sesuatu yang mungkin sihir sungguhan. Tak ada yang meresap."
+ "A tortoise of castle rubble and something that might be actual magic. Nothing soaks in.": "Kura-kura dari puing kastel dan sesuatu yang mungkin sihir sungguhan. Tak ada yang meresap.",
+ "Four black jaws fold out of a pink body, and the tide flats suddenly feel very wide.": "Empat rahang hitam terbuka dari tubuh merah muda, dan hamparan pasang surut mendadak terasa sangat luas.",
+ "A glowing bacterium, blown up to the size of a barrel. Come dark, the bay lights up and there are two.": "Bakteri bercahaya yang menggembung sebesar tong. Saat gelap, teluk menyala dan jumlahnya jadi dua.",
+ "It lies buried in the sand with one feeler out. The snap is over before the sand settles.": "Ia terkubur di pasir dengan satu sungut mencuat. Sambaran selesai sebelum pasir mengendap.",
+ "Not one animal but many, sailing on one blue bubble. Its streamers outrun the ship that sees it.": "Bukan satu hewan, melainkan banyak, berlayar di atas satu gelembung biru. Tentakelnya mengungguli kapal yang melihatnya.",
+ "Its shell was a straight spear long before shells learned to curl. The oldest hunter in the Current.": "Cangkangnya adalah tombak lurus jauh sebelum cangkang belajar menggulung. Pemburu tertua di Arus.",
+ "One claw snaps shut so fast the water boils. What was in front of it sits down for a while.": "Satu capit menjepit begitu cepat hingga air mendidih. Apa pun di depannya terduduk sebentar.",
+ "Where it steps, the grass stands up again. Where it is struck, nothing stays wounded for long.": "Di mana ia melangkah, rumput kembali tegak. Di mana ia terpukul, tak ada luka yang bertahan lama.",
+ "It asks one question. Answering is not the dangerous part.": "Ia hanya mengajukan satu pertanyaan. Menjawabnya bukan bagian yang berbahaya.",
+ "Half eagle, half lion, and it never once chose between the two.": "Setengah elang, setengah singa, dan ia tak pernah memilih salah satunya.",
+ "You hear the whirlwind before you see the swift. Mostly you just hear it.": "Anda mendengar pusaran sebelum melihat waletnya. Kebanyakan hanya mendengarnya.",
+ "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.": "Awalnya hanya bola salju. Tak ada yang sepakat itu salah siapa, apalagi si beruang."
 }
