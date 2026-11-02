@@ -65,15 +65,21 @@ function session(id, host, code, extra){ const sb = newPlayer(id); const events 
   // a fresh room of two: the race over the relay, rounds in step, a drop
   // 2026-10-30 (package COOP3, owner W10: a slot in an ally's row needs a card of your own beside it): ana brings a leader, so the middle
   // row's centre (behind it) is a cell player 1 may claim in the race. Was: no leader (any unit opened an ally's slots then).
-  const a = session('ana', true, 'RELAY2', {me: {peerId: 'ana', name: 'ana', deck: deckFrom('ana'.length * 7 + 'ana'.charCodeAt(0)), leader: 'quarry-mole', castleHp: 15}}), b = session('ben', false, 'RELAY2'); await settle();
+  const a = session('ana', true, 'RELAY2', {me: {peerId: 'ana', name: 'ana', deck: {'cave-cricket': 20} /* 2026-11-02 (ENG17): free units, so player 1 can play in rounds 1 and 2 (was deckFrom('ana'...)) */, leader: 'quarry-mole', castleHp: 15}}), b = session('ben', false, 'RELAY2'); await settle();
   b.setReady(true); await settle(); a.start(); await settle(); await elapse(100);
   ok(a.T && b.T && C.tableHash(a.T) === C.tableHash(b.T), 'start: both built the same table');
-  const slot = C.rowLegalSlots(b.T, 1)[0], hb = C.seatData(b.T, 1).hand[0], ha = C.seatData(a.T, 0).hand.find(h=> (defs[h.defId].cost || 0) === 0);
-  b.claim({kind: 'play', uid: hb.uid, row: 1, slot}); a.claim({kind: 'play', uid: ha.uid, row: 1, slot}); // the same moment, player 2's sent first
+  // 2026-11-02 (package ENG17, owner COOP3-3): the middle row's centre is player 2's alone, so the race is on a cell both may use: round 1
+  // player 1 plays beside its leader (0:1), player 2 into its own centre (1:0); round 2 both claim 1:1. Was: both claimed the centre at once.
+  const canP = (p, s, row, sl)=> C.seatData(p.T, s).hand.filter(h=> C.checkAct(p.T, {kind: 'play', seat: s, uid: h.uid, row, slot: sl}).ok);
+  { const a1 = canP(a, 0, 0, 1)[0], b1 = canP(b, 1, 1, 0)[0]; if(a1) a.claim({kind: 'play', uid: a1.uid, row: 0, slot: 1}); if(b1) b.claim({kind: 'play', uid: b1.uid, row: 1, slot: 0}); }
+  for(let i = 0; i < 10 && a.T.round === 1; i++) await elapse(300);
+  const slot = 1, hb = canP(b, 1, 1, slot)[0], ha = canP(a, 0, 1, slot)[0];
+  ok(a.T.round === 2 && C.rowLegalSlots(a.T, 1, 0).includes(slot) && C.rowLegalSlots(b.T, 1, 1).includes(slot) && hb && ha, 'race setup: round 2, 1:1 is a cell for both players');
+  if(hb && ha){ b.claim({kind: 'play', uid: hb.uid, row: 1, slot}); a.claim({kind: 'play', uid: ha.uid, row: 1, slot}); } // the same moment, player 2's sent first
   await elapse(400);
   const u = C.unitAt(a.T, 1, slot);
   ok(u && u.coopSeat === 0 && C.unitAt(b.T, 1, slot) && C.unitAt(b.T, 1, slot).uid === u.uid, 'race: player 1 (the lower index) lands the slot on both screens');
-  ok(b._events.some(([k, d])=> k === 'reject' && d.by === 0) && C.seatData(b.T, 1).hand.some(h=> h.uid === hb.uid), 'race: player 2 is told, its card is back in hand');
+  ok(b._events.some(([k, d])=> k === 'reject' && d.by === 0) && hb && C.seatData(b.T, 1).hand.some(h=> h.uid === hb.uid), 'race: player 2 is told, its card is back in hand');
   for(let r = 0; r < 4; r++){
     [a, b].forEach(p=>{ const s = p.mySeat(); if(C.seatDone(p.T, s)) return; const x = C.cpuChoice(p.T, s); if(x) p.claim(x.kind === 'pass' ? {kind: 'pass'} : x.kind === 'pitch' ? {kind: 'pitch', uid: x.uid} : {kind: 'play', uid: x.uid, row: x.row, slot: x.slot}); });
     await elapse(500);

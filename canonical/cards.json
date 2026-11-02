@@ -1207,7 +1207,12 @@
     },
     "art": "data:image/png;base64,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",
     "creatorNote": "2026-10-19 retune (v5 L/10): was 1/10 (well under: 2A+H+S 51.6% -> 68.8% of N 23.25). 2026-10-19 halve (BF5): was 1/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/6.",
-    "kind": "baby"
+    "kind": "baby",
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    }
   },
   {
     "id": "tunnel-wyrm",
@@ -2406,6 +2411,11 @@
     "effects": {
       "tide": true
     },
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "creatorNote": "2026-10-17 (balance pass): 1/12 -> 1/13 (win-rate: below its band (35-60%)). 2026-10-19 halve (BF5): was 1/13. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/4. 2026-10-21 human pass I (owner's hub skill costs): 1/7 -> 1/8. 2026-10-23 (package EN, owner EV-6: \"They will be the only NOT-evomax cards with Fodder. Treat all baby-like cards like this. Oh, and they only gain this at lvl1.\"): Stem (Fodder) from Level 1 (levelSkills 1). 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 1/8 -> 1/7. 2026-10-24 (package EN8) (owner 21:20 #7: \"since evomax is only in play in 20-40, don't introduce stem first\"): Fodder (Stem from Level 1) removed; first obtainable on Map 0.",
     "kind": "baby"
   },
@@ -2599,7 +2609,12 @@
       "tier": 3,
       "map": "m11"
     },
-    "kind": "baby"
+    "kind": "baby",
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    }
   },
   {
     "id": "woodland-brawler",
@@ -2848,7 +2863,12 @@
       "tier": 2,
       "map": "mr"
     },
-    "kind": "baby"
+    "kind": "baby",
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    }
   },
   {
     "id": "firetail-trickster",
@@ -5866,7 +5886,7 @@
     "creatorNote": "2026-10-19 (card pass, package CB): source: 20-B-4 The Caldera Wyrm (worldboss, Volcano Lair) (it fights there; 2 fight(s) field it). 2026-10-19 retune (v5 L/10): was 6/13 (well under: 2A+H+S 53.7% -> 67.6% of N 50.32). 2026-10-19 halve (BF5): was 8/16. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/7. 2026-10-21 human pass I (owner's hub skill costs): 6/11 -> 4/6. 2026-10-22 package DV re-fit (rarity common -> heroic; tools/refit_pass_2026_10_21.js): 4/6 -> 6/10. 2026-10-23 (package EN, owner EV-6: \"They will be the only NOT-evomax cards with Fodder. Treat all baby-like cards like this. Oh, and they only gain this at lvl1.\"): Stem (Fodder) from Level 1 (levelSkills 1). 2026-10-23 BF11 (cap 2 = 2x(N/3)^2, Thorns 1.25, Bulwark 6): 6/10 -> 6/11.",
     "levelSkills": {
       "1": {
-        "stem": true
+        "hatchling": true
       }
     },
     "kind": "baby"
@@ -9089,7 +9109,12 @@
     ],
     "animal": "otter",
     "creatorNote": "2026-10-19 retune (v5 L/10): was 1/3 (well under: 2A+H+S 24.1% -> 67.4% of N 20.77). 2026-10-19 halve (BF5): was 3/8. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/4. 2026-10-23 (package EN, owner EV-6: \"They will be the only NOT-evomax cards with Fodder. Treat all baby-like cards like this. Oh, and they only gain this at lvl1.\"): Stem (Fodder) from Level 1 (levelSkills 1). 2026-10-24 (package EN8) (owner 21:20 #7: \"since evomax is only in play in 20-40, don't introduce stem first\"): Fodder (Stem from Level 1) removed; first obtainable on Map 0. 2026-10-26 (CONTENT3, OVR): the owner's live edit of 2026-10-22 folded in (health 5).",
-    "kind": "baby"
+    "kind": "baby",
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    }
   },
   {
     "id": "otter-paddler",
@@ -9898,6 +9923,11 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {},
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "faction": "base",
     "species": [
       "Bird"
@@ -13186,6 +13216,11 @@
     "effects": {
       "flying": true
     },
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "species": [
       "Bird"
     ],
@@ -13260,6 +13295,11 @@
     "dmgType": "physical",
     "effects": {
       "evasive": true
+    },
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
     },
     "species": [
       "Lagomorph"
@@ -21070,6 +21110,11 @@
     "effects": {
       "quick": true
     },
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "flavor": "Small, fast and absolutely certain it is the biggest thing in the swamp.",
     "dmgType": "physical",
     "resist": [],
@@ -21574,6 +21619,11 @@
     "effects": {
       "tide": true
     },
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "flavor": "Born in the green shallows, it has never seen deep water and is not in a hurry to.",
     "locked": true,
     "numericId": 559,
@@ -21692,6 +21742,11 @@
     "archetypes": [],
     "species": [],
     "effects": {},
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "rarity": "common",
     "hatchInto": {
       "any": true
@@ -21722,6 +21777,11 @@
       "Bird"
     ],
     "effects": {},
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "rarity": "uncommon",
     "hatchInto": {
       "species": [
@@ -21761,6 +21821,11 @@
     "species": [],
     "animal": "otter",
     "effects": {},
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "rarity": "uncommon",
     "hatchInto": {
       "species": [
@@ -21794,6 +21859,11 @@
     "archetypes": [],
     "species": [],
     "effects": {},
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "rarity": "uncommon",
     "hatchInto": {
       "species": [
@@ -21835,6 +21905,11 @@
     "effects": {
       "chrysalis": true
     },
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "rarity": "uncommon",
     "hatchInto": {
       "species": [
@@ -21875,6 +21950,11 @@
     "archetypes": [],
     "species": [],
     "effects": {},
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "rarity": "uncommon",
     "hatchInto": {
       "species": [
@@ -21913,6 +21993,11 @@
     "archetypes": [],
     "species": [],
     "effects": {},
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "rarity": "uncommon",
     "hatchInto": {
       "species": [
@@ -22534,6 +22619,11 @@
     "species": [],
     "animal": "dragon",
     "effects": {},
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
+    },
     "rarity": "legendary",
     "hatchInto": {
       "defId": "red-dragon"
@@ -31388,7 +31478,7 @@
     },
     "levelSkills": {
       "1": {
-        "stem": true
+        "hatchling": true
       }
     },
     "kind": "baby"
@@ -31695,6 +31785,11 @@
     "effects": {
       "armor": 1,
       "frostbite": 1
+    },
+    "levelSkills": {
+      "1": {
+        "hatchling": true
+      }
     },
     "flavor": "When the wolves come, the herd forms a ring, and the calves go in the middle.",
     "dmgType": "physical",

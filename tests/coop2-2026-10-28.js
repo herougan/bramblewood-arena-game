@@ -56,23 +56,25 @@ async function elapse(hub, clock, ms){ for(let x = 0; x < ms; x += 50){ clock.ad
     ok(C.seatData(T, 0).hand.length === 3 && C.seatData(T, 1).hand.length === 3, 'table: each player draws an opening hand of 3');
     ok(C.seatData(T, 1).hand.every(h=> h.defId === 'baby-bat') && C.seatData(T, 0).hand.every(h=> h.defId !== 'baby-bat'), 'table: each hand comes from its own deck');
     const h0 = C.seatData(T, 0).hand.find(h=> h.defId === 'cave-cricket') || C.seatData(T, 0).hand[0], h1 = C.seatData(T, 1).hand[0];
-    // player 1 (seat 0) plays into player 2's empty middle row (K12: "allies can place in allied spots")
-    ok(C.rowLegalSlots(T, 1).includes(0), 'slots: the empty middle row opens at its centre');
-    let r = C.applyAct(T, {kind: 'play', seat: 0, uid: h0.uid, row: 1, slot: 0});
-    const u = C.unitAt(T, 1, 0);
-    ok(r.ok && u && u.coopSeat === 0 && u.holdRow, 'ally slot: player 1 played into player 2\'s row; the unit is player 1\'s and holds the row');
-    ok(!C.checkAct(T, {kind: 'play', seat: 0, uid: C.seatData(T, 0).hand[0].uid, row: 0, slot: 1}).ok, 'one play a turn: a second play by the same player is refused');
-    ok(C.checkAct(T, {kind: 'play', seat: 1, uid: h1.uid, row: 1, slot: 0}).why === 'taken', 'locked: the slot is taken for everyone');
+    // 2026-11-02 (package ENG17, owner COOP3-3: "only a player can play into the starting card slot of their row. The rest is up for grabs."):
+    // player 2's row centre is player 2's alone. Was: player 1 played into player 2's empty middle row's centre (K12), then player 2 opened
+    // beside it (COOP3's interim rule). Now player 1 is refused there, plays beside its leader, and player 2 takes its own centre.
+    ok(C.rowLegalSlots(T, 1).includes(0), 'slots: the empty middle row opens at its centre (the any-unit answer)');
+    ok(!C.rowLegalSlots(T, 1, 0).includes(0) && C.checkAct(T, {kind: 'play', seat: 0, uid: h0.uid, row: 1, slot: 0}).why === 'cell', 'reserved: player 1 may not play into player 2\'s row centre (ENG17)');
+    let r = C.applyAct(T, {kind: 'play', seat: 0, uid: h0.uid, row: 0, slot: 1});
+    ok(r.ok && C.unitAt(T, 0, 1) && C.unitAt(T, 0, 1).coopSeat === 0, 'player 1 plays beside its leader');
+    ok(!C.checkAct(T, {kind: 'play', seat: 0, uid: C.seatData(T, 0).hand[0].uid, row: 0, slot: 2}).ok, 'one play a turn: a second play by the same player is refused');
     const lum1 = C.seatData(T, 1).lumber || 0, lum0 = C.seatData(T, 0).lumber || 0;
     r = C.applyAct(T, {kind: 'pitch', seat: 1, uid: h1.uid});
     ok(r.ok && (C.seatData(T, 1).lumber || 0) === lum1 + 1 && (C.seatData(T, 0).lumber || 0) === lum0, 'pitch: the Lumber goes to the player who pitched, nobody else');
     const h1b = C.seatData(T, 1).hand[0];
-    // 2026-10-30 (package COOP3, owner W10: "However you cannot use your allies' 'network' to place cards."): player 2 has nothing on the board,
-    // so player 1's units open nothing in the front row for it; it plays beside its own row's centre (held by player 1's card) instead.
-    // Was: 'ally slot: player 2 may play into player 1's front row too' (row 0, slot -1, beside player 1's leader).
+    // COOP3 (W10): player 2 has nothing on the board, so player 1's units open nothing in the front row for it
     ok(!C.checkAct(T, {kind: 'play', seat: 1, uid: h1b.uid, row: 0, slot: -1}).ok, 'ally slot: player 2 may not play beside player 1\'s units (COOP3, W10)');
-    ok(C.checkAct(T, {kind: 'play', seat: 1, uid: h1b.uid, row: 1, slot: -1}).ok, 'own row: its centre held by an ally, player 2 opens beside it (COOP3)');
-    C.applyAct(T, {kind: 'play', seat: 1, uid: h1b.uid, row: 1, slot: -1});
+    ok(C.checkAct(T, {kind: 'play', seat: 1, uid: h1b.uid, row: 1, slot: 0}).ok, 'own row: player 2 plays into its own row centre (ENG17)');
+    C.applyAct(T, {kind: 'play', seat: 1, uid: h1b.uid, row: 1, slot: 0});
+    const u = C.unitAt(T, 1, 0);
+    ok(u && u.coopSeat === 1 && u.holdRow, 'the middle row\'s unit is player 2\'s and holds the row');
+    ok(C.checkAct(T, {kind: 'play', seat: 0, uid: C.seatData(T, 0).hand[0].uid, row: 1, slot: 0}).ok === false, 'locked: the slot is taken');
     ok(C.seatDone(T, 0) && C.seatDone(T, 1), 'turn: both players have played');
     const hands = [C.seatData(T, 0).hand.length, C.seatData(T, 1).hand.length];
     const res = C.headlessRound(T);
@@ -80,6 +82,8 @@ async function elapse(hub, clock, ms){ for(let x = 0; x < ms; x += 50){ clock.ad
     ok(C.seatData(T, 0).hand.length === hands[0] + 1 && C.seatData(T, 1).hand.length === hands[1] + 1, 'round: each player drew a card');
     ok(!C.seatDone(T, 0) && !C.seatDone(T, 1), 'round: every player\'s turn flags are clear again');
     ok(C.unitAt(T, 1, 0) && C.unitAt(T, 1, 0).uid === u.uid, 'hold: the unit in the middle row is still there (no stepping up into the front)');
+    // the rest is up for grabs: behind its own 0:1 unit, player 1 may play into player 2's row (not its centre)
+    ok(!C.unitAt(T, 0, 1) || C.rowLegalSlots(T, 1, 0).includes(1), 'ally slot: player 1 may play into player 2\'s row beside its centre, behind its own unit');
     // same seed, same acts -> the same table
     const A = mk(9, [{deck: deckFrom(1)}, {deck: deckFrom(2)}]), B = mk(9, [{deck: deckFrom(1)}, {deck: deckFrom(2)}]);
     for(let i = 0; i < 6; i++){ [A, B].forEach(X=>{ C.cpuActs(X, 0); C.cpuActs(X, 1); C.headlessRound(X); }); }
@@ -107,37 +111,44 @@ async function elapse(hub, clock, ms){ for(let x = 0; x < ms; x += 50){ clock.ad
     guest.setReady(true); await settle(hub);
     ok(host.start(), 'room: the host starts'); await settle(hub);
     ok(host.T && guest.T && C.tableHash(host.T) === C.tableHash(guest.T), 'start: both clients built the same table');
-    const gh = C.seatData(guest.T, 1).hand[0], hh = C.seatData(host.T, 0).hand.find(h=> (defs[h.defId].cost || 0) === 0);
-    // the guest (player 2) claims the middle row's centre first; the host (player 1) claims it in the same moment
-    const gr = guest.claim({kind: 'play', uid: gh.uid, row: 1, slot: 0});
-    await settle(hub);
-    const hr = host.claim({kind: 'play', uid: hh.uid, row: 1, slot: 0});
-    ok(gr.ok && hr.ok, 'race: both claims were sent');
-    await elapse(hub, clock, 400);
-    const cell = C.unitAt(host.T, 1, 0), gcell = C.unitAt(guest.T, 1, 0);
-    ok(cell && cell.coopSeat === 0 && cell.defId === hh.defId, 'race: the lower player index (player 1) lands in the slot, though player 2 claimed first');
-    ok(gcell && gcell.uid === cell.uid, 'race: player 2\'s screen shows player 1\'s card in that slot');
-    const rej = ev.g.find(([k])=> k === 'reject');
-    ok(rej && rej[1].by === 0 && rej[1].act && rej[1].act.uid === gh.uid, 'race: player 2\'s claim is refused, taken by player 1');
-    ok(C.seatData(guest.T, 1).hand.some(h=> h.uid === gh.uid) && !Object.keys(guest.pending).length, 'race: player 2\'s card is back in its hand, nothing waiting');
-    ok(C.tableHash(host.T) === C.tableHash(guest.T), 'race: both tables are the same after it');
-    // the slot is locked: a later claim on it is refused at once on the claimant's own page
-    const g2 = guest.claim({kind: 'play', uid: gh.uid, row: 1, slot: 0});
-    ok(!g2.ok && g2.why === 'taken', 'lock: a later claim on the taken slot is refused');
-    // player 2 plays into player 1's front row instead (an allied spot); the round starts once both are done
-    // 2026-10-30 (COOP3, W10): with nothing of its own on the board player 2 has no cell in player 1's row; it plays beside its own row's
-    // centre (player 1's card holds it). Was: rowLegalSlots(guest.T, 0)[0], a front-row slot beside player 1's units.
-    const fs1 = C.rowLegalSlots(guest.T, 1, 1)[0];
-    ok(fs1 != null && guest.claim({kind: 'play', uid: gh.uid, row: 1, slot: fs1}).ok, 'own row: player 2 claims a slot beside its row\'s centre (COOP3)');
+    // 2026-11-02 (package ENG17, owner COOP3-3): the middle row's centre is player 2's alone, so the race moves to a cell both may use:
+    // round 1, player 1 plays beside its leader (0:1) and player 2 into its own centre (1:0); round 2 both claim 1:1 (behind player 1's
+    // unit, beside player 2's). Was: both claimed the middle row's centre in round 1.
+    const canP = (S, s)=> C.seatData(S.T, s).hand.filter(h=> S.T.E.canPlay(C.seatData(S.T, s), h.defId, h.uid));
+    const hp1 = canP(host, 0)[0], gp1 = canP(guest, 1)[0];
+    ok(!!(hp1 && gp1) && host.claim({kind: 'play', uid: hp1.uid, row: 0, slot: 1}).ok && guest.claim({kind: 'play', uid: gp1.uid, row: 1, slot: 0}).ok, 'round 1: player 1 at 0:1, player 2 in its own centre');
     await elapse(hub, clock, 400); for(let i = 0; i < 10 && host.T.round === 1; i++) await elapse(hub, clock, 200);
     ok(host.T.round === 2 && guest.T.round === 2, 'turn: both played, the round was fought on both clients');
+    const RS = 1; // the race's cell: 1:1
+    ok(C.rowLegalSlots(host.T, 1, 0).includes(RS) && C.rowLegalSlots(guest.T, 1, 1).includes(RS), 'race: 1:1 is a cell for both players');
+    const gh = canP(guest, 1)[0], hh = canP(host, 0)[0];
+    // the guest (player 2) claims 1:1 first; the host (player 1) claims it in the same moment
+    const gr = gh && guest.claim({kind: 'play', uid: gh.uid, row: 1, slot: RS});
+    await settle(hub);
+    const hr = hh && host.claim({kind: 'play', uid: hh.uid, row: 1, slot: RS});
+    ok(gr && gr.ok && hr && hr.ok, 'race: both claims were sent');
+    await elapse(hub, clock, 400);
+    const cell = C.unitAt(host.T, 1, RS), gcell = C.unitAt(guest.T, 1, RS);
+    ok(cell && cell.coopSeat === 0 && hh && cell.defId === hh.defId, 'race: the lower player index (player 1) lands in the slot, though player 2 claimed first');
+    ok(gcell && cell && gcell.uid === cell.uid, 'race: player 2\'s screen shows player 1\'s card in that slot');
+    const rej = ev.g.find(([k])=> k === 'reject');
+    ok(rej && rej[1].by === 0 && rej[1].act && gh && rej[1].act.uid === gh.uid, 'race: player 2\'s claim is refused, taken by player 1');
+    ok(gh && C.seatData(guest.T, 1).hand.some(h=> h.uid === gh.uid) && !Object.keys(guest.pending).length, 'race: player 2\'s card is back in its hand, nothing waiting');
+    ok(C.tableHash(host.T) === C.tableHash(guest.T), 'race: both tables are the same after it');
+    // the slot is locked: a later claim on it is refused at once on the claimant's own page
+    const g2 = gh && guest.claim({kind: 'play', uid: gh.uid, row: 1, slot: RS});
+    ok(g2 && !g2.ok && g2.why === 'taken', 'lock: a later claim on the taken slot is refused');
+    const fs1 = C.rowLegalSlots(guest.T, 1, 1)[0];
+    ok(fs1 != null && fs1 !== 0 && gh && guest.claim({kind: 'play', uid: gh.uid, row: 1, slot: fs1}).ok, 'own row: player 2 claims another cell of its row');
+    await elapse(hub, clock, 400); for(let i = 0; i < 10 && host.T.round === 2; i++) await elapse(hub, clock, 200);
+    ok(host.T.round === 3 && guest.T.round === 3, 'turn: both played, the round was fought on both clients');
     ok(C.tableHash(host.T) === C.tableHash(guest.T) && host.desyncs === 0 && guest.desyncs === 0, 'turn: same table on both after the round, no desync');
     // a lower index never steals a slot already landed: player 2 lands first in one moment, player 1 claims it in the next
-    const g3 = C.seatData(guest.T, 1).hand[0], sl3 = C.rowLegalSlots(guest.T, 1, 1).find(sl=> sl !== 0); // + COOP3: a slot player 2 itself may use
-    guest.claim({kind: 'play', uid: g3.uid, row: 1, slot: sl3}); await elapse(hub, clock, 300);
-    ok(C.unitAt(host.T, 1, sl3) && C.unitAt(host.T, 1, sl3).coopSeat === 1, 'first come: player 2\'s claim landed alone');
-    const h3 = C.seatData(host.T, 0).hand.find(h=> (defs[h.defId].cost || 0) <= (C.seatData(host.T, 0).lumber || 0));
-    if(h3){ const r3 = host.claim({kind: 'play', uid: h3.uid, row: 1, slot: sl3}); ok(!r3.ok && r3.why === 'taken', 'first come: player 1 can\'t take a slot player 2 already holds'); }
+    const g3 = canP(guest, 1)[0], sl3 = C.rowLegalSlots(guest.T, 1, 1).find(sl=> sl !== 0); // + COOP3: a slot player 2 itself may use
+    if(g3 && sl3 != null){ guest.claim({kind: 'play', uid: g3.uid, row: 1, slot: sl3}); await elapse(hub, clock, 300);
+      ok(C.unitAt(host.T, 1, sl3) && C.unitAt(host.T, 1, sl3).coopSeat === 1, 'first come: player 2\'s claim landed alone');
+      const h3 = C.seatData(host.T, 0).hand.find(h=> (defs[h.defId].cost || 0) <= (C.seatData(host.T, 0).lumber || 0));
+      if(h3){ const r3 = host.claim({kind: 'play', uid: h3.uid, row: 1, slot: sl3}); ok(!r3.ok && r3.why === 'taken', 'first come: player 1 can\'t take a slot player 2 already holds'); } }
     host.close(); guest.close();
   }
 

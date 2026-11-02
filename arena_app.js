@@ -1840,6 +1840,26 @@ Object.assign(SKILL_ICON, {evolute:'🧬', evoluteAlpha:'🧬α', evoluteOmega:'
 // (mechLineGate 'evolution'), so the editor offers them on Evomax cards only. Cards: tests/en8-2026-10-24.js checks no other card carries them
 // before Map 20 (a card's mysterySkills show as "?" instead: the Cocoon, call EN8-4).
 sk1Patch(PASSIVE_DEFS, 'stem', {mechLineGate:'evolution'}); sk1Patch(PASSIVE_DEFS, 'stemGrant', {mechLineGate:'evolution'}); sk1Patch(PASSIVE_DEFS, 'chrysalis', {mechLineGate:'evolution'});
+// ==== Package ENG17 (2026-11-02, owner BABY-2 11-02 14:10: "Hatchling doesn't do that. It just does what we wanted Fodder to do."): Hatchling,
+// the Baby cards' skill (card group Baby, kind 'baby'), is EV-6 / EN-6's Fodder: a plain Stem from Level 1 (canonical/cards.json levelSkills
+// {"1": {"hatchling": true}}), so an evolute played onto it gains +1/+2 (bramblewood-engine.js isStemDef). Not the egg's Hatch / Stay (ENG16).
+// An older card's Fodder (a Baby card's Level 1 Stem, or a `fodder` key) is read as Hatchling (eng17MigrateHatchling).
+sk1Patch(PASSIVE_DEFS, 'hatchling', {category:'passive', label:TX('ui.skn-hatchling'), kind:'boolean', desc:()=> TX('ui.sk-hatchling'), codexNote:TX('ui.sk-hatchling-codex')});
+Object.assign(SKILL_ICON, {hatchling:'🐣'});
+function eng17MigrateHatchling(c, baseline){
+  if(!c) return c; const baby = c.kind === 'baby' || (!('kind' in c) && baseline && baseline.kind === 'baby');
+  const e = c.effects || {}, ls = c.levelSkills || null, l1 = ls && (ls[1] || ls['1']);
+  const hasFodderKey = e.fodder != null || !!(l1 && l1.fodder != null);
+  const babyStem = baby && l1 && l1.stem === true && !l1.stemGrant;
+  const needs = hasFodderKey || babyStem || (baby && !(l1 && l1.hatchling));
+  if(!needs) return c;
+  const out = Object.assign({}, c), ne = Object.assign({}, e);
+  if(ne.fodder != null){ if(ne.fodder) ne.hatchling = true; delete ne.fodder; } out.effects = ne;
+  if(baby || (l1 && l1.fodder != null)){ const nls = Object.assign({}, ls || {}), n1 = Object.assign({}, l1 || {}); delete nls['1'];
+    if(n1.fodder != null) delete n1.fodder; if(baby && n1.stem === true && !n1.stemGrant) delete n1.stem; if(baby || hasFodderKey) n1.hatchling = true;
+    nls[1] = n1; out.levelSkills = nls; }
+  return out;
+}
 // EN8 (2026-10-24, owner 22:28 #2, LUM-1): the resource skills (rules: the EN8 block in bramblewood-engine.js; prices: canonical/skill-costs.json,
 // the owner's 4-round rule). Each number defaults to 1. Scavenge and Salvage keep SK2's names with LUM-1's plain rules (no points).
 const EN8_UI = {stonecutterN:1, stonecutterEvery:2, prospectorN:1, fellingN:1, pearlBedN:1, salvageN:1, salvageMult:2, scavengeN:1, coppiceN:1, driftwoodN:1, windfallLumber:1}; // the engine's EN8_DEF
@@ -3172,6 +3192,7 @@ Object.assign(SKILL_TEXT, {mimic: ()=> TX('ui.sk-mimic')}); // Package MT (2026-
 Object.assign(SKILL_TEXT, {evolute: ()=> TX('ui.sk-evolute'), evoluteAlpha: ()=> TX('ui.sk-evolute-alpha'), evoluteOmega: ()=> TX('ui.sk-evolute-omega'), stem: ()=> TX('ui.sk-stem'),
   stemGrant: v=> TX('ui.sk-stem-grant', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}),
   chrysalis: (v, n, e)=> e && e.stemGrant && typeof e.stemGrant === 'object' ? TX('ui.sk-chrysalis-grant', {skills: grantText(e.stemGrant) || TX('ui.cx-nothing')}) : TX('ui.sk-chrysalis')});
+Object.assign(SKILL_TEXT, {hatchling: ()=> TX('ui.sk-hatchling')}); // Package ENG17 (2026-11-02, BABY-2): Hatchling's card line
 Object.assign(SKILL_TEXT, {injured: v=> TX('ui.sk-injured', {n: numOr(v, 1)}), rally: v=> TX('ui.sk-rally', {n: numOr(v, 1)})}); // Package BF6 (2026-10-21): Injured N's and Rally N's card lines
 // Package TR (2026-10-21): King, Kingly – {…}, Tribute N; King Slayer reaches Royalty and the crowned unit; Usurper steals the Crown
 Object.assign(SKILL_TEXT, {king: (v, n, e)=> TX('ui.sk-king', {skills: grantText(kinglyOfApp(e))}), kinglyGrant: v=> TX('ui.sk-king', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}),
@@ -3215,6 +3236,7 @@ const SKILL_REVEAL_MAP = {
   // (Fodder was the name of the babies' Stem, EN-6 / EV-6: one skill, stem.)
   stem:        {from:20, nameFrom:15, parts:['stemGrant']},
   chrysalis:   {from:20, nameFrom:15},
+  hatchling:   {from:20, nameFrom:15}, // ENG17 (2026-11-02, BABY-2): Hatchling is the babies' Fodder, so it follows Stem's gate
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
@@ -3744,6 +3766,7 @@ function buildCardDefs(){
   Object.keys(liveCards).forEach(id=>{ const m = migrateWorthyToBounty(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; });
   Object.keys(liveCards).forEach(id=>{ const m = sk1MigrateSiege(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-19 (package SK1): Demolisher is Siege now
   Object.keys(liveCards).forEach(id=>{ const m = enMigrateCard(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-23 (package EN): Spellshield is Spellward, Enraged is Rage – {…}
+  Object.keys(liveCards).forEach(id=>{ const m = eng17MigrateHatchling(liveCards[id], CARD_DEFS_BASELINE[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-11-02 (package ENG17, BABY-2): a Baby card's Fodder / Stem from Level 1 is Hatchling
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
@@ -8971,6 +8994,7 @@ CHIP_FALLBACK_SKILLS.push('harvest', 'scavenge', 'salvage', 'quarry', 'smelter',
 CHIP_FALLBACK_SKILLS.push('mimic'); // Package MT (2026-10-21): Mimic's chip (🪞)
 CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
 CHIP_FALLBACK_SKILLS.push('evolute', 'evoluteAlpha', 'evoluteOmega', 'stem', 'chrysalis'); // Package EV (2026-10-21): 🧬 / 🧬α / 🧬Ω, 🌱, 🐛
+CHIP_FALLBACK_SKILLS.push('hatchling'); // Package ENG17 (2026-11-02): 🐣
 CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 🪙
 // 2026-10-30 (coordinator; owner 21:35: "When the Sun's active, Diurnal symbol becomes highlighted, like tide. When it's night, nocturnal symbol gets
 // highlighted."): a board card's Diurnal / Nocturnal chip takes the live Tide look while its bonus applies (the engine's zeitPhase: a dark fight counts
@@ -32351,7 +32375,7 @@ function runCardCheck(host){
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
 const SB_KEY = 'bramblewood_stat_budget_v6', SB_KEY_V5 = 'bramblewood_stat_budget_v5', SB_KEY_V3 = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2'; // 2026-10-19 (BF2): v5 numbers start fresh; 2026-10-21 (BF6): so do the halved coefficients (v6)
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
-const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', shield:0 /* FIN2-c (2026-10-26): priced as 0.8 Health in capScores */, flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */, evolute:3, evoluteAlpha:4, evoluteOmega:5, stem:1.6, chrysalis:1.6 /* 2026-10-21 (package EV): theoretical, canonical/skill-costs.json */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', shield:0 /* FIN2-c (2026-10-26): priced as 0.8 Health in capScores */, flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */, evolute:3, evoluteAlpha:4, evoluteOmega:5, stem:1.6, chrysalis:1.6 /* 2026-10-21 (package EV): theoretical, canonical/skill-costs.json */, hatchling:1.6 /* 2026-11-02 (ENG17, BABY-2): a Stem from Level 1 */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow']; // 2026-10-22 (BF8): Blind (Blinding) is a priced skill now, not a half-miss
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 // 2026-10-21 (package CX5, owner call CX5): the card editor's budget panel and the Test Lab price S from canonical/skill-costs.json (built

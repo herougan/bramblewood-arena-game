@@ -444,17 +444,23 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // plus the centre of that player's home row (always open, as legalSlots' centre). Units of the other players open nothing for this one.
   // mine(card, row) says whose a unit is. Returns [{row, slot}] (row 0 the front, r >= 1 that reserve row), inside slotCols, no Rubble on the
   // front, a cage opens nothing. Only the group dungeon calls it; solo and PvP keep legalSlots / legalReserveSlots.
-  function ownedCells(pl, mine, homeRow){
+  // 2026-11-02 (package ENG17, owner COOP3-3 11-02 14:10: "only a player can play into the starting card slot of their row. The rest is up
+  // for grabs."): each player's row centre (the starting slot) is that player's alone. otherHomes = the rows of the other players (default,
+  // with a homeRow: every other row of the side); their centres are never a cell for this player, whatever stands beside them. Every other
+  // free cell follows the rule above. The W10 interim exception (an ally in your centre opened the slots beside it) is no longer needed for
+  // plays; it stays only as a safety net for a unit MOVED into your centre (a pull to the centre), so a player is never shut out.
+  function ownedCells(pl, mine, homeRow, otherHomes){
     if(!slotMode || !pl) return [];
     const nRows = 1 + (pl.reserve ? pl.reserve.length : 0), occ0 = occupiedSlots(pl);
+    const others = new Set(homeRow == null ? (otherHomes || []) : (otherHomes || Array.from({length: nRows}, (_, r)=> r)).filter(r=> r !== homeRow));
     const free = (r, sl)=> inSlotCols(sl) && (r === 0 ? !occ0.has(sl) && !eqRubbleBlocks(pl, sl) : !!pl.reserve[r-1] && !pl.reserve[r-1][sl]);
-    const out = new Map(), add = (r, sl)=>{ if(r >= 0 && r < nRows && Number.isInteger(sl) && free(r, sl)) out.set(r + ':' + sl, {row: r, slot: sl}); };
+    const out = new Map(), add = (r, sl)=>{ if(r >= 0 && r < nRows && Number.isInteger(sl) && free(r, sl) && !(sl === 0 && others.has(r))) out.set(r + ':' + sl, {row: r, slot: sl}); };
     const units = r=> r === 0 ? allBoardCards(pl).filter(c=> c.hp > 0 && Number.isInteger(c.slot) && !c.cageOf)
       : Object.keys(pl.reserve[r-1] || {}).map(k=> pl.reserve[r-1][k]).filter(c=> c && c.hp > 0 && Number.isInteger(c.slot));
     let own = 0;
     for(let r = 0; r < nRows; r++) units(r).forEach(c=>{ if(!mine(c, r)) return; own++; add(r, c.slot - 1); add(r, c.slot + 1); add(r - 1, c.slot); add(r + 1, c.slot); });
     if(homeRow != null){ add(homeRow, 0);
-      // nothing of yours on the board and an ally holds your row's centre: the slots beside it (legalSlots' empty-board rule), so a player is never shut out
+      // nothing of yours on the board and another unit holds your row's centre (ENG17: only by a move now, never a play): the slots beside it
       if(!own && !free(homeRow, 0)){ add(homeRow, -1); add(homeRow, 1); } }
     return [...out.values()].sort((a, b)=> a.row - b.row || a.slot - b.slot);
   }
@@ -4748,7 +4754,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const EVO_STAGES = ['evolute', 'evoluteAlpha', 'evoluteOmega'];
   function evoStageOf(d){ const e = (d && d.effects) || {}; return e.evoluteOmega ? 3 : e.evoluteAlpha ? 2 : e.evolute ? 1 : 0; }
   function isEvoluteDef(defId){ return evoStageOf(CARD_DEFS[defId]) > 0; }
-  function isStemDef(d){ const e = (d && d.effects) || {}; return !!(e.stem || e.chrysalis || (e.stemGrant && typeof e.stemGrant === 'object')); }
+  // Hatchling (2026-11-02, package ENG17, owner BABY-2 11-02 14:10: "Hatchling ... just does what we wanted Fodder to do."): the Baby cards'
+  // skill (card group Baby, from Level 1: canonical/cards.json levelSkills) is EV-6's Fodder: a plain Stem (+1/+2 to the evolute played
+  // onto it). `fodder` (an older name) reads as Hatchling.
+  function isStemDef(d){ const e = (d && d.effects) || {}; return !!(e.stem || e.chrysalis || e.hatchling || e.fodder || (e.stemGrant && typeof e.stemGrant === 'object')); }
   function evoShares(a, b){
     if(!a || !b) return false;
     if(TAXONOMY){ if(TAXONOMY.isChangeling(a) || TAXONOMY.isChangeling(b)) return true;

@@ -45,10 +45,11 @@ const cells = list=> list.map(x=> x.row + ':' + x.slot).join(' ');
     const mine = who=> (c)=> c.who === who;
     ok(cells(E.ownedCells(P[1], mine('a'), 0)) === '0:0', 'engine: nothing on the board -> your row\'s centre only');
     put(0, 0, 'a');
-    ok(cells(E.ownedCells(P[1], mine('a'), 0)) === '0:-1 0:1 1:0', `engine: beside your unit, and behind it in the next row (${cells(E.ownedCells(P[1], mine('a'), 0))})`);
+    // 2026-11-02 (ENG17, owner COOP3-3): 1:0 is the ally's starting slot, reserved to them, so it is no longer a cell behind your unit
+    ok(cells(E.ownedCells(P[1], mine('a'), 0)) === '0:-1 0:1', `engine: beside your unit; behind it is the ally's row centre, theirs alone (${cells(E.ownedCells(P[1], mine('a'), 0))})`);
     ok(cells(E.ownedCells(P[1], mine('b'), 1)) === '1:0', `engine: the ally's units open nothing for you; your own row's centre stays open (${cells(E.ownedCells(P[1], mine('b'), 1))})`);
-    put(1, 0, 'a');
-    ok(cells(E.ownedCells(P[1], mine('b'), 1)) === '1:-1 1:1', `engine: your row's centre held by an ally and nothing of yours -> the slots beside it (${cells(E.ownedCells(P[1], mine('b'), 1))})`);
+    put(1, 0, 'a'); // 2026-11-02 (ENG17): no play can put it there now; a unit moved in (a pull) keeps the safety net
+    ok(cells(E.ownedCells(P[1], mine('b'), 1)) === '1:-1 1:1', `engine: your row's centre held by an ally's unit and nothing of yours -> the slots beside it (${cells(E.ownedCells(P[1], mine('b'), 1))})`);
     put(1, 1, 'b');
     const b = cells(E.ownedCells(P[1], mine('b'), 1)), a = cells(E.ownedCells(P[1], mine('a'), 0));
     ok(b === '0:1 1:2', `engine: from your unit in your row: the slot beside it and the one in front of it in the ally's row (${b})`);
@@ -65,7 +66,8 @@ const cells = list=> list.map(x=> x.row + ':' + x.slot).join(' ');
   const mk = (seed, seats)=> C.createTable({makeSimEngine: H.Engine.makeSimEngine, defs, seed, typeId: 'hollow', floorIdx: 0, seats});
   {
     const T = mk(5, [{name: 'Hazel', deck: {'cave-cricket': 20}, castleHp: 15, leader: 'quarry-mole'}, {name: 'Pip', deck: {'baby-bat': 20}, castleHp: 12}]);
-    ok(C.rowLegalSlots(T, 0, 0).join() === '-1,1' && C.rowLegalSlots(T, 1, 0).join() === '0', 'table: player 1 (leader in the centre): beside it, and behind it in player 2\'s row');
+    // 2026-11-02 (ENG17, owner COOP3-3): behind the leader is player 2's row centre, player 2's alone (was '0')
+    ok(C.rowLegalSlots(T, 0, 0).join() === '-1,1' && C.rowLegalSlots(T, 1, 0).join() === '', 'table: player 1 (leader in the centre): beside it; not player 2\'s row centre behind it');
     ok(C.rowLegalSlots(T, 0, 1).join() === '' && C.rowLegalSlots(T, 1, 1).join() === '0', 'table: player 2 (nothing on the board): its own row\'s centre; nothing beside player 1\'s leader');
     ok(C.rowLegalSlots(T, 0).join() === '-1,1', 'table: without a seat, the old any-unit answer (callers that only ask "is it free")');
     const h1 = C.seatData(T, 1).hand[0];

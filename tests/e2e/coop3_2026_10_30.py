@@ -137,11 +137,14 @@ async def run_width(browser, w):
       m.selectedUid = h.uid; renderBoard(); renderHand();
       const legal = C.rowLegalSlots(T, 1, 0), refusedSlot = [t - 1, t + 1].find(x=> C.COLS.includes(x) && !C.unitAt(T, 1, x) && !legal.includes(x));
       const shown = [...document.querySelectorAll('#battlefieldInner .reserve-target[data-reserve="1"]')].map(x=> Number(x.dataset.slot));
-      return {uid: h.uid, allowed: mineAt.slot, allySlot: t, refusedSlot, legal, shown}; }""")
+      const behindCentre = !!C.unitAt(T, 0, 0) && C.unitAt(T, 0, 0).coopSeat === 0; // ENG17: my unit in front of the ally's centre
+      return {uid: h.uid, allowed: mineAt.slot, allySlot: t, refusedSlot, legal, shown, behindCentre, centreFree: !C.unitAt(T, 1, 0)}; }""")
     if cr.get('none'):
         check(False, 'cross-row: no playable card for the check')
     else:
         check(cr['allowed'] in cr['shown'] and cr['allowed'] in cr['legal'], f"W10 allowed: a '+' in the ally's row behind my own card (1:{cr['allowed']}) ({cr})")
+        # 2026-11-02 (package ENG17, owner COOP3-3): the ally's row centre is theirs alone: never a '+' for me, even right behind my own card
+        if cr['centreFree']: check(0 not in cr['shown'] and 0 not in cr['legal'], f"ENG17: no '+' on the ally's row centre for me (behind my card: {cr['behindCentre']}) ({cr})")
         check(cr['refusedSlot'] is not None and cr['refusedSlot'] not in cr['shown'], f"W10 refused: no '+' beside only the ally's card (1:{cr['refusedSlot']})")
         await shot(page, 'cross-row', w)
         ref = await page.evaluate(f"""async()=>{{ const m = matchState, n0 = Object.keys(GD.s.pending).length; gdClaimPlay({cr['uid']}, {cr['refusedSlot']}, null, {{reserve: 1}});
