@@ -288,5 +288,6 @@ run node tests/eng17-2026-11-02.js   # 2026-11-02 (package ENG17, owner COOP3-3 
 run node tests/bal11-wk-2026-11-02.js   # 2026-11-02 (package BAL11, owner 14:26): every map with BPRO decks has 1-2 WPRO decks (the weakest legal decks of its list, no Baby cards), baked into index.html, and an N-WK skirmish beside N-SK that draws from them
 run node tests/content7-2026-11-02.js   # 2026-11-02 (package CONTENT7, owner IDEA-11-02 + CONTENT6-2 b): nine new unlisted cards inside the budget with an animal each, the Mythic three marked for Map 56+, Gale Sprite -> Whirlwind Swift and Alpine Avalanche -> Avalanche Bear in cards.json and 12 packs, CONTENT7-1..3, art prompts without banned words
 run node tests/fix5-2026-11-02.js   # 2026-11-02 (package FIX5, owner 21:12): the board keeps Swarm / Pack / Kinship / Formation / tide Attack when the fight is decided (the deciding render reads live units, not the replay snapshot) (browser: tests/e2e/fix5_2026_11_02.py)
+run node tests/fix6-2026-11-02.js   # 2026-11-02 (package FIX6, owner 21:37): your leader comes out on Auto and in the sims (leaderPlan, dealPlayerLeader), the CPU keeps LEAD-4, 4-5's Drowned Matriarch is played from hand, the Tower pools follow current rarities
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

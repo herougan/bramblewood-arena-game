@@ -8074,6 +8074,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!cands.length) return null;
     return cands.reduce((a, b)=> (aiResourceGap(ai, b.defId) < aiResourceGap(ai, a.defId) || (aiResourceGap(ai, b.defId) === aiResourceGap(ai, a.defId) && cardValue(b.defId) > cardValue(a.defId))) ? b : a);
   }
+  // FIX6 (2026-11-02): the leader a leaderPlan seat (your side on Auto-play, the sims' reference player) gathers for: still in reserve, short
+  // only of resources, within AI_PLAN_REACH pitches. null for every other seat (the CPU's leaders: LEAD-4).
+  function aiLeaderToGather(players, aiId){
+    const ai = players[aiId]; if(!ai || !ai.leaderPlan || ai.playedThisTurn || !(ai.reserveLeaders && ai.reserveLeaders.length)) return null;
+    return ai.reserveLeaders.find(id=> CARD_DEFS[id] && !canPlay(ai, id, null) && aiShortOfResources(ai, id) && aiResourceGap(ai, id) <= AI_PLAN_REACH) || null;
+  }
   function aiFreeCard(defId){ const d = CARD_DEFS[defId] || {}; return !(costOfCard(defId) > 0) && !(Number(d.stoneCost) > 0) && !(Number(d.metalCost) > 0); }
   // The best of your units a Ready unit of this card could kill this round from a slot the CPU may take (its worth), else 0.
   function aiBestKillNow(players, aiId, defId){
@@ -8257,9 +8263,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 2026-10-18 (CPU difficulty): the basic CPU (aiLevel 0) keeps the old coin flip too; the smartest wants the field to be worth it
     // (> 0.5), so a card that would barely help, or hurt it, waits in hand for its moment.
     if(fieldCard && (aiSmart() ? aiFieldWorth(players, aiId, fieldCard.defId) > (aiSmartest() ? 0.5 : 0) : rnd() < 0.5)) placeCard(players, sideOf, aiId, fieldCard.uid, 'left', stats, events);
+    // FIX6 (2026-11-02, owner 21:37: "Drowned Matriarch ... is never played ... make sure we take leaders into account"): a seat that plays
+    // for a person (pl.leaderPlan: your side on Auto-play, and the reference player in the sims, dealPlayerLeader in arena_app.js) brings its
+    // leader out as soon as it can pay for it, pitches for it (below) and keeps its Lumber for it for up to AI_PLAN_TURNS turns. The CPU's own
+    // leaders are unchanged (LEAD-4: no saving, the 35% roll); `ai.leaderPlan ||` comes first, so the CPU's dice sequence is untouched.
     if(ai.reserveLeaders && ai.reserveLeaders.length && !ai.playedThisTurn){
       const ready = ai.reserveLeaders.filter(id=> CARD_DEFS[id] && canPlay(ai, id, null));
-      if(ready.length && (!affordable.length || rules.bossSurge || rnd() < 0.35)){ // a surging boss comes out the moment it can
+      if(ready.length && (ai.leaderPlan || !affordable.length || rules.bossSurge || rnd() < 0.35)){ // a surging boss comes out the moment it can
         const id = ready[Math.floor(rnd()*ready.length)];
         if(summonLeader(players, sideOf, aiId, id, rnd() < 0.5 ? 'left' : 'right', stats, events)){ ai.reserveLeaders = ai.reserveLeaders.filter(x=> x!==id); return; }
       }
@@ -8305,21 +8315,29 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const bestNow = useful.length ? useful.reduce((a, b)=> cardValue(b.defId) > cardValue(a.defId) ? b : a) : null;
       const big = short.filter(hc=> !bestNow ? true : (need(hc) <= (aiAim ? AI_PLAN_REACH : AI_SAVE_REACH) /* ENG14 (X24): pitch thrice */ && cardValue(hc.defId) >= (aiAim ? AI_PLAN_VALUE : AI_HIGH_VALUE) * cardValue(bestNow.defId) && !(ai._aiSave && ai._aiSave.uid === hc.uid && ai._aiSave.turns >= AI_PLAN_TURNS)));
       let target = big.length ? big.reduce((a, b)=> (need(b) < need(a) || (need(b) === need(a) && cardValue(b.defId) > cardValue(a.defId))) ? b : a) : null;
+      // FIX6 (2026-11-02): a leaderPlan seat gathers for its leader first (a pseudo hand entry: nothing in the hand is it, so every hand card may go)
+      { const lid = aiLeaderToGather(players, aiId); if(lid) target = {uid: 'leader:' + lid, defId: lid, leader: true}; }
       // ENG14 (2026-10-30, X24): it no longer gathers only for the nearest card: a card in reach (AI_PLAN_REACH) worth AI_PLAN_VALUE x the
       // nearest one is the one it gathers for (the most valuable such card), so the big card is not the one it pitches away.
       if(aiAim && target){ const near = target, up = big.filter(hc=> hc !== near && need(hc) <= AI_PLAN_REACH && cardValue(hc.defId) >= AI_PLAN_VALUE * cardValue(near.defId)
           && !(ai._aiSave && ai._aiSave.uid === hc.uid && ai._aiSave.turns >= AI_PLAN_TURNS) && !aiLosingBadly(players, aiId));
         if(up.length) target = up.reduce((a, b)=> cardValue(b.defId) > cardValue(a.defId) ? b : a); }
       const endLumber = (ai.lumber||0) - (bestNow ? costOfCard(bestNow.defId) : 0), reserve = aiReserveOf(ai);
-      const why = target && ai.hand.length >= 2 ? 'gather'
+      const why = target && (ai.hand.length >= 2 || target.leader) ? 'gather' /* FIX6: for its leader, even its last card */
         : endLumber < reserve && ai.hand.length >= (useful.length ? 3 : 2) ? 'reserve'
         : !useful.length && ai.hand.length >= MAX_HAND ? 'full' : null;
       if(why){
         let pool = ai.hand.filter(hc=> hc !== target && hc !== bestNow);
         // ENG14 (2026-10-30, X24): gathering for a card worth AI_PLAN_VALUE x its best play now and 1 short, it pitches that play when nothing else is left (the big card goes down now)
         if(!pool.length && aiAim && why === 'gather' && need(target) <= 1 && bestNow && target !== bestNow && cardValue(target.defId) >= AI_PLAN_VALUE * cardValue(bestNow.defId) && !aiLosingBadly(players, aiId)) pool = [bestNow];
+        if(!pool.length && why === 'gather' && target.leader && need(target) <= 1 && bestNow) pool = [bestNow]; // FIX6: the leader this turn over its best hand play
         if(pool.length) aiPitch(players, sideOf, aiId, pitchPick(pool), stats, events);
       }
+    }
+    // FIX6 (2026-11-02): the pitch above may have paid for a leaderPlan seat's leader: it comes out now (the turn's play).
+    if(ai.leaderPlan && ai.reserveLeaders && ai.reserveLeaders.length && !ai.playedThisTurn){
+      const id = ai.reserveLeaders.find(x=> CARD_DEFS[x] && canPlay(ai, x, null));
+      if(id && summonLeader(players, sideOf, aiId, id, rnd() < 0.5 ? 'left' : 'right', stats, events)){ ai.reserveLeaders = ai.reserveLeaders.filter(x=> x!==id); return; }
     }
     // Devilry (2026-10-10): cast a Beware card from exile, or feed a Devourer, before the normal play.
     if(!ai.playedThisTurn){ const ix = ai.exile.findIndex(e=> canCastFromExile(ai, e.defId)); if(ix >= 0 && rnd() < 0.7) castFromExile(players, sideOf, aiId, ix, rnd() < .5 ? 'left' : 'right', stats, events); }
@@ -8336,6 +8354,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // ENG14 (2026-10-30, X24): the save plan (AI_PLAN_REACH above). The card it saves for: short only of resources, within this turn's
     // pitch (already made above) and the next AI_PLAN_REACH - 1, worth AI_PLAN_VALUE x the best paying card it could play now; not one it
     // already held back for AI_PLAN_TURNS turns. That turn only the free cards stay playable.
+    // FIX6 (2026-11-02): a leaderPlan seat still short for its leader after the pitch keeps its Lumber (only free cards stay playable), at
+    // most AI_PLAN_TURNS turns for it and never while losing the board badly; the leader then waits for a turn it can be paid.
+    { const lid = aiLeaderToGather(players, aiId);
+      if(lid && playable.length && !aiLosingBadly(players, aiId)){ const h = ai._leadHold && ai._leadHold.id === lid ? ai._leadHold : (ai._leadHold = {id: lid, turns: 0, last: null});
+        if(h.turns < AI_PLAN_TURNS || h.last === turnNo){ if(h.last !== turnNo){ h.turns += 1; h.last = turnNo; } playable = playable.filter(hc=> aiFreeCard(hc.defId)); } } }
     if(aiAim && !ai.playedThisTurn && playable.length){
       const save = aiSavePlan(players, aiId, playable, cardValue);
       if(save){ const s0 = ai._aiSave; if(!s0 || s0.uid !== save.uid) ai._aiSave = {uid: save.uid, turns: 0, last: null};
