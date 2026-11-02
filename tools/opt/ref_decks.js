@@ -28,6 +28,23 @@ function readSets(root) {
     // deckFor); the game's refSetFor takes one deck a set, so it is checked here but not baked
     // 2026-10-30 (package REF5): a per-map set with "bake": true (the progression reference, n decks a map, each {seed, counts, parts}) is baked:
     // the game's refSetFor deals one of the map's decks at random ("Reference (Random)") or the one picked ("<id>-k")
+    // 2026-11-02 (package BAL13): the reference ladder ("ladder": {"<map id>": {map, decks: [{rank, counts, parts, leader, name}, ...]}},
+    // docs/balance/ref/ref-ladder.json, 10 decks a map from weak to strong, side maps their own). With "bake": true (owner 22:15) it is baked as a
+    // per-map set keyed by map id (byMapId; mainOf: main map number -> its id, for the maps with no entry): the game's "Reference (Random)" deals one
+    // of the map's decks at random, "<id>-k" one in particular, each with its name, leader and levelled parts
+    if (j.ladder && !j.counts && !j.decks) {
+      if (toolSets[j.id] || sets[j.id]) { problems.push(f + ': id ' + j.id + ' is used twice'); return; }
+      let n = 0; const decks = {}, mainOf = {};
+      Object.keys(j.ladder).forEach(m => { const L = j.ladder[m]; if (!L.side) mainOf[L.map] = m; const list = L.decks || []; n = Math.max(n, list.length);
+        decks[m] = list.map(e => { const c = e.counts || {}, tot = Object.values(c).reduce((t, k) => t + (k | 0), 0), pt = (e.parts || []).reduce((t, p) => t + (p[1] | 0), 0);
+          Object.keys(c).filter(id => !known.has(id)).forEach(id => problems.push(f + ': ' + m + ' rank ' + e.rank + ': unknown card ' + id)); if (tot !== 20) problems.push(f + ': ' + m + ' rank ' + e.rank + ': ' + tot + ' cards (a deck is 20)');
+          if (j.bake && pt !== tot) problems.push(f + ': ' + m + ' rank ' + e.rank + ': parts hold ' + pt + ' copies, counts ' + tot);
+          if (e.leader && !known.has(e.leader)) problems.push(f + ': ' + m + ' rank ' + e.rank + ': unknown leader ' + e.leader);
+          return Object.assign({ seed: e.rank, counts: c, parts: e.parts || [] }, e.leader ? { leader: e.leader } : {}, e.name ? { name: e.name } : {}); }); });
+      if (j.bake) { if (j.id === 'map' || !/^[a-z0-9]+$/.test(j.id)) { problems.push(f + ': bad id ' + j.id + ' (a baked per-map set: letters and digits only)'); return; }
+        sets[j.id] = { id: j.id, label: j.label || j.id, file: 'docs/balance/ref/' + f, perMap: true, byMapId: true, n, mainOf, decks }; return; }
+      toolSets[j.id] = { id: j.id, label: j.label || j.id, file: 'docs/balance/ref/' + f, maps: Object.keys(j.ladder).length, ladder: true }; return;
+    }
     if (j.decks && !j.counts && j.bake) {
       if (sets[j.id] || toolSets[j.id] || j.id === 'map' || !/^[a-z0-9]+$/.test(j.id)) { problems.push(f + ': bad or repeated id ' + j.id + ' (a baked per-map set: letters and digits only)'); return; }
       const decks = {}; let n = 0;
