@@ -22,7 +22,7 @@ const file = JSON.parse(rd('docs/balance/ref/ref2-owner-main-deck-2026-10-25.jso
 ok(file.id === 'ref2' && file.label === 'Reference-2' && Object.values(file.counts).reduce((t, n)=> t + n, 0) === 20 && file.schedule.perMap === 5 && file.schedule.fromMap === 1, '1. the Reference-2 file: id, label, 20 cards, +5 copies a map from Map 1');
 const B = require(path.join(ROOT, 'tools/lib_bramble.js')), G = B.G;
 // 2026-10-31 REF5: the progression reference (prog, its random pick and decks 1-5) comes first; the map reference, then Reference-2 follow
-ok(JSON.stringify(G.refSetIds().filter(id=> !/^prog(-\d+)?$/.test(id))) === JSON.stringify(['map', 'ref2']), '1. the sets: the map reference, then Reference-2 ' + JSON.stringify(G.refSetIds()));
+ok(JSON.stringify(G.refSetIds().filter(id=> !/^(prog|ladder)(-\d+)?$/.test(id) /* 2026-11-02 (BAL13): + the reference ladder */)) === JSON.stringify(['map', 'ref2']), '1. the sets: the map reference, then Reference-2 ' + JSON.stringify(G.refSetIds()));
 { const base = G.referenceBaseDefs(), set = G.REF_DECK_SETS.ref2;
   let prev = null, okStep = true, okCap = true, totals = [];
   const caps = G.refSetCopyLevels(set, 0, base).map(c=> c.id).map(id=>{ const b = base[id]; const isBase = (b.rarity === 'starter' || !!b.basic || !!b.tutorial || G.cardSourceOf(b).kind === 'base'); return (isBase ? 4 : G.cardMaxLevel(b)) - G.cardBaseLevel(b); });
