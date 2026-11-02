@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T21:28:40.331Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T03:00:02.781Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "m7",
   "num": 10,
@@ -174,71 +174,57 @@
    "focus": "big",
    "steps": 4,
    "moves": 3,
-   "games": 1824,
+   "games": 1752,
    "apartFromEarlier": null
   },
   {
    "focus": "swarm",
-   "steps": 4,
-   "moves": 0,
-   "games": 1776,
-   "apartFromEarlier": 12
+   "steps": 5,
+   "moves": 2,
+   "games": 1704,
+   "apartFromEarlier": 13
   },
   {
    "focus": "family:tide",
    "steps": 4,
-   "moves": 3,
-   "games": 1608,
-   "apartFromEarlier": 6
+   "moves": 4,
+   "games": 1560,
+   "apartFromEarlier": 7
   },
   {
    "focus": "open",
    "steps": 4,
    "moves": 2,
-   "games": 1704,
-   "apartFromEarlier": 8
+   "games": 1728,
+   "apartFromEarlier": 7
   }
  ],
  "apart": 6,
- "seconds": 71,
- "games": 7680,
+ "seconds": 67,
+ "games": 7512,
  "decks": [
   {
    "focus": "open",
    "labels": [
     "economy (4 resource makers)",
-    "tide x16",
-    "strike-first x6"
+    "tide x13",
+    "cleave x6"
    ],
    "deck": {
-    "clownfish-scout": 4,
+    "clownfish-scout": 3,
     "coral-polyp-colony": 4,
-    "coral-reef-shark": 4,
     "electric-ray": 4,
-    "great-barracuda": 2,
-    "reef-admiral": 2
+    "kraken-spawnling": 3,
+    "parrotfish": 3,
+    "swordfish-spearman": 3
    },
    "cards": [
-    {
-     "id": "clownfish-scout",
-     "name": "Clownfish Scout",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
     {
      "id": "coral-polyp-colony",
      "name": "Coral Polyp Colony",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
-    },
-    {
-     "id": "coral-reef-shark",
-     "name": "Coral Reef Shark",
-     "copies": 4,
-     "cost": 2,
-     "rarity": "uncommon"
     },
     {
      "id": "electric-ray",
@@ -248,40 +234,54 @@
      "rarity": "uncommon"
     },
     {
-     "id": "great-barracuda",
-     "name": "Great Barracuda",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "rare"
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
     },
     {
-     "id": "reef-admiral",
-     "name": "Reef Admiral",
-     "copies": 2,
+     "id": "kraken-spawnling",
+     "name": "Kraken Spawnling",
+     "copies": 3,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "parrotfish",
+     "name": "Parrotfish",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "swordfish-spearman",
+     "name": "Swordfish Spearman",
+     "copies": 3,
      "cost": 1,
-     "rarity": "veryrare"
+     "rarity": "rare"
     }
    ],
-   "score": 0.8802,
+   "score": 0.8351,
    "ci": [
-    0.8465,
-    0.9139
+    0.7954,
+    0.8747
    ],
    "avgLumber": 0.8,
-   "avgWait": 0.9,
+   "avgWait": 1.15,
    "curve": {
-    "0": 8,
-    "1": 8,
-    "2": 4
+    "0": 10,
+    "1": 7,
+    "3": 3
    },
    "resourceMakers": 4,
    "families": [
     {
      "f": "tide",
-     "n": 16
+     "n": 13
     },
     {
-     "f": "strike-first",
+     "f": "cleave",
      "n": 6
     }
    ],
@@ -289,7 +289,7 @@
     {
      "entry": "mirror|fight:10-1",
      "label": "vs 10-1 skirmish's deck",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -301,170 +301,25 @@
     {
      "entry": "mirror|fight:10-3",
      "label": "vs 10-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-4",
+     "label": "vs 10-4 skirmish's deck",
      "p": 0.9167,
      "n": 24
     },
     {
-     "entry": "mirror|fight:10-4",
-     "label": "vs 10-4 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
      "entry": "mirror|fight:10-5",
      "label": "vs 10-5 skirmish's deck",
-     "p": 0.875,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-6",
      "label": "vs 10-6 elite's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:10-7",
-     "label": "vs 10-7 elite's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:10-8",
-     "label": "vs 10-8 elite's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:10-9",
-     "label": "vs 10-9 boss's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 10-1's field",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road10",
-     "label": "vs reference deck (Map 10) under 10-2's field",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
-     "p": 0.5625,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "swarm",
-   "labels": [
-    "swarm (16 copies at 0 Lumber)",
-    "economy (4 resource makers)",
-    "tide x20"
-   ],
-   "deck": {
-    "clownfish-scout": 4,
-    "coral-polyp-colony": 4,
-    "coral-reef-shark": 4,
-    "open-ocean-hermit-crab": 4,
-    "parrotfish": 4
-   },
-   "cards": [
-    {
-     "id": "clownfish-scout",
-     "name": "Clownfish Scout",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "coral-polyp-colony",
-     "name": "Coral Polyp Colony",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "coral-reef-shark",
-     "name": "Coral Reef Shark",
-     "copies": 4,
-     "cost": 2,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "open-ocean-hermit-crab",
-     "name": "Open-Ocean Hermit Crab",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "parrotfish",
-     "name": "Parrotfish",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    }
-   ],
-   "score": 0.8646,
-   "ci": [
-    0.8289,
-    0.9002
-   ],
-   "avgLumber": 0.4,
-   "avgWait": 0.6,
-   "curve": {
-    "0": 16,
-    "2": 4
-   },
-   "resourceMakers": 4,
-   "families": [
-    {
-     "f": "tide",
-     "n": 20
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:10-1",
-     "label": "vs 10-1 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:10-2",
-     "label": "vs 10-2 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:10-3",
-     "label": "vs 10-3 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:10-4",
-     "label": "vs 10-4 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:10-5",
-     "label": "vs 10-5 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:10-6",
-     "label": "vs 10-6 elite's deck",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -476,19 +331,19 @@
     {
      "entry": "mirror|fight:10-8",
      "label": "vs 10-8 elite's deck",
-     "p": 0.9583,
+     "p": 0.9375,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-9",
      "label": "vs 10-9 boss's deck",
-     "p": 0.9167,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 10-1's field",
-     "p": 0.7917,
+     "p": 1,
      "n": 24
     },
     {
@@ -504,27 +359,33 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 8
+   "copiesApartFromOpen": 0
   },
   {
-   "focus": "family:tide",
+   "focus": "swarm",
    "labels": [
-    "swarm (14 copies at 0 Lumber)",
-    "economy (4 resource makers)",
-    "tide x18"
+    "swarm (15 copies at 0 Lumber)",
+    "tide x20"
    ],
    "deck": {
-    "banded-sea-krait": 2,
-    "clownfish-scout": 3,
-    "coral-polyp-colony": 4,
-    "open-ocean-hermit-crab": 3,
+    "clownfish-scout": 4,
+    "coral-polyp-colony": 3,
+    "mangrove-manatee": 3,
+    "open-ocean-hermit-crab": 4,
     "parrotfish": 4,
-    "riptide-eel": 4
+    "reef-admiral": 2
    },
    "cards": [
     {
-     "id": "coral-polyp-colony",
-     "name": "Coral Polyp Colony",
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "name": "Open-Ocean Hermit Crab",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
@@ -537,57 +398,50 @@
      "rarity": "common"
     },
     {
-     "id": "riptide-eel",
-     "name": "Riptide Eel",
-     "copies": 4,
+     "id": "coral-polyp-colony",
+     "name": "Coral Polyp Colony",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "copies": 3,
      "cost": 1,
-     "rarity": "uncommon"
+     "rarity": "rare"
     },
     {
-     "id": "clownfish-scout",
-     "name": "Clownfish Scout",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "open-ocean-hermit-crab",
-     "name": "Open-Ocean Hermit Crab",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "banded-sea-krait",
-     "name": "Banded Sea Krait",
+     "id": "reef-admiral",
+     "name": "Reef Admiral",
      "copies": 2,
      "cost": 1,
-     "rarity": "uncommon"
+     "rarity": "veryrare"
     }
    ],
-   "score": 0.816,
+   "score": 0.8056,
    "ci": [
-    0.7757,
-    0.8562
+    0.7637,
+    0.8474
    ],
-   "avgLumber": 0.3,
-   "avgWait": 0.7,
+   "avgLumber": 0.25,
+   "avgWait": 1,
    "curve": {
-    "0": 14,
-    "1": 6
+    "0": 15,
+    "1": 5
    },
-   "resourceMakers": 4,
+   "resourceMakers": 3,
    "families": [
     {
      "f": "tide",
-     "n": 18
+     "n": 20
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:10-1",
      "label": "vs 10-1 skirmish's deck",
-     "p": 0.7917,
+     "p": 0.7083,
      "n": 24
     },
     {
@@ -599,25 +453,25 @@
     {
      "entry": "mirror|fight:10-3",
      "label": "vs 10-3 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-4",
      "label": "vs 10-4 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-5",
      "label": "vs 10-5 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-6",
      "label": "vs 10-6 elite's deck",
-     "p": 0.9167,
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -629,53 +483,211 @@
     {
      "entry": "mirror|fight:10-8",
      "label": "vs 10-8 elite's deck",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-9",
      "label": "vs 10-9 boss's deck",
-     "p": 0.7917,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 10-1's field",
-     "p": 0.875,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|ref:road10",
      "label": "vs reference deck (Map 10) under 10-2's field",
-     "p": 0.3333,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
-     "p": 0.6667,
+     "p": 0.7083,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 13
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "tide x16"
+   ],
+   "deck": {
+    "clownfish-scout": 3,
+    "electric-ray": 4,
+    "open-ocean-hermit-crab": 4,
+    "parrotfish": 4,
+    "reef-admiral": 2,
+    "riptide-eel": 3
+   },
+   "cards": [
+    {
+     "id": "electric-ray",
+     "name": "Electric Ray",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "name": "Open-Ocean Hermit Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "parrotfish",
+     "name": "Parrotfish",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "riptide-eel",
+     "name": "Riptide Eel",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "reef-admiral",
+     "name": "Reef Admiral",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7986,
+   "ci": [
+    0.758,
+    0.8392
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.75,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 16
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-1",
+     "label": "vs 10-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-2",
+     "label": "vs 10-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-3",
+     "label": "vs 10-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-4",
+     "label": "vs 10-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-5",
+     "label": "vs 10-5 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-6",
+     "label": "vs 10-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-7",
+     "label": "vs 10-7 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-8",
+     "label": "vs 10-8 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-9",
+     "label": "vs 10-9 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road10",
+     "label": "vs reference deck (Map 10) under 10-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
   },
   {
    "focus": "big",
    "labels": [
     "big (8 copies at 3+ Lumber, average 1.4)",
     "economy (4 resource makers)",
-    "tide x16",
-    "cleave x12"
+    "tide x15",
+    "cleave x8"
    ],
    "deck": {
+    "banded-sea-krait": 1,
+    "clownfish-scout": 4,
     "coral-polyp-colony": 4,
     "kraken-spawnling": 4,
     "orca-vanguard": 4,
-    "parrotfish": 4,
-    "reef-admiral": 1,
-    "riptide-eel": 3
+    "swordfish-spearman": 3
    },
    "cards": [
+    {
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "coral-polyp-colony",
      "name": "Coral Polyp Colony",
@@ -698,34 +710,27 @@
      "rarity": "common"
     },
     {
-     "id": "parrotfish",
-     "name": "Parrotfish",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "riptide-eel",
-     "name": "Riptide Eel",
+     "id": "swordfish-spearman",
+     "name": "Swordfish Spearman",
      "copies": 3,
      "cost": 1,
-     "rarity": "uncommon"
+     "rarity": "rare"
     },
     {
-     "id": "reef-admiral",
-     "name": "Reef Admiral",
+     "id": "banded-sea-krait",
+     "name": "Banded Sea Krait",
      "copies": 1,
      "cost": 1,
-     "rarity": "veryrare"
+     "rarity": "uncommon"
     }
    ],
-   "score": 0.6597,
+   "score": 0.5243,
    "ci": [
-    0.613,
-    0.7065
+    0.47,
+    0.5786
    ],
    "avgLumber": 1.4,
-   "avgWait": 1.65,
+   "avgWait": 1.55,
    "curve": {
     "0": 8,
     "1": 4,
@@ -735,88 +740,88 @@
    "families": [
     {
      "f": "tide",
-     "n": 16
+     "n": 15
     },
     {
      "f": "cleave",
-     "n": 12
+     "n": 8
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:10-1",
      "label": "vs 10-1 skirmish's deck",
-     "p": 0.5417,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-2",
      "label": "vs 10-2 skirmish's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-3",
      "label": "vs 10-3 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-4",
      "label": "vs 10-4 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-5",
      "label": "vs 10-5 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-6",
      "label": "vs 10-6 elite's deck",
-     "p": 0.9583,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-7",
      "label": "vs 10-7 elite's deck",
-     "p": 0.625,
+     "p": 0.3333,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-8",
      "label": "vs 10-8 elite's deck",
-     "p": 0.75,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-9",
      "label": "vs 10-9 boss's deck",
-     "p": 0.625,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 10-1's field",
-     "p": 0.625,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|ref:road10",
      "label": "vs reference deck (Map 10) under 10-2's field",
-     "p": 0.0417,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
-     "p": 0.4167,
+     "p": 0.2917,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 15
+   "copiesApartFromOpen": 7
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map m7 --pool banded-sea-krait,clownfish-scout,colossal-squid,coral-polyp-colony,coral-reef-shark,electric-ray,great-barracuda,kraken-spawnling,mangrove-manatee,open-ocean-hermit-crab,orca-vanguard,parrotfish,reef-admiral,reef-shark,riptide-eel,swordfish-spearman --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true"

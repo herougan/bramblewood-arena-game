@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T22:08:53.231Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T03:31:56.244Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "mx",
   "num": 20,
@@ -157,60 +157,68 @@
    "focus": "big",
    "steps": 7,
    "moves": 3,
-   "games": 1554,
+   "games": 1582,
    "apartFromEarlier": null
   },
   {
    "focus": "swarm",
    "steps": 9,
-   "moves": 4,
-   "games": 1610,
+   "moves": 3,
+   "games": 1652,
    "apartFromEarlier": 12
   },
   {
    "focus": "family:fire",
-   "steps": 10,
+   "steps": 8,
    "moves": 2,
-   "games": 1568,
-   "apartFromEarlier": 11
+   "games": 1666,
+   "apartFromEarlier": 10
   },
   {
    "focus": "open",
-   "steps": 10,
-   "moves": 4,
-   "games": 1708,
-   "apartFromEarlier": 7
+   "steps": 9,
+   "moves": 3,
+   "games": 1652,
+   "apartFromEarlier": 6
   }
  ],
  "apart": 6,
- "seconds": 107,
- "games": 6888,
+ "seconds": 95,
+ "games": 7000,
  "decks": [
   {
    "focus": "swarm",
    "labels": [
-    "swarm (14 copies at 0 Lumber)"
+    "swarm (14 copies at 0 Lumber)",
+    "economy (4 resource makers)"
    ],
    "deck": {
-    "ashbone-ghoul": 4,
+    "ashbone-ghoul": 3,
     "cinder-stoker": 4,
     "ember-jackal": 3,
     "obsidian-scorpion": 3,
-    "pack-mule": 3,
+    "pack-mule": 4,
     "tide-spirit": 3
    },
    "cards": [
     {
-     "id": "ashbone-ghoul",
-     "name": "Ashbone Ghoul",
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "cinder-stoker",
-     "name": "Cinder Stoker",
+     "id": "pack-mule",
+     "name": "Pack Mule",
      "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 3,
      "cost": 0,
      "rarity": "common"
     },
@@ -229,11 +237,120 @@
      "rarity": "rare"
     },
     {
-     "id": "pack-mule",
-     "name": "Pack Mule",
+     "id": "tide-spirit",
+     "name": "Tide Spirit",
      "copies": 3,
      "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8631,
+   "ci": [
+    0.8184,
+    0.9078
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "label": "vs 20-B-1 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "label": "vs 20-B-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "label": "vs 20-B-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "label": "vs 20-B-4 worldboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-B-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-B-2's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 6
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "ash-moth": 3,
+    "cinder-stoker": 4,
+    "ember-jackal": 3,
+    "magma-salamander": 3,
+    "pack-mule": 4,
+    "tide-spirit": 3
+   },
+   "cards": [
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
      "rarity": "common"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ash-moth",
+     "name": "Ash Moth",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "ember-jackal",
+     "name": "Ember Jackal",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
     },
     {
      "id": "tide-spirit",
@@ -243,30 +360,30 @@
      "rarity": "rare"
     }
    ],
-   "score": 0.8988,
+   "score": 0.8393,
    "ci": [
-    0.8566,
-    0.941
+    0.7902,
+    0.8883
    ],
-   "avgLumber": 0.3,
-   "avgWait": 0.5,
+   "avgLumber": 0.45,
+   "avgWait": 0.3,
    "curve": {
-    "0": 14,
-    "1": 6
+    "0": 11,
+    "1": 9
    },
-   "resourceMakers": 3,
+   "resourceMakers": 4,
    "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:20-B-1",
      "label": "vs 20-B-1 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-B-2",
      "label": "vs 20-B-2 skirmish's deck",
-     "p": 0.7917,
+     "p": 0.6667,
      "n": 24
     },
     {
@@ -296,26 +413,34 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
-     "p": 1,
+     "p": 0.875,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 7
+   "copiesApartFromOpen": 0
   },
   {
-   "focus": "open",
+   "focus": "family:fire",
    "labels": [
-    "economy (4 resource makers)"
+    "fire x9",
+    "ranged x7"
    ],
    "deck": {
-    "ash-cloud-condor": 3,
+    "ashbone-ghoul": 4,
     "cinder-stoker": 4,
     "ember-jackal": 3,
-    "magma-wraith": 3,
-    "pack-mule": 4,
-    "tide-spirit": 3
+    "magma-salamander": 3,
+    "magma-titan": 2,
+    "magma-wraith": 4
    },
    "cards": [
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "cinder-stoker",
      "name": "Cinder Stoker",
@@ -324,18 +449,11 @@
      "rarity": "common"
     },
     {
-     "id": "pack-mule",
-     "name": "Pack Mule",
+     "id": "magma-wraith",
+     "name": "Magma Wraith",
      "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "ash-cloud-condor",
-     "name": "Ash Cloud Condor",
-     "copies": 3,
      "cost": 1,
-     "rarity": "rare"
+     "rarity": "uncommon"
     },
     {
      "id": "ember-jackal",
@@ -345,124 +463,6 @@
      "rarity": "rare"
     },
     {
-     "id": "magma-wraith",
-     "name": "Magma Wraith",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "tide-spirit",
-     "name": "Tide Spirit",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    }
-   ],
-   "score": 0.7917,
-   "ci": [
-    0.7387,
-    0.8446
-   ],
-   "avgLumber": 0.45,
-   "avgWait": 0.45,
-   "curve": {
-    "0": 11,
-    "1": 9
-   },
-   "resourceMakers": 4,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:20-B-1",
-     "label": "vs 20-B-1 skirmish's deck",
-     "p": 0.4167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-B-2",
-     "label": "vs 20-B-2 skirmish's deck",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-B-3",
-     "label": "vs 20-B-3 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-B-4",
-     "label": "vs 20-B-4 worldboss's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 20-B-1's field",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road20",
-     "label": "vs reference deck (Map 20) under 20-B-2's field",
-     "p": 0.625,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
-     "p": 0.9167,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "family:fire",
-   "labels": [
-    "economy (4 resource makers)",
-    "ranged x8",
-    "fire x8"
-   ],
-   "deck": {
-    "cinder-stoker": 4,
-    "ember-centipede": 4,
-    "fire-drake-hatchling": 1,
-    "magma-salamander": 3,
-    "magma-wraith": 4,
-    "pack-mule": 4
-   },
-   "cards": [
-    {
-     "id": "cinder-stoker",
-     "name": "Cinder Stoker",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "ember-centipede",
-     "name": "Ember Centipede",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "magma-wraith",
-     "name": "Magma Wraith",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "pack-mule",
-     "name": "Pack Mule",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
      "id": "magma-salamander",
      "name": "Magma Salamander",
      "copies": 3,
@@ -470,81 +470,81 @@
      "rarity": "rare"
     },
     {
-     "id": "fire-drake-hatchling",
-     "name": "Fire Drake Hatchling",
-     "copies": 1,
-     "cost": 2,
-     "rarity": "heroic"
+     "id": "magma-titan",
+     "name": "Magma Titan",
+     "copies": 2,
+     "cost": 3,
+     "rarity": "common"
     }
    ],
-   "score": 0.756,
+   "score": 0.6786,
    "ci": [
-    0.7018,
-    0.8101
+    0.6136,
+    0.7435
    ],
-   "avgLumber": 0.45,
-   "avgWait": 0.65,
+   "avgLumber": 0.8,
+   "avgWait": 0.75,
    "curve": {
-    "0": 12,
-    "1": 7,
-    "2": 1
+    "0": 8,
+    "1": 10,
+    "3": 2
    },
-   "resourceMakers": 4,
+   "resourceMakers": 0,
    "families": [
     {
-     "f": "ranged",
-     "n": 8
+     "f": "fire",
+     "n": 9
     },
     {
-     "f": "fire",
-     "n": 8
+     "f": "ranged",
+     "n": 7
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:20-B-1",
      "label": "vs 20-B-1 skirmish's deck",
-     "p": 0.2917,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-B-2",
      "label": "vs 20-B-2 skirmish's deck",
-     "p": 0.625,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-B-3",
      "label": "vs 20-B-3 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-B-4",
      "label": "vs 20-B-4 worldboss's deck",
-     "p": 0.9583,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 20-B-1's field",
-     "p": 1,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|ref:road20",
      "label": "vs reference deck (Map 20) under 20-B-2's field",
-     "p": 0.625,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field",
-     "p": 0.8333,
+     "p": 0.7083,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 9
+   "copiesApartFromOpen": 10
   },
   {
    "focus": "big",
@@ -603,10 +603,10 @@
      "rarity": "common"
     }
    ],
-   "score": 0.4286,
+   "score": 0.4345,
    "ci": [
-    0.3645,
-    0.4926
+    0.3697,
+    0.4993
    ],
    "avgLumber": 1,
    "avgWait": 1.35,
@@ -651,7 +651,7 @@
     {
      "entry": "mirror|ref:road20",
      "label": "vs reference deck (Map 20) under 20-B-2's field",
-     "p": 0.125,
+     "p": 0.1667,
      "n": 24
     },
     {

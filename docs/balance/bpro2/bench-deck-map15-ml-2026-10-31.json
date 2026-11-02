@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T21:44:52.594Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T03:14:24.442Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "ml",
   "num": 15,
@@ -140,40 +140,180 @@
   {
    "focus": "economy",
    "steps": 6,
-   "moves": 4,
-   "games": 2080,
+   "moves": 3,
+   "games": 2020,
    "apartFromEarlier": null
   },
   {
    "focus": "family:strike-first",
-   "steps": 9,
-   "moves": 4,
-   "games": 2180,
-   "apartFromEarlier": 8
+   "steps": 7,
+   "moves": 2,
+   "games": 2040,
+   "apartFromEarlier": 9
   },
   {
    "focus": "open",
    "steps": 7,
-   "moves": 5,
-   "games": 2100,
+   "moves": 4,
+   "games": 2140,
    "apartFromEarlier": 7
   }
  ],
  "apart": 6,
- "seconds": 206,
- "games": 6840,
+ "seconds": 92,
+ "games": 6680,
  "decks": [
   {
-   "focus": "economy",
+   "focus": "open",
    "labels": [
-    "economy (7 resource makers)"
+    "economy (7 resource makers)",
+    "flying x6"
    ],
    "deck": {
     "border-collie": 4,
     "carrion-crow": 4,
-    "hedgehog-herbalist": 3,
     "raccoon-bandit": 3,
-    "squires-mount": 3,
+    "shepherds-bark": 4,
+    "stoat-cutthroat": 3,
+    "talon-archer": 2
+   },
+   "cards": [
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "shepherds-bark",
+     "name": "Shepherd",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "talon-archer",
+     "name": "Talon Archer",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.6958,
+   "ci": [
+    0.6443,
+    0.7474
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 1,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "border-collie": 4,
+    "carrion-crow": 4,
+    "hedge-weasel": 4,
+    "hedgehog-herbalist": 3,
+    "raccoon-bandit": 2,
     "stoat-cutthroat": 3
    },
    "cards": [
@@ -192,22 +332,15 @@
      "rarity": "common"
     },
     {
+     "id": "hedge-weasel",
+     "name": "Hedge Weasel",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
      "id": "hedgehog-herbalist",
      "name": "Hedgehog Herbalist",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "raccoon-bandit",
-     "name": "Raccoon Bandit",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    },
-    {
-     "id": "squires-mount",
-     "name": "Squire's Mount",
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
@@ -218,20 +351,27 @@
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "rare"
     }
    ],
-   "score": 0.7875,
+   "score": 0.6917,
    "ci": [
-    0.7396,
-    0.8354
+    0.638,
+    0.7453
    ],
-   "avgLumber": 0.65,
+   "avgLumber": 0.5,
    "avgWait": 1,
    "curve": {
-    "0": 7,
-    "1": 13
+    "0": 10,
+    "1": 10
    },
-   "resourceMakers": 7,
+   "resourceMakers": 6,
    "families": [],
    "perOpponent": [
     {
@@ -243,37 +383,37 @@
     {
      "entry": "mirror|fight:15-2",
      "label": "vs 15-2 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-3",
      "label": "vs 15-3 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-4",
      "label": "vs 15-4 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-5",
      "label": "vs 15-5 elite's deck",
-     "p": 0.8333,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-6",
      "label": "vs 15-6 elite's deck",
-     "p": 0.75,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-7",
      "label": "vs 15-7 boss's deck",
-     "p": 0.5,
+     "p": 0.5833,
      "n": 24
     },
     {
@@ -285,32 +425,40 @@
     {
      "entry": "mirror|ref:road15",
      "label": "vs reference deck (Map 15) under 15-2's field",
-     "p": 0.5833,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
-     "p": 0.875,
+     "p": 0.625,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 8
+   "copiesApartFromOpen": 7
   },
   {
-   "focus": "open",
+   "focus": "family:strike-first",
    "labels": [
-    "midrange (average 0.7 Lumber)"
+    "economy (4 resource makers)",
+    "strike-first x9"
    ],
    "deck": {
-    "border-collie": 3,
-    "carrion-crow": 3,
+    "carrion-crow": 4,
+    "cataphract-destrier": 2,
     "hedge-weasel": 4,
-    "hedgehog-herbalist": 3,
     "pronghorn-racer": 4,
-    "squires-mount": 3
+    "squires-mount": 3,
+    "stoat-cutthroat": 3
    },
    "cards": [
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "hedge-weasel",
      "name": "Hedge Weasel",
@@ -326,155 +474,6 @@
      "rarity": "common"
     },
     {
-     "id": "border-collie",
-     "name": "Border Collie",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "carrion-crow",
-     "name": "Carrion Crow",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "hedgehog-herbalist",
-     "name": "Hedgehog Herbalist",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "squires-mount",
-     "name": "Squire's Mount",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    }
-   ],
-   "score": 0.6917,
-   "ci": [
-    0.637,
-    0.7463
-   ],
-   "avgLumber": 0.65,
-   "avgWait": 0.8,
-   "curve": {
-    "0": 7,
-    "1": 13
-   },
-   "resourceMakers": 3,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:15-1",
-     "label": "vs 15-1 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:15-2",
-     "label": "vs 15-2 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:15-3",
-     "label": "vs 15-3 skirmish's deck",
-     "p": 0.5417,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:15-4",
-     "label": "vs 15-4 skirmish's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:15-5",
-     "label": "vs 15-5 elite's deck",
-     "p": 0.5417,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:15-6",
-     "label": "vs 15-6 elite's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:15-7",
-     "label": "vs 15-7 boss's deck",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 15-1's field",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road15",
-     "label": "vs reference deck (Map 15) under 15-2's field",
-     "p": 0.4167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
-     "p": 0.625,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "family:strike-first",
-   "labels": [
-    "big (4 copies at 3+ Lumber, average 1.4)",
-    "strike-first x11"
-   ],
-   "deck": {
-    "carrion-crow": 3,
-    "cataphract-destrier": 4,
-    "hedgehog-herbalist": 3,
-    "pronghorn-racer": 4,
-    "squires-mount": 3,
-    "stoat-cutthroat": 3
-   },
-   "cards": [
-    {
-     "id": "cataphract-destrier",
-     "name": "Gilded Roadwarden",
-     "copies": 4,
-     "cost": 4,
-     "rarity": "common"
-    },
-    {
-     "id": "pronghorn-racer",
-     "name": "Pronghorn Racer",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "carrion-crow",
-     "name": "Carrion Crow",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "hedgehog-herbalist",
-     "name": "Hedgehog Herbalist",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
      "id": "squires-mount",
      "name": "Squire's Mount",
      "copies": 3,
@@ -487,68 +486,75 @@
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
+    },
+    {
+     "id": "cataphract-destrier",
+     "name": "Gilded Roadwarden",
+     "copies": 2,
+     "cost": 4,
+     "rarity": "common"
     }
    ],
-   "score": 0.55,
+   "score": 0.65,
    "ci": [
-    0.4926,
-    0.6074
+    0.5962,
+    0.7038
    ],
-   "avgLumber": 1.45,
-   "avgWait": 1.4,
+   "avgLumber": 0.9,
+   "avgWait": 1.1,
    "curve": {
-    "0": 3,
-    "1": 13,
-    "4": 4
+    "0": 8,
+    "1": 10,
+    "4": 2
    },
-   "resourceMakers": 3,
+   "resourceMakers": 4,
    "families": [
     {
      "f": "strike-first",
-     "n": 11
+     "n": 9
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:15-1",
      "label": "vs 15-1 skirmish's deck",
-     "p": 0.9167,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-2",
      "label": "vs 15-2 skirmish's deck",
-     "p": 0.5417,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-3",
      "label": "vs 15-3 skirmish's deck",
-     "p": 0.625,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-4",
      "label": "vs 15-4 skirmish's deck",
-     "p": 0.5833,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-5",
      "label": "vs 15-5 elite's deck",
-     "p": 0.5833,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-6",
      "label": "vs 15-6 elite's deck",
-     "p": 0.5,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:15-7",
      "label": "vs 15-7 boss's deck",
-     "p": 0.2917,
+     "p": 0.375,
      "n": 24
     },
     {
@@ -560,17 +566,17 @@
     {
      "entry": "mirror|ref:road15",
      "label": "vs reference deck (Map 15) under 15-2's field",
-     "p": 0.1667,
+     "p": 0.2083,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
-     "p": 0.5,
+     "p": 0.7083,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 7
+   "copiesApartFromOpen": 13
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map ml --pool armory,bison-bulldozer,border-collie,carrion-crow,cataphract-destrier,hedge-weasel,hedgehog-herbalist,lodge-engineer,pronghorn-racer,raccoon-bandit,shepherds-bark,squires-mount,stoat-cutthroat,talon-archer,warhorse-charger --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,family:strike-first,open --level 1 --mode map-true"

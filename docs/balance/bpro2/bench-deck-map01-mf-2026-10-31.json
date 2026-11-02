@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T20:46:18.553Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T02:34:57.955Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "mf",
   "num": 1,
@@ -192,7 +192,7 @@
   }
  ],
  "apart": 6,
- "seconds": 153,
+ "seconds": 76,
  "games": 7296,
  "decks": [
   {
@@ -253,10 +253,10 @@
      "rarity": "starter"
     }
    ],
-   "score": 0.8385,
+   "score": 0.8333,
    "ci": [
-    0.7924,
-    0.8847
+    0.7862,
+    0.8805
    ],
    "avgLumber": 0.2,
    "avgWait": 0,
@@ -305,7 +305,7 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 1-1's field",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -636,10 +636,10 @@
      "rarity": "uncommon"
     }
    ],
-   "score": 0.6146,
+   "score": 0.6302,
    "ci": [
-    0.5487,
-    0.6805
+    0.5658,
+    0.6946
    ],
    "avgLumber": 0.2,
    "avgWait": 0,
@@ -692,7 +692,7 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 1-1's field",
-     "p": 0.75,
+     "p": 0.875,
      "n": 24
     },
     {

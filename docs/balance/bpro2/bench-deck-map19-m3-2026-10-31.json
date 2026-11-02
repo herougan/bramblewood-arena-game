@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T21:59:48.668Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T03:24:05.627Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "m3",
   "num": 19,
@@ -142,49 +142,49 @@
  "searches": [
   {
    "focus": "economy",
-   "steps": 7,
+   "steps": 6,
    "moves": 1,
-   "games": 1512,
+   "games": 1566,
    "apartFromEarlier": null
   },
   {
    "focus": "big",
-   "steps": 5,
+   "steps": 6,
    "moves": 2,
-   "games": 1584,
-   "apartFromEarlier": 14
+   "games": 1728,
+   "apartFromEarlier": 12
   },
   {
    "focus": "family:bleed",
    "steps": 6,
-   "moves": 4,
-   "games": 1566,
-   "apartFromEarlier": 12
+   "moves": 2,
+   "games": 1764,
+   "apartFromEarlier": 14
   },
   {
    "focus": "open",
-   "steps": 5,
-   "moves": 1,
-   "games": 1584,
-   "apartFromEarlier": 10
+   "steps": 6,
+   "moves": 4,
+   "games": 1566,
+   "apartFromEarlier": 7
   }
  ],
  "apart": 6,
- "seconds": 94,
- "games": 6822,
+ "seconds": 90,
+ "games": 7200,
  "decks": [
   {
    "focus": "open",
    "labels": [
-    "economy (7 resource makers)"
+    "economy (8 resource makers)"
    ],
    "deck": {
     "cinder-stoker": 4,
-    "fire-salamander": 4,
-    "glacier-wolf-pack": 2,
-    "obsidian-scorpion": 3,
+    "hercules-beetle": 3,
+    "obsidian-scorpion": 2,
+    "pit-glutton": 3,
     "pumice-beetle": 4,
-    "talus-pika": 3
+    "talus-pika": 4
    },
    "cards": [
     {
@@ -195,13 +195,6 @@
      "rarity": "common"
     },
     {
-     "id": "fire-salamander",
-     "name": "Fire Salamander",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
      "id": "pumice-beetle",
      "name": "Pumice Beetle",
      "copies": 4,
@@ -209,52 +202,58 @@
      "rarity": "uncommon"
     },
     {
-     "id": "obsidian-scorpion",
-     "name": "Obsidian Scorpion",
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hercules-beetle",
+     "name": "Hercules Beetle",
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
     },
     {
-     "id": "talus-pika",
-     "name": "Talus Pika",
+     "id": "pit-glutton",
+     "name": "Pit Glutton",
      "copies": 3,
-     "cost": 0,
-     "rarity": "common"
+     "cost": 1,
+     "rarity": "rare"
     },
     {
-     "id": "glacier-wolf-pack",
-     "name": "Glacier Wolf Pack",
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
      "copies": 2,
-     "cost": 2,
-     "rarity": "common"
+     "cost": 1,
+     "rarity": "rare"
     }
    ],
-   "score": 0.8796,
+   "score": 0.8935,
    "ci": [
-    0.8416,
-    0.9176
+    0.8574,
+    0.9296
    ],
-   "avgLumber": 0.75,
-   "avgWait": 0.65,
+   "avgLumber": 0.6,
+   "avgWait": 0.75,
    "curve": {
-    "0": 7,
-    "1": 11,
-    "2": 2
+    "0": 8,
+    "1": 12
    },
-   "resourceMakers": 7,
+   "resourceMakers": 8,
    "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:19-1",
      "label": "vs 19-1 skirmish's deck",
-     "p": 0.875,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-2",
      "label": "vs 19-2 skirmish's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -272,7 +271,7 @@
     {
      "entry": "mirror|fight:19-5",
      "label": "vs 19-5 elite's deck",
-     "p": 0.875,
+     "p": 1,
      "n": 24
     },
     {
@@ -290,13 +289,13 @@
     {
      "entry": "mirror|ref:road19",
      "label": "vs reference deck (Map 19) under 19-2's field",
-     "p": 0.4583,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
-     "p": 0.8333,
+     "p": 0.7083,
      "n": 24
     }
    ],
@@ -359,10 +358,10 @@
      "rarity": "veryrare"
     }
    ],
-   "score": 0.8542,
+   "score": 0.8102,
    "ci": [
-    0.8169,
-    0.8915
+    0.7634,
+    0.857
    ],
    "avgLumber": 0.8,
    "avgWait": 0.85,
@@ -376,19 +375,19 @@
     {
      "entry": "mirror|fight:19-1",
      "label": "vs 19-1 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-2",
      "label": "vs 19-2 skirmish's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-3",
      "label": "vs 19-3 elite's deck",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     },
     {
@@ -400,35 +399,35 @@
     {
      "entry": "mirror|fight:19-5",
      "label": "vs 19-5 elite's deck",
-     "p": 1,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-6",
      "label": "vs 19-6 miniboss's deck",
-     "p": 0.8333,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 19-1's field",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|ref:road19",
      "label": "vs reference deck (Map 19) under 19-2's field",
-     "p": 0.3125,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
-     "p": 0.6667,
+     "p": 0.625,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 10
+   "copiesApartFromOpen": 7
   },
   {
    "focus": "family:bleed",
@@ -488,10 +487,10 @@
      "rarity": "veryrare"
     }
    ],
-   "score": 0.7361,
+   "score": 0.6898,
    "ci": [
-    0.6825,
-    0.7897
+    0.6338,
+    0.7458
    ],
    "avgLumber": 1.4,
    "avgWait": 1.35,
@@ -512,7 +511,7 @@
     {
      "entry": "mirror|fight:19-1",
      "label": "vs 19-1 skirmish's deck",
-     "p": 0.75,
+     "p": 0.5833,
      "n": 24
     },
     {
@@ -530,25 +529,25 @@
     {
      "entry": "mirror|fight:19-4",
      "label": "vs 19-4 elite's deck",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-5",
      "label": "vs 19-5 elite's deck",
-     "p": 0.7917,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-6",
      "label": "vs 19-6 miniboss's deck",
-     "p": 0.8333,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 19-1's field",
-     "p": 0.7917,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -560,7 +559,7 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
-     "p": 0.625,
+     "p": 0.5417,
      "n": 24
     }
    ],
@@ -569,25 +568,18 @@
   {
    "focus": "big",
    "labels": [
-    "big (8 copies at 3+ Lumber, average 1.8)",
-    "economy (4 resource makers)"
+    "big (8 copies at 3+ Lumber, average 1.7)",
+    "economy (8 resource makers)"
    ],
    "deck": {
-    "cinder-stoker": 4,
+    "cinder-stoker": 2,
     "glacial-ape-king": 4,
-    "hercules-beetle": 2,
     "pumice-beetle": 4,
+    "talus-pika": 4,
     "yeti": 4,
     "yeti-chieftain": 2
    },
    "cards": [
-    {
-     "id": "cinder-stoker",
-     "name": "Cinder Stoker",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
     {
      "id": "glacial-ape-king",
      "name": "Glacial Ape-King",
@@ -603,6 +595,13 @@
      "rarity": "uncommon"
     },
     {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
      "id": "yeti",
      "name": "Yeti",
      "copies": 4,
@@ -610,11 +609,11 @@
      "rarity": "common"
     },
     {
-     "id": "hercules-beetle",
-     "name": "Hercules Beetle",
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
      "copies": 2,
-     "cost": 1,
-     "rarity": "rare"
+     "cost": 0,
+     "rarity": "common"
     },
     {
      "id": "yeti-chieftain",
@@ -624,78 +623,78 @@
      "rarity": "veryrare"
     }
    ],
-   "score": 0.4491,
+   "score": 0.5231,
    "ci": [
-    0.389,
-    0.5092
+    0.4636,
+    0.5827
    ],
-   "avgLumber": 1.8,
-   "avgWait": 2.9,
+   "avgLumber": 1.7,
+   "avgWait": 2.7,
    "curve": {
-    "0": 4,
-    "1": 8,
+    "0": 6,
+    "1": 6,
     "3": 4,
     "4": 4
    },
-   "resourceMakers": 4,
+   "resourceMakers": 8,
    "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:19-1",
      "label": "vs 19-1 skirmish's deck",
-     "p": 0.4167,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-2",
      "label": "vs 19-2 skirmish's deck",
-     "p": 0.4583,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-3",
      "label": "vs 19-3 elite's deck",
-     "p": 0.5,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-4",
      "label": "vs 19-4 elite's deck",
-     "p": 0.875,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-5",
      "label": "vs 19-5 elite's deck",
-     "p": 0.5833,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-6",
      "label": "vs 19-6 miniboss's deck",
-     "p": 0.5,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 19-1's field",
-     "p": 0.4167,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|ref:road19",
      "label": "vs reference deck (Map 19) under 19-2's field",
-     "p": 0.0833,
+     "p": 0.0417,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
-     "p": 0.2083,
+     "p": 0.3333,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 12
+   "copiesApartFromOpen": 10
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map m3 --pool cinder-stoker,echidna-quillshot,fire-salamander,glacial-ape-king,glacier-wolf-pack,granite-ox-golem,hercules-beetle,magma-titan,obsidian-scorpion,pit-glutton,pumice-beetle,sulfur-cinder-moth,talus-pika,yeti,yeti-chieftain --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,family:bleed,open --level 1 --mode map-true"

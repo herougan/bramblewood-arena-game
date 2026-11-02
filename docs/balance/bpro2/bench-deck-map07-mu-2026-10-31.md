@@ -1,6 +1,6 @@
-# Focused decks: Map 7 The Morel Hollow (2026-11-01)
+# Focused decks: Map 7 The Morel Hollow (2026-11-02)
 
-Package TOOLS1 (T3). `node tools/bench/bench.js deck --map mu --pool adder-ambusher,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,corpse-flower-beetle,dung-beetle,earthworm,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,slow-worm,truffle-piglet,wolf-spider-mother,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true` (tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)), 7272 games in 112 s.
+Package TOOLS1 (T3). `node tools/bench/bench.js deck --map mu --pool adder-ambusher,bogfire-newt,bombardier-beetle,cane-toad,compost-grub,corpse-flower-beetle,dung-beetle,earthworm,fungal-colossus,garden-snail,hawthorn-shieldbug,leafcutter-gardener,owl-nightwatch,planarian-splitter,sleepless-shrew,slow-worm,truffle-piglet,wolf-spider-mother,worker-ant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true` (tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)), 7200 games in 103 s.
 
 - The list (19): Adder Ambusher, Bogfire Newt, Bombardier Beetle, Cane Toad, Compost Grub, Corpse-flower Beetle, Dung Beetle, Earthworm, Fungal Colossus, Garden Snail, Hawthorn Shieldbug, Leafcutter Gardener, Owl Nightwatch, Planarian Splitter, Sleepless Shrew, Slow-worm, Truffle Piglet, Wolf Spider Mother, Worker Ant.
 - The rule: at most 6 different cards, at most 4 copies (never above a rarity's cap), 20 cards. Level 1.
@@ -9,16 +9,16 @@ Package TOOLS1 (T3). `node tools/bench/bench.js deck --map mu --pool adder-ambus
 
 | Deck | Focus | Labels | Win rate (95%) | Avg Lumber | Curve (Lumber: copies) | Cards | Apart from open |
 |---|---|---|---|---|---|---|---|
-| 1 | economy | big (11 copies at 1+ Lumber, average 0.6); economy (8 resource makers) | 84% (79%-88%) | 0.55 | 0: 9, 1: 11 | 4x Leafcutter Gardener, 4x Owl Nightwatch, 4x Truffle Piglet, 3x Dung Beetle, 3x Wolf Spider Mother, 2x Slow-worm | 12 |
-| 2 | open | big (9 copies at 1+ Lumber, average 0.5) | 75% (70%-79%) | 0.45 | 0: 11, 1: 9 | 4x Bogfire Newt, 4x Slow-worm, 3x Bombardier Beetle, 3x Corpse-flower Beetle, 3x Leafcutter Gardener, 3x Wolf Spider Mother | 0 |
-| 3 | swarm | swarm (15 copies at 0 Lumber) | 70% (65%-75%) | 0.25 | 0: 15, 1: 5 | 4x Compost Grub, 4x Dung Beetle, 4x Slow-worm, 3x Corpse-flower Beetle, 3x Sleepless Shrew, 2x Wolf Spider Mother | 11 |
-| 4 | big | big (10 copies at 1+ Lumber, average 0.5) | 68% (62%-73%) | 0.5 | 0: 10, 1: 10 | 4x Compost Grub, 4x Planarian Splitter, 4x Worker Ant, 3x Corpse-flower Beetle, 3x Wolf Spider Mother, 2x Leafcutter Gardener | 12 |
+| 1 | economy | big (11 copies at 1+ Lumber, average 0.6); economy (8 resource makers) | 83% (79%-88%) | 0.55 | 0: 9, 1: 11 | 4x Leafcutter Gardener, 4x Owl Nightwatch, 4x Truffle Piglet, 3x Dung Beetle, 3x Wolf Spider Mother, 2x Slow-worm | 10 |
+| 2 | swarm | swarm (14 copies at 0 Lumber); economy (4 resource makers) | 80% (75%-84%) | 0.3 | 0: 14, 1: 6 | 4x Leafcutter Gardener, 4x Sleepless Shrew, 4x Worker Ant, 3x Adder Ambusher, 3x Wolf Spider Mother, 2x Bogfire Newt | 17 |
+| 3 | big | big (9 copies at 1+ Lumber, average 0.5); economy (4 resource makers) | 78% (73%-83%) | 0.45 | 0: 11, 1: 9 | 4x Bombardier Beetle, 4x Dung Beetle, 4x Leafcutter Gardener, 4x Owl Nightwatch, 3x Bogfire Newt, 1x Wolf Spider Mother | 15 |
+| 4 | open | big (10 copies at 1+ Lumber, average 0.5); economy (4 resource makers) | 73% (68%-78%) | 0.5 | 0: 10, 1: 10 | 4x Dung Beetle, 4x Garden Snail, 4x Truffle Piglet, 3x Corpse-flower Beetle, 3x Wolf Spider Mother, 2x Compost Grub | 0 |
 
 ## Per opponent
 
 | Deck | fight:7-1 | fight:7-2 | fight:7-3 | fight:7-4 | fight:7-5 | fight:7-6 | ref:starter | ref:road7 | ref:expected |
 |---|---|---|---|---|---|---|---|---|---|
-| 1 economy | 100% | 83% | 96% | 100% | 71% | 63% | 100% | 50% | 92% |
-| 2 open | 96% | 42% | 75% | 96% | 67% | 29% | 88% | 88% | 92% |
-| 3 swarm | 96% | 50% | 92% | 96% | 46% | 25% | 83% | 54% | 88% |
-| 4 big | 100% | 54% | 83% | 92% | 58% | 21% | 75% | 58% | 67% |
+| 1 economy | 100% | 83% | 96% | 100% | 71% | 63% | 100% | 46% | 92% |
+| 2 swarm | 96% | 71% | 96% | 96% | 54% | 58% | 100% | 54% | 92% |
+| 3 big | 92% | 54% | 88% | 96% | 83% | 42% | 100% | 50% | 96% |
+| 4 open | 100% | 50% | 88% | 96% | 54% | 38% | 83% | 54% | 96% |

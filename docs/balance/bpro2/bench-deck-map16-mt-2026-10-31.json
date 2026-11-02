@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T21:48:05.434Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T03:15:50.428Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "mt",
   "num": 16,
@@ -156,59 +156,52 @@
  "searches": [
   {
    "focus": "economy",
-   "steps": 5,
+   "steps": 4,
    "moves": 4,
-   "games": 1700,
+   "games": 1500,
    "apartFromEarlier": null
   },
   {
    "focus": "big",
    "steps": 4,
-   "moves": 3,
+   "moves": 2,
    "games": 1520,
    "apartFromEarlier": 13
   },
   {
    "focus": "family:cleave",
    "steps": 4,
-   "moves": 1,
-   "games": 1580,
-   "apartFromEarlier": 10
+   "moves": 2,
+   "games": 1500,
+   "apartFromEarlier": 9
   },
   {
    "focus": "open",
    "steps": 5,
-   "moves": 3,
-   "games": 1540,
-   "apartFromEarlier": 6
+   "moves": 2,
+   "games": 1600,
+   "apartFromEarlier": 7
   }
  ],
  "apart": 6,
- "seconds": 191,
- "games": 6980,
+ "seconds": 85,
+ "games": 6760,
  "decks": [
   {
-   "focus": "open",
+   "focus": "big",
    "labels": [
-    "big (8 copies at 1+ Lumber, average 0.5)",
-    "economy (4 resource makers)"
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "evasion x7"
    ],
    "deck": {
-    "cone-cutter-squirrel": 4,
-    "dhole-matriarch": 2,
-    "dhole-runner": 3,
+    "cone-cutter-squirrel": 3,
     "pinecone-sapper": 4,
     "snowshoe-hare": 4,
-    "swift-fox": 3
+    "swift-fox": 4,
+    "taiga-lynx": 3,
+    "woodland-caribou": 2
    },
    "cards": [
-    {
-     "id": "cone-cutter-squirrel",
-     "name": "Cone-cutter Squirrel",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
     {
      "id": "pinecone-sapper",
      "name": "Pinecone Sapper",
@@ -224,143 +217,6 @@
      "rarity": "common"
     },
     {
-     "id": "dhole-runner",
-     "name": "Dhole Runner",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "swift-fox",
-     "name": "Swift Fox",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "dhole-matriarch",
-     "name": "Dhole Matriarch",
-     "copies": 2,
-     "cost": 2,
-     "rarity": "veryrare"
-    }
-   ],
-   "score": 0.8063,
-   "ci": [
-    0.7588,
-    0.8537
-   ],
-   "avgLumber": 0.5,
-   "avgWait": 0.75,
-   "curve": {
-    "0": 12,
-    "1": 6,
-    "2": 2
-   },
-   "resourceMakers": 4,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:16-1",
-     "label": "vs 16-1 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:16-2",
-     "label": "vs 16-2 skirmish's deck",
-     "p": 0.7292,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:16-3",
-     "label": "vs 16-3 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:16-4",
-     "label": "vs 16-4 skirmish's deck",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:16-5",
-     "label": "vs 16-5 elite's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:16-6",
-     "label": "vs 16-6 elite's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:16-7",
-     "label": "vs 16-7 miniboss's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 16-1's field",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road16",
-     "label": "vs reference deck (Map 16) under 16-2's field",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field",
-     "p": 0.625,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "economy",
-   "labels": [
-    "big (14 copies at 1+ Lumber, average 0.8)",
-    "economy (6 resource makers)",
-    "swarm x6"
-   ],
-   "deck": {
-    "cone-cutter-squirrel": 2,
-    "dhole-matriarch": 2,
-    "dhole-runner": 4,
-    "pinecone-sapper": 4,
-    "redwood-woodpecker": 4,
-    "swift-fox": 4
-   },
-   "cards": [
-    {
-     "id": "dhole-runner",
-     "name": "Dhole Runner",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "pinecone-sapper",
-     "name": "Pinecone Sapper",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "redwood-woodpecker",
-     "name": "Redwood Woodpecker",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
      "id": "swift-fox",
      "name": "Swift Fox",
      "copies": 4,
@@ -370,90 +226,96 @@
     {
      "id": "cone-cutter-squirrel",
      "name": "Cone-cutter Squirrel",
-     "copies": 2,
+     "copies": 3,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "dhole-matriarch",
-     "name": "Dhole Matriarch",
+     "id": "taiga-lynx",
+     "name": "Taiga Lynx",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "woodland-caribou",
+     "name": "Woodland Caribou",
      "copies": 2,
-     "cost": 2,
-     "rarity": "veryrare"
+     "cost": 1,
+     "rarity": "uncommon"
     }
    ],
-   "score": 0.7229,
+   "score": 0.7396,
    "ci": [
-    0.6692,
-    0.7767
+    0.6893,
+    0.7898
    ],
-   "avgLumber": 0.8,
-   "avgWait": 0.9,
+   "avgLumber": 0.45,
+   "avgWait": 0.45,
    "curve": {
-    "0": 6,
-    "1": 12,
-    "2": 2
+    "0": 11,
+    "1": 9
    },
-   "resourceMakers": 6,
+   "resourceMakers": 3,
    "families": [
     {
-     "f": "swarm",
-     "n": 6
+     "f": "evasion",
+     "n": 7
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:16-1",
      "label": "vs 16-1 skirmish's deck",
-     "p": 1,
+     "p": 0.9375,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-2",
      "label": "vs 16-2 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-3",
      "label": "vs 16-3 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-4",
      "label": "vs 16-4 skirmish's deck",
-     "p": 0.4583,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-5",
      "label": "vs 16-5 elite's deck",
-     "p": 0.8333,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-6",
      "label": "vs 16-6 elite's deck",
-     "p": 0.875,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-7",
      "label": "vs 16-7 miniboss's deck",
-     "p": 0.7083,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 16-1's field",
-     "p": 0.7292,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|ref:road16",
      "label": "vs reference deck (Map 16) under 16-2's field",
-     "p": 0.625,
+     "p": 0.375,
      "n": 24
     },
     {
@@ -463,17 +325,17 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 6
+   "copiesApartFromOpen": 7
   },
   {
-   "focus": "big",
+   "focus": "open",
    "labels": [
-    "big (8 copies at 1+ Lumber, average 0.4)",
+    "big (8 copies at 1+ Lumber, average 0.5)",
     "economy (4 resource makers)"
    ],
    "deck": {
+    "boreal-elk": 1,
     "cone-cutter-squirrel": 4,
-    "dhole-runner": 1,
     "pinecone-sapper": 4,
     "snowshoe-hare": 4,
     "wolf-pack-runner": 3,
@@ -516,23 +378,24 @@
      "rarity": "rare"
     },
     {
-     "id": "dhole-runner",
-     "name": "Dhole Runner",
+     "id": "boreal-elk",
+     "name": "Boreal Elk",
      "copies": 1,
-     "cost": 1,
+     "cost": 2,
      "rarity": "common"
     }
    ],
-   "score": 0.7125,
+   "score": 0.7354,
    "ci": [
-    0.6593,
-    0.7657
+    0.6822,
+    0.7886
    ],
-   "avgLumber": 0.4,
+   "avgLumber": 0.45,
    "avgWait": 0.8,
    "curve": {
     "0": 12,
-    "1": 8
+    "1": 7,
+    "2": 1
    },
    "resourceMakers": 4,
    "families": [],
@@ -546,25 +409,25 @@
     {
      "entry": "mirror|fight:16-2",
      "label": "vs 16-2 skirmish's deck",
-     "p": 0.5833,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-3",
      "label": "vs 16-3 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-4",
      "label": "vs 16-4 skirmish's deck",
-     "p": 0.5417,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-5",
      "label": "vs 16-5 elite's deck",
-     "p": 0.875,
+     "p": 0.8542,
      "n": 24
     },
     {
@@ -576,13 +439,155 @@
     {
      "entry": "mirror|fight:16-7",
      "label": "vs 16-7 miniboss's deck",
+     "p": 0.7708,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 16-1's field",
+     "p": 0.8542,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 16-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.9)",
+    "economy (7 resource makers)",
+    "swarm x6"
+   ],
+   "deck": {
+    "bramblewood-lynx": 3,
+    "cone-cutter-squirrel": 4,
+    "dhole-matriarch": 2,
+    "dhole-runner": 4,
+    "redwood-woodpecker": 3,
+    "swift-fox": 4
+   },
+   "cards": [
+    {
+     "id": "cone-cutter-squirrel",
+     "name": "Cone-cutter Squirrel",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dhole-runner",
+     "name": "Dhole Runner",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "swift-fox",
+     "name": "Swift Fox",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "redwood-woodpecker",
+     "name": "Redwood Woodpecker",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dhole-matriarch",
+     "name": "Dhole Matriarch",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7104,
+   "ci": [
+    0.6556,
+    0.7653
+   ],
+   "avgLumber": 0.9,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 4,
+    "1": 14,
+    "2": 2
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "swarm",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:16-1",
+     "label": "vs 16-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-2",
+     "label": "vs 16-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-3",
+     "label": "vs 16-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-4",
+     "label": "vs 16-4 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-5",
+     "label": "vs 16-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-6",
+     "label": "vs 16-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-7",
+     "label": "vs 16-7 miniboss's deck",
      "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 16-1's field",
-     "p": 0.8958,
+     "p": 0.6667,
      "n": 24
     },
     {
@@ -598,13 +603,13 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 7
+   "copiesApartFromOpen": 16
   },
   {
    "focus": "family:cleave",
    "labels": [
-    "big (12 copies at 1+ Lumber, average 1.0)",
-    "economy (8 resource makers)",
+    "big (10 copies at 1+ Lumber, average 0.9)",
+    "economy (4 resource makers)",
     "cleave x8"
    ],
    "deck": {
@@ -612,7 +617,8 @@
     "boreal-elk": 4,
     "cone-cutter-squirrel": 4,
     "pinecone-sapper": 4,
-    "redwood-woodpecker": 4
+    "snowshoe-hare": 2,
+    "swift-fox": 2
    },
    "cards": [
     {
@@ -644,26 +650,33 @@
      "rarity": "common"
     },
     {
-     "id": "redwood-woodpecker",
-     "name": "Redwood Woodpecker",
-     "copies": 4,
+     "id": "snowshoe-hare",
+     "name": "Snowshoe Hare",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "swift-fox",
+     "name": "Swift Fox",
+     "copies": 2,
      "cost": 1,
-     "rarity": "uncommon"
+     "rarity": "common"
     }
    ],
-   "score": 0.4438,
+   "score": 0.4625,
    "ci": [
-    0.3845,
-    0.503
+    0.4054,
+    0.5196
    ],
-   "avgLumber": 1,
-   "avgWait": 1.4,
+   "avgLumber": 0.9,
+   "avgWait": 1.2,
    "curve": {
-    "0": 8,
-    "1": 4,
+    "0": 10,
+    "1": 2,
     "2": 8
    },
-   "resourceMakers": 8,
+   "resourceMakers": 4,
    "families": [
     {
      "f": "cleave",
@@ -674,49 +687,49 @@
     {
      "entry": "mirror|fight:16-1",
      "label": "vs 16-1 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.8125,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-2",
      "label": "vs 16-2 skirmish's deck",
-     "p": 0.4583,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-3",
      "label": "vs 16-3 skirmish's deck",
-     "p": 0.4167,
+     "p": 0.3333,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-4",
      "label": "vs 16-4 skirmish's deck",
-     "p": 0.375,
+     "p": 0.4167,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-5",
      "label": "vs 16-5 elite's deck",
-     "p": 0.5833,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-6",
      "label": "vs 16-6 elite's deck",
-     "p": 0.6875,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:16-7",
      "label": "vs 16-7 miniboss's deck",
-     "p": 0.4167,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 16-1's field",
-     "p": 0.375,
+     "p": 0.3542,
      "n": 24
     },
     {
@@ -728,11 +741,11 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field",
-     "p": 0.375,
+     "p": 0.3333,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 12
+   "copiesApartFromOpen": 9
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map mt --pool alpha-howler,berserker-boar,boreal-elk,bramblewood-lynx,cone-cutter-squirrel,dhole-matriarch,dhole-runner,lunar-howler,pinecone-sapper,redwood-woodpecker,snowshoe-hare,swift-fox,taiga-lynx,wolf-pack-runner,woodland-caribou --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,family:cleave,open --level 1 --mode map-true"

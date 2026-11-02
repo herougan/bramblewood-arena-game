@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T22:07:04.073Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T03:30:20.470Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "me",
   "num": 20,
@@ -142,28 +142,28 @@
   {
    "focus": "big",
    "steps": 7,
-   "moves": 4,
-   "games": 2080,
+   "moves": 3,
+   "games": 2240,
    "apartFromEarlier": null
   },
   {
    "focus": "family:flying",
-   "steps": 15,
-   "moves": 5,
+   "steps": 19,
+   "moves": 7,
    "games": 2040,
-   "apartFromEarlier": 12
+   "apartFromEarlier": 9
   },
   {
    "focus": "open",
    "steps": 6,
    "moves": 3,
-   "games": 2060,
-   "apartFromEarlier": 9
+   "games": 2080,
+   "apartFromEarlier": 8
   }
  ],
  "apart": 6,
- "seconds": 147,
- "games": 6660,
+ "seconds": 128,
+ "games": 6840,
  "decks": [
   {
    "focus": "open",
@@ -171,12 +171,12 @@
     "economy (4 resource makers)"
    ],
    "deck": {
-    "ash-cloud-condor": 2,
     "ashbone-ghoul": 4,
-    "cinder-skeleton": 3,
+    "cinder-skeleton": 4,
     "cinder-stoker": 4,
-    "obsidian-scorpion": 3,
-    "pack-mule": 4
+    "obsidian-scorpion": 2,
+    "pack-mule": 4,
+    "woodland-brawler": 2
    },
    "cards": [
     {
@@ -184,6 +184,13 @@
      "name": "Ashbone Ghoul",
      "copies": 4,
      "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-skeleton",
+     "name": "Cinder Skeleton",
+     "copies": 4,
+     "cost": 1,
      "rarity": "common"
     },
     {
@@ -201,34 +208,27 @@
      "rarity": "common"
     },
     {
-     "id": "cinder-skeleton",
-     "name": "Cinder Skeleton",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
      "id": "obsidian-scorpion",
      "name": "Obsidian Scorpion",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "ash-cloud-condor",
-     "name": "Ash Cloud Condor",
      "copies": 2,
      "cost": 1,
      "rarity": "rare"
+    },
+    {
+     "id": "woodland-brawler",
+     "name": "Woodland Brawler",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
     }
    ],
    "score": 0.725,
    "ci": [
-    0.6726,
-    0.7774
+    0.675,
+    0.775
    ],
    "avgLumber": 0.4,
-   "avgWait": 0.45,
+   "avgWait": 0.4,
    "curve": {
     "0": 12,
     "1": 8
@@ -239,13 +239,13 @@
     {
      "entry": "mirror|fight:20-A-1",
      "label": "vs 20-A-1 elite's deck",
-     "p": 0.9167,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-A-2",
      "label": "vs 20-A-2 elite's deck",
-     "p": 0.5,
+     "p": 0.5417,
      "n": 24
     },
     {
@@ -257,43 +257,43 @@
     {
      "entry": "mirror|fight:20-A-4",
      "label": "vs 20-A-4 dungeon's deck",
-     "p": 0.75,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-A-5",
      "label": "vs 20-A-5 elite's deck",
-     "p": 0.6667,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-A-6",
      "label": "vs 20-A-6 elite's deck",
-     "p": 0.875,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-A-7",
      "label": "vs 20-A-7 elite's deck",
-     "p": 0.7917,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 20-A-1's field",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|ref:road20",
      "label": "vs reference deck (Map 20) under 20-A-2's field",
-     "p": 0.5,
+     "p": 0.2917,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
-     "p": 0.7083,
+     "p": 0.8333,
      "n": 24
     }
    ],
@@ -308,8 +308,8 @@
    "deck": {
     "ash-cloud-condor": 3,
     "ash-moth": 4,
+    "ashbone-ghoul": 4,
     "cinder-stoker": 4,
-    "magma-wraith": 4,
     "ossuary-lammergeier": 1,
     "pack-mule": 4
    },
@@ -322,18 +322,18 @@
      "rarity": "common"
     },
     {
-     "id": "cinder-stoker",
-     "name": "Cinder Stoker",
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "magma-wraith",
-     "name": "Magma Wraith",
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
      "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
+     "cost": 0,
+     "rarity": "common"
     },
     {
      "id": "pack-mule",
@@ -357,16 +357,16 @@
      "rarity": "superrare"
     }
    ],
-   "score": 0.5292,
+   "score": 0.5417,
    "ci": [
-    0.4743,
-    0.5841
+    0.4866,
+    0.5967
    ],
-   "avgLumber": 0.6,
+   "avgLumber": 0.4,
    "avgWait": 0.4,
    "curve": {
-    "0": 8,
-    "1": 12
+    "0": 12,
+    "1": 8
    },
    "resourceMakers": 4,
    "families": [
@@ -379,65 +379,65 @@
     {
      "entry": "mirror|fight:20-A-1",
      "label": "vs 20-A-1 elite's deck",
-     "p": 0.5833,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-A-2",
      "label": "vs 20-A-2 elite's deck",
-     "p": 0.3333,
+     "p": 0.2917,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-A-3",
      "label": "vs 20-A-3 elite's deck",
-     "p": 0.125,
+     "p": 0.1667,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-A-4",
      "label": "vs 20-A-4 dungeon's deck",
-     "p": 0.5,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-A-5",
      "label": "vs 20-A-5 elite's deck",
-     "p": 0.5833,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-A-6",
      "label": "vs 20-A-6 elite's deck",
-     "p": 0.4167,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-A-7",
      "label": "vs 20-A-7 elite's deck",
-     "p": 0.8333,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 20-A-1's field",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:road20",
      "label": "vs reference deck (Map 20) under 20-A-2's field",
-     "p": 0.25,
+     "p": 0.2917,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
-     "p": 0.7083,
+     "p": 0.8333,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 10
+   "copiesApartFromOpen": 8
   },
   {
    "focus": "big",
@@ -447,11 +447,11 @@
    ],
    "deck": {
     "ancient-sloth-titan": 4,
-    "ashbone-ghoul": 4,
-    "cinder-stoker": 3,
+    "ashbone-ghoul": 3,
+    "cinder-stoker": 4,
     "deep-cave-troll": 4,
-    "ossuary-lammergeier": 1,
-    "pack-mule": 4
+    "pack-mule": 4,
+    "the-contradiction": 1
    },
    "cards": [
     {
@@ -462,8 +462,8 @@
      "rarity": "common"
     },
     {
-     "id": "ashbone-ghoul",
-     "name": "Ashbone Ghoul",
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
@@ -483,24 +483,24 @@
      "rarity": "common"
     },
     {
-     "id": "cinder-stoker",
-     "name": "Cinder Stoker",
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
      "copies": 3,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "ossuary-lammergeier",
-     "name": "Ossuary Lammergeier",
+     "id": "the-contradiction",
+     "name": "The Contradiction",
      "copies": 1,
      "cost": 1,
-     "rarity": "superrare"
+     "rarity": "epic"
     }
    ],
-   "score": 0.4083,
+   "score": 0.4,
    "ci": [
-    0.3517,
-    0.465
+    0.3432,
+    0.4568
    ],
    "avgLumber": 1.25,
    "avgWait": 1.85,
@@ -515,7 +515,7 @@
     {
      "entry": "mirror|fight:20-A-1",
      "label": "vs 20-A-1 elite's deck",
-     "p": 0.5833,
+     "p": 0.5,
      "n": 24
     },
     {
@@ -527,7 +527,7 @@
     {
      "entry": "mirror|fight:20-A-3",
      "label": "vs 20-A-3 elite's deck",
-     "p": 0.25,
+     "p": 0.2917,
      "n": 24
     },
     {
@@ -539,7 +539,7 @@
     {
      "entry": "mirror|fight:20-A-5",
      "label": "vs 20-A-5 elite's deck",
-     "p": 0.5,
+     "p": 0.3333,
      "n": 24
     },
     {
@@ -551,13 +551,13 @@
     {
      "entry": "mirror|fight:20-A-7",
      "label": "vs 20-A-7 elite's deck",
-     "p": 0.6667,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 20-A-1's field",
-     "p": 0.5833,
+     "p": 0.7083,
      "n": 24
     },
     {
@@ -569,7 +569,7 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 20-A-3's field",
-     "p": 0.2917,
+     "p": 0.375,
      "n": 24
     }
    ],

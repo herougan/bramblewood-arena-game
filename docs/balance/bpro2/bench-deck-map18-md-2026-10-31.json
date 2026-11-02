@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T21:56:28.870Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T03:20:59.026Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "md",
   "num": 18,
@@ -152,7 +152,7 @@
   {
    "focus": "economy",
    "steps": 4,
-   "moves": 3,
+   "moves": 2,
    "games": 1540,
    "apartFromEarlier": null
   },
@@ -160,59 +160,59 @@
    "focus": "big",
    "steps": 4,
    "moves": 1,
-   "games": 1560,
+   "games": 1580,
    "apartFromEarlier": 9
   },
   {
    "focus": "family:poison",
    "steps": 5,
-   "moves": 3,
-   "games": 1700,
-   "apartFromEarlier": 12
+   "moves": 2,
+   "games": 1620,
+   "apartFromEarlier": 9
   },
   {
    "focus": "open",
    "steps": 5,
-   "moves": 1,
-   "games": 1620,
-   "apartFromEarlier": 8
+   "moves": 5,
+   "games": 1780,
+   "apartFromEarlier": 7
   }
  ],
  "apart": 6,
- "seconds": 166,
- "games": 7060,
+ "seconds": 129,
+ "games": 7160,
  "decks": [
   {
    "focus": "open",
    "labels": [
-    "midrange (average 1.0 Lumber)"
+    "economy (4 resource makers)"
    ],
    "deck": {
-    "antlion-pit": 4,
-    "bison-bulldozer": 4,
-    "caustic-scorpion": 1,
-    "dromedary": 4,
-    "spitting-cobra": 3,
+    "antlion-pit": 2,
+    "caustic-scorpion": 4,
+    "dromedary": 2,
+    "dune-packrat": 4,
+    "fennec-fox": 4,
     "thorny-devil": 4
    },
    "cards": [
     {
-     "id": "antlion-pit",
-     "name": "Antlion Pit",
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
     },
     {
-     "id": "bison-bulldozer",
-     "name": "Bison Bulldozer",
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
     },
     {
-     "id": "dromedary",
-     "name": "Dromedary",
+     "id": "fennec-fox",
+     "name": "Fennec Fox",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
@@ -225,43 +225,43 @@
      "rarity": "common"
     },
     {
-     "id": "spitting-cobra",
-     "name": "Spitting Cobra",
-     "copies": 3,
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 2,
      "cost": 1,
-     "rarity": "rare"
+     "rarity": "uncommon"
     },
     {
-     "id": "caustic-scorpion",
-     "name": "Caustic Scorpion",
-     "copies": 1,
+     "id": "dromedary",
+     "name": "Dromedary",
+     "copies": 2,
      "cost": 1,
      "rarity": "uncommon"
     }
    ],
-   "score": 0.925,
+   "score": 0.9042,
    "ci": [
-    0.8928,
-    0.9572
+    0.8683,
+    0.9401
    ],
    "avgLumber": 1,
-   "avgWait": 1.6,
+   "avgWait": 1.5,
    "curve": {
     "1": 20
    },
-   "resourceMakers": 0,
+   "resourceMakers": 4,
    "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:18-1",
      "label": "vs 18-1 skirmish's deck",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-2",
      "label": "vs 18-2 skirmish's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
@@ -273,19 +273,19 @@
     {
      "entry": "mirror|fight:18-4",
      "label": "vs 18-4 skirmish's deck",
-     "p": 0.875,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-5",
      "label": "vs 18-5 elite's deck",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-6",
      "label": "vs 18-6 elite's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
@@ -309,7 +309,7 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     }
    ],
@@ -322,10 +322,10 @@
    ],
    "deck": {
     "antlion-pit": 4,
-    "dromedary": 1,
+    "caustic-scorpion": 1,
+    "dromedary": 4,
     "dune-packrat": 4,
     "dust-hyena": 3,
-    "sandfish": 4,
     "thorny-devil": 4
    },
    "cards": [
@@ -337,18 +337,18 @@
      "rarity": "uncommon"
     },
     {
-     "id": "dune-packrat",
-     "name": "Dune Packrat",
+     "id": "dromedary",
+     "name": "Dromedary",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
     },
     {
-     "id": "sandfish",
-     "name": "Sandfish",
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
      "copies": 4,
      "cost": 1,
-     "rarity": "common"
+     "rarity": "uncommon"
     },
     {
      "id": "thorny-devil",
@@ -365,20 +365,20 @@
      "rarity": "uncommon"
     },
     {
-     "id": "dromedary",
-     "name": "Dromedary",
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
      "copies": 1,
      "cost": 1,
      "rarity": "uncommon"
     }
    ],
-   "score": 0.8583,
+   "score": 0.8833,
    "ci": [
-    0.8185,
-    0.8982
+    0.8451,
+    0.9215
    ],
    "avgLumber": 0.85,
-   "avgWait": 1.1,
+   "avgWait": 1.3,
    "curve": {
     "0": 3,
     "1": 17
@@ -389,13 +389,13 @@
     {
      "entry": "mirror|fight:18-1",
      "label": "vs 18-1 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-2",
      "label": "vs 18-2 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -407,25 +407,25 @@
     {
      "entry": "mirror|fight:18-4",
      "label": "vs 18-4 skirmish's deck",
-     "p": 0.5,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-5",
      "label": "vs 18-5 elite's deck",
-     "p": 0.875,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-6",
      "label": "vs 18-6 elite's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-7",
      "label": "vs 18-7 miniboss's deck",
-     "p": 0.7083,
+     "p": 0.625,
      "n": 24
     },
     {
@@ -437,43 +437,42 @@
     {
      "entry": "mirror|ref:road18",
      "label": "vs reference deck (Map 18) under 18-2's field",
-     "p": 0.75,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 11
+   "copiesApartFromOpen": 7
   },
   {
    "focus": "family:poison",
    "labels": [
-    "big (4 copies at 2+ Lumber, average 1.2)",
     "poison x8"
    ],
    "deck": {
-    "bison-bulldozer": 4,
     "caustic-scorpion": 4,
-    "dromedary": 3,
-    "fennec-fox": 1,
+    "dromedary": 4,
+    "dust-hyena": 3,
+    "meerkat-burrower": 2,
     "sand-widow": 4,
-    "thorny-devil": 4
+    "thorny-devil": 3
    },
    "cards": [
     {
-     "id": "bison-bulldozer",
-     "name": "Bison Bulldozer",
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
     },
     {
-     "id": "caustic-scorpion",
-     "name": "Caustic Scorpion",
+     "id": "dromedary",
+     "name": "Dromedary",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
@@ -486,39 +485,40 @@
      "rarity": "common"
     },
     {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
      "id": "thorny-devil",
      "name": "Thorny Devil",
-     "copies": 4,
+     "copies": 3,
      "cost": 1,
      "rarity": "common"
     },
     {
-     "id": "dromedary",
-     "name": "Dromedary",
-     "copies": 3,
+     "id": "meerkat-burrower",
+     "name": "Meerkat Burrower",
+     "copies": 2,
      "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "fennec-fox",
-     "name": "Fennec Fox",
-     "copies": 1,
-     "cost": 1,
-     "rarity": "uncommon"
+     "rarity": "common"
     }
    ],
-   "score": 0.75,
+   "score": 0.7583,
    "ci": [
-    0.7005,
-    0.7995
+    0.7076,
+    0.809
    ],
-   "avgLumber": 1.2,
-   "avgWait": 1.75,
+   "avgLumber": 1.05,
+   "avgWait": 1.6,
    "curve": {
-    "1": 16,
+    "0": 3,
+    "1": 13,
     "2": 4
    },
-   "resourceMakers": 0,
+   "resourceMakers": 3,
    "families": [
     {
      "f": "poison",
@@ -529,65 +529,65 @@
     {
      "entry": "mirror|fight:18-1",
      "label": "vs 18-1 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-2",
      "label": "vs 18-2 skirmish's deck",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-3",
      "label": "vs 18-3 skirmish's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-4",
      "label": "vs 18-4 skirmish's deck",
-     "p": 0.5833,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-5",
      "label": "vs 18-5 elite's deck",
-     "p": 0.625,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-6",
      "label": "vs 18-6 elite's deck",
-     "p": 0.7083,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-7",
      "label": "vs 18-7 miniboss's deck",
-     "p": 0.7917,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 18-1's field",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|ref:road18",
      "label": "vs reference deck (Map 18) under 18-2's field",
-     "p": 0.375,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
-     "p": 0.6667,
+     "p": 0.8333,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 8
+   "copiesApartFromOpen": 11
   },
   {
    "focus": "big",
@@ -640,10 +640,10 @@
      "rarity": "common"
     }
    ],
-   "score": 0.5583,
+   "score": 0.5708,
    "ci": [
-    0.5029,
-    0.6137
+    0.5159,
+    0.6258
    ],
    "avgLumber": 1.4,
    "avgWait": 1.8,
@@ -664,37 +664,37 @@
     {
      "entry": "mirror|fight:18-1",
      "label": "vs 18-1 skirmish's deck",
-     "p": 0.5417,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-2",
      "label": "vs 18-2 skirmish's deck",
-     "p": 0.7917,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-3",
      "label": "vs 18-3 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-4",
      "label": "vs 18-4 skirmish's deck",
-     "p": 0.1667,
+     "p": 0.2083,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-5",
      "label": "vs 18-5 elite's deck",
-     "p": 0.375,
+     "p": 0.2917,
      "n": 24
     },
     {
      "entry": "mirror|fight:18-6",
      "label": "vs 18-6 elite's deck",
-     "p": 0.4167,
+     "p": 0.5,
      "n": 24
     },
     {
@@ -706,23 +706,23 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 18-1's field",
-     "p": 0.8333,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:road18",
      "label": "vs reference deck (Map 18) under 18-2's field",
-     "p": 0.4167,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
-     "p": 0.6667,
+     "p": 0.7083,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 12
+   "copiesApartFromOpen": 14
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map md --pool antlion-pit,bison-bulldozer,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,fennec-fox,glass-golem,hollow-belly-rat,komodo-warlord,meerkat-burrower,roadrunner-courier,sand-widow,sandfish,spitting-cobra,thorny-devil --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,family:poison,open --level 1 --mode map-true"

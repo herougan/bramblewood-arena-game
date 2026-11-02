@@ -1,13 +1,2 @@
-mo: field misty, phase off, woods, terrain Old Woods T1 -> misty, phase off, tangledRoots, woods, terrain Old Woods T1
-ms: field aiGuardLethal, phase cycle, swampFever 25, terrain Sucking Mire T1 -> aiGuardLethal, phase cycle, swampFever 25, tide, terrain Sucking Mire T1
-mz: field aiGuardLethal, dark dark, phase off, woods, terrain Old Woods T2 (Regen 1) -> aiGuardLethal, dark dark, phase off, sporeCloud, woods, terrain Old Woods T2 (Regen 1)
-m4: field aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 -> aiGuardLethal, dark dark, landslide, phase off, terrain Deep Dark T1
-mk: field aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Coral Shelf T2 (Thorns 1) -> aiGuardLethal, phase cycle, saltMap, tangledRoots, tide, wet, terrain Coral Shelf T2 (Thorns 1)
-m7: field aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Coral Shelf T1 -> aiGuardLethal, permaTide, phase cycle, saltMap, tide, wet, terrain Coral Shelf T1
-mv: field aiGuardLethal, phase cycle, wind gale, windfall, terrain High Crags T1 -> aiGuardLethal, phase cycle, thunderstorm, wind gale, windfall, terrain High Crags T1
-my: field aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods T2 (Regen 1) -> aiGuardLethal, canopy, field rain, phase cycle, woods, terrain Old Woods T2 (Regen 1)
-ml: field aiGuardLethal, phase cycle, undergrowth, terrain Open Meadow T2 (Healing 1) -> aiGuardLethal, phase cycle, tallGrass, undergrowth, terrain Open Meadow T2 (Healing 1)
-md: field aiGuardLethal, phase cycle, sandstorm, weatherMap, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1) -> aiGuardLethal, phase cycle, quicksand, sandstorm, weatherMap, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)
-m3: field aiGuardLethal, hotMap, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption) -> aiGuardLethal, field heatwave, heatLevel 1, hotMap, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)
-11 fields, 0 leaders re-baked
+0 fields, 0 leaders re-baked
 -> canonical/pro-skirmishes.json (rebuild the game to bake it in)

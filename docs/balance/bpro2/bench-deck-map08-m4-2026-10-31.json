@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T21:23:50.982Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T02:54:59.306Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "m4",
   "num": 8,
@@ -169,50 +169,50 @@
   {
    "focus": "big",
    "steps": 4,
-   "moves": 3,
-   "games": 1672,
+   "moves": 2,
+   "games": 1628,
    "apartFromEarlier": null
   },
   {
    "focus": "swarm",
    "steps": 4,
    "moves": 2,
-   "games": 1650,
-   "apartFromEarlier": 9
+   "games": 1562,
+   "apartFromEarlier": 8
   },
   {
    "focus": "family:flying",
    "steps": 4,
-   "moves": 3,
+   "moves": 1,
    "games": 1606,
-   "apartFromEarlier": 7
+   "apartFromEarlier": 6
   },
   {
    "focus": "open",
-   "steps": 5,
+   "steps": 4,
    "moves": 4,
-   "games": 1628,
-   "apartFromEarlier": 6
+   "games": 1540,
+   "apartFromEarlier": 8
   }
  ],
  "apart": 6,
- "seconds": 84,
- "games": 7260,
+ "seconds": 79,
+ "games": 7040,
  "decks": [
   {
-   "focus": "open",
+   "focus": "big",
    "labels": [
     "big (9 copies at 1+ Lumber, average 0.5)",
-    "flying x7",
-    "night x7"
+    "flying x6",
+    "night x6"
    ],
    "deck": {
     "cave-olm": 4,
     "echo-matriarch": 3,
-    "grotto-lobster": 3,
-    "hollow-belly-rat": 3,
-    "star-nosed-mole": 3,
-    "vampire-bat": 4
+    "giant-cave-huntsman": 2,
+    "quarry-mole": 4,
+    "star-nosed-mole": 4,
+    "vampire-bat": 3
    },
    "cards": [
     {
@@ -223,11 +223,18 @@
      "rarity": "common"
     },
     {
-     "id": "vampire-bat",
-     "name": "Vampire Bat",
+     "id": "quarry-mole",
+     "name": "Quarry Mole",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
      "copies": 4,
      "cost": 0,
-     "rarity": "uncommon"
+     "rarity": "common"
     },
     {
      "id": "echo-matriarch",
@@ -237,34 +244,27 @@
      "rarity": "rare"
     },
     {
-     "id": "grotto-lobster",
-     "name": "Grotto Lobster",
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
      "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "hollow-belly-rat",
-     "name": "Hollow-belly Rat",
-     "copies": 3,
-     "cost": 1,
+     "cost": 0,
      "rarity": "uncommon"
     },
     {
-     "id": "star-nosed-mole",
-     "name": "Star-nosed Mole",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
     }
    ],
-   "score": 0.8939,
+   "score": 0.8788,
    "ci": [
-    0.8593,
-    0.9285
+    0.8427,
+    0.9149
    ],
    "avgLumber": 0.45,
-   "avgWait": 1.15,
+   "avgWait": 1.05,
    "curve": {
     "0": 11,
     "1": 9
@@ -273,48 +273,48 @@
    "families": [
     {
      "f": "flying",
-     "n": 7
+     "n": 6
     },
     {
      "f": "night",
-     "n": 7
+     "n": 6
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:8-1",
      "label": "vs 8-1 skirmish's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-2",
      "label": "vs 8-2 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-3",
      "label": "vs 8-3 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-4",
      "label": "vs 8-4 skirmish's deck",
-     "p": 0.7917,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-5",
      "label": "vs 8-5 skirmish's deck",
-     "p": 0.875,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-6",
      "label": "vs 8-6 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.6667,
      "n": 24
     },
     {
@@ -348,172 +348,21 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 0
+   "copiesApartFromOpen": 10
   },
   {
    "focus": "family:flying",
    "labels": [
-    "big (8 copies at 1+ Lumber, average 0.4)",
-    "night x11",
-    "flying x9"
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "flying x14",
+    "night x10"
    ],
    "deck": {
-    "blind-cave-fish": 4,
-    "echo-matriarch": 3,
-    "grotto-lobster": 3,
-    "pelican-diver": 2,
-    "star-nosed-mole": 4,
-    "vampire-bat": 4
-   },
-   "cards": [
-    {
-     "id": "blind-cave-fish",
-     "name": "Blind Cave Fish",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "star-nosed-mole",
-     "name": "Star-nosed Mole",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "vampire-bat",
-     "name": "Vampire Bat",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "echo-matriarch",
-     "name": "Echo Matriarch",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "grotto-lobster",
-     "name": "Grotto Lobster",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "pelican-diver",
-     "name": "Pelican Diver",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "uncommon"
-    }
-   ],
-   "score": 0.8598,
-   "ci": [
-    0.8194,
-    0.9003
-   ],
-   "avgLumber": 0.4,
-   "avgWait": 0.9,
-   "curve": {
-    "0": 12,
-    "1": 8
-   },
-   "resourceMakers": 0,
-   "families": [
-    {
-     "f": "night",
-     "n": 11
-    },
-    {
-     "f": "flying",
-     "n": 9
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:8-1",
-     "label": "vs 8-1 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-2",
-     "label": "vs 8-2 skirmish's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-3",
-     "label": "vs 8-3 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-4",
-     "label": "vs 8-4 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-5",
-     "label": "vs 8-5 skirmish's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-6",
-     "label": "vs 8-6 skirmish's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-7",
-     "label": "vs 8-7 elite's deck",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-8",
-     "label": "vs 8-8 miniboss's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 8-1's field",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road8",
-     "label": "vs reference deck (Map 8) under 8-2's field",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
-     "p": 1,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 7
-  },
-  {
-   "focus": "swarm",
-   "labels": [
-    "swarm (14 copies at 0 Lumber)",
-    "night x9",
-    "flying x7"
-   ],
-   "deck": {
-    "blind-cave-fish": 2,
     "cave-olm": 4,
     "echo-matriarch": 3,
-    "giant-cave-huntsman": 3,
-    "star-nosed-mole": 4,
+    "echo-screecher": 3,
+    "grotto-lobster": 2,
+    "sulfur-cinder-moth": 4,
     "vampire-bat": 4
    },
    "cards": [
@@ -525,10 +374,10 @@
      "rarity": "common"
     },
     {
-     "id": "star-nosed-mole",
-     "name": "Star-nosed Mole",
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
      "copies": 4,
-     "cost": 0,
+     "cost": 1,
      "rarity": "common"
     },
     {
@@ -546,47 +395,51 @@
      "rarity": "rare"
     },
     {
-     "id": "giant-cave-huntsman",
-     "name": "Giant Cave Huntsman",
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
     },
     {
-     "id": "blind-cave-fish",
-     "name": "Blind Cave Fish",
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
      "copies": 2,
-     "cost": 0,
-     "rarity": "common"
+     "cost": 1,
+     "rarity": "rare"
     }
    ],
-   "score": 0.8409,
+   "score": 0.8655,
    "ci": [
-    0.7998,
-    0.882
+    0.8264,
+    0.9046
    ],
-   "avgLumber": 0.3,
-   "avgWait": 1,
+   "avgLumber": 0.6,
+   "avgWait": 1.05,
    "curve": {
-    "0": 14,
-    "1": 6
+    "0": 8,
+    "1": 12
    },
    "resourceMakers": 0,
    "families": [
     {
-     "f": "night",
-     "n": 9
+     "f": "flying",
+     "n": 14
     },
     {
-     "f": "flying",
-     "n": 7
+     "f": "night",
+     "n": 10
+    },
+    {
+     "f": "siege",
+     "n": 6
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:8-1",
      "label": "vs 8-1 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -598,7 +451,7 @@
     {
      "entry": "mirror|fight:8-3",
      "label": "vs 8-3 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.9375,
      "n": 24
     },
     {
@@ -616,7 +469,7 @@
     {
      "entry": "mirror|fight:8-6",
      "label": "vs 8-6 skirmish's deck",
-     "p": 0.5833,
+     "p": 0.7083,
      "n": 24
     },
     {
@@ -628,42 +481,44 @@
     {
      "entry": "mirror|fight:8-8",
      "label": "vs 8-8 miniboss's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 8-1's field",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|ref:road8",
      "label": "vs reference deck (Map 8) under 8-2's field",
-     "p": 0.75,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
-     "p": 1,
+     "p": 0.9167,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 6
+   "copiesApartFromOpen": 8
   },
   {
-   "focus": "big",
+   "focus": "open",
    "labels": [
-    "big (12 copies at 1+ Lumber, average 0.6)"
+    "big (13 copies at 1+ Lumber, average 0.7)",
+    "flying x10",
+    "siege x6"
    ],
    "deck": {
     "cave-olm": 4,
     "echo-matriarch": 3,
-    "gallery-orb-weaver": 4,
+    "echo-screecher": 3,
     "grotto-lobster": 3,
-    "star-nosed-mole": 4,
-    "sulfur-cinder-moth": 2
+    "pelican-diver": 4,
+    "star-nosed-mole": 3
    },
    "cards": [
     {
@@ -674,22 +529,22 @@
      "rarity": "common"
     },
     {
-     "id": "gallery-orb-weaver",
-     "name": "Gallery Orb-Weaver",
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
      "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
     },
     {
-     "id": "star-nosed-mole",
-     "name": "Star-nosed Mole",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
      "id": "echo-matriarch",
      "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
@@ -702,49 +557,217 @@
      "rarity": "rare"
     },
     {
-     "id": "sulfur-cinder-moth",
-     "name": "Sulfur Cinder Moth",
-     "copies": 2,
-     "cost": 1,
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 3,
+     "cost": 0,
      "rarity": "common"
     }
    ],
-   "score": 0.8258,
+   "score": 0.8636,
    "ci": [
-    0.7832,
-    0.8683
+    0.8247,
+    0.9026
    ],
-   "avgLumber": 0.6,
-   "avgWait": 1,
+   "avgLumber": 0.65,
+   "avgWait": 1.15,
    "curve": {
-    "0": 8,
-    "1": 12
+    "0": 7,
+    "1": 13
    },
    "resourceMakers": 0,
-   "families": [],
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    },
+    {
+     "f": "siege",
+     "n": 6
+    },
+    {
+     "f": "night",
+     "n": 6
+    }
+   ],
    "perOpponent": [
     {
      "entry": "mirror|fight:8-1",
      "label": "vs 8-1 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-2",
      "label": "vs 8-2 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-3",
      "label": "vs 8-3 skirmish's deck",
-     "p": 0.7917,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-4",
      "label": "vs 8-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
      "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "night x14",
+    "flying x10"
+   ],
+   "deck": {
+    "blind-cave-fish": 4,
+    "cave-olm": 4,
+    "echo-matriarch": 3,
+    "echo-screecher": 3,
+    "star-nosed-mole": 2,
+    "vampire-bat": 4
+   },
+   "cards": [
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cave-olm",
+     "name": "Cave Olm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8542,
+   "ci": [
+    0.8135,
+    0.8948
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "night",
+     "n": 14
+    },
+    {
+     "f": "flying",
+     "n": 10
+    },
+    {
+     "f": "siege",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.875,
      "n": 24
     },
     {
@@ -756,31 +779,31 @@
     {
      "entry": "mirror|fight:8-6",
      "label": "vs 8-6 skirmish's deck",
-     "p": 0.7083,
+     "p": 0.6458,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-7",
      "label": "vs 8-7 elite's deck",
-     "p": 0.5833,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-8",
      "label": "vs 8-8 miniboss's deck",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 8-1's field",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|ref:road8",
      "label": "vs reference deck (Map 8) under 8-2's field",
-     "p": 0.7917,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -790,7 +813,7 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 7
+   "copiesApartFromOpen": 8
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map m4 --pool blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:flying,open --level 1 --mode map-true"

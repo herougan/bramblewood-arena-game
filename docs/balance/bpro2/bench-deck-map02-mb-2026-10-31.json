@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T20:57:45.671Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T02:38:10.011Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "mb",
   "num": 2,
@@ -156,52 +156,58 @@
   {
    "focus": "economy",
    "steps": 6,
-   "moves": 3,
-   "games": 1712,
+   "moves": 4,
+   "games": 1664,
    "apartFromEarlier": null
   },
   {
    "focus": "big",
    "steps": 6,
-   "moves": 6,
+   "moves": 2,
    "games": 1744,
-   "apartFromEarlier": 14
+   "apartFromEarlier": 15
   },
   {
    "focus": "swarm",
    "steps": 6,
    "moves": 4,
-   "games": 1664,
-   "apartFromEarlier": 10
+   "games": 1712,
+   "apartFromEarlier": 11
   },
   {
    "focus": "open",
    "steps": 6,
-   "moves": 4,
-   "games": 1568,
-   "apartFromEarlier": 9
+   "moves": 3,
+   "games": 1712,
+   "apartFromEarlier": 11
   }
  ],
  "apart": 6,
- "seconds": 401,
- "games": 7200,
+ "seconds": 112,
+ "games": 7344,
  "decks": [
   {
-   "focus": "economy",
+   "focus": "open",
    "labels": [
-    "swarm (16 copies at 0 Lumber)",
-    "economy (6 resource makers)",
-    "tide x10"
+    "swarm (15 copies at 0 Lumber)",
+    "tide x13"
    ],
    "deck": {
-    "conch-crawler": 2,
+    "beaver-lumberjack": 3,
+    "conch-crawler": 4,
     "conch-herald": 4,
     "cricket-drummer": 4,
-    "driftwood-crab": 4,
-    "gull-thief": 2,
+    "grey-seal-bull": 1,
     "pincushion-urchin": 4
    },
    "cards": [
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "conch-herald",
      "name": "Conch Herald",
@@ -217,13 +223,6 @@
      "rarity": "common"
     },
     {
-     "id": "driftwood-crab",
-     "name": "Driftwood Crab",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
      "id": "pincushion-urchin",
      "name": "Pincushion Urchin",
      "copies": 4,
@@ -231,79 +230,79 @@
      "rarity": "common"
     },
     {
-     "id": "conch-crawler",
-     "name": "Conch Crawler",
-     "copies": 2,
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 3,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "gull-thief",
-     "name": "Gull Thief",
-     "copies": 2,
-     "cost": 0,
-     "rarity": "common"
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "uncommon"
     }
    ],
-   "score": 0.8385,
+   "score": 0.7865,
    "ci": [
-    0.7981,
-    0.879
+    0.7453,
+    0.8277
    ],
-   "avgLumber": 0.2,
-   "avgWait": 0.7,
+   "avgLumber": 0.25,
+   "avgWait": 0.85,
    "curve": {
-    "0": 16,
-    "1": 4
+    "0": 15,
+    "1": 5
    },
-   "resourceMakers": 6,
+   "resourceMakers": 3,
    "families": [
     {
      "f": "tide",
-     "n": 10
+     "n": 13
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:2-1",
      "label": "vs 2-1 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-2",
      "label": "vs 2-2 skirmish's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-3",
      "label": "vs 2-3 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-4",
      "label": "vs 2-4 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-5",
      "label": "vs 2-5 elite's deck",
-     "p": 0.7917,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 2-1's field",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:road2",
      "label": "vs reference deck (Map 2) under 2-2's field",
-     "p": 0.25,
+     "p": 0.0417,
      "n": 24
     },
     {
@@ -313,36 +312,42 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 9
+   "copiesApartFromOpen": 0
   },
   {
    "focus": "swarm",
    "labels": [
-    "swarm (14 copies at 0 Lumber)",
-    "economy (6 resource makers)",
+    "swarm (16 copies at 0 Lumber)",
     "tide x7"
    ],
    "deck": {
-    "beaver-lumberjack": 4,
+    "beaver-lumberjack": 1,
     "bramble-sprout": 4,
-    "conch-herald": 3,
-    "driftwood-crab": 2,
-    "oystercatcher": 3,
+    "cricket-drummer": 4,
+    "fiddler-crab-swarm": 3,
+    "oystercatcher": 4,
     "pincushion-urchin": 4
    },
    "cards": [
-    {
-     "id": "beaver-lumberjack",
-     "name": "Beaver Lumberjack",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
     {
      "id": "bramble-sprout",
      "name": "Bramble Sprout",
      "copies": 4,
      "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "oystercatcher",
+     "name": "Oystercatcher",
+     "copies": 4,
+     "cost": 1,
      "rarity": "common"
     },
     {
@@ -353,39 +358,32 @@
      "rarity": "common"
     },
     {
-     "id": "conch-herald",
-     "name": "Conch Herald",
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
      "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "oystercatcher",
-     "name": "Oystercatcher",
-     "copies": 3,
-     "cost": 1,
+     "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "driftwood-crab",
-     "name": "Driftwood Crab",
-     "copies": 2,
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 1,
      "cost": 0,
      "rarity": "common"
     }
    ],
-   "score": 0.8229,
+   "score": 0.7396,
    "ci": [
-    0.7843,
-    0.8616
+    0.6857,
+    0.7934
    ],
-   "avgLumber": 0.3,
-   "avgWait": 0.8,
+   "avgLumber": 0.2,
+   "avgWait": 0.45,
    "curve": {
-    "0": 14,
-    "1": 6
+    "0": 16,
+    "1": 4
    },
-   "resourceMakers": 6,
+   "resourceMakers": 1,
    "families": [
     {
      "f": "tide",
@@ -396,7 +394,7 @@
     {
      "entry": "mirror|fight:2-1",
      "label": "vs 2-1 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -408,56 +406,56 @@
     {
      "entry": "mirror|fight:2-3",
      "label": "vs 2-3 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-4",
      "label": "vs 2-4 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-5",
      "label": "vs 2-5 elite's deck",
-     "p": 0.8333,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 2-1's field",
-     "p": 0.9167,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|ref:road2",
      "label": "vs reference deck (Map 2) under 2-2's field",
-     "p": 0.125,
+     "p": 0.2083,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
-     "p": 0.9583,
+     "p": 0.7917,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 14
+   "copiesApartFromOpen": 11
   },
   {
    "focus": "big",
    "labels": [
     "big (8 copies at 1+ Lumber, average 0.4)",
-    "tide x13",
-    "guard x9"
+    "economy (7 resource makers)",
+    "tide x8"
    ],
    "deck": {
-    "beaver-lumberjack": 3,
+    "badger-lumberjack": 3,
     "bramble-sprout": 4,
-    "conch-crawler": 2,
     "conch-herald": 4,
-    "fiddler-crab-swarm": 3,
-    "grey-seal-bull": 4
+    "driftwood-crab": 4,
+    "oystercatcher": 1,
+    "pincushion-urchin": 4
    },
    "cards": [
     {
@@ -475,123 +473,119 @@
      "rarity": "uncommon"
     },
     {
-     "id": "grey-seal-bull",
-     "name": "Grey Seal Bull",
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
      "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 3,
      "cost": 1,
      "rarity": "uncommon"
     },
     {
-     "id": "beaver-lumberjack",
-     "name": "Beaver Lumberjack",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "fiddler-crab-swarm",
-     "name": "Fiddler Crab Swarm",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "conch-crawler",
-     "name": "Conch Crawler",
-     "copies": 2,
-     "cost": 0,
+     "id": "oystercatcher",
+     "name": "Oystercatcher",
+     "copies": 1,
+     "cost": 1,
      "rarity": "common"
     }
    ],
-   "score": 0.7656,
+   "score": 0.6927,
    "ci": [
-    0.7157,
-    0.8155
+    0.6387,
+    0.7467
    ],
    "avgLumber": 0.4,
-   "avgWait": 0.85,
+   "avgWait": 0.8,
    "curve": {
     "0": 12,
     "1": 8
    },
-   "resourceMakers": 3,
+   "resourceMakers": 7,
    "families": [
     {
      "f": "tide",
-     "n": 13
-    },
-    {
-     "f": "guard",
-     "n": 9
+     "n": 8
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:2-1",
      "label": "vs 2-1 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-2",
      "label": "vs 2-2 skirmish's deck",
-     "p": 0.875,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-3",
      "label": "vs 2-3 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-4",
      "label": "vs 2-4 skirmish's deck",
-     "p": 0.75,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-5",
      "label": "vs 2-5 elite's deck",
-     "p": 0.7917,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 2-1's field",
-     "p": 0.8333,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|ref:road2",
      "label": "vs reference deck (Map 2) under 2-2's field",
-     "p": 0.1667,
+     "p": 0.0833,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
-     "p": 0.8333,
+     "p": 0.7083,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 14
+   "copiesApartFromOpen": 12
   },
   {
-   "focus": "open",
+   "focus": "economy",
    "labels": [
-    "swarm (16 copies at 0 Lumber)",
-    "economy (4 resource makers)",
-    "tide x13",
-    "guard x6"
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "economy (6 resource makers)",
+    "tide x10",
+    "guard x8"
    ],
    "deck": {
-    "cricket-drummer": 3,
+    "beaver-lumberjack": 2,
     "driftwood-crab": 4,
-    "fiddler-crab-swarm": 2,
+    "fiddler-crab-swarm": 4,
     "grey-seal-bull": 4,
-    "open-ocean-hermit-crab": 3,
-    "pincushion-urchin": 4
+    "open-ocean-hermit-crab": 2,
+    "oystercatcher": 4
    },
    "cards": [
     {
@@ -602,6 +596,13 @@
      "rarity": "common"
     },
     {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
      "id": "grey-seal-bull",
      "name": "Grey Seal Bull",
      "copies": 4,
@@ -609,53 +610,50 @@
      "rarity": "uncommon"
     },
     {
-     "id": "pincushion-urchin",
-     "name": "Pincushion Urchin",
+     "id": "oystercatcher",
+     "name": "Oystercatcher",
      "copies": 4,
-     "cost": 0,
+     "cost": 1,
      "rarity": "common"
     },
     {
-     "id": "cricket-drummer",
-     "name": "Cricket Drummer",
-     "copies": 3,
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 2,
      "cost": 0,
      "rarity": "common"
     },
     {
      "id": "open-ocean-hermit-crab",
      "name": "Open-Ocean Hermit Crab",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "fiddler-crab-swarm",
-     "name": "Fiddler Crab Swarm",
      "copies": 2,
      "cost": 0,
      "rarity": "common"
     }
    ],
-   "score": 0.7604,
+   "score": 0.6823,
    "ci": [
-    0.7118,
-    0.809
+    0.626,
+    0.7386
    ],
-   "avgLumber": 0.2,
-   "avgWait": 0.8,
+   "avgLumber": 0.4,
+   "avgWait": 0.9,
    "curve": {
-    "0": 16,
-    "1": 4
+    "0": 12,
+    "1": 8
    },
-   "resourceMakers": 4,
+   "resourceMakers": 6,
    "families": [
     {
      "f": "tide",
-     "n": 13
+     "n": 10
     },
     {
      "f": "guard",
+     "n": 8
+    },
+    {
+     "f": "armor",
      "n": 6
     }
    ],
@@ -669,7 +667,7 @@
     {
      "entry": "mirror|fight:2-2",
      "label": "vs 2-2 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.8333,
      "n": 24
     },
     {
@@ -681,7 +679,7 @@
     {
      "entry": "mirror|fight:2-4",
      "label": "vs 2-4 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.6667,
      "n": 24
     },
     {
@@ -699,17 +697,17 @@
     {
      "entry": "mirror|ref:road2",
      "label": "vs reference deck (Map 2) under 2-2's field",
-     "p": 0.125,
+     "p": 0.0833,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
-     "p": 0.875,
+     "p": 0.6667,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 0
+   "copiesApartFromOpen": 17
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map mb --pool badger-lumberjack,beaver-lumberjack,bramble-sprout,conch-crawler,conch-herald,cricket-drummer,driftwood-crab,fiddler-crab-swarm,grey-seal-bull,gull-thief,old-shell,open-ocean-hermit-crab,oystercatcher,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tidepool-trapper-crab --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"

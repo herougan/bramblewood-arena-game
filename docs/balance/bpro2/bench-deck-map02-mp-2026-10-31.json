@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-01T21:11:28.490Z",
- "fingerprint": "ed5419f9498e",
+ "generated": "2026-11-02T02:42:15.562Z",
+ "fingerprint": "6035264fa026",
  "map": {
   "id": "mp",
   "num": 2,
@@ -166,7 +166,7 @@
    "focus": "big",
    "steps": 4,
    "moves": 1,
-   "games": 1540,
+   "games": 1500,
    "apartFromEarlier": 14
   },
   {
@@ -179,14 +179,14 @@
   {
    "focus": "open",
    "steps": 5,
-   "moves": 2,
-   "games": 1660,
-   "apartFromEarlier": 6
+   "moves": 3,
+   "games": 1520,
+   "apartFromEarlier": 8
   }
  ],
  "apart": 6,
- "seconds": 380,
- "games": 6840,
+ "seconds": 152,
+ "games": 6660,
  "decks": [
   {
    "focus": "swarm",
@@ -238,10 +238,10 @@
      "rarity": "common"
     }
    ],
-   "score": 0.8417,
+   "score": 0.8375,
    "ci": [
-    0.8007,
-    0.8826
+    0.7977,
+    0.8773
    ],
    "avgLumber": 0.2,
    "avgWait": 0.4,
@@ -302,13 +302,13 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 2-A-1's field",
-     "p": 0.8333,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:road6",
      "label": "vs reference deck (Map 6) under 2-A-2's field",
-     "p": 0.5833,
+     "p": 0.4583,
      "n": 24
     },
     {
@@ -324,14 +324,15 @@
    "focus": "open",
    "labels": [
     "economy (8 resource makers)",
-    "tide x8"
+    "tide x7"
    ],
    "deck": {
+    "box-turtle": 3,
     "grey-seal-bull": 4,
     "lodge-engineer": 4,
     "muskrat-reedgatherer": 4,
-    "tidepool-trapper-crab": 4,
-    "water-vole": 4
+    "tidepool-trapper-crab": 2,
+    "water-vole": 3
    },
    "cards": [
     {
@@ -356,24 +357,31 @@
      "rarity": "common"
     },
     {
-     "id": "tidepool-trapper-crab",
-     "name": "Tidepool Trapper Crab",
-     "copies": 4,
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 3,
      "cost": 0,
      "rarity": "common"
     },
     {
      "id": "water-vole",
      "name": "Water Vole",
-     "copies": 4,
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "tidepool-trapper-crab",
+     "name": "Tidepool Trapper Crab",
+     "copies": 2,
      "cost": 0,
      "rarity": "common"
     }
    ],
-   "score": 0.8083,
+   "score": 0.8375,
    "ci": [
-    0.7636,
-    0.8531
+    0.7977,
+    0.8773
    ],
    "avgLumber": 0.6,
    "avgWait": 1,
@@ -386,14 +394,14 @@
    "families": [
     {
      "f": "tide",
-     "n": 8
+     "n": 7
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:2-A-1",
      "label": "vs 2-A-1 skirmish's deck",
-     "p": 0.75,
+     "p": 0.875,
      "n": 24
     },
     {
@@ -405,25 +413,25 @@
     {
      "entry": "mirror|fight:2-A-3",
      "label": "vs 2-A-3 skirmish's deck",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-A-4",
      "label": "vs 2-A-4 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-A-5",
      "label": "vs 2-A-5 elite's deck",
-     "p": 0.5,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-A-6",
      "label": "vs 2-A-6 elite's deck",
-     "p": 0.875,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -435,19 +443,19 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 2-A-1's field",
-     "p": 0.875,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|ref:road6",
      "label": "vs reference deck (Map 6) under 2-A-2's field",
-     "p": 0.5,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
-     "p": 0.75,
+     "p": 0.6667,
      "n": 24
     }
    ],
@@ -512,10 +520,10 @@
      "rarity": "uncommon"
     }
    ],
-   "score": 0.7625,
+   "score": 0.7708,
    "ci": [
-    0.7228,
-    0.8022
+    0.7298,
+    0.8118
    ],
    "avgLumber": 0.4,
    "avgWait": 1,
@@ -583,7 +591,7 @@
     {
      "entry": "mirror|ref:road6",
      "label": "vs reference deck (Map 6) under 2-A-2's field",
-     "p": 0.0833,
+     "p": 0.1667,
      "n": 24
     },
     {
@@ -593,7 +601,7 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 14
+   "copiesApartFromOpen": 11
   },
   {
    "focus": "big",
@@ -654,10 +662,10 @@
      "rarity": "uncommon"
     }
    ],
-   "score": 0.5333,
+   "score": 0.5375,
    "ci": [
-    0.4759,
-    0.5908
+    0.4803,
+    0.5947
    ],
    "avgLumber": 1,
    "avgWait": 1.2,
@@ -719,7 +727,7 @@
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 2-A-1's field",
-     "p": 0.6667,
+     "p": 0.7083,
      "n": 24
     },
     {
@@ -735,7 +743,7 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 6
+   "copiesApartFromOpen": 9
   }
  ],
  "reproduce": "node tools/bench/bench.js deck --map mp --pool alley-cat,box-turtle,fiddler-crab-swarm,grey-seal-bull,lodge-engineer,muskrat-lodgekeeper,muskrat-reedgatherer,old-shell,old-sturgeon,platypus-spur,pond-algae,pyrenean-desman,riverworks-bastion,snapstick-turtle,tidepool-trapper-crab,water-shrew,water-vole --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
