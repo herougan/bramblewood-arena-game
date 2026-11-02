@@ -1,3 +1,4 @@
+-- APPLIED 2026-11-02 20:19 SGT (owner: "TUT2-1 apply it"); verified: cfg.rivalDeck2 and cfg.myDeck2 hold the new decks.
 -- 2026-10-30 (package TUT2, owner SKL0-1 "yes definitely": every T-1 / T-2 card fights at Level 0 on both sides, with no skills).
 -- 2026-10-30 (package TUT3, owner TUT2-3 "T-1/T-2 won't have swarm or flying"): the same file now also changes cfg.myDeck2, your T-2 deck: the one
 -- skill card in it, the Honey Bee (Flying), becomes a Pond Duck (3/4, no skill). Two statements, each on its own guard.
