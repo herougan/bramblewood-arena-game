@@ -1,0 +1,332 @@
+{
+ "tool": "tools/bal12/lumber_homes_2026_11_02.js",
+ "generated": "2026-11-02",
+ "rows": [
+  {
+   "id": "elder-willow",
+   "homes": [],
+   "mean": null
+  },
+  {
+   "id": "nautilus-drifter",
+   "homes": [
+    {
+     "map": "mj",
+     "mean": 1.227
+    }
+   ],
+   "mean": 1.227,
+   "mult": 1.02
+  },
+  {
+   "id": "elderhorn-monarch",
+   "homes": [
+    {
+     "map": "m24",
+     "mean": 1.313
+    }
+   ],
+   "mean": 1.313,
+   "mult": 1.12
+  },
+  {
+   "id": "lodge-engineer",
+   "homes": [
+    {
+     "map": "mp",
+     "mean": 0.472
+    },
+    {
+     "map": "ml",
+     "mean": 1.133
+    },
+    {
+     "map": "m23",
+     "mean": 1.4
+    },
+    {
+     "map": "m24",
+     "mean": 1.313
+    }
+   ],
+   "mean": 1.08,
+   "mult": 1.01
+  },
+  {
+   "id": "rodent-king",
+   "homes": [],
+   "mean": null
+  },
+  {
+   "id": "bone-diviner",
+   "homes": [],
+   "mean": null
+  },
+  {
+   "id": "dust-hyena",
+   "homes": [
+    {
+     "map": "muc",
+     "mean": 0.95
+    },
+    {
+     "map": "m5",
+     "mean": 0.733
+    },
+    {
+     "map": "md",
+     "mean": 1.053
+    },
+    {
+     "map": "mpd",
+     "mean": 1.05
+    }
+   ],
+   "mean": 0.946,
+   "mult": 1
+  },
+  {
+   "id": "coral-polyp-colony",
+   "homes": [
+    {
+     "map": "m7",
+     "mean": 1.333
+    },
+    {
+     "map": "mj",
+     "mean": 1.227
+    }
+   ],
+   "mean": 1.28,
+   "mult": 1.08
+  },
+  {
+   "id": "gull-thief",
+   "homes": [
+    {
+     "map": "mtut",
+     "mean": 0.074
+    },
+    {
+     "map": "mb",
+     "mean": 0.353
+    },
+    {
+     "map": "mg",
+     "mean": 0.435
+    },
+    {
+     "map": "mc",
+     "mean": 0.467
+    }
+   ],
+   "mean": 0.332,
+   "mult": 0.39
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "homes": [
+    {
+     "map": "m10",
+     "mean": 0.7
+    },
+    {
+     "map": "mv",
+     "mean": 0.737
+    }
+   ],
+   "mean": 0.718,
+   "mult": 1
+  },
+  {
+   "id": "pack-rat-looter",
+   "homes": [],
+   "mean": null
+  },
+  {
+   "id": "land-tiller",
+   "homes": [
+    {
+     "map": "m23",
+     "mean": 1.4
+    },
+    {
+     "map": "m24",
+     "mean": 1.313
+    }
+   ],
+   "mean": 1.357,
+   "mult": 1.14
+  },
+  {
+   "id": "sunfeather-scout",
+   "homes": [],
+   "mean": null
+  },
+  {
+   "id": "ferry-toll-frog",
+   "homes": [],
+   "mean": null
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "homes": [],
+   "mean": null
+  },
+  {
+   "id": "otter-angler",
+   "homes": [],
+   "mean": null
+  },
+  {
+   "id": "leafcutter-gardener",
+   "homes": [
+    {
+     "map": "mu",
+     "mean": 0.545
+    },
+    {
+     "map": "mz",
+     "mean": 0.619
+    },
+    {
+     "map": "my",
+     "mean": 0.815
+    }
+   ],
+   "mean": 0.66,
+   "mult": 1
+  },
+  {
+   "id": "truffle-piglet",
+   "homes": [
+    {
+     "map": "mu",
+     "mean": 0.545
+    },
+    {
+     "map": "mz",
+     "mean": 0.619
+    },
+    {
+     "map": "muc",
+     "mean": 0.95
+    }
+   ],
+   "mean": 0.705,
+   "mult": 1
+  },
+  {
+   "id": "driftwood-crab",
+   "homes": [
+    {
+     "map": "mb",
+     "mean": 0.353
+    },
+    {
+     "map": "mg",
+     "mean": 0.435
+    }
+   ],
+   "mean": 0.394,
+   "mult": 0.49
+  },
+  {
+   "id": "gannet-nestweaver",
+   "homes": [
+    {
+     "map": "mc",
+     "mean": 0.467
+    },
+    {
+     "map": "m10",
+     "mean": 0.7
+    }
+   ],
+   "mean": 0.584,
+   "mult": 0.94
+  },
+  {
+   "id": "nutria-reedcutter",
+   "homes": [
+    {
+     "map": "mw",
+     "mean": 0.875
+    },
+    {
+     "map": "ms",
+     "mean": 0.789
+    },
+    {
+     "map": "m8",
+     "mean": 0.933
+    }
+   ],
+   "mean": 0.866,
+   "mult": 1
+  },
+  {
+   "id": "termite-forager",
+   "homes": [],
+   "mean": null
+  },
+  {
+   "id": "cone-cutter-squirrel",
+   "homes": [
+    {
+     "map": "mt",
+     "mean": 1
+    },
+    {
+     "map": "m6",
+     "mean": 0.938
+    }
+   ],
+   "mean": 0.969,
+   "mult": 1.01
+  },
+  {
+   "id": "talus-pika",
+   "homes": [
+    {
+     "map": "m6",
+     "mean": 0.938
+    },
+    {
+     "map": "mi",
+     "mean": 0.941
+    },
+    {
+     "map": "m3",
+     "mean": 1.533
+    },
+    {
+     "map": "m21",
+     "mean": 0.8
+    }
+   ],
+   "mean": 1.053,
+   "mult": 1.01
+  },
+  {
+   "id": "dune-packrat",
+   "homes": [
+    {
+     "map": "md",
+     "mean": 1.053
+    },
+    {
+     "map": "mpd",
+     "mean": 1.05
+    }
+   ],
+   "mean": 1.051,
+   "mult": 1.01
+  },
+  {
+   "id": "peat-cutter-vole",
+   "homes": [],
+   "mean": null
+  }
+ ]
+}

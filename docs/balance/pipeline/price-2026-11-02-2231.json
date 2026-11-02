@@ -1,0 +1,155 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "price",
+ "status": "ok",
+ "started": "2026-11-02T14:31:26.675Z",
+ "finished": "2026-11-02T14:31:31.935Z",
+ "durationSec": 5.3,
+ "args": [],
+ "head": "447f7a9b",
+ "inputs": {
+  "measures": "docs/balance/pipeline/state/merged-measures.json",
+  "skill2Items": 231,
+  "pipelineItems": 242,
+  "mapRecordedOnly": 0,
+  "constantsBefore": {
+   "cap2SScale": 0.5,
+   "flying": 1.17,
+   "evasive": 1.16,
+   "shadow": 1.1
+  },
+  "setConst": {},
+  "dry": false,
+  "halfMiss": {
+   "evasive": {
+    "measured": 1.18,
+    "lo": 1.17,
+    "hi": 1.2,
+    "now": 1.16,
+    "statBase": 20.83,
+    "worth": 3.832,
+    "from": "SKILL2 measures",
+    "fingerprint": "ea6e5bcc7b96"
+   },
+   "flying": {
+    "measured": 1.19,
+    "lo": 1.18,
+    "hi": 1.2,
+    "now": 1.17,
+    "statBase": 20.83,
+    "worth": 3.9743,
+    "from": "SKILL2 measures",
+    "fingerprint": "ea6e5bcc7b96"
+   }
+  }
+ },
+ "counts": {
+  "skills set": 111,
+  "kept": 48,
+  "canon (curve kept)": 4,
+  "table entries changed": 12,
+  "trigger pairs": 12
+ },
+ "changed": [
+  {
+   "id": "arrow",
+   "field": "value",
+   "old": "4.43^0.234",
+   "new": "4.26^0.291"
+  },
+  {
+   "id": "brood",
+   "field": "value",
+   "old": "3.96^0.417",
+   "new": "4.28^0.302"
+  },
+  {
+   "id": "fletcher",
+   "field": "value",
+   "old": "2.22",
+   "new": "3.19"
+  },
+  {
+   "id": "breach",
+   "field": "value",
+   "old": "4.5",
+   "new": "3.03"
+  },
+  {
+   "id": "inspiring",
+   "field": "value",
+   "old": "3.3^0.626",
+   "new": "3.3^0.549"
+  },
+  {
+   "id": "pounce",
+   "field": "value",
+   "old": "1.93^0.619",
+   "new": "2.11^0.488"
+  },
+  {
+   "id": "regen",
+   "field": "value",
+   "old": "2^0.54",
+   "new": "2.26^0.362"
+  },
+  {
+   "id": "shell",
+   "field": "value",
+   "old": "1.74^0.375",
+   "new": "1.64^0.464"
+  },
+  {
+   "id": "siege",
+   "field": "value",
+   "old": "0.62^1.036",
+   "new": "0.85^0.851"
+  },
+  {
+   "id": "stealth",
+   "field": "value",
+   "old": "7.28",
+   "new": "6.88"
+  },
+  {
+   "id": "sweep",
+   "field": "value",
+   "old": "4.45^0.191",
+   "new": "4.72^0.105"
+  },
+  {
+   "id": "bola",
+   "field": "value",
+   "old": "2",
+   "new": "5.58"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "evasive multiplier",
+   "why": "measures imply x1.18 [1.17, 1.2] on stat terms of 20.83, the budget has x1.16 (an owner call: --set-const evasive=1.18)"
+  },
+  {
+   "id": "flying multiplier",
+   "why": "measures imply x1.19 [1.18, 1.2] on stat terms of 20.83, the budget has x1.17 (an owner call: --set-const flying=1.19)"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [
+  "record: armor=3: measured 4.58 [4.35, 4.76], the canon curve gives 4.85 (kept: two canon points fix the curve)",
+  "record: armor=4: measured 4.95 [4.64, 5.52], the canon curve gives 5.88 (kept: two canon points fix the curve)",
+  "record: armor=5: measured 5.01 [4.75, 5.58], the canon curve gives 6.83 (kept: two canon points fix the curve)",
+  "record: poison=3: measured 5.01 [4.86, 5.12], the canon curve gives 6.98 (kept: two canon points fix the curve)"
+ ],
+ "files": [
+  "docs/balance/pipeline/state/price-plan.json",
+  "docs/balance/pipeline/state/merged-measures.json",
+  "canonical/skill-costs.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/price-2026-11-02-2231.json"
+}
