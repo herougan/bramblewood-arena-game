@@ -1,6 +1,6 @@
 {
  "tool": "tools/opt/wpro_2026_11_02.js",
- "generated": "2026-11-02T07:32:35.335Z",
+ "generated": "2026-11-02T21:24:28.947Z",
  "map": {
   "id": "mb",
   "num": 2,
@@ -18,6 +18,7 @@
   "fiddler-crab-swarm",
   "grey-seal-bull",
   "gull-thief",
+  "moon-jelly",
   "old-shell",
   "open-ocean-hermit-crab",
   "oystercatcher",
@@ -34,7 +35,7 @@
  },
  "settings": {
   "seed": "wpro|mb",
-  "budget": 1200,
+  "budget": 1600,
   "finalGames": 24,
   "apart": 6
  },
@@ -72,40 +73,42 @@
    "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field"
   }
  ],
- "steps": 4,
- "moves": 2,
- "games": 1696,
- "seconds": 25,
+ "steps": 6,
+ "moves": 4,
+ "games": 2208,
+ "seconds": 40,
  "weak": [
   {
    "deck": {
-    "fiddler-crab-swarm": 4,
-    "old-shell": 4,
+    "badger-lumberjack": 4,
+    "conch-crawler": 3,
+    "old-shell": 2,
     "oystercatcher": 4,
-    "rock-pool-starfish": 4,
+    "rock-pool-starfish": 3,
     "sea-turtle-elder": 4
    },
-   "score": 0.0937,
+   "score": 0.0521,
    "ci": [
-    0.0537,
-    0.1338
+    0.0213,
+    0.0828
    ],
-   "vsRef": 0.0417,
-   "refWins": 0.9583,
+   "vsRef": 0.0278,
+   "refWins": 0.9722,
    "labels": [
-    "big (12 copies at 1+ Lumber, average 0.8)",
-    "armor x12",
-    "tide x12"
+    "big (14 copies at 1+ Lumber, average 0.9)",
+    "economy (4 resource makers)",
+    "tide x10",
+    "armor x9"
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:2-1",
-     "p": 0.125,
+     "p": 0.1667,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-2",
-     "p": 0.25,
+     "p": 0.0833,
      "n": 24
     },
     {
@@ -115,12 +118,12 @@
     },
     {
      "entry": "mirror|fight:2-4",
-     "p": 0.125,
+     "p": 0,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-5",
-     "p": 0.0417,
+     "p": 0,
      "n": 24
     },
     {
@@ -135,70 +138,71 @@
     },
     {
      "entry": "mirror|ref:expected",
-     "p": 0.0417,
+     "p": 0,
      "n": 24
     }
    ]
   },
   {
    "deck": {
-    "cricket-drummer": 4,
-    "grey-seal-bull": 4,
-    "old-shell": 4,
+    "badger-lumberjack": 4,
+    "beaver-lumberjack": 4,
+    "open-ocean-hermit-crab": 4,
     "rock-pool-starfish": 4,
     "sea-turtle-elder": 4
    },
-   "score": 0.1406,
+   "score": 0.224,
    "ci": [
-    0.0938,
-    0.1875
+    0.168,
+    0.2799
    ],
-   "vsRef": 0.1111,
-   "refWins": 0.8889,
+   "vsRef": 0.1806,
+   "refWins": 0.8194,
    "labels": [
-    "big (12 copies at 1+ Lumber, average 0.8)",
+    "big (8 copies at 1+ Lumber, average 0.6)",
+    "economy (8 resource makers)",
     "tide x12",
     "armor x8"
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:2-1",
-     "p": 0.25,
+     "p": 0.4167,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-2",
-     "p": 0.2917,
+     "p": 0.3333,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-3",
-     "p": 0.0417,
+     "p": 0.1667,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-4",
-     "p": 0.2083,
+     "p": 0.2917,
      "n": 24
     },
     {
      "entry": "mirror|fight:2-5",
-     "p": 0,
+     "p": 0.0417,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
-     "p": 0.125,
+     "p": 0.1667,
      "n": 24
     },
     {
      "entry": "mirror|ref:road2",
-     "p": 0,
+     "p": 0.0417,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
-     "p": 0.2083,
+     "p": 0.3333,
      "n": 24
     }
    ]
@@ -207,23 +211,24 @@
  "strong": {
   "id": "2-BPRO-1",
   "deck": {
-   "beaver-lumberjack": 3,
+   "beaver-lumberjack": 2,
    "conch-crawler": 4,
    "conch-herald": 4,
-   "cricket-drummer": 4,
-   "grey-seal-bull": 1,
-   "pincushion-urchin": 4
+   "cricket-drummer": 3,
+   "driftwood-crab": 4,
+   "pincushion-urchin": 3
   },
-  "score": 0.849,
+  "score": 0.8698,
   "ci": [
-   0.8144,
-   0.8835
+   0.8361,
+   0.9035
   ],
-  "vsRef": 0.6944,
-  "refWins": 0.3056,
+  "vsRef": 0.75,
+  "refWins": 0.25,
   "labels": [
-   "swarm (15 copies at 0 Lumber)",
-   "tide x13"
+   "swarm (16 copies at 0 Lumber)",
+   "economy (6 resource makers)",
+   "tide x11"
   ],
   "perOpponent": [
    {
@@ -238,12 +243,12 @@
    },
    {
     "entry": "mirror|fight:2-3",
-    "p": 0.9167,
+    "p": 0.9583,
     "n": 24
    },
    {
     "entry": "mirror|fight:2-4",
-    "p": 1,
+    "p": 0.9583,
     "n": 24
    },
    {
@@ -258,12 +263,12 @@
    },
    {
     "entry": "mirror|ref:road2",
-    "p": 0.1667,
+    "p": 0.25,
     "n": 24
    },
    {
     "entry": "mirror|ref:expected",
-    "p": 0.9167,
+    "p": 1,
     "n": 24
    }
   ]

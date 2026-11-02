@@ -17,7 +17,6 @@
     "cottontail",
     "crossed-eyes",
     "duck-paddler",
-    "duckling",
     "earthworm",
     "honey-bee",
     "house-cat",
@@ -79,8 +78,7 @@
       "leaders": []
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mo": {
    "id": "mo",
@@ -123,7 +121,6 @@
     "bramble-sprout",
     "chipmunk-cavalry",
     "chipmunk-skirmisher",
-    "compost-grub",
     "cottontail",
     "cricket-drummer",
     "dormouse",
@@ -193,19 +190,7 @@
       "leaders": []
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.6667,
-     "why": "under 68.3%"
-    },
-    {
-     "focus": "family:flying",
-     "score": 0.6302,
-     "why": "under 68.3%"
-    }
-   ]
+   }
   },
   "mq": {
    "id": "mq",
@@ -219,7 +204,6 @@
     "badger-lumberjack",
     "bee-forager",
     "bramble-sprout",
-    "compost-grub",
     "cottontail",
     "cricket-drummer",
     "field-mouse",
@@ -288,19 +272,7 @@
       "leaders": []
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.4844,
-     "why": "under 52.2%"
-    },
-    {
-     "focus": "family:flying",
-     "score": 0.375,
-     "why": "under 52.2%"
-    }
-   ]
+   }
   },
   "mb": {
    "id": "mb",
@@ -319,6 +291,7 @@
     "fiddler-crab-swarm",
     "grey-seal-bull",
     "gull-thief",
+    "moon-jelly",
     "old-shell",
     "open-ocean-hermit-crab",
     "oystercatcher",
@@ -352,58 +325,37 @@
     "bpro": [
      {
       "id": "2-BPRO-1",
-      "focus": "open",
-      "score": 0.7865,
+      "focus": "economy",
+      "score": 0.8542,
       "ci": [
-       0.7453,
-       0.8277
+       0.8202,
+       0.8881
       ],
       "deck": {
-       "beaver-lumberjack": 3,
+       "beaver-lumberjack": 2,
        "conch-crawler": 4,
        "conch-herald": 4,
-       "cricket-drummer": 4,
-       "grey-seal-bull": 1,
-       "pincushion-urchin": 4
+       "cricket-drummer": 3,
+       "driftwood-crab": 4,
+       "pincushion-urchin": 3
       },
       "leaders": [
-       "grey-seal-bull"
+       "conch-herald"
       ]
      },
      {
       "id": "2-BPRO-2",
-      "focus": "swarm",
-      "score": 0.7396,
+      "focus": "open",
+      "score": 0.8125,
       "ci": [
-       0.6857,
-       0.7934
+       0.7685,
+       0.8565
       ],
       "deck": {
-       "beaver-lumberjack": 1,
        "bramble-sprout": 4,
-       "cricket-drummer": 4,
-       "fiddler-crab-swarm": 3,
-       "oystercatcher": 4,
-       "pincushion-urchin": 4
-      },
-      "leaders": [
-       "bramble-sprout"
-      ]
-     },
-     {
-      "id": "2-BPRO-3",
-      "focus": "big",
-      "score": 0.6927,
-      "ci": [
-       0.6387,
-       0.7467
-      ],
-      "deck": {
-       "badger-lumberjack": 3,
-       "bramble-sprout": 4,
+       "conch-crawler": 4,
        "conch-herald": 4,
-       "driftwood-crab": 4,
-       "oystercatcher": 1,
+       "moon-jelly": 4,
        "pincushion-urchin": 4
       },
       "leaders": [
@@ -411,28 +363,47 @@
       ]
      },
      {
-      "id": "2-BPRO-4",
-      "focus": "economy",
-      "score": 0.6823,
+      "id": "2-BPRO-3",
+      "focus": "swarm",
+      "score": 0.7448,
       "ci": [
-       0.626,
-       0.7386
+       0.6947,
+       0.7949
       ],
       "deck": {
-       "beaver-lumberjack": 2,
-       "driftwood-crab": 4,
+       "bramble-sprout": 3,
+       "conch-herald": 4,
        "fiddler-crab-swarm": 4,
-       "grey-seal-bull": 4,
-       "open-ocean-hermit-crab": 2,
-       "oystercatcher": 4
+       "gull-thief": 4,
+       "pincushion-urchin": 4,
+       "sea-turtle-elder": 1
+      },
+      "leaders": [
+       "conch-herald"
+      ]
+     },
+     {
+      "id": "2-BPRO-4",
+      "focus": "big",
+      "score": 0.7135,
+      "ci": [
+       0.6635,
+       0.7636
+      ],
+      "deck": {
+       "beaver-lumberjack": 3,
+       "conch-herald": 4,
+       "cricket-drummer": 3,
+       "driftwood-crab": 2,
+       "fiddler-crab-swarm": 4,
+       "grey-seal-bull": 4
       },
       "leaders": [
        "grey-seal-bull"
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mg": {
    "id": "mg",
@@ -541,14 +512,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "swarm",
-     "score": 0.7262,
-     "why": "under 74.9%"
-    }
-   ]
+   }
   },
   "mp": {
    "id": "mp",
@@ -658,14 +622,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.5375,
-     "why": "under 68.8%"
-    }
-   ]
+   }
   },
   "mc": {
    "id": "mc",
@@ -770,14 +727,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "economy",
-     "score": 0.6792,
-     "why": "under 69.2%"
-    }
-   ]
+   }
   },
   "m2": {
    "id": "m2",
@@ -792,6 +742,7 @@
     "duck-paddler",
     "field-vole",
     "fire-ant-raft",
+    "lions-mane-jelly",
     "muskrat-lodgekeeper",
     "muskrat-reedgatherer",
     "old-sturgeon",
@@ -825,19 +776,19 @@
     "bpro": [
      {
       "id": "4-BPRO-1",
-      "focus": "swarm",
+      "focus": "open",
       "score": 0.9271,
       "ci": [
-       0.8923,
-       0.9619
+       0.8909,
+       0.9633
       ],
       "deck": {
-       "box-turtle": 4,
-       "drowned-matriarch": 2,
+       "box-turtle": 2,
+       "drowned-matriarch": 4,
        "duck-paddler": 2,
-       "pond-algae": 4,
+       "muskrat-reedgatherer": 4,
        "pyrenean-desman": 4,
-       "water-vole": 4
+       "snapstick-turtle": 4
       },
       "leaders": [
        "drowned-matriarch"
@@ -846,17 +797,17 @@
      {
       "id": "4-BPRO-2",
       "focus": "big",
-      "score": 0.8698,
+      "score": 0.875,
       "ci": [
-       0.8243,
-       0.9153
+       0.8308,
+       0.9192
       ],
       "deck": {
-       "box-turtle": 2,
        "drowned-matriarch": 4,
-       "duck-paddler": 4,
+       "duck-paddler": 2,
        "fire-ant-raft": 4,
-       "pyrenean-desman": 2,
+       "pyrenean-desman": 4,
+       "slow-worm": 2,
        "water-vole": 4
       },
       "leaders": [
@@ -865,46 +816,26 @@
      },
      {
       "id": "4-BPRO-3",
-      "focus": "open",
-      "score": 0.8698,
+      "focus": "swarm",
+      "score": 0.875,
       "ci": [
-       0.8246,
-       0.915
+       0.8314,
+       0.9186
       ],
       "deck": {
        "box-turtle": 4,
-       "drowned-matriarch": 4,
-       "pond-algae": 4,
+       "drowned-matriarch": 2,
+       "field-vole": 4,
+       "muskrat-lodgekeeper": 3,
        "pyrenean-desman": 4,
-       "stone-turtle-warden": 4
-      },
-      "leaders": [
-       "drowned-matriarch"
-      ]
-     },
-     {
-      "id": "4-BPRO-4",
-      "focus": "economy",
-      "score": 0.8646,
-      "ci": [
-       0.8175,
-       0.9116
-      ],
-      "deck": {
-       "beaver-lumberjack": 2,
-       "box-turtle": 3,
-       "drowned-matriarch": 4,
-       "muskrat-reedgatherer": 4,
-       "pyrenean-desman": 4,
-       "stone-turtle-warden": 3
+       "water-vole": 3
       },
       "leaders": [
        "drowned-matriarch"
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mw": {
    "id": "mw",
@@ -931,9 +862,7 @@
     "venomlord-serpent"
    ],
    "anchorDropped": [],
-   "fightOnly": [
-    "caiman-hatchling"
-   ],
+   "fightOnly": [],
    "focuses": [
     "economy",
     "big",
@@ -1031,8 +960,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "ms": {
    "id": "ms",
@@ -1135,14 +1063,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.4821,
-     "why": "under 53.5%"
-    }
-   ]
+   }
   },
   "m8": {
    "id": "m8",
@@ -1269,8 +1190,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mu": {
    "id": "mu",
@@ -1380,14 +1300,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "swarm",
-     "score": 0.6574,
-     "why": "under 66.5%"
-    }
-   ]
+   }
   },
   "mz": {
    "id": "mz",
@@ -1411,11 +1324,7 @@
     "wolf-spider-mother"
    ],
    "anchorDropped": [],
-   "fightOnly": [
-    "beetle-battering-ram",
-    "gangrenous-leech",
-    "trapdoor-spider"
-   ],
+   "fightOnly": [],
    "focuses": [
     "economy",
     "big",
@@ -1513,8 +1422,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "m4": {
    "id": "m4",
@@ -1642,8 +1550,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mn": {
    "id": "mn",
@@ -1770,8 +1677,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mk": {
    "id": "mk",
@@ -1895,8 +1801,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "m7": {
    "id": "m7",
@@ -1920,6 +1825,7 @@
     "reef-admiral",
     "reef-shark",
     "riptide-eel",
+    "supernova-jelly",
     "swordfish-spearman"
    ],
    "anchorDropped": [],
@@ -1944,72 +1850,65 @@
      {
       "id": "10-BPRO-1",
       "focus": "open",
-      "score": 0.8351,
+      "score": 0.8472,
       "ci": [
-       0.7954,
-       0.8747
+       0.8116,
+       0.8828
       ],
       "deck": {
-       "clownfish-scout": 3,
        "coral-polyp-colony": 4,
+       "coral-reef-shark": 4,
        "electric-ray": 4,
-       "kraken-spawnling": 3,
-       "parrotfish": 3,
-       "swordfish-spearman": 3
+       "open-ocean-hermit-crab": 1,
+       "parrotfish": 4,
+       "supernova-jelly": 3
       },
       "leaders": [
-       "swordfish-spearman"
+       "supernova-jelly"
       ]
      },
      {
       "id": "10-BPRO-2",
       "focus": "swarm",
-      "score": 0.8056,
+      "score": 0.8264,
       "ci": [
-       0.7637,
-       0.8474
+       0.7864,
+       0.8664
       ],
       "deck": {
-       "clownfish-scout": 4,
-       "coral-polyp-colony": 3,
-       "mangrove-manatee": 3,
+       "clownfish-scout": 3,
+       "coral-polyp-colony": 4,
+       "great-barracuda": 1,
        "open-ocean-hermit-crab": 4,
        "parrotfish": 4,
-       "reef-admiral": 2
+       "riptide-eel": 4
       },
       "leaders": [
-       "reef-admiral"
+       "great-barracuda"
       ]
      },
      {
       "id": "10-BPRO-3",
       "focus": "family:tide",
-      "score": 0.7986,
+      "score": 0.8229,
       "ci": [
-       0.758,
-       0.8392
+       0.782,
+       0.8638
       ],
       "deck": {
-       "clownfish-scout": 3,
-       "electric-ray": 4,
-       "open-ocean-hermit-crab": 4,
+       "clownfish-scout": 4,
+       "coral-polyp-colony": 3,
+       "great-barracuda": 3,
+       "mangrove-manatee": 3,
        "parrotfish": 4,
-       "reef-admiral": 2,
-       "riptide-eel": 3
+       "swordfish-spearman": 3
       },
       "leaders": [
-       "reef-admiral"
+       "mangrove-manatee"
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.5243,
-     "why": "under 68.5%"
-    }
-   ]
+   }
   },
   "mj": {
    "id": "mj",
@@ -2074,7 +1973,7 @@
        "nautilus-drifter": 3
       },
       "leaders": [
-       "mangrove-manatee"
+       "nautilus-drifter"
       ]
      },
      {
@@ -2114,18 +2013,11 @@
        "parrotfish": 4
       },
       "leaders": [
-       "mangrove-manatee"
+       "nautilus-drifter"
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.776,
-     "why": "under 78.5%"
-    }
-   ]
+   }
   },
   "m10": {
    "id": "m10",
@@ -2235,14 +2127,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.6699,
-     "why": "under 73.8%"
-    }
-   ]
+   }
   },
   "mv": {
    "id": "mv",
@@ -2268,9 +2153,7 @@
     "wound-reaver"
    ],
    "anchorDropped": [],
-   "fightOnly": [
-    "mountain-goat-climber"
-   ],
+   "fightOnly": [],
    "focuses": [
     "big",
     "swarm",
@@ -2349,14 +2232,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.6607,
-     "why": "under 71.3%"
-    }
-   ]
+   }
   },
   "mh": {
    "id": "mh",
@@ -2461,14 +2337,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "swarm",
-     "score": 0.5667,
-     "why": "under 59.2%"
-    }
-   ]
+   }
   },
   "mr": {
    "id": "mr",
@@ -2574,14 +2443,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:evasion",
-     "score": 0.5265,
-     "why": "under 59.2%"
-    }
-   ]
+   }
   },
   "m5": {
    "id": "m5",
@@ -2596,7 +2458,6 @@
     "grave-grin-hyena",
     "hoopoe-herald",
     "house-cat",
-    "leafcutter-gardener",
     "marula-elephant",
     "mouse-sapper",
     "pangolin-roller",
@@ -2631,16 +2492,16 @@
       "focus": "swarm",
       "score": 0.9205,
       "ci": [
-       0.889,
-       0.9519
+       0.8902,
+       0.9507
       ],
       "deck": {
-       "carrion-crow": 2,
+       "dust-hyena": 4,
        "grave-grin-hyena": 4,
        "hoopoe-herald": 4,
        "plains-zebra": 4,
        "pride-queen": 2,
-       "weaver-bird": 4
+       "springbok-pronker": 2
       },
       "leaders": [
        "pride-queen"
@@ -2648,67 +2509,66 @@
      },
      {
       "id": "14-BPRO-2",
-      "focus": "open",
-      "score": 0.8902,
-      "ci": [
-       0.8544,
-       0.9259
-      ],
-      "deck": {
-       "carrion-crow": 4,
-       "grave-grin-hyena": 4,
-       "leafcutter-gardener": 4,
-       "pangolin-roller": 4,
-       "pride-queen": 2,
-       "savanna-cheetah": 2
-      },
-      "leaders": [
-       "pride-queen"
-      ]
-     },
-     {
-      "id": "14-BPRO-3",
       "focus": "economy",
-      "score": 0.875,
+      "score": 0.8788,
       "ci": [
-       0.8368,
-       0.9132
+       0.8427,
+       0.9148
       ],
       "deck": {
-       "carrion-crow": 3,
-       "dust-hyena": 3,
-       "leafcutter-gardener": 4,
-       "pangolin-roller": 4,
+       "carrion-crow": 2,
+       "dust-hyena": 4,
+       "hoopoe-herald": 4,
+       "plains-zebra": 4,
        "savanna-cheetah": 2,
-       "weaver-bird": 4
+       "springbok-pronker": 4
       },
       "leaders": [
        "savanna-cheetah"
       ]
      },
      {
-      "id": "14-BPRO-4",
+      "id": "14-BPRO-3",
       "focus": "big",
-      "score": 0.875,
+      "score": 0.8788,
       "ci": [
-       0.8382,
-       0.9118
+       0.8429,
+       0.9147
       ],
       "deck": {
-       "dust-hyena": 2,
+       "carrion-crow": 2,
+       "grave-grin-hyena": 2,
        "hoopoe-herald": 4,
-       "leafcutter-gardener": 4,
-       "pangolin-roller": 4,
-       "pride-queen": 2,
+       "house-cat": 4,
+       "mouse-sapper": 4,
        "springbok-pronker": 4
       },
       "leaders": [
-       "pride-queen"
+       "grave-grin-hyena"
+      ]
+     },
+     {
+      "id": "14-BPRO-4",
+      "focus": "open",
+      "score": 0.8447,
+      "ci": [
+       0.8031,
+       0.8863
+      ],
+      "deck": {
+       "carrion-crow": 4,
+       "dust-hyena": 4,
+       "grave-grin-hyena": 4,
+       "house-cat": 3,
+       "mouse-sapper": 3,
+       "savanna-cheetah": 2
+      },
+      "leaders": [
+       "savanna-cheetah"
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "my": {
    "id": "my",
@@ -2736,8 +2596,7 @@
    ],
    "anchorDropped": [],
    "fightOnly": [
-    "ancient-sloth-titan",
-    "siege-rhino"
+    "ancient-sloth-titan"
    ],
    "focuses": [
     "economy",
@@ -2759,18 +2618,18 @@
      {
       "id": "14-A-BPRO-1",
       "focus": "economy",
-      "score": 0.7656,
+      "score": 0.8177,
       "ci": [
-       0.711,
-       0.8202
+       0.7664,
+       0.869
       ],
       "deck": {
        "hercules-beetle": 2,
        "hoopoe-herald": 3,
        "leafcutter-gardener": 4,
-       "lyrebird-mimic": 4,
-       "pangolin-roller": 4,
-       "redwood-woodpecker": 3
+       "pangolin-roller": 3,
+       "poison-dart-croaker": 4,
+       "redwood-woodpecker": 4
       },
       "leaders": [
        "hercules-beetle"
@@ -2779,51 +2638,65 @@
      {
       "id": "14-A-BPRO-2",
       "focus": "open",
-      "score": 0.7344,
+      "score": 0.7969,
       "ci": [
-       0.6771,
-       0.7917
+       0.7435,
+       0.8503
       ],
       "deck": {
-       "apollo-butterfly": 4,
+       "apollo-butterfly": 3,
        "hoopoe-herald": 4,
-       "lyrebird-mimic": 4,
-       "pangolin-roller": 4,
-       "weaver-bird": 4
+       "leafcutter-gardener": 4,
+       "pangolin-roller": 3,
+       "poison-dart-croaker": 3,
+       "spitting-cobra": 3
       },
       "leaders": [
-       "lyrebird-mimic"
+       "pangolin-roller"
       ]
      },
      {
       "id": "14-A-BPRO-3",
-      "focus": "big",
-      "score": 0.6458,
+      "focus": "swarm",
+      "score": 0.7656,
       "ci": [
-       0.5846,
-       0.7071
+       0.7098,
+       0.8214
       ],
       "deck": {
-       "apollo-butterfly": 2,
-       "hercules-beetle": 3,
+       "apollo-butterfly": 4,
        "hoopoe-herald": 4,
-       "jaguar-stalker": 3,
-       "kinkajou-lurker": 4,
-       "leafcutter-gardener": 4
+       "leafcutter-gardener": 4,
+       "lyrebird-mimic": 4,
+       "pangolin-roller": 2,
+       "vampire-bat": 2
       },
       "leaders": [
-       "hercules-beetle"
+       "pangolin-roller"
+      ]
+     },
+     {
+      "id": "14-A-BPRO-4",
+      "focus": "big",
+      "score": 0.7135,
+      "ci": [
+       0.6562,
+       0.7709
+      ],
+      "deck": {
+       "hoopoe-herald": 4,
+       "kinkajou-lurker": 4,
+       "leafcutter-gardener": 4,
+       "pride-queen": 2,
+       "spitting-cobra": 3,
+       "weaver-bird": 3
+      },
+      "leaders": [
+       "pride-queen"
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "swarm",
-     "score": 0.5677,
-     "why": "under 61.6%"
-    }
-   ]
+   }
   },
   "ml": {
    "id": "ml",
@@ -2927,8 +2800,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mt": {
    "id": "mt",
@@ -3035,14 +2907,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:cleave",
-     "score": 0.4625,
-     "why": "under 59%"
-    }
-   ]
+   }
   },
   "m6": {
    "id": "m6",
@@ -3169,8 +3034,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "mi": {
    "id": "mi",
@@ -3251,8 +3115,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "md": {
    "id": "md",
@@ -3361,14 +3224,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.5708,
-     "why": "under 75.4%"
-    }
-   ]
+   }
   },
   "mpd": {
    "id": "mpd",
@@ -3393,9 +3249,7 @@
     "trapdoor-spider"
    ],
    "anchorDropped": [],
-   "fightOnly": [
-    "cinder-gecko"
-   ],
+   "fightOnly": [],
    "focuses": [
     "economy",
     "big",
@@ -3493,8 +3347,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "m3": {
    "id": "m3",
@@ -3504,7 +3357,6 @@
    "cap": "veryrare",
    "pool": [
     "cinder-stoker",
-    "echidna-quillshot",
     "fire-salamander",
     "glacial-ape-king",
     "glacier-wolf-pack",
@@ -3519,7 +3371,9 @@
     "yeti",
     "yeti-chieftain"
    ],
-   "anchorDropped": [],
+   "anchorDropped": [
+    "echidna-quillshot: superrare is over the map's rarity cap (veryrare)"
+   ],
    "fightOnly": [
     "phoenix-fledgling",
     "quill-volley"
@@ -3582,19 +3436,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:bleed",
-     "score": 0.6898,
-     "why": "under 74.3%"
-    },
-    {
-     "focus": "big",
-     "score": 0.5231,
-     "why": "under 74.3%"
-    }
-   ]
+   }
   },
   "m9": {
    "id": "m9",
@@ -3698,8 +3540,7 @@
       ]
      }
     ]
-   },
-   "leftOut": []
+   }
   },
   "m11": {
    "id": "m11",
@@ -3789,19 +3630,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:flying",
-     "score": 0.6314,
-     "why": "under 63.5%"
-    },
-    {
-     "focus": "big",
-     "score": 0.4327,
-     "why": "under 63.5%"
-    }
-   ]
+   }
   },
   "me": {
    "id": "me",
@@ -3888,14 +3717,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.4,
-     "why": "under 57.5%"
-    }
-   ]
+   }
   },
   "mx": {
    "id": "mx",
@@ -3913,7 +3735,6 @@
     "deep-cave-troll",
     "ember-centipede",
     "ember-jackal",
-    "fire-drake-hatchling",
     "granite-ox-golem",
     "magma-salamander",
     "magma-titan",
@@ -3990,19 +3811,7 @@
       ]
      }
     ]
-   },
-   "leftOut": [
-    {
-     "focus": "family:fire",
-     "score": 0.6786,
-     "why": "under 71.3%"
-    },
-    {
-     "focus": "big",
-     "score": 0.4345,
-     "why": "under 71.3%"
-    }
-   ]
+   }
   }
  },
  "rule": {

@@ -119,8 +119,11 @@ function prices(opt) {
   Object.keys(byId).sort().forEach(id => {
     // the entry as it was before SKILL2 (its skill2Was), so a re-run gives the same plan; a canon entry as the anchors left it
     const cur = SK[id], e0 = cur && !cur.canon && cur.skill2Was ? Object.assign(JSON.parse(JSON.stringify(cur)), { pow: undefined }, cur.skill2Was) : cur; if (e0 && e0.pow === undefined) delete e0.pow;
-    const pts = byId[id].filter(r => r.class !== 'combo' || SPECIAL[id]).map(r => ({ key: r.key, n: r.n, w: r.nCards, W: r.test.worthRuler.m, ci: r.test.worthRuler, price: r.test.price, fights: r.fights, conf: confOf(r.test.worthRuler) }));
+    const pts = byId[id].filter(r => r.class !== 'combo' || SPECIAL[id]).map(r => ({ key: r.key, n: r.n, w: r.nCards || 1 /* 2026-11-03 (BAL14): an ad hoc measure of a skill on no card (Majesty, Pearl ...) weighs 1, not 0 */, W: r.test.worthRuler.m, ci: r.test.worthRuler, price: r.test.price, fights: r.fights, conf: confOf(r.test.worthRuler) }));
     if (SH[id] && !e0) { shChanged[id] = pts; return; }
+    // 2026-11-03 (BAL14): an entry with `plus` (Bola: plus arrow) prices only its own part; the measure holds the plus skill too, so writing it would
+    // count that skill twice (BAL10 found it on Bola; BAL14's run wrote it again, 2 -> 6.89): kept, the reading recorded
+    if (e0 && e0.plus) { kept.push(`${id}: value is the part beyond its plus (${e0.plus}); the measure includes it (${pts.map(p => p.key + ' ' + r2(p.W)).join('; ')}): kept`); rows.push({ id, kind: 'kept', old: e0.value, fit: null, note: 'plus ' + e0.plus + ': the measure includes the plus skill', pts }); return; }
     if (id === 'anadromous') { kept.push('anadromous: left to ENG15 (coordinator 10-31: reworked and re-priced there)'); return; }
     if (!e0) { kept.push(`${id}: no table entry`); return; }
     if (e0.canon) {
@@ -178,12 +181,13 @@ function prices(opt) {
   // trigger entries: a pair "on>do" (the action as tools/skill_costs.js aliases it) gets mult = Σ w W p / Σ w p² over its measured in-play
   // entries (p = the entry's price before, w = its cards): table.pairs, read by tools/skill_costs.js triggerCost
   const ALIAS = table.aliases || {}, pairs = {};
-  Object.values(R).filter(r => r.class === 'trigger' && r.kind === 'measure').forEach(r => { const t = r.test.effects.triggers[0], k = t.on + '>' + (ALIAS[t.do] || t.do); (pairs[k] = pairs[k] || []).push(r); });
+  const BBP = require(path.join(ROOT, 'bramblewood-budget.js')); /* 2026-11-03 (BAL14): an On Ready / On Spawn Lumber gain is priced by lumberGainS (BAL12), not by its pair, so its reading must not set the pair's mult (it pulled onReady>gain to 0.49 and would have re-priced the Metal / Uranium gains) */
+  Object.values(R).filter(r => r.class === 'trigger' && r.kind === 'measure' && !(BBP.lumberGainS && BBP.lumberGainS(1, r.test.effects.triggers[0]) != null)).forEach(r => { const t = r.test.effects.triggers[0], k = t.on + '>' + (ALIAS[t.do] || t.do); (pairs[k] = pairs[k] || []).push(r); });
   const trRows = [];
   Object.keys(pairs).sort().forEach(k => { const list = pairs[k].filter(r => Math.abs(r.test.price) > 0.05), old = 1; /* the measured prices had no pair mult */ if (!list.length) return;
     // the owner holds the Bee Drone's and the Worker Ant's trigger prices for RECOST1-3's package (RECOST1-5, 10-30 23:25 "hold them")
     const held = list.filter(r => r.cards.some(c => HELD_TRIG.includes(c))); if (held.length) { kept.push(`${k}: held (RECOST1-5: ${held.map(r => r.cards.join(', ')).join('; ')}); measured ${list.map(r => r2(r.test.worthRuler.m) + ' / ' + r.test.price).join(', ')}`); return; }
-    const num = list.reduce((t, r) => t + r.nCards * r.test.worthRuler.m * (r.test.price / old), 0), den = list.reduce((t, r) => t + r.nCards * (r.test.price / old) ** 2, 0);
+    const wOf = r => r.nCards || 1; /* 2026-11-03 (BAL14): an ad hoc trigger measure (Grant Shield, on no card) weighs 1 */ const num = list.reduce((t, r) => t + wOf(r) * r.test.worthRuler.m * (r.test.price / old), 0), den = list.reduce((t, r) => t + wOf(r) * (r.test.price / old) ** 2, 0);
     let mult = r2(den ? num / den : 1), note = ''; const id0 = k.split('>')[1];
     if (mult * list.reduce((t, r) => t + r.test.price, 0) / list.length <= NOTHING && mult < 1) { kept.push(k + ': reads nothing on the vanilla carriers (' + list.map(r => r2(r.test.worthRuler.m)).join(', ') + '): kept'); return; }
     trRows.push({ pair: k, old, mult, note, entries: list.map(r => ({ key: r.key, W: r2(r.test.worthRuler.m), lo: r2(r.test.worthRuler.lo), hi: r2(r.test.worthRuler.hi), price: r.test.price, fights: r.fights, cards: r.cards })) }); });

@@ -41,17 +41,20 @@ function toTide(e, P, want){ for(let r = 1; r < 9 && e.getTide() !== want; r++) 
   const N = put(e, P, 1, 'x2-land'); ok(e.wetCountOf(N) === 0, 'a land unit that arrives in a Flood is dry until the next round starts (ENG20)');
   ok(toTide(e, P, 'ebb'), 'then Ebb');
   ok(e.wetCountOf(L) === 2, 'Ebb: a land unit keeps its counters (they stay until fire dries them, ENG20-1)');
-  ok(e.wetCountOf(S) === 1 && e.wetCountOf(T) === 1, 'Ebb: Swimmers and Tide units stay Wet');
-  e.setField('rain', 3); ok(e.wetCountOf(F) === 1 && e.wetCountOf(S) === 2 && e.wetCountOf(L) === 1, 'Rain still adds a counter for everyone, flyers too');
+  // 2026-11-03 (package BAL14, ENG20-1): the Flood's 2 counters stay through the Ebb (the Ebb fills only a dry unit, to 1); the late land unit is out of the water in an Ebb
+  ok(e.wetCountOf(S) === 2 && e.wetCountOf(T) === 2 && e.wetCountOf(N) === 0, 'Ebb: Swimmers and Tide units keep their 2 counters; the land unit that arrived in the Flood is still dry');
+  e.setField('rain', 3); ok(e.wetCountOf(F) === 1 && e.wetCountOf(S) === 3 && e.wetCountOf(L) === 3, 'Rain still adds a counter for everyone, flyers too (2 + 1, a flyer 0 + 1)');
   ok(e.wetCountOf({kind:'hq'}) === 0, 'a castle is never Wet'); }
-{ const {e, P} = mk({highTide:true}); const L = put(e, P, 1, 'x2-land'); ok(toTide(e, P, 'high') && e.wetCountOf(L) === 1, 'High Tide wets land units like a Flood'); }
-{ const {e, P} = mk({permaTide:true}); const L = put(e, P, 1, 'x2-land'); ok(e.getTide() === 'flow' && e.wetCountOf(L) === 1, 'Perma-tide (always Flood): land units are Wet'); }
-{ const {e, P} = mk({permaTide:true, ashy:true}); const F = put(e, P, 2, 'x2-fly'); ok(e.wetCountOf(F) === 1, 'an Ashy sky grounds a flyer: it wades in too'); }
+{ const {e, P} = mk({highTide:true}); const L = put(e, P, 1, 'x2-land'); ok(toTide(e, P, 'high') && e.wetCountOf(L) === 2, 'High Tide wets land units like a Flood (2 counters, ENG20)'); }
+{ const {e, P} = mk({permaTide:true}); const L = put(e, P, 1, 'x2-land'); ok(e.getTide() === 'flow' && e.wetCountOf(L) === 0, 'Perma-tide: a land unit placed mid-round is dry until the round starts (ENG20)');
+  e.roundStart(P, 1, so, {}, []); ok(e.wetCountOf(L) === 2, 'Perma-tide (always Flood): land units are Wet at the round start (2 counters, BAL14 2026-11-03)'); }
+{ const {e, P} = mk({permaTide:true, ashy:true}); const F = put(e, P, 2, 'x2-fly'); e.roundStart(P, 1, so, {}, []); ok(e.wetCountOf(F) === 2, 'an Ashy sky grounds a flyer: it wades in too (2 counters at the round start, BAL14 2026-11-03)'); }
 // every row: a raid's middle / back-row unit is in the Flood too
 { const {e, P} = mk({permaTide:true}, {reserveRows:2}); const M = e.fillReserve(P[2], 1, 0, 'x2-land'), B = e.fillReserve(P[1], 2, 0, 'x2-fly');
-  ok(M && e.wetCountOf(M) === 1 && B && e.wetCountOf(B) === 0, 'reserve rows: a middle-row land unit is Wet in a Flood, a back-row flyer is not'); }
+  e.roundStart(P, 1, so, {}, []); // 2026-11-03 (BAL14, ENG20): the counters come at the round start
+  ok(M && e.wetCountOf(M) === 2 && B && e.wetCountOf(B) === 0, 'reserve rows: a middle-row land unit is Wet in a Flood (2 counters), a back-row flyer is not'); }
 // the Wet bonus on a lightning hit follows it
-{ const {e, P} = mk({permaTide:true}); const L = put(e, P, 2, 'x2-land'); e.debugSpawnCard(P, so, 1, 'x2-sky', 'left', {}, []); ok(L.hp === 50 - 5, `Lightning 4 at a land unit in a Flood: 4 + 1 Wet (${50 - L.hp})`); }
+{ const {e, P} = mk({permaTide:true}); const L = put(e, P, 2, 'x2-land'); e.roundStart(P, 1, so, {}, []); const h0 = L.hp; e.debugSpawnCard(P, so, 1, 'x2-sky', 'left', {}, []); ok(h0 - L.hp === 4 + 2, `Lightning 4 at a land unit in a Flood: 4 + 2 Wet (2 counters at the round start, BAL14 2026-11-03) (${h0 - L.hp})`); }
 
 // ---- 13: lightning at a bramble lands, but no Shocked and no Wet bonus
 { const {e, P} = mk({permaTide:true}); e.setField('rain', 3); const h = P[2].hq.hp, ev = []; e.debugSpawnCard(P, so, 1, 'x2-sky', 'left', {}, ev);

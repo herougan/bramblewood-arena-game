@@ -1,15 +1,15 @@
 {
  "about": "BAL13 reference ladder build for one map (tools/bal13/ladder_2026_11_02.js build); `collect` writes the chosen decks to docs/balance/ref/ref-ladder.json",
  "tool": "1.1.0 (2026-11-02, BAL13: with leaders)",
- "fingerprint": "cbb7161843dc",
- "built": "2026-11-02T14:19:11.322Z",
+ "fingerprint": "eda0010649f4",
+ "built": "2026-11-02T21:45:00.249Z",
  "map": {
   "id": "mr",
   "num": 13,
   "name": "The Redwood Deep",
   "side": false
  },
- "pool": 256,
+ "pool": 258,
  "leader": "old-snapjaw",
  "strength": "bench-contrib-global-2026-10-30-final.json",
  "settings": {
@@ -34,22 +34,21 @@
   {
    "rank": 1,
    "counts": {
-    "sulfur-cinder-moth": 4,
-    "cunning-vixen": 2,
-    "octopus-tactician": 1,
-    "duckling": 2,
-    "platypus-spur": 3,
-    "forager-ant": 3,
-    "otter-kit": 1,
-    "proboscis-monkey": 4
+    "farm-dog": 4,
+    "nightjar-drifter": 1,
+    "snapper-hatchling": 3,
+    "owl-sentinel": 3,
+    "poison-dart-croaker": 2,
+    "reef-shark": 3,
+    "electric-ray": 4
    },
-   "from": "sampled q=0.39",
-   "selectWin": 0,
-   "pred": 0.343,
+   "from": "sampled q=0.43",
+   "selectWin": 8.3,
+   "pred": 0.39,
    "perFight": {
-    "13-1": 0,
-    "13-2": 0,
-    "13-3": 0,
+    "13-1": 16.7,
+    "13-2": 33.3,
+    "13-3": 16.7,
     "13-4": 0,
     "13-5": 0,
     "13-6": 0,
@@ -60,20 +59,21 @@
   {
    "rank": 2,
    "counts": {
-    "ghost-crayfish": 4,
-    "cunning-vixen": 4,
-    "guppy": 4,
-    "conch-herald": 4,
-    "earthworm": 2,
-    "camouflage-frog": 2
+    "clover-butterfly": 3,
+    "reef-shark": 3,
+    "sea-hare": 3,
+    "muskrat-lodgekeeper": 4,
+    "quarry-mole": 3,
+    "sulfur-cinder-moth": 2,
+    "carrion-beetle": 2
    },
-   "from": "sampled q=0.35",
-   "selectWin": 8.3,
-   "pred": 0.288,
+   "from": "sampled q=0.30",
+   "selectWin": 14.6,
+   "pred": 0.216,
    "perFight": {
-    "13-1": 50,
-    "13-2": 16.7,
-    "13-3": 0,
+    "13-1": 16.7,
+    "13-2": 66.7,
+    "13-3": 33.3,
     "13-4": 0,
     "13-5": 0,
     "13-6": 0,
@@ -84,146 +84,147 @@
   {
    "rank": 3,
    "counts": {
-    "piranha-shoal": 3,
-    "ember-tetra": 1,
-    "diving-bell-spider": 2,
-    "paper-wasp": 5,
-    "lamprey": 3,
-    "fox-sharpshot": 2,
-    "mudflat-godwit": 4
+    "conch-herald": 3,
+    "chipmunk-cavalry": 3,
+    "booming-bittern": 3,
+    "woodpecker-sapper": 2,
+    "riverwing-envoy": 2,
+    "gull-thief": 2,
+    "earthworm": 3,
+    "peak-condor": 2
    },
-   "from": "sampled q=0.17",
-   "selectWin": 16.7,
-   "pred": -0.25,
+   "from": "sampled q=0.48",
+   "selectWin": 22.9,
+   "pred": 0.532,
    "perFight": {
-    "13-1": 33.3,
-    "13-2": 16.7,
+    "13-1": 16.7,
+    "13-2": 66.7,
     "13-3": 66.7,
     "13-4": 0,
     "13-5": 0,
     "13-6": 16.7,
-    "13-7": 0,
+    "13-7": 16.7,
     "13-8": 0
    }
   },
   {
    "rank": 4,
    "counts": {
-    "greyplume-fledgling": 2,
-    "cave-olm": 4,
-    "mangrove-manatee": 3,
-    "snapper-hatchling": 5,
-    "open-ocean-hermit-crab": 2,
-    "octopus-tactician": 4
+    "booming-bittern": 3,
+    "grotto-lobster": 3,
+    "fulmar-spitter": 4,
+    "mantis-shrimp": 3,
+    "dam-keeper-beaver": 3,
+    "gallery-orb-weaver": 4
    },
-   "from": "sampled q=0.61",
-   "selectWin": 25,
-   "pred": 0.77,
+   "from": "sampled q=0.22",
+   "selectWin": 29.2,
+   "pred": -0.181,
    "perFight": {
-    "13-1": 50,
-    "13-2": 33.3,
-    "13-3": 50,
-    "13-4": 16.7,
-    "13-5": 16.7,
-    "13-6": 16.7,
+    "13-1": 66.7,
+    "13-2": 16.7,
+    "13-3": 83.3,
+    "13-4": 33.3,
+    "13-5": 0,
+    "13-6": 33.3,
     "13-7": 0,
-    "13-8": 16.7
+    "13-8": 0
    }
   },
   {
    "rank": 5,
    "counts": {
-    "hedge-weasel": 4,
-    "bramblewood-lynx": 3,
-    "mangrove-mudskipper": 5,
-    "compost-grub": 4,
-    "caiman-hatchling": 4
+    "cone-snail": 4,
+    "lamprey": 4,
+    "carrion-beetle": 4,
+    "lions-mane-jelly": 4,
+    "pine-marten": 3,
+    "cottonmouth-matriarch": 1
    },
-   "from": "sampled q=0.74",
+   "from": "sampled q=0.04",
    "selectWin": 35.4,
-   "pred": 0.855,
+   "pred": -0.341,
    "perFight": {
-    "13-1": 33.3,
-    "13-2": 50,
-    "13-3": 66.7,
+    "13-1": 16.7,
+    "13-2": 33.3,
+    "13-3": 100,
     "13-4": 16.7,
-    "13-5": 16.7,
-    "13-6": 50,
-    "13-7": 50,
-    "13-8": 0
+    "13-5": 0,
+    "13-6": 83.3,
+    "13-7": 16.7,
+    "13-8": 16.7
    }
   },
   {
    "rank": 6,
    "counts": {
-    "tunnel-ant": 3,
-    "burrow-rabbit": 5,
-    "nutria-reedcutter": 3,
-    "pond-trout": 3,
-    "apollo-butterfly": 2,
-    "pond-duck": 4
+    "dormouse": 3,
+    "lyrebird-mimic": 4,
+    "ant-scout": 2,
+    "sunbittern-strider": 3,
+    "field-vole": 5,
+    "woodcock-lookout": 3
    },
-   "from": "sampled q=0.87",
+   "from": "sampled q=0.74",
    "selectWin": 43.8,
-   "pred": 1.118,
+   "pred": 0.965,
    "perFight": {
-    "13-1": 50,
+    "13-1": 100,
     "13-2": 50,
     "13-3": 83.3,
-    "13-4": 0,
-    "13-5": 33.3,
-    "13-6": 66.7,
-    "13-7": 33.3,
-    "13-8": 33.3
+    "13-4": 16.7,
+    "13-5": 16.7,
+    "13-6": 50,
+    "13-7": 16.7,
+    "13-8": 16.7
    }
   },
   {
    "rank": 7,
    "counts": {
-    "fox-kit": 5,
-    "blue-ringed-octopus": 3,
-    "swordfish-spearman": 3,
-    "raven-scout": 3,
+    "grass-viper": 4,
+    "mangrove-manatee": 3,
+    "lyrebird-mimic": 4,
+    "coral-polyp-colony": 4,
     "newt-doctor": 4,
-    "mudpuppy": 2
+    "owl-nightwatch": 1
    },
-   "from": "sampled q=0.96",
-   "selectWin": 50,
-   "pred": 1.429,
+   "from": "sampled q=0.78",
+   "selectWin": 47.9,
+   "pred": 1.139,
    "perFight": {
-    "13-1": 33.3,
+    "13-1": 83.3,
     "13-2": 66.7,
-    "13-3": 33.3,
+    "13-3": 83.3,
     "13-4": 16.7,
-    "13-5": 50,
-    "13-6": 100,
-    "13-7": 83.3,
-    "13-8": 16.7
+    "13-5": 16.7,
+    "13-6": 50,
+    "13-7": 33.3,
+    "13-8": 33.3
    }
   },
   {
    "rank": 8,
    "counts": {
-    "chipmunk-skirmisher": 3,
-    "pyrenean-desman": 2,
-    "leafcutter-gardener": 2,
-    "fawn-scout": 2,
-    "beaver-lumberjack": 1,
-    "blue-ringed-octopus": 2,
-    "alpine-marmot": 5,
-    "raven-scout": 3
+    "swordfish-spearman": 3,
+    "river-carp": 1,
+    "adder-ambusher": 3,
+    "dormouse": 2,
+    "chipmunk-skirmisher": 4,
+    "terrier-pup": 3,
+    "redwood-woodpecker": 4
    },
-   "from": "sampled q=1.00",
-   "selectWin": 56.3,
-   "pred": 1.365,
+   "from": "sampled q=0.96",
+   "selectWin": 54.2,
+   "pred": 1.257,
    "perFight": {
     "13-1": 50,
-    "13-2": 66.7,
-    "13-3": 66.7,
-    "13-4": 33.3,
-    "13-5": 83.3,
-    "13-6": 83.3,
-    "13-7": 33.3,
+    "13-2": 83.3,
+    "13-3": 83.3,
+    "13-4": 0,
+    "13-5": 33.3,
+    "13-6": 100,
+    "13-7": 50,
     "13-8": 33.3
    }
   },
@@ -238,40 +239,40 @@
     "wolf-spider-mother": 3
    },
    "from": "13-PRO-3",
-   "selectWin": 70.8,
+   "selectWin": 64.6,
    "pred": 0.982,
    "perFight": {
     "13-1": 100,
-    "13-2": 83.3,
+    "13-2": 100,
     "13-3": 100,
-    "13-4": 50,
-    "13-5": 50,
-    "13-6": 83.3,
-    "13-7": 50,
-    "13-8": 50
+    "13-4": 66.7,
+    "13-5": 33.3,
+    "13-6": 50,
+    "13-7": 33.3,
+    "13-8": 33.3
    }
   },
   {
    "rank": 10,
    "counts": {
-    "fox-kit": 4,
-    "ibex-rockcaller": 2,
-    "redwood-woodpecker": 4,
-    "swift-fox": 3,
-    "truffle-piglet": 4,
-    "wolf-spider-mother": 3
+    "mudpuppy": 4,
+    "blue-ringed-octopus": 3,
+    "driftwood-crab": 5,
+    "hedge-weasel": 3,
+    "fox-kit": 3,
+    "star-nosed-mole": 2
    },
-   "from": "13-PRO-1",
-   "selectWin": 77.1,
-   "pred": 1.364,
+   "from": "sampled q=0.91",
+   "selectWin": 70.8,
+   "pred": 1.304,
    "perFight": {
-    "13-1": 83.3,
-    "13-2": 100,
+    "13-1": 100,
+    "13-2": 66.7,
     "13-3": 100,
-    "13-4": 66.7,
-    "13-5": 50,
-    "13-6": 100,
-    "13-7": 66.7,
+    "13-4": 50,
+    "13-5": 33.3,
+    "13-6": 83.3,
+    "13-7": 83.3,
     "13-8": 50
    }
   }
@@ -279,7 +280,7 @@
  "candidates": [
   {
    "from": "13-PRO-1",
-   "win": 77.1,
+   "win": 66.7,
    "pred": 1.364,
    "counts": {
     "fox-kit": 4,
@@ -292,7 +293,7 @@
   },
   {
    "from": "13-PRO-2",
-   "win": 70.8,
+   "win": 52.1,
    "pred": 1.109,
    "counts": {
     "alpine-marmot": 4,
@@ -305,7 +306,7 @@
   },
   {
    "from": "13-PRO-3",
-   "win": 70.8,
+   "win": 64.6,
    "pred": 0.982,
    "counts": {
     "berserker-boar": 4,
@@ -318,7 +319,7 @@
   },
   {
    "from": "13-PRO-4",
-   "win": 54.2,
+   "win": 52.1,
    "pred": 1.153,
    "counts": {
     "bramble-hoglet": 4,
@@ -331,320 +332,329 @@
   },
   {
    "from": "sampled q=0.00",
-   "win": 18.8,
-   "pred": -0.199,
+   "win": 10.4,
+   "pred": -0.311,
    "counts": {
-    "cottonmouth-matriarch": 3,
-    "anaconda-coil": 3,
-    "raft-spider": 4,
-    "stalactite-golem": 5,
-    "lamprey": 5
+    "moat-snapper": 4,
+    "colossal-squid": 2,
+    "greater-siren": 3,
+    "stag-beetle": 3,
+    "horseshoe-crab": 5,
+    "vampire-bat-nurse": 3
    }
   },
   {
    "from": "sampled q=0.04",
-   "win": 10.4,
-   "pred": -0.344,
+   "win": 35.4,
+   "pred": -0.341,
    "counts": {
-    "malachite-golem": 3,
+    "cone-snail": 4,
+    "lamprey": 4,
+    "carrion-beetle": 4,
+    "lions-mane-jelly": 4,
     "pine-marten": 3,
-    "greater-siren": 3,
-    "ironclaw-fiddler": 3,
-    "quill-thorn-boar": 2,
-    "buzzed-chipmunk": 4,
-    "barkplate-beetle": 2
+    "cottonmouth-matriarch": 1
    }
   },
   {
    "from": "sampled q=0.09",
-   "win": 18.8,
-   "pred": -0.264,
+   "win": 12.5,
+   "pred": -0.337,
    "counts": {
-    "field-crow": 5,
-    "sea-cucumber": 4,
-    "grotto-lobster": 2,
     "millipede-hauler": 4,
-    "nightjar-drifter": 2,
-    "elephant-nose-fish": 1,
-    "greater-siren": 2
+    "carrion-beetle": 4,
+    "elephant-nose-fish": 4,
+    "greater-siren": 3,
+    "malachite-golem": 3,
+    "sawfish": 2
    }
   },
   {
    "from": "sampled q=0.13",
-   "win": 4.2,
-   "pred": -0.141,
+   "win": 12.5,
+   "pred": -0.174,
    "counts": {
-    "eyrie-warden": 5,
-    "dolphin-knight": 3,
-    "cleaner-wrasse": 1,
     "river-mink": 4,
-    "barkplate-beetle": 4,
-    "anhinga-spearbird": 3
+    "cottonmouth-matriarch": 3,
+    "supernova-jelly": 3,
+    "farm-dog": 3,
+    "venomlord-serpent": 5,
+    "mudflat-godwit": 2
    }
   },
   {
    "from": "sampled q=0.17",
    "win": 16.7,
-   "pred": -0.25,
+   "pred": -0.154,
    "counts": {
-    "piranha-shoal": 3,
-    "ember-tetra": 1,
-    "diving-bell-spider": 2,
-    "paper-wasp": 5,
-    "lamprey": 3,
-    "fox-sharpshot": 2,
-    "mudflat-godwit": 4
+    "river-mink": 4,
+    "ironclaw-fiddler": 3,
+    "malachite-golem": 3,
+    "sheep": 5,
+    "coffer-mimic": 4,
+    "mudflat-godwit": 1
    }
   },
   {
    "from": "sampled q=0.22",
-   "win": 2.1,
-   "pred": 0.139,
+   "win": 29.2,
+   "pred": -0.181,
    "counts": {
-    "cave-pseudoscorpion": 4,
-    "eyrie-warden": 5,
-    "slow-worm": 2,
-    "cottonmouth-matriarch": 3,
-    "harvest-mouse": 2,
-    "mudflat-godwit": 2,
-    "water-shrew": 2
+    "booming-bittern": 3,
+    "grotto-lobster": 3,
+    "fulmar-spitter": 4,
+    "mantis-shrimp": 3,
+    "dam-keeper-beaver": 3,
+    "gallery-orb-weaver": 4
    }
   },
   {
    "from": "sampled q=0.26",
-   "win": 6.3,
-   "pred": 0.47,
+   "win": 25,
+   "pred": 0.017,
    "counts": {
-    "eyrie-warden": 5,
-    "peregrine-stooper": 2,
-    "conch-herald": 4,
-    "booming-bittern": 4,
-    "water-shrew": 5
+    "paper-wasp": 1,
+    "grotto-lobster": 3,
+    "mayfly-dancer": 5,
+    "moon-jelly": 4,
+    "ghost-crayfish": 2,
+    "quarry-mole": 5
    }
   },
   {
    "from": "sampled q=0.30",
-   "win": 2.1,
-   "pred": 0.068,
+   "win": 14.6,
+   "pred": 0.216,
    "counts": {
-    "puffin-diver": 1,
-    "ghost-crayfish": 4,
-    "ladybird-guard": 4,
-    "pine-marten": 1,
-    "field-crow": 3,
-    "snapstick-turtle": 2,
-    "red-billed-chough": 2,
-    "guppy": 3
+    "clover-butterfly": 3,
+    "reef-shark": 3,
+    "sea-hare": 3,
+    "muskrat-lodgekeeper": 4,
+    "quarry-mole": 3,
+    "sulfur-cinder-moth": 2,
+    "carrion-beetle": 2
    }
   },
   {
    "from": "sampled q=0.35",
-   "win": 8.3,
-   "pred": 0.288,
+   "win": 39.6,
+   "pred": 0.074,
    "counts": {
-    "ghost-crayfish": 4,
-    "cunning-vixen": 4,
-    "guppy": 4,
-    "conch-herald": 4,
-    "earthworm": 2,
-    "camouflage-frog": 2
+    "whale-shark": 3,
+    "cave-centipede": 5,
+    "alpine-swift": 5,
+    "garden-snail": 2,
+    "baby-bat": 5
    }
   },
   {
    "from": "sampled q=0.39",
-   "win": 0,
-   "pred": 0.343,
+   "win": 31.3,
+   "pred": 0.217,
    "counts": {
-    "sulfur-cinder-moth": 4,
-    "cunning-vixen": 2,
-    "octopus-tactician": 1,
-    "duckling": 2,
-    "platypus-spur": 3,
-    "forager-ant": 3,
-    "otter-kit": 1,
-    "proboscis-monkey": 4
+    "snapstick-turtle": 1,
+    "farm-dog": 4,
+    "electric-ray": 4,
+    "cave-centipede": 1,
+    "stalactite-golem": 3,
+    "sea-cucumber": 3,
+    "duckling": 3,
+    "guppy": 1
    }
   },
   {
    "from": "sampled q=0.43",
-   "win": 27.1,
-   "pred": 0.618,
+   "win": 8.3,
+   "pred": 0.39,
    "counts": {
-    "woodpecker-sapper": 4,
-    "quarry-mole": 5,
-    "worker-ant": 3,
-    "quillback-elder": 4,
-    "forager-ant": 1,
-    "quillguard": 3
+    "farm-dog": 4,
+    "nightjar-drifter": 1,
+    "snapper-hatchling": 3,
+    "owl-sentinel": 3,
+    "poison-dart-croaker": 2,
+    "reef-shark": 3,
+    "electric-ray": 4
    }
   },
   {
    "from": "sampled q=0.48",
-   "win": 0,
-   "pred": 0.546,
+   "win": 22.9,
+   "pred": 0.532,
    "counts": {
-    "swamp-alligator": 3,
-    "clownfish-scout": 5,
-    "grey-seal-bull": 1,
-    "coral-reef-shark": 4,
-    "camouflage-frog": 3,
-    "peregrine-stooper": 4
+    "conch-herald": 3,
+    "chipmunk-cavalry": 3,
+    "booming-bittern": 3,
+    "woodpecker-sapper": 2,
+    "riverwing-envoy": 2,
+    "gull-thief": 2,
+    "earthworm": 3,
+    "peak-condor": 2
    }
   },
   {
    "from": "sampled q=0.52",
-   "win": 4.2,
-   "pred": 0.69,
+   "win": 20.8,
+   "pred": 0.601,
    "counts": {
-    "open-ocean-hermit-crab": 2,
-    "house-cat": 4,
-    "ant-hill": 4,
-    "fishing-cat": 3,
-    "coral-reef-shark": 4,
-    "berserker-boar": 3
+    "great-barracuda": 2,
+    "compost-grub": 3,
+    "otter-guard": 1,
+    "water-vole": 4,
+    "chamois-leaper": 1,
+    "crocodile-ambusher": 5,
+    "slow-worm": 4
    }
   },
   {
    "from": "sampled q=0.57",
-   "win": 2.1,
+   "win": 22.9,
    "pred": 0.653,
    "counts": {
-    "water-vole": 5,
-    "cypress-root-lurker": 5,
-    "otter-kit": 5,
-    "snapstick-turtle": 3,
-    "forager-ant": 2
+    "greyplume-fledgling": 2,
+    "woodpecker-sapper": 4,
+    "compost-grub": 2,
+    "gull-thief": 5,
+    "swift-fox": 5,
+    "golden-eagle-diver": 2
    }
   },
   {
    "from": "sampled q=0.61",
-   "win": 25,
-   "pred": 0.77,
+   "win": 29.2,
+   "pred": 0.75,
    "counts": {
-    "greyplume-fledgling": 2,
-    "cave-olm": 4,
-    "mangrove-manatee": 3,
-    "snapper-hatchling": 5,
-    "open-ocean-hermit-crab": 2,
-    "octopus-tactician": 4
+    "clownfish-scout": 3,
+    "silver-minnow": 3,
+    "chipmunk-skirmisher": 5,
+    "swift-fox": 5,
+    "grey-seal-bull": 4
    }
   },
   {
    "from": "sampled q=0.65",
-   "win": 12.5,
-   "pred": 0.716,
+   "win": 29.2,
+   "pred": 0.876,
    "counts": {
-    "chipmunk-forager": 5,
-    "mangrove-kingfisher": 3,
-    "cypress-root-lurker": 5,
-    "alligator-gar": 3,
-    "tasmanian-devil": 4
+    "otter-kit": 3,
+    "lyrebird-mimic": 2,
+    "riptide-eel": 4,
+    "fawn-scout": 2,
+    "golden-eagle-diver": 4,
+    "oystercatcher": 1,
+    "gale-swift": 3,
+    "parrotfish": 1
    }
   },
   {
    "from": "sampled q=0.70",
-   "win": 22.9,
-   "pred": 1.094,
+   "win": 33.3,
+   "pred": 0.987,
    "counts": {
-    "cave-olm": 3,
-    "fiddler-crab-swarm": 2,
-    "gale-swift": 1,
-    "bee-forager": 3,
-    "star-nosed-mole": 4,
-    "field-mouse": 5,
-    "pond-trout": 2
+    "house-cat": 5,
+    "adder-ambusher": 3,
+    "tidepool-trapper-crab": 1,
+    "apollo-butterfly": 2,
+    "bombardier-beetle": 4,
+    "otter-guard": 2,
+    "crossed-eyes": 3
    }
   },
   {
    "from": "sampled q=0.74",
-   "win": 35.4,
-   "pred": 0.855,
+   "win": 43.8,
+   "pred": 0.965,
    "counts": {
-    "hedge-weasel": 4,
-    "bramblewood-lynx": 3,
-    "mangrove-mudskipper": 5,
-    "compost-grub": 4,
-    "caiman-hatchling": 4
+    "dormouse": 3,
+    "lyrebird-mimic": 4,
+    "ant-scout": 2,
+    "sunbittern-strider": 3,
+    "field-vole": 5,
+    "woodcock-lookout": 3
    }
   },
   {
    "from": "sampled q=0.78",
-   "win": 12.5,
-   "pred": 1.032,
+   "win": 47.9,
+   "pred": 1.139,
    "counts": {
-    "apollo-butterfly": 4,
-    "snapper-hatchling": 5,
-    "field-mouse": 4,
-    "fawn-scout": 3,
-    "truffle-piglet": 4
+    "grass-viper": 4,
+    "mangrove-manatee": 3,
+    "lyrebird-mimic": 4,
+    "coral-polyp-colony": 4,
+    "newt-doctor": 4,
+    "owl-nightwatch": 1
    }
   },
   {
    "from": "sampled q=0.83",
-   "win": 18.8,
-   "pred": 1.065,
+   "win": 25,
+   "pred": 0.999,
    "counts": {
-    "owl-nightwatch": 3,
-    "parrotfish": 5,
-    "dormouse": 4,
-    "hedge-weasel": 4,
-    "bombardier-beetle": 4
+    "bramble-sprout": 3,
+    "ant-scout": 2,
+    "bramble-hoglet": 4,
+    "muskrat-reedgatherer": 2,
+    "forager-ant": 2,
+    "nutria-reedcutter": 3,
+    "otter-paddler": 3,
+    "truffle-piglet": 1
    }
   },
   {
    "from": "sampled q=0.87",
    "win": 43.8,
-   "pred": 1.118,
+   "pred": 1.109,
    "counts": {
-    "tunnel-ant": 3,
-    "burrow-rabbit": 5,
-    "nutria-reedcutter": 3,
-    "pond-trout": 3,
-    "apollo-butterfly": 2,
-    "pond-duck": 4
+    "duck-paddler": 2,
+    "otter-guard": 2,
+    "truffle-piglet": 2,
+    "mouse-sapper": 2,
+    "terrier-pup": 3,
+    "conch-crawler": 3,
+    "cave-olm": 3,
+    "chipmunk-hoarder": 3
    }
   },
   {
    "from": "sampled q=0.91",
-   "win": 37.5,
-   "pred": 1.067,
+   "win": 70.8,
+   "pred": 1.304,
    "counts": {
-    "tunnel-ant": 3,
-    "bramble-sprout": 1,
-    "beaver-lumberjack": 3,
-    "feral-tomcat": 4,
-    "grass-viper": 4,
-    "box-turtle": 5
+    "mudpuppy": 4,
+    "blue-ringed-octopus": 3,
+    "driftwood-crab": 5,
+    "hedge-weasel": 3,
+    "fox-kit": 3,
+    "star-nosed-mole": 2
    }
   },
   {
    "from": "sampled q=0.96",
-   "win": 50,
-   "pred": 1.429,
+   "win": 54.2,
+   "pred": 1.257,
    "counts": {
-    "fox-kit": 5,
-    "blue-ringed-octopus": 3,
     "swordfish-spearman": 3,
-    "raven-scout": 3,
-    "newt-doctor": 4,
-    "mudpuppy": 2
+    "river-carp": 1,
+    "adder-ambusher": 3,
+    "dormouse": 2,
+    "chipmunk-skirmisher": 4,
+    "terrier-pup": 3,
+    "redwood-woodpecker": 4
    }
   },
   {
    "from": "sampled q=1.00",
-   "win": 56.3,
-   "pred": 1.365,
+   "win": 43.8,
+   "pred": 1.4,
    "counts": {
-    "chipmunk-skirmisher": 3,
-    "pyrenean-desman": 2,
-    "leafcutter-gardener": 2,
-    "fawn-scout": 2,
-    "beaver-lumberjack": 1,
-    "blue-ringed-octopus": 2,
-    "alpine-marmot": 5,
-    "raven-scout": 3
+    "ibex-rockcaller": 2,
+    "truffle-piglet": 4,
+    "leafcutter-gardener": 5,
+    "newt-doctor": 4,
+    "planarian-splitter": 4,
+    "wolf-spider-mother": 1
    }
   }
  ],
- "ms": 238927
+ "ms": 29705
 }

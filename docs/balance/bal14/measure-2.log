@@ -1,0 +1,20 @@
+pipeline measure: OK in 1.7h  -> docs/balance/pipeline/measure-2026-11-03-0319.json
+counts: items 243, measured 205, reused 38, stopped early 172, fights saved 34400, left (--minutes) 0
+cache: 38 reused, 205 measured
+changed 205:
+  boomerang worth 2.29 -> 2.2525 [1.7578, 2.5869] at 200 fights, price on carriers 2.29
+  carrion=2 worth 2.6743 -> 2.29 [2.0252, 2.6115] at 200 fights, price on carriers 2.68
+  changeling worth 0.037 -> 0.1312 [-0.1174, 0.4591] at 200 fights, price on carriers 0.96
+  darksight worth 0.3202 -> 0.5247 [0.157, 0.9731] at 200 fights, price on carriers 3
+  dive=2 worth 0 -> 0 [0, 0] at 200 fights, price on carriers 1.77
+  esprit=1 worth 2.365 -> 2.275 [1.8634, 2.6066] at 200 fights, price on carriers 2.37
+  esprit=2 worth 3.6809 -> 3.3814 [2.7249, 3.8849] at 200 fights, price on carriers 3.69
+  fireArrow=1 worth 4.4313 -> 6.557 [6.193, 7.9821] at 200 fights, price on carriers 4.43
+  fireArrow=2 worth 5.1967 -> 8.0391 [7.5663, 9.7355] at 200 fights, price on carriers 5.2
+  healing=1 worth 4.2578 -> 3.4776 [2.9695, 3.9737] at 200 fights, price on carriers 4.26
+  immolation=1 worth -1.7207 -> -0.7947 [-1.4803, -0.1769] at 400 fights, price on carriers 0
+  invisible=2 worth 1.5396 -> 0.9674 [0.5658, 1.422] at 200 fights, price on carriers 1.54
+  ... 193 more in the file
+FLAGGED 85:
+  darksight: over-priced: worth 0.5247 against 3 on the carriers
+  ... 84 more in the file

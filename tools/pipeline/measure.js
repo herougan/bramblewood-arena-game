@@ -13,6 +13,15 @@ const STORE = path.join(P.OUTDIR, 'measures.json');
 
 function itemsFor(plan, args) {
   const out = [], seen = new Set(), add = it => { if (!seen.has(it.key)) { seen.add(it.key); out.push(it); } };
+  // 2026-11-03 (package BAL14): --only-file F, a JSON list played in its own order: a plan key (string; keys hold commas, so --only cannot
+  // name trigger items) or a whole ad hoc item {key, id, class, test, ...} (a skill on no card, a trigger action such as grantShield)
+  if (args['only-file']) {
+    const byKey = {}; plan.forEach(it => { byKey[it.key] = it; });
+    JSON.parse(fs.readFileSync(String(args['only-file']), 'utf8')).forEach(x => {
+      if (typeof x === 'string') { if (!byKey[x]) throw new Error(`measure: '${x}' is not a plan key`); add(byKey[x]); }
+      else add(Object.assign({ kind: 'measure', class: 'keyword', nCards: 0, cards: [], adhoc: true }, x)); });
+    return out;
+  }
   if (args.skills) {
     String(args.skills).split(',').map(s => s.trim()).filter(Boolean).forEach(tok => {
       const [id, n] = tok.split('='), hit = plan.filter(it => it.kind !== 'skip' && (n == null ? it.id === id : (it.key === tok || (it.id === id && String(it.n) === n && !it.pair))));

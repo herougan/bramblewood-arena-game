@@ -1,0 +1,54 @@
+{
+ "_about": "BAL13 item 1 (2026-11-02, owner 19:56 on BAL11-3 b): the late-priced cards swapped out of the earlier fights' decks; tools/bal13/decks_2026_11_02.js",
+ "late": {
+  "beetle-battering-ram": 23,
+  "siege-rhino": 23,
+  "hercules-beetle": 18
+ },
+ "rows": [
+  {
+   "where": "bpro 14-A-BPRO-1",
+   "map": 14,
+   "loc": "my",
+   "pro": {
+    "kind": "bpro",
+    "id": "14-A-BPRO-1"
+   },
+   "before": {
+    "hercules-beetle": 2,
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 4,
+    "pangolin-roller": 3,
+    "poison-dart-croaker": 4,
+    "redwood-woodpecker": 4
+   },
+   "after": {
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 4,
+    "pangolin-roller": 3,
+    "poison-dart-croaker": 4,
+    "redwood-woodpecker": 4,
+    "proboscis-monkey": 2
+   },
+   "moves": [
+    {
+     "out": "hercules-beetle",
+     "copies": 2,
+     "to": {
+      "proboscis-monkey": 2
+     },
+     "left": 0
+    }
+   ]
+  }
+ ],
+ "kept": [
+  {
+   "where": "node my:14-A-4",
+   "map": 14,
+   "card": "hercules-beetle",
+   "copies": 3,
+   "why": "the fight's own first-clear card"
+  }
+ ]
+}

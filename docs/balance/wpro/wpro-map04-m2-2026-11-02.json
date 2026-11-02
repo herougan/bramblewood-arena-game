@@ -1,6 +1,6 @@
 {
  "tool": "tools/opt/wpro_2026_11_02.js",
- "generated": "2026-11-02T08:18:36.466Z",
+ "generated": "2026-11-02T21:25:12.791Z",
  "map": {
   "id": "m2",
   "num": 4,
@@ -14,6 +14,7 @@
   "duck-paddler",
   "field-vole",
   "fire-ant-raft",
+  "lions-mane-jelly",
   "muskrat-lodgekeeper",
   "muskrat-reedgatherer",
   "old-sturgeon",
@@ -34,7 +35,7 @@
  },
  "settings": {
   "seed": "wpro|m2",
-  "budget": 4000,
+  "budget": 1600,
   "finalGames": 24,
   "apart": 6
  },
@@ -72,31 +73,30 @@
    "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field"
   }
  ],
- "steps": 17,
- "moves": 5,
- "games": 4688,
- "seconds": 72,
+ "steps": 6,
+ "moves": 3,
+ "games": 2224,
+ "seconds": 42,
  "weak": [
   {
    "deck": {
+    "lions-mane-jelly": 4,
     "muskrat-lodgekeeper": 4,
     "old-sturgeon": 4,
-    "platypus-spur": 4,
-    "pond-algae": 1,
-    "snapstick-turtle": 4,
-    "stone-turtle-warden": 3
+    "stone-turtle-warden": 4,
+    "water-shrew": 4
    },
-   "score": 0.1979,
+   "score": 0.1563,
    "ci": [
-    0.1447,
-    0.2511
+    0.1082,
+    0.2043
    ],
-   "vsRef": 0.2222,
-   "refWins": 0.7778,
+   "vsRef": 0.0972,
+   "refWins": 0.9028,
    "labels": [
-    "big (19 copies at 1+ Lumber, average 1.1)",
-    "tide x15",
-    "armor x7"
+    "big (16 copies at 1+ Lumber, average 1.0)",
+    "tide x12",
+    "poison x8"
    ],
    "perOpponent": [
     {
@@ -106,17 +106,17 @@
     },
     {
      "entry": "mirror|fight:4-2",
-     "p": 0.375,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|fight:4-3",
-     "p": 0.1667,
+     "p": 0.2083,
      "n": 24
     },
     {
      "entry": "mirror|fight:4-4",
-     "p": 0.25,
+     "p": 0.1667,
      "n": 24
     },
     {
@@ -126,61 +126,60 @@
     },
     {
      "entry": "mirror|ref:starter",
-     "p": 0.4167,
+     "p": 0.125,
      "n": 24
     },
     {
      "entry": "mirror|ref:road4",
-     "p": 0.0833,
+     "p": 0.0417,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
-     "p": 0.1667,
+     "p": 0.125,
      "n": 24
     }
    ]
   },
   {
    "deck": {
-    "field-vole": 1,
-    "muskrat-lodgekeeper": 3,
-    "old-sturgeon": 4,
+    "lions-mane-jelly": 4,
+    "muskrat-lodgekeeper": 4,
     "platypus-spur": 4,
-    "slow-worm": 4,
+    "snapstick-turtle": 4,
     "stone-turtle-warden": 4
    },
-   "score": 0.2083,
+   "score": 0.2135,
    "ci": [
-    0.1536,
-    0.2631
+    0.1622,
+    0.2648
    ],
-   "vsRef": 0.1667,
-   "refWins": 0.8333,
+   "vsRef": 0.1944,
+   "refWins": 0.8056,
    "labels": [
-    "big (15 copies at 1+ Lumber, average 0.9)",
-    "tide x11",
-    "armor x8"
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "tide x12",
+    "poison x8"
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:4-1",
-     "p": 0.0417,
+     "p": 0,
      "n": 24
     },
     {
      "entry": "mirror|fight:4-2",
-     "p": 0.4167,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:4-3",
-     "p": 0.2917,
+     "p": 0.2083,
      "n": 24
     },
     {
      "entry": "mirror|fight:4-4",
-     "p": 0.2917,
+     "p": 0.1667,
      "n": 24
     },
     {
@@ -190,17 +189,17 @@
     },
     {
      "entry": "mirror|ref:starter",
-     "p": 0.125,
+     "p": 0.375,
      "n": 24
     },
     {
      "entry": "mirror|ref:road4",
-     "p": 0.0833,
+     "p": 0,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
-     "p": 0.2917,
+     "p": 0.2083,
      "n": 24
     }
    ]
@@ -209,63 +208,64 @@
  "strong": {
   "id": "4-BPRO-1",
   "deck": {
-   "box-turtle": 4,
-   "drowned-matriarch": 2,
+   "box-turtle": 2,
+   "drowned-matriarch": 4,
    "duck-paddler": 2,
-   "pond-algae": 4,
+   "muskrat-reedgatherer": 4,
    "pyrenean-desman": 4,
-   "water-vole": 4
+   "snapstick-turtle": 4
   },
-  "score": 0.8594,
+  "score": 0.8333,
   "ci": [
-   0.8134,
-   0.9054
+   0.7837,
+   0.883
   ],
-  "vsRef": 0.7778,
-  "refWins": 0.2222,
+  "vsRef": 0.8611,
+  "refWins": 0.1389,
   "labels": [
-   "swarm (18 copies at 0 Lumber)",
-   "tide x10"
+   "big (8 copies at 1+ Lumber, average 0.4)",
+   "economy (4 resource makers)",
+   "tide x12"
   ],
   "perOpponent": [
    {
     "entry": "mirror|fight:4-1",
-    "p": 0.875,
+    "p": 0.7917,
     "n": 24
    },
    {
     "entry": "mirror|fight:4-2",
-    "p": 0.9167,
+    "p": 1,
     "n": 24
    },
    {
     "entry": "mirror|fight:4-3",
-    "p": 0.9583,
+    "p": 0.7917,
     "n": 24
    },
    {
     "entry": "mirror|fight:4-4",
-    "p": 0.9167,
+    "p": 0.75,
     "n": 24
    },
    {
     "entry": "mirror|fight:4-5",
-    "p": 0.875,
+    "p": 0.75,
     "n": 24
    },
    {
     "entry": "mirror|ref:starter",
-    "p": 0.9167,
+    "p": 1,
     "n": 24
    },
    {
     "entry": "mirror|ref:road4",
-    "p": 0.5417,
+    "p": 0.625,
     "n": 24
    },
    {
     "entry": "mirror|ref:expected",
-    "p": 0.875,
+    "p": 0.9583,
     "n": 24
    }
   ]

@@ -1,6 +1,6 @@
 {
  "tool": "tools/opt/wpro_2026_11_02.js",
- "generated": "2026-11-02T08:26:54.845Z",
+ "generated": "2026-11-02T21:26:11.292Z",
  "map": {
   "id": "m5",
   "num": 14,
@@ -14,7 +14,6 @@
   "grave-grin-hyena",
   "hoopoe-herald",
   "house-cat",
-  "leafcutter-gardener",
   "marula-elephant",
   "mouse-sapper",
   "pangolin-roller",
@@ -33,7 +32,7 @@
  },
  "settings": {
   "seed": "wpro|m5",
-  "budget": 4000,
+  "budget": 1600,
   "finalGames": 24,
   "apart": 6
  },
@@ -83,121 +82,43 @@
    "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field"
   }
  ],
- "steps": 11,
- "moves": 6,
- "games": 4818,
- "seconds": 59,
+ "steps": 4,
+ "moves": 1,
+ "games": 2134,
+ "seconds": 30,
  "weak": [
   {
    "deck": {
-    "acacia-giraffe": 3,
-    "carrion-crow": 2,
+    "acacia-giraffe": 4,
     "marula-elephant": 4,
     "mouse-sapper": 4,
-    "spitting-cobra": 3,
-    "springbok-pronker": 4
+    "springbok-pronker": 4,
+    "weaver-bird": 4
    },
-   "score": 0.3902,
+   "score": 0.3485,
    "ci": [
-    0.3378,
-    0.4425
+    0.2992,
+    0.3977
    ],
-   "vsRef": 0.1806,
-   "refWins": 0.8194,
+   "vsRef": 0.0972,
+   "refWins": 0.9028,
    "labels": [
-    "big (18 copies at 1+ Lumber, average 1.3)"
+    "big (20 copies at 1+ Lumber, average 1.4)"
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:14-1",
-     "p": 0.2917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-2",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-3",
-     "p": 0.4583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-4",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-5",
-     "p": 0.1667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-6",
-     "p": 0.375,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-7",
-     "p": 0.625,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-8",
      "p": 0.3333,
      "n": 24
     },
     {
-     "entry": "mirror|ref:starter",
-     "p": 0.2083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road14",
-     "p": 0.0833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "p": 0.25,
-     "n": 24
-    }
-   ]
-  },
-  {
-   "deck": {
-    "acacia-giraffe": 4,
-    "dust-hyena": 1,
-    "marula-elephant": 4,
-    "mouse-sapper": 4,
-    "spitting-cobra": 3,
-    "weaver-bird": 4
-   },
-   "score": 0.4129,
-   "ci": [
-    0.3599,
-    0.4659
-   ],
-   "vsRef": 0.2361,
-   "refWins": 0.7639,
-   "labels": [
-    "big (19 copies at 1+ Lumber, average 1.4)"
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:14-1",
-     "p": 0.4167,
-     "n": 24
-    },
-    {
      "entry": "mirror|fight:14-2",
-     "p": 0.9167,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:14-3",
-     "p": 0.5417,
+     "p": 0.2917,
      "n": 24
     },
     {
@@ -207,37 +128,37 @@
     },
     {
      "entry": "mirror|fight:14-5",
-     "p": 0.1667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-6",
-     "p": 0.3333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-7",
-     "p": 0.5417,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-8",
-     "p": 0.3333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "p": 0.2917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road14",
      "p": 0.0417,
      "n": 24
     },
     {
-     "entry": "mirror|ref:expected",
+     "entry": "mirror|fight:14-6",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
      "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.1667,
      "n": 24
     }
    ]
@@ -246,27 +167,28 @@
  "strong": {
   "id": "14-BPRO-1",
   "deck": {
-   "carrion-crow": 2,
+   "dust-hyena": 4,
    "grave-grin-hyena": 4,
    "hoopoe-herald": 4,
    "plains-zebra": 4,
    "pride-queen": 2,
-   "weaver-bird": 4
+   "springbok-pronker": 2
   },
   "score": 0.9356,
   "ci": [
-   0.9076,
-   0.9636
+   0.9081,
+   0.9631
   ],
-  "vsRef": 0.875,
-  "refWins": 0.125,
+  "vsRef": 0.8194,
+  "refWins": 0.1806,
   "labels": [
-   "swarm (14 copies at 0 Lumber)"
+   "swarm (16 copies at 0 Lumber)",
+   "economy (4 resource makers)"
   ],
   "perOpponent": [
    {
     "entry": "mirror|fight:14-1",
-    "p": 1,
+    "p": 0.9167,
     "n": 24
    },
    {
@@ -276,7 +198,7 @@
    },
    {
     "entry": "mirror|fight:14-3",
-    "p": 0.9583,
+    "p": 1,
     "n": 24
    },
    {
@@ -286,7 +208,7 @@
    },
    {
     "entry": "mirror|fight:14-5",
-    "p": 0.7917,
+    "p": 0.9583,
     "n": 24
    },
    {
@@ -296,27 +218,27 @@
    },
    {
     "entry": "mirror|fight:14-7",
-    "p": 1,
+    "p": 0.9583,
     "n": 24
    },
    {
     "entry": "mirror|fight:14-8",
-    "p": 0.9167,
-    "n": 24
-   },
-   {
-    "entry": "mirror|ref:starter",
     "p": 1,
     "n": 24
    },
    {
+    "entry": "mirror|ref:starter",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
     "entry": "mirror|ref:road14",
-    "p": 0.75,
+    "p": 0.6667,
     "n": 24
    },
    {
     "entry": "mirror|ref:expected",
-    "p": 0.875,
+    "p": 0.8333,
     "n": 24
    }
   ]

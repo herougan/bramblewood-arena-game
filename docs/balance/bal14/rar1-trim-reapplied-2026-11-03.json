@@ -1,0 +1,105 @@
+{
+ "_about": "BAL13 (2026-11-02, coordinator 20:19): RAR-1 copy-cap trims of the road and PRO decks; tools/bal13/decks_2026_11_02.js trim",
+ "rar1": {
+  "beetle-battering-ram": "veryrare",
+  "siege-rhino": "veryrare",
+  "nautilus-drifter": "veryrare",
+  "tide-spirit": "veryrare",
+  "trapdoor-spider": "veryrare",
+  "magma-salamander": "veryrare",
+  "echidna-quillshot": "superrare",
+  "pangolin-roller": "rare",
+  "vampire-bat": "rare",
+  "dune-packrat": "rare",
+  "coral-polyp-colony": "uncommon",
+  "thorny-devil": "uncommon",
+  "dung-beetle": "uncommon"
+ },
+ "rows": [
+  {
+   "where": "bpro 10-A-BPRO-1",
+   "map": 10,
+   "loc": "mj",
+   "pro": {
+    "kind": "bpro",
+    "id": "10-A-BPRO-1"
+   },
+   "before": {
+    "blue-ringed-octopus": 3,
+    "clownfish-scout": 4,
+    "coral-polyp-colony": 3,
+    "electric-ray": 4,
+    "mangrove-manatee": 3,
+    "nautilus-drifter": 3
+   },
+   "after": {
+    "blue-ringed-octopus": 3,
+    "clownfish-scout": 4,
+    "coral-polyp-colony": 4,
+    "electric-ray": 4,
+    "mangrove-manatee": 3,
+    "nautilus-drifter": 2
+   },
+   "moves": [
+    {
+     "out": "nautilus-drifter",
+     "copies": 1,
+     "to": {
+      "coral-polyp-colony": 1
+     },
+     "left": 0
+    }
+   ],
+   "whole": []
+  },
+  {
+   "where": "bpro 10-A-BPRO-3",
+   "map": 10,
+   "loc": "mj",
+   "pro": {
+    "kind": "bpro",
+    "id": "10-A-BPRO-3"
+   },
+   "before": {
+    "clownfish-scout": 3,
+    "coral-polyp-colony": 4,
+    "hagfish-silencer": 3,
+    "mangrove-manatee": 3,
+    "nautilus-drifter": 3,
+    "parrotfish": 4
+   },
+   "after": {
+    "clownfish-scout": 4,
+    "coral-polyp-colony": 4,
+    "hagfish-silencer": 3,
+    "mangrove-manatee": 3,
+    "nautilus-drifter": 2,
+    "parrotfish": 4
+   },
+   "moves": [
+    {
+     "out": "nautilus-drifter",
+     "copies": 1,
+     "to": {
+      "clownfish-scout": 1
+     },
+     "left": 0
+    }
+   ],
+   "whole": []
+  }
+ ],
+ "overCap": [
+  {
+   "where": "node m3:19-6",
+   "map": 19,
+   "loc": "m3",
+   "key": "19-6",
+   "card": "echidna-quillshot",
+   "rarity": "superrare",
+   "cap": "veryrare",
+   "copies": 1,
+   "kept": true
+  }
+ ]
+}

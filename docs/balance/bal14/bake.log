@@ -1,0 +1,27 @@
+0 fields, 0 leaders re-baked
+-> canonical/pro-skirmishes.json (rebuild the game to bake it in)
+mb: done -> docs/balance/bpro2/bench-deck-map02-mb-2026-10-31.json (185 s)
+m2: done -> docs/balance/bpro2/bench-deck-map04-m2-2026-10-31.json (107 s)
+m7: done -> docs/balance/bpro2/bench-deck-map10-m7-2026-10-31.json (83 s)
+m5: done -> docs/balance/bpro2/bench-deck-map14-m5-2026-10-31.json (99 s)
+my: done -> docs/balance/bpro2/bench-deck-map14-my-2026-10-31.json (179 s)
+m7: 10-BPRO-1 open 0.8472; 10-BPRO-2 swarm 0.8264; 10-BPRO-3 family:tide 0.8229
+mj: 10-A-BPRO-1 open 0.9349; 10-A-BPRO-2 family:tide 0.901; 10-A-BPRO-3 economy 0.8984
+m5: 14-BPRO-1 swarm 0.9205; 14-BPRO-2 economy 0.8788; 14-BPRO-3 big 0.8788; 14-BPRO-4 open 0.8447
+my: 14-A-BPRO-1 economy 0.8177; 14-A-BPRO-2 open 0.7969; 14-A-BPRO-3 swarm 0.7656; 14-A-BPRO-4 big 0.7135
+-> canonical/pro-skirmishes.json (rebuild the game to bake it in)
+problem: 10-A-BPRO-1: nautilus-drifter x3 over its veryrare cap 2
+problem: 10-A-BPRO-3: nautilus-drifter x3 over its veryrare cap 2
+2 problem(s)
+mb: weak 0.0521 / 0.224, strong 0.8698, ref vs weak 0.9722 (40 s)
+m2: weak 0.1563 / 0.2135, strong 0.8333, ref vs weak 0.9028 (42 s)
+m7: weak 0.1198, strong 0.8628, ref vs weak 0.9653 (25 s)
+m5: weak 0.3485, strong 0.9356, ref vs weak 0.9028 (30 s)
+my: weak 0.1562 / 0.2656, strong 0.8125, ref vs weak 0.9167 (59 s)
+m7: 10-WPRO-1 0.1198
+mj: 10-A-WPRO-1 0.2969; 10-A-WPRO-2 0.3828
+m5: 14-WPRO-1 0.3485
+my: 14-A-WPRO-1 0.1562; 14-A-WPRO-2 0.2656
+8 maps -> canonical/pro-skirmishes.json (rebuild the game to bake it in)
+ok
+BAKE-DONE

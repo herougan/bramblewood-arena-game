@@ -150,6 +150,8 @@ function cmdRefit(apply) {
   const BAL11_HELD = new Set(((() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal11', 'refit-2026-11-02.json'), 'utf8')).held; } catch (e) { return []; } })()).map(h => h.id));
   // 2026-11-02 (package BAL12): the cards BAL12's re-fit held (Lumber makers priced from On Ready +1 Lumber; tools/bal12/refit_2026_11_02.js)
   const BAL12_HELD = new Set(((() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal12', 'refit-2026-11-02.json'), 'utf8')).held; } catch (e) { return []; } })()).map(h => h.id));
+  // 2026-11-03 (package BAL14): + the cards BAL14's re-fit held after the full bramble-15 re-measure (docs/balance/bal14/refit-2026-11-03.json, decision BAL14-1)
+  const BAL14_HELD = new Set(((() => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal14', 'refit-2026-11-03.json'), 'utf8')).held; } catch (e) { return []; } })()).map(h => h.id));
   const owner = new Set(CFG.refit.ownerCards);
   for (const c of cards) {
     const d = D[c.id]; if (!d || c.pool || c.token || c.test || c.health == null) continue;
@@ -158,6 +160,7 @@ function cmdRefit(apply) {
     const base = { id: c.id, rarity: c.rarity, stats: `${c.attack == null ? '-' : c.attack}/${c.health}`, verdict: v.over ? 'over' : 'under', use: v.use, cap2: v.cap2 };
     if (/^egg-/.test(c.id) || (c.effects || {}).egg || isEquip(d) || c.cardType === 'equipment') { listed.push(Object.assign(base, { why: 'egg / equipment: priced its own way (read well under by design)' })); continue; }
     if (owner.has(c.id)) { listed.push(Object.assign(base, { why: 'named owner card (' + CFG.refit.ownerWhy + ')' })); continue; }
+    if (BAL14_HELD.has(c.id)) { listed.push(Object.assign(base, { why: 'held for the owner by BAL14 (no fit within 2 a stat keeps its body shape; docs/balance/bal14/refit-2026-11-03.json)' })); continue; } // 2026-11-03 (BAL14)
     if (BAL12_HELD.has(c.id)) { listed.push(Object.assign(base, { why: 'held for the owner by BAL12 (no fit within 2 a stat keeps its body shape; docs/balance/bal12/refit-2026-11-02.json)' })); continue; } // 2026-11-02 (BAL12)
     if (BAL11_HELD.has(c.id)) { listed.push(Object.assign(base, { why: 'held for the owner by BAL11 (decision BAL11-2: no fit within 2 a stat keeps its body shape; docs/balance/bal11/refit-2026-11-02.json)' })); continue; } // 2026-11-02 (BAL11)
     if (OWNER_NOTE.test(c.creatorNote || '')) { listed.push(Object.assign(base, { why: 'creatorNote: the owner set it ("' + ((c.creatorNote || '').match(OWNER_NOTE) || [''])[0].slice(0, 90) + '")' })); continue; }

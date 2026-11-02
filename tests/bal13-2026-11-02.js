@@ -20,8 +20,9 @@ ok(p.kept.every(k => /first-clear|leader/.test(k.why)), 'the only late copies le
 const late = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal13', 'late-cards-2026-11-02.json'), 'utf8'));
 ok(late.rows.length >= 7, 'the applied plan lists the swapped decks (' + late.rows.length + ')');
 late.rows.forEach(r => ok(tot(r.after) === tot(r.before), r.where + ': size kept (' + tot(r.before) + ')'));
+// 2026-11-03 (package BAL14): a BPRO / WPRO deck of the five maps BAL14 searched again (mb m2 m7 m5 my) is a new deck: one without a late card needs no bal13 note
 late.rows.filter(r => r.pro).forEach(r => { const x = (pro.maps[r.loc][r.pro.kind] || []).find(y => y.id === r.pro.id);
-  ok(x && /BAL13/.test(x.bal13 || ''), r.where + ': dated bal13 note'); ok(x && Object.keys(x.deck).length <= 6 && Object.values(x.deck).every(k => k <= 4), r.where + ': 6/4 rule'); });
+  ok(x && (/BAL13/.test(x.bal13 || '') || (['mb', 'm2', 'm7', 'm5', 'my'].includes(r.loc) && !Object.keys(x.deck).some(id => ['beetle-battering-ram', 'siege-rhino', 'hercules-beetle'].includes(id)))), r.where + ': dated bal13 note'); ok(x && Object.keys(x.deck).length <= 6 && Object.values(x.deck).every(k => k <= 4), r.where + ': 6/4 rule'); });
 const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 late.rows.filter(r => !r.pro).forEach(r => ok(new RegExp(`key:"${r.key}"[^\\n]*BAL13, owner 19:56 on BAL11-3 b`).test(app), r.where + ': dated comment on the deck'));
 

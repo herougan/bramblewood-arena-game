@@ -1,7 +1,7 @@
 {
  "about": "BAL13 card flags (tools/bal13/card_flags_2026_11_02.js); flags only",
- "road": "summary-2026-11-02-led",
- "games": 24,
+ "road": "summary-2026-11-03-led",
+ "games": 40,
  "gap": 20,
  "fights": [
   {
@@ -17,7 +17,7 @@
    "measured": 67.5,
    "target": 90,
    "easy": false,
-   "base": 79.2,
+   "base": 75,
    "tries": [
     {
      "side": "enemy",
@@ -25,7 +25,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 95.8
+     "win": 95
     },
     {
      "side": "player",
@@ -36,12 +36,20 @@
      "win": 87.5
     },
     {
+     "side": "enemy",
+     "id": "otter-kit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 85
+    },
+    {
      "side": "player",
      "id": "alpine-marmot",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 87.5
+     "win": 85
     },
     {
      "side": "enemy",
@@ -49,23 +57,15 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 83.3
+     "win": 82.5
     },
     {
-     "side": "enemy",
-     "id": "burrow-rabbit",
+     "side": "player",
+     "id": "ibex-rockcaller",
      "step": 1,
-     "dA": -1,
+     "dA": 1,
      "dH": 0,
-     "win": 83.3
-    },
-    {
-     "side": "enemy",
-     "id": "otter-kit",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 83.3
+     "win": 80
     }
    ],
    "enemy": {
@@ -75,7 +75,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 95.8
+     "win": 95
     },
     "ladder": [
      {
@@ -84,7 +84,7 @@
       "step": 1,
       "dA": 0,
       "dH": -3,
-      "win": 95.8
+      "win": 95
      }
     ],
     "suggestion": {
@@ -93,7 +93,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 95.8
+     "win": 95
     },
     "enough": true
    },
@@ -126,7 +126,7 @@
     },
     "enough": true
    },
-   "ms": 12057
+   "ms": 16110
   },
   {
    "leader": "old-snapjaw",
@@ -149,7 +149,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 54.2
+     "win": 45
     },
     {
      "side": "enemy",
@@ -157,23 +157,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 41.7
-    },
-    {
-     "side": "enemy",
-     "id": "otter-kit",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 37.5
-    },
-    {
-     "side": "enemy",
-     "id": "tunnel-ant",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 33.3
+     "win": 45
     },
     {
      "side": "player",
@@ -181,7 +165,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 33.3
+     "win": 42.5
     },
     {
      "side": "player",
@@ -189,7 +173,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 33.3
+     "win": 37.5
+    },
+    {
+     "side": "enemy",
+     "id": "otter-kit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 35
+    },
+    {
+     "side": "enemy",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 30
     }
    ],
    "enemy": {
@@ -199,7 +199,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 54.2
+     "win": 45
     },
     "ladder": [
      {
@@ -208,7 +208,7 @@
       "step": 1,
       "dA": 0,
       "dH": -3,
-      "win": 54.2
+      "win": 45
      },
      {
       "side": "enemy",
@@ -216,7 +216,7 @@
       "step": 2,
       "dA": 0,
       "dH": -6,
-      "win": 58.3
+      "win": 47.5
      },
      {
       "side": "enemy",
@@ -224,7 +224,7 @@
       "step": 3,
       "dA": 0,
       "dH": -9,
-      "win": 58.3
+      "win": 47.5
      }
     ],
     "suggestion": {
@@ -233,7 +233,7 @@
      "step": 3,
      "dA": 0,
      "dH": -9,
-     "win": 58.3
+     "win": 47.5
     },
     "enough": false
    },
@@ -244,7 +244,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 33.3
+     "win": 42.5
     },
     "ladder": [
      {
@@ -253,7 +253,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 33.3
+      "win": 42.5
      },
      {
       "side": "player",
@@ -261,7 +261,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 41.7
+      "win": 50
      },
      {
       "side": "player",
@@ -269,7 +269,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 50
+      "win": 60
      }
     ],
     "suggestion": {
@@ -278,11 +278,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 50
+     "win": 60
     },
     "enough": false
    },
-   "ms": 11832
+   "ms": 16477
   },
   {
    "leader": "old-snapjaw",
@@ -297,16 +297,8 @@
    "measured": 15,
    "target": 40,
    "easy": false,
-   "base": 16.7,
+   "base": 12.5,
    "tries": [
-    {
-     "side": "enemy",
-     "id": "ent",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 37.5
-    },
     {
      "side": "player",
      "id": "otter-centurion",
@@ -317,11 +309,11 @@
     },
     {
      "side": "enemy",
-     "id": "tunnel-ant",
+     "id": "ent",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 29.2
+     "win": 32.5
     },
     {
      "side": "enemy",
@@ -329,7 +321,23 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 29.2
+     "win": 22.5
+    },
+    {
+     "side": "enemy",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 20
+    },
+    {
+     "side": "enemy",
+     "id": "forager-ant",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 20
     },
     {
      "side": "player",
@@ -337,15 +345,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 29.2
-    },
-    {
-     "side": "player",
-     "id": "electric-ray",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 29.2
+     "win": 20
     }
    ],
    "enemy": {
@@ -355,7 +355,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 37.5
+     "win": 32.5
     },
     "ladder": [
      {
@@ -364,7 +364,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 37.5
+      "win": 32.5
      }
     ],
     "suggestion": {
@@ -373,7 +373,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 37.5
+     "win": 32.5
     },
     "enough": true
    },
@@ -406,7 +406,7 @@
     },
     "enough": true
    },
-   "ms": 17735
+   "ms": 23387
   },
   {
    "leader": "wandering-traveller",
@@ -421,7 +421,7 @@
    "measured": 95,
    "target": 70,
    "easy": true,
-   "base": 95.8,
+   "base": 97.5,
    "tries": [
     {
      "side": "player",
@@ -429,7 +429,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 79.2
+     "win": 85
     },
     {
      "side": "enemy",
@@ -437,7 +437,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 90
     },
     {
      "side": "enemy",
@@ -445,23 +445,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
-    },
-    {
-     "side": "enemy",
-     "id": "bramble-sprout",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 87.5
-    },
-    {
-     "side": "enemy",
-     "id": "field-vole",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 87.5
+     "win": 90
     },
     {
      "side": "player",
@@ -469,7 +453,23 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 87.5
+     "win": 90
+    },
+    {
+     "side": "enemy",
+     "id": "bramble-sprout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 92.5
+    },
+    {
+     "side": "enemy",
+     "id": "field-vole",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 92.5
     }
    ],
    "enemy": {
@@ -479,7 +479,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 90
     },
     "ladder": [
      {
@@ -488,7 +488,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 83.3
+      "win": 90
      },
      {
       "side": "enemy",
@@ -496,7 +496,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 79.2
+      "win": 87.5
      },
      {
       "side": "enemy",
@@ -504,7 +504,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 41.7
+      "win": 45
      }
     ],
     "suggestion": {
@@ -513,7 +513,7 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 41.7
+     "win": 45
     },
     "enough": false
    },
@@ -524,7 +524,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 79.2
+     "win": 85
     },
     "ladder": [
      {
@@ -533,7 +533,7 @@
       "step": 1,
       "dA": 0,
       "dH": -3,
-      "win": 79.2
+      "win": 85
      },
      {
       "side": "player",
@@ -541,7 +541,7 @@
       "step": 2,
       "dA": 0,
       "dH": -6,
-      "win": 87.5
+      "win": 92.5
      },
      {
       "side": "player",
@@ -549,7 +549,7 @@
       "step": 3,
       "dA": 0,
       "dH": -9,
-      "win": 87.5
+      "win": 92.5
      }
     ],
     "suggestion": {
@@ -558,11 +558,11 @@
      "step": 3,
      "dA": 0,
      "dH": -9,
-     "win": 87.5
+     "win": 92.5
     },
     "enough": false
    },
-   "ms": 7157
+   "ms": 9373
   },
   {
    "leader": "wandering-traveller",
@@ -577,15 +577,23 @@
    "measured": 95,
    "target": 60,
    "easy": true,
-   "base": 95.8,
+   "base": 97.5,
    "tries": [
+    {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 80
+    },
     {
      "side": "enemy",
      "id": "dormouse",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 82.5
     },
     {
      "side": "enemy",
@@ -593,7 +601,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 85
     },
     {
      "side": "enemy",
@@ -601,15 +609,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 87.5
     },
     {
      "side": "player",
-     "id": "bee-forager",
+     "id": "soldier-ant",
      "step": 1,
-     "dA": 0,
-     "dH": -3,
-     "win": 83.3
+     "dA": -1,
+     "dH": 0,
+     "win": 90
     },
     {
      "side": "enemy",
@@ -617,15 +625,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 87.5
-    },
-    {
-     "side": "enemy",
-     "id": "meadow-frog",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 87.5
+     "win": 92.5
     }
    ],
    "enemy": {
@@ -635,7 +635,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 82.5
     },
     "ladder": [
      {
@@ -644,7 +644,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 75
+      "win": 82.5
      },
      {
       "side": "enemy",
@@ -652,7 +652,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 70.8
+      "win": 75
      },
      {
       "side": "enemy",
@@ -660,7 +660,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 33.3
+      "win": 35
      }
     ],
     "suggestion": {
@@ -669,7 +669,7 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 33.3
+     "win": 35
     },
     "enough": false
    },
@@ -680,7 +680,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 83.3
+     "win": 80
     },
     "ladder": [
      {
@@ -689,7 +689,7 @@
       "step": 1,
       "dA": 0,
       "dH": -3,
-      "win": 83.3
+      "win": 80
      },
      {
       "side": "player",
@@ -697,7 +697,7 @@
       "step": 2,
       "dA": 0,
       "dH": -6,
-      "win": 100
+      "win": 95
      },
      {
       "side": "player",
@@ -705,7 +705,7 @@
       "step": 3,
       "dA": 0,
       "dH": -9,
-      "win": 100
+      "win": 95
      }
     ],
     "suggestion": {
@@ -714,11 +714,11 @@
      "step": 3,
      "dA": 0,
      "dH": -9,
-     "win": 100
+     "win": 95
     },
     "enough": false
    },
-   "ms": 5922
+   "ms": 8432
   },
   {
    "leader": "wandering-traveller",
@@ -733,7 +733,7 @@
    "measured": 100,
    "target": 40,
    "easy": true,
-   "base": 95.8,
+   "base": 97.5,
    "tries": [
     {
      "side": "enemy",
@@ -741,7 +741,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 62.5
+     "win": 72.5
     },
     {
      "side": "enemy",
@@ -749,7 +749,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 87.5
     },
     {
      "side": "enemy",
@@ -757,23 +757,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
-    },
-    {
-     "side": "enemy",
-     "id": "badger-lumberjack",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 91.7
-    },
-    {
-     "side": "player",
-     "id": "soldier-ant",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 91.7
+     "win": 87.5
     },
     {
      "side": "player",
@@ -781,7 +765,23 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 91.7
+     "win": 90
+    },
+    {
+     "side": "enemy",
+     "id": "badger-lumberjack",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 92.5
+    },
+    {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 92.5
     }
    ],
    "enemy": {
@@ -791,7 +791,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 62.5
+     "win": 72.5
     },
     "ladder": [
      {
@@ -800,7 +800,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 62.5
+      "win": 72.5
      },
      {
       "side": "enemy",
@@ -808,7 +808,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 41.7
+      "win": 42.5
      }
     ],
     "suggestion": {
@@ -817,56 +817,56 @@
      "step": 2,
      "dA": 2,
      "dH": 0,
-     "win": 41.7
+     "win": 42.5
     },
     "enough": true
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "soldier-ant",
+     "id": "bee-forager",
      "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 91.7
+     "dA": 0,
+     "dH": -3,
+     "win": 90
     },
     "ladder": [
      {
       "side": "player",
-      "id": "soldier-ant",
+      "id": "bee-forager",
       "step": 1,
-      "dA": -1,
-      "dH": 0,
-      "win": 91.7
+      "dA": 0,
+      "dH": -3,
+      "win": 90
      },
      {
       "side": "player",
-      "id": "soldier-ant",
+      "id": "bee-forager",
       "step": 2,
-      "dA": -1,
-      "dH": -3,
+      "dA": 0,
+      "dH": -6,
       "win": 87.5
      },
      {
       "side": "player",
-      "id": "soldier-ant",
+      "id": "bee-forager",
       "step": 3,
-      "dA": -1,
-      "dH": -6,
-      "win": 83.3
+      "dA": 0,
+      "dH": -9,
+      "win": 87.5
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "soldier-ant",
+     "id": "bee-forager",
      "step": 3,
-     "dA": -1,
-     "dH": -6,
-     "win": 83.3
+     "dA": 0,
+     "dH": -9,
+     "win": 87.5
     },
     "enough": false
    },
-   "ms": 7907
+   "ms": 11119
   },
   {
    "leader": "the-gannet-queen",
@@ -881,7 +881,7 @@
    "measured": 55,
    "target": 90,
    "easy": false,
-   "base": 62.5,
+   "base": 57.5,
    "tries": [
     {
      "side": "enemy",
@@ -889,7 +889,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 83.3
+     "win": 80
     },
     {
      "side": "enemy",
@@ -897,7 +897,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
     },
     {
      "side": "player",
@@ -905,23 +905,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
-    },
-    {
-     "side": "player",
-     "id": "burrow-rabbit",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 75
-    },
-    {
-     "side": "player",
-     "id": "adder-ambusher",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 75
+     "win": 77.5
     },
     {
      "side": "player",
@@ -929,7 +913,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 70
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 67.5
     }
    ],
    "enemy": {
@@ -939,7 +939,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 83.3
+     "win": 80
     },
     "ladder": [
      {
@@ -948,16 +948,24 @@
       "step": 1,
       "dA": 0,
       "dH": -3,
-      "win": 83.3
+      "win": 80
+     },
+     {
+      "side": "enemy",
+      "id": "field-vole",
+      "step": 2,
+      "dA": 0,
+      "dH": -6,
+      "win": 92.5
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "field-vole",
-     "step": 1,
+     "step": 2,
      "dA": 0,
-     "dH": -3,
-     "win": 83.3
+     "dH": -6,
+     "win": 92.5
     },
     "enough": true
    },
@@ -968,7 +976,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
     },
     "ladder": [
      {
@@ -977,20 +985,36 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 83.3
+      "win": 77.5
+     },
+     {
+      "side": "player",
+      "id": "eagle-owl-quartermaster",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 77.5
+     },
+     {
+      "side": "player",
+      "id": "eagle-owl-quartermaster",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 80
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "eagle-owl-quartermaster",
-     "step": 1,
-     "dA": 1,
+     "step": 3,
+     "dA": 3,
      "dH": 0,
-     "win": 83.3
+     "win": 80
     },
-    "enough": true
+    "enough": false
    },
-   "ms": 7636
+   "ms": 13696
   },
   {
    "leader": "the-gannet-queen",
@@ -1005,7 +1029,7 @@
    "measured": 37.5,
    "target": 60,
    "easy": false,
-   "base": 45.8,
+   "base": 40,
    "tries": [
     {
      "side": "player",
@@ -1013,7 +1037,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 65
     },
     {
      "side": "enemy",
@@ -1021,15 +1045,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 62.5
-    },
-    {
-     "side": "player",
-     "id": "adder-ambusher",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 50
+     "win": 60
     },
     {
      "side": "player",
@@ -1037,15 +1053,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
-    },
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 50
+     "win": 55
     },
     {
      "side": "enemy",
@@ -1053,7 +1061,23 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 45.8
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 47.5
     }
    ],
    "enemy": {
@@ -1063,7 +1087,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 62.5
+     "win": 60
     },
     "ladder": [
      {
@@ -1072,7 +1096,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 62.5
+      "win": 60
      }
     ],
     "suggestion": {
@@ -1081,7 +1105,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 62.5
+     "win": 60
     },
     "enough": true
    },
@@ -1092,7 +1116,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 65
     },
     "ladder": [
      {
@@ -1101,36 +1125,20 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 70.8
-     },
-     {
-      "side": "player",
-      "id": "eagle-owl-quartermaster",
-      "step": 2,
-      "dA": 2,
-      "dH": 0,
-      "win": 91.7
-     },
-     {
-      "side": "player",
-      "id": "eagle-owl-quartermaster",
-      "step": 3,
-      "dA": 3,
-      "dH": 0,
-      "win": 95.8
+      "win": 65
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "eagle-owl-quartermaster",
-     "step": 3,
-     "dA": 3,
+     "step": 1,
+     "dA": 1,
      "dH": 0,
-     "win": 95.8
+     "win": 65
     },
-    "enough": false
+    "enough": true
    },
-   "ms": 10340
+   "ms": 13645
   },
   {
    "leader": "old-shell",
@@ -1145,31 +1153,15 @@
    "measured": 95,
    "target": 60,
    "easy": true,
-   "base": 79.2,
+   "base": 80,
    "tries": [
-    {
-     "side": "enemy",
-     "id": "open-ocean-hermit-crab",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 70.8
-    },
     {
      "side": "player",
      "id": "bee-forager",
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 70.8
-    },
-    {
-     "side": "enemy",
-     "id": "sea-turtle-elder",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 79.2
+     "win": 70
     },
     {
      "side": "enemy",
@@ -1177,15 +1169,31 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 72.5
     },
     {
      "side": "enemy",
-     "id": "conch-herald",
+     "id": "open-ocean-hermit-crab",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 72.5
+    },
+    {
+     "side": "enemy",
+     "id": "conch-crawler",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 77.5
+    },
+    {
+     "side": "enemy",
+     "id": "sea-turtle-elder",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 80
     },
     {
      "side": "enemy",
@@ -1193,53 +1201,45 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 80
     }
    ],
    "enemy": {
     "driver": {
      "side": "enemy",
-     "id": "open-ocean-hermit-crab",
+     "id": "tide-pool-crab",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 72.5
     },
     "ladder": [
      {
       "side": "enemy",
-      "id": "open-ocean-hermit-crab",
+      "id": "tide-pool-crab",
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 70.8
+      "win": 72.5
      },
      {
       "side": "enemy",
-      "id": "open-ocean-hermit-crab",
+      "id": "tide-pool-crab",
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 50
-     },
-     {
-      "side": "enemy",
-      "id": "open-ocean-hermit-crab",
-      "step": 3,
-      "dA": 3,
-      "dH": 0,
-      "win": 41.7
+      "win": 62.5
      }
     ],
     "suggestion": {
      "side": "enemy",
-     "id": "open-ocean-hermit-crab",
-     "step": 3,
-     "dA": 3,
+     "id": "tide-pool-crab",
+     "step": 2,
+     "dA": 2,
      "dH": 0,
-     "win": 41.7
+     "win": 62.5
     },
-    "enough": false
+    "enough": true
    },
    "player": {
     "driver": {
@@ -1248,7 +1248,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 70.8
+     "win": 70
     },
     "ladder": [
      {
@@ -1257,7 +1257,7 @@
       "step": 1,
       "dA": 0,
       "dH": -3,
-      "win": 70.8
+      "win": 70
      },
      {
       "side": "player",
@@ -1265,28 +1265,20 @@
       "step": 2,
       "dA": 0,
       "dH": -6,
-      "win": 70.8
-     },
-     {
-      "side": "player",
-      "id": "bee-forager",
-      "step": 3,
-      "dA": 0,
-      "dH": -9,
-      "win": 70.8
+      "win": 67.5
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "bee-forager",
-     "step": 3,
+     "step": 2,
      "dA": 0,
-     "dH": -9,
-     "win": 70.8
+     "dH": -6,
+     "win": 67.5
     },
-    "enough": false
+    "enough": true
    },
-   "ms": 8868
+   "ms": 11726
   },
   {
    "leader": "old-shell",
@@ -1301,24 +1293,8 @@
    "measured": 62.5,
    "target": 40,
    "easy": true,
-   "base": 45.8,
+   "base": 50,
    "tries": [
-    {
-     "side": "player",
-     "id": "tunnel-ant",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 33.3
-    },
-    {
-     "side": "enemy",
-     "id": "fiddler-crab-swarm",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 37.5
-    },
     {
      "side": "enemy",
      "id": "tidepool-trapper-crab",
@@ -1329,19 +1305,11 @@
     },
     {
      "side": "enemy",
-     "id": "grey-seal-bull",
+     "id": "fiddler-crab-swarm",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
-    },
-    {
-     "side": "enemy",
-     "id": "open-ocean-hermit-crab",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 45.8
+     "win": 42.5
     },
     {
      "side": "enemy",
@@ -1349,13 +1317,37 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 42.5
+    },
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 42.5
+    },
+    {
+     "side": "enemy",
+     "id": "conch-crawler",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45
+    },
+    {
+     "side": "player",
+     "id": "bee-forager",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 45
     }
    ],
    "enemy": {
     "driver": {
      "side": "enemy",
-     "id": "fiddler-crab-swarm",
+     "id": "tidepool-trapper-crab",
      "step": 1,
      "dA": 1,
      "dH": 0,
@@ -1364,7 +1356,7 @@
     "ladder": [
      {
       "side": "enemy",
-      "id": "fiddler-crab-swarm",
+      "id": "tidepool-trapper-crab",
       "step": 1,
       "dA": 1,
       "dH": 0,
@@ -1373,7 +1365,7 @@
     ],
     "suggestion": {
      "side": "enemy",
-     "id": "fiddler-crab-swarm",
+     "id": "tidepool-trapper-crab",
      "step": 1,
      "dA": 1,
      "dH": 0,
@@ -1388,7 +1380,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 33.3
+     "win": 42.5
     },
     "ladder": [
      {
@@ -1397,7 +1389,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 33.3
+      "win": 42.5
      }
     ],
     "suggestion": {
@@ -1406,11 +1398,11 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 33.3
+     "win": 42.5
     },
     "enough": true
    },
-   "ms": 10686
+   "ms": 14810
   },
   {
    "leader": "old-shell",
@@ -1433,23 +1425,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 79.2
-    },
-    {
-     "side": "player",
-     "id": "cricket-drummer",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 79.2
-    },
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 79.2
+     "win": 85
     },
     {
      "side": "enemy",
@@ -1457,15 +1433,23 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
+     "win": 80
+    },
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
      "win": 75
     },
     {
-     "side": "enemy",
-     "id": "water-vole",
+     "side": "player",
+     "id": "otter-centurion",
      "step": 1,
-     "dA": 0,
-     "dH": -3,
-     "win": 70.8
+     "dA": 1,
+     "dH": 0,
+     "win": 75
     },
     {
      "side": "player",
@@ -1473,7 +1457,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 66.7
+     "win": 72.5
+    },
+    {
+     "side": "enemy",
+     "id": "water-vole",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 70
     }
    ],
    "enemy": {
@@ -1483,7 +1475,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 79.2
+     "win": 85
     },
     "ladder": [
      {
@@ -1492,34 +1484,18 @@
       "step": 1,
       "dA": 0,
       "dH": -3,
-      "win": 79.2
-     },
-     {
-      "side": "enemy",
-      "id": "tidepool-trapper-crab",
-      "step": 2,
-      "dA": 0,
-      "dH": -6,
-      "win": 100
-     },
-     {
-      "side": "enemy",
-      "id": "tidepool-trapper-crab",
-      "step": 3,
-      "dA": 0,
-      "dH": -9,
-      "win": 100
+      "win": 85
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "tidepool-trapper-crab",
-     "step": 3,
+     "step": 1,
      "dA": 0,
-     "dH": -9,
-     "win": 100
+     "dH": -3,
+     "win": 85
     },
-    "enough": false
+    "enough": true
    },
    "player": {
     "driver": {
@@ -1528,7 +1504,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 75
     },
     "ladder": [
      {
@@ -1537,7 +1513,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 79.2
+      "win": 75
      },
      {
       "side": "player",
@@ -1545,7 +1521,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 87.5
+      "win": 85
      }
     ],
     "suggestion": {
@@ -1554,11 +1530,11 @@
      "step": 2,
      "dA": 2,
      "dH": 0,
-     "win": 87.5
+     "win": 85
     },
     "enough": true
    },
-   "ms": 17984
+   "ms": 25754
   },
   {
    "leader": "old-shell",
@@ -1573,7 +1549,7 @@
    "measured": 100,
    "target": 78,
    "easy": true,
-   "base": 91.7,
+   "base": 95,
    "tries": [
     {
      "side": "enemy",
@@ -1581,7 +1557,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 29.2
+     "win": 35
     },
     {
      "side": "enemy",
@@ -1592,12 +1568,28 @@
      "win": 37.5
     },
     {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 90
+    },
+    {
      "side": "enemy",
      "id": "old-sturgeon",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 87.5
+     "win": 92.5
+    },
+    {
+     "side": "enemy",
+     "id": "pond-duck",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95
     },
     {
      "side": "enemy",
@@ -1605,23 +1597,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 91.7
-    },
-    {
-     "side": "player",
-     "id": "cricket-drummer",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 91.7
-    },
-    {
-     "side": "player",
-     "id": "otter-guard",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 91.7
+     "win": 95
     }
    ],
    "enemy": {
@@ -1631,7 +1607,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 29.2
+     "win": 35
     },
     "ladder": [
      {
@@ -1640,7 +1616,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 29.2
+      "win": 35
      },
      {
       "side": "enemy",
@@ -1648,7 +1624,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 4.2
+      "win": 5
      },
      {
       "side": "enemy",
@@ -1656,7 +1632,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 0
+      "win": 2.5
      }
     ],
     "suggestion": {
@@ -1665,48 +1641,56 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 0
+     "win": 2.5
     },
     "enough": false
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "cricket-drummer",
+     "id": "otter-guard",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 91.7
+     "win": 90
     },
     "ladder": [
      {
       "side": "player",
-      "id": "cricket-drummer",
+      "id": "otter-guard",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 91.7
+      "win": 90
      },
      {
       "side": "player",
-      "id": "cricket-drummer",
+      "id": "otter-guard",
       "step": 2,
-      "dA": -1,
+      "dA": -2,
+      "dH": 0,
+      "win": 100
+     },
+     {
+      "side": "player",
+      "id": "otter-guard",
+      "step": 3,
+      "dA": -2,
       "dH": -3,
-      "win": 83.3
+      "win": 97.5
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "cricket-drummer",
-     "step": 2,
-     "dA": -1,
+     "id": "otter-guard",
+     "step": 3,
+     "dA": -2,
      "dH": -3,
-     "win": 83.3
+     "win": 97.5
     },
-    "enough": true
+    "enough": false
    },
-   "ms": 18681
+   "ms": 30327
   },
   {
    "leader": "old-shell",
@@ -1721,7 +1705,7 @@
    "measured": 15,
    "target": 66,
    "easy": false,
-   "base": 8.3,
+   "base": 15,
    "tries": [
     {
      "side": "player",
@@ -1729,23 +1713,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 33.3
-    },
-    {
-     "side": "enemy",
-     "id": "poison-dart-croaker",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 20.8
-    },
-    {
-     "side": "enemy",
-     "id": "tidepool-trapper-crab",
-     "step": 1,
-     "dA": 0,
-     "dH": -3,
-     "win": 20.8
+     "win": 32.5
     },
     {
      "side": "player",
@@ -1753,15 +1721,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 20.8
+     "win": 25
     },
     {
      "side": "enemy",
-     "id": "mangrove-mudskipper",
+     "id": "poison-dart-croaker",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 22.5
+    },
+    {
+     "side": "enemy",
+     "id": "tidepool-trapper-crab",
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 16.7
+     "win": 22.5
     },
     {
      "side": "player",
@@ -1769,7 +1745,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 16.7
+     "win": 20
+    },
+    {
+     "side": "enemy",
+     "id": "duckling",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 17.5
     }
    ],
    "enemy": {
@@ -1779,7 +1763,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 20.8
+     "win": 22.5
     },
     "ladder": [
      {
@@ -1788,7 +1772,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 20.8
+      "win": 22.5
      },
      {
       "side": "enemy",
@@ -1796,7 +1780,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 20.8
+      "win": 30
      },
      {
       "side": "enemy",
@@ -1804,7 +1788,7 @@
       "step": 3,
       "dA": -2,
       "dH": -3,
-      "win": 33.3
+      "win": 35
      }
     ],
     "suggestion": {
@@ -1813,7 +1797,7 @@
      "step": 3,
      "dA": -2,
      "dH": -3,
-     "win": 33.3
+     "win": 35
     },
     "enough": false
    },
@@ -1824,7 +1808,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 33.3
+     "win": 32.5
     },
     "ladder": [
      {
@@ -1833,7 +1817,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 33.3
+      "win": 32.5
      },
      {
       "side": "player",
@@ -1841,7 +1825,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 66.7
+      "win": 72.5
      }
     ],
     "suggestion": {
@@ -1850,11 +1834,11 @@
      "step": 2,
      "dA": 2,
      "dH": 0,
-     "win": 66.7
+     "win": 72.5
     },
     "enough": true
    },
-   "ms": 12048
+   "ms": 17282
   },
   {
    "leader": "old-shell",
@@ -1869,8 +1853,16 @@
    "measured": 15,
    "target": 60,
    "easy": false,
-   "base": 16.7,
+   "base": 22.5,
    "tries": [
+    {
+     "side": "enemy",
+     "id": "lodge-engineer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 42.5
+    },
     {
      "side": "player",
      "id": "cricket-drummer",
@@ -1881,11 +1873,11 @@
     },
     {
      "side": "enemy",
-     "id": "lodge-engineer",
+     "id": "fiddler-crab-swarm",
      "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 33.3
+     "dA": 0,
+     "dH": -3,
+     "win": 35
     },
     {
      "side": "player",
@@ -1893,7 +1885,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 29.2
+     "win": 32.5
     },
     {
      "side": "player",
@@ -1901,23 +1893,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 29.2
+     "win": 30
     },
     {
      "side": "enemy",
-     "id": "fiddler-crab-swarm",
+     "id": "tidepool-trapper-crab",
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 25
-    },
-    {
-     "side": "enemy",
-     "id": "river-carp",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 20.8
+     "win": 27.5
     }
    ],
    "enemy": {
@@ -1927,7 +1911,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 33.3
+     "win": 42.5
     },
     "ladder": [
      {
@@ -1936,7 +1920,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 33.3
+      "win": 42.5
      },
      {
       "side": "enemy",
@@ -1944,7 +1928,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 66.7
+      "win": 65
      }
     ],
     "suggestion": {
@@ -1953,7 +1937,7 @@
      "step": 2,
      "dA": -2,
      "dH": 0,
-     "win": 66.7
+     "win": 65
     },
     "enough": true
    },
@@ -1981,28 +1965,20 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 45.8
-     },
-     {
-      "side": "player",
-      "id": "cricket-drummer",
-      "step": 3,
-      "dA": 3,
-      "dH": 0,
-      "win": 66.7
+      "win": 55
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "cricket-drummer",
-     "step": 3,
-     "dA": 3,
+     "step": 2,
+     "dA": 2,
      "dH": 0,
-     "win": 66.7
+     "win": 55
     },
     "enough": true
    },
-   "ms": 18967
+   "ms": 28937
   },
   {
    "leader": "old-shell",
@@ -2017,7 +1993,7 @@
    "measured": 75,
    "target": 40,
    "easy": true,
-   "base": 79.2,
+   "base": 82.5,
    "tries": [
     {
      "side": "enemy",
@@ -2025,7 +2001,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 57.5
     },
     {
      "side": "enemy",
@@ -2033,23 +2009,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 62.5
-    },
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 70.8
-    },
-    {
-     "side": "enemy",
-     "id": "octopus-tactician",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 75
+     "win": 65
     },
     {
      "side": "enemy",
@@ -2057,7 +2017,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 67.5
     },
     {
      "side": "enemy",
@@ -2065,7 +2025,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 67.5
+    },
+    {
+     "side": "enemy",
+     "id": "octopus-tactician",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 70
+    },
+    {
+     "side": "player",
+     "id": "greyplume-fledgling",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 70
     }
    ],
    "enemy": {
@@ -2075,7 +2051,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 57.5
     },
     "ladder": [
      {
@@ -2084,7 +2060,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 58.3
+      "win": 57.5
      },
      {
       "side": "enemy",
@@ -2092,7 +2068,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 37.5
+      "win": 40
      }
     ],
     "suggestion": {
@@ -2101,56 +2077,56 @@
      "step": 2,
      "dA": 2,
      "dH": 0,
-     "win": 37.5
+     "win": 40
     },
     "enough": true
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "otter-centurion",
+     "id": "greyplume-fledgling",
      "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 70.8
+     "dA": 0,
+     "dH": -3,
+     "win": 70
     },
     "ladder": [
      {
       "side": "player",
-      "id": "otter-centurion",
+      "id": "greyplume-fledgling",
       "step": 1,
-      "dA": -1,
-      "dH": 0,
-      "win": 70.8
-     },
-     {
-      "side": "player",
-      "id": "otter-centurion",
-      "step": 2,
-      "dA": -2,
-      "dH": 0,
-      "win": 66.7
-     },
-     {
-      "side": "player",
-      "id": "otter-centurion",
-      "step": 3,
-      "dA": -2,
+      "dA": 0,
       "dH": -3,
-      "win": 66.7
+      "win": 70
+     },
+     {
+      "side": "player",
+      "id": "greyplume-fledgling",
+      "step": 2,
+      "dA": 0,
+      "dH": -6,
+      "win": 70
+     },
+     {
+      "side": "player",
+      "id": "greyplume-fledgling",
+      "step": 3,
+      "dA": 0,
+      "dH": -9,
+      "win": 70
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "otter-centurion",
+     "id": "greyplume-fledgling",
      "step": 3,
-     "dA": -2,
-     "dH": -3,
-     "win": 66.7
+     "dA": 0,
+     "dH": -9,
+     "win": 70
     },
     "enough": false
    },
-   "ms": 9985
+   "ms": 14874
   },
   {
    "leader": "the-gannet-queen",
@@ -2165,7 +2141,7 @@
    "measured": 90,
    "target": 66,
    "easy": true,
-   "base": 91.7,
+   "base": 85,
    "tries": [
     {
      "side": "enemy",
@@ -2173,15 +2149,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
-    },
-    {
-     "side": "enemy",
-     "id": "mountain-goat-climber",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 70.8
+     "win": 60
     },
     {
      "side": "enemy",
@@ -2189,15 +2157,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 67.5
     },
     {
      "side": "enemy",
-     "id": "golden-eagle-diver",
+     "id": "mountain-goat-climber",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 70
     },
     {
      "side": "enemy",
@@ -2205,15 +2173,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 72.5
     },
     {
-     "side": "player",
-     "id": "otter-guard",
+     "side": "enemy",
+     "id": "red-billed-chough",
      "step": 1,
-     "dA": -1,
+     "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
+    },
+    {
+     "side": "enemy",
+     "id": "golden-eagle-diver",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 77.5
     }
    ],
    "enemy": {
@@ -2223,7 +2199,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 60
     },
     "ladder": [
      {
@@ -2232,7 +2208,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 58.3
+      "win": 60
      }
     ],
     "suggestion": {
@@ -2241,56 +2217,56 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 60
     },
     "enough": true
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "otter-guard",
+     "id": "cricket-drummer",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
     },
     "ladder": [
      {
       "side": "player",
-      "id": "otter-guard",
+      "id": "cricket-drummer",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 83.3
+      "win": 77.5
      },
      {
       "side": "player",
-      "id": "otter-guard",
+      "id": "cricket-drummer",
       "step": 2,
-      "dA": -2,
-      "dH": 0,
-      "win": 75
+      "dA": -1,
+      "dH": -3,
+      "win": 80
      },
      {
       "side": "player",
-      "id": "otter-guard",
+      "id": "cricket-drummer",
       "step": 3,
-      "dA": -2,
-      "dH": -3,
+      "dA": -1,
+      "dH": -6,
       "win": 75
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "otter-guard",
+     "id": "cricket-drummer",
      "step": 3,
-     "dA": -2,
-     "dH": -3,
+     "dA": -1,
+     "dH": -6,
      "win": 75
     },
     "enough": false
    },
-   "ms": 8390
+   "ms": 11384
   },
   {
    "leader": "drowned-matriarch",
@@ -2305,7 +2281,7 @@
    "measured": 72.5,
    "target": 40,
    "easy": true,
-   "base": 62.5,
+   "base": 60,
    "tries": [
     {
      "side": "enemy",
@@ -2313,15 +2289,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
-    },
-    {
-     "side": "enemy",
-     "id": "stone-turtle-warden",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 50
+     "win": 42.5
     },
     {
      "side": "player",
@@ -2329,7 +2297,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 50
+     "win": 47.5
     },
     {
      "side": "player",
@@ -2337,15 +2305,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 50
-    },
-    {
-     "side": "player",
-     "id": "cricket-drummer",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 54.2
+     "win": 52.5
     },
     {
      "side": "enemy",
@@ -2353,7 +2313,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 55
+    },
+    {
+     "side": "player",
+     "id": "cricket-drummer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 55
+    },
+    {
+     "side": "enemy",
+     "id": "muskrat-lodgekeeper",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 57.5
     }
    ],
    "enemy": {
@@ -2363,7 +2339,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
+     "win": 42.5
     },
     "ladder": [
      {
@@ -2372,7 +2348,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 41.7
+      "win": 42.5
      }
     ],
     "suggestion": {
@@ -2381,7 +2357,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
+     "win": 42.5
     },
     "enough": true
    },
@@ -2392,7 +2368,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 50
+     "win": 47.5
     },
     "ladder": [
      {
@@ -2401,36 +2377,20 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 50
-     },
-     {
-      "side": "player",
-      "id": "tunnel-ant",
-      "step": 2,
-      "dA": -1,
-      "dH": -3,
-      "win": 29.2
-     },
-     {
-      "side": "player",
-      "id": "tunnel-ant",
-      "step": 3,
-      "dA": -1,
-      "dH": -6,
-      "win": 20.8
+      "win": 47.5
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "tunnel-ant",
-     "step": 3,
+     "step": 1,
      "dA": -1,
-     "dH": -6,
-     "win": 20.8
+     "dH": 0,
+     "win": 47.5
     },
-    "enough": false
+    "enough": true
    },
-   "ms": 9776
+   "ms": 11651
   },
   {
    "leader": "old-snapjaw",
@@ -2445,7 +2405,7 @@
    "measured": 97.5,
    "target": 72,
    "easy": true,
-   "base": 95.8,
+   "base": 97.5,
    "tries": [
     {
      "side": "enemy",
@@ -2453,7 +2413,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 80
     },
     {
      "side": "enemy",
@@ -2461,7 +2421,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 87.5
     },
     {
      "side": "enemy",
@@ -2472,28 +2432,28 @@
      "win": 87.5
     },
     {
-     "side": "enemy",
-     "id": "nutria-reedcutter",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 91.7
-    },
-    {
-     "side": "player",
-     "id": "otter-guard",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 91.7
-    },
-    {
      "side": "player",
      "id": "rabbit-kit",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 91.7
+     "win": 92.5
+    },
+    {
+     "side": "enemy",
+     "id": "fen-mink",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95
+    },
+    {
+     "side": "enemy",
+     "id": "nutria-reedcutter",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95
     }
    ],
    "enemy": {
@@ -2503,7 +2463,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 80
     },
     "ladder": [
      {
@@ -2512,7 +2472,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 75
+      "win": 80
      }
     ],
     "suggestion": {
@@ -2521,56 +2481,56 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 80
     },
     "enough": true
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "otter-guard",
+     "id": "rabbit-kit",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 91.7
+     "win": 92.5
     },
     "ladder": [
      {
       "side": "player",
-      "id": "otter-guard",
+      "id": "rabbit-kit",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 91.7
+      "win": 92.5
      },
      {
       "side": "player",
-      "id": "otter-guard",
+      "id": "rabbit-kit",
       "step": 2,
-      "dA": -2,
-      "dH": 0,
-      "win": 95.8
+      "dA": -1,
+      "dH": -3,
+      "win": 90
      },
      {
       "side": "player",
-      "id": "otter-guard",
+      "id": "rabbit-kit",
       "step": 3,
-      "dA": -2,
-      "dH": -3,
-      "win": 95.8
+      "dA": -1,
+      "dH": -6,
+      "win": 90
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "otter-guard",
+     "id": "rabbit-kit",
      "step": 3,
-     "dA": -2,
-     "dH": -3,
-     "win": 95.8
+     "dA": -1,
+     "dH": -6,
+     "win": 90
     },
     "enough": false
    },
-   "ms": 9463
+   "ms": 12050
   },
   {
    "leader": "old-snapjaw",
@@ -2585,7 +2545,7 @@
    "measured": 95,
    "target": 66,
    "easy": true,
-   "base": 91.7,
+   "base": 95,
    "tries": [
     {
      "side": "enemy",
@@ -2593,23 +2553,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 54.2
-    },
-    {
-     "side": "player",
-     "id": "meadow-frog",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 83.3
-    },
-    {
-     "side": "enemy",
-     "id": "crocodile-ambusher",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 87.5
+     "win": 55
     },
     {
      "side": "enemy",
@@ -2620,12 +2564,28 @@
      "win": 87.5
     },
     {
+     "side": "enemy",
+     "id": "crocodile-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 90
+    },
+    {
      "side": "player",
      "id": "otter-centurion",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 87.5
+     "win": 90
+    },
+    {
+     "side": "player",
+     "id": "meadow-frog",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 90
     },
     {
      "side": "enemy",
@@ -2633,7 +2593,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 91.7
+     "win": 92.5
     }
    ],
    "enemy": {
@@ -2643,7 +2603,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 54.2
+     "win": 55
     },
     "ladder": [
      {
@@ -2652,7 +2612,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 54.2
+      "win": 55
      },
      {
       "side": "enemy",
@@ -2660,7 +2620,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 20.8
+      "win": 22.5
      },
      {
       "side": "enemy",
@@ -2668,7 +2628,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 4.2
+      "win": 2.5
      }
     ],
     "suggestion": {
@@ -2677,56 +2637,56 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 4.2
+     "win": 2.5
     },
     "enough": false
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "meadow-frog",
+     "id": "otter-centurion",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 90
     },
     "ladder": [
      {
       "side": "player",
-      "id": "meadow-frog",
+      "id": "otter-centurion",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 83.3
+      "win": 90
      },
      {
       "side": "player",
-      "id": "meadow-frog",
+      "id": "otter-centurion",
       "step": 2,
-      "dA": -1,
-      "dH": -3,
-      "win": 83.3
+      "dA": -2,
+      "dH": 0,
+      "win": 90
      },
      {
       "side": "player",
-      "id": "meadow-frog",
+      "id": "otter-centurion",
       "step": 3,
-      "dA": -1,
-      "dH": -6,
-      "win": 66.7
+      "dA": -2,
+      "dH": -3,
+      "win": 90
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "meadow-frog",
+     "id": "otter-centurion",
      "step": 3,
-     "dA": -1,
-     "dH": -6,
-     "win": 66.7
+     "dA": -2,
+     "dH": -3,
+     "win": 90
     },
-    "enough": true
+    "enough": false
    },
-   "ms": 9166
+   "ms": 12679
   },
   {
    "leader": "old-snapjaw",
@@ -2741,7 +2701,7 @@
    "measured": 65,
    "target": 40,
    "easy": true,
-   "base": 62.5,
+   "base": 65,
    "tries": [
     {
      "side": "enemy",
@@ -2753,19 +2713,19 @@
     },
     {
      "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 37.5
-    },
-    {
-     "side": "player",
      "id": "otter-guard",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 41.7
+     "win": 42.5
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 42.5
     },
     {
      "side": "player",
@@ -2773,11 +2733,11 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 45.8
+     "win": 47.5
     },
     {
      "side": "enemy",
-     "id": "constrictor-coil",
+     "id": "anhinga-spearbird",
      "step": 1,
      "dA": 1,
      "dH": 0,
@@ -2824,33 +2784,33 @@
    "player": {
     "driver": {
      "side": "player",
-     "id": "otter-centurion",
+     "id": "otter-guard",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 37.5
+     "win": 42.5
     },
     "ladder": [
      {
       "side": "player",
-      "id": "otter-centurion",
+      "id": "otter-guard",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 37.5
+      "win": 42.5
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "otter-centurion",
+     "id": "otter-guard",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 37.5
+     "win": 42.5
     },
     "enough": true
    },
-   "ms": 8243
+   "ms": 11591
   },
   {
    "leader": "old-snapjaw",
@@ -2865,7 +2825,7 @@
    "measured": 52.5,
    "target": 90,
    "easy": false,
-   "base": 41.7,
+   "base": 50,
    "tries": [
     {
      "side": "enemy",
@@ -2873,7 +2833,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 91.7
+     "win": 90
     },
     {
      "side": "player",
@@ -2881,23 +2841,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
-    },
-    {
-     "side": "player",
-     "id": "lyrebird-mimic",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 70.8
-    },
-    {
-     "side": "enemy",
-     "id": "snapper-hatchling",
-     "step": 1,
-     "dA": 0,
-     "dH": -3,
-     "win": 66.7
+     "win": 72.5
     },
     {
      "side": "player",
@@ -2905,7 +2849,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 66.7
+     "win": 67.5
+    },
+    {
+     "side": "player",
+     "id": "lyrebird-mimic",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 67.5
+    },
+    {
+     "side": "enemy",
+     "id": "snapper-hatchling",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 65
     },
     {
      "side": "player",
@@ -2913,7 +2873,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 54.2
+     "win": 60
     }
    ],
    "enemy": {
@@ -2923,7 +2883,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 91.7
+     "win": 90
     },
     "ladder": [
      {
@@ -2932,7 +2892,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 91.7
+      "win": 90
      }
     ],
     "suggestion": {
@@ -2941,7 +2901,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 91.7
+     "win": 90
     },
     "enough": true
    },
@@ -2952,7 +2912,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 72.5
     },
     "ladder": [
      {
@@ -2961,7 +2921,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 75
+      "win": 72.5
      },
      {
       "side": "player",
@@ -2969,7 +2929,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 66.7
+      "win": 67.5
      },
      {
       "side": "player",
@@ -2977,7 +2937,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 79.2
+      "win": 77.5
      }
     ],
     "suggestion": {
@@ -2986,11 +2946,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 79.2
+     "win": 77.5
     },
     "enough": false
    },
-   "ms": 8315
+   "ms": 12070
   },
   {
    "leader": "heron-hag",
@@ -3013,7 +2973,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 100
+     "win": 97.5
     },
     {
      "side": "enemy",
@@ -3063,7 +3023,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 100
+     "win": 97.5
     },
     "ladder": [
      {
@@ -3072,7 +3032,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 100
+      "win": 97.5
      },
      {
       "side": "enemy",
@@ -3080,7 +3040,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 100
+      "win": 95
      },
      {
       "side": "enemy",
@@ -3088,7 +3048,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 91.7
+      "win": 90
      }
     ],
     "suggestion": {
@@ -3097,7 +3057,7 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 91.7
+     "win": 90
     },
     "enough": false
    },
@@ -3125,7 +3085,7 @@
       "step": 2,
       "dA": -1,
       "dH": -3,
-      "win": 95.8
+      "win": 97.5
      },
      {
       "side": "player",
@@ -3146,7 +3106,7 @@
     },
     "enough": false
    },
-   "ms": 8157
+   "ms": 10740
   },
   {
    "leader": "heron-hag",
@@ -3161,7 +3121,7 @@
    "measured": 97.5,
    "target": 70,
    "easy": true,
-   "base": 95.8,
+   "base": 90,
    "tries": [
     {
      "side": "enemy",
@@ -3169,23 +3129,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
-    },
-    {
-     "side": "player",
-     "id": "burrow-rabbit",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 79.2
+     "win": 77.5
     },
     {
      "side": "enemy",
-     "id": "marsh-wisp",
+     "id": "bogfire-newt",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 87.5
+     "win": 82.5
     },
     {
      "side": "enemy",
@@ -3193,15 +3145,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 87.5
-    },
-    {
-     "side": "enemy",
-     "id": "raven-scout",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 87.5
+     "win": 82.5
     },
     {
      "side": "player",
@@ -3209,7 +3153,23 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 87.5
+     "win": 82.5
+    },
+    {
+     "side": "player",
+     "id": "burrow-rabbit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 82.5
+    },
+    {
+     "side": "enemy",
+     "id": "marsh-wisp",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 85
     }
    ],
    "enemy": {
@@ -3219,7 +3179,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 77.5
     },
     "ladder": [
      {
@@ -3228,7 +3188,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 75
+      "win": 77.5
      }
     ],
     "suggestion": {
@@ -3237,56 +3197,56 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 77.5
     },
     "enough": true
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "burrow-rabbit",
+     "id": "cricket-drummer",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 82.5
     },
     "ladder": [
      {
       "side": "player",
-      "id": "burrow-rabbit",
+      "id": "cricket-drummer",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 79.2
+      "win": 82.5
      },
      {
       "side": "player",
-      "id": "burrow-rabbit",
+      "id": "cricket-drummer",
       "step": 2,
       "dA": -1,
       "dH": -3,
-      "win": 87.5
+      "win": 82.5
      },
      {
       "side": "player",
-      "id": "burrow-rabbit",
+      "id": "cricket-drummer",
       "step": 3,
       "dA": -1,
       "dH": -6,
-      "win": 87.5
+      "win": 77.5
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "burrow-rabbit",
+     "id": "cricket-drummer",
      "step": 3,
      "dA": -1,
      "dH": -6,
-     "win": 87.5
+     "win": 77.5
     },
-    "enough": false
+    "enough": true
    },
-   "ms": 8893
+   "ms": 12310
   },
   {
    "leader": "heron-hag",
@@ -3301,7 +3261,7 @@
    "measured": 97.5,
    "target": 65,
    "easy": true,
-   "base": 100,
+   "base": 97.5,
    "tries": [
     {
      "side": "enemy",
@@ -3309,7 +3269,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 72.5
     },
     {
      "side": "player",
@@ -3317,7 +3277,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 80
     },
     {
      "side": "enemy",
@@ -3325,15 +3285,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 87.5
-    },
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 87.5
+     "win": 90
     },
     {
      "side": "enemy",
@@ -3341,15 +3293,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 91.7
+     "win": 90
     },
     {
-     "side": "enemy",
-     "id": "marsh-wisp",
+     "side": "player",
+     "id": "burrow-rabbit",
      "step": 1,
-     "dA": 1,
+     "dA": -1,
      "dH": 0,
-     "win": 95.8
+     "win": 90
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 92.5
     }
    ],
    "enemy": {
@@ -3359,7 +3319,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 72.5
     },
     "ladder": [
      {
@@ -3368,7 +3328,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 70.8
+      "win": 72.5
      }
     ],
     "suggestion": {
@@ -3377,7 +3337,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 72.5
     },
     "enough": true
    },
@@ -3388,7 +3348,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 80
     },
     "ladder": [
      {
@@ -3397,7 +3357,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 79.2
+      "win": 80
      },
      {
       "side": "player",
@@ -3405,7 +3365,7 @@
       "step": 2,
       "dA": -1,
       "dH": -3,
-      "win": 83.3
+      "win": 82.5
      },
      {
       "side": "player",
@@ -3413,7 +3373,7 @@
       "step": 3,
       "dA": -1,
       "dH": -6,
-      "win": 83.3
+      "win": 77.5
      }
     ],
     "suggestion": {
@@ -3422,11 +3382,11 @@
      "step": 3,
      "dA": -1,
      "dH": -6,
-     "win": 83.3
+     "win": 77.5
     },
     "enough": false
    },
-   "ms": 9379
+   "ms": 12981
   },
   {
    "leader": "heron-hag",
@@ -3441,7 +3401,7 @@
    "measured": 82.5,
    "target": 60,
    "easy": true,
-   "base": 83.3,
+   "base": 87.5,
    "tries": [
     {
      "side": "enemy",
@@ -3449,15 +3409,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
-    },
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 75
+     "win": 70
     },
     {
      "side": "enemy",
@@ -3465,23 +3417,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
-    },
-    {
-     "side": "enemy",
-     "id": "venomlord-serpent",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 79.2
-    },
-    {
-     "side": "player",
-     "id": "otter-guard",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 79.2
+     "win": 80
     },
     {
      "side": "player",
@@ -3489,7 +3425,31 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 80
+    },
+    {
+     "side": "enemy",
+     "id": "venomlord-serpent",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 82.5
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 82.5
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 82.5
     }
    ],
    "enemy": {
@@ -3499,7 +3459,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 70
     },
     "ladder": [
      {
@@ -3508,7 +3468,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 70.8
+      "win": 70
      },
      {
       "side": "enemy",
@@ -3516,7 +3476,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 75
+      "win": 72.5
      },
      {
       "side": "enemy",
@@ -3524,7 +3484,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 70.8
+      "win": 75
      }
     ],
     "suggestion": {
@@ -3533,56 +3493,56 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 70.8
+     "win": 75
     },
     "enough": false
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "otter-centurion",
+     "id": "meadow-frog",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 75
+     "win": 80
     },
     "ladder": [
      {
       "side": "player",
-      "id": "otter-centurion",
+      "id": "meadow-frog",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 75
+      "win": 80
      },
      {
       "side": "player",
-      "id": "otter-centurion",
+      "id": "meadow-frog",
       "step": 2,
-      "dA": -2,
-      "dH": 0,
-      "win": 83.3
+      "dA": -1,
+      "dH": -3,
+      "win": 82.5
      },
      {
       "side": "player",
-      "id": "otter-centurion",
+      "id": "meadow-frog",
       "step": 3,
-      "dA": -2,
-      "dH": -3,
-      "win": 83.3
+      "dA": -1,
+      "dH": -6,
+      "win": 80
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "otter-centurion",
+     "id": "meadow-frog",
      "step": 3,
-     "dA": -2,
-     "dH": -3,
-     "win": 83.3
+     "dA": -1,
+     "dH": -6,
+     "win": 80
     },
     "enough": false
    },
-   "ms": 7575
+   "ms": 10871
   },
   {
    "leader": "heron-hag",
@@ -3597,7 +3557,7 @@
    "measured": 75,
    "target": 40,
    "easy": true,
-   "base": 54.2,
+   "base": 65,
    "tries": [
     {
      "side": "enemy",
@@ -3605,7 +3565,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 20.8
+     "win": 32.5
     },
     {
      "side": "player",
@@ -3613,31 +3573,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 20.8
-    },
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 37.5
-    },
-    {
-     "side": "player",
-     "id": "burrow-rabbit",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 41.7
-    },
-    {
-     "side": "enemy",
-     "id": "lamprey",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 45.8
+     "win": 35
     },
     {
      "side": "enemy",
@@ -3645,7 +3581,31 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 47.5
+    },
+    {
+     "side": "enemy",
+     "id": "lamprey",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 50
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 52.5
+    },
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 52.5
     }
    ],
    "enemy": {
@@ -3655,7 +3615,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 20.8
+     "win": 32.5
     },
     "ladder": [
      {
@@ -3664,34 +3624,18 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 20.8
-     },
-     {
-      "side": "enemy",
-      "id": "adder-ambusher",
-      "step": 2,
-      "dA": 2,
-      "dH": 0,
-      "win": 25
-     },
-     {
-      "side": "enemy",
-      "id": "adder-ambusher",
-      "step": 3,
-      "dA": 3,
-      "dH": 0,
-      "win": 12.5
+      "win": 32.5
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "adder-ambusher",
-     "step": 3,
-     "dA": 3,
+     "step": 1,
+     "dA": 1,
      "dH": 0,
-     "win": 12.5
+     "win": 32.5
     },
-    "enough": false
+    "enough": true
    },
    "player": {
     "driver": {
@@ -3700,7 +3644,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 20.8
+     "win": 35
     },
     "ladder": [
      {
@@ -3709,36 +3653,20 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 20.8
-     },
-     {
-      "side": "player",
-      "id": "cricket-drummer",
-      "step": 2,
-      "dA": -1,
-      "dH": -3,
-      "win": 20.8
-     },
-     {
-      "side": "player",
-      "id": "cricket-drummer",
-      "step": 3,
-      "dA": -1,
-      "dH": -6,
-      "win": 25
+      "win": 35
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "cricket-drummer",
-     "step": 3,
+     "step": 1,
      "dA": -1,
-     "dH": -6,
-     "win": 25
+     "dH": 0,
+     "win": 35
     },
-    "enough": false
+    "enough": true
    },
-   "ms": 11175
+   "ms": 12349
   },
   {
    "leader": "old-snapjaw",
@@ -3753,7 +3681,7 @@
    "measured": 67.5,
    "target": 90,
    "easy": false,
-   "base": 75,
+   "base": 67.5,
    "tries": [
     {
      "side": "enemy",
@@ -3761,7 +3689,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 87.5
+     "win": 90
     },
     {
      "side": "enemy",
@@ -3769,7 +3697,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 80
     },
     {
      "side": "player",
@@ -3777,31 +3705,31 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
+    },
+    {
+     "side": "enemy",
+     "id": "hawthorn-shieldbug",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 72.5
     },
     {
      "side": "player",
-     "id": "otter-guard",
+     "id": "otter-centurion",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 72.5
     },
     {
-     "side": "enemy",
-     "id": "compost-grub",
+     "side": "player",
+     "id": "soldier-ant",
      "step": 1,
-     "dA": 0,
-     "dH": -3,
-     "win": 75
-    },
-    {
-     "side": "enemy",
-     "id": "garden-snail",
-     "step": 1,
-     "dA": 0,
-     "dH": -3,
-     "win": 75
+     "dA": 1,
+     "dH": 0,
+     "win": 72.5
     }
    ],
    "enemy": {
@@ -3811,7 +3739,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 87.5
+     "win": 90
     },
     "ladder": [
      {
@@ -3820,7 +3748,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 87.5
+      "win": 90
      }
     ],
     "suggestion": {
@@ -3829,7 +3757,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 87.5
+     "win": 90
     },
     "enough": true
    },
@@ -3840,7 +3768,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
     },
     "ladder": [
      {
@@ -3849,20 +3777,36 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 83.3
+      "win": 77.5
+     },
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 80
+     },
+     {
+      "side": "player",
+      "id": "tunnel-ant",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 80
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "tunnel-ant",
-     "step": 1,
-     "dA": 1,
+     "step": 3,
+     "dA": 3,
      "dH": 0,
-     "win": 83.3
+     "win": 80
     },
-    "enough": true
+    "enough": false
    },
-   "ms": 10982
+   "ms": 18332
   },
   {
    "leader": "old-snapjaw",
@@ -3877,7 +3821,7 @@
    "measured": 85,
    "target": 60,
    "easy": true,
-   "base": 79.2,
+   "base": 87.5,
    "tries": [
     {
      "side": "enemy",
@@ -3885,7 +3829,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
+     "win": 37.5
     },
     {
      "side": "enemy",
@@ -3893,15 +3837,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 66.7
-    },
-    {
-     "side": "player",
-     "id": "otter-guard",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 75
+     "win": 72.5
     },
     {
      "side": "enemy",
@@ -3909,7 +3845,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 80
     },
     {
      "side": "player",
@@ -3917,15 +3853,23 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 85
     },
     {
-     "side": "enemy",
-     "id": "garden-snail",
+     "side": "player",
+     "id": "otter-guard",
      "step": 1,
-     "dA": 1,
+     "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 85
+    },
+    {
+     "side": "player",
+     "id": "muskrat-lodgekeeper",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 85
     }
    ],
    "enemy": {
@@ -3935,7 +3879,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
+     "win": 37.5
     },
     "ladder": [
      {
@@ -3944,7 +3888,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 41.7
+      "win": 37.5
      },
      {
       "side": "enemy",
@@ -3952,7 +3896,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 41.7
+      "win": 37.5
      },
      {
       "side": "enemy",
@@ -3960,7 +3904,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 8.3
+      "win": 5
      }
     ],
     "suggestion": {
@@ -3969,56 +3913,56 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 8.3
+     "win": 5
     },
     "enough": false
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "otter-guard",
+     "id": "tunnel-ant",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 75
+     "win": 85
     },
     "ladder": [
      {
       "side": "player",
-      "id": "otter-guard",
+      "id": "tunnel-ant",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 75
+      "win": 85
      },
      {
       "side": "player",
-      "id": "otter-guard",
+      "id": "tunnel-ant",
       "step": 2,
-      "dA": -2,
-      "dH": 0,
-      "win": 79.2
+      "dA": -1,
+      "dH": -3,
+      "win": 77.5
      },
      {
       "side": "player",
-      "id": "otter-guard",
+      "id": "tunnel-ant",
       "step": 3,
-      "dA": -2,
-      "dH": -3,
-      "win": 75
+      "dA": -1,
+      "dH": -6,
+      "win": 70
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "otter-guard",
+     "id": "tunnel-ant",
      "step": 3,
-     "dA": -2,
-     "dH": -3,
-     "win": 75
+     "dA": -1,
+     "dH": -6,
+     "win": 70
     },
     "enough": false
    },
-   "ms": 13771
+   "ms": 19521
   },
   {
    "leader": "old-snapjaw",
@@ -4033,7 +3977,7 @@
    "measured": 90,
    "target": 40,
    "easy": true,
-   "base": 83.3,
+   "base": 87.5,
    "tries": [
     {
      "side": "enemy",
@@ -4041,7 +3985,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 65
     },
     {
      "side": "enemy",
@@ -4049,7 +3993,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 67.5
     },
     {
      "side": "enemy",
@@ -4057,7 +4001,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 82.5
+    },
+    {
+     "side": "enemy",
+     "id": "ant-warrior",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 82.5
     },
     {
      "side": "player",
@@ -4065,7 +4017,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 82.5
     },
     {
      "side": "player",
@@ -4073,15 +4025,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
-    },
-    {
-     "side": "player",
-     "id": "tunnel-ant",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 79.2
+     "win": 82.5
     }
    ],
    "enemy": {
@@ -4091,7 +4035,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 65
     },
     "ladder": [
      {
@@ -4100,7 +4044,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 58.3
+      "win": 65
      },
      {
       "side": "enemy",
@@ -4108,16 +4052,24 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 45.8
+      "win": 55
+     },
+     {
+      "side": "enemy",
+      "id": "planarian-splitter",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 47.5
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "planarian-splitter",
-     "step": 2,
-     "dA": 2,
+     "step": 3,
+     "dA": 3,
      "dH": 0,
-     "win": 45.8
+     "win": 47.5
     },
     "enough": true
    },
@@ -4128,7 +4080,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 82.5
     },
     "ladder": [
      {
@@ -4137,7 +4089,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 79.2
+      "win": 82.5
      },
      {
       "side": "player",
@@ -4145,7 +4097,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 83.3
+      "win": 85
      },
      {
       "side": "player",
@@ -4153,7 +4105,7 @@
       "step": 3,
       "dA": -2,
       "dH": -3,
-      "win": 70.8
+      "win": 67.5
      }
     ],
     "suggestion": {
@@ -4162,11 +4114,11 @@
      "step": 3,
      "dA": -2,
      "dH": -3,
-     "win": 70.8
+     "win": 67.5
     },
     "enough": false
    },
-   "ms": 10312
+   "ms": 15488
   },
   {
    "leader": "echo-matriarch",
@@ -4189,7 +4141,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 87.5
+     "win": 90
     },
     {
      "side": "enemy",
@@ -4197,7 +4149,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 95.8
+     "win": 97.5
     },
     {
      "side": "enemy",
@@ -4239,7 +4191,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 87.5
+     "win": 90
     },
     "ladder": [
      {
@@ -4248,7 +4200,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 87.5
+      "win": 90
      },
      {
       "side": "enemy",
@@ -4256,16 +4208,24 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 79.2
+      "win": 87.5
+     },
+     {
+      "side": "enemy",
+      "id": "whip-spider",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 75
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "whip-spider",
-     "step": 2,
-     "dA": 2,
+     "step": 3,
+     "dA": 3,
      "dH": 0,
-     "win": 79.2
+     "win": 75
     },
     "enough": true
    },
@@ -4293,7 +4253,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 100
+      "win": 97.5
      },
      {
       "side": "player",
@@ -4301,7 +4261,7 @@
       "step": 3,
       "dA": -2,
       "dH": -3,
-      "win": 100
+      "win": 97.5
      }
     ],
     "suggestion": {
@@ -4310,11 +4270,11 @@
      "step": 3,
      "dA": -2,
      "dH": -3,
-     "win": 100
+     "win": 97.5
     },
     "enough": false
    },
-   "ms": 5633
+   "ms": 8434
   },
   {
    "leader": "echo-matriarch",
@@ -4329,7 +4289,7 @@
    "measured": 92.5,
    "target": 65,
    "easy": true,
-   "base": 83.3,
+   "base": 90,
    "tries": [
     {
      "side": "enemy",
@@ -4337,23 +4297,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
-    },
-    {
-     "side": "enemy",
-     "id": "blind-cave-fish",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 75
-    },
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 75
+     "win": 77.5
     },
     {
      "side": "enemy",
@@ -4361,7 +4305,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 80
     },
     {
      "side": "enemy",
@@ -4369,15 +4313,31 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 85
+    },
+    {
+     "side": "enemy",
+     "id": "blind-cave-fish",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 85
     },
     {
      "side": "player",
-     "id": "muskrat-lodgekeeper",
+     "id": "otter-centurion",
      "step": 1,
-     "dA": 0,
-     "dH": -3,
-     "win": 79.2
+     "dA": -1,
+     "dH": 0,
+     "win": 85
+    },
+    {
+     "side": "player",
+     "id": "tunnel-ant",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
     }
    ],
    "enemy": {
@@ -4387,7 +4347,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 77.5
     },
     "ladder": [
      {
@@ -4396,16 +4356,24 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 70.8
+      "win": 77.5
+     },
+     {
+      "side": "enemy",
+      "id": "gallery-orb-weaver",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 70
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "gallery-orb-weaver",
-     "step": 1,
-     "dA": 1,
+     "step": 2,
+     "dA": 2,
      "dH": 0,
-     "win": 70.8
+     "win": 70
     },
     "enough": true
    },
@@ -4416,7 +4384,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 75
+     "win": 85
     },
     "ladder": [
      {
@@ -4425,7 +4393,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 75
+      "win": 85
      },
      {
       "side": "player",
@@ -4433,20 +4401,28 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 70.8
+      "win": 75
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 72.5
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "otter-centurion",
-     "step": 2,
+     "step": 3,
      "dA": -2,
-     "dH": 0,
-     "win": 70.8
+     "dH": -3,
+     "win": 72.5
     },
     "enough": true
    },
-   "ms": 6384
+   "ms": 9167
   },
   {
    "leader": "echo-matriarch",
@@ -4461,7 +4437,7 @@
    "measured": 82.5,
    "target": 60,
    "easy": true,
-   "base": 79.2,
+   "base": 80,
    "tries": [
     {
      "side": "enemy",
@@ -4469,7 +4445,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
+     "win": 50
     },
     {
      "side": "enemy",
@@ -4477,7 +4453,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 67.5
     },
     {
      "side": "player",
@@ -4485,7 +4461,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 70.8
+     "win": 72.5
     },
     {
      "side": "player",
@@ -4493,7 +4469,15 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 70.8
+     "win": 72.5
+    },
+    {
+     "side": "enemy",
+     "id": "stalactite-golem",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 77.5
     },
     {
      "side": "player",
@@ -4501,15 +4485,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 75
-    },
-    {
-     "side": "enemy",
-     "id": "hollow-belly-rat",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 79.2
+     "win": 77.5
     }
    ],
    "enemy": {
@@ -4519,7 +4495,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
+     "win": 50
     },
     "ladder": [
      {
@@ -4528,7 +4504,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 41.7
+      "win": 50
      },
      {
       "side": "enemy",
@@ -4536,7 +4512,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 29.2
+      "win": 35
      },
      {
       "side": "enemy",
@@ -4544,7 +4520,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 29.2
+      "win": 25
      }
     ],
     "suggestion": {
@@ -4553,7 +4529,7 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 29.2
+     "win": 25
     },
     "enough": false
    },
@@ -4564,7 +4540,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 70.8
+     "win": 72.5
     },
     "ladder": [
      {
@@ -4573,7 +4549,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 70.8
+      "win": 72.5
      },
      {
       "side": "player",
@@ -4581,7 +4557,7 @@
       "step": 2,
       "dA": -1,
       "dH": -3,
-      "win": 66.7
+      "win": 67.5
      }
     ],
     "suggestion": {
@@ -4590,11 +4566,11 @@
      "step": 2,
      "dA": -1,
      "dH": -3,
-     "win": 66.7
+     "win": 67.5
     },
     "enough": true
    },
-   "ms": 8280
+   "ms": 12277
   },
   {
    "leader": "echo-matriarch",
@@ -4617,7 +4593,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 91.7
+     "win": 92.5
     },
     {
      "side": "enemy",
@@ -4625,7 +4601,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 91.7
+     "win": 95
     },
     {
      "side": "enemy",
@@ -4633,7 +4609,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 95.8
+     "win": 97.5
     },
     {
      "side": "player",
@@ -4641,7 +4617,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 95.8
+     "win": 97.5
     },
     {
      "side": "player",
@@ -4649,7 +4625,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 95.8
+     "win": 97.5
     },
     {
      "side": "enemy",
@@ -4667,7 +4643,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 91.7
+     "win": 92.5
     },
     "ladder": [
      {
@@ -4676,7 +4652,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 91.7
+      "win": 92.5
      },
      {
       "side": "enemy",
@@ -4684,7 +4660,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 87.5
+      "win": 90
      },
      {
       "side": "enemy",
@@ -4692,7 +4668,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 79.2
+      "win": 80
      }
     ],
     "suggestion": {
@@ -4701,7 +4677,7 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 79.2
+     "win": 80
     },
     "enough": true
    },
@@ -4712,7 +4688,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 95.8
+     "win": 97.5
     },
     "ladder": [
      {
@@ -4721,7 +4697,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 95.8
+      "win": 97.5
      },
      {
       "side": "player",
@@ -4750,7 +4726,7 @@
     },
     "enough": false
    },
-   "ms": 12155
+   "ms": 16397
   },
   {
    "leader": "echo-matriarch",
@@ -4765,7 +4741,7 @@
    "measured": 97.5,
    "target": 50,
    "easy": true,
-   "base": 83.3,
+   "base": 87.5,
    "tries": [
     {
      "side": "enemy",
@@ -4773,15 +4749,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
-    },
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 75
+     "win": 55
     },
     {
      "side": "enemy",
@@ -4789,7 +4757,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 75
     },
     {
      "side": "enemy",
@@ -4797,23 +4765,31 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 77.5
     },
     {
      "side": "player",
-     "id": "golden-eagle-diver",
+     "id": "otter-centurion",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 80
     },
     {
      "side": "player",
-     "id": "wolf-spider-mother",
+     "id": "electric-ray",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 85
+    },
+    {
+     "side": "player",
+     "id": "fawn-scout",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
     }
    ],
    "enemy": {
@@ -4823,7 +4799,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 55
     },
     "ladder": [
      {
@@ -4832,24 +4808,16 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 70.8
-     },
-     {
-      "side": "enemy",
-      "id": "sulfur-cinder-moth",
-      "step": 2,
-      "dA": 2,
-      "dH": 0,
-      "win": 45.8
+      "win": 55
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "sulfur-cinder-moth",
-     "step": 2,
-     "dA": 2,
+     "step": 1,
+     "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 55
     },
     "enough": true
    },
@@ -4860,7 +4828,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 75
+     "win": 80
     },
     "ladder": [
      {
@@ -4869,7 +4837,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 75
+      "win": 80
      },
      {
       "side": "player",
@@ -4877,7 +4845,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 79.2
+      "win": 80
      },
      {
       "side": "player",
@@ -4885,7 +4853,7 @@
       "step": 3,
       "dA": -2,
       "dH": -3,
-      "win": 83.3
+      "win": 80
      }
     ],
     "suggestion": {
@@ -4894,11 +4862,11 @@
      "step": 3,
      "dA": -2,
      "dH": -3,
-     "win": 83.3
+     "win": 80
     },
     "enough": false
    },
-   "ms": 16146
+   "ms": 21630
   },
   {
    "leader": "old-snapjaw",
@@ -4913,23 +4881,15 @@
    "measured": 32.5,
    "target": 66,
    "easy": false,
-   "base": 33.3,
+   "base": 27.5,
    "tries": [
-    {
-     "side": "enemy",
-     "id": "mangrove-monitor",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 50
-    },
     {
      "side": "player",
      "id": "tunnel-ant",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 45
     },
     {
      "side": "player",
@@ -4937,15 +4897,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
+     "win": 40
     },
     {
      "side": "enemy",
-     "id": "mangrove-manatee",
+     "id": "mangrove-monitor",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 37.5
+     "win": 35
     },
     {
      "side": "player",
@@ -4953,7 +4913,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 37.5
+     "win": 35
     },
     {
      "side": "player",
@@ -4961,7 +4921,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 37.5
+     "win": 35
+    },
+    {
+     "side": "enemy",
+     "id": "reef-shark",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 32.5
     }
    ],
    "enemy": {
@@ -4971,7 +4939,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 50
+     "win": 35
     },
     "ladder": [
      {
@@ -4980,7 +4948,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 50
+      "win": 35
      },
      {
       "side": "enemy",
@@ -4988,7 +4956,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 45.8
+      "win": 32.5
      },
      {
       "side": "enemy",
@@ -4996,7 +4964,7 @@
       "step": 3,
       "dA": -2,
       "dH": -3,
-      "win": 45.8
+      "win": 32.5
      }
     ],
     "suggestion": {
@@ -5005,7 +4973,7 @@
      "step": 3,
      "dA": -2,
      "dH": -3,
-     "win": 45.8
+     "win": 32.5
     },
     "enough": false
    },
@@ -5016,7 +4984,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 45
     },
     "ladder": [
      {
@@ -5025,7 +4993,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 45.8
+      "win": 45
      },
      {
       "side": "player",
@@ -5033,7 +5001,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 41.7
+      "win": 40
      },
      {
       "side": "player",
@@ -5041,7 +5009,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 58.3
+      "win": 50
      }
     ],
     "suggestion": {
@@ -5050,11 +5018,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 58.3
+     "win": 50
     },
-    "enough": true
+    "enough": false
    },
-   "ms": 7023
+   "ms": 10551
   },
   {
    "leader": "old-snapjaw",
@@ -5069,15 +5037,23 @@
    "measured": 17.5,
    "target": 60,
    "easy": false,
-   "base": 29.2,
+   "base": 35,
    "tries": [
     {
      "side": "player",
-     "id": "tunnel-ant",
+     "id": "otter-guard",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 47.5
+    },
+    {
+     "side": "player",
+     "id": "soldier-ant",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 45
     },
     {
      "side": "enemy",
@@ -5085,7 +5061,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 41.7
+     "win": 42.5
     },
     {
      "side": "player",
@@ -5093,15 +5069,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
+     "win": 42.5
     },
     {
      "side": "player",
-     "id": "otter-guard",
+     "id": "tunnel-ant",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 41.7
+     "win": 42.5
     },
     {
      "side": "enemy",
@@ -5109,15 +5085,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 37.5
-    },
-    {
-     "side": "enemy",
-     "id": "horseshoe-crab",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 33.3
+     "win": 40
     }
    ],
    "enemy": {
@@ -5127,7 +5095,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 41.7
+     "win": 42.5
     },
     "ladder": [
      {
@@ -5136,7 +5104,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 41.7
+      "win": 42.5
      },
      {
       "side": "enemy",
@@ -5144,7 +5112,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 41.7
+      "win": 42.5
      },
      {
       "side": "enemy",
@@ -5152,7 +5120,7 @@
       "step": 3,
       "dA": -3,
       "dH": 0,
-      "win": 37.5
+      "win": 45
      }
     ],
     "suggestion": {
@@ -5161,56 +5129,56 @@
      "step": 3,
      "dA": -3,
      "dH": 0,
-     "win": 37.5
+     "win": 45
     },
     "enough": false
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "tunnel-ant",
+     "id": "otter-guard",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 47.5
     },
     "ladder": [
      {
       "side": "player",
-      "id": "tunnel-ant",
+      "id": "otter-guard",
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 45.8
+      "win": 47.5
      },
      {
       "side": "player",
-      "id": "tunnel-ant",
+      "id": "otter-guard",
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 41.7
+      "win": 45
      },
      {
       "side": "player",
-      "id": "tunnel-ant",
+      "id": "otter-guard",
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 58.3
+      "win": 45
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "tunnel-ant",
+     "id": "otter-guard",
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 58.3
+     "win": 45
     },
-    "enough": true
+    "enough": false
    },
-   "ms": 8954
+   "ms": 12488
   },
   {
    "leader": "old-snapjaw",
@@ -5225,23 +5193,23 @@
    "measured": 5,
    "target": 40,
    "easy": false,
-   "base": 12.5,
+   "base": 17.5,
    "tries": [
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 29.2
-    },
     {
      "side": "enemy",
      "id": "proboscis-monkey",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 25
+     "win": 35
+    },
+    {
+     "side": "player",
+     "id": "otter-centurion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 30
     },
     {
      "side": "player",
@@ -5249,7 +5217,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 20.8
+     "win": 25
     },
     {
      "side": "player",
@@ -5257,7 +5225,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 20.8
+     "win": 25
+    },
+    {
+     "side": "player",
+     "id": "otter-guard",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20
     },
     {
      "side": "enemy",
@@ -5265,15 +5241,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 12.5
-    },
-    {
-     "side": "enemy",
-     "id": "mangrove-monitor",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 12.5
+     "win": 17.5
     }
    ],
    "enemy": {
@@ -5283,7 +5251,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 25
+     "win": 35
     },
     "ladder": [
      {
@@ -5292,34 +5260,18 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 25
-     },
-     {
-      "side": "enemy",
-      "id": "proboscis-monkey",
-      "step": 2,
-      "dA": -1,
-      "dH": -3,
-      "win": 29.2
-     },
-     {
-      "side": "enemy",
-      "id": "proboscis-monkey",
-      "step": 3,
-      "dA": -1,
-      "dH": -6,
-      "win": 29.2
+      "win": 35
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "proboscis-monkey",
-     "step": 3,
+     "step": 1,
      "dA": -1,
-     "dH": -6,
-     "win": 29.2
+     "dH": 0,
+     "win": 35
     },
-    "enough": false
+    "enough": true
    },
    "player": {
     "driver": {
@@ -5328,7 +5280,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 29.2
+     "win": 30
     },
     "ladder": [
      {
@@ -5337,7 +5289,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 29.2
+      "win": 30
      },
      {
       "side": "player",
@@ -5345,20 +5297,28 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 45.8
+      "win": 50
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 57.5
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "otter-centurion",
-     "step": 2,
-     "dA": 2,
+     "step": 3,
+     "dA": 3,
      "dH": 0,
-     "win": 45.8
+     "win": 57.5
     },
-    "enough": true
+    "enough": false
    },
-   "ms": 6864
+   "ms": 10619
   },
   {
    "leader": "reef-admiral",
@@ -5373,7 +5333,7 @@
    "measured": 97.5,
    "target": 64.3,
    "easy": true,
-   "base": 83.3,
+   "base": 85,
    "tries": [
     {
      "side": "enemy",
@@ -5381,7 +5341,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 75
     },
     {
      "side": "enemy",
@@ -5389,23 +5349,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
-    },
-    {
-     "side": "enemy",
-     "id": "coral-reef-shark",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 83.3
-    },
-    {
-     "side": "enemy",
-     "id": "orca-vanguard",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 83.3
+     "win": 77.5
     },
     {
      "side": "player",
@@ -5413,7 +5357,23 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 82.5
+    },
+    {
+     "side": "enemy",
+     "id": "coral-reef-shark",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 85
+    },
+    {
+     "side": "enemy",
+     "id": "orca-vanguard",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 85
     },
     {
      "side": "player",
@@ -5421,7 +5381,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 85
     }
    ],
    "enemy": {
@@ -5431,7 +5391,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 75
     },
     "ladder": [
      {
@@ -5440,18 +5400,34 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 70.8
+      "win": 75
+     },
+     {
+      "side": "enemy",
+      "id": "swordfish-spearman",
+      "step": 2,
+      "dA": 2,
+      "dH": 0,
+      "win": 50
+     },
+     {
+      "side": "enemy",
+      "id": "swordfish-spearman",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 47.5
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "swordfish-spearman",
-     "step": 1,
-     "dA": 1,
+     "step": 3,
+     "dA": 3,
      "dH": 0,
-     "win": 70.8
+     "win": 47.5
     },
-    "enough": true
+    "enough": false
    },
    "player": {
     "driver": {
@@ -5460,7 +5436,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 82.5
     },
     "ladder": [
      {
@@ -5469,7 +5445,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 83.3
+      "win": 82.5
      },
      {
       "side": "player",
@@ -5477,7 +5453,7 @@
       "step": 2,
       "dA": -1,
       "dH": -3,
-      "win": 83.3
+      "win": 85
      },
      {
       "side": "player",
@@ -5485,7 +5461,7 @@
       "step": 3,
       "dA": -1,
       "dH": -6,
-      "win": 75
+      "win": 77.5
      }
     ],
     "suggestion": {
@@ -5494,11 +5470,11 @@
      "step": 3,
      "dA": -1,
      "dH": -6,
-     "win": 75
+     "win": 77.5
     },
     "enough": false
    },
-   "ms": 5184
+   "ms": 9170
   },
   {
    "leader": "reef-admiral",
@@ -5513,7 +5489,7 @@
    "measured": 75,
    "target": 40,
    "easy": true,
-   "base": 75,
+   "base": 72.5,
    "tries": [
     {
      "side": "enemy",
@@ -5521,7 +5497,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 55
     },
     {
      "side": "enemy",
@@ -5529,13 +5505,29 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 54.2
+     "win": 60
+    },
+    {
+     "side": "enemy",
+     "id": "swordfish-spearman",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 60
     },
     {
      "side": "player",
      "id": "adder-ambusher",
      "step": 1,
      "dA": -1,
+     "dH": 0,
+     "win": 60
+    },
+    {
+     "side": "enemy",
+     "id": "riptide-eel",
+     "step": 1,
+     "dA": 1,
      "dH": 0,
      "win": 62.5
     },
@@ -5545,23 +5537,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 62.5
-    },
-    {
-     "side": "enemy",
-     "id": "riptide-eel",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 66.7
-    },
-    {
-     "side": "enemy",
-     "id": "swordfish-spearman",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 66.7
+     "win": 65
     }
    ],
    "enemy": {
@@ -5571,7 +5547,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 55
     },
     "ladder": [
      {
@@ -5580,7 +5556,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 50
+      "win": 55
      },
      {
       "side": "enemy",
@@ -5588,7 +5564,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 33.3
+      "win": 40
      }
     ],
     "suggestion": {
@@ -5597,7 +5573,7 @@
      "step": 2,
      "dA": 2,
      "dH": 0,
-     "win": 33.3
+     "win": 40
     },
     "enough": true
    },
@@ -5608,7 +5584,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 62.5
+     "win": 60
     },
     "ladder": [
      {
@@ -5617,7 +5593,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 62.5
+      "win": 60
      },
      {
       "side": "player",
@@ -5633,7 +5609,7 @@
       "step": 3,
       "dA": -1,
       "dH": -6,
-      "win": 54.2
+      "win": 50
      }
     ],
     "suggestion": {
@@ -5642,11 +5618,11 @@
      "step": 3,
      "dA": -1,
      "dH": -6,
-     "win": 54.2
+     "win": 50
     },
     "enough": false
    },
-   "ms": 9255
+   "ms": 13707
   },
   {
    "leader": "reef-admiral",
@@ -5661,7 +5637,7 @@
    "measured": 27.5,
    "target": 60,
    "easy": false,
-   "base": 16.7,
+   "base": 15,
    "tries": [
     {
      "side": "player",
@@ -5669,7 +5645,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 37.5
+     "win": 32.5
     },
     {
      "side": "enemy",
@@ -5677,15 +5653,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 20.8
-    },
-    {
-     "side": "enemy",
-     "id": "glass-octopus",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 20.8
+     "win": 22.5
     },
     {
      "side": "enemy",
@@ -5693,23 +5661,31 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 20.8
+     "win": 22.5
     },
     {
      "side": "player",
-     "id": "wolf-spider-mother",
+     "id": "echo-screecher",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 20.8
+     "win": 22.5
+    },
+    {
+     "side": "player",
+     "id": "electric-ray",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 20
     },
     {
      "side": "enemy",
-     "id": "silver-minnow",
+     "id": "glass-octopus",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 16.7
+     "win": 17.5
     }
    ],
    "enemy": {
@@ -5719,7 +5695,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 20.8
+     "win": 22.5
     },
     "ladder": [
      {
@@ -5728,7 +5704,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 20.8
+      "win": 22.5
      },
      {
       "side": "enemy",
@@ -5736,7 +5712,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 33.3
+      "win": 27.5
      },
      {
       "side": "enemy",
@@ -5744,7 +5720,7 @@
       "step": 3,
       "dA": -3,
       "dH": 0,
-      "win": 33.3
+      "win": 30
      }
     ],
     "suggestion": {
@@ -5753,7 +5729,7 @@
      "step": 3,
      "dA": -3,
      "dH": 0,
-     "win": 33.3
+     "win": 30
     },
     "enough": false
    },
@@ -5764,7 +5740,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 37.5
+     "win": 32.5
     },
     "ladder": [
      {
@@ -5773,7 +5749,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 37.5
+      "win": 32.5
      },
      {
       "side": "player",
@@ -5781,7 +5757,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 50
+      "win": 42.5
      },
      {
       "side": "player",
@@ -5789,7 +5765,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 50
+      "win": 45
      }
     ],
     "suggestion": {
@@ -5798,11 +5774,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 50
+     "win": 45
     },
     "enough": false
    },
-   "ms": 9800
+   "ms": 15114
   },
   {
    "leader": "old-snapjaw",
@@ -5817,7 +5793,7 @@
    "measured": 50,
    "target": 75,
    "easy": false,
-   "base": 37.5,
+   "base": 40,
    "tries": [
     {
      "side": "player",
@@ -5825,15 +5801,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
-    },
-    {
-     "side": "enemy",
-     "id": "alpine-swift",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 50
+     "win": 57.5
     },
     {
      "side": "player",
@@ -5841,7 +5809,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 55
     },
     {
      "side": "player",
@@ -5849,15 +5817,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
-    },
-    {
-     "side": "enemy",
-     "id": "eyrie-warden",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 45.8
+     "win": 52.5
     },
     {
      "side": "enemy",
@@ -5865,51 +5825,67 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 41.7
+     "win": 47.5
+    },
+    {
+     "side": "enemy",
+     "id": "swamp-alligator",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 47.5
+    },
+    {
+     "side": "enemy",
+     "id": "eyrie-warden",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 47.5
     }
    ],
    "enemy": {
     "driver": {
      "side": "enemy",
-     "id": "alpine-swift",
+     "id": "ibex-rockcaller",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 50
+     "win": 47.5
     },
     "ladder": [
      {
       "side": "enemy",
-      "id": "alpine-swift",
+      "id": "ibex-rockcaller",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 50
+      "win": 47.5
      },
      {
       "side": "enemy",
-      "id": "alpine-swift",
+      "id": "ibex-rockcaller",
       "step": 2,
-      "dA": -1,
-      "dH": -3,
-      "win": 37.5
+      "dA": -2,
+      "dH": 0,
+      "win": 62.5
      },
      {
       "side": "enemy",
-      "id": "alpine-swift",
+      "id": "ibex-rockcaller",
       "step": 3,
-      "dA": -1,
-      "dH": -6,
-      "win": 37.5
+      "dA": -2,
+      "dH": -3,
+      "win": 60
      }
     ],
     "suggestion": {
      "side": "enemy",
-     "id": "alpine-swift",
+     "id": "ibex-rockcaller",
      "step": 3,
-     "dA": -1,
-     "dH": -6,
-     "win": 37.5
+     "dA": -2,
+     "dH": -3,
+     "win": 60
     },
     "enough": false
    },
@@ -5920,7 +5896,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 57.5
     },
     "ladder": [
      {
@@ -5929,7 +5905,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 58.3
+      "win": 57.5
      },
      {
       "side": "player",
@@ -5937,7 +5913,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 54.2
+      "win": 52.5
      },
      {
       "side": "player",
@@ -5945,7 +5921,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 91.7
+      "win": 87.5
      }
     ],
     "suggestion": {
@@ -5954,11 +5930,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 91.7
+     "win": 87.5
     },
     "enough": false
    },
-   "ms": 13141
+   "ms": 20008
   },
   {
    "leader": "old-snapjaw",
@@ -5973,7 +5949,7 @@
    "measured": 37.5,
    "target": 63.8,
    "easy": false,
-   "base": 45.8,
+   "base": 50,
    "tries": [
     {
      "side": "player",
@@ -5981,7 +5957,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 66.7
+     "win": 67.5
+    },
+    {
+     "side": "player",
+     "id": "crimson-wing-recruit",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 65
     },
     {
      "side": "enemy",
@@ -5997,23 +5981,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 58.3
-    },
-    {
-     "side": "player",
-     "id": "wolf-spider-mother",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 58.3
-    },
-    {
-     "side": "player",
-     "id": "crimson-wing-recruit",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 58.3
+     "win": 60
     },
     {
      "side": "player",
@@ -6021,7 +5989,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 57.5
+    },
+    {
+     "side": "player",
+     "id": "wolf-spider-mother",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 55
     }
    ],
    "enemy": {
@@ -6060,7 +6036,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 66.7
+     "win": 67.5
     },
     "ladder": [
      {
@@ -6069,7 +6045,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 66.7
+      "win": 67.5
      }
     ],
     "suggestion": {
@@ -6078,11 +6054,11 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 66.7
+     "win": 67.5
     },
     "enough": true
    },
-   "ms": 10265
+   "ms": 16589
   },
   {
    "leader": "old-snapjaw",
@@ -6097,23 +6073,23 @@
    "measured": 60,
    "target": 84,
    "easy": false,
-   "base": 62.5,
+   "base": 52.5,
    "tries": [
-    {
-     "side": "enemy",
-     "id": "lyrebird-mimic",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 70.8
-    },
     {
      "side": "player",
      "id": "eagle-owl-quartermaster",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 70
+    },
+    {
+     "side": "enemy",
+     "id": "lyrebird-mimic",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 67.5
     },
     {
      "side": "enemy",
@@ -6121,7 +6097,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 66.7
+     "win": 67.5
     },
     {
      "side": "player",
@@ -6129,23 +6105,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 66.7
+     "win": 65
     },
     {
-     "side": "enemy",
-     "id": "dormouse",
+     "side": "player",
+     "id": "adder-ambusher",
      "step": 1,
-     "dA": -1,
+     "dA": 1,
      "dH": 0,
      "win": 62.5
     },
     {
      "side": "enemy",
-     "id": "hedge-weasel",
+     "id": "carrion-crow",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 62.5
+     "win": 60
     }
    ],
    "enemy": {
@@ -6155,7 +6131,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 70.8
+     "win": 67.5
     },
     "ladder": [
      {
@@ -6164,7 +6140,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 70.8
+      "win": 67.5
      },
      {
       "side": "enemy",
@@ -6172,7 +6148,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 70.8
+      "win": 67.5
      },
      {
       "side": "enemy",
@@ -6180,7 +6156,7 @@
       "step": 3,
       "dA": -3,
       "dH": 0,
-      "win": 75
+      "win": 67.5
      }
     ],
     "suggestion": {
@@ -6189,7 +6165,7 @@
      "step": 3,
      "dA": -3,
      "dH": 0,
-     "win": 75
+     "win": 67.5
     },
     "enough": false
    },
@@ -6200,7 +6176,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 70
     },
     "ladder": [
      {
@@ -6209,7 +6185,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 70.8
+      "win": 70
      },
      {
       "side": "player",
@@ -6217,20 +6193,28 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 79.2
+      "win": 75
+     },
+     {
+      "side": "player",
+      "id": "eagle-owl-quartermaster",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 77.5
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "eagle-owl-quartermaster",
-     "step": 2,
-     "dA": 2,
+     "step": 3,
+     "dA": 3,
      "dH": 0,
-     "win": 79.2
+     "win": 77.5
     },
     "enough": true
    },
-   "ms": 9510
+   "ms": 15917
   },
   {
    "leader": "old-snapjaw",
@@ -6253,15 +6237,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 75
-    },
-    {
-     "side": "enemy",
-     "id": "shimmerwing-stag",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 50
+     "win": 60
     },
     {
      "side": "player",
@@ -6269,7 +6245,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 47.5
     },
     {
      "side": "enemy",
@@ -6277,7 +6253,15 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 45.8
+     "win": 45
+    },
+    {
+     "side": "enemy",
+     "id": "shimmerwing-stag",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 45
     },
     {
      "side": "player",
@@ -6285,15 +6269,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 42.5
     },
     {
-     "side": "enemy",
-     "id": "woodpecker-sapper",
+     "side": "player",
+     "id": "burrow-rabbit",
      "step": 1,
-     "dA": -1,
+     "dA": 1,
      "dH": 0,
-     "win": 41.7
+     "win": 40
     }
    ],
    "enemy": {
@@ -6303,7 +6287,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 75
+     "win": 60
     },
     "ladder": [
      {
@@ -6312,18 +6296,34 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 75
+      "win": 60
+     },
+     {
+      "side": "enemy",
+      "id": "fox-kit",
+      "step": 2,
+      "dA": -1,
+      "dH": -3,
+      "win": 60
+     },
+     {
+      "side": "enemy",
+      "id": "fox-kit",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 60
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "fox-kit",
-     "step": 1,
+     "step": 3,
      "dA": -1,
-     "dH": 0,
-     "win": 75
+     "dH": -6,
+     "win": 60
     },
-    "enough": true
+    "enough": false
    },
    "player": {
     "driver": {
@@ -6332,7 +6332,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 47.5
     },
     "ladder": [
      {
@@ -6341,7 +6341,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 50
+      "win": 47.5
      },
      {
       "side": "player",
@@ -6349,7 +6349,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 50
+      "win": 55
      },
      {
       "side": "player",
@@ -6357,7 +6357,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 45.8
+      "win": 52.5
      }
     ],
     "suggestion": {
@@ -6366,11 +6366,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 45.8
+     "win": 52.5
     },
     "enough": false
    },
-   "ms": 9966
+   "ms": 18205
   },
   {
    "leader": "old-snapjaw",
@@ -6385,7 +6385,7 @@
    "measured": 37.5,
    "target": 60,
    "easy": false,
-   "base": 41.7,
+   "base": 47.5,
    "tries": [
     {
      "side": "enemy",
@@ -6393,7 +6393,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 70.8
+     "win": 72.5
     },
     {
      "side": "enemy",
@@ -6401,15 +6401,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 58.3
-    },
-    {
-     "side": "enemy",
-     "id": "bramblewood-lynx",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 54.2
+     "win": 60
     },
     {
      "side": "player",
@@ -6417,7 +6409,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 54.2
+     "win": 60
     },
     {
      "side": "player",
@@ -6425,15 +6417,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 55
     },
     {
-     "side": "player",
-     "id": "otter-centurion",
+     "side": "enemy",
+     "id": "swift-fox",
      "step": 1,
-     "dA": 1,
+     "dA": -1,
      "dH": 0,
-     "win": 50
+     "win": 52.5
+    },
+    {
+     "side": "enemy",
+     "id": "grizzly-vanguard",
+     "step": 1,
+     "dA": 0,
+     "dH": -3,
+     "win": 52.5
     }
    ],
    "enemy": {
@@ -6443,7 +6443,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 70.8
+     "win": 72.5
     },
     "ladder": [
      {
@@ -6452,7 +6452,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 70.8
+      "win": 72.5
      },
      {
       "side": "enemy",
@@ -6460,7 +6460,7 @@
       "step": 2,
       "dA": -1,
       "dH": -3,
-      "win": 70.8
+      "win": 70
      },
      {
       "side": "enemy",
@@ -6468,7 +6468,7 @@
       "step": 3,
       "dA": -1,
       "dH": -6,
-      "win": 66.7
+      "win": 65
      }
     ],
     "suggestion": {
@@ -6477,7 +6477,7 @@
      "step": 3,
      "dA": -1,
      "dH": -6,
-     "win": 66.7
+     "win": 65
     },
     "enough": true
    },
@@ -6488,7 +6488,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 54.2
+     "win": 60
     },
     "ladder": [
      {
@@ -6497,7 +6497,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 54.2
+      "win": 60
      }
     ],
     "suggestion": {
@@ -6506,11 +6506,11 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 54.2
+     "win": 60
     },
     "enough": true
    },
-   "ms": 11100
+   "ms": 18650
   },
   {
    "leader": "pride-queen",
@@ -6528,28 +6528,12 @@
    "base": 0,
    "tries": [
     {
-     "side": "player",
-     "id": "electric-ray",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 8.3
-    },
-    {
-     "side": "enemy",
-     "id": "weaver-bird",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 4.2
-    },
-    {
      "side": "enemy",
      "id": "pangolin-roller",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 4.2
+     "win": 5
     },
     {
      "side": "enemy",
@@ -6557,7 +6541,15 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 4.2
+     "win": 5
+    },
+    {
+     "side": "player",
+     "id": "electric-ray",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 5
     },
     {
      "side": "player",
@@ -6565,7 +6557,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 4.2
+     "win": 2.5
     },
     {
      "side": "player",
@@ -6573,51 +6565,59 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 4.2
+     "win": 2.5
+    },
+    {
+     "side": "player",
+     "id": "adder-ambusher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 2.5
     }
    ],
    "enemy": {
     "driver": {
      "side": "enemy",
-     "id": "weaver-bird",
+     "id": "pangolin-roller",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 4.2
+     "win": 5
     },
     "ladder": [
      {
       "side": "enemy",
-      "id": "weaver-bird",
+      "id": "pangolin-roller",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 4.2
+      "win": 5
      },
      {
       "side": "enemy",
-      "id": "weaver-bird",
+      "id": "pangolin-roller",
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 4.2
+      "win": 12.5
      },
      {
       "side": "enemy",
-      "id": "weaver-bird",
+      "id": "pangolin-roller",
       "step": 3,
-      "dA": -2,
-      "dH": -3,
-      "win": 4.2
+      "dA": -3,
+      "dH": 0,
+      "win": 10
      }
     ],
     "suggestion": {
      "side": "enemy",
-     "id": "weaver-bird",
+     "id": "pangolin-roller",
      "step": 3,
-     "dA": -2,
-     "dH": -3,
-     "win": 4.2
+     "dA": -3,
+     "dH": 0,
+     "win": 10
     },
     "enough": false
    },
@@ -6628,7 +6628,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 8.3
+     "win": 5
     },
     "ladder": [
      {
@@ -6637,7 +6637,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 8.3
+      "win": 5
      },
      {
       "side": "player",
@@ -6645,7 +6645,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 16.7
+      "win": 12.5
      },
      {
       "side": "player",
@@ -6653,7 +6653,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 16.7
+      "win": 10
      }
     ],
     "suggestion": {
@@ -6662,11 +6662,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 16.7
+     "win": 10
     },
     "enough": false
    },
-   "ms": 14834
+   "ms": 22432
   },
   {
    "leader": "pride-queen",
@@ -6678,10 +6678,10 @@
    "key": "14-A-3",
    "name": "Sloth Boughs",
    "kind": "skirmish",
-   "measured": 17.5,
+   "measured": 20,
    "target": 70,
    "easy": false,
-   "base": 12.5,
+   "base": 15,
    "tries": [
     {
      "side": "player",
@@ -6689,7 +6689,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 52.5
+    },
+    {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 35
     },
     {
      "side": "player",
@@ -6697,7 +6705,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 33.3
+     "win": 32.5
     },
     {
      "side": "enemy",
@@ -6708,28 +6716,20 @@
      "win": 25
     },
     {
-     "side": "player",
-     "id": "electric-ray",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 25
-    },
-    {
-     "side": "player",
-     "id": "ibex-rockcaller",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 20.8
-    },
-    {
      "side": "enemy",
-     "id": "leafcutter-gardener",
+     "id": "hoopoe-herald",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 16.7
+     "win": 22.5
+    },
+    {
+     "side": "enemy",
+     "id": "vampire-bat",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 22.5
     }
    ],
    "enemy": {
@@ -6756,7 +6756,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 29.2
+      "win": 27.5
      },
      {
       "side": "enemy",
@@ -6764,7 +6764,7 @@
       "step": 3,
       "dA": -3,
       "dH": 0,
-      "win": 20.8
+      "win": 17.5
      }
     ],
     "suggestion": {
@@ -6773,7 +6773,7 @@
      "step": 3,
      "dA": -3,
      "dH": 0,
-     "win": 20.8
+     "win": 17.5
     },
     "enough": false
    },
@@ -6784,7 +6784,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 52.5
     },
     "ladder": [
      {
@@ -6793,7 +6793,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 50
+      "win": 52.5
      },
      {
       "side": "player",
@@ -6801,28 +6801,20 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 79.2
-     },
-     {
-      "side": "player",
-      "id": "otter-centurion",
-      "step": 3,
-      "dA": 3,
-      "dH": 0,
-      "win": 79.2
+      "win": 77.5
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "otter-centurion",
-     "step": 3,
-     "dA": 3,
+     "step": 2,
+     "dA": 2,
      "dH": 0,
-     "win": 79.2
+     "win": 77.5
     },
-    "enough": false
+    "enough": true
    },
-   "ms": 18453
+   "ms": 28646
   },
   {
    "leader": "pride-queen",
@@ -6837,7 +6829,7 @@
    "measured": 2.5,
    "target": 40,
    "easy": false,
-   "base": 4.2,
+   "base": 7.5,
    "tries": [
     {
      "side": "player",
@@ -6845,23 +6837,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 25
-    },
-    {
-     "side": "enemy",
-     "id": "hoopoe-herald",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 16.7
-    },
-    {
-     "side": "enemy",
-     "id": "pangolin-roller",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 12.5
+     "win": 27.5
     },
     {
      "side": "player",
@@ -6869,7 +6845,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
+     "win": 22.5
+    },
+    {
+     "side": "enemy",
+     "id": "hoopoe-herald",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
      "win": 12.5
+    },
+    {
+     "side": "enemy",
+     "id": "pangolin-roller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 10
     },
     {
      "side": "player",
@@ -6877,15 +6869,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 12.5
+     "win": 10
     },
     {
      "side": "player",
-     "id": "electric-ray",
+     "id": "echo-screecher",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 8.3
+     "win": 10
     }
    ],
    "enemy": {
@@ -6895,7 +6887,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 16.7
+     "win": 12.5
     },
     "ladder": [
      {
@@ -6904,7 +6896,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 16.7
+      "win": 12.5
      },
      {
       "side": "enemy",
@@ -6920,7 +6912,7 @@
       "step": 3,
       "dA": -1,
       "dH": -6,
-      "win": 12.5
+      "win": 17.5
      }
     ],
     "suggestion": {
@@ -6929,7 +6921,7 @@
      "step": 3,
      "dA": -1,
      "dH": -6,
-     "win": 12.5
+     "win": 17.5
     },
     "enough": false
    },
@@ -6940,7 +6932,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 25
+     "win": 27.5
     },
     "ladder": [
      {
@@ -6949,7 +6941,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 25
+      "win": 27.5
      },
      {
       "side": "player",
@@ -6957,20 +6949,28 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
+      "win": 27.5
+     },
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
       "win": 37.5
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "adder-ambusher",
-     "step": 2,
-     "dA": 2,
+     "step": 3,
+     "dA": 3,
      "dH": 0,
      "win": 37.5
     },
     "enough": true
    },
-   "ms": 20972
+   "ms": 35132
   },
   {
    "leader": "old-snapjaw",
@@ -6985,7 +6985,7 @@
    "measured": 60,
    "target": 84,
    "easy": false,
-   "base": 79.2,
+   "base": 72.5,
    "tries": [
     {
      "side": "enemy",
@@ -6993,7 +6993,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 87.5
+     "win": 82.5
     },
     {
      "side": "enemy",
@@ -7001,15 +7001,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
-    },
-    {
-     "side": "enemy",
-     "id": "hedge-weasel",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 83.3
+     "win": 77.5
     },
     {
      "side": "enemy",
@@ -7017,7 +7009,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
     },
     {
      "side": "player",
@@ -7025,7 +7017,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
     },
     {
      "side": "player",
@@ -7033,7 +7025,15 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
+    },
+    {
+     "side": "enemy",
+     "id": "hedge-weasel",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 75
     }
    ],
    "enemy": {
@@ -7043,7 +7043,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 87.5
+     "win": 82.5
     },
     "ladder": [
      {
@@ -7052,7 +7052,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 87.5
+      "win": 82.5
      }
     ],
     "suggestion": {
@@ -7061,7 +7061,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 87.5
+     "win": 82.5
     },
     "enough": true
    },
@@ -7072,7 +7072,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
     },
     "ladder": [
      {
@@ -7081,7 +7081,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 83.3
+      "win": 77.5
      }
     ],
     "suggestion": {
@@ -7090,11 +7090,11 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
     },
     "enough": true
    },
-   "ms": 9310
+   "ms": 13617
   },
   {
    "leader": "old-snapjaw",
@@ -7109,23 +7109,23 @@
    "measured": 50,
    "target": 78,
    "easy": false,
-   "base": 33.3,
+   "base": 37.5,
    "tries": [
-    {
-     "side": "enemy",
-     "id": "stoat-cutthroat",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 50
-    },
     {
      "side": "player",
      "id": "fawn-scout",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 60
+    },
+    {
+     "side": "enemy",
+     "id": "stoat-cutthroat",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 55
     },
     {
      "side": "enemy",
@@ -7133,7 +7133,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 45.8
+     "win": 52.5
     },
     {
      "side": "player",
@@ -7141,7 +7141,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 52.5
     },
     {
      "side": "enemy",
@@ -7149,7 +7149,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 37.5
+     "win": 50
     },
     {
      "side": "enemy",
@@ -7157,7 +7157,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 37.5
+     "win": 50
     }
    ],
    "enemy": {
@@ -7167,7 +7167,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 50
+     "win": 55
     },
     "ladder": [
      {
@@ -7176,7 +7176,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 50
+      "win": 55
      },
      {
       "side": "enemy",
@@ -7184,18 +7184,26 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 70.8
+      "win": 67.5
+     },
+     {
+      "side": "enemy",
+      "id": "stoat-cutthroat",
+      "step": 3,
+      "dA": -2,
+      "dH": -3,
+      "win": 65
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "stoat-cutthroat",
-     "step": 2,
+     "step": 3,
      "dA": -2,
-     "dH": 0,
-     "win": 70.8
+     "dH": -3,
+     "win": 65
     },
-    "enough": true
+    "enough": false
    },
    "player": {
     "driver": {
@@ -7204,7 +7212,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 60
     },
     "ladder": [
      {
@@ -7213,7 +7221,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 50
+      "win": 60
      },
      {
       "side": "player",
@@ -7221,7 +7229,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 54.2
+      "win": 62.5
      },
      {
       "side": "player",
@@ -7229,7 +7237,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 70.8
+      "win": 75
      }
     ],
     "suggestion": {
@@ -7238,11 +7246,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 70.8
+     "win": 75
     },
     "enough": true
    },
-   "ms": 8992
+   "ms": 15337
   },
   {
    "leader": "old-snapjaw",
@@ -7257,7 +7265,7 @@
    "measured": 60,
    "target": 84,
    "easy": false,
-   "base": 91.7,
+   "base": 82.5,
    "tries": [
     {
      "side": "player",
@@ -7265,15 +7273,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 100
-    },
-    {
-     "side": "player",
-     "id": "wolf-spider-mother",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 100
+     "win": 95
     },
     {
      "side": "player",
@@ -7281,15 +7281,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 95.8
-    },
-    {
-     "side": "enemy",
-     "id": "frost-hare-sprinter",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 91.7
+     "win": 92.5
     },
     {
      "side": "enemy",
@@ -7297,7 +7289,15 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 91.7
+     "win": 90
+    },
+    {
+     "side": "enemy",
+     "id": "frost-hare-sprinter",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 87.5
     },
     {
      "side": "enemy",
@@ -7305,35 +7305,43 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 91.7
+     "win": 87.5
+    },
+    {
+     "side": "player",
+     "id": "wolf-spider-mother",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 87.5
     }
    ],
    "enemy": {
     "driver": {
      "side": "enemy",
-     "id": "frost-hare-sprinter",
+     "id": "snowshoe-hare",
      "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 91.7
+     "dA": 0,
+     "dH": -3,
+     "win": 90
     },
     "ladder": [
      {
       "side": "enemy",
-      "id": "frost-hare-sprinter",
+      "id": "snowshoe-hare",
       "step": 1,
-      "dA": -1,
-      "dH": 0,
-      "win": 91.7
+      "dA": 0,
+      "dH": -3,
+      "win": 90
      }
     ],
     "suggestion": {
      "side": "enemy",
-     "id": "frost-hare-sprinter",
+     "id": "snowshoe-hare",
      "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 91.7
+     "dA": 0,
+     "dH": -3,
+     "win": 90
     },
     "enough": true
    },
@@ -7344,7 +7352,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 100
+     "win": 95
     },
     "ladder": [
      {
@@ -7353,7 +7361,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 100
+      "win": 95
      },
      {
       "side": "player",
@@ -7361,7 +7369,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 100
+      "win": 95
      },
      {
       "side": "player",
@@ -7382,7 +7390,7 @@
     },
     "enough": false
    },
-   "ms": 12058
+   "ms": 18866
   },
   {
    "leader": "wolfsbane-alpha",
@@ -7397,7 +7405,7 @@
    "measured": 10,
    "target": 60,
    "easy": false,
-   "base": 4.2,
+   "base": 15,
    "tries": [
     {
      "side": "player",
@@ -7405,7 +7413,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 20.8
+     "win": 27.5
     },
     {
      "side": "enemy",
@@ -7413,7 +7421,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 16.7
+     "win": 20
     },
     {
      "side": "player",
@@ -7421,31 +7429,31 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 12.5
+     "win": 20
+    },
+    {
+     "side": "player",
+     "id": "taiga-lynx",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 17.5
     },
     {
      "side": "enemy",
-     "id": "talus-pika",
+     "id": "harbor-seal",
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 8.3
+     "win": 15
     },
     {
-     "side": "player",
-     "id": "alpine-marmot",
+     "side": "enemy",
+     "id": "spitting-spider",
      "step": 1,
-     "dA": 1,
+     "dA": -1,
      "dH": 0,
-     "win": 8.3
-    },
-    {
-     "side": "player",
-     "id": "ibex-rockcaller",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 8.3
+     "win": 15
     }
    ],
    "enemy": {
@@ -7455,7 +7463,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 16.7
+     "win": 20
     },
     "ladder": [
      {
@@ -7464,7 +7472,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 16.7
+      "win": 20
      },
      {
       "side": "enemy",
@@ -7472,7 +7480,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 20.8
+      "win": 37.5
      },
      {
       "side": "enemy",
@@ -7480,7 +7488,7 @@
       "step": 3,
       "dA": -3,
       "dH": 0,
-      "win": 33.3
+      "win": 42.5
      }
     ],
     "suggestion": {
@@ -7489,7 +7497,7 @@
      "step": 3,
      "dA": -3,
      "dH": 0,
-     "win": 33.3
+     "win": 42.5
     },
     "enough": false
    },
@@ -7500,7 +7508,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 20.8
+     "win": 27.5
     },
     "ladder": [
      {
@@ -7509,7 +7517,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 20.8
+      "win": 27.5
      },
      {
       "side": "player",
@@ -7517,7 +7525,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 33.3
+      "win": 35
      },
      {
       "side": "player",
@@ -7525,7 +7533,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 45.8
+      "win": 45
      }
     ],
     "suggestion": {
@@ -7534,11 +7542,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 45.8
+     "win": 45
     },
     "enough": false
    },
-   "ms": 22824
+   "ms": 35605
   },
   {
    "leader": "old-snapjaw",
@@ -7553,23 +7561,15 @@
    "measured": 92.5,
    "target": 60,
    "easy": true,
-   "base": 79.2,
+   "base": 80,
    "tries": [
-    {
-     "side": "enemy",
-     "id": "sandfish",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 70.8
-    },
     {
      "side": "enemy",
      "id": "sand-widow",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 62.5
     },
     {
      "side": "enemy",
@@ -7577,15 +7577,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
-    },
-    {
-     "side": "enemy",
-     "id": "dust-devil-kestrel",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 75
+     "win": 67.5
     },
     {
      "side": "enemy",
@@ -7593,7 +7585,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 72.5
     },
     {
      "side": "player",
@@ -7601,43 +7593,51 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 75
-    }
-   ],
-   "enemy": {
-    "driver": {
+     "win": 72.5
+    },
+    {
      "side": "enemy",
      "id": "sandfish",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 77.5
+    },
+    {
+     "side": "enemy",
+     "id": "caustic-scorpion",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 77.5
+    }
+   ],
+   "enemy": {
+    "driver": {
+     "side": "enemy",
+     "id": "sand-widow",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 62.5
     },
     "ladder": [
      {
       "side": "enemy",
-      "id": "sandfish",
+      "id": "sand-widow",
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 70.8
-     },
-     {
-      "side": "enemy",
-      "id": "sandfish",
-      "step": 2,
-      "dA": 2,
-      "dH": 0,
-      "win": 58.3
+      "win": 62.5
      }
     ],
     "suggestion": {
      "side": "enemy",
-     "id": "sandfish",
-     "step": 2,
-     "dA": 2,
+     "id": "sand-widow",
+     "step": 1,
+     "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 62.5
     },
     "enough": true
    },
@@ -7648,7 +7648,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 75
+     "win": 72.5
     },
     "ladder": [
      {
@@ -7657,7 +7657,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 75
+      "win": 72.5
      },
      {
       "side": "player",
@@ -7665,7 +7665,7 @@
       "step": 2,
       "dA": -1,
       "dH": -3,
-      "win": 62.5
+      "win": 57.5
      }
     ],
     "suggestion": {
@@ -7674,11 +7674,11 @@
      "step": 2,
      "dA": -1,
      "dH": -3,
-     "win": 62.5
+     "win": 57.5
     },
     "enough": true
    },
-   "ms": 19870
+   "ms": 30196
   },
   {
    "leader": "old-snapjaw",
@@ -7693,7 +7693,7 @@
    "measured": 80,
    "target": 40,
    "easy": true,
-   "base": 66.7,
+   "base": 72.5,
    "tries": [
     {
      "side": "enemy",
@@ -7701,7 +7701,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 47.5
     },
     {
      "side": "player",
@@ -7709,15 +7709,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 54.2
-    },
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 58.3
+     "win": 55
     },
     {
      "side": "enemy",
@@ -7729,19 +7721,27 @@
     },
     {
      "side": "player",
-     "id": "tunnel-ant",
+     "id": "otter-centurion",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 62.5
+     "win": 67.5
     },
     {
-     "side": "enemy",
-     "id": "sand-widow",
+     "side": "player",
+     "id": "echo-screecher",
      "step": 1,
-     "dA": 1,
+     "dA": -1,
      "dH": 0,
-     "win": 66.7
+     "win": 67.5
+    },
+    {
+     "side": "player",
+     "id": "golden-eagle-diver",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 70
     }
    ],
    "enemy": {
@@ -7751,7 +7751,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 47.5
     },
     "ladder": [
      {
@@ -7760,34 +7760,18 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 50
-     },
-     {
-      "side": "enemy",
-      "id": "dromedary",
-      "step": 2,
-      "dA": 2,
-      "dH": 0,
-      "win": 29.2
-     },
-     {
-      "side": "enemy",
-      "id": "dromedary",
-      "step": 3,
-      "dA": 3,
-      "dH": 0,
-      "win": 12.5
+      "win": 47.5
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "dromedary",
-     "step": 3,
-     "dA": 3,
+     "step": 1,
+     "dA": 1,
      "dH": 0,
-     "win": 12.5
+     "win": 47.5
     },
-    "enough": false
+    "enough": true
    },
    "player": {
     "driver": {
@@ -7796,7 +7780,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 54.2
+     "win": 55
     },
     "ladder": [
      {
@@ -7805,7 +7789,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 54.2
+      "win": 55
      },
      {
       "side": "player",
@@ -7813,20 +7797,28 @@
       "step": 2,
       "dA": -1,
       "dH": -3,
-      "win": 45.8
+      "win": 52.5
+     },
+     {
+      "side": "player",
+      "id": "adder-ambusher",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 45
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "adder-ambusher",
-     "step": 2,
+     "step": 3,
      "dA": -1,
-     "dH": -3,
-     "win": 45.8
+     "dH": -6,
+     "win": 45
     },
     "enough": true
    },
-   "ms": 17750
+   "ms": 25664
   },
   {
    "leader": "old-snapjaw",
@@ -7841,31 +7833,15 @@
    "measured": 67.5,
    "target": 90,
    "easy": false,
-   "base": 66.7,
+   "base": 65,
    "tries": [
-    {
-     "side": "enemy",
-     "id": "roadrunner-courier",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 79.2
-    },
-    {
-     "side": "enemy",
-     "id": "sandfish",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 79.2
-    },
     {
      "side": "enemy",
      "id": "skull-vulture",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 80
     },
     {
      "side": "player",
@@ -7873,7 +7849,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 77.5
     },
     {
      "side": "enemy",
@@ -7881,7 +7857,23 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 75
+     "win": 72.5
+    },
+    {
+     "side": "enemy",
+     "id": "roadrunner-courier",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 72.5
+    },
+    {
+     "side": "enemy",
+     "id": "sandfish",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 72.5
     },
     {
      "side": "player",
@@ -7889,51 +7881,51 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
+     "win": 67.5
     }
    ],
    "enemy": {
     "driver": {
      "side": "enemy",
-     "id": "roadrunner-courier",
+     "id": "skull-vulture",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 80
     },
     "ladder": [
      {
       "side": "enemy",
-      "id": "roadrunner-courier",
+      "id": "skull-vulture",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 79.2
+      "win": 80
      },
      {
       "side": "enemy",
-      "id": "roadrunner-courier",
+      "id": "skull-vulture",
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 79.2
+      "win": 72.5
      },
      {
       "side": "enemy",
-      "id": "roadrunner-courier",
+      "id": "skull-vulture",
       "step": 3,
       "dA": -2,
       "dH": -3,
-      "win": 75
+      "win": 70
      }
     ],
     "suggestion": {
      "side": "enemy",
-     "id": "roadrunner-courier",
+     "id": "skull-vulture",
      "step": 3,
      "dA": -2,
      "dH": -3,
-     "win": 75
+     "win": 70
     },
     "enough": false
    },
@@ -7944,7 +7936,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 77.5
     },
     "ladder": [
      {
@@ -7953,7 +7945,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 79.2
+      "win": 77.5
      },
      {
       "side": "player",
@@ -7961,20 +7953,28 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 83.3
+      "win": 80
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 85
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "otter-centurion",
-     "step": 2,
-     "dA": 2,
+     "step": 3,
+     "dA": 3,
      "dH": 0,
-     "win": 83.3
+     "win": 85
     },
     "enough": true
    },
-   "ms": 8504
+   "ms": 14451
   },
   {
    "leader": "old-snapjaw",
@@ -7989,16 +7989,8 @@
    "measured": 60,
    "target": 85.7,
    "easy": false,
-   "base": 54.2,
+   "base": 55,
    "tries": [
-    {
-     "side": "player",
-     "id": "talon-archer",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 66.7
-    },
     {
      "side": "enemy",
      "id": "sand-widow",
@@ -8009,7 +8001,7 @@
     },
     {
      "side": "player",
-     "id": "walrus-icebreaker",
+     "id": "talon-archer",
      "step": 1,
      "dA": 1,
      "dH": 0,
@@ -8017,27 +8009,35 @@
     },
     {
      "side": "enemy",
-     "id": "trapdoor-spider",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 58.3
-    },
-    {
-     "side": "enemy",
      "id": "skull-vulture",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 58.3
+     "win": 60
     },
     {
      "side": "player",
-     "id": "ibex-rockcaller",
+     "id": "otter-centurion",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 60
+    },
+    {
+     "side": "player",
+     "id": "echo-screecher",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 60
+    },
+    {
+     "side": "player",
+     "id": "walrus-icebreaker",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 60
     }
    ],
    "enemy": {
@@ -8064,7 +8064,7 @@
       "step": 2,
       "dA": -1,
       "dH": -3,
-      "win": 70.8
+      "win": 62.5
      },
      {
       "side": "enemy",
@@ -8072,7 +8072,7 @@
       "step": 3,
       "dA": -1,
       "dH": -6,
-      "win": 66.7
+      "win": 60
      }
     ],
     "suggestion": {
@@ -8081,7 +8081,7 @@
      "step": 3,
      "dA": -1,
      "dH": -6,
-     "win": 66.7
+     "win": 60
     },
     "enough": false
    },
@@ -8092,7 +8092,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 66.7
+     "win": 62.5
     },
     "ladder": [
      {
@@ -8101,7 +8101,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 66.7
+      "win": 62.5
      },
      {
       "side": "player",
@@ -8109,7 +8109,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 66.7
+      "win": 65
      },
      {
       "side": "player",
@@ -8117,7 +8117,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 62.5
+      "win": 67.5
      }
     ],
     "suggestion": {
@@ -8126,11 +8126,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 62.5
+     "win": 67.5
     },
     "enough": false
    },
-   "ms": 12582
+   "ms": 20792
   },
   {
    "leader": "old-snapjaw",
@@ -8145,7 +8145,7 @@
    "measured": 47.5,
    "target": 72.9,
    "easy": false,
-   "base": 45.8,
+   "base": 40,
    "tries": [
     {
      "side": "enemy",
@@ -8153,7 +8153,15 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 62.5
+     "win": 52.5
+    },
+    {
+     "side": "enemy",
+     "id": "sand-widow",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 50
     },
     {
      "side": "enemy",
@@ -8161,7 +8169,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 58.3
+     "win": 50
     },
     {
      "side": "player",
@@ -8169,15 +8177,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
-    },
-    {
-     "side": "enemy",
-     "id": "trapdoor-spider",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 54.2
+     "win": 50
     },
     {
      "side": "enemy",
@@ -8185,15 +8185,15 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 54.2
+     "win": 47.5
     },
     {
      "side": "player",
-     "id": "talon-archer",
+     "id": "walrus-icebreaker",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 54.2
+     "win": 47.5
     }
    ],
    "enemy": {
@@ -8203,7 +8203,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 62.5
+     "win": 52.5
     },
     "ladder": [
      {
@@ -8212,7 +8212,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 62.5
+      "win": 52.5
      },
      {
       "side": "enemy",
@@ -8220,16 +8220,24 @@
       "step": 2,
       "dA": -1,
       "dH": -3,
-      "win": 75
+      "win": 60
+     },
+     {
+      "side": "enemy",
+      "id": "dromedary",
+      "step": 3,
+      "dA": -1,
+      "dH": -6,
+      "win": 65
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "dromedary",
-     "step": 2,
+     "step": 3,
      "dA": -1,
-     "dH": -3,
-     "win": 75
+     "dH": -6,
+     "win": 65
     },
     "enough": true
    },
@@ -8240,7 +8248,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 58.3
+     "win": 50
     },
     "ladder": [
      {
@@ -8249,7 +8257,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 58.3
+      "win": 50
      },
      {
       "side": "player",
@@ -8257,20 +8265,28 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 66.7
+      "win": 62.5
+     },
+     {
+      "side": "player",
+      "id": "otter-centurion",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 67.5
      }
     ],
     "suggestion": {
      "side": "player",
      "id": "otter-centurion",
-     "step": 2,
-     "dA": 2,
+     "step": 3,
+     "dA": 3,
      "dH": 0,
-     "win": 66.7
+     "win": 67.5
     },
     "enough": true
    },
-   "ms": 10141
+   "ms": 19630
   },
   {
    "leader": "yeti-chieftain",
@@ -8293,7 +8309,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 85
     },
     {
      "side": "enemy",
@@ -8301,15 +8317,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
-    },
-    {
-     "side": "enemy",
-     "id": "fire-salamander",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 87.5
+     "win": 85
     },
     {
      "side": "enemy",
@@ -8317,21 +8325,29 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 87.5
-    },
-    {
-     "side": "enemy",
-     "id": "pit-glutton",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 87.5
+     "win": 85
     },
     {
      "side": "player",
      "id": "ibex-rockcaller",
      "step": 1,
      "dA": -1,
+     "dH": 0,
+     "win": 85
+    },
+    {
+     "side": "player",
+     "id": "talon-archer",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 85
+    },
+    {
+     "side": "enemy",
+     "id": "fire-salamander",
+     "step": 1,
+     "dA": 1,
      "dH": 0,
      "win": 87.5
     }
@@ -8343,7 +8359,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 85
     },
     "ladder": [
      {
@@ -8352,7 +8368,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 83.3
+      "win": 85
      },
      {
       "side": "enemy",
@@ -8360,7 +8376,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 87.5
+      "win": 85
      },
      {
       "side": "enemy",
@@ -8368,7 +8384,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 83.3
+      "win": 85
      }
     ],
     "suggestion": {
@@ -8377,7 +8393,7 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 83.3
+     "win": 85
     },
     "enough": false
    },
@@ -8388,7 +8404,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 87.5
+     "win": 85
     },
     "ladder": [
      {
@@ -8397,7 +8413,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 87.5
+      "win": 85
      },
      {
       "side": "player",
@@ -8405,7 +8421,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 87.5
+      "win": 85
      },
      {
       "side": "player",
@@ -8426,7 +8442,7 @@
     },
     "enough": true
    },
-   "ms": 14055
+   "ms": 21319
   },
   {
    "leader": "yeti-chieftain",
@@ -8441,7 +8457,7 @@
    "measured": 87.5,
    "target": 60,
    "easy": true,
-   "base": 91.7,
+   "base": 82.5,
    "tries": [
     {
      "side": "enemy",
@@ -8449,7 +8465,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 62.5
+     "win": 57.5
     },
     {
      "side": "enemy",
@@ -8457,15 +8473,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 70.8
-    },
-    {
-     "side": "enemy",
-     "id": "pumice-beetle",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 79.2
+     "win": 70
     },
     {
      "side": "player",
@@ -8473,7 +8481,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 72.5
     },
     {
      "side": "player",
@@ -8481,15 +8489,23 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 75
     },
     {
-     "side": "player",
-     "id": "echo-screecher",
+     "side": "enemy",
+     "id": "pumice-beetle",
      "step": 1,
-     "dA": -1,
+     "dA": 1,
      "dH": 0,
-     "win": 83.3
+     "win": 77.5
+    },
+    {
+     "side": "enemy",
+     "id": "talus-pika",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 80
     }
    ],
    "enemy": {
@@ -8499,7 +8515,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 62.5
+     "win": 57.5
     },
     "ladder": [
      {
@@ -8508,7 +8524,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 62.5
+      "win": 57.5
      }
     ],
     "suggestion": {
@@ -8517,7 +8533,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 62.5
+     "win": 57.5
     },
     "enough": true
    },
@@ -8528,7 +8544,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 72.5
     },
     "ladder": [
      {
@@ -8537,7 +8553,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 79.2
+      "win": 72.5
      },
      {
       "side": "player",
@@ -8545,7 +8561,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 83.3
+      "win": 75
      },
      {
       "side": "player",
@@ -8553,7 +8569,7 @@
       "step": 3,
       "dA": -2,
       "dH": -3,
-      "win": 66.7
+      "win": 60
      }
     ],
     "suggestion": {
@@ -8562,11 +8578,11 @@
      "step": 3,
      "dA": -2,
      "dH": -3,
-     "win": 66.7
+     "win": 60
     },
     "enough": true
    },
-   "ms": 14569
+   "ms": 23769
   },
   {
    "leader": "yeti-chieftain",
@@ -8584,22 +8600,6 @@
    "base": 75,
    "tries": [
     {
-     "side": "enemy",
-     "id": "cinder-stoker",
-     "step": 1,
-     "dA": 0,
-     "dH": -3,
-     "win": 87.5
-    },
-    {
-     "side": "player",
-     "id": "otter-centurion",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 87.5
-    },
-    {
      "side": "player",
      "id": "alpine-marmot",
      "step": 1,
@@ -8608,20 +8608,20 @@
      "win": 87.5
     },
     {
-     "side": "enemy",
-     "id": "tide-spirit",
+     "side": "player",
+     "id": "otter-centurion",
      "step": 1,
-     "dA": -1,
+     "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 85
     },
     {
      "side": "enemy",
-     "id": "phoenix-fledgling",
+     "id": "cinder-stoker",
      "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 79.2
+     "dA": 0,
+     "dH": -3,
+     "win": 82.5
     },
     {
      "side": "player",
@@ -8629,7 +8629,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 80
+    },
+    {
+     "side": "player",
+     "id": "fawn-scout",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 80
+    },
+    {
+     "side": "enemy",
+     "id": "tide-spirit",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 77.5
     }
    ],
    "enemy": {
@@ -8639,7 +8655,7 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 87.5
+     "win": 82.5
     },
     "ladder": [
      {
@@ -8648,7 +8664,7 @@
       "step": 1,
       "dA": 0,
       "dH": -3,
-      "win": 87.5
+      "win": 82.5
      },
      {
       "side": "enemy",
@@ -8656,7 +8672,7 @@
       "step": 2,
       "dA": 0,
       "dH": -6,
-      "win": 91.7
+      "win": 92.5
      },
      {
       "side": "enemy",
@@ -8664,7 +8680,7 @@
       "step": 3,
       "dA": 0,
       "dH": -9,
-      "win": 91.7
+      "win": 92.5
      }
     ],
     "suggestion": {
@@ -8673,14 +8689,14 @@
      "step": 3,
      "dA": 0,
      "dH": -9,
-     "win": 91.7
+     "win": 92.5
     },
     "enough": false
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "otter-centurion",
+     "id": "alpine-marmot",
      "step": 1,
      "dA": 1,
      "dH": 0,
@@ -8689,7 +8705,7 @@
     "ladder": [
      {
       "side": "player",
-      "id": "otter-centurion",
+      "id": "alpine-marmot",
       "step": 1,
       "dA": 1,
       "dH": 0,
@@ -8697,24 +8713,32 @@
      },
      {
       "side": "player",
-      "id": "otter-centurion",
+      "id": "alpine-marmot",
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 75
+      "win": 87.5
+     },
+     {
+      "side": "player",
+      "id": "alpine-marmot",
+      "step": 3,
+      "dA": 3,
+      "dH": 0,
+      "win": 90
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "otter-centurion",
-     "step": 2,
-     "dA": 2,
+     "id": "alpine-marmot",
+     "step": 3,
+     "dA": 3,
      "dH": 0,
-     "win": 75
+     "win": 90
     },
-    "enough": true
+    "enough": false
    },
-   "ms": 13365
+   "ms": 22909
   },
   {
    "leader": "yeti-chieftain",
@@ -8729,23 +8753,23 @@
    "measured": 32.5,
    "target": 60,
    "easy": false,
-   "base": 25,
+   "base": 35,
    "tries": [
-    {
-     "side": "enemy",
-     "id": "magma-salamander",
-     "step": 1,
-     "dA": -1,
-     "dH": 0,
-     "win": 45.8
-    },
     {
      "side": "player",
      "id": "obsidian-scorpion",
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 50
+    },
+    {
+     "side": "enemy",
+     "id": "magma-salamander",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 47.5
     },
     {
      "side": "enemy",
@@ -8753,7 +8777,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 37.5
+     "win": 45
     },
     {
      "side": "enemy",
@@ -8761,23 +8785,23 @@
      "step": 1,
      "dA": 0,
      "dH": -3,
-     "win": 33.3
+     "win": 42.5
     },
     {
-     "side": "player",
-     "id": "fawn-scout",
+     "side": "enemy",
+     "id": "ore-smelter-mole",
      "step": 1,
-     "dA": 1,
+     "dA": -1,
      "dH": 0,
-     "win": 33.3
+     "win": 40
     },
     {
-     "side": "player",
-     "id": "echo-screecher",
+     "side": "enemy",
+     "id": "phoenix-fledgling",
      "step": 1,
-     "dA": 1,
+     "dA": -1,
      "dH": 0,
-     "win": 33.3
+     "win": 37.5
     }
    ],
    "enemy": {
@@ -8787,7 +8811,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 45.8
+     "win": 47.5
     },
     "ladder": [
      {
@@ -8796,7 +8820,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 45.8
+      "win": 47.5
      },
      {
       "side": "enemy",
@@ -8804,26 +8828,18 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 50
-     },
-     {
-      "side": "enemy",
-      "id": "magma-salamander",
-      "step": 3,
-      "dA": -2,
-      "dH": -3,
-      "win": 50
+      "win": 57.5
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "magma-salamander",
-     "step": 3,
+     "step": 2,
      "dA": -2,
-     "dH": -3,
-     "win": 50
+     "dH": 0,
+     "win": 57.5
     },
-    "enough": false
+    "enough": true
    },
    "player": {
     "driver": {
@@ -8832,7 +8848,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 45.8
+     "win": 50
     },
     "ladder": [
      {
@@ -8841,7 +8857,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 45.8
+      "win": 50
      },
      {
       "side": "player",
@@ -8849,7 +8865,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 41.7
+      "win": 47.5
      },
      {
       "side": "player",
@@ -8857,7 +8873,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 58.3
+      "win": 55
      }
     ],
     "suggestion": {
@@ -8866,11 +8882,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 58.3
+     "win": 55
     },
     "enough": true
    },
-   "ms": 12969
+   "ms": 19864
   },
   {
    "leader": "old-snapjaw",
@@ -8885,7 +8901,7 @@
    "measured": 97.5,
    "target": 40,
    "easy": true,
-   "base": 95.8,
+   "base": 95,
    "tries": [
     {
      "side": "enemy",
@@ -8893,15 +8909,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
-    },
-    {
-     "side": "enemy",
-     "id": "ashbone-ghoul",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 83.3
+     "win": 80
     },
     {
      "side": "enemy",
@@ -8909,7 +8917,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
+     "win": 82.5
+    },
+    {
+     "side": "enemy",
+     "id": "ashbone-ghoul",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
      "win": 87.5
+    },
+    {
+     "side": "enemy",
+     "id": "ossuary-lammergeier",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 90
     },
     {
      "side": "player",
@@ -8917,23 +8941,15 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 91.7
+     "win": 90
     },
     {
-     "side": "enemy",
-     "id": "cave-warlord",
+     "side": "player",
+     "id": "echidna-quillshot",
      "step": 1,
-     "dA": 1,
+     "dA": -1,
      "dH": 0,
-     "win": 95.8
-    },
-    {
-     "side": "enemy",
-     "id": "pit-glutton",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 95.8
+     "win": 90
     }
    ],
    "enemy": {
@@ -8943,7 +8959,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 80
     },
     "ladder": [
      {
@@ -8952,7 +8968,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 75
+      "win": 80
      },
      {
       "side": "enemy",
@@ -8968,7 +8984,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 50
+      "win": 55
      }
     ],
     "suggestion": {
@@ -8977,7 +8993,7 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 50
+     "win": 55
     },
     "enough": false
    },
@@ -8988,7 +9004,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 91.7
+     "win": 90
     },
     "ladder": [
      {
@@ -8997,7 +9013,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 91.7
+      "win": 90
      },
      {
       "side": "player",
@@ -9005,7 +9021,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 100
+      "win": 97.5
      },
      {
       "side": "player",
@@ -9013,7 +9029,7 @@
       "step": 3,
       "dA": -3,
       "dH": 0,
-      "win": 95.8
+      "win": 97.5
      }
     ],
     "suggestion": {
@@ -9022,11 +9038,11 @@
      "step": 3,
      "dA": -3,
      "dH": 0,
-     "win": 95.8
+     "win": 97.5
     },
     "enough": false
    },
-   "ms": 20710
+   "ms": 31822
   },
   {
    "leader": "old-snapjaw",
@@ -9041,7 +9057,7 @@
    "measured": 90,
    "target": 67.1,
    "easy": true,
-   "base": 95.8,
+   "base": 97.5,
    "tries": [
     {
      "side": "enemy",
@@ -9049,7 +9065,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 91.7
+     "win": 92.5
     },
     {
      "side": "enemy",
@@ -9057,7 +9073,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 91.7
+     "win": 95
+    },
+    {
+     "side": "enemy",
+     "id": "pit-glutton",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 95
+    },
+    {
+     "side": "player",
+     "id": "ibex-rockcaller",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 95
     },
     {
      "side": "enemy",
@@ -9065,7 +9097,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 95.8
+     "win": 97.5
     },
     {
      "side": "enemy",
@@ -9073,23 +9105,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 95.8
-    },
-    {
-     "side": "enemy",
-     "id": "cinder-stoker",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 95.8
-    },
-    {
-     "side": "enemy",
-     "id": "fumarole-ibex",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 95.8
+     "win": 97.5
     }
    ],
    "enemy": {
@@ -9099,7 +9115,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 91.7
+     "win": 92.5
     },
     "ladder": [
      {
@@ -9108,7 +9124,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 91.7
+      "win": 92.5
      },
      {
       "side": "enemy",
@@ -9116,7 +9132,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 87.5
+      "win": 80
      },
      {
       "side": "enemy",
@@ -9124,7 +9140,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 50
+      "win": 55
      }
     ],
     "suggestion": {
@@ -9133,56 +9149,56 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 50
+     "win": 55
     },
     "enough": false
    },
    "player": {
     "driver": {
      "side": "player",
-     "id": "otter-centurion",
+     "id": "ibex-rockcaller",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 95.8
+     "win": 95
     },
     "ladder": [
      {
       "side": "player",
-      "id": "otter-centurion",
+      "id": "ibex-rockcaller",
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 95.8
+      "win": 95
      },
      {
       "side": "player",
-      "id": "otter-centurion",
+      "id": "ibex-rockcaller",
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 91.7
+      "win": 90
      },
      {
       "side": "player",
-      "id": "otter-centurion",
+      "id": "ibex-rockcaller",
       "step": 3,
       "dA": -2,
       "dH": -3,
-      "win": 91.7
+      "win": 92.5
      }
     ],
     "suggestion": {
      "side": "player",
-     "id": "otter-centurion",
+     "id": "ibex-rockcaller",
      "step": 3,
      "dA": -2,
      "dH": -3,
-     "win": 91.7
+     "win": 92.5
     },
     "enough": false
    },
-   "ms": 15895
+   "ms": 27193
   },
   {
    "leader": "old-snapjaw",
@@ -9197,7 +9213,7 @@
    "measured": 87.5,
    "target": 50,
    "easy": true,
-   "base": 87.5,
+   "base": 92.5,
    "tries": [
     {
      "side": "enemy",
@@ -9205,15 +9221,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
-    },
-    {
-     "side": "enemy",
-     "id": "ossuary-lammergeier",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 75
+     "win": 85
     },
     {
      "side": "enemy",
@@ -9221,7 +9229,23 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 85
+    },
+    {
+     "side": "enemy",
+     "id": "ossuary-lammergeier",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 85
+    },
+    {
+     "side": "enemy",
+     "id": "magma-salamander",
+     "step": 1,
+     "dA": 1,
+     "dH": 0,
+     "win": 85
     },
     {
      "side": "enemy",
@@ -9229,7 +9253,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 79.2
+     "win": 87.5
     },
     {
      "side": "player",
@@ -9237,15 +9261,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
-    },
-    {
-     "side": "enemy",
-     "id": "pit-glutton",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 83.3
+     "win": 87.5
     }
    ],
    "enemy": {
@@ -9255,7 +9271,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 75
+     "win": 85
     },
     "ladder": [
      {
@@ -9264,7 +9280,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 75
+      "win": 85
      },
      {
       "side": "enemy",
@@ -9272,7 +9288,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 58.3
+      "win": 72.5
      },
      {
       "side": "enemy",
@@ -9280,7 +9296,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 58.3
+      "win": 65
      }
     ],
     "suggestion": {
@@ -9289,7 +9305,7 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 58.3
+     "win": 65
     },
     "enough": false
    },
@@ -9300,7 +9316,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 79.2
+     "win": 87.5
     },
     "ladder": [
      {
@@ -9309,7 +9325,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 79.2
+      "win": 87.5
      },
      {
       "side": "player",
@@ -9317,7 +9333,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 75
+      "win": 82.5
      },
      {
       "side": "player",
@@ -9325,7 +9341,7 @@
       "step": 3,
       "dA": -3,
       "dH": 0,
-      "win": 75
+      "win": 82.5
      }
     ],
     "suggestion": {
@@ -9334,11 +9350,11 @@
      "step": 3,
      "dA": -3,
      "dH": 0,
-     "win": 75
+     "win": 82.5
     },
     "enough": false
    },
-   "ms": 27398
+   "ms": 43097
   },
   {
    "leader": "old-snapjaw",
@@ -9361,7 +9377,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 16.7
+     "win": 30
     },
     {
      "side": "enemy",
@@ -9369,7 +9385,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 50
+     "win": 40
     },
     {
      "side": "enemy",
@@ -9380,20 +9396,12 @@
      "win": 62.5
     },
     {
-     "side": "enemy",
-     "id": "cinder-skeleton",
-     "step": 1,
-     "dA": 1,
-     "dH": 0,
-     "win": 66.7
-    },
-    {
      "side": "player",
      "id": "otter-centurion",
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 66.7
+     "win": 65
     },
     {
      "side": "player",
@@ -9401,7 +9409,15 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 66.7
+     "win": 65
+    },
+    {
+     "side": "player",
+     "id": "echidna-quillshot",
+     "step": 1,
+     "dA": -1,
+     "dH": 0,
+     "win": 67.5
     }
    ],
    "enemy": {
@@ -9411,7 +9427,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 16.7
+     "win": 30
     },
     "ladder": [
      {
@@ -9420,34 +9436,18 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 16.7
-     },
-     {
-      "side": "enemy",
-      "id": "magma-wraith",
-      "step": 2,
-      "dA": 2,
-      "dH": 0,
-      "win": 8.3
-     },
-     {
-      "side": "enemy",
-      "id": "magma-wraith",
-      "step": 3,
-      "dA": 3,
-      "dH": 0,
-      "win": 4.2
+      "win": 30
      }
     ],
     "suggestion": {
      "side": "enemy",
      "id": "magma-wraith",
-     "step": 3,
-     "dA": 3,
+     "step": 1,
+     "dA": 1,
      "dH": 0,
-     "win": 4.2
+     "win": 30
     },
-    "enough": false
+    "enough": true
    },
    "player": {
     "driver": {
@@ -9456,7 +9456,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 66.7
+     "win": 65
     },
     "ladder": [
      {
@@ -9465,7 +9465,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 66.7
+      "win": 65
      },
      {
       "side": "player",
@@ -9473,7 +9473,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 50
+      "win": 55
      },
      {
       "side": "player",
@@ -9481,7 +9481,7 @@
       "step": 3,
       "dA": -2,
       "dH": -3,
-      "win": 20.8
+      "win": 27.5
      }
     ],
     "suggestion": {
@@ -9490,11 +9490,11 @@
      "step": 3,
      "dA": -2,
      "dH": -3,
-     "win": 20.8
+     "win": 27.5
     },
-    "enough": false
+    "enough": true
    },
-   "ms": 14612
+   "ms": 20552
   }
  ],
  "multi": [
@@ -9505,9 +9505,7 @@
     "0-B-1 (hard)",
     "0-B-2 (hard)",
     "0-B-4 (hard)",
-    "2-B-4 (easy)",
-    "5-7 (easy)",
-    "6-7 (easy)",
+    "5-5 (easy)",
     "7-A-5 (easy)",
     "8-4 (easy)",
     "8-6 (easy)",
@@ -9520,8 +9518,6 @@
     "17-7 (hard)",
     "18-A-1 (hard)",
     "18-A-5 (hard)",
-    "19-A-3 (hard)",
-    "20-4 (easy)",
     "20-A-4 (easy)"
    ]
   },
@@ -9530,10 +9526,11 @@
    "id": "cricket-drummer",
    "fights": [
     "2-A-1 (hard)",
-    "2-A-3 (easy)",
     "2-A-5 (hard)",
     "2-A-6 (hard)",
+    "3-5 (easy)",
     "6-4 (easy)",
+    "6-5 (easy)",
     "6-6 (easy)",
     "6-8 (easy)"
    ]
@@ -9557,8 +9554,8 @@
     "2-5 (easy)",
     "4-5 (easy)",
     "7-A-1 (hard)",
-    "9-5 (hard)",
-    "9-6 (hard)"
+    "7-A-4 (easy)",
+    "9-5 (hard)"
    ]
   },
   {
@@ -9567,6 +9564,7 @@
    "fights": [
     "1-3 (easy)",
     "1-4 (easy)",
+    "1-5 (easy)",
     "2-4 (easy)"
    ]
   },
@@ -9580,12 +9578,30 @@
    ]
   },
   {
+   "side": "enemy",
+   "id": "tidepool-trapper-crab",
+   "fights": [
+    "2-5 (easy)",
+    "2-A-1 (hard)",
+    "2-A-3 (easy)"
+   ]
+  },
+  {
    "side": "player",
    "id": "otter-guard",
    "fights": [
-    "3-5 (easy)",
-    "5-4 (easy)",
-    "7-A-4 (easy)"
+    "2-A-3 (easy)",
+    "5-7 (easy)",
+    "9-6 (hard)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "ibex-rockcaller",
+   "fights": [
+    "19-4 (easy)",
+    "19-5 (easy)",
+    "20-4 (easy)"
    ]
   },
   {
@@ -9597,35 +9613,11 @@
    ]
   },
   {
-   "side": "player",
-   "id": "soldier-ant",
-   "fights": [
-    "1-5 (easy)",
-    "8-7 (easy)"
-   ]
-  },
-  {
-   "side": "enemy",
-   "id": "tidepool-trapper-crab",
-   "fights": [
-    "2-A-1 (hard)",
-    "2-A-3 (easy)"
-   ]
-  },
-  {
    "side": "enemy",
    "id": "grass-viper",
    "fights": [
     "5-4 (easy)",
     "5-7 (easy)"
-   ]
-  },
-  {
-   "side": "player",
-   "id": "burrow-rabbit",
-   "fights": [
-    "6-5 (easy)",
-    "10-A-4 (hard)"
    ]
   },
   {
@@ -9638,10 +9630,26 @@
   },
   {
    "side": "enemy",
+   "id": "ibex-rockcaller",
+   "fights": [
+    "11-5 (hard)",
+    "11-8 (hard)"
+   ]
+  },
+  {
+   "side": "enemy",
    "id": "fox-kit",
    "fights": [
     "13-5 (hard)",
     "13-7 (hard)"
+   ]
+  },
+  {
+   "side": "player",
+   "id": "alpine-marmot",
+   "fights": [
+    "13-5 (hard)",
+    "19-A-3 (hard)"
    ]
   },
   {
@@ -9654,18 +9662,18 @@
   },
   {
    "side": "enemy",
+   "id": "sand-widow",
+   "fights": [
+    "18-6 (easy)",
+    "18-A-2 (hard)"
+   ]
+  },
+  {
+   "side": "enemy",
    "id": "dromedary",
    "fights": [
     "18-7 (easy)",
     "18-A-5 (hard)"
-   ]
-  },
-  {
-   "side": "player",
-   "id": "ibex-rockcaller",
-   "fights": [
-    "19-4 (easy)",
-    "19-5 (easy)"
    ]
   },
   {

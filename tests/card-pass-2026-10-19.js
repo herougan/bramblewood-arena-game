@@ -60,7 +60,9 @@ const SKILL2 = (()=>{ const j = readJSON('docs/balance/skill2-refit-2026-10-31.j
 const BAL11 = new Set((readJSON('docs/balance/bal11/refit-2026-11-02.json').held || []).map(h=> h.id));
 // 2026-11-02 (package BAL12): + the Lumber makers BAL12's re-fit held (no line within 2 a stat keeps the body; docs/balance/bal12/refit-2026-11-02.json, decision BAL12-1)
 const BAL12 = new Set((readJSON('docs/balance/bal12/refit-2026-11-02.json').held || []).map(h=> h.id));
-const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !SKILL2.has(c.id) && !BAL11.has(c.id) && !BAL12.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
+// 2026-11-03 (package BAL14): + the cards BAL14's re-fit held after the full bramble-15 re-measure (docs/balance/bal14/refit-2026-11-03.json, decision BAL14-1)
+const BAL14 = new Set((readJSON('docs/balance/bal14/refit-2026-11-03.json').held || []).map(h=> h.id));
+const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !SKILL2.has(c.id) && !BAL11.has(c.id) && !BAL12.has(c.id) && !BAL14.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
 ok(!over.length, '1. today\'s budget passes for every live card but the owner-call list, the post-balance queue and the held list: ' + over.slice(0, 8).join('; '));
 // the pass's own fits still hold under the costs it was made with (every applied entry back at its prevValue), or the card is queued
 const SCT = JSON.parse(read('canonical/skill-costs.json')); ['skills', 'triggers', 'actions', 'modifiers'].forEach(k=> (SCT[k] || []).forEach(e=>{ if(e.appliedAt) e.value = e.prevValue; }));

@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-02T03:10:31.052Z",
- "fingerprint": "6035264fa026",
+ "generated": "2026-11-02T21:20:41.259Z",
+ "fingerprint": "9bee2332ba75",
  "map": {
   "id": "m5",
   "num": 14,
@@ -15,7 +15,6 @@
   "grave-grin-hyena",
   "hoopoe-herald",
   "house-cat",
-  "leafcutter-gardener",
   "marula-elephant",
   "mouse-sapper",
   "pangolin-roller",
@@ -33,7 +32,6 @@
   "Grave-Grin Hyena",
   "Hoopoe Herald",
   "House Cat",
-  "Leafcutter Gardener",
   "Marula Elephant",
   "Mouse Sapper",
   "Pangolin Roller",
@@ -121,8 +119,7 @@
    "label": "economy (resource makers)",
    "cards": [
     "carrion-crow",
-    "dust-hyena",
-    "leafcutter-gardener"
+    "dust-hyena"
    ],
    "need": 6
   },
@@ -151,7 +148,6 @@
     "grave-grin-hyena",
     "hoopoe-herald",
     "house-cat",
-    "leafcutter-gardener",
     "plains-zebra"
    ],
    "need": 14
@@ -168,49 +164,57 @@
    "focus": "economy",
    "steps": 4,
    "moves": 1,
-   "games": 1716,
+   "games": 1628,
    "apartFromEarlier": null
   },
   {
    "focus": "big",
    "steps": 4,
-   "moves": 3,
-   "games": 1672,
+   "moves": 1,
+   "games": 1628,
    "apartFromEarlier": 10
   },
   {
    "focus": "swarm",
-   "steps": 4,
-   "moves": 2,
-   "games": 1540,
-   "apartFromEarlier": 14
+   "steps": 5,
+   "moves": 1,
+   "games": 1562,
+   "apartFromEarlier": 6
   },
   {
    "focus": "open",
    "steps": 4,
-   "moves": 2,
-   "games": 1562,
-   "apartFromEarlier": 7
+   "moves": 3,
+   "games": 1650,
+   "apartFromEarlier": 10
   }
  ],
  "apart": 6,
- "seconds": 88,
- "games": 7194,
+ "seconds": 99,
+ "games": 7172,
  "decks": [
   {
    "focus": "swarm",
    "labels": [
-    "swarm (14 copies at 0 Lumber)"
+    "swarm (16 copies at 0 Lumber)",
+    "economy (4 resource makers)"
    ],
    "deck": {
-    "carrion-crow": 2,
+    "dust-hyena": 4,
     "grave-grin-hyena": 4,
     "hoopoe-herald": 4,
     "plains-zebra": 4,
     "pride-queen": 2,
-    "weaver-bird": 4
+    "springbok-pronker": 2
    },
    "cards": [
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
     {
      "id": "grave-grin-hyena",
      "name": "Grave-Grin Hyena",
@@ -233,474 +237,44 @@
      "rarity": "uncommon"
     },
     {
-     "id": "weaver-bird",
-     "name": "Weaver Bird",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "carrion-crow",
-     "name": "Carrion Crow",
-     "copies": 2,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
      "id": "pride-queen",
      "name": "Pride Queen",
      "copies": 2,
      "cost": 1,
      "rarity": "veryrare"
-    }
-   ],
-   "score": 0.9205,
-   "ci": [
-    0.889,
-    0.9519
-   ],
-   "avgLumber": 0.3,
-   "avgWait": 0.4,
-   "curve": {
-    "0": 14,
-    "1": 6
-   },
-   "resourceMakers": 2,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:14-1",
-     "label": "vs 14-1 skirmish's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-2",
-     "label": "vs 14-2 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-3",
-     "label": "vs 14-3 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-4",
-     "label": "vs 14-4 skirmish's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-5",
-     "label": "vs 14-5 elite's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-6",
-     "label": "vs 14-6 elite's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-7",
-     "label": "vs 14-7 elite's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-8",
-     "label": "vs 14-8 miniboss's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 14-1's field",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road14",
-     "label": "vs reference deck (Map 14) under 14-2's field",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
-     "p": 0.875,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 12
-  },
-  {
-   "focus": "open",
-   "labels": [
-    "big (8 copies at 1+ Lumber, average 0.4)",
-    "economy (8 resource makers)"
-   ],
-   "deck": {
-    "carrion-crow": 4,
-    "grave-grin-hyena": 4,
-    "leafcutter-gardener": 4,
-    "pangolin-roller": 4,
-    "pride-queen": 2,
-    "savanna-cheetah": 2
-   },
-   "cards": [
-    {
-     "id": "carrion-crow",
-     "name": "Carrion Crow",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "grave-grin-hyena",
-     "name": "Grave-Grin Hyena",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "leafcutter-gardener",
-     "name": "Leafcutter Gardener",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "pangolin-roller",
-     "name": "Pangolin Roller",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "pride-queen",
-     "name": "Pride Queen",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "veryrare"
-    },
-    {
-     "id": "savanna-cheetah",
-     "name": "Savanna Cheetah",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "veryrare"
-    }
-   ],
-   "score": 0.8902,
-   "ci": [
-    0.8544,
-    0.9259
-   ],
-   "avgLumber": 0.4,
-   "avgWait": 0.7,
-   "curve": {
-    "0": 12,
-    "1": 8
-   },
-   "resourceMakers": 8,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:14-1",
-     "label": "vs 14-1 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-2",
-     "label": "vs 14-2 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-3",
-     "label": "vs 14-3 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-4",
-     "label": "vs 14-4 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-5",
-     "label": "vs 14-5 elite's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-6",
-     "label": "vs 14-6 elite's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-7",
-     "label": "vs 14-7 elite's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-8",
-     "label": "vs 14-8 miniboss's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 14-1's field",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road14",
-     "label": "vs reference deck (Map 14) under 14-2's field",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
-     "p": 0.875,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "economy",
-   "labels": [
-    "big (10 copies at 1+ Lumber, average 0.5)",
-    "economy (10 resource makers)"
-   ],
-   "deck": {
-    "carrion-crow": 3,
-    "dust-hyena": 3,
-    "leafcutter-gardener": 4,
-    "pangolin-roller": 4,
-    "savanna-cheetah": 2,
-    "weaver-bird": 4
-   },
-   "cards": [
-    {
-     "id": "leafcutter-gardener",
-     "name": "Leafcutter Gardener",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "pangolin-roller",
-     "name": "Pangolin Roller",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "weaver-bird",
-     "name": "Weaver Bird",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "carrion-crow",
-     "name": "Carrion Crow",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "dust-hyena",
-     "name": "Dust Hyena",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "savanna-cheetah",
-     "name": "Savanna Cheetah",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "veryrare"
-    }
-   ],
-   "score": 0.875,
-   "ci": [
-    0.8368,
-    0.9132
-   ],
-   "avgLumber": 0.5,
-   "avgWait": 0.35,
-   "curve": {
-    "0": 10,
-    "1": 10
-   },
-   "resourceMakers": 10,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:14-1",
-     "label": "vs 14-1 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-2",
-     "label": "vs 14-2 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-3",
-     "label": "vs 14-3 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-4",
-     "label": "vs 14-4 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-5",
-     "label": "vs 14-5 elite's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-6",
-     "label": "vs 14-6 elite's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-7",
-     "label": "vs 14-7 elite's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:14-8",
-     "label": "vs 14-8 miniboss's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 14-1's field",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road14",
-     "label": "vs reference deck (Map 14) under 14-2's field",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
-     "p": 1,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 7
-  },
-  {
-   "focus": "big",
-   "labels": [
-    "big (10 copies at 1+ Lumber, average 0.5)",
-    "economy (6 resource makers)"
-   ],
-   "deck": {
-    "dust-hyena": 2,
-    "hoopoe-herald": 4,
-    "leafcutter-gardener": 4,
-    "pangolin-roller": 4,
-    "pride-queen": 2,
-    "springbok-pronker": 4
-   },
-   "cards": [
-    {
-     "id": "hoopoe-herald",
-     "name": "Hoopoe Herald",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "leafcutter-gardener",
-     "name": "Leafcutter Gardener",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "pangolin-roller",
-     "name": "Pangolin Roller",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
     },
     {
      "id": "springbok-pronker",
      "name": "Springbok Pronker",
-     "copies": 4,
+     "copies": 2,
      "cost": 1,
      "rarity": "common"
-    },
-    {
-     "id": "dust-hyena",
-     "name": "Dust Hyena",
-     "copies": 2,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "pride-queen",
-     "name": "Pride Queen",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "veryrare"
     }
    ],
-   "score": 0.875,
+   "score": 0.9205,
    "ci": [
-    0.8382,
-    0.9118
+    0.8902,
+    0.9507
    ],
-   "avgLumber": 0.5,
+   "avgLumber": 0.2,
    "avgWait": 0.3,
    "curve": {
-    "0": 10,
-    "1": 10
+    "0": 16,
+    "1": 4
    },
-   "resourceMakers": 6,
+   "resourceMakers": 4,
    "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:14-1",
      "label": "vs 14-1 skirmish's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:14-2",
      "label": "vs 14-2 skirmish's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
@@ -718,31 +292,31 @@
     {
      "entry": "mirror|fight:14-5",
      "label": "vs 14-5 elite's deck",
-     "p": 0.7083,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:14-6",
      "label": "vs 14-6 elite's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:14-7",
      "label": "vs 14-7 elite's deck",
-     "p": 0.875,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:14-8",
      "label": "vs 14-8 miniboss's deck",
-     "p": 0.7083,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 14-1's field",
-     "p": 0.9583,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -758,8 +332,430 @@
      "n": 24
     }
    ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "carrion-crow": 2,
+    "dust-hyena": 4,
+    "hoopoe-herald": 4,
+    "plains-zebra": 4,
+    "savanna-cheetah": 2,
+    "springbok-pronker": 4
+   },
+   "cards": [
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "plains-zebra",
+     "name": "Plains Zebra",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "springbok-pronker",
+     "name": "Springbok Pronker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8788,
+   "ci": [
+    0.8427,
+    0.9148
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.1,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 6,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)"
+   ],
+   "deck": {
+    "carrion-crow": 2,
+    "grave-grin-hyena": 2,
+    "hoopoe-herald": 4,
+    "house-cat": 4,
+    "mouse-sapper": 4,
+    "springbok-pronker": 4
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mouse-sapper",
+     "name": "Mouse Sapper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "springbok-pronker",
+     "name": "Springbok Pronker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8788,
+   "ci": [
+    0.8429,
+    0.9147
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 2,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
    "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "economy (8 resource makers)"
+   ],
+   "deck": {
+    "carrion-crow": 4,
+    "dust-hyena": 4,
+    "grave-grin-hyena": 4,
+    "house-cat": 3,
+    "mouse-sapper": 3,
+    "savanna-cheetah": 2
+   },
+   "cards": [
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mouse-sapper",
+     "name": "Mouse Sapper",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8447,
+   "ci": [
+    0.8031,
+    0.8863
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.55,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 8,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map m5 --pool acacia-giraffe,carrion-crow,dust-hyena,grave-grin-hyena,hoopoe-herald,house-cat,leafcutter-gardener,marula-elephant,mouse-sapper,pangolin-roller,plains-zebra,pride-queen,savanna-cheetah,spitting-cobra,springbok-pronker,weaver-bird --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map m5 --pool acacia-giraffe,carrion-crow,dust-hyena,grave-grin-hyena,hoopoe-herald,house-cat,marula-elephant,mouse-sapper,pangolin-roller,plains-zebra,pride-queen,savanna-cheetah,spitting-cobra,springbok-pronker,weaver-bird --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
 }

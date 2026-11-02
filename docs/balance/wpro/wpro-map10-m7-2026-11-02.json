@@ -1,6 +1,6 @@
 {
  "tool": "tools/opt/wpro_2026_11_02.js",
- "generated": "2026-11-02T08:01:24.396Z",
+ "generated": "2026-11-02T21:25:39.461Z",
  "map": {
   "id": "m7",
   "num": 10,
@@ -23,6 +23,7 @@
   "reef-admiral",
   "reef-shark",
   "riptide-eel",
+  "supernova-jelly",
   "swordfish-spearman"
  ],
  "rule": {
@@ -33,7 +34,7 @@
  },
  "settings": {
   "seed": "wpro|m7",
-  "budget": 1200,
+  "budget": 1600,
   "finalGames": 24,
   "apart": 6
  },
@@ -87,27 +88,27 @@
    "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field"
   }
  ],
- "steps": 3,
- "moves": 0,
- "games": 2112,
- "seconds": 17,
+ "steps": 4,
+ "moves": 1,
+ "games": 2376,
+ "seconds": 25,
  "weak": [
   {
    "deck": {
-    "banded-sea-krait": 4,
     "colossal-squid": 2,
-    "electric-ray": 2,
+    "coral-reef-shark": 4,
+    "electric-ray": 4,
     "kraken-spawnling": 4,
     "orca-vanguard": 4,
-    "reef-shark": 4
+    "supernova-jelly": 2
    },
-   "score": 0.066,
+   "score": 0.1198,
    "ci": [
-    0.0434,
-    0.0885
+    0.0857,
+    0.1539
    ],
-   "vsRef": 0,
-   "refWins": 1,
+   "vsRef": 0.0347,
+   "refWins": 0.9653,
    "labels": [
     "big (10 copies at 3+ Lumber, average 2.3)",
     "tide x10",
@@ -121,22 +122,22 @@
     },
     {
      "entry": "mirror|fight:10-2",
-     "p": 0.5833,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-3",
-     "p": 0,
+     "p": 0.0417,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-4",
-     "p": 0,
+     "p": 0.0833,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-5",
-     "p": 0,
+     "p": 0.0417,
      "n": 24
     },
     {
@@ -146,22 +147,22 @@
     },
     {
      "entry": "mirror|fight:10-7",
-     "p": 0,
+     "p": 0.125,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-8",
-     "p": 0.0417,
+     "p": 0.1667,
      "n": 24
     },
     {
      "entry": "mirror|fight:10-9",
-     "p": 0,
+     "p": 0.1667,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
-     "p": 0,
+     "p": 0.0833,
      "n": 24
     },
     {
@@ -171,7 +172,7 @@
     },
     {
      "entry": "mirror|ref:expected",
-     "p": 0,
+     "p": 0.0208,
      "n": 24
     }
    ]
@@ -180,29 +181,28 @@
  "strong": {
   "id": "10-BPRO-1",
   "deck": {
-   "clownfish-scout": 3,
    "coral-polyp-colony": 4,
+   "coral-reef-shark": 4,
    "electric-ray": 4,
-   "kraken-spawnling": 3,
-   "parrotfish": 3,
-   "swordfish-spearman": 3
+   "open-ocean-hermit-crab": 1,
+   "parrotfish": 4,
+   "supernova-jelly": 3
   },
-  "score": 0.8125,
+  "score": 0.8628,
   "ci": [
-   0.7732,
-   0.8518
+   0.8263,
+   0.8994
   ],
-  "vsRef": 0.5694,
-  "refWins": 0.4306,
+  "vsRef": 0.7083,
+  "refWins": 0.2917,
   "labels": [
    "economy (4 resource makers)",
-   "tide x13",
-   "cleave x6"
+   "tide x13"
   ],
   "perOpponent": [
    {
     "entry": "mirror|fight:10-1",
-    "p": 0.9167,
+    "p": 0.9375,
     "n": 24
    },
    {
@@ -212,17 +212,17 @@
    },
    {
     "entry": "mirror|fight:10-3",
-    "p": 0.9167,
+    "p": 1,
     "n": 24
    },
    {
     "entry": "mirror|fight:10-4",
-    "p": 0.8333,
+    "p": 0.9583,
     "n": 24
    },
    {
     "entry": "mirror|fight:10-5",
-    "p": 0.875,
+    "p": 0.8333,
     "n": 24
    },
    {
@@ -232,12 +232,12 @@
    },
    {
     "entry": "mirror|fight:10-7",
-    "p": 0.875,
+    "p": 0.8333,
     "n": 24
    },
    {
     "entry": "mirror|fight:10-8",
-    "p": 0.875,
+    "p": 0.9167,
     "n": 24
    },
    {
@@ -247,17 +247,17 @@
    },
    {
     "entry": "mirror|ref:starter",
-    "p": 0.9167,
+    "p": 0.9583,
     "n": 24
    },
    {
     "entry": "mirror|ref:road10",
-    "p": 0.375,
+    "p": 0.5833,
     "n": 24
    },
    {
     "entry": "mirror|ref:expected",
-    "p": 0.4167,
+    "p": 0.5833,
     "n": 24
    }
   ]
