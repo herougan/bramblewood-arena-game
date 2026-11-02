@@ -55,7 +55,8 @@ ok(/if\(ev && !ev\.__t12 && revealTut12\(\)\) return tut12LogMask\(logText\(/.te
 // ---- 2. Bee Knight's levels
 // 2026-10-30 TUT2: owner SKL0-1 "T-1/T-2 won't have swarm or flying ... no skills till lvl 1": Flying arrives at Level 1 too
 ok(bee && JSON.stringify(bee.effects) === '{"swarm":true,"flying":true}' && JSON.stringify(bee.levelSkills) === '{"1":{"swarm":true,"flying":true}}', '2. cards.json: Bee Knight as printed (Level 1) has Swarm + Flying; levelSkills: both arrive at Level 1 (TUT2)');
-ok(cards.filter(c=> c.levelSkills).every(c=> Object.keys(c.levelSkills).every(k=> +k > 0)), '2. no levelSkills at Level 0');
+// 2026-11-02 (ENG18, owner BASELVL-1: "Baby cards start at level 0"): a Baby card's Hatchling is its one Level 0 level skill
+ok(cards.filter(c=> c.levelSkills).every(c=> Object.keys(c.levelSkills).every(k=> +k > 0 || (c.kind === 'baby' && JSON.stringify(c.levelSkills[k]) === '{"hatchling":true}'))), '2. no levelSkills at Level 0 (but a Baby card\'s Hatchling)');
 const L = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = L.G;
 { const overlay = {}, defs = Object.assign({}, L.CARD_DEFS_BASELINE);
   const c = {getCardDefs: ()=> defs, copyBaseDef: id=> L.CARD_DEFS_BASELINE[id] || null, cardBaseLevel: G.cardBaseLevel, statsAtLevel: G.statsAtLevel, matchDefsOverlay: overlay, Number, Object};
@@ -66,9 +67,10 @@ const L = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = L.G;
   const lv1 = (()=>{ const fx = Object.assign({}, bee.effects); Object.keys(bee.levelSkills).map(Number).filter(k=> k <= 1).forEach(k=> Object.assign(fx, bee.levelSkills[k])); return fx; })();
   ok(lv1.swarm && lv1.flying, '2. at Level 1 (copyDefAt / referencePlayerDeck merge levelSkills <= L) it has Flying + Swarm');
   // 2026-10-30 TUT2: owner SKL0-1 "yes definitely": every T-1 / T-2 card is Level 0; a Base card (own level 1) gets its Level 0 copy too
-  ok(['earthworm', 'crossed-eyes'].every(id=> c.R.tutorialLevel0Def(id) === null) && ['pond-trout', 'silver-minnow', 'duckling', 'cottontail'].every(id=>{ const o = c.R.tutorialLevel0Def(id); return o && o.level === 0; }), '2. the other six T-1 / T-2 cards: Level 0 (the Base cards as their Level 0 copy, TUT2; Earthworm and Crossed-Eyes are Level 0 already)');
+  // 2026-11-02 (ENG18, BASELVL-1): the Duckling is a Baby card, Level 0 already, so it plays as itself (like Earthworm)
+  ok(['earthworm', 'crossed-eyes', 'duckling'].every(id=> c.R.tutorialLevel0Def(id) === null) && ['pond-trout', 'silver-minnow', 'cottontail'].every(id=>{ const o = c.R.tutorialLevel0Def(id); return o && o.level === 0; }), '2. the other six T-1 / T-2 cards: Level 0 (the Base cards as their Level 0 copy, TUT2; Earthworm and Crossed-Eyes are Level 0 already)');
   const deck = c.R.tutorialPlainDeck({'bee-knight': 2, duckling: 3}, 1);
-  ok(deck['bee-knight~tut0'] === 2 && deck['duckling~tut0'] === 3 && !deck['bee-knight'] && overlay['bee-knight~tut0'], '2. the tutorial deck (either side) deals the Level 0 copies');
+  ok(deck['bee-knight~tut0'] === 2 && deck['duckling'] === 3 /* ENG18: Level 0 already */ && !deck['bee-knight'] && overlay['bee-knight~tut0'], '2. the tutorial deck (either side) deals the Level 0 copies');
   ok(/rivalCounts = tutorialPlainDeck\(tutDecks\.rival, st\)/.test(app) && /deckCounts = tutorialPlainDeck\(tutDecks\.mine, st\)/.test(app), '2. both T-1 / T-2 decks go through it');
   // the budget at each level
   const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')));
