@@ -112,7 +112,7 @@ async def hh4(b, url, w):
     pg = await W.fresh(b, url, w)
     await pg.evaluate(REACH); await pg.evaluate(OPEN); await pg.wait_for_timeout(3500)
     d = await pg.evaluate("(()=>{ const d = getCardDefs().torch; return d && {type: d.cardType, rarity: d.rarity, grant: d.equip && d.equip.grant, src: d.source, aw: d.awaitingSource, obtain: cardObtainableFrom(d), unatt: isUnattainable(d)}; })()")
-    ok(d and d['type'] == 'equipment' and d['rarity'] == 'common' and d['grant'] == {'illuminate': True} and d['aw'] is True, f'the Torch card: common equipment granting Illuminate, awaitingSource {d}')
+    ok(d and d['type'] == 'equipment' and d['rarity'] == 'common' and d['grant'] == {'illuminate': True} and not d['aw'] and d['src'] and d['src'].get('kind') == 'secret', f'the Torch card: common equipment granting Illuminate, from its secret source {d}')  # 2026-11-02 (coordinator): CARD5 cleared awaitingSource (it has art and a secret source)
     ok(d and d['obtain'] == 'secret' and not d['unatt'], f'a secret card (obtainable, so the grant is not refused) {d and d["obtain"]}')
     s = await pg.evaluate(TSTATE)
     ok(s is not None and s['dis'] and not s['lit'] and 'too dark' in s['tip'], f'cold pit: the bracket is there, disabled and dark {s}')
