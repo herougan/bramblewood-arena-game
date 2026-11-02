@@ -11,7 +11,7 @@
 // The optimum: optima[0] of the newest map-true run among --tags (first tag that has a file for the map wins; default the HUB7 re-run, then
 // PRO3's 10-25 run). A row says which file it came from, so a reused 10-25 deck is visible.
 // One game: exactly tools/opt/pro_ease.js's reference vs PRO fight (the game's playReferenceGame): you = the reference set at its scheduled
-// levels, no leader; the enemy = the optimum as a PRO fight (pro_skirmishes.proNode under the map's average field, the PRO rule's level and
+// levels, with the set's leader (FIX6, 2026-11-02; was: none); the enemy = the optimum as a PRO fight (pro_skirmishes.proNode under the map's average field, the PRO rule's level and
 // CPU skill, its showcase leader from Map 2). Seeds: fnv(seed | map id | ref | deck key), games seed0 + 37g, so a pairing repeats exactly.
 // Output: docs/balance/hub7-ref-vs-optimum-<date>.json (--out to change).
 'use strict';

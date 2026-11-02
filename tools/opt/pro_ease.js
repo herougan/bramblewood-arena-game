@@ -8,8 +8,8 @@
 //
 // One game: the game's own playReferenceGame (arena_app.js, through tools/lib_bramble.js), the reference fight the road measure plays:
 //   - you: the reference set (--ref: 'map' = the map's reference deck at referencePlayerLevel; 'ref2' ... = a set from docs/balance/ref/, baked
-//     into arena_app.js REF_DECK_SETS, at its scheduled per-copy levels), your seat on CPU skill 1, the plain home bramble, no leader (the
-//     reference harness has none);
+//     into arena_app.js REF_DECK_SETS, at its scheduled per-copy levels), your seat on CPU skill 1, the plain home bramble, and the set's
+//     leader when it names one (FIX6, 2026-11-02: dealt by playReferenceGame; was: no leader; 'map' names none);
 //   - the enemy: the PRO fight as the game builds it (proNodeOf: the PRO's deck at its level 1, its showcase leader from Map 2, the map's castle
 //     and Shield rule, the entry's average field, the CPU at the PRO rule's skill, Smart).
 // Seeds: seed0 = fnv(seed | entry id | ref set), games seed0 + 37g (the same as the road measure's spacing), so a pairing repeats exactly.

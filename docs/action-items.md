@@ -21,6 +21,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - KK13 (owner 14:26): go live once KK1-KK11 are merged. DONE: Release 11-02a live 2026-11-02 (106ea8f2).
 - KK14 (found at the 11-02a release): since ENG17, `tests/opt-2026-10-23.js` fails "--redo ladder repeats the ladder exactly" (3 of 3 runs; passes at 66e27c8d). A replay of the optimizer's ladder walks a different path once Baby cards are Stems (Hatchling). Tool-only, the game is unaffected. Next: find the order-dependent step in tools/opt/deckopt.js (levelled '@p' defs, mineFor) and make it deterministic.
 - KK15: `tests/e2e/ui14_2026_11_02.py` is flaky under load (a different check fails each loaded run; the Brood check passed 4 of 4 runs alone). Make its waits robust.
+- KK16 (owner 21:12, CONTENT7-3): Bright Night Algae becomes Dinoflagellates (type algae, phylum flora). With KK17, after BAL12 / BAL13 merge.
+- KK17 (owner 21:12, CONTENT7-1 + "I want jellyfish in the game"): place the sea cards only where the map is under its card cap (main 8-11 own, 12-16 total; side 11-14). Plan: Pebble Beach (2): Bloodworm, Moon Jelly; Sunken Hollow (4): Lion's Mane Jelly, Pistol Shrimp; Kelp Mangroves (9): Man o' War; Coral Current (10): Nautiloid, Supernova Jelly. No room: Bobbit Worm, Dinoflagellates (unlisted). Each placed card re-fit to its map; road re-measured.
+- KK18 (owner 21:12): after balancing, choose rewards per map and which cards are in which pack; skirmish rewards are their own thing (not pack cards).
+- KK19 (owner 21:12): FIX5, dynamic values (Swarm bonus etc.) reset on victory: running.
+- KK20 (owner 21:12): Drowned Matriarch: a Sunken Hollow SPECIAL card (Uncommon 2/13), 2 copies in 4-5's deck; 4-5's leader is Old Sturgeon. Still listed in the Tower's Heroic pool (TOWER_POOLS) though it is Uncommon now: check the Tower pools against current rarities.
 
 ## 11-02 00:17: the owner's notes (owner asleep; "Decisions - you decide" stands)
 - JJ1 (UI14; done 11-02, not yet released): VS screen: the pills show for ~1 s, too short to read them all. See JJ8.

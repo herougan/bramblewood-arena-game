@@ -9169,7 +9169,7 @@ function abilityBadges(d, bopts){
   if(e.changeling) out.push(`${iconHTML('changeling', '🎭')}`);
   if(e.keenEye) out.push(`${iconHTML('keen-eye', '👁️')}`);
   if(e.primed) out.push(`${iconHTML('primed', '🔋')}`);
-  if(e.drunk) out.push(`${iconHTML('drunk', '🍺')}`); if(e.purblind) out.push(`${iconHTML('purblind', '🕶️')}`); if(e.scatterbrained) out.push(`${iconHTML('scatterbrained', '❓')}`);
+  if(e.drunk) out.push(`${iconHTML('drunk', '🍺')}`); if(e.purblind && !(bopts && bopts.live && bopts.live.blind > 0)) out.push(`${iconHTML('purblind', '🕶️')}`); /* 2026-11-02 (owner SS#1 21:37: "Blind has redundant context pips. Just use the above one."): on the board a Purblind unit already shows its Blind status pip, so the trait pip only shows outside a fight or while it is not Blind */ if(e.scatterbrained) out.push(`${iconHTML('scatterbrained', '❓')}`);
   if(e.tipsy) out.push(`${iconHTML('tipsy', '🍺')}${e.tipsy.chance||''}%`); if(e.confuse) out.push(`${iconHTML('confuse', '❓')}${e.confuse.chance||''}%`);
   if(e.overwhelm) out.push(`${iconHTML('overwhelm', '🐘')}`); // Stampede (2026-10-10) // Anti-Air (2026-10-10): a slingshot stone for the birds
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
@@ -20148,6 +20148,7 @@ function referenceFightSetup(mapId, node, opts){
   const ref = referenceDeckFor(mapId, node);
   if(opts.refSet && opts.refSet !== 'map' && !opts.deck){ const rs = refSetFor(opts.refSet, mapId, node); if(rs){ ref.stage = 'ref:' + rs.set; ref.deck = rs.deck; ref.parts = rs.parts; ref.level = rs.level; ref.leader = rs.leader; } } // 2026-10-25 (package PREF): Reference-2 and later sets, a level per copy
   if(opts.deck){ ref.stage = 'trial'; ref.deck = opts.deck; } if(opts.level != null){ ref.level = opts.level; delete ref.parts; }
+  if(opts.noLeader) ref.leader = null; else if(opts.leader) ref.leader = opts.leader; // FIX6 (2026-11-02): playReferenceGame deals ref.leader to your seat
   const savedOverlay = matchDefsOverlay, savedGrant = matchLeaderGrantMap;
   try{
     matchDefsOverlay = {};
@@ -20162,6 +20163,17 @@ function referenceFightSetup(mapId, node, opts){
       mode: node.battleMode || CONQUEST_DEFAULT_MODE, sc: skirmishCastle(node), myCastle: earlyHomeBramble(node, brambleChar(CHARACTER_DEFS.castle || {id:'castle', health:30}))}; // BF5: at BRAMBLE_SCALE; EB (2026-10-23): the early lead
   } finally { matchDefsOverlay = savedOverlay; matchLeaderGrantMap = savedGrant; invalidateCardDefs(); }
 }
+// FIX6 (2026-11-02, owner 21:37: "Drowned Matriarch ... is never played ... make sure we take leaders into account"): your seat's leader in a
+// game the engine plays for you. The game gives you your leader beside the board (matchState.leaderDefId), summoned once at its card's cost
+// (attemptSummonLeader); a seat the engine plays (Auto-play, autoplayStep; the sims' reference player, playReferenceGame) gets it as a
+// reserve leader with leaderPlan on: the engine brings it out as soon as it can pay, pitches for it and keeps its Lumber for it up to
+// AI_PLAN_TURNS turns (bramblewood-engine.js aiLeaderToGather). The CPU's leaders keep LEAD-4 (no saving). Before FIX6 the sims dealt your
+// seat no leader at all, and Auto-play never summoned it. Tools: lib_bramble exports it (G.dealPlayerLeader(P[1], id, defs)); pass
+// {noLeader: true} to referenceFightSetup to measure a set without its leader. Returns true when dealt.
+function dealPlayerLeader(pl, leaderId, defs){
+  if(!pl || !leaderId || (defs && !defs[leaderId])) return false;
+  pl.reserveLeaders = [leaderId]; pl.leaderPlan = true; return true;
+}
 // One game g of a reference fight. It ends at DRAW_ROUND_CAP rounds (the stall rule earlier), and after maxMs (if given) as a draw.
 function playReferenceGame(ctx, g, maxMs){
   const engine = makeSimEngine(ctx.defs, seededRng(ctx.seed0 + g * 37), {recordEvents:false, battleMode: ctx.mode, rules: ctx.rules, aiAim:true, aiLevel: ctx.cpu});
@@ -20169,6 +20181,7 @@ function playReferenceGame(ctx, g, maxMs){
   const P = {1: engine.newPlayer(1, ctx.mine, ctx.myCastle), 2: engine.newPlayer(2, ctx.enemyDeck, ctx.sc.character)};
   P[2].loopCards = []; Object.assign(P[2].hq, ctx.setup.hq); if(ctx.setup.hq.shieldLayers) P[2].hq.shieldLayers = ctx.setup.hq.shieldLayers.slice(); if(ctx.setup.reserveLeaders) P[2].reserveLeaders = ctx.setup.reserveLeaders.slice();
   if(ctx.setup.openingExtra) P[2].openingExtra = ctx.setup.openingExtra; // ENG14 (2026-10-30, X25): an elite's 4-card opening hand
+  if(ctx.ref && ctx.ref.leader) dealPlayerLeader(P[1], ctx.ref.leader, ctx.defs); // FIX6 (2026-11-02): your seat's leader, as the game deals it
   if(ctx.node.floor > 1 && !ctx.node.tower) P[2].perks = Object.assign({}, P[2].perks || {}, {floorPct: (ctx.node.floor - 1) * ENDLESS_FLOOR_CURVE.floorPct}); // 2026-10-19 (LV): was 0.04 a floor
   engine.draw(P[1], 3, 'A', stats, null); engine.draw(P[2], 3, 'B', stats, null);
   const t0 = maxMs ? Date.now() : 0; let r = 1, over = false, lastSig = null, stalled = 0, timedOut = false;
@@ -23585,12 +23598,18 @@ function undercroftTheme(f){
 // break) every extra level adds +1 Attack or +1 Health, picked by a seed per card and level (statsBeyondLevel), unless the card has
 // its own stats for that level. No Dungeon tickets: each floor costs Energy like an elite, and a cleared floor stays cleared.
 const TOWER_LEVEL_CAP = 20, TOWER_BR_START = 555, TOWER_BR_STEP = 25, TOWER_FLOORS = 50;
+// FIX6 (2026-11-02, KK20): the pools follow the cards' current rarities (cards.json). BAL9 and earlier passes had moved 17 of them: the Very Rares
+// (Ur-Elk, Shimmerwing Stag, Woodland Brawler, Lone Grey Wolf, Ember Revenant, Yeti Chieftain, Pride Queen, Wolfsbane Alpha) have a tier of their
+// own; Old Snapjaw (Rare) is a Rare; The Contradiction and Triumvirate (Epic) are Epics; the Caldera Wyrm (Heroic) left the boss pool for the
+// Heroics, joined by the Fire Drake Hatchling; the three Uncommons (Octopus Tactician, Drowned Matriarch, Old Shell) left the Tower. The boss pool keeps its dragons, now Mythic,
+// Divine and Ancient beside the Blue Dragon and the Old Willow (decision FIX6-3). Unique is empty (no Unique card qualifies today).
 const TOWER_POOLS = {
-  rare: ['malachite-golem', 'marching-elephant', 'ur-elk', 'siege-rhino', 'ironback-gorilla', 'octopus-tactician', 'shimmerwing-stag', 'vampire-squid', 'obsidian-lich', 'badger-berserker', 'woodland-brawler', 'lone-grey-wolf'],
-  epic: ['ironmaw-warwolf', 'marshal-of-rivergate', 'irradiated-couatl', 'ember-revenant', 'the-sixfold', 'iron-warden'],
-  heroic: ['yeti-chieftain', 'rivergate-tribune', 'sunspire-sky-sovereign', 'old-snapjaw', 'pride-queen', 'wolfsbane-alpha', 'drowned-matriarch', 'old-shell'],
-  unique: ['the-contradiction', 'triumvirate'],
-  legendary: ['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'caldera-wyrm', 'old-willow-of-the-ford'],
+  rare: ['malachite-golem', 'marching-elephant', 'siege-rhino', 'ironback-gorilla', 'vampire-squid', 'obsidian-lich', 'badger-berserker', 'old-snapjaw'],
+  veryrare: ['ur-elk', 'shimmerwing-stag', 'woodland-brawler', 'lone-grey-wolf', 'ember-revenant', 'yeti-chieftain', 'pride-queen', 'wolfsbane-alpha'],
+  epic: ['ironmaw-warwolf', 'marshal-of-rivergate', 'irradiated-couatl', 'the-sixfold', 'iron-warden', 'the-contradiction', 'triumvirate'],
+  heroic: ['rivergate-tribune', 'sunspire-sky-sovereign', 'caldera-wyrm', 'fire-drake-hatchling'], // + the Fire Drake Hatchling (Heroic, 20-B-4 like the Wyrm): the top floors had too few Heroics to reach their rating
+  unique: [],
+  legendary: ['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'old-willow-of-the-ford'],
 };
 // Lumber sources for the tower (2026-10-17): the Nautilus Drifter (Rare: +1 Lumber each time it is Ready, Bounty 1) and the Gilded
 // Swan Knight (Super Rare: Bounty 2). See towerFloorDeck.
@@ -23620,7 +23639,7 @@ function towerFloorDeck(f, defs){
   const wantAvg = target / ratingLevelFactor(lvGoal, TOWER_LEVEL_CAP) / DECK_SIZE;
   let count = 0, wsum = 0;
   if(boss){ const id = pick('legendary'); if(id){ deck[id] = 1; count += 1; wsum += ratingWeightOf(defs[id]); } }
-  const tiers = ['rare', 'epic', 'heroic', 'unique'];
+  const tiers = ['rare', 'veryrare', 'epic', 'heroic', 'unique']; // + veryrare (FIX6, 2026-11-02)
   while(count < 12){
     const k = Math.min(2, 12 - count);
     let best = null, bestErr = Infinity; tiers.forEach(t=>{ if(!(TOWER_POOLS[t] || []).some(id=> defs[id] && !used.has(id))) return; const w = RATING_WEIGHT[t], err = Math.abs((wsum + k*w) / (count + k) - wantAvg); if(err < bestErr){ bestErr = err; best = t; } });
@@ -41104,13 +41123,28 @@ function processIdleSweep(){
 }
 setTimeout(()=>{ try{ processIdleSweep(); }catch(e){} }, 6000);
 function setIdleSweepTarget(mapId, nodeKey){ try{ localStorage.setItem(IDLE_SWEEP_KEY, JSON.stringify(mapId ? {mapId, nodeKey} : null)); }catch(e){} }
+// FIX6 (2026-11-02, owner 21:37: "... is never played"): Auto-play never summoned your leader (the engine's turn only reads a seat's
+// reserveLeaders, and yours sits in matchState.leaderDefId). For the Auto turn your leader is lent to the engine as a reserve leader with
+// leaderPlan (dealPlayerLeader: out as soon as it can be paid, pitched for, Lumber kept for it); a summon it makes is then yours as if you
+// had played it (m.leaderUid, the widget, the throne moment). Not for a caged leader (the cage frees it) or one already out.
+function autoplayLeaderOn(m, me){
+  if(!m || !me || !m.leaderDefId || m.leaderUid != null || m.caged || me.reserveLeaders) return null;
+  return dealPlayerLeader(me, m.leaderDefId, getCardDefs()) ? m.leaderDefId : null;
+}
+function autoplayLeaderOff(m, me, lead, ev){
+  if(!lead) return; delete me.reserveLeaders; delete me.leaderPlan;
+  const pe = (ev || []).find(e=> e && e.type === 'play' && e.leader && e.side === m.sideOf(1)); if(!pe) return;
+  m.leaderUid = pe.uid;
+  try{ const wrap = document.getElementById('leaderWidgetWrap'); if(wrap){ wrap.innerHTML = leaderWidgetHTML(m); wireLeaderWidget(); } }catch(e){}
+  try{ const lu = pe.uid, at = Math.round(animMs().strike || 380); noteMatchFx(at + LEADER_THRONE_WAIT_MS, m); setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId}), at); }catch(e){}
+}
 async function autoplayStep(){
   const m = matchState; if(!m || !m.autoplay || m.over || m.resolving || m._autoBusy || m.awaitingPass) return;
   if(m.coop) return gdAutoStep(m); // COOP2 had no Auto in a group dungeon; 2026-10-30 (package COOP3, W6): my seat's turn, as a claim
   if(document.querySelector('.coach-tip.is-blocking, #npcPromptOverlay:not([hidden]), .dialogue-overlay:not([hidden])')) return;
   m._autoBusy = true;
   try{ const me = m.players[1];
-    if(!me.playedThisTurn){ const ev = [], handBefore = (me.hand || []).map(h=> ({uid:h.uid, defId:h.defId})); m.engine.aiTakeTurn(m.players, m.sideOf, 1, m.stats, ev);
+    if(!me.playedThisTurn){ const ev = [], handBefore = (me.hand || []).map(h=> ({uid:h.uid, defId:h.defId})); const lead = autoplayLeaderOn(m, me); m.engine.aiTakeTurn(m.players, m.sideOf, 1, m.stats, ev); autoplayLeaderOff(m, me, lead, ev);
       try{ carryLooksAfterPlays(m, 1, handBefore, ev); }catch(e){} // 2026-10-17: an auto-played Shiny/skinned copy keeps its look (carryCardLook)
       ev.forEach(e=>{ try{ pushLog(e); renderVfxForEvent(e); }catch(_){} }); renderBoard(); renderHand(); renderHUD(); await sleep(Math.round(500 / Math.max(1, m.speedMult||1))); }
     if(matchState === m && m.autoplay && !m.over && !m.resolving) await afterPlayerAction(1);
@@ -41694,15 +41728,15 @@ function currentCardByUid(uid){
   // the correct value AT THAT POINT in the replay for every card — survivors and cards
   // that are about to die alike — not just whichever cards happen to still be standing
   // once the whole round is already over.
-  if(m.replayCards && m.replayCards[uid]) return m.replayCards[uid];
-  for(const pid of [1,2]){
-    const pl = m.players[pid];
-    for(const side of ['left','center','right']){
-      const c = pl.row[side].find(x=>x.uid===uid);
-      if(c) return c;
-    }
-  }
-  return null;
+  // FIX5 (2026-11-02, owner 21:12: "Dynamic values shouldn't reset on victory. for example swarm bonus is removed on victory."): the
+  // snapshot is the replay's alone. Once the replay is over (m.replayRows cleared by resolveRound's final sync) a unit still on the board is
+  // read live; the snapshot only answers for a unit that is gone. The deciding round's last render (m.ending, pl2ReconcileRow) used to patch
+  // every kept unit from the round-start snapshot, which has no uid (so Swarm counted 0) and older Pack / Kinship / phase numbers.
+  // pl2ReconcileRow passes the uid as the element's data-uid (a string), so that lookup compares as text.
+  const live = loose=>{ for(const pid of [1,2]){ const pl = m.players[pid]; if(!pl) continue;
+    for(const side of ['left','center','right']){ const c = (pl.row[side]||[]).find(x=> loose ? String(x.uid)===String(uid) : x.uid===uid); if(c) return c; } } return null; };
+  if(m.replayCards && m.replayCards[uid]){ if(m.replayRows) return m.replayCards[uid]; return live(true) || m.replayCards[uid]; }
+  return live(false);
 }
 // Attack amplification (2026-10-11, user: "The enhanced stats shouldn't be blue ... thresholds for how to amplify the
 // attack label ... 1.5x, 2x, 2.5x etc. redder and more glowy"): a buffed attack stays red and heats up in steps.
@@ -41741,8 +41775,12 @@ function atkPlateCls(d){ const k = atkElementOf(d); return k ? ' atk-' + (k === 
 function updateCardAtkDisplay(uid){
   const el = boardCardEl(uid); const c = currentCardByUid(uid); if(!el || !c) return;
   const a = el.querySelector('.stats .atk'); if(!a) return;
-  const d = getCardDefs()[c.defId] || {}; let tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.inspired||0) + liveSwarmBonus(c) + pl1AuraAtk(c) /* PL1 (2026-10-24, P24-12) */;
-  if(isTideDefApp(d) && matchState && matchState.engine && matchState.engine.getTide && matchState.engine.getTide()==='flow' && matchHasTide(matchState)) tot += 1;
+  // FIX5 (2026-11-02, owner 21:12): the same sum as the board card's own render (boardCardHTML's effAtk): Formation / Isolation (sk1Atk) and
+  // High tide's +2 were left out here, and a replay snapshot carries no uid, so Swarm is asked by this uid. This patch is what the deciding
+  // round's last render (pl2ReconcileRow) shows under the end sign.
+  const d = getCardDefs()[c.defId] || {}; let tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.sk1Atk||0) + (c.inspired||0) + ((d.effects||{}).swarm ? liveSwarmBonus(c.uid != null ? c : Object.assign({}, c, {uid})) : 0) + pl1AuraAtk(c) /* PL1 (2026-10-24, P24-12) */;
+  const tideNow = (isTideDefApp(d) && !((d.effects||{}).tideGrant && !(d.effects||{}).supremeTide) && matchState && matchState.engine && matchState.engine.getTide && matchHasTide(matchState)) ? matchState.engine.getTide() : null;
+  tot += tideNow === 'flow' ? 1 : tideNow === 'high' ? 2 : 0;
   if((d.effects||{}).rage && c.maxHp > 0 && c.hp / c.maxHp < 0.5) tot *= 2;
   pl2SetStat(a, atkLabelHTML(tot, d.attack, d), {any:true}); // PL2 (2026-10-25, owner 22:28 #5): a changed Attack bounces
   a.classList.toggle('is-atk-zero', (Number(d.attack)||0) <= 0 && tot <= 0); // 2026-10-21 (package UI3): back when a buff lifts it above 0

@@ -1630,13 +1630,13 @@
       "kind": "pack",
       "tier": 4
     },
-    "name": "Gale Sprite",
+    "name": "Whirlwind Swift",
     "icon": "\ud83d\udca8",
     "cost": 1,
     "wait": 0,
     "attack": 1,
     "health": 8,
-    "flavor": "You hear it before you see it. Mostly you just hear it.",
+    "flavor": "You hear the whirlwind before you see the swift. Mostly you just hear it.",
     "locked": true,
     "archetypes": [
       "Elemental"
@@ -5228,7 +5228,7 @@
   {
     "id": "alpine-avalanche",
     "unattainable": true,
-    "name": "Alpine Avalanche",
+    "name": "Avalanche Bear",
     "icon": "\ud83c\udfd4\ufe0f",
     "cost": 2,
     "wait": 2,
@@ -5240,7 +5240,7 @@
     "effects": {
       "fork": true
     },
-    "flavor": "Started as a pebble. Nobody agrees on whose fault that was.",
+    "flavor": "Started as a snowball. Nobody agrees on whose fault that was, least of all the bear.",
     "locked": true,
     "numericId": 150,
     "uuid": "a7c864c8-dbce-4b30-a960-8827206a595e",
@@ -34970,5 +34970,310 @@
       }
     },
     "creatorNote": "2026-11-01 (package UI13, HH4): found on Caves & Alcoves, a torch bracket beside the first fire pit, clickable once the pit is lit (once per save). awaitingSource until it has art. 2026-11-02 CARD5: awaitingSource cleared (it has art and its secret source); re-fit 1/0 -> 3/3 inside its band by the equipment rules (bramblewood-budget.js: (3A + H + S of the Illuminate grant) x equipLifeMult 0.75 at Level 1 = 9.23 of N 14.79, 0.62; was 0.17)."
+  },
+  {
+    "id": "bloodworm",
+    "name": "Bloodworm",
+    "icon": "\ud83e\udeb1",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 6,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Worm",
+      "Coastal"
+    ],
+    "species": [
+      "Annelid"
+    ],
+    "animal": "worm",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "poison": 1,
+      "bleed": 1
+    },
+    "flavor": "Four black jaws fold out of a pink body, and the tide flats suddenly feel very wide.",
+    "numericId": 9184,
+    "uuid": "fff16f09-b2e3-513a-8166-a1db0e656aa9",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home Pebble Beach (Map 2) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 2): S 4.74, N 17.18, 3A + H + S 16.74: 2/6. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
+  },
+  {
+    "id": "night-algae",
+    "name": "Bright Night Algae",
+    "icon": "\u2728",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 3,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Flora",
+      "Ocean"
+    ],
+    "species": [
+      "Plant"
+    ],
+    "animal": "glowing bacterium",
+    "subtype": "plant",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "bloomCopy": {
+        "when": [
+          "night"
+        ],
+        "mode": "and"
+      }
+    },
+    "flavor": "A glowing bacterium, blown up to the size of a barrel. Come dark, the bay lights up and there are two.",
+    "numericId": 9185,
+    "uuid": "9f8c913d-39f2-5404-8e4f-3fdb91c67edc",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home the Kelp Mangroves (Map 9) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 9): S 4.4, N 18.82, 3A + H + S 17: 1/3. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
+  },
+  {
+    "id": "bobbit-worm",
+    "name": "Bobbit Worm",
+    "icon": "\ud83e\udeb1",
+    "cost": 1,
+    "wait": 2,
+    "attack": 4,
+    "health": 10,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Worm",
+      "Ocean"
+    ],
+    "species": [
+      "Annelid"
+    ],
+    "animal": "worm",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "ambush": 2,
+      "gash": 2
+    },
+    "flavor": "It lies buried in the sand with one feeler out. The snap is over before the sand settles.",
+    "numericId": 9186,
+    "uuid": "6e68e425-4ad8-5ac8-bd04-52d1afa54710",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home the Kelp Mangroves (Map 9) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 9): S 4.05, N 26.93, 3A + H + S 26.05: 4/10. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
+  },
+  {
+    "id": "man-o-war",
+    "name": "Man o' War",
+    "icon": "\ud83e\udebc",
+    "cost": 1,
+    "wait": 2,
+    "attack": 3,
+    "health": 13,
+    "rarity": "rare",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Ocean",
+      "Coral Reef"
+    ],
+    "species": [
+      "Cnidaria"
+    ],
+    "animal": "jellyfish",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "poison": 2,
+      "tide": true
+    },
+    "flavor": "Not one animal but many, sailing on one blue bubble. Its streamers outrun the ship that sees it.",
+    "numericId": 9187,
+    "uuid": "8e898d98-3e37-543e-878d-354dd04d39fd",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home the Kelp Mangroves (Map 9) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity rare, map term Map 9): S 5.85, N 28.1, 3A + H + S 27.85: 3/13. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
+  },
+  {
+    "id": "nautiloid",
+    "name": "Nautiloid",
+    "icon": "\ud83d\udc1a",
+    "cost": 1,
+    "wait": 2,
+    "attack": 3,
+    "health": 14,
+    "rarity": "rare",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Cephalopod",
+      "Ocean"
+    ],
+    "species": [
+      "Cephalopod"
+    ],
+    "animal": "octopus",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "armor": 2,
+      "pierce": 2
+    },
+    "flavor": "Its shell was a straight spear long before shells learned to curl. The oldest hunter in the Current.",
+    "numericId": 9188,
+    "uuid": "3ff26f2c-8f66-5529-9fa1-c3064b58e7f1",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home Coral Current (Map 10) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity rare, map term Map 10): S 4.59, N 28.34, 3A + H + S 27.59: 3/14. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
+  },
+  {
+    "id": "pistol-shrimp",
+    "name": "Pistol Shrimp",
+    "icon": "\ud83e\udd90",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 4,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Coral Reef",
+      "Ocean"
+    ],
+    "species": [
+      "Crustacean"
+    ],
+    "animal": "shrimp",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "stunOnHit": 2
+    },
+    "flavor": "One claw snaps shut so fast the water boils. What was in front of it sits down for a while.",
+    "numericId": 9189,
+    "uuid": "ac2d1dc8-89e6-5dd4-9bb6-cfa9151816bb",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): unlisted; proposed home Coral Current (Map 10) (decision CONTENT7-1). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 10): S 3.82, N 22.79, 3A + H + S 19.82: 4/4. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
+  },
+  {
+    "id": "unicorn",
+    "name": "Unicorn",
+    "icon": "\ud83e\udd84",
+    "cost": 3,
+    "wait": 4,
+    "attack": 7,
+    "health": 33,
+    "rarity": "mythic",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Mythic",
+      "Forest"
+    ],
+    "species": [
+      "Equid"
+    ],
+    "animal": "horse",
+    "subtype": "mythic",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "healing": 3,
+      "cure": 2
+    },
+    "flavor": "Where it steps, the grass stands up again. Where it is struck, nothing stays wounded for long.",
+    "numericId": 9190,
+    "uuid": "6703f457-d073-5098-aeb5-09c4772d95b2",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): MARKED FOR MAP 56+ (Mythic, unlisted). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity mythic, map term Map 56): S 9.52, N 64.3, 3A + H + S 63.52: 7/33. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
+  },
+  {
+    "id": "sphinx",
+    "name": "Sphinx",
+    "icon": "\ud83e\udd81",
+    "cost": 3,
+    "wait": 4,
+    "attack": 9,
+    "health": 33,
+    "rarity": "mythic",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Mythic",
+      "Desert"
+    ],
+    "species": [
+      "Felid"
+    ],
+    "animal": "lion",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "confuse": {
+        "chance": 50,
+        "duration": 2
+      },
+      "daunt": 1
+    },
+    "flavor": "It asks one question. Answering is not the dangerous part.",
+    "numericId": 9191,
+    "uuid": "447ea724-c90a-5504-b295-fcb87ef42a6a",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): MARKED FOR MAP 56+ (Mythic, unlisted). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity mythic, map term Map 56): S 3.35, N 64.3, 3A + H + S 63.35: 9/33. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
+  },
+  {
+    "id": "griffin",
+    "name": "Griffin",
+    "icon": "\ud83e\udd85",
+    "cost": 3,
+    "wait": 4,
+    "attack": 10,
+    "health": 22,
+    "rarity": "mythic",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Mythic",
+      "Mountain"
+    ],
+    "species": [
+      "Bird"
+    ],
+    "animal": "eagle",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "flying": true,
+      "pounce": 2
+    },
+    "flavor": "Half eagle, half lion, and it never once chose between the two.",
+    "numericId": 9192,
+    "uuid": "04fb891a-d321-5739-93bb-7a6926048317",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): MARKED FOR MAP 56+ (Mythic, unlisted). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity mythic, map term Map 56): S 2.67, N 64.3, 3A + H + S 63.51: 10/22. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md."
   }
 ]
