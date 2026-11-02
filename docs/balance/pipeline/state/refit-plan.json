@@ -382,30 +382,5 @@
    }
   }
  ],
- "held": [
-  {
-   "id": "wrong-way-salmon",
-   "name": "Wrong-Way Salmon",
-   "rarity": "uncommon",
-   "inPlay": true,
-   "stats": "1/11",
-   "old": {
-    "use": 0.99,
-    "N": 17.13,
-    "x1": 16.94,
-    "S": 2.94,
-    "verdict": "ok"
-   },
-   "new": {
-    "use": 1.01,
-    "N": 17.13,
-    "x1": 17.22,
-    "x2": 13.59,
-    "N2": 51.19,
-    "S": 3.22,
-    "verdict": "over"
-   },
-   "why": "Anadromous: ENG15 reworks and re-prices it"
-  }
- ]
+ "held": []
 }

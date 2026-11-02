@@ -3,6 +3,16 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 
+## 2026-11-02 Package BAL10 (overnight balance run after BAL9 / CARD5; not yet released)
+- **Cards re-fit to the re-measured skill prices** (BAL10-3, BAL10-4): Lamprey 2/5, Banded Sea Krait 4/3, Beaver Lumberjack 3/3, Otter Centurion 3/5, Trash Panda Trickster 2/3, Lunar Howler 4/2 (was 2/1; Moonborn re-priced), Corpse Flower Beetle 4/10, Wrong-Way Salmon 1/10 (its ENG15 hold lifted). No owner-named card touched; no stat moved more than 2.
+- **Skill prices** from the pipeline's measure of 240 in-play skill items on the post-BAL9 game (`canonical/skill-costs.json`, 125 entries); Bola kept at its logic price 2 (the price step had counted its Arrow shot twice). Flying / Evasive constants kept (BAL10-2).
+- **Road decks retuned** (BAL10-5): 111 fights of Maps 0-20 and their side maps, swaps only (leaders, first-clear cards, sizes kept), each checked against the fight's own list and K14. Fights in the green band 39 -> 77 of 226; more than 20 points off 115 -> 87. The rest are listed gaps for the owner (BAL10-6: The Canopy, Sunken Depths, Mycelium Deep, Pale Desert, Wolfsbane Tundra, Basalt Foundry, Caves & Alcoves). `docs/balance/bal10/road-2026-11-02.md`.
+- **The Old Bramble's PRO decks** re-run by DECK1 under its Map 21 cap (0-B-PRO-1 big, 0-B-PRO-2 open); no BPRO (6 cards cannot hold 20 copies under Rare caps). Its 0-B-3 lost the tutorial-only Thornwood Palisade (BAL10-1).
+- **BPRO decks rebuilt** for 35 maps (pipeline bake; fields re-baked for ENG16's map fields).
+- **Tournament, Maps 0-20** (Map reference, Reference Random, PRO, BPRO): `docs/balance/bal10/tournament-2026-11-02.md`.
+- Tools: `tools/skirmish_pass.js curve --strict` (the fight's own list, K14 not worse); `tools/bal9/road_fix_2026_11_02.js` (guard + dated apply) and `road_summary_2026_11_02.js`; BAL9 tools no longer skip the Old Bramble; `tools/opt/deck1_2026_10_30.js` takes map ids (`--map mo`) and keeps other maps' rows on a partial apply; `tools/opt/bpro2_2026_10_31.js` says "none" when 6 cards cannot reach 20 copies.
+- Tests: `tests/tx-2026-10-21.js` Swarm checks follow EN2 (Types only, `swarmTypeShares` / `swarmTypeIsAny`).
+
 ## 2026-11-02 Package CARD5 (card-data follow-ups from QA1 / FIX4 / BAL9; not yet released)
 - **The Old Bramble's fights are capped by Map 21** (BAL9-5 a), the map it opens at, not Map 0's Common: its Rare / Very Rare list now fits its fights (map flag `capByUnlock`, read by `roadRarityCap` through `mapUnlockNumberOf`). Shield and levels unchanged.
 - **Conch Herald back to 1/13** (BAL9-6 a; it measured +10.3 win-rate points a copy, the Pebble Beach outlier). Peak Condor, Red-billed Chough and Caldera Wyrm unchanged.

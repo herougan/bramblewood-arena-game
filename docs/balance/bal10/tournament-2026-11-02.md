@@ -1,6 +1,6 @@
 # BAL10 tournament, Maps 0-20 (2026-11-02)
 
-Mean win rate (%) of the reference decks: against every road fight of the main map (tools/pipeline/run.sh tournament --games 24, tests/out/pipeline-tournament/bal10/ref5-road.jsonl, summary docs/balance/pipeline/tournament-2026-11-02-1235.json) and against every PRO / BPRO deck of the map and its side maps (tools/opt/pro_ease.js --maps 0-20 --ref map,prog --games 24, docs/balance/pro-ease-bal10.json). Ref Random = the mean of prog-1..5. 24 games a pairing (about +/-18 points a pairing at 95%; map means are steadier).
+Mean win rate (%) of the reference decks: against every road fight of the main map (tools/pipeline/run.sh tournament --games 24, tests/out/pipeline-tournament/bal10/ref5-road.jsonl, summary docs/balance/pipeline/tournament-2026-11-02-1235.json) and against every PRO / BPRO deck of the map and its side maps (tools/opt/pro_ease.js --maps 0-20 --ref map,prog --games 24, docs/balance/pro-ease-2026-11-02-bal10-prog.json). Ref Random = the mean of prog-1..5. 24 games a pairing (about +/-18 points a pairing at 95%; map means are steadier).
 
 | Map | Road: Map ref | Road: Ref Random | vs PRO: Map ref | vs PRO: Ref Random | vs BPRO: Map ref | vs BPRO: Ref Random |
 |---|---|---|---|---|---|---|
