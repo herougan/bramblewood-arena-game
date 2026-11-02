@@ -1846,18 +1846,24 @@ sk1Patch(PASSIVE_DEFS, 'stem', {mechLineGate:'evolution'}); sk1Patch(PASSIVE_DEF
 // An older card's Fodder (a Baby card's Level 1 Stem, or a `fodder` key) is read as Hatchling (eng17MigrateHatchling).
 sk1Patch(PASSIVE_DEFS, 'hatchling', {category:'passive', label:TX('ui.skn-hatchling'), kind:'boolean', desc:()=> TX('ui.sk-hatchling'), codexNote:TX('ui.sk-hatchling-codex')});
 Object.assign(SKILL_ICON, {hatchling:'🐣'});
+// 2026-11-02 (package ENG18, owner 20:19 on BASELVL-1: "Baby cards start at level 0"): a Baby card's Hatchling is at Level 0 now (levelSkills
+// {"0": {"hatchling": true}}; base Level 0, cardBaseLevel). Reads both: an older Baby override with it (or a Stem / fodder) at Level 1 moves to
+// Level 0; a non-Baby card's Level 1 fodder still reads as Hatchling at Level 1, as ENG17 did.
 function eng17MigrateHatchling(c, baseline){
   if(!c) return c; const baby = c.kind === 'baby' || (!('kind' in c) && baseline && baseline.kind === 'baby');
-  const e = c.effects || {}, ls = c.levelSkills || null, l1 = ls && (ls[1] || ls['1']);
-  const hasFodderKey = e.fodder != null || !!(l1 && l1.fodder != null);
+  const e = c.effects || {}, ls = c.levelSkills || null, l1 = ls && (ls[1] || ls['1']), l0 = ls && (ls[0] || ls['0']);
+  const hasFodderKey = e.fodder != null || !!(l1 && l1.fodder != null) || !!(l0 && l0.fodder != null);
   const babyStem = baby && l1 && l1.stem === true && !l1.stemGrant;
-  const needs = hasFodderKey || babyStem || (baby && !(l1 && l1.hatchling));
+  const babyOld1 = baby && l1 && (l1.hatchling || l1.fodder != null);
+  const needs = hasFodderKey || babyStem || babyOld1 || (baby && !(l0 && l0.hatchling));
   if(!needs) return c;
   const out = Object.assign({}, c), ne = Object.assign({}, e);
   if(ne.fodder != null){ if(ne.fodder) ne.hatchling = true; delete ne.fodder; } out.effects = ne;
-  if(baby || (l1 && l1.fodder != null)){ const nls = Object.assign({}, ls || {}), n1 = Object.assign({}, l1 || {}); delete nls['1'];
-    if(n1.fodder != null) delete n1.fodder; if(baby && n1.stem === true && !n1.stemGrant) delete n1.stem; if(baby || hasFodderKey) n1.hatchling = true;
-    nls[1] = n1; out.levelSkills = nls; }
+  const nls = Object.assign({}, ls || {});
+  if(baby){ const n1 = Object.assign({}, l1 || {}), n0 = Object.assign({}, l0 || {}); delete nls['1']; delete nls['0'];
+    delete n1.fodder; delete n1.hatchling; if(n1.stem === true && !n1.stemGrant) delete n1.stem; delete n0.fodder;
+    n0.hatchling = true; nls[0] = n0; if(Object.keys(n1).length) nls[1] = n1; out.levelSkills = nls; }
+  else if(l1 && l1.fodder != null){ const n1 = Object.assign({}, l1); delete nls['1']; delete n1.fodder; n1.hatchling = true; nls[1] = n1; out.levelSkills = nls; }
   return out;
 }
 // EN8 (2026-10-24, owner 22:28 #2, LUM-1): the resource skills (rules: the EN8 block in bramblewood-engine.js; prices: canonical/skill-costs.json,
@@ -2798,7 +2804,7 @@ const STATUS_KEYWORDS = [
 const KEYWORD_TERMS = [
   {name:'Pitch', re:'pitch(?:ed|es|ing)?', text:'give up a card from your hand for Lumber (once a turn).'},
   {name:'Upkeep', re:'upkeep', text:'the start of each round, before anyone attacks. Upkeep effects go in the same order units act.'},
-  {name:'Adjacent', re:'adjacent', text:'directly left or right; in a raid, also directly in front or behind.'}, // 2026-10-22 (package GD2, owner GD-1)
+  {name:'Adjacent', re:'adjacent', text:TX('ui.eng18-term-adjacent')}, // 2026-10-22 (package GD2, owner GD-1); 2026-11-02 (ENG18, owner 19:56: "Adjacent in front, behind, left, right."): a TX key, and a group dungeon's rows count as a raid's do (the engine's adjacentOf: RESERVE_ACTS)
   {name:'Surrounding', re:'surrounding', text:TX('ui.term-surrounding')}, // 2026-10-23 (package EN, owner GD2-5: "Dynamite is adjacent but including diagonals - is there a way to name this?")
   {name:'Kin', re:'kin', cs:true, text:'your own units that share a Type with this one (never itself).'}, // 2026-10-18: the Kin target
   {name:'Dark-blind', re:'dark-blind', text:TX('ui.term-dark-blind')}, // 2026-10-18 (package D): the Darkness card's word
@@ -14258,6 +14264,10 @@ function forgeCurveOf(d){
 }
 function cardBaseLevel(d){
   if(!d) return 1;
+  // 2026-11-02 (package ENG18, owner 20:19 on BASELVL-1: "Baby cards start at level 0"): every Baby card (kind 'baby' in canonical/cards.json,
+  // the eggs and the two starter babies Otter Kit and Duckling included) has base Level 0: its printed stats are its Level 0 stats. Ahead of
+  // the faction rule below, so the starter babies are Level 0 too. (Inline, so the tools that lift this function alone still run.)
+  if(d.kind === 'baby' && !d.token) return 0;
   // 2026-10-12 (user: "base creatures start at 0, rewarded creatures at 1, quest creatures should also start at 0").
   const qs = d.source && (d.source.kind==='quest' || d.source.kind==='errand' || d.source.kind==='base'); // 2026-10-13: "all quest cards and base cards start at level 0"
   // 2026-10-14 (22:50, user: "Faction cards come in at level 1. Wandering Trader comes in at level 1."): a faction's own cards
@@ -26372,6 +26382,10 @@ async function gdJoin(code){
 // 2026-10-30 (package COOP3, owner W4: "The allies should play their cards first if CPU btw, taking a random amount of time between 0.5 to 3.0s.
 // (0.5 to 1.5s in the first turn only)"): how long a CPU ally waits before its play, drawn per seat each turn (the room's host times it,
 // CoopM.createSession's cpuDelay). Presentation only: its acts are logged and numbered like a player's, so every page replays the same fight.
+// 2026-11-02 (ENG18, owner on COOP3-1: "If you play before they play, they may recalculate their action before they play it."): as built,
+// a CPU ally holds no plan while its timer runs: when the timer fires it picks its play then (CoopM.cpuChoice, from the board as it is
+// after your play, within its own network: ownedCells, never another row's centre), so a play you make first is always seen. Pinned by
+// tests/eng18-2026-11-02.js (your play takes the cell it would have picked: it picks another legal one at its time, no refusal).
 function gdCpuDelay(T, seat){ const first = !T || (T.round | 0) <= 1, ms = Math.round(first ? 500 + Math.random() * 1000 : 500 + Math.random() * 2500); try{ (GD.cpuDrawn = GD.cpuDrawn || []).push({round: T ? T.round : 0, seat, ms}); if(GD.cpuDrawn.length > 60) GD.cpuDrawn.shift(); }catch(e){} return ms; }
 function gdBegin(kind, code, host, opts){
   opts = opts || {};
@@ -26382,7 +26396,7 @@ function gdBegin(kind, code, host, opts){
   Object.assign(GD, {kind, code, paid: [], energyPaid: 0, floorEnd: null, endInfo: null, leaveArm: 0, note: ''});
   const maxHumans = kind === 'live' ? (GD.server4p ? 4 : GD_LIVE_MAX_BEFORE_SQL) : kind === 'solo' ? 1 : 4;
   gdDefs();
-  GD.s = CoopM.createSession({transport, me: {peerId, name: gdMyName(), deck: publicDeck(myDeckCounts), leader: matchLeaderId(), castle: myCharacterId, castleHp: gdCastleHp()}, host, code,
+  GD.s = CoopM.createSession({transport, me: {peerId, name: gdMyName(), deck: publicDeck(myDeckCounts), leader: matchLeaderId(), castle: myCharacterId, castleHp: gdCastleHp(), avatar: (()=>{ try{ return loadAvatar(); }catch(e){ return null; } })() /* ENG18 (UI16-4): my profile look for the others' lobby */}, host, code,
     typeId: 'hollow', deps: gdDeps(), maxHumans, onEvent: gdOnEvent, apply: gdApply, batchMs: opts.batchMs, cpuDelay: opts.cpuDelay || gdCpuDelay}); // + COOP3: the CPU allies take their time
   GD.phase = host ? 'lobby' : 'connecting';
   if(!host){ clearTimeout(GD.joinTimer); GD.joinTimer = setTimeout(()=>{ if(GD.phase === 'connecting'){ showToast(TX('ui.ar3-not-found'), 'warn'); gdClose(true); } }, 6000); }
