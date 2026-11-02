@@ -1,0 +1,14 @@
+{
+ "_about": "BAL9 JJ12a (2026-11-02): rarities at or below the first list's cap, re-fit; tools/bal9/cards_2026_11_02.js rarity",
+ "built": "2026-11-02",
+ "edits": [],
+ "held": [
+  {
+   "id": "dolphin-knight",
+   "rarity": "rare",
+   "cap": "uncommon",
+   "why": "owner HH6 (11-01): added to Pebble Beach, \"limits ignored\""
+  }
+ ],
+ "skipped": []
+}
