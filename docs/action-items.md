@@ -15,6 +15,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - KK8 (done 11-02): Supabase progress guard applied (trigger guard_progress_shrink is on). RECOST1-5 closed (owner recosts). Coffer Mimic as hermit crab OK'd. COOP3-4 OK'd.
 - KK9 (done 11-02, BAL-ROLES): balance roles written into docs/workflows/balance.md; Conch Herald back to the owner's 2/13, Pincushion Urchin back to 2/4.
 
+- KK10 (BAL11, owner 14:26): every map gets both a super strong and a super weak deck from its own list under its field effects; an N-WK (weak) skirmish next to every N-SK.
+- KK11 (ENG17, owner 14:26): the reserved starting slot applies to co-op / multiplayer dungeons only; raids unchanged (always CPU for now).
+- KK12 (owner 14:26 "apply it"): BRUP-5 Briar Blossoms column. First apply attempt waited on the Supabase confirmation prompt and timed out; not applied yet.
+- KK13 (owner 14:26): go live once KK1-KK11 are merged.
+
 ## 11-02 00:17: the owner's notes (owner asleep; "Decisions - you decide" stands)
 - JJ1 (UI14; done 11-02, not yet released): VS screen: the pills show for ~1 s, too short to read them all. See JJ8.
 - JJ2 (UI14; done 11-02, not yet released): after game over, the "..." screen waits 0.3 s too long; cut it.
