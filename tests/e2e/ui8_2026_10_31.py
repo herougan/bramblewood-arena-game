@@ -137,9 +137,11 @@ async def aa2(b, url, shots):
         if r.get('none'): ok(False, 'the VS opener opened'); await ctx.close(); continue
         # 2026-11-02 (FIX4): UI14 (JJ8, 2026-11-02) redrew each side as one card: kicker, round portrait, name, map, BR box, a facts line (text,
         # no pills), the quote, a timer bar. These checks follow that markup; the pill-height and level-BR checks were AA2's pill design and are gone.
-        want = ['ui14-vs-kicker', 'vs-portrait', 'vs-name', 'ui14-vs-map', 'vs-lvl', 'vs-facts', 'vs-taunt', 'ui14-vs-timer']
-        ok([c for c in r['order'] if c != 'ui14-vs-map'] == [c for c in want if c != 'ui14-vs-map'], f"the right side is kicker, portrait, name, (map), BR box, facts, quote, timer {r['order']}")
-        ok(len(r['pills']) == 0 and len(r['facts']) >= 2, f"the small facts are one text line, not pills (pills {len(r['pills'])}, facts {len(r['facts'])})")
+        # 2026-11-02 (UI16, owner note 9): the map name is on top, then the code; the leader's and bramble's art (ui16-vs-art) or the round
+        # portrait; no facts line (people, castle, leaders, CPU) any more.
+        want = ['ui14-vs-map', 'ui14-vs-kicker', 'PIC', 'vs-name', 'vs-lvl', 'vs-taunt', 'ui14-vs-timer']
+        ok([('PIC' if c in ('ui16-vs-art', 'vs-portrait') else c) for c in r['order'] if c] == want, f"the right side is map, kicker, art or portrait, name, BR box, quote, timer {r['order']}")
+        ok(len(r['pills']) == 0 and len(r['facts']) == 0, f"no pills and no facts line (pills {len(r['pills'])}, facts {len(r['facts'])})")
         ok(all(p['l'] >= r['sideL'] - 1 and p['r'] <= r['sideR'] + 1 for p in r['facts']), 'the facts stay inside the column')
         ok(abs(r['themBr']['cx'] - r['col']) < 4 and abs(r['name']['cx'] - r['col']) < 4, 'the name and the BR box are centred on the column')
         ok(r['sw'] <= r['vw'], f"no sideways scroll {r['sw']} / {r['vw']}")

@@ -290,6 +290,8 @@ run node tests/bal11-wk-2026-11-02.js   # 2026-11-02 (package BAL11, owner 14:26
 run node tests/content7-2026-11-02.js   # 2026-11-02 (package CONTENT7, owner IDEA-11-02 + CONTENT6-2 b): nine new unlisted cards inside the budget with an animal each, the Mythic three marked for Map 56+, Gale Sprite -> Whirlwind Swift and Alpine Avalanche -> Avalanche Bear in cards.json and 12 packs, CONTENT7-1..3, art prompts without banned words
 run node tests/fix5-2026-11-02.js   # 2026-11-02 (package FIX5, owner 21:12): the board keeps Swarm / Pack / Kinship / Formation / tide Attack when the fight is decided (the deciding render reads live units, not the replay snapshot) (browser: tests/e2e/fix5_2026_11_02.py)
 run node tests/fix6-2026-11-02.js   # 2026-11-02 (package FIX6, owner 21:37): your leader comes out on Auto and in the sims (leaderPlan, dealPlayerLeader), the CPU keeps LEAD-4, 4-5's Drowned Matriarch is played from hand, the Tower pools follow current rarities
+run node tests/ui16-2026-11-02.js   # 2026-11-02 (package UI16, owner 22:15 notes 9, 10, 1): the rival's versus card (map name over the code, leader and bramble art, no facts line); Auto's pitch to the Graveyard and play from the hand; the player card's looks (ids, texts in 12 packs, CSS, a synced key)
+# browser check for package UI16 (notes 9, 10, 1): python3 tests/e2e/ui16_2026_11_02.py (needs Playwright; not run by run.js)
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)
