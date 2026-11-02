@@ -3,6 +3,9 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 
+## 2026-11-02 Release 11-02a (UI14, ENG16, ART5, LANG3, QA1, FIX4, BAL9, CARD5, BAL10; prepared, deploys on the owner's OK)
+- One release for the owner's 11-02 notes (JJ1-JJ28) and the overnight work: the VS card, boomerang finisher, random N-SK draws, status pills, Quicksand, a field of its own per map, Milling 1->2, wind rebalanced (WIND-2 a), Baby cards levelled with Hatch / Stay, 121 new card art, 12 language packs updated; PvP stranger and Live Ranked fixed, War Banner on every row in raids; rarities re-set to the map lists, cut cards out of every deck, Guardian on a wall per map, reference and BPRO decks rebuilt, skill prices re-measured, 111 road fights retuned (BAL10). Tests: smoke (known d-2026-10-19 only), e2e qa1 34/34, fix4, ui14, ui13, live two-player all pass.
+
 ## 2026-11-02 Package BAL10 (overnight balance run after BAL9 / CARD5; not yet released)
 - **Cards re-fit to the re-measured skill prices** (BAL10-3, BAL10-4): Lamprey 2/5, Banded Sea Krait 4/3, Beaver Lumberjack 3/3, Otter Centurion 3/5, Trash Panda Trickster 2/3, Lunar Howler 4/2 (was 2/1; Moonborn re-priced), Corpse Flower Beetle 4/10, Wrong-Way Salmon 1/10 (its ENG15 hold lifted). No owner-named card touched; no stat moved more than 2.
 - **Skill prices** from the pipeline's measure of 240 in-play skill items on the post-BAL9 game (`canonical/skill-costs.json`, 125 entries); Bola kept at its logic price 2 (the price step had counted its Arrow shot twice). Flying / Evasive constants kept (BAL10-2).
