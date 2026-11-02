@@ -889,40 +889,6 @@
      },
      "h2h": null,
      "later": []
-    },
-    {
-     "id": "0-B-PRO-3",
-     "name": "0-B-PRO-3",
-     "focus": "family:evasion",
-     "labels": [
-      "big (9 copies at 1+ Lumber, average 0.5)",
-      "evasion x8"
-     ],
-     "level": 1,
-     "leaders": [],
-     "deck": {
-      "bramblewood-lynx": 3,
-      "ent": 3,
-      "hedgehog-herbalist": 3,
-      "mountain-hare": 4,
-      "swamp-rabbit": 4,
-      "thorn-shrike": 3
-     },
-     "source": {
-      "file": "docs/balance/deck1/bench-deck-map00-mo-2026-10-30.json",
-      "mode": "deck1",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mo --pool ashbone-ghoul,bramblewood-lynx,cunning-vixen,dhole-matriarch,dhole-runner,eagle-owl-quartermaster,echidna-quillshot,ent,fox-sharpshot,gatling-hog,grave-grin-hyena,hedgehog-herbalist,ibex-rockcaller,lucky-hopper,lyrebird-mimic,mountain-hare,quillguard,sergeant-bramblefox,shimmerwing-stag,squires-mount,stoat-cutthroat,swamp-rabbit,taiga-lynx,thorn-shrike,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus big,swarm,family:evasion,open --anchor bramblewood-lynx,dhole-matriarch,echidna-quillshot,ent,gatling-hog,hedgehog-herbalist,lucky-hopper,quillguard,sergeant-bramblefox,shimmerwing-stag,taiga-lynx,thorn-shrike,wolf-spider-mother --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.6429,
-      "ci": [
-       0.5762,
-       0.7095
-      ],
-      "avgLumber": 0.45,
-      "generated": "2026-11-01T23:07:44.549Z"
-     },
-     "h2h": null,
-     "later": []
     }
    ],
    "bpro": [],
@@ -1103,6 +1069,41 @@
      "later": [],
      "bal9": "2026-11-02 (BAL9, JJ24): cut cards swapped for cards of the map's list under DECK1's 6/4 rule (jay-pilferer x4, mudpuppy x4); not re-searched",
      "why": "2026-11-02 (BAL9, JJ24): its cut cards (Porcupine Roller ...) have no home on the Old Bramble's list inside the 6/4 rule (16 cards left); dropped to replaced"
+    },
+    {
+     "id": "0-B-PRO-3",
+     "name": "0-B-PRO-3",
+     "focus": "family:evasion",
+     "labels": [
+      "big (9 copies at 1+ Lumber, average 0.5)",
+      "evasion x8"
+     ],
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "bramblewood-lynx": 3,
+      "ent": 3,
+      "hedgehog-herbalist": 3,
+      "mountain-hare": 4,
+      "swamp-rabbit": 4,
+      "thorn-shrike": 3
+     },
+     "source": {
+      "file": "docs/balance/deck1/bench-deck-map00-mo-2026-10-30.json",
+      "mode": "deck1",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map mo --pool ashbone-ghoul,bramblewood-lynx,cunning-vixen,dhole-matriarch,dhole-runner,eagle-owl-quartermaster,echidna-quillshot,ent,fox-sharpshot,gatling-hog,grave-grin-hyena,hedgehog-herbalist,ibex-rockcaller,lucky-hopper,lyrebird-mimic,mountain-hare,quillguard,sergeant-bramblefox,shimmerwing-stag,squires-mount,stoat-cutthroat,swamp-rabbit,taiga-lynx,thorn-shrike,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus big,swarm,family:evasion,open --anchor bramblewood-lynx,dhole-matriarch,echidna-quillshot,ent,gatling-hog,hedgehog-herbalist,lucky-hopper,quillguard,sergeant-bramblefox,shimmerwing-stag,taiga-lynx,thorn-shrike,wolf-spider-mother --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.6429,
+      "ci": [
+       0.5762,
+       0.7095
+      ],
+      "avgLumber": 0.45,
+      "generated": "2026-11-01T23:07:44.549Z"
+     },
+     "h2h": null,
+     "later": [],
+     "why": "2026-11-02 (BAL10): holds Swamp Rabbit x4, a card on no list (out of play, the cut-card rule); the BAL9 swap would leave Mountain Hare x5 (6/4 rule), so the evasion deck (64%, the weakest of three) is dropped"
     }
    ],
    "skipped": [
@@ -1158,8 +1159,8 @@
     "BPRO: 0-B-BPRO-2 dropped: beetle-grunt: not in the map's own pool (BPRO); cobalt-talon-fledgling: not in the map's own pool (BPRO); farm-dog: not in the map's own pool (BPRO); feral-tomcat: not in the map's own pool (BPRO); fox-kit: not in the map's own pool (BPRO); paper-wasp: not in the map's own pool (BPRO); pond-trout: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "BPRO: left out (-129 Elo below the band): ant-scout:5,bee-knight:1,burrow-rabbit:1,cottontail:3,forage...",
-    "DECK1: 3 focused decks (0-B-PRO-1 big, 0-B-PRO-2 open, 0-B-PRO-3 family:evasion); the previous PRO decks are under history",
-    "SKILL2 BPRO: none (6 different cards hold at most 19 copies under the rarity copy caps (4 copies at most): no 20-card deck); the previous BPRO decks are under history"
+    "SKILL2 BPRO: none (6 different cards hold at most 19 copies under the rarity copy caps (4 copies at most): no 20-card deck); the previous BPRO decks are under history",
+    "DECK1: 2 focused decks (0-B-PRO-1 big, 0-B-PRO-2 open), re-run 2026-11-02 (BAL10) under the Map 21 cap; 0-B-PRO-3 (evasion) dropped (swamp-rabbit is out of play)"
    ],
    "history": [
     {

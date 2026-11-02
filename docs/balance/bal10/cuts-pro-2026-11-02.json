@@ -1,0 +1,46 @@
+{
+ "_about": "BAL9 JJ24 (2026-11-02): cut cards swapped out of every road and PRO deck; tools/bal9/decks_2026_11_02.js cuts",
+ "built": "2026-11-02",
+ "cutCards": [
+  "swamp-rabbit"
+ ],
+ "refDeckCuts": [],
+ "rows": [
+  {
+   "where": "pro 0-B-PRO-3",
+   "map": 0,
+   "loc": "mo",
+   "pro": {
+    "kind": "pro",
+    "id": "0-B-PRO-3"
+   },
+   "before": {
+    "bramblewood-lynx": 3,
+    "ent": 3,
+    "hedgehog-herbalist": 3,
+    "mountain-hare": 4,
+    "swamp-rabbit": 4,
+    "thorn-shrike": 3
+   },
+   "after": {
+    "bramblewood-lynx": 3,
+    "ent": 3,
+    "hedgehog-herbalist": 3,
+    "mountain-hare": 5,
+    "thorn-shrike": 3,
+    "gatling-hog": 3
+   },
+   "moves": [
+    {
+     "cut": "swamp-rabbit",
+     "copies": 4,
+     "to": {
+      "gatling-hog": 3,
+      "mountain-hare": 1
+     },
+     "left": 0
+    }
+   ]
+  }
+ ]
+}
