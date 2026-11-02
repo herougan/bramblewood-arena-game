@@ -5192,7 +5192,7 @@
      quickly, with its temporary Health beside them; a raging unit shows an ember shield (½); Tide units show Flow +1 / Ebb −1. */
   /* Shell (2026-10-12, user: "overall this UI is not working for us. Maybe just 4 stacked shields on the btm, but its like blue-y
      to represent etherealness"): N small pale-blue shields stacked along the bottom edge. */
-  .board-card .shell-up{position:absolute; left:50%; bottom:22px; transform:translateX(-50%); z-index:6; display:flex; pointer-events:none; animation:shellGlowIn .4s ease-out both;}
+  .board-card .shell-up{position:absolute; left:50%; bottom:22px; translate:-50% 0 /* 2026-11-02 (UI15, owner #14): was transform:translateX(-50%), which the shellGlowIn animation's own transform replaced, so the pips ended off-centre */; z-index:6; display:flex; pointer-events:none; animation:shellGlowIn .4s ease-out both;}
   .board-card .shell-up i{width:16px; height:19px; margin-left:-7px; clip-path:polygon(50% 0, 100% 16%, 92% 62%, 50% 100%, 8% 62%, 0 16%);
     background:linear-gradient(160deg, rgba(225,245,255,.95), rgba(120,190,255,.75) 55%, rgba(80,140,230,.6)); box-shadow:inset 0 0 4px rgba(255,255,255,.8); filter:drop-shadow(0 0 4px rgba(120,190,255,.9));}
   .board-card .shell-up i:first-child{margin-left:0;}
@@ -12052,7 +12052,8 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 #myDeckList.is-stacks{--cs-gap:12px; display:flex; flex-wrap:wrap; gap:14px var(--cs-gap); padding:12px 8px 8px;}
 #myDeckList .deck-stack{display:block; width:var(--card-full-col) /* 2026-10-30 (CS-A): the Full size; a phone fits 4 a row */; padding:0; background:none; border:0; cursor:pointer;}
 #myDeckList .deck-stack .card-tile{width:100% !important; pointer-events:none;}
-#myDeckList .deck-stack:hover .card-tile{transform:translateY(-3px);}
+#myDeckList .deck-stack .card-tile{transition:transform .2s ease;} /* 2026-11-02 (UI15, owner #4): the lift eases in 0.2 s */
+#myDeckList .deck-stack:hover .card-tile{transform:translateY(-4.5px);} /* 2026-11-02 (UI15): 50% more lift (was -3px) */
 /* 2026-10-15 (click = +, Shift+click = −): the − corner takes a copy out with one tap on touch screens */
 #myDeckList .deck-stack{position:relative;}
 #myDeckList .dchip-minus{position:absolute; top:-6px; left:-6px; z-index:3; width:22px; height:22px; padding:0; border-radius:50%; border:1px solid rgba(0,0,0,.25); background:#fff6ea; color:#8a2a1e; font:900 15px/1 'Nunito',system-ui,sans-serif; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,.3); cursor:pointer; opacity:.8;}
@@ -14415,6 +14416,27 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .mech-wrap.mech-devilry .ritual-shape svg polygon{fill:rgba(220,60,90,.18); stroke:#e05a74;}
 .mech-wrap .ritual-line{display:block;}
 .mech-wrap .ritual-line .ritual-shape{display:block; margin:6px auto 2px !important;}
+/* 2026-11-02 (package UI15) */
+/* owner #3: the xN count pips of the deck editor's Your Loadout sit a few pixels (4) closer to their card */
+#myDeckList .pool-stack .ps-count{right:-7px; bottom:-6px;}
+/* owner #11: the rarity / Supreme frame glow (.cframe-fx::after, z 3, later in the tile) sat over the Wait clock; the clock is above it now */
+.card-tile .waitbadge{z-index:6;}
+/* owner #8: Ritual's corner numbers read on the dark Devilry box (the pills were dark with dark digits), and the diagram is centred on the whole box */
+.mech-wrap.mech-devilry li .ritual-shape .rs-pt{background:#f4e6e9; border-color:#e05a74;}
+.mech-wrap.mech-devilry li .ritual-shape .rs-pt, .mech-wrap.mech-devilry li .ritual-shape .rs-pt b{color:#2b1a1f !important;}
+.mech-wrap .ritual-line .ritual-shape{position:relative; left:var(--rl-shift, 0px);}
+/* owner #8: the card detail page takes a tone from the card's group: Devilry darker, Ecclesia (Grace) a whiter fabric; Exile / Evolution keep the plain page */
+.card-detail-card.cd-grp-devilry{background:linear-gradient(180deg, rgba(20,6,14,.22), rgba(20,6,14,.34)), var(--surface); border-color:var(--devilry-border);}
+.card-detail-card.cd-grp-grace{background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.34) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(210,200,230,.16) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.42)), var(--surface); border-color:var(--grace);}
+:root[data-theme="dark"] .card-detail-card.cd-grp-grace{background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, transparent 1px 3px), var(--surface);}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .card-detail-card.cd-grp-grace{background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, transparent 1px 3px), var(--surface);} }
 /* JJ16: the top-right nav (🏠 🗺️ 🗝️ ⚙️ energy, account, feedback): one height (32px, 28px on a phone), round icon buttons, and one gap between all of them */
 .topbar{column-gap:10px;}
 .topbar > .home-nav-btn.ne-home-icon{width:32px; height:32px; padding:0 !important; border-radius:50%; justify-content:center; gap:0; box-sizing:border-box; margin:0;}
@@ -48626,7 +48648,7 @@ Object.assign(SKILL_ICON, {iceArrow:'🧊🏹', twinShot:'🏹🏹', volley:'�
 Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌', keenSense:'👃'});
 Object.assign(SKILL_ICON, {chainLightning:'🌩️'}); // 2026-10-17: Chain Lightning
 SKILL_ICON.rebuild = '🔨🏰'; // Rebuild N (2026-10-17; 🧱 alone is Bulwark's)
-SKILL_ICON.creative = '🎨'; // 2026-10-18 (package U, user: "New skills: Creative - not sure what it does yet, but it gives Creativity counters to cards somehow")
+SKILL_ICON.creative = '⌘'; // 2026-11-02 (package UI15, owner): was 🎨; // 2026-10-18 (package U, user: "New skills: Creative - not sure what it does yet, but it gives Creativity counters to cards somehow")
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
 // because 💨 is Swift's, 🌫️ Shade's and 🫧 Poison's, with 💣💨 where only text fits.
 Object.assign(SKILL_ICON, {psychic:'💭', smokeBomb:'💣💨'});
@@ -50199,7 +50221,7 @@ sk1Patch(PASSIVE_DEFS, 'dive', {codexNote:TX('ui.eng9-dive-codex')});
 sk1Patch(PASSIVE_DEFS, 'bloomCopy', {codexNote:TX('ui.eng9-bloom-codex')});
 sk1Patch(PASSIVE_DEFS, 'season', {codexNote:TX('ui.eng9-season-codex')});
 // (the Spit labels and Charge's line: ENG10's block below, 2026-10-26: the element alone, and Charge recharging again)
-Object.assign(SKILL_ICON, {undead:'↺', revive:'🪦', poisonBarbs:'🌵', stockpile:'🪵'});
+Object.assign(SKILL_ICON, {undead:'↺', revive:'🪦', poisonBarbs:'🪛', stockpile:'🪵'});
 // ==== Package CONTENT3 (2026-10-26; rules in bramblewood-engine.js, prices in canonical/skill-costs.json): the new skills' lines.
 //   Wakeful (G5)      never falls Asleep (a Sleep hit, the Spore Cloud)       Pulverise (OWN-Q5)  ignores Armor, breaks Armor / Magic Armor /
 //   Socket N (E14)    N more gem sockets on each copy (the Forge's Socket tab)                     equipment, double damage to Structures
@@ -51913,7 +51935,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'a8501938bf76', BUILD_CARD_HASH = '43203d98922d0b4cb39597490a944c605b07be0c217254aece2102490dc75d29';
+const BUILD_ID = '528a1e0c5456', BUILD_CARD_HASH = '43203d98922d0b4cb39597490a944c605b07be0c217254aece2102490dc75d29';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -57029,7 +57051,10 @@ function equipTimeBadgeHTML(d){ if(!d || d.cardType !== 'equipment') return '';
   const n = equipTimeOf(d), tip = TX('ui.c3-equip-time', {n}) + (d.equip && d.equip.tamperProof ? ' · ' + TX('ui.c3-tamper') : ''), spin = (()=>{ try{ return reducedMotion(); }catch(e){ return true; } })() ? '' : 'animation:c3EqSpin 6s linear infinite;';
   return `<span class="c3-eq-time" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" role="img" style="position:absolute; z-index:5; top:3px; right:3px; display:flex; align-items:center; gap:1px; padding:1px 4px; border-radius:9px; background:#1d1a14d9; color:#ffe7a8; font:700 clamp(8px, 9cqw, 12px)/1.2 system-ui, sans-serif; box-shadow:0 0 0 1px #c9a24a;"><span style="display:inline-block; ${spin}">⚔️</span>${n}${d.equip && d.equip.tamperProof ? '🔒' : ''}</span>`; }
 if(typeof document !== 'undefined' && !document.getElementById('c3EqSpinCss')){ try{ const st = document.createElement('style'); st.id = 'c3EqSpinCss'; st.textContent = '@keyframes c3EqSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}'; (document.head || document.documentElement).appendChild(st); }catch(e){} }
+const SOCKET_REVEAL_MAP = 45; // 2026-11-02 (package UI15, owner #4): "The diamonds on cards are gem sockets! Leave them invisible till we discover that technology at Map 45+."
+function socketsRevealed(){ try{ if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled && adminAllowed()) return true; }catch(e){} try{ return furthestMapReached() >= SOCKET_REVEAL_MAP; }catch(e){ return false; } }
 function socketSlotHTML(d){
+  if(!socketsRevealed()) return ''; // 2026-11-02 (package UI15): hidden until Map 45 (Admin mode still previews them)
   let n = 0; try{ n = typeof socketSlotsOf === 'function' ? socketSlotsOf(d) : 0; }catch(e){ n = 0; } if(!(n > 0)) return '';
   // CONTENT3 (2026-10-26, E14): one diamond per socket (Socket N adds them), stacked down the right edge; each shows its gem
   const gems = d.socketGem && typeof gemParts === 'function' ? gemParts(d.socketGem) : [];
@@ -58410,7 +58435,7 @@ function openCardDetail(defId, opts){
       <span class="cdt-cost"><b>${d.cost||0}</b><small>🪵 Cost</small></span>
       <span class="cdt-wait"><b>${d.wait||0}</b><small>⏳ Wait</small></span>
     </div>`;
-  overlay.innerHTML = `<div class="modal card-detail-card ${spawnIds.length ? 'has-spawns' : ''}">
+  overlay.innerHTML = `<div class="modal card-detail-card ${spawnIds.length ? 'has-spawns' : ''} ${mechLine === 'devilry' || mechLine === 'grace' ? 'cd-grp-' + mechLine : ''}">
       <button type="button" class="modal-close-btn cd-x-solo" id="cdCloseXBtn" title="Close" aria-label="Close">✕</button>
       <div class="cd-grid">
       ${'' /* 2026-10-30 (package CS-C): the card is the Detail card (tilt, drag sideways to spin, tap to flip to its back) with the Inspector's
@@ -86968,7 +86993,7 @@ function battlefieldTransformCSS(){
   const total = Math.max(lo, Math.min(hi, battlefieldLeanX + battlefieldPanX));
   battlefieldPanX = total - battlefieldLeanX;
   scheduleBfDividerFit();
-  if(battlefieldScale>=0.995 && Math.abs(total)<0.5 && Math.abs(battlefieldTilt)<0.05 && Math.abs(battlefieldCenterY)<0.5) return '';
+  if(Math.abs(battlefieldScale-1)<0.005 /* 2026-11-02 (UI15): the board can zoom in now, so 'at least .995' no longer means 1:1 */ && Math.abs(total)<0.5 && Math.abs(battlefieldTilt)<0.05 && Math.abs(battlefieldCenterY)<0.5) return '';
   // translateX/translateY come BEFORE scale so they read in real (unscaled) screen px; the turn sits between them.
   const turn = Math.abs(battlefieldTilt)>=0.05 ? ` perspective(1800px) rotateY(${battlefieldTilt.toFixed(2)}deg)` : '';
   return `translateX(${total.toFixed(1)}px) translateY(${battlefieldCenterY.toFixed(1)}px)${turn} scale(${battlefieldScale.toFixed(3)})`;
@@ -87587,6 +87612,26 @@ function fitBattlefieldZoomNowCore(instant){
   const m = needsZoom ? measure() : baseline;
 
   const lean = raidCols ? null : measureBoardLean(inner, m.containerWidth); // the raid's camera doesn't lean toward the cards (2026-10-18)
+  // 2026-11-02 (package UI15, owner ss6: "Example of space not well used again. The screen should be zoomed in such that the cards are left
+  // border to right border!"): when the units fit with room to spare, the board zooms IN until the columns they stand in span the frame
+  // from edge to edge (3% margin), as far as the frame's height lets the rows grow (and at most 2.4x), and follows as units come and go
+  // (every render calls this; smoothIfChanged eases it). The raid and the phone's fill mode size their own cards (mb2Fit*), so they keep 1:1 here.
+  let zoomIn = 1;
+  if(m.scale>=0.995 && !raidCols && !mb2Span && !isDragging){
+    const frameH = mb2FrameInnerHeight(battlefield), natH = inner.offsetHeight || 1, wScale = m.containerWidth > 0 && neededWidth > 0 ? m.containerWidth / neededWidth : 1;
+    zoomIn = Math.min(wScale * 0.97, frameH / natH, 2.4);
+    if(!(zoomIn > 1.04)) zoomIn = 1;
+  }
+  if(zoomIn > 1){
+    const natH = inner.offsetHeight || 1, frameH = mb2FrameInnerHeight(battlefield);
+    smoothIfChanged(()=>{
+      battlefieldScale = zoomIn; battlefieldCenterY = (frameH - natH * zoomIn) / 2; battlefieldPanX = 0; battlefieldPanMaxX = 0;
+      setBoardLean(lean, zoomIn, 0);
+      applyBattlefieldTransform();
+    });
+    battlefield.classList.remove('pannable', 'panning');
+    return;
+  }
   if(m.scale>=0.995){ // fits already (both dimensions, at whichever width this landed on) — stay at 1:1, no zoom
     smoothIfChanged(()=>{
       battlefieldScale = 1; battlefieldCenterY = 0; battlefieldPanX = 0; battlefieldPanMaxX = 0;

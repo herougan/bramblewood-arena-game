@@ -291,3 +291,4 @@ run node tests/fix5-2026-11-02.js   # 2026-11-02 (package FIX5, owner 21:12): th
 run node tests/fix6-2026-11-02.js   # 2026-11-02 (package FIX6, owner 21:37): your leader comes out on Auto and in the sims (leaderPlan, dealPlayerLeader), the CPU keeps LEAD-4, 4-5's Drowned Matriarch is played from hand, the Tower pools follow current rarities
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
+# browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)
