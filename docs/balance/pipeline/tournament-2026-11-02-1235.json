@@ -1,0 +1,252 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "tournament",
+ "status": "ok",
+ "started": "2026-11-02T04:35:09.729Z",
+ "finished": "2026-11-02T04:43:49.644Z",
+ "durationSec": 519.9,
+ "args": [
+  "--games",
+  "24",
+  "--maps",
+  "0-20",
+  "--minutes",
+  "100",
+  "--tag",
+  "bal10"
+ ],
+ "head": "bbdafe09",
+ "inputs": {
+  "games": 24,
+  "maps": "0-20",
+  "tag": "bal10",
+  "band": 0.25,
+  "dir": "tests/out/pipeline-tournament/bal10",
+  "refs": [
+   "map",
+   "prog-1",
+   "prog-2",
+   "prog-3",
+   "prog-4",
+   "prog-5"
+  ],
+  "means": {
+   "map": 0.6373,
+   "prog-1": 0.5909,
+   "prog-2": 0.5344,
+   "prog-3": 0.5562,
+   "prog-4": 0.5338,
+   "prog-5": 0.5545
+  }
+ },
+ "counts": {
+  "fights": 149,
+  "rows played now": 894,
+  "rows on file": 894
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "mf:1-5",
+   "why": "prog mean 0.83 against the road target 0.4 (Map reference 0.833)"
+  },
+  {
+   "id": "m2:4-1",
+   "why": "prog mean 0.28 against the road target 0.9 (Map reference 0.458)"
+  },
+  {
+   "id": "m2:4-2",
+   "why": "prog mean 0.25 against the road target 0.8 (Map reference 0.5)"
+  },
+  {
+   "id": "m2:4-4",
+   "why": "prog mean 0.32 against the road target 0.6 (Map reference 0.375)"
+  },
+  {
+   "id": "mu:7-3",
+   "why": "prog mean 0.43 against the road target 0.75 (Map reference 0.5)"
+  },
+  {
+   "id": "mu:7-6",
+   "why": "prog mean 0.06 against the road target 0.4 (Map reference 0.167)"
+  },
+  {
+   "id": "m4:8-1",
+   "why": "prog mean 0.63 against the road target 0.9 (Map reference 0.458)"
+  },
+  {
+   "id": "m4:8-3",
+   "why": "prog mean 0.47 against the road target 0.8 (Map reference 0.375)"
+  },
+  {
+   "id": "m4:8-5",
+   "why": "prog mean 0.35 against the road target 0.7 (Map reference 0.208)"
+  },
+  {
+   "id": "m4:8-7",
+   "why": "prog mean 0.08 against the road target 0.6 (Map reference 0)"
+  },
+  {
+   "id": "m7:10-1",
+   "why": "prog mean 0.31 against the road target 0.9 (Map reference 0.5)"
+  },
+  {
+   "id": "m7:10-3",
+   "why": "prog mean 0.54 against the road target 0.814 (Map reference 0.75)"
+  },
+  {
+   "id": "m7:10-4",
+   "why": "prog mean 0.49 against the road target 0.771 (Map reference 0.625)"
+  },
+  {
+   "id": "m7:10-5",
+   "why": "prog mean 0.48 against the road target 0.729 (Map reference 0.375)"
+  },
+  {
+   "id": "m10:11-3",
+   "why": "prog mean 0.38 against the road target 0.825 (Map reference 0.833)"
+  },
+  {
+   "id": "m10:11-4",
+   "why": "prog mean 0.53 against the road target 0.788 (Map reference 0.917)"
+  },
+  {
+   "id": "m10:11-5",
+   "why": "prog mean 0.28 against the road target 0.75 (Map reference 0.5)"
+  },
+  {
+   "id": "m10:11-7",
+   "why": "prog mean 0.23 against the road target 0.675 (Map reference 0.375)"
+  },
+  {
+   "id": "m10:11-8",
+   "why": "prog mean 0.32 against the road target 0.638 (Map reference 0.625)"
+  },
+  {
+   "id": "m10:11-10",
+   "why": "prog mean 0.13 against the road target 0.4 (Map reference 0.208)"
+  },
+  {
+   "id": "mh:12-1",
+   "why": "prog mean 0.64 against the road target 0.9 (Map reference 0.875)"
+  },
+  {
+   "id": "mr:13-2",
+   "why": "prog mean 0.38 against the road target 0.85 (Map reference 0.792)"
+  },
+  {
+   "id": "mr:13-4",
+   "why": "prog mean 0.33 against the road target 0.75 (Map reference 0.542)"
+  },
+  {
+   "id": "mr:13-5",
+   "why": "prog mean 0.23 against the road target 0.7 (Map reference 0.542)"
+  },
+  {
+   "id": "mr:13-7",
+   "why": "prog mean 0.28 against the road target 0.6 (Map reference 0.542)"
+  },
+  {
+   "id": "m5:14-3",
+   "why": "prog mean 0.55 against the road target 0.8 (Map reference 0.75)"
+  },
+  {
+   "id": "m5:14-4",
+   "why": "prog mean 0.2 against the road target 0.75 (Map reference 0.417)"
+  },
+  {
+   "id": "m5:14-5",
+   "why": "prog mean 0.18 against the road target 0.7 (Map reference 0.208)"
+  },
+  {
+   "id": "m5:14-6",
+   "why": "prog mean 0.13 against the road target 0.65 (Map reference 0.292)"
+  },
+  {
+   "id": "m5:14-7",
+   "why": "prog mean 0.15 against the road target 0.6 (Map reference 0.167)"
+  },
+  {
+   "id": "m5:14-8",
+   "why": "prog mean 0.14 against the road target 0.4 (Map reference 0.167)"
+  },
+  {
+   "id": "ml:15-2",
+   "why": "prog mean 0.56 against the road target 0.84 (Map reference 0.958)"
+  },
+  {
+   "id": "ml:15-3",
+   "why": "prog mean 0.43 against the road target 0.78 (Map reference 0.625)"
+  },
+  {
+   "id": "ml:15-5",
+   "why": "prog mean 0.29 against the road target 0.66 (Map reference 0.583)"
+  },
+  {
+   "id": "ml:15-6",
+   "why": "prog mean 0.21 against the road target 0.6 (Map reference 0.417)"
+  },
+  {
+   "id": "mt:16-3",
+   "why": "prog mean 0.36 against the road target 0.78 (Map reference 0.5)"
+  },
+  {
+   "id": "m6:17-2",
+   "why": "prog mean 0.51 against the road target 0.85 (Map reference 0.625)"
+  },
+  {
+   "id": "m6:17-3",
+   "why": "prog mean 0.51 against the road target 0.8 (Map reference 0.708)"
+  },
+  {
+   "id": "m6:17-4",
+   "why": "prog mean 0.02 against the road target 0.75 (Map reference 0)"
+  },
+  {
+   "id": "m6:17-5",
+   "why": "prog mean 0.1 against the road target 0.7 (Map reference 0.208)"
+  },
+  {
+   "id": "m6:17-6",
+   "why": "prog mean 0.01 against the road target 0.65 (Map reference 0)"
+  },
+  {
+   "id": "m6:17-7",
+   "why": "prog mean 0.01 against the road target 0.6 (Map reference 0.042)"
+  },
+  {
+   "id": "m6:17-8",
+   "why": "prog mean 0 against the road target 0.4 (Map reference 0)"
+  },
+  {
+   "id": "m11:20-6",
+   "why": "prog mean 0.38 against the road target 0.686 (Map reference 0.625)"
+  },
+  {
+   "id": "m11:20-7",
+   "why": "prog mean 0.33 against the road target 0.643 (Map reference 0.75)"
+  },
+  {
+   "id": "m11:20-8",
+   "why": "prog mean 0.12 against the road target 0.6 (Map reference 0.208)"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 894
+ },
+ "notes": [
+  "map mean win 0.6373",
+  "prog-1 mean win 0.5909",
+  "prog-2 mean win 0.5344",
+  "prog-3 mean win 0.5562",
+  "prog-4 mean win 0.5338",
+  "prog-5 mean win 0.5545"
+ ],
+ "files": [
+  "tests/out/pipeline-tournament/bal10/ref5-road.jsonl"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/tournament-2026-11-02-1235.json"
+}
