@@ -14360,6 +14360,79 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 }
 @media (prefers-reduced-motion: reduce){ .ui14-vs-timer > i{animation:none;} }
 :where(html[data-fx="none"]) .ui14-vs-timer > i{animation:none;}
+/* UI16 (2026-11-02): the owner's 11-02 22:15 notes 9, 10 and 1. */
+/* note 9: the rival's versus card. Map name on top, then the code and kind, the leader's and the bramble's art feathered at the edges (the
+   radial fade a card's own art has), the fight's name, the BR box, the quote. */
+.vs-opener .ui16-vs-them .ui16-vs-map{margin:0; font:800 clamp(14px, 1.45vw, 17px)/1.2 'Baloo 2', system-ui, sans-serif; color:#ffe9c2; letter-spacing:.01em; opacity:1;}
+.ui16-vs-art{display:flex; justify-content:center; align-items:flex-start; gap:6px; width:100%; margin:2px 0 0;}
+.ui16-vs-fig{margin:0; display:flex; flex-direction:column; align-items:center; gap:0; flex:0 1 48%; min-width:0;}
+.ui16-vs-art.n1 .ui16-vs-fig{flex-basis:66%;}
+.ui16-vs-art.n3 .ui16-vs-fig{flex-basis:33%;}
+.ui16-vs-pic{display:block; width:100%; max-width:158px; aspect-ratio:1 / 1.12; background:center 30% / cover no-repeat;
+  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%); mask-image:radial-gradient(ellipse 50% 50% at 50% 50%, #000 55%, transparent 100%);}
+.ui16-vs-pic.is-emoji{display:flex; align-items:center; justify-content:center; font-size:clamp(46px, 4.6vw, 62px); line-height:1;
+  background:radial-gradient(circle at 50% 55%, rgba(255,214,150,.30), rgba(255,214,150,.06) 55%, transparent 72%);}
+.ui16-vs-fig figcaption{display:flex; flex-direction:column; align-items:center; margin-top:-10px; position:relative; max-width:100%;}
+.ui16-vs-fig figcaption small{font:800 9.5px/1.2 system-ui, sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#ffd9a0; opacity:.85;}
+.ui16-vs-fig figcaption b{font:800 13px/1.15 'Baloo 2', system-ui, sans-serif; color:#fff2d6; text-shadow:0 1px 3px rgba(0,0,0,.8); text-align:center; overflow-wrap:anywhere;}
+.vs-opener .ui16-vs-them.has-art{gap:6px;}
+@media (max-width:560px){
+  .ui16-vs-pic{max-width:104px;} .ui16-vs-pic.is-emoji{font-size:42px;}
+  .ui16-vs-fig figcaption b{font-size:12px;}
+}
+/* note 10: on Auto, your pitched card flies into your Graveyard; the pile bumps as it lands */
+.ui16-pitch-fly{will-change:transform, opacity; box-shadow:0 10px 24px rgba(0,0,0,.45);}
+#dropDiscard.ui16-grave-bump{animation:ui16GraveBump .5s cubic-bezier(.3,1.6,.5,1);}
+@keyframes ui16GraveBump{0%{transform:scale(1);} 35%{transform:scale(1.08); box-shadow:0 0 0 3px rgba(255,214,120,.55), 0 0 22px rgba(255,190,90,.5);} 100%{transform:scale(1);}}
+@media (prefers-reduced-motion: reduce){ #dropDiscard.ui16-grave-bump{animation:none;} }
+/* note 1: the player card's looks. One rule per choice sets a variable; the places below use them. The first of each list (meadow, plain,
+   classic) is the look those places had before, so a player who chose nothing sees no change. */
+[data-ui16-bg="meadow"]{--ui16-bg:radial-gradient(ellipse 70% 120% at 0% 0%, rgba(233,180,76,.28), transparent 60%), linear-gradient(135deg, #3c2a1a, #23170d);}
+[data-ui16-bg="dusk"]{--ui16-bg:radial-gradient(ellipse 70% 120% at 100% 0%, rgba(240,140,190,.26), transparent 60%), linear-gradient(140deg, #3b2453 0%, #1d1530 55%, #120c1d 100%);}
+[data-ui16-bg="tide"]{--ui16-bg:radial-gradient(ellipse 90% 60% at 50% 120%, rgba(90,220,230,.28), transparent 65%), linear-gradient(160deg, #134a5c 0%, #0d2f3d 60%, #081d27 100%);}
+[data-ui16-bg="ember"]{--ui16-bg:radial-gradient(ellipse 80% 90% at 85% 110%, rgba(255,120,40,.5), transparent 60%), linear-gradient(150deg, #4a1a10, #1f0a06);}
+[data-ui16-bg="frost"]{--ui16-bg:radial-gradient(ellipse 80% 70% at 15% 0%, rgba(230,245,255,.35), transparent 60%), linear-gradient(165deg, #5d7f99 0%, #2c4256 55%, #18242f 100%);}
+[data-ui16-bg="starlight"]{--ui16-bg:radial-gradient(circle at 18% 28%, rgba(255,255,255,.9) 0 1px, transparent 2px), radial-gradient(circle at 72% 58%, rgba(255,240,200,.85) 0 1.2px, transparent 2.4px), radial-gradient(circle at 44% 82%, rgba(255,255,255,.7) 0 1px, transparent 2px), radial-gradient(circle at 88% 20%, rgba(255,255,255,.7) 0 1px, transparent 2px), radial-gradient(ellipse 70% 60% at 60% 40%, rgba(120,140,255,.25), transparent 70%), linear-gradient(170deg, #1b2350, #0a0d22);}
+[data-ui16-border="plain"]{--ui16-c1:rgba(233,180,76,.38); --ui16-c2:rgba(0,0,0,0); --ui16-glow:rgba(0,0,0,0);}
+[data-ui16-border="vine"]{--ui16-c1:#7fd06a; --ui16-c2:#2f6b2a; --ui16-glow:rgba(110,200,90,.35);}
+[data-ui16-border="bark"]{--ui16-c1:#b8875a; --ui16-c2:#4f3218; --ui16-glow:rgba(150,100,60,.3);}
+[data-ui16-border="silver"]{--ui16-c1:#eef2f6; --ui16-c2:#7d8a97; --ui16-glow:rgba(220,230,245,.38);}
+[data-ui16-border="gold"]{--ui16-c1:#ffe08a; --ui16-c2:#b07a14; --ui16-glow:rgba(255,200,80,.5);}
+[data-ui16-font="classic"]{--ui16-font:'Baloo 2', system-ui, sans-serif;}
+[data-ui16-font="poster"]{--ui16-font:'Lilita One', 'Baloo 2', system-ui, sans-serif;}
+[data-ui16-font="kingdom"]{--ui16-font:'MedievalSharp', Georgia, serif;}
+[data-ui16-font="hand"]{--ui16-font:'Caveat', 'Baloo 2', cursive;}
+/* where they show: the profile header, the editor's preview, What rivals see, your side of the versus card, a PvP side, your co-op seat */
+.pf-hero[data-ui16-bg]:not([data-ui16-bg="meadow"]), .ui16-vs2[data-ui16-bg]:not([data-ui16-bg="meadow"]), .ui16-seat[data-ui16-bg]:not([data-ui16-bg="meadow"]){background:var(--ui16-bg);}
+.ui16-seat[data-ui16-bg]:not([data-ui16-bg="meadow"]){color:#fbf1dc;}
+.pf-hero[data-ui16-border]:not([data-ui16-border="plain"]), .ui16-vs2[data-ui16-border]:not([data-ui16-border="plain"]), .ui16-seat[data-ui16-border]:not([data-ui16-border="plain"]),
+.vs-opener .vs-me.ui14-vs-card[data-ui16-border]:not([data-ui16-border="plain"]){border:2px solid var(--ui16-c1); box-shadow:0 0 0 2px var(--ui16-c2), 0 0 18px var(--ui16-glow), 0 10px 30px rgba(0,0,0,.28);}
+[data-ui16-font]:not([data-ui16-font="classic"]) .ui16-name, .ui16-name[data-ui16-font]:not([data-ui16-font="classic"]){font-family:var(--ui16-font) !important;}
+[data-ui16-font="hand"] .ui16-name{font-size-adjust:.5; letter-spacing:.01em;} /* Caveat's small letters drawn at the others' size, whatever the place's own size */
+.ui16-pre, .ui16-suf{font-size:.72em; font-weight:700; opacity:.88; letter-spacing:.01em; white-space:nowrap;}
+.pf-name.ui16-name{white-space:normal; overflow-wrap:anywhere;}
+/* the player card itself (the editor's preview) and What rivals see */
+.ui16-pcard, .pp-banner.ui16-pp{display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:16px; color:#fbf1dc; background:var(--ui16-bg);
+  border:2px solid var(--ui16-c1); box-shadow:0 0 0 2px var(--ui16-c2), 0 0 18px var(--ui16-glow), 0 8px 20px rgba(0,0,0,.25);}
+.ui16-pcard{margin:6px 0 12px;}
+.ui16-pcard-txt{display:flex; flex-direction:column; align-items:flex-start; gap:5px; min-width:0;}
+.ui16-pcard .ui16-name{font:800 20px/1.1 'Baloo 2', system-ui, sans-serif; color:#fff6e2; overflow-wrap:anywhere;}
+.pp-banner.ui16-pp .pp-name{color:#fff6e2;} .pp-banner.ui16-pp .pp-title{color:#f3dcae;}
+.pp-banner.ui16-pp{margin-bottom:8px;}
+/* the editor's choices */
+.ui16-looks{display:flex; flex-direction:column; gap:2px;}
+.ui16-picks{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:6px;}
+.ui16-pick{display:inline-flex; align-items:center; gap:7px; min-height:34px; padding:4px 11px 4px 5px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:700 12.5px/1.15 'Nunito', system-ui, sans-serif;}
+.ui16-picks[data-ui16-kind="prefix"] .ui16-pick, .ui16-picks[data-ui16-kind="suffix"] .ui16-pick{padding-left:11px;}
+.ui16-pick.is-on{outline:2px solid var(--gold, #e3b23c); outline-offset:1px; background:color-mix(in srgb, var(--gold, #e3b23c) 18%, var(--surface-2));}
+.ui16-pick[disabled]{opacity:.5; cursor:not-allowed;}
+.ui16-sw{display:inline-flex; align-items:center; justify-content:center; flex:none; width:24px; height:24px; border-radius:7px; font-style:normal;}
+.ui16-sw.is-bg{background:var(--ui16-bg); box-shadow:inset 0 0 0 1px rgba(255,255,255,.15);}
+.ui16-sw.is-border{background:#2a2018; border:3px solid var(--ui16-c1); box-shadow:0 0 0 1px var(--ui16-c2), 0 0 6px var(--ui16-glow); box-sizing:border-box;}
+.ui16-sw.is-font{background:#2a2018; color:#fbf1dc; font-family:var(--ui16-font); font-size:14px;}
+/* your co-op seat: your avatar beside your name */
+.ui16-seat .ui16-seat-av{position:absolute; right:8px; top:8px;}
+.ui16-seat .ui16-name{padding-right:34px;}
 /* JJ20: the Devilry box: a black-grey-black gradient, and its diagrams (Ritual's shape) centred on their own line */
 .mech-wrap.mech-devilry{background:linear-gradient(180deg, #0c0b0c 0%, #3b3a3c 50%, #0c0b0c 100%); border-color:var(--devilry-border); color:#ece6e6;}
 .mech-wrap.mech-devilry li{background:rgba(255,255,255,.07) !important; color:#ece6e6 !important; border-color:rgba(255,255,255,.12) !important;}

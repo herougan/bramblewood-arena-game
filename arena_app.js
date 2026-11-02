@@ -26509,7 +26509,8 @@ function gdLobbyHTML(){
     if(x.cpu) return `<div class="gd-seat seat-${i} is-cpu">${label}<b>🤖 ${escapeHtml(TX('ui.coop2-cpu-name'))}</b><small>${escapeHtml(TX('ui.ui3-cpu-random'))}</small></div>`;
     const isHost = x.peerId === r.hostId, isMe = x.peerId === me;
     const state = isHost ? `👑 ${escapeHtml(TX('ui.ar3-host'))}` : !x.connected ? `📴 ${escapeHtml(TX('ui.ar3-away'))}` : x.ready ? `✅ ${escapeHtml(TX('ui.ar3-ready'))}` : `⏳ ${escapeHtml(TX('ui.ar3-not-ready'))}`;
-    return `<div class="gd-seat seat-${i} ${isMe ? 'is-me' : ''} ${x.ready || isHost ? 'is-ready' : ''}">${label}<b>${escapeHtml(x.name || '?')}${isMe && x.name !== TX('ui.ar3-you') ? ` <em>(${escapeHtml(TX('ui.ar3-you'))})</em>` : ''}</b><small>${state}</small></div>`;
+    const look = isMe ? loadAvatar() : (x.avatar && typeof x.avatar === 'object' ? x.avatar : null); // UI16 (2026-11-02, note 1): a seat wears its player's card look (yours always; another's once the room carries it)
+    return `<div class="gd-seat seat-${i} ${isMe ? 'is-me' : ''} ${x.ready || isHost ? 'is-ready' : ''}${look ? ' ui16-seat' : ''}" ${look ? ui16LookAttrs(look) : ''}>${label}${look ? `<span class="ui16-seat-av">${avatarHTML(look, 30)}</span>` : ''}<b class="ui16-name">${look ? ui16NameHTML(look, x.name || '?') : escapeHtml(x.name || '?')}${isMe && x.name !== TX('ui.ar3-you') ? ` <em>(${escapeHtml(TX('ui.ar3-you'))})</em>` : ''}</b><small>${state}</small></div>`;
   };
   const mine = mySeat != null && r.seats[mySeat];
   const waiting = host && !S.canStart();
@@ -32209,6 +32210,20 @@ function ui14OpenerHold(map, node, isBoss, isElite, lair){
   const repeat = !!(last && last.key === key && now - last.t < 5*60*1000); showVersusOpener.last = {key, t: now}; ui14OpenerHold.repeat = repeat;
   return repeat ? 1200 : lair ? 5000 : isBoss ? 4200 : isElite ? 3800 : 3400;
 }
+// 2026-11-02 (package UI16, owner note 9): the rival card's art row: each leader's card art and the bramble's art, feathered at the edges like a
+// card's own art (the same radial fade), each named under it with a small kicker (Leader / Bramble). A bramble with no picture shows its emoji
+// in the same frame. '' when there is nothing to draw (no leader and no bramble art): the card keeps the round portrait.
+function ui16VsArtStageHTML(map, node, enemyChar){
+  let leaders = []; try{ leaders = leadersShownFor(node, map && map.id).slice(0, 2); }catch(e){}
+  const defs = getCardDefs(), br = enemyChar || null, brArt = br && br.art ? String(br.art) : '';
+  if(!leaders.length && !brArt) return '';
+  const fig = (kind, name, art, icon)=> `<figure class="ui16-vs-fig is-${kind}"><span class="ui16-vs-pic${art ? '' : ' is-emoji'}"${art ? ` style="background-image:url('${escapeAttr(art)}')"` : ''} aria-hidden="true">${art ? '' : escapeHtml(icon || '🏰')}</span><figcaption><small>${escapeHtml(TX(kind === 'leader' ? 'ui.ui16-vs-leader' : 'ui.ui16-vs-bramble'))}</small>${name ? `<b>${escapeHtml(name)}</b>` : ''}</figcaption></figure>`;
+  const out = leaders.map(id=> fig('leader', defs[id].name, defs[id].art || '', defs[id].icon || '👑'));
+  // a fight with no castle of its own (the placeholder bramble carries the fight's name) shows the plain bramble, unnamed
+  const brName = br && br.id !== 'conquest-enemy' ? br.name : '';
+  out.push(fig('bramble', brName, brArt, (br && br.icon) || '🏰'));
+  return `<div class="ui16-vs-art n${out.length}">${out.join('')}</div>`;
+}
 function showVersusOpener(map, node, myChar, enemyChar){
   const host = document.getElementById('view-play'); if(!host || !node) return;
   host.querySelectorAll('.vs-opener').forEach(e=> e.remove());
@@ -32228,32 +32243,30 @@ function showVersusOpener(map, node, myChar, enemyChar){
   // how long it stays up (ui14OpenerHold); a tap still skips.
   const bgArt = (()=>{ try{ const bf = document.getElementById('battlefieldEl'); const u = bf && (/url\("?([^")]+)"?\)/.exec(getComputedStyle(bf).backgroundImage) || [])[1]; return u || ''; }catch(e){ return ''; } })();
   const bgStyle = bgArt ? ` style="--ui14-vs-art:url('${escapeAttr(bgArt)}')"` : '';
-  const facts = (()=>{ const out = [];
-    try{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; out.push(`<span class="vs-fact vs-people">${pp.icon} ${escapeHtml(pp.name)}</span>`); }catch(e){}
-    try{ out.push(`<span class="vs-fact vs-castle">${castleLineText(node)}</span>`); }catch(e){}
-    try{ const L = leadersShownFor(node, map && map.id), defs = getCardDefs(); if(L.length){ // 2026-10-23 (package LEAD): an elite's or a boss's leader(s), by name and face
-      const face = id=> `<span class="vs-leader-face" aria-hidden="true">${escapeHtml(defs[id].icon || '👑')}</span>`;
-      const text = L.length > 1 ? TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}) : TX('ui.nv-vs-ally-leader', {name: defs[L[0]].name});
-      out.push(`<span class="vs-fact vs-leaders${L.length > 1 ? ' is-pair' : ''}">${L.slice(0, 2).map(face).join('')}<span>${escapeHtml(text)}</span></span>`); } }catch(e){}
-    try{ const lv = cpuAiLevelForNode(map && map.id, node); if(isBoss || isElite || lv > 0) out.push(cpuAiPillHTML(lv).replace('<div class="vs-ai-pill', '<span class="vs-fact vs-ai-pill').replace(/<\/div>$/, '</span>')); }catch(e){}
-    return out.join(''); })();
   const hold = ui14OpenerHold(map, node, isBoss, isElite, lair);
+  const myAv = loadAvatar(); // UI16 (2026-11-02, owner note 1): your card wears your player card's border and font, and your name its prefix / suffix
+  // 2026-11-02 (package UI16, owner note 9 on ss3-fight-preview-20-A-2: "make this card similar to our card preview, showing the leader and bramble
+  // art (with faded edges) ... not including info like 'Wild Beasts' or 'Smart CPU'. Then removing info of hp and shield. [The] map name should
+  // be above the skirmish code."): the rival's card reads map name, code and kind, the art of its leader(s) and its bramble (each a picture
+  // feathered at the edges, as a card's own art is, named under it), the fight's name, the BR box and the quote. The facts line (people, castle
+  // Health and Armour, the leader line, the CPU) is gone. With no leader and a bramble with no art it keeps the round portrait.
+  const ui16Stage = ui16VsArtStageHTML(map, node, enemyChar);
   el.innerHTML = `
-    <div class="vs-side vs-me ui14-vs-card"${bgStyle}>
+    <div class="vs-side vs-me ui14-vs-card"${bgStyle} ${ui16LookAttrs(myAv, ['border', 'font'])}>
       <div class="ui14-vs-kicker">${escapeHtml(TX('ui.ui14-vs-you-kicker'))}</div>
-      <div class="vs-portrait ui14-vs-round">${avatarHTML(loadAvatar(), 84)}</div>
-      <div class="vs-name">${escapeHtml(myProfile ? myProfile.name : 'You')}</div>
+      <div class="vs-portrait ui14-vs-round">${avatarHTML(myAv, 84)}</div>
+      <div class="vs-name ui16-name">${ui16NameHTML(myAv, myProfile ? myProfile.name : 'You')}</div>
       <div class="ui14-vs-map">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
       ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${mainDeckLevel(myDeckCounts, myLeaderId)}</b></div>`; }catch(e){ return ''; } })()}
     </div>
     <div class="vs-mid"><span class="vs-mark">VS</span></div>
-    <div class="vs-side vs-them ui14-vs-card"${bgStyle}>
+    <div class="vs-side vs-them ui14-vs-card ui16-vs-them${ui16Stage ? ' has-art' : ''}"${bgStyle}>
+      ${map ? `<div class="ui14-vs-map ui16-vs-map">${escapeHtml(map.icon || '')} ${escapeHtml(map.name || '')}</div>` : ''}
       <div class="ui14-vs-kicker vs-kind${isBoss ? ' vis3-kind-boss' : isElite ? ' vis3-kind-elite' : ''}">${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</div>
-      <div class="vs-portrait vs-rival-ico ui14-vs-round" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}${isBoss && !/raid|final|world|mega/.test(node.kind || '') ? '<span class="vis3-skull-frame"></span>' : isElite ? '<span class="vis3-elite-frame"></span>' : ''}</div>
+      ${ui16Stage || `<div class="vs-portrait vs-rival-ico ui14-vs-round" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}${isBoss && !/raid|final|world|mega/.test(node.kind || '') ? '<span class="vis3-skull-frame"></span>' : isElite ? '<span class="vis3-elite-frame"></span>' : ''}</div>`}
       <div class="vs-name">${escapeHtml(node.name)}</div>
-      ${map ? `<div class="ui14-vs-map">${escapeHtml(map.icon || '')} ${escapeHtml(map.name || '')}</div>` : ''}
       ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
-      ${facts ? `<div class="vs-facts ui14-vs-facts">${facts}</div>` : ''}
+      ${'' /* UI16 (2026-11-02, note 9): no facts line any more (people, castle Health and Armour, leaders, CPU) */}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
       <i class="ui14-vs-timer" aria-hidden="true"><i style="animation-duration:${hold}ms"></i></i>
     </div>
@@ -41089,6 +41102,67 @@ function processIdleSweep(){
 }
 setTimeout(()=>{ try{ processIdleSweep(); }catch(e){} }, 6000);
 function setIdleSweepTarget(mapId, nodeKey){ try{ localStorage.setItem(IDLE_SWEEP_KEY, JSON.stringify(mapId ? {mapId, nodeKey} : null)); }catch(e){} }
+// 2026-11-02 (package UI16, owner note 10: "On Auto-play, the pitching animation doesn't play when the CPU pitches. The card should go onto the
+// graveyard. Same for playing the card."): on Auto the CPU plays your side, and its pitch and play were drawn as nothing (enemyPitchVfx skips the
+// side whose hand you see; your own pitch and play animate at the drop or tap, which Auto never does). Now each card leaves your hand the way
+// yours do: a pitched card's face flies from its place in your hand into your Graveyard and sinks in (the pile bumps, its +N rises from it and
+// the pitch callout shows, as a tap-pitch does); a played card flies from its place in your hand onto its slot (the hand flight a tap-to-play
+// gets: pendingEntranceOrigins, kind 'hand', fromTile). Run right after aiTakeTurn, before the hand is redrawn, so the hand tiles are still there.
+// window.__ui16Auto counts them (tests/e2e/ui16_2026_11_02.py).
+function ui16AutoHandFx(m, handBefore, ev){
+  if(!m || !ev || !ev.length || viewerHandPid(m) !== 1) return;
+  const side = m.sideOf(1), after = new Set(((m.players[1] || {}).hand || []).map(h=> h.uid));
+  const gone = (handBefore || []).filter(h=> !after.has(h.uid));
+  const take = defId=>{ const i = gone.findIndex(g=> g.defId === defId); return i < 0 ? null : gone.splice(i, 1)[0]; };
+  const tileOf = h=> h ? document.querySelector(`#handStrip .card-tile[data-handuid="${CSS.escape(String(h.uid))}"]`) : null;
+  const W = window.__ui16Auto = window.__ui16Auto || {pitch: 0, play: 0, last: null};
+  ev.forEach(e=>{
+    if(!e || e.side !== side) return;
+    if(e.type === 'discard'){ const t = tileOf(take(e.defId)); W.pitch++; W.last = {kind: 'pitch', defId: e.defId, tile: !!t}; ui16PitchToGrave(m, t, e); }
+    else if(e.type === 'play' && !e.leader && e.uid != null){ const t = tileOf(take(e.defId)); W.play++; W.last = {kind: 'play', defId: e.defId, tile: !!t};
+      if(t){ const r = t.getBoundingClientRect(); if(r.width > 0) pendingEntranceOrigins.set(String(e.uid), {x: r.left + r.width/2, y: r.top + r.height/2, kind: 'hand', fromTile: true, w: r.width}); } }
+  });
+}
+// The pitched card's flight into your Graveyard (#dropDiscard): a fixed copy of the hand tile (so nothing clips it) arcs over and shrinks onto
+// the pile, tilts and sinks into it; as it lands the pile bumps and the gain shows (resourceGainVfx from the pile, pitchCallout). No tile (a
+// hand that is not drawn) starts it from just under the pile. Reduced motion or Effects None: only the gain.
+const UI16_PITCH_MS = 620;
+function ui16PitchToGrave(m, tile, ev){
+  const grave = document.getElementById('dropDiscard');
+  const meta = PITCH_RESOURCE_META[ev.resource] || PITCH_RESOURCE_META.lumber, amt = Math.max(0, Number(ev.amount) || 0);
+  const gains = amt > 0 ? [{amount: amt, glyph: meta.glyph, pillId: meta.pillId}] : [];
+  const land = ()=>{ if(matchState !== m) return;
+    try{ if(grave){ grave.classList.remove('ui16-grave-bump'); void grave.offsetWidth; grave.classList.add('ui16-grave-bump'); setTimeout(()=> grave.classList.remove('ui16-grave-bump'), 520); } }catch(e){}
+    try{ if(gains.length){ resourceGainVfx(grave ? grave.getBoundingClientRect() : null, gains); pitchCallout(gains, getCardDefs()[ev.defId]); } else SoundKit.gold(); }catch(e){} };
+  const lvl = (typeof fxLevel === 'function') ? fxLevel() : 'high';
+  if(!grave || !document.body.animate || reducedMotion() || lvl === 'none'){ land(); return; }
+  const g = grave.getBoundingClientRect(); if(!(g.width > 0)){ land(); return; }
+  let r = tile ? tile.getBoundingClientRect() : null; if(!r || !(r.width > 0)) r = {left: g.left, top: g.bottom + 10, width: g.width * .8, height: g.width};
+  const p = tile ? tile.cloneNode(true) : document.createElement('div');
+  if(!tile) p.innerHTML = cardTileHTML(getCardDefs()[ev.defId] || {name: ev.defId}, {inPlay: true});
+  p.removeAttribute && p.removeAttribute('id'); p.querySelectorAll('[id]').forEach(n=> n.removeAttribute('id'));
+  p.classList.add('ui16-pitch-fly'); p.classList.remove('holo-active', 'holo-tilt', 'selected', 'is-selected'); p.setAttribute('aria-hidden', 'true');
+  [['position', 'fixed'], ['left', r.left + 'px'], ['top', r.top + 'px'], ['width', r.width + 'px'], ['height', r.height + 'px'], ['margin', '0'], ['box-sizing', 'border-box'], ['pointer-events', 'none'], ['z-index', '1300'], ['transition', 'none'], ['transform-origin', '50% 50%']]
+    .forEach(([k, v])=> p.style.setProperty(k, v, 'important'));
+  document.body.appendChild(p);
+  if(tile) tile.style.visibility = 'hidden'; // the hand's own tile is redrawn away a moment later
+  const k = 1 / Math.max(.25, Number(m.speedMult) || 1), T = Math.round(UI16_PITCH_MS * k * (lvl === 'low' ? .7 : 1));
+  const dx = (g.left + g.width/2) - (r.left + r.width/2), dy = (g.top + g.height/2) - (r.top + r.height/2), s1 = Math.max(.25, Math.min(1, (g.width * .78) / r.width));
+  const lift = Math.min(90, Math.abs(dx) * .18 + 30);
+  const a = p.animate([
+    {transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1, filter: 'brightness(1)'},
+    {transform: `translate(${dx*.5}px, ${dy*.5 - lift}px) rotate(${dx > 0 ? 10 : -10}deg) scale(${(1 + s1)/2})`, opacity: 1, filter: 'brightness(1.05)', offset: .45},
+    {transform: `translate(${dx}px, ${dy}px) rotate(${dx > 0 ? 4 : -4}deg) scale(${s1})`, opacity: 1, filter: 'brightness(1.25)', offset: .78},
+    {transform: `translate(${dx}px, ${dy + g.height*.18}px) rotate(0deg) scale(${s1*.82})`, opacity: 0, filter: 'brightness(.7)'},
+  ], {duration: T, easing: 'cubic-bezier(.35,.0,.25,1)', fill: 'both'});
+  try{ noteMatchFx(T); }catch(e){} // the round waits for the card to land
+  // the flight's clock starts at the first frame drawn after it (a.ready), which can be 100-500 ms after the CPU's turn (the hand and board
+  // redraw in between: see UI8's note on handFlightProxy), so the landing is timed from there; a tab that never draws still lands on the wall clock
+  let done = false, landed = false; const fin = ()=>{ if(done) return; done = true; p.remove(); }, landOnce = ()=>{ if(landed) return; landed = true; land(); };
+  try{ a.ready.then(()=> setTimeout(landOnce, Math.round(T * .78)), landOnce); }catch(e){ setTimeout(landOnce, Math.round(T * .78)); }
+  setTimeout(landOnce, T + 1500);
+  a.onfinish = ()=>{ landOnce(); fin(); }; setTimeout(fin, T + 2000);
+}
 async function autoplayStep(){
   const m = matchState; if(!m || !m.autoplay || m.over || m.resolving || m._autoBusy || m.awaitingPass) return;
   if(m.coop) return gdAutoStep(m); // COOP2 had no Auto in a group dungeon; 2026-10-30 (package COOP3, W6): my seat's turn, as a claim
@@ -41097,6 +41171,7 @@ async function autoplayStep(){
   try{ const me = m.players[1];
     if(!me.playedThisTurn){ const ev = [], handBefore = (me.hand || []).map(h=> ({uid:h.uid, defId:h.defId})); m.engine.aiTakeTurn(m.players, m.sideOf, 1, m.stats, ev);
       try{ carryLooksAfterPlays(m, 1, handBefore, ev); }catch(e){} // 2026-10-17: an auto-played Shiny/skinned copy keeps its look (carryCardLook)
+      fightSafe(()=> ui16AutoHandFx(m, handBefore, ev), 'ui16AutoHandFx'); // UI16 (2026-11-02, owner note 10): the pitch flies to your Graveyard, the play from your hand
       ev.forEach(e=>{ try{ pushLog(e); renderVfxForEvent(e); }catch(_){} }); renderBoard(); renderHand(); renderHUD(); await sleep(Math.round(500 / Math.max(1, m.speedMult||1))); }
     if(matchState === m && m.autoplay && !m.over && !m.resolving) await afterPlayerAction(1);
   }catch(e){} finally{ m._autoBusy = false; }
@@ -45118,18 +45193,85 @@ function avatarHTML(av, size, extraCls){
   return `<span class="bw-avatar ${extraCls||''}" style="--av:${col}; width:${px}px; height:${px}px; font-size:${Math.round(px*0.56)}px;" aria-hidden="true">${ch.emoji}</span>`;
 }
 function avatarTitleLabel(av){ return (AVATAR_TITLES.find(t=>t.id===av.title) || AVATAR_TITLES[0]).label; }
+/* ---- UI16 (2026-11-02, owner note 1: "Profile editing - Edit background, Edit border, Edit Font, Edit title, suffix title, prefix title"): your
+   player card. Five more choices beside the character, colour and title: the card's background, its border, the font of your name, and a word
+   before and after your name ("Brave Jay of the Glade"; the title stays its own chip). Each list starts small; the first one or two are open to
+   everyone and the rest unlock as you play (a map cleared, a player level, a first win, 50 cards), the way the titles already do. No shop, no
+   price (there is no cosmetics rule in docs/project-state.md or docs/decisions.json yet; UI16-1 asks). They are saved in the avatar record
+   (bramblewood_avatar: on this device, in your synced progress, and with the ghost decks and raid attempts that already carry your avatar), so no
+   new server column is needed. Others' choices are only read through these lists: an unknown id draws the default. ---- */
+// The ids and what opens them. How each one looks (colours, gradients, fonts) is CSS only: [data-ui16-bg=...] and friends in the UI16 block of
+// arena_template.html, which also dresses the swatches in the picker. The first of each list is the default and draws the old look.
+const UI16_LOOKS = {
+  bg: [{id:'meadow'}, {id:'dusk'}, {id:'tide', map:'m7'}, {id:'ember', map:'m3'}, {id:'frost', map:'m6'}, {id:'starlight', map:'m11'}],
+  border: [{id:'plain'}, {id:'vine', firstWin:true}, {id:'bark', map:'m1'}, {id:'silver', level:15}, {id:'gold', map:'m11'}],
+  font: [{id:'classic'}, {id:'poster'}, {id:'kingdom', level:10}, {id:'hand', map:'m4'}],
+  prefix: [
+    {id:'none'}, {id:'brave'}, {id:'mossy', map:'m1'}, {id:'swift', firstWin:true}, {id:'ancient', level:25}, {id:'golden', map:'m11'},
+  ],
+  suffix: [
+    {id:'none'}, {id:'bold'}, {id:'glade', map:'m1'}, {id:'wanderer', map:'m4'}, {id:'collector', cards:50}, {id:'unbroken', map:'m11'},
+  ],
+};
+const UI16_LOOK_KINDS = ['bg', 'border', 'font', 'prefix', 'suffix'];
+function ui16LookOf(kind, id){ const L = UI16_LOOKS[kind] || []; return L.find(x=> x.id === id) || L[0]; }
+function ui16LookName(kind, id){ return TX('ui.ui16-' + kind + '-' + ui16LookOf(kind, id).id); }
+function ui16LookUnlocked(o){
+  if(!o) return false;
+  try{
+    if(o.map && !conquestMapCleared(o.map)) return false;
+    if(o.level && (playerLevelInfo().level || 0) < o.level) return false;
+    if(o.firstWin && !(loadConquestProgress().completed || []).some(id=> !/tutorial/.test(id))) return false;
+    if(o.cards && Object.keys(myCardCopies || {}).filter(k=> (myCardCopies[k] || []).length).length < o.cards) return false;
+  }catch(e){ return false; }
+  return true;
+}
+function ui16LookHint(o){
+  if(!o) return '';
+  if(o.map){ const m = CONQUEST_MAPS.find(x=> x.id === o.map); return TX('ui.ui16-hint-map', {map: m ? m.name : o.map}); }
+  if(o.level) return TX('ui.ui16-hint-level', {n: o.level});
+  if(o.firstWin) return TX('ui.ui16-hint-first-win');
+  if(o.cards) return TX('ui.ui16-hint-cards', {n: o.cards});
+  return TX('ui.ui16-hint-free');
+}
+// the data-* attributes that dress an element in a player's look (CSS: the UI16 block of arena_template.html); kinds limits which ones
+function ui16LookAttrs(av, kinds){
+  av = av || {}; const want = kinds || ['bg', 'border', 'font'];
+  return want.map(k=> `data-ui16-${k}="${escapeAttr(ui16LookOf(k, av[k]).id)}"`).join(' ');
+}
+// "Brave Jay of the Glade": the prefix and suffix around the name, each in its own span
+function ui16NameHTML(av, name){
+  av = av || {}; const p = ui16LookOf('prefix', av.prefix), s = ui16LookOf('suffix', av.suffix);
+  return `${p.id !== 'none' ? `<span class="ui16-pre">${escapeHtml(TX('ui.ui16-prefix-' + p.id))}</span> ` : ''}<span class="ui16-nm">${escapeHtml(name || '')}</span>${s.id !== 'none' ? ` <span class="ui16-suf">${escapeHtml(TX('ui.ui16-suffix-' + s.id))}</span>` : ''}`;
+}
+// the player card: avatar, name with prefix and suffix, the title chip, on the chosen background inside the chosen border, in the chosen font
+function ui16PlayerCardHTML(av, name, opts){
+  av = av || {}; opts = opts || {};
+  return `<div class="ui16-pcard${opts.cls ? ' ' + opts.cls : ''}" ${ui16LookAttrs(av)}>
+    <span class="ui16-pcard-av">${avatarHTML(av, opts.size || 56)}</span>
+    <span class="ui16-pcard-txt"><b class="ui16-name">${ui16NameHTML(av, name)}</b>${opts.noTitle ? '' : `<span class="avatar-title-chip" style="--av:${(AVATAR_COLORS.find(c=>c.id===av.color)||AVATAR_COLORS[0]).hex}">${escapeHtml(avatarTitleLabel(av))}</span>`}${opts.sub ? `<small>${opts.sub}</small>` : ''}</span>
+  </div>`;
+}
+function ui16LookPickerHTML(av){
+  const row = kind=> `<div class="inv-label">${escapeHtml(TX('ui.ui16-label-' + kind))}</div>
+    <div class="ui16-picks" data-ui16-kind="${kind}">${UI16_LOOKS[kind].map(o=>{ const open = ui16LookUnlocked(o), on = ui16LookOf(kind, av[kind]).id === o.id;
+      const swatch = kind === 'bg' || kind === 'border' || kind === 'font' ? `<i class="ui16-sw is-${kind}" data-ui16-${kind}="${o.id}" aria-hidden="true">${kind === 'font' ? 'Aa' : ''}</i>` : '';
+      return `<button type="button" class="ui16-pick${on ? ' is-on' : ''}" data-ui16-pick="${kind}:${o.id}" ${open ? '' : 'disabled'} aria-pressed="${on}" title="${escapeAttr(open ? ui16LookName(kind, o.id) : '🔒 ' + ui16LookHint(o))}">${swatch}<span>${open ? '' : '🔒 '}${escapeHtml(ui16LookName(kind, o.id))}</span></button>`; }).join('')}</div>`;
+  return `<div class="ui16-looks">${row('bg')}${row('border')}${row('font')}${row('prefix')}${row('suffix')}</div>`;
+}
 function avatarCustomizerHTML(){
   const av = loadAvatar();
   return `<div class="panel avatar-panel" id="avatarPanel">
     <h3>🎨 Your character</h3>
-    <div class="avatar-preview">${avatarHTML(av, 84)}<div><div class="avatar-preview-name">${escapeHtml(myProfile ? myProfile.name : 'Guest')}</div><div class="avatar-title-chip" style="--av:${(AVATAR_COLORS.find(c=>c.id===av.color)||AVATAR_COLORS[0]).hex}">${escapeHtml(avatarTitleLabel(av))}</div></div></div>
+    ${ui16PlayerCardHTML(av, myProfile ? myProfile.name : 'Guest', {size: 84, cls: 'ui16-preview'}) /* UI16 (2026-11-02, note 1): the preview is your player card, as rivals see it */}
     <div class="inv-label">Character</div>
     <div class="avatar-choices">${Registry.avatarCharacters().map(c=>`<button type="button" class="avatar-choice ${c.id===av.character?'is-on':''}" data-av-char="${c.id}" ${c.isUnlocked?'':'disabled'} title="${escapeAttr(c.isUnlocked ? c.name : '🔒 '+c.unlockHint)}" aria-pressed="${c.id===av.character}"><span class="ac-emoji">${c.isUnlocked?c.emoji:'🔒'}</span><span class="ac-name">${escapeHtml(c.name)}</span></button>`).join('')}</div>
     <div class="inv-label">Colour</div>
     <div class="avatar-swatches">${Registry.avatarColors().map(c=>`<button type="button" class="avatar-swatch ${c.id===av.color?'is-on':''}" data-av-color="${c.id}" style="--sw:${c.hex}" title="${escapeAttr(c.name)}" aria-label="${escapeAttr(c.name)}" aria-pressed="${c.id===av.color}"></button>`).join('')}</div>
     <div class="inv-label">Title</div>
     <div class="avatar-titles">${Registry.avatarTitles().map(t=>`<button type="button" class="avatar-title-opt ${t.id===av.title?'is-on':''}" data-av-title="${t.id}" ${t.isUnlocked?'':'disabled'} title="${escapeAttr(t.isUnlocked ? t.hint : '🔒 '+t.hint)}">${t.isUnlocked?'':'🔒 '}${escapeHtml(t.label)}</button>`).join('')}</div>
-    <p class="tk-hint">More characters and titles unlock as you win. Outfits are on the way.</p>
+    ${ui16LookPickerHTML(av) /* UI16 (2026-11-02, note 1): background, border, font, the words before and after your name */}
+    <p class="tk-hint">${escapeHtml(TX('ui.ui16-more-hint'))}</p>
   </div>`;
 }
 function wireAvatarCustomizer(){
@@ -45140,8 +45282,10 @@ function wireAvatarCustomizer(){
     if(b.dataset.avChar) av.character = b.dataset.avChar;
     else if(b.dataset.avColor) av.color = b.dataset.avColor;
     else if(b.dataset.avTitle) av.title = b.dataset.avTitle;
+    else if(b.dataset.ui16Pick){ const [k, id] = b.dataset.ui16Pick.split(':'); if(!UI16_LOOK_KINDS.includes(k) || !ui16LookUnlocked(UI16_LOOKS[k].find(o=> o.id === id))) return; av[k] = id; } // UI16 (2026-11-02)
     else return;
     saveAvatar(av);
+    try{ livePushProgress(false); }catch(e){} // UI16 (2026-11-02): your look goes to your synced progress now (bramblewood_avatar is a progress key), not at the 20 s tick
     const tmp = document.createElement('div'); tmp.innerHTML = avatarCustomizerHTML(); panel.replaceWith(tmp.firstElementChild); wireAvatarCustomizer();
     const top = document.querySelector('.profile-avatar'); if(top) top.innerHTML = avatarHTML(av, 72);
   };
@@ -45190,9 +45334,12 @@ function showVsScreen(left, right){
         <div class="vs2-sb-total"><span>${escapeHtml(TX('ui.nv-vs-side-total'))}</span><b>${br(total)}</b></div>
         <small class="vs2-sb-note">${escapeHtml(TX('ui.nv-vs-leaders-x2'))}</small>
       </div>`; };
-    const card = (p, cls)=> `<div class="vs-side ${cls}"><div class="vs2-card">
+    // 2026-11-02 (package UI16, owner note 1): a player's side (yours, a PvP ghost's) is their player card: its background, border and font, and the
+    // name with its prefix and suffix. A ghost's look arrives in its avatar record and is read only through UI16_LOOKS (an unknown id draws the default).
+    const pLook = p=> !p.art && p.avatar ? ' ' + ui16LookAttrs(p.avatar) : '';
+    const card = (p, cls)=> `<div class="vs-side ${cls}"><div class="vs2-card${pLook(p) ? ' ui16-vs2' : ''}"${pLook(p)}>
         ${p.art ? `<span class="vs2-boss-frame"><img class="vs-boss-art" src="${escapeAttr(p.art)}" alt=""></span>` : `<span class="vs2-portrait">${avatarHTML(p.avatar, 110)}</span>`}
-        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${p.bramble ? `<div class="u3-bramble-line">${p.bramble.icon || '🏰'} ${escapeHtml(TX('ui.u3-bramble-vs', {name: p.bramble.name}))}</div>${raidBrambleAbsHTML(p.bramble.lines || [])}${p.bramble.shield ? `<div class="u3-bramble-line mx-raid-shield" title="${escapeAttr(p.bramble.shieldTip || '')}"><span aria-hidden="true">🔷</span> ${escapeHtml(p.bramble.shield)}</div>` : '' /* 2026-10-19 (package MX) */}` : '' /* 2026-10-19 (package U3) */}</div>
+        <div class="vs2-id">${p.art ? `<div class="vs2-kicker">${escapeHtml(raid ? TX('ui.nv-vs-raid-boss') : TX('ui.nv-vs-boss'))}</div>` : ''}<div class="vs-name ui16-name">${p.avatar && !p.art ? ui16NameHTML(p.avatar, p.name) : escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${p.bramble ? `<div class="u3-bramble-line">${p.bramble.icon || '🏰'} ${escapeHtml(TX('ui.u3-bramble-vs', {name: p.bramble.name}))}</div>${raidBrambleAbsHTML(p.bramble.lines || [])}${p.bramble.shield ? `<div class="u3-bramble-line mx-raid-shield" title="${escapeAttr(p.bramble.shieldTip || '')}"><span aria-hidden="true">🔷</span> ${escapeHtml(p.bramble.shield)}</div>` : '' /* 2026-10-19 (package MX) */}` : '' /* 2026-10-19 (package U3) */}</div>
       </div>${cls === 'vs-left' ? sidePanel() : ''}</div>`;
     const waitMs = raid ? 9000 : 2800;
     el.innerHTML = `${card(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${card(right,'vs-right')}<button type="button" class="vs-start"><i class="vs-start-fill" style="animation-duration:${waitMs}ms" aria-hidden="true"></i><span class="vs-start-txt">⚔️ ${escapeHtml(TX('ui.nv-vs-start'))}</span></button>`;
@@ -58539,9 +58686,9 @@ function playerPreviewHTML(){
     <h2>⚔️ What rivals see</h2>
     <p class="panel-sub">This is you on the other side of the board: your name and look, and the deck you play with (your active deck${d ? `, “${escapeHtml(d.name)}”` : ''}).</p>
     <div class="pp-card">
-      <div class="pp-banner">
+      <div class="pp-banner ui16-pp" ${ui16LookAttrs(loadAvatar()) /* UI16 (2026-11-02, note 1): your player card, as rivals see it */}>
         <div class="pp-avatar">${avatarHTML(loadAvatar(), 60)}</div>
-        <div class="pp-who"><div class="pp-name">${escapeHtml(myProfile ? myProfile.name : 'Guest')}</div><div class="pp-title">${escapeHtml(avatarTitleLabel(loadAvatar()))}</div></div>
+        <div class="pp-who"><div class="pp-name ui16-name">${ui16NameHTML(loadAvatar(), myProfile ? myProfile.name : 'Guest')}</div><div class="pp-title">${escapeHtml(avatarTitleLabel(loadAvatar()))}</div></div>
         <span class="conquest-rank-badge pp-rank">${rank.label}</span>
       </div>
       ${d ? deckShowcaseHTML(d) : '<p class="panel-sub">No deck yet.</p>'}
@@ -58966,14 +59113,14 @@ setTimeout(()=>{ try{ if(res4TrailOpen()) res4TrailState(); }catch(e){} }, 1500)
 function profileHeroHTML(){
   const av = loadAvatar(), L = playerLevelInfo(), rank = rankForRating(myRating);
   const name = myProfile ? myProfile.name : 'Guest';
-  return `<section class="pf-hero">
-    <button type="button" class="pf-avatar-btn" id="pfAvatarBtn" title="Edit your character" aria-label="Edit your character (${escapeAttr(avatarTitleLabel(av))})">
+  return `<section class="pf-hero" ${ui16LookAttrs(av) /* UI16 (2026-11-02, note 1): the header is your player card: its background, border and font */}>
+    <button type="button" class="pf-avatar-btn" id="pfAvatarBtn" title="${escapeAttr(TX('ui.ui16-edit-card'))}" aria-label="${escapeAttr(TX('ui.ui16-edit-card'))} (${escapeAttr(avatarTitleLabel(av))})">
       <span class="pf-title">${escapeHtml(avatarTitleLabel(av))}</span>
       <span class="pf-avatar">${avatarHTML(av, 104)}</span>
       <span class="pf-edit" aria-hidden="true">✏️</span>
     </button>
     <div class="pf-who">
-      <h2 class="pf-name">${escapeHtml(name)}</h2>
+      <h2 class="pf-name ui16-name">${ui16NameHTML(av, name)}</h2>
       <div class="pf-status">${isSignedIn() ? '<span class="pf-dot ok"></span>Synced to your account' : '<span class="pf-dot"></span>Guest · saved on this device'}${cloudCardAdmin ? ' · <span class="admin-badge">🛡 Admin</span>' : ''}</div>
       ${'' /* RES3 (2026-10-26, R9): the level bar is the full-width track under the hero (res3LevelTrackHTML) */}
     </div>
