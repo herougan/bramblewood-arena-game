@@ -1,0 +1,218 @@
+{
+ "tool": "tools/bal12/lumber_home_2026_11_02.js",
+ "generated": "2026-11-02T14:31:13.127Z",
+ "fingerprint": "64700feee054",
+ "bramble": 15,
+ "fights": 300,
+ "contexts": {
+  "global": {
+   "name": "global-b15",
+   "poolCards": 768,
+   "meanCost": 0.8581,
+   "level": 1,
+   "statRate": {
+    "m": 0.029,
+    "lo": 0.0204,
+    "hi": 0.0371
+   },
+   "placebo": {
+    "m": -0.0766,
+    "lo": -0.7742,
+    "hi": 0.4034
+   },
+   "skills": {
+    "onReadyGold=1": {
+     "m": 6.1244,
+     "lo": 4.8439,
+     "hi": 8.4776
+    },
+    "T:onReady>gain 3": {
+     "m": 6.2392,
+     "lo": 4.9828,
+     "hi": 8.538
+    }
+   }
+  },
+  "mb": {
+   "name": "map02-mb-bpro-b15",
+   "poolCards": 17,
+   "meanCost": 0.3529,
+   "level": 0,
+   "statRate": {
+    "m": 0.0372,
+    "lo": 0.0292,
+    "hi": 0.0461
+   },
+   "placebo": {
+    "m": 0.209,
+    "lo": -0.3415,
+    "hi": 0.7059
+   },
+   "skills": {
+    "onReadyGold=1": {
+     "m": 2.209,
+     "lo": 1.4641,
+     "hi": 3.1765
+    },
+    "T:onReady>gain 3": {
+     "m": 2.5672,
+     "lo": 1.791,
+     "hi": 3.6748
+    }
+   }
+  },
+  "mz": {
+   "name": "map07-mz-bpro-b15",
+   "poolCards": 23,
+   "meanCost": 0.6087,
+   "level": 0,
+   "statRate": {
+    "m": 0.0278,
+    "lo": 0.0203,
+    "hi": 0.0367
+   },
+   "placebo": {
+    "m": 0.52,
+    "lo": -0.2273,
+    "hi": 1.1654
+   },
+   "skills": {
+    "onReadyGold=1": {
+     "m": 6.4,
+     "lo": 4.597,
+     "hi": 9.4035
+    },
+    "T:onReady>gain 3": {
+     "m": 6,
+     "lo": 4.2899,
+     "hi": 8.7895
+    }
+   }
+  },
+  "m7": {
+   "name": "map10-m7-bpro-b15",
+   "poolCards": 15,
+   "meanCost": 1.3333,
+   "level": 0,
+   "statRate": {
+    "m": 0.0189,
+    "lo": 0.0122,
+    "hi": 0.0258
+   },
+   "placebo": {
+    "m": -1.1765,
+    "lo": -2.4348,
+    "hi": -0.383
+   },
+   "skills": {
+    "onReadyGold=1": {
+     "m": 6.5,
+     "lo": 4.8706,
+     "hi": 9.9592
+    },
+    "T:onReady>gain 3": {
+     "m": 7.6176,
+     "lo": 5.617,
+     "hi": 11.4737
+    }
+   }
+  },
+  "mj": {
+   "name": "map10-mj-bpro-b15",
+   "poolCards": 22,
+   "meanCost": 1.2273,
+   "level": 3,
+   "statRate": {
+    "m": 0.031,
+    "lo": 0.0211,
+    "hi": 0.0436
+   },
+   "placebo": {
+    "m": -0.0897,
+    "lo": -0.6708,
+    "hi": 0.3497
+   },
+   "skills": {
+    "onReadyGold=1": {
+     "m": 6.1883,
+     "lo": 4.5598,
+     "hi": 8.6933
+    },
+    "T:onReady>gain 3": {
+     "m": 6.4753,
+     "lo": 4.6928,
+     "hi": 9.2422
+    }
+   }
+  }
+ },
+ "carriers": [
+  "house-cat",
+  "constrictor-coil",
+  "rivergate-recruit"
+ ],
+ "fit": {
+  "slope": 1.0273,
+  "slopeSE": 0.1184,
+  "globalMeanCost": 0.8581,
+  "points": [
+   {
+    "ctx": "mb",
+    "skill": "onReadyGold=1",
+    "dc": -0.5052,
+    "ratio": 0.3607,
+    "se": 0.0898
+   },
+   {
+    "ctx": "mb",
+    "skill": "T:onReady>gain 3",
+    "dc": -0.5052,
+    "ratio": 0.4115,
+    "se": 0.0975
+   },
+   {
+    "ctx": "mz",
+    "skill": "onReadyGold=1",
+    "dc": -0.24939999999999996,
+    "ratio": 1.045,
+    "se": 0.2551
+   },
+   {
+    "ctx": "mz",
+    "skill": "T:onReady>gain 3",
+    "dc": -0.24939999999999996,
+    "ratio": 0.9617,
+    "se": 0.2311
+   },
+   {
+    "ctx": "m7",
+    "skill": "onReadyGold=1",
+    "dc": 0.47519999999999996,
+    "ratio": 1.0613,
+    "se": 0.266
+   },
+   {
+    "ctx": "m7",
+    "skill": "T:onReady>gain 3",
+    "dc": 0.47519999999999996,
+    "ratio": 1.2209,
+    "se": 0.2981
+   },
+   {
+    "ctx": "mj",
+    "skill": "onReadyGold=1",
+    "dc": 0.3692000000000001,
+    "ratio": 1.0104,
+    "se": 0.2303
+   },
+   {
+    "ctx": "mj",
+    "skill": "T:onReady>gain 3",
+    "dc": 0.3692000000000001,
+    "ratio": 1.0378,
+    "se": 0.2395
+   }
+  ],
+  "form": "mult = 1 + slope x (home mean cost - global mean cost)"
+ }
+}

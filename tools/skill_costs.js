@@ -43,6 +43,7 @@
     const SK = by('skills'), TR = by('triggers'), AC = by('actions'), MO = by('modifiers');
     const ALIAS = table.aliases || {}, SH = table.shorthands || {}, B = table.budget || {}, HALF = table.halfMiss || [];
     const ZH = table.zeitHome || {}; // BAL11 (2026-11-02): per card {night, day} shares on its home maps
+    const LH = table.lumberHome || {}; // BAL12 (2026-11-02): per Lumber maker the mean Lumber cost of its home lists' pools (bramblewood-budget.js lumberHomeMult)
     const mod = (id, d)=> MO[id] && typeof MO[id].value === 'number' ? MO[id].value : d;
     const actEntries = {}; (table.actions || []).forEach(a=>{ const base = a.id.split('.')[0]; (actEntries[base] = actEntries[base] || []).push(a); });
     function skillCost(id, v){
@@ -106,8 +107,10 @@
       // BAL11 (2026-11-02): the card's time-of-day share on its home maps (table.zeitHome, tools/bal9/zeit_home_2026_11_02.js) for zeitS, the
       // Nocturnal / Diurnal braces and the Nightblind / Sunshy drawbacks (bramblewood-budget.js ZEIT_HOME_WEIGHT)
       const home = card && card.id && ZH[String(card.id).split('@')[0]] || null;
+      // BAL12 (2026-11-02, owner BAL11-4 a): a Lumber maker's skill x lumberHomeMult(its home lists' mean Lumber cost)
+      const lm = BB.lumberHomeMult && card && card.id ? BB.lumberHomeMult(LH[String(card.id).split('@')[0]]) : 1;
       Object.entries(effects || {}).forEach(([k, v])=>{
-        if(k === 'triggers'){ (Array.isArray(v) ? v : []).forEach(t=>{ if(!t) return; const c = triggerCost(t, card); missing.push(...c.missing); S += c.cost; parts.push(['trigger', t.on + ' → ' + t.do, c.cost, c.weight + ' × ' + c.value]); }); return; }
+        if(k === 'triggers'){ (Array.isArray(v) ? v : []).forEach(t=>{ if(!t) return; const c = triggerCost(t, card); missing.push(...c.missing); const lg = BB.lumberGainS ? BB.lumberGainS(skillCost('onReadyGold', 1), t) : null /* BAL12 (2026-11-02): priced from On Ready +1 Lumber */, c0 = lg != null ? lg : c.cost; const x = lm !== 1 && BB.isLumberTrigger && BB.isLumberTrigger(t) ? r2(c0 * lm) : c0; S += x; parts.push(['trigger', t.on + ' → ' + t.do, x, (lg != null ? 'onReadyGold x ' + (Math.max(1, +t.amount || 1)) + '^' + BB.LUMBER_GAIN_POW : c.weight + ' × ' + c.value) + (x !== c0 ? ' x' + lm + ' at home (BAL12)' : '')]); }); return; }
         // Context skills (2026-10-21, package CX2): CONTEXT_MULT (0.4) x the S of the skills in their braces, across all their phases
         // (bramblewood-budget.js contextS); the plain flag beside the braces (tide next to tideGrant ...) costs nothing then.
         // ENG10 (2026-10-26, PROP1-4): the threshold skills, braces x the measured share at their N (bramblewood-budget.js thrS)
@@ -135,6 +138,7 @@
         if(BB.EN7_TIP_SHOTS && BB.EN7_TIP_SHOTS[k]){ const [base, st] = BB.EN7_TIP_SHOTS[k], c = v && effects[base] ? r2(mod('tip', BB.EN7_TIP_MULT || 0.9) * (skillCost(st, Math.max(1, numOf(effects[st]))) || 0)) : 0; S += c; parts.push(['skill', k, c, 'x' + mod('tip', 0.9) + ' of ' + st]); return; }
         if(k === 'diveUses'){ const c = effects.dive ? r2(Math.max(0, numOf(v) - 1) * (skillCost('dive', effects.dive) || 0)) : 0; S += c; parts.push(['skill', k, c, 'extra dives']); return; }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
+        if(lm !== 1 && (BB.LUMBER_MAKER_KEYS || []).includes(k)){ c = r2(c * lm); S += c; parts.push(['skill', k, c, 'x' + lm + ' at home (BAL12)']); return; } // BAL12 (2026-11-02): On Ready Lumber at its lists' mean cost
         { const zm = BB.zeitDrawbackMult ? BB.zeitDrawbackMult(k, home) : 1; if(zm !== 1){ c = r2(c * zm); S += c; parts.push(['skill', k, c, 'x' + zm + ' at home (BAL11)']); return; } } // BAL11 (2026-11-02): Nightblind / Sunshy at their home share
         S += c; parts.push(['skill', k, c, '']);
       });
@@ -167,7 +171,7 @@
       if(BB.canopyMultOf) m *= BB.canopyMultOf(e, B); // Canopy Cover (EN5, 2026-10-24): Evasive's multiplier x its uptime under the trees
       // 2026-10-21 (package BX): an Archer never swings (Archer N: its arrow instead), so its Attack is not part of its strength
       // EN6 (2026-10-24): a Hibernate unit's Attack counts only for the rounds it is awake (bramblewood-budget.js EN6_HIBERNATE_UPTIME)
-      const A = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0) * (e.hibernate && BB.EN6_HIBERNATE_UPTIME ? 1 - BB.EN6_HIBERNATE_UPTIME : 1), H = d.health || 0, N2 = r2(BB.cap2Limit ? BB.cap2Limit(N, B) : (N / 3) * (N / 3) * 2); /* BF11 (2026-10-23): 2×(N/3)² */
+      const A = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0) * (e.hibernate && BB.EN6_HIBERNATE_UPTIME ? 1 - BB.EN6_HIBERNATE_UPTIME : 1), H = d.health || 0, N2 = r2((BB.cap2Limit ? BB.cap2Limit(N, B) : (N / 3) * (N / 3) * 2) * (BB.tempoCap2Mult ? BB.tempoCap2Mult(d, B) : 1)); /* BAL12 (2026-11-02): x the tempo cap of a 0-Lumber Rare */ /* BF11 (2026-10-23): 2×(N/3)² */
       // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): both rules inclusive, 2A+H+S <= N and A*H+S <= (N/3)^2
       // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): cap 2 is A*H + S*|S| <= (N/3)^2 (the helper's productScore)
       // 2026-10-22 (BF7, owner, pass III): the helper's capScores: m on the stat terms only, f x the whole left side for Fragile (0.7)
