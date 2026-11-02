@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-02 Package FIX6 (owner 21:37: "Drowned Matriarch is ALWAYS my leader ... and is never played ... take leaders into account")
+- **Your leader comes out on Auto-play:** Auto lends your leader to the engine for its turn; it is summoned as soon as it can be paid (pitching for it, Lumber kept up to 2 turns) and is then yours as if you had played it. Before, Auto never summoned it.
+- **The sims play the reference set's leader** (`dealPlayerLeader`, `playReferenceGame`; `tools/opt/deckopt.js --leader`); the Map reference has none, so the road measure is unchanged. Reference (Random) spot checks moved +18 to +35 points (decision FIX6-2). The CPU's leaders keep LEAD-4 (FIX6-1).
+- **Why the Drowned Matriarch:** REF fights default to "Reference (Random)", whose 20 decks on Maps 5-8 all lead with it (BAL9's rule: the strongest owned card that can lead; it is the only one by then). Your own deck's leader is your pick, kept on the deck (default the Wandering Traveller). `ref5_prog.js` no longer picks a leader the deck already holds (5 BAL9 decks did; to re-bake with BAL13).
+- **The Tower's pools follow current rarities** (KK20): a Very Rare tier, the Uncommons out (the Drowned Matriarch among them), Caldera Wyrm and Fire Drake Hatchling as Heroics (FIX6-3); the Tower test passes again (was 15 failures). Test: `tests/fix6-2026-11-02.js`.
+
 ## 2026-11-02 Package CONTENT7 (owner 19:56 "OK go do, + art": IDEA-11-02, CONTENT6-2 b)
 - **Nine new creatures, on no map list yet:** Bloodworm (the worm with four jaws), Bright Night Algae (Bloom at night), Bobbit Worm, Man o' War, Nautiloid, Pistol Shrimp, and the Mythic three Unicorn, Sphinx and Griffin (marked for Map 56+). Each has an animal, one or two existing skills and a line priced inside the budget at its rarity and proposed map's term. Proposed maps are decision CONTENT7-1 (Pebble Beach, Kelp Mangroves, Coral Current). Gale Sprite is now Whirlwind Swift and Alpine Avalanche is Avalanche Bear (ids unchanged; 12 languages).
 - **Art:** prompts written for the nine and the twelve CONTENT6 repaints (`docs/art/content7-2026-11-02-briefs.md`, six 2x2 sheets in `content7-sheets-plan-2026-11-02.json`); no image generated (needs the owner's credits and a file hand-off). Tools: `tools/content7_cards_2026_11_02.js`, `tools/i18n_2026_11_02_content7.py` (+ two lines in `tools/animal_tags.py`). Test: `tests/content7-2026-11-02.js`.
