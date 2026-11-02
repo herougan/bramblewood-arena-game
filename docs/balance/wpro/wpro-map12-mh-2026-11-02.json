@@ -1,0 +1,305 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:25:55.438Z",
+ "map": {
+  "id": "mh",
+  "num": 12,
+  "name": "The Briar Maze"
+ },
+ "level": 1,
+ "pool": [
+  "ant-hill",
+  "badger-lumberjack",
+  "bramble-hoglet",
+  "carrion-crow",
+  "cunning-vixen",
+  "dormouse",
+  "field-mouse",
+  "gatling-hog",
+  "hedge-weasel",
+  "hedgerow-shrew",
+  "lyrebird-mimic",
+  "mouse-sapper",
+  "quill-thorn-boar",
+  "quillguard",
+  "thorn-shrike"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mh",
+  "budget": 4000,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:12-1",
+   "label": "vs 12-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:12-2",
+   "label": "vs 12-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:12-3",
+   "label": "vs 12-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:12-4",
+   "label": "vs 12-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:12-5",
+   "label": "vs 12-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:12-6",
+   "label": "vs 12-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:12-7",
+   "label": "vs 12-7 miniboss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 12-1's field"
+  },
+  {
+   "key": "mirror|ref:road12",
+   "label": "vs reference deck (Map 12) under 12-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field"
+  }
+ ],
+ "steps": 13,
+ "moves": 4,
+ "games": 4800,
+ "seconds": 73,
+ "weak": [
+  {
+   "deck": {
+    "ant-hill": 4,
+    "cunning-vixen": 4,
+    "gatling-hog": 3,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 4,
+    "thorn-shrike": 2
+   },
+   "score": 0.225,
+   "ci": [
+    0.1747,
+    0.2753
+   ],
+   "vsRef": 0.2361,
+   "refWins": 0.7639,
+   "labels": [
+    "big (17 copies at 1+ Lumber, average 1.1)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.125,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "cunning-vixen": 4,
+    "gatling-hog": 3,
+    "lyrebird-mimic": 4,
+    "mouse-sapper": 4,
+    "quill-thorn-boar": 3,
+    "thorn-shrike": 2
+   },
+   "score": 0.2875,
+   "ci": [
+    0.2342,
+    0.3408
+   ],
+   "vsRef": 0.3333,
+   "refWins": 0.6667,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.0)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.375,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "12-BPRO-1",
+  "deck": {
+   "carrion-crow": 4,
+   "dormouse": 4,
+   "field-mouse": 4,
+   "gatling-hog": 3,
+   "quill-thorn-boar": 3,
+   "quillguard": 2
+  },
+  "score": 0.7375,
+  "ci": [
+   0.6892,
+   0.7858
+  ],
+  "vsRef": 0.6806,
+  "refWins": 0.3194,
+  "labels": [
+   "big (8 copies at 1+ Lumber, average 0.4)",
+   "economy (4 resource makers)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:12-1",
+    "p": 0.5417,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:12-2",
+    "p": 0.6667,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:12-3",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:12-4",
+    "p": 0.6667,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:12-5",
+    "p": 0.7917,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:12-6",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:12-7",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road12",
+    "p": 0.2083,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.8333,
+    "n": 24
+   }
+  ]
+ }
+}

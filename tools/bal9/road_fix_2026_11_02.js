@@ -30,7 +30,14 @@ if (CMD === 'filter') {
     else {
       const old = f.n.deck, pool = LP.fightPool(pools, f.map, f.m.sub ? f.m.parent : null) || new Set();
       Object.keys(x.deck).filter(id => !old[id] && !pool.has(id)).forEach(id => why.push(`${id} is not on the fight's list`));
-      const v0 = K.violations(f, old).length, v1 = K.violations(f, x.deck).length; if (v1 > v0) why.push(`K14: ${v0} -> ${v1} problems (${K.violations(f, x.deck).join('; ')})`);
+      // 2026-11-02 (BAL11): each deck with its own leaders (an Auto leader moves with the deck and is exempt from K14)
+      const VV = d => K.violations(Object.assign({}, f, { n: Object.assign({}, f.n, { deck: d }) }), d);
+      const v0 = VV(old).length, v1 = VV(x.deck).length; if (v1 > v0) why.push(`K14: ${v0} -> ${v1} problems (${VV(x.deck).join('; ')})`);
+      // 2026-11-02 (BAL11): nor more non-unique copies (a deck already over 6 may not add one), and a challenge deck keeps its selfish boon on
+      const nu = d => { const m = VV(d).map(s => /^(\d+) non-unique copies$/.exec(s)).find(Boolean); return m ? +m[1] : 0; };
+      if (nu(x.deck) > Math.max(6, nu(old))) why.push(`K14: ${nu(old)} -> ${nu(x.deck)} non-unique copies`);
+      const E = require(path.join(ROOT, 'bramblewood-engine.js')), D = require(path.join(ROOT, 'tools', 'lib_bramble.js')).CARD_DEFS_BASELINE, bn = f.n.rules && f.n.rules.boon;
+      if (bn && E.selfishBoonCount && E.selfishBoonCount(D, old, bn).on && !E.selfishBoonCount(D, x.deck, bn).on) why.push(`its ${bn} boon goes off`);
     }
     const before = x.before, after = x.after && x.after.win, t = x.target;
     if (after == null || Math.abs(after - t) > Math.abs(before - t) - 2) why.push(`gap ${Math.round(Math.abs(before - t))} -> ${after == null ? '?' : Math.round(Math.abs(after - t))} (needs 2+ points closer)`);
@@ -44,7 +51,10 @@ if (CMD === 'filter') {
   const a = s.indexOf('const CONQUEST_MAPS = ['), b = s.indexOf('\n];', a); let body = s.slice(a, b);
   rows.filter(x => x.deck && x.apply !== false).forEach(x => {
     const re = new RegExp(`(\\{ ?key:\\s*['"]${x.key.replace(/[-]/g, '\\-')}['"],[^\\n]*)`), mm = body.match(re); if (!mm) { console.log('not found', x.key); return; }
-    const c = `/* 2026-11-02 (BAL10): ${note}, ${x.before}% -> ${x.after.win}% at 40-50 tune games, target ${x.target} (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */`;
+    // 2026-11-02 (BAL11): a fix from `skirmish_pass.js weak` (tool: 'weak') gets its own comment: the deck rebuilt from the fight's list, weaker cards
+    const c = x.tool === 'weak'
+      ? `/* 2026-11-02 (BAL11, owner on BAL10-6): ${note}, ${x.before}% -> ${x.after.win}% at 40 tune games, target ${x.target} (tools/skirmish_pass.js weak: rebuilt from the fight's own list, no Baby card, leaders / first-clear cards / size kept; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */`
+      : `/* 2026-11-02 (BAL10): ${note}, ${x.before}% -> ${x.after.win}% at 40-50 tune games, target ${x.target} (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */`;
     const line = mm[1].replace(/deck:\{[^}]*\}/, m => 'deck:' + JSON.stringify(x.deck) + ' ' + c);
     body = body.replace(mm[1], line); n++;
   });

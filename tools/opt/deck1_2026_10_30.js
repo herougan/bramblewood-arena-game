@@ -53,7 +53,10 @@ function deck1Pools(gm, map) {
   // held: the map-true pool of the same map without its road fights' decks (owned by then, earlier main maps' lists, open side maps and,
   // for a side map, its parent's list), at the map's own rarity cap; a card that is the map's only through a road fight's deck is not in it
   const mt0 = O.mapTruePools(gm, Object.assign({}, map, { nodes: [] }), { rarityCap: mt.cap }, 'map-true');
-  const held = mt0.p1.filter(id => !anchor.includes(id)).sort();
+  // 2026-11-02 (BAL11): not a cut card (on no list: out of play, BAL9 JJ24's rule; tools/lib_map_pools.js isOutOfPlay), so a re-run leaves
+  // none for tools/bal9/decks_2026_11_02.js cuts to swap
+  const LPx = require('../lib_map_pools.js'), outOfPlay = id => { try { return !!(gm.D[id] && LPx.isOutOfPlay(gm.G, gm.D[id])); } catch (e) { return false; } };
+  const held = mt0.p1.filter(id => !anchor.includes(id) && !outOfPlay(id)).sort();
   const fightOnly = uniq([].concat(...O.fightsOf(map).map(n => Object.keys(n.deck)))).filter(id => O.deckable(gm, id) && !mt.rule(id) && mt0.rule(id)).sort();
   // the legality rule is the existing PRO map rule (mapRuleProblems: the map's cards, or obtainable by then, within the cap, no faction
   // card) with the road fights' decks no longer counting as the map's cards

@@ -1,0 +1,57 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "refit",
+ "status": "ok",
+ "started": "2026-11-02T07:12:42.104Z",
+ "finished": "2026-11-02T07:12:44.796Z",
+ "durationSec": 2.7,
+ "args": [
+  "--dry"
+ ],
+ "head": "3e1afa46",
+ "inputs": {
+  "priceSnapshot": "docs/balance/pipeline/state/skill-costs.before-price.json",
+  "plan": "docs/balance/pipeline/state/refit-plan.json",
+  "cardsSha": "c18f508999",
+  "dry": true,
+  "rule": "tools/skill2_refit_2026_10_31.js",
+  "limits": {
+   "maxStatPoints": 2
+  }
+ },
+ "counts": {
+  "in play checked": 469,
+  "pushed out": 1,
+  "rule-clean": 0,
+  "flagged": 1,
+  "out of play (not touched)": 6,
+  "outside before (left)": 146,
+  "applied": 0
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "glass-octopus",
+   "why": "4/9 -> 3/9 proposed (trim): theme clash: the change moves the card to another body shape (hitter / balanced / wall: Attack / Health 0.4 and up / 0.2-0.4 / below) or takes its last point of Attack",
+   "proposal": {
+    "from": "4/9",
+    "to": "3/9",
+    "kind": "trim",
+    "useBefore": 0.99,
+    "useNow": 1.1,
+    "useAfter": 1
+   }
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/state/refit-plan.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/refit-2026-11-02-1512.json"
+}

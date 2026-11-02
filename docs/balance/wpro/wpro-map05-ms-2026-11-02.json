@@ -1,0 +1,188 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T07:35:28.865Z",
+ "map": {
+  "id": "ms",
+  "num": 5,
+  "name": "The Sunken Grove"
+ },
+ "level": 1,
+ "pool": [
+  "alligator-gar",
+  "anhinga-spearbird",
+  "bog-leech",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "fen-mink",
+  "grass-viper",
+  "hedgehog-herbalist",
+  "mangrove-mudskipper",
+  "nutria-reedcutter",
+  "old-snapjaw",
+  "swamp-alligator",
+  "venomlord-serpent"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|ms",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:5-A-1",
+   "label": "vs 5-A-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:5-A-2",
+   "label": "vs 5-A-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:5-A-3",
+   "label": "vs 5-A-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:5-A-4",
+   "label": "vs 5-A-4 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 5-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road13",
+   "label": "vs reference deck (Map 13) under 5-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 5-A-3's field"
+  }
+ ],
+ "steps": 5,
+ "moves": 0,
+ "games": 1512,
+ "seconds": 21,
+ "weak": [
+  {
+   "deck": {
+    "anhinga-spearbird": 4,
+    "constrictor-coil": 4,
+    "crocodile-ambusher": 4,
+    "swamp-alligator": 4,
+    "venomlord-serpent": 4
+   },
+   "score": 0.006,
+   "ci": [
+    -0.0075,
+    0.0194
+   ],
+   "vsRef": 0.0139,
+   "refWins": 0.9861,
+   "labels": [
+    "big (16 copies at 2+ Lumber, average 2.0)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-A-1",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-A-4",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.0417,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "5-A-BPRO-1",
+  "deck": {
+   "alligator-gar": 3,
+   "anhinga-spearbird": 3,
+   "bog-leech": 3,
+   "grass-viper": 4,
+   "hedgehog-herbalist": 3,
+   "nutria-reedcutter": 4
+  },
+  "score": 0.6845,
+  "ci": [
+   0.6272,
+   0.7418
+  ],
+  "vsRef": 0.6111,
+  "refWins": 0.3889,
+  "labels": [
+   "economy (4 resource makers)",
+   "bleed x6"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:5-A-1",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:5-A-2",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:5-A-3",
+    "p": 0.625,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:5-A-4",
+    "p": 0.4167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road13",
+    "p": 0.2083,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.7083,
+    "n": 24
+   }
+  ]
+ }
+}

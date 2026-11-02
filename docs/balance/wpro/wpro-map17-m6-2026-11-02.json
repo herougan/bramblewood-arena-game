@@ -1,0 +1,252 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:06:07.722Z",
+ "map": {
+  "id": "m6",
+  "num": 17,
+  "name": "Wolfsbane Tundra"
+ },
+ "level": 1,
+ "pool": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "glacial-ape-king",
+  "harbor-seal",
+  "lone-grey-wolf",
+  "mountain-hare",
+  "polar-bear",
+  "ravenous-wolverine",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "talus-pika",
+  "walrus-icebreaker",
+  "wolfsbane-alpha",
+  "woodland-caribou"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|m6",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:17-1",
+   "label": "vs 17-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:17-2",
+   "label": "vs 17-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:17-3",
+   "label": "vs 17-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:17-4",
+   "label": "vs 17-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:17-5",
+   "label": "vs 17-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:17-6",
+   "label": "vs 17-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:17-7",
+   "label": "vs 17-7 elite's deck"
+  },
+  {
+   "key": "mirror|fight:17-8",
+   "label": "vs 17-8 miniboss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 17-1's field"
+  },
+  {
+   "key": "mirror|ref:road17",
+   "label": "vs reference deck (Map 17) under 17-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 17-3's field"
+  }
+ ],
+ "steps": 3,
+ "moves": 1,
+ "games": 1826,
+ "seconds": 26,
+ "weak": [
+  {
+   "deck": {
+    "alpha-howler": 4,
+    "glacial-ape-king": 2,
+    "harbor-seal": 4,
+    "lone-grey-wolf": 2,
+    "snow-bunting-archer": 4,
+    "spitting-spider": 4
+   },
+   "score": 0.1932,
+   "ci": [
+    0.1503,
+    0.236
+   ],
+   "vsRef": 0,
+   "refWins": 1,
+   "labels": [
+    "big (2 copies at 3+ Lumber, average 1.5)",
+    "ranged x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-1",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-2",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-3",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-4",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-5",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-6",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-7",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-8",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "17-BPRO-1",
+  "deck": {
+   "beluga": 2,
+   "frost-hare-sprinter": 4,
+   "mountain-hare": 4,
+   "snow-ermine": 4,
+   "talus-pika": 4,
+   "walrus-icebreaker": 2
+  },
+  "score": 0.8864,
+  "ci": [
+   0.8496,
+   0.9231
+  ],
+  "vsRef": 0.8194,
+  "refWins": 0.1806,
+  "labels": [
+   "swarm (16 copies at 0 Lumber)",
+   "economy (4 resource makers)",
+   "evasion x12",
+   "cold x6"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:17-1",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:17-2",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:17-3",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:17-4",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:17-5",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:17-6",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:17-7",
+    "p": 0.7917,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:17-8",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road17",
+    "p": 0.6667,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.875,
+    "n": 24
+   }
+  ]
+ }
+}

@@ -1,0 +1,308 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:17:24.889Z",
+ "map": {
+  "id": "mc",
+  "num": 3,
+  "name": "Gannet Cliffs"
+ },
+ "level": 1,
+ "pool": [
+  "conch-crawler",
+  "conch-herald",
+  "feral-tomcat",
+  "fiddler-crab-swarm",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "peak-condor",
+  "peregrine-stooper",
+  "puffin-diver",
+  "razorbill",
+  "red-billed-chough",
+  "the-gannet-queen"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mc",
+  "budget": 4000,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:3-1",
+   "label": "vs 3-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:3-2",
+   "label": "vs 3-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:3-3",
+   "label": "vs 3-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:3-4",
+   "label": "vs 3-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:3-5",
+   "label": "vs 3-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:3-6",
+   "label": "vs 3-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:3-7",
+   "label": "vs 3-7 elite's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 3-1's field"
+  },
+  {
+   "key": "mirror|ref:road3",
+   "label": "vs reference deck (Map 3) under 3-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 3-3's field"
+  }
+ ],
+ "steps": 13,
+ "moves": 6,
+ "games": 4680,
+ "seconds": 89,
+ "weak": [
+  {
+   "deck": {
+    "gannet-nestweaver": 4,
+    "gull-thief": 4,
+    "razorbill": 4,
+    "red-billed-chough": 4,
+    "the-gannet-queen": 4
+   },
+   "score": 0.1542,
+   "ci": [
+    0.1125,
+    0.1958
+   ],
+   "vsRef": 0.2639,
+   "refWins": 0.7361,
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)",
+    "economy (8 resource makers)",
+    "flying x20"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:3-1",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-2",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-3",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-4",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-5",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-6",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-7",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.25,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "gull-thief": 4,
+    "hawk-arrowkeeper": 4,
+    "puffin-diver": 4,
+    "razorbill": 4,
+    "the-gannet-queen": 4
+   },
+   "score": 0.1958,
+   "ci": [
+    0.1494,
+    0.2423
+   ],
+   "vsRef": 0.2917,
+   "refWins": 0.7083,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.0)",
+    "economy (4 resource makers)",
+    "flying x20"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:3-1",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-2",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-3",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-4",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-5",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-6",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-7",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.3333,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "3-BPRO-1",
+  "deck": {
+   "conch-herald": 4,
+   "gannet-nestweaver": 4,
+   "golden-eagle-diver": 4,
+   "hawk-arrowkeeper": 4,
+   "peregrine-stooper": 4
+  },
+  "score": 0.8833,
+  "ci": [
+   0.8447,
+   0.922
+  ],
+  "vsRef": 0.875,
+  "refWins": 0.125,
+  "labels": [
+   "big (16 copies at 1+ Lumber, average 0.8)",
+   "economy (4 resource makers)",
+   "flying x16",
+   "strike-first x8"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:3-1",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:3-2",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:3-3",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:3-4",
+    "p": 0.75,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:3-5",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:3-6",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:3-7",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road3",
+    "p": 0.6667,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 1,
+    "n": 24
+   }
+  ]
+ }
+}

@@ -1,0 +1,234 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:05:41.874Z",
+ "map": {
+  "id": "mt",
+  "num": 16,
+  "name": "The Pinewood Taiga"
+ },
+ "level": 1,
+ "pool": [
+  "alpha-howler",
+  "berserker-boar",
+  "boreal-elk",
+  "bramblewood-lynx",
+  "cone-cutter-squirrel",
+  "dhole-matriarch",
+  "dhole-runner",
+  "lunar-howler",
+  "pinecone-sapper",
+  "redwood-woodpecker",
+  "snowshoe-hare",
+  "swift-fox",
+  "taiga-lynx",
+  "wolf-pack-runner",
+  "woodland-caribou"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mt",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:16-1",
+   "label": "vs 16-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:16-2",
+   "label": "vs 16-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:16-3",
+   "label": "vs 16-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:16-4",
+   "label": "vs 16-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:16-5",
+   "label": "vs 16-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:16-6",
+   "label": "vs 16-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:16-7",
+   "label": "vs 16-7 miniboss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 16-1's field"
+  },
+  {
+   "key": "mirror|ref:road16",
+   "label": "vs reference deck (Map 16) under 16-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field"
+  }
+ ],
+ "steps": 3,
+ "moves": 1,
+ "games": 1640,
+ "seconds": 17,
+ "weak": [
+  {
+   "deck": {
+    "alpha-howler": 4,
+    "berserker-boar": 4,
+    "boreal-elk": 4,
+    "lunar-howler": 3,
+    "swift-fox": 3,
+    "woodland-caribou": 2
+   },
+   "score": 0.05,
+   "ci": [
+    0.0243,
+    0.0757
+   ],
+   "vsRef": 0,
+   "refWins": 1,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.6)",
+    "cleave x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:16-1",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-4",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-5",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-6",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:16-7",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "16-BPRO-1",
+  "deck": {
+   "cone-cutter-squirrel": 3,
+   "pinecone-sapper": 4,
+   "snowshoe-hare": 4,
+   "swift-fox": 4,
+   "taiga-lynx": 3,
+   "woodland-caribou": 2
+  },
+  "score": 0.7313,
+  "ci": [
+   0.6812,
+   0.7813
+  ],
+  "vsRef": 0.5486,
+  "refWins": 0.4514,
+  "labels": [
+   "big (9 copies at 1+ Lumber, average 0.5)",
+   "evasion x7"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:16-1",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:16-2",
+    "p": 0.6667,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:16-3",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:16-4",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:16-5",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:16-6",
+    "p": 0.5833,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:16-7",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road16",
+    "p": 0.2917,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.5208,
+    "n": 24
+   }
+  ]
+ }
+}

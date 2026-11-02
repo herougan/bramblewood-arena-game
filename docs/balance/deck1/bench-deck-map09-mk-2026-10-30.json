@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-10-30T10:43:32.401Z",
- "fingerprint": "5b2112374573",
+ "generated": "2026-11-02T09:01:54.627Z",
+ "fingerprint": "b28777f5a2b6",
  "map": {
   "id": "mk",
   "num": 9,
@@ -11,59 +11,59 @@
  "pool": [
   "alley-cat",
   "alligator-gar",
-  "anhinga-spearbird",
   "archerfish",
   "banded-sea-krait",
   "booming-bittern",
-  "caiman-hatchling",
   "crocodile-ambusher",
   "fiddler-crab-swarm",
   "fishing-cat",
   "giant-cave-huntsman",
-  "great-crested-grebe",
-  "greater-siren",
+  "guppy",
+  "horseshoe-crab",
   "mangrove-kingfisher",
   "mangrove-manatee",
   "mangrove-monitor",
   "mangrove-mudskipper",
-  "minnow-skitter",
-  "mudpuppy",
+  "muskrat-lodgekeeper",
   "newt-doctor",
   "otter-centurion",
   "pincushion-urchin",
+  "proboscis-monkey",
+  "puffin-diver",
   "reef-shark",
-  "shallows-fry",
+  "sea-turtle-elder",
   "sunbittern-strider",
   "vampire-bat",
+  "water-vole",
   "wolf-spider-mother"
  ],
  "poolNames": [
   "Alley Cat",
   "Alligator Gar",
-  "Anhinga Spearbird",
   "Archerfish",
   "Banded Sea Krait",
   "Booming Bittern",
-  "Caiman Hatchling",
   "Crocodile Ambusher",
   "Fiddler Crab Swarm",
   "Fishing Cat",
   "Giant Cave Huntsman",
-  "Great Crested Grebe",
-  "Greater Siren",
+  "Guppy",
+  "Horseshoe Crab",
   "Mangrove Kingfisher",
   "Mangrove Manatee",
   "Mangrove Monitor",
   "Mangrove Mudskipper",
-  "Minnow Skitter",
-  "Mudpuppy",
+  "Muskrat Lodgekeeper",
   "Newt Doctor",
   "Otter Centurion",
   "Pincushion Urchin",
+  "Proboscis Monkey",
+  "Puffin Diver",
   "Reef Shark",
-  "Shallows Fry",
+  "Sea Turtle Elder",
   "Sunbittern Strider",
   "Vampire Bat",
+  "Water Vole",
   "Wolf Spider Mother"
  ],
  "rule": {
@@ -74,24 +74,24 @@
    "archerfish",
    "banded-sea-krait",
    "booming-bittern",
-   "caiman-hatchling",
    "crocodile-ambusher",
    "fiddler-crab-swarm",
    "fishing-cat",
+   "horseshoe-crab",
    "mangrove-kingfisher",
    "mangrove-manatee",
    "mangrove-monitor",
    "mangrove-mudskipper",
-   "minnow-skitter",
-   "mudpuppy",
+   "proboscis-monkey",
    "reef-shark",
+   "sea-turtle-elder",
    "sunbittern-strider"
   ],
   "anchorMin": 10
  },
  "settings": {
   "seed": "deck1",
-  "budget": 12000,
+  "budget": 6000,
   "finalGames": 24,
   "roadWeight": 0,
   "mode": "map-true"
@@ -154,19 +154,21 @@
    "label": "big (1+ Lumber cards)",
    "cards": [
     "alligator-gar",
-    "anhinga-spearbird",
     "archerfish",
     "banded-sea-krait",
     "booming-bittern",
     "crocodile-ambusher",
     "fishing-cat",
     "giant-cave-huntsman",
-    "great-crested-grebe",
-    "greater-siren",
+    "horseshoe-crab",
     "mangrove-kingfisher",
     "mangrove-manatee",
     "mangrove-monitor",
+    "muskrat-lodgekeeper",
+    "proboscis-monkey",
+    "puffin-diver",
     "reef-shark",
+    "sea-turtle-elder",
     "sunbittern-strider",
     "wolf-spider-mother"
    ],
@@ -177,16 +179,14 @@
    "label": "swarm (0-Lumber cards)",
    "cards": [
     "alley-cat",
-    "caiman-hatchling",
     "fiddler-crab-swarm",
+    "guppy",
     "mangrove-mudskipper",
-    "minnow-skitter",
-    "mudpuppy",
     "newt-doctor",
     "otter-centurion",
     "pincushion-urchin",
-    "shallows-fry",
-    "vampire-bat"
+    "vampire-bat",
+    "water-vole"
    ],
    "need": 14
   },
@@ -196,14 +196,16 @@
    "cards": [
     "alligator-gar",
     "fiddler-crab-swarm",
-    "great-crested-grebe",
-    "greater-siren",
+    "guppy",
     "mangrove-manatee",
     "mangrove-mudskipper",
-    "minnow-skitter",
+    "muskrat-lodgekeeper",
     "pincushion-urchin",
+    "proboscis-monkey",
+    "puffin-diver",
     "reef-shark",
-    "shallows-fry"
+    "sea-turtle-elder",
+    "water-vole"
    ],
    "need": 8
   },
@@ -217,50 +219,50 @@
  "searches": [
   {
    "focus": "big",
-   "steps": 10,
-   "moves": 4,
-   "games": 3020,
+   "steps": 5,
+   "moves": 2,
+   "games": 1680,
    "apartFromEarlier": null
   },
   {
    "focus": "swarm",
-   "steps": 10,
-   "moves": 4,
-   "games": 3020,
-   "apartFromEarlier": 14
+   "steps": 5,
+   "moves": 2,
+   "games": 1520,
+   "apartFromEarlier": 12
   },
   {
    "focus": "family:tide",
-   "steps": 10,
-   "moves": 2,
-   "games": 3200,
+   "steps": 4,
+   "moves": 1,
+   "games": 1500,
    "apartFromEarlier": 10
   },
   {
    "focus": "open",
-   "steps": 9,
+   "steps": 5,
    "moves": 2,
-   "games": 3180,
-   "apartFromEarlier": 9
+   "games": 1780,
+   "apartFromEarlier": 13
   }
  ],
  "apart": 6,
- "seconds": 177,
- "games": 13060,
+ "seconds": 89,
+ "games": 7120,
  "decks": [
   {
-   "focus": "family:tide",
+   "focus": "swarm",
    "labels": [
-    "big (9 copies at 1+ Lumber, average 0.5)",
-    "tide x11"
+    "swarm (14 copies at 0 Lumber)",
+    "tide x10"
    ],
    "deck": {
-    "alley-cat": 3,
-    "banded-sea-krait": 3,
+    "archerfish": 2,
     "fiddler-crab-swarm": 4,
-    "greater-siren": 3,
-    "minnow-skitter": 4,
-    "wolf-spider-mother": 3
+    "guppy": 3,
+    "newt-doctor": 4,
+    "pincushion-urchin": 3,
+    "sunbittern-strider": 4
    },
    "cards": [
     {
@@ -271,186 +273,45 @@
      "rarity": "common"
     },
     {
-     "id": "minnow-skitter",
-     "name": "Minnow Skitter",
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
      "copies": 4,
      "cost": 0,
-     "rarity": "common"
+     "rarity": "uncommon"
     },
     {
-     "id": "alley-cat",
-     "name": "Alley Cat",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    },
-    {
-     "id": "banded-sea-krait",
-     "name": "Banded Sea Krait",
-     "copies": 3,
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "copies": 4,
      "cost": 1,
      "rarity": "uncommon"
     },
     {
-     "id": "greater-siren",
-     "name": "Greater Siren",
+     "id": "guppy",
+     "name": "Guppy",
      "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
+     "cost": 0,
+     "rarity": "starter"
     },
     {
-     "id": "wolf-spider-mother",
-     "name": "Wolf Spider Mother",
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
      "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "copies": 2,
      "cost": 1,
-     "rarity": "rare"
+     "rarity": "uncommon"
     }
    ],
-   "score": 0.8,
+   "score": 0.9083,
    "ci": [
-    0.7509,
-    0.8491
-   ],
-   "avgLumber": 0.45,
-   "avgWait": 0.6,
-   "curve": {
-    "0": 11,
-    "1": 9
-   },
-   "resourceMakers": 0,
-   "families": [
-    {
-     "f": "tide",
-     "n": 11
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:9-1",
-     "label": "vs 9-1 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-2",
-     "label": "vs 9-2 skirmish's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-3",
-     "label": "vs 9-3 skirmish's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-4",
-     "label": "vs 9-4 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-5",
-     "label": "vs 9-5 elite's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-6",
-     "label": "vs 9-6 elite's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-7",
-     "label": "vs 9-7 miniboss's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 9-1's field",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road9",
-     "label": "vs reference deck (Map 9) under 9-2's field",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
-     "p": 0.6667,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 9
-  },
-  {
-   "focus": "swarm",
-   "labels": [
-    "swarm (14 copies at 0 Lumber)",
-    "tide x7",
-    "bleed x6"
-   ],
-   "deck": {
-    "alley-cat": 3,
-    "alligator-gar": 3,
-    "caiman-hatchling": 3,
-    "minnow-skitter": 4,
-    "mudpuppy": 4,
-    "wolf-spider-mother": 3
-   },
-   "cards": [
-    {
-     "id": "minnow-skitter",
-     "name": "Minnow Skitter",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "mudpuppy",
-     "name": "Mudpuppy",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "alley-cat",
-     "name": "Alley Cat",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    },
-    {
-     "id": "alligator-gar",
-     "name": "Alligator Gar",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "caiman-hatchling",
-     "name": "Caiman Hatchling",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "wolf-spider-mother",
-     "name": "Wolf Spider Mother",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    }
-   ],
-   "score": 0.7958,
-   "ci": [
-    0.7465,
-    0.8451
+    0.874,
+    0.9427
    ],
    "avgLumber": 0.3,
    "avgWait": 0.65,
@@ -462,91 +323,87 @@
    "families": [
     {
      "f": "tide",
-     "n": 7
-    },
-    {
-     "f": "bleed",
-     "n": 6
+     "n": 10
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:9-1",
      "label": "vs 9-1 skirmish's deck",
-     "p": 0.875,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-2",
      "label": "vs 9-2 skirmish's deck",
-     "p": 0.625,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-3",
      "label": "vs 9-3 skirmish's deck",
-     "p": 0.6667,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-4",
      "label": "vs 9-4 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-5",
      "label": "vs 9-5 elite's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-6",
      "label": "vs 9-6 elite's deck",
-     "p": 0.875,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-7",
      "label": "vs 9-7 miniboss's deck",
-     "p": 0.9167,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 9-1's field",
-     "p": 0.8333,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|ref:road9",
      "label": "vs reference deck (Map 9) under 9-2's field",
-     "p": 0.7083,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
-     "p": 0.7083,
+     "p": 0.7917,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 10
+   "copiesApartFromOpen": 13
   },
   {
    "focus": "big",
    "labels": [
-    "big (9 copies at 1+ Lumber, average 0.5)",
-    "tide x13",
+    "big (10 copies at 1+ Lumber, average 0.5)",
+    "tide x16",
     "armor x7"
    ],
    "deck": {
     "alligator-gar": 3,
     "fiddler-crab-swarm": 4,
     "mangrove-manatee": 3,
-    "minnow-skitter": 3,
-    "sunbittern-strider": 3,
-    "vampire-bat": 4
+    "mangrove-mudskipper": 4,
+    "sunbittern-strider": 4,
+    "water-vole": 2
    },
    "cards": [
     {
@@ -557,10 +414,17 @@
      "rarity": "common"
     },
     {
-     "id": "vampire-bat",
-     "name": "Vampire Bat",
+     "id": "mangrove-mudskipper",
+     "name": "Mangrove Mudskipper",
      "copies": 4,
      "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "copies": 4,
+     "cost": 1,
      "rarity": "uncommon"
     },
     {
@@ -578,220 +442,68 @@
      "rarity": "rare"
     },
     {
-     "id": "minnow-skitter",
-     "name": "Minnow Skitter",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "sunbittern-strider",
-     "name": "Sunbittern Strider",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    }
-   ],
-   "score": 0.7708,
-   "ci": [
-    0.7219,
-    0.8198
-   ],
-   "avgLumber": 0.45,
-   "avgWait": 1.1,
-   "curve": {
-    "0": 11,
-    "1": 9
-   },
-   "resourceMakers": 0,
-   "families": [
-    {
-     "f": "tide",
-     "n": 13
-    },
-    {
-     "f": "armor",
-     "n": 7
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:9-1",
-     "label": "vs 9-1 skirmish's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-2",
-     "label": "vs 9-2 skirmish's deck",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-3",
-     "label": "vs 9-3 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-4",
-     "label": "vs 9-4 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-5",
-     "label": "vs 9-5 elite's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-6",
-     "label": "vs 9-6 elite's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:9-7",
-     "label": "vs 9-7 miniboss's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 9-1's field",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road9",
-     "label": "vs reference deck (Map 9) under 9-2's field",
-     "p": 0.4167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
-     "p": 0.6667,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 10
-  },
-  {
-   "focus": "open",
-   "labels": [
-    "big (8 copies at 1+ Lumber, average 0.4)",
-    "tide x14",
-    "armor x7"
-   ],
-   "deck": {
-    "alligator-gar": 3,
-    "caiman-hatchling": 4,
-    "fiddler-crab-swarm": 4,
-    "giant-cave-huntsman": 2,
-    "greater-siren": 3,
-    "minnow-skitter": 4
-   },
-   "cards": [
-    {
-     "id": "caiman-hatchling",
-     "name": "Caiman Hatchling",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "fiddler-crab-swarm",
-     "name": "Fiddler Crab Swarm",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "minnow-skitter",
-     "name": "Minnow Skitter",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "alligator-gar",
-     "name": "Alligator Gar",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "greater-siren",
-     "name": "Greater Siren",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "giant-cave-huntsman",
-     "name": "Giant Cave Huntsman",
+     "id": "water-vole",
+     "name": "Water Vole",
      "copies": 2,
-     "cost": 1,
-     "rarity": "rare"
+     "cost": 0,
+     "rarity": "common"
     }
    ],
-   "score": 0.7375,
+   "score": 0.8792,
    "ci": [
-    0.6847,
-    0.7903
+    0.8436,
+    0.9147
    ],
-   "avgLumber": 0.4,
-   "avgWait": 0.8,
+   "avgLumber": 0.5,
+   "avgWait": 0.95,
    "curve": {
-    "0": 12,
-    "1": 8
+    "0": 10,
+    "1": 10
    },
    "resourceMakers": 0,
    "families": [
     {
      "f": "tide",
-     "n": 14
+     "n": 16
     },
     {
      "f": "armor",
      "n": 7
     },
     {
-     "f": "strike-first",
-     "n": 6
+     "f": "guard",
+     "n": 7
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:9-1",
      "label": "vs 9-1 skirmish's deck",
-     "p": 0.7917,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-2",
      "label": "vs 9-2 skirmish's deck",
-     "p": 0.5417,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-3",
      "label": "vs 9-3 skirmish's deck",
-     "p": 0.5417,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-4",
      "label": "vs 9-4 skirmish's deck",
-     "p": 0.75,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:9-5",
      "label": "vs 9-5 elite's deck",
-     "p": 0.8333,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -803,7 +515,7 @@
     {
      "entry": "mirror|fight:9-7",
      "label": "vs 9-7 miniboss's deck",
-     "p": 0.75,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -815,18 +527,303 @@
     {
      "entry": "mirror|ref:road9",
      "label": "vs reference deck (Map 9) under 9-2's field",
-     "p": 0.5833,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
-     "p": 0.7083,
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (18 copies at 0 Lumber)",
+    "tide x13",
+    "guard x6"
+   ],
+   "deck": {
+    "fiddler-crab-swarm": 4,
+    "mangrove-mudskipper": 4,
+    "newt-doctor": 3,
+    "proboscis-monkey": 2,
+    "vampire-bat": 4,
+    "water-vole": 3
+   },
+   "cards": [
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mangrove-mudskipper",
+     "name": "Mangrove Mudskipper",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "water-vole",
+     "name": "Water Vole",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "proboscis-monkey",
+     "name": "Proboscis Monkey",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.875,
+   "ci": [
+    0.8384,
+    0.9116
+   ],
+   "avgLumber": 0.1,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 18,
+    "1": 2
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 13
+    },
+    {
+     "f": "guard",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:9-1",
+     "label": "vs 9-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-2",
+     "label": "vs 9-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-3",
+     "label": "vs 9-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-4",
+     "label": "vs 9-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-5",
+     "label": "vs 9-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-6",
+     "label": "vs 9-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-7",
+     "label": "vs 9-7 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 9-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road9",
+     "label": "vs reference deck (Map 9) under 9-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 15
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.5)",
+    "tide x11"
+   ],
+   "deck": {
+    "mangrove-monitor": 2,
+    "otter-centurion": 3,
+    "pincushion-urchin": 4,
+    "proboscis-monkey": 4,
+    "sunbittern-strider": 4,
+    "water-vole": 3
+   },
+   "cards": [
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "proboscis-monkey",
+     "name": "Proboscis Monkey",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "water-vole",
+     "name": "Water Vole",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mangrove-monitor",
+     "name": "Mangrove Monitor",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8083,
+   "ci": [
+    0.7627,
+    0.854
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 11
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:9-1",
+     "label": "vs 9-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-2",
+     "label": "vs 9-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-3",
+     "label": "vs 9-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-4",
+     "label": "vs 9-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-5",
+     "label": "vs 9-5 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-6",
+     "label": "vs 9-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:9-7",
+     "label": "vs 9-7 miniboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 9-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road9",
+     "label": "vs reference deck (Map 9) under 9-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+     "p": 0.5,
      "n": 24
     }
    ],
    "copiesApartFromOpen": 0
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,anhinga-spearbird,archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,great-crested-grebe,greater-siren,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,newt-doctor,otter-centurion,pincushion-urchin,reef-shark,shallows-fry,sunbittern-strider,vampire-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --anchor-min 10 --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map mk --pool alley-cat,alligator-gar,archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,giant-cave-huntsman,guppy,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,muskrat-lodgekeeper,newt-doctor,otter-centurion,pincushion-urchin,proboscis-monkey,puffin-diver,reef-shark,sea-turtle-elder,sunbittern-strider,vampire-bat,water-vole,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor archerfish,banded-sea-krait,booming-bittern,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,horseshoe-crab,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,proboscis-monkey,reef-shark,sea-turtle-elder,sunbittern-strider --anchor-min 10 --level 1 --mode map-true"
 }

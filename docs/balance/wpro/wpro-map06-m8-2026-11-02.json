@@ -1,0 +1,248 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T07:35:56.797Z",
+ "map": {
+  "id": "m8",
+  "num": 6,
+  "name": "Sable Swampmire"
+ },
+ "level": 1,
+ "pool": [
+  "adder-ambusher",
+  "alligator-gar",
+  "booming-bittern",
+  "camouflage-frog",
+  "constrictor-coil",
+  "heron-hag",
+  "lamprey",
+  "marsh-harrier",
+  "marsh-wisp",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "poison-dart-croaker",
+  "raven-scout",
+  "venomlord-serpent"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|m8",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:6-1",
+   "label": "vs 6-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:6-2",
+   "label": "vs 6-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:6-3",
+   "label": "vs 6-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:6-4",
+   "label": "vs 6-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:6-5",
+   "label": "vs 6-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:6-6",
+   "label": "vs 6-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:6-7",
+   "label": "vs 6-7 elite's deck"
+  },
+  {
+   "key": "mirror|fight:6-8",
+   "label": "vs 6-8 miniboss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 6-1's field"
+  },
+  {
+   "key": "mirror|ref:road6",
+   "label": "vs reference deck (Map 6) under 6-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field"
+  }
+ ],
+ "steps": 3,
+ "moves": 1,
+ "games": 1848,
+ "seconds": 28,
+ "weak": [
+  {
+   "deck": {
+    "booming-bittern": 4,
+    "camouflage-frog": 4,
+    "constrictor-coil": 4,
+    "lamprey": 4,
+    "venomlord-serpent": 4
+   },
+   "score": 0.1231,
+   "ci": [
+    0.0937,
+    0.1525
+   ],
+   "vsRef": 0,
+   "refWins": 1,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)",
+    "evasion x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:6-1",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-3",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-4",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-5",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-6",
+     "p": 0.6042,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-7",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-8",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "6-BPRO-1",
+  "deck": {
+   "adder-ambusher": 3,
+   "heron-hag": 3,
+   "marsh-wisp": 3,
+   "newt-doctor": 4,
+   "nutria-reedcutter": 4,
+   "raven-scout": 3
+  },
+  "score": 0.9091,
+  "ci": [
+   0.8836,
+   0.9346
+  ],
+  "vsRef": 0.7222,
+  "refWins": 0.2778,
+  "labels": [
+   "swarm (14 copies at 0 Lumber)",
+   "economy (4 resource makers)",
+   "poison x6",
+   "flying x6"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:6-1",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:6-2",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:6-3",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:6-4",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:6-5",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:6-6",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:6-7",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:6-8",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road6",
+    "p": 0.2917,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.9583,
+    "n": 24
+   }
+  ]
+ }
+}

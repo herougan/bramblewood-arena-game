@@ -1,0 +1,323 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:03:52.449Z",
+ "map": {
+  "id": "mr",
+  "num": 13,
+  "name": "The Redwood Deep"
+ },
+ "level": 1,
+ "pool": [
+  "berserker-boar",
+  "bramble-hoglet",
+  "bramblewood-lynx",
+  "carrion-crow",
+  "cunning-vixen",
+  "fawn-scout",
+  "grizzly-vanguard",
+  "owl-nightwatch",
+  "quillback-elder",
+  "redwood-woodpecker",
+  "sergeant-bramblefox",
+  "shimmerwing-stag",
+  "stag-knight",
+  "swift-fox",
+  "tasmanian-devil",
+  "woodpecker-sapper"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mr",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:13-1",
+   "label": "vs 13-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:13-2",
+   "label": "vs 13-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:13-3",
+   "label": "vs 13-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:13-4",
+   "label": "vs 13-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:13-5",
+   "label": "vs 13-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:13-6",
+   "label": "vs 13-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:13-7",
+   "label": "vs 13-7 elite's deck"
+  },
+  {
+   "key": "mirror|fight:13-8",
+   "label": "vs 13-8 miniboss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 13-1's field"
+  },
+  {
+   "key": "mirror|ref:road13",
+   "label": "vs reference deck (Map 13) under 13-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field"
+  }
+ ],
+ "steps": 3,
+ "moves": 2,
+ "games": 1980,
+ "seconds": 22,
+ "weak": [
+  {
+   "deck": {
+    "berserker-boar": 3,
+    "cunning-vixen": 1,
+    "grizzly-vanguard": 4,
+    "quillback-elder": 4,
+    "stag-knight": 4,
+    "swift-fox": 4
+   },
+   "score": 0.0227,
+   "ci": [
+    0.0046,
+    0.0408
+   ],
+   "vsRef": 0.0139,
+   "refWins": 0.9861,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.8)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "berserker-boar": 4,
+    "grizzly-vanguard": 4,
+    "owl-nightwatch": 4,
+    "swift-fox": 4,
+    "tasmanian-devil": 4
+   },
+   "score": 0.0909,
+   "ci": [
+    0.0573,
+    0.1246
+   ],
+   "vsRef": 0.0972,
+   "refWins": 0.9028,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.2083,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "13-BPRO-1",
+  "deck": {
+   "berserker-boar": 4,
+   "bramble-hoglet": 4,
+   "bramblewood-lynx": 3,
+   "fawn-scout": 3,
+   "sergeant-bramblefox": 3,
+   "tasmanian-devil": 3
+  },
+  "score": 0.7689,
+  "ci": [
+   0.7244,
+   0.8135
+  ],
+  "vsRef": 0.7222,
+  "refWins": 0.2778,
+  "labels": [
+   "big (13 copies at 1+ Lumber, average 0.8)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:13-1",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:13-2",
+    "p": 0.7083,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:13-3",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:13-4",
+    "p": 0.75,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:13-5",
+    "p": 0.75,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:13-6",
+    "p": 0.7917,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:13-7",
+    "p": 0.5833,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:13-8",
+    "p": 0.7917,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road13",
+    "p": 0.25,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.9167,
+    "n": 24
+   }
+  ]
+ }
+}

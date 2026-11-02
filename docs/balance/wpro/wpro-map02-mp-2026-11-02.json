@@ -1,0 +1,235 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T07:33:41.990Z",
+ "map": {
+  "id": "mp",
+  "num": 2,
+  "name": "Lilypad Reach"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "box-turtle",
+  "fiddler-crab-swarm",
+  "grey-seal-bull",
+  "lodge-engineer",
+  "muskrat-lodgekeeper",
+  "muskrat-reedgatherer",
+  "old-shell",
+  "old-sturgeon",
+  "platypus-spur",
+  "pond-algae",
+  "pyrenean-desman",
+  "riverworks-bastion",
+  "snapstick-turtle",
+  "tidepool-trapper-crab",
+  "water-shrew",
+  "water-vole"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mp",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-A-1",
+   "label": "vs 2-A-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:2-A-2",
+   "label": "vs 2-A-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:2-A-3",
+   "label": "vs 2-A-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:2-A-4",
+   "label": "vs 2-A-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:2-A-5",
+   "label": "vs 2-A-5 elite's deck"
+  },
+  {
+   "key": "mirror|fight:2-A-6",
+   "label": "vs 2-A-6 elite's deck"
+  },
+  {
+   "key": "mirror|fight:2-A-7",
+   "label": "vs 2-A-7 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 2-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road6",
+   "label": "vs reference deck (Map 6) under 2-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field"
+  }
+ ],
+ "steps": 3,
+ "moves": 0,
+ "games": 1620,
+ "seconds": 36,
+ "weak": [
+  {
+   "deck": {
+    "grey-seal-bull": 4,
+    "lodge-engineer": 4,
+    "old-shell": 4,
+    "platypus-spur": 4,
+    "riverworks-bastion": 4
+   },
+   "score": 0.1167,
+   "ci": [
+    0.0773,
+    0.156
+   ],
+   "vsRef": 0.0417,
+   "refWins": 0.9583,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.6)",
+    "economy (4 resource makers)",
+    "guard x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.0417,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "2-A-BPRO-1",
+  "deck": {
+   "box-turtle": 4,
+   "grey-seal-bull": 4,
+   "tidepool-trapper-crab": 4,
+   "water-shrew": 4,
+   "water-vole": 4
+  },
+  "score": 0.8083,
+  "ci": [
+   0.7653,
+   0.8514
+  ],
+  "vsRef": 0.7778,
+  "refWins": 0.2222,
+  "labels": [
+   "swarm (16 copies at 0 Lumber)",
+   "tide x8"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:2-A-1",
+    "p": 0.7083,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:2-A-2",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:2-A-3",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:2-A-4",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:2-A-5",
+    "p": 0.3333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:2-A-6",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:2-A-7",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road6",
+    "p": 0.6667,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.7083,
+    "n": 24
+   }
+  ]
+ }
+}

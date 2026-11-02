@@ -1,0 +1,343 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:29:29.096Z",
+ "map": {
+  "id": "mpd",
+  "num": 18,
+  "name": "The Pale Desert"
+ },
+ "level": 1,
+ "pool": [
+  "antlion-pit",
+  "caustic-scorpion",
+  "dromedary",
+  "dune-packrat",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "fennec-fox",
+  "quicksand-queen",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "skull-vulture",
+  "thorny-devil",
+  "trapdoor-spider"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mpd",
+  "budget": 4000,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:18-A-1",
+   "label": "vs 18-A-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-A-2",
+   "label": "vs 18-A-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-A-3",
+   "label": "vs 18-A-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-A-4",
+   "label": "vs 18-A-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-A-5",
+   "label": "vs 18-A-5 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-A-6",
+   "label": "vs 18-A-6 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-A-7",
+   "label": "vs 18-A-7 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:18-A-8",
+   "label": "vs 18-A-8 elite's deck"
+  },
+  {
+   "key": "mirror|fight:18-A-9",
+   "label": "vs 18-A-9 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 18-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road19",
+   "label": "vs reference deck (Map 19) under 18-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field"
+  }
+ ],
+ "steps": 10,
+ "moves": 5,
+ "games": 4776,
+ "seconds": 62,
+ "weak": [
+  {
+   "deck": {
+    "dromedary": 4,
+    "fennec-fox": 3,
+    "roadrunner-courier": 4,
+    "sand-widow": 4,
+    "sandfish": 1,
+    "skull-vulture": 4
+   },
+   "score": 0.3819,
+   "ci": [
+    0.329,
+    0.4349
+   ],
+   "vsRef": 0.2222,
+   "refWins": 0.7778,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.1667,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "caustic-scorpion": 4,
+    "dromedary": 3,
+    "dust-devil-kestrel": 2,
+    "fennec-fox": 4,
+    "sand-widow": 4,
+    "skull-vulture": 3
+   },
+   "score": 0.4444,
+   "ci": [
+    0.3894,
+    0.4995
+   ],
+   "vsRef": 0.3333,
+   "refWins": 0.6667,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "poison x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.25,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "18-A-BPRO-1",
+  "deck": {
+   "antlion-pit": 4,
+   "dune-packrat": 4,
+   "dust-hyena": 4,
+   "quicksand-queen": 2,
+   "thorny-devil": 4,
+   "trapdoor-spider": 2
+  },
+  "score": 0.9375,
+  "ci": [
+   0.9106,
+   0.9644
+  ],
+  "vsRef": 0.8472,
+  "refWins": 0.1528,
+  "labels": [
+   "big (14 copies at 1+ Lumber, average 0.7)",
+   "economy (8 resource makers)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:18-A-1",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-A-2",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-A-3",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-A-4",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-A-5",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-A-6",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-A-7",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-A-8",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:18-A-9",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road19",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.75,
+    "n": 24
+   }
+  ]
+ }
+}

@@ -1,0 +1,549 @@
+{
+ "_about": "tools/bal9/zeit_home_2026_11_02.js (package BAL11): the time-of-day share per map (side 1's unit-rounds by the engine's zeitPhase, night = night + Twilight, day = day + Twilight - half the dim days, as ENG12 counts them) over each map's fights x 6 CPU fights of random live band decks; per time-of-day card the mean over its home maps (lists, side-map lists, SPECIAL).",
+ "generated": "2026-11-02",
+ "seed": 1,
+ "per": 6,
+ "maps": {
+  "m1": {
+   "fights": 4,
+   "unitRounds": 1172,
+   "night": 0,
+   "day": 0
+  },
+  "mf": {
+   "fights": 5,
+   "unitRounds": 1716,
+   "night": 0.514,
+   "day": 0.478
+  },
+  "mb": {
+   "fights": 5,
+   "unitRounds": 1784,
+   "night": 0.5,
+   "day": 0.505
+  },
+  "mc": {
+   "fights": 7,
+   "unitRounds": 2395,
+   "night": 0.484,
+   "day": 0.504
+  },
+  "m2": {
+   "fights": 5,
+   "unitRounds": 1559,
+   "night": 0.491,
+   "day": 0.489
+  },
+  "mw": {
+   "fights": 7,
+   "unitRounds": 2142,
+   "night": 0.509,
+   "day": 0.488
+  },
+  "m8": {
+   "fights": 8,
+   "unitRounds": 2138,
+   "night": 1,
+   "day": 0
+  },
+  "mu": {
+   "fights": 6,
+   "unitRounds": 2084,
+   "night": 0.503,
+   "day": 0.48
+  },
+  "m4": {
+   "fights": 8,
+   "unitRounds": 2846,
+   "night": 1,
+   "day": 0
+  },
+  "mk": {
+   "fights": 7,
+   "unitRounds": 2013,
+   "night": 0.505,
+   "day": 0.48
+  },
+  "m7": {
+   "fights": 9,
+   "unitRounds": 2894,
+   "night": 0.503,
+   "day": 0.48
+  },
+  "m10": {
+   "fights": 10,
+   "unitRounds": 3122,
+   "night": 0.487,
+   "day": 0.502
+  },
+  "mh": {
+   "fights": 7,
+   "unitRounds": 2234,
+   "night": 0.508,
+   "day": 0.489
+  },
+  "mr": {
+   "fights": 8,
+   "unitRounds": 2648,
+   "night": 0.492,
+   "day": 0.49
+  },
+  "m5": {
+   "fights": 8,
+   "unitRounds": 2336,
+   "night": 0.49,
+   "day": 0.504
+  },
+  "ml": {
+   "fights": 7,
+   "unitRounds": 2177,
+   "night": 0.48,
+   "day": 0.506
+  },
+  "mt": {
+   "fights": 7,
+   "unitRounds": 1999,
+   "night": 1,
+   "day": 0
+  },
+  "m6": {
+   "fights": 8,
+   "unitRounds": 2881,
+   "night": 0.483,
+   "day": 0.504
+  },
+  "md": {
+   "fights": 7,
+   "unitRounds": 2790,
+   "night": 0.487,
+   "day": 0.51
+  },
+  "m3": {
+   "fights": 6,
+   "unitRounds": 1795,
+   "night": 0.489,
+   "day": 0.43
+  },
+  "m11": {
+   "fights": 10,
+   "unitRounds": 3120,
+   "night": 0.51,
+   "day": 0.482
+  },
+  "m21": {
+   "fights": 6,
+   "unitRounds": 1797,
+   "night": 0.485,
+   "day": 0.496
+  },
+  "m22": {
+   "fights": 8,
+   "unitRounds": 2521,
+   "night": 0.501,
+   "day": 0.459
+  },
+  "m23": {
+   "fights": 8,
+   "unitRounds": 2391,
+   "night": 0.49,
+   "day": 0.491
+  },
+  "m24": {
+   "fights": 8,
+   "unitRounds": 2585,
+   "night": 0.495,
+   "day": 0.497
+  },
+  "mtut": {
+   "fights": 3,
+   "unitRounds": 963,
+   "night": 0,
+   "day": 0
+  },
+  "mq": {
+   "fights": 5,
+   "unitRounds": 1652,
+   "night": 0.495,
+   "day": 0.495
+  },
+  "mp": {
+   "fights": 7,
+   "unitRounds": 2594,
+   "night": 0.504,
+   "day": 0.505
+  },
+  "m9": {
+   "fights": 10,
+   "unitRounds": 3129,
+   "night": 0.485,
+   "day": 0.498
+  },
+  "mj": {
+   "fights": 5,
+   "unitRounds": 2640,
+   "night": 1,
+   "day": 0
+  },
+  "mg": {
+   "fights": 4,
+   "unitRounds": 1290,
+   "night": 1,
+   "day": 0
+  },
+  "mz": {
+   "fights": 5,
+   "unitRounds": 1790,
+   "night": 1,
+   "day": 0
+  },
+  "my": {
+   "fights": 5,
+   "unitRounds": 1614,
+   "night": 0.473,
+   "day": 0.511
+  },
+  "me": {
+   "fights": 7,
+   "unitRounds": 2493,
+   "night": 0.487,
+   "day": 0.497
+  },
+  "mx": {
+   "fights": 4,
+   "unitRounds": 1345,
+   "night": 0,
+   "day": 0
+  },
+  "ms": {
+   "fights": 4,
+   "unitRounds": 1450,
+   "night": 0.484,
+   "day": 0.501
+  },
+  "mn": {
+   "fights": 4,
+   "unitRounds": 1462,
+   "night": 0,
+   "day": 0
+  },
+  "mv": {
+   "fights": 4,
+   "unitRounds": 1296,
+   "night": 0.495,
+   "day": 0.489
+  },
+  "mi": {
+   "fights": 4,
+   "unitRounds": 1104,
+   "night": 0,
+   "day": 0
+  },
+  "mo": {
+   "fights": 4,
+   "unitRounds": 1370,
+   "night": 0,
+   "day": 0
+  },
+  "mpd": {
+   "fights": 9,
+   "unitRounds": 3252,
+   "night": 0.509,
+   "day": 0.48
+  }
+ },
+ "cards": [
+  {
+   "id": "owl-sentinel",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "mf"
+   ],
+   "share": 0.514
+  },
+  {
+   "id": "raccoon-bandit",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "ml"
+   ],
+   "share": 0.48
+  },
+  {
+   "id": "beetle-battering-ram",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "m23"
+   ],
+   "share": 0.49
+  },
+  {
+   "id": "echo-screecher",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "m4",
+    "mn"
+   ],
+   "share": 0.5
+  },
+  {
+   "id": "vampire-roost",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "m11"
+   ],
+   "share": 0.51
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "phase": "day",
+   "keys": [
+    "diurnal"
+   ],
+   "home": [
+    "mtut",
+    "m21"
+   ],
+   "share": 0.248
+  },
+  {
+   "id": "hawk-arrowkeeper",
+   "phase": "day",
+   "keys": [
+    "diurnal"
+   ],
+   "home": [
+    "mc"
+   ],
+   "share": 0.504
+  },
+  {
+   "id": "toucan-courier",
+   "phase": "day",
+   "keys": [
+    "diurnal"
+   ],
+   "home": [
+    "mtut"
+   ],
+   "share": 0
+  },
+  {
+   "id": "snow-owl-sentinel",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "m21"
+   ],
+   "share": 0.485
+  },
+  {
+   "id": "permafrost-mammoth",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "m22"
+   ],
+   "share": 0.501
+  },
+  {
+   "id": "golden-eagle-diver",
+   "phase": "day",
+   "keys": [
+    "diurnal"
+   ],
+   "home": [
+    "mtut",
+    "mc",
+    "m10",
+    "mv",
+    "m21"
+   ],
+   "share": 0.398
+  },
+  {
+   "id": "trash-panda-trickster",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "mtut",
+    "mg"
+   ],
+   "share": 0.5
+  },
+  {
+   "id": "owl-nightwatch",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "mu",
+    "mz",
+    "mr"
+   ],
+   "share": 0.665
+  },
+  {
+   "id": "vigil-owl",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "mv"
+   ],
+   "share": 0.495
+  },
+  {
+   "id": "talon-archer",
+   "phase": "day",
+   "keys": [
+    "diurnal"
+   ],
+   "home": [
+    "ml"
+   ],
+   "share": 0.506
+  },
+  {
+   "id": "echo-matriarch",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "m4"
+   ],
+   "share": 1
+  },
+  {
+   "id": "wolfsbane-alpha",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "m6"
+   ],
+   "share": 0.483
+  },
+  {
+   "id": "skull-vulture",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "mpd"
+   ],
+   "share": 0.509
+  },
+  {
+   "id": "ash-moth",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "m11",
+    "me",
+    "mx"
+   ],
+   "share": 0.332
+  },
+  {
+   "id": "vampire-bat",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "m4",
+    "mn",
+    "my"
+   ],
+   "share": 0.491
+  },
+  {
+   "id": "hoopoe-herald",
+   "phase": "night",
+   "keys": [
+    "nightblind"
+   ],
+   "home": [
+    "m5"
+   ],
+   "share": 0.49
+  },
+  {
+   "id": "sunbittern-strider",
+   "phase": "day",
+   "keys": [
+    "diurnal",
+    "diurnalGrant"
+   ],
+   "home": [
+    "mk"
+   ],
+   "share": 0.48
+  },
+  {
+   "id": "kinkajou-lurker",
+   "phase": "night",
+   "keys": [
+    "nocturnal",
+    "nocturnalGrant"
+   ],
+   "home": [
+    "my"
+   ],
+   "share": 0.473
+  },
+  {
+   "id": "robin-redbreast",
+   "phase": "day",
+   "keys": [
+    "diurnal"
+   ],
+   "home": [
+    "mf",
+    "mq"
+   ],
+   "share": 0.487
+  },
+  {
+   "id": "banded-sea-krait",
+   "phase": "night",
+   "keys": [
+    "nocturnal"
+   ],
+   "home": [
+    "mk",
+    "m7"
+   ],
+   "share": 0.504
+  }
+ ],
+ "seconds": 85
+}

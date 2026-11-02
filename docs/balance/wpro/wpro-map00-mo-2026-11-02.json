@@ -1,0 +1,21 @@
+{
+ "map": {
+  "id": "mo"
+ },
+ "none": "no legal seed",
+ "pool": [
+  "bramblewood-lynx",
+  "dhole-matriarch",
+  "echidna-quillshot",
+  "ent",
+  "gatling-hog",
+  "hedgehog-herbalist",
+  "lucky-hopper",
+  "quillguard",
+  "sergeant-bramblefox",
+  "shimmerwing-stag",
+  "taiga-lynx",
+  "thorn-shrike",
+  "wolf-spider-mother"
+ ]
+}

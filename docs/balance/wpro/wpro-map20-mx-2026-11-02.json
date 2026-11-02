@@ -1,0 +1,254 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:10:11.664Z",
+ "map": {
+  "id": "mx",
+  "num": 20,
+  "name": "Volcano Lair"
+ },
+ "level": 1,
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-cloud-condor",
+  "ash-moth",
+  "ashbone-ghoul",
+  "caldera-wyrm",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "ember-centipede",
+  "ember-jackal",
+  "granite-ox-golem",
+  "magma-salamander",
+  "magma-titan",
+  "magma-wraith",
+  "obsidian-scorpion",
+  "pack-mule",
+  "salamander-pyromancer",
+  "stalactite-golem",
+  "tide-spirit",
+  "vampire-roost",
+  "woodland-brawler"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mx",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-B-1",
+   "label": "vs 20-B-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:20-B-2",
+   "label": "vs 20-B-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:20-B-3",
+   "label": "vs 20-B-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:20-B-4",
+   "label": "vs 20-B-4 worldboss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-B-1's field"
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-B-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-B-3's field"
+  }
+ ],
+ "steps": 5,
+ "moves": 2,
+ "games": 1708,
+ "seconds": 25,
+ "weak": [
+  {
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "ash-cloud-condor": 3,
+    "deep-cave-troll": 2,
+    "magma-titan": 4,
+    "obsidian-scorpion": 3,
+    "vampire-roost": 4
+   },
+   "score": 0.0357,
+   "ci": [
+    0.0079,
+    0.0635
+   ],
+   "vsRef": 0.0417,
+   "refWins": 0.9583,
+   "labels": [
+    "big (14 copies at 2+ Lumber, average 2.2)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "ash-cloud-condor": 3,
+    "deep-cave-troll": 3,
+    "ember-centipede": 3,
+    "stalactite-golem": 3,
+    "vampire-roost": 4
+   },
+   "score": 0.0179,
+   "ci": [
+    -0.0027,
+    0.0384
+   ],
+   "vsRef": 0,
+   "refWins": 1,
+   "labels": [
+    "big (14 copies at 2+ Lumber, average 1.9)",
+    "guard x7"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-B-1",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-3",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-B-4",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "20-B-BPRO-1",
+  "deck": {
+   "ashbone-ghoul": 3,
+   "cinder-stoker": 4,
+   "ember-jackal": 3,
+   "obsidian-scorpion": 3,
+   "pack-mule": 4,
+   "tide-spirit": 3
+  },
+  "score": 0.8095,
+  "ci": [
+   0.7606,
+   0.8585
+  ],
+  "vsRef": 0.9028,
+  "refWins": 0.0972,
+  "labels": [
+   "swarm (14 copies at 0 Lumber)",
+   "economy (4 resource makers)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:20-B-1",
+    "p": 0.375,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-B-2",
+    "p": 0.5833,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-B-3",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:20-B-4",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road20",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.875,
+    "n": 24
+   }
+  ]
+ }
+}

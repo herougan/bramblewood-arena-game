@@ -24,6 +24,7 @@ const PRO_FILE = path.join(ROOT, 'canonical', 'pro-skirmishes.json');
 const RULE = D1.RULE, MAX_FOCUS = 3, BUDGET = 6000, FINAL = 24, LEVEL = 1, HARD_GAP = 0.15;
 const PRIORITY = ['stone/metal', 'economy', 'big', 'swarm'];
 const uniq = a => [...new Set(a)];
+const isBabyId = (gm, id) => /^egg-/.test(id) || ((gm.D[id] || {}).kind === 'baby'); // BAL11 (2026-11-02): Baby cards and eggs
 function mapRange(spec) { if (spec == null) return null; const out = new Set(); String(spec).split(',').forEach(p => { const m = /^(\d+)-(\d+)$/.exec(p); if (m) { for (let i = +m[1]; i <= +m[2]; i++) out.add(i); } else out.add(+p); }); return out; }
 
 const BAL9 = require('../bal9/lib_bal9.js'), CARRY_FROM = 40;
@@ -35,7 +36,9 @@ function carriedFor(gm, map, cap, own) {
   return out;
 }
 function planMap(gm, map, rules) {
-  const G = gm.G, p = D1.deck1Pools(gm, map), pool = p.anchor.slice().sort();
+  // 2026-11-02 (package BAL11, owner 14:26: strong and weak decks "given the map cards" with no Baby cards / eggs): a Baby card (kind baby, the
+  // eggs included) is out of the BPRO pool (13-BPRO-1..4 held Fox Kit, 5-A-BPRO Caiman / Snapper Hatchlings, 7-BPRO-4 / 7-A-BPRO-2 Compost Grub)
+  const G = gm.G, p = D1.deck1Pools(gm, map), pool = p.anchor.filter(id => !isBabyId(gm, id)).sort();
   const base = { id: map.id, num: G.mapNumberOf(map.id), side: map.sub ? map.parent : null, name: map.name, cap: p.cap, pool, anchorDropped: p.anchorDropped, fightOnly: p.fightOnly };
   if (!pool.length) return Object.assign(base, { focuses: [], none: 'no card of the list is inside the map\'s rarity cap (' + p.cap + ')' });
   const room = f => f.cards.reduce((t, id) => t + Math.min(RULE.maxCopies, O.capOf(gm, id)), 0);
@@ -65,7 +68,8 @@ function outFileOf(gm, map) { return path.join(OUTDIR, `bench-deck-map${String(g
 function bproProblems(gm, map, deck, pools) {
   const p = pools || D1.deck1Pools(gm, map), out = [], ids = Object.keys(deck).filter(id => deck[id] > 0);
   if (ids.length > RULE.maxUnique) out.push(`${ids.length} different cards (at most ${RULE.maxUnique})`);
-  ids.forEach(id => { if (deck[id] > RULE.maxCopies) out.push(`${id} x${deck[id]} (at most ${RULE.maxCopies})`); if (!p.anchor.includes(id) && !(p.carriedIn || []).includes(id)) out.push(id + ': not on the map\'s list (' + (p.rule(id) || 'held, not listed') + ')'); });
+  ids.forEach(id => { if (deck[id] > RULE.maxCopies) out.push(`${id} x${deck[id]} (at most ${RULE.maxCopies})`); if (!p.anchor.includes(id) && !(p.carriedIn || []).includes(id)) out.push(id + ': not on the map\'s list (' + (p.rule(id) || 'held, not listed') + ')');
+    if (isBabyId(gm, id)) out.push(id + ': a Baby card (BAL11)'); });
   return out;
 }
 
@@ -129,5 +133,5 @@ function checkAll(gm) {
       if (!e.focus) out.push(e.id + ': no focus'); if (!(e.source && e.source.mode === 'bpro2')) out.push(e.id + ': not a SKILL2 BPRO deck'); }); });
   return out;
 }
-module.exports = { planMap, bproProblems, checkAll, RULE, carriedFor, CARRY_FROM }; // + BAL9 (JJ22)
+module.exports = { planMap, bproProblems, checkAll, RULE, carriedFor, CARRY_FROM, isBabyId }; // + BAL9 (JJ22); + BAL11 isBabyId
 if (require.main === module) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

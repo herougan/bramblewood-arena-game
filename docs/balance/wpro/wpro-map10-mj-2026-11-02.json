@@ -1,0 +1,272 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:21:44.867Z",
+ "map": {
+  "id": "mj",
+  "num": 10,
+  "name": "The Sunken Depths"
+ },
+ "level": 1,
+ "pool": [
+  "blue-ringed-octopus",
+  "clownfish-scout",
+  "colossal-squid",
+  "coral-polyp-colony",
+  "coral-reef-shark",
+  "electric-ray",
+  "great-barracuda",
+  "hagfish-silencer",
+  "kraken-spawnling",
+  "mangrove-manatee",
+  "nautilus-drifter",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-admiral",
+  "riptide-eel"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mj",
+  "budget": 4000,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:10-A-1",
+   "label": "vs 10-A-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:10-A-2",
+   "label": "vs 10-A-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:10-A-3",
+   "label": "vs 10-A-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:10-A-4",
+   "label": "vs 10-A-4 elite's deck"
+  },
+  {
+   "key": "mirror|fight:10-A-5",
+   "label": "vs 10-A-5 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 10-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road11",
+   "label": "vs reference deck (Map 11) under 10-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field"
+  }
+ ],
+ "steps": 20,
+ "moves": 7,
+ "games": 4544,
+ "seconds": 52,
+ "weak": [
+  {
+   "deck": {
+    "colossal-squid": 2,
+    "electric-ray": 3,
+    "great-barracuda": 3,
+    "kraken-spawnling": 4,
+    "orca-vanguard": 4,
+    "riptide-eel": 4
+   },
+   "score": 0.2969,
+   "ci": [
+    0.2405,
+    0.3532
+   ],
+   "vsRef": 0.0417,
+   "refWins": 0.9583,
+   "labels": [
+    "big (10 copies at 3+ Lumber, average 2.1)",
+    "tide x13",
+    "cleave x10"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-A-1",
+     "p": 0.6042,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-2",
+     "p": 0.5208,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-3",
+     "p": 0.5208,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-4",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-5",
+     "p": 0.3542,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "blue-ringed-octopus": 3,
+    "electric-ray": 4,
+    "great-barracuda": 3,
+    "hagfish-silencer": 2,
+    "kraken-spawnling": 4,
+    "orca-vanguard": 4
+   },
+   "score": 0.3828,
+   "ci": [
+    0.3259,
+    0.4398
+   ],
+   "vsRef": 0.1389,
+   "refWins": 0.8611,
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.8)",
+    "cleave x8",
+    "tide x7"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-A-1",
+     "p": 0.6875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-2",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-3",
+     "p": 0.7292,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-4",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-5",
+     "p": 0.3958,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "10-A-BPRO-1",
+  "deck": {
+   "blue-ringed-octopus": 3,
+   "clownfish-scout": 4,
+   "coral-polyp-colony": 3,
+   "electric-ray": 4,
+   "mangrove-manatee": 3,
+   "nautilus-drifter": 3
+  },
+  "score": 0.9479,
+  "ci": [
+   0.918,
+   0.9778
+  ],
+  "vsRef": 0.9306,
+  "refWins": 0.0694,
+  "labels": [
+   "economy (6 resource makers)",
+   "tide x10",
+   "economy x6"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:10-A-1",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-A-2",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-A-3",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-A-4",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:10-A-5",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road11",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.7917,
+    "n": 24
+   }
+  ]
+ }
+}

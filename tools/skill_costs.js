@@ -42,6 +42,7 @@
     const by = kind=>{ const m = {}; (table[kind] || []).forEach(x=> m[x.id] = x); return m; };
     const SK = by('skills'), TR = by('triggers'), AC = by('actions'), MO = by('modifiers');
     const ALIAS = table.aliases || {}, SH = table.shorthands || {}, B = table.budget || {}, HALF = table.halfMiss || [];
+    const ZH = table.zeitHome || {}; // BAL11 (2026-11-02): per card {night, day} shares on its home maps
     const mod = (id, d)=> MO[id] && typeof MO[id].value === 'number' ? MO[id].value : d;
     const actEntries = {}; (table.actions || []).forEach(a=>{ const base = a.id.split('.')[0]; (actEntries[base] = actEntries[base] || []).push(a); });
     function skillCost(id, v){
@@ -102,6 +103,9 @@
     // S of a card's effects: {S, parts:[[kind, id, cost, detail]], missing:[ids with no entry]}.
     function cardS(effects, card){
       const parts = [], missing = []; let S = 0;
+      // BAL11 (2026-11-02): the card's time-of-day share on its home maps (table.zeitHome, tools/bal9/zeit_home_2026_11_02.js) for zeitS, the
+      // Nocturnal / Diurnal braces and the Nightblind / Sunshy drawbacks (bramblewood-budget.js ZEIT_HOME_WEIGHT)
+      const home = card && card.id && ZH[String(card.id).split('@')[0]] || null;
       Object.entries(effects || {}).forEach(([k, v])=>{
         if(k === 'triggers'){ (Array.isArray(v) ? v : []).forEach(t=>{ if(!t) return; const c = triggerCost(t, card); missing.push(...c.missing); S += c.cost; parts.push(['trigger', t.on + ' → ' + t.do, c.cost, c.weight + ' × ' + c.value]); }); return; }
         // Context skills (2026-10-21, package CX2): CONTEXT_MULT (0.4) x the S of the skills in their braces, across all their phases
@@ -111,7 +115,7 @@
           if(th){ S += th.S; parts.push(['context', k, th.S, th.mult + ' × ' + th.inner]); return; } }
         // ENG12 (2026-10-28, owner L11): Nocturnal / Diurnal / Crepuscular (+A/+H) at their measured uptime x (2A + H) (bramblewood-budget.js zeitS);
         // a Nocturnal unit's dark-sight (ENG11) adds Darksight's price x the share of rounds in a dark fight, once (not beside Darksight)
-        { const zs = BB.zeitS ? BB.zeitS(k, effects) : null;
+        { const zs = BB.zeitS ? BB.zeitS(k, effects, home) : null;
           if(zs){ let c = zs.S; const sightKey = k === 'nocturnal' || (k === 'nocturnalHp' && !effects.nocturnal);
             if(sightKey && !effects.darksight && BB.ZEIT_DARK_SHARE) c = r2(c + BB.ZEIT_DARK_SHARE * (skillCost('darksight', true) || 0));
             S += c; parts.push(['context', k, c, zs.mult ? zs.mult + ' × ' + zs.inner + (c !== zs.S ? ' + dark sight' : '') : (c ? 'dark sight' : 'beside its flag or braces')]); return; } }
@@ -119,7 +123,7 @@
         if(k === 'shock' && SK.shock && SK.shock.logic === 'shock'){ const c = BB.shockS(v, card && card.attack); S += c; parts.push(['skill', k, c, '4-round rule']); return; }
         if(k === 'shockBolt' && SK.shockBolt && SK.shockBolt.logic === 'shock'){ const c = r2((skillCost('arrow', v) || 0) + BB.shockBoltShockS(card && card.attack)); S += c; parts.push(['skill', k, c, 'Arrow ' + numOf(v) + ' + Shock']); return; }
         if(BB.contextFlagCovered && BB.contextFlagCovered(k, effects)){ parts.push(['skill', k, 0, 'its braces carry the cost']); return; }
-        { const cx = BB.contextS ? BB.contextS(k, v, inner=>{ const r = cardS(inner, card); missing.push(...r.missing); return r.S; }) : null; // CX5: inner misses reported
+        { const cx = BB.contextS ? BB.contextS(k, v, inner=>{ const r = cardS(inner, card); missing.push(...r.missing); return r.S; }, BB.zeitGrantMult ? BB.zeitGrantMult(k, home) : undefined /* BAL11 */) : null; // CX5: inner misses reported
           if(cx){ S += cx.S; parts.push(['context', k, cx.S, cx.mult + ' × ' + cx.inner]); return; } }
         // SKILL2 (2026-10-31): x the shorthand's own `mult` (its measured worth / trigger x action), so the shared trigger weight and action value stay
         if(SH[k]){ const sh = SH[k], N = numOf(v) || 1, w = triggerWeight({on:sh.trigger}), a = actionValue(sh.both ? {do:sh.action, amount:N, amount2:N} : sh.field ? {do:sh.action, [sh.field]:N} : {do:sh.action, amount:N}, card) /* field (2026-10-19, SK1): Spoils is Health only */, c = r2(w.w * a.value * (typeof sh.mult === 'number' ? sh.mult : 1)); // both (2026-10-19, package GI): +N/+N, Kin Rally
@@ -131,6 +135,7 @@
         if(BB.EN7_TIP_SHOTS && BB.EN7_TIP_SHOTS[k]){ const [base, st] = BB.EN7_TIP_SHOTS[k], c = v && effects[base] ? r2(mod('tip', BB.EN7_TIP_MULT || 0.9) * (skillCost(st, Math.max(1, numOf(effects[st]))) || 0)) : 0; S += c; parts.push(['skill', k, c, 'x' + mod('tip', 0.9) + ' of ' + st]); return; }
         if(k === 'diveUses'){ const c = effects.dive ? r2(Math.max(0, numOf(v) - 1) * (skillCost('dive', effects.dive) || 0)) : 0; S += c; parts.push(['skill', k, c, 'extra dives']); return; }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
+        { const zm = BB.zeitDrawbackMult ? BB.zeitDrawbackMult(k, home) : 1; if(zm !== 1){ c = r2(c * zm); S += c; parts.push(['skill', k, c, 'x' + zm + ' at home (BAL11)']); return; } } // BAL11 (2026-11-02): Nightblind / Sunshy at their home share
         S += c; parts.push(['skill', k, c, '']);
       });
       // EN7 (2026-10-24, owner 13:12 #5): Poison / Bleed now ride on Pounce and Ambush too: a share of their price on top (bramblewood-budget.js EN7_EXTRA_HIT)

@@ -1,0 +1,178 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T07:31:20.800Z",
+ "map": {
+  "id": "m1",
+  "num": 0,
+  "name": "Bramblewood Outskirts"
+ },
+ "level": 1,
+ "pool": [
+  "ant-scout",
+  "beaver-lumberjack",
+  "bee-forager",
+  "bee-sentry",
+  "chipmunk-forager",
+  "chipmunk-skirmisher",
+  "cottontail",
+  "crossed-eyes",
+  "duck-paddler",
+  "earthworm",
+  "honey-bee",
+  "house-cat",
+  "silver-minnow",
+  "soldier-ant",
+  "terrier-pup",
+  "worker-ant"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|m1",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:0-1",
+   "label": "vs 0-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:0-2",
+   "label": "vs 0-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:0-3",
+   "label": "vs 0-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:0-4",
+   "label": "vs 0-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 0-1's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field"
+  }
+ ],
+ "steps": 5,
+ "moves": 2,
+ "games": 1440,
+ "seconds": 23,
+ "weak": [
+  {
+   "deck": {
+    "beaver-lumberjack": 3,
+    "bee-forager": 1,
+    "bee-sentry": 4,
+    "chipmunk-forager": 4,
+    "earthworm": 4,
+    "worker-ant": 4
+   },
+   "score": 0.0694,
+   "ci": [
+    0.0299,
+    0.109
+   ],
+   "vsRef": 0.125,
+   "refWins": 0.875,
+   "labels": [
+    "midrange (average 0.0 Lumber)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-1",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.2083,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "0-BPRO-1",
+  "deck": {
+   "ant-scout": 4,
+   "bee-forager": 4,
+   "chipmunk-skirmisher": 2,
+   "honey-bee": 4,
+   "soldier-ant": 4,
+   "worker-ant": 2
+  },
+  "score": 0.8472,
+  "ci": [
+   0.7918,
+   0.9027
+  ],
+  "vsRef": 0.8958,
+  "refWins": 0.1042,
+  "labels": [
+   "swarm x12",
+   "flying x8"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:0-1",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:0-2",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:0-3",
+    "p": 0.5833,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:0-4",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.9167,
+    "n": 24
+   }
+  ]
+ }
+}
