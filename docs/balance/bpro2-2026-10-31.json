@@ -926,7 +926,6 @@
     "muskrat-reedgatherer",
     "nutria-reedcutter",
     "old-snapjaw",
-    "snapper-hatchling",
     "snapstick-turtle",
     "swamp-alligator",
     "venomlord-serpent"
@@ -946,8 +945,8 @@
     "big",
     "economy",
     "swarm",
-    "family:tide",
-    "family:armor"
+    "family:armor",
+    "family:bleed"
    ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map05-mw-2026-10-31.json",
@@ -1045,7 +1044,6 @@
     "alligator-gar",
     "anhinga-spearbird",
     "bog-leech",
-    "caiman-hatchling",
     "constrictor-coil",
     "crocodile-ambusher",
     "fen-mink",
@@ -1054,7 +1052,6 @@
     "mangrove-mudskipper",
     "nutria-reedcutter",
     "old-snapjaw",
-    "snapper-hatchling",
     "swamp-alligator",
     "venomlord-serpent"
    ],
@@ -1080,18 +1077,18 @@
      {
       "id": "5-A-BPRO-1",
       "focus": "open",
-      "score": 0.7738,
+      "score": 0.6845,
       "ci": [
-       0.7208,
-       0.8268
+       0.6268,
+       0.7422
       ],
       "deck": {
        "alligator-gar": 3,
+       "anhinga-spearbird": 3,
        "bog-leech": 3,
-       "caiman-hatchling": 4,
        "grass-viper": 4,
-       "hedgehog-herbalist": 2,
-       "mangrove-mudskipper": 4
+       "hedgehog-herbalist": 3,
+       "nutria-reedcutter": 4
       },
       "leaders": [
        "hedgehog-herbalist"
@@ -1100,21 +1097,41 @@
      {
       "id": "5-A-BPRO-2",
       "focus": "swarm",
-      "score": 0.756,
+      "score": 0.619,
       "ci": [
-       0.7005,
-       0.8114
+       0.5524,
+       0.6857
       ],
       "deck": {
-       "alligator-gar": 2,
-       "bog-leech": 4,
-       "caiman-hatchling": 4,
+       "bog-leech": 3,
+       "fen-mink": 4,
        "hedgehog-herbalist": 3,
-       "mangrove-mudskipper": 3,
-       "snapper-hatchling": 4
+       "mangrove-mudskipper": 4,
+       "nutria-reedcutter": 4,
+       "old-snapjaw": 2
       },
       "leaders": [
-       "hedgehog-herbalist"
+       "old-snapjaw"
+      ]
+     },
+     {
+      "id": "5-A-BPRO-3",
+      "focus": "family:armor",
+      "score": 0.6131,
+      "ci": [
+       0.5489,
+       0.6773
+      ],
+      "deck": {
+       "alligator-gar": 3,
+       "hedgehog-herbalist": 3,
+       "mangrove-mudskipper": 4,
+       "nutria-reedcutter": 4,
+       "old-snapjaw": 3,
+       "swamp-alligator": 3
+      },
+      "leaders": [
+       "old-snapjaw"
       ]
      }
     ]
@@ -1122,13 +1139,8 @@
    "leftOut": [
     {
      "focus": "big",
-     "score": 0.5655,
-     "why": "under 62.4%"
-    },
-    {
-     "focus": "family:armor",
-     "score": 0.5536,
-     "why": "under 62.4%"
+     "score": 0.4821,
+     "why": "under 53.5%"
     }
    ]
   },
@@ -1271,7 +1283,6 @@
     "bogfire-newt",
     "bombardier-beetle",
     "cane-toad",
-    "compost-grub",
     "corpse-flower-beetle",
     "dung-beetle",
     "earthworm",
@@ -1311,16 +1322,16 @@
      {
       "id": "7-BPRO-1",
       "focus": "economy",
-      "score": 0.8333,
+      "score": 0.8148,
       "ci": [
-       0.79,
-       0.8767
+       0.767,
+       0.8626
       ],
       "deck": {
-       "dung-beetle": 3,
+       "bombardier-beetle": 3,
+       "earthworm": 3,
        "leafcutter-gardener": 4,
-       "owl-nightwatch": 4,
-       "slow-worm": 2,
+       "planarian-splitter": 3,
        "truffle-piglet": 4,
        "wolf-spider-mother": 3
       },
@@ -1330,67 +1341,53 @@
      },
      {
       "id": "7-BPRO-2",
-      "focus": "swarm",
-      "score": 0.7963,
-      "ci": [
-       0.7487,
-       0.8439
-      ],
-      "deck": {
-       "adder-ambusher": 3,
-       "bogfire-newt": 2,
-       "leafcutter-gardener": 4,
-       "sleepless-shrew": 4,
-       "wolf-spider-mother": 3,
-       "worker-ant": 4
-      },
-      "leaders": [
-       "adder-ambusher"
-      ]
-     },
-     {
-      "id": "7-BPRO-3",
       "focus": "big",
-      "score": 0.7778,
+      "score": 0.7593,
       "ci": [
-       0.7301,
-       0.8254
+       0.7064,
+       0.8121
       ],
       "deck": {
-       "bogfire-newt": 3,
        "bombardier-beetle": 4,
-       "dung-beetle": 4,
+       "dung-beetle": 3,
        "leafcutter-gardener": 4,
-       "owl-nightwatch": 4,
-       "wolf-spider-mother": 1
+       "planarian-splitter": 4,
+       "sleepless-shrew": 2,
+       "wolf-spider-mother": 3
       },
       "leaders": [
        "wolf-spider-mother"
       ]
      },
      {
-      "id": "7-BPRO-4",
+      "id": "7-BPRO-3",
       "focus": "open",
-      "score": 0.7315,
+      "score": 0.7176,
       "ci": [
-       0.6806,
-       0.7824
+       0.663,
+       0.7722
       ],
       "deck": {
-       "compost-grub": 2,
-       "corpse-flower-beetle": 3,
+       "bogfire-newt": 4,
+       "bombardier-beetle": 2,
        "dung-beetle": 4,
-       "garden-snail": 4,
-       "truffle-piglet": 4,
-       "wolf-spider-mother": 3
+       "sleepless-shrew": 4,
+       "wolf-spider-mother": 2,
+       "worker-ant": 4
       },
       "leaders": [
-       "corpse-flower-beetle"
+       "wolf-spider-mother"
       ]
      }
     ]
    },
-   "leftOut": []
+   "leftOut": [
+    {
+     "focus": "swarm",
+     "score": 0.6574,
+     "why": "under 66.5%"
+    }
+   ]
   },
   "mz": {
    "id": "mz",
@@ -1401,7 +1398,6 @@
    "pool": [
     "ant-warrior",
     "bombardier-beetle",
-    "compost-grub",
     "dung-beetle",
     "fungal-colossus",
     "garden-snail",
@@ -1439,38 +1435,38 @@
      {
       "id": "7-A-BPRO-1",
       "focus": "big",
-      "score": 0.8958,
+      "score": 0.8125,
       "ci": [
-       0.8563,
-       0.9354
+       0.7619,
+       0.8631
       ],
       "deck": {
        "ant-warrior": 4,
-       "bombardier-beetle": 3,
-       "dung-beetle": 4,
-       "leafcutter-gardener": 4,
-       "owl-nightwatch": 2,
-       "wolf-spider-mother": 3
+       "bombardier-beetle": 4,
+       "dung-beetle": 3,
+       "leafcutter-gardener": 1,
+       "owl-nightwatch": 4,
+       "truffle-piglet": 4
       },
       "leaders": [
-       "wolf-spider-mother"
+       "bombardier-beetle"
       ]
      },
      {
       "id": "7-A-BPRO-2",
       "focus": "economy",
-      "score": 0.8333,
+      "score": 0.7969,
       "ci": [
-       0.7858,
-       0.8809
+       0.7482,
+       0.8455
       ],
       "deck": {
-       "compost-grub": 4,
-       "dung-beetle": 3,
-       "leafcutter-gardener": 2,
-       "owl-nightwatch": 4,
-       "truffle-piglet": 4,
-       "wolf-spider-mother": 3
+       "ant-warrior": 4,
+       "bombardier-beetle": 4,
+       "hawthorn-shieldbug": 4,
+       "leafcutter-gardener": 4,
+       "truffle-piglet": 3,
+       "wolf-spider-mother": 1
       },
       "leaders": [
        "wolf-spider-mother"
@@ -1479,18 +1475,38 @@
      {
       "id": "7-A-BPRO-3",
       "focus": "swarm",
-      "score": 0.7656,
+      "score": 0.776,
       "ci": [
-       0.7161,
-       0.8152
+       0.7229,
+       0.8292
       ],
       "deck": {
        "ant-warrior": 4,
-       "dung-beetle": 3,
-       "hawthorn-shieldbug": 3,
+       "bombardier-beetle": 3,
+       "dung-beetle": 4,
+       "hawthorn-shieldbug": 2,
        "leafcutter-gardener": 4,
-       "sleepless-shrew": 4,
-       "wolf-spider-mother": 2
+       "sleepless-shrew": 3
+      },
+      "leaders": [
+       "bombardier-beetle"
+      ]
+     },
+     {
+      "id": "7-A-BPRO-4",
+      "focus": "open",
+      "score": 0.7448,
+      "ci": [
+       0.6893,
+       0.8003
+      ],
+      "deck": {
+       "ant-warrior": 4,
+       "hawthorn-shieldbug": 4,
+       "owl-nightwatch": 2,
+       "rootworm-colony": 3,
+       "truffle-piglet": 4,
+       "wolf-spider-mother": 3
       },
       "leaders": [
        "wolf-spider-mother"
@@ -1498,13 +1514,7 @@
      }
     ]
    },
-   "leftOut": [
-    {
-     "focus": "open",
-     "score": 0.6563,
-     "why": "under 74.6%"
-    }
-   ]
+   "leftOut": []
   },
   "m4": {
    "id": "m4",
@@ -2473,7 +2483,6 @@
     "carrion-crow",
     "cunning-vixen",
     "fawn-scout",
-    "fox-kit",
     "grizzly-vanguard",
     "owl-nightwatch",
     "quillback-elder",
@@ -2490,7 +2499,7 @@
    "focuses": [
     "economy",
     "big",
-    "swarm",
+    "family:evasion",
     "open"
    ],
    "focusesAvailable": [
@@ -2506,19 +2515,19 @@
     "bpro": [
      {
       "id": "13-BPRO-1",
-      "focus": "swarm",
-      "score": 0.8258,
+      "focus": "big",
+      "score": 0.7424,
       "ci": [
-       0.7831,
-       0.8684
+       0.6945,
+       0.7903
       ],
       "deck": {
+       "berserker-boar": 4,
        "bramble-hoglet": 4,
        "bramblewood-lynx": 3,
-       "carrion-crow": 3,
        "fawn-scout": 3,
-       "fox-kit": 4,
-       "sergeant-bramblefox": 3
+       "sergeant-bramblefox": 3,
+       "tasmanian-devil": 3
       },
       "leaders": [
        "sergeant-bramblefox"
@@ -2526,19 +2535,19 @@
      },
      {
       "id": "13-BPRO-2",
-      "focus": "big",
-      "score": 0.7803,
+      "focus": "open",
+      "score": 0.6932,
       "ci": [
-       0.7336,
-       0.827
+       0.6417,
+       0.7447
       ],
       "deck": {
-       "bramble-hoglet": 4,
+       "bramble-hoglet": 3,
+       "bramblewood-lynx": 3,
        "fawn-scout": 3,
-       "fox-kit": 3,
-       "owl-nightwatch": 4,
-       "sergeant-bramblefox": 3,
-       "woodpecker-sapper": 3
+       "quillback-elder": 4,
+       "redwood-woodpecker": 4,
+       "sergeant-bramblefox": 3
       },
       "leaders": [
        "sergeant-bramblefox"
@@ -2546,39 +2555,19 @@
      },
      {
       "id": "13-BPRO-3",
-      "focus": "open",
-      "score": 0.7576,
+      "focus": "economy",
+      "score": 0.6856,
       "ci": [
-       0.7112,
-       0.8039
+       0.6353,
+       0.7359
       ],
       "deck": {
-       "bramblewood-lynx": 3,
-       "fox-kit": 4,
-       "quillback-elder": 2,
+       "bramble-hoglet": 4,
+       "carrion-crow": 4,
        "redwood-woodpecker": 4,
        "sergeant-bramblefox": 3,
-       "tasmanian-devil": 4
-      },
-      "leaders": [
-       "sergeant-bramblefox"
-      ]
-     },
-     {
-      "id": "13-BPRO-4",
-      "focus": "economy",
-      "score": 0.678,
-      "ci": [
-       0.6277,
-       0.7284
-      ],
-      "deck": {
-       "carrion-crow": 4,
-       "fawn-scout": 3,
-       "fox-kit": 3,
-       "owl-nightwatch": 3,
-       "redwood-woodpecker": 4,
-       "sergeant-bramblefox": 3
+       "swift-fox": 4,
+       "tasmanian-devil": 1
       },
       "leaders": [
        "sergeant-bramblefox"
@@ -2586,7 +2575,13 @@
      }
     ]
    },
-   "leftOut": []
+   "leftOut": [
+    {
+     "focus": "family:evasion",
+     "score": 0.5265,
+     "why": "under 59.2%"
+    }
+   ]
   },
   "m5": {
    "id": "m5",

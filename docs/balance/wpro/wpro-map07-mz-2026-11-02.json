@@ -1,0 +1,266 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T07:36:56.431Z",
+ "map": {
+  "id": "mz",
+  "num": 7,
+  "name": "The Mycelium Deep"
+ },
+ "level": 1,
+ "pool": [
+  "ant-warrior",
+  "bombardier-beetle",
+  "dung-beetle",
+  "fungal-colossus",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "owl-nightwatch",
+  "planarian-splitter",
+  "rootworm-colony",
+  "sleepless-shrew",
+  "truffle-piglet",
+  "wolf-spider-mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mz",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:7-A-1",
+   "label": "vs 7-A-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:7-A-2",
+   "label": "vs 7-A-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:7-A-3",
+   "label": "vs 7-A-3 elite's deck"
+  },
+  {
+   "key": "mirror|fight:7-A-4",
+   "label": "vs 7-A-4 elite's deck"
+  },
+  {
+   "key": "mirror|fight:7-A-5",
+   "label": "vs 7-A-5 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 7-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road8",
+   "label": "vs reference deck (Map 8) under 7-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 7-A-3's field"
+  }
+ ],
+ "steps": 4,
+ "moves": 1,
+ "games": 1680,
+ "seconds": 28,
+ "weak": [
+  {
+   "deck": {
+    "fungal-colossus": 4,
+    "hawthorn-shieldbug": 4,
+    "leafcutter-gardener": 1,
+    "planarian-splitter": 4,
+    "rootworm-colony": 4,
+    "wolf-spider-mother": 3
+   },
+   "score": 0.151,
+   "ci": [
+    0.109,
+    0.1931
+   ],
+   "vsRef": 0.1806,
+   "refWins": 0.8194,
+   "labels": [
+    "big (19 copies at 1+ Lumber, average 1.1)",
+    "swarm x7"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-A-1",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-4",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-5",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.125,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "bombardier-beetle": 4,
+    "dung-beetle": 2,
+    "fungal-colossus": 2,
+    "hawthorn-shieldbug": 4,
+    "planarian-splitter": 4,
+    "rootworm-colony": 4
+   },
+   "score": 0.1719,
+   "ci": [
+    0.124,
+    0.2198
+   ],
+   "vsRef": 0.2222,
+   "refWins": 0.7778,
+   "labels": [
+    "big (18 copies at 1+ Lumber, average 1.0)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:7-A-1",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-2",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-3",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-4",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:7-A-5",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.2917,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "7-A-BPRO-1",
+  "deck": {
+   "ant-warrior": 4,
+   "bombardier-beetle": 4,
+   "dung-beetle": 3,
+   "leafcutter-gardener": 1,
+   "owl-nightwatch": 4,
+   "truffle-piglet": 4
+  },
+  "score": 0.7813,
+  "ci": [
+   0.7301,
+   0.8324
+  ],
+  "vsRef": 0.9444,
+  "refWins": 0.0556,
+  "labels": [
+   "big (12 copies at 1+ Lumber, average 0.6)",
+   "economy (5 resource makers)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:7-A-1",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:7-A-2",
+    "p": 0.75,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:7-A-3",
+    "p": 0.4583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:7-A-4",
+    "p": 0.4583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:7-A-5",
+    "p": 0.7917,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road8",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 1,
+    "n": 24
+   }
+  ]
+ }
+}

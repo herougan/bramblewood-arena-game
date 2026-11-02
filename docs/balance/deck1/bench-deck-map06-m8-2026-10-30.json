@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-10-30T10:28:44.664Z",
- "fingerprint": "5b2112374573",
+ "generated": "2026-11-02T07:49:33.599Z",
+ "fingerprint": "5654ae6bb0c1",
  "map": {
   "id": "m8",
   "num": 6,
@@ -14,17 +14,17 @@
   "alligator-gar",
   "anhinga-spearbird",
   "bee-forager",
-  "bogfire-newt",
   "booming-bittern",
   "box-turtle",
-  "caiman-hatchling",
   "camouflage-frog",
-  "cane-toad",
   "constrictor-coil",
   "driftwood-crab",
+  "fen-mink",
   "fire-ant-raft",
   "gannet-nestweaver",
   "grass-snake",
+  "heron-hag",
+  "lamprey",
   "marsh-harrier",
   "marsh-wisp",
   "meadow-frog",
@@ -42,17 +42,17 @@
   "Alligator Gar",
   "Anhinga Spearbird",
   "Bee Forager",
-  "Bogfire Newt",
   "Booming Bittern",
   "Box Turtle",
-  "Caiman Hatchling",
   "Camouflage Frog",
-  "Cane Toad",
   "Constrictor Coil",
   "Driftwood Crab",
+  "Fen Mink",
   "Fire Ant Raft",
   "Gannet Nestweaver",
   "Grass Snake",
+  "The Heron Hag",
+  "Lamprey",
   "Marsh Harrier",
   "Marsh Wisp",
   "Meadow Frog",
@@ -71,11 +71,11 @@
   "anchor": [
    "adder-ambusher",
    "alligator-gar",
-   "bogfire-newt",
    "booming-bittern",
    "camouflage-frog",
-   "cane-toad",
    "constrictor-coil",
+   "heron-hag",
+   "lamprey",
    "marsh-harrier",
    "marsh-wisp",
    "newt-doctor",
@@ -88,7 +88,7 @@
  },
  "settings": {
   "seed": "deck1",
-  "budget": 12000,
+  "budget": 6000,
   "finalGames": 24,
   "roadWeight": 0,
   "mode": "map-true"
@@ -165,7 +165,6 @@
    "id": "big",
    "label": "big (2+ Lumber cards)",
    "cards": [
-    "cane-toad",
     "constrictor-coil",
     "venomlord-serpent"
    ],
@@ -177,10 +176,9 @@
    "cards": [
     "alley-cat",
     "bee-forager",
-    "bogfire-newt",
     "box-turtle",
-    "caiman-hatchling",
     "driftwood-crab",
+    "fen-mink",
     "gannet-nestweaver",
     "marsh-wisp",
     "meadow-frog",
@@ -201,59 +199,52 @@
  "searches": [
   {
    "focus": "economy",
-   "steps": 9,
-   "moves": 5,
-   "games": 3234,
+   "steps": 5,
+   "moves": 3,
+   "games": 1848,
    "apartFromEarlier": null
   },
   {
    "focus": "big",
-   "steps": 9,
-   "moves": 3,
-   "games": 3322,
-   "apartFromEarlier": 18
+   "steps": 4,
+   "moves": 1,
+   "games": 1584,
+   "apartFromEarlier": 17
   },
   {
    "focus": "swarm",
-   "steps": 9,
-   "moves": 4,
-   "games": 3344,
-   "apartFromEarlier": 13
+   "steps": 4,
+   "moves": 3,
+   "games": 1562,
+   "apartFromEarlier": 8
   },
   {
    "focus": "open",
-   "steps": 9,
-   "moves": 3,
-   "games": 3366,
-   "apartFromEarlier": 12
+   "steps": 4,
+   "moves": 1,
+   "games": 1672,
+   "apartFromEarlier": 11
   }
  ],
  "apart": 6,
- "seconds": 206,
- "games": 13970,
+ "seconds": 113,
+ "games": 7370,
  "decks": [
   {
    "focus": "swarm",
    "labels": [
     "swarm (14 copies at 0 Lumber)",
-    "flying x6"
+    "economy (10 resource makers)"
    ],
    "deck": {
-    "bogfire-newt": 4,
+    "adder-ambusher": 3,
     "box-turtle": 4,
-    "grass-snake": 3,
-    "marsh-harrier": 3,
-    "otter-centurion": 3,
-    "raven-scout": 3
+    "constrictor-coil": 3,
+    "driftwood-crab": 4,
+    "gannet-nestweaver": 2,
+    "nutria-reedcutter": 4
    },
    "cards": [
-    {
-     "id": "bogfire-newt",
-     "name": "Bogfire Newt",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
     {
      "id": "box-turtle",
      "name": "Box Turtle",
@@ -262,146 +253,8 @@
      "rarity": "common"
     },
     {
-     "id": "grass-snake",
-     "name": "Grass Snake",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "marsh-harrier",
-     "name": "Marsh Harrier",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "otter-centurion",
-     "name": "Otter Centurion",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    },
-    {
-     "id": "raven-scout",
-     "name": "Raven Scout",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    }
-   ],
-   "score": 0.8939,
-   "ci": [
-    0.8642,
-    0.9237
-   ],
-   "avgLumber": 0.3,
-   "avgWait": 0.65,
-   "curve": {
-    "0": 14,
-    "1": 6
-   },
-   "resourceMakers": 0,
-   "families": [
-    {
-     "f": "flying",
-     "n": 6
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:6-1",
-     "label": "vs 6-1 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:6-2",
-     "label": "vs 6-2 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:6-3",
-     "label": "vs 6-3 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:6-4",
-     "label": "vs 6-4 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:6-5",
-     "label": "vs 6-5 elite's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:6-6",
-     "label": "vs 6-6 elite's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:6-7",
-     "label": "vs 6-7 elite's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:6-8",
-     "label": "vs 6-8 miniboss's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 6-1's field",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road6",
-     "label": "vs reference deck (Map 6) under 6-2's field",
-     "p": 0.3333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
-     "p": 1,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 12
-  },
-  {
-   "focus": "open",
-   "labels": [
-    "economy (4 resource makers)"
-   ],
-   "deck": {
-    "adder-ambusher": 3,
-    "grass-snake": 4,
-    "marsh-harrier": 3,
-    "meadow-frog": 4,
-    "nutria-reedcutter": 4,
-    "otter-centurion": 2
-   },
-   "cards": [
-    {
-     "id": "grass-snake",
-     "name": "Grass Snake",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "meadow-frog",
-     "name": "Meadow Frog",
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
@@ -421,38 +274,39 @@
      "rarity": "rare"
     },
     {
-     "id": "marsh-harrier",
-     "name": "Marsh Harrier",
+     "id": "constrictor-coil",
+     "name": "Constrictor Coil",
      "copies": 3,
-     "cost": 1,
-     "rarity": "uncommon"
+     "cost": 2,
+     "rarity": "common"
     },
     {
-     "id": "otter-centurion",
-     "name": "Otter Centurion",
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
      "copies": 2,
      "cost": 0,
-     "rarity": "rare"
+     "rarity": "common"
     }
    ],
-   "score": 0.8826,
+   "score": 0.9545,
    "ci": [
-    0.8514,
-    0.9137
+    0.9324,
+    0.9767
    ],
-   "avgLumber": 0.5,
-   "avgWait": 1,
+   "avgLumber": 0.45,
+   "avgWait": 1.15,
    "curve": {
-    "0": 10,
-    "1": 10
+    "0": 14,
+    "1": 3,
+    "2": 3
    },
-   "resourceMakers": 4,
+   "resourceMakers": 10,
    "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:6-1",
      "label": "vs 6-1 skirmish's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -476,75 +330,67 @@
     {
      "entry": "mirror|fight:6-5",
      "label": "vs 6-5 elite's deck",
-     "p": 0.9167,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-6",
      "label": "vs 6-6 elite's deck",
-     "p": 0.9167,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-7",
      "label": "vs 6-7 elite's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-8",
      "label": "vs 6-8 miniboss's deck",
-     "p": 0.875,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 6-1's field",
-     "p": 0.8333,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|ref:road6",
      "label": "vs reference deck (Map 6) under 6-2's field",
-     "p": 0.2917,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
-     "p": 0.9167,
+     "p": 1,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 0
+   "copiesApartFromOpen": 11
   },
   {
    "focus": "economy",
    "labels": [
-    "economy (6 resource makers)",
-    "poison x11"
+    "economy (10 resource makers)"
    ],
    "deck": {
     "adder-ambusher": 3,
-    "bogfire-newt": 4,
-    "cane-toad": 4,
+    "alligator-gar": 3,
+    "booming-bittern": 4,
     "driftwood-crab": 4,
-    "gannet-nestweaver": 2,
-    "raven-scout": 3
+    "gannet-nestweaver": 3,
+    "nutria-reedcutter": 3
    },
    "cards": [
     {
-     "id": "bogfire-newt",
-     "name": "Bogfire Newt",
+     "id": "booming-bittern",
+     "name": "Booming Bittern",
      "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "cane-toad",
-     "name": "Cane Toad",
-     "copies": 4,
-     "cost": 2,
+     "cost": 1,
      "rarity": "uncommon"
     },
     {
@@ -562,39 +408,40 @@
      "rarity": "rare"
     },
     {
-     "id": "raven-scout",
-     "name": "Raven Scout",
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
      "copies": 3,
-     "cost": 0,
+     "cost": 1,
      "rarity": "rare"
     },
     {
      "id": "gannet-nestweaver",
      "name": "Gannet Nestweaver",
-     "copies": 2,
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 3,
      "cost": 0,
      "rarity": "common"
     }
    ],
-   "score": 0.8561,
+   "score": 0.9091,
    "ci": [
-    0.8232,
-    0.8889
+    0.8793,
+    0.9389
    ],
-   "avgLumber": 0.55,
-   "avgWait": 1.05,
+   "avgLumber": 0.5,
+   "avgWait": 1.3,
    "curve": {
-    "0": 13,
-    "1": 3,
-    "2": 4
+    "0": 10,
+    "1": 10
    },
-   "resourceMakers": 6,
-   "families": [
-    {
-     "f": "poison",
-     "n": 11
-    }
-   ],
+   "resourceMakers": 10,
+   "families": [],
    "perOpponent": [
     {
      "entry": "mirror|fight:6-1",
@@ -611,7 +458,7 @@
     {
      "entry": "mirror|fight:6-3",
      "label": "vs 6-3 skirmish's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -623,37 +470,184 @@
     {
      "entry": "mirror|fight:6-5",
      "label": "vs 6-5 elite's deck",
-     "p": 0.875,
+     "p": 0.9167,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-6",
      "label": "vs 6-6 elite's deck",
-     "p": 0.9167,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-7",
      "label": "vs 6-7 elite's deck",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-8",
      "label": "vs 6-8 miniboss's deck",
-     "p": 0.75,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 6-1's field",
-     "p": 0.75,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|ref:road6",
      "label": "vs reference deck (Map 6) under 6-2's field",
-     "p": 0.2083,
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (8 resource makers)",
+    "flying x8"
+   ],
+   "deck": {
+    "alligator-gar": 3,
+    "constrictor-coil": 4,
+    "gannet-nestweaver": 4,
+    "marsh-harrier": 4,
+    "nutria-reedcutter": 4,
+    "raft-spider": 1
+   },
+   "cards": [
+    {
+     "id": "constrictor-coil",
+     "name": "Constrictor Coil",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "marsh-harrier",
+     "name": "Marsh Harrier",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "raft-spider",
+     "name": "Raft Spider",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8598,
+   "ci": [
+    0.8259,
+    0.8938
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 1.55,
+   "curve": {
+    "0": 8,
+    "1": 8,
+    "2": 4
+   },
+   "resourceMakers": 8,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:6-1",
+     "label": "vs 6-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-2",
+     "label": "vs 6-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-3",
+     "label": "vs 6-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-4",
+     "label": "vs 6-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-5",
+     "label": "vs 6-5 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-6",
+     "label": "vs 6-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-7",
+     "label": "vs 6-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-8",
+     "label": "vs 6-8 miniboss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 6-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 6-2's field",
+     "p": 0.2917,
      "n": 24
     },
     {
@@ -663,34 +657,36 @@
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 17
+   "copiesApartFromOpen": 0
   },
   {
    "focus": "big",
    "labels": [
-    "big (8 copies at 2+ Lumber, average 1.0)"
+    "big (8 copies at 2+ Lumber, average 1.0)",
+    "economy (4 resource makers)",
+    "flying x7"
    ],
    "deck": {
-    "alley-cat": 3,
-    "bee-forager": 3,
-    "box-turtle": 4,
+    "box-turtle": 3,
     "constrictor-coil": 4,
-    "raven-scout": 2,
+    "gannet-nestweaver": 4,
+    "otter-centurion": 2,
+    "raven-scout": 3,
     "venomlord-serpent": 4
    },
    "cards": [
-    {
-     "id": "box-turtle",
-     "name": "Box Turtle",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
     {
      "id": "constrictor-coil",
      "name": "Constrictor Coil",
      "copies": 4,
      "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 4,
+     "cost": 0,
      "rarity": "common"
     },
     {
@@ -701,111 +697,116 @@
      "rarity": "common"
     },
     {
-     "id": "alley-cat",
-     "name": "Alley Cat",
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "raven-scout",
+     "name": "Raven Scout",
      "copies": 3,
      "cost": 0,
      "rarity": "rare"
     },
     {
-     "id": "bee-forager",
-     "name": "Bee Forager",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "starter"
-    },
-    {
-     "id": "raven-scout",
-     "name": "Raven Scout",
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
      "copies": 2,
      "cost": 0,
      "rarity": "rare"
     }
    ],
-   "score": 0.625,
+   "score": 0.7917,
    "ci": [
-    0.5753,
-    0.6747
+    0.7495,
+    0.8339
    ],
    "avgLumber": 1,
-   "avgWait": 1,
+   "avgWait": 1.3,
    "curve": {
     "0": 12,
     "2": 4,
     "3": 4
    },
-   "resourceMakers": 0,
-   "families": [],
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 7
+    }
+   ],
    "perOpponent": [
     {
      "entry": "mirror|fight:6-1",
      "label": "vs 6-1 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-2",
      "label": "vs 6-2 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-3",
      "label": "vs 6-3 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-4",
      "label": "vs 6-4 skirmish's deck",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-5",
      "label": "vs 6-5 elite's deck",
-     "p": 0.5417,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-6",
      "label": "vs 6-6 elite's deck",
-     "p": 0.4167,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-7",
      "label": "vs 6-7 elite's deck",
-     "p": 0.7917,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:6-8",
      "label": "vs 6-8 miniboss's deck",
-     "p": 0.4583,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 6-1's field",
-     "p": 0.375,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|ref:road6",
      "label": "vs reference deck (Map 6) under 6-2's field",
-     "p": 0.0833,
+     "p": 0.25,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
-     "p": 0.75,
+     "p": 0.7917,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 20
+   "copiesApartFromOpen": 12
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map m8 --pool adder-ambusher,alley-cat,alligator-gar,anhinga-spearbird,bee-forager,bogfire-newt,booming-bittern,box-turtle,caiman-hatchling,camouflage-frog,cane-toad,constrictor-coil,driftwood-crab,fire-ant-raft,gannet-nestweaver,grass-snake,marsh-harrier,marsh-wisp,meadow-frog,newt-doctor,nutria-reedcutter,otter-centurion,poison-dart-croaker,raft-spider,raven-scout,venomlord-serpent --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,alligator-gar,bogfire-newt,booming-bittern,camouflage-frog,cane-toad,constrictor-coil,marsh-harrier,marsh-wisp,newt-doctor,nutria-reedcutter,poison-dart-croaker,raven-scout,venomlord-serpent --anchor-min 10 --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map m8 --pool adder-ambusher,alley-cat,alligator-gar,anhinga-spearbird,bee-forager,booming-bittern,box-turtle,camouflage-frog,constrictor-coil,driftwood-crab,fen-mink,fire-ant-raft,gannet-nestweaver,grass-snake,heron-hag,lamprey,marsh-harrier,marsh-wisp,meadow-frog,newt-doctor,nutria-reedcutter,otter-centurion,poison-dart-croaker,raft-spider,raven-scout,venomlord-serpent --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor adder-ambusher,alligator-gar,booming-bittern,camouflage-frog,constrictor-coil,heron-hag,lamprey,marsh-harrier,marsh-wisp,newt-doctor,nutria-reedcutter,poison-dart-croaker,raven-scout,venomlord-serpent --anchor-min 10 --level 1 --mode map-true"
 }

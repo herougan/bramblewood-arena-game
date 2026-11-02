@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-10-30T10:37:34.627Z",
- "fingerprint": "5b2112374573",
+ "generated": "2026-11-02T07:53:16.535Z",
+ "fingerprint": "5654ae6bb0c1",
  "map": {
   "id": "m4",
   "num": 8,
@@ -10,88 +10,91 @@
  "level": 1,
  "pool": [
   "alley-cat",
-  "ant-warrior",
-  "badger-stonemason",
+  "alligator-gar",
   "blind-cave-fish",
   "cave-olm",
   "diving-bell-spider",
+  "echo-matriarch",
   "echo-screecher",
-  "fire-ant-raft",
+  "gallery-orb-weaver",
   "giant-cave-huntsman",
-  "leafcutter-gardener",
-  "mayfly-dancer",
+  "grotto-lobster",
+  "hollow-belly-rat",
+  "malachite-golem",
   "mudpuppy",
   "newt-doctor",
   "octopus-tactician",
   "otter-centurion",
   "pelican-diver",
+  "pincushion-urchin",
   "planarian-splitter",
+  "puffin-diver",
   "quarry-mole",
   "raft-spider",
+  "rock-pool-starfish",
   "stalactite-golem",
   "star-nosed-mole",
   "sulfur-cinder-moth",
-  "trash-panda-trickster",
   "vampire-bat",
-  "whip-spider",
-  "wolf-spider-mother",
-  "worker-ant"
+  "wolf-spider-mother"
  ],
  "poolNames": [
   "Alley Cat",
-  "Ant Warrior",
-  "Badger Stonemason",
+  "Alligator Gar",
   "Blind Cave Fish",
   "Cave Olm",
   "Diving Bell Spider",
+  "Echo Matriarch",
   "Echo Screecher",
-  "Fire Ant Raft",
+  "Gallery Orb-Weaver",
   "Giant Cave Huntsman",
-  "Leafcutter Gardener",
-  "Mayfly Dancer",
+  "Grotto Lobster",
+  "Hollow-belly Rat",
+  "Malachite Golem",
   "Mudpuppy",
   "Newt Doctor",
   "Octopus Tactician",
   "Otter Centurion",
   "Pelican Diver",
+  "Pincushion Urchin",
   "Planarian Splitter",
+  "Puffin Diver",
   "Quarry Mole",
   "Raft Spider",
+  "Rock Pool Starfish",
   "Stalactite Golem",
   "Star-nosed Mole",
   "Sulfur Cinder Moth",
-  "Trash Panda Trickster",
   "Vampire Bat",
-  "Whip Spider",
-  "Wolf Spider Mother",
-  "Worker Ant"
+  "Wolf Spider Mother"
  ],
  "rule": {
   "maxUnique": 6,
   "maxCopies": 4,
   "size": 20,
   "anchor": [
-   "ant-warrior",
-   "badger-stonemason",
    "blind-cave-fish",
    "cave-olm",
+   "echo-matriarch",
    "echo-screecher",
+   "gallery-orb-weaver",
    "giant-cave-huntsman",
+   "grotto-lobster",
+   "hollow-belly-rat",
+   "malachite-golem",
    "octopus-tactician",
    "pelican-diver",
    "quarry-mole",
    "stalactite-golem",
    "star-nosed-mole",
    "sulfur-cinder-moth",
-   "trash-panda-trickster",
-   "vampire-bat",
-   "whip-spider"
+   "vampire-bat"
   ],
   "anchorMin": 10
  },
  "settings": {
   "seed": "deck1",
-  "budget": 12000,
+  "budget": 6000,
   "finalGames": 24,
   "roadWeight": 0,
   "mode": "map-true"
@@ -155,32 +158,26 @@
  ],
  "focuses": [
   {
-   "id": "economy",
-   "label": "economy (resource makers)",
-   "cards": [
-    "badger-stonemason",
-    "leafcutter-gardener",
-    "trash-panda-trickster"
-   ],
-   "need": 6
-  },
-  {
    "id": "big",
    "label": "big (1+ Lumber cards)",
    "cards": [
-    "badger-stonemason",
+    "alligator-gar",
     "diving-bell-spider",
+    "echo-matriarch",
     "echo-screecher",
-    "fire-ant-raft",
+    "gallery-orb-weaver",
     "giant-cave-huntsman",
+    "grotto-lobster",
+    "hollow-belly-rat",
+    "malachite-golem",
     "octopus-tactician",
     "pelican-diver",
     "planarian-splitter",
+    "puffin-diver",
     "quarry-mole",
     "raft-spider",
     "stalactite-golem",
     "sulfur-cinder-moth",
-    "whip-spider",
     "wolf-spider-mother"
    ],
    "need": 8
@@ -190,20 +187,32 @@
    "label": "swarm (0-Lumber cards)",
    "cards": [
     "alley-cat",
-    "ant-warrior",
     "blind-cave-fish",
     "cave-olm",
-    "leafcutter-gardener",
-    "mayfly-dancer",
     "mudpuppy",
     "newt-doctor",
     "otter-centurion",
+    "pincushion-urchin",
+    "rock-pool-starfish",
     "star-nosed-mole",
-    "trash-panda-trickster",
-    "vampire-bat",
-    "worker-ant"
+    "vampire-bat"
    ],
    "need": 14
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "alligator-gar",
+    "blind-cave-fish",
+    "diving-bell-spider",
+    "octopus-tactician",
+    "pincushion-urchin",
+    "puffin-diver",
+    "raft-spider",
+    "rock-pool-starfish"
+   ],
+   "need": 8
   },
   {
    "id": "open",
@@ -214,232 +223,87 @@
  ],
  "searches": [
   {
-   "focus": "economy",
-   "steps": 9,
-   "moves": 2,
-   "games": 3124,
+   "focus": "big",
+   "steps": 4,
+   "moves": 1,
+   "games": 1650,
    "apartFromEarlier": null
   },
   {
-   "focus": "big",
-   "steps": 9,
-   "moves": 6,
-   "games": 3146,
-   "apartFromEarlier": 19
+   "focus": "swarm",
+   "steps": 4,
+   "moves": 3,
+   "games": 1672,
+   "apartFromEarlier": 16
   },
   {
-   "focus": "swarm",
-   "steps": 11,
-   "moves": 4,
-   "games": 3080,
-   "apartFromEarlier": 8
+   "focus": "family:tide",
+   "steps": 4,
+   "moves": 1,
+   "games": 1650,
+   "apartFromEarlier": 11
   },
   {
    "focus": "open",
-   "steps": 9,
-   "moves": 6,
-   "games": 3146,
-   "apartFromEarlier": 8
+   "steps": 4,
+   "moves": 3,
+   "games": 1672,
+   "apartFromEarlier": 10
   }
  ],
  "apart": 6,
- "seconds": 166,
- "games": 13200,
+ "seconds": 99,
+ "games": 7348,
  "decks": [
   {
-   "focus": "swarm",
+   "focus": "open",
    "labels": [
-    "swarm (14 copies at 0 Lumber)",
-    "economy (4 resource makers)",
-    "swarm x7",
-    "night x7"
+    "big (10 copies at 1+ Lumber, average 0.5)",
+    "swarm x6"
    ],
    "deck": {
-    "alley-cat": 3,
-    "ant-warrior": 4,
-    "echo-screecher": 3,
-    "otter-centurion": 3,
-    "trash-panda-trickster": 4,
+    "grotto-lobster": 3,
+    "mudpuppy": 4,
+    "pincushion-urchin": 3,
+    "star-nosed-mole": 3,
+    "sulfur-cinder-moth": 4,
     "wolf-spider-mother": 3
    },
    "cards": [
     {
-     "id": "ant-warrior",
-     "name": "Ant Warrior",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "trash-panda-trickster",
-     "name": "Trash Panda Trickster",
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
     },
     {
-     "id": "alley-cat",
-     "name": "Alley Cat",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    },
-    {
-     "id": "echo-screecher",
-     "name": "Echo Screecher",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "otter-centurion",
-     "name": "Otter Centurion",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    },
-    {
-     "id": "wolf-spider-mother",
-     "name": "Wolf Spider Mother",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    }
-   ],
-   "score": 0.8674,
-   "ci": [
-    0.8289,
-    0.9059
-   ],
-   "avgLumber": 0.3,
-   "avgWait": 0.45,
-   "curve": {
-    "0": 14,
-    "1": 6
-   },
-   "resourceMakers": 4,
-   "families": [
-    {
-     "f": "swarm",
-     "n": 7
-    },
-    {
-     "f": "night",
-     "n": 7
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:8-1",
-     "label": "vs 8-1 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-2",
-     "label": "vs 8-2 skirmish's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-3",
-     "label": "vs 8-3 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-4",
-     "label": "vs 8-4 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-5",
-     "label": "vs 8-5 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-6",
-     "label": "vs 8-6 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-7",
-     "label": "vs 8-7 elite's deck",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-8",
-     "label": "vs 8-8 miniboss's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 8-1's field",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road8",
-     "label": "vs reference deck (Map 8) under 8-2's field",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
-     "p": 1,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 9
-  },
-  {
-   "focus": "big",
-   "labels": [
-    "big (8 copies at 1+ Lumber, average 0.4)",
-    "swarm x7"
-   ],
-   "deck": {
-    "ant-warrior": 4,
-    "echo-screecher": 1,
-    "raft-spider": 4,
-    "star-nosed-mole": 4,
-    "vampire-bat": 4,
-    "wolf-spider-mother": 3
-   },
-   "cards": [
-    {
-     "id": "ant-warrior",
-     "name": "Ant Warrior",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "raft-spider",
-     "name": "Raft Spider",
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
      "copies": 4,
      "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 3,
+     "cost": 0,
      "rarity": "common"
     },
     {
      "id": "star-nosed-mole",
      "name": "Star-nosed Mole",
-     "copies": 4,
+     "copies": 3,
      "cost": 0,
      "rarity": "common"
-    },
-    {
-     "id": "vampire-bat",
-     "name": "Vampire Bat",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
     },
     {
      "id": "wolf-spider-mother",
@@ -447,395 +311,85 @@
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
-    },
-    {
-     "id": "echo-screecher",
-     "name": "Echo Screecher",
-     "copies": 1,
-     "cost": 1,
-     "rarity": "rare"
     }
    ],
-   "score": 0.8144,
+   "score": 0.9621,
    "ci": [
-    0.7703,
-    0.8585
+    0.9394,
+    0.9849
    ],
-   "avgLumber": 0.4,
-   "avgWait": 0.6,
+   "avgLumber": 0.5,
+   "avgWait": 0.8,
    "curve": {
-    "0": 12,
-    "1": 8
+    "0": 10,
+    "1": 10
    },
    "resourceMakers": 0,
    "families": [
     {
      "f": "swarm",
-     "n": 7
+     "n": 6
     }
    ],
    "perOpponent": [
     {
      "entry": "mirror|fight:8-1",
      "label": "vs 8-1 skirmish's deck",
-     "p": 0.8333,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-2",
      "label": "vs 8-2 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-3",
      "label": "vs 8-3 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-4",
-     "label": "vs 8-4 skirmish's deck",
-     "p": 0.625,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-5",
-     "label": "vs 8-5 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-6",
-     "label": "vs 8-6 skirmish's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-7",
-     "label": "vs 8-7 elite's deck",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-8",
-     "label": "vs 8-8 miniboss's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 8-1's field",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road8",
-     "label": "vs reference deck (Map 8) under 8-2's field",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
-     "p": 1,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 8
-  },
-  {
-   "focus": "economy",
-   "labels": [
-    "economy (8 resource makers)",
-    "bleed x7",
-    "night x7"
-   ],
-   "deck": {
-    "alley-cat": 3,
-    "echo-screecher": 3,
-    "leafcutter-gardener": 4,
-    "otter-centurion": 2,
-    "trash-panda-trickster": 4,
-    "whip-spider": 4
-   },
-   "cards": [
-    {
-     "id": "leafcutter-gardener",
-     "name": "Leafcutter Gardener",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "trash-panda-trickster",
-     "name": "Trash Panda Trickster",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "whip-spider",
-     "name": "Whip Spider",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "alley-cat",
-     "name": "Alley Cat",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    },
-    {
-     "id": "echo-screecher",
-     "name": "Echo Screecher",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "otter-centurion",
-     "name": "Otter Centurion",
-     "copies": 2,
-     "cost": 0,
-     "rarity": "rare"
-    }
-   ],
-   "score": 0.803,
-   "ci": [
-    0.761,
-    0.8451
-   ],
-   "avgLumber": 0.35,
-   "avgWait": 0.45,
-   "curve": {
-    "0": 13,
-    "1": 7
-   },
-   "resourceMakers": 8,
-   "families": [
-    {
-     "f": "bleed",
-     "n": 7
-    },
-    {
-     "f": "night",
-     "n": 7
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:8-1",
-     "label": "vs 8-1 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-2",
-     "label": "vs 8-2 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-3",
-     "label": "vs 8-3 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-4",
-     "label": "vs 8-4 skirmish's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-5",
-     "label": "vs 8-5 skirmish's deck",
-     "p": 0.625,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-6",
-     "label": "vs 8-6 skirmish's deck",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-7",
-     "label": "vs 8-7 elite's deck",
-     "p": 0.375,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-8",
-     "label": "vs 8-8 miniboss's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 8-1's field",
      "p": 0.9583,
      "n": 24
     },
     {
-     "entry": "mirror|ref:road8",
-     "label": "vs reference deck (Map 8) under 8-2's field",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
-     "p": 1,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 12
-  },
-  {
-   "focus": "open",
-   "labels": [
-    "swarm (15 copies at 0 Lumber)",
-    "economy (8 resource makers)",
-    "swarm x7",
-    "night x7"
-   ],
-   "deck": {
-    "ant-warrior": 4,
-    "leafcutter-gardener": 4,
-    "raft-spider": 2,
-    "trash-panda-trickster": 4,
-    "vampire-bat": 3,
-    "wolf-spider-mother": 3
-   },
-   "cards": [
-    {
-     "id": "ant-warrior",
-     "name": "Ant Warrior",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "leafcutter-gardener",
-     "name": "Leafcutter Gardener",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "trash-panda-trickster",
-     "name": "Trash Panda Trickster",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "vampire-bat",
-     "name": "Vampire Bat",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "wolf-spider-mother",
-     "name": "Wolf Spider Mother",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "raft-spider",
-     "name": "Raft Spider",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "common"
-    }
-   ],
-   "score": 0.7689,
-   "ci": [
-    0.7211,
-    0.8167
-   ],
-   "avgLumber": 0.25,
-   "avgWait": 0.4,
-   "curve": {
-    "0": 15,
-    "1": 5
-   },
-   "resourceMakers": 8,
-   "families": [
-    {
-     "f": "swarm",
-     "n": 7
-    },
-    {
-     "f": "night",
-     "n": 7
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:8-1",
-     "label": "vs 8-1 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-2",
-     "label": "vs 8-2 skirmish's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:8-3",
-     "label": "vs 8-3 skirmish's deck",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
      "entry": "mirror|fight:8-4",
      "label": "vs 8-4 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-5",
      "label": "vs 8-5 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-6",
      "label": "vs 8-6 skirmish's deck",
-     "p": 0.7917,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-7",
      "label": "vs 8-7 elite's deck",
-     "p": 0.5,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:8-8",
      "label": "vs 8-8 miniboss's deck",
-     "p": 0.8333,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 8-1's field",
-     "p": 0.9583,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|ref:road8",
      "label": "vs reference deck (Map 8) under 8-2's field",
-     "p": 0.6667,
+     "p": 0.9583,
      "n": 24
     },
     {
@@ -846,7 +400,460 @@
     }
    ],
    "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.5)",
+    "flying x11",
+    "night x9"
+   ],
+   "deck": {
+    "blind-cave-fish": 2,
+    "echo-matriarch": 3,
+    "grotto-lobster": 3,
+    "star-nosed-mole": 4,
+    "sulfur-cinder-moth": 4,
+    "vampire-bat": 4
+   },
+   "cards": [
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9583,
+   "ci": [
+    0.9344,
+    0.9822
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    },
+    {
+     "f": "night",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "heal x7"
+   ],
+   "deck": {
+    "cave-olm": 4,
+    "mudpuppy": 3,
+    "octopus-tactician": 1,
+    "pelican-diver": 4,
+    "pincushion-urchin": 4,
+    "star-nosed-mole": 4
+   },
+   "cards": [
+    {
+     "id": "cave-olm",
+     "name": "Cave Olm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "octopus-tactician",
+     "name": "Octopus Tactician",
+     "copies": 1,
+     "cost": 2,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.9356,
+   "ci": [
+    0.9067,
+    0.9645
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 15,
+    "1": 4,
+    "2": 1
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "heal",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (18 copies at 0 Lumber)",
+    "night x10",
+    "tide x8"
+   ],
+   "deck": {
+    "blind-cave-fish": 4,
+    "echo-screecher": 2,
+    "mudpuppy": 4,
+    "pincushion-urchin": 4,
+    "star-nosed-mole": 2,
+    "vampire-bat": 4
+   },
+   "cards": [
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9205,
+   "ci": [
+    0.889,
+    0.9519
+   ],
+   "avgLumber": 0.1,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 18,
+    "1": 2
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "night",
+     "n": 10
+    },
+    {
+     "f": "tide",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,ant-warrior,badger-stonemason,blind-cave-fish,cave-olm,diving-bell-spider,echo-screecher,fire-ant-raft,giant-cave-huntsman,leafcutter-gardener,mayfly-dancer,mudpuppy,newt-doctor,octopus-tactician,otter-centurion,pelican-diver,planarian-splitter,quarry-mole,raft-spider,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,trash-panda-trickster,vampire-bat,whip-spider,wolf-spider-mother,worker-ant --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor ant-warrior,badger-stonemason,blind-cave-fish,cave-olm,echo-screecher,giant-cave-huntsman,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,trash-panda-trickster,vampire-bat,whip-spider --anchor-min 10 --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,blind-cave-fish,cave-olm,diving-bell-spider,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,mudpuppy,newt-doctor,octopus-tactician,otter-centurion,pelican-diver,pincushion-urchin,planarian-splitter,puffin-diver,quarry-mole,raft-spider,rock-pool-starfish,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed deck1 --focus big,swarm,family:tide,open --anchor blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grotto-lobster,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,vampire-bat --anchor-min 10 --level 1 --mode map-true"
 }

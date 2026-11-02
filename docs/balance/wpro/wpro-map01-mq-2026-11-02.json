@@ -1,0 +1,205 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T07:32:10.591Z",
+ "map": {
+  "id": "mq",
+  "num": 1,
+  "name": "Clovermead"
+ },
+ "level": 1,
+ "pool": [
+  "ant-hill",
+  "ant-scout",
+  "badger-lumberjack",
+  "bee-forager",
+  "bramble-sprout",
+  "cottontail",
+  "cricket-drummer",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "lucky-hopper",
+  "meadow-rabbit",
+  "robin-redbreast",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mq",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:1-A-1",
+   "label": "vs 1-A-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:1-A-2",
+   "label": "vs 1-A-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:1-A-3",
+   "label": "vs 1-A-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:1-A-4",
+   "label": "vs 1-A-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:1-A-5",
+   "label": "vs 1-A-5 boss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 1-A-1's field"
+  },
+  {
+   "key": "mirror|ref:road12",
+   "label": "vs reference deck (Map 12) under 1-A-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field"
+  }
+ ],
+ "steps": 4,
+ "moves": 1,
+ "games": 1648,
+ "seconds": 25,
+ "weak": [
+  {
+   "deck": {
+    "ant-hill": 4,
+    "badger-lumberjack": 4,
+    "cottontail": 4,
+    "lucky-hopper": 4,
+    "slow-worm": 4
+   },
+   "score": 0.0885,
+   "ci": [
+    0.0519,
+    0.1252
+   ],
+   "vsRef": 0.1944,
+   "refWins": 0.8056,
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.8)",
+    "economy (4 resource makers)"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.25,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "1-A-BPRO-1",
+  "deck": {
+   "ant-hill": 3,
+   "ant-scout": 4,
+   "bee-forager": 4,
+   "cricket-drummer": 4,
+   "field-mouse": 2,
+   "slow-worm": 3
+  },
+  "score": 0.6615,
+  "ci": [
+   0.5993,
+   0.7236
+  ],
+  "vsRef": 0.7917,
+  "refWins": 0.2083,
+  "labels": [
+   "swarm (17 copies at 0 Lumber)",
+   "swarm x8"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:1-A-1",
+    "p": 0.5833,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:1-A-2",
+    "p": 0.6667,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:1-A-3",
+    "p": 0.5,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:1-A-4",
+    "p": 0.4167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:1-A-5",
+    "p": 0.75,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road12",
+    "p": 0.5417,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.875,
+    "n": 24
+   }
+  ]
+ }
+}

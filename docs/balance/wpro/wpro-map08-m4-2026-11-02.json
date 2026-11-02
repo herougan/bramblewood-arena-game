@@ -1,0 +1,328 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T08:00:10.499Z",
+ "map": {
+  "id": "m4",
+  "num": 8,
+  "name": "Caves & Alcoves"
+ },
+ "level": 1,
+ "pool": [
+  "blind-cave-fish",
+  "cave-olm",
+  "echo-matriarch",
+  "echo-screecher",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "grotto-lobster",
+  "hollow-belly-rat",
+  "malachite-golem",
+  "octopus-tactician",
+  "pelican-diver",
+  "quarry-mole",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "sulfur-cinder-moth",
+  "vampire-bat"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|m4",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:8-1",
+   "label": "vs 8-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:8-2",
+   "label": "vs 8-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:8-3",
+   "label": "vs 8-3 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:8-4",
+   "label": "vs 8-4 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:8-5",
+   "label": "vs 8-5 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:8-6",
+   "label": "vs 8-6 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:8-7",
+   "label": "vs 8-7 elite's deck"
+  },
+  {
+   "key": "mirror|fight:8-8",
+   "label": "vs 8-8 miniboss's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 8-1's field"
+  },
+  {
+   "key": "mirror|ref:road8",
+   "label": "vs reference deck (Map 8) under 8-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field"
+  }
+ ],
+ "steps": 3,
+ "moves": 2,
+ "games": 2024,
+ "seconds": 40,
+ "weak": [
+  {
+   "deck": {
+    "hollow-belly-rat": 4,
+    "malachite-golem": 3,
+    "octopus-tactician": 4,
+    "pelican-diver": 3,
+    "stalactite-golem": 4,
+    "sulfur-cinder-moth": 2
+   },
+   "score": 0.2727,
+   "ci": [
+    0.2225,
+    0.3229
+   ],
+   "vsRef": 0.125,
+   "refWins": 0.875,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.6)",
+    "armor x7"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.2083,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "giant-cave-huntsman": 2,
+    "hollow-belly-rat": 4,
+    "malachite-golem": 3,
+    "pelican-diver": 3,
+    "quarry-mole": 4,
+    "stalactite-golem": 4
+   },
+   "score": 0.4034,
+   "ci": [
+    0.3512,
+    0.4556
+   ],
+   "vsRef": 0.1667,
+   "refWins": 0.8333,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)",
+    "armor x7"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "p": 0.2292,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.0833,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "8-BPRO-1",
+  "deck": {
+   "cave-olm": 4,
+   "echo-matriarch": 3,
+   "giant-cave-huntsman": 2,
+   "quarry-mole": 4,
+   "star-nosed-mole": 4,
+   "vampire-bat": 3
+  },
+  "score": 0.9318,
+  "ci": [
+   0.9022,
+   0.9615
+  ],
+  "vsRef": 0.9306,
+  "refWins": 0.0694,
+  "labels": [
+   "big (9 copies at 1+ Lumber, average 0.5)",
+   "flying x6",
+   "night x6"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:8-1",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:8-2",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:8-3",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:8-4",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:8-5",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:8-6",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:8-7",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:8-8",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road8",
+    "p": 0.8333,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 1,
+    "n": 24
+   }
+  ]
+ }
+}

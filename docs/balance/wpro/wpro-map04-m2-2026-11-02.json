@@ -1,0 +1,272 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T07:34:43.452Z",
+ "map": {
+  "id": "m2",
+  "num": 4,
+  "name": "Sunken Hollow"
+ },
+ "level": 1,
+ "pool": [
+  "beaver-lumberjack",
+  "box-turtle",
+  "drowned-matriarch",
+  "duck-paddler",
+  "field-vole",
+  "fire-ant-raft",
+  "muskrat-lodgekeeper",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "platypus-spur",
+  "pond-algae",
+  "pyrenean-desman",
+  "slow-worm",
+  "snapstick-turtle",
+  "stone-turtle-warden",
+  "water-shrew",
+  "water-vole"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|m2",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:4-1",
+   "label": "vs 4-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:4-2",
+   "label": "vs 4-2 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:4-3",
+   "label": "vs 4-3 elite's deck"
+  },
+  {
+   "key": "mirror|fight:4-4",
+   "label": "vs 4-4 elite's deck"
+  },
+  {
+   "key": "mirror|fight:4-5",
+   "label": "vs 4-5 elite's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 4-1's field"
+  },
+  {
+   "key": "mirror|ref:road4",
+   "label": "vs reference deck (Map 4) under 4-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field"
+  }
+ ],
+ "steps": 4,
+ "moves": 2,
+ "games": 1664,
+ "seconds": 29,
+ "weak": [
+  {
+   "deck": {
+    "duck-paddler": 2,
+    "muskrat-lodgekeeper": 4,
+    "old-sturgeon": 4,
+    "platypus-spur": 4,
+    "snapstick-turtle": 2,
+    "stone-turtle-warden": 4
+   },
+   "score": 0.224,
+   "ci": [
+    0.1684,
+    0.2795
+   ],
+   "vsRef": 0.2361,
+   "refWins": 0.7639,
+   "labels": [
+    "big (18 copies at 1+ Lumber, average 1.1)",
+    "tide x14",
+    "armor x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:4-1",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-2",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-3",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-4",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-5",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road4",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.2917,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "field-vole": 4,
+    "old-sturgeon": 4,
+    "platypus-spur": 4,
+    "snapstick-turtle": 4,
+    "stone-turtle-warden": 4
+   },
+   "score": 0.2188,
+   "ci": [
+    0.1652,
+    0.2723
+   ],
+   "vsRef": 0.2917,
+   "refWins": 0.7083,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.0)",
+    "tide x12",
+    "armor x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:4-1",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-2",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-3",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-4",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-5",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road4",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.375,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "4-BPRO-1",
+  "deck": {
+   "box-turtle": 4,
+   "drowned-matriarch": 2,
+   "duck-paddler": 2,
+   "pond-algae": 4,
+   "pyrenean-desman": 4,
+   "water-vole": 4
+  },
+  "score": 0.8594,
+  "ci": [
+   0.8134,
+   0.9054
+  ],
+  "vsRef": 0.7778,
+  "refWins": 0.2222,
+  "labels": [
+   "swarm (18 copies at 0 Lumber)",
+   "tide x10"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:4-1",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:4-2",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:4-3",
+    "p": 0.9583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:4-4",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:4-5",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 0.9167,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road4",
+    "p": 0.5417,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.875,
+    "n": 24
+   }
+  ]
+ }
+}

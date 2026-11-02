@@ -1,0 +1,253 @@
+{
+ "tool": "tools/opt/wpro_2026_11_02.js",
+ "generated": "2026-11-02T07:33:05.985Z",
+ "map": {
+  "id": "mg",
+  "num": 2,
+  "name": "Smugglers' Grotto"
+ },
+ "level": 1,
+ "pool": [
+  "conch-crawler",
+  "conch-herald",
+  "driftwood-crab",
+  "fiddler-crab-swarm",
+  "gallery-orb-weaver",
+  "grey-seal-bull",
+  "gull-thief",
+  "octopus-tactician",
+  "old-shell",
+  "open-ocean-hermit-crab",
+  "pelican-diver",
+  "pincushion-urchin",
+  "rock-pool-starfish",
+  "sea-turtle-elder",
+  "tide-pool-crab",
+  "tidepool-trapper-crab",
+  "trash-panda-trickster"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "noBaby": true
+ },
+ "settings": {
+  "seed": "wpro|mg",
+  "budget": 1200,
+  "finalGames": 24,
+  "apart": 6
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-B-1",
+   "label": "vs 2-B-1 skirmish's deck"
+  },
+  {
+   "key": "mirror|fight:2-B-2",
+   "label": "vs 2-B-2 elite's deck"
+  },
+  {
+   "key": "mirror|fight:2-B-3",
+   "label": "vs 2-B-3 elite's deck"
+  },
+  {
+   "key": "mirror|fight:2-B-4",
+   "label": "vs 2-B-4 elite's deck"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 2-B-1's field"
+  },
+  {
+   "key": "mirror|ref:road7",
+   "label": "vs reference deck (Map 7) under 2-B-2's field"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field"
+  }
+ ],
+ "steps": 5,
+ "moves": 2,
+ "games": 1764,
+ "seconds": 31,
+ "weak": [
+  {
+   "deck": {
+    "octopus-tactician": 4,
+    "old-shell": 4,
+    "pelican-diver": 4,
+    "rock-pool-starfish": 4,
+    "sea-turtle-elder": 4
+   },
+   "score": 0.0536,
+   "ci": [
+    0.0215,
+    0.0856
+   ],
+   "vsRef": 0.0278,
+   "refWins": 0.9722,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.2)",
+    "tide x12",
+    "armor x8"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0,
+     "n": 24
+    }
+   ]
+  },
+  {
+   "deck": {
+    "fiddler-crab-swarm": 2,
+    "octopus-tactician": 2,
+    "old-shell": 4,
+    "open-ocean-hermit-crab": 4,
+    "pelican-diver": 4,
+    "sea-turtle-elder": 4
+   },
+   "score": 0.244,
+   "ci": [
+    0.1854,
+    0.3027
+   ],
+   "vsRef": 0.1806,
+   "refWins": 0.8194,
+   "labels": [
+    "big (14 copies at 1+ Lumber, average 1.0)",
+    "armor x14",
+    "tide x12"
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "p": 0.2083,
+     "n": 24
+    }
+   ]
+  }
+ ],
+ "strong": {
+  "id": "2-B-BPRO-1",
+  "deck": {
+   "conch-crawler": 3,
+   "driftwood-crab": 4,
+   "gallery-orb-weaver": 4,
+   "pelican-diver": 4,
+   "tidepool-trapper-crab": 1,
+   "trash-panda-trickster": 4
+  },
+  "score": 0.8333,
+  "ci": [
+   0.7837,
+   0.883
+  ],
+  "vsRef": 0.8056,
+  "refWins": 0.1944,
+  "labels": [
+   "big (8 copies at 1+ Lumber, average 0.4)",
+   "economy (8 resource makers)"
+  ],
+  "perOpponent": [
+   {
+    "entry": "mirror|fight:2-B-1",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:2-B-2",
+    "p": 0.7917,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:2-B-3",
+    "p": 0.75,
+    "n": 24
+   },
+   {
+    "entry": "mirror|fight:2-B-4",
+    "p": 0.875,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:starter",
+    "p": 1,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:road7",
+    "p": 0.4583,
+    "n": 24
+   },
+   {
+    "entry": "mirror|ref:expected",
+    "p": 0.9583,
+    "n": 24
+   }
+  ]
+ }
+}

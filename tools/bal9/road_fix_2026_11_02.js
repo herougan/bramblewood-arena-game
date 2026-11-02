@@ -44,7 +44,10 @@ if (CMD === 'filter') {
   const a = s.indexOf('const CONQUEST_MAPS = ['), b = s.indexOf('\n];', a); let body = s.slice(a, b);
   rows.filter(x => x.deck && x.apply !== false).forEach(x => {
     const re = new RegExp(`(\\{ ?key:\\s*['"]${x.key.replace(/[-]/g, '\\-')}['"],[^\\n]*)`), mm = body.match(re); if (!mm) { console.log('not found', x.key); return; }
-    const c = `/* 2026-11-02 (BAL10): ${note}, ${x.before}% -> ${x.after.win}% at 40-50 tune games, target ${x.target} (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */`;
+    // 2026-11-02 (BAL11): a fix from `skirmish_pass.js weak` (tool: 'weak') gets its own comment: the deck rebuilt from the fight's list, weaker cards
+    const c = x.tool === 'weak'
+      ? `/* 2026-11-02 (BAL11, owner on BAL10-6): ${note}, ${x.before}% -> ${x.after.win}% at 40 tune games, target ${x.target} (tools/skirmish_pass.js weak: rebuilt from the fight's own list, no Baby card, leaders / first-clear cards / size kept; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */`
+      : `/* 2026-11-02 (BAL10): ${note}, ${x.before}% -> ${x.after.win}% at 40-50 tune games, target ${x.target} (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */`;
     const line = mm[1].replace(/deck:\{[^}]*\}/, m => 'deck:' + JSON.stringify(x.deck) + ' ' + c);
     body = body.replace(mm[1], line); n++;
   });

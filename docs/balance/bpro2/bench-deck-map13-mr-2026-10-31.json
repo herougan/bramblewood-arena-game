@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-02T03:09:02.195Z",
- "fingerprint": "6035264fa026",
+ "generated": "2026-11-02T07:25:07.929Z",
+ "fingerprint": "faa5cc9f27d4",
  "map": {
   "id": "mr",
   "num": 13,
@@ -15,7 +15,6 @@
   "carrion-crow",
   "cunning-vixen",
   "fawn-scout",
-  "fox-kit",
   "grizzly-vanguard",
   "owl-nightwatch",
   "quillback-elder",
@@ -34,7 +33,6 @@
   "Carrion Crow",
   "Cunning Vixen",
   "Fawn Scout",
-  "Fox Kit",
   "Grizzly Vanguard",
   "Owl Nightwatch",
   "Quillback Elder",
@@ -148,15 +146,14 @@
    "need": 8
   },
   {
-   "id": "swarm",
-   "label": "swarm (0-Lumber cards)",
+   "id": "family:evasion",
+   "label": "evasion (skill family)",
    "cards": [
-    "bramble-hoglet",
-    "carrion-crow",
-    "fawn-scout",
-    "fox-kit"
+    "cunning-vixen",
+    "owl-nightwatch",
+    "shimmerwing-stag"
    ],
-   "need": 14
+   "need": 8
   },
   {
    "id": "open",
@@ -169,60 +166,60 @@
   {
    "focus": "economy",
    "steps": 4,
-   "moves": 2,
-   "games": 1628,
+   "moves": 1,
+   "games": 1672,
    "apartFromEarlier": null
   },
   {
    "focus": "big",
    "steps": 4,
-   "moves": 2,
-   "games": 1584,
-   "apartFromEarlier": 8
+   "moves": 3,
+   "games": 1540,
+   "apartFromEarlier": 12
   },
   {
-   "focus": "swarm",
+   "focus": "family:evasion",
    "steps": 5,
-   "moves": 1,
-   "games": 1628,
-   "apartFromEarlier": 7
+   "moves": 2,
+   "games": 1716,
+   "apartFromEarlier": 8
   },
   {
    "focus": "open",
    "steps": 4,
-   "moves": 3,
-   "games": 1628,
-   "apartFromEarlier": 10
+   "moves": 1,
+   "games": 1650,
+   "apartFromEarlier": 8
   }
  ],
  "apart": 6,
- "seconds": 78,
- "games": 7172,
+ "seconds": 88,
+ "games": 7282,
  "decks": [
   {
-   "focus": "swarm",
+   "focus": "big",
    "labels": [
-    "swarm (14 copies at 0 Lumber)"
+    "big (13 copies at 1+ Lumber, average 0.8)"
    ],
    "deck": {
+    "berserker-boar": 4,
     "bramble-hoglet": 4,
     "bramblewood-lynx": 3,
-    "carrion-crow": 3,
     "fawn-scout": 3,
-    "fox-kit": 4,
-    "sergeant-bramblefox": 3
+    "sergeant-bramblefox": 3,
+    "tasmanian-devil": 3
    },
    "cards": [
     {
-     "id": "bramble-hoglet",
-     "name": "Bramble Hoglet",
+     "id": "berserker-boar",
+     "name": "Berserker Boar",
      "copies": 4,
-     "cost": 0,
+     "cost": 2,
      "rarity": "common"
     },
     {
-     "id": "fox-kit",
-     "name": "Fox Kit",
+     "id": "bramble-hoglet",
+     "name": "Bramble Hoglet",
      "copies": 4,
      "cost": 0,
      "rarity": "common"
@@ -235,13 +232,6 @@
      "rarity": "rare"
     },
     {
-     "id": "carrion-crow",
-     "name": "Carrion Crow",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
      "id": "fawn-scout",
      "name": "Fawn Scout",
      "copies": 3,
@@ -254,158 +244,26 @@
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
-    }
-   ],
-   "score": 0.8258,
-   "ci": [
-    0.7831,
-    0.8684
-   ],
-   "avgLumber": 0.3,
-   "avgWait": 0.3,
-   "curve": {
-    "0": 14,
-    "1": 6
-   },
-   "resourceMakers": 3,
-   "families": [],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:13-1",
-     "label": "vs 13-1 skirmish's deck",
-     "p": 1,
-     "n": 24
     },
     {
-     "entry": "mirror|fight:13-2",
-     "label": "vs 13-2 skirmish's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-3",
-     "label": "vs 13-3 skirmish's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-4",
-     "label": "vs 13-4 skirmish's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-5",
-     "label": "vs 13-5 elite's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-6",
-     "label": "vs 13-6 elite's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-7",
-     "label": "vs 13-7 elite's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:13-8",
-     "label": "vs 13-8 miniboss's deck",
-     "p": 0.75,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 13-1's field",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road13",
-     "label": "vs reference deck (Map 13) under 13-2's field",
-     "p": 0.5417,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
-     "p": 0.7083,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 10
-  },
-  {
-   "focus": "big",
-   "labels": [
-    "big (10 copies at 1+ Lumber, average 0.5)"
-   ],
-   "deck": {
-    "bramble-hoglet": 4,
-    "fawn-scout": 3,
-    "fox-kit": 3,
-    "owl-nightwatch": 4,
-    "sergeant-bramblefox": 3,
-    "woodpecker-sapper": 3
-   },
-   "cards": [
-    {
-     "id": "bramble-hoglet",
-     "name": "Bramble Hoglet",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "owl-nightwatch",
-     "name": "Owl Nightwatch",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "fawn-scout",
-     "name": "Fawn Scout",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    },
-    {
-     "id": "fox-kit",
-     "name": "Fox Kit",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "sergeant-bramblefox",
-     "name": "Sergeant Bramblefox",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "woodpecker-sapper",
-     "name": "Woodpecker Sapper",
+     "id": "tasmanian-devil",
+     "name": "Tasmanian Devil",
      "copies": 3,
      "cost": 1,
      "rarity": "uncommon"
     }
    ],
-   "score": 0.7803,
+   "score": 0.7424,
    "ci": [
-    0.7336,
-    0.827
+    0.6945,
+    0.7903
    ],
-   "avgLumber": 0.5,
-   "avgWait": 0.35,
+   "avgLumber": 0.85,
+   "avgWait": 0.5,
    "curve": {
-    "0": 10,
-    "1": 10
+    "0": 7,
+    "1": 9,
+    "2": 4
    },
    "resourceMakers": 0,
    "families": [],
@@ -413,92 +271,92 @@
     {
      "entry": "mirror|fight:13-1",
      "label": "vs 13-1 skirmish's deck",
-     "p": 1,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-2",
      "label": "vs 13-2 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-3",
      "label": "vs 13-3 skirmish's deck",
-     "p": 0.8333,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-4",
      "label": "vs 13-4 skirmish's deck",
-     "p": 0.5833,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-5",
      "label": "vs 13-5 elite's deck",
-     "p": 0.6667,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-6",
      "label": "vs 13-6 elite's deck",
-     "p": 0.9167,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-7",
      "label": "vs 13-7 elite's deck",
-     "p": 0.7083,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-8",
      "label": "vs 13-8 miniboss's deck",
-     "p": 0.8333,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 13-1's field",
-     "p": 0.875,
+     "p": 0.8333,
      "n": 24
     },
     {
      "entry": "mirror|ref:road13",
      "label": "vs reference deck (Map 13) under 13-2's field",
-     "p": 0.5,
+     "p": 0.2917,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
-     "p": 0.75,
+     "p": 0.8333,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 14
+   "copiesApartFromOpen": 8
   },
   {
    "focus": "open",
    "labels": [
-    "big (16 copies at 1+ Lumber, average 0.9)",
+    "big (14 copies at 1+ Lumber, average 0.9)",
     "economy (4 resource makers)"
    ],
    "deck": {
+    "bramble-hoglet": 3,
     "bramblewood-lynx": 3,
-    "fox-kit": 4,
-    "quillback-elder": 2,
+    "fawn-scout": 3,
+    "quillback-elder": 4,
     "redwood-woodpecker": 4,
-    "sergeant-bramblefox": 3,
-    "tasmanian-devil": 4
+    "sergeant-bramblefox": 3
    },
    "cards": [
     {
-     "id": "fox-kit",
-     "name": "Fox Kit",
+     "id": "quillback-elder",
+     "name": "Quillback Elder",
      "copies": 4,
-     "cost": 0,
+     "cost": 2,
      "rarity": "common"
     },
     {
@@ -509,11 +367,11 @@
      "rarity": "uncommon"
     },
     {
-     "id": "tasmanian-devil",
-     "name": "Tasmanian Devil",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
+     "id": "bramble-hoglet",
+     "name": "Bramble Hoglet",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
     },
     {
      "id": "bramblewood-lynx",
@@ -523,31 +381,31 @@
      "rarity": "rare"
     },
     {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
      "id": "sergeant-bramblefox",
      "name": "Sergeant Bramblefox",
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
-    },
-    {
-     "id": "quillback-elder",
-     "name": "Quillback Elder",
-     "copies": 2,
-     "cost": 2,
-     "rarity": "common"
     }
    ],
-   "score": 0.7576,
+   "score": 0.6932,
    "ci": [
-    0.7112,
-    0.8039
+    0.6417,
+    0.7447
    ],
    "avgLumber": 0.9,
    "avgWait": 0.75,
    "curve": {
-    "0": 4,
-    "1": 14,
-    "2": 2
+    "0": 6,
+    "1": 10,
+    "2": 4
    },
    "resourceMakers": 4,
    "families": [],
@@ -561,61 +419,61 @@
     {
      "entry": "mirror|fight:13-2",
      "label": "vs 13-2 skirmish's deck",
-     "p": 0.5833,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-3",
      "label": "vs 13-3 skirmish's deck",
-     "p": 0.9167,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-4",
      "label": "vs 13-4 skirmish's deck",
-     "p": 0.6667,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-5",
      "label": "vs 13-5 elite's deck",
-     "p": 0.7917,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-6",
      "label": "vs 13-6 elite's deck",
-     "p": 0.875,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-7",
      "label": "vs 13-7 elite's deck",
-     "p": 0.75,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-8",
      "label": "vs 13-8 miniboss's deck",
-     "p": 0.7917,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 13-1's field",
-     "p": 1,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|ref:road13",
      "label": "vs reference deck (Map 13) under 13-2's field",
-     "p": 0.2917,
+     "p": 0.25,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
-     "p": 0.7083,
+     "p": 0.75,
      "n": 24
     }
    ],
@@ -624,19 +482,25 @@
   {
    "focus": "economy",
    "labels": [
-    "big (10 copies at 1+ Lumber, average 0.5)",
-    "economy (8 resource makers)",
-    "flying x7"
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "economy (8 resource makers)"
    ],
    "deck": {
+    "bramble-hoglet": 4,
     "carrion-crow": 4,
-    "fawn-scout": 3,
-    "fox-kit": 3,
-    "owl-nightwatch": 3,
     "redwood-woodpecker": 4,
-    "sergeant-bramblefox": 3
+    "sergeant-bramblefox": 3,
+    "swift-fox": 4,
+    "tasmanian-devil": 1
    },
    "cards": [
+    {
+     "id": "bramble-hoglet",
+     "name": "Bramble Hoglet",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
     {
      "id": "carrion-crow",
      "name": "Carrion Crow",
@@ -652,23 +516,9 @@
      "rarity": "uncommon"
     },
     {
-     "id": "fawn-scout",
-     "name": "Fawn Scout",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    },
-    {
-     "id": "fox-kit",
-     "name": "Fox Kit",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "owl-nightwatch",
-     "name": "Owl Nightwatch",
-     "copies": 3,
+     "id": "swift-fox",
+     "name": "Swift Fox",
+     "copies": 4,
      "cost": 1,
      "rarity": "common"
     },
@@ -678,24 +528,172 @@
      "copies": 3,
      "cost": 1,
      "rarity": "rare"
+    },
+    {
+     "id": "tasmanian-devil",
+     "name": "Tasmanian Devil",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "uncommon"
     }
    ],
-   "score": 0.678,
+   "score": 0.6856,
    "ci": [
-    0.6277,
-    0.7284
+    0.6353,
+    0.7359
    ],
-   "avgLumber": 0.5,
-   "avgWait": 0.55,
+   "avgLumber": 0.6,
+   "avgWait": 0.45,
    "curve": {
-    "0": 10,
-    "1": 10
+    "0": 8,
+    "1": 12
    },
    "resourceMakers": 8,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "family:evasion",
+   "labels": [
+    "big (14 copies at 1+ Lumber, average 0.7)",
+    "evasion x8"
+   ],
+   "deck": {
+    "bramble-hoglet": 3,
+    "bramblewood-lynx": 3,
+    "cunning-vixen": 4,
+    "fawn-scout": 3,
+    "owl-nightwatch": 4,
+    "sergeant-bramblefox": 3
+   },
+   "cards": [
+    {
+     "id": "cunning-vixen",
+     "name": "Cunning Vixen",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "owl-nightwatch",
+     "name": "Owl Nightwatch",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "bramble-hoglet",
+     "name": "Bramble Hoglet",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "sergeant-bramblefox",
+     "name": "Sergeant Bramblefox",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.5265,
+   "ci": [
+    0.4705,
+    0.5825
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 0.55,
+   "curve": {
+    "0": 6,
+    "1": 14
+   },
+   "resourceMakers": 0,
    "families": [
     {
-     "f": "flying",
-     "n": 7
+     "f": "evasion",
+     "n": 8
     }
    ],
    "perOpponent": [
@@ -708,13 +706,13 @@
     {
      "entry": "mirror|fight:13-2",
      "label": "vs 13-2 skirmish's deck",
-     "p": 0.5,
+     "p": 0.4167,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-3",
      "label": "vs 13-3 skirmish's deck",
-     "p": 0.7083,
+     "p": 0.75,
      "n": 24
     },
     {
@@ -726,48 +724,48 @@
     {
      "entry": "mirror|fight:13-5",
      "label": "vs 13-5 elite's deck",
-     "p": 0.75,
+     "p": 0.3333,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-6",
      "label": "vs 13-6 elite's deck",
-     "p": 0.8333,
+     "p": 0.625,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-7",
      "label": "vs 13-7 elite's deck",
-     "p": 0.625,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:13-8",
      "label": "vs 13-8 miniboss's deck",
-     "p": 0.7083,
+     "p": 0.5,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 13-1's field",
-     "p": 0.9583,
+     "p": 0.5833,
      "n": 24
     },
     {
      "entry": "mirror|ref:road13",
      "label": "vs reference deck (Map 13) under 13-2's field",
-     "p": 0.2083,
+     "p": 0.125,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
-     "p": 0.9167,
+     "p": 0.5417,
      "n": 24
     }
    ],
-   "copiesApartFromOpen": 10
+   "copiesApartFromOpen": 8
   }
  ],
- "reproduce": "node tools/bench/bench.js deck --map mr --pool berserker-boar,bramble-hoglet,bramblewood-lynx,carrion-crow,cunning-vixen,fawn-scout,fox-kit,grizzly-vanguard,owl-nightwatch,quillback-elder,redwood-woodpecker,sergeant-bramblefox,shimmerwing-stag,stag-knight,swift-fox,tasmanian-devil,woodpecker-sapper --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+ "reproduce": "node tools/bench/bench.js deck --map mr --pool berserker-boar,bramble-hoglet,bramblewood-lynx,carrion-crow,cunning-vixen,fawn-scout,grizzly-vanguard,owl-nightwatch,quillback-elder,redwood-woodpecker,sergeant-bramblefox,shimmerwing-stag,stag-knight,swift-fox,tasmanian-devil,woodpecker-sapper --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,family:evasion,open --level 1 --mode map-true"
 }
