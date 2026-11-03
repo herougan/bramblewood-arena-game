@@ -26,6 +26,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - KK18 (owner 21:12): after balancing, choose rewards per map and which cards are in which pack; skirmish rewards are their own thing (not pack cards).
 - KK19 (owner 21:12): FIX5, dynamic values (Swarm bonus etc.) reset on victory: running.
 - KK20 (owner 21:12): Drowned Matriarch: a Sunken Hollow SPECIAL card (Uncommon 2/13), 2 copies in 4-5's deck; 4-5's leader is Old Sturgeon. Still listed in the Tower's Heroic pool (TOWER_POOLS) though it is Uncommon now: check the Tower pools against current rarities.
+- KK21 (owner 11-03 09:39): balancing roadmap recorded in docs/workflows/balance.md (skill -> card -> card picking -> deck optimisation -> map -> skirmish rewards -> pack cards -> /5 and /20 bosses).
+- KK22 (owner 11-03 09:39): carried cards: Map 11+ +1 carried, Map 21+ own -1 and +2 carried (growing later), side maps +1 carried over their unlock map; archetype skirmishes. THEME5 (proposal) running; the owner picks the cards (THEME5-1).
+- KK23 (owner 11-03 09:39): BAL14-3 = change the budget to the measured Lumber-gain price, no re-fit. DEC1 running, with the delegated BAL / ENG / FIX / UI decisions ("Balance items you can choose. Like ENG and FIX and UI.").
+- KK24 (owner 11-03 09:39): art download approved (pixellab.ai): ART7 running.
+- KK25 (owner 11-03 09:39): deploy approach "thermo nuclear code review + ponytail dev + pstack": asked the owner what each means (no plugin of those names in the catalog).
 
 ## 11-02 00:17: the owner's notes (owner asleep; "Decisions - you decide" stands)
 - JJ1 (UI14; done 11-02, not yet released): VS screen: the pills show for ~1 s, too short to read them all. See JJ8.

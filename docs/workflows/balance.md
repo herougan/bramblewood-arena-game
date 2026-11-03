@@ -2,6 +2,17 @@
 
 For the budget formula, card retunes, the road and difficulty curves, raid tuning and win-rate measurement. The owner wants the strongest model for balance work.
 
+## Balancing roadmap (owner, 2026-11-03 09:39)
+In this order; each step settles before the next leans on it, and a later step never re-opens an earlier one without the owner:
+1. **Skill balance** — the skill prices (budget formula, `canonical/skill-costs.json`). Budget changes can always come later without re-fitting (owner 09:39 on BAL14-3: "We can always change the budget (skill balance) but we don't need do anything").
+2. **Card balance** — each card fitted to its budget (Claude's rough pass, then the owner's pass; BAL-ROLES).
+3. **Card picking (thematic)** — which cards each map and side map lists (own and carried; THEME rules; THEME5 for the Map 11+ / 21+ / side-map carried rule).
+4. **Deck optimisation** — the optimised skirmish decks per map: several distinct archetypes, three slightly down-tuned peak strategies scattered over three skirmishes, the rest a random weaker blend (THEME5 plan).
+5. **Map balancing** — each map's road fights against the road curve.
+6. **Picking skirmish rewards.**
+7. **Picking pack cards** (skirmish rewards are their own thing, not pack cards: owner 11-02 21:12).
+8. **The /5 elites and bosses and the /20 world bosses** balanced last.
+
 ## Roles: who balances what (owner, 2026-11-02 14:13, decision BAL-ROLES)
 - Claude does the rough first pass only: fit each card's stats to its power budget (N(L) in `bramblewood-budget.js`), and optimise decks from the cards already chosen. It may suggest a short list of card picks / cuts per map.
 - The owner chooses the cards on each list and re-tunes cards by feel.
