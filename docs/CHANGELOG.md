@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package DESIGN1 (owner 11-03 18:37: "Is the current card design fun?"; review only)
+- A card design review (not balance): a verdict, the top 10 design problems ranked by impact on fun, each with one small testable rule or card-text change (the Lumber curve's collapse to 0-1 Lumber cards, vanilla and same-shape bodies, a flat Maps 0-1, positional skills measuring about zero, stat walls without answers, keyword load and synonyms, archetypes as deck shapes, rarity, leaders and brambles, the Baby / Evomax line), the cards that work and why, and read-only sims (player seat at three CPU levels and with skills stripped). No game file changed; decisions DESIGN1-1 to DESIGN1-11. `docs/design1-2026-11-03.md`.
+
 ## 2026-11-03 Package FIX7 (release review 11-03a: M1, m1-m4, stale tests)
 - **Raids and multiplayer dungeons: a middle- or back-row spawn no longer breaks the round's replay (M1).** A row Spawner or Duplicate (since DEC1), and Brood / Twin / Sprout or a row death's tokens (since RR, 10-19), come with lane null and their row and slot; the replay read `rr[null]` and threw, so the rest of the round's animations were skipped. The unit now jumps out of its spawner into its own row slot mid-replay (`raidReplayReserveSpawn`), and the round plays on. Browser check `tests/e2e/fix7_2026_11_03.py` (it fails on the old build with "resolveRound failed"); screenshots in `docs/screens/fix7/`.
 - **Flyers' wind marks follow the gust's kind (m1):** Crosswind shows +0/2 (heavy +0/5) and no Tail / Head mark or north / south wind layer; Heavy Headwind shows −2⚔ (was −1⚔); Heavy Tailwind shows the boot and its extra Fast Forward (⏩).
