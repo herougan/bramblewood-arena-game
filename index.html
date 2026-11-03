@@ -47782,7 +47782,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.econ3-each": "each",
   "ui.econ3-each-tip": "Every quest in this tier pays this when you claim it.",
   "ui.econ3-head-show": "Show the map's story",
-  "ui.econ3-head-hide": "Hide the map's story"
+  "ui.econ3-head-hide": "Hide the map's story",
+  "ui.econ3-metal": "Metal"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -52499,7 +52500,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '14d0db09ffa8', BUILD_CARD_HASH = '1018824d4b3168c81372981943a2ec8e6e96d6ef34545c05f96df05d32ba5898';
+const BUILD_ID = '98298611b775', BUILD_CARD_HASH = '1018824d4b3168c81372981943a2ec8e6e96d6ef34545c05f96df05d32ba5898';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -64168,8 +64169,12 @@ function resetForgeProgress(){
 // upgrade that feature"): the Forge has five tiers. Each raises the highest level it tempers to and the rarest card it will
 // work, and each upgrade waits for the map the old level gates used (Lv 5–8 at Map 16, 9 at Map 26, 10 at Map 31).
 // Limit breaks still wait for Map 50.
+// Metal's use (2026-11-03, package ECON3, ECON2-8 a; owner 21:10 "ECON2-8: a"): nothing spent Metal (a dedicated player holds 45-85 by Map 20, from
+// the weekly quests, boss repeats and the Trail). Each Forge tier step now also takes Metal: 5 for the Iron Forge (Map 13), 10 for the Ember
+// Forge (Map 16), 15 and 20 for the two after (Maps 26 and 31). The Leaves / Dust / Strange Materia prices are unchanged.
+const FORGE_TIER_METAL = {2: 5, 3: 10, 4: 15, 5: 20};
 const FORGE_TIER_NAMES = ['Village Forge', 'Iron Forge', 'Ember Forge', 'Dragonfire Forge', 'Heartfire Forge']; // names stay literal here: the language packs key on source text (the file's `name` is for the hub)
-const FORGE_TIERS = UPGRADE_COSTS.forgeTiers.map(t=> { const o = {tier:t.tier, name:FORGE_TIER_NAMES[t.tier - 1], cap:t.cap, upTo:t.upTo}; if(t.gold != null){ o.map = t.map; o.cost = {gold:t.gold, dust:t.dust}; o.strange = t.strange; } return o; }); // 2026-10-23 (HUB2): canonical/upgrade-costs.json
+const FORGE_TIERS = UPGRADE_COSTS.forgeTiers.map(t=> { const o = {tier:t.tier, name:FORGE_TIER_NAMES[t.tier - 1], cap:t.cap, upTo:t.upTo}; if(t.gold != null){ o.map = t.map; o.cost = {gold:t.gold, dust:t.dust}; o.strange = t.strange; o.metal = FORGE_TIER_METAL[t.tier] || 0; } return o; }); // 2026-10-23 (HUB2): canonical/upgrade-costs.json; metal: 2026-11-03 (ECON3)
 // Strange Materia (2026-10-12, 11:39 list: "Upgrading the forge requires strange materia at certain levels - only gotten after
 // defeating a certain map's boss. we can tweak this as we go"): each Forge tier also needs Strange Materia 🔮 (1, 1, 2, 3).
 // The boss of the map before each tier's map drops them on its first clear (Maps 12, 15, 25 and 30: one, one, two, three).
@@ -64238,13 +64243,13 @@ function forgeTierFor(defId, toLevel){ // the tier needed to temper this card to
 function canUpgradeForge(){
   const next = FORGE_TIERS[forgeTier()]; if(!next) return {ok:false, why:'max'};
   if(!adminModeEnabled && playerMapReach() < next.map) return {ok:false, why:'map', next};
-  if((myCurrencies.gold||0) < next.cost.gold || (myCurrencies.dust||0) < next.cost.dust) return {ok:false, why:'cost', next};
+  if((myCurrencies.gold||0) < next.cost.gold || (myCurrencies.dust||0) < next.cost.dust || (myCurrencies.metal||0) < (next.metal||0)) return {ok:false, why:'cost', next}; // metal: 2026-11-03 (ECON3, ECON2-8)
   if(!adminModeEnabled && next.strange && ownedCount('strange-materia') < next.strange) return {ok:false, why:'strange', next};
   return {ok:true, next};
 }
 function upgradeForge(){
   const c = canUpgradeForge(); if(!c.ok) return false;
-  myCurrencies.gold -= c.next.cost.gold; myCurrencies.dust -= c.next.cost.dust; try{ saveCurrencies(); }catch(e){}
+  myCurrencies.gold -= c.next.cost.gold; myCurrencies.dust -= c.next.cost.dust; myCurrencies.metal = Math.max(0, (myCurrencies.metal||0) - (c.next.metal||0)); try{ saveCurrencies(); }catch(e){} // metal: 2026-11-03 (ECON3, ECON2-8)
   if(c.next.strange && !adminModeEnabled) try{ spendCopies('strange-materia', c.next.strange); }catch(e){}
   try{ localStorage.setItem(FORGE_TIER_KEY, String(c.next.tier)); }catch(e){}
   try{ logTxn({action:'forgeUpgrade', source:'Forge', before: c.next.tier - 1, after: c.next.tier}); }catch(e){}
@@ -64260,7 +64265,7 @@ function forgeUpgradeHTML(){
     <div class="fu-now" title="${escapeAttr(cur.name + ': tempers to Lv ' + cur.cap + ', cards up to ' + rarName(cur.upTo))}"><b>🏭 Forge</b> <small>Tier ${cur.tier}</small></div>
     ${next ? `<div class="fu-next"><span>Next: <b>${escapeHtml(next.name)}</b>, Lv ${next.cap} and up to ${escapeHtml(rarName(next.upTo))}</span>
       ${c.why === 'map' ? `<span class="fu-gate">🗺️ ${mapLockText(next.map, `Opens at Map ${next.map}`) /* 2026-10-18: Maps 26 and 31 aren't charted yet */}</span>` : ''}
-      <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge${btnCostHTML(next.cost, next.strange ? [{icon:'🔮', need:next.strange, have:ownedCount('strange-materia'), label:strangeMateriaSourceText()}] : [])}</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
+      <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge${btnCostHTML(Object.assign({}, next.cost, next.metal ? {metal: next.metal} : {}) /* 2026-11-03 (ECON3, ECON2-8): its Metal */, next.strange ? [{icon:'🔮', need:next.strange, have:ownedCount('strange-materia'), label:strangeMateriaSourceText()}] : [])}</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
     ${adminModeEnabled ? `<button type="button" class="btn small ghost" id="forgeTierEditBtn">✏️ Edit tier prices</button>` : ''}
   </div>`;
 }
@@ -70556,18 +70561,22 @@ const QUEST_TIERS = {
       {id:'d3-units', counter:'unitsDefeated', goal:30, label:TX('ui.i2-q-units-n', {n: 30})},
       {id:'d3-pvp', counter:'pvpWins', goal:2, label:TX('ui.i2-q-pvp-n', {n: 2})}]},
   ],
+  // 2026-11-03 (package ECON3, ECON2-3 a; owner 21:10 "ECON2-3: a"): each tier holds only quests a player can do once its feature is
+  // open. w1-pvp (Arena, Map 11) moved to tier 3 and w3-conquest to tier 1; the two raid quests (Raid, Map 13) to tier 3. So tiers 1-2
+  // are all doable from Map 4 and tier 3 opens behind them. The ids are kept (a save's claimed list still matches); the tiers' pay is
+  // unchanged and still paid per quest (ECON2-2).
   weekly: [
     {reward:{gold:340, dust:520, metal:3}, quests:[
       {id:'w1-energy', counter:'energyConquest', goal:200, label:TX('ui.i2-q-energy-n', {n: 200})},
-      {id:'w1-pvp', counter:'pvpTickets', goal:30, label:TX('ui.i2-q-tickets-n', {n: 30})},
+      {id:'w3-conquest', counter:'conquestWins', goal:10, label:TX('ui.i2-q-conquest-n', {n: 10})},
       {id:'w1-units', counter:'unitsDefeated', goal:100, label:TX('ui.i2-q-units-n', {n: 100})}]},
     {reward:{gold:225, dust:345, metal:1}, quests:[
-      {id:'w2-raid', counter:'raidsJoined', goal:3, label:TX('ui.i2-q-raids-n', {n: 3})},
-      {id:'w2-raiddmg', counter:'raidDamage', goal:4000, label:TX('ui.i2-q-raiddmg-n', {n: '4,000'})}, // 2026-10-19 (package RB): 20,000 on the x15 scale; a fight is ~1/5 of what it counted
       {id:'w2-wins', counter:'wins', goal:15, label:TX('ui.i2-q-wins-n', {n: 15})}]},
     {reward:{gold:110, dust:170}, quests:[
-      {id:'w3-conquest', counter:'conquestWins', goal:10, label:TX('ui.i2-q-conquest-n', {n: 10})},
-      {id:'w3-pvp', counter:'pvpWins', goal:10, label:TX('ui.i2-q-pvp-n', {n: 10})}]},
+      {id:'w1-pvp', counter:'pvpTickets', goal:30, label:TX('ui.i2-q-tickets-n', {n: 30})},
+      {id:'w3-pvp', counter:'pvpWins', goal:10, label:TX('ui.i2-q-pvp-n', {n: 10})},
+      {id:'w2-raid', counter:'raidsJoined', goal:3, label:TX('ui.i2-q-raids-n', {n: 3})},
+      {id:'w2-raiddmg', counter:'raidDamage', goal:4000, label:TX('ui.i2-q-raiddmg-n', {n: '4,000'})}]}, // 2026-10-19 (package RB): 20,000 on the x15 scale; a fight is ~1/5 of what it counted
   ],
 };
 econScaleTable('quests', QUEST_TIERS.daily.map(t=> t.reward)); econScaleTable('quests', QUEST_TIERS.weekly.map(t=> t.reward)); // 2026-10-30 (ECON1, owner BRUP-1): halved
@@ -71213,7 +71222,11 @@ function questNoteGhost(note){
     // a tilted note's bounding box is a little larger than the note: the copy is centred on it
     Object.assign(g.style, {position:'fixed', left: (r.left + (r.width - w) / 2) + 'px', top: (r.top + (r.height - h) / 2) + 'px', width: w + 'px', height: h + 'px',
       margin:'0', zIndex:'1200', pointerEvents:'none', rotate: cs.rotate && cs.rotate !== 'none' ? cs.rotate : '0deg'});
-    document.body.appendChild(g); return g;
+    document.body.appendChild(g);
+    // a transformed ancestor would shift a fixed box: measure where the copy landed and put its centre on the note's
+    const q = g.getBoundingClientRect(), dx = (r.left + r.width / 2) - (q.left + q.width / 2), dy = (r.top + r.height / 2) - (q.top + q.height / 2);
+    if(Math.abs(dx) > .5 || Math.abs(dy) > .5){ g.style.left = (parseFloat(g.style.left) + dx) + 'px'; g.style.top = (parseFloat(g.style.top) + dy) + 'px'; }
+    return g;
   }catch(e){ return null; }
 }
 function questNoteFall(g){
@@ -71227,7 +71240,10 @@ function questNoteFall(g){
     {transform:`translate(${side*26}px, ${h*1.5}px) rotate(${side*24}deg)`, opacity:0, offset:1},
   ], {duration: ECON3_NOTE_FALL_MS, easing:'cubic-bezier(.45,0,.75,.4)', fill:'forwards'});
   const done = ()=>{ try{ g.remove(); }catch(e){} };
-  a.onfinish = done; a.oncancel = done; setTimeout(done, ECON3_NOTE_FALL_MS + 600);
+  a.onfinish = done; a.oncancel = done;
+  // the fallback, should the finish event not come: gone once it has finished or run past its time (a held fall is the test's mid-fall shot)
+  const t0 = Date.now(), iv = setInterval(()=>{ if(!g.isConnected){ clearInterval(iv); return; } const st = a.playState;
+    if(st === 'finished' || st === 'idle' || (st !== 'paused' && Date.now() - t0 > ECON3_NOTE_FALL_MS + 600)){ clearInterval(iv); done(); } }, 250);
   try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){}
   return a;
 }
@@ -83358,7 +83374,7 @@ function adminu1ErrorText(err){
 // 'viewing' controls also. How many online now, server load etc."): read-only tiles above the player list. From what the client can read
 // already: profiles (public read: total accounts, new today, and last_seen_at, which the signed-in heartbeat bumps every 2 minutes, so
 // "online now" is seen in the last 5 minutes; the live presence channel's count rides along), raid_week_attempts (public read). From the
-// proposed admin_overview() (supabase/proposed/20261103_admin_overview.sql, admin only): fights and matches in the last hour, database
+// proposed admin_overview() (supabase/migrations/20261103_admin_overview.sql, applied 2026-11-03, admin only): fights and matches in the last hour, database
 // connections and size; those tiles say "needs SQL" until it is applied. The health line: a cheap Supabase read's round trip, the
 // Supabase request errors this tab has seen (ui17CountingFetch, given to createClient), the site's own round trip (version.json) and
 // this build's id against the live one. Refresh, and every 30 s while the list is open.
@@ -102724,7 +102740,7 @@ function rollMateriaDrops(node, isFirstClear, rank){
   const k = baseKind(node.kind || 'skirmish'), add = (id, n)=>{ out[id] = (out[id]||0) + n; };
   if(isFirstClear && (k==='boss' || k==='finalboss')){ try{ const mid = mapIdOfNode(node), num = mid ? mapNumberOf(mid) : null; const n = num != null ? STRANGE_MATERIA_DROPS[num] : 0; if(n && mapRewardNodeKey(CONQUEST_MAPS.find(m=> m.id===mid)) === node.key) add('strange-materia', n); }catch(e){} }
   if(isFirstClear){ if(k==='elite') add('iron-shard', 1); if(k==='boss'){ add('iron-shard', 2); add('river-pearl', 1); add('tempering-stone', 1); } if(k==='raidboss' || k==='finalboss'){ add('iron-shard', 3); add('ember-core', 1); add('tempering-stone', 2); } }
-  else { if(Math.random() < 0.15) add('iron-shard', 1); if((k==='boss' || k==='elite') && Math.random() < 0.05) add('tempering-stone', 1); }
+  else { if(Math.random() < 0.05 /* 2026-11-03 (ECON3, ECON2-8 a; owner 21:10): was 0.15, 188 Iron Shards held by Map 20 */) add('iron-shard', 1); if((k==='boss' || k==='elite') && Math.random() < 0.05) add('tempering-stone', 1); }
   if(['SS','SSS'].includes(rank) && Math.random() < 0.10) add('ember-core', 1);
   Object.entries(out).forEach(([id, n])=>{ for(let i = 0; i < n; i++) unlockCardForPlayer(id, 'materia'); });
   return out;
@@ -102811,6 +102827,7 @@ function btnCostHTML(cost, extra){
   part('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust');
   part('🦴', cost.kibble, myCurrencies.kibble||0, 'Kibble');
   part('🍂', cost.gems, myCurrencies.gems||0, 'Gold Leaves');
+  part(CURRENCY_META.metal.glyph, cost.metal, myCurrencies.metal||0, TX('ui.econ3-metal')); // 2026-11-03 (ECON3, ECON2-8): the Forge's tier steps
   Object.entries(cost.mats||{}).forEach(([id, n])=>{ if(defs[id]) part(defs[id].icon, n, ownedCount(id), defs[id].name); });
   (extra||[]).forEach(x=> part(x.icon, x.need, x.have, x.label));
   return parts.length ? `<span class="btn-cost"><span class="bc-sep" aria-hidden="true">·</span>${parts.join('')}</span>` : '';

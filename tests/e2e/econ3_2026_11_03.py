@@ -167,7 +167,7 @@ async def swap_pass(b, url):
     await pg.add_init_script(INIT); await pg.goto(url, wait_until='domcontentloaded', timeout=120000); await pg.wait_for_timeout(4000)
     await pg.evaluate("()=>{ try{ skipTriggerLesson(); }catch(e){} document.querySelectorAll('.dialogue-wrap, .dlg, .coach-tip').forEach(e=> e.remove()); try{ localStorage.setItem(FX_LEVEL_KEY, 'high'); }catch(e){} openQuestsModal(); }")
     await pg.wait_for_timeout(1500)
-    before = await pg.evaluate("()=>{ const b = document.querySelector('[data-swap-id]'); if(!b) return null; const n = b.closest('.qn-note'); return {id: b.dataset.swapId, label: n.querySelector('.qn-label').textContent.trim()}; }")
+    before = await pg.evaluate("()=>{ const b = document.querySelector('[data-swap-id]'); if(!b) return null; const n = b.closest('.qn-note'); const md = document.querySelector('.quests-modal'); md.scrollTop += n.getBoundingClientRect().top - md.getBoundingClientRect().top - 200; /* the modal's own scroll, which a redraw keeps */ return {id: b.dataset.swapId, label: n.querySelector('.qn-label').textContent.trim()}; }")
     ok(before is not None, f'2. a notice offers the free swap ({before})')
     if not before: await pg.close(); return
     # click, then hold every running animation at 45%: the old paper mid-fall over the new roll

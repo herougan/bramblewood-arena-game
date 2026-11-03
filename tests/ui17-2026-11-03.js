@@ -134,8 +134,8 @@ ok(!/'bramblewood_arena_admin_infenergy'/.test(/const ADMIN_RESET_LOCAL_KEYS = \
     const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8')); const m = keys.map(k=> TEXT[k]).filter(e=> !(e in pack)); ok(!m.length, `${code}: every UI17 text translated ${m.slice(0, 2)}`); }
   const fr = fn('ui17OpenFullReset'); ok(/role="alertdialog"/.test(fr) && /inp\.value\.trim\(\) === 'RESET'/.test(fr) && /disabled aria-disabled="true"/.test(fr) && !/confirm\(/.test(fr), 'the danger modal needs RESET typed (no browser confirm)');
   ok(/id="pfFullReset"/.test(fn('adminProfileToolsHTML')) && /id="ui17FullResetBtn"/.test(fn('renderAdmin')), 'the button is in Profile -> Admin resets and in the Admin tab');
-  const sql = fs.readFileSync(path.join(ROOT, 'supabase/proposed/20261103_admin_overview.sql'), 'utf8');
-  ok(/PROPOSED, NOT APPLIED/.test(sql) && /is_app_admin\(\)/.test(sql) && /security definer/.test(sql) && /revoke all on function public\.admin_overview\(\) from public, anon/.test(sql) && !/\b(insert|update|delete)\b\s+(into|public\.|from)/i.test(sql), 'admin_overview is proposed, admin-only, read-only');
+  const sql = fs.readFileSync(path.join(ROOT, 'supabase/migrations/20261103_admin_overview.sql' /* 2026-11-03: applied (UI17-1) */), 'utf8');
+  ok(/APPLIED 2026-11-03/.test(sql) /* 2026-11-03: applied (UI17-1) */ && /is_app_admin\(\)/.test(sql) && /security definer/.test(sql) && /revoke all on function public\.admin_overview\(\) from public, anon/.test(sql) && !/\b(insert|update|delete)\b\s+(into|public\.|from)/i.test(sql), 'admin_overview is applied, admin-only, read-only');
   ['.ui17-ov{', '.ui17-tiles{', '.ui17-fr-modal{', '#ui17FrGo:not([disabled])', '.ui17-buy-again'].forEach(sel=> ok(css.includes(sel), `CSS has ${sel}`));
   console.log(`ui17: ${pass} passed, ${fail} failed`);
   process.exit(fail ? 1 : 0);

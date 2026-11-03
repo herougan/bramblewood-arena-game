@@ -114,7 +114,7 @@ for(const k of keys){ ok(src.includes(`'${k}'`), `9. ${k} is used`);
   for(const c of CODES){ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8')); ok(pack[TEXT[k]], `9. ${c} translates "${TEXT[k]}"`); } }
 { const D = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'decisions.json'), 'utf8')).items, by = id=> D.find(x=> x.id === id) || {};
   ['ECON2-1', 'ECON2-2', 'ECON2-3', 'ECON2-5', 'ECON2-6', 'ECON2-8', 'ECON2-10'].forEach(id=> ok(by(id).status === 'DONE', `9. ${id} is DONE`));
-  ['ECON2-4', 'ECON2-7', 'ECON2-9', 'ECON2-11', 'ECON2-12'].forEach(id=> ok(by(id).status === 'YET', `9. ${id} still waits`)); }
+  ['ECON2-4', 'ECON2-7', 'ECON2-9', 'ECON2-11', 'ECON2-12'].forEach(id=> ok(!/ECON3/.test(by(id).answer || ''), `9. ${id} is not answered by ECON3`)); }
 
 console.log(fail ? `econ3-2026-11-03: ${fail} of ${n} checks failed` : `econ3-2026-11-03: all ${n} checks pass`);
 process.exit(fail ? 1 : 0);

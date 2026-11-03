@@ -22376,7 +22376,11 @@ function questNoteGhost(note){
     // a tilted note's bounding box is a little larger than the note: the copy is centred on it
     Object.assign(g.style, {position:'fixed', left: (r.left + (r.width - w) / 2) + 'px', top: (r.top + (r.height - h) / 2) + 'px', width: w + 'px', height: h + 'px',
       margin:'0', zIndex:'1200', pointerEvents:'none', rotate: cs.rotate && cs.rotate !== 'none' ? cs.rotate : '0deg'});
-    document.body.appendChild(g); return g;
+    document.body.appendChild(g);
+    // a transformed ancestor would shift a fixed box: measure where the copy landed and put its centre on the note's
+    const q = g.getBoundingClientRect(), dx = (r.left + r.width / 2) - (q.left + q.width / 2), dy = (r.top + r.height / 2) - (q.top + q.height / 2);
+    if(Math.abs(dx) > .5 || Math.abs(dy) > .5){ g.style.left = (parseFloat(g.style.left) + dx) + 'px'; g.style.top = (parseFloat(g.style.top) + dy) + 'px'; }
+    return g;
   }catch(e){ return null; }
 }
 function questNoteFall(g){
@@ -22390,7 +22394,10 @@ function questNoteFall(g){
     {transform:`translate(${side*26}px, ${h*1.5}px) rotate(${side*24}deg)`, opacity:0, offset:1},
   ], {duration: ECON3_NOTE_FALL_MS, easing:'cubic-bezier(.45,0,.75,.4)', fill:'forwards'});
   const done = ()=>{ try{ g.remove(); }catch(e){} };
-  a.onfinish = done; a.oncancel = done; setTimeout(()=>{ if(a.playState !== 'paused') done(); }, ECON3_NOTE_FALL_MS + 600); // the fallback (a held fall is the test's mid-fall shot)
+  a.onfinish = done; a.oncancel = done;
+  // the fallback, should the finish event not come: gone once it has finished or run past its time (a held fall is the test's mid-fall shot)
+  const t0 = Date.now(), iv = setInterval(()=>{ if(!g.isConnected){ clearInterval(iv); return; } const st = a.playState;
+    if(st === 'finished' || st === 'idle' || (st !== 'paused' && Date.now() - t0 > ECON3_NOTE_FALL_MS + 600)){ clearInterval(iv); done(); } }, 250);
   try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){}
   return a;
 }
@@ -34521,7 +34528,7 @@ function adminu1ErrorText(err){
 // 'viewing' controls also. How many online now, server load etc."): read-only tiles above the player list. From what the client can read
 // already: profiles (public read: total accounts, new today, and last_seen_at, which the signed-in heartbeat bumps every 2 minutes, so
 // "online now" is seen in the last 5 minutes; the live presence channel's count rides along), raid_week_attempts (public read). From the
-// proposed admin_overview() (supabase/proposed/20261103_admin_overview.sql, admin only): fights and matches in the last hour, database
+// proposed admin_overview() (supabase/migrations/20261103_admin_overview.sql, applied 2026-11-03, admin only): fights and matches in the last hour, database
 // connections and size; those tiles say "needs SQL" until it is applied. The health line: a cheap Supabase read's round trip, the
 // Supabase request errors this tab has seen (ui17CountingFetch, given to createClient), the site's own round trip (version.json) and
 // this build's id against the live one. Refresh, and every 30 s while the list is open.
