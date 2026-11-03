@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package QA2 (owner 18:37: "Go through fresh account from scratch once again to test")
+- A fresh-account, offline playthrough (opening, both tutorials, Maps 0-2, Camp, Nest, packs, 2-SK / 2-WK, Settings, Spanish) at 1366 and 390. Report: `docs/qa2-2026-11-03.md`, ranked findings, no blockers, 6 major issues (Camp skippable with no way back, duplicate early packs, the Pelican Point 2-4 wall, road wins missing from the match ledger, Spanish name mangling, an `@lv` id in a level pack). Screenshots `docs/screens/qa2/`. No game code changed. New browser test `tests/e2e/qa2_2026_11_03.py` (e2e list).
+
 ## 2026-11-03 Package FIX7 (release review 11-03a: M1, m1-m4, stale tests)
 - **Raids and multiplayer dungeons: a middle- or back-row spawn no longer breaks the round's replay (M1).** A row Spawner or Duplicate (since DEC1), and Brood / Twin / Sprout or a row death's tokens (since RR, 10-19), come with lane null and their row and slot; the replay read `rr[null]` and threw, so the rest of the round's animations were skipped. The unit now jumps out of its spawner into its own row slot mid-replay (`raidReplayReserveSpawn`), and the round plays on. Browser check `tests/e2e/fix7_2026_11_03.py` (it fails on the old build with "resolveRound failed"); screenshots in `docs/screens/fix7/`.
 - **Flyers' wind marks follow the gust's kind (m1):** Crosswind shows +0/2 (heavy +0/5) and no Tail / Head mark or north / south wind layer; Heavy Headwind shows −2⚔ (was −1⚔); Heavy Tailwind shows the boot and its extra Fast Forward (⏩).
