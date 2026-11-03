@@ -1,0 +1,61 @@
+{
+ "note": "2026-11-03 (package ECON3, ECON2-10): fights that sit in a published map layout (card_overrides __cfg:map-layout:<mapId>, which wins over a node's fixedPos) and are closer than 7% of the canvas to their neighbour, or sit under the full title panel a map shows on its first look. The game code cannot move them; 20261103_econ3_map_layout.sql does, once the owner says 'apply it'. 'key' is the fight's id today, 'rowKey' the key the row stores it under (rows saved before the 2026-10-14 rename keep the old key). tests/e2e/econ3_2026_11_03.py applies these on top of the live rows (tests/fixtures/econ3-live-map-layout-2026-11-03.json).",
+ "moves": [
+  {
+   "map": "m11",
+   "key": "20-3",
+   "rowKey": "11-9",
+   "from": {
+    "x": 40,
+    "y": 15
+   },
+   "to": {
+    "x": 52,
+    "y": 12
+   },
+   "why": "The Sundered Peak: 20-2 / 20-3 6.8% apart (review 3.3% on the unpublished layout)"
+  },
+  {
+   "map": "mpd",
+   "key": "18-A-7",
+   "rowKey": "18-A-7",
+   "from": {
+    "x": 44.8,
+    "y": 45
+   },
+   "to": {
+    "x": 40,
+    "y": 52
+   },
+   "why": "The Pale Desert: 18-A-6 / 18-A-7 6.9% apart"
+  },
+  {
+   "map": "m7",
+   "key": "10-2",
+   "rowKey": "7-2",
+   "from": {
+    "x": 35,
+    "y": 15
+   },
+   "to": {
+    "x": 38,
+    "y": 24
+   },
+   "why": "Coral Current: 10-2 under the full title panel (first look)"
+  },
+  {
+   "map": "me",
+   "key": "20-A-2",
+   "rowKey": "20-A-2",
+   "from": {
+    "x": 40,
+    "y": 15
+   },
+   "to": {
+    "x": 40,
+    "y": 24
+   },
+   "why": "Eye of the Volcano: 20-A-2 under the full title panel (first look)"
+  }
+ ]
+}

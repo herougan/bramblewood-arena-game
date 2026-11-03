@@ -10619,6 +10619,8 @@
   .qn-foot .qn-claim{align-self:auto;}
   .qn-swap{margin-left:auto; font:800 11.5px 'Nunito',system-ui,sans-serif; padding:4px 9px; border-radius:999px; border:1px solid rgba(90,60,30,.35); background:rgba(255,255,255,.35); color:#5a3a1a; cursor:pointer;}
   .qn-swap:hover{background:rgba(255,255,255,.6);}
+  /* 2026-11-03 (package ECON3, ECON2-2): "each" after a weekly quest's reward chips (the tier's reward is paid per quest) */
+  .qn-rw-each{font:800 11px 'Nunito',system-ui,sans-serif; color:#6a4a22; opacity:.85; align-self:center; margin-left:2px; text-transform:lowercase;}
   .qn-weekly .qn-note.is-claimed::after{content:""; display:block; height:28px;}
   .qn-rank{position:absolute; top:6px; right:8px; min-width:26px; padding:1px 6px; border-radius:6px; text-align:center; font:900 14px/1.2 'Baloo 2',system-ui,sans-serif; color:#fff; box-shadow:0 2px 4px rgba(0,0,0,.25);}
   .qn-rank-A{background:#d9a62a;} .qn-rank-S{background:linear-gradient(135deg,#ff6fc8,#7a6bff);}
@@ -11261,6 +11263,21 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .conquest-main > .conquest-headline, .conquest-main > .map-layout-bar{transition:opacity .2s ease;}
 .conquest-main > .is-ghost{opacity:.1 !important;}
 .conquest-main > .conquest-headline{transition:opacity .45s ease;} .conquest-main > .conquest-headline.is-away{opacity:0 !important; pointer-events:none;}
+/* The title panel folded to a chip after the first look (2026-11-03, package ECON3, ECON2-10): the map's icon and name in a small pill; a tap
+   opens the blurb under it. The chip takes the pointer (the full panel lets it through), so it never hides a fight behind it. */
+.conquest-main > .conquest-headline.is-chip{padding:4px 6px; border-radius:999px; max-width:min(340px, 60%);}
+.conquest-main > .conquest-headline.is-chip.is-open{border-radius:12px; max-width:min(420px, 46%); padding:6px 10px 8px;}
+.conquest-headline.is-chip .cqh-h{margin:0; font-size:inherit; line-height:1;}
+.conquest-headline.is-chip .cqh-chip{pointer-events:auto; display:inline-flex; align-items:center; gap:6px; max-width:100%; border:0; background:transparent; color:inherit; cursor:pointer;
+  font:800 14px/1.2 'Baloo 2','Nunito',system-ui,sans-serif; padding:3px 6px; border-radius:999px;}
+.conquest-headline.is-chip .cqh-chip:hover, .conquest-headline.is-chip .cqh-chip:focus-visible{background:rgba(255,255,255,.12); outline:none;}
+.conquest-headline.is-chip .cqh-name{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.conquest-headline.is-chip .cqh-caret{font-size:11px; opacity:.75; transition:transform .2s ease;}
+.conquest-headline.is-chip.is-open .cqh-caret{transform:rotate(180deg);}
+.conquest-headline.is-chip > .panel-sub{display:none; margin:6px 2px 0; font-size:13px;}
+.conquest-headline.is-chip.is-open > .panel-sub{display:block;}
+.conquest-headline.is-chip > .dungeon-ticket-line{margin:2px 6px 2px;}
+@media (max-width:820px){ body.conquest-full .conquest-main > .conquest-headline.is-chip{max-width:calc(100% - 16px);} }
 .conquest-admin-btn{position:absolute; top:58px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center;} .conquest-admin-btn.is-on{background:rgba(200,40,40,.55); border-color:rgba(255,140,140,.8);}
 /* Home on the map's own button row (2026-10-18, package MB, owner: "In mobile, there's no way to go 'home'. No home button in the
    conquest menu."): the full-screen map hides the header and the 🏠 / ⚙️ / Energy row, so 🏠 sits left of 🧭 while it is on. */
@@ -14756,7 +14773,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
       <button class="faction-btn" id="factionHummingbirdBtn" type="button" data-faction="hummingbirds">
         <span class="faction-ico">🐦</span>
         <span class="faction-name">Hummingbirds</span>
-        <span class="faction-sub">Sunfeather Dominion</span>
+        <span class="faction-sub">Sunfeather Tribes</span>
       </button>
       <button class="faction-btn faction-btn-random" id="factionRandomBtn" type="button" data-faction="random" hidden>
         <span class="faction-ico">🎲</span>

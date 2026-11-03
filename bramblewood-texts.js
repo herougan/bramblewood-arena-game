@@ -885,7 +885,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.i-cannot-tell-a-lie-that": "I cannot tell a lie: that was a bad Wait 3.",
   "results.george-washingtoad": "George Washingtoad",
   "results.eureka-i-have-found-another-way": "Eureka! I have found another way to lose. Next, the way to win.",
-  "results.the-best-laid-plans-of-mice": "The best-laid plans of mice and otters often meet a Bee Knight.",
+  "results.the-best-laid-plans-of-mice": "The best-laid plans of mice and otters often meet a Bee Warden.",
   "results.robert-burrows": "Robert Burrows",
   "results.a-win-by-a-thread-ranks": "A win by a thread. Ranks grade the bramble Health you keep: lose less of it for a better rank.",
   "results.well-fought-keep-90-of-your": "Well fought. Keep 90% of your bramble and it becomes S.",
@@ -3168,7 +3168,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng20-float-roll": "Stop, drop and roll!",
   "ui.eng20-log-burn": "{name} burns for {n}.",
   "ui.eng20-float-heavy-head": "Heavy Headwind: −2⚔",
-  "ui.eng20-float-heavy-tail": "Heavy Tailwind!"
+  "ui.eng20-float-heavy-tail": "Heavy Tailwind!",
+  "ui.econ3-each": "each",
+  "ui.econ3-each-tip": "Every quest in this tier pays this when you claim it.",
+  "ui.econ3-head-show": "Show the map's story",
+  "ui.econ3-head-hide": "Hide the map's story",
+  "ui.econ3-metal": "Metal"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
