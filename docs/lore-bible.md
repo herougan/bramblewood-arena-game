@@ -172,13 +172,15 @@ Bosses are named characters from the plot where possible: Shieldback, Vesper, Au
 - Mice and rats should not get heavy armour.
 - Otter cards should not be fast and flimsy; Hummingbird cards should not be slow walls.
 
-## Known mismatches in the current roster (proposals, nothing renamed yet)
+## Known mismatches in the current roster
+
+The first and third rows were renamed on 2026-11-03 (package CONTENT9, decision TEXT1-1, owner 21:10: "I prefer Tribes."), in the game and all 12 languages; card ids are unchanged.
 
 | Card or thing | Why it doesn't fit | Suggestion |
 |---|---|---|
-| Dominion Nestguard; "Sunfeather Dominion" in the old doc | "Dominion" reads as an empire; the Hummingbirds are tribes now | "Sunfeather Nestguard"; call the faction "the Sunfeather Tribes" |
+| Dominion Nestguard; "Sunfeather Dominion" in the old doc | "Dominion" reads as an empire; the Hummingbirds are tribes now | ✅ Done 2026-11-03: "Sunfeather Nestguard"; the faction is "the Sunfeather Tribes" (faction screen, Ambush pop-up "A Sunfeather war-band", Aurelia's raid line, the Sunthroat Courier's flavour) |
 | The old caste system (rank by colour) | Tribal, not a caste hierarchy | Keep the colours as **tribe** names (Crimson Wing tribe, etc.) |
-| Stag Knight, Bee Knight, Dolphin Knight, Cataphract Destrier | Medieval knights don't fit a pre-Roman world | Stag → "Stag Champion" (beast-bonded); Bee → "Bee Warden"; Dolphin → "Dolphin Outrider"; Cataphract → "War Destrier" |
+| Stag Knight, Bee Knight, Dolphin Knight, Cataphract Destrier | Medieval knights don't fit a pre-Roman world | ✅ Done 2026-11-03: Stag Champion, Bee Warden, Dolphin Outrider (its flavour lost the moat and the lance). The Cataphract Destrier had already become the Gilded Roadwarden. Not in this list and still a knight: the Gilded Swan Knight (Map 24's gilded guard; a possible next rename) |
 | War Hound, Armored Mastiff, Shepherd's Bark | ✅ Settled 2026-10-08 | Neutral friends of both peoples (see "Dogs and cats"); war dogs carry weapons in their mouths and stay four-legged. Art passes should drop any biped/armoured-knight look. |
 | Raccoon Warlord, Raccoon Bandit | Raccoons aren't covered by your list | Treat raccoons as road-folk (bandits and thieves), alongside rats |
 | Rodent King | Fits as a rat road-gang boss | Keep; flavour as "king of the road" |

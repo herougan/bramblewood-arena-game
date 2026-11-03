@@ -881,7 +881,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.i-cannot-tell-a-lie-that": "I cannot tell a lie: that was a bad Wait 3.",
   "results.george-washingtoad": "George Washingtoad",
   "results.eureka-i-have-found-another-way": "Eureka! I have found another way to lose. Next, the way to win.",
-  "results.the-best-laid-plans-of-mice": "The best-laid plans of mice and otters often meet a Bee Knight.",
+  "results.the-best-laid-plans-of-mice": "The best-laid plans of mice and otters often meet a Bee Warden.",
   "results.robert-burrows": "Robert Burrows",
   "results.a-win-by-a-thread-ranks": "A win by a thread. Ranks grade the bramble Health you keep: lose less of it for a better rank.",
   "results.well-fought-keep-90-of-your": "Well fought. Keep 90% of your bramble and it becomes S.",

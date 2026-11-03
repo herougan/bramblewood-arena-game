@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package CONTENT9 (owner 21:10 answers: TEXT1-1, ECON2-9, DESIGN1-2 / -5 / -10; no card stats or decks changed)
+- **The Sunfeather Tribes:** the hummingbird faction is no longer the "Sunfeather Dominion" (faction screen and picker, its lore line, the Ambush pop-up "A Sunfeather war-band", Aurelia's raid line, the Sunthroat Courier's flavour). Card renames, ids unchanged: Dominion Nestguard -> Sunfeather Nestguard, Stag Knight -> Stag Champion, Bee Knight -> Bee Warden, Dolphin Knight -> Dolphin Outrider (flavour without the moat and lance). 12 languages, rows renamed in place (`tools/i18n_2026_11_03_content9.py`); the lore bible marks them done.
+- **Ten curiosities on the silent maps** (Maps 6, 9, 12, 15, 16, 17, 18, 22, 23, 24), 3-4 lines each in the lore bible's voices, placed in each map's emptiest area; DRAFTS for the owner (Admin -> NPC speeches). Every main map from 0 to 24 now has a conversation. 12 languages.
+- **Proposals only** in `docs/content9-2026-11-03.md`: one job for five Map 0-1 cards, the rest vanilla (CONTENT9-1); the answer rule with a read-only checker, `node tools/content9/answers_2026_11_03.js` (Arrow Slits on Maps 23-24 and 25+ Health walls on Maps 17-24 are answered only by carried cards; Slippery ice and Consternation have no keyword answer); two bramble abilities, the Gnawed Larder's Feed and Ballista Keep's Aimed Bolt (CONTENT9-2).
+- Test: `tests/content9-2026-11-03.js`.
+
 ## 2026-11-03 Package ECON2 (economy review for alpha; measures and proposes, no game number changed)
 - **New `docs/econ2-2026-11-03.md`:**
   - A day-by-day sim of a new player (`tools/econ2/econ_sim_2026_11_03.js`, the game's own tables with ECON1's halving): Maps 0-10 take 3 days (casual 7); from Map 11, Magic Dust is the only thing that limits progress. Maps 11-20 take 46 days (casual 66) if the deck keeps the road's reference level with each map's cards, and 7 (casual 14) if one deck is kept.
