@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package LISTFIX2 (owner 22:02: "cut cards still stay, but are just flagged as cut")
+- **Every cut is applied:** all 37 cuts of the owner's 11-01 export (THEME4) and the older THEME3 cuts are off their MAP / submap lists. 13 cut cards still show on their map:
+  - 8 sit on SPECIAL as a fight's reward or first-clear card (2-1, 2-3, 2-5, 4-2, 4-5, 5-3, 6-4, 20-9).
+  - 3 are boss leaders on SPECIAL since RELFIX3 (3-7, 17-8, 19-6).
+  - CARD5 put 2 back on the MAP list as first-clear cards: Snapper Hatchling (5-1) and Weaver Bird (14-3).
+  - No list or deck changed. Owner calls: LISTFIX2-1 (the reward / first-clear cards) and LISTFIX2-2 (the boss cards).
+- **Map cards view:** each Cut card has a status pill read off the live lists: ⚠ Still listed, Kept for its fight (on SPECIAL), or ✓ Removed (its tooltip names any other list that still holds it). A note under Copy my picks says the ✂ / ↩ marks stay in this browser until Claude folds them in.
+  - No "Apply my cuts" button: a list change from the browser is a live `card_overrides` `__cfg:map-pools` write, which waits for "apply it".
+- `canonical/map-review.json`: `statusWhy` on the 13 entries. Texts: 8 TX keys (ui.lf2-*) in 12 packs (`tools/i18n_2026_11_03_listfix2.py`). Test: `tests/listfix2-2026-11-03.js`.
+
 ## 2026-11-03 Package CONTENT9 (owner 21:10 answers: TEXT1-1, ECON2-9, DESIGN1-2 / -5 / -10; no card stats or decks changed)
 - **The Sunfeather Tribes:** the hummingbird faction is no longer the "Sunfeather Dominion" (faction screen and picker, its lore line, the Ambush pop-up "A Sunfeather war-band", Aurelia's raid line, the Sunthroat Courier's flavour). Card renames, ids unchanged: Dominion Nestguard -> Sunfeather Nestguard, Stag Knight -> Stag Champion, Bee Knight -> Bee Warden, Dolphin Knight -> Dolphin Outrider (flavour without the moat and lance). 12 languages, rows renamed in place (`tools/i18n_2026_11_03_content9.py`); the lore bible marks them done.
 - **Ten curiosities on the silent maps** (Maps 6, 9, 12, 15, 16, 17, 18, 22, 23, 24), 3-4 lines each in the lore bible's voices, placed in each map's emptiest area; DRAFTS for the owner (Admin -> NPC speeches). Every main map from 0 to 24 now has a conversation. 12 languages.
