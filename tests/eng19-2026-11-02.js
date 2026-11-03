@@ -79,7 +79,9 @@ ok(hitBy('x-kingw') === 5, `#13: a Waiting Majesty unit does nothing (${hitBy('x
   ok(SC.cardS({majesty:1}).S === 3.4 && SC.cardS({pearl:1}).S === 0.9, '#13 / #5: Majesty 3.4 and Pearl 0.9 a point in the budget');
   ok(SC.cardS({triggers:[{on:'onSpawn', do:'grantShield', allies:3}]}).S === 3.78 && !SC.cardS({triggers:[{on:'onSpawn', do:'grantShield', adjacent:1}]}).missing.length, '#15: On Play +3 Shield to every ally prices at 3.78; every group has a price'); }
 { const cards = J('canonical/cards.json'), list = Array.isArray(cards) ? cards : (cards.cards || Object.values(cards)); const s = JSON.stringify(list.map(c=> c.effects || {}));
-  ok(!/"majesty"/.test(s) && !/grantShield/.test(s), '#13 / #15: Majesty and Grant Shield are on no card'); }
+  // 2026-11-03 (DEC1, ENG19-2): Royal Guard carries On Play +3 Shield to every ally; Majesty is still on no card (ENG19-1)
+  const gs = list.filter(c=> /grantShield/.test(JSON.stringify(c.effects || {}))).map(c=> c.id);
+  ok(!/"majesty"/.test(s) && gs.join() === 'otter-royal-guard', '#13 / #15: Majesty is on no card; Grant Shield only on Royal Guard (DEC1, ENG19-2): ' + gs.join()); }
 
 // ---- #14 the 💠 number ----------------------------------------------------------------------------------------------------
 { const {e, P} = mk(7); const sh = spawn(e, P, 2, 'x-shell'); spawn(e, P, 1, 'x-hit5'); const ev = []; e.resolveCombat(P, so, {}, ev, 1); e.resolveCombat(P, so, {}, ev, 1);

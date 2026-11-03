@@ -32,7 +32,7 @@ const SK = {}; table.skills.forEach(e => { SK[e.id] = e; });
   ok(table.lumberHome && table.lumberHome['nautilus-drifter'] > 1 && table.lumberHome['driftwood-crab'] < 0.5, 'canonical/skill-costs.json lumberHome: each maker\'s home lists\' mean cost');
   const S = id => T.cardS(C[id].effects, C[id]).S;
   ok(Math.abs(S('nautilus-drifter') - Math.round(T.skillCost('onReadyGold', 1) * BB.lumberHomeMult(table.lumberHome['nautilus-drifter']) * 100) / 100) < 0.02, `Nautilus Drifter's On Ready Lumber x its home multiplier (S ${S('nautilus-drifter')})`);
-  const pk = T.cardS(C['dune-packrat'].effects, C['dune-packrat']); ok(pk.S > 6 && /onReadyGold x 3\^0\.175/.test(JSON.stringify(pk.parts)), `Dune Packrat's On Ready gain 3 priced from On Ready +1 Lumber (S ${pk.S}, was 3.14)`);
+  const pk = T.cardS(C['dune-packrat'].effects, C['dune-packrat']); ok(Math.abs(pk.S - 5.72) < 0.3 && /onReadyGold x 3\^0\.71/.test(JSON.stringify(pk.parts)), `Dune Packrat's On Ready gain 3 priced from On Ready +1 Lumber (S ${pk.S}, was 3.14; 2026-11-03 DEC1 BAL14-3: x 0.39 x N^0.71, from the trigger's own bramble-15 measures, was x N^0.175 8.14)`);
   const hy = T.cardS(C['dust-hyena'].effects, C['dust-hyena']), kp = hy.parts.find(p => p[0] === 'trigger' && /onKill/.test(p[1])); ok(kp && kp[2] < 3 && !/onReadyGold/.test(kp[3]), `an On Kill Lumber gain keeps its trigger price (Dust Hyena's ${kp && kp[2]})`); }
 
 // ---- tempo cap 2 --------------------------------------------------------------------------------------------------------------------
@@ -50,9 +50,12 @@ ok(BB.DEFAULTS.perLumber === 2.5 && table.budget.perLumber === 2.5, 'perLumber 2
 
 // ---- the re-fit ---------------------------------------------------------------------------------------------------------------------
 { const r = cp.spawnSync('node', ['tools/bal12/refit_2026_11_02.js', '--check'], { cwd: ROOT, encoding: 'utf8' }).stdout || '';
-  ok(/^re-fit: 0;/.test(r.split('\n')[0]), `no in-play card outside the band but the held and listed ones (${r.split('\n')[0]})`);
+  // 2026-11-03 (DEC1): Echo Matriarch (Flying x1.19, BAL14-2) and Otter Angler (the cheaper Lumber gain lets a fit within the rule reach it, BAL14-3)
+  // are held: the owner changed the budget only, no re-fit (11-03 09:39)
+  const fits = r.split('\n').filter(l => /^\s+fit /.test(l)).map(l => l.trim().split(/\s+/)[1]), DEC1_HOLD = ['echo-matriarch', 'otter-angler'];
+  ok(/^re-fit: \d+;/.test(r.split('\n')[0]) && fits.every(id => DEC1_HOLD.includes(id)), `no in-play card outside the band but the held and listed ones (${r.split('\n')[0]}; DEC1 holds: ${fits.join(', ') || 'none'})`);
   const plan = J('docs/balance/bal12/refit-2026-11-02.json'); ok(plan.edits.every(e => Math.abs((e.set.attack != null ? e.set.attack : 0) - (+e.from.stats.split('/')[0] || 0)) <= 2 && Math.abs(e.set.health - +e.from.stats.split('/')[1]) <= 2), `each re-fit moves a stat by at most 2 (${plan.edits.map(e => e.id + ' ' + e.from.stats + ' -> ' + e.to).join(', ')})`);
-  ok(['glass-octopus', 'subterraneaner', 'badger-sapper'].every(id => !plan.edits.some(e => e.id === id)) && C['glass-octopus'].attack === 4 && C['glass-octopus'].health === 9 && C['subterraneaner'].attack === 4 && C['badger-sapper'].health === 15, 'the three cards BAL11 held keep their lines (the owner picks)'); }
+  ok(['glass-octopus', 'subterraneaner', 'badger-sapper'].every(id => !plan.edits.some(e => e.id === id)) && C['glass-octopus'].attack === 4 && (C['glass-octopus'].health === 9 || (C['glass-octopus'].health === 7 && /DEC1: BAL12-2 a/.test(C['glass-octopus'].creatorNote || ''))) /* 2026-11-03 (DEC1, BAL12-2 a): 4/7 */ && C['subterraneaner'].attack === 4 && C['badger-sapper'].health === 15, 'the three cards BAL11 held keep their lines (the owner picks)'); }
 
 // ---- decisions --------------------------------------------------------------------------------------------------------------------
 { const items = J('docs/decisions.json').items.filter(x => /^BAL12-/.test(x.id)); ok(items.length >= 3 && items.every(x => x.group === 'game'), `BAL12 owner calls filed (${items.map(x => x.id).join(', ')})`); }

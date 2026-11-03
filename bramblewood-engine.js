@@ -6204,13 +6204,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const r = resolveGeneralTarget(players, pid, src, who, sub); return r && r.card ? [{pid: who === 'ally' || who === 'kin' ? pid : foe, c: r.card, single:true}] : [];
   }
   // A unit put into play by an ability, in the free slot right beside src (open boards; packed rows: the shorter flank).
+  // 2026-11-03 (package DEC1, ENG18-5 b, Claude's call under owner 11-03 09:39): a raid's / group dungeon's middle- or back-row Spawner (or
+  // a Duplicate of a unit there) puts its unit into its own row, the free slot nearest it there, as Brood, Twin and Sprout do (spawnBeside,
+  // package RR); it went into the front row. One-row fights are unchanged.
   function sk3SpawnAdjacent(players, sideOf, pid, src, defId, stats, events, kind, prep){
     const pl = players[pid]; if(!pl || !CARD_DEFS[defId]) return null; let lane, sl = null;
-    if(slotMode){ sl = nearestFreeSlot(pl, src.slot, false); if(sl === null) return null; } // BF6 (owner 15:21): the nearest free slot (was: only the two beside it, else none)
+    const srcRow = slotMode ? reserveRowOf(pl, src) : 0; // DEC1 (ENG18-5 b): its own row
+    if(srcRow){ sl = rowFreeSlotNear(pl, srcRow, src.slot, false); if(sl === null) return null; }
+    else if(slotMode){ sl = nearestFreeSlot(pl, src.slot, false); if(sl === null) return null; } // BF6 (owner 15:21): the nearest free slot (was: only the two beside it, else none)
     const nc = makeBoardCard(defId); if(prep) prep(nc);
-    if(slotMode) lane = putInSlot(pl, nc, sl); else { lane = flankOrShorter(pl, findCardSide(pl, src.uid) || 'left'); pl.row[lane].push(nc); }
+    if(srcRow){ rowPut(pl, srcRow, sl, nc, src); lane = null; }
+    else if(slotMode) lane = putInSlot(pl, nc, sl); else { lane = flankOrShorter(pl, findCardSide(pl, src.uid) || 'left'); pl.row[lane].push(nc); }
     { const st = ensureStat(stats, sideOf(pid), src.defId); st.spawnedTokens = (st.spawnedTokens||0) + 1; }
-    if(recordEvents && events) events.push({type:'spawn', side:sideOf(pid), defId, count:1, cause:'triggerSpawn', kind, uids:[nc.uid], lane, nearUid:src.uid});
+    if(recordEvents && events) events.push(Object.assign({type:'spawn', side:sideOf(pid), defId, count:1, cause:'triggerSpawn', kind, uids:[nc.uid], lane, nearUid:src.uid}, srcRow ? {row:srcRow, slot:nc.slot} : {}));
     fireSpawnFamilyTriggers(players, sideOf, pid, nc, stats, events, 'spawned');
     return nc;
   }

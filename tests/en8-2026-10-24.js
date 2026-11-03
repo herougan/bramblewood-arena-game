@@ -170,8 +170,8 @@ for(const lv of [0, 1, 2]){
   const T2 = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/theme2-proposal-2026-10-28.json'), 'utf8')).maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));
   C.NEW.forEach(s=>{ const c = by[s.id], m = s.place[0]; ok(c && !c.faction && (pools[m].cards || []).includes(s.id) === (T2[m] || []).includes(s.id) && c.source && c.source.map === m, `${s.id}: its source is ${m}, its place on ${m}'s list follows THEME2, no faction`); });
   const skills = ['stonecutter', 'prospector', 'felling', 'pearlBed', 'coppice', 'driftwood', 'scavenge', 'salvage', 'magicArmor'];
-  skills.forEach(k=> ok(cards.some(c=> c.effects && c.effects[k] && !c.pool && !c.awaitingSource), `a placed card carries ${k}`));
-  ok(by['oyster-bank'].effects.pearlBed && by['giant-clam'].effects.pearlBed, 'the Shellfish (Oyster Bank, Giant Clam) grow Pearls');
+  skills.forEach(k=> ok(cards.some(c=> c.effects && (c.effects[k] || (k === 'pearlBed' && c.effects.pearl)) && !c.pool && !c.awaitingSource), `a placed card carries ${k}`)); // 2026-11-03 (DEC1, ENG19-3): the Shellfish carry Pearl (Pearl Bed's old once rule) now
+  ok(by['oyster-bank'].effects.pearl && by['giant-clam'].effects.pearl, 'the Shellfish (Oyster Bank, Giant Clam) grow Pearls (Pearl 1 since 2026-11-03, DEC1 ENG19-3: as they played before ENG19)');
   ok(!by['leafcutter-gardener'].effects.growth && (by['leafcutter-gardener'].effects.triggers || []).some(t=> t.on === 'onReady' && t.resource === 'lumber'), 'Leafcutter Gardener: Growth -> On Ready +1 Lumber');
   const early = cards.filter(c=> c.mechanicLine !== 'evolution' && !c.pool && (om[c.id] || 0) < 20 && (((c.effects||{}).stem || (c.effects||{}).stemGrant || ((c.effects||{}).chrysalis && !(c.mysterySkills||[]).includes('chrysalis'))) || Object.values(c.levelSkills || {}).some(s=> s && (s.stem || s.stemGrant))));
   // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): such a card reads obtain map 0 but no one can get it before Map 20 or

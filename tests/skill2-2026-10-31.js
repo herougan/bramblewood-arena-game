@@ -45,7 +45,8 @@ const near = (a, b, e) => Math.abs(a - b) <= (e || 0.011);
   const ip = R.changes.filter(r => r.inPlay); ok(ip.length === 47, `3. 47 in-play changes on record (${ip.length})`);
   // 2026-11-02 (BAL9): a card BAL9 re-fit later (JJ5 / JJ21 / JJ12, its note says so) is held to the note only
   // 2026-11-02 (CARD5, decision BAL9-6 a): Conch Herald back to 1/13, its note says CARD5; held to the note too
-  const bal9 = r => /2026-11-02 (BAL9|CARD5)/.test((by[r.id] || {}).creatorNote || '');
+  // 2026-11-03 (DEC1): Glass Octopus 4/7 (BAL12-2 a) and Royal Guard 3/6 (ENG19-2) were re-fit later; held to the note too
+  const bal9 = r => /2026-11-02 (BAL9|CARD5)|2026-11-03 DEC1: (BAL12-2 a|ENG19-2)/.test((by[r.id] || {}).creatorNote || '');
   ip.forEach(r => ok(by[r.id] && (bal9(r) || by[r.id].attack === r.attack) && (bal9(r) || by[r.id].health === r.health) && /SKILL2 re-fit/.test(by[r.id].creatorNote || ''), `3. ${r.id}: ${r.stats} -> ${r.to} applied with its note`));
   R.changes.filter(r => !r.inPlay).forEach(r => ok(by[r.id] && (bal9(r) || `${by[r.id].attack == null ? '-' : by[r.id].attack}/${by[r.id].health}` === r.stats), `3. ${r.id}: out of play, on record only (coordinator: cards.json limited to this package's items)`));
   const st = id => by[id].attack + '/' + by[id].health;
