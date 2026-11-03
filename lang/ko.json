@@ -3858,5 +3858,9 @@
  "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "✂ 제외와 ↩ 유지는 이 브라우저에서 선택을 표시할 뿐입니다. Claude가 반영하기 전까지 목록은 바뀌지 않습니다. 내 선택 복사 또는 모두 내보내기를 누른 뒤 텍스트를 Claude에게 붙여 넣으세요.",
  "Every quest in this tier pays this when you claim it.": "이 단계의 퀘스트는 받을 때마다 이만큼 줘요.",
  "Show the map's story": "지도 이야기 보기",
- "Hide the map's story": "지도 이야기 숨기기"
+ "Hide the map's story": "지도 이야기 숨기기",
+ "Mystery skills": "미스터리 스킬",
+ "Cards with a skill you have not seen yet.": "아직 보지 못한 스킬이 있는 카드.",
+ "[Lvl {n}]": "[Lv.{n}]",
+ "Gets this skill at Level {n}.": "레벨 {n}에서 이 스킬을 얻는다."
 }

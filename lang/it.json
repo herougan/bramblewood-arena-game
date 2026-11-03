@@ -3857,5 +3857,9 @@
  "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "✂ Taglia e ↩ Tieni segnano solo le tue scelte in questo browser; nessuna lista cambia finché Claude non le integra. Usa Copia le mie scelte o Esporta tutto, poi incolla il testo a Claude.",
  "Every quest in this tier pays this when you claim it.": "Ogni missione di questo livello paga questo quando la riscatti.",
  "Show the map's story": "Mostra la storia della mappa",
- "Hide the map's story": "Nascondi la storia della mappa"
+ "Hide the map's story": "Nascondi la storia della mappa",
+ "Mystery skills": "Abilità misteriose",
+ "Cards with a skill you have not seen yet.": "Carte con un’abilità che non hai ancora visto.",
+ "[Lvl {n}]": "[Liv. {n}]",
+ "Gets this skill at Level {n}.": "Ottiene questa abilità al livello {n}."
 }

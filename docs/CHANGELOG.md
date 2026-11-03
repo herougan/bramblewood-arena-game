@@ -12,6 +12,11 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - No "Apply my cuts" button: a list change from the browser is a live `card_overrides` `__cfg:map-pools` write, which waits for "apply it".
 - `canonical/map-review.json`: `statusWhy` on the 13 entries. Texts: 8 TX keys (ui.lf2-*) in 12 packs (`tools/i18n_2026_11_03_listfix2.py`). Test: `tests/listfix2-2026-11-03.js`.
 
+## 2026-11-03 Package UI18 (Codex skill filter: seen skills only, Mystery skills, level flags; owner 22:04 + 22:08)
+- **The Codex's Skills filter lists only skills you have seen** (the same rule as the Skills book: on a card you have seen, or met in a fight; Admin Mode still lists all).
+- **New "? Mystery skills" entry** shows the cards that carry a skill you have not seen yet (their skills still read "?"). It is hidden when no card is one, so once everything is unlocked it is gone.
+- **A skill a card only gets at a later level now counts in the filter**, and the Codex tile says so with a small flag under the card, for example Bee Knight: "Swarm [Lvl 1]", "Flying [Lvl 1]" (a skill you have not seen reads "? [Lvl 1]"). Codex only; not on the hand or the board.
+- Texts in 12 languages (`tools/i18n_2026_11_03_ui18.py`). Tests: `tests/ui18-2026-11-03.js`, `tests/e2e/ui18_2026_11_03.py`.
 ## 2026-11-03 Package CONTENT9 (owner 21:10 answers: TEXT1-1, ECON2-9, DESIGN1-2 / -5 / -10; no card stats or decks changed)
 - **The Sunfeather Tribes:** the hummingbird faction is no longer the "Sunfeather Dominion" (faction screen and picker, its lore line, the Ambush pop-up "A Sunfeather war-band", Aurelia's raid line, the Sunthroat Courier's flavour). Card renames, ids unchanged: Dominion Nestguard -> Sunfeather Nestguard, Stag Knight -> Stag Champion, Bee Knight -> Bee Warden, Dolphin Knight -> Dolphin Outrider (flavour without the moat and lance). 12 languages, rows renamed in place (`tools/i18n_2026_11_03_content9.py`); the lore bible marks them done.
 - **Ten curiosities on the silent maps** (Maps 6, 9, 12, 15, 16, 17, 18, 22, 23, 24), 3-4 lines each in the lore bible's voices, placed in each map's emptiest area; DRAFTS for the owner (Admin -> NPC speeches). Every main map from 0 to 24 now has a conversation. 12 languages.

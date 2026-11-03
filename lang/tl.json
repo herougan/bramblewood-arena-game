@@ -3856,5 +3856,9 @@
  "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "Minamarkahan lang ng ✂ Tanggalin at ↩ Panatilihin ang mga pinili mo sa browser na ito; walang listahang magbabago hangga’t hindi ito isinasama ni Claude. Gamitin ang Kopyahin ang mga napili ko o I-export lahat, saka i-paste kay Claude.",
  "Every quest in this tier pays this when you claim it.": "Bawat quest sa tier na ito ay nagbabayad nito kapag kinuha mo.",
  "Show the map's story": "Ipakita ang kuwento ng mapa",
- "Hide the map's story": "Itago ang kuwento ng mapa"
+ "Hide the map's story": "Itago ang kuwento ng mapa",
+ "Mystery skills": "Mga misteryosong kasanayan",
+ "Cards with a skill you have not seen yet.": "Mga card na may kasanayang hindi mo pa nakikita.",
+ "[Lvl {n}]": "[Lvl {n}]",
+ "Gets this skill at Level {n}.": "Nakukuha ang kasanayang ito sa Level {n}."
 }

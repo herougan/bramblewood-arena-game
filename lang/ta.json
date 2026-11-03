@@ -3858,5 +3858,9 @@
  "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "✂ நீக்கு, ↩ வை ஆகியவை இந்த உலாவியில் உங்கள் தேர்வுகளைக் குறிக்க மட்டுமே; Claude சேர்க்கும் வரை எந்தப் பட்டியலும் மாறாது. என் தேர்வுகளை நகலெடு அல்லது அனைத்தையும் ஏற்றுமதி செய், பின் உரையை Claude-இடம் ஒட்டவும்.",
  "Every quest in this tier pays this when you claim it.": "இந்த நிலையின் ஒவ்வொரு தேடலும் நீங்கள் பெறும்போது இதைத் தரும்.",
  "Show the map's story": "வரைபடத்தின் கதையைக் காட்டு",
- "Hide the map's story": "வரைபடத்தின் கதையை மறை"
+ "Hide the map's story": "வரைபடத்தின் கதையை மறை",
+ "Mystery skills": "மர்ம திறன்கள்",
+ "Cards with a skill you have not seen yet.": "நீ இன்னும் பார்க்காத திறன் உள்ள அட்டைகள்.",
+ "[Lvl {n}]": "[நிலை {n}]",
+ "Gets this skill at Level {n}.": "நிலை {n} இல் இந்தத் திறனைப் பெறுகிறது."
 }

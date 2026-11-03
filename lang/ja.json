@@ -3855,5 +3855,9 @@
  "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "✂ カット と ↩ 残す はこのブラウザで選択に印を付けるだけです。Claude が取り込むまでリストは変わりません。「選択をコピー」か「すべてエクスポート」を使い、テキストを Claude に貼り付けてください。",
  "Every quest in this tier pays this when you claim it.": "この段のクエストは、受け取るたびにこれがもらえます。",
  "Show the map's story": "マップの物語を見る",
- "Hide the map's story": "マップの物語を隠す"
+ "Hide the map's story": "マップの物語を隠す",
+ "Mystery skills": "ミステリースキル",
+ "Cards with a skill you have not seen yet.": "まだ見たことのないスキルを持つカード。",
+ "[Lvl {n}]": "[Lv.{n}]",
+ "Gets this skill at Level {n}.": "レベル{n}でこのスキルを覚える。"
 }

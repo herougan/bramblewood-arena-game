@@ -3857,5 +3857,9 @@
  "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "✂ Coret dan ↩ Simpan hanya menandai pilihanmu di peramban ini; tidak ada daftar yang berubah sampai Claude memasukkannya. Pakai Salin pilihan saya atau Ekspor semua, lalu tempel teksnya ke Claude.",
  "Every quest in this tier pays this when you claim it.": "Setiap misi di tingkat ini memberi ini saat kamu mengklaimnya.",
  "Show the map's story": "Tampilkan kisah peta",
- "Hide the map's story": "Sembunyikan kisah peta"
+ "Hide the map's story": "Sembunyikan kisah peta",
+ "Mystery skills": "Skill misterius",
+ "Cards with a skill you have not seen yet.": "Kartu dengan skill yang belum pernah kamu lihat.",
+ "[Lvl {n}]": "[Lv. {n}]",
+ "Gets this skill at Level {n}.": "Mendapat skill ini di Level {n}."
 }

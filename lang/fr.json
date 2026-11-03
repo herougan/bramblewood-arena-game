@@ -3855,5 +3855,9 @@
  "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "✂ Écarter et ↩ Garder ne font que marquer tes choix dans ce navigateur ; aucune liste ne change avant que Claude les intègre. Utilise Copier mes choix ou Tout exporter, puis colle le texte à Claude.",
  "Every quest in this tier pays this when you claim it.": "Chaque quête de ce palier rapporte ceci quand vous la réclamez.",
  "Show the map's story": "Afficher l'histoire de la carte",
- "Hide the map's story": "Masquer l'histoire de la carte"
+ "Hide the map's story": "Masquer l'histoire de la carte",
+ "Mystery skills": "Compétences mystères",
+ "Cards with a skill you have not seen yet.": "Cartes avec une compétence que tu n’as pas encore vue.",
+ "[Lvl {n}]": "[Niv. {n}]",
+ "Gets this skill at Level {n}.": "Obtient cette compétence au niveau {n}."
 }
