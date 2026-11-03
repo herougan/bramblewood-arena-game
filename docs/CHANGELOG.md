@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package ART8 (flagged card art redo, PARTIAL: 7 of 112 done)
+- Redone in PixelLab (Pro, 128x128, 2x2, picked by eye; same import as ART7): `adder-ambusher`, `alpine-avalanche`, `ancient-sloth-titan`, `ashbone-ghoul`, `baby-horned-capybara`, `badger-berserker`, `badger-sapper`. Each has a full scene background; contact sheet `docs/art/art8-contact-1.png`.
+- The run stopped because the owner's browser pane went hidden (page timers throttled, gallery does not load). The other 105 cards (ANIM1 groups A-D minus the four the owner keeps, plus `rootworm-colony` and `chipmunk-skirmisher`) are not done. Tools: `tools/art/art8_import_2026_11_03.py`, picks and prompts in `docs/art/art8-picks-2026-11-03.json`.
+
 ## 2026-11-03 Package ECON2 (economy review for alpha; measures and proposes, no game number changed)
 - **New `docs/econ2-2026-11-03.md`:**
   - A day-by-day sim of a new player (`tools/econ2/econ_sim_2026_11_03.js`, the game's own tables with ECON1's halving): Maps 0-10 take 3 days (casual 7); from Map 11, Magic Dust is the only thing that limits progress. Maps 11-20 take 46 days (casual 66) if the deck keeps the road's reference level with each map's cards, and 7 (casual 14) if one deck is kept.

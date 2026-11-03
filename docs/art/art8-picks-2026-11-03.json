@@ -1,0 +1,30 @@
+{
+ "adder-ambusher": {
+  "pick": "B",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a viper-like adder coiled on dry heath grass, a full scenic background filling the whole frame, no text"
+ },
+ "alpine-avalanche": {
+  "pick": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a large white polar bear on a snowy slope with a tumbling avalanche behind, a full scenic background filling the whole frame, no text"
+ },
+ "ancient-sloth-titan": {
+  "pick": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a huge shaggy ground sloth under tall jungle trees, a full scenic background filling the whole frame, no text"
+ },
+ "ashbone-ghoul": {
+  "pick": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a gaunt grey-furred hyena on pale ash flats, dark volcanic hills behind, a full scenic background filling the whole frame, no text"
+ },
+ "baby-horned-capybara": {
+  "pick": "D",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a baby capybara with a small horn on a green riverbank among reeds, a full scenic background filling the whole frame, no text"
+ },
+ "badger-berserker": {
+  "pick": "B",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a snarling badger with bared teeth charging out of a forest burrow, flying dirt, a full scenic background filling the whole frame, no text"
+ },
+ "badger-sapper": {
+  "pick": "C",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a badger carrying a bundle of tools beside a freshly dug pit in a forest clearing, a full scenic background filling the whole frame, no text"
+ }
+}
