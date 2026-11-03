@@ -2282,7 +2282,7 @@
     "effects": {
       "onReadyGold": 1
     },
-    "flavor": "A living fossil that has been quietly hoarding pearls since long before this castle was built.",
+    "flavor": "A living fossil, quietly hoarding pearls since the sea was young.",
     "locked": true,
     "archetypes": [
       "Cephalopod"
@@ -2605,7 +2605,7 @@
     "attack": 3,
     "health": 14,
     "effects": {},
-    "flavor": "Settles every argument the same way: badly, loudly, and in its own favor.",
+    "flavor": "Settles every argument the same way: badly, loudly, and in its own favour.",
     "locked": true,
     "archetypes": [
       "Bear"
@@ -3620,7 +3620,7 @@
     "effects": {
       "regen": 3
     },
-    "flavor": "Older than the castle, wider than the moat, and in absolutely no hurry to leave the mud.",
+    "flavor": "Wider than the moat, heavier than the drawbridge, and perfectly happy where the mud is deepest.",
     "locked": true,
     "archetypes": [
       "Frog"
@@ -7264,7 +7264,7 @@
       "evasive": true,
       "tide": true
     },
-    "flavor": "By the time the color pattern registers as a threat, it already isn't there.",
+    "flavor": "By the time the colour pattern registers as a threat, it already isn't there.",
     "dmgType": "physical",
     "resist": [],
     "tags": [],
@@ -14880,7 +14880,7 @@
       "kind": "pack",
       "tier": 1
     },
-    "flavor": "Twice the height of a cart, with blades bolted to its flanks and brow and steel on every claw and tooth. The monkey on its back, Kip, does the steering. This is not a pet. This is the war, walking.",
+    "flavor": "Twice the height of a cart, steel on every claw and tooth. Kip, the monkey on its back, does the steering. This is the war, walking.",
     "numericId": 390,
     "uuid": "9a5112c9-2131-413c-a35e-49e924d3ceef",
     "unattainable": true,
@@ -21649,7 +21649,7 @@
       "leader": true,
       "magic": true
     },
-    "flavor": "A cat in a starry hat, a staff with a sky-blue orb, and a little fire spirit reading over its shoulder. It turns up on the far roads, past Map 50, the way the Traveller once did.",
+    "flavor": "A cat in a starry hat, with a little fire spirit reading over its shoulder. It walks the farthest roads, as the Traveller once did.",
     "locked": true,
     "basicSet": "leader",
     "numericId": 561,
@@ -27905,7 +27905,7 @@
     "uuid": "8423b74a-74e1-5315-a0be-84fc6c5d2aa0",
     "wait": 1,
     "attack": 5,
-    "flavor": "Poke it and it throws its insides at you, sticky threads and all. A week later it has grown a new set and is back on the reef, chewing sand.",
+    "flavor": "Poke it and it throws its insides at you. A week later it has grown a new set and is back on the reef, chewing sand.",
     "health": 5,
     "locked": true,
     "rarity": "uncommon",
@@ -29439,7 +29439,7 @@
       "armor": 2,
       "tide": true
     },
-    "flavor": "Older than the castle, armoured like a knight, and in no hurry at all.",
+    "flavor": "Its bony plates were armour long before anyone forged any. It has outlived every smith since.",
     "dmgType": "physical",
     "resist": [],
     "tags": [],
@@ -32082,7 +32082,7 @@
     "dmgType": "physical",
     "resist": [],
     "tags": [],
-    "flavor": "Bent at one end, scuffed at the other. It has opened more stuck doors than any key, and it is a great comfort when something small and leggy drops from the rafters.",
+    "flavor": "It has opened more stuck doors than any key, and it is a great comfort when something leggy drops from the rafters.",
     "locked": true,
     "archetypes": [],
     "rarity": "rare",
@@ -32118,7 +32118,7 @@
       "armor": 1,
       "helmet": true
     },
-    "flavor": "It used to take the high roads and the hard jobs. Then it took one to the knee. Now it keeps the village gate with a bucket on its head and stories nobody asked for.",
+    "flavor": "It took the hard jobs until it took one to the knee. Now it keeps the village gate, with a bucket on its head and stories nobody asked for.",
     "dmgType": "physical",
     "resist": [],
     "tags": [],

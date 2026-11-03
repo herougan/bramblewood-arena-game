@@ -2926,7 +2926,7 @@ const SKILL_TEXT = {
   brood: v=> Number(v) > 1 ? `When it arrives, ${v} 1/1 Brood tokens of its kind (Swarm) hatch beside it.` : `When it arrives, a 1/1 Brood token of its kind (Swarm) hatches beside it.`,
   sweep: v=> `Also deals ${numOr(v, 1)} damage to the units beside its target.`, // Cleave N: default 1 (2026-10-16)
   rage: (v, n, e)=> e && e.rageGrant && typeof e.rageGrant === 'object' ? TX('ui.sk-rage-grant', {skills: grantText(e.rageGrant) || TX('ui.cx-nothing')}) : `Below half Health: double Attack and takes half damage.`, // + Rage – {…} (EN, 2026-10-23)
-  immolation: v=> `Deal ${v} fire damage to all adjacent units every upkeep.`,
+  immolation: v=> `Every upkeep: ${v} fire damage to adjacent units and the enemy facing it.`, // 2026-11-03 (TEXT1): + the facing enemy, as the engine's upkeep burns it
   speed: v=> `Speed ${v}: faster units swing first.`, haste: ()=> `Speed +2, and +1 to adjacent allies.`,
   rabid: v=> `Its hits add ${numOr(v, 2)} Poison. Swimmers and water damage hit it for double.`, // 2026-10-16 skill audit: Rabid N
   cower: v=> typeof v === 'number' ? TX('ui.eng15-cower-short', {n: v}) : v === 'flee' ? `Hit last turn: it backs off this turn (no attack, heals 2).` : `Hit last turn: it hides in its shell this turn (no attack, attacks can't hurt it).`, // + Cower N (ENG15, 2026-10-31)
@@ -2985,7 +2985,7 @@ const SKILL_TEXT = {
   guardian: ()=> `Takes the plain attacks aimed at its adjacent allies (not the bramble).`, // EN3 (2026-10-23, owner 19:27 #2) // 2026-10-22 (package GD): + in front / behind; (GD2, GD-3): swings only
   quick: ()=> `Swings at Speed 2: before Arrows and Bolts and units without Quick.`, // 2026-10-17
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
-  swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
+  swift: ()=> `Always attacks first, and dodges half the attacks from units without Swift.`, // 2026-11-03 (TEXT1): the dodge is a 1-in-2 roll
   reload: v=> `After attacking, sits out ${v} round${v==1?'':'s'}.`,
   shell: v=> TX('ui.sk-shell', {n: v}), // 2026-10-18 (package D): terse
   stealth: ()=> `Always attacks the enemy bramble.`,
@@ -17893,7 +17893,7 @@ const DIALOGUES = {
     {who:'vesper', text:'An otter with a deck. How quaint. Fight me where it counts.'},
     {who:'swiftpaw', text:'The Arena. Strangers, tickets, bad manners.', options:[{label:'I\'m in.', goto:'go', act:'sub:arena'}, {label:'Later.', goto:'later'}], silent:'go'},
     {label:'later', who:'vesper', text:'Of course. Later. They always say later.', goto:'go'},
-    {label:'go', who:'vesper', text:'Ten tickets a day. Spend them well.'},
+    {label:'go', who:'vesper', text:'Ten tickets at most, and one more each hour. Spend them well.'},
   ]},
   unlock_raid: {lines:[
     {who:'aurelia', text:'Even the Dominion cannot fell that thing alone.'},
@@ -17967,7 +17967,7 @@ const DIALOGUES = {
   ]},
   unlock_tavern: {lines:[
     {who:'traveller', text:'A tavern, this far out. Warm fire, long tables, and a keeper who has heard every road story twice.'},
-    {who:'traveller', text:'Rest here when you have earned it: every 20 different fights you clear, the keeper will stretch your stamina a little further.', options:[{label:'Show me.', goto:'go', act:'tavern'}], silent:'go'},
+    {who:'traveller', text:'Rest here when you have earned it. Bring Dust and the right materials, and the keeper will stretch your Energy a little further.', options:[{label:'Show me.', goto:'go', act:'tavern'}], silent:'go'},
     {label:'go', who:'traveller', text:'Max Energy, raised one cup at a time.'},
   ]},
   unlock_skillcodex: {lines:[
@@ -18088,7 +18088,7 @@ const DIALOGUES = {
   ]},
   cur_m7_shell: {lines:[
     {who:'traveller', text:'A great spiral shell. Hold it up and you hear the reef breathing.', options:[{label:'Listen.', goto:'go'}, {label:'Not now.', goto:'no'}]},
-    {label:'go', who:'traveller', text:'Flood… ebb… flood. The tide decides who hits harder. Watch the pill on the field.', goto:'end'}, // 2026-10-15: Flood
+    {label:'go', who:'traveller', text:'Flood… ebb… flood. The tide decides who hits harder. Watch the Tide marker on the field.', goto:'end'}, // 2026-10-15: Flood
     {label:'no', who:'traveller', text:'The reef will still be breathing later.', goto:'end'},
     {label:'end', who:'aurelia', text:'Tide units ride the Flood. Keep that in mind.'}, // 2026-10-15: Swimmer retired, Flow → Flood
   ]},
@@ -23249,7 +23249,7 @@ const CONQUEST_MAPS = [
       { key:"19-5", kind:"elite", name:"Sky Scraper Sentinel", icon:"🦅", rules:{ashRain:true}, deck:{"cinder-stoker":4,"phoenix-fledgling":3,"yeti":4,"quill-volley":1,"magma-titan":4,"pumice-beetle":2,"talus-pika":1,"pit-glutton":1} /* 2026-11-03 (BAL13, BAL12-6 / RAR-1): echidna-quillshot over the fight's rarity cap (veryrare), copies to the list's nearest within it (tools/bal13/decks_2026_11_02.js overcap) */ /* 2026-11-02 (BAL10): road retune toward the road curve (round 1), swaps only, 47.5% -> 58% at 40-50 tune games, target 60 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */ /* 2026-11-02 (BAL9, JJ24): cut cards scree-goat, porcupine-roller swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 37.5% -> 60% at 40 tune games, target 60 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 74% -> 68% at 50 tune games, target 60 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3.25 dropped, the level schedule decides */, flavor:"You'll hear it before you see it. That's the point.", revealDeck:"A", requires:["19-4"] },
       { key:"19-6", kind:"boss", name:"The Frost Yeti King", icon:"👑", rules:{ashy:true}, deck:{"cinder-stoker":5,"yeti":2,"quill-volley":2,"glacier-wolf-pack":3,"talus-pika":1,"sulfur-cinder-moth":1,"pumice-beetle":2,"yeti-chieftain":1,"pit-glutton":1} /* 2026-11-03 (DEC1, BAL12-6 a / BAL13-2 a): echidna-quillshot (Super Rare, over the fight's Very Rare cap; no longer its reward) x1 -> pit-glutton x1, the list's nearest within the cap, the boss's leader left out (tools/bal13/decks_2026_11_02.js swapOut, as 19-3..19-5) */ /* 2026-11-02 (BAL13, RAR-1 copy caps): echidna-quillshot -1 (its new rarity's copy cap), copies to the list's nearest (tools/bal13/decks_2026_11_02.js trim) */ /* 2026-11-02 (BAL9, JJ24): cut cards porcupine-roller, scree-goat swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 90% -> 62.5% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, showcase:"yeti" /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"The summit belongs to whatever can survive the cold longest.", requires:["19-5"] },
     ]},
-  { id:"m11", unlockAfter:"m3", name:"The Sundered Peak", icon:"🌋", blurb:"The campaign’s final approach — apex predators, no scouts left to send ahead of you. Ten regions down. One throne left.", sequential:true,
+  { id:"m11", unlockAfter:"m3", name:"The Sundered Peak", icon:"🌋", blurb:"The mountain’s broken crown — apex predators, and no scouts left to send ahead of you.", sequential:true,
     nodes: [
       { key:"20-1", kind:"skirmish", name:"Silverback Watch", icon:"🦍", deck:{"ashbone-ghoul":3,"cave-warlord":3,"cinder-skeleton":3,"pack-mule":5,"magma-salamander":2} /* 2026-11-02 (BAL9, JJ24): cut card bear-cub swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 98% -> 94% at 50 tune games, target 90 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, flavor:"The watch has not missed an approach in living memory.", requires:[], showcase:"cave-warlord" },
       { key:"20-2", kind:"skirmish", name:"Grizzly Frontier", icon:"🐻", deck:{"pack-mule":3,"ash-cloud-condor":3,"woodland-brawler":1,"cave-warlord":3,"ashbone-ghoul":4,"pit-glutton":3} /* 2026-11-02 (BAL10): road retune toward the road curve (round 1), swaps only, 95% -> 88% at 40-50 tune games, target 85.7 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */ /* 2026-11-02 (BAL9, JJ24): cut card bear-cub swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 62.5% -> 80% at 40 tune games, target 86 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 68% -> 86% at 50 tune games, target 86 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, flavor:"Even the cubs here have already learned to hold ground.", requires:["20-1"] },
