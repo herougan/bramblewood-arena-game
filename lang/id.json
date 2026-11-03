@@ -3847,5 +3847,13 @@
  "Updated {t} · refreshes every {s} s": "Diperbarui {t} · diperbarui tiap {s} dtk",
  "Buy again": "Beli lagi",
  "Buy {n} again": "Beli {n} lagi",
- "Not enough to buy another": "Tidak cukup untuk membeli lagi"
+ "Not enough to buy another": "Tidak cukup untuk membeli lagi",
+ "Still listed": "Masih terdaftar",
+ "This cut is not in the game yet: the card is still on this list.": "Potongan ini belum masuk ke permainan: kartunya masih ada di daftar ini.",
+ "Kept for its fight": "Disimpan untuk pertarungannya",
+ "Off this list, but on the map's SPECIAL list: a fight still leads with it or gives it as a reward, so it can still appear here.": "Tidak di daftar ini, tetapi di daftar SPECIAL peta: sebuah pertarungan masih memakainya sebagai pemimpin atau memberinya sebagai hadiah, jadi kartu ini masih bisa muncul di sini.",
+ "Removed": "Dihapus",
+ "Off this list: the cut is in the game.": "Tidak di daftar ini: potongannya sudah di permainan.",
+ "Off this list: the cut is in the game. Still on: {lists}.": "Tidak di daftar ini: potongannya sudah di permainan. Masih di: {lists}.",
+ "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "✂ Coret dan ↩ Simpan hanya menandai pilihanmu di peramban ini; tidak ada daftar yang berubah sampai Claude memasukkannya. Pakai Salin pilihan saya atau Ekspor semua, lalu tempel teksnya ke Claude."
 }

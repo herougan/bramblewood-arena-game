@@ -3845,5 +3845,13 @@
  "Updated {t} · refreshes every {s} s": "更新于 {t} · 每 {s} 秒刷新",
  "Buy again": "再买一次",
  "Buy {n} again": "再买 {n} 个",
- "Not enough to buy another": "不够再买一个"
+ "Not enough to buy another": "不够再买一个",
+ "Still listed": "仍在列表中",
+ "This cut is not in the game yet: the card is still on this list.": "这次删减还未进入游戏：这张卡仍在此列表中。",
+ "Kept for its fight": "为其战斗保留",
+ "Off this list, but on the map's SPECIAL list: a fight still leads with it or gives it as a reward, so it can still appear here.": "已不在此列表，但在地图的 SPECIAL 列表中：仍有战斗以它为首领或把它作为奖励，所以它仍可能在这里出现。",
+ "Removed": "已移除",
+ "Off this list: the cut is in the game.": "已不在此列表：删减已进入游戏。",
+ "Off this list: the cut is in the game. Still on: {lists}.": "已不在此列表：删减已进入游戏。仍在：{lists}。",
+ "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "✂ 剔除 和 ↩ 保留 只在此浏览器中标记你的选择；在 Claude 合并之前，列表不会改变。请用“复制我的选择”或“全部导出”，再把文字粘贴给 Claude。"
 }

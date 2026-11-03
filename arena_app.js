@@ -32098,6 +32098,31 @@ function rv2TagsOf(e, baby){
   else if(e.by === 'claude') t.push(['claude', TX('ui.rv2-tag-claude'), TX('ui.rv2-tip-claude')]);
   return t;
 }
+// 2026-11-03 (package LISTFIX2; owner 22:02: "cut cards still stay, but are just flagged as cut"): a Cut card's tile says whether the cut is
+// in the lists the game plays (mpEntry: the file + any live __cfg:map-pools row): "Still listed" (warning) while it is still on this section's
+// list, "Kept for its fight" when it left the MAP / submap list but sits on the map's SPECIAL (a boss leader or a fight's reward / first-clear
+// card: SPECIAL feeds that map's fights and packs), "Removed" otherwise (its tooltip names any other list that still holds it). The entry's
+// optional `statusWhy` (canonical/map-review.json, LISTFIX2) is added to the tooltip. Read-only: the ✂ / ↩ buttons still only mark picks.
+function lf2ListOf(ent, secKey){ return secKey === 'cards' ? ent.cards : secKey === 'special' ? ent.special : (ent.submaps[String(secKey).replace(/^sub:/, '')] || []); }
+function lf2CutStatus(top, secKey, id){
+  let ent; try{ ent = mpEntry(top); }catch(e){ return null; } if(!ent) return null;
+  if(lf2ListOf(ent, secKey).includes(id)) return {k: 'listed'};
+  if(secKey !== 'special' && ent.special.includes(id)) return {k: 'special'};
+  const where = [], tops = new Set(Object.keys(((typeof MAP_POOLS_BASE !== 'undefined' && MAP_POOLS_BASE) || {}).maps || {}).concat(Object.keys(mapPoolEdits || {})));
+  const nm = mid=>{ const m = mpMapById(mid); return m ? m.name : mid; };
+  tops.forEach(t=>{ let e; try{ e = mpEntry(t); }catch(x){ return; } if(!e) return;
+    if(e.cards.includes(id) || e.special.includes(id)) where.push(nm(t));
+    Object.keys(e.submaps).forEach(s=>{ if((e.submaps[s] || []).includes(id)) where.push(nm(MP_EXTRA_LISTS[s] ? MP_EXTRA_LISTS[s].map : s)); }); });
+  return {k: 'removed', where: [...new Set(where)]};
+}
+function lf2CutPillHTML(e, secKey){
+  const st = lf2CutStatus(rvFlipTop, secKey, e.id); if(!st) return '';
+  const extra = e.statusWhy ? ' ' + String(e.statusWhy) : '', css = (bg, fg)=> ` style="background:${bg};color:${fg};border-color:transparent;cursor:help"`; // inline: the panel's CSS lives in the template
+  if(st.k === 'listed') return `<b class="rv2-pill is-lf2-listed"${css('#c0392b', '#fff')} title="${escapeAttr(TX('ui.lf2-listed-tip') + extra)}">⚠ ${escapeHtml(TX('ui.lf2-listed'))}</b>`;
+  if(st.k === 'special') return `<b class="rv2-pill is-lf2-special"${css('#d9c27a', '#2a220b')} title="${escapeAttr(TX('ui.lf2-special-tip') + extra)}">${escapeHtml(TX('ui.lf2-special'))}</b>`;
+  const tip = st.where.length ? TX('ui.lf2-removed-elsewhere-tip', {lists: st.where.join(', ')}) : TX('ui.lf2-removed-tip');
+  return `<b class="rv2-pill is-lf2-removed"${css('#3f7d4e', '#fff')} title="${escapeAttr(tip + extra)}">✓ ${escapeHtml(TX('ui.lf2-removed'))}</b>`;
+}
 function rv1TilesHTML(list, kind, defs, secKey){
   if(!list.length) return '<span class="panel-sub">–</span>';
   return list.map(e=> rv1TileHTML(e, kind, defs, secKey)).join('');
@@ -32113,7 +32138,7 @@ function rv1TileHTML(e, kind, defs, secKey){
   const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
   const dd = defs[e.id], pt = dd ? basicPackTierOf(dd) : 0; // the pack a basic pack also gives it from, as a pill (was a tag under the small tile)
   const baby = ui13IsBaby(e.id, defs), unlikely = e.flag === 'unlikely';
-  const pills = rv2TagsOf(e, baby).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
+  const pills = (kind === 'cut' ? lf2CutPillHTML(e, secKey) /* 2026-11-03 (LISTFIX2) */ : '') + rv2TagsOf(e, baby).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
   const fl = !!rvFlips[rvFlipTop + '|' + secKey + '|' + e.id]; // 2026-10-29 (UI3, S10): a toggle made earlier this session is still on
   return `<span class="rv1-tile is-${kind}${fl ? ' is-flipped' : ''}${baby ? ' is-baby' : ''}${unlikely ? ' is-unlikely' : ''}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}" data-rv-baby="${baby ? 1 : 0}" data-rv-unlikely="${unlikely ? 1 : 0}">`
     + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, why: e.why || ''})
@@ -32291,7 +32316,7 @@ function pk1OpenMapCards(mapId){
   }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); }; // 2026-11-01 (UI13, HH3): not while the card editor has it hidden

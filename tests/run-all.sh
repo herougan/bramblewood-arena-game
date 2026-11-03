@@ -304,6 +304,7 @@ run node tests/fix7-2026-11-03.js   # 2026-11-03 (package FIX7, release review 1
 # browser check for package FIX7 (M1): python3 tests/e2e/fix7_2026_11_03.py (needs Playwright; not run by run.js)
 run node tests/ui17-2026-11-03.js   # 2026-11-03 (package UI17, owner 18:37 + 18:40): Full reset (new account) local + cloud against a fake Supabase, admin infinite Energy (Admin Mode + admin account only, kept by every reset), the Admin -> Players overview (needs SQL until admin_overview), Buy again, the ×10 at Map 8, texts in 12 packs, the proposed SQL
 # browser check for package UI17: python3 tests/e2e/ui17_2026_11_03.py (needs Playwright; not run by run.js)
+run node tests/listfix2-2026-11-03.js   # 2026-11-03 (package LISTFIX2, owner 22:02): every 11-01 export cut applied (CARD5's two first-clear cards open as LISTFIX2-1), cut cards on SPECIAL are their fight's cards and say why, the Map cards view's Still listed / Kept for its fight / Removed pill, no Apply button, texts in 12 packs
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

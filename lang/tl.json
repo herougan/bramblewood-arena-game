@@ -3846,5 +3846,13 @@
  "Updated {t} · refreshes every {s} s": "Na-update {t} · nire-refresh bawat {s} s",
  "Buy again": "Bilhin ulit",
  "Buy {n} again": "Bilhin ulit ang {n}",
- "Not enough to buy another": "Kulang para bumili ulit"
+ "Not enough to buy another": "Kulang para bumili ulit",
+ "Still listed": "Nakalista pa",
+ "This cut is not in the game yet: the card is still on this list.": "Wala pa sa laro ang tanggal na ito: nasa listahang ito pa ang baraha.",
+ "Kept for its fight": "Itinago para sa laban nito",
+ "Off this list, but on the map's SPECIAL list: a fight still leads with it or gives it as a reward, so it can still appear here.": "Wala na sa listahang ito, pero nasa SPECIAL na listahan ng mapa: may laban pang gumagamit dito bilang pinuno o ibinibigay ito bilang gantimpala, kaya puwede pa itong lumabas dito.",
+ "Removed": "Tinanggal",
+ "Off this list: the cut is in the game.": "Wala na sa listahang ito: nasa laro na ang tanggal.",
+ "Off this list: the cut is in the game. Still on: {lists}.": "Wala na sa listahang ito: nasa laro na ang tanggal. Nasa pa rin: {lists}.",
+ "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "Minamarkahan lang ng ✂ Tanggalin at ↩ Panatilihin ang mga pinili mo sa browser na ito; walang listahang magbabago hangga’t hindi ito isinasama ni Claude. Gamitin ang Kopyahin ang mga napili ko o I-export lahat, saka i-paste kay Claude."
 }

@@ -3847,5 +3847,13 @@
  "Updated {t} · refreshes every {s} s": "Atualizado {t} · atualiza a cada {s} s",
  "Buy again": "Comprar outra vez",
  "Buy {n} again": "Comprar {n} outra vez",
- "Not enough to buy another": "Não chega para comprar outro"
+ "Not enough to buy another": "Não chega para comprar outro",
+ "Still listed": "Ainda na lista",
+ "This cut is not in the game yet: the card is still on this list.": "Este corte ainda não está no jogo: a carta continua nesta lista.",
+ "Kept for its fight": "Mantida pelo seu combate",
+ "Off this list, but on the map's SPECIAL list: a fight still leads with it or gives it as a reward, so it can still appear here.": "Fora desta lista, mas na lista SPECIAL do mapa: um combate ainda a usa como líder ou a dá como recompensa, por isso ainda pode aparecer aqui.",
+ "Removed": "Removida",
+ "Off this list: the cut is in the game.": "Fora desta lista: o corte está no jogo.",
+ "Off this list: the cut is in the game. Still on: {lists}.": "Fora desta lista: o corte está no jogo. Ainda em: {lists}.",
+ "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "✂ Cortar e ↩ Manter só marcam as tuas escolhas neste navegador; nenhuma lista muda até o Claude as integrar. Usa Copiar minhas escolhas ou Exportar tudo e cola o texto ao Claude."
 }

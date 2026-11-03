@@ -3845,5 +3845,13 @@
  "Updated {t} · refreshes every {s} s": "{t} に更新 · {s}秒ごとに更新",
  "Buy again": "もう一度買う",
  "Buy {n} again": "もう一度{n}個買う",
- "Not enough to buy another": "もう一つ買うには足りません"
+ "Not enough to buy another": "もう一つ買うには足りません",
+ "Still listed": "まだリストにある",
+ "This cut is not in the game yet: the card is still on this list.": "このカットはまだゲームに入っていません：カードはまだこのリストにあります。",
+ "Kept for its fight": "戦闘のために残す",
+ "Off this list, but on the map's SPECIAL list: a fight still leads with it or gives it as a reward, so it can still appear here.": "このリストからは外れましたが、マップの SPECIAL リストにあります：まだリーダーにする戦闘や報酬として出す戦闘があるため、ここに出ることがあります。",
+ "Removed": "削除済み",
+ "Off this list: the cut is in the game.": "このリストから外れました：カットはゲームに反映済みです。",
+ "Off this list: the cut is in the game. Still on: {lists}.": "このリストから外れました：カットはゲームに反映済みです。まだ載っている所：{lists}。",
+ "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.": "✂ カット と ↩ 残す はこのブラウザで選択に印を付けるだけです。Claude が取り込むまでリストは変わりません。「選択をコピー」か「すべてエクスポート」を使い、テキストを Claude に貼り付けてください。"
 }

@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package LISTFIX2 (owner 22:02: "cut cards still stay, but are just flagged as cut")
+- **Every cut is applied:** all 37 cuts of the owner's 11-01 export (THEME4) and the older THEME3 cuts are off their MAP / submap lists. 13 cut cards still show on their map:
+  - 8 sit on SPECIAL as a fight's reward or first-clear card (2-1, 2-3, 2-5, 4-2, 4-5, 5-3, 6-4, 20-9).
+  - 3 are boss leaders on SPECIAL since RELFIX3 (3-7, 17-8, 19-6).
+  - CARD5 put 2 back on the MAP list as first-clear cards: Snapper Hatchling (5-1) and Weaver Bird (14-3).
+  - No list or deck changed. Owner calls: LISTFIX2-1 (the reward / first-clear cards) and LISTFIX2-2 (the boss cards).
+- **Map cards view:** each Cut card has a status pill read off the live lists: ⚠ Still listed, Kept for its fight (on SPECIAL), or ✓ Removed (its tooltip names any other list that still holds it). A note under Copy my picks says the ✂ / ↩ marks stay in this browser until Claude folds them in.
+  - No "Apply my cuts" button: a list change from the browser is a live `card_overrides` `__cfg:map-pools` write, which waits for "apply it".
+- `canonical/map-review.json`: `statusWhy` on the 13 entries. Texts: 8 TX keys (ui.lf2-*) in 12 packs (`tools/i18n_2026_11_03_listfix2.py`). Test: `tests/listfix2-2026-11-03.js`.
+
 ## 2026-11-03 Package ECON2 (economy review for alpha; measures and proposes, no game number changed)
 - **New `docs/econ2-2026-11-03.md`:**
   - A day-by-day sim of a new player (`tools/econ2/econ_sim_2026_11_03.js`, the game's own tables with ECON1's halving): Maps 0-10 take 3 days (casual 7); from Map 11, Magic Dust is the only thing that limits progress. Maps 11-20 take 46 days (casual 66) if the deck keeps the road's reference level with each map's cards, and 7 (casual 14) if one deck is kept.
