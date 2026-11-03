@@ -3164,7 +3164,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng20-float-roll": "Stop, drop and roll!",
   "ui.eng20-log-burn": "{name} burns for {n}.",
   "ui.eng20-float-heavy-head": "Heavy Headwind: −2⚔",
-  "ui.eng20-float-heavy-tail": "Heavy Tailwind!"
+  "ui.eng20-float-heavy-tail": "Heavy Tailwind!",
+  "ui.econ3-each": "each",
+  "ui.econ3-each-tip": "Every quest in this tier pays this when you claim it.",
+  "ui.econ3-head-show": "Show the map's story",
+  "ui.econ3-head-hide": "Hide the map's story",
+  "ui.econ3-metal": "Metal"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

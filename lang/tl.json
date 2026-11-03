@@ -3845,5 +3845,8 @@
  "Updated {t} · refreshes every {s} s": "Na-update {t} · nire-refresh bawat {s} s",
  "Buy again": "Bilhin ulit",
  "Buy {n} again": "Bilhin ulit ang {n}",
- "Not enough to buy another": "Kulang para bumili ulit"
+ "Not enough to buy another": "Kulang para bumili ulit",
+ "Every quest in this tier pays this when you claim it.": "Bawat quest sa tier na ito ay nagbabayad nito kapag kinuha mo.",
+ "Show the map's story": "Ipakita ang kuwento ng mapa",
+ "Hide the map's story": "Itago ang kuwento ng mapa"
 }

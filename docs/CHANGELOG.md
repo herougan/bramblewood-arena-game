@@ -7,6 +7,15 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Ten curiosities on the silent maps** (Maps 6, 9, 12, 15, 16, 17, 18, 22, 23, 24), 3-4 lines each in the lore bible's voices, placed in each map's emptiest area; DRAFTS for the owner (Admin -> NPC speeches). Every main map from 0 to 24 now has a conversation. 12 languages.
 - **Proposals only** in `docs/content9-2026-11-03.md`: one job for five Map 0-1 cards, the rest vanilla (CONTENT9-1); the answer rule with a read-only checker, `node tools/content9/answers_2026_11_03.js` (Arrow Slits on Maps 23-24 and 25+ Health walls on Maps 17-24 are answered only by carried cards; Slippery ice and Consternation have no keyword answer); two bramble abilities, the Gnawed Larder's Feed and Ballista Keep's Aimed Bolt (CONTENT9-2).
 - Test: `tests/content9-2026-11-03.js`.
+## 2026-11-03 Package ECON3 (owner 20:34 + 21:10: ECON2-1, -2, -3, -5, -6, -8, -10 and the quest swap)
+- **Murgle Mayhem is open** (ECON2-1): still on Sable Swampmire (Map 6) behind 6-8, it unlocks once Map 11 opens (Map 10 cleared); pay unchanged (69 Dust + 46 Leaves a won floor). The Undercroft and the Long Burrow stay hidden.
+- **Weekly quests** (ECON2-2, ECON2-3): the board says "each" after a weekly reward (paid per quest, as before). Tiers by feature: tier 1 Energy / 10 Conquest wins / units, tier 2 15 wins, tier 3 PvP tickets, PvP wins and the two raid quests; ids and pay kept.
+- **Repeat skirmish pay by Energy** (ECON2-5): 8 Leaves + 2 Dust a point of Energy before ECON1's half, so 4 Leaves + 1 Dust a point (Map 0: 4 / 1; a 9-Energy Map 20 skirmish 36 / 9, was 4 / 0). Overrides, elites, bosses, the Spire and the daily dungeons keep theirs.
+- **Errands** (ECON2-6): pay x2.5 (35-68 Dust), offered after 15% of Conquest wins (was 30%).
+- **Floods** (ECON2-8): Iron Shard on a repeat win 5% (was 15%); Forge tier steps also take Metal: 5 / 10 / 15 / 20 (tiers 2-5).
+- **Maps** (ECON2-10): the title panel folds to a chip (icon + name) after the first look at a map; a tap opens the blurb. Moved in code: Volcano Lair 20-B-2 / 20-B-3, Clovermead 1-A-1, the Spark-fly Hollow 8-H, the Pale Stag 13-J, Basalt Foundry's anvil, Eyrie Heights' Map Codex and Arena spots. Measured against the live published layouts (they win over fixedPos; copy in `tests/fixtures/econ3-live-map-layout-2026-11-03.json`), four fights that sit in those rows wait on `supabase/proposed/20261103_econ3_map_layout.sql` ("apply it"): 20-3, 18-A-7, 10-2, 20-A-2. Screens: `docs/screens/econ3/`.
+- **Quest swap**: the board is drawn with the new roll first and the old paper falls off its pin over it (was a blank paper flip).
+- Texts: 5 TX keys (ui.econ3-*) in 12 packs (`tools/i18n_2026_11_03_econ3.py`). Tests: `tests/econ3-2026-11-03.js`, browser `tests/e2e/econ3_2026_11_03.py`; dated updates to econ1-2026-10-30 (skirmish repeat) and tu2-2026-10-23 (Murgle's switch).
 
 ## 2026-11-03 Package ECON2 (economy review for alpha; measures and proposes, no game number changed)
 - **New `docs/econ2-2026-11-03.md`:**
