@@ -5001,5 +5001,11 @@
  "An army that isn't paid starts thinking. Good. Let it think.": "Ein Heer, das keinen Sold bekommt, fängt an zu denken. Gut. Soll es denken.",
  "A coin from the Counting House, fallen in a crack. Someone bit it to test it.": "Eine Münze aus dem Kontor, in eine Ritze gefallen. Jemand hat hineingebissen, um sie zu prüfen.",
  "And then left it there?": "Und sie dann liegen lassen?",
- "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "Der Biss verrät: Unter dem Gold ist Blei. Sogar die Münzen des Magnaten tragen Rüstung."
+ "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "Der Biss verrät: Unter dem Gold ist Blei. Sogar die Münzen des Magnaten tragen Rüstung.",
+ "{v1}/{v2} cleared": "{v1}/{v2} geschafft",
+ "{v1} {v2}/{v3} cleared": "{v1} {v2}/{v3} geschafft",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} geschafft",
+ "Cleared": "Geschafft",
+ "{v1} card{s} collected": "{v1} Karte(n) gesammelt",
+ "Clear {v1} / {v2}": "{v1} / {v2} abschließen"
 }

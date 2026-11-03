@@ -12400,8 +12400,8 @@ const ACHIEVEMENT_DEFS = [
   {id:'collector_50', cat:'collection', tier:1, icon:'🗂️', title:'Card Collector', desc:TX('ui.i2-ach-own-n', {n: 50}), target:50, progress:ctx=>ctx.ownedCards, reward:{dust:101}},
   {id:'collector_100', cat:'collection', tier:2, icon:'📚', title:'Bramble Archivist', desc:TX('ui.i2-ach-own-n', {n: 100}), target:100, progress:ctx=>ctx.ownedCards, reward:{gold:40, dust:202}},
   {id:'collector_200', cat:'collection', tier:3, icon:'🏛️', title:'Complete the Codex', desc:TX('ui.i2-ach-own-n', {n: 200}), target:200, progress:ctx=>ctx.ownedCards, reward:{gold:120, dust:338, metal:1}},
-  {id:'leveler_1', cat:'forge', tier:1, icon:'🔨', title:'First Steps in the Forge', desc:'Level up your first card.', target:1, progress:ctx=>ctx.leveledCards>0?1:0, reward:{dust:68}},
-  {id:'leveler_10', cat:'forge', tier:2, icon:'⭐', title:'Forge Regular', desc:TX('ui.i2-ach-level-n', {n: 10}), target:10, progress:ctx=>ctx.leveledCards, reward:{gold:40, dust:202}},
+  {id:'leveler_1', cat:'forge', tier:1, icon:'🔨', title:'First Steps in the Forge', desc:'Level up your first card.', target:1, progress:ctx=>ctx.forgeOpen && ctx.leveledCards>0?1:0, reward:{dust:68}},
+  {id:'leveler_10', cat:'forge', tier:2, icon:'⭐', title:'Forge Regular', desc:TX('ui.i2-ach-level-n', {n: 10}), target:10, progress:ctx=>ctx.forgeOpen ? ctx.leveledCards : 0, reward:{gold:40, dust:202}},
   {id:'conquest_5', cat:'road', tier:1, icon:'🗺️', title:'Into the Wilds', desc:TX('ui.i2-ach-clear-n', {n: 5}), target:5, progress:ctx=>ctx.clearedNodes, reward:{gold:60, dust:68}},
   {id:'conquest_map', cat:'road', tier:2, icon:'🏕️', title:'Campaign Cleared', desc:'Fully clear a Conquest map.', target:1, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:150, dust:169, metal:1}},
   {id:'conquest_maps_5', cat:'road', tier:2, icon:'🧭', title:'Five Horizons', desc:TX('ui.i2-ach-maps-n', {n: 5}), target:5, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:240, dust:220}},
@@ -12448,6 +12448,7 @@ function achievementContext(){
   return {
     wins: s.wins, bestWinStreak: s.bestWinStreak,
     ownedCards, leveledCards,
+    forgeOpen: featureUnlockedSafe('forge'), // 2026-11-03 (FIX8, QA2 M4): the Forge achievements wait for the Forge (Map 11); duplicate pulls level cards long before
     clearedNodes, mapsFullyCleared,
     raidBossesUnlocked: progress.raidUnlocked.length,
     // 2026-10-14 (user: "Wyrmslayer should only be achieved when I defeat the Caldera wyrm! Not just from seeing it."):
@@ -18645,6 +18646,23 @@ function activateSpot(spot){
     if(script && script.lines.some(l=> l.act || (l.options||[]).some(o=> o.act))){ playDialogue(spot.dialogue, {once:true, expand:true}); return; }
     if(spot.dialogue) playDialogue(spot.dialogue, {once:true, expand:true}); } // (PL2: the Group Dungeon spot has no conversation)
   spot.go();
+}
+// 2026-11-03 (package FIX8, QA2 M1): the Camp opens by itself once 0-1 and 0-2 are won. It used to unlock only when the player tapped its
+// spot on Map 0, which nothing pointed at, so a player who followed the Next buttons reached Map 1 (world still hidden, no way back to
+// Map 0) with no deck editor. Now the map draw calls this: it unlocks the Camp (toast, held packs, its conversation) without taking the
+// player anywhere. The Camp then stays on Home, the shortcuts and the Play tab's nav; the Map 0 spot still opens it too.
+function fix8AutoCamp(tries){
+  try{
+    tries = tries | 0;
+    const sp = FEATURE_SPOTS.find(x=> x.key === 'deck'); if(!sp || featureUnlocked('deck') || !loadTutorialDone() || !spotAvailable(sp, loadConquestProgress())) return false;
+    if((typeof matchState !== 'undefined' && matchState) || packRevealBusy() || document.getElementById('deckSwapOverlay') || document.querySelector('.starter-step') || tutorialRewardPopPending){
+      if(tries < 40) setTimeout(()=> fix8AutoCamp(tries + 1), 1500); return false; }
+    unlockFeature('deck'); try{ if(SoundKit.unlock) SoundKit.unlock(); }catch(e){}
+    showToast(`${sp.icon} ${sp.name} — unlocked!`, 'ok');
+    setTimeout(()=>{ try{ const n = releaseHeldPacks(); if(n) fxHook('heldPacks', n); }catch(e){} }, 1200);
+    try{ playDialogue(sp.dialogue, {once:true, expand:true}); }catch(e){}
+    return true;
+  }catch(e){ return false; }
 }
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
 // 2026-10-15 (user: "Are there any submaps with no background? fill them in."): the Old Bramble, Ice Hollow, Glimmer Depths,
@@ -27633,6 +27651,7 @@ function renderConquestSubTab(body){
   if(conquestAutoAdvanceTo && !matchState && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)){ const nx = CONQUEST_MAPS.find(m=> m.id === conquestAutoAdvanceTo); conquestAutoAdvanceTo = null;
     if(nx && isMapUnlocked(nx, loadConquestProgress())){ conquestSelectedMap = nx.id; conquestSelectedNodeKey = null; conquestWorldView = false; } }
   setTimeout(maybeOfferDeckSwap, 600);
+  setTimeout(fix8AutoCamp, 900); // 2026-11-03 (FIX8, QA2 M1)
   grantClearedBossLeaders();
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
   // whole window now (the ⛶ button still switches the browser itself to full screen).
@@ -27692,7 +27711,7 @@ function renderConquestSubTab(body){
       <div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">${map.icon}</div>${cleared ? '<i class="cmi-tick" aria-hidden="true">✓</i>' : ''}
       <div class="cmi-body"><div class="cmi-name">${map.name}</div><div class="cmi-sub">${cleared ? '✓ Cleared' : `${doneN}/${fightable.length} cleared`}</div></div>
     </div>`;
-  }).join('') + (firstLocked ? (()=>{ const num = mapNumberOf(firstLocked.id), tip = TX('ui.u3-map-chip-tip-locked', {n: num, name: firstLocked.name});
+  }).join('') + (firstLocked ? (()=>{ const num = mapNumberOf(firstLocked.id), tip = (()=>{ try{ return mapLockReason(firstLocked, progress); }catch(e){ return TX('ui.u3-map-chip-tip-locked', {n: num, name: firstLocked.name}); } })(); // 2026-11-03 (FIX8, QA2 minor 8): names the fights still to win (Map 2 waited on the side fight 1-3), not just "the map before it"
     return `<div class="conquest-map-item locked next-locked" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"><div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>`; })() : '');
   // D13 (2026-10-03): a 🧭 World chip opens the atlas — every map as a compass diamond.
   // 2026-10-15 (user: "The world - all maps design doesn't look like the other map tabs. It should also have the side shine thing,
@@ -30359,7 +30378,7 @@ function tutorialFactionRewards(stage, forGrant){ // forGrant: true = the grant 
   const defs = getCardDefs(); if(Array.isArray(o[stage])) return o[stage].filter(id=> defs[id]);
   if(forGrant === 'peek' || !loadFactionChoice() || (typeof matchState !== 'undefined' && matchState && matchState.adminTest)) return [];
   if(forGrant !== true && (stage === 2 ? loadTutorial2Done() : loadTutorialDone())) return []; // past it already (a save from before RW5): nothing to draw
-  const ids = factionDrawSet(TUTORIAL_FACTION_REWARDS[stage - 1]); o[stage] = ids;
+  const ids = factionDrawSet(TUTORIAL_FACTION_REWARDS[stage - 1], null, loadFactionChoice() !== 'both'); o[stage] = ids; // 2026-11-03 (FIX8, QA2 minor 11): your own side's (and shared) cards, not the other side's
   try{ localStorage.setItem(TUT_FACTION_RW_KEY, JSON.stringify(o)); }catch(e){} return ids;
 }
 function starterDeckParts(pick){
@@ -35825,6 +35844,7 @@ function endMatch(opts){
   standardMatchActive = false;
   if(!(opts && opts.keepResume) && matchState && matchState.mode !== 'tutorial') bumpFightSerial(); // D53: a row's "New!" lasts the fight it first happened in
   try{ EMOTE_LAST_HIT.clear(); }catch(e){}
+  try{ document.querySelectorAll('body > .speech-bubble').forEach(b=> b.remove()); barkCurrent = null; }catch(e){} // 2026-11-03 (package FIX8, QA2 minor 3): the fight's last speech bubble ("Victory is ours!") stayed on the map
   SoundKit.stopAll();
   document.documentElement.classList.remove('bw-resolving'); document.body.classList.remove('match-ended'); syncFightTimeScale(null);
   // 2026-10-12 (user: "Tutorial disappears when a mission ends. If I didn't click next, it is silenced once"): a tip you
@@ -43695,7 +43715,7 @@ async function resolveRoundCore(opts){
     // Tutorial (2026-09-23, batch #28) excluded for the same reason Sandbox is: a scripted
     // onboarding fight against a fixed Basics-tier opponent isn't a real result and shouldn't
     // pollute the player's actual win/loss ledger.
-    if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial' && m.mode!=='coop') recordMatchResult(m.winner, m.mode); // + COOP2: a vault floor pays as a raid fight, not on the win/loss ledger
+    if(m.mode!=='pc' && m.mode!=='sandbox' && m.mode!=='tutorial' && m.mode!=='coop' && !(m.mode==='conquest' && (m.adminTest || m.proFight))) recordMatchResult(m.winner, m.mode); /* 2026-11-03 (FIX8, QA2 M4): road (conquest) fights count on the ledger too, so First Victory and the Battles medals move; recordMatchResult pays nothing for them (gold/dust only for quick battles) */ // + COOP2: a vault floor pays as a raid fight, not on the win/loss ledger
     try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest && !m.towerReplay && !m.rewardDuplicate) heroAwardBattle(m); }catch(e){} // 2026-10-18 (package Z): a free Spire replay gives nothing
     if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
       try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw'), standard: !!m.standard || undefined, myDeck: m.standard ? 'Standard deck' : ((getActiveDeck() || {}).name || undefined)}); }catch(e){} // 2026-10-21 (package AR): + your deck's name and the format, for the Profile's match log
@@ -46900,7 +46920,7 @@ function wireWinLossRewardAnim(){
       onComplete: ()=>{ countEl.textContent = '+'+target; countEl.classList.remove('is-counting'); countEl.classList.add('is-counted'); }});
     countEl.classList.add('is-counting');
   });
-  { let waited = 0; const wait = ()=>{ if(document.querySelector('.rr-stage') && waited < 20000){ waited += 120; setTimeout(wait, 120); } else { startCounts(); setTimeout(baseDustBurst, 2400 + counts.length*180); } }; setTimeout(wait, 500); }
+  { let waited = 0; const wait = ()=>{ if(document.querySelector('.rr-stage') && waited < 5000 /* 2026-11-03 (FIX8, QA2 minor 7): was 20 s, so on a slow device the rewards read +0 for as long as the card reveal ran; the count now starts after 5 s at most */){ waited += 120; setTimeout(wait, 120); } else { startCounts(); setTimeout(baseDustBurst, 2400 + counts.length*180); } }; setTimeout(wait, 500); }
   rewardsCheer();
   try{ rewardCardsReveal(); }catch(e){}
 }
@@ -54742,7 +54762,7 @@ function homeTileDetails(){
   const out = {};
   try{
     const p = loadConquestProgress();
-    for(const map of CONQUEST_MAPS){ if(!isMapUnlocked(map, p)) continue; const i = map.nodes.findIndex((n, k)=> n.kind!=='tutorial' && isNodeVisible(map, n, k, p) && !p.completed.includes(conquestNodeId(map.id, n.key))); if(i >= 0){ out.play = `Next: ${map.nodes[i].icon||''} ${map.nodes[i].name}`; break; } }
+    for(const map of CONQUEST_MAPS){ if(!isMapUnlocked(map, p)) continue; const i = map.nodes.findIndex((n, k)=> n.kind!=='tutorial' && isNodeVisible(map, n, k, p) && !p.completed.includes(conquestNodeId(map.id, n.key))); if(i >= 0){ out.play = `Next: ${map.nodes[i].icon||''} ${map.nodes[i].name}`; out.playMap = map.id; /* 2026-11-03 (FIX8, QA2 minor 9) */ break; } }
   }catch(e){}
   try{ const d = (myDecks||[]).find(x=> x.id===activeDeckId); out.deck = `${(d && d.name) || 'Your deck'} · ⚔ ${mainDeckLevel(myDeckCounts, myLeaderId) || 1}`; }catch(e){}
   try{ const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].test && !defs[id].token && !isHofVariant(defs[id])); out.codex = (()=>{ const c = collectionStats(); return `${c.owned} / ${c.total} cards`; })(); }catch(e){}
@@ -54798,7 +54818,7 @@ function renderHome(){
       ${'' /* 2026-10-17 (user: "No need for "Start the tutorial" button since we get right into it."): removed; a paused tutorial resumes from the 🎓 on the Outskirts map */}
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
         ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Continue</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
-          : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
+          : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"${sub.playMap ? ` data-fix8map="${escapeAttr(sub.playMap)}"` : ''}><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
         ${raidHome ? `${arenaTile}<button class="btn primary big home-menu-btn home-tile" id="homeRaidBtn"><span class="tab-emoji">🐲</span><span>${(()=>{ try{ return liveRaidDefs().length >= 2 ? 'Raids' : 'Raid'; }catch(e){ return 'Raid'; } })()}</span><small class="home-sub">${escapeHtml(sub.raid || 'Team up against a raid boss')}</small></button>${big('deck','⛺','Camp')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}`
           : `${big('deck','⛺','Camp')}${arenaHome ? arenaTile : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}`}
         ${raidHome && tabOpen('nest') ? `<button type="button" class="home-note note-nest" data-hometab="nest" title="Nest"><i class="pin" aria-hidden="true">📌</i><b>🪺 Nest</b><small>${escapeHtml(sub.nest || 'Eggs and babies')}</small></button>` : ''}
@@ -54818,7 +54838,9 @@ function renderHome(){
       </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
       <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>
     </div>`;
-  root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=>{ const t = b.getAttribute('data-hometab'); if(t === 'tavern') openTavern(); else homeGo(t); }));
+  root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=>{ const t = b.getAttribute('data-hometab');
+    if(t === 'play' && b.dataset.fix8map && !matchState){ try{ const pm = CONQUEST_MAPS.find(x=> x.id === b.dataset.fix8map); if(pm && isMapUnlocked(pm, loadConquestProgress()) && !(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(pm))){ conquestSelectedMap = pm.id; conquestSelectedNodeKey = null; playSubTab = 'conquest'; } }catch(e){} } // 2026-11-03 (FIX8, QA2 minor 9): "Play - Next: X" opens the map X is on
+    if(t === 'tavern') openTavern(); else homeGo(t); }));
   const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ if(!resumeAbandonedMatchNow()) renderHome(); });
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
   const cb = document.getElementById('homeCommunityBtn');
@@ -57229,7 +57251,7 @@ function packCardPool(defs, pool, exact, gated){
   const ok = pool === 'basic' ? new Set(BASIC_PACK_TIERS) : (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
   const early = gated && !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12; gated callers only since RW3)
   const reach = !gated || adminModeEnabled ? Infinity : (()=>{ try{ return trackMapReached(); }catch(e){ return 0; } })();
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || isEasterEgg(d) /* 2026-10-19 (package EE) */ || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; if(!packCardReached(d, reach)) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.derivedFrom || /@(lv|p)\d/.test(id)) return false; /* 2026-11-03 (FIX8, QA2 M6): a fight's overlay copies ("bramble-sprout@lv1", "@p3") are in getCardDefs() while a match is live; a pack paid at a fight's end rolled one and showed it as "undefined" */ if(d.token || d.test || isUnattainable(d) || isEasterEgg(d) /* 2026-10-19 (package EE) */ || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; if(!packCardReached(d, reach)) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
 }
 // 2026-10-22 (package DV, owner 00:43: "Then decide which (1-2) will be skirmish rewards. The rest will be generic pack rewards."): a
 // map's cards that are not its skirmish rewards are basic-pack cards with that map ({kind:'pack', tier:1, map}); the packs and the
@@ -57277,7 +57299,9 @@ function rollPackCards(pack, opts){
   const n = pack.cards||3, cap = Math.max(1, Math.ceil(n / Math.max(1, pool.length)));
   let guard = 0;
   while(out.length < n && guard++ < 500){ let left = pool.filter(id=> out.filter(x=> x===id).length < cap); if(!left.length) break;
-    if(opts && opts.newFirst){ const fresh = left.filter(id=> !out.includes(id) && !copiesOwned(id) && !myUnlockedCardIds.has(id)); if(fresh.length) left = fresh; } // RW5
+    if(opts && opts.newFirst){ const fresh = left.filter(id=> !out.includes(id) && !copiesOwned(id) && !myUnlockedCardIds.has(id)); if(fresh.length) left = fresh; // RW5
+      else { // 2026-11-03 (FIX8, QA2 M2): no new card left (the early gate leaves very few): the cards you hold the fewest copies of, and none twice in a pack while another is left, so a run of level packs is not all House Cat
+        const nr = left.filter(id=> !out.includes(id)); if(nr.length) left = nr; const low = Math.min(...left.map(id=> copiesOwned(id))); left = left.filter(id=> copiesOwned(id) === low); } }
     out.push(pick(left)); }
   while(out.length < n) out.push(pick(pool));
   return out.sort(()=> Math.random()-0.5);
@@ -57622,7 +57646,9 @@ function rollFactionPackCards(fp, rnd){
   // lowest first, plain first on Maps 0-1); a people's bundle keeps the pack weights
   const ownPick = fp.kind === 'faction' ? (list=>{ const got = []; return ()=>{ const id = factionPackPoolPick(list, rnd, got.length) /* 2026-10-23 (RW5): out of the faction pool */ || factionTrackPick(list, rnd, {received: factionReceived() + got.length}); if(id) got.push(id); return id; }; })(own) : ()=> pick(own);
   for(let i = 0; i < FACTION_PACK_OWN; i++){ const id = ownPick(); if(id) out.push({id, from:'own'}); }
-  for(let i = 0; i < FACTION_PACK_GENERAL; i++){ const id = pick(gen); if(id) out.push({id, from:'general'}); }
+  for(let i = 0; i < FACTION_PACK_GENERAL; i++){ // 2026-11-03 (FIX8, QA2 M2): new first, and never a card the pack already holds while another is left
+    let g = gen.filter(id=> !out.some(o=> o.id === id)); if(!g.length) g = gen; if(REWARD_NEW_FIRST){ const nw = g.filter(id=> !copiesOwned(id)); if(nw.length) g = nw; }
+    const id = pick(g); if(id) out.push({id, from:'general'}); }
   return {pulls: out, bonus: null};
 }
 function openFactionPack(id){
@@ -57880,9 +57906,9 @@ function factionPoolPickOf(st, ids, rnd, map){
   const w = id=> (FACTION_SIDE_WEIGHT[factionSideOf(defs[id])] || 1) * Math.max(1, st.left[id]);
   const tot = pool.reduce((t, id)=> t + w(id), 0); let r = rnd() * tot; for(const id of pool){ r -= w(id); if(r <= 0) return id; } return pool[pool.length - 1];
 }
-function factionSetPick(st, rnd){
+function factionSetPick(st, rnd, mineOnly){
   const defs = getCardDefs(), map = trackMapReached();
-  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]));
+  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]) && !(mineOnly && factionSideOf(defs[id]) === 'other')); // 2026-11-03 (FIX8, QA2 minor 11): mineOnly = not the other side's cards
   const want = id=> factionClimbWant(factionSideOf(defs[id]), Math.max(copiesOwned(id), (st.given && st.given[id]) || 0), st.left[id]); // RW5: climbing the tree
   const left = {}; live.forEach(id=>{ const k = factionRarityKey(defs[id].rarity); left[k] = (left[k] || 0) + want(id); });
   const step = st.patternStep | 0, pr = factionPatternRarity(step, map, left);
@@ -57897,8 +57923,8 @@ function factionReward(rnd){
   factionTakeOut(st, pick); saveFactionPool(st);
   return grantOne(pick, 'factionReward') ? pick : null;
 }
-function factionDrawSet(n, rnd){ rnd = rnd || Math.random; const st = loadFactionPool(), out = [];
-  for(let i = 0; i < (n|0); i++){ const id = factionSetPick(st, rnd); if(!id) break; factionTakeOut(st, id); out.push(id); }
+function factionDrawSet(n, rnd, mineOnly){ rnd = rnd || Math.random; const st = loadFactionPool(), out = [];
+  for(let i = 0; i < (n|0); i++){ const id = (mineOnly && factionSetPick(st, rnd, true)) || factionSetPick(st, rnd); if(!id) break; factionTakeOut(st, id); out.push(id); }
   saveFactionPool(st); return out; }
 function factionRandomReward(rnd){
   rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
@@ -57911,7 +57937,9 @@ function factionRandomReward(rnd){
 function factionPackPoolPick(ids, rnd, extra){
   if(!FACTION_POOL_RW5) return null; const st = loadFactionPool(), set = new Set(ids);
   const live = Object.keys(st.left).filter(id=> set.has(id) && st.left[id] > 0); if(!live.length) return null;
-  const id = factionTrackPick(live, rnd || Math.random, {received: factionReceived(st) + (extra|0)}, x=> st.left[x]); if(!id) return null;
+  const ctx = {received: factionReceived(st) + (extra|0)}; let id = null;
+  if(REWARD_NEW_FIRST){ const fresh = live.filter(x=> !copiesOwned(x) && !(st.given && st.given[x])); if(fresh.length) id = factionTrackPick(fresh, rnd || Math.random, ctx, x=> st.left[x]); } // 2026-11-03 (FIX8, QA2 M2): a card you don't have first, like the set rewards (the pack gave Shell-Cracker x2 with new Rivergate cards left)
+  if(!id) id = factionTrackPick(live, rnd || Math.random, ctx, x=> st.left[x]); if(!id) return null;
   st.left[id] -= 1; st.given = st.given || {}; st.given[id] = (st.given[id] || 0) + 1; saveFactionPool(st); return id; // creditFactionPack counts it as received
 }
 function factionGrowth(rnd){
@@ -58274,7 +58302,7 @@ function openPackAnimation(pack, opened, opts){
           <div class="po2-liner" aria-hidden="true"></div>
           <div class="po2-art" style="${(()=>{ const a2 = packCoverArt(pack, o.faceK != null ? o.faceK : (o.faceK = packIdx + Math.floor(Math.random()*8))) || art; return a2 ? `background-image:url('${escapeAttr(a2)}')` : ''; })()}"></div>
           <span class="po2-foil" aria-hidden="true"></span>
-          <div class="po2-label"><span class="po2-ico">${pack.icon}</span><b>${escapeHtml(pack.name)}</b><small>${o.results.length} cards${bundle ? ` · ${packIdx+1}/${opened.length}` : ''}</small></div>
+          <div class="po2-label"><span class="po2-ico">${pack.icon}</span><b>${escapeHtml(pack.name)}</b><small>${o.results.length === 1 ? '1 card' : o.results.length + ' cards'}</small></div>${'' /* 2026-11-03 (FIX8, QA2 minor 1): "1 cards" fixed, and the pack's own "1/2" is gone: the top bar already says "Pack 1 of 2" */}
           <div class="po2-crimp po2-crimp-b" aria-hidden="true"></div>
         </div>
         <button type="button" class="po2-strip" id="poStrip" aria-label="Tear open the pack">
@@ -61736,7 +61764,8 @@ function wireSettingsButton(idSuffix){
   if(bfSelect){
     const current = loadBattlefieldBgOverride();
     bfSelect.innerHTML = `<option value="auto">🗺️ Auto (by map)</option><option value="calm">🌿 Calm (minimal)</option>` +
-      CONQUEST_MAPS.map(map=>`<option value="${map.id}">${map.icon} ${escapeAttr(map.name)}</option>`).join('');
+      // 2026-11-03 (package FIX8, QA2 minor 12): only the maps you can already open (and the one picked now); no Reserved placeholders, no late maps. Admin sees all.
+      CONQUEST_MAPS.filter(map=>{ try{ return adminModeEnabled || map.id === current || (!map.reserved && isMapUnlocked(map, loadConquestProgress())); }catch(e){ return true; } }).map(map=>`<option value="${map.id}">${map.icon} ${escapeAttr(map.name)}</option>`).join('');
     bfSelect.value = current;
     // A stored value from a map that no longer exists (shouldn't happen, but defensive) would
     // otherwise silently leave the <select> on its first option while the pill still applies a
