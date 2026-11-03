@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package UI18 (Codex skill filter: seen skills only, Mystery skills, level flags; owner 22:04 + 22:08)
+- **The Codex's Skills filter lists only skills you have seen** (the same rule as the Skills book: on a card you have seen, or met in a fight; Admin Mode still lists all).
+- **New "? Mystery skills" entry** shows the cards that carry a skill you have not seen yet (their skills still read "?"). It is hidden when no card is one, so once everything is unlocked it is gone.
+- **A skill a card only gets at a later level now counts in the filter**, and the Codex tile says so with a small flag under the card, for example Bee Knight: "Swarm [Lvl 1]", "Flying [Lvl 1]" (a skill you have not seen reads "? [Lvl 1]"). Codex only; not on the hand or the board.
+- Texts in 12 languages (`tools/i18n_2026_11_03_ui18.py`). Tests: `tests/ui18-2026-11-03.js`, `tests/e2e/ui18_2026_11_03.py`.
+
 ## 2026-11-03 Package ECON2 (economy review for alpha; measures and proposes, no game number changed)
 - **New `docs/econ2-2026-11-03.md`:**
   - A day-by-day sim of a new player (`tools/econ2/econ_sim_2026_11_03.js`, the game's own tables with ECON1's halving): Maps 0-10 take 3 days (casual 7); from Map 11, Magic Dust is the only thing that limits progress. Maps 11-20 take 46 days (casual 66) if the deck keeps the road's reference level with each map's cards, and 7 (casual 14) if one deck is kept.

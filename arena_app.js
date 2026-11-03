@@ -7714,7 +7714,7 @@ function renderCodexGrid(keepPage){
   if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
   if(codexFilter.animal) ids = ids.filter(id=> animalGroupOf(defs[id].animal) === codexFilter.animal); // 2026-10-19 (package UT): the animal filter
   if(codexFilter.rarity) ids = ids.filter(id=> (defs[id].rarity || 'common') === codexFilter.rarity); // 2026-10-18 (package C): the album's rarity filter
-  { const want = codexSkillsChosen(); if(want.length){ ids = ids.filter(id=>{ const d = maskHiddenSkills(defs[id]); return want.every(k=> cardMatchesSkillPick(d, k)); }); } } // 2026-10-18 (package C): every skill picked; 2026-10-21 (package TX): a family (Diurnal = Diurnal {…}) or a group, never a skill still "?"
+  { const want = codexSkillsChosen(); if(want.length){ ids = ids.filter(id=> want.every(k=> ui18CardMatchesPick(defs[id], k))); } } // 2026-11-03 (package UI18): the mystery entry, and a skill a card only gets at a later level // 2026-10-18 (package C): every skill picked; 2026-10-21 (package TX): a family (Diurnal = Diurnal {…}) or a group, never a skill still "?"
   // 2026-09-26 (#1, "add a sort view to codex"): added Rarity (by RARITY_DEFS' own defined
   // order, common -> legendary etc., not alphabetically) and a dir flip. `base` always returns
   // the "natural" high-to-low/A-Z-first comparison; the dir flip below negates it uniformly
@@ -7792,7 +7792,7 @@ function renderCodexGrid(keepPage){
     // (EmojiStyle.htmlBlock, as the board rows do), so the emoji observer has nothing to swap node by node after it lands.
     // 2026-10-18 (audit 4): the key also carries whether the card's revealAfter gate is met, so a masked "?" tile (Quarry Mole)
     // is redrawn once Map 0 is cleared, without a reload.
-    let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
+    let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + ui18LateSkillFlags(id, d) + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
     // Easter eggs (2026-10-19, package EE): one not seen yet is a "???" tile (easterEggMaskDef), not the card.
     if(easterEggMasked(d) && easterEggsShown()){ let mh = `<div class="cx-tile-wrap cx-unowned cx-ee-mask" title="${escapeAttr(TX('ui.ee-mask-tip'))}">${cardTileHTML(easterEggMaskDef(d), {lazyArt:true, extraClass:'ee-masked', size:'full'})}</div>`; try{ mh = EmojiStyle.htmlBlock(mh); }catch(e){} return mh; }
     const hit = sig && codexTileCache.get(id);
@@ -7802,8 +7802,9 @@ function renderCodexGrid(keepPage){
     // (🥚 / 🚫) with its words in title and aria-label; the words follow the symbol only on a wide screen (.cx-tag-words, hidden on phones).
     if(adminModeEnabled && isEasterEgg(d)) tags.push(`<span class="cx-tag cx-tag-unob cx-tag-sym" title="${escapeAttr(TX('ui.ee-admin-tip'))}" aria-label="${escapeAttr(TX('ui.ee-tag'))}">🥚<span class="cx-tag-words"> ${escapeHtml(TX('ui.ee-tag'))}</span></span>`); // 2026-10-19 (package EE)
     else if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob cx-tag-sym" title="Not obtainable yet: the card editor\'s Obtainable box" aria-label="Not obtainable">🚫<span class="cx-tag-words"> Not obtainable</span></span>');
+    const lateFlags = ui18LateSkillFlags(id, d); // 2026-11-03 (package UI18): "Swarm [Lvl 1]" for a skill the shown copy gets later (Codex only)
     const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
-    let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable', size:'full' /* 2026-10-30 (CS-A) */})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
+    let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable', size:'full' /* 2026-10-30 (CS-A) */})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}${lateFlags}</div>`;
     try{ html = EmojiStyle.htmlBlock(html); }catch(e){}
     if(sig) codexTileCache.set(id, {sig, html});
     return html;
@@ -7961,6 +7962,44 @@ function codexFilterBadge(){
   const t = document.getElementById('cxFiltersToggle'); if(!t) return; const n = codexFilterCount(); let b = t.querySelector('.cx-fcount');
   if(!n){ if(b) b.remove(); return; } if(!b){ b = document.createElement('b'); b.className = 'cx-fcount'; t.append(' ', b); } b.textContent = n;
 }
+// UI18_CODEX_SKILLS:BEGIN
+// 2026-11-03 (package UI18, owner 22:04 + 22:08): the Codex skill filter lists only skills you have seen (skillBookEntries: on a card you
+// have seen, or met in a fight; Admin Mode lists all), plus one "? Mystery skills" entry for the cards that carry a skill you have not seen yet.
+// A card also counts for a skill it only gets at a later level (levelSkills), and its Codex tile says so with a "[Lvl N]" flag (Codex only).
+const UI18_MYSTERY = 'mystery', UI18_NOT_SKILL = new Set(['hatchling', 'fodder']);
+function ui18SeenSkillKeys(){ try{ return new Set(skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> e.key)); }catch(e){ return new Set(); } }
+// every skill key a card can carry: its effects and each level's levelSkills, as [{key, lvl}] (lvl = the level it arrives at, 0 = from the start)
+function ui18CardSkillKeys(d){
+  const out = [], seen = new Set(), add = (k, lvl)=>{ if(UI18_NOT_SKILL.has(k) || seen.has(k)) return; const p = skillDefOf(k); if(!p || !p.label || p.retired) return; seen.add(k); out.push({key:k, lvl}); };
+  const e = (d && d.effects) || {}; Object.keys(e).forEach(k=>{ if(skillValOn(e[k])) add(k, 0); });
+  const ls = (d && d.levelSkills) || {}; Object.keys(ls).map(Number).sort((a, b)=> a - b).forEach(L=>{ const o = ls[L] || ls[String(L)] || {}; Object.keys(o).forEach(k=>{ if(skillValOn(o[k])) add(k, L); }); });
+  return out;
+}
+function ui18CardHasMystery(d, seenSet){ if(adminModeEnabled || !d) return false; const seen = seenSet || ui18SeenSkillKeys();
+  return ui18CardSkillKeys(d).some(x=> !seen.has(x.key)); }
+function ui18MysteryCount(){ try{ if(adminModeEnabled) return 0; const defs = getCardDefs(), seen = ui18SeenSkillKeys(); let n = 0;
+  Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || d.test || d.token || easterEggMasked(d)) return; if(ui18CardHasMystery(d, seen)) n++; }); return n; }catch(e){ return 0; } }
+// a pick of the filter against a card (the Codex grid and the album): the mystery entry, or a seen skill / group, also at a later level
+function ui18CardMatchesPick(d, pick){
+  if(pick === UI18_MYSTERY) return ui18CardHasMystery(d);
+  const m = maskHiddenSkills(d); if(cardMatchesSkillPick(m, pick)) return true;
+  if(!d || !d.levelSkills || m._revealGated) return false;
+  const fx = Object.assign({}, m.effects || {}); let any = false;
+  Object.keys(d.levelSkills).forEach(L=>{ const o = d.levelSkills[L] || {}; Object.keys(o).forEach(k=>{ if(!UI18_NOT_SKILL.has(k) && !skillHiddenNow(k) && skillValOn(o[k]) && !(k in fx)){ fx[k] = o[k]; any = true; } }); });
+  return any && cardMatchesSkillPick(Object.assign({}, m, {effects: fx}), pick);
+}
+// the Codex tile's flags: each skill the card only gets from a level on (levelSkills, Level 1 and up), with that level (a skill you have not seen reads "?")
+function ui18LateSkillFlags(id, d){
+  try{ if(!d) return '';
+    const b = copyBaseDef(id) || d, ls = b.levelSkills; if(!ls) return '';
+    const seen = ui18SeenSkillKeys(), gated = (()=>{ const ra = cardRevealAfter(d); return !!(ra && !revealAfterMet(ra)); })(), rows = [];
+    ui18CardSkillKeys({levelSkills: ls}).forEach(x=>{ if(x.lvl < 1) return; const known = adminModeEnabled || (!gated && seen.has(x.key) && !skillHiddenNow(x.key)); rows.push({lvl:x.lvl, name: known ? (skillDefOf(x.key).label) : '?', icon: known ? (SKILL_ICON[x.key] || '') : ''}); });
+    if(!rows.length) return '';
+    const txt = r=> `${r.icon ? r.icon + ' ' : ''}${r.name} ${TX('ui.codex-skill-lvl', {n: r.lvl})}`, tip = rows.map(r=> `${r.name}: ${TX('ui.codex-skill-lvl-tip', {n: r.lvl})}`).join('\n');
+    return `<span class="cx-lvlsk" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${rows.slice(0, 2).map(r=> `<i>${escapeHtml(txt(r))}</i>`).join('')}${rows.length > 2 ? '<i>+' + (rows.length - 2) + '</i>' : ''}</span>`;
+  }catch(e){ return ''; }
+}
+// UI18_CODEX_SKILLS:END
 // 2026-10-21 (package TX, owner: "In the filter, Diurnal is the same as Diurnal {}. Same for swimmer and the rest."): one chip per skill family.
 function codexSkillChoices(){ try{ const seen = new Set(); return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:skillFamilyId(e.key), icon:SKILL_ICON[skillFamilyId(e.key)] || e.icon, name:e.name})).filter(e=>{ if(seen.has(e.key)) return false; seen.add(e.key); return true; }); }catch(e){ return []; } }
 function codexSkillName(key){ const p = skillDefOf(key); return (p && p.label) || key; }
@@ -8101,12 +8140,12 @@ function cardMatchesSkillPick(d, pick){
   if(pick.startsWith('agg:')) return cardInSkillAggregate(d, pick.slice(4));
   return skillFamilyKeys(pick).some(k=> cardHasSkill(d, k));
 }
-function skillPickName(k){ if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.label() : k; } return codexSkillName(skillFamilyId(k)); }
-function skillPickIcon(k){ if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.icon : '✨'; } return SKILL_ICON[skillFamilyId(k)] || '✨'; }
+function skillPickName(k){ if(k === UI18_MYSTERY) return TX('ui.codex-skill-mystery'); if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.label() : k; } return codexSkillName(skillFamilyId(k)); }
+function skillPickIcon(k){ if(k === UI18_MYSTERY) return '?'; if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.icon : '✨'; } return SKILL_ICON[skillFamilyId(k)] || '✨'; }
 // The skill picker's body: the groups, then the skills you have seen (one chip per family). `on` is the Set of picks.
 function skillPickerChipsHTML(list, on){
   return `<div class="cx-skill-groups"><b>${escapeHtml(TX('ui.tx-skill-groups'))}</b><small>${escapeHtml(TX('ui.tx-skill-groups-hint'))}</small></div>`
-    + `<div class="cx-skill-chips is-groups">${SKILL_AGGREGATES.map(a=> `<button type="button" class="cx-sk-chip is-group" data-cxskill="agg:${a.id}" aria-pressed="${on.has('agg:' + a.id)}">${a.icon} ${escapeHtml(a.label())}</button>`).join('')}</div>`
+    + `<div class="cx-skill-chips is-groups">${(ui18MysteryCount() || on.has(UI18_MYSTERY)) ? `<button type="button" class="cx-sk-chip is-group is-mystery" data-cxskill="${UI18_MYSTERY}" aria-pressed="${on.has(UI18_MYSTERY)}" title="${escapeAttr(TX('ui.codex-skill-mystery-tip'))}">? ${escapeHtml(TX('ui.codex-skill-mystery'))}</button>` : ''}${SKILL_AGGREGATES.map(a=> `<button type="button" class="cx-sk-chip is-group" data-cxskill="agg:${a.id}" aria-pressed="${on.has('agg:' + a.id)}">${a.icon} ${escapeHtml(a.label())}</button>`).join('')}</div>`
     + (list.length ? `<div class="cx-skill-chips">${list.map(s=> `<button type="button" class="cx-sk-chip" data-cxskill="${escapeAttr(s.key)}" aria-pressed="${on.has(s.key)}">${s.icon} ${escapeHtml(s.name)}</button>`).join('')}</div>` : `<p class="cx-skill-none">${escapeHtml(TX('ui.codex-skill-none'))}</p>`);
 }
 // ---- sorts ----
@@ -8143,7 +8182,7 @@ function cfMatch(d, f){
   if(f.phylum && !phylumOf(d).split(' & ').includes(f.phylum)) return false;
   if(f.rarity && (d.rarity || 'common') !== f.rarity) return false;
   if(f.mechLine && inferMechanicLine(d) !== f.mechLine) return false;
-  const sk = (f.skills || []).filter(k=> typeof k === 'string'); if(sk.length && (easterEggMasked(d) || !sk.every(k=> cardMatchesSkillPick(maskHiddenSkills(d), k)))) return false;
+  const sk = (f.skills || []).filter(k=> typeof k === 'string'); if(sk.length && (easterEggMasked(d) || !sk.every(k=> ui18CardMatchesPick(d, k)))) return false;
   return true;
 }
 function cfApply(ids, defs, f){ return ids.filter(id=> cfMatch(defs[id], f)); }

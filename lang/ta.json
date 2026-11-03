@@ -3848,5 +3848,9 @@
  "Updated {t} · refreshes every {s} s": "{t} இல் புதுப்பிக்கப்பட்டது · ஒவ்வொரு {s} வி. புதுப்பிக்கும்",
  "Buy again": "மீண்டும் வாங்கு",
  "Buy {n} again": "மீண்டும் {n} வாங்கு",
- "Not enough to buy another": "இன்னொன்று வாங்கப் போதவில்லை"
+ "Not enough to buy another": "இன்னொன்று வாங்கப் போதவில்லை",
+ "Mystery skills": "மர்ம திறன்கள்",
+ "Cards with a skill you have not seen yet.": "நீ இன்னும் பார்க்காத திறன் உள்ள அட்டைகள்.",
+ "[Lvl {n}]": "[நிலை {n}]",
+ "Gets this skill at Level {n}.": "நிலை {n} இல் இந்தத் திறனைப் பெறுகிறது."
 }

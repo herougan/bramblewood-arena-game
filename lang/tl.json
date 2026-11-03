@@ -3846,5 +3846,9 @@
  "Updated {t} · refreshes every {s} s": "Na-update {t} · nire-refresh bawat {s} s",
  "Buy again": "Bilhin ulit",
  "Buy {n} again": "Bilhin ulit ang {n}",
- "Not enough to buy another": "Kulang para bumili ulit"
+ "Not enough to buy another": "Kulang para bumili ulit",
+ "Mystery skills": "Mga misteryosong kasanayan",
+ "Cards with a skill you have not seen yet.": "Mga card na may kasanayang hindi mo pa nakikita.",
+ "[Lvl {n}]": "[Lvl {n}]",
+ "Gets this skill at Level {n}.": "Nakukuha ang kasanayang ito sa Level {n}."
 }

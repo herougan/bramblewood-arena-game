@@ -3845,5 +3845,9 @@
  "Updated {t} · refreshes every {s} s": "{t} に更新 · {s}秒ごとに更新",
  "Buy again": "もう一度買う",
  "Buy {n} again": "もう一度{n}個買う",
- "Not enough to buy another": "もう一つ買うには足りません"
+ "Not enough to buy another": "もう一つ買うには足りません",
+ "Mystery skills": "ミステリースキル",
+ "Cards with a skill you have not seen yet.": "まだ見たことのないスキルを持つカード。",
+ "[Lvl {n}]": "[Lv.{n}]",
+ "Gets this skill at Level {n}.": "レベル{n}でこのスキルを覚える。"
 }

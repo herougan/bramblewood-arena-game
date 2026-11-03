@@ -3847,5 +3847,9 @@
  "Updated {t} · refreshes every {s} s": "Atualizado {t} · atualiza a cada {s} s",
  "Buy again": "Comprar outra vez",
  "Buy {n} again": "Comprar {n} outra vez",
- "Not enough to buy another": "Não chega para comprar outro"
+ "Not enough to buy another": "Não chega para comprar outro",
+ "Mystery skills": "Habilidades misteriosas",
+ "Cards with a skill you have not seen yet.": "Cartas com uma habilidade que ainda não viste.",
+ "[Lvl {n}]": "[Nv. {n}]",
+ "Gets this skill at Level {n}.": "Ganha esta habilidade no nível {n}."
 }

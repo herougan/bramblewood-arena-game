@@ -3845,5 +3845,9 @@
  "Updated {t} · refreshes every {s} s": "更新於 {t} · 每 {s} 秒重新整理",
  "Buy again": "再買一次",
  "Buy {n} again": "再買 {n} 個",
- "Not enough to buy another": "不夠再買一個"
+ "Not enough to buy another": "不夠再買一個",
+ "Mystery skills": "神祕技能",
+ "Cards with a skill you have not seen yet.": "帶有你還沒見過的技能的卡牌。",
+ "[Lvl {n}]": "[Lv.{n}]",
+ "Gets this skill at Level {n}.": "在 {n} 級獲得此技能。"
 }

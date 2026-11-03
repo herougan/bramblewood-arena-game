@@ -3845,5 +3845,9 @@
  "Updated {t} · refreshes every {s} s": "Mis à jour {t} · actualisé toutes les {s} s",
  "Buy again": "Racheter",
  "Buy {n} again": "Racheter {n}",
- "Not enough to buy another": "Pas assez pour en racheter"
+ "Not enough to buy another": "Pas assez pour en racheter",
+ "Mystery skills": "Compétences mystères",
+ "Cards with a skill you have not seen yet.": "Cartes avec une compétence que tu n’as pas encore vue.",
+ "[Lvl {n}]": "[Niv. {n}]",
+ "Gets this skill at Level {n}.": "Obtient cette compétence au niveau {n}."
 }

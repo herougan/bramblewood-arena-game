@@ -3848,5 +3848,9 @@
  "Updated {t} · refreshes every {s} s": "{t} 업데이트 · {s}초마다 새로고침",
  "Buy again": "다시 구매",
  "Buy {n} again": "{n}개 다시 구매",
- "Not enough to buy another": "하나 더 사기엔 부족해요"
+ "Not enough to buy another": "하나 더 사기엔 부족해요",
+ "Mystery skills": "미스터리 스킬",
+ "Cards with a skill you have not seen yet.": "아직 보지 못한 스킬이 있는 카드.",
+ "[Lvl {n}]": "[Lv.{n}]",
+ "Gets this skill at Level {n}.": "레벨 {n}에서 이 스킬을 얻는다."
 }

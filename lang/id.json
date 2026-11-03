@@ -3847,5 +3847,9 @@
  "Updated {t} · refreshes every {s} s": "Diperbarui {t} · diperbarui tiap {s} dtk",
  "Buy again": "Beli lagi",
  "Buy {n} again": "Beli {n} lagi",
- "Not enough to buy another": "Tidak cukup untuk membeli lagi"
+ "Not enough to buy another": "Tidak cukup untuk membeli lagi",
+ "Mystery skills": "Skill misterius",
+ "Cards with a skill you have not seen yet.": "Kartu dengan skill yang belum pernah kamu lihat.",
+ "[Lvl {n}]": "[Lv. {n}]",
+ "Gets this skill at Level {n}.": "Mendapat skill ini di Level {n}."
 }
