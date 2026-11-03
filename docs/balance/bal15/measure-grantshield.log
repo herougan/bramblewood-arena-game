@@ -1,0 +1,8 @@
+pipeline: waiting for the lock (--minutes 110' pid 9400 since 03:19:13 in /home/claude/bramblewood-arena-game/.claude/worktrees/agent-a89e958e88fd0fd33 )...
+pipeline measure: OK in 16.2min  -> docs/balance/pipeline/measure-2026-11-03-1142.json
+counts: items 1, measured 1, reused 0, stopped early 1, fights saved 600, left (--minutes) 0
+cache: 0 reused, 1 measured
+changed 1:
+  T:onSpawn>grantShield {"on":"onSpawn","do":"grantShield","allies":3} worth - -> 6.0824 [5.2843, 7.2453] at 400 fights, price on carriers 10.21
+FLAGGED 1:
+  T:onSpawn>grantShield {"on":"onSpawn","do":"grantShield","allies":3}: over-priced: worth 6.0824 against 10.21 on the carriers

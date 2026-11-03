@@ -1,0 +1,21 @@
+pipeline: waiting for the lock ( 400,700,1000' pid 1565 since 11:42:24 in /home/claude/bramblewood-arena-game/.claude/worktrees/agent-ab46374fc0cabbfc0 )...
+pipeline measure: OK in 48.9min  -> docs/balance/pipeline/measure-2026-11-03-1158.json
+counts: items 15, measured 15, reused 0, stopped early 0, fights saved 0, left (--minutes) 0
+cache: 0 reused, 15 measured
+changed 15:
+  guardian worth -0.2757 -> -0.3572 [-0.7579, -0.014] at 1000 fights, price on carriers 0
+  crabClaws worth -0.3244 -> -0.1677 [-0.6314, 0.2492] at 1000 fights, price on carriers 0.1
+  taunt worth -1.1758 -> -0.7361 [-1.2206, -0.3431] at 1000 fights, price on carriers 0.4
+  backstab=2 worth 0.3892 -> 0.3261 [-0.0869, 0.6577] at 1000 fights, price on carriers 1.82
+  immolation=1 worth -0.7947 -> -0.851 [-1.2764, -0.5053] at 1000 fights, price on carriers 0
+  T:onSpawn>stun {"on":"onSpawn","do":"stun","who":"enemy","sub":"all","everyone":true,"count":1} worth -1.4515 -> -1.1616 [-1.7757, -0.6687] at 1000 fights, price on carriers 3.91
+  backstab=3 worth 1.5488 -> 1.3914 [0.9879, 1.7949] at 1000 fights, price on carriers 2.53
+  drunk worth -4.2897 -> -3.6991 [-4.4531, -3.0534] at 1000 fights, price on carriers -4.29
+  earthquake=3 worth 1.2569 -> 1.1026 [0.6015, 1.5951] at 1000 fights, price on carriers 1.44
+  evolute worth -6.4711 -> -6.4136 [-7.7255, -5.4091] at 1000 fights, price on carriers 3
+  hunter=1 worth 0.9407 -> 0.5063 [0.1361, 0.8412] at 1000 fights, price on carriers 0.94
+  nightblind worth -2.1813 -> -2.1182 [-2.6177, -1.731] at 1000 fights, price on carriers -2.18
+  ... 3 more in the file
+FLAGGED 7:
+  taunt: over-priced: worth -0.7361 against 0.4 on the carriers
+  ... 6 more in the file

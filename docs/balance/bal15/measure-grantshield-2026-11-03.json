@@ -1,0 +1,1 @@
+[{"key":"T:onSpawn>grantShield {\"on\":\"onSpawn\",\"do\":\"grantShield\",\"allies\":3}","id":"onSpawn>grantShield","class":"trigger","n":null,"test":{"triggers":[{"on":"onSpawn","do":"grantShield","allies":3}]}}]

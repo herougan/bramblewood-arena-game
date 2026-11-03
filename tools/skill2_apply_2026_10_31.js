@@ -19,6 +19,8 @@ const FILE = path.join(ROOT, 'canonical', 'skill-costs.json');
 const CHECK = path.join(ROOT, 'docs', 'balance', 'skill-canon-check-2026-10-31-skill2-before.json');
 const MEAS = process.env.SKILL2_MEAS || path.join(ROOT, 'docs', 'balance', 'skill2-measures-2026-10-31.json'); // SPEED1 (2026-10-31): SKILL2_MEAS / SKILL2_PRICES_OUT let tools/pipeline/price.js feed it the merged measures and keep the plan out of the dated SKILL2 file
 const r2 = v => Math.round(v * 100) / 100, r3 = v => Math.round(v * 1000) / 1000;
+// 2026-11-03 (BAL15): a power curve's value under 0.1 keeps 4 decimals (Backstab 0.0273 x N^3.578: rounded to 0.03 it read 1.53 at N 3 against 1.39)
+const rPow = v => Math.abs(v) < 0.1 ? Math.round(v * 10000) / 10000 : r2(v);
 const numOf = v => typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b) => a + (+b || 0), 0) : 0);
 // the factor an entry's value is multiplied by at N (tools/skill_costs.js skillCost, without pow / plus)
 function factorOf(e, v) { const n = numOf(v); if (e.scale === 'n') { const N = Math.max(1, v === true && e.payDefault ? e.payDefault : n); return e.pow != null ? Math.pow(N, +e.pow) : N; }
@@ -26,8 +28,8 @@ function factorOf(e, v) { const n = numOf(v); if (e.scale === 'n') { const N = M
 
 // ---------------------------------------------------------------- the file: read, replace skill lines, write
 function readTable() { const text = fs.readFileSync(FILE, 'utf8'); return { text, table: JSON.parse(text) }; }
-function writeSkills(text, changed) { // changed: {id: entry}
-  const lines = text.split('\n'), start = lines.findIndex(l => /^ "skills": \[/.test(l)); let n = 0;
+function writeSkills(text, changed, section) { // changed: {id: entry}; section (BAL15, 2026-11-03): 'skills' (default) or 'actions'
+  const lines = text.split('\n'), start = lines.findIndex(l => new RegExp('^ "' + (section || 'skills') + '": \\[').test(l)); let n = 0;
   for (let i = start + 1; i < lines.length && !/^ \]/.test(lines[i]); i++) { const m = /^  (\{.*\})(,?)$/.exec(lines[i]); if (!m) continue; let id; try { id = JSON.parse(m[1]).id; } catch (e) { continue; }
     if (!changed[id]) continue; lines[i] = '  ' + JSON.stringify(changed[id]) + m[2]; n++; }
   if (n !== Object.keys(changed).length) throw new Error(`wrote ${n} of ${Object.keys(changed).length} skill lines`);
@@ -94,6 +96,13 @@ const CONDITIONAL = { tide: 'Tide fields only', mountainClimber: 'mountain terra
 const POW_KEEP = {};
 const NOTHING = 0.3;
 const HELD_TRIG = ['bee-drone', 'worker-ant'];
+// 2026-11-03 (package BAL15, DEC1 item 2: Royal Guard's "On Play: +3 Shield to every ally" measured as its own skill item): a trigger measure whose
+// action sets one of its own priced fields (Grant Shield's adjacent / surrounding / allies: canonical/skill-costs.json grantShield.<field>) prices
+// that field's entry, value = W / (N x the trigger's weight x the pair's mult), and is left out of the pair's mult (the pair is read from the
+// action's base field, amount: Grant Shield 2 on itself). Pooled into the pair it would have pulled On Spawn > Grant Shield to about W / price.
+const OWN_FIELDS = { grantShield: ['adjacent', 'surrounding', 'allies'] };
+function ownFieldOf(r) { const t = r && r.class === 'trigger' && r.test && r.test.effects && (r.test.effects.triggers || [])[0]; if (!t || !OWN_FIELDS[t.do]) return null;
+  const f = OWN_FIELDS[t.do].filter(k => +t[k] > 0); return f.length === 1 && !(+t.amount > 0) ? { id: t.do + '.' + f[0], field: f[0], n: +t[f[0]], on: t.on, pair: t.on + '>' + t.do } : null; }
 const SPECIAL = {
   // DECK1-1: Remember N acts only from the Exile zone, through its card's own On Death → Exile self; measured as the pair (Remember 1 on the
   // Ashbone Ghoul, Remember 2 on the Marsh Wisp). The pair reads less at 2 (two Echoes to wait for), so Remember is a power curve with a
@@ -145,7 +154,7 @@ function prices(opt) {
         const q = use.filter(p => p.W > 0 && numOf(p.n) > 0); const X = q.map(p => Math.log(numOf(p.n))), Y = q.map(p => Math.log(p.W)), Wt = q.map(p => p.w);
         const sw = Wt.reduce((a, b) => a + b, 0), mx = X.reduce((t, x, i) => t + Wt[i] * x, 0) / sw, my = Y.reduce((t, y, i) => t + Wt[i] * y, 0) / sw;
         const sxx = X.reduce((t, x, i) => t + Wt[i] * (x - mx) * (x - mx), 0), sxy = X.reduce((t, x, i) => t + Wt[i] * (x - mx) * (Y[i] - my), 0);
-        e.pow = r3(sxx ? sxy / sxx : +e.pow); e.value = r2(Math.exp(my - e.pow * mx)); why = 'v x N^pow fitted in log space';
+        e.pow = r3(sxx ? sxy / sxx : +e.pow); e.value = rPow(Math.exp(my - e.pow * mx)); why = 'v x N^pow fitted in log space';
       } else { const num = use.reduce((t, p) => t + p.w * p.W * factorOf(e, p.n), 0), den = use.reduce((t, p) => t + p.w * factorOf(e, p.n) ** 2, 0); e.value = r2(den ? num / den : e.value); why = use.length > 1 ? 'least squares over ' + use.length + ' N' : '';
         // two or more N whose readings the entry's scale fits badly (Arrow 1 / 2 read 4.4 / 6.7, not 1 : 2): a power curve v x N^pow (scale n)
         // when it halves the weighted squared error
@@ -155,14 +164,14 @@ function prices(opt) {
           const mx = X.reduce((t, x, i) => t + Wt[i] * x, 0) / sw, my = Y.reduce((t, y, i) => t + Wt[i] * y, 0) / sw;
           const sxx = X.reduce((t, x, i) => t + Wt[i] * (x - mx) ** 2, 0), sxy = X.reduce((t, x, i) => t + Wt[i] * (x - mx) * (Y[i] - my), 0), pw = sxx ? sxy / sxx : 1, v = Math.exp(my - pw * mx);
           const sse = f => use.reduce((t, p) => t + p.w * (p.W - f(p)) ** 2, 0), sScale = sse(p => e.value * factorOf(e, p.n)), sPow = sse(p => v * Math.pow(Math.max(1, numOf(p.n)), pw));
-          if (sPow < 0.5 * sScale) { why = `a power curve fits its ${q.length} N better than its '${e.scale}' scale (squared error ${r2(sPow)} vs ${r2(sScale)}): scale n, v x N^pow`; e.scale = 'n'; e.value = r2(v); e.pow = r3(pw); }
+          if (sPow < 0.5 * sScale) { why = `a power curve fits its ${q.length} N better than its '${e.scale}' scale (squared error ${r2(sPow)} vs ${r2(sScale)}): scale n, v x N^pow`; e.scale = 'n'; e.value = rPow(v); e.pow = r3(pw); }
         } }
       fitv = e.value;
     }
     if (CONDITIONAL[id] && e.value < e0.value) { kept.push(`${id}: reads ${e.value} < ${e0.value} (${CONDITIONAL[id]}); kept`); rows.push({ id, kind: 'kept', old: e0.value, fit: e.value, note: CONDITIONAL[id] + ': a low reading is not applied', pts }); return; }
     if (e0.value < 0 && e.value > 0) { rows.push({ id, kind: 'kept', old: e0.value, fit: e.value, note: 'a drawback stays at or below 0 (read ' + e.value + ')', pts }); return; }
     // NOTHING (0.3, the placebo's lower bound): a positive skill that reads at or below it does not fire on these carriers (it needs a partner, a field or a target they lack): its price is kept, never lowered by it
-    if (e0.value >= 0 && e.value <= NOTHING && e.value < e0.value) { rows.push({ id, kind: 'kept', old: e0.value, fit: e.value, note: 'reads nothing on the vanilla carriers (' + e.value + ' <= ' + NOTHING + '): kept', pts }); return; }
+    if (e0.value >= 0 && e.value <= NOTHING && e.value < e0.value && !(e.pow != null && Math.max(...pts.map(p => p.W)) > NOTHING) /* 2026-11-03 (BAL15): a power curve's value is its price at N 1; it reads nothing only when every reading does (Backstab 2 / 3 read 0.33 / 1.39 at 1,000 fights, the curve 0.03 x N^3.58) */) { rows.push({ id, kind: 'kept', old: e0.value, fit: e.value, note: 'reads nothing on the vanilla carriers (' + e.value + ' <= ' + NOTHING + '): kept', pts }); return; }
     if (e0.value === e.value && e0.pow === e.pow) { rows.push({ id, kind: 'same', old: e0.value, fit: e.value, pts }); return; }
     const c = pts.map(p => p.conf), conf = c.includes('high') ? 'high' : c.includes('medium') ? 'medium' : 'low';
     e.measuredS = e.value; e.measuredConf = conf; e.measuredSE = r2(Math.min(...pts.map(p => (p.ci.hi - p.ci.lo) / 3.92 / Math.max(1e-9, factorOf(e, p.n)))));
@@ -182,7 +191,7 @@ function prices(opt) {
   // entries (p = the entry's price before, w = its cards): table.pairs, read by tools/skill_costs.js triggerCost
   const ALIAS = table.aliases || {}, pairs = {};
   const BBP = require(path.join(ROOT, 'bramblewood-budget.js')); /* 2026-11-03 (BAL14): an On Ready / On Spawn Lumber gain is priced by lumberGainS (BAL12), not by its pair, so its reading must not set the pair's mult (it pulled onReady>gain to 0.49 and would have re-priced the Metal / Uranium gains) */
-  Object.values(R).filter(r => r.class === 'trigger' && r.kind === 'measure' && !(BBP.lumberGainS && BBP.lumberGainS(1, r.test.effects.triggers[0]) != null)).forEach(r => { const t = r.test.effects.triggers[0], k = t.on + '>' + (ALIAS[t.do] || t.do); (pairs[k] = pairs[k] || []).push(r); });
+  Object.values(R).filter(r => r.class === 'trigger' && r.kind === 'measure' && !ownFieldOf(r) /* BAL15: priced on its own field below */ && !(BBP.lumberGainS && BBP.lumberGainS(1, r.test.effects.triggers[0]) != null)).forEach(r => { const t = r.test.effects.triggers[0], k = t.on + '>' + (ALIAS[t.do] || t.do); (pairs[k] = pairs[k] || []).push(r); });
   const trRows = [];
   Object.keys(pairs).sort().forEach(k => { const list = pairs[k].filter(r => Math.abs(r.test.price) > 0.05), old = 1; /* the measured prices had no pair mult */ if (!list.length) return;
     // the owner holds the Bee Drone's and the Worker Ant's trigger prices for RECOST1-3's package (RECOST1-5, 10-30 23:25 "hold them")
@@ -191,6 +200,16 @@ function prices(opt) {
     let mult = r2(den ? num / den : 1), note = ''; const id0 = k.split('>')[1];
     if (mult * list.reduce((t, r) => t + r.test.price, 0) / list.length <= NOTHING && mult < 1) { kept.push(k + ': reads nothing on the vanilla carriers (' + list.map(r => r2(r.test.worthRuler.m)).join(', ') + '): kept'); return; }
     trRows.push({ pair: k, old, mult, note, entries: list.map(r => ({ key: r.key, W: r2(r.test.worthRuler.m), lo: r2(r.test.worthRuler.lo), hi: r2(r.test.worthRuler.hi), price: r.test.price, fights: r.fights, cards: r.cards })) }); });
+  // 2026-11-03 (BAL15): the own-field trigger measures (OWN_FIELDS): the field's entry from its reading, at the pair's mult as this plan leaves it
+  const AC = {}, actChanged = {}; (table.actions || []).forEach(e => { AC[e.id] = e; });
+  Object.values(R).filter(r => r.kind === 'measure' && ownFieldOf(r)).forEach(r => { const o = ownFieldOf(r), e0 = AC[o.id]; if (!e0) { kept.push(`${o.id}: no table entry`); return; }
+    const tw = +((table.triggers || []).find(x => x.id === o.on) || { value: 1 }).value, pr = trRows.find(x => x.pair === o.pair), pm = pr ? pr.mult : +(((table.pairs || {})[o.pair] || {}).mult || 1), W = r.test.worthRuler;
+    const v = r2(W.m / (o.n * tw * pm)), conf = confOf(W), pts = [{ key: r.key, n: o.n, w: 1, W: W.m, ci: W, price: r.test.price, fights: r.fights, conf }];
+    if (v <= 0 || W.m <= NOTHING) { rows.push({ id: o.id, kind: 'kept', old: e0.value, fit: v, note: 'reads nothing on the vanilla carriers: kept', pts }); return; }
+    if (v === e0.value) { rows.push({ id: o.id, kind: 'same', old: e0.value, fit: v, pts }); return; }
+    const e = keepWas(JSON.parse(JSON.stringify(e0))); e.value = v; e.measuredS = v; e.measuredConf = conf; e.measuredSE = r2((W.hi - W.lo) / 3.92 / (o.n * tw * pm));
+    e.measuredHow = `2026-11-03 (BAL15): its own trigger item, ${r.key.replace(/^T:/, '')} ${r2(W.m)} [${r2(W.lo)}, ${r2(W.hi)}] stat points (${r.fights} paired fights, both brambles ${r.bramble || 30}, the canon's vanilla carriers; docs/balance/pipeline/measures.json); a point = W / (${o.n} x ${o.on} ${tw} x pair ${o.pair} ${pm}); price before ${r.test.price}`;
+    actChanged[o.id] = e; rows.push({ id: o.id, kind: 'set', section: 'actions', old: e0.value, value: v, scale: e.scale, conf, pts, why: 'own field (' + o.field + ') of ' + o.pair }); });
   // print
   rows.forEach(r => { if (r.kind === 'set') console.log(`set  ${r.id.padEnd(18)} ${String(r.old).padStart(6)}${r.oldPow != null ? '^' + r.oldPow : ''} -> ${String(r.value).padStart(6)}${r.pow != null ? '^' + r.pow : ''} (${r.scale}, ${r.conf})  ${r.pts.map(p => p.key + ' ' + r2(p.W) + ' was ' + p.price).join('; ')} ${r.why || ''}`);
     else if (r.kind === 'kept') console.log(`kept ${r.id.padEnd(18)} ${r.old} (read ${r.fit}): ${r.note}`); else if (r.kind === 'canon') console.log(`canon ${r.id}: ${r.note}`); });
@@ -200,7 +219,7 @@ function prices(opt) {
   const plan = { rows, shorthands: shRows, pairs: trRows, kept };
   fs.writeFileSync(process.env.SKILL2_PRICES_OUT || path.join(ROOT, 'docs', 'balance', 'skill2-prices-2026-10-31.json'), JSON.stringify(Object.assign({ _about: 'SKILL2 (2026-10-31): the price plan node tools/skill2_apply_2026_10_31.js prices builds from docs/balance/skill2-measures-2026-10-31.json (applied unless --dry).' }, plan), null, 1) + '\n');
   if (opt.dry) return plan;
-  let out = writeSkills(text, changed); const t2 = JSON.parse(out);
+  let out = writeSkills(text, changed); if (Object.keys(actChanged).length) out = writeSkills(out, actChanged, 'actions'); /* BAL15 */ const t2 = JSON.parse(out);
   // shorthands and triggers are single lines too ("shorthands" is one line; trigger entries a line each)
   shRows.filter(r => r.kind === 'set').forEach(r => { t2.shorthands[r.id].mult = r.mult; t2.shorthands[r.id].skill2 = `2026-10-31 (SKILL2, BUDGET2-1): mult ${r.old} -> ${r.mult}, measured ${r.pts.map(p => p.key + ' ' + r2(p.W) + ' (price before ' + p.price + ')').join('; ')}`; });
   const lines = out.split('\n');
@@ -220,5 +239,5 @@ async function main(argv) {
   if (cmd === 'prices') return prices(opt);
   console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 17).map(l => l.replace(/^\/\/ ?/, '')).join('\n'));
 }
-module.exports = { factorOf, readTable, writeSkills, keepWas, prices };
+module.exports = { factorOf, readTable, writeSkills, keepWas, prices, ownFieldOf /* BAL15 (2026-11-03) */ };
 if (require.main === module) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

@@ -1065,80 +1065,74 @@
     "barnacle-bulwark",
     "reefback-turtle"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -0.0328,
-     "lo": -1.0967,
-     "hi": 0.8084
-    },
-    {
-     "fights": 400,
-     "m": -0.2757,
-     "lo": -1.0183,
-     "hi": 0.2984
+     "fights": 1000,
+     "m": -0.3572,
+     "lo": -0.7579,
+     "hi": -0.014
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "guardian": true
     },
-    "gain": -0.0071,
+    "gain": -0.0096,
     "worth": {
-     "m": -0.2275,
-     "lo": -0.815,
-     "hi": 0.2708
+     "m": -0.3242,
+     "lo": -0.6694,
+     "hi": -0.0127
     },
     "worthRuler": {
-     "m": -0.2757,
-     "lo": -1.0183,
-     "hi": 0.2984
+     "m": -0.3572,
+     "lo": -0.7579,
+     "hi": -0.014
     },
     "worthStat": {
-     "m": -0.2204,
-     "lo": -0.7542,
-     "hi": 0.2416
+     "m": -0.2706,
+     "lo": -0.5575,
+     "hi": -0.0116
     },
     "price": 0,
-    "net": -0.2757,
-    "verdict": "within its interval",
+    "net": -0.3572,
+    "verdict": "over-priced",
     "between": [
      "-",
      "quick (2.23)"
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T18:57:01.924Z",
-   "seconds": 343
+   "measuredAt": "2026-11-03T04:18:31.942Z",
+   "seconds": 1195
   },
   "global|leader": {
    "key": "leader",
@@ -1765,71 +1759,65 @@
     "tidepool-trapper-crab",
     "grotto-lobster"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -0.0492,
-     "lo": -1.2265,
-     "hi": 0.9447
-    },
-    {
-     "fights": 400,
-     "m": -0.3244,
-     "lo": -1.2613,
-     "hi": 0.3688
+     "fights": 1000,
+     "m": -0.1677,
+     "lo": -0.6314,
+     "hi": 0.2492
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "crabClaws": true
     },
-    "gain": -0.0083,
+    "gain": -0.0045,
     "worth": {
-     "m": -0.2676,
-     "lo": -0.9593,
-     "hi": 0.3307
+     "m": -0.1522,
+     "lo": -0.5593,
+     "hi": 0.2229
     },
     "worthRuler": {
-     "m": -0.3244,
-     "lo": -1.2613,
-     "hi": 0.3688
+     "m": -0.1677,
+     "lo": -0.6314,
+     "hi": 0.2492
     },
     "worthStat": {
-     "m": -0.2593,
-     "lo": -0.9017,
-     "hi": 0.3025
+     "m": -0.1271,
+     "lo": -0.4602,
+     "hi": 0.1928
     },
     "price": 0.1,
-    "net": -0.4244,
+    "net": -0.2677,
     "verdict": "within its interval",
     "between": [
      "-",
@@ -1837,8 +1825,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T19:01:00.480Z",
-   "seconds": 52
+   "measuredAt": "2026-11-03T04:20:38.926Z",
+   "seconds": 127
   },
   "global|illuminate": {
    "key": "illuminate",
@@ -2107,71 +2095,65 @@
     "proboscis-monkey",
     "swordbill-challenger"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -1.0658,
-     "lo": -2.5604,
-     "hi": -0.0743
-    },
-    {
-     "fights": 400,
-     "m": -1.1758,
-     "lo": -2.0505,
-     "hi": -0.4403
+     "fights": 1000,
+     "m": -0.7361,
+     "lo": -1.2206,
+     "hi": -0.3431
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "taunt": true
     },
-    "gain": -0.0302,
+    "gain": -0.0197,
     "worth": {
-     "m": -0.9702,
-     "lo": -1.6745,
-     "hi": -0.4181
+     "m": -0.6681,
+     "lo": -1.0504,
+     "hi": -0.3261
     },
     "worthRuler": {
-     "m": -1.1758,
-     "lo": -2.0505,
-     "hi": -0.4403
+     "m": -0.7361,
+     "lo": -1.2206,
+     "hi": -0.3431
     },
     "worthStat": {
-     "m": -0.94,
-     "lo": -1.5696,
-     "hi": -0.3734
+     "m": -0.5576,
+     "lo": -0.8818,
+     "hi": -0.2746
     },
     "price": 0.4,
-    "net": -1.5758,
+    "net": -1.1361,
     "verdict": "over-priced",
     "between": [
      "-",
@@ -2179,8 +2161,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T19:03:08.172Z",
-   "seconds": 53
+   "measuredAt": "2026-11-03T04:22:44.177Z",
+   "seconds": 125
   },
   "global|undead": {
    "key": "undead",
@@ -3287,71 +3269,65 @@
     "wrong-way-salmon",
     "cunning-vixen"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": 0.4919,
-     "lo": -0.5271,
-     "hi": 1.3177
-    },
-    {
-     "fights": 400,
-     "m": 0.3892,
-     "lo": -0.2832,
-     "hi": 1.0217
+     "fights": 1000,
+     "m": 0.3261,
+     "lo": -0.0869,
+     "hi": 0.6577
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "backstab": 2
     },
-    "gain": 0.01,
+    "gain": 0.0088,
     "worth": {
-     "m": 0.3212,
-     "lo": -0.2227,
-     "hi": 0.8315
+     "m": 0.296,
+     "lo": -0.0802,
+     "hi": 0.6002
     },
     "worthRuler": {
-     "m": 0.3892,
-     "lo": -0.2832,
-     "hi": 1.0217
+     "m": 0.3261,
+     "lo": -0.0869,
+     "hi": 0.6577
     },
     "worthStat": {
-     "m": 0.3112,
-     "lo": -0.1892,
-     "hi": 0.7843
+     "m": 0.2471,
+     "lo": -0.0661,
+     "hi": 0.516
     },
     "price": 1.82,
-    "net": -1.4308,
+    "net": -1.4939,
     "verdict": "over-priced",
     "between": [
      "-",
@@ -3359,8 +3335,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T19:09:23.197Z",
-   "seconds": 54
+   "measuredAt": "2026-11-03T04:24:57.889Z",
+   "seconds": 134
   },
   "global|boomerang": {
    "key": "boomerang",
@@ -4195,71 +4171,65 @@
     "magma-titan",
     "rimeheart-colossus"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -0.7051,
-     "lo": -1.6624,
-     "hi": 0.0869
-    },
-    {
-     "fights": 400,
-     "m": -0.7947,
-     "lo": -1.4803,
-     "hi": -0.1769
+     "fights": 1000,
+     "m": -0.851,
+     "lo": -1.2764,
+     "hi": -0.5053
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "immolation": 1
     },
-    "gain": -0.0204,
+    "gain": -0.0228,
     "worth": {
-     "m": -0.6557,
-     "lo": -1.2258,
-     "hi": -0.1633
+     "m": -0.7724,
+     "lo": -1.1514,
+     "hi": -0.4554
     },
     "worthRuler": {
-     "m": -0.7947,
-     "lo": -1.4803,
-     "hi": -0.1769
+     "m": -0.851,
+     "lo": -1.2764,
+     "hi": -0.5053
     },
     "worthStat": {
-     "m": -0.6353,
-     "lo": -1.1538,
-     "hi": -0.1679
+     "m": -0.6447,
+     "lo": -0.9564,
+     "hi": -0.3971
     },
     "price": 0,
-    "net": -0.7947,
+    "net": -0.851,
     "verdict": "over-priced",
     "between": [
      "-",
@@ -4267,8 +4237,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T19:24:17.157Z",
-   "seconds": 50
+   "measuredAt": "2026-11-03T04:26:57.701Z",
+   "seconds": 120
   },
   "global|invisible=2": {
    "key": "invisible=2",
@@ -7874,47 +7844,41 @@
    "cards": [
     "granite-ox-golem"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -1.5577,
-     "lo": -3.2211,
-     "hi": -0.3598
-    },
-    {
-     "fights": 400,
-     "m": -1.4515,
-     "lo": -2.6305,
-     "hi": -0.5505
+     "fights": 1000,
+     "m": -1.1616,
+     "lo": -1.7757,
+     "hi": -0.6687
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
@@ -7930,24 +7894,24 @@
       }
      ]
     },
-    "gain": -0.0373,
+    "gain": -0.0312,
     "worth": {
-     "m": -1.1976,
-     "lo": -2.0194,
-     "hi": -0.4997
+     "m": -1.0543,
+     "lo": -1.564,
+     "hi": -0.6078
     },
     "worthRuler": {
-     "m": -1.4515,
-     "lo": -2.6305,
-     "hi": -0.5505
+     "m": -1.1616,
+     "lo": -1.7757,
+     "hi": -0.6687
     },
     "worthStat": {
-     "m": -1.1605,
-     "lo": -1.9509,
-     "hi": -0.4826
+     "m": -0.88,
+     "lo": -1.3264,
+     "hi": -0.5217
     },
     "price": 3.91,
-    "net": -5.3615,
+    "net": -5.0716,
     "verdict": "over-priced",
     "between": [
      "-",
@@ -7955,8 +7919,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T19:46:22.007Z",
-   "seconds": 62
+   "measuredAt": "2026-11-03T04:29:27.389Z",
+   "seconds": 150
   },
   "global|T:perTurn>forgeWeapon {\"on\":\"perTurn\",\"do\":\"forgeWeapon\",\"amount\":1,\"pay\":{\"stone\":1}}": {
    "key": "T:perTurn>forgeWeapon {\"on\":\"perTurn\",\"do\":\"forgeWeapon\",\"amount\":1,\"pay\":{\"stone\":1}}",
@@ -8552,71 +8516,65 @@
    "cards": [
     "stoat-cutthroat"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": 1.7217,
-     "lo": 0.6504,
-     "hi": 2.3175
-    },
-    {
-     "fights": 400,
-     "m": 1.5488,
-     "lo": 0.9606,
-     "hi": 2.2328
+     "fights": 1000,
+     "m": 1.3914,
+     "lo": 0.9879,
+     "hi": 1.7949
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "backstab": 3
     },
-    "gain": 0.0398,
+    "gain": 0.0373,
     "worth": {
-     "m": 1.2779,
-     "lo": 0.8131,
-     "hi": 1.8701
+     "m": 1.2629,
+     "lo": 0.9061,
+     "hi": 1.6454
     },
     "worthRuler": {
-     "m": 1.5488,
-     "lo": 0.9606,
-     "hi": 2.2328
+     "m": 1.3914,
+     "lo": 0.9879,
+     "hi": 1.7949
     },
     "worthStat": {
-     "m": 1.2382,
-     "lo": 0.7011,
-     "hi": 1.8182
+     "m": 1.0541,
+     "lo": 0.7616,
+     "hi": 1.3826
     },
     "price": 2.53,
-    "net": -0.9812,
+    "net": -1.1386,
     "verdict": "over-priced",
     "between": [
      "-",
@@ -8624,8 +8582,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T19:50:14.813Z",
-   "seconds": 57
+   "measuredAt": "2026-11-03T04:31:37.427Z",
+   "seconds": 130
   },
   "global|bedrock": {
    "key": "bedrock",
@@ -10653,80 +10611,74 @@
    "cards": [
     "marula-elephant"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -4.4436,
-     "lo": -7.2147,
-     "hi": -2.899
-    },
-    {
-     "fights": 400,
-     "m": -4.2897,
-     "lo": -6.0297,
-     "hi": -3.0844
+     "fights": 1000,
+     "m": -3.6991,
+     "lo": -4.4531,
+     "hi": -3.0534
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "drunk": true
     },
-    "gain": -0.1102,
+    "gain": -0.0993,
     "worth": {
-     "m": -3.5394,
-     "lo": -4.5407,
-     "hi": -2.8836
+     "m": -3.3575,
+     "lo": -3.8501,
+     "hi": -2.825
     },
     "worthRuler": {
-     "m": -4.2897,
-     "lo": -6.0297,
-     "hi": -3.0844
+     "m": -3.6991,
+     "lo": -4.4531,
+     "hi": -3.0534
     },
     "worthStat": {
-     "m": -3.4295,
-     "lo": -4.4038,
-     "hi": -2.7307
+     "m": -2.8024,
+     "lo": -3.2169,
+     "hi": -2.4042
     },
-    "price": -3.07,
-    "net": -1.2197,
-    "verdict": "over-priced",
+    "price": -4.29,
+    "net": 0.5909,
+    "verdict": "within its interval",
     "between": [
      "-",
      "quick (2.23)"
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T20:04:29.285Z",
-   "seconds": 54
+   "measuredAt": "2026-11-03T04:33:48.173Z",
+   "seconds": 131
   },
   "global|earthquake=3": {
    "key": "earthquake=3",
@@ -10740,71 +10692,65 @@
    "cards": [
     "gorge-wyrm"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": 1.197,
-     "lo": -0.0272,
-     "hi": 2.338
-    },
-    {
-     "fights": 400,
-     "m": 1.2569,
-     "lo": 0.3471,
-     "hi": 2.1608
+     "fights": 1000,
+     "m": 1.1026,
+     "lo": 0.6015,
+     "hi": 1.5951
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "earthquake": 3
     },
-    "gain": 0.0323,
+    "gain": 0.0296,
     "worth": {
-     "m": 1.0371,
-     "lo": 0.3117,
-     "hi": 1.7892
+     "m": 1.0008,
+     "lo": 0.5781,
+     "hi": 1.4356
     },
     "worthRuler": {
-     "m": 1.2569,
-     "lo": 0.3471,
-     "hi": 2.1608
+     "m": 1.1026,
+     "lo": 0.6015,
+     "hi": 1.5951
     },
     "worthStat": {
-     "m": 1.0049,
-     "lo": 0.3197,
-     "hi": 1.7656
+     "m": 0.8353,
+     "lo": 0.4604,
+     "hi": 1.2247
     },
     "price": 1.44,
-    "net": -0.1831,
+    "net": -0.3374,
     "verdict": "within its interval",
     "between": [
      "-",
@@ -10812,8 +10758,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T20:05:17.599Z",
-   "seconds": 48
+   "measuredAt": "2026-11-03T04:35:34.652Z",
+   "seconds": 106
   },
   "global|earthquake=4": {
    "key": "earthquake=4",
@@ -10914,71 +10860,65 @@
    "cards": [
     "gale-sprite"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -5.7554,
-     "lo": -9.2091,
-     "hi": -3.7998
-    },
-    {
-     "fights": 400,
-     "m": -6.4711,
-     "lo": -8.809,
-     "hi": -4.8475
+     "fights": 1000,
+     "m": -6.4136,
+     "lo": -7.7255,
+     "hi": -5.4091
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "evolute": true
     },
-    "gain": -0.1662,
+    "gain": -0.1721,
     "worth": {
-     "m": -5.3392,
-     "lo": -6.8094,
-     "hi": -4.4453
+     "m": -5.8213,
+     "lo": -6.8485,
+     "hi": -5.0051
     },
     "worthRuler": {
-     "m": -6.4711,
-     "lo": -8.809,
-     "hi": -4.8475
+     "m": -6.4136,
+     "lo": -7.7255,
+     "hi": -5.4091
     },
     "worthStat": {
-     "m": -5.1734,
-     "lo": -6.8145,
-     "hi": -4.1935
+     "m": -4.8588,
+     "lo": -5.6539,
+     "hi": -4.2213
     },
     "price": 3,
-    "net": -9.4711,
+    "net": -9.4136,
     "verdict": "over-priced",
     "between": [
      "-",
@@ -10986,8 +10926,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T20:06:51.307Z",
-   "seconds": 47
+   "measuredAt": "2026-11-03T04:37:26.920Z",
+   "seconds": 112
   },
   "global|explode={\"time\":1,\"damage\":4}": {
    "key": "explode={\"time\":1,\"damage\":4}",
@@ -12900,47 +12840,41 @@
    "cards": [
     "tidepool-trapper-crab"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": 0.869,
-     "lo": 0.1014,
-     "hi": 1.7422
-    },
-    {
-     "fights": 400,
-     "m": 0.9407,
-     "lo": 0.3258,
-     "hi": 1.594
+     "fights": 1000,
+     "m": 0.5063,
+     "lo": 0.1361,
+     "hi": 0.8412
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
@@ -12948,33 +12882,33 @@
      "hunter": 1,
      "hunterVs": "wet"
     },
-    "gain": 0.0242,
+    "gain": 0.0136,
     "worth": {
-     "m": 0.7761,
-     "lo": 0.2759,
-     "hi": 1.2911
+     "m": 0.4595,
+     "lo": 0.118,
+     "hi": 0.7381
     },
     "worthRuler": {
-     "m": 0.9407,
-     "lo": 0.3258,
-     "hi": 1.594
+     "m": 0.5063,
+     "lo": 0.1361,
+     "hi": 0.8412
     },
     "worthStat": {
-     "m": 0.752,
-     "lo": 0.2401,
-     "hi": 1.3481
+     "m": 0.3835,
+     "lo": 0.0941,
+     "hi": 0.6571
     },
-    "price": 0.75,
-    "net": 0.1907,
-    "verdict": "within its interval",
+    "price": 0.94,
+    "net": -0.4337,
+    "verdict": "over-priced",
     "between": [
      "-",
      "quick (2.23)"
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T20:18:51.292Z",
-   "seconds": 56
+   "measuredAt": "2026-11-03T04:39:30.663Z",
+   "seconds": 124
   },
   "global|hunter=2": {
    "key": "hunter=2",
@@ -14481,80 +14415,74 @@
    "cards": [
     "hoopoe-herald"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -2.3612,
-     "lo": -3.9644,
-     "hi": -1.478
-    },
-    {
-     "fights": 400,
-     "m": -2.1813,
-     "lo": -3.1616,
-     "hi": -1.4521
+     "fights": 1000,
+     "m": -2.1182,
+     "lo": -2.6177,
+     "hi": -1.731
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "nightblind": true
     },
-    "gain": -0.056,
+    "gain": -0.0568,
     "worth": {
-     "m": -1.7998,
-     "lo": -2.4571,
-     "hi": -1.3234
+     "m": -1.9226,
+     "lo": -2.2404,
+     "hi": -1.5834
     },
     "worthRuler": {
-     "m": -2.1813,
-     "lo": -3.1616,
-     "hi": -1.4521
+     "m": -2.1182,
+     "lo": -2.6177,
+     "hi": -1.731
     },
     "worthStat": {
-     "m": -1.7439,
-     "lo": -2.444,
-     "hi": -1.223
+     "m": -1.6047,
+     "lo": -1.8941,
+     "hi": -1.3451
     },
-    "price": -3.29,
-    "net": 1.1087,
-    "verdict": "under-priced",
+    "price": -2.18,
+    "net": 0.0618,
+    "verdict": "within its interval",
     "between": [
      "-",
      "quick (2.23)"
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T20:29:14.228Z",
-   "seconds": 52
+   "measuredAt": "2026-11-03T04:41:37.497Z",
+   "seconds": 127
   },
   "global|nullify": {
    "key": "nullify",
@@ -15414,71 +15342,65 @@
    "cards": [
     "gangrenous-leech"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -5.4438,
-     "lo": -8.6607,
-     "hi": -3.6179
-    },
-    {
-     "fights": 400,
-     "m": -5.4899,
-     "lo": -7.5572,
-     "hi": -4.1372
+     "fights": 1000,
+     "m": -5.3048,
+     "lo": -6.3786,
+     "hi": -4.5307
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "parasite": true
     },
-    "gain": -0.141,
+    "gain": -0.1423,
     "worth": {
-     "m": -4.5297,
-     "lo": -5.8369,
-     "hi": -3.7
+     "m": -4.8149,
+     "lo": -5.5193,
+     "hi": -4.1191
     },
     "worthRuler": {
-     "m": -5.4899,
-     "lo": -7.5572,
-     "hi": -4.1372
+     "m": -5.3048,
+     "lo": -6.3786,
+     "hi": -4.5307
     },
     "worthStat": {
-     "m": -4.389,
-     "lo": -5.6839,
-     "hi": -3.4879
+     "m": -4.0188,
+     "lo": -4.6542,
+     "hi": -3.4961
     },
     "price": 1,
-    "net": -6.4899,
+    "net": -6.3048,
     "verdict": "over-priced",
     "between": [
      "-",
@@ -15486,8 +15408,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T20:34:53.838Z",
-   "seconds": 45
+   "measuredAt": "2026-11-03T04:43:22.611Z",
+   "seconds": 105
   },
   "global|perforate=2": {
    "key": "perforate=2",
@@ -16155,71 +16077,65 @@
    "cards": [
     "badger-stonemason"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -2.7547,
-     "lo": -4.5938,
-     "hi": -1.6927
-    },
-    {
-     "fights": 400,
-     "m": -2.7895,
-     "lo": -3.9512,
-     "hi": -1.9504
+     "fights": 1000,
+     "m": -2.6369,
+     "lo": -3.2272,
+     "hi": -2.2019
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "quarry": 1
     },
-    "gain": -0.0717,
+    "gain": -0.0707,
     "worth": {
-     "m": -2.3016,
-     "lo": -3.0509,
-     "hi": -1.8345
+     "m": -2.3934,
+     "lo": -2.7742,
+     "hi": -2.0461
     },
     "worthRuler": {
-     "m": -2.7895,
-     "lo": -3.9512,
-     "hi": -1.9504
+     "m": -2.6369,
+     "lo": -3.2272,
+     "hi": -2.2019
     },
     "worthStat": {
-     "m": -2.2301,
-     "lo": -2.9162,
-     "hi": -1.7117
+     "m": -1.9976,
+     "lo": -2.3564,
+     "hi": -1.7268
     },
     "price": 2.5,
-    "net": -5.2895,
+    "net": -5.1369,
     "verdict": "over-priced",
     "between": [
      "-",
@@ -16227,8 +16143,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T20:39:28.155Z",
-   "seconds": 53
+   "measuredAt": "2026-11-03T04:45:19.925Z",
+   "seconds": 117
   },
   "global|rampart": {
    "key": "rampart",
@@ -17220,71 +17136,65 @@
    "cards": [
     "pika-hoarder"
    ],
-   "fights": 400,
-   "converged": false,
+   "fights": 1000,
+   "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": -5.0667,
-     "lo": -7.7565,
-     "hi": -3.5324
-    },
-    {
-     "fights": 400,
-     "m": -4.9465,
-     "lo": -6.659,
-     "hi": -3.6915
+     "fights": 1000,
+     "m": -4.8203,
+     "lo": -5.7414,
+     "hi": -4.1094
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "aedaa997c3ce",
    "canonRate": {
-    "m": 0.0311,
-    "lo": 0.0266,
-    "hi": 0.0336
+    "m": 0.0296,
+    "lo": 0.0274,
+    "hi": 0.0325
    },
    "statRate": {
-    "m": 0.0321,
-    "lo": 0.0265,
-    "hi": 0.0375
+    "m": 0.0354,
+    "lo": 0.032,
+    "hi": 0.0394
    },
    "kappa": {
-    "m": 1.0321,
-    "lo": 0.8982,
-    "hi": 1.2385
+    "m": 1.1981,
+    "lo": 1.0802,
+    "hi": 1.3108
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": 0,
+    "gain": 0.0079,
     "worthStat": {
-     "m": 0,
-     "lo": -0.3925,
-     "hi": 0.3333
+     "m": 0.2235,
+     "lo": 0,
+     "hi": 0.425
     }
    },
    "test": {
     "effects": {
      "scatterbrained": true
     },
-    "gain": -0.1271,
+    "gain": -0.1293,
     "worth": {
-     "m": -4.0814,
-     "lo": -5.0988,
-     "hi": -3.3856
+     "m": -4.3752,
+     "lo": -4.9537,
+     "hi": -3.8322
     },
     "worthRuler": {
-     "m": -4.9465,
-     "lo": -6.659,
-     "hi": -3.6915
+     "m": -4.8203,
+     "lo": -5.7414,
+     "hi": -4.1094
     },
     "worthStat": {
-     "m": -3.9546,
-     "lo": -5.0113,
-     "hi": -3.1924
+     "m": -3.6518,
+     "lo": -4.2319,
+     "hi": -3.246
     },
-    "price": -6.4,
-    "net": 1.4535,
+    "price": -4.95,
+    "net": 0.1297,
     "verdict": "within its interval",
     "between": [
      "-",
@@ -17292,8 +17202,8 @@
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T20:46:18.031Z",
-   "seconds": 55
+   "measuredAt": "2026-11-03T04:47:27.949Z",
+   "seconds": 128
   },
   "global|scavenge=1": {
    "key": "scavenge=1",
@@ -21121,6 +21031,91 @@
    "statBase": 18.17,
    "measuredAt": "2026-11-02T20:29:40.050Z",
    "seconds": 26
+  },
+  "global|T:onSpawn>grantShield {\"on\":\"onSpawn\",\"do\":\"grantShield\",\"allies\":3}": {
+   "key": "T:onSpawn>grantShield {\"on\":\"onSpawn\",\"do\":\"grantShield\",\"allies\":3}",
+   "ctx": "global",
+   "bramble": 15,
+   "id": "onSpawn>grantShield",
+   "class": "trigger",
+   "kind": "measure",
+   "n": null,
+   "nCards": 0,
+   "cards": [],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 400,
+     "m": 6.0824,
+     "lo": 5.2843,
+     "hi": 7.2453
+    }
+   ],
+   "fingerprint": "aedaa997c3ce",
+   "canonRate": {
+    "m": 0.0311,
+    "lo": 0.0267,
+    "hi": 0.0339
+   },
+   "statRate": {
+    "m": 0.0322,
+    "lo": 0.0266,
+    "hi": 0.0374
+   },
+   "kappa": {
+    "m": 1.038,
+    "lo": 0.9058,
+    "hi": 1.238
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0021,
+    "worthStat": {
+     "m": 0.0646,
+     "lo": -0.298,
+     "hi": 0.3873
+    }
+   },
+   "test": {
+    "effects": {
+     "triggers": [
+      {
+       "on": "onSpawn",
+       "do": "grantShield",
+       "allies": 3
+      }
+     ]
+    },
+    "gain": 0.1608,
+    "worth": {
+     "m": 5.178,
+     "lo": 4.7863,
+     "hi": 5.8768
+    },
+    "worthRuler": {
+     "m": 6.0824,
+     "lo": 5.2843,
+     "hi": 7.2453
+    },
+    "worthStat": {
+     "m": 4.9887,
+     "lo": 4.2319,
+     "hi": 6.0073
+    },
+    "price": 10.21,
+    "net": -4.1276,
+    "verdict": "over-priced",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 18.17,
+   "measuredAt": "2026-11-03T03:58:34.499Z",
+   "seconds": 968
   }
  }
 }

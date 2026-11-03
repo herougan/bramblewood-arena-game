@@ -1,0 +1,1 @@
+["guardian", "crabClaws", "taunt", "backstab=2", "immolation=1", "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"all\",\"everyone\":true,\"count\":1}", "backstab=3", "drunk", "earthquake=3", "evolute", "hunter=1", "nightblind", "parasite", "quarry=1", "scatterbrained"]

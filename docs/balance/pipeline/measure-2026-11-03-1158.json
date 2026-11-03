@@ -1,0 +1,183 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-03T03:58:34.598Z",
+ "finished": "2026-11-03T04:47:27.954Z",
+ "durationSec": 2933.4,
+ "args": [
+  "--only-file",
+  "docs/balance/bal15/measure-wide-2026-11-03.json",
+  "--fights",
+  "1000"
+ ],
+ "head": "93a1b9d9",
+ "inputs": {
+  "context": "global",
+  "bramble": 15,
+  "fingerprint": "aedaa997c3ce",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "guardian",
+   "crabClaws",
+   "taunt",
+   "backstab=2",
+   "immolation=1",
+   "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"all\",\"everyone\":true,\"count\":1}",
+   "backstab=3",
+   "drunk",
+   "earthquake=3",
+   "evolute",
+   "hunter=1",
+   "nightblind",
+   "parasite",
+   "quarry=1",
+   "scatterbrained"
+  ]
+ },
+ "counts": {
+  "items": 15,
+  "measured": 15,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "guardian",
+   "field": "worth",
+   "old": "-0.2757",
+   "new": "-0.3572 [-0.7579, -0.014] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "crabClaws",
+   "field": "worth",
+   "old": "-0.3244",
+   "new": "-0.1677 [-0.6314, 0.2492] at 1000 fights, price on carriers 0.1"
+  },
+  {
+   "id": "taunt",
+   "field": "worth",
+   "old": "-1.1758",
+   "new": "-0.7361 [-1.2206, -0.3431] at 1000 fights, price on carriers 0.4"
+  },
+  {
+   "id": "backstab=2",
+   "field": "worth",
+   "old": "0.3892",
+   "new": "0.3261 [-0.0869, 0.6577] at 1000 fights, price on carriers 1.82"
+  },
+  {
+   "id": "immolation=1",
+   "field": "worth",
+   "old": "-0.7947",
+   "new": "-0.851 [-1.2764, -0.5053] at 1000 fights, price on carriers 0"
+  },
+  {
+   "id": "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"all\",\"everyone\":true,\"count\":1}",
+   "field": "worth",
+   "old": "-1.4515",
+   "new": "-1.1616 [-1.7757, -0.6687] at 1000 fights, price on carriers 3.91"
+  },
+  {
+   "id": "backstab=3",
+   "field": "worth",
+   "old": "1.5488",
+   "new": "1.3914 [0.9879, 1.7949] at 1000 fights, price on carriers 2.53"
+  },
+  {
+   "id": "drunk",
+   "field": "worth",
+   "old": "-4.2897",
+   "new": "-3.6991 [-4.4531, -3.0534] at 1000 fights, price on carriers -4.29"
+  },
+  {
+   "id": "earthquake=3",
+   "field": "worth",
+   "old": "1.2569",
+   "new": "1.1026 [0.6015, 1.5951] at 1000 fights, price on carriers 1.44"
+  },
+  {
+   "id": "evolute",
+   "field": "worth",
+   "old": "-6.4711",
+   "new": "-6.4136 [-7.7255, -5.4091] at 1000 fights, price on carriers 3"
+  },
+  {
+   "id": "hunter=1",
+   "field": "worth",
+   "old": "0.9407",
+   "new": "0.5063 [0.1361, 0.8412] at 1000 fights, price on carriers 0.94"
+  },
+  {
+   "id": "nightblind",
+   "field": "worth",
+   "old": "-2.1813",
+   "new": "-2.1182 [-2.6177, -1.731] at 1000 fights, price on carriers -2.18"
+  },
+  {
+   "id": "parasite",
+   "field": "worth",
+   "old": "-5.4899",
+   "new": "-5.3048 [-6.3786, -4.5307] at 1000 fights, price on carriers 1"
+  },
+  {
+   "id": "quarry=1",
+   "field": "worth",
+   "old": "-2.7895",
+   "new": "-2.6369 [-3.2272, -2.2019] at 1000 fights, price on carriers 2.5"
+  },
+  {
+   "id": "scatterbrained",
+   "field": "worth",
+   "old": "-4.9465",
+   "new": "-4.8203 [-5.7414, -4.1094] at 1000 fights, price on carriers -4.95"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "taunt",
+   "why": "over-priced: worth -0.7361 against 0.4 on the carriers"
+  },
+  {
+   "id": "backstab=2",
+   "why": "over-priced: worth 0.3261 against 1.82 on the carriers"
+  },
+  {
+   "id": "T:onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"all\",\"everyone\":true,\"count\":1}",
+   "why": "over-priced: worth -1.1616 against 3.91 on the carriers"
+  },
+  {
+   "id": "backstab=3",
+   "why": "over-priced: worth 1.3914 against 2.53 on the carriers"
+  },
+  {
+   "id": "evolute",
+   "why": "over-priced: worth -6.4136 against 3 on the carriers"
+  },
+  {
+   "id": "parasite",
+   "why": "over-priced: worth -5.3048 against 1 on the carriers"
+  },
+  {
+   "id": "quarry=1",
+   "why": "over-priced: worth -2.6369 against 2.5 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 15
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-03-1158.json"
+}
