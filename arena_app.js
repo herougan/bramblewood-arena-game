@@ -17913,7 +17913,7 @@ const DIALOGUES = {
     {label:'go', who:'vesper', text:'Ten tickets at most, and one more each hour. Spend them well.'},
   ]},
   unlock_raid: {lines:[
-    {who:'aurelia', text:'Even the Dominion cannot fell that thing alone.'},
+    {who:'aurelia', text:'Even the Sunfeather Tribes cannot fell that thing alone.'},
     {who:'shieldback', text:'Then we chip at it together. Every deck that fights wears it down.'},
     {who:'aurelia', text:'Will you stand with your enemies, if only for an afternoon?', options:[{label:'For an afternoon.', goto:'go'}, {label:'Never.', goto:'never'}], silent:'go'},
     {label:'never', who:'aurelia', text:'Then stand beside them and pretend. It works the same.', goto:'go'},
@@ -18130,6 +18130,59 @@ const DIALOGUES = {
   cur_m11_banner: {lines:[
     {who:'shieldback', text:'A torn banner on the ridge. Not ours, not theirs.'},
     {who:'traveller', text:'There are more than two sides on this road. You\'ll meet them.'},
+  ]},
+  // 2026-11-03 (package CONTENT9, ECON2-9 a, owner 21:10 "OK": one curiosity on each silent main map, Claude drafts, the owner edits).
+  // DRAFTS: Maps 6, 9, 12, 15, 16, 17, 18, 22, 23, 24 (list in docs/content9-2026-11-03.md). Edit them in Admin -> NPC speeches.
+  cur_m8_bones: {lines:[
+    {who:'swiftpaw', text:'Bones, stacked by size. Somebody here is tidy about supper.'},
+    {who:'traveller', text:'The Gnawed. Rats who stopped asking what\'s on the plate. They\'d trade with you, if you looked less like a meal.'},
+    {who:'shieldback', text:'Noted. Nobody wanders off alone in this bog.'},
+  ]},
+  cur_mk_kelpknot: {lines:[
+    {who:'whisper', text:'Kelp, knotted around a root. Three knots, then one.'},
+    {who:'traveller', text:'Tidefolk writing. It means: the dry ones came through here, so count your fish.'},
+    {who:'swiftpaw', text:'\'The dry ones.\' That\'s us, isn\'t it?'},
+  ]},
+  cur_mh_thread: {lines:[
+    {who:'traveller', text:'A thread, tied to a thorn, running off into the hedge.'},
+    {who:'swiftpaw', text:'Someone found the way out and marked it for the rest of us.'},
+    {who:'traveller', text:'Or someone marked the way in. In a maze it\'s the same thread.'},
+  ]},
+  cur_ml_cartwheel: {lines:[
+    {who:'traveller', text:'One of ours. A road-folk cart lost a wheel here and kept going on three.'},
+    {who:'shieldback', text:'On three wheels? Through militia country?'},
+    {who:'traveller', text:'Road-folk always keep going. The wheel is the only thing we ever leave behind.'},
+  ]},
+  cur_mt_antler: {lines:[
+    {who:'aurelia', text:'An elk\'s antler, shed in the snow. The great stags drop them every winter.'},
+    {who:'vesper', text:'Our tribes carve them into horns. One note, and every stag in the wood looks up.'},
+    {who:'swiftpaw', text:'And every wolf, I\'d guess.'},
+  ]},
+  cur_m6_wolfsbane: {lines:[
+    {who:'whisper', text:'Wolfsbane, flowering through the frost. The only blue for a hundred miles.'},
+    {who:'shieldback', text:'The packs walk around it. Every one of them, and wide.'},
+    {who:'whisper', text:'Then so do we. Some lessons the wolves already paid for.'},
+  ]},
+  cur_md_glassrose: {lines:[
+    {who:'traveller', text:'Lightning struck the dune here and left a rose of glass behind.'},
+    {who:'fennec-fox', text:'Don\'t touch it. It\'s still warm. It\'s always still warm.'},
+    {who:'swiftpaw', text:'How long ago was the lightning?'},
+    {who:'fennec-fox', text:'Before my grandmother. The sand keeps a grudge.'},
+  ]},
+  cur_m22_kettle: {lines:[
+    {who:'peddler', text:'Somebody\'s kettle, set over a crack in the ice. It boils without a fire.'},
+    {who:'traveller', text:'The goats up here make tea whenever the vent breathes. Twice a minute.'},
+    {who:'peddler', text:'The mountain\'s been cooking longer than any of us. Mind you don\'t end up in the pot.'},
+  ]},
+  cur_m23_payroll: {lines:[
+    {who:'swiftpaw', text:'A pay-roll, dropped in the mud. Every sellsword in the camp, and what they\'re owed.'},
+    {who:'traveller', text:'Look at the bottom line. Nobody\'s been paid since spring.'},
+    {who:'shieldback', text:'An army that isn\'t paid starts thinking. Good. Let it think.'},
+  ]},
+  cur_m24_coin: {lines:[
+    {who:'traveller', text:'A coin from the Counting House, fallen in a crack. Someone bit it to test it.'},
+    {who:'swiftpaw', text:'And then left it there?'},
+    {who:'traveller', text:'The bite says it\'s lead under the gold. Even the Magnate\'s coins wear armour.'},
   ]},
   boss_banter: {lines:[
     {who:'shieldback', text:'That one doesn\'t surrender. Don\'t wait for it to.'},
@@ -18918,6 +18971,18 @@ const MAP_CURIOSITIES = [
   {key:'anvil', map:'m9', icon:'⚒️', name:'The old anvil', x:18, y:30, dialogue:'cur_m9_anvil'},
   {key:'eyrie', map:'m10', icon:'🪺', name:'An empty eyrie', x:82, y:22, dialogue:'cur_m10_nest'},
   {key:'banner', map:'m11', icon:'🚩', name:'A torn banner', x:22, y:76, dialogue:'cur_m11_banner'},
+  // 2026-11-03 (package CONTENT9, ECON2-9 a): drafts on the silent maps, each in the map's biggest empty area (farthest from its fights,
+  // spots and trail lines in ECON2's probe, docs/balance/econ2-maps-2026-11-03.json); the layout editor can still move them.
+  {key:'bones', map:'m8', icon:'🦴', name:'A tidy pile of bones', x:22, y:50, dialogue:'cur_m8_bones'},
+  {key:'kelpknot', map:'mk', icon:'🪢', name:'A knotted kelp rope', x:30, y:48, dialogue:'cur_mk_kelpknot'},
+  {key:'thread', map:'mh', icon:'🧶', name:'A thread tied to a thorn', x:50, y:54, dialogue:'cur_mh_thread'},
+  {key:'cartwheel', map:'ml', icon:'🛞', name:'A cart wheel in the grass', x:42, y:44, dialogue:'cur_ml_cartwheel'},
+  {key:'antler', map:'mt', icon:'🦌', name:'A shed antler', x:12, y:64, dialogue:'cur_mt_antler'},
+  {key:'wolfsbane', map:'m6', icon:'🪻', name:'A patch of wolfsbane', x:76, y:60, dialogue:'cur_m6_wolfsbane'},
+  {key:'glassrose', map:'md', icon:'🌹', name:'A rose of glass', x:12, y:72, dialogue:'cur_md_glassrose'},
+  {key:'kettle', map:'m22', icon:'♨️', name:'A kettle on a steam vent', x:48, y:52, dialogue:'cur_m22_kettle'},
+  {key:'payroll', map:'m23', icon:'📜', name:'A muddy pay-roll', x:84, y:86, dialogue:'cur_m23_payroll'},
+  {key:'coin', map:'m24', icon:'🪙', name:'A bitten gold coin', x:88, y:86, dialogue:'cur_m24_coin'},
 ];
 const CURIO_AFTER = ['It\'s just as you left it.', 'Nothing new here. Yet.', 'You give it another look. Still curious.'];
 function mapCuriositiesHTML(map){
@@ -23841,7 +23906,7 @@ function applyAmbushNode(){
   // (AMBUSH_HARD), not the weak deck a save stored when it triggered
   const fixed = AMBUSH_DECKS[hb ? 'hummingbirds' : 'otters'];
   map.nodes.push(Object.assign({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: fixed ? Object.assign({}, fixed) : (st.deck || ambushDeck(foe)), hqHp:24,
-    flavor: hb ? 'A Dominion patrol drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
+    flavor: hb ? 'A Sunfeather war-band drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
     rewardTokens:['factionGrowth'], requires: [], floating: true, ambush:true, optional: true, fixedPos: st.pos || null, faction: foe}, AMBUSH_HARD[hb ? 'hummingbirds' : 'otters'] || {}));
 }
 // 2026-10-24 (package MAP, owner 17:01 #3: "Those ambush skirmishes should lock the previous path i was going for. But then they also
@@ -24071,7 +24136,7 @@ function ambushShouldTrigger(map, node){
 // every map you've reached, at most 100 (ambushTheftRoll). Never more than you have.
 function ambushTheftCap(){ let n = 0; try{ n = Math.max(0, furthestMapReached()); }catch(e){} return Math.min(100, 15 + 5*n); }
 function ambushTheftRoll(){ const cap = ambushTheftCap(), lo = Math.min(10, cap); return lo + Math.floor(Math.random() * (cap - lo + 1)); }
-function ambushPopHTML(hb){ return `<div class="ambush-pop-card"><div class="ambush-pop-ico" aria-hidden="true">${hb ? '🐦' : '🦦'}⚔️</div><h3>Ambush!</h3><p>${hb ? 'A Dominion patrol drops out of the canopy.' : 'A Rivergate shield-line rises out of the shallows.'}</p><small>Lose, and they run off with some of your Maple Leaves.</small></div>`; }
+function ambushPopHTML(hb){ return `<div class="ambush-pop-card"><div class="ambush-pop-ico" aria-hidden="true">${hb ? '🐦' : '🦦'}⚔️</div><h3>Ambush!</h3><p>${hb ? 'A Sunfeather war-band drops out of the canopy.' : 'A Rivergate shield-line rises out of the shallows.'}</p><small>Lose, and they run off with some of your Maple Leaves.</small></div>`; }
 function showAmbushPop(hb){ document.querySelectorAll('.ambush-pop').forEach(x=> x.remove()); const el = document.createElement('div'); el.className = 'ambush-pop'; el.setAttribute('role', 'alertdialog'); el.setAttribute('aria-label', 'Ambush!'); el.innerHTML = ambushPopHTML(hb); document.body.appendChild(el); return el; }
 function runAmbush(map, nodeKey){
   const foe = ambushFoe(), hb = foe === 'hummingbirds', positions = mapNodePositions(map), i = map.nodes.findIndex(n=> n.key === nodeKey), at = positions[i] || {x:50, y:50};
@@ -30394,12 +30459,12 @@ function showFactionScreen(){
 // toward the hovered side with a quake, a flash and a low boom.
 const FACTION_LORE = {
   otters: {name:'Rivergate Otters', lore:'Rivergate was raised dam by dam by otters who never forget a flood, and never forgive one.', play:'They fight in shield walls: tough, armoured units that hold a lane and win the long fight.'},
-  hummingbirds: {name:'Sunfeather Dominion', lore:'From flower-thrones high in the canopy, the Dominion rules a court where every courtier is a duelist.', play:'They are fast fencers on the wing: flyers that strike first and slip past anything on the ground.'},
+  hummingbirds: {name:'Sunfeather Tribes', lore:'From painted cliff-nests above the canopy, the Sunfeather Tribes fly out in bright war-bands, and every warrior is a duelist.', play:'They are fast fencers on the wing: flyers that strike first and slip past anything on the ground.'},
   random: {name:'Random', lore:'Some warbands are born on the riverbank, some under the canopy.', play:'You get one side at random, with its starter cards and its faction rewards.'},
 };
 const FACTION_SHOWCASE = {
   otters: {title:'Rivergate Otters', blurb:'Shield walls, slick armour and stubborn river pride.', characters:['otter-centurion','otter-riverguard','otter-shieldback'], cards:['otter-kit','otter-paddler','otter-guard'], dir:-1},
-  hummingbirds: {title:'Sunfeather Dominion', blurb:'Too fast to hit, too proud to lose.', characters:['crimson-wing-duelist-cadet','cobalt-talon-skirmisher','dominion-nestguard'], cards:['sunthroat-courier','violet-vane-fletcher','mosswing-laborer'], dir:1},
+  hummingbirds: {title:'Sunfeather Tribes', blurb:'Too fast to hit, too proud to lose.', characters:['crimson-wing-duelist-cadet','cobalt-talon-skirmisher','dominion-nestguard'], cards:['sunthroat-courier','violet-vane-fletcher','mosswing-laborer'], dir:1},
 };
 // 2026-10-24 (package PL1, owner P24-1: "both should show 3 Commons at first, then, like the main screen, slowly flip to other
 // cards of that faction at random"): each side's three example cards start as three of its Commons (Starters fill in when a side
