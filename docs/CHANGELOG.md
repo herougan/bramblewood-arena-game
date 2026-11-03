@@ -2,9 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
-## 2026-11-03 Package ART8 (flagged card art redo, PARTIAL: 7 of 112 done)
-- Redone in PixelLab (Pro, 128x128, 2x2, picked by eye; same import as ART7): `adder-ambusher`, `alpine-avalanche`, `ancient-sloth-titan`, `ashbone-ghoul`, `baby-horned-capybara`, `badger-berserker`, `badger-sapper`. Each has a full scene background; contact sheet `docs/art/art8-contact-1.png`.
-- The run stopped because the owner's browser pane went hidden (page timers throttled, gallery does not load). The other 105 cards (ANIM1 groups A-D minus the four the owner keeps, plus `rootworm-colony` and `chipmunk-skirmisher`) are not done. Tools: `tools/art/art8_import_2026_11_03.py`, picks and prompts in `docs/art/art8-picks-2026-11-03.json`.
+## 2026-11-03 Package ART8 (flagged card art redo, PARTIAL: 13 of 112 done)
+- Redone in PixelLab (Pro, 128x128, 2x2, picked by eye; same import as ART7): `adder-ambusher`, `alpine-avalanche`, `ancient-sloth-titan`, `ashbone-ghoul`, `baby-horned-capybara`, `badger-berserker`, `badger-sapper`, `badger-trench-digger`, `basalt-boar`, `beaver-lumberjack`, `bee-knight`, `beetle-battering-ram`, `beetle-grunt`. Each has a full scene background; contact sheets `docs/art/art8-contact-1.png`, `-2.png`. `beetle-grunt` is a small beetle in a big scene (all four variants were); regenerate if it reads too small.
+- The run stopped because the owner's browser pane went hidden (page timers throttled, gallery does not load). The other 99 cards (ANIM1 groups A-D minus the four the owner keeps, plus `rootworm-colony` and `chipmunk-skirmisher`) are not done. Tools: `tools/art/art8_import_2026_11_03.py`, picks and prompts in `docs/art/art8-picks-2026-11-03.json`.
 
 ## 2026-11-03 Package ECON2 (economy review for alpha; measures and proposes, no game number changed)
 - **New `docs/econ2-2026-11-03.md`:**

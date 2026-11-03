@@ -26,5 +26,29 @@
  "badger-sapper": {
   "pick": "C",
   "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a badger carrying a bundle of tools beside a freshly dug pit in a forest clearing, a full scenic background filling the whole frame, no text"
+ },
+ "badger-trench-digger": {
+  "pick": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a badger digging a deep trench with its claws, mounds of earth, a forest clearing, a full scenic background filling the whole frame, no text"
+ },
+ "basalt-boar": {
+  "pick": "B",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a heavy grey-black boar made of basalt-like hide on dark rock with glowing orange cracks, a full scenic background filling the whole frame, no text"
+ },
+ "beaver-lumberjack": {
+  "pick": "C",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a beaver gnawing a log on a riverbank with wood chips, a full scenic background filling the whole frame, no text"
+ },
+ "bee-knight": {
+  "pick": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a large honeybee with a golden shield-like thorax hovering in a flowering meadow, a full scenic background filling the whole frame, no text"
+ },
+ "beetle-battering-ram": {
+  "pick": "A",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a horned rhinoceros beetle charging head-down along a forest path, a full scenic background filling the whole frame, no text"
+ },
+ "beetle-grunt": {
+  "pick": "C",
+  "prompt": "Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, a small shiny green beetle marching on a forest floor with ferns, a full scenic background filling the whole frame, no text"
  }
 }
