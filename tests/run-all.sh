@@ -300,6 +300,8 @@ run node tests/ui16-2026-11-02.js   # 2026-11-02 (package UI16, owner 22:15 note
 # browser check for package UI16 (notes 9, 10, 1): python3 tests/e2e/ui16_2026_11_02.py (needs Playwright; not run by run.js)
 run node tests/dec1-2026-11-03.js   # 2026-11-03 (package DEC1, owner 11-03 09:39: "Balance items you can choose. Like ENG and FIX and UI."): 35 open calls at their defaults, Flying x1.19 / Evasive x1.18, the Lumber-gain trigger at its measured price, Royal Guard's +3 Shield to every ally, Pearl 1 on the Shellfish, Glass Octopus 4/7, 19-6's reward, a Spawner's own row
 run node tests/bal15-2026-11-03.js   # 2026-11-03 (package BAL15, the measures DEC1 left open; budget only): the tempo term at bramble 15 (BAL15-1, not applied), Royal Guard's Grant Shield to every ally priced from its own item, BAL14's 15 wide items at 1,000 fights, the summary 2026-11-03b
+run node tests/fix7-2026-11-03.js   # 2026-11-03 (package FIX7, release review 11-03a): a middle / back-row spawn replays into its row (M1), the Flyers' wind marks per gust kind (m1), a unit bleeding out as it attacks keeps its On Attack (m2), Auto's leader lend always undone (m3), BASELVL-1's economy note (m4)
+# browser check for package FIX7 (M1): python3 tests/e2e/fix7_2026_11_03.py (needs Playwright; not run by run.js)
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

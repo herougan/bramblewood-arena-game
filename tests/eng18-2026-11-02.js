@@ -126,9 +126,10 @@ const playable = (T, s)=> C.seatData(T, s).hand.find(h=> T.E.canPlay(C.seatData(
     const en = k=>{ const m = src.match(new RegExp('^  "' + k.replace(/[.]/g, '\\.') + '": (".*?"),$', 'm')); return m ? JSON.parse(m[1]) : null; };
     void t;
     const adjT = en('ui.eng18-term-adjacent') || '';
-    ok(/left, right, in front or behind/.test(adjT) && /group dungeon/.test(adjT), 'Codex term Adjacent: the four directions, raids and group dungeons');
+    // 2026-11-03 (package FIX7): the player-facing texts say "multiplayer dungeon" since X19; either name passes
+    ok(/left, right, in front or behind/.test(adjT) && /(group|multiplayer) dungeon/.test(adjT), 'Codex term Adjacent: the four directions, raids and group dungeons');
     ok(/group.dungeon/.test(en('ui.term-surrounding') || '') && /diagonals/.test(en('ui.term-surrounding') || ''), 'Codex term Surrounding: the diagonals, and a group dungeon\'s rows');
-    ok(/raid or group dungeon/.test(en('ui.eng9-guardian') || ''), 'Guardian: in front / behind in a raid or group dungeon');
+    ok(/raid or (group|multiplayer) dungeon/.test(en('ui.eng9-guardian') || '') /* FIX7 (2026-11-03): X19's wording */, 'Guardian: in front / behind in a raid or group dungeon');
     ok(/nearest/.test(en('ui.sk3-spawner') || '') && !/beside it/.test(en('ui.sk3-spawner-codex') || ''), 'Spawner: the nearest free slot (BF6)');
     ok(/adjacent to that one/.test(en('ui.sk3-stench') || ''), 'Stench: the facing enemy and the units adjacent to it');
     ok(/Guardian adjacent to it/.test(en('ui.eq2-strike-desc') || ''), 'Beak Strike: a Guardian adjacent to it');

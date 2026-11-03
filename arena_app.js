@@ -29696,6 +29696,36 @@ function raidReplayReserveDrop(m, side, uid){
   if(hit && typeof document !== 'undefined'){ const el = boardCardEl(uid); if(el && el.closest('.reserve-row')){ const e = document.createElement('div'); e.className = 'board-card empty-slot'; e.setAttribute('aria-hidden', 'true'); el.replaceWith(e); } }
   return hit;
 }
+// 2026-11-03 (package FIX7, release review 11-03a M1): a spawn into a middle or back row mid-replay comes with lane null and its row and
+// slot: a row Spawner or Duplicate (sk3SpawnAdjacent, since DEC1), Brood / Twin / Sprout (spawnBeside, since package RR on 10-19) and a
+// row death's tokens. The replay's spawn branch read rr[null] for it and threw, which cut the rest of the round's replay short. The unit now
+// takes its slot in m.replayReserve, joins replayCards (dropped again by raidReplayReserveEnd) and only that slot is redrawn, jumping out of
+// its spawner (from: a screen point) when effects allow. Returns the new element or null (nothing drawn: the next full render shows it).
+function raidReplayReserveSpawn(m, pid, p, ev, from){
+  const rows = m && m.replayReserve && m.replayReserve[pid], r = +p.row, sl = +p.slot, u = p.uid;
+  if(!rows || !rows[r - 1] || !Number.isInteger(sl) || u == null) return null;
+  rows[r - 1][sl] = u;
+  if(!m.replayCards) m.replayCards = {};
+  if(!m.replayCards[u]){
+    let live = null; ((m.players[pid] || {}).reserve || []).forEach(rw=> Object.keys(rw).forEach(k=>{ if(rw[k] && String(rw[k].uid) === String(u)) live = rw[k]; }));
+    if(!live){ const d = getCardDefs()[(ev && ev.defId)] || {}; // spawned and killed in this same round: built from its card
+      live = {uid: u, defId: ev && ev.defId, slot: sl, atk: d.attack || 0, baseAtk: d.attack || 0, hp: d.health || 1, maxHp: d.health || 1, wait: d.wait || 0, effects: d.effects || {}}; }
+    m.replayCards[u] = Object.assign({}, live, {slot: sl, reserveCard: live}); (m._replayResUids = m._replayResUids || []).push(u);
+  }
+  if(typeof document === 'undefined') return null;
+  const rowEl = document.querySelector(`#battlefieldInner .reserve-row[data-respid="${pid}"][data-resrow="${r}"]`); if(!rowEl) return null;
+  const range = m._slotRange || 0, cells = rowEl.querySelectorAll(':scope > .board-card'), i = sl + range;
+  if(!range || cells.length !== 2 * range + 1 || i < 0 || i >= cells.length) return null;
+  const rc = m.replayCards[u], c = Object.assign({}, rc.reserveCard || rc, {hp: rc.hp, maxHp: rc.maxHp, atk: rc.atk, slot: sl});
+  const tmp = document.createElement('div'); tmp.innerHTML = boardCardHTML(c, getCardDefs(), {pid, extraClass: 'is-reserve'});
+  const el = tmp.firstElementChild; if(!el) return null;
+  cells[i].replaceWith(el); try{ knownBoardUids.add(String(u)); }catch(e){} try{ applySkinClasses(el); }catch(e){}
+  try{ window.__bwRowSpawns = (window.__bwRowSpawns || 0) + 1; }catch(e){} // the e2e (tests/e2e/fix7_2026_11_03.py) counts these
+  const lvl = (typeof fxLevel === 'function') ? fxLevel() : 'high';
+  if(from && hasGsap() && !reducedMotion() && lvl !== 'none' && lvl !== 'low'){ const er = el.getBoundingClientRect();
+    if(er.width) gsap.from(el, {x: from.x - (er.left + er.width / 2), y: from.y - (er.top + er.height / 2), scale: .45, opacity: 0, rotation: from.rotate || 0, duration: .38, ease: 'back.out(1.5)', clearProps: 'transform,opacity'}); }
+  return el;
+}
 // The card a reserve slot shows mid-replay: the unit standing there as the replay stands, with its replay Health and statuses.
 function raidReplayReserveCard(m, pid, r, sl, like){
   const rows = m.replayReserve && m.replayReserve[pid], o = rows && rows[r - 1];
@@ -40572,7 +40602,10 @@ function syncWindField(m){
     // 2026-10-24 (package BV, owner 17:34 #1): when the wind changes direction, the lines on the board turn (FX.B.windTurn: a few
     // draw in, then out the other way) instead of the layer being swapped at once; while it turns, a redraw leaves it alone.
     if(bf.dataset.windTurning) return;
-    const want = w && w.windy ? ['strong', w.mine ? 'north' : 'south'] : (mode === 'windy' && m._windLastMine != null) ? ['soft', m._windLastMine ? 'north' : 'south'] : null;
+    // 2026-11-03 (package FIX7, review 11-03a m1): a Crosswind blows across the board (the engine gives neither side a Tail or Head), so it
+    // draws no north / south layer; the calm rounds after it keep the breeze of the last gust that did blow up or down.
+    const cross = !!(w && w.windy && (w.kind === 'cross' || w.kind === 'heavyCross'));
+    const want = cross ? null : w && w.windy ? ['strong', w.mine ? 'north' : 'south'] : (mode === 'windy' && m._windLastMine != null) ? ['soft', m._windLastMine ? 'north' : 'south'] : null;
     const cur = bf.querySelector(':scope > .sfx-windfield:not(.is-out)'), curDir = cur && (cur.dataset.key || '').split(':')[1];
     const B = window.FX && FX.B;
     if(want && cur && curDir && curDir !== want[1] && B && B.windTurn && fxAtLeast('med') && !reducedMotion()){ B.windTurn(bf, {strength: want[0], dir: want[1]}); return; }
@@ -41336,7 +41369,8 @@ async function autoplayStep(){
   if(document.querySelector('.coach-tip.is-blocking, #npcPromptOverlay:not([hidden]), .dialogue-overlay:not([hidden])')) return;
   m._autoBusy = true;
   try{ const me = m.players[1];
-    if(!me.playedThisTurn){ const ev = [], handBefore = (me.hand || []).map(h=> ({uid:h.uid, defId:h.defId})); const lead = autoplayLeaderOn(m, me); m.engine.aiTakeTurn(m.players, m.sideOf, 1, m.stats, ev); autoplayLeaderOff(m, me, lead, ev);
+    if(!me.playedThisTurn){ const ev = [], handBefore = (me.hand || []).map(h=> ({uid:h.uid, defId:h.defId})); const lead = autoplayLeaderOn(m, me);
+      try{ m.engine.aiTakeTurn(m.players, m.sideOf, 1, m.stats, ev); } finally { autoplayLeaderOff(m, me, lead, ev); } // FIX7 (2026-11-03, review 11-03a m3): the lend is undone even if the turn throws
       try{ carryLooksAfterPlays(m, 1, handBefore, ev); }catch(e){} // 2026-10-17: an auto-played Shiny/skinned copy keeps its look (carryCardLook)
       fightSafe(()=> ui16AutoHandFx(m, handBefore, ev), 'ui16AutoHandFx'); // UI16 (2026-11-02, owner note 10): the pitch flies to your Graveyard, the play from your hand
       ev.forEach(e=>{ try{ pushLog(e); renderVfxForEvent(e); }catch(_){} }); renderBoard(); renderHand(); renderHUD(); await sleep(Math.round(500 / Math.max(1, m.speedMult||1))); }
@@ -43186,7 +43220,20 @@ async function resolveRoundCore(opts){
       // event at all). Normalize all three shapes to one placements list here.
       const pid = ev.side==='A'?1:2;
       const rr = m.replayRows[pid];
-      const placements = ev.placements || (ev.uids ? ev.uids.map(u=>({uid:u, lane:ev.lane})) : []);
+      let placements = ev.placements || (ev.uids ? ev.uids.map(u=>({uid:u, lane:ev.lane, row:ev.row, slot:ev.slot})) : []);
+      // 2026-11-03 (package FIX7, review 11-03a M1): a middle- or back-row spawn (lane null, its row and slot) goes into its reserve row
+      // (raidReplayReserveSpawn); only front-row placements reflow the lanes below. A placement with no lane this replay knows is skipped.
+      const rowPl = placements.filter(p=> p && p.lane == null && p.row != null);
+      if(rowPl.length){
+        const nearEl = ev.nearUid != null ? boardCardEl(ev.nearUid) : null, nr = nearEl && nearEl.getBoundingClientRect();
+        const from = nr && nr.width ? {x: nr.left + nr.width/2, y: nr.top + nr.height/2, rotate: Math.random()*16-8} : (ev.cause === 'onDeathSpawn' && lastDeathOrigin ? Object.assign({rotate: 0}, lastDeathOrigin) : null);
+        if(ev.cause === 'onDeathSpawn') lastDeathOrigin = null;
+        rowPl.forEach(p=>{ try{ raidReplayReserveSpawn(m, pid, p, ev, from); }catch(e){} });
+        rowPl.forEach(p=> pendingEntranceOrigins.delete(String(p.uid))); // drawn here; not left for a later front-row render
+        await sleep(spawnEntranceSettleMs(rowPl.length, m.speedMult));
+        if(matchState !== m) return;
+      }
+      placements = placements.filter(p=> p && rr && p.lane != null && rr[p.lane]);
       if(placements.length){
         // 2026-09-17 follow-up ("the bee swarmling should spawn to the left/right of the BEE
         // DRONE specifically, not just to the left of its rank/flank"): mirrors the engine's own
@@ -44210,10 +44257,14 @@ function tideTipLines(k){ return (skillHiddenNow('tide') ? TIDE_TIPS_HIDDEN : TI
 function liveWindState(pid){
   try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || m.over || !m.engine || (pid !== 1 && pid !== 2)) return null;
     if(m.engine.isAshy && m.engine.isAshy()) return null;
-    const w = m._windNow; let tail;
-    if(w) { if(!w.windy) return null; tail = (pid === 1) === !!w.mine; }
-    else { if(!m.engine.isWindy || !m.engine.isWindy()) return null; tail = m.engine.windSideOf(pid) === 'tail'; }
-    return {k: tail ? 'tail' : 'head'};
+    // 2026-11-03 (package FIX7, review 11-03a m1): the gust's kind (ENG20-4) counts too: a Crosswind gives no Tail or Head (every Flyer
+    // +0/2, heavy +0/5: k 'cross'), and a heavy gust doubles the numbers (heavy: the Headwind's -2 Attack, the Tailwind's extra Fast Forward).
+    const w = m._windNow; let tail, kind;
+    if(w) { if(!w.windy) return null; kind = w.kind || 'normal'; tail = (pid === 1) === !!w.mine; }
+    else { if(!m.engine.isWindy || !m.engine.isWindy()) return null; kind = (m.engine.getWindKind && m.engine.getWindKind()) || 'normal'; tail = m.engine.windSideOf(pid) === 'tail'; }
+    const heavy = kind === 'heavy' || kind === 'heavyCross';
+    if(kind === 'cross' || kind === 'heavyCross') return {k: 'cross', heavy, hp: heavy ? 5 : 2};
+    return {k: tail ? 'tail' : 'head', heavy};
   }catch(err){ return null; }
 }
 // 2026-10-24 (package BV, owner 17:01 #4: "If the flying x windy, the context pips should be in the same pill. E.g. wings + boots
@@ -44223,8 +44274,10 @@ function liveWindState(pid){
 function flyerWindPips(e, lw){
   const out = [];
   if(e.flying){
-    if(lw && lw.k === 'tail') out.push(`<span class="ab-windpair wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-wing') + ' ' + TX('ui.wind-tail-quick'))}"><span class="ab-wing">${iconHTML('flying', '🪽')}</span><span class="ab-quick ab-wind-quick">${iconHTML('quick', '👢')}</span></span>`);
-    else if(lw) out.push(`<span class="ab-windpair wind-live wind-head" title="${escapeAttr(TX('ui.wind-head-wing'))}"><span class="ab-wing">${iconHTML('flying', '🪽')}</span><b class="wind-x2 wind-atk-cut">−1⚔</b></span>`); // ENG16 (2026-11-02, WIND-2 a): −1 Attack, no longer ×2
+    // FIX7 (2026-11-03, review m1): per kind. Heavy Tailwind: the boot and one Fast Forward (⏩); Heavy Headwind: −2⚔; Crosswind: +0/2 (heavy +0/5).
+    if(lw && lw.k === 'cross') out.push(`<span class="ab-windpair wind-live wind-cross${lw.heavy ? ' is-heavy' : ''}" title="${escapeAttr(TX(lw.heavy ? 'ui.eng20-wind-heavy-cross' : 'ui.eng20-wind-cross'))}"><span class="ab-wing">${iconHTML('flying', '🪽')}</span><b class="wind-x2 wind-cross-hp">+0/${lw.hp}</b></span>`);
+    else if(lw && lw.k === 'tail') out.push(`<span class="ab-windpair wind-live wind-tail${lw.heavy ? ' is-heavy' : ''}" title="${escapeAttr(TX('ui.wind-tail-wing') + ' ' + TX('ui.wind-tail-quick') + (lw.heavy ? ' ' + TX('ui.eng20-float-heavy-tail') : ''))}"><span class="ab-wing">${iconHTML('flying', '🪽')}</span><span class="ab-quick ab-wind-quick">${iconHTML('quick', '👢')}</span>${lw.heavy ? '<b class="wind-x2 wind-ff">+⏩</b>' : ''}</span>`);
+    else if(lw) out.push(`<span class="ab-windpair wind-live wind-head${lw.heavy ? ' is-heavy' : ''}" title="${escapeAttr(lw.heavy ? TX('ui.eng20-float-heavy-head') : TX('ui.wind-head-wing'))}"><span class="ab-wing">${iconHTML('flying', '🪽')}</span><b class="wind-x2 wind-atk-cut">${lw.heavy ? '−2⚔' : '−1⚔'}</b></span>`); // ENG16 (2026-11-02, WIND-2 a): −1 Attack, no longer ×2
     else out.push(`<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
   }
   if(e.quick && !(e.flying && lw && lw.k === 'tail')) out.push(`<span class="ab-quick">${iconHTML('quick', '👢')}</span>`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
@@ -52034,7 +52087,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='phase' || ev.type==='moon' || (ev.type==='statusFx' && (ev.kind==='stateSkill' || ev.kind==='phaseGrow' || ev.kind==='phaseFade'))) pl1HandPreviewSoon();
   // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
   if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine, kind: ev.kind || null /* ENG20-4 */};
-      if(matchState && ev.windy) matchState._windLastMine = mine;
+      if(matchState && ev.windy && ev.kind !== 'cross' && ev.kind !== 'heavyCross') matchState._windLastMine = mine; // FIX7 (2026-11-03): a Crosswind blows neither way
       const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } syncWindField(matchState); syncWindBadges(); }catch(e){} } // + the wind layer (2026-10-15); + the Flyers' wind marks (2026-10-18, BP)
   if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
   // 2026-10-15 (FX batch B): Twilight has its own toast (it used to be announced as "Day breaks").

@@ -33,14 +33,16 @@ const constLine = name=>{ const m = src.match(new RegExp('^const ' + name + ' = 
   ctx.matchState = {engine: eng0(), over: true, _windNow: {windy:true, mine:true}}; ok(ctx.liveWindState(1) === null, 'a finished match: no marks');
   ok(ctx.liveWindState(0) === null && ctx.liveWindState(undefined) === null, 'no side (a hand card, the Codex): no marks'); }
 // the engine's rules the marks describe
-ok(/function windSideOf\(pid\)\{ return !windNow \? null : \(pid === windFrom \? 'tail' : 'head'\); \}/.test(eng), 'engine: the side the wind blows from is the Tailwind side');
+// 2026-11-03 (package FIX7, stale since ENG20-4): windSideOf gives 'cross' in a Crosswind (no back or face), so the regex allows that branch.
+ok(/function windSideOf\(pid\)\{ return !windNow \? null : (isCrosswind\(\) \? 'cross' (\/\*[^*]*\*\/ )?: )?\(pid === windFrom \? 'tail' : 'head'\); \}/.test(eng), 'engine: the side the wind blows from is the Tailwind side');
 ok(/function headwindDouble\(card, pid\)\{ return windNow && isFlyingCard\(card\) && !ashyNow\(\) && windSideOf\(pid\) === 'head'; \}/.test(eng), 'engine: a Headwind doubles a Flyer\'s skills and triggers (not while Ashy)');
 ok(/\(wind && e\.flying && !ashyNow\(\) && windSideOf\(pid\) === 'tail'\) \? 'tailwind'/.test(eng) && /c\.ffCounters = \(c\.ffCounters\|\|0\) \+ 1;/.test(eng), 'engine: a Tailwind gives a Flyer an extra (Fast Forward) turn');
 { const ab = fnSrc('abilityBadges'); ok(!!ab, 'abilityBadges exists');
   ok(/const lw = e\.flying && bopts && bopts\.live \? liveWindState\(bopts\.live\.pid\) : null;/.test(ab), 'a board Flyer asks liveWindState for its side');
   // 2026-10-24 (package BV, owner 17:01 #4): the wind's marks are one pip now (flyerWindPips): wing + boot, or wing + ×2
   const fw = fnSrc('flyerWindPips'); ok(!!fw && /out\.push\(\.\.\.flyerWindPips\(e, lw\)\)/.test(ab), 'the Flyer\'s pips come from flyerWindPips');
-  ok(/class="ab-windpair wind-live wind-tail"/.test(fw) && /class="ab-windpair wind-live wind-head"/.test(fw) && /<b class="wind-x2 wind-atk-cut">−1⚔<\/b>/.test(fw) /* ENG16 (2026-11-02, WIND-2 a): −1⚔, was ×2 */, 'the wing is lit with its boot (Tailwind) or its −1⚔ (Headwind) in one pip');
+  // 2026-11-03 (package FIX7, review m1): the pair's class carries the heavy look (is-heavy), a Heavy Headwind shows −2⚔, a Crosswind its +0/N
+  ok(/class="ab-windpair wind-live wind-tail\$\{/.test(fw) && /class="ab-windpair wind-live wind-head\$\{/.test(fw) && /<b class="wind-x2 wind-atk-cut">\$\{lw\.heavy \? '−2⚔' : '−1⚔'\}<\/b>/.test(fw) /* ENG16 (2026-11-02, WIND-2 a): −1⚔, was ×2 */ && /wind-cross-hp">\+0\/\$\{lw\.hp\}/.test(fw), 'the wing is lit with its boot (Tailwind) or its −1⚔ (Headwind) in one pip');
   ok(/if\(e\.quick && !\(e\.flying && lw && lw\.k === 'tail'\)\)/.test(fw), 'a Tailwind takes the Flyer\'s own Quick boot into the pair');
   ok(/TX\('ui\.wind-tail-wing'\)/.test(fw) && /TX\('ui\.wind-head-wing'\)/.test(fw) && /TX\('ui\.wind-tail-quick'\)/.test(fw), 'the marks\' titles are TX keys'); }
 ['ui.wind-tail-wing', 'ui.wind-head-wing', 'ui.wind-tail-quick'].forEach(k=> ok(texts.includes('"' + k + '": '), 'TX key ' + k));
@@ -54,7 +56,7 @@ ok(/syncWindField\(matchState\); syncWindBadges\(\);/.test(src) && !!fnSrc('sync
   // 2026-10-28 (package VIS5, L3): the callout is the leader's slam, 1.4 s whole (was x0.8 of 2.4 s = 1.92 s)
   ok(ctx.LEADER_CALLOUT_BASE_MS === 1400 && ctx.LEADER_CALLOUT_FADE === 1 && ctx.LEADER_CALLOUT_MS === 1400, `the callout (the slam) runs 1.4 s (${ctx.LEADER_CALLOUT_MS} ms)`);
   ok(ctx.LEADER_QUEUE_WAIT === 0.75 && ctx.LEADER_THRONE_WAIT_MS === Math.round(ctx.LEADER_THRONE_FX_MS * 0.75), `the queue waits ×0.75 of the throne moment (${ctx.LEADER_THRONE_WAIT_MS} of ${ctx.LEADER_THRONE_FX_MS} ms)`); }
-ok(!/noteMatchFx\([^\n]*LEADER_THRONE_FX_MS/.test(src) && (src.match(/noteMatchFx\([^\n]*LEADER_THRONE_WAIT_MS/g) || []).length === 3, 'all three leader waits use LEADER_THRONE_WAIT_MS');
+ok(!/noteMatchFx\([^\n]*LEADER_THRONE_FX_MS/.test(src) && (src.match(/noteMatchFx\([^\n]*LEADER_THRONE_WAIT_MS/g) || []).length === 4 /* 2026-11-03 (FIX7): + autoplayLeaderOff's (FIX6: Auto summons your leader) */, 'all four leader waits use LEADER_THRONE_WAIT_MS');
 // 2026-10-28 (VIS5, L3): the banner sits in the slam's wrapper, which is what is added to the page and removed
 ok(/b\.style\.animationDuration = LEADER_CALLOUT_MS \+ 'ms'; w\.appendChild\(b\); document\.body\.appendChild\(w\); setTimeout\(\(\)=> w\.remove\(\), LEADER_CALLOUT_MS\);/.test(src), 'the callout\'s animation and removal use LEADER_CALLOUT_MS');
 ok(/\.leader-callout\{position:fixed; z-index:1103; animation-duration:1\.92s;/.test(tpl), 'the callout CSS says 1.92 s');

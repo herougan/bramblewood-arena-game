@@ -76,8 +76,10 @@ function hitBy(kingId){ const {e, P} = mk(6); const a = spawn(e, P, 1, 'x-hit5')
 ok(hitBy(null) === 5 && hitBy('x-king') === 3, `#13: a 5-Attack swing facing a Ready Majesty 2 unit hits for 3 (${hitBy('x-king')}; without it ${hitBy(null)})`);
 ok(hitBy('x-kingw') === 5, `#13: a Waiting Majesty unit does nothing (${hitBy('x-kingw')})`);
 { const SC = require(path.join(ROOT, 'tools/skill_costs.js')).make(J('canonical/skill-costs.json'));
-  ok(SC.cardS({majesty:1}).S === 3.4 && SC.cardS({pearl:1}).S === 0.9, '#13 / #5: Majesty 3.4 and Pearl 0.9 a point in the budget');
-  ok(SC.cardS({triggers:[{on:'onSpawn', do:'grantShield', allies:3}]}).S === 3.78 && !SC.cardS({triggers:[{on:'onSpawn', do:'grantShield', adjacent:1}]}).missing.length, '#15: On Play +3 Shield to every ally prices at 3.78; every group has a price'); }
+  // 2026-11-03 (package FIX7): the prices were re-fit after ENG19 (BAL14 / BAL15 measured: Majesty 3.88, Pearl 2.76 a point; On Play +3 Shield to
+  // every ally 6.12, measured 6.08 [5.28, 7.25]); the test pins today's canonical prices (were 3.4, 0.9 and 3.78 by ENG19's 4-round rule)
+  ok(SC.cardS({majesty:1}).S === 3.88 && SC.cardS({pearl:1}).S === 2.76, '#13 / #5: Majesty 3.88 and Pearl 2.76 a point in the budget (BAL14 / BAL15)');
+  ok(SC.cardS({triggers:[{on:'onSpawn', do:'grantShield', allies:3}]}).S === 6.12 && !SC.cardS({triggers:[{on:'onSpawn', do:'grantShield', adjacent:1}]}).missing.length, '#15: On Play +3 Shield to every ally prices at 6.12 (BAL15); every group has a price'); }
 { const cards = J('canonical/cards.json'), list = Array.isArray(cards) ? cards : (cards.cards || Object.values(cards)); const s = JSON.stringify(list.map(c=> c.effects || {}));
   // 2026-11-03 (DEC1, ENG19-2): Royal Guard carries On Play +3 Shield to every ally; Majesty is still on no card (ENG19-1)
   const gs = list.filter(c=> /grantShield/.test(JSON.stringify(c.effects || {}))).map(c=> c.id);

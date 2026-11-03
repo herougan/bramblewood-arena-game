@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package FIX7 (release review 11-03a: M1, m1-m4, stale tests)
+- **Raids and multiplayer dungeons: a middle- or back-row spawn no longer breaks the round's replay (M1).** A row Spawner or Duplicate (since DEC1), and Brood / Twin / Sprout or a row death's tokens (since RR, 10-19), come with lane null and their row and slot; the replay read `rr[null]` and threw, so the rest of the round's animations were skipped. The unit now jumps out of its spawner into its own row slot mid-replay (`raidReplayReserveSpawn`), and the round plays on. Browser check `tests/e2e/fix7_2026_11_03.py` (it fails on the old build with "resolveRound failed"); screenshots in `docs/screens/fix7/`.
+- **Flyers' wind marks follow the gust's kind (m1):** Crosswind shows +0/2 (heavy +0/5) and no Tail / Head mark or north / south wind layer; Heavy Headwind shows −2⚔ (was −1⚔); Heavy Tailwind shows the boot and its extra Fast Forward (⏩).
+- **A unit that bleeds out as it attacks still gets its On Attack (m2):** it draws, gains and hits as before ENG19, but gives itself nothing (ENG19's rule for a unit dead in its own swing).
+- Auto-play's loan of your leader to the engine is always undone, even if the CPU's turn throws (m3). Decision BASELVL-1's answer now lists the economy side effects of base Level 0 Baby cards (m4). Stale tests updated: bp-2026-10-19 (windSideOf's Crosswind branch, the fourth leader wait), eng18 ("multiplayer dungeons"), eng19 (BAL14 / BAL15 prices). New `tests/fix7-2026-11-03.js`.
+
 ## 2026-11-03 Package ART7 (owner 11-03 09:39: "Proceed to download"; PixelLab gallery art for CONTENT6 and CONTENT7)
 - The 21 PixelLab 2x2 sheets (art6 jobs) downloaded from the owner's gallery (only those; nothing bought), one variant picked per card by eye, imported as 256 px art (`tools/art/art7_import_2026_11_03.py`, no palette snap since PixelLab output is already pixel art). New art on the 12 CONTENT6 cards (their `artReview` cleared) and the 9 CONTENT7 cards (Dinoflagellates = night-algae). Blackmass Rat and Revenant Bog Turtle: the brightest variant. Contact sheet `docs/art/art7-contact-2026-11-03.png`.
 ## 2026-11-03 Package BAL15 (the measures DEC1 left open; balancing roadmap step 1, skill balance; budget only)

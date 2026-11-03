@@ -10400,7 +10400,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // dropped to 0 or below. That's the same "a unit that's dying doesn't get to act"
       // violation item #7 fixed for poison — just from a different, unguarded self-damage
       // source. Re-check here and bail before any target is resolved or damage is dealt.
-      if(a.att.hp<=0){ reflowAfterKills(killCreditKeysAtTurnStart); watchScan(players, sideOf, stats, events); pending = pickNextAttacker(); continue; } // this is itself a fresh death — reflow now, not at round's end
+      // 2026-11-03 (package FIX7, review 11-03a m2): a unit that bleeds out as it attacks still gets its On Attack (before ENG19 it had fired
+      // ahead of this tick), by ENG19's rule for a unit dead in its own swing ('postDead': it draws, gains and hits, gives itself nothing).
+      if(a.att.hp<=0){ runOnAttackPost(players, sideOf, a, attDef, stats, events); reflowAfterKills(killCreditKeysAtTurnStart); watchScan(players, sideOf, stats, events); pending = pickNextAttacker(); continue; } // this is itself a fresh death — reflow now, not at round's end
       // Live column/target resolution (2026-09-17 follow-up): both this attacker's OWN
       // column/facing and the enemy's column map are recomputed fresh from the CURRENT board,
       // not the frozen snapshot captured when the round started — see liveColOf's comment.
