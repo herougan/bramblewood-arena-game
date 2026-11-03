@@ -1,0 +1,1517 @@
+{
+ "about": "THEME5 skirmish plan (proposal; tools/theme5/skirmish_plan_2026_11_03.js)",
+ "built": "2026-11-03",
+ "maps": [
+  {
+   "id": "m1",
+   "label": "0",
+   "name": "Bramblewood Outskirts",
+   "fights": [
+    "0-1 skirmish 90",
+    "0-2 skirmish 75",
+    "0-3 skirmish 60",
+    "0-4 skirmish 45"
+   ],
+   "placed": [
+    {
+     "fight": "0-1",
+     "kind": "skirmish",
+     "target": 90,
+     "strategy": "a third focus from the next bench / deckopt run (the map has 2 distinct BPRO / PRO focus)"
+    },
+    {
+     "fight": "0-2",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "0-BPRO-2 open (Ant Scout)"
+    },
+    {
+     "fight": "0-3",
+     "kind": "skirmish",
+     "target": 60,
+     "strategy": "0-BPRO-1 family:flying (Ant Scout)"
+    }
+   ],
+   "rest": []
+  },
+  {
+   "id": "mf",
+   "label": "1",
+   "name": "Thistlewood",
+   "fights": [
+    "1-1 skirmish 90",
+    "1-2 skirmish 80",
+    "1-3 skirmish 70",
+    "1-4 skirmish 60",
+    "1-5 elite 40"
+   ],
+   "placed": [
+    {
+     "fight": "1-2",
+     "kind": "skirmish",
+     "target": 80,
+     "strategy": "a third focus from the next bench / deckopt run (the map has 2 distinct BPRO / PRO focus)"
+    },
+    {
+     "fight": "1-3",
+     "kind": "skirmish",
+     "target": 70,
+     "strategy": "1-BPRO-2 swarm (Ant Scout)"
+    },
+    {
+     "fight": "1-4",
+     "kind": "skirmish",
+     "target": 60,
+     "strategy": "1-BPRO-1 open (Chipmunk Cavalry)"
+    }
+   ],
+   "rest": [
+    "1-1"
+   ]
+  },
+  {
+   "id": "mb",
+   "label": "2",
+   "name": "Pebble Beach",
+   "fights": [
+    "2-1 skirmish 90",
+    "2-2 skirmish 80",
+    "2-3 skirmish 70",
+    "2-4 skirmish 60",
+    "2-5 elite 40"
+   ],
+   "placed": [
+    {
+     "fight": "2-2",
+     "kind": "skirmish",
+     "target": 80,
+     "strategy": "2-BPRO-3 swarm (Conch Herald)"
+    },
+    {
+     "fight": "2-3",
+     "kind": "skirmish",
+     "target": 70,
+     "strategy": "2-BPRO-2 open (Conch Herald)"
+    },
+    {
+     "fight": "2-4",
+     "kind": "skirmish",
+     "target": 60,
+     "strategy": "2-BPRO-1 economy (Conch Herald)"
+    }
+   ],
+   "rest": [
+    "2-1"
+   ]
+  },
+  {
+   "id": "mc",
+   "label": "3",
+   "name": "Gannet Cliffs",
+   "fights": [
+    "3-1 skirmish 90",
+    "3-2 skirmish 84",
+    "3-3 skirmish 78",
+    "3-4 skirmish 72",
+    "3-5 elite 66",
+    "3-6 elite 60",
+    "3-7 elite 40"
+   ],
+   "placed": [
+    {
+     "fight": "3-2",
+     "kind": "skirmish",
+     "target": 84,
+     "strategy": "3-BPRO-3 swarm (Peregrine Stooper)"
+    },
+    {
+     "fight": "3-4",
+     "kind": "skirmish",
+     "target": 72,
+     "strategy": "3-BPRO-2 open (Conch Herald)"
+    },
+    {
+     "fight": "3-6",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "3-BPRO-1 big (Conch Herald)"
+    }
+   ],
+   "rest": [
+    "3-1",
+    "3-3",
+    "3-5"
+   ]
+  },
+  {
+   "id": "m2",
+   "label": "4",
+   "name": "Sunken Hollow",
+   "fights": [
+    "4-1 skirmish 90",
+    "4-2 skirmish 80",
+    "4-3 elite 70",
+    "4-4 elite 60",
+    "4-5 elite 40"
+   ],
+   "placed": [
+    {
+     "fight": "4-2",
+     "kind": "skirmish",
+     "target": 80,
+     "strategy": "4-BPRO-3 swarm (The Drowned Matriarch)"
+    },
+    {
+     "fight": "4-3",
+     "kind": "elite",
+     "target": 70,
+     "strategy": "4-BPRO-2 big (The Drowned Matriarch)"
+    },
+    {
+     "fight": "4-4",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "4-BPRO-1 open (The Drowned Matriarch)"
+    }
+   ],
+   "rest": [
+    "4-1"
+   ]
+  },
+  {
+   "id": "mw",
+   "label": "5",
+   "name": "Gatorback Swamp",
+   "fights": [
+    "5-1 skirmish 90",
+    "5-2 skirmish 84",
+    "5-3 skirmish 78",
+    "5-4 skirmish 72",
+    "5-5 elite 66",
+    "5-6 elite 60",
+    "5-7 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "5-2",
+     "kind": "skirmish",
+     "target": 84,
+     "strategy": "5-BPRO-3 open (Alligator Gar)"
+    },
+    {
+     "fight": "5-4",
+     "kind": "skirmish",
+     "target": 72,
+     "strategy": "5-BPRO-2 economy (Fire Ant Raft)"
+    },
+    {
+     "fight": "5-6",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "5-BPRO-1 swarm (Bog Leech)"
+    }
+   ],
+   "rest": [
+    "5-1",
+    "5-3",
+    "5-5"
+   ]
+  },
+  {
+   "id": "m8",
+   "label": "6",
+   "name": "Sable Swampmire",
+   "fights": [
+    "6-1 skirmish 90",
+    "6-2 skirmish 85",
+    "6-3 skirmish 80",
+    "6-4 skirmish 75",
+    "6-5 elite 70",
+    "6-6 elite 65",
+    "6-7 elite 60",
+    "6-8 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "6-2",
+     "kind": "skirmish",
+     "target": 85,
+     "strategy": "6-BPRO-3 open (Alligator Gar)"
+    },
+    {
+     "fight": "6-4",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "6-BPRO-2 family:poison (Adder Ambusher)"
+    },
+    {
+     "fight": "6-7",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "6-BPRO-1 swarm (Adder Ambusher)"
+    }
+   ],
+   "rest": [
+    "6-1",
+    "6-3",
+    "6-5",
+    "6-6"
+   ]
+  },
+  {
+   "id": "mp",
+   "label": "2-A",
+   "name": "Lilypad Reach",
+   "fights": [
+    "2-A-1 skirmish 90",
+    "2-A-2 skirmish 84",
+    "2-A-3 skirmish 78",
+    "2-A-4 skirmish 72",
+    "2-A-5 elite 66",
+    "2-A-6 elite 60",
+    "2-A-7 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "2-A-2",
+     "kind": "skirmish",
+     "target": 84,
+     "strategy": "Dam Fortress (+Newt Doctor)"
+    },
+    {
+     "fight": "2-A-4",
+     "kind": "skirmish",
+     "target": 72,
+     "strategy": "2-A-BPRO-2 open (Grey Seal Bull)"
+    },
+    {
+     "fight": "2-A-6",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "2-A-BPRO-1 swarm (Grey Seal Bull)"
+    }
+   ],
+   "rest": [
+    "2-A-1",
+    "2-A-3",
+    "2-A-5"
+   ]
+  },
+  {
+   "id": "mu",
+   "label": "7",
+   "name": "The Morel Hollow",
+   "fights": [
+    "7-1 skirmish 90",
+    "7-2 skirmish 82.5",
+    "7-3 skirmish 75",
+    "7-4 skirmish 67.5",
+    "7-5 elite 60",
+    "7-6 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "7-2",
+     "kind": "skirmish",
+     "target": 82.5,
+     "strategy": "7-BPRO-3 open (Wolf Spider Mother)"
+    },
+    {
+     "fight": "7-3",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "7-BPRO-2 big (Wolf Spider Mother)"
+    },
+    {
+     "fight": "7-5",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "7-BPRO-1 economy (Wolf Spider Mother)"
+    }
+   ],
+   "rest": [
+    "7-1",
+    "7-4"
+   ]
+  },
+  {
+   "id": "mg",
+   "label": "2-B",
+   "name": "Smugglers' Grotto",
+   "fights": [
+    "2-B-1 skirmish 90",
+    "2-B-2 elite 75",
+    "2-B-3 elite 60",
+    "2-B-4 elite 40"
+   ],
+   "placed": [
+    {
+     "fight": "2-B-1",
+     "kind": "skirmish",
+     "target": 90,
+     "strategy": "Shell Bunker (+The Old Shell)"
+    },
+    {
+     "fight": "2-B-2",
+     "kind": "elite",
+     "target": 75,
+     "strategy": "2-B-BPRO-2 big (Gallery Orb-Weaver)"
+    },
+    {
+     "fight": "2-B-3",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "2-B-BPRO-1 economy (Gallery Orb-Weaver)"
+    }
+   ],
+   "rest": []
+  },
+  {
+   "id": "m4",
+   "label": "8",
+   "name": "Caves & Alcoves",
+   "fights": [
+    "8-1 skirmish 90",
+    "8-2 skirmish 85",
+    "8-3 skirmish 80",
+    "8-4 skirmish 75",
+    "8-5 skirmish 70",
+    "8-6 skirmish 65",
+    "8-7 elite 60",
+    "8-8 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "8-2",
+     "kind": "skirmish",
+     "target": 85,
+     "strategy": "8-BPRO-3 open (Grotto Lobster)"
+    },
+    {
+     "fight": "8-4",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "8-BPRO-2 family:flying (Grotto Lobster)"
+    },
+    {
+     "fight": "8-7",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "8-BPRO-1 big (Giant Cave Huntsman)"
+    }
+   ],
+   "rest": [
+    "8-1",
+    "8-3",
+    "8-5",
+    "8-6"
+   ]
+  },
+  {
+   "id": "mz",
+   "label": "7-A",
+   "name": "The Mycelium Deep",
+   "fights": [
+    "7-A-1 skirmish 90",
+    "7-A-2 skirmish 80",
+    "7-A-3 elite 70",
+    "7-A-4 elite 60",
+    "7-A-5 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "7-A-2",
+     "kind": "skirmish",
+     "target": 80,
+     "strategy": "Rot and Burst (+Bogfire Newt)"
+    },
+    {
+     "fight": "7-A-3",
+     "kind": "elite",
+     "target": 70,
+     "strategy": "7-A-BPRO-2 economy (Wolf Spider Mother)"
+    },
+    {
+     "fight": "7-A-4",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "7-A-BPRO-1 big (Bombardier Beetle)"
+    }
+   ],
+   "rest": [
+    "7-A-1"
+   ]
+  },
+  {
+   "id": "mk",
+   "label": "9",
+   "name": "The Kelp Mangroves",
+   "fights": [
+    "9-1 skirmish 90",
+    "9-2 skirmish 84",
+    "9-3 skirmish 78",
+    "9-4 skirmish 72",
+    "9-5 elite 66",
+    "9-6 elite 60",
+    "9-7 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "9-2",
+     "kind": "skirmish",
+     "target": 84,
+     "strategy": "9-BPRO-3 family:tide (Mangrove Manatee)"
+    },
+    {
+     "fight": "9-4",
+     "kind": "skirmish",
+     "target": 72,
+     "strategy": "9-BPRO-2 open (Mangrove Manatee)"
+    },
+    {
+     "fight": "9-6",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "9-BPRO-1 big (Mangrove Manatee)"
+    }
+   ],
+   "rest": [
+    "9-1",
+    "9-3",
+    "9-5"
+   ]
+  },
+  {
+   "id": "m7",
+   "label": "10",
+   "name": "Coral Current",
+   "fights": [
+    "10-1 skirmish 90",
+    "10-2 skirmish 85.7",
+    "10-3 skirmish 81.4",
+    "10-4 skirmish 77.1",
+    "10-5 skirmish 72.9",
+    "10-6 elite 68.6",
+    "10-7 elite 64.3",
+    "10-8 elite 60",
+    "10-9 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "10-2",
+     "kind": "skirmish",
+     "target": 85.7,
+     "strategy": "10-BPRO-3 family:tide (Mangrove Manatee)"
+    },
+    {
+     "fight": "10-5",
+     "kind": "skirmish",
+     "target": 72.9,
+     "strategy": "10-BPRO-2 swarm (Great Barracuda)"
+    },
+    {
+     "fight": "10-8",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "10-BPRO-1 open (Supernova Jelly)"
+    }
+   ],
+   "rest": [
+    "10-1",
+    "10-3",
+    "10-4",
+    "10-6",
+    "10-7"
+   ]
+  },
+  {
+   "id": "m10",
+   "label": "11",
+   "name": "Eyrie Heights",
+   "fights": [
+    "11-1 skirmish 90",
+    "11-2 skirmish 86.3",
+    "11-3 skirmish 82.5",
+    "11-4 skirmish 78.8",
+    "11-5 elite 75",
+    "11-6 elite 71.3",
+    "11-7 elite 67.5",
+    "11-8 elite 63.8",
+    "11-9 elite 60",
+    "11-10 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "11-2",
+     "kind": "skirmish",
+     "target": 86.3,
+     "strategy": "Stoop and Pounce (+The Gannet Queen)"
+    },
+    {
+     "fight": "11-5",
+     "kind": "elite",
+     "target": 75,
+     "strategy": "11-BPRO-2 swarm (Ibex Rockcaller)"
+    },
+    {
+     "fight": "11-9",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "11-BPRO-1 open (Wound Reaver)"
+    }
+   ],
+   "rest": [
+    "11-1",
+    "11-3",
+    "11-4",
+    "11-6",
+    "11-7",
+    "11-8"
+   ]
+  },
+  {
+   "id": "mj",
+   "label": "10-A",
+   "name": "The Sunken Depths",
+   "fights": [
+    "10-A-1 skirmish 90",
+    "10-A-2 skirmish 80",
+    "10-A-3 skirmish 70",
+    "10-A-4 elite 60",
+    "10-A-5 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "10-A-2",
+     "kind": "skirmish",
+     "target": 80,
+     "strategy": "Shock and Nova (+Supernova Jelly)"
+    },
+    {
+     "fight": "10-A-3",
+     "kind": "skirmish",
+     "target": 70,
+     "strategy": "10-A-BPRO-2 family:tide (Reef Admiral)"
+    },
+    {
+     "fight": "10-A-4",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "10-A-BPRO-1 open (Nautilus Drifter)"
+    }
+   ],
+   "rest": [
+    "10-A-1"
+   ]
+  },
+  {
+   "id": "mh",
+   "label": "12",
+   "name": "The Briar Maze",
+   "fights": [
+    "12-1 skirmish 90",
+    "12-2 skirmish 84",
+    "12-3 skirmish 78",
+    "12-4 skirmish 72",
+    "12-5 elite 66",
+    "12-6 elite 60",
+    "12-7 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "12-2",
+     "kind": "skirmish",
+     "target": 84,
+     "strategy": "Hedge Fortress (+Hawthorn Shieldbug)"
+    },
+    {
+     "fight": "12-4",
+     "kind": "skirmish",
+     "target": 72,
+     "strategy": "12-BPRO-2 big (Quillguard)"
+    },
+    {
+     "fight": "12-6",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "12-BPRO-1 open (Quillguard)"
+    }
+   ],
+   "rest": [
+    "12-1",
+    "12-3",
+    "12-5"
+   ]
+  },
+  {
+   "id": "mq",
+   "label": "1-A",
+   "name": "Clovermead",
+   "fights": [
+    "1-A-1 skirmish 90",
+    "1-A-2 skirmish 80",
+    "1-A-3 skirmish 70",
+    "1-A-4 skirmish 60",
+    "1-A-5 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "1-A-2",
+     "kind": "skirmish",
+     "target": 80,
+     "strategy": "Clover Hive (+Bee Sentry)"
+    },
+    {
+     "fight": "1-A-3",
+     "kind": "skirmish",
+     "target": 70,
+     "strategy": "1-A-BPRO-2 open (Bee Forager)"
+    },
+    {
+     "fight": "1-A-4",
+     "kind": "skirmish",
+     "target": 60,
+     "strategy": "1-A-BPRO-1 swarm (Ant Scout)"
+    }
+   ],
+   "rest": [
+    "1-A-1"
+   ]
+  },
+  {
+   "id": "mr",
+   "label": "13",
+   "name": "The Redwood Deep",
+   "fights": [
+    "13-1 skirmish 90",
+    "13-2 skirmish 85",
+    "13-3 skirmish 80",
+    "13-4 skirmish 75",
+    "13-5 elite 70",
+    "13-6 elite 65",
+    "13-7 elite 60",
+    "13-8 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "13-2",
+     "kind": "skirmish",
+     "target": 85,
+     "strategy": "Old-Growth Giants (+Badger Lumberjack)"
+    },
+    {
+     "fight": "13-4",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "13-BPRO-2 open (Sergeant Bramblefox)"
+    },
+    {
+     "fight": "13-7",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "13-BPRO-1 big (Sergeant Bramblefox)"
+    }
+   ],
+   "rest": [
+    "13-1",
+    "13-3",
+    "13-5",
+    "13-6"
+   ]
+  },
+  {
+   "id": "ms",
+   "label": "5-A",
+   "name": "The Sunken Grove",
+   "fights": [
+    "5-A-1 skirmish 90",
+    "5-A-2 skirmish 75",
+    "5-A-3 skirmish 60",
+    "5-A-4 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "5-A-1",
+     "kind": "skirmish",
+     "target": 90,
+     "strategy": "Regrowth Wall (+Mangrove Manatee)"
+    },
+    {
+     "fight": "5-A-2",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "5-A-BPRO-2 swarm (Old Snapjaw)"
+    },
+    {
+     "fight": "5-A-3",
+     "kind": "skirmish",
+     "target": 60,
+     "strategy": "5-A-BPRO-1 open (Hedgehog Herbalist)"
+    }
+   ],
+   "rest": []
+  },
+  {
+   "id": "m5",
+   "label": "14",
+   "name": "Savanna Reaches",
+   "fights": [
+    "14-1 skirmish 90",
+    "14-2 skirmish 85",
+    "14-3 skirmish 80",
+    "14-4 skirmish 75",
+    "14-5 elite 70",
+    "14-6 elite 65",
+    "14-7 elite 60",
+    "14-8 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "14-2",
+     "kind": "skirmish",
+     "target": 85,
+     "strategy": "Mound and Herd (+Ant Hill)"
+    },
+    {
+     "fight": "14-4",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "Sun Strike (+Golden Eagle Diver)"
+    },
+    {
+     "fight": "14-7",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "14-BPRO-1 swarm (Pride Queen)"
+    }
+   ],
+   "rest": [
+    "14-1",
+    "14-3",
+    "14-5",
+    "14-6"
+   ]
+  },
+  {
+   "id": "ml",
+   "label": "15",
+   "name": "The Long Grass",
+   "fights": [
+    "15-1 skirmish 90",
+    "15-2 skirmish 84",
+    "15-3 skirmish 78",
+    "15-4 skirmish 72",
+    "15-5 elite 66",
+    "15-6 elite 60",
+    "15-7 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "15-2",
+     "kind": "skirmish",
+     "target": 84,
+     "strategy": "Farmstead Cavalry (+Truffle Piglet)"
+    },
+    {
+     "fight": "15-4",
+     "kind": "skirmish",
+     "target": 72,
+     "strategy": "15-BPRO-2 economy (Hedgehog Herbalist)"
+    },
+    {
+     "fight": "15-6",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "15-BPRO-1 open (Talon Archer)"
+    }
+   ],
+   "rest": [
+    "15-1",
+    "15-3",
+    "15-5"
+   ]
+  },
+  {
+   "id": "mv",
+   "label": "11-A",
+   "name": "The Aerie Vault",
+   "fights": [
+    "11-A-1 skirmish 90",
+    "11-A-2 skirmish 75",
+    "11-A-3 skirmish 60",
+    "11-A-4 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "11-A-1",
+     "kind": "skirmish",
+     "target": 90,
+     "strategy": "Fletcher's Roost (+Talon Archer)"
+    },
+    {
+     "fight": "11-A-2",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "11-A-BPRO-2 family:flying (Wound Reaver)"
+    },
+    {
+     "fight": "11-A-3",
+     "kind": "skirmish",
+     "target": 60,
+     "strategy": "11-A-BPRO-1 open (Ibex Rockcaller)"
+    }
+   ],
+   "rest": []
+  },
+  {
+   "id": "mt",
+   "label": "16",
+   "name": "The Pinewood Taiga",
+   "fights": [
+    "16-1 skirmish 90",
+    "16-2 skirmish 84",
+    "16-3 skirmish 78",
+    "16-4 skirmish 72",
+    "16-5 elite 66",
+    "16-6 elite 60",
+    "16-7 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "16-2",
+     "kind": "skirmish",
+     "target": 84,
+     "strategy": "Moonlit Pack (+Owl Nightwatch)"
+    },
+    {
+     "fight": "16-4",
+     "kind": "skirmish",
+     "target": 72,
+     "strategy": "16-BPRO-2 open (Wolf Pack Runner)"
+    },
+    {
+     "fight": "16-6",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "16-BPRO-1 big (Taiga Lynx)"
+    }
+   ],
+   "rest": [
+    "16-1",
+    "16-3",
+    "16-5"
+   ]
+  },
+  {
+   "id": "mn",
+   "label": "8-A",
+   "name": "The Glimmer Depths",
+   "fights": [
+    "8-A-1 skirmish 90",
+    "8-A-2 skirmish 75",
+    "8-A-3 skirmish 60",
+    "8-A-4 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "8-A-1",
+     "kind": "skirmish",
+     "target": 90,
+     "strategy": "Spider Gallery (+Gallery Orb-Weaver)"
+    },
+    {
+     "fight": "8-A-2",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "8-A-BPRO-2 big (Giant Cave Huntsman)"
+    },
+    {
+     "fight": "8-A-3",
+     "kind": "skirmish",
+     "target": 60,
+     "strategy": "8-A-BPRO-1 open (Echo Matriarch)"
+    }
+   ],
+   "rest": []
+  },
+  {
+   "id": "m6",
+   "label": "17",
+   "name": "Wolfsbane Tundra",
+   "fights": [
+    "17-1 skirmish 90",
+    "17-2 skirmish 85",
+    "17-3 skirmish 80",
+    "17-4 skirmish 75",
+    "17-5 elite 70",
+    "17-6 elite 65",
+    "17-7 elite 60",
+    "17-8 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "17-2",
+     "kind": "skirmish",
+     "target": 85,
+     "strategy": "Avalanche and Quake (+Ibex Rockcaller)"
+    },
+    {
+     "fight": "17-4",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "17-BPRO-2 swarm (Ravenous Wolverine)"
+    },
+    {
+     "fight": "17-7",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "17-BPRO-1 family:evasion (Walrus Icebreaker)"
+    }
+   ],
+   "rest": [
+    "17-1",
+    "17-3",
+    "17-5",
+    "17-6"
+   ]
+  },
+  {
+   "id": "md",
+   "label": "18",
+   "name": "The Glass Dunes",
+   "fights": [
+    "18-1 skirmish 90",
+    "18-2 skirmish 84",
+    "18-3 skirmish 78",
+    "18-4 skirmish 72",
+    "18-5 elite 66",
+    "18-6 elite 60",
+    "18-7 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "18-2",
+     "kind": "skirmish",
+     "target": 84,
+     "strategy": "Haste Blitz (+Savanna Cheetah)"
+    },
+    {
+     "fight": "18-4",
+     "kind": "skirmish",
+     "target": 72,
+     "strategy": "18-BPRO-2 economy (Dune Packrat)"
+    },
+    {
+     "fight": "18-6",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "18-BPRO-1 open (Dune Packrat)"
+    }
+   ],
+   "rest": [
+    "18-1",
+    "18-3",
+    "18-5"
+   ]
+  },
+  {
+   "id": "my",
+   "label": "14-A",
+   "name": "The Canopy",
+   "fights": [
+    "14-A-1 skirmish 90",
+    "14-A-2 skirmish 80",
+    "14-A-3 skirmish 70",
+    "14-A-4 elite 60",
+    "14-A-5 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "14-A-2",
+     "kind": "skirmish",
+     "target": 80,
+     "strategy": "Poison Frogs (+Cane Toad)"
+    },
+    {
+     "fight": "14-A-3",
+     "kind": "skirmish",
+     "target": 70,
+     "strategy": "14-A-BPRO-2 open (Pangolin Roller)"
+    },
+    {
+     "fight": "14-A-4",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "14-A-BPRO-1 economy (Pangolin Roller)"
+    }
+   ],
+   "rest": [
+    "14-A-1"
+   ]
+  },
+  {
+   "id": "m3",
+   "label": "19",
+   "name": "Ashen Spurn",
+   "fights": [
+    "19-1 skirmish 90",
+    "19-2 skirmish 82.5",
+    "19-3 elite 75",
+    "19-4 elite 67.5",
+    "19-5 elite 60",
+    "19-6 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "19-2",
+     "kind": "skirmish",
+     "target": 82.5,
+     "strategy": "Fire and Ice Front (+Walrus Icebreaker)"
+    },
+    {
+     "fight": "19-3",
+     "kind": "elite",
+     "target": 75,
+     "strategy": "19-BPRO-2 economy (Pit Glutton)"
+    },
+    {
+     "fight": "19-5",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "19-BPRO-1 open (Hercules Beetle)"
+    }
+   ],
+   "rest": [
+    "19-1",
+    "19-4"
+   ]
+  },
+  {
+   "id": "mpd",
+   "label": "18-A",
+   "name": "The Pale Desert",
+   "fights": [
+    "18-A-1 skirmish 90",
+    "18-A-2 skirmish 85.7",
+    "18-A-3 skirmish 81.4",
+    "18-A-4 skirmish 77.1",
+    "18-A-5 skirmish 72.9",
+    "18-A-6 skirmish 68.6",
+    "18-A-7 skirmish 64.3",
+    "18-A-8 elite 60",
+    "18-A-9 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "18-A-2",
+     "kind": "skirmish",
+     "target": 85.7,
+     "strategy": "Spit from Cover (+Spitting Cobra)"
+    },
+    {
+     "fight": "18-A-5",
+     "kind": "skirmish",
+     "target": 72.9,
+     "strategy": "18-A-BPRO-2 open (Dust-devil Kestrel)"
+    },
+    {
+     "fight": "18-A-8",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "18-A-BPRO-1 economy (Quicksand Queen)"
+    }
+   ],
+   "rest": [
+    "18-A-1",
+    "18-A-3",
+    "18-A-4",
+    "18-A-6",
+    "18-A-7"
+   ]
+  },
+  {
+   "id": "m11",
+   "label": "20",
+   "name": "The Sundered Peak",
+   "fights": [
+    "20-1 skirmish 90",
+    "20-2 skirmish 85.7",
+    "20-3 skirmish 81.4",
+    "20-4 skirmish 77.1",
+    "20-5 elite 72.9",
+    "20-6 elite 68.6",
+    "20-7 elite 64.3",
+    "20-8 elite 60",
+    "20-9 boss 50",
+    "20-10 worldboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "20-2",
+     "kind": "skirmish",
+     "target": 85.7,
+     "strategy": "Firing Line (+Fire Salamander)"
+    },
+    {
+     "fight": "20-5",
+     "kind": "elite",
+     "target": 72.9,
+     "strategy": "20-BPRO-2 economy (Magma Salamander)"
+    },
+    {
+     "fight": "20-8",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "20-BPRO-1 open (Ossuary Lammergeier)"
+    }
+   ],
+   "rest": [
+    "20-1",
+    "20-3",
+    "20-4",
+    "20-6",
+    "20-7"
+   ]
+  },
+  {
+   "id": "me",
+   "label": "20-A",
+   "name": "Eye of the Volcano",
+   "fights": [
+    "20-A-1 elite 88.2",
+    "20-A-2 elite 81.3",
+    "20-A-3 elite 74.6",
+    "20-A-4 dungeon 35.5",
+    "20-A-5 elite 68",
+    "20-A-6 elite 61.6",
+    "20-A-7 elite 55.4"
+   ],
+   "placed": [
+    {
+     "fight": "20-A-2",
+     "kind": "elite",
+     "target": 81.3,
+     "strategy": "Burning Wall (+Magma Rhino)"
+    },
+    {
+     "fight": "20-A-5",
+     "kind": "elite",
+     "target": 68,
+     "strategy": "20-A-BPRO-2 family:flying (Ossuary Lammergeier)"
+    },
+    {
+     "fight": "20-A-7",
+     "kind": "elite",
+     "target": 55.4,
+     "strategy": "20-A-BPRO-1 open (Woodland Brawler)"
+    }
+   ],
+   "rest": [
+    "20-A-1",
+    "20-A-3",
+    "20-A-6"
+   ]
+  },
+  {
+   "id": "mx",
+   "label": "20",
+   "name": "Volcano Lair",
+   "fights": [
+    "20-B-1 skirmish 85",
+    "20-B-2 skirmish 72.5",
+    "20-B-3 skirmish 60",
+    "20-B-4 worldboss 20"
+   ],
+   "placed": [
+    {
+     "fight": "20-B-1",
+     "kind": "skirmish",
+     "target": 85,
+     "strategy": "Quake on a Hard Board (+Gorge Wyrm)"
+    },
+    {
+     "fight": "20-B-2",
+     "kind": "skirmish",
+     "target": 72.5,
+     "strategy": "20-B-BPRO-2 open (Magma Salamander)"
+    },
+    {
+     "fight": "20-B-3",
+     "kind": "skirmish",
+     "target": 60,
+     "strategy": "20-B-BPRO-1 swarm (Tide Seahorse)"
+    }
+   ],
+   "rest": []
+  },
+  {
+   "id": "m21",
+   "label": "21",
+   "name": "The Quiet Summit",
+   "fights": [
+    "21-1 skirmish 90",
+    "21-2 skirmish 82.5",
+    "21-3 skirmish 75",
+    "21-4 elite 67.5",
+    "21-5 elite 60",
+    "21-6 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "21-2",
+     "kind": "skirmish",
+     "target": 82.5,
+     "strategy": "Expose Volley (+Eagle-Owl Quartermaster)"
+    },
+    {
+     "fight": "21-3",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "Vigil and Relics (+Vigil Owl)"
+    },
+    {
+     "fight": "21-5",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "the strongest BPRO the deck step builds (no PRO / BPRO decks past Map 20 yet)"
+    }
+   ],
+   "rest": [
+    "21-1",
+    "21-4"
+   ]
+  },
+  {
+   "id": "mi",
+   "label": "17-A",
+   "name": "The Ice Hollow",
+   "fights": [
+    "17-A-1 skirmish 90",
+    "17-A-2 skirmish 75",
+    "17-A-3 skirmish 60",
+    "17-A-4 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "17-A-1",
+     "kind": "skirmish",
+     "target": 90,
+     "strategy": "Ice-Cave Titans (+Yeti)"
+    },
+    {
+     "fight": "17-A-2",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "17-A-BPRO-2 open (Walrus Icebreaker)"
+    },
+    {
+     "fight": "17-A-3",
+     "kind": "skirmish",
+     "target": 60,
+     "strategy": "17-A-BPRO-1 family:evasion (Wolfsbane Alpha)"
+    }
+   ],
+   "rest": []
+  },
+  {
+   "id": "mo",
+   "label": "0-B",
+   "name": "The Old Bramble",
+   "fights": [
+    "0-B-1 skirmish 90",
+    "0-B-2 skirmish 75",
+    "0-B-3 skirmish 60",
+    "0-B-4 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "0-B-1",
+     "kind": "skirmish",
+     "target": 90,
+     "strategy": "Quill Hedge (+Quill-Thorn Boar)"
+    },
+    {
+     "fight": "0-B-2",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "0-B-PRO-2 open (Grave-Grin Hyena)"
+    },
+    {
+     "fight": "0-B-3",
+     "kind": "skirmish",
+     "target": 60,
+     "strategy": "0-B-PRO-1 big (Ashbone Ghoul)"
+    }
+   ],
+   "rest": []
+  },
+  {
+   "id": "m22",
+   "label": "22",
+   "name": "The Rimefire Caldera",
+   "fights": [
+    "22-1 skirmish 90",
+    "22-2 skirmish 85",
+    "22-3 skirmish 80",
+    "22-4 skirmish 75",
+    "22-5 skirmish 70",
+    "22-6 elite 65",
+    "22-7 elite 60",
+    "22-8 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "22-2",
+     "kind": "skirmish",
+     "target": 85,
+     "strategy": "Deep Cold (+Glacier Yak)"
+    },
+    {
+     "fight": "22-4",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "Ash-Stun Tempo (+Ash Cloud Condor)"
+    },
+    {
+     "fight": "22-7",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "the strongest BPRO the deck step builds (no PRO / BPRO decks past Map 20 yet)"
+    }
+   ],
+   "rest": [
+    "22-1",
+    "22-3",
+    "22-5",
+    "22-6"
+   ]
+  },
+  {
+   "id": "m23",
+   "label": "23",
+   "name": "The Goldfeather Siege",
+   "fights": [
+    "23-1 skirmish 90",
+    "23-2 skirmish 85",
+    "23-3 skirmish 80",
+    "23-4 skirmish 75",
+    "23-5 skirmish 70",
+    "23-6 elite 65",
+    "23-7 elite 60",
+    "23-8 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "23-2",
+     "kind": "skirmish",
+     "target": 85,
+     "strategy": "Arrow Storm (+Eagle-Owl Quartermaster)"
+    },
+    {
+     "fight": "23-4",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "Gilded Heavies (+Gilded Roadwarden)"
+    },
+    {
+     "fight": "23-7",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "the strongest BPRO the deck step builds (no PRO / BPRO decks past Map 20 yet)"
+    }
+   ],
+   "rest": [
+    "23-1",
+    "23-3",
+    "23-5",
+    "23-6"
+   ]
+  },
+  {
+   "id": "m9",
+   "label": "19-A",
+   "name": "Basalt Foundry",
+   "fights": [
+    "19-A-1 skirmish 90",
+    "19-A-2 skirmish 86.3",
+    "19-A-3 skirmish 82.5",
+    "19-A-4 skirmish 78.8",
+    "19-A-5 skirmish 75",
+    "19-A-6 skirmish 71.3",
+    "19-A-7 elite 67.5",
+    "19-A-8 elite 63.8",
+    "19-A-9 elite 60",
+    "19-A-10 boss 40"
+   ],
+   "placed": [
+    {
+     "fight": "19-A-2",
+     "kind": "skirmish",
+     "target": 86.3,
+     "strategy": "Smithy (+Armory)"
+    },
+    {
+     "fight": "19-A-5",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "19-A-BPRO-2 swarm (Tide Seahorse)"
+    },
+    {
+     "fight": "19-A-9",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "19-A-BPRO-1 big (Magma Salamander)"
+    }
+   ],
+   "rest": [
+    "19-A-1",
+    "19-A-3",
+    "19-A-4",
+    "19-A-6",
+    "19-A-7",
+    "19-A-8"
+   ]
+  },
+  {
+   "id": "m24",
+   "label": "24",
+   "name": "Goldfeather Keep",
+   "fights": [
+    "24-1 skirmish 90",
+    "24-2 skirmish 85",
+    "24-3 skirmish 80",
+    "24-4 skirmish 75",
+    "24-5 skirmish 70",
+    "24-6 elite 65",
+    "24-7 elite 60",
+    "24-8 miniboss 40"
+   ],
+   "placed": [
+    {
+     "fight": "24-2",
+     "kind": "skirmish",
+     "target": 85,
+     "strategy": "Iron Vault (+Ore-Smelter Mole)"
+    },
+    {
+     "fight": "24-4",
+     "kind": "skirmish",
+     "target": 75,
+     "strategy": "Counting House (+Golden Magpie)"
+    },
+    {
+     "fight": "24-7",
+     "kind": "elite",
+     "target": 60,
+     "strategy": "the strongest BPRO the deck step builds (no PRO / BPRO decks past Map 20 yet)"
+    }
+   ],
+   "rest": [
+    "24-1",
+    "24-3",
+    "24-5",
+    "24-6"
+   ]
+  }
+ ]
+}
