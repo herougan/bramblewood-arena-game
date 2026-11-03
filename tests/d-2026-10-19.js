@@ -90,7 +90,10 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
 const pw = cards.find(c=> c.id === 'pall-wraith');
 ok(!!pw && pw.effects.castDarkness === true && pw.effects.darksight === true && !pw.test, 'the Pall Wraith: Cast Darkness + Darksight');
 // 2026-10-21 (package RP, owner: "submaps get 1 unique card each"): the Wraith Vents keep only their boss card, so the Pall Wraith moved to 20-5
-ok(pw && pw.source && pw.source.kind === 'map' && pw.source.id === 'm11' && pw.source.node === '20-5', 'its card reward: 20-5 (moved off the Wraith Vents by package RP)');
+// 2026-11-03 (package TEXT1): the 20-5 pin was stale. DV's rule "a skirmish reward is never a pack card" made it a Map 11 pack card
+// (source {kind:'pack', map:'m11'}), and since LISTFIX1 (APPLY1-2) it is on no map list, so it is out of play (unattainable). Placement
+// is the card-data workflow's, not this test's: it checks the card still has a recorded source on Map 11.
+ok(pw && pw.source && (pw.source.id === 'm11' || pw.source.map === 'm11'), 'its source is on Map 11 (was the 20-5 reward; a Map 11 pack card since DV, out of play since LISTFIX1)');
 ok(/name:"The Wraith Vents", icon:"👻"/.test(src), 'the Wraith Vents side map is still there (its Pall Wraith reward moved to 20-5, package RP)');
 ok(cards.filter(c=> c.numericId === (pw && pw.numericId)).length === 1, 'its numericId is unique');
 { // budget v3 (SB_V3_DEFAULTS + SB_DEFAULT_SKILLS, as the Test Lab reads them)
