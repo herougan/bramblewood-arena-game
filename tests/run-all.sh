@@ -302,6 +302,8 @@ run node tests/dec1-2026-11-03.js   # 2026-11-03 (package DEC1, owner 11-03 09:3
 run node tests/bal15-2026-11-03.js   # 2026-11-03 (package BAL15, the measures DEC1 left open; budget only): the tempo term at bramble 15 (BAL15-1, not applied), Royal Guard's Grant Shield to every ally priced from its own item, BAL14's 15 wide items at 1,000 fights, the summary 2026-11-03b
 run node tests/fix7-2026-11-03.js   # 2026-11-03 (package FIX7, release review 11-03a): a middle / back-row spawn replays into its row (M1), the Flyers' wind marks per gust kind (m1), a unit bleeding out as it attacks keeps its On Attack (m2), Auto's leader lend always undone (m3), BASELVL-1's economy note (m4)
 # browser check for package FIX7 (M1): python3 tests/e2e/fix7_2026_11_03.py (needs Playwright; not run by run.js)
+run node tests/ui17-2026-11-03.js   # 2026-11-03 (package UI17, owner 18:37 + 18:40): Full reset (new account) local + cloud against a fake Supabase, admin infinite Energy (Admin Mode + admin account only, kept by every reset), the Admin -> Players overview (needs SQL until admin_overview), Buy again, the ×10 at Map 8, texts in 12 packs, the proposed SQL
+# browser check for package UI17: python3 tests/e2e/ui17_2026_11_03.py (needs Playwright; not run by run.js)
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

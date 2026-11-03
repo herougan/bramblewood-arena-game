@@ -10165,6 +10165,36 @@
   .adminu1-none,.adminu1-msg{padding:14px 8px; color:var(--ink-soft); text-align:center;}
   .adminu1-msg{text-align:left; white-space:normal;}
   @media (max-width:520px){ .adminu1-overlay{padding:16px 8px;} .adminu1-modal{padding:16px 12px;} .adminu1-table{min-width:0; font-size:12px;} .adminu1-table td{white-space:normal; padding:5px 4px;} .adminu1-sort{padding:8px 4px; white-space:normal;} .adminu1-table td.adminu1-c-name{min-width:84px;} }
+  /* 2026-11-03 (package UI17): Admin -> Players overview tiles and health line; the Full reset's red typed-confirm modal; infinite Energy; Buy again */
+  .ui17-ov{margin:4px 0 12px; padding:10px 12px; border:1px solid var(--surface-border); border-radius:12px; background:color-mix(in srgb, var(--bg) 70%, transparent);}
+  .ui17-ov-head{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px;}
+  .ui17-ov-head h3{margin:0; font-size:15px;}
+  .ui17-tiles{display:grid; grid-template-columns:repeat(auto-fill, minmax(118px, 1fr)); gap:8px;}
+  .ui17-tile{display:flex; flex-direction:column; gap:2px; padding:8px 10px; border:1px solid var(--surface-border); border-radius:10px; background:var(--surface, var(--bg)); min-width:0;}
+  .ui17-tile b{font-size:22px; line-height:1.1; font-variant-numeric:tabular-nums;}
+  .ui17-tile span{font-size:12px; color:var(--ink-soft);}
+  .ui17-tile small{font-size:11px; color:var(--ink-soft); opacity:.85;}
+  .ui17-sql{display:inline-block; font-size:12px; font-weight:700; padding:2px 6px; border-radius:6px; background:#fde7b0; color:#5a3a00;}
+  .ui17-health{display:flex; flex-wrap:wrap; gap:4px 12px; align-items:baseline; margin:10px 0 2px; font-size:12.5px;}
+  .ui17-health b::before{content:''; display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; background:#3aa45a; vertical-align:0;}
+  .ui17-health.is-bad b::before{background:#d2493b;}
+  .ui17-health span{color:var(--ink-soft);}
+  .ui17-ov-at{margin:0; font-size:11px; color:var(--ink-soft);}
+  .ui17-fr-overlay{z-index:10050;}
+  .ui17-fr-modal{width:min(520px, 100%); border:2px solid #c0392b; box-shadow:0 0 0 4px rgba(192,57,43,.18), 0 18px 40px rgba(0,0,0,.35);}
+  .ui17-fr-modal h2{color:#c0392b; margin-top:0;}
+  .ui17-fr-list{margin:6px 0 10px 18px; padding:0; font-size:14px;}
+  .ui17-fr-keep{font-size:13px; color:var(--ink-soft);}
+  .ui17-fr-type{display:flex; flex-direction:column; gap:6px; margin:12px 0; font-weight:700;}
+  .ui17-fr-type input{min-height:40px; padding:6px 10px; border:2px solid #c0392b; border-radius:10px; font:inherit; font-size:18px; letter-spacing:.12em; text-transform:uppercase; background:var(--bg); color:var(--ink);}
+  .ui17-fr-acts{display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;}
+  .ui17-fr-acts .btn.danger[disabled]{opacity:.45; cursor:not-allowed;}
+  .ui17-fr-acts #ui17FrGo:not([disabled]){background:#c0392b; border-color:#c0392b; color:#fff;}
+  .ui17-inf-row{display:flex; align-items:center; gap:6px; font-size:13px;}
+  .ui17-inf{font-weight:800;}
+  .po-actions .ui17-buy-again{display:inline-flex; align-items:center; gap:6px;}
+  .po-actions .ui17-buy-again[disabled]{opacity:.55;}
+  @media (max-width:520px){ .ui17-tiles{grid-template-columns:repeat(2, minmax(0, 1fr));} .ui17-tile b{font-size:19px;} .ui17-fr-acts .btn{flex:1 1 auto;} }
   /* Ecclesia (2026-10-10): Prayer pill and the offering picker */
   .hud-pill.prayer{background:linear-gradient(180deg,#f7e7b0,#e3c26a); color:#3a2a08;}
   .prayer-offer{width:min(640px, 100%);}
