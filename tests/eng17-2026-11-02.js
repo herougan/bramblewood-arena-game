@@ -146,7 +146,7 @@ const cells = list=> list.map(x=> x.row + ':' + x.slot).join(' ');
   const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), tx = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');
   ok(/sk1Patch\(PASSIVE_DEFS, 'hatchling', \{category:'passive', label:TX\('ui\.skn-hatchling'\)/.test(app), 'page: the Hatchling skill row');
   ok(/"ui\.skn-hatchling": "Hatchling"/.test(tx) && /"ui\.sk-hatchling": "[^"]*\+1\/\+2/.test(tx), 'texts: Hatchling\'s name and help (TX keys)');
-  ok(/hatchling:\s*\{from:20, nameFrom:15\}/.test(app) && /SKILL_ICON, \{hatchling:'🐣'\}/.test(app) && /hatchling: \(\)=> TX\('ui\.sk-hatchling'\)/.test(app), 'page: its gate (Stem\'s), icon and card line');
+  ok(/hatchling:\s*\{from:20, nameFrom:-1\}/.test(app) /* 2026-11-03 (ENG22, DESIGN1-11): "Hatchling - ?" from the start until Map 20 (was nameFrom 15) */ && /SKILL_ICON, \{hatchling:'🐣'\}/.test(app) && /hatchling: \(\)=> TX\('ui\.sk-hatchling'\)/.test(app), 'page: its gate (Stem\'s), icon and card line');
   const m = app.match(/function eng17MigrateHatchling\(c, baseline\)\{[\s\S]*?\n\}/);
   ok(!!m, 'page: eng17MigrateHatchling is defined');
   if(m){

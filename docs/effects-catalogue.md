@@ -1458,3 +1458,20 @@ tick; `draw`'s `openingExtra`; `AI_PLAN_*`, `aiSavePlan`, `aiLosingBadly`, `aiFr
 | 🫐 Glean | floats on the givers and the gleaner | "🫐→💠N" | `statusFx en20Glean`, `statusFx unitShield` |
 | 🪵 Lumber Feast | floating text | "🪵−N +N/+N" | `statusFx en20LumberFeast` |
 | 🌬️ Heavy / cross wind | the wind pill | the floats above | `wind {kind}`, `statusFx headwind {heavy}`, `tailwind {heavy}`, `crosswind` |
+
+## 2026-11-03 additions (package ENG22): Build / Fortify, Delivery, Taunt and Guardian on shots, Carnage that sees, four counters
+
+The rules as built (engine: `buildSizeOf`, `fortifyBramble`, `deliveryEveryTick` / `en8Trigs` Delivery, `shotRedirect`, `thrSeeDeath`, `thrRoundMark`; owner 2026-11-03 21:10 / 21:13, `docs/decisions.json`):
+- **Build { A/H Palisade }** (key `fortification`, was Fortification; SKILL-BUILD-1): on play a Palisade of that size in an empty slot beside it; true = 0/6.
+- **Fortify { X }** (key `fortify`; on no card): on play your bramble gets X for the fight (+N Health and its top, Thorns N, Regen N, Bolt N, +N Shield). Event `fortify {parts}`, log line "🏯 … fortifies its bramble". Bramble Armor (`brambleArmor`) reads Bramble Armor again (call ENG22-2).
+- **Delivery { Lumber xN }** (key `delivery`, resource `deliveryRes`): On Ready, once (Stockpile's rule); **Delivery { Lumber xN }, every turn** (`deliveryEvery`): every upkeep while Ready (onReadyGold's). Lumber events carry `cause:'delivery'` for the every-turn form. Stockpile, onReadyGold and On Ready gain triggers still play; no card carries them.
+- **Taunt / Guardian on shots** (DESIGN1-4): an aimed shot (Arrow, Archer, Arrow action, Fire / Ice Arrow, Twin Shot, Bola, Lasso, Snipe, Bolts, Spitfire) goes to an enemy Taunt unit around a front-row shooter, else to a Ready Guardian beside its target. The `arrow` / `bolt` event carries `taunted` or `guardianRedirect`; a pulled shot also logs `statusFx taunted {shot:true}`. Not Volley, not bramble-aimed shots.
+- **Carnage N** counts `c.carnageSeen` (enemy deaths while it is on the board); **Tally N** is the old count; **Almanac N** reads `pl.drawnAfterOpening`; **Onslaught N** `pl._siegeLast` (bramble damage dealt last round); **Riled N** `c._riledLast` (damage it took last round). The four new ones are on no card (call ENG22-1).
+- **Wetness, -1 a round** (owner 22:02): `en20WaterDrain` at each round start, before `en20TideWater`; event `statusFx en20Dry {drain:true}`.
+- **Hatchling - ?** until Map 20; Map 0's untaught abilities read "?" (`SKILL_REVEAL_MAP`); base Level 0 cards get their abilities at Level 1 (levelSkills "1").
+
+| Effect | Where | What you see | Engine event |
+|---|---|---|---|
+| 🏯 Fortify | the log | "🏯 {name} fortifies its bramble: Thorns 1, +1 Health." | `fortify` |
+| 📦 Delivery | the Lumber / resource float | as the old Lumber pings | `lumber` / `stone` / `metal` / `uranium` / `pearl` / `grace` |
+| Taunt / Guardian pull a shot | the arrow flies to the puller | the shot's target | `arrow` / `bolt` with `taunted` / `guardianRedirect` |

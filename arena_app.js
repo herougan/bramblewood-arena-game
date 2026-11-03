@@ -1403,7 +1403,7 @@ const SK2_LINE = {
   pickpocket: v=> TX('ui.sk2-pickpocket', {n: sk2Num(v, 'pickpocketN')}),
   sabotage: v=> TX('ui.sk2-sabotage', {n: sk2Num(v, 'sabotageN')}),
   arson: v=> TX('ui.sk2-arson', {n: sk2Num(v, 'arsonN')}),
-  fortification: ()=> TX('ui.sk2-fortification', {a: SK2_UI.fortifyAtk, h: SK2_UI.fortifyHp}),
+  fortification: v=>{ const z = e22BuildSize(v); return TX('ui.sk2-fortification', {a: z.atk, h: z.hp}); }, // ENG22 (2026-11-03): Build {A/H Palisade}, the card's size
 };
 PASSIVE_DEFS.push(
   {key:'harvest', category:'passive', label:TX('ui.sk2n-harvest'), kind:'boolean', desc:v=> SK2_LINE.harvest(v), codexNote:TX('ui.sk2-harvest-codex')},
@@ -1418,8 +1418,17 @@ PASSIVE_DEFS.push(
   {key:'pickpocket', category:'passive', label:TX('ui.sk2n-pickpocket'), kind:'number', min:1, defaultValue:SK2_UI.pickpocketN, desc:v=> SK2_LINE.pickpocket(v), codexNote:TX('ui.sk2-pickpocket-codex'), get:e=> e.pickpocket ? sk2Num(e.pickpocket, 'pickpocketN') : undefined},
   {key:'sabotage', category:'passive', label:TX('ui.sk2n-sabotage'), kind:'number', min:1, defaultValue:SK2_UI.sabotageN, desc:v=> SK2_LINE.sabotage(v), codexNote:TX('ui.sk2-sabotage-codex'), get:e=> e.sabotage ? sk2Num(e.sabotage, 'sabotageN') : undefined},
   {key:'arson', category:'passive', label:TX('ui.sk2n-arson'), kind:'number', min:1, defaultValue:SK2_UI.arsonN, desc:v=> SK2_LINE.arson(v), codexNote:TX('ui.sk2-arson-codex'), get:e=> e.arson ? sk2Num(e.arson, 'arsonN') : undefined},
-  {key:'fortification', category:'passive', label:TX('ui.sk2n-fortification'), kind:'boolean', desc:()=> SK2_LINE.fortification(), codexNote:TX('ui.sk2-fortification-codex')},
+  // ENG22 (2026-11-03, owner SKILL-BUILD-1: "Fortification renamed to Build - {}. So it would be written as Build - { 0/6 Palisade }"): named
+  // Build, and its braces are the Palisade's size (the key stays fortification; true = the default 0/6).
+  {key:'fortification', category:'passive', label:TX('ui.sk2n-fortification'), kind:'text', placeholder:'0/6 Palisade', desc:v=> SK2_LINE.fortification(v), codexNote:TX('ui.sk2-fortification-codex'),
+    get:e=> e.fortification ? e22BuildText(e.fortification) : undefined, apply:(e, v)=>{ const z = e22BuildSize(v); e.fortification = (z.atk === SK2_UI.fortifyAtk && z.hp === SK2_UI.fortifyHp) ? true : `${z.atk}/${z.hp} Palisade`; }},
 );
+// Build's size (ENG22): true = SK2's default, "A/H Palisade" / "A/H", or {attack, health} (bramblewood-engine.js buildSizeOf, the same rule)
+function e22BuildSize(v){ let a = SK2_UI.fortifyAtk, h = SK2_UI.fortifyHp;
+  if(v && typeof v === 'object'){ if(v.attack != null) a = Number(v.attack)||0; if(v.health != null) h = Number(v.health)||1; }
+  else if(typeof v === 'string'){ const m = /(\d+)\s*\/\s*(\d+)/.exec(v); if(m){ a = Number(m[1]); h = Number(m[2]); } }
+  return {atk: Math.max(0, Math.round(a)), hp: Math.max(1, Math.round(h))}; }
+function e22BuildText(v){ const z = e22BuildSize(v); return `${z.atk}/${z.hp} Palisade`; }
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
 // Scatterbrained, Meteor, ..."): oneOff:true on those registry entries; the skill picker and the Skills codex tag them. Durian joins
@@ -1972,9 +1981,13 @@ PASSIVE_DEFS.push(
   {key:'dismantle', category:'passive', label:TX('ui.e10-dismantle-name'), kind:'boolean', desc:()=> TX('ui.e10-dismantle'), codexNote:TX('ui.e10-hardy-codex')});
 // each threshold skill's name and line, as literal text keys (tests/game-texts.js reads TX('key') calls)
 const THR_TX = {requiem:{name:()=> TX('ui.skn-e10-requiem'), line:o=> TX('ui.sk-e10-requiem', {n: o.n, skills: o.skills})}, dirge:{name:()=> TX('ui.skn-e10-dirge'), line:o=> TX('ui.sk-e10-dirge', {n: o.n, skills: o.skills})},
+  // ENG22 (2026-11-03, owner 21:13): Carnage sees the deaths (its line), and four counters in the same form (on no card; decision ENG22-1)
+  tally:{name:()=> TX('ui.skn-e10-tally'), line:o=> TX('ui.sk-e10-tally', {n: o.n, skills: o.skills})}, almanac:{name:()=> TX('ui.skn-e10-almanac'), line:o=> TX('ui.sk-e10-almanac', {n: o.n, skills: o.skills})},
+  onslaught:{name:()=> TX('ui.skn-e10-onslaught'), line:o=> TX('ui.sk-e10-onslaught', {n: o.n, skills: o.skills})}, riled:{name:()=> TX('ui.skn-e10-riled'), line:o=> TX('ui.sk-e10-riled', {n: o.n, skills: o.skills})},
   carnage:{name:()=> TX('ui.skn-e10-carnage'), line:o=> TX('ui.sk-e10-carnage', {n: o.n, skills: o.skills})}, muster:{name:()=> TX('ui.skn-e10-muster'), line:o=> TX('ui.sk-e10-muster', {n: o.n, skills: o.skills})},
   beset:{name:()=> TX('ui.skn-e10-beset'), line:o=> TX('ui.sk-e10-beset', {n: o.n, skills: o.skills})}, throng:{name:()=> TX('ui.skn-e10-throng'), line:o=> TX('ui.sk-e10-throng', {n: o.n, skills: o.skills})}};
-const THR_APP = {requiem:{n:5, ico:'⚰️'}, dirge:{n:3, ico:'🎻'}, carnage:{n:3, ico:'🥩'}, muster:{n:6, ico:'🏴'}, beset:{n:6, ico:'🆘'}, throng:{n:10, ico:'🐜🐜'}}; // icons no other skill uses
+const THR_APP = {requiem:{n:5, ico:'⚰️'}, dirge:{n:3, ico:'🎻'}, carnage:{n:3, ico:'🥩'}, muster:{n:6, ico:'🏴'}, beset:{n:6, ico:'🆘'}, throng:{n:10, ico:'🐜🐜'},
+  tally:{n:3, ico:'🪦🪦'}, almanac:{n:4, ico:'📖'}, onslaught:{n:3, ico:'🏹🏰'}, riled:{n:3, ico:'😤'} /* ENG22 */}; // icons no other skill uses
 function thrNApp(k, e){ const v = e && e[k]; return (v === true || v == null || !(Number(v) > 0)) ? THR_APP[k].n : Math.round(Number(v)); }
 function thrGrantApp(k, e){ const g = e && e[k + 'Grant']; return g && typeof g === 'object' && Object.keys(g).length ? g : {attack: 2, health: 2}; }
 Object.keys(THR_APP).forEach(k=>{ EN5_STATE_KEYS[k] = {tx: 'e10-' + k, ico: THR_APP[k].ico}; EN5_STATE_DEFAULT_APP[k] = {attack: 2, health: 2}; SKILL_ICON[k] = THR_APP[k].ico; SKILL_ICON[k + 'Grant'] = THR_APP[k].ico;
@@ -1983,6 +1996,40 @@ Object.keys(THR_APP).forEach(k=>{ EN5_STATE_KEYS[k] = {tx: 'e10-' + k, ico: THR_
     {key:k + 'Grant', category:'passive', label:THR_TX[k].name(), kind:'grant', placeholder:'+2/+2', desc:(v, n, e)=> THR_TX[k].line({n: thrNApp(k, e), skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-e10-thr-codex'),
     get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; if(!e[k]) e[k] = THR_APP[k].n; } }}); });
 Object.assign(SKILL_ICON, {sunder:'🪓💥', dismantle:'🔧💥'}); // icons no other skill uses
+// ==== Package ENG22 (2026-11-03, owner 21:10 / 21:13 in docs/decisions.json; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
+//   Fortify {X}     on play your bramble gets X for the fight (SKILL-BUILD-1; on no card). Bramble Armor (key brambleArmor) is its EN3 name again.
+//   Delivery {X}    the one "resource when Ready" keyword (DESIGN1-6): Delivery {Lumber x1} once (Stockpile's and the On Ready gain's rule),
+//                   Delivery {Lumber x1}, every turn (onReadyGold's rule); deliveryRes picks another resource. Stockpile leaves "+ Add Skill".
+//   Taunt / Guardian also take arrows and shots (DESIGN1-4); Carnage counts what it saw; Tally / Almanac / Onslaught / Riled (on no card).
+const E22_FP = ['health', 'thorns', 'regen', 'bolt', 'shield'];
+// Fortify's braces: {health, thorns, regen, bolt, shield} or the card's text ("Thorns 1, +1 Health"); bramblewood-engine.js fortifyParts, the same rule
+function e22FortifyParts(v){ const out = {}; if(!v) return out;
+  if(typeof v === 'object'){ E22_FP.forEach(k=>{ const n = Math.round(Number(v[k])||0); if(n > 0) out[k] = n; }); return out; }
+  String(v).split(/[,;&]/).forEach(x=>{ const t = x.trim().toLowerCase(); if(!t) return; const m = /([+-]?\d+)/.exec(t), n = m ? Math.abs(Number(m[1])) : 1;
+    const k = /health|hp/.test(t) ? 'health' : /thorn/.test(t) ? 'thorns' : /regen/.test(t) ? 'regen' : /bolt/.test(t) ? 'bolt' : /shield/.test(t) ? 'shield' : null;
+    if(k && n > 0) out[k] = (out[k]||0) + n; }); return out; }
+function e22FortifyText(v){ const p = e22FortifyParts(v), w = {health:n=> TX('ui.e22-fp-health', {n}), thorns:n=> TX('ui.e22-fp-thorns', {n}), regen:n=> TX('ui.e22-fp-regen', {n}), bolt:n=> TX('ui.e22-fp-bolt', {n}), shield:n=> TX('ui.e22-fp-shield', {n})};
+  return E22_FP.filter(k=> p[k]).map(k=> w[k](p[k])).join(', '); }
+const E22_RES = ['lumber', 'stone', 'metal', 'uranium', 'pearl', 'grace'];
+function e22ResOf(e){ const r = e && typeof e.deliveryRes === 'string' ? e.deliveryRes.toLowerCase().replace(/s$/, '') : 'lumber'; return E22_RES.includes(r) ? r : 'lumber'; }
+function e22ResName(r){ return ({lumber:()=> TX('ui.e22-res-lumber'), stone:()=> TX('ui.e22-res-stone'), metal:()=> TX('ui.e22-res-metal'), uranium:()=> TX('ui.e22-res-uranium'), pearl:()=> TX('ui.e22-res-pearl'), grace:()=> TX('ui.e22-res-grace')}[r] || (()=> TX('ui.e22-res-lumber')))(); }
+// The card line's head (cardSkillLines): Build { 0/6 Palisade }, Fortify { Thorns 1, +1 Health }, Delivery { Lumber x1 }(, every turn)
+function e22Head(k, v, e){
+  if(k === 'fortification'){ const z = e22BuildSize(v); return TX('ui.e22-build-head', {a: z.atk, h: z.hp}); }
+  if(k === 'fortify') return TX('ui.e22-fortify-head', {x: e22FortifyText(v)});
+  if(k === 'delivery') return TX('ui.e22-delivery-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
+  if(k === 'deliveryEvery') return TX('ui.e22-delivery-every-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
+  return null; }
+PASSIVE_DEFS.push(
+  {key:'fortify', category:'passive', label:TX('ui.e22-fortify-name'), kind:'text', placeholder:'Thorns 1, +1 Health', desc:v=> TX('ui.e22-fortify', {x: e22FortifyText(v)}), codexNote:TX('ui.e22-fortify-codex'),
+    get:e=> e.fortify ? e22FortifyText(e.fortify) : undefined, apply:(e, v)=>{ const p = e22FortifyParts(v); if(Object.keys(p).length) e.fortify = p; }},
+  {key:'delivery', category:'passive', label:TX('ui.e22-delivery-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
+  {key:'deliveryEvery', category:'passive', label:TX('ui.e22-delivery-every-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery-every', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
+  {key:'deliveryRes', category:'passive', label:TX('ui.e22-delivery-res-name'), kind:'select', selectOptions:()=> E22_RES.map(r=> ({value:r, label:e22ResName(r)})), desc:v=> e22ResName(e22ResOf({deliveryRes:v}))});
+Object.assign(SKILL_ICON, {fortify:'🏯', delivery:'📦', deliveryEvery:'📦', deliveryRes:'📦'});
+sk1Patch(PASSIVE_DEFS, 'stockpile', {hidden:true}); // ENG22 (DESIGN1-6): Delivery {Lumber xN} replaces it in "+ Add Skill"; an old card still reads it
+sk1Patch(PASSIVE_DEFS, 'taunt', {desc:()=> TX('ui.e22-taunt')}); // ENG22 (DESIGN1-4): Taunt pulls the arrows and shots of the enemies around it
+sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.e22-guardian')}); // ENG22 (DESIGN1-4): Guardian takes arrows and shots too
 // Hardy N on an equipment card (PROP1-1): its lives, equip.hardy (default 1, shown only from 2)
 function eqHardyOf(d){ const e = (d && d.equip) || {}, v = e.hardy != null ? e.hardy : e.lives; return v != null && Number(v) > 0 ? Math.max(1, Math.min(9, Math.round(Number(v)))) : 1; }
 // FIX3-4 (owner 10-26 11:19: "Yes level pvp strangers deck"): a Collection PvP stranger's deck fights at the level that brings its battle rating
@@ -3268,7 +3315,14 @@ const SKILL_REVEAL_MAP = {
   // (Fodder was the name of the babies' Stem, EN-6 / EV-6: one skill, stem.)
   stem:        {from:20, nameFrom:15, parts:['stemGrant']},
   chrysalis:   {from:20, nameFrom:15},
-  hatchling:   {from:20, nameFrom:15}, // ENG17 (2026-11-02, BABY-2): Hatchling is the babies' Fodder, so it follows Stem's gate
+  // ENG22 (2026-11-03, owner DESIGN1-11: "It needs to focus on advantaging evomax cards. So having its own inherent effect is too much. Can be
+  // 'Hatchling - ?'."): it reads "Hatchling - ?" from the start (nameFrom -1) until Evomax comes in, Map 20 (EN8: "evomax is only in play in
+  // 20-40"); it has no effect of its own (an evolute played onto it gains +1/+2).
+  hatchling:   {from:20, nameFrom:-1}, // ENG17 (2026-11-02, BABY-2): Hatchling is the babies' Fodder, so it follows Stem's gate
+  // ENG22 (2026-11-03, owner DESIGN1-2: "If somehow in Tutorial map and Map 0 an ability we don't feel comfortable in introducing yet comes out -
+  // it's a '?'."): the abilities the base Level 0 cards bring at Level 1 that Map 0's own fights don't show (they show Armor, Flying, Swarm,
+  // Poison and Quick) read "?" on the tutorial map and Map 0; Map 1 reveals them. Tide is Map 2's already.
+  taunt:       {from:1}, reach:{from:1}, inspiring:{from:1}, esprit:{from:1}, boomerang:{from:1}, evasive:{from:1}, molting:{from:1}, frostbite:{from:1}, fireArrow:{from:1},
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
@@ -3456,6 +3510,8 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
       const head0 = p.key==='pack' ? `${p.label}${skillValSuffix(p, v === true ? 2 : v)}` : p.label; /* BL (2026-10-23): "Pack", not "Pack 2", at its default */ lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
+    if(p.key==='deliveryRes') return; // ENG22: read on the Delivery line
+    { const h22 = e22Head(p.key, v, e); if(h22){ lines.push(`${ic(p.key)}${escapeHtml(h22)} — ${skillText(p, v, e)}`); return; } } // ENG22 (2026-11-03): Build / Fortify / Delivery {…}
     const head = p.key==='hunter' ? giHunterHead(p, e) /* Hunter N (Poisoned) (2026-10-19, GI) */ : p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${skillValSuffix(p, v)}` /* BL: bare at its default */ : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? (atSkillDefault(p, v) ? p.label : `${p.label} +${v[0]}/+${v[1]}`) /* BL (2026-10-23): "Diurnal", not "Diurnal +1/+0" */ : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
@@ -23687,7 +23743,8 @@ const TOWER_POOLS = {
 // Swan Knight (Super Rare: Bounty 2). See towerFloorDeck.
 const TOWER_LUMBER_POOL = ['nautilus-drifter', 'gilded-swan-knight'];
 // A Lumber source (2026-10-17): +Lumber on arrival or when Ready, Bounty, or a trigger that gains Lumber.
-function isLumberSource(d){ const e = (d && d.effects) || {}; if(e.onSpawnGold || e.onReadyGold || e.bounty) return true;
+function isLumberSource(d){ const e = (d && d.effects) || {}; if(e.onSpawnGold || e.onReadyGold || e.bounty || e.stockpile) return true;
+  if((e.delivery || e.deliveryEvery) && (!e.deliveryRes || /^lumber/i.test(String(e.deliveryRes)))) return true; // ENG22 (2026-11-03): Delivery {Lumber xN} (inline: tools lift this function alone)
   return (e.triggers || []).some(t=> t && (t.do === 'gainGold' || t.do === 'gainLumber' || (t.do === 'gain' && (!t.resource || t.resource === 'lumber')))); }
 // A deck that costs a lot of Lumber (3+ cards at 3+ Lumber, or 2+ on average, copies counted) with no Lumber source in it.
 function towerNeedsLumber(deck, defs){ let n = 0, sum = 0, big = 0, src = false;
@@ -34180,20 +34237,7 @@ const ADMIN_RESET_LOCAL_KEYS = [
   'bramblewood_arena_leader', 'bramblewood_arena_deck', 'bramblewood_arena_decks',
   'bramblewood_arena_active_deck', 'bramblewood_arena_profile', ASYNC_MATCH_KEY, CONQUEST_PROGRESS_KEY, ENERGY_KEY,
 ];
-async function adminResetProgress(){
-  ADMIN_RESET_LOCAL_KEYS.forEach(k=>{ try{ localStorage.removeItem(k); }catch(e){} });
-  if(sbClient && cloudUserId){
-    try{
-      await Promise.all([
-        sbClient.from('player_currencies').delete().eq('profile_id', cloudUserId),
-        sbClient.from('player_card_unlocks').delete().eq('profile_id', cloudUserId),
-        sbClient.from('player_decks').delete().eq('profile_id', cloudUserId),
-        sbClient.from('profiles').delete().eq('id', cloudUserId),
-      ]);
-    }catch(e){ /* best-effort -- the local reset already happened either way */ }
-  }
-  location.reload();
-}
+// ENG22 (2026-11-03, UI17-3): adminResetProgress (Admin -> "Reset my progress") is retired; ui17OpenFullReset does all of it.
 // Admin "Manage Cards" (#363, 2026-09-26, per explicit request: "i think just create a separate
 // admin panel for the admin's functions like editting cards"): card creation/editing used to live
 // behind a "Create a Card" button and a click-to-edit gate on every Codex tile, both only visible
@@ -34674,11 +34718,6 @@ function renderAdmin(){
       <label class="admin-toggle-label ui17-inf-row"><input type="checkbox" id="ui17InfEnergyChk" ${ui17InfEnergyStored() ? 'checked' : ''} ${adminModeEnabled ? '' : 'disabled'}> ${escapeHtml(TX('ui.ui17-inf-energy'))}</label>
       <p class="panel-sub">${escapeHtml(TX('ui.ui17-inf-energy-help'))}</p>
     </div>
-    <div class="panel admin-subpanel">
-      <h3>Reset account progress</h3>
-      <p class="panel-sub">Wipes your currencies, card levels, decks, conquest progress, rating, energy, and saved name — on this device, and in the cloud too if you're signed in. This cannot be undone.</p>
-      <button class="btn danger" id="adminResetBtn" type="button">⚠️ Reset my progress</button>
-    </div>
     <div class="panel admin-subpanel ui17-fr-panel"><h3>🧨 ${escapeHtml(TX('ui.ui17-fr-btn'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.ui17-fr-help'))}</p>
       <button class="btn danger" id="ui17FullResetBtn" type="button">🧨 ${escapeHtml(TX('ui.ui17-fr-btn'))}</button></div>
     <div class="panel admin-subpanel">
@@ -34780,11 +34819,7 @@ function renderAdmin(){
   const infChk = document.getElementById('ui17InfEnergyChk'); // 2026-11-03 (package UI17)
   if(infChk) infChk.onchange = ()=>{ ui17SetInfiniteEnergy(infChk.checked); const line = document.getElementById('adminEnergyLine'); if(line) line.textContent = ui17InfiniteEnergy() ? '∞⚡' : `Currently ${currentEnergy()}/${energyMax()}⚡.`; };
   const frBtn = document.getElementById('ui17FullResetBtn'); if(frBtn) frBtn.onclick = ui17OpenFullReset; // 2026-11-03 (package UI17)
-  const resetBtn = document.getElementById('adminResetBtn');
-  if(resetBtn) resetBtn.addEventListener('click', ()=>{
-    if(!confirm("Reset ALL of your progress — currencies, card levels, decks, conquest progress, rating, energy, and your saved name? This can't be undone.")) return;
-    adminResetProgress();
-  });
+  // ENG22 (2026-11-03, owner UI17-3 "OK apply all"): Admin -> "Reset my progress" is gone; Full reset (new account) replaces it.
 }
 
 /* ============================================================
@@ -47027,6 +47062,7 @@ function logText(ev){
     // EN3 (2026-10-23): Rampart's share of a bramble hit, Bramble Armor's 1, and a Boomerang thrown on a miss
     case 'rampart': return {cls:'', text:TX('ui.en3-log-rampart', {name: nm(ev.defId), n: ev.dmg != null ? ev.dmg : ev.share, b: ev.bramble != null ? ev.bramble : 0})};
     case 'brambleArmor': return {cls:'', text:TX('ui.en3-log-bramble-armor', {name: nm(ev.defId)})};
+    case 'fortify': return {cls:'', text:TX('ui.e22-log-fortify', {name: nm(ev.defId), x: e22FortifyText(ev.parts)})}; // ENG22 (2026-11-03)
     case 'boomerangThrow': return {cls:'quick', text:TX('ui.en3-log-boom-miss', {name: nm(ev.defId)})};
     case 'arrow': if(ev.style === 'drop') return {cls:'', text: ev.targetDefId ? TX('ui.bx-log-drop', {name: nm(ev.defId), target: nm(ev.targetDefId)}) : TX('ui.bx-log-drop-bramble', {name: nm(ev.defId)})}; // Package BX (2026-10-21)
       return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};

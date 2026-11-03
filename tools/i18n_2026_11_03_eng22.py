@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+"""Game texts added on 2026-11-03 by package ENG22 (Build {A/H Palisade} and the new Fortify {X} (SKILL-BUILD-1), Bramble Armor's name back
+(the key brambleArmor; Fortify is the new skill's), Delivery {X} (DESIGN1-6), Taunt / Guardian taking arrows and shots (DESIGN1-4), Carnage
+seeing its deaths and the four counters Tally / Almanac / Onslaught / Riled (owner 21:13), wetness lost 1 a round (owner 22:02)). One row per English text in lang/<code>.json (rows
+that already exist are kept as they are; new rows are appended, nothing is sorted). The skill names (Almanac, Onslaught, Riled, Tally) are
+placeholders for the owner's pick (decision ENG22-1); Tagalog, Tamil, Japanese and Korean deserve a native read.
+    python3 tools/i18n_2026_11_03_eng22.py   (idempotent)"""
+import json, os, re
+ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
+CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']
+T = [  # English, then the 12 translations in CODES order
+ ('Build', ['Bâtir', 'Bauen', 'Construir', 'Costruire', 'Construir', 'Magtayo', 'கட்டு', 'Bangun', '建造', '建造', '建設', '건설']),
+ ('Bramble Armor', ['Armure du roncier', 'Dornenrüstung', 'Armadura del zarzal', 'Armatura del rovo', 'Armadura do silvado', 'Baluti ng Dawag', 'முட்புதர் கவசம்', 'Zirah Semak', '荆棘护甲', '荊棘護甲', 'いばらの鎧', '덤불 갑옷']),
+ ('While it has seen {n} or more enemy units die (since it came onto the field): {skills}.', [
+   'Tant qu’il a vu mourir {n} unités ennemies ou plus (depuis son arrivée sur le terrain) : {skills}.',
+   'Solange es {n} oder mehr gegnerische Einheiten sterben sah (seit es auf dem Feld ist): {skills}.',
+   'Mientras haya visto morir {n} o más unidades enemigas (desde que llegó al campo): {skills}.',
+   'Finché ha visto morire {n} o più unità nemiche (da quando è sul campo): {skills}.',
+   'Enquanto tiver visto {n} ou mais unidades inimigas morrerem (desde que chegou ao campo): {skills}.',
+   'Habang nakakita na ito ng {n} o higit pang kaaway na namatay (mula nang pumasok ito sa larangan): {skills}.',
+   'களத்துக்கு வந்ததிலிருந்து {n} அல்லது அதற்கு மேற்பட்ட எதிரி அலகுகள் இறப்பதைப் பார்த்திருக்கும் வரை: {skills}.',
+   'Selama ia sudah melihat {n} unit musuh atau lebih mati (sejak masuk ke medan): {skills}.',
+   '只要它（上场以来）亲眼看到 {n} 个或更多敌方单位死亡：{skills}。',
+   '只要它（上場以來）親眼看到 {n} 個或更多敵方單位死亡：{skills}。',
+   '場に出てから敵ユニットが{n}体以上倒れるのを見ている間：{skills}。',
+   '필드에 나온 뒤 적 유닛 {n}명 이상이 쓰러지는 것을 본 동안: {skills}.']),
+ ('Build { {a}/{h} Palisade }', ['Bâtir { Palissade {a}/{h} }', 'Bauen { {a}/{h} Palisade }', 'Construir { Empalizada {a}/{h} }', 'Costruire { Palizzata {a}/{h} }', 'Construir { Paliçada {a}/{h} }', 'Magtayo { {a}/{h} Bakod-kahoy }', 'கட்டு { {a}/{h} வேலி அரண் }', 'Bangun { Pagar Kayu {a}/{h} }', '建造 { {a}/{h} 木栅 }', '建造 { {a}/{h} 木柵 }', '建設 { {a}/{h} 柵 }', '건설 { {a}/{h} 목책 }']),
+ ('Fortify { {x} }', ['Fortifier { {x} }', 'Festigen { {x} }', 'Fortalecer { {x} }', 'Rinforzo { {x} }', 'Reforçar { {x} }', 'Patibayin { {x} }', 'வலுப்படுத்து { {x} }', 'Perkuat { {x} }', '加固 { {x} }', '加固 { {x} }', '補強 { {x} }', '보강 { {x} }']),
+ ('On play, your bramble gets {x} for the rest of the fight, even after this unit dies.', [
+   'En jeu, votre roncier gagne {x} pour le reste du combat, même après la mort de cette unité.',
+   'Beim Ausspielen erhält deine Dornenhecke {x} für den Rest des Kampfes, auch wenn diese Einheit stirbt.',
+   'Al jugarla, tu zarzal obtiene {x} el resto del combate, aunque esta unidad muera.',
+   'Quando è giocata, il tuo rovo ottiene {x} per il resto dello scontro, anche dopo la morte di questa unità.',
+   'Ao ser jogada, o teu silvado recebe {x} até ao fim do combate, mesmo depois de esta unidade morrer.',
+   'Paglaro nito, makukuha ng iyong dawag ang {x} sa natitirang laban, kahit mamatay ang yunit na ito.',
+   'ஆடும்போது, உன் முட்புதர் சண்டை முடியும்வரை {x} பெறும், இந்த அலகு இறந்த பின்னும்.',
+   'Saat dimainkan, semakmu mendapat {x} sampai akhir pertarungan, bahkan setelah unit ini mati.',
+   '打出时，你的荆棘丛在本场剩余时间获得 {x}，即使此单位阵亡也保留。',
+   '打出時，你的荊棘叢在本場剩餘時間獲得 {x}，即使此單位陣亡也保留。',
+   'プレイ時、あなたのいばらは戦いの残りの間 {x} を得る（このユニットが倒れても残る）。',
+   '낼 때, 내 덤불이 남은 전투 동안 {x}을(를) 얻습니다. 이 유닛이 쓰러져도 남습니다.']),
+ ('Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Bramble Armor is different: 1 less a hit while its unit lives.', [
+   'Parties : +N Santé (sa Santé et son maximum), Épines N (une unité qui frappe le roncier subit N), Régén N (chaque manche soigne N un allié blessé), Trait N (chaque manche, N sur une unité ennemie au hasard), +N Bouclier. Plusieurs s’additionnent. L’Armure du roncier est autre chose : 1 de moins par coup tant que son unité vit.',
+   'Teile: +N Leben (sein Leben und sein Maximum), Dornen N (eine Einheit, die die Dornenhecke trifft, erleidet N), Regen N (heilt jede Runde einen verwundeten Verbündeten um N), Bolzen N (jede Runde N auf eine zufällige gegnerische Einheit), +N Schild. Mehrere addieren sich. Dornenrüstung ist etwas anderes: 1 weniger pro Treffer, solange ihre Einheit lebt.',
+   'Partes: +N Salud (su Salud y su máximo), Espinas N (una unidad que golpea al zarzal recibe N), Regen N (cada ronda cura N a un aliado herido), Virote N (cada ronda, N a una unidad enemiga al azar), +N Escudo. Varias se suman. La Armadura del zarzal es otra cosa: 1 menos por golpe mientras su unidad vive.',
+   'Parti: +N Salute (la sua Salute e il massimo), Spine N (un’unità che colpisce il rovo subisce N), Rigenera N (ogni round cura N un alleato ferito), Dardo N (ogni round, N a un’unità nemica a caso), +N Scudo. Più parti si sommano. L’Armatura del rovo è diversa: 1 in meno a colpo finché la sua unità vive.',
+   'Partes: +N Vida (a sua Vida e o máximo), Espinhos N (uma unidade que acerta o silvado sofre N), Regen N (cada ronda cura N um aliado ferido), Virote N (cada ronda, N numa unidade inimiga ao acaso), +N Escudo. Várias somam-se. A Armadura do silvado é outra coisa: 1 a menos por golpe enquanto a sua unidade vive.',
+   'Mga bahagi: +N Buhay (ang Buhay at ang pinakamataas nito), Tinik N (ang yunit na tumama sa dawag ay tatamaan ng N), Regen N (bawat round, gagaling ng N ang isang sugatang kakampi), Bolt N (bawat round, N sa isang random na kaaway), +N Shield. Nagdaragdag ang marami. Iba ang Baluti ng Dawag: 1 bawas bawat tama habang buhay ang yunit nito.',
+   'பகுதிகள்: +N உயிர் (அதன் உயிரும் உச்சமும்), முட்கள் N (முட்புதரைத் தாக்கும் அலகு N பெறும்), மீளுருவாக்கம் N (ஒவ்வொரு சுற்றும் காயமடைந்த ஒரு நட்பு அலகை N குணமாக்கும்), அம்பு N (ஒவ்வொரு சுற்றும் சீரற்ற எதிரி அலகுக்கு N), +N கேடயம். பல சேர்ந்து கூடும். முட்புதர் கவசம் வேறு: அதன் அலகு உயிரோடிருக்கும்வரை ஒவ்வொரு அடிக்கும் 1 குறைவு.',
+   'Bagian: +N Nyawa (Nyawa dan batas atasnya), Duri N (unit yang memukul semak menerima N), Regen N (tiap ronde menyembuhkan satu sekutu terluka sebesar N), Baut N (tiap ronde, N ke unit musuh acak), +N Perisai. Beberapa saling menambah. Zirah Semak berbeda: 1 lebih sedikit per pukulan selama unitnya hidup.',
+   '部分：+N 生命（生命与上限）、荆刺 N（攻击荆棘丛的单位受到 N）、再生 N（每回合治疗一名受伤友军 N）、弩矢 N（每回合对随机敌方单位造成 N）、+N 护盾。多个可叠加。荆棘护甲不同：其单位存活时每次受击少 1。',
+   '部分：+N 生命（生命與上限）、荊刺 N（攻擊荊棘叢的單位受到 N）、再生 N（每回合治療一名受傷友軍 N）、弩矢 N（每回合對隨機敵方單位造成 N）、+N 護盾。多個可疊加。荊棘護甲不同：其單位存活時每次受擊少 1。',
+   '内訳：+N 体力（体力と上限）、棘 N（いばらを攻撃したユニットが N を受ける）、再生 N（毎ラウンド傷ついた味方1体を N 回復）、ボルト N（毎ラウンド、ランダムな敵ユニットに N）、+N シールド。複数は合算。いばらの鎧は別物：そのユニットが生きている間、1撃ごとに1少なくなる。',
+   '구성: +N 체력(체력과 최대치), 가시 N(덤불을 친 유닛이 N 받음), 재생 N(매 라운드 다친 아군 하나를 N 회복), 볼트 N(매 라운드 무작위 적 유닛에 N), +N 보호막. 여럿이면 합산됩니다. 덤불 갑옷은 다릅니다: 그 유닛이 살아 있는 동안 한 번 맞을 때마다 1 적게 받습니다.']),
+ ('+{n} Health', ['+{n} Santé', '+{n} Leben', '+{n} Salud', '+{n} Salute', '+{n} Vida', '+{n} Buhay', '+{n} உயிர்', '+{n} Nyawa', '+{n} 生命', '+{n} 生命', '+{n} 体力', '+{n} 체력']),
+ ('Thorns {n}', ['Épines {n}', 'Dornen {n}', 'Espinas {n}', 'Spine {n}', 'Espinhos {n}', 'Tinik {n}', 'முட்கள் {n}', 'Duri {n}', '荆刺 {n}', '荊刺 {n}', '棘 {n}', '가시 {n}']),
+ ('Regen {n}', ['Régén {n}', 'Regen {n}', 'Regen {n}', 'Rigenera {n}', 'Regen {n}', 'Regen {n}', 'மீளுருவாக்கம் {n}', 'Regen {n}', '再生 {n}', '再生 {n}', '再生 {n}', '재생 {n}']),
+ ('Bolt {n}', ['Trait {n}', 'Bolzen {n}', 'Virote {n}', 'Dardo {n}', 'Virote {n}', 'Bolt {n}', 'அம்பு {n}', 'Baut {n}', '弩矢 {n}', '弩矢 {n}', 'ボルト {n}', '볼트 {n}']),
+ ('+{n} Shield', ['+{n} Bouclier', '+{n} Schild', '+{n} Escudo', '+{n} Scudo', '+{n} Escudo', '+{n} Shield', '+{n} கேடயம்', '+{n} Perisai', '+{n} 护盾', '+{n} 護盾', '+{n} シールド', '+{n} 보호막']),
+ ('🏯 {name} fortifies its bramble: {x}.', ['🏯 {name} fortifie son roncier : {x}.', '🏯 {name} festigt seine Dornenhecke: {x}.', '🏯 {name} fortalece su zarzal: {x}.', '🏯 {name} rinforza il suo rovo: {x}.', '🏯 {name} reforça o seu silvado: {x}.', '🏯 Pinatibay ng {name} ang dawag nito: {x}.', '🏯 {name} தன் முட்புதரை வலுப்படுத்துகிறது: {x}.', '🏯 {name} memperkuat semaknya: {x}.', '🏯 {name} 加固了己方荆棘丛：{x}。', '🏯 {name} 加固了己方荊棘叢：{x}。', '🏯 {name}がいばらを補強：{x}。', '🏯 {name}이(가) 덤불을 보강합니다: {x}.']),
+ ('Delivery', ['Livraison', 'Lieferung', 'Entrega', 'Consegna', 'Entrega', 'Padala', 'விநியோகம்', 'Kiriman', '补给', '補給', '配達', '배달']),
+ ('Delivery, every turn', ['Livraison, chaque tour', 'Lieferung, jede Runde', 'Entrega, cada turno', 'Consegna, ogni turno', 'Entrega, a cada turno', 'Padala, bawat turn', 'விநியோகம், ஒவ்வொரு முறையும்', 'Kiriman, tiap giliran', '补给，每回合', '補給，每回合', '配達、毎ターン', '배달, 매 턴']),
+ ('Delivery resource', ['Ressource livrée', 'Gelieferte Ressource', 'Recurso entregado', 'Risorsa consegnata', 'Recurso entregue', 'Padalang yaman', 'விநியோக வளம்', 'Sumber daya kiriman', '补给资源', '補給資源', '配達する資源', '배달 자원']),
+ ('Delivery { {res} x{n} }', ['Livraison { {res} x{n} }', 'Lieferung { {res} x{n} }', 'Entrega { {res} x{n} }', 'Consegna { {res} x{n} }', 'Entrega { {res} x{n} }', 'Padala { {res} x{n} }', 'விநியோகம் { {res} x{n} }', 'Kiriman { {res} x{n} }', '补给 { {res} x{n} }', '補給 { {res} x{n} }', '配達 { {res} x{n} }', '배달 { {res} x{n} }']),
+ ('Delivery { {res} x{n} }, every turn', ['Livraison { {res} x{n} }, chaque tour', 'Lieferung { {res} x{n} }, jede Runde', 'Entrega { {res} x{n} }, cada turno', 'Consegna { {res} x{n} }, ogni turno', 'Entrega { {res} x{n} }, a cada turno', 'Padala { {res} x{n} }, bawat turn', 'விநியோகம் { {res} x{n} }, ஒவ்வொரு முறையும்', 'Kiriman { {res} x{n} }, tiap giliran', '补给 { {res} x{n} }，每回合', '補給 { {res} x{n} }，每回合', '配達 { {res} x{n} }、毎ターン', '배달 { {res} x{n} }, 매 턴']),
+ ('When it becomes Ready: gain {n} {res}, once.', ['Quand il devient Prêt : gagnez {n} {res}, une fois.', 'Wenn es bereit wird: erhalte {n} {res}, einmal.', 'Cuando queda Listo: gana {n} {res}, una vez.', 'Quando diventa Pronto: ottieni {n} {res}, una volta.', 'Quando fica Pronto: ganha {n} {res}, uma vez.', 'Pag naging Handa: makakuha ng {n} {res}, minsan.', 'தயாரானதும்: {n} {res} பெறு, ஒரு முறை.', 'Saat menjadi Siap: dapatkan {n} {res}, sekali.', '进入可行动时：获得 {n} {res}，一次。', '進入可行動時：獲得 {n} {res}，一次。', '準備OKになった時：{res}を{n}得る（1回）。', '준비되면: {res} {n} 획득, 한 번.']),
+ ('Every turn while it is Ready: gain {n} {res}.', ['Chaque tour où il est Prêt : gagnez {n} {res}.', 'Jede Runde, in der es bereit ist: erhalte {n} {res}.', 'Cada turno que esté Listo: gana {n} {res}.', 'Ogni turno in cui è Pronto: ottieni {n} {res}.', 'A cada turno em que está Pronto: ganha {n} {res}.', 'Bawat turn habang Handa ito: makakuha ng {n} {res}.', 'அது தயாராக இருக்கும் ஒவ்வொரு முறையும்: {n} {res} பெறு.', 'Tiap giliran selama Siap: dapatkan {n} {res}.', '可行动期间每回合：获得 {n} {res}。', '可行動期間每回合：獲得 {n} {res}。', '準備OKの間、毎ターン：{res}を{n}得る。', '준비된 동안 매 턴: {res} {n} 획득.']),
+ ('Lumber unless the braces name another resource (Stone, Metal, Uranium, Pearl, Grace). A unit with no Wait delivers at its first upkeep. It was Stockpile and On Ready +Lumber.', [
+   'Du Bois sauf si les accolades nomment une autre ressource (Pierre, Métal, Uranium, Nacré, Grâce). Une unité sans Attente livre à sa première maintenance. C’était Réserve et Prêt : +Bois.',
+   'Holz, außer die Klammern nennen eine andere Ressource (Stein, Metall, Uran, Perlmutt, Gnade). Eine Einheit ohne Warten liefert bei ihrer ersten Versorgung. Früher Vorrat und Bereit: +Holz.',
+   'Madera salvo que las llaves nombren otro recurso (Piedra, Metal, Uranio, Perla, Gracia). Una unidad sin Espera entrega en su primer mantenimiento. Antes era Acopio y Al estar Listo +Madera.',
+   'Legname, a meno che le graffe nominino un’altra risorsa (Pietra, Metallo, Uranio, Perla, Grazia). Un’unità senza Attesa consegna al suo primo mantenimento. Era Scorta e Pronto: +Legname.',
+   'Madeira, a não ser que as chavetas digam outro recurso (Pedra, Metal, Urânio, Pérola, Graça). Uma unidade sem Espera entrega na sua primeira manutenção. Era Estoque e Pronto: +Madeira.',
+   'Kahoy maliban kung ibang yaman ang nasa braces (Bato, Metal, Uranium, Perlas, Grasya). Ang yunit na walang Hintay ay magpapadala sa unang upkeep nito. Dati itong Imbakan at On Ready +Kahoy.',
+   'அடைப்புக்குறி வேறு வளத்தைச் சொல்லாவிட்டால் மரம் (கல், உலோகம், யுரேனியம், முத்து, அருள்). காத்திருப்பு இல்லாத அலகு தன் முதல் பராமரிப்பில் வழங்கும். முன்பு இது சேமிப்பு, தயாரானதும் +மரம்.',
+   'Kayu, kecuali kurung kurawal menyebut sumber daya lain (Batu, Logam, Uranium, Mutiara, Rahmat). Unit tanpa Tunggu mengirim pada pemeliharaan pertamanya. Dulu Timbunan dan Saat Siap +Kayu.',
+   '默认为木材，除非括号写明其他资源（岩石、金属、铀、珍珠、恩典）。没有等待的单位在第一次维护时补给。以前是囤积和可行动时+木材。',
+   '預設為木材，除非括號寫明其他資源（岩石、金屬、鈾、珍珠、恩典）。沒有等待的單位在第一次維護時補給。以前是囤積和可行動時+木材。',
+   '括弧が別の資源（石・金属・ウラン・パール・恩寵）を示さない限り木材。待機のないユニットは最初の維持フェイズで配達する。以前の備蓄と準備OK時+木材。',
+   '중괄호가 다른 자원(돌, 금속, 우라늄, 펄, 은총)을 말하지 않으면 목재입니다. 대기가 없는 유닛은 첫 유지 단계에 배달합니다. 예전의 비축과 준비 시 +목재입니다.']),
+ ('Lumber', ['Bois', 'Holz', 'Madera', 'Legname', 'Madeira', 'Kahoy', 'மரம்', 'Kayu', '木材', '木材', '木材', '목재']),
+ ('Stone', ['Pierre', 'Stein', 'Piedra', 'Pietra', 'Pedra', 'Bato', 'கல்', 'Batu', '岩石', '岩石', '石', '돌']),
+ ('Metal', ['Métal', 'Metall', 'Metal', 'Metallo', 'Metal', 'Metal', 'உலோகம்', 'Logam', '金属', '金屬', '金属', '금속']),
+ ('Uranium', ['Uranium', 'Uran', 'Uranio', 'Uranio', 'Urânio', 'Uranium', 'யுரேனியம்', 'Uranium', '铀', '鈾', 'ウラン', '우라늄']),
+ ('Pearl', ['Nacré', 'Perlmutt', 'Perla', 'Perla', 'Pérola', 'Perlas', 'முத்து', 'Mutiara', '珍珠', '珍珠', 'パール', '펄']),
+ ('Grace', ['Grâce', 'Gnade', 'Gracia', 'Grazia', 'Graça', 'Grasya', 'அருள்', 'Rahmat', '恩典', '恩典', '恩寵', '은총']),
+ ('Tally', ['Décompte', 'Strichliste', 'Recuento', 'Conta', 'Contagem', 'Bilang', 'கணக்கு', 'Hitungan', '计数', '計數', '勘定', '집계']),
+ ('Almanac', ['Almanach', 'Almanach', 'Almanaque', 'Almanacco', 'Almanaque', 'Almanake', 'பஞ்சாங்கம்', 'Almanak', '历书', '曆書', '暦', '책력']),
+ ('While you have drawn {n} or more cards this fight (after your opening hand): {skills}.', [
+   'Tant que vous avez pioché {n} cartes ou plus ce combat (après votre main de départ) : {skills}.',
+   'Solange du in diesem Kampf {n} oder mehr Karten gezogen hast (nach deiner Starthand): {skills}.',
+   'Mientras hayas robado {n} o más cartas en este combate (después de tu mano inicial): {skills}.',
+   'Finché hai pescato {n} o più carte in questo scontro (dopo la mano iniziale): {skills}.',
+   'Enquanto tiveres comprado {n} ou mais cartas neste combate (depois da mão inicial): {skills}.',
+   'Habang nakabunot ka na ng {n} o higit pang card sa labang ito (pagkatapos ng unang kamay): {skills}.',
+   'இந்தச் சண்டையில் (தொடக்கக் கைக்குப் பின்) {n} அல்லது அதற்கு மேற்பட்ட அட்டைகள் எடுத்திருக்கும் வரை: {skills}.',
+   'Selama kamu sudah menarik {n} kartu atau lebih dalam pertarungan ini (setelah tangan awal): {skills}.',
+   '只要你本场（起手之后）已抽 {n} 张或更多牌：{skills}。',
+   '只要你本場（起手之後）已抽 {n} 張或更多牌：{skills}。',
+   'この戦いで（初手の後に）カードを{n}枚以上引いている間：{skills}。',
+   '이번 전투에서(시작 패 이후) 카드를 {n}장 이상 뽑은 동안: {skills}.']),
+ ('Onslaught', ['Assaut', 'Ansturm', 'Embestida', 'Assalto', 'Investida', 'Daluyong', 'பெருந்தாக்கு', 'Gempuran', '猛攻', '猛攻', '猛攻', '맹공']),
+ ('While your side dealt {n} or more damage to the enemy bramble last round: {skills}.', [
+   'Tant que votre camp a infligé {n} dégâts ou plus au roncier ennemi la manche précédente : {skills}.',
+   'Solange deine Seite in der letzten Runde {n} oder mehr Schaden an der gegnerischen Dornenhecke verursacht hat: {skills}.',
+   'Mientras tu bando haya hecho {n} o más de daño al zarzal enemigo la ronda anterior: {skills}.',
+   'Finché la tua parte ha inflitto {n} o più danni al rovo nemico nel round precedente: {skills}.',
+   'Enquanto o teu lado tiver causado {n} ou mais de dano ao silvado inimigo na ronda anterior: {skills}.',
+   'Habang nakapagdulot ang panig mo ng {n} o higit pang pinsala sa kaaway na dawag noong nakaraang round: {skills}.',
+   'கடந்த சுற்றில் உன் பக்கம் எதிரி முட்புதருக்கு {n} அல்லது அதற்கு மேல் சேதம் செய்திருக்கும் வரை: {skills}.',
+   'Selama pihakmu memberi {n} kerusakan atau lebih ke semak musuh pada ronde lalu: {skills}.',
+   '只要你方上回合对敌方荆棘丛造成 {n} 点或更多伤害：{skills}。',
+   '只要你方上回合對敵方荊棘叢造成 {n} 點或更多傷害：{skills}。',
+   '前のラウンドに味方が敵のいばらに{n}以上のダメージを与えている間：{skills}。',
+   '지난 라운드에 내 편이 적 덤불에 {n} 이상의 피해를 준 동안: {skills}.']),
+ ('Riled', ['Énervé', 'Gereizt', 'Enfurecido', 'Irritato', 'Irritado', 'Nagngingitngit', 'சீண்டப்பட்டது', 'Terusik', '激怒', '激怒', '逆上', '격분']),
+ ('While it took {n} or more damage last round: {skills}.', [
+   'Tant qu’il a subi {n} dégâts ou plus la manche précédente : {skills}.',
+   'Solange es in der letzten Runde {n} oder mehr Schaden erlitten hat: {skills}.',
+   'Mientras haya recibido {n} o más de daño la ronda anterior: {skills}.',
+   'Finché ha subito {n} o più danni nel round precedente: {skills}.',
+   'Enquanto tiver sofrido {n} ou mais de dano na ronda anterior: {skills}.',
+   'Habang tumanggap ito ng {n} o higit pang pinsala noong nakaraang round: {skills}.',
+   'கடந்த சுற்றில் அது {n} அல்லது அதற்கு மேல் சேதம் பெற்றிருக்கும் வரை: {skills}.',
+   'Selama ia menerima {n} kerusakan atau lebih pada ronde lalu: {skills}.',
+   '只要它上回合受到 {n} 点或更多伤害：{skills}。',
+   '只要它上回合受到 {n} 點或更多傷害：{skills}。',
+   '前のラウンドに{n}以上のダメージを受けている間：{skills}。',
+   '지난 라운드에 {n} 이상의 피해를 받은 동안: {skills}.']),
+ ('Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.', [
+   'Provoque les ennemis autour de lui (en face, ou à une colonne de chaque côté) : leurs coups, flèches et tirs le touchent, même ceux qui visaient le roncier. La Furtivité passe ; une Volée n’est pas attirée.',
+   'Verspottet die Gegner um sich (gegenüber oder eine Spalte daneben): ihre Hiebe, Pfeile und Schüsse treffen es, selbst solche, die die Dornenhecke träfen. Tarnung schlüpft vorbei; eine Salve wird nicht angezogen.',
+   'Provoca a los enemigos a su alrededor (de frente, o a una columna a cada lado): sus golpes, flechas y disparos le dan a él, incluso los que irían al zarzal. El Sigilo se escabulle; una Andanada no se desvía.',
+   'Provoca i nemici intorno (di fronte, o a una colonna per lato): i loro colpi, frecce e tiri colpiscono lui, anche quelli diretti al rovo. La Furtività passa oltre; una Raffica non viene attirata.',
+   'Provoca os inimigos à sua volta (de frente, ou a uma coluna de cada lado): os golpes, flechas e tiros deles acertam-no, mesmo os que iriam ao silvado. A Furtividade escapa; uma Saraivada não é atraída.',
+   'Hinahamon ang mga kaaway sa paligid nito (kaharap, o isang column sa magkabilang gilid): ang mga hampas, palaso at tira nila ay tatama rito, kahit ang tatama sana sa dawag. Nakalulusot ang Stealth; hindi nahihila ang Volley.',
+   'சுற்றியுள்ள எதிரிகளைச் சீண்டுகிறது (எதிரில், அல்லது இருபுறமும் ஒரு நெடுவரிசை): அவர்களின் அடிகள், அம்புகள், சுடுதல்கள் இதைத் தாக்கும், முட்புதரைத் தாக்கவிருந்தவையும் கூட. மறைவு தப்பும்; அம்புமழை இழுக்கப்படாது.',
+   'Memancing musuh di sekitarnya (di depannya, atau satu kolom di kiri-kanan): ayunan, panah dan tembakan mereka mengenainya, bahkan yang akan mengenai semak. Siluman lolos; Rentetan tidak tertarik.',
+   '嘲讽它周围的敌人（正对它，或左右各一列）：他们的攻击、箭矢和射击都会打向它，连本要打荆棘丛的也是。潜行可绕过；齐射不会被吸引。',
+   '嘲諷它周圍的敵人（正對它，或左右各一列）：他們的攻擊、箭矢和射擊都會打向它，連本要打荊棘叢的也是。潛行可繞過；齊射不會被吸引。',
+   '周りの敵（正面か左右1列）を挑発する：その攻撃・矢・射撃はこれに当たる（いばらを狙うものも）。ステルスはすり抜け、一斉射撃は引き寄せない。',
+   '주변의 적(정면, 또는 양옆 한 칸)을 도발합니다: 그들의 공격, 화살, 사격이 이 유닛에 맞습니다. 덤불을 노리던 것도요. 은신은 빠져나가고, 일제 사격은 끌려오지 않습니다.']),
+ ("While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.", [
+   'Quand il est Prêt, s’interpose devant un allié adjacent (à côté ; en raid ou en donjon multijoueur, devant ou derrière aussi) et prend les attaques simples, contre-attaques, flèches et tirs qui le visent. Les autres compétences et les coups de zone non, et il ne protège jamais le roncier ni un allié à Épines. Pas en Attente, Étourdi, Gelé, Endormi ou Lié.',
+   'Wenn bereit, stellt es sich vor einen benachbarten Verbündeten (daneben; im Raid oder Mehrspieler-Dungeon auch davor oder dahinter) und nimmt die normalen Angriffe, Gegenangriffe, Pfeile und Schüsse auf ihn. Andere Fähigkeiten und Flächentreffer nicht, und es schützt nie die Dornenhecke oder einen Verbündeten mit Dornen. Nicht beim Warten, betäubt, gefroren, schlafend oder gebunden.',
+   'Si está Listo, se pone delante de un aliado adyacente (al lado; en una incursión o mazmorra multijugador, delante o detrás también) y recibe los ataques normales, contraataques, flechas y disparos dirigidos a él. Otras habilidades y golpes de área no, y nunca protege al zarzal ni a un aliado con Espinas. No en Espera, Aturdido, Congelado, Dormido o Atado.',
+   'Se è Pronto, si mette davanti a un alleato adiacente (accanto; in un raid o dungeon multigiocatore, anche davanti o dietro) e prende gli attacchi semplici, i contrattacchi, le frecce e i tiri diretti a lui. Altre abilità e colpi ad area no, e non protegge mai il rovo né un alleato con Spine. Non in Attesa, Stordito, Congelato, Addormentato o Legato.',
+   'Quando Pronto, põe-se à frente de um aliado adjacente (ao lado; numa raide ou masmorra multijogador, à frente ou atrás também) e recebe os ataques simples, contra-ataques, flechas e tiros dirigidos a ele. Outras habilidades e golpes de área não, e nunca protege o silvado nem um aliado com Espinhos. Não em Espera, Atordoado, Congelado, Adormecido ou Preso.',
+   'Habang Handa, humaharang sa harap ng katabing kakampi (sa tabi; sa raid o multiplayer dungeon, sa harap o likod din) at sinasalo ang mga karaniwang atake, ganting-atake, palaso at tira na para dito. Hindi ang ibang skill at area hit, at hindi nito binabantayan ang dawag o kakampi na may Tinik. Hindi habang Naghihintay, Stunned, Frozen, Tulog o Bound.',
+   'தயாராக இருக்கும்போது, அருகிலுள்ள நட்பு அலகின் முன் நின்று (பக்கத்தில்; ரெய்டு அல்லது பலர் நிலவறையில் முன்னும் பின்னும்) அதை நோக்கிய சாதாரணத் தாக்குதல்கள், எதிர்த்தாக்குதல்கள், அம்புகள், சுடுதல்களை ஏற்கும். மற்ற திறன்களும் பரப்புத் தாக்குதல்களும் இல்லை; முட்புதரையோ முட்கள் உள்ள நட்பு அலகையோ ஒருபோதும் காக்காது. காத்திருப்பு, திகைப்பு, உறைவு, தூக்கம், கட்டு நிலைகளில் இல்லை.',
+   'Saat Siap, berdiri di depan sekutu yang bersebelahan (di samping; di raid atau dungeon multipemain, juga depan atau belakang) dan menerima serangan biasa, serangan balik, panah dan tembakan yang mengarah padanya. Skill lain dan serangan area tidak, dan ia tidak pernah menjaga semak atau sekutu ber-Duri. Tidak saat Tunggu, Pingsan, Beku, Tidur atau Terikat.',
+   '可行动时，挡在相邻友军面前（两侧；在突袭或多人地城中也含前后），承受对其的普通攻击、反击、箭矢和射击。其他技能和范围攻击不算，且绝不守护荆棘丛或有荆刺的友军。等待、眩晕、冰冻、沉睡或束缚时无效。',
+   '可行動時，擋在相鄰友軍面前（兩側；在突襲或多人地城中也含前後），承受對其的普通攻擊、反擊、箭矢和射擊。其他技能和範圍攻擊不算，且絕不守護荊棘叢或有荊刺的友軍。等待、暈眩、冰凍、沉睡或束縛時無效。',
+   '準備OKの間、隣の味方の前に立ち（横。レイドやマルチダンジョンでは前後も）、それへの通常攻撃・反撃・矢・射撃を受ける。他のスキルや範囲攻撃は別で、いばらや棘を持つ味方は決して守らない。待機・スタン・凍結・睡眠・拘束中は不可。',
+   '준비된 동안, 인접한 아군 앞에 나서(옆; 레이드나 멀티 던전에서는 앞뒤도) 그 아군을 노린 일반 공격, 반격, 화살, 사격을 대신 받습니다. 다른 스킬과 범위 공격은 아니며, 덤불이나 가시가 있는 아군은 지키지 않습니다. 대기, 기절, 빙결, 수면, 속박 중에는 안 됩니다.']),
+ ('Wet {n}: each lightning hit deals {n} more. It loses one counter each round; fire dries one a point before it can burn.', [
+   'Mouillé {n} : chaque coup de foudre inflige {n} de plus. Il perd un marqueur à chaque manche ; le feu en sèche un par point avant de pouvoir brûler.',
+   'Nass {n}: jeder Blitztreffer verursacht {n} mehr. Es verliert jede Runde einen Marker; Feuer trocknet einen pro Punkt, bevor es brennen kann.',
+   'Mojado {n}: cada golpe de rayo hace {n} más. Pierde un contador cada ronda; el fuego seca uno por punto antes de poder quemar.',
+   'Bagnato {n}: ogni colpo di fulmine infligge {n} in più. Perde un segnalino ogni round; il fuoco ne asciuga uno a punto prima di poter bruciare.',
+   'Molhado {n}: cada golpe de raio causa {n} a mais. Perde um marcador a cada ronda; o fogo seca um por ponto antes de poder queimar.',
+   'Basa {n}: bawat tama ng kidlat ay {n} pang dagdag. Nawawalan ito ng isang counter bawat round; tinutuyo ng apoy ang isa bawat puntos bago ito makasunog.',
+   'ஈரம் {n}: ஒவ்வொரு மின்னல் அடியும் {n} கூடுதல். ஒவ்வொரு சுற்றும் ஒரு குறி குறையும்; எரியும் முன் தீ ஒரு புள்ளிக்கு ஒன்றை உலர்த்தும்.',
+   'Basah {n}: tiap serangan petir memberi {n} lebih. Ia kehilangan satu penanda tiap ronde; api mengeringkan satu per poin sebelum bisa membakar.',
+   '潮湿 {n}：每次闪电命中多造成 {n}。每回合失去一个标记；火焰每点先烘干一个，才能点燃。',
+   '潮濕 {n}：每次閃電命中多造成 {n}。每回合失去一個標記；火焰每點先烘乾一個，才能點燃。',
+   '濡れ {n}：雷撃1回ごとに{n}多く与える。毎ラウンド1つ失う。火は燃やす前に1点ごとに1つ乾かす。',
+   '젖음 {n}: 번개 공격마다 {n} 더 받습니다. 매 라운드 표식 하나를 잃고, 불은 태우기 전에 1점마다 하나를 말립니다.']),
+]
+ph = lambda s: sorted(set(re.findall(r'\{\w+\}', s)))
+def dump(path, d):
+    with open(path, 'w', encoding='utf-8') as fh:
+        json.dump(d, fh, ensure_ascii=False, indent=1); fh.write('\n')
+added = 0
+for i, code in enumerate(CODES):
+    path = os.path.join(ROOT, 'lang', code + '.json'); pack = json.load(open(path, encoding='utf-8'))
+    for en, row in T:
+        assert len(row) == 12 and ph(en) == ph(row[i]), (code, en)
+        if en not in pack: added += 1
+        pack.setdefault(en, row[i])
+    dump(path, pack)
+print('ok: %d rows added across %d packs' % (added, len(CODES)))
