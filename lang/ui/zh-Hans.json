@@ -5001,5 +5001,11 @@
  "An army that isn't paid starts thinking. Good. Let it think.": "拿不到饷的军队就会开始盘算。很好。让它盘算去。",
  "A coin from the Counting House, fallen in a crack. Someone bit it to test it.": "一枚账房里的金币，掉进了缝里。有人咬过它，试试真假。",
  "And then left it there?": "然后就扔在那儿了？",
- "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "那道牙印说明金子底下是铅。连大亨的金币都披着盔甲。"
+ "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "那道牙印说明金子底下是铅。连大亨的金币都披着盔甲。",
+ "{v1}/{v2} cleared": "已通关 {v1}/{v2}",
+ "{v1} {v2}/{v3} cleared": "{v1} 已通关 {v2}/{v3}",
+ "{v1} — {v2}/{v3} cleared": "{v1} — 已通关 {v2}/{v3}",
+ "Cleared": "已通关",
+ "{v1} card{s} collected": "已收集 {v1} 张卡牌",
+ "Clear {v1} / {v2}": "通关{v1} / {v2}"
 }

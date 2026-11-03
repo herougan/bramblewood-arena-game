@@ -3413,7 +3413,7 @@
   .lc-leaf{position:absolute; line-height:1; will-change:transform; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));}
   .home-discover-hint{font-size:13px; color:var(--page-ink, #f4efdc); opacity:.85; margin:4px 0 10px; text-align:center;}
   .tip-ticker{position:relative; min-height:2.9em; overflow:hidden;} /* room for a tip that wraps to two lines */
-  @media (max-width:520px){ .tip-ticker{min-height:4.2em;} }
+  @media (max-width:520px){ .tip-ticker{min-height:5.8em;} } /* 2026-11-03 (FIX8, QA2 minor 13): the Nest's tip wraps to three lines at 390 and was clipped at two */
   .tip-ticker .tip-line{position:absolute; left:10px; right:0; top:0; transform-origin:0 50%; animation:tipIn .6s cubic-bezier(.2,.8,.3,1) both, tipDrift 14s linear .6s both;}
   .tip-ticker .tip-line.tip-out{animation:tipOutZoom .42s ease-in forwards;}
   @keyframes tipDrift{from{translate:0 0;} to{translate:-8px 0;}} /* 2026-10-10: was -22px, which pushed the first letters out of the clipped box on phones */

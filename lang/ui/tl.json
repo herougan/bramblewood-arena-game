@@ -2573,5 +2573,11 @@
  "An army that isn't paid starts thinking. Good. Let it think.": "Ang hukbong hindi nasasahuran ay nagsisimulang mag-isip. Mabuti. Hayaan itong mag-isip.",
  "A coin from the Counting House, fallen in a crack. Someone bit it to test it.": "Barya mula sa Bahay-Bilangan, nahulog sa siwang. May kumagat dito para subukin.",
  "And then left it there?": "Tapos iniwan lang doon?",
- "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "Sabi ng kagat, tingga ito sa ilalim ng ginto. Pati ang mga barya ng Magnate ay nakabaluti."
+ "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "Sabi ng kagat, tingga ito sa ilalim ng ginto. Pati ang mga barya ng Magnate ay nakabaluti.",
+ "{v1}/{v2} cleared": "{v1}/{v2} natapos",
+ "{v1} {v2}/{v3} cleared": "{v1} {v2}/{v3} natapos",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} natapos",
+ "Cleared": "Natapos",
+ "{v1} card{s} collected": "{v1} card na nakolekta",
+ "Clear {v1} / {v2}": "Tapusin ang {v1} / {v2}"
 }
