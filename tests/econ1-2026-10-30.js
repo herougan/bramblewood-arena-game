@@ -183,9 +183,10 @@ KEYS.forEach(k=> ok(TEXT[k] && src.includes(`'${k}'`), `5. ${k} is a TX key the 
 ok(/if\(cloudBlossomsColumn !== false\) row\.blossoms = /.test(fnSrc('cloudPushCurrencies')) && /cloudBlossomsColumn = false; delete row\.blossoms/.test(fnSrc('cloudPushCurrencies')), '5. the push sends blossoms, and drops the column once when the server has none');
 ok(/blossoms: cur\.blossoms != null \? /.test(fnSrc('cloudPullState')), '5. the pull reads blossoms, or keeps this browser\'s');
 ok(/blossoms: Math\.max\(0, Math\.floor\(Number\(parsed\.blossoms\)\|\|0\)\)/.test(fnSrc('loadCurrencies')), '5. saved locally with the other currencies');
-const sql = fs.readFileSync(path.join(ROOT, 'supabase', 'proposed', '20261030_bramble_resource.sql'), 'utf8');
-ok(/add column if not exists blossoms integer not null default 0/.test(sql) && /PROPOSED, NOT APPLIED/.test(sql), '5. the proposed SQL adds the column (not applied)');
-ok(!fs.existsSync(path.join(ROOT, 'supabase', 'migrations', '20261030_bramble_resource.sql')), '5. nothing in migrations/');
+// 2026-11-03: applied (owner 23:01 #12), so the file moved to migrations/.
+const sql = fs.readFileSync(path.join(ROOT, 'supabase', 'migrations', '20261030_bramble_resource.sql'), 'utf8');
+ok(/add column if not exists blossoms integer not null default 0/.test(sql) && /APPLIED 2026-11-03/.test(sql), '5. the migration adds the column (applied 2026-11-03)');
+ok(!fs.existsSync(path.join(ROOT, 'supabase', 'proposed', '20261030_bramble_resource.sql')), '5. nothing left in proposed/');
 
 console.log(`econ1-2026-10-30: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

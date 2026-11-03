@@ -12408,7 +12408,7 @@ const CURRENCY_META = {
   // Briar Blossoms (2026-10-30, package ECON1, owner BRUP-1 10:34: "Their own resource & a bit of normal resource. The bramble resource comes
   // from winning fights. Dealing damage to bramble does net you a tiny bit even on loss."): what a bramble's Reinforce mostly costs (with a
   // small share of Dust and Leaves, BRAMBLE_COST). The name and icon are a placeholder the owner can change (label, glyph and the
-  // TX key ui.econ1-blossoms). Cloud: player_currencies.blossoms once supabase/proposed/20261030_bramble_resource.sql is applied.
+  // TX key ui.econ1-blossoms). Cloud: player_currencies.blossoms (supabase/migrations/20261030_bramble_resource.sql, APPLIED 2026-11-03).
   blossoms: {glyph:'💮', label:'Briar Blossoms'},
 };
 // Krooni retired for now (2026-10-23, package TU2, owner E9: "Retire Krooni for now"): nothing spends them, so players no longer see or
@@ -12961,7 +12961,7 @@ async function cloudPullState(){
         // 2026-10-19 (package RC): the raid trophy shards come from the row's raid_shards (supabase/proposed/20261019_raid_shards.sql)
         // once that column exists and has been written; until then this browser's are kept
         raidShards: cur.raid_shards && typeof cur.raid_shards === 'object' && Object.keys(cur.raid_shards).length ? raidShardsClean(cur.raid_shards) : raidShardsClean(myCurrencies && myCurrencies.raidShards),
-        // 2026-10-30 (ECON1): Briar Blossoms from the row's blossoms column (supabase/proposed/20261030_bramble_resource.sql) once it exists;
+        // 2026-10-30 (ECON1): Briar Blossoms from the row's blossoms column (supabase/migrations/20261030_bramble_resource.sql, APPLIED 2026-11-03);
         // until then (no column: undefined) this browser's are kept, like the trophy shards
         blossoms: cur.blossoms != null ? Math.max(0, Number(cur.blossoms)||0) : Math.max(0, Number((myCurrencies && myCurrencies.blossoms) || 0))};
       settleRaidPoints();
