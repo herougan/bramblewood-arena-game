@@ -881,7 +881,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.i-cannot-tell-a-lie-that": "I cannot tell a lie: that was a bad Wait 3.",
   "results.george-washingtoad": "George Washingtoad",
   "results.eureka-i-have-found-another-way": "Eureka! I have found another way to lose. Next, the way to win.",
-  "results.the-best-laid-plans-of-mice": "The best-laid plans of mice and otters often meet a Bee Knight.",
+  "results.the-best-laid-plans-of-mice": "The best-laid plans of mice and otters often meet a Bee Warden.",
   "results.robert-burrows": "Robert Burrows",
   "results.a-win-by-a-thread-ranks": "A win by a thread. Ranks grade the bramble Health you keep: lose less of it for a better rank.",
   "results.well-fought-keep-90-of-your": "Well fought. Keep 90% of your bramble and it becomes S.",
@@ -3199,7 +3199,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.skn-e10-riled": "Riled",
   "ui.sk-e10-riled": "While it took {n} or more damage last round: {skills}.",
   "ui.e22-taunt": "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.",
-  "ui.e22-guardian": "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound."
+  "ui.e22-guardian": "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.",
+  "ui.econ3-each": "each",
+  "ui.econ3-each-tip": "Every quest in this tier pays this when you claim it.",
+  "ui.econ3-head-show": "Show the map's story",
+  "ui.econ3-head-hide": "Hide the map's story",
+  "ui.econ3-metal": "Metal"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
