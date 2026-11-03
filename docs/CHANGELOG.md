@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package CUT3 (owner 23:12: "Cut Glacial ape-king from Map 0-20")
+- **Glacial Ape-King is cut** from Map 17 Wolfsbane Tundra, its 17-A side map and Map 19 (MAP and submap lists; it was on no SPECIAL list). It is a first-clear or reward card nowhere. The review shows it as an owner cut.
+- **Audit only, no deck changed:** `docs/cut3-audit-2026-11-03.md` lists every deck that still holds an owner-cut card, by map, with the cut source. Ape-King is the leader of 17-1, 17-3, 17-8 and 17-A-1: owner call. Decision CUT3-1 (YET): rebuild the decks after your pass.
+- Test: `tests/cut3-2026-11-03.js`.
+
 ## 2026-11-03 Package LISTFIX2 (owner 22:02: "cut cards still stay, but are just flagged as cut")
 - **Every cut is applied:** all 37 cuts of the owner's 11-01 export (THEME4) and the older THEME3 cuts are off their MAP / submap lists. 13 cut cards still show on their map:
   - 8 sit on SPECIAL as a fight's reward or first-clear card (2-1, 2-3, 2-5, 4-2, 4-5, 5-3, 6-4, 20-9).
