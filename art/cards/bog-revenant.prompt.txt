@@ -1,0 +1,2 @@
+# ART7 2026-11-03, PixelLab Create image (Pro, 128x128, 2x2), variant B picked; job description = prefix + brief (docs/art/art6-pixellab-gallery-2026-11-02.md)
+Pokemon-style pixel art card illustration, clean dark outlines, rich readable palette, one bright accent, brief for card id "bog-revenant" in docs/art/content6-2026-11-02-briefs.md or content7 briefs, full background, no text

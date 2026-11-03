@@ -2,6 +2,8 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package ART7 (owner 11-03 09:39: "Proceed to download"; PixelLab gallery art for CONTENT6 and CONTENT7)
+- The 21 PixelLab 2x2 sheets (art6 jobs) downloaded from the owner's gallery (only those; nothing bought), one variant picked per card by eye, imported as 256 px art (`tools/art/art7_import_2026_11_03.py`, no palette snap since PixelLab output is already pixel art). New art on the 12 CONTENT6 cards (their `artReview` cleared) and the 9 CONTENT7 cards (Dinoflagellates = night-algae). Blackmass Rat and Revenant Bog Turtle: the brightest variant. Contact sheet `docs/art/art7-contact-2026-11-03.png`.
 ## 2026-11-03 Package THEME5 (owner 11-03 09:39: more carried cards so each map has archetypes; proposal only)
 - The owner's new list-size rule written out per tier (Maps 11-20 carried +1; Maps 21+ own -1 and carried +2; side maps +1), with every list's own / carried counts and targets, and 34 carried candidates, each opening a deck plan distinct from the map's PRO / BPRO decks (20-card plans checked against the lists and copy caps; no optimizer run, the machine was busy). Also the skirmish plan for the later deck step: 3 fights a map get one down-tuned peak strategy each, the rest a random weaker blend. Nothing applied; decision THEME5-1. `docs/balance/theme5/carried-proposal-2026-11-03.md`, read-only helpers in `tools/theme5/`.
 ## 2026-11-03 Package DEC1 (owner 11-03 09:39: "Balance items you can choose. Like ENG and FIX and UI."; BAL14-3: "Just change the budget")
