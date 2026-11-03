@@ -14,6 +14,9 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
 // ---- 1. the re-measure at bramble 15 (BAL12-5) --------------------------------------------------------------------------------------
 { const SM = require(path.join(ROOT, 'tools', 'skill2_measure_2026_10_31.js')), plan = SM.buildPlan(), R = J('docs/balance/pipeline/measures.json').results;
   const items = plan.filter(it => it.kind === 'measure'), left = items.filter(it => !(R['global|' + it.key] && R['global|' + it.key].bramble === 15));
+  // 2026-11-03 (DEC1, ENG19-2): Royal Guard's On Play +3 Shield to every ally is priced from the ad hoc On Spawn Grant Shield pair (BAL14, x2.7); its own
+  // measure waits for the next balance package
+  const DEC1_NEW = ['T:onSpawn>grantShield {"on":"onSpawn","do":"grantShield","allies":3}']; left.splice(0, left.length, ...left.filter(it => !DEC1_NEW.includes(it.key)));
   ok(items.length >= 240 && !left.length, `every in-play skill item measured at bramble 15 (${items.length - left.length} of ${items.length}; left: ${left.slice(0, 5).map(i => i.key).join(', ') || 'none'})`);
   const order = J('docs/balance/bal14/measure-order.json'), adhoc = order.filter(x => typeof x === 'object').map(x => x.key);
   ok(['majesty=1', 'majesty=2', 'pearl=1', 'pearlBed=1', 'dropRoll', 'glean', 'lumberFeast=3'].every(k => adhoc.includes(k) && R['global|' + k] && R['global|' + k].bramble === 15)

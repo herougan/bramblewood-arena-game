@@ -23,7 +23,9 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
 { const r = run(['tools/bal9/cards_2026_11_02.js', 'rewards', '--check']).split('\n')[0];
   ok(/^reward slots re-filled: 0 /.test(r), `JJ12 every reward slot holds a new card of its map (${r})`);
   const q = run(['tools/bal9/cards_2026_11_02.js', 'rarity', '--check']).split('\n')[0];
-  ok(/^rarity lowered: 0;/.test(q), `JJ12 every listed card is at or below its first list's cap (${q})`);
+  // 2026-11-03 (DEC1, BAL12-6 a): Echidna Quillshot keeps RAR-1's Super Rare (owner 11-02 20:19) as a pack card of Map 19, held like Dolphin Knight (HH6)
+  const low = run(['tools/bal9/cards_2026_11_02.js', 'rarity', '--check']).split('\n').filter(l => /^\s+\S+\s+\S+\s+->/.test(l)).map(l => l.trim().split(/\s+/)[0]);
+  ok(/^rarity lowered: \d+;/.test(q) && low.every(id => id === 'echidna-quillshot'), `JJ12 every listed card is at or below its first list's cap (${q}; held by RAR-1: ${low.join(', ') || 'none'})`);
   ok(C['old-shell'].rarity === 'uncommon' && C['old-shell'].effects.leader === true, `JJ12 Old Shell (Map 2) is Uncommon and still leads (${C['old-shell'].rarity}, leader ${C['old-shell'].effects.leader})`);
   ok(C['dolphin-knight'].rarity === 'rare', 'JJ12 Dolphin Knight stays Rare (owner HH6: limits ignored)');
   ok(C['hedgehog-scout'].unattainable === true && C['lyrebird-mimic'].source.kind === 'map' && C['lyrebird-mimic'].source.node === '12-5', 'JJ12 Hedgehog Scout (cut) is out of play; Lyrebird Mimic holds the 12-5 reward slot');
@@ -31,7 +33,9 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
 
 // ---- JJ21: the budget band -----------------------------------------------------------------------------------------------------
 { const r = run(['tools/bal9/cards_2026_11_02.js', 'refit', '--check']);
-  ok(/^re-fit: 0;/.test(r.split('\n')[0]), `JJ21 no in-play card outside the band but the listed ones (${r.split('\n')[0]})`);
+  // 2026-11-03 (DEC1, BAL14-2 a): Echo Matriarch at cap-1 use 1.00 once Flying went to x1.19, held for the owner's card pass (no re-fit, owner 11-03 09:39)
+  const fits = r.split('\n').filter(l => /^\s{2}\S/.test(l) && !/^\s+listed /.test(l)).map(l => l.trim().split(/\s+/)[0]);
+  ok(/^re-fit: \d+;/.test(r.split('\n')[0]) && fits.every(id => id === 'echo-matriarch'), `JJ21 no in-play card outside the band but the listed ones (${r.split('\n')[0]}; DEC1 holds: ${fits.join(', ') || 'none'})`);
   // 2026-11-02 (BAL11): + the cards BAL11's budget fit held for the owner (decision BAL11-2, docs/balance/bal11/refit-2026-11-02.json)
   // 2026-11-02 (BAL12): + the cards BAL12's budget fit held (docs/balance/bal12/refit-2026-11-02.json)
   // 2026-11-03 (BAL14): + the cards BAL14's re-fit held (docs/balance/bal14/refit-2026-11-03.json, decision BAL14-1)

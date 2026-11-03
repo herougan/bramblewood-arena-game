@@ -298,6 +298,7 @@ run node tests/eng19-2026-11-02.js   # 2026-11-02 (package ENG19, owner 22:15 #5
 run node tests/fix6-2026-11-02.js   # 2026-11-02 (package FIX6, owner 21:37): your leader comes out on Auto and in the sims (leaderPlan, dealPlayerLeader), the CPU keeps LEAD-4, 4-5's Drowned Matriarch is played from hand, the Tower pools follow current rarities
 run node tests/ui16-2026-11-02.js   # 2026-11-02 (package UI16, owner 22:15 notes 9, 10, 1): the rival's versus card (map name over the code, leader and bramble art, no facts line); Auto's pitch to the Graveyard and play from the hand; the player card's looks (ids, texts in 12 packs, CSS, a synced key)
 # browser check for package UI16 (notes 9, 10, 1): python3 tests/e2e/ui16_2026_11_02.py (needs Playwright; not run by run.js)
+run node tests/dec1-2026-11-03.js   # 2026-11-03 (package DEC1, owner 11-03 09:39: "Balance items you can choose. Like ENG and FIX and UI."): 35 open calls at their defaults, Flying x1.19 / Evasive x1.18, the Lumber-gain trigger at its measured price, Royal Guard's +3 Shield to every ally, Pearl 1 on the Shellfish, Glass Octopus 4/7, 19-6's reward, a Spawner's own row
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

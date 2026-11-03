@@ -150,7 +150,7 @@ const playable = (T, s)=> C.seatData(T, s).hand.find(h=> T.E.canPlay(C.seatData(
       'Dynamite', 'Scavenge', 'Shore Up', 'Pack', 'Fireball', 'Meteor', 'Rocket', 'Stench', 'Spawner', 'Bloom', 'Rampart', 'Sentry', 'Taunt'].forEach(s=> ok(doc.includes(s), `audit lists ${s}`));
     const dj = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'decisions.json'), 'utf8'));
     const eng18 = dj.items.filter(x=> /^ENG18-\d+$/.test(x.id));
-    ok(eng18.length >= 4 && eng18.every(x=> x.group === 'game' && x.status === 'YET' && Array.isArray(x.options) && x.options.length >= 2 && x.default), `decisions ENG18-n filed, group game, with options (${eng18.length})`);
+    ok(eng18.length >= 4 && eng18.every(x=> x.group === 'game' && (x.status === 'YET' || (x.status === 'DONE' && /Claude's call/.test(x.outcome || '')) /* 2026-11-03 (DEC1): decided at the defaults, ENG18-5 b */) && Array.isArray(x.options) && x.options.length >= 2 && x.default), `decisions ENG18-n filed, group game, with options (${eng18.length})`);
   }
 
   // ---- 7. UI16-4: a seat keeps its player's profile look (avatar), sent by the joining player
