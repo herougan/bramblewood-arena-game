@@ -2573,5 +2573,11 @@
  "An army that isn't paid starts thinking. Good. Let it think.": "급료를 못 받는 군대는 생각을 하기 시작한다. 좋다. 생각하게 둬라.",
  "A coin from the Counting House, fallen in a crack. Someone bit it to test it.": "회계실의 동전이 틈새에 떨어져 있어요. 누군가 진짜인지 깨물어 봤네요.",
  "And then left it there?": "그러고는 그냥 두고 갔다고요?",
- "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "이빨 자국을 보니 금 아래는 납이에요. 거부의 동전조차 갑옷을 입었네요."
+ "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "이빨 자국을 보니 금 아래는 납이에요. 거부의 동전조차 갑옷을 입었네요.",
+ "{v1}/{v2} cleared": "{v1}/{v2} 클리어",
+ "{v1} {v2}/{v3} cleared": "{v1} {v2}/{v3} 클리어",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} 클리어",
+ "Cleared": "클리어",
+ "{v1} card{s} collected": "카드 {v1}장 수집",
+ "Clear {v1} / {v2}": "{v1} / {v2} 클리어"
 }

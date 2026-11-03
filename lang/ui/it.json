@@ -2573,5 +2573,11 @@
  "An army that isn't paid starts thinking. Good. Let it think.": "Un esercito non pagato comincia a pensare. Bene. Che pensi.",
  "A coin from the Counting House, fallen in a crack. Someone bit it to test it.": "Una moneta della Casa dei Conti, caduta in una fessura. Qualcuno l’ha morsa per saggiarla.",
  "And then left it there?": "E poi l’ha lasciata lì?",
- "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "Il morso dice che sotto l’oro c’è piombo. Persino le monete del Magnate portano l’armatura."
+ "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "Il morso dice che sotto l’oro c’è piombo. Persino le monete del Magnate portano l’armatura.",
+ "{v1}/{v2} cleared": "{v1}/{v2} superate",
+ "{v1} {v2}/{v3} cleared": "{v1} {v2}/{v3} superate",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} superate",
+ "Cleared": "Superata",
+ "{v1} card{s} collected": "{v1} carte raccolte",
+ "Clear {v1} / {v2}": "Completa {v1} / {v2}"
 }

@@ -1179,6 +1179,10 @@
   .cx-tile-wrap{position:relative; min-width:0;}
   .cx-tag{position:absolute; left:4px; bottom:4px; z-index:6; font-size:10px; font-weight:800; padding:1px 6px; border-radius:999px; background:var(--surface); color:var(--ink); border:1px solid var(--surface-border); pointer-events:none;}
   .cx-tag-hidden{background:var(--ink); color:var(--surface);}
+  /* 2026-11-03 (package UI18, owner 22:08): the Codex tile's "Swarm [Lvl 1]" flags, for a skill the shown copy only gets at a later level */
+  .cx-lvlsk{display:flex; flex-wrap:wrap; align-items:flex-start; gap:2px; margin-top:3px; min-width:0;}
+  .cx-lvlsk i{font-style:normal; font-size:10px; font-weight:800; line-height:14px; padding:0 6px; border-radius:999px; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; background:var(--ink); color:var(--surface); opacity:.9;}
+  .cx-sk-chip.is-mystery{border-style:dashed;}
   .cx-tag-event{left:auto; right:4px; top:4px; bottom:auto; max-width:90%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   /* 2026-10-22 (package GD2, owner: "Not available and Easter egg pills?pips are too large. Use a symbol like 🚫"): the admin's 🚫 Not
      obtainable and 🥚 Easter egg markers are a symbol; the words follow it only on a wide screen (title / aria-label carry them). */
@@ -3409,7 +3413,7 @@
   .lc-leaf{position:absolute; line-height:1; will-change:transform; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));}
   .home-discover-hint{font-size:13px; color:var(--page-ink, #f4efdc); opacity:.85; margin:4px 0 10px; text-align:center;}
   .tip-ticker{position:relative; min-height:2.9em; overflow:hidden;} /* room for a tip that wraps to two lines */
-  @media (max-width:520px){ .tip-ticker{min-height:4.2em;} }
+  @media (max-width:520px){ .tip-ticker{min-height:5.8em;} } /* 2026-11-03 (FIX8, QA2 minor 13): the Nest's tip wraps to three lines at 390 and was clipped at two */
   .tip-ticker .tip-line{position:absolute; left:10px; right:0; top:0; transform-origin:0 50%; animation:tipIn .6s cubic-bezier(.2,.8,.3,1) both, tipDrift 14s linear .6s both;}
   .tip-ticker .tip-line.tip-out{animation:tipOutZoom .42s ease-in forwards;}
   @keyframes tipDrift{from{translate:0 0;} to{translate:-8px 0;}} /* 2026-10-10: was -22px, which pushed the first letters out of the clipped box on phones */

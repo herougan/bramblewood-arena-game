@@ -2573,5 +2573,11 @@
  "An army that isn't paid starts thinking. Good. Let it think.": "ஊதியம் பெறாத படை சிந்திக்கத் தொடங்கும். நல்லது. சிந்திக்கட்டும்.",
  "A coin from the Counting House, fallen in a crack. Someone bit it to test it.": "எண்ணும் மாளிகையிலிருந்து ஒரு காசு, விரிசலில் விழுந்தது. சோதிக்க யாரோ கடித்துப் பார்த்திருக்கிறார்கள்.",
  "And then left it there?": "பிறகு அங்கேயே விட்டுவிட்டார்களா?",
- "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "கடிதடம் சொல்கிறது: பொன்னுக்கு அடியில் ஈயம். செல்வந்தரின் காசுகள்கூடக் கவசம் அணிகின்றன."
+ "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "கடிதடம் சொல்கிறது: பொன்னுக்கு அடியில் ஈயம். செல்வந்தரின் காசுகள்கூடக் கவசம் அணிகின்றன.",
+ "{v1}/{v2} cleared": "{v1}/{v2} முடிந்தது",
+ "{v1} {v2}/{v3} cleared": "{v1} {v2}/{v3} முடிந்தது",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} முடிந்தது",
+ "Cleared": "முடிந்தது",
+ "{v1} card{s} collected": "{v1} அட்டைகள் சேகரிக்கப்பட்டன",
+ "Clear {v1} / {v2}": "{v1} / {v2} ஐ முடி"
 }

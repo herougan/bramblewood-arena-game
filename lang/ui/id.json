@@ -2573,5 +2573,11 @@
  "An army that isn't paid starts thinking. Good. Let it think.": "Pasukan yang tidak dibayar mulai berpikir. Bagus. Biar ia berpikir.",
  "A coin from the Counting House, fallen in a crack. Someone bit it to test it.": "Koin dari Rumah Hitung, jatuh ke celah. Seseorang menggigitnya untuk mengujinya.",
  "And then left it there?": "Lalu ditinggalkan begitu saja?",
- "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "Bekas gigitan itu bilang di bawah emasnya ada timah. Bahkan koin sang Konglomerat memakai zirah."
+ "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "Bekas gigitan itu bilang di bawah emasnya ada timah. Bahkan koin sang Konglomerat memakai zirah.",
+ "{v1}/{v2} cleared": "{v1}/{v2} diselesaikan",
+ "{v1} {v2}/{v3} cleared": "{v1} {v2}/{v3} diselesaikan",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} diselesaikan",
+ "Cleared": "Selesai",
+ "{v1} card{s} collected": "{v1} kartu terkumpul",
+ "Clear {v1} / {v2}": "Tuntaskan {v1} / {v2}"
 }

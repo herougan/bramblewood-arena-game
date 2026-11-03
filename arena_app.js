@@ -7770,7 +7770,7 @@ function renderCodexGrid(keepPage){
   if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
   if(codexFilter.animal) ids = ids.filter(id=> animalGroupOf(defs[id].animal) === codexFilter.animal); // 2026-10-19 (package UT): the animal filter
   if(codexFilter.rarity) ids = ids.filter(id=> (defs[id].rarity || 'common') === codexFilter.rarity); // 2026-10-18 (package C): the album's rarity filter
-  { const want = codexSkillsChosen(); if(want.length){ ids = ids.filter(id=>{ const d = maskHiddenSkills(defs[id]); return want.every(k=> cardMatchesSkillPick(d, k)); }); } } // 2026-10-18 (package C): every skill picked; 2026-10-21 (package TX): a family (Diurnal = Diurnal {…}) or a group, never a skill still "?"
+  { const want = codexSkillsChosen(); if(want.length){ ids = ids.filter(id=> want.every(k=> ui18CardMatchesPick(defs[id], k))); } } // 2026-11-03 (package UI18): the mystery entry, and a skill a card only gets at a later level // 2026-10-18 (package C): every skill picked; 2026-10-21 (package TX): a family (Diurnal = Diurnal {…}) or a group, never a skill still "?"
   // 2026-09-26 (#1, "add a sort view to codex"): added Rarity (by RARITY_DEFS' own defined
   // order, common -> legendary etc., not alphabetically) and a dir flip. `base` always returns
   // the "natural" high-to-low/A-Z-first comparison; the dir flip below negates it uniformly
@@ -7848,7 +7848,7 @@ function renderCodexGrid(keepPage){
     // (EmojiStyle.htmlBlock, as the board rows do), so the emoji observer has nothing to swap node by node after it lands.
     // 2026-10-18 (audit 4): the key also carries whether the card's revealAfter gate is met, so a masked "?" tile (Quarry Mole)
     // is redrawn once Map 0 is cleared, without a reload.
-    let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
+    let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + ui18LateSkillFlags(id, d) + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
     // Easter eggs (2026-10-19, package EE): one not seen yet is a "???" tile (easterEggMaskDef), not the card.
     if(easterEggMasked(d) && easterEggsShown()){ let mh = `<div class="cx-tile-wrap cx-unowned cx-ee-mask" title="${escapeAttr(TX('ui.ee-mask-tip'))}">${cardTileHTML(easterEggMaskDef(d), {lazyArt:true, extraClass:'ee-masked', size:'full'})}</div>`; try{ mh = EmojiStyle.htmlBlock(mh); }catch(e){} return mh; }
     const hit = sig && codexTileCache.get(id);
@@ -7858,8 +7858,9 @@ function renderCodexGrid(keepPage){
     // (🥚 / 🚫) with its words in title and aria-label; the words follow the symbol only on a wide screen (.cx-tag-words, hidden on phones).
     if(adminModeEnabled && isEasterEgg(d)) tags.push(`<span class="cx-tag cx-tag-unob cx-tag-sym" title="${escapeAttr(TX('ui.ee-admin-tip'))}" aria-label="${escapeAttr(TX('ui.ee-tag'))}">🥚<span class="cx-tag-words"> ${escapeHtml(TX('ui.ee-tag'))}</span></span>`); // 2026-10-19 (package EE)
     else if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob cx-tag-sym" title="Not obtainable yet: the card editor\'s Obtainable box" aria-label="Not obtainable">🚫<span class="cx-tag-words"> Not obtainable</span></span>');
+    const lateFlags = ui18LateSkillFlags(id, d); // 2026-11-03 (package UI18): "Swarm [Lvl 1]" for a skill the shown copy gets later (Codex only)
     const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
-    let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable', size:'full' /* 2026-10-30 (CS-A) */})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
+    let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable', size:'full' /* 2026-10-30 (CS-A) */})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}${lateFlags}</div>`;
     try{ html = EmojiStyle.htmlBlock(html); }catch(e){}
     if(sig) codexTileCache.set(id, {sig, html});
     return html;
@@ -8017,6 +8018,44 @@ function codexFilterBadge(){
   const t = document.getElementById('cxFiltersToggle'); if(!t) return; const n = codexFilterCount(); let b = t.querySelector('.cx-fcount');
   if(!n){ if(b) b.remove(); return; } if(!b){ b = document.createElement('b'); b.className = 'cx-fcount'; t.append(' ', b); } b.textContent = n;
 }
+// UI18_CODEX_SKILLS:BEGIN
+// 2026-11-03 (package UI18, owner 22:04 + 22:08): the Codex skill filter lists only skills you have seen (skillBookEntries: on a card you
+// have seen, or met in a fight; Admin Mode lists all), plus one "? Mystery skills" entry for the cards that carry a skill you have not seen yet.
+// A card also counts for a skill it only gets at a later level (levelSkills), and its Codex tile says so with a "[Lvl N]" flag (Codex only).
+const UI18_MYSTERY = 'mystery', UI18_NOT_SKILL = new Set(['hatchling', 'fodder']);
+function ui18SeenSkillKeys(){ try{ return new Set(skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> e.key)); }catch(e){ return new Set(); } }
+// every skill key a card can carry: its effects and each level's levelSkills, as [{key, lvl}] (lvl = the level it arrives at, 0 = from the start)
+function ui18CardSkillKeys(d){
+  const out = [], seen = new Set(), add = (k, lvl)=>{ if(UI18_NOT_SKILL.has(k) || seen.has(k)) return; const p = skillDefOf(k); if(!p || !p.label || p.retired) return; seen.add(k); out.push({key:k, lvl}); };
+  const e = (d && d.effects) || {}; Object.keys(e).forEach(k=>{ if(skillValOn(e[k])) add(k, 0); });
+  const ls = (d && d.levelSkills) || {}; Object.keys(ls).map(Number).sort((a, b)=> a - b).forEach(L=>{ const o = ls[L] || ls[String(L)] || {}; Object.keys(o).forEach(k=>{ if(skillValOn(o[k])) add(k, L); }); });
+  return out;
+}
+function ui18CardHasMystery(d, seenSet){ if(adminModeEnabled || !d) return false; const seen = seenSet || ui18SeenSkillKeys();
+  return ui18CardSkillKeys(d).some(x=> !seen.has(x.key)); }
+function ui18MysteryCount(){ try{ if(adminModeEnabled) return 0; const defs = getCardDefs(), seen = ui18SeenSkillKeys(); let n = 0;
+  Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || d.test || d.token || easterEggMasked(d)) return; if(ui18CardHasMystery(d, seen)) n++; }); return n; }catch(e){ return 0; } }
+// a pick of the filter against a card (the Codex grid and the album): the mystery entry, or a seen skill / group, also at a later level
+function ui18CardMatchesPick(d, pick){
+  if(pick === UI18_MYSTERY) return ui18CardHasMystery(d);
+  const m = maskHiddenSkills(d); if(cardMatchesSkillPick(m, pick)) return true;
+  if(!d || !d.levelSkills || m._revealGated) return false;
+  const fx = Object.assign({}, m.effects || {}); let any = false;
+  Object.keys(d.levelSkills).forEach(L=>{ const o = d.levelSkills[L] || {}; Object.keys(o).forEach(k=>{ if(!UI18_NOT_SKILL.has(k) && !skillHiddenNow(k) && skillValOn(o[k]) && !(k in fx)){ fx[k] = o[k]; any = true; } }); });
+  return any && cardMatchesSkillPick(Object.assign({}, m, {effects: fx}), pick);
+}
+// the Codex tile's flags: each skill the card only gets from a level on (levelSkills, Level 1 and up), with that level (a skill you have not seen reads "?")
+function ui18LateSkillFlags(id, d){
+  try{ if(!d) return '';
+    const b = copyBaseDef(id) || d, ls = b.levelSkills; if(!ls) return '';
+    const seen = ui18SeenSkillKeys(), gated = (()=>{ const ra = cardRevealAfter(d); return !!(ra && !revealAfterMet(ra)); })(), rows = [];
+    ui18CardSkillKeys({levelSkills: ls}).forEach(x=>{ if(x.lvl < 1) return; const known = adminModeEnabled || (!gated && seen.has(x.key) && !skillHiddenNow(x.key)); rows.push({lvl:x.lvl, name: known ? (skillDefOf(x.key).label) : '?', icon: known ? (SKILL_ICON[x.key] || '') : ''}); });
+    if(!rows.length) return '';
+    const txt = r=> `${r.icon ? r.icon + ' ' : ''}${r.name} ${TX('ui.codex-skill-lvl', {n: r.lvl})}`, tip = rows.map(r=> `${r.name}: ${TX('ui.codex-skill-lvl-tip', {n: r.lvl})}`).join('\n');
+    return `<span class="cx-lvlsk" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${rows.slice(0, 2).map(r=> `<i>${escapeHtml(txt(r))}</i>`).join('')}${rows.length > 2 ? '<i>+' + (rows.length - 2) + '</i>' : ''}</span>`;
+  }catch(e){ return ''; }
+}
+// UI18_CODEX_SKILLS:END
 // 2026-10-21 (package TX, owner: "In the filter, Diurnal is the same as Diurnal {}. Same for swimmer and the rest."): one chip per skill family.
 function codexSkillChoices(){ try{ const seen = new Set(); return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:skillFamilyId(e.key), icon:SKILL_ICON[skillFamilyId(e.key)] || e.icon, name:e.name})).filter(e=>{ if(seen.has(e.key)) return false; seen.add(e.key); return true; }); }catch(e){ return []; } }
 function codexSkillName(key){ const p = skillDefOf(key); return (p && p.label) || key; }
@@ -8157,12 +8196,12 @@ function cardMatchesSkillPick(d, pick){
   if(pick.startsWith('agg:')) return cardInSkillAggregate(d, pick.slice(4));
   return skillFamilyKeys(pick).some(k=> cardHasSkill(d, k));
 }
-function skillPickName(k){ if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.label() : k; } return codexSkillName(skillFamilyId(k)); }
-function skillPickIcon(k){ if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.icon : '✨'; } return SKILL_ICON[skillFamilyId(k)] || '✨'; }
+function skillPickName(k){ if(k === UI18_MYSTERY) return TX('ui.codex-skill-mystery'); if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.label() : k; } return codexSkillName(skillFamilyId(k)); }
+function skillPickIcon(k){ if(k === UI18_MYSTERY) return '?'; if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.icon : '✨'; } return SKILL_ICON[skillFamilyId(k)] || '✨'; }
 // The skill picker's body: the groups, then the skills you have seen (one chip per family). `on` is the Set of picks.
 function skillPickerChipsHTML(list, on){
   return `<div class="cx-skill-groups"><b>${escapeHtml(TX('ui.tx-skill-groups'))}</b><small>${escapeHtml(TX('ui.tx-skill-groups-hint'))}</small></div>`
-    + `<div class="cx-skill-chips is-groups">${SKILL_AGGREGATES.map(a=> `<button type="button" class="cx-sk-chip is-group" data-cxskill="agg:${a.id}" aria-pressed="${on.has('agg:' + a.id)}">${a.icon} ${escapeHtml(a.label())}</button>`).join('')}</div>`
+    + `<div class="cx-skill-chips is-groups">${(ui18MysteryCount() || on.has(UI18_MYSTERY)) ? `<button type="button" class="cx-sk-chip is-group is-mystery" data-cxskill="${UI18_MYSTERY}" aria-pressed="${on.has(UI18_MYSTERY)}" title="${escapeAttr(TX('ui.codex-skill-mystery-tip'))}">? ${escapeHtml(TX('ui.codex-skill-mystery'))}</button>` : ''}${SKILL_AGGREGATES.map(a=> `<button type="button" class="cx-sk-chip is-group" data-cxskill="agg:${a.id}" aria-pressed="${on.has('agg:' + a.id)}">${a.icon} ${escapeHtml(a.label())}</button>`).join('')}</div>`
     + (list.length ? `<div class="cx-skill-chips">${list.map(s=> `<button type="button" class="cx-sk-chip" data-cxskill="${escapeAttr(s.key)}" aria-pressed="${on.has(s.key)}">${s.icon} ${escapeHtml(s.name)}</button>`).join('')}</div>` : `<p class="cx-skill-none">${escapeHtml(TX('ui.codex-skill-none'))}</p>`);
 }
 // ---- sorts ----
@@ -8199,7 +8238,7 @@ function cfMatch(d, f){
   if(f.phylum && !phylumOf(d).split(' & ').includes(f.phylum)) return false;
   if(f.rarity && (d.rarity || 'common') !== f.rarity) return false;
   if(f.mechLine && inferMechanicLine(d) !== f.mechLine) return false;
-  const sk = (f.skills || []).filter(k=> typeof k === 'string'); if(sk.length && (easterEggMasked(d) || !sk.every(k=> cardMatchesSkillPick(maskHiddenSkills(d), k)))) return false;
+  const sk = (f.skills || []).filter(k=> typeof k === 'string'); if(sk.length && (easterEggMasked(d) || !sk.every(k=> ui18CardMatchesPick(d, k)))) return false;
   return true;
 }
 function cfApply(ids, defs, f){ return ids.filter(id=> cfMatch(defs[id], f)); }
@@ -12425,7 +12464,7 @@ const CURRENCY_META = {
   // Briar Blossoms (2026-10-30, package ECON1, owner BRUP-1 10:34: "Their own resource & a bit of normal resource. The bramble resource comes
   // from winning fights. Dealing damage to bramble does net you a tiny bit even on loss."): what a bramble's Reinforce mostly costs (with a
   // small share of Dust and Leaves, BRAMBLE_COST). The name and icon are a placeholder the owner can change (label, glyph and the
-  // TX key ui.econ1-blossoms). Cloud: player_currencies.blossoms once supabase/proposed/20261030_bramble_resource.sql is applied.
+  // TX key ui.econ1-blossoms). Cloud: player_currencies.blossoms (supabase/migrations/20261030_bramble_resource.sql, APPLIED 2026-11-03).
   blossoms: {glyph:'💮', label:'Briar Blossoms'},
 };
 // Krooni retired for now (2026-10-23, package TU2, owner E9: "Retire Krooni for now"): nothing spends them, so players no longer see or
@@ -12456,8 +12495,8 @@ const ACHIEVEMENT_DEFS = [
   {id:'collector_50', cat:'collection', tier:1, icon:'🗂️', title:'Card Collector', desc:TX('ui.i2-ach-own-n', {n: 50}), target:50, progress:ctx=>ctx.ownedCards, reward:{dust:101}},
   {id:'collector_100', cat:'collection', tier:2, icon:'📚', title:'Bramble Archivist', desc:TX('ui.i2-ach-own-n', {n: 100}), target:100, progress:ctx=>ctx.ownedCards, reward:{gold:40, dust:202}},
   {id:'collector_200', cat:'collection', tier:3, icon:'🏛️', title:'Complete the Codex', desc:TX('ui.i2-ach-own-n', {n: 200}), target:200, progress:ctx=>ctx.ownedCards, reward:{gold:120, dust:338, metal:1}},
-  {id:'leveler_1', cat:'forge', tier:1, icon:'🔨', title:'First Steps in the Forge', desc:'Level up your first card.', target:1, progress:ctx=>ctx.leveledCards>0?1:0, reward:{dust:68}},
-  {id:'leveler_10', cat:'forge', tier:2, icon:'⭐', title:'Forge Regular', desc:TX('ui.i2-ach-level-n', {n: 10}), target:10, progress:ctx=>ctx.leveledCards, reward:{gold:40, dust:202}},
+  {id:'leveler_1', cat:'forge', tier:1, icon:'🔨', title:'First Steps in the Forge', desc:'Level up your first card.', target:1, progress:ctx=>ctx.forgeOpen && ctx.leveledCards>0?1:0, reward:{dust:68}},
+  {id:'leveler_10', cat:'forge', tier:2, icon:'⭐', title:'Forge Regular', desc:TX('ui.i2-ach-level-n', {n: 10}), target:10, progress:ctx=>ctx.forgeOpen ? ctx.leveledCards : 0, reward:{gold:40, dust:202}},
   {id:'conquest_5', cat:'road', tier:1, icon:'🗺️', title:'Into the Wilds', desc:TX('ui.i2-ach-clear-n', {n: 5}), target:5, progress:ctx=>ctx.clearedNodes, reward:{gold:60, dust:68}},
   {id:'conquest_map', cat:'road', tier:2, icon:'🏕️', title:'Campaign Cleared', desc:'Fully clear a Conquest map.', target:1, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:150, dust:169, metal:1}},
   {id:'conquest_maps_5', cat:'road', tier:2, icon:'🧭', title:'Five Horizons', desc:TX('ui.i2-ach-maps-n', {n: 5}), target:5, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:240, dust:220}},
@@ -12504,6 +12543,7 @@ function achievementContext(){
   return {
     wins: s.wins, bestWinStreak: s.bestWinStreak,
     ownedCards, leveledCards,
+    forgeOpen: featureUnlockedSafe('forge'), // 2026-11-03 (FIX8, QA2 M4): the Forge achievements wait for the Forge (Map 11); duplicate pulls level cards long before
     clearedNodes, mapsFullyCleared,
     raidBossesUnlocked: progress.raidUnlocked.length,
     // 2026-10-14 (user: "Wyrmslayer should only be achieved when I defeat the Caldera wyrm! Not just from seeing it."):
@@ -12978,7 +13018,7 @@ async function cloudPullState(){
         // 2026-10-19 (package RC): the raid trophy shards come from the row's raid_shards (supabase/proposed/20261019_raid_shards.sql)
         // once that column exists and has been written; until then this browser's are kept
         raidShards: cur.raid_shards && typeof cur.raid_shards === 'object' && Object.keys(cur.raid_shards).length ? raidShardsClean(cur.raid_shards) : raidShardsClean(myCurrencies && myCurrencies.raidShards),
-        // 2026-10-30 (ECON1): Briar Blossoms from the row's blossoms column (supabase/proposed/20261030_bramble_resource.sql) once it exists;
+        // 2026-10-30 (ECON1): Briar Blossoms from the row's blossoms column (supabase/migrations/20261030_bramble_resource.sql, APPLIED 2026-11-03);
         // until then (no column: undefined) this browser's are kept, like the trophy shards
         blossoms: cur.blossoms != null ? Math.max(0, Number(cur.blossoms)||0) : Math.max(0, Number((myCurrencies && myCurrencies.blossoms) || 0))};
       settleRaidPoints();
@@ -18701,6 +18741,23 @@ function activateSpot(spot){
     if(script && script.lines.some(l=> l.act || (l.options||[]).some(o=> o.act))){ playDialogue(spot.dialogue, {once:true, expand:true}); return; }
     if(spot.dialogue) playDialogue(spot.dialogue, {once:true, expand:true}); } // (PL2: the Group Dungeon spot has no conversation)
   spot.go();
+}
+// 2026-11-03 (package FIX8, QA2 M1): the Camp opens by itself once 0-1 and 0-2 are won. It used to unlock only when the player tapped its
+// spot on Map 0, which nothing pointed at, so a player who followed the Next buttons reached Map 1 (world still hidden, no way back to
+// Map 0) with no deck editor. Now the map draw calls this: it unlocks the Camp (toast, held packs, its conversation) without taking the
+// player anywhere. The Camp then stays on Home, the shortcuts and the Play tab's nav; the Map 0 spot still opens it too.
+function fix8AutoCamp(tries){
+  try{
+    tries = tries | 0;
+    const sp = FEATURE_SPOTS.find(x=> x.key === 'deck'); if(!sp || featureUnlocked('deck') || !loadTutorialDone() || !spotAvailable(sp, loadConquestProgress())) return false;
+    if((typeof matchState !== 'undefined' && matchState) || packRevealBusy() || document.getElementById('deckSwapOverlay') || document.querySelector('.starter-step') || tutorialRewardPopPending){
+      if(tries < 40) setTimeout(()=> fix8AutoCamp(tries + 1), 1500); return false; }
+    unlockFeature('deck'); try{ if(SoundKit.unlock) SoundKit.unlock(); }catch(e){}
+    showToast(`${sp.icon} ${sp.name} — unlocked!`, 'ok');
+    setTimeout(()=>{ try{ const n = releaseHeldPacks(); if(n) fxHook('heldPacks', n); }catch(e){} }, 1200);
+    try{ playDialogue(sp.dialogue, {once:true, expand:true}); }catch(e){}
+    return true;
+  }catch(e){ return false; }
 }
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
 // 2026-10-15 (user: "Are there any submaps with no background? fill them in."): the Old Bramble, Ice Hollow, Glimmer Depths,
@@ -27690,6 +27747,7 @@ function renderConquestSubTab(body){
   if(conquestAutoAdvanceTo && !matchState && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)){ const nx = CONQUEST_MAPS.find(m=> m.id === conquestAutoAdvanceTo); conquestAutoAdvanceTo = null;
     if(nx && isMapUnlocked(nx, loadConquestProgress())){ conquestSelectedMap = nx.id; conquestSelectedNodeKey = null; conquestWorldView = false; } }
   setTimeout(maybeOfferDeckSwap, 600);
+  setTimeout(fix8AutoCamp, 900); // 2026-11-03 (FIX8, QA2 M1)
   grantClearedBossLeaders();
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
   // whole window now (the ⛶ button still switches the browser itself to full screen).
@@ -27749,7 +27807,7 @@ function renderConquestSubTab(body){
       <div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">${map.icon}</div>${cleared ? '<i class="cmi-tick" aria-hidden="true">✓</i>' : ''}
       <div class="cmi-body"><div class="cmi-name">${map.name}</div><div class="cmi-sub">${cleared ? '✓ Cleared' : `${doneN}/${fightable.length} cleared`}</div></div>
     </div>`;
-  }).join('') + (firstLocked ? (()=>{ const num = mapNumberOf(firstLocked.id), tip = TX('ui.u3-map-chip-tip-locked', {n: num, name: firstLocked.name});
+  }).join('') + (firstLocked ? (()=>{ const num = mapNumberOf(firstLocked.id), tip = (()=>{ try{ return mapLockReason(firstLocked, progress); }catch(e){ return TX('ui.u3-map-chip-tip-locked', {n: num, name: firstLocked.name}); } })(); // 2026-11-03 (FIX8, QA2 minor 8): names the fights still to win (Map 2 waited on the side fight 1-3), not just "the map before it"
     return `<div class="conquest-map-item locked next-locked" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"><div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>`; })() : '');
   // D13 (2026-10-03): a 🧭 World chip opens the atlas — every map as a compass diamond.
   // 2026-10-15 (user: "The world - all maps design doesn't look like the other map tabs. It should also have the side shine thing,
@@ -30416,7 +30474,7 @@ function tutorialFactionRewards(stage, forGrant){ // forGrant: true = the grant 
   const defs = getCardDefs(); if(Array.isArray(o[stage])) return o[stage].filter(id=> defs[id]);
   if(forGrant === 'peek' || !loadFactionChoice() || (typeof matchState !== 'undefined' && matchState && matchState.adminTest)) return [];
   if(forGrant !== true && (stage === 2 ? loadTutorial2Done() : loadTutorialDone())) return []; // past it already (a save from before RW5): nothing to draw
-  const ids = factionDrawSet(TUTORIAL_FACTION_REWARDS[stage - 1]); o[stage] = ids;
+  const ids = factionDrawSet(TUTORIAL_FACTION_REWARDS[stage - 1], null, loadFactionChoice() !== 'both'); o[stage] = ids; // 2026-11-03 (FIX8, QA2 minor 11): your own side's (and shared) cards, not the other side's
   try{ localStorage.setItem(TUT_FACTION_RW_KEY, JSON.stringify(o)); }catch(e){} return ids;
 }
 function starterDeckParts(pick){
@@ -32288,6 +32346,31 @@ function rv2TagsOf(e, baby){
   else if(e.by === 'claude') t.push(['claude', TX('ui.rv2-tag-claude'), TX('ui.rv2-tip-claude')]);
   return t;
 }
+// 2026-11-03 (package LISTFIX2; owner 22:02: "cut cards still stay, but are just flagged as cut"): a Cut card's tile says whether the cut is
+// in the lists the game plays (mpEntry: the file + any live __cfg:map-pools row): "Still listed" (warning) while it is still on this section's
+// list, "Kept for its fight" when it left the MAP / submap list but sits on the map's SPECIAL (a boss leader or a fight's reward / first-clear
+// card: SPECIAL feeds that map's fights and packs), "Removed" otherwise (its tooltip names any other list that still holds it). The entry's
+// optional `statusWhy` (canonical/map-review.json, LISTFIX2) is added to the tooltip. Read-only: the ✂ / ↩ buttons still only mark picks.
+function lf2ListOf(ent, secKey){ return secKey === 'cards' ? ent.cards : secKey === 'special' ? ent.special : (ent.submaps[String(secKey).replace(/^sub:/, '')] || []); }
+function lf2CutStatus(top, secKey, id){
+  let ent; try{ ent = mpEntry(top); }catch(e){ return null; } if(!ent) return null;
+  if(lf2ListOf(ent, secKey).includes(id)) return {k: 'listed'};
+  if(secKey !== 'special' && ent.special.includes(id)) return {k: 'special'};
+  const where = [], tops = new Set(Object.keys(((typeof MAP_POOLS_BASE !== 'undefined' && MAP_POOLS_BASE) || {}).maps || {}).concat(Object.keys(mapPoolEdits || {})));
+  const nm = mid=>{ const m = mpMapById(mid); return m ? m.name : mid; };
+  tops.forEach(t=>{ let e; try{ e = mpEntry(t); }catch(x){ return; } if(!e) return;
+    if(e.cards.includes(id) || e.special.includes(id)) where.push(nm(t));
+    Object.keys(e.submaps).forEach(s=>{ if((e.submaps[s] || []).includes(id)) where.push(nm(MP_EXTRA_LISTS[s] ? MP_EXTRA_LISTS[s].map : s)); }); });
+  return {k: 'removed', where: [...new Set(where)]};
+}
+function lf2CutPillHTML(e, secKey){
+  const st = lf2CutStatus(rvFlipTop, secKey, e.id); if(!st) return '';
+  const extra = e.statusWhy ? ' ' + String(e.statusWhy) : '', css = (bg, fg)=> ` style="background:${bg};color:${fg};border-color:transparent;cursor:help"`; // inline: the panel's CSS lives in the template
+  if(st.k === 'listed') return `<b class="rv2-pill is-lf2-listed"${css('#c0392b', '#fff')} title="${escapeAttr(TX('ui.lf2-listed-tip') + extra)}">⚠ ${escapeHtml(TX('ui.lf2-listed'))}</b>`;
+  if(st.k === 'special') return `<b class="rv2-pill is-lf2-special"${css('#d9c27a', '#2a220b')} title="${escapeAttr(TX('ui.lf2-special-tip') + extra)}">${escapeHtml(TX('ui.lf2-special'))}</b>`;
+  const tip = st.where.length ? TX('ui.lf2-removed-elsewhere-tip', {lists: st.where.join(', ')}) : TX('ui.lf2-removed-tip');
+  return `<b class="rv2-pill is-lf2-removed"${css('#3f7d4e', '#fff')} title="${escapeAttr(tip + extra)}">✓ ${escapeHtml(TX('ui.lf2-removed'))}</b>`;
+}
 function rv1TilesHTML(list, kind, defs, secKey){
   if(!list.length) return '<span class="panel-sub">–</span>';
   return list.map(e=> rv1TileHTML(e, kind, defs, secKey)).join('');
@@ -32303,7 +32386,7 @@ function rv1TileHTML(e, kind, defs, secKey){
   const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
   const dd = defs[e.id], pt = dd ? basicPackTierOf(dd) : 0; // the pack a basic pack also gives it from, as a pill (was a tag under the small tile)
   const baby = ui13IsBaby(e.id, defs), unlikely = e.flag === 'unlikely';
-  const pills = rv2TagsOf(e, baby).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
+  const pills = (kind === 'cut' ? lf2CutPillHTML(e, secKey) /* 2026-11-03 (LISTFIX2) */ : '') + rv2TagsOf(e, baby).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
   const fl = !!rvFlips[rvFlipTop + '|' + secKey + '|' + e.id]; // 2026-10-29 (UI3, S10): a toggle made earlier this session is still on
   return `<span class="rv1-tile is-${kind}${fl ? ' is-flipped' : ''}${baby ? ' is-baby' : ''}${unlikely ? ' is-unlikely' : ''}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}" data-rv-baby="${baby ? 1 : 0}" data-rv-unlikely="${unlikely ? 1 : 0}">`
     + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, why: e.why || ''})
@@ -32481,7 +32564,7 @@ function pk1OpenMapCards(mapId){
   }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); }; // 2026-11-01 (UI13, HH3): not while the card editor has it hidden
@@ -35860,6 +35943,7 @@ function endMatch(opts){
   standardMatchActive = false;
   if(!(opts && opts.keepResume) && matchState && matchState.mode !== 'tutorial') bumpFightSerial(); // D53: a row's "New!" lasts the fight it first happened in
   try{ EMOTE_LAST_HIT.clear(); }catch(e){}
+  try{ document.querySelectorAll('body > .speech-bubble').forEach(b=> b.remove()); barkCurrent = null; }catch(e){} // 2026-11-03 (package FIX8, QA2 minor 3): the fight's last speech bubble ("Victory is ours!") stayed on the map
   SoundKit.stopAll();
   document.documentElement.classList.remove('bw-resolving'); document.body.classList.remove('match-ended'); syncFightTimeScale(null);
   // 2026-10-12 (user: "Tutorial disappears when a mission ends. If I didn't click next, it is silenced once"): a tip you
@@ -43730,7 +43814,7 @@ async function resolveRoundCore(opts){
     // Tutorial (2026-09-23, batch #28) excluded for the same reason Sandbox is: a scripted
     // onboarding fight against a fixed Basics-tier opponent isn't a real result and shouldn't
     // pollute the player's actual win/loss ledger.
-    if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial' && m.mode!=='coop') recordMatchResult(m.winner, m.mode); // + COOP2: a vault floor pays as a raid fight, not on the win/loss ledger
+    if(m.mode!=='pc' && m.mode!=='sandbox' && m.mode!=='tutorial' && m.mode!=='coop' && !(m.mode==='conquest' && (m.adminTest || m.proFight))) recordMatchResult(m.winner, m.mode); /* 2026-11-03 (FIX8, QA2 M4): road (conquest) fights count on the ledger too, so First Victory and the Battles medals move; recordMatchResult pays nothing for them (gold/dust only for quick battles) */ // + COOP2: a vault floor pays as a raid fight, not on the win/loss ledger
     try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest && !m.towerReplay && !m.rewardDuplicate) heroAwardBattle(m); }catch(e){} // 2026-10-18 (package Z): a free Spire replay gives nothing
     if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
       try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw'), standard: !!m.standard || undefined, myDeck: m.standard ? 'Standard deck' : ((getActiveDeck() || {}).name || undefined)}); }catch(e){} // 2026-10-21 (package AR): + your deck's name and the format, for the Profile's match log
@@ -46935,7 +47019,7 @@ function wireWinLossRewardAnim(){
       onComplete: ()=>{ countEl.textContent = '+'+target; countEl.classList.remove('is-counting'); countEl.classList.add('is-counted'); }});
     countEl.classList.add('is-counting');
   });
-  { let waited = 0; const wait = ()=>{ if(document.querySelector('.rr-stage') && waited < 20000){ waited += 120; setTimeout(wait, 120); } else { startCounts(); setTimeout(baseDustBurst, 2400 + counts.length*180); } }; setTimeout(wait, 500); }
+  { let waited = 0; const wait = ()=>{ if(document.querySelector('.rr-stage') && waited < 5000 /* 2026-11-03 (FIX8, QA2 minor 7): was 20 s, so on a slow device the rewards read +0 for as long as the card reveal ran; the count now starts after 5 s at most */){ waited += 120; setTimeout(wait, 120); } else { startCounts(); setTimeout(baseDustBurst, 2400 + counts.length*180); } }; setTimeout(wait, 500); }
   rewardsCheer();
   try{ rewardCardsReveal(); }catch(e){}
 }
@@ -54778,7 +54862,7 @@ function homeTileDetails(){
   const out = {};
   try{
     const p = loadConquestProgress();
-    for(const map of CONQUEST_MAPS){ if(!isMapUnlocked(map, p)) continue; const i = map.nodes.findIndex((n, k)=> n.kind!=='tutorial' && isNodeVisible(map, n, k, p) && !p.completed.includes(conquestNodeId(map.id, n.key))); if(i >= 0){ out.play = `Next: ${map.nodes[i].icon||''} ${map.nodes[i].name}`; break; } }
+    for(const map of CONQUEST_MAPS){ if(!isMapUnlocked(map, p)) continue; const i = map.nodes.findIndex((n, k)=> n.kind!=='tutorial' && isNodeVisible(map, n, k, p) && !p.completed.includes(conquestNodeId(map.id, n.key))); if(i >= 0){ out.play = `Next: ${map.nodes[i].icon||''} ${map.nodes[i].name}`; out.playMap = map.id; /* 2026-11-03 (FIX8, QA2 minor 9) */ break; } }
   }catch(e){}
   try{ const d = (myDecks||[]).find(x=> x.id===activeDeckId); out.deck = `${(d && d.name) || 'Your deck'} · ⚔ ${mainDeckLevel(myDeckCounts, myLeaderId) || 1}`; }catch(e){}
   try{ const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].test && !defs[id].token && !isHofVariant(defs[id])); out.codex = (()=>{ const c = collectionStats(); return `${c.owned} / ${c.total} cards`; })(); }catch(e){}
@@ -54834,7 +54918,7 @@ function renderHome(){
       ${'' /* 2026-10-17 (user: "No need for "Start the tutorial" button since we get right into it."): removed; a paused tutorial resumes from the 🎓 on the Outskirts map */}
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
         ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Continue</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
-          : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
+          : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"${sub.playMap ? ` data-fix8map="${escapeAttr(sub.playMap)}"` : ''}><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
         ${raidHome ? `${arenaTile}<button class="btn primary big home-menu-btn home-tile" id="homeRaidBtn"><span class="tab-emoji">🐲</span><span>${(()=>{ try{ return liveRaidDefs().length >= 2 ? 'Raids' : 'Raid'; }catch(e){ return 'Raid'; } })()}</span><small class="home-sub">${escapeHtml(sub.raid || 'Team up against a raid boss')}</small></button>${big('deck','⛺','Camp')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}`
           : `${big('deck','⛺','Camp')}${arenaHome ? arenaTile : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}`}
         ${raidHome && tabOpen('nest') ? `<button type="button" class="home-note note-nest" data-hometab="nest" title="Nest"><i class="pin" aria-hidden="true">📌</i><b>🪺 Nest</b><small>${escapeHtml(sub.nest || 'Eggs and babies')}</small></button>` : ''}
@@ -54854,7 +54938,9 @@ function renderHome(){
       </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
       <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>
     </div>`;
-  root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=>{ const t = b.getAttribute('data-hometab'); if(t === 'tavern') openTavern(); else homeGo(t); }));
+  root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=>{ const t = b.getAttribute('data-hometab');
+    if(t === 'play' && b.dataset.fix8map && !matchState){ try{ const pm = CONQUEST_MAPS.find(x=> x.id === b.dataset.fix8map); if(pm && isMapUnlocked(pm, loadConquestProgress()) && !(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(pm))){ conquestSelectedMap = pm.id; conquestSelectedNodeKey = null; playSubTab = 'conquest'; } }catch(e){} } // 2026-11-03 (FIX8, QA2 minor 9): "Play - Next: X" opens the map X is on
+    if(t === 'tavern') openTavern(); else homeGo(t); }));
   const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ if(!resumeAbandonedMatchNow()) renderHome(); });
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
   const cb = document.getElementById('homeCommunityBtn');
@@ -57265,7 +57351,7 @@ function packCardPool(defs, pool, exact, gated){
   const ok = pool === 'basic' ? new Set(BASIC_PACK_TIERS) : (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
   const early = gated && !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12; gated callers only since RW3)
   const reach = !gated || adminModeEnabled ? Infinity : (()=>{ try{ return trackMapReached(); }catch(e){ return 0; } })();
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || isEasterEgg(d) /* 2026-10-19 (package EE) */ || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; if(!packCardReached(d, reach)) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.derivedFrom || /@(lv|p)\d/.test(id)) return false; /* 2026-11-03 (FIX8, QA2 M6): a fight's overlay copies ("bramble-sprout@lv1", "@p3") are in getCardDefs() while a match is live; a pack paid at a fight's end rolled one and showed it as "undefined" */ if(d.token || d.test || isUnattainable(d) || isEasterEgg(d) /* 2026-10-19 (package EE) */ || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; if(!packCardReached(d, reach)) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
 }
 // 2026-10-22 (package DV, owner 00:43: "Then decide which (1-2) will be skirmish rewards. The rest will be generic pack rewards."): a
 // map's cards that are not its skirmish rewards are basic-pack cards with that map ({kind:'pack', tier:1, map}); the packs and the
@@ -57313,7 +57399,9 @@ function rollPackCards(pack, opts){
   const n = pack.cards||3, cap = Math.max(1, Math.ceil(n / Math.max(1, pool.length)));
   let guard = 0;
   while(out.length < n && guard++ < 500){ let left = pool.filter(id=> out.filter(x=> x===id).length < cap); if(!left.length) break;
-    if(opts && opts.newFirst){ const fresh = left.filter(id=> !out.includes(id) && !copiesOwned(id) && !myUnlockedCardIds.has(id)); if(fresh.length) left = fresh; } // RW5
+    if(opts && opts.newFirst){ const fresh = left.filter(id=> !out.includes(id) && !copiesOwned(id) && !myUnlockedCardIds.has(id)); if(fresh.length) left = fresh; // RW5
+      else { // 2026-11-03 (FIX8, QA2 M2): no new card left (the early gate leaves very few): the cards you hold the fewest copies of, and none twice in a pack while another is left, so a run of level packs is not all House Cat
+        const nr = left.filter(id=> !out.includes(id)); if(nr.length) left = nr; const low = Math.min(...left.map(id=> copiesOwned(id))); left = left.filter(id=> copiesOwned(id) === low); } }
     out.push(pick(left)); }
   while(out.length < n) out.push(pick(pool));
   return out.sort(()=> Math.random()-0.5);
@@ -57658,7 +57746,9 @@ function rollFactionPackCards(fp, rnd){
   // lowest first, plain first on Maps 0-1); a people's bundle keeps the pack weights
   const ownPick = fp.kind === 'faction' ? (list=>{ const got = []; return ()=>{ const id = factionPackPoolPick(list, rnd, got.length) /* 2026-10-23 (RW5): out of the faction pool */ || factionTrackPick(list, rnd, {received: factionReceived() + got.length}); if(id) got.push(id); return id; }; })(own) : ()=> pick(own);
   for(let i = 0; i < FACTION_PACK_OWN; i++){ const id = ownPick(); if(id) out.push({id, from:'own'}); }
-  for(let i = 0; i < FACTION_PACK_GENERAL; i++){ const id = pick(gen); if(id) out.push({id, from:'general'}); }
+  for(let i = 0; i < FACTION_PACK_GENERAL; i++){ // 2026-11-03 (FIX8, QA2 M2): new first, and never a card the pack already holds while another is left
+    let g = gen.filter(id=> !out.some(o=> o.id === id)); if(!g.length) g = gen; if(REWARD_NEW_FIRST){ const nw = g.filter(id=> !copiesOwned(id)); if(nw.length) g = nw; }
+    const id = pick(g); if(id) out.push({id, from:'general'}); }
   return {pulls: out, bonus: null};
 }
 function openFactionPack(id){
@@ -57916,9 +58006,9 @@ function factionPoolPickOf(st, ids, rnd, map){
   const w = id=> (FACTION_SIDE_WEIGHT[factionSideOf(defs[id])] || 1) * Math.max(1, st.left[id]);
   const tot = pool.reduce((t, id)=> t + w(id), 0); let r = rnd() * tot; for(const id of pool){ r -= w(id); if(r <= 0) return id; } return pool[pool.length - 1];
 }
-function factionSetPick(st, rnd){
+function factionSetPick(st, rnd, mineOnly){
   const defs = getCardDefs(), map = trackMapReached();
-  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]));
+  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]) && !(mineOnly && factionSideOf(defs[id]) === 'other')); // 2026-11-03 (FIX8, QA2 minor 11): mineOnly = not the other side's cards
   const want = id=> factionClimbWant(factionSideOf(defs[id]), Math.max(copiesOwned(id), (st.given && st.given[id]) || 0), st.left[id]); // RW5: climbing the tree
   const left = {}; live.forEach(id=>{ const k = factionRarityKey(defs[id].rarity); left[k] = (left[k] || 0) + want(id); });
   const step = st.patternStep | 0, pr = factionPatternRarity(step, map, left);
@@ -57933,8 +58023,8 @@ function factionReward(rnd){
   factionTakeOut(st, pick); saveFactionPool(st);
   return grantOne(pick, 'factionReward') ? pick : null;
 }
-function factionDrawSet(n, rnd){ rnd = rnd || Math.random; const st = loadFactionPool(), out = [];
-  for(let i = 0; i < (n|0); i++){ const id = factionSetPick(st, rnd); if(!id) break; factionTakeOut(st, id); out.push(id); }
+function factionDrawSet(n, rnd, mineOnly){ rnd = rnd || Math.random; const st = loadFactionPool(), out = [];
+  for(let i = 0; i < (n|0); i++){ const id = (mineOnly && factionSetPick(st, rnd, true)) || factionSetPick(st, rnd); if(!id) break; factionTakeOut(st, id); out.push(id); }
   saveFactionPool(st); return out; }
 function factionRandomReward(rnd){
   rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
@@ -57947,7 +58037,9 @@ function factionRandomReward(rnd){
 function factionPackPoolPick(ids, rnd, extra){
   if(!FACTION_POOL_RW5) return null; const st = loadFactionPool(), set = new Set(ids);
   const live = Object.keys(st.left).filter(id=> set.has(id) && st.left[id] > 0); if(!live.length) return null;
-  const id = factionTrackPick(live, rnd || Math.random, {received: factionReceived(st) + (extra|0)}, x=> st.left[x]); if(!id) return null;
+  const ctx = {received: factionReceived(st) + (extra|0)}; let id = null;
+  if(REWARD_NEW_FIRST){ const fresh = live.filter(x=> !copiesOwned(x) && !(st.given && st.given[x])); if(fresh.length) id = factionTrackPick(fresh, rnd || Math.random, ctx, x=> st.left[x]); } // 2026-11-03 (FIX8, QA2 M2): a card you don't have first, like the set rewards (the pack gave Shell-Cracker x2 with new Rivergate cards left)
+  if(!id) id = factionTrackPick(live, rnd || Math.random, ctx, x=> st.left[x]); if(!id) return null;
   st.left[id] -= 1; st.given = st.given || {}; st.given[id] = (st.given[id] || 0) + 1; saveFactionPool(st); return id; // creditFactionPack counts it as received
 }
 function factionGrowth(rnd){
@@ -58310,7 +58402,7 @@ function openPackAnimation(pack, opened, opts){
           <div class="po2-liner" aria-hidden="true"></div>
           <div class="po2-art" style="${(()=>{ const a2 = packCoverArt(pack, o.faceK != null ? o.faceK : (o.faceK = packIdx + Math.floor(Math.random()*8))) || art; return a2 ? `background-image:url('${escapeAttr(a2)}')` : ''; })()}"></div>
           <span class="po2-foil" aria-hidden="true"></span>
-          <div class="po2-label"><span class="po2-ico">${pack.icon}</span><b>${escapeHtml(pack.name)}</b><small>${o.results.length} cards${bundle ? ` · ${packIdx+1}/${opened.length}` : ''}</small></div>
+          <div class="po2-label"><span class="po2-ico">${pack.icon}</span><b>${escapeHtml(pack.name)}</b><small>${o.results.length === 1 ? '1 card' : o.results.length + ' cards'}</small></div>${'' /* 2026-11-03 (FIX8, QA2 minor 1): "1 cards" fixed, and the pack's own "1/2" is gone: the top bar already says "Pack 1 of 2" */}
           <div class="po2-crimp po2-crimp-b" aria-hidden="true"></div>
         </div>
         <button type="button" class="po2-strip" id="poStrip" aria-label="Tear open the pack">
@@ -61772,7 +61864,8 @@ function wireSettingsButton(idSuffix){
   if(bfSelect){
     const current = loadBattlefieldBgOverride();
     bfSelect.innerHTML = `<option value="auto">🗺️ Auto (by map)</option><option value="calm">🌿 Calm (minimal)</option>` +
-      CONQUEST_MAPS.map(map=>`<option value="${map.id}">${map.icon} ${escapeAttr(map.name)}</option>`).join('');
+      // 2026-11-03 (package FIX8, QA2 minor 12): only the maps you can already open (and the one picked now); no Reserved placeholders, no late maps. Admin sees all.
+      CONQUEST_MAPS.filter(map=>{ try{ return adminModeEnabled || map.id === current || (!map.reserved && isMapUnlocked(map, loadConquestProgress())); }catch(e){ return true; } }).map(map=>`<option value="${map.id}">${map.icon} ${escapeAttr(map.name)}</option>`).join('');
     bfSelect.value = current;
     // A stored value from a map that no longer exists (shouldn't happen, but defensive) would
     // otherwise silently leave the <select> on its first option while the pill still applies a

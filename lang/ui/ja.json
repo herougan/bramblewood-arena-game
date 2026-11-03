@@ -5001,5 +5001,11 @@
  "An army that isn't paid starts thinking. Good. Let it think.": "給金の出ない軍は考え始める。よし。考えさせておけ。",
  "A coin from the Counting House, fallen in a crack. Someone bit it to test it.": "勘定所の金貨が隙間に落ちている。誰かが確かめるために噛んだ跡がある。",
  "And then left it there?": "で、そのまま置いていったのか？",
- "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "噛み跡を見れば金の下は鉛だとわかる。大富豪の金貨でさえ鎧を着ているのさ。"
+ "The bite says it's lead under the gold. Even the Magnate's coins wear armour.": "噛み跡を見れば金の下は鉛だとわかる。大富豪の金貨でさえ鎧を着ているのさ。",
+ "{v1}/{v2} cleared": "{v1}/{v2} 制覇",
+ "{v1} {v2}/{v3} cleared": "{v1} {v2}/{v3} 制覇",
+ "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} 制覇",
+ "Cleared": "制覇",
+ "{v1} card{s} collected": "{v1}枚のカードを入手",
+ "Clear {v1} / {v2}": "{v1} / {v2}をクリア"
 }
