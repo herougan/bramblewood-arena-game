@@ -1,6 +1,6 @@
 {
  "about": "BAL13 card flags (tools/bal13/card_flags_2026_11_02.js); flags only",
- "road": "summary-2026-11-03-led",
+ "road": "summary-2026-11-03b-led",
  "games": 40,
  "gap": 20,
  "fights": [
@@ -126,7 +126,7 @@
     },
     "enough": true
    },
-   "ms": 16110
+   "ms": 20143
   },
   {
    "leader": "old-snapjaw",
@@ -282,7 +282,7 @@
     },
     "enough": false
    },
-   "ms": 16477
+   "ms": 20719
   },
   {
    "leader": "old-snapjaw",
@@ -406,7 +406,7 @@
     },
     "enough": true
    },
-   "ms": 23387
+   "ms": 30087
   },
   {
    "leader": "wandering-traveller",
@@ -562,7 +562,7 @@
     },
     "enough": false
    },
-   "ms": 9373
+   "ms": 11985
   },
   {
    "leader": "wandering-traveller",
@@ -718,7 +718,7 @@
     },
     "enough": false
    },
-   "ms": 8432
+   "ms": 10548
   },
   {
    "leader": "wandering-traveller",
@@ -866,7 +866,7 @@
     },
     "enough": false
    },
-   "ms": 11119
+   "ms": 13894
   },
   {
    "leader": "the-gannet-queen",
@@ -1014,7 +1014,7 @@
     },
     "enough": false
    },
-   "ms": 13696
+   "ms": 17664
   },
   {
    "leader": "the-gannet-queen",
@@ -1138,7 +1138,7 @@
     },
     "enough": true
    },
-   "ms": 13645
+   "ms": 16341
   },
   {
    "leader": "old-shell",
@@ -1278,7 +1278,7 @@
     },
     "enough": true
    },
-   "ms": 11726
+   "ms": 15247
   },
   {
    "leader": "old-shell",
@@ -1402,7 +1402,7 @@
     },
     "enough": true
    },
-   "ms": 14810
+   "ms": 18432
   },
   {
    "leader": "old-shell",
@@ -1534,7 +1534,7 @@
     },
     "enough": true
    },
-   "ms": 25754
+   "ms": 31816
   },
   {
    "leader": "old-shell",
@@ -1690,7 +1690,7 @@
     },
     "enough": false
    },
-   "ms": 30327
+   "ms": 36972
   },
   {
    "leader": "old-shell",
@@ -1838,7 +1838,7 @@
     },
     "enough": true
    },
-   "ms": 17282
+   "ms": 22917
   },
   {
    "leader": "old-shell",
@@ -1978,7 +1978,7 @@
     },
     "enough": true
    },
-   "ms": 28937
+   "ms": 37223
   },
   {
    "leader": "old-shell",
@@ -2126,7 +2126,7 @@
     },
     "enough": false
    },
-   "ms": 14874
+   "ms": 19195
   },
   {
    "leader": "the-gannet-queen",
@@ -2266,7 +2266,7 @@
     },
     "enough": false
    },
-   "ms": 11384
+   "ms": 15799
   },
   {
    "leader": "drowned-matriarch",
@@ -2390,7 +2390,7 @@
     },
     "enough": true
    },
-   "ms": 11651
+   "ms": 16185
   },
   {
    "leader": "old-snapjaw",
@@ -2530,7 +2530,7 @@
     },
     "enough": false
    },
-   "ms": 12050
+   "ms": 16586
   },
   {
    "leader": "old-snapjaw",
@@ -2686,7 +2686,7 @@
     },
     "enough": false
    },
-   "ms": 12679
+   "ms": 16212
   },
   {
    "leader": "old-snapjaw",
@@ -2810,7 +2810,7 @@
     },
     "enough": true
    },
-   "ms": 11591
+   "ms": 15386
   },
   {
    "leader": "old-snapjaw",
@@ -2950,7 +2950,7 @@
     },
     "enough": false
    },
-   "ms": 12070
+   "ms": 16610
   },
   {
    "leader": "heron-hag",
@@ -3106,7 +3106,7 @@
     },
     "enough": false
    },
-   "ms": 10740
+   "ms": 15045
   },
   {
    "leader": "heron-hag",
@@ -3246,7 +3246,7 @@
     },
     "enough": true
    },
-   "ms": 12310
+   "ms": 15488
   },
   {
    "leader": "heron-hag",
@@ -3386,7 +3386,7 @@
     },
     "enough": false
    },
-   "ms": 12981
+   "ms": 16902
   },
   {
    "leader": "heron-hag",
@@ -3542,7 +3542,7 @@
     },
     "enough": false
    },
-   "ms": 10871
+   "ms": 13607
   },
   {
    "leader": "heron-hag",
@@ -3666,7 +3666,7 @@
     },
     "enough": true
    },
-   "ms": 12349
+   "ms": 15904
   },
   {
    "leader": "old-snapjaw",
@@ -3806,7 +3806,7 @@
     },
     "enough": false
    },
-   "ms": 18332
+   "ms": 24453
   },
   {
    "leader": "old-snapjaw",
@@ -3962,7 +3962,7 @@
     },
     "enough": false
    },
-   "ms": 19521
+   "ms": 25504
   },
   {
    "leader": "old-snapjaw",
@@ -4118,7 +4118,7 @@
     },
     "enough": false
    },
-   "ms": 15488
+   "ms": 21797
   },
   {
    "leader": "echo-matriarch",
@@ -4274,7 +4274,7 @@
     },
     "enough": false
    },
-   "ms": 8434
+   "ms": 10403
   },
   {
    "leader": "echo-matriarch",
@@ -4422,7 +4422,7 @@
     },
     "enough": true
    },
-   "ms": 9167
+   "ms": 13056
   },
   {
    "leader": "echo-matriarch",
@@ -4570,7 +4570,7 @@
     },
     "enough": true
    },
-   "ms": 12277
+   "ms": 17141
   },
   {
    "leader": "echo-matriarch",
@@ -4726,7 +4726,7 @@
     },
     "enough": false
    },
-   "ms": 16397
+   "ms": 24570
   },
   {
    "leader": "echo-matriarch",
@@ -4866,7 +4866,7 @@
     },
     "enough": false
    },
-   "ms": 21630
+   "ms": 30423
   },
   {
    "leader": "old-snapjaw",
@@ -5022,7 +5022,7 @@
     },
     "enough": false
    },
-   "ms": 10551
+   "ms": 14995
   },
   {
    "leader": "old-snapjaw",
@@ -5178,7 +5178,7 @@
     },
     "enough": false
    },
-   "ms": 12488
+   "ms": 17393
   },
   {
    "leader": "old-snapjaw",
@@ -5318,7 +5318,7 @@
     },
     "enough": false
    },
-   "ms": 10619
+   "ms": 14259
   },
   {
    "leader": "reef-admiral",
@@ -5474,7 +5474,7 @@
     },
     "enough": false
    },
-   "ms": 9170
+   "ms": 12743
   },
   {
    "leader": "reef-admiral",
@@ -5622,7 +5622,7 @@
     },
     "enough": false
    },
-   "ms": 13707
+   "ms": 18530
   },
   {
    "leader": "reef-admiral",
@@ -5634,10 +5634,10 @@
    "key": "10-A-4",
    "name": "The Undertow",
    "kind": "elite",
-   "measured": 27.5,
+   "measured": 25,
    "target": 60,
    "easy": false,
-   "base": 15,
+   "base": 17.5,
    "tries": [
     {
      "side": "player",
@@ -5645,7 +5645,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 32.5
+     "win": 37.5
     },
     {
      "side": "enemy",
@@ -5653,7 +5653,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 22.5
+     "win": 25
     },
     {
      "side": "enemy",
@@ -5661,7 +5661,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 22.5
+     "win": 25
     },
     {
      "side": "player",
@@ -5695,7 +5695,7 @@
      "step": 1,
      "dA": -1,
      "dH": 0,
-     "win": 22.5
+     "win": 25
     },
     "ladder": [
      {
@@ -5704,7 +5704,7 @@
       "step": 1,
       "dA": -1,
       "dH": 0,
-      "win": 22.5
+      "win": 25
      },
      {
       "side": "enemy",
@@ -5712,7 +5712,7 @@
       "step": 2,
       "dA": -2,
       "dH": 0,
-      "win": 27.5
+      "win": 32.5
      },
      {
       "side": "enemy",
@@ -5720,7 +5720,7 @@
       "step": 3,
       "dA": -3,
       "dH": 0,
-      "win": 30
+      "win": 35
      }
     ],
     "suggestion": {
@@ -5729,7 +5729,7 @@
      "step": 3,
      "dA": -3,
      "dH": 0,
-     "win": 30
+     "win": 35
     },
     "enough": false
    },
@@ -5740,7 +5740,7 @@
      "step": 1,
      "dA": 1,
      "dH": 0,
-     "win": 32.5
+     "win": 37.5
     },
     "ladder": [
      {
@@ -5749,7 +5749,7 @@
       "step": 1,
       "dA": 1,
       "dH": 0,
-      "win": 32.5
+      "win": 37.5
      },
      {
       "side": "player",
@@ -5757,7 +5757,7 @@
       "step": 2,
       "dA": 2,
       "dH": 0,
-      "win": 42.5
+      "win": 45
      },
      {
       "side": "player",
@@ -5765,7 +5765,7 @@
       "step": 3,
       "dA": 3,
       "dH": 0,
-      "win": 45
+      "win": 47.5
      }
     ],
     "suggestion": {
@@ -5774,11 +5774,11 @@
      "step": 3,
      "dA": 3,
      "dH": 0,
-     "win": 45
+     "win": 47.5
     },
     "enough": false
    },
-   "ms": 15114
+   "ms": 20654
   },
   {
    "leader": "old-snapjaw",
@@ -5934,7 +5934,7 @@
     },
     "enough": false
    },
-   "ms": 20008
+   "ms": 28547
   },
   {
    "leader": "old-snapjaw",
@@ -6058,7 +6058,7 @@
     },
     "enough": true
    },
-   "ms": 16589
+   "ms": 22066
   },
   {
    "leader": "old-snapjaw",
@@ -6214,7 +6214,7 @@
     },
     "enough": true
    },
-   "ms": 15917
+   "ms": 21421
   },
   {
    "leader": "old-snapjaw",
@@ -6370,7 +6370,7 @@
     },
     "enough": false
    },
-   "ms": 18205
+   "ms": 24692
   },
   {
    "leader": "old-snapjaw",
@@ -6510,7 +6510,7 @@
     },
     "enough": true
    },
-   "ms": 18650
+   "ms": 25480
   },
   {
    "leader": "pride-queen",
@@ -6666,7 +6666,7 @@
     },
     "enough": false
    },
-   "ms": 22432
+   "ms": 32654
   },
   {
    "leader": "pride-queen",
@@ -6814,7 +6814,7 @@
     },
     "enough": true
    },
-   "ms": 28646
+   "ms": 38318
   },
   {
    "leader": "pride-queen",
@@ -6970,7 +6970,7 @@
     },
     "enough": true
    },
-   "ms": 35132
+   "ms": 50169
   },
   {
    "leader": "old-snapjaw",
@@ -7094,7 +7094,7 @@
     },
     "enough": true
    },
-   "ms": 13617
+   "ms": 21068
   },
   {
    "leader": "old-snapjaw",
@@ -7250,7 +7250,7 @@
     },
     "enough": true
    },
-   "ms": 15337
+   "ms": 22946
   },
   {
    "leader": "old-snapjaw",
@@ -7390,7 +7390,7 @@
     },
     "enough": false
    },
-   "ms": 18866
+   "ms": 29410
   },
   {
    "leader": "wolfsbane-alpha",
@@ -7546,7 +7546,7 @@
     },
     "enough": false
    },
-   "ms": 35605
+   "ms": 54636
   },
   {
    "leader": "old-snapjaw",
@@ -7678,7 +7678,7 @@
     },
     "enough": true
    },
-   "ms": 30196
+   "ms": 43527
   },
   {
    "leader": "old-snapjaw",
@@ -7818,7 +7818,7 @@
     },
     "enough": true
    },
-   "ms": 25664
+   "ms": 34469
   },
   {
    "leader": "old-snapjaw",
@@ -7974,7 +7974,7 @@
     },
     "enough": true
    },
-   "ms": 14451
+   "ms": 19012
   },
   {
    "leader": "old-snapjaw",
@@ -8130,7 +8130,7 @@
     },
     "enough": false
    },
-   "ms": 20792
+   "ms": 25596
   },
   {
    "leader": "old-snapjaw",
@@ -8286,7 +8286,7 @@
     },
     "enough": true
    },
-   "ms": 19630
+   "ms": 24580
   },
   {
    "leader": "yeti-chieftain",
@@ -8442,7 +8442,7 @@
     },
     "enough": true
    },
-   "ms": 21319
+   "ms": 31586
   },
   {
    "leader": "yeti-chieftain",
@@ -8582,7 +8582,7 @@
     },
     "enough": true
    },
-   "ms": 23769
+   "ms": 29868
   },
   {
    "leader": "yeti-chieftain",
@@ -8738,7 +8738,7 @@
     },
     "enough": false
    },
-   "ms": 22909
+   "ms": 32254
   },
   {
    "leader": "yeti-chieftain",
@@ -8886,7 +8886,7 @@
     },
     "enough": true
    },
-   "ms": 19864
+   "ms": 27325
   },
   {
    "leader": "old-snapjaw",
@@ -9042,7 +9042,7 @@
     },
     "enough": false
    },
-   "ms": 31822
+   "ms": 42424
   },
   {
    "leader": "old-snapjaw",
@@ -9198,7 +9198,7 @@
     },
     "enough": false
    },
-   "ms": 27193
+   "ms": 36426
   },
   {
    "leader": "old-snapjaw",
@@ -9354,7 +9354,7 @@
     },
     "enough": false
    },
-   "ms": 43097
+   "ms": 58232
   },
   {
    "leader": "old-snapjaw",
@@ -9494,7 +9494,7 @@
     },
     "enough": true
    },
-   "ms": 20552
+   "ms": 26270
   }
  ],
  "multi": [

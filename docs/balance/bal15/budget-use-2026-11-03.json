@@ -1,0 +1,228 @@
+{
+ "tool": "tools/bal15/budget_use_2026_11_03.js",
+ "built": "2026-11-03",
+ "rows": [
+  {
+   "id": "gorge-wyrm",
+   "name": "Gorge Wyrm",
+   "inPlay": true,
+   "stats": "2/26",
+   "S": [
+    7.66,
+    7.32
+   ],
+   "use": [
+    0.87,
+    0.86
+   ],
+   "cap2": [
+    0.18,
+    0.18
+   ],
+   "verdict": [
+    "in band",
+    "in band"
+   ]
+  },
+  {
+   "id": "glacial-ape-king",
+   "name": "Glacial Ape-King",
+   "inPlay": true,
+   "stats": "6/40",
+   "S": [
+    1.57,
+    2.18
+   ],
+   "use": [
+    0.94,
+    0.95
+   ],
+   "cap2": [
+    0.35,
+    0.35
+   ],
+   "verdict": [
+    "in band",
+    "in band"
+   ]
+  },
+  {
+   "id": "tidepool-trapper-crab",
+   "name": "Tidepool Trapper Crab",
+   "inPlay": true,
+   "stats": "1/7",
+   "S": [
+    1.04,
+    0.61
+   ],
+   "use": [
+    0.85,
+    0.82
+   ],
+   "cap2": [
+    0.25,
+    0.24
+   ],
+   "verdict": [
+    "in band",
+    "in band"
+   ]
+  },
+  {
+   "id": "stoat-cutthroat",
+   "name": "Stoat Cutthroat",
+   "inPlay": true,
+   "stats": "3/10",
+   "S": [
+    5.92,
+    4.78
+   ],
+   "use": [
+    0.97,
+    0.92
+   ],
+   "cap2": [
+    0.34,
+    0.31
+   ],
+   "verdict": [
+    "in band",
+    "in band"
+   ]
+  },
+  {
+   "id": "wrong-way-salmon",
+   "name": "Wrong-Way Salmon",
+   "inPlay": true,
+   "stats": "1/10",
+   "S": [
+    3.22,
+    1.73
+   ],
+   "use": [
+    0.95,
+    0.86
+   ],
+   "cap2": [
+    0.25,
+    0.21
+   ],
+   "verdict": [
+    "in band",
+    "in band"
+   ]
+  },
+  {
+   "id": "otter-royal-guard",
+   "name": "Royal Guard",
+   "inPlay": true,
+   "stats": "3/6",
+   "S": [
+    10.21,
+    6.12
+   ],
+   "use": [
+    0.98,
+    0.82
+   ],
+   "cap2": [
+    0.38,
+    0.24
+   ],
+   "verdict": [
+    "in band",
+    "in band"
+   ]
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "inPlay": true,
+   "stats": "1/10",
+   "S": [
+    1.82,
+    0.33
+   ],
+   "use": [
+    0.72,
+    0.66
+   ],
+   "cap2": [
+    0.13,
+    0.12
+   ],
+   "verdict": [
+    "in band",
+    "in band"
+   ]
+  },
+  {
+   "id": "hoopoe-herald",
+   "name": "Hoopoe Herald",
+   "inPlay": true,
+   "stats": "2/12",
+   "S": [
+    -2.09,
+    -2.04
+   ],
+   "use": [
+    0.96,
+    0.97
+   ],
+   "cap2": [
+    0.48,
+    0.48
+   ],
+   "verdict": [
+    "in band",
+    "in band"
+   ]
+  },
+  {
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "inPlay": true,
+   "stats": "4/20",
+   "S": [
+    -4.29,
+    -3.7
+   ],
+   "use": [
+    0.86,
+    0.88
+   ],
+   "cap2": [
+    0.41,
+    0.42
+   ],
+   "verdict": [
+    "in band",
+    "in band"
+   ]
+  },
+  {
+   "id": "pika-hoarder",
+   "name": "Pika Hoarder",
+   "inPlay": true,
+   "stats": "3/13",
+   "S": [
+    -4.95,
+    -4.82
+   ],
+   "use": [
+    0.96,
+    0.96
+   ],
+   "cap2": [
+    0.59,
+    0.6
+   ],
+   "verdict": [
+    "in band",
+    "in band"
+   ]
+  }
+ ],
+ "newOver": [],
+ "newUnder": []
+}

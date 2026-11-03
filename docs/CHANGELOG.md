@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package BAL15 (the measures DEC1 left open; balancing roadmap step 1, skill balance; budget only)
+- **Tempo term at bramble 15 (BAL12-3):** a 0-Lumber, Wait 0-1 Rare reads 0.04 [-0.12, 0.20] of its body above the other Rare+ cards (400 fights a card, 15 T cards + 110 sampled). That is not separable from zero. Cap 2 limits none of them. On cap 1 (N x 0.96) it would put Dolphin Knight, Pike Lancer and Vigil Owl over, so it was not applied (decision BAL15-1). The budget keeps cap 2 at x0.85.
+- **Royal Guard's +3 Shield to every ally, its own item:** worth 6.08 [5.28, 7.25] at 400 fights, against 10.21 before. `grantShield.allies` 1.2 -> 0.72 a point; the On Spawn > Grant Shield pair stays x2.7. Royal Guard 3/6 now uses 0.82 of its budget (was 0.98), still in band, so no re-fit.
+- **BAL14's 15 wide items at 1,000 fights**, all converged. Re-priced: Drunk -3.7, Nightblind -2.12, Scatterbrained -4.82, Hunter 0.51 x N^-2.505, Backstab 0.0273 x N^3.578 (0.33 / 1.39 at 2 / 3), Earthquake 0.0815 x N^2.372. The rest were kept by the price rules. 10 cards' budget use moved; none left the band.
+- Tools: the price tool prices a Grant Shield field from its own trigger item and leaves it out of the pair. A power curve now "reads nothing" only when every reading does, and its value under 0.1 keeps 4 decimals. New `tools/bal15/` (tempo read, budget use). The pipeline writes actions to the price summary.
+- Summary `docs/balance/bal13/summary-2026-11-03b.md`: 80 green / 99 within 10 / 65 beyond 20 (BAL14 81 / 100 / 65), 28 maps OVER the 15% cap. Only two road fights moved, both from DEC1's cards: 19-6 37.5 -> 57.5 (target 40) and 10-A-4 27.5 -> 25 (target 60). Card flags: 65 fights, 12 that no single card change reaches.
+- Tests: new `tests/bal15-2026-11-03.js`. card-matrix 0 diffs.
+
 ## 2026-11-03 Package THEME5 (owner 11-03 09:39: more carried cards so each map has archetypes; proposal only)
 - The owner's new list-size rule written out per tier (Maps 11-20 carried +1; Maps 21+ own -1 and carried +2; side maps +1), with every list's own / carried counts and targets, and 34 carried candidates, each opening a deck plan distinct from the map's PRO / BPRO decks (20-card plans checked against the lists and copy caps; no optimizer run, the machine was busy). Also the skirmish plan for the later deck step: 3 fights a map get one down-tuned peak strategy each, the rest a random weaker blend. Nothing applied; decision THEME5-1. `docs/balance/theme5/carried-proposal-2026-11-03.md`, read-only helpers in `tools/theme5/`.
 ## 2026-11-03 Package DEC1 (owner 11-03 09:39: "Balance items you can choose. Like ENG and FIX and UI."; BAL14-3: "Just change the budget")

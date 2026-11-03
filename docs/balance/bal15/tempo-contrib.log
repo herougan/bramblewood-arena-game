@@ -1,0 +1,144 @@
+contrib (global-b15, Level 1, 6 copies, 400 fights a card, seed tools1): 125 card(s), pool 777, 410 fields
+  2525/50855 games, 41.8/s, about 19 min left
+  5600/50855 games, 46.4/s, about 16 min left
+  8800/50855 games, 48.6/s, about 14 min left
+  12400/50855 games, 51.4/s, about 12 min left
+  16200/50855 games, 53.7/s, about 11 min left
+  19550/50855 games, 54.1/s, about 10 min left
+  23475/50855 games, 55.7/s, about 8 min left
+  27075/50855 games, 56.1/s, about 7 min left
+  30975/50855 games, 57.1/s, about 6 min left
+  34575/50855 games, 57.3/s, about 5 min left
+  37925/50855 games, 57.2/s, about 4 min left
+  41500/50855 games, 57.4/s, about 3 min left
+  45175/50855 games, 57.6/s, about 2 min left
+  48825/50855 games, 57.8/s, about 1 min left
+  played 50855 games in 876 s
+fair line: per copy +6.2 + -0.090 x N points; median value / budget pt 0.170
+card                          N    contribution     per copy  value/pt  index  vs fair   z
+Salamander Pyromancer (epic) 35.05   +45.3 ± 5.4      +7.5    0.220  1.2941    +4.7  10.33
+Siege Rhino (veryrare)       38.09   +42.8 ± 5.1      +7.1    0.190  1.1176    +4.6  10.44
+Trapdoor Spider (veryrare)   23.49   +50.5 ± 5.1      +8.4    0.360  2.1176    +4.5  10.34
+Old Willow of the Ford (lege 45.27   +36.9 ± 5.4      +6.2    0.140  0.8235    +4.3  9.41
+Caldera Snow Leopard (superr 29.68   +44.0 ± 5.2      +7.3    0.250  1.4706    +4.0  9.01
+Badger Berserker (rare)      28.71   +43.6 ± 5.2      +7.3    0.250  1.4706    +3.8  8.65
+Ür-Elk (veryrare)            37.85   +36.3 ± 5.3      +6.0    0.160  0.9412    +3.5  7.75
+Ember Jackal (rare)          21.68   +45.0 ± 5.2      +7.5    0.350  2.0588    +3.4  7.65
+Ent (rare)                    33.3   +37.5 ± 5.5      +6.3    0.190  1.1176    +3.2  6.92
+Battlement Heron (rare)      27.81   +40.1 ± 5.1      +6.7    0.240  1.4118    +3.2  7.24
+Giant Cave Huntsman (rare)   28.45   +39.1 ± 5.3      +6.5    0.230  1.3529    +3.0  6.78
+Nautilus Drifter (veryrare)  35.05   +33.0 ± 5.4      +5.5    0.160  0.9412    +2.7  5.76
+Tide Seahorse (veryrare)     23.49   +39.3 ± 5.4      +6.5    0.280  1.6471    +2.6  5.65
+Dolphin Knight (rare)        20.22   +41.0 ± 5.1      +6.8    0.340      2    +2.6  5.93
+Pike Lancer (rare)           20.22   +41.0 ± 5.1      +6.8    0.340      2    +2.6  5.93
+Swordfish Spearman (rare)    28.22   +35.9 ± 5.4      +6.0    0.210  1.2353    +2.5  5.41
+Howdah Archers (rare)        27.58   +35.4 ± 5.2      +5.9    0.210  1.2353    +2.4  5.34
+Beetle Battering-Ram (veryra 33.12   +32.1 ± 5.4      +5.3    0.160  0.9412    +2.3  5.08
+Quicksand Queen (veryrare)   32.19   +32.5 ± 5.4      +5.4    0.170      1    +2.3  5
+Riverstone Slinger (rare)    20.22   +38.3 ± 5.0      +6.4    0.320  1.8824    +2.1  4.99
+Ossuary Lammergeier (superra 29.21   +33.0 ± 5.3      +5.5    0.190  1.1176    +2.1  4.67
+Colony (rare)                24.42   +35.5 ± 5.0      +5.9    0.240  1.4118    +2.1  4.85
+Hercules Beetle (rare)       30.79   +31.6 ± 5.3      +5.3    0.170      1    +2.0  4.51
+Dune Packrat (rare)          25.47   +33.3 ± 5.3      +5.5    0.220  1.2941    +1.8  3.98
+Hedgehog Herbalist (rare)    25.24   +33.1 ± 5.4      +5.5    0.220  1.2941    +1.8  3.79
+Dust-devil Kestrel (veryrare 31.96   +29.3 ± 5.5      +4.9    0.150  0.8824    +1.7  3.71
+Fox Kit (common)             15.29   +38.5 ± 5.1      +6.4    0.420  2.4706    +1.7  3.94
+Otter Shieldback (uncommon)  27.91   +30.3 ± 5.3      +5.0    0.180  1.0588    +1.5  3.4
+Savanna Cheetah (veryrare)   22.85   +33.0 ± 5.2      +5.5    0.240  1.4118    +1.5  3.4
+Mangrove Manatee (rare)      33.65   +26.8 ± 5.3      +4.5    0.130  0.7647    +1.5  3.26
+Glass Octopus (rare)         29.62   +28.5 ± 5.3      +4.8    0.160  0.9412    +1.4  3.1
+Fawn Scout (rare)            18.29   +34.8 ± 5.2      +5.8    0.320  1.8824    +1.4  3.1
+Sunspire Sky-Sovereign (hero 28.04   +29.3 ± 5.3      +4.9    0.170      1    +1.4  3.02
+Raccoon Bandit (rare)        22.32   +32.3 ± 5.4      +5.4    0.240  1.4118    +1.3  2.87
+Upside-Down Bat (uncommon)   17.47   +35.0 ± 5.0      +5.8    0.330  1.9412    +1.3  3.09
+Shellwright Apprentice (comm 17.88   +33.8 ± 5.0      +5.6    0.310  1.8235    +1.2  2.73
+Raven Scout (rare)           16.76   +34.0 ± 4.8      +5.7    0.340      2    +1.1  2.65
+Gold-throated Acolyte (uncom 23.43   +30.0 ± 5.2      +5.0    0.210  1.2353    +1.1  2.36
+Tunnel Ant (rare)            22.21   +30.4 ± 5.3      +5.1    0.230  1.3529    +1.0  2.24
+Ore-Smelter Mole (uncommon)  26.41   +27.1 ± 5.2      +4.5    0.170      1    +0.9  1.96
+Tiny Cave Dweller (uncommon) 15.02   +33.5 ± 4.9      +5.6    0.370  2.1765    +0.8  2.02
+Bramblewood Lynx (rare)      25.03   +27.6 ± 5.0      +4.6    0.180  1.0588    +0.8  1.89
+Pangolin Roller (rare)       25.47   +27.3 ± 5.1      +4.5    0.180  1.0588    +0.8  1.81
+Marshal of Rivergate (epic)  34.87   +21.8 ± 5.4      +3.6    0.100  0.5882    +0.8  1.69
+Corpse-flower Beetle (rare)  26.58   +26.5 ± 5.0      +4.4    0.170      1    +0.8  1.8
+Ashwing Ptarmigan (rare)     24.02   +27.1 ± 5.0      +4.5    0.190  1.1176    +0.6  1.49
+Otter Centurion (rare)       19.05   +29.6 ± 4.9      +4.9    0.260  1.5294    +0.6  1.38
+Land Tiller (common)         18.29   +29.6 ± 4.7      +4.9    0.270  1.5882    +0.5  1.26
+Leafcutter Gardener (common) 14.56   +31.6 ± 5.0      +5.3    0.360  2.1176    +0.5  1.12
+Cricket Drummer (common)     13.82   +31.9 ± 4.8      +5.3    0.380  2.2353    +0.4  1.11
+Duckling Squadron (common)    18.9   +28.9 ± 4.8      +4.8    0.250  1.4706    +0.4  1.06
+Snow Owl Sentinel (superrare 29.44   +22.8 ± 5.5      +3.8    0.130  0.7647    +0.4  0.88
+Mountain Goat Climber (uncom 18.99   +28.2 ± 4.7      +4.7    0.250  1.4706    +0.3  0.86
+Pack Mule (common)           17.59   +29.0 ± 5.1      +4.8    0.270  1.5882    +0.3  0.77
+Adder Ambusher (rare)        23.61   +25.4 ± 5.3      +4.2    0.180  1.0588    +0.3  0.67
+Alligator Gar (rare)         27.75   +23.0 ± 5.3      +3.8    0.140  0.8235    +0.3  0.65
+Ant Warrior (uncommon)       15.72   +29.5 ± 5.0      +4.9    0.310  1.8235    +0.2  0.56
+Ravenous Wolverine (rare)    21.68   +26.0 ± 5.0      +4.3    0.200  1.1765    +0.2  0.52
+Royal Guard (superrare)      25.71   +23.3 ± 4.9      +3.9    0.150  0.8824    +0.1  0.36
+Gatling Hog (rare)           23.84   +24.1 ± 5.0      +4.0    0.170      1    +0.1  0.26
+Grave-Grin Hyena (uncommon)  21.15   +25.6 ± 5.0      +4.3    0.200  1.1765    +0.1  0.26
+Otter Scout (rare)           17.25   +27.5 ± 4.7      +4.6    0.270  1.5882    +0.1  0.12
+Ash Cloud Condor (rare)      26.88   +21.9 ± 5.1      +3.6    0.140  0.8235    +0.0  0.07
+Echo Screecher (rare)        24.07   +23.5 ± 5.1      +3.9    0.160  0.9412    +0.0  0.07
+Coral Polyp Colony (uncommon 19.52   +26.1 ± 5.1      +4.3    0.220  1.2941    +0.0  0.07
+Hagfish Silencer (rare)      22.21   +24.1 ± 5.1      +4.0    0.180  1.0588    -0.0  -0.09
+Chapel Tortoise (uncommon)   22.79   +23.1 ± 5.2      +3.9    0.170      1    -0.2  -0.36
+Goose Sentry (rare)          27.81   +20.1 ± 5.2      +3.4    0.120  0.7059    -0.2  -0.4
+Testudo Tortoise (rare)      35.57   +15.6 ± 5.1      +2.6    0.070  0.4118    -0.2  -0.44
+Quillguard (rare)            30.86   +18.3 ± 5.4      +3.0    0.100  0.5882    -0.2  -0.43
+Otter Paddler (starter)      12.34   +28.7 ± 4.8      +4.8    0.390  2.2941    -0.2  -0.52
+Pond Duck (starter)          12.34   +28.5 ± 4.7      +4.8    0.380  2.2353    -0.3  -0.62
+Bee Forager (starter)        11.75   +28.6 ± 5.2      +4.8    0.410  2.4118    -0.3  -0.64
+Archerfish (uncommon)        22.67   +22.3 ± 4.7      +3.7    0.160  0.9412    -0.3  -0.78
+Ember Revenant (veryrare)    32.36   +16.5 ± 5.1      +2.8    0.080  0.4706    -0.4  -0.81
+Swordbill Challenger (rare)  20.22   +23.3 ± 5.3      +3.9    0.190  1.1176    -0.4  -0.82
+Vampire Bat (rare)           20.69   +23.0 ± 5.2      +3.8    0.190  1.1176    -0.4  -0.86
+Cottontail (starter)         12.34   +26.3 ± 4.5      +4.4    0.350  2.0588    -0.6  -1.61
+Glass Changeling (rare)      25.24   +18.4 ± 5.0      +3.1    0.120  0.7059    -0.7  -1.66
+Robin Redbreast (uncommon)   14.61   +24.0 ± 4.6      +4.0    0.270  1.5882    -0.8  -1.97
+Lodge Engineer (uncommon)    29.27   +15.4 ± 4.8      +2.6    0.090  0.5294    -0.8  -2.04
+Beluga (rare)                29.85   +14.8 ± 5.1      +2.5    0.080  0.4706    -0.9  -2.05
+Bison Bulldozer (uncommon)   24.31   +17.9 ± 5.1      +3.0    0.120  0.7059    -0.9  -2.02
+Glacial Ape-King (common)    63.13    -4.8 ± 4.3      -0.8   -0.010  -0.0588    -1.0  -2.65
+Pincushion Urchin (common)   16.72   +21.3 ± 4.8      +3.5    0.210  1.2353    -1.0  -2.54
+Meadow Rabbit (starter)      12.34   +23.6 ± 4.6      +3.9    0.320  1.8824    -1.1  -2.71
+Vampire Squid (rare)         33.24   +11.3 ± 4.9      +1.9    0.060  0.3529    -1.1  -2.73
+Compost Grub (common)        13.57   +22.1 ± 4.7      +3.7    0.270  1.5882    -1.2  -2.96
+Thorn Shrike (rare)          23.84   +16.0 ± 5.0      +2.7    0.110  0.6471    -1.2  -2.89
+Sunspire Envoy (rare)        23.37   +16.1 ± 5.3      +2.7    0.110  0.6471    -1.3  -2.81
+The Magnate Duck (epic)      58.46    -4.1 ± 4.1      -0.7   -0.010  -0.0588    -1.3  -3.74
+Mangrove Kingfisher (rare)   20.51   +17.0 ± 4.8      +2.8    0.140  0.8235    -1.4  -3.43
+Dhole Matriarch (veryrare)   35.11    +8.3 ± 4.9      +1.4    0.040  0.2353    -1.5  -3.5
+Violet Vane Fletcher (starte 13.18   +20.6 ± 4.4      +3.4    0.260  1.5294    -1.5  -3.93
+Goliath Tentacle (epic)      41.71    +4.3 ± 4.8      +0.7    0.020  0.1176    -1.5  -3.66
+Quill Volley (rare)          22.85   +14.1 ± 4.7      +2.4    0.100  0.5882    -1.7  -4.16
+Octopus Tactician (uncommon) 30.67    +9.5 ± 4.7      +1.6    0.050  0.2941    -1.7  -4.18
+River Warden (rare)          26.99   +11.1 ± 4.9      +1.8    0.070  0.4118    -1.8  -4.21
+Ruby-Throat Duelist (rare)   20.22   +14.6 ± 4.8      +2.4    0.120  0.7059    -1.8  -4.43
+Hummingbird Needler (uncommo 15.26   +17.1 ± 4.9      +2.9    0.190  1.1176    -1.9  -4.49
+Alpine Salamander (common)    21.5   +13.5 ± 4.8      +2.3    0.100  0.5882    -1.9  -4.59
+Goliath Broodmother (legenda 49.29    -2.5 ± 4.8      -0.4   -0.010  -0.0588    -1.9  -4.64
+Woodland Caribou (uncommon)  24.77   +11.3 ± 4.8      +1.9    0.080  0.4706    -1.9  -4.71
+Cinder Hornet (common)       24.83   +11.1 ± 4.6      +1.8    0.070  0.4118    -2.0  -5
+Platypus Spur (uncommon)     21.97   +12.1 ± 4.5      +2.0    0.090  0.5294    -2.1  -5.37
+Rootworm Colony (common)     21.74   +12.1 ± 4.5      +2.0    0.090  0.5294    -2.1  -5.45
+Colossal Squid (veryrare)    47.31    -2.5 ± 4.4      -0.4   -0.010  -0.0588    -2.1  -5.58
+Iron Badger (epic)           40.65    +0.9 ± 4.8      +0.1    0.000      0    -2.2  -5.27
+Harbor Seal (common)         23.14   +10.9 ± 5.1      +1.8    0.080  0.4706    -2.2  -4.97
+Constrictor Coil (common)    29.26    +6.8 ± 4.8      +1.1    0.040  0.2353    -2.3  -5.49
+Harvest Mouse (starter)      12.34   +16.0 ± 3.8      +2.7    0.220  1.2941    -2.3  -7.13
+Banded Sea Krait (uncommon)  23.14    +9.3 ± 4.9      +1.5    0.070  0.4118    -2.4  -5.86
+Stoneheart Tortoise (common) 40.36    -1.6 ± 4.5      -0.3   -0.010  -0.0588    -2.6  -6.78
+Poison Dart Croaker (common) 21.27    +9.0 ± 4.6      +1.5    0.070  0.4118    -2.6  -6.82
+Glacier Wolf Pack (common)   26.76    +5.0 ± 4.5      +0.8    0.030  0.1765    -2.8  -7.37
+Pronghorn Racer (common)     19.34    +6.9 ± 4.5      +1.1    0.060  0.3529    -3.2  -8.33
+Permafrost Mammoth (common)  42.06    -6.3 ± 4.9      -1.0   -0.020  -0.1176    -3.2  -7.73
+Lunar Howler (rare)          29.85    +0.5 ± 4.4      +0.1    0.000      0    -3.3  -8.62
+Gangrenous Leech (uncommon)  22.67    +4.5 ± 5.1      +0.8    0.030  0.1765    -3.3  -7.58
+Venomlord Serpent (common)   36.92    -6.4 ± 4.6      -1.1   -0.030  -0.1765    -3.7  -9.48
+Armory (rare)                22.21    +1.3 ± 4.8      +0.2    0.010  0.0588    -3.9  -9.51
+Vigil Owl (rare)             19.05    +0.3 ± 4.1      +0.0    0.000      0    -4.3  -12.46
+Malachite Golem (rare)        36.8   -10.3 ± 4.5      -1.7   -0.050  -0.2941    -4.4  -11.55
+Riverworks Bastion (common)  38.32   -12.0 ± 4.6      -2.0   -0.050  -0.2941    -4.5  -11.67
+Badger Stonemason (uncommon) 24.31    -6.0 ± 4.5      -1.0   -0.040  -0.2353    -4.9  -12.62
+-> docs/balance/bench-contrib-global-b15-2026-11-03-bal15-tempo.json (+ .md)

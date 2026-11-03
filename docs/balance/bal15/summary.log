@@ -1,0 +1,269 @@
+road measure -> docs/balance/skirmish-pass-summary-2026-11-03b.jsonl
+mo vs WPRO null vs BPRO null road weakest 1.3 strongest 50 (14 s)
+m1 vs WPRO 95.8 vs BPRO 62.9 road weakest 31.3 strongest 82.5 (16 s)
+mf vs WPRO 83.3 vs BPRO 18.8 road weakest 65 strongest 99 (17 s)
+mq vs WPRO 55 vs BPRO 6.3 road weakest 0 strongest 53 (30 s)
+mb vs WPRO 76.2 vs BPRO 16.9 road weakest 9 strongest 64 (39 s)
+mg vs WPRO 77.1 vs BPRO 14.2 road weakest 3.8 strongest 80 (38 s)
+mc vs WPRO 82.9 vs BPRO 15.3 road weakest 16.4 strongest 74.3 (50 s)
+mp vs WPRO 85 vs BPRO 14.4 road weakest 10.7 strongest 83.6 (69 s)
+mw vs WPRO 85.8 vs BPRO 16.7 road weakest 16.4 strongest 90.7 (37 s)
+m2 vs WPRO 68.3 vs BPRO 16.4 road weakest 8 strongest 84 (36 s)
+ms vs WPRO 97.5 vs BPRO 30.3 road weakest 0 strongest 68.8 (34 s)
+m8 vs WPRO 97.5 vs BPRO 23.7 road weakest 35.6 strongest 92.5 (44 s)
+mu vs WPRO 82.5 vs BPRO 12.8 road weakest 10.8 strongest 86.7 (38 s)
+mz vs WPRO 62.9 vs BPRO 6 road weakest 30 strongest 94 (43 s)
+m4 vs WPRO 95 vs BPRO 22.3 road weakest 40.6 strongest 91.9 (32 s)
+mn vs WPRO 98.3 vs BPRO 18.1 road weakest 58.8 strongest 72.5 (48 s)
+mk vs WPRO 82.1 vs BPRO 42.5 road weakest 30.7 strongest 80 (38 s)
+m7 vs WPRO 98.3 vs BPRO 20.3 road weakest 48.9 strongest 93.9 (32 s)
+mj vs WPRO 77.5 vs BPRO 6.9 road weakest 48 strongest 88 (39 s)
+mv vs WPRO 90 vs BPRO 5.3 road weakest 12.5 strongest 70 (44 s)
+m10 vs WPRO 78.7 vs BPRO 15 road weakest 18 strongest 88.5 (75 s)
+mr vs WPRO 85 vs BPRO 28.3 road weakest 7.5 strongest 68.8 (36 s)
+mh vs WPRO 72.1 vs BPRO 38.6 road weakest 9.3 strongest 86.4 (50 s)
+m5 vs WPRO 71.7 vs BPRO 32.7 road weakest 15 strongest 85.6 (43 s)
+my vs WPRO 82.1 vs BPRO 15.4 road weakest 10 strongest 81 (71 s)
+ml vs WPRO 96.7 vs BPRO 16.7 road weakest 8.6 strongest 52.9 (37 s)
+mt vs WPRO 90 vs BPRO 20.8 road weakest 0.7 strongest 64.3 (38 s)
+mi vs WPRO 61.3 vs BPRO 5 road weakest 1.3 strongest 71.2 (40 s)
+m6 vs WPRO 83.3 vs BPRO 11.9 road weakest 11.2 strongest 68.1 (58 s)
+mpd vs WPRO 75.8 vs BPRO 5.2 road weakest 7.2 strongest 70.6 (54 s)
+md vs WPRO 83.3 vs BPRO 21.4 road weakest 6.4 strongest 97.9 (74 s)
+m9 vs WPRO 82.5 vs BPRO 23.6 road weakest 10.5 strongest 80 (53 s)
+m3 vs WPRO 92.5 vs BPRO 45 road weakest 27.5 strongest 74.2 (38 s)
+me vs WPRO 99.2 vs BPRO 15.4 road weakest 5.7 strongest 63.6 (41 s)
+m11 vs WPRO 88.3 vs BPRO 20.4 road weakest 4.5 strongest 49.5 (63 s)
+mx vs WPRO 96.3 vs BPRO 3.3 road weakest null strongest null (13 s)
+# Balance summary, 2026-11-03b
+
+Tool: `node tools/bal13/summary_2026_11_02.js --road summary-2026-11-03b --games 12 --road-games 20` (1.1.0 (2026-11-02, BAL13: with leaders)). Reference ladder: `docs/balance/ref/ref-ladder.json` (2026-11-02, 10 decks a map, rank 1 weakest .. rank 10 strongest). Road measure: `docs/balance/skirmish-pass-summary-2026-11-03b.jsonl` (the Map reference, 40 games a fight, seeds 9100 + 37g). Procedure: `docs/evaluation-protocol.md` section 4a.
+
+**Engine:** the game as merged on this branch (includes FIX6's leaders). **Leaders:** every number here is played WITH leaders (owner 2026-11-02 21:37). The enemy decks keep their own (the game's skirmish / PRO leaders). Your seat plays the leader a player holds at the map (tools/bal13/lib_leader_2026_11_02.js leaderFor: the strongest card that may lead in the map-true pool, else the Wandering Traveller), dealt by the game's own harness since FIX6 (referenceFightSetup {leader}, dealPlayerLeader: out as soon as it can be paid); the per-map leader is in the table.
+
+## Road totals (the Map reference, with its leader)
+
+226 road fights: **80 in the green band** (target +/- 8), 99 within 10 points, **65 beyond 20 points**. Without a leader (the standard road measure, `skirmish-pass-summary-2026-11-03b.jsonl`): 88 green, 103 within 10, 62 beyond 20.
+
+## Per map
+
+(a) the ladder's mean win rate against the map's WPRO decks (its weakest decks) and its BPRO decks (its strongest), 12 games a pairing (10 decks x each WPRO / BPRO deck). (b) the weakest (rank 1) and strongest (rank 10) ladder deck against the map's road fights, 20 games a fight (the gap to the mean road target in points), beside the Map reference (40 games a fight).
+
+Flag (owner 2026-11-02 20:19): the Map reference should win at most 15% against the map's strongest deck (BPRO-1, 40 games); "OVER" marks a map above it.
+
+| Map | Your leader | (a) vs WPRO | (a) vs BPRO | Map ref vs BPRO-1 | Flag | (b) weakest ref vs road | (b) strongest ref vs road | Map reference vs road | Road target | Green / fights |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 0 Bramblewood Outskirts | Wandering Traveller | 95.8 | 62.9 | 75 | OVER | 31.3 (-36) | 82.5 (+15) | 68.1 (+1) | 67.5 | 1 / 4 |
+| 0-B The Old Bramble | Old Snapjaw | - | - | - |  | 1.3 (-65) | 50 (-16) | 36.3 (-30) | 66.3 | 0 / 4 |
+| 1 Thistlewood | Wandering Traveller | 83.3 | 18.8 | 47.5 | OVER | 65 (-3) | 99 (+31) | 97.5 (+29) | 68 | 0 / 5 |
+| 1-A Clovermead | The Gannet Queen | 55 | 6.3 | 10 |  | 0 (-68) | 53 (-15) | 57 (-11) | 68 | 3 / 5 |
+| 2 Pebble Beach | The Old Shell | 76.2 | 16.9 | 70 | OVER | 9 (-59) | 64 (-4) | 83 (+15) | 68 | 2 / 5 |
+| 2-B Smugglers' Grotto | The Old Shell | 77.1 | 14.2 | 27.5 | OVER | 3.8 (-62) | 80 (+14) | 80 (+14) | 66.3 | 2 / 4 |
+| 2-A Lilypad Reach | The Old Shell | 85 | 14.4 | 47.5 | OVER | 10.7 (-59) | 83.6 (+14) | 60 (-10) | 70 | 2 / 7 |
+| 3 Gannet Cliffs | The Gannet Queen | 82.9 | 15.3 | 35 | OVER | 16.4 (-54) | 74.3 (+4) | 80.4 (+10) | 70 | 3 / 7 |
+| 4 Sunken Hollow | The Drowned Matriarch | 68.3 | 16.4 | 47.5 | OVER | 8 (-60) | 84 (+16) | 80.5 (+12) | 68 | 2 / 5 |
+| 5 Gatorback Swamp | Old Snapjaw | 85.8 | 16.7 | 40 | OVER | 16.4 (-52) | 90.7 (+22) | 82.9 (+14) | 68.6 | 2 / 7 |
+| 5-A The Sunken Grove | Old Snapjaw | 97.5 | 30.3 | 85 | OVER | 0 (-64) | 68.8 (+5) | 54.4 (-9) | 63.8 | 1 / 4 |
+| 6 Sable Swampmire | The Heron Hag | 97.5 | 23.7 | 57.5 | OVER | 35.6 (-35) | 92.5 (+22) | 92.8 (+22) | 70.6 | 1 / 8 |
+| 7 The Morel Hollow | Old Snapjaw | 82.5 | 12.8 | 2.5 |  | 10.8 (-58) | 86.7 (+17) | 65.4 (-4) | 69.2 | 4 / 6 |
+| 7-A The Mycelium Deep | Old Snapjaw | 62.9 | 6 | 2.5 |  | 30 (-36) | 94 (+28) | 74.5 (+9) | 66 | 1 / 5 |
+| 8 Caves & Alcoves | Echo Matriarch | 95 | 22.3 | 37.5 | OVER | 40.6 (-29) | 91.9 (+22) | 84.1 (+15) | 69.4 | 2 / 8 |
+| 8-A The Glimmer Depths | Echo Matriarch | 98.3 | 18.1 | 52.5 | OVER | 58.8 (-5) | 72.5 (+9) | 89.4 (+26) | 63.8 | 0 / 4 |
+| 9 The Kelp Mangroves | Old Snapjaw | 82.1 | 42.5 | 35 | OVER | 30.7 (-38) | 80 (+11) | 48.6 (-20) | 68.6 | 1 / 7 |
+| 10 Coral Current | Reef Admiral | 98.3 | 20.3 | 32.5 | OVER | 48.9 (-22) | 93.9 (+23) | 86.4 (+15) | 71.1 | 3 / 9 |
+| 10-A The Sunken Depths | Reef Admiral | 77.5 | 6.9 | 0 |  | 48 (-18) | 88 (+22) | 62.5 (-4) | 66 | 2 / 5 |
+| 11 Eyrie Heights | Old Snapjaw | 78.7 | 15 | 37.5 | OVER | 18 (-54) | 88.5 (+17) | 66.5 (-5) | 71.5 | 6 / 10 |
+| 11-A The Aerie Vault | Old Snapjaw | 90 | 5.3 | 5 |  | 12.5 (-51) | 70 (+6) | 68.1 (+4) | 63.8 | 3 / 4 |
+| 12 The Briar Maze | Old Snapjaw | 72.1 | 38.6 | 65 | OVER | 9.3 (-59) | 86.4 (+18) | 60.7 (-8) | 68.6 | 3 / 7 |
+| 13 The Redwood Deep | Old Snapjaw | 85 | 28.3 | 60 | OVER | 7.5 (-62) | 68.8 (-1) | 57.8 (-12) | 69.4 | 4 / 8 |
+| 14 Savanna Reaches | Pride Queen | 71.7 | 32.7 | 42.5 | OVER | 15 (-56) | 85.6 (+15) | 81.2 (+11) | 70.6 | 3 / 8 |
+| 14-A The Canopy | Pride Queen | 82.1 | 15.4 | 2.5 |  | 10 (-58) | 81 (+13) | 33 (-35) | 68 | 0 / 5 |
+| 15 The Long Grass | Old Snapjaw | 96.7 | 16.7 | 42.5 | OVER | 8.6 (-61) | 52.9 (-17) | 61.8 (-8) | 70 | 2 / 7 |
+| 16 The Pinewood Taiga | Old Snapjaw | 90 | 20.8 | 17.5 | OVER | 0.7 (-68) | 64.3 (-4) | 62.5 (-6) | 68.6 | 2 / 7 |
+| 17 Wolfsbane Tundra | Wolfsbane Alpha | 83.3 | 11.9 | 30 | OVER | 11.2 (-59) | 68.1 (-3) | 65.3 (-5) | 70.6 | 3 / 8 |
+| 17-A The Ice Hollow | Wolfsbane Alpha | 61.3 | 5 | 35 | OVER | 1.3 (-63) | 71.2 (+7) | 75 (+11) | 63.8 | 1 / 4 |
+| 18 The Glass Dunes | Old Snapjaw | 83.3 | 21.4 | 45 | OVER | 6.4 (-62) | 97.9 (+29) | 83.2 (+15) | 68.6 | 4 / 7 |
+| 18-A The Pale Desert | Old Snapjaw | 75.8 | 5.2 | 17.5 | OVER | 7.2 (-63) | 70.6 (+1) | 66.1 (-4) | 70 | 4 / 9 |
+| 19 Ashen Spurn | Yeti Chieftain | 92.5 | 45 | 87.5 | OVER | 27.5 (-42) | 74.2 (+5) | 84.6 (+15) | 69.2 | 2 / 6 |
+| 19-A Basalt Foundry | Yeti Chieftain | 82.5 | 23.6 | 35 | OVER | 10.5 (-60) | 80 (+9) | 58 (-13) | 70.5 | 3 / 10 |
+| 20 The Sundered Peak | Old Snapjaw | 88.3 | 20.4 | 92.5 | OVER | 4.5 (-63) | 49.5 (-18) | 81.3 (+13) | 68 | 4 / 10 |
+| 20-A Eye of the Volcano | Old Snapjaw | 99.2 | 15.4 | 35 | OVER | 5.7 (-61) | 63.6 (-3) | 65.4 (-1) | 66.4 | 4 / 7 |
+| 20 Volcano Lair | The Caldera Wyrm | 96.3 | 3.3 | 10 |  | - | - | - | - | 0 / 0 |
+| **All maps (mean)** | | 83.7 | 19.7 | 39 | 28 OVER | 17.7 | 77.2 | 70.1 | 68.2 | 80 / 226 |
+
+## ENG20-5 road check: volcano, sea and Remember fights (95)
+
+The fights whose rules are a volcano map (hotMap, eruption, lava spouts) or a sea map (tide, salt, high tide), or whose enemy deck or Map reference deck holds a Remember card (Wisp Newt, Revenant Bog Turtle, Unremembered Heron, Ashbone Ghoul). The Map reference with its leader, 40 games; no deck was changed (cards with a gap over 20 are in the card flags).
+
+| Fight | Map | Tags | Win | Target | Gap | Reading |
+|---|---|---|---|---|---|---|
+| 2-1 Rock Pool Raiders | 2 Pebble Beach | sea | 97.5 | 90 | +8 | acceptable |
+| 2-2 Gull Gang | 2 Pebble Beach | sea | 80 | 80 | 0 | ideal |
+| 2-3 Hermit Row | 2 Pebble Beach | sea | 80 | 70 | +10 | acceptable, too easy |
+| 2-4 Pelican Point | 2 Pebble Beach | sea | 95 | 60 | +35 | unacceptable, too easy |
+| 2-5 The Old Shell | 2 Pebble Beach | sea | 62.5 | 40 | +23 | unacceptable, too easy |
+| 2-A-1 Lily Hop | 2 mp Lilypad Reach | sea | 67.5 | 90 | -22 | unacceptable, too hard |
+| 2-A-2 Duck Row | 2 mp Lilypad Reach | sea | 87.5 | 84 | +4 | ideal |
+| 2-A-3 Beaver Dam | 2 mp Lilypad Reach | sea | 100 | 78 | +22 | unacceptable, too easy |
+| 2-A-4 Pike Shallows | 2 mp Lilypad Reach | sea | 87.5 | 72 | +16 | starting to be unacceptable, too easy |
+| 2-A-5 Croaker Chorus | 2 mp Lilypad Reach | sea | 15 | 66 | -51 | unacceptable, too hard |
+| 2-A-6 The Lodge | 2 mp Lilypad Reach | sea | 15 | 60 | -45 | unacceptable, too hard |
+| 2-A-7 The Lodge Matriarch | 2 mp Lilypad Reach | sea | 47.5 | 40 | +8 | acceptable |
+| 3-5 Eagle Stoop | 3 Gannet Cliffs | sea | 90 | 66 | +24 | unacceptable, too easy |
+| 3-6 Avalanche Pass | 3 Gannet Cliffs | sea | 75 | 60 | +15 | less liked, too easy |
+| 3-7 The Gannet Queen | 3 Gannet Cliffs | sea | 55 | 40 | +15 | less liked, too easy |
+| 4-1 Reef Skirmishers | 4 Sunken Hollow | sea | 97.5 | 90 | +8 | acceptable |
+| 4-2 Tidal Ring | 4 Sunken Hollow | sea | 80 | 80 | 0 | ideal |
+| 4-3 Cetacean Pod | 4 Sunken Hollow | sea | 82.5 | 70 | +13 | less liked, too easy |
+| 4-4 The Kraken's Maw | 4 Sunken Hollow | sea | 70 | 60 | +10 | acceptable, too easy |
+| 4-5 The Drowned Colossus | 4 Sunken Hollow | sea | 72.5 | 40 | +33 | unacceptable, too easy |
+| 5-A-1 Rotting Roots | 5 ms The Sunken Grove | sea | 52.5 | 90 | -37 | unacceptable, too hard |
+| 5-A-2 Gator Hollow | 5 ms The Sunken Grove | sea | 77.5 | 65 | +13 | less liked, too easy |
+| 5-A-3 Moss Weir | 5 ms The Sunken Grove | sea | 47.5 | 60 | -12 | less liked, too hard |
+| 5-A-4 The Grove Warden | 5 ms The Sunken Grove | sea | 40 | 40 | 0 | ideal |
+| 6-1 Leech Bog | 6 Sable Swampmire | remember | 90 | 90 | 0 | ideal |
+| 6-2 Mire Ambush | 6 Sable Swampmire | remember | 100 | 85 | +15 | less liked, too easy |
+| 6-3 Toad Chorus | 6 Sable Swampmire | remember | 100 | 80 | +20 | starting to be unacceptable, too easy |
+| 6-4 Root Snare | 6 Sable Swampmire | remember | 100 | 75 | +25 | unacceptable, too easy |
+| 6-5 Venomlord's Coil | 6 Sable Swampmire | remember | 97.5 | 70 | +28 | unacceptable, too easy |
+| 6-6 Crocodile Run | 6 Sable Swampmire | remember | 97.5 | 65 | +33 | unacceptable, too easy |
+| 6-7 Adder Gauntlet | 6 Sable Swampmire | remember | 82.5 | 60 | +23 | unacceptable, too easy |
+| 6-8 The Alligator King | 6 Sable Swampmire | remember | 75 | 40 | +35 | unacceptable, too easy |
+| 9-1 Mudflat Skippers | 9 The Kelp Mangroves | sea | 72.5 | 90 | -17 | starting to be unacceptable, too hard |
+| 9-2 Monitor Roots | 9 The Kelp Mangroves | sea | 92.5 | 84 | +9 | acceptable, too easy |
+| 9-3 Kingfisher Dive | 9 The Kelp Mangroves | sea | 65 | 78 | -13 | less liked, too hard |
+| 9-4 Kelp Curtains | 9 The Kelp Mangroves | sea | 55 | 62 | -7 | acceptable |
+| 9-5 Moray Den | 9 The Kelp Mangroves | sea | 32.5 | 66 | -33 | unacceptable, too hard |
+| 9-6 Drifting Shell | 9 The Kelp Mangroves | sea | 17.5 | 60 | -42 | unacceptable, too hard |
+| 9-7 The Kelp Witch | 9 The Kelp Mangroves | sea | 5 | 40 | -35 | unacceptable, too hard |
+| 10-1 Clownfish Shoal | 10 Coral Current | sea | 97.5 | 90 | +8 | acceptable |
+| 10-2 Moray Ambush | 10 Coral Current | sea | 97.5 | 85.7 | +12 | less liked, too easy |
+| 10-3 Tide Pool Line | 10 Coral Current | sea | 92.5 | 81.4 | +11 | less liked, too easy |
+| 10-4 Riptide Channel | 10 Coral Current | sea | 92.5 | 77.1 | +15 | starting to be unacceptable, too easy |
+| 10-5 Current Split | 10 Coral Current | sea | 77.5 | 72.9 | +5 | ideal |
+| 10-6 Reef Shark Pack | 10 Coral Current | sea | 67.5 | 68.6 | -1 | ideal |
+| 10-7 Eel Nest | 10 Coral Current | sea | 97.5 | 64.3 | +33 | unacceptable, too easy |
+| 10-8 Sea Turtle Elder's Court | 10 Coral Current | sea | 80 | 60 | +20 | starting to be unacceptable, too easy |
+| 10-9 The Orca Vanguard King | 10 Coral Current | sea | 75 | 40 | +35 | unacceptable, too easy |
+| 10-A-1 Bubble Trail | 10 mj The Sunken Depths | sea | 85 | 90 | -5 | ideal |
+| 10-A-2 The Drowned Deck | 10 mj The Sunken Depths | sea | 87.5 | 70 | +18 | starting to be unacceptable, too easy |
+| 10-A-3 Cargo Hold | 10 mj The Sunken Depths | sea | 82.5 | 70 | +13 | less liked, too easy |
+| 10-A-4 The Undertow | 10 mj The Sunken Depths | sea | 25 | 60 | -35 | unacceptable, too hard |
+| 10-A-5 The Ferry's Last Passenger | 10 mj The Sunken Depths | sea | 32.5 | 40 | -7 | acceptable |
+| 18-A-1 Bleached Flats | 18 mpd The Pale Desert | volcano | 67.5 | 90 | -22 | unacceptable, too hard |
+| 18-A-2 Mirage Jackals | 18 mpd The Pale Desert | volcano | 60 | 85.7 | -26 | unacceptable, too hard |
+| 18-A-3 Dust Devils | 18 mpd The Pale Desert | volcano | 82.5 | 71.4 | +11 | less liked, too easy |
+| 18-A-4 Meerkat Warrens | 18 mpd The Pale Desert | volcano | 95 | 77.1 | +18 | starting to be unacceptable, too easy |
+| 18-A-5 Vulture Road | 18 mpd The Pale Desert | volcano | 47.5 | 72.9 | -25 | unacceptable, too hard |
+| 18-A-6 The Salt Pan | 18 mpd The Pale Desert | volcano | 67.5 | 68.6 | -1 | ideal |
+| 18-A-7 Oryx Crossing | 18 mpd The Pale Desert | volcano | 70 | 64.3 | +6 | acceptable |
+| 18-A-8 The Dry Well | 18 mpd The Pale Desert | volcano | 62.5 | 60 | +3 | ideal |
+| 18-A-9 The Quicksand Queen | 18 mpd The Pale Desert | volcano | 42.5 | 40 | +3 | ideal |
+| 19-1 Badger Warband | 19 Ashen Spurn | volcano | 95 | 90 | +5 | ideal |
+| 19-2 Quill Line | 19 Ashen Spurn | volcano | 85 | 82.5 | +3 | ideal |
+| 19-3 Porcupine Bastion | 19 Ashen Spurn | volcano | 90 | 75 | +15 | less liked, too easy |
+| 19-4 Sky Marks | 19 Ashen Spurn | volcano | 92.5 | 67.5 | +25 | unacceptable, too easy |
+| 19-5 Sky Scraper Sentinel | 19 Ashen Spurn | volcano | 87.5 | 60 | +28 | unacceptable, too easy |
+| 19-6 The Frost Yeti King | 19 Ashen Spurn | volcano | 57.5 | 40 | +18 | starting to be unacceptable, too easy |
+| 19-A-1 Cinder Swarm | 19 m9 Basalt Foundry | volcano | 75 | 90 | -15 | less liked, too hard |
+| 19-A-10 The Phoenix Ember King | 19 m9 Basalt Foundry | volcano, remember | 27.5 | 40 | -12 | less liked, too hard |
+| 19-A-2 Salamander Vents | 19 m9 Basalt Foundry | volcano | 67.5 | 86.3 | -19 | starting to be unacceptable, too hard |
+| 19-A-3 Slag Runners | 19 m9 Basalt Foundry | volcano, remember | 50 | 72.5 | -22 | unacceptable, too hard |
+| 19-A-4 Vent Skitter | 19 m9 Basalt Foundry | volcano, remember | 75 | 78.8 | -4 | ideal |
+| 19-A-5 Ashfall Line | 19 m9 Basalt Foundry | volcano | 62.5 | 75 | -12 | less liked, too hard |
+| 19-A-6 Furnace Mouth | 19 m9 Basalt Foundry | volcano, remember | 77.5 | 71.3 | +6 | acceptable |
+| 19-A-7 Basalt Vanguard | 19 m9 Basalt Foundry | volcano, remember | 65 | 67.5 | -2 | ideal |
+| 19-A-8 Titan's Shadow | 19 m9 Basalt Foundry | volcano, remember | 47.5 | 63.8 | -16 | starting to be unacceptable, too hard |
+| 19-A-9 The Pyroclast Wyrm | 19 m9 Basalt Foundry | volcano, remember | 32.5 | 60 | -27 | unacceptable, too hard |
+| 20-1 Silverback Watch | 20 The Sundered Peak | volcano, remember | 97.5 | 90 | +8 | acceptable |
+| 20-10 The Cave Warlord | 20 The Sundered Peak | volcano, remember | 97.5 | 40 | +58 | unacceptable, too easy |
+| 20-2 Grizzly Frontier | 20 The Sundered Peak | volcano, remember | 92.5 | 85.7 | +7 | acceptable |
+| 20-3 Panther Ledge | 20 The Sundered Peak | volcano, remember | 87.5 | 81.4 | +6 | acceptable |
+| 20-4 Shrine Steps | 20 The Sundered Peak | volcano, remember | 90 | 67.1 | +23 | unacceptable, too easy |
+| 20-5 Cave Warlord's Guard | 20 The Sundered Peak | volcano, remember | 92.5 | 72.9 | +20 | starting to be unacceptable, too easy |
+| 20-6 The Constrictor Sovereign | 20 The Sundered Peak | volcano, remember | 60 | 68.6 | -9 | acceptable, too hard |
+| 20-7 The Blessed Avatar | 20 The Sundered Peak | volcano | 50 | 64.3 | -14 | less liked, too hard |
+| 20-8 The Iron Cataphract | 20 The Sundered Peak | volcano, remember | 57.5 | 60 | -2 | ideal |
+| 20-9 The Ancient Sloth Titan | 20 The Sundered Peak | volcano, remember | 87.5 | 50 | +38 | unacceptable, too easy |
+| 20-A-1 The Ash Ossuary | 20 me Eye of the Volcano | volcano, remember | 75 | 88.2 | -13 | less liked, too hard |
+| 20-A-2 The Wraith Vents | 20 me Eye of the Volcano | volcano, remember | 77.5 | 81.3 | -4 | ideal |
+| 20-A-3 The Lich's Kiln | 20 me Eye of the Volcano | volcano, remember | 62.5 | 74.6 | -12 | less liked, too hard |
+| 20-A-4 Heart of the Mountain | 20 me Eye of the Volcano | volcano, remember | 77.5 | 35.5 | +42 | unacceptable, too easy |
+| 20-A-5 Scorched Boars | 20 me Eye of the Volcano | volcano | 60 | 68 | -8 | acceptable |
+| 20-A-6 The Vent Crabs | 20 me Eye of the Volcano | volcano, remember | 57.5 | 61.6 | -4 | ideal |
+| 20-A-7 Ash Condor Roost | 20 me Eye of the Volcano | volcano, remember | 47.5 | 55.4 | -8 | acceptable |
+- volcano: 42 fights, 17 green, 11 beyond 20, mean gap 1.4
+- sea: 45 fights, 13 green, 15 beyond 20, mean gap 1.4
+- remember: 30 fights, 11 green, 11 beyond 20, mean gap 8.2
+
+## Fights more than 20 points off (65)
+
+| Fight | Map | Kind | Win | Target | Gap |
+|---|---|---|---|---|---|
+| 14-A-1 Dart Frogs | 14 my The Canopy | skirmish | 2.5 | 90 | -87 (too hard) |
+| 1-5 The Thistle Baron | 1 Thistlewood | elite | 100 | 40 | +60 (too easy) |
+| 20-10 The Cave Warlord | 20 The Sundered Peak | worldboss | 97.5 | 40 | +58 (too easy) |
+| 0-B-2 The Briar Ring | 0 mo The Old Bramble | skirmish | 20 | 75 | -55 (too hard) |
+| 2-A-5 Croaker Chorus | 2 mp Lilypad Reach | elite | 15 | 66 | -51 (too hard) |
+| 17-7 Alpha Howler's Den | 17 Wolfsbane Tundra | elite | 10 | 60 | -50 (too hard) |
+| 7-A-5 The Mycelium Mind | 7 mz The Mycelium Deep | boss | 90 | 40 | +50 (too easy) |
+| 14-A-3 Sloth Boughs | 14 my The Canopy | skirmish | 20 | 70 | -50 (too hard) |
+| 8-A-3 Shard Gallery | 8 mn The Glimmer Depths | skirmish | 97.5 | 50 | +48 (too easy) |
+| 2-A-6 The Lodge | 2 mp Lilypad Reach | elite | 15 | 60 | -45 (too hard) |
+| 9-6 Drifting Shell | 9 The Kelp Mangroves | elite | 17.5 | 60 | -42 (too hard) |
+| 20-A-4 Heart of the Mountain | 20 me Eye of the Volcano | dungeon | 77.5 | 35.5 | +42 (too easy) |
+| 18-7 The Sand Widow Queen | 18 The Glass Dunes | miniboss | 80 | 40 | +40 (too easy) |
+| 20-9 The Ancient Sloth Titan | 20 The Sundered Peak | boss | 87.5 | 50 | +38 (too easy) |
+| 14-A-5 The Jaguar's Path | 14 my The Canopy | boss | 2.5 | 40 | -37 (too hard) |
+| 5-A-1 Rotting Roots | 5 ms The Sunken Grove | skirmish | 52.5 | 90 | -37 (too hard) |
+| 1-4 Sapper Hedge | 1 Thistlewood | skirmish | 95 | 60 | +35 (too easy) |
+| 2-4 Pelican Point | 2 Pebble Beach | skirmish | 95 | 60 | +35 (too easy) |
+| 6-8 The Alligator King | 6 Sable Swampmire | miniboss | 75 | 40 | +35 (too easy) |
+| 9-7 The Kelp Witch | 9 The Kelp Mangroves | miniboss | 5 | 40 | -35 (too hard) |
+| 10-9 The Orca Vanguard King | 10 Coral Current | boss | 75 | 40 | +35 (too easy) |
+| 1-A-1 Clover Patch | 1 mq Clovermead | skirmish | 55 | 90 | -35 (too hard) |
+| 10-A-4 The Undertow | 10 mj The Sunken Depths | elite | 25 | 60 | -35 (too hard) |
+| 2-B-4 The Grotto Keeper | 2 mg Smugglers' Grotto | elite | 75 | 40 | +35 (too easy) |
+| 9-5 Moray Den | 9 The Kelp Mangroves | elite | 32.5 | 66 | -33 (too hard) |
+| 10-7 Eel Nest | 10 Coral Current | elite | 97.5 | 64.3 | +33 (too easy) |
+| 4-5 The Drowned Colossus | 4 Sunken Hollow | elite | 72.5 | 40 | +33 (too easy) |
+| 6-6 Crocodile Run | 6 Sable Swampmire | elite | 97.5 | 65 | +33 (too easy) |
+| 18-6 Komodo Wallow | 18 The Glass Dunes | elite | 92.5 | 60 | +33 (too easy) |
+| 5-5 Gator Slide | 5 Gatorback Swamp | elite | 95 | 66 | +29 (too easy) |
+| 15-3 Stoat Ambush | 15 The Long Grass | skirmish | 50 | 78 | -28 (too hard) |
+| 6-5 Venomlord's Coil | 6 Sable Swampmire | elite | 97.5 | 70 | +28 (too easy) |
+| 8-6 Glowworm Deep | 8 Caves & Alcoves | skirmish | 92.5 | 65 | +28 (too easy) |
+| 13-5 Badger Setts | 13 The Redwood Deep | elite | 42.5 | 70 | -27 (too hard) |
+| 19-5 Sky Scraper Sentinel | 19 Ashen Spurn | elite | 87.5 | 60 | +28 (too easy) |
+| 19-A-9 The Pyroclast Wyrm | 19 m9 Basalt Foundry | elite | 32.5 | 60 | -27 (too hard) |
+| 11-8 Summit Approach | 11 Eyrie Heights | elite | 37.5 | 63.8 | -26 (too hard) |
+| 18-A-2 Mirage Jackals | 18 mpd The Pale Desert | skirmish | 60 | 85.7 | -26 (too hard) |
+| 5-4 Snapping Reeds | 5 Gatorback Swamp | skirmish | 97.5 | 72 | +26 (too easy) |
+| 18-A-5 Vulture Road | 18 mpd The Pale Desert | skirmish | 47.5 | 72.9 | -25 (too hard) |
+| 1-3 Burrow Line | 1 Thistlewood | skirmish | 95 | 70 | +25 (too easy) |
+| 5-7 Old Snapjaw | 5 Gatorback Swamp | boss | 65 | 40 | +25 (too easy) |
+| 6-4 Root Snare | 6 Sable Swampmire | skirmish | 100 | 75 | +25 (too easy) |
+| 8-4 Echo Chamber | 8 Caves & Alcoves | skirmish | 100 | 75 | +25 (too easy) |
+| 11-5 West Ledge | 11 Eyrie Heights | elite | 50 | 75 | -25 (too hard) |
+| 19-4 Sky Marks | 19 Ashen Spurn | elite | 92.5 | 67.5 | +25 (too easy) |
+| 7-A-4 The Rot Heart | 7 mz The Mycelium Deep | elite | 85 | 60 | +25 (too easy) |
+| 8-A-2 The Echo Pool | 8 mn The Glimmer Depths | skirmish | 100 | 75 | +25 (too easy) |
+| 0-B-4 The Old Bramble | 0 mo The Old Bramble | boss | 15 | 40 | -25 (too hard) |
+| 3-5 Eagle Stoop | 3 Gannet Cliffs | elite | 90 | 66 | +24 (too easy) |
+| 12-2 Quill Path | 12 The Briar Maze | skirmish | 60 | 84 | -24 (too hard) |
+| 15-2 Squire Road | 15 The Long Grass | skirmish | 60 | 84 | -24 (too hard) |
+| 16-2 Pinecone Drop | 16 The Pinewood Taiga | skirmish | 60 | 84 | -24 (too hard) |
+| 20-4 Shrine Steps | 20 The Sundered Peak | skirmish | 90 | 67.1 | +23 (too easy) |
+| 2-5 The Old Shell | 2 Pebble Beach | elite | 62.5 | 40 | +23 (too easy) |
+| 6-7 Adder Gauntlet | 6 Sable Swampmire | elite | 82.5 | 60 | +23 (too easy) |
+| 8-7 The Roost Above | 8 Caves & Alcoves | elite | 82.5 | 60 | +23 (too easy) |
+| 13-7 The King's Den | 13 The Redwood Deep | elite | 37.5 | 60 | -22 (too hard) |
+| 1-A-4 Harvest Mice | 1 mq Clovermead | skirmish | 37.5 | 60 | -22 (too hard) |
+| 2-A-1 Lily Hop | 2 mp Lilypad Reach | skirmish | 67.5 | 90 | -22 (too hard) |
+| 19-A-3 Slag Runners | 19 m9 Basalt Foundry | skirmish | 50 | 72.5 | -22 (too hard) |
+| 7-A-1 Root Cellar | 7 mz The Mycelium Deep | skirmish | 67.5 | 90 | -22 (too hard) |
+| 0-B-1 Thorn Path | 0 mo The Old Bramble | skirmish | 67.5 | 90 | -22 (too hard) |
+| 18-A-1 Bleached Flats | 18 mpd The Pale Desert | skirmish | 67.5 | 90 | -22 (too hard) |
+| 2-A-3 Beaver Dam | 2 mp Lilypad Reach | skirmish | 100 | 78 | +22 (too easy) |
+
+-> docs/balance/bal13/summary-2026-11-03b.md / .json

@@ -17,6 +17,7 @@ function diffTables(a, b) {
   const out = [], by = t => { const o = {}; t.skills.forEach(e => { o[e.id] = e; }); return o; }, A = by(a), B = by(b);
   Object.keys(B).forEach(id => { const x = A[id], y = B[id]; if (!x) { out.push({ id, field: 'skill', old: '-', new: `${y.value}${y.pow != null ? '^' + y.pow : ''} (new)` }); return; }
     if (x.value !== y.value || x.pow !== y.pow || x.scale !== y.scale) out.push({ id, field: 'value', old: `${x.value}${x.pow != null ? '^' + x.pow : ''}`, new: `${y.value}${y.pow != null ? '^' + y.pow : ''}` }); });
+  (b.actions || []).forEach(y => { const x = (a.actions || []).find(e => e.id === y.id); if (x && x.value !== y.value) out.push({ id: 'action ' + y.id, field: 'value', old: x.value, new: y.value }); }); // 2026-11-03 (BAL15): an own-field trigger price (grantShield.allies)
   Object.keys(b.shorthands || {}).forEach(id => { const x = (a.shorthands || {})[id], y = b.shorthands[id]; if (!x || x.mult !== y.mult) out.push({ id: 'shorthand ' + id, field: 'mult', old: x ? x.mult : '-', new: y.mult }); });
   Object.keys(b.pairs || {}).forEach(k => { const x = (a.pairs || {})[k], y = b.pairs[k]; if (!x || x.mult !== y.mult) out.push({ id: 'pair ' + k, field: 'mult', old: x ? x.mult : '-', new: y.mult }); });
   return out;
@@ -53,6 +54,8 @@ async function step(args, S) {
   // a re-run drifts in the third digit on entries nobody measured; those, the shorthands and the trigger pairs go back unless a new measure names them
   if (!args.dry) {
     const mine = new Set(Object.keys(P.readJson(path.join(P.OUTDIR, 'measures.json'), { results: {} }).results).filter(k => args['include-map'] || k.startsWith('global|')).map(k => (P.readJson(path.join(P.OUTDIR, 'measures.json')).results[k] || {}).id)), trig = Object.keys(P.readJson(path.join(P.OUTDIR, 'measures.json'), { results: {} }).results).some(k => /\|T:/.test(k));
+    // 2026-11-03 (package BAL15): a trigger measure that prices its own field (Grant Shield's allies ...) names that entry (grantShield.allies)
+    Object.values(P.readJson(path.join(P.OUTDIR, 'measures.json'), { results: {} }).results).forEach(r => { const o = A.ownFieldOf && A.ownFieldOf(r); if (o && (args['include-map'] || r.ctx === 'global')) mine.add(o.id); });
     const text = fs.readFileSync(TABLE, 'utf8'), cur = JSON.parse(text), back = {}; const bySkill = {}; t.skills.forEach(e => { bySkill[e.id] = e; });
     cur.skills.forEach(e => { if (!mine.has(e.id) && JSON.stringify(e) !== JSON.stringify(bySkill[e.id])) back[e.id] = bySkill[e.id]; });
     let out = Object.keys(back).length ? A.writeSkills(text, back) : text; const lines = out.split('\n');

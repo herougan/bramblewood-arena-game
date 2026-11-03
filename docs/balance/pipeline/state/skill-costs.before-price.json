@@ -1,10 +1,10 @@
 {
- "savedAt": "2026-11-02T22:12:07.588Z",
+ "savedAt": "2026-11-03T05:06:16.835Z",
  "constants": {
   "cap2SScale": 0.5,
   "missMultBy": {
-   "flying": 1.17,
-   "evasive": 1.16,
+   "flying": 1.19,
+   "evasive": 1.18,
    "shadow": 1.1
   }
  },
@@ -504,9 +504,16 @@
    {
     "id": "grantShield.allies",
     "label": "Grant Shield (every ally)",
-    "value": 1.2,
+    "value": 0.72,
     "per": "allies",
-    "note": "2026-11-02 (ENG19): N to every ally, itself included: 0.4 x (subAll 2 for the others + 1 for itself) = 1.2 a point. On Play +3 to all = On Spawn 1.05 x 3.6 = 3.78 S."
+    "note": "2026-11-02 (ENG19): N to every ally, itself included: 0.4 x (subAll 2 for the others + 1 for itself) = 1.2 a point. On Play +3 to all = On Spawn 1.05 x 3.6 = 3.78 S.",
+    "skill2Was": {
+     "value": 1.2
+    },
+    "measuredS": 0.72,
+    "measuredConf": "high",
+    "measuredSE": 0.06,
+    "measuredHow": "2026-11-03 (BAL15): its own trigger item, onSpawn>grantShield {\"on\":\"onSpawn\",\"do\":\"grantShield\",\"allies\":3} 6.08 [5.28, 7.25] stat points (400 paired fights, both brambles 15, the canon's vanilla carriers; docs/balance/pipeline/measures.json); a point = W / (3 x onSpawn 1.05 x pair onSpawn>grantShield 2.7); price before 10.21"
    },
    {
     "sk1Note": "2026-10-19 (package SK1): Cleanse removes the physical debuffs only now (not Poison or the control statuses)",
@@ -1109,8 +1116,8 @@
     "measuredConf": "low",
     "measuredSE": 0.76,
     "measuredHow": "2026-10-19 (package DC): damage-equivalent in a mixed deck: 5 copies among 20 vanilla, inverted on 5 copies of On Spawn: Damage D (D 0-48) vs SW's calibrated mix, 800 games a point; S = D × the damage action's measuredS per point (low confidence: the bridge puts this scale at 0.15-2.6x SW's)",
-    "mult": 1.27,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): mult 1 -> 1.27, measured bounty=1 2.8 (price before 2.2)"
+    "mult": 0.72,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): mult 1 -> 0.72, measured bounty=1 2.3 (price before 3.18)"
    },
    "kinRally": {
     "trigger": "onAllyPlayed",
@@ -1119,8 +1126,8 @@
     "note": "2026-10-19 (package GI): Kin Rally N = On Ally Played × Buff +N/+N (1 × N + 0.5 × N); the Kin filter is not discounted, as for filterArchetype",
     "measuredS": 3.77,
     "measuredConf": "high",
-    "mult": 0.9,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): mult 1 -> 0.9, measured kinRally=1 2.64 (price before 2.93)"
+    "mult": 0.49,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): mult 1 -> 0.49, measured kinRally=1 2.89 (price before 5.85)"
    },
    "packHowl": {
     "trigger": "onAllyPlayed",
@@ -1136,8 +1143,8 @@
     "note": "2026-10-19 (package SK2): Milling N = On Turn Start × Gain N Lumber (the engine's trigger layer, trigsOf)",
     "measuredConf": "low",
     "measuredHow": "estimate SK2 (2026-10-19): trigger × action, On Turn Start 3 × Gain 1 × N",
-    "mult": 0.93,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): mult 1 -> 0.93, measured milling=1 3.67 (price before 3.93)",
+    "mult": 0.82,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): mult 1 -> 0.82, measured milling=1 2.29 (price before 2.79)",
     "eng16": "2026-11-02 (ENG16, JJ17, owner: Milling turns 1 of your Lumber into 2 Lumber; its skill worth x0.85): the rule changed (needs Lumber you hold, net +N); mult 1.54 -> 1.31 (1.54 x 0.85 = 1.309), price per N 4.61 -> 3.93. Not re-measured."
    },
    "fortification": {
@@ -1246,56 +1253,60 @@
   },
   "pairs": {
    "onAllyPlayed>reduceWaitOfSpawned": {
-    "mult": 0.7,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onAllyPlayed>reduceWaitOfSpawned {\"on\":\"onAllyPlayed\",\"do\":\"reduceWaitOfSpawned\",\"amount\":1,\"once\":true} 1.05 [0.72, 1.6] (200 fights; price before 1.5; nest); mult = Σ w W p / Σ w p²"
+    "mult": 1.31,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onAllyPlayed>reduceWaitOfSpawned {\"on\":\"onAllyPlayed\",\"do\":\"reduceWaitOfSpawned\",\"amount\":1,\"once\":true} 1.84 [1.18, 2.31] (200 fights; price before 1.4; nest); mult = Σ w W p / Σ w p²"
    },
    "onAttack>buff": {
-    "mult": 0.92,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onAttack>buff {\"on\":\"onAttack\",\"do\":\"buff\",\"amount\":2,\"who\":\"self\"} 5.36 [5.1, 6.05] (200 fights; price before 5.84; ravenous-wolverine); mult = Σ w W p / Σ w p²"
+    "mult": 1.22,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onAttack>buff {\"on\":\"onAttack\",\"do\":\"buff\",\"amount\":2,\"who\":\"self\"} 6.38 [5.84, 7.85] (200 fights; price before 5.22; ravenous-wolverine); mult = Σ w W p / Σ w p²"
    },
    "onAttack>heal": {
-    "mult": 0.84,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onAttack>heal {\"do\":\"heal\",\"on\":\"onAttack\",\"amount\":1} 1.86 [1.42, 2.36] (200 fights; price before 2.22; bee-forager); onAttack>heal {\"do\":\"heal\",\"on\":\"onAttack\",\"who\":\"self\",\"amount\":1} 1.86 [1.42, 2.36] (200 fights; price before 2.22; forager-ant); mult = Σ w W p / Σ w p²"
+    "mult": 9.75,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onAttack>heal {\"do\":\"heal\",\"on\":\"onAttack\",\"amount\":1} 2.24 [1.79, 2.45] (200 fights; price before 0.23; bee-forager); onAttack>heal {\"do\":\"heal\",\"on\":\"onAttack\",\"who\":\"self\",\"amount\":1} 2.24 [1.79, 2.45] (200 fights; price before 0.23; forager-ant); mult = Σ w W p / Σ w p²"
    },
    "onDeath>damage": {
-    "mult": 0.94,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"} 0.64 [0.28, 1.08] (200 fights; price before 0.97; sulfur-cinder-moth); onDeath>damage {\"on\":\"onDeath\",\"do\":\"damage\",\"amount\":5,\"dmgType\":\"heat\",\"who\":\"enemy\",\"sub\":\"adjacent\"} 2.38 [1.86, 2.63] (200 fights; price before 2.42; caldera-wyrm); mult = Σ w W p / Σ w p²"
+    "mult": 1.86,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onDeath>damage {\"do\":\"damage\",\"on\":\"onDeath\",\"sub\":\"adjacent\",\"who\":\"enemy\",\"amount\":2,\"dmgType\":\"heat\"} 2.2 [1.69, 2.41] (200 fights; price before 0.6; sulfur-cinder-moth); onDeath>damage {\"on\":\"onDeath\",\"do\":\"damage\",\"amount\":5,\"dmgType\":\"heat\",\"who\":\"enemy\",\"sub\":\"adjacent\"} 2.35 [2.25, 3.06] (200 fights; price before 1.5; caldera-wyrm); mult = Σ w W p / Σ w p²"
    },
    "onKill>gain": {
-    "mult": 1.05,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onKill>gain {\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"} 1.7 [1.27, 2.33] (200 fights; price before 1.62; dust-hyena, gull-thief, ferry-toll-frog); mult = Σ w W p / Σ w p²"
+    "mult": 0.86,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onKill>gain {\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"} 1.26 [0.86, 1.91] (200 fights; price before 1.47; dust-hyena, gull-thief, ferry-toll-frog); mult = Σ w W p / Σ w p²"
    },
    "onReady>damage": {
-    "mult": 1.2,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":2,\"dmgType\":\"physical\",\"who\":\"enemy\",\"sub\":\"random\"} 2.19 [1.58, 2.68] (200 fights; price before 1.82; pelican-diver); mult = Σ w W p / Σ w p²"
+    "mult": 3.11,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onReady>damage {\"on\":\"onReady\",\"do\":\"damage\",\"amount\":2,\"dmgType\":\"physical\",\"who\":\"enemy\",\"sub\":\"random\"} 2.67 [2.28, 3.36] (200 fights; price before 0.86; pelican-diver); mult = Σ w W p / Σ w p²"
    },
    "onReady>gain": {
     "mult": 1.15,
     "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":1} 4.33 [3.75, 4.7] (200 fights; price before 1.97; leafcutter-gardener, driftwood-crab, talus-pika); onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"} 4.33 [3.75, 4.7] (200 fights; price before 1.97; otter-angler); onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2} 4.99 [4.76, 5.07] (200 fights; price before 3.94; nutria-reedcutter); onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":3} 5.25 [5.15, 5.58] (200 fights; price before 5.91; dune-packrat); onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"resource\":\"metal\",\"amount\":1} 0 [-0.14, 0.11] (200 fights; price before 1.97; ore-smelter-mole); onReady>gain {\"on\":\"onReady\",\"do\":\"gain\",\"resource\":\"uranium\",\"amount\":1} 0 [-0.17, 0.14] (200 fights; price before 1.97; irradiated-axolotl); mult = Σ w W p / Σ w p²"
    },
    "onSpawn>addWait": {
-    "mult": 1.04,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onSpawn>addWait {\"on\":\"onSpawn\",\"do\":\"addWait\",\"amount\":2,\"who\":\"enemy\",\"sub\":\"adjacent\"} 2.02 [1.58, 2.5] (200 fights; price before 1.94; glacier-yak); mult = Σ w W p / Σ w p²"
+    "mult": 0.26,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onSpawn>addWait {\"on\":\"onSpawn\",\"do\":\"addWait\",\"amount\":2,\"who\":\"enemy\",\"sub\":\"adjacent\"} 1.61 [1.14, 2.17] (200 fights; price before 6.12; glacier-yak); mult = Σ w W p / Σ w p²"
    },
    "onSpawn>drawCard": {
-    "mult": 1.13,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onSpawn>drawCard {\"on\":\"onSpawn\",\"do\":\"drawCard\",\"count\":1} 3.91 [3.17, 4.56] (200 fights; price before 2.41; daily-post); onSpawn>drawCard {\"on\":\"onSpawn\",\"do\":\"drawCard\",\"count\":2} 4.86 [4.51, 4.95] (200 fights; price before 4.82; snail-mail); mult = Σ w W p / Σ w p²"
+    "mult": 0.6,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onSpawn>drawCard {\"on\":\"onSpawn\",\"do\":\"drawCard\",\"count\":1} 3.59 [3.08, 4.64] (200 fights; price before 4.86; daily-post); onSpawn>drawCard {\"on\":\"onSpawn\",\"do\":\"drawCard\",\"count\":2} 5.54 [4.4, 7.06] (200 fights; price before 9.73; snail-mail); mult = Σ w W p / Σ w p²"
    },
    "onSpawn>gain": {
     "mult": 1.12,
     "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":1} 4.37 [3.75, 4.71] (200 fights; price before 1.46; gannet-nestweaver); onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"lumber\",\"amount\":2} 5.07 [4.9, 5.16] (200 fights; price before 2.92; cone-cutter-squirrel); onSpawn>gain {\"on\":\"onSpawn\",\"do\":\"gain\",\"resource\":\"stone\",\"amount\":2} 0.12 [0, 0.39] (200 fights; price before 2.92; pumice-beetle); mult = Σ w W p / Σ w p²"
    },
    "onSpawn>magnet": {
-    "mult": 0.93,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onSpawn>magnet {\"on\":\"onSpawn\",\"do\":\"magnet\",\"amount\":1,\"who\":\"enemy\",\"sub\":\"all\"} 0.49 [0.05, 0.88] (200 fights; price before 0.53; clap-net-trapper); mult = Σ w W p / Σ w p²"
+    "mult": 1.98,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onSpawn>magnet {\"on\":\"onSpawn\",\"do\":\"magnet\",\"amount\":1,\"who\":\"enemy\",\"sub\":\"all\"} 0.81 [0.41, 1.26] (400 fights; price before 0.41; clap-net-trapper); mult = Σ w W p / Σ w p²"
    },
    "onSpawn>stun": {
     "mult": 0.31,
     "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onSpawn>stun {\"on\":\"onSpawn\",\"do\":\"stun\",\"who\":\"enemy\",\"sub\":\"adjacent\"} 1.97 [1.65, 2.52] (300 fights; price before 6.3; ash-cloud-condor); mult = Σ w W p / Σ w p²"
    },
    "perTurn>spawnCard": {
-    "mult": 0.95,
-    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured perTurn>spawnCard {\"do\":\"spawnCard\",\"on\":\"perTurn\",\"count\":1,\"defId\":\"ant-scout\",\"turnOf\":\"self\"} 7.24 [6.5, 8.02] (200 fights; price before 7.62; ant-hill); mult = Σ w W p / Σ w p²"
+    "mult": 1.52,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured perTurn>spawnCard {\"do\":\"spawnCard\",\"on\":\"perTurn\",\"count\":1,\"defId\":\"ant-scout\",\"turnOf\":\"self\"} 8.66 [8.14, 10.38] (200 fights; price before 5.7; ant-hill); mult = Σ w W p / Σ w p²"
+   },
+   "onSpawn>grantShield": {
+    "mult": 2.7,
+    "skill2": "2026-10-31 (SKILL2, BUDGET2-1): measured onSpawn>grantShield {\"on\":\"onSpawn\",\"do\":\"grantShield\",\"amount\":2} 2.27 [1.91, 2.5] (200 fights; price before 0.84; ); mult = Σ w W p / Σ w p²"
    }
   },
   "skills": [
@@ -1415,14 +1426,14 @@
    {
     "id": "undead",
     "scale": "fixed",
-    "value": 1.7,
+    "value": 2.27,
     "note": "2026-10-26 (package ENG9; 4-round rule, not measured), owner #20: Undead, the old self-Revive renamed: it dies (a true death) and comes back once at 1 Health, now as a token (its next death leaves no card behind). Revive was 4.5 for it; the token's lost graveyard card (Grave Call, Revive, Corpsefeeder can't use it) -0.2: 4.3.",
     "prevValue": 4.3,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredS": 1.7,
+    "measuredS": 2.27,
     "measuredConf": "high",
-    "measuredSE": 0.24,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): undead 1.7 [1.31, 2.25] (200 fights, 4 in-play cards; price before 2.14); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredSE": 0.17,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): undead 2.27 [1.87, 2.53] (200 fights, 4 in-play cards; price before 1.7); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "fixed",
      "value": 0.54,
@@ -1442,14 +1453,14 @@
    {
     "id": "stockpile",
     "scale": "n",
-    "value": 4.33,
+    "value": 2.65,
     "note": "2026-10-26 (package ENG9; 4-round rule, not measured), owner EN6-6: Stockpile N = On Ready (0.9) x Gain N Lumber (1 a point), once: 0.9 a point, the price the Beaver Lumberjack's On Ready trigger had (its stats don't move). Name: call ENG9-2.",
     "prevValue": 0.9,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredS": 4.33,
+    "measuredS": 2.65,
     "measuredConf": "high",
-    "measuredSE": 0.07,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): stockpile=1 4.33 [3.75, 4.7] (200 fights, 1 in-play card; price before 3.04); stockpile=2 4.99 [4.76, 5.07] (200 fights, 1 in-play card; price before 4.84); a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 2.71): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredSE": 0.24,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): stockpile=1 2.65 [2.25, 3.35] (200 fights, 1 in-play card; price before 4.33); stockpile=2 4.4 [3.67, 5.26] (400 fights, 1 in-play card; price before 4.98); a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 0.16): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "n",
      "value": 2.18,
@@ -1459,7 +1470,7 @@
      "measuredSE": 0.44,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill stockpile --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +3.27 +/- 1.29 budget points against a price of +1.35 on beaver-lumberjack, muskrat-reedgatherer (net +1.92, z 2.91); value = worth / mean(N^1); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.202
+    "pow": 0.733
    },
    {
     "id": "stonecutter",
@@ -1482,14 +1493,32 @@
    {
     "id": "pearlBed",
     "scale": "n",
-    "value": 0.9,
-    "note": "2026-10-24 (package EN8, owner 22:28 #2, LUM-1; 4-round rule, not measured): Pearl Bed N, On Ready +N Pearl, once. A Pearl pays 1 Lumber or 1 Stone (the better of 0.75 / 1, used when short): 0.9 a point."
+    "value": 3.85,
+    "note": "2026-10-24 (package EN8, owner 22:28 #2, LUM-1; 4-round rule, not measured): Pearl Bed N, On Ready +N Pearl, once. A Pearl pays 1 Lumber or 1 Stone (the better of 0.75 / 1, used when short): 0.9 a point.",
+    "skill2Was": {
+     "scale": "n",
+     "value": 0.9
+    },
+    "measuredS": 3.85,
+    "measuredConf": "high",
+    "measuredSE": 0.49,
+    "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): pearlBed=1 3.85 [3.29, 5.2] (200 fights, 1 in-play card; price before 0.9); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "pearl",
     "scale": "n",
-    "value": 0.9,
-    "note": "2026-11-02 (package ENG19, owner 22:15 #5: \"Pearl - On Ready, Pearl Bed - Every turn (readied)\"; 4-round rule, not measured): Pearl N, On Ready +N Pearl, once (Pearl Bed's rule until ENG19, and its price: a Pearl pays 1 Lumber or 1 Stone, the better of 0.75 / 1, used when short): 0.9 a point. Pearl Bed now pays every Ready turn; its price (0.9) is left for the owner (decision ENG19-3: about 3.2 a point by the same rule)."
+    "value": 2.76,
+    "note": "2026-11-02 (package ENG19, owner 22:15 #5: \"Pearl - On Ready, Pearl Bed - Every turn (readied)\"; 4-round rule, not measured): Pearl N, On Ready +N Pearl, once (Pearl Bed's rule until ENG19, and its price: a Pearl pays 1 Lumber or 1 Stone, the better of 0.75 / 1, used when short): 0.9 a point. Pearl Bed now pays every Ready turn; its price (0.9) is left for the owner (decision ENG19-3: about 3.2 a point by the same rule).",
+    "skill2Was": {
+     "scale": "n",
+     "value": 0.9
+    },
+    "measuredS": 2.76,
+    "measuredConf": "high",
+    "measuredSE": 0.28,
+    "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): pearl=1 2.76 [2.28, 3.39] (200 fights, 1 in-play card; price before 0.9); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "coppice",
@@ -1521,11 +1550,11 @@
    {
     "id": "acidBolt",
     "scale": "half",
-    "value": 5.36,
-    "measuredS": 5.36,
+    "value": 6.89,
+    "measuredS": 6.89,
     "measuredConf": "high",
-    "measuredSE": 0.25,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): acidBolt=1 5.36 [5.11, 6.11] (200 fights, 1 in-play card; price before 6.3); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredSE": 0.47,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): acidBolt=1 6.89 [6.47, 8.33] (200 fights, 1 in-play card; price before 5.36); docs/balance/skill2-measures-2026-10-31.json",
     "recost1Was": {
      "measuredS": 24.39,
      "measuredConf": "low",
@@ -1547,10 +1576,10 @@
    {
     "id": "ambush",
     "scale": "n",
-    "value": 0.79,
-    "measuredS": 0.79,
+    "value": 1.44,
+    "measuredS": 1.44,
     "measuredConf": "high",
-    "measuredSE": 0.07,
+    "measuredSE": 0.13,
     "prevValue": 2,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "noteEN7": "2026-10-24 (package EN7, owner 13:12 #5): a unit's Poison / Bleed (Rabid, Greater Poison) now ride on its Ambush strike too; a card with both pays 0.3 x their price on top (bramblewood-budget.js EN7_EXTRA_HIT, tools/skill_costs.js cardS: one more landing early in a 4-round life of about 3 landed swings). This skill's own price is unchanged.",
@@ -1561,7 +1590,7 @@
      "measuredConf": "high",
      "measuredSE": 0.26
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): ambush=2 1.64 [1.29, 2.17] (200 fights, 1 in-play card; price before 1.92); ambush=4 3.39 [2.81, 4.04] (200 fights, 1 in-play card; price before 3.54); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.27): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): ambush=2 2.23 [1.6, 2.46] (200 fights, 1 in-play card; price before 1.63); ambush=4 3.47 [2.85, 4.09] (200 fights, 1 in-play card; price before 3.38); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.87,
@@ -1571,7 +1600,7 @@
      "measuredSE": 0.21,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill ambush --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +1.74 +/- 0.81 budget points against a price of +4.00 on polar-bear, subterraneaner, tunnel-ant (net -2.26, z -5.50); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 1.049
+    "pow": 0.637
    },
    {
     "id": "amore",
@@ -1626,7 +1655,7 @@
     "value": 4.26,
     "measuredS": 4.26,
     "measuredConf": "high",
-    "measuredSE": 0.18,
+    "measuredSE": 0.27,
     "skill2Was": {
      "scale": "half",
      "value": 3,
@@ -1635,8 +1664,8 @@
      "measuredSE": 5.32
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): arrow=1 4.26 [3.68, 4.76] (200 fights, 3 in-play cards; price before 4.43); arrow=2 5.21 [5.07, 5.94] (200 fights, 7 in-play cards; price before 6.29); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 7.41): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
-    "pow": 0.291
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): arrow=1 4.26 [3.68, 4.76] (200 fights, 3 in-play cards; price before 4.43); arrow=2 7.01 [6.58, 8.51] (200 fights, 7 in-play cards; price before 5.21); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 1.54): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "pow": 0.719
    },
    {
     "id": "arrowCount",
@@ -1685,8 +1714,8 @@
    {
     "id": "avalanche",
     "scale": "half",
-    "value": 5.23,
-    "measuredS": 5.23,
+    "value": 6.63,
+    "measuredS": 6.63,
     "measuredConf": "high",
     "recost1Was": {
      "measuredS": 4.22,
@@ -1694,8 +1723,8 @@
     },
     "prevValue": 4,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredSE": 0.25,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): avalanche=1 5.23 [5.05, 6.04] (200 fights, 1 in-play card; price before 6.81); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredSE": 0.6,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): avalanche=1 6.63 [5.88, 8.22] (200 fights, 1 in-play card; price before 5.23); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 8.29,
@@ -1709,10 +1738,10 @@
    {
     "id": "backstab",
     "scale": "n",
-    "value": 1.04,
-    "measuredS": 1.04,
+    "value": 0.03,
+    "measuredS": 0.03,
     "measuredConf": "high",
-    "measuredSE": 0.11,
+    "measuredSE": 0,
     "prevValue": 1,
     "note": "2026-10-23 (package EN, owner D21: \"if the enemy has a status that makes them less effective at combat or YOU have a skill that makes you MORE effective at combat (blind vs evade e.g.)\"): +N on its swing when the unit it strikes is Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or stone, or would swing blind in the dark while it sees (was: a unit not directly in front). Priced by logic, not measured: Assault's 1.8 a point x about 1 swing in 3 that meets a condition = 0.6 a point. The measuredS beside it is the old rule's; measure the new one with tools/skill_test_robust.js.",
     "prevValueEN": 1.5,
@@ -1727,8 +1756,8 @@
      "measuredConf": "high",
      "measuredSE": 0.18
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): backstab=2 1.83 [1.32, 2.19] (400 fights, 2 in-play cards; price before 1.54); backstab=3 2.54 [2.08, 3.18] (200 fights, 1 in-play card; price before 2.44); a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 0.02): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
-    "pow": 0.81
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): backstab=2 0.33 [-0.09, 0.66] (1000 fights, 2 in-play cards; price before 1.82); backstab=3 1.39 [0.99, 1.79] (1000 fights, 1 in-play card; price before 2.53); a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 0.38): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "pow": 3.578
    },
    {
     "id": "banana",
@@ -1753,10 +1782,10 @@
    {
     "id": "berserk",
     "scale": "half",
-    "value": 2.4,
-    "measuredS": 2.4,
+    "value": 1.8,
+    "measuredS": 1.8,
     "measuredConf": "high",
-    "measuredSE": 0.06,
+    "measuredSE": 0.19,
     "prevValue": 2,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -1766,7 +1795,7 @@
      "measuredConf": "high",
      "measuredSE": 0.43
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): berserk=2 4.79 [4.44, 4.88] (200 fights, 1 in-play card; price before 4.66); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): berserk=2 3.6 [3.1, 4.61] (200 fights, 1 in-play card; price before 4.8); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 3.09,
@@ -1911,10 +1940,10 @@
    {
     "id": "boomerang",
     "scale": "half",
-    "value": 2.29,
-    "measuredS": 2.29,
+    "value": 2.25,
+    "measuredS": 2.25,
     "measuredConf": "high",
-    "measuredSE": 0.25,
+    "measuredSE": 0.21,
     "prevValue": 3,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -1925,7 +1954,7 @@
      "measuredConf": "low",
      "measuredSE": 1.49
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): boomerang 2.29 [1.73, 2.71] (200 fights, 2 in-play cards; price before 1.97); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): boomerang 2.25 [1.76, 2.59] (200 fights, 2 in-play cards; price before 2.29); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "brittle",
@@ -1951,8 +1980,8 @@
     },
     "measuredS": 4.28,
     "measuredConf": "high",
-    "measuredSE": 0.19,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): brood=2 5.28 [5.09, 6.03] (200 fights, 1 in-play card; price before 7.2); brood=1 4.28 [3.52, 5.04] (200 fights, 1 in-play card; price before 3.96); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 2.16): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredSE": 0.3,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): brood=2 8.27 [7.71, 9.97] (200 fights, 1 in-play card; price before 5.28); brood=1 4.28 [3.52, 5.04] (200 fights, 1 in-play card; price before 3.96); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.02): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
     "pricedBy": "re-measured after the nearest-slot rule: 3.02 against 3.21, within the noise; kept",
     "skill2Was": {
      "scale": "half",
@@ -1963,15 +1992,15 @@
      "measuredSE": 1.47,
      "measuredHow": "2026-10-21 (BF6): tools/skill_worth.js --world=half (baselines 1/4 W1, 2/7 W2, 3/11 W3, brambles 50), 30 games a point; median of S / (1 + floor(N/2)) over N = 1, 2"
     },
-    "pow": 0.302
+    "pow": 0.949
    },
    {
     "id": "bulldoze",
     "scale": "half",
-    "value": 1.95,
-    "measuredS": 1.95,
+    "value": 2.28,
+    "measuredS": 2.28,
     "measuredConf": "high",
-    "measuredSE": 0.24,
+    "measuredSE": 0.16,
     "prevValue": 4,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -1981,7 +2010,7 @@
      "measuredConf": "high",
      "measuredSE": 0.74
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): bulldoze=1 1.95 [1.56, 2.48] (200 fights, 1 in-play card; price before 2.31); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): bulldoze=1 2.28 [1.97, 2.58] (200 fights, 1 in-play card; price before 1.95); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 2.48,
@@ -1995,10 +2024,10 @@
    {
     "id": "bulwark",
     "scale": "n",
-    "value": 4.87,
-    "measuredS": 4.87,
+    "value": 5.96,
+    "measuredS": 5.96,
     "measuredConf": "high",
-    "measuredSE": 0.11,
+    "measuredSE": 0.48,
     "note": "2026-10-23 (package EN, owner 01:57 note 2: \"Bulwark N ... summons 2 bulwark shields somewhere - vanguard and 4*N HP\"): as it arrives it raises two 0/4N Structure shields in the front-row slots nearest it. Priced from what it raises: each shield is 4N Health, counted as stats on the card are (2A + H) = 4N, two of them = 8 a point. The old rule (N less damage to your bramble a hit) is gone; measuredS beside it is the old rule's.; 2026-10-23 (BF11, owner 11:11: \"Bulwark should be scored only for 6, since its easily exploitable by the opponent\"); 2026-10-23 (package EN3, owner 19:27 #9: \"Okay bulwark is a 9!, not 6.\")",
     "prevValueEN": 1,
     "prevScaleEN": "half",
@@ -2016,8 +2045,8 @@
      "measuredSE": 0.1
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): bulwark=1 4.87 [4.54, 4.98] (200 fights, 1 in-play card; price before 5.62); bulwark=2 5.2 [5.05, 5.9] (200 fights, 1 in-play card; price before 7.04); a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 4.13): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
-    "pow": 0.093
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): bulwark=1 5.96 [5.32, 7.52] (200 fights, 1 in-play card; price before 4.87); bulwark=2 6.94 [6.37, 8.56] (200 fights, 1 in-play card; price before 5.19); a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 4.97): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "pow": 0.219
    },
    {
     "id": "carrion",
@@ -2087,10 +2116,10 @@
    {
     "id": "charge",
     "scale": "fixed",
-    "value": 4.04,
-    "measuredS": 4.04,
+    "value": 4.85,
+    "measuredS": 4.85,
     "measuredConf": "high",
-    "measuredSE": 0.29,
+    "measuredSE": 0.57,
     "prevValue": 3,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "note": "2026-10-26 (package ENG10; 4-round rule), owner on ENG9-4 (10-26 11:19): \"Charge is recharging, like reload.\" The clock winds back after the effect, so it repeats every N upkeeps: back to the price it had for the repeating clock, 3 (a Charge 2 of 3 damage goes off about twice in a 4-round life: 6 damage at 0.67 a point, x0.75 for the clock's start). ENG9 had made it a one-shot (1.2).",
@@ -2101,7 +2130,7 @@
      "measuredConf": "high",
      "measuredSE": 0.51
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): charge={\"n\":2,\"do\":{\"do\":\"damage\",\"amount\":3,\"who\":\"enemy\",\"sub\":\"random\"}} 4.04 [3.37, 4.51] (200 fights, 1 in-play card; price before 3.66); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): charge={\"n\":2,\"do\":{\"do\":\"damage\",\"amount\":3,\"who\":\"enemy\",\"sub\":\"random\"}} 4.85 [3.66, 5.9] (200 fights, 1 in-play card; price before 4.04); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "fixed",
      "value": 5.58,
@@ -2134,7 +2163,7 @@
    {
     "id": "coffee",
     "scale": "n",
-    "value": 1.93,
+    "value": 2.29,
     "pow": -1,
     "payDefault": 2,
     "prevValue": 0.22,
@@ -2146,18 +2175,18 @@
      "pow": -1,
      "appliedAt": "2026-10-27 (package ENG11, owner K2)"
     },
-    "measuredS": 1.93,
+    "measuredS": 2.29,
     "measuredConf": "high",
-    "measuredSE": 0.29,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): coffee=1 1.93 [1.38, 2.52] (200 fights, 1 in-play card; price before 2.08); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredSE": 0.21,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): coffee=1 2.29 [1.89, 2.73] (200 fights, 1 in-play card; price before 1.93); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "confuse",
     "scale": "half",
-    "value": 1.31,
-    "measuredS": 1.31,
+    "value": 1.69,
+    "measuredS": 1.69,
     "measuredConf": "high",
-    "measuredSE": 0.24,
+    "measuredSE": 0.26,
     "prevValue": 3.41,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -2168,7 +2197,7 @@
      "measuredConf": "high",
      "measuredSE": 0.45
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): confuse={\"chance\":50,\"duration\":2} 1.31 [0.85, 1.78] (400 fights, 1 in-play card; price before 1.87); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): confuse={\"chance\":50,\"duration\":2} 1.69 [1.22, 2.23] (400 fights, 1 in-play card; price before 1.31); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "converge",
@@ -2193,8 +2222,8 @@
    {
     "id": "corrode",
     "scale": "half",
-    "value": 1.83,
-    "measuredS": 1.83,
+    "value": 1.73,
+    "measuredS": 1.73,
     "measuredConf": "high",
     "recost1Was": {
      "measuredS": 1.34,
@@ -2202,8 +2231,8 @@
     },
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredSE": 0.13,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): corrode=2 3.67 [3.18, 4.23] (200 fights, 1 in-play card; price before 3.6); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredSE": 0.14,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): corrode=2 3.47 [2.9, 4] (200 fights, 1 in-play card; price before 3.66); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0,
@@ -2336,8 +2365,8 @@
    {
     "id": "daunt",
     "scale": "n",
-    "value": 2.04,
-    "measuredS": 2.04,
+    "value": 2.31,
+    "measuredS": 2.31,
     "measuredConf": "high",
     "measuredSE": 0.14,
     "prevValue": 2.5,
@@ -2350,7 +2379,7 @@
      "measuredConf": "high",
      "measuredSE": 0.46
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): daunt=1 2.04 [1.65, 2.48] (200 fights, 3 in-play cards; price before 1.89); daunt=2 2.99 [2.59, 3.4] (200 fights, 1 in-play card; price before 3.1); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.5): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): daunt=1 2.31 [2.12, 2.69] (200 fights, 3 in-play cards; price before 2.04); daunt=2 3.04 [2.53, 3.4] (200 fights, 1 in-play card; price before 3); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 1.06): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.34,
@@ -2360,13 +2389,13 @@
      "measuredSE": 0.17,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill daunt --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +0.42 +/- 0.43 budget points against a price of +3.12 on booming-bittern, cave-warlord, eyrie-warden, skull-vulture (net -2.71, z -12.39); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.555
+    "pow": 0.399
    },
    {
     "id": "decay",
     "scale": "half",
-    "value": 4.91,
-    "measuredS": 4.91,
+    "value": 6.13,
+    "measuredS": 6.13,
     "measuredConf": "high",
     "note": "2026-10-26 (package ENG9; 4-round rule, not measured), owner G4: \"Decay is really strong btw - ... upped by ~12% in cost\": 1 -> 1.12 (half scale). Checked: the Dung Beetle's hit lays the counter and its tick takes the Attack (tests/eng9-2026-10-26.js).",
     "prevValue": 1,
@@ -2376,9 +2405,9 @@
      "measuredS": 3.92,
      "measuredConf": "low"
     },
-    "measuredSE": 0.06,
+    "measuredSE": 0.41,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): decay=1 4.91 [4.72, 4.96] (200 fights, 1 in-play card; price before 4.76); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): decay=1 6.13 [5.8, 7.4] (200 fights, 1 in-play card; price before 4.91); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "defiance",
@@ -2440,10 +2469,10 @@
    {
     "id": "devour",
     "scale": "half",
-    "value": 1.21,
-    "measuredS": 1.21,
+    "value": 2,
+    "measuredS": 2,
     "measuredConf": "high",
-    "measuredSE": 0.25,
+    "measuredSE": 0.2,
     "skill2Was": {
      "scale": "half",
      "value": 4,
@@ -2452,7 +2481,7 @@
      "measuredSE": 2.99
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): devour={\"attack\":2,\"health\":2} -0.14 [-0.67, 0.31] (400 fights, 1 in-play card; price before 4); devour={\"attack\":3,\"health\":3,\"grant\":{\"arrow\":2}} 2.55 [2.04, 3.19] (200 fights, 1 in-play card; price before 4); least squares over 2 N; docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): devour={\"attack\":2,\"health\":2} 0.54 [0.15, 0.92] (400 fights, 1 in-play card; price before 1.21); devour={\"attack\":3,\"health\":3,\"grant\":{\"arrow\":2}} 3.46 [2.8, 4.32] (200 fights, 1 in-play card; price before 1.21); least squares over 2 N; docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "dictator",
@@ -2510,10 +2539,10 @@
    {
     "id": "drunk",
     "scale": "half",
-    "value": -3.07,
-    "measuredS": -3.07,
+    "value": -3.7,
+    "measuredS": -3.7,
     "measuredConf": "high",
-    "measuredSE": 0.33,
+    "measuredSE": 0.36,
     "prevValue": -3,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -2523,7 +2552,7 @@
      "measuredConf": "high",
      "measuredSE": 0.25
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): drunk -3.07 [-3.82, -2.51] (700 fights, 1 in-play card; price before -3.25); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): drunk -3.7 [-4.45, -3.05] (1000 fights, 1 in-play card; price before -4.29); docs/balance/skill2-measures-2026-10-31.json",
     "note": "2026-10-30 (RECOST1): a drawback, its negative price kept (not floored at 0).",
     "skill2Was": {
      "scale": "half",
@@ -2568,10 +2597,10 @@
    {
     "id": "earthquake",
     "scale": "n",
-    "value": 1.03,
-    "measuredS": 1.03,
+    "value": 0.08,
+    "measuredS": 0.08,
     "measuredConf": "high",
-    "measuredSE": 0.17,
+    "measuredSE": 0.01,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -2582,8 +2611,8 @@
      "measuredConf": "high",
      "measuredSE": 0.46
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): earthquake=3 1.44 [1, 1.91] (700 fights, 1 in-play card; price before 1.01); earthquake=4 1.57 [1.07, 2.06] (700 fights, 1 in-play card; price before 1.33); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.11): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
-    "pow": 0.304
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): earthquake=3 1.1 [0.6, 1.6] (1000 fights, 1 in-play card; price before 1.44); earthquake=4 2.18 [1.25, 2.51] (400 fights, 1 in-play card; price before 1.57); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.09): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "pow": 2.372
    },
    {
     "id": "electricity",
@@ -2598,10 +2627,10 @@
    {
     "id": "esprit",
     "scale": "n",
-    "value": 2.37,
-    "measuredS": 2.37,
+    "value": 2.27,
+    "measuredS": 2.27,
     "measuredConf": "high",
-    "measuredSE": 0.18,
+    "measuredSE": 0.19,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -2612,8 +2641,8 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): esprit=1 2.37 [1.88, 2.68] (200 fights, 2 in-play cards; price before 2.52); esprit=2 3.68 [3.15, 4.24] (200 fights, 2 in-play cards; price before 3.53); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.44): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
-    "pow": 0.638
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): esprit=1 2.28 [1.86, 2.61] (200 fights, 2 in-play cards; price before 2.37); esprit=2 3.38 [2.72, 3.88] (200 fights, 2 in-play cards; price before 3.69); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.55): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "pow": 0.572
    },
    {
     "id": "espritHp",
@@ -2680,10 +2709,10 @@
    {
     "id": "explode",
     "scale": "half",
-    "value": 3.98,
-    "measuredS": 3.98,
+    "value": 5.75,
+    "measuredS": 5.75,
     "measuredConf": "high",
-    "measuredSE": 0.28,
+    "measuredSE": 0.56,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -2694,7 +2723,7 @@
      "measuredConf": "high",
      "measuredSE": 0.52
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): explode={\"time\":1,\"damage\":4} 3.98 [3.36, 4.47] (200 fights, 1 in-play card; price before 4.16); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): explode={\"time\":1,\"damage\":4} 5.75 [4.92, 7.13] (200 fights, 1 in-play card; price before 3.98); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "sk1Note": "2026-10-19 (package SK1): Expose N reworked (strips hiding for N rounds; the crit moved to Exploit): re-measure",
@@ -2703,7 +2732,7 @@
     "value": 0.09,
     "measuredS": 0.09,
     "measuredConf": "high",
-    "measuredSE": 0.07,
+    "measuredSE": 0.09,
     "prevValue": 2.1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -2713,7 +2742,7 @@
      "measuredConf": "high",
      "measuredSE": 0.34
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): expose=2 0.17 [-0.09, 0.47] (200 fights, 1 in-play card; price before 0.14); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): expose=2 0.18 [-0.12, 0.55] (200 fights, 1 in-play card; price before 0.18); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.03,
@@ -2727,10 +2756,10 @@
    {
     "id": "fastForward",
     "scale": "half",
-    "value": 3.04,
-    "measuredS": 3.04,
+    "value": 3.02,
+    "measuredS": 3.02,
     "measuredConf": "high",
-    "measuredSE": 0.25,
+    "measuredSE": 0.28,
     "prevValue": 5.59,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -2740,7 +2769,7 @@
      "measuredConf": "high",
      "measuredSE": 0.67
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): fastForward=1 3.04 [2.53, 3.53] (200 fights, 1 in-play card; price before 2.95); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): fastForward=1 3.02 [2.49, 3.6] (200 fights, 1 in-play card; price before 3.04); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 2.34,
@@ -2807,10 +2836,10 @@
    {
     "id": "fireArrow",
     "scale": "n",
-    "value": 4.43,
-    "measuredS": 4.43,
+    "value": 6.56,
+    "measuredS": 6.56,
     "measuredConf": "high",
-    "measuredSE": 0.17,
+    "measuredSE": 0.45,
     "skill2Was": {
      "scale": "half",
      "value": 3.5,
@@ -2819,16 +2848,16 @@
      "measuredSE": 5.32
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): fireArrow=1 4.43 [4.02, 4.7] (200 fights, 2 in-play cards; price before 4.01); fireArrow=2 5.2 [5.05, 5.87] (200 fights, 2 in-play cards; price before 6.3); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 5.38): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
-    "pow": 0.23
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): fireArrow=1 6.56 [6.19, 7.98] (200 fights, 2 in-play cards; price before 4.43); fireArrow=2 8.04 [7.57, 9.74] (200 fights, 2 in-play cards; price before 5.2); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 10.3): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "pow": 0.294
    },
    {
     "id": "fireball",
     "scale": "half",
-    "value": 1.1,
-    "measuredS": 1.1,
+    "value": 1.24,
+    "measuredS": 1.24,
     "measuredConf": "high",
-    "measuredSE": 0.05,
+    "measuredSE": 0.08,
     "note": "2026-10-26 (package ENG9; 4-round rule, not measured), owner G23: Fireball was already once (On Ready); it now also goes off for a unit Ready at Wait 0 (at its first upkeep) and leaves the card once spent. No price change: 2 (half scale).",
     "skill2Was": {
      "scale": "half",
@@ -2838,7 +2867,7 @@
      "measuredSE": 11.83
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): fireball=15 8.77 [7.95, 9.59] (200 fights, 1 in-play card; price before 16); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): fireball=15 9.91 [9.23, 11.85] (200 fights, 1 in-play card; price before 8.8); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "fireBolt",
@@ -2854,7 +2883,7 @@
     "value": 3.19,
     "measuredS": 3.19,
     "measuredConf": "high",
-    "measuredSE": 0.13,
+    "measuredSE": 0.09,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -2865,7 +2894,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): arrow=1+fletcher=1 7.44 [6.64, 8.36] (200 fights, 1 in-play card; price before 6.65); fletcher=1 0.37 [0.17, 0.67] (200 fights, 1 in-play card; price before 3.18); (Arrow 1 + Fletcher 1) 7.44 - Arrow 1 4.26, the Quartermaster's pair (DECK1-1); on carriers with no arrow of their own 0.37; docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): arrow=1+fletcher=1 7.44 [6.64, 8.36] (200 fights, 1 in-play card; price before 6.65); fletcher=1 0.1 [-0.04, 0.31] (200 fights, 1 in-play card; price before 3.19); (Arrow 1 + Fletcher 1) 7.44 - Arrow 1 4.26, the Quartermaster's pair (DECK1-1); on carriers with no arrow of their own 0.1; docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "flying",
@@ -2959,10 +2988,10 @@
    {
     "id": "freeze",
     "scale": "half",
-    "value": 1.35,
-    "measuredS": 1.35,
+    "value": 1.83,
+    "measuredS": 1.83,
     "measuredConf": "high",
-    "measuredSE": 0.17,
+    "measuredSE": 0.24,
     "prevValue": 1.8,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -2972,7 +3001,7 @@
      "measuredConf": "high",
      "measuredSE": 0.15
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): freeze={\"chance\":25,\"duration\":1} 0.82 [0.33, 1.27] (400 fights, 1 in-play card; price before 1.84); freeze={\"chance\":30,\"duration\":1} 0.95 [0.45, 1.39] (400 fights, 1 in-play card; price before 1.84); freeze={\"chance\":40,\"duration\":2} 2.29 [1.87, 2.56] (400 fights, 1 in-play card; price before 1.84); least squares over 3 N; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): freeze={\"chance\":25,\"duration\":1} 1.37 [0.88, 1.86] (400 fights, 1 in-play card; price before 1.35); freeze={\"chance\":30,\"duration\":1} 1.5 [1.04, 1.98] (400 fights, 1 in-play card; price before 1.35); freeze={\"chance\":40,\"duration\":2} 2.62 [2.27, 3.26] (200 fights, 1 in-play card; price before 1.35); least squares over 3 N; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.55,
@@ -2986,10 +3015,10 @@
    {
     "id": "frenzy",
     "scale": "half",
-    "value": 0.51,
-    "measuredS": 0.51,
+    "value": 0.75,
+    "measuredS": 0.75,
     "measuredConf": "high",
-    "measuredSE": 0.17,
+    "measuredSE": 0.21,
     "prevValue": 0.1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -2999,7 +3028,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): frenzy 0.51 [0.23, 0.91] (200 fights, 1 in-play card; price before 0.32); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): frenzy 0.75 [0.41, 1.23] (200 fights, 1 in-play card; price before 0.51); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.88,
@@ -3050,10 +3079,10 @@
    {
     "id": "gash",
     "scale": "half",
-    "value": 1.21,
-    "measuredS": 1.21,
+    "value": 1.15,
+    "measuredS": 1.15,
     "measuredConf": "high",
-    "measuredSE": 0.11,
+    "measuredSE": 0.09,
     "prevValueEN3": 1.5,
     "note": "2026-10-23 (package EN3, owner 19:27 #6: Bleed and Poison wore down a stack before its damage; priced up to the next tenth)",
     "recost1Was": {
@@ -3063,7 +3092,7 @@
     },
     "prevValue": 1.6,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): gash=3 2.42 [1.87, 2.74] (200 fights, 3 in-play cards; price before 2.66); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): gash=3 2.29 [2.01, 2.68] (200 fights, 3 in-play cards; price before 2.42); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.24,
@@ -3128,12 +3157,21 @@
    {
     "id": "rampart",
     "scale": "fixed",
-    "value": 0.22,
+    "value": 0.49,
     "note": "2026-10-26 (package ENG9; 4-round rule, not measured), owner EN8-8 (E9): Rampart works only while the unit is Ready (not its Wait rounds, not Bound): 0.25 -> 0.22.",
-    "measuredS": 0.44,
-    "measuredConf": "medium",
-    "measuredHow": "2026-10-23 (EN3): tools/skill_test_robust.js --mono --multi, 3000 games a setup: worth 0.44 mono (net -2.49 ±0.13 at the 2.0 estimate), -0.13 with companions; priced 0.5 (a floor: the test brambles are 35 Health, and only one Rampart shares a hit, so a deck of them over-counts)",
-    "prevValue": 0.25
+    "measuredS": 0.49,
+    "measuredConf": "high",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): rampart 0.49 [0.05, 1.05] (200 fights, 1 in-play card; price before 0.22); docs/balance/skill2-measures-2026-10-31.json",
+    "prevValue": 0.25,
+    "skill2Was": {
+     "scale": "fixed",
+     "value": 0.22,
+     "measuredS": 0.44,
+     "measuredConf": "medium",
+     "measuredHow": "2026-10-23 (EN3): tools/skill_test_robust.js --mono --multi, 3000 games a setup: worth 0.44 mono (net -2.49 ±0.13 at the 2.0 estimate), -0.13 with companions; priced 0.5 (a floor: the test brambles are 35 Health, and only one Rampart shares a hit, so a deck of them over-counts)"
+    },
+    "measuredSE": 0.26,
+    "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)"
    },
    {
     "id": "brambleArmor",
@@ -3155,13 +3193,13 @@
     "id": "greaterPoison",
     "scale": "half",
     "note": "2026-10-23 (package EN4, owner 22:23 #7; how it ticks: call EN4-2): its landed swing turns the target's Poison into Greater Poison (1 a stack each round, never wears off; owner 23:45) and adds N. 4-round logic beside Poison 2: Poison 2 alone ticks 2+3+4 = 9 in 4 rounds, with Greater Poison 1 the same unit's ticks are 3+5+7 = 15, about 6 more damage = 3 stat points if the target lives all 4 rounds, about 2 at a usual 2/3; alone (no Poison) 1+2+3 = 6, about 2. Priced 2.5. tools/skill_test_robust.js (enabler Poison 2) is censored at the floor (the enabler deck loses nearly every game), so the logic price stands: docs/balance/en4-skill-test-2026-10-23.md.",
-    "value": 4.29,
+    "value": 3.69,
     "prevValue": 2.5,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredS": 4.29,
+    "measuredS": 3.69,
     "measuredConf": "high",
-    "measuredSE": 0.22,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): greaterPoison=1 4.29 [3.68, 4.55] (200 fights, 1 in-play card; price before 3.85); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredSE": 0.32,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): greaterPoison=1 3.69 [3.39, 4.65] (200 fights, 1 in-play card; price before 4.29); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.39,
@@ -3202,18 +3240,18 @@
    {
     "id": "canopyCover",
     "scale": "fixed",
-    "value": 0.02,
+    "value": 0.07,
     "attackShare": 0.22,
     "note": "2026-10-30 (package TUT2, owner ENG13-3: \"just use logic and reduce it, no need to remeasure.\"): since ENG13 the cover dodges only shots, skills and Flying / thrown (Boomerang) swings, no longer a ground unit's melee swing, so its price is scaled by the share of single-target attacks of those kinds: over the live cards on the map lists (canonical/map-pools.json, every tier), each card weighted by the lists it is on, 162 of 739 attacks (swings + shot skills + damage triggers) = 0.219 -> attackShare 0.22 (tools/tut2_canopy_share_2026_10_30.js; bramblewood-budget.js CANOPY_SHARE). The multiplier is now 1 + 0.37 x 0.4 x 0.22 = x1.033 (was x1.148). 2026-10-24 (package EN5, owner FLY-1): a half-miss skill conditioned on the field: priced by bramblewood-budget.js canopyMultOf, 1 + (Evasive's 1.37 - 1) x CANOPY_UPTIME 0.4 on the stat terms (x1.148), not as a skill. 40 of 267 conquest fights (15%) are under the trees; a forest card is mostly played there (call EN5-3).",
     "skill2Was": {
      "scale": "fixed",
      "value": 0
     },
-    "measuredS": 0.02,
+    "measuredS": 0.07,
     "measuredConf": "high",
     "measuredSE": 0.08,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): canopyCover 0.02 [-0.13, 0.18] (200 fights, 1 in-play card; price before 0.3883); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): canopyCover 0.07 [-0.07, 0.26] (200 fights, 1 in-play card; price before 0.275); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "timbered",
@@ -3269,17 +3307,17 @@
    {
     "id": "foeScarcity",
     "scale": "fixed",
-    "value": 3.07,
+    "value": 3.39,
     "note": "2026-10-24 (package EN6, owner 03:17): Foe's Scarcity - {...} while the opponent holds 1 or none (measured 0.77); plain = {+1/+0}: 2 stat points x uptime 0.77 = 1.54 (bramblewood-budget.js EN6_UPTIME; docs/balance/en6-state-uptime-2026-10-24.json). Its braces: 0.77 x their S.",
     "skill2Was": {
      "scale": "fixed",
      "value": 1.54
     },
-    "measuredS": 3.07,
+    "measuredS": 3.39,
     "measuredConf": "high",
-    "measuredSE": 0.22,
+    "measuredSE": 0.23,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): foeScarcity 3.07 [2.68, 3.53] (200 fights, 1 in-play card; price before 2.91); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): foeScarcity 3.39 [2.79, 3.7] (200 fights, 1 in-play card; price before 3.07); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "heat",
@@ -3456,10 +3494,10 @@
    {
     "id": "haste",
     "scale": "half",
-    "value": 2.55,
-    "measuredS": 2.55,
+    "value": 2.57,
+    "measuredS": 2.57,
     "measuredConf": "high",
-    "measuredSE": 0.23,
+    "measuredSE": 0.21,
     "skill2Was": {
      "scale": "half",
      "value": 3,
@@ -3468,7 +3506,7 @@
      "measuredSE": 1.54
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): haste 2.55 [2.19, 3.1] (200 fights, 1 in-play card; price before 2.72); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): haste 2.57 [2.31, 3.12] (200 fights, 1 in-play card; price before 2.55); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "heal",
@@ -3483,10 +3521,10 @@
    {
     "id": "healing",
     "scale": "half",
-    "value": 4.26,
-    "measuredS": 4.26,
+    "value": 3.48,
+    "measuredS": 3.48,
     "measuredConf": "high",
-    "measuredSE": 0.24,
+    "measuredSE": 0.26,
     "prevValue": 4,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -3496,7 +3534,7 @@
      "measuredConf": "high",
      "measuredSE": 0.74
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): healing=1 4.26 [3.64, 4.59] (200 fights, 2 in-play cards; price before 4.25); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): healing=1 3.48 [2.97, 3.97] (200 fights, 2 in-play cards; price before 4.26); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 1.2,
@@ -3567,10 +3605,10 @@
    {
     "id": "hoard",
     "scale": "n",
-    "value": 1.6,
-    "measuredS": 1.6,
+    "value": 2.24,
+    "measuredS": 2.24,
     "measuredConf": "high",
-    "measuredSE": 0.26,
+    "measuredSE": 0.24,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -3581,17 +3619,17 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): hoard=1 1.6 [1.21, 2.24] (200 fights, 1 in-play card; price before 2.12); hoard=3 0.07 [-0.09, 0.28] (200 fights, 1 in-play card; price before 0.17); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 1.96): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
-    "pow": -2.8
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): hoard=1 2.24 [1.58, 2.51] (200 fights, 1 in-play card; price before 1.6); hoard=3 0.16 [0, 0.36] (200 fights, 1 in-play card; price before 0.07); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 3.73): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "pow": -2.38
    },
    {
     "id": "hunter",
     "scale": "n",
-    "value": 0.75,
+    "value": 0.51,
     "note": "2026-10-19 (package GI): +N vs the picked status (Poisoned / Bleeding / Wet / Exposed), as Shatter",
-    "measuredS": 0.75,
+    "measuredS": 0.51,
     "measuredConf": "high",
-    "measuredSE": 0.26,
+    "measuredSE": 0.18,
     "recost1Was": {
      "measuredS": 0.99,
      "measuredConf": "medium",
@@ -3599,7 +3637,7 @@
     },
     "prevValue": 2,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): hunter=1 0.75 [0.22, 1.25] (400 fights, 1 in-play card; price before 0.28); hunter=2 0.19 [-0.35, 0.64] (400 fights, 1 in-play card; price before 0.56); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.34): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): hunter=1 0.51 [0.14, 0.84] (1000 fights, 1 in-play card; price before 0.94); hunter=2 0.09 [-0.51, 0.59] (400 fights, 1 in-play card; price before 0.19); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.17): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.28,
@@ -3609,7 +3647,7 @@
      "measuredSE": 0.33,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill hunter --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +0.42 +/- 0.96 budget points against a price of +3.00 on fen-mink, tidepool-trapper-crab (net -2.58, z -5.24); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": -1.975
+    "pow": -2.505
    },
    {
     "id": "hunterVs",
@@ -3621,10 +3659,10 @@
    {
     "id": "iceArrow",
     "scale": "n",
-    "value": 5.21,
-    "measuredS": 5.21,
+    "value": 6.57,
+    "measuredS": 6.57,
     "measuredConf": "high",
-    "measuredSE": 0.24,
+    "measuredSE": 0.43,
     "recost1Was": {
      "measuredS": 27.96,
      "measuredConf": "low",
@@ -3632,7 +3670,7 @@
     },
     "prevValue": 2.5,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): iceArrow=1 5.21 [5.04, 5.98] (200 fights, 1 in-play card; price before 5.83); iceArrow=2 6.52 [5.75, 7.32] (200 fights, 1 in-play card; price before 6.99); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 3.03): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): iceArrow=1 6.57 [6.08, 7.99] (200 fights, 1 in-play card; price before 5.21); iceArrow=2 8.13 [7.69, 9.75] (200 fights, 1 in-play card; price before 6.53); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 5.02): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 3.96,
@@ -3642,15 +3680,15 @@
      "measuredSE": 0.53,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill iceArrow --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +5.94 +/- 1.55 budget points against a price of +3.75 on snow-bunting-archer, rimefire-salamander (net +2.19, z 2.76); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.325
+    "pow": 0.307
    },
    {
     "id": "iceBolt",
     "scale": "half",
-    "value": 3.26,
-    "measuredS": 3.26,
+    "value": 4.04,
+    "measuredS": 4.04,
     "measuredConf": "high",
-    "measuredSE": 0.2,
+    "measuredSE": 0.27,
     "recost1Was": {
      "measuredS": 20.91,
      "measuredConf": "low",
@@ -3658,7 +3696,7 @@
     },
     "prevValue": 3,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): iceBolt=2 6.52 [5.75, 7.32] (200 fights, 1 in-play card; price before 7); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): iceBolt=2 8.08 [7.59, 9.73] (200 fights, 1 in-play card; price before 6.52); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 4.21,
@@ -3680,10 +3718,10 @@
    {
     "id": "illuminate",
     "scale": "half",
-    "value": 0.36,
-    "measuredS": 0.36,
+    "value": 0.51,
+    "measuredS": 0.51,
     "measuredConf": "high",
-    "measuredSE": 0.17,
+    "measuredSE": 0.25,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -3694,7 +3732,7 @@
      "measuredConf": "high",
      "measuredSE": 0.39
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): illuminate 0.36 [0.1, 0.75] (200 fights, 4 in-play cards; price before 0.31); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): illuminate 0.51 [0.07, 1.05] (200 fights, 4 in-play cards; price before 0.36); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "immolation",
@@ -3753,8 +3791,8 @@
      "measuredSE": 0.33,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill inspiring --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +2.88 +/- 0.80 budget points against a price of +4.38 on goliath-broodmother, otter-flag-bearer, conch-herald, gilded-swan-knight (net -1.50, z -3.67); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.549,
-    "canonCurve": "2026-10-31 (SKILL2): the canon point inspiring 1 = 3.3 kept (3.3); the curve v x N^pow refitted through it from inspiring=2 4.83 [4.48, 4.91] (was n pow 0.626, which gave 5.09)",
+    "pow": 0.854,
+    "canonCurve": "2026-10-31 (SKILL2): the canon point inspiring 1 = 3.3 kept (3.3); the curve v x N^pow refitted through it from inspiring=2 5.96 [5.47, 7.41] (was n pow 0.549, which gave 4.83)",
     "bal12Was": {
      "scale": "n",
      "value": 3.13,
@@ -3776,8 +3814,8 @@
    {
     "id": "invisible",
     "scale": "half",
-    "value": 0.77,
-    "measuredS": 0.77,
+    "value": 0.48,
+    "measuredS": 0.48,
     "measuredConf": "high",
     "measuredSE": 0.11,
     "prevValue": 1,
@@ -3790,7 +3828,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): invisible=2 1.54 [1.23, 2.07] (200 fights, 2 in-play cards; price before 1.42); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): invisible=2 0.97 [0.57, 1.42] (200 fights, 2 in-play cards; price before 1.54); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "ironWill",
@@ -3840,10 +3878,10 @@
    {
     "id": "keenSense",
     "scale": "half",
-    "value": 0.37,
-    "measuredS": 0.37,
+    "value": 0.66,
+    "measuredS": 0.66,
     "measuredConf": "high",
-    "measuredSE": 0.2,
+    "measuredSE": 0.24,
     "prevValue": 4.14,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -3854,7 +3892,7 @@
      "measuredConf": "high",
      "measuredSE": 0.2
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): keenSense 0.37 [0, 0.77] (200 fights, 1 in-play card; price before 1.63); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): keenSense 0.66 [0.26, 1.22] (200 fights, 1 in-play card; price before 0.37); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "kingSlayer",
@@ -3911,10 +3949,10 @@
    {
     "id": "loneWolf",
     "scale": "half",
-    "value": 2.55,
-    "measuredS": 2.55,
+    "value": 3.68,
+    "measuredS": 3.68,
     "measuredConf": "high",
-    "measuredSE": 0.05,
+    "measuredSE": 0.25,
     "recost1Was": {
      "measuredS": 6.94,
      "measuredConf": "low",
@@ -3922,7 +3960,7 @@
     },
     "prevValue": 6,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): loneWolf=[1,1] 5.09 [4.95, 5.34] (200 fights, 1 in-play card; price before 5.68); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): loneWolf=[1,1] 7.36 [6.87, 8.81] (200 fights, 1 in-play card; price before 5.1); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 2.62,
@@ -3957,10 +3995,10 @@
    {
     "id": "lumberjack",
     "scale": "half",
-    "value": 4.36,
-    "measuredS": 4.36,
+    "value": 3.29,
+    "measuredS": 3.29,
     "measuredConf": "high",
-    "measuredSE": 0.26,
+    "measuredSE": 0.32,
     "prevValue": 5,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -3970,7 +4008,7 @@
      "measuredConf": "high",
      "measuredSE": 0.47
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): lumberjack 4.36 [3.69, 4.71] (200 fights, 1 in-play card; price before 3.56); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): lumberjack 3.29 [2.61, 3.86] (200 fights, 1 in-play card; price before 4.36); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 2.76,
@@ -3994,10 +4032,10 @@
    {
     "id": "meiosis",
     "scale": "half",
-    "value": 4.49,
-    "measuredS": 4.49,
+    "value": 4.55,
+    "measuredS": 4.55,
     "measuredConf": "high",
-    "measuredSE": 0.12,
+    "measuredSE": 0.47,
     "recost1Was": {
      "measuredS": 3.63,
      "measuredConf": "low",
@@ -4005,7 +4043,7 @@
     },
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): meiosis=1 4.49 [4.26, 4.73] (200 fights, 2 in-play cards; price before 4.5); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): meiosis=1 4.55 [3.68, 5.53] (200 fights, 2 in-play cards; price before 4.49); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 2.79,
@@ -4028,10 +4066,10 @@
    {
     "id": "midas",
     "scale": "n",
-    "value": 1.52,
-    "measuredS": 1.52,
+    "value": 0.73,
+    "measuredS": 0.73,
     "measuredConf": "high",
-    "measuredSE": 0.14,
+    "measuredSE": 0.11,
     "recost1Was": {
      "measuredS": 1.1,
      "measuredConf": "high",
@@ -4039,7 +4077,7 @@
     },
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): midas=2 2.1 [1.64, 2.56] (200 fights, 1 in-play card; price before 1.86); midas=3 2.53 [2.08, 3] (200 fights, 1 in-play card; price before 2.4); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.09): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): midas=2 1.23 [0.91, 1.63] (400 fights, 1 in-play card; price before 2.1); midas=3 1.67 [1.18, 2.25] (200 fights, 1 in-play card; price before 2.53); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.1): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.03,
@@ -4049,7 +4087,7 @@
      "measuredSE": 0.03,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill midas --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +0.06 +/- 0.12 budget points against a price of +2.00 on golden-magpie, magnate-duck (net -1.94, z -32.25); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.465
+    "pow": 0.753
    },
    {
     "id": "mimic",
@@ -4062,10 +4100,10 @@
    {
     "id": "mighty",
     "scale": "half",
-    "value": 4.83,
-    "measuredS": 4.83,
+    "value": 4.79,
+    "measuredS": 4.79,
     "measuredConf": "high",
-    "measuredSE": 0.08,
+    "measuredSE": 0.5,
     "prevValue": 7.15,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -4076,7 +4114,7 @@
      "measuredConf": "high",
      "measuredSE": 0.46
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): mighty 4.83 [4.57, 4.88] (200 fights, 1 in-play card; price before 5.05); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): mighty 4.79 [3.66, 5.6] (200 fights, 1 in-play card; price before 4.83); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "molting",
@@ -4100,7 +4138,7 @@
     "value": 1.23,
     "measuredS": 1.23,
     "measuredConf": "high",
-    "measuredSE": 0.1,
+    "measuredSE": 0.16,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -4111,7 +4149,7 @@
      "measuredConf": "high",
      "measuredSE": 0.66
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): moonborn=4 3.69 [3.14, 4.3] (200 fights, 1 in-play card; price before 12); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): moonborn=4 3.69 [3.33, 5.17] (200 fights, 1 in-play card; price before 3.69); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "moonpull",
@@ -4144,10 +4182,10 @@
    {
     "id": "nightblind",
     "scale": "half",
-    "value": -3.29,
-    "measuredS": -3.29,
+    "value": -2.12,
+    "measuredS": -2.12,
     "measuredConf": "high",
-    "measuredSE": 0.47,
+    "measuredSE": 0.23,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -4158,7 +4196,7 @@
      "measuredConf": "high",
      "measuredSE": 0.13
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): nightblind -3.29 [-4.36, -2.52] (400 fights, 1 in-play card; price before -2.63); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): nightblind -2.12 [-2.62, -1.73] (1000 fights, 1 in-play card; price before -2.18); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "nocturnal",
@@ -4196,18 +4234,27 @@
    {
     "id": "nova",
     "scale": "half",
-    "value": 2.5,
-    "measuredS": 5.01,
-    "measuredConf": "low",
-    "measuredSE": 5.1
+    "value": 2.24,
+    "measuredS": 2.24,
+    "measuredConf": "high",
+    "measuredSE": 0.26,
+    "skill2Was": {
+     "scale": "half",
+     "value": 2.5,
+     "measuredS": 5.01,
+     "measuredConf": "low",
+     "measuredSE": 5.1
+    },
+    "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): nova=3 4.49 [3.62, 5.62] (200 fights, 1 in-play card; price before 5); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "nullify",
     "scale": "half",
-    "value": 0.49,
-    "measuredS": 0.49,
+    "value": 0.26,
+    "measuredS": 0.26,
     "measuredConf": "high",
-    "measuredSE": 0.16,
+    "measuredSE": 0.12,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -4218,7 +4265,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): nullify 0.49 [0.26, 0.88] (200 fights, 1 in-play card; price before 0); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): nullify 0.26 [0.04, 0.5] (200 fights, 1 in-play card; price before 0.49); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "nursing",
@@ -4233,10 +4280,10 @@
    {
     "id": "octolash",
     "scale": "half",
-    "value": 6.85,
-    "measuredS": 6.85,
+    "value": 7.14,
+    "measuredS": 7.14,
     "measuredConf": "high",
-    "measuredSE": 0.4,
+    "measuredSE": 0.49,
     "prevValue": 25,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -4247,15 +4294,15 @@
      "measuredConf": "low",
      "measuredSE": 4.25
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): octolash 6.85 [6.11, 7.68] (200 fights, 1 in-play card; price before 8.32); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): octolash 7.14 [6.7, 8.63] (200 fights, 1 in-play card; price before 6.85); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "onDeathSpawn",
     "scale": "half",
-    "value": 4.14,
-    "measuredS": 4.14,
+    "value": 4.35,
+    "measuredS": 4.35,
     "measuredConf": "high",
-    "measuredSE": 0.07,
+    "measuredSE": 0.27,
     "recost1Was": {
      "measuredS": 12.96,
      "measuredConf": "low",
@@ -4263,7 +4310,7 @@
     },
     "prevValue": 3,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2} 3.45 [3.05, 4.04] (200 fights, 1 in-play card; price before 4.17); onDeathSpawn={\"defId\":\"bramble-sprout\",\"count\":1} 3.97 [3.41, 4.37] (200 fights, 1 in-play card; price before 4.17); onDeathSpawn={\"defId\":\"inkcloud-squid\",\"count\":2} 5.01 [4.84, 5.11] (200 fights, 1 in-play card; price before 4.17); least squares over 3 N; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): onDeathSpawn={\"defId\":\"bat-swarmling\",\"count\":2} 3.4 [2.73, 3.8] (200 fights, 1 in-play card; price before 4.14); onDeathSpawn={\"defId\":\"bramble-sprout\",\"count\":1} 3.54 [2.99, 4.32] (200 fights, 1 in-play card; price before 4.14); onDeathSpawn={\"defId\":\"inkcloud-squid\",\"count\":2} 6.09 [5.56, 7.5] (200 fights, 1 in-play card; price before 4.14); least squares over 3 N; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.91,
@@ -4277,10 +4324,10 @@
    {
     "id": "onReadyDamage",
     "scale": "half",
-    "value": 3.85,
-    "measuredS": 3.85,
+    "value": 5.56,
+    "measuredS": 5.56,
     "measuredConf": "high",
-    "measuredSE": 0.09,
+    "measuredSE": 0.42,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -4291,7 +4338,7 @@
      "measuredConf": "high",
      "measuredSE": 0.19
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): onReadyDamage={\"amount\":3,\"dmgType\":\"physical\"} 2.81 [2.31, 3.39] (200 fights, 2 in-play cards; price before 4.13); onReadyDamage={\"amount\":6,\"dmgType\":\"physical\"} 4.76 [4.35, 4.91] (200 fights, 1 in-play card; price before 4.13); onReadyDamage={\"amount\":8,\"dmgType\":\"physical\"} 5.02 [4.81, 5.16] (200 fights, 1 in-play card; price before 4.13); least squares over 3 N; docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): onReadyDamage={\"amount\":3,\"dmgType\":\"physical\"} 3.67 [3.26, 4.92] (200 fights, 2 in-play cards; price before 3.85); onReadyDamage={\"amount\":6,\"dmgType\":\"physical\"} 6.84 [6.29, 8.3] (200 fights, 1 in-play card; price before 3.85); onReadyDamage={\"amount\":8,\"dmgType\":\"physical\"} 8.06 [7.49, 9.74] (200 fights, 1 in-play card; price before 3.85); least squares over 3 N; docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "onReadyGold",
@@ -4344,10 +4391,10 @@
    {
     "id": "overwhelm",
     "scale": "half",
-    "value": 0.34,
-    "measuredS": 0.34,
+    "value": 0.52,
+    "measuredS": 0.52,
     "measuredConf": "high",
-    "measuredSE": 0.13,
+    "measuredSE": 0.15,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -4358,15 +4405,15 @@
      "measuredConf": "high",
      "measuredSE": 0.25
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): overwhelm 0.34 [0.15, 0.66] (200 fights, 3 in-play cards; price before 0.57); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): overwhelm 0.52 [0.27, 0.86] (200 fights, 3 in-play cards; price before 0.34); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "pack",
     "scale": "half",
-    "value": 2.55,
-    "measuredS": 2.55,
+    "value": 3.25,
+    "measuredS": 3.25,
     "measuredConf": "high",
-    "measuredSE": 0.06,
+    "measuredSE": 0.27,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -4377,7 +4424,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): pack=2 5.09 [4.92, 5.39] (200 fights, 1 in-play card; price before 5.82); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): pack=2 6.51 [5.87, 7.98] (200 fights, 1 in-play card; price before 5.1); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "packLeader",
@@ -4414,10 +4461,10 @@
    {
     "id": "perforate",
     "scale": "half",
-    "value": 2.62,
-    "measuredS": 2.62,
+    "value": 3.94,
+    "measuredS": 3.94,
     "measuredConf": "high",
-    "measuredSE": 0.12,
+    "measuredSE": 0.25,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "prevValueEN3": 3.5,
@@ -4430,7 +4477,7 @@
      "measuredConf": "high",
      "measuredSE": 0.97
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): perforate=2 5.25 [5.06, 5.99] (200 fights, 1 in-play card; price before 5.94); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): perforate=2 7.87 [7.41, 9.35] (200 fights, 1 in-play card; price before 5.24); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "pickpocket",
@@ -4444,10 +4491,10 @@
    {
     "id": "pierce",
     "scale": "n",
-    "value": 0.26,
-    "measuredS": 0.26,
+    "value": 0.23,
+    "measuredS": 0.23,
     "measuredConf": "high",
-    "measuredSE": 0.1,
+    "measuredSE": 0.12,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -4457,7 +4504,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): pierce=1 0.26 [0.08, 0.52] (200 fights, 4 in-play cards; price before 0.25); pierce=2 0.36 [0.16, 0.69] (200 fights, 2 in-play cards; price before 0.36); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.02): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): pierce=1 0.23 [0.03, 0.5] (200 fights, 4 in-play cards; price before 0.26); pierce=2 0.3 [0.03, 0.64] (200 fights, 2 in-play cards; price before 0.36); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.02): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.17,
@@ -4467,7 +4514,7 @@
      "measuredSE": 0.12,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill pierce --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +0.30 +/- 0.40 budget points against a price of +1.75 on anvil-thrush, ember-revenant, mallard-halberdier, oystercatcher (net -1.45, z -7.10); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.465
+    "pow": 0.362
    },
    {
     "id": "pitchfork",
@@ -4522,10 +4569,10 @@
    {
     "id": "poisonBolt",
     "scale": "half",
-    "value": 2.6,
-    "measuredS": 2.6,
+    "value": 3.53,
+    "measuredS": 3.53,
     "measuredConf": "high",
-    "measuredSE": 0.11,
+    "measuredSE": 0.24,
     "prevValueEN3": 3,
     "note": "2026-10-23 (package EN3, owner 19:27 #6: Bleed and Poison wore down a stack before its damage; priced up to the next tenth)",
     "skill2Was": {
@@ -4536,7 +4583,7 @@
      "measuredSE": 4.42
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): poisonBolt=2 5.2 [5.07, 5.91] (200 fights, 1 in-play card; price before 5.98); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): poisonBolt=2 7.06 [6.61, 8.47] (200 fights, 1 in-play card; price before 5.2); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "poisonGas",
@@ -4551,7 +4598,7 @@
    {
     "id": "pounce",
     "scale": "n",
-    "value": 2.11,
+    "value": 1.66,
     "measuredS": 1.93,
     "measuredConf": "high",
     "measuredSE": 0.13,
@@ -4580,8 +4627,8 @@
      "measuredSE": 0.19,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill pounce --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +1.53 +/- 0.73 budget points against a price of +3.60 on anhinga-spearbird, caldera-snow-leopard, firetail-trickster, fishing-cat (net -2.07, z -5.55); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.488,
-    "canonCurve": "2026-10-31 (SKILL2): the canon point pounce 2 = 2.96 kept (2.96); the curve v x N^pow refitted through it from pounce=3 3.43 [2.81, 4.28]; pounce=5 4.89 [4.56, 4.98]; pounce=6 5.12 [4.94, 5.59] (was n pow 0.619, which gave 3.81 / 5.23 / 5.85)",
+    "pow": 0.833,
+    "canonCurve": "2026-10-31 (SKILL2): the canon point pounce 2 = 2.96 kept (2.96); the curve v x N^pow refitted through it from pounce=3 4.15 [3.47, 5.57]; pounce=5 6.49 [5.84, 8.05]; pounce=6 7.24 [6.67, 8.78] (was n pow 0.488, which gave 3.61 / 4.63 / 5.06)",
     "bal12Was": {
      "scale": "n",
      "value": 1.74,
@@ -4620,10 +4667,10 @@
    {
     "id": "predator",
     "scale": "half",
-    "value": 1.05,
-    "measuredS": 1.05,
+    "value": 1.12,
+    "measuredS": 1.12,
     "measuredConf": "high",
-    "measuredSE": 0.24,
+    "measuredSE": 0.29,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -4634,15 +4681,15 @@
      "measuredConf": "high",
      "measuredSE": 0.39
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): predator=1 1.05 [0.71, 1.66] (200 fights, 2 in-play cards; price before 1.04); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): predator=1 1.12 [0.66, 1.8] (200 fights, 2 in-play cards; price before 1.05); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "prey",
     "scale": "half",
-    "value": 0.15,
-    "measuredS": 0.15,
+    "value": 0.03,
+    "measuredS": 0.03,
     "measuredConf": "high",
-    "measuredSE": 0.08,
+    "measuredSE": 0.06,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -4653,7 +4700,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): prey 0.15 [0.03, 0.34] (200 fights, 1 in-play card; price before 0.05); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): prey 0.03 [-0.06, 0.16] (200 fights, 1 in-play card; price before 0.15); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "primed",
@@ -4843,10 +4890,10 @@
    {
     "id": "reach",
     "scale": "half",
-    "value": 0.62,
-    "measuredS": 0.62,
+    "value": 0.52,
+    "measuredS": 0.52,
     "measuredConf": "high",
-    "measuredSE": 0.21,
+    "measuredSE": 0.25,
     "skill2Was": {
      "scale": "half",
      "value": 0.5,
@@ -4855,7 +4902,7 @@
      "measuredSE": 0.28
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): reach 0.62 [0.27, 1.09] (200 fights, 5 in-play cards; price before 0.76); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): reach 0.52 [0.06, 1.04] (200 fights, 5 in-play cards; price before 0.62); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "rebuild",
@@ -4878,10 +4925,10 @@
    {
     "id": "reflect",
     "scale": "half",
-    "value": 0.68,
-    "measuredS": 0.68,
+    "value": 0.59,
+    "measuredS": 0.59,
     "measuredConf": "high",
-    "measuredSE": 0.23,
+    "measuredSE": 0.24,
     "prevValue": 0,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -4891,7 +4938,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): reflect 0.68 [0.32, 1.23] (200 fights, 1 in-play card; price before 0.63); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): reflect 0.59 [0.19, 1.14] (200 fights, 1 in-play card; price before 0.68); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 1.04,
@@ -4905,7 +4952,7 @@
    {
     "id": "regen",
     "scale": "n",
-    "value": 2.26,
+    "value": 2.3,
     "measuredS": 2,
     "measuredConf": "high",
     "measuredSE": 0.12,
@@ -4933,8 +4980,8 @@
      "measuredSE": 0.12,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill regen --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +0.96 +/- 0.47 budget points against a price of +5.20 on grovebearer-dragon-turtle, alpine-salamander, bog-behemoth, bramble-hoglet (net -4.24, z -17.69); value = worth / mean(N^1); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.362,
-    "canonCurve": "2026-10-31 (SKILL2): the canon point regen 2 = 2.91 kept (2.9); the curve v x N^pow refitted through it from regen=1 2.37 [1.88, 2.67]; regen=3 4.22 [3.82, 4.48] (was n pow 0.54, which gave 2 / 3.62)",
+    "pow": 0.333,
+    "canonCurve": "2026-10-31 (SKILL2): the canon point regen 2 = 2.9 kept (2.9); the curve v x N^pow refitted through it from regen=1 2.32 [2.2, 2.73]; regen=3 3.45 [2.97, 3.89] (was n pow 0.362, which gave 2.26 / 3.36)",
     "bal12Was": {
      "scale": "n",
      "value": 2.37,
@@ -4948,11 +4995,11 @@
    {
     "id": "relic",
     "scale": "fixed",
-    "value": 1.13,
+    "value": 1.52,
     "note": "2026-10-19 (package E): a 1/1 left in its slot with plain keywords only",
-    "measuredS": 1.13,
+    "measuredS": 1.52,
     "measuredConf": "high",
-    "measuredSE": 0.24,
+    "measuredSE": 0.26,
     "prevValue": 2,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -4962,7 +5009,7 @@
      "measuredConf": "high",
      "measuredSE": 0.28
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): relic 1.13 [0.76, 1.69] (200 fights, 2 in-play cards; price before 1.39); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): relic 1.52 [1.08, 2.08] (200 fights, 2 in-play cards; price before 1.13); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "fixed",
      "value": 0.09,
@@ -4976,10 +5023,10 @@
    {
     "id": "reload",
     "scale": "half",
-    "value": -5.71,
-    "measuredS": -5.71,
+    "value": -4.2,
+    "measuredS": -4.2,
     "measuredConf": "high",
-    "measuredSE": 0.68,
+    "measuredSE": 0.62,
     "prevValue": -4,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "note": "2026-10-26 (package ENG10; 4-round rule), owner on ENG9-4: \"Make reloads skill cost better, meaning more negative!\" Reload 1 sits out a round after each swing: it swings 2 of a 4-round life's 4 rounds, so it loses half its Attack's worth, A points (2 a point x half). The Reload cards average Attack 6 (Peak Condor 4, Riptide Eel 8): -6 (half scale), was -4 (the measured worth).",
@@ -4991,15 +5038,15 @@
      "measuredConf": "high",
      "measuredSE": 0.24
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): reload=1 -5.71 [-7.26, -4.59] (400 fights, 2 in-play cards; price before -5.15); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): reload=1 -4.2 [-5.51, -3.08] (400 fights, 2 in-play cards; price before -5.71); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "remember",
     "scale": "n",
-    "value": 4.92,
-    "measuredS": 4.92,
+    "value": 4.63,
+    "measuredS": 4.63,
     "measuredConf": "high",
-    "measuredSE": 0.13,
+    "measuredSE": 0.62,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -5009,7 +5056,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): remember=1+T:onDeath>exileSelf 4.84 [4.46, 4.95] (200 fights, 1 in-play card; price before 4.92); remember=2+T:onDeath>exileSelf 2.4 [1.95, 2.72] (400 fights, 1 in-play card; price before 1.94); Remember 1 / 2 with their On Death → Exile self, as the cards carry them (DECK1-1): 4.84 / 2.4 with the trigger's -0.08 added back; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): remember=1+T:onDeath>exileSelf 4.55 [3.51, 6.11] (200 fights, 1 in-play card; price before 4.84); remember=2+T:onDeath>exileSelf 2.18 [1.35, 2.54] (200 fights, 1 in-play card; price before 2.4); Remember 1 / 2 with their On Death → Exile self, as the cards carry them (DECK1-1): 4.55 / 2.18 with the trigger's -0.08 added back; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 2.07,
@@ -5019,7 +5066,7 @@
      "measuredSE": 0.29,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill remember --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +3.63 +/- 0.98 budget points against a price of +1.75 on ashbone-ghoul, bog-revenant, marsh-wisp, the-unremembered (net +1.88, z 3.76); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": -0.989
+    "pow": -1.033
    },
    {
     "id": "render",
@@ -5035,10 +5082,10 @@
    {
     "id": "renewal",
     "scale": "half",
-    "value": 0.04,
-    "measuredS": 0.04,
+    "value": 0.23,
+    "measuredS": 0.23,
     "measuredConf": "high",
-    "measuredSE": 0.09,
+    "measuredSE": 0.1,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -5049,7 +5096,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): renewal 0.04 [-0.12, 0.22] (200 fights, 1 in-play card; price before 0.14); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): renewal 0.23 [0.07, 0.46] (200 fights, 1 in-play card; price before 0.04); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "repair",
@@ -5101,10 +5148,10 @@
    {
     "id": "rocket",
     "scale": "half",
-    "value": 1.65,
-    "measuredS": 1.65,
+    "value": 2.56,
+    "measuredS": 2.56,
     "measuredConf": "high",
-    "measuredSE": 0.03,
+    "measuredSE": 0.19,
     "recost1Was": {
      "measuredS": 1.99,
      "measuredConf": "low",
@@ -5112,7 +5159,7 @@
     },
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): rocket=4 4.96 [4.73, 5.06] (200 fights, 1 in-play card; price before 5.19); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): rocket=4 7.69 [7.08, 9.35] (200 fights, 1 in-play card; price before 4.95); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 2.03,
@@ -5199,10 +5246,10 @@
    {
     "id": "sap",
     "scale": "half",
-    "value": 2.82,
-    "measuredS": 2.82,
+    "value": 2.3,
+    "measuredS": 2.3,
     "measuredConf": "high",
-    "measuredSE": 0.21,
+    "measuredSE": 0.15,
     "skill2Was": {
      "scale": "half",
      "value": 1,
@@ -5211,7 +5258,7 @@
      "measuredSE": 3.41
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): sap 2.82 [2.47, 3.31] (200 fights, 1 in-play card; price before 2.77); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): sap 2.3 [2.02, 2.6] (200 fights, 1 in-play card; price before 2.82); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "satiety",
@@ -5226,10 +5273,10 @@
    {
     "id": "scar",
     "scale": "half",
-    "value": 1.82,
-    "measuredS": 1.82,
+    "value": 1.69,
+    "measuredS": 1.69,
     "measuredConf": "high",
-    "measuredSE": 0.15,
+    "measuredSE": 0.13,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -5240,15 +5287,15 @@
      "measuredConf": "high",
      "measuredSE": 0.31
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): scar=2 3.64 [3.13, 4.3] (200 fights, 1 in-play card; price before 2.84); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): scar=2 3.38 [2.73, 3.73] (200 fights, 1 in-play card; price before 3.64); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "scare",
     "scale": "half",
-    "value": 1.96,
-    "measuredS": 1.96,
+    "value": 1.79,
+    "measuredS": 1.79,
     "measuredConf": "high",
-    "measuredSE": 0.11,
+    "measuredSE": 0.14,
     "prevValue": 2.5,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -5258,7 +5305,7 @@
      "measuredConf": "high",
      "measuredSE": 1.06
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): scare=2 3.91 [3.38, 4.21] (200 fights, 1 in-play card; price before 4.04); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): scare=2 3.58 [3.26, 4.37] (200 fights, 1 in-play card; price before 3.92); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.18,
@@ -5272,10 +5319,10 @@
    {
     "id": "scatterbrained",
     "scale": "half",
-    "value": -6.4,
-    "measuredS": -6.4,
+    "value": -4.82,
+    "measuredS": -4.82,
     "measuredConf": "high",
-    "measuredSE": 0.81,
+    "measuredSE": 0.42,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -5286,16 +5333,16 @@
      "measuredConf": "high",
      "measuredSE": 0.13
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): scatterbrained -6.4 [-8.27, -5.08] (400 fights, 1 in-play card; price before -5.71); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): scatterbrained -4.82 [-5.74, -4.11] (1000 fights, 1 in-play card; price before -4.95); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "scavenge",
     "scale": "n",
-    "value": 3.56,
+    "value": 2.27,
     "note": "2026-10-24 (package EN8, owner 22:28 #2, LUM-1; 4-round rule, not measured): Scavenge N is now LUM-1's plain rule: when another of your units dies, +N Lumber (was SK2's Scavenge N, M points). About 2 of your units die in a unit's 4 rounds x 0.75: 1.5 a point. Was 0.75 (SK2 estimate).",
-    "measuredS": 3.56,
+    "measuredS": 2.27,
     "measuredConf": "high",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): scavenge=1 3.56 [3.01, 4.25] (200 fights, 1 in-play card; price before 2.67); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): scavenge=1 2.27 [1.77, 2.65] (200 fights, 1 in-play card; price before 3.56); docs/balance/skill2-measures-2026-10-31.json",
     "recost1Was": {
      "measuredS": 1.5,
      "measuredConf": "low",
@@ -5303,7 +5350,7 @@
     },
     "prevValue": 1.5,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredSE": 0.32,
+    "measuredSE": 0.22,
     "skill2Was": {
      "scale": "n",
      "value": 3.28,
@@ -5327,12 +5374,21 @@
     "sk1Note": "2026-10-19 (package SK1): Sentry N reworked (On Enemy Enters (Facing): Damage N); this measured worth is the old rule (its Attack, once a round): re-measure",
     "id": "sentry",
     "scale": "half",
-    "value": 3,
-    "measuredS": 3.4,
+    "value": 3.27,
+    "measuredS": 3.27,
     "measuredConf": "high",
-    "measuredSE": 0.14,
+    "measuredSE": 0.25,
     "prevValue": 1,
-    "appliedAt": "2026-10-19 (owner: apply measured worth)"
+    "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
+    "skill2Was": {
+     "scale": "half",
+     "value": 3,
+     "appliedAt": "2026-10-19 (owner: apply measured worth)",
+     "measuredS": 3.4,
+     "measuredConf": "high",
+     "measuredSE": 0.14
+    },
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): sentry 3.27 [2.68, 3.67] (200 fights, 2 in-play cards; price before 3); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "shade",
@@ -5356,10 +5412,10 @@
    {
     "id": "shatter",
     "scale": "half",
-    "value": 0.03,
-    "measuredS": 0.03,
+    "value": 0.02,
+    "measuredS": 0.02,
     "measuredConf": "high",
-    "measuredSE": 0.02,
+    "measuredSE": 0.01,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -5370,7 +5426,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): shatter=2 0.06 [0, 0.16] (200 fights, 1 in-play card; price before 0.12); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): shatter=2 0.03 [0, 0.11] (200 fights, 1 in-play card; price before 0.06); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "shedding",
@@ -5385,7 +5441,7 @@
    {
     "id": "shell",
     "scale": "n",
-    "value": 1.64,
+    "value": 1.78,
     "measuredS": 1.74,
     "measuredConf": "high",
     "measuredSE": 0.13,
@@ -5413,8 +5469,8 @@
      "measuredSE": 0.11,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill shell --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +1.05 +/- 0.50 budget points against a price of +4.50 on malachite-golem, shellwright-apprentice, stalactite-golem, limpet-clinger (net -3.45, z -13.44); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.464,
-    "canonCurve": "2026-10-31 (SKILL2): the canon point shell 2 = 2.26 kept (2.26); the curve v x N^pow refitted through it from shell=1 1.45 [1.03, 2.07]; shell=4 2.94 [2.59, 3.35] (was n pow 0.375, which gave 1.74 / 2.93)",
+    "pow": 0.345,
+    "canonCurve": "2026-10-31 (SKILL2): the canon point shell 2 = 2.26 kept (2.26); the curve v x N^pow refitted through it from shell=1 2.25 [1.7, 2.49]; shell=4 3.22 [2.58, 3.61] (was n pow 0.464, which gave 1.64 / 3.12)",
     "bal12Was": {
      "scale": "n",
      "value": 2.1,
@@ -5428,10 +5484,10 @@
    {
     "id": "shield",
     "scale": "fixed",
-    "value": 2.51,
-    "measuredS": 2.51,
+    "value": 2.53,
+    "measuredS": 2.53,
     "measuredConf": "high",
-    "measuredSE": 0.2,
+    "measuredSE": 0.17,
     "fin2Prev": {
      "scale": "half",
      "value": 1
@@ -5445,7 +5501,7 @@
      "measuredSE": 0.12
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): shield=3 2.17 [1.73, 2.52] (200 fights, 1 in-play card; price before 5.02); shield=4 2.85 [2.48, 3.32] (200 fights, 1 in-play card; price before 5.82); least squares over 2 N; docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): shield=3 2.29 [1.96, 2.64] (200 fights, 1 in-play card; price before 4.91); shield=4 2.78 [2.34, 3.2] (200 fights, 1 in-play card; price before 5.71); least squares over 2 N; docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "shieldCall",
@@ -5482,11 +5538,11 @@
    {
     "sk1Note": "2026-10-19 (package SK1): Siege N now also hits Structures (Demolisher folded in): re-measure",
     "id": "siege",
-    "scale": "n",
-    "value": 0.85,
-    "measuredS": 0.85,
+    "scale": "half",
+    "value": 1.07,
+    "measuredS": 1.07,
     "measuredConf": "high",
-    "measuredSE": 0.08,
+    "measuredSE": 0.09,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -5496,7 +5552,7 @@
      "measuredConf": "high",
      "measuredSE": 0.11
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): siege=4 2.97 [2.41, 3.46] (200 fights, 2 in-play cards; price before 2.61); siege=1 0.97 [0.66, 1.44] (200 fights, 1 in-play card; price before 0.62); siege=2 1.21 [0.86, 1.81] (200 fights, 1 in-play card; price before 1.6); siege=3 2.14 [1.7, 2.58] (200 fights, 1 in-play card; price before 2.31); a power curve fits its 4 N better than its 'half' scale (squared error 0.2 vs 0.57): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): siege=4 2.97 [2.41, 3.46] (200 fights, 2 in-play cards; price before 2.61); siege=1 0.97 [0.66, 1.44] (200 fights, 1 in-play card; price before 0.62); siege=2 2.29 [1.94, 2.73] (200 fights, 1 in-play card; price before 1.53); siege=3 2.79 [2.32, 3.4] (200 fights, 1 in-play card; price before 2.16); least squares over 4 N; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.39,
@@ -5505,8 +5561,7 @@
      "measuredConf": "high",
      "measuredSE": 0.1,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill siege --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +0.87 +/- 0.45 budget points against a price of +2.25 on deep-cave-troll, trebuchet-crew, mouse-sapper, siege-rhino (net -1.38, z -6.01); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
-    },
-    "pow": 0.851
+    }
    },
    {
     "id": "skyfall",
@@ -5576,10 +5631,10 @@
    {
     "id": "sonar",
     "scale": "half",
-    "value": 0.58,
-    "measuredS": 0.58,
+    "value": 0.66,
+    "measuredS": 0.66,
     "measuredConf": "high",
-    "measuredSE": 0.24,
+    "measuredSE": 0.26,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -5590,15 +5645,15 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): sonar 0.58 [0.21, 1.13] (200 fights, 2 in-play cards; price before 0.31); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): sonar 0.66 [0.26, 1.27] (200 fights, 2 in-play cards; price before 0.58); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "speed",
     "scale": "half",
-    "value": 0.84,
-    "measuredS": 0.84,
+    "value": 1.02,
+    "measuredS": 1.02,
     "measuredConf": "high",
-    "measuredSE": 0.09,
+    "measuredSE": 0.06,
     "prevValue": 1.95,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -5608,7 +5663,7 @@
      "measuredConf": "high",
      "measuredSE": 1.59
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): speed=2 1.68 [1.42, 2.15] (200 fights, 1 in-play card; price before 1.78); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): speed=2 2.03 [1.79, 2.24] (200 fights, 1 in-play card; price before 1.68); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.37,
@@ -5630,10 +5685,10 @@
    {
     "id": "spitfire",
     "scale": "half",
-    "value": 4.95,
-    "measuredS": 4.95,
+    "value": 7.72,
+    "measuredS": 7.72,
     "measuredConf": "high",
-    "measuredSE": 0.09,
+    "measuredSE": 0.51,
     "recost1Was": {
      "measuredS": 6.2,
      "measuredConf": "low",
@@ -5641,7 +5696,7 @@
     },
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): spitfire=1 4.95 [4.7, 5.06] (200 fights, 1 in-play card; price before 5.02); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): spitfire=1 7.72 [7.2, 9.2] (200 fights, 1 in-play card; price before 4.95); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 6.12,
@@ -5734,8 +5789,8 @@
    {
     "id": "strangle",
     "scale": "half",
-    "value": 4.04,
-    "measuredS": 4.04,
+    "value": 3.65,
+    "measuredS": 3.65,
     "measuredConf": "high",
     "note": "2026-10-26 (package ENG9; 4-round rule, not measured), OWN-Q1: the Bound a Strangle hit lays no longer stops the swing; the unit swings and shoots at half damage, can't move (Guardian, Rampart, Dive, Charge) and loses Flying's dodge, so Strangle's hold is worth about 0.6 of what it was; the squeeze is unchanged: 1 -> 0.8 (half scale).",
     "prevValue": 0.8,
@@ -5745,8 +5800,8 @@
      "measuredConf": "low"
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredSE": 0.25,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): strangle=1 4.04 [3.41, 4.41] (200 fights, 1 in-play card; price before 3.91); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredSE": 0.31,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): strangle=1 3.65 [3.29, 4.52] (200 fights, 1 in-play card; price before 4.04); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 3.1,
@@ -5760,10 +5815,10 @@
    {
     "id": "stunOnHit",
     "scale": "half",
-    "value": 1.91,
-    "measuredS": 1.91,
+    "value": 2.29,
+    "measuredS": 2.29,
     "measuredConf": "high",
-    "measuredSE": 0.21,
+    "measuredSE": 0.24,
     "prevValue": 3,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -5773,7 +5828,7 @@
      "measuredConf": "high",
      "measuredSE": 0.38
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): stunOnHit=1 1.91 [1.39, 2.22] (400 fights, 1 in-play card; price before 2.21); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): stunOnHit=1 2.29 [1.8, 2.73] (200 fights, 1 in-play card; price before 1.91); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 1.66,
@@ -5787,10 +5842,10 @@
    {
     "id": "sturdy",
     "scale": "half",
-    "value": 2.93,
-    "measuredS": 2.93,
+    "value": 2.81,
+    "measuredS": 2.81,
     "measuredConf": "high",
-    "measuredSE": 0.22,
+    "measuredSE": 0.19,
     "prevValue": 8,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "recost1Was": {
@@ -5800,7 +5855,7 @@
      "measuredConf": "high",
      "measuredSE": 2.46
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): sturdy 2.93 [2.51, 3.37] (200 fights, 1 in-play card; price before 2.96); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): sturdy 2.81 [2.42, 3.16] (200 fights, 1 in-play card; price before 2.93); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.69,
@@ -5848,10 +5903,10 @@
    {
     "id": "swarm",
     "scale": "half",
-    "value": 3.09,
-    "measuredS": 3.09,
+    "value": 3.13,
+    "measuredS": 3.13,
     "measuredConf": "high",
-    "measuredSE": 0.21,
+    "measuredSE": 0.23,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -5862,7 +5917,7 @@
      "measuredConf": "high",
      "measuredSE": 0.17
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): swarm 3.09 [2.69, 3.51] (200 fights, 10 in-play cards; price before 2.97); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): swarm 3.13 [2.58, 3.5] (200 fights, 10 in-play cards; price before 3.09); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "swarmN",
@@ -5878,7 +5933,7 @@
    {
     "id": "sweep",
     "scale": "n",
-    "value": 4.72,
+    "value": 3.59,
     "measuredS": 4.45,
     "measuredConf": "high",
     "measuredSE": 0.24,
@@ -5906,8 +5961,8 @@
      "measuredSE": 0.14,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill sweep --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +1.09 +/- 0.57 budget points against a price of +7.80 on alpha-howler, boar-rampager, boreal-elk, fox-warchief (net -6.71, z -23.15); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.105,
-    "canonCurve": "2026-10-31 (SKILL2): the canon point sweep 2 = 5.08 kept (5.08); the curve v x N^pow refitted through it from sweep=3 5.08 [4.89, 5.28]; sweep=4 5.42 [5.1, 6.2]; sweep=5 6.06 [5.3, 6.8] (was n pow 0.191, which gave 5.49 / 5.8 / 6.05)",
+    "pow": 0.501,
+    "canonCurve": "2026-10-31 (SKILL2): the canon point sweep 2 = 5.08 kept (5.08); the curve v x N^pow refitted through it from sweep=3 6.36 [5.95, 7.85]; sweep=4 7.19 [6.66, 8.78]; sweep=5 7.73 [7.17, 9.39] (was n pow 0.105, which gave 5.3 / 5.46 / 5.59)",
     "bal12Was": {
      "scale": "n",
      "value": 4.22,
@@ -5953,8 +6008,8 @@
    {
     "id": "swipe",
     "scale": "half",
-    "value": 4.87,
-    "measuredS": 4.87,
+    "value": 3.66,
+    "measuredS": 3.66,
     "measuredConf": "high",
     "recost1Was": {
      "measuredS": 3.19,
@@ -5962,8 +6017,8 @@
     },
     "prevValue": 3,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredSE": 0.12,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): swipe=1 4.87 [4.53, 4.98] (200 fights, 1 in-play card; price before 4.41); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredSE": 0.5,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): swipe=1 3.66 [3.11, 5.08] (200 fights, 1 in-play card; price before 4.87); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 5.25,
@@ -5977,8 +6032,8 @@
    {
     "id": "tangle",
     "scale": "half",
-    "value": 2.07,
-    "measuredS": 2.07,
+    "value": 2.34,
+    "measuredS": 2.34,
     "measuredConf": "high",
     "note": "2026-10-26 (package ENG9; 4-round rule, not measured), owner G25: Tangleweed N lays Tangled for N rounds: the unit's swings, shots, actions and triggers each fail 1 in 2 (was Bound: no swing at all). Half the swings it denied, a little back for the skills it now spoils too: x0.7, 2 -> 1.4 (half scale).",
     "prevValue": 2,
@@ -5988,9 +6043,9 @@
      "measuredS": 3.44,
      "measuredConf": "low"
     },
-    "measuredSE": 0.27,
+    "measuredSE": 0.2,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): tangle=1 2.07 [1.48, 2.56] (200 fights, 2 in-play cards; price before 2.43); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): tangle=1 2.34 [2.17, 2.95] (200 fights, 2 in-play cards; price before 2.07); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "taunt",
@@ -6013,10 +6068,10 @@
    {
     "id": "thorns",
     "scale": "n",
-    "value": 2.86,
-    "measuredS": 2.86,
+    "value": 2.83,
+    "measuredS": 2.83,
     "measuredConf": "high",
-    "measuredSE": 0.04,
+    "measuredSE": 0.22,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "note": "re-measured 2026-10-19 (BF3) after package TS, 5 runs, 177k games: S per point 2.5-7.2, median 3.23; the head-to-head saturates (the Thorns side wins 96-100%), so 3.23 is a floor, not a ceiling; 2026-10-23 (BF11, owner 11:11: \"Thorn 1 is roughly worse than Attack +1. So it must be less than 2\"): 1.25 a point, the robust test's measure (Thorns 2 worth 2.48)",
@@ -6030,8 +6085,8 @@
      "measuredConf": "low",
      "measuredSE": 5.93
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): thorns=1 2.8 [2.45, 3.27] (200 fights, 2 in-play cards; price before 2.68); thorns=2 4.56 [4.26, 4.82] (200 fights, 2 in-play cards; price before 4.56); thorns=3 5 [4.82, 5.11] (200 fights, 1 in-play card; price before 6.23); a power curve fits its 3 N better than its 'n' scale (squared error 0.33 vs 2.85): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
-    "pow": 0.58
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): thorns=1 2.82 [2.4, 3.25] (200 fights, 2 in-play cards; price before 2.86); thorns=2 4.49 [3.65, 5.4] (200 fights, 2 in-play cards; price before 4.28); thorns=3 5.84 [5.35, 7.17] (200 fights, 1 in-play card; price before 5.41); a power curve fits its 3 N better than its 'n' scale (squared error 0 vs 1.35): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "pow": 0.663
    },
    {
     "id": "tide",
@@ -6075,10 +6130,10 @@
    {
     "id": "tornado",
     "scale": "half",
-    "value": 0.91,
-    "measuredS": 0.91,
+    "value": 1.96,
+    "measuredS": 1.96,
     "measuredConf": "high",
-    "measuredSE": 0.3,
+    "measuredSE": 0.26,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -6089,7 +6144,7 @@
      "measuredConf": "high",
      "measuredSE": 0.43
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): tornado=1 0.91 [0.32, 1.5] (400 fights, 1 in-play card; price before 1.12); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): tornado=1 1.96 [1.28, 2.32] (400 fights, 1 in-play card; price before 0.91); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "toxin",
@@ -6104,8 +6159,8 @@
    {
     "id": "trap",
     "scale": "n",
-    "value": 1.34,
-    "measuredS": 1.34,
+    "value": 1.49,
+    "measuredS": 1.49,
     "measuredConf": "high",
     "measuredSE": 0.13,
     "prevValue": 1,
@@ -6118,16 +6173,16 @@
      "measuredConf": "high",
      "measuredSE": 0.26
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): trap=5 2.46 [1.85, 2.8] (200 fights, 1 in-play card; price before 2.45); trap=6 2.63 [2.14, 3.25] (200 fights, 1 in-play card; price before 2.78); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.15): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
-    "pow": 0.375
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): trap=5 3.22 [2.59, 3.65] (200 fights, 1 in-play card; price before 2.45); trap=6 3.52 [2.9, 4.44] (200 fights, 1 in-play card; price before 2.62); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.22): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "pow": 0.48
    },
    {
     "id": "trident",
     "scale": "half",
-    "value": 3.82,
-    "measuredS": 3.82,
+    "value": 2.28,
+    "measuredS": 2.28,
     "measuredConf": "high",
-    "measuredSE": 0.31,
+    "measuredSE": 0.25,
     "skill2Was": {
      "scale": "half",
      "value": 4,
@@ -6136,7 +6191,7 @@
      "measuredSE": 2.62
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): trident 3.82 [3.15, 4.37] (200 fights, 1 in-play card; price before 4.04); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): trident 2.28 [1.72, 2.68] (200 fights, 1 in-play card; price before 3.82); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "trueStrike",
@@ -6153,12 +6208,12 @@
    {
     "id": "tsunami",
     "scale": "half",
-    "value": 4.02,
-    "measuredS": 4.02,
+    "value": 4.17,
+    "measuredS": 4.17,
     "measuredConf": "high",
     "measuredOff": ">",
-    "measuredSE": 0.19,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): tsunami=2 8.05 [7.3, 8.82] (300 fights, 1 in-play card; price before 6.96); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredSE": 0.32,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): tsunami=2 8.35 [7.69, 10.18] (200 fights, 1 in-play card; price before 8.04); docs/balance/skill2-measures-2026-10-31.json",
     "recost1Was": {
      "measuredS": 60.96,
      "measuredConf": "low",
@@ -6198,10 +6253,10 @@
    {
     "id": "twinShot",
     "scale": "half",
-    "value": 5.17,
-    "measuredS": 5.17,
+    "value": 6.63,
+    "measuredS": 6.63,
     "measuredConf": "high",
-    "measuredSE": 0.2,
+    "measuredSE": 0.5,
     "recost1Was": {
      "measuredS": 9.75,
      "measuredConf": "low",
@@ -6209,7 +6264,7 @@
     },
     "prevValue": 9,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): twinShot=1 5.17 [5.01, 5.78] (200 fights, 1 in-play card; price before 5.47); docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): twinShot=1 6.63 [6.21, 8.16] (200 fights, 1 in-play card; price before 5.17); docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 6.61,
@@ -6223,10 +6278,10 @@
    {
     "id": "twinStrike",
     "scale": "half",
-    "value": 5.11,
-    "measuredS": 5.11,
+    "value": 6.38,
+    "measuredS": 6.38,
     "measuredConf": "high",
-    "measuredSE": 0.11,
+    "measuredSE": 0.49,
     "prevValue": 6,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -6237,7 +6292,7 @@
      "measuredConf": "low",
      "measuredSE": 2.47
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): twinStrike 5.11 [4.96, 5.38] (200 fights, 2 in-play cards; price before 6.99); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): twinStrike 6.38 [5.99, 7.91] (200 fights, 2 in-play cards; price before 5.11); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "usurper",
@@ -6252,8 +6307,8 @@
    {
     "id": "vanguard",
     "scale": "half",
-    "value": 1.8,
-    "measuredS": 1.8,
+    "value": 2.26,
+    "measuredS": 2.26,
     "measuredConf": "high",
     "measuredSE": 0.25,
     "skill2Was": {
@@ -6264,7 +6319,7 @@
      "measuredSE": 0.29
     },
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): vanguard=1 1.8 [1.2, 2.17] (400 fights, 1 in-play card; price before 1.35); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): vanguard=1 2.26 [1.77, 2.77] (400 fights, 1 in-play card; price before 1.8); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "venomMaster",
@@ -6281,10 +6336,10 @@
    {
     "id": "venomous",
     "scale": "n",
-    "value": 2.55,
-    "measuredS": 2.55,
+    "value": 2.76,
+    "measuredS": 2.76,
     "measuredConf": "high",
-    "measuredSE": 0.04,
+    "measuredSE": 0.2,
     "prevValue": 3.1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "prevValueEN3": 3,
@@ -6296,7 +6351,7 @@
      "measuredConf": "high",
      "measuredSE": 0.99
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): venomous=2 4.85 [4.59, 4.86] (200 fights, 2 in-play cards; price before 4.44); venomous=1 2.55 [2.3, 2.95] (200 fights, 1 in-play card; price before 2.4); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.01): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): venomous=2 5.46 [4.72, 6.69] (200 fights, 2 in-play cards; price before 4.86); venomous=1 2.76 [2.41, 3.21] (200 fights, 1 in-play card; price before 2.55); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 0.74,
@@ -6306,15 +6361,15 @@
      "measuredSE": 0.2,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill venomous --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +1.29 +/- 0.68 budget points against a price of +5.42 on platypus-spur, water-shrew, banded-sea-krait, giant-water-bug (net -4.14, z -11.91); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.929
+    "pow": 0.984
    },
    {
     "id": "volley",
     "scale": "n",
-    "value": 5.39,
-    "measuredS": 5.39,
+    "value": 6.79,
+    "measuredS": 6.79,
     "measuredConf": "high",
-    "measuredSE": 0.28,
+    "measuredSE": 0.45,
     "recost1Was": {
      "measuredS": 7.94,
      "measuredConf": "low",
@@ -6322,7 +6377,7 @@
     },
     "prevValue": 3,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): volley=1 5.39 [5.07, 6.16] (200 fights, 1 in-play card; price before 6.27); volley=2 8.06 [7.19, 8.93] (200 fights, 1 in-play card; price before 8.3); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 1.48): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): volley=1 6.79 [6.27, 8.31] (200 fights, 1 in-play card; price before 5.39); volley=2 8.98 [8.49, 10.83] (200 fights, 1 in-play card; price before 8.06); a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 4.23): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json",
     "skill2Was": {
      "scale": "half",
      "value": 4.56,
@@ -6332,15 +6387,15 @@
      "measuredSE": 0.55,
      "measuredHow": "2026-10-30 (RECOST1): node tools/bench/bench.js skill volley --games 200 --carriers 4 (global context, 6 copies, Level 1): worth +6.83 +/- 1.63 budget points against a price of +4.50 on echidna-quillshot, trebuchet-crew (net +2.33, z 2.81); value = worth / mean(1 + floor(N/2)); docs/balance/bench-skills-2026-10-30-remeasure.json"
     },
-    "pow": 0.581
+    "pow": 0.404
    },
    {
     "id": "wave",
     "scale": "half",
-    "value": 2.57,
-    "measuredS": 2.57,
+    "value": 2.15,
+    "measuredS": 2.15,
     "measuredConf": "high",
-    "measuredSE": 0.28,
+    "measuredSE": 0.3,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -6351,13 +6406,13 @@
      "measuredConf": "high",
      "measuredSE": 0.77
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): wave=\"alternate\" 2.57 [2.09, 3.17] (200 fights, 1 in-play card; price before 2.72); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): wave=\"alternate\" 2.15 [1.31, 2.48] (200 fights, 1 in-play card; price before 2.57); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "weaken",
     "scale": "half",
-    "value": 3.12,
-    "measuredS": 3.12,
+    "value": 3.39,
+    "measuredS": 3.39,
     "measuredConf": "high",
     "skill2Was": {
      "scale": "half",
@@ -6367,7 +6422,7 @@
     },
     "measuredSE": 0.22,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): weaken=1 3.12 [2.66, 3.51] (200 fights, 1 in-play card; price before 1); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): weaken=1 3.39 [2.81, 3.69] (200 fights, 1 in-play card; price before 3.12); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "weakness",
@@ -6406,10 +6461,10 @@
    {
     "id": "wither",
     "scale": "half",
-    "value": 3.04,
-    "measuredS": 3.04,
+    "value": 3.47,
+    "measuredS": 3.47,
     "measuredConf": "high",
-    "measuredSE": 0.22,
+    "measuredSE": 0.25,
     "prevValue": 1,
     "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
     "skill2Was": {
@@ -6420,7 +6475,7 @@
      "measuredConf": "high",
      "measuredSE": 0.15
     },
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): wither=1 3.04 [2.64, 3.51] (200 fights, 1 in-play card; price before 2.9); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): wither=1 3.47 [3, 3.99] (200 fights, 1 in-play card; price before 3.04); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "worship",
@@ -6534,8 +6589,18 @@
    {
     "id": "majesty",
     "scale": "n",
-    "value": 3.4,
-    "note": "2026-11-02 (package ENG19, owner 22:15 #13, decision ENG19-1 a; 4-round rule, not measured): Majesty N, while it is Ready the enemy units facing it (its column and the ones beside it) swing at -N Attack. About 2 foes in reach x N x 0.8 of the rounds (Ready, alive, a foe across) x the Debuff action's 2.1 a point of Attack: 3.4 a point. On no card yet."
+    "value": 3.88,
+    "note": "2026-11-02 (package ENG19, owner 22:15 #13, decision ENG19-1 a; 4-round rule, not measured): Majesty N, while it is Ready the enemy units facing it (its column and the ones beside it) swing at -N Attack. About 2 foes in reach x N x 0.8 of the rounds (Ready, alive, a foe across) x the Debuff action's 2.1 a point of Attack: 3.4 a point. On no card yet.",
+    "skill2Was": {
+     "scale": "n",
+     "value": 3.4
+    },
+    "pow": 0.804,
+    "measuredS": 3.88,
+    "measuredConf": "high",
+    "measuredSE": 0.31,
+    "appliedAt": "2026-10-31 (package SKILL2, decision BUDGET2-1: re-measured against the re-canonised anchors, in 3A + H stat points)",
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): majesty=1 3.88 [3.48, 5.24] (200 fights, 1 in-play card; price before 3.4); majesty=2 6.78 [6.24, 8.35] (200 fights, 1 in-play card; price before 6.8); a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 0.19): scale n, v x N^pow; docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "amplifier",
@@ -6616,7 +6681,7 @@
    {
     "id": "king",
     "scale": "fixed",
-    "value": 2.31,
+    "value": 2.7,
     "ownerSet": false,
     "theoretical": true,
     "note": "2026-10-23 (package EN, owner TR-4: \"Maybe King costs too much! - balance on your own\"): 0.4 x Kingly's S at today's prices = 0.4 x 3.5 = 1.4 (Tribute 1 at 0.5 + Armor 2 at 1.5 a point; TR priced Armor at its measured 2.74, and human pass I had set 4). Only the Magnate Duck is a King now. The first King in play takes the Crown and has Kingly {Tribute 1, Armor 2} while it holds it; with its own braces (kinglyGrant) it costs 0.4 x their S and this flag 0. A King also enables its side's Liege units (priced on the Liege). Theoretical, not measured.",
@@ -6627,10 +6692,10 @@
      "value": 1.4,
      "appliedAt": "2026-10-23 (package EN: by logic)"
     },
-    "measuredS": 2.31,
+    "measuredS": 2.7,
     "measuredConf": "high",
-    "measuredSE": 0.18,
-    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): king 2.31 [1.88, 2.59] (200 fights, 1 in-play card; price before 2.75); docs/balance/skill2-measures-2026-10-31.json"
+    "measuredSE": 0.21,
+    "measuredHow": "2026-10-31 (SKILL2): node tools/skill2_measure_2026_10_31.js run (tools/skill_canon_2026_10_31.js measure, global context, the canon's six vanilla carriers, 6 copies, Level 1): king 2.7 [2.31, 3.13] (200 fights, 1 in-play card; price before 2.31); docs/balance/skill2-measures-2026-10-31.json"
    },
    {
     "id": "kingly",

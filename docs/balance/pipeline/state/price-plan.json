@@ -148,40 +148,43 @@
   },
   {
    "id": "backstab",
-   "kind": "kept",
+   "kind": "set",
    "old": 0.6,
-   "fit": 0.04,
-   "note": "reads nothing on the vanilla carriers (0.04 <= 0.3): kept",
+   "value": 0.0273,
+   "pow": 3.578,
+   "scale": "n",
+   "conf": "high",
    "pts": [
     {
      "key": "backstab=2",
      "n": 2,
      "w": 2,
-     "W": 0.3892,
+     "W": 0.3261,
      "ci": {
-      "m": 0.3892,
-      "lo": -0.2832,
-      "hi": 1.0217
+      "m": 0.3261,
+      "lo": -0.0869,
+      "hi": 0.6577
      },
      "price": 1.82,
-     "fights": 400,
-     "conf": "medium"
+     "fights": 1000,
+     "conf": "high"
     },
     {
      "key": "backstab=3",
      "n": 3,
      "w": 1,
-     "W": 1.5488,
+     "W": 1.3914,
      "ci": {
-      "m": 1.5488,
-      "lo": 0.9606,
-      "hi": 2.2328
+      "m": 1.3914,
+      "lo": 0.9879,
+      "hi": 1.7949
      },
      "price": 2.53,
-     "fights": 400,
-     "conf": "medium"
+     "fights": 1000,
+     "conf": "high"
     }
-   ]
+   ],
+   "why": "a power curve fits its 2 N better than its 'n' scale (squared error 0 vs 0.38): scale n, v x N^pow"
   },
   {
    "id": "bedrock",
@@ -689,22 +692,22 @@
    "id": "crabClaws",
    "kind": "kept",
    "old": 0.1,
-   "fit": -0.32,
-   "note": "reads nothing on the vanilla carriers (-0.32 <= 0.3): kept",
+   "fit": -0.17,
+   "note": "reads nothing on the vanilla carriers (-0.17 <= 0.3): kept",
    "pts": [
     {
      "key": "crabClaws",
      "n": true,
      "w": 4,
-     "W": -0.3244,
+     "W": -0.1677,
      "ci": {
-      "m": -0.3244,
-      "lo": -1.2613,
-      "hi": 0.3688
+      "m": -0.1677,
+      "lo": -0.6314,
+      "hi": 0.2492
      },
      "price": 0.1,
-     "fights": 400,
-     "conf": "medium"
+     "fights": 1000,
+     "conf": "high"
     }
    ]
   },
@@ -985,23 +988,23 @@
    "id": "drunk",
    "kind": "set",
    "old": -1.12,
-   "value": -4.29,
+   "value": -3.7,
    "scale": "half",
-   "conf": "medium",
+   "conf": "high",
    "pts": [
     {
      "key": "drunk",
      "n": true,
      "w": 1,
-     "W": -4.2897,
+     "W": -3.6991,
      "ci": {
-      "m": -4.2897,
-      "lo": -6.0297,
-      "hi": -3.0844
+      "m": -3.6991,
+      "lo": -4.4531,
+      "hi": -3.0534
      },
-     "price": -3.07,
-     "fights": 400,
-     "conf": "medium"
+     "price": -4.29,
+     "fights": 1000,
+     "conf": "high"
     }
    ],
    "why": ""
@@ -1031,24 +1034,26 @@
   },
   {
    "id": "earthquake",
-   "kind": "kept",
+   "kind": "set",
    "old": 0.44,
-   "fit": 0.15,
-   "note": "reads nothing on the vanilla carriers (0.15 <= 0.3): kept",
+   "value": 0.0815,
+   "pow": 2.372,
+   "scale": "n",
+   "conf": "high",
    "pts": [
     {
      "key": "earthquake=3",
      "n": 3,
      "w": 1,
-     "W": 1.2569,
+     "W": 1.1026,
      "ci": {
-      "m": 1.2569,
-      "lo": 0.3471,
-      "hi": 2.1608
+      "m": 1.1026,
+      "lo": 0.6015,
+      "hi": 1.5951
      },
      "price": 1.44,
-     "fights": 400,
-     "conf": "medium"
+     "fights": 1000,
+     "conf": "high"
     },
     {
      "key": "earthquake=4",
@@ -1064,7 +1069,8 @@
      "fights": 400,
      "conf": "high"
     }
-   ]
+   ],
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.09): scale n, v x N^pow"
   },
   {
    "id": "esprit",
@@ -1110,22 +1116,22 @@
    "id": "evolute",
    "kind": "kept",
    "old": 3,
-   "fit": -6.47,
-   "note": "reads nothing on the vanilla carriers (-6.47 <= 0.3): kept",
+   "fit": -6.41,
+   "note": "reads nothing on the vanilla carriers (-6.41 <= 0.3): kept",
    "pts": [
     {
      "key": "evolute",
      "n": true,
      "w": 1,
-     "W": -6.4711,
+     "W": -6.4136,
      "ci": {
-      "m": -6.4711,
-      "lo": -8.809,
-      "hi": -4.8475
+      "m": -6.4136,
+      "lo": -7.7255,
+      "hi": -5.4091
      },
      "price": 3,
-     "fights": 400,
-     "conf": "medium"
+     "fights": 1000,
+     "conf": "high"
     }
    ]
   },
@@ -1541,7 +1547,7 @@
    "id": "frostbite",
    "kind": "kept",
    "old": 0.5,
-   "fit": 0.1,
+   "fit": 0.0984,
    "note": "cold maps (Frostbite Resist, Freezing): a low reading is not applied",
    "pts": [
     {
@@ -1651,22 +1657,22 @@
    "id": "guardian",
    "kind": "kept",
    "old": 0,
-   "fit": -0.28,
+   "fit": -0.36,
    "note": "protects partners: a low reading is not applied",
    "pts": [
     {
      "key": "guardian",
      "n": true,
      "w": 22,
-     "W": -0.2757,
+     "W": -0.3572,
      "ci": {
-      "m": -0.2757,
-      "lo": -1.0183,
-      "hi": 0.2984
+      "m": -0.3572,
+      "lo": -0.7579,
+      "hi": -0.014
      },
      "price": 0,
-     "fights": 400,
-     "conf": "medium"
+     "fights": 1000,
+     "conf": "high"
     }
    ]
   },
@@ -1878,8 +1884,8 @@
    "id": "hunter",
    "kind": "set",
    "old": 0.28,
-   "value": 0.94,
-   "pow": -3.399,
+   "value": 0.51,
+   "pow": -2.505,
    "scale": "n",
    "conf": "high",
    "pts": [
@@ -1887,15 +1893,15 @@
      "key": "hunter=1",
      "n": 1,
      "w": 1,
-     "W": 0.9407,
+     "W": 0.5063,
      "ci": {
-      "m": 0.9407,
-      "lo": 0.3258,
-      "hi": 1.594
+      "m": 0.5063,
+      "lo": 0.1361,
+      "hi": 0.8412
      },
-     "price": 0.75,
-     "fights": 400,
-     "conf": "medium"
+     "price": 0.94,
+     "fights": 1000,
+     "conf": "high"
     },
     {
      "key": "hunter=2",
@@ -1912,7 +1918,7 @@
      "conf": "high"
     }
    ],
-   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.64): scale n, v x N^pow"
+   "why": "a power curve fits its 2 N better than its 'half' scale (squared error 0 vs 0.17): scale n, v x N^pow"
   },
   {
    "id": "iceArrow",
@@ -2008,22 +2014,22 @@
    "id": "immolation",
    "kind": "kept",
    "old": 0,
-   "fit": -0.79,
-   "note": "reads nothing on the vanilla carriers (-0.79 <= 0.3): kept",
+   "fit": -0.85,
+   "note": "reads nothing on the vanilla carriers (-0.85 <= 0.3): kept",
    "pts": [
     {
      "key": "immolation=1",
      "n": 1,
      "w": 2,
-     "W": -0.7947,
+     "W": -0.851,
      "ci": {
-      "m": -0.7947,
-      "lo": -1.4803,
-      "hi": -0.1769
+      "m": -0.851,
+      "lo": -1.2764,
+      "hi": -0.5053
      },
      "price": 0,
-     "fights": 400,
-     "conf": "medium"
+     "fights": 1000,
+     "conf": "high"
     }
    ]
   },
@@ -2031,7 +2037,7 @@
    "id": "inspiring",
    "kind": "set",
    "old": 3.3,
-   "oldPow": 0.549,
+   "oldPow": 0.854,
    "value": 3.3,
    "pow": 0.854,
    "scale": "n",
@@ -2052,7 +2058,7 @@
      "conf": "high"
     }
    ],
-   "why": "2026-10-31 (SKILL2): the canon point inspiring 1 = 3.3 kept (3.3); the curve v x N^pow refitted through it from inspiring=2 5.96 [5.47, 7.41] (was n pow 0.549, which gave 4.83)"
+   "why": "2026-10-31 (SKILL2): the canon point inspiring 1 = 3.3 kept (3.3); the curve v x N^pow refitted through it from inspiring=2 5.96 [5.47, 7.41] (was n pow 0.854, which gave 5.96)"
   },
   {
    "id": "invisible",
@@ -2546,23 +2552,23 @@
    "id": "nightblind",
    "kind": "set",
    "old": -3,
-   "value": -2.18,
+   "value": -2.12,
    "scale": "half",
-   "conf": "medium",
+   "conf": "high",
    "pts": [
     {
      "key": "nightblind",
      "n": true,
      "w": 1,
-     "W": -2.1813,
+     "W": -2.1182,
      "ci": {
-      "m": -2.1813,
-      "lo": -3.1616,
-      "hi": -1.4521
+      "m": -2.1182,
+      "lo": -2.6177,
+      "hi": -1.731
      },
-     "price": -3.29,
-     "fights": 400,
-     "conf": "medium"
+     "price": -2.18,
+     "fights": 1000,
+     "conf": "high"
     }
    ],
    "why": ""
@@ -2865,22 +2871,22 @@
    "id": "parasite",
    "kind": "kept",
    "old": 1,
-   "fit": -5.49,
-   "note": "reads nothing on the vanilla carriers (-5.49 <= 0.3): kept",
+   "fit": -5.3,
+   "note": "reads nothing on the vanilla carriers (-5.3 <= 0.3): kept",
    "pts": [
     {
      "key": "parasite",
      "n": true,
      "w": 1,
-     "W": -5.4899,
+     "W": -5.3048,
      "ci": {
-      "m": -5.4899,
-      "lo": -7.5572,
-      "hi": -4.1372
+      "m": -5.3048,
+      "lo": -6.3786,
+      "hi": -4.5307
      },
      "price": 1,
-     "fights": 400,
-     "conf": "medium"
+     "fights": 1000,
+     "conf": "high"
     }
    ]
   },
@@ -3032,8 +3038,8 @@
   {
    "id": "pounce",
    "kind": "set",
-   "old": 2.11,
-   "oldPow": 0.488,
+   "old": 1.66,
+   "oldPow": 0.833,
    "value": 1.66,
    "pow": 0.833,
    "scale": "n",
@@ -3082,7 +3088,7 @@
      "conf": "high"
     }
    ],
-   "why": "2026-10-31 (SKILL2): the canon point pounce 2 = 2.96 kept (2.96); the curve v x N^pow refitted through it from pounce=3 4.15 [3.47, 5.57]; pounce=5 6.49 [5.84, 8.05]; pounce=6 7.24 [6.67, 8.78] (was n pow 0.488, which gave 3.61 / 4.63 / 5.06)"
+   "why": "2026-10-31 (SKILL2): the canon point pounce 2 = 2.96 kept (2.96); the curve v x N^pow refitted through it from pounce=3 4.15 [3.47, 5.57]; pounce=5 6.49 [5.84, 8.05]; pounce=6 7.24 [6.67, 8.78] (was n pow 0.833, which gave 4.15 / 6.34 / 7.38)"
   },
   {
    "id": "prayer",
@@ -3230,22 +3236,22 @@
    "id": "quarry",
    "kind": "kept",
    "old": 2.5,
-   "fit": -2.79,
+   "fit": -2.64,
    "note": "pays in Stone: a low reading is not applied",
    "pts": [
     {
      "key": "quarry=1",
      "n": 1,
      "w": 1,
-     "W": -2.7895,
+     "W": -2.6369,
      "ci": {
-      "m": -2.7895,
-      "lo": -3.9512,
-      "hi": -1.9504
+      "m": -2.6369,
+      "lo": -3.2272,
+      "hi": -2.2019
      },
      "price": 2.5,
-     "fights": 400,
-     "conf": "medium"
+     "fights": 1000,
+     "conf": "high"
     }
    ]
   },
@@ -3350,8 +3356,8 @@
   {
    "id": "regen",
    "kind": "set",
-   "old": 2.26,
-   "oldPow": 0.362,
+   "old": 2.3,
+   "oldPow": 0.333,
    "value": 2.3,
    "pow": 0.333,
    "scale": "n",
@@ -3386,7 +3392,7 @@
      "conf": "high"
     }
    ],
-   "why": "2026-10-31 (SKILL2): the canon point regen 2 = 2.9 kept (2.9); the curve v x N^pow refitted through it from regen=1 2.32 [2.2, 2.73]; regen=3 3.45 [2.97, 3.89] (was n pow 0.362, which gave 2.26 / 3.36)"
+   "why": "2026-10-31 (SKILL2): the canon point regen 2 = 2.9 kept (2.9); the curve v x N^pow refitted through it from regen=1 2.32 [2.2, 2.73]; regen=3 3.45 [2.97, 3.89] (was n pow 0.333, which gave 2.3 / 3.32)"
   },
   {
    "id": "relic",
@@ -3675,23 +3681,23 @@
    "id": "scatterbrained",
    "kind": "set",
    "old": -6,
-   "value": -4.95,
+   "value": -4.82,
    "scale": "half",
-   "conf": "medium",
+   "conf": "high",
    "pts": [
     {
      "key": "scatterbrained",
      "n": true,
      "w": 1,
-     "W": -4.9465,
+     "W": -4.8203,
      "ci": {
-      "m": -4.9465,
-      "lo": -6.659,
-      "hi": -3.6915
+      "m": -4.8203,
+      "lo": -5.7414,
+      "hi": -4.1094
      },
-     "price": -6.4,
-     "fights": 400,
-     "conf": "medium"
+     "price": -4.95,
+     "fights": 1000,
+     "conf": "high"
     }
    ],
    "why": ""
@@ -3774,8 +3780,8 @@
   {
    "id": "shell",
    "kind": "set",
-   "old": 1.64,
-   "oldPow": 0.464,
+   "old": 1.78,
+   "oldPow": 0.345,
    "value": 1.78,
    "pow": 0.345,
    "scale": "n",
@@ -3810,7 +3816,7 @@
      "conf": "high"
     }
    ],
-   "why": "2026-10-31 (SKILL2): the canon point shell 2 = 2.26 kept (2.26); the curve v x N^pow refitted through it from shell=1 2.25 [1.7, 2.49]; shell=4 3.22 [2.58, 3.61] (was n pow 0.464, which gave 1.64 / 3.12)"
+   "why": "2026-10-31 (SKILL2): the canon point shell 2 = 2.26 kept (2.26); the curve v x N^pow refitted through it from shell=1 2.25 [1.7, 2.49]; shell=4 3.22 [2.58, 3.61] (was n pow 0.345, which gave 1.78 / 2.87)"
   },
   {
    "id": "shield",
@@ -4207,8 +4213,8 @@
   {
    "id": "sweep",
    "kind": "set",
-   "old": 4.72,
-   "oldPow": 0.105,
+   "old": 3.59,
+   "oldPow": 0.501,
    "value": 3.59,
    "pow": 0.501,
    "scale": "n",
@@ -4257,7 +4263,7 @@
      "conf": "high"
     }
    ],
-   "why": "2026-10-31 (SKILL2): the canon point sweep 2 = 5.08 kept (5.08); the curve v x N^pow refitted through it from sweep=3 6.36 [5.95, 7.85]; sweep=4 7.19 [6.66, 8.78]; sweep=5 7.73 [7.17, 9.39] (was n pow 0.105, which gave 5.3 / 5.46 / 5.59)"
+   "why": "2026-10-31 (SKILL2): the canon point sweep 2 = 5.08 kept (5.08); the curve v x N^pow refitted through it from sweep=3 6.36 [5.95, 7.85]; sweep=4 7.19 [6.66, 8.78]; sweep=5 7.73 [7.17, 9.39] (was n pow 0.501, which gave 6.22 / 7.19 / 8.04)"
   },
   {
    "id": "swipe",
@@ -4313,22 +4319,22 @@
    "id": "taunt",
    "kind": "kept",
    "old": 0.4,
-   "fit": -1.18,
+   "fit": -0.74,
    "note": "protects partners: a low reading is not applied",
    "pts": [
     {
      "key": "taunt",
      "n": true,
      "w": 4,
-     "W": -1.1758,
+     "W": -0.7361,
      "ci": {
-      "m": -1.1758,
-      "lo": -2.0505,
-      "hi": -0.4403
+      "m": -0.7361,
+      "lo": -1.2206,
+      "hi": -0.3431
      },
      "price": 0.4,
-     "fights": 400,
-     "conf": "medium"
+     "fights": 1000,
+     "conf": "high"
     }
    ]
   },
@@ -4870,6 +4876,28 @@
     }
    ],
    "why": ""
+  },
+  {
+   "id": "grantShield.allies",
+   "kind": "same",
+   "old": 0.72,
+   "fit": 0.72,
+   "pts": [
+    {
+     "key": "T:onSpawn>grantShield {\"on\":\"onSpawn\",\"do\":\"grantShield\",\"allies\":3}",
+     "n": 3,
+     "w": 1,
+     "W": 6.0824,
+     "ci": {
+      "m": 6.0824,
+      "lo": 5.2843,
+      "hi": 7.2453
+     },
+     "price": 10.21,
+     "fights": 400,
+     "conf": "high"
+    }
+   ]
   }
  ],
  "shorthands": [
@@ -5197,8 +5225,8 @@
   "dry: reads 0.46 < 4 (dry maps only); kept",
   "fog: reads 0.03 < 2.7 (Mist only); kept",
   "frost: reads 0.3 < 1.12 (cold maps only); kept",
-  "frostbite: reads 0.1 < 0.5 (cold maps (Frostbite Resist, Freezing)); kept",
-  "guardian: reads -0.28 < 0 (protects partners); kept",
+  "frostbite: reads 0.0984 < 0.5 (cold maps (Frostbite Resist, Freezing)); kept",
+  "guardian: reads -0.36 < 0 (protects partners); kept",
   "heat: reads 1.02 < 1.2 (hot maps only); kept",
   "keenEye: reads 0 < 0.34 (against Changelings and in Mist); kept",
   "kinship: reads 1.05 < 3 (needs its type beside it); kept",
@@ -5206,17 +5234,17 @@
   "packLeader: reads -0.32 < 0 (needs its pack); kept",
   "prayer: reads 0.03 < 0.9 (needs Prayer partners); kept",
   "prospector: reads 0 < 1.2 (pays in Metal); kept",
-  "quarry: reads -2.79 < 2.5 (pays in Stone); kept",
+  "quarry: reads -2.64 < 2.5 (pays in Stone); kept",
   "storm: reads 0.88 < 1.8 (storms only); kept",
   "supreme: reads 3.38 < 5 (Tide fields only); kept",
-  "taunt: reads -1.18 < 0.4 (protects partners); kept",
+  "taunt: reads -0.74 < 0.4 (protects partners); kept",
   "tide: reads 0.56 < 1.5 (Tide fields only); kept",
   "timbered: reads 0.13 < 0.5 (needs Lumber cards); kept",
   "onAttack>drawCard: held (RECOST1-5: worker-ant); measured 3.63 / 5.54",
   "onAttacked>spawnCard: held (RECOST1-5: bee-drone); measured 5.55 / 7.6, 5.55 / 7.6",
   "onReady>gain: reads nothing on the vanilla carriers (0.1, 0.1): kept",
   "onSpawn>gain: reads nothing on the vanilla carriers (-0.03): kept",
-  "onSpawn>stun: reads nothing on the vanilla carriers (1.61, -1.45): kept",
+  "onSpawn>stun: reads nothing on the vanilla carriers (1.61, -1.16): kept",
   "perTurn>forgeWeapon: reads nothing on the vanilla carriers (0): kept"
  ]
 }

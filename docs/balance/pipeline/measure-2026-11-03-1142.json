@@ -1,0 +1,63 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-03T03:42:24.519Z",
+ "finished": "2026-11-03T03:58:34.507Z",
+ "durationSec": 970,
+ "args": [
+  "--only-file",
+  "docs/balance/bal15/measure-grantshield-2026-11-03.json",
+  "--fights",
+  "400,700,1000"
+ ],
+ "head": "93a1b9d9",
+ "inputs": {
+  "context": "global",
+  "bramble": 15,
+  "fingerprint": "aedaa997c3ce",
+  "stages": [
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "T:onSpawn>grantShield {\"on\":\"onSpawn\",\"do\":\"grantShield\",\"allies\":3}"
+  ]
+ },
+ "counts": {
+  "items": 1,
+  "measured": 1,
+  "reused": 0,
+  "stopped early": 1,
+  "fights saved": 600,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "T:onSpawn>grantShield {\"on\":\"onSpawn\",\"do\":\"grantShield\",\"allies\":3}",
+   "field": "worth",
+   "old": "-",
+   "new": "6.0824 [5.2843, 7.2453] at 400 fights, price on carriers 10.21"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "T:onSpawn>grantShield {\"on\":\"onSpawn\",\"do\":\"grantShield\",\"allies\":3}",
+   "why": "over-priced: worth 6.0824 against 10.21 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 1
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-03-1142.json"
+}
