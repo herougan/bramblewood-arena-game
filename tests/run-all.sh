@@ -304,6 +304,8 @@ run node tests/fix7-2026-11-03.js   # 2026-11-03 (package FIX7, release review 1
 # browser check for package FIX7 (M1): python3 tests/e2e/fix7_2026_11_03.py (needs Playwright; not run by run.js)
 run node tests/ui17-2026-11-03.js   # 2026-11-03 (package UI17, owner 18:37 + 18:40): Full reset (new account) local + cloud against a fake Supabase, admin infinite Energy (Admin Mode + admin account only, kept by every reset), the Admin -> Players overview (needs SQL until admin_overview), Buy again, the ×10 at Map 8, texts in 12 packs, the proposed SQL
 # browser check for package UI17: python3 tests/e2e/ui17_2026_11_03.py (needs Playwright; not run by run.js)
+run node tests/econ3-2026-11-03.js   # 2026-11-03 (package ECON3, owner 20:34 + 21:10, ECON2-1/2/3/5/6/8/10): Murgle Mayhem open from Map 11 on Map 6, "each" on weekly rewards, weekly tiers by feature, repeat skirmish pay by Energy, errands x2.5 at half the rate, Iron Shard 5% and Forge tiers take Metal, the map title chip and node moves (with the proposed layout SQL), the quest swap's falling paper; texts in 12 packs
+# browser check for package ECON3: python3 tests/e2e/econ3_2026_11_03.py (needs Playwright; not run by run.js): the maps measured with the live layout rows, the chip at 1366 / 390, the swap mid-fall
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

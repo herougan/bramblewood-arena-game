@@ -3845,5 +3845,8 @@
  "Updated {t} · refreshes every {s} s": "{t} に更新 · {s}秒ごとに更新",
  "Buy again": "もう一度買う",
  "Buy {n} again": "もう一度{n}個買う",
- "Not enough to buy another": "もう一つ買うには足りません"
+ "Not enough to buy another": "もう一つ買うには足りません",
+ "Every quest in this tier pays this when you claim it.": "この段のクエストは、受け取るたびにこれがもらえます。",
+ "Show the map's story": "マップの物語を見る",
+ "Hide the map's story": "マップの物語を隠す"
 }

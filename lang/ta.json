@@ -3848,5 +3848,8 @@
  "Updated {t} · refreshes every {s} s": "{t} இல் புதுப்பிக்கப்பட்டது · ஒவ்வொரு {s} வி. புதுப்பிக்கும்",
  "Buy again": "மீண்டும் வாங்கு",
  "Buy {n} again": "மீண்டும் {n} வாங்கு",
- "Not enough to buy another": "இன்னொன்று வாங்கப் போதவில்லை"
+ "Not enough to buy another": "இன்னொன்று வாங்கப் போதவில்லை",
+ "Every quest in this tier pays this when you claim it.": "இந்த நிலையின் ஒவ்வொரு தேடலும் நீங்கள் பெறும்போது இதைத் தரும்.",
+ "Show the map's story": "வரைபடத்தின் கதையைக் காட்டு",
+ "Hide the map's story": "வரைபடத்தின் கதையை மறை"
 }

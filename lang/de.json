@@ -3844,5 +3844,8 @@
  "Updated {t} · refreshes every {s} s": "Aktualisiert {t} · alle {s} s neu",
  "Buy again": "Nochmal kaufen",
  "Buy {n} again": "Nochmal {n} kaufen",
- "Not enough to buy another": "Nicht genug für noch einen"
+ "Not enough to buy another": "Nicht genug für noch einen",
+ "Every quest in this tier pays this when you claim it.": "Jede Quest dieser Stufe zahlt das, wenn du sie abholst.",
+ "Show the map's story": "Geschichte der Karte zeigen",
+ "Hide the map's story": "Geschichte der Karte ausblenden"
 }
