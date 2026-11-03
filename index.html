@@ -52478,7 +52478,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd51221d65a55', BUILD_CARD_HASH = '1018824d4b3168c81372981943a2ec8e6e96d6ef34545c05f96df05d32ba5898';
+const BUILD_ID = 'ffe261d52d20', BUILD_CARD_HASH = '1018824d4b3168c81372981943a2ec8e6e96d6ef34545c05f96df05d32ba5898';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -83284,7 +83284,7 @@ function adminu1ErrorText(err){
 // 'viewing' controls also. How many online now, server load etc."): read-only tiles above the player list. From what the client can read
 // already: profiles (public read: total accounts, new today, and last_seen_at, which the signed-in heartbeat bumps every 2 minutes, so
 // "online now" is seen in the last 5 minutes; the live presence channel's count rides along), raid_week_attempts (public read). From the
-// proposed admin_overview() (supabase/proposed/20261103_admin_overview.sql, admin only): fights and matches in the last hour, database
+// proposed admin_overview() (supabase/migrations/20261103_admin_overview.sql, applied 2026-11-03, admin only): fights and matches in the last hour, database
 // connections and size; those tiles say "needs SQL" until it is applied. The health line: a cheap Supabase read's round trip, the
 // Supabase request errors this tab has seen (ui17CountingFetch, given to createClient), the site's own round trip (version.json) and
 // this build's id against the live one. Refresh, and every 30 s while the list is open.

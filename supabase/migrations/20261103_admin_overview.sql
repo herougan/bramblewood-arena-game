@@ -1,4 +1,4 @@
--- PROPOSED, NOT APPLIED (2026-11-03, package UI17). Apply only after the owner says "apply it".
+-- APPLIED 2026-11-03 21:1x SGT (owner: "UI17-X: OK apply all"). Was: PROPOSED (2026-11-03, package UI17). Apply only after the owner says "apply it".
 -- Purpose: owner 2026-11-03 18:37: "The players screen has to be more filled with typical administrative 'viewing' controls also. How many
 --   online now, server load etc." Admin -> Players shows overview tiles; the ones the client can already read (accounts, online now, active
 --   in the last hour / day / week, new today, raid attempts in the last hour) need nothing. The rest come from admin_overview() below and

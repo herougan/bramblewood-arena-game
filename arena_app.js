@@ -34460,7 +34460,7 @@ function adminu1ErrorText(err){
 // 'viewing' controls also. How many online now, server load etc."): read-only tiles above the player list. From what the client can read
 // already: profiles (public read: total accounts, new today, and last_seen_at, which the signed-in heartbeat bumps every 2 minutes, so
 // "online now" is seen in the last 5 minutes; the live presence channel's count rides along), raid_week_attempts (public read). From the
-// proposed admin_overview() (supabase/proposed/20261103_admin_overview.sql, admin only): fights and matches in the last hour, database
+// proposed admin_overview() (supabase/migrations/20261103_admin_overview.sql, applied 2026-11-03, admin only): fights and matches in the last hour, database
 // connections and size; those tiles say "needs SQL" until it is applied. The health line: a cheap Supabase read's round trip, the
 // Supabase request errors this tab has seen (ui17CountingFetch, given to createClient), the site's own round trip (version.json) and
 // this build's id against the live one. Refresh, and every 30 s while the list is open.
