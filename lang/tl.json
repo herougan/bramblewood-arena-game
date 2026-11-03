@@ -3846,5 +3846,10 @@
  "Updated {t} · refreshes every {s} s": "Na-update {t} · nire-refresh bawat {s} s",
  "Buy again": "Bilhin ulit",
  "Buy {n} again": "Bilhin ulit ang {n}",
- "Not enough to buy another": "Kulang para bumili ulit"
+ "Not enough to buy another": "Kulang para bumili ulit",
+ "Inspiration {n}: +{atk} Attack, spent on its next attack that hits.": "Inspirasyon {n}: +{atk} Atake, ginagastos sa susunod nitong atakeng tumama.",
+ "inspired {target}: +{n} Inspiration (+{atk}⚔ until it hits) 📯": "ininspira si {target}: +{n} Inspirasyon (+{atk}⚔ hanggang tumama) 📯",
+ "spent its Inspiration: +{atk}⚔ on that hit 📯": "ginastos ang Inspirasyon nito: +{atk}⚔ sa tamang iyon 📯",
+ "Already used: it pounced as it landed.": "Nagamit na: sumunggab ito pagdating.",
+ "When it attacks, adjacent allies gain {n} Inspiration (+2 Attack each, stacking), spent on their next hit.": "Kapag umatake ito, ang mga katabing kakampi ay nagkakaroon ng {n} Inspirasyon (+2 Atake bawat isa, nagpapatong), ginagastos sa susunod na tama."
 }

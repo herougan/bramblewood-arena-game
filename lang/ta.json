@@ -3848,5 +3848,10 @@
  "Updated {t} · refreshes every {s} s": "{t} இல் புதுப்பிக்கப்பட்டது · ஒவ்வொரு {s} வி. புதுப்பிக்கும்",
  "Buy again": "மீண்டும் வாங்கு",
  "Buy {n} again": "மீண்டும் {n} வாங்கு",
- "Not enough to buy another": "இன்னொன்று வாங்கப் போதவில்லை"
+ "Not enough to buy another": "இன்னொன்று வாங்கப் போதவில்லை",
+ "Inspiration {n}: +{atk} Attack, spent on its next attack that hits.": "ஊக்கம் {n}: +{atk} தாக்குதல், அடுத்துத் தாக்கிப் படும்போது செலவாகும்.",
+ "inspired {target}: +{n} Inspiration (+{atk}⚔ until it hits) 📯": "{target}-ஐ ஊக்குவித்தது: +{n} ஊக்கம் (படும் வரை +{atk}⚔) 📯",
+ "spent its Inspiration: +{atk}⚔ on that hit 📯": "தன் ஊக்கத்தைச் செலவழித்தது: அந்தத் தாக்குதலில் +{atk}⚔ 📯",
+ "Already used: it pounced as it landed.": "ஏற்கனவே பயன்பட்டது: வந்தவுடன் அது பாய்ந்தது.",
+ "When it attacks, adjacent allies gain {n} Inspiration (+2 Attack each, stacking), spent on their next hit.": "அது தாக்கும்போது, அருகிலுள்ள கூட்டாளிகள் {n} ஊக்கம் பெறும் (ஒவ்வொன்றும் +2 தாக்குதல், அடுக்காகும்), அடுத்த படும் தாக்குதலில் செலவாகும்."
 }

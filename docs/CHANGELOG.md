@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package ENG21 (owner 20:28: Inspiring tokens, Pounce's pip)
+- **Inspiring N** now gives each adjacent ally N Inspiration tokens as the Inspiring unit attacks: +2 Attack each, stacking; the ally spends them all on its next attack that lands a hit (a miss keeps them). Was +N Attack spent by the next swing, a miss included. A 📯N pip shows the tokens; the Attack number has an inspiration beat as they are gained and spent (Effects None: none; reduced motion: a still tint). Engine: `inspTokens`, `INSPIRE_TOKEN_ATK`, event `statusFx inspiredSpent`. Decision ENG21-1 (the reading); `docs/project-state.md`.
+- **Price** (400 paired fights, bramble 15, budget only, no re-fits): Inspiring 1 3.3 -> 5.43, Inspiring 2 5.96 -> 6.99. Over budget now: Otter Flag-Bearer, Meerkat Wayfarer (Conch Herald was already).
+- **Pounce**: once it has fired, its pip leaves the card and its line reads used (as Remember).
+- **Golden diffs**: fights with Inspiring cards play differently (bigger bonus, kept through misses); the card matrix golden is refreshed for that.
+- Texts in 12 packs (`tools/i18n_2026_11_03_eng21.py`); tests `tests/eng21-2026-11-03.js`, `tests/e2e/eng21_2026_11_03.py`; `tests/keywords-2026-10-12.js` pinned the old +2 and now pins +4.
+
 ## 2026-11-03 Package ECON2 (economy review for alpha; measures and proposes, no game number changed)
 - **New `docs/econ2-2026-11-03.md`:**
   - A day-by-day sim of a new player (`tools/econ2/econ_sim_2026_11_03.js`, the game's own tables with ECON1's halving): Maps 0-10 take 3 days (casual 7); from Map 11, Magic Dust is the only thing that limits progress. Maps 11-20 take 46 days (casual 66) if the deck keeps the road's reference level with each map's cards, and 7 (casual 14) if one deck is kept.

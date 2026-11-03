@@ -3848,5 +3848,10 @@
  "Updated {t} · refreshes every {s} s": "{t} 업데이트 · {s}초마다 새로고침",
  "Buy again": "다시 구매",
  "Buy {n} again": "{n}개 다시 구매",
- "Not enough to buy another": "하나 더 사기엔 부족해요"
+ "Not enough to buy another": "하나 더 사기엔 부족해요",
+ "Inspiration {n}: +{atk} Attack, spent on its next attack that hits.": "고무 {n}: 공격 +{atk}, 다음에 명중한 공격에서 써요.",
+ "inspired {target}: +{n} Inspiration (+{atk}⚔ until it hits) 📯": "{target}을(를) 고무: 고무 +{n} (명중할 때까지 +{atk}⚔) 📯",
+ "spent its Inspiration: +{atk}⚔ on that hit 📯": "고무를 썼어요: 그 공격에 +{atk}⚔ 📯",
+ "Already used: it pounced as it landed.": "이미 사용함: 등장할 때 덮쳤어요.",
+ "When it attacks, adjacent allies gain {n} Inspiration (+2 Attack each, stacking), spent on their next hit.": "공격할 때 인접한 아군이 고무 {n}을 얻어요 (하나마다 공격 +2, 중첩). 다음 명중에서 써요."
 }

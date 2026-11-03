@@ -1,0 +1,74 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-03T12:38:02.180Z",
+ "finished": "2026-11-03T14:32:12.447Z",
+ "durationSec": 6850.3,
+ "args": [
+  "--skills",
+  "inspiring=1,inspiring=2",
+  "--fights",
+  "400",
+  "--bramble",
+  "15"
+ ],
+ "head": "d0ce2471",
+ "inputs": {
+  "context": "global",
+  "bramble": 15,
+  "fingerprint": "612c2ed1e9e1",
+  "stages": [
+   400
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 400,
+  "items": [
+   "inspiring=1",
+   "inspiring=2"
+  ]
+ },
+ "counts": {
+  "items": 2,
+  "measured": 2,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "inspiring=1",
+   "field": "worth",
+   "old": "-",
+   "new": "5.4314 [5.1615, 5.9531] at 400 fights, price on carriers 3.3"
+  },
+  {
+   "id": "inspiring=2",
+   "field": "worth",
+   "old": "5.9641",
+   "new": "6.9924 [6.558, 7.6877] at 400 fights, price on carriers 5.96"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "inspiring=1",
+   "why": "under-priced: worth 5.4314 against 3.3 on the carriers"
+  },
+  {
+   "id": "inspiring=2",
+   "why": "under-priced: worth 6.9924 against 5.96 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 2
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-03-2038.json"
+}

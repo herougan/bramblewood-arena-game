@@ -65,7 +65,9 @@ const BAL14 = new Set((readJSON('docs/balance/bal14/refit-2026-11-03.json').held
 // 2026-11-03 (package DEC1, BAL14-2 a): + Echo Matriarch, at cap-1 use 1.00 (was 0.99) once Flying went to its measured x1.19; held for the
 // owner's card pass (owner 11-03 09:39: "don't have to rebalance for now. Just change the budget")
 const DEC1 = new Set(['echo-matriarch']);
-const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !SKILL2.has(c.id) && !BAL11.has(c.id) && !BAL12.has(c.id) && !BAL14.has(c.id) && !DEC1.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
+// 2026-11-03 (package ENG21, decision ENG21-1): Inspiring's token rule re-priced (Inspiring 1 3.3 -> 5.43), budget only, no re-fits: these two go over until the balance step
+const ENG21 = new Set(['meerkat-wayfarer', 'otter-flag-bearer']);
+const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !SKILL2.has(c.id) && !BAL11.has(c.id) && !BAL12.has(c.id) && !BAL14.has(c.id) && !DEC1.has(c.id) && !ENG21.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
 ok(!over.length, '1. today\'s budget passes for every live card but the owner-call list, the post-balance queue and the held list: ' + over.slice(0, 8).join('; '));
 // the pass's own fits still hold under the costs it was made with (every applied entry back at its prevValue), or the card is queued
 const SCT = JSON.parse(read('canonical/skill-costs.json')); ['skills', 'triggers', 'actions', 'modifiers'].forEach(k=> (SCT[k] || []).forEach(e=>{ if(e.appliedAt) e.value = e.prevValue; }));

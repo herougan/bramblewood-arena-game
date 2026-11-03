@@ -3845,5 +3845,10 @@
  "Updated {t} · refreshes every {s} s": "{t} に更新 · {s}秒ごとに更新",
  "Buy again": "もう一度買う",
  "Buy {n} again": "もう一度{n}個買う",
- "Not enough to buy another": "もう一つ買うには足りません"
+ "Not enough to buy another": "もう一つ買うには足りません",
+ "Inspiration {n}: +{atk} Attack, spent on its next attack that hits.": "鼓舞{n}：攻撃+{atk}、次に命中した攻撃で使う。",
+ "inspired {target}: +{n} Inspiration (+{atk}⚔ until it hits) 📯": "{target}を鼓舞：鼓舞+{n}（命中するまで+{atk}⚔）📯",
+ "spent its Inspiration: +{atk}⚔ on that hit 📯": "鼓舞を使った：その命中で+{atk}⚔ 📯",
+ "Already used: it pounced as it landed.": "使用済み：登場時に飛びかかった。",
+ "When it attacks, adjacent allies gain {n} Inspiration (+2 Attack each, stacking), spent on their next hit.": "攻撃する時、隣接する味方が鼓舞を{n}得る（1つにつき攻撃+2、重ねがけ可）。次の命中で使う。"
 }

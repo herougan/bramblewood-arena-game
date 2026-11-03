@@ -2772,74 +2772,74 @@
     "goliath-broodmother",
     "marshal-tuskwell"
    ],
-   "fights": 200,
+   "fights": 400,
    "converged": true,
    "stages": [
     {
-     "fights": 200,
-     "m": 5.9641,
-     "lo": 5.4674,
-     "hi": 7.4132
+     "fights": 400,
+     "m": 6.9924,
+     "lo": 6.558,
+     "hi": 7.6877
     }
    ],
-   "fingerprint": "69c00163b4c0",
+   "fingerprint": "612c2ed1e9e1",
    "canonRate": {
-    "m": 0.0323,
-    "lo": 0.0255,
-    "hi": 0.0362
+    "m": 0.0314,
+    "lo": 0.0269,
+    "hi": 0.0342
    },
    "statRate": {
-    "m": 0.031,
-    "lo": 0.0235,
-    "hi": 0.0392
+    "m": 0.0317,
+    "lo": 0.0259,
+    "hi": 0.0372
    },
    "kappa": {
-    "m": 0.9602,
-    "lo": 0.765,
-    "hi": 1.2189
+    "m": 1.0114,
+    "lo": 0.8543,
+    "hi": 1.2021
    },
    "placebo": {
     "effects": {
      "skill2Placebo": true
     },
-    "gain": -0.0025,
+    "gain": 0.0021,
     "worthStat": {
-     "m": -0.0805,
-     "lo": -0.7529,
-     "hi": 0.4142
+     "m": 0.0657,
+     "lo": -0.3294,
+     "hi": 0.4007
     }
    },
    "test": {
     "effects": {
      "inspiring": 2
     },
-    "gain": 0.1679,
+    "gain": 0.221,
     "worth": {
-     "m": 5.194,
-     "lo": 4.8592,
-     "hi": 6.2069
+     "m": 7.0479,
+     "lo": 6.613,
+     "hi": 8.0666
     },
     "worthRuler": {
-     "m": 5.9641,
-     "lo": 5.4674,
-     "hi": 7.4132
+     "m": 6.9924,
+     "lo": 6.558,
+     "hi": 7.6877
     },
     "worthStat": {
-     "m": 5.4094,
-     "lo": 4.3511,
-     "hi": 7.0742
+     "m": 6.9688,
+     "lo": 6.0115,
+     "hi": 8.5748
     },
-    "price": 4.83,
-    "net": 1.1341,
+    "price": 5.96,
+    "net": 1.0324,
     "verdict": "under-priced",
     "between": [
-     "sweep 2 (5.08)",
-     "onReadyGold 1 (6.65)"
+     "onReadyGold 1 (6.65)",
+     "-"
     ]
    },
    "statBase": 18.17,
-   "measuredAt": "2026-11-02T19:06:41.218Z",
-   "seconds": 22
+   "measuredAt": "2026-11-03T14:32:12.419Z",
+   "seconds": 310
   },
   "global|keenEye": {
    "key": "keenEye",
@@ -21116,6 +21116,85 @@
    "statBase": 18.17,
    "measuredAt": "2026-11-03T03:58:34.499Z",
    "seconds": 968
+  },
+  "global|inspiring=1": {
+   "key": "inspiring=1",
+   "ctx": "global",
+   "bramble": 15,
+   "id": "inspiring",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 0,
+   "cards": [],
+   "fights": 400,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 400,
+     "m": 5.4314,
+     "lo": 5.1615,
+     "hi": 5.9531
+    }
+   ],
+   "fingerprint": "612c2ed1e9e1",
+   "canonRate": {
+    "m": 0.0314,
+    "lo": 0.0269,
+    "hi": 0.0342
+   },
+   "statRate": {
+    "m": 0.0317,
+    "lo": 0.0259,
+    "hi": 0.0372
+   },
+   "kappa": {
+    "m": 1.0114,
+    "lo": 0.8543,
+    "hi": 1.2021
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0021,
+    "worthStat": {
+     "m": 0.0657,
+     "lo": -0.3294,
+     "hi": 0.4007
+    }
+   },
+   "test": {
+    "effects": {
+     "inspiring": 1
+    },
+    "gain": 0.1721,
+    "worth": {
+     "m": 5.4869,
+     "lo": 5.15,
+     "hi": 6.2649
+    },
+    "worthRuler": {
+     "m": 5.4314,
+     "lo": 5.1615,
+     "hi": 5.9531
+    },
+    "worthStat": {
+     "m": 5.4253,
+     "lo": 4.6922,
+     "hi": 6.6667
+    },
+    "price": 3.3,
+    "net": 2.1314,
+    "verdict": "under-priced",
+    "between": [
+     "sweep 2 (5.08)",
+     "onReadyGold 1 (6.65)"
+    ]
+   },
+   "statBase": 18.17,
+   "measuredAt": "2026-11-03T14:27:02.484Z",
+   "seconds": 6536
   }
  }
 }

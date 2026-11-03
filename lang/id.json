@@ -3847,5 +3847,10 @@
  "Updated {t} · refreshes every {s} s": "Diperbarui {t} · diperbarui tiap {s} dtk",
  "Buy again": "Beli lagi",
  "Buy {n} again": "Beli {n} lagi",
- "Not enough to buy another": "Tidak cukup untuk membeli lagi"
+ "Not enough to buy another": "Tidak cukup untuk membeli lagi",
+ "Inspiration {n}: +{atk} Attack, spent on its next attack that hits.": "Inspirasi {n}: +{atk} Serangan, habis pada serangan berikutnya yang kena.",
+ "inspired {target}: +{n} Inspiration (+{atk}⚔ until it hits) 📯": "menginspirasi {target}: +{n} Inspirasi (+{atk}⚔ sampai kena) 📯",
+ "spent its Inspiration: +{atk}⚔ on that hit 📯": "menghabiskan Inspirasinya: +{atk}⚔ pada serangan itu 📯",
+ "Already used: it pounced as it landed.": "Sudah dipakai: ia menerkam saat tiba.",
+ "When it attacks, adjacent allies gain {n} Inspiration (+2 Attack each, stacking), spent on their next hit.": "Saat menyerang, sekutu di sebelahnya mendapat {n} Inspirasi (+2 Serangan masing-masing, bisa ditumpuk), habis pada serangan berikutnya yang kena."
 }

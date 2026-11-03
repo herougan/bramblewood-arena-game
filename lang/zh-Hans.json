@@ -3845,5 +3845,10 @@
  "Updated {t} · refreshes every {s} s": "更新于 {t} · 每 {s} 秒刷新",
  "Buy again": "再买一次",
  "Buy {n} again": "再买 {n} 个",
- "Not enough to buy another": "不够再买一个"
+ "Not enough to buy another": "不够再买一个",
+ "Inspiration {n}: +{atk} Attack, spent on its next attack that hits.": "鼓舞 {n}：攻击 +{atk}，在下一次命中的攻击时用掉。",
+ "inspired {target}: +{n} Inspiration (+{atk}⚔ until it hits) 📯": "鼓舞了 {target}：+{n} 层鼓舞（命中前 +{atk}⚔）📯",
+ "spent its Inspiration: +{atk}⚔ on that hit 📯": "用掉了鼓舞：这次命中 +{atk}⚔ 📯",
+ "Already used: it pounced as it landed.": "已用过：它登场时已经猛扑过。",
+ "When it attacks, adjacent allies gain {n} Inspiration (+2 Attack each, stacking), spent on their next hit.": "它攻击时，相邻友军获得 {n} 层鼓舞（每层攻击 +2，可叠加），在下一次命中时用掉。"
 }

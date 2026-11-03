@@ -3164,7 +3164,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng20-float-roll": "Stop, drop and roll!",
   "ui.eng20-log-burn": "{name} burns for {n}.",
   "ui.eng20-float-heavy-head": "Heavy Headwind: −2⚔",
-  "ui.eng20-float-heavy-tail": "Heavy Tailwind!"
+  "ui.eng20-float-heavy-tail": "Heavy Tailwind!",
+  "ui.eng21-sk-inspiring": "When it attacks, adjacent allies gain {n} Inspiration (+2 Attack each, stacking), spent on their next hit.",
+  "ui.eng21-insp-tip": "Inspiration {n}: +{atk} Attack, spent on its next attack that hits.",
+  "ui.eng21-log-inspired": "inspired {target}: +{n} Inspiration (+{atk}⚔ until it hits) 📯",
+  "ui.eng21-log-insp-spent": "spent its Inspiration: +{atk}⚔ on that hit 📯",
+  "ui.eng21-pounce-used": "Already used: it pounced as it landed."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

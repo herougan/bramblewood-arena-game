@@ -3844,5 +3844,10 @@
  "Updated {t} · refreshes every {s} s": "Aktualisiert {t} · alle {s} s neu",
  "Buy again": "Nochmal kaufen",
  "Buy {n} again": "Nochmal {n} kaufen",
- "Not enough to buy another": "Nicht genug für noch einen"
+ "Not enough to buy another": "Nicht genug für noch einen",
+ "Inspiration {n}: +{atk} Attack, spent on its next attack that hits.": "Inspiration {n}: +{atk} Angriff, verbraucht bei seinem nächsten Angriff, der trifft.",
+ "inspired {target}: +{n} Inspiration (+{atk}⚔ until it hits) 📯": "inspirierte {target}: +{n} Inspiration (+{atk}⚔ bis zum Treffer) 📯",
+ "spent its Inspiration: +{atk}⚔ on that hit 📯": "verbrauchte seine Inspiration: +{atk}⚔ auf diesen Treffer 📯",
+ "Already used: it pounced as it landed.": "Schon verbraucht: Sie ist beim Eintreffen angesprungen.",
+ "When it attacks, adjacent allies gain {n} Inspiration (+2 Attack each, stacking), spent on their next hit.": "Wenn sie angreift, erhalten angrenzende Verbündete {n} Inspiration (je +2 Angriff, stapelbar), verbraucht beim nächsten Treffer."
 }
