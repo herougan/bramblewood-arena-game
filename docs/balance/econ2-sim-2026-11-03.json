@@ -1,0 +1,3230 @@
+{
+ "generated": "2026-11-03",
+ "tool": "node tools/econ2/econ_sim_2026_11_03.js",
+ "assumptions": {
+  "minutesPerFight": 3,
+  "rank": "S",
+  "pvpWin": 0.55,
+  "raidDamage": 600,
+  "forgeToReference": true,
+  "buyEnergySteps": true,
+  "days": 400
+ },
+ "players": {
+  "dedicated": {
+   "label": "Dedicated (checks in all day, ~2 h of fights)",
+   "awakeRegenHours": 16,
+   "sessions": null,
+   "fightMinutes": 120,
+   "notices": 6,
+   "weekly": true,
+   "pvp": 10,
+   "raids": 1,
+   "trailChallenges": 3,
+   "errands": true
+  },
+  "casual": {
+   "label": "Casual (2 sessions of 30 min a day)",
+   "awakeRegenHours": null,
+   "sessions": 2,
+   "sessionMinutes": 30,
+   "fightMinutes": 60,
+   "notices": 3,
+   "weekly": true,
+   "pvp": 3,
+   "raids": 1,
+   "trailChallenges": 1,
+   "errands": true
+  },
+  "dedicatedKeepDeck": {
+   "label": "Dedicated, keeps one deck from Map 11 (variant: the Forge bill's lower bound)",
+   "awakeRegenHours": 16,
+   "sessions": null,
+   "fightMinutes": 120,
+   "notices": 6,
+   "weekly": true,
+   "pvp": 10,
+   "raids": 1,
+   "trailChallenges": 3,
+   "errands": true,
+   "keepDeck": true
+  },
+  "casualKeepDeck": {
+   "label": "Casual, keeps one deck from Map 11 (variant)",
+   "awakeRegenHours": null,
+   "sessions": 2,
+   "sessionMinutes": 30,
+   "fightMinutes": 60,
+   "notices": 3,
+   "weekly": true,
+   "pvp": 3,
+   "raids": 1,
+   "trailChallenges": 1,
+   "errands": true,
+   "keepDeck": true
+  },
+  "dedicatedWeeklyOnce": {
+   "label": "Dedicated, a weekly tier paid once (variant)",
+   "awakeRegenHours": 16,
+   "sessions": null,
+   "fightMinutes": 120,
+   "notices": 6,
+   "weekly": true,
+   "pvp": 10,
+   "raids": 1,
+   "trailChallenges": 3,
+   "errands": true,
+   "weeklyOnce": true
+  }
+ },
+ "sim": {
+  "dedicated": {
+   "label": "Dedicated (checks in all day, ~2 h of fights)",
+   "snaps": {
+    "0": {
+     "map": 0,
+     "day": 0,
+     "why": "start",
+     "wallet": {
+      "gold": 0,
+      "dust": 0,
+      "gems": 0,
+      "metal": 0,
+      "kibble": 0,
+      "xp": 0,
+      "iron": 0,
+      "pearl": 0,
+      "temper": 0,
+      "strange": 0,
+      "cards": 0,
+      "packs": 0,
+      "capsules": 0
+     },
+     "playerLevel": 0,
+     "energyMax": 20,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 0
+    },
+    "5": {
+     "map": 5,
+     "day": 2,
+     "why": "reached",
+     "wallet": {
+      "gold": 1491,
+      "dust": 1027,
+      "gems": 1,
+      "metal": 0,
+      "kibble": 34,
+      "xp": 353,
+      "iron": 7,
+      "pearl": 0,
+      "temper": 0,
+      "strange": 0,
+      "cards": 21,
+      "packs": 1,
+      "capsules": 0
+     },
+     "playerLevel": 1,
+     "energyMax": 25,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 0
+    },
+    "10": {
+     "map": 10,
+     "day": 3,
+     "why": "reached",
+     "wallet": {
+      "gold": 3514,
+      "dust": 2502,
+      "gems": 2,
+      "metal": 0,
+      "kibble": 85,
+      "xp": 755,
+      "iron": 20,
+      "pearl": 1,
+      "temper": 1,
+      "strange": 0,
+      "cards": 45,
+      "packs": 2,
+      "capsules": 1
+     },
+     "playerLevel": 3,
+     "energyMax": 30,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 1
+    },
+    "15": {
+     "map": 15,
+     "day": 17,
+     "why": "reached",
+     "wallet": {
+      "gold": 7128,
+      "dust": 712,
+      "gems": 17,
+      "metal": 17,
+      "kibble": 238,
+      "xp": 9905,
+      "iron": 93,
+      "pearl": 1,
+      "temper": 4,
+      "strange": 1,
+      "cards": 93,
+      "packs": 11,
+      "capsules": 0
+     },
+     "playerLevel": 16,
+     "energyMax": 40,
+     "forgeTier": 1,
+     "refLevel": 3,
+     "deckLevelGap": {
+      "dust": 3837,
+      "gold": 2554
+     },
+     "trailTier": 17
+    },
+    "20": {
+     "map": 20,
+     "day": 36,
+     "why": "reached",
+     "wallet": {
+      "gold": 12113,
+      "dust": 615,
+      "gems": 37,
+      "metal": 45,
+      "kibble": 362,
+      "xp": 24001,
+      "iron": 188,
+      "pearl": 2,
+      "temper": 2,
+      "strange": 1,
+      "cards": 144,
+      "packs": 21,
+      "capsules": 0
+     },
+     "playerLevel": 26,
+     "energyMax": 50,
+     "forgeTier": 2,
+     "refLevel": 3.9,
+     "deckLevelGap": {
+      "dust": 6552,
+      "gold": 4366
+     },
+     "trailTier": 6
+    },
+    "21": {
+     "map": 21,
+     "day": 50,
+     "why": "Map 20 cleared",
+     "wallet": {
+      "gold": 12943,
+      "dust": 784,
+      "gems": 51,
+      "metal": 64,
+      "kibble": 471,
+      "xp": 33761,
+      "iron": 251,
+      "pearl": 3,
+      "temper": 7,
+      "strange": 0,
+      "cards": 164,
+      "packs": 26,
+      "capsules": 0
+     },
+     "playerLevel": 31,
+     "energyMax": 50,
+     "forgeTier": 3,
+     "refLevel": 4.08,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 23
+    }
+   },
+   "stages": {
+    "0-5": 2,
+    "5-10": 1,
+    "10-15": 14,
+    "15-20": 19,
+    "20-end": 14
+   },
+   "daysOnMap": {
+    "0": 1,
+    "4": 1,
+    "8": 1,
+    "11": 2,
+    "12": 4,
+    "13": 6,
+    "14": 2,
+    "15": 5,
+    "16": 2,
+    "17": 1,
+    "18": 4,
+    "19": 7,
+    "20": 13
+   },
+   "forgeWaitDays": {
+    "11": 2,
+    "12": 4,
+    "13": 6,
+    "14": 2,
+    "15": 5,
+    "16": 2,
+    "17": 1,
+    "18": 4,
+    "19": 7,
+    "20": 12
+   },
+   "boundBy": {
+    "0-4": {
+     "time": 1
+    },
+    "5-10": {
+     "time": 1
+    },
+    "11-15": {
+     "forge": 19
+    },
+    "16-20": {
+     "forge": 26,
+     "energy": 1,
+     "done": 1
+    }
+   },
+   "energyPerDay": [
+    {
+     "day": 1,
+     "map": 4,
+     "energy": 217,
+     "road": 127
+    },
+    {
+     "day": 2,
+     "map": 8,
+     "energy": 246,
+     "road": 236
+    },
+    {
+     "day": 3,
+     "map": 11,
+     "energy": 235,
+     "road": 220
+    },
+    {
+     "day": 5,
+     "map": 12,
+     "energy": 227,
+     "road": 173
+    },
+    {
+     "day": 10,
+     "map": 13,
+     "energy": 248,
+     "road": 0
+    },
+    {
+     "day": 15,
+     "map": 14,
+     "energy": 237,
+     "road": 96
+    },
+    {
+     "day": 20,
+     "map": 15,
+     "energy": 237,
+     "road": 0
+    },
+    {
+     "day": 25,
+     "map": 18,
+     "energy": 237,
+     "road": 96
+    },
+    {
+     "day": 30,
+     "map": 19,
+     "energy": 250,
+     "road": 0
+    },
+    {
+     "day": 35,
+     "map": 19,
+     "energy": 242,
+     "road": 0
+    },
+    {
+     "day": 40,
+     "map": 20,
+     "energy": 247,
+     "road": 0
+    },
+    {
+     "day": 45,
+     "map": 20,
+     "energy": 247,
+     "road": 0
+    }
+   ],
+   "income": {
+    "firstClear": {
+     "gold": 8670,
+     "dust": 7294,
+     "kibble": 224,
+     "cards": 79,
+     "capsules": 8,
+     "iron": 78,
+     "pearl": 4,
+     "temper": 10,
+     "strange": 2
+    },
+    "wins": {
+     "xp": 3789
+    },
+    "mapPack": {
+     "packs": 9,
+     "cards": 27
+    },
+    "notices": {
+     "gold": 10348.8,
+     "dust": 11918.8,
+     "gems": 51.4,
+     "xp": 13453.4
+    },
+    "levelTrack": {
+     "cards": 23,
+     "packs": 6,
+     "gold": 2100,
+     "dust": 1050
+    },
+    "trail": {
+     "gold": 730,
+     "dust": 770,
+     "packs": 11,
+     "cards": 35,
+     "kibble": 80,
+     "capsules": 3,
+     "metal": 3
+    },
+    "errands": {
+     "dust": 894.9,
+     "gold": 565.2,
+     "xp": 942,
+     "iron": 13.5
+    },
+    "repeat": {
+     "gold": 9263,
+     "dust": 3986,
+     "kibble": 166.8,
+     "iron": 166.8
+    },
+    "pvp": {
+     "gold": 622.8,
+     "dust": 32.3,
+     "xp": 987
+    },
+    "weekly": {
+     "gold": 6377,
+     "dust": 9767,
+     "metal": 61,
+     "xp": 14590
+    },
+    "raids": {
+     "gold": 256.3,
+     "dust": 194.2
+    }
+   },
+   "spent": {
+    "forge": {
+     "gold": 20440,
+     "dust": 30703
+    },
+    "forgeTier": {
+     "gold": 2100,
+     "dust": 1100
+    },
+    "energy": {
+     "gold": 0,
+     "dust": 2510
+    },
+    "nest": {
+     "gold": 3450,
+     "dust": 810
+    }
+   },
+   "wallet": {
+    "gold": 12943,
+    "dust": 784.2,
+    "gems": 51.4,
+    "metal": 64,
+    "kibble": 470.8,
+    "xp": 33761.4,
+    "iron": 251.3,
+    "pearl": 3,
+    "temper": 7,
+    "strange": 0,
+    "cards": 164,
+    "packs": 26,
+    "capsules": 0
+   },
+   "log": [
+    {
+     "day": 1,
+     "map": 4,
+     "ev": "Max Energy 25"
+    },
+    {
+     "day": 2,
+     "map": 8,
+     "ev": "Max Energy 30"
+    },
+    {
+     "day": 8,
+     "map": 12,
+     "ev": "Max Energy 35"
+    },
+    {
+     "day": 14,
+     "map": 13,
+     "ev": "Max Energy 40"
+    },
+    {
+     "day": 22,
+     "map": 16,
+     "ev": "Iron Forge"
+    },
+    {
+     "day": 28,
+     "map": 18,
+     "ev": "Max Energy 45"
+    },
+    {
+     "day": 35,
+     "map": 19,
+     "ev": "Max Energy 50"
+    },
+    {
+     "day": 49,
+     "map": 21,
+     "ev": "Ember Forge"
+    }
+   ],
+   "finished": true,
+   "day": 50
+  },
+  "casual": {
+   "label": "Casual (2 sessions of 30 min a day)",
+   "snaps": {
+    "0": {
+     "map": 0,
+     "day": 0,
+     "why": "start",
+     "wallet": {
+      "gold": 0,
+      "dust": 0,
+      "gems": 0,
+      "metal": 0,
+      "kibble": 0,
+      "xp": 0,
+      "iron": 0,
+      "pearl": 0,
+      "temper": 0,
+      "strange": 0,
+      "cards": 0,
+      "packs": 0,
+      "capsules": 0
+     },
+     "playerLevel": 0,
+     "energyMax": 20,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 0
+    },
+    "5": {
+     "map": 5,
+     "day": 3,
+     "why": "reached",
+     "wallet": {
+      "gold": 1386,
+      "dust": 906,
+      "gems": 1,
+      "metal": 0,
+      "kibble": 34,
+      "xp": 215,
+      "iron": 7,
+      "pearl": 0,
+      "temper": 0,
+      "strange": 0,
+      "cards": 21,
+      "packs": 1,
+      "capsules": 0
+     },
+     "playerLevel": 1,
+     "energyMax": 25,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 0
+    },
+    "10": {
+     "map": 10,
+     "day": 7,
+     "why": "reached",
+     "wallet": {
+      "gold": 3630,
+      "dust": 2689,
+      "gems": 3,
+      "metal": 0,
+      "kibble": 85,
+      "xp": 908,
+      "iron": 21,
+      "pearl": 1,
+      "temper": 1,
+      "strange": 0,
+      "cards": 45,
+      "packs": 2,
+      "capsules": 0
+     },
+     "playerLevel": 3,
+     "energyMax": 30,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 2
+    },
+    "15": {
+     "map": 15,
+     "day": 29,
+     "why": "reached",
+     "wallet": {
+      "gold": 6716,
+      "dust": 1102,
+      "gems": 14,
+      "metal": 30,
+      "kibble": 214,
+      "xp": 11648,
+      "iron": 71,
+      "pearl": 1,
+      "temper": 3,
+      "strange": 1,
+      "cards": 93,
+      "packs": 11,
+      "capsules": 0
+     },
+     "playerLevel": 18,
+     "energyMax": 45,
+     "forgeTier": 1,
+     "refLevel": 3,
+     "deckLevelGap": {
+      "dust": 3837,
+      "gold": 2554
+     },
+     "trailTier": 17
+    },
+    "20": {
+     "map": 20,
+     "day": 55,
+     "why": "reached",
+     "wallet": {
+      "gold": 9402,
+      "dust": 394,
+      "gems": 28,
+      "metal": 58,
+      "kibble": 327,
+      "xp": 23355,
+      "iron": 136,
+      "pearl": 2,
+      "temper": 4,
+      "strange": 1,
+      "cards": 136,
+      "packs": 19,
+      "capsules": 0
+     },
+     "playerLevel": 26,
+     "energyMax": 45,
+     "forgeTier": 2,
+     "refLevel": 3.9,
+     "deckLevelGap": {
+      "dust": 6552,
+      "gold": 4366
+     },
+     "trailTier": 15
+    },
+    "21": {
+     "map": 21,
+     "day": 74,
+     "why": "Map 20 cleared",
+     "wallet": {
+      "gold": 8433,
+      "dust": 93,
+      "gems": 38,
+      "metal": 85,
+      "kibble": 413,
+      "xp": 33525,
+      "iron": 178,
+      "pearl": 3,
+      "temper": 7,
+      "strange": 0,
+      "cards": 153,
+      "packs": 23,
+      "capsules": 1
+     },
+     "playerLevel": 31,
+     "energyMax": 50,
+     "forgeTier": 3,
+     "refLevel": 4.08,
+     "deckLevelGap": {
+      "dust": 636,
+      "gold": 423
+     },
+     "trailTier": 9
+    }
+   },
+   "stages": {
+    "0-5": 3,
+    "5-10": 4,
+    "10-15": 22,
+    "15-20": 26,
+    "20-end": 19
+   },
+   "daysOnMap": {
+    "0": 1,
+    "2": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "8": 1,
+    "9": 1,
+    "10": 2,
+    "11": 2,
+    "12": 7,
+    "13": 7,
+    "14": 4,
+    "15": 7,
+    "16": 4,
+    "17": 1,
+    "18": 5,
+    "19": 9,
+    "20": 18
+   },
+   "forgeWaitDays": {
+    "12": 7,
+    "13": 7,
+    "14": 4,
+    "15": 7,
+    "16": 4,
+    "17": 1,
+    "18": 5,
+    "19": 9,
+    "20": 16
+   },
+   "boundBy": {
+    "0-4": {
+     "time": 1,
+     "energy": 1
+    },
+    "5-10": {
+     "energy": 6
+    },
+    "11-15": {
+     "energy": 2,
+     "forge": 25
+    },
+    "16-20": {
+     "forge": 35,
+     "energy": 2,
+     "done": 1
+    }
+   },
+   "energyPerDay": [
+    {
+     "day": 1,
+     "map": 2,
+     "energy": 57,
+     "road": 42
+    },
+    {
+     "day": 2,
+     "map": 4,
+     "energy": 73,
+     "road": 69
+    },
+    {
+     "day": 3,
+     "map": 5,
+     "energy": 75,
+     "road": 75
+    },
+    {
+     "day": 5,
+     "map": 8,
+     "energy": 85,
+     "road": 84
+    },
+    {
+     "day": 10,
+     "map": 11,
+     "energy": 87,
+     "road": 87
+    },
+    {
+     "day": 15,
+     "map": 12,
+     "energy": 97,
+     "road": 0
+    },
+    {
+     "day": 20,
+     "map": 13,
+     "energy": 97,
+     "road": 0
+    },
+    {
+     "day": 25,
+     "map": 14,
+     "energy": 97,
+     "road": 96
+    },
+    {
+     "day": 30,
+     "map": 15,
+     "energy": 107,
+     "road": 0
+    },
+    {
+     "day": 35,
+     "map": 15,
+     "energy": 107,
+     "road": 0
+    },
+    {
+     "day": 40,
+     "map": 17,
+     "energy": 107,
+     "road": 85
+    },
+    {
+     "day": 45,
+     "map": 18,
+     "energy": 107,
+     "road": 0
+    },
+    {
+     "day": 50,
+     "map": 19,
+     "energy": 107,
+     "road": 0
+    },
+    {
+     "day": 55,
+     "map": 20,
+     "energy": 107,
+     "road": 84
+    },
+    {
+     "day": 60,
+     "map": 20,
+     "energy": 107,
+     "road": 0
+    },
+    {
+     "day": 65,
+     "map": 20,
+     "energy": 107,
+     "road": 0
+    },
+    {
+     "day": 70,
+     "map": 20,
+     "energy": 107,
+     "road": 0
+    }
+   ],
+   "income": {
+    "firstClear": {
+     "gold": 8670,
+     "dust": 7294,
+     "kibble": 224,
+     "cards": 79,
+     "capsules": 8,
+     "iron": 78,
+     "pearl": 4,
+     "temper": 10,
+     "strange": 2
+    },
+    "wins": {
+     "xp": 2235
+    },
+    "mapPack": {
+     "packs": 9,
+     "cards": 27
+    },
+    "notices": {
+     "gold": 7603.2,
+     "dust": 8756.6,
+     "gems": 37.8,
+     "xp": 9884.2
+    },
+    "levelTrack": {
+     "cards": 23,
+     "packs": 6,
+     "gold": 2100,
+     "dust": 1050
+    },
+    "trail": {
+     "gold": 520,
+     "dust": 600,
+     "packs": 8,
+     "cards": 24,
+     "kibble": 100,
+     "capsules": 3,
+     "metal": 2
+    },
+    "errands": {
+     "dust": 1164.7,
+     "gold": 735.6,
+     "xp": 1226,
+     "iron": 17.5
+    },
+    "weekly": {
+     "gold": 8635,
+     "dust": 13225,
+     "metal": 83,
+     "xp": 19770
+    },
+    "pvp": {
+     "gold": 258.4,
+     "dust": 13.4,
+     "xp": 409.5
+    },
+    "repeat": {
+     "gold": 5128.2,
+     "dust": 2211.1,
+     "kibble": 89.1,
+     "iron": 89.1
+    },
+    "raids": {
+     "gold": 350,
+     "dust": 265.3
+    }
+   },
+   "spent": {
+    "forge": {
+     "gold": 20017,
+     "dust": 30067
+    },
+    "forgeTier": {
+     "gold": 2100,
+     "dust": 1100
+    },
+    "energy": {
+     "gold": 0,
+     "dust": 2510
+    },
+    "nest": {
+     "gold": 3450,
+     "dust": 810
+    }
+   },
+   "wallet": {
+    "gold": 8433.4,
+    "dust": 93.1,
+    "gems": 37.8,
+    "metal": 85,
+    "kibble": 413.1,
+    "xp": 33524.7,
+    "iron": 177.6,
+    "pearl": 3,
+    "temper": 7,
+    "strange": 0,
+    "cards": 153,
+    "packs": 23,
+    "capsules": 1
+   },
+   "log": [
+    {
+     "day": 2,
+     "map": 4,
+     "ev": "Max Energy 25"
+    },
+    {
+     "day": 3,
+     "map": 5,
+     "ev": "Max Energy 30"
+    },
+    {
+     "day": 9,
+     "map": 11,
+     "ev": "Max Energy 35"
+    },
+    {
+     "day": 10,
+     "map": 11,
+     "ev": "Max Energy 40"
+    },
+    {
+     "day": 28,
+     "map": 14,
+     "ev": "Max Energy 45"
+    },
+    {
+     "day": 36,
+     "map": 16,
+     "ev": "Iron Forge"
+    },
+    {
+     "day": 70,
+     "map": 20,
+     "ev": "Max Energy 50"
+    },
+    {
+     "day": 73,
+     "map": 21,
+     "ev": "Ember Forge"
+    }
+   ],
+   "finished": true,
+   "day": 74
+  },
+  "dedicatedKeepDeck": {
+   "label": "Dedicated, keeps one deck from Map 11 (variant: the Forge bill's lower bound)",
+   "snaps": {
+    "0": {
+     "map": 0,
+     "day": 0,
+     "why": "start",
+     "wallet": {
+      "gold": 0,
+      "dust": 0,
+      "gems": 0,
+      "metal": 0,
+      "kibble": 0,
+      "xp": 0,
+      "iron": 0,
+      "pearl": 0,
+      "temper": 0,
+      "strange": 0,
+      "cards": 0,
+      "packs": 0,
+      "capsules": 0
+     },
+     "playerLevel": 0,
+     "energyMax": 20,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 0
+    },
+    "5": {
+     "map": 5,
+     "day": 2,
+     "why": "reached",
+     "wallet": {
+      "gold": 1491,
+      "dust": 1027,
+      "gems": 1,
+      "metal": 0,
+      "kibble": 34,
+      "xp": 353,
+      "iron": 7,
+      "pearl": 0,
+      "temper": 0,
+      "strange": 0,
+      "cards": 21,
+      "packs": 1,
+      "capsules": 0
+     },
+     "playerLevel": 1,
+     "energyMax": 25,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 0
+    },
+    "10": {
+     "map": 10,
+     "day": 3,
+     "why": "reached",
+     "wallet": {
+      "gold": 3514,
+      "dust": 2502,
+      "gems": 2,
+      "metal": 0,
+      "kibble": 85,
+      "xp": 755,
+      "iron": 20,
+      "pearl": 1,
+      "temper": 1,
+      "strange": 0,
+      "cards": 45,
+      "packs": 2,
+      "capsules": 1
+     },
+     "playerLevel": 3,
+     "energyMax": 30,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 1
+    },
+    "15": {
+     "map": 15,
+     "day": 6,
+     "why": "reached",
+     "wallet": {
+      "gold": 4374,
+      "dust": 1831,
+      "gems": 5,
+      "metal": 0,
+      "kibble": 155,
+      "xp": 1936,
+      "iron": 49,
+      "pearl": 2,
+      "temper": 4,
+      "strange": 1,
+      "cards": 78,
+      "packs": 6,
+      "capsules": 0
+     },
+     "playerLevel": 6,
+     "energyMax": 35,
+     "forgeTier": 1,
+     "refLevel": 3,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 4
+    },
+    "20": {
+     "map": 20,
+     "day": 9,
+     "why": "reached",
+     "wallet": {
+      "gold": 6242,
+      "dust": 2477,
+      "gems": 8,
+      "metal": 9,
+      "kibble": 231,
+      "xp": 5234,
+      "iron": 69,
+      "pearl": 2,
+      "temper": 2,
+      "strange": 1,
+      "cards": 112,
+      "packs": 11,
+      "capsules": 0
+     },
+     "playerLevel": 11,
+     "energyMax": 50,
+     "forgeTier": 2,
+     "refLevel": 3.9,
+     "deckLevelGap": {
+      "dust": 1166,
+      "gold": 776
+     },
+     "trailTier": 9
+    },
+    "21": {
+     "map": 21,
+     "day": 11,
+     "why": "Map 20 cleared",
+     "wallet": {
+      "gold": 3702,
+      "dust": 1742,
+      "gems": 11,
+      "metal": 9,
+      "kibble": 252,
+      "xp": 5883,
+      "iron": 81,
+      "pearl": 3,
+      "temper": 7,
+      "strange": 0,
+      "cards": 123,
+      "packs": 13,
+      "capsules": 0
+     },
+     "playerLevel": 12,
+     "energyMax": 50,
+     "forgeTier": 3,
+     "refLevel": 4.08,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 10
+    }
+   },
+   "stages": {
+    "0-5": 2,
+    "5-10": 1,
+    "10-15": 3,
+    "15-20": 3,
+    "20-end": 2
+   },
+   "daysOnMap": {
+    "0": 1,
+    "4": 1,
+    "8": 1,
+    "11": 2,
+    "12": 1,
+    "15": 1,
+    "16": 1,
+    "18": 1,
+    "20": 1
+   },
+   "forgeWaitDays": {
+    "11": 2,
+    "16": 1
+   },
+   "boundBy": {
+    "0-4": {
+     "time": 1
+    },
+    "5-10": {
+     "time": 1
+    },
+    "11-15": {
+     "forge": 2,
+     "energy": 2
+    },
+    "16-20": {
+     "forge": 1,
+     "energy": 2,
+     "done": 1
+    }
+   },
+   "energyPerDay": [
+    {
+     "day": 1,
+     "map": 4,
+     "energy": 217,
+     "road": 127
+    },
+    {
+     "day": 2,
+     "map": 8,
+     "energy": 246,
+     "road": 236
+    },
+    {
+     "day": 3,
+     "map": 11,
+     "energy": 235,
+     "road": 220
+    },
+    {
+     "day": 5,
+     "map": 12,
+     "energy": 227,
+     "road": 227
+    },
+    {
+     "day": 10,
+     "map": 21,
+     "energy": 247,
+     "road": 117
+    }
+   ],
+   "income": {
+    "firstClear": {
+     "gold": 8670,
+     "dust": 7294,
+     "kibble": 224,
+     "cards": 79,
+     "capsules": 8,
+     "iron": 78,
+     "pearl": 4,
+     "temper": 10,
+     "strange": 2
+    },
+    "wins": {
+     "xp": 615
+    },
+    "mapPack": {
+     "packs": 9,
+     "cards": 27
+    },
+    "notices": {
+     "gold": 2112,
+     "dust": 2432.4,
+     "gems": 10.5,
+     "xp": 2745.6
+    },
+    "levelTrack": {
+     "cards": 11,
+     "packs": 2,
+     "gold": 600,
+     "dust": 300
+    },
+    "trail": {
+     "gold": 120,
+     "dust": 110,
+     "packs": 2,
+     "cards": 6,
+     "kibble": 20,
+     "capsules": 1
+    },
+    "errands": {
+     "dust": 155.8,
+     "gold": 98.4,
+     "xp": 164,
+     "iron": 2.3
+    },
+    "repeat": {
+     "gold": 419.6,
+     "dust": 179.8,
+     "kibble": 8.1,
+     "iron": 8.1
+    },
+    "pvp": {
+     "gold": 106,
+     "dust": 5.5,
+     "xp": 168
+    },
+    "raids": {
+     "gold": 31.3,
+     "dust": 23.7
+    },
+    "weekly": {
+     "gold": 959,
+     "dust": 1469,
+     "metal": 9,
+     "xp": 2190
+    }
+   },
+   "spent": {
+    "forge": {
+     "gold": 3864,
+     "dust": 5808
+    },
+    "forgeTier": {
+     "gold": 2100,
+     "dust": 1100
+    },
+    "energy": {
+     "gold": 0,
+     "dust": 2510
+    },
+    "nest": {
+     "gold": 3450,
+     "dust": 810
+    }
+   },
+   "wallet": {
+    "gold": 3702.2,
+    "dust": 1742.2,
+    "gems": 10.5,
+    "metal": 9,
+    "kibble": 252.1,
+    "xp": 5882.6,
+    "iron": 81.4,
+    "pearl": 3,
+    "temper": 7,
+    "strange": 0,
+    "cards": 123,
+    "packs": 13,
+    "capsules": 0
+   },
+   "log": [
+    {
+     "day": 1,
+     "map": 4,
+     "ev": "Max Energy 25"
+    },
+    {
+     "day": 2,
+     "map": 8,
+     "ev": "Max Energy 30"
+    },
+    {
+     "day": 5,
+     "map": 12,
+     "ev": "Max Energy 35"
+    },
+    {
+     "day": 6,
+     "map": 15,
+     "ev": "Max Energy 40"
+    },
+    {
+     "day": 7,
+     "map": 16,
+     "ev": "Iron Forge"
+    },
+    {
+     "day": 7,
+     "map": 16,
+     "ev": "Max Energy 45"
+    },
+    {
+     "day": 8,
+     "map": 18,
+     "ev": "Max Energy 50"
+    },
+    {
+     "day": 10,
+     "map": 21,
+     "ev": "Ember Forge"
+    }
+   ],
+   "finished": true,
+   "day": 11
+  },
+  "casualKeepDeck": {
+   "label": "Casual, keeps one deck from Map 11 (variant)",
+   "snaps": {
+    "0": {
+     "map": 0,
+     "day": 0,
+     "why": "start",
+     "wallet": {
+      "gold": 0,
+      "dust": 0,
+      "gems": 0,
+      "metal": 0,
+      "kibble": 0,
+      "xp": 0,
+      "iron": 0,
+      "pearl": 0,
+      "temper": 0,
+      "strange": 0,
+      "cards": 0,
+      "packs": 0,
+      "capsules": 0
+     },
+     "playerLevel": 0,
+     "energyMax": 20,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 0
+    },
+    "5": {
+     "map": 5,
+     "day": 3,
+     "why": "reached",
+     "wallet": {
+      "gold": 1386,
+      "dust": 906,
+      "gems": 1,
+      "metal": 0,
+      "kibble": 34,
+      "xp": 215,
+      "iron": 7,
+      "pearl": 0,
+      "temper": 0,
+      "strange": 0,
+      "cards": 21,
+      "packs": 1,
+      "capsules": 0
+     },
+     "playerLevel": 1,
+     "energyMax": 25,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 0
+    },
+    "10": {
+     "map": 10,
+     "day": 7,
+     "why": "reached",
+     "wallet": {
+      "gold": 3630,
+      "dust": 2689,
+      "gems": 3,
+      "metal": 0,
+      "kibble": 85,
+      "xp": 908,
+      "iron": 21,
+      "pearl": 1,
+      "temper": 1,
+      "strange": 0,
+      "cards": 45,
+      "packs": 2,
+      "capsules": 0
+     },
+     "playerLevel": 3,
+     "energyMax": 30,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 2
+    },
+    "15": {
+     "map": 15,
+     "day": 13,
+     "why": "reached",
+     "wallet": {
+      "gold": 4759,
+      "dust": 650,
+      "gems": 6,
+      "metal": 4,
+      "kibble": 150,
+      "xp": 2768,
+      "iron": 43,
+      "pearl": 1,
+      "temper": 1,
+      "strange": 1,
+      "cards": 81,
+      "packs": 7,
+      "capsules": 0
+     },
+     "playerLevel": 8,
+     "energyMax": 50,
+     "forgeTier": 1,
+     "refLevel": 3,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 5
+    },
+    "20": {
+     "map": 20,
+     "day": 18,
+     "why": "reached",
+     "wallet": {
+      "gold": 6067,
+      "dust": 2555,
+      "gems": 8,
+      "metal": 13,
+      "kibble": 224,
+      "xp": 5899,
+      "iron": 63,
+      "pearl": 2,
+      "temper": 2,
+      "strange": 1,
+      "cards": 112,
+      "packs": 11,
+      "capsules": 0
+     },
+     "playerLevel": 12,
+     "energyMax": 50,
+     "forgeTier": 2,
+     "refLevel": 3.9,
+     "deckLevelGap": {
+      "dust": 742,
+      "gold": 494
+     },
+     "trailTier": 9
+    },
+    "21": {
+     "map": 21,
+     "day": 21,
+     "why": "Map 20 cleared",
+     "wallet": {
+      "gold": 3704,
+      "dust": 2132,
+      "gems": 10,
+      "metal": 13,
+      "kibble": 245,
+      "xp": 6392,
+      "iron": 76,
+      "pearl": 3,
+      "temper": 7,
+      "strange": 0,
+      "cards": 123,
+      "packs": 13,
+      "capsules": 0
+     },
+     "playerLevel": 13,
+     "energyMax": 50,
+     "forgeTier": 3,
+     "refLevel": 4.08,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 10
+    }
+   },
+   "stages": {
+    "0-5": 3,
+    "5-10": 4,
+    "10-15": 6,
+    "15-20": 5,
+    "20-end": 3
+   },
+   "daysOnMap": {
+    "0": 1,
+    "2": 1,
+    "4": 1,
+    "5": 1,
+    "6": 1,
+    "8": 1,
+    "9": 1,
+    "10": 2,
+    "11": 2,
+    "13": 1,
+    "14": 1,
+    "15": 1,
+    "16": 1,
+    "17": 1,
+    "18": 1,
+    "19": 1,
+    "20": 2
+   },
+   "forgeWaitDays": {
+    "16": 1
+   },
+   "boundBy": {
+    "0-4": {
+     "time": 1,
+     "energy": 1
+    },
+    "5-10": {
+     "energy": 6
+    },
+    "11-15": {
+     "energy": 5
+    },
+    "16-20": {
+     "forge": 1,
+     "energy": 5,
+     "done": 1
+    }
+   },
+   "energyPerDay": [
+    {
+     "day": 1,
+     "map": 2,
+     "energy": 57,
+     "road": 42
+    },
+    {
+     "day": 2,
+     "map": 4,
+     "energy": 73,
+     "road": 69
+    },
+    {
+     "day": 3,
+     "map": 5,
+     "energy": 75,
+     "road": 75
+    },
+    {
+     "day": 5,
+     "map": 8,
+     "energy": 85,
+     "road": 84
+    },
+    {
+     "day": 10,
+     "map": 11,
+     "energy": 87,
+     "road": 87
+    },
+    {
+     "day": 15,
+     "map": 17,
+     "energy": 117,
+     "road": 114
+    },
+    {
+     "day": 20,
+     "map": 21,
+     "energy": 117,
+     "road": 54
+    }
+   ],
+   "income": {
+    "firstClear": {
+     "gold": 8670,
+     "dust": 7294,
+     "kibble": 224,
+     "cards": 79,
+     "capsules": 8,
+     "iron": 78,
+     "pearl": 4,
+     "temper": 10,
+     "strange": 2
+    },
+    "wins": {
+     "xp": 480
+    },
+    "mapPack": {
+     "packs": 9,
+     "cards": 27
+    },
+    "notices": {
+     "gold": 2006.4,
+     "dust": 2310.8,
+     "gems": 10,
+     "xp": 2608.3
+    },
+    "levelTrack": {
+     "cards": 11,
+     "packs": 2,
+     "gold": 700,
+     "dust": 350
+    },
+    "trail": {
+     "gold": 120,
+     "dust": 110,
+     "packs": 2,
+     "cards": 6,
+     "kibble": 20,
+     "capsules": 1
+    },
+    "errands": {
+     "dust": 226.1,
+     "gold": 142.8,
+     "xp": 238,
+     "iron": 3.4
+    },
+    "weekly": {
+     "gold": 1299,
+     "dust": 1989,
+     "metal": 13,
+     "xp": 2990
+    },
+    "pvp": {
+     "gold": 47.7,
+     "dust": 2.5,
+     "xp": 75.6
+    },
+    "raids": {
+     "gold": 62.5,
+     "dust": 47.4
+    },
+    "repeat": {
+     "gold": 69.9,
+     "dust": 30,
+     "kibble": 1.3,
+     "iron": 1.3
+    }
+   },
+   "spent": {
+    "forge": {
+     "gold": 3864,
+     "dust": 5808
+    },
+    "forgeTier": {
+     "gold": 2100,
+     "dust": 1100
+    },
+    "energy": {
+     "gold": 0,
+     "dust": 2510
+    },
+    "nest": {
+     "gold": 3450,
+     "dust": 810
+    }
+   },
+   "wallet": {
+    "gold": 3704.3,
+    "dust": 2131.7,
+    "gems": 10,
+    "metal": 13,
+    "kibble": 245.4,
+    "xp": 6391.9,
+    "iron": 75.8,
+    "pearl": 3,
+    "temper": 7,
+    "strange": 0,
+    "cards": 123,
+    "packs": 13,
+    "capsules": 0
+   },
+   "log": [
+    {
+     "day": 2,
+     "map": 4,
+     "ev": "Max Energy 25"
+    },
+    {
+     "day": 3,
+     "map": 5,
+     "ev": "Max Energy 30"
+    },
+    {
+     "day": 9,
+     "map": 11,
+     "ev": "Max Energy 35"
+    },
+    {
+     "day": 10,
+     "map": 11,
+     "ev": "Max Energy 40"
+    },
+    {
+     "day": 11,
+     "map": 13,
+     "ev": "Max Energy 45"
+    },
+    {
+     "day": 12,
+     "map": 14,
+     "ev": "Max Energy 50"
+    },
+    {
+     "day": 14,
+     "map": 16,
+     "ev": "Iron Forge"
+    },
+    {
+     "day": 20,
+     "map": 21,
+     "ev": "Ember Forge"
+    }
+   ],
+   "finished": true,
+   "day": 21
+  },
+  "dedicatedWeeklyOnce": {
+   "label": "Dedicated, a weekly tier paid once (variant)",
+   "snaps": {
+    "0": {
+     "map": 0,
+     "day": 0,
+     "why": "start",
+     "wallet": {
+      "gold": 0,
+      "dust": 0,
+      "gems": 0,
+      "metal": 0,
+      "kibble": 0,
+      "xp": 0,
+      "iron": 0,
+      "pearl": 0,
+      "temper": 0,
+      "strange": 0,
+      "cards": 0,
+      "packs": 0,
+      "capsules": 0
+     },
+     "playerLevel": 0,
+     "energyMax": 20,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 0
+    },
+    "5": {
+     "map": 5,
+     "day": 2,
+     "why": "reached",
+     "wallet": {
+      "gold": 1491,
+      "dust": 1027,
+      "gems": 1,
+      "metal": 0,
+      "kibble": 34,
+      "xp": 353,
+      "iron": 7,
+      "pearl": 0,
+      "temper": 0,
+      "strange": 0,
+      "cards": 21,
+      "packs": 1,
+      "capsules": 0
+     },
+     "playerLevel": 1,
+     "energyMax": 25,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 0
+    },
+    "10": {
+     "map": 10,
+     "day": 3,
+     "why": "reached",
+     "wallet": {
+      "gold": 3514,
+      "dust": 2502,
+      "gems": 2,
+      "metal": 0,
+      "kibble": 85,
+      "xp": 755,
+      "iron": 20,
+      "pearl": 1,
+      "temper": 1,
+      "strange": 0,
+      "cards": 45,
+      "packs": 2,
+      "capsules": 1
+     },
+     "playerLevel": 3,
+     "energyMax": 30,
+     "forgeTier": 1,
+     "refLevel": 0,
+     "deckLevelGap": {
+      "dust": 0,
+      "gold": 0
+     },
+     "trailTier": 1
+    },
+    "15": {
+     "map": 15,
+     "day": 20,
+     "why": "reached",
+     "wallet": {
+      "gold": 7751,
+      "dust": 729,
+      "gems": 20,
+      "metal": 6,
+      "kibble": 248,
+      "xp": 11053,
+      "iron": 106,
+      "pearl": 2,
+      "temper": 4,
+      "strange": 1,
+      "cards": 96,
+      "packs": 12,
+      "capsules": 0
+     },
+     "playerLevel": 18,
+     "energyMax": 35,
+     "forgeTier": 1,
+     "refLevel": 3,
+     "deckLevelGap": {
+      "dust": 3837,
+      "gold": 2554
+     },
+     "trailTier": 20
+    },
+    "20": {
+     "map": 20,
+     "day": 43,
+     "why": "reached",
+     "wallet": {
+      "gold": 13208,
+      "dust": 806,
+      "gems": 44,
+      "metal": 20,
+      "kibble": 410,
+      "xp": 28943,
+      "iron": 217,
+      "pearl": 2,
+      "temper": 5,
+      "strange": 1,
+      "cards": 147,
+      "packs": 22,
+      "capsules": 0
+     },
+     "playerLevel": 29,
+     "energyMax": 40,
+     "forgeTier": 2,
+     "refLevel": 3.9,
+     "deckLevelGap": {
+      "dust": 6552,
+      "gold": 4366
+     },
+     "trailTier": 14
+    },
+    "21": {
+     "map": 21,
+     "day": 59,
+     "why": "Map 20 cleared",
+     "wallet": {
+      "gold": 16252,
+      "dust": 29,
+      "gems": 61,
+      "metal": 27,
+      "kibble": 504,
+      "xp": 39454,
+      "iron": 287,
+      "pearl": 3,
+      "temper": 7,
+      "strange": 0,
+      "cards": 172,
+      "packs": 28,
+      "capsules": 0
+     },
+     "playerLevel": 34,
+     "energyMax": 50,
+     "forgeTier": 3,
+     "refLevel": 4.08,
+     "deckLevelGap": {
+      "dust": 1217,
+      "gold": 809
+     },
+     "trailTier": 30
+    }
+   },
+   "stages": {
+    "0-5": 2,
+    "5-10": 1,
+    "10-15": 17,
+    "15-20": 23,
+    "20-end": 16
+   },
+   "daysOnMap": {
+    "0": 1,
+    "4": 1,
+    "8": 1,
+    "11": 2,
+    "12": 5,
+    "13": 6,
+    "14": 4,
+    "15": 7,
+    "16": 2,
+    "17": 1,
+    "18": 6,
+    "19": 7,
+    "20": 15
+   },
+   "forgeWaitDays": {
+    "11": 2,
+    "12": 5,
+    "13": 6,
+    "14": 4,
+    "15": 7,
+    "16": 2,
+    "17": 1,
+    "18": 6,
+    "19": 7,
+    "20": 14
+   },
+   "boundBy": {
+    "0-4": {
+     "time": 1
+    },
+    "5-10": {
+     "time": 1
+    },
+    "11-15": {
+     "forge": 24
+    },
+    "16-20": {
+     "forge": 30,
+     "energy": 1,
+     "done": 1
+    }
+   },
+   "energyPerDay": [
+    {
+     "day": 1,
+     "map": 4,
+     "energy": 217,
+     "road": 127
+    },
+    {
+     "day": 2,
+     "map": 8,
+     "energy": 246,
+     "road": 236
+    },
+    {
+     "day": 3,
+     "map": 11,
+     "energy": 235,
+     "road": 220
+    },
+    {
+     "day": 5,
+     "map": 12,
+     "energy": 227,
+     "road": 173
+    },
+    {
+     "day": 10,
+     "map": 13,
+     "energy": 235,
+     "road": 75
+    },
+    {
+     "day": 15,
+     "map": 13,
+     "energy": 227,
+     "road": 0
+    },
+    {
+     "day": 20,
+     "map": 15,
+     "energy": 232,
+     "road": 96
+    },
+    {
+     "day": 25,
+     "map": 15,
+     "energy": 232,
+     "road": 0
+    },
+    {
+     "day": 30,
+     "map": 18,
+     "energy": 237,
+     "road": 96
+    },
+    {
+     "day": 35,
+     "map": 18,
+     "energy": 237,
+     "road": 0
+    },
+    {
+     "day": 40,
+     "map": 19,
+     "energy": 237,
+     "road": 0
+    },
+    {
+     "day": 45,
+     "map": 20,
+     "energy": 237,
+     "road": 0
+    },
+    {
+     "day": 50,
+     "map": 20,
+     "energy": 237,
+     "road": 0
+    },
+    {
+     "day": 55,
+     "map": 20,
+     "energy": 237,
+     "road": 0
+    }
+   ],
+   "income": {
+    "firstClear": {
+     "gold": 8670,
+     "dust": 7294,
+     "kibble": 224,
+     "cards": 79,
+     "capsules": 8,
+     "iron": 78,
+     "pearl": 4,
+     "temper": 10,
+     "strange": 2
+    },
+    "wins": {
+     "xp": 4452
+    },
+    "mapPack": {
+     "packs": 9,
+     "cards": 27
+    },
+    "notices": {
+     "gold": 12249.6,
+     "dust": 14107.9,
+     "gems": 60.9,
+     "xp": 15924.5
+    },
+    "levelTrack": {
+     "cards": 23,
+     "packs": 6,
+     "gold": 2400,
+     "dust": 1200
+    },
+    "trail": {
+     "gold": 880,
+     "dust": 900,
+     "packs": 13,
+     "cards": 43,
+     "kibble": 80,
+     "capsules": 4,
+     "metal": 4
+    },
+    "errands": {
+     "dust": 1065.9,
+     "gold": 673.2,
+     "xp": 1122,
+     "iron": 16
+    },
+    "repeat": {
+     "gold": 11175.5,
+     "dust": 4810.7,
+     "kibble": 200,
+     "iron": 200
+    },
+    "pvp": {
+     "gold": 742,
+     "dust": 38.5,
+     "xp": 1176
+    },
+    "weekly": {
+     "xp": 16780,
+     "gold": 2536,
+     "dust": 3886,
+     "metal": 23
+    },
+    "raids": {
+     "gold": 306.3,
+     "dust": 232.1
+    }
+   },
+   "spent": {
+    "forge": {
+     "gold": 19631,
+     "dust": 29486
+    },
+    "forgeTier": {
+     "gold": 2100,
+     "dust": 1100
+    },
+    "energy": {
+     "gold": 0,
+     "dust": 2510
+    },
+    "nest": {
+     "gold": 1650,
+     "dust": 410
+    }
+   },
+   "wallet": {
+    "gold": 16251.5,
+    "dust": 29.2,
+    "gems": 60.9,
+    "metal": 27,
+    "kibble": 503.9,
+    "xp": 39454.5,
+    "iron": 287,
+    "pearl": 3,
+    "temper": 7,
+    "strange": 0,
+    "cards": 172,
+    "packs": 28,
+    "capsules": 0
+   },
+   "log": [
+    {
+     "day": 1,
+     "map": 4,
+     "ev": "Max Energy 25"
+    },
+    {
+     "day": 2,
+     "map": 8,
+     "ev": "Max Energy 30"
+    },
+    {
+     "day": 15,
+     "map": 13,
+     "ev": "Max Energy 35"
+    },
+    {
+     "day": 27,
+     "map": 16,
+     "ev": "Iron Forge"
+    },
+    {
+     "day": 28,
+     "map": 16,
+     "ev": "Max Energy 40"
+    },
+    {
+     "day": 56,
+     "map": 20,
+     "ev": "Max Energy 45"
+    },
+    {
+     "day": 57,
+     "map": 20,
+     "ev": "Max Energy 50"
+    },
+    {
+     "day": 58,
+     "map": 21,
+     "ev": "Ember Forge"
+    }
+   ],
+   "finished": true,
+   "day": 59
+  }
+ },
+ "road": [
+  {
+   "map": 0,
+   "id": "m1",
+   "name": "Bramblewood Outskirts",
+   "fights": 4,
+   "energy": 7,
+   "energyWithLosses": 12,
+   "firstGold": 160,
+   "firstDust": 80,
+   "cards": 2,
+   "capsules": 0,
+   "pack": null,
+   "goldPerEnergy": 13.85,
+   "dustPerEnergy": 6.92,
+   "repeatSkirmish": {
+    "energy": 1,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 4
+   }
+  },
+  {
+   "map": 1,
+   "id": "mf",
+   "name": "Thistlewood",
+   "fights": 5,
+   "energy": 9,
+   "energyWithLosses": 15,
+   "firstGold": 230,
+   "firstDust": 148,
+   "cards": 2,
+   "capsules": 1,
+   "pack": null,
+   "goldPerEnergy": 15.54,
+   "dustPerEnergy": 10,
+   "repeatSkirmish": {
+    "energy": 1,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 4
+   }
+  },
+  {
+   "map": 2,
+   "id": "mb",
+   "name": "Pebble Beach",
+   "fights": 5,
+   "energy": 14,
+   "energyWithLosses": 23,
+   "firstGold": 230,
+   "firstDust": 148,
+   "cards": 4,
+   "capsules": 1,
+   "pack": null,
+   "goldPerEnergy": 10.11,
+   "dustPerEnergy": 6.5,
+   "repeatSkirmish": {
+    "energy": 2,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 2
+   }
+  },
+  {
+   "map": 3,
+   "id": "mc",
+   "name": "Gannet Cliffs",
+   "fights": 7,
+   "energy": 28,
+   "energyWithLosses": 43,
+   "firstGold": 370,
+   "firstDust": 284,
+   "cards": 4,
+   "capsules": 0,
+   "pack": "bronze",
+   "goldPerEnergy": 8.68,
+   "dustPerEnergy": 6.66,
+   "repeatSkirmish": {
+    "energy": 4,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 1
+   }
+  },
+  {
+   "map": 4,
+   "id": "m2",
+   "name": "Sunken Hollow",
+   "fights": 5,
+   "energy": 25,
+   "energyWithLosses": 40,
+   "firstGold": 290,
+   "firstDust": 244,
+   "cards": 5,
+   "capsules": 1,
+   "pack": null,
+   "goldPerEnergy": 7.29,
+   "dustPerEnergy": 6.13,
+   "repeatSkirmish": {
+    "energy": 5,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.8
+   }
+  },
+  {
+   "map": 5,
+   "id": "mw",
+   "name": "Gatorback Swamp",
+   "fights": 7,
+   "energy": 40,
+   "energyWithLosses": 66,
+   "firstGold": 420,
+   "firstDust": 385,
+   "cards": 4,
+   "capsules": 0,
+   "pack": null,
+   "goldPerEnergy": 6.39,
+   "dustPerEnergy": 5.85,
+   "repeatSkirmish": {
+    "energy": 5,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.8
+   }
+  },
+  {
+   "map": 6,
+   "id": "m8",
+   "name": "Sable Swampmire",
+   "fights": 8,
+   "energy": 48,
+   "energyWithLosses": 72,
+   "firstGold": 440,
+   "firstDust": 352,
+   "cards": 5,
+   "capsules": 1,
+   "pack": null,
+   "goldPerEnergy": 6.11,
+   "dustPerEnergy": 4.89,
+   "repeatSkirmish": {
+    "energy": 6,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.67
+   }
+  },
+  {
+   "map": 7,
+   "id": "mu",
+   "name": "The Morel Hollow",
+   "fights": 6,
+   "energy": 36,
+   "energyWithLosses": 56,
+   "firstGold": 300,
+   "firstDust": 216,
+   "cards": 2,
+   "capsules": 0,
+   "pack": "silver",
+   "goldPerEnergy": 5.37,
+   "dustPerEnergy": 3.87,
+   "repeatSkirmish": {
+    "energy": 6,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.67
+   }
+  },
+  {
+   "map": 8,
+   "id": "m4",
+   "name": "Caves & Alcoves",
+   "fights": 8,
+   "energy": 48,
+   "energyWithLosses": 72,
+   "firstGold": 380,
+   "firstDust": 256,
+   "cards": 5,
+   "capsules": 0,
+   "pack": null,
+   "goldPerEnergy": 5.28,
+   "dustPerEnergy": 3.55,
+   "repeatSkirmish": {
+    "energy": 6,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.67
+   }
+  },
+  {
+   "map": 9,
+   "id": "mk",
+   "name": "The Kelp Mangroves",
+   "fights": 7,
+   "energy": 49,
+   "energyWithLosses": 75,
+   "firstGold": 370,
+   "firstDust": 284,
+   "cards": 3,
+   "capsules": 1,
+   "pack": null,
+   "goldPerEnergy": 4.96,
+   "dustPerEnergy": 3.81,
+   "repeatSkirmish": {
+    "energy": 7,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.57
+   }
+  },
+  {
+   "map": 10,
+   "id": "m7",
+   "name": "Coral Current",
+   "fights": 9,
+   "energy": 70,
+   "energyWithLosses": 111,
+   "firstGold": 530,
+   "firstDust": 473,
+   "cards": 4,
+   "capsules": 0,
+   "pack": "mystery",
+   "goldPerEnergy": 4.78,
+   "dustPerEnergy": 4.26,
+   "repeatSkirmish": {
+    "energy": 7,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.57
+   }
+  },
+  {
+   "map": 11,
+   "id": "m10",
+   "name": "Eyrie Heights",
+   "fights": 11,
+   "energy": 84,
+   "energyWithLosses": 173,
+   "firstGold": 780,
+   "firstDust": 758,
+   "cards": 4,
+   "capsules": 0,
+   "pack": "gold",
+   "goldPerEnergy": 4.51,
+   "dustPerEnergy": 4.38,
+   "repeatSkirmish": {
+    "energy": 7,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.57
+   }
+  },
+  {
+   "map": 12,
+   "id": "mh",
+   "name": "The Briar Maze",
+   "fights": 7,
+   "energy": 49,
+   "energyWithLosses": 75,
+   "firstGold": 370,
+   "firstDust": 284,
+   "cards": 4,
+   "capsules": 1,
+   "pack": null,
+   "goldPerEnergy": 4.96,
+   "dustPerEnergy": 3.81,
+   "repeatSkirmish": {
+    "energy": 7,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.57
+   }
+  },
+  {
+   "map": 13,
+   "id": "mr",
+   "name": "The Redwood Deep",
+   "fights": 8,
+   "energy": 64,
+   "energyWithLosses": 96,
+   "firstGold": 440,
+   "firstDust": 352,
+   "cards": 3,
+   "capsules": 0,
+   "pack": "bronze",
+   "goldPerEnergy": 4.58,
+   "dustPerEnergy": 3.67,
+   "repeatSkirmish": {
+    "energy": 8,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.5
+   }
+  },
+  {
+   "map": 14,
+   "id": "m5",
+   "name": "Savanna Reaches",
+   "fights": 8,
+   "energy": 64,
+   "energyWithLosses": 96,
+   "firstGold": 440,
+   "firstDust": 352,
+   "cards": 4,
+   "capsules": 0,
+   "pack": null,
+   "goldPerEnergy": 4.58,
+   "dustPerEnergy": 3.67,
+   "repeatSkirmish": {
+    "energy": 8,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.5
+   }
+  },
+  {
+   "map": 15,
+   "id": "ml",
+   "name": "The Long Grass",
+   "fights": 7,
+   "energy": 64,
+   "energyWithLosses": 105,
+   "firstGold": 420,
+   "firstDust": 385,
+   "cards": 3,
+   "capsules": 1,
+   "pack": "mystery",
+   "goldPerEnergy": 3.99,
+   "dustPerEnergy": 3.66,
+   "repeatSkirmish": {
+    "energy": 8,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.5
+   }
+  },
+  {
+   "map": 16,
+   "id": "mt",
+   "name": "The Pinewood Taiga",
+   "fights": 7,
+   "energy": 56,
+   "energyWithLosses": 85,
+   "firstGold": 370,
+   "firstDust": 284,
+   "cards": 3,
+   "capsules": 0,
+   "pack": "silver",
+   "goldPerEnergy": 4.34,
+   "dustPerEnergy": 3.33,
+   "repeatSkirmish": {
+    "energy": 8,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.5
+   }
+  },
+  {
+   "map": 17,
+   "id": "m6",
+   "name": "Wolfsbane Tundra",
+   "fights": 8,
+   "energy": 64,
+   "energyWithLosses": 96,
+   "firstGold": 440,
+   "firstDust": 352,
+   "cards": 4,
+   "capsules": 0,
+   "pack": null,
+   "goldPerEnergy": 4.58,
+   "dustPerEnergy": 3.67,
+   "repeatSkirmish": {
+    "energy": 8,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.5
+   }
+  },
+  {
+   "map": 18,
+   "id": "md",
+   "name": "The Glass Dunes",
+   "fights": 7,
+   "energy": 63,
+   "energyWithLosses": 96,
+   "firstGold": 370,
+   "firstDust": 284,
+   "cards": 5,
+   "capsules": 1,
+   "pack": "gold",
+   "goldPerEnergy": 3.86,
+   "dustPerEnergy": 2.96,
+   "repeatSkirmish": {
+    "energy": 9,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.44
+   }
+  },
+  {
+   "map": 19,
+   "id": "m3",
+   "name": "Ashen Spurn",
+   "fights": 6,
+   "energy": 54,
+   "energyWithLosses": 84,
+   "firstGold": 360,
+   "firstDust": 312,
+   "cards": 4,
+   "capsules": 0,
+   "pack": null,
+   "goldPerEnergy": 4.3,
+   "dustPerEnergy": 3.73,
+   "repeatSkirmish": {
+    "energy": 9,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.44
+   }
+  },
+  {
+   "map": 20,
+   "id": "m11",
+   "name": "The Sundered Peak",
+   "fights": 11,
+   "energy": 126,
+   "energyWithLosses": 269,
+   "firstGold": 960,
+   "firstDust": 1061,
+   "cards": 5,
+   "capsules": 0,
+   "pack": "mystery",
+   "goldPerEnergy": 3.57,
+   "dustPerEnergy": 3.95,
+   "repeatSkirmish": {
+    "energy": 9,
+    "gold": 4,
+    "dust": 0,
+    "goldPerEnergy": 0.44
+   }
+  }
+ ],
+ "quests": {
+  "noticeEV": {
+   "gold": 35.2,
+   "dust": 40.5
+  },
+  "notices": [
+   {
+    "rank": "D",
+    "weight": 22,
+    "reward": {
+     "gold": 20,
+     "dust": 25,
+     "xp": 25
+    },
+    "stickers": 10
+   },
+   {
+    "rank": "C",
+    "weight": 30,
+    "reward": {
+     "gold": 25,
+     "dust": 30,
+     "xp": 30
+    },
+    "stickers": 10
+   },
+   {
+    "rank": "B",
+    "weight": 30,
+    "reward": {
+     "gold": 30,
+     "dust": 35,
+     "xp": 40
+    },
+    "stickers": 10
+   },
+   {
+    "rank": "A",
+    "weight": 13.8,
+    "reward": {
+     "gold": 50,
+     "dust": 55,
+     "xp": 70
+    },
+    "stickers": 20
+   },
+   {
+    "rank": "S",
+    "weight": 3.5,
+    "reward": {
+     "gold": 140,
+     "dust": 150,
+     "gems": 3,
+     "xp": 180
+    },
+    "stickers": 40
+   },
+   {
+    "rank": "SS",
+    "weight": 0.5,
+    "reward": {
+     "gold": 280,
+     "dust": 300,
+     "gems": 8,
+     "xp": 360
+    },
+    "stickers": 60
+   },
+   {
+    "rank": "SSS",
+    "weight": 0.2,
+    "reward": {
+     "gold": 550,
+     "dust": 600,
+     "gems": 15,
+     "metal": 2,
+     "xp": 750
+    },
+    "stickers": 100
+   }
+  ],
+  "weekly": [
+   {
+    "tier": 1,
+    "rewardPerQuest": {
+     "gold": 170,
+     "dust": 260,
+     "metal": 2
+    },
+    "quests": [
+     {
+      "id": "w1-energy",
+      "counter": "energyConquest",
+      "goal": 200,
+      "gate": "Notices (Map 4)"
+     },
+     {
+      "id": "w1-pvp",
+      "counter": "pvpTickets",
+      "goal": 30,
+      "gate": "Arena (Map 11)"
+     },
+     {
+      "id": "w1-units",
+      "counter": "unitsDefeated",
+      "goal": 100,
+      "gate": "Notices (Map 4)"
+     }
+    ]
+   },
+   {
+    "tier": 2,
+    "rewardPerQuest": {
+     "gold": 113,
+     "dust": 173,
+     "metal": 1
+    },
+    "quests": [
+     {
+      "id": "w2-raid",
+      "counter": "raidsJoined",
+      "goal": 3,
+      "gate": "Raid (Map 13)"
+     },
+     {
+      "id": "w2-raiddmg",
+      "counter": "raidDamage",
+      "goal": 4000,
+      "gate": "Raid (Map 13)"
+     },
+     {
+      "id": "w2-wins",
+      "counter": "wins",
+      "goal": 15,
+      "gate": "Notices (Map 4)"
+     }
+    ]
+   },
+   {
+    "tier": 3,
+    "rewardPerQuest": {
+     "gold": 55,
+     "dust": 85
+    },
+    "quests": [
+     {
+      "id": "w3-conquest",
+      "counter": "conquestWins",
+      "goal": 10,
+      "gate": "Notices (Map 4)"
+     },
+     {
+      "id": "w3-pvp",
+      "counter": "pvpWins",
+      "goal": 10,
+      "gate": "Arena (Map 11)"
+     }
+    ]
+   }
+  ],
+  "errands": [
+   {
+    "id": "mole-ridge",
+    "counter": "conquestWins",
+    "goal": 3,
+    "mu": 0.06,
+    "dust": 21,
+    "gold": 14,
+    "shard": false
+   },
+   {
+    "id": "heron-pests",
+    "counter": "unitsDefeated",
+    "goal": 12,
+    "mu": 0.05,
+    "dust": 17,
+    "gold": 12,
+    "shard": false
+   },
+   {
+    "id": "mouse-letter",
+    "counter": "wins",
+    "goal": 3,
+    "mu": 0.06,
+    "dust": 21,
+    "gold": 14,
+    "shard": false
+   },
+   {
+    "id": "beetle-packs",
+    "counter": "packsOpened",
+    "goal": 2,
+    "mu": 0.04,
+    "dust": 14,
+    "gold": 9,
+    "shard": false
+   },
+   {
+    "id": "frog-march",
+    "counter": "energyConquest",
+    "goal": 25,
+    "mu": 0.05,
+    "dust": 17,
+    "gold": 12,
+    "shard": false
+   },
+   {
+    "id": "hedgehog-bully",
+    "counter": "conquestWins",
+    "goal": 2,
+    "mu": 0.04,
+    "dust": 14,
+    "gold": 9,
+    "shard": true
+   },
+   {
+    "id": "heron-feast",
+    "counter": "unitsDefeated",
+    "goal": 20,
+    "mu": 0.08,
+    "dust": 27,
+    "gold": 18,
+    "shard": true
+   }
+  ],
+  "trail": [
+   {
+    "tier": 1,
+    "stickers": 150,
+    "reward": {
+     "gold": 40
+    }
+   },
+   {
+    "tier": 2,
+    "stickers": 300,
+    "reward": {
+     "dust": 50
+    }
+   },
+   {
+    "tier": 3,
+    "stickers": 450,
+    "reward": {
+     "kit": 2
+    }
+   },
+   {
+    "tier": 4,
+    "stickers": 600,
+    "reward": {
+     "gold": 30
+    }
+   },
+   {
+    "tier": 5,
+    "stickers": 750,
+    "reward": {
+     "pack": 1
+    }
+   },
+   {
+    "tier": 6,
+    "stickers": 900,
+    "reward": {
+     "dust": 60
+    }
+   },
+   {
+    "tier": 7,
+    "stickers": 1050,
+    "reward": {
+     "kibble": 20
+    }
+   },
+   {
+    "tier": 8,
+    "stickers": 1200,
+    "reward": {
+     "gold": 50
+    }
+   },
+   {
+    "tier": 9,
+    "stickers": 1350,
+    "reward": {
+     "capsule": 1
+    }
+   },
+   {
+    "tier": 10,
+    "stickers": 1500,
+    "reward": {
+     "faction": 1
+    }
+   },
+   {
+    "tier": 11,
+    "stickers": 1650,
+    "reward": {
+     "dust": 60
+    }
+   },
+   {
+    "tier": 12,
+    "stickers": 1800,
+    "reward": {
+     "metal": 1
+    }
+   },
+   {
+    "tier": 13,
+    "stickers": 1950,
+    "reward": {
+     "gold": 50
+    }
+   },
+   {
+    "tier": 14,
+    "stickers": 2100,
+    "reward": {
+     "kit": 1
+    }
+   },
+   {
+    "tier": 15,
+    "stickers": 2250,
+    "reward": {
+     "pack": 1
+    }
+   },
+   {
+    "tier": 16,
+    "stickers": 2400,
+    "reward": {
+     "dust": 75
+    }
+   },
+   {
+    "tier": 17,
+    "stickers": 2550,
+    "reward": {
+     "kibble": 20
+    }
+   },
+   {
+    "tier": 18,
+    "stickers": 2700,
+    "reward": {
+     "gold": 60
+    }
+   },
+   {
+    "tier": 19,
+    "stickers": 2850,
+    "reward": {
+     "ticket": 1
+    }
+   },
+   {
+    "tier": 20,
+    "stickers": 3000,
+    "reward": {
+     "faction": 1
+    }
+   },
+   {
+    "tier": 21,
+    "stickers": 3150,
+    "reward": {
+     "dust": 75
+    }
+   },
+   {
+    "tier": 22,
+    "stickers": 3300,
+    "reward": {
+     "gold": 60
+    }
+   },
+   {
+    "tier": 23,
+    "stickers": 3450,
+    "reward": {
+     "kit": 1
+    }
+   },
+   {
+    "tier": 24,
+    "stickers": 3600,
+    "reward": {
+     "metal": 1
+    }
+   },
+   {
+    "tier": 25,
+    "stickers": 3750,
+    "reward": {
+     "pack": 1
+    }
+   },
+   {
+    "tier": 26,
+    "stickers": 3900,
+    "reward": {
+     "dust": 75
+    }
+   },
+   {
+    "tier": 27,
+    "stickers": 4050,
+    "reward": {
+     "gold": 75
+    }
+   },
+   {
+    "tier": 28,
+    "stickers": 4200,
+    "reward": {
+     "capsule": 1
+    }
+   },
+   {
+    "tier": 29,
+    "stickers": 4350,
+    "reward": {
+     "dust": 55,
+     "gold": 75
+    }
+   },
+   {
+    "tier": 30,
+    "stickers": 4500,
+    "reward": {
+     "chest": 1,
+     "title": 1
+    }
+   }
+  ],
+  "featureMaps": {
+   "deck": 0,
+   "fieldkit": 12,
+   "backpack": 5,
+   "nest": 3,
+   "quests": 4,
+   "shop": 5,
+   "autobattle": 5,
+   "skillcodex": 9,
+   "mapcodex": 11,
+   "codex": 7,
+   "arena": 11,
+   "shop2": 8,
+   "questboard": 8,
+   "forge": 11,
+   "raid": 13,
+   "shop3": 13,
+   "wanderer": 13,
+   "tavern": 14,
+   "gauntlet": 16,
+   "stomp": 21,
+   "testlab": 21,
+   "market": 31
+  }
+ },
+ "shop": [
+  {
+   "id": "bronze",
+   "name": "Hedgerow Pouch",
+   "cost": {
+    "gold": 50,
+    "gems": 0
+   },
+   "cards": 3,
+   "onSaleMap": 5
+  },
+  {
+   "id": "silver",
+   "name": "Tidemire Chest",
+   "cost": {
+    "gold": 72,
+    "gems": 6
+   },
+   "cards": 3,
+   "onSaleMap": 8
+  },
+  {
+   "id": "mystery",
+   "name": "Mystery Booster",
+   "cost": {
+    "gold": 80,
+    "gems": 0
+   },
+   "cards": 3,
+   "onSaleMap": null
+  },
+  {
+   "id": "gold",
+   "name": "Highcrest Case",
+   "cost": {
+    "gold": 94,
+    "gems": 11
+   },
+   "cards": 3,
+   "onSaleMap": 13
+  }
+ ]
+}

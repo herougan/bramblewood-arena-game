@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-03 Package ECON2 (economy review for alpha; measures and proposes, no game number changed)
+- **New `docs/econ2-2026-11-03.md`:**
+  - A day-by-day sim of a new player (`tools/econ2/econ_sim_2026_11_03.js`, the game's own tables with ECON1's halving): Maps 0-10 take 3 days (casual 7); from Map 11, Magic Dust is the only thing that limits progress. Maps 11-20 take 46 days (casual 66) if the deck keeps the road's reference level with each map's cards, and 7 (casual 14) if one deck is kept.
+  - Flooded: Maple Leaves (12k at Map 20), Kibble, Iron Shards and Metal. Starved: Dust, a two-session player's Energy from Map 5, and Gold Leaves at about 1 a day.
+  - Quest, trail and errand tables against effort. Weekly quests pay per quest, and the PvP quest hides tiers 2-3 until Map 11. Errands pay less than a D notice.
+  - Dialogue counts: 62 scripts, 171 lines in all; a busy first hour; Maps 18 and 22-24 silent.
+  - Map placement: a fight under the title panel on 20 maps, 13 crowded pairs, one perimeter layout on Maps 3-19.
+- Screenshots of 41 maps in `docs/screens/econ2/` (`tools/econ2/map_probe_2026_11_03.py`, `map_report_2026_11_03.py`).
+- Owner calls ECON2-1 to ECON2-12 in `docs/decisions.json` (ECON2-12 finance).
+
 ## 2026-11-03 Package FIX7 (release review 11-03a: M1, m1-m4, stale tests)
 - **Raids and multiplayer dungeons: a middle- or back-row spawn no longer breaks the round's replay (M1).** A row Spawner or Duplicate (since DEC1), and Brood / Twin / Sprout or a row death's tokens (since RR, 10-19), come with lane null and their row and slot; the replay read `rr[null]` and threw, so the rest of the round's animations were skipped. The unit now jumps out of its spawner into its own row slot mid-replay (`raidReplayReserveSpawn`), and the round plays on. Browser check `tests/e2e/fix7_2026_11_03.py` (it fails on the old build with "resolveRound failed"); screenshots in `docs/screens/fix7/`.
 - **Flyers' wind marks follow the gust's kind (m1):** Crosswind shows +0/2 (heavy +0/5) and no Tail / Head mark or north / south wind layer; Heavy Headwind shows −2⚔ (was −1⚔); Heavy Tailwind shows the boot and its extra Fast Forward (⏩).

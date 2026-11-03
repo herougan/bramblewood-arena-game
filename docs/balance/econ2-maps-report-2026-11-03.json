@@ -1,0 +1,1323 @@
+{
+ "maps": [
+  {
+   "id": "m1",
+   "n": 0,
+   "name": "Bramblewood Outskirts",
+   "sub": false,
+   "kinds": {
+    "other": 74,
+    "feature": 1,
+    "well": 1,
+    "curiosity": 1,
+    "submap": 2,
+    "fight": 4,
+    "pawn": 1
+   },
+   "interactive": 9,
+   "decor": 74,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 17,
+   "meanLink": 25.3,
+   "maxLink": 27.3,
+   "links": 4
+  },
+  {
+   "id": "mf",
+   "n": 1,
+   "name": "Thistlewood",
+   "sub": false,
+   "kinds": {
+    "other": 110,
+    "curiosity": 2,
+    "submap": 1,
+    "fight": 4,
+    "elite": 1,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 110,
+   "crowded": [
+    [
+     4.8,
+     "submap:~sub:mq",
+     "fight:1-3"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 17,
+   "meanLink": 25.6,
+   "maxLink": 27.0,
+   "links": 5
+  },
+  {
+   "id": "mb",
+   "n": 2,
+   "name": "Pebble Beach",
+   "sub": false,
+   "kinds": {
+    "other": 3,
+    "curiosity": 2,
+    "submap": 2,
+    "fight": 4,
+    "elite": 1,
+    "pawn": 1
+   },
+   "interactive": 9,
+   "decor": 3,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 17,
+   "meanLink": 39.0,
+   "maxLink": 47.0,
+   "links": 4
+  },
+  {
+   "id": "mc",
+   "n": 3,
+   "name": "Gannet Cliffs",
+   "sub": false,
+   "kinds": {
+    "feature": 1,
+    "fight": 4,
+    "elite": 3,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 0,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:3-1"
+   ],
+   "atEdge": [],
+   "emptyCells": 17,
+   "meanLink": 39.7,
+   "maxLink": 61.8,
+   "links": 7
+  },
+  {
+   "id": "m2",
+   "n": 4,
+   "name": "Sunken Hollow",
+   "sub": false,
+   "kinds": {
+    "other": 113,
+    "feature": 1,
+    "cave": 1,
+    "curiosity": 1,
+    "fight": 2,
+    "elite": 4,
+    "pawn": 1
+   },
+   "interactive": 9,
+   "decor": 113,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 18,
+   "meanLink": 38.1,
+   "maxLink": 47.0,
+   "links": 5
+  },
+  {
+   "id": "mw",
+   "n": 5,
+   "name": "Gatorback Swamp",
+   "sub": false,
+   "kinds": {
+    "other": 115,
+    "feature": 1,
+    "submap": 1,
+    "fight": 4,
+    "elite": 3,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 10,
+   "decor": 115,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:5-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 15,
+   "meanLink": 38.8,
+   "maxLink": 68.4,
+   "links": 8
+  },
+  {
+   "id": "m8",
+   "n": 6,
+   "name": "Sable Swampmire",
+   "sub": false,
+   "kinds": {
+    "other": 140,
+    "curiosity": 1,
+    "fight": 4,
+    "elite": 3,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 9,
+   "decor": 140,
+   "crowded": [
+    [
+     7.0,
+     "fight:6-2",
+     "fight:6-3"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [
+    "title panel over fight:6-1"
+   ],
+   "atEdge": [],
+   "emptyCells": 17,
+   "meanLink": 29.2,
+   "maxLink": 45.2,
+   "links": 7
+  },
+  {
+   "id": "mu",
+   "n": 7,
+   "name": "The Morel Hollow",
+   "sub": false,
+   "kinds": {
+    "other": 18,
+    "feature": 1,
+    "submap": 1,
+    "fight": 4,
+    "elite": 1,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 18,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:7-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 17,
+   "meanLink": 40.4,
+   "maxLink": 61.5,
+   "links": 6
+  },
+  {
+   "id": "m4",
+   "n": 8,
+   "name": "Caves & Alcoves",
+   "sub": false,
+   "kinds": {
+    "other": 50,
+    "feature": 2,
+    "curiosity": 2,
+    "submap": 1,
+    "fight": 6,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 14,
+   "decor": 46,
+   "crowded": [
+    [
+     2.8,
+     "fight:8-5",
+     "elite:8-H"
+    ],
+    [
+     6.9,
+     "fight:8-2",
+     "fight:8-3"
+    ]
+   ],
+   "crowdedPairs": 2,
+   "underPanels": [
+    "title panel over fight:8-1"
+   ],
+   "atEdge": [],
+   "emptyCells": 12,
+   "meanLink": 33.3,
+   "maxLink": 57.5,
+   "links": 9
+  },
+  {
+   "id": "mk",
+   "n": 9,
+   "name": "The Kelp Mangroves",
+   "sub": false,
+   "kinds": {
+    "other": 100,
+    "feature": 1,
+    "fight": 4,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 100,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:9-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 18,
+   "meanLink": 40.5,
+   "maxLink": 64.7,
+   "links": 7
+  },
+  {
+   "id": "m7",
+   "n": 10,
+   "name": "Coral Current",
+   "sub": false,
+   "kinds": {
+    "curiosity": 2,
+    "submap": 1,
+    "fight": 5,
+    "elite": 4,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 13,
+   "decor": 0,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 14,
+   "meanLink": 26.8,
+   "maxLink": 39.0,
+   "links": 9
+  },
+  {
+   "id": "m10",
+   "n": 11,
+   "name": "Eyrie Heights",
+   "sub": false,
+   "kinds": {
+    "other": 22,
+    "feature": 3,
+    "curiosity": 1,
+    "submap": 1,
+    "fight": 4,
+    "elite": 5,
+    "boss": 2,
+    "pawn": 1
+   },
+   "interactive": 16,
+   "decor": 22,
+   "crowded": [
+    [
+     4.3,
+     "curiosity:~cur:eyrie",
+     "elite:11-5"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 11,
+   "meanLink": 23.9,
+   "maxLink": 48.8,
+   "links": 9
+  },
+  {
+   "id": "mh",
+   "n": 12,
+   "name": "The Briar Maze",
+   "sub": false,
+   "kinds": {
+    "other": 45,
+    "feature": 1,
+    "fight": 4,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 45,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:12-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 17,
+   "meanLink": 40.1,
+   "maxLink": 55.0,
+   "links": 6
+  },
+  {
+   "id": "mr",
+   "n": 13,
+   "name": "The Redwood Deep",
+   "sub": false,
+   "kinds": {
+    "other": 27,
+    "feature": 3,
+    "fight": 4,
+    "elite": 4,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 12,
+   "decor": 27,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:13-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 14,
+   "meanLink": 41.5,
+   "maxLink": 61.7,
+   "links": 9
+  },
+  {
+   "id": "m5",
+   "n": 14,
+   "name": "Savanna Reaches",
+   "sub": false,
+   "kinds": {
+    "other": 26,
+    "feature": 1,
+    "curiosity": 2,
+    "submap": 1,
+    "fight": 4,
+    "elite": 3,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 12,
+   "decor": 26,
+   "crowded": [
+    [
+     7.0,
+     "fight:14-2",
+     "fight:14-3"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [
+    "title panel over fight:14-1"
+   ],
+   "atEdge": [],
+   "emptyCells": 13,
+   "meanLink": 31.1,
+   "maxLink": 54.8,
+   "links": 7
+  },
+  {
+   "id": "ml",
+   "n": 15,
+   "name": "The Long Grass",
+   "sub": false,
+   "kinds": {
+    "other": 16,
+    "fight": 4,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 7,
+   "decor": 16,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:15-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 18,
+   "meanLink": 37.6,
+   "maxLink": 59.4,
+   "links": 7
+  },
+  {
+   "id": "mt",
+   "n": 16,
+   "name": "The Pinewood Taiga",
+   "sub": false,
+   "kinds": {
+    "other": 95,
+    "feature": 2,
+    "fight": 4,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 9,
+   "decor": 95,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:16-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 16,
+   "meanLink": 39.5,
+   "maxLink": 62.4,
+   "links": 8
+  },
+  {
+   "id": "m6",
+   "n": 17,
+   "name": "Wolfsbane Tundra",
+   "sub": false,
+   "kinds": {
+    "other": 36,
+    "curiosity": 1,
+    "submap": 1,
+    "npc": 1,
+    "fight": 4,
+    "elite": 4,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 12,
+   "decor": 36,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:17-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 16,
+   "meanLink": 26.7,
+   "maxLink": 43.7,
+   "links": 8
+  },
+  {
+   "id": "md",
+   "n": 18,
+   "name": "The Glass Dunes",
+   "sub": false,
+   "kinds": {
+    "submap": 1,
+    "fight": 4,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 0,
+   "crowded": [
+    [
+     6.6,
+     "fight:18-2",
+     "fight:18-3"
+    ],
+    [
+     6.8,
+     "submap:~sub:mpd",
+     "elite:18-5"
+    ]
+   ],
+   "crowdedPairs": 2,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 19,
+   "meanLink": 39.1,
+   "maxLink": 55.0,
+   "links": 5
+  },
+  {
+   "id": "m3",
+   "n": 19,
+   "name": "Ashen Spurn",
+   "sub": false,
+   "kinds": {
+    "other": 25,
+    "curiosity": 2,
+    "submap": 1,
+    "fight": 2,
+    "elite": 4,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 10,
+   "decor": 25,
+   "crowded": [
+    [
+     4.7,
+     "submap:~sub:m9",
+     "elite:19-3"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [
+    "title panel over fight:19-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 16,
+   "meanLink": 29.8,
+   "maxLink": 43.6,
+   "links": 6
+  },
+  {
+   "id": "m11",
+   "n": 20,
+   "name": "The Sundered Peak",
+   "sub": false,
+   "kinds": {
+    "other": 15,
+    "curiosity": 1,
+    "submap": 3,
+    "fight": 4,
+    "elite": 4,
+    "boss": 3,
+    "pawn": 1
+   },
+   "interactive": 15,
+   "decor": 15,
+   "crowded": [
+    [
+     3.3,
+     "fight:20-2",
+     "fight:20-3"
+    ],
+    [
+     6.4,
+     "submap:~sub:tw",
+     "fight:20-1"
+    ]
+   ],
+   "crowdedPairs": 2,
+   "underPanels": [
+    "title panel over fight:20-2",
+    "title panel over fight:20-3"
+   ],
+   "atEdge": [],
+   "emptyCells": 13,
+   "meanLink": 24.8,
+   "maxLink": 40.5,
+   "links": 10
+  },
+  {
+   "id": "m21",
+   "n": 21,
+   "name": "The Quiet Summit",
+   "sub": false,
+   "kinds": {
+    "other": 17,
+    "feature": 2,
+    "fight": 3,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 17,
+   "crowded": [
+    [
+     5.2,
+     "feature:~spot:stomp",
+     "fight:21-3"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [
+    "title panel over fight:21-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 18,
+   "meanLink": 30.3,
+   "maxLink": 53.0,
+   "links": 5
+  },
+  {
+   "id": "m22",
+   "n": 22,
+   "name": "The Rimefire Caldera",
+   "sub": false,
+   "kinds": {
+    "other": 22,
+    "fight": 5,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 22,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 17,
+   "meanLink": 24.3,
+   "maxLink": 30.1,
+   "links": 8
+  },
+  {
+   "id": "m23",
+   "n": 23,
+   "name": "The Goldfeather Siege",
+   "sub": false,
+   "kinds": {
+    "fight": 5,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 0,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 17,
+   "meanLink": 23.3,
+   "maxLink": 27.3,
+   "links": 9
+  },
+  {
+   "id": "m24",
+   "n": 24,
+   "name": "Goldfeather Keep",
+   "sub": false,
+   "kinds": {
+    "other": 20,
+    "fight": 5,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 20,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 17,
+   "meanLink": 25.2,
+   "maxLink": 32.1,
+   "links": 9
+  },
+  {
+   "id": "mtut",
+   "n": 0,
+   "name": "Tutorial",
+   "sub": true,
+   "kinds": {
+    "other": 56,
+    "exit": 1,
+    "tutorial": 2,
+    "fight": 2,
+    "elite": 1,
+    "pawn": 1
+   },
+   "interactive": 6,
+   "decor": 56,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 19,
+   "meanLink": 21.8,
+   "maxLink": 24.4,
+   "links": 5
+  },
+  {
+   "id": "mq",
+   "n": 1,
+   "name": "Clovermead",
+   "sub": true,
+   "kinds": {
+    "other": 53,
+    "exit": 1,
+    "fight": 4,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 6,
+   "decor": 53,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:1-A-1"
+   ],
+   "atEdge": [],
+   "emptyCells": 19,
+   "meanLink": 46.0,
+   "maxLink": 88.1,
+   "links": 6
+  },
+  {
+   "id": "mp",
+   "n": 2,
+   "name": "Lilypad Reach",
+   "sub": true,
+   "kinds": {
+    "other": 78,
+    "exit": 1,
+    "fight": 4,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 78,
+   "crowded": [
+    [
+     6.2,
+     "fight:2-A-2",
+     "fight:2-A-3"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [
+    "title panel over fight:2-A-2"
+   ],
+   "atEdge": [],
+   "emptyCells": 18,
+   "meanLink": 34.2,
+   "maxLink": 55.0,
+   "links": 6
+  },
+  {
+   "id": "m9",
+   "n": 19,
+   "name": "Basalt Foundry",
+   "sub": true,
+   "kinds": {
+    "other": 8,
+    "curiosity": 1,
+    "exit": 1,
+    "fight": 6,
+    "elite": 3,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 12,
+   "decor": 8,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 15,
+   "meanLink": 26.1,
+   "maxLink": 49.8,
+   "links": 9
+  },
+  {
+   "id": "mj",
+   "n": 10,
+   "name": "The Sunken Depths",
+   "sub": true,
+   "kinds": {
+    "exit": 1,
+    "fight": 3,
+    "elite": 1,
+    "boss": 1,
+    "pawn": 1,
+    "other": 3
+   },
+   "interactive": 6,
+   "decor": 0,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:10-A-1"
+   ],
+   "atEdge": [],
+   "emptyCells": 19,
+   "meanLink": 40.2,
+   "maxLink": 54.0,
+   "links": 5
+  },
+  {
+   "id": "mg",
+   "n": 2,
+   "name": "Smugglers' Grotto",
+   "sub": true,
+   "kinds": {
+    "other": 21,
+    "exit": 1,
+    "fight": 1,
+    "elite": 3,
+    "pawn": 1
+   },
+   "interactive": 5,
+   "decor": 18,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 20,
+   "meanLink": 36.4,
+   "maxLink": 70.6,
+   "links": 5
+  },
+  {
+   "id": "mz",
+   "n": 7,
+   "name": "The Mycelium Deep",
+   "sub": true,
+   "kinds": {
+    "exit": 1,
+    "fight": 2,
+    "elite": 2,
+    "boss": 1,
+    "pawn": 1,
+    "other": 3
+   },
+   "interactive": 6,
+   "decor": 0,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:7-A-1"
+   ],
+   "atEdge": [],
+   "emptyCells": 19,
+   "meanLink": 40.5,
+   "maxLink": 55.8,
+   "links": 5
+  },
+  {
+   "id": "my",
+   "n": 14,
+   "name": "The Canopy",
+   "sub": true,
+   "kinds": {
+    "other": 158,
+    "exit": 1,
+    "fight": 3,
+    "elite": 1,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 6,
+   "decor": 158,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [
+    "title panel over fight:14-A-1"
+   ],
+   "atEdge": [],
+   "emptyCells": 19,
+   "meanLink": 43.9,
+   "maxLink": 72.3,
+   "links": 6
+  },
+  {
+   "id": "me",
+   "n": 20,
+   "name": "Eye of the Volcano",
+   "sub": true,
+   "kinds": {
+    "other": 2,
+    "exit": 1,
+    "elite": 7,
+    "pawn": 1
+   },
+   "interactive": 8,
+   "decor": 2,
+   "crowded": [
+    [
+     6.9,
+     "elite:20-A-2",
+     "elite:20-A-3"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 19,
+   "meanLink": 43.3,
+   "maxLink": 94.3,
+   "links": 7
+  },
+  {
+   "id": "mx",
+   "n": 20,
+   "name": "Volcano Lair",
+   "sub": true,
+   "kinds": {
+    "exit": 1,
+    "fight": 3,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 5,
+   "decor": 0,
+   "crowded": [
+    [
+     7.0,
+     "fight:20-B-2",
+     "fight:20-B-3"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 21,
+   "meanLink": 25.0,
+   "maxLink": 42.6,
+   "links": 4
+  },
+  {
+   "id": "ms",
+   "n": 5,
+   "name": "The Sunken Grove",
+   "sub": true,
+   "kinds": {
+    "exit": 1,
+    "fight": 3,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 5,
+   "decor": 0,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 21,
+   "meanLink": 24.9,
+   "maxLink": 37.8,
+   "links": 4
+  },
+  {
+   "id": "mn",
+   "n": 8,
+   "name": "The Glimmer Depths",
+   "sub": true,
+   "kinds": {
+    "other": 1,
+    "exit": 1,
+    "fight": 3,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 5,
+   "decor": 0,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 20,
+   "meanLink": 23.5,
+   "maxLink": 32.4,
+   "links": 4
+  },
+  {
+   "id": "mv",
+   "n": 11,
+   "name": "The Aerie Vault",
+   "sub": true,
+   "kinds": {
+    "exit": 1,
+    "fight": 3,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 5,
+   "decor": 0,
+   "crowded": [
+    [
+     7.0,
+     "fight:11-A-2",
+     "fight:11-A-3"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 21,
+   "meanLink": 22.2,
+   "maxLink": 39.5,
+   "links": 4
+  },
+  {
+   "id": "mi",
+   "n": 17,
+   "name": "The Ice Hollow",
+   "sub": true,
+   "kinds": {
+    "exit": 1,
+    "fight": 3,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 5,
+   "decor": 0,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 20,
+   "meanLink": 24.3,
+   "maxLink": 34.9,
+   "links": 4
+  },
+  {
+   "id": "mo",
+   "n": 0,
+   "name": "The Old Bramble",
+   "sub": true,
+   "kinds": {
+    "exit": 1,
+    "fight": 3,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 5,
+   "decor": 0,
+   "crowded": [],
+   "crowdedPairs": 0,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 20,
+   "meanLink": 24.7,
+   "maxLink": 34.5,
+   "links": 4
+  },
+  {
+   "id": "mpd",
+   "n": 18,
+   "name": "The Pale Desert",
+   "sub": true,
+   "kinds": {
+    "exit": 1,
+    "fight": 7,
+    "elite": 1,
+    "boss": 1,
+    "pawn": 1
+   },
+   "interactive": 10,
+   "decor": 0,
+   "crowded": [
+    [
+     6.9,
+     "fight:18-A-6",
+     "fight:18-A-7"
+    ]
+   ],
+   "crowdedPairs": 1,
+   "underPanels": [],
+   "atEdge": [],
+   "emptyCells": 16,
+   "meanLink": 37.2,
+   "maxLink": 58.4,
+   "links": 10
+  }
+ ],
+ "dialoguePerMap": {
+  "0": {
+   "convs": 2,
+   "lines": 8,
+   "words": 65,
+   "what": [
+    "spot deck",
+    "curio signpost"
+   ]
+  },
+  "12": {
+   "convs": 1,
+   "lines": 3,
+   "words": 60,
+   "what": [
+    "spot fieldkit"
+   ]
+  },
+  "5": {
+   "convs": 3,
+   "lines": 9,
+   "words": 92,
+   "what": [
+    "spot backpack",
+    "spot shop",
+    "boss 5-7"
+   ]
+  },
+  "3": {
+   "convs": 1,
+   "lines": 3,
+   "words": 26,
+   "what": [
+    "spot nest"
+   ]
+  },
+  "4": {
+   "convs": 2,
+   "lines": 8,
+   "words": 84,
+   "what": [
+    "spot quests",
+    "curio lantern"
+   ]
+  },
+  "9": {
+   "convs": 1,
+   "lines": 2,
+   "words": 24,
+   "what": [
+    "spot skillcodex"
+   ]
+  },
+  "11": {
+   "convs": 5,
+   "lines": 13,
+   "words": 127,
+   "what": [
+    "spot mapcodex",
+    "spot arena",
+    "spot forge",
+    "curio eyrie",
+    "boss 11-R"
+   ]
+  },
+  "7": {
+   "convs": 1,
+   "lines": 3,
+   "words": 36,
+   "what": [
+    "spot codex"
+   ]
+  },
+  "8": {
+   "convs": 4,
+   "lines": 12,
+   "words": 136,
+   "what": [
+    "spot shop2",
+    "spot questboard",
+    "curio echo",
+    "curio glowpool"
+   ]
+  },
+  "13": {
+   "convs": 3,
+   "lines": 11,
+   "words": 112,
+   "what": [
+    "spot raid",
+    "spot shop3",
+    "spot wanderer"
+   ]
+  },
+  "14": {
+   "convs": 3,
+   "lines": 9,
+   "words": 105,
+   "what": [
+    "spot tavern",
+    "curio baobab",
+    "curio drum"
+   ]
+  },
+  "16": {
+   "convs": 1,
+   "lines": 3,
+   "words": 28,
+   "what": [
+    "spot gauntlet"
+   ]
+  },
+  "21": {
+   "convs": 2,
+   "lines": 6,
+   "words": 71,
+   "what": [
+    "spot stomp",
+    "spot testlab"
+   ]
+  },
+  "31": {
+   "convs": 1,
+   "lines": 2,
+   "words": 34,
+   "what": [
+    "spot market"
+   ]
+  },
+  "1": {
+   "convs": 2,
+   "lines": 7,
+   "words": 75,
+   "what": [
+    "curio scarecrow",
+    "curio beehive"
+   ]
+  },
+  "2": {
+   "convs": 2,
+   "lines": 6,
+   "words": 65,
+   "what": [
+    "curio bottle",
+    "curio crab"
+   ]
+  },
+  "19": {
+   "convs": 3,
+   "lines": 10,
+   "words": 86,
+   "what": [
+    "curio ashcairn",
+    "curio peddler",
+    "curio anvil"
+   ]
+  },
+  "17": {
+   "convs": 1,
+   "lines": 2,
+   "words": 18,
+   "what": [
+    "curio icefish"
+   ]
+  },
+  "10": {
+   "convs": 3,
+   "lines": 8,
+   "words": 81,
+   "what": [
+    "curio shell",
+    "curio wreck",
+    "boss 10-9"
+   ]
+  },
+  "6": {
+   "convs": 1,
+   "lines": 2,
+   "words": 13,
+   "what": [
+    "curio wisp"
+   ]
+  },
+  "20": {
+   "convs": 4,
+   "lines": 8,
+   "words": 70,
+   "what": [
+    "curio banner",
+    "boss 20-9",
+    "boss 20-10",
+    "boss 20-R"
+   ]
+  },
+  "15": {
+   "convs": 1,
+   "lines": 2,
+   "words": 16,
+   "what": [
+    "boss 15-7"
+   ]
+  }
+ },
+ "crowdThreshold": 7.0
+}
