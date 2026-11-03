@@ -65,7 +65,7 @@ Each keyword's price lives in `canonical/skill-costs.json`; its behaviour in the
 - **Expose strips hiding, Exploit adds damage; Siege N replaces Demolisher; Isolation is a drawback; Punish stays behind a flag (Map 40+).** [rules 10-19 SK1]
 - **Hunter N has one status picker** (Poisoned default, Bleeding, Wet, Exposed); Hunter and Executioner add to hits and shots, never to ticks or a bramble. [rules 10-19 GI]
 - **Bloom:** the copy can bloom; it tries to create the new unit adjacent, and up or down on multi-row boards. [BL-1, BL-2]
-- **Bloom with no free slot fails:** the split animation turns slightly reddish, then the unit gets +1/+1 instead (no Lumber paid); Bloom starts "testing" only when the unit is Ready. **Built (ENG9, 2026-10-26).** [EN7-2]
+- **Bloom with no free adjacent slot waits:** it tries again next round (ENG15, 2026-10-31, FF5; was ENG9's reddish split and +1/+1 instead, EN7-2); Bloom starts "testing" only when the unit is Ready. **Built.** (TEXT1 2026-11-03: corrected to the engine, `bloomSlotOf` / the bloom upkeep.) [EN7-2, FF5]
 - **Cleave's side hits spread Poison and Bleed;** priced by the 4-round rule (0.6 of the status's price on top). **Built (ENG9, 2026-10-26).** [EN7-3]
 - **Dive stays as built (area damage still reaches a diver); a Quick creature can Dive and loses Quick while aloft or under.** The Quick part: **Built (ENG9, 2026-10-26).** [EN7-1, EN7-4]
 - **Undead (passive) brings the unit back once as a token; Revive N (action; the keyword is On Play: Revive N) returns random graveyard creature cards as real cards.** **Built (ENG9, 2026-10-26).** Revive is on no card yet (call ENG9-1). [owner note #20, 10-25 17:53; no decision id]

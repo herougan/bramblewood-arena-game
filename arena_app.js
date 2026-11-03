@@ -2926,7 +2926,7 @@ const SKILL_TEXT = {
   brood: v=> Number(v) > 1 ? `When it arrives, ${v} 1/1 Brood tokens of its kind (Swarm) hatch beside it.` : `When it arrives, a 1/1 Brood token of its kind (Swarm) hatches beside it.`,
   sweep: v=> `Also deals ${numOr(v, 1)} damage to the units beside its target.`, // Cleave N: default 1 (2026-10-16)
   rage: (v, n, e)=> e && e.rageGrant && typeof e.rageGrant === 'object' ? TX('ui.sk-rage-grant', {skills: grantText(e.rageGrant) || TX('ui.cx-nothing')}) : `Below half Health: double Attack and takes half damage.`, // + Rage – {…} (EN, 2026-10-23)
-  immolation: v=> `Deal ${v} fire damage to all adjacent units every upkeep.`,
+  immolation: v=> `Every upkeep: ${v} fire damage to adjacent units and the enemy facing it.`, // 2026-11-03 (TEXT1): + the facing enemy, as the engine's upkeep burns it
   speed: v=> `Speed ${v}: faster units swing first.`, haste: ()=> `Speed +2, and +1 to adjacent allies.`,
   rabid: v=> `Its hits add ${numOr(v, 2)} Poison. Swimmers and water damage hit it for double.`, // 2026-10-16 skill audit: Rabid N
   cower: v=> typeof v === 'number' ? TX('ui.eng15-cower-short', {n: v}) : v === 'flee' ? `Hit last turn: it backs off this turn (no attack, heals 2).` : `Hit last turn: it hides in its shell this turn (no attack, attacks can't hurt it).`, // + Cower N (ENG15, 2026-10-31)
@@ -2985,7 +2985,7 @@ const SKILL_TEXT = {
   guardian: ()=> `Takes the plain attacks aimed at its adjacent allies (not the bramble).`, // EN3 (2026-10-23, owner 19:27 #2) // 2026-10-22 (package GD): + in front / behind; (GD2, GD-3): swings only
   quick: ()=> `Swings at Speed 2: before Arrows and Bolts and units without Quick.`, // 2026-10-17
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
-  swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
+  swift: ()=> `Always attacks first, and dodges half the attacks from units without Swift.`, // 2026-11-03 (TEXT1): the dodge is a 1-in-2 roll
   reload: v=> `After attacking, sits out ${v} round${v==1?'':'s'}.`,
   shell: v=> TX('ui.sk-shell', {n: v}), // 2026-10-18 (package D): terse
   stealth: ()=> `Always attacks the enemy bramble.`,
@@ -12822,7 +12822,7 @@ async function initCloudSync(){
   }catch(e){}
   try{
     if(typeof supabase === 'undefined' || !supabase.createClient){ setCloudPill(false, 'cloud SDK failed to load'); return; }
-    sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {global: {fetch: (...a)=> ui17CountingFetch(...a)}}); // 2026-11-03 (package UI17): counts request errors for Admin -> Players
     const overridesLoaded = loadCloudCardOverrides(); // public read — no session needed
     // Later auth changes in this same page (not the initial load, which the code below handles
     // directly so the post-redirect toast fires exactly once).
@@ -13952,7 +13952,20 @@ function loadEnergyState(){
   }catch(e){}
   return {current: energyMax(), lastRegenAt: Date.now()}; // first-run seed: start full, not empty.
 }
-function saveEnergyState(s){ try{ localStorage.setItem(ENERGY_KEY, JSON.stringify(s)); }catch(e){} }
+function saveEnergyState(s){ if(s && s.ui17Inf) return; /* 2026-11-03 (package UI17): the infinite reading is never stored */ try{ localStorage.setItem(ENERGY_KEY, JSON.stringify(s)); }catch(e){} }
+// 2026-11-03 (package UI17, owner 18:37: "i need to have infinite energy"): an admin switch kept on this device. It counts only while Admin
+// Mode is on and the account passes adminAllowed() (an app_admins account, or a local dev copy), so a player who sets the key by hand gets
+// nothing. While it counts, Energy reads UI17_INF_ENERGY (more than any fight costs), nothing is spent and nothing is saved; switching it
+// off leaves the stored Energy as it was. Every reset keeps it (RESET_KEEP, UI17_RESET_KEEP).
+const UI17_INF_ENERGY_KEY = 'bramblewood_arena_admin_infenergy', UI17_INF_ENERGY = 999;
+function ui17InfEnergyStored(){ try{ return localStorage.getItem(UI17_INF_ENERGY_KEY) === '1'; }catch(e){ return false; } }
+function ui17InfiniteEnergy(){ try{ return ui17InfEnergyStored() && adminModeEnabled === true && adminAllowed(); }catch(e){ return false; } }
+function ui17SetInfiniteEnergy(on){
+  if(on && !adminAllowed()) return false;
+  try{ localStorage.setItem(UI17_INF_ENERGY_KEY, on ? '1' : '0'); }catch(e){}
+  try{ refreshEnergyHud(); refreshEnergyButtons(); }catch(e){}
+  return true;
+}
 // Energy panel (2026-10-11, user: "Clicking on Energy grants me a subwindow ... (16a) Get more energy! (16b) +5 Free energy!
 // - once a day for non-admins"): tapping any Energy pill opens it. +5 free Energy once a day for everyone (it can go over
 // the cap); admins also get an unlimited refill.
@@ -13978,12 +13991,13 @@ function openEnergyPanel(anchor){
   // tooltip."): the count (what the Nest does to the maximum is its tooltip), the refill line, and one row: the free Energy and a
   // 🔋×N Use button whose tooltip names the capsules and what each gives. Was: a Nest line, the free button, then a capsule card.
   const capN = energyCapsules(), capTip = capN ? TX('ui.rw4-capsules', {n: capN}) + ' · ' + TX('ui.rw4-capsule-each', {n: ENERGY_CAPSULE_AMOUNT}) : '';
-  pop.innerHTML = `<b class="ep-count" title="${escapeAttr(energyNextStepText())}">⚡ ${s.current}/${energyMax()}</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small>
+  pop.innerHTML = `<b class="ep-count" title="${escapeAttr(energyNextStepText())}">⚡ ${s.ui17Inf ? '∞' /* 2026-11-03 (package UI17) */ : `${s.current}/${energyMax()}`}</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small>
     <div class="ep-row"><button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>${capN ? `<button type="button" class="btn small ep-cap-btn" id="epCapsule" title="${escapeAttr(capTip)}" aria-label="${escapeAttr(capTip + ' · ' + TX('ui.rw4-use'))}"><span aria-hidden="true">🔋×${capN}</span> ${escapeHtml(TX('ui.rw4-use'))}</button>` : ''}</div>
     ${isAdmin ? `<div class="ep-admin" role="group" aria-label="Admin Energy controls"><span class="ep-admin-h">🚨 Admin</span>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5" aria-label="Take 5 Energy">−5</button><button type="button" class="btn small" data-ep="-1" aria-label="Take 1 Energy">−1</button><button type="button" class="btn small" data-ep="1" aria-label="Give 1 Energy">+1</button><button type="button" class="btn small" data-ep="5" aria-label="Give 5 Energy">+5</button></div>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="empty">Empty</button><button type="button" class="btn small primary" id="epRefill">Fill</button><input type="number" min="0" max="999" class="w-60" id="epSet" value="${s.current}" aria-label="Set Energy"><button type="button" class="btn small" data-ep="set">Set</button></div>
-      <div class="ep-admin-row"><button type="button" class="btn small" data-ep="tick">Next refill now</button></div></div>` : ''}`;
+      <div class="ep-admin-row"><button type="button" class="btn small" data-ep="tick">Next refill now</button></div>
+      ${adminAllowed() ? `<label class="ep-admin-row ui17-inf-row"><input type="checkbox" id="epInfinite" ${ui17InfEnergyStored() ? 'checked' : ''} ${adminModeEnabled ? '' : 'disabled'}> ${escapeHtml(TX('ui.ui17-inf-energy'))}</label>` : '' /* 2026-11-03 (package UI17) */}</div>` : ''}`;
   document.body.appendChild(pop);
   const r = anchor.getBoundingClientRect(), w = Math.min(isAdmin ? 290 : 260, innerWidth - 24);
   pop.style.width = w + 'px'; pop.style.top = Math.min(innerHeight - (isAdmin ? 290 : 160), r.bottom + 8) + 'px'; pop.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width/2 - w/2)) + 'px';
@@ -13991,6 +14005,7 @@ function openEnergyPanel(anchor){
   const fb = pop.querySelector('#epFree'); if(fb) fb.onclick = ()=>{ if(freeEnergyClaimedToday()) return; const st = settleEnergy(); st.current += FREE_ENERGY_AMOUNT; saveEnergyState(st); try{ localStorage.setItem(FREE_ENERGY_KEY, todayKey()); }catch(e){} try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`⚡ +${FREE_ENERGY_AMOUNT} Energy. Come back tomorrow for more.`); };
   const cb = pop.querySelector('#epCapsule'); if(cb) cb.onclick = ()=>{ const from = cb.getBoundingClientRect(); if(useEnergyCapsule()){ try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`🔋 +${ENERGY_CAPSULE_AMOUNT} Energy from a capsule.`); try{ ui2EnergyZap(from); }catch(e){} } }; // 2026-10-29 (UI2, R5): the sparks fly into the pill
   pop.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('#epFree:not([disabled]), #epCapsule'); if(b) try{ fxHook('energyRefill', b.id === 'epCapsule' ? ENERGY_CAPSULE_AMOUNT : FREE_ENERGY_AMOUNT, b.id, b.getBoundingClientRect()); }catch(_){} }, true); // 2026-10-15 batch F
+  const inf = pop.querySelector('#epInfinite'); if(inf) inf.onchange = ()=>{ ui17SetInfiniteEnergy(inf.checked); const head = pop.querySelector('.ep-count'); const st = settleEnergy(); if(head) head.textContent = st.ui17Inf ? '⚡ ∞' : `⚡ ${st.current}/${energyMax()}`; }; // 2026-11-03 (package UI17)
   const rb = pop.querySelector('#epRefill'); if(rb) rb.onclick = ()=>{ const st = settleEnergy(); st.current = Math.max(st.current, energyMax()); saveEnergyState(st); done('⚡ Energy full.'); };
   // Admin Energy controls (2026-10-12, user: "My energy admin controls are not there yet"): step, empty, set, and an
   // instant refill tick. They show for an admin account even with Admin mode switched off.
@@ -14043,6 +14058,7 @@ document.addEventListener('click', e=>{ const pill = e.target.closest && e.targe
 // fresh. Once capped, lastRegenAt is kept pinned to "now" (nothing to accrue past the cap, and it
 // keeps the stored timestamp from drifting arbitrarily far into the past).
 function settleEnergy(){
+  if(ui17InfiniteEnergy()) return {current: UI17_INF_ENERGY, lastRegenAt: Date.now(), ui17Inf: true}; // 2026-11-03 (package UI17): admin infinite Energy
   const s = loadEnergyState();
   // Idle-Sweep (2026-10-13): Energy that would spill past the maximum is banked for the chosen fight instead of lost.
   const idleOn = (()=>{ try{ return !!idleSweepTarget() && autoTier('idleSweep'); }catch(e){ return false; } })();
@@ -14072,6 +14088,7 @@ function msUntilNextEnergyTick(){
   return Math.max(0, ENERGY_REGEN_MS - (Date.now() - s.lastRegenAt));
 }
 function spendEnergy(cost){
+  if(ui17InfiniteEnergy()){ try{ refreshEnergyHud(); }catch(e){} return true; } // 2026-11-03 (package UI17): admin infinite Energy spends nothing
   const s = settleEnergy();
   if(s.current < cost) return false;
   s.current -= cost;
@@ -14132,7 +14149,7 @@ function refreshEnergyHud(){
   const ico = '<span class="energy-ico">⚡</span>';
   // 2026-10-12 (22:25, user: "The energy pill can be simplified: Just X/Y <Lighting> MM:SS"): the clock is the time to the next point.
   const clock = ms=>{ const sec = Math.max(0, Math.ceil(ms/1000)), h = Math.floor(sec/3600), m = Math.floor(sec%3600/60), ss = sec%60; return h ? `${h}:${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}` : `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`; };
-  const html = `${s.current}/${energyMax()}${ico}${s.current < energyMax() && nextMs != null ? `<span class="energy-next"> ${clock(nextMs)}</span>` : ''}`;
+  const html = s.ui17Inf ? `<span class="ui17-inf" title="${escapeAttr(TX('ui.ui17-inf-energy'))}">∞</span>${ico}` /* 2026-11-03 (package UI17) */ : `${s.current}/${energyMax()}${ico}${s.current < energyMax() && nextMs != null ? `<span class="energy-next"> ${clock(nextMs)}</span>` : ''}`;
   const low = s.current < ENERGY_COST.skirmish;
   [['energyPill','energyPillText'], ['energyPillPlay','energyPillPlayText']].forEach(([pillId, textId])=>{
     const pill = document.getElementById(pillId);
@@ -17893,7 +17910,7 @@ const DIALOGUES = {
     {who:'vesper', text:'An otter with a deck. How quaint. Fight me where it counts.'},
     {who:'swiftpaw', text:'The Arena. Strangers, tickets, bad manners.', options:[{label:'I\'m in.', goto:'go', act:'sub:arena'}, {label:'Later.', goto:'later'}], silent:'go'},
     {label:'later', who:'vesper', text:'Of course. Later. They always say later.', goto:'go'},
-    {label:'go', who:'vesper', text:'Ten tickets a day. Spend them well.'},
+    {label:'go', who:'vesper', text:'Ten tickets at most, and one more each hour. Spend them well.'},
   ]},
   unlock_raid: {lines:[
     {who:'aurelia', text:'Even the Dominion cannot fell that thing alone.'},
@@ -17967,7 +17984,7 @@ const DIALOGUES = {
   ]},
   unlock_tavern: {lines:[
     {who:'traveller', text:'A tavern, this far out. Warm fire, long tables, and a keeper who has heard every road story twice.'},
-    {who:'traveller', text:'Rest here when you have earned it: every 20 different fights you clear, the keeper will stretch your stamina a little further.', options:[{label:'Show me.', goto:'go', act:'tavern'}], silent:'go'},
+    {who:'traveller', text:'Rest here when you have earned it. Bring Dust and the right materials, and the keeper will stretch your Energy a little further.', options:[{label:'Show me.', goto:'go', act:'tavern'}], silent:'go'},
     {label:'go', who:'traveller', text:'Max Energy, raised one cup at a time.'},
   ]},
   unlock_skillcodex: {lines:[
@@ -18088,7 +18105,7 @@ const DIALOGUES = {
   ]},
   cur_m7_shell: {lines:[
     {who:'traveller', text:'A great spiral shell. Hold it up and you hear the reef breathing.', options:[{label:'Listen.', goto:'go'}, {label:'Not now.', goto:'no'}]},
-    {label:'go', who:'traveller', text:'Flood… ebb… flood. The tide decides who hits harder. Watch the pill on the field.', goto:'end'}, // 2026-10-15: Flood
+    {label:'go', who:'traveller', text:'Flood… ebb… flood. The tide decides who hits harder. Watch the Tide marker on the field.', goto:'end'}, // 2026-10-15: Flood
     {label:'no', who:'traveller', text:'The reef will still be breathing later.', goto:'end'},
     {label:'end', who:'aurelia', text:'Tide units ride the Flood. Keep that in mind.'}, // 2026-10-15: Swimmer retired, Flow → Flood
   ]},
@@ -23249,7 +23266,7 @@ const CONQUEST_MAPS = [
       { key:"19-5", kind:"elite", name:"Sky Scraper Sentinel", icon:"🦅", rules:{ashRain:true}, deck:{"cinder-stoker":4,"phoenix-fledgling":3,"yeti":4,"quill-volley":1,"magma-titan":4,"pumice-beetle":2,"talus-pika":1,"pit-glutton":1} /* 2026-11-03 (BAL13, BAL12-6 / RAR-1): echidna-quillshot over the fight's rarity cap (veryrare), copies to the list's nearest within it (tools/bal13/decks_2026_11_02.js overcap) */ /* 2026-11-02 (BAL10): road retune toward the road curve (round 1), swaps only, 47.5% -> 58% at 40-50 tune games, target 60 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */ /* 2026-11-02 (BAL9, JJ24): cut cards scree-goat, porcupine-roller swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 37.5% -> 60% at 40 tune games, target 60 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 74% -> 68% at 50 tune games, target 60 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3.25 dropped, the level schedule decides */, flavor:"You'll hear it before you see it. That's the point.", revealDeck:"A", requires:["19-4"] },
       { key:"19-6", kind:"boss", name:"The Frost Yeti King", icon:"👑", rules:{ashy:true}, deck:{"cinder-stoker":5,"yeti":2,"quill-volley":2,"glacier-wolf-pack":3,"talus-pika":1,"sulfur-cinder-moth":1,"pumice-beetle":2,"yeti-chieftain":1,"pit-glutton":1} /* 2026-11-03 (DEC1, BAL12-6 a / BAL13-2 a): echidna-quillshot (Super Rare, over the fight's Very Rare cap; no longer its reward) x1 -> pit-glutton x1, the list's nearest within the cap, the boss's leader left out (tools/bal13/decks_2026_11_02.js swapOut, as 19-3..19-5) */ /* 2026-11-02 (BAL13, RAR-1 copy caps): echidna-quillshot -1 (its new rarity's copy cap), copies to the list's nearest (tools/bal13/decks_2026_11_02.js trim) */ /* 2026-11-02 (BAL9, JJ24): cut cards porcupine-roller, scree-goat swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 90% -> 62.5% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, showcase:"yeti" /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"The summit belongs to whatever can survive the cold longest.", requires:["19-5"] },
     ]},
-  { id:"m11", unlockAfter:"m3", name:"The Sundered Peak", icon:"🌋", blurb:"The campaign’s final approach — apex predators, no scouts left to send ahead of you. Ten regions down. One throne left.", sequential:true,
+  { id:"m11", unlockAfter:"m3", name:"The Sundered Peak", icon:"🌋", blurb:"The mountain’s broken crown — apex predators, and no scouts left to send ahead of you.", sequential:true,
     nodes: [
       { key:"20-1", kind:"skirmish", name:"Silverback Watch", icon:"🦍", deck:{"ashbone-ghoul":3,"cave-warlord":3,"cinder-skeleton":3,"pack-mule":5,"magma-salamander":2} /* 2026-11-02 (BAL9, JJ24): cut card bear-cub swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 98% -> 94% at 50 tune games, target 90 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, flavor:"The watch has not missed an approach in living memory.", requires:[], showcase:"cave-warlord" },
       { key:"20-2", kind:"skirmish", name:"Grizzly Frontier", icon:"🐻", deck:{"pack-mule":3,"ash-cloud-condor":3,"woodland-brawler":1,"cave-warlord":3,"ashbone-ghoul":4,"pit-glutton":3} /* 2026-11-02 (BAL10): road retune toward the road curve (round 1), swaps only, 95% -> 88% at 40-50 tune games, target 85.7 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */ /* 2026-11-02 (BAL9, JJ24): cut card bear-cub swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 62.5% -> 80% at 40 tune games, target 86 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 68% -> 86% at 50 tune games, target 86 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, flavor:"Even the cubs here have already learned to hold ground.", requires:["20-1"] },
@@ -34438,17 +34455,107 @@ function adminu1ErrorText(err){
   if(/42501|not allowed|permission denied/i.test(s)) return TX('ui.adminu1-denied');
   return TX('ui.adminu1-error', {msg: s || '?'});
 }
+// UI17_OVERVIEW:BEGIN (tests/ui17-2026-11-03.js evaluates this block)
+// Admin -> Players overview (2026-11-03, package UI17, owner 18:37: "The players screen has to be more filled with typical administrative
+// 'viewing' controls also. How many online now, server load etc."): read-only tiles above the player list. From what the client can read
+// already: profiles (public read: total accounts, new today, and last_seen_at, which the signed-in heartbeat bumps every 2 minutes, so
+// "online now" is seen in the last 5 minutes; the live presence channel's count rides along), raid_week_attempts (public read). From the
+// proposed admin_overview() (supabase/proposed/20261103_admin_overview.sql, admin only): fights and matches in the last hour, database
+// connections and size; those tiles say "needs SQL" until it is applied. The health line: a cheap Supabase read's round trip, the
+// Supabase request errors this tab has seen (ui17CountingFetch, given to createClient), the site's own round trip (version.json) and
+// this build's id against the live one. Refresh, and every 30 s while the list is open.
+const UI17_ONLINE_MIN = 5, UI17_OV_REFRESH_MS = 30000;
+function ui17Net(){ const w = typeof window !== 'undefined' ? window : globalThis; return w.__ui17Net || (w.__ui17Net = {req:0, err:0, last:null}); }
+function ui17CountingFetch(input, init){
+  const n = ui17Net(); n.req++;
+  const path = (()=>{ try{ return new URL(typeof input === 'string' ? input : input.url).pathname; }catch(e){ return ''; } })();
+  return fetch(input, init).then(r=>{ if(r && r.status >= 400){ n.err++; n.last = {status: r.status, path, at: Date.now()}; } return r; },
+    e=>{ n.err++; n.last = {status: 0, path, at: Date.now()}; throw e; });
+}
+// the cut-off times for the counts, from a clock (ms) and the local midnight
+function ui17OverviewSince(now){
+  const d = new Date(now); d.setHours(0, 0, 0, 0);
+  return {online: new Date(now - UI17_ONLINE_MIN * 60000).toISOString(), hour: new Date(now - 3600e3).toISOString(),
+    day: new Date(now - 86400e3).toISOString(), week: new Date(now - 7 * 86400e3).toISOString(), today: d.toISOString()};
+}
+// a database function that is not there yet (not applied), as opposed to any other refusal
+function ui17NeedsSql(err){ const t = String((err && (err.code + ' ' + err.message)) || err || ''); return /PGRST202|42883|does not exist|not find the function|schema cache/i.test(t); }
+// the tiles, in order: [key, TX label, value, sub line]; a value of null shows "…", 'sql' shows "needs SQL", 'err' shows "?"
+function ui17OverviewTiles(d){
+  const v = k=> d[k] === undefined ? null : d[k];
+  const srv = d.server === 'sql' ? 'sql' : d.server === 'err' ? 'err' : null, sv = k=> srv || (d.server ? (d.server[k] ?? 0) : null);
+  return [
+    ['online', 'ui.ui17-ov-online', v('online'), d.presence != null ? TX('ui.ui17-ov-presence', {n: d.presence}) : TX('ui.ui17-ov-online-sub', {n: UI17_ONLINE_MIN})],
+    ['hour', 'ui.ui17-ov-hour', v('hour'), ''], ['day', 'ui.ui17-ov-day', v('day'), ''], ['week', 'ui.ui17-ov-week', v('week'), ''],
+    ['total', 'ui.ui17-ov-total', v('total'), ''], ['today', 'ui.ui17-ov-new', v('today'), ''],
+    ['fights', 'ui.ui17-ov-fights', sv('fights_1h'), ''], ['matches', 'ui.ui17-ov-matches', sv('matches_1h'), ''],
+    ['raids', 'ui.ui17-ov-raids', v('raids'), ''],
+    ['conns', 'ui.ui17-ov-conns', sv('db_connections'), d.server && typeof d.server === 'object' && d.server.db_size_mb != null ? TX('ui.ui17-ov-db-size', {n: d.server.db_size_mb}) : ''],
+  ];
+}
+function ui17OverviewHTML(d){
+  const cell = x=> x === null ? '…' : x === 'sql' ? `<span class="ui17-sql" title="${escapeAttr(TX('ui.ui17-ov-needs-sql-tip'))}">${escapeHtml(TX('ui.ui17-ov-needs-sql'))}</span>` : x === 'err' ? '?' : escapeHtml(String(x));
+  const tiles = ui17OverviewTiles(d).map(([k, t, val, sub])=> `<div class="ui17-tile" data-ov="${k}"><b>${cell(val)}</b><span>${escapeHtml(TX(t))}</span>${sub ? `<small>${escapeHtml(sub)}</small>` : ''}</div>`).join('');
+  const n = d.net || {req:0, err:0, last:null};
+  const health = [
+    d.ping == null ? '' : d.ping < 0 ? TX('ui.ui17-ov-ping-fail') : TX('ui.ui17-ov-ping', {ms: d.ping}),
+    TX('ui.ui17-ov-errors', {n: n.err, req: n.req}) + (n.last ? ' (' + (n.last.status || 'net') + ' ' + String(n.last.path || '').replace(/^\/rest\/v1\//, '') + ')' : ''),
+    d.site == null ? '' : d.site < 0 ? TX('ui.ui17-ov-site-fail') : TX('ui.ui17-ov-site', {ms: d.site}) + (d.edge ? ' · ' + d.edge : ''),
+    TX('ui.ui17-ov-build', {v: d.build || 'dev'}) + (d.liveBuild && d.liveBuild !== d.build ? ' · ' + TX('ui.ui17-ov-live-build', {v: d.liveBuild}) : ''),
+  ].filter(Boolean);
+  const bad = (d.ping != null && d.ping < 0) || n.err > 0;
+  return `<div class="ui17-ov-head"><h3>📈 ${escapeHtml(TX('ui.ui17-ov-title'))}</h3><button type="button" class="btn small ghost" data-ov-refresh>↻ ${escapeHtml(TX('ui.adminu1-refresh'))}</button></div>
+    <div class="ui17-tiles">${tiles}</div>
+    <p class="ui17-health ${bad ? 'is-bad' : 'is-ok'}"><b>${escapeHtml(TX('ui.ui17-ov-health'))}</b> ${health.map(h=> `<span>${escapeHtml(h)}</span>`).join('')}</p>
+    <p class="ui17-ov-at">${d.at ? escapeHtml(TX('ui.ui17-ov-updated', {t: new Date(d.at).toLocaleTimeString(), s: UI17_OV_REFRESH_MS / 1000})) : ''}</p>`;
+}
+async function ui17LoadOverview(client){
+  const now = Date.now(), since = ui17OverviewSince(now), d = {at: now, net: Object.assign({}, ui17Net())};
+  d.build = (typeof BUILD_ID !== 'undefined' && !String(BUILD_ID).startsWith('__')) ? BUILD_ID : 'dev';
+  try{ d.presence = (typeof Social !== 'undefined' && Social.presence && Social.online) ? Social.online.size : null; }catch(e){ d.presence = null; }
+  const site = (async ()=>{ const t0 = performance.now();
+    try{ const r = await fetch('version.json?t=' + now, {cache: 'no-store'}); d.site = r.ok ? Math.round(performance.now() - t0) : -1;
+      const id = r.headers && r.headers.get('x-vercel-id'); if(id) d.edge = String(id).split('::')[0];
+      if(r.ok){ try{ const j = await r.json(); d.liveBuild = j && j.build; }catch(e){} } }catch(e){ d.site = -1; } })();
+  if(!client){ await site; return d; }
+  const count = async (key, table, col, gte)=>{ try{ let q = client.from(table).select('id', {count: 'exact', head: true}); if(col) q = q.gte(col, gte);
+    const r = await q; d[key] = r.error ? 'err' : (r.count ?? 0); }catch(e){ d[key] = 'err'; } };
+  const ping = (async ()=>{ const t0 = performance.now(); try{ const r = await client.from('profiles').select('id').limit(1); d.ping = r.error ? -1 : Math.round(performance.now() - t0); }catch(e){ d.ping = -1; } })();
+  const server = (async ()=>{ try{ const r = await client.rpc('admin_overview'); d.server = r.error ? (ui17NeedsSql(r.error) ? 'sql' : 'err') : ((Array.isArray(r.data) ? r.data[0] : r.data) || {}); }catch(e){ d.server = 'err'; } })();
+  await Promise.all([site, ping, server,
+    count('online', 'profiles', 'last_seen_at', since.online), count('hour', 'profiles', 'last_seen_at', since.hour),
+    count('day', 'profiles', 'last_seen_at', since.day), count('week', 'profiles', 'last_seen_at', since.week),
+    count('total', 'profiles'), count('today', 'profiles', 'created_at', since.today),
+    count('raids', 'raid_week_attempts', 'fought_at', since.hour)]);
+  d.net = Object.assign({}, ui17Net());
+  return d;
+}
+function ui17StartOverview(ov){
+  const box = ov && ov.querySelector('.ui17-ov'); if(!box) return null;
+  let busy = false, timer = null;
+  const paint = d=>{ box.innerHTML = ui17OverviewHTML(d); const b = box.querySelector('[data-ov-refresh]'); if(b) b.onclick = load; };
+  const load = async ()=>{ if(busy || !box.isConnected) return; busy = true;
+    try{ paint(await ui17LoadOverview(typeof sbClient !== 'undefined' && sbClient && isSignedIn() ? sbClient : null)); }catch(e){ console.error('[Bramblewood] admin overview', e); }
+    busy = false; };
+  paint({net: ui17Net()});
+  timer = setInterval(()=>{ if(!box.isConnected){ clearInterval(timer); return; } if(!document.hidden) load(); }, UI17_OV_REFRESH_MS);
+  load();
+  return {load, stop: ()=> clearInterval(timer)};
+}
+// UI17_OVERVIEW:END
 async function openAdminUserList(){
   if(!adminAllowed() || !adminModeEnabled) return null; // admin mode only
   document.querySelectorAll('.adminu1-overlay').forEach(o=> o.remove());
   const ov = document.createElement('div'); ov.className = 'modal-overlay adminu1-overlay';
   ov.innerHTML = `<div class="modal adminu1-modal" role="dialog" aria-modal="true" aria-label="${escapeAttr(TX('ui.adminu1-title'))}">
     <div class="modal-head-row"><h2>👥 ${escapeHtml(TX('ui.adminu1-title'))}</h2><button type="button" class="modal-close-btn" data-x aria-label="${escapeAttr(TX('ui.adminu1-close'))}">✕</button></div>
+    <section class="ui17-ov" aria-label="${escapeAttr(TX('ui.ui17-ov-title'))}"></section>
     <p class="panel-sub">${escapeHtml(TX('ui.adminu1-sub'))}</p>
     <div class="adminu1-bar"><input type="search" class="adminu1-search" placeholder="${escapeAttr(TX('ui.adminu1-search'))}" aria-label="${escapeAttr(TX('ui.adminu1-search'))}" autocomplete="off"><span class="adminu1-count" aria-live="polite"></span><button type="button" class="btn small ghost" data-refresh>↻ ${escapeHtml(TX('ui.adminu1-refresh'))}</button></div>
     <div class="adminu1-body"></div></div>`;
   document.body.appendChild(ov);
   const body = ov.querySelector('.adminu1-body'), search = ov.querySelector('.adminu1-search'), count = ov.querySelector('.adminu1-count');
+  ui17StartOverview(ov); // 2026-11-03 (package UI17): the overview tiles, refreshed every 30 s while open
   let rows = [], sortKey = 'seen', dir = -1;
   const close = ()=> ov.remove();
   ov.querySelectorAll('[data-x]').forEach(b=> b.onclick = close);
@@ -34562,14 +34669,18 @@ function renderAdmin(){
     </div>
     <div class="panel admin-subpanel">
       <h3>Energy</h3>
-      <p class="panel-sub" id="adminEnergyLine">Currently ${currentEnergy()}/${energyMax()}⚡.</p>
+      <p class="panel-sub" id="adminEnergyLine">${ui17InfiniteEnergy() ? '∞⚡' : `Currently ${currentEnergy()}/${energyMax()}⚡.`}</p>
       <button class="btn small" id="adminRefillEnergyBtn" type="button">⚡ Refill to full</button>
+      <label class="admin-toggle-label ui17-inf-row"><input type="checkbox" id="ui17InfEnergyChk" ${ui17InfEnergyStored() ? 'checked' : ''} ${adminModeEnabled ? '' : 'disabled'}> ${escapeHtml(TX('ui.ui17-inf-energy'))}</label>
+      <p class="panel-sub">${escapeHtml(TX('ui.ui17-inf-energy-help'))}</p>
     </div>
     <div class="panel admin-subpanel">
       <h3>Reset account progress</h3>
       <p class="panel-sub">Wipes your currencies, card levels, decks, conquest progress, rating, energy, and saved name — on this device, and in the cloud too if you're signed in. This cannot be undone.</p>
       <button class="btn danger" id="adminResetBtn" type="button">⚠️ Reset my progress</button>
     </div>
+    <div class="panel admin-subpanel ui17-fr-panel"><h3>🧨 ${escapeHtml(TX('ui.ui17-fr-btn'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.ui17-fr-help'))}</p>
+      <button class="btn danger" id="ui17FullResetBtn" type="button">🧨 ${escapeHtml(TX('ui.ui17-fr-btn'))}</button></div>
     <div class="panel admin-subpanel">
       <h3>Publish card edits</h3>
       <p class="panel-sub">${cloudCardAdmin
@@ -34666,6 +34777,9 @@ function renderAdmin(){
     const line = document.getElementById('adminEnergyLine');
     if(line) line.textContent = `Currently ${currentEnergy()}/${energyMax()}⚡.`;
   });
+  const infChk = document.getElementById('ui17InfEnergyChk'); // 2026-11-03 (package UI17)
+  if(infChk) infChk.onchange = ()=>{ ui17SetInfiniteEnergy(infChk.checked); const line = document.getElementById('adminEnergyLine'); if(line) line.textContent = ui17InfiniteEnergy() ? '∞⚡' : `Currently ${currentEnergy()}/${energyMax()}⚡.`; };
+  const frBtn = document.getElementById('ui17FullResetBtn'); if(frBtn) frBtn.onclick = ui17OpenFullReset; // 2026-11-03 (package UI17)
   const resetBtn = document.getElementById('adminResetBtn');
   if(resetBtn) resetBtn.addEventListener('click', ()=>{
     if(!confirm("Reset ALL of your progress — currencies, card levels, decks, conquest progress, rating, energy, and your saved name? This can't be undone.")) return;
@@ -55973,7 +56087,7 @@ let shopSelected = null; // 'packId:qty'
 // Leaf, does nothing, and is sold out after one.
 const SHOP_BREAD_KEY = 'bramblewood_shop_bread_v1';
 function shopBreadSold(){ try{ return localStorage.getItem(SHOP_BREAD_KEY) === '1'; }catch(e){ return false; } }
-function shopBundlesOpen(){ return adminModeEnabled || playerMapReach() >= 9; }
+function shopBundlesOpen(){ return adminModeEnabled || playerMapReach() >= PACK_QTY_TIERS[0][1]; } // 2026-11-03 (package UI17): the ×10's map (8; was 9)
 // Field kit on the shelf (2026-10-17, user: "daily, there's a 30% chance to sell a field pack item (if you unlocked it)"): once the
 // traveller's kit is open (the 'fieldkit' spot, Map 12), each local day has a 30% chance that the cart stocks one field-kit item.
 // Which day and which item are seeded from the day number, so the offer is the same all day (and on every reload); one per day,
@@ -55994,7 +56108,9 @@ function shopKitFull(id){ return itemCount(id) >= ITEM_CAP; }
 // are only visible when you have enough for the previous tier, and only if you passed a certain map: 10/25/50/100/250 at map
 // 9/14/19/29/44"). With one pack on sale its bundles still sit on the shelves; from two packs on, the shelves show each pack
 // once and the counter asks how many.
-const PACK_QTY_TIERS = [[10, 9], [25, 14], [50, 19], [100, 29], [250, 44]];
+// 2026-11-03 (package UI17, owner 18:40: "for 5x pack, unlock it slightly earlier"): there is no set of 5; the first set is the ×10, and it
+// opens one map earlier: Map 8 (was Map 9), with the shelves' sets (shopBundlesOpen). The later tiers stay where they were.
+const PACK_QTY_TIERS = [[10, 8], [25, 14], [50, 19], [100, 29], [250, 44]];
 function packQtyOptions(p){
   const reach = playerMapReach(), out = [1];
   for(const [q, map] of PACK_QTY_TIERS){ if(!adminModeEnabled && reach < map) break; if(!adminModeEnabled && !canAffordPacks(p, out[out.length - 1])) break; out.push(q); }
@@ -57931,7 +58047,26 @@ function buyPack(packId, btnEl, qty, opts){
   if(wander && opened.length){ const ws = wandererState(); ws.bought = true; saveWandererState(ws); const wb = document.querySelector('[data-wander-buy]'); if(wb){ wb.outerHTML = '<button type="button" class="btn" disabled>Bought today</button>'; } }
   refreshShopAfford();
   try{ SoundKit.coinRegister(); if((pack.pool||1)===99) setTimeout(()=>{ try{ SoundKit.mysteryBoing(); }catch(e){} }, 380); }catch(e){}
-  openPackAnimation(pack, opened, {bundle: qty > 1 ? qty : 0});
+  openPackAnimation(pack, opened, {bundle: qty > 1 ? qty : 0, buyAgain: wander || !opened.length ? null : {packId: pack.id, qty}}); // 2026-11-03 (package UI17): Buy again
+}
+// Buy again (2026-11-03, package UI17, owner 18:40: "when buying singles early on, its abit slow. Maybe do a buy again button at the end after
+// opening if player has enough cash"): the last summary of a bought pack (or set) offers the same pack, same count, same price. It is
+// disabled (with the price on it) when you can't pay, the pack is off sale, or a Mystery pack has none left today; pressing it closes the
+// opener and runs the normal purchase (buyPack), which opens the next one. A wandering merchant's deal and reward packs never offer it.
+function ui17BuyAgainState(ba){
+  if(!ba) return null;
+  const pack = shopPacksAll().find(p=> p.id === ba.packId); if(!pack) return null;
+  let qty = Math.max(1, ba.qty|0 || 1);
+  if(pack.id === MYSTERY_PACK_ID && !pack.anytime) qty = Math.min(qty, mysteryPacksLeft());
+  const cost = qty > 1 ? packSetCost(pack, qty) : {gold: pack.cost.gold||0, gems: pack.cost.gems||0};
+  const ok = qty > 0 && packOnSale(pack) && isSignedIn() && canAffordPacks(pack, qty);
+  return {pack, qty, cost, ok};
+}
+function ui17BuyAgainHTML(ba){
+  const st = ui17BuyAgainState(ba); if(!st || st.qty < 1) return '';
+  const price = btnCostHTML({gold: st.cost.gold, gems: st.cost.gems});
+  const label = st.qty > 1 ? TX('ui.ui17-buy-again-n', {n: st.qty}) : TX('ui.ui17-buy-again');
+  return `<button type="button" class="btn ${st.ok ? 'primary' : ''} ui17-buy-again" id="poBuyAgain" ${st.ok ? '' : `disabled aria-disabled="true" title="${escapeAttr(TX('ui.ui17-buy-again-short'))}"`}>${escapeHtml(label)} ${price}</button>`;
 }
 function openPackAnimation(pack, opened, opts){
   opts = opts || {};
@@ -58192,11 +58327,13 @@ function openPackAnimation(pack, opened, opts){
     const more = Math.max(0, opts.moreAfter|0), prior = (opts.priorOpened || []).length && phase !== 'session';
     if(left > 0 || more > 0) return `<div class="po-actions"><button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="${left > 0 ? 'poNext' : 'poNextSet'}">${escapeHtml(TX('ui.pl1-next-pack', {n: left + more}))}</button></div>`;
     if(prior) return `<div class="po-actions"><button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="poSession">${escapeHtml(TX('ui.pl1-all-packs', {n: sessionPacks().length}))}</button></div>`;
-    return `<div class="po-actions">${nestBtn}<button type="button" class="btn primary" id="poDone">Done</button></div>`;
+    const again = ui17BuyAgainHTML(opts.buyAgain); // 2026-11-03 (package UI17)
+    return `<div class="po-actions">${nestBtn}<button type="button" class="btn ${again && !/disabled/.test(again) ? '' : 'primary'}" id="poDone">Done</button>${again}</div>`;
   };
   const sessionPacks = ()=> [].concat(...(opts.priorOpened || []).map(g=> g.opened.map(o=> ({pack: g.pack, o})))).concat(opened.map(o=> ({pack, o})));
   const wireFoot = ()=>{
     const done = overlay.querySelector('#poDone'); if(done) done.onclick = close;
+    const again = overlay.querySelector('#poBuyAgain'); if(again) again.onclick = ()=>{ const st = ui17BuyAgainState(opts.buyAgain); if(!st || !st.ok){ denyShake(again); return; } close(); buyPack(st.pack.id, null, st.qty); }; // 2026-11-03 (package UI17)
     const nest = overlay.querySelector('#poNest'); if(nest) nest.onclick = ()=>{ const toNest = /Nest/.test(nest.title); close(); if(toNest){ nestTab = 'recruits'; switchTab('nest'); } else switchTab('deck'); }; // 2026-10-23: the button's own target (see footActions)
     const next = overlay.querySelector('#poNext'); if(next) next.onclick = ()=>{ packIdx++; showPack(); };
     const nextSet = overlay.querySelector('#poNextSet'); if(nextSet) nextSet.onclick = close; // PL1: the next set opens as this one closes (onClose)
@@ -59429,7 +59566,8 @@ function renderAchievementsPage(){
 // Admin resets (2026-10-13, user: "Help me add some admin functions in the profile. 1) Reset all, 2) Reset codex - just removes
 // all seen only, 3) Reset to Map [N] -> assumes progress up till that map only, and unlocking all features up to that point").
 // Admin content (card and map edits, NPC speeches, tutorial setup), device settings, admin mode and your name are kept.
-const RESET_KEEP = /^(bramblewood_arena_(adminmode|devmode|profile|card_overlay|shop_packs_override)|bramblewood_(dialogue_edits_v1|forge_tier_edits_v1|node_edits_v1|tutorial_cfg_v2|map_layout_v1|ui_flags_v1|card_txns_v1))$/;
+const RESET_KEEP = /^(bramblewood_arena_(adminmode|devmode|admin_infenergy|profile|card_overlay|shop_packs_override)|bramblewood_(dialogue_edits_v1|forge_tier_edits_v1|node_edits_v1|tutorial_cfg_v2|map_layout_v1|ui_flags_v1|card_txns_v1))$/;
+// 2026-11-03 (package UI17): + admin_infenergy, the admin's infinite Energy switch, which every reset keeps.
 const PENDING_MAP_RESET_KEY = 'bw_pending_map_reset';
 function adminWipeProgress(){ try{ Object.keys(localStorage).filter(k=> /^(bramblewood|bw_)/.test(k) && !DEVICE_SETTING_KEYS.test(k) && !RESET_KEEP.test(k)).forEach(k=> localStorage.removeItem(k)); sessionStorage.clear(); }catch(e){}
   try{ localStorage.setItem(PROGRESS_SHRINK_OK_KEY, '1'); }catch(e){} } // 2026-10-31 (package UI12, GG2): this reset is meant to replace the cloud blob once (the save guard lets it)
@@ -59475,6 +59613,7 @@ function adminProfileToolsHTML(){
     <div class="pf-admin-row"><button type="button" class="btn small" id="pfResetCodex">Reset Codex</button><span>Forget every card seen (owned cards stay).</span></div>
     <div class="pf-admin-row"><button type="button" class="btn small danger" id="pfResetForge">${escapeHtml(TX('ui.fg-reset-forge'))}</button><span>${escapeHtml(TX('ui.fg-reset-forge-help'))}</span></div>
     <div class="pf-admin-row"><button type="button" class="btn small" id="pfResetMap">Reset to Map</button><input type="number" id="pfResetMapN" min="0" max="${top}" value="${Math.min(top, playerMapReach())}" aria-label="Map number"><span>Maps before it cleared, their features open.</span></div>
+    <div class="pf-admin-row"><button type="button" class="btn small danger" id="pfFullReset">🧨 ${escapeHtml(TX('ui.ui17-fr-btn'))}</button><span>${escapeHtml(TX('ui.ui17-fr-help'))}</span></div>
     <p class="pf-admin-confirm" id="pfAdminConfirm" hidden></p></div>`;
 }
 function wireAdminProfileTools(){
@@ -59484,9 +59623,90 @@ function wireAdminProfileTools(){
   arm(document.getElementById('pfResetAll'), 'Reset all', adminResetAll);
   arm(document.getElementById('pfResetMap'), 'Reset to Map', ()=> adminResetToMap(document.getElementById('pfResetMapN').value));
   const rc = document.getElementById('pfResetCodex'); if(rc) rc.onclick = adminResetCodex;
+  const fr = document.getElementById('pfFullReset'); if(fr) fr.onclick = ui17OpenFullReset; // 2026-11-03 (package UI17): its own typed confirm
   // 2026-10-21 (package FG): the same two-tap confirm (no confirm() dialog)
   arm(document.getElementById('pfResetForge'), TX('ui.fg-reset-forge'), ()=>{ const r = resetForgeProgress(); try{ refreshDeckHeroBanner(); }catch(e){} showToast(TX('toast.fg-forge-reset', {cards: r.cards, zero: r.zero}), 'ok'); renderProfile(); });
 }
+// UI17_FULL_RESET:BEGIN (tests/ui17-2026-11-03.js evaluates this block)
+// Full reset, new account (2026-11-03, package UI17, owner 18:37: "Can you make a full reset button so I even have to pick my faction
+// again - w/ a danger confirm button"). Everything a brand-new player starts without goes: every bramblewood_ / bw_ key on this device
+// (progress, tutorials and coach tips seen, the faction choice, decks, cards, currencies, Codex seen, name and looks, Energy upgrades) and
+// this tab's session flags (so the splash and the faction picker come back), and, when signed in, the account's cloud rows: card unlocks,
+// decks and match history deleted (their RLS lets the owner delete), currencies set to a new player's (200 / 20 / 60 / 0, 5 Raid Tickets:
+// player_currencies has no delete policy), the name back to the placeholder (profiles has no delete policy either), and the progress blob
+// replaced by an empty one carrying the admin-reset marker (the guard_progress_shrink trigger backs the old one up first). Kept: the sign-in
+// itself, Admin Mode, device settings (sound, effects, language, dialogue speed, music picks, atmosphere, shaders), the admin's editor
+// content (card, map, skirmish, speech and tutorial edits, pack overrides, test rules) and infinite Energy, which is switched on.
+// Not reachable from the client: the server-only rating, friends and guild membership (they stay).
+const UI17_RESET_KEEP = /^(bramblewood_arena_(adminmode|devmode|admin_infenergy|card_overlay|shop_packs_override)|bramblewood_(dialogue_edits_v1|forge_tier_edits_v1|node_edits_v1|tutorial_cfg_v2|map_layout_v1|ui_flags_v1|card_txns_v1|lang_v1|dialogue_speed_v1|battle_music|calm_music|atmosphere_v1|shaders_v1|test_rules_v1|testkit_prefs|fxlib_prefs_v1)|bw_soundMuted)$/;
+const UI17_NEW_CURRENCIES = {gold:200, gems:20, dust:60, metal:0, raid_points:5};
+const UI17_RESET_NOTE_KEY = 'bw_ui17_reset_note';
+function ui17ResetKeys(keys){ return keys.filter(k=> /^(bramblewood|bw_)/.test(k) && !DEVICE_SETTING_KEYS.test(k) && !UI17_RESET_KEEP.test(k)); }
+async function ui17CloudReset(client, uid){
+  const failed = [];
+  if(!client || !uid) return failed;
+  const run = async (label, q)=>{ try{ const r = await q; if(r && r.error) failed.push(label); }catch(e){ failed.push(label); } };
+  const now = new Date().toISOString();
+  await Promise.all([
+    run('player_card_unlocks', client.from('player_card_unlocks').delete().eq('profile_id', uid)),
+    run('player_decks', client.from('player_decks').delete().eq('profile_id', uid)),
+    run('match_history', client.from('match_history').delete().eq('profile_id', uid)),
+    run('player_currencies', client.from('player_currencies').update(Object.assign({}, UI17_NEW_CURRENCIES, {raid_points_updated_at: now})).eq('profile_id', uid)),
+    run('profiles', client.from('profiles').update({display_name: 'Woodland Warrior'}).eq('id', uid)),
+    run('player_progress', client.from('player_progress').update({data: {bw_progress_shrink_ok: '1'}, updated_at: now}).eq('profile_id', uid)),
+  ]);
+  // the proposed columns (raid_shards, blossoms), each on its own so a missing column refuses only itself
+  try{ await client.from('player_currencies').update({raid_shards: {}}).eq('profile_id', uid); }catch(e){}
+  try{ await client.from('player_currencies').update({blossoms: 0}).eq('profile_id', uid); }catch(e){}
+  return failed;
+}
+function ui17LocalReset(store, session, opts){
+  opts = opts || {};
+  const keys = []; for(let i = 0; i < store.length; i++) keys.push(store.key(i));
+  const gone = ui17ResetKeys(keys); gone.forEach(k=> store.removeItem(k));
+  try{ session && session.clear(); }catch(e){}
+  store.setItem(PROGRESS_SHRINK_OK_KEY, '1'); // this blob may replace the cloud's once (SAVE_GUARD_UI12)
+  if(opts.adminMode) store.setItem(ADMIN_MODE_KEY, '1');
+  store.setItem(UI17_INF_ENERGY_KEY, '1');
+  if(opts.note) store.setItem(UI17_RESET_NOTE_KEY, opts.note);
+  return gone;
+}
+// UI17_FULL_RESET:END
+async function ui17FullReset(){
+  if(!adminAllowed()) return false;
+  const adminMode = adminModeEnabled;
+  let failed = [];
+  if(typeof sbClient !== 'undefined' && sbClient && cloudUserId && isSignedIn()) failed = await ui17CloudReset(sbClient, cloudUserId);
+  try{ ui17LocalReset(localStorage, sessionStorage, {adminMode, note: failed.length ? 'fail:' + failed.join(', ') : 'ok'}); }catch(e){ console.error('[Bramblewood] full reset', e); }
+  location.reload();
+  return true;
+}
+function ui17OpenFullReset(){
+  if(!adminAllowed()){ showToast(TX('ui.ui17-fr-admin-only'), 'warn'); return; }
+  document.querySelectorAll('.ui17-fr-overlay').forEach(o=> o.remove());
+  const ov = document.createElement('div'); ov.className = 'modal-overlay ui17-fr-overlay';
+  const items = ['ui.ui17-fr-i-progress', 'ui.ui17-fr-i-tutorials', 'ui.ui17-fr-i-faction', 'ui.ui17-fr-i-cards', 'ui.ui17-fr-i-codex', 'ui.ui17-fr-i-profile', 'ui.ui17-fr-i-cloud'];
+  ov.innerHTML = `<div class="modal ui17-fr-modal" role="alertdialog" aria-modal="true" aria-labelledby="ui17FrTitle" aria-describedby="ui17FrBody">
+    <h2 id="ui17FrTitle">🧨 ${escapeHtml(TX('ui.ui17-fr-title'))}</h2>
+    <div id="ui17FrBody"><p>${escapeHtml(TX('ui.ui17-fr-body'))}</p><ul class="ui17-fr-list">${items.map(k=> `<li>${escapeHtml(TX(k))}</li>`).join('')}</ul>
+    <p class="ui17-fr-keep">${escapeHtml(TX('ui.ui17-fr-keep'))}</p></div>
+    <label class="ui17-fr-type">${escapeHtml(TX('ui.ui17-fr-type', {word: 'RESET'}))}<input type="text" id="ui17FrInput" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="10"></label>
+    <div class="ui17-fr-acts"><button type="button" class="btn ghost" data-x>${escapeHtml(TX('ui.ui17-fr-cancel'))}</button><button type="button" class="btn danger" id="ui17FrGo" disabled aria-disabled="true">🧨 ${escapeHtml(TX('ui.ui17-fr-go'))}</button></div></div>`;
+  document.body.appendChild(ov);
+  const inp = ov.querySelector('#ui17FrInput'), go = ov.querySelector('#ui17FrGo');
+  const close = ()=> ov.remove();
+  ov.querySelectorAll('[data-x]').forEach(b=> b.onclick = close);
+  ov.onclick = e=>{ if(e.target === ov) close(); };
+  ov.onkeydown = e=>{ if(e.key === 'Escape'){ e.stopPropagation(); close(); } };
+  inp.oninput = ()=>{ const ok = inp.value.trim() === 'RESET'; go.disabled = !ok; go.setAttribute('aria-disabled', String(!ok)); };
+  inp.onkeydown = e=>{ if(e.key === 'Enter' && !go.disabled) go.click(); };
+  go.onclick = async ()=>{ if(inp.value.trim() !== 'RESET') return; go.disabled = true; inp.disabled = true; go.textContent = TX('ui.ui17-fr-working'); await ui17FullReset(); };
+  setTimeout(()=> inp.focus(), 30);
+  return ov;
+}
+// After the reload: one line saying it worked (or which cloud rows refused), then the note is gone.
+setTimeout(()=>{ let n = null; try{ n = localStorage.getItem(UI17_RESET_NOTE_KEY); if(n) localStorage.removeItem(UI17_RESET_NOTE_KEY); }catch(e){}
+  if(!n) return; try{ showToast(n === 'ok' ? TX('ui.ui17-fr-done') : TX('ui.ui17-fr-partial', {list: n.slice(5)}), n === 'ok' ? 'ok' : 'warn'); }catch(e){} }, 2500);
 function renderProfile(){
   const root = document.getElementById('view-profile');
   root.innerHTML = `<div class="pf">
