@@ -111,9 +111,9 @@
    "special": []
   },
   "m6": {
-   "cards": ["lone-grey-wolf", "polar-bear", "walrus-icebreaker", "glacial-ape-king", "harbor-seal", "snow-bunting-archer", "snow-ermine", "ravenous-wolverine", "spitting-spider", "talus-pika", "alpha-howler", "cone-cutter-squirrel", "frost-hare-sprinter", "mountain-hare", "beluga", "woodland-caribou"],
+   "cards": ["lone-grey-wolf", "polar-bear", "walrus-icebreaker", "harbor-seal", "snow-bunting-archer", "snow-ermine", "ravenous-wolverine", "spitting-spider", "talus-pika", "alpha-howler", "cone-cutter-squirrel", "frost-hare-sprinter", "mountain-hare", "beluga", "woodland-caribou"],
    "submaps": {
-    "mi": ["greenland-shark", "lone-grey-wolf", "snow-ermine", "glacial-ape-king", "frost-hare-sprinter", "ravenous-wolverine", "harbor-seal", "polar-bear", "snow-bunting-archer", "spitting-spider", "walrus-icebreaker", "talus-pika"]
+    "mi": ["greenland-shark", "lone-grey-wolf", "snow-ermine", "frost-hare-sprinter", "ravenous-wolverine", "harbor-seal", "polar-bear", "snow-bunting-archer", "spitting-spider", "walrus-icebreaker", "talus-pika"]
    },
    "special": ["wolfsbane-alpha"]
   },
@@ -125,7 +125,7 @@
    "special": ["sand-widow"]
   },
   "m3": {
-   "cards": ["echidna-quillshot", "fire-salamander", "cinder-stoker", "yeti", "magma-titan", "glacier-wolf-pack", "pumice-beetle", "glacial-ape-king", "talus-pika", "hercules-beetle", "obsidian-scorpion", "granite-ox-golem", "pit-glutton", "sulfur-cinder-moth"],
+   "cards": ["echidna-quillshot", "fire-salamander", "cinder-stoker", "yeti", "magma-titan", "glacier-wolf-pack", "pumice-beetle", "talus-pika", "hercules-beetle", "obsidian-scorpion", "granite-ox-golem", "pit-glutton", "sulfur-cinder-moth"],
    "submaps": {
     "m9": ["ember-revenant", "anvilwhisker-otter", "ore-smelter-mole", "tide-spirit", "cinder-gecko", "ember-jackal", "quill-volley", "ashbone-ghoul", "fire-salamander", "magma-salamander", "ash-cloud-condor", "hercules-beetle", "phoenix-fledgling", "cinder-stoker"]
    },

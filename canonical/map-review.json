@@ -3092,11 +3092,6 @@
      "by": "kept"
     },
     {
-     "id": "glacial-ape-king",
-     "why": "Tundra & ice card",
-     "by": "kept"
-    },
-    {
      "id": "harbor-seal",
      "why": "Tundra & ice card; first-clear card of 17-3",
      "by": "kept"
@@ -3165,6 +3160,11 @@
      "why": "Owner 11-01: cut",
      "by": "owner",
      "statusWhy": "LISTFIX2 (11-03): your 11-01 cut is applied (off Wolfsbane Tundra's MAP list, THEME4). It sits on SPECIAL as 17-8's boss leader and reward (RELFIX3, 10-29); THEME4 kept it there on purpose. Dropping the boss card itself needs a new 17-8 leader and reward (LISTFIX2-2)."
+    },
+    {
+     "id": "glacial-ape-king",
+     "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
+     "by": "owner"
     }
    ],
    "maybe": [
@@ -3493,11 +3493,6 @@
      "by": "kept"
     },
     {
-     "id": "glacial-ape-king",
-     "why": "Carried from Wolfsbane Tundra (Map 17); Tundra & ice card",
-     "by": "kept"
-    },
-    {
      "id": "talus-pika",
      "why": "Carried from Wolfsbane Tundra (Map 17); Mountain & sky card",
      "by": "kept"
@@ -3548,6 +3543,11 @@
     {
      "id": "phoenix-fledgling",
      "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "glacial-ape-king",
+     "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
      "by": "owner"
     }
    ],
@@ -4282,11 +4282,6 @@
      "by": "kept"
     },
     {
-     "id": "glacial-ape-king",
-     "why": "Carried from Wolfsbane Tundra (Map 17); Tundra & ice card",
-     "by": "kept"
-    },
-    {
      "id": "frost-hare-sprinter",
      "why": "Carried from The Pinewood Taiga (Map 16); Tundra & ice card",
      "by": "kept"
@@ -4327,7 +4322,13 @@
      "by": "kept"
     }
    ],
-   "cut": [],
+   "cut": [
+    {
+     "id": "glacial-ape-king",
+     "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
+     "by": "owner"
+    }
+   ],
    "maybe": [
     {
      "id": "arctic-fox-raider",
@@ -4785,5 +4786,6 @@
   }
  },
  "theme4": "THEME4 (2026-11-01): the owner's picks folded (tools/theme4/apply_2026_11_01.py); chosen entries may carry flag \"unlikely\" + flagWhy (Claude's flag, still on the list).",
- "listfix2": "LISTFIX2 (2026-11-03): cut entries may carry statusWhy: why a cut card is still on its map's lists (SPECIAL for its fight, or put back by a later package). The Map cards panel shows each cut's live status (Still listed / Kept for its fight / Removed) from the lists themselves."
+ "listfix2": "LISTFIX2 (2026-11-03): cut entries may carry statusWhy: why a cut card is still on its map's lists (SPECIAL for its fight, or put back by a later package). The Map cards panel shows each cut's live status (Still listed / Kept for its fight / Removed) from the lists themselves.",
+ "cut3": "CUT3 (2026-11-03): the owner cut Glacial Ape-King from every map and submap of Map 0-20 (m3 = Map 19, m6 = Map 17, mi = Map 17 side map). Decks that still hold it are audited in docs/cut3-audit-2026-11-03.md; Map 17 (17-8) boss leader is an owner call."
 }
