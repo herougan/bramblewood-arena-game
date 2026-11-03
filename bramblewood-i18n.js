@@ -57,7 +57,14 @@ function compileTemplate(key, value){
     if(!p) continue;
     const prevPh = i > 0, nextPh = i < parts.length - 1;
     // spaces: any run of whitespace; next to a placeholder optional, since the value may be empty ("{v1} You found...")
-    src += p.split(/(\s+)/).map((t, j, a)=> j % 2 ? (((j === 1 && !a[0] && prevPh) || (j === a.length - 2 && !a[a.length - 1] && nextPh)) ? '\\s*' : '\\s+') : reEsc(t)).join('');
+    // 2026-11-03 (package FIX8, QA2 M5): an optional space next to a LITERAL word may be missing only when the value does not end (or start)
+    // in a letter there. "Next: {v1} at {v2}" took "Next: Goat Ledge" as v1 "Go", "at", v2 "Ledge" ("Siguiente: Go a Ledge").
+    src += p.split(/(\s+)/).map((t, j, a)=>{ if(j % 2 === 0) return reEsc(t);
+      const lead = j === 1 && !a[0] && prevPh, trail = j === a.length - 2 && !a[a.length - 1] && nextPh;
+      if(lead && trail) return '\\s*';
+      if(lead) return a[2] ? '(?:\\s+|(?<![\\p{L}\\p{N}]))' : '\\s*';
+      if(trail) return a[j - 1] ? '(?:\\s+|(?![\\p{L}\\p{N}]))' : '\\s*';
+      return '\\s+'; }).join('');
     lit += p.replace(/\s+/g, '').length;
     // the anchor: the longest literal word not glued to a placeholder ("card{s}" is no anchor: on screen it reads "cards").
     // A template with only glued words ("{rounds} rounds{v2}{v3}") takes one anyway: its values start with a space or are empty.
@@ -72,7 +79,8 @@ function compileTemplate(key, value){
   if(!anchor || !names.length) return null;
   // a template with little text of its own ("vs {liveOpponentName}") takes only a name-sized value, not any sentence starting "vs "
   src = src.replace(/\u0000(\w+)\u0001/g, (m, kind)=> kind === 'any' && lit < 6 ? '([^]{0,32}?)' : PH_PAT[kind]);
-  try{ return {key, value, names, re: new RegExp(src + '$', 'u'), anchor, lit}; }catch(e){ return null; }
+  try{ return {key, value, names, re: new RegExp(src + '$', 'u'), anchor, lit}; }catch(e){
+    try{ return {key, value, names, re: new RegExp(src.split('(?:\\s+|(?<![\\p{L}\\p{N}]))').join('\\s*').split('(?:\\s+|(?![\\p{L}\\p{N}]))').join('\\s*') + '$', 'u'), anchor, lit}; }catch(e2){ return null; } } // (an engine without lookbehind: the old loose spaces)
 }
 // 2026-10-23 (package SX, owner I2 "Template change"): opts.locale (the pack's language) makes the templates number-aware: a count
 // written the English way with a thousands comma or a decimal point ("4,000", "2.5") is filled into the translation the language's
@@ -108,7 +116,7 @@ function createTranslator(pack, onMiss, opts){
   // a value that isn't a key as a whole is tried piece by piece between separators
   function value(v, deep){
     const w = piece(v, deep); if(w != null) return w;
-    const bits = v.split(/(\s[·—–]\s|[.!?,;:]\s)/);
+    const bits = v.split(/(\s[·—–\/]\s|[.!?,;:]\s)/); // 2026-11-03 (FIX8, QA2 M5): + " / " ("Clear Sable Swampmire / The Morel Hollow": two map names)
     return bits.length > 1 ? bits.map((b, i)=> i % 2 ? b : (piece(b, deep) || b)).join('') : v;
   }
   function viaTemplates(str, deep){

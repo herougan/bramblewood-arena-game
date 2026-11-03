@@ -1,4 +1,4 @@
--- PROPOSED, NOT APPLIED (2026-10-30, package ECON1, owner BRUP-1 10:34: "Their own resource & a bit of normal resource. The bramble
+-- APPLIED 2026-11-03 (owner 23:01 #12, run in the SQL editor; was PROPOSED 2026-10-30, package ECON1, owner BRUP-1 10:34: "Their own resource & a bit of normal resource. The bramble
 -- resource comes from winning fights.").
 --
 -- Briar Blossoms (myCurrencies.blossoms) are what a bramble's Reinforce mostly costs. The client keeps them with the other currencies and,

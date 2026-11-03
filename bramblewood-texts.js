@@ -56,6 +56,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.codex-skill-none": "No skills seen yet.",
   "ui.codex-skill-clear": "Clear",
   "ui.codex-skill-active": "Showing cards with",
+  "ui.codex-skill-mystery": "Mystery skills",
+  "ui.codex-skill-mystery-tip": "Cards with a skill you have not seen yet.",
+  "ui.codex-skill-lvl": "[Lvl {n}]",
+  "ui.codex-skill-lvl-tip": "Gets this skill at Level {n}.",
   "ui.codex-skill-remove": "Remove from the filter",
   "ui.book-show-cards": "Show cards with this skill",
   "ui.codex-view-album": "View: Album",
@@ -881,7 +885,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.i-cannot-tell-a-lie-that": "I cannot tell a lie: that was a bad Wait 3.",
   "results.george-washingtoad": "George Washingtoad",
   "results.eureka-i-have-found-another-way": "Eureka! I have found another way to lose. Next, the way to win.",
-  "results.the-best-laid-plans-of-mice": "The best-laid plans of mice and otters often meet a Bee Knight.",
+  "results.the-best-laid-plans-of-mice": "The best-laid plans of mice and otters often meet a Bee Warden.",
   "results.robert-burrows": "Robert Burrows",
   "results.a-win-by-a-thread-ranks": "A win by a thread. Ranks grade the bramble Health you keep: lose less of it for a better rank.",
   "results.well-fought-keep-90-of-your": "Well fought. Keep 90% of your bramble and it becomes S.",
@@ -3033,6 +3037,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui13-baby-title": "Baby cards: eggs from these fights",
   "ui.ui13-baby-sub": "Eggs are on no list: a fight drops one now and then, and its kind follows the fight's deck. Baby cards on the lists above carry a Baby pill and are not counted.",
   "ui.ui13-egg-why": "Drops from {fights} (first clear up to {p})",
+  "ui.lf2-listed": "Still listed",
+  "ui.lf2-listed-tip": "This cut is not in the game yet: the card is still on this list.",
+  "ui.lf2-special": "Kept for its fight",
+  "ui.lf2-special-tip": "Off this list, but on the map's SPECIAL list: a fight still leads with it or gives it as a reward, so it can still appear here.",
+  "ui.lf2-removed": "Removed",
+  "ui.lf2-removed-tip": "Off this list: the cut is in the game.",
+  "ui.lf2-removed-elsewhere-tip": "Off this list: the cut is in the game. Still on: {lists}.",
+  "ui.lf2-picks-note": "✂ Cut and ↩ Keep only mark your picks in this browser; no list changes until Claude folds them in. Use Copy my picks or Export all, then paste the text to Claude.",
   "ui.ui13-egg-sure": "{node} gives one for sure on its first clear.",
   "ui.ui13-kind": "Card group",
   "ui.ui13-kind-base": "Base",
@@ -3169,7 +3181,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng21-insp-tip": "Inspiration {n}: +{atk} Attack, spent on its next attack that hits.",
   "ui.eng21-log-inspired": "inspired {target}: +{n} Inspiration (+{atk}⚔ until it hits) 📯",
   "ui.eng21-log-insp-spent": "spent its Inspiration: +{atk}⚔ on that hit 📯",
-  "ui.eng21-pounce-used": "Already used: it pounced as it landed."
+  "ui.eng21-pounce-used": "Already used: it pounced as it landed.",
+  "ui.econ3-each": "each",
+  "ui.econ3-each-tip": "Every quest in this tier pays this when you claim it.",
+  "ui.econ3-head-show": "Show the map's story",
+  "ui.econ3-head-hide": "Hide the map's story",
+  "ui.econ3-metal": "Metal"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

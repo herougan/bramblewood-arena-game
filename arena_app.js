@@ -7716,7 +7716,7 @@ function renderCodexGrid(keepPage){
   if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
   if(codexFilter.animal) ids = ids.filter(id=> animalGroupOf(defs[id].animal) === codexFilter.animal); // 2026-10-19 (package UT): the animal filter
   if(codexFilter.rarity) ids = ids.filter(id=> (defs[id].rarity || 'common') === codexFilter.rarity); // 2026-10-18 (package C): the album's rarity filter
-  { const want = codexSkillsChosen(); if(want.length){ ids = ids.filter(id=>{ const d = maskHiddenSkills(defs[id]); return want.every(k=> cardMatchesSkillPick(d, k)); }); } } // 2026-10-18 (package C): every skill picked; 2026-10-21 (package TX): a family (Diurnal = Diurnal {…}) or a group, never a skill still "?"
+  { const want = codexSkillsChosen(); if(want.length){ ids = ids.filter(id=> want.every(k=> ui18CardMatchesPick(defs[id], k))); } } // 2026-11-03 (package UI18): the mystery entry, and a skill a card only gets at a later level // 2026-10-18 (package C): every skill picked; 2026-10-21 (package TX): a family (Diurnal = Diurnal {…}) or a group, never a skill still "?"
   // 2026-09-26 (#1, "add a sort view to codex"): added Rarity (by RARITY_DEFS' own defined
   // order, common -> legendary etc., not alphabetically) and a dir flip. `base` always returns
   // the "natural" high-to-low/A-Z-first comparison; the dir flip below negates it uniformly
@@ -7794,7 +7794,7 @@ function renderCodexGrid(keepPage){
     // (EmojiStyle.htmlBlock, as the board rows do), so the emoji observer has nothing to swap node by node after it lands.
     // 2026-10-18 (audit 4): the key also carries whether the card's revealAfter gate is met, so a masked "?" tile (Quarry Mole)
     // is redrawn once Map 0 is cleared, without a reload.
-    let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
+    let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + ui18LateSkillFlags(id, d) + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
     // Easter eggs (2026-10-19, package EE): one not seen yet is a "???" tile (easterEggMaskDef), not the card.
     if(easterEggMasked(d) && easterEggsShown()){ let mh = `<div class="cx-tile-wrap cx-unowned cx-ee-mask" title="${escapeAttr(TX('ui.ee-mask-tip'))}">${cardTileHTML(easterEggMaskDef(d), {lazyArt:true, extraClass:'ee-masked', size:'full'})}</div>`; try{ mh = EmojiStyle.htmlBlock(mh); }catch(e){} return mh; }
     const hit = sig && codexTileCache.get(id);
@@ -7804,8 +7804,9 @@ function renderCodexGrid(keepPage){
     // (🥚 / 🚫) with its words in title and aria-label; the words follow the symbol only on a wide screen (.cx-tag-words, hidden on phones).
     if(adminModeEnabled && isEasterEgg(d)) tags.push(`<span class="cx-tag cx-tag-unob cx-tag-sym" title="${escapeAttr(TX('ui.ee-admin-tip'))}" aria-label="${escapeAttr(TX('ui.ee-tag'))}">🥚<span class="cx-tag-words"> ${escapeHtml(TX('ui.ee-tag'))}</span></span>`); // 2026-10-19 (package EE)
     else if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob cx-tag-sym" title="Not obtainable yet: the card editor\'s Obtainable box" aria-label="Not obtainable">🚫<span class="cx-tag-words"> Not obtainable</span></span>');
+    const lateFlags = ui18LateSkillFlags(id, d); // 2026-11-03 (package UI18): "Swarm [Lvl 1]" for a skill the shown copy gets later (Codex only)
     const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
-    let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable', size:'full' /* 2026-10-30 (CS-A) */})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
+    let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable', size:'full' /* 2026-10-30 (CS-A) */})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}${lateFlags}</div>`;
     try{ html = EmojiStyle.htmlBlock(html); }catch(e){}
     if(sig) codexTileCache.set(id, {sig, html});
     return html;
@@ -7963,6 +7964,44 @@ function codexFilterBadge(){
   const t = document.getElementById('cxFiltersToggle'); if(!t) return; const n = codexFilterCount(); let b = t.querySelector('.cx-fcount');
   if(!n){ if(b) b.remove(); return; } if(!b){ b = document.createElement('b'); b.className = 'cx-fcount'; t.append(' ', b); } b.textContent = n;
 }
+// UI18_CODEX_SKILLS:BEGIN
+// 2026-11-03 (package UI18, owner 22:04 + 22:08): the Codex skill filter lists only skills you have seen (skillBookEntries: on a card you
+// have seen, or met in a fight; Admin Mode lists all), plus one "? Mystery skills" entry for the cards that carry a skill you have not seen yet.
+// A card also counts for a skill it only gets at a later level (levelSkills), and its Codex tile says so with a "[Lvl N]" flag (Codex only).
+const UI18_MYSTERY = 'mystery', UI18_NOT_SKILL = new Set(['hatchling', 'fodder']);
+function ui18SeenSkillKeys(){ try{ return new Set(skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> e.key)); }catch(e){ return new Set(); } }
+// every skill key a card can carry: its effects and each level's levelSkills, as [{key, lvl}] (lvl = the level it arrives at, 0 = from the start)
+function ui18CardSkillKeys(d){
+  const out = [], seen = new Set(), add = (k, lvl)=>{ if(UI18_NOT_SKILL.has(k) || seen.has(k)) return; const p = skillDefOf(k); if(!p || !p.label || p.retired) return; seen.add(k); out.push({key:k, lvl}); };
+  const e = (d && d.effects) || {}; Object.keys(e).forEach(k=>{ if(skillValOn(e[k])) add(k, 0); });
+  const ls = (d && d.levelSkills) || {}; Object.keys(ls).map(Number).sort((a, b)=> a - b).forEach(L=>{ const o = ls[L] || ls[String(L)] || {}; Object.keys(o).forEach(k=>{ if(skillValOn(o[k])) add(k, L); }); });
+  return out;
+}
+function ui18CardHasMystery(d, seenSet){ if(adminModeEnabled || !d) return false; const seen = seenSet || ui18SeenSkillKeys();
+  return ui18CardSkillKeys(d).some(x=> !seen.has(x.key)); }
+function ui18MysteryCount(){ try{ if(adminModeEnabled) return 0; const defs = getCardDefs(), seen = ui18SeenSkillKeys(); let n = 0;
+  Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || d.test || d.token || easterEggMasked(d)) return; if(ui18CardHasMystery(d, seen)) n++; }); return n; }catch(e){ return 0; } }
+// a pick of the filter against a card (the Codex grid and the album): the mystery entry, or a seen skill / group, also at a later level
+function ui18CardMatchesPick(d, pick){
+  if(pick === UI18_MYSTERY) return ui18CardHasMystery(d);
+  const m = maskHiddenSkills(d); if(cardMatchesSkillPick(m, pick)) return true;
+  if(!d || !d.levelSkills || m._revealGated) return false;
+  const fx = Object.assign({}, m.effects || {}); let any = false;
+  Object.keys(d.levelSkills).forEach(L=>{ const o = d.levelSkills[L] || {}; Object.keys(o).forEach(k=>{ if(!UI18_NOT_SKILL.has(k) && !skillHiddenNow(k) && skillValOn(o[k]) && !(k in fx)){ fx[k] = o[k]; any = true; } }); });
+  return any && cardMatchesSkillPick(Object.assign({}, m, {effects: fx}), pick);
+}
+// the Codex tile's flags: each skill the card only gets from a level on (levelSkills, Level 1 and up), with that level (a skill you have not seen reads "?")
+function ui18LateSkillFlags(id, d){
+  try{ if(!d) return '';
+    const b = copyBaseDef(id) || d, ls = b.levelSkills; if(!ls) return '';
+    const seen = ui18SeenSkillKeys(), gated = (()=>{ const ra = cardRevealAfter(d); return !!(ra && !revealAfterMet(ra)); })(), rows = [];
+    ui18CardSkillKeys({levelSkills: ls}).forEach(x=>{ if(x.lvl < 1) return; const known = adminModeEnabled || (!gated && seen.has(x.key) && !skillHiddenNow(x.key)); rows.push({lvl:x.lvl, name: known ? (skillDefOf(x.key).label) : '?', icon: known ? (SKILL_ICON[x.key] || '') : ''}); });
+    if(!rows.length) return '';
+    const txt = r=> `${r.icon ? r.icon + ' ' : ''}${r.name} ${TX('ui.codex-skill-lvl', {n: r.lvl})}`, tip = rows.map(r=> `${r.name}: ${TX('ui.codex-skill-lvl-tip', {n: r.lvl})}`).join('\n');
+    return `<span class="cx-lvlsk" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${rows.slice(0, 2).map(r=> `<i>${escapeHtml(txt(r))}</i>`).join('')}${rows.length > 2 ? '<i>+' + (rows.length - 2) + '</i>' : ''}</span>`;
+  }catch(e){ return ''; }
+}
+// UI18_CODEX_SKILLS:END
 // 2026-10-21 (package TX, owner: "In the filter, Diurnal is the same as Diurnal {}. Same for swimmer and the rest."): one chip per skill family.
 function codexSkillChoices(){ try{ const seen = new Set(); return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:skillFamilyId(e.key), icon:SKILL_ICON[skillFamilyId(e.key)] || e.icon, name:e.name})).filter(e=>{ if(seen.has(e.key)) return false; seen.add(e.key); return true; }); }catch(e){ return []; } }
 function codexSkillName(key){ const p = skillDefOf(key); return (p && p.label) || key; }
@@ -8103,12 +8142,12 @@ function cardMatchesSkillPick(d, pick){
   if(pick.startsWith('agg:')) return cardInSkillAggregate(d, pick.slice(4));
   return skillFamilyKeys(pick).some(k=> cardHasSkill(d, k));
 }
-function skillPickName(k){ if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.label() : k; } return codexSkillName(skillFamilyId(k)); }
-function skillPickIcon(k){ if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.icon : '✨'; } return SKILL_ICON[skillFamilyId(k)] || '✨'; }
+function skillPickName(k){ if(k === UI18_MYSTERY) return TX('ui.codex-skill-mystery'); if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.label() : k; } return codexSkillName(skillFamilyId(k)); }
+function skillPickIcon(k){ if(k === UI18_MYSTERY) return '?'; if(String(k).startsWith('agg:')){ const a = skillAggregateOf(k.slice(4)); return a ? a.icon : '✨'; } return SKILL_ICON[skillFamilyId(k)] || '✨'; }
 // The skill picker's body: the groups, then the skills you have seen (one chip per family). `on` is the Set of picks.
 function skillPickerChipsHTML(list, on){
   return `<div class="cx-skill-groups"><b>${escapeHtml(TX('ui.tx-skill-groups'))}</b><small>${escapeHtml(TX('ui.tx-skill-groups-hint'))}</small></div>`
-    + `<div class="cx-skill-chips is-groups">${SKILL_AGGREGATES.map(a=> `<button type="button" class="cx-sk-chip is-group" data-cxskill="agg:${a.id}" aria-pressed="${on.has('agg:' + a.id)}">${a.icon} ${escapeHtml(a.label())}</button>`).join('')}</div>`
+    + `<div class="cx-skill-chips is-groups">${(ui18MysteryCount() || on.has(UI18_MYSTERY)) ? `<button type="button" class="cx-sk-chip is-group is-mystery" data-cxskill="${UI18_MYSTERY}" aria-pressed="${on.has(UI18_MYSTERY)}" title="${escapeAttr(TX('ui.codex-skill-mystery-tip'))}">? ${escapeHtml(TX('ui.codex-skill-mystery'))}</button>` : ''}${SKILL_AGGREGATES.map(a=> `<button type="button" class="cx-sk-chip is-group" data-cxskill="agg:${a.id}" aria-pressed="${on.has('agg:' + a.id)}">${a.icon} ${escapeHtml(a.label())}</button>`).join('')}</div>`
     + (list.length ? `<div class="cx-skill-chips">${list.map(s=> `<button type="button" class="cx-sk-chip" data-cxskill="${escapeAttr(s.key)}" aria-pressed="${on.has(s.key)}">${s.icon} ${escapeHtml(s.name)}</button>`).join('')}</div>` : `<p class="cx-skill-none">${escapeHtml(TX('ui.codex-skill-none'))}</p>`);
 }
 // ---- sorts ----
@@ -8145,7 +8184,7 @@ function cfMatch(d, f){
   if(f.phylum && !phylumOf(d).split(' & ').includes(f.phylum)) return false;
   if(f.rarity && (d.rarity || 'common') !== f.rarity) return false;
   if(f.mechLine && inferMechanicLine(d) !== f.mechLine) return false;
-  const sk = (f.skills || []).filter(k=> typeof k === 'string'); if(sk.length && (easterEggMasked(d) || !sk.every(k=> cardMatchesSkillPick(maskHiddenSkills(d), k)))) return false;
+  const sk = (f.skills || []).filter(k=> typeof k === 'string'); if(sk.length && (easterEggMasked(d) || !sk.every(k=> ui18CardMatchesPick(d, k)))) return false;
   return true;
 }
 function cfApply(ids, defs, f){ return ids.filter(id=> cfMatch(defs[id], f)); }
@@ -12373,7 +12412,7 @@ const CURRENCY_META = {
   // Briar Blossoms (2026-10-30, package ECON1, owner BRUP-1 10:34: "Their own resource & a bit of normal resource. The bramble resource comes
   // from winning fights. Dealing damage to bramble does net you a tiny bit even on loss."): what a bramble's Reinforce mostly costs (with a
   // small share of Dust and Leaves, BRAMBLE_COST). The name and icon are a placeholder the owner can change (label, glyph and the
-  // TX key ui.econ1-blossoms). Cloud: player_currencies.blossoms once supabase/proposed/20261030_bramble_resource.sql is applied.
+  // TX key ui.econ1-blossoms). Cloud: player_currencies.blossoms (supabase/migrations/20261030_bramble_resource.sql, APPLIED 2026-11-03).
   blossoms: {glyph:'💮', label:'Briar Blossoms'},
 };
 // Krooni retired for now (2026-10-23, package TU2, owner E9: "Retire Krooni for now"): nothing spends them, so players no longer see or
@@ -12404,8 +12443,8 @@ const ACHIEVEMENT_DEFS = [
   {id:'collector_50', cat:'collection', tier:1, icon:'🗂️', title:'Card Collector', desc:TX('ui.i2-ach-own-n', {n: 50}), target:50, progress:ctx=>ctx.ownedCards, reward:{dust:101}},
   {id:'collector_100', cat:'collection', tier:2, icon:'📚', title:'Bramble Archivist', desc:TX('ui.i2-ach-own-n', {n: 100}), target:100, progress:ctx=>ctx.ownedCards, reward:{gold:40, dust:202}},
   {id:'collector_200', cat:'collection', tier:3, icon:'🏛️', title:'Complete the Codex', desc:TX('ui.i2-ach-own-n', {n: 200}), target:200, progress:ctx=>ctx.ownedCards, reward:{gold:120, dust:338, metal:1}},
-  {id:'leveler_1', cat:'forge', tier:1, icon:'🔨', title:'First Steps in the Forge', desc:'Level up your first card.', target:1, progress:ctx=>ctx.leveledCards>0?1:0, reward:{dust:68}},
-  {id:'leveler_10', cat:'forge', tier:2, icon:'⭐', title:'Forge Regular', desc:TX('ui.i2-ach-level-n', {n: 10}), target:10, progress:ctx=>ctx.leveledCards, reward:{gold:40, dust:202}},
+  {id:'leveler_1', cat:'forge', tier:1, icon:'🔨', title:'First Steps in the Forge', desc:'Level up your first card.', target:1, progress:ctx=>ctx.forgeOpen && ctx.leveledCards>0?1:0, reward:{dust:68}},
+  {id:'leveler_10', cat:'forge', tier:2, icon:'⭐', title:'Forge Regular', desc:TX('ui.i2-ach-level-n', {n: 10}), target:10, progress:ctx=>ctx.forgeOpen ? ctx.leveledCards : 0, reward:{gold:40, dust:202}},
   {id:'conquest_5', cat:'road', tier:1, icon:'🗺️', title:'Into the Wilds', desc:TX('ui.i2-ach-clear-n', {n: 5}), target:5, progress:ctx=>ctx.clearedNodes, reward:{gold:60, dust:68}},
   {id:'conquest_map', cat:'road', tier:2, icon:'🏕️', title:'Campaign Cleared', desc:'Fully clear a Conquest map.', target:1, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:150, dust:169, metal:1}},
   {id:'conquest_maps_5', cat:'road', tier:2, icon:'🧭', title:'Five Horizons', desc:TX('ui.i2-ach-maps-n', {n: 5}), target:5, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:240, dust:220}},
@@ -12452,6 +12491,7 @@ function achievementContext(){
   return {
     wins: s.wins, bestWinStreak: s.bestWinStreak,
     ownedCards, leveledCards,
+    forgeOpen: featureUnlockedSafe('forge'), // 2026-11-03 (FIX8, QA2 M4): the Forge achievements wait for the Forge (Map 11); duplicate pulls level cards long before
     clearedNodes, mapsFullyCleared,
     raidBossesUnlocked: progress.raidUnlocked.length,
     // 2026-10-14 (user: "Wyrmslayer should only be achieved when I defeat the Caldera wyrm! Not just from seeing it."):
@@ -12926,7 +12966,7 @@ async function cloudPullState(){
         // 2026-10-19 (package RC): the raid trophy shards come from the row's raid_shards (supabase/proposed/20261019_raid_shards.sql)
         // once that column exists and has been written; until then this browser's are kept
         raidShards: cur.raid_shards && typeof cur.raid_shards === 'object' && Object.keys(cur.raid_shards).length ? raidShardsClean(cur.raid_shards) : raidShardsClean(myCurrencies && myCurrencies.raidShards),
-        // 2026-10-30 (ECON1): Briar Blossoms from the row's blossoms column (supabase/proposed/20261030_bramble_resource.sql) once it exists;
+        // 2026-10-30 (ECON1): Briar Blossoms from the row's blossoms column (supabase/migrations/20261030_bramble_resource.sql, APPLIED 2026-11-03);
         // until then (no column: undefined) this browser's are kept, like the trophy shards
         blossoms: cur.blossoms != null ? Math.max(0, Number(cur.blossoms)||0) : Math.max(0, Number((myCurrencies && myCurrencies.blossoms) || 0))};
       settleRaidPoints();
@@ -15327,8 +15367,12 @@ function resetForgeProgress(){
 // upgrade that feature"): the Forge has five tiers. Each raises the highest level it tempers to and the rarest card it will
 // work, and each upgrade waits for the map the old level gates used (Lv 5–8 at Map 16, 9 at Map 26, 10 at Map 31).
 // Limit breaks still wait for Map 50.
+// Metal's use (2026-11-03, package ECON3, ECON2-8 a; owner 21:10 "ECON2-8: a"): nothing spent Metal (a dedicated player holds 45-85 by Map 20, from
+// the weekly quests, boss repeats and the Trail). Each Forge tier step now also takes Metal: 5 for the Iron Forge (Map 13), 10 for the Ember
+// Forge (Map 16), 15 and 20 for the two after (Maps 26 and 31). The Leaves / Dust / Strange Materia prices are unchanged.
+const FORGE_TIER_METAL = {2: 5, 3: 10, 4: 15, 5: 20};
 const FORGE_TIER_NAMES = ['Village Forge', 'Iron Forge', 'Ember Forge', 'Dragonfire Forge', 'Heartfire Forge']; // names stay literal here: the language packs key on source text (the file's `name` is for the hub)
-const FORGE_TIERS = UPGRADE_COSTS.forgeTiers.map(t=> { const o = {tier:t.tier, name:FORGE_TIER_NAMES[t.tier - 1], cap:t.cap, upTo:t.upTo}; if(t.gold != null){ o.map = t.map; o.cost = {gold:t.gold, dust:t.dust}; o.strange = t.strange; } return o; }); // 2026-10-23 (HUB2): canonical/upgrade-costs.json
+const FORGE_TIERS = UPGRADE_COSTS.forgeTiers.map(t=> { const o = {tier:t.tier, name:FORGE_TIER_NAMES[t.tier - 1], cap:t.cap, upTo:t.upTo}; if(t.gold != null){ o.map = t.map; o.cost = {gold:t.gold, dust:t.dust}; o.strange = t.strange; o.metal = FORGE_TIER_METAL[t.tier] || 0; } return o; }); // 2026-10-23 (HUB2): canonical/upgrade-costs.json; metal: 2026-11-03 (ECON3)
 // Strange Materia (2026-10-12, 11:39 list: "Upgrading the forge requires strange materia at certain levels - only gotten after
 // defeating a certain map's boss. we can tweak this as we go"): each Forge tier also needs Strange Materia 🔮 (1, 1, 2, 3).
 // The boss of the map before each tier's map drops them on its first clear (Maps 12, 15, 25 and 30: one, one, two, three).
@@ -15397,13 +15441,13 @@ function forgeTierFor(defId, toLevel){ // the tier needed to temper this card to
 function canUpgradeForge(){
   const next = FORGE_TIERS[forgeTier()]; if(!next) return {ok:false, why:'max'};
   if(!adminModeEnabled && playerMapReach() < next.map) return {ok:false, why:'map', next};
-  if((myCurrencies.gold||0) < next.cost.gold || (myCurrencies.dust||0) < next.cost.dust) return {ok:false, why:'cost', next};
+  if((myCurrencies.gold||0) < next.cost.gold || (myCurrencies.dust||0) < next.cost.dust || (myCurrencies.metal||0) < (next.metal||0)) return {ok:false, why:'cost', next}; // metal: 2026-11-03 (ECON3, ECON2-8)
   if(!adminModeEnabled && next.strange && ownedCount('strange-materia') < next.strange) return {ok:false, why:'strange', next};
   return {ok:true, next};
 }
 function upgradeForge(){
   const c = canUpgradeForge(); if(!c.ok) return false;
-  myCurrencies.gold -= c.next.cost.gold; myCurrencies.dust -= c.next.cost.dust; try{ saveCurrencies(); }catch(e){}
+  myCurrencies.gold -= c.next.cost.gold; myCurrencies.dust -= c.next.cost.dust; myCurrencies.metal = Math.max(0, (myCurrencies.metal||0) - (c.next.metal||0)); try{ saveCurrencies(); }catch(e){} // metal: 2026-11-03 (ECON3, ECON2-8)
   if(c.next.strange && !adminModeEnabled) try{ spendCopies('strange-materia', c.next.strange); }catch(e){}
   try{ localStorage.setItem(FORGE_TIER_KEY, String(c.next.tier)); }catch(e){}
   try{ logTxn({action:'forgeUpgrade', source:'Forge', before: c.next.tier - 1, after: c.next.tier}); }catch(e){}
@@ -15419,7 +15463,7 @@ function forgeUpgradeHTML(){
     <div class="fu-now" title="${escapeAttr(cur.name + ': tempers to Lv ' + cur.cap + ', cards up to ' + rarName(cur.upTo))}"><b>🏭 Forge</b> <small>Tier ${cur.tier}</small></div>
     ${next ? `<div class="fu-next"><span>Next: <b>${escapeHtml(next.name)}</b>, Lv ${next.cap} and up to ${escapeHtml(rarName(next.upTo))}</span>
       ${c.why === 'map' ? `<span class="fu-gate">🗺️ ${mapLockText(next.map, `Opens at Map ${next.map}`) /* 2026-10-18: Maps 26 and 31 aren't charted yet */}</span>` : ''}
-      <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge${btnCostHTML(next.cost, next.strange ? [{icon:'🔮', need:next.strange, have:ownedCount('strange-materia'), label:strangeMateriaSourceText()}] : [])}</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
+      <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge${btnCostHTML(Object.assign({}, next.cost, next.metal ? {metal: next.metal} : {}) /* 2026-11-03 (ECON3, ECON2-8): its Metal */, next.strange ? [{icon:'🔮', need:next.strange, have:ownedCount('strange-materia'), label:strangeMateriaSourceText()}] : [])}</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
     ${adminModeEnabled ? `<button type="button" class="btn small ghost" id="forgeTierEditBtn">✏️ Edit tier prices</button>` : ''}
   </div>`;
 }
@@ -17917,7 +17961,7 @@ const DIALOGUES = {
     {label:'go', who:'vesper', text:'Ten tickets at most, and one more each hour. Spend them well.'},
   ]},
   unlock_raid: {lines:[
-    {who:'aurelia', text:'Even the Dominion cannot fell that thing alone.'},
+    {who:'aurelia', text:'Even the Sunfeather Tribes cannot fell that thing alone.'},
     {who:'shieldback', text:'Then we chip at it together. Every deck that fights wears it down.'},
     {who:'aurelia', text:'Will you stand with your enemies, if only for an afternoon?', options:[{label:'For an afternoon.', goto:'go'}, {label:'Never.', goto:'never'}], silent:'go'},
     {label:'never', who:'aurelia', text:'Then stand beside them and pretend. It works the same.', goto:'go'},
@@ -18134,6 +18178,59 @@ const DIALOGUES = {
   cur_m11_banner: {lines:[
     {who:'shieldback', text:'A torn banner on the ridge. Not ours, not theirs.'},
     {who:'traveller', text:'There are more than two sides on this road. You\'ll meet them.'},
+  ]},
+  // 2026-11-03 (package CONTENT9, ECON2-9 a, owner 21:10 "OK": one curiosity on each silent main map, Claude drafts, the owner edits).
+  // DRAFTS: Maps 6, 9, 12, 15, 16, 17, 18, 22, 23, 24 (list in docs/content9-2026-11-03.md). Edit them in Admin -> NPC speeches.
+  cur_m8_bones: {lines:[
+    {who:'swiftpaw', text:'Bones, stacked by size. Somebody here is tidy about supper.'},
+    {who:'traveller', text:'The Gnawed. Rats who stopped asking what\'s on the plate. They\'d trade with you, if you looked less like a meal.'},
+    {who:'shieldback', text:'Noted. Nobody wanders off alone in this bog.'},
+  ]},
+  cur_mk_kelpknot: {lines:[
+    {who:'whisper', text:'Kelp, knotted around a root. Three knots, then one.'},
+    {who:'traveller', text:'Tidefolk writing. It means: the dry ones came through here, so count your fish.'},
+    {who:'swiftpaw', text:'\'The dry ones.\' That\'s us, isn\'t it?'},
+  ]},
+  cur_mh_thread: {lines:[
+    {who:'traveller', text:'A thread, tied to a thorn, running off into the hedge.'},
+    {who:'swiftpaw', text:'Someone found the way out and marked it for the rest of us.'},
+    {who:'traveller', text:'Or someone marked the way in. In a maze it\'s the same thread.'},
+  ]},
+  cur_ml_cartwheel: {lines:[
+    {who:'traveller', text:'One of ours. A road-folk cart lost a wheel here and kept going on three.'},
+    {who:'shieldback', text:'On three wheels? Through militia country?'},
+    {who:'traveller', text:'Road-folk always keep going. The wheel is the only thing we ever leave behind.'},
+  ]},
+  cur_mt_antler: {lines:[
+    {who:'aurelia', text:'An elk\'s antler, shed in the snow. The great stags drop them every winter.'},
+    {who:'vesper', text:'Our tribes carve them into horns. One note, and every stag in the wood looks up.'},
+    {who:'swiftpaw', text:'And every wolf, I\'d guess.'},
+  ]},
+  cur_m6_wolfsbane: {lines:[
+    {who:'whisper', text:'Wolfsbane, flowering through the frost. The only blue for a hundred miles.'},
+    {who:'shieldback', text:'The packs walk around it. Every one of them, and wide.'},
+    {who:'whisper', text:'Then so do we. Some lessons the wolves already paid for.'},
+  ]},
+  cur_md_glassrose: {lines:[
+    {who:'traveller', text:'Lightning struck the dune here and left a rose of glass behind.'},
+    {who:'fennec-fox', text:'Don\'t touch it. It\'s still warm. It\'s always still warm.'},
+    {who:'swiftpaw', text:'How long ago was the lightning?'},
+    {who:'fennec-fox', text:'Before my grandmother. The sand keeps a grudge.'},
+  ]},
+  cur_m22_kettle: {lines:[
+    {who:'peddler', text:'Somebody\'s kettle, set over a crack in the ice. It boils without a fire.'},
+    {who:'traveller', text:'The goats up here make tea whenever the vent breathes. Twice a minute.'},
+    {who:'peddler', text:'The mountain\'s been cooking longer than any of us. Mind you don\'t end up in the pot.'},
+  ]},
+  cur_m23_payroll: {lines:[
+    {who:'swiftpaw', text:'A pay-roll, dropped in the mud. Every sellsword in the camp, and what they\'re owed.'},
+    {who:'traveller', text:'Look at the bottom line. Nobody\'s been paid since spring.'},
+    {who:'shieldback', text:'An army that isn\'t paid starts thinking. Good. Let it think.'},
+  ]},
+  cur_m24_coin: {lines:[
+    {who:'traveller', text:'A coin from the Counting House, fallen in a crack. Someone bit it to test it.'},
+    {who:'swiftpaw', text:'And then left it there?'},
+    {who:'traveller', text:'The bite says it\'s lead under the gold. Even the Magnate\'s coins wear armour.'},
   ]},
   boss_banter: {lines:[
     {who:'shieldback', text:'That one doesn\'t surrender. Don\'t wait for it to.'},
@@ -18499,10 +18596,10 @@ const FEATURE_SPOTS = [
   {key:'autobattle', adminOnly:true /* PL2 (2026-10-25, owner 22:28 #6: "Hide whisper's game for now - only for admin") */, mapHidden:true /* 2026-10-30 (UI6, X22): off the map for everyone, Admin too (ui6SpotOffMap) */, icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   // The Skill Codex two maps after the Codex, the Map Codex two after that (2026-10-13). They're Codex pages, not map spots.
   {key:'skillcodex', icon:'📘', name:'Skill Codex', mapNumber:9, get map(){ return mapIdAt(9); }, after:null, dialogue:'unlock_skillcodex', tabs:['skillcodex'], go:()=>{ codexSubTab = 'skills'; switchTab('codex'); }},
-  {key:'mapcodex', icon:'🗺️', name:'Map Codex', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_mapcodex', tabs:['mapcodex'], go:()=>{ codexSubTab = 'maps'; switchTab('codex'); }},
+  {key:'mapcodex', icon:'🗺️', name:'Map Codex', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, pos:{x:6, y:74} /* 2026-11-03 (ECON3, ECON2-10): its default sat on 11-1 */, dialogue:'unlock_mapcodex', tabs:['mapcodex'], go:()=>{ codexSubTab = 'maps'; switchTab('codex'); }},
   {key:'codex', icon:'📖', name:'Codex', mapNumber:7, get map(){ return mapIdAt(7); }, after:null, dialogue:'unlock_codex', tabs:['codex'], go:()=> switchTab('codex')},
   // 2026-10-13 (user: "Move the Arena to Map 11"; "the quest board can be moved into the caves and alcoves", Map 8).
-  {key:'arena', icon:'🏟️', name:'The Arena', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
+  {key:'arena', icon:'🏟️', name:'The Arena', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, pos:{x:17, y:72} /* 2026-11-03 (ECON3, ECON2-10): beside the Map Codex, clear of 11-1 / 11-2 */, dialogue:'unlock_arena', tabs:['arena','ranking','friends','guild'], go:()=>{ playSubTab = 'arena'; switchTab('play'); }},
   // Pack B (Tidemire Chests) from Map 8.
   {key:'shop2', icon:'🏮', name:'Ember Peddler', mapNumber:8, get map(){ return mapIdAt(8); }, after:null, dialogue:'unlock_shop2', tabs:[], merchant:true, pack:'silver', go:()=> switchTab('shop')},
   // The Quest board (Map 9): from here, some conversations on the road turn into errands (mini-quests) on the Notices.
@@ -18592,6 +18689,23 @@ function activateSpot(spot){
     if(script && script.lines.some(l=> l.act || (l.options||[]).some(o=> o.act))){ playDialogue(spot.dialogue, {once:true, expand:true}); return; }
     if(spot.dialogue) playDialogue(spot.dialogue, {once:true, expand:true}); } // (PL2: the Group Dungeon spot has no conversation)
   spot.go();
+}
+// 2026-11-03 (package FIX8, QA2 M1): the Camp opens by itself once 0-1 and 0-2 are won. It used to unlock only when the player tapped its
+// spot on Map 0, which nothing pointed at, so a player who followed the Next buttons reached Map 1 (world still hidden, no way back to
+// Map 0) with no deck editor. Now the map draw calls this: it unlocks the Camp (toast, held packs, its conversation) without taking the
+// player anywhere. The Camp then stays on Home, the shortcuts and the Play tab's nav; the Map 0 spot still opens it too.
+function fix8AutoCamp(tries){
+  try{
+    tries = tries | 0;
+    const sp = FEATURE_SPOTS.find(x=> x.key === 'deck'); if(!sp || featureUnlocked('deck') || !loadTutorialDone() || !spotAvailable(sp, loadConquestProgress())) return false;
+    if((typeof matchState !== 'undefined' && matchState) || packRevealBusy() || document.getElementById('deckSwapOverlay') || document.querySelector('.starter-step') || tutorialRewardPopPending){
+      if(tries < 40) setTimeout(()=> fix8AutoCamp(tries + 1), 1500); return false; }
+    unlockFeature('deck'); try{ if(SoundKit.unlock) SoundKit.unlock(); }catch(e){}
+    showToast(`${sp.icon} ${sp.name} — unlocked!`, 'ok');
+    setTimeout(()=>{ try{ const n = releaseHeldPacks(); if(n) fxHook('heldPacks', n); }catch(e){} }, 1200);
+    try{ playDialogue(sp.dialogue, {once:true, expand:true}); }catch(e){}
+    return true;
+  }catch(e){ return false; }
 }
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
 // 2026-10-15 (user: "Are there any submaps with no background? fill them in."): the Old Bramble, Ice Hollow, Glimmer Depths,
@@ -18919,9 +19033,21 @@ const MAP_CURIOSITIES = [
   {key:'shell', map:'m7', icon:'🐚', name:'A spiral shell', x:16, y:72, dialogue:'cur_m7_shell'},
   {key:'wreck', map:'m7', icon:'⚓', name:'A coral wreck', x:84, y:26, dialogue:'cur_m7_wreck'},
   {key:'wisp', map:'m8', icon:'🕯️', name:'A light over the bog', x:80, y:68, dialogue:'cur_m8_wisp'},
-  {key:'anvil', map:'m9', icon:'⚒️', name:'The old anvil', x:18, y:30, dialogue:'cur_m9_anvil'},
+  {key:'anvil', map:'m9', icon:'⚒️', name:'The old anvil', x:20, y:56 /* 2026-11-03 (ECON3, ECON2-10): was 18 / 30, on 19-A-1 */, dialogue:'cur_m9_anvil'},
   {key:'eyrie', map:'m10', icon:'🪺', name:'An empty eyrie', x:82, y:22, dialogue:'cur_m10_nest'},
   {key:'banner', map:'m11', icon:'🚩', name:'A torn banner', x:22, y:76, dialogue:'cur_m11_banner'},
+  // 2026-11-03 (package CONTENT9, ECON2-9 a): drafts on the silent maps, each in the map's biggest empty area (farthest from its fights,
+  // spots and trail lines in ECON2's probe, docs/balance/econ2-maps-2026-11-03.json); the layout editor can still move them.
+  {key:'bones', map:'m8', icon:'🦴', name:'A tidy pile of bones', x:22, y:50, dialogue:'cur_m8_bones'},
+  {key:'kelpknot', map:'mk', icon:'🪢', name:'A knotted kelp rope', x:30, y:48, dialogue:'cur_mk_kelpknot'},
+  {key:'thread', map:'mh', icon:'🧶', name:'A thread tied to a thorn', x:50, y:54, dialogue:'cur_mh_thread'},
+  {key:'cartwheel', map:'ml', icon:'🛞', name:'A cart wheel in the grass', x:42, y:44, dialogue:'cur_ml_cartwheel'},
+  {key:'antler', map:'mt', icon:'🦌', name:'A shed antler', x:12, y:64, dialogue:'cur_mt_antler'},
+  {key:'wolfsbane', map:'m6', icon:'🪻', name:'A patch of wolfsbane', x:76, y:60, dialogue:'cur_m6_wolfsbane'},
+  {key:'glassrose', map:'md', icon:'🌹', name:'A rose of glass', x:12, y:72, dialogue:'cur_md_glassrose'},
+  {key:'kettle', map:'m22', icon:'♨️', name:'A kettle on a steam vent', x:48, y:52, dialogue:'cur_m22_kettle'},
+  {key:'payroll', map:'m23', icon:'📜', name:'A muddy pay-roll', x:84, y:86, dialogue:'cur_m23_payroll'},
+  {key:'coin', map:'m24', icon:'🪙', name:'A bitten gold coin', x:88, y:86, dialogue:'cur_m24_coin'},
 ];
 const CURIO_AFTER = ['It\'s just as you left it.', 'Nothing new here. Yet.', 'You give it another look. Still curious.'];
 function mapCuriositiesHTML(map){
@@ -21715,18 +21841,22 @@ const QUEST_TIERS = {
       {id:'d3-units', counter:'unitsDefeated', goal:30, label:TX('ui.i2-q-units-n', {n: 30})},
       {id:'d3-pvp', counter:'pvpWins', goal:2, label:TX('ui.i2-q-pvp-n', {n: 2})}]},
   ],
+  // 2026-11-03 (package ECON3, ECON2-3 a; owner 21:10 "ECON2-3: a"): each tier holds only quests a player can do once its feature is
+  // open. w1-pvp (Arena, Map 11) moved to tier 3 and w3-conquest to tier 1; the two raid quests (Raid, Map 13) to tier 3. So tiers 1-2
+  // are all doable from Map 4 and tier 3 opens behind them. The ids are kept (a save's claimed list still matches); the tiers' pay is
+  // unchanged and still paid per quest (ECON2-2).
   weekly: [
     {reward:{gold:340, dust:520, metal:3}, quests:[
       {id:'w1-energy', counter:'energyConquest', goal:200, label:TX('ui.i2-q-energy-n', {n: 200})},
-      {id:'w1-pvp', counter:'pvpTickets', goal:30, label:TX('ui.i2-q-tickets-n', {n: 30})},
+      {id:'w3-conquest', counter:'conquestWins', goal:10, label:TX('ui.i2-q-conquest-n', {n: 10})},
       {id:'w1-units', counter:'unitsDefeated', goal:100, label:TX('ui.i2-q-units-n', {n: 100})}]},
     {reward:{gold:225, dust:345, metal:1}, quests:[
-      {id:'w2-raid', counter:'raidsJoined', goal:3, label:TX('ui.i2-q-raids-n', {n: 3})},
-      {id:'w2-raiddmg', counter:'raidDamage', goal:4000, label:TX('ui.i2-q-raiddmg-n', {n: '4,000'})}, // 2026-10-19 (package RB): 20,000 on the x15 scale; a fight is ~1/5 of what it counted
       {id:'w2-wins', counter:'wins', goal:15, label:TX('ui.i2-q-wins-n', {n: 15})}]},
     {reward:{gold:110, dust:170}, quests:[
-      {id:'w3-conquest', counter:'conquestWins', goal:10, label:TX('ui.i2-q-conquest-n', {n: 10})},
-      {id:'w3-pvp', counter:'pvpWins', goal:10, label:TX('ui.i2-q-pvp-n', {n: 10})}]},
+      {id:'w1-pvp', counter:'pvpTickets', goal:30, label:TX('ui.i2-q-tickets-n', {n: 30})},
+      {id:'w3-pvp', counter:'pvpWins', goal:10, label:TX('ui.i2-q-pvp-n', {n: 10})},
+      {id:'w2-raid', counter:'raidsJoined', goal:3, label:TX('ui.i2-q-raids-n', {n: 3})},
+      {id:'w2-raiddmg', counter:'raidDamage', goal:4000, label:TX('ui.i2-q-raiddmg-n', {n: '4,000'})}]}, // 2026-10-19 (package RB): 20,000 on the x15 scale; a fight is ~1/5 of what it counted
   ],
 };
 econScaleTable('quests', QUEST_TIERS.daily.map(t=> t.reward)); econScaleTable('quests', QUEST_TIERS.weekly.map(t=> t.reward)); // 2026-10-30 (ECON1, owner BRUP-1): halved
@@ -22137,7 +22267,9 @@ const QUEST_ICON = {energyConquest:'⚡', pvpTickets:'🎟️', unitsDefeated:'�
 // Say yes and it's pinned under Errands on the Notices; let it pass and it waits there as an offer for the rest of the
 // day. Up to 3 at a time. Progress counts from the moment you take it on (lifetime counters), and an errand pays a small
 // share of a Materia Unit plus Maple Leaves, and sometimes an Iron Shard.
-const ERRANDS_KEY = 'bramblewood_errands_v1', ERRANDS_MAX = 3, ERRAND_OFFER_CHANCE = 0.3;
+// 2026-11-03 (package ECON3, ECON2-6; owner 20:34 "ECON2-6 OK"): errands pay 2.5 times as much (ERRAND_PAY_MULT, on top of ECON1's half:
+// 35-68 Dust, 23-45 Leaves, about one notice) and are offered half as often (after 15% of Conquest wins, was 30%; still 2 offers a day at most).
+const ERRANDS_KEY = 'bramblewood_errands_v1', ERRANDS_MAX = 3, ERRAND_OFFER_CHANCE = 0.15, ERRAND_PAY_MULT = 2.5;
 // 2026-10-16 (user: "The quests should be bigger more official looking cards"): each errand has a short title for its writ
 // and for the "📜 Errand: …" toasts; the label stays the task line.
 const ERRAND_TEMPLATES = [
@@ -22159,7 +22291,7 @@ function loadErrands(){
 }
 function saveErrands(e){ try{ localStorage.setItem(ERRANDS_KEY, JSON.stringify(e)); }catch(_){} }
 function errandsOpen(){ return featureUnlocked('questboard') || (typeof adminModeEnabled !== 'undefined' && adminModeEnabled); }
-function errandReward(t){ return {dust: econScale('errands', 'dust', Math.round(MU(t.mu))), gold: econScale('errands', 'gold', Math.round(MATERIA_UNIT.gold * t.mu))}; } // 2026-10-30 (ECON1): halved, shown and paid
+function errandReward(t){ const k = ERRAND_PAY_MULT; return {dust: econScale('errands', 'dust', Math.round(MU(t.mu) * k)), gold: econScale('errands', 'gold', Math.round(MATERIA_UNIT.gold * t.mu * k))}; } // 2026-10-30 (ECON1): halved, shown and paid; 2026-11-03 (ECON3, ECON2-6): x2.5 before the half
 function errandProgress(x){ const st = loadLifetimeStats(); return Math.max(0, Math.min(x.goal, (st[x.counter]||0) - (x.base||0))); }
 function pickErrandTemplate(e){ const busy = new Set(e.active.map(x=> x.tid).concat(e.offers.map(x=> x.tid))); const pool = ERRAND_TEMPLATES.filter(t=> !busy.has(t.id)); return pool.length ? pool[Math.floor(Math.random()*pool.length)] : null; }
 function acceptErrand(tid){
@@ -22282,7 +22414,7 @@ function questsModalHTML(){
             <div class="qn-ico" aria-hidden="true">${QUEST_ICON[x.counter] || '📜'}</div>
             <div class="qn-label">${escapeHtml(x.label)}</div>
             <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
-            <div class="qn-note-rw">${rewardChips(t.reward)}</div>
+            <div class="qn-note-rw">${rewardChips(t.reward)}${kind === 'weekly' ? `<span class="qn-rw-each" title="${escapeAttr(TX('ui.econ3-each-tip'))}">${escapeHtml(TX('ui.econ3-each'))}</span>` : '' /* 2026-11-03 (package ECON3, ECON2-2; owner 20:34 "ECON2-2 OK"): claimQuest pays the tier's reward for every quest claimed, so the board says "each" */}</div>
             ${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : done ? '<span class="qn-claimhint" aria-hidden="true">🎁 Click to claim</span>' : ''}
           </div>`; }).join('')}</div>
       </div>`).join('')}
@@ -22357,6 +22489,44 @@ function questsModalShellHTML(dailyBoard, section, nextMon, now){
     ${body}
   </div>`;
 }
+// The swapped notice falling off the board (2026-11-03, package ECON3): questNoteGhost copies the old paper where it hangs (fixed, above the
+// board), questNoteFall swings it off its pin and drops it, fading, while the new roll already sits in the slot underneath. Nothing with
+// reduced motion or effects off (the board simply shows the new notice). The animation is ECON3_NOTE_FALL_MS long.
+const ECON3_NOTE_FALL_MS = 760;
+function questNoteGhost(note){
+  try{ if(!note || reducedMotion() || (typeof fxLevel === 'function' && fxLevel() === 'none')) return null;
+    const r = note.getBoundingClientRect(); if(!r.width) return null;
+    const g = note.cloneNode(true); g.classList.add('qn-ghost'); ['data-qid', 'data-claim-id', 'data-claim-kind', 'role', 'tabindex'].forEach(k=> g.removeAttribute(k));
+    g.setAttribute('aria-hidden', 'true'); g.querySelectorAll('.qn-swap, .qn-new, .fxe-curl').forEach(x=> x.remove());
+    const cs = getComputedStyle(note), w = note.offsetWidth, h = note.offsetHeight;
+    // a tilted note's bounding box is a little larger than the note: the copy is centred on it
+    Object.assign(g.style, {position:'fixed', left: (r.left + (r.width - w) / 2) + 'px', top: (r.top + (r.height - h) / 2) + 'px', width: w + 'px', height: h + 'px',
+      margin:'0', zIndex:'1200', pointerEvents:'none', rotate: cs.rotate && cs.rotate !== 'none' ? cs.rotate : '0deg'});
+    document.body.appendChild(g);
+    // a transformed ancestor would shift a fixed box: measure where the copy landed and put its centre on the note's
+    const q = g.getBoundingClientRect(), dx = (r.left + r.width / 2) - (q.left + q.width / 2), dy = (r.top + r.height / 2) - (q.top + q.height / 2);
+    if(Math.abs(dx) > .5 || Math.abs(dy) > .5){ g.style.left = (parseFloat(g.style.left) + dx) + 'px'; g.style.top = (parseFloat(g.style.top) + dy) + 'px'; }
+    return g;
+  }catch(e){ return null; }
+}
+function questNoteFall(g){
+  if(!g || !g.animate){ if(g) g.remove(); return null; }
+  const h = g.offsetHeight || 160, side = Math.random() < .5 ? -1 : 1;
+  g.classList.add('qn-falling'); g.style.transformOrigin = '50% 4%';
+  const a = g.animate([
+    {transform:'translate(0, 0) rotate(0deg)', opacity:1, offset:0},
+    {transform:`translate(${side*4}px, 2px) rotate(${side*7}deg)`, opacity:1, offset:.18},
+    {transform:`translate(${side*-3}px, ${h*.12}px) rotate(${side*-5}deg)`, opacity:1, offset:.34},
+    {transform:`translate(${side*26}px, ${h*1.5}px) rotate(${side*24}deg)`, opacity:0, offset:1},
+  ], {duration: ECON3_NOTE_FALL_MS, easing:'cubic-bezier(.45,0,.75,.4)', fill:'forwards'});
+  const done = ()=>{ try{ g.remove(); }catch(e){} };
+  a.onfinish = done; a.oncancel = done;
+  // the fallback, should the finish event not come: gone once it has finished or run past its time (a held fall is the test's mid-fall shot)
+  const t0 = Date.now(), iv = setInterval(()=>{ if(!g.isConnected){ clearInterval(iv); return; } const st = a.playState;
+    if(st === 'finished' || st === 'idle' || (st !== 'paused' && Date.now() - t0 > ECON3_NOTE_FALL_MS + 600)){ clearInterval(iv); done(); } }, 250);
+  try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){}
+  return a;
+}
 let questsKeyHandler = null;
 function openQuestsModal(focus){
   const overlay = document.getElementById('authGateOverlay'); if(!overlay) return;
@@ -22378,8 +22548,12 @@ function openQuestsModal(focus){
   overlay.querySelectorAll('[data-qid]').forEach(n=>{ const seen = ()=>{ questMarkSeen(n.dataset.qid); const t = n.querySelector('.qn-new'); if(t) t.remove(); };
     n.addEventListener('mouseenter', seen); n.addEventListener('click', seen, true); n.addEventListener('focus', seen); });
   overlay.querySelectorAll('[data-claim-id][role="button"], [data-errand-claim][role="button"]').forEach(n=> n.addEventListener('keydown', e=>{ if((e.key === 'Enter' || e.key === ' ') && e.target === n){ e.preventDefault(); n.click(); } }));
-  overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ if(swapDailyNotice(b.dataset.swapId)) openQuestsModal(); }));
-  overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ const n = b.closest('.qn-note'); try{ fxHook('noticeSwap', n && n.getBoundingClientRect()); }catch(e){} }, true)); // 2026-10-15 batch F
+  // 2026-11-03 (package ECON3; owner 20:34: "When clicking swap (quest) - the paper falls away, revealing the 'previous quest' underneath.
+  // (It's just a new roll)"): the swap is a new roll, so the board is drawn with the NEW notice first and the old paper (a copy of it, on
+  // top) falls off its pin to show it. Was: FX.F's noticeSwap flipped a blank paper over the slot (batch F, 2026-10-15).
+  overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ const old = b.closest('.qn-note'), ghost = questNoteGhost(old);
+    if(!swapDailyNotice(b.dataset.swapId)){ if(ghost) ghost.remove(); return; }
+    openQuestsModal(); if(ghost) questNoteFall(ghost); }));
   overlay.querySelectorAll('[data-errand-claim]').forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); const rw = claimErrand(b.dataset.errandClaim); if(rw){ openQuestsModal(); rewardRush(r, rw, {xp:20}); } else denyShake(b); }));
   overlay.querySelectorAll('[data-errand-take]').forEach(b=> b.addEventListener('click', ()=>{ if(acceptErrand(b.dataset.errandTake)) openQuestsModal(); else denyShake(b); }));
   overlay.querySelectorAll('[data-errand-skip]').forEach(b=> b.addEventListener('click', ()=>{ dismissErrandOffer(b.dataset.errandSkip); openQuestsModal(); }));
@@ -23372,7 +23546,7 @@ const CONQUEST_MAPS = [
   // 2026-10-22 (package DV, owner 00:43: "make them accessible after a certain future map is complete. Don't have to be sequential, an early submap could be unlocked later on but a later submap be unlocked just 1 map after"): opens once Map 12 is cleared (was Map 5); its fights count as Map 12 (shieldMap). docs/map-divvy-2026-10-22.md
   { id:"mq", mapField:{thunderstorm:true} /* CONTENT4 (2026-10-28, L2, owner: "It should be a rare thing for a map not to have a field effect"): Thunderstorm over the open meadow (Spring Rain measured 77 -> 92% on a map already too easy); fightRules sets it where the fight does not set that key */, sub:true, parent:"mf", shieldMap:12, entry:{x:36, y:26, after:"1-1", afterMapCleared:"mh", label:"Clover meadows"}, name:"Clovermead", icon:"🍀", blurb:"A wide clover meadow past the Outskirts — rabbits, bees and mice, and nobody in a hurry.", sequential:true,
     nodes: [
-      { key:"1-A-1", kind:"skirmish", name:"Clover Patch", icon:"🍀", deck:{"bee-forager":1,"cottontail":1,"field-vole":5,"meadow-rabbit":1,"hedgerow-shrew":5} /* 2026-11-02 (BAL11, owner on BAL10-6): enemy deck rebuilt weaker from the fight's own list toward its road target (round 2), 72.5% -> 90% at 40 tune games, target 90 (tools/skirmish_pass.js weak: rebuilt from the fight's own list, no Baby card, leaders / first-clear cards / size kept; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */ /* 2026-11-02 (BAL9, JJ24): cut cards clover-butterfly, pigeon-peon, stag-beetle swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 1 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 75% -> 90% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, flavor:"Every clover here has a rabbit sitting on it.", requires:[] },
+      { key:"1-A-1", kind:"skirmish", name:"Clover Patch", icon:"🍀", deck:{"bee-forager":1,"cottontail":1,"field-vole":5,"meadow-rabbit":1,"hedgerow-shrew":5} /* 2026-11-02 (BAL11, owner on BAL10-6): enemy deck rebuilt weaker from the fight's own list toward its road target (round 2), 72.5% -> 90% at 40 tune games, target 90 (tools/skirmish_pass.js weak: rebuilt from the fight's own list, no Baby card, leaders / first-clear cards / size kept; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */ /* 2026-11-02 (BAL9, JJ24): cut cards clover-butterfly, pigeon-peon, stag-beetle swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 1 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 75% -> 90% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, flavor:"Every clover here has a rabbit sitting on it.", requires:[], fixedPos:{x:10, y:44} /* 2026-11-03 (ECON3, ECON2-10): the scatter put it at the top left, under the title panel */ },
       // 2026-10-19 (EE merge): Creeper became an ungettable Easter egg (3/12, explodes), so Bee Lines swaps its 2 for Honey Bees
       { key:"1-A-2", kind:"skirmish", name:"Bee Lines", icon:"🐝", deck:{"burrow-rabbit":1,"field-mouse":5,"honey-bee":1,"house-cat":1,"rabbit-kit":5,"hedgerow-shrew":3,"slow-worm":3} /* 2026-11-02 (BAL9, JJ24): cut card stag-beetle swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (RELFIX2): K14's swaps left 8 different cards (a skirmish keeps 5-7); Bee Sentry out (Honey Bee keeps the bee line), its copy to the map's Hedgerow Shrew */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 10 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 90% -> 80% at 40 tune games, target 80 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, flavor:"The bees fly in straight lines. Straight at you.", requires:["1-A-1"] },
       { key:"1-A-3", kind:"skirmish", name:"Puddle Hop", icon:"🐸", shieldOverride:0, deck:{"honey-bee":1,"house-cat":1,"harvest-mouse":1,"bramble-sprout":5,"hedgerow-shrew":2} /* 2026-11-02 (BAL10): road retune toward the road curve (round 1), swaps only, 92.5% -> 72% at 40-50 tune games, target 70 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct; checked by tools/bal9/road_fix_2026_11_02.js: list, K14) */ /* 2026-11-02 (BAL9, JJ24): cut cards jay-pilferer, village-miller swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 4 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 85% -> 70% at 40 tune games, target 70 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, flavor:"Last night's rain left a puddle for every frog.", requires:["1-A-1"] },
@@ -23488,8 +23662,8 @@ const CONQUEST_MAPS = [
   { id:"mx", finalBoss:true /* FLAIR1 (2026-10-28, owner 23:06): the Dragon Lair is the 0-20 road's final boss; the flag turns on its own flair (flairLairMap) */, mapField:{sulphurFumes:true} /* CONTENT4 (2026-10-28, L2, owner: "It should be a rare thing for a map not to have a field effect"): Sulphur Fumes inside the mountain; fightRules sets it where the fight does not set that key */, sub:true, parent:"m11", entry:{x:82, y:30, after:"20-10", label:"The lair"}, name:"Volcano Lair", icon:"🐉", blurb:"Where the mountain's fire is born. Something vast sleeps in it, and it is waking.", sequential:true,
     nodes: [
       { key:"20-B-1", rating:350, kind:"skirmish", challenge:true, name:"Cinder Slopes", icon:"🔥", deck:{"cinder-gecko":1,"cinder-hornet":1,"pack-mule":5,"ember-jackal":3,"magma-salamander":2,"tide-spirit":2,"fire-drake-hatchling":1,"obsidian-scorpion":1,"cinder-stoker":1} /* 2026-11-02 (BAL13, RAR-1 copy caps): magma-salamander -1, tide-spirit -1 (its new rarity's copy cap), copies to the list's nearest (tools/bal13/decks_2026_11_02.js trim) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 5 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rules:{"boon":"emberBorn"}, flavor:"The rocks are warm underfoot, then hot, then glowing.", rewards:{"first":{"gold":240,"dust":36}}, requires:[] },
-      { key:"20-B-2", rating:375, kind:"skirmish", name:"Obsidian Run", icon:"🪨", deck:{"cinder-stoker":1,"ember-centipede":3,"pack-mule":3,"obsidian-scorpion":1,"tide-spirit":2,"ash-moth":5,"magma-salamander":1} /* 2026-11-02 (BAL13, RAR-1 copy caps): tide-spirit -1 (its new rarity's copy cap), copies to the list's nearest (tools/bal13/decks_2026_11_02.js trim) */ /* 2026-11-02 (BAL9, JJ24): cut card basalt-boar swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 2 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, flavor:"Black glass in long, sharp ribbons. Watch where you step.", rewards:{"first":{"gold":260,"dust":40}}, requires:["20-B-1"] },
-      { key:"20-B-3", rating:400, kind:"skirmish", name:"The Wyrm's Antechamber", icon:"🌋", deck:{"cinder-stoker":1,"gorge-wyrm":1,"pack-mule":5,"magma-salamander":2,"ashbone-ghoul":1,"vampire-roost":5,"tide-spirit":1} /* 2026-11-02 (BAL13, RAR-1 copy caps): magma-salamander -1 (its new rarity's copy cap), copies to the list's nearest (tools/bal13/decks_2026_11_02.js trim) */ /* 2026-11-02 (BAL9, JJ24): cut cards cinder-imp, silverback-brawler swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 4 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, flavor:"The heat comes in waves now, like breathing.", rewards:{"first":{"gold":280,"dust":44}}, requires:["20-B-2"] },
+      { key:"20-B-2", rating:375, kind:"skirmish", name:"Obsidian Run", icon:"🪨", deck:{"cinder-stoker":1,"ember-centipede":3,"pack-mule":3,"obsidian-scorpion":1,"tide-spirit":2,"ash-moth":5,"magma-salamander":1} /* 2026-11-02 (BAL13, RAR-1 copy caps): tide-spirit -1 (its new rarity's copy cap), copies to the list's nearest (tools/bal13/decks_2026_11_02.js trim) */ /* 2026-11-02 (BAL9, JJ24): cut card basalt-boar swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 2 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, flavor:"Black glass in long, sharp ribbons. Watch where you step.", rewards:{"first":{"gold":260,"dust":40}}, requires:["20-B-1"], fixedPos:{x:36, y:62} /* 2026-11-03 (ECON3, ECON2-10): the scatter put 20-B-2 and 20-B-3 6.9% apart in the middle; a zig-zag now */ },
+      { key:"20-B-3", rating:400, kind:"skirmish", name:"The Wyrm's Antechamber", icon:"🌋", deck:{"cinder-stoker":1,"gorge-wyrm":1,"pack-mule":5,"magma-salamander":2,"ashbone-ghoul":1,"vampire-roost":5,"tide-spirit":1} /* 2026-11-02 (BAL13, RAR-1 copy caps): magma-salamander -1 (its new rarity's copy cap), copies to the list's nearest (tools/bal13/decks_2026_11_02.js trim) */ /* 2026-11-02 (BAL9, JJ24): cut cards cinder-imp, silverback-brawler swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 4 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, flavor:"The heat comes in waves now, like breathing.", rewards:{"first":{"gold":280,"dust":44}}, requires:["20-B-2"], fixedPos:{x:64, y:30} /* 2026-11-03 (ECON3, ECON2-10) */ },
       { key:"20-B-4", finalBoss:true /* FLAIR1: the lair's last fight */, rating:500, kind:"worldboss", name:"The Caldera Wyrm", icon:"🐉", deck:{"fire-drake-hatchling":1,"magma-titan":1,"magma-salamander":2,"ember-jackal":3,"obsidian-scorpion":1,"cinder-stoker":1,"deep-cave-troll":4,"tide-spirit":1} /* 2026-11-02 (BAL13, RAR-1 copy caps): magma-salamander -1 (its new rarity's copy cap), copies to the list's nearest (tools/bal13/decks_2026_11_02.js trim) */ /* 2026-11-02 (BAL9, JJ24): cut card pyroclast-wyrm swapped for the list's nearest (Lumber, Wait, 2A+H) */ /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 3 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL2): Fire Drake Hatchling (Heroic) 2 -> 1; Ember Jackal 2 -> 3 */, /* 2026-10-17 lumber audit: Cinder Imp ×2 → Cinder Stoker ×2 (Bounty) */ leaders:["caldera-wyrm"], leaderGrant:{"immolation":2}, hqHp:269 /* 2026-10-24 (BAL2): +29, the Health the Caldera Wyrm card gave up when it got a source (6/36 -> 4/7) */, flavor:"The mountain has a heartbeat. Get close enough and you can feel it in your teeth.", characterId:"collapsed-mine", rewards:{"first":{"gold":400,"dust":60}}, requires:["20-B-3"] }
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from mw's own cards; tune in the editor.
@@ -23616,7 +23790,12 @@ function endlessDungeon(cfg){
 // stop on the World map, no Dungeons tab, no 🗝️ key button for players; Admin Mode still sees and opens all of them. Climbs, best
 // floors and keys in a save are untouched. Backlog: docs/action-items.md (decide what they give, rebalance, then set this to false).
 const DAILY_DUNGEONS_HIDDEN = true;
-CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8', preview: DAILY_DUNGEONS_HIDDEN, entry:{x:88, y:16, after:'6-8', label:'Murgle Mayhem'},
+// 2026-11-03 (package ECON3, ECON2-1; owner 20:34: "ECON2-1 OK - not so critical atm. It can stay in the current map but just be unlocked
+// later on."): Murgle Mayhem is open to players again (its own switch, MURGLE_RELEASED; the Undercroft and the Long Burrow stay hidden).
+// It stays on Sable Swampmire (Map 6) behind 6-8, and it opens once Map 11 does (entry.afterMapCleared 'm7': Map 10, Coral Current,
+// cleared), the review's Map 11. Its pay (DAILY_DUNGEON_PAY.mm) and floors are unchanged. Locked, its entrance names the map to clear.
+const MURGLE_RELEASED = true, MURGLE_OPENS_AFTER_MAP = 'm7';
+CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8', preview: !MURGLE_RELEASED && DAILY_DUNGEONS_HIDDEN, entry:{x:88, y:16, after:'6-8', afterMapCleared: MURGLE_OPENS_AFTER_MAP, label:'Murgle Mayhem'},
   name:'Murgle Mayhem', icon:'🐸', bossName:'The Murgle King', bossIcon:'👑', floors:50, baseHq:40,
   blurb:'A sinkhole of bog water under the Swampmire that goes down further than anyone has counted. Something down there keeps sending the frogs back up.',
   flavor:'More frogs. Angrier frogs.', bossFlavor:'Every tenth floor something bigger is waiting in the reeds.',
@@ -23845,7 +24024,7 @@ function applyAmbushNode(){
   // (AMBUSH_HARD), not the weak deck a save stored when it triggered
   const fixed = AMBUSH_DECKS[hb ? 'hummingbirds' : 'otters'];
   map.nodes.push(Object.assign({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: fixed ? Object.assign({}, fixed) : (st.deck || ambushDeck(foe)), hqHp:24,
-    flavor: hb ? 'A Dominion patrol drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
+    flavor: hb ? 'A Sunfeather war-band drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
     rewardTokens:['factionGrowth'], requires: [], floating: true, ambush:true, optional: true, fixedPos: st.pos || null, faction: foe}, AMBUSH_HARD[hb ? 'hummingbirds' : 'otters'] || {}));
 }
 // 2026-10-24 (package MAP, owner 17:01 #3: "Those ambush skirmishes should lock the previous path i was going for. But then they also
@@ -23875,7 +24054,7 @@ const HIDDEN_SKIRMISHES = [
     node:{key:'4-H', code:'4-H', kind:'elite', name:"The Lamplighter's Return", icon:'🏮', hqHp:80, rules:{phase:'night'},
       flavor:'Somebody came home to the lantern you left lit, and brought the whole river with them.',
       deck:{'otter-lantern-bearer':3, 'beaver-builder':3, 'pond-trout':3, 'open-ocean-hermit-crab':3, 'humpback-elder':1}}},
-  {map:'m4', near:'8-6', dx:14, dy:-12, reveal:{curiosity:'cur_m4_glowpool'}, hint:'Something glows past the glowworm pool…',
+  {map:'m4', near:'8-6', dx:-13, dy:-25 /* 2026-11-03 (ECON3, ECON2-10): was dx 14, dy -12, which put it on 8-5 under the published layout (8-6 at the right edge) */, reveal:{curiosity:'cur_m4_glowpool'}, hint:'Something glows past the glowworm pool…',
     node:{key:'8-H', code:'8-H', kind:'elite', name:'The Spark-fly Hollow', icon:'✨', hqHp:70, rules:{dark:'dark'}, // 2026-10-16: Darkness; the first Pitch Black is the Sunken Depths (Map 10)
       flavor:'Past the glowworm pool the cave goes dark, except where the spark-flies are.',
       deck:{'lantern-spark-fly':3, 'glowworm-cluster':3, 'blind-cave-fish':3, 'cave-bat-swarm':2, 'echo-screecher':1}}},
@@ -23998,7 +24177,7 @@ const JUMPER_SKIRMISHES = [
     node:{key:'5-J', code:'5-J', kind:'elite', name:'The Log That Moved', icon:'🐊', hqHp:120,
       flavor:'You were sure that was a log. So was everything else that walked across it.',
       deck:{'crocodile-ambusher':2, 'swamp-alligator':2, 'snapper-hatchling':3, 'venomlord-serpent':2, 'constrictor-coil':2, 'mangrove-mudskipper':1}}},
-  {map:'mr', after:'13-4', before:'13-5', entrance:'ghost',
+  {map:'mr', after:'13-4', before:'13-5', entrance:'ghost', offset:0 /* 2026-11-03 (ECON3, ECON2-10): the diamond's middle; 7 off the line put it on 13-3 */,
     node:{key:'13-J', code:'13-J', kind:'elite', name:'The Pale Stag', icon:'👻', hqHp:150,
       flavor:'The oldest stag in the Deep died a hundred winters ago. Nobody told it.',
       deck:{'shimmerwing-stag':2, 'the-unremembered':2, 'willow-o-wisp':2, 'obsidian-lich':1, 'badger-berserker':2, 'boar-rampager':2, 'war-panther':1}}},
@@ -24075,7 +24254,7 @@ function ambushShouldTrigger(map, node){
 // every map you've reached, at most 100 (ambushTheftRoll). Never more than you have.
 function ambushTheftCap(){ let n = 0; try{ n = Math.max(0, furthestMapReached()); }catch(e){} return Math.min(100, 15 + 5*n); }
 function ambushTheftRoll(){ const cap = ambushTheftCap(), lo = Math.min(10, cap); return lo + Math.floor(Math.random() * (cap - lo + 1)); }
-function ambushPopHTML(hb){ return `<div class="ambush-pop-card"><div class="ambush-pop-ico" aria-hidden="true">${hb ? '🐦' : '🦦'}⚔️</div><h3>Ambush!</h3><p>${hb ? 'A Dominion patrol drops out of the canopy.' : 'A Rivergate shield-line rises out of the shallows.'}</p><small>Lose, and they run off with some of your Maple Leaves.</small></div>`; }
+function ambushPopHTML(hb){ return `<div class="ambush-pop-card"><div class="ambush-pop-ico" aria-hidden="true">${hb ? '🐦' : '🦦'}⚔️</div><h3>Ambush!</h3><p>${hb ? 'A Sunfeather war-band drops out of the canopy.' : 'A Rivergate shield-line rises out of the shallows.'}</p><small>Lose, and they run off with some of your Maple Leaves.</small></div>`; }
 function showAmbushPop(hb){ document.querySelectorAll('.ambush-pop').forEach(x=> x.remove()); const el = document.createElement('div'); el.className = 'ambush-pop'; el.setAttribute('role', 'alertdialog'); el.setAttribute('aria-label', 'Ambush!'); el.innerHTML = ambushPopHTML(hb); document.body.appendChild(el); return el; }
 function runAmbush(map, nodeKey){
   const foe = ambushFoe(), hb = foe === 'hummingbirds', positions = mapNodePositions(map), i = map.nodes.findIndex(n=> n.key === nodeKey), at = positions[i] || {x:50, y:50};
@@ -24728,7 +24907,13 @@ const CONQUEST_NODE_REWARDS = {
 // you can no longer earn there.
 // Per-skirmish reward override (2026-10-07, skirmish editor): node.rewards = {first:{gold,dust},
 // repeat:{gold,dust}} replaces any of the kind's defaults it sets; anything left blank keeps them.
-function nodeRewardTier(node){
+// 2026-11-03 (package ECON3, ECON2-5; owner 20:34 "ECON2-5 OK"): a skirmish won again pays by its Energy, so farming a cleared map is never
+// worth less a point of Energy than farming Map 0. Before halving: REPEAT_PER_ENERGY a point (8 Leaves, 2 Dust); after ECON1's conquestRepeat
+// half, 4 Leaves and 1 Dust a point of Energy. Map 0's 1-Energy skirmish still pays 4 Leaves (and now 1 Dust); a 9-Energy skirmish on Map 20
+// pays 36 Leaves and 9 Dust (was 4 and 0). An admin's per-skirmish repeat override (node.rewards.repeat) still wins; elites, bosses, the
+// Spire and the daily dungeons keep their own tables. Inline in nodeRewardTier (the tools and tests lift that function alone); a tool without
+// nodeEnergyCost reads 1 Energy (the old flat pay). `map` is optional (nodeEnergyCost finds the node's map).
+function nodeRewardTier(node, map){
   const base = node && (CONQUEST_NODE_REWARDS[node.kind] || CONQUEST_NODE_REWARDS[baseKind(node.kind)]); if(!base) return null;
   const o = (node && node.rewards) || {};
   const pick = (k, f)=> (o[k] && o[k][f] != null && o[k][f] !== '') ? Math.max(0, Number(o[k][f])||0) : base[k][f];
@@ -24738,6 +24923,11 @@ function nodeRewardTier(node){
   const dp = node.dungeonId && typeof dailyDungeonPay === 'function' && dailyDungeonPay(node.dungeonId), half = (k, v)=> typeof econScale === 'function' ? econScale('conquestRepeat', k, v) : v; // guarded: tools lift this function alone
   if(dp) return {first:{gold:pick('first','gold') + (dp.gold||0), dust:pick('first','dust') + (dp.dust||0), blossoms: dp.blossoms||0}, repeat:{gold: dp.gold||0, dust: dp.dust||0, blossoms: dp.blossoms||0}, dungeonPay: true};
   // 2026-10-30 (ECON1, owner BRUP-1): a fight won again pays ECON_INCOME_MULT.conquestRepeat (half) of its kind's clear-again reward
+  // 2026-11-03 (ECON3, ECON2-5): a skirmish's clear-again pay is 8 Leaves and 2 Dust a point of its Energy (halved: 4 and 1), unless overridden
+  if((node.kind === 'skirmish' || baseKind(node.kind || '') === 'skirmish') && !(o.repeat && Object.keys(o.repeat).some(f=> o.repeat[f] != null && o.repeat[f] !== ''))){
+    let e = 1; try{ if(typeof nodeEnergyCost === 'function') e = Math.max(1, nodeEnergyCost(map || undefined, node) || 1); }catch(err){ e = 1; }
+    return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold: half('gold', 8 * e), dust: half('dust', 2 * e)}, repeatEnergy: e};
+  }
   return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold: half('gold', pick('repeat','gold')), dust: half('dust', pick('repeat','dust'))}};
 }
 // Reward strip beside the skirmish title (2026-10-08, user: "The first clear rewards should instead
@@ -25413,7 +25603,7 @@ function adminCompleteNodes(mapId, keys, opts){
   if(opts && opts.allRewards){
     const map = CONQUEST_MAPS.find(mm=> mm.id === mapId);
     keys.forEach(k=>{ const node = map && map.nodes.find(nn=> nn.key === k); if(!node || node.kind === 'tutorial') return;
-      const tier = nodeRewardTier(node), first = firstTime.has(k);
+      const tier = nodeRewardTier(node, map), first = firstTime.has(k); // map: 2026-11-03 (ECON3, ECON2-5)
       if(tier){ [first ? tier.first : null, tier.repeat].forEach(t=>{ if(!t) return; pay.gold += t.gold || 0; pay.dust += t.dust || 0; }); }
       if(!first) return;
       try{ if(node.firstFactionPack){ const fid = FACTION_PACKS[node.firstFactionPack] ? node.firstFactionPack : myFactionPackId(); if(fid && (grantFactionPack(fid, 1) || []).length) packs++; } }catch(e){}
@@ -27504,6 +27694,7 @@ function renderConquestSubTab(body){
   if(conquestAutoAdvanceTo && !matchState && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)){ const nx = CONQUEST_MAPS.find(m=> m.id === conquestAutoAdvanceTo); conquestAutoAdvanceTo = null;
     if(nx && isMapUnlocked(nx, loadConquestProgress())){ conquestSelectedMap = nx.id; conquestSelectedNodeKey = null; conquestWorldView = false; } }
   setTimeout(maybeOfferDeckSwap, 600);
+  setTimeout(fix8AutoCamp, 900); // 2026-11-03 (FIX8, QA2 M1)
   grantClearedBossLeaders();
   // 2026-10-08 (user: "Conquest - we talked about making it full screen"): the map always fills the
   // whole window now (the ⛶ button still switches the browser itself to full screen).
@@ -27563,7 +27754,7 @@ function renderConquestSubTab(body){
       <div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">${map.icon}</div>${cleared ? '<i class="cmi-tick" aria-hidden="true">✓</i>' : ''}
       <div class="cmi-body"><div class="cmi-name">${map.name}</div><div class="cmi-sub">${cleared ? '✓ Cleared' : `${doneN}/${fightable.length} cleared`}</div></div>
     </div>`;
-  }).join('') + (firstLocked ? (()=>{ const num = mapNumberOf(firstLocked.id), tip = TX('ui.u3-map-chip-tip-locked', {n: num, name: firstLocked.name});
+  }).join('') + (firstLocked ? (()=>{ const num = mapNumberOf(firstLocked.id), tip = (()=>{ try{ return mapLockReason(firstLocked, progress); }catch(e){ return TX('ui.u3-map-chip-tip-locked', {n: num, name: firstLocked.name}); } })(); // 2026-11-03 (FIX8, QA2 minor 8): names the fights still to win (Map 2 waited on the side fight 1-3), not just "the map before it"
     return `<div class="conquest-map-item locked next-locked" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"><div class="cmi-num" aria-hidden="true">${num == null ? '' : num}</div><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>`; })() : '');
   // D13 (2026-10-03): a 🧭 World chip opens the atlas — every map as a compass diamond.
   // 2026-10-15 (user: "The world - all maps design doesn't look like the other map tabs. It should also have the side shine thing,
@@ -27670,7 +27861,7 @@ function renderConquestSubTab(body){
   mainEl.className = 'conquest-main' + (map.endless && map.axis === 'x' ? ' endless-x-main' : '') + (map.endless && map.axis !== 'x' ? ' endless-y-main' : ''); // a left-to-right dungeon scrolls sideways (2026-10-16)
   mainEl.dataset.mapId = map.id;
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
-  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}${'' /* 2026-10-18 (package MB, owner on mobile: "there's no way to go 'home'. No home button in the conquest menu."): full-screen map hides the header and the Home / Settings row, so a 🏠 sits on the map's own button row (CSS shows it only while body.conquest-immersive) */}<button type="button" class="conquest-home-btn" id="conquestHomeBtn" aria-label="${escapeAttr(TX('ui.back-to-home'))}" title="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span></button>${'' /* 2026-10-19 (package U3): the acorn, as the cluster's Home */}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
+  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}${'' /* 2026-10-18 (package MB, owner on mobile: "there's no way to go 'home'. No home button in the conquest menu."): full-screen map hides the header and the Home / Settings row, so a 🏠 sits on the map's own button row (CSS shows it only while body.conquest-immersive) */}<button type="button" class="conquest-home-btn" id="conquestHomeBtn" aria-label="${escapeAttr(TX('ui.back-to-home'))}" title="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🌰</span></button>${'' /* 2026-10-19 (package U3): the acorn, as the cluster's Home */}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button>${mapHeadlineHTML(map) /* 2026-11-03 (package ECON3, ECON2-10): the title panel folds to a chip after the first look */}
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' + (map.axis === 'x' ? ' endless-x' : '') : ''}" id="conquestCanvas" style="${map.endless ? (map.axis === 'x' ? `width:${map.nodes.length * 96}px;` : `min-height:${map.nodes.length * 86}px; --endless-h:${map.nodes.length * 86}px;`) : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${zoomAt && (tutPhase || tutZoomOut) ? `--tut-x:${zoomAt.x}%; --tut-y:${zoomAt.y}%;` : ''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
@@ -30230,7 +30421,7 @@ function tutorialFactionRewards(stage, forGrant){ // forGrant: true = the grant 
   const defs = getCardDefs(); if(Array.isArray(o[stage])) return o[stage].filter(id=> defs[id]);
   if(forGrant === 'peek' || !loadFactionChoice() || (typeof matchState !== 'undefined' && matchState && matchState.adminTest)) return [];
   if(forGrant !== true && (stage === 2 ? loadTutorial2Done() : loadTutorialDone())) return []; // past it already (a save from before RW5): nothing to draw
-  const ids = factionDrawSet(TUTORIAL_FACTION_REWARDS[stage - 1]); o[stage] = ids;
+  const ids = factionDrawSet(TUTORIAL_FACTION_REWARDS[stage - 1], null, loadFactionChoice() !== 'both'); o[stage] = ids; // 2026-11-03 (FIX8, QA2 minor 11): your own side's (and shared) cards, not the other side's
   try{ localStorage.setItem(TUT_FACTION_RW_KEY, JSON.stringify(o)); }catch(e){} return ids;
 }
 function starterDeckParts(pick){
@@ -30398,12 +30589,12 @@ function showFactionScreen(){
 // toward the hovered side with a quake, a flash and a low boom.
 const FACTION_LORE = {
   otters: {name:'Rivergate Otters', lore:'Rivergate was raised dam by dam by otters who never forget a flood, and never forgive one.', play:'They fight in shield walls: tough, armoured units that hold a lane and win the long fight.'},
-  hummingbirds: {name:'Sunfeather Dominion', lore:'From flower-thrones high in the canopy, the Dominion rules a court where every courtier is a duelist.', play:'They are fast fencers on the wing: flyers that strike first and slip past anything on the ground.'},
+  hummingbirds: {name:'Sunfeather Tribes', lore:'From painted cliff-nests above the canopy, the Sunfeather Tribes fly out in bright war-bands, and every warrior is a duelist.', play:'They are fast fencers on the wing: flyers that strike first and slip past anything on the ground.'},
   random: {name:'Random', lore:'Some warbands are born on the riverbank, some under the canopy.', play:'You get one side at random, with its starter cards and its faction rewards.'},
 };
 const FACTION_SHOWCASE = {
   otters: {title:'Rivergate Otters', blurb:'Shield walls, slick armour and stubborn river pride.', characters:['otter-centurion','otter-riverguard','otter-shieldback'], cards:['otter-kit','otter-paddler','otter-guard'], dir:-1},
-  hummingbirds: {title:'Sunfeather Dominion', blurb:'Too fast to hit, too proud to lose.', characters:['crimson-wing-duelist-cadet','cobalt-talon-skirmisher','dominion-nestguard'], cards:['sunthroat-courier','violet-vane-fletcher','mosswing-laborer'], dir:1},
+  hummingbirds: {title:'Sunfeather Tribes', blurb:'Too fast to hit, too proud to lose.', characters:['crimson-wing-duelist-cadet','cobalt-talon-skirmisher','dominion-nestguard'], cards:['sunthroat-courier','violet-vane-fletcher','mosswing-laborer'], dir:1},
 };
 // 2026-10-24 (package PL1, owner P24-1: "both should show 3 Commons at first, then, like the main screen, slowly flip to other
 // cards of that faction at random"): each side's three example cards start as three of its Commons (Starters fill in when a side
@@ -32102,6 +32293,31 @@ function rv2TagsOf(e, baby){
   else if(e.by === 'claude') t.push(['claude', TX('ui.rv2-tag-claude'), TX('ui.rv2-tip-claude')]);
   return t;
 }
+// 2026-11-03 (package LISTFIX2; owner 22:02: "cut cards still stay, but are just flagged as cut"): a Cut card's tile says whether the cut is
+// in the lists the game plays (mpEntry: the file + any live __cfg:map-pools row): "Still listed" (warning) while it is still on this section's
+// list, "Kept for its fight" when it left the MAP / submap list but sits on the map's SPECIAL (a boss leader or a fight's reward / first-clear
+// card: SPECIAL feeds that map's fights and packs), "Removed" otherwise (its tooltip names any other list that still holds it). The entry's
+// optional `statusWhy` (canonical/map-review.json, LISTFIX2) is added to the tooltip. Read-only: the ✂ / ↩ buttons still only mark picks.
+function lf2ListOf(ent, secKey){ return secKey === 'cards' ? ent.cards : secKey === 'special' ? ent.special : (ent.submaps[String(secKey).replace(/^sub:/, '')] || []); }
+function lf2CutStatus(top, secKey, id){
+  let ent; try{ ent = mpEntry(top); }catch(e){ return null; } if(!ent) return null;
+  if(lf2ListOf(ent, secKey).includes(id)) return {k: 'listed'};
+  if(secKey !== 'special' && ent.special.includes(id)) return {k: 'special'};
+  const where = [], tops = new Set(Object.keys(((typeof MAP_POOLS_BASE !== 'undefined' && MAP_POOLS_BASE) || {}).maps || {}).concat(Object.keys(mapPoolEdits || {})));
+  const nm = mid=>{ const m = mpMapById(mid); return m ? m.name : mid; };
+  tops.forEach(t=>{ let e; try{ e = mpEntry(t); }catch(x){ return; } if(!e) return;
+    if(e.cards.includes(id) || e.special.includes(id)) where.push(nm(t));
+    Object.keys(e.submaps).forEach(s=>{ if((e.submaps[s] || []).includes(id)) where.push(nm(MP_EXTRA_LISTS[s] ? MP_EXTRA_LISTS[s].map : s)); }); });
+  return {k: 'removed', where: [...new Set(where)]};
+}
+function lf2CutPillHTML(e, secKey){
+  const st = lf2CutStatus(rvFlipTop, secKey, e.id); if(!st) return '';
+  const extra = e.statusWhy ? ' ' + String(e.statusWhy) : '', css = (bg, fg)=> ` style="background:${bg};color:${fg};border-color:transparent;cursor:help"`; // inline: the panel's CSS lives in the template
+  if(st.k === 'listed') return `<b class="rv2-pill is-lf2-listed"${css('#c0392b', '#fff')} title="${escapeAttr(TX('ui.lf2-listed-tip') + extra)}">⚠ ${escapeHtml(TX('ui.lf2-listed'))}</b>`;
+  if(st.k === 'special') return `<b class="rv2-pill is-lf2-special"${css('#d9c27a', '#2a220b')} title="${escapeAttr(TX('ui.lf2-special-tip') + extra)}">${escapeHtml(TX('ui.lf2-special'))}</b>`;
+  const tip = st.where.length ? TX('ui.lf2-removed-elsewhere-tip', {lists: st.where.join(', ')}) : TX('ui.lf2-removed-tip');
+  return `<b class="rv2-pill is-lf2-removed"${css('#3f7d4e', '#fff')} title="${escapeAttr(tip + extra)}">✓ ${escapeHtml(TX('ui.lf2-removed'))}</b>`;
+}
 function rv1TilesHTML(list, kind, defs, secKey){
   if(!list.length) return '<span class="panel-sub">–</span>';
   return list.map(e=> rv1TileHTML(e, kind, defs, secKey)).join('');
@@ -32117,7 +32333,7 @@ function rv1TileHTML(e, kind, defs, secKey){
   const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
   const dd = defs[e.id], pt = dd ? basicPackTierOf(dd) : 0; // the pack a basic pack also gives it from, as a pill (was a tag under the small tile)
   const baby = ui13IsBaby(e.id, defs), unlikely = e.flag === 'unlikely';
-  const pills = rv2TagsOf(e, baby).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
+  const pills = (kind === 'cut' ? lf2CutPillHTML(e, secKey) /* 2026-11-03 (LISTFIX2) */ : '') + rv2TagsOf(e, baby).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
   const fl = !!rvFlips[rvFlipTop + '|' + secKey + '|' + e.id]; // 2026-10-29 (UI3, S10): a toggle made earlier this session is still on
   return `<span class="rv1-tile is-${kind}${fl ? ' is-flipped' : ''}${baby ? ' is-baby' : ''}${unlikely ? ' is-unlikely' : ''}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}" data-rv-baby="${baby ? 1 : 0}" data-rv-unlikely="${unlikely ? 1 : 0}">`
     + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, why: e.why || ''})
@@ -32295,7 +32511,7 @@ function pk1OpenMapCards(mapId){
   }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); }; // 2026-11-01 (UI13, HH3): not while the card editor has it hidden
@@ -34464,7 +34680,7 @@ function adminu1ErrorText(err){
 // 'viewing' controls also. How many online now, server load etc."): read-only tiles above the player list. From what the client can read
 // already: profiles (public read: total accounts, new today, and last_seen_at, which the signed-in heartbeat bumps every 2 minutes, so
 // "online now" is seen in the last 5 minutes; the live presence channel's count rides along), raid_week_attempts (public read). From the
-// proposed admin_overview() (supabase/proposed/20261103_admin_overview.sql, admin only): fights and matches in the last hour, database
+// proposed admin_overview() (supabase/migrations/20261103_admin_overview.sql, applied 2026-11-03, admin only): fights and matches in the last hour, database
 // connections and size; those tiles say "needs SQL" until it is applied. The health line: a cheap Supabase read's round trip, the
 // Supabase request errors this tab has seen (ui17CountingFetch, given to createClient), the site's own round trip (version.json) and
 // this build's id against the live one. Refresh, and every 30 s while the list is open.
@@ -35696,6 +35912,7 @@ function endMatch(opts){
   standardMatchActive = false;
   if(!(opts && opts.keepResume) && matchState && matchState.mode !== 'tutorial') bumpFightSerial(); // D53: a row's "New!" lasts the fight it first happened in
   try{ EMOTE_LAST_HIT.clear(); }catch(e){}
+  try{ document.querySelectorAll('body > .speech-bubble').forEach(b=> b.remove()); barkCurrent = null; }catch(e){} // 2026-11-03 (package FIX8, QA2 minor 3): the fight's last speech bubble ("Victory is ours!") stayed on the map
   SoundKit.stopAll();
   document.documentElement.classList.remove('bw-resolving'); document.body.classList.remove('match-ended'); syncFightTimeScale(null);
   // 2026-10-12 (user: "Tutorial disappears when a mission ends. If I didn't click next, it is silenced once"): a tip you
@@ -41352,7 +41569,7 @@ function sweepAllowed(mapId, nodeKey){ const nid = conquestNodeId(mapId, nodeKey
 function runSweep(mapId, nodeKey, count){
   const f = findConquestNode(mapId, nodeKey); if(!f) return null; const node = f.node, map = f.map || CONQUEST_MAPS.find(x=> x.id === mapId);
   const cost = nodeEnergyCost(map, node) || 1; let wins = 0, played = 0, gold = 0, dust = 0, blossoms = 0, keys = 0;
-  const tier = nodeRewardTier(node), dg = isDailyDungeonMap(map);
+  const tier = nodeRewardTier(node, map), dg = isDailyDungeonMap(map); // map: 2026-11-03 (ECON3, ECON2-5)
   for(let i = 0; i < count; i++){ if(dg && dungeonTicketsLeft() <= 0) break; if(!spendEnergy(cost)) break; if(dg){ dungeonStakeKey(mapId); keys++; } played++;
     const r = simulateSkirmishVsDeckSeeded(node, myDeckCounts, myCastleDef(), Math.floor(Math.random()*1e9));
     if(r.win){ wins++; const rank = r.castleLeft >= 0.9 ? 'S' : r.castleLeft >= 0.7 ? 'A' : r.castleLeft >= 0.5 ? 'B' : 'C'; const bm = tier && tier.dungeonPay ? 1 : (RANK_MULT[rank] || 1); // 2026-10-30 (ECON1): a daily dungeon's pay gets no rank bonus
@@ -43590,7 +43807,7 @@ async function resolveRoundCore(opts){
     // Tutorial (2026-09-23, batch #28) excluded for the same reason Sandbox is: a scripted
     // onboarding fight against a fixed Basics-tier opponent isn't a real result and shouldn't
     // pollute the player's actual win/loss ledger.
-    if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial' && m.mode!=='coop') recordMatchResult(m.winner, m.mode); // + COOP2: a vault floor pays as a raid fight, not on the win/loss ledger
+    if(m.mode!=='pc' && m.mode!=='sandbox' && m.mode!=='tutorial' && m.mode!=='coop' && !(m.mode==='conquest' && (m.adminTest || m.proFight))) recordMatchResult(m.winner, m.mode); /* 2026-11-03 (FIX8, QA2 M4): road (conquest) fights count on the ledger too, so First Victory and the Battles medals move; recordMatchResult pays nothing for them (gold/dust only for quick battles) */ // + COOP2: a vault floor pays as a raid fight, not on the win/loss ledger
     try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest && !m.towerReplay && !m.rewardDuplicate) heroAwardBattle(m); }catch(e){} // 2026-10-18 (package Z): a free Spire replay gives nothing
     if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
       try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw'), standard: !!m.standard || undefined, myDeck: m.standard ? 'Standard deck' : ((getActiveDeck() || {}).name || undefined)}); }catch(e){} // 2026-10-21 (package AR): + your deck's name and the format, for the Profile's match log
@@ -46795,7 +47012,7 @@ function wireWinLossRewardAnim(){
       onComplete: ()=>{ countEl.textContent = '+'+target; countEl.classList.remove('is-counting'); countEl.classList.add('is-counted'); }});
     countEl.classList.add('is-counting');
   });
-  { let waited = 0; const wait = ()=>{ if(document.querySelector('.rr-stage') && waited < 20000){ waited += 120; setTimeout(wait, 120); } else { startCounts(); setTimeout(baseDustBurst, 2400 + counts.length*180); } }; setTimeout(wait, 500); }
+  { let waited = 0; const wait = ()=>{ if(document.querySelector('.rr-stage') && waited < 5000 /* 2026-11-03 (FIX8, QA2 minor 7): was 20 s, so on a slow device the rewards read +0 for as long as the card reveal ran; the count now starts after 5 s at most */){ waited += 120; setTimeout(wait, 120); } else { startCounts(); setTimeout(baseDustBurst, 2400 + counts.length*180); } }; setTimeout(wait, 500); }
   rewardsCheer();
   try{ rewardCardsReveal(); }catch(e){}
 }
@@ -53854,7 +54071,7 @@ function rollMateriaDrops(node, isFirstClear, rank){
   const k = baseKind(node.kind || 'skirmish'), add = (id, n)=>{ out[id] = (out[id]||0) + n; };
   if(isFirstClear && (k==='boss' || k==='finalboss')){ try{ const mid = mapIdOfNode(node), num = mid ? mapNumberOf(mid) : null; const n = num != null ? STRANGE_MATERIA_DROPS[num] : 0; if(n && mapRewardNodeKey(CONQUEST_MAPS.find(m=> m.id===mid)) === node.key) add('strange-materia', n); }catch(e){} }
   if(isFirstClear){ if(k==='elite') add('iron-shard', 1); if(k==='boss'){ add('iron-shard', 2); add('river-pearl', 1); add('tempering-stone', 1); } if(k==='raidboss' || k==='finalboss'){ add('iron-shard', 3); add('ember-core', 1); add('tempering-stone', 2); } }
-  else { if(Math.random() < 0.15) add('iron-shard', 1); if((k==='boss' || k==='elite') && Math.random() < 0.05) add('tempering-stone', 1); }
+  else { if(Math.random() < 0.05 /* 2026-11-03 (ECON3, ECON2-8 a; owner 21:10): was 0.15, 188 Iron Shards held by Map 20 */) add('iron-shard', 1); if((k==='boss' || k==='elite') && Math.random() < 0.05) add('tempering-stone', 1); }
   if(['SS','SSS'].includes(rank) && Math.random() < 0.10) add('ember-core', 1);
   Object.entries(out).forEach(([id, n])=>{ for(let i = 0; i < n; i++) unlockCardForPlayer(id, 'materia'); });
   return out;
@@ -53941,6 +54158,7 @@ function btnCostHTML(cost, extra){
   part('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust');
   part('🦴', cost.kibble, myCurrencies.kibble||0, 'Kibble');
   part('🍂', cost.gems, myCurrencies.gems||0, 'Gold Leaves');
+  part(CURRENCY_META.metal.glyph, cost.metal, myCurrencies.metal||0, TX('ui.econ3-metal')); // 2026-11-03 (ECON3, ECON2-8): the Forge's tier steps
   Object.entries(cost.mats||{}).forEach(([id, n])=>{ if(defs[id]) part(defs[id].icon, n, ownedCount(id), defs[id].name); });
   (extra||[]).forEach(x=> part(x.icon, x.need, x.have, x.label));
   return parts.length ? `<span class="btn-cost"><span class="bc-sep" aria-hidden="true">·</span>${parts.join('')}</span>` : '';
@@ -54636,7 +54854,7 @@ function homeTileDetails(){
   const out = {};
   try{
     const p = loadConquestProgress();
-    for(const map of CONQUEST_MAPS){ if(!isMapUnlocked(map, p)) continue; const i = map.nodes.findIndex((n, k)=> n.kind!=='tutorial' && isNodeVisible(map, n, k, p) && !p.completed.includes(conquestNodeId(map.id, n.key))); if(i >= 0){ out.play = `Next: ${map.nodes[i].icon||''} ${map.nodes[i].name}`; break; } }
+    for(const map of CONQUEST_MAPS){ if(!isMapUnlocked(map, p)) continue; const i = map.nodes.findIndex((n, k)=> n.kind!=='tutorial' && isNodeVisible(map, n, k, p) && !p.completed.includes(conquestNodeId(map.id, n.key))); if(i >= 0){ out.play = `Next: ${map.nodes[i].icon||''} ${map.nodes[i].name}`; out.playMap = map.id; /* 2026-11-03 (FIX8, QA2 minor 9) */ break; } }
   }catch(e){}
   try{ const d = (myDecks||[]).find(x=> x.id===activeDeckId); out.deck = `${(d && d.name) || 'Your deck'} · ⚔ ${mainDeckLevel(myDeckCounts, myLeaderId) || 1}`; }catch(e){}
   try{ const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].test && !defs[id].token && !isHofVariant(defs[id])); out.codex = (()=>{ const c = collectionStats(); return `${c.owned} / ${c.total} cards`; })(); }catch(e){}
@@ -54692,7 +54910,7 @@ function renderHome(){
       ${'' /* 2026-10-17 (user: "No need for "Start the tutorial" button since we get right into it."): removed; a paused tutorial resumes from the 🎓 on the Outskirts map */}
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
         ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Continue</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
-          : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
+          : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"${sub.playMap ? ` data-fix8map="${escapeAttr(sub.playMap)}"` : ''}><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
         ${raidHome ? `${arenaTile}<button class="btn primary big home-menu-btn home-tile" id="homeRaidBtn"><span class="tab-emoji">🐲</span><span>${(()=>{ try{ return liveRaidDefs().length >= 2 ? 'Raids' : 'Raid'; }catch(e){ return 'Raid'; } })()}</span><small class="home-sub">${escapeHtml(sub.raid || 'Team up against a raid boss')}</small></button>${big('deck','⛺','Camp')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}`
           : `${big('deck','⛺','Camp')}${arenaHome ? arenaTile : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}`}
         ${raidHome && tabOpen('nest') ? `<button type="button" class="home-note note-nest" data-hometab="nest" title="Nest"><i class="pin" aria-hidden="true">📌</i><b>🪺 Nest</b><small>${escapeHtml(sub.nest || 'Eggs and babies')}</small></button>` : ''}
@@ -54712,7 +54930,9 @@ function renderHome(){
       </div>` : `<p class="home-tutorial-lock">🔒 Finish the tutorial to open the map. Your deck, the Nest and the rest open as you win fights there.</p>`}
       <p class="home-discover-hint tip-ticker" id="homeTipTicker" aria-live="polite"></p>
     </div>`;
-  root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=>{ const t = b.getAttribute('data-hometab'); if(t === 'tavern') openTavern(); else homeGo(t); }));
+  root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=>{ const t = b.getAttribute('data-hometab');
+    if(t === 'play' && b.dataset.fix8map && !matchState){ try{ const pm = CONQUEST_MAPS.find(x=> x.id === b.dataset.fix8map); if(pm && isMapUnlocked(pm, loadConquestProgress()) && !(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(pm))){ conquestSelectedMap = pm.id; conquestSelectedNodeKey = null; playSubTab = 'conquest'; } }catch(e){} } // 2026-11-03 (FIX8, QA2 minor 9): "Play - Next: X" opens the map X is on
+    if(t === 'tavern') openTavern(); else homeGo(t); }));
   const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ if(!resumeAbandonedMatchNow()) renderHome(); });
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
   const cb = document.getElementById('homeCommunityBtn');
@@ -57123,7 +57343,7 @@ function packCardPool(defs, pool, exact, gated){
   const ok = pool === 'basic' ? new Set(BASIC_PACK_TIERS) : (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
   const early = gated && !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12; gated callers only since RW3)
   const reach = !gated || adminModeEnabled ? Infinity : (()=>{ try{ return trackMapReached(); }catch(e){ return 0; } })();
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || isEasterEgg(d) /* 2026-10-19 (package EE) */ || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; if(!packCardReached(d, reach)) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.derivedFrom || /@(lv|p)\d/.test(id)) return false; /* 2026-11-03 (FIX8, QA2 M6): a fight's overlay copies ("bramble-sprout@lv1", "@p3") are in getCardDefs() while a match is live; a pack paid at a fight's end rolled one and showed it as "undefined" */ if(d.token || d.test || isUnattainable(d) || isEasterEgg(d) /* 2026-10-19 (package EE) */ || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; if(!packCardReached(d, reach)) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
 }
 // 2026-10-22 (package DV, owner 00:43: "Then decide which (1-2) will be skirmish rewards. The rest will be generic pack rewards."): a
 // map's cards that are not its skirmish rewards are basic-pack cards with that map ({kind:'pack', tier:1, map}); the packs and the
@@ -57171,7 +57391,9 @@ function rollPackCards(pack, opts){
   const n = pack.cards||3, cap = Math.max(1, Math.ceil(n / Math.max(1, pool.length)));
   let guard = 0;
   while(out.length < n && guard++ < 500){ let left = pool.filter(id=> out.filter(x=> x===id).length < cap); if(!left.length) break;
-    if(opts && opts.newFirst){ const fresh = left.filter(id=> !out.includes(id) && !copiesOwned(id) && !myUnlockedCardIds.has(id)); if(fresh.length) left = fresh; } // RW5
+    if(opts && opts.newFirst){ const fresh = left.filter(id=> !out.includes(id) && !copiesOwned(id) && !myUnlockedCardIds.has(id)); if(fresh.length) left = fresh; // RW5
+      else { // 2026-11-03 (FIX8, QA2 M2): no new card left (the early gate leaves very few): the cards you hold the fewest copies of, and none twice in a pack while another is left, so a run of level packs is not all House Cat
+        const nr = left.filter(id=> !out.includes(id)); if(nr.length) left = nr; const low = Math.min(...left.map(id=> copiesOwned(id))); left = left.filter(id=> copiesOwned(id) === low); } }
     out.push(pick(left)); }
   while(out.length < n) out.push(pick(pool));
   return out.sort(()=> Math.random()-0.5);
@@ -57516,7 +57738,9 @@ function rollFactionPackCards(fp, rnd){
   // lowest first, plain first on Maps 0-1); a people's bundle keeps the pack weights
   const ownPick = fp.kind === 'faction' ? (list=>{ const got = []; return ()=>{ const id = factionPackPoolPick(list, rnd, got.length) /* 2026-10-23 (RW5): out of the faction pool */ || factionTrackPick(list, rnd, {received: factionReceived() + got.length}); if(id) got.push(id); return id; }; })(own) : ()=> pick(own);
   for(let i = 0; i < FACTION_PACK_OWN; i++){ const id = ownPick(); if(id) out.push({id, from:'own'}); }
-  for(let i = 0; i < FACTION_PACK_GENERAL; i++){ const id = pick(gen); if(id) out.push({id, from:'general'}); }
+  for(let i = 0; i < FACTION_PACK_GENERAL; i++){ // 2026-11-03 (FIX8, QA2 M2): new first, and never a card the pack already holds while another is left
+    let g = gen.filter(id=> !out.some(o=> o.id === id)); if(!g.length) g = gen; if(REWARD_NEW_FIRST){ const nw = g.filter(id=> !copiesOwned(id)); if(nw.length) g = nw; }
+    const id = pick(g); if(id) out.push({id, from:'general'}); }
   return {pulls: out, bonus: null};
 }
 function openFactionPack(id){
@@ -57774,9 +57998,9 @@ function factionPoolPickOf(st, ids, rnd, map){
   const w = id=> (FACTION_SIDE_WEIGHT[factionSideOf(defs[id])] || 1) * Math.max(1, st.left[id]);
   const tot = pool.reduce((t, id)=> t + w(id), 0); let r = rnd() * tot; for(const id of pool){ r -= w(id); if(r <= 0) return id; } return pool[pool.length - 1];
 }
-function factionSetPick(st, rnd){
+function factionSetPick(st, rnd, mineOnly){
   const defs = getCardDefs(), map = trackMapReached();
-  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]));
+  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]) && !(mineOnly && factionSideOf(defs[id]) === 'other')); // 2026-11-03 (FIX8, QA2 minor 11): mineOnly = not the other side's cards
   const want = id=> factionClimbWant(factionSideOf(defs[id]), Math.max(copiesOwned(id), (st.given && st.given[id]) || 0), st.left[id]); // RW5: climbing the tree
   const left = {}; live.forEach(id=>{ const k = factionRarityKey(defs[id].rarity); left[k] = (left[k] || 0) + want(id); });
   const step = st.patternStep | 0, pr = factionPatternRarity(step, map, left);
@@ -57791,8 +58015,8 @@ function factionReward(rnd){
   factionTakeOut(st, pick); saveFactionPool(st);
   return grantOne(pick, 'factionReward') ? pick : null;
 }
-function factionDrawSet(n, rnd){ rnd = rnd || Math.random; const st = loadFactionPool(), out = [];
-  for(let i = 0; i < (n|0); i++){ const id = factionSetPick(st, rnd); if(!id) break; factionTakeOut(st, id); out.push(id); }
+function factionDrawSet(n, rnd, mineOnly){ rnd = rnd || Math.random; const st = loadFactionPool(), out = [];
+  for(let i = 0; i < (n|0); i++){ const id = (mineOnly && factionSetPick(st, rnd, true)) || factionSetPick(st, rnd); if(!id) break; factionTakeOut(st, id); out.push(id); }
   saveFactionPool(st); return out; }
 function factionRandomReward(rnd){
   rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
@@ -57805,7 +58029,9 @@ function factionRandomReward(rnd){
 function factionPackPoolPick(ids, rnd, extra){
   if(!FACTION_POOL_RW5) return null; const st = loadFactionPool(), set = new Set(ids);
   const live = Object.keys(st.left).filter(id=> set.has(id) && st.left[id] > 0); if(!live.length) return null;
-  const id = factionTrackPick(live, rnd || Math.random, {received: factionReceived(st) + (extra|0)}, x=> st.left[x]); if(!id) return null;
+  const ctx = {received: factionReceived(st) + (extra|0)}; let id = null;
+  if(REWARD_NEW_FIRST){ const fresh = live.filter(x=> !copiesOwned(x) && !(st.given && st.given[x])); if(fresh.length) id = factionTrackPick(fresh, rnd || Math.random, ctx, x=> st.left[x]); } // 2026-11-03 (FIX8, QA2 M2): a card you don't have first, like the set rewards (the pack gave Shell-Cracker x2 with new Rivergate cards left)
+  if(!id) id = factionTrackPick(live, rnd || Math.random, ctx, x=> st.left[x]); if(!id) return null;
   st.left[id] -= 1; st.given = st.given || {}; st.given[id] = (st.given[id] || 0) + 1; saveFactionPool(st); return id; // creditFactionPack counts it as received
 }
 function factionGrowth(rnd){
@@ -58168,7 +58394,7 @@ function openPackAnimation(pack, opened, opts){
           <div class="po2-liner" aria-hidden="true"></div>
           <div class="po2-art" style="${(()=>{ const a2 = packCoverArt(pack, o.faceK != null ? o.faceK : (o.faceK = packIdx + Math.floor(Math.random()*8))) || art; return a2 ? `background-image:url('${escapeAttr(a2)}')` : ''; })()}"></div>
           <span class="po2-foil" aria-hidden="true"></span>
-          <div class="po2-label"><span class="po2-ico">${pack.icon}</span><b>${escapeHtml(pack.name)}</b><small>${o.results.length} cards${bundle ? ` · ${packIdx+1}/${opened.length}` : ''}</small></div>
+          <div class="po2-label"><span class="po2-ico">${pack.icon}</span><b>${escapeHtml(pack.name)}</b><small>${o.results.length === 1 ? '1 card' : o.results.length + ' cards'}</small></div>${'' /* 2026-11-03 (FIX8, QA2 minor 1): "1 cards" fixed, and the pack's own "1/2" is gone: the top bar already says "Pack 1 of 2" */}
           <div class="po2-crimp po2-crimp-b" aria-hidden="true"></div>
         </div>
         <button type="button" class="po2-strip" id="poStrip" aria-label="Tear open the pack">
@@ -61205,6 +61431,34 @@ function mountMapShader(host, mapId){
 // Map loading veil (2026-10-10, user: "Map loading screen so VFX don't half-load"): entering a map shows a painted
 // card with the map's name until its effect layer has drawn its first frame and the fonts are in (at least 0.35 s,
 // at most 1.8 s), then lifts. Re-renders of the same map don't show it again.
+// The map's title panel folds to a chip (2026-11-03, package ECON3, ECON2-10; owner 20:34 "ECON2-10 OK"): on 20 maps a fight sat under the
+// title panel (docs/econ2-2026-11-03.md section 4). The first look at a map shows the whole panel (name and blurb); from the next visit on
+// it is a small chip with the map's icon and name, and a tap on the chip opens the blurb under it (tap again to fold it). Maps seen are
+// kept on this device (MAP_HEAD_SEEN_KEY). The first look lasts while the player stays on that map; leaving it ends it.
+const MAP_HEAD_SEEN_KEY = 'bramblewood_map_head_seen_v1';
+let mapHeadFirstLook = null, mapHeadLastMap = null, mapHeadOpen = false;
+function mapHeadSeenList(){ try{ const a = JSON.parse(localStorage.getItem(MAP_HEAD_SEEN_KEY) || '[]'); return Array.isArray(a) ? a : []; }catch(e){ return []; } }
+function mapHeadFolded(map){
+  if(!map || !map.id) return false;
+  if(mapHeadLastMap !== map.id){ mapHeadLastMap = map.id; mapHeadOpen = false; if(mapHeadFirstLook !== map.id) mapHeadFirstLook = null; }
+  if(mapHeadFirstLook === map.id) return false;
+  const seen = mapHeadSeenList(); if(seen.includes(map.id)) return true;
+  seen.push(map.id); try{ localStorage.setItem(MAP_HEAD_SEEN_KEY, JSON.stringify(seen)); }catch(e){}
+  mapHeadFirstLook = map.id; return false;
+}
+function mapHeadlineHTML(map){
+  const dl = isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : '';
+  if(!mapHeadFolded(map)) return `<div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${dl}</div>`;
+  const tip = TX(mapHeadOpen ? 'ui.econ3-head-hide' : 'ui.econ3-head-show');
+  return `<div class="conquest-scrim conquest-headline is-chip ${mapHeadOpen ? 'is-open' : ''}"><h3 class="cqh-h"><button type="button" class="cqh-chip" aria-expanded="${mapHeadOpen}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(map.name + ' · ' + tip)}"><span class="cqh-ico" aria-hidden="true">${map.icon}</span><span class="cqh-name">${map.name}</span><span class="cqh-caret" aria-hidden="true">▾</span></button></h3><p class="panel-sub">${map.blurb}</p>${dl}</div>`;
+}
+document.addEventListener('click', e=>{
+  const b = e.target && e.target.closest ? e.target.closest('.conquest-headline .cqh-chip') : null; if(!b) return;
+  const head = b.closest('.conquest-headline'); mapHeadOpen = !head.classList.contains('is-open');
+  head.classList.toggle('is-open', mapHeadOpen); b.setAttribute('aria-expanded', String(mapHeadOpen));
+  const tip = TX(mapHeadOpen ? 'ui.econ3-head-hide' : 'ui.econ3-head-show'); b.title = tip;
+  const nm = head.querySelector('.cqh-name'); b.setAttribute('aria-label', (nm ? nm.textContent : '') + ' · ' + tip);
+});
 let conquestVeiledMap = null, mapVeilShownThisSession = false;
 // Banners step aside (2026-10-10, user: "The banner on the top left should also disappear when hovering on top of it, so
 // I can click on things behind it. Same for all the banner UI"): the map's title banner and the admin layout bar let the
@@ -61218,7 +61472,7 @@ const GHOST_BANNERS = '.conquest-main > .conquest-headline, .conquest-main > .ma
       let onControl = false; if(inside){ const t = document.elementFromPoint(x, y); onControl = !!(t && b.contains(t) && t.closest('button, a, input, select, textarea, label')); }
       // The map's title banner (2026-10-11, user: "Hovering to the explanation on the top left makes it fade out and
       // disappear for 10s before it fades back in"): one touch sends it away for 10 seconds.
-      if(b.classList.contains('conquest-headline')){ if(inside && !b.classList.contains('is-away')){ b.classList.add('is-away'); clearTimeout(b._awayT); b._awayT = setTimeout(()=> b.classList.remove('is-away'), 10000); } return; }
+      if(b.classList.contains('conquest-headline')){ if(b.classList.contains('is-chip')) return; /* 2026-11-03 (ECON3, ECON2-10): the folded chip is a button and stays put */ if(inside && !b.classList.contains('is-away')){ b.classList.add('is-away'); clearTimeout(b._awayT); b._awayT = setTimeout(()=> b.classList.remove('is-away'), 10000); } return; }
       b.classList.toggle('is-ghost', inside && !onControl);
     }); };
   document.addEventListener('pointermove', e=>{ last = {x:e.clientX, y:e.clientY}; if(!raf) raf = requestAnimationFrame(run); }, {passive:true});
@@ -61602,7 +61856,8 @@ function wireSettingsButton(idSuffix){
   if(bfSelect){
     const current = loadBattlefieldBgOverride();
     bfSelect.innerHTML = `<option value="auto">🗺️ Auto (by map)</option><option value="calm">🌿 Calm (minimal)</option>` +
-      CONQUEST_MAPS.map(map=>`<option value="${map.id}">${map.icon} ${escapeAttr(map.name)}</option>`).join('');
+      // 2026-11-03 (package FIX8, QA2 minor 12): only the maps you can already open (and the one picked now); no Reserved placeholders, no late maps. Admin sees all.
+      CONQUEST_MAPS.filter(map=>{ try{ return adminModeEnabled || map.id === current || (!map.reserved && isMapUnlocked(map, loadConquestProgress())); }catch(e){ return true; } }).map(map=>`<option value="${map.id}">${map.icon} ${escapeAttr(map.name)}</option>`).join('');
     bfSelect.value = current;
     // A stored value from a map that no longer exists (shouldn't happen, but defensive) would
     // otherwise silently leave the <select> on its first option while the pill still applies a

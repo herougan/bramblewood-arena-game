@@ -114,6 +114,9 @@ ok(E.econPay('arena', 'gold', 4) === 2 && E.econPay('nope', 'gold', 4) === 4 && 
   const R = ctx.F;
   ['skirmish', 'elite', 'boss', 'raidboss', 'finalboss'].forEach(k=>{ const t = R.nodeRewardTier({kind: k}), b = R.CONQUEST_NODE_REWARDS[k];
     ok(t.first.gold === b.first.gold && t.first.dust === b.first.dust, `3. ${k}: the first clear is unchanged (${b.first.gold} / ${b.first.dust})`);
+    // 2026-11-03 (ECON3, ECON2-5): a skirmish's repeat is 8 Leaves and 2 Dust a point of Energy before the half (1 Energy here: no
+    // nodeEnergyCost in this context), so its Dust is half of 2, not of the table's 0; tests/econ3-2026-11-03.js checks the scaling
+    if(k === 'skirmish'){ ok(t.repeat.gold === E.econScale('conquestRepeat', 'gold', 8) && t.repeat.dust === E.econScale('conquestRepeat', 'dust', 2), `3. skirmish: a repeat pays half of 8 Leaves / 2 Dust a point of Energy (${t.repeat.gold} / ${t.repeat.dust})`); return; }
     ok(t.repeat.gold === E.econScale('conquestRepeat', 'gold', b.repeat.gold) && t.repeat.dust === E.econScale('conquestRepeat', 'dust', b.repeat.dust) && t.repeat.gold < b.repeat.gold, `3. ${k}: a repeat pays half (${b.repeat.gold} -> ${t.repeat.gold} Leaves)`); });
   const ov = R.nodeRewardTier({kind:'elite', rewards:{repeat:{gold: 30}}}); ok(ov.repeat.gold === 15, '3. a node\'s own repeat override is halved too');
   // 4. the daily dungeon floors
@@ -180,9 +183,10 @@ KEYS.forEach(k=> ok(TEXT[k] && src.includes(`'${k}'`), `5. ${k} is a TX key the 
 ok(/if\(cloudBlossomsColumn !== false\) row\.blossoms = /.test(fnSrc('cloudPushCurrencies')) && /cloudBlossomsColumn = false; delete row\.blossoms/.test(fnSrc('cloudPushCurrencies')), '5. the push sends blossoms, and drops the column once when the server has none');
 ok(/blossoms: cur\.blossoms != null \? /.test(fnSrc('cloudPullState')), '5. the pull reads blossoms, or keeps this browser\'s');
 ok(/blossoms: Math\.max\(0, Math\.floor\(Number\(parsed\.blossoms\)\|\|0\)\)/.test(fnSrc('loadCurrencies')), '5. saved locally with the other currencies');
-const sql = fs.readFileSync(path.join(ROOT, 'supabase', 'proposed', '20261030_bramble_resource.sql'), 'utf8');
-ok(/add column if not exists blossoms integer not null default 0/.test(sql) && /PROPOSED, NOT APPLIED/.test(sql), '5. the proposed SQL adds the column (not applied)');
-ok(!fs.existsSync(path.join(ROOT, 'supabase', 'migrations', '20261030_bramble_resource.sql')), '5. nothing in migrations/');
+// 2026-11-03: applied (owner 23:01 #12), so the file moved to migrations/.
+const sql = fs.readFileSync(path.join(ROOT, 'supabase', 'migrations', '20261030_bramble_resource.sql'), 'utf8');
+ok(/add column if not exists blossoms integer not null default 0/.test(sql) && /APPLIED 2026-11-03/.test(sql), '5. the migration adds the column (applied 2026-11-03)');
+ok(!fs.existsSync(path.join(ROOT, 'supabase', 'proposed', '20261030_bramble_resource.sql')), '5. nothing left in proposed/');
 
 console.log(`econ1-2026-10-30: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

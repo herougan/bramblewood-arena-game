@@ -529,17 +529,20 @@
     {
      "id": "fiddler-crab-swarm",
      "why": "Owner Q1; kept on SPECIAL as the skirmish reward of 2-1",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Pebble Beach's MAP list since THEME3, owner Q1); it stays on SPECIAL as 2-1's skirmish-only reward. Still on the Gannet Cliffs list (you kept it there 11-01) and The Kelp Mangroves. Taking it out of Pebble Beach fully needs another 2-1 reward (LISTFIX2-1)."
     },
     {
      "id": "grey-seal-bull",
      "why": "Owner Q1; kept on SPECIAL as the skirmish reward of 2-5",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Pebble Beach's MAP list since THEME3, owner Q1); it stays on SPECIAL as 2-5's skirmish-only reward, and you chose it for Smugglers' Grotto on 11-01. JJ5 (BAL9-3) only trimmed it to 3/12; it did not put it back. Taking it out of Pebble Beach fully needs another 2-5 reward (LISTFIX2-1)."
     },
     {
      "id": "tidepool-trapper-crab",
      "why": "Owner Q1; kept on SPECIAL as the first-clear card of 2-3",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Pebble Beach's MAP list since THEME3, owner Q1); it stays on SPECIAL as 2-3's first-clear card (it also drops in Pack 1), and you chose it for Smugglers' Grotto on 11-01. Taking it out fully needs another 2-3 first-clear card (LISTFIX2-1)."
     },
     {
      "id": "oyster-bank",
@@ -662,7 +665,8 @@
     {
      "id": "the-gannet-queen",
      "why": "Owner 11-01: cut",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): your 11-01 cut is applied (off Gannet Cliffs' MAP list, THEME4). It sits on SPECIAL as 3-7's boss leader and reward (RELFIX3 moved the boss cards there 10-29); THEME4 kept it there on purpose. Dropping the boss card itself needs a new 3-7 leader and reward (LISTFIX2-2)."
     }
    ],
    "maybe": [
@@ -770,12 +774,14 @@
     {
      "id": "old-sturgeon",
      "why": "Owner Q2 (for now); kept on SPECIAL as the skirmish reward of 4-5",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Sunken Hollow's MAP list since THEME3, owner Q2); it stays on SPECIAL as 4-5's skirmish-only reward. You chose it for Lilypad Reach on 11-01; also on The Undercroft. Taking it out of Sunken Hollow fully needs another 4-5 reward (LISTFIX2-1)."
     },
     {
      "id": "stone-turtle-warden",
      "why": "Owner Q2; kept on SPECIAL as the first-clear card of 4-2",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Sunken Hollow's MAP list since THEME3, owner Q2); it stays on SPECIAL as 4-2's first-clear card (it also drops in Pack 1). Also on The Undercroft. Taking it out fully needs another 4-2 first-clear card (LISTFIX2-1)."
     },
     {
      "id": "marsh-mallow-hare",
@@ -907,7 +913,8 @@
     {
      "id": "venomlord-serpent",
      "why": "Owner Q3 (moved to Map 6); kept on SPECIAL as the first-clear card of 5-3",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Gatorback Swamp's MAP list since THEME3, owner Q3: moved to Map 6, where it is listed); it stays on Gatorback's SPECIAL as 5-3's first-clear card, and you chose it for The Sunken Grove on 11-01. Taking it off Gatorback fully needs another 5-3 first-clear card (LISTFIX2-1)."
     },
     {
      "id": "stone-turtle-warden",
@@ -937,7 +944,8 @@
     {
      "id": "snapper-hatchling",
      "why": "Owner 11-01: cut",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): THEME4 applied your 11-01 cut; CARD5 (11-02) put it back on the MAP list because it is 5-1's first-clear card (a coordinator follow-up, not your call). Also on The Sunken Grove, where you chose it. Keep it or cut it again: LISTFIX2-1."
     },
     {
      "id": "caiman-hatchling",
@@ -1040,7 +1048,8 @@
     {
      "id": "marsh-wisp",
      "why": "Owner Q4; kept on SPECIAL as the first-clear card of 6-4",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Sable Swampmire's MAP list since THEME3, owner Q4); it stays on SPECIAL as 6-4's first-clear card (it also drops in Pack 1). On no other list. Taking it out fully needs another 6-4 first-clear card (LISTFIX2-1)."
     },
     {
      "id": "peat-cutter-vole",
@@ -2598,7 +2607,8 @@
     {
      "id": "weaver-bird",
      "why": "Owner 11-01: cut",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): THEME4 applied your 11-01 cut; CARD5 (11-02) put it back on the MAP list because it is 14-3's first-clear card (a coordinator follow-up, not your call). Also on The Canopy, where you chose it, and The Undercroft. Keep it or cut it again: LISTFIX2-1."
     },
     {
      "id": "meerkat-burrower",
@@ -3153,7 +3163,8 @@
     {
      "id": "wolfsbane-alpha",
      "why": "Owner 11-01: cut",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): your 11-01 cut is applied (off Wolfsbane Tundra's MAP list, THEME4). It sits on SPECIAL as 17-8's boss leader and reward (RELFIX3, 10-29); THEME4 kept it there on purpose. Dropping the boss card itself needs a new 17-8 leader and reward (LISTFIX2-2)."
     }
    ],
    "maybe": [
@@ -3526,7 +3537,8 @@
     {
      "id": "yeti-chieftain",
      "why": "Owner 11-01: cut",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): your 11-01 cut is applied (off Ashen Spurn's MAP list, THEME4). It sits on SPECIAL as 19-6's boss leader and challenge card (RELFIX3, 10-29); THEME4 kept it there on purpose. Dropping the boss card itself needs a new 19-6 leader and challenge card (LISTFIX2-2)."
     },
     {
      "id": "porcupine-roller",
@@ -3749,7 +3761,8 @@
     {
      "id": "woodland-brawler",
      "why": "Owner Q6; kept on SPECIAL as the skirmish reward of 20-9",
-     "by": "owner"
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off The Sundered Peak's MAP list since THEME3, owner Q6); it stays on SPECIAL as 20-9's skirmish-only reward. On no other list. Taking it out fully needs another 20-9 reward (LISTFIX2-1)."
     },
     {
      "id": "bear-cub",
@@ -4771,5 +4784,6 @@
    ]
   }
  },
- "theme4": "THEME4 (2026-11-01): the owner's picks folded (tools/theme4/apply_2026_11_01.py); chosen entries may carry flag \"unlikely\" + flagWhy (Claude's flag, still on the list)."
+ "theme4": "THEME4 (2026-11-01): the owner's picks folded (tools/theme4/apply_2026_11_01.py); chosen entries may carry flag \"unlikely\" + flagWhy (Claude's flag, still on the list).",
+ "listfix2": "LISTFIX2 (2026-11-03): cut entries may carry statusWhy: why a cut card is still on its map's lists (SPECIAL for its fight, or put back by a later package). The Map cards panel shows each cut's live status (Still listed / Kept for its fight / Removed) from the lists themselves."
 }

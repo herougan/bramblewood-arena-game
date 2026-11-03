@@ -80,7 +80,8 @@ ok(/Object\.keys\(CURRENCY_META\)\.filter\(currencyShown/.test(src) && /p\.kroon
 ok(/adminModeEnabled/.test(fnSrc('currencyShown')), '6. Admin Mode still sees them');
 
 // --- 7. daily dungeons
-ok(/const DAILY_DUNGEONS_HIDDEN = true;/.test(src) && /id:'mm', code:'MM', mapNumber:6, parent:'m8', preview: DAILY_DUNGEONS_HIDDEN/.test(src) && /id:'muc'[^\n]*preview: DAILY_DUNGEONS_HIDDEN/.test(src) && /id:'mlb'[^\n]*\|\| DAILY_DUNGEONS_HIDDEN/.test(src), '7. Murgle Mayhem, the Undercroft and the Long Burrow are previews');
+// 2026-11-03 (package ECON3, ECON2-1): Murgle Mayhem is released (MURGLE_RELEASED, opening with Map 11); the Undercroft and the Long Burrow stay previews
+ok(/const DAILY_DUNGEONS_HIDDEN = true;/.test(src) && /id:'mm', code:'MM', mapNumber:6, parent:'m8', preview: !MURGLE_RELEASED && DAILY_DUNGEONS_HIDDEN/.test(src) && /id:'muc'[^\n]*preview: DAILY_DUNGEONS_HIDDEN/.test(src) && /id:'mlb'[^\n]*\|\| DAILY_DUNGEONS_HIDDEN/.test(src), '7. the Undercroft and the Long Burrow are previews; Murgle Mayhem has its own switch');
 ok(/!\(typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer\(m\)\)/.test(fnSrc('subMapEntrancesHTML')), '7. no entrance on the parent map for players');
 
 // --- 8. Bonus Raid Ticket

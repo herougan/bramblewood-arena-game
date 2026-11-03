@@ -122,7 +122,7 @@ Each keyword's price lives in `canonical/skill-costs.json`; its behaviour in the
   - A won Conquest fight pays Blossoms by kind and map (`BRAMBLE_WIN_BLOSSOMS`, +10% a map). A loss pays a quarter of that, times the share of the enemy bramble taken. Fights pay them from when Reinforce opens (Map 28).
   - Every repeatable source of Maple Leaves, Magic Dust, Gold Leaves and Metal pays half, through `ECON_INCOME_MULT` in `arena_app.js`, one multiplier per source (0.5 each). First clears, achievements, the level track and one-off gifts pay in full.
   - Murgle Mayhem pays 69 Dust + 46 Leaves for every won floor, and the Undercroft 63 Blossoms (`DAILY_DUNGEON_PAY`). Over 22 keys a week (11 floors each), that is a Common card Lv 0 → 10 and a Common bramble Lv 0 → 10.
-  - Arithmetic: `docs/balance/econ1-2026-10-30.md`. Cloud column: `supabase/proposed/20261030_bramble_resource.sql` (not applied). Open calls BRUP-2 to BRUP-5. [BRUP-1]
+  - Arithmetic: `docs/balance/econ1-2026-10-30.md`. Cloud column: `supabase/migrations/20261030_bramble_resource.sql` (applied 2026-11-03). Open calls BRUP-2 to BRUP-5. [BRUP-1]
 
 ## 4. Progression and rewards
 
