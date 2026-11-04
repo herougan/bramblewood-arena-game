@@ -43,7 +43,7 @@ def check(cond, msg):
 
 # Listens for the tentacle's impact; at that instant freezes GSAP and measures the tentacle and the struck cells.
 ARM = """(want)=>{ window.__tfAt = null; window.__tfWant = want == null ? null : !!want; if(window.__tfArmed) return 1; window.__tfArmed = true;
-  document.addEventListener('fxf:tentacle', e=>{ if(window.__tfAt || (window.__tfWant != null && !!e.detail.horizontal !== window.__tfWant)) return; try{ gsap.globalTimeline.pause(); }catch(_){}
+  document.addEventListener('fxf:tentacle', e=>{ if(e.detail && e.detail.phase === 'reach') return; /* 2026-11-04 (REG1): RAIDFX1 (10-30) also emits a per-card 'reach' event before the impact; only the impact carries base / tip */ if(window.__tfAt || (window.__tfWant != null && !!e.detail.horizontal !== window.__tfWant)) return; try{ gsap.globalTimeline.pause(); }catch(_){}
     const b = document.querySelector('.fxf-tentacle .tb-body'), sv = b && b.ownerSVGElement, lay = sv && sv.parentElement;
     let op = 0, box = null;
     if(b){ const r = b.getBoundingClientRect(); box = {l:r.left, t:r.top, r:r.right, b:r.bottom, w:r.width, h:r.height};
@@ -65,7 +65,9 @@ async def open_raid(b, w, h, phone, reduced):
     pg.on('dialog', lambda d: asyncio.ensure_future(d.accept()))
     await pg.add_init_script(INIT)
     await pg.goto(URL); await pg.wait_for_timeout(1500)
-    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy = 60; window.showCoachTip = function(){}; 1")
+    # 2026-11-04 (REG1): the starter deck holds copies a fresh test profile does not own (deckCopyProblem, package PG 10-23), so the
+    # raid fight never opened; the copy gate is waved through, as CS-D did for battle_ui_2026_10_19.py
+    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy = 60; window.showCoachTip = function(){}; window.deckSizeOkOrWarn = ()=> true; 1")
     for js in RAID_OPEN: await pg.evaluate(js); await pg.wait_for_timeout(700)
     await pg.evaluate("(()=>{ const v = document.querySelector('.vs-screen'); if(v) v.click(); return 1; })()"); await pg.wait_for_timeout(5000)
     await pg.evaluate("document.querySelectorAll('.coach-bubble, .coach-tip, .npc-bubble, .coach-callout').forEach(e=> e.remove()); 1")

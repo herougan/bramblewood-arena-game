@@ -45,12 +45,12 @@ ok(R.RAID_SHIELD_DEFAULT === 50 && goliath.shield === 50, 'the Goliath\'s Shield
     const b = A.buildRaidFullFight(goliath, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(2), allies: [], myDeck: {}, recordEvents: false}), q = b.players[2].hq;
     const want = Math.round(25 * s); // 2026-10-21 (BF5): the raid's Shield at BRAMBLE_SCALE 0.5 (raids.json keeps 50)
     ok(q.shield === want && q.maxShield === want && JSON.stringify(q.shieldLayers) === JSON.stringify([want]) && b.raidShield.shield === want, `the built fight's boss bramble at ${s * 100}%: Shield ${q.shield}/${q.maxShield} (want ${want})`);
-    ok(q.hp === 175, 'its Health is untouched (350, at BRAMBLE_SCALE 175)'); }
+    ok(q.hp === 390, `its Health is untouched (780, at BRAMBLE_SCALE 390; got ${q.hp})`); } // 2026-11-04 (REG1): RAIDBAL1 (10-30) raised the Left Tentacle's bramble 410 -> 780 (canonical/raids.json castleHp)
   // the Shield soaks hits first, as on any bramble
   const st = stateAt(goliath, 1), f = R.fightFor(goliath, st, 'left', {});
   const b = A.buildRaidFullFight(goliath, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(2), allies: [], myDeck: {}, recordEvents: false});
   ok(/pl\.hq\.shield > 0 && toHp > 0\)\{ const soak = Math\.min\(pl\.hq\.shield, toHp\)/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8')), 'the engine spends a bramble\'s Shield before its Health');
-  ok(b.players[2].hq.hp === 175 && b.players[2].hq.shield === 25, 'fresh: 350 Health behind 50 Shield (BF5: halved, 175 behind 25)'); }
+  ok(b.players[2].hq.hp === 390 && b.players[2].hq.shield === 25, 'fresh: 780 Health behind 50 Shield (BF5: halved, 390 behind 25)'); } // 2026-11-04 (REG1): RAIDBAL1's Left 780
 ok(/\{ const r = \(RaidM && RaidM\.raidShield\) \? RaidM\.raidShield\(raidDefScaled\(def\), st, partId\) : null; if\(r\)\{ const q = players\[2\]\.hq; q\.shield = r\.shield;/.test(src), 'the one-row raid fight (startRaidPartMatch) gets the Shield too');
 // the editor: "Shield" beside "Energy", raid and part, saved
 ok(/value="\$\{draft\.cost\.energy\|\|4\}"><\/label>\n\s*<label title="[^"]*">Shield<input id="reShield" type="number" min="0" max="999"/.test(src), 'the raid editor: a Shield field right after "Energy per fight"');
@@ -67,7 +67,8 @@ ok(/\$\{raidShieldLineHTML\(def, st\)/.test(src) && /shield: b\.raidShield && b\
   const K = new Function('dungeonTabLabel', 'TX', 'dungeonKeyCap', 'dungeonNoKeysText', body)(()=> 'Daily Dungeons', TX, ()=> 5, ()=> TX('ui.dungeon-no-keys', {cap: 5, h: 3}));
   const z = K.dungeonKeyBadge(0), t = K.dungeonKeyBadge(3);
   ok(z.text === '0' && z.empty === true, 'at 0 keys the badge says "0" and is the empty state');
-  ok(/No Dungeon keys left/.test(z.tip) && /3h/.test(z.tip), `its tip says when they refill (${z.tip})`);
+  /* 2026-11-04 (REG1): UI6 (10-31, X19) reworded "No Dungeon keys left" to "No keys left" (ui.dungeon-no-keys) */
+  ok(/No keys left/.test(z.tip) && /3h/.test(z.tip), `its tip says when they refill (${z.tip})`);
   ok(t.text === '3' && !t.empty && /3\/5/.test(t.tip), `3 keys: "3", not empty (${t.tip})`);
   ok(K.dungeonKeyBadge(-2).text === '0' && K.dungeonKeyBadge(undefined).text === '0', 'never blank or negative'); }
 ok(/\$\{k\.empty \? ' is-empty' : ''\}/.test(src) && /b\.classList\.toggle\('is-empty', k\.empty\)/.test(src), 'both 🗝️ buttons (the Play cluster and the topbar) take .is-empty');
@@ -165,11 +166,11 @@ async function browser(){ if(process.env.MX_NO_BROWSER) return;
       await pg.addInitScript(INIT); await pg.goto(URL, {waitUntil: 'domcontentloaded', timeout: 120000}); await pg.waitForTimeout(2500);
       await pg.addStyleTag({content: QUIET});
       const shot = async name=>{ if(SHOTS) await pg.screenshot({path: path.join(OUT, `${name}-${tag}.png`)}); };
-      await pg.evaluate("(()=>{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); adminModeEnabled = true; window.playDialogue = ()=> null; const s = loadDungeonTickets(); s.n = 0; saveDungeonTickets(s); return 1; })()");
+      await pg.evaluate("(()=>{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); adminModeEnabled = true; window.playDialogue = ()=> null; const s = loadDungeonTickets(); s.n = 0; saveDungeonTickets(s); window.deckSizeOkOrWarn = ()=> true; return 1; })()"); // 2026-11-04 (REG1): the starter deck holds copies a fresh test profile does not own (deckCopyProblem, package PG 10-23), so startRaidPartMatch opened no VS card or fight; the copy gate is waved through, as CS-D did for battle_ui
       // 2. the key badge at 0: the Play cluster, then the topbar on another tab
       await pg.evaluate("(()=>{ conquestWorldView = false; playSubTab = 'conquest'; switchTab('play'); try{ renderPlay(); }catch(e){} return 1; })()"); await pg.waitForTimeout(1200);
       const kp = await pg.evaluate("(()=>{ const b = document.getElementById('dungeonKeyBtnPlay'); if(!b) return null; const c = b.querySelector('.dk-n'), r = c.getBoundingClientRect(); return {text: c.textContent, empty: b.classList.contains('is-empty'), tip: b.title, shown: r.width > 0 && getComputedStyle(c).display !== 'none', bg: getComputedStyle(c).backgroundColor}; })()");
-      ok(kp && kp.text === '0' && kp.empty && kp.shown && /No Dungeon keys/.test(kp.tip), `${tag} 2. the Play 🗝️ says 0, greyed, with the refill tip (${JSON.stringify(kp)})`);
+      ok(kp && kp.text === '0' && kp.empty && kp.shown && /No keys left/.test(kp.tip) /* 2026-11-04 (REG1): UI6's X19 wording */, `${tag} 2. the Play 🗝️ says 0, greyed, with the refill tip (${JSON.stringify(kp)})`);
       await shot('key-badge-0-play');
       await pg.evaluate("(()=>{ switchTab('codex'); return 1; })()"); await pg.waitForTimeout(900);
       const kt = await pg.evaluate("(()=>{ const b = document.getElementById('dungeonKeyBtnTop'); if(!b || b.hidden) return null; const c = b.querySelector('.dk-n'); return {text: c.textContent, empty: b.classList.contains('is-empty')}; })()");
@@ -196,7 +197,7 @@ async function browser(){ if(process.env.MX_NO_BROWSER) return;
       await pg.waitForFunction("typeof matchState !== 'undefined' && matchState && matchState.raidFull && document.querySelector('#appWrap.in-match')", null, {timeout: 20000}).catch(()=>{});
       await pg.waitForTimeout(2500);
       const hq = await pg.evaluate("(()=>{ const m = matchState; if(!m) return null; const badges = [...document.querySelectorAll('.castle-shield')].filter(e=> /^\\D*25$/.test(e.textContent.trim()) && e.getBoundingClientRect().width > 0).map(e=> e.className + ':' + e.textContent.trim()); return {shield: m.players[2].hq.shield, max: m.players[2].hq.maxShield, hp: m.players[2].hq.hp, badges}; })()");
-      ok(hq && hq.shield === 25 && hq.max === 25 && hq.hp === 175, `${tag} 1. in the fight: the boss bramble 175 Health + 25 Shield (BF5: 350 + 50 halved) (${JSON.stringify(hq && {shield: hq.shield, max: hq.max, hp: hq.hp})})`);
+      ok(hq && hq.shield === 25 && hq.max === 25 && hq.hp === 390 /* 2026-11-04 (REG1): RAIDBAL1's Left 780, halved */, `${tag} 1. in the fight: the boss bramble 390 Health + 25 Shield (BF5: 780 + 50 halved) (${JSON.stringify(hq && {shield: hq.shield, max: hq.max, hp: hq.hp})})`);
       ok(hq && hq.badges.length > 0, `${tag} 1. the board shows 🔷25 on the boss bramble (${hq && hq.badges.join(' | ')})`);
       // the Shield badge and the Health number both readable on the boss's bramble tile (they overlapped on phones at 🔷50 / 350)
       const lap = await pg.evaluate("(()=>{ const s = [...document.querySelectorAll('.castle-shield')].find(e=> e.getBoundingClientRect().width > 0 && /25$/.test(e.textContent.trim())); /* BF5 */ if(!s) return null; const t = s.closest('.card-tile'), hp = t && t.querySelector('.hp'); if(!hp) return {noHp: true}; const a = s.getBoundingClientRect(), b = hp.getBoundingClientRect(); return {tile: Math.round(t.getBoundingClientRect().width), overlap: !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top), hp: hp.textContent.trim()}; })()");

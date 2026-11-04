@@ -101,7 +101,10 @@ async def run(b, url, w):
       const st = skillRevealState(), defs = getCardDefs(), d = Object.values(defs).find(x=> x.effects && x.effects.diurnal && !x.isLeader && !x.hero);
       let html = ''; try{ html = fullCardHTML(d.id); }catch(e){ html = 'ERR ' + e; }
       return {fresh: st.fresh.map(x=> x.k), key: skillNewKey(), tags: (html.match(/class="sk-new"/g) || []).length, err: html.startsWith('ERR') ? html : ''}; })()""")
-    ok(r['fresh'] == ['diurnal'] and r['key'] == 'diurnal', f"6. Map 1 marks Diurnal only, not Crepuscular / Nocturnal {r['fresh']}")
+    # 2026-11-04 (REG1): ENG22 (DESIGN1-2 / call ENG22-4) gates Taunt, Reach, Inspiring, Esprit, Boomerang, Evasive, Molting, Frostbite and
+    # Fire Arrow to Map 1, so Map 1 now reveals them too; the NEW! mark is still Diurnal's alone, and never Crepuscular / Nocturnal
+    E22 = {'taunt', 'reach', 'inspiring', 'esprit', 'boomerang', 'evasive', 'molting', 'frostbite', 'fireArrow'}
+    ok(r['fresh'][:1] == ['diurnal'] and set(r['fresh'][1:]) <= E22 and not {'crepuscular', 'nocturnal'} & set(r['fresh']) and r['key'] == 'diurnal', f"6. Map 1 marks Diurnal only, not Crepuscular / Nocturnal {r['fresh']}")
     ok(r['tags'] == 1 and not r['err'], f"6. exactly one NEW! tag in a card's text {r}")
     await pg.close()
 

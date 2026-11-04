@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-04 Package REG1 (the batch's browser-test failures that main did not show; tests only)
+- **No regression in game code found.** On main these checks never ran (each test crashed earlier; TESTFIX1 fixed that), so they surfaced on the batch. Every one pins an earlier, deliberate change and is updated with a dated `REG1` comment:
+  - raid-reward-card, mx, tentacle_fx: a fresh test profile does not own its starter deck's Dolphin Outrider (PG's copy gate, 10-23), so no raid fight opened; the gate is waved through, as CS-D did. tentacle_fx also skips RAIDFX1's per-card `reach` event. mx: RAIDBAL1's Left bramble 780 (390 at scale) and UI6's "No keys left" tip.
+  - rw4: Map 1 also reveals ENG22-4's nine skills (NEW! stays Diurnal's). en3: `brambleArmor` reads Bramble Armor again (ENG22-2). cs_c: Otter Centurion has no Level 0 skill (ENG22-4), so the popovers use a card with one.
+  - bv "their bramble has gone into the ground": a timing flake under load; it fails on main too, and passed alone on the batch.
+- Left: mx's two source pins (raid tickets chip, Energy pill) fail on main too.
+
 ## 2026-11-04 Package TESTFIX1 (the full unit suite means something again; tests only)
 - **Full suite (`node tests/run.js --full`, no e2e): 206 passed / 93 failed before, 250 / 48 after** (298 listed; one retired). Every failure is classed in `docs/testfix1-2026-11-04.md` (test, failures before, class, what was done, decision id).
 - **(a) stale pins, updated to the current rule with dated `TESTFIX1` comments** (66 test files). The changes they now follow: the re-measured prices (SKILL2 / BUDGET2-1, BAL10 / BAL12 / BAL14, ENG21; history kept on the entries); BAL9's re-fits and rarities; Undead / Tangled / Fork / one-shot copies (ENG9); Bloom (ENG15 FF5); the nearest free slot (ENG18-4); Swarm and Structures (ENG19-4); Burn (ENG20-1); Delivery, Guardian on shots, Build and Bramble Armor (ENG22); CS-A card sizes; TIP1 wording; answered decisions. Also harness extractions that missed newer helpers, and CHANGELOG windows (the whole file, as QA1 did).

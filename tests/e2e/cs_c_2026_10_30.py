@@ -79,8 +79,10 @@ async def run(b, url, w):
     ok(r['cd'] and not r['ci'], f"the Nest's viewer opens the Card Detail overlay ({r})")
     ok(r['pull'] and r['pullW'] >= 250 and r['pullClosed'], f"the pack-results viewer: the same Detail card (the pulled copy's Shiny) with its text, {r['pullW']}px, Esc closes")
     # 3. the hover popover: the Full card plus text and a caller's line, on screen
-    await pg.evaluate("(async()=>{ switchTab('codex'); await new Promise(z=> setTimeout(z, 800)); const t = document.querySelector('#codexGrid [data-defid]'); if(t) t.setAttribute('data-pop-line', 'A caller line: why this card'); })()")
-    el = await pg.query_selector('#codexGrid [data-defid]')
+    # 2026-11-04 (REG1): ENG22 (call ENG22-4) gives the base Level 0 cards their abilities at Level 1, so the first Codex tile (a Level 0
+    # card) can have no skill line at all; hover the first tile whose card has an ability at its base level
+    await pg.evaluate("(async()=>{ switchTab('codex'); await new Promise(z=> setTimeout(z, 800)); const all = [...document.querySelectorAll('#codexGrid [data-defid]')]; const t = all.find(x=> Object.keys((getCardDefs()[x.dataset.defid] || {}).effects || {}).length) || all[0]; if(t){ t.setAttribute('data-pop-line', 'A caller line: why this card'); t.setAttribute('data-reg1-hover', '1'); } })()")
+    el = await pg.query_selector('#codexGrid [data-reg1-hover]')
     if el:
         bb = await el.bounding_box(); await pg.mouse.move(bb['x'] + bb['width'] / 2, bb['y'] + bb['height'] / 2); await pg.wait_for_timeout(1400)
         r = await pg.evaluate("""(()=>{ const p = document.getElementById('cardPop'), t = p && p.querySelector('.card-pop-visual-tile'), r = p.getBoundingClientRect(), tr = t && t.getBoundingClientRect();
@@ -93,7 +95,9 @@ async def run(b, url, w):
         ok(False, 'a Codex tile to hover')
     await pg.mouse.move(2, 2)
     # 4. the gallery popover over a modal (the Map cards review): the Full card, its text, the reason; z 900 over the overlay's 600
-    r = await pg.evaluate("""(async()=>{ const ov = document.createElement('div'); ov.className = 'modal-overlay'; ov.innerHTML = '<div class="modal"><span class="vis4-mc-card" data-zoom="otter-centurion" data-zoom-why="Fake reason: fills a gap" tabindex="0" style="display:inline-block;width:80px;height:100px">x</span></div>';
+    # 2026-11-04 (REG1): Otter Centurion is a base Level 0 card whose Boomerang comes at Level 1 (ENG22, call ENG22-4), so its Full card has
+    # no skill text at Level 0; the gallery card is Eagle Diver (Flying, Pounce 2 and a "?" Diurnal at its base level)
+    r = await pg.evaluate("""(async()=>{ const ov = document.createElement('div'); ov.className = 'modal-overlay'; ov.innerHTML = '<div class="modal"><span class="vis4-mc-card" data-zoom="eagle-diver" data-zoom-why="Fake reason: fills a gap" tabindex="0" style="display:inline-block;width:80px;height:100px">x</span></div>';
       document.body.appendChild(ov); wireRewardZoom(ov); const t = ov.querySelector('[data-zoom]'); t.dispatchEvent(new PointerEvent('pointerenter')); await new Promise(z=> setTimeout(z, 300));
       const z = document.querySelector('.cnp-rw-zoom'), r = z && z.getBoundingClientRect(); const out = z ? {sheet: z.classList.contains('cp-sheet'), above: +getComputedStyle(z).zIndex, under: +getComputedStyle(ov).zIndex, full: !!z.querySelector('.card-tile[data-size="full"]'),
         text: !!z.querySelector('.cp-text li, .cp-text .mech-wrap'), why: (z.querySelector('.cnp-rw-why') || {}).textContent, on: r.left >= 0 && r.top >= 0 && r.right <= innerWidth + 1 && r.bottom <= innerHeight + 1} : null;

@@ -121,7 +121,9 @@ async function browser(){
       await ctx.close();
       // -- a won raid fight dropping Honeyjoe Brewer (the owner's "Honeybrew")
       [ctx, pg] = await open(w);
-      await pg.evaluate("window.raidFightCardDrop = ()=>{ unlockCardForPlayer('honeyjoe-brewer', 'raidReward'); return 'honeyjoe-brewer'; }; playSubTab = 'raid'; switchTab('play'); 1"); await pg.waitForTimeout(500);
+      // 2026-11-04 (REG1): the starter deck holds copies a fresh test profile does not own (deckCopyProblem, package PG 10-23), so the
+      // raid fight never opened ("Your deck has 3 Dolphin Outrider, but you own 0"); the copy gate is waved through, as CS-D did for battle_ui
+      await pg.evaluate("window.deckSizeOkOrWarn = ()=> true; window.raidFightCardDrop = ()=>{ unlockCardForPlayer('honeyjoe-brewer', 'raidReward'); return 'honeyjoe-brewer'; }; playSubTab = 'raid'; switchTab('play'); 1"); await pg.waitForTimeout(500);
       await pg.evaluate("document.querySelector('.raid-hub [data-raid-open]').click()"); await pg.waitForTimeout(500);
       await pg.evaluate("document.querySelector('[data-raid-part=left]').click()"); await pg.waitForTimeout(1500);
       await pg.evaluate("(()=>{ const v = document.querySelector('.vs-screen'); if(v) v.click(); return 1; })()"); await pg.waitForTimeout(4000);
