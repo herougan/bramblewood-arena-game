@@ -294,6 +294,7 @@ const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','
 ACTION_KEYS.push('forgeWeapon', 'disarm', 'revive' /* ENG9 (2026-10-26): Revive N, the action */); // Package SK2b (2026-10-19 / owner Oct 21): a smith lays a weapon; Disarm takes one
 ACTION_KEYS.push('exploit', 'poisonTick', 'pulse'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N; + Pulse N (EN4, 2026-10-23: Poison Tick is retired, it reads as Pulse)
 ACTION_KEYS.push('arrow');
+ACTION_KEYS.push('grantFastForward'); // ENG23 (2026-11-04): Grant Fast-forward N (fast-forward tokens), on no card
 ACTION_KEYS.push('grantShield'); // ENG19 (2026-11-02, owner #15): Grant Shield, itself / adjacent / surrounding / every ally // Package BX (2026-10-21): Arrow N as an action (the Arrow skill's shot: the enemy facing it, else the nearest, else the bramble)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
@@ -692,6 +693,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // castleSpawn ({first, every, defId, count}: units join you from the castle on those rounds).
       enemyWaitBonus: (chEffects.enemyWaitBonus||0), castleBolt: (chEffects.castleBolt||0), castleLumberEvery: (chEffects.castleLumberEvery||0),
       castleThorns: (chEffects.castleThorns||0), herbRefinery: !!chEffects.herbRefinery, castleSpawn: chEffects.castleSpawn || null,
+      // ENG23 (2026-11-04, CONTENT9-2, owner "Ok for C9-2"): the bramble actives. Feed (the Gnawed Larder): feeds left this fight and what
+      // a feed does; Aimed Bolt (Ballista Keep): its damage, once a fight (aimedBoltUsed).
+      feed: eng23FeedCfg(chEffects.feed), aimedBolt: Math.max(0, Number(chEffects.aimedBolt)||0), aimedBoltUsed: false,
     };
   }
   // Assigns a player's Castle-type card (Castle/Colony/Nest/...). Not yet a
@@ -1159,6 +1163,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // ENG11 (2026-10-27, owner K10: "Scorching - only in the day. In places without night/day - scorching is perma-on."): Scorching burns
   // by day (Twilight counts as day) and every round where the fight has no day or night; at night it rests.
   function scorchingOn(){ const ph = phaseActive() ? getPhase() : null; return !ph || ph === 'day' || ph === 'twilight'; }
+  // ENG23 (2026-11-04): Crepuscular's two parts, {day:[A, H], night:[A, H]}. Its braces (crepuscularGrant) replace both (condStatsOf);
+  // crepuscularDay / crepuscularNight ([A, H] or {attack, health}) are the editor's separate parts; a bare `true` is the default +0/+1 at
+  // night; an old number (crepuscular N, crepuscularHp M) is +N/+M in both. Leylines I adds +2/+2 to each part that has a bonus.
+  function crepuscularParts(e){
+    const none = {day:[0, 0], night:[0, 0]}; if(!e || !(e.crepuscular || e.crepuscularHp || e.crepuscularDay || e.crepuscularNight)) return none;
+    if(e.crepuscularGrant && typeof e.crepuscularGrant === 'object') return none;
+    const two = v=> Array.isArray(v) ? [Math.max(0, Number(v[0])||0), Math.max(0, Number(v[1])||0)] : (v && typeof v === 'object') ? [Math.max(0, Number(v.attack)||0), Math.max(0, Number(v.health)||0)] : [0, 0];
+    let day, night;
+    if(e.crepuscularDay != null || e.crepuscularNight != null){ day = two(e.crepuscularDay); night = two(e.crepuscularNight); }
+    else if(e.crepuscular === true && !e.crepuscularHp){ day = [0, 0]; night = [0, 1]; } // ENG23: the plain default, +0/+1 at night
+    else { const both = [e.crepuscular === true ? 1 : Math.max(0, Number(e.crepuscular)||0), Math.max(0, Number(e.crepuscularHp)||0)]; day = both.slice(); night = both.slice(); } // an old card: the same by day and at night
+    if(leyZeit){ const up = p=> (p[0] || p[1]) ? [p[0] + 2, p[1] + 2] : p; day = up(day); night = up(night); }
+    return {day, night};
+  }
   function phaseStatsOf(e, ph){
     const pick0 = k=>{ if(e[k+'Grant'] && typeof e[k+'Grant'] === 'object') return [0, 0]; const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; }; // Diurnal – {…}: the braces, not the plain bonus (2026-10-15)
     // Leylines I (2026-10-16, user: "Diurnal default becomes +3/+3 not +1/+1"): the plain bonus (Diurnal with no number) is +3/+3, and a
@@ -1167,10 +1185,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 2026-10-21 (package CX2, owner 17:42: "Crepuscular: +1 attack in day, +1 attack at night"): Crepuscular has a day part and a night
     // part, like Tide's two facets (was: Twilight only). The plain form gives its +A/+H by day and again at night; Twilight, which counts
     // as both, brings both parts. A deck with one still adds the Twilight phase (twilightOn).
-    const cr = (e.crepuscular || e.crepuscularHp) ? pick('crepuscular') : [0,0];
-    if(ph==='twilight'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0], d = (e.diurnal || e.diurnalHp) ? pick('diurnal') : [0,0]; return [n[0] + d[0] + 2 * cr[0], n[1] + d[1] + 2 * cr[1]]; } // 2026-10-13: both are active in Twilight
-    if(ph==='night'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0]; return [n[0] + cr[0], n[1] + cr[1]]; }
-    if(ph==='day'){ const d = (e.diurnal || e.diurnalHp) ? (dimSun() ? pick('diurnal').map(x=> Math.floor(x / 2)) : pick('diurnal')) : [0,0]; return [d[0] + cr[0], d[1] + cr[1]]; } // Cloudy (2026-10-16): clouds over the sun halve the day bonus; Ash Rain too (2026-10-17)
+    // 2026-11-04 (package ENG23, owner 11-03 23:01: "+0/1 at night instead. Let me change for both separately"): the day part and the night
+    // part are their own numbers now (crepuscularParts): a plain Crepuscular (true, no numbers) is +0/+0 by day and +0/+1 at night; the
+    // editor's four numbers set crepuscularDay / crepuscularNight; an old card's numbers (crepuscular N, crepuscularHp M) still give the
+    // same +N/+M by day and at night. Twilight brings both parts, as before.
+    const crp = crepuscularParts(e), crD = crp.day, crN = crp.night;
+    if(ph==='twilight'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0], d = (e.diurnal || e.diurnalHp) ? pick('diurnal') : [0,0]; return [n[0] + d[0] + crD[0] + crN[0], n[1] + d[1] + crD[1] + crN[1]]; } // 2026-10-13: both are active in Twilight
+    if(ph==='night'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0]; return [n[0] + crN[0], n[1] + crN[1]]; }
+    if(ph==='day'){ const d = (e.diurnal || e.diurnalHp) ? (dimSun() ? pick('diurnal').map(x=> Math.floor(x / 2)) : pick('diurnal')) : [0,0]; return [d[0] + crD[0], d[1] + crD[1]]; } // Cloudy (2026-10-16): clouds over the sun halve the day bonus; Ash Rain too (2026-10-17)
     return [0, 0];
   }
   function syncPhaseStats(players, sideOf, events){
@@ -2701,8 +2723,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'plentyGrant', 'scarcityGrant', 'foePlentyGrant', 'foeScarcityGrant', 'heatGrant', 'frostGrant', 'rainGrant', 'stormGrant', 'fogGrant', 'saltGrant', 'droughtGrant', 'seasonGrant', 'requiemGrant', 'dirgeGrant', 'carnageGrant', 'musterGrant', 'besetGrant', 'throngGrant' /* ENG10 */, 'tallyGrant', 'almanacGrant', 'onslaughtGrant', 'riledGrant', 'deliveryRes' /* ENG22 */, 'arrowBramble', 'fireArrowBramble', 'fireBoltBramble' /* EN6 (2026-10-24) */, 'arrowPoison', 'arrowBleed', 'fireArrowPoison', 'fireArrowBleed', 'fireBoltPoison', 'fireBoltBleed', 'diveUses' /* EN7 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
-  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant'], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */, plenty:['plentyGrant'], scarcity:['scarcityGrant'], foePlenty:['foePlentyGrant'], foeScarcity:['foeScarcityGrant'], heat:['heatGrant'], frost:['frostGrant'], rain:['rainGrant'], storm:['stormGrant'], fog:['fogGrant'], salt:['saltGrant'], drought:['droughtGrant'], season:['seasonGrant'], requiem:['requiemGrant'], dirge:['dirgeGrant'], carnage:['carnageGrant'], muster:['musterGrant'], beset:['besetGrant'], throng:['throngGrant'] /* ENG10 */, tally:['tallyGrant'], almanac:['almanacGrant'], onslaught:['onslaughtGrant'], riled:['riledGrant'], delivery:['deliveryRes'], deliveryEvery:['deliveryRes'] /* ENG22 */, arrow:['arrowBramble', 'arrowPoison', 'arrowBleed'], fireArrow:['fireArrowBramble', 'fireArrowPoison', 'fireArrowBleed'], fireBolt:['fireBoltBramble', 'fireBoltPoison', 'fireBoltBleed'] /* EN6; + EN7's – poison / – bleed */, dive:['diveUses'] /* EN7 */};
+  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'crepuscularDay', 'crepuscularNight' /* ENG23 */, 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'plentyGrant', 'scarcityGrant', 'foePlentyGrant', 'foeScarcityGrant', 'heatGrant', 'frostGrant', 'rainGrant', 'stormGrant', 'fogGrant', 'saltGrant', 'droughtGrant', 'seasonGrant', 'requiemGrant', 'dirgeGrant', 'carnageGrant', 'musterGrant', 'besetGrant', 'throngGrant' /* ENG10 */, 'tallyGrant', 'almanacGrant', 'onslaughtGrant', 'riledGrant', 'deliveryRes' /* ENG22 */, 'arrowBramble', 'fireArrowBramble', 'fireBoltBramble' /* EN6 (2026-10-24) */, 'arrowPoison', 'arrowBleed', 'fireArrowPoison', 'fireArrowBleed', 'fireBoltPoison', 'fireBoltBleed', 'diveUses' /* EN7 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
+  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant', 'crepuscularDay', 'crepuscularNight' /* ENG23 */], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */, plenty:['plentyGrant'], scarcity:['scarcityGrant'], foePlenty:['foePlentyGrant'], foeScarcity:['foeScarcityGrant'], heat:['heatGrant'], frost:['frostGrant'], rain:['rainGrant'], storm:['stormGrant'], fog:['fogGrant'], salt:['saltGrant'], drought:['droughtGrant'], season:['seasonGrant'], requiem:['requiemGrant'], dirge:['dirgeGrant'], carnage:['carnageGrant'], muster:['musterGrant'], beset:['besetGrant'], throng:['throngGrant'] /* ENG10 */, tally:['tallyGrant'], almanac:['almanacGrant'], onslaught:['onslaughtGrant'], riled:['riledGrant'], delivery:['deliveryRes'], deliveryEvery:['deliveryRes'] /* ENG22 */, arrow:['arrowBramble', 'arrowPoison', 'arrowBleed'], fireArrow:['fireArrowBramble', 'fireArrowPoison', 'fireArrowBleed'], fireBolt:['fireBoltBramble', 'fireBoltPoison', 'fireBoltBleed'] /* EN6; + EN7's – poison / – bleed */, dive:['diveUses'] /* EN7 */};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
     Object.keys(e).forEach(k=>{ if(IRR_NOT_SKILLS.has(k)) return; const v = e[k]; if(v === false || v == null || v === 0 || v === '' || (Array.isArray(v) && !v.length)) return; out.push({key:k}); });
@@ -2825,6 +2847,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // ENG15 (2026-10-31, Y2): sea = +1/+1 and Tide; fresh = the Fry on death (no stats); dry = +0/+1. The chips: anadromousSea / anadromousRiver / anadromousDry.
       const anad = anadromousOf(e); if(anad){ if(anad === 'sea'){ a += 1; h += 1; if(!e.tide) grant = Object.assign(grant || {}, {tide: true}); } else if(anad === 'dry') h += 1; on6.push(anad === 'sea' ? 'anadromousSea' : anad === 'fresh' ? 'anadromousRiver' : 'anadromousDry'); }
       const all = on.concat(on6); c._en5On = all.length ? all.join(',') : ''; }
+    // Skitter (ENG23, 2026-11-04, owner 11-03 23:12: "After hit, it gains haste & evade for the next turn."): the round after one of its
+    // hits landed, it has Haste and Evasive (eng23SkitterOn).
+    if(e.skitter && eng23SkitterOn(c)) grant = Object.assign(grant || {}, {haste: true, evasive: true});
     a += en6HandAtk(e, pl, foe); // EN6 (2026-10-24): Full Hand / Lean N, yours and the foe's
     // Rage – {…} (2026-10-23, package EN, owner TR-6: "Rage - {...} means the typical effects of Rage, PLUS {...}"): while its Rage is on,
     // the braces too (effects.rageGrant, beside effects.rage). Its Rage is read without the braces' own Health (c._rageOn), so a +Health in
@@ -5744,6 +5769,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // the status skips its own dodge roll, the caster's skill Bleed tick and the target's On Attacked (the hit gave those already).
   let sk1OnHitNow = false;
   function sk1OnHit(players, sideOf, attPid, att, attDef, t, stats, events){
+    if(att && effectsOf(att).skitter) eng23SkitterMark(att, attPid, sideOf, events); // ENG23 (2026-11-04): Skitter, for its next round
     if(!t || !(t.hp > 0) || !att || !sk1HasHook(att, 'onHit')) return;
     const was = sk1OnHitNow; sk1OnHitNow = true;
     try{ runCustomTriggers(players, sideOf, attPid, att, CARD_DEFS[att.defId], 'onHit', stats, events, {subjectCard:t}); } finally{ sk1OnHitNow = was; }
@@ -7817,6 +7843,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // addWait (2026-09-26, new basic action — "add a new set of basic abilities, triggers,
         // and actions"): the debuff-side counterpart to Reduce Wait — delays a target's next
         // action by pushing its Wait counter UP by N rounds, instead of Stun's full skip.
+        // Grant Fast-forward N (ENG23, 2026-11-04): N fast-forward tokens (Fast Forward counters) on itself (default), an ally or every ally.
+        case 'grantFastForward': {
+          const who = t.who || 'self', sub = t.sub || 'adjacent', n = Math.max(1, Math.round(Number(t.amount)||1));
+          if(who === 'self'){ if(eng23GrantFF(boardCard, n) && recordEvents && events) events.push({type:'statusFx', kind:'grantFastForward', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:mySide, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:n}); }
+          else applyTargetedStatus(players, sideOf, playerId, boardCard, who === 'enemy' ? 'ally' : who, sub, n, stats, events, mySide, 'grantFastForward', c=>{ eng23GrantFF(c, n); });
+          break;
+        }
         case 'addWait': {
           const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent');
           applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, t.amount||0, stats, events, mySide, 'addWait', c=>{ c.wait = (c.wait||0)+(t.amount||0); });
@@ -8511,6 +8544,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const before = ai.playsThisTurn || 0; aiTakeTurnOnce(players, sideOf, aiId, stats, events);
       if((ai.playsThisTurn || 0) === before) break;
     }
+    { const ai = players[aiId]; if(ai && (ai.feed || ai.aimedBolt > 0)) try{ eng23AiBramble(players, sideOf, aiId, stats, events); }catch(e){} } // ENG23 (2026-11-04): Feed / Aimed Bolt
   }
   function aiTakeTurnOnce(players, sideOf, aiId, stats, events){
     const ai = players[aiId];
@@ -9965,6 +9999,69 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'collapseIn', side:sideOf(pl.id), defId:moved.defId, uid:moved.uid, fromSide});
     });
   }
+  // ==== ENG23 (2026-11-04, package ENG23; owner 11-03 23:01 / 23:12) ===============================================================
+  // Skitter (owner: "After hit, it gains haste & evade for the next turn."): when its melee hit lands on a unit (a killing hit too), it is
+  // marked for the next round (combat number + 1); that round condStatsOf gives it Haste and Evasive as a grant (the derived card), so
+  // Haste's Speed (+2 itself, +1 its neighbours) and Evasive's 1-in-2 dodge are the engine's own rules. Another hit that round renews it.
+  function eng23Round(){ return combatNo + (combatDepth > 0 ? 0 : 1); } // the combat now, or the next one between rounds (noteHit's rule)
+  function eng23SkitterOn(c){ return !!(c && c._skitterFor != null && c._skitterFor === eng23Round()); }
+  function eng23SkitterMark(c, pid, sideOf, events){ if(!c) return; const was = c._skitterFor; c._skitterFor = eng23Round() + 1;
+    if(was !== c._skitterFor && recordEvents && events) events.push({type:'statusFx', kind:'skitter', side: sideOf ? sideOf(pid) : (pid === 1 ? 'A' : 'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); }
+  // Fast-forward tokens (owner: "A new type of token that can be on a card, that lets it fast forward N = number of tokens"): they are the
+  // engine's Fast Forward counters (c.ffCounters, fastForwardPass below): N tokens on a unit are N extra turns at the start of the next
+  // combat, its own, before the main order (a Waiting unit counts its Wait down, a Ready one swings). The board shows them as ⏩N.
+  // Grant Fast-forward N (the action 'grantFastForward', who / sub like Increase Wait: itself by default, an ally, every ally) adds N
+  // tokens. On no card yet.
+  function eng23GrantFF(c, n){ if(!c || c.gap || !(c.hp > 0)) return 0; const k = Math.max(0, Math.round(Number(n)||0)); if(k) c.ffCounters = (c.ffCounters||0) + k; return k; }
+  // Feed (the Gnawed Larder, CONTENT9-2 A: "Feed: once a turn, instead of pitching a card for Lumber, drag it onto your bramble. The bramble
+  // eats it: Repair Bramble 3, and your units on the field get +1 Attack for the rest of the fight. Three feeds a fight."): it uses the
+  // turn's pitch (no Lumber, no pitch yield, no On Pitch); the card goes to the Graveyard as a Devour's food does (fireOnSacrifice 'devour',
+  // so Sacrifice - {} cards see it). Defaults: 3 feeds, Repair 3, +1 Attack (effects.feed: true, a number of feeds, or {feeds, repair, attack}).
+  const ENG23_FEED_DEF = {feeds: 3, repair: 3, attack: 1};
+  function eng23FeedCfg(v){ if(!v) return null; const o = (v && typeof v === 'object') ? v : (v === true ? {} : {feeds: Number(v)});
+    const n = k=> o[k] != null && Number.isFinite(Number(o[k])) ? Math.max(0, Math.round(Number(o[k]))) : ENG23_FEED_DEF[k];
+    const feeds = n('feeds'); return {feeds, left: feeds, repair: n('repair'), attack: n('attack')}; }
+  function eng23CanFeed(pl){ return !!(pl && pl.feed && pl.feed.left > 0 && !pl.discardUsedThisTurn && !((pl.skipTurns||0) > 0) && pl.hq && pl.hq.hp > 0); }
+  function feedBramble(players, sideOf, pid, card, stats, events){
+    const pl = players && players[pid]; if(!eng23CanFeed(pl) || !card) return null;
+    const ix = pl.hand.findIndex(h=> h === card || (card.uid != null && h.uid === card.uid)); if(ix < 0) return null;
+    const [h] = pl.hand.splice(ix, 1); pl.graveyard.push({defId: h.defId}); pl.discardUsedThisTurn = true; pl.feed.left -= 1;
+    const before = pl.hq.hp; pl.hq.hp = Math.min(pl.hq.maxHp, pl.hq.hp + pl.feed.repair); const healed = pl.hq.hp - before;
+    const fed = []; upkeepUnitsOf(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf || !pl.feed.attack) return; c.atk += pl.feed.attack; c.baseAtk = (c.baseAtk||0) + pl.feed.attack; fed.push(c.uid); });
+    if(recordEvents && events) events.push({type:'feed', side: sideOf(pid), eatenDefId: h.defId, repair: healed, attack: pl.feed.attack, uids: fed, left: pl.feed.left, hp: pl.hq.hp, maxHp: pl.hq.maxHp});
+    try{ fireOnSacrifice(players, sideOf, pid, null, h.defId, stats || {}, events, 'devour'); }catch(e){}
+    return {defId: h.defId, repair: healed, attack: pl.feed.attack, units: fed.length, left: pl.feed.left};
+  }
+  // Aimed Bolt (Ballista Keep, CONTENT9-2 B: "once a fight, tap the bramble on your turn and pick an enemy column: its bolt hits the unit
+  // there for 4 (the bramble if the column is empty). It doesn't use your play. Its random bolt each round carries on."): the castleBolt
+  // shot with a chosen column (the slot number; the enemy front-row unit there, else their bramble).
+  function eng23CanAim(pl){ return !!(pl && pl.aimedBolt > 0 && !pl.aimedBoltUsed && pl.hq && pl.hq.hp > 0); }
+  function aimedBolt(players, sideOf, pid, slot, stats, events){
+    const pl = players && players[pid], foe = players && players[otherId(pid)]; if(!eng23CanAim(pl) || !foe) return null;
+    const t = allLive(foe).find(c=> c.slot === Number(slot)) || null; pl.aimedBoltUsed = true; const n = pl.aimedBolt;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'aimedBolt', side: sideOf(pid), targetSide: sideOf(otherId(pid)), targetDefId: t ? t.defId : null, targetUid: t ? t.uid : null, castle: !t, slot: Number(slot), amount: n});
+    if(t){ if(!helmetDeflects({kind:'card', card:t}, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, 'castle', n, 'physical', {kind:'card', card:t}, stats || {}, events, null, null, true); }
+    else fireDamageAction(players, sideOf, pid, 'castle', n, 'physical', {kind:'hq'}, stats || {}, events, null, null, true);
+    try{ removeDeadCards(players, sideOf, {}, stats || {}, events); }catch(e){}
+    return {slot: Number(slot), uid: t ? t.uid : null, castle: !t, amount: n};
+  }
+  // The CPU (after its plays): the Aimed Bolt at the highest-Attack enemy unit it can kill (else their bramble when 4 finishes it; else,
+  // from round 6, at their highest-Attack unit); Feed when its pitch is still unused, it holds 2+ cards and 2+ of its units stand (or its
+  // bramble is down by the repair or more), with the least valuable card that it cannot play now.
+  function eng23AiBramble(players, sideOf, aiId, stats, events){
+    const ai = players[aiId], foe = players[otherId(aiId)]; if(!ai || !foe) return;
+    const value = id=>{ const d = CARD_DEFS[id] || {}; return (d.attack||0) + (d.health||0)*0.45 + Object.keys(d.effects||{}).length*1.5 + costOfCard(id)*2; }; // aiTakeTurnOnce's cardValue
+    if(eng23CanAim(ai)){ const n = ai.aimedBolt, foes = aiFoes(allLive(foe)), byAtk = (a, b)=> (b.atk||0) - (a.atk||0) || (a.uid - b.uid);
+      const kill = foes.filter(c=> c.hp <= n).sort(byAtk)[0];
+      if(kill) aimedBolt(players, sideOf, aiId, kill.slot, stats, events);
+      else if(foe.hq.hp <= n){ const used = new Set(allLive(foe).map(c=> c.slot)), open = [0, -1, 1, -2, 2].find(s=> !used.has(s)); if(open != null) aimedBolt(players, sideOf, aiId, open, stats, events); }
+      else if(turnNo >= 6 && foes.length) aimedBolt(players, sideOf, aiId, foes.slice().sort(byAtk)[0].slot, stats, events); }
+    if(eng23CanFeed(ai) && ai.hand.length >= 2){ const mine = allLive(ai).length, down = ai.hq.maxHp - ai.hq.hp;
+      if(mine >= 2 || down >= ai.feed.repair){ const can = h=> { try{ return canPlay(ai, h.defId, h.uid); }catch(e){ return false; } };
+        const food = ai.hand.slice().sort((a, b)=> (can(a) - can(b)) || (value(a.defId) - value(b.defId)) || (a.uid - b.uid))[0];
+        if(food && !(can(food) && ai.hand.length < 4)) feedBramble(players, sideOf, aiId, food, stats, events); } }
+  }
+  // ==== end of ENG23 ==================================================================================================================
   // Fast Forward N (2026-10-12, D22, the user's rule: "with N counters, a unit runs its turn, upkeep included, N extra
   // times before joining the main action order"). At the start of the next combat after it arrives, each counter is one
   // extra turn for that unit alone: its Wait counts down by 1 if it's still Waiting (with the usual Ready moment),
@@ -10939,6 +11036,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // 2026-10-19 (package SK1, owner 21:36): Expose N now leaves the target Exposed for N rounds (its hiding stripped), and the
         // counters' extra damage is Exploit N's tokens; with Venom Pulse, all three are sk1OnHit (after this hit's own Poison).
         if(defCard.hp>0) sk1OnHit(players, sideOf, otherId(a.enemyId), a.att, attDef, defCard, stats, events);
+        else if(a.att && effectsOf(a.att).skitter) eng23SkitterMark(a.att, otherId(a.enemyId), sideOf, events); // ENG23: a killing hit is a hit too
         // Scar (permanent, stacking Expose — see computeHitDamage): applied the same way as
         // Expose/Poison/Bleed, but on a SURVIVING target only makes sense the same as those.
         if(attDef.effects && attDef.effects.scar && defCard.hp>0){
@@ -11256,7 +11354,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, endOfRoundUpkeep, applyDecayTicks, swingSpeedOf, isMagicDmg, blockerReady, reviveFromGrave, spendOnReady /* 2026-10-26 (package ENG9): for its test */, fortifyParts, buildSizeOf, deliveryResOf, shotRedirect /* 2026-11-03 (package ENG22): for the app and its test */, boonState: players=> boonStateOf(players && players[boonPid()]) /* 2026-10-24 (package DF3): the selfish boon's count */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, ownedCells /* COOP3 */, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, zeitPhase /* ENG11 (K6) */, scorchingOn /* ENG11 (K10) */, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */, EN8_DEF, pearlSettle, pearlGap, aiUsefulNow, aiResourceGap, aiLethalBlock, aiLosingBadly, aiFreeCard, AI_PLAN: ()=> ({reach: AI_PLAN_REACH, turns: AI_PLAN_TURNS, value: AI_PLAN_VALUE}) /* ENG14 (2026-10-30, X24) */, mirageOwnerKey, bolaPinnable /* ENG14 */, aiIncomingOnBramble, hasThornsNow, magicArmorOf, redirectToGuardian /* EN8 (2026-10-24) */, EN20, en20HpAfter, en20IsLeader, getWindKind: ()=> windNow ? windKind : null, isCrosswind, isHeavyWind, aiDevourPlan /* ENG20 (2026-11-02) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, ownedCells /* COOP3 */, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, zeitPhase /* ENG11 (K6) */, scorchingOn /* ENG11 (K10) */, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */, EN8_DEF, pearlSettle, pearlGap, aiUsefulNow, aiResourceGap, aiLethalBlock, aiLosingBadly, aiFreeCard, AI_PLAN: ()=> ({reach: AI_PLAN_REACH, turns: AI_PLAN_TURNS, value: AI_PLAN_VALUE}) /* ENG14 (2026-10-30, X24) */, mirageOwnerKey, bolaPinnable /* ENG14 */, aiIncomingOnBramble, hasThornsNow, magicArmorOf, redirectToGuardian /* EN8 (2026-10-24) */, EN20, en20HpAfter, en20IsLeader, getWindKind: ()=> windNow ? windKind : null, isCrosswind, isHeavyWind, aiDevourPlan /* ENG20 (2026-11-02) */, crepuscularParts, eng23SkitterOn, eng23GrantFF, feedBramble, aimedBolt, eng23CanFeed, eng23CanAim, eng23FeedCfg, ENG23_FEED_DEF, eng23AiBramble /* ENG23 (2026-11-04) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

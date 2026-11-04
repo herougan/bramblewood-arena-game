@@ -1475,3 +1475,20 @@ The rules as built (engine: `buildSizeOf`, `fortifyBramble`, `deliveryEveryTick`
 | 🏯 Fortify | the log | "🏯 {name} fortifies its bramble: Thorns 1, +1 Health." | `fortify` |
 | 📦 Delivery | the Lumber / resource float | as the old Lumber pings | `lumber` / `stone` / `metal` / `uranium` / `pearl` / `grace` |
 | Taunt / Guardian pull a shot | the arrow flies to the puller | the shot's target | `arrow` / `bolt` with `taunted` / `guardianRedirect` |
+
+## 2026-11-04 additions (package ENG23)
+
+The rules as built (engine: `crepuscularParts`, `eng23SkitterOn` / `eng23SkitterMark`, `eng23GrantFF` and the `grantFastForward` action, `feedBramble`, `aimedBolt`, `eng23AiBramble`; owner 2026-11-03 23:01 / 23:12, `docs/decisions.json` ENG23-1 to ENG23-7):
+
+- **Crepuscular**: a day part and a night part. Plain (`crepuscular: true`) is +0/+1 at night; `crepuscularDay` / `crepuscularNight` set each part; an old card's `crepuscular` N / `crepuscularHp` M is +N/+M in both. **Crepuscular {day} → {night}** (`crepuscularGrant`): a stat change or skills in each brace. Twilight brings both.
+- **Skitter** (`skitter`): after its melee hit lands on a unit (a killing hit too), Haste and Evasive for the next round (a grant through `condStatsOf`); another hit renews it.
+- **Fast-forward tokens**: the Fast Forward counters (`ffCounters`); N tokens are N extra turns at the start of the next combat, before the main order (`fastForwardPass`). **Grant Fast-forward N** (`grantFastForward`: who self / ally, sub adjacent / random / all) adds them.
+- **Feed** (bramble effect `feed`: {feeds 3, repair 3, attack 1}, the Gnawed Larder): instead of the turn's pitch, a hand card goes to the Graveyard (as Devour's food), Repair N, your units on the field +A Attack.
+- **Aimed Bolt** (bramble effect `aimedBolt` N, Ballista Keep): once a fight, on your turn, N to the enemy unit in the column you pick, else their bramble. Not your play.
+
+| Effect | Where | What you see | Engine event |
+|---|---|---|---|
+| 🐾 Skitter | the unit, the log | "🐾 Skitter" float; "🐾 {name} skitters: Haste and Evasive next turn." | `statusFx` `skitter` |
+| ⏩ Fast-forward tokens | the unit's badges | ⏩N with a tooltip; "⏩ +N" when granted | `statusFx` `grantFastForward`; spent at `fastForward` |
+| 🍖 Feed | the HUD button, your bramble, the units | "🍖 +3❤" on the bramble, "🍖 +1⚔" on each unit; a log line | `feed` |
+| 🎯 Aimed Bolt | the HUD button and its column picker | a 🏹 shot from your bramble; a log line | `statusFx` `aimedBolt` |

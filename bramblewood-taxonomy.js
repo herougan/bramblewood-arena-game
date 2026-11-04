@@ -32,7 +32,11 @@
   [['tree', 'Tree'], ['fruit', 'Fruit'], ['flower', 'Flower'], ['vine', 'Vine'], ['mushroom', 'Mushroom']].forEach(([k, n])=>{ if(!NAMES[k]) NAMES[k] = n; if(!PARENTS[k]) PARENTS[k] = ['flora']; });
   if(!PARENTS.fungi) PARENTS.fungi = ['flora']; if(!PARENTS.plant) PARENTS.plant = ['flora'];
   // Old or misspelt names a saved card may still carry (2026-10-21: species Cnidarian is Cnidaria now; Feline was a Felid).
-  const ALIAS = {cnidarian:'cnidaria', feline:'felid', mollusk:'mollusc', ants:'ant'};
+  const ALIAS = {cnidarian:'cnidaria', feline:'felid', mollusk:'mollusc', ants:'ant', rodentia:'rodent' /* ENG23 */};
+  // ENG23 (2026-11-04, owner 11-03 23:12: "Rodents renamed to Rodentia"): the Type's shown name is Rodentia. The key stays 'rodent' (the
+  // species "Rodent" on 54 cards in canonical/cards.json, the live card_overrides rows and players' saved custom cards all carry it); the
+  // shown name "Rodentia" reads back to the same key (ALIAS), so a filter picked by its name still finds every rodent.
+  NAMES.rodent = 'Rodentia';
   // Species -> phylum (the Codex's phyla; 2026-10-21 owner: "Aquatic Phyla should be broken up. Fish is its own Phyla." + "The octopi
   // and etc need their own types like cephalopod or cnidaria."). Not part of the hierarchy: a Cephalopod is a Mollusc, but its phylum
   // is Cephalopod. A species not listed is its own phylum.

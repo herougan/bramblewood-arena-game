@@ -699,6 +699,29 @@ function grantToText(g){ g = g || {}; const st = (g.attack || g.health) ? [`+${N
 // Esprit's target (2026-10-18): 'kin' (default) or 'any', from the skill value's third slot or the card's effects.espritWho.
 function espritWhoOf(v, e){ return (Array.isArray(v) && v[2] === 'any') || (e && e.espritWho === 'any') ? 'any' : 'kin'; }
 function phaseVals(v){ return Array.isArray(v) ? [Number(v[0])||0, Number(v[1])||0] : [v===true ? 1 : (Number(v)||0), 0]; }
+// ENG23 (2026-11-04): Crepuscular's two parts in the editor and on the card (the engine's crepuscularParts reads the same keys). A value is
+// [dayA, dayH, nightA, nightH]; an older two-number value [A, H] (the Test Kit, an old row) is the same +A/+H in both parts.
+function eng23CrepVals(v){ const n = x=> Math.max(0, Number(x)||0);
+  if(Array.isArray(v)) return v.length >= 4 ? [n(v[0]), n(v[1]), n(v[2]), n(v[3])] : [n(v[0]), n(v[1]), n(v[0]), n(v[1])];
+  return v === true ? [0, 0, 0, 1] : [n(v), 0, n(v), 0]; }
+function eng23CrepGet(e){ if(!e || e.crepuscularGrant) return undefined;
+  const two = v=> Array.isArray(v) ? [Number(v[0])||0, Number(v[1])||0] : (v && typeof v === 'object') ? [Number(v.attack)||0, Number(v.health)||0] : [0, 0];
+  if(e.crepuscularDay != null || e.crepuscularNight != null) return two(e.crepuscularDay).concat(two(e.crepuscularNight));
+  if(e.crepuscular === true && !e.crepuscularHp) return [0, 0, 0, 1];
+  if(e.crepuscular || e.crepuscularHp){ const a = e.crepuscular === true ? 1 : (Number(e.crepuscular)||0), h = Number(e.crepuscularHp)||0; return [a, h, a, h]; }
+  return undefined; }
+function eng23CrepApply(e, vals){ const [da, dh, na, nh] = eng23CrepVals(vals); if(!(da || dh || na || nh)) return;
+  delete e.crepuscularDay; delete e.crepuscularNight; delete e.crepuscularHp;
+  if(da === na && dh === nh){ e.crepuscular = da; if(dh > 0) e.crepuscularHp = dh; return; } // the old form: an old card saves back unchanged
+  e.crepuscular = true; if(da === 0 && dh === 0 && na === 0 && nh === 1) return; // the default
+  if(da || dh) e.crepuscularDay = [da, dh]; if(na || nh) e.crepuscularNight = [na, nh]; }
+function eng23CrepHead(v){ const [da, dh, na, nh] = eng23CrepVals(v);
+  if(da === 0 && dh === 0 && na === 0 && nh === 1) return 'Crepuscular'; if(da === na && dh === nh) return `Crepuscular +${da}/+${dh}`;
+  return TX('ui.eng23-crep-head', {day: `+${da}/+${dh}`, night: `+${na}/+${nh}`}); }
+function eng23CrepText(v){ const [da, dh, na, nh] = eng23CrepVals(v);
+  if(da === na && dh === nh) return TX('ui.sk-crepuscular', {a: da, h: dh});
+  if(!(da || dh)) return TX('ui.eng23-crep-night-only', {a: na, h: nh});
+  return TX('ui.eng23-crep-parts', {da, dh, na, nh}); }
 const PASSIVE_DEFS = [
   {key:'poison', category:'passive', label:'Poison', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Poison.`},
   // Decay (passive, 2026-09-29): mirrors Poison's stack-then-tick shape exactly, but each tick
@@ -756,9 +779,13 @@ const PASSIVE_DEFS = [
   // (day for Diurnal), lost when the phase turns. The old on/off form reads as +1/+0.
   // 2026-10-13 (10:57 list): Crepuscular (Twilight only), Sun-shy (blind by day), Night-blind (blind at night).
   // 2026-10-21 (package CX2, owner 17:42: "Crepuscular: +1 attack in day, +1 attack at night"): a day part and a night part, like Tide.
-  {key:'crepuscular', category:'passive', label:'Crepuscular', kind:'twoNumber', placeholders:['Attack','Health'], defaultValue:[1, 0] /* BL (2026-10-23, owner 17:34 #4): +1/+0 is the standard */, desc:v=>{ const [a, h] = phaseVals(v); return TX('ui.sk-crepuscular', {a, h}); },
-    get:e=> e.crepuscularGrant ? undefined : (e.crepuscular || e.crepuscularHp) ? [e.crepuscular===true ? 1 : (e.crepuscular||0), e.crepuscularHp||0] : undefined,
-    apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.crepuscular = a; if(h>0) e.crepuscularHp = h; } }},
+  // 2026-11-04 (package ENG23, owner 11-03 23:01: "+0/1 at night instead. Let me change for both separately"): four numbers, the day part's
+  // Attack / Health and the night part's; the default is +0/+0 by day, +0/+1 at night (a bare `crepuscular: true`). Saved as: the same
+  // numbers in both parts -> the old form (crepuscular N, crepuscularHp M); the default -> true; else crepuscularDay / crepuscularNight.
+  {key:'crepuscular', category:'passive', label:'Crepuscular', kind:'twoNumber', placeholders:[TX('ui.eng23-crep-day-atk'), TX('ui.eng23-crep-day-hp'), TX('ui.eng23-crep-night-atk'), TX('ui.eng23-crep-night-hp')], defaultValue:[0, 0, 0, 1],
+    desc:v=> eng23CrepText(v),
+    get:e=> eng23CrepGet(e),
+    apply:(e, vals)=> eng23CrepApply(e, vals)},
   {key:'sunshy', category:'passive', label:'Sun-shy', kind:'boolean', desc:()=>`Blind by day: misses 1 attack in 2 while the sun is up.`},
   {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (an Illuminate unit on your side lights it, and so does an enemy Illuminate unit directly facing it).`}, // + facing (2026-10-16)
   {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], defaultValue:[1, 0] /* BL (2026-10-23, owner 17:34 #4): +1/+0 is the standard */, desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}.`; }, // 2026-10-15: night has no Darkness of its own any more
@@ -782,7 +809,9 @@ const PASSIVE_DEFS = [
     get:e=> e.tideGrant ? [grantToText(e.tideGrant.flood), grantToText(e.tideGrant.ebb)] : undefined,
     apply:(e, vals)=>{ const a = parseGrantText(vals && vals[0]), b = parseGrantText(vals && vals[1]); if(Object.keys(a).length || Object.keys(b).length){ e.tideGrant = {flood:a, ebb:b}; e.tide = true; } }},
   // Crepuscular – {day}{night} (2026-10-21, package CX2): the day part by day, the night part at night, both in Twilight.
-  {key:'crepuscularGrant', category:'passive', label:'Crepuscular', kind:'grant2', placeholders:[TX('ui.cx-day'), TX('ui.cx-night')], grantPlaceholders:['evasive', 'regen 2'],
+  // ENG23 (2026-11-04, owner: "offer one option of crepescular {}, {} -> {} in day, {} in night"): the braced form's own name in "+ Add
+  // Skill", "Crepuscular {day} → {night}"; each brace takes a stat change (+1/+0) or skills (evasive, regen 2), as Tide's do.
+  {key:'crepuscularGrant', category:'passive', get label(){ return TX('ui.eng23-crep-braced'); }, kind:'grant2', placeholders:[TX('ui.cx-day'), TX('ui.cx-night')], grantPlaceholders:['evasive', 'regen 2'],
     desc:v=>{ const [a, b] = Array.isArray(v) ? v : ['', '']; return TX('ui.sk-crepuscular-grant', {day: grantText(parseGrantText(a)) || TX('ui.cx-nothing'), night: grantText(parseGrantText(b)) || TX('ui.cx-nothing')}); },
     get:e=> e.crepuscularGrant ? [grantToText(e.crepuscularGrant.day), grantToText(e.crepuscularGrant.night)] : undefined,
     apply:(e, vals)=>{ const a = parseGrantText(vals && vals[0]), b = parseGrantText(vals && vals[1]); if(Object.keys(a).length || Object.keys(b).length){ e.crepuscularGrant = {day:a, night:b}; if(!e.crepuscular) e.crepuscular = true; } }},
@@ -2030,6 +2059,18 @@ Object.assign(SKILL_ICON, {fortify:'🏯', delivery:'📦', deliveryEvery:'📦'
 sk1Patch(PASSIVE_DEFS, 'stockpile', {hidden:true}); // ENG22 (DESIGN1-6): Delivery {Lumber xN} replaces it in "+ Add Skill"; an old card still reads it
 sk1Patch(PASSIVE_DEFS, 'taunt', {desc:()=> TX('ui.e22-taunt')}); // ENG22 (DESIGN1-4): Taunt pulls the arrows and shots of the enemies around it
 sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.e22-guardian')}); // ENG22 (DESIGN1-4): Guardian takes arrows and shots too
+// ==== ENG23 (2026-11-04, package ENG23; owner 11-03 23:01 / 23:12) ====
+// Skitter (owner: "After hit, it gains haste & evade for the next turn."): the engine's eng23SkitterOn grant (Haste + Evasive, its next round).
+PASSIVE_DEFS.push({key:'skitter', category:'passive', label:TX('ui.eng23-skitter-name'), kind:'boolean', desc:()=> TX('ui.eng23-skitter'), codexNote:TX('ui.eng23-skitter-codex')});
+Object.assign(SKILL_ICON, {skitter:'🐾'});
+// Grant Fast-forward N: the action form of the fast-forward tokens (the engine's Fast Forward counters); itself, an ally or every ally.
+ACTION_DEFS.push({key:'grantFastForward', get label(){ return TX('ui.eng23-act-ff'); }, fields:['amount', 'who', 'sub'], subOptions:['adjacent', 'random', 'all'], get desc(){ return TX('ui.eng23-act-ff-desc'); }});
+// A live edit (card_overrides) saved before ENG22 still holds Stockpile N / onReadyGold N (the Beaver Lumberjack's row, 11-03 14:49, reads
+// Stockpile 1): it reads as the Delivery that replaced them in cards.json (same amount, same timing), so the card shows and explains Delivery.
+function eng23MigrateDelivery(d){ const e = d && d.effects; if(!e || !(e.stockpile || e.onReadyGold) || e.delivery || e.deliveryEvery) return d;
+  const fx = Object.assign({}, e); if(fx.stockpile){ fx.delivery = fx.stockpile === true ? 1 : fx.stockpile; delete fx.stockpile; }
+  if(fx.onReadyGold){ fx.deliveryEvery = fx.onReadyGold === true ? 1 : fx.onReadyGold; delete fx.onReadyGold; }
+  return Object.assign({}, d, {effects: fx}); }
 // Hardy N on an equipment card (PROP1-1): its lives, equip.hardy (default 1, shown only from 2)
 function eqHardyOf(d){ const e = (d && d.equip) || {}, v = e.hardy != null ? e.hardy : e.lives; return v != null && Number(v) > 0 ? Math.max(1, Math.min(9, Math.round(Number(v)))) : 1; }
 // FIX3-4 (owner 10-26 11:19: "Yes level pvp strangers deck"): a Collection PvP stranger's deck fights at the level that brings its battle rating
@@ -2798,7 +2839,8 @@ function speciesLine(def){
   const ph = [...new Set(sp.map(speciesPhylum))];
   // 2026-10-21 (package TX): a water animal shows its habitat, Aquatic (it was the phylum's name)
   const aq = TAXO && sp.some(x=> TAXO.ancestors(x).has('aquatic')) ? ' · 🌊 Aquatic' : '';
-  return `🧬 ${sp.join(' & ')}${ph.length && !(ph.length===1 && ph[0]===sp[0]) ? ' · ' + ph.join(' & ') : ''}${aq}`;
+  const shown = sp.map(x=> TAXO ? TAXO.name(x) : x); // ENG23 (2026-11-04): the Type's shown name (Rodent reads Rodentia)
+  return `🧬 ${shown.join(' & ')}${ph.length && !(ph.length===1 && ph[0]===sp[0]) ? ' · ' + ph.join(' & ') : ''}${aq}`;
 }
 // Spells (2026-10-11): what a spell does, in a sentence.
 function spellText(d){ const sp = (d && d.spell) || {}, n = sp.amount || 0;
@@ -3150,7 +3192,7 @@ Object.assign(SKILL_TEXT, {
   converge: v=> `When it becomes Ready, ${v === 'ally' ? 'your units close' : v === 'both' ? 'the units on both sides close' : "the enemy's units close"} their gaps toward the centre.`,
   defiance: (v, n)=> `+${n||1} Attack for every enemy unit that is ${Array.isArray(v) && v.length ? v.join(' or ') : 'of its chosen type'}.`,
   swarm: (v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it.`, // ENG19 (2026-11-02, owner 22:15 #6: "Structures do count, so remove that phrase")
-  crepuscular: v=> { const [a, h] = phaseVals(v); return TX('ui.sk-crepuscular', {a, h}); }, // CX2 (2026-10-21): by day and at night, both in Twilight
+  crepuscular: v=> eng23CrepText(v), // CX2 (2026-10-21): by day and at night, both in Twilight; ENG23 (2026-11-04): each part its own
   sunshy: ()=> `Blind by day.`,
   nightblind: ()=> `Blind at night, unless an Illuminate unit lights your side (or faces it).`, // 2026-10-17
   nocturnal: v=> { const [a, h] = phaseVals(v); return `At night: +${a}/+${h}.`; },
@@ -3308,7 +3350,7 @@ function skillText(p, v, e){ const f = SKILL_TEXT[p.key], n = p.numberKey ? (e||
 const SKILL_REVEAL_MAP = {
   diurnal:     {from:1, tutorials:true, parts:['diurnalHp', 'diurnalGrant']}, // "?" on Map 0, outside the tutorials
   nocturnal:   {from:1, parts:['nocturnalHp', 'nocturnalGrant']},
-  crepuscular: {from:1, parts:['crepuscularHp', 'crepuscularGrant']}, // + its braces (CX2, 2026-10-21)
+  crepuscular: {from:1, parts:['crepuscularHp', 'crepuscularGrant', 'crepuscularDay', 'crepuscularNight' /* ENG23 */]}, // + its braces (CX2, 2026-10-21)
   tide:        {from:2, parts:['tideGrant']}, // Map 2+ (the Meadow Frog's Tide on Map 1 is a "?")
   // ENG9 (2026-10-26, owner EN8-4: "Fodder, stem, chrysalis should all say ?. Then at maybe 5 maps before 20, you can see the name, but not the
   // effect. so Chrysalis - ?"): nameFrom = the map from which the name shows with "?" for its effect (skillNameOnlyNow); from = fully revealed.
@@ -3323,6 +3365,11 @@ const SKILL_REVEAL_MAP = {
   // it's a '?'."): the abilities the base Level 0 cards bring at Level 1 that Map 0's own fights don't show (they show Armor, Flying, Swarm,
   // Poison and Quick) read "?" on the tutorial map and Map 0; Map 1 reveals them. Tide is Map 2's already.
   taunt:       {from:1}, reach:{from:1}, inspiring:{from:1}, esprit:{from:1}, boomerang:{from:1}, evasive:{from:1}, molting:{from:1}, frostbite:{from:1}, fireArrow:{from:1},
+  // ENG23 (2026-11-04, owner 11-03 23:12: "True sight is '?' until the first Map with invisible units or changelings are seen."): True Sight
+  // (keenEye) reads "?" until Map 6, the Sable Swampmire, the first map whose fights field an Invisible unit (the Booming Bittern, 6-2 to
+  // 6-6; no Changeling is in a fight before Map 18), or until the player has seen a card with Invisible or Changeling (seenWith), wherever.
+  // (Delivery, Map 0's Lumber maker on the Beaver Lumberjack, is not gated: it shows and explains itself on Map 0; owner call ENG23-4.)
+  keenEye:     {from:6, seenWith:['invisible', 'changeling']},
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
@@ -3371,13 +3418,16 @@ function hiddenSkillSet(){
     try{ if(typeof PASSIVE_DEFS !== 'undefined') PASSIVE_DEFS.forEach(pd=> pd && pd.key && all.add(pd.key)); }catch(e){}
     TUT12_SHOWN.forEach(k=> all.delete(k)); skillRevealMemo = {at: now, set: all, tut, t12}; return all; }
   const st = skillRevealState(), far = furthestMapReached(), set = new Set(); let grew = false;
-  Object.keys(SKILL_REVEAL).forEach(k=>{ if(st.keys.includes(k)) return; if(far >= SKILL_REVEAL[k]){ st.keys.push(k); grew = true; return; }
+  Object.keys(SKILL_REVEAL).forEach(k=>{ if(st.keys.includes(k)) return; if(far >= SKILL_REVEAL[k] || eng23SeenWithMet(SKILL_REVEAL_MAP[k])){ st.keys.push(k); grew = true; return; }
     if(tut && SKILL_REVEAL_MAP[k] && SKILL_REVEAL_MAP[k].tutorials) return; // 2026-10-21 (package TX): the tutorial shows it, unremembered
     if(SKILL_REVEAL_MAP[k] && SKILL_REVEAL_MAP[k].nameFrom != null && far >= SKILL_REVEAL_MAP[k].nameFrom) return; // ENG9: its name shows now (skillNameOnlyNow)
     set.add(k); });
   if(grew) skillRevealSave(st);
   skillRevealMemo = {at: now, set, tut, t12}; return set;
 }
+// ENG23 (2026-11-04): a reveal row's seenWith (keenEye): met once a card the player has seen (seenCardIds) carries one of those skills.
+function eng23SeenWithMet(r){ if(!r || !Array.isArray(r.seenWith) || !r.seenWith.length) return false;
+  try{ const defs = getCardDefs0(); for(const id of seenCardIds()){ const e = defs[id] && defs[id].effects; if(e && r.seenWith.some(k=> skillValOn(e[k]))) return true; } }catch(e){} return false; }
 function skillHiddenNow(key){ if(key && !TUT12_SHOWN.has(key) && revealTut12()) return true; /* SKL0: T-1 / T-2 */ return hiddenSkillSet().has(key); }
 // ENG9 (2026-10-26, EN8-4): between a gated skill's nameFrom and its from map, its name shows with "?" for its effect.
 function skillNameOnlyNow(key){ const r = SKILL_REVEAL_MAP[key]; if(!r || r.nameFrom == null) return false; if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return false;
@@ -3468,7 +3518,7 @@ function describeEffects(def, liveCard, opt){
       lines.push(`<span class="ritual-line">${ic('ritual')}Ritual — ${escapeHtml(TX('ui.cx-ritual-short'))}${ritualShapeHTML(cs.map(c=> ({html: `${c.ico}<b>${r[c.k]}</b>`})), {w: 124, h: 100, r: 40, cls: 'rs-card', label: TX('ui.de-ritual', {p: r.perished||0, d: r.drawn||0, c: r.castleDamage||0})})}</span>`); return; }
     if(p.key==='transform'){ const tf = e.transform, lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null;
       lines.push(`${ic('transform')}<span class="cx-head">${escapeHtml(transformHead(tf))}</span> — ${escapeHtml(TX('ui.sk-transform-short'))}${lc && lc.transformed ? ` <span class="atk-bonus">${escapeHtml(TX('ui.tf-done'))}</span>` : ''}`); return; }
-    if(p.key==='crepuscularGrant'){ const g = e.crepuscularGrant || {}; lines.push(`${ic('crepuscular')}Crepuscular — ${escapeHtml(TX('ui.sk-crepuscular-grant', {day: grantText(g.day) || TX('ui.cx-nothing'), night: grantText(g.night) || TX('ui.cx-nothing')}))}`); return; }
+    if(p.key==='crepuscularGrant'){ const g = e.crepuscularGrant || {}; lines.push(`${ic('crepuscular')}${escapeHtml(TX('ui.eng23-crep-head', {day: grantText(g.day) || '–', night: grantText(g.night) || '–'})) /* ENG23 (2026-11-04): "Crepuscular { +1/+0 } → { Evasive }" */} — ${escapeHtml(TX('ui.sk-crepuscular-grant', {day: grantText(g.day) || TX('ui.cx-nothing'), night: grantText(g.night) || TX('ui.cx-nothing')}))}`); return; }
     if(p.key==='seasonGrant' && e.season) return; // EN6 (2026-10-24): the Season line says its braces
     if(/Grant$/.test(p.key) && THR_APP[p.key.slice(0, -5)] && e[p.key.slice(0, -5)]) return; // ENG10 (2026-10-26, PROP1-4): the threshold line says its braces
     if(THR_APP[p.key]){ const N = thrNApp(p.key, e); lines.push(`${ic(p.key)}${p.label} ${N} – {${escapeHtml(grantText(thrGrantApp(p.key, e)))}} — ${escapeHtml(THR_TX[p.key].line({n: N, skills: grantText(thrGrantApp(p.key, e))}))}`); return; } // ENG10: "Requiem 5 – {+2/+2}"
@@ -3512,7 +3562,7 @@ function describeEffects(def, liveCard, opt){
       const head0 = p.key==='pack' ? `${p.label}${skillValSuffix(p, v === true ? 2 : v)}` : p.label; /* BL (2026-10-23): "Pack", not "Pack 2", at its default */ lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
     if(p.key==='deliveryRes') return; // ENG22: read on the Delivery line
     { const h22 = e22Head(p.key, v, e); if(h22){ lines.push(`${ic(p.key)}${escapeHtml(h22)} — ${skillText(p, v, e)}`); return; } } // ENG22 (2026-11-03): Build / Fortify / Delivery {…}
-    const head = p.key==='hunter' ? giHunterHead(p, e) /* Hunter N (Poisoned) (2026-10-19, GI) */ : p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${skillValSuffix(p, v)}` /* BL: bare at its default */ : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? (atSkillDefault(p, v) ? p.label : `${p.label} +${v[0]}/+${v[1]}`) /* BL (2026-10-23): "Diurnal", not "Diurnal +1/+0" */ : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
+    const head = p.key==='hunter' ? giHunterHead(p, e) /* Hunter N (Poisoned) (2026-10-19, GI) */ : p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${skillValSuffix(p, v)}` /* BL: bare at its default */ : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.key==='crepuscular' && Array.isArray(v)) ? eng23CrepHead(v) /* ENG23 (2026-11-04): its two parts */ : (p.kind==='twoNumber' && Array.isArray(v)) ? (atSkillDefault(p, v) ? p.label : `${p.label} +${v[0]}/+${v[1]}`) /* BL (2026-10-23): "Diurnal", not "Diurnal +1/+0" */ : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
     lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head}${legendaryTagHTML(p) /* 2026-10-18 (owner 23:05) */} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; })(p); if(lines.length > nL0){ const tg = skillNewTagHTML(p.key); if(tg) lines[nL0] += tg; } }); // "Answered by" lives in the Skill Codex now (2026-10-13); NEW! on a freshly revealed skill (2026-10-23, RW4)
@@ -3858,6 +3908,7 @@ function buildCardDefs(){
   Object.keys(liveCards).forEach(id=>{ const m = sk1MigrateSiege(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-19 (package SK1): Demolisher is Siege now
   Object.keys(liveCards).forEach(id=>{ const m = enMigrateCard(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-23 (package EN): Spellshield is Spellward, Enraged is Rage – {…}
   Object.keys(liveCards).forEach(id=>{ const m = eng17MigrateHatchling(liveCards[id], CARD_DEFS_BASELINE[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-11-02 (package ENG17, BABY-2): a Baby card's Fodder / Stem from Level 1 is Hatchling
+  Object.keys(liveCards).forEach(id=>{ const m = eng23MigrateDelivery(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-11-04 (package ENG23): a pre-ENG22 live edit's Stockpile reads as Delivery
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
@@ -6552,6 +6603,10 @@ Object.assign(SKILL_TEXT, {
   healing: v=> TX('ui.sk-healing', {n: numOr(v, 1)}),
 });
 function sk1LogText(ev, nm){
+  if(ev && ev.type === 'feed') return {cls:'', text:TX('ui.eng23-log-feed', {name: nm(ev.eatenDefId), n: ev.repair||0, a: ev.attack||0, left: ev.left||0})}; // ENG23 (2026-11-04): Feed
+  if(ev && ev.type === 'statusFx' && ev.kind === 'aimedBolt') return {cls:'', text: ev.castle ? TX('ui.eng23-log-bolt-bramble', {n: ev.amount||0}) : TX('ui.eng23-log-bolt', {name: nm(ev.targetDefId), n: ev.amount||0})};
+  if(ev && ev.type === 'statusFx' && ev.kind === 'skitter') return {cls:'', text:TX('ui.eng23-log-skitter', {name: nm(ev.attDefId)})};
+  if(ev && ev.type === 'statusFx' && ev.kind === 'grantFastForward') return {cls:'', text:TX('ui.eng23-log-ff', {name: nm(ev.targetDefId), n: ev.amount||1})};
   if(!ev || ev.type !== 'statusFx') return null;
   const s = n=> n === 1 ? '' : 's';
   if(ev.kind === 'spellward' || ev.kind === 'spellshield') return {cls:'', text:TX('ui.log-spellward', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // GD2 (2026-10-22); Spellward (EN, 2026-10-23)
@@ -6572,8 +6627,14 @@ function sk1Vfx(ev){
   const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
   const refresh = u=>{ try{ updateCardStatusDisplay(u); }catch(e){} };
   if(ev.type === 'triggerFired' && ev.hook === 'onEnemyEnter'){ fl(boardCardEl(ev.uid), TX('ui.float-sentry'), 'quick'); snd('ambushTone'); return; }
+  // ENG23 (2026-11-04): Feed's +Attack on each unit, the fast-forward tokens as they are granted and spent, Skitter, the Aimed Bolt
+  if(ev.type === 'feed'){ (ev.uids || []).forEach(u=>{ const r = rcOf(u); if(r) r.atk = (r.atk||0) + (ev.attack||0); fl(boardCardEl(u), `🍖 +${ev.attack||0}⚔`, 'buff'); refresh(u); }); try{ const h = hqTileEl(ev.side); if(h) floatText(h, `🍖 +${ev.repair||0}❤`, 'heal'); }catch(e){} snd('healTone'); return; }
+  if(ev.type === 'fastForward'){ const r = rcOf(ev.uid); if(r) r.ffCounters = 0; refresh(ev.uid); return; }
   if(ev.type !== 'statusFx') return;
   const rc = rcOf(ev.targetUid), el = boardCardEl(ev.targetUid);
+  if(ev.kind === 'grantFastForward'){ if(rc) rc.ffCounters = (rc.ffCounters||0) + (ev.amount||1); fl(el, `⏩ +${ev.amount||1}`, 'quick'); refresh(ev.targetUid); return; }
+  if(ev.kind === 'skitter'){ fl(el, `🐾 ${TX('ui.eng23-skitter-name')}`, 'quick'); return; }
+  if(ev.kind === 'aimedBolt'){ const from = hqTileEl(ev.side), to = ev.castle ? hqTileEl(ev.targetSide) : el; if(from && to) try{ spawnProjectile(from, to, '🏹'); }catch(e){} return; }
   if(ev.kind === 'exploit'){ if(rc) rc.exploit = (rc.exploit||0) + (ev.amount||1); fl(el, TX('ui.float-exploit'), 'debuff'); snd('exposeTone'); refresh(ev.targetUid); return; }
   if(ev.kind === 'exploitHit'){ if(rc) rc.exploit = ev.amount||0; fl(el, `🩻 +${ev.bonus||1}`, 'debuff'); refresh(ev.targetUid); return; }
   if(ev.kind === 'exploitFade'){ if(rc) rc.exploit = 0; refresh(ev.targetUid); return; }
@@ -6585,6 +6646,7 @@ function sk1Vfx(ev){
 }
 // The Exploit tokens chip and the Formation / Isolation chip (the bonus it has right now).
 function sk1StatusBadges(c, badges){
+  if(c.ffCounters > 0) badges.push(`<span class="abadge ff-tokens" data-ff="${c.ffCounters}" title="${escapeAttr(TX('ui.eng23-ff-tip', {n: c.ffCounters}))}">⏩${c.ffCounters}</span>`); // ENG23 (2026-11-04): fast-forward tokens
   if(c.exploit > 0) badges.push(`<span class="abadge exploit" title="${escapeAttr(TX('ui.exploit-tip', {n: c.exploit, s: c.exploit === 1 ? '' : 's'}))}">🩻${c.exploit}</span>`);
   const a = c.sk1Atk || 0; if(a > 0) badges.push(`<span class="abadge formation" title="${escapeAttr(TX('ui.aura-formation-tip', {n: a}))}">🔗+${a}</span>`);
   else if(a < 0) badges.push(`<span class="abadge isolation" title="${escapeAttr(TX('ui.aura-isolation-tip', {n: -a}))}">🏝️${a}</span>`);
@@ -9082,6 +9144,7 @@ function triggerActionEmoji(t){
     case 'rebuild': return '🔨'; // Rebuild castle (2026-10-17)
     case 'cleanse': return '🫧';
     case 'addWait': return '⏳';
+    case 'grantFastForward': return '⏩'; // ENG23 (2026-11-04)
     case 'reduceWaitOfSpawned': return '⏩';
     case 'swapPositions': return '🔄';
     case 'mindControl': return '🪢';
@@ -11681,6 +11744,8 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     const ph = s.placeholders || ['Timer','Damage'];
     // 2026-10-16 skill audit: a hover title too, so "Chance %" / "Rounds" (Freeze …) or "Fuse" / "Damage" (Dynamite) show with a value in.
     valueHtml = `<input type="number" min="0" class="w-60" placeholder="${ph[0]}" aria-label="${ph[0]}" title="${ph[0]}" data-sk="val0" data-i="${i}" value="${vals[0]}"><input type="number" min="0" class="w-60" placeholder="${ph[1]}" aria-label="${ph[1]}" title="${ph[1]}" data-sk="val1" data-i="${i}" value="${vals[1]}">`;
+    // ENG23 (2026-11-04): a four-number skill (Crepuscular: day Attack / Health, night Attack / Health) gets its second pair (val2, val3)
+    if(ph.length >= 4) valueHtml += ph.slice(2, 4).map((p, j)=> `<input type="number" min="0" class="w-60" placeholder="${escapeAttr(p)}" aria-label="${escapeAttr(p)}" title="${escapeAttr(p)}" data-sk="val${j + 2}" data-i="${i}" value="${vals[j + 2] != null ? vals[j + 2] : 0}">`).join('');
     // A target picker after the numbers (2026-10-18, Esprit: Kin by default, or Any).
     if(s.whoPicker) valueHtml += `<select data-sk="val2" data-i="${i}" aria-label="Target" title="Which arrivals count: Kin (your units that share a Type with it) or Any (every unit of yours)">${s.whoPicker.map(o=> `<option value="${o.value}" ${(vals[2] || s.whoPicker[0].value) === o.value ? 'selected' : ''}>${escapeHtml(o.label)}</option>`).join('')}</select>`;
   } else if(s.kind==='select' && s.selectOptions){
@@ -11930,6 +11995,7 @@ function triggerPreviewText(t){
     case 'stunPlayer': doText = `make the enemy player skip ${t.count>1 ? t.count + ' turns' : 'their turn'}`; break;
     case 'cleanse': { const w = t.who && t.who!=='self' ? whoTarget : 'itself'; doText = t.amount ? `cleanse ${t.amount} ailment${t.amount===1?'':'s'} from ${w} (curses first)` : `cleanse ${w} of every ailment`; break; }
     case 'addWait': doText = `delay ${whoTarget} by ${amt} Wait`; break;
+    case 'grantFastForward': doText = TX('ui.eng23-act-ff-text', {n: amt, who: t.who && t.who !== 'self' ? whoTarget : TX('ui.eng23-itself')}); break; // ENG23 (2026-11-04)
     case 'fireHit': doText = `its hit also deals ${amt} fire damage`; break; // 2026-10-16
     case 'rebuild': doText = `restore ${amt} Health to your bramble`; break; // 2026-10-17
     default: doText = aDef.label.toLowerCase();
@@ -12119,8 +12185,8 @@ function readEditorFormIntoCard(){
     const fx = L > 0 ? (levelFx[L] = levelFx[L] || {}) : newEffects;
     if(sdef.kind==='typeTwoNumber'){ sdef.apply(fx, ['val0','val1','val2'].map(k=> (row.querySelector(`[data-sk="${k}"]`)||{}).value)); }
     else if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount' || sdef.kind==='grant2' || sdef.kind==='transform' || sdef.kind==='ritual'){ // + Tide – {…}, {…} (2026-10-15); + Transform, Ritual (CX2, 2026-10-21)
-      const v0 = row.querySelector('[data-sk="val0"]').value, v1 = row.querySelector('[data-sk="val1"]').value, v2El = row.querySelector('[data-sk="val2"]');
-      sdef.apply(fx, v2El ? [v0, v1, v2El.value] : [v0,v1]); // + a target picker's value (Esprit Kin / Any, 2026-10-18)
+      const v0 = row.querySelector('[data-sk="val0"]').value, v1 = row.querySelector('[data-sk="val1"]').value, v2El = row.querySelector('[data-sk="val2"]'), v3El = row.querySelector('[data-sk="val3"]');
+      sdef.apply(fx, v3El && v2El ? [v0, v1, v2El.value, v3El.value] /* ENG23: Crepuscular's four numbers */ : v2El ? [v0, v1, v2El.value] : [v0,v1]); // + a target picker's value (Esprit Kin / Any, 2026-10-18)
     } else if(sdef.kind==='number' || sdef.kind==='select' || sdef.kind==='text' || sdef.kind==='grant'){ // + the Zeitgeber braces (2026-10-15)
       sdef.apply(fx, row.querySelector('[data-sk="val"]').value);
     } else if(sdef.kind==='types'){
@@ -15938,6 +16004,8 @@ function characterDescHTML(ch){
   if(e.castleRegen) bits.push(TX('ui.en8-castle-regen', {n: e.castleRegen})); // EN8 (2026-10-24, P24-17): a random wounded ally, never the bramble
   if(e.enemyWaitBonus) bits.push(`The enemy's first 3 units arrive with +${e.enemyWaitBonus} ⏳ Wait`);
   if(e.castleBolt) bits.push(`Each round a ballista bolt hits a random enemy unit for ${e.castleBolt}`);
+  if(e.aimedBolt) bits.push(TX('ui.eng23-bolt-desc', {n: e.aimedBolt})); // ENG23 (2026-11-04, CONTENT9-2 B): Aimed Bolt, once a fight
+  if(e.feed){ const f = eng23FeedCfgApp(e.feed); bits.push(TX('ui.eng23-feed-desc', {n: f.repair, a: f.attack, k: f.feeds})); } // ENG23 (CONTENT9-2 A): Feed
   if(e.castleLumberEvery) bits.push(`+1 🪵 every ${e.castleLumberEvery} rounds`);
   if(e.castleThorns) bits.push(`A unit that hits this bramble takes ${e.castleThorns}`);
   if(e.herbRefinery) bits.push(`Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵`);
@@ -15987,6 +16055,7 @@ const BRAMBLE_FX = [
   {key:'castleRegen', icon:'💚', label:()=> TX('ui.ux2-fx-regen')},
   {key:'enemyWaitBonus', icon:'⏳', label:()=> TX('ui.ux2-fx-enemy-wait')},
   {key:'castleBolt', icon:'🏹', label:()=> TX('ui.ux2-fx-bolt')},
+  {key:'aimedBolt', icon:'🎯', label:()=> TX('ui.eng23-bolt-name')}, {key:'feed', icon:'🍖', label:()=> TX('ui.eng23-feed-name')}, // ENG23 (2026-11-04)
   {key:'castleThorns', icon:'🌵', label:()=> TX('ui.ux2-fx-thorns')},
   {key:'herbRefinery', icon:'🌿', label:()=> TX('ui.ux2-fx-herb')},
   {key:'castleSpawn', icon:'🐣', label:()=> TX('ui.ux2-fx-spawn')},
@@ -24999,7 +25068,7 @@ function wireRewardZoom(root){
     const z = document.createElement('div'); z.className = 'cnp-rw-zoom'; z.setAttribute('aria-hidden', 'true');
     // 2026-10-16: a pack (or other non-card reward) shows a small name card instead (data-zoom-tip "Name|Line")
     if(el.dataset.zoomTip){ const [t1, t2] = el.dataset.zoomTip.split('|'); z.classList.add('cnp-rw-tip'); z.innerHTML = `<b>${escapeHtml(t1||'')}</b>${t2 ? `<small>${escapeHtml(t2)}</small>` : ''}`; }
-    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true, size:'full' /* 2026-10-30 (CS-B): a Compact preview or a Chip zooms to the Full card */})
+    else { const d = el.dataset.zoomBase ? eng23MapDef(el.dataset.zoom) : getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true, size:'full' /* 2026-10-30 (CS-B): a Compact preview or a Chip zooms to the Full card */})
         + cardPopTextHTML(d); z.classList.add('cp-sheet'); // 2026-10-30 (package CS-C, owner CS-1): the Full card plus its text, as the page's hover popover
       // 2026-10-29 (package UI3, S6): the Map cards gallery's reason rides in the popover (data-zoom-why), no native tooltip, no "?"
       if(el.dataset.zoomWhy) z.insertAdjacentHTML('beforeend', `<span class="cnp-rw-why">${escapeHtml(el.dataset.zoomWhy)}</span>`); }
@@ -32306,8 +32375,20 @@ function vis4MapCardsHTML(map, node){
 }
 // VIS4's tiles, by rarity then name: a card the player has never seen is the ❓ back (an admin sees every card). opts.packs: a "📦 Pack N" tag
 // under each card a basic pack also gives (the 🃏 Map cards overlay).
+// ENG23 (2026-11-04, owner 11-03 23:12: "why does the lumberjack say 3/10 instead of 3/5 here?"): the Map cards tiles drew getCardDefs(),
+// which bakes in the VIEWER's own copy: its Forge level (myCardLevels), socket gem and prestige. The owner's account has the Beaver
+// Lumberjack at Level 10 (player_card_unlocks), and its live edit is 3/5 (card_overrides, 11-03 14:49), so Level 10 of the budget curve
+// read 3/10. A map's list is about the card as that map gives it out and fields it: its base level (cardBaseLevel), with the base level's
+// stats (statsAtLevel) and skills (effectsAtLevel). eng23MapDef is that copy; the tiles and their zoom (data-zoom-base) use it.
+function eng23MapDef(id, defs){
+  defs = defs || getCardDefs(); const d = defs[id]; if(!d) return null;
+  const raw = (typeof liveCards !== 'undefined' && liveCards[id]) || CARD_DEFS_BASELINE[id]; if(!raw || raw.attack == null) return d;
+  const b = cardBaseLevel(raw), hatch = b > 0 && isHatchling(id), L = hatch ? 0 : b, st = statsAtLevel(raw, L);
+  const out = Object.assign({}, d, {attack: st.attack, health: st.health, level: L, baseLevel: b, effects: raw.levelSkills ? effectsAtLevel(raw, L) : (raw.effects || d.effects)});
+  delete out.socketGem; delete out.enchant; delete out.prestigeTier; delete out.prestigeClass; delete out.prestigeIcon; delete out.prestigeLabel; return out; }
 function vis4MapCardTilesHTML(ids, defs, opts){
   defs = defs || getCardDefs(); const packs = !!(opts && opts.packs);
+  { const base = {}; ids.forEach(id=>{ const b = eng23MapDef(id, defs); if(b) base[id] = b; }); defs = Object.assign({}, defs, base); } // ENG23: each card at its base level
   const big = !!(opts && opts.large); // 2026-10-29 (package REVIEW2): the deck-size card, its pack tag under it in the flow
   return ids.slice().sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name))).map(id=>{ const d = defs[id];
     // 2026-10-30 (package CS-B; owner CS-4): a list (the skirmish panel's strip, a list with no review in the 🃏 Map cards overlay) is Chips;
@@ -32315,7 +32396,7 @@ function vis4MapCardTilesHTML(ids, defs, opts){
     if(!adminModeEnabled && isCardHiddenForPlayer(d)) return big ? `<span class="vis4-mc-card is-mystery is-large" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`
       : `<span class="vis4-mc-card is-chip is-mystery" role="img" aria-label="A mystery card">${cardChipHTML(d, {mystery:true})}</span>`;
     const pt = packs && !big ? basicPackTierOf(d) : 0, tag = pt ? `<small class="pk1-mc-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</small>` : '';
-    return `<span class="vis4-mc-card${big ? ' is-large' : ' is-chip'}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}"${opts && opts.why ? ` data-zoom-why="${escapeAttr(opts.why)}"` : ''} aria-label="${escapeAttr(d.name)}">${big ? cardTileHTML(d, {inPlay:true, size:'full'}) : cardChipHTML(d, {noDefid:true})}${tag}</span>`; }).join('');
+    return `<span class="vis4-mc-card${big ? ' is-large' : ' is-chip'}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" data-zoom-base="1"${opts && opts.why ? ` data-zoom-why="${escapeAttr(opts.why)}"` : ''} aria-label="${escapeAttr(d.name)}">${big ? cardTileHTML(d, {inPlay:true, size:'full'}) : cardChipHTML(d, {noDefid:true})}${tag}</span>`; }).join('');
 }
 // 2026-10-28 (package PACK1; owner 10-28: the map's cards viewable from the skirmish panel's admin button list): 🃏 Map cards opens the whole
 // card list of this fight's map as an overlay, one section per list (mapPoolSections: MAP, each side map's own, SPECIAL), VIS4's tiles that zoom
@@ -36937,7 +37018,7 @@ function renderMatchUI(){
       ${fieldOverlayHTML(fieldEffectOf(m))}
       ${fieldResSideHTML(m, true)}${fieldResSideHTML(m, false)}
     </div>
-    <div class="hud">${resourcePillsHTML}</div>
+    <div class="hud">${resourcePillsHTML}${eng23BrambleActsHTML(m) /* ENG23 (2026-11-04) */}</div>
     <div class="bottom-play-row${document.querySelector('.bottom-play-row.is-turn-played') ? ' is-turn-played' : ''}">
       ${matchCastleTileHTML(castleCharOf(m, 1), (m.resolving && m.displayHqHp && m.displayHqHp.A != null) ? m.displayHqHp.A : p1.hq.hp, p1.hq.maxHp, 'A', bottomLabel)}
       <div class="deck-widget hq-tile ${(p1.deck||[]).length ? 'bw-back bk-unit' : 'is-empty'}" id="deckWidgetBottom" style="${deckPileStyle((p1.deck||[]).length)}">
@@ -38072,7 +38153,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, ffCounters:rc.ffCounters||0 /* ENG23 */, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -38210,7 +38291,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${pl1AuraAtk(c)}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}`; // + the Evolute stack (EV, 2026-10-21)
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${pl1AuraAtk(c)}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.ffCounters||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}`; // + the Evolute stack (EV, 2026-10-21)
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -41555,6 +41636,69 @@ async function discardCardByUid(uid){
     if(m.mode!=='sandbox') maybeAutoSkip();
   }
 }
+// ==== ENG23 (2026-11-04, CONTENT9-2, owner "Ok for C9-2"): the bramble actives on your HUD =========================================
+// Feed (the Gnawed Larder): drag a hand card onto 🍖 Feed (or onto your bramble), or pick a card and tap Feed; it uses the turn's pitch
+// (engine feedBramble). Aimed Bolt (Ballista Keep): tap 🎯, pick an enemy column (its unit, or their bramble through an empty column);
+// once a fight, it doesn't use your play (engine aimedBolt). Solo fights only: a co-op room or a live 1v1 has no claim for them yet.
+function eng23FeedCfgApp(v){ const d = {feeds: 3, repair: 3, attack: 1}; const o = (v && typeof v === 'object') ? v : (v === true ? {} : {feeds: Number(v)});
+  ['feeds', 'repair', 'attack'].forEach(k=>{ if(o[k] != null && Number.isFinite(Number(o[k]))) d[k] = Math.max(0, Math.round(Number(o[k]))); }); return d; }
+function eng23ActsOn(m){ return !!(m && m.engine && m.engine.feedBramble && !m.coop && m.mode !== 'liveRanked' && !m.over); }
+function eng23BrambleActsHTML(m){
+  try{ if(!eng23ActsOn(m)) return ''; const pid = viewerHandPid(m), pl = m.players[pid]; if(!pl || !(pl.feed || pl.aimedBolt > 0)) return '';
+    const mine = activePlayerId(m) === pid && !m.resolving, out = [];
+    if(pl.feed){ const can = mine && m.engine.eng23CanFeed(pl);
+      out.push(`<button type="button" class="btn small eng23-act eng23-feed" data-eng23-feed="1"${can ? '' : ' disabled'} title="${escapeAttr(TX('ui.eng23-feed-tip', {n: pl.feed.repair, a: pl.feed.attack, left: pl.feed.left}))}">🍖 ${escapeHtml(TX('ui.eng23-feed-name'))} <small>${pl.feed.left}/${pl.feed.feeds}</small></button>`); }
+    if(pl.aimedBolt > 0){ const can = mine && m.engine.eng23CanAim(pl);
+      out.push(`<button type="button" class="btn small eng23-act eng23-bolt" data-eng23-bolt="1"${can ? '' : ' disabled'} title="${escapeAttr(TX('ui.eng23-bolt-tip', {n: pl.aimedBolt}))}">🎯 ${escapeHtml(TX('ui.eng23-bolt-name'))} <small>${pl.aimedBoltUsed ? '0/1' : '1/1'}</small></button>`); }
+    return out.length ? `<span class="eng23-acts" style="display:inline-flex;gap:4px;margin-left:6px;align-items:center">${out.join('')}</span>` : '';
+  }catch(e){ return ''; } }
+function eng23TurnOk(m){ return !!(eng23ActsOn(m) && !m.resolving && !m.awaitingPass && !m._committing && !m._upkeep && activePlayerId(m) === viewerHandPid(m)); }
+async function eng23AfterAct(m, pid){
+  const me = m.players[pid], foe = m.players[pid === 1 ? 2 : 1];
+  if((foe && foe.hq.hp <= 0) || (me.hand.length === 0 && !leaderSummonableNow(m, me))){ await afterPlayerAction(pid); return; }
+  fightSafe(renderHand, 'renderHand'); fightSafe(renderBoard, 'renderBoard'); fightSafe(updateControlsDisabled); fightSafe(renderHUD, 'renderHUD');
+  try{ updateHqHpDisplay(); }catch(e){}
+  if(m.mode !== 'sandbox') maybeAutoSkip();
+}
+async function eng23FeedByUid(uid){
+  const m = matchState; if(!eng23TurnOk(m) || !pitchAllowedIn(m)) return;
+  const pid = activePlayerId(m), pl = m.players[pid], card = pl.hand.find(h=> h.uid === uid), btn = document.querySelector('[data-eng23-feed]');
+  if(!card || !m.engine.eng23CanFeed(pl)){ denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`) || btn); return; }
+  recordFightAction(m, {a:'feed', uid});
+  const ev = [], r = m.engine.feedBramble(m.players, m.sideOf, pid, card, m.stats, ev); if(!r) return;
+  if(m.selectedUid === uid) m.selectedUid = null;
+  fightSafe(()=>{ try{ SoundKit.healTone && SoundKit.healTone(); }catch(e){} ev.forEach(x=>{ try{ pushLog(x); renderVfxForEvent(x); }catch(e){} }); }, 'feed presentation');
+  await eng23AfterAct(m, pid);
+}
+function eng23OpenBoltPicker(btn){
+  const m = matchState; if(!eng23TurnOk(m)) return; const pid = activePlayerId(m), pl = m.players[pid], foe = m.players[pid === 1 ? 2 : 1];
+  if(!m.engine.eng23CanAim(pl)){ denyShake(btn); return; }
+  document.querySelectorAll('.eng23-bolt-pick').forEach(x=> x.remove());
+  const defs = getCardDefs(), units = [...foe.row.left, ...foe.row.center, ...foe.row.right].filter(c=> c && !c.gap && c.hp > 0).sort((a, b)=> a.slot - b.slot);
+  const used = new Set(units.map(c=> c.slot)), open = [0, -1, 1, -2, 2].find(s=> !used.has(s));
+  const rows = units.map(c=> `<button type="button" class="btn small" data-eng23-slot="${c.slot}">${escapeHtml((defs[c.defId] || {}).name || c.defId)} <small>❤${c.hp}</small></button>`);
+  if(open != null && units.length < 3) rows.push(`<button type="button" class="btn small" data-eng23-slot="${open}">🏰 ${escapeHtml(TX('ui.eng23-bolt-bramble'))}</button>`);
+  const box = document.createElement('div'); box.className = 'eng23-bolt-pick'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', TX('ui.eng23-bolt-pick'));
+  box.style.cssText = 'position:fixed;z-index:700;background:var(--panel,#2a2218);color:var(--ink,#f3e9d2);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;max-width:min(92vw,420px)';
+  box.innerHTML = `<b style="width:100%">🎯 ${escapeHtml(TX('ui.eng23-bolt-pick'))}</b>${rows.join('') || `<span>${escapeHtml(TX('ui.eng23-bolt-none'))}</span>`}<button type="button" class="btn small" data-eng23-cancel="1">✕</button>`;
+  document.body.appendChild(box); const r = btn.getBoundingClientRect(); box.style.left = Math.max(8, Math.min(innerWidth - box.offsetWidth - 8, r.left)) + 'px'; box.style.top = Math.max(8, r.top - box.offsetHeight - 8) + 'px';
+  box.addEventListener('click', async e=>{ const b = e.target.closest('button'); if(!b) return; box.remove(); if(b.dataset.eng23Slot != null) await eng23AimedBolt(Number(b.dataset.eng23Slot)); });
+}
+async function eng23AimedBolt(slot){
+  const m = matchState; if(!eng23TurnOk(m)) return; const pid = activePlayerId(m);
+  recordFightAction(m, {a:'aimedBolt', slot});
+  const ev = [], r = m.engine.aimedBolt(m.players, m.sideOf, pid, slot, m.stats, ev); if(!r) return;
+  fightSafe(()=>{ ev.forEach(x=>{ try{ pushLog(x); renderVfxForEvent(x); }catch(e){} }); }, 'aimed bolt presentation');
+  await eng23AfterAct(m, pid);
+}
+document.addEventListener('click', e=>{ const t = e.target && e.target.closest && e.target.closest('[data-eng23-feed], [data-eng23-bolt]'); if(!t || t.disabled) return; const m = matchState; if(!m) return;
+  e.preventDefault(); if(t.dataset.eng23Bolt){ eng23OpenBoltPicker(t); return; }
+  if(m.selectedUid != null) eng23FeedByUid(m.selectedUid); else { try{ showToast(TX('ui.eng23-feed-how'), 'info'); }catch(err){} } });
+const eng23FeedTarget = e=>{ const m = matchState; if(!m || !e.target || !e.target.closest) return null; const t = e.target.closest('[data-eng23-feed], [data-hq="A"]');
+  if(!t || !eng23ActsOn(m)) return null; const pl = m.players[viewerHandPid(m)]; return pl && pl.feed && (t.dataset.eng23Feed || viewerHandPid(m) === 1) ? t : null; };
+document.addEventListener('dragover', e=>{ if(eng23FeedTarget(e)) e.preventDefault(); });
+document.addEventListener('drop', e=>{ const t = eng23FeedTarget(e); if(!t) return; e.preventDefault(); e.stopPropagation(); const uid = Number(e.dataTransfer.getData('text/plain')); if(uid) eng23FeedByUid(uid); }, true);
+// ==== end of ENG23 HUD ====
 // Admin (2026-10-12, user: "An auto-win battle button at the top"): the enemy castle falls and the match ends as a win.
 async function adminAutoWin(){
   const m = matchState; if(!m || m.over || m.resultDecided || !adminModeEnabled) return; // + decided (2026-10-21, package ED): one result a match
@@ -41979,6 +42123,7 @@ function renderHUD(){
          — see that copy's comment for the full why. -->
     ${itemsHudHTML(m)}
     ${(()=>{ const n = m && m.engine && m.engine.actionsPerTurn ? m.engine.actionsPerTurn() : 1; if(n <= 1) return ''; const used = me.playedThisTurn ? n : (me.playsTurn === (m.round||1) - 1 ? (me.playsThisTurn||0) : 0); return `<span class="hud-pill plays-pill" title="Actions per turn: you may play ${n} cards a turn">▶ ${Math.max(0, n - used)}/${n} plays</span>`; })()}
+    ${eng23BrambleActsHTML(m) /* ENG23 (2026-11-04): Feed / Aimed Bolt */}
     `;
   // (2026-10-04) Settings and Quit live in the top bar now; this used to add a second copy of
   // both (with a duplicate #quitMatchBtn id) under the board after every HUD refresh.
@@ -43379,7 +43524,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, ffCounters:c.ffCounters||0 /* ENG23 */, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
