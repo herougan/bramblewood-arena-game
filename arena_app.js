@@ -8923,7 +8923,7 @@ function nmFitScale(name){ const w = nmWidthEm(name); return w <= NM_ROOM_EM ? 1
 // hang over the corners of the name scroll. The scroll now leaves them room: nmHTML() tells the scroll how wide each badge is, in em of the badge's own text size
 // (--nm-cem, --nm-wem; a pip is about .8em, a number-and-icon about 1.9em, a text cost like 🕊️2 about 1.3em a character), and the CSS (UI20 block, arena_template.html)
 // narrows the scroll's width so its text starts past the badge. The name is not shrunk for it; a name that no longer fits wraps to a second line.
-function nmPartsEm(parts){ let em = 0; for(const p of (parts || [])){ const m = /data-n="(\d+)"/.exec(p); em += m ? (+m[1] > 4 ? 2.1 : .9 * (+m[1]) + .35) : 1.3 * [...String(p).replace(/<[^>]*>/g, '')].length; } return Math.round(em * 100) / 100; }
+function nmPartsEm(parts){ let em = 0; for(const p of (parts || [])){ const m = /data-n="(\d+)"/.exec(p); em += m ? (+m[1] > 4 ? 2.1 : .9 * (+m[1]) + .35) : 1.3 * [...String(p).replace(/<[^>]*>/g, '')].length; } return Math.round((em * 1.04 + .2 * Math.max(0, (parts || []).length - 1)) * 100) / 100; } // + 4% and .2em between two cost parts (measured: a Lumber + Stone badge ran .17em wider than the sum)
 function nmWaitEm(w){ w = w | 0; return w <= 0 ? 0 : w > 4 ? 2.1 : Math.round((.9 * w + .35) * 100) / 100; }
 function nmHTML(name, costParts, wait){ const sc = nmFitScale(name), ce = nmPartsEm(costParts), we = nmWaitEm(wait), st = (ce ? `--nm-cem:${ce};` : '') + (we ? `--nm-wem:${we};` : '');
   return `<div class="nm"${st ? ` style="${st}"` : ''}><span class="nmt"${sc < 1 ? ` style="--nm-s:${sc}"` : ''}>${escapeHtml(name)}</span></div>`; }

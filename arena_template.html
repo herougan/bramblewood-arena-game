@@ -14682,6 +14682,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
   --nm-edge:max(0px, calc(var(--nm-reach) - var(--nm-cap) - .3em));
   max-width:min(94%, calc(100% - 2 * var(--nm-edge)));}
 .card-tile:has(> .waitbadge[data-wait-total]) > .nm{--nm-ring:min(28px, max(18px, 22cqw));}
+.card-tile > .nm .nmt{overflow-wrap:anywhere;} /* a long word breaks inside the narrowed scroll instead of running out under a badge */
 .card-tile.locked > .nm{filter:none;}
 /* ===== 2026-11-04 (package UI19): the Card editor, compacted (owner 23:01: "Compactify as much as you can", less margin under section titles) ===== */
 #editorOverlay .modal{padding-top:16px; padding-bottom:12px;}

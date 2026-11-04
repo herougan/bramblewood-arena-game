@@ -3,14 +3,14 @@
     python3 tests/e2e/ui20_2026_11_04.py [--widths 1366,390] [--tag after]     (--tag before: only measure, never fails; used for the "before" shots)
 Shots in tests/e2e/shots/ui20/ (<tag>-<screen>-<width>.png). The check measures, on every drawn card, the name's text lines against the cost badge and the wait badge:
   Codex (compressed and full), the large view, the pack opener, hand and board in a fight, plus a sheet of synthetic tiles at the three sizes (detail, full, compact)
-  with the heaviest costs and waits and the longest names. Exits 1 on any overlap unless --tag before. Build first."""
+  with the heaviest costs and waits a real card can have (a cost of 9 em would fill the tile; no card does) and the longest names. Exits 1 on any overlap unless --tag before. Build first."""
 import argparse, asyncio, os, sys, json
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import vis3_2026_10_26 as V
 from playwright.async_api import async_playwright
 ROOT = V.ROOT
 SHOTS = os.path.join(ROOT, 'tests', 'e2e', 'shots', 'ui20'); os.makedirs(SHOTS, exist_ok=True)
-fails = []; TAG = 'after'
+fails = []; TAG = 'after'; QUICK = False
 def ok(c, m):
     print(('  ok  ' if c else '  FAIL ') + m, flush=True)
     if not c and TAG != 'before': fails.append(m)
@@ -33,7 +33,7 @@ async def measure(pg, label):
 SHEET = """(async()=>{ const defs = getCardDefs(); const ids = ['glacial-ape-king','yeti','gorge-wyrm','grovebearer-dragon-turtle','old-willow-of-the-ford','salamander-pyromancer','stoneheart-golem','otter-centurion','tunnel-ant','dolphin-knight','komodo-warlord','elder-willow'].filter(i=> defs[i]);
   const mk = (id, patch)=> Object.assign({}, defs[id], patch || {});
   const list = []; ids.forEach(id=> list.push(defs[id]));
-  list.push(mk('glacial-ape-king', {id: 'syn-heavy', cost: 4, stoneCost: 3, metalCost: 2, wait: 3, name: 'Glacial Ape-King'}));
+  list.push(mk('glacial-ape-king', {id: 'syn-heavy', cost: 4, wait: 4, name: 'Glacial Ape-King'}));
   list.push(mk('stoneheart-golem', {id: 'syn-six', cost: 6, stoneCost: 5, graceCost: 2, wait: 6, name: 'Grovebearer Dragon Turtle'}));
   const host = document.createElement('div'); host.id = 'ui20Sheet'; host.style.cssText = 'position:fixed; inset:0; z-index:99999; background:#2a2018; overflow:auto; padding:14px; display:flex; flex-wrap:wrap; gap:14px; align-content:flex-start;';
   ['detail', 'full', 'compact'].forEach(sz=> list.forEach(d=>{ const w = document.createElement('div'); w.innerHTML = cardTileHTML(d, {size: sz}); host.appendChild(w.firstElementChild); }));
@@ -47,7 +47,11 @@ async def run(b, url, w):
     await pg.goto(url); await pg.wait_for_function("typeof switchTab === 'function' && typeof openCardDetail === 'function'", timeout=90000); await pg.wait_for_timeout(1500)
     await pg.add_style_tag(content=NOTOAST)
     await pg.evaluate("(()=>{ " + V.OWN + " })()")
-    shot = lambda n: pg.screenshot(path=os.path.join(SHOTS, f'{TAG}-{n}-{w}.png'), animations='allow')
+    async def shot(n):  # a fight's animations can starve the screenshot on a loaded machine: retry once, then stop the page's animations
+        path = os.path.join(SHOTS, f'{TAG}-{n}-{w}.png')
+        try: await pg.screenshot(path=path, animations='allow', timeout=40000)
+        except Exception:
+            await pg.add_style_tag(content='*{animation:none !important; transition:none !important;}'); await pg.wait_for_timeout(500); await pg.screenshot(path=path, timeout=60000)
     # Codex
     await pg.evaluate("(()=>{ codexViewMode = 'compressed'; codexSubTab = 'browse'; switchTab('codex'); })()"); await pg.wait_for_timeout(1800)
     await measure(pg, 'Codex (compressed)'); await shot('codex')
@@ -57,6 +61,8 @@ async def run(b, url, w):
     await pg.evaluate("openCardDetail('glacial-ape-king')"); await pg.wait_for_timeout(1400)
     await measure(pg, 'large view (Glacial Ape-King)'); await shot('large')
     await pg.evaluate("(()=>{ try{ closeCardDetail(); }catch(e){} })()")
+    if QUICK:
+        n = await pg.evaluate(SHEET); await measure(pg, f'sheet of {n} cards x 3 sizes'); await shot('sheet'); await ctx.close(); return
     # the pack opener
     await pg.evaluate("""(async()=>{ myCurrencies.gold = 99999; saveCurrencies(); const p = getShopPacks().find(x=> x.id === 'bronze'); const o = purchasePackOnce(p, true); openPackAnimation(p, [o]); await new Promise(z=> setTimeout(z, 1200));
       const ov = document.getElementById('packOpenOverlay');
@@ -64,7 +70,7 @@ async def run(b, url, w):
         if(strip){ const r = strip.getBoundingClientRect(); const fire = (type, x)=> strip.dispatchEvent(new PointerEvent(type, {bubbles:true, clientX:x, clientY:r.top + r.height/2, pointerId:1, pointerType:'mouse', buttons:1}));
           fire('pointerdown', r.left + 4); for(let i = 1; i <= 12; i++){ fire('pointermove', r.left + r.width*i/12); await new Promise(z=> setTimeout(z, 16)); } fire('pointerup', r.right - 2); }
         await new Promise(z=> setTimeout(z, 900)); }
-      const c = ov.querySelector('.po2-card.is-current'); if(c && !c.classList.contains('is-revealed')) c.click(); await new Promise(z=> setTimeout(z, 900)); })()""")
+      const c = ov.querySelector('.po2-card.is-current'); if(c && !c.classList.contains('is-revealed')) c.click(); await new Promise(z=> setTimeout(z, 2200)); })()""")
     await measure(pg, 'pack opener'); await shot('pack')
     await pg.evaluate("(()=>{ const ov = document.getElementById('packOpenOverlay'); if(ov){ ov.hidden = true; ov.innerHTML = ''; } })()")
     # a fight: hand and board
@@ -77,7 +83,7 @@ async def run(b, url, w):
     await ctx.close()
 
 async def main(a):
-    global TAG; TAG = a.tag
+    global TAG, QUICK; TAG = a.tag; QUICK = a.quick
     httpd = V.serve(); url = f'http://127.0.0.1:{httpd.server_address[1]}/index.html'
     async with async_playwright() as p:
         b = await p.chromium.launch(executable_path=V.CHROME if os.path.exists(V.CHROME) else '/opt/pw-browsers/chromium', args=['--enable-unsafe-swiftshader', '--use-angle=swiftshader', '--ignore-gpu-blocklist'])
@@ -87,5 +93,5 @@ async def main(a):
     print('FAILED: ' + '; '.join(fails) if fails else 'all ok'); sys.exit(1 if fails else 0)
 
 if __name__ == '__main__':
-    ap = argparse.ArgumentParser(); ap.add_argument('--widths', default='1366,390'); ap.add_argument('--tag', default='after')
+    ap = argparse.ArgumentParser(); ap.add_argument('--widths', default='1366,390'); ap.add_argument('--tag', default='after'); ap.add_argument('--quick', action='store_true', help='only the Codex, large view and the sheet (no pack, no fight)')
     asyncio.run(main(ap.parse_args()))

@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-04 Package UI20 (owner 11-04: the Lumber logs covered the start of "Glacial Ape-King" in the large view)
+- **Cost and wait badges no longer cover the card name**, on every card size (hand, board, Codex, large view, pack opener). The name scroll is narrowed to leave room for the badges: its text starts past the cost badge (top left) and ends before the wait badge (top right). The name is not shrunk for it; a name that no longer fits wraps to a second line.
+- Layout only: no card, rule or budget changed; no Supabase write. Tests: `tests/ui20-2026-11-04.js`, `tests/e2e/ui20_2026_11_04.py` (before and after shots in `tests/e2e/shots/ui20/`).
 ## 2026-11-04 Package UI19 (owner 11-03 23:01 / 23:12, 11-04 07:42: Card editor, name scroll, Map cards skills)
 - **Name scroll:** a new look with real rolled ends and a paper texture (fibres, flecks, a curve of light and shade). The rolled ends are the same width on every card of a size; they no longer grow with the number of name lines. The name stays on one line where it can: long names shrink (floor 70%, never under 6px of type) before they wrap, so Glacial Ape-King's scroll no longer covers its head. Hand, board, Codex and the large view all use it.
 - **Art height (Card editor):** a new field per card, `artPosY` (0 shows the top of the picture, 100 the bottom, blank or 50 centred), to push a card's art below the scroll. Saved on the card (it reaches `canonical/cards.json` with the usual fold). No card has a value yet.
