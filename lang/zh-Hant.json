@@ -3903,5 +3903,6 @@
  "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "移動名稱卷軸後面的圖片：0 顯示頂部，100 顯示底部，50 為置中。",
  "Skills on these cards": "這些卡牌上的技能",
  "First time this skill shows up on the road: no earlier map’s cards carry it.": "這個技能第一次出現在道路上：之前地圖的卡牌都沒有它。",
- "No skills on these cards.": "這些卡牌沒有技能。"
+ "No skills on these cards.": "這些卡牌沒有技能。",
+ "{name} fortifies its bramble: {x}.": "{name} 加固了己方荊棘叢：{x}。"
 }

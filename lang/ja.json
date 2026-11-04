@@ -3903,5 +3903,6 @@
  "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "名前の巻物の後ろの絵を動かします。0 は上、100 は下、50 は中央。",
  "Skills on these cards": "これらのカードのスキル",
  "First time this skill shows up on the road: no earlier map’s cards carry it.": "このスキルが道中で初めて登場します。これより前のマップのカードにはありません。",
- "No skills on these cards.": "これらのカードにスキルはありません。"
+ "No skills on these cards.": "これらのカードにスキルはありません。",
+ "{name} fortifies its bramble: {x}.": "{name}がいばらを補強：{x}。"
 }

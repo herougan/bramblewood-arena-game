@@ -3906,5 +3906,6 @@
  "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "이름 두루마리 뒤의 그림을 옮깁니다. 0은 위쪽, 100은 아래쪽, 50은 가운데입니다.",
  "Skills on these cards": "이 카드들의 스킬",
  "First time this skill shows up on the road: no earlier map’s cards carry it.": "이 스킬이 길 위에서 처음 나옵니다. 이전 맵의 카드에는 없습니다.",
- "No skills on these cards.": "이 카드들에는 스킬이 없습니다."
+ "No skills on these cards.": "이 카드들에는 스킬이 없습니다.",
+ "{name} fortifies its bramble: {x}.": "{name}이(가) 덤불을 보강합니다: {x}."
 }

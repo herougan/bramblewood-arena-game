@@ -3905,5 +3905,6 @@
  "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Menggeser gambar di belakang gulungan nama: 0 menampilkan bagian atas, 100 bagian bawah, 50 di tengah.",
  "Skills on these cards": "Skill pada kartu-kartu ini",
  "First time this skill shows up on the road: no earlier map’s cards carry it.": "Pertama kali skill ini muncul di jalan: tidak ada kartu peta sebelumnya yang memilikinya.",
- "No skills on these cards.": "Tidak ada skill pada kartu-kartu ini."
+ "No skills on these cards.": "Tidak ada skill pada kartu-kartu ini.",
+ "{name} fortifies its bramble: {x}.": "{name} memperkuat semaknya: {x}."
 }

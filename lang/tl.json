@@ -3904,5 +3904,6 @@
  "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Inililipat ang larawan sa likod ng balumbon ng pangalan: 0 ang itaas, 100 ang ibaba, 50 ang gitna.",
  "Skills on these cards": "Mga kasanayan sa mga kard na ito",
  "First time this skill shows up on the road: no earlier map’s cards carry it.": "Unang beses na lumitaw ang kasanayang ito sa daan: walang kard ng naunang mapa ang mayroon nito.",
- "No skills on these cards.": "Walang kasanayan sa mga kard na ito."
+ "No skills on these cards.": "Walang kasanayan sa mga kard na ito.",
+ "{name} fortifies its bramble: {x}.": "Pinatibay ng {name} ang dawag nito: {x}."
 }

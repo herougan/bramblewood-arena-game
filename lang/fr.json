@@ -3903,5 +3903,6 @@
  "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Déplace l’image derrière le parchemin du nom : 0 montre le haut, 100 le bas, 50 est centré.",
  "Skills on these cards": "Compétences de ces cartes",
  "First time this skill shows up on the road: no earlier map’s cards carry it.": "Première apparition de cette compétence sur la route : aucune carte d’une carte précédente ne l’a.",
- "No skills on these cards.": "Aucune compétence sur ces cartes."
+ "No skills on these cards.": "Aucune compétence sur ces cartes.",
+ "{name} fortifies its bramble: {x}.": "{name} fortifie son roncier : {x}."
 }

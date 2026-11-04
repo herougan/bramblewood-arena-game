@@ -3905,5 +3905,6 @@
  "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Sposta l’immagine dietro la pergamena del nome: 0 mostra la parte alta, 100 quella bassa, 50 è centrata.",
  "Skills on these cards": "Abilità di queste carte",
  "First time this skill shows up on the road: no earlier map’s cards carry it.": "Prima volta che questa abilità compare lungo la strada: nessuna carta di una mappa precedente la ha.",
- "No skills on these cards.": "Nessuna abilità su queste carte."
+ "No skills on these cards.": "Nessuna abilità su queste carte.",
+ "{name} fortifies its bramble: {x}.": "{name} rinforza il suo rovo: {x}."
 }

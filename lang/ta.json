@@ -3906,5 +3906,6 @@
  "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "பெயர் சுருளுக்குப் பின்னால் படத்தை நகர்த்தும்: 0 மேற்பகுதி, 100 கீழ்ப்பகுதி, 50 நடுவில்.",
  "Skills on these cards": "இந்த அட்டைகளில் உள்ள திறன்கள்",
  "First time this skill shows up on the road: no earlier map’s cards carry it.": "இந்தத் திறன் பாதையில் முதல் முறையாகத் தோன்றுகிறது: முந்தைய வரைபட அட்டைகளில் இல்லை.",
- "No skills on these cards.": "இந்த அட்டைகளில் திறன்கள் இல்லை."
+ "No skills on these cards.": "இந்த அட்டைகளில் திறன்கள் இல்லை.",
+ "{name} fortifies its bramble: {x}.": "{name} தன் முட்புதரை வலுப்படுத்துகிறது: {x}."
 }
