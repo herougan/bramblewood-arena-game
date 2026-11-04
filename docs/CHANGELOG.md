@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-04 Package SKILLREC1 (owner 07:42: "get a list of skill recommendations (sort by advancement) in the master hub"; proposal only)
+- **New `docs/skill-recommendations-2026-11-04.md` + `.json`** (the hub's Design tab, first sheet): the skill counterpart of the 10-16 card placement. 84 rows, Map 0 -> 24 with side maps under their parent, 75 cards: add / swap / remove a skill, with the card, the skill and N, why (theme, the map's mechanic, curve, variety), where the idea repeats, and the budget at printed stats (`tools/skill_costs.js`: 30 rows would need the owner's re-fit, 27 fit, 7 free room, 5 wait on a price).
+- Maps 0-1 first: CONTENT9-1's jobs for the six identical 2/7s kept (Chipmunk Skirmisher Quick only if its re-fit is not a fourth 2/4 Quick), Field Vole Skitter, Woodcock Lookout the Crepuscular split; 17 near-identical groups along the road each get distinct jobs (in-play cards with no skill 34 -> 11 if all are taken). Places the new skills (Build, Fortify, Taunt, Delivery {Stone}, Tally / Almanac / Onslaught / Riled, Skitter, the Fast Forward token) and 14 built skills on no in-play card; a section on skills on no card and overused ones.
+- No card, deck, price or engine changed. Owner call SKILLREC1-1. `tools/hub/build_hub.py`: the sheet is listed first in the Design tab.
+
 ## 2026-11-03 Package LISTFIX2 (owner 22:02: "cut cards still stay, but are just flagged as cut")
 - **Every cut is applied:** all 37 cuts of the owner's 11-01 export (THEME4) and the older THEME3 cuts are off their MAP / submap lists. 13 cut cards still show on their map:
   - 8 sit on SPECIAL as a fight's reward or first-clear card (2-1, 2-3, 2-5, 4-2, 4-5, 5-3, 6-4, 20-9).
