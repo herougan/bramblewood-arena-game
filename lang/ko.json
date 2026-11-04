@@ -3965,5 +3965,10 @@
  "Sequestration": "압류",
  "Its hit steals the target's status skills until the end of next round.": "공격이 맞으면 다음 라운드가 끝날 때까지 대상의 상태 스킬을 빼앗습니다.",
  "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "상태 스킬: 독, 출혈, 부패, 수면, 빙결, 기절, 실명 등. 사격이나 피해 스킬은 아닙니다. 한 번에 하나만 빼앗습니다.",
- "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "구성: +N 체력(체력과 최대치), 가시 N(덤불을 친 유닛이 N 받음), 재생 N(매 라운드 다친 아군 하나를 N 회복), 볼트 N(매 라운드 무작위 적 유닛에 N), +N 보호막. 여럿이면 합산됩니다. \"보강 { 방어구 1 }, 살아 있는 동안\"은(는) 다릅니다: 그 유닛이 살아 있는 동안 한 번 맞을 때마다 1 적게 받습니다."
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "구성: +N 체력(체력과 최대치), 가시 N(덤불을 친 유닛이 N 받음), 재생 N(매 라운드 다친 아군 하나를 N 회복), 볼트 N(매 라운드 무작위 적 유닛에 N), +N 보호막. 여럿이면 합산됩니다. \"보강 { 방어구 1 }, 살아 있는 동안\"은(는) 다릅니다: 그 유닛이 살아 있는 동안 한 번 맞을 때마다 1 적게 받습니다.",
+ "Skirmish rewards": "교전 보상",
+ "Reward": "보상",
+ "Recommended by Claude": "Claude 추천",
+ "Claude New": "Claude 신규",
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "이 맵에 대한 Claude의 추천입니다. 표시만 되며 어떤 목록, 풀, 덱, 집계에도 들어가지 않습니다."
 }

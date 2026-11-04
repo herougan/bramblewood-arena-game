@@ -14738,6 +14738,17 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ui19-new{font-size:8px; padding:1px 4px;}
 .ui19-sk-n{font-size:9.5px;}
 @media (max-width:520px){ .ui19-sk-list{grid-template-columns:1fr 1fr;} }
+/* 2026-11-04 (package UI22, owner 22:56): the Map cards window's "Skirmish rewards" (a caption per fight, card tiles with their role under them)
+   and "Recommended by Claude" (tiles marked with a "Claude New" pill; shown only, on no list). */
+.ui22-fight{margin:2px 0 0;}
+.ui22-cap{font:700 12px/1.3 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); margin:6px 0 0;}
+.ui22-cap b{color:var(--ink); font-weight:800;}
+.ui22-row{gap:6px 8px; padding:4px 0 6px;}
+.ui22-rw{display:inline-flex; flex-direction:column; align-items:center; gap:3px; position:relative;}
+.ui22-rw-role{font:700 9.5px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.04em;}
+.ui22-rw.is-challenge .ui22-rw-role{color:#b8860b;}
+.ui22-pill{font:800 10px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; background:#6d4bd8; color:#fff; padding:2px 7px; border-radius:999px; cursor:help; white-space:nowrap;}
+.ui22-claude .ui22-rw{opacity:.96;}
 /* art focus (Card editor: Art height): extended art moves down by --apy (framed art uses object-position, set inline) */
 .card-tile.art-extended > .ico .card-art-img[style*="--apy"]{top:calc((50 - var(--apy)) * .5%);}
 </style>

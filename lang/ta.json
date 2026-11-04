@@ -3965,5 +3965,10 @@
  "Sequestration": "பறிமுதல்",
  "Its hit steals the target's status skills until the end of next round.": "இதன் அடி இலக்கின் நிலைத் திறன்களை அடுத்த சுற்றின் முடிவு வரை பறிக்கும்.",
  "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "நிலைத் திறன்கள்: நஞ்சு, இரத்தப்போக்கு, சிதைவு, தூக்கம், உறைவு, மயக்கம், குருடு போன்றவை; அம்புகளோ சேதத் திறன்களோ ஒருபோதும் இல்லை. ஒரு நேரத்தில் ஒரு பறிப்பு.",
- "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "பகுதிகள்: +N உயிர் (அதன் உயிரும் உச்சமும்), முட்கள் N (முட்புதரைத் தாக்கும் அலகு N பெறும்), மீளுருவாக்கம் N (ஒவ்வொரு சுற்றும் காயமடைந்த ஒரு நட்பு அலகை N குணமாக்கும்), அம்பு N (ஒவ்வொரு சுற்றும் சீரற்ற எதிரி அலகுக்கு N), +N கேடயம். பல சேர்ந்து கூடும். \"வலுப்படுத்து { கவசம் 1 }, அது உயிருடன் இருக்கும் வரை\" வேறு: அதன் அலகு உயிரோடிருக்கும்வரை ஒவ்வொரு அடிக்கும் 1 குறைவு."
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "பகுதிகள்: +N உயிர் (அதன் உயிரும் உச்சமும்), முட்கள் N (முட்புதரைத் தாக்கும் அலகு N பெறும்), மீளுருவாக்கம் N (ஒவ்வொரு சுற்றும் காயமடைந்த ஒரு நட்பு அலகை N குணமாக்கும்), அம்பு N (ஒவ்வொரு சுற்றும் சீரற்ற எதிரி அலகுக்கு N), +N கேடயம். பல சேர்ந்து கூடும். \"வலுப்படுத்து { கவசம் 1 }, அது உயிருடன் இருக்கும் வரை\" வேறு: அதன் அலகு உயிரோடிருக்கும்வரை ஒவ்வொரு அடிக்கும் 1 குறைவு.",
+ "Skirmish rewards": "மோதல் வெகுமதிகள்",
+ "Reward": "வெகுமதி",
+ "Recommended by Claude": "Claude பரிந்துரைத்தவை",
+ "Claude New": "Claude புதியது",
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "இந்த வரைபடத்திற்கான Claude இன் பரிந்துரைகள். காட்சிக்கு மட்டும்: எந்த பட்டியல், தொகுப்பு, அட்டைக்கட்டு அல்லது எண்ணிக்கையிலும் இல்லை."
 }

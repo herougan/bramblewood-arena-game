@@ -3962,5 +3962,10 @@
  "Sequestration": "Séquestre",
  "Its hit steals the target's status skills until the end of next round.": "Son coup vole les compétences d’état de la cible jusqu’à la fin de la manche suivante.",
  "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Compétences d’état : Poison, Saignement, Pourriture, Sommeil, Gel, Étourdissement, Cécité et autres ; jamais les tirs ni les compétences de dégâts. Un vol à la fois.",
- "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Parties : +N Santé (sa Santé et son maximum), Épines N (une unité qui frappe le roncier subit N), Régén N (chaque manche soigne N un allié blessé), Trait N (chaque manche, N sur une unité ennemie au hasard), +N Bouclier. Plusieurs s’additionnent. « Fortifier { Armure 1 }, tant qu’il vit » est autre chose : 1 de moins par coup tant que son unité vit."
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Parties : +N Santé (sa Santé et son maximum), Épines N (une unité qui frappe le roncier subit N), Régén N (chaque manche soigne N un allié blessé), Trait N (chaque manche, N sur une unité ennemie au hasard), +N Bouclier. Plusieurs s’additionnent. « Fortifier { Armure 1 }, tant qu’il vit » est autre chose : 1 de moins par coup tant que son unité vit.",
+ "Skirmish rewards": "Récompenses d’escarmouche",
+ "Reward": "Récompense",
+ "Recommended by Claude": "Recommandées par Claude",
+ "Claude New": "Nouveau Claude",
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Suggestions de Claude pour cette carte. Affichées seulement : dans aucune liste, réserve, deck ni compte."
 }

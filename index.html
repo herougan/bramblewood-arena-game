@@ -14785,6 +14785,17 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ui19-new{font-size:8px; padding:1px 4px;}
 .ui19-sk-n{font-size:9.5px;}
 @media (max-width:520px){ .ui19-sk-list{grid-template-columns:1fr 1fr;} }
+/* 2026-11-04 (package UI22, owner 22:56): the Map cards window's "Skirmish rewards" (a caption per fight, card tiles with their role under them)
+   and "Recommended by Claude" (tiles marked with a "Claude New" pill; shown only, on no list). */
+.ui22-fight{margin:2px 0 0;}
+.ui22-cap{font:700 12px/1.3 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); margin:6px 0 0;}
+.ui22-cap b{color:var(--ink); font-weight:800;}
+.ui22-row{gap:6px 8px; padding:4px 0 6px;}
+.ui22-rw{display:inline-flex; flex-direction:column; align-items:center; gap:3px; position:relative;}
+.ui22-rw-role{font:700 9.5px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.04em;}
+.ui22-rw.is-challenge .ui22-rw-role{color:#b8860b;}
+.ui22-pill{font:800 10px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; background:#6d4bd8; color:#fff; padding:2px 7px; border-radius:999px; cursor:help; white-space:nowrap;}
+.ui22-claude .ui22-rw{opacity:.96;}
 /* art focus (Card editor: Art height): extended art moves down by --apy (framed art uses object-position, set inline) */
 .card-tile.art-extended > .ico .card-art-img[style*="--apy"]{top:calc((50 - var(--apy)) * .5%);}
 </style>
@@ -44843,7 +44854,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=0f5455ab91", "es": "assets/lang/es.js?v=6a594e045d", "fr": "assets/lang/fr.js?v=62854cfa92", "id": "assets/lang/id.js?v=96aa4979be", "it": "assets/lang/it.js?v=234bc19ca3", "ja": "assets/lang/ja.js?v=bb8887e940", "ko": "assets/lang/ko.js?v=2f0a89464a", "pt": "assets/lang/pt.js?v=cd3db62c68", "ta": "assets/lang/ta.js?v=9f977ebb48", "tl": "assets/lang/tl.js?v=49f6110762", "zh-Hans": "assets/lang/zh-Hans.js?v=75108defd5", "zh-Hant": "assets/lang/zh-Hant.js?v=9c320674bb"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=ea7af8858e", "es": "assets/lang/es.js?v=86e1105d49", "fr": "assets/lang/fr.js?v=381f1771ae", "id": "assets/lang/id.js?v=bbfd411f56", "it": "assets/lang/it.js?v=2fe8eaae69", "ja": "assets/lang/ja.js?v=6e4d6d2956", "ko": "assets/lang/ko.js?v=b2cb68022b", "pt": "assets/lang/pt.js?v=cb1380bb6b", "ta": "assets/lang/ta.js?v=3f2e9a2893", "tl": "assets/lang/tl.js?v=bf96dbb765", "zh-Hans": "assets/lang/zh-Hans.js?v=bc9681211e", "zh-Hant": "assets/lang/zh-Hant.js?v=f1772b4fd5"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -45037,6 +45048,13 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui19-mc-new-tip": "First time this skill shows up on the road: no earlier map’s cards carry it.",
   "ui.ui19-mc-count": "{n} of {total} cards",
   "ui.ui19-mc-none": "No skills on these cards.",
+  "ui.ui22-rewards-title": "Skirmish rewards",
+  "ui.ui22-role-reward": "Reward",
+  "ui.ui22-role-first": "First clear",
+  "ui.ui22-role-challenge": "Challenge",
+  "ui.ui22-claude-title": "Recommended by Claude",
+  "ui.ui22-claude-new": "Claude New",
+  "ui.ui22-claude-new-tip": "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.",
   "ui.codex-skill-lvl": "[Lvl {n}]",
   "ui.codex-skill-lvl-tip": "Gets this skill at Level {n}.",
   "ui.codex-skill-remove": "Remove from the filter",
@@ -53109,7 +53127,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '33edf00c9db0', BUILD_CARD_HASH = '0358e3130ff95381443fecb297dc35a0ab81e703ee3873c7f75099390f687b6e';
+const BUILD_ID = '406666b72186', BUILD_CARD_HASH = '0358e3130ff95381443fecb297dc35a0ab81e703ee3873c7f75099390f687b6e';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -82001,6 +82019,45 @@ function ui19McSkillsHTML(top, ids, defs, ok){
   return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length ? `<ul class="ui19-sk-list">${flagged.map(li).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
+// UI22_MC:START
+// 2026-11-04 (package UI22, owner 22:56): two more sections in the admin Map cards window.
+// 1 "Skirmish rewards": each fight of this map (a main map: its side maps' fights too) with the cards a first clear pays, read from the same
+//   functions the game uses: nodeRewardCardIds (the skirmish-exclusive cards; a challenge card is one with cardRewardIsChallenge) and
+//   nodeFirstPackCardIds (the pack card a first clear pays, node.firstCard or SKIRMISH_FIRST_PACK_CARDS).
+// 2 "Claude New": Claude's recommended cards for the map that are on none of its lists (canonical/claude-new-cards.json: THEME5's carried picks
+//   and SKILLREC1's card rows). Shown only: they are put on no list, pool, deck or count (no .rv1-tile, so no export, flip or N / M count).
+const CLAUDE_NEW = {"theme5": {"m10": [{"id": "the-gannet-queen", "why": "THEME5: Stoop and Pounce"}], "mh": [{"id": "hawthorn-shieldbug", "why": "THEME5: Hedge Fortress"}], "mr": [{"id": "badger-lumberjack", "why": "THEME5: Old-Growth Giants"}], "m5": [{"id": "ant-hill", "why": "THEME5: Mound and Herd"}, {"id": "golden-eagle-diver", "why": "THEME5: Sun Strike"}], "ml": [{"id": "truffle-piglet", "why": "THEME5: Farmstead Cavalry"}], "mt": [{"id": "owl-nightwatch", "why": "THEME5: Moonlit Pack"}], "m6": [{"id": "ibex-rockcaller", "why": "THEME5: Avalanche and Quake"}], "md": [{"id": "savanna-cheetah", "why": "THEME5: Haste Blitz"}], "m3": [{"id": "walrus-icebreaker", "why": "THEME5: Fire and Ice Front"}], "m11": [{"id": "fire-salamander", "why": "THEME5: Firing Line"}], "m21": [{"id": "eagle-owl-quartermaster", "why": "THEME5: Expose Volley"}, {"id": "vigil-owl", "why": "THEME5: Vigil and Relics"}], "m22": [{"id": "glacier-yak", "why": "THEME5: Deep Cold"}, {"id": "ash-cloud-condor", "why": "THEME5: Ash-Stun Tempo"}], "m23": [{"id": "eagle-owl-quartermaster", "why": "THEME5: Arrow Storm"}, {"id": "cataphract-destrier", "why": "THEME5: Gilded Heavies"}], "m24": [{"id": "ore-smelter-mole", "why": "THEME5: Iron Vault"}, {"id": "golden-magpie", "why": "THEME5: Counting House"}], "mp": [{"id": "newt-doctor", "why": "THEME5: Dam Fortress"}], "mg": [{"id": "old-shell", "why": "THEME5: Shell Bunker"}], "mz": [{"id": "bogfire-newt", "why": "THEME5: Rot and Burst"}], "mj": [{"id": "supernova-jelly", "why": "THEME5: Shock and Nova"}], "mq": [{"id": "bee-sentry", "why": "THEME5: Clover Hive"}], "ms": [{"id": "mangrove-manatee", "why": "THEME5: Regrowth Wall"}], "mv": [{"id": "talon-archer", "why": "THEME5: Fletcher's Roost"}], "mn": [{"id": "gallery-orb-weaver", "why": "THEME5: Spider Gallery"}], "my": [{"id": "cane-toad", "why": "THEME5: Poison Frogs"}], "mpd": [{"id": "spitting-cobra", "why": "THEME5: Spit from Cover"}], "me": [{"id": "magma-titan", "why": "THEME5: Burning Wall"}], "mx": [{"id": "gorge-wyrm", "why": "THEME5: Quake on a Hard Board"}], "mi": [{"id": "yeti", "why": "THEME5: Ice-Cave Titans"}], "mo": [{"id": "quill-thorn-boar", "why": "THEME5: Quill Hedge"}], "m9": [{"id": "armory", "why": "THEME5: Smithy"}]}, "skillrec": {"0": [{"id": "chipmunk-skirmisher", "why": "SKILLREC1: Quick"}, {"id": "terrier-pup", "why": "SKILLREC1: Guardian"}, {"id": "house-cat", "why": "SKILLREC1: keep vanilla"}, {"id": "silver-minnow", "why": "SKILLREC1: Swarm, from Level 1"}, {"id": "beaver-lumberjack", "why": "SKILLREC1: Delivery {Lumber x1}"}], "0-T": [{"id": "pond-trout", "why": "SKILLREC1: Tide, from Level 1"}, {"id": "otter-paddler", "why": "SKILLREC1: Tide, from Level 1"}, {"id": "burrow-rabbit", "why": "SKILLREC1: Cower {Shell}, from Level 1"}], "1": [{"id": "cricket-drummer", "why": "SKILLREC1: Inspiring 1"}, {"id": "dormouse", "why": "SKILLREC1: Nocturnal 1"}, {"id": "field-mouse", "why": "SKILLREC1: On Death: gain 1 Lumber"}, {"id": "bramble-sprout", "why": "SKILLREC1: Thorns 1"}, {"id": "field-vole", "why": "SKILLREC1: Skitter (Swarm removed)"}, {"id": "woodcock-lookout", "why": "SKILLREC1: Crepuscular {day +1/+0, night +0/+2}, True Sight"}, {"id": "meadow-rabbit", "why": "SKILLREC1: Evasive, from Level 1"}, {"id": "hedgerow-shrew", "why": "SKILLREC1: keep"}], "1-A": [{"id": "lucky-hopper", "why": "SKILLREC1: Evasive"}], "2": [{"id": "dolphin-knight", "why": "SKILLREC1: Tide, Swimmer"}, {"id": "driftwood-crab", "why": "SKILLREC1: Delivery {Lumber x1}"}], "2-A": [{"id": "lodge-engineer", "why": "SKILLREC1: Delivery {Lumber x1} every turn, Build {0/6 Palisade}"}], "2-B": [{"id": "trash-panda-trickster", "why": "SKILLREC1: keep"}], "3": [{"id": "kittiwake-flock", "why": "SKILLREC1: Flying, Throng"}, {"id": "feral-tomcat", "why": "SKILLREC1: Quick, Reach"}, {"id": "hawk-arrowkeeper", "why": "SKILLREC1: Flying, Diurnal, Arrow 1"}], "4": [{"id": "snapstick-turtle", "why": "SKILLREC1: Tide, Spiteful 1"}, {"id": "pyrenean-desman", "why": "SKILLREC1: Tide, Keen Sense"}, {"id": "lions-mane-jelly", "why": "SKILLREC1: Tide, Poison 2"}], "5": [{"id": "constrictor-coil", "why": "SKILLREC1: Strangle 2"}, {"id": "crocodile-ambusher", "why": "SKILLREC1: Ambush 3"}, {"id": "anhinga-spearbird", "why": "SKILLREC1: Pierce 2"}, {"id": "nutria-reedcutter", "why": "SKILLREC1: Delivery {Lumber x2}"}], "5-A": [{"id": "mangrove-mudskipper", "why": "SKILLREC1: Tide, Restless"}], "6": [{"id": "raven-scout", "why": "SKILLREC1: Flying, True Sight"}, {"id": "adder-ambusher", "why": "SKILLREC1: Poison 2, Nocturnal 1"}], "7": [{"id": "cane-toad", "why": "SKILLREC1: Poison 1, Poison Barbs 2"}, {"id": "leafcutter-gardener", "why": "SKILLREC1: Delivery {Lumber x1}"}], "8-A": [{"id": "glimmer-spider", "why": "SKILLREC1: Poison 1, Illuminate"}], "9": [{"id": "mangrove-monitor", "why": "SKILLREC1: keep vanilla"}, {"id": "reef-shark", "why": "SKILLREC1: Tide, Hunter 1 (Bleeding)"}, {"id": "proboscis-monkey", "why": "SKILLREC1: keep (Taunt now pulls shots)"}], "10": [{"id": "clownfish-scout", "why": "SKILLREC1: Tide, Poison Barbs 1"}, {"id": "coral-reef-shark", "why": "SKILLREC1: Tide, Swimmer"}], "10-A": [{"id": "orca-vanguard", "why": "SKILLREC1: Tide, Sweep 3, Sonar"}], "11": [{"id": "alpine-marmot", "why": "SKILLREC1: Taunt"}], "12": [{"id": "quillguard", "why": "SKILLREC1: Fortify {Thorns 1}"}], "13": [{"id": "sergeant-bramblefox", "why": "SKILLREC1: Almanac 4"}, {"id": "bramblewood-lynx", "why": "SKILLREC1: Predator 1"}, {"id": "stag-knight", "why": "SKILLREC1: keep vanilla"}], "14": [{"id": "savanna-cheetah", "why": "SKILLREC1: Quick, Predator 1"}, {"id": "plains-zebra", "why": "SKILLREC1: Sociable 1"}, {"id": "acacia-giraffe", "why": "SKILLREC1: Reach"}, {"id": "hoopoe-herald", "why": "SKILLREC1: Night-blind, Herald 2"}, {"id": "dust-hyena", "why": "SKILLREC1: keep (Carnage counts only deaths it saw, ENG22)"}], "15": [{"id": "warhorse-charger", "why": "SKILLREC1: Onslaught 3"}, {"id": "squires-mount", "why": "SKILLREC1: Loyal 1"}], "16": [{"id": "snowshoe-hare", "why": "SKILLREC1: Skitter"}], "17": [{"id": "talus-pika", "why": "SKILLREC1: Delivery {Stone x1}"}, {"id": "frost-hare-sprinter", "why": "SKILLREC1: Speed 1"}], "18": [{"id": "caustic-scorpion", "why": "SKILLREC1: Corrode 2"}, {"id": "thorny-devil", "why": "SKILLREC1: Thorns 2, Taunt"}, {"id": "roadrunner-courier", "why": "SKILLREC1: Haste, On Play: an adjacent ally gets 1 Fast Forward token"}, {"id": "glass-golem", "why": "SKILLREC1: Reflect"}, {"id": "dune-packrat", "why": "SKILLREC1: Delivery {Lumber x3}"}], "18-A": [{"id": "skull-vulture", "why": "SKILLREC1: Flying, Tally 3, Nocturnal"}, {"id": "trapdoor-spider", "why": "SKILLREC1: Poison 1, Ambush 2"}], "19": [{"id": "pumice-beetle", "why": "SKILLREC1: Delivery {Stone x2} (on play)"}], "19-A": [{"id": "cinder-gecko", "why": "SKILLREC1: Skitter"}, {"id": "tide-spirit", "why": "SKILLREC1: Tide, Tsunami 1"}, {"id": "quill-volley", "why": "SKILLREC1: Volley 1"}], "20": [{"id": "fumarole-ibex", "why": "SKILLREC1: Mountain Climber, Landslide 1"}, {"id": "woodland-brawler", "why": "SKILLREC1: Riled 3"}, {"id": "ash-moth", "why": "SKILLREC1: Flying, Nocturnal, Smoke Bomb"}, {"id": "pack-mule", "why": "SKILLREC1: Delivery {Lumber x1}"}], "21": [{"id": "mountain-goat-climber", "why": "SKILLREC1: Mountain Climber"}], "22": [{"id": "badger-berserker", "why": "SKILLREC1: Berserk 1"}, {"id": "ashwing-ptarmigan", "why": "SKILLREC1: Flying, Molting 1"}], "23": [{"id": "badger-trench-digger", "why": "SKILLREC1: Guardian, Build {0/6 Palisade}"}, {"id": "howdah-archers", "why": "SKILLREC1: Twin Shot 1"}], "24": [{"id": "great-gate", "why": "SKILLREC1: Guardian, Fortify {+3 Health}"}, {"id": "stoneheart-golem", "why": "SKILLREC1: Bramble Armor"}]}};
+function ui22McMaps(mapId){ const top = mpTopOf(mapId); return mpIsSub(mapId) ? [mpMapById(mapId)] : [mpMapById(top)].concat(mpSubsOf(top)); }
+function ui22McTile(id, defs, role, label){
+  return `<span class="ui22-rw is-${role}">${vis4MapCardTilesHTML([id], defs, {packs: false})}<small class="ui22-rw-role">${escapeHtml(label)}</small></span>`;
+}
+function ui22McRewardsHTML(mapId, defs, ok){
+  const roleLabel = {reward: TX('ui.ui22-role-reward'), first: TX('ui.ui22-role-first'), challenge: TX('ui.ui22-role-challenge')};
+  const fights = [];
+  ui22McMaps(mapId).filter(Boolean).forEach(map=> (map.nodes || []).forEach(node=>{
+    const own = nodeRewardCardIds(map.id, node.key).filter(ok), pack = nodeFirstPackCardIds(map.id, node.key).filter(id=> ok(id) && !own.includes(id));
+    const items = own.map(id=> ({id, role: cardRewardIsChallenge(map.id, node, id) ? 'challenge' : 'reward'})).concat(pack.map(id=> ({id, role: 'first'})));
+    if(items.length) fights.push({code: skirmishCode(map.id, node.key), name: node.name || '', icon: node.icon || '', items});
+  }));
+  const body = fights.map(f=> `<div class="ui22-fight"><div class="ui22-cap"><b>${escapeHtml(f.code)}</b> ${escapeHtml((f.icon ? f.icon + ' ' : '') + f.name)}</div><div class="vis4-mc-row ui22-row">${f.items.map(x=> ui22McTile(x.id, defs, x.role, roleLabel[x.role])).join('')}</div></div>`).join('');
+  return `<section class="pk1-mc-sec rv2-panel ui22-rewards" id="ui22McRewards"><h3>${escapeHtml(TX('ui.ui22-rewards-title'))} <small>${fights.length}</small></h3>${body || `<p class="panel-sub">–</p>`}</section>`;
+}
+function ui22McClaudeNew(mapId, onLists, ok, defs){
+  const out = [], seen = new Set(), maps = ui22McMaps(mapId).filter(Boolean);
+  const take = (id, why)=>{ if(id && !seen.has(id) && !onLists.has(id) && defs[id] && ok(id)){ seen.add(id); out.push({id, why}); } };
+  maps.forEach(m=> ((CLAUDE_NEW.theme5 || {})[m.id] || []).forEach(e=> take(e.id, e.why)));
+  const labels = new Set(maps.map(m=>{ if(!m.sub){ const n = mapNumberOf(m.id); return n == null ? '' : String(n); } const k = ((m.nodes || [])[0] || {}).key || ''; return k.replace(/-[^-]+$/, ''); }).filter(Boolean));
+  Object.keys(CLAUDE_NEW.skillrec || {}).filter(l=> labels.has(l)).forEach(l=> CLAUDE_NEW.skillrec[l].forEach(e=> take(e.id, e.why)));
+  return out;
+}
+function ui22McClaudeNewHTML(mapId, defs, ok, onLists){
+  const list = ui22McClaudeNew(mapId, onLists, ok, defs);
+  if(!list.length) return '';
+  const pill = TX('ui.ui22-claude-new'), tip = TX('ui.ui22-claude-new-tip');
+  const tiles = list.map(e=> `<span class="ui22-rw is-claude" data-ui22-claude-new="${escapeAttr(e.id)}" title="${escapeAttr(e.why || '')}">${vis4MapCardTilesHTML([e.id], defs, {packs: true})}<b class="ui22-pill" title="${escapeAttr(tip)}">${escapeHtml(pill)}</b></span>`).join('');
+  return `<section class="pk1-mc-sec rv2-panel ui22-claude" id="ui22McClaude"><h3>${escapeHtml(TX('ui.ui22-claude-title'))} <small>${list.length}</small></h3><p class="panel-sub">${escapeHtml(tip)}</p><div class="vis4-mc-row ui22-row">${tiles}</div></section>`;
+}
+// UI22_MC:END
 function pk1OpenMapCards(mapId){
   const top = mpTopOf(mapId), m = mpMapById(mapId) || mpMapById(top); if(!m) return; // 2026-10-29 (package UI3, S4): a submap's fight is labelled by the submap itself
   let ov = document.getElementById('pk1MapCardsOverlay');
@@ -82023,9 +82080,12 @@ function pk1OpenMapCards(mapId){
     bars.push(`<span class="rv2-cl" data-rv2-count="${si}"><b>${escapeHtml(s.label)}</b> <span class="rv2-ct"></span></span>`);
     return `<section class="pk1-mc-sec has-rv1 rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''} data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
   }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
+  // 2026-11-04 (package UI22): the fights' rewards, then Claude's recommended cards (shown, on no list)
+  const ui22Lists = new Set(mapPoolSections(top).flatMap(s=> s.ids || []));
+  const ui22Secs = (()=>{ try{ return ui22McRewardsHTML(mapId, defs, ok) + ui22McClaudeNewHTML(mapId, defs, ok, ui22Lists); }catch(e){ return ''; } })();
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}${(()=>{ try{ return ui19McSkillsHTML(top, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok), defs, ok); }catch(e){ return ''; } })() /* 2026-11-04 (UI19) */}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}${(()=>{ try{ return ui19McSkillsHTML(top, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok), defs, ok); }catch(e){ return ''; } })() /* 2026-11-04 (UI19) */}<div class="vis4-map-cards pk1-mc-body">${secs}${ui22Secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); }; // 2026-11-01 (UI13, HH3): not while the card editor has it hidden

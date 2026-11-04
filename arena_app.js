@@ -32667,6 +32667,45 @@ function ui19McSkillsHTML(top, ids, defs, ok){
   return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length ? `<ul class="ui19-sk-list">${flagged.map(li).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
+// UI22_MC:START
+// 2026-11-04 (package UI22, owner 22:56): two more sections in the admin Map cards window.
+// 1 "Skirmish rewards": each fight of this map (a main map: its side maps' fights too) with the cards a first clear pays, read from the same
+//   functions the game uses: nodeRewardCardIds (the skirmish-exclusive cards; a challenge card is one with cardRewardIsChallenge) and
+//   nodeFirstPackCardIds (the pack card a first clear pays, node.firstCard or SKIRMISH_FIRST_PACK_CARDS).
+// 2 "Claude New": Claude's recommended cards for the map that are on none of its lists (canonical/claude-new-cards.json: THEME5's carried picks
+//   and SKILLREC1's card rows). Shown only: they are put on no list, pool, deck or count (no .rv1-tile, so no export, flip or N / M count).
+const CLAUDE_NEW = __CLAUDE_NEW__;
+function ui22McMaps(mapId){ const top = mpTopOf(mapId); return mpIsSub(mapId) ? [mpMapById(mapId)] : [mpMapById(top)].concat(mpSubsOf(top)); }
+function ui22McTile(id, defs, role, label){
+  return `<span class="ui22-rw is-${role}">${vis4MapCardTilesHTML([id], defs, {packs: false})}<small class="ui22-rw-role">${escapeHtml(label)}</small></span>`;
+}
+function ui22McRewardsHTML(mapId, defs, ok){
+  const roleLabel = {reward: TX('ui.ui22-role-reward'), first: TX('ui.ui22-role-first'), challenge: TX('ui.ui22-role-challenge')};
+  const fights = [];
+  ui22McMaps(mapId).filter(Boolean).forEach(map=> (map.nodes || []).forEach(node=>{
+    const own = nodeRewardCardIds(map.id, node.key).filter(ok), pack = nodeFirstPackCardIds(map.id, node.key).filter(id=> ok(id) && !own.includes(id));
+    const items = own.map(id=> ({id, role: cardRewardIsChallenge(map.id, node, id) ? 'challenge' : 'reward'})).concat(pack.map(id=> ({id, role: 'first'})));
+    if(items.length) fights.push({code: skirmishCode(map.id, node.key), name: node.name || '', icon: node.icon || '', items});
+  }));
+  const body = fights.map(f=> `<div class="ui22-fight"><div class="ui22-cap"><b>${escapeHtml(f.code)}</b> ${escapeHtml((f.icon ? f.icon + ' ' : '') + f.name)}</div><div class="vis4-mc-row ui22-row">${f.items.map(x=> ui22McTile(x.id, defs, x.role, roleLabel[x.role])).join('')}</div></div>`).join('');
+  return `<section class="pk1-mc-sec rv2-panel ui22-rewards" id="ui22McRewards"><h3>${escapeHtml(TX('ui.ui22-rewards-title'))} <small>${fights.length}</small></h3>${body || `<p class="panel-sub">–</p>`}</section>`;
+}
+function ui22McClaudeNew(mapId, onLists, ok, defs){
+  const out = [], seen = new Set(), maps = ui22McMaps(mapId).filter(Boolean);
+  const take = (id, why)=>{ if(id && !seen.has(id) && !onLists.has(id) && defs[id] && ok(id)){ seen.add(id); out.push({id, why}); } };
+  maps.forEach(m=> ((CLAUDE_NEW.theme5 || {})[m.id] || []).forEach(e=> take(e.id, e.why)));
+  const labels = new Set(maps.map(m=>{ if(!m.sub){ const n = mapNumberOf(m.id); return n == null ? '' : String(n); } const k = ((m.nodes || [])[0] || {}).key || ''; return k.replace(/-[^-]+$/, ''); }).filter(Boolean));
+  Object.keys(CLAUDE_NEW.skillrec || {}).filter(l=> labels.has(l)).forEach(l=> CLAUDE_NEW.skillrec[l].forEach(e=> take(e.id, e.why)));
+  return out;
+}
+function ui22McClaudeNewHTML(mapId, defs, ok, onLists){
+  const list = ui22McClaudeNew(mapId, onLists, ok, defs);
+  if(!list.length) return '';
+  const pill = TX('ui.ui22-claude-new'), tip = TX('ui.ui22-claude-new-tip');
+  const tiles = list.map(e=> `<span class="ui22-rw is-claude" data-ui22-claude-new="${escapeAttr(e.id)}" title="${escapeAttr(e.why || '')}">${vis4MapCardTilesHTML([e.id], defs, {packs: true})}<b class="ui22-pill" title="${escapeAttr(tip)}">${escapeHtml(pill)}</b></span>`).join('');
+  return `<section class="pk1-mc-sec rv2-panel ui22-claude" id="ui22McClaude"><h3>${escapeHtml(TX('ui.ui22-claude-title'))} <small>${list.length}</small></h3><p class="panel-sub">${escapeHtml(tip)}</p><div class="vis4-mc-row ui22-row">${tiles}</div></section>`;
+}
+// UI22_MC:END
 function pk1OpenMapCards(mapId){
   const top = mpTopOf(mapId), m = mpMapById(mapId) || mpMapById(top); if(!m) return; // 2026-10-29 (package UI3, S4): a submap's fight is labelled by the submap itself
   let ov = document.getElementById('pk1MapCardsOverlay');
@@ -32689,9 +32728,12 @@ function pk1OpenMapCards(mapId){
     bars.push(`<span class="rv2-cl" data-rv2-count="${si}"><b>${escapeHtml(s.label)}</b> <span class="rv2-ct"></span></span>`);
     return `<section class="pk1-mc-sec has-rv1 rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''} data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
   }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
+  // 2026-11-04 (package UI22): the fights' rewards, then Claude's recommended cards (shown, on no list)
+  const ui22Lists = new Set(mapPoolSections(top).flatMap(s=> s.ids || []));
+  const ui22Secs = (()=>{ try{ return ui22McRewardsHTML(mapId, defs, ok) + ui22McClaudeNewHTML(mapId, defs, ok, ui22Lists); }catch(e){ return ''; } })();
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}${(()=>{ try{ return ui19McSkillsHTML(top, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok), defs, ok); }catch(e){ return ''; } })() /* 2026-11-04 (UI19) */}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}${(()=>{ try{ return ui19McSkillsHTML(top, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok), defs, ok); }catch(e){ return ''; } })() /* 2026-11-04 (UI19) */}<div class="vis4-map-cards pk1-mc-body">${secs}${ui22Secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); }; // 2026-11-01 (UI13, HH3): not while the card editor has it hidden

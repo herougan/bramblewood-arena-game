@@ -3964,5 +3964,10 @@
  "Sequestration": "Sequestro",
  "Its hit steals the target's status skills until the end of next round.": "Il suo colpo ruba le abilità di stato del bersaglio fino alla fine del round seguente.",
  "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Abilità di stato: Veleno, Sanguinamento, Decadimento, Sonno, Gelo, Stordimento, Cecità e simili; mai tiri o abilità di danno. Un furto alla volta.",
- "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Parti: +N Salute (la sua Salute e il massimo), Spine N (un’unità che colpisce il rovo subisce N), Rigenera N (ogni round cura N un alleato ferito), Dardo N (ogni round, N a un’unità nemica a caso), +N Scudo. Più parti si sommano. «Rinforzo { Armatura 1 }, finché vive» è diverso: 1 in meno a colpo finché la sua unità vive."
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Parti: +N Salute (la sua Salute e il massimo), Spine N (un’unità che colpisce il rovo subisce N), Rigenera N (ogni round cura N un alleato ferito), Dardo N (ogni round, N a un’unità nemica a caso), +N Scudo. Più parti si sommano. «Rinforzo { Armatura 1 }, finché vive» è diverso: 1 in meno a colpo finché la sua unità vive.",
+ "Skirmish rewards": "Ricompense delle schermaglie",
+ "Reward": "Ricompensa",
+ "Recommended by Claude": "Consigliate da Claude",
+ "Claude New": "Nuovo di Claude",
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Suggerimenti di Claude per questa mappa. Solo visualizzati: in nessuna lista, riserva, mazzo o conteggio."
 }

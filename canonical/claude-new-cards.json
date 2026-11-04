@@ -1,0 +1,587 @@
+{
+ "_about": "UI22 (2026-11-04): Claude's recommended cards per map, shown in the Map cards window as \"Claude New\" and put on no list. Built by tools/ui22_claude_new_2026_11_04.py.",
+ "theme5": {
+  "m10": [
+   {
+    "id": "the-gannet-queen",
+    "why": "THEME5: Stoop and Pounce"
+   }
+  ],
+  "mh": [
+   {
+    "id": "hawthorn-shieldbug",
+    "why": "THEME5: Hedge Fortress"
+   }
+  ],
+  "mr": [
+   {
+    "id": "badger-lumberjack",
+    "why": "THEME5: Old-Growth Giants"
+   }
+  ],
+  "m5": [
+   {
+    "id": "ant-hill",
+    "why": "THEME5: Mound and Herd"
+   },
+   {
+    "id": "golden-eagle-diver",
+    "why": "THEME5: Sun Strike"
+   }
+  ],
+  "ml": [
+   {
+    "id": "truffle-piglet",
+    "why": "THEME5: Farmstead Cavalry"
+   }
+  ],
+  "mt": [
+   {
+    "id": "owl-nightwatch",
+    "why": "THEME5: Moonlit Pack"
+   }
+  ],
+  "m6": [
+   {
+    "id": "ibex-rockcaller",
+    "why": "THEME5: Avalanche and Quake"
+   }
+  ],
+  "md": [
+   {
+    "id": "savanna-cheetah",
+    "why": "THEME5: Haste Blitz"
+   }
+  ],
+  "m3": [
+   {
+    "id": "walrus-icebreaker",
+    "why": "THEME5: Fire and Ice Front"
+   }
+  ],
+  "m11": [
+   {
+    "id": "fire-salamander",
+    "why": "THEME5: Firing Line"
+   }
+  ],
+  "m21": [
+   {
+    "id": "eagle-owl-quartermaster",
+    "why": "THEME5: Expose Volley"
+   },
+   {
+    "id": "vigil-owl",
+    "why": "THEME5: Vigil and Relics"
+   }
+  ],
+  "m22": [
+   {
+    "id": "glacier-yak",
+    "why": "THEME5: Deep Cold"
+   },
+   {
+    "id": "ash-cloud-condor",
+    "why": "THEME5: Ash-Stun Tempo"
+   }
+  ],
+  "m23": [
+   {
+    "id": "eagle-owl-quartermaster",
+    "why": "THEME5: Arrow Storm"
+   },
+   {
+    "id": "cataphract-destrier",
+    "why": "THEME5: Gilded Heavies"
+   }
+  ],
+  "m24": [
+   {
+    "id": "ore-smelter-mole",
+    "why": "THEME5: Iron Vault"
+   },
+   {
+    "id": "golden-magpie",
+    "why": "THEME5: Counting House"
+   }
+  ],
+  "mp": [
+   {
+    "id": "newt-doctor",
+    "why": "THEME5: Dam Fortress"
+   }
+  ],
+  "mg": [
+   {
+    "id": "old-shell",
+    "why": "THEME5: Shell Bunker"
+   }
+  ],
+  "mz": [
+   {
+    "id": "bogfire-newt",
+    "why": "THEME5: Rot and Burst"
+   }
+  ],
+  "mj": [
+   {
+    "id": "supernova-jelly",
+    "why": "THEME5: Shock and Nova"
+   }
+  ],
+  "mq": [
+   {
+    "id": "bee-sentry",
+    "why": "THEME5: Clover Hive"
+   }
+  ],
+  "ms": [
+   {
+    "id": "mangrove-manatee",
+    "why": "THEME5: Regrowth Wall"
+   }
+  ],
+  "mv": [
+   {
+    "id": "talon-archer",
+    "why": "THEME5: Fletcher's Roost"
+   }
+  ],
+  "mn": [
+   {
+    "id": "gallery-orb-weaver",
+    "why": "THEME5: Spider Gallery"
+   }
+  ],
+  "my": [
+   {
+    "id": "cane-toad",
+    "why": "THEME5: Poison Frogs"
+   }
+  ],
+  "mpd": [
+   {
+    "id": "spitting-cobra",
+    "why": "THEME5: Spit from Cover"
+   }
+  ],
+  "me": [
+   {
+    "id": "magma-titan",
+    "why": "THEME5: Burning Wall"
+   }
+  ],
+  "mx": [
+   {
+    "id": "gorge-wyrm",
+    "why": "THEME5: Quake on a Hard Board"
+   }
+  ],
+  "mi": [
+   {
+    "id": "yeti",
+    "why": "THEME5: Ice-Cave Titans"
+   }
+  ],
+  "mo": [
+   {
+    "id": "quill-thorn-boar",
+    "why": "THEME5: Quill Hedge"
+   }
+  ],
+  "m9": [
+   {
+    "id": "armory",
+    "why": "THEME5: Smithy"
+   }
+  ]
+ },
+ "skillrec": {
+  "0": [
+   {
+    "id": "chipmunk-skirmisher",
+    "why": "SKILLREC1: Quick"
+   },
+   {
+    "id": "terrier-pup",
+    "why": "SKILLREC1: Guardian"
+   },
+   {
+    "id": "house-cat",
+    "why": "SKILLREC1: keep vanilla"
+   },
+   {
+    "id": "silver-minnow",
+    "why": "SKILLREC1: Swarm, from Level 1"
+   },
+   {
+    "id": "beaver-lumberjack",
+    "why": "SKILLREC1: Delivery {Lumber x1}"
+   }
+  ],
+  "0-T": [
+   {
+    "id": "pond-trout",
+    "why": "SKILLREC1: Tide, from Level 1"
+   },
+   {
+    "id": "otter-paddler",
+    "why": "SKILLREC1: Tide, from Level 1"
+   },
+   {
+    "id": "burrow-rabbit",
+    "why": "SKILLREC1: Cower {Shell}, from Level 1"
+   }
+  ],
+  "1": [
+   {
+    "id": "cricket-drummer",
+    "why": "SKILLREC1: Inspiring 1"
+   },
+   {
+    "id": "dormouse",
+    "why": "SKILLREC1: Nocturnal 1"
+   },
+   {
+    "id": "field-mouse",
+    "why": "SKILLREC1: On Death: gain 1 Lumber"
+   },
+   {
+    "id": "bramble-sprout",
+    "why": "SKILLREC1: Thorns 1"
+   },
+   {
+    "id": "field-vole",
+    "why": "SKILLREC1: Skitter (Swarm removed)"
+   },
+   {
+    "id": "woodcock-lookout",
+    "why": "SKILLREC1: Crepuscular {day +1/+0, night +0/+2}, True Sight"
+   },
+   {
+    "id": "meadow-rabbit",
+    "why": "SKILLREC1: Evasive, from Level 1"
+   },
+   {
+    "id": "hedgerow-shrew",
+    "why": "SKILLREC1: keep"
+   }
+  ],
+  "1-A": [
+   {
+    "id": "lucky-hopper",
+    "why": "SKILLREC1: Evasive"
+   }
+  ],
+  "2": [
+   {
+    "id": "dolphin-knight",
+    "why": "SKILLREC1: Tide, Swimmer"
+   },
+   {
+    "id": "driftwood-crab",
+    "why": "SKILLREC1: Delivery {Lumber x1}"
+   }
+  ],
+  "2-A": [
+   {
+    "id": "lodge-engineer",
+    "why": "SKILLREC1: Delivery {Lumber x1} every turn, Build {0/6 Palisade}"
+   }
+  ],
+  "2-B": [
+   {
+    "id": "trash-panda-trickster",
+    "why": "SKILLREC1: keep"
+   }
+  ],
+  "3": [
+   {
+    "id": "kittiwake-flock",
+    "why": "SKILLREC1: Flying, Throng"
+   },
+   {
+    "id": "feral-tomcat",
+    "why": "SKILLREC1: Quick, Reach"
+   },
+   {
+    "id": "hawk-arrowkeeper",
+    "why": "SKILLREC1: Flying, Diurnal, Arrow 1"
+   }
+  ],
+  "4": [
+   {
+    "id": "snapstick-turtle",
+    "why": "SKILLREC1: Tide, Spiteful 1"
+   },
+   {
+    "id": "pyrenean-desman",
+    "why": "SKILLREC1: Tide, Keen Sense"
+   },
+   {
+    "id": "lions-mane-jelly",
+    "why": "SKILLREC1: Tide, Poison 2"
+   }
+  ],
+  "5": [
+   {
+    "id": "constrictor-coil",
+    "why": "SKILLREC1: Strangle 2"
+   },
+   {
+    "id": "crocodile-ambusher",
+    "why": "SKILLREC1: Ambush 3"
+   },
+   {
+    "id": "anhinga-spearbird",
+    "why": "SKILLREC1: Pierce 2"
+   },
+   {
+    "id": "nutria-reedcutter",
+    "why": "SKILLREC1: Delivery {Lumber x2}"
+   }
+  ],
+  "5-A": [
+   {
+    "id": "mangrove-mudskipper",
+    "why": "SKILLREC1: Tide, Restless"
+   }
+  ],
+  "6": [
+   {
+    "id": "raven-scout",
+    "why": "SKILLREC1: Flying, True Sight"
+   },
+   {
+    "id": "adder-ambusher",
+    "why": "SKILLREC1: Poison 2, Nocturnal 1"
+   }
+  ],
+  "7": [
+   {
+    "id": "cane-toad",
+    "why": "SKILLREC1: Poison 1, Poison Barbs 2"
+   },
+   {
+    "id": "leafcutter-gardener",
+    "why": "SKILLREC1: Delivery {Lumber x1}"
+   }
+  ],
+  "8-A": [
+   {
+    "id": "glimmer-spider",
+    "why": "SKILLREC1: Poison 1, Illuminate"
+   }
+  ],
+  "9": [
+   {
+    "id": "mangrove-monitor",
+    "why": "SKILLREC1: keep vanilla"
+   },
+   {
+    "id": "reef-shark",
+    "why": "SKILLREC1: Tide, Hunter 1 (Bleeding)"
+   },
+   {
+    "id": "proboscis-monkey",
+    "why": "SKILLREC1: keep (Taunt now pulls shots)"
+   }
+  ],
+  "10": [
+   {
+    "id": "clownfish-scout",
+    "why": "SKILLREC1: Tide, Poison Barbs 1"
+   },
+   {
+    "id": "coral-reef-shark",
+    "why": "SKILLREC1: Tide, Swimmer"
+   }
+  ],
+  "10-A": [
+   {
+    "id": "orca-vanguard",
+    "why": "SKILLREC1: Tide, Sweep 3, Sonar"
+   }
+  ],
+  "11": [
+   {
+    "id": "alpine-marmot",
+    "why": "SKILLREC1: Taunt"
+   }
+  ],
+  "12": [
+   {
+    "id": "quillguard",
+    "why": "SKILLREC1: Fortify {Thorns 1}"
+   }
+  ],
+  "13": [
+   {
+    "id": "sergeant-bramblefox",
+    "why": "SKILLREC1: Almanac 4"
+   },
+   {
+    "id": "bramblewood-lynx",
+    "why": "SKILLREC1: Predator 1"
+   },
+   {
+    "id": "stag-knight",
+    "why": "SKILLREC1: keep vanilla"
+   }
+  ],
+  "14": [
+   {
+    "id": "savanna-cheetah",
+    "why": "SKILLREC1: Quick, Predator 1"
+   },
+   {
+    "id": "plains-zebra",
+    "why": "SKILLREC1: Sociable 1"
+   },
+   {
+    "id": "acacia-giraffe",
+    "why": "SKILLREC1: Reach"
+   },
+   {
+    "id": "hoopoe-herald",
+    "why": "SKILLREC1: Night-blind, Herald 2"
+   },
+   {
+    "id": "dust-hyena",
+    "why": "SKILLREC1: keep (Carnage counts only deaths it saw, ENG22)"
+   }
+  ],
+  "15": [
+   {
+    "id": "warhorse-charger",
+    "why": "SKILLREC1: Onslaught 3"
+   },
+   {
+    "id": "squires-mount",
+    "why": "SKILLREC1: Loyal 1"
+   }
+  ],
+  "16": [
+   {
+    "id": "snowshoe-hare",
+    "why": "SKILLREC1: Skitter"
+   }
+  ],
+  "17": [
+   {
+    "id": "talus-pika",
+    "why": "SKILLREC1: Delivery {Stone x1}"
+   },
+   {
+    "id": "frost-hare-sprinter",
+    "why": "SKILLREC1: Speed 1"
+   }
+  ],
+  "18": [
+   {
+    "id": "caustic-scorpion",
+    "why": "SKILLREC1: Corrode 2"
+   },
+   {
+    "id": "thorny-devil",
+    "why": "SKILLREC1: Thorns 2, Taunt"
+   },
+   {
+    "id": "roadrunner-courier",
+    "why": "SKILLREC1: Haste, On Play: an adjacent ally gets 1 Fast Forward token"
+   },
+   {
+    "id": "glass-golem",
+    "why": "SKILLREC1: Reflect"
+   },
+   {
+    "id": "dune-packrat",
+    "why": "SKILLREC1: Delivery {Lumber x3}"
+   }
+  ],
+  "18-A": [
+   {
+    "id": "skull-vulture",
+    "why": "SKILLREC1: Flying, Tally 3, Nocturnal"
+   },
+   {
+    "id": "trapdoor-spider",
+    "why": "SKILLREC1: Poison 1, Ambush 2"
+   }
+  ],
+  "19": [
+   {
+    "id": "pumice-beetle",
+    "why": "SKILLREC1: Delivery {Stone x2} (on play)"
+   }
+  ],
+  "19-A": [
+   {
+    "id": "cinder-gecko",
+    "why": "SKILLREC1: Skitter"
+   },
+   {
+    "id": "tide-spirit",
+    "why": "SKILLREC1: Tide, Tsunami 1"
+   },
+   {
+    "id": "quill-volley",
+    "why": "SKILLREC1: Volley 1"
+   }
+  ],
+  "20": [
+   {
+    "id": "fumarole-ibex",
+    "why": "SKILLREC1: Mountain Climber, Landslide 1"
+   },
+   {
+    "id": "woodland-brawler",
+    "why": "SKILLREC1: Riled 3"
+   },
+   {
+    "id": "ash-moth",
+    "why": "SKILLREC1: Flying, Nocturnal, Smoke Bomb"
+   },
+   {
+    "id": "pack-mule",
+    "why": "SKILLREC1: Delivery {Lumber x1}"
+   }
+  ],
+  "21": [
+   {
+    "id": "mountain-goat-climber",
+    "why": "SKILLREC1: Mountain Climber"
+   }
+  ],
+  "22": [
+   {
+    "id": "badger-berserker",
+    "why": "SKILLREC1: Berserk 1"
+   },
+   {
+    "id": "ashwing-ptarmigan",
+    "why": "SKILLREC1: Flying, Molting 1"
+   }
+  ],
+  "23": [
+   {
+    "id": "badger-trench-digger",
+    "why": "SKILLREC1: Guardian, Build {0/6 Palisade}"
+   },
+   {
+    "id": "howdah-archers",
+    "why": "SKILLREC1: Twin Shot 1"
+   }
+  ],
+  "24": [
+   {
+    "id": "great-gate",
+    "why": "SKILLREC1: Guardian, Fortify {+3 Health}"
+   },
+   {
+    "id": "stoneheart-golem",
+    "why": "SKILLREC1: Bramble Armor"
+   }
+  ]
+ }
+}

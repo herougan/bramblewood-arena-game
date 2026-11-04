@@ -2,6 +2,8 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-04 Package UI22 (owner 22:56: skirmish rewards and Claude New in Map cards)
+- Admin Map cards window: a "Skirmish rewards" section (every fight of the map and its side maps with its reward, first-clear and challenge cards, fight code and name as caption) and a "Recommended by Claude" section whose cards wear a "Claude New" pill. Those cards are shown only: on no list, pool, deck or count. The compact skills block is unchanged. UI only, no balance change.
 ## 2026-11-04 Package UI22a (owner 22:56: Map cards scroll and the skills block)
 - The whole Map cards dialog scrolls again (the card body no longer scrolls on its own). The "Skills on these cards" block is about a quarter of its height: narrower tiles, smaller type, two-line text with the full text as a tooltip. The rest of UI22 (skirmish rewards section, "Claude New" cards) follows.
 ## 2026-11-04 Package ENG24 (owner 11-04 22:34: ENG22-2 b, RELICT-1, RELICT-2, IDEA-BRAMBLES, FIX8-4, ENG22-5 a)

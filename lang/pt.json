@@ -3964,5 +3964,10 @@
  "Sequestration": "Sequestro",
  "Its hit steals the target's status skills until the end of next round.": "O seu golpe rouba as habilidades de estado do alvo até ao fim da ronda seguinte.",
  "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Habilidades de estado: Veneno, Sangramento, Decomposição, Sono, Congelamento, Atordoamento, Cegueira e afins; nunca tiros nem habilidades de dano. Um roubo de cada vez.",
- "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Partes: +N Vida (a sua Vida e o máximo), Espinhos N (uma unidade que acerta o silvado sofre N), Regen N (cada ronda cura N um aliado ferido), Virote N (cada ronda, N numa unidade inimiga ao acaso), +N Escudo. Várias somam-se. «Reforçar { Armadura 1 }, enquanto viver» é outra coisa: 1 a menos por golpe enquanto a sua unidade vive."
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Partes: +N Vida (a sua Vida e o máximo), Espinhos N (uma unidade que acerta o silvado sofre N), Regen N (cada ronda cura N um aliado ferido), Virote N (cada ronda, N numa unidade inimiga ao acaso), +N Escudo. Várias somam-se. «Reforçar { Armadura 1 }, enquanto viver» é outra coisa: 1 a menos por golpe enquanto a sua unidade vive.",
+ "Skirmish rewards": "Recompensas de escaramuça",
+ "Reward": "Recompensa",
+ "Recommended by Claude": "Recomendadas pelo Claude",
+ "Claude New": "Novo do Claude",
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Sugestões do Claude para este mapa. Apenas exibidas: não estão em nenhuma lista, reserva, baralho ou contagem."
 }

@@ -3962,5 +3962,10 @@
  "Sequestration": "夺技",
  "Its hit steals the target's status skills until the end of next round.": "它的攻击会夺走目标的状态技能，直到下一回合结束。",
  "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "状态技能：中毒、流血、腐朽、睡眠、冰冻、眩晕、致盲等；绝不包括射击或伤害技能。一次只夺一份。",
- "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "部分：+N 生命（生命与上限）、荆刺 N（攻击荆棘丛的单位受到 N）、再生 N（每回合治疗一名受伤友军 N）、弩矢 N（每回合对随机敌方单位造成 N）、+N 护盾。多个可叠加。“加固 { 护甲 1 }，存活期间”不同：其单位存活时每次受击少 1。"
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "部分：+N 生命（生命与上限）、荆刺 N（攻击荆棘丛的单位受到 N）、再生 N（每回合治疗一名受伤友军 N）、弩矢 N（每回合对随机敌方单位造成 N）、+N 护盾。多个可叠加。“加固 { 护甲 1 }，存活期间”不同：其单位存活时每次受击少 1。",
+ "Skirmish rewards": "遭遇战奖励",
+ "Reward": "奖励",
+ "Recommended by Claude": "Claude 推荐",
+ "Claude New": "Claude 新推荐",
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Claude 为此地图推荐的卡牌。仅作展示：不在任何列表、卡池、卡组或计数中。"
 }

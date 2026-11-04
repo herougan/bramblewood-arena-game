@@ -3961,5 +3961,10 @@
  "Sequestration": "Secuestro",
  "Its hit steals the target's status skills until the end of next round.": "Su golpe roba las habilidades de estado del objetivo hasta el final de la siguiente ronda.",
  "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Habilidades de estado: Veneno, Sangrado, Descomposición, Sueño, Congelación, Aturdimiento, Ceguera y similares; nunca disparos ni habilidades de daño. Un robo a la vez.",
- "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Partes: +N Salud (su Salud y su máximo), Espinas N (una unidad que golpea al zarzal recibe N), Regen N (cada ronda cura N a un aliado herido), Virote N (cada ronda, N a una unidad enemiga al azar), +N Escudo. Varias se suman. «Fortalecer { Armadura 1 }, mientras viva» es otra cosa: 1 menos por golpe mientras su unidad vive."
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Partes: +N Salud (su Salud y su máximo), Espinas N (una unidad que golpea al zarzal recibe N), Regen N (cada ronda cura N a un aliado herido), Virote N (cada ronda, N a una unidad enemiga al azar), +N Escudo. Varias se suman. «Fortalecer { Armadura 1 }, mientras viva» es otra cosa: 1 menos por golpe mientras su unidad vive.",
+ "Skirmish rewards": "Recompensas de escaramuza",
+ "Reward": "Recompensa",
+ "Recommended by Claude": "Recomendadas por Claude",
+ "Claude New": "Nuevo de Claude",
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Sugerencias de Claude para este mapa. Solo se muestran: no están en ninguna lista, reserva, mazo ni cuenta."
 }

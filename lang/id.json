@@ -3964,5 +3964,10 @@
  "Sequestration": "Sita",
  "Its hit steals the target's status skills until the end of next round.": "Pukulannya mencuri skill status sasaran sampai akhir ronde berikutnya.",
  "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Skill status: Racun, Pendarahan, Busuk, Tidur, Beku, Pingsan, Buta, dan sejenisnya; bukan tembakan atau skill kerusakan. Satu curian sekali waktu.",
- "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Bagian: +N Nyawa (Nyawa dan batas atasnya), Duri N (unit yang memukul semak menerima N), Regen N (tiap ronde menyembuhkan satu sekutu terluka sebesar N), Baut N (tiap ronde, N ke unit musuh acak), +N Perisai. Beberapa saling menambah. \"Perkuat { Zirah 1 }, selama ia hidup\" berbeda: 1 lebih sedikit per pukulan selama unitnya hidup."
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Bagian: +N Nyawa (Nyawa dan batas atasnya), Duri N (unit yang memukul semak menerima N), Regen N (tiap ronde menyembuhkan satu sekutu terluka sebesar N), Baut N (tiap ronde, N ke unit musuh acak), +N Perisai. Beberapa saling menambah. \"Perkuat { Zirah 1 }, selama ia hidup\" berbeda: 1 lebih sedikit per pukulan selama unitnya hidup.",
+ "Skirmish rewards": "Hadiah pertempuran kecil",
+ "Reward": "Hadiah",
+ "Recommended by Claude": "Direkomendasikan Claude",
+ "Claude New": "Baru dari Claude",
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Saran Claude untuk peta ini. Hanya ditampilkan: tidak ada di daftar, kumpulan, dek, atau hitungan mana pun."
 }

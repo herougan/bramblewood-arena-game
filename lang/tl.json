@@ -3963,5 +3963,10 @@
  "Sequestration": "Pagkumpiska",
  "Its hit steals the target's status skills until the end of next round.": "Ninanakaw ng tama nito ang mga status skill ng target hanggang matapos ang susunod na round.",
  "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Mga status skill: Lason, Dugo, Bulok, Tulog, Yelo, Stun, Bulag at iba pa; hindi kailanman ang mga tira o damage skill. Isang nakaw sa bawat pagkakataon.",
- "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Mga bahagi: +N Buhay (ang Buhay at ang pinakamataas nito), Tinik N (ang yunit na tumama sa dawag ay tatamaan ng N), Regen N (bawat round, gagaling ng N ang isang sugatang kakampi), Bolt N (bawat round, N sa isang random na kaaway), +N Shield. Nagdaragdag ang marami. Iba ang \"Patibayin { Baluti 1 }, habang buhay ito\": 1 bawas bawat tama habang buhay ang yunit nito."
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Mga bahagi: +N Buhay (ang Buhay at ang pinakamataas nito), Tinik N (ang yunit na tumama sa dawag ay tatamaan ng N), Regen N (bawat round, gagaling ng N ang isang sugatang kakampi), Bolt N (bawat round, N sa isang random na kaaway), +N Shield. Nagdaragdag ang marami. Iba ang \"Patibayin { Baluti 1 }, habang buhay ito\": 1 bawas bawat tama habang buhay ang yunit nito.",
+ "Skirmish rewards": "Mga gantimpala sa labanan",
+ "Reward": "Gantimpala",
+ "Recommended by Claude": "Inirekomenda ni Claude",
+ "Claude New": "Bago ni Claude",
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Mga mungkahi ni Claude para sa mapang ito. Ipinapakita lang: wala sa anumang listahan, pool, deck o bilang."
 }

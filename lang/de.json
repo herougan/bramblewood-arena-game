@@ -3961,5 +3961,10 @@
  "Sequestration": "Beschlagnahme",
  "Its hit steals the target's status skills until the end of next round.": "Sein Treffer stiehlt die Zustandsfähigkeiten des Ziels bis zum Ende der nächsten Runde.",
  "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Zustandsfähigkeiten: Gift, Blutung, Verfall, Schlaf, Frost, Betäubung, Blindheit und ähnliche; nie Schüsse oder Schadensfähigkeiten. Ein Diebstahl auf einmal.",
- "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Teile: +N Leben (sein Leben und sein Maximum), Dornen N (eine Einheit, die die Dornenhecke trifft, erleidet N), Regen N (heilt jede Runde einen verwundeten Verbündeten um N), Bolzen N (jede Runde N auf eine zufällige gegnerische Einheit), +N Schild. Mehrere addieren sich. „Festigen { Rüstung 1 }, solange es lebt“ ist etwas anderes: 1 weniger pro Treffer, solange ihre Einheit lebt."
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Teile: +N Leben (sein Leben und sein Maximum), Dornen N (eine Einheit, die die Dornenhecke trifft, erleidet N), Regen N (heilt jede Runde einen verwundeten Verbündeten um N), Bolzen N (jede Runde N auf eine zufällige gegnerische Einheit), +N Schild. Mehrere addieren sich. „Festigen { Rüstung 1 }, solange es lebt“ ist etwas anderes: 1 weniger pro Treffer, solange ihre Einheit lebt.",
+ "Skirmish rewards": "Scharmützel-Belohnungen",
+ "Reward": "Belohnung",
+ "Recommended by Claude": "Von Claude empfohlen",
+ "Claude New": "Claude neu",
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Claudes Vorschläge für diese Karte. Nur zur Ansicht: auf keiner Liste, in keinem Pool, Deck oder Zähler."
 }
