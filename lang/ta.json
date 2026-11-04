@@ -3864,5 +3864,13 @@
  "Mystery skills": "மர்ம திறன்கள்",
  "Cards with a skill you have not seen yet.": "நீ இன்னும் பார்க்காத திறன் உள்ள அட்டைகள்.",
  "[Lvl {n}]": "[நிலை {n}]",
- "Gets this skill at Level {n}.": "நிலை {n} இல் இந்தத் திறனைப் பெறுகிறது."
+ "Gets this skill at Level {n}.": "நிலை {n} இல் இந்தத் திறனைப் பெறுகிறது.",
+ "Swarm N": "திரள் N",
+ "Attack gained for each ally that counts (1 if left alone).": "கணக்கில் வரும் ஒவ்வொரு கூட்டாளிக்கும் கிடைக்கும் தாக்குதல் (மாற்றாவிட்டால் 1).",
+ "per ally": "ஒவ்வொரு கூட்டாளிக்கும்",
+ "Art height": "கலையின் உயரம்",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "பெயர் சுருளுக்குப் பின்னால் படத்தை நகர்த்தும்: 0 மேற்பகுதி, 100 கீழ்ப்பகுதி, 50 நடுவில்.",
+ "Skills on these cards": "இந்த அட்டைகளில் உள்ள திறன்கள்",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "இந்தத் திறன் பாதையில் முதல் முறையாகத் தோன்றுகிறது: முந்தைய வரைபட அட்டைகளில் இல்லை.",
+ "No skills on these cards.": "இந்த அட்டைகளில் திறன்கள் இல்லை."
 }

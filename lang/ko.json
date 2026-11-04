@@ -3864,5 +3864,13 @@
  "Mystery skills": "미스터리 스킬",
  "Cards with a skill you have not seen yet.": "아직 보지 못한 스킬이 있는 카드.",
  "[Lvl {n}]": "[Lv.{n}]",
- "Gets this skill at Level {n}.": "레벨 {n}에서 이 스킬을 얻는다."
+ "Gets this skill at Level {n}.": "레벨 {n}에서 이 스킬을 얻는다.",
+ "Swarm N": "떼 N",
+ "Attack gained for each ally that counts (1 if left alone).": "해당되는 아군 하나당 얻는 공격력 (비워 두면 1).",
+ "per ally": "아군당",
+ "Art height": "일러스트 높이",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "이름 두루마리 뒤의 그림을 옮깁니다. 0은 위쪽, 100은 아래쪽, 50은 가운데입니다.",
+ "Skills on these cards": "이 카드들의 스킬",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "이 스킬이 길 위에서 처음 나옵니다. 이전 맵의 카드에는 없습니다.",
+ "No skills on these cards.": "이 카드들에는 스킬이 없습니다."
 }

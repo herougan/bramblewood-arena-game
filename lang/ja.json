@@ -3861,5 +3861,13 @@
  "Mystery skills": "ミステリースキル",
  "Cards with a skill you have not seen yet.": "まだ見たことのないスキルを持つカード。",
  "[Lvl {n}]": "[Lv.{n}]",
- "Gets this skill at Level {n}.": "レベル{n}でこのスキルを覚える。"
+ "Gets this skill at Level {n}.": "レベル{n}でこのスキルを覚える。",
+ "Swarm N": "スウォーム N",
+ "Attack gained for each ally that counts (1 if left alone).": "対象となる味方1体ごとに得る攻撃力（未入力なら1）。",
+ "per ally": "味方1体ごと",
+ "Art height": "イラストの高さ",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "名前の巻物の後ろの絵を動かします。0 は上、100 は下、50 は中央。",
+ "Skills on these cards": "これらのカードのスキル",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "このスキルが道中で初めて登場します。これより前のマップのカードにはありません。",
+ "No skills on these cards.": "これらのカードにスキルはありません。"
 }

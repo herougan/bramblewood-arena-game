@@ -3860,5 +3860,13 @@
  "Mystery skills": "Mysteriöse Fähigkeiten",
  "Cards with a skill you have not seen yet.": "Karten mit einer Fähigkeit, die du noch nicht gesehen hast.",
  "[Lvl {n}]": "[St. {n}]",
- "Gets this skill at Level {n}.": "Bekommt diese Fähigkeit auf Stufe {n}."
+ "Gets this skill at Level {n}.": "Bekommt diese Fähigkeit auf Stufe {n}.",
+ "Swarm N": "Schwarm N",
+ "Attack gained for each ally that counts (1 if left alone).": "Angriff für jeden zählenden Verbündeten (1, wenn nichts steht).",
+ "per ally": "pro Verbündetem",
+ "Art height": "Bildhöhe",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Verschiebt das Bild hinter der Namensrolle: 0 zeigt die Oberkante, 100 die Unterkante, 50 ist mittig.",
+ "Skills on these cards": "Fähigkeiten dieser Karten",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "Zum ersten Mal auf dem Weg: keine Karte einer früheren Karte trägt diese Fähigkeit.",
+ "No skills on these cards.": "Keine Fähigkeiten auf diesen Karten."
 }

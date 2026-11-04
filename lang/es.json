@@ -3860,5 +3860,13 @@
  "Mystery skills": "Habilidades misteriosas",
  "Cards with a skill you have not seen yet.": "Cartas con una habilidad que aún no has visto.",
  "[Lvl {n}]": "[Nv. {n}]",
- "Gets this skill at Level {n}.": "Obtiene esta habilidad en el nivel {n}."
+ "Gets this skill at Level {n}.": "Obtiene esta habilidad en el nivel {n}.",
+ "Swarm N": "Enjambre N",
+ "Attack gained for each ally that counts (1 if left alone).": "Ataque ganado por cada aliado que cuenta (1 si se deja así).",
+ "per ally": "por aliado",
+ "Art height": "Altura del arte",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Mueve la imagen detrás del pergamino del nombre: 0 muestra la parte superior, 100 la inferior, 50 está centrada.",
+ "Skills on these cards": "Habilidades de estas cartas",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "Primera vez que aparece esta habilidad en el camino: ninguna carta de un mapa anterior la tiene.",
+ "No skills on these cards.": "Ninguna habilidad en estas cartas."
 }

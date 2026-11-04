@@ -3861,5 +3861,13 @@
  "Mystery skills": "神祕技能",
  "Cards with a skill you have not seen yet.": "帶有你還沒見過的技能的卡牌。",
  "[Lvl {n}]": "[Lv.{n}]",
- "Gets this skill at Level {n}.": "在 {n} 級獲得此技能。"
+ "Gets this skill at Level {n}.": "在 {n} 級獲得此技能。",
+ "Swarm N": "集群 N",
+ "Attack gained for each ally that counts (1 if left alone).": "每個符合條件的盟友增加的攻擊（不填為 1）。",
+ "per ally": "每個盟友",
+ "Art height": "插圖高度",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "移動名稱卷軸後面的圖片：0 顯示頂部，100 顯示底部，50 為置中。",
+ "Skills on these cards": "這些卡牌上的技能",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "這個技能第一次出現在道路上：之前地圖的卡牌都沒有它。",
+ "No skills on these cards.": "這些卡牌沒有技能。"
 }

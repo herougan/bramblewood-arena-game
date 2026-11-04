@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-04 Package UI19 (owner 11-03 23:01 / 23:12, 11-04 07:42: Card editor, name scroll, Map cards skills)
+- **Name scroll:** a new look with real rolled ends and a paper texture (fibres, flecks, a curve of light and shade). The rolled ends are the same width on every card of a size; they no longer grow with the number of name lines. The name stays on one line where it can: long names shrink (floor 70%, never under 6px of type) before they wrap, so Glacial Ape-King's scroll no longer covers its head. Hand, board, Codex and the large view all use it.
+- **Art height (Card editor):** a new field per card, `artPosY` (0 shows the top of the picture, 100 the bottom, blank or 50 centred), to push a card's art below the scroll. Saved on the card (it reaches `canonical/cards.json` with the usual fold). No card has a value yet.
+- **Swarm N works in the Card editor:** the "+N per ally" field is back (it was hidden in UI10). It saves `swarmN` (the field the engine reads next to Swarm, with or without a type list). Setting it back to 1 now clears an old `swarmN`.
+- **Card editor, compact:** Locked, Hidden, Quest, Event, Dev, Special on one row; Cost, Pitch, Reward on one row (Pitch shows Lumber, Stone, Metal); tighter margins and rows; Type Tags and their picker on one line; Resistances and Weaknesses, From and Stats by level now sit below the abilities. The budget keeps its head line, Stats and Product lines (and the price / two-skill warnings); the explanation text is gone.
+- **Map cards window:** a "Skills on these cards" list: each skill the shown cards carry, its short text, "n of N cards", and a NEW! flag on a skill no earlier map's cards (road order) carry.
+- No card, deck or budget changed; no Supabase write. Texts: 10 keys in the 12 packs (`tools/i18n_2026_11_03_ui19.py`). Tests: `tests/ui19-2026-11-03.js`, `tests/e2e/ui19_2026_11_03.py`.
+
 ## 2026-11-03 Package LISTFIX2 (owner 22:02: "cut cards still stay, but are just flagged as cut")
 - **Every cut is applied:** all 37 cuts of the owner's 11-01 export (THEME4) and the older THEME3 cuts are off their MAP / submap lists. 13 cut cards still show on their map:
   - 8 sit on SPECIAL as a fight's reward or first-clear card (2-1, 2-3, 2-5, 4-2, 4-5, 5-3, 6-4, 20-9).
