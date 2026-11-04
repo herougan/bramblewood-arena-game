@@ -3897,6 +3897,15 @@
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "Hinahamon ang mga kaaway sa paligid nito (kaharap, o isang column sa magkabilang gilid): ang mga hampas, palaso at tira nila ay tatama rito, kahit ang tatama sana sa dawag. Nakalulusot ang Stealth; hindi nahihila ang Volley.",
  "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.": "Habang Handa, humaharang sa harap ng katabing kakampi (sa tabi; sa raid o multiplayer dungeon, sa harap o likod din) at sinasalo ang mga karaniwang atake, ganting-atake, palaso at tira na para dito. Hindi ang ibang skill at area hit, at hindi nito binabantayan ang dawag o kakampi na may Tinik. Hindi habang Naghihintay, Stunned, Frozen, Tulog o Bound.",
  "Wet {n}: each lightning hit deals {n} more. It loses one counter each round; fire dries one a point before it can burn.": "Basa {n}: bawat tama ng kidlat ay {n} pang dagdag. Nawawalan ito ng isang counter bawat round; tinutuyo ng apoy ang isa bawat puntos bago ito makasunog.",
+ "Swarm N": "Swarm N",
+ "Attack gained for each ally that counts (1 if left alone).": "Attack na nakukuha sa bawat kakampi na bibilangin (1 kung hindi binago).",
+ "per ally": "bawat kakampi",
+ "Art height": "Taas ng art",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Inililipat ang larawan sa likod ng balumbon ng pangalan: 0 ang itaas, 100 ang ibaba, 50 ang gitna.",
+ "Skills on these cards": "Mga kasanayan sa mga kard na ito",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "Unang beses na lumitaw ang kasanayang ito sa daan: walang kard ng naunang mapa ang mayroon nito.",
+ "No skills on these cards.": "Walang kasanayan sa mga kard na ito.",
+ "{name} fortifies its bramble: {x}.": "Pinatibay ng {name} ang dawag nito: {x}.",
  "Day Attack": "Atake sa araw",
  "Day Health": "Buhay sa araw",
  "Night Attack": "Atake sa gabi",
@@ -3933,6 +3942,5 @@
  "{name} skitters: Haste and Evasive next turn.": "Kumaskas ang {name}: Bilis at Iwas sa susunod na turn.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Kinain ng dawag ang {name}: Ayusin {n}, iyong mga yunit sa larangan +{a} Atake ({left} na lang).",
  "The Aimed Bolt hits {name} for {n}.": "Tinamaan ng Asintadong Bolt ang {name} ng {n}.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "Tinamaan ng Asintadong Bolt ang dawag ng kaaway ng {n}.",
- "{name} fortifies its bramble: {x}.": "Pinatibay ng {name} ang dawag nito: {x}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Tinamaan ng Asintadong Bolt ang dawag ng kaaway ng {n}."
 }

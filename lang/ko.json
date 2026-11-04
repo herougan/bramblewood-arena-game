@@ -3899,6 +3899,15 @@
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "주변의 적(정면, 또는 양옆 한 칸)을 도발합니다: 그들의 공격, 화살, 사격이 이 유닛에 맞습니다. 덤불을 노리던 것도요. 은신은 빠져나가고, 일제 사격은 끌려오지 않습니다.",
  "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.": "준비된 동안, 인접한 아군 앞에 나서(옆; 레이드나 멀티 던전에서는 앞뒤도) 그 아군을 노린 일반 공격, 반격, 화살, 사격을 대신 받습니다. 다른 스킬과 범위 공격은 아니며, 덤불이나 가시가 있는 아군은 지키지 않습니다. 대기, 기절, 빙결, 수면, 속박 중에는 안 됩니다.",
  "Wet {n}: each lightning hit deals {n} more. It loses one counter each round; fire dries one a point before it can burn.": "젖음 {n}: 번개 공격마다 {n} 더 받습니다. 매 라운드 표식 하나를 잃고, 불은 태우기 전에 1점마다 하나를 말립니다.",
+ "Swarm N": "떼 N",
+ "Attack gained for each ally that counts (1 if left alone).": "해당되는 아군 하나당 얻는 공격력 (비워 두면 1).",
+ "per ally": "아군당",
+ "Art height": "일러스트 높이",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "이름 두루마리 뒤의 그림을 옮깁니다. 0은 위쪽, 100은 아래쪽, 50은 가운데입니다.",
+ "Skills on these cards": "이 카드들의 스킬",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "이 스킬이 길 위에서 처음 나옵니다. 이전 맵의 카드에는 없습니다.",
+ "No skills on these cards.": "이 카드들에는 스킬이 없습니다.",
+ "{name} fortifies its bramble: {x}.": "{name}이(가) 덤불을 보강합니다: {x}.",
  "Day Attack": "낮 공격",
  "Day Health": "낮 체력",
  "Night Attack": "밤 공격",
@@ -3935,6 +3944,5 @@
  "{name} skitters: Haste and Evasive next turn.": "{name}이(가) 종종걸음: 다음 턴에 신속과 회피.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "덤불이 {name}을(를) 먹었습니다: 수리 {n}, 필드의 내 유닛 공격 +{a} (남은 횟수 {left}).",
  "The Aimed Bolt hits {name} for {n}.": "조준 볼트가 {name}에 {n} 명중.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "조준 볼트가 적 덤불에 {n} 명중.",
- "{name} fortifies its bramble: {x}.": "{name}이(가) 덤불을 보강합니다: {x}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "조준 볼트가 적 덤불에 {n} 명중."
 }

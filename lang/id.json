@@ -3898,6 +3898,15 @@
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "Memancing musuh di sekitarnya (di depannya, atau satu kolom di kiri-kanan): ayunan, panah dan tembakan mereka mengenainya, bahkan yang akan mengenai semak. Siluman lolos; Rentetan tidak tertarik.",
  "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.": "Saat Siap, berdiri di depan sekutu yang bersebelahan (di samping; di raid atau dungeon multipemain, juga depan atau belakang) dan menerima serangan biasa, serangan balik, panah dan tembakan yang mengarah padanya. Skill lain dan serangan area tidak, dan ia tidak pernah menjaga semak atau sekutu ber-Duri. Tidak saat Tunggu, Pingsan, Beku, Tidur atau Terikat.",
  "Wet {n}: each lightning hit deals {n} more. It loses one counter each round; fire dries one a point before it can burn.": "Basah {n}: tiap serangan petir memberi {n} lebih. Ia kehilangan satu penanda tiap ronde; api mengeringkan satu per poin sebelum bisa membakar.",
+ "Swarm N": "Swarm N",
+ "Attack gained for each ally that counts (1 if left alone).": "Serangan yang didapat untuk tiap sekutu yang dihitung (1 jika dibiarkan).",
+ "per ally": "per sekutu",
+ "Art height": "Tinggi gambar",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Menggeser gambar di belakang gulungan nama: 0 menampilkan bagian atas, 100 bagian bawah, 50 di tengah.",
+ "Skills on these cards": "Skill pada kartu-kartu ini",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "Pertama kali skill ini muncul di jalan: tidak ada kartu peta sebelumnya yang memilikinya.",
+ "No skills on these cards.": "Tidak ada skill pada kartu-kartu ini.",
+ "{name} fortifies its bramble: {x}.": "{name} memperkuat semaknya: {x}.",
  "Day Attack": "Serangan siang",
  "Day Health": "Nyawa siang",
  "Night Attack": "Serangan malam",
@@ -3934,6 +3943,5 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} berlari kecil: Gesit dan Mengelak giliran berikutnya.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Semak memakan {name}: Perbaiki {n}, unitmu di medan +{a} Serangan (sisa {left}).",
  "The Aimed Bolt hits {name} for {n}.": "Baut Terarah mengenai {name} sebesar {n}.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "Baut Terarah mengenai semak musuh sebesar {n}.",
- "{name} fortifies its bramble: {x}.": "{name} memperkuat semaknya: {x}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Baut Terarah mengenai semak musuh sebesar {n}."
 }

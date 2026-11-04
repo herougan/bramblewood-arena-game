@@ -3898,6 +3898,15 @@
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "Provoca os inimigos à sua volta (de frente, ou a uma coluna de cada lado): os golpes, flechas e tiros deles acertam-no, mesmo os que iriam ao silvado. A Furtividade escapa; uma Saraivada não é atraída.",
  "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.": "Quando Pronto, põe-se à frente de um aliado adjacente (ao lado; numa raide ou masmorra multijogador, à frente ou atrás também) e recebe os ataques simples, contra-ataques, flechas e tiros dirigidos a ele. Outras habilidades e golpes de área não, e nunca protege o silvado nem um aliado com Espinhos. Não em Espera, Atordoado, Congelado, Adormecido ou Preso.",
  "Wet {n}: each lightning hit deals {n} more. It loses one counter each round; fire dries one a point before it can burn.": "Molhado {n}: cada golpe de raio causa {n} a mais. Perde um marcador a cada ronda; o fogo seca um por ponto antes de poder queimar.",
+ "Swarm N": "Enxame N",
+ "Attack gained for each ally that counts (1 if left alone).": "Ataque ganho por cada aliado que conta (1 se deixado assim).",
+ "per ally": "por aliado",
+ "Art height": "Altura da arte",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Move a imagem atrás do pergaminho do nome: 0 mostra o topo, 100 a base, 50 é centralizado.",
+ "Skills on these cards": "Habilidades destas cartas",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "Primeira vez que esta habilidade aparece na estrada: nenhuma carta de um mapa anterior a tem.",
+ "No skills on these cards.": "Nenhuma habilidade nestas cartas.",
+ "{name} fortifies its bramble: {x}.": "{name} reforça o seu silvado: {x}.",
  "Day Attack": "Ataque de dia",
  "Day Health": "Vida de dia",
  "Night Attack": "Ataque de noite",
@@ -3934,6 +3943,5 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} escapule-se: Pressa e Evasivo no próximo turno.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "O silvado come {name}: Reparar {n}, as tuas unidades em campo +{a} Ataque (restam {left}).",
  "The Aimed Bolt hits {name} for {n}.": "O Virote apontado acerta {name} por {n}.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "O Virote apontado acerta o silvado inimigo por {n}.",
- "{name} fortifies its bramble: {x}.": "{name} reforça o seu silvado: {x}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "O Virote apontado acerta o silvado inimigo por {n}."
 }

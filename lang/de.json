@@ -3895,6 +3895,15 @@
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "Verspottet die Gegner um sich (gegenüber oder eine Spalte daneben): ihre Hiebe, Pfeile und Schüsse treffen es, selbst solche, die die Dornenhecke träfen. Tarnung schlüpft vorbei; eine Salve wird nicht angezogen.",
  "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.": "Wenn bereit, stellt es sich vor einen benachbarten Verbündeten (daneben; im Raid oder Mehrspieler-Dungeon auch davor oder dahinter) und nimmt die normalen Angriffe, Gegenangriffe, Pfeile und Schüsse auf ihn. Andere Fähigkeiten und Flächentreffer nicht, und es schützt nie die Dornenhecke oder einen Verbündeten mit Dornen. Nicht beim Warten, betäubt, gefroren, schlafend oder gebunden.",
  "Wet {n}: each lightning hit deals {n} more. It loses one counter each round; fire dries one a point before it can burn.": "Nass {n}: jeder Blitztreffer verursacht {n} mehr. Es verliert jede Runde einen Marker; Feuer trocknet einen pro Punkt, bevor es brennen kann.",
+ "Swarm N": "Schwarm N",
+ "Attack gained for each ally that counts (1 if left alone).": "Angriff für jeden zählenden Verbündeten (1, wenn nichts steht).",
+ "per ally": "pro Verbündetem",
+ "Art height": "Bildhöhe",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Verschiebt das Bild hinter der Namensrolle: 0 zeigt die Oberkante, 100 die Unterkante, 50 ist mittig.",
+ "Skills on these cards": "Fähigkeiten dieser Karten",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "Zum ersten Mal auf dem Weg: keine Karte einer früheren Karte trägt diese Fähigkeit.",
+ "No skills on these cards.": "Keine Fähigkeiten auf diesen Karten.",
+ "{name} fortifies its bramble: {x}.": "{name} festigt seine Dornenhecke: {x}.",
  "Day Attack": "Angriff am Tag",
  "Day Health": "Leben am Tag",
  "Night Attack": "Angriff bei Nacht",
@@ -3931,6 +3940,5 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} huscht: Eile und Ausweichend im nächsten Zug.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Die Dornenhecke frisst {name}: Reparatur {n}, deine Einheiten auf dem Feld +{a} Angriff (noch {left}).",
  "The Aimed Bolt hits {name} for {n}.": "Der Gezielte Bolzen trifft {name} für {n}.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "Der Gezielte Bolzen trifft die gegnerische Dornenhecke für {n}.",
- "{name} fortifies its bramble: {x}.": "{name} festigt seine Dornenhecke: {x}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Der Gezielte Bolzen trifft die gegnerische Dornenhecke für {n}."
 }

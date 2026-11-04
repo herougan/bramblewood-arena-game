@@ -3896,6 +3896,15 @@
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "Provoque les ennemis autour de lui (en face, ou à une colonne de chaque côté) : leurs coups, flèches et tirs le touchent, même ceux qui visaient le roncier. La Furtivité passe ; une Volée n’est pas attirée.",
  "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.": "Quand il est Prêt, s’interpose devant un allié adjacent (à côté ; en raid ou en donjon multijoueur, devant ou derrière aussi) et prend les attaques simples, contre-attaques, flèches et tirs qui le visent. Les autres compétences et les coups de zone non, et il ne protège jamais le roncier ni un allié à Épines. Pas en Attente, Étourdi, Gelé, Endormi ou Lié.",
  "Wet {n}: each lightning hit deals {n} more. It loses one counter each round; fire dries one a point before it can burn.": "Mouillé {n} : chaque coup de foudre inflige {n} de plus. Il perd un marqueur à chaque manche ; le feu en sèche un par point avant de pouvoir brûler.",
+ "Swarm N": "Essaim N",
+ "Attack gained for each ally that counts (1 if left alone).": "Attaque gagnée pour chaque allié concerné (1 par défaut).",
+ "per ally": "par allié",
+ "Art height": "Hauteur de l’illustration",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "Déplace l’image derrière le parchemin du nom : 0 montre le haut, 100 le bas, 50 est centré.",
+ "Skills on these cards": "Compétences de ces cartes",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "Première apparition de cette compétence sur la route : aucune carte d’une carte précédente ne l’a.",
+ "No skills on these cards.": "Aucune compétence sur ces cartes.",
+ "{name} fortifies its bramble: {x}.": "{name} fortifie son roncier : {x}.",
  "Day Attack": "Attaque de jour",
  "Day Health": "Santé de jour",
  "Night Attack": "Attaque de nuit",
@@ -3932,6 +3941,5 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} détale : Hâte et Évasif au prochain tour.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Le roncier mange {name} : Réparation {n}, vos unités sur le terrain +{a} Attaque (encore {left}).",
  "The Aimed Bolt hits {name} for {n}.": "Le Trait visé touche {name} pour {n}.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "Le Trait visé touche le roncier ennemi pour {n}.",
- "{name} fortifies its bramble: {x}.": "{name} fortifie son roncier : {x}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Le Trait visé touche le roncier ennemi pour {n}."
 }

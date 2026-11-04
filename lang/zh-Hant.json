@@ -3896,6 +3896,15 @@
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "嘲諷它周圍的敵人（正對它，或左右各一列）：他們的攻擊、箭矢和射擊都會打向它，連本要打荊棘叢的也是。潛行可繞過；齊射不會被吸引。",
  "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.": "可行動時，擋在相鄰友軍面前（兩側；在突襲或多人地城中也含前後），承受對其的普通攻擊、反擊、箭矢和射擊。其他技能和範圍攻擊不算，且絕不守護荊棘叢或有荊刺的友軍。等待、暈眩、冰凍、沉睡或束縛時無效。",
  "Wet {n}: each lightning hit deals {n} more. It loses one counter each round; fire dries one a point before it can burn.": "潮濕 {n}：每次閃電命中多造成 {n}。每回合失去一個標記；火焰每點先烘乾一個，才能點燃。",
+ "Swarm N": "集群 N",
+ "Attack gained for each ally that counts (1 if left alone).": "每個符合條件的盟友增加的攻擊（不填為 1）。",
+ "per ally": "每個盟友",
+ "Art height": "插圖高度",
+ "Moves the picture behind the name scroll: 0 shows the top of it, 100 the bottom, 50 is centred.": "移動名稱卷軸後面的圖片：0 顯示頂部，100 顯示底部，50 為置中。",
+ "Skills on these cards": "這些卡牌上的技能",
+ "First time this skill shows up on the road: no earlier map’s cards carry it.": "這個技能第一次出現在道路上：之前地圖的卡牌都沒有它。",
+ "No skills on these cards.": "這些卡牌沒有技能。",
+ "{name} fortifies its bramble: {x}.": "{name} 加固了己方荊棘叢：{x}。",
  "Day Attack": "白天攻擊",
  "Day Health": "白天生命",
  "Night Attack": "夜晚攻擊",
@@ -3932,6 +3941,5 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} 竄逃：下一回合迅捷與閃避。",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "荊棘叢吃掉了 {name}：修復 {n}，你場上的單位 +{a} 攻擊（還剩 {left} 次）。",
  "The Aimed Bolt hits {name} for {n}.": "瞄準弩矢命中 {name}，造成 {n}。",
- "The Aimed Bolt hits the enemy bramble for {n}.": "瞄準弩矢命中敵方荊棘叢，造成 {n}。",
- "{name} fortifies its bramble: {x}.": "{name} 加固了己方荊棘叢：{x}。"
+ "The Aimed Bolt hits the enemy bramble for {n}.": "瞄準弩矢命中敵方荊棘叢，造成 {n}。"
 }
