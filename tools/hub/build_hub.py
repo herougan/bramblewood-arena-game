@@ -213,6 +213,15 @@ guide = ('<div class="doc guide"><h1>Claude\'s guide</h1>'
   f'<h2>Read before…</h2><table><thead><tr><th>Task</th><th>Doc</th></tr></thead><tbody>{rows}</tbody></table>'
   '<h2>The docs</h2><p class="note">Snapshots of the project docs at build time. The project copy is the source of truth. Pick one in the table above.</p>' + docs_html + '</div>')
 
+# 2026-11-04 (package FEEL1, owner 09:23: "We should define "feelings" in master hub. a new tab."): the 💭 Feelings tab, docs/feelings.md
+# (canonical: what a skirmish should make the player feel, the forecast principle, the recipe, the gaps), one doc with searchable sections.
+_feel_path = os.path.join(ROOT, 'docs', 'feelings.md')
+feel_html = '<p class="dec-empty">docs/feelings.md is missing.</p>'
+if os.path.exists(_feel_path):
+    _fh, _fsecs = anchor(md_html(open(_feel_path, encoding='utf-8').read()), 'feel')
+    for sid, st, sx in _fsecs: SEARCH.append(['Feelings', st, 'docs/feelings.md', sx[:4000], {'tab': 'feelings', 'el': sid}])
+    feel_html = '<article class="doc guide">' + _fh + '</article>'
+
 # 2026-10-24 (package HUB4, owner G2 / item 71: "Everything within the master hub. Move the other .md files that are still relevant."): the 📖 Library tab
 # (tools/hub/library.py): every docs/**/*.md except docs/balance and docs/art, canonical + reference rendered, dated snapshots in a collapsed History
 # group rendered on demand. Docs that already have a tab (Design sheets, Claude's guide docs, Skills, Action items, Changelog, Decisions, Progression
@@ -399,6 +408,7 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🗃️', 'ctable', 'Card table', 'Every card in one sortable, filterable table (100 a page), the packs and the art that could wear them, and each card\'s contribution to winning (too strong / too weak flagged)'),  # 2026-10-25 (package HUB5, H2 / G11); + 🏅 Contribution (2026-10-27, BAL6)
   ('🗺️', 'mapcards', 'Map cards', 'Every map\'s card list in road order: rarity, pack and role of each card, counts against the proposed cap, oddity chips (rarity, size, selection) and the packs against the lists'),  # 2026-10-28 (package HUB9)
   ('📊', 'curves', 'Curves', 'XP per level (Levels 15-25 marked), Forge and crafting costs, Energy and resource curves'),  # 2026-10-25 (package HUB5, H3)
+  ('💭', 'feelings', 'Feelings', 'What a skirmish should make the player feel, the forecast principle, the recipe and the gaps'),  # 2026-11-04 (package FEEL1)
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
 _built = datetime.date.today().isoformat()  # date only: the build machine's clock is UTC, the docs use your local time
@@ -713,6 +723,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
 <button role="tab" id="t-dialogues" aria-controls="p-dialogues" data-tab="dialogues">💬 Dialogues</button>
 <button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
+<button role="tab" id="t-feelings" aria-controls="p-feelings" data-tab="feelings">💭 Feelings</button>
 <button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
 <button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
 <button role="tab" id="t-doclib" aria-controls="p-doclib" data-tab="doclib">📖 Library</button>
@@ -758,6 +769,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 {decks_panel}
 {dialogues_panel}
 <section class="panel" id="p-doclib" role="tabpanel" aria-labelledby="t-doclib" hidden>{lazy(LIB_HTML)}</section>
+<section class="panel" id="p-feelings" role="tabpanel" aria-labelledby="t-feelings" hidden>{lazy(feel_html)}</section>
 <section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{lazy(design_html)}</section>
 <section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{lazy(guide)}</section>
 </main>
