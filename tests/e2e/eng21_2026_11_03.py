@@ -38,16 +38,17 @@ async def run(b, url, w):
     await pg.evaluate("gsap.globalTimeline.timeScale(1)"); await pg.wait_for_timeout(900)
     cls = await pg.evaluate("window.__e21.join(' | ')")
     P.ok('eng21-insp-gain' in cls, f'{w}: the inspiration beat plays on the Attack number as the token comes ({cls[:160]})')
-    s = await state(pg, left)
-    P.ok(s['pip'] == ['📯1'], f'{w}: the Kit shows the 📯1 Inspiration pip {s["pip"]}')
-    P.ok(s['atk'] and a0 and int(''.join(ch for ch in s['atk'] if ch.isdigit())) == int(''.join(ch for ch in a0 if ch.isdigit())) + 2, f'{w}: its Attack reads +2 ({a0} -> {s["atk"]})')
+    # outside a real replay (no replayRows) the board's numbers read the live unit (FIX5); the replay copy is what the fight shows
+    r = await pg.evaluate("(u=>{ const rc = matchState.replayCards[u]; return {t: rc.inspTokens, a: rc.inspired, pip: eng21InspPip(rc)}; })(%s)" % left)
+    P.ok(r['t'] == 1 and r['a'] == 2 and '📯1' in r['pip'], f'{w}: the Kit holds 1 token (+2) and its pip reads 📯1 {r}')
     await pg.evaluate(E("window.__e21 = []; gsap.globalTimeline.timeScale(.25); renderVfxForEvent(" + ev('inspiredSpent', left, 'amount:2, tokens:1') + "); return 1;"))
     await P.frames(pg, 'eng21-spend', w, [0, 120, 260, 420, 600], '#rowMine', 40, cols=3)
     await pg.evaluate("gsap.globalTimeline.timeScale(1)"); await pg.wait_for_timeout(900)
     s = await state(pg, left)
     cls = await pg.evaluate("window.__e21.join(' | ')")
     P.ok('eng21-insp-spend' in cls, f'{w}: the spend beat plays on the Attack number ({cls[:160]})')
-    P.ok(not s['pip'] and s['atk'] == a0, f'{w}: spent: the pip is gone and the Attack is back ({s["atk"]}, {s["pip"]})')
+    r = await pg.evaluate("(u=>{ const rc = matchState.replayCards[u]; return {t: rc.inspTokens, a: rc.inspired}; })(%s)" % left)
+    P.ok(not r['t'] and not r['a'] and not s['pip'] and s['atk'] == a0, f'{w}: spent: no tokens left, no pip, the Attack is back ({r}, {s["atk"]}, {s["pip"]})')
     await P.close(pg)
     # reduced motion: the still tint, no animation
     ctx = await b.new_context(viewport={'width': w, 'height': 860}, reduced_motion='reduce'); pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e))); pg._errs = errs; pg._ctx = ctx
