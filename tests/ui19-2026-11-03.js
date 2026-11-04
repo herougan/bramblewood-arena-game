@@ -34,7 +34,7 @@ ok(/\.ed-econ\{display:flex; flex-wrap:wrap/.test(css) && /#editorOverlay \.edit
 ok(/--nm-cap:clamp\(5px, 5\.6cqw, 14px\)/.test(css) && /left center \/ var\(--nm-cap\) 100%/.test(css) && /right center \/ var\(--nm-cap\) 100%/.test(css), '3. the rolled ends take their width from the card (--nm-cap), not the line count');
 ok(/<pattern id='fib'|%3Cpattern%20id='fib'/.test(css), '3. the paper has a fibre / fleck texture');
 const ctx = {escapeHtml: s=> String(s)}; vm.createContext(ctx);
-vm.runInContext(grab('nmWidthEm') + grab('nmFitScale') + grab('nmHTML') + '\nthis.NM_ROOM_EM = 9.2; this.NM_MIN_SCALE = 0.72;', ctx);
+vm.runInContext(grab('nmWidthEm') + grab('nmFitScale') + grab('nmPartsEm') + grab('nmWaitEm') + grab('nmHTML') + '\nthis.NM_ROOM_EM = 9.2; this.NM_MIN_SCALE = 0.72;', ctx);
 vm.runInContext('var NM_ROOM_EM = 6.8, NM_MIN_SCALE = 0.7, NM_W_CACHE = new Map(), nmCtx = null; this.api = {nmFitScale, nmHTML};', ctx);
 const A = ctx.api;
 ok(A.nmFitScale('Bee') === 1 && A.nmFitScale('Wolf Pup') === 1, '3. short names keep full size');
