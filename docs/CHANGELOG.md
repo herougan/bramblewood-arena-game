@@ -2,6 +2,21 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-04 Package TESTFIX1 (the full unit suite means something again; tests only)
+- **Full suite (`node tests/run.js --full`, no e2e): 206 passed / 93 failed before, 250 / 48 after** (298 listed; one retired). Every failure is classed in `docs/testfix1-2026-11-04.md` (test, failures before, class, what was done, decision id).
+- **(a) stale pins, updated to the current rule with dated `TESTFIX1` comments** (66 test files). The changes they now follow: the re-measured prices (SKILL2 / BUDGET2-1, BAL10 / BAL12 / BAL14, ENG21; history kept on the entries); BAL9's re-fits and rarities; Undead / Tangled / Fork / one-shot copies (ENG9); Bloom (ENG15 FF5); the nearest free slot (ENG18-4); Swarm and Structures (ENG19-4); Burn (ENG20-1); Delivery, Guardian on shots, Build and Bramble Armor (ENG22); CS-A card sizes; TIP1 wording; answered decisions. Also harness extractions that missed newer helpers, and CHANGELOG windows (the whole file, as QA1 did).
+- **(b) real findings, not fixed (game code and data are out of scope):** listed with a one-line repro in the doc. The main ones:
+  - generated files out of date: unit-themes, animal-tags, emoji used.json, card-obtain-maps;
+  - CUT3's Glacial Ape-King follow-ups (call CUT3-1);
+  - missing translations ("Starter", Rage) and four over-long tooltips;
+  - reused SK2 icons, and a pack-opener face drawn outside `poTile`;
+  - Armor priced concave against the owner's ENG9-9;
+  - Delivery Every without the Lumber home factor;
+  - `deckopt --compare` and `pro_skirmishes --apply` writing nothing.
+- **(c):** `autobattle`'s speed bar is now judged on CPU time and marked known-slow in `tests/run-all.sh` (5.8-6.1/s under the runner's load, 7/s alone). The `game-texts` round-trip timeout passed when the test ran alone.
+- **(d) retired:** `tests/server-overrides-fold-2026-10-19.js` (the 10-19 fold migration: its SQL was applied with B13, and its cards and nodes have changed since).
+- `tests/e2e/pl2_2026_10_25.py`: a Python `#` comment inside its JS string is now `//` (`node --check` passes; e2e not run in this package).
+
 ## 2026-11-04 Package ENG23 (owner 11-03 23:01 / 23:12: Crepuscular, Skitter, fast-forward tokens, "?" rules, the Lumberjack's 3/10, Rodentia, CONTENT9-2)
 - **Crepuscular:** a plain Crepuscular is +0/+1 at night (nothing by day); the editor sets the day part and the night part apart (four numbers); "Crepuscular {day} → {night}" takes a stat change or skills in each brace. The two old cards (Nightjar Drifter, Woodcock Lookout) keep their numbers in both parts, priced as before (call ENG23-1).
 - **Skitter** (new, on no card): after its hit lands on a unit, Haste and Evasive for its next round. Priced 1.44 S + x1.1 (call ENG23-2; Field Vole is yours to change).

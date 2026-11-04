@@ -11,7 +11,7 @@ run node tests/card-matrix.js
 run node tests/scenarios.js
 run node tests/two-player.js
 run node tests/async-raid.js
-run node tests/autobattle.js
+run node tests/autobattle.js   # known-slow (2026-11-04, TESTFIX1): its speed bar (6 fights a second of CPU time) reads 5.8-6.1 under the runner's two-at-a-time load and 7 alone; rerun it alone (node tests/run.js --only autobattle -j 1) before calling it a failure
 run node tests/raid.js
 run node tests/trench.js
 run node tests/ghost-unique.js
