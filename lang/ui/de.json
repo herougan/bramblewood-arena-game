@@ -45,7 +45,6 @@
  "+1 Lumber now.": "Sofort +1 Holz.",
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 Holz, +1 Stein; 1 Schaden an allen",
  "+1 starting Lumber.": "+1 Start-Holz.",
- "+1 🪵 every {v1} rounds": "+1 🪵 alle {v1} Runden",
  "+1/+1 for each Lumber you hold.": "+1/+1 für jedes Holz, das du hast.",
  "+1/+1 for every Lumber you hold.": "+1/+1 für jedes Holz, das du hast.",
  "+2/+2 for each Stone you hold.": "+2/+2 für jeden Stein, den du hast.",
@@ -1198,7 +1197,6 @@
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "Jede Runde {v1} auf jeder Seite {v2} +1 Warten. Kälteschwache Einheiten erleiden zudem 1 Schaden.",
  "Each round, a 1-in-2 chance to deal double damage.": "Jede Runde eine Chance von 1 zu 2 auf doppelten Schaden.",
  "each round, a coin flip decides whether it can act.": "jede Runde entscheidet ein Münzwurf, ob es handeln darf.",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "Jede Runde eines davon: heile deine am schwersten verletzte Einheit um 3, 2 Schaden an einer zufälligen gegnerischen Einheit oder +1 🪵",
  "Each side plays 2 cards a turn.": "Jede Seite spielt 2 Karten pro Zug.",
  "Each time frost chills it, it gains +{v1}/+{v2} for good.": "Jedes Mal, wenn der Frost sie unterkühlt, erhält sie dauerhaft +{v1}/+{v2}.",
  "Each time it is hit, it loses {v1} Attack for good.": "Jedes Mal, wenn sie getroffen wird, verliert sie dauerhaft {v1} Angriff.",
@@ -5004,5 +5002,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} geschafft",
  "Cleared": "Geschafft",
  "{v1} card{s} collected": "{v1} Karte(n) gesammelt",
- "Clear {v1} / {v2}": "{v1} / {v2} abschließen"
+ "Clear {v1} / {v2}": "{v1} / {v2} abschließen",
+ "+{v1} 🪵 every {v2} rounds": "+{v1} 🪵 alle {v2} Runden",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "Jede Runde eines davon: heile deine am schwersten verletzte Einheit um {v1}, {v2} Schaden an einer zufälligen gegnerischen Einheit oder +{v3} 🪵"
 }

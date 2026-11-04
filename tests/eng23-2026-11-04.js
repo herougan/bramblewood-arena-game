@@ -120,21 +120,21 @@ ok(/TAXO \? TAXO\.name\(x\) : x/.test(app), '6: the card details show the Type\'
 // ---- 7. CONTENT9-2 ------------------------------------------------------------------------------------------------------------
 const CH = J('canonical/characters.json'), chOf = id=> CH.find(c=> c.id === id);
 { const gl = chOf('gnawed-larder'), bk = chOf('ballista-keep');
-  ok(gl && gl.effects.feed && gl.effects.feed.feeds === 3 && gl.effects.feed.repair === 3 && gl.effects.feed.attack === 1 && gl.unlockMap === 'm8', '7: the Gnawed Larder: Feed 3 a fight, Repair 3, +1 Attack (unlocked by Map 6\'s boss)');
-  ok(bk && bk.effects.aimedBolt === 4 && bk.effects.castleBolt === 2 && bk.health === 22, '7: Ballista Keep: Aimed Bolt 4 beside its bolt; Health unchanged (owner call)'); }
+  ok(gl && gl.effects.feed && gl.effects.feed.feeds === 3 && gl.effects.feed.repair === 5 && gl.effects.feed.attack === 3 /* 2026-11-04 (ENG24, IDEA-BRAMBLES): +2 each (was 3 / 1) */ && gl.unlockMap === 'm8', '7: the Gnawed Larder: Feed 3 a fight, Repair 5, +3 Attack (ENG24 +2; unlocked by Map 6\'s boss)');
+  ok(bk && bk.effects.aimedBolt === 6 && bk.effects.castleBolt === 4 /* 2026-11-04 (ENG24, IDEA-BRAMBLES): +2 each (was 4 / 2) */ && bk.health === 22, '7: Ballista Keep: Aimed Bolt 6 beside its bolt 4 (ENG24 +2); Health unchanged (owner call)'); }
 { const {e, P} = mk(7, {}, {1: chOf('gnawed-larder')}); const pl = P[1]; pl.hq.hp -= 5; const u1 = put(e, P, 1, 'x-dummy', 0), u2 = put(e, P, 1, 'x-dummy', 1);
   pl.hand = [{uid: 901, defId:'x-weak'}, {uid: 902, defId:'x-weak'}, {uid: 903, defId:'x-weak'}, {uid: 904, defId:'x-weak'}]; const hp0 = pl.hq.hp, a0 = u1.atk, ev = [];
   const r = e.feedBramble(P, so, 1, pl.hand[0], {}, ev);
-  ok(r && pl.hq.hp === hp0 + 3 && u1.atk === a0 + 1 && u2.atk === a0 + 1 && pl.discardUsedThisTurn && pl.feed.left === 2 && pl.graveyard.some(g=> g.defId === 'x-weak') && ev.some(x=> x.type === 'feed'), '7: a feed: Repair 3, +1 Attack on the field, the turn\'s pitch used, 2 left');
+  ok(r && pl.hq.hp === hp0 + 5 && u1.atk === a0 + 3 && u2.atk === a0 + 3 /* ENG24 (2026-11-04): Repair 5, +3 (was 3, +1) */ && pl.discardUsedThisTurn && pl.feed.left === 2 && pl.graveyard.some(g=> g.defId === 'x-weak') && ev.some(x=> x.type === 'feed'), '7: a feed: Repair 5, +3 Attack on the field (ENG24), the turn\'s pitch used, 2 left');
   ok(!e.feedBramble(P, so, 1, pl.hand[0], {}, []), '7: once a turn (it is the pitch)');
   const lumber0 = pl.lumber || 0; pl.discardUsedThisTurn = false; e.feedBramble(P, so, 1, pl.hand[0], {}, []); pl.discardUsedThisTurn = false; e.feedBramble(P, so, 1, pl.hand[0], {}, []); pl.discardUsedThisTurn = false;
   ok(pl.feed.left === 0 && !e.feedBramble(P, so, 1, pl.hand[0], {}, []) && (pl.lumber || 0) === lumber0 && pl.hq.hp <= pl.hq.maxHp, '7: three feeds a fight, no Lumber, never above the bramble\'s top'); }
 { const {e, P} = mk(8, {}, {1: chOf('ballista-keep')}); const t = put(e, P, 2, 'x-dummy', 0); const hp0 = t.hp, ev = [];
   const r = e.aimedBolt(P, so, 1, 0, {}, ev);
-  ok(r && t.hp === hp0 - 4 && ev.some(x=> x.kind === 'aimedBolt'), `7: Aimed Bolt: 4 to the unit in the column picked (${hp0} -> ${t.hp})`);
+  ok(r && t.hp === hp0 - 6 /* ENG24 (2026-11-04): 6 (was 4) */ && ev.some(x=> x.kind === 'aimedBolt'), `7: Aimed Bolt: 6 to the unit in the column picked (${hp0} -> ${t.hp})`);
   ok(!e.aimedBolt(P, so, 1, 0, {}, []), '7: once a fight');
   const g = mk(9, {}, {1: chOf('ballista-keep')}); const h0 = g.P[2].hq.hp; g.e.aimedBolt(g.P, so, 1, 2, {}, []);
-  ok(g.P[2].hq.hp === h0 - 4, '7: an empty column: their bramble takes it'); }
+  ok(g.P[2].hq.hp === h0 - 6 /* ENG24 */, '7: an empty column: their bramble takes it'); }
 { const {e, P} = mk(10, {}, {2: chOf('ballista-keep')}); const weak = put(e, P, 1, 'x-weak', 0); put(e, P, 1, 'x-dummy', 1); P[2].hand = [];
   e.eng23AiBramble(P, so, 2, {}, []); ok(!(weak.hp > 0) || !all(P[1]).includes(weak), '7: the CPU aims it at a unit it can kill'); }
 { const {e, P} = mk(11, {}, {2: chOf('gnawed-larder')}); put(e, P, 2, 'x-dummy', 0); put(e, P, 2, 'x-dummy', 1); P[2].hand = [{uid: 951, defId:'x-dummy'}, {uid: 952, defId:'x-pricey'}]; P[2].lumber = 0;

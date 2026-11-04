@@ -28,7 +28,6 @@
  "+1 Lumber now.": "지금 목재 +1.",
  "+1 Lumber, +1 Stone; 1 damage to all": "목재 +1, 돌 +1; 모두에게 1 피해",
  "+1 starting Lumber.": "시작 목재 +1.",
- "+1 🪵 every {v1} rounds": "{v1}라운드마다 +1 🪵",
  "+{v1} Attack for every ally that shares a type with it.": "타입을 공유하는 아군 하나마다 공격 +{v1}.",
  "+{v1} Dust": "가루 +{v1}",
  "+{v1} Energy from a capsule.": "캡슐로 에너지 +{v1}.",
@@ -648,7 +647,6 @@
  "Each round from round 2, both sides gain 1 Lumber.": "2라운드부터 매 라운드 양쪽이 목재 1을 얻어요.",
  "Each round from round 2, every unit takes 1 ice damage.": "2라운드부터 매 라운드 모든 유닛이 얼음 피해 1을 받아요.",
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "매 라운드 양쪽에서 {v1} {v2} 대기 +1. 냉기에 약한 유닛은 1 피해도 받아요.",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "매 라운드 다음 중 하나: 가장 다친 아군 3 회복, 무작위 적 유닛에 2 피해, 또는 +1 🪵",
  "Each side plays 2 cards a turn.": "양쪽이 한 턴에 카드를 2장씩 내요.",
  "Each time it is hit, it loses {v1} Attack for good.": "맞을 때마다 공격이 영구히 {v1} 줄어요.",
  "Earned from bosses on the road. Your side’s cards also turn up in every basic pack.": "길 위의 보스에게서 얻어요. 내 쪽 카드는 모든 기본 팩에서도 나와요.",
@@ -2579,5 +2577,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} 클리어",
  "Cleared": "클리어",
  "{v1} card{s} collected": "카드 {v1}장 수집",
- "Clear {v1} / {v2}": "{v1} / {v2} 클리어"
+ "Clear {v1} / {v2}": "{v1} / {v2} 클리어",
+ "+{v1} 🪵 every {v2} rounds": "{v2}라운드마다 +{v1} 🪵",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "매 라운드 다음 중 하나: 가장 다친 아군 {v1} 회복, 무작위 적 유닛에 {v2} 피해, 또는 +{v3} 🪵"
 }

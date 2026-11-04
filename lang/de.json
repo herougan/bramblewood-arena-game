@@ -3945,5 +3945,21 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} huscht: Eile und Ausweichend im nächsten Zug.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Die Dornenhecke frisst {name}: Reparatur {n}, deine Einheiten auf dem Feld +{a} Angriff (noch {left}).",
  "The Aimed Bolt hits {name} for {n}.": "Der Gezielte Bolzen trifft {name} für {n}.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "Der Gezielte Bolzen trifft die gegnerische Dornenhecke für {n}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Der Gezielte Bolzen trifft die gegnerische Dornenhecke für {n}.",
+ "Fortify { Armor 1 }, while it lives": "Festigen { Rüstung 1 }, solange es lebt",
+ "Fortify { Armor {n} }, while it lives": "Festigen { Rüstung {n} }, solange es lebt",
+ "Relict": "Relikt",
+ "Field effects and field-wide skills pass it by, good and bad.": "Feldeffekte und feldweite Fähigkeiten gehen an ihm vorbei, gute wie schlechte.",
+ "Weather, the dark, terrain hazards, wind, the tide's water and lane bonuses don't touch it, nor Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero or Nova. Single-target skills still do.": "Wetter, Dunkelheit, Geländegefahren, Wind, das Wasser der Flut und Bahnboni berühren es nicht, ebenso wenig Erdbeben, Erdrutsch, Lawine, Tsunami, Tornado, Giftgas, Absoluter Nullpunkt oder Nova. Fähigkeiten mit einem Ziel schon.",
+ "Meld": "Verschmelzen",
+ "Meld { {x} }": "Verschmelzen { {x} }",
+ "Your other Meld units have {x} while it lives.": "Deine anderen Verschmelzen-Einheiten haben {x}, solange es lebt.",
+ "Like a hive: every Meld unit shares its braces with the other Meld units on your side, not with itself.": "Wie ein Schwarm: Jede Verschmelzen-Einheit teilt ihre Klammern mit den anderen Verschmelzen-Einheiten deiner Seite, nicht mit sich selbst.",
+ "Immunity": "Immunität",
+ "It can't be Poisoned or catch Decay, Toxin or other sickness.": "Es kann nicht vergiftet werden und fängt sich weder Verfall, Toxin noch andere Krankheit ein.",
+ "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.": "Verhindert Gift, Starkes Gift, Toxin, Verfall (und den Angriffsverlust durch Verfallsschaden), Sumpffieber und Sporenwolke. Gift- oder Verfallsschaden trifft trotzdem.",
+ "Sequestration": "Beschlagnahme",
+ "Its hit steals the target's status skills until the end of next round.": "Sein Treffer stiehlt die Zustandsfähigkeiten des Ziels bis zum Ende der nächsten Runde.",
+ "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Zustandsfähigkeiten: Gift, Blutung, Verfall, Schlaf, Frost, Betäubung, Blindheit und ähnliche; nie Schüsse oder Schadensfähigkeiten. Ein Diebstahl auf einmal.",
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Teile: +N Leben (sein Leben und sein Maximum), Dornen N (eine Einheit, die die Dornenhecke trifft, erleidet N), Regen N (heilt jede Runde einen verwundeten Verbündeten um N), Bolzen N (jede Runde N auf eine zufällige gegnerische Einheit), +N Schild. Mehrere addieren sich. „Festigen { Rüstung 1 }, solange es lebt“ ist etwas anderes: 1 weniger pro Treffer, solange ihre Einheit lebt."
 }

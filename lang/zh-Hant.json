@@ -3946,5 +3946,21 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} 竄逃：下一回合迅捷與閃避。",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "荊棘叢吃掉了 {name}：修復 {n}，你場上的單位 +{a} 攻擊（還剩 {left} 次）。",
  "The Aimed Bolt hits {name} for {n}.": "瞄準弩矢命中 {name}，造成 {n}。",
- "The Aimed Bolt hits the enemy bramble for {n}.": "瞄準弩矢命中敵方荊棘叢，造成 {n}。"
+ "The Aimed Bolt hits the enemy bramble for {n}.": "瞄準弩矢命中敵方荊棘叢，造成 {n}。",
+ "Fortify { Armor 1 }, while it lives": "加固 { 護甲 1 }，存活期間",
+ "Fortify { Armor {n} }, while it lives": "加固 { 護甲 {n} }，存活期間",
+ "Relict": "孑遺",
+ "Field effects and field-wide skills pass it by, good and bad.": "場地效果和全場技能對它無效，無論好壞。",
+ "Weather, the dark, terrain hazards, wind, the tide's water and lane bonuses don't touch it, nor Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero or Nova. Single-target skills still do.": "天氣、黑暗、地形危害、風、潮水和路線加成都不影響它，地震、山崩、雪崩、海嘯、龍捲風、毒氣、絕對零度和新星也不影響。單體技能仍然有效。",
+ "Meld": "融合",
+ "Meld { {x} }": "融合 { {x} }",
+ "Your other Meld units have {x} while it lives.": "它存活期間，你的其他融合單位擁有 {x}。",
+ "Like a hive: every Meld unit shares its braces with the other Meld units on your side, not with itself.": "像蜂巢一樣：每個融合單位把括號裡的技能分給你方其他融合單位，不給自己。",
+ "Immunity": "免疫",
+ "It can't be Poisoned or catch Decay, Toxin or other sickness.": "它不會中毒，也不會染上腐朽、毒素或其他疾病。",
+ "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.": "阻止中毒、強毒、毒素、腐朽（及腐朽傷害造成的攻擊下降）、沼澤熱和孢子雲。毒素或腐朽傷害仍會造成傷害。",
+ "Sequestration": "奪技",
+ "Its hit steals the target's status skills until the end of next round.": "它的攻擊會奪走目標的狀態技能，直到下一回合結束。",
+ "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "狀態技能：中毒、流血、腐朽、睡眠、冰凍、暈眩、致盲等；絕不包括射擊或傷害技能。一次只奪一份。",
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "部分：+N 生命（生命與上限）、荊刺 N（攻擊荊棘叢的單位受到 N）、再生 N（每回合治療一名受傷友軍 N）、弩矢 N（每回合對隨機敵方單位造成 N）、+N 護盾。多個可疊加。「加固 { 護甲 1 }，存活期間」不同：其單位存活時每次受擊少 1。"
 }

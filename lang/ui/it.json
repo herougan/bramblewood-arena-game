@@ -28,7 +28,6 @@
  "+1 Lumber now.": "+1 Legname subito.",
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 Legname, +1 Pietra; 1 danno a tutti",
  "+1 starting Lumber.": "+1 Legname iniziale.",
- "+1 🪵 every {v1} rounds": "+1 🪵 ogni {v1} round",
  "+{v1} Attack for every ally that shares a type with it.": "+{v1} Attacco per ogni alleato che condivide un tipo con lei.",
  "+{v1} Dust": "+{v1} Polvere",
  "+{v1} Energy from a capsule.": "+{v1} Energia da una capsula.",
@@ -648,7 +647,6 @@
  "Each round from round 2, both sides gain 1 Lumber.": "Ogni round dal round 2, entrambi i lati guadagnano 1 Legname.",
  "Each round from round 2, every unit takes 1 ice damage.": "Ogni round dal round 2, ogni unità subisce 1 danno da ghiaccio.",
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "Ogni round {v1} su ogni lato {v2} +1 Attesa. Anche le unità deboli al freddo subiscono 1 danno.",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "Ogni round, una tra: cura 3 la tua unità più ferita, 2 danni a un’unità nemica a caso, o +1 🪵",
  "Each side plays 2 cards a turn.": "Ogni lato gioca 2 carte per turno.",
  "Each time it is hit, it loses {v1} Attack for good.": "Ogni volta che viene colpita, perde {v1} Attacco per sempre.",
  "Earned from bosses on the road. Your side’s cards also turn up in every basic pack.": "Ottenute dai boss lungo la strada. Le carte della tua fazione escono anche in ogni bustina base.",
@@ -2579,5 +2577,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} superate",
  "Cleared": "Superata",
  "{v1} card{s} collected": "{v1} carte raccolte",
- "Clear {v1} / {v2}": "Completa {v1} / {v2}"
+ "Clear {v1} / {v2}": "Completa {v1} / {v2}",
+ "+{v1} 🪵 every {v2} rounds": "+{v1} 🪵 ogni {v2} round",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "Ogni round, una tra: cura {v1} la tua unità più ferita, {v2} danni a un’unità nemica a caso, o +{v3} 🪵"
 }

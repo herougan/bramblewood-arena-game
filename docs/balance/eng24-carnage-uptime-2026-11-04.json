@@ -1,0 +1,40 @@
+{
+ "_about": "tools/eng24_carnage_uptime_2026_11_04.js (ENG24, ENG22-5 a): the share of side 1's unit-rounds where the unit has seen i or more enemy deaths since it came onto the board (seen, Carnage's ENG22 rule) and where i or more enemy units died this fight (fight, the old rule, PROP1's foeDead). Index i = i or more.",
+ "generated": "2026-11-04",
+ "seed": 1,
+ "games": 1500,
+ "band": 714,
+ "unitRounds": 81257,
+ "atLeast": {
+  "seen": [
+   1,
+   0.532,
+   0.335,
+   0.206,
+   0.126,
+   0.074,
+   0.042,
+   0.023,
+   0.011,
+   0.006,
+   0.003,
+   0.001,
+   0.001
+  ],
+  "fight": [
+   1,
+   0.727,
+   0.549,
+   0.401,
+   0.288,
+   0.198,
+   0.128,
+   0.079,
+   0.045,
+   0.026,
+   0.015,
+   0.008,
+   0.004
+  ]
+ }
+}

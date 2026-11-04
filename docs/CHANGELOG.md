@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-04 Package ENG24 (owner 11-04 22:34: ENG22-2 b, RELICT-1, RELICT-2, IDEA-BRAMBLES, FIX8-4, ENG22-5 a)
+- Players see: Bramble Armor reads "Fortify { Armor 1 }, while it lives" (same rule); every bramble ability number +2 (Heal 1 -> 3, Aimed Bolt 4 -> 6, Feed Repair 5 and +3 Attack, spawns 3, Clam Farm +3 Lumber, Herb Refinery 5 / 4 / +3; enemy brambles too; flavors follow); the "build a new deck" defeat tip waits for the Camp.
+- New skills on no card, priced by measure (canonical/skill-costs.json; Relict 1.24, Meld {Quick} 1.64 (any braces x 0.73), Immunity 0.30, Sequestration 0.43): Relict (the field and the field-wide skills pass it by), Meld {X} (other Meld units share X), Immunity (no Poison / Greater Poison / Toxin / Decay), Sequestration (built reading: its hit steals the target's status skills until the end of next round). Rules in docs/effects-catalogue.md.
+- Carnage: THR_UPTIME.carnage re-measured for its "sees the deaths" rule (tools/eng24_carnage_uptime_2026_11_04.js), 0.41 -> 0.21 at N 3, price 3.28 -> 1.68.
+- Decisions: RELICT-2 answer notes the Sequestration reading; new ENG24-1 (the +2 reading), ENG24-2 (Relict's scope). Test: tests/eng24-2026-11-04.js.
+
 ## 2026-11-04 Release 11-04a (QA2, FIX8, ECON3, CONTENT9, ART8 partial, UI18, LISTFIX2, CUT3, ENG22, SKILLREC1, UI19, ENG21, FEEL1, UI20, ENG23, TESTFIX1, REG1)
 - One release for the owner's 11-03 evening and 11-04 notes. Players see: Build / Fortify and Bramble Armor's name back; Delivery replaces Stockpile on 24 cards; Taunt and Guardian pull shots; base Level 0 cards get their skills from Level 1; Inspiring N tokens (+2 Atk each, spent on a landing hit, 📯 pip); Pounce's pip hides once used; Crepuscular day / night parts and the braced form; Skitter; ⏩ fast-forward tokens; True Sight "?" until Map 6; Rodentia; Wetness drops 1 a round; Carnage counts deaths seen.
 - UI: Codex skill filter with Mystery skills and level flags; Card editor compacted (Swarm N editable); the name scroll reworked; Map cards list their skills with NEW! flags; cost / wait badges clear of names; cut cards flagged on review lists. FIX8: Camp opens after 0-2, packs show new cards first with no repeats in a pack, road wins count for achievements. ART8: 13 card arts redone (104 left).

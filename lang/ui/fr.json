@@ -45,7 +45,6 @@
  "+1 Lumber now.": "+1 Bois tout de suite.",
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 Bois, +1 Pierre ; 1 dégât à tous",
  "+1 starting Lumber.": "+1 Bois de départ.",
- "+1 🪵 every {v1} rounds": "+1 🪵 tous les {v1} tours",
  "+1/+1 for each Lumber you hold.": "+1/+1 pour chaque Bois que vous avez.",
  "+1/+1 for every Lumber you hold.": "+1/+1 pour chaque Bois que vous avez.",
  "+2/+2 for each Stone you hold.": "+2/+2 pour chaque Pierre que vous avez.",
@@ -1198,7 +1197,6 @@
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "À chaque tour, {v1} de chaque camp {v2} +1 Attente. Les unités vulnérables au froid subissent aussi 1 dégât.",
  "Each round, a 1-in-2 chance to deal double damage.": "À chaque tour, 1 chance sur 2 d’infliger le double de dégâts.",
  "each round, a coin flip decides whether it can act.": "à chaque tour, un pile ou face décide si elle peut agir.",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "À chaque tour, au choix : soigner de 3 votre unité la plus blessée, 2 dégâts à une unité ennemie au hasard, ou +1 🪵",
  "Each side plays 2 cards a turn.": "Chaque camp joue 2 cartes par tour.",
  "Each time frost chills it, it gains +{v1}/+{v2} for good.": "Chaque fois que le gel la transit, elle gagne +{v1}/+{v2} pour de bon.",
  "Each time it is hit, it loses {v1} Attack for good.": "Chaque fois qu’elle est touchée, elle perd {v1} Attaque pour de bon.",
@@ -5004,5 +5002,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} réussis",
  "Cleared": "Réussi",
  "{v1} card{s} collected": "{v1} carte{s} obtenue{s}",
- "Clear {v1} / {v2}": "Terminer {v1} / {v2}"
+ "Clear {v1} / {v2}": "Terminer {v1} / {v2}",
+ "+{v1} 🪵 every {v2} rounds": "+{v1} 🪵 tous les {v2} tours",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "À chaque tour, au choix : soigner de {v1} votre unité la plus blessée, {v2} dégâts à une unité ennemie au hasard, ou +{v3} 🪵"
 }

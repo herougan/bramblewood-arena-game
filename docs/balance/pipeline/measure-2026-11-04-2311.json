@@ -1,0 +1,64 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-04T15:11:00.515Z",
+ "finished": "2026-11-04T15:17:12.610Z",
+ "durationSec": 372.1,
+ "args": [
+  "--only-file",
+  "/tmp/claude-0/-home-claude/803d58f5-74f9-50e4-ac3c-c17d5b9039a6/scratchpad/eng24-items.json",
+  "--map",
+  "12",
+  "--fights",
+  "200,400"
+ ],
+ "head": "2cb56fb3",
+ "inputs": {
+  "context": "map12",
+  "bramble": 15,
+  "fingerprint": "b808c71ee749",
+  "stages": [
+   200,
+   400
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 400,
+  "items": [
+   "relict"
+  ]
+ },
+ "counts": {
+  "items": 1,
+  "measured": 1,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "relict",
+   "field": "worth",
+   "old": "-",
+   "new": "-1.5858 [-4.7509, -0.0465] at 400 fights, price on carriers 1"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "relict",
+   "why": "interval still wide at 400 fights (se 1.2); measure again with --fights 400,800"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 1
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-04-2311.json"
+}

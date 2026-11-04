@@ -45,7 +45,6 @@
  "+1 Lumber now.": "今すぐ木材+1。",
  "+1 Lumber, +1 Stone; 1 damage to all": "木材+1、石+1；全体に1ダメージ",
  "+1 starting Lumber.": "開始時の木材+1。",
- "+1 🪵 every {v1} rounds": "{v1}ラウンドごとに+1 🪵",
  "+1/+1 for each Lumber you hold.": "所持している木材1ごとに+1/+1。",
  "+1/+1 for every Lumber you hold.": "所持している木材1ごとに+1/+1。",
  "+2/+2 for each Stone you hold.": "所持している石1ごとに+2/+2。",
@@ -1198,7 +1197,6 @@
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "毎ラウンド、両陣営の{v1}{v2}待機+1。冷気に弱いユニットはさらに1ダメージを受ける。",
  "Each round, a 1-in-2 chance to deal double damage.": "毎ラウンド、2分の1でダメージ2倍。",
  "each round, a coin flip decides whether it can act.": "毎ラウンド、コイントスで行動できるか決まる。",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "毎ラウンドどれか一つ：最も傷ついた味方を3回復、ランダムな敵ユニットに2ダメージ、または+1 🪵",
  "Each side plays 2 cards a turn.": "各陣営が1ターンに2枚プレイする。",
  "Each time frost chills it, it gains +{v1}/+{v2} for good.": "霜で冷えるたびに、永続的に+{v1}/+{v2}。",
  "Each time it is hit, it loses {v1} Attack for good.": "攻撃を受けるたびに、攻撃が{v1}永続的に下がる。",
@@ -5004,5 +5002,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} 制覇",
  "Cleared": "制覇",
  "{v1} card{s} collected": "{v1}枚のカードを入手",
- "Clear {v1} / {v2}": "{v1} / {v2}をクリア"
+ "Clear {v1} / {v2}": "{v1} / {v2}をクリア",
+ "+{v1} 🪵 every {v2} rounds": "{v2}ラウンドごとに+{v1} 🪵",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "毎ラウンドどれか一つ：最も傷ついた味方を{v1}回復、ランダムな敵ユニットに{v2}ダメージ、または+{v3} 🪵"
 }

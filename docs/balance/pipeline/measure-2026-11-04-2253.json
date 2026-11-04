@@ -1,0 +1,78 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-04T14:53:11.434Z",
+ "finished": "2026-11-04T15:10:58.473Z",
+ "durationSec": 1067,
+ "args": [
+  "--only-file",
+  "/tmp/claude-0/-home-claude/803d58f5-74f9-50e4-ac3c-c17d5b9039a6/scratchpad/eng24-items.json",
+  "--fights",
+  "200,400"
+ ],
+ "head": "2cb56fb3",
+ "inputs": {
+  "context": "global",
+  "bramble": 15,
+  "fingerprint": "bc44acbc1459",
+  "stages": [
+   200,
+   400
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 400,
+  "items": [
+   "relict",
+   "immunity",
+   "sequestration",
+   "meld={quick}"
+  ]
+ },
+ "counts": {
+  "items": 4,
+  "measured": 4,
+  "reused": 0,
+  "stopped early": 3,
+  "fights saved": 600,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "relict",
+   "field": "worth",
+   "old": "-",
+   "new": "1.2398 [0.7494, 1.8359] at 400 fights, price on carriers 1"
+  },
+  {
+   "id": "immunity",
+   "field": "worth",
+   "old": "-",
+   "new": "0.2973 [-0.0697, 0.807] at 200 fights, price on carriers 1"
+  },
+  {
+   "id": "sequestration",
+   "field": "worth",
+   "old": "-",
+   "new": "0.4295 [0.1256, 0.7757] at 200 fights, price on carriers 1"
+  },
+  {
+   "id": "meld={quick}",
+   "field": "worth",
+   "old": "-",
+   "new": "1.6353 [1.2525, 2.0361] at 200 fights, price on carriers 1"
+  }
+ ],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 4
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-04-2253.json"
+}

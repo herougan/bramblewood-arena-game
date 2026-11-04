@@ -3948,5 +3948,21 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} berlari kecil: Gesit dan Mengelak giliran berikutnya.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Semak memakan {name}: Perbaiki {n}, unitmu di medan +{a} Serangan (sisa {left}).",
  "The Aimed Bolt hits {name} for {n}.": "Baut Terarah mengenai {name} sebesar {n}.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "Baut Terarah mengenai semak musuh sebesar {n}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Baut Terarah mengenai semak musuh sebesar {n}.",
+ "Fortify { Armor 1 }, while it lives": "Perkuat { Zirah 1 }, selama ia hidup",
+ "Fortify { Armor {n} }, while it lives": "Perkuat { Zirah {n} }, selama ia hidup",
+ "Relict": "Relik",
+ "Field effects and field-wide skills pass it by, good and bad.": "Efek medan dan skill seluruh medan melewatinya, baik maupun buruk.",
+ "Weather, the dark, terrain hazards, wind, the tide's water and lane bonuses don't touch it, nor Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero or Nova. Single-target skills still do.": "Cuaca, gelap, bahaya medan, angin, air pasang, dan bonus lajur tidak menyentuhnya, begitu pula Gempa, Longsor, Longsor Salju, Tsunami, Tornado, Gas Racun, Nol Mutlak, atau Nova. Skill satu sasaran tetap mengenainya.",
+ "Meld": "Lebur",
+ "Meld { {x} }": "Lebur { {x} }",
+ "Your other Meld units have {x} while it lives.": "Unit Lebur-mu yang lain punya {x} selama ia hidup.",
+ "Like a hive: every Meld unit shares its braces with the other Meld units on your side, not with itself.": "Seperti sarang: setiap unit Lebur berbagi isi kurung kurawalnya dengan unit Lebur lain di pihakmu, bukan dengan dirinya sendiri.",
+ "Immunity": "Imunitas",
+ "It can't be Poisoned or catch Decay, Toxin or other sickness.": "Ia tak bisa Teracuni atau terkena Busuk, Toksin, atau penyakit lain.",
+ "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.": "Menghentikan Racun, Racun Besar, Toksin, Busuk (dan hilangnya Serangan oleh kerusakan Busuk), Demam Rawa, dan Awan Spora. Kerusakan racun atau busuk tetap melukai.",
+ "Sequestration": "Sita",
+ "Its hit steals the target's status skills until the end of next round.": "Pukulannya mencuri skill status sasaran sampai akhir ronde berikutnya.",
+ "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Skill status: Racun, Pendarahan, Busuk, Tidur, Beku, Pingsan, Buta, dan sejenisnya; bukan tembakan atau skill kerusakan. Satu curian sekali waktu.",
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Bagian: +N Nyawa (Nyawa dan batas atasnya), Duri N (unit yang memukul semak menerima N), Regen N (tiap ronde menyembuhkan satu sekutu terluka sebesar N), Baut N (tiap ronde, N ke unit musuh acak), +N Perisai. Beberapa saling menambah. \"Perkuat { Zirah 1 }, selama ia hidup\" berbeda: 1 lebih sedikit per pukulan selama unitnya hidup."
 }

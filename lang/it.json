@@ -3948,5 +3948,21 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} sgattaiola: Fretta ed Evasivo al prossimo turno.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Il rovo mangia {name}: Riparazione {n}, le tue unità in campo +{a} Attacco (ne restano {left}).",
  "The Aimed Bolt hits {name} for {n}.": "Il Dardo mirato colpisce {name} per {n}.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "Il Dardo mirato colpisce il rovo nemico per {n}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Il Dardo mirato colpisce il rovo nemico per {n}.",
+ "Fortify { Armor 1 }, while it lives": "Rinforzo { Armatura 1 }, finché vive",
+ "Fortify { Armor {n} }, while it lives": "Rinforzo { Armatura {n} }, finché vive",
+ "Relict": "Relitto",
+ "Field effects and field-wide skills pass it by, good and bad.": "Gli effetti del campo e le abilità su tutto il campo non lo toccano, buoni o cattivi.",
+ "Weather, the dark, terrain hazards, wind, the tide's water and lane bonuses don't touch it, nor Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero or Nova. Single-target skills still do.": "Non lo toccano il tempo, il buio, i pericoli del terreno, il vento, l’acqua della marea né i bonus di corsia, né Terremoto, Frana, Valanga, Tsunami, Tornado, Gas velenoso, Zero assoluto o Nova. Le abilità a bersaglio singolo sì.",
+ "Meld": "Fusione",
+ "Meld { {x} }": "Fusione { {x} }",
+ "Your other Meld units have {x} while it lives.": "Le tue altre unità con Fusione hanno {x} finché vive.",
+ "Like a hive: every Meld unit shares its braces with the other Meld units on your side, not with itself.": "Come un alveare: ogni unità con Fusione condivide le sue graffe con le altre unità con Fusione del tuo lato, non con sé stessa.",
+ "Immunity": "Immunità",
+ "It can't be Poisoned or catch Decay, Toxin or other sickness.": "Non può essere Avvelenato né prendere Decadimento, Tossina o altre malattie.",
+ "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.": "Ferma Veleno, Veleno superiore, Tossina, Decadimento (e la perdita di Attacco dei danni da decadimento), Febbre di palude e Nube di spore. I danni da veleno o decadimento colpiscono ancora.",
+ "Sequestration": "Sequestro",
+ "Its hit steals the target's status skills until the end of next round.": "Il suo colpo ruba le abilità di stato del bersaglio fino alla fine del round seguente.",
+ "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Abilità di stato: Veleno, Sanguinamento, Decadimento, Sonno, Gelo, Stordimento, Cecità e simili; mai tiri o abilità di danno. Un furto alla volta.",
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Parti: +N Salute (la sua Salute e il massimo), Spine N (un’unità che colpisce il rovo subisce N), Rigenera N (ogni round cura N un alleato ferito), Dardo N (ogni round, N a un’unità nemica a caso), +N Scudo. Più parti si sommano. «Rinforzo { Armatura 1 }, finché vive» è diverso: 1 in meno a colpo finché la sua unità vive."
 }

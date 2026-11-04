@@ -28,7 +28,6 @@
  "+1 Lumber now.": "இப்போதே +1 மரக்கட்டை.",
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 மரக்கட்டை, +1 கல்; அனைவருக்கும் 1 சேதம்",
  "+1 starting Lumber.": "+1 தொடக்க மரக்கட்டை.",
- "+1 🪵 every {v1} rounds": "ஒவ்வொரு {v1} சுற்றுகளுக்கும் +1 🪵",
  "+{v1} Attack for every ally that shares a type with it.": "அதனுடன் ஒரு வகையைப் பகிரும் ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல்.",
  "+{v1} Dust": "+{v1} தூசி",
  "+{v1} Energy from a capsule.": "ஒரு குப்பியிலிருந்து +{v1} ஆற்றல்.",
@@ -648,7 +647,6 @@
  "Each round from round 2, both sides gain 1 Lumber.": "சுற்று 2 முதல் ஒவ்வொரு சுற்றும், இரு பக்கங்களும் 1 மரக்கட்டை பெறும்.",
  "Each round from round 2, every unit takes 1 ice damage.": "சுற்று 2 முதல் ஒவ்வொரு சுற்றும், ஒவ்வொரு அலகும் 1 பனிச் சேதம் பெறும்.",
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "ஒவ்வொரு சுற்றும் ஒவ்வொரு பக்கத்திலும் {v1} {v2} +1 காத்திரு. குளிருக்குப் பலவீனமான அலகுகளும் 1 சேதம் பெறுகின்றன.",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "ஒவ்வொரு சுற்றும், இவற்றில் ஒன்று: அதிகம் காயமுற்ற உன் அலகை 3 குணப்படுத்து, ஒரு சீரற்ற எதிரி அலகுக்கு 2 சேதம், அல்லது +1 🪵",
  "Each side plays 2 cards a turn.": "ஒவ்வொரு பக்கமும் ஒரு திருப்பத்துக்கு 2 அட்டைகள் ஆடும்.",
  "Each time it is hit, it loses {v1} Attack for good.": "ஒவ்வொரு முறை அடிபடும்போதும், அது நிரந்தரமாக {v1} தாக்குதலை இழக்கிறது.",
  "Earned from bosses on the road. Your side’s cards also turn up in every basic pack.": "சாலையிலுள்ள தலைவர்களிடமிருந்து பெறலாம். உன் பக்க அட்டைகள் ஒவ்வொரு அடிப்படைப் பொதியிலும் வரும்.",
@@ -2579,5 +2577,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} முடிந்தது",
  "Cleared": "முடிந்தது",
  "{v1} card{s} collected": "{v1} அட்டைகள் சேகரிக்கப்பட்டன",
- "Clear {v1} / {v2}": "{v1} / {v2} ஐ முடி"
+ "Clear {v1} / {v2}": "{v1} / {v2} ஐ முடி",
+ "+{v1} 🪵 every {v2} rounds": "ஒவ்வொரு {v2} சுற்றுகளுக்கும் +{v1} 🪵",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "ஒவ்வொரு சுற்றும், இவற்றில் ஒன்று: அதிகம் காயமுற்ற உன் அலகை {v1} குணப்படுத்து, ஒரு சீரற்ற எதிரி அலகுக்கு {v2} சேதம், அல்லது +{v3} 🪵"
 }

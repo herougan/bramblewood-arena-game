@@ -1839,7 +1839,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.skn-rampart": "Rampart",
   "ui.sk-rampart": "Takes half (rounded up) of each hit on your bramble from its column or beside it.",
   "ui.sk-rampart-codex": "Only hits from a unit in its own column or the one on either side: swings, shots, skills, a boomerang. Hits from further away and the field’s own damage aren’t shared. With two in reach, the nearest takes it. Its share is plain damage: its Shield soaks first, Armor doesn’t.",
-  "ui.skn-bramble-armor": "Bramble Armor",
+  "ui.skn-bramble-armor": "Fortify { Armor 1 }, while it lives",
   "ui.sk-bramble-armor": "Your bramble takes 1 less damage from each hit.",
   "ui.sk-bramble-armor-codex": "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.",
   "ui.en3-log-rampart": "🚧 {name} takes {n} of the hit on its bramble; the bramble takes {b}.",
@@ -3196,7 +3196,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.e22-fortify-name": "Fortify",
   "ui.e22-fortify-head": "Fortify { {x} }",
   "ui.e22-fortify": "On play, your bramble gets {x} for the rest of the fight, even after this unit dies.",
-  "ui.e22-fortify-codex": "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Bramble Armor is different: 1 less a hit while its unit lives.",
+  "ui.e22-fortify-codex": "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.",
   "ui.e22-fp-health": "+{n} Health",
   "ui.e22-fp-thorns": "Thorns {n}",
   "ui.e22-fp-regen": "Regen {n}",
@@ -3262,7 +3262,21 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng23-bolt-bramble": "Their bramble (an empty column)",
   "ui.eng23-bolt-none": "No target.",
   "ui.eng23-log-bolt": "🎯 The Aimed Bolt hits {name} for {n}.",
-  "ui.eng23-log-bolt-bramble": "🎯 The Aimed Bolt hits the enemy bramble for {n}."
+  "ui.eng23-log-bolt-bramble": "🎯 The Aimed Bolt hits the enemy bramble for {n}.",
+  "ui.eng24-barmor-head": "Fortify { Armor {n} }, while it lives",
+  "ui.eng24-relict-name": "Relict",
+  "ui.eng24-relict": "Field effects and field-wide skills pass it by, good and bad.",
+  "ui.eng24-relict-codex": "Weather, the dark, terrain hazards, wind, the tide's water and lane bonuses don't touch it, nor Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero or Nova. Single-target skills still do.",
+  "ui.eng24-meld-name": "Meld",
+  "ui.eng24-meld-head": "Meld { {x} }",
+  "ui.eng24-meld": "Your other Meld units have {x} while it lives.",
+  "ui.eng24-meld-codex": "Like a hive: every Meld unit shares its braces with the other Meld units on your side, not with itself.",
+  "ui.eng24-immunity-name": "Immunity",
+  "ui.eng24-immunity": "It can't be Poisoned or catch Decay, Toxin or other sickness.",
+  "ui.eng24-immunity-codex": "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.",
+  "ui.eng24-sequestration-name": "Sequestration",
+  "ui.eng24-sequestration": "Its hit steals the target's status skills until the end of next round.",
+  "ui.eng24-sequestration-codex": "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
