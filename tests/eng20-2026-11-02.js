@@ -73,7 +73,12 @@ const hitWith = (e, P, c, amt, type, srcUid)=> e.damageCardFlat(c, amt, type, sr
 { // the tide's counters: Flood fills a dry unit in the water to 2, a Flyer stays dry; a wet unit gets no more
   const {e, P} = mk(6, {permaTide:true}); const L = spawn(e, P, 1, 'x-land'), F = spawn(e, P, 1, 'x-flyw', 'right'); spawn(e, P, 2, 'x-wall');
   e.roundStart(P, 1, so, {}, []); ok(L.water === 2 && !(F.water > 0), `2: a Flood gives a dry land unit 2 counters, a Flyer none (${L.water}, ${F.water})`);
-  L.water = 1; e.roundStart(P, 2, so, {}, []); ok(L.water === 1, '2: a unit that has counters gets none from the tide'); }
+  // 2026-11-03 (package ENG22, owner 22:02: "Wetness is lost 1 per turn."): the round start takes 1 off first, then the tide fills a dry unit
+  L.water = 3; e.roundStart(P, 2, so, {}, []); ok(L.water === 2, `2: a unit that has counters loses 1 and gets none from the tide (3 -> ${L.water})`);
+  L.water = 1; e.roundStart(P, 3, so, {}, []); ok(L.water === 2, `2: a unit dried to 0 by the round's loss is filled again by the Flood (1 -> 0 -> ${L.water})`); }
+{ const {e, P} = mk(6); const L = spawn(e, P, 1, 'x-land'); spawn(e, P, 2, 'x-wall'); L.water = 3; const got = [];
+  for(let r = 1; r <= 4; r++){ e.roundStart(P, r, so, {}, []); got.push(L.water); }
+  ok(got.join(',') === '2,1,0,0', `2: with no tide, wetness is lost 1 a round (ENG22; ${got})`); }
 { const {e, P} = mk(6); spawn(e, P, 2, 'x-wall'); e.startTide(); let ebb = false, sw = null, land = null;
   for(let r = 1; r <= 4 && !ebb; r++){ e.roundStart(P, r, so, {}, []); if(e.getTide() === 'flow' && !sw){ /* spawn dry units for the next Ebb */ }
     if(e.getTide() === 'ebb'){ ebb = true; } }

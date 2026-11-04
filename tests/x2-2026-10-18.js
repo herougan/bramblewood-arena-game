@@ -40,10 +40,11 @@ function toTide(e, P, want){ for(let r = 1; r < 9 && e.getTide() !== want; r++) 
   ok(e.wetCountOf(F) === 0, 'Flood: a flyer stays dry');
   const N = put(e, P, 1, 'x2-land'); ok(e.wetCountOf(N) === 0, 'a land unit that arrives in a Flood is dry until the next round starts (ENG20)');
   ok(toTide(e, P, 'ebb'), 'then Ebb');
-  ok(e.wetCountOf(L) === 2, 'Ebb: a land unit keeps its counters (they stay until fire dries them, ENG20-1)');
+  // 2026-11-03 (package ENG22, owner 22:02: "Wetness is lost 1 per turn."): each round's start takes 1 water counter off before the tide adds (was: they stayed until fire dried them, ENG20-1)
+  ok(e.wetCountOf(L) === 1, 'Ebb: a land unit loses 1 of its 2 counters at the round start (ENG22), and the Ebb does not reach it');
   // 2026-11-03 (package BAL14, ENG20-1): the Flood's 2 counters stay through the Ebb (the Ebb fills only a dry unit, to 1); the late land unit is out of the water in an Ebb
-  ok(e.wetCountOf(S) === 2 && e.wetCountOf(T) === 2 && e.wetCountOf(N) === 0, 'Ebb: Swimmers and Tide units keep their 2 counters; the land unit that arrived in the Flood is still dry');
-  e.setField('rain', 3); ok(e.wetCountOf(F) === 1 && e.wetCountOf(S) === 3 && e.wetCountOf(L) === 3, 'Rain still adds a counter for everyone, flyers too (2 + 1, a flyer 0 + 1)');
+  ok(e.wetCountOf(S) === 1 && e.wetCountOf(T) === 1 && e.wetCountOf(N) === 0, 'Ebb: Swimmers and Tide units drop from 2 to 1 (ENG22: -1 a round; they still have a counter, so the Ebb adds none); the land unit that arrived in the Flood is still dry');
+  e.setField('rain', 3); ok(e.wetCountOf(F) === 1 && e.wetCountOf(S) === 2 && e.wetCountOf(L) === 2, 'Rain still adds a counter for everyone, flyers too (1 + 1, a flyer 0 + 1)');
   ok(e.wetCountOf({kind:'hq'}) === 0, 'a castle is never Wet'); }
 { const {e, P} = mk({highTide:true}); const L = put(e, P, 1, 'x2-land'); ok(toTide(e, P, 'high') && e.wetCountOf(L) === 2, 'High Tide wets land units like a Flood (2 counters, ENG20)'); }
 { const {e, P} = mk({permaTide:true}); const L = put(e, P, 1, 'x2-land'); ok(e.getTide() === 'flow' && e.wetCountOf(L) === 0, 'Perma-tide: a land unit placed mid-round is dry until the round starts (ENG20)');

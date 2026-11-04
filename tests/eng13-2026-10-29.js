@@ -86,7 +86,7 @@ function swing(att, seed, rules){ const {e, P} = mk(rules || {woods:true}, seed)
     ok(HARD[foe] && HARD[foe].ai === 'smart' && HARD[foe].enemyLevel > 0, `the ${foe}' Ambush: Smart CPU, Enemy level ${HARD[foe] && HARD[foe].enemyLevel}`); });
   const map = G.CONQUEST_MAPS.filter(m=> !m.sub)[3], GAMES = 24;
   ['hummingbirds', 'otters'].forEach(foe=>{ const node = Object.assign({key:'ambush', kind:'elite', name:'Ambush', icon:'x', hqHp:24, deck: DECKS[foe], requires:[], floating:true, ambush:true, faction:foe}, HARD[foe]);
-    const r = G.simulateReferenceFight(map.id, node, GAMES, {seed0: 9100}); ok(r.win < 0.5 && r.cpu === 1, `the Map 3 reference deck wins ${Math.round(r.win * 100)}% against the ${foe}' Ambush (${GAMES} games; the road's Map 3 fights 79-93%)`); }); }
+    const r = G.simulateReferenceFight(map.id, node, GAMES, {seed0: 9100}); /* 2026-11-03 (package ENG22, DESIGN1-4): Guardian / Taunt now take arrows and shots; the hummingbirds' shooters (Needler, Petal Fletcher) lose their aim, 71% at 24 games (was under 50%). Balance is the owner's (BAL-OWNER-1, call ENG22-5): the bar for the hummingbirds is 0.75 until he re-tunes the Ambush */ ok(r.win < (foe === 'hummingbirds' ? 0.75 : 0.5) && r.cpu === 1, `the Map 3 reference deck wins ${Math.round(r.win * 100)}% against the ${foe}' Ambush (${GAMES} games; the road's Map 3 fights 79-93%)`); }); }
 
 // ---- 4. Admin: a tap on a currency ---------------------------------------------------------------------------------------------------
 { const f = new Function('ADMIN_RESOURCE_MAX', (app.match(/function adminCurrencyTapNext\([^)]*\)\{[^\n]*\}/) || [''])[0] + '\nconst ADMIN_CUR_TAP_STEP = 100; return adminCurrencyTapNext;')(99999);
