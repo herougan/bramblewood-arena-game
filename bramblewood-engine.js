@@ -716,6 +716,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(player.deck.length===0) return;
       const defId = player.deck.pop();
       player.drawnTotal = (player.drawnTotal||0) + 1; // Ritual tally (2026-10-10)
+      if(!opening) player.drawnAfterOpening = (player.drawnAfterOpening||0) + 1; // ENG22 (2026-11-03): Almanac N
       if(player.hand.length >= MAX_HAND){
         player.graveyard.push({defId});
         player.lumber += 1;
@@ -1477,6 +1478,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     try{ watchScan(players, sideOf, stats, events); }catch(e){} return r; }
   function roundStartInner(players, round, sideOf, stats, events){
     curPlayers = players; turnNo += 1;
+    thrRoundMark(players); // ENG22 (2026-11-03): Onslaught / Riled read last round
     rollWind(players, sideOf, events);
     en20CrossSync(players, sideOf, events); // ENG20-4 (2026-11-02): the Crosswind's +0/N comes and goes with the gust
     if(RESERVE_ROWS) advanceReserves(players, sideOf, stats, events); // the rows behind step up first (2026-10-12)
@@ -1550,6 +1552,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(tideRising()){
       if(recordEvents && events) events.push({type:'tide', tide:getTide(), round});
     } else if(getTide() === 'ebb' && recordEvents && events) events.push({type:'tide', tide:'ebb', round});
+    en20WaterDrain(players, sideOf, events); // ENG22 (2026-11-03, owner 22:02: "Wetness is lost 1 per turn."): -1 water counter each, before the tide adds
     en20TideWater(players, sideOf, events); // ENG20-2 (2026-11-02): the tide's water counters
     { const stV = statusSnap(players); volcanoTick(players, round, sideOf, stats, events, fPause); pushStatusEnds(stV, players, sideOf, events); } // 2026-10-15: petrification wearing off (2026-10-19: no hazards while the field is broken)
     if(rules.swampFever && round > 1 && !fPause) swampFeverTick(players, sideOf, events); // Swamp Fever (2026-10-15)
@@ -2590,14 +2593,34 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // A death counts every unit that left the board dead (tokens and Bloom copies too; Undead / Revive don't take it back), not Structures or
   // cages: pl.diedThisFight, raised in the death sweep. Units: live units (a raid's middle and back rows too), not Structures, cages, a
   // Parasite riding its host or loose equipment.
-  const THR_DEFAULT_N = {requiem: 5, dirge: 3, carnage: 3, muster: 6, beset: 6, throng: 10};
+  // ENG22 (2026-11-03, owner 21:13: "Carnage N - the card must 'see' the creatures dying. Not just creatures having died this game."): Carnage
+  // counts the enemy units that died while this unit was on the board (Ready or Waiting: both, it is on the field), c.carnageSeen, raised in
+  // the death sweep (thrSeeDeath). The old rule (every enemy death this fight) is Tally N. And from the owner's "What about abilities for
+  // Cards drawn this game, creatures destroyed this game, and damage done to bramble last turn? Or even damage taken last turn.", three
+  // more counters in the same form (on no card; decision ENG22-1 for carriers and names):
+  //   Tally N (3)    enemy units that died this fight (Carnage's old rule)
+  //   Almanac N (4)  cards you have drawn this fight after your opening hand (pl.drawnAfterOpening, draw)
+  //   Onslaught N (3) damage your side dealt to the enemy bramble last round (pl._siegeLast, thrRoundMark)
+  //   Riled N (3)    damage this unit took last round (c._riledLast, thrRoundMark; applyDamage keeps c._dmgAmt for the round)
+  const THR_DEFAULT_N = {requiem: 5, dirge: 3, carnage: 3, muster: 6, beset: 6, throng: 10, tally: 3, almanac: 4, onslaught: 3, riled: 3};
+  // At a round's start (roundStartInner, right after the round counter moves on): last round's bramble damage and each unit's damage taken.
+  function thrRoundMark(players){ [1, 2].forEach(pid=>{ const pl = players && players[pid]; if(!pl) return;
+    pl._siegeLast = (pl.castleDealt||0) - (pl._siegeMark||0); pl._siegeMark = pl.castleDealt||0;
+    rowsUnitsOf(pl).forEach(c=>{ if(c && !c.gap) c._riledLast = c._dmgTurn === turnNo - 1 ? (c._dmgAmt||0) : 0; }); }); }
+  // A unit died (the death sweep, not a Structure or a cage): every living Carnage unit on the other side saw it.
+  function thrSeeDeath(players, deadPl){ const foe = players && deadPl && players[otherId(deadPl.id)]; if(!foe) return;
+    upkeepUnitsOf(foe).forEach(c=>{ if(c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c).carnage) c.carnageSeen = (c.carnageSeen||0) + 1; }); }
   function thrN(e, k){ const v = e && e[k]; return (v === true || v == null || !(Number(v) > 0)) ? THR_DEFAULT_N[k] : Math.round(Number(v)); }
   function thrUnits(pl){ return pl ? upkeepUnitsOf(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !isStructureCard(c)).length : 0; }
   const thrDied = pl=> (pl && pl.diedThisFight) || 0;
   Object.assign(EN6_STATES, {
     requiem: {grant:'requiemGrant', dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> thrDied(pl) + thrDied(foe) >= thrN(e, 'requiem')},
     dirge:   {grant:'dirgeGrant',   dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> thrDied(pl) >= thrN(e, 'dirge')},
-    carnage: {grant:'carnageGrant', dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> thrDied(foe) >= thrN(e, 'carnage')},
+    carnage: {grant:'carnageGrant', dflt:{attack: 2, health: 2}, on: (pl, foe, e, c)=> ((c && c.carnageSeen) || 0) >= thrN(e, 'carnage')}, // ENG22: the deaths it saw
+    tally:   {grant:'tallyGrant',   dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> thrDied(foe) >= thrN(e, 'tally')}, // ENG22: Carnage's old rule
+    almanac: {grant:'almanacGrant', dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> ((pl && pl.drawnAfterOpening) || 0) >= thrN(e, 'almanac')}, // ENG22
+    onslaught: {grant:'onslaughtGrant', dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> ((pl && pl._siegeLast) || 0) >= thrN(e, 'onslaught')}, // ENG22
+    riled:   {grant:'riledGrant',   dflt:{attack: 2, health: 2}, on: (pl, foe, e, c)=> ((c && c._riledLast) || 0) >= thrN(e, 'riled')}, // ENG22
     muster:  {grant:'musterGrant',  dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> thrUnits(pl) >= thrN(e, 'muster')},
     beset:   {grant:'besetGrant',   dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> thrUnits(foe) >= thrN(e, 'beset')},
     throng:  {grant:'throngGrant',  dflt:{attack: 2, health: 2}, on: (pl, foe, e)=> thrUnits(pl) + thrUnits(foe) >= thrN(e, 'throng')}
@@ -2607,7 +2630,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function thrNote(def){ const e = def && def.effects; if(e && !thrInPlay && THR_KEYS.some(k=> e[k] || e[k + 'Grant'])) thrInPlay = true; }
   function en6SeasonOf(e){ const v = e && e.season; const s = typeof v === 'string' ? v.toLowerCase() : 'winter'; return EN6_SEASONS.includes(s) ? s : 'winter'; }
   function en6StateGrant(k, e){ const s = EN6_STATES[k], g = e && e[s.grant]; return g && typeof g === 'object' && Object.keys(g).length ? g : s.dflt; }
-  function en6StatesOn(e, pl, foe){ const out = []; if(!e || !pl) return out; Object.keys(EN6_STATES).forEach(k=>{ if((e[k] || e[EN6_STATES[k].grant]) && EN6_STATES[k].on(pl, foe, e)) out.push(k); }); return out; }
+  function en6StatesOn(e, pl, foe, c){ const out = []; if(!e || !pl) return out; Object.keys(EN6_STATES).forEach(k=>{ if((e[k] || e[EN6_STATES[k].grant]) && EN6_STATES[k].on(pl, foe, e, c)) out.push(k); }); return out; } // + c (ENG22): the unit, for Carnage / Riled
   // Full Hand / Lean: +N Attack per card in hand / per empty slot (the hand limit MAX_HAND), yours and the opponent's
   function en6HandAtk(e, pl, foe){ if(!e) return 0; const n = k=> Math.max(0, Number(e[k] === true ? 1 : e[k]) || 0); let a = 0;
     if(e.fullHand) a += n('fullHand') * handN(pl); if(e.lean && pl) a += n('lean') * Math.max(0, MAX_HAND - handN(pl));
@@ -2681,8 +2704,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'plentyGrant', 'scarcityGrant', 'foePlentyGrant', 'foeScarcityGrant', 'heatGrant', 'frostGrant', 'rainGrant', 'stormGrant', 'fogGrant', 'saltGrant', 'droughtGrant', 'seasonGrant', 'requiemGrant', 'dirgeGrant', 'carnageGrant', 'musterGrant', 'besetGrant', 'throngGrant' /* ENG10 */, 'arrowBramble', 'fireArrowBramble', 'fireBoltBramble' /* EN6 (2026-10-24) */, 'arrowPoison', 'arrowBleed', 'fireArrowPoison', 'fireArrowBleed', 'fireBoltPoison', 'fireBoltBleed', 'diveUses' /* EN7 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
-  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant'], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */, plenty:['plentyGrant'], scarcity:['scarcityGrant'], foePlenty:['foePlentyGrant'], foeScarcity:['foeScarcityGrant'], heat:['heatGrant'], frost:['frostGrant'], rain:['rainGrant'], storm:['stormGrant'], fog:['fogGrant'], salt:['saltGrant'], drought:['droughtGrant'], season:['seasonGrant'], requiem:['requiemGrant'], dirge:['dirgeGrant'], carnage:['carnageGrant'], muster:['musterGrant'], beset:['besetGrant'], throng:['throngGrant'] /* ENG10 */, arrow:['arrowBramble', 'arrowPoison', 'arrowBleed'], fireArrow:['fireArrowBramble', 'fireArrowPoison', 'fireArrowBleed'], fireBolt:['fireBoltBramble', 'fireBoltPoison', 'fireBoltBleed'] /* EN6; + EN7's – poison / – bleed */, dive:['diveUses'] /* EN7 */};
+  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'plentyGrant', 'scarcityGrant', 'foePlentyGrant', 'foeScarcityGrant', 'heatGrant', 'frostGrant', 'rainGrant', 'stormGrant', 'fogGrant', 'saltGrant', 'droughtGrant', 'seasonGrant', 'requiemGrant', 'dirgeGrant', 'carnageGrant', 'musterGrant', 'besetGrant', 'throngGrant' /* ENG10 */, 'tallyGrant', 'almanacGrant', 'onslaughtGrant', 'riledGrant', 'deliveryRes' /* ENG22 */, 'arrowBramble', 'fireArrowBramble', 'fireBoltBramble' /* EN6 (2026-10-24) */, 'arrowPoison', 'arrowBleed', 'fireArrowPoison', 'fireArrowBleed', 'fireBoltPoison', 'fireBoltBleed', 'diveUses' /* EN7 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
+  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant'], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */, plenty:['plentyGrant'], scarcity:['scarcityGrant'], foePlenty:['foePlentyGrant'], foeScarcity:['foeScarcityGrant'], heat:['heatGrant'], frost:['frostGrant'], rain:['rainGrant'], storm:['stormGrant'], fog:['fogGrant'], salt:['saltGrant'], drought:['droughtGrant'], season:['seasonGrant'], requiem:['requiemGrant'], dirge:['dirgeGrant'], carnage:['carnageGrant'], muster:['musterGrant'], beset:['besetGrant'], throng:['throngGrant'] /* ENG10 */, tally:['tallyGrant'], almanac:['almanacGrant'], onslaught:['onslaughtGrant'], riled:['riledGrant'], delivery:['deliveryRes'], deliveryEvery:['deliveryRes'] /* ENG22 */, arrow:['arrowBramble', 'arrowPoison', 'arrowBleed'], fireArrow:['fireArrowBramble', 'fireArrowPoison', 'fireArrowBleed'], fireBolt:['fireBoltBramble', 'fireBoltPoison', 'fireBoltBleed'] /* EN6; + EN7's – poison / – bleed */, dive:['diveUses'] /* EN7 */};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
     Object.keys(e).forEach(k=>{ if(IRR_NOT_SKILLS.has(k)) return; const v = e[k]; if(v === false || v == null || v === 0 || v === '' || (Array.isArray(v) && !v.length)) return; out.push({key:k}); });
@@ -2798,7 +2821,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if((e.liege || e.liegeGrant) && kingOnSide(pl, c)) addGrant(liegeOf(e));
     // EN5 (2026-10-24): Timbered / Bedrock / Forged / Last Stand – {…}, while their side's state holds (EN5_STATES); c._en5On lists the ones on
     { const on = en5StatesOn(e, pl); on.forEach(k=> addGrant(en5StateGrant(k, e)));
-      const on6 = en6StatesOn(e, pl, foe); on6.forEach(k=> addGrant(en6StateGrant(k, e))); /* EN6 (2026-10-24): hand, heat / frost, weather, season */
+      const on6 = en6StatesOn(e, pl, foe, c); on6.forEach(k=> addGrant(en6StateGrant(k, e))); /* EN6 (2026-10-24): hand, heat / frost, weather, season */
       // Anadromous (2026-10-30, package ENG14, owner X20 / ANAD-1: "Get tide benefits +2 Health in non-sea, +1 attack in sea."): on a
       // salt-water fight (rules.saltMap: the beach and reef maps, or a fight that sets it) +1 Attack; everywhere else +2 Health. The map
       // never changes mid-fight, so one of the two is always on; c._en5On names it ('anadromousSea' / 'anadromousRiver') for the chips.
@@ -3234,7 +3257,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(o.noteHit) noteHit(card, dmg, o.dmgType);
     const hp0 = card.hp;
     card.hp = Math.max(0, card.hp - dmg);
-    if(dmg > 0) card._dmgTurn = turnNo; // EN8 (2026-10-24): Coppice reads the last round it took damage
+    if(dmg > 0){ if(card._dmgTurn !== turnNo) card._dmgAmt = 0; card._dmgAmt = (card._dmgAmt||0) + dmg; card._dmgTurn = turnNo; } // EN8 (2026-10-24): Coppice reads the last round it took damage; + its amount this round (ENG22: Riled)
     if(o.suddenDeath && o.suddenDeath(dmg)) card.hp = 0;
     if(o.killerUid != null && hp0 > 0 && card.hp <= 0) noteKiller(card, o.killerUid, o.killerDefId); // who:'killer' (2026-10-14)
     if(o.wake && dmg > 0 && card.asleep > 0 && !card.hibernating /* EN6: Hibernate wakes with the cold, not a hit */){ if(o.wokeBy !== undefined) card._wokeBy = o.wokeBy ? Object.assign({uid: o.wokeBy.uid, n: card.asleep, t: o.wokeBy.t}) : null; card.asleep = 0; card._wokeRound = turnNo /* BAL7 (2026-10-28, ENG12-2): woken by a hit, it loses the rest of the round */; noteWoke(card); }
@@ -3699,6 +3722,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(hasThornsNow(card)) return card; // EN8 (P24-15)
     const gs = adjacentOf(enemyPl, card).filter(n=> n !== card && isLiveGuardian(n)); if(!gs.length) return card;
     return gs.length === 1 ? gs[0] : gs[Math.floor(rnd()*gs.length)];
+  }
+  // ENG22 (2026-11-03, owner DESIGN1-4: "Yes to a. Taunt allow redirect arrows from surrounding shooters. - It taunts surrounding enemies, so
+  // their single targets and normal attacks hit it."): a shot (Arrow, Archer, an Arrow action, Fire / Ice Arrow, Twin Shot, Bola, Lasso, Snipe,
+  // the Bolts and Spitfire; not Volley, an arrow at every enemy) aimed at a unit is taken by
+  //   1. an enemy Taunt unit around the shooter: the front-row shooter faces it or stands one column beside it (the 8 around the Taunt unit,
+  //      corners included; tauntTargetOf, the swing's rule). Stealth slips past, as for a swing. A middle / back-row shooter is not around it.
+  //   2. else a Guardian beside the unit aimed at (redirectToGuardian: Ready, not itself, never for a Thorns unit, one at random when two).
+  // This reverses GD-3 for shots. A shot aimed at the bramble (Arrow – bramble) is not pulled. lastShotPull names which one stepped in.
+  let lastShotPull = null;
+  function shotRedirect(players, sideOf, pid, shooter, t, events){
+    lastShotPull = null; const enemy = players && players[otherId(pid)]; if(!enemy || !t || !(t.hp > 0) || t.cageOf) return t;
+    if(shooter && !effectsOf(shooter).stealth){ const myCols = combatColumnsOf(players[pid]); let myCol = null;
+      Object.keys(myCols).forEach(k=>{ const en = myCols[k]; if(en && en.kind === 'card' && en.card && en.card.uid === shooter.uid) myCol = Number(k); });
+      if(myCol !== null){ const tt = tauntTargetOf(myCols, combatColumnsOf(enemy), myCol);
+        if(tt && tt.card){ if(tt.card !== t){ lastShotPull = 'taunt';
+          if(recordEvents && events) events.push({type:'statusFx', kind:'taunted', side:sideOf(otherId(pid)), attDefId:tt.card.defId, attUid:tt.card.uid, targetSide:sideOf(pid), targetDefId:shooter.defId, targetUid:shooter.uid, shot:true}); }
+          return tt.card; } } }
+    const g = redirectToGuardian(enemy, t); if(g !== t) lastShotPull = 'guardian';
+    return g;
   }
   // Spellward (2026-10-22, package GD2, owner GD-3: "We have ward for dodging skills right? There can be a similar skill - but for
   // shielding allies from skills."): a single-target enemy skill aimed at a unit adjacent to a Spellward unit hits the Spellward
@@ -5976,9 +6018,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const EN8_DEF = {stonecutterN:1, stonecutterEvery:2, prospectorN:1, fellingN:1, pearlBedN:1, pearlN:1 /* ENG19 */, salvageN:1, salvageMult:2, scavengeN:1, coppiceN:1, driftwoodN:1, windfallLumber:1};
   let en8TrigMemo = null;
   function en8Trigs(e, list, def){
-    if(!e || !(e.stonecutter || e.prospector || e.felling || e.pearlBed || e.pearl || e.stockpile || e.revive)) return list;
+    if(!e || !(e.stonecutter || e.prospector || e.felling || e.pearlBed || e.pearl || e.stockpile || e.revive || e.delivery)) return list;
     const waits = !!(def && Number(def.wait) > 0); // Pearl (ENG19; Pearl Bed before): a Wait 0 card is Ready as it lands (the engine fires no On Ready for it), so it pays On Play
-    if(!en8TrigMemo) en8TrigMemo = new WeakMap(); const key = [e.stonecutter, e.prospector, e.felling, e.pearlBed, e.pearl, e.stockpile, e.revive, waits].join('|'), m = en8TrigMemo.get(e);
+    if(!en8TrigMemo) en8TrigMemo = new WeakMap(); const key = [e.stonecutter, e.prospector, e.felling, e.pearlBed, e.pearl, e.stockpile, e.revive, waits, e.delivery, e.deliveryRes].join('|'), m = en8TrigMemo.get(e);
     if(m && m.src === list && m.key === key) return m.out;
     const out = list.slice(), N = (k, d)=> numN(e[k], d);
     if(e.stonecutter) out.push({on:'perTurn', do:'gain', resource:'stone', amount:N('stonecutter', EN8_DEF.stonecutterN), every:EN8_DEF.stonecutterEvery, keyword:'stonecutter'});
@@ -5990,7 +6032,26 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (its first upkeep Ready; a Wait 0 unit's first upkeep since ENG9). Then it leaves the card (spendOnReady). Name: call ENG9-2.
     if(e.revive) out.push({on:'onSpawn', do:'revive', count:N('revive', 1), keyword:'revive'}); // Revive N (ENG9): On Play, the action (reviveFromGrave)
     if(e.stockpile) out.push({on:'onReady', do:'gain', resource:'lumber', amount:N('stockpile', 1), keyword:'stockpile'});
+    // Delivery {X} (ENG22, 2026-11-03, owner DESIGN1-6: "Maybe call it Delivery {}, like Stockpile {}. Advanced versions (rarely used) of the
+    // skill would go past the default of lumber and maybe be like stone or pearls. E.g. Delivery {Pearl x1}."): the one keyword for "a
+    // resource when Ready". effects.delivery N = On Ready, +N of effects.deliveryRes (default 'lumber'; 'stone', 'metal', 'uranium',
+    // 'pearl', 'grace'), once (Stockpile's rule: its first upkeep Ready, then it leaves the card, spendOnReady). effects.deliveryEvery N is
+    // the every-turn form (onReadyGold's rule: every upkeep while Ready, deliveryEveryTick). The old forms (Stockpile N, onReadyGold N, an On
+    // Ready gain trigger) still play for old saves; canonical/cards.json carries Delivery only.
+    if(e.delivery) out.push({on:'onReady', do:'gain', resource:deliveryResOf(e), amount:N('delivery', 1), keyword:'delivery'});
     en8TrigMemo.set(e, {src:list, key, out}); return out;
+  }
+  const DELIVERY_RES = ['lumber', 'stone', 'metal', 'uranium', 'pearl', 'grace'];
+  function deliveryResOf(e){ const r = e && typeof e.deliveryRes === 'string' ? e.deliveryRes.toLowerCase().replace(/s$/, '') : 'lumber'; return DELIVERY_RES.includes(r) ? r : 'lumber'; }
+  // Delivery {X}, every turn (ENG22): the onReadyGold upkeep pass's twin (same place, same rule: CARD_DEFS' effects, every upkeep while Ready).
+  function deliveryEveryTick(pl, c, def, stats, sideOf, events){
+    const e = def && def.effects; const n = e && numN(e.deliveryEvery, 1); if(!e || !e.deliveryEvery || !(n > 0)) return;
+    const res = deliveryResOf(e), side = sideOf(pl.id);
+    if(res === 'lumber'){ addLumber(pl, n); ensureStat(stats, side, c.defId).lumberGenerated += n; if(recordEvents && events) events.push({type:'lumber', side, defId:c.defId, uid:c.uid, amount:n, cause:'delivery'}); return; }
+    if(res === 'stone' || res === 'metal'){ const got = addOre(pl, res, n); if(recordEvents && events) events.push({type:res, side, defId:c.defId, uid:c.uid, amount: res === 'metal' ? got : n, cause:'delivery'}); return; }
+    if(res === 'uranium'){ pl.uranium = (pl.uranium||0) + n; if(recordEvents && events) events.push({type:'uranium', side, defId:c.defId, uid:c.uid, amount:n, cause:'delivery'}); return; }
+    if(res === 'pearl'){ pl.pearls = (pl.pearls||0) + n; if(recordEvents && events) events.push({type:'pearl', side, defId:c.defId, uid:c.uid, amount:n, cause:'delivery'}); return; }
+    if(res === 'grace'){ pl.grace = (pl.grace||0) + n; ensureStat(stats, side, c.defId).graceGenerated += n; if(recordEvents && events) events.push({type:'grace', side, defId:c.defId, uid:c.uid, amount:n, cause:'delivery'}); }
   }
   // Pearls (EN8): after a payment took Lumber or Stone below 0 (canPlay let it through because Pearls cover the gap), Pearls make it good.
   function pearlSettle(pl){
@@ -6772,7 +6833,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //     (a Swimmer / Tide unit is always at least 1: it lives in the water) + 1 under Rain. Every lightning hit gets +1 a Wet counter (as before).
   //   The tide (owner: "Tide and Ebb add a water counter if the card doesn't have counters - flood up to max 2 counters, ebb up to max 1"):
   //     at a round's start, a unit in the water with no water counter gets floodWater (2) in a Flood or High Tide, ebbWater (1) in an Ebb
-  //     (in an Ebb only Swimmer / Tide units are in the water). A unit that already has counters gets none. Counters stay until fire dries them.
+  //     (in an Ebb only Swimmer / Tide units are in the water). A unit that already has counters gets none. Counters stay until fire dries them (ENG22, owner 22:02: and 1 is lost every round's start, en20WaterDrain).
   //   Fire (owner: "Fire damage should light the target on fire, or remove wet counters first"): a fire (heat) hit that lands removes 1 water
   //     counter a point of damage; if points are left once it is dry, a unit's hit, shot or skill sets it Burning (burnRounds 2: at each of the
   //     next 2 round starts it takes burnDmg 1 fire; a new fire hit refreshes it to 2, it never stacks). Field fire (Scorching, the volcano,
@@ -6804,6 +6865,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       ensureStat(stats, sideOf(pl.id), c.defId).taken += dmg;
       if(recordEvents && events) events.push({type:'burnTick', side:sideOf(pl.id), defId:c.defId, uid:c.uid, dmg, left:c.burn, mods:dnModsFor(c.uid)}); }));
     if(any) removeDeadCards(players, sideOf, {}, stats, events); }
+  // ENG22 (2026-11-03, owner 22:02: "Wetness is lost 1 per turn."): at every round's start each unit with water counters loses 1, before the
+  // tide's counters (en20TideWater, right after it): a unit dried to 0 in the water gets the tide's 2 (Flood) / 1 (Ebb) again, a unit that
+  // still has counters gets none. On top of fire drying them (ENG20-1). Event statusFx en20Dry {drain:true}.
+  function en20WaterDrain(players, sideOf, events){
+    [1,2].forEach(pid=> players[pid] && upkeepUnitsOf(players[pid]).forEach(c=>{
+      if(!c || c.gap || !(c.hp > 0) || !((c.water || 0) > 0)) return; c.water -= 1;
+      if(recordEvents && events) events.push({type:'statusFx', kind:'en20Dry', drain:true, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, amount:1, total:c.water}); })); }
   // The tide's water counters, at a round's start once the tide is known.
   function en20TideWater(players, sideOf, events){
     const t = getTide(); if(t == null) return; const n = tideRising() ? EN20.floodWater : t === 'ebb' ? EN20.ebbWater : 0; if(!(n > 0)) return;
@@ -6933,7 +7001,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects.tsunami) tsunamiStrike(players, sideOf, playerId, boardCard, numN(def.effects.tsunami, 1), stats, events); // Tsunami N (2026-10-14)
     if(def.effects.fieldBreaker) fieldBreak(sideOf, playerId, boardCard, Math.max(1, numN(def.effects.fieldBreaker, 2)), events); // Field Breaker N (2026-10-19, package GI)
     if(def.effects.rainmaker){ const rr = Math.max(1, Number(def.effects.rainmaker)||3); setField('rain', rr, mySide); if(recordEvents && events) events.push({type:'fieldSet', side:mySide, defId:boardCard.defId, field:'rain', rounds:rr, rainmaker:true}); }
-    if(def.effects.fortification) sk2Fortify(players, sideOf, playerId, boardCard, stats, events); // Package SK2 (2026-10-19): a Palisade beside it
+    if(def.effects.fortification) sk2Fortify(players, sideOf, playerId, boardCard, stats, events); // Package SK2 (2026-10-19): a Palisade beside it (Build {…} since ENG22)
+    if(def.effects.fortify) fortifyBramble(players, sideOf, playerId, boardCard, events); // ENG22 (2026-11-03, SKILL-BUILD-1): Fortify {…}, to your bramble
     if(def.effects.bulwark) bulwarkRaise(players, sideOf, playerId, boardCard, stats, events); // Bulwark N (2026-10-23, package EN): two 0/4N Vanguard shields nearest it
     // Bounty N (2026-10-15, user: "I think Bounty and Worthy should be fused. Just Bounty. Bounty means - I give lumber to my owner on
     // play, but also to the enemy on kill."): on play its owner gains N Lumber; when it dies, the other side gains N (removeDeadCards).
@@ -7292,7 +7361,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         let hw2 = null; const hwTwice = ()=> hw2 == null ? (hw2 = headwindTwice(c, pid, sideOf(pid), events)) : hw2;
         if(fx.snipe){ const opp0 = opposingCardOf(players, pid, c); if(!(opp0 && opp0.card && opp0.card.hp>0)){
           for(let sr = 0, sn = 1; sr < sn && c.hp > 0; sr++){ const foes = allBoardCards(enemy).filter(x=> x.hp>0 && !x.cageOf);
-          if(foes.length){ const t = foes[Math.floor(rnd()*foes.length)]; const amt = Number(fx.snipe === true ? 1 : fx.snipe)||1;
+          if(foes.length){ const t = shotRedirect(players, sideOf, pid, c, foes[Math.floor(rnd()*foes.length)], events); const amt = Number(fx.snipe === true ? 1 : fx.snipe)||1; // ENG22: Taunt / Guardian
             if(recordEvents && events) events.push({type:'arrow', snipe:true, side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: t.uid, targetDefId: t.defId, amount: amt, headwind: sr > 0 || undefined});
             fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, killCredit, c.uid, true, true); }
             if(sr === 0 && hwTwice()) sn = 2; } } } }
@@ -7303,11 +7372,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(!(c.hp > 0)) return;
           let target;
           if(shot.at === 'hq') target = {kind:'hq'};
-          else if(shot.at){ if(!(shot.at.hp > 0)) return; target = {kind:'card', card: shieldCall(enemy, shot.at) || shot.at}; }
+          else if(shot.at){ if(!(shot.at.hp > 0)) return; const at = shot.volley ? shot.at : shotRedirect(players, sideOf, pid, c, shot.at, events); target = {kind:'card', card: shieldCall(enemy, at) || at}; } // ENG22: Taunt / Guardian take it (not Volley)
           else { const opp = opposingCardOf(players, pid, c);
-            const near = (opp && opp.card && opp.card.hp>0) ? opp.card : arrowTargetOf(players, pid, c);
+            const near0 = (opp && opp.card && opp.card.hp>0) ? opp.card : arrowTargetOf(players, pid, c), near = near0 ? shotRedirect(players, sideOf, pid, c, near0, events) : near0; // ENG22
             target = near ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'}; }
-          const tEv = {side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: shot.bolt ? shot.n : shot.amount};
+          const pulled = shot.volley ? null : lastShotPull; lastShotPull = null;
+          const tEv = {side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: shot.bolt ? shot.n : shot.amount, guardianRedirect: pulled === 'guardian' || undefined, taunted: pulled === 'taunt' || undefined};
           if(recordEvents && events) events.push(shot.bolt ? Object.assign({type:'bolt', element: shot.bolt, key: shot.boltKey}, tEv)
             : Object.assign({type:'arrow', fire: !!shot.fire, ice: shot.ice || undefined, twin: shot.twin || undefined, volley: shot.volley || undefined, bola: shot.bola || undefined /* ENG14 */, lasso: shot.lasso || undefined /* ENG15 */}, tEv));
           fired = true;
@@ -9004,11 +9074,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function bxArrowShot(players, sideOf, pid, c, n, stats, events, how, bramble, tip){
     const pl = players[pid], enemy = players[otherId(pid)]; if(!pl || !enemy || !c || !(c.hp > 0)) return false;
     const amount = Math.max(0, Math.round(Number(n) || 0)) + ((pl.perks && pl.perks.fletcher) ? 1 : 0) + auraN(pl, 'fletcher') + eqArrowBonus(pl);
-    const opp = opposingCardOf(players, pid, c), near = (opp && opp.card && opp.card.hp > 0) ? opp.card : arrowTargetOf(players, pid, c);
+    const opp = opposingCardOf(players, pid, c), near0 = (opp && opp.card && opp.card.hp > 0) ? opp.card : arrowTargetOf(players, pid, c);
+    const near = (near0 && !bramble) ? shotRedirect(players, sideOf, pid, c, near0, events) : near0, pulled = lastShotPull; lastShotPull = null; // ENG22 (2026-11-03, DESIGN1-4): Taunt / Guardian
     const target = (near && !bramble) ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'}; // EN6 (2026-10-24): Arrow – bramble aims at the bramble
     if(c.invisible > 0){ c.invisible = 0; if(recordEvents && events) events.push({type:'statusEnd', status:'invisible', side:sideOf(pid), uid:c.uid, defId:c.defId, attacked:true}); } // shooting gives it away, as for Arrow
     if(recordEvents && events) events.push({type:'arrow', side:sideOf(pid), defId:c.defId, uid:c.uid, targetSide:sideOf(otherId(pid)), targetUid: target.kind === 'card' ? target.card.uid : null, targetDefId: target.kind === 'card' ? target.card.defId : null,
-      amount, archer: how === 'archer' || undefined, style: (effectsOf(c).archerStyle || undefined)});
+      amount, archer: how === 'archer' || undefined, style: (effectsOf(c).archerStyle || undefined), guardianRedirect: pulled === 'guardian' || undefined, taunted: pulled === 'taunt' || undefined});
     if(helmetDeflects(target, sideOf(otherId(pid)), events)) return true;
     const [amt2, tip2] = en7StatusOnly(tip, amount, target); // ENG9: – poison / – bleed: counters only
     const hit = fireDamageAction(players, sideOf, pid, c.defId, amt2, 'physical', target, stats, events, bxBook, c.uid, true, true); // true: a shot (Reflect, Evasive); true: Armor stops it (ENG10)
@@ -9090,18 +9161,47 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(h > 0){ const i0 = events ? events.length : 0; fireHealTriggers(players, sideOf, pl.id, c, t, h, stats, events); if(events && events[i0] && events[i0].type === 'heal') events[i0].cause = 'forage'; }
   }
   // Fortification: the Palisade token (one derived card per size), built in an empty slot beside its builder.
-  function sk2PalisadeDefOf(){
-    const atk = Math.max(0, Math.round(Number(SK2.fortifyAtk)||0)), hp = Math.max(1, Math.round(Number(SK2.fortifyHp)||1)), id = 'sk2-palisade~' + atk + 'x' + hp;
+  // ENG22 (2026-11-03, owner SKILL-BUILD-1: "Fortification renamed to Build - {}. So it would be written as Build - { 0/6 Palisade }"): the
+  // engine key stays effects.fortification; its value is the Palisade's size: true = the default (SK2.fortifyAtk / fortifyHp, 0/6), a string
+  // "A/H Palisade" (or "A/H"), or {attack, health}. buildSizeOf reads it.
+  function buildSizeOf(v){ let a = Number(SK2.fortifyAtk)||0, h = Number(SK2.fortifyHp)||1;
+    if(v && typeof v === 'object'){ if(v.attack != null) a = Number(v.attack)||0; if(v.health != null) h = Number(v.health)||1; }
+    else if(typeof v === 'string'){ const m = /(\d+)\s*\/\s*(\d+)/.exec(v); if(m){ a = Number(m[1]); h = Number(m[2]); } }
+    return {atk: Math.max(0, Math.round(a)), hp: Math.max(1, Math.round(h))}; }
+  function sk2PalisadeDefOf(v){
+    const sz = buildSizeOf(v), atk = sz.atk, hp = sz.hp, id = 'sk2-palisade~' + atk + 'x' + hp;
     if(!CARD_DEFS[id]){ const look = CARD_DEFS[SK2.fortifyFrom] || {};
       CARD_DEFS[id] = derivedDefs[id] = {id, name:'Palisade' /* the app shows TX('ui.sk2-palisade-name') */, icon: look.icon || '🪵', art: look.art, attack:atk, health:hp, wait:0, cost:0,
         rarity:'common', token:true, sk2Palisade:true, archetypes:['Structure'], species:[], effects: Object.assign({}, SK2.fortifyEffects || {})}; }
     return id;
   }
+  // Fortify {X} (ENG22, 2026-11-03, owner SKILL-BUILD-1: "Fortify (new skill) - {} would then be, to give {} to the bramble. E.g. Fortify -
+  // {Thorns 1, +1 Health}"): on play, your bramble gets X for the rest of the fight (it stays when the unit dies). effects.fortify =
+  // {health, thorns, regen, bolt, shield} or the card's text ("Thorns 1, +1 Health"); fortifyParts reads either. The parts are the
+  // brambles' own passives: +N Health (Health and its top), Thorns N (castleThorns: a unit that hits the bramble takes N), Regen N
+  // (castleRegen: heals one wounded ally unit N at a round's start; a bramble is never healed), Bolt N (castleBolt: N at a random enemy unit
+  // each round), +N Shield (the blue shield on top of its Health). Several add up. On no card yet (priced in canonical/skill-costs.json).
+  const FORTIFY_PARTS = ['health', 'thorns', 'regen', 'bolt', 'shield'];
+  function fortifyParts(v){ const out = {}; if(!v) return out;
+    if(typeof v === 'object'){ FORTIFY_PARTS.forEach(k=>{ const n = Math.round(Number(v[k])||0); if(n > 0) out[k] = n; }); return out; }
+    String(v).split(/[,;&]/).forEach(s=>{ const t = s.trim().toLowerCase(); if(!t) return; const m = /([+-]?\d+)/.exec(t), n = m ? Math.abs(Number(m[1])) : 1;
+      const k = /health|hp/.test(t) ? 'health' : /thorn/.test(t) ? 'thorns' : /regen/.test(t) ? 'regen' : /bolt/.test(t) ? 'bolt' : /shield/.test(t) ? 'shield' : null;
+      if(k && n > 0) out[k] = (out[k]||0) + n; }); return out; }
+  function fortifyBramble(players, sideOf, pid, src, events){
+    const pl = players && players[pid]; if(!pl || !pl.hq || !src) return null; const p = fortifyParts(effectsOf(src).fortify); if(!Object.keys(p).length) return null;
+    if(p.health){ pl.hq.maxHp = (pl.hq.maxHp||0) + p.health; pl.hq.hp = (pl.hq.hp||0) + p.health; }
+    if(p.thorns) pl.castleThorns = (pl.castleThorns||0) + p.thorns;
+    if(p.regen) pl.castleRegen = (pl.castleRegen||0) + p.regen;
+    if(p.bolt) pl.castleBolt = (pl.castleBolt||0) + p.bolt;
+    if(p.shield) pl.hq.shield = (pl.hq.shield||0) + p.shield;
+    if(recordEvents && events) events.push({type:'fortify', side:sideOf(pid), uid:src.uid, defId:src.defId, parts:p, hp:pl.hq.hp, maxHp:pl.hq.maxHp, shield:pl.hq.shield||0});
+    return p;
+  }
   function sk2Fortify(players, sideOf, pid, src, stats, events){
     const pl = players && players[pid]; if(!pl || !src || !(src.hp > 0) || !allBoardCards(pl).includes(src)) return null;
     if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).map(x=> x.slot)), s0 = Number.isInteger(src.slot) ? src.slot : 0;
       if(used.has(s0 - 1) && used.has(s0 + 1)) return null; } // only right beside it
-    const tok = spawnBeside(players, sideOf, pid, src, sk2PalisadeDefOf(), stats, events, 'sk2Fortify');
+    const tok = spawnBeside(players, sideOf, pid, src, sk2PalisadeDefOf(effectsOf(src).fortification), stats, events, 'sk2Fortify'); // ENG22: Build {A/H Palisade}
     if(tok && recordEvents && events) events.push({type:'sk2', kind:'fortify', side:sideOf(pid), uid:src.uid, defId:src.defId, tokenUid:tok.uid, tokenDefId:tok.defId, slot:tok.slot});
     return tok;
   }
@@ -9413,6 +9513,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           ensureStat(stats, sideOf(pl.id), c.defId).lumberGenerated += def.effects.onReadyGold;
           if(recordEvents && events) events.push({type:'lumber', side:sideOf(pl.id), defId:c.defId, uid:c.uid, amount:def.effects.onReadyGold});
         }
+        if(def.effects && def.effects.deliveryEvery) deliveryEveryTick(pl, c, def, stats, sideOf, events); // ENG22 (2026-11-03, DESIGN1-6): Delivery {X}, every turn
         tributeTick(players, sideOf, pl, c, stats, events); // Tribute N (TR, 2026-10-21): Gold while Ready (a crowned King's Kingly has Tribute 1)
         // Rebuild N (2026-10-17): every upkeep while Ready, like onReadyGold just above (so also the upkeep its Wait runs out).
         if(def.effects && def.effects.rebuild && c.hp > 0 && !c.cageOf) rebuildCastle(players, sideOf, pl.id, c, numN(def.effects.rebuild, REBUILD_DEF), stats, events, 'ready');
@@ -9478,7 +9579,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // ENG9 (2026-10-26, owner G23: "once used, remove Fireball"): a unit's one-shot On Ready skills, once they have gone off, leave its own copy
   // of the card (patchUnitDef: the board, its detail and the log show it without them): On Ready damage, an On Ready Missile or Render,
   // Rocket, Fireball, Meteor, Chilli, Converge, Stockpile, an On Ready Pearl (Pearl Bed before ENG19) and its On Ready triggers. Event skillSpent {keys}.
-  const ONE_SHOT_READY = ['onReadyDamage', 'rocket', 'fireball', 'meteor', 'chilli', 'converge', 'stockpile'];
+  const ONE_SHOT_READY = ['onReadyDamage', 'rocket', 'fireball', 'meteor', 'chilli', 'converge', 'stockpile', 'delivery' /* ENG22 (2026-11-03): Delivery {X}, once */];
   function spendOnReady(c, side, events){
     const e = effectsOf(c), patch = {}, keys = [];
     const off = k=>{ const v = e[k]; patch[k] = typeof v === 'number' ? 0 : (v && typeof v === 'object') ? null : false; keys.push(k); };
@@ -9653,7 +9754,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const reviving = !!(cdef.effects && cdef.effects.undead && !card.revivedOnce && !card.nullified); // a Nullify kill: no Revive (2026-10-14); a middle / back-row unit revives in its row's slot too (2026-10-19, RR; TS had it off)
       const rv = reviving ? {pl, side, card, slot: card.slot, entry: null} : null; if(rv) revives.push(rv);
       ensureStat(stats, mySide, card.defId).deaths += 1;
-      if(!isStructureCard(card)){ pl.diedThisFight = (pl.diedThisFight || 0) + 1; if(thrInPlay) trDirty = true; } // ENG10 (2026-10-26, PROP1-4): the threshold skills' deaths
+      if(!isStructureCard(card)){ pl.diedThisFight = (pl.diedThisFight || 0) + 1; if(thrInPlay){ trDirty = true; thrSeeDeath(players, pl); } } // + Carnage sees it (ENG22) // ENG10 (2026-10-26, PROP1-4): the threshold skills' deaths
       // Devilry (2026-10-10): every unit that perishes counts toward Rituals, and gives its owner 1 Darkness.
       // D20 (2026-10-12): Darkness from your own losses stops at 10, so a deck can't farm it with cheap chaff (cards that
       // make Darkness on purpose still go past it).
@@ -11163,7 +11264,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { ...EQ_API /* 2026-10-19 (package EQ) */, endOfRoundUpkeep, applyDecayTicks, swingSpeedOf, isMagicDmg, blockerReady, reviveFromGrave, spendOnReady /* 2026-10-26 (package ENG9): for its test */, boonState: players=> boonStateOf(players && players[boonPid()]) /* 2026-10-24 (package DF3): the selfish boon's count */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
+  return { ...EQ_API /* 2026-10-19 (package EQ) */, endOfRoundUpkeep, applyDecayTicks, swingSpeedOf, isMagicDmg, blockerReady, reviveFromGrave, spendOnReady /* 2026-10-26 (package ENG9): for its test */, fortifyParts, buildSizeOf, deliveryResOf, shotRedirect /* 2026-11-03 (package ENG22): for the app and its test */, boonState: players=> boonStateOf(players && players[boonPid()]) /* 2026-10-24 (package DF3): the selfish boon's count */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
     darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, ownedCells /* COOP3 */, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, zeitPhase /* ENG11 (K6) */, scorchingOn /* ENG11 (K10) */, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */, EN8_DEF, pearlSettle, pearlGap, aiUsefulNow, aiResourceGap, aiLethalBlock, aiLosingBadly, aiFreeCard, AI_PLAN: ()=> ({reach: AI_PLAN_REACH, turns: AI_PLAN_TURNS, value: AI_PLAN_VALUE}) /* ENG14 (2026-10-30, X24) */, mirageOwnerKey, bolaPinnable /* ENG14 */, aiIncomingOnBramble, hasThornsNow, magicArmorOf, redirectToGuardian /* EN8 (2026-10-24) */, EN20, en20HpAfter, en20IsLeader, getWindKind: ()=> windNow ? windKind : null, isCrosswind, isHeavyWind, aiDevourPlan /* ENG20 (2026-11-02) */ };
 }
 

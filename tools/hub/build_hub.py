@@ -172,6 +172,8 @@ skills_html = ''.join(skill_card(f) for f in SKILLS)
 # have"; "write down your ideas or my ideas in the master sheet in the design section"): the design
 # sheets and audits, newest first, each a collapsible card (the first one open).
 DESIGN = [
+  # 2026-11-04 (package SKILLREC1, owner 07:42: "get a list of skill recommendations (sort by advancement) in the master hub"): first, so it opens by default
+  ('Skill recommendations by road advancement (SKILLREC1)', 'skill-recommendations-2026-11-04.md'),
   ('Fields, day and night, Lumber from cards', 'fields-and-day-night-2026-10-09.md'),
   ('Starter decks: every Basic card, for reorganising', 'starter-decks-2026-10-10.md'),
   ('Card levels: base level and growth schedule', 'card-levels-2026-10-10.md'),

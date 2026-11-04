@@ -1403,7 +1403,7 @@ const SK2_LINE = {
   pickpocket: v=> TX('ui.sk2-pickpocket', {n: sk2Num(v, 'pickpocketN')}),
   sabotage: v=> TX('ui.sk2-sabotage', {n: sk2Num(v, 'sabotageN')}),
   arson: v=> TX('ui.sk2-arson', {n: sk2Num(v, 'arsonN')}),
-  fortification: ()=> TX('ui.sk2-fortification', {a: SK2_UI.fortifyAtk, h: SK2_UI.fortifyHp}),
+  fortification: v=>{ const z = e22BuildSize(v); return TX('ui.sk2-fortification', {a: z.atk, h: z.hp}); }, // ENG22 (2026-11-03): Build {A/H Palisade}, the card's size
 };
 PASSIVE_DEFS.push(
   {key:'harvest', category:'passive', label:TX('ui.sk2n-harvest'), kind:'boolean', desc:v=> SK2_LINE.harvest(v), codexNote:TX('ui.sk2-harvest-codex')},
@@ -1418,8 +1418,17 @@ PASSIVE_DEFS.push(
   {key:'pickpocket', category:'passive', label:TX('ui.sk2n-pickpocket'), kind:'number', min:1, defaultValue:SK2_UI.pickpocketN, desc:v=> SK2_LINE.pickpocket(v), codexNote:TX('ui.sk2-pickpocket-codex'), get:e=> e.pickpocket ? sk2Num(e.pickpocket, 'pickpocketN') : undefined},
   {key:'sabotage', category:'passive', label:TX('ui.sk2n-sabotage'), kind:'number', min:1, defaultValue:SK2_UI.sabotageN, desc:v=> SK2_LINE.sabotage(v), codexNote:TX('ui.sk2-sabotage-codex'), get:e=> e.sabotage ? sk2Num(e.sabotage, 'sabotageN') : undefined},
   {key:'arson', category:'passive', label:TX('ui.sk2n-arson'), kind:'number', min:1, defaultValue:SK2_UI.arsonN, desc:v=> SK2_LINE.arson(v), codexNote:TX('ui.sk2-arson-codex'), get:e=> e.arson ? sk2Num(e.arson, 'arsonN') : undefined},
-  {key:'fortification', category:'passive', label:TX('ui.sk2n-fortification'), kind:'boolean', desc:()=> SK2_LINE.fortification(), codexNote:TX('ui.sk2-fortification-codex')},
+  // ENG22 (2026-11-03, owner SKILL-BUILD-1: "Fortification renamed to Build - {}. So it would be written as Build - { 0/6 Palisade }"): named
+  // Build, and its braces are the Palisade's size (the key stays fortification; true = the default 0/6).
+  {key:'fortification', category:'passive', label:TX('ui.sk2n-fortification'), kind:'text', placeholder:'0/6 Palisade', desc:v=> SK2_LINE.fortification(v), codexNote:TX('ui.sk2-fortification-codex'),
+    get:e=> e.fortification ? e22BuildText(e.fortification) : undefined, apply:(e, v)=>{ const z = e22BuildSize(v); e.fortification = (z.atk === SK2_UI.fortifyAtk && z.hp === SK2_UI.fortifyHp) ? true : `${z.atk}/${z.hp} Palisade`; }},
 );
+// Build's size (ENG22): true = SK2's default, "A/H Palisade" / "A/H", or {attack, health} (bramblewood-engine.js buildSizeOf, the same rule)
+function e22BuildSize(v){ let a = SK2_UI.fortifyAtk, h = SK2_UI.fortifyHp;
+  if(v && typeof v === 'object'){ if(v.attack != null) a = Number(v.attack)||0; if(v.health != null) h = Number(v.health)||1; }
+  else if(typeof v === 'string'){ const m = /(\d+)\s*\/\s*(\d+)/.exec(v); if(m){ a = Number(m[1]); h = Number(m[2]); } }
+  return {atk: Math.max(0, Math.round(a)), hp: Math.max(1, Math.round(h))}; }
+function e22BuildText(v){ const z = e22BuildSize(v); return `${z.atk}/${z.hp} Palisade`; }
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
 // Scatterbrained, Meteor, ..."): oneOff:true on those registry entries; the skill picker and the Skills codex tag them. Durian joins
@@ -1972,9 +1981,13 @@ PASSIVE_DEFS.push(
   {key:'dismantle', category:'passive', label:TX('ui.e10-dismantle-name'), kind:'boolean', desc:()=> TX('ui.e10-dismantle'), codexNote:TX('ui.e10-hardy-codex')});
 // each threshold skill's name and line, as literal text keys (tests/game-texts.js reads TX('key') calls)
 const THR_TX = {requiem:{name:()=> TX('ui.skn-e10-requiem'), line:o=> TX('ui.sk-e10-requiem', {n: o.n, skills: o.skills})}, dirge:{name:()=> TX('ui.skn-e10-dirge'), line:o=> TX('ui.sk-e10-dirge', {n: o.n, skills: o.skills})},
+  // ENG22 (2026-11-03, owner 21:13): Carnage sees the deaths (its line), and four counters in the same form (on no card; decision ENG22-1)
+  tally:{name:()=> TX('ui.skn-e10-tally'), line:o=> TX('ui.sk-e10-tally', {n: o.n, skills: o.skills})}, almanac:{name:()=> TX('ui.skn-e10-almanac'), line:o=> TX('ui.sk-e10-almanac', {n: o.n, skills: o.skills})},
+  onslaught:{name:()=> TX('ui.skn-e10-onslaught'), line:o=> TX('ui.sk-e10-onslaught', {n: o.n, skills: o.skills})}, riled:{name:()=> TX('ui.skn-e10-riled'), line:o=> TX('ui.sk-e10-riled', {n: o.n, skills: o.skills})},
   carnage:{name:()=> TX('ui.skn-e10-carnage'), line:o=> TX('ui.sk-e10-carnage', {n: o.n, skills: o.skills})}, muster:{name:()=> TX('ui.skn-e10-muster'), line:o=> TX('ui.sk-e10-muster', {n: o.n, skills: o.skills})},
   beset:{name:()=> TX('ui.skn-e10-beset'), line:o=> TX('ui.sk-e10-beset', {n: o.n, skills: o.skills})}, throng:{name:()=> TX('ui.skn-e10-throng'), line:o=> TX('ui.sk-e10-throng', {n: o.n, skills: o.skills})}};
-const THR_APP = {requiem:{n:5, ico:'⚰️'}, dirge:{n:3, ico:'🎻'}, carnage:{n:3, ico:'🥩'}, muster:{n:6, ico:'🏴'}, beset:{n:6, ico:'🆘'}, throng:{n:10, ico:'🐜🐜'}}; // icons no other skill uses
+const THR_APP = {requiem:{n:5, ico:'⚰️'}, dirge:{n:3, ico:'🎻'}, carnage:{n:3, ico:'🥩'}, muster:{n:6, ico:'🏴'}, beset:{n:6, ico:'🆘'}, throng:{n:10, ico:'🐜🐜'},
+  tally:{n:3, ico:'🪦🪦'}, almanac:{n:4, ico:'📖'}, onslaught:{n:3, ico:'🏹🏰'}, riled:{n:3, ico:'😤'} /* ENG22 */}; // icons no other skill uses
 function thrNApp(k, e){ const v = e && e[k]; return (v === true || v == null || !(Number(v) > 0)) ? THR_APP[k].n : Math.round(Number(v)); }
 function thrGrantApp(k, e){ const g = e && e[k + 'Grant']; return g && typeof g === 'object' && Object.keys(g).length ? g : {attack: 2, health: 2}; }
 Object.keys(THR_APP).forEach(k=>{ EN5_STATE_KEYS[k] = {tx: 'e10-' + k, ico: THR_APP[k].ico}; EN5_STATE_DEFAULT_APP[k] = {attack: 2, health: 2}; SKILL_ICON[k] = THR_APP[k].ico; SKILL_ICON[k + 'Grant'] = THR_APP[k].ico;
@@ -1983,6 +1996,40 @@ Object.keys(THR_APP).forEach(k=>{ EN5_STATE_KEYS[k] = {tx: 'e10-' + k, ico: THR_
     {key:k + 'Grant', category:'passive', label:THR_TX[k].name(), kind:'grant', placeholder:'+2/+2', desc:(v, n, e)=> THR_TX[k].line({n: thrNApp(k, e), skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-e10-thr-codex'),
     get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; if(!e[k]) e[k] = THR_APP[k].n; } }}); });
 Object.assign(SKILL_ICON, {sunder:'🪓💥', dismantle:'🔧💥'}); // icons no other skill uses
+// ==== Package ENG22 (2026-11-03, owner 21:10 / 21:13 in docs/decisions.json; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
+//   Fortify {X}     on play your bramble gets X for the fight (SKILL-BUILD-1; on no card). Bramble Armor (key brambleArmor) is its EN3 name again.
+//   Delivery {X}    the one "resource when Ready" keyword (DESIGN1-6): Delivery {Lumber x1} once (Stockpile's and the On Ready gain's rule),
+//                   Delivery {Lumber x1}, every turn (onReadyGold's rule); deliveryRes picks another resource. Stockpile leaves "+ Add Skill".
+//   Taunt / Guardian also take arrows and shots (DESIGN1-4); Carnage counts what it saw; Tally / Almanac / Onslaught / Riled (on no card).
+const E22_FP = ['health', 'thorns', 'regen', 'bolt', 'shield'];
+// Fortify's braces: {health, thorns, regen, bolt, shield} or the card's text ("Thorns 1, +1 Health"); bramblewood-engine.js fortifyParts, the same rule
+function e22FortifyParts(v){ const out = {}; if(!v) return out;
+  if(typeof v === 'object'){ E22_FP.forEach(k=>{ const n = Math.round(Number(v[k])||0); if(n > 0) out[k] = n; }); return out; }
+  String(v).split(/[,;&]/).forEach(x=>{ const t = x.trim().toLowerCase(); if(!t) return; const m = /([+-]?\d+)/.exec(t), n = m ? Math.abs(Number(m[1])) : 1;
+    const k = /health|hp/.test(t) ? 'health' : /thorn/.test(t) ? 'thorns' : /regen/.test(t) ? 'regen' : /bolt/.test(t) ? 'bolt' : /shield/.test(t) ? 'shield' : null;
+    if(k && n > 0) out[k] = (out[k]||0) + n; }); return out; }
+function e22FortifyText(v){ const p = e22FortifyParts(v), w = {health:n=> TX('ui.e22-fp-health', {n}), thorns:n=> TX('ui.e22-fp-thorns', {n}), regen:n=> TX('ui.e22-fp-regen', {n}), bolt:n=> TX('ui.e22-fp-bolt', {n}), shield:n=> TX('ui.e22-fp-shield', {n})};
+  return E22_FP.filter(k=> p[k]).map(k=> w[k](p[k])).join(', '); }
+const E22_RES = ['lumber', 'stone', 'metal', 'uranium', 'pearl', 'grace'];
+function e22ResOf(e){ const r = e && typeof e.deliveryRes === 'string' ? e.deliveryRes.toLowerCase().replace(/s$/, '') : 'lumber'; return E22_RES.includes(r) ? r : 'lumber'; }
+function e22ResName(r){ return ({lumber:()=> TX('ui.e22-res-lumber'), stone:()=> TX('ui.e22-res-stone'), metal:()=> TX('ui.e22-res-metal'), uranium:()=> TX('ui.e22-res-uranium'), pearl:()=> TX('ui.e22-res-pearl'), grace:()=> TX('ui.e22-res-grace')}[r] || (()=> TX('ui.e22-res-lumber')))(); }
+// The card line's head (cardSkillLines): Build { 0/6 Palisade }, Fortify { Thorns 1, +1 Health }, Delivery { Lumber x1 }(, every turn)
+function e22Head(k, v, e){
+  if(k === 'fortification'){ const z = e22BuildSize(v); return TX('ui.e22-build-head', {a: z.atk, h: z.hp}); }
+  if(k === 'fortify') return TX('ui.e22-fortify-head', {x: e22FortifyText(v)});
+  if(k === 'delivery') return TX('ui.e22-delivery-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
+  if(k === 'deliveryEvery') return TX('ui.e22-delivery-every-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
+  return null; }
+PASSIVE_DEFS.push(
+  {key:'fortify', category:'passive', label:TX('ui.e22-fortify-name'), kind:'text', placeholder:'Thorns 1, +1 Health', desc:v=> TX('ui.e22-fortify', {x: e22FortifyText(v)}), codexNote:TX('ui.e22-fortify-codex'),
+    get:e=> e.fortify ? e22FortifyText(e.fortify) : undefined, apply:(e, v)=>{ const p = e22FortifyParts(v); if(Object.keys(p).length) e.fortify = p; }},
+  {key:'delivery', category:'passive', label:TX('ui.e22-delivery-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
+  {key:'deliveryEvery', category:'passive', label:TX('ui.e22-delivery-every-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery-every', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
+  {key:'deliveryRes', category:'passive', label:TX('ui.e22-delivery-res-name'), kind:'select', selectOptions:()=> E22_RES.map(r=> ({value:r, label:e22ResName(r)})), desc:v=> e22ResName(e22ResOf({deliveryRes:v}))});
+Object.assign(SKILL_ICON, {fortify:'🏯', delivery:'📦', deliveryEvery:'📦', deliveryRes:'📦'});
+sk1Patch(PASSIVE_DEFS, 'stockpile', {hidden:true}); // ENG22 (DESIGN1-6): Delivery {Lumber xN} replaces it in "+ Add Skill"; an old card still reads it
+sk1Patch(PASSIVE_DEFS, 'taunt', {desc:()=> TX('ui.e22-taunt')}); // ENG22 (DESIGN1-4): Taunt pulls the arrows and shots of the enemies around it
+sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.e22-guardian')}); // ENG22 (DESIGN1-4): Guardian takes arrows and shots too
 // Hardy N on an equipment card (PROP1-1): its lives, equip.hardy (default 1, shown only from 2)
 function eqHardyOf(d){ const e = (d && d.equip) || {}, v = e.hardy != null ? e.hardy : e.lives; return v != null && Number(v) > 0 ? Math.max(1, Math.min(9, Math.round(Number(v)))) : 1; }
 // FIX3-4 (owner 10-26 11:19: "Yes level pvp strangers deck"): a Collection PvP stranger's deck fights at the level that brings its battle rating
@@ -3268,7 +3315,14 @@ const SKILL_REVEAL_MAP = {
   // (Fodder was the name of the babies' Stem, EN-6 / EV-6: one skill, stem.)
   stem:        {from:20, nameFrom:15, parts:['stemGrant']},
   chrysalis:   {from:20, nameFrom:15},
-  hatchling:   {from:20, nameFrom:15}, // ENG17 (2026-11-02, BABY-2): Hatchling is the babies' Fodder, so it follows Stem's gate
+  // ENG22 (2026-11-03, owner DESIGN1-11: "It needs to focus on advantaging evomax cards. So having its own inherent effect is too much. Can be
+  // 'Hatchling - ?'."): it reads "Hatchling - ?" from the start (nameFrom -1) until Evomax comes in, Map 20 (EN8: "evomax is only in play in
+  // 20-40"); it has no effect of its own (an evolute played onto it gains +1/+2).
+  hatchling:   {from:20, nameFrom:-1}, // ENG17 (2026-11-02, BABY-2): Hatchling is the babies' Fodder, so it follows Stem's gate
+  // ENG22 (2026-11-03, owner DESIGN1-2: "If somehow in Tutorial map and Map 0 an ability we don't feel comfortable in introducing yet comes out -
+  // it's a '?'."): the abilities the base Level 0 cards bring at Level 1 that Map 0's own fights don't show (they show Armor, Flying, Swarm,
+  // Poison and Quick) read "?" on the tutorial map and Map 0; Map 1 reveals them. Tide is Map 2's already.
+  taunt:       {from:1}, reach:{from:1}, inspiring:{from:1}, esprit:{from:1}, boomerang:{from:1}, evasive:{from:1}, molting:{from:1}, frostbite:{from:1}, fireArrow:{from:1},
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
@@ -3458,6 +3512,8 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
       const head0 = p.key==='pack' ? `${p.label}${skillValSuffix(p, v === true ? 2 : v)}` : p.label; /* BL (2026-10-23): "Pack", not "Pack 2", at its default */ lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
+    if(p.key==='deliveryRes') return; // ENG22: read on the Delivery line
+    { const h22 = e22Head(p.key, v, e); if(h22){ lines.push(`${ic(p.key)}${escapeHtml(h22)} — ${skillText(p, v, e)}`); return; } } // ENG22 (2026-11-03): Build / Fortify / Delivery {…}
     const head = p.key==='hunter' ? giHunterHead(p, e) /* Hunter N (Poisoned) (2026-10-19, GI) */ : p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${skillValSuffix(p, v)}` /* BL: bare at its default */ : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? (atSkillDefault(p, v) ? p.label : `${p.label} +${v[0]}/+${v[1]}`) /* BL (2026-10-23): "Diurnal", not "Diurnal +1/+0" */ : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
@@ -8501,11 +8557,15 @@ function preloadFightAssets(m){
   try{ const c = SoundKit.audioContext && SoundKit.audioContext(); if(c){ if(c.state === 'suspended' && c.resume) c.resume().catch(()=>{});
     const b = c.createBuffer(1, 1, c.sampleRate), s = c.createBufferSource(); s.buffer = b; s.connect(c.destination); s.start(); } }catch(e){}
 }
+// 2026-11-04 (package UI19, owner 23:12: "the name scroll covers the creature's head"): a card's own art focus, artPosY in % (0 = the top of the picture shows, 100 = its bottom,
+// unset or 50 = centred); set in the Card editor (Art height), stored on the card (canonical/cards.json). Framed art uses object-position, extended art moves down by --apy.
+function artPosOf(d){ const v = d && d.artPosY; if(v === undefined || v === null || v === '') return null; const n = Math.round(Number(v)); return Number.isFinite(n) && n !== 50 ? Math.max(0, Math.min(100, n)) : null; }
+function artPosStyle(d){ const n = artPosOf(d); return n === null ? '' : ` style="--apy:${n}; object-position:50% ${n}%"`; }
 function cardIcoHTML(d, lazy){
   if(d && d.art){
     // 2026-10-17 (Codex / Nest lag): a long grid (the Codex, the Nest) asks for lazy, async art, so a page of cards doesn't fetch and
     // decode every painting on the main thread before it can show; the board and hand keep the synchronous decode below.
-    if(lazy) return `<img class="card-art-img" src="${d.art}" alt="${escapeAttr(d.name||'')}" draggable="false" decoding="async" loading="lazy" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';"><span class="ico-emoji-fallback" style="display:none">${escapeAttr((d && d.icon) || '❔')}</span>`;
+    if(lazy) return `<img class="card-art-img" src="${d.art}"${artPosStyle(d)} alt="${escapeAttr(d.name||'')}" draggable="false" decoding="async" loading="lazy" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';"><span class="ico-emoji-fallback" style="display:none">${escapeAttr((d && d.icon) || '❔')}</span>`;
     const icon = escapeAttr((d && d.icon) || '❔');
     // 2026-09-26 (bug report: "backgrounds sometimes randomly disappear" — a card briefly showing
     // just its plain rarity-color background, no art). Root cause: every board/hand re-render
@@ -8521,7 +8581,7 @@ function cardIcoHTML(d, lazy){
     // layout instead of deferring it, closing that gap; loading="eager" additionally rules out any
     // browser heuristic treating an off-screen-at-mount tile (e.g. one that scrolls into view) as
     // lazy-loadable, which the same deferred-paint symptom could also come from.
-    return `<img class="card-art-img" src="${d.art}" alt="${escapeAttr(d.name||'')}" draggable="false" decoding="sync" loading="eager" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';"><span class="ico-emoji-fallback" style="display:none">${icon}</span>`;
+    return `<img class="card-art-img" src="${d.art}"${artPosStyle(d)} alt="${escapeAttr(d.name||'')}" draggable="false" decoding="sync" loading="eager" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';"><span class="ico-emoji-fallback" style="display:none">${icon}</span>`;
   }
   // Shadow cards (2026-10-11, Willow-o'-Wisp) without art: the emoji becomes a dark silhouette with a cold glow.
   if(d && Array.isArray(d.archetypes) && d.archetypes.includes('Shadow')) return `<span class="ico-shadow">${d.icon || '❔'}</span>`;
@@ -8851,6 +8911,17 @@ function ui3TintHTML(d){
 // their own rules; in-match cards move in a later step). docs/design/card-sizes-2026-10-29.md has the plan; tests/cs-a-2026-10-30.js checks it.
 const CARD_SIZES = ['detail', 'full', 'compact'];
 function cardSizeAttr(opts){ const s = opts && opts.size; return CARD_SIZES.includes(s) ? ` data-size="${s}"` : ''; }
+// 2026-11-04 (package UI19, owner 23:12: "the two-line name scroll covers the creature's head"): the name scroll stays on one line where it can. nmFitScale() takes the
+// name's width in em (measured with the real Baloo 2 Bold on a canvas once the font is loaded, else estimated per letter) against the room a card gives it
+// (NM_ROOM_EM = 6.7 em of the card’s name size; measured on a built tile: 6.9 em of room) and shrinks the text (--nm-s) down to NM_MIN_SCALE; a longer name then wraps
+// to two lines. The text never goes under 6.2px (CSS). The rolled ends do not follow (--nm-cap is the card's).
+const NM_ROOM_EM = 6.7, NM_MIN_SCALE = 0.7, NM_W_CACHE = new Map(); let nmCtx = null;
+function nmWidthEm(name){ name = String(name || '');
+  try{ if(NM_W_CACHE.has(name)) return NM_W_CACHE.get(name);
+    if(typeof document !== 'undefined' && document.fonts && document.fonts.check('700 20px "Baloo 2"')){ nmCtx = nmCtx || document.createElement('canvas').getContext('2d'); nmCtx.font = '700 100px "Baloo 2"'; const w = nmCtx.measureText(name).width / 100; NM_W_CACHE.set(name, w); return w; } }catch(e){}
+  let w = 0; for(const ch of name){ w += /[iIl1j.,'’:;!|]/.test(ch) ? .3 : /[ftr\- ]/.test(ch) ? .36 : /[mwMW@]/.test(ch) ? .75 : /[A-Z]/.test(ch) ? .63 : .52; } return w; } // the fallback before the font is ready
+function nmFitScale(name){ const w = nmWidthEm(name); return w <= NM_ROOM_EM ? 1 : Math.max(NM_MIN_SCALE, Math.round(NM_ROOM_EM / w * 100) / 100); }
+function nmHTML(name){ const sc = nmFitScale(name); return `<div class="nm"><span class="nmt"${sc < 1 ? ` style="--nm-s:${sc}"` : ''}>${escapeHtml(name)}</span></div>`; }
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
@@ -8911,7 +8982,7 @@ function cardTileHTML(d, opts){
       ${live.overlaysHTML||''}
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
       ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
-      <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
+      ${nmHTML(d.name||live.fallbackName||'')}
       <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
       ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */, shieldAmt: live.shieldAmt /* 2026-10-31 (UI11, FF1) */, cowering: !!live.cowering /* ENG15 (FF6) */}})}
       ${live.bottomHTML||''}
@@ -8933,7 +9004,7 @@ function cardTileHTML(d, opts){
     ${d.darkSummon && !cardFrameArch(d, cardBackingKind(d)) /* 2026-10-16 (user: "...remove the top right hand corner context symbol for those. like the 5 point star for devilry..."): the Devilry frame says it; the card text still says Dark Summon */?`<div class="darkbadge" title="Dark Summon — uses your Dark Summon for the turn (1 a turn), not your normal play">⛧</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
     ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
-    <div class="nm">${escapeHtml(d.name||'')}</div>
+    ${nmHTML(d.name||'')}
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
     ${abilityBadges(d, {compact: !!(hand || inMatch), hand: !!hand /* UI5 (2026-10-30, W5) */, live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
@@ -9710,7 +9781,7 @@ function deletedTileHTML(t){
   const when = t.deletedAt ? new Date(t.deletedAt).toLocaleString() : '';
   return `<div class="card-tile" style="cursor:default;">
     <div class="ico">${d.icon||'❔'}</div>
-    <div class="nm">${escapeHtml(d.name||t.id)}</div>
+    ${nmHTML(d.name||t.id)}
     <div class="stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔${d.attack||0}</span><span class="hp">❤${d.health||1}</span></div>
     <div style="font-size:10px; color:var(--ink-muted); text-align:center; margin-top:4px;">${when}</div>
     <button class="btn small primary" style="width:100%; margin-top:6px;" data-restore="${t.id}">♻ Restore</button>
@@ -11046,7 +11117,10 @@ function renderEditorInner(){
            dropdowns alphabetical"): RARITY_DEFS is a meaningful power-tier ladder. -->
       <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label>${(()=>{ /* 2026-10-21 (package CX2): the rank ladder (Common → Daemonic; Starter only on a Starter card) and four toggles, Quest, Event, Dev, Special (one at a time) */
         const rp = rarityPartsOf(c.rarity || 'common'), ladder = RARITY_DEFS.filter(r=> !r.as && !r.special && (r.key !== 'starter' || rp.rank === 'starter'));
-        return `<select id="fRarity" aria-label="Rank">${ladder.map(r=>`<option value="${r.key}" ${rp.rank===r.key?'selected':''}>${r.label}</option>`).join('')}</select><span class="rarity-flags" role="group" aria-label="${escapeAttr(TX('ui.cx-rarity-flags'))}">${Object.keys(RARITY_FLAG_LABEL).map(f=> `<label class="rarity-flag" title="${escapeAttr(RARITY_FLAG_TEXT[f][1]())}"><input type="checkbox" data-rflag="${f}" ${rp.flag===f?'checked':''}>${escapeHtml(RARITY_FLAG_TEXT[f][0]())}</label>`).join('')}</span>`; })()}</div>
+        return `<select id="fRarity" aria-label="Rank">${ladder.map(r=>`<option value="${r.key}" ${rp.rank===r.key?'selected':''}>${r.label}</option>`).join('')}</select>`; })()}</div>
+      ${'' /* 2026-11-04 (package UI19, owner 23:01: "Locked, Hidden and the source flags (Quest / Event / Dev / Special) on one row"): one row of toggles under Name / Rank */}
+      <div class="field ed-flagrow" style="grid-column:1 / -1"><span class="rarity-flags ed-flags" role="group" aria-label="${escapeAttr(TX('ui.cx-rarity-flags'))}">
+        <label class="rarity-flag" title="Locked cards can't go in a deck yet."><input type="checkbox" id="fLocked" ${c.locked?'checked':''}>Locked</label><label class="rarity-flag" title="Hidden until a player first sees one in play, then it becomes Locked."><input type="checkbox" id="fHidden" ${c.hidden===false?'':'checked'}>Hidden</label>${devModeEnabled ? `<label class="rarity-flag" title="Test cards only show in the Codex 🧪 Test cards filter and the Sandbox spawn picker."><input type="checkbox" id="fTest" ${c.test?'checked':''}>🧪 Test card</label>` : ''}<span class="ed-flag-sep" aria-hidden="true"></span>${(()=>{ const rp2 = rarityPartsOf(c.rarity || 'common'); return Object.keys(RARITY_FLAG_LABEL).map(f=> `<label class="rarity-flag" title="${escapeAttr(RARITY_FLAG_TEXT[f][1]())}"><input type="checkbox" data-rflag="${f}" ${rp2.flag===f?'checked':''}>${escapeHtml(RARITY_FLAG_TEXT[f][0]())}</label>`).join(''); })()}</span></div>
       ${(()=>{ /* 2026-11-01 (package UI13, HH1): Base / Baby / Faction beside the rarity; only Baby is stored, Base or Faction follows the card's faction */
         const auto = c.faction ? 'faction' : 'base';
         return `<div class="field ui13-kind-field" title="${escapeAttr(TX('ui.ui13-kind-edit-tip'))}"><label for="fKind">${escapeHtml(TX('ui.ui13-kind'))}</label><select id="fKind"><option value="">${CARD_KIND_ICON[auto]} ${escapeHtml(cardKindLabel(auto))}</option><option value="baby" ${c.kind === 'baby' ? 'selected' : ''}>${CARD_KIND_ICON.baby} ${escapeHtml(cardKindLabel('baby'))}</option></select></div>`; })()}
@@ -11054,7 +11128,7 @@ function renderEditorInner(){
       <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack'], ['graveCall', TX('ui.spell3-grave-call', {cap: 10})], ['smokeScreen', TX('ui.act3-smoke-screen')], ['magnet', TX('ui.act3-magnet')] /* 2026-10-19 (SK3) */].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
       <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> (p.kind==='boolean' || p.kind==='number') && (!p.retired || Object.keys((c.equip||{}).grant||{})[0]===p.key)).map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
       <div class="field" id="fEquipTimeRow" ${c.cardType==='equipment'?'':'hidden'} title="${escapeAttr(TX('ui.c3-equip-time-tip'))}"><label>${escapeHtml(TX('ui.c3-equip-time-name'))}</label><span style="display:flex; gap:10px; align-items:center;"><input id="fEquipTime" type="number" min="0" max="5" style="width:64px" value="${(c.equip && c.equip.turns != null) ? c.equip.turns : 1}" aria-label="${escapeAttr(TX('ui.c3-equip-time-name'))}"><label style="display:flex; gap:4px; align-items:center;"><input id="fEquipTamper" type="checkbox" ${(c.equip && c.equip.tamperProof) ? 'checked' : ''}> ${escapeHtml(TX('ui.c3-tamper-name'))}</label><label style="display:flex; gap:4px; align-items:center;" title="${escapeAttr(TX('ui.e10-hardy-tip'))}">${escapeHtml(TX('ui.e10-hardy-name'))} <input id="fEquipHardy" type="number" min="1" max="9" style="width:52px" value="${eqHardyOf(c)}"></label></span></div>
-      <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select></div>
+      <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select><label class="ed-arty" title="${escapeAttr(TX('ui.ui19-art-y-tip'))}"><span>${escapeHtml(TX('ui.ui19-art-y'))}</span><input id="fArtPosY" type="number" min="0" max="100" step="5" placeholder="50" value="${artPosOf(c) === null ? '' : artPosOf(c)}"></label></div>
       <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Bird, Insect" oninput="(function(el){ const v = el.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })(this)"></div><datalist id="speciesList">${allSpeciesNames().map(k=> `<option value="${escapeAttr(k)}" label="${speciesIcon(k)} ${escapeAttr(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeAttr(SPECIES_PHYLUM[k]) : SPECIES_PHYLUM[k] ? '' : ' · new'}">`).join('')}</datalist></div>
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
            request: "I think the Splash Effect doesn't need to be there as well, since it's
@@ -11071,8 +11145,6 @@ function renderEditorInner(){
            decks)" checkbox — checked meant NOT locked, the opposite of the underlying c.locked
            field it wrote to (c.locked = !checked). Now the checkbox IS c.locked directly: label
            reads "Locked", checked when the card is actually locked, no double-negative. -->
-      <div class="field" title="Locked cards can't go in a deck yet."><label>Availability</label><label class="field-checkbox-row"><input type="checkbox" id="fLocked" ${c.locked?'checked':''}> Locked</label><label class="field-checkbox-row" title="Hidden until a player first sees one in play, then it becomes Locked."><input type="checkbox" id="fHidden" ${c.hidden===false?'':'checked'}> Hidden</label></div>
-      ${devModeEnabled ? `<div class="field" title="Test cards only show in the Codex 🧪 Test cards filter and the Sandbox spawn picker."><label>Developer</label><label class="field-checkbox-row"><input type="checkbox" id="fTest" ${c.test?'checked':''}> 🧪 Test card</label></div>` : ''}
     </div>
     <div class="field-row">
       <!-- Task #102 (2026-09-16): this used to be the free-text "Archetype(s) — comma list"
@@ -11084,12 +11156,12 @@ function renderEditorInner(){
            replacing the old standalone Card Type dropdown — a card with no "Structure" pill is a
            Unit, same implicit default the dropdown used to have (see isStructure()). -->
       <div class="field" style="grid-column:span 3" title="A card can carry several type-tags. Pick one to add it; click − on a pill to remove it.">
-        <label>Type Tags</label>
+        <label>Type Tags</label><div class="ed-tags-line">
         <div class="pill-row" id="archPills">${(c.archetypes&&c.archetypes.length?c.archetypes:[]).map((a,i)=>`<span class="pill">${ARCHETYPE_ICON[a]||'🌰'} ${a}<button type="button" class="pill-rm" data-rmarch="${i}" title="Remove ${escapeAttr(a)}">−</button></span>`).join('') || '<span class="pill-empty">No types yet</span>'}</div>
         <div class="pill-add-row">
           <select id="archAddSel">${Object.keys(ARCHETYPE_ICON).sort().filter(a=>!(c.archetypes||[]).includes(a)).map(a=>`<option value="${a}">${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
           <button type="button" class="btn small" id="archAddBtn">+ Add</button>
-        </div>
+        </div></div>
       </div>
     </div>
 
@@ -11119,57 +11191,60 @@ function renderEditorInner(){
         <select id="fDmgType">${[...DMG_TYPES].sort().map(dt=>`<option value="${dt}" ${((c.dmgType||'physical')===dt)?'selected':''}>${dmgTypeOptLabel(dt)}</option>`).join('')}</select>
       </div>
     </div>
-    ${levelStatsEditorHTML(c)}
-    ${'' /* 2026-10-12 (23:12, user: "Let me edit their source in the web-app"): the Codex's placement panel, right in the editor */}
-    ${c.id && rawCardDef(c.id) ? codexPlacementHTML(c) : ''}
-    <div class="field-row">
-      <!-- 2026-09-22 ("don't use gold anymore. the current symbol that represents gold looks
-           like stone anyway!"): the base play cost is paid in Lumber, not Gold — the underlying
-           field name (c.cost) is unchanged (see costOfCard in bramblewood-engine.js), only the
-           label/tooltip text and which HUD resource it actually draws from.
-           Stone/Metal (2026-09-27, item 6, per explicit request: "Cost should show all 3 costs,
-           lumber, stone, and metal"): Cost and Reward each show all three resources side by
-           side now, plain numbers next to their emoji (no resource name spelled out — matches
-           the Pitch display just after). Lumber is still the only one the live match
-           engine actually charges/pays out (costOfCard / the bounty payout in
-           bramblewood-engine.js read c.cost / effects.bounty only) — Stone/Metal are captured
-           here as card data (c.stoneCost/c.metalCost, effects.bountyStone/bountyMetal) for now,
-           same additive-only scope as the Devilry/Ecclesia/Scrapper cost fields further down
-           this form, which also only take effect once a matching system reads them. -->
-      <div class="field field-wide" title="What it costs to play this card: Lumber, Stone and Metal.">
-        <label>Cost</label>
-        <div class="multi-resource-row">
-          <input id="fCost" type="number" min="0" value="${c.cost}" title="Lumber"><span class="mr-glyph" title="Lumber">🪵</span>
-          <input id="fCostStone" type="number" min="0" value="${c.stoneCost||0}" title="Stone"><span class="mr-glyph" title="Stone">🪨</span>
-          <input id="fCostMetal" type="number" min="0" value="${c.metalCost||0}" title="Metal"><span class="mr-glyph" title="Metal">🔩</span>
-        </div>
-      </div>
-      <div class="field field-wide" title="Bounty: Lumber its owner gains when played and the opponent gains when it dies.">
-        <label>Reward</label>
-        <div class="multi-resource-row">
-          <input id="fBounty" type="number" min="0" value="${c.effects.bounty||0}" title="Lumber"><span class="mr-glyph" title="Lumber">🪵</span>
-          <input id="fBountyStone" type="number" min="0" value="${c.effects.bountyStone||0}" title="Stone"><span class="mr-glyph" title="Stone">🪨</span>
-          <input id="fBountyMetal" type="number" min="0" value="${c.effects.bountyMetal||0}" title="Metal"><span class="mr-glyph" title="Metal">🔩</span>
-        </div>
-      </div>
-      <!-- Pitch (2026-09-21, Batch #10 request: "Pitch value display in the stats menu
-           (read-only/greyed-out), certain passives would change this number"). Read-only by
-           design: a card's pitchYield field has no edit UI anywhere in this form (see
-           editorPitchYieldOf's own comment) and isn't meant to gain one here.
-           2026-09-27, item 6 ("the display should just say +1 <Emoji>. Don't need to write
-           'Lumber'" + "When a passive skill increases this pitch value, the pitch value will
-           update accordingly"): dropped the spelled-out resource name, and pitchValueStatDisplay
-           now folds the Core Evil / Devilry-archetype Dark Point bonus into the shown total
-           (previously the tooltip explicitly disclaimed "this preview shows only the base
-           yield" — now it doesn't need to, the number IS the effective total). -->
-      <div class="field" title="What discarding this card grants. Read-only here."><label>Pitch</label><input id="fPitchValueDisplay" value="${pitchValueStatDisplay(c)}" disabled></div>
-    </div>
+    <!-- 2026-11-04 (package UI19, owner 23:01: "Cost, Pitch and Reward go on one row, in that order. Pitch gets the same 3 columns as Cost: Lumber, Stone, Metal"):
+         one compact row; each group is Lumber, Stone, Metal. Cost: c.cost / stoneCost / metalCost (only Lumber is charged by the engine today). Reward: effects.bounty*.
+         Pitch is read-only (no pitchYield edit UI): its amount sits under the resource it gives, the others read 0; a Dark Point bonus or a Grace yield shows after it. -->
+    ${(()=>{ const py = editorPitchColsOf(c), box = (id, val, glyph, title, dis)=> `<input ${id ? `id="${id}" ` : ''}type="number" min="0" value="${val}" title="${title}" aria-label="${title}"${dis ? ' disabled' : ''}><span class="mr-glyph" title="${title}">${glyph}</span>`;
+      return `<div class="ed-econ">
+      <div class="field" title="What it costs to play this card: Lumber, Stone and Metal."><label>Cost</label><div class="multi-resource-row">${box('fCost', c.cost, '🪵', 'Lumber')}${box('fCostStone', c.stoneCost||0, '🪨', 'Stone')}${box('fCostMetal', c.metalCost||0, '🔩', 'Metal')}</div></div>
+      <div class="field" title="What discarding this card grants. Read-only here."><label>Pitch</label><div class="multi-resource-row">${box('fPitchValueDisplay', py.lumber, '🪵', 'Lumber', true)}${box('', py.stone, '🪨', 'Stone', true)}${box('', py.metal, '🔩', 'Metal', true)}${py.extra ? `<span class="ed-pitch-extra">${escapeHtml(py.extra)}</span>` : ''}</div></div>
+      <div class="field" title="Bounty: Lumber its owner gains when played and the opponent gains when it dies."><label>Reward</label><div class="multi-resource-row">${box('fBounty', c.effects.bounty||0, '🪵', 'Lumber')}${box('fBountyStone', c.effects.bountyStone||0, '🪨', 'Stone')}${box('fBountyMetal', c.effects.bountyMetal||0, '🔩', 'Metal')}</div></div>
+    </div>`; })()}
 
     <!-- Task #104 (2026-09-16): "Advanced" is now the umbrella header over Archetype (the
          mechanic-line picker, itself renamed from "Type" — task #102), Passive abilities, and
          Custom Triggers, instead of three separately-styled dividers with no shared heading. -->
     <div class="section-divider group-header"><span class="st-label">Advanced</span></div>
 
+    <div class="section-divider subsection mech-line-${inferMechanicLine(c)}"><span class="st-label">Archetype</span>
+      <div class="field-row">
+        <div class="field" title="Picks this card's summoning line: Grace (Ecclesia), Exile (Scrapper) or Devilry."><label>Archetype</label><select id="fMechLine">
+          <option value="none" ${inferMechanicLine(c)==='none'?'selected':''}>None</option>
+          <option value="devilry" ${inferMechanicLine(c)==='devilry'?'selected':''}>Devilry</option>
+          <option value="grace" ${inferMechanicLine(c)==='grace'?'selected':''}>Ecclesia</option>
+          <option value="exile" ${inferMechanicLine(c)==='exile'?'selected':''}>Scrapper</option>
+          <option value="evolution" ${inferMechanicLine(c)==='evolution'?'selected':''}>${escapeHtml(TX('ui.arch-evomax'))}</option>
+        </select></div>
+        <div class="field mech-field" data-mech="grace" title="Prayer needed to play this card. Never spent."><label>Ecclesia — Prayer needed 🙏</label><input id="fPrayerReq" type="number" min="0" value="${c.prayerReq||0}"></div>
+        <div class="field mech-field" data-mech="exile" title="Playing this card also requires exiling this many cards from the chosen zone."><label>Scrapper cost — zone</label><select id="fExileZone"><option value="">none</option><option value="graveyard" ${c.exileCost&&c.exileCost.zone==='graveyard'?'selected':''}>graveyard</option><option value="hand" ${c.exileCost&&c.exileCost.zone==='hand'?'selected':''}>hand</option></select></div>
+        <div class="field mech-field" data-mech="exile" title="How many cards must be exiled from that zone to afford this card."><label>Scrapper cost — count</label><input id="fExileCount" type="number" min="0" value="${c.exileCost?c.exileCost.count:0}"></div>
+        <div class="field mech-field" data-mech="devilry" title="Extra cost paid from the Devilry resource pool on top of the lumber cost above."><label>Devilry cost</label><input id="fDevilryCost" type="number" min="0" value="${c.devilryCost||0}"></div>
+      </div>
+    </div>
+
+    <div class="section-divider subsection"><span class="st-label">Passive abilities</span><span class="st-sub">Always-active modifiers baked directly into combat math — no generic Custom Trigger equivalent</span>
+      <div id="skillRows">${deriveSkillRows(c).map((r,i)=>({r,i})).filter(({r})=>{const s=SKILL_DEFS.find(x=>x.key===r.key); return !s||s.category!=='evergreen';}).map(({r,i})=>skillRowHTML(r,i,'passive',inferMechanicLine(c))).join('')}</div>
+      <button class="btn small" id="addSkill">+ Add skill</button>
+    </div>
+
+    <!-- Evergreen abilities (2026-09-27, per explicit request: "On Death [Spawn]: Passive is
+         not a passive ability... clean up the passive abilities to remove all triggers and
+         actions"): its own section, split out of "Passive abilities" above — these are bundled
+         trigger+action shorthand (On Death: Spawn, Gash, Render, Earthquake, Inherent Darkness),
+         the exact same thing buildable by hand below in Custom Triggers, just packaged as one
+         named skill with fewer clicks. The Reference tab already drew this line correctly; the
+         live editor just hadn't caught up. -->
+    <div class="section-divider subsection"><span class="st-label">Evergreen abilities</span><span class="st-sub">Bundled trigger + action shorthand — buildable by hand below in Custom Triggers, just packaged as one named skill</span>
+      <div id="evergreenRows">${deriveSkillRows(c).map((r,i)=>({r,i})).filter(({r})=>{const s=SKILL_DEFS.find(x=>x.key===r.key); return s&&s.category==='evergreen';}).map(({r,i})=>skillRowHTML(r,i,'evergreen',inferMechanicLine(c))).join('')}</div>
+      <button class="btn small" id="addEvergreen">+ Add evergreen</button>
+    </div>
+
+    <div class="section-divider subsection"><span class="st-label">Custom Triggers</span><span class="st-sub">On ⟨Trigger⟩, Do ⟨Action⟩</span>
+      <div id="triggerRows">${c.effects.triggers.map((t,i)=>triggerRowHTML(t,i)).join('')}</div>
+      <button class="btn small" id="addTrigger">+ Add trigger</button>
+    </div>
+
+    <!-- 2026-11-04 (package UI19, owner 23:01): Resistances and weaknesses, the source ("From") and Stats by level sit below the abilities -->
     <!-- Resistance and Weaknesses (2026-09-16, per explicit request): a Resistance box and a
          Weakness box side by side in the same row, each an add/remove pill list exactly like
          the Type Tags field above. Backed directly by c.effects.resist[] / c.effects.weakness[]
@@ -11233,43 +11308,9 @@ function renderEditorInner(){
       </div>
     </div>
 
-    <div class="section-divider subsection mech-line-${inferMechanicLine(c)}"><span class="st-label">Archetype</span>
-      <div class="field-row">
-        <div class="field" title="Picks this card's summoning line: Grace (Ecclesia), Exile (Scrapper) or Devilry."><label>Archetype</label><select id="fMechLine">
-          <option value="none" ${inferMechanicLine(c)==='none'?'selected':''}>None</option>
-          <option value="devilry" ${inferMechanicLine(c)==='devilry'?'selected':''}>Devilry</option>
-          <option value="grace" ${inferMechanicLine(c)==='grace'?'selected':''}>Ecclesia</option>
-          <option value="exile" ${inferMechanicLine(c)==='exile'?'selected':''}>Scrapper</option>
-          <option value="evolution" ${inferMechanicLine(c)==='evolution'?'selected':''}>${escapeHtml(TX('ui.arch-evomax'))}</option>
-        </select></div>
-        <div class="field mech-field" data-mech="grace" title="Prayer needed to play this card. Never spent."><label>Ecclesia — Prayer needed 🙏</label><input id="fPrayerReq" type="number" min="0" value="${c.prayerReq||0}"></div>
-        <div class="field mech-field" data-mech="exile" title="Playing this card also requires exiling this many cards from the chosen zone."><label>Scrapper cost — zone</label><select id="fExileZone"><option value="">none</option><option value="graveyard" ${c.exileCost&&c.exileCost.zone==='graveyard'?'selected':''}>graveyard</option><option value="hand" ${c.exileCost&&c.exileCost.zone==='hand'?'selected':''}>hand</option></select></div>
-        <div class="field mech-field" data-mech="exile" title="How many cards must be exiled from that zone to afford this card."><label>Scrapper cost — count</label><input id="fExileCount" type="number" min="0" value="${c.exileCost?c.exileCost.count:0}"></div>
-        <div class="field mech-field" data-mech="devilry" title="Extra cost paid from the Devilry resource pool on top of the lumber cost above."><label>Devilry cost</label><input id="fDevilryCost" type="number" min="0" value="${c.devilryCost||0}"></div>
-      </div>
-    </div>
-
-    <div class="section-divider subsection"><span class="st-label">Passive abilities</span><span class="st-sub">Always-active modifiers baked directly into combat math — no generic Custom Trigger equivalent</span>
-      <div id="skillRows">${deriveSkillRows(c).map((r,i)=>({r,i})).filter(({r})=>{const s=SKILL_DEFS.find(x=>x.key===r.key); return !s||s.category!=='evergreen';}).map(({r,i})=>skillRowHTML(r,i,'passive',inferMechanicLine(c))).join('')}</div>
-      <button class="btn small" id="addSkill">+ Add skill</button>
-    </div>
-
-    <!-- Evergreen abilities (2026-09-27, per explicit request: "On Death [Spawn]: Passive is
-         not a passive ability... clean up the passive abilities to remove all triggers and
-         actions"): its own section, split out of "Passive abilities" above — these are bundled
-         trigger+action shorthand (On Death: Spawn, Gash, Render, Earthquake, Inherent Darkness),
-         the exact same thing buildable by hand below in Custom Triggers, just packaged as one
-         named skill with fewer clicks. The Reference tab already drew this line correctly; the
-         live editor just hadn't caught up. -->
-    <div class="section-divider subsection"><span class="st-label">Evergreen abilities</span><span class="st-sub">Bundled trigger + action shorthand — buildable by hand below in Custom Triggers, just packaged as one named skill</span>
-      <div id="evergreenRows">${deriveSkillRows(c).map((r,i)=>({r,i})).filter(({r})=>{const s=SKILL_DEFS.find(x=>x.key===r.key); return s&&s.category==='evergreen';}).map(({r,i})=>skillRowHTML(r,i,'evergreen',inferMechanicLine(c))).join('')}</div>
-      <button class="btn small" id="addEvergreen">+ Add evergreen</button>
-    </div>
-
-    <div class="section-divider subsection"><span class="st-label">Custom Triggers</span><span class="st-sub">On ⟨Trigger⟩, Do ⟨Action⟩</span>
-      <div id="triggerRows">${c.effects.triggers.map((t,i)=>triggerRowHTML(t,i)).join('')}</div>
-      <button class="btn small" id="addTrigger">+ Add trigger</button>
-    </div>
+    ${levelStatsEditorHTML(c)}
+    ${'' /* 2026-10-12 (23:12, user: "Let me edit their source in the web-app"): the Codex's placement panel, right in the editor */}
+    ${c.id && rawCardDef(c.id) ? codexPlacementHTML(c) : ''}
 
     <div class="section-divider full-bleed"><span class="st-label">Flavor text</span>
       <textarea id="fFlavor" class="full-width" title="Optional italic flavor line shown under this card's abilities in its popover and reference entry." placeholder="A line of witty medieval-woodland flavor…">${escapeAttr(c.flavor)}</textarea>
@@ -11444,6 +11485,10 @@ function renderEditorInner(){
     if(c._skillRows && c._skillRows[i]) c._skillRows[i].value = sel.value ? [sel.value] : [];
     sel.setAttribute('data-first', sel.value); sel.setAttribute('data-extra', '[]');
     if(hint) hint.textContent = sel.value ? 'Counts ' + sel.value : 'Any shared type';
+  }));
+  // 2026-11-03 (UI19): the Swarm N box keeps the row's n.
+  overlay.querySelectorAll('#skillRows input[data-sk="valN"], #evergreenRows input[data-sk="valN"]').forEach(inp=> inp.addEventListener('input', ()=>{
+    const i = Number(inp.getAttribute('data-i')); if(c._skillRows && c._skillRows[i]) c._skillRows[i].n = Math.max(1, Math.round(Number(inp.value)) || 1);
   }));
   // Chained (Devilry, 2026-09-17): changing the break-condition dropdown (val0) needs the
   // whole row re-rendered so the damage-threshold number field (val1) shows/hides itself to
@@ -11662,7 +11707,9 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     // option, so the select shows it and a Save keeps it (it used to fall back to "Type", plain Swarm).
     const sel = Array.isArray(row.value) ? row.value : [];
     valueHtml = `<select class="skill-types" data-sk="vals" data-i="${i}" data-first="${escapeAttr(sel[0]||'')}" data-extra="${escapeAttr(JSON.stringify(sel.slice(1)))}" aria-label="Counts allies of this type (Type: any shared type)" title="Type: any ally that shares a type. Pick a type to count only that type."><option value="" ${sel.length?'':'selected'}>Type</option>${(sel[0] && !Object.prototype.hasOwnProperty.call(ARCHETYPE_ICON, sel[0]) ? [sel[0]] : []).concat(Object.keys(ARCHETYPE_ICON).sort()).map(a=>`<option value="${escapeAttr(a)}" ${sel[0]===a?'selected':''}>${ARCHETYPE_ICON[a]||''} ${escapeHtml(a)}</option>`).join('')}</select><small class="skill-types-hint">${sel.length ? 'Counts ' + escapeHtml(sel.join(', ')) : 'Any shared type'}</small>`;
-    if(s.numberKey) valueHtml += `<input type="hidden" data-sk="valN" data-i="${i}" value="${row.n||1}">`;
+    // 2026-11-03 (package UI19, owner 23:01: "I can't seem to edit the Swarm N value in Card editor"): UI10 had hidden the N box; it is a real
+    // number field again, "+N per ally" (swarmN; a numeric effects.swarm from old data arrives as n, see deriveSkillRows, and saves as swarm + swarmN).
+    if(s.numberKey) valueHtml += `<label class="sk-n" title="${escapeAttr(TX('ui.ui19-swarm-n-tip'))}"><span>+</span><input type="number" min="1" max="9" step="1" class="w-52" data-sk="valN" data-i="${i}" aria-label="${escapeAttr(TX('ui.ui19-swarm-n'))}" value="${Math.max(1, Number(row.n)||1)}"><span>${escapeHtml(TX('ui.ui19-swarm-per'))}</span></label>`;
   } else if(s.kind==='cardCount'){
     // On Death: Spawn / On Attacked: Spawn (2026-09-21): a card-name dropdown (val0=defId) plus
     // a count (val1) — the exact same picker widget actionFieldsHTML already builds for the
@@ -11997,6 +12044,7 @@ function readEditorFormIntoCard(){
           { const hd = document.getElementById('fEquipHardy'); if(hd){ const n = Math.max(1, Math.min(9, Math.round(Number(hd.value) || 1))); delete c.equip.lives; if(n > 1) c.equip.hardy = n; else delete c.equip.hardy; } } /* ENG10 (2026-10-26, PROP1-1): Hardy N */ } if(!(c.archetypes||[]).includes('Equipment')) c.archetypes = ['Equipment'].concat((c.archetypes||[]).filter(a=> a!=='Misc')); }
       else if(c.cardType === 'spell' || c.cardType === 'equipment'){ delete c.cardType; delete c.spell; delete c.equip; } } }
   { const fa = document.getElementById('fArtStyle'); if(fa){ if(fa.value === 'extended') c.artExtended = true; else delete c.artExtended; } } // 2026-10-10: normal vs extended art
+  { const fy = document.getElementById('fArtPosY'); if(fy){ const n = fy.value === '' ? NaN : Math.round(Number(fy.value)); if(Number.isFinite(n) && n !== 50) c.artPosY = Math.max(0, Math.min(100, n)); else delete c.artPosY; } } // 2026-11-04 (UI19): art focus
   { const fs = document.getElementById('fSpecies'); if(fs){ const sp = fs.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean).map(x=> Object.keys(SPECIES_PHYLUM).find(k=> k.toLowerCase()===x.toLowerCase()) || x).slice(0, 2);
     if(sp.length) c.species = sp; else { delete c.species; if(!c.test && !c.field && !c.cardType) showToast('This card has no species. Every unit needs an animal type or Elemental.', 'warn'); } } }
   // 2026-09-27, item 9: no editor field for this any more (see the removed markup's own
@@ -12074,7 +12122,7 @@ function readEditorFormIntoCard(){
     } else if(sdef.kind==='types'){
       const el = row.querySelector('[data-sk="vals"]'), nEl = row.querySelector('[data-sk="valN"]'); // 2026-10-31 (UI10): one dropdown; '' = plain Swarm; an untouched multi-type pick keeps its other types
       const picked = !el ? [] : el.multiple ? [...el.selectedOptions].map(o=> o.value) : el.value ? (el.value === el.getAttribute('data-first') ? [el.value].concat(JSON.parse(el.getAttribute('data-extra') || '[]')) : [el.value]) : [];
-      sdef.apply(fx, picked, nEl ? nEl.value : 1);
+      sdef.apply(fx, picked, nEl ? Math.max(1, Math.round(Number(nEl.value)) || 1) : 1); // UI19: N is a visible field again, a whole number >= 1
     } else {
       sdef.apply(fx, true);
     }
@@ -12103,6 +12151,7 @@ function readEditorFormIntoCard(){
   { const formKeys = new Set(['triggers', 'resist', 'weakness', 'immune', 'bounty', 'bountyStone', 'bountyMetal', 'onReadyDamage']);
     const params = (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.PARAMS) || [];
     Object.keys(c.effects || {}).forEach(k=>{ if(k in newEffects || formKeys.has(k)) return; const v = c.effects[k];
+      if(SKILL_DEFS.some(s=> s.numberKey === k)) return; // 2026-11-04 (UI19): a row's own N (swarmN, defianceN ...) is read from its field; an old value must not come back when the row says 1 or the skill is gone
       if(params.includes(k) && !Object.keys(newEffects).some(b=> b !== k && k.startsWith(b))) return; // a parameter (defianceN, hunterVs ...) only beside its skill
       const read = SKILL_DEFS.some(s=>{ try{ return (s.get ? s.get({[k]: v}) : ({[k]: v})[s.key]) !== undefined; }catch(e){ return s.key === k; } });
       if(!read) newEffects[k] = v; }); }
@@ -23870,7 +23919,8 @@ const TOWER_POOLS = {
 // Swan Knight (Super Rare: Bounty 2). See towerFloorDeck.
 const TOWER_LUMBER_POOL = ['nautilus-drifter', 'gilded-swan-knight'];
 // A Lumber source (2026-10-17): +Lumber on arrival or when Ready, Bounty, or a trigger that gains Lumber.
-function isLumberSource(d){ const e = (d && d.effects) || {}; if(e.onSpawnGold || e.onReadyGold || e.bounty) return true;
+function isLumberSource(d){ const e = (d && d.effects) || {}; if(e.onSpawnGold || e.onReadyGold || e.bounty || e.stockpile) return true;
+  if((e.delivery || e.deliveryEvery) && (!e.deliveryRes || /^lumber/i.test(String(e.deliveryRes)))) return true; // ENG22 (2026-11-03): Delivery {Lumber xN} (inline: tools lift this function alone)
   return (e.triggers || []).some(t=> t && (t.do === 'gainGold' || t.do === 'gainLumber' || (t.do === 'gain' && (!t.resource || t.resource === 'lumber')))); }
 // A deck that costs a lot of Lumber (3+ cards at 3+ Lumber, or 2+ on average, copies counted) with no Lumber source in it.
 function towerNeedsLumber(deck, defs){ let n = 0, sum = 0, big = 0, src = false;
@@ -32487,6 +32537,34 @@ function ui13RefreshTile(ov, tile){
   else { const e = rvTileEntries.get(sec + '|' + id + '|' + kind); if(!e || !defs[id]) return; tmp.innerHTML = rv1TileHTML(e, kind, defs, sec); fresh = tmp.firstElementChild; tile.replaceWith(fresh); }
   rv2Update(ov); try{ if(fresh) wireRewardZoom(fresh.matches('[data-zoom]') ? fresh.parentNode : fresh); }catch(e){} // only the new tile (a second wiring of the rest would double their listeners)
 }
+// UI19_MC_SKILLS:BEGIN
+// 2026-11-04 (package UI19, owner 2026-11-03 23:01 + 11-04 07:42: "also list the skills on this page ... which are the first time showing with the NEW! flag"):
+// the 🃏 Map cards window lists the skills the shown lists' cards carry (a skill a card only gets at a later level counts too), each with its short text
+// and "n of N cards"; NEW! marks a skill no card of an EARLIER map (road order, mapNumberOf, any of that map's lists) carries. Admin-only like the window.
+function ui19McSkillRows(ids, defs){
+  const by = new Map();
+  [...new Set(ids)].forEach(id=>{ const d = defs[id]; if(!d) return;
+    ui18CardSkillKeys(d).forEach(({key, lvl})=>{ let r = by.get(key); if(!r){ r = {key, ids: [], lvl, fx: lvl > 0 ? (((d.levelSkills || {})[lvl]) || {}) : (d.effects || {})}; by.set(key, r); } r.ids.push(id); }); });
+  return [...by.values()];
+}
+function ui19McEarlierSkillKeys(top, defs, ok){
+  const n = mapNumberOf(top), keys = new Set(); if(n === null) return keys;
+  (typeof mainConquestMaps === 'function' ? mainConquestMaps() : []).forEach(mm=>{ const k = mapNumberOf(mm.id); if(k === null || k >= n) return;
+    let secs = []; try{ secs = mapPoolSections(mm.id); }catch(e){}
+    secs.forEach(s=> (s.ids || []).filter(ok).forEach(id=> { const d = defs[id]; if(d) ui18CardSkillKeys(d).forEach(x=> keys.add(x.key)); })); });
+  return keys;
+}
+function ui19McSkillText(r){
+  const p = skillDefOf(r.key); if(!p) return '';
+  try{ const v = p.get ? p.get(r.fx) : r.fx[r.key]; return String(skillText(p, v === undefined ? true : v, r.fx) || ''); }catch(e){ try{ return String(p.desc(true, undefined, r.fx) || ''); }catch(e2){ return ''; } }
+}
+function ui19McSkillsHTML(top, ids, defs, ok){
+  const uniq = [...new Set(ids)], rows = ui19McSkillRows(uniq, defs), early = ui19McEarlierSkillKeys(top, defs, ok);
+  const flagged = rows.map(r=> Object.assign(r, {isNew: !early.has(r.key), p: skillDefOf(r.key)})).sort((a, b)=> (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
+  const li = r=> `<li class="ui19-sk${r.isNew ? ' is-new' : ''}" data-ui19-skill="${escapeAttr(r.key)}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}<small>${escapeHtml(ui19McSkillText(r))}</small></span><span class="ui19-sk-n">${escapeHtml(TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}))}</span></li>`;
+  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length ? `<ul class="ui19-sk-list">${flagged.map(li).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
+}
+// UI19_MC_SKILLS:END
 function pk1OpenMapCards(mapId){
   const top = mpTopOf(mapId), m = mpMapById(mapId) || mpMapById(top); if(!m) return; // 2026-10-29 (package UI3, S4): a submap's fight is labelled by the submap itself
   let ov = document.getElementById('pk1MapCardsOverlay');
@@ -32511,7 +32589,7 @@ function pk1OpenMapCards(mapId){
   }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}${(()=>{ try{ return ui19McSkillsHTML(top, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok), defs, ok); }catch(e){ return ''; } })() /* 2026-11-04 (UI19) */}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); }; // 2026-11-01 (UI13, HH3): not while the card editor has it hidden
@@ -32838,12 +32916,12 @@ function sbFormulaText(cfg){ const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : 
 // one line of what N is made of, a ✓ / ✗ line per rule written as "score < N = value", the half-miss ×1.5 explained when it applies, the
 // formula (from the helper's numbers), all through TX. Was: "Budget: 34.5 < N 39.9 · …" and v3's "N = 20 + 2×Level …".
 // 2026-10-21 (BF5, owner): the card's N multiplier, one line when it isn't 1: no abilities x plainBonus, only light ones x lightBonus; Fragile (BF7, 2026-10-22) is no longer one: its x0.7 is on the caps (sbFragileUse)
-function sbNMultLine(d){ const B = BramblewoodBudget, cfg = Object.assign({}, SB_V3_DEFAULTS, (typeof sbLoad === 'function' ? sbLoad() : {})), e = (d && d.effects) || {}, a = B.abilitiesOf(e), g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], out = [];
+function sbNMultLine(d, warnOnly){ const B = BramblewoodBudget, cfg = Object.assign({}, SB_V3_DEFAULTS, (typeof sbLoad === 'function' ? sbLoad() : {})), e = (d && d.effects) || {}, a = B.abilitiesOf(e), g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], out = [];
   if(!a.length) out.push(TX('ui.budget-nmult-plain', {k: g('plainBonus')})); else if(a.every(x=> B.LIGHT.includes(x))) out.push(TX('ui.budget-nmult-light', {k: g('lightBonus')}));
   if(a.includes('fragile')) out.push(TX('ui.budget-nmult-fragile', {k: g('fragileUse')})); // 2026-10-22 (BF7): Fragile is x0.7 on both caps' left sides now, not N x fragileMult; the TX words were reworded by RW
   // 2026-10-21 (package TR, owner HB2-1): the two-skill rule's count, where it is over two (plain Flying, Tide, Diurnal, Nocturnal don't count; several count 1)
   const n2 = B.skillCountOf ? B.skillCountOf(e) : a.length, warn = n2 > 2 ? `<small style="color:var(--danger, #c0392b); display:block">${escapeHtml(TX('ui.budget-two-skills', {n: n2}))}</small>` : '';
-  return (out.length ? `<small style="color:var(--ink-muted); display:block">${escapeHtml(out.join(' '))}</small>` : '') + warn; }
+  return (out.length && !warnOnly ? `<small style="color:var(--ink-muted); display:block">${escapeHtml(out.join(' '))}</small>` : '') + warn; } // UI19 (2026-11-04): warnOnly = the editor keeps the two-skill warning, not the explanation
 // 2026-10-21 (package CX2): the context-skill rule in the budget panel, CONTEXT_MULT × the skills in the braces, and this card's own
 // context skills worked out ("Tide: 0.4 × 11.5 = 4.6").
 function sbContextLine(d, cfg){ const B = BramblewoodBudget, e = (d && d.effects) || {}, f1 = v=> Math.round(v * 10) / 10;
@@ -32866,20 +32944,18 @@ function ceBudgetHTML(d){
   let om = 0; try{ om = cardObtainMap(d); }catch(e){}
   const bp = BramblewoodBudget.baseParts(Object.assign({}, d, {obtainMap: om}), bc), part = q=> q.k === 'base' ? String(q.v) : q.k === 'rarity' ? `${rarLabel} ${f1(q.v)}` : q.k === 'wait' ? TX('ui.budget-part-wait', {v: f1(q.v)}) : q.k === 'lumber' ? TX('ui.budget-part-lumber', {v: f1(q.v)}) : q.k === 'map' ? TX('ui.budget-part-map', {map: q.map, coef: q.coef, v: f1(q.v)}) : TX('ui.budget-part-ritual', {v: f1(q.v)});
   const head = !c.ok ? TX('ui.budget-head-over', {n: f1(N), base: f1(bp.total)}) : c.wellUnder ? TX('ui.budget-head-under', {n: f1(N), base: f1(bp.total)}) : TX('ui.budget-head-ok', {n: f1(N), base: f1(bp.total)});
-  return `<div style="color:${sbColour(c)}; font-weight:700; font-size:14px">${escapeHtml(head)}</div>
-    <div style="font-size:12px; margin:2px 0">${escapeHtml(TX('ui.budget-line', {level: 1, rarity: rarLabel, wait: W, lumber: C}))}</div>
+  // 2026-11-04 (package UI19, owner 23:01: "Remove the explanation text under Within budget. Keep the budget line and the Stats / Product check lines"): the half-miss,
+  // Base, N multiplier, context-skill and formula explanations are gone from the editor (the Stat budget lab still prints them); the Level / Rank / Wait / Lumber line
+  // shares the budget line's row. The warnings (a skill with no price, more than two skills) stay.
+  return `<div style="display:flex; flex-wrap:wrap; align-items:baseline; column-gap:10px"><span style="color:${sbColour(c)}; font-weight:700; font-size:14px">${escapeHtml(head)}</span><span style="font-size:12px">${escapeHtml(TX('ui.budget-line', {level: 1, rarity: rarLabel, wait: W, lumber: C}))}</span></div>
     <div style="font-size:12.5px">${statsLine}</div>
     <div style="font-size:12.5px">${productLine}</div>
-    ${price.missing.length ? `<small style="color:var(--danger, #c0392b); display:block">${escapeHtml(TX('ui.budget-price-missing', {skills: sbMissingNames(price.missing).join(', ')}))}</small>` : '' /* CX5 (10-21) */}
-    ${miss.length ? `<small style="color:var(--ink-muted); display:block">${escapeHtml(TX('ui.budget-miss', {m: f1(M), skills: miss.join(', ')}))}</small>` : ''}
-    <small style="color:var(--ink-muted); display:block">${escapeHtml(TX('ui.budget-base-line', {parts: bp.parts.map(part).join(' + '), base: f1(bp.total)}))}</small>${sbNMultLine(d)} <!-- BF5 (10-21): the card's N multiplier -->
-    ${sbContextLine(d, cfg)}
-    <small style="color:var(--ink-muted); display:block">${escapeHtml(sbFormulaText(cfg))} <span title="${escapeAttr(TX('ui.budget-pink-tip', {pct: Math.round(SB_WELL_UNDER*100)}))}">${escapeHtml(TX('ui.budget-pink', {pct: Math.round(SB_WELL_UNDER*100)}))}</span></small>`;
+    ${price.missing.length ? `<small style="color:var(--danger, #c0392b); display:block">${escapeHtml(TX('ui.budget-price-missing', {skills: sbMissingNames(price.missing).join(', ')}))}</small>` : '' /* CX5 (10-21) */}${sbNMultLine(d, true)}`;
 }
 function ceBudgetRefresh(d){
   const fa = document.getElementById('fAtk'); if(!fa) return;
   let box = document.getElementById('ceBudget');
-  if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('afterend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:2px 0 10px; font-size:12.5px; line-height:1.5"></div>'); box = document.getElementById('ceBudget'); }
+  if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('afterend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:0 0 4px; font-size:12.5px; line-height:1.4"></div>'); box = document.getElementById('ceBudget'); }
   try{ box.innerHTML = ceBudgetHTML(d); }catch(e){ box.textContent = ''; }
 }
 let sbState = {upTo:5, onlyFail:true};
@@ -34400,20 +34476,7 @@ const ADMIN_RESET_LOCAL_KEYS = [
   'bramblewood_arena_leader', 'bramblewood_arena_deck', 'bramblewood_arena_decks',
   'bramblewood_arena_active_deck', 'bramblewood_arena_profile', ASYNC_MATCH_KEY, CONQUEST_PROGRESS_KEY, ENERGY_KEY,
 ];
-async function adminResetProgress(){
-  ADMIN_RESET_LOCAL_KEYS.forEach(k=>{ try{ localStorage.removeItem(k); }catch(e){} });
-  if(sbClient && cloudUserId){
-    try{
-      await Promise.all([
-        sbClient.from('player_currencies').delete().eq('profile_id', cloudUserId),
-        sbClient.from('player_card_unlocks').delete().eq('profile_id', cloudUserId),
-        sbClient.from('player_decks').delete().eq('profile_id', cloudUserId),
-        sbClient.from('profiles').delete().eq('id', cloudUserId),
-      ]);
-    }catch(e){ /* best-effort -- the local reset already happened either way */ }
-  }
-  location.reload();
-}
+// ENG22 (2026-11-03, UI17-3): adminResetProgress (Admin -> "Reset my progress") is retired; ui17OpenFullReset does all of it.
 // Admin "Manage Cards" (#363, 2026-09-26, per explicit request: "i think just create a separate
 // admin panel for the admin's functions like editting cards"): card creation/editing used to live
 // behind a "Create a Card" button and a click-to-edit gate on every Codex tile, both only visible
@@ -34894,11 +34957,6 @@ function renderAdmin(){
       <label class="admin-toggle-label ui17-inf-row"><input type="checkbox" id="ui17InfEnergyChk" ${ui17InfEnergyStored() ? 'checked' : ''} ${adminModeEnabled ? '' : 'disabled'}> ${escapeHtml(TX('ui.ui17-inf-energy'))}</label>
       <p class="panel-sub">${escapeHtml(TX('ui.ui17-inf-energy-help'))}</p>
     </div>
-    <div class="panel admin-subpanel">
-      <h3>Reset account progress</h3>
-      <p class="panel-sub">Wipes your currencies, card levels, decks, conquest progress, rating, energy, and saved name — on this device, and in the cloud too if you're signed in. This cannot be undone.</p>
-      <button class="btn danger" id="adminResetBtn" type="button">⚠️ Reset my progress</button>
-    </div>
     <div class="panel admin-subpanel ui17-fr-panel"><h3>🧨 ${escapeHtml(TX('ui.ui17-fr-btn'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.ui17-fr-help'))}</p>
       <button class="btn danger" id="ui17FullResetBtn" type="button">🧨 ${escapeHtml(TX('ui.ui17-fr-btn'))}</button></div>
     <div class="panel admin-subpanel">
@@ -35000,11 +35058,7 @@ function renderAdmin(){
   const infChk = document.getElementById('ui17InfEnergyChk'); // 2026-11-03 (package UI17)
   if(infChk) infChk.onchange = ()=>{ ui17SetInfiniteEnergy(infChk.checked); const line = document.getElementById('adminEnergyLine'); if(line) line.textContent = ui17InfiniteEnergy() ? '∞⚡' : `Currently ${currentEnergy()}/${energyMax()}⚡.`; };
   const frBtn = document.getElementById('ui17FullResetBtn'); if(frBtn) frBtn.onclick = ui17OpenFullReset; // 2026-11-03 (package UI17)
-  const resetBtn = document.getElementById('adminResetBtn');
-  if(resetBtn) resetBtn.addEventListener('click', ()=>{
-    if(!confirm("Reset ALL of your progress — currencies, card levels, decks, conquest progress, rating, energy, and your saved name? This can't be undone.")) return;
-    adminResetProgress();
-  });
+  // ENG22 (2026-11-03, owner UI17-3 "OK apply all"): Admin -> "Reset my progress" is gone; Full reset (new account) replaces it.
 }
 
 /* ============================================================
@@ -37730,7 +37784,7 @@ function showPlacementPreview(row, side){
   // cardTileHTML's own waitbadge exactly so the preview genuinely previews what you're about to get.
   ghost.innerHTML = `<div class="card-tile ${rarityTierClass(d.rarity)} ${biomeClass(d)}" style="--rarity-a:${rA}; --rarity-b:${rB}">
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}
-    <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div><div class="nm">${escapeHtml(d.name||'')}</div>
+    <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div>${nmHTML(d.name||'')}
     <div class="stats"><span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">${atkGlyphOf(d)}${d.attack}</span><span class="hp">❤${d.health}</span></div>
   </div>`;
   if(actualSide==='center'){
@@ -41272,6 +41326,15 @@ function editorPitchYieldOf(c){
     return {resource:c.pitchYield.resource, amount:Math.max(0, Number(c.pitchYield.amount)||0)};
   }
   return {resource:'lumber', amount:1};
+}
+// 2026-11-04 (package UI19): the Pitch of the Card editor in the Cost / Reward layout: Lumber, Stone, Metal (no card pitches Metal yet), the amount under the
+// resource the card gives; `extra` is what has no column (a Grace yield, the Dark Point bonus), e.g. "+1 ★".
+function editorPitchColsOf(c){
+  const {resource, amount} = editorPitchYieldOf(c), out = {lumber: 0, stone: 0, metal: 0, extra: ''};
+  if(resource === 'lumber' || resource === 'stone' || resource === 'metal') out[resource] = amount; else out.extra = `+${amount} ${(PITCH_RESOURCE_META[resource] || {}).glyph || resource}`;
+  const bonus = ((c.effects && c.effects.coreEvil) ? 1 : 0) + (inferMechanicLine(c) === 'devilry' ? 1 : 0);
+  if(bonus > 0) out.extra += (out.extra ? ' ' : '') + `+${bonus} ${PITCH_RESOURCE_META.devilry.glyph}`;
+  return out;
 }
 function pitchValueStatDisplay(c){
   const {resource, amount} = editorPitchYieldOf(c);
@@ -47272,6 +47335,7 @@ function logText(ev){
     // EN3 (2026-10-23): Rampart's share of a bramble hit, Bramble Armor's 1, and a Boomerang thrown on a miss
     case 'rampart': return {cls:'', text:TX('ui.en3-log-rampart', {name: nm(ev.defId), n: ev.dmg != null ? ev.dmg : ev.share, b: ev.bramble != null ? ev.bramble : 0})};
     case 'brambleArmor': return {cls:'', text:TX('ui.en3-log-bramble-armor', {name: nm(ev.defId)})};
+    case 'fortify': return {cls:'', text:TX('ui.e22-log-fortify', {name: nm(ev.defId), x: e22FortifyText(ev.parts)})}; // ENG22 (2026-11-03)
     case 'boomerangThrow': return {cls:'quick', text:TX('ui.en3-log-boom-miss', {name: nm(ev.defId)})};
     case 'arrow': if(ev.style === 'drop') return {cls:'', text: ev.targetDefId ? TX('ui.bx-log-drop', {name: nm(ev.defId), target: nm(ev.targetDefId)}) : TX('ui.bx-log-drop-bramble', {name: nm(ev.defId)})}; // Package BX (2026-10-21)
       return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};

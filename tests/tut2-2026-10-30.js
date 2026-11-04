@@ -78,7 +78,8 @@ ok(/const TUT12_SHOWN = new Set\(\[\]\);/.test(app), '2. the T-1 / T-2 mask has 
   ['ancient-sloth-titan', 'old-growth-tortoise', 'garden-snail'].forEach(id=>{ const c = byId[id]; ok(c && c.effects.slow === true, `5. ${id} has Slow`);
     const lv = SC.levelOf(c), b = T.budget(c), raw = T.cardS(Object.fromEntries(Object.entries(c.effects).filter(([k])=> k !== 'slow')), c).S;
     ok(b.ok && Math.abs(b.S - raw * 0.85) < 0.011, `5. ${id} (Level ${lv}): S ${raw} -> ${b.S}, 2A+H+S ${b.x1} <= N ${b.N}; cap 2 ${b.x2} <= ${b.N2}`); });
-  ok(!T12.includes('garden-snail') && !(byId['garden-snail'].levelSkills), '5. the Garden Snail is not on mtut12: Slow from Level 0'); }
+  // 2026-11-03 (package ENG22, owner DESIGN1-2): its Armor 1 now arrives at Level 1 (levelSkills "1"); Slow (a drawback) still from Level 0
+  ok(!T12.includes('garden-snail') && !(byId['garden-snail'].levelSkills && byId['garden-snail'].levelSkills['1'] && byId['garden-snail'].levelSkills['1'].slow != null), '5. the Garden Snail is not on mtut12: Slow from Level 0'); }
 
 console.log(`tut2-2026-10-30: ${n - fail}/${n} passed, ${fail} failure(s)`);
 process.exit(fail ? 1 : 0);
