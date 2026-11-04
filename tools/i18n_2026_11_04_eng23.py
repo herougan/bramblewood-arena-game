@@ -157,11 +157,20 @@ def dump(path, d):
     with open(path, 'w', encoding='utf-8') as fh:
         json.dump(d, fh, ensure_ascii=False, indent=1); fh.write('\n')
 added = 0
+# The log lines open with an emoji; the page translator also looks up the text after it (tests/i18n-templates-2026-10-18.js), so a line
+# that opens with "🎯 " / "🍖 " / "🐾 " / "⏩ " gets a second row without it. ENG22's Fortify log line (🏯) gets its own the same way.
+EMO = re.compile(r'^(🎯|🍖|🐾|⏩|🏯) ')
+FORTIFY = '🏯 {name} fortifies its bramble: {x}.'
 for i, code in enumerate(CODES):
     path = os.path.join(ROOT, 'lang', code + '.json'); pack = json.load(open(path, encoding='utf-8'))
-    for en, row in T:
+    rows = list(T) + ([(FORTIFY, [pack[FORTIFY]] * 12)] if FORTIFY in pack else [])
+    for en, row in rows:
         assert len(row) == 12 and ph(en) == ph(row[i]), (code, en)
         if en not in pack: added += 1
         pack.setdefault(en, row[i])
+        if EMO.match(en) and EMO.match(row[i]):
+            bare = EMO.sub('', en)
+            if bare not in pack: added += 1
+            pack.setdefault(bare, EMO.sub('', row[i]))
     dump(path, pack)
 print('ok: %d rows added across %d packs' % (added, len(CODES)))

@@ -3927,5 +3927,11 @@
  "No target.": "沒有目標。",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 瞄準弩矢命中 {name}，造成 {n}。",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 瞄準弩矢命中敵方荊棘叢，造成 {n}。",
- "Rodentia": "齧齒目"
+ "Rodentia": "齧齒目",
+ "{name} gets fast-forward ×{n}.": "{name} 獲得快進 ×{n}。",
+ "{name} skitters: Haste and Evasive next turn.": "{name} 竄逃：下一回合迅捷與閃避。",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "荊棘叢吃掉了 {name}：修復 {n}，你場上的單位 +{a} 攻擊（還剩 {left} 次）。",
+ "The Aimed Bolt hits {name} for {n}.": "瞄準弩矢命中 {name}，造成 {n}。",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "瞄準弩矢命中敵方荊棘叢，造成 {n}。",
+ "{name} fortifies its bramble: {x}.": "{name} 加固了己方荊棘叢：{x}。"
 }

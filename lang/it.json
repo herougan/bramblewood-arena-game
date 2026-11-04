@@ -3929,5 +3929,11 @@
  "No target.": "Nessun bersaglio.",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 Il Dardo mirato colpisce {name} per {n}.",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 Il Dardo mirato colpisce il rovo nemico per {n}.",
- "Rodentia": "Roditori"
+ "Rodentia": "Roditori",
+ "{name} gets fast-forward ×{n}.": "{name} riceve avanti veloce ×{n}.",
+ "{name} skitters: Haste and Evasive next turn.": "{name} sgattaiola: Fretta ed Evasivo al prossimo turno.",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Il rovo mangia {name}: Riparazione {n}, le tue unità in campo +{a} Attacco (ne restano {left}).",
+ "The Aimed Bolt hits {name} for {n}.": "Il Dardo mirato colpisce {name} per {n}.",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Il Dardo mirato colpisce il rovo nemico per {n}.",
+ "{name} fortifies its bramble: {x}.": "{name} rinforza il suo rovo: {x}."
 }

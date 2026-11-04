@@ -3928,5 +3928,11 @@
  "No target.": "Walang target.",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 Tinamaan ng Asintadong Bolt ang {name} ng {n}.",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 Tinamaan ng Asintadong Bolt ang dawag ng kaaway ng {n}.",
- "Rodentia": "Rodentia"
+ "Rodentia": "Rodentia",
+ "{name} gets fast-forward ×{n}.": "Nakakuha ang {name} ng fast-forward ×{n}.",
+ "{name} skitters: Haste and Evasive next turn.": "Kumaskas ang {name}: Bilis at Iwas sa susunod na turn.",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Kinain ng dawag ang {name}: Ayusin {n}, iyong mga yunit sa larangan +{a} Atake ({left} na lang).",
+ "The Aimed Bolt hits {name} for {n}.": "Tinamaan ng Asintadong Bolt ang {name} ng {n}.",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Tinamaan ng Asintadong Bolt ang dawag ng kaaway ng {n}.",
+ "{name} fortifies its bramble: {x}.": "Pinatibay ng {name} ang dawag nito: {x}."
 }

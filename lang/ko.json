@@ -3930,5 +3930,11 @@
  "No target.": "대상 없음.",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 조준 볼트가 {name}에 {n} 명중.",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 조준 볼트가 적 덤불에 {n} 명중.",
- "Rodentia": "설치목"
+ "Rodentia": "설치목",
+ "{name} gets fast-forward ×{n}.": "{name}이(가) 빨리 감기 ×{n}을(를) 얻었습니다.",
+ "{name} skitters: Haste and Evasive next turn.": "{name}이(가) 종종걸음: 다음 턴에 신속과 회피.",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "덤불이 {name}을(를) 먹었습니다: 수리 {n}, 필드의 내 유닛 공격 +{a} (남은 횟수 {left}).",
+ "The Aimed Bolt hits {name} for {n}.": "조준 볼트가 {name}에 {n} 명중.",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "조준 볼트가 적 덤불에 {n} 명중.",
+ "{name} fortifies its bramble: {x}.": "{name}이(가) 덤불을 보강합니다: {x}."
 }

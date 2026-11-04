@@ -3930,5 +3930,11 @@
  "No target.": "இலக்கு இல்லை.",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 குறிவைத்த அம்பு {name}-ஐ {n} அளவு தாக்குகிறது.",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 குறிவைத்த அம்பு எதிரி முட்புதரை {n} அளவு தாக்குகிறது.",
- "Rodentia": "கொறிணிகள்"
+ "Rodentia": "கொறிணிகள்",
+ "{name} gets fast-forward ×{n}.": "{name} வேக முன்னோட்டம் ×{n} பெறுகிறது.",
+ "{name} skitters: Haste and Evasive next turn.": "{name} பதுங்கியோடுகிறது: அடுத்த முறை வேகமும் தப்பித்தலும்.",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "முட்புதர் {name}-ஐத் தின்கிறது: பழுதுபார் {n}, களத்திலுள்ள உன் அலகுகள் +{a} தாக்குதல் (இன்னும் {left}).",
+ "The Aimed Bolt hits {name} for {n}.": "குறிவைத்த அம்பு {name}-ஐ {n} அளவு தாக்குகிறது.",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "குறிவைத்த அம்பு எதிரி முட்புதரை {n} அளவு தாக்குகிறது.",
+ "{name} fortifies its bramble: {x}.": "{name} தன் முட்புதரை வலுப்படுத்துகிறது: {x}."
 }

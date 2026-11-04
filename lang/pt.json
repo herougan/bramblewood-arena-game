@@ -3929,5 +3929,11 @@
  "No target.": "Sem alvo.",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 O Virote apontado acerta {name} por {n}.",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 O Virote apontado acerta o silvado inimigo por {n}.",
- "Rodentia": "Roedores"
+ "Rodentia": "Roedores",
+ "{name} gets fast-forward ×{n}.": "{name} recebe avanço rápido ×{n}.",
+ "{name} skitters: Haste and Evasive next turn.": "{name} escapule-se: Pressa e Evasivo no próximo turno.",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "O silvado come {name}: Reparar {n}, as tuas unidades em campo +{a} Ataque (restam {left}).",
+ "The Aimed Bolt hits {name} for {n}.": "O Virote apontado acerta {name} por {n}.",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "O Virote apontado acerta o silvado inimigo por {n}.",
+ "{name} fortifies its bramble: {x}.": "{name} reforça o seu silvado: {x}."
 }

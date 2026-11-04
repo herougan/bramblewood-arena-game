@@ -3926,5 +3926,11 @@
  "No target.": "Kein Ziel.",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 Der Gezielte Bolzen trifft {name} für {n}.",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 Der Gezielte Bolzen trifft die gegnerische Dornenhecke für {n}.",
- "Rodentia": "Nagetiere"
+ "Rodentia": "Nagetiere",
+ "{name} gets fast-forward ×{n}.": "{name} erhält Vorspulen ×{n}.",
+ "{name} skitters: Haste and Evasive next turn.": "{name} huscht: Eile und Ausweichend im nächsten Zug.",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Die Dornenhecke frisst {name}: Reparatur {n}, deine Einheiten auf dem Feld +{a} Angriff (noch {left}).",
+ "The Aimed Bolt hits {name} for {n}.": "Der Gezielte Bolzen trifft {name} für {n}.",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Der Gezielte Bolzen trifft die gegnerische Dornenhecke für {n}.",
+ "{name} fortifies its bramble: {x}.": "{name} festigt seine Dornenhecke: {x}."
 }

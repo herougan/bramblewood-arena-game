@@ -3927,5 +3927,11 @@
  "No target.": "Aucune cible.",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 Le Trait visé touche {name} pour {n}.",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 Le Trait visé touche le roncier ennemi pour {n}.",
- "Rodentia": "Rongeurs"
+ "Rodentia": "Rongeurs",
+ "{name} gets fast-forward ×{n}.": "{name} reçoit avance rapide ×{n}.",
+ "{name} skitters: Haste and Evasive next turn.": "{name} détale : Hâte et Évasif au prochain tour.",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Le roncier mange {name} : Réparation {n}, vos unités sur le terrain +{a} Attaque (encore {left}).",
+ "The Aimed Bolt hits {name} for {n}.": "Le Trait visé touche {name} pour {n}.",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Le Trait visé touche le roncier ennemi pour {n}.",
+ "{name} fortifies its bramble: {x}.": "{name} fortifie son roncier : {x}."
 }

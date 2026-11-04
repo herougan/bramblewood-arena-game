@@ -3927,5 +3927,11 @@
  "No target.": "対象なし。",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 狙いボルトが{name}に{n}命中。",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 狙いボルトが敵のいばらに{n}命中。",
- "Rodentia": "齧歯目"
+ "Rodentia": "齧歯目",
+ "{name} gets fast-forward ×{n}.": "{name}は早送り ×{n} を得た。",
+ "{name} skitters: Haste and Evasive next turn.": "{name}はすばしっこく動く：次のターン、ヘイストと回避。",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "いばらが{name}を食べた：修復{n}、場のユニットに攻撃+{a}（残り{left}回）。",
+ "The Aimed Bolt hits {name} for {n}.": "狙いボルトが{name}に{n}命中。",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "狙いボルトが敵のいばらに{n}命中。",
+ "{name} fortifies its bramble: {x}.": "{name}がいばらを補強：{x}。"
 }

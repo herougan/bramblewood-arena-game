@@ -3927,5 +3927,11 @@
  "No target.": "没有目标。",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 瞄准弩矢命中 {name}，造成 {n}。",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 瞄准弩矢命中敌方荆棘丛，造成 {n}。",
- "Rodentia": "啮齿目"
+ "Rodentia": "啮齿目",
+ "{name} gets fast-forward ×{n}.": "{name} 获得快进 ×{n}。",
+ "{name} skitters: Haste and Evasive next turn.": "{name} 窜逃：下一回合迅捷与闪避。",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "荆棘丛吃掉了 {name}：修复 {n}，你场上的单位 +{a} 攻击（还剩 {left} 次）。",
+ "The Aimed Bolt hits {name} for {n}.": "瞄准弩矢命中 {name}，造成 {n}。",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "瞄准弩矢命中敌方荆棘丛，造成 {n}。",
+ "{name} fortifies its bramble: {x}.": "{name} 加固了己方荆棘丛：{x}。"
 }

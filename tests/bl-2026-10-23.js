@@ -129,7 +129,8 @@ const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 ok(/\{key:'bloomCopy', category:'passive', label:'Bloom', kind:'text'/.test(src), '11. PASSIVE_DEFS: Bloom (bloomCopy)');
 ok(/\{key:'bloomWhen', category:'passive', hidden:true, retired:true/.test(src) && /\{key:'bloom', category:'evergreen', hidden:true, retired:true/.test(src), '11. the old Bloom heal and Bloom When are retired (hidden)');
 ok(/grant:\{healing:1\},\s*sig:'Healing 1'/.test(src) && /desc:'Healing heals 1 more\.'/.test(src), '11. the Open Meadow and Pollen Drift are on Healing');
-['crepuscular', 'nocturnal', 'diurnal'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'passive', label:'[A-Za-z]+', kind:'twoNumber', placeholders:\\['Attack','Health'\\], defaultValue:\\[1, 0\\]`).test(src), `11. ${k}: default +1/+0`));
+// 2026-11-04 (ENG23, owner 11-03 23:01: "+0/1 at night instead"): Crepuscular's default is +0/+1 at night now (four numbers; tests/eng23-2026-11-04.js)
+['nocturnal', 'diurnal'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'passive', label:'[A-Za-z]+', kind:'twoNumber', placeholders:\\['Attack','Health'\\], defaultValue:\\[1, 0\\]`).test(src), `11. ${k}: default +1/+0`));
 { const grab = name=> { const m = src.match(new RegExp(`function ${name}\\([^)]*\\)\\{[\\s\\S]*?\\n(?=function |//|const )`)); return m ? m[0] : ''; };
   const code = ['phaseVals', 'valSuffix', 'atSkillDefault', 'skillValSuffix'].map(grab).join('\n');
   const F = new Function(code + '; return {atSkillDefault, skillValSuffix};')();

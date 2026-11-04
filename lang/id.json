@@ -3929,5 +3929,11 @@
  "No target.": "Tidak ada sasaran.",
  "🎯 The Aimed Bolt hits {name} for {n}.": "🎯 Baut Terarah mengenai {name} sebesar {n}.",
  "🎯 The Aimed Bolt hits the enemy bramble for {n}.": "🎯 Baut Terarah mengenai semak musuh sebesar {n}.",
- "Rodentia": "Rodentia"
+ "Rodentia": "Rodentia",
+ "{name} gets fast-forward ×{n}.": "{name} mendapat maju cepat ×{n}.",
+ "{name} skitters: Haste and Evasive next turn.": "{name} berlari kecil: Gesit dan Mengelak giliran berikutnya.",
+ "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Semak memakan {name}: Perbaiki {n}, unitmu di medan +{a} Serangan (sisa {left}).",
+ "The Aimed Bolt hits {name} for {n}.": "Baut Terarah mengenai {name} sebesar {n}.",
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Baut Terarah mengenai semak musuh sebesar {n}.",
+ "{name} fortifies its bramble: {x}.": "{name} memperkuat semaknya: {x}."
 }
