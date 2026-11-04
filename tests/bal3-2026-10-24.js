@@ -51,6 +51,8 @@ const TEN = {'alley-cat': [1, 1], 'honey-badger-fury': [1, 6], 'chipmunk-hoarder
 TEN['chipmunk-hoarder'] = [2, 5]; TEN['muskrat-lodgekeeper'] = [1, 7];
 // 2026-10-30 RECOST1: Quick and Bleed re-priced to their bench worth, then the under-budget, measurably weak cards lifted (docs/balance/recost1-2026-10-30.json)
 TEN['alley-cat'] = [2, 2]; TEN['chipmunk-cavalry'] = [3, 3];
+// 2026-11-04 (TESTFIX1): BAL9 (2026-11-02, owner JJ21 / JJ12, call BAL9-1) re-fit two more onto the band (their notes say "BAL9 refit"): Alley Cat 1/1, Rock Pool Starfish 2/1
+TEN['alley-cat'] = [1, 1]; TEN['rock-pool-starfish'] = [2, 1];
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), byId = new Map(cards.map(c=> [c.id, c]));
 const held = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal2-refit-2026-10-24.json'), 'utf8')).held || [];
 const flagged = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'human-pass-1-flagged-2026-10-21.json'), 'utf8'));

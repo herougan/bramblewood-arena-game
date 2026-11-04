@@ -53,7 +53,7 @@ ok(/function referencePlayerDeck\(deck, level, base, overlay\)\{ return refParts
 { const ents = {mc: {map: 3, pro: [{id: '3-PRO-1'}, {id: '3-PRO-2'}], bpro: [{id: '3-BPRO-1'}]}, mg: {map: 2, side: true, pro: [{id: '2-B-PRO-1'}], bpro: []}};
   const store = {}, localStorage = {getItem: k=> k in store ? store[k] : null, setItem: (k, v)=>{ store[k] = String(v); }};
   const Q = new Function('localStorage', 'adminState', `const REF_DECK_SETS = {ref2: {label: 'Reference-2'}}; const REF_PLAY_KEY = 'p', XREF_VS_KEY = 'v'; const ents = ${JSON.stringify(ents)};
-    function proMapEntries(){ return ents; } ${fnSrc('skirmDecksOf')} ${fnSrc('proEntriesOf')} ${fnSrc('refSetIds')} ${fnSrc('refDefaultSet') /* 2026-10-31 REF5: the default pick (the map reference while no per-map set is baked, as in this stub) */} ${fnSrc('refPlayPrefs')} ${fnSrc('saveRefPlayPrefs')} ${fnSrc('xrefKeyOf')} ${fnSrc('xrefVsFor')} ${fnSrc('setXrefVs')}
+    function proMapEntries(){ return ents; } ${fnSrc('skirmDecksOf')} ${fnSrc('skirmWeakDecksOf') /* 2026-11-04 (TESTFIX1): BAL11's N-WK (owner 11-02 14:26), which proEntriesOf reads since */} ${fnSrc('proEntriesOf')} ${fnSrc('refSetIds')} ${fnSrc('refDefaultSet') /* 2026-10-31 REF5: the default pick (the map reference while no per-map set is baked, as in this stub) */} ${fnSrc('refPlayPrefs')} ${fnSrc('saveRefPlayPrefs')} ${fnSrc('xrefKeyOf')} ${fnSrc('xrefVsFor')} ${fnSrc('setXrefVs')}
     function refPlayActive(){ const adminModeEnabled = adminState.on; return !!adminModeEnabled && refPlayPrefs().on; }
     return {refPlayPrefs, saveRefPlayPrefs, refPlayActive, xrefKeyOf, xrefVsFor, setXrefVs};`);
   const admin = {on: true}, F = Q(localStorage, admin);

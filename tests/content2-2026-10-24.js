@@ -38,7 +38,7 @@ for(const s of C2.NEW){ const c = by[s.id];
   ok(c, `${s.id} is in cards.json`); if(!c) continue;
   ok(skillCount(c.effects) <= 2, `${s.id}: two skills at most (${JSON.stringify(c.effects)})`);
   ok(c.attack >= 1 && c.health >= 1 && /Fit: the formula line/.test(c.creatorNote || ''), `${s.id}: fitted by the formula (${c.attack}/${c.health})`);
-  ok(!c.art, `${s.id}: placeholder art (its emoji ${c.icon})`);
+  ok(!c.art || /^data:image\/png;base64,/.test(c.art), `${s.id}: placeholder art (its emoji ${c.icon}), or its painted art since (2026-11-04 TESTFIX1: ART2 painted them on 10-29)`);
   if(s.place){ const [map, tier] = s.place;
     ok(c.source && c.source.kind === 'pack' && c.source.map === map && c.source.tier === tier && !c.awaitingSource, `${s.id}: a Pack ${tier} card of ${map}`);
     ok(pools[map].cards.includes(s.id) === (T2[map] || []).includes(s.id), `${s.id}: its place on ${map}'s list follows THEME2`); } // 2026-10-28 APPLY1: lists follow THEME2
@@ -50,10 +50,12 @@ ok(ut.counts.faction.gnawed >= 4 && ut.counts.faction.tidefolk >= 5, `the thin f
 ok(utBy['gannet-nestweaver'].biomes[0] === 'cliffs' && utBy['redwood-woodpecker'].biomes[0] === 'redwood' && utBy['driftwood-crab'].biomes[0] === 'coast', 'the gatherers carry their biome');
 
 // ---- 2. Lumber and Stone
-const pays = (c, res)=>{ const e = c.effects || {}; return (res === 'lumber' && (e.milling || e.onReadyGold)) || (e.triggers || []).some(t=> t.do === 'gain' && t.resource === res && (t.on === 'onReady' || t.on === 'onSpawn')); };
+// 2026-11-04 (TESTFIX1): ENG22 (2026-11-03, owner 21:10, DESIGN1-6) folds "a resource when Ready" into Delivery {X} (Lumber by default; deliveryEvery each round)
+const pays = (c, res)=>{ const e = c.effects || {}; return (res === 'lumber' && (e.milling || e.onReadyGold || ((e.delivery || e.deliveryEvery) && (!e.deliveryRes || e.deliveryRes === 'lumber')))) || (res !== 'lumber' && (e.delivery || e.deliveryEvery) && e.deliveryRes === res) || (e.triggers || []).some(t=> t.do === 'gain' && t.resource === res && (t.on === 'onReady' || t.on === 'onSpawn')); };
 ['driftwood-crab', 'gannet-nestweaver', 'nutria-reedcutter', 'redwood-woodpecker', 'termite-forager', 'cone-cutter-squirrel', 'talus-pika', 'dune-packrat', 'land-tiller', 'coral-polyp-colony', 'rodent-king']
   .forEach(id=> ok(pays(by[id], 'lumber'), `${id} gathers Lumber`));
-ok(new Set(['driftwood-crab', 'nutria-reedcutter', 'cone-cutter-squirrel', 'dune-packrat'].map(id=> by[id].effects.triggers[0].amount)).size === 3, 'the gatherers come at different strengths (+1, +2, +3)');
+const gainOf = c=> c.effects.delivery || (c.effects.triggers || [])[0] && c.effects.triggers[0].amount; // TESTFIX1: Delivery N since ENG22
+ok(new Set(['driftwood-crab', 'nutria-reedcutter', 'cone-cutter-squirrel', 'dune-packrat'].map(id=> gainOf(by[id]))).size === 3, 'the gatherers come at different strengths (+1, +2, +3)');
 // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the card's place on its map's list is THEME2's (the Land Tiller is on Maps 23-24's lists now)
 Object.entries(C2.EXISTING).forEach(([id, [map, tier]])=> ok(pools[map].cards.includes(id) === (T2[map] || []).includes(id) && by[id].source.map === map && by[id].source.tier === tier, `${id}: its source is ${map}, its place on ${map}'s list follows THEME2`));
 ok(pays(by['gravel-mole'], 'stone') && pays(by['pumice-beetle'], 'stone'), 'two Stone gatherers');
@@ -65,8 +67,9 @@ ok(by['badger-stonemason'].effects.quarry === 1 && pools.m4.cards.includes('badg
   const put = (e, P, id)=>{ const pl = P[1], c = e.makeBoardCard(id); c.slot = 0; c._seenAt = 0; c.wait = 0; pl.row.center = all(pl).concat(c).filter(x=> x.slot === 0); e.syncSlots(pl); return c; };
   { const {e, P} = mk(); put(e, P, 'badger-stonemason'); P[1].lumber = 3; P[1].stone = 0; e.resolveCombat(P, id=> id === 1 ? 'A' : 'B', {}, [], 1);
     ok(P[1].lumber === 2 && P[1].stone === 1, `Badger Stonemason: 1 Lumber -> 1 Stone a turn (${P[1].lumber}L ${P[1].stone}S)`); }
-  { const {e, P} = mk(); put(e, P, 'redwood-woodpecker'); P[1].lumber = 0; e.resolveCombat(P, id=> id === 1 ? 'A' : 'B', {}, [], 1);
-    ok(P[1].lumber === 1, `Redwood Woodpecker: +1 Lumber a turn while Ready (${P[1].lumber})`); } }
+  // 2026-11-04 (TESTFIX1): ENG16 (2026-11-02, owner JJ17) made Milling turn 1 of your Lumber into 2 (it needs Lumber you hold, net +N): it starts with 1
+  { const {e, P} = mk(); put(e, P, 'redwood-woodpecker'); P[1].lumber = 1; e.resolveCombat(P, id=> id === 1 ? 'A' : 'B', {}, [], 1);
+    ok(P[1].lumber === 2, `Redwood Woodpecker: +1 Lumber a turn while Ready (net; ${P[1].lumber})`); } }
 
 // ---- 3. the decks (N21-1, N21-2)
 const src = R('arena_app.js');

@@ -30,7 +30,8 @@ Object.entries(WANT).forEach(([id, r])=> ok(byId[id] && byId[id].rarity === r, `
 LIST.forEach(id=>{ const c = byId[id]; if(!c) return ok(false, id + ' exists');
   ok(c.easterEgg === true && c.source && c.source.kind === 'easteregg', `${id}: easterEgg flag and source easteregg`);
   ok((typeof c.animal === 'string' && c.animal) || c.cardType === 'equipment', `${id}: has an animal field (an item: none needed, UT's rule)`);   // 2026-10-19 (UT merge)
-  ok(c.icon && (id === 'creeper' ? /^data:image\/png;base64,/.test(c.art || '') : !c.art), id === 'creeper' ? 'creeper: its old art is back (2026-10-19, package EQ, owner: "We can use the existing creeper art.")' : `${id}: a placeholder emoji, no art yet`);
+  // 2026-11-04 (TESTFIX1): the eggs were painted on 2026-11-02 by ART5 (owner JJ9: art for the 121 cards that had none); a placeholder emoji or painted art
+  ok(c.icon && (id === 'creeper' ? /^data:image\/png;base64,/.test(c.art || '') : (!c.art || /^data:image\/png;base64,/.test(c.art))), id === 'creeper' ? 'creeper: its old art is back (2026-10-19, package EQ, owner: "We can use the existing creeper art.")' : `${id}: a placeholder emoji, no art yet`);
   ok(/package EE/.test(c.creatorNote || '') && /N = [\d.]+; S = /.test(c.creatorNote), `${id}: creatorNote shows the budget`);
   ok(c.locked === true, `${id}: locked`); });
 ok(byId.terraumbra && byId.terraumbra.mechanicLine === 'evolution' && byId.terraumbra.cardType === 'equipment', 'Terraumbra: an Evomax (evolution) equipment card');
@@ -63,12 +64,14 @@ const ctx = {defs, getCardDefs: ()=> defs, liveCards: {}, CARD_DEFS_BASELINE: de
   RARITY_DEFS: ['common', 'uncommon', 'rare', 'veryrare', 'superrare', 'epic', 'heroic'].map(key=> ({key})), mapNumberOf: ()=> 35, nodeFirstClearPacks: ()=> [],
   // 2026-10-28 (package PACK1): a basic pack's pool comes from the map lists (basicPackTierOf, evaluated over the real map lists in tests/pack1-2026-10-28.js); here every basic-pack card that is not an egg is in Pack 1
   basicPackTierOf: d=> (d && !d.easterEgg && d.source && d.source.kind === 'pack' && (parseInt(d.source.tier, 10) || 1) <= 10) ? 1 : 0,
+  isTicketedDungeonFight: ()=> false /* 2026-11-04 (TESTFIX1): RW3 (2026-10-23): nodeCardDropChance asks it first; these fights are road fights, not a Daily */,
   packCardReached: ()=> true}; // packCardPool asks it since the map divvy; this test had no stub, so it stopped at its first packCardPool call (pre-existing; stubbed by RW2)
 vm.createContext(ctx);
 const pieces = [constSrc('EASTER_EGG_IDS'), constSrc('EASTER_EGG_GRANT_SOURCES'), constSrc('UNATTAINABLE_ADMIN_SOURCES'),
   constSrc('ENERGY_COST'), constSrc('SKIRMISH_DROP_CHANCE'), constSrc('SKIRMISH_DROP_RARITY'), constSrc('SKIRMISH_DROP_SHIFT'), constSrc('DROP_CHANCE_PER_ENERGY'), // 2026-10-22 (RW2; was CARD_DROP_CHANCE)
+  constSrc('DROP_PER_ENERGY_RW3'), constSrc('DROP_SHIELD_BONUS'), constSrc('BASIC_PACK_TIERS'), // 2026-11-04 (TESTFIX1): RW3's per-Energy drop rate, which fightCardDropChance reads since
   ...['isEasterEgg', 'easterEggSeen', 'easterEggMasked', 'easterEggMaskDef', 'cardSourceOf', 'isBasicPackSource' /* PACK1 */, 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'packPoolOf', 'packCardPool', 'cardDropRarity', 'rollCardDrop', 'nodeRewardCardIds', 'trackPick', 'raidCardIds',
-    'dropRankOk', 'skirmishDropApplies', 'skirmishDropRarityRoll', 'skirmishDropPick', 'skirmishDropRoll', 'rollSkirmishCardDrop', 'fightDropEnergy', 'fightCardDropChance', 'nodeCardDropChance'].map(fnSrc)];
+    'dropRankOk', 'skirmishDropApplies', 'skirmishDropRarityRoll', 'skirmishDropPick', 'skirmishDropRoll', 'rollSkirmishCardDrop', 'fightDropEnergy', 'dropShieldBonus' /* TESTFIX1 */, 'fightCardDropChance', 'nodeCardDropChance'].map(fnSrc)];
 vm.runInContext(pieces.join('\n') + '\nout.f = {isEasterEgg, cardObtainableFrom, isUnattainable, packCardPool, rollCardDrop, nodeRewardCardIds, trackPick, raidCardIds, easterEggMasked, easterEggMaskDef};', ctx);
 const F = ctx.out.f;
 const eggDefs = Object.keys(defs).filter(isEggId);
@@ -87,7 +90,7 @@ ok(/!isEasterEgg\(defs\[x\]\)[^\n]*\['pack','map'\]\.includes\(cardSourceOf\(def
 // unlockCardForPlayer: refused from every source but an admin's grant
 { const calls = []; const uctx = {CARD_DEFS_BASELINE: defs, liveCards: {}, out: {}, UNATTAINABLE_ADMIN_SOURCES: new Set(), pitchingUnlocked: ()=> true, loadPitchHeld: ()=> [], PITCH_HELD_KEY: 'x', localStorage: {setItem(){}},
     isUnattainable: ()=> false, grantCardCopy: id=> calls.push(id), noteSighted: ()=>{}, noteGainedForSwap: ()=>{}, myUnlockedCardIds: new Set(), saveUnlockedCardIds: ()=>{}, getCardDefs: ()=> defs, logTxn: ()=>{},
-    CARD_UNLOCK_SOURCES: {}, canLeadDef: ()=> false, loadDialogueFlags: ()=> ({}), setTimeout: ()=>{}, tutorialCopyLevel0: ()=>{} /* 2026-10-19 (UT merge) */, Set, Object, JSON, String};
+    CARD_UNLOCK_SOURCES: {}, canLeadDef: ()=> false, loadDialogueFlags: ()=> ({}), setTimeout: ()=>{}, tutorialCopyLevel0: ()=>{} /* 2026-10-19 (UT merge) */, factionCopyLevel0: ()=>{}, babyCopyLevel0: ()=>{}, eggChoiceForNewCopy: ()=>{}, setDialogueFlag: ()=>{} /* 2026-11-04 (TESTFIX1): TU2's faction and ENG17's Baby Level-0 copy steps (BABY-2), ENG16's egg choice, called after a grant */, Set, Object, JSON, String};
   vm.createContext(uctx);
   vm.runInContext([constSrc('EASTER_EGG_IDS'), constSrc('EASTER_EGG_GRANT_SOURCES'), fnSrc('isEasterEgg'), fnSrc('isTutorialCopySource'), fnSrc('unlockCardForPlayer')].join('\n') + '\nout.u = unlockCardForPlayer;', uctx);
   const SOURCES = ['shopPack', 'factionPack', 'reward', 'conquestReward', 'conquestRareFind', 'bossBaseGift', 'cardDrop', 'raid', 'smith', 'fuse', 'nest', 'egg', 'tavern', 'market', 'progressTrack', 'baseGrowth', 'promotion', 'tutorialReward', 'tutorialBonus', 'secret', 'quest', 'scaleTrail', 'materia', 'errand', 'test', 'sandbox', undefined];

@@ -129,7 +129,7 @@ Object.keys(data.maps).forEach(mid=>{
   ok(/dry run: nothing written/.test(out) && /0-PRO-1/.test(out) && /0-BPRO-1/.test(out) && rd(FILE) === before, '2. a dry run prints the plan (PRO and BPRO) and writes nothing');
   cp.execFileSync(process.execPath, [path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js'), '--maps', '0', '--games', '4', '--apply', '--out', tmp, '--quiet'], {cwd: ROOT, encoding: 'utf8'});
   const t = JSON.parse(fs.readFileSync(tmp, 'utf8')); fs.rmSync(tmp, {force: true});
-  ok(t.maps.m1 && t.maps.m1.pro[0].id === '0-PRO-1' && t.maps.m1.field && t.rule.games === 4 && rd(FILE) === before, '2. --apply --out writes that file only');
+  ok(t.maps.m1 && t.maps.m1.pro && t.maps.m1.pro[0] && t.maps.m1.pro[0].id === '0-PRO-1' /* 2026-11-04 (TESTFIX1): a missing PRO deck fails here instead of crashing the rest */ && t.maps.m1.field && t.rule.games === 4 && rd(FILE) === before, '2. --apply --out writes that file only');
   ok(t.maps.m1.bpro && t.maps.m1.bpro[0] && t.maps.m1.bpro[0].id === '0-BPRO-1', '2. --apply --out writes the BPRO list too (PRO2)');
   // 2026-10-24 (PRO2): an old PRO that breaks the map rule (the OPT2-era 0-PRO-3 with 2 Ents) is dropped to `replaced` with its reason
   { const old = JSON.parse(before), tmp2 = path.join(os.tmpdir(), 'pro-test-old-' + process.pid + '.json');
@@ -202,7 +202,8 @@ async function browser(){
       ok(!road.inNodes && !road.onMap.length && road.found && !road.other, '4. no map lists a PRO fight and none is drawn on the map; findConquestNode finds it on its own map only ' + JSON.stringify(road));
       // ---- the admin list
       const adm = await pg.evaluate("(async()=>{ switchTab('admin'); renderAdmin(); await new Promise(r=> setTimeout(r, 300)); const p = document.getElementById('adminProFights'); return {shown: !!p, rows: p ? [...p.querySelectorAll('.pro-row')].map(r=> r.dataset.proKey) : [], fights: p ? p.querySelectorAll('[data-pro-start]').length : 0, links: p ? p.querySelectorAll('[data-pro-copy]').length : 0}; })()");
-      const all = Object.values(data.maps).map(m=> ((m.bpro || []).length ? m.bpro : m.pro)[0].id.replace(/-B?PRO-\d+$/, '') + '-SK'); // 2026-10-31 (UI10, EE2): one skirmish a map
+      // 2026-11-04 (TESTFIX1): BAL11 (2026-11-02, owner 14:26: "for every N-SK, there is a N-WK (weak)") adds N-WK after N-SK where the map has WPRO decks
+      const all = Object.values(data.maps).flatMap(m=> [((m.bpro || []).length ? m.bpro : m.pro)[0].id.replace(/-B?PRO-\d+$/, '') + '-SK'].concat((m.wpro || []).length ? [m.wpro[0].id.replace(/-WPRO-\d+$/, '') + '-WK'] : [])); // 2026-10-31 (UI10, EE2): one skirmish a map
       // 2026-10-25 (package PREF): each map also lists its X-REF fight (a row with Fight, no Copy link), last in the map's block
       const xrefs = []; // (UI10: X-REF is part of the skirmish)
       ok(adm.shown && JSON.stringify(adm.rows.filter(k=> !/-REF$/.test(k))) === JSON.stringify(all) && JSON.stringify(adm.rows.filter(k=> /-REF$/.test(k))) === JSON.stringify(xrefs) && adm.fights === all.length + xrefs.length && adm.links === all.length, '4. Admin lists every PRO fight with Fight and Copy link, and each map\'s X-REF ' + JSON.stringify(adm));
@@ -224,7 +225,7 @@ async function browser(){
       ok(again.pro === '0-SK' && again.admin && !again.over && again.energy === 40, '4. Play again is the same free PRO fight ' + JSON.stringify(again));
       // ---- the skirmish editor's row
       const ed = await pg.evaluate("(async()=>{ endMatch(); switchTab('play'); openSkirmishEditor('mc', '3-2'); await new Promise(r=> setTimeout(r, 300)); const f = document.querySelector('#skirmishEditorOverlay .pro-editor'); return {shown: !!f, keys: f ? [...f.querySelectorAll('[data-pro-start]')].map(b=> b.dataset.proStart) : []}; })()");
-      ok(ed.shown && JSON.stringify(ed.keys) === JSON.stringify(['3-SK']), '4. the skirmish editor shows its map\'s one skirmish (UI10) ' + JSON.stringify(ed));
+      ok(ed.shown && JSON.stringify(ed.keys) === JSON.stringify((data.maps.mc.wpro || []).length ? ['3-SK', '3-WK'] : ['3-SK']), '4. the skirmish editor shows its map\'s one skirmish (UI10; and its weak one, BAL11) ' + JSON.stringify(ed));
       await pg.click('#skirmishEditorOverlay [data-pro-start="3-SK"]'); await pg.waitForTimeout(900); if(!(await pg.evaluate('!!matchState'))){ await pg.click('#cnpFightBtn'); await pg.waitForTimeout(1000); } /* (Map 3 not open yet for this player: it starts at once) */ // 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO click opens the fight's panel; its Fight button (#cnpFightBtn) starts it
       const fromEd = await pg.evaluate("({pro: matchState && matchState.proFight, overlay: (document.getElementById('skirmishEditorOverlay') || {}).hidden})");
       ok(fromEd.pro === '3-SK' && fromEd.overlay === true, '4. its Fight button closes the editor and starts the fight ' + JSON.stringify(fromEd));
