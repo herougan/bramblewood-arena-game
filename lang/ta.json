@@ -3949,5 +3949,21 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} பதுங்கியோடுகிறது: அடுத்த முறை வேகமும் தப்பித்தலும்.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "முட்புதர் {name}-ஐத் தின்கிறது: பழுதுபார் {n}, களத்திலுள்ள உன் அலகுகள் +{a} தாக்குதல் (இன்னும் {left}).",
  "The Aimed Bolt hits {name} for {n}.": "குறிவைத்த அம்பு {name}-ஐ {n} அளவு தாக்குகிறது.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "குறிவைத்த அம்பு எதிரி முட்புதரை {n} அளவு தாக்குகிறது."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "குறிவைத்த அம்பு எதிரி முட்புதரை {n} அளவு தாக்குகிறது.",
+ "Fortify { Armor 1 }, while it lives": "வலுப்படுத்து { கவசம் 1 }, அது உயிருடன் இருக்கும் வரை",
+ "Fortify { Armor {n} }, while it lives": "வலுப்படுத்து { கவசம் {n} }, அது உயிருடன் இருக்கும் வரை",
+ "Relict": "தொல்லுயிர்",
+ "Field effects and field-wide skills pass it by, good and bad.": "களத்தின் விளைவுகளும் களம் முழுவதுக்குமான திறன்களும், நல்லதோ கெட்டதோ, இதைத் தொடாது.",
+ "Weather, the dark, terrain hazards, wind, the tide's water and lane bonuses don't touch it, nor Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero or Nova. Single-target skills still do.": "வானிலை, இருள், நில ஆபத்துகள், காற்று, அலையின் நீர், பாதை போனஸ்கள் இதைத் தொடாது; நிலநடுக்கம், நிலச்சரிவு, பனிச்சரிவு, சுனாமி, சூறாவளி, நச்சு வாயு, முழுப் பூஜ்யம், நோவாவும் அப்படியே. ஒற்றை இலக்குத் திறன்கள் இன்னும் தாக்கும்.",
+ "Meld": "இணைவு",
+ "Meld { {x} }": "இணைவு { {x} }",
+ "Your other Meld units have {x} while it lives.": "இது உயிருடன் இருக்கும் வரை உன் மற்ற இணைவு அலகுகளுக்கு {x}.",
+ "Like a hive: every Meld unit shares its braces with the other Meld units on your side, not with itself.": "ஒரு கூட்டைப் போல: ஒவ்வொரு இணைவு அலகும் தன் அடைப்புக்குறிகளை உன் பக்கத்தின் மற்ற இணைவு அலகுகளுடன் பகிரும், தனக்கல்ல.",
+ "Immunity": "நோயெதிர்ப்பு",
+ "It can't be Poisoned or catch Decay, Toxin or other sickness.": "இதற்கு நஞ்சு ஏறாது; சிதைவு, நச்சுப்பொருள் அல்லது வேறு நோயும் பிடிக்காது.",
+ "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.": "நஞ்சு, பெருநஞ்சு, நச்சுப்பொருள், சிதைவு (சிதைவு சேதத்தின் தாக்குதல் இழப்பும்), சதுப்புக் காய்ச்சல், வித்து மேகம் ஆகியவற்றைத் தடுக்கும். நஞ்சு அல்லது சிதைவு சேதம் இன்னும் வலிக்கும்.",
+ "Sequestration": "பறிமுதல்",
+ "Its hit steals the target's status skills until the end of next round.": "இதன் அடி இலக்கின் நிலைத் திறன்களை அடுத்த சுற்றின் முடிவு வரை பறிக்கும்.",
+ "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "நிலைத் திறன்கள்: நஞ்சு, இரத்தப்போக்கு, சிதைவு, தூக்கம், உறைவு, மயக்கம், குருடு போன்றவை; அம்புகளோ சேதத் திறன்களோ ஒருபோதும் இல்லை. ஒரு நேரத்தில் ஒரு பறிப்பு.",
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "பகுதிகள்: +N உயிர் (அதன் உயிரும் உச்சமும்), முட்கள் N (முட்புதரைத் தாக்கும் அலகு N பெறும்), மீளுருவாக்கம் N (ஒவ்வொரு சுற்றும் காயமடைந்த ஒரு நட்பு அலகை N குணமாக்கும்), அம்பு N (ஒவ்வொரு சுற்றும் சீரற்ற எதிரி அலகுக்கு N), +N கேடயம். பல சேர்ந்து கூடும். \"வலுப்படுத்து { கவசம் 1 }, அது உயிருடன் இருக்கும் வரை\" வேறு: அதன் அலகு உயிரோடிருக்கும்வரை ஒவ்வொரு அடிக்கும் 1 குறைவு."
 }

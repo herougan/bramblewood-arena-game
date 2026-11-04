@@ -28,7 +28,6 @@
  "+1 Lumber now.": "+1 Kayu sekarang.",
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 Kayu, +1 Batu; 1 kerusakan ke semua",
  "+1 starting Lumber.": "+1 Kayu awal.",
- "+1 🪵 every {v1} rounds": "+1 🪵 setiap {v1} ronde",
  "+{v1} Attack for every ally that shares a type with it.": "+{v1} Serangan untuk setiap sekutu yang berbagi tipe dengannya.",
  "+{v1} Dust": "+{v1} Debu",
  "+{v1} Energy from a capsule.": "+{v1} Energi dari kapsul.",
@@ -648,7 +647,6 @@
  "Each round from round 2, both sides gain 1 Lumber.": "Setiap ronde mulai ronde 2, kedua pihak mendapat 1 Kayu.",
  "Each round from round 2, every unit takes 1 ice damage.": "Setiap ronde mulai ronde 2, setiap unit menerima 1 kerusakan es.",
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "Setiap ronde {v1} di tiap sisi {v2} +1 Tunggu. Unit yang lemah terhadap dingin juga menerima 1 kerusakan.",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "Setiap ronde, salah satu dari: pulihkan 3 unitmu yang paling terluka, 2 kerusakan ke unit musuh acak, atau +1 🪵",
  "Each side plays 2 cards a turn.": "Setiap sisi memainkan 2 kartu per giliran.",
  "Each time it is hit, it loses {v1} Attack for good.": "Setiap kali terkena, ia kehilangan {v1} Serangan selamanya.",
  "Earned from bosses on the road. Your side’s cards also turn up in every basic pack.": "Didapat dari bos di perjalanan. Kartu sisimu juga muncul di setiap paket dasar.",
@@ -2579,5 +2577,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} diselesaikan",
  "Cleared": "Selesai",
  "{v1} card{s} collected": "{v1} kartu terkumpul",
- "Clear {v1} / {v2}": "Tuntaskan {v1} / {v2}"
+ "Clear {v1} / {v2}": "Tuntaskan {v1} / {v2}",
+ "+{v1} 🪵 every {v2} rounds": "+{v1} 🪵 setiap {v2} ronde",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "Setiap ronde, salah satu dari: pulihkan {v1} unitmu yang paling terluka, {v2} kerusakan ke unit musuh acak, atau +{v3} 🪵"
 }

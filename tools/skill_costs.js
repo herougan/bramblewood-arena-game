@@ -114,6 +114,9 @@
         // Context skills (2026-10-21, package CX2): CONTEXT_MULT (0.4) x the S of the skills in their braces, across all their phases
         // (bramblewood-budget.js contextS); the plain flag beside the braces (tide next to tideGrant ...) costs nothing then.
         // ENG10 (2026-10-26, PROP1-4): the threshold skills, braces x the measured share at their N (bramblewood-budget.js thrS)
+        // ENG24 (2026-11-04): Meld { X }, X's S x the measured MELD_MULT (bramblewood-budget.js meldS)
+        { const ml = BB.meldS ? BB.meldS(k, v, inner=>{ const r = cardS(inner, card); missing.push(...r.missing); return r.S; }) : null;
+          if(ml){ S += ml.S; parts.push(['context', k, ml.S, ml.mult + ' × ' + ml.inner]); return; } }
         { const th = BB.thrS ? BB.thrS(k, v, effects, inner=>{ const r = cardS(inner, card); missing.push(...r.missing); return r.S; }) : null;
           if(th){ S += th.S; parts.push(['context', k, th.S, th.mult + ' × ' + th.inner]); return; } }
         // ENG12 (2026-10-28, owner L11): Nocturnal / Diurnal / Crepuscular (+A/+H) at their measured uptime x (2A + H) (bramblewood-budget.js zeitS);

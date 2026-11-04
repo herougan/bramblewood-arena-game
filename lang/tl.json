@@ -3947,5 +3947,21 @@
  "{name} skitters: Haste and Evasive next turn.": "Kumaskas ang {name}: Bilis at Iwas sa susunod na turn.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Kinain ng dawag ang {name}: Ayusin {n}, iyong mga yunit sa larangan +{a} Atake ({left} na lang).",
  "The Aimed Bolt hits {name} for {n}.": "Tinamaan ng Asintadong Bolt ang {name} ng {n}.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "Tinamaan ng Asintadong Bolt ang dawag ng kaaway ng {n}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Tinamaan ng Asintadong Bolt ang dawag ng kaaway ng {n}.",
+ "Fortify { Armor 1 }, while it lives": "Patibayin { Baluti 1 }, habang buhay ito",
+ "Fortify { Armor {n} }, while it lives": "Patibayin { Baluti {n} }, habang buhay ito",
+ "Relict": "Relikto",
+ "Field effects and field-wide skills pass it by, good and bad.": "Hindi ito tinatablan ng mga epekto ng larangan at mga skill na pang-buong larangan, mabuti man o masama.",
+ "Weather, the dark, terrain hazards, wind, the tide's water and lane bonuses don't touch it, nor Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero or Nova. Single-target skills still do.": "Hindi ito tinatamaan ng panahon, dilim, panganib ng lupain, hangin, tubig ng alon at bonus ng linya, o ng Lindol, Pagguho, Avalanche, Tsunami, Buhawi, Lasong Gas, Absolute Zero o Nova. Tinatamaan pa rin ito ng mga skill na iisa ang target.",
+ "Meld": "Pagsanib",
+ "Meld { {x} }": "Pagsanib { {x} }",
+ "Your other Meld units have {x} while it lives.": "May {x} ang iba mong yunit na may Pagsanib habang buhay ito.",
+ "Like a hive: every Meld unit shares its braces with the other Meld units on your side, not with itself.": "Parang pugad: ibinabahagi ng bawat yunit na may Pagsanib ang braces nito sa ibang yunit na may Pagsanib sa panig mo, hindi sa sarili nito.",
+ "Immunity": "Imyunidad",
+ "It can't be Poisoned or catch Decay, Toxin or other sickness.": "Hindi ito malalason o mahahawaan ng Bulok, Toxin o ibang sakit.",
+ "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.": "Pinipigilan ang Lason, Matinding Lason, Toxin, Bulok (at ang bawas sa Atake ng pinsalang Bulok), Lagnat ng Latian at Ulap ng Spore. Masakit pa rin ang pinsalang lason o bulok.",
+ "Sequestration": "Pagkumpiska",
+ "Its hit steals the target's status skills until the end of next round.": "Ninanakaw ng tama nito ang mga status skill ng target hanggang matapos ang susunod na round.",
+ "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Mga status skill: Lason, Dugo, Bulok, Tulog, Yelo, Stun, Bulag at iba pa; hindi kailanman ang mga tira o damage skill. Isang nakaw sa bawat pagkakataon.",
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Mga bahagi: +N Buhay (ang Buhay at ang pinakamataas nito), Tinik N (ang yunit na tumama sa dawag ay tatamaan ng N), Regen N (bawat round, gagaling ng N ang isang sugatang kakampi), Bolt N (bawat round, N sa isang random na kaaway), +N Shield. Nagdaragdag ang marami. Iba ang \"Patibayin { Baluti 1 }, habang buhay ito\": 1 bawas bawat tama habang buhay ang yunit nito."
 }

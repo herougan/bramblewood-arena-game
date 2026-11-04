@@ -28,7 +28,6 @@
  "+1 Lumber now.": "+1 Madeira já.",
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 de Madeira, +1 de Pedra; 1 de dano a todos",
  "+1 starting Lumber.": "+1 de Madeira inicial.",
- "+1 🪵 every {v1} rounds": "+1 🪵 a cada {v1} rondas",
  "+{v1} Attack for every ally that shares a type with it.": "+{v1} de Ataque por cada aliado que partilhe um tipo com ela.",
  "+{v1} Dust": "+{v1} de Pó",
  "+{v1} Energy from a capsule.": "+{v1} de Energia de uma cápsula.",
@@ -648,7 +647,6 @@
  "Each round from round 2, both sides gain 1 Lumber.": "Em cada ronda a partir da ronda 2, ambos os lados ganham 1 de Madeira.",
  "Each round from round 2, every unit takes 1 ice damage.": "Em cada ronda a partir da ronda 2, cada unidade sofre 1 de dano de gelo.",
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "Em cada ronda, {v1} de cada lado {v2} +1 de Espera. As unidades fracas ao frio também sofrem 1 de dano.",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "Em cada ronda, uma destas: cura 3 à tua unidade mais ferida, 2 de dano a uma unidade inimiga aleatória, ou +1 🪵",
  "Each side plays 2 cards a turn.": "Cada lado joga 2 cartas por turno.",
  "Each time it is hit, it loses {v1} Attack for good.": "Sempre que é atingida, perde {v1} de Ataque para sempre.",
  "Earned from bosses on the road. Your side’s cards also turn up in every basic pack.": "Ganhos dos chefes pela estrada. As cartas do teu lado também aparecem em cada pacote básico.",
@@ -2579,5 +2577,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} vencidas",
  "Cleared": "Vencida",
  "{v1} card{s} collected": "{v1} carta(s) coletada(s)",
- "Clear {v1} / {v2}": "Completa {v1} / {v2}"
+ "Clear {v1} / {v2}": "Completa {v1} / {v2}",
+ "+{v1} 🪵 every {v2} rounds": "+{v1} 🪵 a cada {v2} rondas",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "Em cada ronda, uma destas: cura {v1} à tua unidade mais ferida, {v2} de dano a uma unidade inimiga aleatória, ou +{v3} 🪵"
 }

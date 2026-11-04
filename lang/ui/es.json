@@ -45,7 +45,6 @@
  "+1 Lumber now.": "+1 de Madera ahora.",
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 de Madera, +1 de Piedra; 1 de daño a todos",
  "+1 starting Lumber.": "+1 de Madera inicial.",
- "+1 🪵 every {v1} rounds": "+1 🪵 cada {v1} rondas",
  "+1/+1 for each Lumber you hold.": "+1/+1 por cada Madera que tengas.",
  "+1/+1 for every Lumber you hold.": "+1/+1 por cada Madera que tengas.",
  "+2/+2 for each Stone you hold.": "+2/+2 por cada Piedra que tengas.",
@@ -1198,7 +1197,6 @@
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "Cada ronda {v1} de cada bando {v2} +1 de Espera. Las unidades débiles al frío también reciben 1 de daño.",
  "Each round, a 1-in-2 chance to deal double damage.": "Cada ronda, 1 entre 2 de infligir el doble de daño.",
  "each round, a coin flip decides whether it can act.": "cada ronda, una moneda al aire decide si puede actuar.",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "Cada ronda, una de estas: cura 3 a tu unidad más herida, 2 de daño a una unidad enemiga al azar, o +1 🪵",
  "Each side plays 2 cards a turn.": "Cada bando juega 2 cartas por turno.",
  "Each time frost chills it, it gains +{v1}/+{v2} for good.": "Cada vez que la helada la enfría, gana +{v1}/+{v2} para siempre.",
  "Each time it is hit, it loses {v1} Attack for good.": "Cada vez que la golpean, pierde {v1} de Ataque para siempre.",
@@ -5004,5 +5002,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} superados",
  "Cleared": "Superado",
  "{v1} card{s} collected": "{v1} carta{s} reunida{s}",
- "Clear {v1} / {v2}": "Completa {v1} / {v2}"
+ "Clear {v1} / {v2}": "Completa {v1} / {v2}",
+ "+{v1} 🪵 every {v2} rounds": "+{v1} 🪵 cada {v2} rondas",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "Cada ronda, una de estas: cura {v1} a tu unidad más herida, {v2} de daño a una unidad enemiga al azar, o +{v3} 🪵"
 }

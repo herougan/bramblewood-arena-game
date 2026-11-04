@@ -45,7 +45,6 @@
  "+1 Lumber now.": "立即 +1 木材。",
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 木材，+1 岩石；全體 1 點傷害",
  "+1 starting Lumber.": "開局 +1 木材。",
- "+1 🪵 every {v1} rounds": "每 {v1} 輪 +1 🪵",
  "+1/+1 for each Lumber you hold.": "你每持有 1 木材，+1/+1。",
  "+1/+1 for every Lumber you hold.": "你每持有 1 木材，+1/+1。",
  "+2/+2 for each Stone you hold.": "你每持有 1 岩石，+2/+2。",
@@ -1198,7 +1197,6 @@
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "每輪雙方各有 {v1}{v2} +1 等待。怕冷的單位還會受到 1 點傷害。",
  "Each round, a 1-in-2 chance to deal double damage.": "每輪有 1/2 機率造成雙倍傷害。",
  "each round, a coin flip decides whether it can act.": "每輪擲硬幣決定它能否行動。",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "每輪從中選一：為你傷勢最重的單位回覆 3、對一個隨機敵方單位造成 2 點傷害，或 +1 🪵",
  "Each side plays 2 cards a turn.": "每方每回合打出 2 張牌。",
  "Each time frost chills it, it gains +{v1}/+{v2} for good.": "每次被冰霜凍僵，永久獲得 +{v1}/+{v2}。",
  "Each time it is hit, it loses {v1} Attack for good.": "每次被擊中，它都會永久失去 {v1} 點攻擊。",
@@ -5004,5 +5002,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — 已通關 {v2}/{v3}",
  "Cleared": "已通關",
  "{v1} card{s} collected": "已收集 {v1} 張卡牌",
- "Clear {v1} / {v2}": "通關{v1} / {v2}"
+ "Clear {v1} / {v2}": "通關{v1} / {v2}",
+ "+{v1} 🪵 every {v2} rounds": "每 {v2} 輪 +{v1} 🪵",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "每輪從中選一：為你傷勢最重的單位回覆 {v1}、對一個隨機敵方單位造成 {v2} 點傷害，或 +{v3} 🪵"
 }

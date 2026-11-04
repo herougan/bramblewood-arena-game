@@ -3946,5 +3946,21 @@
  "{name} skitters: Haste and Evasive next turn.": "{name}はすばしっこく動く：次のターン、ヘイストと回避。",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "いばらが{name}を食べた：修復{n}、場のユニットに攻撃+{a}（残り{left}回）。",
  "The Aimed Bolt hits {name} for {n}.": "狙いボルトが{name}に{n}命中。",
- "The Aimed Bolt hits the enemy bramble for {n}.": "狙いボルトが敵のいばらに{n}命中。"
+ "The Aimed Bolt hits the enemy bramble for {n}.": "狙いボルトが敵のいばらに{n}命中。",
+ "Fortify { Armor 1 }, while it lives": "補強 { アーマー 1 }、生きている間",
+ "Fortify { Armor {n} }, while it lives": "補強 { アーマー {n} }、生きている間",
+ "Relict": "遺存種",
+ "Field effects and field-wide skills pass it by, good and bad.": "フィールド効果と全体スキルは、良くも悪くもこれに及ばない。",
+ "Weather, the dark, terrain hazards, wind, the tide's water and lane bonuses don't touch it, nor Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero or Nova. Single-target skills still do.": "天候、暗闇、地形の危険、風、潮の水、レーンボーナスはこれに及ばず、地震・地すべり・雪崩・津波・竜巻・毒ガス・絶対零度・ノヴァも同じ。単体対象のスキルは効く。",
+ "Meld": "融合",
+ "Meld { {x} }": "融合 { {x} }",
+ "Your other Meld units have {x} while it lives.": "これが生きている間、他の融合ユニットは{x}を持つ。",
+ "Like a hive: every Meld unit shares its braces with the other Meld units on your side, not with itself.": "群れのように：融合ユニットは括弧の中身を味方の他の融合ユニットと分け合う（自分自身には付かない）。",
+ "Immunity": "免疫",
+ "It can't be Poisoned or catch Decay, Toxin or other sickness.": "毒にならず、腐敗・トキシンなどの病にもかからない。",
+ "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.": "毒・強毒・トキシン・腐敗（腐敗ダメージの攻撃低下も）・沼地熱・胞子雲を防ぐ。毒や腐敗のダメージ自体は受ける。",
+ "Sequestration": "奪取",
+ "Its hit steals the target's status skills until the end of next round.": "攻撃が当たると、次のラウンドの終わりまで相手の状態スキルを奪う。",
+ "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "状態スキル：毒・出血・腐敗・睡眠・凍結・スタン・盲目など。射撃やダメージスキルは対象外。奪えるのは一度に一つの相手から。",
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "内訳：+N 体力（体力と上限）、棘 N（いばらを攻撃したユニットが N を受ける）、再生 N（毎ラウンド傷ついた味方1体を N 回復）、ボルト N（毎ラウンド、ランダムな敵ユニットに N）、+N シールド。複数は合算。「補強 { アーマー 1 }、生きている間」は別物：そのユニットが生きている間、1撃ごとに1少なくなる。"
 }

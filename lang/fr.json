@@ -3946,5 +3946,21 @@
  "{name} skitters: Haste and Evasive next turn.": "{name} détale : Hâte et Évasif au prochain tour.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "Le roncier mange {name} : Réparation {n}, vos unités sur le terrain +{a} Attaque (encore {left}).",
  "The Aimed Bolt hits {name} for {n}.": "Le Trait visé touche {name} pour {n}.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "Le Trait visé touche le roncier ennemi pour {n}."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "Le Trait visé touche le roncier ennemi pour {n}.",
+ "Fortify { Armor 1 }, while it lives": "Fortifier { Armure 1 }, tant qu’il vit",
+ "Fortify { Armor {n} }, while it lives": "Fortifier { Armure {n} }, tant qu’il vit",
+ "Relict": "Relicte",
+ "Field effects and field-wide skills pass it by, good and bad.": "Les effets de terrain et les compétences sur tout le terrain l’épargnent, bons ou mauvais.",
+ "Weather, the dark, terrain hazards, wind, the tide's water and lane bonuses don't touch it, nor Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero or Nova. Single-target skills still do.": "Ni la météo, ni l’obscurité, ni les dangers du terrain, ni le vent, ni l’eau de la marée, ni les bonus de couloir ne le touchent, pas plus que Séisme, Éboulement, Avalanche, Tsunami, Tornade, Gaz toxique, Zéro absolu ou Nova. Les compétences à cible unique, si.",
+ "Meld": "Fusion",
+ "Meld { {x} }": "Fusion { {x} }",
+ "Your other Meld units have {x} while it lives.": "Vos autres unités Fusion ont {x} tant qu’il vit.",
+ "Like a hive: every Meld unit shares its braces with the other Meld units on your side, not with itself.": "Comme une ruche : chaque unité Fusion partage ses accolades avec les autres unités Fusion de votre camp, pas avec elle-même.",
+ "Immunity": "Immunité",
+ "It can't be Poisoned or catch Decay, Toxin or other sickness.": "Il ne peut pas être Empoisonné ni attraper Pourriture, Toxine ou autre maladie.",
+ "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.": "Bloque Poison, Poison supérieur, Toxine, Pourriture (et la perte d’Attaque des dégâts de Pourriture), Fièvre des marais et Nuage de spores. Les dégâts de poison ou de pourriture font toujours mal.",
+ "Sequestration": "Séquestre",
+ "Its hit steals the target's status skills until the end of next round.": "Son coup vole les compétences d’état de la cible jusqu’à la fin de la manche suivante.",
+ "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "Compétences d’état : Poison, Saignement, Pourriture, Sommeil, Gel, Étourdissement, Cécité et autres ; jamais les tirs ni les compétences de dégâts. Un vol à la fois.",
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "Parties : +N Santé (sa Santé et son maximum), Épines N (une unité qui frappe le roncier subit N), Régén N (chaque manche soigne N un allié blessé), Trait N (chaque manche, N sur une unité ennemie au hasard), +N Bouclier. Plusieurs s’additionnent. « Fortifier { Armure 1 }, tant qu’il vit » est autre chose : 1 de moins par coup tant que son unité vit."
 }

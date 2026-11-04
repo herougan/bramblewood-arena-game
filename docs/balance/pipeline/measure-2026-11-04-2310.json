@@ -1,0 +1,57 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-04T15:10:58.559Z",
+ "finished": "2026-11-04T15:11:00.421Z",
+ "durationSec": 1.9,
+ "args": [
+  "--only-file",
+  "/tmp/claude-0/-home-claude/803d58f5-74f9-50e4-ac3c-c17d5b9039a6/scratchpad/eng24-items.json",
+  "--map",
+  "3",
+  "--fights",
+  "200,400"
+ ],
+ "head": "2cb56fb3",
+ "inputs": {
+  "context": "map3",
+  "bramble": 15,
+  "fingerprint": "b808c71ee749",
+  "stages": [
+   200,
+   400
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 400,
+  "items": [
+   "relict"
+  ]
+ },
+ "counts": {
+  "items": 1,
+  "measured": 0,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "relict",
+   "why": "no reading in context map3 (no vanilla carriers in its pool?): pass --carriers a,b,c"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-04-2310.json"
+}

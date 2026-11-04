@@ -2046,6 +2046,8 @@ function e22ResName(r){ return ({lumber:()=> TX('ui.e22-res-lumber'), stone:()=>
 function e22Head(k, v, e){
   if(k === 'fortification'){ const z = e22BuildSize(v); return TX('ui.e22-build-head', {a: z.atk, h: z.hp}); }
   if(k === 'fortify') return TX('ui.e22-fortify-head', {x: e22FortifyText(v)});
+  if(k === 'brambleArmor') return TX('ui.eng24-barmor-head', {n: eng24BarmorN(v)}); // ENG24 (ENG22-2 b): Fortify { Armor 1 }, while it lives
+  if(k === 'meld') return TX('ui.eng24-meld-head', {x: grantText(v && typeof v === 'object' ? v : {}) || TX('ui.cx-nothing')}); // ENG24: Meld { Quick }
   if(k === 'delivery') return TX('ui.e22-delivery-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
   if(k === 'deliveryEvery') return TX('ui.e22-delivery-every-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
   return null; }
@@ -2058,6 +2060,17 @@ PASSIVE_DEFS.push(
 Object.assign(SKILL_ICON, {fortify:'🏯', delivery:'📦', deliveryEvery:'📦', deliveryRes:'📦'});
 sk1Patch(PASSIVE_DEFS, 'stockpile', {hidden:true}); // ENG22 (DESIGN1-6): Delivery {Lumber xN} replaces it in "+ Add Skill"; an old card still reads it
 sk1Patch(PASSIVE_DEFS, 'taunt', {desc:()=> TX('ui.e22-taunt')}); // ENG22 (DESIGN1-4): Taunt pulls the arrows and shots of the enemies around it
+// ==== Package ENG24 (2026-11-04, owner 11-04 22:34 in docs/decisions.json; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
+//   Bramble Armor (key brambleArmor) reads as a Fortify form: "Fortify { Armor N }, while it lives" (ENG22-2 b); the rule is unchanged.
+//   Relict (RELICT-1), Meld {X}, Immunity, Sequestration (RELICT-2): on no card; texts under 15 words.
+function eng24BarmorN(v){ const n = Math.round(Number(v)); return v === true || !(n > 0) ? 1 : n; }
+PASSIVE_DEFS.push(
+  {key:'relict', category:'passive', label:TX('ui.eng24-relict-name'), kind:'boolean', desc:()=> TX('ui.eng24-relict'), codexNote:TX('ui.eng24-relict-codex')},
+  {key:'meld', category:'passive', label:TX('ui.eng24-meld-name'), kind:'text', placeholder:'Quick', desc:v=> TX('ui.eng24-meld', {x: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.eng24-meld-codex'),
+    get:e=> e.meld && typeof e.meld === 'object' ? grantToText(e.meld) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length) e.meld = g; }},
+  {key:'immunity', category:'passive', label:TX('ui.eng24-immunity-name'), kind:'boolean', desc:()=> TX('ui.eng24-immunity'), codexNote:TX('ui.eng24-immunity-codex')},
+  {key:'sequestration', category:'passive', label:TX('ui.eng24-sequestration-name'), kind:'boolean', desc:()=> TX('ui.eng24-sequestration'), codexNote:TX('ui.eng24-sequestration-codex')});
+Object.assign(SKILL_ICON, {relict:'🦴', meld:'🫧', immunity:'🧪', sequestration:'🫳'});
 sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.e22-guardian')}); // ENG22 (DESIGN1-4): Guardian takes arrows and shots too
 // ==== ENG23 (2026-11-04, package ENG23; owner 11-03 23:01 / 23:12) ====
 // Skitter (owner: "After hit, it gains haste & evade for the next turn."): the engine's eng23SkitterOn grant (Haste + Evasive, its next round).
@@ -16010,9 +16023,9 @@ function characterDescHTML(ch){
   if(e.castleBolt) bits.push(`Each round a ballista bolt hits a random enemy unit for ${e.castleBolt}`);
   if(e.aimedBolt) bits.push(TX('ui.eng23-bolt-desc', {n: e.aimedBolt})); // ENG23 (2026-11-04, CONTENT9-2 B): Aimed Bolt, once a fight
   if(e.feed){ const f = eng23FeedCfgApp(e.feed); bits.push(TX('ui.eng23-feed-desc', {n: f.repair, a: f.attack, k: f.feeds})); } // ENG23 (CONTENT9-2 A): Feed
-  if(e.castleLumberEvery) bits.push(`+1 🪵 every ${e.castleLumberEvery} rounds`);
+  if(e.castleLumberEvery) bits.push(`+${Number(e.castleLumberAmount) > 0 ? Math.round(e.castleLumberAmount) : 1} 🪵 every ${e.castleLumberEvery} rounds`); // ENG24 (IDEA-BRAMBLES): its amount
   if(e.castleThorns) bits.push(`A unit that hits this bramble takes ${e.castleThorns}`);
-  if(e.herbRefinery) bits.push(`Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵`);
+  if(e.herbRefinery){ const hb = Object.assign({heal:3, damage:2, lumber:1}, typeof e.herbRefinery === 'object' ? e.herbRefinery : {}); bits.push(`Each round, one of: heal your most wounded unit ${hb.heal}, ${hb.damage} damage to a random enemy unit, or +${hb.lumber} 🪵`); } // ENG24: its numbers
   if(e.castleSpawn){ const sp = e.castleSpawn, d = getCardDefs()[sp.defId]; bits.push(`${(sp.count||1) > 1 ? (sp.count + '× ') : ''}${d ? d.name : sp.defId} join${(sp.count||1) > 1 ? '' : 's'} you on round ${sp.first||2}${sp.every ? ' and every ' + sp.every + ' rounds after' : ''}`); }
   return bits.length ? bits.join(' · ') : 'No passive — a plain, sturdy baseline.';
 }
@@ -46686,6 +46699,8 @@ function pickNextBattle(m, newFights){
 }
 // Loss tip (2026-10-04, "a tip on loss — like asking you to try to make a new deck"): one short,
 // specific suggestion read off how the match went, plus a button straight into the deck builder.
+// FIX8-4 (ENG24, 2026-11-04): the deck advice needs the Camp (its deck editor); before it opens (it opens by itself after 0-2) the tip is left out
+function eng24DefeatAdviceOk(){ try{ return !!tabOpen('deck'); }catch(e){ return true; } }
 function lossTipHTML(m){
   const enemy = m.players[2].hq, mine = m.players[1].hq;
   const enemyLeft = enemy.maxHp ? enemy.hp / enemy.maxHp : 1;
@@ -46693,7 +46708,8 @@ function lossTipHTML(m){
   if(enemyLeft > 0.7) tip = TX('results.your-cards-barely-reached-their-castle');
   else if((m.round||0) <= 6) tip = TX('results.you-were-overrun-early-cheaper-cards');
   else if(enemyLeft < 0.25) tip = TX('results.so-close-swap-your-two-or');
-  else tip = TX('results.try-building-a-new-deck-around');
+  else if(eng24DefeatAdviceOk()) tip = TX('results.try-building-a-new-deck-around');
+  else return ''; // 2026-11-04 (ENG24, FIX8-4, owner 11-04 22:34: "Hide it until Camp is open"): no "build a new deck" advice before the Camp
   const canDeck = tabOpen('deck');
   return `<div class="loss-tip"><span class="loss-tip-ico" aria-hidden="true">💡</span><div class="loss-tip-body"><div>${tip}</div>${canDeck ? ('<button type="button" class="btn small" id="wlReworkDeckBtn">' + TX('results.rework-my-deck') + '</button>') : ''}</div></div>`;
 }

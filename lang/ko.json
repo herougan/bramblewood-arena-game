@@ -3949,5 +3949,21 @@
  "{name} skitters: Haste and Evasive next turn.": "{name}이(가) 종종걸음: 다음 턴에 신속과 회피.",
  "The bramble eats {name}: Repair {n}, your units on the field +{a} Attack ({left} feeds left).": "덤불이 {name}을(를) 먹었습니다: 수리 {n}, 필드의 내 유닛 공격 +{a} (남은 횟수 {left}).",
  "The Aimed Bolt hits {name} for {n}.": "조준 볼트가 {name}에 {n} 명중.",
- "The Aimed Bolt hits the enemy bramble for {n}.": "조준 볼트가 적 덤불에 {n} 명중."
+ "The Aimed Bolt hits the enemy bramble for {n}.": "조준 볼트가 적 덤불에 {n} 명중.",
+ "Fortify { Armor 1 }, while it lives": "보강 { 방어구 1 }, 살아 있는 동안",
+ "Fortify { Armor {n} }, while it lives": "보강 { 방어구 {n} }, 살아 있는 동안",
+ "Relict": "잔존종",
+ "Field effects and field-wide skills pass it by, good and bad.": "필드 효과와 필드 전체 스킬은 좋든 나쁘든 이 유닛을 비켜 갑니다.",
+ "Weather, the dark, terrain hazards, wind, the tide's water and lane bonuses don't touch it, nor Earthquake, Landslide, Avalanche, Tsunami, Tornado, Poison Gas, Absolute Zero or Nova. Single-target skills still do.": "날씨, 어둠, 지형 위험, 바람, 조수의 물, 레인 보너스가 닿지 않으며 지진, 산사태, 눈사태, 쓰나미, 토네이도, 독가스, 절대영도, 노바도 마찬가지입니다. 단일 대상 스킬은 여전히 통합니다.",
+ "Meld": "융합",
+ "Meld { {x} }": "융합 { {x} }",
+ "Your other Meld units have {x} while it lives.": "살아 있는 동안 다른 융합 유닛이 {x}을(를) 얻습니다.",
+ "Like a hive: every Meld unit shares its braces with the other Meld units on your side, not with itself.": "벌집처럼: 융합 유닛마다 중괄호의 스킬을 내 편의 다른 융합 유닛과 나눕니다. 자신에게는 주지 않습니다.",
+ "Immunity": "면역",
+ "It can't be Poisoned or catch Decay, Toxin or other sickness.": "중독되지 않으며 부패, 독소 같은 병에도 걸리지 않습니다.",
+ "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.": "독, 강독, 독소, 부패(부패 피해의 공격력 감소 포함), 늪지열, 포자 구름을 막습니다. 독이나 부패 피해 자체는 여전히 받습니다.",
+ "Sequestration": "압류",
+ "Its hit steals the target's status skills until the end of next round.": "공격이 맞으면 다음 라운드가 끝날 때까지 대상의 상태 스킬을 빼앗습니다.",
+ "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.": "상태 스킬: 독, 출혈, 부패, 수면, 빙결, 기절, 실명 등. 사격이나 피해 스킬은 아닙니다. 한 번에 하나만 빼앗습니다.",
+ "Parts: +N Health (its Health and its top), Thorns N (a unit that hits the bramble takes N), Regen N (each round heals one wounded ally N), Bolt N (each round, N at a random enemy unit), +N Shield. Several add up. Fortify { Armor 1 }, while it lives, is different: 1 less a hit while its unit lives.": "구성: +N 체력(체력과 최대치), 가시 N(덤불을 친 유닛이 N 받음), 재생 N(매 라운드 다친 아군 하나를 N 회복), 볼트 N(매 라운드 무작위 적 유닛에 N), +N 보호막. 여럿이면 합산됩니다. \"보강 { 방어구 1 }, 살아 있는 동안\"은(는) 다릅니다: 그 유닛이 살아 있는 동안 한 번 맞을 때마다 1 적게 받습니다."
 }

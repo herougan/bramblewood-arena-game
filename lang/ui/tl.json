@@ -28,7 +28,6 @@
  "+1 Lumber now.": "+1 Kahoy ngayon.",
  "+1 Lumber, +1 Stone; 1 damage to all": "+1 Kahoy, +1 Bato; 1 pinsala sa lahat",
  "+1 starting Lumber.": "+1 panimulang Kahoy.",
- "+1 🪵 every {v1} rounds": "+1 🪵 bawat {v1} round",
  "+{v1} Attack for every ally that shares a type with it.": "+{v1} Atake para sa bawat kakampi na kapareho nito ng uri.",
  "+{v1} Dust": "+{v1} Alikabok",
  "+{v1} Energy from a capsule.": "+{v1} Enerhiya mula sa capsule.",
@@ -648,7 +647,6 @@
  "Each round from round 2, both sides gain 1 Lumber.": "Bawat round mula round 2, makakakuha ang dalawang panig ng 1 Kahoy.",
  "Each round from round 2, every unit takes 1 ice damage.": "Bawat round mula round 2, bawat yunit ay tatanggap ng 1 pinsalang yelo.",
  "Each round {v1} on each side {v2} +1 Wait. Units weak to cold also take 1 damage.": "Bawat round, {v1} sa bawat panig {v2} +1 Hintay. Ang mga yunit na mahina sa lamig ay tatanggap din ng 1 pinsala.",
- "Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵": "Bawat round, isa sa: pagalingin nang 3 ang pinakasugatan mong yunit, 2 pinsala sa isang random na kalabang yunit, o +1 🪵",
  "Each side plays 2 cards a turn.": "Bawat panig ay naglalaro ng 2 card bawat turn.",
  "Each time it is hit, it loses {v1} Attack for good.": "Tuwing tatamaan ito, nawawalan ito ng {v1} Atake nang tuluyan.",
  "Earned from bosses on the road. Your side’s cards also turn up in every basic pack.": "Nakukuha mula sa mga boss sa daan. Lumalabas din ang mga card ng panig mo sa bawat basic pack.",
@@ -2579,5 +2577,7 @@
  "{v1} — {v2}/{v3} cleared": "{v1} — {v2}/{v3} natapos",
  "Cleared": "Natapos",
  "{v1} card{s} collected": "{v1} card na nakolekta",
- "Clear {v1} / {v2}": "Tapusin ang {v1} / {v2}"
+ "Clear {v1} / {v2}": "Tapusin ang {v1} / {v2}",
+ "+{v1} 🪵 every {v2} rounds": "+{v1} 🪵 bawat {v2} round",
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "Bawat round, isa sa: pagalingin nang {v1} ang pinakasugatan mong yunit, {v2} pinsala sa isang random na kalabang yunit, o +{v3} 🪵"
 }

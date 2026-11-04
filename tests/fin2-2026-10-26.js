@@ -25,7 +25,7 @@ ok(/\.\.\.ACTIVE_PRESETS\.map\(p=>\(\{\n\s*key:p\.key, category:p\.category, lab
 // ---- FIN2-a: Fortify
 // 2026-11-04 (TESTFIX1): ENG22 (2026-11-03, owner 21:10: "Fortification renamed to Build ... Fortify (new skill)") gave the word Fortify to the new
 // skill, so brambleArmor reads Bramble Armor again until the owner names it (call ENG22-2, open); the FIN2-a rename no longer holds
-ok(TEXT['ui.skn-bramble-armor'] === 'Bramble Armor', 'a. the skill reads Bramble Armor again (ENG22; FIN2 had Fortify)');
+ok(TEXT['ui.skn-bramble-armor'] === 'Fortify { Armor 1 }, while it lives', 'a. the skill reads as a Fortify form (2026-11-04, ENG24, call ENG22-2 b; ENG22 had Bramble Armor, FIN2 Fortify)');
 ok(/Rampart and Fortify still cut it/.test(TEXT['ui.sk-breach-codex']) && /Rampart and Fortify still cut it/.test(TEXT['ui.sk-shot-bramble-codex']) && /fortifies its bramble/.test(TEXT['ui.en3-log-bramble-armor']), 'a. the other skills\' texts and the log say Fortify');
 ok(TEXT['ui.sk2n-fortification'] === 'Build', 'a. Fortification (SK2) is called Build since ENG22 (owner 2026-11-03 21:10)');
 ok(/brambleArmor/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8')), 'a. the engine key brambleArmor is kept');
@@ -84,7 +84,7 @@ async function browser(){
     const defs = await pg.evaluate("({noLabel: SKILL_DEFS.concat(PASSIVE_DEFS).filter(x=> typeof x.label !== 'string').map(x=> x.key), render: SKILL_DEFS.filter(x=> x.key === 'render').length, fortify: (PASSIVE_DEFS.find(x=> x.key === 'brambleArmor') || {}).label})");
     ok(!defs.noLabel.length, `B b. every skill has a label (${defs.noLabel.join(', ')})`);
     ok(defs.render === 1, `B b. Render is one skill (${defs.render})`);
-    ok(defs.fortify === 'Bramble Armor', `B a. the editor lists Bramble Armor again (ENG22, call ENG22-2) (${defs.fortify})`);
+    ok(defs.fortify === 'Fortify { Armor 1 }, while it lives', `B a. the editor lists the Fortify form (ENG24, call ENG22-2 b) (${defs.fortify})`);
     // every card opens in the editor, and a Save with no change keeps what the form can't show
     const rt = await pg.evaluate(`(()=>{ adminModeEnabled = true; const thrown = []; let opened = 0;
       for(const id of Object.keys(CARD_DEFS_BASELINE)){ try{ openCardEditor(id); opened++; readEditorFormIntoCard(); }catch(e){ thrown.push(id + ': ' + String(e).slice(0, 80)); } try{ closeCardEditor(); }catch(_){} }
