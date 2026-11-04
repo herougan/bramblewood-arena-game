@@ -25,6 +25,7 @@ Web card game (creature cards, lanes, maps, raids). One page built from many scr
 | Owner decisions | `docs/decisions.json` (hub 🗳️ tab; `decisions.md` is generated) | |
 | Settled rules (damage types, keywords, resources, progression, road, CPU, budget), each with its decision id | `docs/project-state.md` | Dated design docs; the engine and `decisions.json` win over it |
 | Evaluation (PRO / BPRO rules, reference decks, difficulty tolerance, testing procedure) | `docs/evaluation-protocol.md` | Numbers quoted in dated balance reports |
+| Skirmish feelings / the forecast principle | `docs/feelings.md` (hub 💭 Feelings tab) | Dated design docs about strategies and combos |
 | What shipped | `docs/CHANGELOG.md` | |
 | Lore, names | `docs/lore-bible.md` | |
 

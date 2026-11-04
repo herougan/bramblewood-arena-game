@@ -26,6 +26,7 @@ CANONICAL = {  # file -> what it is the source of truth for (CLAUDE.md table)
 TAB_DOCS = {  # canonical docs with their own hub tab
     'action-items.md': ('actions', '🎯 Action items'), 'CHANGELOG.md': ('changelog', '🗒️ Changelog'),
     'decisions.md': ('decisions', '🗳️ Decisions'), 'progression-plan.md': ('progress', '📚 Progression plan'),
+    'feelings.md': ('feelings', '💭 Feelings'),  # 2026-11-04 (package FEEL1): canonical, rendered in its own tab
 }
 HISTORY_NAMES = {  # not dated in the name, but snapshots or retired
     'MASTER.md': 'Retired 2026-10-09 (the hub replaced it)',

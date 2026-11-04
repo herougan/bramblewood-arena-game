@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-04 Package FEEL1 (owner 09:23: "We should define "feelings" in master hub. a new tab."; design only)
+- **New canonical `docs/feelings.md`** (the hub's new 💭 Feelings tab, searchable by section): nine skirmish feelings (the juke, the reveal, the clutch save, the instant surprise, the forecast and planned payoff, the comeback, the race, the swarm snowball, the turn of the clock). Each has its moment on a real board, the cards and maps that make it today, what kills it and a log signal to measure it.
+- **The forecast principle** (F1-F4): what a forecast shows (which unit, what, when, on whom), strength against Wait, fair and unfair surprise, and instant effects stay small. Also the skirmish recipe (checklist, enemy deck patterns, what the CPU must do) and 8 example set-ups on Maps 1-23.
+- **10 gaps, proposals only.** First three: G1 the CPU reads forecasts (it counts a Waiting unit as no threat today), G2 forecast indicators on the board, G3 a bait check by CPU level. Owner call FEEL1-1.
+- No card, deck, rule or price changed; no Supabase write. `tools/hub/build_hub.py` + `tools/hub/library.py`: the tab. CLAUDE.md: a source-of-truth row. Test: `tests/feel1-2026-11-04.js`.
+
 ## 2026-11-04 Package UI19 (owner 11-03 23:01 / 23:12, 11-04 07:42: Card editor, name scroll, Map cards skills)
 - **Name scroll:** a new look with real rolled ends and a paper texture (fibres, flecks, a curve of light and shade). The rolled ends are the same width on every card of a size; they no longer grow with the number of name lines. The name stays on one line where it can: long names shrink (floor 70%, never under 6px of type) before they wrap, so Glacial Ape-King's scroll no longer covers its head. Hand, board, Codex and the large view all use it.
 - **Art height (Card editor):** a new field per card, `artPosY` (0 shows the top of the picture, 100 the bottom, blank or 50 centred), to push a card's art below the scroll. Saved on the card (it reaches `canonical/cards.json` with the usual fold). No card has a value yet.
