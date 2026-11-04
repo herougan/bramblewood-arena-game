@@ -551,6 +551,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // owner rule). The owner's 2026-10-19 22:10 call ("all the skills should work as if they were at the front") may mean 1 (full):
   // asked in the RR report, left at 0.5 until the owner says. A row unit's prong / lash hits, and its Boomerang's return, take it too.
   const ROW_SWING_SHARE = 0.5;
+  // ENG21 (2026-11-03, owner 20:28: "Inspiring - +2 attack to adjacent creatures. It stacks! Once unit attacks and hits something, the inspiring
+  // tokens are expended"): one Inspiration token is +2 Attack (card.inspTokens counts them; card.inspired holds the Attack they add).
+  const INSPIRE_TOKEN_ATK = 2;
   function rowShareOf(n){ return n > 0 ? n * ROW_SWING_SHARE : n; } // exact (2026-10-22, package FX2; was rounded up): the hit's one rounding is applyDamage's / damageHQ's
   // The free slot nearest s0 in a middle / back row (2026-10-19, package RR: a token, a Revive, a Relic or a split in that row),
   // s0 itself first when allowed; ties at random, as spawnBeside's. null when none within 15 columns.
@@ -782,7 +785,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     thrNote(def); // ENG10 (2026-10-26, PROP1-4): a threshold skill in play
     const board = {uid:uidCounter++, defId, hp:def.health, maxHp:def.health, atk:def.attack, baseAtk:def.attack, wait:def.wait, fuse: Number(def.effects && def.effects.dynamite) || 0, poison:0, decay:0, bleed:0, exposed:0, exploit:0, scar:0, firedOnce:{},
       ffCounters: Math.max(0, Number(def.effects && def.effects.fastForward) || 0), // Fast Forward N (2026-10-12), see fastForwardPass
-      reloadRemaining:0, _reloadJustSet:false, stunned:false, _stunnedJustSet:false, shellArmor:0, shellSkip:false, shellNext:0, tempHp:0, shellUntil:null, inspired:0, _frenziedThisRound:false,
+      reloadRemaining:0, _reloadJustSet:false, stunned:false, _stunnedJustSet:false, shellArmor:0, shellSkip:false, shellNext:0, tempHp:0, shellUntil:null, inspired:0, inspTokens:0 /* ENG21 */, _frenziedThisRound:false,
       critUsed:0, rallyBonus:0, tempHpR:0, baseHp:def.health, // EQ2 (2026-10-24): the round's temporary Health (Bolster); its printed Health (the bonus Health bar)
       // Elemental status effects (2026-09-16), one per non-physical DMG_TYPE — see
       // rollStatusOnHit/gatherAttackers/endOfRoundUpkeep for the full lifecycle of each:
@@ -7111,6 +7114,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // 2026-10-16: High Canopy / Undergrowth +2 ("Pounce does extra damage"), then Tall Grass doubles it ("Backstab and pounce does 2x damage").
       if(pAmt > 0 || canopyPounceBonus()){ pAmt += canopyPounceBonus(); if(rules.tallGrass && !quietOn()) pAmt *= 2; }
       boardCard.pounceN = pAmt;
+      boardCard.pounceSpent = true; // ENG21 (2026-11-03, owner 20:28: "After pounce, you can remove that context pill"): its Pounce has fired
       const pev = {type:'pounce', side:sideOf(playerId), defId:boardCard.defId, uid:boardCard.uid, amount:pAmt, scale:pScale, targetSide:sideOf(otherId(playerId))};
       if(recordEvents && events) events.push(pev);
       const foes = allBoardCards(players[otherId(playerId)]).filter(c=> c.hp>0 && !c.cageOf);
@@ -10584,6 +10588,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // On Attack (custom trigger — e.g. Bloodlust N = onAttack->buffAttack N): fires once this
       // card commits to attacking this round, AFTER atkThisRound is already captured above, so
       // a permanent Attack buff it grants takes effect starting NEXT round, not retroactively.
+      a.att._inspHit = 0; // ENG21 (2026-11-03): set when a hit of this swing lands (a unit or the bramble), which spends its Inspiration
       a.att._fireHit = 0; // Fire on hit (2026-10-16): an On Attack trigger may load this swing with extra fire damage
       runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAction', stats, events); // Package BX (2026-10-21): On Action, its turn
       { const prev = onAttackPhase; onAttackPhase = 'pre'; try{ runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events); } finally { onAttackPhase = prev; } } // ENG19 (2026-11-02, #12): only Fire on hit here; the rest after the swing (runOnAttackPost)
@@ -10791,12 +10796,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // atkThisRound is captured (same convention as the onAttack trigger above), so the
       // bonus applies starting next round, not retroactively to this swing.
       // Inspiring N (2026-10-12, a new passive): as it attacks, the allies either side of it get +N Attack for their next
-      // swing. Friction N (2026-10-12, user: "a negative passive that deals N damage to your adjacent allies when this
+      // swing (ENG21, 2026-11-03: N Inspiration tokens, +2 Attack each, spent by their next swing that lands). Friction N (2026-10-12, user: "a negative passive that deals N damage to your adjacent allies when this
       // unit attacks").
       { const ie = attDef.effects || {}, insp = Number(ie.inspiring)||0, fric = Number(ie.friction)||0;
         // 2026-10-22 (package GD2, GD-1): + the allies in front of / behind it where the rows fight (frontBehindOf; none elsewhere).
         if(insp > 0 || fric > 0) [liveSelf.col - 1, liveSelf.col + 1].map(col=> liveOwnCols[col]).concat(frontBehindOf(players[a.attId], a.att).map(card=> ({kind:'card', card}))).forEach(en=>{ if(!en || en.kind!=='card' || !en.card || !(en.card.hp > 0)) return; const ally = en.card;
-          if(insp > 0){ ally.inspired = (ally.inspired||0) + insp; if(recordEvents && events) events.push({type:'statusFx', kind:'inspired', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:ally.uid, targetDefId:ally.defId, amount:insp}); }
+          // ENG21 (2026-11-03, owner 20:28, decision ENG21-1): N Inspiration tokens (+2 Attack each, they stack) until the ally's next landing hit.
+          if(insp > 0){ ally.inspTokens = (ally.inspTokens||0) + insp; ally.inspired = (ally.inspired||0) + insp * INSPIRE_TOKEN_ATK; if(recordEvents && events) events.push({type:'statusFx', kind:'inspired', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:ally.uid, targetDefId:ally.defId, amount:insp * INSPIRE_TOKEN_ATK, tokens:insp, total:ally.inspTokens}); }
           if(fric > 0){ const fd = damageCardFlat(ally, fric, 'physical', a.att.defId); if(recordEvents && events) events.push({type:'friction', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetSide:mySide, targetUid:ally.uid, targetDefId:ally.defId, dmg:fd, mods:dnModsFor(ally.uid)}); }
         }); }
       if(attDef.effects && attDef.effects.grit && target.kind==='card' && effAtk(target.card) > effAtk(a.att)){
@@ -10835,7 +10841,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const r2 = damageCard(side, sweepN, dmgType, null);
         aStat.dealt += r2.dmg;
         ensureStat(stats, sideOf(a.enemyId), side.defId).taken += r2.dmg;
-        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, mods:dnModsFor(side.uid), dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, armorSoaked:r2.armorSoaked||0, sweep:true, sweepDir:dir});
+        a.att._inspHit = 1; if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, mods:dnModsFor(side.uid), dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, armorSoaked:r2.armorSoaked||0, sweep:true, sweepDir:dir});
         maybeBreakChain(players, sideOf, a.enemyId, side, stats, events, {kind:'damage', amount:r2.dmg});
         // ENG9 (2026-10-26, owner EN7-3: "Cleave and related DOES spread the status."): a side hit that got through carries the unit's own
         // Poison N and Bleed N (with Greater Poison, Hemorrhage and Venom Master, as its swing gives them). Was EN7: an area, no statuses.
@@ -10862,7 +10868,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               aStat.dealt += r3.dmg; if(rowSwing) rowStrikeTally += r3.dmg; // reserveVolley's total (2026-10-19, RR)
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
               const lb3 = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), lk3 = lastLaneKind; // for the hit event (2026-10-16)
-              if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, guardedUid: c2GuardianRedirect ? c2raw.uid : undefined /* EN2 (2026-10-23): who it stepped in for */, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
+              a.att._inspHit = 1; if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, guardedUid: c2GuardianRedirect ? c2raw.uid : undefined /* EN2 (2026-10-23): who it stepped in for */, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
@@ -10894,7 +10900,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               // landing on the castle, not a swipe redirect.
               const flankDmg = damageHQ(players[a.enemyId], castleSwingAmt(a.att, atkThisRound));
               aStat.dealt += flankDmg; aStat.faceDamage += flankDmg;
-              if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, prong: prong || null, festerBonus, ruptureBonus});
+              a.att._inspHit = 1; if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, prong: prong || null, festerBonus, ruptureBonus});
               if(attDef.effects.sap && flankDmg>0){
                 const healedFlank = Math.min(a.att.maxHp - a.att.hp, flankDmg);
                 if(healedFlank>0){ a.att.hp += healedFlank; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedFlank}); }
@@ -10939,7 +10945,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
         if(rowSwing) rowStrikeTally += dmg; // reserveVolley's total (2026-10-19, TS)
-        if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined, dive: diveBonus ? diveBonus : undefined})));
+        a.att._inspHit = 1; if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined, dive: diveBonus ? diveBonus : undefined})));
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
@@ -11194,7 +11200,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         swingLanded = true;
         aStat.dealt += dmg; aStat.faceDamage += dmg;
         if(rowSwing) rowStrikeTally += dmg; // reserveVolley's total (2026-10-19, TS)
-        if(recordEvents && events) events.push(rowEv(fkTag({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus, shielded: (rowSwing && dmg < castleAmt) || undefined})));
+        a.att._inspHit = 1; if(recordEvents && events) events.push(rowEv(fkTag({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus, shielded: (rowSwing && dmg < castleAmt) || undefined})));
         fireHitLands(a.att, null, mySide, sideOf(a.enemyId), players[a.enemyId], aStat, stats, events); // Fire on hit, at the castle (2026-10-16)
         { const th = players[a.enemyId].castleThorns; if(th > 0 && dmg > 0 && a.att.hp > 0){ const td = damageCardFlat(a.att, th, 'thorns'); aStat.taken = (aStat.taken||0) + td;
           if(recordEvents && events) events.push({type:'statusFx', kind:'castleThorns', side:sideOf(a.enemyId), targetSide:mySide, targetDefId:a.att.defId, targetUid:a.att.uid, amount:td}); } }
@@ -11232,7 +11238,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         a.att.boomerangOut = true;
         if(boomMiss && recordEvents && events) events.push({type:'boomerangThrow', miss:true, side:mySide, uid:a.att.uid, defId:a.att.defId, targetSide:sideOf(a.enemyId), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : undefined, castle: target && target.kind === 'hq' ? true : undefined});
       }
-      a.att.inspired = 0; // Inspiring's bonus is spent on this swing
+      // ENG21 (2026-11-03, owner 20:28: "Once unit attacks and hits something, the inspiring tokens are expended"): spent only by a swing
+      // that landed a hit (was: by any swing, a miss included); a miss, a dodge or no target keeps them for the next swing.
+      if(a.att._inspHit && ((a.att.inspired||0) > 0 || (a.att.inspTokens||0) > 0)){ if(recordEvents && events) events.push({type:'statusFx', kind:'inspiredSpent', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:a.att.uid, targetDefId:a.att.defId, amount:a.att.inspired||0, tokens:a.att.inspTokens||0});
+        a.att.inspired = 0; a.att.inspTokens = 0; }
       sk2AfterSwing(players, sideOf, a, stats, events); // Package SK2 (2026-10-19): Pickpocket, Sabotage, Arson on what the swing hit
       // Recoil N (2026-10-12, user: "New passive skill: Recoil N: On attack, deal N damage to itself").
       if(attDef.effects && Number(attDef.effects.recoil) > 0 && a.att.hp > 0){

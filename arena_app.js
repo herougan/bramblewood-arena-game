@@ -976,7 +976,7 @@ const PASSIVE_DEFS = [
   // Without a list it keeps the old Fast Forward.
   {key:'swimmerGrant', category:'passive', hidden:true, retired:true, label:'Swimmer Skills', kind:'text', placeholder:'fastForward 1, armor 2', desc:v=>`On a Flood round it gains ${grantText(parseGrantText(v)) || 'nothing'}.`,
     get:e=> e.swimmerGrant ? grantToText(e.swimmerGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.swimmerGrant = g; e.swimmer = true; } }},
-  {key:'inspiring', category:'passive', label:'Inspiring', kind:'number', min:0, desc:v=>`As it attacks, its adjacent allies get +${v} Attack for their next swing.`} /* GD2: adjacent */,
+  {key:'inspiring', category:'passive', label:'Inspiring', kind:'number', min:0, desc:v=> TX('ui.eng21-sk-inspiring', {n: v})} /* GD2: adjacent */ /* ENG21 (2026-11-03): Inspiration tokens, +2 Attack each, spent by a landing hit */,
   {key:'friction', category:'passive', label:'Friction', kind:'number', min:0, desc:v=>`A drawback: when it attacks, it deals ${v} damage to each adjacent ally.`} /* GD2: adjacent */,
   // Worthy folded into Bounty (2026-10-15, user: "I think Bounty and Worthy should be fused. Just Bounty."): out of the editor and the
   // lists.
@@ -3050,7 +3050,7 @@ const SKILL_TEXT = {
   rainrunner: v=> `In rain: +${v}/+${v}, and it can't be blocked.`,
   moonborn: v=> `At night: up to +${v}/+${v}, depending on the moon's phase.`,
   frostbite: v=> `Each time frost chills it, it gains +${v}/+${v} for good.`,
-  inspiring: v=> `When it attacks, adjacent allies get +${v} Attack on their next attack.`,
+  inspiring: v=> TX('ui.eng21-sk-inspiring', {n: v}), // ENG21 (2026-11-03, owner 20:28): N Inspiration tokens, +2 Attack each, stacking, spent on the next hit
   friction: v=> `When it attacks, deal ${v} damage to adjacent allies.`,
   lumberjack: ()=> `Whenever you gain Lumber, gain 1 more.`,
   heavyMetal: ()=> `Whenever you gain Stone or Metal, gain 1 more.`,
@@ -3544,6 +3544,8 @@ function describeEffects(def, liveCard, opt){
     // ENG20-1 (2026-11-02, owner 22:44: "Remember can only trigger once per card, then the skill desc becomes redded out"): a unit that came back
     // by Remember shows the line struck, with the used tag (its pip is gone from the strip, abilityBadges).
     if(p.key==='remember' && liveCard){ const lc = currentCardByUidSafe(liveCard.uid) || liveCard; if(lc && lc.rememberSpent){ lines.push(`<span class="sk-used" title="${escapeAttr(TX('ui.eng20-remember-used'))}">${ic('remember')}${p.label}${valSuffix(v)} — ${skillText(p, v, e)}</span> <b class="sk-used-tag">${escapeHtml(TX('ui.eng20-used'))}</b>`); return; } }
+    // ENG21 (2026-11-03): a Pounce that has fired reads struck, with the used tag (its pip is gone from the strip, abilityBadges)
+    if(p.key==='pounce' && liveCard){ const lc = currentCardByUidSafe(liveCard.uid) || liveCard; if(lc && lc.pounceSpent){ lines.push(`<span class="sk-used" title="${escapeAttr(TX('ui.eng21-pounce-used'))}">${ic('pounce')}Pounce${pounceMode(e.pounce) ? '' : valSuffix(numOr(e.pounce, 1))} — ${TX('ui.sk-pounce', {n: lc.pounceN != null ? lc.pounceN : pounceWords(e.pounce)})}</span> <b class="sk-used-tag">${escapeHtml(TX('ui.eng20-used'))}</b>`); return; } }
     if(p.key==='pounce' && !pounceMode(e.pounce)){ lines.push(`${ic('pounce')}Pounce${valSuffix(numOr(e.pounce, 1))} — ${SKILL_TEXT.pounce(e.pounce)}`); return; }
     if(p.key==='pounce'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; // 2026-10-16 (user: "Pounce <Att> or <Hp>")
       const pm = pounceMode(e.pounce), now = lc ? (lc.pounceN != null ? lc.pounceN : pm === 'attack' ? (lc.atk||0) : (lc.hp||0)) : null;
@@ -9247,6 +9249,8 @@ function ui11BloomImpossible(bw, bopts){
 // pushed a chip with the icon alone off centre. A chip with no number is marked (.is-icon-only) and keeps no such pull.
 // ENG20-1 (2026-11-02): is this board card's Remember used (it came back once)? Live engine card first, then the replay's copy.
 function en20RememberSpent(bopts){ try{ const lv = bopts && bopts.live; if(!lv || lv.uid == null) return false; const lc = currentCardByUidSafe(lv.uid); return !!((lc && lc.rememberSpent) || lv.rememberSpent); }catch(e){ return false; } }
+// ENG21 (2026-11-03, owner 20:28: "After pounce, you can remove that context pill"): has this board card's Pounce fired? As en20RememberSpent.
+function eng21PounceSpent(bopts){ try{ const lv = bopts && bopts.live; if(!lv || lv.uid == null) return false; const lc = currentCardByUidSafe(lv.uid); return !!((lc && lc.pounceSpent) || lv.pounceSpent); }catch(e){ return false; } }
 function ui11IconOnly(html){ try{ return String(html).replace(/<[^>]*>/g, '').replace(/[\s\uFE0F\u200D]|\p{Extended_Pictographic}/gu, '') === '' ? ' is-icon-only' : ''; }catch(e){ return ''; } }
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
@@ -9472,7 +9476,7 @@ function abilityBadges(d, bopts){
   if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
   if(e.amore){ const st = bopts && bopts.live ? amoreLiveState(bopts.live) : 'single'; // Amore (2026-10-16)
     out.push(`<span class="ab-amore is-${st}" title="${escapeAttr(st === 'love' ? 'Amore: in love — +0/+3 and Regeneration 3 while its partner lives' : st === 'broken' ? 'Amore: heartbroken — its partner died; it kept +0/+3, lost Regeneration 3' : 'Amore: pairs with your next Amore unit of the same Type')}">${st === 'love' ? '❤️' : st === 'broken' ? '🤎' : '💕'}</span>`); }
-  if(e.pounce){ const pm = pounceMode(e.pounce), pl = bopts && bopts.live && bopts.live.pounceN != null ? bopts.live.pounceN : null; // Pounce (2026-10-12); <Att>/<Hp> (2026-10-16)
+  if(e.pounce && !eng21PounceSpent(bopts)){ const pm = pounceMode(e.pounce), pl = bopts && bopts.live && bopts.live.pounceN != null ? bopts.live.pounceN : null; // Pounce (2026-10-12); <Att>/<Hp> (2026-10-16); ENG21 (2026-11-03): gone once it has fired
     out.push(`<span title="Pounce ${pm ? (pm === 'attack' ? '(its Attack)' : '(its Health)') : numOr(e.pounce, 1)}">${iconHTML('pounce', '🐾')}${pm ? (pl != null ? `<b class="atk-bonus">${pl}</b>` : (pm === 'attack' ? '⚔' : '❤')) : n1(e.pounce)}</span>`); }
   if(e.bloodlust) out.push(`<span title="Bloodlust: when it kills the unit facing it, it leaps to the next creature">${iconHTML('bloodlust', '🩸⚔️')}</span>`); // Bloodlust (2026-10-15; no number since the 2026-10-17 rework)
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
@@ -38179,7 +38183,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0, ffCounters:rc.ffCounters||0 /* ENG23 */ /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0, ffCounters:rc.ffCounters||0 /* ENG23 */, inspTokens:rc.inspTokens||0, pounceSpent:!!rc.pounceSpent /* ENG21 */ /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -38317,7 +38321,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${pl1AuraAtk(c)}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.ffCounters||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}`; // + the Evolute stack (EV, 2026-10-21)
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${pl1AuraAtk(c)}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.ffCounters||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.inspTokens||0}:${c.pounceSpent?1:0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}`; // + the Evolute stack (EV, 2026-10-21)
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -40398,6 +40402,7 @@ function boardCardHTML(c, defs, opts){
   if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
   if(c.creativity>0) badges.push(`<span class="abadge creativity" title="${escapeAttr(creativityTip(c.creativity))}">🎨${c.creativity}</span>`); // Creativity (2026-10-18)
   if(c.prayerTokens>0) badges.push(`<span class="abadge prayer" title="${escapeAttr(prayerTokenTip(c.prayerTokens))}">📿${c.prayerTokens}</span>`); // Prayer tokens (2026-10-19, package E)
+  if(c.inspTokens>0) badges.push(eng21InspPip(c)); // ENG21 (2026-11-03): Inspiration tokens, with the count
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   // 2026-09-20 fix: blind/shocked/corrode badges existed in updateCardStatusDisplay's live-patch
@@ -42411,6 +42416,7 @@ function updateCardStatusDisplay(uid){
   if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
   if(c.creativity>0) badges.push(`<span class="abadge creativity" title="${escapeAttr(creativityTip(c.creativity))}">🎨${c.creativity}</span>`); // Creativity (2026-10-18)
   if(c.prayerTokens>0) badges.push(`<span class="abadge prayer" title="${escapeAttr(prayerTokenTip(c.prayerTokens))}">📿${c.prayerTokens}</span>`); // Prayer tokens (2026-10-19, package E)
+  if(c.inspTokens>0) badges.push(eng21InspPip(c)); // ENG21 (2026-11-03): Inspiration tokens, with the count
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">${iconHTML('blind-now', '🕶️')}${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
@@ -42613,14 +42619,36 @@ function pl2InspireFx(ev, rc){
   if(!b || now - b.t0 > 900 / scale){ b = {t0: now}; PL2_INSPIRE_BURSTS.set(key, b);
     try{ SoundKit.rallyHorn ? SoundKit.rallyHorn() : SoundKit.curse(); }catch(e){}
     pl2InspireBurst(boardCardEl(ev.attUid)); }
-  const apply = ()=>{ if(matchState !== m) return; const r = (m && m.replayCards && m.replayCards[ev.targetUid]) || rc; if(r) r.inspired = (r.inspired||0) + (ev.amount||0);
-    try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} };
+  const apply = ()=>{ if(matchState !== m) return; const r = (m && m.replayCards && m.replayCards[ev.targetUid]) || rc; if(r){ r.inspired = (r.inspired||0) + (ev.amount||0); r.inspTokens = ev.total != null ? ev.total : (r.inspTokens||0) + (ev.tokens||0); } // ENG21: + the tokens
+    try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} eng21InspNumFx(ev.targetUid, 'gain'); };
   const wait = Math.max(0, PL2_INSPIRE_LAG - (now - b.t0) / 1000 * scale);
   if(wait > 0.01 && hasGsap()) gsap.delayedCall(wait, apply); else apply();
 }
+// ENG21 (2026-11-03): from the engine's own 'inspiredSpent' (a swing that landed a hit), not from any hit / miss of the attacker as before.
 function pl2InspireSpent(ev){
-  try{ const m = matchState, rc = m && m.replayCards && m.replayCards[ev.attUid]; if(!rc || !(rc.inspired > 0)) return;
-    rc.inspired = 0; updateCardAtkDisplay(ev.attUid); }catch(e){}
+  try{ const m = matchState, rc = m && m.replayCards && m.replayCards[ev.attUid]; if(!rc || !(rc.inspired > 0 || rc.inspTokens > 0)) return;
+    eng21InspNumFx(ev.attUid, 'spend'); rc.inspired = 0; rc.inspTokens = 0; updateCardAtkDisplay(ev.attUid); try{ updateCardStatusDisplay(ev.attUid); }catch(e){} }catch(e){}
+}
+// ENG21 (2026-11-03, owner 20:28: "There should be a inspiration vfx effect on the card numbers"): the Inspiration pip (📯 and the token count)
+// and the inspiration beat on the unit's Attack number, as tokens are gained (a gold glow that swells and a 📯 that rises off the number) and
+// spent (the glow flares and drains into the number). It sits on the plate beside PL2's bounce (pl2SetStat), which is the number changing.
+// Effects None: nothing. Reduced motion: the gold tint alone, held a moment, no motion.
+function eng21InspPip(c){ const n = c.inspTokens||0; return `<span class="abadge inspired eng21-insp" title="${escapeAttr(TX('ui.eng21-insp-tip', {n, atk: c.inspired != null ? c.inspired : n * 2}))}" aria-label="${escapeAttr(TX('ui.eng21-insp-tip', {n, atk: c.inspired != null ? c.inspired : n * 2}))}">📯${n}</span>`; }
+const ENG21_INSP_CSS = `.stats .atk.eng21-insp-still{color:#ffd56e;text-shadow:0 0 6px rgba(255,200,80,.85)}
+.stats .atk.eng21-insp-gain{animation:eng21InspGain .75s ease-out}
+.stats .atk.eng21-insp-gain::before{content:'📯';position:absolute;left:50%;top:-2px;font-size:.8em;pointer-events:none;animation:eng21InspRise .75s ease-out forwards}
+.stats .atk.eng21-insp-spend{animation:eng21InspSpend .6s ease-in}
+@keyframes eng21InspGain{0%{text-shadow:0 0 0 rgba(255,200,80,0);color:inherit}35%{text-shadow:0 0 10px #ffcf5a,0 0 18px rgba(255,200,80,.8);color:#ffe9a6}100%{text-shadow:0 0 0 rgba(255,200,80,0)}}
+@keyframes eng21InspRise{0%{opacity:0;transform:translate(-50%,4px) scale(.6)}30%{opacity:1;transform:translate(-50%,-6px) scale(1.1)}100%{opacity:0;transform:translate(-50%,-20px) scale(.9)}}
+@keyframes eng21InspSpend{0%{text-shadow:0 0 14px #fff2b0,0 0 22px #ffbf3a;color:#fff2b0}60%{text-shadow:0 0 6px #ffcf5a;color:#ffd56e}100%{text-shadow:none}}
+.abadge.eng21-insp{background:rgba(120,80,10,.85);color:#ffe9a6}`;
+function eng21InspNumFx(uid, kind){
+  try{ if(typeof fxAtLeast === 'function' && !fxAtLeast('low')) return; const el = boardCardEl(uid), a = el && el.querySelector('.stats .atk'); if(!a) return;
+    if(!document.getElementById('eng21InspCss')){ const st = document.createElement('style'); st.id = 'eng21InspCss'; st.textContent = ENG21_INSP_CSS; (document.head || document.documentElement).appendChild(st); }
+    const cls = reducedMotion() ? 'eng21-insp-still' : kind === 'spend' ? 'eng21-insp-spend' : 'eng21-insp-gain';
+    a.classList.remove('eng21-insp-gain', 'eng21-insp-spend', 'eng21-insp-still'); void a.offsetWidth; a.classList.add(cls);
+    setTimeout(()=>{ try{ a.classList.remove(cls); }catch(e){} }, cls === 'eng21-insp-still' ? 700 : 800);
+  }catch(e){}
 }
 function pl2InspireBurst(card, opts){
   opts = opts || {};
@@ -43559,7 +43587,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0, ffCounters:c.ffCounters||0 /* ENG23 */ /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0, ffCounters:c.ffCounters||0 /* ENG23 */, inspTokens:c.inspTokens||0, pounceSpent:!!c.pounceSpent /* ENG21 */ /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -47547,7 +47575,8 @@ function logText(ev){
         avalancheWait: `buried ${nm(ev.targetDefId)} in snow (+${ev.amount} Wait) 🏔️`, // 2026-10-14
         bludgeon: `bludgeoned ${nm(ev.targetDefId)}: its ${({armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow'})[ev.broke] || ev.broke} is broken 🔨`,
         coffeeCrash: `crashed after its coffee and dozes off 😴`,
-        inspired: `inspired ${nm(ev.targetDefId)} (+${ev.amount}⚔ next swing) 📯`,
+        inspired: TX('ui.eng21-log-inspired', {target: nm(ev.targetDefId), n: ev.tokens != null ? ev.tokens : ev.amount, atk: ev.amount}), // ENG21 (2026-11-03)
+        inspiredSpent: TX('ui.eng21-log-insp-spent', {atk: ev.amount}), // ENG21 (2026-11-03): a landing hit spends its Inspiration
         frostbite: `grew stronger in the frost (+${ev.amount}/+${ev.amount}) 🥶`,
         firstBlood: `drew first blood this round (+${ev.amount}) 🩸`,
         octolash: `lashed out at ${ev.amount} units 🐙`,
@@ -51711,9 +51740,7 @@ function renderVfxForEvent(ev){
   try{ en5Vfx(ev); }catch(e){} // EN5 (2026-10-24)
   try{ en6Vfx(ev); }catch(e){} // EN6 (2026-10-24)
   try{ en7Vfx(ev); }catch(e){} // EN7 (2026-10-24)
-  if(ev && (ev.type === 'hit' || ev.type === 'hitHQ' || ev.type === 'evaded' || ev.type === 'blindMiss') && ev.attUid != null && !ev.ranged){ // PL2 (2026-10-25, #4): an Inspired bonus is spent by this swing
-    const m0 = matchState, rc0 = m0 && m0.replayCards && m0.replayCards[ev.attUid];
-    if(rc0 && rc0.inspired > 0){ if(hasGsap()) gsap.delayedCall(.32, ()=>{ if(matchState === m0) pl2InspireSpent(ev); }); else pl2InspireSpent(ev); } }
+  // (PL2's spend on any hit or miss of the attacker is gone: ENG21, 2026-11-03, the engine's 'inspiredSpent' says when a landing hit spends it)
   if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true; setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; } // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
@@ -52168,6 +52195,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='chilli'){ if(el) floatText(el, `🌶️ +${ev.amount}⚔ 🔥`, 'buff'); } // Chilli (2026-10-15)
     else if(ev.kind==='chilliBurn'){ if(el) dnFloat(el, ev.amount, {type:'chilli', mods: ev.mods}); } /* DN2 */
     else if(ev.kind==='coffeeCrash'){ if(el) floatText(el, '😴 Crash', 'stun'); }
+    else if(ev.kind==='inspiredSpent'){ pl2InspireSpent(ev); } // ENG21 (2026-11-03): a landing hit spent its Inspiration: the Attack number flares and comes back down
     else if(ev.kind==='inspired'){ pl2InspireFx(ev, rc); } // PL2 (2026-10-25, owner 22:28 #4): the horn bursts over the inspirer; 0.3 s later its allies' Attack goes up (was a "📯 +1⚔ next swing" float on each ally)
     else if(ev.kind==='frostbite'){ if(el) floatText(el, `🥶 Frostbite +${ev.amount}/+${ev.amount}`, 'buff'); try{ SoundKit.freezeChime(); }catch(e){} }
     else if(ev.kind==='firstBlood'){ if(el) floatText(el, `🩸 First blood +${ev.amount}`, 'debuff'); try{ SoundKit.backstabSlice ? SoundKit.backstabSlice() : null; }catch(e){} }

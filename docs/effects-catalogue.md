@@ -437,7 +437,7 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Prayer (`prayer`) | 7 | `SkillFX.prayerLight` | play of a Prayer card, grace | 🆕 |
 | Stealth (`stealth`) | 7 | `SkillFX.stealthSlip` | hitHQ by a Stealth unit | 🆕 |
 | Esprit (`esprit`) | 6 | `SkillFX.espritAura` | statusFx esprit | 🆕 |
-| Inspiring (`inspiring`) | 6 | `SkillFX.espritAura` | statusFx inspired | 🆕 |
+| Inspiring (`inspiring`) | 9 | the horn burst (`pl2InspireBurst`); ENG21: the 📯N Inspiration pip and the beat on the Attack number (`eng21InspNumFx`) | statusFx inspired, inspiredSpent | 🆕 |
 | Progeny (`onDeathSpawn`) | 6 | `SkillFX.summonPortal` | spawn | 🆕 |
 | Pierce (`pierce`) | 6 | `SkillFX.pierceThrough` | hit with ev.rend, pierceHQ | 🆕 |
 | Fire Arrow (`fireArrow`) | 5 | `SkillFX.bowShot` (fire) | arrow + hit |  |
@@ -1492,3 +1492,13 @@ The rules as built (engine: `crepuscularParts`, `eng23SkitterOn` / `eng23Skitter
 | ⏩ Fast-forward tokens | the unit's badges | ⏩N with a tooltip; "⏩ +N" when granted | `statusFx` `grantFastForward`; spent at `fastForward` |
 | 🍖 Feed | the HUD button, your bramble, the units | "🍖 +3❤" on the bramble, "🍖 +1⚔" on each unit; a log line | `feed` |
 | 🎯 Aimed Bolt | the HUD button and its column picker | a 🏹 shot from your bramble; a log line | `statusFx` `aimedBolt` |
+
+## 2026-11-03 additions (package ENG21): Inspiration tokens, Pounce's pip
+- **Inspiring N** (owner 20:28: "Inspiring - +2 attack to adjacent creatures. It stacks! Once unit attacks and hits something, the inspiring tokens are expended for N damage."): as the Inspiring unit attacks, each adjacent ally (left / right, and front / behind where the rows fight) gains N Inspiration tokens (`c.inspTokens`), +2 Attack each (`c.inspired` holds the Attack, `INSPIRE_TOKEN_ATK`); they stack. The ally spends them all when its attack lands a hit (a unit or the bramble; the extra Attack applies to every hit of that swing); a miss, a dodge or a swing with no target keeps them. The engine says when (`statusFx inspiredSpent`). The rule is the engine's; this describes it.
+- **The look**: the Inspiration pip `📯N` on the unit's status strip (tip: "Inspiration N: +A Attack, spent on its next attack that hits."); as tokens are gained the Attack number glows gold and a 📯 rises off it (`eng21-insp-gain`), as they are spent it flares and drains (`eng21-insp-spend`); PL2's bounce still plays the number changing. Effects None: nothing; reduced motion: a still gold tint for 0.7 s.
+- **Pounce**: once it has fired (`pounceSpent`) the 🐾 pip leaves the strip and its line reads used, as Remember's.
+
+| Effect | Look | What plays | Events |
+|---|---|---|---|
+| 📯 Inspiration gained | `eng21InspNumFx(uid, 'gain')` on `.stats .atk` (CSS) | the horn burst over the inspirer, the 📯N pip | `statusFx inspired` {amount, tokens, total} |
+| 📯 Inspiration spent | `eng21InspNumFx(uid, 'spend')` | the Attack number back down, the pip gone | `statusFx inspiredSpent` {amount, tokens} |

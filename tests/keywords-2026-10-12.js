@@ -70,9 +70,10 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-fly', 'left', {}, []); const t = give(P, 1, 'k2-tail'); ok(e.placeCard(P, so, 1, t.uid, 'left', {}, []), 'Tailwind is cast');
   const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1); ok(hq - P[2].hq.hp === 4, `a Flyer swings twice under a Tailwind (${hq - P[2].hq.hp}, want 4)`); }
 // Inspiring 2: the ally beside it hits for +2 on its next swing
+// 2026-11-03 (package ENG21, owner 20:28): Inspiring 2 = 2 Inspiration tokens, +2 Attack each (+4), spent by the hit (was +2, spent by any swing)
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-insp', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-hit', 'right', {}, []);
-  const [I, A] = all(P[1]); e.debugAttack(P, so, I.uid, {}, []); ok(A.inspired === 2, `the neighbour is Inspired (+${A.inspired})`);
-  const hq = P[2].hq.hp; e.debugAttack(P, so, A.uid, {}, []); ok(hq - P[2].hq.hp === 7 && !A.inspired, `its next swing is +2 and spends it (${hq - P[2].hq.hp})`); }
+  const [I, A] = all(P[1]); e.debugAttack(P, so, I.uid, {}, []); ok(A.inspired === 4 && A.inspTokens === 2, `the neighbour is Inspired (${A.inspTokens} tokens, +${A.inspired})`);
+  const hq = P[2].hq.hp; e.debugAttack(P, so, A.uid, {}, []); ok(hq - P[2].hq.hp === 9 && !A.inspired && !A.inspTokens, `its next swing is +4 and spends it (${hq - P[2].hq.hp})`); }
 // Friction 2: hurts the allies beside it when it attacks
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-fric', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-wall', 'right', {}, []);
   const W = all(P[1]).find(c=> c.defId==='k2-wall'), hp = W.hp; e.debugAttack(P, so, all(P[1]).find(c=> c.defId==='k2-fric').uid, {}, []); ok(hp - W.hp === 2, `Friction 2 hurts the ally beside it (${hp - W.hp})`); }
