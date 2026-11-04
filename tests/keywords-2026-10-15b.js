@@ -28,7 +28,9 @@ const ctx = {
 vm.createContext(ctx);
 vm.runInContext(block + '\n;this.R = {SKILL_REVEAL, SKILL_Q_TIP, hiddenSkillSet, skillHiddenNow, hiddenSkillsOf, maskHiddenSkills, noteMapEnteredForReveal, skillQChipHTML, reset: ()=>{ skillRevealMemo = null; }};', ctx);
 const R = ctx.R;
-ok(JSON.stringify(R.SKILL_REVEAL) === JSON.stringify({diurnal:1, nocturnal:1, crepuscular:1, tide:2}), '1. the gates: Diurnal / Nocturnal / Crepuscular on Map 1, Tide on Map 2 (Swimmer retired 2026-10-15)');
+// 2026-11-04 (TESTFIX1): later packages gate more skills in the same table (ENG9, owner EN8-4: Stem / Chrysalis; ENG22 DESIGN1-11: Hatchling; ENG23 True Sight ...),
+// so this pins the four original gates and that Swimmer stays ungated, not the whole table
+ok(['diurnal', 'nocturnal', 'crepuscular', 'tide'].map(k=> R.SKILL_REVEAL[k]).join() === '1,1,1,2' && !('swimmer' in R.SKILL_REVEAL), '1. the gates: Diurnal / Nocturnal / Crepuscular on Map 1, Tide on Map 2 (Swimmer retired 2026-10-15)');
 const lark = {id:'lark', name:'Lark', effects:{diurnal:2, diurnalHp:1, flying:true}};
 const fish = {id:'fish', name:'Fish', effects:{tide:true, quick:true}};
 const swim = {id:'swim', name:'Swim', effects:{swimmer:'evade', swimmerGrant:{armor:1}}};
@@ -54,7 +56,7 @@ for(const k of Object.keys(store)) delete store[k]; R.reset(); ok(R.skillHiddenN
 ctx.adminModeEnabled = true; R.reset(); ok(!R.skillHiddenNow('tide') && !R.skillHiddenNow('diurnal') && R.maskHiddenSkills(fish) === fish, '1. Admin Mode shows every skill');
 ctx.adminModeEnabled = false; R.reset();
 // where the "?" is applied
-ok(/function describeEffects\(def, liveCard\)\{\n  def = maskHiddenSkills\(def\);/.test(src), '1. card text lines go through the mask');
+ok(/function describeEffects\(def, liveCard(, opt)?\)\{\n  def = maskHiddenSkills\(def\);/.test(src) /* 2026-11-04 (TESTFIX1): a third parameter (opt.terse) since */, '1. card text lines go through the mask');
 ok(/if\(def\._hiddenSkills\) lines\.push\(`<span class="skill-q-line">\$\{skillQChipHTML\(\)\}<\/span>`\);/.test(src), '1. ...and get one "?" line');
 ok(/function abilityBadges\(d, bopts\)\{\n  d = maskHiddenSkills\(d\);/.test(src) && /if\(d\._hiddenSkills\) out\.push\(skillQChipHTML\(\)\);/.test(src), '1. the skill strip shows one "?" chip');
 ok(/PASSIVE_DEFS\.filter\(p=> met\.has\(p\.key\) && p\.label && !p\.retired && !skillHiddenNow\(p\.key\)\)/.test(src) || /shown = p=> p\.label && !p\.retired && !skillHiddenNow\(p\.key\)/.test(src) /* 2026-10-19: the Skills book */, '1. the Skills codex leaves hidden skills out');
@@ -101,7 +103,8 @@ ok(/cdef\.effects && cdef\.effects\.hiveMind/.test(fs.readFileSync(path.join(__d
 // ---- 5. canonical cards
 const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8'));
 const byId = Object.fromEntries(cards.map(c=> [c.id, c]));
-['blind-cave-fish', 'mangrove-mudskipper', 'wrong-way-salmon'].forEach(id=> ok(byId[id] && byId[id].effects && byId[id].effects.tide === true, `5. ${id} has Tide`));
+// 2026-11-04 (TESTFIX1): BF6 (2026-10-21, calls B11 / B14) dropped the Wrong-Way Salmon's Tide (it is Anadromous since 10-31)
+['blind-cave-fish', 'mangrove-mudskipper'].forEach(id=> ok(byId[id] && byId[id].effects && byId[id].effects.tide === true, `5. ${id} has Tide`));
 ok(!cards.some(c=> c.effects && c.effects.hiveMind), '4. no canonical card has Hive Mind');
 
 console.log(`keywords-2026-10-15b: ${fail ? fail + ' failure(s)' : 'all passed'}`); process.exit(fail ? 1 : 0);

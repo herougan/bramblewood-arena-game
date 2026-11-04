@@ -180,7 +180,9 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(R.codexFilterCount() === 1, '9. the picks count once in the ⚙️ Filters badge');
   const g = fnSrc('renderCodexGrid');
   // 2026-10-21 (package TX): each pick is a skill family (Diurnal = Diurnal {…}) or a skill group, read on the "?"-masked card
-  ok(/const want = codexSkillsChosen\(\); if\(want\.length\)\{ ids = ids\.filter\(id=>\{ const d = maskHiddenSkills\(defs\[id\]\); return want\.every\(k=> cardMatchesSkillPick\(d, k\)\); \}\); \}/.test(g), '9. Browse keeps only cards with EVERY skill picked (album and grid views: before the views split)');
+  // 2026-11-04 (TESTFIX1): UI18 (2026-11-03) moved the per-card test into ui18CardMatchesPick (the "?" mystery pick, later-level skills); it still masks first
+  ok(/const want = codexSkillsChosen\(\); if\(want\.length\)\{ ids = ids\.filter\(id=> want\.every\(k=> ui18CardMatchesPick\(defs\[id\], k\)\)\); \}/.test(g)
+    && /function ui18CardMatchesPick\(d, pick\)\{[\s\S]{0,120}const m = maskHiddenSkills\(d\); if\(cardMatchesSkillPick\(m, pick\)\) return true;/.test(src), '9. Browse keeps only cards with EVERY skill picked (album and grid views: before the views split)');
   ok(g.indexOf('const want = codexSkillsChosen()') < g.indexOf('codexDrawAlbum(gEl,'), '9. ... for the album and the grids alike');
   ok(/const o = Object\.assign\(\{\}, codexFilter\)/.test(fnSrc('saveCodexFilters')) && !/skills/.test(fnSrc('saveCodexFilters')), '9. the picks are saved with the other non-text filters (sticky)');
   const w = fnSrc('wireCodexSkillFilter');

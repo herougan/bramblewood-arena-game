@@ -79,8 +79,10 @@ const pack = c=> JSON.parse(R('lang/' + c + '.json')), uiPack = c=> JSON.parse(R
   ok(/title="Notices"><i class="pin" aria-hidden="true">📌<\/i><b>📌 Notices<\/b><small>\$\{qn \? `\$\{qn\} to claim!` : 'Dailies &amp; quests'\}/.test(src), 'O8: the home note is the Notices board (Dailies & quests), not "Quests"');
   ok(/"toast\.errand-taken": "📌 Quest taken: \{label\}"/.test(txt) && /"toast\.errand-complete-claim-it-on-the": "📜 Quest complete: \{title\}\. Claim it on the Notices\."/.test(txt) && /"toast\.errand": "📜 Quest: \{title\} — \{v\}\/\{g\}"/.test(txt), 'O8: the three toasts say Quest');
   ok(!/errand/i.test(txt.replace(/"[a-z.\-]*errand[a-z.\-]*":/g, '')), 'O8: bramblewood-texts.js has no player text with "errand"');
-  const newUi = ['Your dailies', 'Dailies', 'Dailies & quests', 'The favours folk asked of you on the road. Take one, finish it, and claim the reward.', 'Quests. Small favours, small rewards. They add up.', 'Give up this quest', 'You have {v1} quests already'];
-  const newMain = ['Quest taken: {label}', 'Quest complete: {title}. Claim it on the Notices.', 'Quest: {title} — {v}/{g}'];
+  // 2026-11-04 (TESTFIX1): 'Dailies' and 'Dailies & quests' are no longer literal UI strings (the Notices were reworked after UI1; "Dailies" is the
+  // TX key ui.ui6-dailies in the main packs) and LANG3 (cdb79465) dropped the dead ui-pack rows; the main pack's 'Dailies' is checked instead
+  const newUi = ['Your dailies', 'The favours folk asked of you on the road. Take one, finish it, and claim the reward.', 'Quests. Small favours, small rewards. They add up.', 'Give up this quest', 'You have {v1} quests already'];
+  const newMain = ['Dailies', 'Quest taken: {label}', 'Quest complete: {title}. Claim it on the Notices.', 'Quest: {title} — {v}/{g}'];
   CODES.forEach(c=>{ const p = pack(c), u = uiPack(c);
     ok(newUi.every(k=> typeof u[k] === 'string' && u[k]) && newMain.every(k=> typeof p[k] === 'string' && p[k]), `O8: ${c}: the new rows are translated`);
     ok(!Object.keys(u).concat(Object.keys(p)).some(k=> /\berrands?\b/i.test(k)), `O8: ${c}: no errand row left in the packs`);

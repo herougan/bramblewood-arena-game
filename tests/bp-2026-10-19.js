@@ -47,7 +47,7 @@ ok(/\(wind && e\.flying && !ashyNow\(\) && windSideOf\(pid\) === 'tail'\) \? 'ta
   ok(/TX\('ui\.wind-tail-wing'\)/.test(fw) && /TX\('ui\.wind-head-wing'\)/.test(fw) && /TX\('ui\.wind-tail-quick'\)/.test(fw), 'the marks\' titles are TX keys'); }
 ['ui.wind-tail-wing', 'ui.wind-head-wing', 'ui.wind-tail-quick'].forEach(k=> ok(texts.includes('"' + k + '": '), 'TX key ' + k));
 ok(/\.ab-tide\.tide-live, \.wind-live\{/.test(tpl), '.wind-live shares the .tide-live highlight rule');
-ok(/pid: live\.pid/.test(src) && /packChainBonus: c\.packChainBonus\|\|0, pid: opts\.pid, atkLabel/.test(src), 'the board card passes its side (pid) down to the badges');
+ok(/pid: live\.pid/.test(src) && /packChainBonus: c\.packChainBonus\|\|0, pid: opts\.pid, /.test(src) /* 2026-11-04 (TESTFIX1): UI3 / UI11 put more fields after pid */, 'the board card passes its side (pid) down to the badges');
 ok(/syncWindField\(matchState\); syncWindBadges\(\);/.test(src) && !!fnSrc('syncWindBadges'), 'the wind event re-marks the Flyers on the board at once (syncWindBadges)');
 
 // ---- 2. the leader's moment
@@ -69,7 +69,7 @@ ok(/\.leader-callout\{position:fixed; z-index:1103; animation-duration:1\.92s;/.
   ok(/bf\.addEventListener\('pointermove'/.test(wf) && /tryFacingHover\(c, 0\)/.test(wf), 'a move inside a card redraws its lines');
   // the night layers never cover or hide the lines
   ok(!/(night|dark-scene|bf-lantern|phase="night")[^{\n]*\.facing-svg[^{]*\{[^}]*(display:\s*none|opacity:\s*0|visibility:\s*hidden)/.test(tpl), 'no night / dark rule hides .facing-svg');
-  ok(/#battlefieldEl > \.night-veil\{position:absolute; inset:0; z-index:0; pointer-events:none;/.test(tpl) && /\.battlefield \.night-cursor-light\{position:absolute; inset:0; z-index:6; pointer-events:none;/.test(tpl), 'the night veil and the night light never take the pointer');
+  ok(/#battlefieldEl > \.night-veil\{position:absolute; inset:0; z-index:0; pointer-events:none;/.test(tpl) && /\.battlefield \.night-cursor-light\{position:absolute; inset:0; z-index:0; \/\*[^*]*\*\/ pointer-events:none;/.test(tpl) /* 2026-11-04 (TESTFIX1): UI8 (2026-10-31, Z4) moved it under the cards, z-index 6 -> 0 */, 'the night veil and the night light never take the pointer');
   // tryFacingHover: a busy (landing) card is retried until it settles
   const ctx = {calls:[], timers:[], facingHoverUid:null, facingRetryT:0, FACING_RETRY_MS:120, FACING_RETRY_MAX:33};
   vm.createContext(ctx);
@@ -107,7 +107,7 @@ ok(/\.leader-callout\{position:fixed; z-index:1103; animation-duration:1\.92s;/.
   const ti = src.indexOf("if(panel) panel.classList.toggle('collapsed', !battleLogOpen);"), pi = src.indexOf('if(battleLogOpen) pinBattleLog(null, true);');
   ok(ti > 0 && pi > ti && pi - ti < 600, 'opening the log pins it AFTER the panel is shown (it used to scroll while display:none)');
   ok(/\{ const pin0 = battleLogPinned; m\.log\.forEach\(renderLogLine\); battleLogPinned = pin0; \}[^\n]*\n  try\{ if\(!m\._logPinInit\)\{ m\._logPinInit = true; battleLogPinned = true; \} wireBattleLogScroll\(\);/.test(src), 'a full render keeps the place (and a new match starts pinned)');
-  ok(/logEl\.hidden = false; logEl\.scrollTop = logEl\.scrollHeight;/.test(src), 'a past match\'s log opens on its last line');
+  // 2026-11-04 (TESTFIX1): retired: UI1 O4 (2026-10-29) removed the Profile's Match History panel, the past match log this checked
   ok(/\$\{lines\.reverse\(\)\.join\(''\)\}/.test(fnSrc('cardActionLogHTML')), 'a card\'s own log lines read oldest first, newest at the bottom');
   // the pin logic on a fake scroll box
   const ctx = {}; vm.createContext(ctx);

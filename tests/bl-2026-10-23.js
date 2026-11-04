@@ -40,14 +40,17 @@ const bloomPass = (e, P)=>{ const ev = []; e.bloomCopyPass(P, so, {}, ev); retur
   const ev = bloomPass(e, P), bl = ev.find(x=> x.type === 'bloom'), sp = ev.find(x=> x.type === 'spawn' && x.kind === 'bloom');
   const C = all(P[1]).find(x=> x.bloomCopy);
   ok(bl && sp && C && bl.copyUid === C.uid && sp.nearUid === A.uid && sp.uids[0] === C.uid, '1. a bloom event, then a spawn (kind bloom) for the copy beside it');
-  ok(A.bloomed && A.atk === 4 && A.maxHp === 10 && A.hp === 7, `1. the unit itself is unchanged (owner 19:30: "bloom only gives the new one +1/+1, not itself") (${A.atk}/${A.hp}/${A.maxHp})`);
+  // 2026-11-04 (TESTFIX1): ENG15 (2026-10-31, owner FF5) keeps the original able to bloom (no "bloomed" state); the copy is a token with no Bloom
+  ok(A.atk === 4 && A.maxHp === 10 && A.hp === 7, `1. the unit itself is unchanged (owner 19:30: "bloom only gives the new one +1/+1, not itself") (${A.atk}/${A.hp}/${A.maxHp})`);
   ok(C && C.defId === 'bl-alga' && C.atk === 5 && C.maxHp === 11 && C.hp === 8, `1. the copy: the same card, its Attack with the buff, +1/+1, its damage (${C && [C.atk, C.hp, C.maxHp]})`);
   ok(C && !C.poison && !C.bleed && !(C.shield > 0) && !C.exposed, '1. the copy has none of its counters (Poison, Bleed, Shield, Exposed)');
   ok(C && C.wait === 1, `1. the copy arrives with the printed Wait (${C && C.wait})`);
   ok(C && Math.abs(C.slot - A.slot) === 1, `1. in a free slot right beside it (${C && C.slot})`);
   ok(A.poison === 2 && A.bleed === 1, '1. the unit keeps its own counters');
   // 2026-10-24 (package EN5, owner BL-1 03:12: "the copy can bloom"): the unit blooms once; its copy blooms once too (was: never)
-  { if(C) C.wait = 0; /* 2026-10-26 (ENG9, owner EN7-2): Bloom tests only once the unit is Ready; the copy came in at Wait 1 */ const ev2 = bloomPass(e, P); ok(!ev2.some(x=> x.type === 'bloom' && x.uid === A.uid) && ev2.some(x=> x.type === 'bloom' && C && x.uid === C.uid), `1. once per unit: no second bloom of the unit; the copy blooms once (EN5) (${ev2.filter(x=> x.type === 'bloom').map(x=> x.uid).join(',')})`); }
+  { if(C) C.wait = 0; /* 2026-10-26 (ENG9, owner EN7-2): Bloom tests only once the unit is Ready; the copy came in at Wait 1 */ const ev2 = bloomPass(e, P);
+    // 2026-11-04 (TESTFIX1): ENG15 (FF5): the original keeps trying every Ready round (it blooms again when there is room); its copy never blooms (was EN5: once each)
+    ok(!ev2.some(x=> x.type === 'bloom' && C && x.uid === C.uid) && C && C.token && !all(P[1]).some(x=> x.bloomCopy && x.bloomOf === C.uid), `1. the copy is a token and never blooms (ENG15) (${ev2.filter(x=> x.type === 'bloom').map(x=> x.uid).join(',')})`); }
   ok(C && C.bloomCopy && C.bloomOf === A.uid, '1. the copy is marked as a copy of the unit'); }
 
 // ---- 2. Sunny is day with no Rain / Fog; Night is not sunny; Wet needs rain, the Tide in or a wet map
@@ -67,15 +70,17 @@ const bloomPass = (e, P)=>{ const ev = []; e.bloomCopyPass(P, so, {}, ev); retur
 // ---- 4. + 1 Lumber: needs it, pays it
 { const {e, P} = mk({phase:'day', wet:true}); e.roundStart(P, 1, so, {}, []); const L = put(e, P, 1, 'bl-lumb', 0); P[1].lumber = 0;
   ok(!bloomPass(e, P).length && !L.bloomed, '4. + 1 Lumber with none: no bloom');
-  P[1].lumber = 2; const ev = bloomPass(e, P); ok(L.bloomed && P[1].lumber === 1 && ev.find(x=> x.type === 'bloom').lumber === 1, `4. with Lumber: it pays 1 and blooms (${P[1].lumber} left)`); }
+  P[1].lumber = 2; const ev = bloomPass(e, P); ok(ev.some(x=> x.type === 'bloom' && x.uid === L.uid && x.copyUid) /* TESTFIX1: no bloomed flag since ENG15 */ && P[1].lumber === 1 && ev.find(x=> x.type === 'bloom').lumber === 1, `4. with Lumber: it pays 1 and blooms (${P[1].lumber} left)`); }
 
 // ---- 5. no free slot beside it: it waits (owner call BL-2); 2026-10-26 (ENG9, owner EN7-2): it fails, +1/+1 on the unit, and blooms no more
 { const {e, P} = mk({phase:'day', wet:true}); e.roundStart(P, 1, so, {}, []); const A = put(e, P, 1, 'bl-alga', 0); const L = put(e, P, 1, 'bl-wall', -1), R = put(e, P, 1, 'bl-wall', 1);
-  ok(!bloomPass(e, P).length && !A.bloomed, '5. still Waiting: it does not test its Bloom yet (ENG9)');
-  A.wait = 0; const a0 = A.atk, m0 = A.maxHp; const evf = bloomPass(e, P); const f = evf.find(x=> x.type === 'bloom');
-  ok(f && f.failed && A.bloomed && A.atk === a0 + 1 && A.maxHp === m0 + 1 && !all(P[1]).some(x=> x.bloomCopy), `5. Ready, both neighbours taken: the split fails, +1/+1 on the unit (${A.atk}/${A.maxHp})`);
+  ok(!bloomPass(e, P).length, '5. still Waiting: it does not test its Bloom yet (ENG9)');
+  // 2026-11-04 (TESTFIX1): ENG15 (2026-10-31, owner FF5, project-state "Bloom with no free adjacent slot waits"): no room, it waits and tries again next
+  // round; no failed split and no +1/+1 any more (that was ENG9's EN7-2 rule)
+  A.wait = 0; const a0 = A.atk, m0 = A.maxHp; const evf = bloomPass(e, P);
+  ok(!evf.some(x=> x.type === 'bloom') && A.atk === a0 && A.maxHp === m0 && !all(P[1]).some(x=> x.bloomCopy), `5. Ready, both neighbours taken: it waits, no +1/+1 (${A.atk}/${A.maxHp})`);
   R.hp = 0; e.removeDeadCards(P, so, {}, {}, []); const ev = bloomPass(e, P);
-  ok(!ev.some(x=> x.type === 'bloom') && !all(P[1]).some(x=> x.bloomCopy), '5. a neighbour slot frees up later: it does not bloom again'); void L; }
+  ok(ev.some(x=> x.type === 'bloom' && x.uid === A.uid && x.copyUid) && all(P[1]).some(x=> x.bloomCopy), '5. a neighbour slot frees up later: it blooms then'); void L; }
 
 // ---- 6. the day bonus stays out of the copy's base (it gets its own); the copy leaves no card behind
 { const {e, P} = mk({phase:'day', wet:true}); e.roundStart(P, 1, so, {}, []); const A = put(e, P, 1, 'bl-day', 0);
@@ -160,7 +165,7 @@ ok(/then −1 stack at the round's end/.test(TXm.TEXT['ui.st-bleed']) && /At the
 const cat = fs.readFileSync(path.join(ROOT, 'docs', 'effects-catalogue.md'), 'utf8'); ok(/2026-10-23 additions \(package BL\)/.test(cat) && /bleedFadeDropVfx/.test(cat) && /bloomCopyVfx/.test(cat), '14. the effects catalogue');
 const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'decisions.json'), 'utf8')); const list = Array.isArray(dec) ? dec : (dec.decisions || dec.items || []);
 ok(['BL-1', 'BL-2', 'BL-3', 'BL-4', 'BL-5'].every(id=> list.some(d=> d.id === id)), '14. the owner calls BL-1..BL-5 in docs/decisions.json');
-ok(/BL \(2026-10-23\)|package BL/.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 260000)), '14. a CHANGELOG entry at the top'); // 2026-10-23 (RW5): later packages' entries sit above it (was the first 6000 characters); 2026-10-24: 80000 (more packages above); 2026-10-25 (release): 160000 (PL2, PRO3 above); 2026-10-29 RELFIX3: 260000 (the 10-28 / 10-29 batches above)
+ok(/BL \(2026-10-23\)|package BL/.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8')), '14. a CHANGELOG entry at the top'); // 2026-10-23 (RW5): later packages' entries sit above it (was the first 6000 characters); 2026-10-24: 80000 (more packages above); 2026-10-25 (release): 160000 (PL2, PRO3 above); 2026-10-29 RELFIX3: 260000 (the 10-28 / 10-29 batches above) // 2026-11-04 (TESTFIX1): the whole CHANGELOG, as QA1 did for the others; later packages' entries sit above this one
 
 console.log(fail ? `bl-2026-10-23: ${fail} of ${n} FAILED` : `bl-2026-10-23: all ${n} passed`);
 process.exit(fail ? 1 : 0);

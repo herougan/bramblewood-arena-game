@@ -22,15 +22,16 @@ const onKillLumber = {on:'onKill', do:'gainLumber', amount:2};
 const defs = Object.assign({}, H.loadCardDefs(), {
   'rv-wall': U('rv-wall', {}, {health:500}),
   'rv-sword': U('rv-sword', {triggers:[onKillLumber]}, {attack:5, health:500}),
-  'rv-phoenix': U('rv-phoenix', {revive:true, bounty:3, triggers:[{on:'onDeath', do:'gain', resource:'grace', amount:1}]}, {health:2}),
+  // 2026-11-04 (TESTFIX1): ENG9 (2026-10-26, owner note #20) renamed the passive Revive to Undead (effects.undead; Revive N is now an action)
+  'rv-phoenix': U('rv-phoenix', {undead:true, bounty:3, triggers:[{on:'onDeath', do:'gain', resource:'grace', amount:1}]}, {health:2}),
   'rv-mourner': U('rv-mourner', {triggers:[{on:'onAllyDie', do:'gain', resource:'stone', amount:1}]}, {health:500}),
-  'rv-meio': U('rv-meio', {revive:true, meiosis:1}, {health:2}),
-  'rv-crys': U('rv-crys', {revive:true, crystallise:2}, {health:2}),
-  'rv-spawner': U('rv-spawner', {revive:true, onDeathSpawn:{defId:'rv-wall', count:1}}, {health:2}),
+  'rv-meio': U('rv-meio', {undead:true, meiosis:1}, {health:2}),
+  'rv-crys': U('rv-crys', {undead:true, crystallise:2}, {health:2}),
+  'rv-spawner': U('rv-spawner', {undead:true, onDeathSpawn:{defId:'rv-wall', count:1}}, {health:2}),
   'rv-ritual': U('rv-ritual', {ritual:{perished:9}}, {health:500}),
-  'rv-pray': U('rv-pray', {revive:true, prayer:2}, {health:2, mechanicLine:'grace'}),
+  'rv-pray': U('rv-pray', {undead:true, prayer:2}, {health:2, mechanicLine:'grace'}),
   // a loop: each revives once, and each one's death kills every ally
-  'rv-loop': U('rv-loop', {revive:true, triggers:[{on:'onDeath', do:'damage', amount:99, who:'ally', sub:'all'}]}, {health:3}),
+  'rv-loop': U('rv-loop', {undead:true, triggers:[{on:'onDeath', do:'damage', amount:99, who:'ally', sub:'all'}]}, {health:3}),
   // the Quiet Contemplation set
   'qc-twin': U('qc-twin', {twinStrike:true}, {attack:2, health:500}),
   'qc-frenzy': U('qc-frenzy', {frenzy:true}, {attack:2, health:500}),
@@ -71,7 +72,8 @@ const kill = (e, P, c, ev, stats)=>{ c.hp = 0; e.removeDeadCards(P, so, {}, stat
   ok(!P[2].graveyard.some(g=> g.defId === 'rv-phoenix') && !P[2].exile.some(g=> g.defId === 'rv-phoenix'), '1. it is not left in the graveyard (it came back out)');
   // its final death: the Removal Zone, one more kill, one more On Kill and Bounty
   const ev2 = []; e.debugAttack(P, so, S.uid, stats, ev2);
-  ok(!all(P[2]).includes(X) && P[2].exile.some(g=> g.defId === 'rv-phoenix') && !ev2.some(x=> x.type === 'revive'), '1. the second death is final: the Removal Zone, no revive');
+  // 2026-11-04 (TESTFIX1): since ENG9 (2026-10-26) an Undead unit comes back as a token, so its final death leaves nothing (was: the Removal Zone)
+  ok(!all(P[2]).includes(X) && !P[2].exile.some(g=> g.defId === 'rv-phoenix') && !P[2].graveyard.some(g=> g.defId === 'rv-phoenix') && !ev2.some(x=> x.type === 'revive'), '1. the second death is final: a token, gone, no revive');
   ok(kills(stats, 'A', 'rv-sword') === 2 && deaths(stats, 'B', 'rv-phoenix') === 2 && (P[1].lumber || 0) - l0 === 10, `1. two deaths, two kills, two On Kills and Bounties (kills ${kills(stats, 'A', 'rv-sword')}, +${(P[1].lumber || 0) - l0})`); }
 // the Ritual count (units perished) goes up for the revive death too
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'rv-ritual', 'left', {}, []); const Rt = all(P[1]).find(c=> c.defId === 'rv-ritual');
@@ -105,7 +107,9 @@ const kill = (e, P, c, ev, stats)=>{ c.hp = 0; e.removeDeadCards(P, so, {}, stat
 // ---- 1c. Rescue is no death: Shield Call moves the unit out of harm, nothing fires for it
 { const {e, P} = mk(); const sn = put(e, P, 1, 'rv-sword', 0); P[1].row.center = []; e.syncSlots(P[1]);
   const sniper = put(e, P, 1, 'qc-hitter', 0); defs['qc-hitter'].effects = {snipe:9}; sniper.atk = 0;
-  const hound = put(e, P, 2, 'shieldbearer-hound', 3); const X = put(e, P, 2, 'rv-phoenix', 1); hound.wait = 0;
+  // 2026-11-04 (TESTFIX1): BF6 (2026-10-21, B11 / B14) swapped the Shieldbearer Hound's Shield Call for Armor 1, so a test hound carries it
+  defs['rv-hound'] = Object.assign({}, defs['shieldbearer-hound'], {id:'rv-hound', effects:{shieldCall:true}});
+  const hound = put(e, P, 2, 'rv-hound', 3); const X = put(e, P, 2, 'rv-phoenix', 1); hound.wait = 0;
   const stats = {}, ev = [], g0 = P[2].grace || 0; e.debugAttack(P, so, sniper.uid, stats, ev);
   defs['qc-hitter'].effects = {};
   const called = ev.some(x=> x.type === 'spawn' && x.cause === 'shieldCall');

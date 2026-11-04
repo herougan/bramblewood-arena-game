@@ -87,37 +87,43 @@ function dodges(rules, id, seed, att){ const {e, P} = mk(rules, seed || 11); put
 { ok(T.cardS({hemorrhage:true}).S === 2 && Math.abs(T.cardS({hemorrhage:3}).S - (2 + T.skillCost('bleed', 3))) < 0.01, `Hemorrhage priced 2, Hemorrhage 3 = 2 + Bleed 3 (${T.cardS({hemorrhage:3}).S})`); }
 
 // ---- Bloom: the copy can bloom; up / down on a board with more rows --------------------------------------------------------------
+// 2026-11-04 (TESTFIX1): ENG15 (2026-10-31, owner FF5) reversed EN5's "the copy can bloom": the copy is a token with no Bloom and the parent's Wait,
+// and the original is never spent (it blooms again at a later Ready round with room)
 { const {e, P} = mk({phase:'day'}); e.roundStart(P, 1, so, {}, []); const A = put(e, P, 1, 'x-bloom', 0);
-  let ev = []; e.bloomCopyPass(P, so, {}, ev); const C = all(P[1]).find(x=> x.bloomCopy); ok(C && A.bloomed, 'the unit blooms');
-  ev = []; e.bloomCopyPass(P, so, {}, ev); const C2 = all(P[1]).find(x=> x.bloomCopy && x.bloomOf === C.uid);
-  ok(C2 && C.bloomed && C2.atk === C.atk + 1, `the copy blooms too, once (copy of the copy ${C2 && C2.atk + '/' + C2.maxHp})`);
-  const n0 = all(P[1]).length; ev = []; e.bloomCopyPass(P, so, {}, ev); const fresh = all(P[1]).filter(x=> x.bloomOf === C2.uid);
-  ok(!all(P[1]).some(x=> x.bloomOf === A.uid && x !== C) && !all(P[1]).some(x=> x.bloomOf === C.uid && x !== C2) && fresh.length <= 1 && all(P[1]).length <= n0 + 1, 'each unit blooms once'); }
+  let ev = []; e.bloomCopyPass(P, so, {}, ev); const C = all(P[1]).find(x=> x.bloomCopy); ok(C && ev.some(x=> x.type === 'bloom' && x.uid === A.uid), 'the unit blooms');
+  if(C) C.wait = 0; ev = []; e.bloomCopyPass(P, so, {}, ev);
+  ok(C && C.token && !all(P[1]).some(x=> x.bloomCopy && x.bloomOf === C.uid), 'the copy is a token and never blooms (ENG15)');
+  ok(ev.some(x=> x.type === 'bloom' && x.uid === A.uid) && all(P[1]).filter(x=> x.bloomOf === A.uid).length === 2, `the original blooms again at its next Ready round (${all(P[1]).filter(x=> x.bloomOf === A.uid).length} copies)`); }
 { const {e, P} = mk({phase:'day'}, 5, {reserveRows:1, reserveActs:true}); e.roundStart(P, 1, so, {}, []);
   const A = put(e, P, 1, 'x-bloom', 0); put(e, P, 1, 'x-wall', -1); put(e, P, 1, 'x-wall', 1); A.bloomed = false;
   const ev = []; e.bloomCopyPass(P, so, {}, ev); const b = ev.find(x=> x.type === 'bloom'), rw = P[1].reserve && P[1].reserve[0];
   ok(b && b.row === 1 && rw && rw[0] && rw[0].bloomCopy, `both sides taken on a two-row board: the copy grows behind it (row ${b && b.row}, slot ${b && b.slot})`); }
 { const {e, P} = mk({phase:'day'}); e.roundStart(P, 1, so, {}, []); const A = put(e, P, 1, 'x-bloom', 0); put(e, P, 1, 'x-wall', -1); put(e, P, 1, 'x-wall', 1);
-  const ev = []; e.bloomCopyPass(P, so, {}, ev); const f = ev.find(x=> x.type === 'bloom'); ok(f && f.failed && A.bloomed && !all(P[1]).some(x=> x.bloomCopy), 'one row, both sides taken: the split fails, +1/+1 on the unit (2026-10-26, ENG9 / EN7-2; was BL-2: it waits)'); }
+  // 2026-11-04 (TESTFIX1): ENG15 (2026-10-31, owner FF5) went back to BL-2: no room, it waits (no failed split, no +1/+1)
+  const a0 = A.atk, ev = []; e.bloomCopyPass(P, so, {}, ev); ok(!ev.some(x=> x.type === 'bloom') && A.atk === a0 && !all(P[1]).some(x=> x.bloomCopy), 'one row, both sides taken: it waits and tries again next round (ENG15 FF5; ENG9 / EN7-2 had a failed split and +1/+1)'); }
 { const src = fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8'); ok(!/c\.bloomed \|\| c\.bloomCopy \|\| c\.cageOf/.test(src), 'bloomCopyPass no longer skips a copy'); }
 { const p = BB.bloomOdds({when:['wet', 'sunny']}), q = BB.BLOOM_CHAIN_Q, pc = BB.bloomChainOdds({when:['wet', 'sunny']});
   ok(Math.abs(pc - Math.round(p * (1 + q + q * q) * 100) / 100) < 1e-9 && BB.bloomBodyMult({bloomCopy:{when:['wet', 'sunny']}}) === 1 + pc, `Bloom's chain priced: p ${p} -> ${pc} (q ${q})`); }
 
 // ---- prices -------------------------------------------------------------------------------------------------------------------
 // 2026-10-30 RECOST1: Bleed re-priced to its bench worth (3.6 -> 2.05 a point, the same N^0.6 curve); EN5's 3.6 is its prevValue
-const bv = /RECOST1/.test(sk('bleed').appliedAt || '') && sk('bleed').prevValue === 3.6 ? sk('bleed').value : 3.6;
-{ ok(sk('bleed').pow === 0.6 && sk('bleed').value === bv && sk('poison').pow === 0.7 && sk('poison').value === 3, `Bleed ${bv} x N^0.6, Poison 3.0 x N^0.7 (${sk('bleed').value}^${sk('bleed').pow}, ${sk('poison').value}^${sk('poison').pow})`);
+// 2026-11-04 (TESTFIX1): BAL12 (2026-11-02, call BAL11-2 a) re-set both curves at the road's bramble Health (value and pow on the entry; EN5's
+// 3.6 x N^0.6 is Bleed's prevValue, Poison's 3.0 x N^0.7 its skill2Was): EN5's rule, a power curve where a bigger number costs more, is what is checked
+const bv = sk('bleed').value, pv = sk('poison').value;
+{ ok(/BAL12/.test(sk('bleed').appliedAt) && sk('bleed').prevValue === 3.6 && sk('poison').skill2Was.value === 3 && sk('poison').skill2Was.pow === 0.7 && sk('bleed').pow > 0 && sk('poison').pow > 0, `Bleed ${bv} x N^${sk('bleed').pow} (EN5 3.6 x N^0.6), Poison ${pv} x N^${sk('poison').pow} (EN5 3.0 x N^0.7)`);
   const b = [1, 2, 3].map(k=> T.skillCost('bleed', k)), p = [1, 2, 3].map(k=> T.skillCost('poison', k));
-  ok(b[0] === bv && Math.abs(b[1] - bv * Math.pow(2, 0.6)) < 0.02 && Math.abs(b[2] - bv * Math.pow(3, 0.6)) < 0.03 && b[2] > b[1] && b[1] > b[0], `bigger numbers cost more: Bleed ${b.join(' / ')}`);
-  ok(p[0] === 3 && Math.abs(p[1] - 4.87) < 0.02 && p[2] > p[1], `Poison ${p.join(' / ')}`);
+  ok(b[0] === bv && Math.abs(b[1] - bv * Math.pow(2, sk('bleed').pow)) < 0.02 && Math.abs(b[2] - bv * Math.pow(3, sk('bleed').pow)) < 0.03 && b[2] > b[1] && b[1] > b[0], `bigger numbers cost more: Bleed ${b.join(' / ')}`);
+  ok(p[0] === pv && Math.abs(p[1] - pv * Math.pow(2, sk('poison').pow)) < 0.02 && p[2] > p[1], `Poison ${p.join(' / ')}`);
   const md = fs.readFileSync(path.join(ROOT, 'docs/balance/en5-bleed-poison-2026-10-24.md'), 'utf8'); ok(/bleed 3/.test(md) && /poison 1/.test(md), 'the measurement is filed (docs/balance/en5-bleed-poison-2026-10-24.md)');
-  ok(sk('breach') && sk('breach').scale === 'n' && sk('breach').value >= 1.5 && sk('breach').value <= 2.2, `Breach ${sk('breach') && sk('breach').value} a point (the owner's estimate 1.9)`);
+  // 2026-11-04 (TESTFIX1): SKILL2 (BUDGET2-1) re-measured Breach 1.9 -> 2.25 and BAL11 (owner on BAL10-6) doubled it for the low bramble Health -> 3.03
+  ok(sk('breach') && sk('breach').scale === 'n' && sk('breach').skill2Was.value >= 1.5 && sk('breach').skill2Was.value <= 2.2 && sk('breach').bal11 && sk('breach').value === 3.03, `Breach ${sk('breach') && sk('breach').value} a point (the owner's estimate 1.9)`);
   // 2026-10-30 TUT2: owner ENG13-3 "just use logic and reduce it": x the share of covered attacks (BB.CANOPY_SHARE 0.22)
-  ok(sk('canopyCover') && sk('canopyCover').value === 0 && Math.abs(BB.canopyMultOf({canopyCover:true}) - (1 + 0.37 * BB.CANOPY_UPTIME * BB.CANOPY_SHARE)) < 1e-9 && BB.canopyMultOf({canopyCover:true, evasive:true}) === 1 && BB.canopyMultOf({canopyCover:true, flying:true}) === 1,
-    `Canopy Cover: x${BB.canopyMultOf({canopyCover:true})} on the stats (Evasive's 1.37 x uptime ${BB.CANOPY_UPTIME}), none on top of Evasive or on a Flyer`);
+  ok(sk('canopyCover') && sk('canopyCover').skill2Was.value === 0 /* TESTFIX1: SKILL2 (BUDGET2-1) 0.07 as a skill since */ && Math.abs(BB.canopyMultOf({canopyCover:true}) - (1 + (BB.missMultFor('evasive') - 1) * BB.CANOPY_UPTIME * BB.CANOPY_SHARE)) < 1e-9 /* TESTFIX1: Evasive's own miss multiplier (re-measured since, was 1.37) */ && BB.canopyMultOf({canopyCover:true, evasive:true}) === 1 && BB.canopyMultOf({canopyCover:true, flying:true}) === 1,
+    `Canopy Cover: x${BB.canopyMultOf({canopyCover:true})} on the stats (Evasive's ${BB.missMultFor('evasive')} x uptime ${BB.CANOPY_UPTIME} x share ${BB.CANOPY_SHARE}), none on top of Evasive or on a Flyer`);
   ok(BB.missMultOf({canopyCover:true}) === BB.canopyMultOf({canopyCover:true}), 'the budget\'s miss multiplier carries it (capScores, the forge curve)');
   const st = {timbered:[0.5, 'timberedGrant', 0.25], bedrock:[0.3, 'bedrockGrant', 0.2], forged:[1, 'forgedGrant', 0.5], lastStand:[0.6, 'lastStandGrant', 0.2]};
-  Object.entries(st).forEach(([k, [v, g, u]])=>{ ok(sk(k) && sk(k).value === v && BB.CONTEXT_MULT_BY[g] === u && BB.CONTEXT_FLAG[k] === g && BB.PARAMS.includes(g), `${k}: plain ${v}, braces x${u}`); });
+  // 2026-11-04 (TESTFIX1): SKILL2 (BUDGET2-1) re-measured Last Stand 0.6 -> 0.45 (skill2Was keeps 0.6)
+  Object.entries(st).forEach(([k, [v, g, u]])=>{ ok(sk(k) && (sk(k).value === v || (sk(k).skill2Was && sk(k).skill2Was.value === v)) && BB.CONTEXT_MULT_BY[g] === u && BB.CONTEXT_FLAG[k] === g && BB.PARAMS.includes(g), `${k}: plain ${v}, braces x${u}`); });
   ok(Math.abs(T.cardS({timbered:true, timberedGrant:{thorns:2}}).S - 0.25 * T.cardS({thorns:2}).S) < 0.01, `Timbered – {Thorns 2} = 0.25 x Thorns 2 (${T.cardS({timbered:true, timberedGrant:{thorns:2}}).S})`); }
 
 // ---- cards --------------------------------------------------------------------------------------------------------------------
@@ -147,7 +153,8 @@ const bv = /RECOST1/.test(sk('bleed').appliedAt || '') && sk('bleed').prevValue 
   const tpl = fs.readFileSync(path.join(ROOT, 'arena_template.html'), 'utf8'); ['.sfx.en5-breach-chip', '.en5-canopy-pulse', '.abadge.en5-state', '.gd-people'].forEach(s=> ok(tpl.includes(s), 'arena_template.html: ' + s));
   const TXm = require(path.join(ROOT, 'bramblewood-texts.js'));
   ok(TXm.TEXT['ui.skn-greater-poison'] === 'Deadly Poison' && !Object.values(TXm.TEXT).some(v=> /Greater Poison/.test(v)), 'Deadly Poison everywhere a player reads it (the key stays greaterPoison)');
-  ok(/copy can bloom once too/.test(TXm.TEXT['ui.bl-desc']) && /in front or behind/.test(TXm.TEXT['ui.bl-codex']), 'Bloom\'s texts: the copy can bloom; in front or behind on more rows');
+  // 2026-11-04 (TESTFIX1): ENG15 (FF5) rewrote the texts: the copy is a token with no Bloom; no room, it waits
+  ok(/The copy is a token with its Wait and no Bloom/.test(TXm.TEXT['ui.bl-desc']) && /in front or behind/.test(TXm.TEXT['ui.bl-codex']) && /it waits and tries again next round/.test(TXm.TEXT['ui.bl-codex']), 'Bloom\'s texts: the copy has no Bloom (ENG15); in front or behind on more rows');
   const txt = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8'); const a = txt.indexOf('const TEXT = '), b = txt.indexOf('/*TEXT-TABLE-END*/') > 0 ? txt.indexOf('/*TEXT-TABLE-END*/') : txt.indexOf('};', a);
   ok(!/\n\s*\/\/|\/\*(?!TEXT-TABLE)/.test(txt.slice(txt.indexOf('{', a) + 1, b)), 'no comments inside the TEXT object');
   const K = Object.keys(TXm.TEXT).filter(k=> /^ui\.(en5-|skn-(breach|canopy-cover|timbered|bedrock|forged|last-stand)|sk-(breach|canopy-cover|timbered|bedrock|forged|last-stand|hemorrhage-n))/.test(k));
@@ -159,7 +166,7 @@ const bv = /RECOST1/.test(sk('bleed').appliedAt || '') && sk('bleed').prevValue 
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-24 additions \(package EN5\)/.test(cat) && /Deadly Poison/.test(cat), 'docs/effects-catalogue.md: EN5');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.items || []).map(d=> d.id);
   ok(['EN5-1', 'EN5-2', 'EN5-3', 'EN5-4', 'EN5-5', 'EN5-6', 'EN5-7'].every(i=> ids.includes(i)), 'decisions EN5-1 .. EN5-7');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN5/.test(cl.slice(0, 250000)), 'CHANGELOG: EN5 near the top'); /* 2026-10-28 (RELFIX2): 250000, the 10-28 batch's entries sit above it */ /* 2026-10-25 (FIX3): 120000, the 10-25 packages' entries sit above it */ /* 2026-10-24: later packages sit above it */ }
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN5/.test(cl), 'CHANGELOG: EN5 near the top'); /* 2026-11-04 (TESTFIX1): the whole CHANGELOG, as QA1 did */ /* 2026-10-28 (RELFIX2): 250000, the 10-28 batch's entries sit above it */ /* 2026-10-25 (FIX3): 120000, the 10-25 packages' entries sit above it */ /* 2026-10-24: later packages sit above it */ }
 
 // ---- snaps.py: the speedMult crash ----------------------------------------------------------------------------------------------
 { const py = fs.readFileSync(path.join(ROOT, 'tests/e2e/snaps.py'), 'utf8'); ok(/EN5/.test(py), 'tests/e2e/snaps.py: the speedMult crash fixed (EN5 note)'); }

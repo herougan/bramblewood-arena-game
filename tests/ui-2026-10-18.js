@@ -56,9 +56,9 @@ ok(/psychicDampener:\{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampe
   ok(!R.revealAfterMet({mapNum:41}), '11. no fights won: Map 41+ not met');
   completed = ['m40:40-1']; ok(!R.revealAfterMet({mapNum:41}), '11. a Map 40 win is not enough');
   completed = ['m40:40-1', 'm42:42-3']; ok(R.revealAfterMet({mapNum:41}), '11. a win on Map 42 meets "Map 41+"'); }
-ok(/function fieldRowState\(key\)\{ if\(fieldRowGated\(key\)\) return 'unknown';/.test(src) && /function fieldRowGated\(key\)\{[^\n]*FIELD2\[key\][^\n]*revealAfterMet\(f\.revealAfter\)/.test(src), '11. a gated field row stays "?" (fieldRowState), everywhere it is read');
+ok(/function fieldRowState\(key\)\{[^\n]*?if\(fieldRowGated\(key\)\) return 'unknown';/.test(src) /* 2026-11-04 (TESTFIX1): DF3 (2026-10-24) put the boon's always-known row first */ && /function fieldRowGated\(key\)\{[^\n]*FIELD2\[key\][^\n]*revealAfterMet\(f\.revealAfter\)/.test(src), '11. a gated field row stays "?" (fieldRowState), everywhere it is read');
 ok(/function fieldRowHidden\(key\)\{ return fieldRowState\(key\) === 'unknown' && !\(typeof adminModeEnabled/.test(src), '11. ...and admins still read it');
-ok(/function describeEffects\(def, liveCard\)\{\n  def = maskHiddenSkills\(def\);/.test(src) && /function abilityBadges\(d, bopts\)\{\n  d = maskHiddenSkills\(d\);/.test(src), '8. card text and skill strip go through the mask (hand, board, Codex, popover)');
+ok(/function describeEffects\(def, liveCard(, opt)?\)\{\n  def = maskHiddenSkills\(def\);/.test(src) && /function abilityBadges\(d, bopts\)\{\n  d = maskHiddenSkills\(d\);/.test(src), '8. card text and skill strip go through the mask (hand, board, Codex, popover)');
 
 // ---- 9. titles and new fights share one row
 { const rp = fnSrc('rewardsPanelHTML');
@@ -66,7 +66,8 @@ ok(/function describeEffects\(def, liveCard\)\{\n  def = maskHiddenSkills\(def\)
   ok(/\.rw-seen \.rw-open-row \.rw-act\{height:44px;[^}]*background:#f4ecd8; border:3px solid #c9a46a;/.test(tpl), '9. ...in the fights\' chip look'); }
 
 // ---- 10. the swap window's two sides are further apart
-ok(/\.ds2-stage\{position:relative; display:flex; justify-content:center; align-items:flex-start; gap:54px;\}/.test(tpl) && /\n    \.ds2-stage\{gap:30px;\}/.test(tpl), '10. swap window gap 34 -> 54px (phones 18 -> 30px)');
+// 2026-11-04 (TESTFIX1): RW4 (2026-10-23, the owner's 13:16 swap-window restyle) widened it again to 96px (phones 52px)
+ok(/\.ds2-stage\{position:relative; display:flex; justify-content:center; align-items:flex-start; gap:96px;\}/.test(tpl) && /\n    \.ds2-stage\{gap:52px;\}/.test(tpl), '10. swap window gap 34 -> 54px (phones 18 -> 30px); RW4: 96px (phones 52px)');
 
 // ---- "Put it in my deck" by Collection level (2026-10-18, owner decision 18: "Based on collection level. At some point, all rarities
 //      will not even trigger this prompt."; was the deck's own rarity floor)
@@ -98,7 +99,7 @@ ok(/\.ds2-stage\{position:relative; display:flex; justify-content:center; align-
 ok(TEXT['results.egg-card-hatch'] === "An egg! You'll need a place to hatch it.", 'the egg line, as the owner wrote it (TX results.egg-card-hatch)');
 { const rp = fnSrc('rewardsPanelHTML');
   ok(/const eggCards = wonIds\.filter\(id=> isEggRewardCard\(getCardDefs\(\)\[id\]\)\)/.test(rp) && /const cards = wonIds\.filter\(id=> !eggCards\.includes\(id\)\)/.test(rp), 'won egg cards leave the Cards won list');
-  ok(/eggCards\.forEach\(id=>\{[^\n]*\n[^\n]*rw-act rw-egg rw-egg-card[^\n]*eggCardRewardNote\(\)/.test(rp), '...and sit with the egg and the baby in the Rewards block, with the egg line');
+  ok(/eggCards\.forEach\(id=>\{[^\n]*rw-egg-card[^\n]*eggCardRewardNote\(\)/.test(rp) /* 2026-11-04 (TESTFIX1): PL2 / RES3 (10-25 / 10-26) made the rewards one stack of card tiles */, '...and sit with the egg and the baby in the Rewards block, with the egg line');
   ok(/const eggNote = eggCards\.length \? eggCardRewardNote\(\)/.test(rp), '...and the line under the Rewards'); }
 ok(/function swapEligibleDef\(d\)\{ return !!\(d && [^\n]*!isEggRewardCard\(d\)/.test(src), 'an egg card is never offered as a deck swap');
 { const egg = cards.filter(c=> /^egg-/.test(c.id)); ok(egg.length >= 7 && egg.every(c=> c.hatchInto), 'every egg-* card has hatchInto (isEggRewardCard finds them all, Cocoon included)'); }
@@ -106,7 +107,7 @@ ok(/function swapEligibleDef\(d\)\{ return !!\(d && [^\n]*!isEggRewardCard\(d\)/
 // ---- the swap waits for the pack opening
 { const mo = fnSrc('maybeOfferDeckSwap');
   ok(/if\(packRevealBusy\(\)\) return;/.test(mo), 'the swap check waits while a pack is queued, floating up, or open');
-  ok(/packRevealInFlight = true;/.test(src) && /onClose: \(\)=>\{ packRevealInFlight = false; schedulePackReveals\(\); if\(!packRevealQueue\.length\) setTimeout\(\(\)=>\{ try\{ maybeOfferDeckSwap\(\); \}catch\(e\)\{\} \}, 400\); \}/.test(src), 'a reveal is in flight from the queue until its opener closes, which then offers the swap');
+  ok(/packRevealInFlight = true;/.test(src) && /onClose: \(\)=>\{ packRevealInFlight = false; (if\(!packRevealQueue\.length\) pl1PackSession = null; )?schedulePackReveals\(\); if\(!packRevealQueue\.length\) setTimeout\(\(\)=>\{ try\{ maybeOfferDeckSwap\(\); \}catch\(e\)\{\} \}, 400\); \}/.test(src), 'a reveal is in flight from the queue until its opener closes, which then offers the swap');
   ok(/if\(packRevealBusy\(\)\) return false; \/\/ 2026-10-18/.test(fnSrc('scaleTrailScreenFree')), 'the Scale Trail finale waits for the packs too');
   ok(/setTimeout\(maybeOfferDeckSwap, 600\)/.test(fnSrc('renderConquestSubTab')), 'with no pack, the map still offers the swap');
   const ov = {hidden:true}; const ctx = {document:{getElementById: ()=> ov}, packRevealQueue: [], packRevealInFlight: false};
@@ -133,7 +134,7 @@ ok(/function swapEligibleDef\(d\)\{ return !!\(d && [^\n]*!isEggRewardCard\(d\)/
     ok(a === 0 && M.creativity === 2, `on Wait 2 it waits, then gives from the upkeep its Wait runs out, as Rebuild (${a}, ${M.creativity})`); } }
 ok(/\{key:'creative', category:'passive', label:'Creative', kind:'number', min:1, defaultValue:1, desc:v=> TX\('ui\.creative-desc'/.test(src) && /codexNote:TX\('ui\.creative-codex-note'\)/.test(src), '16. PASSIVE_DEFS: Creative (the skill editor), with its Codex note');
 ok(/effect to come/i.test(TEXT['ui.creative-codex-note'] || ''), '16. the Codex says the effect is to come');
-ok(/SKILL_ICON\.creative = '🎨';/.test(src) && /creative: v=> TX\('ui\.creative-text'/.test(src) && /'shatter', 'creative', 'rebuild'\]/.test(src), '16. icon, card text, chip on the skill strip');
+ok(/SKILL_ICON\.creative = '⌘';/.test(src) /* 2026-11-04 (TESTFIX1): UI15 (2026-11-02, owner) changed 🎨 to ⌘ */ && /creative: v=> TX\('ui\.creative-text'/.test(src) && /'shatter', 'creative', 'rebuild'\]/.test(src), '16. icon, card text, chip on the skill strip');
 ok(/creative:0 \/\* 2026-10-18/.test(src), '16. stat budget: costs 0');
 ok((src.match(/if\(c\.creativity>0\) badges\.push\(`<span class="abadge creativity" title="\$\{escapeAttr\(creativityTip\(c\.creativity\)\)\}">🎨\$\{c\.creativity\}<\/span>`\)/g) || []).length === 2, '16. the 🎨 N badge on the board (both status renderers)');
 ok(/no effect yet/.test(TEXT['ui.creativity-tip'] || '') && /reserved/.test(TEXT['ui.creativity-tip'] || ''), '16. its tooltip: no effect yet, reserved');

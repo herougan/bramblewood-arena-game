@@ -74,7 +74,7 @@ async def frames(pg, name, w, times, clip=None, pad=24, cols=4, scale=.6):
 
 E = lambda body: "(async()=>{ " + body + " })()"
 # a fight whose board is exactly the given units; the CPU waits until a step calls it (as tests/e2e/en8_2026_10_24.py)
-BOARD = """(async(map, node, mine, theirs)=>{ adminModeEnabled = true; try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){} switchTab('play'); startConquestMatch(map, node, {skipEnergyCost:true, noOpener:true}); await new Promise(r=> setTimeout(r, 2600));  # 2026-10-26 (release): RES3's level-reward packs would open over these flows; the test player has had them
+BOARD = """(async(map, node, mine, theirs)=>{ adminModeEnabled = true; try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){} switchTab('play'); startConquestMatch(map, node, {skipEnergyCost:true, noOpener:true}); await new Promise(r=> setTimeout(r, 2600));  // 2026-10-26 (release): RES3's level-reward packs would open over these flows; the test player has had them (2026-11-04 TESTFIX1: was a Python '#' inside this JS string, a syntax error in the page)
   const m = matchState, e = m.engine; const uids = {};
   [1, 2].forEach(pid=>{ const pl = m.players[pid]; pl.row.left = []; pl.row.center = []; pl.row.right = []; pl.hand = []; });
   const put = (pid, list)=> list.forEach(([id, slot, hp, wait])=>{ const c = e.makeBoardCard(id); c.wait = wait || 0; if(hp){ c.hp = c.maxHp = hp; } c.slot = slot;

@@ -127,7 +127,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
 // ---- prices, cards, placements -----------------------------------------------------------------------------------------------
 { const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')), sk = id=> sc.skills.find(r=> r.id === id);
   ok(['hemorrhage', 'greaterPoison', 'shoreUp'].every(k=> sk(k) && sk(k).value > 0 && /package EN4/.test(sk(k).note)), 'the three prices: ' + ['hemorrhage', 'greaterPoison', 'shoreUp'].map(k=> k + ' ' + (sk(k) || {}).value).join(', '));
-  ok((sk('greaterPoison').value === 2.5 || (/RECOST1/.test(sk('greaterPoison').appliedAt || '') && sk('greaterPoison').prevValue === 2.5) /* 2026-10-30 RECOST1: re-priced to its bench worth; EN4's 2.5 is its prevValue */) && sk('hemorrhage').value === 2 && sk('shoreUp').value === 2.2, 'Hemorrhage 2, Greater Poison 2.5 (owner 23:45: it never wears off), Shore Up 2.2');
+  ok((sk('greaterPoison').value === 2.5 || (/RECOST1|SKILL2/.test(sk('greaterPoison').appliedAt || '') && sk('greaterPoison').prevValue === 2.5) /* 2026-10-30 RECOST1: re-priced to its bench worth; EN4's 2.5 is its prevValue; 2026-11-04 (TESTFIX1): SKILL2 (BUDGET2-1) 3.69 since 10-31, prevValue still 2.5 */) && sk('hemorrhage').value === 2 && sk('shoreUp').value === 2.2, 'Hemorrhage 2, Greater Poison 2.5 (owner 23:45: it never wears off), Shore Up 2.2');
   ok(sk('greaterPoison').scale === 'half' && sk('hemorrhage').scale === 'fixed' && sk('shoreUp').scale === 'fixed', 'scales: Greater Poison half (N), the others fixed');
   const md = fs.readFileSync(path.join(ROOT, 'docs/balance/en4-skill-test-2026-10-23.md'), 'utf8'); ok(/hemorrhage/.test(md) && /greaterPoison/.test(md) && /shoreUp/.test(md), 'the measurement is filed (docs/balance/en4-skill-test-2026-10-23.md)');
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = id=> cards.find(x=> x.id === id);
@@ -142,7 +142,10 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const HOLD = id=>{ const h = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(id); if(h) console.log(`  · ${id}: budget not checked, ${h === 'unplaced' ? 'unplaced (on no list, out of play)' : 'pending step 3 (re-fit)'}`); return !!h; }; // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): an 'unplaced' card (on no list) or one 'pending' the owner's re-fit (step 3) is reported, not failed (tools/lib_map_pools.js budgetHold)
   Object.entries(NEWC).forEach(([id, [k, map, tier, mapN]])=>{ const x = c(id); const b = x && T.budget(x, {level: 1});
     // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): a card THEME2 leaves off its map's list is on no list (obtain map 0, not obtainable yet)
-    const onT2 = T2[map].includes(id), placed = onT2 ? pools[map].cards.includes(id) && (obtain[id] || 0) === df1(tier, mapN, x.rarity) : !pools[map].cards.includes(id) && !(obtain[id] || 0);
+    // 2026-11-04 (TESTFIX1): the lists follow THEME3 / THEME4 now (CONTENT4-1, THEME3/4 applied) and PACK1 (2026-10-28) takes a pack card's obtain map from
+    // the first map list that names it (packIndex), not DF-1's pack-tier rule: the Cane Toad is first listed on a side map opening at Map 7
+    const first = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G.packIndex().first[id], onT2 = !!first;
+    const placed = first ? (obtain[id] || 0) === first.n : !(obtain[id] || 0);
     ok(x && x.effects[k] && x.source && x.source.kind === 'pack' && x.source.tier === tier && x.source.map === map && !x.awaitingSource && placed,
       `new card ${id}: ${k}, Pack ${tier} @ ${map} (Map ${mapN}), ${onT2 ? 'in its pool' : 'on no list (THEME2)'} (${x && JSON.stringify(x.source)}, obtain ${obtain[id]})`);
     ok(x && b && ((b.ok && b.x1 <= b.N) || HOLD(id)), `${id} inside the budget (${x && x.attack}/${x && x.health}, 2A+H+S ${b && b.x1} <= N ${b && b.N})`);
@@ -198,7 +201,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-23 additions \(package EN4\)/.test(cat) && /en4GreaterPoison/.test(cat) && /Reverted by EN4/.test(cat), 'docs/effects-catalogue.md: EN4');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.items || []).map(d=> d.id);
   ok(['EN4-1', 'EN4-2', 'EN4-3', 'EN4-4', 'EN4-5'].every(i=> ids.includes(i)), 'decisions EN4-1 .. EN4-5');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN4/.test(cl.slice(0, 250000)), 'CHANGELOG: EN4 near the top'); } // 2026-10-28 (RELFIX2): 250000, the 10-28 batch's entries sit above it // 2026-10-25 (release): 120000, PL2's long entry sits above it // 2026-10-24 (BAL2): 60000 // 2026-10-24 (package EN5): later entries sit above it
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN4/.test(cl), 'CHANGELOG: EN4 near the top'); } // 2026-10-28 (RELFIX2): 250000, the 10-28 batch's entries sit above it // 2026-10-25 (release): 120000, PL2's long entry sits above it // 2026-10-24 (BAL2): 60000 // 2026-10-24 (package EN5): later entries sit above it // 2026-11-04 (TESTFIX1): the whole CHANGELOG, as QA1 did for the others; later packages' entries sit above this one
 
 console.log(`en4-2026-10-23: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

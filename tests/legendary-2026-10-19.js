@@ -79,7 +79,8 @@ ok(/legendary:p\.legendary,/.test(src), 'SKILL_DEFS carries the marker');
 { const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
   const leg = sc.skills.filter(s=> s.legendary).map(s=> s.id).sort();
   ok(JSON.stringify(leg) === '["supreme","supremeTide","trueStrike"]', `canonical/skill-costs.json marks the same three (${leg})`);
-  ok(sc.skills.find(s=> s.id === 'trueStrike').value === 2, 'True Strike still costs 2'); }
+  // 2026-11-04 (TESTFIX1): the owner's relative shift (2026-10-21 16:13, x0.78 like the re-measured skills; appliedAt on the entry) made it 1.5
+  ok(sc.skills.find(s=> s.id === 'trueStrike').value === 1.5 && sc.skills.find(s=> s.id === 'trueStrike').prevValue === 2, 'True Strike costs 1.5 (was 2; owner 10-21 16:13 x0.78)'); }
 const words = s=> String(s).replace(/<[^>]*>/g, ' ').split(/\s+/).filter(w=> /[\p{L}\p{N}]/u.test(w)).length;
 ok(TEXT['ui.legendary-tag'] === 'Legendary' && TEXT['ui.legendary-ability'] === 'Legendary ability', 'the tag and glossary name');
 ok(TEXT['ui.legendary-ability-desc'] === 'A legendary power. Rarely found on cards you can own — dragons are the exception.' && words(TEXT['ui.legendary-ability-desc']) < 20, 'the Legendary ability line, under 20 words');
@@ -133,7 +134,8 @@ ok(/\.kw\.kw-legendary\{[^}]*background:linear-gradient\(180deg,#f7dc7e,#c99a22\
   ok(/True Strike is affected by Legendary dodges/.test(all) && /Illusory is not Legendary/.test(all), 'the Legendary dodge rules');
   ok(md.includes('**Shadow of the Valley of Death is a very far future map.**') && md.includes('## Stated rules · 2026-10-18'), 'decisions.md is regenerated with it');
   // 2026-10-21 (package TT): package RP ("submaps get 1 unique card each") moved it to 20-5 (docs/balance/rewards-pass-2026-10-21.md), as tests/d-2026-10-19.js
-  const pwc = cards.find(c=> c.id === 'pall-wraith'); ok(pwc && pwc.source && pwc.source.kind === 'map' && pwc.source.id === 'm11' && pwc.source.node === '20-5', 'the Pall Wraith\'s card reward is 20-5 (moved off 20-A-2 by package RP)'); }
+  // 2026-11-04 (TESTFIX1): DV (2026-10-22, the map divvy, DV1 / DV2) made it a pack card of its map (m11; RW5: Pack 3) instead of the 20-5 reward
+  const pwc = cards.find(c=> c.id === 'pall-wraith'); ok(pwc && pwc.source && pwc.source.kind === 'pack' && pwc.source.map === 'm11', 'the Pall Wraith is a Map 20 (m11) pack card (20-5 reward until DV; moved off 20-A-2 by package RP)'); }
 
 console.log(`legendary-2026-10-19: ${n - fail}/${n} checks passed`);
 process.exit(fail ? 1 : 0);

@@ -28,7 +28,8 @@ const defs = Object.assign({}, base, {
   'pr-bolt': T('pr-bolt', {mechanicLine:'grace', effects:{lightning:2}}),
   'pr-relic': T('pr-relic', {name:'Saint Test', attack:5, health:9, wait:1, mechanicLine:'grace', archetypes:['Ecclesia'],
     effects:{relic:true, prayer:2, flying:true, guardian:true, pierce:2, nocturnal:2, worship:true, healing:3, armor:2, retribution:2, triggers:[{on:'onDeath', do:'gainLumber', amount:3}]}}),
-  'pr-relic-rev': T('pr-relic-rev', {mechanicLine:'grace', health:5, effects:{relic:true, revive:true}}),
+  // 2026-11-04 (TESTFIX1): ENG9 (2026-10-26, owner note #20) renamed the passive Revive to Undead (effects.undead; Revive N is now an action)
+  'pr-relic-rev': T('pr-relic-rev', {mechanicLine:'grace', health:5, effects:{relic:true, undead:true}}),
   'pr-relic-sac': T('pr-relic-sac', {mechanicLine:'grace', health:5, effects:{relic:true, sacrifice:2}}),
   'pr-dark': T('pr-dark', {attack:4, health:4, devilryCost:2, darkSummon:true}),
   'pr-relic-b': T('pr-relic-b', {mechanicLine:'grace', health:5, effects:{relic:true, bounty:2, flying:true}}),
@@ -178,12 +179,12 @@ const kill = (e, P, c, ev)=>{ c.hp = 0; e.removeDeadCards(P, so, {}, {}, ev || [
   const relV = rel && (rel.appliedAt && rel.prevValue === 2 ? Math.max(0, rel.measuredS) : 2);
   ok(rel && rel.scale === 'fixed' && rel.value === relV && SC.cardS({relic:true}, {}).S === relV && /relic:2 \/\* 2026-10-19/.test(fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8')), `6. Relic costs 2, or its applied measured worth (${rel && rel.value}), in canonical/skill-costs.json; 2 in the Test Lab default`);
   // 2026-10-21 (package TT2): BF5 halved N and re-derived every card: the Eagle 4/12 -> 1/4 (docs/balance/halve-ref-2026-10-21.json), Prayer 4 kept
-  const eagle = cards.find(c=> c.id === 'cathedral-eagle'); ok(eagle.attack === 1 && eagle.health === 4 && eagle.prayerReq === 4, '6. Cathedral Eagle 1/4 (BF5), Prayer 4');
+  const eagle = cards.find(c=> c.id === 'cathedral-eagle'); ok(eagle.attack === 2 && eagle.health === 9 && eagle.prayerReq === 4, '6. Cathedral Eagle 2/9 (BF5 1/4; re-fit up by the 10-22 skill-cost pass II and BF7, call BF7-1), Prayer 4'); // 2026-11-04 (TESTFIX1)
   ok(ecc.filter(c=> c.prayerReq).every(c=> c.prayerReq >= 1 && c.prayerReq <= 5), '6. every Prayer need is 1..5');
   const req = id=> (cards.find(c=> c.id === id) || {}).prayerReq;
   ok(req('golden-magpie') === 3 && req('blessed-avatar') === 5 && req('vigil-owl') === 4 && req('cathedral-eagle') === 4 && req('hymn-wren') === 1 && req('storm-heron') === 3, '6. the retuned Prayer needs (Magpie 3, Avatar 5, Owl 4, Eagle 4)');
   // 2026-10-21 (package TT2): BF5 re-derived the High Priest 3/12 -> 1/4 under the halved N
-  { const hp = cards.find(c=> c.id === 'shrine-high-priest') || {}; ok(hp.attack === 1 && hp.health === 4 && hp.effects && hp.effects.relic, '6. Shrine High Priest 1/4 (BF5, Relic)'); }
+  { const hp = cards.find(c=> c.id === 'shrine-high-priest') || {}; ok(hp.attack === 2 && hp.health === 9 && hp.effects && hp.effects.relic, '6. Shrine High Priest 2/9 (BF5 1/4; re-fit up by the 10-22 skill-cost pass II and BF11, 2026-10-23), Relic'); } // 2026-11-04 (TESTFIX1)
 }
 // ---- 7. the CPU
 { // its offering summons with the same token as the player's

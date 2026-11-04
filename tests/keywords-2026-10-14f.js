@@ -41,7 +41,8 @@ const defs = Object.assign({}, base, {
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 function mk(seed, mode, rules){ const e = E.makeSimEngine(defs, E.mulberry32(seed||7), {recordEvents:true, battleMode: mode || 'open', rules: rules || {}}); return {e, P:{1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}}; }
 function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so, pid, id, 'left', {}, ev || []);
-  const c = all(pl).filter(x=> x.defId === id).reduce((a, x)=> (!a || x.uid > a.uid) ? x : a, null);
+  // 2026-11-04 (TESTFIX1): ENG9 (owner G23 "once used, remove Fireball") moves a spent one-shot unit onto its own copy 'id~dvN'
+  const c = all(pl).filter(x=> String(x.defId).split('~dv')[0] === id).reduce((a, x)=> (!a || x.uid > a.uid) ? x : a, null);
   if(slot != null){ c.slot = slot; const cs = all(pl); pl.row.center = cs.filter(x=> x.slot === 0); pl.row.left = cs.filter(x=> x.slot < 0).sort((a, b)=> b.slot - a.slot); pl.row.right = cs.filter(x=> x.slot > 0).sort((a, b)=> a.slot - b.slot); }
   return c; }
 const swings = (id, foe, n, seed)=>{ const {e, P} = mk(seed || 5); const T = put(e, P, 2, foe, 0); const A = put(e, P, 1, id, 0); let missed = 0;
@@ -76,11 +77,16 @@ ok(swings('kf-fence', 'kf-fly', 40) > 5, 'a Flyer is still out of reach half the
   ok(t.hp === 30, `the unit it lands on takes 20 through Armor 5 (${t.hp})`);
   ok([L, C, R].filter(c=> c !== t).every(c=> c.hp === (Math.abs(c.slot - t.slot) === 1 ? 45 : 50)), 'the units beside it take 5');
   M.atk = 0; const hp0 = t.hp; const burns = [];
-  for(let r = 0; r < 3; r++){ const evr = []; e.resolveCombat(P, so, {}, evr, 1); burns.push(evr.filter(x=> x.type === 'meteorBurn' && x.uid === t.uid).map(x=> x.dmg).join('')); }
-  ok(burns.join(',') === '2,2,' && t.hp === hp0 - 4, `the crater burns 2 at the start of the next 2 rounds, then goes out (${burns}, ${t.hp})`); }
+  let burnTicks = 0;
+  for(let r = 0; r < 3; r++){ const evr = []; e.resolveCombat(P, so, {}, evr, 1); burns.push(evr.filter(x=> x.type === 'meteorBurn' && x.uid === t.uid).map(x=> x.dmg).join('')); burnTicks += evr.filter(x=> x.type === 'burnTick' && x.uid === t.uid).reduce((a, x)=> a + x.dmg, 0); }
+  // 2026-11-04 (TESTFIX1): since ENG20 (call ENG20-1, owner 11-02 22:44) a fire hit from a skill also sets the unit Burning (1 a round start, refreshed):
+  // the crater's 2 + 2 stay as pinned; the Burn ticks come on top, counted from their own events
+  ok(burns.join(',') === '2,2,' && t.hp === hp0 - 4 - burnTicks, `the crater burns 2 at the start of the next 2 rounds, then goes out (${burns}, ${t.hp}, Burn ticks ${burnTicks})`);
+  ok(burnTicks > 0, `ENG20: the Meteor's fire hit set the unit Burning (${burnTicks})`); }
 { const {e, P} = mk(6); const C = put(e, P, 2, 'kf-wall', 0); const ev = []; const M = put(e, P, 1, 'kf-met', 0, ev); M.atk = 0;
   C.slot = 2; const W = put(e, P, 2, 'kf-wall', 0); const evr = []; e.resolveCombat(P, so, {}, evr, 1);
-  ok(W.hp === 48 && C.hp === 30, `the burn stays on the column: whoever stands there now takes it (${W.hp}, ${C.hp})`); }
+  const cBurn = evr.filter(x=> x.type === 'burnTick' && x.uid === C.uid).reduce((a, x)=> a + x.dmg, 0); // ENG20 (2026-11-02): C itself Burns from the hit
+  ok(W.hp === 48 && C.hp === 30 - cBurn && !evr.some(x=> x.type === 'meteorBurn' && x.uid === C.uid), `the burn stays on the column: whoever stands there now takes it (${W.hp}, ${C.hp}, C's own Burn ${cBurn})`); }
 
 // ---- 4. Banana
 { const throws = [], eats = []; for(let s = 1; s <= 12; s++){ const {e, P} = mk(s); put(e, P, 2, 'kf-wall', 0); const B = put(e, P, 1, 'kf-ban', 0);
@@ -157,7 +163,8 @@ ok(swings('kf-fence', 'kf-fly', 40) > 5, 'a Flyer is still out of reach half the
 // ---- 10. New cards from the list
 { const h = base['hammerhead-shark'], g = base['ironback-gorilla'];
   // 2026-10-15 (user: "remove Swimmer for now ... don't let cards have it"): the Swimmers carry plain Tide now.
-  ok(h && h.effects.tide && !h.effects.swimmer && h.effects.sweep && (h.archetypes||[]).includes('Ocean') && ['common','uncommon'].includes(h.rarity) && !h.art, 'Hammerhead Shark: an Ocean Tide unit with Cleave');
+  // 2026-11-04 (TESTFIX1): BF6 (2026-10-21, calls B11 / B14) bucketed the common Hammerhead's Cleave (docs/balance/bf6-bucket-2026-10-21.json); it has had art since
+  ok(h && h.effects.tide && !h.effects.swimmer && !h.effects.sweep && (h.archetypes||[]).includes('Ocean') && ['common','uncommon'].includes(h.rarity), 'Hammerhead Shark: an Ocean Tide unit (Cleave cut by BF6)');
   ok(g && g.effects.bludgeon && g.rarity === 'rare' && (g.species||[]).includes('Primate') && !g.art, 'Ironback Gorilla: a rare ape with Bludgeon'); }
 
 // ---- 11. Determinism

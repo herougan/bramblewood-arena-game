@@ -69,7 +69,8 @@ ok(E.TRIGGER_KEYS.includes('onPitch'), 'onPitch is a trigger key');
 { let stunned = 0, rounds = new Set(); for(let s = 1; s <= 120; s++){ const {e, P} = mk(null, s); const W = put(e, P, 2, 's2-wall', 0); const A = put(e, P, 1, 's2-stun-old', 0);
     e.debugAttack(P, so, A.uid, {}, []); if(W.stunned){ stunned++; rounds.add(W.stunned|0); } }
   ok(stunned > 20 && stunned < 60 && rounds.size === 1 && rounds.has(1), `an old Stun 50 (a %) reads as Stun 1: 1 in 3, 1 round (${stunned}/120, ${[...rounds]})`); }
-ok(!base['red-dragon'] || base['red-dragon'].effects.stunOnHit === 1, 'cards.json: Red Dragon Stun 50% -> Stun 1');
+// 2026-11-04 (TESTFIX1): BF9 (2026-10-22, call BF8-3) took the Red Dragon's Stun on Hit off to fit it; the old 50% value must not come back
+ok(!base['red-dragon'] || !base['red-dragon'].effects.stunOnHit, 'cards.json: Red Dragon Stun 50% -> Stun 1 -> none (BF9)');
 
 // ---- 47. Pounce <Att> / <Hp>
 { const {e, P} = mk(); const W = put(e, P, 2, 's2-wall', 0); const ev = []; const A = play(e, P, 1, 's2-pounce-a', 0, ev);
@@ -119,6 +120,6 @@ ok(/\{key:'pounce', category:'evergreen', label:'Pounce', kind:'selectNumber', n
 // ---- 4. clean names: no braces, no "one-off", no notes in brackets in the skill / trigger / action names
 { const bad = [...src.matchAll(/\{key:'(\w+)', (?:category:'\w+', )?(?:hidden:true, )?(?:retired:true, )?(?:mechLineGate:'\w+', )?label:'([^']*)'/g)].filter(m=> /[{}()–]|one-off/i.test(m[2])).map(m=> m[1] + ': ' + m[2]);
   ok(!bad.length, `skill, trigger and action names are plain (${bad.join('; ')})`);
-  ok(/const ZEIT_TWIN = \{diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant'\};/.test(src) /* CX2 (2026-10-21): Full Moon {…} went to Transform's Lycanthropy; + Crepuscular, Rainrunner, Loyal, Usurper */ && /<label class="sk-twin">Gives <select data-sk="twin"/.test(src), 'Diurnal / Nocturnal / Full Moon / Tide: one name, a "Gives" field for the stat bonus or the skill list');
+  ok(/const ZEIT_TWIN = \{diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant'[,}]/.test(src) /* 2026-11-04 (TESTFIX1): EV / TR / EN added stem, king, liege to the same table (2026-10-21/23) */ /* CX2 (2026-10-21): Full Moon {…} went to Transform's Lycanthropy; + Crepuscular, Rainrunner, Loyal, Usurper */ && /<label class="sk-twin">Gives <select data-sk="twin"/.test(src), 'Diurnal / Nocturnal / Full Moon / Tide: one name, a "Gives" field for the stat bonus or the skill list');
   ok(!/x\.oneOff \? ' · one-off'/.test(src), 'one-off is a tag beside the row, not part of the name'); }
 console.log(`skills2-2026-10-16: ${fail ? fail + ' failure(s)' : 'all passed'}`); process.exit(fail ? 1 : 0);

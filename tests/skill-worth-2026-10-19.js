@@ -45,7 +45,10 @@ const plan = SW.plan(table, lab.defs, {});
 const planned = new Set(plan.map(r=> r.kind + ':' + r.id));
 table.skills.forEach(e=> ok(planned.has('skill:' + e.id) || planned.has('param:' + e.id) || SW.WHY[e.id], `skill ${e.id} is planned or has a reason`));
 table.triggers.forEach(e=> ok(planned.has('trigger:' + e.id) || e.id === 'bounty' || e.inEngine === false, `trigger ${e.id} is planned`));
-table.actions.forEach(e=> ok(planned.has('action:' + e.id) || (typeof e.measuredWhy === 'string' && /not yet measured/.test(e.measuredWhy)), `action ${e.id} is planned (or added after the runs, with its reason)`)); // 2026-10-19 (BF2): EE's positionBeam came after the SW runs
+// 2026-11-04 (TESTFIX1): since EN6-2 / EN8-5 (owner 10-23 20:44: "price by logic, the 4-round rule; measurement is optional") an entry added after
+// these runs carries its reason in a dated note (the package and the logic) instead of measuredS / measuredWhy
+const loggedLater = e=> /^2026-1[01]-\d\d/.test(e.note || '') && e.note.slice(0, 10) > '2026-10-19' && /\((package )?[A-Z]+\d*[a-z]?[\s;,)]/.test(e.note);
+table.actions.forEach(e=> ok(planned.has('action:' + e.id) || (typeof e.measuredWhy === 'string' && /not yet measured/.test(e.measuredWhy)) || loggedLater(e), `action ${e.id} is planned (or added after the runs, with its reason)`)); // 2026-10-19 (BF2): EE's positionBeam came after the SW runs
 ok(plan.some(r=> r.kind === 'skill' && r.id === 'swimmer' && r.ctx === 'tide') && plan.some(r=> r.id === 'darksight' && r.ctx === 'dark') && plan.some(r=> r.id === 'nocturnal' && r.ctx === 'night'), 'field-bound skills also run under their field');
 ok(plan.some(r=> r.id === 'armor' && r.n === 2) && plan.some(r=> r.id === 'armor' && r.n !== 1 && r.n !== 2), 'N-scaling skills run at 2-3 N');
 ok(!plan.some(r=> r.effects && r.effects.onDeathSpawn && lab.defs[r.effects.onDeathSpawn.defId] && lab.defs[r.effects.onDeathSpawn.defId].pool), 'no pool card in the plan');
@@ -62,7 +65,7 @@ ok(agg.entries.skills.prayer.why && agg.entries.skills.leader.why, 'entries that
 // 3. the table
 ['skills', 'triggers', 'actions', 'modifiers'].forEach(f=> table[f].forEach(e=>{
   const has = typeof e.measuredS === 'number' && isFinite(e.measuredS), why = typeof e.measuredWhy === 'string' && e.measuredWhy.length > 5;
-  ok(has || why, `${f}: ${e.id} has measuredS or a reason`);
+  ok(has || why || loggedLater(e) || /^a parameter of /.test(e.note || ''), `${f}: ${e.id} has measuredS or a reason`); // TESTFIX1: or a dated logic note (EN6-2, EN8-5)
   if(has) ok(['high', 'medium', 'low'].includes(e.measuredConf), `${f}: ${e.id} has a confidence`);
   ok(typeof e.value === 'number', `${f}: ${e.id} keeps its value`); }));
 Object.entries(table.shorthands || {}).forEach(([k, sh])=> ok(typeof sh.measuredS === 'number' || (typeof sh.measuredWhy === 'string' && sh.measuredWhy), `shorthand ${k} has measuredS or a reason`));
@@ -71,7 +74,8 @@ Object.entries(table.shorthands || {}).forEach(([k, sh])=> ok(typeof sh.measured
 ok(plan.some(r=> r.id === 'hunter' && r.tag === 'vs-bleed') && plan.some(r=> r.id === 'hunter' && r.tag === 'vs-wet' && r.ctx === 'rain'), 'Hunter runs per status');
 ok(plan.some(r=> r.id === 'prayerWard' && r.effects.prayer) && plan.some(r=> r.id === 'fieldBreaker' && r.ctx === 'thunder'), 'Prayer Ward with Prayer, Field Breaker under a field');
 ok(!table.shorthands.kinRally || plan.some(r=> r.id === 'kinRally' && r.archetypes && r.tag === 'enabler'), 'Kin Rally in a tribe deck, with the tribe control');
-ok(table.triggers.find(t=> t.id === 'onDeath').value === 1 && table.triggers.find(t=> t.id === 'onAllyPlayed').value === 2.5, 'the owner\'s seeds are untouched (value)');
+// 2026-11-04 (TESTFIX1): the owner's own hub edits (Human pass I, 2026-10-22) moved On Death to 0.8; On Ally Played is still 2.5
+ok(table.triggers.find(t=> t.id === 'onDeath').value === 0.8 && table.triggers.find(t=> t.id === 'onAllyPlayed').value === 2.5, 'the owner\'s seeds are untouched by the tool (value; On Death 0.8 since Human pass I)');
 ok(/package SW/.test(table.measured || ''), 'the table says what measuredS is');
 ok(/measuredS/.test(src) && /value is unchanged/.test(src) && !/e\.value = x\.measuredS/.test(src), 'the tool writes measuredS, never value');
 

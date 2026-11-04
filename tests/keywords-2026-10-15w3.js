@@ -13,6 +13,8 @@ const fnSrc = name=>{ const i = src.indexOf('function ' + name + '('); if(i < 0)
 // a `const NAME = …;` statement, up to the semicolon that closes it at bracket depth 0
 const constSrc = name=>{ const i = src.indexOf('const ' + name + ' ='); if(i < 0) throw new Error('no const ' + name); let d = 0, q = null;
   for(let k = i; k < src.length; k++){ const c = src[k]; if(q){ if(c === '\\'){ k++; continue; } if(c === q) q = null; continue; }
+    if(c === '/' && src[k + 1] === '*'){ k = src.indexOf('*/', k + 2) + 1; continue; } // 2026-11-04 (TESTFIX1): skip comments (ECON3's "diamond's" in JUMPER_SKIRMISHES read as a quote)
+    if(c === '/' && src[k + 1] === '/'){ k = src.indexOf('\n', k); continue; }
     if(c === '"' || c === "'" || c === '`'){ q = c; continue; } if('([{'.includes(c)) d++; else if(')]}'.includes(c)) d--; else if(c === ';' && !d) return src.slice(i, k + 1); } };
 const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8')), defs = {}; cards.forEach(c=> defs[c.id] = c);
 const ctx = {CARD_DEFS_BASELINE: defs, RARITY_DEFS: [], DECK_SIZE: 20, BramblewoodBudget: require(path.join(__dirname, '..', 'bramblewood-budget.js'))}; vm.createContext(ctx); // + the budget Forge curve (2026-10-19, package BF)

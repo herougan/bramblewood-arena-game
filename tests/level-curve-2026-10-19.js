@@ -86,15 +86,14 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
   ok(main.length - off.length >= 55, `4. main-map fights green on the measure seeds: ${main.length - off.length}/${main.length} (at least 55, BF5 honest levers; BF3 145)`);
   { let cur = true; try{ require('child_process').execFileSync(process.execPath, [path.join(ROOT, 'tools', 'road_gaps_2026_10_19.js'), '--check'], {stdio: 'pipe'}); }catch(e){ cur = false; }
     ok(cur, '4. the gaps list is what the measures say (node tools/road_gaps_2026_10_19.js --check)'); }
-  const now = main.filter(r=>{ const nd = B.byKey(r.map, r.key); return nd && JSON.stringify(nd.deck) === JSON.stringify(r.deck); });
-  ok(now.length === main.length, `4. it measured the decks the game has now (${now.length}/${main.length})`);
+  // 2026-11-04 (TESTFIX1): retired "it measured the decks the game has now" and the two live replays below: the road decks were retuned on
+  // purpose after this measure (BAL3 under BAL2-3, BAL7's K14, BAL9's JJ24 swaps, BAL11 on BAL10-6), so this file is a dated snapshot now;
+  // the road's current measure follows docs/evaluation-protocol.md (tests/bal14-2026-11-03.js and the BAL packages' tests)
   const fm = fresh.filter(r=> !r.side && !r.endless), fg = fm.filter(r=> r.green === 'green').length;
   ok(fm.length === 179 && fg >= 50, `4. fresh seeds: ${fg}/${fm.length} green (at least 50; BF5 honest levers; BF3 125, was 150 with Shield moves)`);
   const sideCurve = after.filter(r=> r.side && r.curve), sg = sideCurve.filter(r=> r.green === 'green').length;
   ok(sideCurve.length >= 70 && sideCurve.filter(r=> r.green !== 'green').every(r=> listed.has(r.map + ':' + r.code)) && sg >= 20, `4. side maps on the curve: ${sg}/${sideCurve.length} green (at least 20 since BF5; BF3 60), the rest listed gaps`);
-  // two fights replayed live: the same result as the file
-  for(const code of ['5-3', '17-4']){ const r = main.find(x=> x.code === code); if(!r){ ok(false, '4. no row ' + code); continue; } const nd = B.byKey(r.map, r.key); G.NODE_MAP_HINT.set(nd, r.map);
-    const live = G.simulateReferenceFight(r.map, nd, 120, {seed0: 9100}); ok(Math.abs(live.win * 100 - r.win) < 0.05, `4. ${code} replayed: ${(live.win * 100).toFixed(1)}% (file ${r.win}%)`); } }
+  } // (the 5-3 / 17-4 live replays: retired with the check above, TESTFIX1)
 
 // ---- 5. absolute difficulty
 { let fit = null; try{ fit = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'level-curve-fit-after.json'), 'utf8')); }catch(e){}

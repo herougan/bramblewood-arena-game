@@ -106,7 +106,8 @@ const castleHit = (id, allies)=>{ const {e, P} = mk(); const s = put(e, P, 1, id
   const m = app.match(/function isFireDef\(d\)\{[^\n]*\}/), isMagicDef = d=> !!(d && ((d.effects && d.effects.magic) || d.dmgType === 'magic'));
   const isFireDef = m ? new Function('isMagicDef', m[0] + '\nreturn isFireDef;')(isMagicDef) : null;
   ok(isFireDef && isFireDef({dmgType:'heat'}) && isFireDef({dmgType:'fire'}) && !isFireDef({dmgType:'physical'}) && !isFireDef({dmgType:'heat', effects:{magic:true}}), 'isFireDef: heat or fire, not magic');
-  ok(/isFireDef\(d\) \? String\(live\.atkLabel\)\.replace\('<i class="sg">⚔<\/i>', '<i class="sg">🔥<\/i>'\)/.test(app) && /const g = isMagicDef\(d\) \? '🪄' : isFireDef\(d\) \? '🔥' : '⚔'/.test(app), 'the attack label shows 🔥 for a fire swing (card face and the live label)');
+  // 2026-11-04 (TESTFIX1): the 10-21 merge generalised the fire swap to every element (ATK_ELEM_GLYPH, atkGlyphOf): heat is still 🔥
+  ok(/atkElementOf\(d\) && [^\n]*String\(live\.atkLabel\)\.replace\('<i class="sg">⚔<\/i>', `<i class="sg">\$\{atkGlyphOf\(d\)\}<\/i>`\)/.test(app) && /const ATK_ELEM_GLYPH = \{heat:'🔥'/.test(app) && /function atkElementOf\(d\)\{[^\n]*d\.dmgType === 'fire' \? 'heat'/.test(app), 'the attack label shows 🔥 for a fire swing (card face and the live label)');
   ok(/if\(k === 'magic'\) return;/.test(app), 'the magic chip is gone from the skill strip');
   ['cinder-stoker', 'cinder-imp'].forEach(id=>{ const c = cards.find(x=> x.id === id); ok(c && c.dmgType === 'heat', `${id}: fire damage (dmgType heat)`); });
   const E2 = mk(); const T = put(E2.e, E2.P, 2, 'bx-wall', 0); const S = put(E2.e, E2.P, 1, 'cinder-stoker', 0); const ev = []; E2.e.debugAttack(E2.P, so, S.uid, {}, ev);
@@ -114,7 +115,7 @@ const castleHit = (id, allies)=>{ const {e, P} = mk(); const s = put(e, P, 1, id
 
 // ---- 6. the young hummingbird warrior; 7. Dive's eligibility (Flying, Tide or the Sprinter tag)
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), kit = cards.find(c=> c.id === 'otter-kit'), g = cards.find(c=> c.id === 'greyplume-fledgling');
-  ok(g && cards[cards.length - 1] === g && g.awaitingSource === true, 'Greyplume Fledgling: the last card, awaiting a source');
+  ok(g && g.awaitingSource === true, 'Greyplume Fledgling: awaiting a source'); // 2026-11-04 (TESTFIX1): later packages appended cards after it, so it is no longer the last
   ok(g && g.rarity === kit.rarity && g.wait === kit.wait && g.cost === kit.cost && g.basic && g.basicSet === 'hummingbirds' && g.effects.flying && g.archetypes.includes('Hummingbird'), 'Otter Kit\'s mirror: Starter, Wait 0, free, a Hummingbird basic that flies');
   const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), M = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
   const bk = M.budget(kit), bg = M.budget(g), bv = M.budget(cards.find(c=> c.id === 'stonedrop-vulture'));

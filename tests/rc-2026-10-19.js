@@ -157,7 +157,8 @@ function forgeCtx(o){
   ok(KEYS.length >= 20, `5. ${KEYS.length} rc TX keys`);
   KEYS.forEach(k=> ok(src.includes(`'${k}'`), `5. ${k} is used`));
   ok(!('toast.raid-cards' in TEXT), '5. the old "Raid cards: ..." toast is retired');
-  ['ui.raid-part-rules-lead', 'ui.raid-rw-leading-what', 'ui.raid-rw-strong-what', 'ui.raid-rw-held-what'].forEach(k=> ok(!/raid card/i.test(TEXT[k]) && /pack card/.test(TEXT[k]) && /trophy shards/.test(TEXT[k]), `5. ${k} promises pack cards and shards, not raid cards`));
+  // 2026-11-04 (TESTFIX1): TIP1 (2026-10-30, docs/tooltips-tip1-2026-10-30.md) cut the lead line's "an extra pack card" to "an extra card"
+  ['ui.raid-part-rules-lead', 'ui.raid-rw-leading-what', 'ui.raid-rw-strong-what', 'ui.raid-rw-held-what'].forEach(k=> ok(!/raid card/i.test(TEXT[k]) && (k === 'ui.raid-part-rules-lead' ? /an extra card/ : /pack card/).test(TEXT[k]) && /trophy shards/.test(TEXT[k]), `5. ${k} promises pack cards and shards, not raid cards`));
   ok(/Forge's Raid tab/.test(TEXT['ui.rc-source-raid']) && /TX\('ui\.rc-source-raid'/.test(src) && !/drops its cards when it falls/.test(src), '5. the Codex source line says crafted in the Forge');
   const panel = src.slice(src.indexOf('<section class="r3-rewards">'), src.indexOf('</section>', src.indexOf('<section class="r3-rewards">')));
   ok(!/one of its own cards|a second card/.test(panel) && /ui\.rc-rw-participant-what/.test(panel) && /ui\.rc-rw-craft/.test(panel), '5. the raid screen\'s "If it falls" lists pack cards, shards and the Forge recipe');

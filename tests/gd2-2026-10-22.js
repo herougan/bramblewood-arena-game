@@ -54,13 +54,14 @@ const same = (a, b)=> a.length === b.length && a.every(x=> b.includes(x));
 { const {e, P} = mk(); const t = place(e, P, 2, 0, 'g2-wall', 0), g = place(e, P, 2, 0, 'g2-guard', 1);
   ok(e.redirectToGuardian(P[2], t) === g, 'Guardian: one adjacent Guardian still always steps in'); }
 
-// ---- GD-3: plain swings are redirected, skills (an arrow) are not
+// ---- GD-3: plain swings are redirected, skills (an arrow) are not (since ENG22 / DESIGN1-4, 2026-11-03, arrows and shots are too)
 { const {e, P} = mk(); place(e, P, 1, 0, 'g2-hit', 0); const t = place(e, P, 2, 0, 'g2-wall', 0), g = place(e, P, 2, 0, 'g2-guard', 1);
   e.resolveCombat(P, so, {}, [], 1); ok(t.hp === 500 && g.hp === 496, `a swing lands on the adjacent Guardian (target -${500 - t.hp}, guard -${500 - g.hp})`); }
 { const {e, P} = mk(); place(e, P, 1, 0, 'g2-archer', 0); const t = place(e, P, 2, 0, 'g2-wall', 0), g = place(e, P, 2, 0, 'g2-guard', 1), g2 = place(e, P, 2, 1, 'g2-guard', 0);
   const ev = []; e.resolveCombat(P, so, {}, ev, 1);
-  ok(t.hp === 497 && g.hp === 500 && g2.hp === 500, `an arrow (Archer 3) goes to its target, no Guardian steps in (target -${500 - t.hp}, guards -${500 - g.hp} / -${500 - g2.hp})`);
-  ok(!ev.some(x=> x.guardianRedirect), 'no guardianRedirect on a shot'); }
+  // 2026-11-04 (TESTFIX1): ENG22 (owner 2026-11-03 21:10 on DESIGN1-4, "Yes to a.") reverses GD-3 for shots: an adjacent Guardian takes Archer's arrow too
+  ok(t.hp === 500 && (g.hp === 497) !== (g2.hp === 497) && g.hp + g2.hp === 997, `an arrow (Archer 3) is taken by one adjacent Guardian (target -${500 - t.hp}, guards -${500 - g.hp} / -${500 - g2.hp})`);
+  ok(ev.some(x=> x.guardianRedirect), 'a guardianRedirect on the shot (DESIGN1-4)'); }
 // Spellward: the arrow aimed at its adjacent ally hits it; a swing does not
 { const {e, P} = mk(); place(e, P, 1, 0, 'g2-archer', 0); const t = place(e, P, 2, 0, 'g2-wall', 0), s = place(e, P, 2, 1, 'g2-ss', 0);
   const ev = []; e.resolveCombat(P, so, {}, ev, 1);

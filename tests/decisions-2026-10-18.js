@@ -107,16 +107,21 @@ ok(/\nconst DECK_PROMPT_FLOORS = \[/.test(src) && /level = collectionStats\(\)\.
 { const cards = readJSON('canonical/cards.json'), d = cards.find(c=> c.id === 'dromedary');
   ok(d && d.name === 'Dromedary' && d.icon === '🐪' && !d.test && !d.token, '8. the Dromedary is a real card');
   ok(d && (d.archetypes || []).includes('Desert') && (d.resist || []).includes('heat') && d.effects && d.effects.dry === true, '8. a desert walker: Desert, resists Heat, Dry (sees through Sandstorms)');
-  const KW = new Set([...src.matchAll(/\{key:'(\w+)', category:/g)].map(m=> m[1]));
+  // 2026-11-04 (TESTFIX1): EN6's state skills (Drought, 2026-10-24) are skill defs too, made in a loop over EN6_STATE_KEYS (sk1Patch), not literal {key:...}
+  const en6Keys = (src.match(/const EN6_STATE_KEYS = \{([\s\S]*?)\};/) || ['', ''])[1].match(/\b(\w+):\{tx:/g) || [];
+  const KW = new Set([...[...src.matchAll(/\{key:'(\w+)', category:/g)].map(m=> m[1]), ...[...src.matchAll(/sk1Patch\(PASSIVE_DEFS, '(\w+)'/g)].map(m=> m[1]), ...en6Keys.map(k=> k.split(':')[0])]);
   ok(d && Object.keys(d.effects).every(k=> KW.has(k)), '8. existing skills only (' + (d ? Object.keys(d.effects).join(', ') : '') + ')');
   ok(d && cards.filter(c=> c.numericId === d.numericId).length === 1 && cards.filter(c=> c.uuid === d.uuid).length === 1, '8. its numericId and uuid are unique');
   // the budget at the level a reward starts at (1); 2026-10-19 (package BF): v4, N = (Base - 1 + L) x (1 + L/20), from bramblewood-budget.js
   const BB = require(require('path').join(__dirname, '..', 'bramblewood-budget.js')), L = 1;
-  const N = BB.nOf(d, L), S = 1 /* Dry */ + d.effects.regen /* Regeneration: its value */;
-  ok(2*d.attack + d.health + S < N && d.attack*d.health + S < (N/3)*(N/3), `8. budget v4: 2A+H+S = ${2*d.attack + d.health + S} < N = ${N.toFixed(1)}, A·H+S = ${d.attack*d.health + S} < (N/3)² = ${((N/3)*(N/3)).toFixed(1)}`);
+  // 2026-11-04 (TESTFIX1): EN6 (2026-10-24, owner 03:17) swapped its Regeneration for Drought and the budget moved on (BF11 cap 2, BUDGET2 / RECOST1-6 3A + H):
+  // the check now asks the canonical helper (tools/skill_costs.js budget, bramblewood-budget.js) instead of a hand copy of budget v4
+  const T = require(require('path').join(__dirname, '..', 'tools', 'skill_costs.js')).make(readJSON('canonical/skill-costs.json')), b = d && T.budget(d, {level: L});
+  ok(b && b.ok && !b.missing.length, `8. inside the budget at Level ${L}: cap 1 ${b && b.x1} <= N ${b && b.N}, cap 2 ${b && b.x2} <= ${b && b.N2}`);
   ok(/regen:'v'/.test(constLine('SB_DEFAULT_SKILLS')) && !/\bdry:/.test(constLine('SB_DEFAULT_SKILLS')), "8. (the Test Lab prices Regeneration at its value and Dry at the default 1, as above)");
   const md = CONQUEST_MAPS.find(m=> m.id === 'md');
-  ok(mains.indexOf(md) === 18 && d.source && d.source.kind === 'map' && d.source.id === 'md' && md.nodes.some(n=> n.key === d.source.node && n.kind === 'skirmish'), `8. a card reward on Map 18, The Glass Dunes (${d.source && d.source.node})`);
+  // 2026-11-04 (TESTFIX1): DV (2026-10-22, the map divvy, project-state DV1 / DV2) made it a Glass Dunes pack card (RW5: Pack 3) instead of the 18-3 reward
+  ok(mains.indexOf(md) === 18 && d.source && ((d.source.kind === 'map' && d.source.id === 'md' && md.nodes.some(n=> n.key === d.source.node && n.kind === 'skirmish')) || (d.source.kind === 'pack' && d.source.map === 'md')), `8. a card of Map 18, The Glass Dunes (${JSON.stringify(d.source)})`);
   const RR = new Function(src.slice(src.indexOf('// ROAD_RARITY:BEGIN'), src.indexOf('// ROAD_RARITY:END')) + '\nreturn {roadRarityOk};')();
   ok(RR.roadRarityOk(d.rarity, 18, 'skirmish'), '8. Uncommon is within a Map 18 skirmish\'s rarity cap');
   ok(md.nodes.some(n=> n.kind === 'skirmish' && (n.deck || {}).dromedary > 0), '8. ...and it walks in a Glass Dunes deck');

@@ -40,7 +40,7 @@ ok(/__UPGRADE_COSTS__/.test(rd('assemble_arena.py')) && /canonical\/upgrade-cost
 function decl(name){ // the statement "const NAME = …;" (it may span lines)
   const lines = app.split('\n'), i = lines.findIndex(l=> new RegExp('^const ' + name + '\\b').test(l)); if(i < 0) return null;
   let j = i; while(j < lines.length && !/;\s*(\/\/.*)?$/.test(lines[j])) j++; return lines.slice(i, j + 1).join('\n'); }
-const NAMES = ['FORGE_TIER_NAMES', 'UPGRADE_COSTS', 'PRESTIGE_TIERS', 'MATERIA_UNIT', 'DISENCHANT_DUST', 'FORGE_STEP_DUST', 'LIMIT_BREAK_COST_MULT', 'LEVEL_COST_MULT', 'DUPLICATE_DIVISOR', 'LIMIT_BREAK_DUPS', 'MATERIA_MOTE', 'FORGE_TIERS'];
+const NAMES = ['FORGE_TIER_NAMES', 'UPGRADE_COSTS', 'PRESTIGE_TIERS', 'MATERIA_UNIT', 'DISENCHANT_DUST', 'FORGE_STEP_DUST', 'LIMIT_BREAK_COST_MULT', 'LEVEL_COST_MULT', 'DUPLICATE_DIVISOR', 'LIMIT_BREAK_DUPS', 'MATERIA_MOTE', 'FORGE_TIER_METAL' /* 2026-11-04 (TESTFIX1): FORGE_TIERS reads the Metal costs since (ECON) */, 'FORGE_TIERS'];
 const code = NAMES.map(n=>{ const d = decl(n); ok(!!d, `2. arena_app.js declares ${n}`); return (d || '').replace('__UPGRADE_COSTS__', JSON.stringify(T)); }).join('\n')
   + '\nconst MATERIA_DUST_COST = ' + ((app.match(/const MATERIA_DUST_COST = ([^,;]+),/) || [])[1] || 'NaN') + ';'
   + '\nconst __energy = ' + (((app.match(/function energyUpgradeCost\(\)\{ return ([^;]+); \}/) || [])[1]) || 'NaN').replace('energyUpgradesBought()', '0') + ';'

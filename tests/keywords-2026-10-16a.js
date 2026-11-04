@@ -66,10 +66,15 @@ const fight = (e, P, ev, first)=> e.resolveCombat(P, so, {}, ev || [], first || 
   const ev3 = []; fight(e, P, ev3, 2); ok(ev3.some(x=> x.type === 'hit' && x.attUid === t.uid), 'it swings again the round after'); }
 { const {e, P} = mk(); put(e, P, 1, 'w2-bull', 0); const t = put(e, P, 2, 'w2-wall', 0); t.wait = 2; fight(e, P, [], 1); ok(t.wait === 1, `Bulldoze leaves a waiting unit alone (${t.wait})`); }
 // ---- Tangleweed: Bound for a round, can't attack; Strangle: squeezes
-{ const {e, P} = mk(); put(e, P, 1, 'w2-tangle', 0); const t = put(e, P, 2, 'w2-hit', 0); fight(e, P, [], 1);
-  ok(t.bound === 1, `Tangleweed binds (${t.bound})`); const ev = []; fight(e, P, ev, 2);
-  ok(ev.some(x=> x.type === 'skipTurn' && x.reason === 'bound' && x.uid === t.uid), 'a Bound unit skips its swing');
-  ok(!ev.some(x=> x.type === 'hit' && x.attUid === t.uid), 'and deals no hit'); }
+// 2026-11-04 (TESTFIX1): ENG9 (2026-10-26, owner G25: "Tangleweed is too strong ... maybe it could be 50% to act") made Tangleweed lay Tangled
+// (a seeded coin: 1 in 2 the unit fumbles its swing), no longer Bound (only Strangle binds, OWN-Q1)
+{ let tangled = 0, fumbled = 0, swung = 0, bad = 0;
+  for(let seed = 1; seed <= 16; seed++){ const {e, P} = mk(undefined, seed); put(e, P, 1, 'w2-tangle', 0); const t = put(e, P, 2, 'w2-hit', 0); fight(e, P, [], 1);
+    if(t.tangled > 0 && !(t.bound > 0)) tangled++; const ev = []; fight(e, P, ev, 2);
+    const whiff = ev.some(x=> x.type === 'confusedWhiff' && x.tangled && x.uid === t.uid), hit = ev.some(x=> x.type === 'hit' && x.attUid === t.uid);
+    if(whiff && !hit) fumbled++; else if(hit && !whiff) swung++; else bad++; }
+  ok(tangled === 16, `Tangleweed tangles, not binds (${tangled}/16)`);
+  ok(fumbled > 0 && swung > 0 && !bad, `a Tangled unit fumbles its swing about half the time (fumbled ${fumbled}, swung ${swung}, neither/both ${bad})`); }
 { const {e, P} = mk(); put(e, P, 1, 'w2-strangle', 0); const t = put(e, P, 2, 'w2-wall', 0); fight(e, P, [], 1); const ev = []; fight(e, P, ev, 1);
   ok(ev.some(x=> x.type === 'strangleTick' && x.uid === t.uid && x.dmg === 3), 'Strangle 3 squeezes the Bound unit for 3 at round start'); }
 // ---- Invincible / Invisible
@@ -135,7 +140,7 @@ const fight = (e, P, ev, first)=> e.resolveCombat(P, so, {}, ev || [], first || 
 { const {e, P} = mk(); const a = put(e, P, 1, 'w2-hit', 0); const g = put(e, P, 2, 'w2-guard', 1); const ev = []; fight(e, P, ev, 1);
   ok(ev.some(x=> x.type === 'hitHQ' && x.attUid === a.uid) && g.hp === 500, 'Guardian is not Taunt: an empty column still goes to the castle'); }
 // 2026-10-21 (package TT): 2/10 since the 2026-10-19 card retune (BF3, v5 L/10 + Map term); was 1/5
-{ const sheep = base['sheep']; ok(sheep && sheep.rarity === 'starter' && sheep.cost === 0 && sheep.wait === 0 && sheep.attack === 1 && sheep.health === 5 && sheep.effects.taunt === true, 'the Sheep: starter, 0 cost, Wait 0, 1/5 (BF5 halved; was 2/10), Taunt'); }
+{ const sheep = base['sheep']; ok(sheep && sheep.rarity === 'starter' && sheep.cost === 0 && sheep.wait === 0 && sheep.attack === 1 && sheep.health === 6 && sheep.effects.taunt === true, 'the Sheep: starter, 0 cost, Wait 0, 1/6 (BF5 halved 2/10 to 1/5; BF6 1/7; RECOST1 re-fit 1/6, 2026-10-30, call RECOST1-1), Taunt'); }
 // ---- Molting: every 2 rounds, +N/+N and +1 Wait
 { const {e, P} = mk(); const m = put(e, P, 1, 'w2-molt', 0); put(e, P, 2, 'w2-wall', 0); fight(e, P, [], 1); ok(m.atk === 1 && m.wait === 0, 'Molting: nothing after round 1');
   const ev = []; fight(e, P, ev, 1); ok(m.atk === 3 && m.maxHp === 7 && m.wait === 1, `round 2: +2/+2 and +1 Wait (${m.atk}/${m.maxHp}, Wait ${m.wait})`);

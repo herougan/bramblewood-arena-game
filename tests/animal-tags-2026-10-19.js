@@ -47,7 +47,8 @@ ok(!cards.some(c=> c.faction === 'otters'), '3. no card has the otters faction')
 ok(cards.filter(c=> c.faction === 'base').length === 27, '3. 27 Base cards (faction base)');
 const hb = cards.filter(c=> c.faction === 'hummingbirds');
 // 2026-10-21 (package TT): 13 since package BX's Greyplume Fledgling (a Hummingbird basic, the Otter Kit's mirror)
-ok(hb.length === 13 && hb.some(c=> c.id === 'greyplume-fledgling') && hb.every(c=> (c.archetypes || []).includes('Hummingbird') && c.animal === 'hummingbird'), '3. the Hummingbirds stay a faction: 13 cards, all hummingbirds');
+// 2026-11-04 (TESTFIX1): 14 since package HB2 (2026-10-21) added the Swordbill Challenger, a Very Rare Hummingbird faction reward
+ok(hb.length === 14 && hb.some(c=> c.id === 'greyplume-fledgling') && hb.some(c=> c.id === 'swordbill-challenger') && hb.every(c=> (c.archetypes || []).includes('Hummingbird') && c.animal === 'hummingbird'), '3. the Hummingbirds stay a faction: 14 cards, all hummingbirds');
 
 // 4. the Codex and the build
 const app = rd('arena_app.js'), tx = rd('bramblewood-texts.js');

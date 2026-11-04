@@ -138,7 +138,7 @@ ok(['ui.egg-choice-title', 'ui.egg-choice-body', 'ui.egg-choice-hatch', 'ui.egg-
 }
 { const dj = J('docs/decisions.json'), by = Object.fromEntries(dj.items.map(x=> [x.id, x]));
   ok(['ENG16-1', 'ENG16-2', 'ENG16-3', 'ENG16-4'].every(id=> by[id] && by[id].status === 'DONE'), 'decisions: ENG16-1 .. 4 recorded');
-  ok(/ENG16/.test(R('docs/CHANGELOG.md').slice(0, 30000)), 'the CHANGELOG entry'); } // 2026-11-02 (ENG20): later entries sit above it
+  ok(/ENG16/.test(R('docs/CHANGELOG.md')), 'the CHANGELOG entry'); } // 2026-11-02 (ENG20): later entries sit above it // 2026-11-04 (TESTFIX1): the whole CHANGELOG, as QA1 did for the others; later packages' entries sit above this one
 
 console.log(`eng16-2026-11-02: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

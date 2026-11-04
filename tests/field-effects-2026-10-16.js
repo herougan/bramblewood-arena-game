@@ -80,10 +80,14 @@ ok(/rocks come down on three neighbouring columns/.test(src), 'Landslide: the fi
   ok(run({rookRow:true}, 'fe-hit', [0]).hp[0] === 495, "Rook's Row: a straight hit +2");
   ok(run({bishopPath:true}, 'fe-hit', [0]).hp[0] === 497, "Bishop's Path: a straight hit gets nothing");
   // 2026-10-17 (Fork hits L and R, or only C): a Fork facing units on both sides strikes both slants; facing only the one in front, it strikes C
-  { const r = run({bishopPath:true}, 'fe-fork', [-1, 1]); ok(r.hp[0] === 495 && r.hp[1] === 495, `Bishop's Path: both of the Fork's slanted prongs +2 (${r.hp})`); ok(r.ev.some(x=> x.type === 'hit' && x.lane === 'bishop' && x.laneBonus === 2), 'the hit event names the lane'); }
-  { const r = run({rookRow:true}, 'fe-fork', [-1, 1]); ok(r.hp[0] === 497 && r.hp[1] === 497, `Rook's Row: the Fork's slanted prongs get nothing (${r.hp})`); }
-  { const r = run({rookRow:true}, 'fe-fork', [0, 1]); ok(r.hp[0] === 495 && r.hp[1] === 500, `Rook's Row: a Fork with only one side filled strikes C alone, straight +2 (${r.hp})`); }
-  ok(run({bishopPath:true}, 'fe-stab', [1]).hp[0] === 494, 'Bishop\'s Path: a Backstab on the slant 3+1+2'); }
+  // 2026-11-04 (TESTFIX1): ENG9 (2026-10-26, call G2 in project-state): Fork hits two adjacent enemies among L/C/R, never L + R. So the lanes are
+  // checked on an L + C pair (one slanted prong, one straight), and an L + R pair gets one prong only
+  { const r = run({bishopPath:true}, 'fe-fork', [-1, 0]); ok(r.hp[0] === 495 && r.hp[1] === 497, `Bishop's Path: the Fork's slanted prong +2, its straight one nothing (${r.hp})`); ok(r.ev.some(x=> x.type === 'hit' && x.lane === 'bishop' && x.laneBonus === 2), 'the hit event names the lane'); }
+  { const r = run({rookRow:true}, 'fe-fork', [-1, 0]); ok(r.hp[0] === 497 && r.hp[1] === 495, `Rook's Row: the Fork's slanted prong gets nothing, its straight one +2 (${r.hp})`); }
+  { const r = run({rookRow:true}, 'fe-fork', [0, 1]); ok(r.hp[0] === 495 && r.hp[1] === 497, `Rook's Row: a Fork facing C and R strikes both, C straight +2 (${r.hp})`); }
+  { const r = run({rookRow:true}, 'fe-fork', [-1, 1]); ok(r.hp.filter(h=> h < 500).length === 1, `ENG9: a Fork never strikes L and R together (${r.hp})`); }
+  // 2026-11-04 (TESTFIX1): Backstab lands on a Waiting, Shocked or Exposed target (EN-5, D21), so the target waits here
+  { const {e, P} = mk({bishopPath:true}); const w = put(e, P, 2, 'fe-wall', 1), A = put(e, P, 1, 'fe-stab', 0); w.wait = 2; e.debugAttack(P, so, A.uid, {}, []); ok(w.hp === 494, `Bishop's Path: a Backstab on the slant 3+1+2 (${500 - w.hp})`); } }
 
 // ---- Mirage: a 1/1 Illusion beside a random unit, copying only movement skills
 { const {e, P} = mk({mirage:true}); const s = put(e, P, 1, 'fe-flyarm', 0); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
@@ -92,9 +96,11 @@ ok(/rocks come down on three neighbouring columns/.test(src), 'Landslide: the fi
   ok(il && il.atk === 1 && il.hp === 1, 'Mirage: the Illusion is 1/1');
   const fx = (d && d.effects) || {}; ok(fx.flying && fx.haste && !fx.armor && !fx.poison, `Mirage: it copies Flying and Haste, not Armor or Poison (${JSON.stringify(fx)})`);
   ok(ev.some(x=> x.type === 'spawn' && x.kind === 'mirage'), 'Mirage: a spawn event (kind mirage)'); }
-{ let none = 0; for(let s = 1; s <= 40 && !none; s++){ const {e, P} = mk({mirage:true}, s); [-1, 0, 1].forEach(sl=> put(e, P, 1, 'fe-wall', sl)); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
-    const m = ev.find(x=> x.field === 'mirage'); if(m && m.none){ none++; ok(all(P[1]).length === 3, 'Mirage: no room beside it, no Illusion'); } }
-  ok(none === 1, 'Mirage: a unit with both neighbours taken gets none (seen)'); }
+// 2026-11-04 (TESTFIX1): since ENG18 (call ENG18-4, 2026-11-02) a token "beside it" goes to the nearest free slot in its row, so a unit with both
+// neighbours taken still gets its Illusion, one further out (it used to get none)
+{ let further = 0; for(let s = 1; s <= 10; s++){ const {e, P} = mk({mirage:true}, s); [-1, 0, 1].forEach(sl=> put(e, P, 1, 'fe-wall', sl)); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
+    const sp = ev.find(x=> x.type === 'spawn' && x.kind === 'mirage'), il = sp && all(P[1]).find(c=> c.uid === sp.uids[0]); if(il && Math.abs(il.slot) === 2 && all(P[1]).length === 4) further++; }
+  ok(further === 10, `Mirage: every unit is boxed in, the Illusion lands in the nearest free slot (${further}/10)`); }
 
 // ---- High Canopy / Undergrowth / Tall Grass
 { const pounce = rules=>{ const {e, P} = mk(rules); const w = put(e, P, 2, 'fe-wall', 0); put(e, P, 1, 'fe-pounce', 0); return 500 - w.hp; };
@@ -108,7 +114,7 @@ ok(/rocks come down on three neighbouring columns/.test(src), 'Landslide: the fi
   ok(bounty({}) === 1 && bounty({canopy:true}) === 2 && bounty({undergrowth:true}) === 1, 'High Canopy: Bounty +1 (not Undergrowth)'); }
 { const first = rules=>{ const {e, P} = mk(rules); put(e, P, 1, 'fe-stealth', 0); put(e, P, 2, 'fe-quick', 0); const ev = []; e.resolveCombat(P, so, {}, ev, 2); const h = ev.filter(x=> x.type === 'hit' || x.type === 'hitHQ'); return h.length ? h[0].side : null; };
   ok(first({}) === 'B' && first({tallGrass:true}) === 'A', 'Tall Grass: Stealth attacks first (before even Quick)'); }
-{ const {e, P} = mk({tallGrass:true}); const w = put(e, P, 2, 'fe-wall', 1), A = put(e, P, 1, 'fe-stab', 0); e.debugAttack(P, so, A.uid, {}, []); ok(w.hp === 492, `Tall Grass: a Backstab hit lands double, (3+1)×2 (${500 - w.hp})`); }
+{ const {e, P} = mk({tallGrass:true}); const w = put(e, P, 2, 'fe-wall', 1), A = put(e, P, 1, 'fe-stab', 0); w.wait = 2 /* TESTFIX1: Backstab needs a Waiting target (EN-5, D21) */; e.debugAttack(P, so, A.uid, {}, []); ok(w.hp === 492, `Tall Grass: a Backstab hit lands double, (3+1)×2 (${500 - w.hp})`); }
 
 // ---- Slippery
 { let miss = 0; for(let s = 1; s <= 300; s++){ const {e, P} = mk({slippery:true}, s); const t = put(e, P, 2, 'fe-wall', 0), A = put(e, P, 1, 'fe-hit', 0); const ev = []; e.debugAttack(P, so, A.uid, {}, ev); if(ev.some(x=> x.type === 'evaded' && x.reason === 'slippery')) miss++; }

@@ -62,10 +62,13 @@ const spawn = (e, P, pid, id, side)=>{ e.debugSpawnCard(P, so, pid, id, side || 
 // Price and re-fit
 { const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')), row = id=> (sc.skills || sc.keywords || Object.values(sc).find(Array.isArray) || []).find(r=> r.id === id);
   const txt = fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8');
-  ok(/"id":"boomerang","scale":"half","value":1\.9/.test(txt) && /"id":"bananarang","scale":"half","value":1\.9/.test(txt), 'Boomerang and Bananarang cost 1.9 (were 3)');
+  // 2026-11-04 (TESTFIX1): SKILL2 (2026-10-31, call BUDGET2-1) re-measured Boomerang 1.9 -> 2.25 (its skill2Was keeps EN2's 1.9); Bananarang stays 1.9
+  ok(row('boomerang').scale === 'half' && row('boomerang').value === 2.25 && row('boomerang').skill2Was.value === 1.9 && /"id":"bananarang","scale":"half","value":1\.9/.test(txt), 'Boomerang and Bananarang cost 1.9 (were 3); Boomerang 2.25 since SKILL2');
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = id=> cards.find(x=> x.id === id);
   const bal2 = id=> /2026-10-24 BAL2 re-fit/.test(c(id).creatorNote || ''); // 2026-10-24 (BAL2): or the DF-1 re-fit moved it on
-  ok((c('otter-centurion').health === 7 || bal2('otter-centurion')) && (c('howler-monkey').health === 5 || bal2('howler-monkey')) && (c('net-thrower').health === 10 || bal2('net-thrower')) && (c('otter-royal-guard').health === 10 || bal2('otter-royal-guard')), 'the four Boomerang cards re-fit up a point of Health (or BAL2 moved them on)'); }
+  // 2026-11-04 (TESTFIX1): retired as a pin: the four cards moved on through later dated re-fits (BAL2, BUDGET2's 3A + H re-fit, the owner's live edits
+  // folded by CONTENT3) and two no longer throw (the Net Thrower has Bola since ENG15, the Otter Royal Guard Grant Shield since ENG19); kept as a note
+  if(false) ok((c('otter-centurion').health === 7 || bal2('otter-centurion')) && (c('howler-monkey').health === 5 || bal2('howler-monkey')) && (c('net-thrower').health === 10 || bal2('net-thrower')) && (c('otter-royal-guard').health === 10 || bal2('otter-royal-guard')), 'the four Boomerang cards re-fit up a point of Health (or BAL2 moved them on)'); }
 
 // ---- The CPU's lanes ------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(); spawn(e, P, 2, 'x-wallr'); spawn(e, P, 2, 'x-wallr', 'right'); spawn(e, P, 2, 'x-wallr', 'right'); // foe at 0, 1, 2

@@ -75,6 +75,6 @@ const near = (a, b, e) => Math.abs(a - b) <= (e || 0.011);
 // 6. decisions, report, CHANGELOG, protocol
 { const D = rd('docs/decisions.json'); ['SKILL2-1', 'SKILL2-2', 'SKILL2-3', 'SKILL2-4'].forEach(id => ok(new RegExp('"id": "' + id + '", "status": "(YET|DONE)"').test(D), `6. ${id} asked`)); // 2026-10-31 coordinator: answered (DONE) counts too
   ok(fs.existsSync(path.join(ROOT, 'docs', 'balance', 'skill2-2026-10-31.md')), '6. the report');
-  ok(/SKILL2/.test(rd('docs/CHANGELOG.md').slice(0, 4000)), '6. the CHANGELOG\'s top entry');
+  ok(/SKILL2/.test(rd('docs/CHANGELOG.md')), '6. the CHANGELOG\'s top entry'); // 2026-11-04 (TESTFIX1): the whole CHANGELOG, as QA1 did for the others; later packages' entries sit above this one
   ok(/### 5a\. The currency/.test(rd('docs/evaluation-protocol.md')), '6. the protocol\'s section 5a'); }
 console.log(`skill2-2026-10-31: ${n - fail}/${n} checks passed`); process.exit(fail ? 1 : 0);

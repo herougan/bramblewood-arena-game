@@ -90,7 +90,7 @@ ok(Object.keys(rec.homes).length === Object.keys(N.HOME).length && rec.packTiers
 const md = R('docs/balance/n221-divvy-2026-10-24.md');
 ok(/## Maps 25-40: the proposal table/.test(md) && /## Where the \d+ waiting cards go/.test(md) && /New-skill flags/.test(md), 'the doc has the homes, the Maps 21-24 table, the proposal table and the flags');
 ok(/## Maps 21-40/.test(R('docs/progression-plan.md')) && /Pack 4/.test(R('docs/progression-plan.md')), 'the progression plan has its Maps 21-40 section');
-ok(/package N221/.test(R('docs/CHANGELOG.md').slice(0, 200000)) /* 2026-10-24 (EN8): later packages' entries sit above it; 2026-10-26: 200000 */, 'a CHANGELOG entry at the top');
+ok(/package N221/.test(R('docs/CHANGELOG.md')) /* 2026-10-24 (EN8): later packages' entries sit above it; 2026-10-26: 200000 */, 'a CHANGELOG entry at the top'); // 2026-11-04 (TESTFIX1): the whole CHANGELOG, as QA1 did for the others; later packages' entries sit above this one
 const dec = J('docs/decisions.json').items;
 ['N221-1', 'N221-2', 'N221-3', 'N221-4', 'N221-5', 'N221-6', 'N221-7'].forEach(id=> ok(dec.some(x=> x.id === id && (x.status === 'YET' || x.status === 'DONE')), `owner call ${id}`)); // 2026-10-26 (release): the owner answered them 10-25 17:53
 ok(/run node tests\/n221-2026-10-24\.js/.test(R('tests/run-all.sh')), 'listed in tests/run-all.sh');

@@ -56,7 +56,8 @@ const swing = (e, P, c)=>{ const ev = []; e.debugAttack(P, so, c.uid, {}, ev); r
 
 // ---- 01:57 note 10: Swarm does not count Structures
 { const {e, P} = mk(); const a = put(e, P, 1, 'en-ant', 0); put(e, P, 1, 'en-ant2', 1); put(e, P, 1, 'en-antwall', -1);
-  ok(e.swarmBonusOf(P, a) === 1, `Swarm: an Ant ally counts, an Ant Structure does not (${e.swarmBonusOf(P, a)})`); }
+  // 2026-11-04 (TESTFIX1): ENG19 (2026-11-02, owner #6, call ENG19-4) reversed this: an allied Structure that shares the Type counts
+  ok(e.swarmBonusOf(P, a) === 2, `Swarm: an Ant ally counts, and since ENG19 an Ant Structure too (${e.swarmBonusOf(P, a)})`); }
 
 // ---- 01:57 note 2: Bulwark N raises two 0/4N shields as it arrives
 { const {e, P} = mk(); const h = {uid: 9001, defId:'en-bulwark'}; P[1].hand.push(h); P[1].lumber = 5;
@@ -108,12 +109,15 @@ const swing = (e, P, c)=>{ const ev = []; e.debugAttack(P, so, c.uid, {}, ev); r
 const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
 const sk = id=> costs.skills.find(x=> x.id === id) || {};
 const BB = require('../bramblewood-budget.js');
-ok(sk('king').value === 1.4 && sk('kingly').value === 3.5, `King 1.4, Kingly 3.5 (${sk('king').value}, ${sk('kingly').value})`);
-ok(sk('assault').scale === 'n' && sk('assault').value === 1.8, `Assault 1.8 a point (${sk('assault').value})`);
-ok(sk('liege').value === 1.08 && BB.CONTEXT_MULT_BY.liegeGrant === 0.3, `Liege 0.3 x Assault 2 = 1.08 (${sk('liege').value}; braces x${BB.CONTEXT_MULT_BY.liegeGrant})`);
+// 2026-11-04 (TESTFIX1): BUDGET2 / SKILL2 (2026-10-31, calls BUDGET2-1 / BUDGET2-2) re-priced these in the 3A + H currency: King re-measured 1.4 -> 2.7,
+// Assault 1.8 -> 2.7 a point (logic, re-canonised) and so Liege 0.3 x Assault 2 = 1.62; Kingly stays 3.5
+ok(sk('king').value === 2.7 && sk('kingly').value === 3.5, `King 2.7, Kingly 3.5 (${sk('king').value}, ${sk('kingly').value})`);
+ok(sk('assault').scale === 'n' && sk('assault').value === 2.7, `Assault 2.7 a point (${sk('assault').value})`);
+ok(sk('liege').value === Math.round(0.3 * 2 * sk('assault').value * 100) / 100 && BB.CONTEXT_MULT_BY.liegeGrant === 0.3, `Liege 0.3 x Assault 2 = 1.62 (${sk('liege').value}; braces x${BB.CONTEXT_MULT_BY.liegeGrant})`);
 ok(BB.CONTEXT_MULT_BY.rageGrant === 0.4 && !BB.CONTEXT_FLAG.rage, 'Rage – {…}: Rage keeps its price, + 0.4 x the braces');
-ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 7.2 /* 2026-10-28 (BAL7, FIN2-2): the owner's 9 x Shield's 0.8 Health */, `Bulwark 7.2 a point (EN3's 9 x 0.8, FIN2-2; was 6, BF11) (${sk('bulwark').value})`);
-ok(sk('backstab').scale === 'n' && sk('backstab').value === 0.6, `Backstab 0.6 a point (${sk('backstab').value})`);
+// 2026-11-04 (TESTFIX1): SKILL2 (2026-10-31, call BUDGET2-1) re-measured both against the re-canonised anchors (appliedAt, skill2Was on the entries)
+ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 5.96 && sk('bulwark').skill2Was.value === 7.2 /* 2026-10-28 (BAL7, FIN2-2): the owner's 9 x Shield's 0.8 Health */, `Bulwark 5.96 a point (SKILL2; was 7.2 = EN3's 9 x 0.8, FIN2-2; 6, BF11) (${sk('bulwark').value})`);
+ok(sk('backstab').scale === 'n' && sk('backstab').value === 0.0273 && sk('backstab').skill2Was.value === 0.6, `Backstab 0.0273 a point (SKILL2; was 0.6) (${sk('backstab').value})`);
 ok(sk('evoluteAlpha').value === 3 && sk('evoluteOmega').value === 3 && sk('evolute').value === 3, 'EV-5: Evolute, Alpha and Omega 3');
 ok(sk('spellward').value > 0 && !costs.skills.some(x=> x.id === 'spellshield' || x.id === 'enraged'), 'GD2-1 / TR-6: spellward priced; no spellshield or enraged entry');
 { const SC = require('../tools/skill_costs.js'), T = SC.make(costs);
@@ -128,7 +132,8 @@ ok(cards.filter(c=> c.effects && c.effects.king).map(c=> c.id).join() === 'magna
 ok(!byId.get('rodent-king').effects.bounty && !byId.get('glacial-ape-king').effects.bounty, 'TR-4: King off the Rodent King and the Glacial Ape-King; Bounty stays off (BF8: loot carriers only)');
 ok(byId.get('magnate-duck').health > 1, `TR-4: the Magnate Duck is not at its 1/1 floor (${byId.get('magnate-duck').attack}/${byId.get('magnate-duck').health})`);
 ok(!cards.some(c=> c.effects && (c.effects.spellshield || (c.effects.transform && c.effects.transform.name === 'enraged'))), 'no card keeps Spellshield or Enraged');
-{ const babies = cards.filter(c=> c.levelSkills && c.levelSkills['1'] && (c.levelSkills['1'].stem || c.levelSkills['1'].hatchling)); // 2026-11-02 (ENG17, BABY-2): a Baby card's Fodder is Hatchling now, on every Baby card
+// 2026-11-04 (TESTFIX1): since ENG22 (2026-11-03, DESIGN1-11) a Baby card has its Hatchling from Level 0 (levelSkills['0']); Stem stays at Level 1
+{ const lv = c=> ['0', '1'].map(k=> (c.levelSkills || {})[k] || {}), babies = cards.filter(c=> lv(c).some(x=> x.stem || x.hatchling)); // 2026-11-02 (ENG17, BABY-2): a Baby card's Fodder is Hatchling now, on every Baby card
   // 2026-10-24 (package EN8, owner 21:20 #7: "don't introduce stem first"): Fodder stays only on the babies first obtainable on Map 20+ (3)
   ok(babies.length >= 3 && babies.every(c=> !(c.effects || {}).stem && c.mechanicLine !== 'evolution'), `EV-6: ${babies.length} baby-like cards gain Stem (Fodder) at Level 1, none has it at Level 0`); }
 { const m = byId.get('coffer-mimic');
@@ -150,7 +155,7 @@ ok(/function enMigrateCard\(c\)/.test(app) && /enMigrateCard\(liveCards\[id\]\)/
   ok(m2.effects.rage === true && m2.effects.rageGrant.armor === 2 && !m2.effects.transform, 'migration: Enraged {Armor 2} -> Rage – {Armor 2}'); }
 for(const k of ['ui.skn-spellward', 'ui.sk-assault', 'ui.sk-liege', 'ui.sk-rage-grant', 'ui.sk-shapeshifter', 'ui.sk-bulwark', 'ui.sk-backstab', 'ui.term-surrounding', 'ui.en-bulwark-shield'])
   ok(texts.includes(`"${k}"`), `text ${k}`);
-ok(/Structures don't count\.` \/\*/.test(app) && /to every surrounding unit/.test(texts) && /\{name:'Surrounding', re:'surrounding'/.test(app), 'Dynamite says "surrounding"; the Codex term sits beside Adjacent');
+ok(/to every surrounding unit/.test(texts) /* 2026-11-04 (TESTFIX1): ENG19 (#6, ENG19-4) took "Structures don't count" out of the Swarm texts */ && /\{name:'Surrounding', re:'surrounding'/.test(app), 'Dynamite says "surrounding"; the Codex term sits beside Adjacent');
 ok(!/opens with an extra card/.test(app), 'D24: no Arena text promises an extra card');
 for(const code of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']){ const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8'));
   ok(p['Spellward'] && !p['Spellshield'] && p['Surrounding'] && p['While a King is on your side: {skills}.'], `${code}: Spellward, Surrounding, Liege translated`); }

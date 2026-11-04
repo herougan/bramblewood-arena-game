@@ -148,10 +148,11 @@ ok(/m\.conquestCastleDrops = \(m\.conquestCastleDrops\|\|\[\]\)\.concat\(cs\.map
 }
 ok(/\.rw-new\.rw-spare\{background:linear-gradient/.test(tpl), 'the SPARE tag has its own colours');
 ok(/c\.querySelector\('\.rw-card\.rw-castle, \.rw-act\.rw-castle'\)/.test(fxf) && /el\.classList\.contains\('is-spare'\)/.test(fxf), 'the results fx finds the bramble card (New bramble! / Spare bramble)');
-ok(/"results\.spare-bramble-tip": "\{name\}: you already have this bramble\./.test(texts) && /"results\.spare": "SPARE"/.test(texts), 'the new texts are TX keys');
+// 2026-11-04 (TESTFIX1): TIP1 (2026-10-30, owner 23:30, docs/tooltips-tip1-2026-10-30.md) cut the spare-bramble tooltip to "{name}: already owned. Fuse the spare in the Forge."
+ok(/"results\.spare-bramble-tip": "\{name\}: already owned\. Fuse the spare in the Forge\."/.test(texts) && /"results\.spare": "SPARE"/.test(texts), 'the new texts are TX keys');
 { // every pack has the new texts
   const codes = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
-  const want = ["It costs 🪵 Lumber: pitch a card you don't need to the Graveyard for Lumber, then play it.", '{name}: you already have this bramble. Fuse the spare in the Forge to level it up.', 'SPARE'];
+  const want = ["It costs 🪵 Lumber: pitch a card you don't need to the Graveyard for Lumber, then play it.", '{name}: already owned. Fuse the spare in the Forge.' /* TIP1's wording (TESTFIX1) */, 'SPARE'];
   const miss = []; codes.forEach(c=>{ const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8')); want.forEach(w=>{ if(!p[w] || (/\{name\}/.test(w) && !/\{name\}/.test(p[w]))) miss.push(c + ': ' + w.slice(0, 20)); }); });
   ok(!miss.length, 'all 12 packs translate the new texts' + (miss.length ? ' (missing ' + miss.join(', ') + ')' : ''));
 }

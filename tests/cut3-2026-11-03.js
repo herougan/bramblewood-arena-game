@@ -37,7 +37,7 @@ const dec = JSON.parse(rd('docs/decisions.json')).items.find(x => x.id === 'CUT3
 ok(dec && dec.status === 'YET' && dec.title === 'Skirmish / road decks holding cut cards: rebuild them after your pass' && /cut3-audit-2026-11-03/.test(dec.body), 'decision CUT3-1 is YET and points to the audit');
 const lines = rd('docs/decisions.json').split('\n').filter(l => l.includes('"id": "CUT3-1"'));
 ok(lines.length === 1, 'CUT3-1 is one line');
-ok(/CUT3/.test(rd('docs/CHANGELOG.md').slice(0, 3000)), 'CHANGELOG entry at the top');
+ok(/CUT3/.test(rd('docs/CHANGELOG.md')), 'CHANGELOG entry at the top'); // 2026-11-04 (TESTFIX1): the whole CHANGELOG, as QA1 did for the others; later packages' entries sit above this one
 
 console.log(`cut3: ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

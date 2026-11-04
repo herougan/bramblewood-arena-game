@@ -34,24 +34,28 @@ ok(!odd.length, '1. every card is in one category (an unsorted card is on the ca
 const two = cards.filter(c=> R.overlaps(c).length).map(c=> `${c.id}: ${R.overlaps(c).join('; ')}`);
 ok(!two.length, '1. no card sits in two categories: ' + two.slice(0, 6).join(' | '));
 const notApplied = REC.moves.filter(m=>{ const c = defs[m.id]; if(!c) return true; if(m.to === 'awaitingSource') return !!c.source || c.awaitingSource !== true; if(m.to === 'base') return !!c.source; return JSON.stringify(c.source) !== JSON.stringify(m.to); }).map(m=> m.id);
-ok(REC.moves.length >= 150 && !notApplied.length, `1. the pass's ${REC.moves.length} moves are applied (python3 tools/rewards_pass_apply_2026_10_21.py): ` + notApplied.slice(0, 6));
+// 2026-11-04 (TESTFIX1): later, dated packages moved many of these cards on on purpose (DV 10-22's map divvy made most map cards pack cards,
+// RW5 the pack tiers, BAL9-1 / RAR-1 rarities, CUT3 the owner's cuts), so the pass's record is history: it must still be there and whole,
+// and a move that still holds must stay inside its fight's cap (below)
+ok(REC.moves.length >= 150 && REC.moves.length - notApplied.length > 0, `1. the pass's ${REC.moves.length} moves are recorded; ${REC.moves.length - notApplied.length} still hold, ${notApplied.length} moved on since`);
 ok(REC.moves.every(m=> m.from !== undefined && m.obtainBefore != null && m.obtainAfter != null && m.group), '1. each move records where it came from and its obtain map before / after (for the stat budget\'s map term)');
 const per = {}; cards.forEach(c=>{ const s = c.source; if(s && s.kind === 'map' && s.node && c.cardType !== 'equipment') per[s.id + ':' + s.node] = (per[s.id + ':' + s.node] || 0) + 1; });
 const intoFull = REC.moves.filter(m=> m.to && m.to.kind === 'map' && per[m.to.id + ':' + m.to.node] > 3).map(m=> m.to.node);
 ok(!intoFull.length, '1. no fight the pass gave a card to gives more than 3: ' + intoFull);
-const capBad = REC.moves.filter(m=> m.to && m.to.kind === 'map').filter(m=>{ const mp = MAPS.find(x=> x.id === m.to.id), nd = mp && mp.nodes.find(x=> x.key === m.to.node); return !nd || !G.roadRarityOk(defs[m.id].rarity, mapNo(mp.id), nd.kind); }).map(m=> m.id);
+const capBad = REC.moves.filter(m=> m.to && m.to.kind === 'map' && !notApplied.includes(m.id) /* TESTFIX1: only the moves that still hold */).filter(m=>{ const mp = MAPS.find(x=> x.id === m.to.id), nd = mp && mp.nodes.find(x=> x.key === m.to.node); return !nd || !G.roadRarityOk(defs[m.id].rarity, mapNo(mp.id), nd.kind); }).map(m=> m.id);
 ok(!capBad.length, '1. every card the pass moved to a fight is inside that fight\'s rarity cap: ' + capBad);
 
 // ---- 2. no map reward in any pack pool
 const grab = B.grab;
-const ctx = {CARD_DEFS_BASELINE: defs, liveCards: {}, getCardDefs: ()=> defs, hofBlocked: ()=> false, pitchingUnlocked: ()=> true, adminModeEnabled: false, Set, Object, Math, JSON, String, Number, Array, parseInt};
+// 2026-11-04 (TESTFIX1): PACK1 (2026-10-28) reads a card's basic pack from the map lists (basicPackTierOf, packIndex): the game's own, from tools/lib_bramble.js
+const ctx = {basicPackTierOf: G.basicPackTierOf, packIndex: G.packIndex, trackMapReached: ()=> Infinity /* a player who has reached every map */, CARD_DEFS_BASELINE: defs, liveCards: {}, getCardDefs: ()=> defs, hofBlocked: ()=> false, pitchingUnlocked: ()=> true, adminModeEnabled: false, Set, Object, Math, JSON, String, Number, Array, parseInt};
 vm.createContext(ctx);
 vm.runInContext(['TUTORIAL_REWARD_IDS', 'EASTER_EGG_IDS', 'isEasterEgg', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'SPELLS_SHELVED', 'packPoolOf', 'BASIC_PACK_POOLS', 'packCardPool',
-  'PEOPLE_OF_ARCHETYPE', 'PEOPLE_NAME_HINTS', 'peopleOfCard', 'FACTION_PACKS', 'factionPackPool'].map(x=> grab(x).replace(/^const |^let /, 'var ')).join('\n') + '\nthis.F = {packCardPool, factionPackPool, FACTION_PACKS, BASIC_PACK_POOLS};', ctx);
+  'PEOPLE_OF_ARCHETYPE', 'PEOPLE_NAME_HINTS', 'peopleOfCard', 'FACTION_PACKS', 'factionPackPool', 'BASIC_PACK_TIERS', 'isBasicPackSource', 'cardFirstMapList', 'packCardReached' /* 2026-11-04 (TESTFIX1): RW5 / PACK1's map-reach gate, which packCardPool calls since */].map(x=> grab(x).replace(/^const |^let /, 'var ')).join('\n') + '\nthis.F = {packCardPool, factionPackPool, FACTION_PACKS, BASIC_PACK_POOLS};', ctx);
 const F = ctx.F, isMap = id=> defs[id] && defs[id].source && defs[id].source.kind === 'map';
 const pools = [1, 11, 99, 2, 3]; let checked = 0;
 pools.forEach(p=>{ const ids = F.packCardPool(defs, p, true); checked += ids.length; ok(!ids.some(isMap), `2. pack pool ${p} holds no skirmish reward (${ids.filter(isMap)})`); });
-{ const sold = F.packCardPool(defs, 1); checked += sold.length; ok(sold.length > 100 && !sold.some(isMap) && !sold.some(id=> +(defs[id].source || {}).tier === 11), `2. the basic packs (BASIC_PACK_POOLS ${JSON.stringify(F.BASIC_PACK_POOLS)}: ${sold.length} cards) hold no skirmish reward and no faction reward`); }
+{ const sold = F.packCardPool(defs, 1); checked += sold.length; ok(sold.length > 40 /* 2026-11-04 (TESTFIX1): since PACK1 (2026-10-28, call N221-1's pack tiers) Pack 1 holds only Maps 0-6's cards (55); was every pack card */ && !sold.some(isMap) && !sold.some(id=> +(defs[id].source || {}).tier === 11), `2. the basic packs (BASIC_PACK_POOLS ${JSON.stringify(F.BASIC_PACK_POOLS)}: ${sold.length} cards) hold no skirmish reward and no faction reward`); }
 Object.values(F.FACTION_PACKS).forEach(fp=>{ ['own', 'general'].forEach(w=>{ const ids = F.factionPackPool(fp, w); checked += ids.length; ok(!ids.some(isMap), `2. the ${fp.name} (${w}) holds no skirmish reward (${ids.filter(isMap).slice(0, 4)})`); }); });
 ok(checked > 300, `2. ${checked} pool entries checked`);
 ok(!/factionPackPool[\s\S]{0,1400}src\.kind==='map'/.test(grab('factionPackPool')), '2. a people\'s bundle no longer tops itself up with map rewards');
@@ -140,7 +144,7 @@ ok(/existing/i.test(mr) && /new idea/i.test(mr) && /Maps 21.40/.test(mr), '7. th
 const dec = readJSON('docs/decisions.json'), r21 = (dec.rules || []).find(r=> r.date === '2026-10-21' && /package RP/.test(r.intro || ''));
 ok(r21 && ['world boss', '95 bosses', 'Limit break', '0.2', '20-40', 'Devilry', 'Submaps'].every(w=> r21.items.some(x=> x.includes(w))), '7. decisions.json: the 2026-10-21 rules entry (world bosses, bosses from Map 5, limit break, Map x 0.2, the eras, the gates, submaps)');
 ok(read('docs/decisions.md').includes('package RP'), '7. decisions.md regenerated (_dec_md)');
-ok(read('docs/CHANGELOG.md').slice(0, 40000).includes('package RP'), '7. a CHANGELOG entry near the top');
+ok(read('docs/CHANGELOG.md').includes('package RP'), '7. a CHANGELOG entry near the top'); // 2026-11-04 (TESTFIX1): the whole CHANGELOG, as QA1 did for the others; later packages' entries sit above this one
 ok(/rewards-pass-2026-10-21\.js/.test(read('tests/run-all.sh')), '7. in tests/run-all.sh');
 
 console.log(fail ? `rewards-pass-2026-10-21: ${fail} of ${n} checks failed` : `rewards-pass-2026-10-21: all ${n} checks pass`);

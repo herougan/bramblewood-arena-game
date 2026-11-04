@@ -105,18 +105,22 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   // 2026-10-24 (package EN5, owner BP-1): Bleed and Poison are priced by the measured power curve now (3.6 x N^0.6, 3.0 x N^0.7); EN3's 2.6 is their prevValueEN5
   want.poison = 3; want.bleed = 3.6;
   // 2026-10-30 RECOST1: Bleed, Gash and Venomous re-priced to their bench worth; the value checked here is then their prevValue
-  ok(Object.keys(want).every(k=> sk(k) && (sk(k).value === want[k] || (/RECOST1/.test(sk(k).appliedAt || '') && sk(k).prevValue === want[k])) && sk(k).prevValueEN3 != null) && sk('bleed').prevValueEN5 === 2.6 && sk('poison').prevValueEN5 === 2.6, 'the Bleed / Poison family up a tenth (Bleed / Poison re-priced by EN5): ' + Object.keys(want).map(k=> k + ' ' + (sk(k) || {}).value).join(', '));
+  // 2026-11-04 (TESTFIX1): later dated re-prices keep the old value on the entry: SKILL2 (2026-10-31, BUDGET2-1) as skill2Was, BAL12 (2026-11-02, BAL11-2 a)
+  // as prevValue; a value checked here holds if it is the price or the one such a re-price replaced
+  const heldTill = (e, v)=> e && (e.value === v || (/RECOST1|SKILL2|BAL12|BAL14|BAL15/.test(e.appliedAt || '') && (e.prevValue === v || (e.skill2Was && e.skill2Was.value === v))));
+  ok(Object.keys(want).every(k=> sk(k) && heldTill(sk(k), want[k]) && sk(k).prevValueEN3 != null) && sk('bleed').prevValueEN5 === 2.6 && sk('poison').prevValueEN5 === 2.6, 'the Bleed / Poison family up a tenth (Bleed / Poison re-priced by EN5): ' + Object.keys(want).map(k=> k + ' ' + (sk(k) || {}).value).join(', '));
   ok(ac('poison').value === 1.4 && ac('bleed').value === 1, `the actions: Poison ${ac('poison').value} (1.3), Bleed ${ac('bleed').value} (0.9)`);
   ok(sk('toxin').value === 5 && sk('detonate').value === 0.2, 'Toxin (never wears off) and Detonate are left'); // 2026-10-26 (release): CONTENT3 reworked Detonate N (0.2 a tick)
-  ok(sk('bulwark').value === 7.2 && sk('bulwark').prevValueBAL7 === 9 && sk('bulwark').prevValueEN3 === 6, 'Bulwark 7.2 (BAL7: the owner\'s 9 x 0.8; was 6 before EN3)'); // 2026-10-28 (RELFIX2): BAL7 / FIN2-2 counts the shields' Health at 0.8, so the owner's 9 is 7.2 a point (was === 9)
-  ok(sk('rampart') && sk('rampart').value === 0.22 /* 2026-10-24 (EN8, owner 21:41 #5): its columns only, 0.5 -> 0.25; 2026-10-26 (ENG9, EN8-8): Ready only, 0.22 */ && sk('brambleArmor') && sk('brambleArmor').value === 1.1, 'Rampart 0.25 (EN8), Bramble Armor 1.1 (measured)');
+  ok(heldTill(sk('bulwark'), 7.2) && sk('bulwark').prevValueBAL7 === 9 && sk('bulwark').prevValueEN3 === 6, 'Bulwark 7.2 (BAL7: the owner\'s 9 x 0.8; was 6 before EN3)'); // 2026-10-28 (RELFIX2): BAL7 / FIN2-2 counts the shields' Health at 0.8, so the owner's 9 is 7.2 a point (was === 9)
+  ok(sk('rampart') && heldTill(sk('rampart'), 0.22) /* TESTFIX1: SKILL2 0.49 since 10-31 */ /* 2026-10-24 (EN8, owner 21:41 #5): its columns only, 0.5 -> 0.25; 2026-10-26 (ENG9, EN8-8): Ready only, 0.22 */ && sk('brambleArmor') && sk('brambleArmor').value === 1.1, 'Rampart 0.25 (EN8), Bramble Armor 1.1 (measured)');
   const rf = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/en3-refit-2026-10-23.json'), 'utf8'));
   ok(rf.raised.length === 3 && rf.held.length === 13 && rf.flagged.includes('poison-dart-frog'), `the re-fit file: ${rf.raised.length} raised, ${rf.held.length} held, flagged ${rf.flagged}`);
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = id=> cards.find(x=> x.id === id);
   // 2026-10-24 (package EN5): a card EN5's re-fit moved (Bleed / Poison by the measured curve) has EN5's line now
   const en5 = h=> /2026-10-24 (EN5|BAL2) re-fit|2026-10-24 BAL3 \(owner BAL2-5/.test(c(h.id).creatorNote || ''); // + BAL2 (2026-10-24): the DF-1 re-fit (Map term 0.2) moved some too // + BAL3 (2026-10-24, RELFIX): owner BAL2-5 put the ten held cards (Alley Cat, Muskrat Lodgekeeper ...) on their formula line
-  ok(rf.held.every(h=> en5(h) || `${c(h.id).attack}/${c(h.id).health}` === h.from), 'the held cards keep their stats (or EN5 re-fitted them)');
-  ok(rf.raised.every(h=> en5(h) || `${c(h.id).attack}/${c(h.id).health}` === h.to), 'the raised cards have their new line (or EN5\'s)');
+  // 2026-11-04 (TESTFIX1): retired as pins: EN3's held / raised lists are a 10-23 snapshot; the cards moved on through later dated re-fits (BAL7, RECOST1,
+  // BUDGET2's 3A + H re-fit on 143 cards, BAL12, the owner's folded live edits); tests/budget2-2026-10-31.js checks the band today
+  ok(rf.held.length > 0 && rf.raised.length > 0, `EN3's re-fit record is there (${rf.held.length} held, ${rf.raised.length} raised)`);
   const fl = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/human-pass-1-flagged-2026-10-21.json'), 'utf8')); ok(fl.length >= 10 && fl.includes('poison-dart-frog'), 'the flagged list was merged, not overwritten');
   const rb = c('riverworks-bastion'); ok(rb.effects.rampart === true && rb.attack === 0 && (rb.health === 30 || /2026-10-24 BAL2 re-fit.*0\/30 -> 0\/\d+/.test(rb.creatorNote || '')), 'Riverworks Bastion: Rampart, 0/30 (or BAL2\'s re-fit of it)');
   // the owner 20:44 ("implement them in new cards"): two new cards each, awaiting their source (EN3-8), inside the budget
@@ -128,7 +132,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   ok(Object.keys(NEWC).every(id=> art.includes('`' + id + '`')) && (art.match(/full background/g) || []).length >= 4 && !/spiked|studded|monitor|sword|spear|blade|axe/i.test(art), 'their NightCafe prompts (a background each, none of the banned words)');
   if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
   const SC = require(path.join(ROOT, 'tools/card_retune_2026_10_19.js')).SC, T = SC.make(sc);
-  const b = T.budget(rb, {level: 1}); ok(b.ok && b.S === 0.22 /* EN8: Rampart 0.25; ENG9: 0.22 */, `Riverworks Bastion inside the budget (2A+H+S ${b.x1} <= N ${b.N})`); }
+  const b = T.budget(rb, {level: 1}); ok(b.ok && b.S === sk('rampart').value /* EN8: Rampart 0.25; ENG9: 0.22; TESTFIX1: SKILL2 0.49, read from the table */, `Riverworks Bastion inside the budget (2A+H+S ${b.x1} <= N ${b.N})`); }
 
 // ---- The app, texts, docs ---------------------------------------------------------------------------------------------------
 { const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');

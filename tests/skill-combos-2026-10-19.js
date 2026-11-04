@@ -60,7 +60,11 @@ if(fs.existsSync(J)){ data = JSON.parse(fs.readFileSync(J, 'utf8'));
   // 2026-10-19 (package SK1): Demolisher was folded into Siege after these runs, so Siege (now on 8 live cards) entered the 40; its pairs
   // wait for the next tools/skill_combo.js run (the estimates say "re-measure": canonical/skill-costs.json sk1Note).
   const SK1_PENDING = new Set(['siege']);
-  const miss = Object.values(plan.pairs).filter(p=> !have.has(p.ids.join('+') + '@' + p.ctx) && !p.ids.some(id=> SK1_PENDING.has(id)));
+  // 2026-11-04 (TESTFIX1): the plan is rebuilt from today's cards, so the top 40 moved with later card changes (BF6, BAL9, ENG22's Delivery on 24 cards ...);
+  // the 10-19 run measured the pairs among its own top 40 (data.top). A pair with a skill outside that list waits for the next run, as Siege did:
+  // prices since are set by the 4-round rule, measurement optional (EN6-2, EN8-5)
+  const RUN_TOP = new Set(data.top || []);
+  const miss = Object.values(plan.pairs).filter(p=> !have.has(p.ids.join('+') + '@' + p.ctx) && !p.ids.some(id=> SK1_PENDING.has(id)) && p.ids.every(id=> RUN_TOP.has(id)));
   ok(!miss.length, `every measured pair is present (${miss.length} missing: ${miss.slice(0, 5).map(p=> p.ids.join('+')).join(', ')})`);
   ok(data.G >= 40, `${data.G} games a point`);
   const games = data.pairs.map(r=> r.games).sort((a, b)=> a - b), med = games[Math.floor(games.length / 2)];
@@ -81,14 +85,18 @@ NEVER.forEach(id=> ok(C.TRIGGER_SCEN[id], `a scenario deck for ${id}`));
 if(data){ const ent = data.scenarioEntries || {};
   NEVER.forEach(id=> ok(ent['trigger:' + id] && (typeof ent['trigger:' + id].measuredS === 'number' || ent['trigger:' + id].why), `trigger ${id}: a result or a reason`));
   ['action:exile', 'action:mindControl', 'skill:tsunami', 'skill:acidBolt', 'skill:meteor', 'action:gain', 'shorthand:bounty', 'skill:crepuscular'].forEach(k=> ok(ent[k] && typeof ent[k].measuredS === 'number', `${k}: measured`));
-  const sk1New = e=> /^estimate /.test(e.measuredHow || ''); // 2026-10-19 (package SK1): entries added after the runs, with an estimate (2026-10-21, BF5: any later package's estimate: SK2b, BX, BF5)
+  // 2026-11-04 (TESTFIX1): entries added after the run (a later dated note: the 4-round rule, EN6-2 / EN8-5) or re-measured since by a later tool
+  // (BF6's, SKILL2's: a later dated measuredHow) are not this run's to cover
+  const later = x=> /^2026-1[01]-\d\d/.test(x || '') && String(x).slice(0, 10) > '2026-10-19';
+  const sk1New = e=> /^estimate /.test(e.measuredHow || '') || later(e.note) || later(e.measuredHow); // 2026-10-19 (package SK1): entries added after the runs, with an estimate (2026-10-21, BF5: any later package's estimate: SK2b, BX, BF5)
   ok(data.coverage.length >= table.skills.filter(e=> !sk1New(e)).length + table.triggers.filter(e=> !sk1New(e)).length + table.actions.filter(e=> !sk1New(e)).length, 'the coverage list has every entry (the SK1 estimates aside)');
   ok(!data.coverage.some(r=> r.status === 'no entry'), 'every engine trigger and action has an entry');
   data.coverage.forEach(r=> ok(r.status && (r.status !== 'not measured' || r.why), `${r.kind} ${r.id}: a status, and a reason when not measured`));
   // the table carries them as measured fields
   NEVER.forEach(id=>{ const e = table.triggers.find(t=> t.id === id), s = ent['trigger:' + id]; if(e && s && typeof s.measuredS === 'number') ok(e.measuredS === s.measuredS && /package DC/.test(e.measuredHow || ''), `skill-costs ${id}: measuredS ${s.measuredS} (package DC)`); }); }
 // value untouched: the seeds and the applied values are what main has (the tool never writes value)
-ok(table.triggers.find(t=> t.id === 'onDeath').value === 1 && table.triggers.find(t=> t.id === 'onMove').value === 0.5, 'value untouched (On Death 1, On Move 0.5)');
+// 2026-11-04 (TESTFIX1): the owner's own hub edits (Human pass I, 2026-10-22) set On Death 0.8 and On Move 1; the combo tool still never writes value
+ok(table.triggers.find(t=> t.id === 'onDeath').value === 0.8 && table.triggers.find(t=> t.id === 'onMove').value === 1 && !/\.value = /.test(rd('tools/skill_combo.js')), 'value untouched by the tool (On Death 0.8, On Move 1 since Human pass I)');
 ok(!/\.value = s\./.test(src) && /value unchanged/.test(src), 'the tool writes measured fields only');
 
 // 5. the hub
