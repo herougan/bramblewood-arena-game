@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-04 20:17: Release 11-04a shipped ("continue, then push")
+- Done (shipped): QA2, FIX8, ECON3 (code; layout SQL not applied), CONTENT9, UI18, LISTFIX2, CUT3, ENG22, SKILLREC1, UI19, ENG21, FEEL1, UI20, ENG23, TESTFIX1, REG1. See docs/CHANGELOG.md.
+- Open: ART8 (104 card arts left; needs the browser pane visible), the skirmish deck rebuild after the owner's pass (CUT3-1: 45 decks / 147 copies), the 47 real findings in docs/testfix1-2026-11-04.md, the browser tests that fail on main too (ui_smoke, flows, ed, nv, codex_perf, en3-en7, eq2 and others; REG1 notes the fresh test profile's deck copy gate and the Chromium crashes under low disk).
+- Owner calls open: ECON3 layout "apply it", ENG23-5 Beaver fold "apply it", ENG21-1, ENG22-1..5, ENG23-1..7, FIX8-1..4, CUT3-1, LISTFIX2-1/2, SKILLREC1-1, FEEL1-1, THEME5-1, ENG20-2, the Armor price curve (eng10 vs ENG9-9), Delivery's Lumber home multiplier.
+
 ## 11-02 14:10: the owner's decisions
 - KK1 (BAL11): too-hard road fights: build the enemy deck from the fight's own map list, weaker on purpose, no Baby cards (BAL10-6).
 - KK2 (BAL11): find why the optimised decks are too strong: flag the over-tuned cards (e.g. Stealth against low bramble Health, a Nocturnal +4/+0 card) and fix the budget's blind spot, not the cards (BAL-ROLES).

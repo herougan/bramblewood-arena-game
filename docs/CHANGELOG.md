@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-04 Release 11-04a (QA2, FIX8, ECON3, CONTENT9, ART8 partial, UI18, LISTFIX2, CUT3, ENG22, SKILLREC1, UI19, ENG21, FEEL1, UI20, ENG23, TESTFIX1, REG1)
+- One release for the owner's 11-03 evening and 11-04 notes. Players see: Build / Fortify and Bramble Armor's name back; Delivery replaces Stockpile on 24 cards; Taunt and Guardian pull shots; base Level 0 cards get their skills from Level 1; Inspiring N tokens (+2 Atk each, spent on a landing hit, 📯 pip); Pounce's pip hides once used; Crepuscular day / night parts and the braced form; Skitter; ⏩ fast-forward tokens; True Sight "?" until Map 6; Rodentia; Wetness drops 1 a round; Carnage counts deaths seen.
+- UI: Codex skill filter with Mystery skills and level flags; Card editor compacted (Swarm N editable); the name scroll reworked; Map cards list their skills with NEW! flags; cost / wait badges clear of names; cut cards flagged on review lists. FIX8: Camp opens after 0-2, packs show new cards first with no repeats in a pack, road wins count for achievements. ART8: 13 card arts redone (104 left).
+- Cut: Glacial Ape-King off the Map 0-20 lists (CUT3; the deck rebuild waits for the owner's pass). Hub: Skill recommendations (Design tab) and 💭 Feelings tab. Re-priced: Inspiring 1 5.43, Inspiring 2 6.99 (Otter Flag-Bearer, Meerkat Wayfarer over budget, ENG21-1 open).
+- Tests: TESTFIX1 took the full unit run from 93 failing to 48 (47 listed real findings in docs/testfix1-2026-11-04.md, 1 load-slow); REG1 classed every batch-only browser failure as a stale pin (no game code changed). card-matrix: 0 failures, 0 golden diffs. Browser tests that also fail on main stay listed. Migrations applied this batch: BRUP-5 Blossoms resource (owner 23:01 #12). Not applied: ECON3 layout SQL, ENG23-5 Beaver fold.
+
 ## 2026-11-04 Package REG1 (the batch's browser-test failures that main did not show; tests only)
 - **No regression in game code found.** On main these checks never ran (each test crashed earlier; TESTFIX1 fixed that), so they surfaced on the batch. Every one pins an earlier, deliberate change and is updated with a dated `REG1` comment:
   - raid-reward-card, mx, tentacle_fx: a fresh test profile does not own its starter deck's Dolphin Outrider (PG's copy gate, 10-23), so no raid fight opened; the gate is waved through, as CS-D did. tentacle_fx also skips RAIDFX1's per-card `reach` event. mx: RAIDBAL1's Left bramble 780 (390 at scale) and UI6's "No keys left" tip.
