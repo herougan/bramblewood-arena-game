@@ -5,7 +5,7 @@ underneath. (It's just a new roll)"). On the built index.html, at 1366 x 900 (an
 1. Maps (ECON2-10). Every Conquest map (main and side; not the endless dungeons or the Spire) is drawn with every fight won and every
    feature open, and with the layout players get: the live `__cfg:map-layout:<mapId>` rows (a read-only copy in
    tests/fixtures/econ3-live-map-layout-2026-11-03.json; a published layout wins over a node's fixedPos) plus ECON3's moves
-   (supabase/proposed/20261103_econ3_map_layout.json, the rows' new positions once the owner says "apply it"). Checks, from the DOM:
+   (supabase/migrations/20261103_econ3_map_layout.json, the rows' new positions; APPLIED 2026-11-04, owner 22:34). Checks, from the DOM:
      - no tap target (fight, side-map entrance, exit, feature spot, curiosity, well, cave) overlaps the map's title chip or the top-right
        buttons (bounding boxes);
      - no two tap targets overlap each other, and none of the pairs the ECON2 review listed is closer than 7% of the canvas
@@ -25,7 +25,7 @@ ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
 EXE = os.environ.get('BW_CHROMIUM', '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell')
 SHOTS = os.path.join(ROOT, 'docs', 'screens', 'econ3')
 LIVE = json.load(open(os.path.join(ROOT, 'tests', 'fixtures', 'econ3-live-map-layout-2026-11-03.json')))['positions']
-MOVES = json.load(open(os.path.join(ROOT, 'supabase', 'proposed', '20261103_econ3_map_layout.json')))['moves']
+MOVES = json.load(open(os.path.join(ROOT, 'supabase', 'migrations', '20261103_econ3_map_layout.json')))['moves']
 REPORT = json.load(open(os.path.join(ROOT, 'docs', 'balance', 'econ2-maps-report-2026-11-03.json')))['maps']
 SWAP_ONLY = '--swap-only' in sys.argv; BEFORE = '--before' in sys.argv; NO_SHOTS = '--no-shots' in sys.argv; LIVE_ONLY = '--live-only' in sys.argv or BEFORE
 SHOT_MAPS = ['mc', 'mw', 'm8', 'mu', 'm4', 'mk', 'mh', 'mr', 'm5', 'ml', 'mt', 'm6', 'm3', 'm11', 'm21', 'mf', 'm10', 'md', 'mq', 'mp', 'mz', 'mj', 'my']

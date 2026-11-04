@@ -91,13 +91,14 @@ ok(/key:"20-B-2"[^\n]*fixedPos:\{x:36, y:62\}/.test(src) && /key:"20-B-3"[^\n]*f
 ok(/key:"1-A-1"[^\n]*fixedPos:\{x:10, y:44\}/.test(src), '7. Clovermead: 1-A-1 out from under the panel');
 ok(/\{map:'m4', near:'8-6', dx:-13, dy:-25/.test(src) && /\{map:'mr', after:'13-4', before:'13-5', entrance:'ghost', offset:0/.test(src), '7. 8-H and 13-J off their neighbours');
 ok(/\{key:'anvil', map:'m9', icon:'⚒️', name:'The old anvil', x:20, y:56/.test(src) && /\{key:'mapcodex'[^\n]*pos:\{x:6, y:74\}/.test(src) && /\{key:'arena'[^\n]*pos:\{x:17, y:72\}/.test(src), '7. the anvil, the Map Codex and the Arena off the fights');
-{ const J = JSON.parse(fs.readFileSync(path.join(ROOT, 'supabase', 'proposed', '20261103_econ3_map_layout.json'), 'utf8')), sql = fs.readFileSync(path.join(ROOT, 'supabase', 'proposed', '20261103_econ3_map_layout.sql'), 'utf8');
+{ const J = JSON.parse(fs.readFileSync(path.join(ROOT, 'supabase', 'migrations', '20261103_econ3_map_layout.json'), 'utf8')), sql = fs.readFileSync(path.join(ROOT, 'supabase', 'migrations', '20261103_econ3_map_layout.sql'), 'utf8');
   const LIVE = JSON.parse(fs.readFileSync(path.join(ROOT, 'tests', 'fixtures', 'econ3-live-map-layout-2026-11-03.json'), 'utf8')).positions;
   ok(J.moves.length === 4, '7. four moves wait on the live layout rows');
   J.moves.forEach(mv=>{ const row = (LIVE[mv.map] || {})[mv.rowKey];
     ok(row && row.x === mv.from.x && row.y === mv.from.y, `7. ${mv.map} ${mv.key}: the row holds it at ${mv.from.x} / ${mv.from.y} under ${mv.rowKey}`);
     ok(sql.includes(`'{positions,${mv.rowKey}}'`) && sql.includes(`'{"x": ${mv.to.x}, "y": ${mv.to.y}}'`) && sql.includes(`'__cfg:map-layout:${mv.map}'`), `7. the SQL moves ${mv.map} ${mv.rowKey} to ${mv.to.x} / ${mv.to.y}`); });
-  ok(/^begin;$/m.test(sql) && /^commit;$/m.test(sql) && !/delete from/i.test(sql), '7. one transaction, nothing deleted'); }
+  ok(/^begin;$/m.test(sql) && /^commit;$/m.test(sql) && !/delete from/i.test(sql), '7. one transaction, nothing deleted');
+  ok(/APPLIED 2026-11-04/.test(sql) && !fs.existsSync(path.join(ROOT, 'supabase', 'proposed', '20261103_econ3_map_layout.sql')), '7. the layout SQL is applied (2026-11-04, owner 22:34 "Apply it to ECON3 yourself") and left proposed/'); } // 2026-11-04 (DEC2): ECON3 applied
 
 // ---------- 8. the quest swap ----------
 { const o = fnSrc('openQuestsModal');

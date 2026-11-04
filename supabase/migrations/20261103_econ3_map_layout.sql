@@ -1,4 +1,4 @@
--- 2026-11-03 (package ECON3, ECON2-10; owner 20:34 "ECON2-10 OK"). PROPOSED: run only after the owner says "apply it".
+-- 2026-11-03 (package ECON3, ECON2-10; owner 20:34 "ECON2-10 OK"). APPLIED 2026-11-04 (owner 22:34 "Apply it to ECON3 yourself"; run via the Supabase connector, verified: m11 11-9 (52,12), m7 7-2 (38,24), me 20-A-2 (40,24), mpd 18-A-7 (40,52)).
 -- Four fights that sit in a published map layout (a __cfg:map-layout row wins over the game's fixedPos) move: two apart from a
 -- neighbour (no two tap targets on a map closer than 7% of the canvas), two out from under the full title panel a map shows on its
 -- first look (tests/e2e/econ3_2026_11_03.py). The moves and their reasons: supabase/proposed/20261103_econ3_map_layout.json. Each
