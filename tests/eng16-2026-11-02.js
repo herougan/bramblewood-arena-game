@@ -52,7 +52,7 @@ ok(/function headwindTwice\(card, pid, side, events\)\{ if\(!\(isHeavyWind\(\) &
 ['ui.fx-windy', 'ui.fxx-windy', 'ui.fx-gale', 'ui.wind-head-wing', 'ui.wind-pill-back', 'ui.wind-pill-face'].forEach(k=>
   ok(TXT[k] && /-1 Attack/.test(TXT[k]) && !/twice/.test(TXT[k]), `WIND-2: ${k} says -1 Attack, not twice`));
 ok(!/Headwind/.test(TXT['ui.fxx-quiet-contemplation']), 'WIND-2: Quiet Contemplation no longer lists the Headwind (nothing to stop)');
-ok(!/trigger twice/.test(app.slice(app.indexOf('function windPillHTML'), app.indexOf('function windPillHTML') + 1200)) && /wind-atk-cut">−1⚔/.test(app), 'WIND-2: the wind pill and the Headwind wing pip say −1 Attack');
+ok(!/trigger twice/.test(app.slice(app.indexOf('function windPillHTML'), app.indexOf('function windPillHTML') + 1200)) && /wind-atk-cut">\$\{lw\.heavy \? '−2⚔' : '−1⚔'\}/.test(app) /* 2026-11-04 (TESTFIX1): ENG20 (2026-11-02) added the heavy wind's −2 */, 'WIND-2: the wind pill and the Headwind wing pip say −1 Attack');
 
 // ---- JJ17: Milling ------------------------------------------------------------------------------------------------------------
 function millRound(lum){ const {e, P} = mk(3); spawn(e, P, 1, 'x-mill'); spawn(e, P, 2, 'x-wallw'); P[1].lumber = lum; const ev = []; e.roundStart(P, 1, so, {}, ev); e.resolveCombat(P, so, {}, ev, 1); return {lum: P[1].lumber, ev}; }
@@ -60,7 +60,8 @@ function millRound(lum){ const {e, P} = mk(3); spawn(e, P, 1, 'x-mill'); spawn(e
   ok(a.lum === 0, `JJ17: with no Lumber nothing is milled (${a.lum})`);
   ok(b.lum === 4 && c.lum === 2, `JJ17: Milling 1 turns 1 Lumber into 2 (3 -> ${b.lum}, 1 -> ${c.lum})`);
   ok(b.ev.some(x=> x.type === 'lumber' && x.mill === 1 && x.amount === 1), 'JJ17: the lumber event says net +1 (mill 1)'); }
-{ const sc = J('canonical/skill-costs.json').shorthands.milling; ok(sc.mult === 1.31 && /0\.85/.test(sc.eng16 || ''), `JJ17: Milling's mult 1.54 x 0.85 = 1.31 (${sc.mult})`); }
+// 2026-11-04 (TESTFIX1): the bramble-15 re-measures moved the factor on (BAL10 1.31 -> 0.93, BAL14 0.93 -> 0.82, 2026-11-02 / 11-03; BAL14-4); ENG16's x0.85 step stays recorded
+{ const sc = J('canonical/skill-costs.json').shorthands.milling; ok(sc.mult > 0 && sc.mult < 1.31 && /1\.54 -> 1\.31/.test(sc.eng16 || '') && /0\.85/.test(sc.eng16 || ''), `JJ17: Milling's mult 1.54 x 0.85 = 1.31, re-measured since (${sc.mult})`); }
 ok(/\{n\} of your Lumber becomes \{n2\}/.test(TXT['ui.sk2-milling']) && /n2: 2 \* sk2Num/.test(app), 'JJ17: the skill text: N of your Lumber becomes 2N');
 
 // ---- JJ19: Quicksand ----------------------------------------------------------------------------------------------------------

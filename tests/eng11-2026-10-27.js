@@ -40,7 +40,9 @@ console.log('K2 Coffee N');
   ok(c.wait === 0 && !c.coffeeCrash, 'no Wait change and no old crash timer on play'); }
 { const SC = require('../tools/skill_costs.js'); const T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
   const S = n=> T.budget(Object.assign({}, defs['e11-plain'], {effects:{coffee:n}})).S;
-  ok(Math.abs(S(1) - 1.5) < 0.01 && Math.abs(S(2) - 0.75) < 0.01 && Math.abs(S(3) - 0.5) < 0.01, `priced 1.5 / N (S ${S(1)}, ${S(2)}, ${S(3)})`); }
+  // 2026-11-04 (TESTFIX1): SKILL2 (2026-10-31, call BUDGET2-1) re-measured Coffee's base 1.5 -> 2.29 (skill2Was keeps ENG11's 1.5); the owner's K2 shape, base / N, stays
+  const cf = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')).skills.find(x=> x.id === 'coffee'), b0 = cf.value;
+  ok(cf.pow === -1 && cf.skill2Was.value === 1.5 && Math.abs(S(1) - b0) < 0.01 && Math.abs(S(2) - b0 / 2) < 0.01 && Math.abs(S(3) - b0 / 3) < 0.01, `priced ${b0} / N (ENG11 1.5 / N) (S ${S(1)}, ${S(2)}, ${S(3)})`); }
 // 2026-10-31 (package BUDGET2): re-fit again under 3A + H (3/14 -> 3/13; its creatorNote carries the line)
 { const chip = base['buzzed-chipmunk']; ok(chip && chip.effects && chip.effects.coffee === 2 && chip.attack === 3 && (chip.health === 14 || (chip.health === 13 && /BUDGET2 re-fit/.test(chip.creatorNote || ''))), 'Buzzed Chipmunk (Map 5) keeps Coffee 2 at 3/14 (re-fit: its line holds; 3/13 after BUDGET2)'); }
 

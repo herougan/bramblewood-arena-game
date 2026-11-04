@@ -91,7 +91,8 @@ ok(/function dungeonsTabOpen\(\)\{ try\{ return dungeonsAdminView\(\); \}/.test(
 
 // ---------------- G10 G12 ----------------
 ok(/const RES3_FIT_MAX = 1\.45;/.test(src) && /wrap\.style\.setProperty\('--res3-fit'/.test(fnSrc('centreFieldInFs')) && /html\.is-desk-centre #appWrap\.in-match\{--mc-fit:var\(--res3-fit, 1\);\}/.test(tpl) /* 2026-10-30 (CS-D): the fit is a parameter of the one match-card formula (tests/cs-d-2026-10-30.js) */, 'G10. a desktop window grows the match to its height');
-ok(/#myDeckList \.deck-stack\{width:clamp\(72px, 7\.4vw, 104px\);\}/.test(tpl) && /#myDeckPool\.pool-grid\{grid-template-columns:repeat\(auto-fill, minmax\(clamp\(112px, 11vw, 150px\), 1fr\)\)/.test(tpl), 'G12. the deck editor: bigger deck cards, a much bigger pool');
+// 2026-11-04 (TESTFIX1): CS-A (2026-10-30, the card-size standard) put both on the Full card size (--card-full-col), bigger than G12's clamps
+ok(/#myDeckList \.deck-stack\{display:block; width:var\(--card-full-col\)/.test(tpl) && /#myDeckPool\.pool-grid\{[^}]*grid-template-columns:repeat\(auto-fill, var\(--card-full-col\)\)/.test(tpl), 'G12. the deck editor: bigger deck cards, a much bigger pool');
 
 // ---------------- G15 G16 ----------------
 { const block = src.slice(src.indexOf('const SHOP_PACKS_DEFAULT = ['), src.indexOf('];', src.indexOf('const SHOP_PACKS_DEFAULT = [')) + 2);

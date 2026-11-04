@@ -83,8 +83,10 @@ ok(BB.zeitS('diurnal', {diurnal: true, diurnalGrant: {evasive: true}}).S === 0 &
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), card = id=> cards.find(c=> c.id === id);
   const owl = card('owl-nightwatch'), b = T.budget(owl), noc = b.parts.find(x=> x[1] === 'nocturnal');
   // 2026-10-31 (BUDGET2): Nocturnal 4 -> 3 (its night bonus at 3A broke cap 2 for any body): 0.53 x 9 + the dark-sight 0.3
-  ok(noc && noc[2] === 5.07 && owl.effects.nocturnal === 3, `L11 the Owl Nightwatch's Nocturnal 3: 4.77 + the dark-sight 0.3 (${noc && noc[2]})`);
-  ok(owl.attack === 1 && owl.health === 5 /* 2026-10-30 RECOST1: 1/6 -> 1/5 after Stealth 1.5 -> 2 (the post-balance queue); was 1/6 */ && b.ok, `L11 ... and it is re-fitted to ${owl.attack}/${owl.health} (was 1/8), within both caps (${b.x1} / ${b.N})`);
+  // 2026-11-04 (TESTFIX1): BAL11 (2026-11-02, call BAL11-2) prices the time of day at the card's home share (zeitHome, the Owl's 0.665 night) and
+  // re-fit the Owl to 1/3: its Nocturnal part is 5.7 now (was 5.07 at the flat share)
+  ok(noc && noc[2] === 5.7 && owl.effects.nocturnal === 3, `L11 the Owl Nightwatch's Nocturnal 3: 4.77 + the dark-sight 0.3 (${noc && noc[2]})`);
+  ok(owl.attack === 1 && owl.health === 3 /* 2026-10-30 RECOST1: 1/6 -> 1/5 after Stealth 1.5 -> 2 (the post-balance queue); was 1/6; TESTFIX1: BAL11 (BAL11-2) 1/5 -> 1/3 */ && b.ok, `L11 ... and it is re-fitted to ${owl.attack}/${owl.health} (was 1/8), within both caps (${b.x1} / ${b.N})`);
   const moved = {'great-horned-owl': '2/14', 'raccoon-bandit': '4/7', 'weredog': '2/7', 'night-watchman': '1/3', 'sunspire-choirmother': '3/4', 'vampire-bat': '2/5', 'kinkajou-lurker': '5/9', 'electric-catfish': '2/8'};
   const m1 = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/bal7-m1-rebalance-2026-10-28.json'), 'utf8')).plan.filter(p=> p.move).map(p=> p.id)); /* 2026-10-28 (BAL7, M1): the contribution re-balance moved these cards again (docs/balance/bal7-m1-rebalance-2026-10-28.json) */
   const HOLD = id=>{ const h = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(id); if(h) console.log(`  · ${id}: budget not checked, ${h}`); return !!h; }; // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): an 'unplaced' card or one 'pending' the owner's re-fit (step 3) is reported, not failed
@@ -93,7 +95,8 @@ ok(BB.zeitS('diurnal', {diurnal: true, diurnalGrant: {evasive: true}}).S === 0 &
   ok(!bad.length, `L5/L11 the re-fitted cards hold their new lines within both caps (${bad.join(', ') || 'all'})`);
   ok(T.skillCost('nocturnal', 4) === 6.36 /* BUDGET2: 0.53 x 3 x 4 */ && T.skillCost('shock', {chance: 40, duration: 1}) === BB.shockS({chance: 40, duration: 1}, 0), 'L5/L11 skill_costs prices one skill the same way without a card');
   const eel = T.budget(card('voltaic-eel')).parts.find(x=> x[1] === 'shock'), cat = T.budget(card('electric-catfish')).parts.find(x=> x[1] === 'shockBolt');
-  ok(eel && eel[2] === 0.83 && cat && cat[2] === 7.98, `L5 the Voltaic Eel's Shock 40%/1 at Attack 1: 0.83 (was 0.93); the Catfish's Shock Bolt 2: 7.98 (was 6) (${eel && eel[2]}, ${cat && cat[2]})`); }
+  // 2026-11-04 (TESTFIX1): Shock Bolt is Arrow N + its Shock; SKILL2 (BUDGET2-1) re-measured Arrow (3 -> 4.26), so the Catfish's part is 8.99 now
+  ok(eel && eel[2] === 0.83 && cat && cat[2] === 8.99, `L5 the Voltaic Eel's Shock 40%/1 at Attack 1: 0.83 (was 0.93); the Catfish's Shock Bolt 2: 7.98 (was 6) (${eel && eel[2]}, ${cat && cat[2]})`); }
 ok(BB.shockS({chance: 100, duration: 2}, 3) > BB.shockS({chance: 100, duration: 1}, 3) && BB.shockS({chance: 100, duration: 1}, 3) > BB.shockS({chance: 50, duration: 1}, 3) && BB.shockS({chance: 50, duration: 1}, 5) > BB.shockS({chance: 50, duration: 1}, 1),
   'L5 Shock costs more with more chance, more rounds and more Attack (it was a flat 0.93)');
 ok(BB.shockS({chance: 40, duration: 1}, 1) === 0.83 && BB.shockS({chance: 30, duration: 1}, 3) === 1.07 && BB.shockS({chance: 100, duration: 2}, 3) === 4.09, 'L5 Shock 40%/1 at Attack 1 0.83, 30%/1 at Attack 3 1.07, 100%/2 at Attack 3 4.09');

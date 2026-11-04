@@ -56,9 +56,10 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   const fired = ev.filter(x=> x.type === 'charge' && x.uid === c.uid && x.fired).length;
   ok(fired >= 3 && !ev.some(x=> x.type === 'skillSpent' && (x.keys || []).includes('charge')), `ENG9-4 Charge 1 goes off every upkeep and stays (${fired} in 4)`);
   // 2026-10-30 RECOST1: Charge re-priced to its bench worth (3 -> 5.58) and the Electric Ray trimmed to 3/8; ENG10's 3 is now its prevValue
-  const rc = /RECOST1/.test(by.charge.appliedAt || '');
+  // 2026-11-04 (TESTFIX1): SKILL2 (2026-10-31, BUDGET2-1) re-measured Charge again (5.58 -> 4.85) and Reload (-6 -> -4.2); their earlier values sit on the entry
+  const rc = /RECOST1|SKILL2/.test(by.charge.appliedAt || '');
   ok(rc ? by.charge.prevValue === 3 && by.charge.recost1Was && by.charge.recost1Was.prevValue === 1.2 : (by.charge.value === 3 && by.charge.prevValue === 1.2), 'ENG9-4 Charge priced 3 again (the repeating clock)');
-  ok(by.reload.value === -6 && by.reload.prevValue === -4, 'ENG9-4 Reload more negative: -4 -> -6');
+  ok((by.reload.value === -6 || (/SKILL2/.test(by.reload.appliedAt || '') && by.reload.skill2Was.value === -6)) && by.reload.prevValue === -4, 'ENG9-4 Reload more negative: -4 -> -6 (SKILL2 re-measured it since)');
   // 2026-10-31 (package BUDGET2): both re-fit again under 3A + H (their creatorNote carries the line; docs/balance/budget2-refit-2026-10-31.json)
   const b2 = id=> /BUDGET2 re-fit/.test(cid[id].creatorNote || '');
   ok((cid['peak-condor'].health === 7 || b2('peak-condor')) && ((cid['riptide-eel'].attack === 9 && cid['riptide-eel'].health === 6) || b2('riptide-eel')), 'ENG9-4 the Reload cards re-fit up: Peak Condor 4/7, Riptide Eel 9/6 (or BUDGET2\'s 3A + H re-fit)');
@@ -87,7 +88,7 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   ok(T.skillCost('armor', 2) > 2 * c1 && T.skillCost('armor', 3) > 3 * c1, 'ENG9-9 ... slightly exponential (each point worth more than the last)');
   const m = JSON.parse(rd('docs/balance/eng10-armor-hits-2026-10-26.json'));
   ok(m.hits > 10000 && m.perN['5'].cancelled > 0.9, `ENG9-9 measured: Armor 5 cancels ${Math.round(m.perN['5'].cancelled * 100)}% of ${m.hits} hits`);
-  ok(cid['tide-pool-crab'].health === 3 /* 2026-10-26 (FIN2-c): Shield at 0.8 Health re-fit it 1/2 -> 1/3 */ && cid['hawthorn-shieldbug'].health === 12, 'ENG9-9 the two held cards cut to the line: Tide Pool Crab 1/2, Hawthorn Shieldbug 2/12');
+  ok((cid['tide-pool-crab'].health === 3 || /BAL9 refit: re-fit 1\/3 -> 1\/2/.test(cid['tide-pool-crab'].creatorNote || '')) /* 2026-10-26 (FIN2-c): Shield at 0.8 Health re-fit it 1/2 -> 1/3; 2026-11-04 (TESTFIX1): BAL9 (owner JJ21) back to 1/2 */ && cid['hawthorn-shieldbug'].health === 12, 'ENG9-9 the two held cards cut to the line: Tide Pool Crab 1/2, Hawthorn Shieldbug 2/12');
   const refit = JSON.parse(rd('docs/balance/eng10-refit-2026-10-26.json'));
   const held = JSON.parse(rd('docs/balance/human-pass-1-flagged-2026-10-21.json'));
   ok(refit.flagged.every(id=> held.includes(id)) && refit.cut.length > 10, `ENG9-9 every moved card has a line but cards already held over budget (${refit.flagged.join(', ')}; ${refit.cut.length} cut, ${refit.raised.length} raised)`);
@@ -96,7 +97,9 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   const HOLD = id=>{ const h = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(id); if(h) console.log(`  · ${id}: budget not checked, ${h === 'unplaced' ? 'unplaced (on no list, out of play)' : 'pending step 3 (re-fit)'}`); return !!h; }; // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): an 'unplaced' card (on no list) or one 'pending' the owner's re-fit (step 3) is reported, not failed (tools/lib_map_pools.js budgetHold)
   const rc1 = new Set((()=>{ try{ return JSON.parse(rd('docs/balance/recost1-2026-10-30.json')).refits.map(r=> r.id); }catch(e){ return []; } })()); // 2026-10-30 RECOST1: re-fit again (docs/balance/recost1-2026-10-30.json)
   const bg2 = new Set((()=>{ try{ return JSON.parse(rd('docs/balance/budget2-refit-2026-10-31.json')).changes.map(r=> r.id); }catch(e){ return []; } })()); // 2026-10-31 BUDGET2: re-fit under 3A + H
-  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id) && !rc1.has(r.id) && !bg2.has(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && (T.budget(c, {level: 1}).ok || HOLD(r.id)), `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
+  // 2026-11-04 (TESTFIX1): BAL9 (2026-11-02, owner JJ12 / JJ21, call BAL9-1) lowered the early boss leaders' rarity and re-fit them (creatorNote "BUDGET2 fit")
+  const bal9 = id=> /owner JJ12|owner JJ21|BAL9 refit/.test((cid[id] || {}).creatorNote || '');
+  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id) && !rc1.has(r.id) && !bg2.has(r.id) && !bal9(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && (T.budget(c, {level: 1}).ok || HOLD(r.id)), `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
 
 // ---- ENG9-7 On Ready at Wait 0 ---------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(71); const l0 = P[1].lumber || 0; const ev = []; put(e, P, 1, 'x-ready0', 0, ev);
@@ -143,7 +146,8 @@ const hook = (P, pid, p, host)=>{ const pl = P[pid]; ['left', 'center', 'right']
   P[1].diedThisFight = 3; P[2].diedThisFight = 2; e.syncPhaseStats(P, so, []);
   ok(on(r, 'requiem') && (r.atk + (r.phaseAtk || 0)) === 3 && r.maxHp === 12, `PROP1-4 Requiem 5 on at 5 deaths: +2/+2 (${(r.atk + (r.phaseAtk || 0))}/${r.maxHp})`);
   ok(on(dg, 'dirge') && !on(ca, 'carnage'), 'PROP1-4 Dirge 3 on at 3 of your deaths; Carnage 3 off at 2 enemy deaths');
-  P[2].diedThisFight = 3; e.syncPhaseStats(P, so, []); ok(on(ca, 'carnage'), 'PROP1-4 Carnage 3 on at 3 enemy deaths');
+  // 2026-11-04 (TESTFIX1): ENG22 (2026-11-03, owner 21:13: "the card must 'see' the creatures dying") counts the enemy deaths it saw on the board (carnageSeen)
+  P[2].diedThisFight = 3; ca.carnageSeen = 3; e.syncPhaseStats(P, so, []); ok(on(ca, 'carnage'), 'PROP1-4 Carnage 3 on at 3 enemy deaths (seen, ENG22)');
   const {e: e2, P: P2} = mk(142); const m = put(e2, P2, 1, 'x-must', 0); ok(!on(m, 'muster'), 'PROP1-4 Muster 3 off alone');
   put(e2, P2, 1, 'x-wall', 1); put(e2, P2, 1, 'x-wall', -1); e2.syncPhaseStats(P2, so, []); ok(on(m, 'muster'), 'PROP1-4 Muster 3 on with 3 units of yours (itself included)');
   const b = put(e2, P2, 1, 'x-beset', 2); ok(!on(b, 'beset'), 'PROP1-4 Beset 2 off against no enemy');

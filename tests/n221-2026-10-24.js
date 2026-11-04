@@ -22,25 +22,33 @@ const chk = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools', 'n221_divvy
 // 2026-10-29 LISTFIX1 (decision APPLY1-4): the listed cards with no way to be obtained got source {kind:'pack', tier: their first map's pack}
 // (docs/balance/listfix1-cards-2026-10-29.json); N221's proposal home for them is overtaken, so they are no longer waiting
 const LF1SRC = J('docs/balance/listfix1-cards-2026-10-29.json').sources;
+// 2026-11-04 (TESTFIX1): cards built after N221 wait under their own owner calls, not N221's table: the Bolas Spider (ENG15, decision ENG14-3)
+// and CONTENT7's ten (owner 11-02 19:56, IDEA-11-02; placement call CONTENT7-1); their creatorNote names it
+const laterHome = id=> /decision ENG14-3|package CONTENT7, owner 19:56/.test((by[id] || {}).creatorNote || '');
+// ... and a proposal-homed card that a later package placed (LISTFIX1 / APPLY1-4 on 10-29, DEC1 on 11-03) has its source now
+const placedSince = id=> by[id] && !by[id].awaitingSource && !!by[id].source;
 const T2 = Object.fromEntries(J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));
 const t2Has = (map, id)=> (T2[map] || []).includes(id), t2Any = id=> Object.values(T2).some(l=> l.includes(id));
 const n221Probs = ((chk.stdout || '') + (chk.stderr || '')).trim().split('\n').map(l=> l.trim()).filter(l=> l && !/FAILED:?$|^ok\b/.test(l)).filter(l=>{
   let m = /^(m\d+): pool (\d+)$/.exec(l); if(m && +m[2] >= 12 && +m[2] <= 16) return false;
+  if(m && +m[2] >= 12 && +m[2] <= 18) return false; // 2026-11-04 (TESTFIX1): THEME3 / THEME4's owner-approved lists (THEME1-1, applied by APPLY1 / CONTENT4) set the sizes now: m22 holds 17
   m = /^(\S+): a pack card of (m\w+) but not in its pool/.exec(l); if(m && !t2Has(m[2], m[1])) return false;
   m = /^(\S+): (in one map pool|card-obtain-maps)/.exec(l); if(m && !t2Any(m[1])) return false;
-  m = /^(\S+): homed as \w+ \(a proposal\) but has a source now/.exec(l); if(m && LF1SRC[m[1]]) return false; // 2026-10-29 LISTFIX1
+  m = /^(\S+): homed as \w+ \(a proposal\) but has a source now/.exec(l); if(m && (LF1SRC[m[1]] || placedSince(m[1]))) return false; // 2026-10-29 LISTFIX1 (+ TESTFIX1: placed since)
+  m = /^no home: (\S+)/.exec(l); if(m && laterHome(m[1])) return false; // TESTFIX1: homed by a later owner call
   return true; });
 ok(chk.status === 0 || !n221Probs.length, `the N221 check passes, but for THEME2's lists (${n221Probs.slice(0, 6).join(' | ') || 'ok'})`);
 
 // ---- 2. one home each
 const waiting = cards.filter(c=> c.awaitingSource).map(c=> c.id);
-waiting.forEach(id=> ok(N.HOME[id], `${id} (waiting) has a home`));
+waiting.filter(id=> !laterHome(id)).forEach(id=> ok(N.HOME[id], `${id} (waiting) has a home`));
 const KINDS = new Set(['pool', 'map', 'quest', 'secrets', 'faction', 'smith', 'decision', 'hold']);
 Object.entries(N.HOME).forEach(([id, h])=>{ ok(by[id], `home for a real card: ${id}`); ok(KINDS.has(h.kind), `${id}: home kind ${h.kind}`);
   if(h.kind === 'pool') ok(!by[id].awaitingSource, `${id}: applied, so no longer waiting`); else if(LF1SRC[id]) ok(by[id] && !by[id].awaitingSource && (by[id].source || {}).kind === 'pack' && by[id].source.tier === LF1SRC[id], `${id}: sourced by LISTFIX1 (Pack ${LF1SRC[id]}), so no longer waiting`);
-  else ok(by[id] && by[id].awaitingSource, `${id}: a proposal home, so still waiting`); });
+  else ok(by[id] && (by[id].awaitingSource || placedSince(id)), `${id}: a proposal home, so still waiting (or placed since)`); });
 { const lf1 = Object.keys(N.HOME).filter(id=> N.HOME[id].kind !== 'pool' && LF1SRC[id]).length; // 2026-10-29 LISTFIX1
-  ok(Object.keys(N.HOME).length === waiting.length + Object.keys(N.APPLY).length + lf1, `homes = waiting (${waiting.length}) + applied (${Object.keys(N.APPLY).length}) + sourced by LISTFIX1 (${lf1})`); }
+  const since = Object.keys(N.HOME).filter(id=> N.HOME[id].kind !== 'pool' && !LF1SRC[id] && placedSince(id)).length;
+  ok(Object.keys(N.HOME).length === waiting.filter(id=> !laterHome(id)).length + Object.keys(N.APPLY).length + lf1 + since, `homes = waiting (${waiting.length}) + applied (${Object.keys(N.APPLY).length}) + sourced by LISTFIX1 (${lf1}) + placed since (${since})`); }
 const onMaps = {}; Object.entries(N.PLAN).forEach(([no, P])=> [...P.held, ...P.carry, ...P.unsorted, ...(P.quest || [])].forEach(id=> (onMaps[id] = onMaps[id] || []).push(+no)));
 Object.entries(onMaps).forEach(([id, ms])=> ok(ms.length === 1, `${id} is proposed on one map only (${ms.join(', ')})`));
 Object.entries(N.HOME).filter(([, h])=> h.kind === 'map' && !h.existing).forEach(([id, h])=> ok((onMaps[id] || []).includes(h.map), `${id}: its home Map ${h.map} lists it`));

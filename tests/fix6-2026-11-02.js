@@ -78,7 +78,8 @@ function game(ctx, g, deal){
   ok(/dealPlayerLeader\(P\[1\], id, defs\)/.test(rd('docs/workflows/balance.md')), 'docs/workflows/balance.md documents the call'); }
 
 // Auto-play summons your leader (autoplayLeaderOn / Off)
-{ ok(/const lead = autoplayLeaderOn\(m, me\); m\.engine\.aiTakeTurn\(m\.players, m\.sideOf, 1, m\.stats, ev\); autoplayLeaderOff\(m, me, lead, ev\);/.test(app), 'autoplayStep lends your leader to the engine for the Auto turn');
+// 2026-11-04 (TESTFIX1): FIX7 (2026-11-03, release review 11-03a m3) wraps the turn in try / finally so the lend is undone even if it throws
+{ ok(/const lead = autoplayLeaderOn\(m, me\);\s*try\{ m\.engine\.aiTakeTurn\(m\.players, m\.sideOf, 1, m\.stats, ev\); \} finally \{ autoplayLeaderOff\(m, me, lead, ev\); \}/.test(app), 'autoplayStep lends your leader to the engine for the Auto turn');
   const grab = name=> B.grab(name);
   const fx = []; const env = new Function('getCardDefs', 'document', 'leaderWidgetHTML', 'wireLeaderWidget', 'animMs', 'noteMatchFx', 'LEADER_THRONE_WAIT_MS', 'leaderThroneVfx', 'setTimeout',
     [grab('dealPlayerLeader'), grab('autoplayLeaderOn'), grab('autoplayLeaderOff'), 'return {autoplayLeaderOn, autoplayLeaderOff};'].join('\n'))(

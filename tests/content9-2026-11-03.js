@@ -72,7 +72,7 @@ ok(['canonical/cards.json', 'canonical/map-pools.json', 'arena_app.js'].map(p=> 
 // ---- 5. decisions and the doc
 const declines = rd('docs/decisions.json').split('\n'); JSON.parse(rd('docs/decisions.json'));
 for(const id of ['CONTENT9-1', 'CONTENT9-2']){ const l = declines.filter(x=> x.trim().startsWith(`{"id": "${id}"`)); ok(l.length === 1, `5. ${id}: one line, id first`);
-  let d = null; try{ d = JSON.parse(l[0].trim().replace(/,$/, '')); }catch(e){} ok(d && d.status === 'YET' && d.group === 'game' && /21:10/.test(d.body), `5. ${id} asked with the owner's words`); }
+  let d = null; try{ d = JSON.parse(l[0].trim().replace(/,$/, '')); }catch(e){} ok(d && (d.status === 'YET' || (d.status === 'DONE' && d.answer) /* 2026-11-04 (TESTFIX1): the owner answered CONTENT9-2 on 11-03 23:01 (#13, "Ok for C9-2."; built by ENG23) */) && d.group === 'game' && /21:10/.test(d.body), `5. ${id} asked with the owner's words`); }
 const doc = rd('docs/content9-2026-11-03.md');
 ok(['## 1. Sunfeather Tribes', '## 2. Curiosities', '## 3. One small job', '## 4. The answer rule', '## 5. Two bramble abilities'].every(h=> doc.includes(h)), '5. the doc has the five sections');
 ok(/Devour/.test(doc) && /Price estimate/.test(doc) && /Where it could appear/.test(doc), '5. the bramble drafts have rules, a price estimate and a place');

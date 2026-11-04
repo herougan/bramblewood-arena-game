@@ -42,7 +42,7 @@ const WIDE = J('docs/balance/bal15/measure-wide-2026-11-03.json');
   ok(/b15/.test(t.measure.context) && t.measure.T.n >= 15 && t.measure.R.n >= 50 && t.measure.fights >= 400, `tempo measure at bramble 15 (${t.measure.T.n} T cards, ${t.measure.R.n} R, ${t.measure.fights} fights a card): share ${t.measure.share} [${t.measure.shareLo}, ${t.measure.shareHi}]`);
   ok(t.cap2Limits.length === 0 && t.cap1Over.length > 0, `cap 2 limits no card; cap 1 at N x (1 - share) would put ${t.cap1Over.length} over (${t.cap1Over.join(', ')}): not applied`);
   ok(BB.TEMPO_CAP2_MULT === 0.85 && !BB.TEMPO_CAP1_MULT, 'the budget keeps the term on cap 2 (x0.85); no cap-1 term');
-  const d = J('docs/decisions.json').items.find(i => i.id === 'BAL15-1'); ok(d && d.group === 'game' && d.status === 'OPEN', 'BAL15-1 recorded for the owner'); }
+  const d = J('docs/decisions.json').items.find(i => i.id === 'BAL15-1'); ok(d && d.group === 'game' && (d.status === 'OPEN' || (d.status === 'DONE' && d.answer)) /* 2026-11-04 (TESTFIX1): answered since (Claude's call under the owner's 11-03 09:39 delegation, DEC1) */, 'BAL15-1 recorded for the owner'); }
 
 // ---- 4. the summary on the final state ------------------------------------------------------------------------------------------------
 { ok(fs.existsSync(path.join(ROOT, 'docs', 'balance', 'bal13', 'summary-2026-11-03b.md')) && fs.existsSync(path.join(ROOT, 'docs', 'balance', 'bal13', 'card-flags-2026-11-02.md')), 'the balance summary (2026-11-03b) and the card flags written');
