@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-04 Package UI22a (owner 22:56: Map cards scroll and the skills block)
+- The whole Map cards dialog scrolls again (the card body no longer scrolls on its own). The "Skills on these cards" block is about a quarter of its height: narrower tiles, smaller type, two-line text with the full text as a tooltip. The rest of UI22 (skirmish rewards section, "Claude New" cards) follows.
+
 ## 2026-11-04 Release 11-04a (QA2, FIX8, ECON3, CONTENT9, ART8 partial, UI18, LISTFIX2, CUT3, ENG22, SKILLREC1, UI19, ENG21, FEEL1, UI20, ENG23, TESTFIX1, REG1)
 - One release for the owner's 11-03 evening and 11-04 notes. Players see: Build / Fortify and Bramble Armor's name back; Delivery replaces Stockpile on 24 cards; Taunt and Guardian pull shots; base Level 0 cards get their skills from Level 1; Inspiring N tokens (+2 Atk each, spent on a landing hit, 📯 pip); Pounce's pip hides once used; Crepuscular day / night parts and the braced form; Skitter; ⏩ fast-forward tokens; True Sight "?" until Map 6; Rodentia; Wetness drops 1 a round; Carnage counts deaths seen.
 - UI: Codex skill filter with Mystery skills and level flags; Card editor compacted (Swarm N editable); the name scroll reworked; Map cards list their skills with NEW! flags; cost / wait badges clear of names; cut cards flagged on review lists. FIX8: Camp opens after 0-2, packs show new cards first with no repeats in a pack, road wins count for achievements. ART8: 13 card arts redone (104 left).

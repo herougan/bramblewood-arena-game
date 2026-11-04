@@ -14770,6 +14770,21 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ui19-new{font:800 10px/1 'Baloo 2', system-ui, sans-serif; font-style:normal; background:#d9480f; color:#fff; padding:2px 6px; border-radius:999px; letter-spacing:.05em; vertical-align:middle; cursor:help;}
 .ui19-sk-n{font-size:11px; font-weight:800; color:var(--ink-muted); white-space:nowrap; flex:0 0 auto;}
 @media (max-width:520px){ .ui19-sk-list{grid-template-columns:1fr;} }
+/* 2026-11-04 (UI22a; owner 22:56: "I can't scroll in the map cards section anymore. Only the cards. Make the overall thing scrollable." and
+   "reduce the size of this section by 50%"): the whole dialog scrolls (the body no longer scrolls on its own, so the skills block scrolls away
+   with the head); the skills block is half the height: narrower tiles, smaller type, the text clamped to two lines (the full text in the tooltip). */
+.pk1-mc-modal{overflow-y:auto; overscroll-behavior:contain;}
+.pk1-mc-overlay .pk1-mc-body{overflow:visible; min-height:auto;}
+.ui19-mc-skills{margin:4px 0 6px;}
+.ui19-mc-skills h3{font-size:14px; margin:0 0 4px;}
+.ui19-sk-list{grid-template-columns:repeat(auto-fill, minmax(170px, 1fr)); gap:3px 5px;}
+.ui19-sk{gap:5px; padding:2px 5px; border-radius:6px;}
+.ui19-sk-ico{font-size:12px;}
+.ui19-sk-main{font-size:11px; line-height:1.2;}
+.ui19-sk-main small{font-size:9.5px; line-height:1.2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+.ui19-new{font-size:8px; padding:1px 4px;}
+.ui19-sk-n{font-size:9.5px;}
+@media (max-width:520px){ .ui19-sk-list{grid-template-columns:1fr 1fr;} }
 /* art focus (Card editor: Art height): extended art moves down by --apy (framed art uses object-position, set inline) */
 .card-tile.art-extended > .ico .card-art-img[style*="--apy"]{top:calc((50 - var(--apy)) * .5%);}
 </style>
@@ -53004,7 +53019,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '4b575bd89507', BUILD_CARD_HASH = '0358e3130ff95381443fecb297dc35a0ab81e703ee3873c7f75099390f687b6e';
+const BUILD_ID = '4d112d7f67f6', BUILD_CARD_HASH = '0358e3130ff95381443fecb297dc35a0ab81e703ee3873c7f75099390f687b6e';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -81891,7 +81906,8 @@ function ui19McSkillText(r){
 function ui19McSkillsHTML(top, ids, defs, ok){
   const uniq = [...new Set(ids)], rows = ui19McSkillRows(uniq, defs), early = ui19McEarlierSkillKeys(top, defs, ok);
   const flagged = rows.map(r=> Object.assign(r, {isNew: !early.has(r.key), p: skillDefOf(r.key)})).sort((a, b)=> (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
-  const li = r=> `<li class="ui19-sk${r.isNew ? ' is-new' : ''}" data-ui19-skill="${escapeAttr(r.key)}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}<small>${escapeHtml(ui19McSkillText(r))}</small></span><span class="ui19-sk-n">${escapeHtml(TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}))}</span></li>`;
+  // 2026-11-04 (UI22a): each skill tile carries its full text as a tooltip (the text is clamped to two lines)
+  const li = r=> `<li class="ui19-sk${r.isNew ? ' is-new' : ''}" data-ui19-skill="${escapeAttr(r.key)}" title="${escapeAttr(r.p.label + ': ' + ui19McSkillText(r))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}<small>${escapeHtml(ui19McSkillText(r))}</small></span><span class="ui19-sk-n">${escapeHtml(TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}))}</span></li>`;
   return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length ? `<ul class="ui19-sk-list">${flagged.map(li).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
