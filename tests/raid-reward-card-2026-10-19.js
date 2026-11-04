@@ -80,7 +80,7 @@ async function browser(){
   if(!fs.existsSync(EXE) || !fs.existsSync(path.join(ROOT, 'index.html'))){ console.log('  (browser part skipped: no Chromium or index.html)'); return; }
   const SHOTS = path.join(ROOT, 'docs', 'screens', 'rw3'); fs.mkdirSync(SHOTS, {recursive: true});
   const URL = 'file://' + path.join(ROOT, 'index.html');
-  const INIT = "localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_tutorial2_done_v1','1'); localStorage.setItem('bramblewood_world_open_v1','1'); sessionStorage.setItem('bramblewood_seen_splash','1');";
+  const INIT = "localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_tutorial2_done_v1','1'); localStorage.setItem('bramblewood_world_open_v1','1'); sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999}));"; // 2026-11-04 (TESTFIX1): the test player has had RES3's level-reward packs (its pack opener sat over the claim button), as QA1 did for the e2e flows
   const b = await pw.chromium.launch({executablePath: EXE});
   const errs = [];
   const open = async (w)=>{ const ctx = await b.newContext({viewport:{width:w, height: w < 500 ? 844 : 900}});

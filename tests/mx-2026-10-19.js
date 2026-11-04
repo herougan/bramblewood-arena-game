@@ -76,10 +76,10 @@ ok(/<span class="r3-chip r3-tickets\$\{tickets <= 0 \? ' is-empty' : ''\}"[^]*?<
 ok(/const html = `\$\{s\.current\}\/\$\{energyMax\(\)\}/.test(src), 'the Energy pill says 0/N at 0 (checked; no change needed)');
 
 // ---- 3. swaps: only a clearly better card
-const SWAP_NAMES = ['SB_DEFAULT_SKILLS', 'SB_HALF_MISS', 'SB_PAY_DEF', 'sbSkillCost', 'sbMissMult', 'cardSkillCount', 'strictlyDominates', 'SWAP_CLEAR_MARGIN', 'swapStrength', 'swapCostBracket', 'swapClearlyBetter', 'swapOptsFor', 'weakestDeckCard', 'dominatedDeckCard'];
+const SWAP_NAMES = ['SB_DEFAULT_SKILLS', 'SB_HALF_MISS', 'SB_PAY_DEF', 'sbSkillCost', 'sbMissMult', 'cardSkillCount', 'strictlyDominates', 'SWAP_CLEAR_MARGIN', 'swapMuchBetterOn' /* 2026-11-04 (TESTFIX1): RW4's "much better" rule from 2-1 (off here: no map reached) */, 'swapStrength', 'swapCostBracket', 'swapClearlyBetter', 'swapOptsFor', 'weakestDeckCard', 'dominatedDeckCard'];
 const world = {defs: {}, deck: {}};
 const S = new Function('getCardDefs', 'swapEligibleDef', 'swapOutAllowed', 'myDeckCounts',
-  SWAP_NAMES.map(B.grab).join('\n') + '\nreturn {' + SWAP_NAMES.filter(n=> !/^[A-Z_]+$/.test(n)).join(', ') + '};')(
+  (src.match(/^const SWAP_MUCH_BETTER_MARGIN = [^\n]*;/m) || [''])[0] + '\n' /* TESTFIX1: RW4's constants line */ + SWAP_NAMES.map(B.grab).join('\n') + '\nreturn {' + SWAP_NAMES.filter(n=> !/^[A-Z_]+$/.test(n)).join(', ') + '};')(
   ()=> world.defs, d=> !!(d && typeof d.attack === 'number' && (d.health || 0) > 0), ()=> true, new Proxy({}, {get: (t, k)=> world.deck[k], ownKeys: ()=> Reflect.ownKeys(world.deck), getOwnPropertyDescriptor: (t, k)=> k in world.deck ? {value: world.deck[k], enumerable: true, configurable: true} : undefined}));
 const card = (id, a, h, x)=> Object.assign({id, attack: a, health: h, cost: 0, wait: 0, effects: {}}, x || {});
 { const deckCard = card('deck-22', 2, 2);

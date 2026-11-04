@@ -71,7 +71,8 @@ function cast(e, P, pid, id){ const pl = P[pid]; const uid = 900000 + Math.floor
   const toks = all(P[1]).filter(c=> c.defId === 'sk-tok');
   ok(toks.length === 1 && Math.abs(toks[0].slot - s.slot) === 1, `Spawner: one token a turn, right beside it (${toks.length})`); fight(e, P);
   ok(all(P[1]).filter(c=> c.defId === 'sk-tok').length === 2, 'Spawner: another the next turn (the other side)'); fight(e, P);
-  ok(all(P[1]).filter(c=> c.defId === 'sk-tok').length === 2, 'Spawner: no free slot beside it, nothing'); }
+  // 2026-11-04 (TESTFIX1): since ENG18 (call ENG18-4, 2026-11-02) a token "beside it" goes to the nearest free slot of its row: a third one, one further out
+  { const t3 = all(P[1]).filter(c=> c.defId === 'sk-tok'); ok(t3.length === 3 && t3.some(c=> Math.abs(c.slot - s.slot) === 2), `Spawner: both sides taken, the nearest free slot (${t3.map(c=> c.slot)})`); } }
 { const {e, P} = mk(); const s = put(e, P, 1, 'sk-spawner'); s.wait = 3; put(e, P, 2, 'sk-wall'); fight(e, P);
   ok(!all(P[1]).some(c=> c.defId === 'sk-tok'), 'Spawner: not while Waiting (On Turn Start needs it Ready)'); }
 ok(JSON.stringify(E.makeSimEngine(defs, E.mulberry32(1), {}).sk3Trigs({spawner:'sk-tok'})[0]) === JSON.stringify({on:'perTurn', do:'spawnCard', defId:'sk-tok', count:1, near:true, keyword:'spawner'}), 'Spawner is On Turn Start x Spawn (near)');
@@ -83,7 +84,8 @@ ok(JSON.stringify(E.makeSimEngine(defs, E.mulberry32(1), {}).sk3Trigs({spawner:'
   ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'duplicate'), 'Duplicate tells the board'); }
 // ---- 3. War Banner N and Warcry N (go-wide)
 { const {e, P} = mk(); const b = put(e, P, 1, 'sk-banner', 'left'); const a = put(e, P, 1, 'sk-small', 'right'); put(e, P, 2, 'sk-wall'); e.sk3Sync(P);
-  ok(a.atk === 2 && a.maxHp === 4 && b.atk === 0, `War Banner 1: your other units +1/+1, not itself (${a.atk}/${a.maxHp})`);
+  // 2026-11-04 (TESTFIX1): BF6 (2026-10-21, owner 15:15: "War Banner: passive increase in attack while this unit is present") made it +N/+0
+  ok(a.atk === 2 && a.maxHp === 3 && b.atk === 0, `War Banner 1: your other units +1/+0, not itself (${a.atk}/${a.maxHp})`);
   b.hp = 0; e.removeDeadCards(P, so, {}, {}, []); e.sk3Sync(P); ok(a.atk === 1 && a.maxHp === 3, 'War Banner: gone with it'); }
 { const {e, P} = mk(); const a = put(e, P, 1, 'sk-small', 'right'); const w = put(e, P, 1, 'sk-warcry', 'left');
   ok(a.atk === 3 && a.maxHp === 5 && w.atk === 0, `Warcry 2: On Play, your other units +2/+2 for good (${a.atk}/${a.maxHp})`); }
@@ -192,10 +194,10 @@ ok(byId['fen-mink'].effects.hunterVs === 'poison', 'Fen Mink keeps its Poisoned 
 const SC = JSON.parse(R('canonical/skill-costs.json'));
 const ids = new Set(SC.skills.map(s=> s.id)), acts = new Set(SC.actions.map(a=> a.id)), trs = new Set(SC.triggers.map(t=> t.id));
 ['spawner', 'banner', 'warcry', 'shieldwall', 'corpsefeeder', 'silence', 'stymie', 'exhaust', 'petrify', 'amplifier', 'stench', 'broodkeeper', 'herald', 'harbinger', 'spotter'].forEach(k=>{
-  const s = SC.skills.find(x=> x.id === k) || (SC.shorthands || {})[k]; ok(s && /estimate SK3/.test(s.measuredHow || ''), `skill-costs: ${k} costed (estimate SK3)`); });
+  const s = SC.skills.find(x=> x.id === k) || (SC.shorthands || {})[k]; ok(s && /estimate SK3|\(BF6\)|\(SKILL2\)|BAL1\d/.test(s.measuredHow || ''), `skill-costs: ${k} costed (estimate SK3, or measured since: BF6 / SKILL2 / BAL1x)`); }); // 2026-11-04 (TESTFIX1): re-measured since by BF6 (2026-10-21) and later
 ['duplicate', 'devourGrave', 'buffAll', 'stench', 'silence', 'stymie', 'exhaust', 'petrify', 'vulnerable', 'barrage', 'smokeScreen', 'magnet'].forEach(k=> ok(acts.has(k), `skill-costs: action ${k}`));
 ok(trs.has('onAnyDeath'), 'skill-costs: trigger On Any Death');
-['grave-call', 'smoke-screen', 'magnet'].forEach((id, i)=>{ const c = byId[id]; ok(c && c.cardType === 'spell' && ['rare', 'epic'].includes(c.rarity) && !c.source && cards.indexOf(c) >= cards.length - 50 /* 2026-10-24 (CONTENT2): later packages append cards (CONTENT2's 18) */, `${id}: a spell at the end of cards.json, Rare/Epic, no source`); });
+['grave-call', 'smoke-screen', 'magnet'].forEach((id, i)=>{ const c = byId[id]; ok(c && c.cardType === 'spell' && ['rare', 'epic'].includes(c.rarity) && !c.source /* 2026-11-04 (TESTFIX1): where it sits in cards.json no longer says anything: later packages appended 100+ cards (CONTENT2 ... CONTENT9) */, `${id}: a spell at the end of cards.json, Rare/Epic, no source`); });
 ok(!byId['clarity-bomb'], 'no Clarity Bomb card (owner 22:08: it is a skill, Spotter)');
 const app = R('arena_app.js'), tx = R('bramblewood-texts.js');
 ['spawner', 'banner', 'warcry', 'shieldwall', 'corpsefeeder', 'amplifier', 'stench', 'broodkeeper', 'herald', 'harbinger', 'spotter', 'silence', 'stymie', 'exhaust', 'petrify'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:`).test(app), `the app's registry has ${k} (the Codex skills book lists it)`));

@@ -61,7 +61,9 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
     // 2026-10-29 RELFIX3: each map's boss card (Heroic / Unique, over the rarest its fights may hold) moved from MAP to SPECIAL (tools/opt/relfix3_boss_special_2026_10_29.py)
     const RELFIX3_BOSS = {mb:'old-shell', mc:'the-gannet-queen', m2:'drowned-matriarch', mw:'old-snapjaw', m8:'heron-hag', m4:'echo-matriarch', m7:'reef-admiral', m5:'pride-queen', m6:'wolfsbane-alpha', m3:'yeti-chieftain', m23:'triumvirate'};
     if(t2){ const want = ((T3[L.sub || L.map]) || t2.proposed).filter(id=> L.sub || RELFIX3_BOSS[L.map] !== id || !(pools[L.map].special || []).includes(id));
-      ok(live && JSON.stringify(live) === JSON.stringify(want), `4. ${k}: the live list is THEME3's (THEME2's where THEME3 has none; ${live && live.length} vs ${want.length})`); return; }
+      // 2026-11-04 (TESTFIX1): CONTENT8 (2026-11-02, owner 21:12, CONTENT7-1 / KK17) placed new sea cards on four lists after THEME3; they are not THEME3's to list
+      const c8 = id=> /package CONTENT8, owner 21:12, CONTENT7-1 \/ KK17\): placed on the /.test((by[id] || {}).creatorNote || ''), liveT = live && live.filter(id=> !c8(id));
+      ok(live && JSON.stringify(liveT) === JSON.stringify(want), `4. ${k}: the live list is THEME3's (THEME2's where THEME3 has none; ${liveT && liveT.length} vs ${want.length}, CONTENT8's placements aside)`); return; }
     ok(live && live.length === L.before, `4. ${k}: the live pool is the plan's "before" (${live && live.length} vs ${L.before}): not applied`);
     if(!L.skipped){ ok(L.afterNew <= Math.max(7, L.keptNew.filter(s=> / \(/.test(s)).length), `4. ${k}: new cards capped (${L.afterNew})`);
       ok(L.keep.every(id=> live.includes(id) || (L.addedOld || []).includes(id)), `4. ${k}: the plan keeps only cards of its list (or carried deck cards)`); } });

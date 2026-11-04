@@ -152,7 +152,10 @@ run node tests/level-curve-2026-10-19.js   # 2026-10-19 (package LV): the level 
 run node tests/forge-curve-2026-10-19.js   # 2026-10-19 (package BF): budget v4 N(L) = (Base-1+L)(1+L/20), the Forge curve (monotonic, majors 4/7/10 > 0, inside N(L)), the anvil strip (~5 s)
 run node tests/bf5-2026-10-21.js   # 2026-10-21 (package BF5): N halved (scale 0.5), the N multipliers, two skills at most and the ants, every live card in the band or a listed owner call, brambles halved at fight build (raids.json full-size, the raid Shield too), the owner's later edits folded, the SQL proposed
 run node tests/side-maps-2026-10-19.js   # 2026-10-19 (package BF): every side map counts at least a map past its parent (enemy level, Shield, lower curve targets), the BF measure (~3 s)
-run node tests/server-overrides-fold-2026-10-19.js   # 2026-10-19 (package BF4): the live server card overrides folded into cards.json and balanced (Dragons Mythic / Divine / Ancient), Map 0 node edits, the proposed SQL (~1 s)
+# 2026-11-04 (TESTFIX1): retired tests/server-overrides-fold-2026-10-19.js: it checked a one-off migration, the 10-19 fold of the live server's card_overrides;
+# its SQL was applied with the 10-21 release (decision B13) and its cards and nodes have been changed on purpose since (rarities BAL9-1 / RAR-1, the 3A + H
+# budget BUDGET2, the decks K14 / BAL9), so it now pins history. The file stays as the record of the fold.
+# (was: node tests/server-overrides-fold-2026-10-19.js, 2026-10-19 package BF4): the live server card overrides folded into cards.json and balanced (Dragons Mythic / Divine / Ancient), Map 0 node edits, the proposed SQL (~1 s)
 run node tests/easter-eggs-2026-10-19.js   # 2026-10-19 (package EE): the Easter-egg category, no source gives one out, "???" until seen, Evomax
 run node tests/position-beam-2026-10-19.js   # 2026-10-19 (package EE): the Galactic Condor's Position Beam from the centre, a side and the edge
 run node tests/rc-2026-10-19.js   # 2026-10-19 (package RC): raid cards almost never drop (one 1.5% chance; seeded 2,000 claims / fights < 3%), claims pay pack / faction cards at the level's floor + trophy shards by tier, the Forge's Raid tab (recipes, exact deduction, a Level-1 copy, unseen = "?"), shard storage + cloud fallback + the proposed SQL, texts in 12 packs

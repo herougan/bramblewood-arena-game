@@ -90,13 +90,14 @@ const sk2Ev = (ev, kind)=> ev.filter(x=> x.type === 'sk2' && x.kind === kind);
 { const {e, P} = mk(); const M = put(e, P, 1, 'k2-mill', 0); M.wait = 2; const W = put(e, P, 2, 'k2-wall', 0);
   round(e, P); ok(P[1].lumber === 0 && M.wait === 1, `still Waiting: no Lumber (${P[1].lumber})`);
   round(e, P); ok(P[1].lumber === 0 && M.wait === 0, `its Wait runs out at this upkeep (${P[1].lumber})`);
-  const ev = round(e, P); ok(P[1].lumber === 2 && W.hp === 497 && ev.some(x=> x.type === 'lumber' && x.uid === M.uid && x.amount === 2), `Ready: +2 at its turn's start, and it still swings (${P[1].lumber}, wall ${W.hp})`);
-  round(e, P); ok(P[1].lumber === 4, `+2 every turn (${P[1].lumber})`); }
-{ const {e, P} = mk(1, {millingAttacks:false}); const M = put(e, P, 1, 'k2-mill', 0); M.wait = 0; const W = put(e, P, 2, 'k2-wall', 0); const ev = round(e, P);
-  ok(W.hp === 500 && P[1].lumber === 2 && ev.some(x=> x.type === 'skipTurn' && x.reason === 'milling'), 'opts.sk2.millingAttacks false: the mill holds its swing'); }
+  // 2026-11-04 (TESTFIX1): ENG16 (2026-11-02, owner JJ17): Milling N turns N of your Lumber into 2N (net +N); with no Lumber nothing is milled, so it holds 2
+  P[1].lumber = 2; const ev = round(e, P); ok(P[1].lumber === 4 && W.hp === 497 && ev.some(x=> x.type === 'lumber' && x.uid === M.uid && x.amount === 2 && x.mill === 2), `Ready: +2 at its turn's start, and it still swings (${P[1].lumber}, wall ${W.hp})`);
+  round(e, P); ok(P[1].lumber === 6, `+2 every turn (${P[1].lumber})`); }
+{ const {e, P} = mk(1, {millingAttacks:false}); const M = put(e, P, 1, 'k2-mill', 0); M.wait = 0; const W = put(e, P, 2, 'k2-wall', 0); P[1].lumber = 2 /* TESTFIX1: ENG16 */; const ev = round(e, P);
+  ok(W.hp === 500 && P[1].lumber === 4 && ev.some(x=> x.type === 'skipTurn' && x.reason === 'milling'), 'opts.sk2.millingAttacks false: the mill holds its swing'); }
 { const {e, P} = mk(); const M = put(e, P, 1, 'k2-mill', 0); M.wait = 0; M.stunned = 2; round(e, P); ok(P[1].lumber === 0, 'a Stunned mill makes nothing that turn (its trigger is off)'); }
-{ const {e, P} = mk(1, {millingN:3}); defs['k2-mill'].effects.milling = true; const M = put(e, P, 1, 'k2-mill', 0); M.wait = 0; round(e, P); defs['k2-mill'].effects.milling = 2;
-  ok(P[1].lumber === 3, `opts.sk2.millingN 3: Milling with no number mills 3 (${P[1].lumber})`); }
+{ const {e, P} = mk(1, {millingN:3}); defs['k2-mill'].effects.milling = true; const M = put(e, P, 1, 'k2-mill', 0); M.wait = 0; P[1].lumber = 3 /* TESTFIX1: ENG16 */; round(e, P); defs['k2-mill'].effects.milling = 2;
+  ok(P[1].lumber === 6, `opts.sk2.millingN 3: Milling with no number mills 3 (${P[1].lumber})`); }
 ok(/list\.push\(\{on:'perTurn', do:'gain', resource:'lumber', amount:numN\(e\.milling, SK2\.millingN\), keyword:'milling'\}\)/.test(R('bramblewood-engine.js')), 'Milling is expressed in the trigger layer (trigsOf: perTurn × gain)');
 
 // ---- 5b. Salvage N (2026-10-24, package EN8 / LUM-1: was SK2's Structure point counter paid in Stone): another of your Structures dying

@@ -18,17 +18,19 @@ ok(K === 1.13 && table.budget.scale === K && BB.DEFAULTS.base === 10 && table.bu
 ok(Math.abs(BB.nAt(11, 1) - K * (11 + 1 / 15) * (1 + 1 / 30)) < 0.011, `1. BF6: nAt(11, 1) = 1.13 x (Base + 1/15)(1 + 1/30) (${BB.nAt(11, 1)})`);
 ok(Math.abs(BB.nAt(11, 0) - K * 10) < 0.011, '1. BF6: Level 0 is 1.13 x (Base - 1)');
 const bounty = [].concat(table.skills || [], table.triggers || []).find(s=> s.id === 'bounty');
-ok(bounty && bounty.value === 1, `1. Bounty 1 a point (owner 21:36: "Let bounty N = N * 2"; got ${bounty && bounty.value})`);
+// 2026-11-04 (TESTFIX1): the owner's Human pass I (10-22) set 3 and BAL2 (2026-10-24, N22-10, call BAL2-4) re-measured it at 2.5 a point
+ok(bounty && bounty.value === 2.5, `1. Bounty 2.5 a point (owner 21:36: "Let bounty N = N * 2" gave 1; Human pass I 3; BAL2 2.5; got ${bounty && bounty.value})`);
 
 // 2. the N multipliers (named constants; shown in the budget panel and the Test Lab)
 ok(BB.DEFAULTS.plainBonus === 1.05 && BB.DEFAULTS.lightBonus === 1.02 && BB.DEFAULTS.fragileUse === 0.7, '2. plainBonus 1.05, lightBonus 1.02, fragileUse 0.7 (BF7, 2026-10-22: Fragile is no longer an N multiplier, fragileMult 0.75)');
 ok(table.budget.plainBonus === 1.05 && table.budget.lightBonus === 1.02 && table.budget.fragileUse === 0.7, '2. the same in the skill-costs budget line');
 ok(BB.nMultOf({}, BB.DEFAULTS) === 1.05, '2. no abilities: x1.05');
-ok(BB.nMultOf({flying: true}, BB.DEFAULTS) === 1.02 && BB.nMultOf({tide: true, diurnal: true}, BB.DEFAULTS) === 1.02, '2. only Flying / Tide / time of day: x1.02');
+// 2026-11-04 (TESTFIX1): BF8 (2026-10-22) took Tide out of the light bonus; Flying and the time of day keep x1.02
+ok(BB.nMultOf({flying: true}, BB.DEFAULTS) === 1.02 && BB.nMultOf({diurnal: true}, BB.DEFAULTS) === 1.02 && BB.nMultOf({tide: true}, BB.DEFAULTS) === 1, '2. only Flying / time of day: x1.02 (Tide since BF8: none)');
 ok(BB.nMultOf({flying: true, poison: 1}, BB.DEFAULTS) === 1, '2. a light ability beside another: x1');
 ok(BB.nMultOf({flying: true, fragile: true}, BB.DEFAULTS) === 1 && BB.fragileUseOf({fragile: true}, BB.DEFAULTS) === 0.7 && BB.fragileUseOf({}, BB.DEFAULTS) === 1, '2. Fragile: no N multiplier (x1 with Flying), fragileUse x0.7 on the caps (BF7, 2026-10-22; was x0.75 on N)');
 const vul = (table.skills || []).find(s=> s.id === 'vulnerable'); ok(vul && vul.value < 0, '2. passive Vulnerable is a negative skill value');
-ok(/function sbNMultLine\(d\)/.test(src) && /ui\.budget-lab-nmult/.test(src), '2. the card editor\'s budget panel and the Test Lab show the multipliers');
+ok(/function sbNMultLine\(d(, warnOnly)?\)/.test(src) /* TESTFIX1: a second parameter since */ && /ui\.budget-lab-nmult/.test(src), '2. the card editor\'s budget panel and the Test Lab show the multipliers');
 
 // 3. two skills at most (special / thematic cards keep more); the owner's ants
 const TS = JSON.parse(read('docs/balance/two-skills-2026-10-21.json'));
@@ -42,7 +44,8 @@ ok(!over.length, '3. no live, non-special card has more than two skills: ' + ove
 ok(TS.cut >= 90 && TS.rows.filter(r=> r.dropped.length).every(r=> byId[r.id] && r.dropped.every(k=> !k.startsWith('trigger:') && ((byId[r.id].effects || {})[k] == null || /TR, owner HB2-1/.test(byId[r.id].creatorNote || '')) || k.startsWith('trigger:'))), `3. the record's ${TS.cut} cuts are in the cards (or given back by TR, HB2-1)`);
 const sc = byId['ant-scout'], so = byId['soldier-ant'], tu = byId['tunnel-ant'];
 ok(sc && JSON.stringify(Object.keys(sc.effects)) === '["swarm"]' && (sc.wait || 0) === 0 && (sc.cost || 0) === 0, '3. Ant Scout: Swarm alone, cheap (Wait 0, Lumber 0)');
-ok(so && so.effects.swarm && so.effects.formation === 1 && so.wait === 1 && (so.cost || 0) === 0, '3. Soldier Ant: Swarm + Formation 1, Wait 1');
+// 2026-11-04 (TESTFIX1): the owner's own live edit of 2026-10-22 (folded by CONTENT3 OVR, 10-26) left it Swarm only
+ok(so && so.effects.swarm && !so.effects.formation && so.wait === 1 && (so.cost || 0) === 0, '3. Soldier Ant: Swarm, Wait 1 (Formation 1 until the owner\'s 10-22 edit)');
 ok(tu && tu.effects.swarm && tu.effects.ambush === 2 && tu.wait === 1 && tu.cost === 1, '3. Tunnel Ant: Swarm + Ambush 2, Wait 1, Lumber 1');
 ok(byId['giant-cave-huntsman'].effects.poison != null && byId['giant-cave-huntsman'].effects.pounce != null, '3. the owner\'s scary spider keeps Poison + Pounce');
 ok(byId['moon-jelly'].effects.moonpull != null && byId['moon-jelly'].effects.tide, '3. Moon Jelly keeps Tide + Moonpull');

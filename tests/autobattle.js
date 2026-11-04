@@ -113,7 +113,7 @@ function autoDraft(run, greedy){
 
 // 6. Population: synthetic players play whole runs; their snapshots fill the stage pools
 {
-  let recorded = [], fights = 0, t0 = Date.now(), perfect = 0, endedEarly = 0;
+  let recorded = [], fights = 0, t0 = Date.now(), perfect = 0, endedEarly = 0; const cpu0 = process.cpuUsage();
   const RUNS = 30;
   for(let p=0; p<RUNS; p++){
     const run = autoDraft(A.newRun(9000+p, NOW), p%2===0);
@@ -141,7 +141,10 @@ function autoDraft(run, greedy){
   console.log(`  stage pools (real+seeded): ${cover.join('  ')}`);
   // 2026-10-21 (package TT2): 6. Alone on this 2-core box the batch measures 8.5-8.7/s and the released main (a87439a7) 8.6/s, the same
   // code speed, so 9 had no margin left; under the runner's two-at-a-time load it reads 6.3/s. 6 still catches a real slowdown (~30%).
-  check(fights/secs > 6, `fights are too slow (${(fights/secs).toFixed(1)}/s)`); // 2026-10-12: 20 was flaky on this box (17.9-21/s with the code before and after tonight), so 15; then 12 (14-15/s on a busy 2-core box, ~75% of the time is the draft pool, not the engine) 2026-10-13: 9 (the unchanged code measured 11/s on this box)
+  // 2026-11-04 (TESTFIX1): judged on this process's CPU time, not the wall clock: under the full suite's two-at-a-time load the wall clock read
+  // 5.8/s and failed, alone 7/s; CPU time is what the code costs, so the same bar of 6 a second still catches a real slowdown
+  const cpu = process.cpuUsage(cpu0), cpuSecs = (cpu.user + cpu.system) / 1e6;
+  check(fights/cpuSecs > 6, `fights are too slow (${(fights/cpuSecs).toFixed(1)}/s of CPU time; ${(fights/secs).toFixed(1)}/s wall)`); // 2026-10-12: 20 was flaky on this box (17.9-21/s with the code before and after tonight), so 15; then 12 (14-15/s on a busy 2-core box, ~75% of the time is the draft pool, not the engine) 2026-10-13: 9 (the unchanged code measured 11/s on this box)
 }
 
 check(JSON.stringify(defs)===defsBefore, 'real card definitions were mutated during the run');

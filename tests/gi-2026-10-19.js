@@ -162,17 +162,21 @@ const SC = require('../tools/skill_costs.js'), table = JSON.parse(R('canonical/s
 const sk = id=> table.skills.find(x=> x.id === id);
 [['hunter', 'half', 1], ['hunterVs', 'fixed', 0], ['executioner', 'half', 1], ['detonate', 'n', 0.2 /* 2026-10-26 (CONTENT3, E18): Detonate N, per tick; was fixed 1 */], ['proliferate', 'n', 2], ['brittle', 'half', 0.5], ['prayerWard', 'n', 0.75], ['fieldBreaker', 'half', 1]]
   // 2026-10-19 (package TC): the owner applied the measured worth — an applied entry keeps the GI value as prevValue (value = max(0, measuredS))
-  .forEach(([id, sc, v])=> ok(sk(id) && sk(id).scale === sc && (sk(id).value === v || (sk(id).appliedAt && sk(id).prevValue === v && sk(id).value === Math.max(0, sk(id).measuredS))),
-    `skill-costs: ${id} ${sc} ${v} (or its applied measured worth: ${sk(id) && sk(id).value})`));
+  // 2026-11-04 (TESTFIX1): later re-measures (SKILL2 2026-10-31, BUDGET2-1; the bramble-15 pipeline BAL10 / BAL12 / BAL14) re-priced some in place
+  // (value = measuredS, scale n with a pow); GI's value must then sit in the entry's history
+  .forEach(([id, sc, v])=>{ const e = sk(id) || {}, hist = [e.prevValue, e.skill2Was && e.skill2Was.value, e.skill2Was && e.skill2Was.prevValue, e.recost1Was && e.recost1Was.prevValue];
+    ok(sk(id) && ((e.scale === sc && (e.value === v || (e.appliedAt && e.prevValue === v && e.value === Math.max(0, e.measuredS)))) || (Math.abs(e.value - e.measuredS) < 0.011 && hist.includes(v))),
+    `skill-costs: ${id} ${sc} ${v} (or its applied measured worth: ${sk(id) && sk(id).value})`); });
 ok(table.shorthands.kinRally && table.shorthands.kinRally.trigger === 'onAllyPlayed' && table.shorthands.kinRally.action === 'buff' && table.shorthands.kinRally.both, 'Kin Rally is a shorthand: On Ally Played × Buff (+N/+N)');
 ok(table.shorthands.packHowl && table.shorthands.packHowl.trigger === 'onAllyPlayed' && table.shorthands.packHowl.action === 'bleed', 'Pack Howl is a shorthand: On Ally Played × Bleed');
 // 2026-10-19 (package TC): the shorthand math from the current table (Buff's values are applied measured worth; On Ally Played stays the owner's 2.5)
 const r2 = v=> Math.round(v * 100) / 100, tw = id=> table.triggers.find(x=> x.id === id).value, avl = id=> table.actions.find(x=> x.id === id).value;
 ok(tw('onAllyPlayed') === 2.5, 'On Ally Played = 2.5 (owner-set, kept)');
-const kin = N=> r2(tw('onAllyPlayed') * (avl('buff') * N + avl('buff.amount2') * N));
+const kin = N=> r2(tw('onAllyPlayed') * (avl('buff') * N + avl('buff.amount2') * N) * (table.shorthands.kinRally.mult || 1)); // TESTFIX1: x the shorthand's measured factor (SKILL2 / BAL14)
 ok(T.cardS({kinRally:1}).S === kin(1) && T.cardS({kinRally:2}).S === kin(2), `Kin Rally N = On Ally Played × (Buff × N + Buff Health × N) = ${tw('onAllyPlayed')} × (${avl('buff')} + ${avl('buff.amount2')}) = ${kin(1)} (${T.cardS({kinRally:1}).S})`);
 ok(T.cardS({packHowl:1}).S === r2(tw('onAllyPlayed') * avl('bleed')) && T.cardS({packHowl:2}).S === r2(tw('onAllyPlayed') * avl('bleed') * 2), `Pack Howl N = ${tw('onAllyPlayed')} × Bleed ${avl('bleed')} × N`);
-const kw = (id, N)=>{ const e = sk(id), n = N === true ? 1 : N; return e.scale === 'n' ? e.value * Math.max(1, n) : e.scale === 'half' ? e.value * (1 + (n > 1 ? Math.floor(n / 2) : 0)) : e.value; };
+// 2026-11-04 (TESTFIX1): an entry's own price rule (a pow curve since SKILL2 / BAL12, a context factor) is the price tool's; cardS must add up the keywords' own costs
+const kw = (id, N)=> T.skillCost(id, N === 0 ? 0 : N);
 [[{hunter:2, hunterVs:'wet'}, kw('hunter', 2) + kw('hunterVs', 0)], [{executioner:3}, kw('executioner', 3)], [{detonate:true}, kw('detonate', true)], [{proliferate:1}, kw('proliferate', 1)],
  [{prayerWard:2}, kw('prayerWard', 2)], [{fieldBreaker:2}, kw('fieldBreaker', 2)], [{brittle:2}, kw('brittle', 2)]]
   .forEach(([e, want])=> ok(Math.abs(T.cardS(e).S - r2(want)) < 1e-9, `the keyword cost of ${JSON.stringify(e)} = ${r2(want)} by its entry's scale (${T.cardS(e).S})`));
@@ -222,7 +226,11 @@ const SK3_NOT_GI = k=> /^ui\.(sk-hunter-weak|hunter-vs-weak)$/.test(k) || (/^ui\
 SK3_NOT_GI.test = SK3_NOT_GI;
 ok(TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length === 67, `67 package GI TX keys (${TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length})`);
 const RETIRED_C3 = new Set(['ui.log-detonate', 'ui.sk-detonate', 'ui.sk-detonate-codex']); // 2026-10-26 (CONTENT3, E18): the old cash-in's lines; Detonate N reads ui.c3-*
-TKEYS.forEach(k=> ok(RETIRED_C3.has(k) || appSrc.includes(`TX('${k}'`), `${k} is used in arena_app.js`));
+// 2026-11-04 (TESTFIX1): EN5 / EN6 / EN7 build these names from a prefix ("TX('ui.skn-' + t)", t from their key tables), so a key is used when its
+// prefix is asked for that way and its rest is a quoted name in the app
+const dynUsed = k=> { for(let i = k.lastIndexOf('-'); i > 0; i = k.lastIndexOf('-', i - 1)){ const pre = k.slice(0, i + 1), rest = k.slice(i + 1);
+  if(appSrc.includes(`TX('${pre}' + `) && (appSrc.includes(`'${rest}'`) || appSrc.includes(`"${rest}"`))) return true; } return false; };
+TKEYS.forEach(k=> ok(RETIRED_C3.has(k) || appSrc.includes(`TX('${k}'`) || dynUsed(k), `${k} is used in arena_app.js`));
 TKEYS.filter(k=> !/codex|^ui\.fxx-|^ui\.stx-/.test(k)).forEach(k=> ok(words(TXT[k]) < 20, `${k} is terse (${words(TXT[k])} words)`));
 // ---- 18. 12 packs: the texts, the pool cards' names and flavour
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];

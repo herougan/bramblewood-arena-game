@@ -23,15 +23,16 @@ ok(/sk1Patch\(ACTIVE_PRESETS, 'render', \{codexNote:TX\('ui\.eng9-render-codex'\
 ok(/\.\.\.ACTIVE_PRESETS\.map\(p=>\(\{\n\s*key:p\.key, category:p\.category, label:p\.label, kind:[^\n]*codexNote:p\.codexNote/.test(src), 'b. SKILL_DEFS carries an active preset\'s codexNote');
 
 // ---- FIN2-a: Fortify
-ok(TEXT['ui.skn-bramble-armor'] === 'Fortify', 'a. the skill is called Fortify');
-ok(!Object.keys(TEXT).some(k=> /Bramble Armor/.test(TEXT[k])), 'a. no TX text says Bramble Armor');
+// 2026-11-04 (TESTFIX1): ENG22 (2026-11-03, owner 21:10: "Fortification renamed to Build ... Fortify (new skill)") gave the word Fortify to the new
+// skill, so brambleArmor reads Bramble Armor again until the owner names it (call ENG22-2, open); the FIN2-a rename no longer holds
+ok(TEXT['ui.skn-bramble-armor'] === 'Bramble Armor', 'a. the skill reads Bramble Armor again (ENG22; FIN2 had Fortify)');
 ok(/Rampart and Fortify still cut it/.test(TEXT['ui.sk-breach-codex']) && /Rampart and Fortify still cut it/.test(TEXT['ui.sk-shot-bramble-codex']) && /fortifies its bramble/.test(TEXT['ui.en3-log-bramble-armor']), 'a. the other skills\' texts and the log say Fortify');
-ok(TEXT['ui.sk2n-fortification'] === 'Fortification', 'a. Fortification (SK2) keeps its name');
+ok(TEXT['ui.sk2n-fortification'] === 'Build', 'a. Fortification (SK2) is called Build since ENG22 (owner 2026-11-03 21:10)');
 ok(/brambleArmor/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8')), 'a. the engine key brambleArmor is kept');
 { const peel = s=> s.replace(/^[^\w{(\[]+\s/, ''), keys = [TEXT['ui.skn-bramble-armor'], TEXT['ui.sk-breach-codex'], TEXT['ui.sk-shot-bramble-codex'], peel(TEXT['ui.en3-log-bramble-armor'])];
   CODES.forEach(c=>{ const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8'));
     ok(keys.every(k=> p[k]), `a. lang/${c}.json has the Fortify texts`);
-    ok(!Object.keys(p).some(k=> /Bramble Armor/.test(k)), `a. lang/${c}.json has no Bramble Armor row left`);
+    // (TESTFIX1: "no Bramble Armor row left" retired: ENG22 brought the name back, ENG22-2)
     ok(p['Fortify'] !== p['Fortification'], `a. lang/${c}.json: Fortify (${p['Fortify']}) is not Fortification's word (${p['Fortification']})`);
     ok(/\{name\}/.test(p[keys[3]] || ''), `a. lang/${c}.json keeps {name} in the log line`); }); }
 
@@ -41,13 +42,16 @@ ok(BB.DEFAULTS.shieldPerHealth === 0.8 && table.budget.shieldPerHealth === 0.8, 
 ok(BB.shieldHealthOf({shield: 3}) === 2.4 && BB.shieldHealthOf({shield: true}) === 0.8 && BB.shieldHealthOf({}) === 0, 'c. Shield N is 0.8 x N Health');
 { const a = BB.capScores(2, 3, 1, {shield: 5}), b = BB.capScores(2, 7, 1, {}); ok(a.x1 === b.x1 && a.x2 === b.x2 && a.sh === 4, `c. Shield 5 on a 2/3 = a 2/7 in both caps (${JSON.stringify([a, b])})`);
   const o = BB.capScores(2, 3, 1, null, null, {sh: 4}); ok(o.x1 === a.x1 && o.x2 === a.x2, 'c. opts.sh for a caller without the effects (the game\'s sbCheck)'); }
-ok(T.skillCost('shield', 3) === 0 && T.cardS({shield: 3}).S === 0, 'c. Shield costs nothing in S');
+// 2026-11-04 (TESTFIX1): SKILL2 (2026-10-31, BUDGET2-1) measured Shield's own skill worth on top of the 0.8 Health (2.53 fixed; skill2Was 0, FIN2's)
+ok(table.skills.find(x=> x.id === 'shield').skill2Was.value === 0 && T.skillCost('shield', 3) === table.skills.find(x=> x.id === 'shield').value && T.cardS({shield: 3}).S === T.skillCost('shield', 3), 'c. Shield costs nothing in S (FIN2); SKILL2 priced its skill part since');
 ok(BB.contextS('tideGrant', {flood: {shield: 5}}, ()=> 0).inner === 4, 'c. a Shield in braces counts as 0.8 Health there too');
 ok(/sbCheck\(A, D, S, N, M, F, SH\)/.test(src) && /c = sbCheck\(A, D, S, N, M, F, SH\)/.test(src) && /sbCheck\(A, D, S, N, M, F, sbShieldH\(d\)\)/.test(src), 'c. the game\'s budget panel and Stat budget pass the Shield');
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), by = id=> cards.find(c=> c.id === id), st = c=> `${c.attack}/${c.health}`;
   const crab = by('tide-pool-crab'), conch = by('conch-crawler'), arm = by('armadillo-guard');
-  ok(st(crab) === '1/3' && crab.effects.shield === 3 && crab.effects.armor === 1 && crab.effects.tide, `c. Tide Pool Crab 1/2 -> 1/3, its skills kept (${st(crab)})`);
-  ok(st(conch) === '2/2', `c. Conch Crawler 1/1 -> 2/2 (${st(conch)})`);
+  // 2026-11-04 (TESTFIX1): BAL9 (2026-11-02, owner JJ21) re-fit both onto the band (their notes): Tide Pool Crab 1/2, Conch Crawler 1/3
+  const bal9 = c=> /BAL9 refit/.test(c.creatorNote || '');
+  ok((st(crab) === '1/3' || bal9(crab)) && crab.effects.shield === 3 && crab.effects.armor === 1 && crab.effects.tide, `c. Tide Pool Crab 1/2 -> 1/3, its skills kept (${st(crab)})`);
+  ok(st(conch) === '2/2' || bal9(conch), `c. Conch Crawler 1/1 -> 2/2 (BAL9 since) (${st(conch)})`);
   ok(st(arm) === '3/8', `c. Armadillo Guard kept at 3/8 (${st(arm)})`);
   // 2026-10-29 RELFIX3: a card out of play (on no map list, LISTFIX1's budgetHold 'unplaced') or waiting for the owner's re-fit ('pending') is
   // skipped and reported: its map term reads Map 0 until it is placed (armadillo-guard is on no list since THEME2 / THEME3)
@@ -80,7 +84,7 @@ async function browser(){
     const defs = await pg.evaluate("({noLabel: SKILL_DEFS.concat(PASSIVE_DEFS).filter(x=> typeof x.label !== 'string').map(x=> x.key), render: SKILL_DEFS.filter(x=> x.key === 'render').length, fortify: (PASSIVE_DEFS.find(x=> x.key === 'brambleArmor') || {}).label})");
     ok(!defs.noLabel.length, `B b. every skill has a label (${defs.noLabel.join(', ')})`);
     ok(defs.render === 1, `B b. Render is one skill (${defs.render})`);
-    ok(defs.fortify === 'Fortify', `B a. the editor lists Fortify (${defs.fortify})`);
+    ok(defs.fortify === 'Bramble Armor', `B a. the editor lists Bramble Armor again (ENG22, call ENG22-2) (${defs.fortify})`);
     // every card opens in the editor, and a Save with no change keeps what the form can't show
     const rt = await pg.evaluate(`(()=>{ adminModeEnabled = true; const thrown = []; let opened = 0;
       for(const id of Object.keys(CARD_DEFS_BASELINE)){ try{ openCardEditor(id); opened++; readEditorFormIntoCard(); }catch(e){ thrown.push(id + ': ' + String(e).slice(0, 80)); } try{ closeCardEditor(); }catch(_){} }
@@ -88,7 +92,7 @@ async function browser(){
       const t = id=> (read(id).triggers || []);
       keep.whenReady = t('scraper-of-skies').some(x=> x.whenReady === true); keep.once = t('nest').some(x=> x.once === true);
       keep.exileSelf = t('marsh-wisp').some(x=> x.do === 'exileSelf') && !t('marsh-wisp').some(x=> x.do === 'arrow');
-      keep.onReadyGold = read('elder-willow').onReadyGold === 1; keep.scar = read('magma-titan').scar === 2; keep.devour = !!read('hollow-belly-rat').devour;
+      keep.onReadyGold = read('elder-willow').deliveryEvery === 1 /* 2026-11-04 (TESTFIX1): ENG22 migrated On Ready Lumber to Delivery {X} (deliveryEvery) */; keep.scar = read('magma-titan').scar === 2; keep.devour = !!read('hollow-belly-rat').devour;
       return {n: Object.keys(CARD_DEFS_BASELINE).length, opened, thrown, keep}; })()`);
     ok(!rt.thrown.length && rt.opened === rt.n, `B b. the editor opens on all ${rt.n} cards (${rt.thrown.slice(0, 3).join(' | ')})`);
     Object.keys(rt.keep).forEach(k=> ok(rt.keep[k], `B b. a plain Save keeps ${k}`));
