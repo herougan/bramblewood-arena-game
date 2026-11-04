@@ -8919,7 +8919,14 @@ function nmWidthEm(name){ name = String(name || '');
     if(typeof document !== 'undefined' && document.fonts && document.fonts.check('700 20px "Baloo 2"')){ nmCtx = nmCtx || document.createElement('canvas').getContext('2d'); nmCtx.font = '700 100px "Baloo 2"'; const w = nmCtx.measureText(name).width / 100; NM_W_CACHE.set(name, w); return w; } }catch(e){}
   let w = 0; for(const ch of name){ w += /[iIl1j.,'’:;!|]/.test(ch) ? .3 : /[ftr\- ]/.test(ch) ? .36 : /[mwMW@]/.test(ch) ? .75 : /[A-Z]/.test(ch) ? .63 : .52; } return w; } // the fallback before the font is ready
 function nmFitScale(name){ const w = nmWidthEm(name); return w <= NM_ROOM_EM ? 1 : Math.max(NM_MIN_SCALE, Math.round(NM_ROOM_EM / w * 100) / 100); }
-function nmHTML(name){ const sc = nmFitScale(name); return `<div class="nm"><span class="nmt"${sc < 1 ? ` style="--nm-s:${sc}"` : ''}>${escapeHtml(name)}</span></div>`; }
+// 2026-11-04 (package UI20, owner 11-04: the Lumber cost badge hid the start of "Glacial Ape-King" in the large view): the cost badge (top left) and the wait badge (top right)
+// hang over the corners of the name scroll. The scroll now leaves them room: nmHTML() tells the scroll how wide each badge is, in em of the badge's own text size
+// (--nm-cem, --nm-wem; a pip is about .8em, a number-and-icon about 1.9em, a text cost like 🕊️2 about 1.3em a character), and the CSS (UI20 block, arena_template.html)
+// narrows the scroll's width so its text starts past the badge. The name is not shrunk for it; a name that no longer fits wraps to a second line.
+function nmPartsEm(parts){ let em = 0; for(const p of (parts || [])){ const m = /data-n="(\d+)"/.exec(p); em += m ? (+m[1] > 4 ? 2.1 : .9 * (+m[1]) + .35) : 1.3 * [...String(p).replace(/<[^>]*>/g, '')].length; } return Math.round(em * 100) / 100; }
+function nmWaitEm(w){ w = w | 0; return w <= 0 ? 0 : w > 4 ? 2.1 : Math.round((.9 * w + .35) * 100) / 100; }
+function nmHTML(name, costParts, wait){ const sc = nmFitScale(name), ce = nmPartsEm(costParts), we = nmWaitEm(wait), st = (ce ? `--nm-cem:${ce};` : '') + (we ? `--nm-wem:${we};` : '');
+  return `<div class="nm"${st ? ` style="${st}"` : ''}><span class="nmt"${sc < 1 ? ` style="--nm-s:${sc}"` : ''}>${escapeHtml(name)}</span></div>`; }
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
@@ -8980,7 +8987,7 @@ function cardTileHTML(d, opts){
       ${live.overlaysHTML||''}
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
       ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
-      ${nmHTML(d.name||live.fallbackName||'')}
+      ${nmHTML(d.name||live.fallbackName||'', costParts, live.waitHTML ? 0 : d.wait) /* UI20: the scroll leaves room for the badges; a live wait ring is sized in the CSS */}
       <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
       ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */, shieldAmt: live.shieldAmt /* 2026-10-31 (UI11, FF1) */, cowering: !!live.cowering /* ENG15 (FF6) */}})}
       ${live.bottomHTML||''}
@@ -9002,7 +9009,7 @@ function cardTileHTML(d, opts){
     ${d.darkSummon && !cardFrameArch(d, cardBackingKind(d)) /* 2026-10-16 (user: "...remove the top right hand corner context symbol for those. like the 5 point star for devilry..."): the Devilry frame says it; the card text still says Dark Summon */?`<div class="darkbadge" title="Dark Summon — uses your Dark Summon for the turn (1 a turn), not your normal play">⛧</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
     ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
-    ${nmHTML(d.name||'')}
+    ${nmHTML(d.name||'', costParts, d.wait) /* UI20 */}
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
     ${abilityBadges(d, {compact: !!(hand || inMatch), hand: !!hand /* UI5 (2026-10-30, W5) */, live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
@@ -37780,7 +37787,7 @@ function showPlacementPreview(row, side){
   // cardTileHTML's own waitbadge exactly so the preview genuinely previews what you're about to get.
   ghost.innerHTML = `<div class="card-tile ${rarityTierClass(d.rarity)} ${biomeClass(d)}" style="--rarity-a:${rA}; --rarity-b:${rB}">
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}
-    <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div>${nmHTML(d.name||'')}
+    <div class="ico">${cardIcoHTML(d)}</div><div class="rarity-band"></div>${nmHTML(d.name||'', null, d.wait) /* UI20 */}
     <div class="stats"><span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">${atkGlyphOf(d)}${d.attack}</span><span class="hp">❤${d.health}</span></div>
   </div>`;
   if(actualSide==='center'){
