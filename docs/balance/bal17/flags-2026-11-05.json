@@ -1,0 +1,3722 @@
+{
+ "about": "BAL17 card flags on BAL16-1's walled fights (tools/bal17/flags_2026_11_05.js). Flags only: no card or deck changed.",
+ "date": "2026-11-05",
+ "games": 60,
+ "seed0": 7300,
+ "fingerprint": "a23caeba6a",
+ "fights": [
+  "14-1",
+  "14-2",
+  "14-3",
+  "14-4",
+  "14-5",
+  "14-6",
+  "14-7",
+  "14-8",
+  "14-A-1",
+  "14-A-2",
+  "14-A-3",
+  "14-A-4",
+  "14-A-5",
+  "19-A-1",
+  "19-A-2",
+  "19-A-3",
+  "19-A-4",
+  "19-A-5",
+  "19-A-6",
+  "19-A-7",
+  "19-A-8",
+  "19-A-9",
+  "19-A-10",
+  "17-4",
+  "17-5",
+  "17-6",
+  "17-7",
+  "17-8",
+  "0-B-1",
+  "0-B-2",
+  "0-B-3",
+  "0-B-4",
+  "8-2",
+  "8-5",
+  "8-7",
+  "10-1",
+  "10-A-4",
+  "10-A-5"
+ ],
+ "maps": [
+  {
+   "map": "mo",
+   "mapNo": 0,
+   "side": true,
+   "mapName": "The Old Bramble",
+   "meanMinus2": 50,
+   "meanPlainNoShield": 70,
+   "brambles": [
+    "outskirts-watchtower {\"firstUnitAtkBonus\":3}"
+   ],
+   "fights": [
+    {
+     "minus2": 90,
+     "plainNoShield": 96.7,
+     "code": "0-B-1",
+     "name": "Thorn Path",
+     "kind": "skirmish",
+     "base": 63.3,
+     "allFillers": 28.3,
+     "noShield": 66.7,
+     "plainBramble": 95,
+     "bramble": {
+      "id": "outskirts-watchtower",
+      "health": 14,
+      "shield": 9
+     },
+     "leaders": [],
+     "level": 3.36
+    },
+    {
+     "minus2": 46.7,
+     "plainNoShield": 70,
+     "code": "0-B-2",
+     "name": "The Briar Ring",
+     "kind": "skirmish",
+     "base": 21.7,
+     "allFillers": 8.3,
+     "noShield": 28.3,
+     "plainBramble": 63.3,
+     "bramble": {
+      "id": "outskirts-watchtower",
+      "health": 14,
+      "shield": 9
+     },
+     "leaders": [],
+     "level": 3.36
+    },
+    {
+     "minus2": 51.7,
+     "plainNoShield": 65,
+     "code": "0-B-3",
+     "name": "Root Gate",
+     "kind": "skirmish",
+     "base": 23.3,
+     "allFillers": 5,
+     "noShield": 30,
+     "plainBramble": 58.3,
+     "bramble": {
+      "id": "outskirts-watchtower",
+      "health": 14,
+      "shield": 9
+     },
+     "leaders": [],
+     "level": 3.36
+    },
+    {
+     "minus2": 11.7,
+     "plainNoShield": 48.3,
+     "code": "0-B-4",
+     "name": "The Old Bramble",
+     "kind": "boss",
+     "base": 0,
+     "allFillers": 0,
+     "noShield": 13.3,
+     "plainBramble": 18.3,
+     "bramble": {
+      "id": "outskirts-watchtower",
+      "health": 18,
+      "shield": 63
+     },
+     "leaders": [
+      "ent"
+     ],
+     "level": 3.36
+    }
+   ],
+   "meanBase": 27.1,
+   "meanAllFillers": 10.4,
+   "meanNoShield": 34.6,
+   "meanPlainBramble": 58.7,
+   "ranked": [
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "stats": "2/9",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 2,
+     "leader": false,
+     "fights": [
+      "0-B-2",
+      "0-B-4"
+     ],
+     "mapMove": 2.1,
+     "meanMove": 4.2,
+     "perFight": [
+      5,
+      3.3
+     ],
+     "budget": {
+      "N": 22.21,
+      "x1": 20.37,
+      "N2": 86.05,
+      "x2": 25.21,
+      "use1": 91.7,
+      "use2": 29.3,
+      "over": false,
+      "S": 5.37
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "stats": "2/22",
+     "cost": 0,
+     "rarity": "rare",
+     "copies": 3,
+     "leader": true,
+     "fights": [
+      "0-B-4"
+     ],
+     "mapMove": 0.8,
+     "meanMove": 3.3,
+     "perFight": [
+      3.3
+     ],
+     "budget": {
+      "N": 33.3,
+      "x1": 30.7,
+      "N2": 193.44,
+      "x2": 45.82,
+      "use1": 92.2,
+      "use2": 23.7,
+      "over": false,
+      "S": 2.7
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "gatling-hog",
+     "name": "Gatling Hog",
+     "stats": "2/6",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "0-B-3"
+     ],
+     "mapMove": 0.4,
+     "meanMove": 1.7,
+     "perFight": [
+      1.7
+     ],
+     "budget": {
+      "N": 27.11,
+      "x1": 22.64,
+      "N2": 128.21,
+      "x2": 40.3,
+      "use1": 83.5,
+      "use2": 31.4,
+      "over": false,
+      "S": 10.64
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "pond-duck",
+     "name": "Pond Duck",
+     "stats": "3/3",
+     "cost": 0,
+     "rarity": "starter",
+     "copies": 3,
+     "leader": false,
+     "fights": [
+      "0-B-1",
+      "0-B-3",
+      "0-B-4"
+     ],
+     "mapMove": 0.4,
+     "meanMove": 0.6,
+     "perFight": [
+      0,
+      1.7,
+      0
+     ],
+     "budget": {
+      "N": 12.34,
+      "x1": 12,
+      "N2": 26.56,
+      "x2": 9,
+      "use1": 97.2,
+      "use2": 33.9,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "stats": "2/10",
+     "cost": 0,
+     "rarity": "starter",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "0-B-1"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0
+     ],
+     "budget": {
+      "N": 16.33,
+      "x1": 16,
+      "N2": 46.52,
+      "x2": 20,
+      "use1": 98,
+      "use2": 43,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "stats": "1/5",
+     "cost": 0,
+     "rarity": "starter",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "0-B-4"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0
+     ],
+     "budget": {
+      "N": 12.34,
+      "x1": 8,
+      "N2": 26.56,
+      "x2": 5,
+      "use1": 64.8,
+      "use2": 18.8,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "silver-minnow",
+     "name": "Silver Minnow",
+     "stats": "2/4",
+     "cost": 0,
+     "rarity": "starter",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "0-B-4"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0
+     ],
+     "budget": {
+      "N": 12.34,
+      "x1": 10,
+      "N2": 26.56,
+      "x2": 8,
+      "use1": 81,
+      "use2": 30.1,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "otter-paddler",
+     "name": "Otter Paddler",
+     "stats": "3/3",
+     "cost": 0,
+     "rarity": "starter",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "0-B-2"
+     ],
+     "mapMove": -0.4,
+     "meanMove": -1.7,
+     "perFight": [
+      -1.7
+     ],
+     "budget": {
+      "N": 12.34,
+      "x1": 12,
+      "N2": 26.56,
+      "x2": 9,
+      "use1": 97.2,
+      "use2": 33.9,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "meadow-rabbit",
+     "name": "Meadow Rabbit",
+     "stats": "3/2",
+     "cost": 0,
+     "rarity": "starter",
+     "copies": 2,
+     "leader": false,
+     "fights": [
+      "0-B-2",
+      "0-B-3"
+     ],
+     "mapMove": -0.8,
+     "meanMove": -1.6,
+     "perFight": [
+      -1.7,
+      -1.6
+     ],
+     "budget": {
+      "N": 12.34,
+      "x1": 11,
+      "N2": 26.56,
+      "x2": 6,
+      "use1": 89.1,
+      "use2": 22.6,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "cottontail",
+     "name": "Cottontail",
+     "stats": "2/5",
+     "cost": 0,
+     "rarity": "starter",
+     "copies": 2,
+     "leader": false,
+     "fights": [
+      "0-B-1",
+      "0-B-3"
+     ],
+     "mapMove": -1.2,
+     "meanMove": -2.4,
+     "perFight": [
+      -3.3,
+      -1.6
+     ],
+     "budget": {
+      "N": 12.34,
+      "x1": 11,
+      "N2": 26.56,
+      "x2": 10,
+      "use1": 89.1,
+      "use2": 37.7,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "thorn-shrike",
+     "name": "Thorn Shrike",
+     "stats": "3/3",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "0-B-3"
+     ],
+     "mapMove": -1.2,
+     "meanMove": -5,
+     "perFight": [
+      -5
+     ],
+     "budget": {
+      "N": 23.84,
+      "x1": 19.01,
+      "N2": 99.14,
+      "x2": 16.3,
+      "use1": 79.7,
+      "use2": 16.4,
+      "over": false,
+      "S": 4.73
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "otter-kit",
+     "name": "Otter Kit",
+     "stats": "2/5",
+     "cost": 0,
+     "rarity": "starter",
+     "copies": 2,
+     "leader": false,
+     "fights": [
+      "0-B-1",
+      "0-B-2"
+     ],
+     "mapMove": -1.7,
+     "meanMove": -3.3,
+     "perFight": [
+      -5,
+      -1.7
+     ],
+     "budget": {
+      "N": 12.34,
+      "x1": 11,
+      "N2": 26.56,
+      "x2": 10,
+      "use1": 89.1,
+      "use2": 37.7,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "ant-scout",
+     "name": "Ant Scout",
+     "stats": "1/5",
+     "cost": 0,
+     "rarity": "starter",
+     "copies": 20,
+     "leader": false,
+     "fights": [
+      "0-B-1",
+      "0-B-2",
+      "0-B-3",
+      "0-B-4"
+     ],
+     "mapMove": -4.1,
+     "meanMove": -4.1,
+     "perFight": [
+      -13.3,
+      0,
+      -3.3,
+      0
+     ],
+     "budget": {
+      "N": 11.75,
+      "x1": 11.13,
+      "N2": 24.08,
+      "x2": 7.45,
+      "use1": 94.7,
+      "use2": 30.9,
+      "over": false,
+      "S": 3.13
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "stats": "5/7",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 2,
+     "leader": false,
+     "fights": [
+      "0-B-1",
+      "0-B-3"
+     ],
+     "mapMove": -5.4,
+     "meanMove": -10.8,
+     "perFight": [
+      -20,
+      -1.6
+     ],
+     "budget": {
+      "N": 25.03,
+      "x1": 22,
+      "N2": 109.29,
+      "x2": 35,
+      "use1": 87.9,
+      "use2": 32,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "forager-ant",
+     "name": "Forager Ant",
+     "stats": "1/6",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 17,
+     "leader": false,
+     "fights": [
+      "0-B-1",
+      "0-B-2",
+      "0-B-3",
+      "0-B-4"
+     ],
+     "mapMove": -9.6,
+     "meanMove": -9.6,
+     "perFight": [
+      -16.6,
+      -13.4,
+      -10,
+      1.7
+     ],
+     "budget": {
+      "N": 11.3,
+      "x1": 11.63,
+      "N2": 22.27,
+      "x2": 7.73,
+      "use1": 102.9,
+      "use2": 34.7,
+      "over": true,
+      "S": 2.63
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    }
+   ]
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "side": false,
+   "mapName": "Caves & Alcoves",
+   "meanMinus2": 51.7,
+   "meanPlainNoShield": 71.1,
+   "brambles": [
+    "lantern-warren {\"flyerAtkBonus\":3}",
+    "collapsed-mine {\"startGold\":3}"
+   ],
+   "fights": [
+    {
+     "minus2": 66.7,
+     "plainNoShield": 81.7,
+     "code": "8-2",
+     "name": "Glowworm Grotto",
+     "kind": "skirmish",
+     "base": 63.3,
+     "allFillers": 20,
+     "noShield": 78.3,
+     "plainBramble": 68.3,
+     "bramble": {
+      "id": "lantern-warren",
+      "health": 11,
+      "shield": 4
+     },
+     "leaders": [
+      "hollow-belly-rat"
+     ],
+     "level": 0
+    },
+    {
+     "minus2": 46.7,
+     "plainNoShield": 70,
+     "code": "8-5",
+     "name": "Sulfur Vent Path",
+     "kind": "skirmish",
+     "base": 35,
+     "allFillers": 10,
+     "noShield": 40,
+     "plainBramble": 63.3,
+     "bramble": {
+      "id": "lantern-warren",
+      "health": 11,
+      "shield": 4
+     },
+     "leaders": [
+      "gallery-orb-weaver"
+     ],
+     "level": 0
+    },
+    {
+     "minus2": 41.7,
+     "plainNoShield": 61.7,
+     "code": "8-7",
+     "name": "The Roost Above",
+     "kind": "elite",
+     "base": 23.3,
+     "allFillers": 6.7,
+     "noShield": 38.3,
+     "plainBramble": 58.3,
+     "bramble": {
+      "id": "collapsed-mine",
+      "health": 12,
+      "shield": 3
+     },
+     "leaders": [
+      "malachite-golem"
+     ],
+     "level": 0
+    }
+   ],
+   "meanBase": 40.5,
+   "meanAllFillers": 12.2,
+   "meanNoShield": 52.2,
+   "meanPlainBramble": 63.3,
+   "ranked": [
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "stats": "1/21",
+     "cost": 2,
+     "rarity": "common",
+     "copies": 11,
+     "leader": false,
+     "fights": [
+      "8-2",
+      "8-5",
+      "8-7"
+     ],
+     "mapMove": 11.1,
+     "meanMove": 11.1,
+     "perFight": [
+      6.7,
+      5,
+      21.7
+     ],
+     "budget": {
+      "N": 34.47,
+      "x1": 26.87,
+      "N2": 207.27,
+      "x2": 23.06,
+      "use1": 78,
+      "use2": 11.1,
+      "over": false,
+      "S": 2.87
+     },
+     "step": {
+      "change": {
+       "dA": 0,
+       "dH": -3
+      },
+      "moves": 0.6
+     },
+     "suggestion": "under budget (78%) yet carries the map: its skill reads cheap here (check its price on this map); 1/21 -> 1/18 (one step moved its fights +0.6)"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "stats": "3/15",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 3,
+     "leader": false,
+     "fights": [
+      "8-7"
+     ],
+     "mapMove": 2.8,
+     "meanMove": 8.4,
+     "perFight": [
+      8.4
+     ],
+     "budget": {
+      "N": 28.45,
+      "x1": 28.15,
+      "N2": 141.2,
+      "x2": 49.31,
+      "use1": 98.9,
+      "use2": 34.9,
+      "over": false,
+      "S": 4.15
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "stats": "1/7",
+     "cost": 1,
+     "rarity": "common",
+     "copies": 5,
+     "leader": false,
+     "fights": [
+      "8-5"
+     ],
+     "mapMove": 2.2,
+     "meanMove": 6.7,
+     "perFight": [
+      6.7
+     ],
+     "budget": {
+      "N": 17.71,
+      "x1": 13.6,
+      "N2": 54.71,
+      "x2": 9.05,
+      "use1": 76.8,
+      "use2": 16.5,
+      "over": false,
+      "S": 1.7
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "stats": "2/8",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "8-2"
+     ],
+     "mapMove": 1.1,
+     "meanMove": 3.4,
+     "perFight": [
+      3.4
+     ],
+     "budget": {
+      "N": 22.67,
+      "x1": 18.9,
+      "N2": 89.65,
+      "x2": 20.29,
+      "use1": 83.4,
+      "use2": 22.6,
+      "over": false,
+      "S": 2.24
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "malachite-golem",
+     "name": "Malachite Golem",
+     "stats": "2/21",
+     "cost": 2,
+     "rarity": "rare",
+     "copies": 1,
+     "leader": true,
+     "fights": [
+      "8-7"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0
+     ],
+     "budget": {
+      "N": 36.8,
+      "x1": 29.87,
+      "N2": 236.24,
+      "x2": 44.06,
+      "use1": 81.2,
+      "use2": 18.7,
+      "over": false,
+      "S": 2.87
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "cave-olm",
+     "name": "Cave Olm",
+     "stats": "1/11",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "8-5"
+     ],
+     "mapMove": -1.1,
+     "meanMove": -3.3,
+     "perFight": [
+      -3.3
+     ],
+     "budget": {
+      "N": 18.35,
+      "x1": 16.3,
+      "N2": 58.74,
+      "x2": 12.32,
+      "use1": 88.8,
+      "use2": 21,
+      "over": false,
+      "S": 2.3
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "hollow-belly-rat",
+     "name": "Hollow-belly Rat",
+     "stats": "2/10",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 3,
+     "leader": true,
+     "fights": [
+      "8-2",
+      "8-5",
+      "8-7"
+     ],
+     "mapMove": -2.2,
+     "meanMove": -2.2,
+     "perFight": [
+      1.7,
+      -3.3,
+      -5
+     ],
+     "budget": {
+      "N": 21.04,
+      "x1": 18,
+      "N2": 77.22,
+      "x2": 21,
+      "use1": 85.6,
+      "use2": 27.2,
+      "over": false,
+      "S": 2
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "name": "Gallery Orb-Weaver",
+     "stats": "4/7",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 2,
+     "leader": true,
+     "fights": [
+      "8-5"
+     ],
+     "mapMove": -3.3,
+     "meanMove": -10,
+     "perFight": [
+      -10
+     ],
+     "budget": {
+      "N": 22.67,
+      "x1": 21.75,
+      "N2": 89.65,
+      "x2": 29.89,
+      "use1": 95.9,
+      "use2": 33.3,
+      "over": false,
+      "S": 2.75
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "stats": "5/5",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 4,
+     "leader": false,
+     "fights": [
+      "8-2"
+     ],
+     "mapMove": -4.4,
+     "meanMove": -13.3,
+     "perFight": [
+      -13.3
+     ],
+     "budget": {
+      "N": 14.79,
+      "x1": 14,
+      "N2": 38.16,
+      "x2": 17.5,
+      "use1": 94.7,
+      "use2": 45.9,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "stats": "1/1",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 15,
+     "leader": false,
+     "fights": [
+      "8-2",
+      "8-5",
+      "8-7"
+     ],
+     "mapMove": -30.5,
+     "meanMove": -30.5,
+     "perFight": [
+      -38.3,
+      -35,
+      -18.3
+     ],
+     "budget": {
+      "N": 14.56,
+      "x1": 9.22,
+      "N2": 36.98,
+      "x2": 6.24,
+      "use1": 63.3,
+      "use2": 16.9,
+      "over": false,
+      "S": 4.5
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    }
+   ]
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "mapName": "Coral Current",
+   "meanMinus2": 75,
+   "meanPlainNoShield": 86.7,
+   "brambles": [
+    "coral-spire {\"unitHpBonus\":4}"
+   ],
+   "fights": [
+    {
+     "minus2": 75,
+     "plainNoShield": 86.7,
+     "code": "10-1",
+     "name": "Clownfish Shoal",
+     "kind": "skirmish",
+     "base": 71.7,
+     "allFillers": 58.3,
+     "noShield": 83.3,
+     "plainBramble": 80,
+     "bramble": {
+      "id": "coral-spire",
+      "health": 12,
+      "shield": 5
+     },
+     "leaders": [
+      "riptide-eel"
+     ],
+     "level": 0
+    }
+   ],
+   "meanBase": 71.7,
+   "meanAllFillers": 58.3,
+   "meanNoShield": 83.3,
+   "meanPlainBramble": 80,
+   "ranked": [
+    {
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "stats": "1/9",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 5,
+     "leader": false,
+     "fights": [
+      "10-1"
+     ],
+     "mapMove": 15,
+     "meanMove": 15,
+     "perFight": [
+      15
+     ],
+     "budget": {
+      "N": 14.56,
+      "x1": 13.5,
+      "N2": 36.98,
+      "x2": 9.56,
+      "use1": 92.7,
+      "use2": 25.9,
+      "over": false,
+      "S": 1.5
+     },
+     "step": {
+      "change": {
+       "dA": 0,
+       "dH": -3
+      },
+      "moves": 0
+     },
+     "suggestion": "at budget (92.7%) but plays above it: 1/9 -> 1/6 (one step moved its fights 0), or re-price its skill"
+    },
+    {
+     "id": "orca-vanguard",
+     "name": "Orca Vanguard",
+     "stats": "7/7",
+     "cost": 3,
+     "rarity": "common",
+     "copies": 5,
+     "leader": false,
+     "fights": [
+      "10-1"
+     ],
+     "mapMove": 11.6,
+     "meanMove": 11.6,
+     "perFight": [
+      11.6
+     ],
+     "budget": {
+      "N": 38.55,
+      "x1": 35.72,
+      "N2": 259.24,
+      "x2": 63.9,
+      "use1": 92.7,
+      "use2": 24.6,
+      "over": false,
+      "S": 7.72
+     },
+     "step": {
+      "change": {
+       "dA": -1,
+       "dH": 0
+      },
+      "moves": -3.4
+     },
+     "suggestion": "at budget (92.7%) but plays above it: 7/7 -> 6/7 (one step moved its fights -3.4), or re-price its skill"
+    },
+    {
+     "id": "kraken-spawnling",
+     "name": "Kraken Spawnling",
+     "stats": "2/16",
+     "cost": 3,
+     "rarity": "common",
+     "copies": 5,
+     "leader": false,
+     "fights": [
+      "10-1"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0
+     ],
+     "budget": {
+      "N": 33.59,
+      "x1": 28.19,
+      "N2": 196.82,
+      "x2": 41.58,
+      "use1": 83.9,
+      "use2": 21.1,
+      "over": false,
+      "S": 6.19
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "reef-shark",
+     "name": "Reef Shark",
+     "stats": "6/13",
+     "cost": 2,
+     "rarity": "common",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "10-1"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0
+     ],
+     "budget": {
+      "N": 34.47,
+      "x1": 32.5,
+      "N2": 207.27,
+      "x2": 78.56,
+      "use1": 94.3,
+      "use2": 37.9,
+      "over": false,
+      "S": 1.5
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "riptide-eel",
+     "name": "Riptide Eel",
+     "stats": "6/7",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 4,
+     "leader": true,
+     "fights": [
+      "10-1"
+     ],
+     "mapMove": -18.4,
+     "meanMove": -18.4,
+     "perFight": [
+      -18.4
+     ],
+     "budget": {
+      "N": 22.67,
+      "x1": 22.3,
+      "N2": 89.65,
+      "x2": 40.18,
+      "use1": 98.4,
+      "use2": 44.8,
+      "over": false,
+      "S": -2.7
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    }
+   ]
+  },
+  {
+   "map": "mj",
+   "mapNo": 10,
+   "side": true,
+   "mapName": "The Sunken Depths",
+   "meanMinus2": 25.9,
+   "meanPlainNoShield": 62.5,
+   "brambles": [
+    "coral-spire {\"unitHpBonus\":4}"
+   ],
+   "fights": [
+    {
+     "minus2": 25,
+     "plainNoShield": 51.7,
+     "code": "10-A-4",
+     "name": "The Undertow",
+     "kind": "elite",
+     "base": 18.3,
+     "allFillers": 30,
+     "noShield": 36.7,
+     "plainBramble": 35,
+     "bramble": {
+      "id": "coral-spire",
+      "health": 14,
+      "shield": 6
+     },
+     "leaders": [
+      "mangrove-manatee"
+     ],
+     "level": 3
+    },
+    {
+     "minus2": 26.7,
+     "plainNoShield": 73.3,
+     "code": "10-A-5",
+     "name": "The Ferry's Last Passenger",
+     "kind": "boss",
+     "base": 13.3,
+     "allFillers": 5,
+     "noShield": 56.7,
+     "plainBramble": 50,
+     "bramble": {
+      "id": "coral-spire",
+      "health": 16,
+      "shield": 17
+     },
+     "leaders": [
+      "hagfish-silencer"
+     ],
+     "level": 3
+    }
+   ],
+   "meanBase": 15.8,
+   "meanAllFillers": 17.5,
+   "meanNoShield": 46.7,
+   "meanPlainBramble": 42.5,
+   "ranked": [
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "stats": "7/7",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 1,
+     "leader": true,
+     "fights": [
+      "10-A-4"
+     ],
+     "mapMove": 9.2,
+     "meanMove": 18.4,
+     "perFight": [
+      18.4
+     ],
+     "budget": {
+      "N": 33.65,
+      "x1": 32.4,
+      "N2": 197.53,
+      "x2": 53.84,
+      "use1": 96.3,
+      "use2": 27.3,
+      "over": false,
+      "S": 4.4
+     },
+     "step": {
+      "change": {
+       "dA": -1,
+       "dH": 0
+      },
+      "moves": 1.7
+     },
+     "suggestion": "at budget (96.3%) but plays above it: 7/7 -> 6/7 (one step moved its fights +1.7), or re-price its skill"
+    },
+    {
+     "id": "kraken-spawnling",
+     "name": "Kraken Spawnling",
+     "stats": "2/16",
+     "cost": 3,
+     "rarity": "common",
+     "copies": 9,
+     "leader": false,
+     "fights": [
+      "10-A-4",
+      "10-A-5"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      5,
+      -5
+     ],
+     "budget": {
+      "N": 33.59,
+      "x1": 28.19,
+      "N2": 196.82,
+      "x2": 41.58,
+      "use1": 83.9,
+      "use2": 21.1,
+      "over": false,
+      "S": 6.19
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "coral-reef-shark",
+     "name": "Coral Reef Shark",
+     "stats": "4/10",
+     "cost": 2,
+     "rarity": "uncommon",
+     "copies": 4,
+     "leader": false,
+     "fights": [
+      "10-A-5"
+     ],
+     "mapMove": -0.8,
+     "meanMove": -1.6,
+     "perFight": [
+      -1.6
+     ],
+     "budget": {
+      "N": 26.29,
+      "x1": 23.5,
+      "N2": 120.57,
+      "x2": 40.56,
+      "use1": 89.4,
+      "use2": 33.6,
+      "over": false,
+      "S": 1.5
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "hagfish-silencer",
+     "name": "Hagfish Silencer",
+     "stats": "3/12",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 6,
+     "leader": true,
+     "fights": [
+      "10-A-4",
+      "10-A-5"
+     ],
+     "mapMove": -3.3,
+     "meanMove": -3.3,
+     "perFight": [
+      0,
+      -6.6
+     ],
+     "budget": {
+      "N": 22.21,
+      "x1": 21.26,
+      "N2": 86.05,
+      "x2": 36.02,
+      "use1": 95.7,
+      "use2": 41.9,
+      "over": false,
+      "S": 0.26
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "orca-vanguard",
+     "name": "Orca Vanguard",
+     "stats": "7/7",
+     "cost": 3,
+     "rarity": "common",
+     "copies": 9,
+     "leader": false,
+     "fights": [
+      "10-A-4",
+      "10-A-5"
+     ],
+     "mapMove": -3.3,
+     "meanMove": -3.3,
+     "perFight": [
+      -1.6,
+      -5
+     ],
+     "budget": {
+      "N": 38.55,
+      "x1": 35.72,
+      "N2": 259.24,
+      "x2": 63.9,
+      "use1": 92.7,
+      "use2": 24.6,
+      "over": false,
+      "S": 7.72
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "stats": "2/11",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 3,
+     "leader": false,
+     "fights": [
+      "10-A-5"
+     ],
+     "mapMove": -5.8,
+     "meanMove": -11.6,
+     "perFight": [
+      -11.6
+     ],
+     "budget": {
+      "N": 29.15,
+      "x1": 24.14,
+      "N2": 148.23,
+      "x2": 34.74,
+      "use1": 82.8,
+      "use2": 23.4,
+      "over": false,
+      "S": 7.14
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    }
+   ]
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "side": false,
+   "mapName": "Savanna Reaches",
+   "meanMinus2": 53.6,
+   "meanPlainNoShield": 76,
+   "brambles": [
+    "acacia-kraal {\"startGold\":3,\"firstUnitAtkBonus\":3}",
+    "plains-terrace {\"firstUnitAtkBonus\":3}"
+   ],
+   "fights": [
+    {
+     "minus2": 58.3,
+     "plainNoShield": 96.7,
+     "code": "14-1",
+     "name": "Zebra Stampede",
+     "kind": "skirmish",
+     "base": 18.3,
+     "allFillers": 0,
+     "noShield": 16.7,
+     "plainBramble": 93.3,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 14,
+      "shield": 7
+     },
+     "leaders": [
+      "marula-elephant"
+     ],
+     "level": 3
+    },
+    {
+     "minus2": 70,
+     "plainNoShield": 83.3,
+     "code": "14-2",
+     "name": "Hyena Chorus",
+     "kind": "skirmish",
+     "base": 35,
+     "allFillers": 0,
+     "noShield": 36.7,
+     "plainBramble": 81.7,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 14,
+      "shield": 7
+     },
+     "leaders": [
+      "spitting-cobra"
+     ],
+     "level": 3
+    },
+    {
+     "minus2": 75,
+     "plainNoShield": 95,
+     "code": "14-3",
+     "name": "Howler Canopy",
+     "kind": "skirmish",
+     "base": 38.3,
+     "allFillers": 0,
+     "noShield": 43.3,
+     "plainBramble": 91.7,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 14,
+      "shield": 7
+     },
+     "leaders": [
+      "spitting-cobra"
+     ],
+     "level": 3
+    },
+    {
+     "minus2": 90,
+     "plainNoShield": 98.3,
+     "code": "14-4",
+     "name": "Toucan Watch",
+     "kind": "skirmish",
+     "base": 40,
+     "allFillers": 1.7,
+     "noShield": 40,
+     "plainBramble": 98.3,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 14,
+      "shield": 7
+     },
+     "leaders": [
+      "marula-elephant"
+     ],
+     "level": 3
+    },
+    {
+     "minus2": 31.7,
+     "plainNoShield": 45,
+     "code": "14-5",
+     "name": "Giraffe Vanguard",
+     "kind": "elite",
+     "base": 21.7,
+     "allFillers": 0,
+     "noShield": 23.3,
+     "plainBramble": 43.3,
+     "bramble": {
+      "id": "plains-terrace",
+      "health": 12,
+      "shield": 11
+     },
+     "leaders": [
+      "savanna-cheetah"
+     ],
+     "level": 3
+    },
+    {
+     "minus2": 25,
+     "plainNoShield": 55,
+     "code": "14-6",
+     "name": "Jaguar Run",
+     "kind": "elite",
+     "base": 3.3,
+     "allFillers": 0,
+     "noShield": 5,
+     "plainBramble": 45,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 16,
+      "shield": 6
+     },
+     "leaders": [
+      "savanna-cheetah"
+     ],
+     "level": 3
+    },
+    {
+     "minus2": 21.7,
+     "plainNoShield": 60,
+     "code": "14-7",
+     "name": "The Cheetah Matriarch",
+     "kind": "elite",
+     "base": 6.7,
+     "allFillers": 0,
+     "noShield": 6.7,
+     "plainBramble": 53.3,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 16,
+      "shield": 19
+     },
+     "leaders": [
+      "savanna-cheetah"
+     ],
+     "level": 3
+    },
+    {
+     "minus2": 56.7,
+     "plainNoShield": 75,
+     "code": "14-8",
+     "name": "The Savanna Warlord",
+     "kind": "miniboss",
+     "base": 10,
+     "allFillers": 0,
+     "noShield": 10,
+     "plainBramble": 76.7,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 16,
+      "shield": 14
+     },
+     "leaders": [
+      "dust-hyena"
+     ],
+     "level": 3
+    }
+   ],
+   "meanBase": 21.7,
+   "meanAllFillers": 0.2,
+   "meanNoShield": 22.7,
+   "meanPlainBramble": 72.9,
+   "ranked": [
+    {
+     "id": "ant-hill",
+     "name": "Ant Hill",
+     "stats": "0/22",
+     "cost": 2,
+     "rarity": "common",
+     "copies": 4,
+     "leader": false,
+     "fights": [
+      "14-3",
+      "14-5",
+      "14-7",
+      "14-8"
+     ],
+     "mapMove": 1.2,
+     "meanMove": 2.5,
+     "perFight": [
+      5,
+      -1.7,
+      1.6,
+      5
+     ],
+     "budget": {
+      "N": 34.47,
+      "x1": 31.12,
+      "N2": 207.27,
+      "x2": 20.79,
+      "use1": 90.3,
+      "use2": 10,
+      "over": false,
+      "S": 9.12
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "stats": "2/4",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "14-6"
+     ],
+     "mapMove": 0.2,
+     "meanMove": 1.7,
+     "perFight": [
+      1.7
+     ],
+     "budget": {
+      "N": 18.35,
+      "x1": 14.17,
+      "N2": 58.74,
+      "x2": 10.81,
+      "use1": 77.2,
+      "use2": 18.4,
+      "over": false,
+      "S": 2.27
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "springbok-pronker",
+     "name": "Springbok Pronker",
+     "stats": "2/12",
+     "cost": 1,
+     "rarity": "common",
+     "copies": 40,
+     "leader": false,
+     "fights": [
+      "14-1",
+      "14-2",
+      "14-3",
+      "14-4",
+      "14-5",
+      "14-6",
+      "14-7",
+      "14-8"
+     ],
+     "mapMove": 0.2,
+     "meanMove": 0.2,
+     "perFight": [
+      0,
+      1.7,
+      -1.6,
+      1.7,
+      0,
+      0,
+      -3.4,
+      3.3
+     ],
+     "budget": {
+      "N": 19.34,
+      "x1": 18.03,
+      "N2": 65.25,
+      "x2": 24,
+      "use1": 93.2,
+      "use2": 36.8,
+      "over": false,
+      "S": 0.03
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "acacia-giraffe",
+     "name": "Acacia Giraffe",
+     "stats": "2/11",
+     "cost": 2,
+     "rarity": "common",
+     "copies": 7,
+     "leader": false,
+     "fights": [
+      "14-1",
+      "14-2",
+      "14-3",
+      "14-4",
+      "14-6",
+      "14-7",
+      "14-8"
+     ],
+     "mapMove": -0.2,
+     "meanMove": -0.2,
+     "perFight": [
+      0,
+      1.7,
+      -3.3,
+      -3.3,
+      1.7,
+      1.6,
+      0
+     ],
+     "budget": {
+      "N": 31.14,
+      "x1": 20.06,
+      "N2": 169.16,
+      "x2": 25.96,
+      "use1": 64.4,
+      "use2": 15.3,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "stats": "3/3",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 3,
+     "leader": false,
+     "fights": [
+      "14-2",
+      "14-6",
+      "14-7"
+     ],
+     "mapMove": -0.4,
+     "meanMove": -1.1,
+     "perFight": [
+      -1.7,
+      0,
+      -1.7
+     ],
+     "budget": {
+      "N": 13.57,
+      "x1": 12,
+      "N2": 32.12,
+      "x2": 9,
+      "use1": 88.4,
+      "use2": 28,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "mouse-sapper",
+     "name": "Mouse Sapper",
+     "stats": "3/11",
+     "cost": 1,
+     "rarity": "common",
+     "copies": 4,
+     "leader": false,
+     "fights": [
+      "14-1",
+      "14-4",
+      "14-5",
+      "14-7"
+     ],
+     "mapMove": -0.8,
+     "meanMove": -1.7,
+     "perFight": [
+      0,
+      -3.3,
+      -3.4,
+      0
+     ],
+     "budget": {
+      "N": 21.5,
+      "x1": 21.07,
+      "N2": 80.64,
+      "x2": 33.29,
+      "use1": 98,
+      "use2": 41.3,
+      "over": false,
+      "S": 1.07
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "stats": "2/12",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 11,
+     "leader": false,
+     "fights": [
+      "14-1",
+      "14-4",
+      "14-6"
+     ],
+     "mapMove": -2.9,
+     "meanMove": -7.7,
+     "perFight": [
+      -6.6,
+      -15,
+      -1.6
+     ],
+     "budget": {
+      "N": 16.51,
+      "x1": 15.96,
+      "N2": 47.55,
+      "x2": 22.96,
+      "use1": 96.7,
+      "use2": 48.3,
+      "over": false,
+      "S": -2.04
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "stats": "4/4",
+     "cost": 1,
+     "rarity": "veryrare",
+     "copies": 5,
+     "leader": true,
+     "fights": [
+      "14-5",
+      "14-6",
+      "14-7",
+      "14-8"
+     ],
+     "mapMove": -3.3,
+     "meanMove": -6.6,
+     "perFight": [
+      -11.7,
+      -1.6,
+      -5,
+      -8.3
+     ],
+     "budget": {
+      "N": 22.85,
+      "x1": 18.23,
+      "N2": 91.08,
+      "x2": 17.24,
+      "use1": 79.8,
+      "use2": 18.9,
+      "over": false,
+      "S": 2.23
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "stats": "2/10",
+     "cost": 0,
+     "rarity": "uncommon",
+     "copies": 7,
+     "leader": false,
+     "fights": [
+      "14-2",
+      "14-5"
+     ],
+     "mapMove": -4,
+     "meanMove": -15.8,
+     "perFight": [
+      -13.3,
+      -18.4
+     ],
+     "budget": {
+      "N": 21.15,
+      "x1": 16.2,
+      "N2": 78.03,
+      "x2": 20.01,
+      "use1": 76.6,
+      "use2": 25.6,
+      "over": false,
+      "S": 0.2
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "stats": "2/6",
+     "cost": 0,
+     "rarity": "uncommon",
+     "copies": 12,
+     "leader": true,
+     "fights": [
+      "14-1",
+      "14-3",
+      "14-5",
+      "14-7",
+      "14-8"
+     ],
+     "mapMove": -5.8,
+     "meanMove": -9.3,
+     "perFight": [
+      -8.3,
+      -16.6,
+      -16.7,
+      0,
+      -5
+     ],
+     "budget": {
+      "N": 17.36,
+      "x1": 14.88,
+      "N2": 52.57,
+      "x2": 14.07,
+      "use1": 85.7,
+      "use2": 26.8,
+      "over": false,
+      "S": 2.88
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "spitting-cobra",
+     "name": "Spitting Cobra",
+     "stats": "4/7",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 4,
+     "leader": true,
+     "fights": [
+      "14-2",
+      "14-3",
+      "14-6"
+     ],
+     "mapMove": -8.3,
+     "meanMove": -22.2,
+     "perFight": [
+      -26.7,
+      -36.6,
+      -3.3
+     ],
+     "budget": {
+      "N": 29.85,
+      "x1": 25.63,
+      "N2": 155.43,
+      "x2": 38.99,
+      "use1": 85.9,
+      "use2": 25.1,
+      "over": false,
+      "S": 6.63
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "marula-elephant",
+     "name": "Marula Elephant",
+     "stats": "4/20",
+     "cost": 2,
+     "rarity": "uncommon",
+     "copies": 31,
+     "leader": true,
+     "fights": [
+      "14-1",
+      "14-2",
+      "14-3",
+      "14-4",
+      "14-5",
+      "14-6",
+      "14-7",
+      "14-8"
+     ],
+     "mapMove": -13.5,
+     "meanMove": -13.5,
+     "perFight": [
+      -16.6,
+      -11.7,
+      -16.6,
+      -36.7,
+      -13.4,
+      -1.6,
+      -5,
+      -6.7
+     ],
+     "budget": {
+      "N": 32.31,
+      "x1": 28.3,
+      "N2": 182.11,
+      "x2": 76.58,
+      "use1": 87.6,
+      "use2": 42.1,
+      "over": false,
+      "S": -3.7
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    }
+   ]
+  },
+  {
+   "map": "my",
+   "mapNo": 14,
+   "side": true,
+   "mapName": "The Canopy",
+   "meanMinus2": 9.7,
+   "meanPlainNoShield": 24,
+   "brambles": [
+    "acacia-kraal {\"startGold\":3,\"firstUnitAtkBonus\":3}"
+   ],
+   "fights": [
+    {
+     "minus2": 0,
+     "plainNoShield": 3.3,
+     "code": "14-A-1",
+     "name": "Dart Frogs",
+     "kind": "skirmish",
+     "base": 0,
+     "allFillers": 0,
+     "noShield": 0,
+     "plainBramble": 0,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 14,
+      "shield": 9
+     },
+     "leaders": [
+      "pangolin-roller"
+     ],
+     "level": 3.54
+    },
+    {
+     "minus2": 46.7,
+     "plainNoShield": 88.3,
+     "code": "14-A-2",
+     "name": "Strangler Arch",
+     "kind": "skirmish",
+     "base": 11.7,
+     "allFillers": 0,
+     "noShield": 16.7,
+     "plainBramble": 85,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 14,
+      "shield": 9
+     },
+     "leaders": [
+      "vampire-bat"
+     ],
+     "level": 3.54
+    },
+    {
+     "minus2": 0,
+     "plainNoShield": 8.3,
+     "code": "14-A-3",
+     "name": "Sloth Boughs",
+     "kind": "skirmish",
+     "base": 0,
+     "allFillers": 0,
+     "noShield": 0,
+     "plainBramble": 6.7,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 14,
+      "shield": 9
+     },
+     "leaders": [
+      "pangolin-roller"
+     ],
+     "level": 3.54
+    },
+    {
+     "minus2": 1.7,
+     "plainNoShield": 11.7,
+     "code": "14-A-4",
+     "name": "Drum Circle",
+     "kind": "elite",
+     "base": 0,
+     "allFillers": 0,
+     "noShield": 0,
+     "plainBramble": 10,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 16,
+      "shield": 14
+     },
+     "leaders": [
+      "hercules-beetle"
+     ],
+     "level": 3.54
+    },
+    {
+     "minus2": 0,
+     "plainNoShield": 8.3,
+     "code": "14-A-5",
+     "name": "The Jaguar's Path",
+     "kind": "boss",
+     "base": 0,
+     "allFillers": 0,
+     "noShield": 0,
+     "plainBramble": 1.7,
+     "bramble": {
+      "id": "acacia-kraal",
+      "health": 18,
+      "shield": 27
+     },
+     "leaders": [
+      "jaguar-stalker"
+     ],
+     "level": 3.54
+    }
+   ],
+   "meanBase": 2.3,
+   "meanAllFillers": 0,
+   "meanNoShield": 3.3,
+   "meanPlainBramble": 20.7,
+   "ranked": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "stats": "2/12",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 21,
+     "leader": false,
+     "fights": [
+      "14-A-1",
+      "14-A-2",
+      "14-A-3",
+      "14-A-4",
+      "14-A-5"
+     ],
+     "mapMove": 1.3,
+     "meanMove": 1.3,
+     "perFight": [
+      0,
+      6.6,
+      0,
+      0,
+      0
+     ],
+     "budget": {
+      "N": 16.51,
+      "x1": 15.96,
+      "N2": 47.55,
+      "x2": 22.96,
+      "use1": 96.7,
+      "use2": 48.3,
+      "over": false,
+      "S": -2.04
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "stats": "2/5",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 4,
+     "leader": false,
+     "fights": [
+      "14-A-1",
+      "14-A-3",
+      "14-A-4",
+      "14-A-5"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "budget": {
+      "N": 14.56,
+      "x1": 13.59,
+      "N2": 36.98,
+      "x2": 11.68,
+      "use1": 93.3,
+      "use2": 31.6,
+      "over": false,
+      "S": 2.59
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "camouflage-frog",
+     "name": "Camouflage Frog",
+     "stats": "2/5",
+     "cost": 1,
+     "rarity": "common",
+     "copies": 3,
+     "leader": false,
+     "fights": [
+      "14-A-1",
+      "14-A-2",
+      "14-A-5"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0,
+      0,
+      0
+     ],
+     "budget": {
+      "N": 19.87,
+      "x1": 14.48,
+      "N2": 68.87,
+      "x2": 12.36,
+      "use1": 72.9,
+      "use2": 17.9,
+      "over": false,
+      "S": 1.5
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "pangolin-roller",
+     "name": "Pangolin Roller",
+     "stats": "5/5",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 10,
+     "leader": true,
+     "fights": [
+      "14-A-1",
+      "14-A-3",
+      "14-A-4",
+      "14-A-5"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "budget": {
+      "N": 25.47,
+      "x1": 22.81,
+      "N2": 113.17,
+      "x2": 26.97,
+      "use1": 89.6,
+      "use2": 23.8,
+      "over": false,
+      "S": 2.81
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "kinkajou-lurker",
+     "name": "Kinkajou Lurker",
+     "stats": "4/6",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "14-A-3"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0
+     ],
+     "budget": {
+      "N": 25.74,
+      "x1": 19.75,
+      "N2": 115.58,
+      "x2": 24.77,
+      "use1": 76.7,
+      "use2": 21.4,
+      "over": false,
+      "S": 1.75
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "hercules-beetle",
+     "name": "Hercules Beetle",
+     "stats": "2/17",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 3,
+     "leader": true,
+     "fights": [
+      "14-A-4"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0
+     ],
+     "budget": {
+      "N": 30.79,
+      "x1": 27.79,
+      "N2": 165.38,
+      "x2": 39.74,
+      "use1": 90.3,
+      "use2": 24,
+      "over": false,
+      "S": 4.79
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "jaguar-stalker",
+     "name": "Jaguar Stalker",
+     "stats": "1/15",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 6,
+     "leader": true,
+     "fights": [
+      "14-A-4",
+      "14-A-5"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0,
+      0
+     ],
+     "budget": {
+      "N": 26.41,
+      "x1": 20.23,
+      "N2": 121.67,
+      "x2": 16.24,
+      "use1": 76.6,
+      "use2": 13.3,
+      "over": false,
+      "S": 2.23
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "redwood-woodpecker",
+     "name": "Redwood Woodpecker",
+     "stats": "2/11",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 2,
+     "leader": false,
+     "fights": [
+      "14-A-4",
+      "14-A-5"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0,
+      0
+     ],
+     "budget": {
+      "N": 22.67,
+      "x1": 19.46,
+      "N2": 89.65,
+      "x2": 23.51,
+      "use1": 85.8,
+      "use2": 26.2,
+      "over": false,
+      "S": 2.46
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "stats": "1/8",
+     "cost": 0,
+     "rarity": "uncommon",
+     "copies": 5,
+     "leader": false,
+     "fights": [
+      "14-A-1",
+      "14-A-2",
+      "14-A-3",
+      "14-A-4",
+      "14-A-5"
+     ],
+     "mapMove": -0.3,
+     "meanMove": -0.3,
+     "perFight": [
+      0,
+      -1.7,
+      0,
+      0,
+      0
+     ],
+     "budget": {
+      "N": 21.15,
+      "x1": 15.92,
+      "N2": 78.03,
+      "x2": 11.52,
+      "use1": 75.3,
+      "use2": 14.8,
+      "over": false,
+      "S": 2.83
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "proboscis-monkey",
+     "name": "Proboscis Monkey",
+     "stats": "2/11",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 2,
+     "leader": false,
+     "fights": [
+      "14-A-2",
+      "14-A-4"
+     ],
+     "mapMove": -0.7,
+     "meanMove": -1.7,
+     "perFight": [
+      -3.4,
+      0
+     ],
+     "budget": {
+      "N": 22.67,
+      "x1": 18.9,
+      "N2": 89.65,
+      "x2": 22.9,
+      "use1": 83.4,
+      "use2": 25.5,
+      "over": false,
+      "S": 1.9
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "weaver-bird",
+     "name": "Weaver Bird",
+     "stats": "3/6",
+     "cost": 1,
+     "rarity": "common",
+     "copies": 19,
+     "leader": false,
+     "fights": [
+      "14-A-1",
+      "14-A-2",
+      "14-A-3",
+      "14-A-5"
+     ],
+     "mapMove": -1.7,
+     "meanMove": -2.1,
+     "perFight": [
+      0,
+      -8.4,
+      0,
+      0
+     ],
+     "budget": {
+      "N": 19.34,
+      "x1": 17.34,
+      "N2": 65.25,
+      "x2": 19.37,
+      "use1": 89.7,
+      "use2": 29.7,
+      "over": false,
+      "S": 2.34
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "stats": "2/3",
+     "cost": 0,
+     "rarity": "rare",
+     "copies": 3,
+     "leader": true,
+     "fights": [
+      "14-A-2",
+      "14-A-3",
+      "14-A-4"
+     ],
+     "mapMove": -2.3,
+     "meanMove": -3.9,
+     "perFight": [
+      -11.7,
+      0,
+      0
+     ],
+     "budget": {
+      "N": 22.32,
+      "x1": 14.84,
+      "N2": 73.87,
+      "x2": 11.4,
+      "use1": 66.5,
+      "use2": 15.4,
+      "over": false,
+      "S": 4.13
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    }
+   ]
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "mapName": "Wolfsbane Tundra",
+   "meanMinus2": 25.3,
+   "meanPlainNoShield": 39.7,
+   "brambles": [
+    "wolfsbane-lodge {\"castleRegen\":3}",
+    "collapsed-mine {\"startGold\":3}"
+   ],
+   "fights": [
+    {
+     "minus2": 41.7,
+     "plainNoShield": 63.3,
+     "code": "17-4",
+     "name": "Lynx Ambush",
+     "kind": "skirmish",
+     "base": 31.7,
+     "allFillers": 25,
+     "noShield": 50,
+     "plainBramble": 50,
+     "bramble": {
+      "id": "wolfsbane-lodge",
+      "health": 17,
+      "shield": 9
+     },
+     "leaders": [
+      "walrus-icebreaker"
+     ],
+     "level": 3.36
+    },
+    {
+     "minus2": 40,
+     "plainNoShield": 68.3,
+     "code": "17-5",
+     "name": "Musk Ox Bulwark",
+     "kind": "elite",
+     "base": 23.3,
+     "allFillers": 0,
+     "noShield": 33.3,
+     "plainBramble": 60,
+     "bramble": {
+      "id": "collapsed-mine",
+      "health": 12,
+      "shield": 13
+     },
+     "leaders": [
+      "walrus-icebreaker"
+     ],
+     "level": 3.36
+    },
+    {
+     "minus2": 31.7,
+     "plainNoShield": 46.7,
+     "code": "17-6",
+     "name": "Glacier Herd",
+     "kind": "elite",
+     "base": 26.7,
+     "allFillers": 1.7,
+     "noShield": 36.7,
+     "plainBramble": 41.7,
+     "bramble": {
+      "id": "wolfsbane-lodge",
+      "health": 19,
+      "shield": 13
+     },
+     "leaders": [
+      "walrus-icebreaker"
+     ],
+     "level": 3.36
+    },
+    {
+     "minus2": 13.3,
+     "plainNoShield": 20,
+     "code": "17-7",
+     "name": "Alpha Howler's Den",
+     "kind": "elite",
+     "base": 10,
+     "allFillers": 0,
+     "noShield": 16.7,
+     "plainBramble": 13.3,
+     "bramble": {
+      "id": "wolfsbane-lodge",
+      "health": 19,
+      "shield": 24
+     },
+     "leaders": [
+      "walrus-icebreaker"
+     ],
+     "level": 3.36
+    },
+    {
+     "minus2": 0,
+     "plainNoShield": 0,
+     "code": "17-8",
+     "name": "The Glacial Ape-King",
+     "kind": "miniboss",
+     "base": 0,
+     "allFillers": 0,
+     "noShield": 0,
+     "plainBramble": 0,
+     "bramble": {
+      "id": "wolfsbane-lodge",
+      "health": 19,
+      "shield": 34
+     },
+     "leaders": [
+      "walrus-icebreaker"
+     ],
+     "level": 3.36
+    }
+   ],
+   "meanBase": 18.3,
+   "meanAllFillers": 5.3,
+   "meanNoShield": 27.3,
+   "meanPlainBramble": 33,
+   "ranked": [
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "stats": "1/16",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 8,
+     "leader": false,
+     "fights": [
+      "17-4",
+      "17-6",
+      "17-8"
+     ],
+     "mapMove": 2,
+     "meanMove": 3.3,
+     "perFight": [
+      13.3,
+      -3.4,
+      0
+     ],
+     "budget": {
+      "N": 29.85,
+      "x1": 26.59,
+      "N2": 155.43,
+      "x2": 30.4,
+      "use1": 89.1,
+      "use2": 19.6,
+      "over": false,
+      "S": 7.59
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "alpha-howler",
+     "name": "Alpha Howler",
+     "stats": "7/7",
+     "cost": 2,
+     "rarity": "common",
+     "copies": 5,
+     "leader": false,
+     "fights": [
+      "17-4",
+      "17-5",
+      "17-6",
+      "17-7",
+      "17-8"
+     ],
+     "mapMove": 1.3,
+     "meanMove": 1.3,
+     "perFight": [
+      5,
+      0,
+      0,
+      1.7,
+      0
+     ],
+     "budget": {
+      "N": 36.1,
+      "x1": 33.08,
+      "N2": 227.34,
+      "x2": 55.45,
+      "use1": 91.6,
+      "use2": 24.4,
+      "over": false,
+      "S": 5.08
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "stats": "2/4",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "17-8"
+     ],
+     "mapMove": 0,
+     "meanMove": 0,
+     "perFight": [
+      0
+     ],
+     "budget": {
+      "N": 16.19,
+      "x1": 12.92,
+      "N2": 45.72,
+      "x2": 9.75,
+      "use1": 79.8,
+      "use2": 21.3,
+      "over": false,
+      "S": 1.12
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "stats": "2/4",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "17-7"
+     ],
+     "mapMove": -1,
+     "meanMove": -5,
+     "perFight": [
+      -5
+     ],
+     "budget": {
+      "N": 16.19,
+      "x1": 11.8,
+      "N2": 45.72,
+      "x2": 9.44,
+      "use1": 72.9,
+      "use2": 20.6,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "spitting-spider",
+     "name": "Spitting Spider",
+     "stats": "4/5",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 20,
+     "leader": false,
+     "fights": [
+      "17-4",
+      "17-5",
+      "17-6",
+      "17-7",
+      "17-8"
+     ],
+     "mapMove": -4.3,
+     "meanMove": -4.3,
+     "perFight": [
+      3.3,
+      -13.3,
+      -11.7,
+      0,
+      0
+     ],
+     "budget": {
+      "N": 24.31,
+      "x1": 24.06,
+      "N2": 103.09,
+      "x2": 32.46,
+      "use1": 99,
+      "use2": 31.5,
+      "over": false,
+      "S": 7.06
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "stats": "4/17",
+     "cost": 1,
+     "rarity": "veryrare",
+     "copies": 9,
+     "leader": true,
+     "fights": [
+      "17-4",
+      "17-5",
+      "17-6",
+      "17-7",
+      "17-8"
+     ],
+     "mapMove": -5.3,
+     "meanMove": -5.3,
+     "perFight": [
+      -5,
+      -6.6,
+      -11.7,
+      -3.3,
+      0
+     ],
+     "budget": {
+      "N": 31.72,
+      "x1": 30.87,
+      "N2": 175.52,
+      "x2": 68.87,
+      "use1": 97.3,
+      "use2": 39.2,
+      "over": false,
+      "S": 1.87
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "polar-bear",
+     "name": "Polar Bear",
+     "stats": "2/17",
+     "cost": 1,
+     "rarity": "veryrare",
+     "copies": 4,
+     "leader": false,
+     "fights": [
+      "17-6",
+      "17-7"
+     ],
+     "mapMove": -6.7,
+     "meanMove": -16.7,
+     "perFight": [
+      -23.4,
+      -10
+     ],
+     "budget": {
+      "N": 31.72,
+      "x1": 25.56,
+      "N2": 175.52,
+      "x2": 25.26,
+      "use1": 80.6,
+      "use2": 14.4,
+      "over": false,
+      "S": 5.38
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "harbor-seal",
+     "name": "Harbor Seal",
+     "stats": "1/9",
+     "cost": 1,
+     "rarity": "common",
+     "copies": 25,
+     "leader": false,
+     "fights": [
+      "17-4",
+      "17-5",
+      "17-6",
+      "17-7",
+      "17-8"
+     ],
+     "mapMove": -9,
+     "meanMove": -9,
+     "perFight": [
+      -5,
+      -15,
+      -20,
+      -5,
+      0
+     ],
+     "budget": {
+      "N": 23.14,
+      "x1": 17.43,
+      "N2": 93.41,
+      "x2": 13.29,
+      "use1": 75.3,
+      "use2": 14.2,
+      "over": false,
+      "S": 3.27
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "snow-bunting-archer",
+     "name": "Snow Bunting Archer",
+     "stats": "2/6",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 16,
+     "leader": false,
+     "fights": [
+      "17-4",
+      "17-5",
+      "17-6",
+      "17-7"
+     ],
+     "mapMove": -16.3,
+     "meanMove": -20.4,
+     "perFight": [
+      -21.7,
+      -23.3,
+      -26.7,
+      -10
+     ],
+     "budget": {
+      "N": 24.31,
+      "x1": 20.13,
+      "N2": 103.09,
+      "x2": 28.52,
+      "use1": 82.8,
+      "use2": 27.7,
+      "over": false,
+      "S": 8.13
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    }
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "side": true,
+   "mapName": "Basalt Foundry",
+   "meanMinus2": 18.2,
+   "meanPlainNoShield": 46.7,
+   "brambles": [
+    "ashen-bastion {\"firstUnitAtkBonus\":4}",
+    "plains-terrace {\"firstUnitAtkBonus\":3}"
+   ],
+   "fights": [
+    {
+     "minus2": 16.7,
+     "plainNoShield": 58.3,
+     "code": "19-A-1",
+     "name": "Cinder Swarm",
+     "kind": "skirmish",
+     "base": 3.3,
+     "allFillers": 1.7,
+     "noShield": 11.7,
+     "plainBramble": 46.7,
+     "bramble": {
+      "id": "ashen-bastion",
+      "health": 16,
+      "shield": 12
+     },
+     "leaders": [
+      "ember-jackal"
+     ],
+     "level": 4.44
+    },
+    {
+     "minus2": 15,
+     "plainNoShield": 48.3,
+     "code": "19-A-2",
+     "name": "Salamander Vents",
+     "kind": "skirmish",
+     "base": 1.7,
+     "allFillers": 0,
+     "noShield": 6.7,
+     "plainBramble": 31.7,
+     "bramble": {
+      "id": "ashen-bastion",
+      "health": 16,
+      "shield": 12
+     },
+     "leaders": [
+      "magma-salamander"
+     ],
+     "level": 4.44
+    },
+    {
+     "minus2": 21.7,
+     "plainNoShield": 43.3,
+     "code": "19-A-3",
+     "name": "Slag Runners",
+     "kind": "skirmish",
+     "base": 11.7,
+     "allFillers": 3.3,
+     "noShield": 15,
+     "plainBramble": 31.7,
+     "bramble": {
+      "id": "ashen-bastion",
+      "health": 16,
+      "shield": 12
+     },
+     "leaders": [
+      "tide-spirit"
+     ],
+     "level": 4.44
+    },
+    {
+     "minus2": 45,
+     "plainNoShield": 75,
+     "code": "19-A-4",
+     "name": "Vent Skitter",
+     "kind": "skirmish",
+     "base": 25,
+     "allFillers": 1.7,
+     "noShield": 26.7,
+     "plainBramble": 58.3,
+     "bramble": {
+      "id": "ashen-bastion",
+      "health": 16,
+      "shield": 12
+     },
+     "leaders": [
+      "tide-spirit"
+     ],
+     "level": 4.44
+    },
+    {
+     "minus2": 20,
+     "plainNoShield": 48.3,
+     "code": "19-A-5",
+     "name": "Ashfall Line",
+     "kind": "skirmish",
+     "base": 11.7,
+     "allFillers": 3.3,
+     "noShield": 23.3,
+     "plainBramble": 38.3,
+     "bramble": {
+      "id": "ashen-bastion",
+      "health": 16,
+      "shield": 12
+     },
+     "leaders": [
+      "magma-salamander"
+     ],
+     "level": 4.44
+    },
+    {
+     "minus2": 16.7,
+     "plainNoShield": 51.7,
+     "code": "19-A-6",
+     "name": "Furnace Mouth",
+     "kind": "skirmish",
+     "base": 6.7,
+     "allFillers": 3.3,
+     "noShield": 6.7,
+     "plainBramble": 43.3,
+     "bramble": {
+      "id": "ashen-bastion",
+      "health": 16,
+      "shield": 12
+     },
+     "leaders": [
+      "ember-jackal"
+     ],
+     "level": 4.44
+    },
+    {
+     "minus2": 20,
+     "plainNoShield": 51.7,
+     "code": "19-A-7",
+     "name": "Basalt Vanguard",
+     "kind": "elite",
+     "base": 8.3,
+     "allFillers": 0,
+     "noShield": 23.3,
+     "plainBramble": 26.7,
+     "bramble": {
+      "id": "plains-terrace",
+      "health": 12,
+      "shield": 18
+     },
+     "leaders": [
+      "tide-spirit"
+     ],
+     "level": 4.44
+    },
+    {
+     "minus2": 10,
+     "plainNoShield": 21.7,
+     "code": "19-A-8",
+     "name": "Titan's Shadow",
+     "kind": "elite",
+     "base": 8.3,
+     "allFillers": 1.7,
+     "noShield": 10,
+     "plainBramble": 18.3,
+     "bramble": {
+      "id": "ashen-bastion",
+      "health": 18,
+      "shield": 18
+     },
+     "leaders": [
+      "tide-spirit"
+     ],
+     "level": 4.44
+    },
+    {
+     "minus2": 3.3,
+     "plainNoShield": 20,
+     "code": "19-A-9",
+     "name": "The Pyroclast Wyrm",
+     "kind": "elite",
+     "base": 5,
+     "allFillers": 0,
+     "noShield": 5,
+     "plainBramble": 16.7,
+     "bramble": {
+      "id": "ashen-bastion",
+      "health": 18,
+      "shield": 18
+     },
+     "leaders": [
+      "magma-salamander"
+     ],
+     "level": 4.44
+    },
+    {
+     "minus2": 13.3,
+     "plainNoShield": 48.3,
+     "code": "19-A-10",
+     "name": "The Phoenix Ember King",
+     "kind": "boss",
+     "base": 10,
+     "allFillers": 0,
+     "noShield": 15,
+     "plainBramble": 25,
+     "bramble": {
+      "id": "ashen-bastion",
+      "health": 20,
+      "shield": 44
+     },
+     "leaders": [
+      "ember-jackal"
+     ],
+     "level": 4.44
+    }
+   ],
+   "meanBase": 9.2,
+   "meanAllFillers": 1.5,
+   "meanNoShield": 14.3,
+   "meanPlainBramble": 33.7,
+   "ranked": [
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "stats": "1/11",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 41,
+     "leader": false,
+     "fights": [
+      "19-A-1",
+      "19-A-2",
+      "19-A-3",
+      "19-A-4",
+      "19-A-5",
+      "19-A-6",
+      "19-A-7",
+      "19-A-8",
+      "19-A-9",
+      "19-A-10"
+     ],
+     "mapMove": 5.3,
+     "meanMove": 5.3,
+     "perFight": [
+      6.7,
+      3.3,
+      16.6,
+      5,
+      0,
+      1.6,
+      15,
+      3.4,
+      1.7,
+      0
+     ],
+     "budget": {
+      "N": 16.19,
+      "x1": 15.2,
+      "N2": 45.72,
+      "x2": 11.36,
+      "use1": 93.9,
+      "use2": 24.8,
+      "over": false,
+      "S": 1.2
+     },
+     "step": {
+      "change": {
+       "dA": 0,
+       "dH": -3
+      },
+      "moves": 4.2
+     },
+     "suggestion": "at budget (93.9%) but plays above it: 1/11 -> 1/8 (one step moved its fights +4.2), or re-price its skill"
+    },
+    {
+     "id": "quill-volley",
+     "name": "Quill Volley",
+     "stats": "1/14",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 3,
+     "leader": false,
+     "fights": [
+      "19-A-8"
+     ],
+     "mapMove": 0.3,
+     "meanMove": 3.4,
+     "perFight": [
+      3.4
+     ],
+     "budget": {
+      "N": 22.85,
+      "x1": 19.96,
+      "N2": 91.08,
+      "x2": 16.19,
+      "use1": 87.4,
+      "use2": 17.8,
+      "over": false,
+      "S": 2.96
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "stats": "3/3",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 11,
+     "leader": false,
+     "fights": [
+      "19-A-1",
+      "19-A-8",
+      "19-A-10"
+     ],
+     "mapMove": -0.2,
+     "meanMove": -0.5,
+     "perFight": [
+      -1.6,
+      6.7,
+      -6.7
+     ],
+     "budget": {
+      "N": 16.72,
+      "x1": 14.59,
+      "N2": 48.77,
+      "x2": 10.68,
+      "use1": 87.3,
+      "use2": 21.9,
+      "over": false,
+      "S": 2.59
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "hercules-beetle",
+     "name": "Hercules Beetle",
+     "stats": "2/17",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 1,
+     "leader": false,
+     "fights": [
+      "19-A-7"
+     ],
+     "mapMove": -0.2,
+     "meanMove": -1.6,
+     "perFight": [
+      -1.6
+     ],
+     "budget": {
+      "N": 30.79,
+      "x1": 27.79,
+      "N2": 165.38,
+      "x2": 39.74,
+      "use1": 90.3,
+      "use2": 24,
+      "over": false,
+      "S": 4.79
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "anvilwhisker-otter",
+     "name": "Anvilwhisker Otter",
+     "stats": "1/14",
+     "cost": 2,
+     "rarity": "uncommon",
+     "copies": 7,
+     "leader": false,
+     "fights": [
+      "19-A-1",
+      "19-A-2",
+      "19-A-3",
+      "19-A-4",
+      "19-A-5",
+      "19-A-6",
+      "19-A-9"
+     ],
+     "mapMove": -0.3,
+     "meanMove": -0.5,
+     "perFight": [
+      0,
+      0,
+      0,
+      -1.7,
+      -1.7,
+      0,
+      0
+     ],
+     "budget": {
+      "N": 29.09,
+      "x1": 21.2,
+      "N2": 147.62,
+      "x2": 18.41,
+      "use1": 72.9,
+      "use2": 12.5,
+      "over": false,
+      "S": 4.2
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "stats": "3/7",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 4,
+     "leader": false,
+     "fights": [
+      "19-A-10"
+     ],
+     "mapMove": -0.8,
+     "meanMove": -8.3,
+     "perFight": [
+      -8.3
+     ],
+     "budget": {
+      "N": 25.47,
+      "x1": 23.72,
+      "N2": 113.17,
+      "x2": 35.9,
+      "use1": 93.1,
+      "use2": 31.7,
+      "over": false,
+      "S": 7.72
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "stats": "3/11",
+     "cost": 1,
+     "rarity": "veryrare",
+     "copies": 5,
+     "leader": true,
+     "fights": [
+      "19-A-2",
+      "19-A-5",
+      "19-A-9"
+     ],
+     "mapMove": -1,
+     "meanMove": -3.3,
+     "perFight": [
+      0,
+      -5,
+      -5
+     ],
+     "budget": {
+      "N": 28.04,
+      "x1": 26.56,
+      "N2": 137.16,
+      "x2": 43.76,
+      "use1": 94.7,
+      "use2": 31.9,
+      "over": false,
+      "S": 6.56
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "ash-cloud-condor",
+     "name": "Ash Cloud Condor",
+     "stats": "3/4",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 2,
+     "leader": false,
+     "fights": [
+      "19-A-8",
+      "19-A-10"
+     ],
+     "mapMove": -1,
+     "meanMove": -4.9,
+     "perFight": [
+      -6.6,
+      -3.3
+     ],
+     "budget": {
+      "N": 26.88,
+      "x1": 17.42,
+      "N2": 126.04,
+      "x2": 15.23,
+      "use1": 64.8,
+      "use2": 12.1,
+      "over": false,
+      "S": 1.95
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "ember-jackal",
+     "name": "Ember Jackal",
+     "stats": "3/11",
+     "cost": 1,
+     "rarity": "rare",
+     "copies": 9,
+     "leader": true,
+     "fights": [
+      "19-A-1",
+      "19-A-2",
+      "19-A-5",
+      "19-A-6",
+      "19-A-7",
+      "19-A-8",
+      "19-A-9",
+      "19-A-10"
+     ],
+     "mapMove": -1.3,
+     "meanMove": -1.6,
+     "perFight": [
+      -1.6,
+      0,
+      0,
+      -1.7,
+      -3.3,
+      -1.6,
+      -1.7,
+      -3.3
+     ],
+     "budget": {
+      "N": 21.68,
+      "x1": 20.75,
+      "N2": 81.99,
+      "x2": 33.14,
+      "use1": 95.7,
+      "use2": 40.4,
+      "over": false,
+      "S": 0.75
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "stats": "1/5",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 7,
+     "leader": false,
+     "fights": [
+      "19-A-3",
+      "19-A-4",
+      "19-A-6",
+      "19-A-7",
+      "19-A-8",
+      "19-A-9",
+      "19-A-10"
+     ],
+     "mapMove": -1.8,
+     "meanMove": -2.6,
+     "perFight": [
+      -3.4,
+      -3.3,
+      0,
+      -1.6,
+      -3.3,
+      -1.7,
+      -5
+     ],
+     "budget": {
+      "N": 19.99,
+      "x1": 12.55,
+      "N2": 69.71,
+      "x2": 10.18,
+      "use1": 62.8,
+      "use2": 14.6,
+      "over": false,
+      "S": 4.55
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "cinder-gecko",
+     "name": "Cinder Gecko",
+     "stats": "2/5",
+     "cost": 0,
+     "rarity": "common",
+     "copies": 4,
+     "leader": false,
+     "fights": [
+      "19-A-3",
+      "19-A-7",
+      "19-A-8",
+      "19-A-10"
+     ],
+     "mapMove": -1.8,
+     "meanMove": -4.5,
+     "perFight": [
+      -6.7,
+      -1.6,
+      -6.6,
+      -3.3
+     ],
+     "budget": {
+      "N": 18.06,
+      "x1": 12.98,
+      "N2": 56.9,
+      "x2": 11.8,
+      "use1": 71.9,
+      "use2": 20.7,
+      "over": false,
+      "S": 0
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "ore-smelter-mole",
+     "name": "Ore-Smelter Mole",
+     "stats": "4/9",
+     "cost": 1,
+     "rarity": "uncommon",
+     "copies": 7,
+     "leader": false,
+     "fights": [
+      "19-A-1",
+      "19-A-2",
+      "19-A-4",
+      "19-A-5",
+      "19-A-6",
+      "19-A-7",
+      "19-A-9"
+     ],
+     "mapMove": -3,
+     "meanMove": -4.3,
+     "perFight": [
+      0,
+      0,
+      -11.7,
+      -6.7,
+      -3.4,
+      -5,
+      -3.3
+     ],
+     "budget": {
+      "N": 26.41,
+      "x1": 22.03,
+      "N2": 121.67,
+      "x2": 36.27,
+      "use1": 83.4,
+      "use2": 29.8,
+      "over": false,
+      "S": 1.03
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "stats": "5/5",
+     "cost": 0,
+     "rarity": "veryrare",
+     "copies": 7,
+     "leader": true,
+     "fights": [
+      "19-A-3",
+      "19-A-4",
+      "19-A-5",
+      "19-A-7",
+      "19-A-8"
+     ],
+     "mapMove": -4.3,
+     "meanMove": -8.6,
+     "perFight": [
+      -10,
+      -18.3,
+      0,
+      -8.3,
+      -6.6
+     ],
+     "budget": {
+      "N": 23.49,
+      "x1": 21.5,
+      "N2": 81.82,
+      "x2": 25.56,
+      "use1": 91.5,
+      "use2": 31.2,
+      "over": false,
+      "S": 1.5
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    },
+    {
+     "id": "phoenix-fledgling",
+     "name": "Phoenix Fledgling",
+     "stats": "2/10",
+     "cost": 2,
+     "rarity": "common",
+     "copies": 44,
+     "leader": false,
+     "fights": [
+      "19-A-1",
+      "19-A-2",
+      "19-A-3",
+      "19-A-4",
+      "19-A-5",
+      "19-A-6",
+      "19-A-7",
+      "19-A-8",
+      "19-A-9",
+      "19-A-10"
+     ],
+     "mapMove": -5.8,
+     "meanMove": -5.8,
+     "perFight": [
+      -1.6,
+      -1.7,
+      -10,
+      -16.7,
+      -6.7,
+      -5,
+      -3.3,
+      -1.6,
+      -1.7,
+      -10
+     ],
+     "budget": {
+      "N": 28.63,
+      "x1": 20.27,
+      "N2": 142.99,
+      "x2": 24.18,
+      "use1": 70.8,
+      "use2": 16.9,
+      "over": false,
+      "S": 1.23
+     },
+     "step": null,
+     "suggestion": "not a driver here (a neutral card in its place moves the map less than 3 points)"
+    }
+   ]
+  }
+ ]
+}
