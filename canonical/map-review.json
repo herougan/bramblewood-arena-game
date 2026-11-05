@@ -470,17 +470,7 @@
      "by": "kept"
     },
     {
-     "id": "conch-crawler",
-     "why": "Coast & shore card",
-     "by": "kept"
-    },
-    {
      "id": "gull-thief",
-     "why": "Coast & shore card",
-     "by": "kept"
-    },
-    {
-     "id": "sea-turtle-elder",
      "why": "Coast & shore card",
      "by": "kept"
     },
@@ -516,13 +506,18 @@
     },
     {
      "id": "rock-pool-starfish",
-     "why": "Owner 11-01: kept (Coast & shore card, on no list now)",
+     "why": "Owner 11-01: kept; owner 11-04 23:17 (LIST-1104): takes Sea Turtle Elder's place in the decks",
      "by": "owner"
     },
     {
      "id": "dolphin-knight",
      "why": "Owner 11-01: added to Pebble Beach (limits ignored)",
      "by": "owner"
+    },
+    {
+     "id": "moon-jelly",
+     "why": "on the list since CONTENT8 (11-02, KK16 / KK17; owner 21:12: \"I want jellyfish in the game\"); review entry added by CONTENT10 (11-05)",
+     "by": "kept"
     }
    ],
    "cut": [
@@ -530,19 +525,19 @@
      "id": "fiddler-crab-swarm",
      "why": "Owner Q1; kept on SPECIAL as the skirmish reward of 2-1",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Pebble Beach's MAP list since THEME3, owner Q1); it stays on SPECIAL as 2-1's skirmish-only reward. Still on the Gannet Cliffs list (you kept it there 11-01) and The Kelp Mangroves. Taking it out of Pebble Beach fully needs another 2-1 reward (LISTFIX2-1)."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 2-1's reward is now Rock Pool Starfish"
     },
     {
      "id": "grey-seal-bull",
      "why": "Owner Q1; kept on SPECIAL as the skirmish reward of 2-5",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Pebble Beach's MAP list since THEME3, owner Q1); it stays on SPECIAL as 2-5's skirmish-only reward, and you chose it for Smugglers' Grotto on 11-01. JJ5 (BAL9-3) only trimmed it to 3/12; it did not put it back. Taking it out of Pebble Beach fully needs another 2-5 reward (LISTFIX2-1)."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 2-5's reward is now Driftwood Crab"
     },
     {
      "id": "tidepool-trapper-crab",
      "why": "Owner Q1; kept on SPECIAL as the first-clear card of 2-3",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Pebble Beach's MAP list since THEME3, owner Q1); it stays on SPECIAL as 2-3's first-clear card (it also drops in Pack 1), and you chose it for Smugglers' Grotto on 11-01. Taking it out fully needs another 2-3 first-clear card (LISTFIX2-1)."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 2-3's first-clear card is now Open-Ocean Hermit Crab"
     },
     {
      "id": "oyster-bank",
@@ -553,6 +548,16 @@
      "id": "tide-pool-crab",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "sea-turtle-elder",
+     "why": "Owner 11-04 23:17 (LIST-1104): cut; Rock Pool Starfish takes its place in Pebble Beach's decks",
+     "by": "owner"
+    },
+    {
+     "id": "conch-crawler",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 2): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -644,6 +649,16 @@
      "id": "fiddler-crab-swarm",
      "why": "Owner 11-01: kept (The owner took it off the beach; a crab swarm fits sea cliffs no better)",
      "by": "owner"
+    },
+    {
+     "id": "oystercatcher",
+     "why": "Carried from Pebble Beach (Map 2); a biome the list already shares; thematic fit, active skills (pierce); CONTENT10 (11-05) (THEME6-1: carried 5 on Map 3)",
+     "by": "claude"
+    },
+    {
+     "id": "pincushion-urchin",
+     "why": "Carried from Pebble Beach (Map 2); a biome the list already shares; thematic fit, active skills (thorns); CONTENT10 (11-05) (THEME6-1: carried 5 on Map 3)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -666,7 +681,7 @@
      "id": "the-gannet-queen",
      "why": "Owner 11-01: cut",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): your 11-01 cut is applied (off Gannet Cliffs' MAP list, THEME4). It sits on SPECIAL as 3-7's boss leader and reward (RELFIX3 moved the boss cards there 10-29); THEME4 kept it there on purpose. Dropping the boss card itself needs a new 3-7 leader and reward (LISTFIX2-2)."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-2 b): off this map fully; 3-7's reward is now Razorbill"
     }
    ],
    "maybe": [
@@ -720,33 +735,13 @@
      "by": "kept"
     },
     {
-     "id": "water-vole",
-     "why": "River & pond card",
-     "by": "kept"
-    },
-    {
-     "id": "box-turtle",
-     "why": "River & pond card",
-     "by": "kept"
-    },
-    {
      "id": "pyrenean-desman",
-     "why": "River & pond card",
-     "by": "kept"
-    },
-    {
-     "id": "muskrat-reedgatherer",
      "why": "River & pond card",
      "by": "kept"
     },
     {
      "id": "beaver-lumberjack",
      "why": "Carried from Bramblewood Outskirts (Map 0); River & pond card",
-     "by": "kept"
-    },
-    {
-     "id": "fire-ant-raft",
-     "why": "Kin biome (Swamp & bog)",
      "by": "kept"
     },
     {
@@ -768,6 +763,21 @@
      "id": "slow-worm",
      "why": "Carried from Map 1; damp hollow",
      "by": "claude"
+    },
+    {
+     "id": "lions-mane-jelly",
+     "why": "on the list since CONTENT8 (11-02, KK16 / KK17; owner 21:12: \"I want jellyfish in the game\"); review entry added by CONTENT10 (11-05)",
+     "by": "kept"
+    },
+    {
+     "id": "shoal-shark",
+     "why": "Owner 11-04 23:17 (LIST-1104): back on the list",
+     "by": "owner"
+    },
+    {
+     "id": "alley-cat",
+     "why": "Owner 11-04 23:17 (LIST-1104): on the list for Muskrat Reedgatherer",
+     "by": "owner"
     }
    ],
    "cut": [
@@ -775,13 +785,13 @@
      "id": "old-sturgeon",
      "why": "Owner Q2 (for now); kept on SPECIAL as the skirmish reward of 4-5",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Sunken Hollow's MAP list since THEME3, owner Q2); it stays on SPECIAL as 4-5's skirmish-only reward. You chose it for Lilypad Reach on 11-01; also on The Undercroft. Taking it out of Sunken Hollow fully needs another 4-5 reward (LISTFIX2-1)."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 4-5's reward is now Pyrenean Desman"
     },
     {
      "id": "stone-turtle-warden",
      "why": "Owner Q2; kept on SPECIAL as the first-clear card of 4-2",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Sunken Hollow's MAP list since THEME3, owner Q2); it stays on SPECIAL as 4-2's first-clear card (it also drops in Pack 1). Also on The Undercroft. Taking it out fully needs another 4-2 first-clear card (LISTFIX2-1)."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 4-2's first-clear card is now Water Shrew"
     },
     {
      "id": "marsh-mallow-hare",
@@ -807,6 +817,26 @@
      "id": "pond-trout",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "why": "Owner 11-04 23:17 (LIST-1104): cut for Alley Cat",
+     "by": "owner"
+    },
+    {
+     "id": "water-vole",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 4): cut by Claude, a second vole on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "fire-ant-raft",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 4): cut by Claude, weak theme fit (kin biome only). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "box-turtle",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 4): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -907,6 +937,11 @@
      "id": "box-turtle",
      "why": "Carried from Map 4; a swamp turtle",
      "by": "claude"
+    },
+    {
+     "id": "pond-algae",
+     "why": "Carried from Sunken Hollow (Map 4); a kin biome; thematic fit, active skills (bloomCopy); CONTENT10 (11-05) (THEME6-1: carried 5 on Map 5)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -914,7 +949,7 @@
      "id": "venomlord-serpent",
      "why": "Owner Q3 (moved to Map 6); kept on SPECIAL as the first-clear card of 5-3",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Gatorback Swamp's MAP list since THEME3, owner Q3: moved to Map 6, where it is listed); it stays on Gatorback's SPECIAL as 5-3's first-clear card, and you chose it for The Sunken Grove on 11-01. Taking it off Gatorback fully needs another 5-3 first-clear card (LISTFIX2-1)."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 5-3's first-clear card is now Swamp Alligator"
     },
     {
      "id": "stone-turtle-warden",
@@ -945,7 +980,7 @@
      "id": "snapper-hatchling",
      "why": "Owner 11-01: cut",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): THEME4 applied your 11-01 cut; CARD5 (11-02) put it back on the MAP list because it is 5-1's first-clear card (a coordinator follow-up, not your call). Also on The Sunken Grove, where you chose it. Keep it or cut it again: LISTFIX2-1."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 5-1's first-clear card is now Cypress Root Lurker"
     },
     {
      "id": "caiman-hatchling",
@@ -1042,6 +1077,16 @@
      "id": "lamprey",
      "why": "Owner 11-01: kept (Owner Q4 (already off since THEME2))",
      "by": "owner"
+    },
+    {
+     "id": "fire-ant-raft",
+     "why": "Carried from Gatorback Swamp (Map 5); the map's own biome; thematic fit, active skills (poison); CONTENT10 (11-05) (THEME6-1: carried 5 on Map 6)",
+     "by": "claude"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "why": "Carried from Gatorback Swamp (Map 5); the map's own biome; thematic fit, active skills (guardian); CONTENT10 (11-05) (THEME6-1: carried 5 on Map 6)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -1049,7 +1094,7 @@
      "id": "marsh-wisp",
      "why": "Owner Q4; kept on SPECIAL as the first-clear card of 6-4",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off Sable Swampmire's MAP list since THEME3, owner Q4); it stays on SPECIAL as 6-4's first-clear card (it also drops in Pack 1). On no other list. Taking it out fully needs another 6-4 first-clear card (LISTFIX2-1)."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 6-4's first-clear card is now Lamprey"
     },
     {
      "id": "peat-cutter-vole",
@@ -1264,11 +1309,6 @@
      "by": "kept"
     },
     {
-     "id": "bombardier-beetle",
-     "why": "Fungal hollow card",
-     "by": "kept"
-    },
-    {
      "id": "hawthorn-shieldbug",
      "why": "Fungal hollow card",
      "by": "kept"
@@ -1289,18 +1329,6 @@
      "id": "adder-ambusher",
      "why": "Carried from Sable Swampmire (Map 6); kin biome (Swamp & bog)",
      "by": "kept"
-    },
-    {
-     "id": "bogfire-newt",
-     "why": "Carried from Sable Swampmire (Map 6); kin biome (Swamp & bog)",
-     "by": "kept",
-     "flag": "unlikely",
-     "flagWhy": "New here since you cut it on Map 6; Map 7 is two unique over"
-    },
-    {
-     "id": "garden-snail",
-     "why": "A Base snail among the mushrooms",
-     "by": "claude"
     },
     {
      "id": "corpse-flower-beetle",
@@ -1333,6 +1361,21 @@
      "id": "ant-warrior",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "garden-snail",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 7): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "bombardier-beetle",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 7): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "bogfire-newt",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: carried 5 on Map 7): cut by Claude, flagged Unlikely (THEME4); weak theme fit (kin biome only). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -1521,11 +1564,6 @@
      "by": "kept"
     },
     {
-     "id": "vampire-bat",
-     "why": "Caves & burrows card",
-     "by": "kept"
-    },
-    {
      "id": "octopus-tactician",
      "why": "Carried from Smugglers' Grotto (Map 7); Caves & burrows card",
      "by": "kept"
@@ -1534,11 +1572,6 @@
      "id": "pelican-diver",
      "why": "Carried from Smugglers' Grotto (Map 7); Caves & burrows card",
      "by": "kept"
-    },
-    {
-     "id": "grotto-lobster",
-     "why": "Owner 11-01: kept (Caves & burrows card, on no list now)",
-     "by": "owner"
     },
     {
      "id": "malachite-golem",
@@ -1553,6 +1586,11 @@
     {
      "id": "hollow-belly-rat",
      "why": "Carried from Map 1; a cave rat",
+     "by": "claude"
+    },
+    {
+     "id": "gull-thief",
+     "why": "Carried from Pebble Beach (Map 2); a kin biome; thematic fit, active skills (foePlenty, trig:onKill/gain); CONTENT10 (11-05) (THEME6-1: carried 5 on Map 8)",
      "by": "claude"
     }
    ],
@@ -1576,6 +1614,16 @@
      "id": "ant-warrior",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "vampire-bat",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 8): cut by Claude, a second bat on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "grotto-lobster",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 8): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -1702,11 +1750,6 @@
      "by": "kept"
     },
     {
-     "id": "archerfish",
-     "why": "Mangrove & kelp card",
-     "by": "kept"
-    },
-    {
      "id": "mangrove-monitor",
      "why": "Mangrove & kelp card",
      "by": "kept"
@@ -1718,11 +1761,6 @@
     },
     {
      "id": "sunbittern-strider",
-     "why": "Mangrove & kelp card",
-     "by": "kept"
-    },
-    {
-     "id": "fishing-cat",
      "why": "Mangrove & kelp card",
      "by": "kept"
     },
@@ -1755,6 +1793,16 @@
      "id": "sea-turtle-elder",
      "why": "Carried from Pebble Beach; mangrove shallows",
      "by": "claude"
+    },
+    {
+     "id": "cane-toad",
+     "why": "Carried from The Morel Hollow (Map 7); a kin biome; thematic fit, active skills (poison, greaterPoison); CONTENT10 (11-05) (THEME6-1: carried 6 on Map 9)",
+     "by": "claude"
+    },
+    {
+     "id": "conch-crawler",
+     "why": "Carried from Gannet Cliffs (Map 3); a kin biome; thematic fit, active skills (shell, shield); CONTENT10 (11-05) (THEME6-1: carried 6 on Map 9)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -1777,6 +1825,16 @@
      "id": "caiman-hatchling",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "fishing-cat",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 9): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "archerfish",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 9): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -1846,16 +1904,6 @@
      "by": "kept"
     },
     {
-     "id": "swordfish-spearman",
-     "why": "Reef & ocean card",
-     "by": "kept"
-    },
-    {
-     "id": "coral-polyp-colony",
-     "why": "Reef & ocean card",
-     "by": "kept"
-    },
-    {
      "id": "reef-shark",
      "why": "Carried from The Kelp Mangroves (Map 9); Reef & ocean card",
      "by": "kept"
@@ -1874,6 +1922,21 @@
      "id": "open-ocean-hermit-crab",
      "why": "Carried from Map 2: an ocean crab, not a shore gull",
      "by": "claude"
+    },
+    {
+     "id": "supernova-jelly",
+     "why": "on the list since CONTENT8 (11-02, KK16 / KK17; owner 21:12: \"I want jellyfish in the game\"); review entry added by CONTENT10 (11-05)",
+     "by": "kept"
+    },
+    {
+     "id": "dolphin-knight",
+     "why": "Carried from Pebble Beach (Map 2); the map's own biome; thematic fit; CONTENT10 (11-05) (THEME6-1: carried 6 on Map 10)",
+     "by": "claude"
+    },
+    {
+     "id": "horseshoe-crab",
+     "why": "Carried from The Kelp Mangroves (Map 9); the map's own biome; thematic fit, active skills (salt); CONTENT10 (11-05) (THEME6-1: carried 6 on Map 10)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -1881,15 +1944,21 @@
      "id": "gull-thief",
      "why": "A shore gull in a coral current",
      "by": "claude"
+    },
+    {
+     "id": "swordfish-spearman",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 10): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "coral-polyp-colony",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 10): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
     {
      "id": "coral-current-eel",
-     "why": "Reef & ocean card, on no list now"
-    },
-    {
-     "id": "dolphin-knight",
      "why": "Reef & ocean card, on no list now"
     },
     {
@@ -1948,22 +2017,12 @@
      "by": "kept"
     },
     {
-     "id": "apollo-butterfly",
-     "why": "Mountain & sky card",
-     "by": "kept"
-    },
-    {
      "id": "alpine-salamander",
      "why": "Mountain & sky card",
      "by": "kept"
     },
     {
      "id": "alpine-swift",
-     "why": "Mountain & sky card",
-     "by": "kept"
-    },
-    {
-     "id": "gale-swift",
      "why": "Mountain & sky card",
      "by": "kept"
     },
@@ -1986,9 +2045,35 @@
      "id": "peregrine-stooper",
      "why": "Carried from Gannet Cliffs (Map 3); Mountain & sky card",
      "by": "kept"
+    },
+    {
+     "id": "red-billed-chough",
+     "why": "Carried from Gannet Cliffs (Map 3); the map's own biome; thematic fit, active skills (mountainClimber); CONTENT10 (11-05) (THEME6-1: carried 7 on Map 11)",
+     "by": "claude"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "why": "Carried from Bramblewood Outskirts (Map 0); a kin biome; thematic fit, active skills (delivery); CONTENT10 (11-05) (THEME6-1: carried 7 on Map 11)",
+     "by": "claude"
+    },
+    {
+     "id": "kittiwake-flock",
+     "why": "Carried from Gannet Cliffs (Map 3); a kin biome; thematic fit; CONTENT10 (11-05) (THEME6-1: carried 7 on Map 11)",
+     "by": "claude"
     }
    ],
-   "cut": [],
+   "cut": [
+    {
+     "id": "gale-swift",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 11): cut by Claude, a second swift on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "apollo-butterfly",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 11): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
    "maybe": [
     {
      "id": "eagle-diver",
@@ -2151,11 +2236,6 @@
      "by": "kept"
     },
     {
-     "id": "gatling-hog",
-     "why": "Briar maze card",
-     "by": "kept"
-    },
-    {
      "id": "carrion-crow",
      "why": "Kin biome (Meadow & woodland); the list's resource maker",
      "by": "kept"
@@ -2189,6 +2269,21 @@
      "id": "dormouse",
      "why": "Carried from Map 1; a hedge dormouse",
      "by": "claude"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "why": "Carried from The Morel Hollow (Map 7); a kin biome; THEME5 carried pick, active skills (guardian); CONTENT10 (11-05) (THEME6-1: carried 8 on Map 12)",
+     "by": "claude"
+    },
+    {
+     "id": "woodcock-lookout",
+     "why": "Carried from Thistlewood (Map 1); a kin biome; thematic fit, active skills (crepuscular, keenEye); CONTENT10 (11-05) (THEME6-1: carried 8 on Map 12)",
+     "by": "claude"
+    },
+    {
+     "id": "hollow-belly-rat",
+     "why": "Carried from Thistlewood (Map 1); a kin biome; thematic fit, active skills (devour); CONTENT10 (11-05) (THEME6-1: carried 8 on Map 12)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -2206,6 +2301,11 @@
      "id": "quillback-elder",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "gatling-hog",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 12): cut by Claude, a second hedgehog on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -2366,16 +2466,6 @@
      "flagWhy": "Map 13 is one unique over; not a redwood animal"
     },
     {
-     "id": "stag-knight",
-     "why": "Redwood deep card",
-     "by": "kept"
-    },
-    {
-     "id": "woodpecker-sapper",
-     "why": "Redwood deep card",
-     "by": "kept"
-    },
-    {
      "id": "redwood-woodpecker",
      "why": "Redwood deep card",
      "by": "kept"
@@ -2404,9 +2494,35 @@
      "id": "owl-nightwatch",
      "why": "Carried from Map 7; an owl of the old trees",
      "by": "claude"
+    },
+    {
+     "id": "badger-lumberjack",
+     "why": "Carried from Thistlewood (Map 1); a kin biome; THEME5 carried pick, active skills (lumberjack, guardian); CONTENT10 (11-05) (THEME6-1: carried 8 on Map 13)",
+     "by": "claude"
+    },
+    {
+     "id": "corpse-flower-beetle",
+     "why": "Carried from The Morel Hollow (Map 7); a kin biome; thematic fit, active skills (wither); CONTENT10 (11-05) (THEME6-1: carried 8 on Map 13)",
+     "by": "claude"
+    },
+    {
+     "id": "ant-hill",
+     "why": "Carried from The Briar Maze (Map 12); a kin biome; thematic fit, active skills (trig:perTurn/spawnCard); CONTENT10 (11-05) (THEME6-1: carried 8 on Map 13)",
+     "by": "claude"
     }
    ],
-   "cut": [],
+   "cut": [
+    {
+     "id": "stag-knight",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 13): cut by Claude, a second deer on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "woodpecker-sapper",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 13): cut by Claude, a second woodpecker on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
    "maybe": [
     {
      "id": "fox-kit",
@@ -2414,10 +2530,6 @@
     },
     {
      "id": "carrion-fly-swarm",
-     "why": "kin biome: Meadow & woodland card, on no list now"
-    },
-    {
-     "id": "corpse-flower-beetle",
      "why": "kin biome: Meadow & woodland card, on no list now"
     }
    ]
@@ -2563,11 +2675,6 @@
      "by": "kept"
     },
     {
-     "id": "pangolin-roller",
-     "why": "Savanna card",
-     "by": "kept"
-    },
-    {
      "id": "mouse-sapper",
      "why": "Carried from The Briar Maze (Map 12); kin biome (Village & keep)",
      "by": "kept"
@@ -2576,11 +2683,6 @@
      "id": "house-cat",
      "why": "Carried from Bramblewood Outskirts (Map 0); kin biome (Village & keep)",
      "by": "kept"
-    },
-    {
-     "id": "plains-zebra",
-     "why": "A plains zebra for the savanna (was on no list)",
-     "by": "claude"
     },
     {
      "id": "acacia-giraffe",
@@ -2596,6 +2698,16 @@
      "id": "carrion-crow",
      "why": "Carried from Map 12; savanna scavenger",
      "by": "claude"
+    },
+    {
+     "id": "ant-hill",
+     "why": "Carried from The Briar Maze (Map 12); a kin biome; THEME5 carried pick, active skills (trig:perTurn/spawnCard); CONTENT10 (11-05) (THEME6-1: carried 9 on Map 14)",
+     "by": "claude"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "why": "Carried from Gannet Cliffs (Map 3); a kin biome; THEME5 carried pick, active skills (pounce); CONTENT10 (11-05) (THEME6-1: carried 9 on Map 14)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -2608,7 +2720,7 @@
      "id": "weaver-bird",
      "why": "Owner 11-01: cut",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): THEME4 applied your 11-01 cut; CARD5 (11-02) put it back on the MAP list because it is 14-3's first-clear card (a coordinator follow-up, not your call). Also on The Canopy, where you chose it, and The Undercroft. Keep it or cut it again: LISTFIX2-1."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 14-3's first-clear card is now Marula Elephant"
     },
     {
      "id": "meerkat-burrower",
@@ -2619,6 +2731,16 @@
      "id": "lodge-engineer",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "plains-zebra",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 14): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "pangolin-roller",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 14): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -2682,17 +2804,7 @@
      "by": "kept"
     },
     {
-     "id": "warhorse-charger",
-     "why": "Long grass card",
-     "by": "kept"
-    },
-    {
      "id": "shepherds-bark",
-     "why": "Long grass card",
-     "by": "kept"
-    },
-    {
-     "id": "squires-mount",
      "why": "Long grass card",
      "by": "kept"
     },
@@ -2720,6 +2832,36 @@
      "id": "armory",
      "why": "Owner 11-01: kept (kin biome: Village & keep card, on no list now)",
      "by": "owner"
+    },
+    {
+     "id": "truffle-piglet",
+     "why": "Carried from The Morel Hollow (Map 7); a kin biome; THEME5 carried pick, active skills (deliveryEvery); CONTENT10 (11-05) (THEME6-1: carried 10 on Map 15)",
+     "by": "claude"
+    },
+    {
+     "id": "swift-fox",
+     "why": "Carried from The Redwood Deep (Map 13); a kin biome; thematic fit, active skills (fastForward); CONTENT10 (11-05) (THEME6-1: carried 10 on Map 15)",
+     "by": "claude"
+    },
+    {
+     "id": "tasmanian-devil",
+     "why": "Carried from The Redwood Deep (Map 13); a kin biome; thematic fit, active skills (berserk); CONTENT10 (11-05) (THEME6-1: carried 10 on Map 15)",
+     "by": "claude"
+    },
+    {
+     "id": "cricket-drummer",
+     "why": "Carried from Thistlewood (Map 1); a kin biome; thematic fit, active skills (inspiring); CONTENT10 (11-05) (THEME6-1: carried 10 on Map 15)",
+     "by": "claude"
+    },
+    {
+     "id": "slow-worm",
+     "why": "Carried from Thistlewood (Map 1); a kin biome; thematic fit, active skills (undead); CONTENT10 (11-05) (THEME6-1: carried 10 on Map 15)",
+     "by": "claude"
+    },
+    {
+     "id": "thorn-shrike",
+     "why": "Carried from The Briar Maze (Map 12); a kin biome; thematic fit, active skills (bleed); CONTENT10 (11-05) (THEME6-1: carried 10 on Map 15)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -2747,6 +2889,16 @@
      "id": "stable-colt",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "squires-mount",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 15): cut by Claude, a second horse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "warhorse-charger",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 15): cut by Claude, a second horse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -2880,16 +3032,6 @@
      "by": "kept"
     },
     {
-     "id": "dhole-runner",
-     "why": "Taiga card",
-     "by": "kept"
-    },
-    {
-     "id": "wolf-pack-runner",
-     "why": "Taiga card",
-     "by": "kept"
-    },
-    {
      "id": "boreal-elk",
      "why": "Taiga card",
      "by": "kept"
@@ -2915,11 +3057,6 @@
      "by": "kept"
     },
     {
-     "id": "pinecone-sapper",
-     "why": "Pinecones for the Pinewood Taiga",
-     "by": "claude"
-    },
-    {
      "id": "lunar-howler",
      "why": "Owner 11-01: kept (Taiga card, on no list now)",
      "by": "owner"
@@ -2927,6 +3064,21 @@
     {
      "id": "swift-fox",
      "why": "Carried from Map 13; forest fox",
+     "by": "claude"
+    },
+    {
+     "id": "owl-nightwatch",
+     "why": "Carried from The Morel Hollow (Map 7); a kin biome; THEME5 carried pick, active skills (stealth); CONTENT10 (11-05) (THEME6-1: carried 10 on Map 16)",
+     "by": "claude"
+    },
+    {
+     "id": "tasmanian-devil",
+     "why": "Carried from The Redwood Deep (Map 13); a kin biome; thematic fit, active skills (berserk); CONTENT10 (11-05) (THEME6-1: carried 10 on Map 16)",
+     "by": "claude"
+    },
+    {
+     "id": "grizzly-vanguard",
+     "why": "Carried from The Redwood Deep (Map 13); a kin biome; thematic fit, active skills (sweep, guardian); CONTENT10 (11-05) (THEME6-1: carried 10 on Map 16)",
      "by": "claude"
     }
    ],
@@ -2945,6 +3097,21 @@
      "id": "fawn-scout",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "wolf-pack-runner",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 16): cut by Claude, a second wolf on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "dhole-runner",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 16): cut by Claude, a second dhole on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "pinecone-sapper",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 16): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -3107,17 +3274,7 @@
      "by": "kept"
     },
     {
-     "id": "ravenous-wolverine",
-     "why": "Tundra & ice card",
-     "by": "kept"
-    },
-    {
      "id": "spitting-spider",
-     "why": "Tundra & ice card",
-     "by": "kept"
-    },
-    {
-     "id": "talus-pika",
      "why": "Tundra & ice card",
      "by": "kept"
     },
@@ -3152,6 +3309,21 @@
      "id": "woodland-caribou",
      "why": "Carried from Map 16; tundra caribou",
      "by": "claude"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "why": "Carried from Eyrie Heights (Map 11); a kin biome; THEME5 carried pick, active skills (avalanche); CONTENT10 (11-05) (THEME6-1: carried 11 on Map 17)",
+     "by": "claude"
+    },
+    {
+     "id": "taiga-lynx",
+     "why": "Carried from The Pinewood Taiga (Map 16); a kin biome; thematic fit, active skills (evasive); CONTENT10 (11-05) (THEME6-1: carried 11 on Map 17)",
+     "by": "claude"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "why": "Carried from Bramblewood Outskirts (Map 0); a kin biome; thematic fit, active skills (delivery); CONTENT10 (11-05) (THEME6-1: carried 11 on Map 17)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -3165,6 +3337,16 @@
      "id": "glacial-ape-king",
      "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
      "by": "owner"
+    },
+    {
+     "id": "talus-pika",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 17): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "ravenous-wolverine",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 17): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -3228,17 +3410,7 @@
      "by": "kept"
     },
     {
-     "id": "dromedary",
-     "why": "Glass dunes card",
-     "by": "kept"
-    },
-    {
      "id": "fennec-fox",
-     "why": "Glass dunes card",
-     "by": "kept"
-    },
-    {
-     "id": "dune-packrat",
      "why": "Glass dunes card",
      "by": "kept"
     },
@@ -3265,13 +3437,13 @@
      "by": "claude"
     },
     {
-     "id": "glass-golem",
-     "why": "Owner 11-01: kept (Glass dunes card, on no list now)",
-     "by": "owner"
-    },
-    {
      "id": "hollow-belly-rat",
      "why": "Carried from Map 1 (your maybe)",
+     "by": "claude"
+    },
+    {
+     "id": "savanna-cheetah",
+     "why": "Carried from Savanna Reaches (Map 14); a kin biome; THEME5 carried pick, active skills (quick); CONTENT10 (11-05) (THEME6-1: carried 12 on Map 18)",
      "by": "claude"
     }
    ],
@@ -3290,6 +3462,21 @@
      "id": "obsidian-scorpion",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "dune-packrat",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 18): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "dromedary",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 18): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "glass-golem",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 18): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -3458,11 +3645,6 @@
   "m3": {
    "chosen": [
     {
-     "id": "echidna-quillshot",
-     "why": "Volcanic & ash card; skirmish reward of 19-6",
-     "by": "kept"
-    },
-    {
      "id": "fire-salamander",
      "why": "Volcanic & ash card; skirmish reward of 19-3",
      "by": "kept"
@@ -3521,6 +3703,46 @@
      "id": "sulfur-cinder-moth",
      "why": "Carried from Map 8; volcanic vents",
      "by": "claude"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "why": "Carried from Wolfsbane Tundra (Map 17); one of the map's biomes; THEME5 carried pick, active skills (freeze, shatter); CONTENT10 (11-05) (THEME6-1: carried 12 on Map 19)",
+     "by": "claude"
+    },
+    {
+     "id": "beluga",
+     "why": "Carried from Wolfsbane Tundra (Map 17); one of the map's biomes; thematic fit, active skills (sonar, inspiring); CONTENT10 (11-05) (THEME6-1: carried 12 on Map 19)",
+     "by": "claude"
+    },
+    {
+     "id": "harbor-seal",
+     "why": "Carried from Wolfsbane Tundra (Map 17); one of the map's biomes; thematic fit, active skills (evasive, dive); CONTENT10 (11-05) (THEME6-1: carried 12 on Map 19)",
+     "by": "claude"
+    },
+    {
+     "id": "snow-ermine",
+     "why": "Carried from Wolfsbane Tundra (Map 17); one of the map's biomes; thematic fit, active skills (evasive, frost); CONTENT10 (11-05) (THEME6-1: carried 12 on Map 19)",
+     "by": "claude"
+    },
+    {
+     "id": "apollo-butterfly",
+     "why": "Carried from The Aerie Vault (side map of Map 11); one of the map's biomes; thematic fit, active skills (thorns); CONTENT10 (11-05) (THEME6-1: carried 12 on Map 19)",
+     "by": "claude"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "why": "Carried from Eyrie Heights (Map 11); one of the map's biomes; thematic fit, active skills (arrow, fletcher); CONTENT10 (11-05) (THEME6-1: carried 12 on Map 19)",
+     "by": "claude"
+    },
+    {
+     "id": "snow-bunting-archer",
+     "why": "Carried from Wolfsbane Tundra (Map 17); one of the map's biomes; thematic fit, active skills (iceArrow); CONTENT10 (11-05) (THEME6-1: carried 12 on Map 19)",
+     "by": "claude"
+    },
+    {
+     "id": "spitting-spider",
+     "why": "Carried from Wolfsbane Tundra (Map 17); one of the map's biomes; thematic fit, active skills (poisonBolt); CONTENT10 (11-05) (THEME6-1: carried 12 on Map 19)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -3533,7 +3755,7 @@
      "id": "yeti-chieftain",
      "why": "Owner 11-01: cut",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): your 11-01 cut is applied (off Ashen Spurn's MAP list, THEME4). It sits on SPECIAL as 19-6's boss leader and challenge card (RELFIX3, 10-29); THEME4 kept it there on purpose. Dropping the boss card itself needs a new 19-6 leader and challenge card (LISTFIX2-2)."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-2 b): off this map fully; 19-6's reward and challenge card is now Yeti"
     },
     {
      "id": "porcupine-roller",
@@ -3549,6 +3771,11 @@
      "id": "glacial-ape-king",
      "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
      "by": "owner"
+    },
+    {
+     "id": "echidna-quillshot",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 19): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
@@ -3722,16 +3949,6 @@
      "by": "kept"
     },
     {
-     "id": "ash-moth",
-     "why": "Volcanic & ash card",
-     "by": "kept"
-    },
-    {
-     "id": "glacier-wolf-pack",
-     "why": "Carried from Ashen Spurn (Map 19); Volcanic & ash card",
-     "by": "kept"
-    },
-    {
      "id": "pumice-beetle",
      "why": "Carried from Ashen Spurn (Map 19); Volcanic & ash card",
      "by": "kept"
@@ -3742,19 +3959,64 @@
      "by": "kept"
     },
     {
-     "id": "gorge-wyrm",
-     "why": "A wyrm of the peak's gorges",
-     "by": "claude"
-    },
-    {
      "id": "fumarole-ibex",
      "why": "An ibex on the fuming mountain slopes",
      "by": "claude"
     },
     {
-     "id": "pit-glutton",
-     "why": "Owner 11-01: kept (Volcanic & ash card, on no list now)",
-     "by": "owner"
+     "id": "chamois-leaper",
+     "why": "Carried from Eyrie Heights (Map 11); LIST-1104 (owner 23:17: \"a thematic mountain card\"): Claude's pick for Glacier Wolf Pack: a cliff goat of the peak (Mountain & sky)",
+     "by": "claude"
+    },
+    {
+     "id": "granite-ox-golem",
+     "why": "Carried from Ashen Spurn (Map 19); the map's own biome; thematic fit, active skills (recoil, trig:onSpawn/stun); CONTENT10 (11-05) (THEME6-1: carried 13 on Map 20)",
+     "by": "claude"
+    },
+    {
+     "id": "magma-titan",
+     "why": "Carried from Ashen Spurn (Map 19); the map's own biome; thematic fit, active skills (scar, immolation); CONTENT10 (11-05) (THEME6-1: carried 13 on Map 20)",
+     "by": "claude"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "why": "Carried from Ashen Spurn (Map 19); the map's own biome; thematic fit, active skills (poison); CONTENT10 (11-05) (THEME6-1: carried 13 on Map 20)",
+     "by": "claude"
+    },
+    {
+     "id": "talus-pika",
+     "why": "Carried from Ashen Spurn (Map 19); one of the map's biomes; thematic fit, active skills (delivery); CONTENT10 (11-05) (THEME6-1: carried 13 on Map 20)",
+     "by": "claude"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "why": "Carried from Eyrie Heights (Map 11); one of the map's biomes; thematic fit, active skills (arrow, fletcher); CONTENT10 (11-05) (THEME6-1: carried 13 on Map 20)",
+     "by": "claude"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "why": "Carried from Bramblewood Outskirts (Map 0); the map's own biome; thematic fit, active skills (delivery); CONTENT10 (11-05) (THEME6-1: carried 13 on Map 20)",
+     "by": "claude"
+    },
+    {
+     "id": "alpine-marmot",
+     "why": "Carried from Eyrie Heights (Map 11); one of the map's biomes; thematic fit, active skills (guardian); CONTENT10 (11-05) (THEME6-1: carried 13 on Map 20)",
+     "by": "claude"
+    },
+    {
+     "id": "alpine-swift",
+     "why": "Carried from Eyrie Heights (Map 11); one of the map's biomes; thematic fit, active skills (quick); CONTENT10 (11-05) (THEME6-1: carried 13 on Map 20)",
+     "by": "claude"
+    },
+    {
+     "id": "apollo-butterfly",
+     "why": "Carried from The Aerie Vault (side map of Map 11); one of the map's biomes; thematic fit, active skills (thorns); CONTENT10 (11-05) (THEME6-1: carried 13 on Map 20)",
+     "by": "claude"
+    },
+    {
+     "id": "eyrie-warden",
+     "why": "Carried from Eyrie Heights (Map 11); one of the map's biomes; thematic fit, active skills (onReadyDamage, daunt); CONTENT10 (11-05) (THEME6-1: carried 13 on Map 20)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -3762,7 +4024,7 @@
      "id": "woodland-brawler",
      "why": "Owner Q6; kept on SPECIAL as the skirmish reward of 20-9",
      "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): the cut is applied (off The Sundered Peak's MAP list since THEME3, owner Q6); it stays on SPECIAL as 20-9's skirmish-only reward. On no other list. Taking it out fully needs another 20-9 reward (LISTFIX2-1)."
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 20-9's reward is now Magma Salamander"
     },
     {
      "id": "bear-cub",
@@ -3773,15 +4035,31 @@
      "id": "echidna-quillshot",
      "why": "Owner 11-01: cut",
      "by": "owner"
+    },
+    {
+     "id": "pit-glutton",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (devilry); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "glacier-wolf-pack",
+     "why": "Owner 11-04 23:17 (LIST-1104): replaced by Chamois Leaper",
+     "by": "owner"
+    },
+    {
+     "id": "gorge-wyrm",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 20): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "ash-moth",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 20): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
     }
    ],
    "maybe": [
     {
      "id": "ember-wisp",
-     "why": "Volcanic & ash card, on no list now"
-    },
-    {
-     "id": "granite-ox-golem",
      "why": "Volcanic & ash card, on no list now"
     },
     {
@@ -4044,31 +4322,6 @@
      "by": "kept"
     },
     {
-     "id": "candle-moth",
-     "why": "Mountain & sky card",
-     "by": "kept"
-    },
-    {
-     "id": "chapel-tortoise",
-     "why": "Mountain & sky card",
-     "by": "kept"
-    },
-    {
-     "id": "friar-badger",
-     "why": "Mountain & sky card",
-     "by": "kept"
-    },
-    {
-     "id": "gale-sprite",
-     "why": "Mountain & sky card",
-     "by": "kept"
-    },
-    {
-     "id": "golden-magpie",
-     "why": "Mountain & sky card",
-     "by": "kept"
-    },
-    {
      "id": "eyrie-warden",
      "why": "Carried from Eyrie Heights (Map 11); Mountain & sky card",
      "by": "kept"
@@ -4087,9 +4340,85 @@
      "id": "golden-eagle-diver",
      "why": "Carried from Gannet Cliffs (Map 3); Mountain & sky card",
      "by": "kept"
+    },
+    {
+     "id": "alpine-swift",
+     "why": "Carried from Eyrie Heights (Map 11); the map's own biome; thematic fit, active skills (quick); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 21)",
+     "by": "claude"
+    },
+    {
+     "id": "peak-condor",
+     "why": "Carried from Gannet Cliffs (Map 3); the map's own biome; thematic fit, active skills (reload); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 21)",
+     "by": "claude"
+    },
+    {
+     "id": "apollo-butterfly",
+     "why": "Carried from The Aerie Vault (side map of Map 11); the map's own biome; thematic fit, active skills (thorns); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 21)",
+     "by": "claude"
+    },
+    {
+     "id": "alpine-salamander",
+     "why": "Carried from Eyrie Heights (Map 11); the map's own biome; thematic fit, active skills (regen); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 21)",
+     "by": "claude"
+    },
+    {
+     "id": "red-billed-chough",
+     "why": "Carried from Gannet Cliffs (Map 3); the map's own biome; thematic fit, active skills (mountainClimber); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 21)",
+     "by": "claude"
+    },
+    {
+     "id": "ember-centipede",
+     "why": "Carried from Volcano Lair (side map of Map 20); a kin biome; thematic fit, active skills (quick, dry); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 21)",
+     "by": "claude"
+    },
+    {
+     "id": "pumice-beetle",
+     "why": "Carried from Ashen Spurn (Map 19); a kin biome; thematic fit, active skills (trig:onSpawn/gain); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 21)",
+     "by": "claude"
+    },
+    {
+     "id": "pack-mule",
+     "why": "Carried from The Sundered Peak (Map 20); a kin biome; thematic fit, active skills (bounty); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 21)",
+     "by": "claude"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "why": "Carried from The Sundered Peak (Map 20); a kin biome; thematic fit, active skills (remember, trig:onDeath/exileSelf); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 21)",
+     "by": "claude"
+    },
+    {
+     "id": "magma-titan",
+     "why": "Carried from Ashen Spurn (Map 19); a kin biome; thematic fit, active skills (scar, immolation); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 21)",
+     "by": "claude"
     }
    ],
-   "cut": [],
+   "cut": [
+    {
+     "id": "candle-moth",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "chapel-tortoise",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "friar-badger",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "gale-sprite",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (evolution); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "golden-magpie",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
+     "by": "owner"
+    }
+   ],
    "maybe": [
     {
      "id": "eagle-diver",
@@ -4396,22 +4725,7 @@
      "by": "kept"
     },
     {
-     "id": "permafrost-mammoth",
-     "why": "Volcanic & ash card",
-     "by": "kept"
-    },
-    {
-     "id": "ashwing-ptarmigan",
-     "why": "Volcanic & ash card",
-     "by": "kept"
-    },
-    {
      "id": "rimeheart-colossus",
-     "why": "Volcanic & ash card",
-     "by": "kept"
-    },
-    {
-     "id": "ash-imp",
      "why": "Volcanic & ash card",
      "by": "kept"
     },
@@ -4439,9 +4753,70 @@
      "id": "glacier-wolf-pack",
      "why": "Carried from Map 19; ice and fire",
      "by": "claude"
+    },
+    {
+     "id": "ash-cloud-condor",
+     "why": "Carried from The Sundered Peak (Map 20); the map's own biome; THEME5 carried pick, active skills (trig:onSpawn/stun); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 22)",
+     "by": "claude"
+    },
+    {
+     "id": "glacier-yak",
+     "why": "Carried from The Quiet Summit (Map 21); one of the map's biomes; THEME5 carried pick, active skills (freeze, trig:onSpawn/addWait); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 22)",
+     "by": "claude"
+    },
+    {
+     "id": "fumarole-ibex",
+     "why": "Carried from The Sundered Peak (Map 20); the map's own biome; thematic fit, active skills (mountainClimber, pounce); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 22)",
+     "by": "claude"
+    },
+    {
+     "id": "echidna-quillshot",
+     "why": "Carried from The Old Bramble (side map of Map 0); the map's own biome; thematic fit, active skills (volley); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 22)",
+     "by": "claude"
+    },
+    {
+     "id": "tide-spirit",
+     "why": "Carried from Volcano Lair (side map of Map 20); the map's own biome; thematic fit; CONTENT10 (11-05) (THEME6-1: carried 14 on Map 22)",
+     "by": "claude"
+    },
+    {
+     "id": "ravenous-wolverine",
+     "why": "Carried from The Ice Hollow (side map of Map 17); one of the map's biomes; thematic fit, active skills (beset, trig:onAttack/buff); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 22)",
+     "by": "claude"
+    },
+    {
+     "id": "cinder-skeleton",
+     "why": "Carried from The Sundered Peak (Map 20); the map's own biome; thematic fit, active skills (undead, requiem); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 22)",
+     "by": "claude"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "why": "Carried from Ashen Spurn (Map 19); the map's own biome; thematic fit, active skills (poison); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 22)",
+     "by": "claude"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "why": "Carried from The Sundered Peak (Map 20); the map's own biome; thematic fit, active skills (remember, trig:onDeath/exileSelf); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 22)",
+     "by": "claude"
     }
    ],
-   "cut": [],
+   "cut": [
+    {
+     "id": "ash-imp",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (devilry); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "permafrost-mammoth",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 22): cut by Claude, a second mammoth on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "ashwing-ptarmigan",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 22): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
    "maybe": [
     {
      "id": "salamander-pyromancer",
@@ -4507,26 +4882,6 @@
      "by": "kept"
     },
     {
-     "id": "trebuchet-crew",
-     "why": "Village & keep card",
-     "by": "kept"
-    },
-    {
-     "id": "balloon-archer",
-     "why": "Village & keep card",
-     "by": "kept"
-    },
-    {
-     "id": "colony",
-     "why": "Village & keep card",
-     "by": "kept"
-    },
-    {
-     "id": "land-tiller",
-     "why": "Village & keep card",
-     "by": "kept"
-    },
-    {
      "id": "lodge-engineer",
      "why": "Carried from Lilypad Reach (Map 6); Village & keep card",
      "by": "kept"
@@ -4545,9 +4900,80 @@
      "id": "stoat-cutthroat",
      "why": "Carried from The Long Grass (Map 15); Village & keep card",
      "by": "kept"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "why": "Carried from Eyrie Heights (Map 11); a kin biome; THEME5 carried pick, active skills (arrow, fletcher); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
+     "by": "claude"
+    },
+    {
+     "id": "alley-cat",
+     "why": "Carried from Sunken Hollow (Map 4); the map's own biome; thematic fit, active skills (bleed, twinStrike); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
+     "by": "claude"
+    },
+    {
+     "id": "border-collie",
+     "why": "Carried from The Long Grass (Map 15); the map's own biome; thematic fit, active skills (converge); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
+     "by": "claude"
+    },
+    {
+     "id": "bison-bulldozer",
+     "why": "Carried from The Long Grass (Map 15); a kin biome; thematic fit, active skills (bulldoze); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
+     "by": "claude"
+    },
+    {
+     "id": "meerkat-burrower",
+     "why": "Carried from The Glass Dunes (Map 18); a kin biome; thematic fit, active skills (darksight); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
+     "by": "claude"
+    },
+    {
+     "id": "pangolin-roller",
+     "why": "Carried from The Canopy (side map of Map 14); a kin biome; thematic fit, active skills (sturdy); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
+     "by": "claude"
+    },
+    {
+     "id": "acacia-giraffe",
+     "why": "Carried from Savanna Reaches (Map 14); a kin biome; thematic fit, active skills (evasive); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
+     "by": "claude"
+    },
+    {
+     "id": "hoopoe-herald",
+     "why": "Carried from Savanna Reaches (Map 14); a kin biome; thematic fit, active skills (nightblind); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
+     "by": "claude"
+    },
+    {
+     "id": "pronghorn-racer",
+     "why": "Carried from The Long Grass (Map 15); a kin biome; thematic fit, active skills (speed); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
+     "by": "claude"
+    },
+    {
+     "id": "raccoon-bandit",
+     "why": "Carried from The Long Grass (Map 15); a kin biome; thematic fit, active skills (bounty); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 23)",
+     "by": "claude"
     }
    ],
-   "cut": [],
+   "cut": [
+    {
+     "id": "trebuchet-crew",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, a second beaver on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "land-tiller",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, a second mouse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "balloon-archer",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, a second mouse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "colony",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
    "maybe": [
     {
      "id": "armory",
@@ -4716,26 +5142,6 @@
      "by": "kept"
     },
     {
-     "id": "goose-sentry",
-     "why": "Village & keep card",
-     "by": "kept"
-    },
-    {
-     "id": "great-gate",
-     "why": "Village & keep card",
-     "by": "kept"
-    },
-    {
-     "id": "nest",
-     "why": "Village & keep card",
-     "by": "kept"
-    },
-    {
-     "id": "stoneheart-golem",
-     "why": "Village & keep card",
-     "by": "kept"
-    },
-    {
      "id": "lodge-engineer",
      "why": "Carried from Lilypad Reach (Map 6); Village & keep card",
      "by": "kept"
@@ -4754,9 +5160,80 @@
      "id": "badger-trench-digger",
      "why": "Carried from The Goldfeather Siege (Map 23); Village & keep card",
      "by": "kept"
+    },
+    {
+     "id": "ore-smelter-mole",
+     "why": "Carried from Basalt Foundry (side map of Map 19); a kin biome; THEME5 carried pick, active skills (heavyMetal, delivery, deliveryRes); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 24)",
+     "by": "claude"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "why": "Carried from The Long Grass (Map 15); the map's own biome; thematic fit, active skills (backstab, foeScarcity); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 24)",
+     "by": "claude"
+    },
+    {
+     "id": "siege-rhino",
+     "why": "Carried from The Goldfeather Siege (Map 23); the map's own biome; thematic fit, active skills (siege); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 24)",
+     "by": "claude"
+    },
+    {
+     "id": "beetle-battering-ram",
+     "why": "Carried from The Goldfeather Siege (Map 23); the map's own biome; thematic fit, active skills (siege, breach); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 24)",
+     "by": "claude"
+    },
+    {
+     "id": "howdah-archers",
+     "why": "Carried from The Goldfeather Siege (Map 23); the map's own biome; thematic fit, active skills (arrow); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 24)",
+     "by": "claude"
+    },
+    {
+     "id": "testudo-tortoise",
+     "why": "Carried from The Goldfeather Siege (Map 23); the map's own biome; thematic fit, active skills (guardian); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 24)",
+     "by": "claude"
+    },
+    {
+     "id": "alley-cat",
+     "why": "Carried from Sunken Hollow (Map 4); the map's own biome; thematic fit, active skills (bleed, twinStrike); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 24)",
+     "by": "claude"
+    },
+    {
+     "id": "border-collie",
+     "why": "Carried from The Long Grass (Map 15); the map's own biome; thematic fit, active skills (converge); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 24)",
+     "by": "claude"
+    },
+    {
+     "id": "raccoon-bandit",
+     "why": "Carried from The Long Grass (Map 15); a kin biome; thematic fit, active skills (bounty); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 24)",
+     "by": "claude"
+    },
+    {
+     "id": "acacia-giraffe",
+     "why": "Carried from Savanna Reaches (Map 14); a kin biome; thematic fit, active skills (evasive); CONTENT10 (11-05) (THEME6-1: carried 14 on Map 24)",
+     "by": "claude"
     }
    ],
-   "cut": [],
+   "cut": [
+    {
+     "id": "great-gate",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, a second duck on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "stoneheart-golem",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "nest",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "goose-sentry",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
    "maybe": [
     {
      "id": "armory",
@@ -4787,5 +5264,6 @@
  },
  "theme4": "THEME4 (2026-11-01): the owner's picks folded (tools/theme4/apply_2026_11_01.py); chosen entries may carry flag \"unlikely\" + flagWhy (Claude's flag, still on the list).",
  "listfix2": "LISTFIX2 (2026-11-03): cut entries may carry statusWhy: why a cut card is still on its map's lists (SPECIAL for its fight, or put back by a later package). The Map cards panel shows each cut's live status (Still listed / Kept for its fight / Removed) from the lists themselves.",
- "cut3": "CUT3 (2026-11-03): the owner cut Glacial Ape-King from every map and submap of Map 0-20 (m3 = Map 19, m6 = Map 17, mi = Map 17 side map). Decks that still hold it are audited in docs/cut3-audit-2026-11-03.md; Map 17 (17-8) boss leader is an owner call."
+ "cut3": "CUT3 (2026-11-03): the owner cut Glacial Ape-King from every map and submap of Map 0-20 (m3 = Map 19, m6 = Map 17, mi = Map 17 side map). Decks that still hold it are audited in docs/cut3-audit-2026-11-03.md; Map 17 (17-8) boss leader is an owner call.",
+ "content10": "CONTENT10 (2026-11-05): THEME6-1 counts (cut entries by Claude carry a why that says so: flip to keep), LIST-1104 and LISTFIX2 swaps; tools/content10/apply_2026_11_05.js, plan in docs/balance/content10/plan-2026-11-05.json."
 }

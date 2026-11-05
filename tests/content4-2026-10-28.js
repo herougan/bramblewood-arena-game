@@ -63,7 +63,9 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
     if(t2){ const want = ((T3[L.sub || L.map]) || t2.proposed).filter(id=> L.sub || RELFIX3_BOSS[L.map] !== id || !(pools[L.map].special || []).includes(id));
       // 2026-11-04 (TESTFIX1): CONTENT8 (2026-11-02, owner 21:12, CONTENT7-1 / KK17) placed new sea cards on four lists after THEME3; they are not THEME3's to list
       const c8 = id=> /package CONTENT8, owner 21:12, CONTENT7-1 \/ KK17\): placed on the /.test((by[id] || {}).creatorNote || ''), liveT = live && live.filter(id=> !c8(id));
-      ok(live && JSON.stringify(liveT) === JSON.stringify(want), `4. ${k}: the live list is THEME3's (THEME2's where THEME3 has none; ${liveT && liveT.length} vs ${want.length}, CONTENT8's placements aside)`); return; }
+      // 2026-11-05 (CONTENT10): map-review.json now lists CONTENT8's placements too (so the Map cards window counts them); they stay aside here
+      const wantT = want.filter(id=> !c8(id));
+      ok(live && JSON.stringify(liveT) === JSON.stringify(wantT), `4. ${k}: the live list is THEME3's (THEME2's where THEME3 has none; ${liveT && liveT.length} vs ${wantT.length}, CONTENT8's placements aside)`); return; }
     ok(live && live.length === L.before, `4. ${k}: the live pool is the plan's "before" (${live && live.length} vs ${L.before}): not applied`);
     if(!L.skipped){ ok(L.afterNew <= Math.max(7, L.keptNew.filter(s=> / \(/.test(s)).length), `4. ${k}: new cards capped (${L.afterNew})`);
       ok(L.keep.every(id=> live.includes(id) || (L.addedOld || []).includes(id)), `4. ${k}: the plan keeps only cards of its list (or carried deck cards)`); } });

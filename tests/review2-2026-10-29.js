@@ -21,7 +21,9 @@ const TX = (k, v)=> String(TXs[k] || k).replace(/\{(\w+)\}/g, (_, n)=> v && n in
 
 // --- A1. pills
 const SIDE = app.slice(app.indexOf('const RV2_SIDE_CLASS'), app.indexOf('\n', app.indexOf('const RV2_SIDE_UNIQUE')));
-const A = new Function('TX', SIDE + '\n' + ['rv2IsCarried', 'rv2TagsOf', 'rv2TargetsOf', 'rv2CountText'].map(fnSrc).join('\n') + '\nreturn {rv2IsCarried, rv2TagsOf, rv2TargetsOf, rv2CountText, RV2_SIDE_CLASS, RV2_SIDE_UNIQUE};')(TX);
+// 2026-11-05 (CONTENT10, THEME6-1): rv2TargetsOf reads the map's number (th6Targets); a stub mapNumberOf gives the test maps theirs
+const MAPNO = {m1: 0, mf: 1, mb: 2, m5: 14, m11: 20, m21: 21, m24: 24};
+const A = new Function('TX', 'mapNumberOf', SIDE + '\n' + ['th6Targets', 'rv2IsCarried', 'rv2TagsOf', 'rv2TargetsOf', 'rv2CountText'].map(fnSrc).join('\n') + '\nreturn {th6Targets, rv2IsCarried, rv2TagsOf, rv2TargetsOf, rv2CountText, RV2_SIDE_CLASS, RV2_SIDE_UNIQUE};')(TX, id=> MAPNO[id] == null ? null : MAPNO[id]);
 const names = e=> A.rv2TagsOf(e).map(t=> t[1]).join('+');
 ok(names({why: 'Volcanic & ash card; skirmish reward of 6-3', by: 'kept'}) === 'Skirmish+Unique', 'A1. a skirmish reward: Skirmish + Unique, no kept pill (' + names({why: 'Volcanic & ash card; skirmish reward of 6-3', by: 'kept'}) + ')');
 ok(names({why: 'Village & keep card; first-clear card of 6-5', by: 'kept'}) === 'Skirmish+Unique', 'A1. a first-clear card is a Skirmish card too');
@@ -33,10 +35,15 @@ ok(!A.rv2TagsOf({why: 'x', by: 'kept'}).some(t=> /kept/i.test(t[0] + t[1])), 'A1
 ok(A.rv2TagsOf({why: 'x', by: 'owner'}).find(t=> t[0] === 'owner')[2] && A.rv2TagsOf({why: 'x', by: 'claude'}).find(t=> t[0] === 'claude')[2], 'A1. the owner and Claude pills carry a tooltip saying what they mean');
 // --- A2. targets
 const u = n=> Array.from({length: n}, ()=> ({why: 'Meadow card'})), c = n=> Array.from({length: n}, ()=> ({why: 'Carried from Map 1'}));
+// 2026-11-05 (CONTENT10, THEME6-1): main maps follow the owner's count rule by map number (was 8-11 own, 4-5 carried on every main map)
 let t = A.rv2TargetsOf({key: 'cards'}, 'm5', u(9).concat(c(4)), u(9).concat(c(4)));
-ok(t && t.n === 9 && t.m === 4, 'A2. main map: unique 9 is in 8-11 so N = 9; carried 4 is in 4-5 so M = 4');
-t = A.rv2TargetsOf({key: 'cards'}, 'm5', u(14).concat(c(1)), u(14).concat(c(1))); ok(t.n === 11 && t.m === 5, 'A2. main map out of range: the caps 11 and 5');
-t = A.rv2TargetsOf({key: 'cards'}, 'm1', u(12), u(12)); ok(t.n === 11 && t.m === 0, 'A2. a map nothing is carried to has no carried target (M = 0)');
+ok(t && t.n === 9 && t.m === 9, 'A2. Map 14: own 9, carried 9 (THEME6-1), whatever the list holds now');
+t = A.rv2TargetsOf({key: 'cards'}, 'mb', u(14).concat(c(1)), u(14).concat(c(1))); ok(t.n === 10 && t.m === 5, 'A2. Map 2: own 10, carried 5');
+t = A.rv2TargetsOf({key: 'cards'}, 'm11', u(8), u(8)); ok(t.n === 8 && t.m === 13, 'A2. Map 20: own 8, carried 13');
+t = A.rv2TargetsOf({key: 'cards'}, 'm21', u(8), u(8)); ok(t.n === 7 && t.m === 14, 'A2. Map 21: own 7, carried 14');
+t = A.rv2TargetsOf({key: 'cards'}, 'm1', u(12), u(12)); ok(t.n === 12 && t.m === 0, 'A2. Map 0 may hold more (N = its 12); nothing carried to it, so M = 0');
+const T6 = A.th6Targets, row = n=> T6(n).own + '/' + T6(n).carried;
+ok([2, 6, 7, 15, 16, 20, 21, 30, 31, 40, 41, 60, 61, 81].map(row).join(' ') === '10/5 10/5 9/5 9/10 8/10 8/13 7/14 7/15 6/15 6/16 5/16 5/16 5/17 5/18', 'A2. th6Targets by map: ' + [2, 6, 7, 15, 16, 20, 21, 30, 31, 40, 41, 60, 61, 81].map(row).join(' '));
 t = A.rv2TargetsOf({key: 'sub:mp', sub: 'mp'}, 'm5', u(3).concat(c(10)), u(3).concat(c(10))); ok(t.n === 3 && t.m === 10, 'A2. a new-location submap: 3 new, 10 carried');
 t = A.rv2TargetsOf({key: 'sub:mz', sub: 'mz'}, 'm5', u(1).concat(c(12)), []); ok(t.n === 1 && t.m === 12, 'A2. a challenge submap: 1 new; carried 10+ (12 already, so M = 12)');
 t = A.rv2TargetsOf({key: 'sub:mx', sub: 'mx'}, 'm20', u(5).concat(c(10)), []); ok(t.n === 5 && t.m === 10, 'A2. the Volcano Lair: 5 new');

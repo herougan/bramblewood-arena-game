@@ -22,7 +22,10 @@ const cards = {}; J('canonical/cards.json').forEach(c=> cards[c.id] = c);
 const topOf = {}; Object.entries(pools).forEach(([t, e])=>{ topOf[t] = t; Object.keys(e.submaps || {}).forEach(s=> topOf[s] = t); });
 const ownList = k=>{ const t = topOf[k], e = pools[t] || {}; return k === t ? (e.cards || []) : ((e.submaps || {})[k] || []); };
 const specialOf = k=> (pools[topOf[k]] || {}).special || [];
-const RESTORED = new Set(['mw|snapper-hatchling', 'm5|weaver-bird']); // CARD5 (11-02), LISTFIX2-1
+// 2026-11-05 (CONTENT10): LISTFIX2-1 b and LISTFIX2-2 b are applied: each fight got another card of its map's list and the cut card left that map's
+// MAP and SPECIAL lists (CARD5's two first-clear cards too); only Wolfsbane Alpha stays on SPECIAL as 17-8's boss (LISTFIX2-2 a). Was: CARD5's two back.
+const RESTORED = new Set([]);
+const LF2 = {mb: ['fiddler-crab-swarm', 'grey-seal-bull', 'tidepool-trapper-crab'], m2: ['old-sturgeon', 'stone-turtle-warden'], mw: ['venomlord-serpent', 'snapper-hatchling'], m8: ['marsh-wisp'], m5: ['weaver-bird'], m11: ['woodland-brawler'], mc: ['the-gannet-queen'], m3: ['yeti-chieftain']};
 
 // ---------------------------------------------------------------- 1. the 11-01 export's cuts
 const ex = J('docs/balance/owner-map-cards-export-2026-11-01.json');
@@ -43,8 +46,9 @@ Object.entries(review).forEach(([k, r])=>{ if(!topOf[k]) return; (r.cut || []).f
     const s = (cards[e.id] || {}).source || {}, why = (s.kind === 'map' && s.id === k) || (first[k] && first[k].has(e.id));
     ok(why, `${k}: cut ${e.id} on SPECIAL is a fight's card of that map (boss / reward / first clear)`);
     ok(!!e.statusWhy, `${k}: cut ${e.id} on SPECIAL says why (statusWhy)`); } }); });
-ok(still.sort().join() === [...RESTORED].sort().join(), `only the two CARD5 cards are cut and still on their list (got ${still.join(', ')})`);
-ok(spec.length === 11, `11 cut cards kept on SPECIAL for their fight (got ${spec.length}: ${spec.join(', ')})`);
+ok(still.sort().join() === [...RESTORED].sort().join(), `no cut card is still on its list (got ${still.join(', ')})`); // 2026-11-05 (CONTENT10): was the two CARD5 cards
+ok(spec.join() === 'm6|wolfsbane-alpha', `only Wolfsbane Alpha is kept on SPECIAL for its fight (got ${spec.length}: ${spec.join(', ')})`); // 2026-11-05 (CONTENT10): was 11
+Object.entries(LF2).forEach(([k, ids])=> ids.forEach(id=> ok(!(pools[k].cards || []).includes(id) && !(pools[k].special || []).includes(id), `CONTENT10: ${id} is off ${k}'s MAP and SPECIAL lists (LISTFIX2)`)));
 
 // ---------------------------------------------------------------- 3. the panel
 const ctx = {TX: (k, p)=> k + (p ? JSON.stringify(p) : ''), escapeAttr: s=> String(s), escapeHtml: s=> String(s), MP_EXTRA_LISTS: {mtut12: {map: 'mtut'}},

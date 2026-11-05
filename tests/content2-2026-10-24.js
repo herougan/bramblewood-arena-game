@@ -40,7 +40,9 @@ for(const s of C2.NEW){ const c = by[s.id];
   ok(c.attack >= 1 && c.health >= 1 && /Fit: the formula line/.test(c.creatorNote || ''), `${s.id}: fitted by the formula (${c.attack}/${c.health})`);
   ok(!c.art || /^data:image\/png;base64,/.test(c.art), `${s.id}: placeholder art (its emoji ${c.icon}), or its painted art since (2026-11-04 TESTFIX1: ART2 painted them on 10-29)`);
   if(s.place){ const [map, tier] = s.place;
-    ok(c.source && c.source.kind === 'pack' && c.source.map === map && c.source.tier === tier && !c.awaitingSource, `${s.id}: a Pack ${tier} card of ${map}`);
+    // 2026-11-05 (CONTENT10, LISTFIX2-1 b): the Driftwood Crab is 2-5's skirmish reward now (for the Grey Seal Bull), a reward of the same map
+    const c10 = s.id === 'driftwood-crab' && c.source && c.source.kind === 'map' && c.source.id === map && c.source.node === '2-5';
+    ok(c10 || (c.source && c.source.kind === 'pack' && c.source.map === map && c.source.tier === tier && !c.awaitingSource), `${s.id}: a Pack ${tier} card of ${map}${c10 ? ' (CONTENT10: now 2-5\'s reward)' : ''}`);
     ok(pools[map].cards.includes(s.id) === (T2[map] || []).includes(s.id), `${s.id}: its place on ${map}'s list follows THEME2`); } // 2026-10-28 APPLY1: lists follow THEME2
   else ok(c.awaitingSource && !c.source && /proposed:/.test(c.creatorNote), `${s.id}: awaiting a source, with a proposed one`); }
 const gnawed = ['bog-shrew', 'mire-rat', 'hollow-belly-rat', 'gnawed-matriarch'], tide = ['kelpborn-otter', 'conger-eel', 'selkie-wavebinder'];

@@ -327,6 +327,7 @@ run node tests/econ3-2026-11-03.js   # 2026-11-03 (package ECON3, owner 20:34 + 
 run node tests/fix8-2026-11-03.js   # 2026-11-03 (package FIX8, QA2): the Camp opens by itself after 0-2 (M1), reward packs spread over the pool and the tutorial rewards match your side (M2), road wins count and the Forge achievements wait for the Forge (M4), Spanish names and the untranslated rows in 12 packs (M5), no "@lv" overlay card in a pack (M6), minors 1, 3, 7, 8, 9, 12, 13
 run node tests/eng23-2026-11-04.js   # 2026-11-04 (package ENG23, owner 11-03 23:01 / 23:12): Crepuscular day / night parts (+0/+1 at night) and {day} → {night}, Skitter, fast-forward tokens + Grant Fast-forward, True Sight "?" until Map 6, Map cards at base level, Rodentia, Feed / Aimed Bolt (CONTENT9-2)
 run node tests/eng24-2026-11-04.js   # 2026-11-04 (package ENG24, owner 11-04 22:34): Bramble Armor as Fortify { Armor N }, while it lives; Relict, Meld {X}, Immunity, Sequestration (on no card, priced by measure); brambles +2; the defeat advice waits for the Camp; Carnage uptime re-measured
+run node tests/content10-2026-11-05.js   # 2026-11-05 (package CONTENT10, THEME6-1 / LIST-1104 / LISTFIX2 / FIX8-1): the own / carried count rule by map number, Maps 2-24 at it or listed short, the owner's swaps, no archetype cards on Map 20+, the new rewards and first-clear cards
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

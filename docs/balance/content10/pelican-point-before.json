@@ -1,0 +1,35 @@
+{
+ "fight": "2-4 Pelican Point",
+ "games": 200,
+ "seeds": "9100 + 37g",
+ "deck": {
+  "sea-turtle-elder": 4,
+  "tide-pool-crab": 5,
+  "conch-herald": 1,
+  "grey-seal-bull": 1,
+  "conch-crawler": 4,
+  "open-ocean-hermit-crab": 4
+ },
+ "rows": {
+  "map": {
+   "win": 83.5,
+   "losses": 33,
+   "draws": 0,
+   "avgRounds": 6.6,
+   "hpLost": 30.8,
+   "stage": "road",
+   "level": 0,
+   "bramble": "15 + 1 Shield"
+  },
+  "starter": {
+   "win": 5.5,
+   "losses": 189,
+   "draws": 0,
+   "avgRounds": 7.9,
+   "hpLost": 97.1,
+   "stage": "trial",
+   "level": 0,
+   "bramble": "15 + 1 Shield"
+  }
+ }
+}

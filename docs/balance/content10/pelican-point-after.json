@@ -1,0 +1,34 @@
+{
+ "fight": "2-4 Pelican Point",
+ "games": 200,
+ "seeds": "9100 + 37g",
+ "deck": {
+  "conch-herald": 2,
+  "conch-crawler": 3,
+  "open-ocean-hermit-crab": 4,
+  "rock-pool-starfish": 5,
+  "gull-thief": 5
+ },
+ "rows": {
+  "map": {
+   "win": 77,
+   "losses": 46,
+   "draws": 0,
+   "avgRounds": 6.7,
+   "hpLost": 35.3,
+   "stage": "road",
+   "level": 0,
+   "bramble": "15 + 1 Shield"
+  },
+  "starter": {
+   "win": 6,
+   "losses": 188,
+   "draws": 0,
+   "avgRounds": 9.2,
+   "hpLost": 98.1,
+   "stage": "trial",
+   "level": 0,
+   "bramble": "15 + 1 Shield"
+  }
+ }
+}

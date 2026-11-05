@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Package CONTENT10 (owner 11-04 22:34 / 23:17 / 23:36-23:40, 11-05 08:08: THEME6-1, LIST-1104, LISTFIX2-1 b, LISTFIX2-2 b, FIX8-1)
+- **Map lists follow THEME6-1's counts** (Maps 2-24; the rule is coded for every map: `th6Targets`, the Map cards window's N / M): own 10 on Map 2 falling to 8 on Map 20, 7 on 21 to 6 on 40, 5 from 41; carried 5 to Map 8, rising to 13 on Map 20, 14 on 21 to 16 on 40, then +1 every 20 maps. 43 own / carried cards cut (weakest theme fit and near-duplicates first, never a fight's card; each cut says why in the Map cards window, flip to keep), 91 carried cards added from earlier lists (THEME5 picks and Claude New first, distinct animals, inside the rarity cap). Six maps stay short of carried (decision CONTENT10-1).
+- **Owner swaps:** Pebble Beach drops Sea Turtle Elder (Rock Pool Starfish in its deck slots); Sunken Hollow gets Shoal Shark back and Alley Cat for Muskrat Reedgatherer; The Sundered Peak gets Chamois Leaper for Glacier Wolf Pack; no archetype cards on Map 20+ lists or decks (Pit Glutton, Ash Imp, five Ecclesia / Evomax cards on Map 21).
+- **LISTFIX2:** ten cut cards leave their map for good, and each fight gets another card of its list (2-1 Rock Pool Starfish, 2-5 Driftwood Crab, 4-5 Pyrenean Desman, 20-9 Magma Salamander rewards; 2-3, 4-2, 5-1, 5-3, 6-4, 14-3 first-clear cards); The Gannet Queen (3-7) -> Razorbill, Yeti Chieftain (19-6) -> the Yeti (reward and challenge). Deck copies moved to the nearest list card (40 road decks).
+- **FIX8-1:** Pelican Point (2-4) a little easier: starter deck 5.5% -> 6%, Map reference 83.5% -> 77% (200 games; decision CONTENT10-2).
+- Tools: `tools/content10/apply_2026_11_05.js` (plan in `docs/balance/content10/plan-2026-11-05.json`), `tools/content10/pelican_point_2026_11_05.js`. Test: `tests/content10-2026-11-05.js`; dated updates to review2, listfix2, content2, content4. Other decks (and PRO / BPRO decks holding cut cards) wait for BAL16.
+
 ## 2026-11-04 Package UI22 (owner 22:56: skirmish rewards and Claude New in Map cards)
 - Admin Map cards window: a "Skirmish rewards" section (every fight of the map and its side maps with its reward, first-clear and challenge cards, fight code and name as caption) and a "Recommended by Claude" section whose cards wear a "Claude New" pill. Those cards are shown only: on no list, pool, deck or count. The compact skills block is unchanged. UI only, no balance change.
 ## 2026-11-04 Package UI22a (owner 22:56: Map cards scroll and the skills block)
