@@ -1,0 +1,814 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T03:43:27.444Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "mr",
+  "num": 13,
+  "name": "The Redwood Deep"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "ant-hill",
+  "badger-lumberjack",
+  "berserker-boar",
+  "blue-ringed-octopus",
+  "bramble-hoglet",
+  "bramblewood-lynx",
+  "carrion-crow",
+  "corpse-flower-beetle",
+  "cunning-vixen",
+  "eagle-owl-quartermaster",
+  "fawn-scout",
+  "fox-kit",
+  "grizzly-vanguard",
+  "hawthorn-shieldbug",
+  "ibex-rockcaller",
+  "leafcutter-gardener",
+  "lyrebird-mimic",
+  "otter-centurion",
+  "owl-nightwatch",
+  "quillback-elder",
+  "redwood-woodpecker",
+  "sergeant-bramblefox",
+  "shimmerwing-stag",
+  "swift-fox",
+  "tasmanian-devil",
+  "truffle-piglet",
+  "tunnel-ant",
+  "wolf-spider-mother",
+  "woodcock-lookout"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Ant Hill",
+  "Badger Lumberjack",
+  "Berserker Boar",
+  "Blue-ringed Octopus",
+  "Bramble Hoglet",
+  "Bramblewood Lynx",
+  "Carrion Crow",
+  "Corpse-flower Beetle",
+  "Cunning Vixen",
+  "Eagle-Owl Quartermaster",
+  "Fawn Scout",
+  "Fox Kit",
+  "Grizzly Vanguard",
+  "Hawthorn Shieldbug",
+  "Ibex Rockcaller",
+  "Leafcutter Gardener",
+  "Lyrebird Mimic",
+  "Otter Centurion",
+  "Owl Nightwatch",
+  "Quillback Elder",
+  "Redwood Woodpecker",
+  "Sergeant Bramblefox",
+  "Shimmerwing Stag",
+  "Swift Fox",
+  "Tasmanian Devil",
+  "Truffle Piglet",
+  "Tunnel Ant",
+  "Wolf Spider Mother",
+  "Woodcock Lookout"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "ant-hill",
+   "badger-lumberjack",
+   "berserker-boar",
+   "bramble-hoglet",
+   "bramblewood-lynx",
+   "carrion-crow",
+   "corpse-flower-beetle",
+   "cunning-vixen",
+   "fawn-scout",
+   "fox-kit",
+   "grizzly-vanguard",
+   "owl-nightwatch",
+   "quillback-elder",
+   "redwood-woodpecker",
+   "sergeant-bramblefox",
+   "shimmerwing-stag",
+   "swift-fox",
+   "tasmanian-devil"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:13-1",
+   "label": "vs 13-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-2",
+   "label": "vs 13-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-3",
+   "label": "vs 13-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-4",
+   "label": "vs 13-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-5",
+   "label": "vs 13-5 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-6",
+   "label": "vs 13-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-7",
+   "label": "vs 13-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:13-8",
+   "label": "vs 13-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 13-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road13",
+   "label": "vs reference deck (Map 13) under 13-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "badger-lumberjack",
+    "carrion-crow",
+    "redwood-woodpecker"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:evasion",
+   "label": "evasion (skill family)",
+   "cards": [
+    "cunning-vixen",
+    "owl-nightwatch",
+    "shimmerwing-stag",
+    "tunnel-ant"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:guard",
+   "label": "guard (skill family)",
+   "cards": [
+    "alpine-marmot",
+    "badger-lumberjack",
+    "grizzly-vanguard",
+    "hawthorn-shieldbug"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 4,
+   "moves": 3,
+   "games": 1518,
+   "apartFromEarlier": 14
+  },
+  {
+   "focus": "family:evasion",
+   "steps": 4,
+   "moves": 1,
+   "games": 1562,
+   "apartFromEarlier": 16
+  },
+  {
+   "focus": "family:guard",
+   "steps": 5,
+   "moves": 3,
+   "games": 1716,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "open",
+   "steps": 4,
+   "moves": 2,
+   "games": 1540,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 116,
+ "games": 7040,
+ "decks": [
+  {
+   "focus": "family:guard",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "guard x8"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "bramble-hoglet": 3,
+    "eagle-owl-quartermaster": 2,
+    "fawn-scout": 3,
+    "fox-kit": 4,
+    "hawthorn-shieldbug": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "bramble-hoglet",
+     "name": "Bramble Hoglet",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fawn-scout",
+     "name": "Fawn Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8674,
+   "ci": [
+    0.8316,
+    0.9033
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "blue-ringed-octopus": 2,
+    "bramblewood-lynx": 3,
+    "corpse-flower-beetle": 3,
+    "fox-kit": 4,
+    "truffle-piglet": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "corpse-flower-beetle",
+     "name": "Corpse-flower Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8371,
+   "ci": [
+    0.7978,
+    0.8765
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.05,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "big (14 copies at 1+ Lumber, average 0.7)",
+    "economy (7 resource makers)"
+   ],
+   "deck": {
+    "blue-ringed-octopus": 3,
+    "bramblewood-lynx": 3,
+    "carrion-crow": 3,
+    "hawthorn-shieldbug": 4,
+    "otter-centurion": 3,
+    "redwood-woodpecker": 4
+   },
+   "cards": [
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "redwood-woodpecker",
+     "name": "Redwood Woodpecker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7121,
+   "ci": [
+    0.6656,
+    0.7586
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 6,
+    "1": 14
+   },
+   "resourceMakers": 7,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 15
+  },
+  {
+   "focus": "family:evasion",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "evasion x9"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "blue-ringed-octopus": 3,
+    "cunning-vixen": 4,
+    "fox-kit": 4,
+    "shimmerwing-stag": 2,
+    "tunnel-ant": 3
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cunning-vixen",
+     "name": "Cunning Vixen",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "shimmerwing-stag",
+     "name": "Shimmerwing Stag",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.6515,
+   "ci": [
+    0.6026,
+    0.7004
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.05,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "p": 0.3333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mr --pool alpine-marmot,ant-hill,badger-lumberjack,berserker-boar,blue-ringed-octopus,bramble-hoglet,bramblewood-lynx,carrion-crow,corpse-flower-beetle,cunning-vixen,eagle-owl-quartermaster,fawn-scout,fox-kit,grizzly-vanguard,hawthorn-shieldbug,ibex-rockcaller,leafcutter-gardener,lyrebird-mimic,otter-centurion,owl-nightwatch,quillback-elder,redwood-woodpecker,sergeant-bramblefox,shimmerwing-stag,swift-fox,tasmanian-devil,truffle-piglet,tunnel-ant,wolf-spider-mother,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus economy,family:evasion,family:guard,open --anchor ant-hill,badger-lumberjack,berserker-boar,bramble-hoglet,bramblewood-lynx,carrion-crow,corpse-flower-beetle,cunning-vixen,fawn-scout,fox-kit,grizzly-vanguard,owl-nightwatch,quillback-elder,redwood-woodpecker,sergeant-bramblefox,shimmerwing-stag,swift-fox,tasmanian-devil --anchor-min 10 --level 1 --mode map-true"
+}

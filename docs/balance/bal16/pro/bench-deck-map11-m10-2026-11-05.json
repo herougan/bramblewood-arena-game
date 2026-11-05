@@ -1,0 +1,875 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T03:37:01.453Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "m10",
+  "num": 11,
+  "name": "Eyrie Heights"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "alpine-marmot",
+  "alpine-salamander",
+  "alpine-swift",
+  "anhinga-spearbird",
+  "beaver-lumberjack",
+  "caiman-hatchling",
+  "chamois-leaper",
+  "chipmunk-hoarder",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gangrenous-leech",
+  "gannet-nestweaver",
+  "giant-cave-huntsman",
+  "golden-eagle-diver",
+  "ibex-rockcaller",
+  "kittiwake-flock",
+  "marsh-harrier",
+  "mountain-hare",
+  "newt-doctor",
+  "otter-centurion",
+  "peak-condor",
+  "peregrine-stooper",
+  "planarian-splitter",
+  "puffin-diver",
+  "razorbill",
+  "red-billed-chough",
+  "swamp-alligator",
+  "wolf-spider-mother",
+  "woodcock-lookout",
+  "wound-reaver"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Alpine Marmot",
+  "Alpine Salamander",
+  "Alpine Swift",
+  "Anhinga Spearbird",
+  "Beaver Lumberjack",
+  "Caiman Hatchling",
+  "Chamois Leaper",
+  "Chipmunk Hoarder",
+  "Eagle-Owl Quartermaster",
+  "Eyrie Warden",
+  "Gangrenous Leech",
+  "Gannet Nestweaver",
+  "Giant Cave Huntsman",
+  "Golden Eagle Diver",
+  "Ibex Rockcaller",
+  "Kittiwake Flock",
+  "Marsh Harrier",
+  "Mountain Hare",
+  "Newt Doctor",
+  "Otter Centurion",
+  "Peak Condor",
+  "Peregrine Stooper",
+  "Planarian Splitter",
+  "Puffin Diver",
+  "Razorbill",
+  "Red-billed Chough",
+  "Swamp Alligator",
+  "Wolf Spider Mother",
+  "Woodcock Lookout",
+  "Wound Reaver"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "alpine-marmot",
+   "alpine-salamander",
+   "alpine-swift",
+   "beaver-lumberjack",
+   "chamois-leaper",
+   "chipmunk-hoarder",
+   "eagle-owl-quartermaster",
+   "eyrie-warden",
+   "gangrenous-leech",
+   "gannet-nestweaver",
+   "golden-eagle-diver",
+   "ibex-rockcaller",
+   "kittiwake-flock",
+   "mountain-hare",
+   "peak-condor",
+   "peregrine-stooper",
+   "red-billed-chough",
+   "swamp-alligator",
+   "wound-reaver"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:11-1",
+   "label": "vs 11-1 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:11-2",
+   "label": "vs 11-2 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:11-3",
+   "label": "vs 11-3 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:11-4",
+   "label": "vs 11-4 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:11-5",
+   "label": "vs 11-5 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:11-6",
+   "label": "vs 11-6 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:11-7",
+   "label": "vs 11-7 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:11-8",
+   "label": "vs 11-8 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:11-9",
+   "label": "vs 11-9 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 11-1's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:road11",
+   "label": "vs reference deck (Map 11) under 11-2's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 11-3's field",
+   "weight": 0.0833
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "alpine-swift",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "gannet-nestweaver",
+    "golden-eagle-diver",
+    "kittiwake-flock",
+    "marsh-harrier",
+    "peak-condor",
+    "peregrine-stooper",
+    "puffin-diver",
+    "razorbill",
+    "red-billed-chough"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "alpine-swift",
+    "anhinga-spearbird",
+    "caiman-hatchling",
+    "chamois-leaper",
+    "giant-cave-huntsman",
+    "golden-eagle-diver",
+    "peregrine-stooper"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "eyrie-warden",
+    "swamp-alligator"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 4,
+   "moves": 2,
+   "games": 1776,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 4,
+   "moves": 3,
+   "games": 1824,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 4,
+   "moves": 3,
+   "games": 1632,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 4,
+   "moves": 3,
+   "games": 1800,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 159,
+ "games": 7800,
+ "decks": [
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "strike-first x8"
+   ],
+   "deck": {
+    "chamois-leaper": 4,
+    "chipmunk-hoarder": 4,
+    "golden-eagle-diver": 4,
+    "ibex-rockcaller": 2,
+    "planarian-splitter": 3,
+    "wound-reaver": 3
+   },
+   "cards": [
+    {
+     "id": "chamois-leaper",
+     "name": "Chamois Leaper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "chipmunk-hoarder",
+     "name": "Chipmunk Hoarder",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "planarian-splitter",
+     "name": "Planarian Splitter",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "wound-reaver",
+     "name": "Wound Reaver",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8958,
+   "ci": [
+    0.8642,
+    0.9275
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-1",
+     "label": "vs 11-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-2",
+     "label": "vs 11-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-3",
+     "label": "vs 11-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-4",
+     "label": "vs 11-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-5",
+     "label": "vs 11-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-6",
+     "label": "vs 11-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-7",
+     "label": "vs 11-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-8",
+     "label": "vs 11-8 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-9",
+     "label": "vs 11-9 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 11-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "strike-first x14",
+    "flying x10"
+   ],
+   "deck": {
+    "alpine-swift": 3,
+    "beaver-lumberjack": 3,
+    "chamois-leaper": 4,
+    "giant-cave-huntsman": 3,
+    "peak-condor": 3,
+    "peregrine-stooper": 4
+   },
+   "cards": [
+    {
+     "id": "chamois-leaper",
+     "name": "Chamois Leaper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "peregrine-stooper",
+     "name": "Peregrine Stooper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "peak-condor",
+     "name": "Peak Condor",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8576,
+   "ci": [
+    0.8235,
+    0.8918
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 6,
+    "1": 14
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 14
+    },
+    {
+     "f": "flying",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-1",
+     "label": "vs 11-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-2",
+     "label": "vs 11-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-3",
+     "label": "vs 11-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-4",
+     "label": "vs 11-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-5",
+     "label": "vs 11-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-6",
+     "label": "vs 11-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-7",
+     "label": "vs 11-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-8",
+     "label": "vs 11-8 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-9",
+     "label": "vs 11-9 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 11-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "economy (4 resource makers)",
+    "flying x14",
+    "strike-first x9"
+   ],
+   "deck": {
+    "alpine-swift": 3,
+    "gannet-nestweaver": 4,
+    "giant-cave-huntsman": 3,
+    "golden-eagle-diver": 3,
+    "otter-centurion": 3,
+    "peak-condor": 4
+   },
+   "cards": [
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "peak-condor",
+     "name": "Peak Condor",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8559,
+   "ci": [
+    0.8219,
+    0.8899
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 1,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 14
+    },
+    {
+     "f": "strike-first",
+     "n": 9
+    },
+    {
+     "f": "ranged",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-1",
+     "label": "vs 11-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-2",
+     "label": "vs 11-2 skirmish's deck",
+     "p": 0.9792,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-3",
+     "label": "vs 11-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-4",
+     "label": "vs 11-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-5",
+     "label": "vs 11-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-6",
+     "label": "vs 11-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-7",
+     "label": "vs 11-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-8",
+     "label": "vs 11-8 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-9",
+     "label": "vs 11-9 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 11-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)"
+   ],
+   "deck": {
+    "alpine-salamander": 4,
+    "eyrie-warden": 4,
+    "giant-cave-huntsman": 3,
+    "ibex-rockcaller": 2,
+    "swamp-alligator": 4,
+    "woodcock-lookout": 3
+   },
+   "cards": [
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "eyrie-warden",
+     "name": "Eyrie Warden",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "swamp-alligator",
+     "name": "Swamp Alligator",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "woodcock-lookout",
+     "name": "Woodcock Lookout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7604,
+   "ci": [
+    0.7221,
+    0.7988
+   ],
+   "avgLumber": 1.45,
+   "avgWait": 1.85,
+   "curve": {
+    "0": 3,
+    "1": 9,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-1",
+     "label": "vs 11-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-2",
+     "label": "vs 11-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-3",
+     "label": "vs 11-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-4",
+     "label": "vs 11-4 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-5",
+     "label": "vs 11-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-6",
+     "label": "vs 11-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-7",
+     "label": "vs 11-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-8",
+     "label": "vs 11-8 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-9",
+     "label": "vs 11-9 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 11-2's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-3's field",
+     "p": 0.3333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m10 --pool alley-cat,alpine-marmot,alpine-salamander,alpine-swift,anhinga-spearbird,beaver-lumberjack,caiman-hatchling,chamois-leaper,chipmunk-hoarder,eagle-owl-quartermaster,eyrie-warden,gangrenous-leech,gannet-nestweaver,giant-cave-huntsman,golden-eagle-diver,ibex-rockcaller,kittiwake-flock,marsh-harrier,mountain-hare,newt-doctor,otter-centurion,peak-condor,peregrine-stooper,planarian-splitter,puffin-diver,razorbill,red-billed-chough,swamp-alligator,wolf-spider-mother,woodcock-lookout,wound-reaver --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus family:flying,family:strike-first,big,open --anchor alpine-marmot,alpine-salamander,alpine-swift,beaver-lumberjack,chamois-leaper,chipmunk-hoarder,eagle-owl-quartermaster,eyrie-warden,gangrenous-leech,gannet-nestweaver,golden-eagle-diver,ibex-rockcaller,kittiwake-flock,mountain-hare,peak-condor,peregrine-stooper,red-billed-chough,swamp-alligator,wound-reaver --anchor-min 10 --level 1 --mode map-true"
+}

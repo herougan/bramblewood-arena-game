@@ -1,0 +1,815 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T03:16:27.318Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "mw",
+  "num": 5,
+  "name": "Gatorback Swamp"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "alligator-gar",
+  "anhinga-spearbird",
+  "bee-forager",
+  "bog-leech",
+  "box-turtle",
+  "conch-crawler",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "driftwood-crab",
+  "fen-mink",
+  "fire-ant-raft",
+  "gannet-nestweaver",
+  "grass-viper",
+  "guppy",
+  "muskrat-lodgekeeper",
+  "muskrat-reedgatherer",
+  "nutria-reedcutter",
+  "old-snapjaw",
+  "old-sturgeon",
+  "otter-centurion",
+  "platypus-spur",
+  "pond-algae",
+  "pyrenean-desman",
+  "snapstick-turtle",
+  "swamp-alligator",
+  "water-vole"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Alligator Gar",
+  "Anhinga Spearbird",
+  "Bee Forager",
+  "Bog Leech",
+  "Box Turtle",
+  "Conch Crawler",
+  "Constrictor Coil",
+  "Crocodile Ambusher",
+  "Cypress Root Lurker",
+  "Driftwood Crab",
+  "Fen Mink",
+  "Fire Ant Raft",
+  "Gannet Nestweaver",
+  "Grass Viper",
+  "Guppy",
+  "Muskrat Lodgekeeper",
+  "Muskrat Reedgatherer",
+  "Nutria Reedcutter",
+  "Old Snapjaw",
+  "Old Sturgeon",
+  "Otter Centurion",
+  "Platypus Spur",
+  "Pond Algae",
+  "Pyrenean Desman",
+  "Snapstick Turtle",
+  "Swamp Alligator",
+  "Water Vole"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "alligator-gar",
+   "anhinga-spearbird",
+   "bog-leech",
+   "box-turtle",
+   "constrictor-coil",
+   "crocodile-ambusher",
+   "cypress-root-lurker",
+   "fen-mink",
+   "fire-ant-raft",
+   "grass-viper",
+   "muskrat-reedgatherer",
+   "nutria-reedcutter",
+   "old-snapjaw",
+   "pond-algae",
+   "snapstick-turtle",
+   "swamp-alligator"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:5-1",
+   "label": "vs 5-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-2",
+   "label": "vs 5-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-3",
+   "label": "vs 5-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-4",
+   "label": "vs 5-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-5",
+   "label": "vs 5-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-6",
+   "label": "vs 5-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-7",
+   "label": "vs 5-7 boss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 5-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road5",
+   "label": "vs reference deck (Map 5) under 5-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 5-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "alligator-gar",
+    "conch-crawler",
+    "fire-ant-raft",
+    "guppy",
+    "muskrat-lodgekeeper",
+    "old-sturgeon",
+    "pyrenean-desman",
+    "snapstick-turtle",
+    "water-vole"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "alligator-gar",
+    "conch-crawler",
+    "old-snapjaw",
+    "old-sturgeon",
+    "swamp-alligator"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "alligator-gar",
+    "anhinga-spearbird",
+    "constrictor-coil",
+    "crocodile-ambusher",
+    "cypress-root-lurker",
+    "fire-ant-raft",
+    "muskrat-lodgekeeper",
+    "old-snapjaw",
+    "old-sturgeon",
+    "platypus-spur",
+    "snapstick-turtle",
+    "swamp-alligator"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:tide",
+   "steps": 5,
+   "moves": 3,
+   "games": 1720,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:armor",
+   "steps": 5,
+   "moves": 2,
+   "games": 1780,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "big",
+   "steps": 6,
+   "moves": 4,
+   "games": 1640,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 2,
+   "games": 1660,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 148,
+ "games": 7440,
+ "decks": [
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "tide x8",
+    "swarm x7"
+   ],
+   "deck": {
+    "anhinga-spearbird": 2,
+    "bee-forager": 3,
+    "box-turtle": 4,
+    "fire-ant-raft": 4,
+    "gannet-nestweaver": 3,
+    "pyrenean-desman": 4
+   },
+   "cards": [
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pyrenean-desman",
+     "name": "Pyrenean Desman",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "anhinga-spearbird",
+     "name": "Anhinga Spearbird",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7583,
+   "ci": [
+    0.7152,
+    0.8014
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.65,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    },
+    {
+     "f": "swarm",
+     "n": 7
+    },
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-1",
+     "label": "vs 5-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-2",
+     "label": "vs 5-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-3",
+     "label": "vs 5-3 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-4",
+     "label": "vs 5-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-5",
+     "label": "vs 5-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-6",
+     "label": "vs 5-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-7",
+     "label": "vs 5-7 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road5",
+     "label": "vs reference deck (Map 5) under 5-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-3's field",
+     "p": 0.3333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "tide x7"
+   ],
+   "deck": {
+    "alligator-gar": 3,
+    "box-turtle": 4,
+    "driftwood-crab": 1,
+    "grass-viper": 4,
+    "muskrat-lodgekeeper": 4,
+    "nutria-reedcutter": 4
+   },
+   "cards": [
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grass-viper",
+     "name": "Grass Viper",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "muskrat-lodgekeeper",
+     "name": "Muskrat Lodgekeeper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6542,
+   "ci": [
+    0.6049,
+    0.7035
+   ],
+   "avgLumber": 0.35,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 13,
+    "1": 7
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-1",
+     "label": "vs 5-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-2",
+     "label": "vs 5-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-3",
+     "label": "vs 5-3 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-4",
+     "label": "vs 5-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-5",
+     "label": "vs 5-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-6",
+     "label": "vs 5-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-7",
+     "label": "vs 5-7 boss's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-1's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road5",
+     "label": "vs reference deck (Map 5) under 5-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-3's field",
+     "p": 0.25,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:armor",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "armor x8",
+    "tide x6"
+   ],
+   "deck": {
+    "alligator-gar": 2,
+    "box-turtle": 4,
+    "conch-crawler": 4,
+    "gannet-nestweaver": 4,
+    "grass-viper": 4,
+    "old-snapjaw": 2
+   },
+   "cards": [
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grass-viper",
+     "name": "Grass Viper",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "old-snapjaw",
+     "name": "Old Snapjaw",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6292,
+   "ci": [
+    0.5792,
+    0.6791
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 16,
+    "1": 2,
+    "2": 2
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "armor",
+     "n": 8
+    },
+    {
+     "f": "tide",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-1",
+     "label": "vs 5-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-2",
+     "label": "vs 5-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-3",
+     "label": "vs 5-3 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-4",
+     "label": "vs 5-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-5",
+     "label": "vs 5-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-6",
+     "label": "vs 5-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-7",
+     "label": "vs 5-7 boss's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-1's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road5",
+     "label": "vs reference deck (Map 5) under 5-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-3's field",
+     "p": 0.1667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)"
+   ],
+   "deck": {
+    "bog-leech": 3,
+    "box-turtle": 3,
+    "cypress-root-lurker": 4,
+    "grass-viper": 3,
+    "muskrat-reedgatherer": 3,
+    "swamp-alligator": 4
+   },
+   "cards": [
+    {
+     "id": "cypress-root-lurker",
+     "name": "Cypress Root Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "swamp-alligator",
+     "name": "Swamp Alligator",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grass-viper",
+     "name": "Grass Viper",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "name": "Muskrat Reedgatherer",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.5917,
+   "ci": [
+    0.5396,
+    0.6437
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 12,
+    "1": 4,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-1",
+     "label": "vs 5-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-2",
+     "label": "vs 5-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-3",
+     "label": "vs 5-3 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-4",
+     "label": "vs 5-4 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-5",
+     "label": "vs 5-5 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-6",
+     "label": "vs 5-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-7",
+     "label": "vs 5-7 boss's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road5",
+     "label": "vs reference deck (Map 5) under 5-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-3's field",
+     "p": 0.2083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mw --pool alley-cat,alligator-gar,anhinga-spearbird,bee-forager,bog-leech,box-turtle,conch-crawler,constrictor-coil,crocodile-ambusher,cypress-root-lurker,driftwood-crab,fen-mink,fire-ant-raft,gannet-nestweaver,grass-viper,guppy,muskrat-lodgekeeper,muskrat-reedgatherer,nutria-reedcutter,old-snapjaw,old-sturgeon,otter-centurion,platypus-spur,pond-algae,pyrenean-desman,snapstick-turtle,swamp-alligator,water-vole --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus family:tide,family:armor,big,open --anchor alligator-gar,anhinga-spearbird,bog-leech,box-turtle,constrictor-coil,crocodile-ambusher,cypress-root-lurker,fen-mink,fire-ant-raft,grass-viper,muskrat-reedgatherer,nutria-reedcutter,old-snapjaw,pond-algae,snapstick-turtle,swamp-alligator --anchor-min 10 --level 1 --mode map-true"
+}

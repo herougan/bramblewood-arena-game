@@ -1,0 +1,750 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T03:48:28.623Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "my",
+  "num": 14,
+  "name": "The Canopy"
+ },
+ "level": 1,
+ "pool": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "eagle-owl-quartermaster",
+  "fire-ant-raft",
+  "grave-grin-hyena",
+  "hercules-beetle",
+  "hoopoe-herald",
+  "ibex-rockcaller",
+  "jaguar-stalker",
+  "kinkajou-lurker",
+  "leafcutter-gardener",
+  "lyrebird-mimic",
+  "meadow-frog",
+  "meerkat-burrower",
+  "pangolin-roller",
+  "poison-dart-croaker",
+  "pride-queen",
+  "proboscis-monkey",
+  "redwood-woodpecker",
+  "robin-redbreast",
+  "spitting-cobra",
+  "stoat-cutthroat",
+  "vampire-bat",
+  "walrus-icebreaker",
+  "weaver-bird",
+  "wolf-spider-mother",
+  "woodcock-lookout"
+ ],
+ "poolNames": [
+  "Apollo Butterfly",
+  "Camouflage Frog",
+  "Eagle-Owl Quartermaster",
+  "Fire Ant Raft",
+  "Grave-Grin Hyena",
+  "Hercules Beetle",
+  "Hoopoe Herald",
+  "Ibex Rockcaller",
+  "Jaguar Stalker",
+  "Kinkajou Lurker",
+  "Leafcutter Gardener",
+  "Lyrebird Mimic",
+  "Meadow Frog",
+  "Meerkat Burrower",
+  "Pangolin Roller",
+  "Poison Dart Croaker",
+  "Pride Queen",
+  "Proboscis Monkey",
+  "Redwood Woodpecker",
+  "Robin Redbreast",
+  "Spitting Cobra",
+  "Stoat Cutthroat",
+  "Vampire Bat",
+  "Walrus Icebreaker",
+  "Weaver Bird",
+  "Wolf Spider Mother",
+  "Woodcock Lookout"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "apollo-butterfly",
+   "camouflage-frog",
+   "hercules-beetle",
+   "hoopoe-herald",
+   "jaguar-stalker",
+   "kinkajou-lurker",
+   "leafcutter-gardener",
+   "lyrebird-mimic",
+   "pangolin-roller",
+   "poison-dart-croaker",
+   "pride-queen",
+   "proboscis-monkey",
+   "redwood-woodpecker",
+   "spitting-cobra",
+   "vampire-bat",
+   "weaver-bird"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:14-A-1",
+   "label": "vs 14-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-2",
+   "label": "vs 14-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-3",
+   "label": "vs 14-A-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-4",
+   "label": "vs 14-A-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-5",
+   "label": "vs 14-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 14-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road18",
+   "label": "vs reference deck (Map 18) under 14-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "apollo-butterfly",
+    "eagle-owl-quartermaster",
+    "robin-redbreast",
+    "vampire-bat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:night",
+   "label": "night (skill family)",
+   "cards": [
+    "kinkajou-lurker",
+    "meerkat-burrower",
+    "vampire-bat",
+    "woodcock-lookout"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "camouflage-frog",
+    "eagle-owl-quartermaster",
+    "fire-ant-raft",
+    "hercules-beetle",
+    "ibex-rockcaller",
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "lyrebird-mimic",
+    "meerkat-burrower",
+    "pangolin-roller",
+    "poison-dart-croaker",
+    "pride-queen",
+    "proboscis-monkey",
+    "redwood-woodpecker",
+    "spitting-cobra",
+    "stoat-cutthroat",
+    "walrus-icebreaker",
+    "weaver-bird",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 6,
+   "moves": 3,
+   "games": 1584,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:night",
+   "steps": 6,
+   "moves": 3,
+   "games": 1584,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 6,
+   "moves": 2,
+   "games": 1616,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 2,
+   "games": 1664,
+   "apartFromEarlier": 14
+  }
+ ],
+ "apart": 10,
+ "seconds": 164,
+ "games": 6960,
+ "decks": [
+  {
+   "focus": "big",
+   "labels": [
+    "big (9 copies at 1 Lumber, average 0.5)"
+   ],
+   "deck": {
+    "grave-grin-hyena": 4,
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 4,
+    "poison-dart-croaker": 4,
+    "walrus-icebreaker": 2,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "poison-dart-croaker",
+     "name": "Poison Dart Croaker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7865,
+   "ci": [
+    0.7343,
+    0.8386
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.75,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (13 copies at 1 Lumber, average 0.7)",
+    "economy (4 resource makers)",
+    "swarm x7"
+   ],
+   "deck": {
+    "apollo-butterfly": 4,
+    "fire-ant-raft": 4,
+    "hercules-beetle": 2,
+    "meadow-frog": 3,
+    "redwood-woodpecker": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "redwood-woodpecker",
+     "name": "Redwood Woodpecker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "hercules-beetle",
+     "name": "Hercules Beetle",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7187,
+   "ci": [
+    0.6643,
+    0.7732
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "swarm",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:night",
+   "labels": [
+    "big (10 copies at 1 Lumber, average 0.5)",
+    "night x8"
+   ],
+   "deck": {
+    "grave-grin-hyena": 2,
+    "hoopoe-herald": 4,
+    "kinkajou-lurker": 4,
+    "walrus-icebreaker": 2,
+    "weaver-bird": 4,
+    "woodcock-lookout": 4
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "kinkajou-lurker",
+     "name": "Kinkajou Lurker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "weaver-bird",
+     "name": "Weaver Bird",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "woodcock-lookout",
+     "name": "Woodcock Lookout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7135,
+   "ci": [
+    0.6566,
+    0.7705
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "night",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "flying x8",
+    "poison x6"
+   ],
+   "deck": {
+    "apollo-butterfly": 4,
+    "fire-ant-raft": 2,
+    "hoopoe-herald": 4,
+    "poison-dart-croaker": 4,
+    "robin-redbreast": 4,
+    "stoat-cutthroat": 2
+   },
+   "cards": [
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "poison-dart-croaker",
+     "name": "Poison Dart Croaker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.5938,
+   "ci": [
+    0.5347,
+    0.6528
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    },
+    {
+     "f": "poison",
+     "n": 6
+    },
+    {
+     "f": "tide",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.375,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map my --pool apollo-butterfly,camouflage-frog,eagle-owl-quartermaster,fire-ant-raft,grave-grin-hyena,hercules-beetle,hoopoe-herald,ibex-rockcaller,jaguar-stalker,kinkajou-lurker,leafcutter-gardener,lyrebird-mimic,meadow-frog,meerkat-burrower,pangolin-roller,poison-dart-croaker,pride-queen,proboscis-monkey,redwood-woodpecker,robin-redbreast,spitting-cobra,stoat-cutthroat,vampire-bat,walrus-icebreaker,weaver-bird,wolf-spider-mother,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus family:flying,family:night,big,open --anchor apollo-butterfly,camouflage-frog,hercules-beetle,hoopoe-herald,jaguar-stalker,kinkajou-lurker,leafcutter-gardener,lyrebird-mimic,pangolin-roller,poison-dart-croaker,pride-queen,proboscis-monkey,redwood-woodpecker,spitting-cobra,vampire-bat,weaver-bird --anchor-min 10 --level 1 --mode map-true"
+}

@@ -1,0 +1,849 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T03:26:56.996Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "m4",
+  "num": 8,
+  "name": "Caves & Alcoves"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "alligator-gar",
+  "blind-cave-fish",
+  "cave-olm",
+  "dung-beetle",
+  "echo-matriarch",
+  "echo-screecher",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "grey-seal-bull",
+  "gull-thief",
+  "hollow-belly-rat",
+  "kittiwake-flock",
+  "malachite-golem",
+  "newt-doctor",
+  "octopus-tactician",
+  "old-sturgeon",
+  "otter-centurion",
+  "pelican-diver",
+  "planarian-splitter",
+  "puffin-diver",
+  "quarry-mole",
+  "razorbill",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "sulfur-cinder-moth",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Alligator Gar",
+  "Blind Cave Fish",
+  "Cave Olm",
+  "Dung Beetle",
+  "Echo Matriarch",
+  "Echo Screecher",
+  "Gallery Orb-Weaver",
+  "Giant Cave Huntsman",
+  "Grey Seal Bull",
+  "Gull Thief",
+  "Hollow-belly Rat",
+  "Kittiwake Flock",
+  "Malachite Golem",
+  "Newt Doctor",
+  "Octopus Tactician",
+  "Old Sturgeon",
+  "Otter Centurion",
+  "Pelican Diver",
+  "Planarian Splitter",
+  "Puffin Diver",
+  "Quarry Mole",
+  "Razorbill",
+  "Stalactite Pill Bug",
+  "Star-nosed Mole",
+  "Sulfur Cinder Moth",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "blind-cave-fish",
+   "cave-olm",
+   "echo-matriarch",
+   "echo-screecher",
+   "gallery-orb-weaver",
+   "giant-cave-huntsman",
+   "gull-thief",
+   "hollow-belly-rat",
+   "malachite-golem",
+   "octopus-tactician",
+   "pelican-diver",
+   "quarry-mole",
+   "stalactite-golem",
+   "star-nosed-mole",
+   "sulfur-cinder-moth"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:8-1",
+   "label": "vs 8-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-2",
+   "label": "vs 8-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-3",
+   "label": "vs 8-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-4",
+   "label": "vs 8-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-5",
+   "label": "vs 8-5 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-6",
+   "label": "vs 8-6 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-7",
+   "label": "vs 8-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:8-8",
+   "label": "vs 8-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 8-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road8",
+   "label": "vs reference deck (Map 8) under 8-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "echo-matriarch",
+    "echo-screecher",
+    "gull-thief",
+    "kittiwake-flock",
+    "pelican-diver",
+    "puffin-diver",
+    "razorbill",
+    "sulfur-cinder-moth"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "alligator-gar",
+    "blind-cave-fish",
+    "grey-seal-bull",
+    "octopus-tactician",
+    "old-sturgeon",
+    "puffin-diver"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "alligator-gar",
+    "echo-matriarch",
+    "echo-screecher",
+    "gallery-orb-weaver",
+    "giant-cave-huntsman",
+    "grey-seal-bull",
+    "hollow-belly-rat",
+    "malachite-golem",
+    "octopus-tactician",
+    "old-sturgeon",
+    "pelican-diver",
+    "planarian-splitter",
+    "puffin-diver",
+    "quarry-mole",
+    "razorbill",
+    "stalactite-golem",
+    "sulfur-cinder-moth",
+    "wolf-spider-mother"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 4,
+   "moves": 3,
+   "games": 1650,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:tide",
+   "steps": 5,
+   "moves": 2,
+   "games": 1716,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 5,
+   "moves": 4,
+   "games": 1804,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 2,
+   "games": 1782,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 119,
+ "games": 7656,
+ "decks": [
+  {
+   "focus": "big",
+   "labels": [
+    "big (14 copies at 1+ Lumber, average 0.7)",
+    "flying x10",
+    "siege x6"
+   ],
+   "deck": {
+    "echo-matriarch": 3,
+    "echo-screecher": 3,
+    "hollow-belly-rat": 4,
+    "kittiwake-flock": 4,
+    "otter-centurion": 2,
+    "planarian-splitter": 4
+   },
+   "cards": [
+    {
+     "id": "hollow-belly-rat",
+     "name": "Hollow-belly Rat",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "planarian-splitter",
+     "name": "Planarian Splitter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8826,
+   "ci": [
+    0.8454,
+    0.9198
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 6,
+    "1": 14
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    },
+    {
+     "f": "siege",
+     "n": 6
+    },
+    {
+     "f": "night",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.6)",
+    "economy (4 resource makers)",
+    "flying x14"
+   ],
+   "deck": {
+    "echo-matriarch": 2,
+    "giant-cave-huntsman": 2,
+    "grey-seal-bull": 4,
+    "gull-thief": 4,
+    "kittiwake-flock": 4,
+    "sulfur-cinder-moth": 4
+   },
+   "cards": [
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "echo-matriarch",
+     "name": "Echo Matriarch",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8598,
+   "ci": [
+    0.821,
+    0.8987
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 14
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "flying x6"
+   ],
+   "deck": {
+    "alley-cat": 2,
+    "cave-olm": 4,
+    "gallery-orb-weaver": 4,
+    "gull-thief": 4,
+    "star-nosed-mole": 4,
+    "sulfur-cinder-moth": 2
+   },
+   "cards": [
+    {
+     "id": "cave-olm",
+     "name": "Cave Olm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "name": "Gallery Orb-Weaver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8258,
+   "ci": [
+    0.785,
+    0.8665
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.3333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "tide x8"
+   ],
+   "deck": {
+    "blind-cave-fish": 4,
+    "giant-cave-huntsman": 2,
+    "grey-seal-bull": 4,
+    "gull-thief": 4,
+    "newt-doctor": 3,
+    "star-nosed-mole": 3
+   },
+   "cards": [
+    {
+     "id": "blind-cave-fish",
+     "name": "Blind Cave Fish",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7576,
+   "ci": [
+    0.7102,
+    0.805
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.75,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:8-1",
+     "label": "vs 8-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-2",
+     "label": "vs 8-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-3",
+     "label": "vs 8-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-4",
+     "label": "vs 8-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-5",
+     "label": "vs 8-5 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-6",
+     "label": "vs 8-6 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-7",
+     "label": "vs 8-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:8-8",
+     "label": "vs 8-8 miniboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road8",
+     "label": "vs reference deck (Map 8) under 8-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-3's field",
+     "p": 0.2917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m4 --pool alley-cat,alligator-gar,blind-cave-fish,cave-olm,dung-beetle,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,grey-seal-bull,gull-thief,hollow-belly-rat,kittiwake-flock,malachite-golem,newt-doctor,octopus-tactician,old-sturgeon,otter-centurion,pelican-diver,planarian-splitter,puffin-diver,quarry-mole,razorbill,stalactite-golem,star-nosed-mole,sulfur-cinder-moth,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus family:flying,family:tide,big,open --anchor blind-cave-fish,cave-olm,echo-matriarch,echo-screecher,gallery-orb-weaver,giant-cave-huntsman,gull-thief,hollow-belly-rat,malachite-golem,octopus-tactician,pelican-diver,quarry-mole,stalactite-golem,star-nosed-mole,sulfur-cinder-moth --anchor-min 10 --level 1 --mode map-true"
+}

@@ -1,0 +1,794 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T03:50:36.842Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "ml",
+  "num": 15,
+  "name": "The Long Grass"
+ },
+ "level": 1,
+ "pool": [
+  "armory",
+  "bison-bulldozer",
+  "blue-ringed-octopus",
+  "border-collie",
+  "carrion-crow",
+  "cataphract-destrier",
+  "cricket-drummer",
+  "cunning-vixen",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "grave-grin-hyena",
+  "hawthorn-shieldbug",
+  "hedge-weasel",
+  "hedgehog-herbalist",
+  "hedgerow-shrew",
+  "ibex-rockcaller",
+  "lodge-engineer",
+  "lyrebird-mimic",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "robin-redbreast",
+  "shepherds-bark",
+  "slow-worm",
+  "stoat-cutthroat",
+  "swift-fox",
+  "talon-archer",
+  "tasmanian-devil",
+  "thorn-shrike",
+  "truffle-piglet",
+  "wolf-spider-mother",
+  "woodcock-lookout"
+ ],
+ "poolNames": [
+  "Armory",
+  "Bison Bulldozer",
+  "Blue-ringed Octopus",
+  "Border Collie",
+  "Carrion Crow",
+  "Gilded Roadwarden",
+  "Cricket Drummer",
+  "Cunning Vixen",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Grave-Grin Hyena",
+  "Hawthorn Shieldbug",
+  "Hedge Weasel",
+  "Hedgehog Herbalist",
+  "Hedgerow Shrew",
+  "Ibex Rockcaller",
+  "Lodge Engineer",
+  "Lyrebird Mimic",
+  "Pronghorn Racer",
+  "Raccoon Bandit",
+  "Robin Redbreast",
+  "Shepherd",
+  "Slow-worm",
+  "Stoat Cutthroat",
+  "Swift Fox",
+  "Talon Archer",
+  "Tasmanian Devil",
+  "Thorn Shrike",
+  "Truffle Piglet",
+  "Wolf Spider Mother",
+  "Woodcock Lookout"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "armory",
+   "bison-bulldozer",
+   "border-collie",
+   "carrion-crow",
+   "cataphract-destrier",
+   "cricket-drummer",
+   "hedge-weasel",
+   "hedgehog-herbalist",
+   "lodge-engineer",
+   "pronghorn-racer",
+   "raccoon-bandit",
+   "shepherds-bark",
+   "slow-worm",
+   "stoat-cutthroat",
+   "swift-fox",
+   "talon-archer",
+   "tasmanian-devil",
+   "thorn-shrike",
+   "truffle-piglet"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:15-1",
+   "label": "vs 15-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-2",
+   "label": "vs 15-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-3",
+   "label": "vs 15-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-4",
+   "label": "vs 15-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-5",
+   "label": "vs 15-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-6",
+   "label": "vs 15-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-7",
+   "label": "vs 15-7 boss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 15-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road15",
+   "label": "vs reference deck (Map 15) under 15-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "carrion-crow",
+    "dust-hyena",
+    "raccoon-bandit"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "carrion-crow",
+    "eagle-owl-quartermaster",
+    "robin-redbreast",
+    "talon-archer",
+    "thorn-shrike"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "cataphract-destrier",
+    "cunning-vixen",
+    "hedgerow-shrew",
+    "pronghorn-racer",
+    "stoat-cutthroat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 2,
+   "games": 1720,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:flying",
+   "steps": 5,
+   "moves": 2,
+   "games": 1740,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 5,
+   "moves": 3,
+   "games": 1500,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 2,
+   "games": 1720,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 128,
+ "games": 7320,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.6 Lumber)"
+   ],
+   "deck": {
+    "blue-ringed-octopus": 3,
+    "cricket-drummer": 4,
+    "ibex-rockcaller": 2,
+    "slow-worm": 4,
+    "stoat-cutthroat": 3,
+    "swift-fox": 4
+   },
+   "cards": [
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "slow-worm",
+     "name": "Slow-worm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "swift-fox",
+     "name": "Swift Fox",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9,
+   "ci": [
+    0.8638,
+    0.9362
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "economy (4 resource makers)",
+    "strike-first x8"
+   ],
+   "deck": {
+    "cricket-drummer": 4,
+    "dust-hyena": 4,
+    "hawthorn-shieldbug": 4,
+    "hedgerow-shrew": 2,
+    "pronghorn-racer": 3,
+    "stoat-cutthroat": 3
+   },
+   "cards": [
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "pronghorn-racer",
+     "name": "Pronghorn Racer",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "hedgerow-shrew",
+     "name": "Hedgerow Shrew",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8917,
+   "ci": [
+    0.8543,
+    0.9291
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (7 resource makers)"
+   ],
+   "deck": {
+    "border-collie": 4,
+    "dust-hyena": 4,
+    "grave-grin-hyena": 4,
+    "hedgehog-herbalist": 3,
+    "ibex-rockcaller": 2,
+    "raccoon-bandit": 3
+   },
+   "cards": [
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hedgehog-herbalist",
+     "name": "Hedgehog Herbalist",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8417,
+   "ci": [
+    0.799,
+    0.8843
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 7,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 18
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "economy (4 resource makers)",
+    "flying x10",
+    "day x6"
+   ],
+   "deck": {
+    "border-collie": 4,
+    "carrion-crow": 4,
+    "grave-grin-hyena": 4,
+    "ibex-rockcaller": 2,
+    "robin-redbreast": 4,
+    "talon-archer": 2
+   },
+   "cards": [
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "talon-archer",
+     "name": "Talon Archer",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7468,
+    0.8366
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    },
+    {
+     "f": "day",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 18
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map ml --pool armory,bison-bulldozer,blue-ringed-octopus,border-collie,carrion-crow,cataphract-destrier,cricket-drummer,cunning-vixen,dust-hyena,eagle-owl-quartermaster,grave-grin-hyena,hawthorn-shieldbug,hedge-weasel,hedgehog-herbalist,hedgerow-shrew,ibex-rockcaller,lodge-engineer,lyrebird-mimic,pronghorn-racer,raccoon-bandit,robin-redbreast,shepherds-bark,slow-worm,stoat-cutthroat,swift-fox,talon-archer,tasmanian-devil,thorn-shrike,truffle-piglet,wolf-spider-mother,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus economy,family:flying,family:strike-first,open --anchor armory,bison-bulldozer,border-collie,carrion-crow,cataphract-destrier,cricket-drummer,hedge-weasel,hedgehog-herbalist,lodge-engineer,pronghorn-racer,raccoon-bandit,shepherds-bark,slow-worm,stoat-cutthroat,swift-fox,talon-archer,tasmanian-devil,thorn-shrike,truffle-piglet --anchor-min 10 --level 1 --mode map-true"
+}

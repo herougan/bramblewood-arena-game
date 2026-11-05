@@ -1,0 +1,707 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T03:39:10.633Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "mv",
+  "num": 11,
+  "name": "The Aerie Vault"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "alpine-salamander",
+  "alpine-swift",
+  "anhinga-spearbird",
+  "apollo-butterfly",
+  "blue-ringed-octopus",
+  "caiman-hatchling",
+  "chamois-leaper",
+  "chipmunk-hoarder",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gale-swift",
+  "gangrenous-leech",
+  "golden-eagle-diver",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "ibex-rockcaller",
+  "marsh-harrier",
+  "mountain-hare",
+  "otter-centurion",
+  "peregrine-stooper",
+  "red-billed-chough",
+  "swamp-alligator",
+  "vigil-owl",
+  "wolf-spider-mother",
+  "wound-reaver"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Alpine Salamander",
+  "Alpine Swift",
+  "Anhinga Spearbird",
+  "Apollo Butterfly",
+  "Blue-ringed Octopus",
+  "Caiman Hatchling",
+  "Chamois Leaper",
+  "Chipmunk Hoarder",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Eyrie Warden",
+  "Gale Swift",
+  "Gangrenous Leech",
+  "Golden Eagle Diver",
+  "Grave-Grin Hyena",
+  "Hoopoe Herald",
+  "Ibex Rockcaller",
+  "Marsh Harrier",
+  "Mountain Hare",
+  "Otter Centurion",
+  "Peregrine Stooper",
+  "Red-billed Chough",
+  "Swamp Alligator",
+  "Vigil Owl",
+  "Wolf Spider Mother",
+  "Wound Reaver"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "alpine-marmot",
+   "alpine-salamander",
+   "alpine-swift",
+   "apollo-butterfly",
+   "chamois-leaper",
+   "chipmunk-hoarder",
+   "eagle-owl-quartermaster",
+   "eyrie-warden",
+   "gale-swift",
+   "gangrenous-leech",
+   "golden-eagle-diver",
+   "ibex-rockcaller",
+   "swamp-alligator",
+   "vigil-owl",
+   "wound-reaver"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:11-A-1",
+   "label": "vs 11-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:11-A-2",
+   "label": "vs 11-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:11-A-3",
+   "label": "vs 11-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:11-A-4",
+   "label": "vs 11-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 11-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road15",
+   "label": "vs reference deck (Map 15) under 11-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 11-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "alpine-swift",
+    "apollo-butterfly",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "gale-swift",
+    "golden-eagle-diver",
+    "marsh-harrier",
+    "peregrine-stooper",
+    "red-billed-chough"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "alpine-swift",
+    "anhinga-spearbird",
+    "caiman-hatchling",
+    "chamois-leaper",
+    "golden-eagle-diver",
+    "peregrine-stooper"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "eyrie-warden",
+    "swamp-alligator"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:flying",
+   "steps": 7,
+   "moves": 4,
+   "games": 1652,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 7,
+   "moves": 1,
+   "games": 1568,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "big",
+   "steps": 8,
+   "moves": 5,
+   "games": 1512,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 8,
+   "moves": 4,
+   "games": 1596,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 129,
+ "games": 6776,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "alpine-marmot": 3,
+    "alpine-salamander": 3,
+    "dust-hyena": 4,
+    "gale-swift": 4,
+    "hoopoe-herald": 4,
+    "ibex-rockcaller": 2
+   },
+   "cards": [
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gale-swift",
+     "name": "Gale Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8869,
+   "ci": [
+    0.8424,
+    0.9315
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-A-1",
+     "label": "vs 11-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-2",
+     "label": "vs 11-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-3",
+     "label": "vs 11-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-4",
+     "label": "vs 11-A-4 boss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 11-A-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-A-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "flying x10",
+    "strike-first x6"
+   ],
+   "deck": {
+    "alpine-salamander": 3,
+    "alpine-swift": 3,
+    "gale-swift": 4,
+    "golden-eagle-diver": 3,
+    "mountain-hare": 4,
+    "wound-reaver": 3
+   },
+   "cards": [
+    {
+     "id": "gale-swift",
+     "name": "Gale Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "wound-reaver",
+     "name": "Wound Reaver",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8036,
+   "ci": [
+    0.7477,
+    0.8595
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    },
+    {
+     "f": "strike-first",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-A-1",
+     "label": "vs 11-A-1 skirmish's deck",
+     "p": 0.7292,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-2",
+     "label": "vs 11-A-2 skirmish's deck",
+     "p": 0.8125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-3",
+     "label": "vs 11-A-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-4",
+     "label": "vs 11-A-4 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 11-A-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-A-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "economy (4 resource makers)",
+    "strike-first x9"
+   ],
+   "deck": {
+    "anhinga-spearbird": 1,
+    "blue-ringed-octopus": 3,
+    "chamois-leaper": 4,
+    "dust-hyena": 4,
+    "golden-eagle-diver": 4,
+    "swamp-alligator": 4
+   },
+   "cards": [
+    {
+     "id": "chamois-leaper",
+     "name": "Chamois Leaper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "swamp-alligator",
+     "name": "Swamp Alligator",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "anhinga-spearbird",
+     "name": "Anhinga Spearbird",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7054,
+   "ci": [
+    0.6492,
+    0.7615
+   ],
+   "avgLumber": 1,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 4,
+    "1": 12,
+    "2": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-A-1",
+     "label": "vs 11-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-2",
+     "label": "vs 11-A-2 skirmish's deck",
+     "p": 0.8125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-3",
+     "label": "vs 11-A-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-4",
+     "label": "vs 11-A-4 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 11-A-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-A-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.0)",
+    "flying x8"
+   ],
+   "deck": {
+    "eyrie-warden": 4,
+    "gale-swift": 2,
+    "grave-grin-hyena": 4,
+    "hoopoe-herald": 4,
+    "red-billed-chough": 2,
+    "swamp-alligator": 4
+   },
+   "cards": [
+    {
+     "id": "eyrie-warden",
+     "name": "Eyrie Warden",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "swamp-alligator",
+     "name": "Swamp Alligator",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "gale-swift",
+     "name": "Gale Swift",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "red-billed-chough",
+     "name": "Red-billed Chough",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7024,
+   "ci": [
+    0.639,
+    0.7658
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.3,
+   "curve": {
+    "0": 12,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-A-1",
+     "label": "vs 11-A-1 skirmish's deck",
+     "p": 0.8958,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-2",
+     "label": "vs 11-A-2 skirmish's deck",
+     "p": 0.8125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-3",
+     "label": "vs 11-A-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-A-4",
+     "label": "vs 11-A-4 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 11-A-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mv --pool alpine-marmot,alpine-salamander,alpine-swift,anhinga-spearbird,apollo-butterfly,blue-ringed-octopus,caiman-hatchling,chamois-leaper,chipmunk-hoarder,dust-hyena,eagle-owl-quartermaster,eyrie-warden,gale-swift,gangrenous-leech,golden-eagle-diver,grave-grin-hyena,hoopoe-herald,ibex-rockcaller,marsh-harrier,mountain-hare,otter-centurion,peregrine-stooper,red-billed-chough,swamp-alligator,vigil-owl,wolf-spider-mother,wound-reaver --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus family:flying,family:strike-first,big,open --anchor alpine-marmot,alpine-salamander,alpine-swift,apollo-butterfly,chamois-leaper,chipmunk-hoarder,eagle-owl-quartermaster,eyrie-warden,gale-swift,gangrenous-leech,golden-eagle-diver,ibex-rockcaller,swamp-alligator,vigil-owl,wound-reaver --anchor-min 10 --level 1 --mode map-true"
+}

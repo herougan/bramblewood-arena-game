@@ -1,0 +1,812 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T03:45:44.795Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "m5",
+  "num": 14,
+  "name": "Savanna Reaches"
+ },
+ "level": 1,
+ "pool": [
+  "acacia-giraffe",
+  "alley-cat",
+  "alpine-marmot",
+  "alpine-swift",
+  "anhinga-spearbird",
+  "ant-hill",
+  "banded-sea-krait",
+  "blue-ringed-octopus",
+  "carrion-crow",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "golden-eagle-diver",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "house-cat",
+  "ibex-rockcaller",
+  "leafcutter-gardener",
+  "marula-elephant",
+  "mouse-sapper",
+  "otter-centurion",
+  "pride-queen",
+  "savanna-cheetah",
+  "spitting-cobra",
+  "springbok-pronker",
+  "sunbittern-strider",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Acacia Giraffe",
+  "Alley Cat",
+  "Alpine Marmot",
+  "Alpine Swift",
+  "Anhinga Spearbird",
+  "Ant Hill",
+  "Banded Sea Krait",
+  "Blue-ringed Octopus",
+  "Carrion Crow",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Golden Eagle Diver",
+  "Grave-Grin Hyena",
+  "Hoopoe Herald",
+  "House Cat",
+  "Ibex Rockcaller",
+  "Leafcutter Gardener",
+  "Marula Elephant",
+  "Mouse Sapper",
+  "Otter Centurion",
+  "Pride Queen",
+  "Savanna Cheetah",
+  "Spitting Cobra",
+  "Springbok Pronker",
+  "Sunbittern Strider",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "acacia-giraffe",
+   "ant-hill",
+   "carrion-crow",
+   "dust-hyena",
+   "golden-eagle-diver",
+   "grave-grin-hyena",
+   "hoopoe-herald",
+   "house-cat",
+   "marula-elephant",
+   "mouse-sapper",
+   "pride-queen",
+   "savanna-cheetah",
+   "spitting-cobra",
+   "springbok-pronker"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:14-1",
+   "label": "vs 14-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-2",
+   "label": "vs 14-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-3",
+   "label": "vs 14-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-4",
+   "label": "vs 14-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-5",
+   "label": "vs 14-5 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-6",
+   "label": "vs 14-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-7",
+   "label": "vs 14-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-8",
+   "label": "vs 14-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 14-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road14",
+   "label": "vs reference deck (Map 14) under 14-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "carrion-crow",
+    "dust-hyena"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "alpine-swift",
+    "anhinga-spearbird",
+    "golden-eagle-diver",
+    "pride-queen",
+    "savanna-cheetah"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "alpine-swift",
+    "carrion-crow",
+    "eagle-owl-quartermaster",
+    "golden-eagle-diver"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 3,
+   "games": 1650,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 6,
+   "moves": 3,
+   "games": 1804,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:flying",
+   "steps": 5,
+   "moves": 2,
+   "games": 1694,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 5,
+   "games": 1782,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 137,
+ "games": 7634,
+ "decks": [
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "strike-first x9"
+   ],
+   "deck": {
+    "alpine-marmot": 3,
+    "alpine-swift": 4,
+    "anhinga-spearbird": 3,
+    "dust-hyena": 4,
+    "hoopoe-herald": 4,
+    "pride-queen": 2
+   },
+   "cards": [
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "anhinga-spearbird",
+     "name": "Anhinga Spearbird",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pride-queen",
+     "name": "Pride Queen",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8712,
+   "ci": [
+    0.8364,
+    0.9061
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)",
+    "economy (8 resource makers)"
+   ],
+   "deck": {
+    "acacia-giraffe": 3,
+    "alpine-marmot": 4,
+    "blue-ringed-octopus": 3,
+    "carrion-crow": 4,
+    "dust-hyena": 4,
+    "ibex-rockcaller": 2
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "acacia-giraffe",
+     "name": "Acacia Giraffe",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8636,
+   "ci": [
+    0.8247,
+    0.9026
+   ],
+   "avgLumber": 0.55,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 12,
+    "1": 5,
+    "2": 3
+   },
+   "resourceMakers": 8,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "guard x8",
+    "flying x8"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "alpine-swift": 4,
+    "carrion-crow": 4,
+    "hoopoe-herald": 2,
+    "marula-elephant": 4,
+    "sunbittern-strider": 2
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "marula-elephant",
+     "name": "Marula Elephant",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8068,
+   "ci": [
+    0.7675,
+    0.8461
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 1.1,
+   "curve": {
+    "0": 14,
+    "1": 2,
+    "2": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.3333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 15
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "acacia-giraffe": 3,
+    "alley-cat": 4,
+    "alpine-marmot": 3,
+    "grave-grin-hyena": 4,
+    "hoopoe-herald": 4,
+    "ibex-rockcaller": 2
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "acacia-giraffe",
+     "name": "Acacia Giraffe",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7992,
+   "ci": [
+    0.7579,
+    0.8406
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 15,
+    "1": 2,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.2917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m5 --pool acacia-giraffe,alley-cat,alpine-marmot,alpine-swift,anhinga-spearbird,ant-hill,banded-sea-krait,blue-ringed-octopus,carrion-crow,dust-hyena,eagle-owl-quartermaster,golden-eagle-diver,grave-grin-hyena,hoopoe-herald,house-cat,ibex-rockcaller,leafcutter-gardener,marula-elephant,mouse-sapper,otter-centurion,pride-queen,savanna-cheetah,spitting-cobra,springbok-pronker,sunbittern-strider,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus economy,family:strike-first,family:flying,open --anchor acacia-giraffe,ant-hill,carrion-crow,dust-hyena,golden-eagle-diver,grave-grin-hyena,hoopoe-herald,house-cat,marula-elephant,mouse-sapper,pride-queen,savanna-cheetah,spitting-cobra,springbok-pronker --anchor-min 10 --level 1 --mode map-true"
+}

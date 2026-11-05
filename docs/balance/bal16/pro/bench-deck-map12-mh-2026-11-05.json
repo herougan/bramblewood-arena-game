@@ -1,0 +1,778 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T03:41:31.464Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "mh",
+  "num": 12,
+  "name": "The Briar Maze"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "ant-hill",
+  "badger-lumberjack",
+  "blue-ringed-octopus",
+  "bramble-hoglet",
+  "carrion-crow",
+  "cunning-vixen",
+  "dormouse",
+  "eagle-owl-quartermaster",
+  "field-mouse",
+  "field-vole",
+  "fire-ant-raft",
+  "harvest-mouse",
+  "hawthorn-shieldbug",
+  "hedge-weasel",
+  "hedgerow-shrew",
+  "hollow-belly-rat",
+  "ibex-rockcaller",
+  "leafcutter-gardener",
+  "lyrebird-mimic",
+  "mouse-sapper",
+  "otter-centurion",
+  "quill-thorn-boar",
+  "quillguard",
+  "robin-redbreast",
+  "thorn-shrike",
+  "truffle-piglet",
+  "wolf-spider-mother",
+  "woodcock-lookout"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Ant Hill",
+  "Badger Lumberjack",
+  "Blue-ringed Octopus",
+  "Bramble Hoglet",
+  "Carrion Crow",
+  "Cunning Vixen",
+  "Dormouse",
+  "Eagle-Owl Quartermaster",
+  "Field Mouse",
+  "Field Vole",
+  "Fire Ant Raft",
+  "Harvest Mouse",
+  "Hawthorn Shieldbug",
+  "Hedge Weasel",
+  "Hedgerow Shrew",
+  "Hollow-belly Rat",
+  "Ibex Rockcaller",
+  "Leafcutter Gardener",
+  "Lyrebird Mimic",
+  "Mouse Sapper",
+  "Otter Centurion",
+  "Quill-Thorn Boar",
+  "Quillguard",
+  "Robin Redbreast",
+  "Thorn Shrike",
+  "Truffle Piglet",
+  "Wolf Spider Mother",
+  "Woodcock Lookout"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "ant-hill",
+   "badger-lumberjack",
+   "bramble-hoglet",
+   "carrion-crow",
+   "cunning-vixen",
+   "dormouse",
+   "field-mouse",
+   "hawthorn-shieldbug",
+   "hedge-weasel",
+   "hedgerow-shrew",
+   "hollow-belly-rat",
+   "lyrebird-mimic",
+   "mouse-sapper",
+   "quill-thorn-boar",
+   "quillguard",
+   "thorn-shrike",
+   "woodcock-lookout"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:12-1",
+   "label": "vs 12-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-2",
+   "label": "vs 12-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-3",
+   "label": "vs 12-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-4",
+   "label": "vs 12-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-5",
+   "label": "vs 12-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-6",
+   "label": "vs 12-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-7",
+   "label": "vs 12-7 miniboss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 12-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road12",
+   "label": "vs reference deck (Map 12) under 12-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "badger-lumberjack",
+    "carrion-crow"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "carrion-crow",
+    "eagle-owl-quartermaster",
+    "robin-redbreast",
+    "thorn-shrike"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:guard",
+   "label": "guard (skill family)",
+   "cards": [
+    "alpine-marmot",
+    "badger-lumberjack",
+    "hawthorn-shieldbug"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 3,
+   "games": 1660,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:flying",
+   "steps": 4,
+   "moves": 3,
+   "games": 1500,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:guard",
+   "steps": 5,
+   "moves": 2,
+   "games": 1520,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 3,
+   "games": 1700,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 141,
+ "games": 7020,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "guard x8",
+    "flying x8"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "bramble-hoglet": 4,
+    "carrion-crow": 4,
+    "hawthorn-shieldbug": 4,
+    "robin-redbreast": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "bramble-hoglet",
+     "name": "Bramble Hoglet",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8292,
+   "ci": [
+    0.7872,
+    0.8711
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "alpine-marmot": 3,
+    "badger-lumberjack": 2,
+    "carrion-crow": 4,
+    "dormouse": 4,
+    "lyrebird-mimic": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dormouse",
+     "name": "Dormouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lyrebird-mimic",
+     "name": "Lyrebird Mimic",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.825,
+   "ci": [
+    0.7812,
+    0.8688
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 6,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "family:guard",
+   "labels": [
+    "big (11 copies at 1+ Lumber, average 0.6)",
+    "guard x8"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "eagle-owl-quartermaster": 3,
+    "field-vole": 2,
+    "hawthorn-shieldbug": 4,
+    "hedge-weasel": 3,
+    "hollow-belly-rat": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "hollow-belly-rat",
+     "name": "Hollow-belly Rat",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "hedge-weasel",
+     "name": "Hedge Weasel",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "field-vole",
+     "name": "Field Vole",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7792,
+   "ci": [
+    0.7319,
+    0.8265
+   ],
+   "avgLumber": 0.55,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 9,
+    "1": 11
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)"
+   ],
+   "deck": {
+    "blue-ringed-octopus": 2,
+    "field-mouse": 4,
+    "harvest-mouse": 3,
+    "leafcutter-gardener": 4,
+    "mouse-sapper": 4,
+    "quill-thorn-boar": 3
+   },
+   "cards": [
+    {
+     "id": "field-mouse",
+     "name": "Field Mouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mouse-sapper",
+     "name": "Mouse Sapper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "harvest-mouse",
+     "name": "Harvest Mouse",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "quill-thorn-boar",
+     "name": "Quill-Thorn Boar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7667,
+   "ci": [
+    0.7178,
+    0.8155
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.55,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mh --pool alpine-marmot,ant-hill,badger-lumberjack,blue-ringed-octopus,bramble-hoglet,carrion-crow,cunning-vixen,dormouse,eagle-owl-quartermaster,field-mouse,field-vole,fire-ant-raft,harvest-mouse,hawthorn-shieldbug,hedge-weasel,hedgerow-shrew,hollow-belly-rat,ibex-rockcaller,leafcutter-gardener,lyrebird-mimic,mouse-sapper,otter-centurion,quill-thorn-boar,quillguard,robin-redbreast,thorn-shrike,truffle-piglet,wolf-spider-mother,woodcock-lookout --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus economy,family:flying,family:guard,open --anchor ant-hill,badger-lumberjack,bramble-hoglet,carrion-crow,cunning-vixen,dormouse,field-mouse,hawthorn-shieldbug,hedge-weasel,hedgerow-shrew,hollow-belly-rat,lyrebird-mimic,mouse-sapper,quill-thorn-boar,quillguard,thorn-shrike,woodcock-lookout --anchor-min 10 --level 1 --mode map-true"
+}

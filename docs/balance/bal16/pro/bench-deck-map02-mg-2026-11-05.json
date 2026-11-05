@@ -1,0 +1,724 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T03:05:33.037Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "mg",
+  "num": 2,
+  "name": "Smugglers' Grotto"
+ },
+ "level": 1,
+ "pool": [
+  "alley-cat",
+  "bee-forager",
+  "box-turtle",
+  "conch-crawler",
+  "conch-herald",
+  "driftwood-crab",
+  "gallery-orb-weaver",
+  "gannet-nestweaver",
+  "garden-snail",
+  "grey-seal-bull",
+  "gull-thief",
+  "kittiwake-flock",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "octopus-tactician",
+  "old-shell",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pelican-diver",
+  "pincushion-urchin",
+  "puffin-diver",
+  "razorbill",
+  "rock-pool-starfish",
+  "sea-turtle-elder",
+  "tide-pool-crab",
+  "tidepool-trapper-crab",
+  "trash-panda-trickster"
+ ],
+ "poolNames": [
+  "Alley Cat",
+  "Bee Forager",
+  "Box Turtle",
+  "Conch Crawler",
+  "Conch Herald",
+  "Driftwood Crab",
+  "Gallery Orb-Weaver",
+  "Gannet Nestweaver",
+  "Garden Snail",
+  "Grey Seal Bull",
+  "Gull Thief",
+  "Kittiwake Flock",
+  "Newt Doctor",
+  "Nutria Reedcutter",
+  "Octopus Tactician",
+  "The Old Shell",
+  "Open-Ocean Hermit Crab",
+  "Oystercatcher",
+  "Pelican Diver",
+  "Pincushion Urchin",
+  "Puffin Diver",
+  "Razorbill",
+  "Rock Pool Starfish",
+  "Sea Turtle Elder",
+  "Tide Pool Crab",
+  "Tidepool Trapper Crab",
+  "Trash Panda Trickster"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "conch-crawler",
+   "conch-herald",
+   "driftwood-crab",
+   "gallery-orb-weaver",
+   "grey-seal-bull",
+   "gull-thief",
+   "octopus-tactician",
+   "old-shell",
+   "open-ocean-hermit-crab",
+   "pelican-diver",
+   "pincushion-urchin",
+   "rock-pool-starfish",
+   "sea-turtle-elder",
+   "tide-pool-crab",
+   "tidepool-trapper-crab",
+   "trash-panda-trickster"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-B-1",
+   "label": "vs 2-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-2",
+   "label": "vs 2-B-2 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-3",
+   "label": "vs 2-B-3 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-4",
+   "label": "vs 2-B-4 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 2-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road7",
+   "label": "vs reference deck (Map 7) under 2-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "gannet-nestweaver",
+    "gull-thief",
+    "trash-panda-trickster"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "conch-crawler",
+    "conch-herald",
+    "grey-seal-bull",
+    "octopus-tactician",
+    "open-ocean-hermit-crab",
+    "pincushion-urchin",
+    "puffin-diver",
+    "rock-pool-starfish",
+    "sea-turtle-elder",
+    "tide-pool-crab"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "bee-forager",
+    "gannet-nestweaver",
+    "gull-thief",
+    "kittiwake-flock",
+    "oystercatcher",
+    "pelican-diver",
+    "puffin-diver",
+    "razorbill"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 7,
+   "moves": 3,
+   "games": 1526,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "family:tide",
+   "steps": 7,
+   "moves": 3,
+   "games": 1568,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:flying",
+   "steps": 7,
+   "moves": 5,
+   "games": 1554,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 7,
+   "moves": 4,
+   "games": 1708,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 139,
+ "games": 6804,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "flying x11"
+   ],
+   "deck": {
+    "conch-herald": 2,
+    "driftwood-crab": 4,
+    "kittiwake-flock": 4,
+    "newt-doctor": 3,
+    "oystercatcher": 3,
+    "pelican-diver": 4
+   },
+   "cards": [
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "oystercatcher",
+     "name": "Oystercatcher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8929,
+   "ci": [
+    0.8495,
+    0.9362
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (6 resource makers)",
+    "flying x10",
+    "tide x6"
+   ],
+   "deck": {
+    "conch-herald": 4,
+    "driftwood-crab": 4,
+    "gannet-nestweaver": 4,
+    "gull-thief": 2,
+    "kittiwake-flock": 4,
+    "sea-turtle-elder": 2
+   },
+   "cards": [
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "sea-turtle-elder",
+     "name": "Sea Turtle Elder",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.869,
+   "ci": [
+    0.8204,
+    0.9177
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 14,
+    "1": 4,
+    "2": 2
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    },
+    {
+     "f": "tide",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "economy (6 resource makers)",
+    "flying x10"
+   ],
+   "deck": {
+    "gallery-orb-weaver": 4,
+    "gull-thief": 2,
+    "kittiwake-flock": 4,
+    "pelican-diver": 4,
+    "tidepool-trapper-crab": 2,
+    "trash-panda-trickster": 4
+   },
+   "cards": [
+    {
+     "id": "gallery-orb-weaver",
+     "name": "Gallery Orb-Weaver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "tidepool-trapper-crab",
+     "name": "Tidepool Trapper Crab",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8423,
+   "ci": [
+    0.7906,
+    0.8939
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.7708,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "armor x12",
+    "tide x12"
+   ],
+   "deck": {
+    "box-turtle": 2,
+    "conch-crawler": 4,
+    "conch-herald": 4,
+    "garden-snail": 4,
+    "nutria-reedcutter": 2,
+    "open-ocean-hermit-crab": 4
+   },
+   "cards": [
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "garden-snail",
+     "name": "Garden Snail",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "name": "Open-Ocean Hermit Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.756,
+   "ci": [
+    0.6998,
+    0.8121
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "armor",
+     "n": 12
+    },
+    {
+     "f": "tide",
+     "n": 12
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.375,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mg --pool alley-cat,bee-forager,box-turtle,conch-crawler,conch-herald,driftwood-crab,gallery-orb-weaver,gannet-nestweaver,garden-snail,grey-seal-bull,gull-thief,kittiwake-flock,newt-doctor,nutria-reedcutter,octopus-tactician,old-shell,open-ocean-hermit-crab,oystercatcher,pelican-diver,pincushion-urchin,puffin-diver,razorbill,rock-pool-starfish,sea-turtle-elder,tide-pool-crab,tidepool-trapper-crab,trash-panda-trickster --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus economy,family:tide,family:flying,open --anchor conch-crawler,conch-herald,driftwood-crab,gallery-orb-weaver,grey-seal-bull,gull-thief,octopus-tactician,old-shell,open-ocean-hermit-crab,pelican-diver,pincushion-urchin,rock-pool-starfish,sea-turtle-elder,tide-pool-crab,tidepool-trapper-crab,trash-panda-trickster --anchor-min 10 --level 1 --mode map-true"
+}
