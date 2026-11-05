@@ -1,0 +1,629 @@
+{
+ "about": "BAL16 shape pass (tools/bal16/decks_2026_11_05.js shape)",
+ "rows": [
+  {
+   "map": "mb",
+   "key": "2-1",
+   "before": {
+    "gull-thief": 5,
+    "open-ocean-hermit-crab": 5,
+    "pincushion-urchin": 5,
+    "rock-pool-starfish": 5
+   },
+   "after": {
+    "gull-thief": 3,
+    "open-ocean-hermit-crab": 5,
+    "oystercatcher": 2,
+    "pincushion-urchin": 5,
+    "rock-pool-starfish": 5
+   },
+   "why": "shaped to the road deck rules: gull-thief x2 -> oystercatcher (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m2",
+   "key": "4-2",
+   "before": {
+    "field-vole": 1,
+    "pond-algae": 3,
+    "snapstick-turtle": 5,
+    "water-shrew": 5
+   },
+   "after": {
+    "field-vole": 1,
+    "lions-mane-jelly": 2,
+    "pond-algae": 3,
+    "snapstick-turtle": 3,
+    "water-shrew": 5
+   },
+   "why": "shaped to the road deck rules: snapstick-turtle x2 -> lions-mane-jelly (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m8",
+   "key": "6-2",
+   "before": {
+    "booming-bittern": 4,
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 1
+   },
+   "after": {
+    "booming-bittern": 4,
+    "camouflage-frog": 5,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 3
+   },
+   "why": "shaped to the road deck rules: constrictor-coil x1 folded into the deck's own cards (5-7 different cards); cypress-root-lurker x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m8",
+   "key": "6-3",
+   "before": {
+    "booming-bittern": 2,
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 1
+   },
+   "after": {
+    "booming-bittern": 4,
+    "camouflage-frog": 5,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 1
+   },
+   "why": "shaped to the road deck rules: constrictor-coil x1 folded into the deck's own cards (5-7 different cards); cypress-root-lurker x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m8",
+   "key": "6-4",
+   "before": {
+    "booming-bittern": 1,
+    "camouflage-frog": 4,
+    "constrictor-coil": 1,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 3
+   },
+   "after": {
+    "booming-bittern": 1,
+    "camouflage-frog": 5,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 3
+   },
+   "why": "shaped to the road deck rules: constrictor-coil x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m7",
+   "key": "10-4",
+   "before": {
+    "clownfish-scout": 4,
+    "coral-reef-shark": 2,
+    "riptide-eel": 4,
+    "orca-vanguard": 4
+   },
+   "after": {
+    "clownfish-scout": 2,
+    "coral-reef-shark": 2,
+    "orca-vanguard": 4,
+    "parrotfish": 2,
+    "riptide-eel": 4
+   },
+   "why": "shaped to the road deck rules: clownfish-scout x2 -> parrotfish (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "mr",
+   "key": "13-1",
+   "before": {
+    "ant-hill": 1,
+    "berserker-boar": 5,
+    "bramblewood-lynx": 1,
+    "fawn-scout": 1,
+    "fox-kit": 4,
+    "grizzly-vanguard": 5,
+    "quillback-elder": 1,
+    "swift-fox": 1
+   },
+   "after": {
+    "berserker-boar": 5,
+    "bramblewood-lynx": 1,
+    "fawn-scout": 1,
+    "fox-kit": 5,
+    "grizzly-vanguard": 5,
+    "quillback-elder": 1,
+    "swift-fox": 1
+   },
+   "why": "shaped to the road deck rules: ant-hill x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m6",
+   "key": "17-8",
+   "before": {
+    "alpha-howler": 1,
+    "beluga": 1,
+    "harbor-seal": 5,
+    "snow-ermine": 1,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 4
+   },
+   "after": {
+    "alpha-howler": 1,
+    "beluga": 3,
+    "harbor-seal": 5,
+    "snow-ermine": 1,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 2
+   },
+   "why": "shaped to the road deck rules: walrus-icebreaker x4 -> x2 (the copy ladder)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "md",
+   "key": "18-4",
+   "before": {
+    "caustic-scorpion": 3,
+    "dust-devil-kestrel": 1,
+    "dust-hyena": 1,
+    "hollow-belly-rat": 1,
+    "komodo-warlord": 2,
+    "sand-widow": 1,
+    "sandfish": 5,
+    "roadrunner-courier": 4
+   },
+   "after": {
+    "caustic-scorpion": 3,
+    "dust-devil-kestrel": 1,
+    "hollow-belly-rat": 1,
+    "komodo-warlord": 2,
+    "roadrunner-courier": 5,
+    "sand-widow": 1,
+    "sandfish": 5
+   },
+   "why": "shaped to the road deck rules: dust-hyena x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": {
+    "id": "sandVeil",
+    "have": 16,
+    "total": 18,
+    "need": 9,
+    "on": true
+   }
+  },
+  {
+   "map": "m11",
+   "key": "20-4",
+   "before": {
+    "cave-warlord": 4,
+    "magma-wraith": 4,
+    "ashbone-ghoul": 5,
+    "magma-salamander": 2,
+    "fumarole-ibex": 1,
+    "pumice-beetle": 1,
+    "cinder-skeleton": 2,
+    "obsidian-scorpion": 1
+   },
+   "after": {
+    "ashbone-ghoul": 5,
+    "cave-warlord": 4,
+    "cinder-skeleton": 3,
+    "magma-salamander": 2,
+    "magma-wraith": 4,
+    "obsidian-scorpion": 1,
+    "pumice-beetle": 1
+   },
+   "why": "shaped to the road deck rules: fumarole-ibex x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": {
+    "id": "restlessDead",
+    "have": 12,
+    "total": 20,
+    "need": 10,
+    "on": true
+   }
+  },
+  {
+   "map": "m22",
+   "key": "22-2",
+   "before": {
+    "cinder-gecko": 5,
+    "cinder-hornet": 5,
+    "cinder-skeleton": 1,
+    "glacier-wolf-pack": 1,
+    "glacier-yak": 1,
+    "ice-petrel": 1,
+    "phoenix-fledgling": 1,
+    "rimefire-salamander": 3
+   },
+   "after": {
+    "cinder-gecko": 5,
+    "cinder-hornet": 5,
+    "glacier-wolf-pack": 1,
+    "glacier-yak": 1,
+    "ice-petrel": 2,
+    "phoenix-fledgling": 1,
+    "rimefire-salamander": 3
+   },
+   "why": "shaped to the road deck rules: cinder-skeleton x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m22",
+   "key": "22-4",
+   "before": {
+    "badger-berserker": 2,
+    "cinder-gecko": 5,
+    "cinder-hornet": 5,
+    "fumarole-ibex": 1,
+    "glacier-yak": 1,
+    "ice-petrel": 3,
+    "phoenix-fledgling": 1,
+    "ur-elk": 2
+   },
+   "after": {
+    "badger-berserker": 2,
+    "cinder-gecko": 5,
+    "cinder-hornet": 5,
+    "glacier-yak": 1,
+    "ice-petrel": 4,
+    "phoenix-fledgling": 1,
+    "ur-elk": 2
+   },
+   "why": "shaped to the road deck rules: fumarole-ibex x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m23",
+   "key": "23-3",
+   "before": {
+    "badger-trench-digger": 1,
+    "beetle-battering-ram": 2,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "lodge-engineer": 1,
+    "mouse-sapper": 1,
+    "pangolin-roller": 1,
+    "raccoon-bandit": 1,
+    "siege-rhino": 2,
+    "testudo-tortoise": 3
+   },
+   "after": {
+    "badger-trench-digger": 4,
+    "beetle-battering-ram": 2,
+    "howdah-archers": 3,
+    "pangolin-roller": 1,
+    "raccoon-bandit": 1,
+    "siege-rhino": 2,
+    "testudo-tortoise": 3
+   },
+   "why": "shaped to the road deck rules: bison-bulldozer x1 folded into the deck's own cards (5-7 different cards); lodge-engineer x1 folded into the deck's own cards (5-7 different cards); mouse-sapper x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m23",
+   "key": "23-4",
+   "before": {
+    "badger-trench-digger": 1,
+    "beetle-battering-ram": 2,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "lodge-engineer": 1,
+    "mouse-sapper": 1,
+    "pack-mule": 1,
+    "pangolin-roller": 1,
+    "raccoon-bandit": 1,
+    "siege-rhino": 2,
+    "testudo-tortoise": 3
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "beetle-battering-ram": 2,
+    "howdah-archers": 3,
+    "pangolin-roller": 1,
+    "raccoon-bandit": 1,
+    "siege-rhino": 2,
+    "testudo-tortoise": 3
+   },
+   "why": "shaped to the road deck rules: bison-bulldozer x1 folded into the deck's own cards (5-7 different cards); lodge-engineer x1 folded into the deck's own cards (5-7 different cards); mouse-sapper x1 folded into the deck's own cards (5-7 different cards); pack-mule x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m23",
+   "key": "23-5",
+   "before": {
+    "badger-trench-digger": 4,
+    "beetle-battering-ram": 2,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "lodge-engineer": 1,
+    "mouse-sapper": 1,
+    "pangolin-roller": 1,
+    "raccoon-bandit": 1,
+    "siege-rhino": 2
+   },
+   "after": {
+    "badger-trench-digger": 3,
+    "beetle-battering-ram": 2,
+    "howdah-archers": 3,
+    "mouse-sapper": 4,
+    "pangolin-roller": 1,
+    "raccoon-bandit": 1,
+    "siege-rhino": 2
+   },
+   "why": "shaped to the road deck rules: bison-bulldozer x1 folded into the deck's own cards (5-7 different cards); lodge-engineer x1 folded into the deck's own cards (5-7 different cards); Mouse Sapper up to keep siegeTrain on",
+   "showcase": null,
+   "boon": {
+    "id": "siegeTrain",
+    "have": 8,
+    "total": 16,
+    "need": 8,
+    "on": true
+   }
+  },
+  {
+   "map": "m24",
+   "key": "24-1",
+   "before": {
+    "duckling-squadron": 3,
+    "elderhorn-monarch": 4,
+    "lodge-engineer": 1,
+    "mallard-halberdier": 2
+   },
+   "after": {
+    "duckling-squadron": 3,
+    "elderhorn-monarch": 2,
+    "lodge-engineer": 1,
+    "mallard-halberdier": 2,
+    "tax-collector-teal": 2
+   },
+   "why": "shaped to the road deck rules: elderhorn-monarch x2 -> tax-collector-teal (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m24",
+   "key": "24-5",
+   "before": {
+    "balloon-archer": 1,
+    "battlement-heron": 3,
+    "howdah-archers": 1,
+    "lodge-engineer": 1,
+    "mallard-halberdier": 3,
+    "ore-smelter-mole": 1,
+    "raccoon-bandit": 1,
+    "tax-collector-teal": 4
+   },
+   "after": {
+    "battlement-heron": 3,
+    "howdah-archers": 2,
+    "lodge-engineer": 1,
+    "mallard-halberdier": 3,
+    "ore-smelter-mole": 1,
+    "raccoon-bandit": 1,
+    "tax-collector-teal": 4
+   },
+   "why": "shaped to the road deck rules: balloon-archer x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "mp",
+   "key": "2-A-2",
+   "before": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "after": {
+    "duckling": 2,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "why": "shaped to the road deck rules: box-turtle x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "mp",
+   "key": "2-A-3",
+   "before": {
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-duck": 1,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "after": {
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 2,
+    "old-sturgeon": 4,
+    "pond-duck": 1,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "why": "shaped to the road deck rules: guppy x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "mp",
+   "key": "2-A-4",
+   "before": {
+    "box-turtle": 1,
+    "lodge-engineer": 2,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "after": {
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "why": "shaped to the road deck rules: box-turtle x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "mj",
+   "key": "10-A-1",
+   "before": {
+    "coral-reef-shark": 1,
+    "kraken-spawnling": 1,
+    "orca-vanguard": 5,
+    "riptide-eel": 3
+   },
+   "after": {
+    "coral-reef-shark": 1,
+    "kraken-spawnling": 1,
+    "orca-vanguard": 3,
+    "parrotfish": 2,
+    "riptide-eel": 3
+   },
+   "why": "shaped to the road deck rules: orca-vanguard x2 -> parrotfish (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "mx",
+   "key": "20-B-1",
+   "before": {
+    "ash-moth": 1,
+    "ashbone-ghoul": 1,
+    "cinder-stoker": 1,
+    "ember-jackal": 3,
+    "fire-drake-hatchling": 1,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 1,
+    "pack-mule": 5,
+    "tide-spirit": 2
+   },
+   "after": {
+    "ash-moth": 3,
+    "ashbone-ghoul": 1,
+    "ember-jackal": 3,
+    "fire-drake-hatchling": 1,
+    "magma-salamander": 2,
+    "pack-mule": 5,
+    "tide-spirit": 2
+   },
+   "why": "shaped to the road deck rules: cinder-stoker x1 folded into the deck's own cards (5-7 different cards); obsidian-scorpion x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": {
+    "id": "emberBorn",
+    "have": 10,
+    "total": 17,
+    "need": 9,
+    "on": true
+   }
+  },
+  {
+   "map": "mo",
+   "key": "0-B-3",
+   "before": {
+    "ant-scout": 5,
+    "bramblewood-lynx": 1,
+    "cottontail": 1,
+    "forager-ant": 5,
+    "gatling-hog": 1,
+    "meadow-rabbit": 1,
+    "pond-duck": 1,
+    "thorn-shrike": 1
+   },
+   "after": {
+    "ant-scout": 5,
+    "cottontail": 2,
+    "forager-ant": 5,
+    "gatling-hog": 1,
+    "meadow-rabbit": 1,
+    "pond-duck": 1,
+    "thorn-shrike": 1
+   },
+   "why": "shaped to the road deck rules: bramblewood-lynx x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  },
+  {
+   "map": "m1",
+   "key": "0-4",
+   "before": {
+    "ant-scout": 1,
+    "bee-forager": 5,
+    "cobalt-talon-fledgling": 2,
+    "duck-paddler": 4,
+    "honey-bee": 1,
+    "house-cat": 4,
+    "otter-kit": 2,
+    "worker-ant": 1
+   },
+   "after": {
+    "ant-scout": 1,
+    "bee-forager": 5,
+    "cobalt-talon-fledgling": 2,
+    "duck-paddler": 4,
+    "house-cat": 5,
+    "otter-kit": 2,
+    "worker-ant": 1
+   },
+   "why": "shaped to the road deck rules: honey-bee x1 folded into the deck's own cards (5-7 different cards)",
+   "showcase": null,
+   "boon": null
+  }
+ ]
+}

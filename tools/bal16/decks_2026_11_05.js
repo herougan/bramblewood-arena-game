@@ -146,13 +146,58 @@ function apply() {
   for (const r of j.rows) { const s2 = writeNode(s, r); if (s2 == null) { miss.push(r.key); continue; } s = s2; n++; }
   fs.writeFileSync(APP, s); console.log(`written: ${n} decks${miss.length ? '; not found: ' + miss.join(', ') : ''}`);
 }
+// SHAPE (2026-11-05, after the retune): the road deck rules the rebuild's one-copy fills broke (tests/bal3 5, tests/df3 3 / 4, tests/content2):
+// a skirmish holds 5-7 different cards, every deck keeps the road's copy ladder (the leader's copies included) and a challenge deck keeps its
+// selfish boon on. Over 7: the one-copy cards that are not kept (leader, rewards, first-clear, combo) leave, a card not unique to the map
+// first, and their copies go to the deck's own map-unique cards with room (the boon's cards first). Under 5: the deck's biggest stack gives
+// copies to the nearest list card it does not hold. Over the ladder: the excess goes to the deck's other cards with room.
+const E = require(path.join(ROOT, 'bramblewood-engine.js'));
+function shapeOne(f) {
+  const before = Object.assign({}, f.n.deck), d = Object.assign({}, before), kept = keptOf(f), lead = leaderOf(f, before), combo = COMBOS[f.key] ? Object.keys(COMBOS[f.key].cards) : [];
+  const keep = id => kept.has(id) || id === lead || combo.includes(id) || id === f.n.showcase;
+  const U = K.uniqueOf(f.map), p = poolOf(f), cap = G.roadRarityCap(f.mapNo, f.kind, f.map) || 'mythic', boon = f.n.rules && f.n.rules.boon;
+  const ladder = id => { try { return G.roadCopyCap ? G.roadCopyCap(D[id].rarity, f.mapNo) : capOf(id); } catch (e) { return capOf(id); } };
+  const room = id => Math.min(capOf(id), ladder(id)) - (d[id] || 0);
+  const boonOk = x => !boon || !E.selfishBoonCount || (E.selfishBoonCount(D, x, boon) || { on: true }).on;
+  const theme = id => boon && E.selfishBoonThemeOf ? !!E.selfishBoonThemeOf(D[id], E.SELFISH_BOONS[boon]) : false;
+  const give = (k, avoid) => { const order = Object.keys(d).filter(id => id !== avoid && room(id) > 0).sort((a, b) => (theme(b) - theme(a)) || ((U.has(b) ? 1 : 0) - (U.has(a) ? 1 : 0)) || (d[b] - d[a]) || (a < b ? -1 : 1));
+    for (const id of order) { while (k > 0 && room(id) > 0) { d[id]++; k--; } if (!k) break; } return k; };
+  const why = [];
+  // the copy ladder
+  Object.keys(d).forEach(id => { const over = d[id] - Math.min(capOf(id), ladder(id)); if (over > 0) { d[id] -= over; const left = give(over, id); d[id] += left; why.push(`${id} x${before[id]} -> x${d[id]} (the copy ladder)`); } });
+  if ((f.kind || 'skirmish') === 'skirmish') {
+    let guard = 0;
+    while (Object.keys(d).length > 7 && guard++ < 20) {
+      const out = Object.keys(d).filter(id => d[id] === 1 && !keep(id)).sort((a, b) => ((U.has(a) ? 1 : 0) - (U.has(b) ? 1 : 0)) || (theme(a) - theme(b)) || (a < b ? -1 : 1))[0];
+      if (!out) break; delete d[out]; const left = give(1, out); if (left) { d[out] = 1; break; } why.push(`${out} x1 folded into the deck's own cards (5-7 different cards)`); }
+    guard = 0;
+    while (Object.keys(d).length < 5 && guard++ < 5) {
+      const big = Object.keys(d).filter(id => !keep(id) || d[id] > 2).sort((a, b) => d[b] - d[a])[0]; if (!big) break;
+      const cand = [...p].filter(c => D[c] && !d[c] && !D[c].token && D[c].kind !== 'baby' && step(D[c].rarity) <= step(cap) && !otherReward(f, c, kept) && ((D[c].source || {}).kind) && (U.has(c) || f.k14exempt) && !(f.mapNo <= 10 && (D[c].effects || {}).moonpull))
+        .sort((a, b) => dist(big, a) - dist(big, b) || (a < b ? -1 : 1))[0]; if (!cand) break;
+      const n = Math.min(2, d[big] - 1, Math.min(capOf(cand), ladder(cand))); if (n <= 0) break; d[big] -= n; d[cand] = n; why.push(`${big} x${n} -> ${cand} (5-7 different cards)`); }
+  }
+  // 23-5 (siegeTrain): its list's siege cards are Beetle Battering Ram and Siege Rhino (Very Rare, 2 copies each) and Mouse Sapper; the cut
+  // Trebuchet Crew held the boon before, so a fourth Mouse Sapper keeps it on (8 of 16; K14 gives way to the challenge's boon here)
+  if (f.key === '23-5' && boon === 'siegeTrain' && !boonOk(d) && (d['badger-trench-digger'] || 0) > 1) { while (!boonOk(d) && d['badger-trench-digger'] > 1 && room('mouse-sapper') > 0) { d['badger-trench-digger']--; d['mouse-sapper'] = (d['mouse-sapper'] || 0) + 1; } why.push('Mouse Sapper up to keep siegeTrain on'); }
+  if (!boonOk(d) && boonOk(before)) return null; // never turn a challenge's boon off
+  if (JSON.stringify(d) === JSON.stringify(before) && !why.length) return null;
+  const after = Object.fromEntries(Object.keys(d).filter(c => d[c] > 0).sort().map(c => [c, d[c]]));
+  if (JSON.stringify(after) === JSON.stringify(Object.fromEntries(Object.keys(before).sort().map(c => [c, before[c]])))) return null;
+  return { map: f.map, key: f.key, before, after, why: 'shaped to the road deck rules: ' + why.join('; '), showcase: null, boon: boon ? E.selfishBoonCount(D, after, boon) : null };
+}
 const cmd = process.argv[2];
+if (require.main === module && cmd === 'shape') {
+  const rows = fights().map(shapeOne).filter(Boolean); rows.forEach(r => console.log(r.key.padEnd(8), r.why, JSON.stringify(r.after), r.boon ? JSON.stringify(r.boon) : ''));
+  if (process.argv.includes('--apply')) { let s = fs.readFileSync(APP, 'utf8'), n = 0; for (const r of rows) { const s2 = writeNode(s, r); if (s2) { s = s2; n++; } else console.log('not found ' + r.key); } fs.writeFileSync(APP, s); console.log('shaped ' + n);
+    fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'bal16', `decks-shape-${DATE}.json`), JSON.stringify({ about: 'BAL16 shape pass (tools/bal16/decks_2026_11_05.js shape)', rows }, null, 1) + '\n'); }
+}
 if (require.main === module) {
   if (cmd === 'audit' || cmd === 'check') { const bad = fights().map(f => ({ f, off: offOf(f) })).filter(x => x.off.length);
     bad.forEach(x => console.log(`${x.f.map} ${x.f.key} ${x.off.map(id => id + ' x' + x.f.n.deck[id]).join(', ')}`)); console.log(`${bad.length} decks with off-list cards`); if (cmd === 'check' && bad.length) process.exitCode = 1; }
   else if (cmd === 'plan') { const j = plan(); j.rows.forEach(r => console.log(`${r.key.padEnd(8)} ${r.short ? 'SHORT ' + r.short + ' ' : ''}${r.leaderChanged ? '[leader ' + r.oldLeader + ' -> ' + r.leader + '] ' : ''}${(r.k14 || []).length ? '[K14 ' + r.k14.join(', ') + '] ' : ''}${JSON.stringify(r.after)}`));
     console.log(`${j.rows.length} decks planned; short ${j.rows.filter(r => r.short).length}; leaders changed ${j.rows.filter(r => r.leaderChanged).length} -> ${path.relative(ROOT, OUT)}`); }
   else if (cmd === 'apply') apply();
-  else console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 7).map(l => l.replace(/^\/\/ ?/, '')).join('\n'));
+  else if (cmd !== 'shape') console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 7).map(l => l.replace(/^\/\/ ?/, '')).join('\n'));
 }
 module.exports = { fights, offOf, rebuild, COMBOS, LEADERS };
