@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Package RAID2 (raid screen tidy-up, tide waves, zoom)
+- Players see: the raid's tide damage lands in waves (the board in three bands, bottom up while the water comes in, top down on the Ebb, a foam crest crossing each band); in a round with a tentacle smack the tentacle plays out first, then the tide; no golden name pill when an ally plays a card (raids and co-op); raids and group dungeons get a zoom button, ctrl-wheel / pinch zoom and drag-to-pan, opening fully zoomed out and easing in to about 1.5 rows of each side; the raid fight frame shows your rank emblem and damage so far; the raid screen is leaner (your rank and damage beside the boss's HP bar, no leader line unless your leader is over the cap, three part cards with name / bar / HP / Fight, then the Core alone as one wide card, rewards as resource kinds only, no explainer sections).
+- Same totals, same engine result: timing and presentation only. Tests: `tests/raid2-2026-11-05.js`; browser check `tests/e2e/raid2_2026_11_05.py`.
+
 ## 2026-11-05 Release 11-05a (DEC2-5, UI22a, ENG24, UI22, CONTENT10, BAL16, UI21, BAL17, CONTENT11, BAL18, ART9, ART9b)
 - Players see: brambles +2 on every ability number; new skills Relict, Meld, Immunity, Sequestration; the map card counts (own 10 -> 5, carried 5 -> 16 by map); 142 fight decks rebuilt with each fight's own list; four two-card combo skirmishes; Maps 21-24 retuned; nests unlock from discovery (Maps 4, 8, 12, 16, 20, 24) with shadow slots; a Keyword of the map and Skirmish rewards / Recommended by Claude in Map cards (which scrolls again); best rank on cleared nodes; 11 early boss gimmicks; Nudibranch and Victoria Regia; new art for them and Old Snapjaw; seven field scenes of their own.
 - Balance tools: new PRO / BPRO / WPRO reference decks for Maps 0-24; 85 stale ladder decks rebuilt. Road (Map reference, no leader, 256 fights): 109 in band / 137 within 10 / 63 beyond 20.

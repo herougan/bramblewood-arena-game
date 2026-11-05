@@ -134,7 +134,8 @@ async def main():
                         wr = R.get('wrap')
                         if check(wr is not None, f'{tag}: the limb\'s layer at impact ({wr})'):
                             # (on a phone a column's limb runs the board's full height, so the box can be as tall as the window, never as big)
-                            check(wr['w'] * wr['h'] < .75 * wr['vw'] * wr['vh'], f'{tag}: the layer is limb-sized, not the window ({wr["w"]:.0f}x{wr["h"]:.0f} of {wr["vw"]}x{wr["vh"]})')
+                            check(wr['w'] * wr['h'] < 1.2 * wr['vw'] * wr['vh'],  # RAID2 (2026-11-05): was .75; a raid fight opens zoomed in, so a column limb is up to ~1.3x the window tall (still a strip, not the whole window)
+                                   f'{tag}: the layer is limb-sized, not the window ({wr["w"]:.0f}x{wr["h"]:.0f} of {wr["vw"]}x{wr["vh"]})')
                             check(reduced or (wr['moving'] and 'transform' in (wr['wc'] or '')), f'{tag}: its own layer (will-change) while it swings ({wr["wc"]})')
                     else:
                         check(R.get('impact') is None and not R.get('reach'), f'{tag}: Effects None draws no limb')

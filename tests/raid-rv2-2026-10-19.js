@@ -127,10 +127,10 @@ ok(texts.TEXT['ui.raid-boss-play-mid'] && texts.TEXT['ui.raid-boss-play-back'] &
 ok(!/raidAlliesTurn\(m, drawEvents\)/.test(src) && /if\(m\.raidFull\) m\._raidAlliesDue = true;/.test(src) && /renderMatchUI\(\);\n  if\(m\._raidAlliesDue\)\{ m\._raidAlliesDue = false; if\(m\.raidFull && !m\.over && matchState === m\) try\{ raidAlliesTurn\(m, null\); \}catch\(e\)\{\} \}/.test(src),
   'each turn\'s ally plays come after the turn\'s redraw, each into its slot, so the redraw never draws them before their flights');
 ok(/function reserveSlotPut\(m, pid, row, slot\)\{[\s\S]{0,900}cells\[i\]\.replaceWith\(el\);/.test(src) && !/function reserveSlotPut[\s\S]{0,900}renderBoard\(/.test(src), 'reserveSlotPut replaces one slot\'s element, nothing else');
-ok(/function allyPlayFx\(uid, opts\)\{[\s\S]{0,2200}allyNameTagPulse\(el, opts\)[\s\S]{0,1600}allyHandFan\(from, w \|\| 40\)[\s\S]{0,400}flip: true, trail: true, dust: true/.test(src), 'the play shows the ally\'s name tag, its hand of card backs, the face-down card turning face up, a trail and dust');
+ok(/function allyPlayFx\(uid, opts\)\{[\s\S]{0,2200}allyHandFan\(from, w \|\| 40\)[\s\S]{0,400}flip: true, trail: true, dust: true/.test(src), '(RAID2, 2026-11-05: no name tag any more) the play shows its hand of card backs, the face-down card turning face up, a trail and dust');
 ok(/if\(origin\.flip\)\{ back = document\.createElement\('div'\); back\.className = 'ally-card-back';/.test(src) && /if\(origin\.dust\) impactDust\(c\);/.test(src), 'the flight proxy turns the card over midway and kicks up dust on landing');
-ok(/\.ally-play-tag\{/.test(tpl) && /@keyframes allyTagPulse/.test(tpl) && /\.ally-hand-fan > \.ally-card-back/.test(tpl) && /\.ally-trail-dot\{/.test(tpl), 'the name tag pulses; the hand fan, card back and trail are styled');
-ok(texts.TX('ui.raid-ally-plays', {name:'Captain Swiftpaw', card:'Otter Guard'}) === 'Captain Swiftpaw plays Otter Guard', 'the tag reads "Captain Swiftpaw plays Otter Guard"');
+ok(!/ally-play-tag/.test(tpl) && !/allyNameTagPulse/.test(src) && /\.ally-hand-fan > \.ally-card-back/.test(tpl) && /\.ally-trail-dot\{/.test(tpl), '(RAID2, 2026-11-05) no name tag; the hand fan, card back and trail are styled');
+// RAID2 (2026-11-05): ui.raid-ally-plays removed with the golden pill
 
 // ======================= 7. the raid fight's rank multiplies its damage; a win shows it emblemed =======================
 { const part = goliath.parts.find(p=> p.id === 'left');
@@ -148,7 +148,7 @@ ok(/m\.raidRank = m\.raidFull \? raidFightRank\(m\) : null;/.test(src) && /recor
 ok(/\$\{raidRankEmblemHTML\(m\.raidRank, m\.raidOverwhelmed, 'lg'\)/.test(src) /* 2026-10-19 (package NV): the results show the raid emblem (tests/nv-2026-10-19.js) */ && /raid-rank\$\{won \? ' is-emblem' : ''\}/.test(src), 'the results show the rank, emblemed for a win');
 ok(/\.conquest-rank-badge\.raid-rank\.is-emblem\{/.test(tpl) && /\.raid-rank-crest\{/.test(tpl), 'the emblemed badge: extra rings and a crest');
 ok(/rank: raidBestRankOf\(def, c, g\)/.test(src) && /rewards, rank: rk,/.test(src) && /fxf-rcs-rank\$\{spec\.rank\.emblem \? ' is-emblem' : ''\}/.test(fxf) && /\.fxf-rcs-rank\.is-emblem\{/.test(fxf), 'the claim row and the claim screen show your best rank in that life, emblemed if you won a fight');
-['ui.raid-rule-share', 'ui.raid-rule-win', 'ui.raid-rule-rank'].forEach(k=>{ const t = texts.TEXT[k]; ok(t && t.split(/\s+/).length < 20 && !/[0-9]\.[0-9]|×/.test(t) && src.includes(`'${k}'`), `the raid rules line ${k} (under 20 words, no multipliers): "${t}"`); });
+// RAID2 (2026-11-05): the raid screen's rules list went ("don't explain much"); ui.raid-rule-* are removed
 
 // ======================= 8. taking part, Competent (10,000), Leading (50,000) =======================
 { const st = (fights, dmg)=> ({contributors:{p: dmg}, fightsBy:{p: fights}});
@@ -165,12 +165,12 @@ ok(/id="reLDmg"/.test(src) && /leadDamage: n\('reLDmg', PD\.leadDamage, 1e8\)/.t
 ok(texts.TEXT['ui.raid-strong'] === '★ Competent participant' && texts.TEXT['results.raid-strong'] === 'Competent participant' && texts.TEXT['ui.raid-leading'] === '👑 Leading participant', 'the tier names');
 
 // ======================= 9. TX keys used, and in the 12 packs =======================
-const KEYS = ['ui.raid-boss-play-mid', 'ui.raid-boss-play-back', 'ui.raid-ally-plays', 'results.raid-rank', 'results.raid-rank-tip', 'results.raid-rank-won-tip', 'ui.raid-leading', 'results.raid-leading',
-  'ui.raid-part-rules-lead', 'ui.raid-rw-leading', 'ui.raid-rw-leading-what', 'ui.raid-boss-plays-note', 'ui.raid-might', 'ui.raid-rule-share', 'ui.raid-rule-win', 'ui.raid-rule-rank'];
+const KEYS = ['ui.raid-boss-play-mid', 'ui.raid-boss-play-back', 'results.raid-rank', 'results.raid-rank-tip', 'results.raid-rank-won-tip', 'ui.raid-leading', 'results.raid-leading',
+  ]; // RAID2 (2026-11-05): the raid screen's explainers (ui.raid-part-rules-lead, ui.raid-rw-leading*, ui.raid-boss-plays-note, ui.raid-might, ui.raid-rule-*) were removed with the screen's tidy-up
 KEYS.forEach(k=> ok(texts.TEXT[k] && src.includes(`'${k}'`), `TX key ${k} exists and is used`));
 { const peel = s=> s.replace(/^[^\p{L}\p{N}{]*/u, '');
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(c=>{ const pack = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'lang', c + '.json'), 'utf8'));
-    const miss = KEYS.concat(['ui.raid-strong', 'ui.raid-part-rules', 'ui.raid-rw-strong']).filter(k=> !pack[peel(texts.TEXT[k])]); ok(!miss.length, `the ${c} pack has the RV2 texts (${miss.join(', ')})`); }); }
+    const miss = KEYS.concat(['ui.raid-strong']).filter(k=> !pack[peel(texts.TEXT[k])]); ok(!miss.length, `the ${c} pack has the RV2 texts (${miss.join(', ')})`); }); }
 
 console.log(fail ? `raid-rv2-2026-10-19: ${fail} failed` : 'raid-rv2-2026-10-19: all passed');
 process.exit(fail ? 1 : 0);

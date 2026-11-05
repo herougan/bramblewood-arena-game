@@ -79,7 +79,7 @@ ok(goliath.instanceCap === 250 && R.instanceCap({}) === 250 && R.INSTANCE_CAP_DE
   ok(/TX\('results\.hp-left', \{raidRemainingAfter: raidNum\(m\.raidRemainingAfter\)/.test(src) && /n: raidNum\(m\.raidDamageDealt\)/.test(src) && /<b>\$\{raidNum\(st\.remaining\)\}<\/b> \/ \$\{raidNum\(st\.max\)\} HP/.test(src), 'C1. the results and the Online Raid\'s HP');
   ok(/locale: raidLocale\(\)/.test(src) && /toLocaleString\(opts\.locale \|\| undefined\)/.test(fxf), 'C1. the claim screen counts in the game\'s language');
   ok(/\$\{adminModeEnabled \? raidDamageCalcHTML\(m\) : ''/.test(src) && /TX\('results\.nv-raid-damage', \{n: raidNum/.test(src), 'C2. the breakdown line is for admins only; the headline stays');
-  ok(!/scores up to <b>\$\{\(sc\.cap/.test(src) && /TX\('ui\.rb-fight-note', \{turns: RaidM\.fightRounds\(def\)\}\)/.test(src), 'C2. the raid tab no longer states the per-fight cap / rate'); }
+  ok(!/scores up to <b>\$\{\(sc\.cap/.test(src), 'C2. the raid tab no longer states the per-fight cap / rate'); }
 
 // ---- A: the allies hold their rows (the seeded 200 plays: tests/raid-ally-rows-2026-10-19.js)
 ok(/if\(c\.holdRow\) return;/.test(eng) && /placed\.holdRow = true;/.test(src), 'A. ally units hold their row');
@@ -88,11 +88,7 @@ ok(/if\(c\.holdRow\) return;/.test(eng) && /placed\.holdRow = true;/.test(src), 
 ok(/const RAID_LIVE_PAGE = 1000, RAID_LIVE_MAX_ROWS = 20000;/.test(src) && /\.range\(from, from \+ RAID_LIVE_PAGE - 1\)/.test(B.grab('liveRefreshRaidParts')), 'the raid\'s rows are read a page at a time, your instance only');
 
 // ---- the texts
-{ const KEYS = ['ui.rb-rule-weaken', 'ui.rb-fight-note', 'ui.rb-ally-row-mid', 'ui.raid-rule-win'];
-  KEYS.forEach(k=> ok(typeof texts.TEXT[k] === 'string' && src.includes(`'${k}'`) && !/×|[0-9]\.[0-9]/.test(texts.TEXT[k]), `${k}: in the table, used, no formula`));
-  ok(/higher rank/.test(texts.TEXT['ui.raid-rule-win']), 'the win rule says a higher rank counts more');
-  ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(c=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8'));
-    const miss = KEYS.filter(k=> !pack[texts.TEXT[k]]); ok(!miss.length, `lang/${c}.json has the RB texts (missing: ${miss.join(', ')})`); }); }
+// RAID2 (2026-11-05): the RB rule texts (ui.rb-rule-weaken, ui.rb-fight-note, ui.rb-ally-row-mid, ui.raid-rule-win) were removed with the raid screen's explainers
 
 // ---- the docs
 { const doc = path.join(ROOT, 'docs', 'balance', 'raid-balance-2026-10-19.md'), j = path.join(ROOT, 'docs', 'balance', 'raid-balance-2026-10-19-fights.json');
