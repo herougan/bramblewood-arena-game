@@ -35269,7 +35269,7 @@
     "species": [
       "Mollusc"
     ],
-    "animal": "nudibranch",
+    "animal": "snail",
     "dmgType": "physical",
     "resist": [],
     "tags": [],
@@ -35305,7 +35305,7 @@
     "species": [
       "Plant"
     ],
-    "animal": "giant water lily",
+    "animal": "frog",
     "subtype": "plant",
     "dmgType": "physical",
     "resist": [],

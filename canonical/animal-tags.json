@@ -65,13 +65,13 @@
   }
  ],
  "counts": {
-  "cards": 906,
-  "creatures": 807,
-  "tagged": 809,
+  "cards": 908,
+  "creatures": 809,
+  "tagged": 811,
   "animals": 366,
   "groups": 145,
-  "withSubtype": 110,
-  "proposed": 22,
+  "withSubtype": 111,
+  "proposed": 23,
   "subtype": {
    "changeling": 3,
    "conjured": 3,
@@ -83,7 +83,7 @@
    "glitch": 1,
    "mutant": 5,
    "mythic": 16,
-   "plant": 15,
+   "plant": 16,
    "spirit": 7,
    "structure": 16,
    "undead": 5,
@@ -93,9 +93,9 @@
    "art": 59,
    "ee": 8,
    "flavor": 15,
-   "icon": 36,
+   "icon": 37,
    "name": 603,
-   "proposed": 22,
+   "proposed": 23,
    "type": 64
   },
   "topGroups": {
@@ -107,11 +107,11 @@
    "turtle": 17,
    "cat": 16,
    "bat": 16,
+   "frog": 16,
    "rabbit": 16,
    "salamander": 16,
    "lizard": 15,
    "wolf": 15,
-   "frog": 15,
    "duck": 15,
    "crow": 13,
    "snake": 13,
@@ -285,6 +285,13 @@
    "animal": "dormouse",
    "subtype": "plant",
    "why": "a coppiced hazel; proposed: the hazel dormouse that lives in it, like the Ent's owl (was subtype structure: a tree, as the Elder Willow)"
+  },
+  {
+   "id": "victoria-regia",
+   "name": "Victoria Regia",
+   "animal": "frog",
+   "subtype": "plant",
+   "why": "a giant water lily pad; proposed: a frog (sits on the pad)"
   }
  ],
  "speciesNotes": [
@@ -353,7 +360,7 @@
   },
   {
    "id": "dolphin-knight",
-   "name": "Dolphin Knight",
+   "name": "Dolphin Outrider",
    "icon": "🐬",
    "creature": true,
    "animal": "dolphin",
@@ -363,7 +370,7 @@
   },
   {
    "id": "bee-knight",
-   "name": "Bee Knight",
+   "name": "Bee Warden",
    "icon": "🐝",
    "creature": true,
    "animal": "bee",
@@ -1112,7 +1119,7 @@
   },
   {
    "id": "stag-knight",
-   "name": "Stag Knight",
+   "name": "Stag Champion",
    "icon": "🦌",
    "creature": true,
    "animal": "deer",
@@ -3244,7 +3251,7 @@
   },
   {
    "id": "dominion-nestguard",
-   "name": "Dominion Nestguard",
+   "name": "Sunfeather Nestguard",
    "icon": "🐦",
    "creature": true,
    "animal": "hummingbird",
@@ -9580,6 +9587,27 @@
    "group": "eagle",
    "subtype": null,
    "how": "icon"
+  },
+  {
+   "id": "nudibranch",
+   "name": "Nudibranch",
+   "icon": "🐌",
+   "creature": true,
+   "animal": "snail",
+   "group": "snail",
+   "subtype": null,
+   "how": "icon"
+  },
+  {
+   "id": "victoria-regia",
+   "name": "Victoria Regia",
+   "icon": "🪷",
+   "creature": true,
+   "animal": "frog",
+   "group": "frog",
+   "subtype": "plant",
+   "how": "proposed",
+   "note": "a giant water lily pad; proposed: a frog (sits on the pad)"
   }
  ]
 }

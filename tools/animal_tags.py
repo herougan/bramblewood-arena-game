@@ -108,6 +108,7 @@ MANUAL = {
   'heartwood-treant': ('bear', 'plant', 'proposed', 'art is a wooden giant; proposed: a bear'),
   'growth-sprout': ('caterpillar', 'plant', 'proposed', 'art is a sprout; proposed: a caterpillar ("every swarm counts it as one of its own")'),
   'rafflesia': ('carrion fly', 'plant', 'proposed', 'a flower that smells of carcass; proposed: a carrion fly'),
+  'victoria-regia': ('frog', 'plant', 'proposed', 'a giant water lily pad; proposed: a frog (sits on the pad)'), # 2026-11-05 (CONTENT11 merge): new card with no animal, so the tool runs
   'fungal-colossus': ('bear', 'fungus', 'art', 'a bear under a toadstool cap'),
   'puffball-bombardier': ('toad', 'fungus', 'proposed', 'art is a puffball with a face; proposed: a toad (toadstool)'),
   # mythic, changelings, were-beasts, mutants, glitch
