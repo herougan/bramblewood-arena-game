@@ -1,0 +1,3085 @@
+{
+ "_about": "CONTENT10 (2026-11-05): the map lists pass; tools/content10/apply_2026_11_05.js",
+ "targets": [
+  {
+   "map": 0,
+   "own": 10,
+   "carried": 5
+  },
+  {
+   "map": 1,
+   "own": 10,
+   "carried": 5
+  },
+  {
+   "map": 2,
+   "own": 10,
+   "carried": 5
+  },
+  {
+   "map": 3,
+   "own": 10,
+   "carried": 5
+  },
+  {
+   "map": 4,
+   "own": 10,
+   "carried": 5
+  },
+  {
+   "map": 5,
+   "own": 10,
+   "carried": 5
+  },
+  {
+   "map": 6,
+   "own": 10,
+   "carried": 5
+  },
+  {
+   "map": 7,
+   "own": 9,
+   "carried": 5
+  },
+  {
+   "map": 8,
+   "own": 9,
+   "carried": 5
+  },
+  {
+   "map": 9,
+   "own": 9,
+   "carried": 6
+  },
+  {
+   "map": 10,
+   "own": 9,
+   "carried": 6
+  },
+  {
+   "map": 11,
+   "own": 9,
+   "carried": 7
+  },
+  {
+   "map": 12,
+   "own": 9,
+   "carried": 8
+  },
+  {
+   "map": 13,
+   "own": 9,
+   "carried": 8
+  },
+  {
+   "map": 14,
+   "own": 9,
+   "carried": 9
+  },
+  {
+   "map": 15,
+   "own": 9,
+   "carried": 10
+  },
+  {
+   "map": 16,
+   "own": 8,
+   "carried": 10
+  },
+  {
+   "map": 17,
+   "own": 8,
+   "carried": 11
+  },
+  {
+   "map": 18,
+   "own": 8,
+   "carried": 12
+  },
+  {
+   "map": 19,
+   "own": 8,
+   "carried": 12
+  },
+  {
+   "map": 20,
+   "own": 8,
+   "carried": 13
+  },
+  {
+   "map": 21,
+   "own": 7,
+   "carried": 14
+  },
+  {
+   "map": 22,
+   "own": 7,
+   "carried": 14
+  },
+  {
+   "map": 23,
+   "own": 7,
+   "carried": 14
+  },
+  {
+   "map": 24,
+   "own": 7,
+   "carried": 14
+  },
+  {
+   "map": 25,
+   "own": 7,
+   "carried": 14
+  },
+  {
+   "map": 26,
+   "own": 7,
+   "carried": 15
+  },
+  {
+   "map": 27,
+   "own": 7,
+   "carried": 15
+  },
+  {
+   "map": 28,
+   "own": 7,
+   "carried": 15
+  },
+  {
+   "map": 29,
+   "own": 7,
+   "carried": 15
+  },
+  {
+   "map": 30,
+   "own": 7,
+   "carried": 15
+  },
+  {
+   "map": 31,
+   "own": 6,
+   "carried": 15
+  },
+  {
+   "map": 32,
+   "own": 6,
+   "carried": 15
+  },
+  {
+   "map": 33,
+   "own": 6,
+   "carried": 15
+  },
+  {
+   "map": 34,
+   "own": 6,
+   "carried": 15
+  },
+  {
+   "map": 35,
+   "own": 6,
+   "carried": 15
+  },
+  {
+   "map": 36,
+   "own": 6,
+   "carried": 16
+  },
+  {
+   "map": 37,
+   "own": 6,
+   "carried": 16
+  },
+  {
+   "map": 38,
+   "own": 6,
+   "carried": 16
+  },
+  {
+   "map": 39,
+   "own": 6,
+   "carried": 16
+  },
+  {
+   "map": 40,
+   "own": 6,
+   "carried": 16
+  },
+  {
+   "map": 41,
+   "own": 5,
+   "carried": 16
+  },
+  {
+   "map": 42,
+   "own": 5,
+   "carried": 16
+  },
+  {
+   "map": 60,
+   "own": 5,
+   "carried": 16
+  },
+  {
+   "map": 61,
+   "own": 5,
+   "carried": 17
+  },
+  {
+   "map": 80,
+   "own": 5,
+   "carried": 17
+  },
+  {
+   "map": 81,
+   "own": 5,
+   "carried": 18
+  }
+ ],
+ "stageA": [
+  {
+   "what": "review entry added",
+   "detail": "mb moon-jelly"
+  },
+  {
+   "what": "review entry added",
+   "detail": "m2 lions-mane-jelly"
+  },
+  {
+   "what": "review entry added",
+   "detail": "m7 supernova-jelly"
+  },
+  {
+   "what": "LIST-1104 Pebble Beach",
+   "detail": "cut Sea Turtle Elder; Rock Pool Starfish takes its deck slots"
+  },
+  {
+   "what": "LIST-1104 Sunken Hollow",
+   "detail": "Shoal Shark back; Muskrat Reedgatherer cut for Alley Cat (deck copies follow)"
+  },
+  {
+   "what": "LIST-1104 Maps 20+ archetypes",
+   "detail": "pit-glutton (devilry, Map 20), candle-moth (grace, Map 21), chapel-tortoise (grace, Map 21), friar-badger (grace, Map 21), gale-sprite (evolution, Map 21), golden-magpie (grace, Map 21), ash-imp (devilry, Map 22)"
+  },
+  {
+   "what": "LISTFIX2-1",
+   "detail": "2-1: Fiddler Crab Swarm -> Rock Pool Starfish (reward)"
+  },
+  {
+   "what": "LISTFIX2-1",
+   "detail": "2-5: Grey Seal Bull -> Driftwood Crab (reward)"
+  },
+  {
+   "what": "LISTFIX2-1",
+   "detail": "2-3: Tidepool Trapper Crab -> Open-Ocean Hermit Crab (first clear)"
+  },
+  {
+   "what": "LISTFIX2-1",
+   "detail": "4-5: Old Sturgeon -> Pyrenean Desman (reward)"
+  },
+  {
+   "what": "LISTFIX2-1",
+   "detail": "4-2: Stone Turtle Warden -> Water Shrew (first clear)"
+  },
+  {
+   "what": "LISTFIX2-1",
+   "detail": "5-3: Venomlord Serpent -> Swamp Alligator (first clear)"
+  },
+  {
+   "what": "LISTFIX2-1",
+   "detail": "5-1: Snapper Hatchling -> Cypress Root Lurker (first clear)"
+  },
+  {
+   "what": "LISTFIX2-1",
+   "detail": "6-4: Wisp Newt -> Lamprey (first clear)"
+  },
+  {
+   "what": "LISTFIX2-1",
+   "detail": "14-3: Weaver Bird -> Marula Elephant (first clear)"
+  },
+  {
+   "what": "LISTFIX2-1",
+   "detail": "20-9: Woodland Brawler -> Magma Salamander (reward)"
+  },
+  {
+   "what": "LISTFIX2-2",
+   "detail": "3-7: The Gannet Queen -> Razorbill (reward)"
+  },
+  {
+   "what": "LISTFIX2-2",
+   "detail": "19-6: Yeti Chieftain -> Yeti (reward + challenge)"
+  },
+  {
+   "what": "LIST-1104 The Sundered Peak",
+   "detail": "Glacier Wolf Pack -> Chamois Leaper"
+  }
+ ],
+ "decks": [
+  {
+   "fight": "mb:2-1",
+   "before": {
+    "conch-crawler": 4,
+    "fiddler-crab-swarm": 4,
+    "gull-thief": 3,
+    "open-ocean-hermit-crab": 4,
+    "rock-pool-starfish": 2,
+    "tidepool-trapper-crab": 3
+   },
+   "after": {
+    "conch-crawler": 4,
+    "gull-thief": 3,
+    "open-ocean-hermit-crab": 5,
+    "rock-pool-starfish": 3,
+    "pincushion-urchin": 5
+   },
+   "notes": [
+    "fiddler-crab-swarm x4 -> open-ocean-hermit-crab x1 + pincushion-urchin x3; tidepool-trapper-crab x3 -> pincushion-urchin x2 + rock-pool-starfish x1"
+   ]
+  },
+  {
+   "fight": "mb:2-2",
+   "before": {
+    "oystercatcher": 3,
+    "fiddler-crab-swarm": 3,
+    "gull-thief": 4,
+    "sea-turtle-elder": 4,
+    "pincushion-urchin": 3,
+    "open-ocean-hermit-crab": 3
+   },
+   "after": {
+    "oystercatcher": 3,
+    "gull-thief": 4,
+    "pincushion-urchin": 4,
+    "open-ocean-hermit-crab": 5,
+    "rock-pool-starfish": 4
+   },
+   "notes": [
+    "fiddler-crab-swarm x3 -> open-ocean-hermit-crab x2 + pincushion-urchin x1; sea-turtle-elder x4 -> rock-pool-starfish x4"
+   ]
+  },
+  {
+   "fight": "mb:2-3",
+   "before": {
+    "open-ocean-hermit-crab": 2,
+    "grey-seal-bull": 1,
+    "conch-crawler": 3,
+    "driftwood-crab": 1,
+    "pincushion-urchin": 2,
+    "oystercatcher": 4,
+    "gull-thief": 4
+   },
+   "after": {
+    "open-ocean-hermit-crab": 2,
+    "conch-crawler": 3,
+    "driftwood-crab": 1,
+    "pincushion-urchin": 2,
+    "oystercatcher": 5,
+    "gull-thief": 4
+   },
+   "notes": [
+    "grey-seal-bull x1 -> oystercatcher x1"
+   ]
+  },
+  {
+   "fight": "mb:2-4",
+   "before": {
+    "sea-turtle-elder": 4,
+    "tide-pool-crab": 5,
+    "conch-herald": 1,
+    "grey-seal-bull": 1,
+    "conch-crawler": 4,
+    "open-ocean-hermit-crab": 4
+   },
+   "after": {
+    "conch-herald": 2,
+    "conch-crawler": 3,
+    "open-ocean-hermit-crab": 4,
+    "rock-pool-starfish": 5,
+    "gull-thief": 5
+   },
+   "notes": [
+    "sea-turtle-elder x4 -> rock-pool-starfish x4; grey-seal-bull x1 -> conch-herald x1",
+    "FIX8-1: tide-pool-crab x5 -> gull-thief; conch-crawler -1 -> rock-pool-starfish +1 (was {\"tide-pool-crab\":5,\"conch-herald\":2,\"conch-crawler\":4,\"open-ocean-hermit-crab\":4,\"rock-pool-starfish\":4})"
+   ]
+  },
+  {
+   "fight": "mb:2-5",
+   "before": {
+    "fiddler-crab-swarm": 1,
+    "open-ocean-hermit-crab": 3,
+    "pincushion-urchin": 3,
+    "sea-turtle-elder": 2,
+    "tidepool-trapper-crab": 2,
+    "conch-herald": 1,
+    "grey-seal-bull": 3,
+    "conch-crawler": 2
+   },
+   "after": {
+    "open-ocean-hermit-crab": 5,
+    "pincushion-urchin": 4,
+    "conch-herald": 4,
+    "conch-crawler": 2,
+    "rock-pool-starfish": 2
+   },
+   "notes": [
+    "fiddler-crab-swarm x1 -> open-ocean-hermit-crab x1; sea-turtle-elder x2 -> rock-pool-starfish x2; tidepool-trapper-crab x2 -> open-ocean-hermit-crab x1 + pincushion-urchin x1; grey-seal-bull x3 -> conch-herald x3"
+   ]
+  },
+  {
+   "fight": "m2:4-2",
+   "before": {
+    "snapstick-turtle": 3,
+    "stone-turtle-warden": 5,
+    "water-shrew": 3,
+    "water-vole": 2,
+    "field-vole": 1
+   },
+   "after": {
+    "snapstick-turtle": 5,
+    "water-shrew": 5,
+    "water-vole": 2,
+    "field-vole": 1,
+    "pond-algae": 1
+   },
+   "notes": [
+    "stone-turtle-warden x5 -> snapstick-turtle x2 + water-shrew x2 + pond-algae x1"
+   ]
+  },
+  {
+   "fight": "m2:4-3",
+   "before": {
+    "stone-turtle-warden": 3,
+    "muskrat-lodgekeeper": 3,
+    "old-sturgeon": 2,
+    "platypus-spur": 3,
+    "water-vole": 4
+   },
+   "after": {
+    "muskrat-lodgekeeper": 3,
+    "platypus-spur": 3,
+    "water-vole": 4,
+    "pond-algae": 3,
+    "lions-mane-jelly": 2
+   },
+   "notes": [
+    "stone-turtle-warden x3 -> pond-algae x3; old-sturgeon x2 -> lions-mane-jelly x2"
+   ]
+  },
+  {
+   "fight": "m2:4-4",
+   "before": {
+    "snapstick-turtle": 2,
+    "stone-turtle-warden": 4,
+    "water-vole": 4,
+    "muskrat-lodgekeeper": 3,
+    "old-sturgeon": 1,
+    "platypus-spur": 1
+   },
+   "after": {
+    "snapstick-turtle": 5,
+    "water-vole": 4,
+    "muskrat-lodgekeeper": 3,
+    "platypus-spur": 1,
+    "pond-algae": 1,
+    "lions-mane-jelly": 1
+   },
+   "notes": [
+    "stone-turtle-warden x4 -> snapstick-turtle x3 + pond-algae x1; old-sturgeon x1 -> lions-mane-jelly x1"
+   ]
+  },
+  {
+   "fight": "m2:4-5",
+   "before": {
+    "snapstick-turtle": 3,
+    "water-shrew": 3,
+    "muskrat-lodgekeeper": 3,
+    "old-sturgeon": 2,
+    "pyrenean-desman": 3,
+    "box-turtle": 2,
+    "drowned-matriarch": 2,
+    "stone-turtle-warden": 2
+   },
+   "after": {
+    "snapstick-turtle": 5,
+    "water-shrew": 3,
+    "muskrat-lodgekeeper": 3,
+    "pyrenean-desman": 3,
+    "box-turtle": 2,
+    "drowned-matriarch": 2,
+    "lions-mane-jelly": 2
+   },
+   "notes": [
+    "old-sturgeon x2 -> lions-mane-jelly x2; stone-turtle-warden x2 -> snapstick-turtle x2"
+   ]
+  },
+  {
+   "fight": "m11:20-2",
+   "before": {
+    "pack-mule": 3,
+    "ash-cloud-condor": 3,
+    "woodland-brawler": 1,
+    "cave-warlord": 3,
+    "ashbone-ghoul": 4,
+    "pit-glutton": 3
+   },
+   "after": {
+    "pack-mule": 3,
+    "ash-cloud-condor": 3,
+    "cave-warlord": 3,
+    "ashbone-ghoul": 4,
+    "fumarole-ibex": 1,
+    "cinder-skeleton": 3
+   },
+   "notes": [
+    "woodland-brawler x1 -> fumarole-ibex x1; pit-glutton x3 -> cinder-skeleton x3"
+   ]
+  },
+  {
+   "fight": "m11:20-3",
+   "before": {
+    "ashbone-ghoul": 3,
+    "pack-mule": 4,
+    "ash-cloud-condor": 1,
+    "ancient-sloth-titan": 1,
+    "cave-warlord": 2,
+    "magma-salamander": 2,
+    "pit-glutton": 1
+   },
+   "after": {
+    "ashbone-ghoul": 3,
+    "pack-mule": 4,
+    "ash-cloud-condor": 2,
+    "ancient-sloth-titan": 1,
+    "cave-warlord": 2,
+    "magma-salamander": 2
+   },
+   "notes": [
+    "pit-glutton x1 -> ash-cloud-condor x1"
+   ]
+  },
+  {
+   "fight": "m11:20-4",
+   "before": {
+    "cave-warlord": 4,
+    "magma-wraith": 4,
+    "ashbone-ghoul": 5,
+    "magma-salamander": 2,
+    "cinder-stoker": 1,
+    "fumarole-ibex": 1,
+    "pit-glutton": 2,
+    "pumice-beetle": 1
+   },
+   "after": {
+    "cave-warlord": 4,
+    "magma-wraith": 4,
+    "ashbone-ghoul": 5,
+    "magma-salamander": 2,
+    "cinder-stoker": 1,
+    "fumarole-ibex": 1,
+    "pumice-beetle": 1,
+    "cinder-skeleton": 2
+   },
+   "notes": [
+    "pit-glutton x2 -> cinder-skeleton x2"
+   ]
+  },
+  {
+   "fight": "m11:20-5",
+   "before": {
+    "cave-warlord": 4,
+    "pack-mule": 4,
+    "ash-cloud-condor": 1,
+    "magma-salamander": 2,
+    "ossuary-lammergeier": 1,
+    "fumarole-ibex": 1,
+    "ashbone-ghoul": 2,
+    "pit-glutton": 1
+   },
+   "after": {
+    "cave-warlord": 4,
+    "pack-mule": 4,
+    "ash-cloud-condor": 2,
+    "magma-salamander": 2,
+    "ossuary-lammergeier": 1,
+    "fumarole-ibex": 1,
+    "ashbone-ghoul": 2
+   },
+   "notes": [
+    "pit-glutton x1 -> ash-cloud-condor x1"
+   ]
+  },
+  {
+   "fight": "m11:20-7",
+   "before": {
+    "cave-warlord": 1,
+    "cinder-skeleton": 2,
+    "magma-wraith": 4,
+    "ossuary-lammergeier": 1,
+    "magma-salamander": 2,
+    "pit-glutton": 3
+   },
+   "after": {
+    "cave-warlord": 1,
+    "cinder-skeleton": 4,
+    "magma-wraith": 4,
+    "ossuary-lammergeier": 1,
+    "magma-salamander": 2,
+    "fumarole-ibex": 1
+   },
+   "notes": [
+    "pit-glutton x3 -> fumarole-ibex x1 + cinder-skeleton x2"
+   ]
+  },
+  {
+   "fight": "m11:20-9",
+   "before": {
+    "ancient-sloth-titan": 4,
+    "ashbone-ghoul": 5,
+    "pack-mule": 1,
+    "ash-cloud-condor": 2,
+    "woodland-brawler": 1,
+    "ossuary-lammergeier": 1,
+    "pit-glutton": 3,
+    "magma-salamander": 2
+   },
+   "after": {
+    "ancient-sloth-titan": 4,
+    "ashbone-ghoul": 5,
+    "pack-mule": 1,
+    "ash-cloud-condor": 3,
+    "ossuary-lammergeier": 1,
+    "magma-salamander": 2,
+    "fumarole-ibex": 1,
+    "cinder-skeleton": 2
+   },
+   "notes": [
+    "woodland-brawler x1 -> ash-cloud-condor x1; pit-glutton x3 -> fumarole-ibex x1 + cinder-skeleton x2"
+   ]
+  },
+  {
+   "fight": "m11:20-10",
+   "before": {
+    "cave-warlord": 3,
+    "magma-salamander": 2,
+    "woodland-brawler": 1,
+    "ossuary-lammergeier": 1,
+    "ashbone-ghoul": 4,
+    "pit-glutton": 3
+   },
+   "after": {
+    "cave-warlord": 3,
+    "magma-salamander": 2,
+    "ossuary-lammergeier": 1,
+    "ashbone-ghoul": 4,
+    "fumarole-ibex": 1,
+    "cinder-skeleton": 3
+   },
+   "notes": [
+    "woodland-brawler x1 -> fumarole-ibex x1; pit-glutton x3 -> cinder-skeleton x3"
+   ]
+  },
+  {
+   "fight": "m21:21-1",
+   "before": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "golden-eagle-diver": 1,
+    "mountain-goat-climber": 1,
+    "glacier-yak": 5,
+    "friar-badger": 1,
+    "pika-hoarder": 2
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "golden-eagle-diver": 1,
+    "mountain-goat-climber": 1,
+    "glacier-yak": 5,
+    "pika-hoarder": 3
+   },
+   "notes": [
+    "friar-badger x1 -> pika-hoarder x1"
+   ]
+  },
+  {
+   "fight": "m21:21-2",
+   "before": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "glacier-yak": 5,
+    "pika-hoarder": 5,
+    "snow-leopard": 2,
+    "friar-badger": 1
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "glacier-yak": 5,
+    "pika-hoarder": 5,
+    "snow-leopard": 2,
+    "mountain-goat-climber": 1
+   },
+   "notes": [
+    "friar-badger x1 -> mountain-goat-climber x1"
+   ]
+  },
+  {
+   "fight": "m21:21-5",
+   "before": {
+    "alpine-marmot": 1,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 1,
+    "snow-owl-sentinel": 1,
+    "snow-leopard": 2,
+    "glacier-yak": 4,
+    "friar-badger": 1
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 1,
+    "snow-owl-sentinel": 1,
+    "snow-leopard": 2,
+    "glacier-yak": 5
+   },
+   "notes": [
+    "friar-badger x1 -> glacier-yak x1"
+   ]
+  },
+  {
+   "fight": "m21:21-6",
+   "before": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 1,
+    "snow-owl-sentinel": 1,
+    "snow-leopard": 2,
+    "glacier-yak": 3,
+    "friar-badger": 1
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 1,
+    "snow-owl-sentinel": 1,
+    "snow-leopard": 2,
+    "glacier-yak": 4
+   },
+   "notes": [
+    "friar-badger x1 -> glacier-yak x1"
+   ]
+  },
+  {
+   "fight": "mw:5-1",
+   "before": {
+    "constrictor-coil": 2,
+    "snapper-hatchling": 1,
+    "bog-leech": 3,
+    "venomlord-serpent": 4,
+    "cypress-root-lurker": 3
+   },
+   "after": {
+    "constrictor-coil": 5,
+    "bog-leech": 3,
+    "cypress-root-lurker": 3,
+    "nutria-reedcutter": 1,
+    "swamp-alligator": 1
+   },
+   "notes": [
+    "snapper-hatchling x1 -> nutria-reedcutter x1; venomlord-serpent x4 -> constrictor-coil x3 + swamp-alligator x1"
+   ]
+  },
+  {
+   "fight": "mw:5-2",
+   "before": {
+    "bog-leech": 2,
+    "swamp-alligator": 3,
+    "venomlord-serpent": 5,
+    "cypress-root-lurker": 2,
+    "crocodile-ambusher": 2
+   },
+   "after": {
+    "bog-leech": 2,
+    "swamp-alligator": 3,
+    "cypress-root-lurker": 2,
+    "crocodile-ambusher": 2,
+    "constrictor-coil": 5
+   },
+   "notes": [
+    "venomlord-serpent x5 -> constrictor-coil x5"
+   ]
+  },
+  {
+   "fight": "mw:5-3",
+   "before": {
+    "constrictor-coil": 1,
+    "snapper-hatchling": 3,
+    "swamp-alligator": 2,
+    "venomlord-serpent": 2,
+    "grass-viper": 4,
+    "bog-leech": 1,
+    "fire-ant-raft": 4
+   },
+   "after": {
+    "constrictor-coil": 3,
+    "swamp-alligator": 2,
+    "grass-viper": 4,
+    "bog-leech": 1,
+    "fire-ant-raft": 4,
+    "nutria-reedcutter": 3
+   },
+   "notes": [
+    "snapper-hatchling x3 -> nutria-reedcutter x3; venomlord-serpent x2 -> constrictor-coil x2"
+   ]
+  },
+  {
+   "fight": "mw:5-4",
+   "before": {
+    "venomlord-serpent": 3,
+    "fen-mink": 3,
+    "grass-viper": 4,
+    "cypress-root-lurker": 1,
+    "swamp-alligator": 4,
+    "nutria-reedcutter": 3
+   },
+   "after": {
+    "fen-mink": 3,
+    "grass-viper": 4,
+    "cypress-root-lurker": 1,
+    "swamp-alligator": 4,
+    "nutria-reedcutter": 3,
+    "constrictor-coil": 3
+   },
+   "notes": [
+    "venomlord-serpent x3 -> constrictor-coil x3"
+   ]
+  },
+  {
+   "fight": "mw:5-5",
+   "before": {
+    "venomlord-serpent": 4,
+    "crocodile-ambusher": 2,
+    "bog-leech": 2,
+    "snapper-hatchling": 4,
+    "cypress-root-lurker": 2
+   },
+   "after": {
+    "crocodile-ambusher": 2,
+    "bog-leech": 2,
+    "cypress-root-lurker": 2,
+    "constrictor-coil": 4,
+    "nutria-reedcutter": 4
+   },
+   "notes": [
+    "venomlord-serpent x4 -> constrictor-coil x4; snapper-hatchling x4 -> nutria-reedcutter x4"
+   ]
+  },
+  {
+   "fight": "mw:5-7",
+   "before": {
+    "constrictor-coil": 3,
+    "snapper-hatchling": 1,
+    "grass-viper": 3,
+    "alligator-gar": 3,
+    "bog-leech": 1,
+    "anhinga-spearbird": 3,
+    "cypress-root-lurker": 1,
+    "nutria-reedcutter": 4
+   },
+   "after": {
+    "constrictor-coil": 3,
+    "grass-viper": 3,
+    "alligator-gar": 3,
+    "bog-leech": 1,
+    "anhinga-spearbird": 3,
+    "cypress-root-lurker": 1,
+    "nutria-reedcutter": 5
+   },
+   "notes": [
+    "snapper-hatchling x1 -> nutria-reedcutter x1"
+   ]
+  },
+  {
+   "fight": "m8:6-1",
+   "before": {
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "marsh-wisp": 3,
+    "poison-dart-croaker": 5,
+    "bogfire-newt": 3,
+    "lamprey": 1
+   },
+   "after": {
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "poison-dart-croaker": 5,
+    "bogfire-newt": 3,
+    "lamprey": 4
+   },
+   "notes": [
+    "marsh-wisp x3 -> lamprey x3"
+   ]
+  },
+  {
+   "fight": "m8:6-2",
+   "before": {
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "marsh-wisp": 4,
+    "booming-bittern": 2,
+    "bogfire-newt": 4,
+    "lamprey": 4
+   },
+   "after": {
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "booming-bittern": 4,
+    "bogfire-newt": 4,
+    "lamprey": 5,
+    "nutria-reedcutter": 1
+   },
+   "notes": [
+    "marsh-wisp x4 -> lamprey x1 + nutria-reedcutter x1 + booming-bittern x2"
+   ]
+  },
+  {
+   "fight": "m8:6-3",
+   "before": {
+    "camouflage-frog": 5,
+    "marsh-wisp": 4,
+    "bogfire-newt": 2,
+    "booming-bittern": 2,
+    "cane-toad": 4,
+    "nutria-reedcutter": 1
+   },
+   "after": {
+    "camouflage-frog": 5,
+    "bogfire-newt": 2,
+    "booming-bittern": 2,
+    "cane-toad": 4,
+    "nutria-reedcutter": 1,
+    "lamprey": 4
+   },
+   "notes": [
+    "marsh-wisp x4 -> lamprey x4"
+   ]
+  },
+  {
+   "fight": "m8:6-4",
+   "before": {
+    "constrictor-coil": 1,
+    "marsh-wisp": 3,
+    "bogfire-newt": 4,
+    "cane-toad": 4,
+    "booming-bittern": 1
+   },
+   "after": {
+    "constrictor-coil": 1,
+    "bogfire-newt": 4,
+    "cane-toad": 4,
+    "booming-bittern": 1,
+    "camouflage-frog": 3
+   },
+   "notes": [
+    "marsh-wisp x3 -> camouflage-frog x3"
+   ]
+  },
+  {
+   "fight": "m8:6-5",
+   "before": {
+    "marsh-wisp": 4,
+    "venomlord-serpent": 2,
+    "bogfire-newt": 3,
+    "booming-bittern": 2,
+    "newt-doctor": 2,
+    "raven-scout": 1
+   },
+   "after": {
+    "venomlord-serpent": 2,
+    "bogfire-newt": 3,
+    "booming-bittern": 2,
+    "newt-doctor": 2,
+    "raven-scout": 1,
+    "camouflage-frog": 4
+   },
+   "notes": [
+    "marsh-wisp x4 -> camouflage-frog x4"
+   ]
+  },
+  {
+   "fight": "m8:6-6",
+   "before": {
+    "camouflage-frog": 4,
+    "marsh-wisp": 1,
+    "booming-bittern": 3,
+    "bogfire-newt": 4,
+    "venomlord-serpent": 3
+   },
+   "after": {
+    "camouflage-frog": 5,
+    "booming-bittern": 3,
+    "bogfire-newt": 4,
+    "venomlord-serpent": 3
+   },
+   "notes": [
+    "marsh-wisp x1 -> camouflage-frog x1"
+   ]
+  },
+  {
+   "fight": "m8:6-7",
+   "before": {
+    "adder-ambusher": 3,
+    "marsh-wisp": 2,
+    "lamprey": 1,
+    "venomlord-serpent": 5,
+    "marsh-harrier": 1
+   },
+   "after": {
+    "adder-ambusher": 3,
+    "lamprey": 1,
+    "venomlord-serpent": 5,
+    "marsh-harrier": 1,
+    "camouflage-frog": 2
+   },
+   "notes": [
+    "marsh-wisp x2 -> camouflage-frog x2"
+   ]
+  },
+  {
+   "fight": "m8:6-8",
+   "before": {
+    "adder-ambusher": 3,
+    "lamprey": 5,
+    "venomlord-serpent": 5,
+    "marsh-wisp": 5,
+    "nutria-reedcutter": 1
+   },
+   "after": {
+    "adder-ambusher": 3,
+    "lamprey": 5,
+    "venomlord-serpent": 5,
+    "nutria-reedcutter": 1,
+    "camouflage-frog": 5
+   },
+   "notes": [
+    "marsh-wisp x5 -> camouflage-frog x5"
+   ]
+  },
+  {
+   "fight": "m5:14-3",
+   "before": {
+    "weaver-bird": 1,
+    "grave-grin-hyena": 3,
+    "marula-elephant": 3,
+    "pangolin-roller": 3,
+    "spitting-cobra": 1,
+    "springbok-pronker": 4
+   },
+   "after": {
+    "grave-grin-hyena": 3,
+    "marula-elephant": 3,
+    "pangolin-roller": 3,
+    "spitting-cobra": 1,
+    "springbok-pronker": 5
+   },
+   "notes": [
+    "weaver-bird x1 -> springbok-pronker x1"
+   ]
+  },
+  {
+   "fight": "m5:14-4",
+   "before": {
+    "marula-elephant": 4,
+    "weaver-bird": 5,
+    "mouse-sapper": 1,
+    "carrion-crow": 1,
+    "springbok-pronker": 4
+   },
+   "after": {
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "carrion-crow": 1,
+    "springbok-pronker": 5,
+    "hoopoe-herald": 4
+   },
+   "notes": [
+    "weaver-bird x5 -> springbok-pronker x1 + hoopoe-herald x4"
+   ]
+  },
+  {
+   "fight": "m5:14-5",
+   "before": {
+    "hoopoe-herald": 4,
+    "weaver-bird": 2,
+    "dust-hyena": 1,
+    "grave-grin-hyena": 3,
+    "pangolin-roller": 3,
+    "savanna-cheetah": 1,
+    "marula-elephant": 4,
+    "springbok-pronker": 1,
+    "mouse-sapper": 1
+   },
+   "after": {
+    "hoopoe-herald": 4,
+    "dust-hyena": 1,
+    "grave-grin-hyena": 3,
+    "pangolin-roller": 3,
+    "savanna-cheetah": 1,
+    "marula-elephant": 4,
+    "springbok-pronker": 3,
+    "mouse-sapper": 1
+   },
+   "notes": [
+    "weaver-bird x2 -> springbok-pronker x2"
+   ]
+  },
+  {
+   "fight": "m5:14-6",
+   "before": {
+    "spitting-cobra": 2,
+    "savanna-cheetah": 1,
+    "marula-elephant": 4,
+    "house-cat": 1,
+    "springbok-pronker": 5,
+    "acacia-giraffe": 1,
+    "weaver-bird": 2,
+    "carrion-crow": 1
+   },
+   "after": {
+    "spitting-cobra": 2,
+    "savanna-cheetah": 1,
+    "marula-elephant": 4,
+    "house-cat": 1,
+    "springbok-pronker": 5,
+    "acacia-giraffe": 1,
+    "carrion-crow": 1,
+    "hoopoe-herald": 2
+   },
+   "notes": [
+    "weaver-bird x2 -> hoopoe-herald x2"
+   ]
+  },
+  {
+   "fight": "m5:14-7",
+   "before": {
+    "savanna-cheetah": 1,
+    "plains-zebra": 1,
+    "acacia-giraffe": 1,
+    "springbok-pronker": 5,
+    "house-cat": 1,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "weaver-bird": 2
+   },
+   "after": {
+    "savanna-cheetah": 1,
+    "plains-zebra": 1,
+    "acacia-giraffe": 1,
+    "springbok-pronker": 5,
+    "house-cat": 1,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "hoopoe-herald": 2
+   },
+   "notes": [
+    "weaver-bird x2 -> hoopoe-herald x2"
+   ]
+  },
+  {
+   "fight": "m3:19-6",
+   "before": {
+    "cinder-stoker": 5,
+    "yeti": 2,
+    "quill-volley": 2,
+    "glacier-wolf-pack": 3,
+    "talus-pika": 1,
+    "sulfur-cinder-moth": 1,
+    "pumice-beetle": 2,
+    "yeti-chieftain": 1,
+    "pit-glutton": 1
+   },
+   "after": {
+    "cinder-stoker": 5,
+    "yeti": 2,
+    "quill-volley": 2,
+    "glacier-wolf-pack": 3,
+    "talus-pika": 1,
+    "sulfur-cinder-moth": 1,
+    "pumice-beetle": 2,
+    "pit-glutton": 1,
+    "granite-ox-golem": 1
+   },
+   "notes": [
+    "yeti-chieftain x1 -> granite-ox-golem x1"
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "id": "shoal-shark",
+   "to": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m2"
+   },
+   "why": "LIST-1104: on Sunken Hollow's list again"
+  },
+  {
+   "id": "rock-pool-starfish",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mb"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mb",
+    "node": "2-1"
+   },
+   "why": "LISTFIX2-1 b: 2-1's reward for Fiddler Crab Swarm"
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "from": {
+    "kind": "map",
+    "id": "mb",
+    "node": "2-1"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mc"
+   },
+   "why": "a pack card, first listed on Gannet Cliffs (Map 3)"
+  },
+  {
+   "id": "driftwood-crab",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mb"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mb",
+    "node": "2-5"
+   },
+   "why": "LISTFIX2-1 b: 2-5's reward for Grey Seal Bull"
+  },
+  {
+   "id": "grey-seal-bull",
+   "from": {
+    "kind": "map",
+    "id": "mb",
+    "node": "2-5"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mb"
+   },
+   "why": "a pack card, first listed on Smugglers' Grotto (side map of Map 2)"
+  },
+  {
+   "id": "pyrenean-desman",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m2"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-5"
+   },
+   "why": "LISTFIX2-1 b: 4-5's reward for Old Sturgeon"
+  },
+  {
+   "id": "old-sturgeon",
+   "from": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-5"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mb"
+   },
+   "why": "a pack card, first listed on Lilypad Reach (side map of Map 2)"
+  },
+  {
+   "id": "magma-salamander",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m11"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-9"
+   },
+   "why": "LISTFIX2-1 b: 20-9's reward for Woodland Brawler"
+  },
+  {
+   "id": "woodland-brawler",
+   "from": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-9"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 3
+   },
+   "why": "on no list now (out of play)"
+  },
+  {
+   "id": "razorbill",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mc"
+   },
+   "to": {
+    "kind": "map",
+    "id": "mc",
+    "node": "3-7"
+   },
+   "why": "LISTFIX2-2 b: 3-7's reward for The Gannet Queen"
+  },
+  {
+   "id": "the-gannet-queen",
+   "from": {
+    "kind": "map",
+    "id": "mc",
+    "node": "3-7"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": "on no list now (out of play)"
+  },
+  {
+   "id": "yeti",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m3"
+   },
+   "to": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-6",
+    "challenge": true
+   },
+   "why": "LISTFIX2-2 b: 19-6's reward and challenge card for Yeti Chieftain"
+  },
+  {
+   "id": "yeti-chieftain",
+   "from": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-6",
+    "challenge": true
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 3
+   },
+   "why": "on no list now (out of play)"
+  }
+ ],
+ "firstPack": [
+  {
+   "fight": "mb:2-3",
+   "from": "tidepool-trapper-crab",
+   "to": "open-ocean-hermit-crab"
+  },
+  {
+   "fight": "m2:4-2",
+   "from": "stone-turtle-warden",
+   "to": "water-shrew"
+  },
+  {
+   "fight": "mw:5-3",
+   "from": "venomlord-serpent",
+   "to": "swamp-alligator"
+  },
+  {
+   "fight": "mw:5-1",
+   "from": "snapper-hatchling",
+   "to": "cypress-root-lurker"
+  },
+  {
+   "fight": "m8:6-4",
+   "from": "marsh-wisp",
+   "to": "lamprey"
+  },
+  {
+   "fight": "m5:14-3",
+   "from": "weaver-bird",
+   "to": "marula-elephant"
+  }
+ ],
+ "maps": {
+  "mb": {
+   "no": 2,
+   "name": "Pebble Beach",
+   "target": {
+    "own": 10,
+    "carried": 5
+   },
+   "cuts": [
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [],
+   "before": {
+    "own": 11,
+    "carried": 4
+   },
+   "after": {
+    "own": 10,
+    "carried": 4
+   },
+   "short": "carried 4/5 (no more thematic, distinct candidates in the cap)"
+  },
+  "mc": {
+   "no": 3,
+   "name": "Gannet Cliffs",
+   "target": {
+    "own": 10,
+    "carried": 5
+   },
+   "cuts": [],
+   "adds": [
+    {
+     "id": "oystercatcher",
+     "name": "Oystercatcher",
+     "from": "mb",
+     "fit": 2,
+     "src": "thematic fit"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "from": "mb",
+     "fit": 2,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 10,
+    "carried": 3
+   },
+   "after": {
+    "own": 10,
+    "carried": 5
+   },
+   "short": null
+  },
+  "m2": {
+   "no": 4,
+   "name": "Sunken Hollow",
+   "target": {
+    "own": 10,
+    "carried": 5
+   },
+   "cuts": [
+    {
+     "id": "water-vole",
+     "name": "Water Vole",
+     "carried": false,
+     "why": "a second vole on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "carried": false,
+     "why": "weak theme fit (kin biome only)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [],
+   "before": {
+    "own": 13,
+    "carried": 4
+   },
+   "after": {
+    "own": 10,
+    "carried": 4
+   },
+   "short": "carried 4/5 (no more thematic, distinct candidates in the cap)"
+  },
+  "mw": {
+   "no": 5,
+   "name": "Gatorback Swamp",
+   "target": {
+    "own": 10,
+    "carried": 5
+   },
+   "cuts": [],
+   "adds": [
+    {
+     "id": "pond-algae",
+     "name": "Pond Algae",
+     "from": "m2",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 10,
+    "carried": 4
+   },
+   "after": {
+    "own": 10,
+    "carried": 5
+   },
+   "short": null
+  },
+  "m8": {
+   "no": 6,
+   "name": "Sable Swampmire",
+   "target": {
+    "own": 10,
+    "carried": 5
+   },
+   "cuts": [],
+   "adds": [
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "from": "mw",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "name": "Cypress Root Lurker",
+     "from": "mw",
+     "fit": 4,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 10,
+    "carried": 3
+   },
+   "after": {
+    "own": 10,
+    "carried": 5
+   },
+   "short": null
+  },
+  "mu": {
+   "no": 7,
+   "name": "The Morel Hollow",
+   "target": {
+    "own": 9,
+    "carried": 5
+   },
+   "cuts": [
+    {
+     "id": "garden-snail",
+     "name": "Garden Snail",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "claude"
+    },
+    {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "bogfire-newt",
+     "name": "Bogfire Newt",
+     "carried": true,
+     "why": "flagged Unlikely (THEME4); weak theme fit (kin biome only)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [],
+   "before": {
+    "own": 11,
+    "carried": 6
+   },
+   "after": {
+    "own": 9,
+    "carried": 5
+   },
+   "short": null
+  },
+  "m4": {
+   "no": 8,
+   "name": "Caves & Alcoves",
+   "target": {
+    "own": 9,
+    "carried": 5
+   },
+   "cuts": [
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "carried": false,
+     "why": "a second bat on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "owner"
+    }
+   ],
+   "adds": [
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "from": "mb",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 4
+   },
+   "after": {
+    "own": 9,
+    "carried": 5
+   },
+   "short": null
+  },
+  "mk": {
+   "no": 9,
+   "name": "The Kelp Mangroves",
+   "target": {
+    "own": 9,
+    "carried": 6
+   },
+   "cuts": [
+    {
+     "id": "fishing-cat",
+     "name": "Fishing Cat",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "cane-toad",
+     "name": "Cane Toad",
+     "from": "mu",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "from": "mc",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 4
+   },
+   "after": {
+    "own": 9,
+    "carried": 6
+   },
+   "short": null
+  },
+  "m7": {
+   "no": 10,
+   "name": "Coral Current",
+   "target": {
+    "own": 9,
+    "carried": 6
+   },
+   "cuts": [
+    {
+     "id": "swordfish-spearman",
+     "name": "Swordfish Spearman",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "coral-polyp-colony",
+     "name": "Coral Polyp Colony",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "dolphin-knight",
+     "name": "Dolphin Outrider",
+     "from": "mb",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "horseshoe-crab",
+     "name": "Horseshoe Crab",
+     "from": "mk",
+     "fit": 4,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 12,
+    "carried": 4
+   },
+   "after": {
+    "own": 10,
+    "carried": 6
+   },
+   "short": null
+  },
+  "m10": {
+   "no": 11,
+   "name": "Eyrie Heights",
+   "target": {
+    "own": 9,
+    "carried": 7
+   },
+   "cuts": [
+    {
+     "id": "gale-swift",
+     "name": "Gale Swift",
+     "carried": false,
+     "why": "a second swift on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "red-billed-chough",
+     "name": "Red-billed Chough",
+     "from": "mc",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "from": "m1",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "from": "mc",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 4
+   },
+   "after": {
+    "own": 9,
+    "carried": 7
+   },
+   "short": null
+  },
+  "mh": {
+   "no": 12,
+   "name": "The Briar Maze",
+   "target": {
+    "own": 9,
+    "carried": 8
+   },
+   "cuts": [
+    {
+     "id": "gatling-hog",
+     "name": "Gatling Hog",
+     "carried": false,
+     "why": "a second hedgehog on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "from": "mu",
+     "fit": 1,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "woodcock-lookout",
+     "name": "Woodcock Lookout",
+     "from": "mf",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "hollow-belly-rat",
+     "name": "Hollow-belly Rat",
+     "from": "mf",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 10,
+    "carried": 5
+   },
+   "after": {
+    "own": 9,
+    "carried": 8
+   },
+   "short": null
+  },
+  "mr": {
+   "no": 13,
+   "name": "The Redwood Deep",
+   "target": {
+    "own": 9,
+    "carried": 8
+   },
+   "cuts": [
+    {
+     "id": "stag-knight",
+     "name": "Stag Champion",
+     "carried": false,
+     "why": "a second deer on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "woodpecker-sapper",
+     "name": "Woodpecker Sapper",
+     "carried": false,
+     "why": "a second woodpecker on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "from": "mf",
+     "fit": 1,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "corpse-flower-beetle",
+     "name": "Corpse-flower Beetle",
+     "from": "mu",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "ant-hill",
+     "name": "Ant Hill",
+     "from": "mh",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 5
+   },
+   "after": {
+    "own": 9,
+    "carried": 8
+   },
+   "short": null
+  },
+  "m5": {
+   "no": 14,
+   "name": "Savanna Reaches",
+   "target": {
+    "own": 9,
+    "carried": 9
+   },
+   "cuts": [
+    {
+     "id": "plains-zebra",
+     "name": "Plains Zebra",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "claude"
+    },
+    {
+     "id": "pangolin-roller",
+     "name": "Pangolin Roller",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "ant-hill",
+     "name": "Ant Hill",
+     "from": "mh",
+     "fit": 1,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "from": "mc",
+     "fit": 1,
+     "src": "THEME5 carried pick"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 3
+   },
+   "after": {
+    "own": 9,
+    "carried": 5
+   },
+   "short": "carried 5/9 (no more thematic, distinct candidates in the cap)"
+  },
+  "ml": {
+   "no": 15,
+   "name": "The Long Grass",
+   "target": {
+    "own": 9,
+    "carried": 10
+   },
+   "cuts": [
+    {
+     "id": "squires-mount",
+     "name": "Squire's Mount",
+     "carried": false,
+     "why": "a second horse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "warhorse-charger",
+     "name": "Warhorse Charger",
+     "carried": false,
+     "why": "a second horse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "from": "mu",
+     "fit": 1,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "swift-fox",
+     "name": "Swift Fox",
+     "from": "mr",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "tasmanian-devil",
+     "name": "Tasmanian Devil",
+     "from": "mr",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "from": "mf",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "slow-worm",
+     "name": "Slow-worm",
+     "from": "mf",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "thorn-shrike",
+     "name": "Thorn Shrike",
+     "from": "mh",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 4
+   },
+   "after": {
+    "own": 9,
+    "carried": 10
+   },
+   "short": null
+  },
+  "mt": {
+   "no": 16,
+   "name": "The Pinewood Taiga",
+   "target": {
+    "own": 8,
+    "carried": 10
+   },
+   "cuts": [
+    {
+     "id": "wolf-pack-runner",
+     "name": "Wolf Pack Runner",
+     "carried": false,
+     "why": "a second wolf on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "dhole-runner",
+     "name": "Dhole Runner",
+     "carried": false,
+     "why": "a second dhole on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "pinecone-sapper",
+     "name": "Pinecone Sapper",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "claude"
+    }
+   ],
+   "adds": [
+    {
+     "id": "owl-nightwatch",
+     "name": "Owl Nightwatch",
+     "from": "mu",
+     "fit": 1,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "tasmanian-devil",
+     "name": "Tasmanian Devil",
+     "from": "mr",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "grizzly-vanguard",
+     "name": "Grizzly Vanguard",
+     "from": "mr",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 4
+   },
+   "after": {
+    "own": 8,
+    "carried": 7
+   },
+   "short": "carried 7/10 (no more thematic, distinct candidates in the cap)"
+  },
+  "m6": {
+   "no": 17,
+   "name": "Wolfsbane Tundra",
+   "target": {
+    "own": 8,
+    "carried": 11
+   },
+   "cuts": [
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "from": "m10",
+     "fit": 1,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "taiga-lynx",
+     "name": "Taiga Lynx",
+     "from": "mt",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "from": "m1",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 10,
+    "carried": 5
+   },
+   "after": {
+    "own": 8,
+    "carried": 8
+   },
+   "short": "carried 8/11 (no more thematic, distinct candidates in the cap)"
+  },
+  "md": {
+   "no": 18,
+   "name": "The Glass Dunes",
+   "target": {
+    "own": 8,
+    "carried": 12
+   },
+   "cuts": [
+    {
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "dromedary",
+     "name": "Dromedary",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "glass-golem",
+     "name": "Glass Golem",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "owner"
+    }
+   ],
+   "adds": [
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "from": "m5",
+     "fit": 1,
+     "src": "THEME5 carried pick"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 5
+   },
+   "after": {
+    "own": 8,
+    "carried": 6
+   },
+   "short": "carried 6/12 (no more thematic, distinct candidates in the cap)"
+  },
+  "m3": {
+   "no": 19,
+   "name": "Ashen Spurn",
+   "target": {
+    "own": 8,
+    "carried": 12
+   },
+   "cuts": [
+    {
+     "id": "echidna-quillshot",
+     "name": "Echidna Quillshot",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "from": "m6",
+     "fit": 3,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "from": "m6",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "harbor-seal",
+     "name": "Harbor Seal",
+     "from": "m6",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "from": "m6",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "from": "mv",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "from": "m10",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "snow-bunting-archer",
+     "name": "Snow Bunting Archer",
+     "from": "m6",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "spitting-spider",
+     "name": "Spitting Spider",
+     "from": "m6",
+     "fit": 3,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 9,
+    "carried": 4
+   },
+   "after": {
+    "own": 8,
+    "carried": 12
+   },
+   "short": null
+  },
+  "m11": {
+   "no": 20,
+   "name": "The Sundered Peak",
+   "target": {
+    "own": 8,
+    "carried": 13
+   },
+   "cuts": [
+    {
+     "id": "gorge-wyrm",
+     "name": "Gorge Wyrm",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "claude"
+    },
+    {
+     "id": "ash-moth",
+     "name": "Ash Moth",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "granite-ox-golem",
+     "name": "Granite Ox Golem",
+     "from": "m3",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "magma-titan",
+     "name": "Magma Rhino",
+     "from": "m3",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "from": "m3",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "from": "m3",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "from": "m10",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "from": "m1",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "from": "m10",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "from": "m10",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "from": "mv",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "eyrie-warden",
+     "name": "Eyrie Warden",
+     "from": "m10",
+     "fit": 3,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 3
+   },
+   "after": {
+    "own": 9,
+    "carried": 13
+   },
+   "short": null
+  },
+  "m21": {
+   "no": 21,
+   "name": "The Quiet Summit",
+   "target": {
+    "own": 7,
+    "carried": 14
+   },
+   "cuts": [],
+   "adds": [
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "from": "m10",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "peak-condor",
+     "name": "Peak Condor",
+     "from": "mc",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "from": "mv",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "from": "m10",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "red-billed-chough",
+     "name": "Red-billed Chough",
+     "from": "mc",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "ember-centipede",
+     "name": "Ember Centipede",
+     "from": "mx",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "from": "m3",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "from": "m11",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "from": "m11",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "magma-titan",
+     "name": "Magma Rhino",
+     "from": "m3",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 6,
+    "carried": 4
+   },
+   "after": {
+    "own": 6,
+    "carried": 14
+   },
+   "short": "own 6/7 (below the target: no own card added)"
+  },
+  "m22": {
+   "no": 22,
+   "name": "The Rimefire Caldera",
+   "target": {
+    "own": 7,
+    "carried": 14
+   },
+   "cuts": [
+    {
+     "id": "permafrost-mammoth",
+     "name": "Permafrost Mammoth",
+     "carried": false,
+     "why": "a second mammoth on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "ashwing-ptarmigan",
+     "name": "Ashwing Ptarmigan",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "ash-cloud-condor",
+     "name": "Ash Cloud Condor",
+     "from": "m11",
+     "fit": 4,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "glacier-yak",
+     "name": "Glacier Yak",
+     "from": "m21",
+     "fit": 3,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "fumarole-ibex",
+     "name": "Fumarole Ibex",
+     "from": "m11",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "echidna-quillshot",
+     "name": "Echidna Quillshot",
+     "from": "mo",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "from": "mx",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "from": "mi",
+     "fit": 3,
+     "src": "thematic fit"
+    },
+    {
+     "id": "cinder-skeleton",
+     "name": "Cinder Skeleton",
+     "from": "m11",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "from": "m3",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "from": "m11",
+     "fit": 4,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 10,
+    "carried": 5
+   },
+   "after": {
+    "own": 8,
+    "carried": 14
+   },
+   "short": null
+  },
+  "m23": {
+   "no": 23,
+   "name": "The Goldfeather Siege",
+   "target": {
+    "own": 7,
+    "carried": 14
+   },
+   "cuts": [
+    {
+     "id": "trebuchet-crew",
+     "name": "Trebuchet Crew",
+     "carried": false,
+     "why": "a second beaver on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "land-tiller",
+     "name": "Land Tiller",
+     "carried": false,
+     "why": "a second mouse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "carried": false,
+     "why": "a second mouse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "colony",
+     "name": "Colony",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "from": "m10",
+     "fit": 1,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "from": "m2",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "from": "ml",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "bison-bulldozer",
+     "name": "Bison Bulldozer",
+     "from": "ml",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "meerkat-burrower",
+     "name": "Meerkat Burrower",
+     "from": "md",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "pangolin-roller",
+     "name": "Pangolin Roller",
+     "from": "my",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "acacia-giraffe",
+     "name": "Acacia Giraffe",
+     "from": "m5",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "from": "m5",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "pronghorn-racer",
+     "name": "Pronghorn Racer",
+     "from": "ml",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "from": "ml",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 4
+   },
+   "after": {
+    "own": 7,
+    "carried": 14
+   },
+   "short": null
+  },
+  "m24": {
+   "no": 24,
+   "name": "Goldfeather Keep",
+   "target": {
+    "own": 7,
+    "carried": 14
+   },
+   "cuts": [
+    {
+     "id": "great-gate",
+     "name": "Great Gate",
+     "carried": false,
+     "why": "a second duck on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "stoneheart-golem",
+     "name": "Stoneheart Tortoise",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "nest",
+     "name": "Nest",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    },
+    {
+     "id": "goose-sentry",
+     "name": "Goose Sentry",
+     "carried": false,
+     "why": "the weakest fit left by the order (fit, active skills, deck use)",
+     "wasBy": "kept"
+    }
+   ],
+   "adds": [
+    {
+     "id": "ore-smelter-mole",
+     "name": "Ore-Smelter Mole",
+     "from": "m9",
+     "fit": 1,
+     "src": "THEME5 carried pick"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "from": "ml",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "siege-rhino",
+     "name": "Siege Rhino",
+     "from": "m23",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "beetle-battering-ram",
+     "name": "Beetle Battering-Ram",
+     "from": "m23",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "howdah-archers",
+     "name": "Howdah Archers",
+     "from": "m23",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "testudo-tortoise",
+     "name": "Testudo Tortoise",
+     "from": "m23",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "from": "m2",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "from": "ml",
+     "fit": 4,
+     "src": "thematic fit"
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "from": "ml",
+     "fit": 1,
+     "src": "thematic fit"
+    },
+    {
+     "id": "acacia-giraffe",
+     "name": "Acacia Giraffe",
+     "from": "m5",
+     "fit": 1,
+     "src": "thematic fit"
+    }
+   ],
+   "before": {
+    "own": 11,
+    "carried": 4
+   },
+   "after": {
+    "own": 7,
+    "carried": 14
+   },
+   "short": null
+  }
+ },
+ "unattainable": "see --flags",
+ "animals": [
+  {
+   "animal": "wolf",
+   "count": 7,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "alpha-howler",
+    "glacier-wolf-pack",
+    "frostmoon-howler",
+    "wolfsbane-alpha",
+    "lunar-howler",
+    "magma-wraith",
+    "lone-grey-wolf"
+   ]
+  },
+  {
+   "animal": "salamander",
+   "count": 7,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "hollow-oath-keeper",
+    "magma-salamander",
+    "cinder-stoker",
+    "salamander-pyromancer",
+    "fire-salamander",
+    "rimefire-salamander",
+    "alpine-salamander"
+   ]
+  },
+  {
+   "animal": "hedgehog",
+   "count": 6,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "bramble-sprout",
+    "hedgehog-scout",
+    "thornwood-palisade",
+    "gatling-hog",
+    "bramble-hoglet",
+    "hedgehog-herbalist"
+   ]
+  },
+  {
+   "animal": "badger",
+   "count": 6,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "badger-berserker",
+    "badger-sapper",
+    "badger-trench-digger",
+    "iron-warden",
+    "badger-lumberjack",
+    "badger-stonemason"
+   ]
+  },
+  {
+   "animal": "boar",
+   "count": 5,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "quill-thorn-boar",
+    "berserker-boar",
+    "basalt-boar",
+    "grindstone-boar",
+    "ember-revenant"
+   ]
+  },
+  {
+   "animal": "owl",
+   "count": 4,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "ent",
+    "owl-sentinel",
+    "owl-nightwatch",
+    "vigil-owl"
+   ]
+  },
+  {
+   "animal": "bear",
+   "count": 4,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "fungal-colossus",
+    "grizzly-vanguard",
+    "cave-warlord",
+    "deep-cave-troll"
+   ]
+  },
+  {
+   "animal": "porcupine",
+   "count": 4,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "quillguard",
+    "quill-volley",
+    "porcupine-roller",
+    "quillback-elder"
+   ]
+  },
+  {
+   "animal": "beetle",
+   "count": 4,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "beetle-battering-ram",
+    "willow-o-wisp",
+    "malachite-golem",
+    "corpse-flower-beetle"
+   ]
+  },
+  {
+   "animal": "chipmunk",
+   "count": 4,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "chipmunk-skirmisher",
+    "chipmunk-hoarder",
+    "chipmunk-cavalry",
+    "chipmunk-forager"
+   ]
+  },
+  {
+   "animal": "mouse",
+   "count": 4,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "field-mouse",
+    "mouse-sapper",
+    "land-tiller",
+    "balloon-archer"
+   ]
+  },
+  {
+   "animal": "horse",
+   "count": 4,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "stable-colt",
+    "warhorse-charger",
+    "cataphract-destrier",
+    "cinder-skeleton"
+   ]
+  },
+  {
+   "animal": "frog",
+   "count": 4,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "puddle-hopper",
+    "poison-dart-croaker",
+    "camouflage-frog",
+    "meadow-frog"
+   ]
+  },
+  {
+   "animal": "rabbit",
+   "count": 4,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "lucky-hopper",
+    "meadow-rabbit",
+    "cottontail",
+    "burrow-rabbit"
+   ]
+  },
+  {
+   "animal": "mole",
+   "count": 4,
+   "cap": 3,
+   "over": true,
+   "ids": [
+    "quarry-mole",
+    "ore-smelter-mole",
+    "star-nosed-mole",
+    "prospector-mole"
+   ]
+  }
+ ],
+ "archetypesOut": [
+  {
+   "map": "m11",
+   "no": 20,
+   "id": "pit-glutton",
+   "arch": "devilry"
+  },
+  {
+   "map": "m21",
+   "no": 21,
+   "id": "candle-moth",
+   "arch": "grace"
+  },
+  {
+   "map": "m21",
+   "no": 21,
+   "id": "chapel-tortoise",
+   "arch": "grace"
+  },
+  {
+   "map": "m21",
+   "no": 21,
+   "id": "friar-badger",
+   "arch": "grace"
+  },
+  {
+   "map": "m21",
+   "no": 21,
+   "id": "gale-sprite",
+   "arch": "evolution"
+  },
+  {
+   "map": "m21",
+   "no": 21,
+   "id": "golden-magpie",
+   "arch": "grace"
+  },
+  {
+   "map": "m22",
+   "no": 22,
+   "id": "ash-imp",
+   "arch": "devilry"
+  }
+ ],
+ "log": []
+}
