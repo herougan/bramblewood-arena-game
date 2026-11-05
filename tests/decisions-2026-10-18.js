@@ -124,7 +124,10 @@ ok(/\nconst DECK_PROMPT_FLOORS = \[/.test(src) && /level = collectionStats\(\)\.
   ok(mains.indexOf(md) === 18 && d.source && ((d.source.kind === 'map' && d.source.id === 'md' && md.nodes.some(n=> n.key === d.source.node && n.kind === 'skirmish')) || (d.source.kind === 'pack' && d.source.map === 'md')), `8. a card of Map 18, The Glass Dunes (${JSON.stringify(d.source)})`);
   const RR = new Function(src.slice(src.indexOf('// ROAD_RARITY:BEGIN'), src.indexOf('// ROAD_RARITY:END')) + '\nreturn {roadRarityOk};')();
   ok(RR.roadRarityOk(d.rarity, 18, 'skirmish'), '8. Uncommon is within a Map 18 skirmish\'s rarity cap');
-  ok(md.nodes.some(n=> n.kind === 'skirmish' && (n.deck || {}).dromedary > 0), '8. ...and it walks in a Glass Dunes deck');
+  // 2026-11-05 (BAL16): CONTENT10's lists keep the Dromedary on the Glass Dunes' side map (the Pale Desert, mpd) only, so BAL16 rebuilt the
+  // main map's decks without it (off their list); it walks in the Pale Desert's skirmishes
+  const mpd = CONQUEST_MAPS.find(m=> m.id === 'mpd');
+  ok(md.nodes.concat((mpd && mpd.nodes) || []).some(n=> n.kind === 'skirmish' && (n.deck || {}).dromedary > 0), '8. ...and it walks in a Glass Dunes deck (or its side map, the Pale Desert: BAL16)');
   ok(typeof d.art === 'string' && d.art.startsWith('data:image/png;base64,'), '8. its art is embedded (wire_art)');
   const png = fs.readFileSync(path.join(ROOT, 'art/cards/dromedary.png'));
   ok(png.readUInt32BE(16) === 256 && png.readUInt32BE(20) === 256 && png[25] === 3, '8. art/cards/dromedary.png is 256×256, palette (256 colours)');

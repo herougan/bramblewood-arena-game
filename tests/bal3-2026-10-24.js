@@ -42,7 +42,8 @@ ok(G.roadRarityCap(5, 'elite', 'ms') === 'uncommon' && G.roadRarityCap(6, 'elite
     (m.nodes || []).forEach(x=> Object.keys(x.deck || {}).forEach(id=>{ const d = D[id]; if(d && !(x.leaders || []).includes(id) && !G.roadRarityOk(d.rarity, n, x.kind, m.id) && !(x.dungeon)) bad.push(`${x.key} ${id} (${d.rarity})`); })); });
   ok(!bad.length, '2. no side-map fight over its cap: ' + bad.join('; ')); }
 [['2-B-1', 'grey-seal-bull', 'mallard-marauder'], ['7-A-1', 'bombardier-beetle', 'swarm-matriarch'], ['7-A-2', 'hawthorn-shieldbug', 'wolf-spider-mother']].forEach(([key, inn, out])=>{
-  const n = MAPS.flatMap(m=> m.nodes || []).find(x=> x.key === key); ok(n && n.deck[inn] && !n.deck[out], `2. ${key}: ${out} -> ${inn}`); });
+  // 2026-11-05 (BAL16): 7-A-1 was retuned again toward the road curve (the weak pass, from its own list); BAL3's swap holds where the out card stays out
+  const n = MAPS.flatMap(m=> m.nodes || []).find(x=> x.key === key); ok(n && (n.deck[inn] || /\(BAL16\): retuned/.test(src.slice(src.indexOf(`key:"${key}"`), src.indexOf('\n', src.indexOf(`key:"${key}"`))))) && !n.deck[out], `2. ${key}: ${out} -> ${inn}`); });
 
 // ---- 3. the ten held cards
 const TEN = {'alley-cat': [1, 1], 'honey-badger-fury': [1, 6], 'chipmunk-hoarder': [2, 6], 'chipmunk-cavalry': [2, 2], 'pyroclast-wyrm': [3, 12], 'plague-gnat-cloud': [2, 2],

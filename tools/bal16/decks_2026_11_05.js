@@ -160,7 +160,8 @@ function shapeOne(f) {
   const room = id => Math.min(capOf(id), ladder(id)) - (d[id] || 0);
   const boonOk = x => !boon || !E.selfishBoonCount || (E.selfishBoonCount(D, x, boon) || { on: true }).on;
   const theme = id => boon && E.selfishBoonThemeOf ? !!E.selfishBoonThemeOf(D[id], E.SELFISH_BOONS[boon]) : false;
-  const give = (k, avoid) => { const order = Object.keys(d).filter(id => id !== avoid && room(id) > 0).sort((a, b) => (theme(b) - theme(a)) || ((U.has(b) ? 1 : 0) - (U.has(a) ? 1 : 0)) || (d[b] - d[a]) || (a < b ? -1 : 1));
+  // K14: copies go only to the map's own cards (or the leader) unless the map is K14-exempt
+  const give = (k, avoid) => { const order = Object.keys(d).filter(id => id !== avoid && room(id) > 0 && (f.k14exempt || U.has(id) || id === lead)).sort((a, b) => (theme(b) - theme(a)) || ((U.has(b) ? 1 : 0) - (U.has(a) ? 1 : 0)) || (d[b] - d[a]) || (a < b ? -1 : 1));
     for (const id of order) { while (k > 0 && room(id) > 0) { d[id]++; k--; } if (!k) break; } return k; };
   const why = [];
   // the copy ladder

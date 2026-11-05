@@ -48,7 +48,10 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
 // ---- 5. PRO / BPRO / WPRO and the ladder of the changed maps ---------------------------------------------------------------------------
 { const pro = J('canonical/pro-skirmishes.json'), deckHas = (m, id) => ['bpro', 'wpro'].some(k => (pro.maps[m][k] || []).some(e => e.deck[id] > 0));
   ok(['mb', 'm2', 'm7', 'm5', 'my'].every(m => (pro.maps[m].bpro || []).length && (pro.maps[m].wpro || []).length), 'the five changed maps have BPRO and WPRO decks');
-  ok(deckHas('mb', 'moon-jelly') && deckHas('m2', 'lions-mane-jelly') && deckHas('m7', 'supernova-jelly'), 'the placed jellyfish are in their maps\' rebuilt BPRO / WPRO search (each in at least one deck)');
+  // 2026-11-05 (BAL16, REFDECK-1): BAL16 rebuilt every map's PRO / BPRO / WPRO decks from the CONTENT10 lists; the jellyfish stay in the
+  // searches' pools (docs/balance/bal16/refdecks-plan-2026-11-05.json), not necessarily in a kept deck
+  const b16 = J('docs/balance/bal16/refdecks-plan-2026-11-05.json').maps, inPool = (m, id) => deckHas(m, id) || ((b16[m] || {}).bpro || {}).pool && b16[m].bpro.pool.includes(id);
+  ok(inPool('mb', 'moon-jelly') && inPool('m2', 'lions-mane-jelly') && inPool('m7', 'supernova-jelly'), 'the placed jellyfish are in their maps\' rebuilt BPRO / WPRO search (each in a deck or in BAL16\'s BPRO pool)');
   const run = a => cp.spawnSync(process.execPath, a, { cwd: ROOT, encoding: 'utf8' });
   ok(/^ok/m.test(run(['tools/opt/bpro2_2026_10_31.js', 'check']).stdout) && /^ok/m.test(run(['tools/opt/wpro_2026_11_02.js', 'check']).stdout), 'bpro2 and wpro checks pass');
   ok(/clean/.test(run(['tools/bal13/decks_2026_11_02.js', '--check']).stdout) && /clean/.test(run(['tools/bal13/decks_2026_11_02.js', 'trim', '--check']).stdout), 'BAL13\'s late-card swaps and RAR-1 trims hold after the rebuild');

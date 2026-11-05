@@ -27,14 +27,17 @@ for (const k of ['m3', 'm6', 'mi']) {
 const src = rd('arena_app.js');
 for (const key of ['17-1', '17-3', '17-8', '17-A-1']) {
   const i = src.indexOf(`key:"${key}"`); const line = src.slice(i, src.indexOf('\n', i));
-  ok(i > 0 && line.includes(`"${ID}":`) && line.includes(`showcase:"${ID}"`), `${key}: deck and leader untouched (owner call)`);
+  // 2026-11-05 (BAL16, CUT3-1 a "rebuild the decks after your pass"): the Ape-King is out of the deck and a new showcase leader from the list leads
+  const NEW = { '17-1': 'beluga', '17-3': 'polar-bear', '17-8': 'walrus-icebreaker', '17-A-1': 'greenland-shark' }[key];
+  ok(i > 0 && !line.includes(`"${ID}":`) && line.includes(`showcase:"${NEW}"`) && line.includes(`"${NEW}":`), `${key}: rebuilt by BAL16, led by ${NEW}`);
 }
 
 const audit = rd('docs/cut3-audit-2026-11-03.md');
 ok(/Owner call/.test(audit) && /17-8/.test(audit) && /THEME4/.test(audit) && /THEME3/.test(audit) && /CUT3/.test(audit), 'audit names the cut, the owner call and the sources');
 ok(/#### Map 17 /.test(audit), 'audit is grouped by map');
 const dec = JSON.parse(rd('docs/decisions.json')).items.find(x => x.id === 'CUT3-1');
-ok(dec && dec.status === 'YET' && dec.title === 'Skirmish / road decks holding cut cards: rebuild them after your pass' && /cut3-audit-2026-11-03/.test(dec.body), 'decision CUT3-1 is YET and points to the audit');
+// 2026-11-05 (BAL16): the owner answered CUT3-1 (a, 11-04 22:34)
+ok(dec && dec.status === 'DONE' && dec.title === 'Skirmish / road decks holding cut cards: rebuild them after your pass' && /cut3-audit-2026-11-03/.test(dec.body), 'decision CUT3-1 is YET and points to the audit');
 const lines = rd('docs/decisions.json').split('\n').filter(l => l.includes('"id": "CUT3-1"'));
 ok(lines.length === 1, 'CUT3-1 is one line');
 ok(/CUT3/.test(rd('docs/CHANGELOG.md')), 'CHANGELOG entry at the top'); // 2026-11-04 (TESTFIX1): the whole CHANGELOG, as QA1 did for the others; later packages' entries sit above this one

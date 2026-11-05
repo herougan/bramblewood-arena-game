@@ -29,7 +29,8 @@ late.rows.filter(r => !r.pro).forEach(r => ok(new RegExp(`key:"${r.key}"[^\\n]*B
 // 2. the reference ladder
 const set = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'ref', 'ref-ladder.json'), 'utf8'));
 ok(set.id === 'ladder' && set.ladder && !set.decks && set.bake && set.byMapId, 'ref-ladder.json: id "ladder", a per-map "ladder" by map id, baked (owner 22:15)');
-Object.keys(pro.maps).forEach(id => { const L = set.ladder[id]; ok(!!L, id + ': has a ladder'); if (!L) return;
+// 2026-11-05 (BAL16): Maps 21-24 got PRO entries (REFDECK-1); the ladder covers Maps 0-20 and their side maps (the protocol's 36)
+Object.keys(pro.maps).filter(id => pro.maps[id].map <= 20).forEach(id => { const L = set.ladder[id]; ok(!!L, id + ': has a ladder'); if (!L) return;
   const map = G.CONQUEST_MAPS.find(m => m.id === id), pool = LD.poolOf(gm, map);
   ok(L.decks.length >= 10, `${id}: ${L.decks.length} decks (at least 10)`);
   L.decks.forEach(d => ok(LD.legal(gm, d.counts, pool), `${id} rank ${d.rank}: 20 cards, the caps, every card in the map-true pool`));
@@ -68,7 +69,8 @@ const t = DK.trimPlan(); ok(t.rows.length === 0, 'no deck over its RAR-1 copy ca
 ok(Object.keys(DK.RAR1).length === 13, 'RAR-1: 13 cards');
 const tr = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal13', 'rar1-trim-2026-11-02.json'), 'utf8'));
 tr.rows.forEach(r => ok(tot(r.after) === tot(r.before), r.where + ': size kept after the trim'));
-tr.rows.filter(r => r.pro).forEach(r => { const x = (pro.maps[r.loc][r.pro.kind] || []).find(y => y.id === r.pro.id); ok(x && Object.keys(x.deck).length <= 6 && Object.values(x.deck).every(k => k <= 4), r.where + ': 6/4 rule after the trim'); });
+// 2026-11-05 (BAL16): a trimmed PRO deck that BAL16 replaced (its id gone from the map's list) is under the entry's history
+tr.rows.filter(r => r.pro && ((pro.maps[r.loc] || {})[r.pro.kind] || []).some(y => y.id === r.pro.id && !(y.source && y.source.package === 'BAL16'))).forEach(r => { const x = (pro.maps[r.loc][r.pro.kind] || []).find(y => y.id === r.pro.id); ok(x && Object.keys(x.deck).length <= 6 && Object.values(x.deck).every(k => k <= 4), r.where + ': 6/4 rule after the trim'); });
 // 5. the card flags for the fights more than 20 points off (flags only)
 ok(fs.existsSync(path.join(ROOT, 'docs', 'balance', 'bal13', 'card-flags-2026-11-02.md')), 'docs/balance/bal13/card-flags-2026-11-02.md');
 ok(/at most 15%/.test(ep) && /owner 2026-11-02 20:19/.test(ep), 'docs/evaluation-protocol.md records the 15% cap against the strongest deck');

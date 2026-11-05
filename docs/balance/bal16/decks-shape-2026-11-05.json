@@ -378,15 +378,16 @@
     "siege-rhino": 2
    },
    "after": {
-    "badger-trench-digger": 3,
+    "badger-trench-digger": 2,
     "beetle-battering-ram": 2,
     "howdah-archers": 3,
+    "lodge-engineer": 1,
     "mouse-sapper": 4,
     "pangolin-roller": 1,
     "raccoon-bandit": 1,
     "siege-rhino": 2
    },
-   "why": "shaped to the road deck rules: bison-bulldozer x1 folded into the deck's own cards (5-7 different cards); lodge-engineer x1 folded into the deck's own cards (5-7 different cards); Mouse Sapper up to keep siegeTrain on",
+   "why": "shaped to the road deck rules: bison-bulldozer x1 folded into the deck's own cards (5-7 different cards); Mouse Sapper up to keep siegeTrain on",
    "showcase": null,
    "boon": {
     "id": "siegeTrain",
@@ -413,84 +414,6 @@
     "tax-collector-teal": 2
    },
    "why": "shaped to the road deck rules: elderhorn-monarch x2 -> tax-collector-teal (5-7 different cards)",
-   "showcase": null,
-   "boon": null
-  },
-  {
-   "map": "m24",
-   "key": "24-5",
-   "before": {
-    "balloon-archer": 1,
-    "battlement-heron": 3,
-    "howdah-archers": 1,
-    "lodge-engineer": 1,
-    "mallard-halberdier": 3,
-    "ore-smelter-mole": 1,
-    "raccoon-bandit": 1,
-    "tax-collector-teal": 4
-   },
-   "after": {
-    "battlement-heron": 3,
-    "howdah-archers": 2,
-    "lodge-engineer": 1,
-    "mallard-halberdier": 3,
-    "ore-smelter-mole": 1,
-    "raccoon-bandit": 1,
-    "tax-collector-teal": 4
-   },
-   "why": "shaped to the road deck rules: balloon-archer x1 folded into the deck's own cards (5-7 different cards)",
-   "showcase": null,
-   "boon": null
-  },
-  {
-   "map": "mp",
-   "key": "2-A-2",
-   "before": {
-    "box-turtle": 1,
-    "duckling": 1,
-    "guppy": 1,
-    "lodge-engineer": 4,
-    "muskrat-reedgatherer": 1,
-    "old-sturgeon": 4,
-    "water-shrew": 1,
-    "water-vole": 1
-   },
-   "after": {
-    "duckling": 2,
-    "guppy": 1,
-    "lodge-engineer": 4,
-    "muskrat-reedgatherer": 1,
-    "old-sturgeon": 4,
-    "water-shrew": 1,
-    "water-vole": 1
-   },
-   "why": "shaped to the road deck rules: box-turtle x1 folded into the deck's own cards (5-7 different cards)",
-   "showcase": null,
-   "boon": null
-  },
-  {
-   "map": "mp",
-   "key": "2-A-3",
-   "before": {
-    "guppy": 1,
-    "lodge-engineer": 4,
-    "muskrat-reedgatherer": 1,
-    "old-sturgeon": 4,
-    "pond-duck": 1,
-    "river-carp": 1,
-    "water-shrew": 1,
-    "water-vole": 1
-   },
-   "after": {
-    "lodge-engineer": 4,
-    "muskrat-reedgatherer": 2,
-    "old-sturgeon": 4,
-    "pond-duck": 1,
-    "river-carp": 1,
-    "water-shrew": 1,
-    "water-vole": 1
-   },
-   "why": "shaped to the road deck rules: guppy x1 folded into the deck's own cards (5-7 different cards)",
    "showcase": null,
    "boon": null
   },
@@ -572,32 +495,6 @@
     "need": 9,
     "on": true
    }
-  },
-  {
-   "map": "mo",
-   "key": "0-B-3",
-   "before": {
-    "ant-scout": 5,
-    "bramblewood-lynx": 1,
-    "cottontail": 1,
-    "forager-ant": 5,
-    "gatling-hog": 1,
-    "meadow-rabbit": 1,
-    "pond-duck": 1,
-    "thorn-shrike": 1
-   },
-   "after": {
-    "ant-scout": 5,
-    "cottontail": 2,
-    "forager-ant": 5,
-    "gatling-hog": 1,
-    "meadow-rabbit": 1,
-    "pond-duck": 1,
-    "thorn-shrike": 1
-   },
-   "why": "shaped to the road deck rules: bramblewood-lynx x1 folded into the deck's own cards (5-7 different cards)",
-   "showcase": null,
-   "boon": null
   },
   {
    "map": "m1",
