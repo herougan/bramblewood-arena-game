@@ -99,7 +99,7 @@ def build(root, md_html, anchor, txt, elsewhere, search, dates=None):
             act = f'<a class="jump" href="#{sid}">Read</a>'
             h, secs = anchor(md_html(md), sid)
             for s_id, s_t, s_x in secs:
-                search.append([stype, s_t, title + (' (history)' if kind == 'history' else ''), s_x[:1200 if kind == 'history' else 3000], {'tab': 'doclib', 'sub': sid, 'el': s_id}])
+                search.append([stype, s_t, title + (' (history)' if kind == 'history' else ''), s_x[:400 if kind == 'history' else 3000], {'tab': 'doclib', 'sub': sid, 'el': s_id}])  # 2026-11-05 (release 11-05a): history sections 1200 -> 400 chars, the page hit the 16MB publish cap
             if not secs: search.append([stype, title, rel, txt(h)[:1200], {'tab': 'doclib', 'sub': sid}])
             body = f'<div class="doc">{h}</div>'
             if kind == 'history': body = '<template class="lazy">' + body + '</template>'  # rendered on demand: stamped out when opened

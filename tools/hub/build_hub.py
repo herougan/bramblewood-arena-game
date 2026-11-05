@@ -115,7 +115,7 @@ bal_json = json.dumps({'games': BAL['games'], 'generated': BAL['generated'], 'ro
 _cl_intro, _cl_secs = split_h2(rd('docs', 'CHANGELOG.md'))
 CL = [(t, md_html(b)) for t, b in _cl_secs]
 changelog = md_html(_cl_intro) + '<p class="cl-tools"><button type="button" data-cl="open">Open all</button> <button type="button" data-cl="close">Close all</button></p>' + ''.join(f'<details class="cl" id="cl-{k}"{" open" if k < 3 else ""}><summary>{H.escape(t)}</summary><div class="cl-b">{b}</div></details>' for k, (t, b) in enumerate(CL))
-for k, (t, b) in enumerate(CL): SEARCH.append(['Changelog', t, '', _txt(b)[:8000], {'tab': 'changelog', 'el': f'cl-{k}'}])
+for k, (t, b) in enumerate(CL): SEARCH.append(['Changelog', t, '', _txt(b)[:3000], {'tab': 'changelog', 'el': f'cl-{k}'}])  # 2026-11-05 (release 11-05a): 8000 -> 3000 chars, the page hit the 16MB publish cap
 # 2026-10-11 (user: "fight against EVERY single Skirmish ... and publish the win rate in our artefact"): the 📈 Difficulty
 # tab is its own plain file (no f-string braces), filled with docs/balance/difficulty-curve.json.
 _curve_path = os.path.join(ROOT, 'docs', 'balance', 'difficulty-curve.json')
