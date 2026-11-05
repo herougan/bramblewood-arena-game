@@ -104,7 +104,7 @@ ok(/if\(rules\.bossGimmick && round > 1\) bossGimmickTick/.test(eng), '3: the en
 ok(fs.existsSync(path.join(ROOT, 'docs', 'content11-2026-11-05.md')), '4: docs/content11-2026-11-05.md');
 { const D = J('docs/decisions.json').items, mine = D.filter(d=> /^CONTENT11-\d$/.test(d.id));
   ok(mine.length === 4, `4: four decisions CONTENT11-1..4 (${mine.length})`);
-  mine.forEach(d=>{ ok(d.status === 'YET' && d.body.split(/\s+/).length < 100 && (d.options || []).length >= 2, `4: ${d.id} is a YET call under 100 words`); ok(/content11-2026-11-05\.md/.test(d.body), `4: ${d.id} points at the detail doc`); }); }
+  mine.forEach(d=>{ ok(['YET', 'DONE'].includes(d.status) /* 2026-11-05 22:20: the owner left these to Claude, now DONE */ && d.body.split(/\s+/).length < 100 && (d.options || []).length >= 2, `4: ${d.id} is a YET call under 100 words`); ok(/content11-2026-11-05\.md/.test(d.body), `4: ${d.id} points at the detail doc`); }); }
 
 console.log(`content11: ${n - fail}/${n} passed${fail ? ', ' + fail + ' failure(s)' : ''}`);
 process.exit(fail ? 1 : 0);

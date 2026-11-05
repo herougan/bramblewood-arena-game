@@ -19,7 +19,7 @@ for (const [t, e] of Object.entries(pools)) {
   for (const [s, l] of Object.entries(e.submaps || {})) ok(!l.includes(ID), `${t}/${s}: not on the submap list`);
 }
 for (const k of ['m3', 'm6', 'mi']) {
-  const r = review[k]; const cut = (r.cut || []).find(x => x.id === ID);
+  const r = review[k]; const arc = ((JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'map-review.json'), 'utf8')).cutArchive || {}).maps || {})[k] || []; const cut = (r.cut || []).concat(arc).find(x => x.id === ID); // 2026-11-05 22:49 (owner: reset the Map cards cut lists): the cut entries moved to map-review.json cutArchive
   ok(cut && cut.by === 'owner', `${k}: Ape-King is an owner cut in the review`);
   ok(!(r.chosen || []).some(x => x.id === ID), `${k}: not in chosen`);
 }

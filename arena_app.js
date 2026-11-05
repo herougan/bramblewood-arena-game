@@ -32556,7 +32556,7 @@ function rv2Update(ov){
 // "<main map>|<list key>|<card id>") so the gallery can export every map's lists, not just the one open. rvFlipTop is the main map being drawn.
 // 2026-10-31 (coordinator, owner 18:09 #8 "Does my export remember ALL my cut/include decisions?"): kept in localStorage too, so a
 // reload or a new release no longer drops the owner's step-3 picks (they lived in memory only).
-const RV_FLIPS_KEY = 'bw_rv_flips_v1';
+const RV_FLIPS_KEY = 'bw_rv_flips_v2'; try{ localStorage.removeItem('bw_rv_flips_v1'); }catch(e){} // 2026-11-05 22:49 (owner: "When you've updated the map cards, reset the 'undo' or 'cut' pills"): v1 held picks made against the old lists; v2 starts empty
 const rvFlips = (()=>{ try{ const o = JSON.parse(localStorage.getItem(RV_FLIPS_KEY) || '{}'); return (o && typeof o === 'object') ? o : {}; }catch(e){ return {}; } })(); let rvFlipTop = '';
 function rvFlipsSave(){ try{ localStorage.setItem(RV_FLIPS_KEY, JSON.stringify(rvFlips)); }catch(e){} }
 // 2026-10-31 (package UI11, FF9; owner 18:09: "Add card to SPECIAL" beside Export all): cards the owner adds to a map's SPECIAL list from the gallery, kept
@@ -32750,7 +32750,7 @@ function pk1OpenMapCards(mapId){
     const rv = rv1ReviewOf(s, top), ids = s.ids.filter(ok);
     if(!rv) return `<section class="pk1-mc-sec rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''}><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
     // 2026-10-29 (package REVIEW2): each list is a panel of its own; Chosen, Maybe, Cut cards in that order, each a boxed part
-    const part = (kind, label, list)=>{ const l = (list || []).filter(e=> e && ok(e.id)); return `<div class="rv1-part is-${kind}"><h4>${escapeHtml(label)} <small>${l.length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(l, kind, defs, s.key)}</div></div>`; };
+    const part = (kind, label, list)=>{ const l = (list || []).filter(e=> e && ok(e.id)); if(kind === 'cut' && !l.length) return ''; /* 2026-11-05 22:49 (owner: "reset the 'undo' or 'cut' pills ... Just show the updated map card list"): the cut cards went to canonical/map-review.json cutArchive, and an empty Cut part is not drawn */ return `<div class="rv1-part is-${kind}"><h4>${escapeHtml(label)} <small>${l.length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(l, kind, defs, s.key)}</div></div>`; };
     const chosen = (rv.chosen || []).filter(e=> e && ok(e.id)), all = chosen.concat((rv.cut || []).filter(e=> e && ok(e.id)), (rv.maybe || []).filter(e=> e && ok(e.id)));
     const nb = e=> !ui13IsBaby(e.id, defs); // 2026-11-01 (package UI13, HH1): Baby cards are left out of the N / M targets too
     const tg = rv2TargetsOf(s, top, chosen.filter(nb), all.filter(nb));

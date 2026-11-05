@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 MC-RESET (owner 22:49: "reset the 'undo' or 'cut' pills, since we've reset it in a way. Just show the updated map card list")
+- Map cards shows only the current lists: the 172 cut entries moved to `canonical/map-review.json` `cutArchive` (history), an empty Cut part is not drawn, and the saved Cut / Keep picks start empty (key `bw_rv_flips_v2`; v1 removed). Tests cut3, listfix2 read the archive; content11 accepts its decisions DONE.
+
 ## 2026-11-05 UI21b (owner 22:24: "Do not put the rank beside the skirmish icon ... make the background green the emblem instead ... without the letters")
 - A cleared map node no longer has the small rank hex beside it; its fill takes the best rank's emblem colours (S foil, A gold, B silver, C bronze, D stone, E grey), no letter. Unranked cleared nodes stay green. Shot `docs/screens/UI21/node-rank-fill-390.png`.
 

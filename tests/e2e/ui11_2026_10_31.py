@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# 2026-11-05 22:49: the Cut / Keep picks key is bw_rv_flips_v2 (owner reset the picks)
 """Package UI11 (2026-10-31, owner FF1-FF3, FF5, FF7, FF9, UI10 leftovers): browser checks, shots in tests/e2e/shots/ui11/.
     python3 tests/e2e/ui11_2026_10_31.py [--page index.html] [--width 1366] [--only ff9,ff1,...]
 FF9  Map cards gallery: "Add card to SPECIAL" right of Export all, searchable picker, added tile (removable), saved in bw_rv_special_add_v1, in Export all (.txt/.json, flagged added).
@@ -47,7 +48,7 @@ async def ff9(b, url, w):
     await pg.wait_for_timeout(300)
     r = await pg.evaluate("""(id=>{ const t = document.querySelector('#pk1MapCardsOverlay .rv1-tile.is-added[data-rv-id="' + id + '"]'); const sec = t && t.closest('.pk1-mc-sec');
       return {has: !!t, inSpecial: !!(sec && /SPECIAL/i.test(sec.querySelector('h3').textContent)), pill: t && t.querySelector('.rv2-pill').textContent, rm: t && !!t.querySelector('[data-rv-act="remove-added"]'),
-        ls: JSON.parse(localStorage.getItem('bw_rv_special_add_v1') || '{}'), flips: localStorage.getItem('bw_rv_flips_v1')}; })""", pick['id'])
+        ls: JSON.parse(localStorage.getItem('bw_rv_special_add_v1') || '{}'), flips: localStorage.getItem('bw_rv_flips_v2')}; })""", pick['id'])
     ok(r['has'] and r['inSpecial'] and r['pill'] == 'Added' and r['rm'], f'the card shows in SPECIAL as Added, with Remove {r["has"], r["inSpecial"], r["pill"]}')
     ok(r['ls'].get('mb') == [pick['id']], f'saved in bw_rv_special_add_v1 {r["ls"]}')
     await pg.evaluate("document.querySelector('.ff9-pk-x').click()"); await pg.evaluate("document.querySelector('#pk1MapCardsOverlay .rv1-tile.is-added').scrollIntoView({block:'center'})"); await pg.wait_for_timeout(300)
@@ -61,7 +62,7 @@ async def ff9(b, url, w):
     ok(('added ' + pick['nm']) in r['txt'], '.txt names it as added')
     # the picks are stored as before
     await pg.evaluate("document.querySelector('#pk1MapCardsOverlay .rv1-act[data-rv-act=cut], #pk1MapCardsOverlay .rv1-act[data-rv-act=keep]').click()")
-    fl = await pg.evaluate("Object.keys(JSON.parse(localStorage.getItem('bw_rv_flips_v1') || '{}'))")
+    fl = await pg.evaluate("Object.keys(JSON.parse(localStorage.getItem('bw_rv_flips_v2') || '{}'))")
     ok(len(fl) == 1 and fl[0].count('|') == 2 and 'added' not in fl[0], f'picks keep their own key shape {fl}')
     # remove
     await pg.evaluate("document.querySelector('#pk1MapCardsOverlay .rv1-tile.is-added [data-rv-act=remove-added]').click()"); await pg.wait_for_timeout(200)

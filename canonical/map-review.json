@@ -156,43 +156,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "feral-tomcat",
-     "why": "House Cat already brings the cat; Map 0 capped at 12",
-     "by": "claude"
-    },
-    {
-     "id": "chipmunk-cavalry",
-     "why": "Chipmunk Skirmisher keeps the chipmunks; it moves on to Thistlewood",
-     "by": "claude"
-    },
-    {
-     "id": "cypress-root-lurker",
-     "why": "A swamp cypress root; Gatorback Swamp is its home",
-     "by": "claude"
-    },
-    {
-     "id": "marsh-mallow-hare",
-     "why": "A marsh hare; the swamp maps carry it",
-     "by": "claude"
-    },
-    {
-     "id": "bee-knight",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "ant-hill",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "owl-sentinel",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "forager-ant",
@@ -407,23 +371,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "fire-ant-raft",
-     "why": "An ant raft for floodwater; the river and swamp lists keep it",
-     "by": "claude"
-    },
-    {
-     "id": "cypress-root-lurker",
-     "why": "A swamp cypress root, not a thistle wood; moved to Gatorback Swamp",
-     "by": "claude"
-    },
-    {
-     "id": "ant-hill",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "bee-drone",
@@ -520,46 +468,7 @@
      "by": "kept"
     }
    ],
-   "cut": [
-    {
-     "id": "fiddler-crab-swarm",
-     "why": "Owner Q1; kept on SPECIAL as the skirmish reward of 2-1",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 2-1's reward is now Rock Pool Starfish"
-    },
-    {
-     "id": "grey-seal-bull",
-     "why": "Owner Q1; kept on SPECIAL as the skirmish reward of 2-5",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 2-5's reward is now Driftwood Crab"
-    },
-    {
-     "id": "tidepool-trapper-crab",
-     "why": "Owner Q1; kept on SPECIAL as the first-clear card of 2-3",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 2-3's first-clear card is now Open-Ocean Hermit Crab"
-    },
-    {
-     "id": "oyster-bank",
-     "why": "Owner Q1 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "tide-pool-crab",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "sea-turtle-elder",
-     "why": "Owner 11-04 23:17 (LIST-1104): cut; Rock Pool Starfish takes its place in Pebble Beach's decks",
-     "by": "owner"
-    },
-    {
-     "id": "conch-crawler",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 2): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "fulmar-spitter",
@@ -661,29 +570,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "fulmar-spitter",
-     "why": "Owner Q1",
-     "by": "owner"
-    },
-    {
-     "id": "dormouse",
-     "why": "A hedgerow dormouse on seabird cliffs",
-     "by": "claude"
-    },
-    {
-     "id": "oyster-bank",
-     "why": "Owner Q1 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "the-gannet-queen",
-     "why": "Owner 11-01: cut",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-2 b): off this map fully; 3-7's reward is now Razorbill"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "riverwing-envoy",
@@ -780,65 +667,7 @@
      "by": "owner"
     }
    ],
-   "cut": [
-    {
-     "id": "old-sturgeon",
-     "why": "Owner Q2 (for now); kept on SPECIAL as the skirmish reward of 4-5",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 4-5's reward is now Pyrenean Desman"
-    },
-    {
-     "id": "stone-turtle-warden",
-     "why": "Owner Q2; kept on SPECIAL as the first-clear card of 4-2",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 4-2's first-clear card is now Water Shrew"
-    },
-    {
-     "id": "marsh-mallow-hare",
-     "why": "A marsh hare; Gatorback Swamp carries it",
-     "by": "claude"
-    },
-    {
-     "id": "cypress-root-lurker",
-     "why": "A swamp cypress root; Gatorback Swamp is its home",
-     "by": "claude"
-    },
-    {
-     "id": "signal-crayfish",
-     "why": "Owner Q2 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "duckling",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "pond-trout",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "muskrat-reedgatherer",
-     "why": "Owner 11-04 23:17 (LIST-1104): cut for Alley Cat",
-     "by": "owner"
-    },
-    {
-     "id": "water-vole",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 4): cut by Claude, a second vole on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "fire-ant-raft",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 4): cut by Claude, weak theme fit (kin biome only). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "box-turtle",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 4): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "diving-bell-spider",
@@ -944,50 +773,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "venomlord-serpent",
-     "why": "Owner Q3 (moved to Map 6); kept on SPECIAL as the first-clear card of 5-3",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 5-3's first-clear card is now Swamp Alligator"
-    },
-    {
-     "id": "stone-turtle-warden",
-     "why": "The owner took it off Map 4; a river warden, not a swamp card",
-     "by": "claude"
-    },
-    {
-     "id": "marsh-mallow-hare",
-     "why": "A soft meadow-edge hare; Gatorback has 11 swamp cards of its own",
-     "by": "claude"
-    },
-    {
-     "id": "buzzed-chipmunk",
-     "why": "Owner Q3 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "alley-cat",
-     "why": "Owner Q3 (moved to Lilypad Reach) (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "sphagnum-vole",
-     "why": "Owner Q3 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "snapper-hatchling",
-     "why": "Owner 11-01: cut",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 5-1's first-clear card is now Cypress Root Lurker"
-    },
-    {
-     "id": "caiman-hatchling",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "anaconda-coil",
@@ -1089,44 +875,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "marsh-wisp",
-     "why": "Owner Q4; kept on SPECIAL as the first-clear card of 6-4",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 6-4's first-clear card is now Lamprey"
-    },
-    {
-     "id": "peat-cutter-vole",
-     "why": "Owner Q4",
-     "by": "owner"
-    },
-    {
-     "id": "mire-witch-heron",
-     "why": "Owner Q4 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "lotus-frog",
-     "why": "Owner Q4 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "cottonmouth-matriarch",
-     "why": "Owner Q4 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "bogfire-newt",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "cane-toad",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "anaconda-coil",
@@ -1227,28 +976,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "shallows-fry",
-     "why": "Owner Q4",
-     "by": "owner"
-    },
-    {
-     "id": "fiddler-crab-swarm",
-     "why": "A beach crab in a lily pond; it goes to the Kelp Mangroves",
-     "by": "claude"
-    },
-    {
-     "id": "great-crested-grebe",
-     "why": "Owner Q4 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "duckling",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "lotus-frog",
@@ -1356,33 +1084,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "peat-cutter-vole",
-     "why": "The owner took it off the swamp; nothing ties it to mushrooms",
-     "by": "claude"
-    },
-    {
-     "id": "ant-warrior",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "garden-snail",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 7): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "bombardier-beetle",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 7): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "bogfire-newt",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: carried 5 on Map 7): cut by Claude, flagged Unlikely (THEME4); weak theme fit (kin biome only). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "puffball-bombardier",
@@ -1476,33 +1178,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "fiddler-crab-swarm",
-     "why": "The owner took it off Pebble Beach; it goes to the Kelp Mangroves",
-     "by": "claude"
-    },
-    {
-     "id": "sulfur-vent-crab",
-     "why": "Owner Q5 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "shallows-fry",
-     "why": "Owner Q5 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "beaver-builder",
-     "why": "Owner Q5 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "duckling",
-     "why": "Owner Q5 (already off since THEME2)",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "arc-bat",
@@ -1599,38 +1275,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "whip-spider",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "badger-stonemason",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "trash-panda-trickster",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "ant-warrior",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "vampire-bat",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 8): cut by Claude, a second bat on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "grotto-lobster",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 8): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "arc-bat",
@@ -1810,38 +1455,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "lodge-engineer",
-     "why": "A river lodge builder; mangroves have no lodges",
-     "by": "claude"
-    },
-    {
-     "id": "mudpuppy",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "minnow-skitter",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "caiman-hatchling",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "fishing-cat",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 9): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "archerfish",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 9): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "ironclaw-fiddler",
@@ -1944,23 +1558,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "gull-thief",
-     "why": "A shore gull in a coral current",
-     "by": "claude"
-    },
-    {
-     "id": "swordfish-spearman",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 10): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "coral-polyp-colony",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 10): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "coral-current-eel",
@@ -2067,18 +1665,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "gale-swift",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 11): cut by Claude, a second swift on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "apollo-butterfly",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 11): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "eagle-diver",
@@ -2296,28 +1883,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "mountain-hare",
-     "why": "An alpine hare in a hedge maze",
-     "by": "claude"
-    },
-    {
-     "id": "hedgehog-scout",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "quillback-elder",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "gatling-hog",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 12): cut by Claude, a second hedgehog on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "hedge-changeling",
@@ -2397,13 +1963,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "house-cat",
-     "why": "A farm cat; the meadow promises rabbits, bees and mice",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "carrion-fly-swarm",
@@ -2521,18 +2081,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "stag-knight",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 13): cut by Claude, a second deer on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "woodpecker-sapper",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 13): cut by Claude, a second woodpecker on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "fox-kit",
@@ -2612,18 +2161,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "echo-keeper",
-     "why": "Owner Q6 (Map 13; it was on The Sunken Grove) (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "swamp-rabbit",
-     "why": "Owner Q6 (Map 13; it was on The Sunken Grove) (already off since THEME2)",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "anaconda-coil",
@@ -2720,39 +2258,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "leafcutter-gardener",
-     "why": "Owner 11-02 (CONTENT6): cut from the carried cards toward balancing animals per type (ant, the most-listed animal group of the carried four); still on the Savanna side map (my) and Map 7",
-     "by": "owner"
-    },
-    {
-     "id": "weaver-bird",
-     "why": "Owner 11-01: cut",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 14-3's first-clear card is now Marula Elephant"
-    },
-    {
-     "id": "meerkat-burrower",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "lodge-engineer",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "plains-zebra",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 14): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "pangolin-roller",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 14): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "fire-hawk",
@@ -2874,43 +2380,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "garden-tiger-moth",
-     "why": "Owner Q6 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "moonshell-snail",
-     "why": "Owner Q6 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "anvil-thrush",
-     "why": "Owner Q6 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "courier-pigeon",
-     "why": "Owner Q6 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "stable-colt",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "squires-mount",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 15): cut by Claude, a second horse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "warhorse-charger",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 15): cut by Claude, a second horse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "wandering-traveller",
@@ -3092,38 +2562,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "trickster-fox",
-     "why": "Owner Q6: \"not snow themed enough\"",
-     "by": "owner"
-    },
-    {
-     "id": "frost-hare-sprinter",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "fawn-scout",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "wolf-pack-runner",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 16): cut by Claude, a second wolf on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "dhole-runner",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 16): cut by Claude, a second dhole on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "pinecone-sapper",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 16): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "musk-ox-calf",
@@ -3221,13 +2660,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "cave-bat-swarm",
-     "why": "A plain cave bat; the Glimmer Spider takes its slot for the crystal theme",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "arc-bat",
@@ -3336,29 +2769,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "wolfsbane-alpha",
-     "why": "Owner 11-01: cut",
-     "by": "owner",
-     "statusWhy": "LISTFIX2 (11-03): your 11-01 cut is applied (off Wolfsbane Tundra's MAP list, THEME4). It sits on SPECIAL as 17-8's boss leader and reward (RELFIX3, 10-29); THEME4 kept it there on purpose. Dropping the boss card itself needs a new 17-8 leader and reward (LISTFIX2-2)."
-    },
-    {
-     "id": "glacial-ape-king",
-     "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
-     "by": "owner"
-    },
-    {
-     "id": "talus-pika",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 17): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "ravenous-wolverine",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 17): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "frostmoon-howler",
@@ -3457,38 +2868,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "border-collie",
-     "why": "A sheepdog has no work in the glass dunes",
-     "by": "claude"
-    },
-    {
-     "id": "static-fennec",
-     "why": "Owner Q6 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "obsidian-scorpion",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "dune-packrat",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 18): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "dromedary",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 18): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "glass-golem",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 18): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "frillneck-duelist",
@@ -3583,48 +2963,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "grave-grin-hyena",
-     "why": "A plains scavenger, not a tree-dweller",
-     "by": "claude"
-    },
-    {
-     "id": "hoopoe-herald",
-     "why": "The owner took it off the savanna; not a canopy bird",
-     "by": "claude"
-    },
-    {
-     "id": "savanna-cheetah",
-     "why": "A plains sprinter, not a canopy hunter",
-     "by": "claude"
-    },
-    {
-     "id": "springbok-pronker",
-     "why": "A plains antelope, not a canopy animal",
-     "by": "claude"
-    },
-    {
-     "id": "marula-elephant",
-     "why": "Too big and too grounded for the canopy",
-     "by": "claude"
-    },
-    {
-     "id": "dust-hyena",
-     "why": "A plains scavenger, not a tree-dweller",
-     "by": "claude"
-    },
-    {
-     "id": "meerkat-burrower",
-     "why": "A ground burrower under a rainforest roof",
-     "by": "claude"
-    },
-    {
-     "id": "rafflesia",
-     "why": "Owner 13:07: \"we'll find another place for it\" (off The Canopy; a later jungle map) (already off since THEME2)",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "toucan-courier",
@@ -3755,39 +3094,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "quill-volley",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "yeti-chieftain",
-     "why": "Owner 11-01: cut",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-2 b): off this map fully; 19-6's reward and challenge card is now Yeti"
-    },
-    {
-     "id": "porcupine-roller",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "phoenix-fledgling",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "glacial-ape-king",
-     "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
-     "by": "owner"
-    },
-    {
-     "id": "echidna-quillshot",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 19): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "ember-wisp",
@@ -3880,23 +3187,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "armadillo-guard",
-     "why": "Owner Q6 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "meerkat-sentry",
-     "why": "Owner Q6 (already off since THEME2)",
-     "by": "owner"
-    },
-    {
-     "id": "dune-jackal-scout",
-     "why": "Owner Q6 (already off since THEME2)",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "pale-oryx",
@@ -4029,44 +3320,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "woodland-brawler",
-     "why": "Owner Q6; kept on SPECIAL as the skirmish reward of 20-9",
-     "by": "owner",
-     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 20-9's reward is now Magma Salamander"
-    },
-    {
-     "id": "bear-cub",
-     "why": "Owner Q6",
-     "by": "owner"
-    },
-    {
-     "id": "echidna-quillshot",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    },
-    {
-     "id": "pit-glutton",
-     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (devilry); the archetypes wait",
-     "by": "owner"
-    },
-    {
-     "id": "glacier-wolf-pack",
-     "why": "Owner 11-04 23:17 (LIST-1104): replaced by Chamois Leaper",
-     "by": "owner"
-    },
-    {
-     "id": "gorge-wyrm",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 20): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "ash-moth",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 20): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "ember-wisp",
@@ -4144,13 +3398,7 @@
      "by": "kept"
     }
    ],
-   "cut": [
-    {
-     "id": "bear-cub",
-     "why": "The owner took it off Map 20; the same call inside its crater",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "salamander-pyromancer",
@@ -4263,23 +3511,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "woodland-brawler",
-     "why": "The owner took it off Map 20; a woodland brawler in a dragon's lair",
-     "by": "claude"
-    },
-    {
-     "id": "bear-cub",
-     "why": "The owner took it off Map 20; the same call for its lair",
-     "by": "claude"
-    },
-    {
-     "id": "phoenix-fledgling",
-     "why": "Owner 11-01: cut",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "the-sixfold",
@@ -4402,33 +3634,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "candle-moth",
-     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
-     "by": "owner"
-    },
-    {
-     "id": "chapel-tortoise",
-     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
-     "by": "owner"
-    },
-    {
-     "id": "friar-badger",
-     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
-     "by": "owner"
-    },
-    {
-     "id": "gale-sprite",
-     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (evolution); the archetypes wait",
-     "by": "owner"
-    },
-    {
-     "id": "golden-magpie",
-     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "eagle-diver",
@@ -4524,58 +3730,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "owl-sentinel",
-     "why": "Q7: a Map 0 common; the Old Bramble plays as Map 21 now",
-     "by": "claude"
-    },
-    {
-     "id": "terrier-pup",
-     "why": "Q7: a Map 0 reward; too weak for Map 21",
-     "by": "claude"
-    },
-    {
-     "id": "chipmunk-cavalry",
-     "why": "Q7: a Map 0 common; too weak for Map 21",
-     "by": "claude"
-    },
-    {
-     "id": "chipmunk-skirmisher",
-     "why": "Q7: a Map 0 reward; too weak for Map 21",
-     "by": "claude"
-    },
-    {
-     "id": "feral-tomcat",
-     "why": "Q7: a Map 0 common; too weak for Map 21",
-     "by": "claude"
-    },
-    {
-     "id": "glacier-wolf-pack",
-     "why": "A tundra wolf pack in an old thorn wood",
-     "by": "claude"
-    },
-    {
-     "id": "cypress-root-lurker",
-     "why": "Q7: a Map 0 common; too weak for Map 21",
-     "by": "claude"
-    },
-    {
-     "id": "house-cat",
-     "why": "Q7: a Map 0 common; too weak for Map 21",
-     "by": "claude"
-    },
-    {
-     "id": "marsh-mallow-hare",
-     "why": "Q7: a Map 0 common; too weak for Map 21",
-     "by": "claude"
-    },
-    {
-     "id": "dune-packrat",
-     "why": "A desert packrat in an old thorn wood",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "thornwood-palisade",
@@ -4661,13 +3816,7 @@
      "by": "kept"
     }
    ],
-   "cut": [
-    {
-     "id": "glacial-ape-king",
-     "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
-     "by": "owner"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "arctic-fox-raider",
@@ -4810,23 +3959,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "ash-imp",
-     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (devilry); the archetypes wait",
-     "by": "owner"
-    },
-    {
-     "id": "permafrost-mammoth",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 22): cut by Claude, a second mammoth on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "ashwing-ptarmigan",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 22): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "salamander-pyromancer",
@@ -4962,28 +4095,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "trebuchet-crew",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, a second beaver on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "land-tiller",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, a second mouse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "balloon-archer",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, a second mouse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "colony",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "armory",
@@ -5222,28 +4334,7 @@
      "by": "claude"
     }
    ],
-   "cut": [
-    {
-     "id": "great-gate",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, a second duck on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "stoneheart-golem",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "nest",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    },
-    {
-     "id": "goose-sentry",
-     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
-     "by": "claude"
-    }
-   ],
+   "cut": [],
    "maybe": [
     {
      "id": "armory",
@@ -5275,5 +4366,955 @@
  "theme4": "THEME4 (2026-11-01): the owner's picks folded (tools/theme4/apply_2026_11_01.py); chosen entries may carry flag \"unlikely\" + flagWhy (Claude's flag, still on the list).",
  "listfix2": "LISTFIX2 (2026-11-03): cut entries may carry statusWhy: why a cut card is still on its map's lists (SPECIAL for its fight, or put back by a later package). The Map cards panel shows each cut's live status (Still listed / Kept for its fight / Removed) from the lists themselves.",
  "cut3": "CUT3 (2026-11-03): the owner cut Glacial Ape-King from every map and submap of Map 0-20 (m3 = Map 19, m6 = Map 17, mi = Map 17 side map). Decks that still hold it are audited in docs/cut3-audit-2026-11-03.md; Map 17 (17-8) boss leader is an owner call.",
- "content10": "CONTENT10 (2026-11-05): THEME6-1 counts (cut entries by Claude carry a why that says so: flip to keep), LIST-1104 and LISTFIX2 swaps; tools/content10/apply_2026_11_05.js, plan in docs/balance/content10/plan-2026-11-05.json."
+ "content10": "CONTENT10 (2026-11-05): THEME6-1 counts (cut entries by Claude carry a why that says so: flip to keep), LIST-1104 and LISTFIX2 swaps; tools/content10/apply_2026_11_05.js, plan in docs/balance/content10/plan-2026-11-05.json.",
+ "cutArchive": {
+  "_about": "2026-11-05 22:49 (owner: \"When you've updated the map cards, reset the 'undo' or 'cut' pills, since we've reset it in a way. Just show the updated map card list\"): each list's cut cards as they stood before the reset, kept for history; the Map cards window shows only the current lists.",
+  "maps": {
+   "m1": [
+    {
+     "id": "feral-tomcat",
+     "why": "House Cat already brings the cat; Map 0 capped at 12",
+     "by": "claude"
+    },
+    {
+     "id": "chipmunk-cavalry",
+     "why": "Chipmunk Skirmisher keeps the chipmunks; it moves on to Thistlewood",
+     "by": "claude"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "why": "A swamp cypress root; Gatorback Swamp is its home",
+     "by": "claude"
+    },
+    {
+     "id": "marsh-mallow-hare",
+     "why": "A marsh hare; the swamp maps carry it",
+     "by": "claude"
+    },
+    {
+     "id": "bee-knight",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "ant-hill",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "owl-sentinel",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    }
+   ],
+   "mf": [
+    {
+     "id": "fire-ant-raft",
+     "why": "An ant raft for floodwater; the river and swamp lists keep it",
+     "by": "claude"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "why": "A swamp cypress root, not a thistle wood; moved to Gatorback Swamp",
+     "by": "claude"
+    },
+    {
+     "id": "ant-hill",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    }
+   ],
+   "mb": [
+    {
+     "id": "fiddler-crab-swarm",
+     "why": "Owner Q1; kept on SPECIAL as the skirmish reward of 2-1",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 2-1's reward is now Rock Pool Starfish"
+    },
+    {
+     "id": "grey-seal-bull",
+     "why": "Owner Q1; kept on SPECIAL as the skirmish reward of 2-5",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 2-5's reward is now Driftwood Crab"
+    },
+    {
+     "id": "tidepool-trapper-crab",
+     "why": "Owner Q1; kept on SPECIAL as the first-clear card of 2-3",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 2-3's first-clear card is now Open-Ocean Hermit Crab"
+    },
+    {
+     "id": "oyster-bank",
+     "why": "Owner Q1 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "tide-pool-crab",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "sea-turtle-elder",
+     "why": "Owner 11-04 23:17 (LIST-1104): cut; Rock Pool Starfish takes its place in Pebble Beach's decks",
+     "by": "owner"
+    },
+    {
+     "id": "conch-crawler",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 2): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "mc": [
+    {
+     "id": "fulmar-spitter",
+     "why": "Owner Q1",
+     "by": "owner"
+    },
+    {
+     "id": "dormouse",
+     "why": "A hedgerow dormouse on seabird cliffs",
+     "by": "claude"
+    },
+    {
+     "id": "oyster-bank",
+     "why": "Owner Q1 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "the-gannet-queen",
+     "why": "Owner 11-01: cut",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-2 b): off this map fully; 3-7's reward is now Razorbill"
+    }
+   ],
+   "m2": [
+    {
+     "id": "old-sturgeon",
+     "why": "Owner Q2 (for now); kept on SPECIAL as the skirmish reward of 4-5",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 4-5's reward is now Pyrenean Desman"
+    },
+    {
+     "id": "stone-turtle-warden",
+     "why": "Owner Q2; kept on SPECIAL as the first-clear card of 4-2",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 4-2's first-clear card is now Water Shrew"
+    },
+    {
+     "id": "marsh-mallow-hare",
+     "why": "A marsh hare; Gatorback Swamp carries it",
+     "by": "claude"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "why": "A swamp cypress root; Gatorback Swamp is its home",
+     "by": "claude"
+    },
+    {
+     "id": "signal-crayfish",
+     "why": "Owner Q2 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "duckling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "pond-trout",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "why": "Owner 11-04 23:17 (LIST-1104): cut for Alley Cat",
+     "by": "owner"
+    },
+    {
+     "id": "water-vole",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 4): cut by Claude, a second vole on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "fire-ant-raft",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 4): cut by Claude, weak theme fit (kin biome only). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "box-turtle",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 10 on Map 4): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "mw": [
+    {
+     "id": "venomlord-serpent",
+     "why": "Owner Q3 (moved to Map 6); kept on SPECIAL as the first-clear card of 5-3",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 5-3's first-clear card is now Swamp Alligator"
+    },
+    {
+     "id": "stone-turtle-warden",
+     "why": "The owner took it off Map 4; a river warden, not a swamp card",
+     "by": "claude"
+    },
+    {
+     "id": "marsh-mallow-hare",
+     "why": "A soft meadow-edge hare; Gatorback has 11 swamp cards of its own",
+     "by": "claude"
+    },
+    {
+     "id": "buzzed-chipmunk",
+     "why": "Owner Q3 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "alley-cat",
+     "why": "Owner Q3 (moved to Lilypad Reach) (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "sphagnum-vole",
+     "why": "Owner Q3 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "snapper-hatchling",
+     "why": "Owner 11-01: cut",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 5-1's first-clear card is now Cypress Root Lurker"
+    },
+    {
+     "id": "caiman-hatchling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    }
+   ],
+   "m8": [
+    {
+     "id": "marsh-wisp",
+     "why": "Owner Q4; kept on SPECIAL as the first-clear card of 6-4",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 6-4's first-clear card is now Lamprey"
+    },
+    {
+     "id": "peat-cutter-vole",
+     "why": "Owner Q4",
+     "by": "owner"
+    },
+    {
+     "id": "mire-witch-heron",
+     "why": "Owner Q4 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "lotus-frog",
+     "why": "Owner Q4 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "cottonmouth-matriarch",
+     "why": "Owner Q4 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "bogfire-newt",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "cane-toad",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    }
+   ],
+   "mp": [
+    {
+     "id": "shallows-fry",
+     "why": "Owner Q4",
+     "by": "owner"
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "why": "A beach crab in a lily pond; it goes to the Kelp Mangroves",
+     "by": "claude"
+    },
+    {
+     "id": "great-crested-grebe",
+     "why": "Owner Q4 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "duckling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    }
+   ],
+   "mu": [
+    {
+     "id": "peat-cutter-vole",
+     "why": "The owner took it off the swamp; nothing ties it to mushrooms",
+     "by": "claude"
+    },
+    {
+     "id": "ant-warrior",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "garden-snail",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 7): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "bombardier-beetle",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 7): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "bogfire-newt",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: carried 5 on Map 7): cut by Claude, flagged Unlikely (THEME4); weak theme fit (kin biome only). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "mg": [
+    {
+     "id": "fiddler-crab-swarm",
+     "why": "The owner took it off Pebble Beach; it goes to the Kelp Mangroves",
+     "by": "claude"
+    },
+    {
+     "id": "sulfur-vent-crab",
+     "why": "Owner Q5 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "shallows-fry",
+     "why": "Owner Q5 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "beaver-builder",
+     "why": "Owner Q5 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "duckling",
+     "why": "Owner Q5 (already off since THEME2)",
+     "by": "owner"
+    }
+   ],
+   "m4": [
+    {
+     "id": "whip-spider",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "badger-stonemason",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "ant-warrior",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "vampire-bat",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 8): cut by Claude, a second bat on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "grotto-lobster",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 8): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "mk": [
+    {
+     "id": "lodge-engineer",
+     "why": "A river lodge builder; mangroves have no lodges",
+     "by": "claude"
+    },
+    {
+     "id": "mudpuppy",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "minnow-skitter",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "caiman-hatchling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "fishing-cat",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 9): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "archerfish",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 9): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "m7": [
+    {
+     "id": "gull-thief",
+     "why": "A shore gull in a coral current",
+     "by": "claude"
+    },
+    {
+     "id": "swordfish-spearman",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 10): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "coral-polyp-colony",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 10): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "m10": [
+    {
+     "id": "gale-swift",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 11): cut by Claude, a second swift on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "apollo-butterfly",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 11): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "mh": [
+    {
+     "id": "mountain-hare",
+     "why": "An alpine hare in a hedge maze",
+     "by": "claude"
+    },
+    {
+     "id": "hedgehog-scout",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "quillback-elder",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "gatling-hog",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 12): cut by Claude, a second hedgehog on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "mq": [
+    {
+     "id": "house-cat",
+     "why": "A farm cat; the meadow promises rabbits, bees and mice",
+     "by": "claude"
+    }
+   ],
+   "mr": [
+    {
+     "id": "stag-knight",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 13): cut by Claude, a second deer on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "woodpecker-sapper",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 13): cut by Claude, a second woodpecker on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "ms": [
+    {
+     "id": "echo-keeper",
+     "why": "Owner Q6 (Map 13; it was on The Sunken Grove) (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "swamp-rabbit",
+     "why": "Owner Q6 (Map 13; it was on The Sunken Grove) (already off since THEME2)",
+     "by": "owner"
+    }
+   ],
+   "m5": [
+    {
+     "id": "leafcutter-gardener",
+     "why": "Owner 11-02 (CONTENT6): cut from the carried cards toward balancing animals per type (ant, the most-listed animal group of the carried four); still on the Savanna side map (my) and Map 7",
+     "by": "owner"
+    },
+    {
+     "id": "weaver-bird",
+     "why": "Owner 11-01: cut",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 14-3's first-clear card is now Marula Elephant"
+    },
+    {
+     "id": "meerkat-burrower",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "lodge-engineer",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "plains-zebra",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 14): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "pangolin-roller",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 14): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "ml": [
+    {
+     "id": "garden-tiger-moth",
+     "why": "Owner Q6 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "moonshell-snail",
+     "why": "Owner Q6 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "anvil-thrush",
+     "why": "Owner Q6 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "courier-pigeon",
+     "why": "Owner Q6 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "stable-colt",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "squires-mount",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 15): cut by Claude, a second horse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "warhorse-charger",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 9 on Map 15): cut by Claude, a second horse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "mt": [
+    {
+     "id": "trickster-fox",
+     "why": "Owner Q6: \"not snow themed enough\"",
+     "by": "owner"
+    },
+    {
+     "id": "frost-hare-sprinter",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "fawn-scout",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "wolf-pack-runner",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 16): cut by Claude, a second wolf on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "dhole-runner",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 16): cut by Claude, a second dhole on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "pinecone-sapper",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 16): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "mn": [
+    {
+     "id": "cave-bat-swarm",
+     "why": "A plain cave bat; the Glimmer Spider takes its slot for the crystal theme",
+     "by": "claude"
+    }
+   ],
+   "m6": [
+    {
+     "id": "wolfsbane-alpha",
+     "why": "Owner 11-01: cut",
+     "by": "owner",
+     "statusWhy": "LISTFIX2 (11-03): your 11-01 cut is applied (off Wolfsbane Tundra's MAP list, THEME4). It sits on SPECIAL as 17-8's boss leader and reward (RELFIX3, 10-29); THEME4 kept it there on purpose. Dropping the boss card itself needs a new 17-8 leader and reward (LISTFIX2-2)."
+    },
+    {
+     "id": "glacial-ape-king",
+     "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
+     "by": "owner"
+    },
+    {
+     "id": "talus-pika",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 17): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "ravenous-wolverine",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 17): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "md": [
+    {
+     "id": "border-collie",
+     "why": "A sheepdog has no work in the glass dunes",
+     "by": "claude"
+    },
+    {
+     "id": "static-fennec",
+     "why": "Owner Q6 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "dune-packrat",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 18): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "dromedary",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 18): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "glass-golem",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 18): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "my": [
+    {
+     "id": "grave-grin-hyena",
+     "why": "A plains scavenger, not a tree-dweller",
+     "by": "claude"
+    },
+    {
+     "id": "hoopoe-herald",
+     "why": "The owner took it off the savanna; not a canopy bird",
+     "by": "claude"
+    },
+    {
+     "id": "savanna-cheetah",
+     "why": "A plains sprinter, not a canopy hunter",
+     "by": "claude"
+    },
+    {
+     "id": "springbok-pronker",
+     "why": "A plains antelope, not a canopy animal",
+     "by": "claude"
+    },
+    {
+     "id": "marula-elephant",
+     "why": "Too big and too grounded for the canopy",
+     "by": "claude"
+    },
+    {
+     "id": "dust-hyena",
+     "why": "A plains scavenger, not a tree-dweller",
+     "by": "claude"
+    },
+    {
+     "id": "meerkat-burrower",
+     "why": "A ground burrower under a rainforest roof",
+     "by": "claude"
+    },
+    {
+     "id": "rafflesia",
+     "why": "Owner 13:07: \"we'll find another place for it\" (off The Canopy; a later jungle map) (already off since THEME2)",
+     "by": "owner"
+    }
+   ],
+   "m3": [
+    {
+     "id": "quill-volley",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "yeti-chieftain",
+     "why": "Owner 11-01: cut",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-2 b): off this map fully; 19-6's reward and challenge card is now Yeti"
+    },
+    {
+     "id": "porcupine-roller",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "phoenix-fledgling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "glacial-ape-king",
+     "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
+     "by": "owner"
+    },
+    {
+     "id": "echidna-quillshot",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 19): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "mpd": [
+    {
+     "id": "armadillo-guard",
+     "why": "Owner Q6 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "meerkat-sentry",
+     "why": "Owner Q6 (already off since THEME2)",
+     "by": "owner"
+    },
+    {
+     "id": "dune-jackal-scout",
+     "why": "Owner Q6 (already off since THEME2)",
+     "by": "owner"
+    }
+   ],
+   "m11": [
+    {
+     "id": "woodland-brawler",
+     "why": "Owner Q6; kept on SPECIAL as the skirmish reward of 20-9",
+     "by": "owner",
+     "statusWhy": "CONTENT10 (11-05) (LISTFIX2-1 b): off this map fully; 20-9's reward is now Magma Salamander"
+    },
+    {
+     "id": "bear-cub",
+     "why": "Owner Q6",
+     "by": "owner"
+    },
+    {
+     "id": "echidna-quillshot",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    },
+    {
+     "id": "pit-glutton",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (devilry); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "glacier-wolf-pack",
+     "why": "Owner 11-04 23:17 (LIST-1104): replaced by Chamois Leaper",
+     "by": "owner"
+    },
+    {
+     "id": "gorge-wyrm",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 20): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "ash-moth",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 8 on Map 20): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "me": [
+    {
+     "id": "bear-cub",
+     "why": "The owner took it off Map 20; the same call inside its crater",
+     "by": "claude"
+    }
+   ],
+   "mx": [
+    {
+     "id": "woodland-brawler",
+     "why": "The owner took it off Map 20; a woodland brawler in a dragon's lair",
+     "by": "claude"
+    },
+    {
+     "id": "bear-cub",
+     "why": "The owner took it off Map 20; the same call for its lair",
+     "by": "claude"
+    },
+    {
+     "id": "phoenix-fledgling",
+     "why": "Owner 11-01: cut",
+     "by": "owner"
+    }
+   ],
+   "m21": [
+    {
+     "id": "candle-moth",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "chapel-tortoise",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "friar-badger",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "gale-sprite",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (evolution); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "golden-magpie",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (grace); the archetypes wait",
+     "by": "owner"
+    }
+   ],
+   "mo": [
+    {
+     "id": "owl-sentinel",
+     "why": "Q7: a Map 0 common; the Old Bramble plays as Map 21 now",
+     "by": "claude"
+    },
+    {
+     "id": "terrier-pup",
+     "why": "Q7: a Map 0 reward; too weak for Map 21",
+     "by": "claude"
+    },
+    {
+     "id": "chipmunk-cavalry",
+     "why": "Q7: a Map 0 common; too weak for Map 21",
+     "by": "claude"
+    },
+    {
+     "id": "chipmunk-skirmisher",
+     "why": "Q7: a Map 0 reward; too weak for Map 21",
+     "by": "claude"
+    },
+    {
+     "id": "feral-tomcat",
+     "why": "Q7: a Map 0 common; too weak for Map 21",
+     "by": "claude"
+    },
+    {
+     "id": "glacier-wolf-pack",
+     "why": "A tundra wolf pack in an old thorn wood",
+     "by": "claude"
+    },
+    {
+     "id": "cypress-root-lurker",
+     "why": "Q7: a Map 0 common; too weak for Map 21",
+     "by": "claude"
+    },
+    {
+     "id": "house-cat",
+     "why": "Q7: a Map 0 common; too weak for Map 21",
+     "by": "claude"
+    },
+    {
+     "id": "marsh-mallow-hare",
+     "why": "Q7: a Map 0 common; too weak for Map 21",
+     "by": "claude"
+    },
+    {
+     "id": "dune-packrat",
+     "why": "A desert packrat in an old thorn wood",
+     "by": "claude"
+    }
+   ],
+   "mi": [
+    {
+     "id": "glacial-ape-king",
+     "why": "Owner 11-03: cut Glacial Ape-King from Map 0-20 (CUT3)",
+     "by": "owner"
+    }
+   ],
+   "m22": [
+    {
+     "id": "ash-imp",
+     "why": "Owner 11-04 23:18 (LIST-1104): no archetype cards on Map 20+ for now (devilry); the archetypes wait",
+     "by": "owner"
+    },
+    {
+     "id": "permafrost-mammoth",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 22): cut by Claude, a second mammoth on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "ashwing-ptarmigan",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 22): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "m23": [
+    {
+     "id": "trebuchet-crew",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, a second beaver on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "land-tiller",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, a second mouse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "balloon-archer",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, a second mouse on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "colony",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 23): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ],
+   "m24": [
+    {
+     "id": "great-gate",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, a second duck on this list (\"each card must feel distinct\"); the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "stoneheart-golem",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "nest",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    },
+    {
+     "id": "goose-sentry",
+     "why": "CONTENT10 (11-05) (THEME6-1 count: own 7 on Map 24): cut by Claude, the weakest fit left by the order (fit, active skills, deck use). Flip it to keep it.",
+     "by": "claude"
+    }
+   ]
+  }
+ }
 }

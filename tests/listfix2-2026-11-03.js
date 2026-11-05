@@ -40,7 +40,8 @@ const first = {}; { const i = src.indexOf('const SKIRMISH_FIRST_PACK_CARDS = {')
   const re = /'([a-z0-9]+):([0-9A-Z-]+)'\s*:\s*'([a-z0-9-]+)'/g; let m; while((m = re.exec(src.slice(i, j)))) (first[m[1]] = first[m[1]] || new Set()).add(m[3]); }
 ok(Object.keys(first).length > 10, 'SKIRMISH_FIRST_PACK_CARDS parsed');
 let still = [], spec = [];
-Object.entries(review).forEach(([k, r])=>{ if(!topOf[k]) return; (r.cut || []).forEach(e=>{
+const cutArc = (J('canonical/map-review.json').cutArchive || {}).maps || {}; // 2026-11-05 22:49 (owner: reset the Map cards cut lists): the cut entries moved to map-review.json cutArchive
+Object.entries(review).forEach(([k, r])=>{ if(!topOf[k]) return; ((r.cut || []).concat(cutArc[k] || [])).forEach(e=>{
   if(ownList(k).includes(e.id)){ still.push(k + '|' + e.id); ok(!!e.statusWhy, `${k}: cut ${e.id} is still listed and says why (statusWhy)`); }
   else if(k === topOf[k] && specialOf(k).includes(e.id)){ spec.push(k + '|' + e.id);
     const s = (cards[e.id] || {}).source || {}, why = (s.kind === 'map' && s.id === k) || (first[k] && first[k].has(e.id));
