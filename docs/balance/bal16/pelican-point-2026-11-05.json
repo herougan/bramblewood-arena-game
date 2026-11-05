@@ -1,0 +1,97 @@
+{
+ "fight": "2-4 Pelican Point",
+ "games": 200,
+ "seeds": "9100 + 37g",
+ "bramble": "15 + 1 Shield",
+ "rows": [
+  {
+   "variant": "now",
+   "deck": {
+    "conch-herald": 2,
+    "gull-thief": 5,
+    "open-ocean-hermit-crab": 4,
+    "pincushion-urchin": 3,
+    "rock-pool-starfish": 5
+   },
+   "size": 19,
+   "map": 75.5,
+   "starter": 2
+  },
+  {
+   "variant": "gull-thief for open-ocean-hermit-crab",
+   "deck": {
+    "conch-herald": 2,
+    "gull-thief": 5,
+    "open-ocean-hermit-crab": 2,
+    "pincushion-urchin": 3,
+    "rock-pool-starfish": 5,
+    "bramble-sprout": 3
+   },
+   "size": 20,
+   "map": 75,
+   "starter": 5
+  },
+  {
+   "variant": "soft: sprouts and drummers",
+   "deck": {
+    "conch-herald": 2,
+    "gull-thief": 4,
+    "bramble-sprout": 5,
+    "cricket-drummer": 5,
+    "rock-pool-starfish": 4
+   },
+   "size": 20,
+   "map": 58.5,
+   "starter": 1
+  },
+  {
+   "variant": "soft: no Thorns",
+   "deck": {
+    "conch-herald": 2,
+    "gull-thief": 5,
+    "open-ocean-hermit-crab": 4,
+    "rock-pool-starfish": 5,
+    "bramble-sprout": 4
+   },
+   "size": 20,
+   "map": 80.5,
+   "starter": 4.5
+  },
+  {
+   "variant": "smaller: 14 cards, no Thorns",
+   "deck": {
+    "conch-herald": 2,
+    "gull-thief": 4,
+    "open-ocean-hermit-crab": 4,
+    "rock-pool-starfish": 4
+   },
+   "size": 14,
+   "map": 66,
+   "starter": 3
+  },
+  {
+   "variant": "smaller: 12 cards, no Herald",
+   "deck": {
+    "gull-thief": 4,
+    "open-ocean-hermit-crab": 4,
+    "rock-pool-starfish": 4
+   },
+   "size": 12,
+   "map": 92.5,
+   "starter": 7.5
+  },
+  {
+   "variant": "CONTENT10 deck (Conch Crawler x3)",
+   "deck": {
+    "conch-herald": 2,
+    "conch-crawler": 3,
+    "open-ocean-hermit-crab": 4,
+    "rock-pool-starfish": 5,
+    "gull-thief": 5
+   },
+   "size": 19,
+   "map": 77,
+   "starter": 6
+  }
+ ]
+}

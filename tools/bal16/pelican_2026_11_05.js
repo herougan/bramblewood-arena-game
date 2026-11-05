@@ -16,7 +16,11 @@ const VARIANTS = {
   'gull-thief for open-ocean-hermit-crab': { 'conch-herald': 2, 'gull-thief': 5, 'open-ocean-hermit-crab': 2, 'pincushion-urchin': 3, 'rock-pool-starfish': 5, 'beaver-lumberjack': 0, 'bramble-sprout': 3 },
   'soft: sprouts and drummers': { 'conch-herald': 2, 'gull-thief': 4, 'bramble-sprout': 5, 'cricket-drummer': 5, 'rock-pool-starfish': 4 },
   'soft: no Thorns': { 'conch-herald': 2, 'gull-thief': 5, 'open-ocean-hermit-crab': 4, 'rock-pool-starfish': 5, 'bramble-sprout': 4 },
+  'smaller: 14 cards, no Thorns': { 'conch-herald': 2, 'gull-thief': 4, 'open-ocean-hermit-crab': 4, 'rock-pool-starfish': 4 },
+  'smaller: 12 cards, no Herald': { 'gull-thief': 4, 'open-ocean-hermit-crab': 4, 'rock-pool-starfish': 4 },
 };
+// the deck as CONTENT10 left it (Conch Crawler x3, before BAL16 took the off-list card out), for comparison
+VARIANTS['CONTENT10 deck (Conch Crawler x3)'] = { 'conch-herald': 2, 'conch-crawler': 3, 'open-ocean-hermit-crab': 4, 'rock-pool-starfish': 5, 'gull-thief': 5 };
 const out = { fight: '2-4 Pelican Point', games, seeds: '9100 + 37g', bramble: null, rows: [] };
 for (const [name, d0] of Object.entries(VARIANTS)) {
   const deck = Object.fromEntries(Object.entries(d0).filter(([, k]) => k > 0)), tot = Object.values(deck).reduce((a, b) => a + b, 0);
