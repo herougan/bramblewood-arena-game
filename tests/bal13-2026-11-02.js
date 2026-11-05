@@ -51,7 +51,8 @@ ok(rd.status === 0, 'tools/opt/ref_decks.js --check passes (the ladder baked): '
 ok(/ladder \(Reference ladder/.test(rd.stdout || ''), 'ref_decks.js lists the ladder');
 
 // 3. the summary
-const sums = fs.readdirSync(path.join(ROOT, 'docs', 'balance', 'bal13')).filter(f => /^summary-\d{4}-\d\d-\d\d\.json$/.test(f)).sort();
+// 2026-11-05 (BAL17): a same-day re-run is summary-<date>b.json (as summary-2026-11-03b), so the newest may carry a letter
+const sums = fs.readdirSync(path.join(ROOT, 'docs', 'balance', 'bal13')).filter(f => /^summary-\d{4}-\d\d-\d\d[a-z]?\.json$/.test(f)).sort();
 ok(sums.length > 0, 'a summary JSON in docs/balance/bal13/');
 if (sums.length) { const s = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal13', sums[sums.length - 1]), 'utf8')), md = fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal13', sums[sums.length - 1].replace(/json$/, 'md')), 'utf8');
   ok(s.totals && s.totals.fights > 200 && s.totals.green <= s.totals.within10 && s.totals.beyond20 === s.totals.beyond20Fights.length, 'summary totals: fights, green, within 10, beyond 20 (+ the list)');

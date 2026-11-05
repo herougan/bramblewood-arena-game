@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Package BAL17 (BAL16-1 a: card flags; Maps 21-24 ladders and retune)
+- **Maps 21-24 road retune (decks only, own lists, K14 not worse):** 13 decks; Maps 21-24 in band 11 -> 18 of 30, beyond 20 12 -> 2. Whole road (256 fights, Map reference, 40 games): in band 102 -> 109, within 10 131 -> 136, beyond 20 75 -> 65. Maps 0-20 unchanged (91 / 117 / 63 of 226).
+- **Card flags on BAL16-1's 38 walled fights** (flags only, no card changed): a neutral same-cost card in each enemy card's place makes no map easier; the enemy brambles carry them (ENG24's +2 undone on enemy brambles: Savanna Reaches 22% -> 54%, the Old Bramble 27% -> 50%). Drivers where one exists: Stalactite Pill Bug (Map 8), Clownfish Scout and Orca Vanguard (10-1), Mangrove Manatee (10-A), Cinder Stoker (19-A); none over budget.
+- **Reference ladders for Maps 21-24** (10 decks each, baked into the game); the balance summary measures them (`docs/balance/bal13/summary-2026-11-05b.md`). Their PRO / BPRO / WPRO decks were already BAL16's.
+- Tools `tools/bal17/` (flags, annotate); report `docs/balance/bal17-2026-11-05.md`, data `docs/balance/bal17/`. Decisions BAL17-1, BAL17-2. Test: dated BAL17 update to bal13 (the summary file may carry a letter).
+
 ## 2026-11-05 Package BAL16 (owner 11-04 23:37, 11-05 08:08: REFDECK-1, CUT3-1 a, IDEA-EARLY-5, CONTENT10-2)
 - **Skirmish decks rebuilt from their own lists:** 142 road and side-map decks lost their off-list cards (BAL9's 99, Pebble Beach's side maps, CUT3's audit, Maps 21-24, Map 0's Fox Kits); size, rewards and first-clear cards kept. Glacial Ape-King's leaders replaced: 17-1 Beluga, 17-3 Polar Bear, 17-8 Walrus Icebreaker, 17-A-1 Greenland Shark. Combo skirmishes (no hints, no rewards): 0-2 Ant Scout + Soldier Ant, 2-1 Pincushion Urchin + Rock Pool Starfish, 3-4 Gannet Nestweaver + Peak Condor, 4-1 Muskrat Lodgekeeper + Platypus Spur.
 - **Road retune (decks only):** in band 62 -> 91 of 226, within 10 79 -> 117, beyond 20 82 -> 63 (Map reference, 40 games). 38 fights stay walls even with their list's weakest deck (Savanna Reaches, The Canopy, Basalt Foundry, 17-4 to 17-8, the Old Bramble, ...).
