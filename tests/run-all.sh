@@ -332,6 +332,7 @@ run node tests/content10-2026-11-05.js   # 2026-11-05 (package CONTENT10, THEME6
 run node tests/content11-2026-11-05.js   # 2026-11-05 (package CONTENT11, NUDI-1 / IDEA-VREGIA / IDEA-EARLY-2): Nudibranch and Victoria Regia (budget, lists, 12 packs, art prompts), the eleven boss gimmicks in scenarios with their texts and measure, decisions CONTENT11-1..4
 run node tests/raid2-2026-11-05.js   # 2026-11-05 (package RAID2): the raid tide's damage in waves (bands, bottom up on a Flood, top down on an Ebb), tentacle first then tide, no ally name pill, the raid / group-dungeon zoom (clamp, focus, wiring), the part picker (3 parts, then the Core alone; no leader / phase / BR / rhythm / attempts lines; reward kinds), the TX keys in 12 packs
 run node tests/fix9-2026-11-05.js   # 2026-11-05 (package FIX9, owner 22:18): generic group titles, raid allies keep playing (swap, reshuffle), Pounce shows Health before the blow, water pips on Shift, Shell = Armor N for the round
+run node tests/edit1-2026-11-05.js   # 2026-11-05 (package EDIT1, owner 23:35): the card editor: "+" puts the level in the same skill row, Hatchling / Regeneration at Level 1 and up, Species dropdown, skills with emoji, Storm Attack / Health fields; Playwright 1366 / 390, docs/screens/EDIT1/
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

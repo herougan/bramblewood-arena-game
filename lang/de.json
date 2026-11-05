@@ -3980,5 +3980,9 @@
  "Root Grip: {name} is Tangled.": "Wurzelgriff: {name} ist verstrickt.",
  "Cracking Bark: the bramble loses {n} Shield.": "Rissige Rinde: das Dorngestrüpp verliert {n} Schild.",
  "Zoom in": "Hineinzoomen",
- "Zoom out": "Herauszoomen"
+ "Zoom out": "Herauszoomen",
+ "Give this skill a level (it arrives at that level)": "Dieser Fähigkeit eine Stufe geben (sie kommt auf dieser Stufe)",
+ "Remove the level (the skill is there from the start)": "Stufe entfernen (die Fähigkeit ist von Anfang an da)",
+ "Second species (optional, makes a hybrid)": "Zweite Art (optional, ergibt eine Mischung)",
+ "— none —": "— keine —"
 }

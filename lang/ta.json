@@ -3984,5 +3984,9 @@
  "Root Grip: {name} is Tangled.": "வேர்ப் பிடி: {name} சிக்கியது.",
  "Cracking Bark: the bramble loses {n} Shield.": "வெடிக்கும் பட்டை: முட்புதர் {n} கேடயம் இழக்கிறது.",
  "Zoom in": "பெரிதாக்கு",
- "Zoom out": "சிறிதாக்கு"
+ "Zoom out": "சிறிதாக்கு",
+ "Give this skill a level (it arrives at that level)": "இந்தத் திறனுக்கு நிலை கொடு (அந்த நிலையில் வரும்)",
+ "Remove the level (the skill is there from the start)": "நிலையை நீக்கு (திறன் தொடக்கத்திலிருந்தே இருக்கும்)",
+ "Second species (optional, makes a hybrid)": "இரண்டாவது இனம் (விருப்பம், கலப்பினம் ஆகும்)",
+ "— none —": "— இல்லை —"
 }

@@ -3981,5 +3981,9 @@
  "Root Grip: {name} is Tangled.": "根の締めつけ：{name}が絡め取られた。",
  "Cracking Bark: the bramble loses {n} Shield.": "ひび割れる樹皮：イバラがシールドを{n}失った。",
  "Zoom in": "ズームイン",
- "Zoom out": "ズームアウト"
+ "Zoom out": "ズームアウト",
+ "Give this skill a level (it arrives at that level)": "このスキルにレベルを付ける（そのレベルで得る）",
+ "Remove the level (the skill is there from the start)": "レベルを外す（最初からスキルを持つ）",
+ "Second species (optional, makes a hybrid)": "第2の種族（任意・ハイブリッドになる）",
+ "— none —": "— なし —"
 }

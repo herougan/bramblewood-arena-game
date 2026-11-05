@@ -1816,6 +1816,17 @@ Object.keys(EN6_STATE_KEYS).filter(k=> k !== 'season').forEach(k=>{ const t = EN
     get:e=> (e[k] && !(e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object')) ? true : undefined});
   sk1Patch(PASSIVE_DEFS, k + 'Grant', {category:'passive', label:TX('ui.skn-' + t), kind:'grant', placeholder:grantToText(EN6_STATE_DEFAULT_APP[k]), desc:v=> TX('ui.sk-' + t, {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-' + t + '-codex'),
     get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; e[k] = true; } }}); });
+// 2026-11-05 (package EDIT1, owner 23:35: "Let me adjust the storm parameters (default 0/2) - (any N/M)"): Storm's two numbers are fields in the
+// card editor, Attack and Health (default +2/+0, the engine's dflt). A card with other numbers saves them as stormGrant {attack, health}, which
+// the engine already reads (en6StateGrant: the card's braces, else the default). A stormGrant with other skills inside keeps its text row.
+const EDIT1_STORM_DEFAULT = [2, 0];
+const edit1StormGrant = e=> (e && e.stormGrant && typeof e.stormGrant === 'object') ? e.stormGrant : null;
+const edit1StormPlain = g=> !g || Object.keys(g).every(k=> k === 'attack' || k === 'health');
+sk1Patch(PASSIVE_DEFS, 'storm', {kind:'twoNumber', placeholders:[TX('ui.edit1-attack'), TX('ui.edit1-health')], defaultValue:EDIT1_STORM_DEFAULT.slice(),
+  get:e=>{ if(!e.storm && !edit1StormGrant(e)) return undefined; const g = edit1StormGrant(e); if(!edit1StormPlain(g)) return undefined; return g && Object.keys(g).length ? [Number(g.attack)||0, Number(g.health)||0] : EDIT1_STORM_DEFAULT.slice(); },
+  apply:(e, v)=>{ const a = Math.max(0, Math.round(Number(v && v[0]) || 0)), h = Math.max(0, Math.round(Number(v && v[1]) || 0)); e.storm = true;
+    if((a === EDIT1_STORM_DEFAULT[0] && h === EDIT1_STORM_DEFAULT[1]) || (!a && !h)) delete e.stormGrant; else { const g = {}; if(a) g.attack = a; if(h) g.health = h; e.stormGrant = g; } }});
+sk1Patch(PASSIVE_DEFS, 'stormGrant', {get:e=> { const g = edit1StormGrant(e); return g && !edit1StormPlain(g) ? grantToText(g) : undefined; }});
 // Season (X) – {…}: the season is the skill's value (a pick in the editor); its braces are seasonGrant (the default +1/+1)
 sk1Patch(PASSIVE_DEFS, 'season', {category:'passive', label:TX('ui.skn-season'), kind:'select', selectOptions:()=> EN6_SEASONS_APP.map(k=> ({value:k, label:`${EN6_SEASON_ICO[k]} ${en6SeasonName(k)}`})),
   desc:(v, n, e)=> TX('ui.sk-season', {season: en6SeasonName(typeof v === 'string' && EN6_SEASONS_APP.includes(v) ? v : en6SeasonOfApp(e)), skills: grantText(en5StateOfApp('season', e))}), codexNote:TX('ui.sk-season-codex'),
@@ -2177,13 +2188,16 @@ function enMigrateCard(c){
 // addable rows, instead of a fixed always-visible grid plus a separate presets section.
 // Each entry knows how to read its current value out of a card's `effects` object and how
 // to write a chosen value back into a fresh `effects` object on save.
-const SKILL_DEFS = [
-  ...PASSIVE_DEFS.map(p=>({
+// 2026-11-05 (package EDIT1): the PASSIVE_DEFS -> SKILL_DEFS mapping is a function now, so the skills added to PASSIVE_DEFS after this list is built
+// (Weapon Master, Pry, Bola, Anadromous, Lasso: they were missing from the card editor) can be copied in by syncLateSkillDefs().
+const passiveToSkillDef = p=>({
     key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, reserved:p.reserved, oneOff:p.oneOff, legendary:p.legendary, /* 2026-10-18 (owner 23:05): the Legendary ability tier */
     get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, codexNote:p.codexNote, whoPicker:p.whoPicker, // (2026-10-18: + whoPicker, Esprit's Kin / Any; 2026-10-15: + the grant pickers' hints, defaultValue; 2026-10-17: + codexNote, a Codex-only sentence)
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
     numberWhen:p.numberWhen, numberTitle:p.numberTitle, // a passive selectNumber's N field (Wave N, 2026-10-18)
-  })),
+});
+const SKILL_DEFS = [
+  ...PASSIVE_DEFS.map(passiveToSkillDef),
   {
     // 2026-10-16 skill audit: plain words, and the labels for its two numbers.
     key:'explode', category:'evergreen', label:'Explode', kind:'twoNumber', placeholders:['Timer','Damage'], desc:()=>'A lit fuse that ticks down every upkeep, even while Waiting or Stunned. At 0 it deals Damage once to the enemy facing it (the bramble if there is none).',
@@ -3320,6 +3334,9 @@ Object.assign(EN5_STATE_KEYS, {anadromousSea:{tx:'e14-anadromous', ico:'🌊'}, 
 PASSIVE_DEFS.push({key:'lasso', category:'evergreen', label:TX('ui.skn-eng15-lasso'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng15-sk-lasso', {n: numOr(v, 1)}), codexNote:TX('ui.eng15-sk-lasso-codex'), get:e=> e.lasso ? numOr(e.lasso, 1) : undefined});
 Object.assign(SKILL_TEXT, {lasso: v=> TX('ui.eng15-sk-lasso-short', {n: numOr(v, 1)})});
 Object.assign(SKILL_ICON, {lasso:'➰', lassoed:'➰'});
+// 2026-11-05 (package EDIT1, owner: Hatchling and others missing from the card editor): every PASSIVE_DEFS skill pushed after SKILL_DEFS was built joins it.
+function syncLateSkillDefs(){ PASSIVE_DEFS.forEach(p=>{ if(p && p.key && !SKILL_DEFS.some(s=> s.key === p.key)) SKILL_DEFS.push(passiveToSkillDef(p)); }); }
+syncLateSkillDefs();
 Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
 Object.assign(SKILL_TEXT, {mimic: ()=> TX('ui.sk-mimic')}); // Package MT (2026-10-21): Mimic's card line
 // Package EV (2026-10-21): the Evolute, Stem and Chrysalis card lines
@@ -11031,12 +11048,12 @@ function closeCardEditor(){ editingCard=null; document.getElementById('editorOve
 let editorMoreOpen = false;
 function snapshotEditorForm(overlay){
   const ids = {}; overlay.querySelectorAll('input[id], select[id], textarea[id]').forEach(el=>{ if(el.id!=='fCardId') ids[el.id] = el.type==='checkbox' ? el.checked : el.value; });
-  const rows = sel=> [...overlay.querySelectorAll(sel)].map(r=> [...r.querySelectorAll('input,select,textarea')].map(el=> el.type==='checkbox' ? el.checked : el.value));
+  const rows = sel=> [...overlay.querySelectorAll(sel)].map(r=> r.hasAttribute('data-kc') ? null /* EDIT1 (2026-11-05): a row whose skill was just changed is a new row: nothing of the old one is put back */ : [...r.querySelectorAll('input,select,textarea')].map(el=> el.type==='checkbox' ? el.checked : el.value));
   return {ids, skills: rows('#skillRows .skill-row'), evergreen: rows('#evergreenRows .skill-row'), triggers: rows('#triggerRows .trigger-row')};
 }
 function restoreEditorForm(overlay, snap){
   Object.entries(snap.ids).forEach(([id, v])=>{ const el = document.getElementById(id); if(!el || !overlay.contains(el)) return; if(el.type==='checkbox') el.checked = v; else if(el.value !== v && (el.tagName!=='SELECT' || [...el.options].some(o=> o.value===v))) el.value = v; });
-  const put = (sel, list)=>{ const rows = [...overlay.querySelectorAll(sel)]; if(rows.length < list.length) return; list.forEach((vals, i)=>{ const els = [...rows[i].querySelectorAll('input,select,textarea')]; if(els.length !== vals.length) return;
+  const put = (sel, list)=>{ const rows = [...overlay.querySelectorAll(sel)]; if(rows.length < list.length) return; list.forEach((vals, i)=>{ if(!vals) return; const els = [...rows[i].querySelectorAll('input,select,textarea')]; if(els.length !== vals.length) return;
     els.forEach((el, k)=>{ const v = vals[k]; if(el.type==='checkbox') el.checked = v; else if(el.tagName!=='SELECT' || [...el.options].some(o=> o.value===v)) el.value = v; el.dispatchEvent(new Event('input', {bubbles:true})); }); }); };
   put('#skillRows .skill-row', snap.skills); put('#evergreenRows .skill-row', snap.evergreen); put('#triggerRows .trigger-row', snap.triggers);
 }
@@ -11215,7 +11232,9 @@ function renderEditorInner(){
       <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> (p.kind==='boolean' || p.kind==='number') && (!p.retired || Object.keys((c.equip||{}).grant||{})[0]===p.key)).map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
       <div class="field" id="fEquipTimeRow" ${c.cardType==='equipment'?'':'hidden'} title="${escapeAttr(TX('ui.c3-equip-time-tip'))}"><label>${escapeHtml(TX('ui.c3-equip-time-name'))}</label><span style="display:flex; gap:10px; align-items:center;"><input id="fEquipTime" type="number" min="0" max="5" style="width:64px" value="${(c.equip && c.equip.turns != null) ? c.equip.turns : 1}" aria-label="${escapeAttr(TX('ui.c3-equip-time-name'))}"><label style="display:flex; gap:4px; align-items:center;"><input id="fEquipTamper" type="checkbox" ${(c.equip && c.equip.tamperProof) ? 'checked' : ''}> ${escapeHtml(TX('ui.c3-tamper-name'))}</label><label style="display:flex; gap:4px; align-items:center;" title="${escapeAttr(TX('ui.e10-hardy-tip'))}">${escapeHtml(TX('ui.e10-hardy-name'))} <input id="fEquipHardy" type="number" min="1" max="9" style="width:52px" value="${eqHardyOf(c)}"></label></span></div>
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select><label class="ed-arty" title="${escapeAttr(TX('ui.ui19-art-y-tip'))}"><span>${escapeHtml(TX('ui.ui19-art-y'))}</span><input id="fArtPosY" type="number" min="0" max="100" step="5" placeholder="50" value="${artPosOf(c) === null ? '' : artPosOf(c)}"></label></div>
-      <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Bird, Insect" oninput="(function(el){ const v = el.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })(this)"></div><datalist id="speciesList">${allSpeciesNames().map(k=> `<option value="${escapeAttr(k)}" label="${speciesIcon(k)} ${escapeAttr(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeAttr(SPECIES_PHYLUM[k]) : SPECIES_PHYLUM[k] ? '' : ' · new'}">`).join('')}</datalist></div>
+      <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span>${'' /* 2026-11-05 (package EDIT1, owner 23:35: "Species should be a dropdown"): the species the game knows (cards.json + the taxonomy); an existing value that is not on the list stays as its own option. A second dropdown makes a hybrid. */}${(()=>{ const names = allSpeciesNames(), cur = c.species || [], opt = (k, sel)=> `<option value="${escapeAttr(k)}" ${sel ? 'selected' : ''}>${speciesIcon(k)} ${escapeHtml(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeHtml(SPECIES_PHYLUM[k]) : ''}</option>`, list = sel=> names.concat(sel && !names.includes(sel) ? [sel] : []).sort().map(k=> opt(k, k === sel)).join(''),
+      onch = "(function(){ const v = ['fSpecies','fSpecies2'].map(i=> (document.getElementById(i)||{}).value).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })()";
+    return `<select id="fSpecies" aria-label="Species" onchange="${onch}"><option value="" ${cur[0] ? '' : 'selected'}>🧬 ${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[0])}</select><select id="fSpecies2" aria-label="${escapeAttr(TX('ui.edit1-species2'))}" title="${escapeAttr(TX('ui.edit1-species2'))}" onchange="${onch}"><option value="" ${cur[1] ? '' : 'selected'}>${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[1])}</select>`; })()}</div>
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
            request: "I think the Splash Effect doesn't need to be there as well, since it's
            related to the level of the card OR by chance, not an inherent quality of this
@@ -11536,7 +11555,7 @@ function renderEditorInner(){
     const used = new Set(deriveSkillRows(c).map(r=>r.key));
     const next = SKILL_DEFS.find(s=>s.category!=='evergreen' && gateOkFor(s) && !used.has(s.key)) || SKILL_DEFS.find(s=>s.category!=='evergreen' && gateOkFor(s));
     if(!next) return;
-    c._skillRows.push({key:next.key, value:defaultSkillValue(next.key)});
+    c._skillRows.push(edit1NewRow(c, next.key)); // EDIT1: Hatchling / Regeneration arrive at Level 1 on a Level 0 card
     renderEditor();
   });
   const addEvergreenBtn = document.getElementById('addEvergreen');
@@ -11544,16 +11563,17 @@ function renderEditorInner(){
     const used = new Set(deriveSkillRows(c).map(r=>r.key));
     const next = SKILL_DEFS.find(s=>s.category==='evergreen' && gateOkFor(s) && !used.has(s.key)) || SKILL_DEFS.find(s=>s.category==='evergreen' && gateOkFor(s));
     if(!next) return;
-    c._skillRows.push({key:next.key, value:defaultSkillValue(next.key)});
+    c._skillRows.push(edit1NewRow(c, next.key));
     renderEditor();
   });
   overlay.querySelectorAll('#skillRows [data-rmskill], #evergreenRows [data-rmskill]').forEach(b=> b.addEventListener('click', ()=>{ c._skillRows.splice(Number(b.getAttribute('data-rmskill')),1); renderEditor(); }));
+  // 2026-11-05 (package EDIT1): ＋ adds the level to this same row (no new row); ✕ takes it off again.
   overlay.querySelectorAll('#skillRows [data-addskillrow], #evergreenRows [data-addskillrow]').forEach(b=> b.addEventListener('click', ()=>{ const r = c._skillRows[Number(b.getAttribute('data-addskillrow'))]; if(!r) return;
-    const next = Math.min(11, Math.max(cardBaseLevel(c) + 1, ...c._skillRows.filter(x=> x.key === r.key).map(x=> (x.lv || cardBaseLevel(c)) + 1)));
-    c._skillRows.push({key:r.key, value:defaultSkillValue(r.key), lv:next}); renderEditor(); })); // added at the end so the form keeps every other row's typing
+    const row = b.closest('.skill-row'), lvEl = row && row.querySelector('[data-sk="lv"]'); r.lv = (lvEl && Number(lvEl.value)) || edit1DefaultLv(c); renderEditor(); }));
+  overlay.querySelectorAll('#skillRows [data-rmlv], #evergreenRows [data-rmlv]').forEach(b=> b.addEventListener('click', ()=>{ const r = c._skillRows[Number(b.getAttribute('data-rmlv'))]; if(!r) return; delete r.lv; renderEditor(); }));
   overlay.querySelectorAll('#skillRows select[data-sk="key"], #evergreenRows select[data-sk="key"], #skillRows select[data-sk="twin"], #evergreenRows select[data-sk="twin"]').forEach(sel=> sel.addEventListener('change', ()=>{ // + the "Gives" field (2026-10-16)
-    const i = Number(sel.getAttribute('data-i'));
-    c._skillRows[i] = {key:sel.value, value:defaultSkillValue(sel.value)};
+    const i = Number(sel.getAttribute('data-i')); const rowEl = sel.closest('.skill-row'); if(rowEl) rowEl.setAttribute('data-kc', '1'); // EDIT1: the new skill's row starts from its own defaults
+    c._skillRows[i] = edit1NewRow(c, sel.value, c._skillRows[i]); // EDIT1: a row keeps its level when its skill changes
     renderEditor();
   }));
   // Live "Resist Cold" readout (2026-09-16): updates in place on every change of a select-kind
@@ -11678,7 +11698,7 @@ function deriveSkillRows(c){
       if(v!==undefined && v!==false) rows.push({key:s.key, value:v, n: s.numberKey ? (Number((c.effects||{})[s.numberKey]) || (s.key==='swarm' && typeof (c.effects||{}).swarm==='number' ? c.effects.swarm : 1)) : undefined});
     });
     // Skills that arrive at a level (2026-10-13): one row each, tagged with the level.
-    Object.keys(c.levelSkills || {}).map(Number).filter(L=> L > 0).sort((a, b)=> a - b).forEach(L=>{ const fx = c.levelSkills[L] || {};
+    Object.keys(c.levelSkills || {}).map(Number).filter(L=> L >= 0 /* 2026-11-05 (EDIT1): Level 0 too: a Baby's Hatchling (levelSkills 0) had no row, so it could not be seen or edited */).sort((a, b)=> a - b).forEach(L=>{ const fx = c.levelSkills[L] || {};
       SKILL_DEFS.forEach(s=>{ const v = s.get(fx); if(v!==undefined && v!==false) rows.push({key:s.key, value:v, lv:L, n: s.numberKey ? (Number(fx[s.numberKey]) || 1) : undefined}); }); });
     c._skillRows = rows;
   }
@@ -11693,6 +11713,14 @@ function grantPickerHTML(i, sk, v, ph){
 }
 function grantPickAdd(sel){ const box = sel.closest('.grant-box'), inp = box && box.querySelector('.grant-in'); if(!inp || !sel.value) return;
   inp.value = inp.value.trim() ? inp.value.replace(/[,\s]+$/, '') + ', ' + sel.value : sel.value; sel.value = ''; inp.dispatchEvent(new Event('input', {bubbles:true})); inp.focus(); }
+// 2026-11-05 (package EDIT1, owner 23:35: "Hatchling ... should also only appear at level 1 and up. Regeneration as well."): these two skills are
+// offered at Level 1 and up only. On a card whose base level is 0 a new Hatchling / Regeneration row arrives with a level (1), and their Lv
+// dropdown never offers 0. A Level 0 row that already exists (a Baby's Hatchling, levelSkills 0) is shown as it is, never moved.
+const EDIT1_FROM_LV1 = new Set(['hatchling', 'regen']);
+const EDIT1_OPTION_ICON = {archerStyle:'🎨'}; // the one skill with no card icon (a look, not a chip): its glyph in the skills dropdown only
+function edit1DefaultLv(c){ return Math.min(11, Math.max(1, cardBaseLevel(c || editingCard) + 1)); }
+function edit1NewRow(c, key, old){ const row = {key, value:defaultSkillValue(key)}; if(old && old.lv != null) row.lv = old.lv;
+  if(EDIT1_FROM_LV1.has(key) && (row.lv === 0 || (row.lv == null && cardBaseLevel(c) < 1))) row.lv = 1; return row; }
 function defaultSkillValue(key){
   const s = SKILL_DEFS.find(x=>x.key===key);
   if(!s) return true;
@@ -11819,14 +11847,15 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   // passing 'N' through for those would index into the string and show garbage.
   const descArg = s.kind==='number' ? (row.value||1) : s.kind==='types' ? row.value : s.kind==='select' ? (row.value||'') : s.kind==='cardCount' ? (Array.isArray(row.value)?row.value:defaultSkillValue(row.key)) : 'N';
   return `<div class="skill-row" title="${escapeAttr(s.desc(descArg, row.n))}">
-    <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
+    <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${escapeHtml(SKILL_ICON[x.key] || EDIT1_OPTION_ICON[x.key] || '•')} ${x.label}</option>`).join('')}</select>
     ${twinOf ? (()=>{ const plain = ZEIT_TWIN[row.key] ? row.key : twinOf, adv = ZEIT_TWIN[plain];
       return `<label class="sk-twin">Gives <select data-sk="twin" data-i="${i}" aria-label="What it gives"><option value="${plain}" ${row.key===plain?'selected':''}>${plain === 'tide' ? 'Tide bonus' : plain === 'king' ? escapeHtml(TX('ui.kingly-default-opt')) /* TR */ : 'Stat bonus'}</option><option value="${adv}" ${row.key===adv?'selected':''}>Skills</option></select></label>`; })() : ''}
     ${oneOffTagHTML(s)}${valueHtml}
     ${liveReadout}
     ${'' /* 2026-10-13 (user: "In the future, i want to be able to add skills at different levels. To not clump up the UI, just have a + button per row"): a row can arrive at a level; ＋ adds a row for the same skill one level up */}
-    ${row.lv ? `<label class="sk-lv" title="This skill arrives at this level">Lv <select data-sk="lv" data-i="${i}">${Array.from({length:11}, (_, k)=> k + 1).map(L=> `<option value="${L}" ${row.lv===L?'selected':''}>${L}</option>`).join('')}</select></label>` : ''}
-    ${CONTEXT_ROW_KINDS.has(s.kind) ? '' : `<button class="btn small ghost sk-add-lv" data-addskillrow="${i}" title="Add a row for this skill at a later level">＋</button>`}
+    ${'' /* 2026-11-05 (package EDIT1, owner 23:35: "When I press the + on a skill, it shouldn't spawn a new line but just add the level parameter in its own line."): the Lv box is always in the row (hidden until the skill has a level, so a typed value survives the redraw); ＋ shows it, its ✕ hides it. Level 0 only shows for a row that already has it. */}
+    <span class="sk-lv" ${row.lv != null ? '' : 'hidden'} title="This skill arrives at this level"><span class="sk-lv-t">Lv</span> <select data-sk="lv" data-i="${i}" aria-label="Lv">${Array.from({length:12}, (_, k)=> k).filter(L=> L >= 1 || row.lv === 0).map(L=> `<option value="${L}" ${(row.lv != null ? row.lv : edit1DefaultLv())===L?'selected':''}>${L}</option>`).join('')}</select>${(row.lv != null && row.lv > 0 && !(EDIT1_FROM_LV1.has(row.key) && cardBaseLevel(editingCard) < 1)) ? `<button type="button" class="btn small ghost sk-rm-lv" data-rmlv="${i}" aria-label="${escapeAttr(TX('ui.edit1-rm-lv'))}" title="${escapeAttr(TX('ui.edit1-rm-lv'))}">✕</button>` : ''}</span>
+    ${(CONTEXT_ROW_KINDS.has(s.kind) || row.lv != null || (EDIT1_FROM_LV1.has(row.key) && cardBaseLevel(editingCard) < 1)) ? '' : `<button class="btn small ghost sk-add-lv" data-addskillrow="${i}" aria-label="${escapeAttr(TX('ui.edit1-add-lv'))}" title="${escapeAttr(TX('ui.edit1-add-lv'))}">＋</button>`}
     <button class="btn small danger rm" data-rmskill="${i}" aria-label="Remove this skill" title="Remove this skill">✕</button>
   </div>`;
 }
@@ -12134,7 +12163,7 @@ function readEditorFormIntoCard(){
       else if(c.cardType === 'spell' || c.cardType === 'equipment'){ delete c.cardType; delete c.spell; delete c.equip; } } }
   { const fa = document.getElementById('fArtStyle'); if(fa){ if(fa.value === 'extended') c.artExtended = true; else delete c.artExtended; } } // 2026-10-10: normal vs extended art
   { const fy = document.getElementById('fArtPosY'); if(fy){ const n = fy.value === '' ? NaN : Math.round(Number(fy.value)); if(Number.isFinite(n) && n !== 50) c.artPosY = Math.max(0, Math.min(100, n)); else delete c.artPosY; } } // 2026-11-04 (UI19): art focus
-  { const fs = document.getElementById('fSpecies'); if(fs){ const sp = fs.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean).map(x=> Object.keys(SPECIES_PHYLUM).find(k=> k.toLowerCase()===x.toLowerCase()) || x).slice(0, 2);
+  { const fs = document.getElementById('fSpecies'); if(fs){ const sp = [...new Set([fs.value, (document.getElementById('fSpecies2') || {}).value].filter(Boolean).map(x=> x.trim()).filter(Boolean).map(x=> Object.keys(SPECIES_PHYLUM).find(k=> k.toLowerCase()===x.toLowerCase()) || x))].slice(0, 2); // EDIT1 (2026-11-05): two dropdowns, no typed list
     if(sp.length) c.species = sp; else { delete c.species; if(!c.test && !c.field && !c.cardType) showToast('This card has no species. Every unit needs an animal type or Elemental.', 'warn'); } } }
   // 2026-09-27, item 9: no editor field for this any more (see the removed markup's own
   // comment above) — keep whatever value the card already carries instead of reading a
@@ -12200,8 +12229,8 @@ function readEditorFormIntoCard(){
     const key = row.querySelector('[data-sk="key"]').value;
     const sdef = SKILL_DEFS.find(x=>x.key===key);
     if(!sdef) return;
-    const lvEl = row.querySelector('[data-sk="lv"]'), L = lvEl ? Number(lvEl.value) : 0;
-    const fx = L > 0 ? (levelFx[L] = levelFx[L] || {}) : newEffects;
+    const lvEl = row.querySelector('[data-sk="lv"]'), lvBox = lvEl && lvEl.closest('.sk-lv'), L = (lvEl && !(lvBox && lvBox.hidden)) ? Number(lvEl.value) : NaN; // EDIT1 (2026-11-05): a hidden Lv box = no level; Level 0 is a level (a Baby's Hatchling)
+    const fx = Number.isFinite(L) && L >= 0 ? (levelFx[L] = levelFx[L] || {}) : newEffects;
     if(sdef.kind==='typeTwoNumber'){ sdef.apply(fx, ['val0','val1','val2'].map(k=> (row.querySelector(`[data-sk="${k}"]`)||{}).value)); }
     else if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount' || sdef.kind==='grant2' || sdef.kind==='transform' || sdef.kind==='ritual'){ // + Tide – {…}, {…} (2026-10-15); + Transform, Ritual (CX2, 2026-10-21)
       const v0 = row.querySelector('[data-sk="val0"]').value, v1 = row.querySelector('[data-sk="val1"]').value, v2El = row.querySelector('[data-sk="val2"]'), v3El = row.querySelector('[data-sk="val3"]');

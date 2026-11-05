@@ -3981,5 +3981,9 @@
  "Root Grip: {name} is Tangled.": "Étreinte des racines : {name} est entravé.",
  "Cracking Bark: the bramble loses {n} Shield.": "Écorce fendue : la ronce perd {n} Bouclier.",
  "Zoom in": "Zoom avant",
- "Zoom out": "Zoom arrière"
+ "Zoom out": "Zoom arrière",
+ "Give this skill a level (it arrives at that level)": "Donner un niveau à cette compétence (elle arrive à ce niveau)",
+ "Remove the level (the skill is there from the start)": "Retirer le niveau (la compétence est là dès le début)",
+ "Second species (optional, makes a hybrid)": "Deuxième espèce (facultatif, fait un hybride)",
+ "— none —": "— aucune —"
 }

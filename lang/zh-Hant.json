@@ -3981,5 +3981,9 @@
  "Root Grip: {name} is Tangled.": "根縛：{name} 被纏住了。",
  "Cracking Bark: the bramble loses {n} Shield.": "裂樹皮：荊棘失去 {n} 護盾。",
  "Zoom in": "放大",
- "Zoom out": "縮小"
+ "Zoom out": "縮小",
+ "Give this skill a level (it arrives at that level)": "給此技能設定等級（到該等級才獲得）",
+ "Remove the level (the skill is there from the start)": "移除等級（技能從一開始就有）",
+ "Second species (optional, makes a hybrid)": "第二物種（可選，成為混種）",
+ "— none —": "— 無 —"
 }
