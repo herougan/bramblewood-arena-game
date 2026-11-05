@@ -37,7 +37,7 @@ const ids = new Set(); cards.forEach(c=> ids.add(c.numericId)); ok(ids.size === 
 const prompts = R('docs/art-style-prompts.md'), BANNED = ['no clothes', 'spiked', 'studded', 'monitor', 'sperm', 'corpse', 'sword', 'spear', 'axe', 'dagger', 'bow and arrow', 'weapon', 'blade'];
 NEW.forEach(s=>{ const c = byId[s.id]; ok(!!c, `${s.id}: in cards.json`); if(!c) return;
   ok(s.fx.every(k=> c.effects && c.effects[k]) && Object.keys(c.effects).length === 2, `${s.id}: carries ${s.fx.join(' + ')} (two skills)`);
-  ok(!c.art && !!c.icon, `${s.id}: art is the emoji placeholder (art is a later package)`);
+  ok(/^data:image\/png;base64,/.test(c.art || "") && !!c.icon, `${s.id}: has its ART9 card art and keeps its icon`); // 2026-11-05 (ART9): the art came in; was "the emoji placeholder"
   ok(c.source && c.source.kind === 'pack' && c.source.map === s.sub && !c.unattainable && !c.awaitingSource, `${s.id}: a pack card of its list, in play`);
   ok(cards.indexOf(c) >= cards.length - 2, `${s.id}: appended at the end`);
   const m = OBT[s.id]; ok(m > 0, `${s.id}: obtainable from Map ${m} (card-obtain-maps)`);

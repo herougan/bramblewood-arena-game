@@ -124,3 +124,6 @@ Card art: paste the base prompt first, then the line below. Run the pixel pass a
 
 ### Victoria Regia
 > Full-body character in a small scene, centred, slight low angle: a giant round water lily pad with a raised rim and a cheerful face in its big white-and-pink flower, a young folded leaf pushing up beside it, the pad's turned-up underside showing rows of small red thorns, calm pond background with reeds, dragonflies and soft evening light, one bright pink accent.
+
+### Old Snapjaw
+> (ART9 2026-11-05, owner 11-04 "Old snapjaw needs new art") Full-body character in a small scene: a huge ancient old alligator with a long scarred snout, mossy green scales and a crown of pink swamp flowers (its own item, kept from the old art), lying half submerged in murky swamp water among cypress roots and lily pads, one glowing yellow eye watching patiently, misty green swamp with hanging moss and fireflies.

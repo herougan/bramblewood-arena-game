@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Package ART9 (card art: Nudibranch, Victoria Regia, Old Snapjaw)
+- PixelLab Create image (Pro, 128x128, 2x2, the owner's account, nothing bought), one variant picked by eye per card, cropped in the browser and imported with `tools/art/art9_import_2026_11_05.py` (ART7's 256 px finish + ART2's art field edit). Nudibranch A, Victoria Regia B, Old Snapjaw A. Old Snapjaw stays an alligator and keeps its flower crown; a first run that drew a snapping turtle was not used. Contact sheet `docs/art/art9-contact-2026-11-05.png`; prompts in `art/cards/<id>.prompt.txt` and `docs/art-style-prompts.md`. Viewed in game (card detail, 390 px).
+
 ## 2026-11-05 Package BAL18 (stale ladder decks, the Lodge Matriarch, road re-measure)
 - **Reference ladder:** the 85 decks on 32 maps that had left their map's pool after CONTENT10 were rebuilt with BAL13's candidates, measure and choice rule. The other 315 decks are unchanged. Each map is ranked weak to strong again, and the result is baked into the game (`tools/bal18/ladder_stale_2026_11_05.js`, `tools/opt/ref_decks.js --apply`).
 - **2-A-7 The Lodge Matriarch:** no change. All 365 legal decks from her list (under K14) were tried, and the best still loses about 97.5% of the time to the Map reference (target 40). Decision BAL18-1.
