@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-05 21:30: Release 11-05a shipped ("continue ... push at the end of this")
+- Done (shipped): DEC2-DEC5, UI22a, ENG24, UI22, CONTENT10, BAL16, UI21, BAL17, CONTENT11, BAL18, ART9, ART9b. See docs/CHANGELOG.md.
+- Open: the full unit run's 55 failing suites (19 not in the 11-04 list; most pin decks, leaders or decisions BAL16 / ENG24 / DEC changed on purpose: lead, dec1, eb, gates, pale-desert, bal9, bal13, thematic, card-pool; to update in a TESTFIX2 package). Glacial Ape-King is still a Map 6 pack card though it is on no list (rw5). ART8's 104 card arts. ART9b's weakest scenes (Wildfire, Quicksand).
+- Owner calls open: BAL17-1 (enemy brambles' +2; settles ENG24-1, BAL16-1), BAL17-2, BAL18-1, BAL16-2/3/4, CONTENT10-1/2, CONTENT11-1..4, UI21-1, ENG24-2, DELIV-1, ENG22-1, WIND-3 (not yet recorded), ENG23-5 "apply it".
+
 ## 11-04 20:17: Release 11-04a shipped ("continue, then push")
 - Done (shipped): QA2, FIX8, ECON3 (code; layout SQL not applied), CONTENT9, UI18, LISTFIX2, CUT3, ENG22, SKILLREC1, UI19, ENG21, FEEL1, UI20, ENG23, TESTFIX1, REG1. See docs/CHANGELOG.md.
 - Open: ART8 (104 card arts left; needs the browser pane visible), the skirmish deck rebuild after the owner's pass (CUT3-1: 45 decks / 147 copies), the 47 real findings in docs/testfix1-2026-11-04.md, the browser tests that fail on main too (ui_smoke, flows, ed, nv, codex_perf, en3-en7, eq2 and others; REG1 notes the fresh test profile's deck copy gate and the Chromium crashes under low disk).

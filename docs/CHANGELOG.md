@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Release 11-05a (DEC2-5, UI22a, ENG24, UI22, CONTENT10, BAL16, UI21, BAL17, CONTENT11, BAL18, ART9, ART9b)
+- Players see: brambles +2 on every ability number; new skills Relict, Meld, Immunity, Sequestration; the map card counts (own 10 -> 5, carried 5 -> 16 by map); 142 fight decks rebuilt with each fight's own list; four two-card combo skirmishes; Maps 21-24 retuned; nests unlock from discovery (Maps 4, 8, 12, 16, 20, 24) with shadow slots; a Keyword of the map and Skirmish rewards / Recommended by Claude in Map cards (which scrolls again); best rank on cleared nodes; 11 early boss gimmicks; Nudibranch and Victoria Regia; new art for them and Old Snapjaw; seven field scenes of their own.
+- Balance tools: new PRO / BPRO / WPRO reference decks for Maps 0-24; 85 stale ladder decks rebuilt. Road (Map reference, no leader, 256 fights): 109 in band / 137 within 10 / 63 beyond 20.
+- Tests: full unit run 248 passed, 55 failed (19 not in the 11-04 list, all reviewed: test pins of this batch's deliberate deck / leader / decision changes, plus rw5's Ape-King pack card; listed in action-items). card-matrix 0 failures; 61,332 golden diffs from the two new cards' index shift (CONTENT11 checked the new engine on the old cards: 0 diffs); goldens updated. Supabase: ECON3 layout applied 11-04 (owner "Apply it to ECON3 yourself").
+
 ## 2026-11-05 Package ART9 (card art: Nudibranch, Victoria Regia, Old Snapjaw)
 - PixelLab Create image (Pro, 128x128, 2x2, the owner's account, nothing bought), one variant picked by eye per card, cropped in the browser and imported with `tools/art/art9_import_2026_11_05.py` (ART7's 256 px finish + ART2's art field edit). Nudibranch A, Victoria Regia B, Old Snapjaw A. Old Snapjaw stays an alligator and keeps its flower crown; a first run that drew a snapping turtle was not used. Contact sheet `docs/art/art9-contact-2026-11-05.png`; prompts in `art/cards/<id>.prompt.txt` and `docs/art-style-prompts.md`. Viewed in game (card detail, 390 px).
 ## 2026-11-05 Package ART9b (field art: seven more Environment cards get their own scene)
