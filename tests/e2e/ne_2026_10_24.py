@@ -49,7 +49,7 @@ async def run(b, url, w):
       const lk = document.querySelector('#view-nest [data-nest-locked]'); lk.click(); await new Promise(r=>setTimeout(r,150));
       return {tabs, wallet, noMap, label: (lk.querySelector('.ne-lock-label')||{}).textContent || ''};"""))
     ok(len(r['tabs']) == 2 and 'Hatchery' in r['tabs'][0] and 'Upgrades' in r['tabs'][1], f"#11 Nest tabs {r['tabs']}"); ok(r['wallet'] == 3, f"#9 the Nest's wallet ({r['wallet']} pills)")
-    ok(r['noMap'], '#10 no map number in the Hatchery'); ok(r['label'] == 'Locked for now — progress further', f"#10 a tapped locked nest says {r['label']!r}")
+    ok(r['noMap'], '#10 no map number in the Hatchery'); ok(r['label'] == 'Unlocks from discovery', f"#10 a tapped locked nest says {r['label']!r}")  # 2026-11-05 (UI21, owner FIX8-3: "say it unlocks from discovery"); was 'Locked for now — progress further'
     await shot(pg, 'nest-locked', w)
     r = await pg.evaluate(E("""grantEgg('bird', 't'); unlockCardForPlayer('field-mouse', 'test'); const c = (myCardCopies['field-mouse']||[]).slice(-1)[0]; if(c){ c.level = 0; c.hatch = 1; saveCardCopies(); }
       renderNest(); document.querySelector('[data-nest-empty]').click(); await new Promise(r=>setTimeout(r,300));
