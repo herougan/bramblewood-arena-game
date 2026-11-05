@@ -1,0 +1,86 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:54:53.202Z",
+ "map": {
+  "id": "mr",
+  "num": 13,
+  "name": "The Redwood Deep"
+ },
+ "pool": [
+  "ant-hill",
+  "badger-lumberjack",
+  "berserker-boar",
+  "bramble-hoglet",
+  "bramblewood-lynx",
+  "carrion-crow",
+  "corpse-flower-beetle",
+  "cunning-vixen",
+  "fawn-scout",
+  "grizzly-vanguard",
+  "owl-nightwatch",
+  "quillback-elder",
+  "redwood-woodpecker",
+  "sergeant-bramblefox",
+  "shimmerwing-stag",
+  "swift-fox",
+  "tasmanian-devil"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ant-hill": 4,
+    "berserker-boar": 4,
+    "carrion-crow": 1,
+    "grizzly-vanguard": 4,
+    "quillback-elder": 4,
+    "tasmanian-devil": 3
+   },
+   "score": 0.0568,
+   "ci": [
+    0.0305,
+    0.0832
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (19 copies at 1+ Lumber, average 1.8)"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 2156,
+   "seconds": 31
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "berserker-boar": 2,
+    "corpse-flower-beetle": 3,
+    "cunning-vixen": 4,
+    "grizzly-vanguard": 4,
+    "quillback-elder": 4,
+    "redwood-woodpecker": 3
+   },
+   "score": 0.1629,
+   "ci": [
+    0.1208,
+    0.2049
+   ],
+   "refWins": 0.9028,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.5)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 2046,
+   "seconds": 35
+  }
+ ]
+}

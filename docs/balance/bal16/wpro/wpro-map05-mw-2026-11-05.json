@@ -1,0 +1,85 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:39:20.005Z",
+ "map": {
+  "id": "mw",
+  "num": 5,
+  "name": "Gatorback Swamp"
+ },
+ "pool": [
+  "alligator-gar",
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fen-mink",
+  "fire-ant-raft",
+  "grass-viper",
+  "muskrat-reedgatherer",
+  "nutria-reedcutter",
+  "old-snapjaw",
+  "pond-algae",
+  "snapstick-turtle",
+  "swamp-alligator"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "anhinga-spearbird": 4,
+    "constrictor-coil": 4,
+    "crocodile-ambusher": 4,
+    "fen-mink": 1,
+    "snapstick-turtle": 4,
+    "swamp-alligator": 3
+   },
+   "score": 0.0625,
+   "ci": [
+    0.0337,
+    0.0913
+   ],
+   "refWins": 0.9583,
+   "labels": [
+    "big (19 copies at 1+ Lumber, average 1.5)"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1900,
+   "seconds": 32
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "anhinga-spearbird": 2,
+    "box-turtle": 3,
+    "constrictor-coil": 4,
+    "crocodile-ambusher": 4,
+    "cypress-root-lurker": 4,
+    "old-snapjaw": 3
+   },
+   "score": 0.1583,
+   "ci": [
+    0.1172,
+    0.1994
+   ],
+   "refWins": 0.9028,
+   "labels": [
+    "big (17 copies at 1+ Lumber, average 1.4)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 1760,
+   "seconds": 35
+  }
+ ]
+}

@@ -1,0 +1,761 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T04:10:38.851Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "m3",
+  "num": 19,
+  "name": "Ashen Spurn"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-salamander",
+  "apollo-butterfly",
+  "beluga",
+  "blue-ringed-octopus",
+  "cinder-stoker",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "fire-salamander",
+  "glacier-wolf-pack",
+  "glimmer-spider",
+  "granite-ox-golem",
+  "grave-grin-hyena",
+  "harbor-seal",
+  "hercules-beetle",
+  "ibex-rockcaller",
+  "lantern-spark-fly",
+  "magma-titan",
+  "mountain-hare",
+  "obsidian-scorpion",
+  "pit-glutton",
+  "polar-bear",
+  "pumice-beetle",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "stoat-cutthroat",
+  "sulfur-cinder-moth",
+  "talus-pika",
+  "thorn-shrike",
+  "walrus-icebreaker",
+  "wolf-spider-mother",
+  "yeti"
+ ],
+ "poolNames": [
+  "Alpine Salamander",
+  "Apollo Butterfly",
+  "Beluga",
+  "Blue-ringed Octopus",
+  "Cinder Stoker",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Fire Salamander",
+  "Glacier Wolf Pack",
+  "Glimmer Spider",
+  "Granite Ox Golem",
+  "Grave-Grin Hyena",
+  "Harbor Seal",
+  "Hercules Beetle",
+  "Ibex Rockcaller",
+  "Lantern Spark Fly",
+  "Magma Rhino",
+  "Mountain Hare",
+  "Obsidian Scorpion",
+  "Pit Glutton",
+  "Polar Bear",
+  "Pumice Beetle",
+  "Snow Bunting Archer",
+  "Snow Ermine",
+  "Spitting Spider",
+  "Stoat Cutthroat",
+  "Sulfur Cinder Moth",
+  "Talus Pika",
+  "Thorn Shrike",
+  "Walrus Icebreaker",
+  "Wolf Spider Mother",
+  "Yeti"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "apollo-butterfly",
+   "beluga",
+   "cinder-stoker",
+   "eagle-owl-quartermaster",
+   "fire-salamander",
+   "glacier-wolf-pack",
+   "granite-ox-golem",
+   "harbor-seal",
+   "hercules-beetle",
+   "magma-titan",
+   "obsidian-scorpion",
+   "pit-glutton",
+   "pumice-beetle",
+   "snow-bunting-archer",
+   "snow-ermine",
+   "spitting-spider",
+   "sulfur-cinder-moth",
+   "talus-pika",
+   "walrus-icebreaker",
+   "yeti"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:19-1",
+   "label": "vs 19-1 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-2",
+   "label": "vs 19-2 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-3",
+   "label": "vs 19-3 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-4",
+   "label": "vs 19-4 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-5",
+   "label": "vs 19-5 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-6",
+   "label": "vs 19-6 miniboss's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 19-1's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:road19",
+   "label": "vs reference deck (Map 19) under 19-2's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+   "weight": 0.1111
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "dust-hyena",
+    "pumice-beetle"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "apollo-butterfly",
+    "eagle-owl-quartermaster",
+    "lantern-spark-fly",
+    "sulfur-cinder-moth",
+    "thorn-shrike"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:evasion",
+   "label": "evasion (skill family)",
+   "cards": [
+    "harbor-seal",
+    "mountain-hare",
+    "polar-bear",
+    "snow-ermine"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 2,
+   "games": 1620,
+   "apartFromEarlier": 16
+  },
+  {
+   "focus": "family:flying",
+   "steps": 6,
+   "moves": 4,
+   "games": 1746,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:evasion",
+   "steps": 6,
+   "moves": 2,
+   "games": 1620,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 3,
+   "games": 1566,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 114,
+ "games": 7128,
+ "decks": [
+  {
+   "focus": "family:evasion",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "evasion x8"
+   ],
+   "deck": {
+    "cinder-stoker": 4,
+    "dust-hyena": 3,
+    "mountain-hare": 4,
+    "obsidian-scorpion": 3,
+    "snow-ermine": 4,
+    "stoat-cutthroat": 2
+   },
+   "cards": [
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.9028,
+   "ci": [
+    0.8677,
+    0.9379
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.25,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "cinder-stoker": 4,
+    "dust-hyena": 4,
+    "obsidian-scorpion": 3,
+    "pit-glutton": 3,
+    "polar-bear": 2,
+    "talus-pika": 4
+   },
+   "cards": [
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "pit-glutton",
+     "name": "Pit Glutton",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "polar-bear",
+     "name": "Polar Bear",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9028,
+   "ci": [
+    0.8668,
+    0.9388
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "flying x8"
+   ],
+   "deck": {
+    "apollo-butterfly": 4,
+    "cinder-stoker": 3,
+    "hercules-beetle": 3,
+    "lantern-spark-fly": 4,
+    "mountain-hare": 3,
+    "obsidian-scorpion": 3
+   },
+   "cards": [
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lantern-spark-fly",
+     "name": "Lantern Spark Fly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hercules-beetle",
+     "name": "Hercules Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8935,
+   "ci": [
+    0.8571,
+    0.93
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (8 resource makers)"
+   ],
+   "deck": {
+    "beluga": 3,
+    "blue-ringed-octopus": 3,
+    "dust-hyena": 4,
+    "obsidian-scorpion": 3,
+    "pit-glutton": 3,
+    "pumice-beetle": 4
+   },
+   "cards": [
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "pit-glutton",
+     "name": "Pit Glutton",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8426,
+   "ci": [
+    0.8055,
+    0.8797
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 1.1,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 8,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m3 --pool alpine-salamander,apollo-butterfly,beluga,blue-ringed-octopus,cinder-stoker,dust-hyena,eagle-owl-quartermaster,fire-salamander,glacier-wolf-pack,glimmer-spider,granite-ox-golem,grave-grin-hyena,harbor-seal,hercules-beetle,ibex-rockcaller,lantern-spark-fly,magma-titan,mountain-hare,obsidian-scorpion,pit-glutton,polar-bear,pumice-beetle,snow-bunting-archer,snow-ermine,spitting-spider,stoat-cutthroat,sulfur-cinder-moth,talus-pika,thorn-shrike,walrus-icebreaker,wolf-spider-mother,yeti --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus economy,family:flying,family:evasion,open --anchor apollo-butterfly,beluga,cinder-stoker,eagle-owl-quartermaster,fire-salamander,glacier-wolf-pack,granite-ox-golem,harbor-seal,hercules-beetle,magma-titan,obsidian-scorpion,pit-glutton,pumice-beetle,snow-bunting-archer,snow-ermine,spitting-spider,sulfur-cinder-moth,talus-pika,walrus-icebreaker,yeti --anchor-min 10 --level 1 --mode map-true"
+}

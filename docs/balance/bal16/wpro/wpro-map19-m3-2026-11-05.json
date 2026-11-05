@@ -1,0 +1,91 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T05:06:43.087Z",
+ "map": {
+  "id": "m3",
+  "num": 19,
+  "name": "Ashen Spurn"
+ },
+ "pool": [
+  "apollo-butterfly",
+  "beluga",
+  "cinder-stoker",
+  "eagle-owl-quartermaster",
+  "fire-salamander",
+  "glacier-wolf-pack",
+  "granite-ox-golem",
+  "harbor-seal",
+  "hercules-beetle",
+  "magma-titan",
+  "obsidian-scorpion",
+  "pit-glutton",
+  "pumice-beetle",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "sulfur-cinder-moth",
+  "talus-pika",
+  "walrus-icebreaker",
+  "yeti"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "eagle-owl-quartermaster": 1,
+    "glacier-wolf-pack": 4,
+    "granite-ox-golem": 3,
+    "magma-titan": 4,
+    "spitting-spider": 4,
+    "yeti": 4
+   },
+   "score": 0.088,
+   "ci": [
+    0.0547,
+    0.1212
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (15 copies at 2+ Lumber, average 2.1)",
+    "bleed x8"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1854,
+   "seconds": 35
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "fire-salamander": 4,
+    "granite-ox-golem": 3,
+    "harbor-seal": 2,
+    "magma-titan": 4,
+    "talus-pika": 4,
+    "yeti": 3
+   },
+   "score": 0.2569,
+   "ci": [
+    0.211,
+    0.3029
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (10 copies at 2+ Lumber, average 1.6)",
+    "fire x8"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 6,
+   "games": 1764,
+   "seconds": 41
+  }
+ ]
+}

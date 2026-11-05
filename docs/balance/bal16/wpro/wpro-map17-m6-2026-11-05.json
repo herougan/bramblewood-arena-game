@@ -1,0 +1,90 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T05:01:06.062Z",
+ "map": {
+  "id": "m6",
+  "num": 17,
+  "name": "Wolfsbane Tundra"
+ },
+ "pool": [
+  "alpha-howler",
+  "beaver-lumberjack",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "ibex-rockcaller",
+  "lone-grey-wolf",
+  "mountain-hare",
+  "polar-bear",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "taiga-lynx",
+  "walrus-icebreaker",
+  "wolfsbane-alpha",
+  "woodland-caribou"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "alpha-howler": 4,
+    "harbor-seal": 4,
+    "polar-bear": 2,
+    "snow-bunting-archer": 3,
+    "spitting-spider": 4,
+    "taiga-lynx": 3
+   },
+   "score": 0.0814,
+   "ci": [
+    0.0495,
+    0.1134
+   ],
+   "refWins": 0.9861,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "evasion x9",
+    "ranged x7"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 1782,
+   "seconds": 37
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "alpha-howler": 4,
+    "beaver-lumberjack": 4,
+    "lone-grey-wolf": 2,
+    "mountain-hare": 4,
+    "polar-bear": 2,
+    "snow-bunting-archer": 4
+   },
+   "score": 0.2879,
+   "ci": [
+    0.2387,
+    0.3371
+   ],
+   "refWins": 0.8611,
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.8)",
+    "cold x8",
+    "evasion x6"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 5,
+   "games": 2068,
+   "seconds": 43
+  }
+ ]
+}

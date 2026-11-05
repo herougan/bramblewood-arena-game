@@ -1,0 +1,903 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T04:16:23.673Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "m11",
+  "num": 20,
+  "name": "The Sundered Peak"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ash-cloud-condor",
+  "ash-moth",
+  "ashbone-ghoul",
+  "beaver-lumberjack",
+  "blue-ringed-octopus",
+  "cave-warlord",
+  "chamois-leaper",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "eagle-owl-quartermaster",
+  "ember-centipede",
+  "eyrie-warden",
+  "fire-salamander",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "grave-grin-hyena",
+  "ibex-rockcaller",
+  "magma-salamander",
+  "magma-titan",
+  "magma-wraith",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pack-mule",
+  "peregrine-stooper",
+  "pumice-beetle",
+  "red-billed-chough",
+  "skull-vulture",
+  "stalactite-golem",
+  "stoat-cutthroat",
+  "talus-pika",
+  "vampire-roost",
+  "walrus-icebreaker",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Alpine Swift",
+  "Ancient Sloth Titan",
+  "Apollo Butterfly",
+  "Ash Cloud Condor",
+  "Ash Moth",
+  "Ashbone Ghoul",
+  "Beaver Lumberjack",
+  "Blue-ringed Octopus",
+  "Cave Warlord",
+  "Chamois Leaper",
+  "Cinder Skeleton",
+  "Cinder Stoker",
+  "Cave Bear",
+  "Eagle-Owl Quartermaster",
+  "Ember Centipede",
+  "Eyrie Warden",
+  "Fire Salamander",
+  "Fumarole Ibex",
+  "Granite Ox Golem",
+  "Grave-Grin Hyena",
+  "Ibex Rockcaller",
+  "Magma Salamander",
+  "Magma Rhino",
+  "Magma Wraith",
+  "Obsidian Scorpion",
+  "Ossuary Lammergeier",
+  "Pack Mule",
+  "Peregrine Stooper",
+  "Pumice Beetle",
+  "Red-billed Chough",
+  "Skull Vulture",
+  "Stalactite Pill Bug",
+  "Stoat Cutthroat",
+  "Talus Pika",
+  "Vampire Roost",
+  "Walrus Icebreaker",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "alpine-marmot",
+   "alpine-swift",
+   "ancient-sloth-titan",
+   "apollo-butterfly",
+   "ash-cloud-condor",
+   "ashbone-ghoul",
+   "beaver-lumberjack",
+   "cave-warlord",
+   "chamois-leaper",
+   "cinder-skeleton",
+   "cinder-stoker",
+   "deep-cave-troll",
+   "eagle-owl-quartermaster",
+   "eyrie-warden",
+   "fumarole-ibex",
+   "granite-ox-golem",
+   "magma-salamander",
+   "magma-titan",
+   "magma-wraith",
+   "obsidian-scorpion",
+   "ossuary-lammergeier",
+   "pack-mule",
+   "pumice-beetle",
+   "stalactite-golem",
+   "talus-pika",
+   "vampire-roost"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:20-1",
+   "label": "vs 20-1 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:20-2",
+   "label": "vs 20-2 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:20-3",
+   "label": "vs 20-3 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:20-4",
+   "label": "vs 20-4 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:20-5",
+   "label": "vs 20-5 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:20-6",
+   "label": "vs 20-6 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:20-7",
+   "label": "vs 20-7 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:20-8",
+   "label": "vs 20-8 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:20-9",
+   "label": "vs 20-9 boss's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:20-10",
+   "label": "vs 20-10 worldboss's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 20-1's field",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|ref:road20",
+   "label": "vs reference deck (Map 20) under 20-2's field",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
+   "weight": 0.0769
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "pack-mule",
+    "pumice-beetle"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "alpine-swift",
+    "apollo-butterfly",
+    "ash-cloud-condor",
+    "ash-moth",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "ossuary-lammergeier",
+    "peregrine-stooper",
+    "red-billed-chough",
+    "skull-vulture"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "alpine-swift",
+    "chamois-leaper",
+    "ember-centipede",
+    "fumarole-ibex",
+    "peregrine-stooper",
+    "stoat-cutthroat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 4,
+   "moves": 2,
+   "games": 1664,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:flying",
+   "steps": 3,
+   "moves": 2,
+   "games": 1560,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 3,
+   "moves": 1,
+   "games": 1534,
+   "apartFromEarlier": 16
+  },
+  {
+   "focus": "open",
+   "steps": 4,
+   "moves": 4,
+   "games": 1820,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 10,
+ "seconds": 207,
+ "games": 7410,
+ "decks": [
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "ashbone-ghoul": 3,
+    "cinder-stoker": 4,
+    "pack-mule": 2,
+    "pumice-beetle": 4,
+    "stalactite-golem": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stalactite-golem",
+     "name": "Stalactite Pill Bug",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7468,
+   "ci": [
+    0.7036,
+    0.79
+   ],
+   "avgLumber": 0.75,
+   "avgWait": 1.1,
+   "curve": {
+    "0": 9,
+    "1": 7,
+    "2": 4
+   },
+   "resourceMakers": 6,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-1",
+     "label": "vs 20-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-2",
+     "label": "vs 20-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-3",
+     "label": "vs 20-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-4",
+     "label": "vs 20-4 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-5",
+     "label": "vs 20-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-6",
+     "label": "vs 20-6 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-7",
+     "label": "vs 20-7 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-8",
+     "label": "vs 20-8 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-9",
+     "label": "vs 20-9 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-10",
+     "label": "vs 20-10 worldboss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.6 Lumber)"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "ash-cloud-condor": 3,
+    "blue-ringed-octopus": 3,
+    "chamois-leaper": 3,
+    "cinder-stoker": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ash-cloud-condor",
+     "name": "Ash Cloud Condor",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "chamois-leaper",
+     "name": "Chamois Leaper",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6346,
+   "ci": [
+    0.589,
+    0.6802
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-1",
+     "label": "vs 20-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-2",
+     "label": "vs 20-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-3",
+     "label": "vs 20-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-4",
+     "label": "vs 20-4 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-5",
+     "label": "vs 20-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-6",
+     "label": "vs 20-6 elite's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-7",
+     "label": "vs 20-7 elite's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-8",
+     "label": "vs 20-8 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-9",
+     "label": "vs 20-9 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-10",
+     "label": "vs 20-10 worldboss's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-2's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "strike-first x10"
+   ],
+   "deck": {
+    "beaver-lumberjack": 4,
+    "fumarole-ibex": 3,
+    "magma-wraith": 3,
+    "peregrine-stooper": 4,
+    "stoat-cutthroat": 3,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "peregrine-stooper",
+     "name": "Peregrine Stooper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fumarole-ibex",
+     "name": "Fumarole Ibex",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "magma-wraith",
+     "name": "Magma Wraith",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6154,
+   "ci": [
+    0.5664,
+    0.6644
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 1,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-1",
+     "label": "vs 20-1 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-2",
+     "label": "vs 20-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-3",
+     "label": "vs 20-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-4",
+     "label": "vs 20-4 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-5",
+     "label": "vs 20-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-6",
+     "label": "vs 20-6 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-7",
+     "label": "vs 20-7 elite's deck",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-8",
+     "label": "vs 20-8 elite's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-9",
+     "label": "vs 20-9 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-10",
+     "label": "vs 20-10 worldboss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "flying x9"
+   ],
+   "deck": {
+    "apollo-butterfly": 4,
+    "cinder-stoker": 4,
+    "deep-cave-troll": 3,
+    "grave-grin-hyena": 4,
+    "ossuary-lammergeier": 1,
+    "red-billed-chough": 4
+   },
+   "cards": [
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "red-billed-chough",
+     "name": "Red-billed Chough",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "copies": 3,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "ossuary-lammergeier",
+     "name": "Ossuary Lammergeier",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "superrare"
+    }
+   ],
+   "score": 0.4936,
+   "ci": [
+    0.4462,
+    0.5409
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 16,
+    "1": 1,
+    "3": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-1",
+     "label": "vs 20-1 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-2",
+     "label": "vs 20-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-3",
+     "label": "vs 20-3 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-4",
+     "label": "vs 20-4 skirmish's deck",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-5",
+     "label": "vs 20-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-6",
+     "label": "vs 20-6 elite's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-7",
+     "label": "vs 20-7 elite's deck",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-8",
+     "label": "vs 20-8 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-9",
+     "label": "vs 20-9 boss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-10",
+     "label": "vs 20-10 worldboss's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m11 --pool alpine-marmot,alpine-swift,ancient-sloth-titan,apollo-butterfly,ash-cloud-condor,ash-moth,ashbone-ghoul,beaver-lumberjack,blue-ringed-octopus,cave-warlord,chamois-leaper,cinder-skeleton,cinder-stoker,deep-cave-troll,eagle-owl-quartermaster,ember-centipede,eyrie-warden,fire-salamander,fumarole-ibex,granite-ox-golem,grave-grin-hyena,ibex-rockcaller,magma-salamander,magma-titan,magma-wraith,obsidian-scorpion,ossuary-lammergeier,pack-mule,peregrine-stooper,pumice-beetle,red-billed-chough,skull-vulture,stalactite-golem,stoat-cutthroat,talus-pika,vampire-roost,walrus-icebreaker,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus economy,family:flying,family:strike-first,open --anchor alpine-marmot,alpine-swift,ancient-sloth-titan,apollo-butterfly,ash-cloud-condor,ashbone-ghoul,beaver-lumberjack,cave-warlord,chamois-leaper,cinder-skeleton,cinder-stoker,deep-cave-troll,eagle-owl-quartermaster,eyrie-warden,fumarole-ibex,granite-ox-golem,magma-salamander,magma-titan,magma-wraith,obsidian-scorpion,ossuary-lammergeier,pack-mule,pumice-beetle,stalactite-golem,talus-pika,vampire-roost --anchor-min 10 --level 1 --mode map-true"
+}

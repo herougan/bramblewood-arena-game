@@ -1,0 +1,84 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:40:23.077Z",
+ "map": {
+  "id": "ms",
+  "num": 5,
+  "name": "The Sunken Grove"
+ },
+ "pool": [
+  "alligator-gar",
+  "anhinga-spearbird",
+  "bog-leech",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "fen-mink",
+  "grass-viper",
+  "hedgehog-herbalist",
+  "mangrove-mudskipper",
+  "nutria-reedcutter",
+  "old-snapjaw",
+  "swamp-alligator",
+  "venomlord-serpent"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "anhinga-spearbird": 4,
+    "constrictor-coil": 4,
+    "crocodile-ambusher": 4,
+    "old-snapjaw": 2,
+    "swamp-alligator": 4,
+    "venomlord-serpent": 2
+   },
+   "score": 0.006,
+   "ci": [
+    -0.0075,
+    0.0194
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (16 copies at 2+ Lumber, average 1.9)",
+    "armor x6"
+   ],
+   "apartFrom": [],
+   "steps": 7,
+   "games": 1792,
+   "seconds": 27
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "bog-leech": 4,
+    "constrictor-coil": 4,
+    "crocodile-ambusher": 2,
+    "hedgehog-herbalist": 3,
+    "old-snapjaw": 3,
+    "venomlord-serpent": 4
+   },
+   "score": 0.1488,
+   "ci": [
+    0.1006,
+    0.197
+   ],
+   "refWins": 0.9028,
+   "labels": [
+    "big (13 copies at 2+ Lumber, average 1.6)",
+    "bleed x7"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 7,
+   "games": 1750,
+   "seconds": 36
+  }
+ ]
+}

@@ -1,0 +1,86 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:45:12.863Z",
+ "map": {
+  "id": "m4",
+  "num": 8,
+  "name": "Caves & Alcoves"
+ },
+ "pool": [
+  "blind-cave-fish",
+  "cave-olm",
+  "echo-matriarch",
+  "echo-screecher",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "gull-thief",
+  "hollow-belly-rat",
+  "malachite-golem",
+  "octopus-tactician",
+  "pelican-diver",
+  "quarry-mole",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "sulfur-cinder-moth"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "blind-cave-fish": 3,
+    "hollow-belly-rat": 2,
+    "malachite-golem": 3,
+    "octopus-tactician": 4,
+    "pelican-diver": 4,
+    "stalactite-golem": 4
+   },
+   "score": 0.2727,
+   "ci": [
+    0.224,
+    0.3214
+   ],
+   "refWins": 0.9167,
+   "labels": [
+    "big (17 copies at 1+ Lumber, average 1.4)",
+    "armor x7",
+    "tide x7"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 1804,
+   "seconds": 33
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "gallery-orb-weaver": 4,
+    "hollow-belly-rat": 4,
+    "malachite-golem": 3,
+    "octopus-tactician": 1,
+    "pelican-diver": 4,
+    "quarry-mole": 4
+   },
+   "score": 0.4432,
+   "ci": [
+    0.3871,
+    0.4993
+   ],
+   "refWins": 0.7222,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 1848,
+   "seconds": 35
+  }
+ ]
+}

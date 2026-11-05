@@ -1,0 +1,91 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T05:14:58.712Z",
+ "map": {
+  "id": "m23",
+  "num": 23,
+  "name": "The Goldfeather Siege"
+ },
+ "pool": [
+  "acacia-giraffe",
+  "alley-cat",
+  "badger-trench-digger",
+  "beetle-battering-ram",
+  "bison-bulldozer",
+  "border-collie",
+  "eagle-owl-quartermaster",
+  "hoopoe-herald",
+  "howdah-archers",
+  "lodge-engineer",
+  "marshal-tuskwell",
+  "meerkat-burrower",
+  "mouse-sapper",
+  "pack-mule",
+  "pangolin-roller",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "siege-rhino",
+  "stoat-cutthroat",
+  "testudo-tortoise",
+  "triumvirate",
+  "war-elephant"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "acacia-giraffe": 4,
+    "bison-bulldozer": 4,
+    "lodge-engineer": 4,
+    "marshal-tuskwell": 1,
+    "pronghorn-racer": 4,
+    "testudo-tortoise": 3
+   },
+   "score": 0.2273,
+   "ci": [
+    0.1837,
+    0.2709
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (1 copies at 3+ Lumber, average 1.7)"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 1958,
+   "seconds": 36
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "acacia-giraffe": 4,
+    "alley-cat": 3,
+    "badger-trench-digger": 4,
+    "border-collie": 3,
+    "lodge-engineer": 4,
+    "meerkat-burrower": 2
+   },
+   "score": 0.2841,
+   "ci": [
+    0.2332,
+    0.3349
+   ],
+   "refWins": 0.875,
+   "labels": [
+    "big (0 copies at 3+ Lumber, average 1.4)"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 5,
+   "games": 1848,
+   "seconds": 33
+  }
+ ]
+}

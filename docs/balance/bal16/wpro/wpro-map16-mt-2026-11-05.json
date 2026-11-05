@@ -1,0 +1,88 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:59:46.370Z",
+ "map": {
+  "id": "mt",
+  "num": 16,
+  "name": "The Pinewood Taiga"
+ },
+ "pool": [
+  "alpha-howler",
+  "berserker-boar",
+  "boreal-elk",
+  "bramblewood-lynx",
+  "cone-cutter-squirrel",
+  "dhole-matriarch",
+  "grizzly-vanguard",
+  "lunar-howler",
+  "owl-nightwatch",
+  "redwood-woodpecker",
+  "snowshoe-hare",
+  "swift-fox",
+  "taiga-lynx",
+  "tasmanian-devil",
+  "woodland-caribou"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "alpha-howler": 3,
+    "berserker-boar": 4,
+    "boreal-elk": 4,
+    "dhole-matriarch": 2,
+    "grizzly-vanguard": 4,
+    "tasmanian-devil": 3
+   },
+   "score": 0.0167,
+   "ci": [
+    0.0005,
+    0.0328
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.9)",
+    "cleave x11",
+    "guard x6"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1860,
+   "seconds": 24
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "alpha-howler": 4,
+    "berserker-boar": 3,
+    "bramblewood-lynx": 3,
+    "grizzly-vanguard": 4,
+    "lunar-howler": 2,
+    "owl-nightwatch": 4
+   },
+   "score": 0.1,
+   "ci": [
+    0.0643,
+    0.1357
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.6)",
+    "cleave x8",
+    "night x6"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 6,
+   "games": 1820,
+   "seconds": 28
+  }
+ ]
+}

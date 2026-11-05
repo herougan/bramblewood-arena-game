@@ -1,0 +1,88 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:52:17.549Z",
+ "map": {
+  "id": "mv",
+  "num": 11,
+  "name": "The Aerie Vault"
+ },
+ "pool": [
+  "alpine-marmot",
+  "alpine-salamander",
+  "alpine-swift",
+  "apollo-butterfly",
+  "chamois-leaper",
+  "chipmunk-hoarder",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gale-swift",
+  "gangrenous-leech",
+  "golden-eagle-diver",
+  "ibex-rockcaller",
+  "swamp-alligator",
+  "vigil-owl",
+  "wound-reaver"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "alpine-swift": 4,
+    "chamois-leaper": 4,
+    "chipmunk-hoarder": 1,
+    "eyrie-warden": 4,
+    "swamp-alligator": 4,
+    "vigil-owl": 3
+   },
+   "score": 0.2024,
+   "ci": [
+    0.1482,
+    0.2566
+   ],
+   "refWins": 0.8194,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.2)",
+    "strike-first x8",
+    "flying x8"
+   ],
+   "apartFrom": [],
+   "steps": 8,
+   "games": 1904,
+   "seconds": 48
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "alpine-salamander": 3,
+    "chamois-leaper": 2,
+    "eyrie-warden": 4,
+    "gangrenous-leech": 4,
+    "golden-eagle-diver": 4,
+    "swamp-alligator": 3
+   },
+   "score": 0.3095,
+   "ci": [
+    0.2462,
+    0.3728
+   ],
+   "refWins": 0.8681,
+   "labels": [
+    "big (7 copies at 2+ Lumber, average 1.6)",
+    "flying x8",
+    "strike-first x6"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 7,
+   "games": 1722,
+   "seconds": 36
+  }
+ ]
+}

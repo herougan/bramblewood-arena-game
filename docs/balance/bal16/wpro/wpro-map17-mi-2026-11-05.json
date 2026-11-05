@@ -1,0 +1,85 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T05:02:23.876Z",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow"
+ },
+ "pool": [
+  "frost-hare-sprinter",
+  "greenland-shark",
+  "harbor-seal",
+  "lone-grey-wolf",
+  "polar-bear",
+  "ravenous-wolverine",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "talus-pika",
+  "walrus-icebreaker",
+  "wolfsbane-alpha"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "frost-hare-sprinter": 2,
+    "greenland-shark": 3,
+    "harbor-seal": 4,
+    "ravenous-wolverine": 3,
+    "snow-bunting-archer": 4,
+    "spitting-spider": 4
+   },
+   "score": 0.1905,
+   "ci": [
+    0.1328,
+    0.2481
+   ],
+   "refWins": 0.8472,
+   "labels": [
+    "big (18 copies at 1 Lumber, average 0.9)",
+    "ranged x8",
+    "tide x7"
+   ],
+   "apartFrom": [],
+   "steps": 12,
+   "games": 1722,
+   "seconds": 34
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "frost-hare-sprinter": 3,
+    "greenland-shark": 3,
+    "harbor-seal": 4,
+    "lone-grey-wolf": 2,
+    "snow-ermine": 4,
+    "talus-pika": 4
+   },
+   "score": 0.3155,
+   "ci": [
+    0.2552,
+    0.3757
+   ],
+   "refWins": 0.7778,
+   "labels": [
+    "big (9 copies at 1 Lumber, average 0.5)",
+    "evasion x11",
+    "tide x7"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 10,
+   "games": 1778,
+   "seconds": 44
+  }
+ ]
+}

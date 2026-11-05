@@ -1,0 +1,687 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T04:27:41.889Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "m24",
+  "num": 24,
+  "name": "Goldfeather Keep"
+ },
+ "level": 1,
+ "pool": [
+  "acacia-giraffe",
+  "alley-cat",
+  "ashbone-ghoul",
+  "badger-berserker",
+  "badger-trench-digger",
+  "balloon-archer",
+  "battlement-heron",
+  "beetle-battering-ram",
+  "border-collie",
+  "duckling-squadron",
+  "eagle-owl-quartermaster",
+  "elderhorn-monarch",
+  "gilded-swan-knight",
+  "grave-grin-hyena",
+  "house-cat",
+  "howdah-archers",
+  "iron-warden",
+  "land-tiller",
+  "lodge-engineer",
+  "magnate-duck",
+  "mallard-halberdier",
+  "marula-elephant",
+  "meerkat-burrower",
+  "ore-smelter-mole",
+  "pangolin-roller",
+  "raccoon-bandit",
+  "siege-rhino",
+  "spitting-cobra",
+  "stoat-cutthroat",
+  "tax-collector-teal",
+  "testudo-tortoise",
+  "tide-spirit",
+  "war-elephant",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Acacia Giraffe",
+  "Alley Cat",
+  "Ashbone Ghoul",
+  "Badger Berserker",
+  "Badger Trench Digger",
+  "Balloon Archer",
+  "Battlement Heron",
+  "Beetle Battering-Ram",
+  "Border Collie",
+  "Duckling Squadron",
+  "Eagle-Owl Quartermaster",
+  "Elderhorn Monarch",
+  "Gilded Swan Knight",
+  "Grave-Grin Hyena",
+  "House Cat",
+  "Howdah Archers",
+  "Iron Badger",
+  "Land Tiller",
+  "Lodge Engineer",
+  "The Magnate Duck",
+  "Mallard Halberdier",
+  "Marula Elephant",
+  "Meerkat Burrower",
+  "Ore-Smelter Mole",
+  "Pangolin Roller",
+  "Raccoon Bandit",
+  "Siege Rhino",
+  "Spitting Cobra",
+  "Stoat Cutthroat",
+  "Tax-Collector Teal",
+  "Testudo Tortoise",
+  "Tide Seahorse",
+  "War Elephant",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "acacia-giraffe",
+   "alley-cat",
+   "badger-trench-digger",
+   "balloon-archer",
+   "battlement-heron",
+   "beetle-battering-ram",
+   "border-collie",
+   "duckling-squadron",
+   "elderhorn-monarch",
+   "gilded-swan-knight",
+   "howdah-archers",
+   "iron-warden",
+   "land-tiller",
+   "lodge-engineer",
+   "magnate-duck",
+   "mallard-halberdier",
+   "ore-smelter-mole",
+   "raccoon-bandit",
+   "siege-rhino",
+   "stoat-cutthroat",
+   "tax-collector-teal",
+   "testudo-tortoise"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:24-1",
+   "label": "vs 24-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:24-2",
+   "label": "vs 24-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:24-3",
+   "label": "vs 24-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:24-4",
+   "label": "vs 24-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:24-5",
+   "label": "vs 24-5 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:24-6",
+   "label": "vs 24-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:24-7",
+   "label": "vs 24-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:24-8",
+   "label": "vs 24-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 24-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road24",
+   "label": "vs reference deck (Map 24) under 24-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 24-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "magnate-duck",
+    "ore-smelter-mole",
+    "raccoon-bandit",
+    "tax-collector-teal"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:ranged",
+   "label": "ranged (skill family)",
+   "cards": [
+    "balloon-archer",
+    "battlement-heron",
+    "eagle-owl-quartermaster",
+    "howdah-archers",
+    "spitting-cobra",
+    "war-elephant"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "gilded-swan-knight",
+    "magnate-duck",
+    "pangolin-roller",
+    "testudo-tortoise",
+    "war-elephant"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 4,
+   "games": 1716,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "family:ranged",
+   "steps": 5,
+   "moves": 3,
+   "games": 1826,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 4,
+   "games": 1738,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 82,
+ "games": 5808,
+ "decks": [
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (7 resource makers)",
+    "economy x7"
+   ],
+   "deck": {
+    "badger-berserker": 3,
+    "house-cat": 4,
+    "howdah-archers": 3,
+    "raccoon-bandit": 3,
+    "stoat-cutthroat": 3,
+    "tax-collector-teal": 4
+   },
+   "cards": [
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "tax-collector-teal",
+     "name": "Tax-Collector Teal",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "badger-berserker",
+     "name": "Badger Berserker",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "howdah-archers",
+     "name": "Howdah Archers",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8333,
+   "ci": [
+    0.7914,
+    0.8752
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "economy",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:24-1",
+     "label": "vs 24-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-2",
+     "label": "vs 24-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-3",
+     "label": "vs 24-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-4",
+     "label": "vs 24-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-5",
+     "label": "vs 24-5 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-6",
+     "label": "vs 24-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-7",
+     "label": "vs 24-7 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-8",
+     "label": "vs 24-8 miniboss's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 24-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road24",
+     "label": "vs reference deck (Map 24) under 24-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 24-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:ranged",
+   "labels": [
+    "ranged x9"
+   ],
+   "deck": {
+    "battlement-heron": 3,
+    "eagle-owl-quartermaster": 3,
+    "grave-grin-hyena": 4,
+    "howdah-archers": 3,
+    "land-tiller": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "land-tiller",
+     "name": "Land Tiller",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "battlement-heron",
+     "name": "Battlement Heron",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "howdah-archers",
+     "name": "Howdah Archers",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8182,
+   "ci": [
+    0.7755,
+    0.8609
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "ranged",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:24-1",
+     "label": "vs 24-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-2",
+     "label": "vs 24-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-3",
+     "label": "vs 24-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-4",
+     "label": "vs 24-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-5",
+     "label": "vs 24-5 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-6",
+     "label": "vs 24-6 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-7",
+     "label": "vs 24-7 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-8",
+     "label": "vs 24-8 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 24-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road24",
+     "label": "vs reference deck (Map 24) under 24-2's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 24-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)",
+    "flying x7"
+   ],
+   "deck": {
+    "battlement-heron": 3,
+    "border-collie": 3,
+    "duckling-squadron": 3,
+    "house-cat": 4,
+    "tax-collector-teal": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "tax-collector-teal",
+     "name": "Tax-Collector Teal",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "battlement-heron",
+     "name": "Battlement Heron",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "duckling-squadron",
+     "name": "Duckling Squadron",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7765,
+   "ci": [
+    0.7304,
+    0.8226
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:24-1",
+     "label": "vs 24-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-2",
+     "label": "vs 24-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-3",
+     "label": "vs 24-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-4",
+     "label": "vs 24-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-5",
+     "label": "vs 24-5 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-6",
+     "label": "vs 24-6 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-7",
+     "label": "vs 24-7 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:24-8",
+     "label": "vs 24-8 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 24-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road24",
+     "label": "vs reference deck (Map 24) under 24-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 24-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m24 --pool acacia-giraffe,alley-cat,ashbone-ghoul,badger-berserker,badger-trench-digger,balloon-archer,battlement-heron,beetle-battering-ram,border-collie,duckling-squadron,eagle-owl-quartermaster,elderhorn-monarch,gilded-swan-knight,grave-grin-hyena,house-cat,howdah-archers,iron-warden,land-tiller,lodge-engineer,magnate-duck,mallard-halberdier,marula-elephant,meerkat-burrower,ore-smelter-mole,pangolin-roller,raccoon-bandit,siege-rhino,spitting-cobra,stoat-cutthroat,tax-collector-teal,testudo-tortoise,tide-spirit,war-elephant,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus economy,family:ranged,family:armor,open --anchor acacia-giraffe,alley-cat,badger-trench-digger,balloon-archer,battlement-heron,beetle-battering-ram,border-collie,duckling-squadron,elderhorn-monarch,gilded-swan-knight,howdah-archers,iron-warden,land-tiller,lodge-engineer,magnate-duck,mallard-halberdier,ore-smelter-mole,raccoon-bandit,siege-rhino,stoat-cutthroat,tax-collector-teal,testudo-tortoise --anchor-min 10 --level 1 --mode map-true"
+}

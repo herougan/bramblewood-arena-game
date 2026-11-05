@@ -1,0 +1,86 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:32:15.047Z",
+ "map": {
+  "id": "mb",
+  "num": 2,
+  "name": "Pebble Beach"
+ },
+ "pool": [
+  "badger-lumberjack",
+  "beaver-lumberjack",
+  "bramble-sprout",
+  "conch-herald",
+  "cricket-drummer",
+  "driftwood-crab",
+  "gull-thief",
+  "moon-jelly",
+  "old-shell",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin",
+  "rock-pool-starfish"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "badger-lumberjack": 4,
+    "beaver-lumberjack": 2,
+    "gull-thief": 4,
+    "old-shell": 3,
+    "oystercatcher": 4,
+    "rock-pool-starfish": 3
+   },
+   "score": 0.099,
+   "ci": [
+    0.0586,
+    0.1394
+   ],
+   "refWins": 0.9028,
+   "labels": [
+    "big (11 copies at 1 Lumber, average 0.6)",
+    "economy (8 resource makers)",
+    "flying x8"
+   ],
+   "apartFrom": [],
+   "steps": 6,
+   "games": 1808,
+   "seconds": 35
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "badger-lumberjack": 4,
+    "bramble-sprout": 4,
+    "old-shell": 4,
+    "open-ocean-hermit-crab": 4,
+    "rock-pool-starfish": 4
+   },
+   "score": 0.1771,
+   "ci": [
+    0.1297,
+    0.2245
+   ],
+   "refWins": 0.7917,
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "economy (4 resource makers)",
+    "armor x8",
+    "tide x8"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 6,
+   "games": 1728,
+   "seconds": 35
+  }
+ ]
+}

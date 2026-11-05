@@ -1,0 +1,86 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:57:37.029Z",
+ "map": {
+  "id": "my",
+  "num": 14,
+  "name": "The Canopy"
+ },
+ "pool": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "hercules-beetle",
+  "hoopoe-herald",
+  "jaguar-stalker",
+  "kinkajou-lurker",
+  "leafcutter-gardener",
+  "lyrebird-mimic",
+  "pangolin-roller",
+  "poison-dart-croaker",
+  "pride-queen",
+  "proboscis-monkey",
+  "redwood-woodpecker",
+  "spitting-cobra",
+  "vampire-bat",
+  "weaver-bird"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "camouflage-frog": 4,
+    "jaguar-stalker": 3,
+    "lyrebird-mimic": 3,
+    "proboscis-monkey": 4,
+    "spitting-cobra": 3,
+    "vampire-bat": 3
+   },
+   "score": 0.1094,
+   "ci": [
+    0.0702,
+    0.1486
+   ],
+   "refWins": 0.8056,
+   "labels": [
+    "big (17 copies at 1 Lumber, average 0.8)",
+    "tide x8"
+   ],
+   "apartFrom": [],
+   "steps": 6,
+   "games": 1840,
+   "seconds": 45
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "apollo-butterfly": 3,
+    "hercules-beetle": 2,
+    "jaguar-stalker": 3,
+    "lyrebird-mimic": 4,
+    "proboscis-monkey": 4,
+    "weaver-bird": 4
+   },
+   "score": 0.2188,
+   "ci": [
+    0.1682,
+    0.2693
+   ],
+   "refWins": 0.6944,
+   "labels": [
+    "big (17 copies at 1 Lumber, average 0.8)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 7,
+   "games": 1920,
+   "seconds": 46
+  }
+ ]
+}

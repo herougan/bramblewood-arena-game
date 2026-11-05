@@ -1,0 +1,677 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T04:26:19.324Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "m23",
+  "num": 23,
+  "name": "The Goldfeather Siege"
+ },
+ "level": 1,
+ "pool": [
+  "acacia-giraffe",
+  "alley-cat",
+  "ashbone-ghoul",
+  "badger-berserker",
+  "badger-trench-digger",
+  "beetle-battering-ram",
+  "bison-bulldozer",
+  "border-collie",
+  "eagle-owl-quartermaster",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "house-cat",
+  "howdah-archers",
+  "ibex-rockcaller",
+  "lodge-engineer",
+  "marshal-tuskwell",
+  "marula-elephant",
+  "meerkat-burrower",
+  "meerkat-wayfarer",
+  "mouse-sapper",
+  "pack-mule",
+  "pangolin-roller",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "siege-rhino",
+  "spitting-cobra",
+  "springbok-pronker",
+  "stoat-cutthroat",
+  "testudo-tortoise",
+  "tide-spirit",
+  "triumvirate",
+  "war-elephant",
+  "weaver-bird",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Acacia Giraffe",
+  "Alley Cat",
+  "Ashbone Ghoul",
+  "Badger Berserker",
+  "Badger Trench Digger",
+  "Beetle Battering-Ram",
+  "Bison Bulldozer",
+  "Border Collie",
+  "Eagle-Owl Quartermaster",
+  "Grave-Grin Hyena",
+  "Hoopoe Herald",
+  "House Cat",
+  "Howdah Archers",
+  "Ibex Rockcaller",
+  "Lodge Engineer",
+  "Marshal Tuskwell",
+  "Marula Elephant",
+  "Meerkat Burrower",
+  "Meerkat Wayfarer",
+  "Mouse Sapper",
+  "Pack Mule",
+  "Pangolin Roller",
+  "Pronghorn Racer",
+  "Raccoon Bandit",
+  "Siege Rhino",
+  "Spitting Cobra",
+  "Springbok Pronker",
+  "Stoat Cutthroat",
+  "Testudo Tortoise",
+  "Tide Seahorse",
+  "Triumphvirate",
+  "War Elephant",
+  "Weaver Bird",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "acacia-giraffe",
+   "alley-cat",
+   "badger-trench-digger",
+   "beetle-battering-ram",
+   "bison-bulldozer",
+   "border-collie",
+   "eagle-owl-quartermaster",
+   "hoopoe-herald",
+   "howdah-archers",
+   "lodge-engineer",
+   "marshal-tuskwell",
+   "meerkat-burrower",
+   "mouse-sapper",
+   "pack-mule",
+   "pangolin-roller",
+   "pronghorn-racer",
+   "raccoon-bandit",
+   "siege-rhino",
+   "stoat-cutthroat",
+   "testudo-tortoise",
+   "triumvirate",
+   "war-elephant"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:23-1",
+   "label": "vs 23-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-2",
+   "label": "vs 23-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-3",
+   "label": "vs 23-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-4",
+   "label": "vs 23-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-5",
+   "label": "vs 23-5 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-6",
+   "label": "vs 23-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-7",
+   "label": "vs 23-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-8",
+   "label": "vs 23-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 23-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road23",
+   "label": "vs reference deck (Map 23) under 23-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 23-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "pack-mule",
+    "raccoon-bandit"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "marshal-tuskwell",
+    "pangolin-roller",
+    "testudo-tortoise",
+    "war-elephant"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:ranged",
+   "label": "ranged (skill family)",
+   "cards": [
+    "eagle-owl-quartermaster",
+    "howdah-archers",
+    "spitting-cobra",
+    "war-elephant"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 4,
+   "games": 1650,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "family:ranged",
+   "steps": 4,
+   "moves": 2,
+   "games": 1540,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 2,
+   "games": 1914,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 76,
+ "games": 5632,
+ "decks": [
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (7 resource makers)",
+    "economy x7"
+   ],
+   "deck": {
+    "badger-berserker": 3,
+    "border-collie": 4,
+    "pack-mule": 4,
+    "raccoon-bandit": 3,
+    "tide-spirit": 2,
+    "weaver-bird": 4
+   },
+   "cards": [
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "weaver-bird",
+     "name": "Weaver Bird",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "badger-berserker",
+     "name": "Badger Berserker",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Seahorse",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9356,
+   "ci": [
+    0.9072,
+    0.964
+   ],
+   "avgLumber": 0.55,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 9,
+    "1": 11
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "economy",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:23-1",
+     "label": "vs 23-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-2",
+     "label": "vs 23-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-3",
+     "label": "vs 23-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-4",
+     "label": "vs 23-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-5",
+     "label": "vs 23-5 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-6",
+     "label": "vs 23-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-7",
+     "label": "vs 23-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-8",
+     "label": "vs 23-8 miniboss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 23-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "label": "vs reference deck (Map 23) under 23-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 23-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "acacia-giraffe": 3,
+    "badger-berserker": 2,
+    "house-cat": 4,
+    "howdah-archers": 3,
+    "pack-mule": 4,
+    "weaver-bird": 4
+   },
+   "cards": [
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "weaver-bird",
+     "name": "Weaver Bird",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "acacia-giraffe",
+     "name": "Acacia Giraffe",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "howdah-archers",
+     "name": "Howdah Archers",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "badger-berserker",
+     "name": "Badger Berserker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8409,
+   "ci": [
+    0.7988,
+    0.883
+   ],
+   "avgLumber": 0.75,
+   "avgWait": 0.55,
+   "curve": {
+    "0": 8,
+    "1": 9,
+    "2": 3
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:23-1",
+     "label": "vs 23-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-2",
+     "label": "vs 23-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-3",
+     "label": "vs 23-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-4",
+     "label": "vs 23-4 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-5",
+     "label": "vs 23-5 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-6",
+     "label": "vs 23-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-7",
+     "label": "vs 23-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-8",
+     "label": "vs 23-8 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 23-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "label": "vs reference deck (Map 23) under 23-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 23-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:ranged",
+   "labels": [
+    "ranged x9"
+   ],
+   "deck": {
+    "badger-berserker": 3,
+    "border-collie": 4,
+    "eagle-owl-quartermaster": 3,
+    "hoopoe-herald": 4,
+    "howdah-archers": 3,
+    "spitting-cobra": 3
+   },
+   "cards": [
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "badger-berserker",
+     "name": "Badger Berserker",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "howdah-archers",
+     "name": "Howdah Archers",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "spitting-cobra",
+     "name": "Spitting Cobra",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7497,
+    0.8337
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "ranged",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:23-1",
+     "label": "vs 23-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-2",
+     "label": "vs 23-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-3",
+     "label": "vs 23-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-4",
+     "label": "vs 23-4 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-5",
+     "label": "vs 23-5 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-6",
+     "label": "vs 23-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-7",
+     "label": "vs 23-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-8",
+     "label": "vs 23-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 23-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "label": "vs reference deck (Map 23) under 23-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 23-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 15
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m23 --pool acacia-giraffe,alley-cat,ashbone-ghoul,badger-berserker,badger-trench-digger,beetle-battering-ram,bison-bulldozer,border-collie,eagle-owl-quartermaster,grave-grin-hyena,hoopoe-herald,house-cat,howdah-archers,ibex-rockcaller,lodge-engineer,marshal-tuskwell,marula-elephant,meerkat-burrower,meerkat-wayfarer,mouse-sapper,pack-mule,pangolin-roller,pronghorn-racer,raccoon-bandit,siege-rhino,spitting-cobra,springbok-pronker,stoat-cutthroat,testudo-tortoise,tide-spirit,triumvirate,war-elephant,weaver-bird,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus economy,family:armor,family:ranged,open --anchor acacia-giraffe,alley-cat,badger-trench-digger,beetle-battering-ram,bison-bulldozer,border-collie,eagle-owl-quartermaster,hoopoe-herald,howdah-archers,lodge-engineer,marshal-tuskwell,meerkat-burrower,mouse-sapper,pack-mule,pangolin-roller,pronghorn-racer,raccoon-bandit,siege-rhino,stoat-cutthroat,testudo-tortoise,triumvirate,war-elephant --anchor-min 10 --level 1 --mode map-true"
+}

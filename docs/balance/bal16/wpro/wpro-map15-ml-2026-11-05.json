@@ -1,0 +1,89 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:58:54.922Z",
+ "map": {
+  "id": "ml",
+  "num": 15,
+  "name": "The Long Grass"
+ },
+ "pool": [
+  "armory",
+  "bison-bulldozer",
+  "border-collie",
+  "carrion-crow",
+  "cataphract-destrier",
+  "cricket-drummer",
+  "hedge-weasel",
+  "hedgehog-herbalist",
+  "lodge-engineer",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "shepherds-bark",
+  "slow-worm",
+  "stoat-cutthroat",
+  "swift-fox",
+  "talon-archer",
+  "tasmanian-devil",
+  "thorn-shrike",
+  "truffle-piglet"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "armory": 3,
+    "cataphract-destrier": 4,
+    "lodge-engineer": 4,
+    "pronghorn-racer": 4,
+    "shepherds-bark": 1,
+    "tasmanian-devil": 4
+   },
+   "score": 0.0792,
+   "ci": [
+    0.0474,
+    0.1109
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (4 copies at 3+ Lumber, average 1.8)",
+    "strike-first x8"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 2040,
+   "seconds": 36
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "bison-bulldozer": 3,
+    "cataphract-destrier": 4,
+    "hedgehog-herbalist": 3,
+    "lodge-engineer": 4,
+    "shepherds-bark": 4,
+    "thorn-shrike": 2
+   },
+   "score": 0.225,
+   "ci": [
+    0.176,
+    0.274
+   ],
+   "refWins": 0.9028,
+   "labels": [
+    "big (4 copies at 3+ Lumber, average 1.8)"
+   ],
+   "apartFrom": [
+    11
+   ],
+   "steps": 5,
+   "games": 1840,
+   "seconds": 42
+  }
+ ]
+}

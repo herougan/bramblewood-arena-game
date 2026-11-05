@@ -1,0 +1,88 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:49:21.291Z",
+ "map": {
+  "id": "mj",
+  "num": 10,
+  "name": "The Sunken Depths"
+ },
+ "pool": [
+  "blue-ringed-octopus",
+  "clownfish-scout",
+  "colossal-squid",
+  "coral-polyp-colony",
+  "coral-reef-shark",
+  "electric-ray",
+  "great-barracuda",
+  "hagfish-silencer",
+  "kraken-spawnling",
+  "mangrove-manatee",
+  "nautilus-drifter",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-admiral",
+  "riptide-eel"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "blue-ringed-octopus": 3,
+    "coral-reef-shark": 3,
+    "electric-ray": 3,
+    "great-barracuda": 3,
+    "kraken-spawnling": 4,
+    "orca-vanguard": 4
+   },
+   "score": 0.4089,
+   "ci": [
+    0.3542,
+    0.4635
+   ],
+   "refWins": 0.9514,
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.9)",
+    "tide x10",
+    "cleave x8"
+   ],
+   "apartFrom": [],
+   "steps": 6,
+   "games": 1840,
+   "seconds": 27
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "clownfish-scout": 3,
+    "electric-ray": 3,
+    "hagfish-silencer": 3,
+    "kraken-spawnling": 4,
+    "orca-vanguard": 3,
+    "riptide-eel": 4
+   },
+   "score": 0.5417,
+   "ci": [
+    0.4863,
+    0.597
+   ],
+   "refWins": 0.8403,
+   "labels": [
+    "big (7 copies at 3+ Lumber, average 1.6)",
+    "tide x10",
+    "cleave x7"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 7,
+   "games": 1808,
+   "seconds": 32
+  }
+ ]
+}

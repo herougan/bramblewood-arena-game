@@ -1,0 +1,87 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T05:10:41.957Z",
+ "map": {
+  "id": "me",
+  "num": 20,
+  "name": "Eye of the Volcano"
+ },
+ "pool": [
+  "ancient-sloth-titan",
+  "ash-cloud-condor",
+  "ash-moth",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "magma-wraith",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pack-mule",
+  "stalactite-golem",
+  "the-contradiction",
+  "vampire-roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "cave-warlord": 4,
+    "deep-cave-troll": 4,
+    "stalactite-golem": 4,
+    "vampire-roost": 4
+   },
+   "score": 0.0333,
+   "ci": [
+    0.0115,
+    0.0552
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (12 copies at 3+ Lumber, average 2.8)",
+    "guard x8",
+    "siege x8"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1960,
+   "seconds": 35
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "ancient-sloth-titan": 2,
+    "ash-cloud-condor": 3,
+    "ash-moth": 3,
+    "cave-warlord": 4,
+    "magma-wraith": 4,
+    "vampire-roost": 4
+   },
+   "score": 0.1417,
+   "ci": [
+    0.1006,
+    0.1828
+   ],
+   "refWins": 0.9306,
+   "labels": [
+    "big (6 copies at 3+ Lumber, average 2.0)",
+    "night x7",
+    "flying x6"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 6,
+   "games": 1900,
+   "seconds": 44
+  }
+ ]
+}

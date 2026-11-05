@@ -1,0 +1,89 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:48:22.390Z",
+ "map": {
+  "id": "m7",
+  "num": 10,
+  "name": "Coral Current"
+ },
+ "pool": [
+  "banded-sea-krait",
+  "clownfish-scout",
+  "colossal-squid",
+  "coral-reef-shark",
+  "dolphin-knight",
+  "electric-ray",
+  "great-barracuda",
+  "horseshoe-crab",
+  "kraken-spawnling",
+  "mangrove-manatee",
+  "open-ocean-hermit-crab",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-admiral",
+  "reef-shark",
+  "riptide-eel",
+  "supernova-jelly"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "banded-sea-krait": 3,
+    "colossal-squid": 2,
+    "coral-reef-shark": 4,
+    "kraken-spawnling": 4,
+    "orca-vanguard": 4,
+    "supernova-jelly": 3
+   },
+   "score": 0.1181,
+   "ci": [
+    0.0843,
+    0.1518
+   ],
+   "refWins": 0.9583,
+   "labels": [
+    "big (10 copies at 3+ Lumber, average 2.3)",
+    "tide x10",
+    "cleave x10"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 1992,
+   "seconds": 19
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "banded-sea-krait": 4,
+    "electric-ray": 2,
+    "great-barracuda": 3,
+    "horseshoe-crab": 4,
+    "orca-vanguard": 4,
+    "supernova-jelly": 3
+   },
+   "score": 0.2535,
+   "ci": [
+    0.2085,
+    0.2984
+   ],
+   "refWins": 0.8889,
+   "labels": [
+    "big (4 copies at 3+ Lumber, average 1.4)",
+    "tide x7"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 4,
+   "games": 1920,
+   "seconds": 21
+  }
+ ]
+}

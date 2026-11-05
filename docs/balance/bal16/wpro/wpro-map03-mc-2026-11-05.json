@@ -1,0 +1,87 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:36:45.894Z",
+ "map": {
+  "id": "mc",
+  "num": 3,
+  "name": "Gannet Cliffs"
+ },
+ "pool": [
+  "conch-crawler",
+  "conch-herald",
+  "feral-tomcat",
+  "fiddler-crab-swarm",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "oystercatcher",
+  "peak-condor",
+  "peregrine-stooper",
+  "pincushion-urchin",
+  "puffin-diver",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "gull-thief": 4,
+    "oystercatcher": 4,
+    "peregrine-stooper": 4,
+    "razorbill": 4,
+    "red-billed-chough": 4
+   },
+   "score": 0.2708,
+   "ci": [
+    0.2224,
+    0.3192
+   ],
+   "refWins": 0.7083,
+   "labels": [
+    "big (12 copies at 1 Lumber, average 0.6)",
+    "economy (4 resource makers)",
+    "flying x20"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1960,
+   "seconds": 42
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "gannet-nestweaver": 3,
+    "hawk-arrowkeeper": 4,
+    "kittiwake-flock": 1,
+    "oystercatcher": 4,
+    "peak-condor": 4,
+    "razorbill": 4
+   },
+   "score": 0.5125,
+   "ci": [
+    0.456,
+    0.569
+   ],
+   "refWins": 0.4444,
+   "labels": [
+    "big (16 copies at 1 Lumber, average 0.8)",
+    "flying x20"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 5,
+   "games": 1840,
+   "seconds": 40
+  }
+ ]
+}

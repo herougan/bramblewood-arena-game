@@ -1,0 +1,82 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:35:23.493Z",
+ "map": {
+  "id": "mp",
+  "num": 2,
+  "name": "Lilypad Reach"
+ },
+ "pool": [
+  "alley-cat",
+  "box-turtle",
+  "lodge-engineer",
+  "muskrat-lodgekeeper",
+  "muskrat-reedgatherer",
+  "old-shell",
+  "old-sturgeon",
+  "platypus-spur",
+  "pond-algae",
+  "pyrenean-desman",
+  "riverworks-bastion",
+  "snapstick-turtle",
+  "water-shrew",
+  "water-vole"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "alley-cat": 4,
+    "muskrat-lodgekeeper": 4,
+    "old-sturgeon": 4,
+    "pond-algae": 4,
+    "riverworks-bastion": 4
+   },
+   "score": 0.1167,
+   "ci": [
+    0.0774,
+    0.156
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "guard x8",
+    "tide x8"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 1780,
+   "seconds": 54
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "alley-cat": 4,
+    "lodge-engineer": 4,
+    "old-shell": 4,
+    "platypus-spur": 4,
+    "riverworks-bastion": 4
+   },
+   "score": 0.1792,
+   "ci": [
+    0.1358,
+    0.2225
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 5,
+   "games": 1820,
+   "seconds": 49
+  }
+ ]
+}

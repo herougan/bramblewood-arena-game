@@ -1,0 +1,794 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T04:06:36.510Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "md",
+  "num": 18,
+  "name": "The Glass Dunes"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-swift",
+  "antlion-pit",
+  "banded-sea-krait",
+  "bison-bulldozer",
+  "blue-ringed-octopus",
+  "caustic-scorpion",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "fennec-fox",
+  "glimmer-spider",
+  "grave-grin-hyena",
+  "hollow-belly-rat",
+  "ibex-rockcaller",
+  "komodo-warlord",
+  "meerkat-burrower",
+  "peregrine-stooper",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "savanna-cheetah",
+  "spitting-cobra",
+  "stoat-cutthroat",
+  "thorny-devil",
+  "walrus-icebreaker",
+  "weaver-bird",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Alpine Swift",
+  "Antlion Pit",
+  "Banded Sea Krait",
+  "Bison Bulldozer",
+  "Blue-ringed Octopus",
+  "Caustic Scorpion",
+  "Dust-devil Kestrel",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Fennec Fox",
+  "Glimmer Spider",
+  "Grave-Grin Hyena",
+  "Hollow-belly Rat",
+  "Ibex Rockcaller",
+  "Komodo Warlord",
+  "Meerkat Burrower",
+  "Peregrine Stooper",
+  "Roadrunner Courier",
+  "Sand Widow",
+  "Sandfish",
+  "Savanna Cheetah",
+  "Spitting Cobra",
+  "Stoat Cutthroat",
+  "Thorny Devil",
+  "Walrus Icebreaker",
+  "Weaver Bird",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "antlion-pit",
+   "bison-bulldozer",
+   "caustic-scorpion",
+   "dust-devil-kestrel",
+   "dust-hyena",
+   "fennec-fox",
+   "hollow-belly-rat",
+   "komodo-warlord",
+   "meerkat-burrower",
+   "roadrunner-courier",
+   "sand-widow",
+   "sandfish",
+   "savanna-cheetah",
+   "spitting-cobra",
+   "thorny-devil"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:18-1",
+   "label": "vs 18-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-2",
+   "label": "vs 18-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-3",
+   "label": "vs 18-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-4",
+   "label": "vs 18-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-5",
+   "label": "vs 18-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-6",
+   "label": "vs 18-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:18-7",
+   "label": "vs 18-7 miniboss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 18-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road18",
+   "label": "vs reference deck (Map 18) under 18-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:poison",
+   "label": "poison (skill family)",
+   "cards": [
+    "banded-sea-krait",
+    "caustic-scorpion",
+    "glimmer-spider",
+    "komodo-warlord",
+    "sand-widow"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "alpine-swift",
+    "peregrine-stooper",
+    "roadrunner-courier",
+    "savanna-cheetah",
+    "stoat-cutthroat"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "komodo-warlord",
+    "sand-widow"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:poison",
+   "steps": 5,
+   "moves": 3,
+   "games": 1740,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 7,
+   "moves": 2,
+   "games": 1660,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 7,
+   "moves": 3,
+   "games": 1700,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 2,
+   "games": 1640,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 10,
+ "seconds": 175,
+ "games": 7380,
+ "decks": [
+  {
+   "focus": "family:poison",
+   "labels": [
+    "economy (4 resource makers)",
+    "poison x8"
+   ],
+   "deck": {
+    "antlion-pit": 4,
+    "caustic-scorpion": 4,
+    "dust-hyena": 4,
+    "glimmer-spider": 4,
+    "ibex-rockcaller": 2,
+    "walrus-icebreaker": 2
+   },
+   "cards": [
+    {
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "glimmer-spider",
+     "name": "Glimmer Spider",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9542,
+   "ci": [
+    0.9283,
+    0.98
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "poison",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "label": "vs 18-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "label": "vs 18-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "label": "vs 18-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "label": "vs 18-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "label": "vs 18-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "label": "vs 18-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "label": "vs 18-7 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 18-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)",
+    "strike-first x7"
+   ],
+   "deck": {
+    "alpine-swift": 3,
+    "blue-ringed-octopus": 3,
+    "dust-hyena": 4,
+    "roadrunner-courier": 4,
+    "thorny-devil": 4,
+    "walrus-icebreaker": 2
+   },
+   "cards": [
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "roadrunner-courier",
+     "name": "Roadrunner Courier",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "thorny-devil",
+     "name": "Thorny Devil",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8875,
+   "ci": [
+    0.8493,
+    0.9257
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 1.05,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "label": "vs 18-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "label": "vs 18-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "label": "vs 18-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "label": "vs 18-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "label": "vs 18-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "label": "vs 18-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "label": "vs 18-7 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 18-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "strike-first x11",
+    "flying x7"
+   ],
+   "deck": {
+    "alpine-swift": 4,
+    "antlion-pit": 4,
+    "eagle-owl-quartermaster": 3,
+    "roadrunner-courier": 4,
+    "stoat-cutthroat": 3,
+    "thorny-devil": 2
+   },
+   "cards": [
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "roadrunner-courier",
+     "name": "Roadrunner Courier",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "thorny-devil",
+     "name": "Thorny Devil",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8667,
+   "ci": [
+    0.8254,
+    0.9079
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 11
+    },
+    {
+     "f": "flying",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "label": "vs 18-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "label": "vs 18-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "label": "vs 18-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "label": "vs 18-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "label": "vs 18-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "label": "vs 18-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "label": "vs 18-7 miniboss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 18-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.4)",
+    "poison x8"
+   ],
+   "deck": {
+    "antlion-pit": 4,
+    "blue-ringed-octopus": 3,
+    "dust-hyena": 3,
+    "komodo-warlord": 4,
+    "sand-widow": 4,
+    "thorny-devil": 2
+   },
+   "cards": [
+    {
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "komodo-warlord",
+     "name": "Komodo Warlord",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "thorny-devil",
+     "name": "Thorny Devil",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.6792,
+   "ci": [
+    0.6231,
+    0.7352
+   ],
+   "avgLumber": 1.45,
+   "avgWait": 1.9,
+   "curve": {
+    "0": 3,
+    "1": 9,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "poison",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-1",
+     "label": "vs 18-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-2",
+     "label": "vs 18-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-3",
+     "label": "vs 18-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-4",
+     "label": "vs 18-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-5",
+     "label": "vs 18-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-6",
+     "label": "vs 18-6 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-7",
+     "label": "vs 18-7 miniboss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 18-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map md --pool alpine-swift,antlion-pit,banded-sea-krait,bison-bulldozer,blue-ringed-octopus,caustic-scorpion,dust-devil-kestrel,dust-hyena,eagle-owl-quartermaster,fennec-fox,glimmer-spider,grave-grin-hyena,hollow-belly-rat,ibex-rockcaller,komodo-warlord,meerkat-burrower,peregrine-stooper,roadrunner-courier,sand-widow,sandfish,savanna-cheetah,spitting-cobra,stoat-cutthroat,thorny-devil,walrus-icebreaker,weaver-bird,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus family:poison,family:strike-first,big,open --anchor antlion-pit,bison-bulldozer,caustic-scorpion,dust-devil-kestrel,dust-hyena,fennec-fox,hollow-belly-rat,komodo-warlord,meerkat-burrower,roadrunner-courier,sand-widow,sandfish,savanna-cheetah,spitting-cobra,thorny-devil --anchor-min 10 --level 1 --mode map-true"
+}

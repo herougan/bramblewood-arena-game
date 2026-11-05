@@ -1,0 +1,713 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T04:03:41.142Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow"
+ },
+ "level": 1,
+ "pool": [
+  "ashbone-ghoul",
+  "beluga",
+  "dhole-matriarch",
+  "eagle-owl-quartermaster",
+  "frost-hare-sprinter",
+  "grave-grin-hyena",
+  "greenland-shark",
+  "grey-seal-bull",
+  "harbor-seal",
+  "ibex-rockcaller",
+  "lone-grey-wolf",
+  "magma-wraith",
+  "mountain-hare",
+  "polar-bear",
+  "ravenous-wolverine",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "stoat-cutthroat",
+  "talus-pika",
+  "walrus-icebreaker",
+  "wolf-spider-mother",
+  "wolfsbane-alpha"
+ ],
+ "poolNames": [
+  "Ashbone Ghoul",
+  "Beluga",
+  "Dhole Matriarch",
+  "Eagle-Owl Quartermaster",
+  "Frost Hare Sprinter",
+  "Grave-Grin Hyena",
+  "Greenland Shark",
+  "Grey Seal Bull",
+  "Harbor Seal",
+  "Ibex Rockcaller",
+  "Lone Grey Wolf",
+  "Magma Wraith",
+  "Mountain Hare",
+  "Polar Bear",
+  "Ravenous Wolverine",
+  "Snow Bunting Archer",
+  "Snow Ermine",
+  "Spitting Spider",
+  "Stoat Cutthroat",
+  "Talus Pika",
+  "Walrus Icebreaker",
+  "Wolf Spider Mother",
+  "Wolfsbane Alpha"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "frost-hare-sprinter",
+   "greenland-shark",
+   "harbor-seal",
+   "lone-grey-wolf",
+   "polar-bear",
+   "ravenous-wolverine",
+   "snow-bunting-archer",
+   "snow-ermine",
+   "spitting-spider",
+   "talus-pika",
+   "walrus-icebreaker",
+   "wolfsbane-alpha"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "bal16-pro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:17-A-1",
+   "label": "vs 17-A-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-2",
+   "label": "vs 17-A-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-3",
+   "label": "vs 17-A-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:17-A-4",
+   "label": "vs 17-A-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 17-A-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road21",
+   "label": "vs reference deck (Map 21) under 17-A-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "family:evasion",
+   "label": "evasion (skill family)",
+   "cards": [
+    "frost-hare-sprinter",
+    "harbor-seal",
+    "magma-wraith",
+    "mountain-hare",
+    "polar-bear",
+    "snow-ermine"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:ranged",
+   "label": "ranged (skill family)",
+   "cards": [
+    "eagle-owl-quartermaster",
+    "magma-wraith",
+    "snow-bunting-archer",
+    "spitting-spider"
+   ],
+   "need": 8
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "beluga",
+    "dhole-matriarch",
+    "eagle-owl-quartermaster",
+    "greenland-shark",
+    "grey-seal-bull",
+    "harbor-seal",
+    "ibex-rockcaller",
+    "lone-grey-wolf",
+    "magma-wraith",
+    "polar-bear",
+    "ravenous-wolverine",
+    "snow-bunting-archer",
+    "spitting-spider",
+    "stoat-cutthroat",
+    "walrus-icebreaker",
+    "wolf-spider-mother",
+    "wolfsbane-alpha"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "family:evasion",
+   "steps": 9,
+   "moves": 5,
+   "games": 1694,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "family:ranged",
+   "steps": 8,
+   "moves": 3,
+   "games": 1554,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "big",
+   "steps": 11,
+   "moves": 6,
+   "games": 1694,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 12,
+   "moves": 4,
+   "games": 1582,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 10,
+ "seconds": 157,
+ "games": 6972,
+ "decks": [
+  {
+   "focus": "family:evasion",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "evasion x12"
+   ],
+   "deck": {
+    "beluga": 3,
+    "frost-hare-sprinter": 4,
+    "grave-grin-hyena": 3,
+    "mountain-hare": 4,
+    "ravenous-wolverine": 2,
+    "snow-ermine": 4
+   },
+   "cards": [
+    {
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7976,
+   "ci": [
+    0.7426,
+    0.8527
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 12
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "family:ranged",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.5)",
+    "ranged x8",
+    "evasion x7"
+   ],
+   "deck": {
+    "grave-grin-hyena": 3,
+    "mountain-hare": 3,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 4,
+    "spitting-spider": 4,
+    "wolf-spider-mother": 2
+   },
+   "cards": [
+    {
+     "id": "snow-bunting-archer",
+     "name": "Snow Bunting Archer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "spitting-spider",
+     "name": "Spitting Spider",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.75,
+   "ci": [
+    0.6914,
+    0.8086
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.65,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "ranged",
+     "n": 8
+    },
+    {
+     "f": "evasion",
+     "n": 7
+    },
+    {
+     "f": "cold",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)"
+   ],
+   "deck": {
+    "frost-hare-sprinter": 4,
+    "grave-grin-hyena": 4,
+    "ravenous-wolverine": 3,
+    "stoat-cutthroat": 3,
+    "talus-pika": 3,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7143,
+   "ci": [
+    0.6539,
+    0.7747
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.375,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "evasion x11",
+    "tide x7"
+   ],
+   "deck": {
+    "ashbone-ghoul": 4,
+    "beluga": 3,
+    "frost-hare-sprinter": 3,
+    "harbor-seal": 4,
+    "snow-ermine": 4,
+    "walrus-icebreaker": 2
+   },
+   "cards": [
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "harbor-seal",
+     "name": "Harbor Seal",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "beluga",
+     "name": "Beluga",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.5536,
+   "ci": [
+    0.488,
+    0.6191
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 11
+    },
+    {
+     "f": "tide",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mi --pool ashbone-ghoul,beluga,dhole-matriarch,eagle-owl-quartermaster,frost-hare-sprinter,grave-grin-hyena,greenland-shark,grey-seal-bull,harbor-seal,ibex-rockcaller,lone-grey-wolf,magma-wraith,mountain-hare,polar-bear,ravenous-wolverine,snow-bunting-archer,snow-ermine,spitting-spider,stoat-cutthroat,talus-pika,walrus-icebreaker,wolf-spider-mother,wolfsbane-alpha --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-pro --focus family:evasion,family:ranged,big,open --anchor frost-hare-sprinter,greenland-shark,harbor-seal,lone-grey-wolf,polar-bear,ravenous-wolverine,snow-bunting-archer,snow-ermine,spitting-spider,talus-pika,walrus-icebreaker,wolfsbane-alpha --anchor-min 10 --level 1 --mode map-true"
+}

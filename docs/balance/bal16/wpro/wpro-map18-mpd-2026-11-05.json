@@ -1,0 +1,85 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T05:05:27.080Z",
+ "map": {
+  "id": "mpd",
+  "num": 18,
+  "name": "The Pale Desert"
+ },
+ "pool": [
+  "antlion-pit",
+  "caustic-scorpion",
+  "dromedary",
+  "dune-packrat",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "fennec-fox",
+  "quicksand-queen",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "skull-vulture",
+  "thorny-devil",
+  "trapdoor-spider"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "caustic-scorpion": 2,
+    "fennec-fox": 4,
+    "quicksand-queen": 2,
+    "roadrunner-courier": 4,
+    "sand-widow": 4,
+    "skull-vulture": 4
+   },
+   "score": 0.3125,
+   "ci": [
+    0.2625,
+    0.3625
+   ],
+   "refWins": 0.7917,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "poison x6"
+   ],
+   "apartFrom": [],
+   "steps": 4,
+   "games": 2016,
+   "seconds": 39
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "caustic-scorpion": 4,
+    "dromedary": 4,
+    "dust-devil-kestrel": 2,
+    "fennec-fox": 4,
+    "sand-widow": 4,
+    "thorny-devil": 2
+   },
+   "score": 0.5625,
+   "ci": [
+    0.5107,
+    0.6143
+   ],
+   "refWins": 0.6528,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.2)",
+    "poison x8"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 1896,
+   "seconds": 41
+  }
+ ]
+}

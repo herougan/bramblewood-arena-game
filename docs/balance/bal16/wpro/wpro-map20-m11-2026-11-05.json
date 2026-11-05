@@ -1,0 +1,96 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T05:09:22.410Z",
+ "map": {
+  "id": "m11",
+  "num": 20,
+  "name": "The Sundered Peak"
+ },
+ "pool": [
+  "alpine-marmot",
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "beaver-lumberjack",
+  "cave-warlord",
+  "chamois-leaper",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "magma-salamander",
+  "magma-titan",
+  "magma-wraith",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pack-mule",
+  "pumice-beetle",
+  "stalactite-golem",
+  "talus-pika",
+  "vampire-roost"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "eyrie-warden": 4,
+    "granite-ox-golem": 3,
+    "magma-titan": 4,
+    "obsidian-scorpion": 1,
+    "vampire-roost": 4
+   },
+   "score": 0.0032,
+   "ci": [
+    -0.005,
+    0.0114
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (12 copies at 3+ Lumber, average 2.5)"
+   ],
+   "apartFrom": [],
+   "steps": 3,
+   "games": 1846,
+   "seconds": 43
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "ash-cloud-condor": 3,
+    "cave-warlord": 4,
+    "chamois-leaper": 1,
+    "deep-cave-troll": 4,
+    "magma-titan": 4
+   },
+   "score": 0.0353,
+   "ci": [
+    0.0148,
+    0.0557
+   ],
+   "refWins": 0.9722,
+   "labels": [
+    "big (16 copies at 3+ Lumber, average 2.8)",
+    "siege x8"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 4,
+   "games": 2080,
+   "seconds": 43
+  }
+ ]
+}

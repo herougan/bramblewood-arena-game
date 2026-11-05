@@ -1,0 +1,90 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:46:32.352Z",
+ "map": {
+  "id": "mn",
+  "num": 8,
+  "name": "The Glimmer Depths"
+ },
+ "pool": [
+  "badger-stonemason",
+  "blind-cave-fish",
+  "cave-olm",
+  "echo-matriarch",
+  "echo-screecher",
+  "giant-cave-huntsman",
+  "glimmer-spider",
+  "grotto-lobster",
+  "lantern-spark-fly",
+  "malachite-golem",
+  "prospector-mole",
+  "quarry-mole",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "sulfur-cinder-moth",
+  "vampire-bat",
+  "whip-spider"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "badger-stonemason": 4,
+    "blind-cave-fish": 4,
+    "glimmer-spider": 2,
+    "malachite-golem": 3,
+    "stalactite-golem": 3,
+    "sulfur-cinder-moth": 4
+   },
+   "score": 0.0417,
+   "ci": [
+    0.0128,
+    0.0705
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.1)",
+    "economy (4 resource makers)",
+    "armor x6"
+   ],
+   "apartFrom": [],
+   "steps": 8,
+   "games": 1792,
+   "seconds": 36
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "cave-olm": 3,
+    "echo-screecher": 3,
+    "malachite-golem": 3,
+    "quarry-mole": 3,
+    "stalactite-golem": 4,
+    "sulfur-cinder-moth": 4
+   },
+   "score": 0.0595,
+   "ci": [
+    0.0265,
+    0.0925
+   ],
+   "refWins": 1,
+   "labels": [
+    "big (17 copies at 1+ Lumber, average 1.2)",
+    "armor x7",
+    "flying x7"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 8,
+   "games": 1806,
+   "seconds": 43
+  }
+ ]
+}

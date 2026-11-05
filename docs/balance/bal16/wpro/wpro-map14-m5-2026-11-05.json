@@ -1,0 +1,84 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T04:56:05.409Z",
+ "map": {
+  "id": "m5",
+  "num": 14,
+  "name": "Savanna Reaches"
+ },
+ "pool": [
+  "acacia-giraffe",
+  "ant-hill",
+  "carrion-crow",
+  "dust-hyena",
+  "golden-eagle-diver",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "house-cat",
+  "marula-elephant",
+  "mouse-sapper",
+  "pride-queen",
+  "savanna-cheetah",
+  "spitting-cobra",
+  "springbok-pronker"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "acacia-giraffe": 4,
+    "ant-hill": 3,
+    "golden-eagle-diver": 4,
+    "marula-elephant": 2,
+    "spitting-cobra": 3,
+    "springbok-pronker": 4
+   },
+   "score": 0.25,
+   "ci": [
+    0.1995,
+    0.3005
+   ],
+   "refWins": 0.8611,
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.4)"
+   ],
+   "apartFrom": [],
+   "steps": 5,
+   "games": 2090,
+   "seconds": 34
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "acacia-giraffe": 4,
+    "ant-hill": 4,
+    "carrion-crow": 3,
+    "dust-hyena": 3,
+    "mouse-sapper": 3,
+    "spitting-cobra": 3
+   },
+   "score": 0.4924,
+   "ci": [
+    0.4396,
+    0.5453
+   ],
+   "refWins": 0.7639,
+   "labels": [
+    "big (14 copies at 1+ Lumber, average 1.1)",
+    "economy (6 resource makers)"
+   ],
+   "apartFrom": [
+    10
+   ],
+   "steps": 5,
+   "games": 1782,
+   "seconds": 38
+  }
+ ]
+}

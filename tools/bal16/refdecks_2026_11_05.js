@@ -150,7 +150,9 @@ function apply(gm, opt) {
       pro = pk.out.map((d, i) => mk('pro', d, i, d => ({ source: { file: path.relative(ROOT, pf), mode: 'deck1', package: 'BAL16', tool: res.tool, reproduce: res.reproduce, score: d.score, ci: d.ci, avgLumber: d.avgLumber, generated: res.generated }, h2h: null, later: [] }))); }
     const wf = outFile(gm, 'wpro', m);
     if (fs.existsSync(wf)) { const res = JSON.parse(fs.readFileSync(wf, 'utf8'));
-      wpro = res.decks.slice().sort((a, b) => a.score - b.score).map((d, i) => mk('wpro', Object.assign({ focus: 'weak ' + d.plan }, d), i, d => ({ source: { file: path.relative(ROOT, wf), mode: 'wpro', package: 'BAL16', plan: d.plan, tool: res.tool, score: d.score, ci: d.ci, refWins: d.refWins, generated: res.generated }, h2h: null, later: [] }))); }
+      // BAL11's rule: the second weak plan stays only when it is weak too (at most max(30%, the weakest + 10 points))
+      const ws = res.decks.slice().sort((a, b) => a.score - b.score); row.wproLeft = ws.filter((w, i) => i > 0 && w.score > Math.max(0.3, ws[0].score + 0.1)).map(w => ({ plan: w.plan, score: w.score, why: 'not weak enough' }));
+      wpro = ws.filter((w, i) => i === 0 || w.score <= Math.max(0.3, ws[0].score + 0.1)).map((d, i) => mk('wpro', Object.assign({ focus: 'weak ' + d.plan }, d), i, d => ({ source: { file: path.relative(ROOT, wf), mode: 'wpro', package: 'BAL16', plan: d.plan, tool: res.tool, score: d.score, ci: d.ci, refWins: d.refWins, generated: res.generated }, h2h: null, later: [] }))); }
     const prev = {}; ['pro', 'bpro', 'wpro'].forEach(k => { if ((k === 'pro' ? pro : k === 'bpro' ? bpro : wpro).length && (entry[k] || []).length) prev[k] = entry[k]; });
     if (Object.keys(prev).length) entry.history = (entry.history || []).concat([Object.assign({}, hist, prev)]);
     if (pro.length) entry.pro = pro; if (bpro.length || x.bpro.none) entry.bpro = bpro; if (wpro.length) entry.wpro = wpro;
