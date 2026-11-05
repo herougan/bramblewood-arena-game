@@ -3981,5 +3981,9 @@
  "Root Grip: {name} is Tangled.": "Cengkeraman Akar: {name} terlilit.",
  "Cracking Bark: the bramble loses {n} Shield.": "Kulit Kayu Retak: semak kehilangan {n} Perisai.",
  "Zoom in": "Perbesar",
- "Zoom out": "Perkecil"
+ "Zoom out": "Perkecil",
+ "Give this skill a level (it arrives at that level)": "Beri keahlian ini level (muncul di level itu)",
+ "Remove the level (the skill is there from the start)": "Hapus level (keahlian ada sejak awal)",
+ "Second species (optional, makes a hybrid)": "Spesies kedua (opsional, jadi hibrida)",
+ "— none —": "— tidak ada —"
 }

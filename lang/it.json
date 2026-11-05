@@ -3981,5 +3981,9 @@
  "Root Grip: {name} is Tangled.": "Presa delle radici: {name} è avvinghiato.",
  "Cracking Bark: the bramble loses {n} Shield.": "Corteccia spaccata: il rovo perde {n} Scudo.",
  "Zoom in": "Ingrandisci",
- "Zoom out": "Riduci"
+ "Zoom out": "Riduci",
+ "Give this skill a level (it arrives at that level)": "Dai un livello a questa abilità (arriva a quel livello)",
+ "Remove the level (the skill is there from the start)": "Rimuovi il livello (l’abilità c’è fin dall’inizio)",
+ "Second species (optional, makes a hybrid)": "Seconda specie (facoltativa, crea un ibrido)",
+ "— none —": "— nessuna —"
 }

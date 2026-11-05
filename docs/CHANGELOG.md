@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Package EDIT1 (owner 23:35, the in-game card editor)
+- **"+" on a skill** adds the level (`Lv`) inside the same row; no new row. A small x takes it off again. Save writes the skill under `levelSkills`.
+- **Hatchling and Regeneration** are editable and offered at Level 1 and up only (a new one on a Level 0 card arrives at Lv 1; the Lv box has no 0). A Baby's existing Level 0 Hatchling now has a row (it had none) and is kept as it is on Save. Also in the editor now: Weapon Master, Pry, Bola, Anadromous and Lasso, which were registered after the editor's list was built.
+- **Species** is a dropdown (a second one for a hybrid; an existing value stays). The **skills dropdown** shows each skill's emoji.
+- **Storm** has two number fields, Attack / Health (default 2 / 0); other numbers save as `stormGrant {attack, health}`, which the engine already reads (default +2/+0). No engine edit.
+- Texts: 4 TX keys in 12 packs (`tools/i18n_2026_11_05_edit1.py`). Test: `tests/edit1-2026-11-05.js`. No card was changed.
+
 ## 2026-11-05 MC-RESET (owner 22:49: "reset the 'undo' or 'cut' pills, since we've reset it in a way. Just show the updated map card list")
 - Map cards shows only the current lists: the 172 cut entries moved to `canonical/map-review.json` `cutArchive` (history), an empty Cut part is not drawn, and the saved Cut / Keep picks start empty (key `bw_rv_flips_v2`; v1 removed). Tests cut3, listfix2 read the archive; content11 accepts its decisions DONE.
 

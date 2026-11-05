@@ -3981,5 +3981,9 @@
  "Root Grip: {name} is Tangled.": "Aperto das raízes: {name} está enredado.",
  "Cracking Bark: the bramble loses {n} Shield.": "Casca rachada: o silvado perde {n} de Escudo.",
  "Zoom in": "Aproximar",
- "Zoom out": "Afastar"
+ "Zoom out": "Afastar",
+ "Give this skill a level (it arrives at that level)": "Dar um nível a esta habilidade (chega nesse nível)",
+ "Remove the level (the skill is there from the start)": "Remover o nível (a habilidade existe desde o início)",
+ "Second species (optional, makes a hybrid)": "Segunda espécie (opcional, cria um híbrido)",
+ "— none —": "— nenhuma —"
 }

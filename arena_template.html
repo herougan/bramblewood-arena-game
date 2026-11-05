@@ -11649,7 +11649,8 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .cd-spawn h3{margin:0 0 6px; font-size:13px; text-transform:uppercase; letter-spacing:.05em; opacity:.7;}
 .cd-spawn .card-tile{width:150px !important; height:auto !important; aspect-ratio:4/5; margin:0 0 8px;} .cd-spawn-ab{font-size:13px;}
 @media (max-width:820px){ .card-detail-card.has-spawns .cd-grid{grid-template-columns:1fr !important;} .cd-spawns{border-left:0; padding-left:0; border-top:1px dashed rgba(120,90,50,.35); padding-top:10px;} }
-.species-field{display:flex; align-items:center; gap:6px;} .species-field .species-ico{font-size:20px; min-width:24px; text-align:center;} .species-field input{flex:1;}
+.species-field{display:flex; align-items:center; gap:6px;} .species-field .species-ico{font-size:20px; min-width:24px; text-align:center;} .species-field{flex-wrap:wrap;} .species-field input,.species-field select{flex:1 1 0; min-width:0;} .species-field #fSpecies2{flex:1 1 100%;} /* 2026-11-05 (EDIT1): two dropdowns, the second (hybrid) on its own line */
+.skill-row .sk-lv{display:inline-flex; align-items:center; gap:4px; white-space:nowrap;} .skill-row .sk-lv[hidden]{display:none !important;} .skill-row .sk-rm-lv{padding:0 6px; min-height:0;} /* 2026-11-05 (EDIT1): the level inside the skill's own row */
 /* Skill and Map Codex (2026-10-13) */
 .sk-codex .sk-row{display:grid; grid-template-columns:minmax(140px, 200px) 1fr; gap:12px; padding:8px 0; border-top:1px solid rgba(120,90,50,.2);}
 .sk-codex .sk-row:first-of-type{border-top:0;} .sk-codex .sk-text .skill-counter{margin-top:4px; font-size:.9em; opacity:.85;}

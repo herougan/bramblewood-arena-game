@@ -3982,5 +3982,9 @@
  "Root Grip: {name} is Tangled.": "뿌리 옭죄기: {name}이(가) 휘감겼습니다.",
  "Cracking Bark: the bramble loses {n} Shield.": "갈라지는 껍질: 가시덤불이 보호막 {n}을(를) 잃었습니다.",
  "Zoom in": "확대",
- "Zoom out": "축소"
+ "Zoom out": "축소",
+ "Give this skill a level (it arrives at that level)": "이 스킬에 레벨 지정 (그 레벨에 얻음)",
+ "Remove the level (the skill is there from the start)": "레벨 제거 (처음부터 스킬 보유)",
+ "Second species (optional, makes a hybrid)": "두 번째 종 (선택, 혼종이 됨)",
+ "— none —": "— 없음 —"
 }
