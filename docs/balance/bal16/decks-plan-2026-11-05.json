@@ -1,0 +1,5230 @@
+{
+ "_about": "BAL16 (2026-11-05): road decks with off-list cards rebuilt from their fight's list; IDEA-EARLY-5 combos; tools/bal16/decks_2026_11_05.js",
+ "built": "2026-11-05",
+ "combos": {
+  "0-2": {
+   "cards": {
+    "ant-scout": 4,
+    "soldier-ant": 4
+   },
+   "why": "Ant Scout + Soldier Ant: two Swarm ants that grow with each other"
+  },
+  "2-1": {
+   "cards": {
+    "pincushion-urchin": 5,
+    "rock-pool-starfish": 4
+   },
+   "why": "Pincushion Urchin + Rock Pool Starfish: a Thorns wall that heals itself (Regen 2)"
+  },
+  "3-4": {
+   "cards": {
+    "gannet-nestweaver": 3,
+    "peak-condor": 3
+   },
+   "why": "Gannet Nestweaver + Peak Condor: the Nestweaver's Lumber on spawn pays for the 1-Lumber Condor early"
+  },
+  "4-1": {
+   "cards": {
+    "muskrat-lodgekeeper": 3,
+    "platypus-spur": 3
+   },
+   "why": "Muskrat Lodgekeeper + Platypus Spur: a Bulwark guard in front of a Venomous striker"
+  }
+ },
+ "leaders": {
+  "17-1": {
+   "id": "beluga",
+   "why": "Ice Fang Patrol: the tundra pack's own Rare with active skills (Sonar, Inspiring 1; EFFECTS-1)"
+  },
+  "17-3": {
+   "id": "polar-bear",
+   "why": "Snowshoe Line: the tundra's Very Rare ambusher (Ambush 4, Hibernate)"
+  },
+  "17-8": {
+   "id": "walrus-icebreaker",
+   "why": "the map's ender: its own reward card leads it (Freeze, Shatter 2); the fight keeps its name The Glacial Ape-King (owner call BAL16-2)"
+  },
+  "17-A-1": {
+   "id": "greenland-shark",
+   "why": "Frost Tunnel: the Ice Hollow's own Rare (Carrion 2, Armor 1)"
+  }
+ },
+ "rows": [
+  {
+   "map": "mb",
+   "mapNo": 2,
+   "side": false,
+   "key": "2-1",
+   "name": "Rock Pool Raiders",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "conch-crawler": 4,
+    "gull-thief": 3,
+    "open-ocean-hermit-crab": 5,
+    "rock-pool-starfish": 3,
+    "pincushion-urchin": 5
+   },
+   "after": {
+    "gull-thief": 5,
+    "open-ocean-hermit-crab": 5,
+    "pincushion-urchin": 5,
+    "rock-pool-starfish": 5
+   },
+   "off": [
+    "conch-crawler"
+   ],
+   "short": 0,
+   "oldLeader": "open-ocean-hermit-crab",
+   "leader": "open-ocean-hermit-crab",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list conch-crawler x4 rebuilt from the fight's list; IDEA-EARLY-5 combo: Pincushion Urchin + Rock Pool Starfish: a Thorns wall that heals itself (Regen 2)",
+   "k14": []
+  },
+  {
+   "map": "mb",
+   "mapNo": 2,
+   "side": false,
+   "key": "2-3",
+   "name": "Hermit Row",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "open-ocean-hermit-crab": 2,
+    "conch-crawler": 3,
+    "driftwood-crab": 1,
+    "pincushion-urchin": 2,
+    "oystercatcher": 5,
+    "gull-thief": 4
+   },
+   "after": {
+    "driftwood-crab": 1,
+    "gull-thief": 5,
+    "open-ocean-hermit-crab": 2,
+    "oystercatcher": 5,
+    "pincushion-urchin": 4
+   },
+   "off": [
+    "conch-crawler"
+   ],
+   "short": 0,
+   "oldLeader": "driftwood-crab",
+   "leader": "driftwood-crab",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list conch-crawler x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mb",
+   "mapNo": 2,
+   "side": false,
+   "key": "2-4",
+   "name": "Pelican Point",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "conch-herald": 2,
+    "conch-crawler": 3,
+    "open-ocean-hermit-crab": 4,
+    "rock-pool-starfish": 5,
+    "gull-thief": 5
+   },
+   "after": {
+    "conch-herald": 2,
+    "gull-thief": 5,
+    "open-ocean-hermit-crab": 4,
+    "pincushion-urchin": 3,
+    "rock-pool-starfish": 5
+   },
+   "off": [
+    "conch-crawler"
+   ],
+   "short": 0,
+   "oldLeader": "conch-herald",
+   "leader": "conch-herald",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list conch-crawler x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mb",
+   "mapNo": 2,
+   "side": false,
+   "key": "2-5",
+   "name": "The Old Shell",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "open-ocean-hermit-crab": 5,
+    "pincushion-urchin": 4,
+    "conch-herald": 4,
+    "conch-crawler": 2,
+    "rock-pool-starfish": 2
+   },
+   "after": {
+    "conch-herald": 4,
+    "gull-thief": 2,
+    "open-ocean-hermit-crab": 5,
+    "pincushion-urchin": 4,
+    "rock-pool-starfish": 2
+   },
+   "off": [
+    "conch-crawler"
+   ],
+   "short": 0,
+   "oldLeader": "conch-herald",
+   "leader": "conch-herald",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list conch-crawler x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "key": "3-2",
+   "name": "Hawk Watch",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "kittiwake-flock": 2,
+    "peak-condor": 1,
+    "puffin-diver": 3,
+    "red-billed-chough": 2,
+    "mountain-goat-climber": 2,
+    "razorbill": 2
+   },
+   "after": {
+    "gannet-nestweaver": 2,
+    "kittiwake-flock": 2,
+    "peak-condor": 1,
+    "puffin-diver": 3,
+    "razorbill": 2,
+    "red-billed-chough": 2
+   },
+   "off": [
+    "mountain-goat-climber"
+   ],
+   "short": 0,
+   "oldLeader": "mountain-goat-climber",
+   "leader": "razorbill",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list mountain-goat-climber x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "key": "3-3",
+   "name": "Rockfall",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "gannet-nestweaver": 1,
+    "peak-condor": 3,
+    "red-billed-chough": 3,
+    "mountain-goat-climber": 2,
+    "razorbill": 3,
+    "hawk-arrowkeeper": 3
+   },
+   "after": {
+    "gannet-nestweaver": 3,
+    "hawk-arrowkeeper": 3,
+    "peak-condor": 3,
+    "razorbill": 3,
+    "red-billed-chough": 3
+   },
+   "off": [
+    "mountain-goat-climber"
+   ],
+   "short": 0,
+   "oldLeader": "mountain-goat-climber",
+   "leader": "razorbill",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list mountain-goat-climber x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "key": "3-4",
+   "name": "Condor Thermals",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "kittiwake-flock": 5,
+    "golden-eagle-diver": 1,
+    "mountain-goat-climber": 2,
+    "peregrine-stooper": 2,
+    "red-billed-chough": 2,
+    "razorbill": 2
+   },
+   "after": {
+    "gannet-nestweaver": 3,
+    "golden-eagle-diver": 1,
+    "kittiwake-flock": 1,
+    "peak-condor": 3,
+    "peregrine-stooper": 2,
+    "razorbill": 2,
+    "red-billed-chough": 2
+   },
+   "off": [
+    "mountain-goat-climber"
+   ],
+   "short": 0,
+   "oldLeader": "peregrine-stooper",
+   "leader": "peregrine-stooper",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list mountain-goat-climber x2 rebuilt from the fight's list; IDEA-EARLY-5 combo: Gannet Nestweaver + Peak Condor: the Nestweaver's Lumber on spawn pays for the 1-Lumber Condor early",
+   "k14": []
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "key": "3-5",
+   "name": "Eagle Stoop",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "kittiwake-flock": 5,
+    "peak-condor": 3,
+    "red-billed-chough": 2,
+    "golden-eagle-diver": 2,
+    "mountain-goat-climber": 4,
+    "peregrine-stooper": 1,
+    "razorbill": 2
+   },
+   "after": {
+    "gannet-nestweaver": 1,
+    "golden-eagle-diver": 2,
+    "kittiwake-flock": 5,
+    "peak-condor": 3,
+    "peregrine-stooper": 4,
+    "razorbill": 2,
+    "red-billed-chough": 2
+   },
+   "off": [
+    "mountain-goat-climber"
+   ],
+   "short": 0,
+   "oldLeader": "golden-eagle-diver",
+   "leader": "golden-eagle-diver",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list mountain-goat-climber x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "side": false,
+   "key": "3-6",
+   "name": "Avalanche Pass",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "peak-condor": 1,
+    "golden-eagle-diver": 3,
+    "mountain-goat-climber": 1,
+    "red-billed-chough": 2,
+    "razorbill": 4,
+    "hawk-arrowkeeper": 3,
+    "gannet-nestweaver": 2
+   },
+   "after": {
+    "gannet-nestweaver": 3,
+    "golden-eagle-diver": 3,
+    "hawk-arrowkeeper": 3,
+    "peak-condor": 1,
+    "razorbill": 4,
+    "red-billed-chough": 2
+   },
+   "off": [
+    "mountain-goat-climber"
+   ],
+   "short": 0,
+   "oldLeader": "mountain-goat-climber",
+   "leader": "mountain-goat-climber",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list mountain-goat-climber x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m2",
+   "mapNo": 4,
+   "side": false,
+   "key": "4-1",
+   "name": "Reef Skirmishers",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "box-turtle": 3,
+    "snapstick-turtle": 3,
+    "water-shrew": 2,
+    "water-vole": 4,
+    "pyrenean-desman": 1
+   },
+   "after": {
+    "muskrat-lodgekeeper": 3,
+    "platypus-spur": 3,
+    "pyrenean-desman": 1,
+    "snapstick-turtle": 3,
+    "water-shrew": 3
+   },
+   "off": [
+    "box-turtle",
+    "water-vole"
+   ],
+   "short": 0,
+   "oldLeader": "pyrenean-desman",
+   "leader": "pyrenean-desman",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list box-turtle x3, water-vole x4 rebuilt from the fight's list; IDEA-EARLY-5 combo: Muskrat Lodgekeeper + Platypus Spur: a Bulwark guard in front of a Venomous striker",
+   "k14": []
+  },
+  {
+   "map": "m2",
+   "mapNo": 4,
+   "side": false,
+   "key": "4-2",
+   "name": "Tidal Ring",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "snapstick-turtle": 5,
+    "water-shrew": 5,
+    "water-vole": 2,
+    "field-vole": 1,
+    "pond-algae": 1
+   },
+   "after": {
+    "field-vole": 1,
+    "pond-algae": 3,
+    "snapstick-turtle": 5,
+    "water-shrew": 5
+   },
+   "off": [
+    "water-vole"
+   ],
+   "short": 0,
+   "oldLeader": "snapstick-turtle",
+   "leader": "snapstick-turtle",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list water-vole x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m2",
+   "mapNo": 4,
+   "side": false,
+   "key": "4-3",
+   "name": "Cetacean Pod",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "muskrat-lodgekeeper": 3,
+    "platypus-spur": 3,
+    "water-vole": 4,
+    "pond-algae": 3,
+    "lions-mane-jelly": 2
+   },
+   "after": {
+    "lions-mane-jelly": 2,
+    "muskrat-lodgekeeper": 3,
+    "platypus-spur": 3,
+    "pond-algae": 3,
+    "water-shrew": 4
+   },
+   "off": [
+    "water-vole"
+   ],
+   "short": 0,
+   "oldLeader": "lions-mane-jelly",
+   "leader": "lions-mane-jelly",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list water-vole x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m2",
+   "mapNo": 4,
+   "side": false,
+   "key": "4-4",
+   "name": "The Kraken's Maw",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "snapstick-turtle": 5,
+    "water-vole": 4,
+    "muskrat-lodgekeeper": 3,
+    "platypus-spur": 1,
+    "pond-algae": 1,
+    "lions-mane-jelly": 1
+   },
+   "after": {
+    "lions-mane-jelly": 1,
+    "muskrat-lodgekeeper": 3,
+    "platypus-spur": 1,
+    "pond-algae": 1,
+    "snapstick-turtle": 5,
+    "water-shrew": 4
+   },
+   "off": [
+    "water-vole"
+   ],
+   "short": 0,
+   "oldLeader": "lions-mane-jelly",
+   "leader": "lions-mane-jelly",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list water-vole x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m2",
+   "mapNo": 4,
+   "side": false,
+   "key": "4-5",
+   "name": "The Drowned Colossus",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "snapstick-turtle": 5,
+    "water-shrew": 3,
+    "muskrat-lodgekeeper": 3,
+    "pyrenean-desman": 3,
+    "box-turtle": 2,
+    "drowned-matriarch": 2,
+    "lions-mane-jelly": 2
+   },
+   "after": {
+    "drowned-matriarch": 2,
+    "lions-mane-jelly": 2,
+    "muskrat-lodgekeeper": 3,
+    "pyrenean-desman": 3,
+    "snapstick-turtle": 5,
+    "water-shrew": 5
+   },
+   "off": [
+    "box-turtle"
+   ],
+   "short": 0,
+   "oldLeader": "lions-mane-jelly",
+   "leader": "lions-mane-jelly",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list box-turtle x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "key": "6-1",
+   "name": "Leech Bog",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "poison-dart-croaker": 5,
+    "bogfire-newt": 3,
+    "lamprey": 4
+   },
+   "after": {
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 4,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "poison-dart-croaker": 5
+   },
+   "off": [
+    "bogfire-newt"
+   ],
+   "short": 0,
+   "oldLeader": "bogfire-newt",
+   "leader": "fire-ant-raft",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list bogfire-newt x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "key": "6-2",
+   "name": "Mire Ambush",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "booming-bittern": 4,
+    "bogfire-newt": 4,
+    "lamprey": 5,
+    "nutria-reedcutter": 1
+   },
+   "after": {
+    "booming-bittern": 4,
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 1
+   },
+   "off": [
+    "bogfire-newt"
+   ],
+   "short": 0,
+   "oldLeader": "booming-bittern",
+   "leader": "booming-bittern",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list bogfire-newt x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "key": "6-3",
+   "name": "Toad Chorus",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "camouflage-frog": 5,
+    "bogfire-newt": 2,
+    "booming-bittern": 2,
+    "cane-toad": 4,
+    "nutria-reedcutter": 1,
+    "lamprey": 4
+   },
+   "after": {
+    "booming-bittern": 2,
+    "camouflage-frog": 5,
+    "constrictor-coil": 1,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "lamprey": 5,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 1
+   },
+   "off": [
+    "bogfire-newt",
+    "cane-toad"
+   ],
+   "short": 0,
+   "oldLeader": "cane-toad",
+   "leader": "booming-bittern",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list bogfire-newt x2, cane-toad x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "key": "6-4",
+   "name": "Root Snare",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "constrictor-coil": 1,
+    "bogfire-newt": 4,
+    "cane-toad": 4,
+    "booming-bittern": 1,
+    "camouflage-frog": 3
+   },
+   "after": {
+    "booming-bittern": 1,
+    "camouflage-frog": 4,
+    "constrictor-coil": 1,
+    "cypress-root-lurker": 1,
+    "fire-ant-raft": 1,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 3
+   },
+   "off": [
+    "bogfire-newt",
+    "cane-toad"
+   ],
+   "short": 0,
+   "oldLeader": "cane-toad",
+   "leader": "booming-bittern",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list bogfire-newt x4, cane-toad x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "key": "6-5",
+   "name": "Venomlord's Coil",
+   "kind": "elite",
+   "cap": "rare",
+   "before": {
+    "venomlord-serpent": 2,
+    "bogfire-newt": 3,
+    "booming-bittern": 2,
+    "newt-doctor": 2,
+    "raven-scout": 1,
+    "camouflage-frog": 4
+   },
+   "after": {
+    "booming-bittern": 2,
+    "camouflage-frog": 4,
+    "marsh-harrier": 1,
+    "newt-doctor": 4,
+    "raven-scout": 1,
+    "venomlord-serpent": 2
+   },
+   "off": [
+    "bogfire-newt"
+   ],
+   "short": 0,
+   "oldLeader": "venomlord-serpent",
+   "leader": "venomlord-serpent",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list bogfire-newt x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "side": false,
+   "key": "6-6",
+   "name": "Crocodile Run",
+   "kind": "elite",
+   "cap": "rare",
+   "before": {
+    "camouflage-frog": 5,
+    "booming-bittern": 3,
+    "bogfire-newt": 4,
+    "venomlord-serpent": 3
+   },
+   "after": {
+    "booming-bittern": 3,
+    "camouflage-frog": 5,
+    "fire-ant-raft": 1,
+    "marsh-harrier": 1,
+    "nutria-reedcutter": 1,
+    "raven-scout": 1,
+    "venomlord-serpent": 3
+   },
+   "off": [
+    "bogfire-newt"
+   ],
+   "short": 0,
+   "oldLeader": "marsh-wisp",
+   "leader": "marsh-wisp",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list bogfire-newt x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "side": false,
+   "key": "7-3",
+   "name": "Web Hollow",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4,
+    "bombardier-beetle": 3,
+    "garden-snail": 1,
+    "honey-bee": 1,
+    "fungal-colossus": 2
+   },
+   "after": {
+    "fungal-colossus": 2,
+    "garden-snail": 1,
+    "hawthorn-shieldbug": 3,
+    "honey-bee": 1,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4
+   },
+   "off": [
+    "bombardier-beetle"
+   ],
+   "short": 0,
+   "oldLeader": "fungal-colossus",
+   "leader": "fungal-colossus",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list bombardier-beetle x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "side": false,
+   "key": "7-4",
+   "name": "Moonlit Gills",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "fungal-colossus": 3,
+    "ant-warrior": 2,
+    "planarian-splitter": 4,
+    "compost-grub": 1,
+    "leafcutter-gardener": 2,
+    "dung-beetle": 4
+   },
+   "after": {
+    "compost-grub": 1,
+    "dung-beetle": 4,
+    "fungal-colossus": 3,
+    "leafcutter-gardener": 4,
+    "planarian-splitter": 4
+   },
+   "off": [
+    "ant-warrior"
+   ],
+   "short": 0,
+   "oldLeader": "fungal-colossus",
+   "leader": "fungal-colossus",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list ant-warrior x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "side": false,
+   "key": "7-5",
+   "name": "The Oath Ring",
+   "kind": "elite",
+   "cap": "rare",
+   "before": {
+    "compost-grub": 1,
+    "dung-beetle": 4,
+    "ant-warrior": 4,
+    "truffle-piglet": 4,
+    "bee-forager": 1,
+    "leafcutter-gardener": 2,
+    "planarian-splitter": 1,
+    "bogfire-newt": 1
+   },
+   "after": {
+    "bee-forager": 1,
+    "compost-grub": 1,
+    "dung-beetle": 4,
+    "leafcutter-gardener": 5,
+    "planarian-splitter": 2,
+    "truffle-piglet": 4,
+    "worker-ant": 1
+   },
+   "off": [
+    "ant-warrior",
+    "bogfire-newt"
+   ],
+   "short": 0,
+   "oldLeader": "truffle-piglet",
+   "leader": "truffle-piglet",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list ant-warrior x4, bogfire-newt x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "side": false,
+   "key": "8-2",
+   "name": "Glowworm Grotto",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "blind-cave-fish": 3,
+    "stalactite-golem": 3,
+    "star-nosed-mole": 4,
+    "sulfur-cinder-moth": 4,
+    "whip-spider": 1,
+    "hollow-belly-rat": 1
+   },
+   "after": {
+    "blind-cave-fish": 3,
+    "hollow-belly-rat": 1,
+    "stalactite-golem": 3,
+    "star-nosed-mole": 4,
+    "sulfur-cinder-moth": 5
+   },
+   "off": [
+    "whip-spider"
+   ],
+   "short": 0,
+   "oldLeader": "hollow-belly-rat",
+   "leader": "hollow-belly-rat",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list whip-spider x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "side": false,
+   "key": "8-3",
+   "name": "Cinder Vents",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "whip-spider": 1,
+    "sulfur-cinder-moth": 2,
+    "gallery-orb-weaver": 2,
+    "blind-cave-fish": 3,
+    "stalactite-golem": 5,
+    "cave-olm": 1
+   },
+   "after": {
+    "blind-cave-fish": 3,
+    "cave-olm": 1,
+    "gallery-orb-weaver": 3,
+    "stalactite-golem": 5,
+    "sulfur-cinder-moth": 2
+   },
+   "off": [
+    "whip-spider"
+   ],
+   "short": 0,
+   "oldLeader": "gallery-orb-weaver",
+   "leader": "gallery-orb-weaver",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list whip-spider x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "side": false,
+   "key": "8-4",
+   "name": "Echo Chamber",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "blind-cave-fish": 5,
+    "whip-spider": 3,
+    "gallery-orb-weaver": 2,
+    "stalactite-golem": 1,
+    "hollow-belly-rat": 1
+   },
+   "after": {
+    "blind-cave-fish": 5,
+    "gallery-orb-weaver": 4,
+    "hollow-belly-rat": 1,
+    "stalactite-golem": 1,
+    "sulfur-cinder-moth": 1
+   },
+   "off": [
+    "whip-spider"
+   ],
+   "short": 0,
+   "oldLeader": "gallery-orb-weaver",
+   "leader": "gallery-orb-weaver",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list whip-spider x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "side": false,
+   "key": "8-6",
+   "name": "Glowworm Deep",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "whip-spider": 4,
+    "gallery-orb-weaver": 4,
+    "cave-olm": 2,
+    "stalactite-golem": 4,
+    "blind-cave-fish": 4
+   },
+   "after": {
+    "blind-cave-fish": 4,
+    "cave-olm": 2,
+    "gallery-orb-weaver": 4,
+    "stalactite-golem": 4,
+    "sulfur-cinder-moth": 4
+   },
+   "off": [
+    "whip-spider"
+   ],
+   "short": 0,
+   "oldLeader": "gallery-orb-weaver",
+   "leader": "gallery-orb-weaver",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list whip-spider x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "side": false,
+   "key": "9-4",
+   "name": "Kelp Curtains",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "mangrove-mudskipper": 5,
+    "reef-shark": 1,
+    "archerfish": 4,
+    "horseshoe-crab": 5,
+    "proboscis-monkey": 1
+   },
+   "after": {
+    "horseshoe-crab": 5,
+    "mangrove-monitor": 1,
+    "mangrove-mudskipper": 5,
+    "proboscis-monkey": 4,
+    "reef-shark": 1
+   },
+   "off": [
+    "archerfish"
+   ],
+   "short": 0,
+   "oldLeader": "proboscis-monkey",
+   "leader": "proboscis-monkey",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list archerfish x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "side": false,
+   "key": "9-5",
+   "name": "Moray Den",
+   "kind": "elite",
+   "cap": "rare",
+   "before": {
+    "mangrove-monitor": 4,
+    "reef-shark": 4,
+    "archerfish": 4,
+    "banded-sea-krait": 3,
+    "mangrove-manatee": 1,
+    "mangrove-mudskipper": 1
+   },
+   "after": {
+    "banded-sea-krait": 3,
+    "mangrove-manatee": 1,
+    "mangrove-monitor": 4,
+    "mangrove-mudskipper": 1,
+    "proboscis-monkey": 4,
+    "reef-shark": 4
+   },
+   "off": [
+    "archerfish"
+   ],
+   "short": 0,
+   "oldLeader": "mangrove-manatee",
+   "leader": "mangrove-manatee",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list archerfish x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "side": false,
+   "key": "9-6",
+   "name": "Drifting Shell",
+   "kind": "elite",
+   "cap": "rare",
+   "before": {
+    "mangrove-mudskipper": 1,
+    "reef-shark": 4,
+    "archerfish": 3,
+    "mangrove-kingfisher": 1,
+    "mangrove-manatee": 1,
+    "horseshoe-crab": 3,
+    "mangrove-monitor": 4
+   },
+   "after": {
+    "horseshoe-crab": 3,
+    "mangrove-kingfisher": 1,
+    "mangrove-manatee": 1,
+    "mangrove-monitor": 4,
+    "mangrove-mudskipper": 1,
+    "proboscis-monkey": 3,
+    "reef-shark": 4
+   },
+   "off": [
+    "archerfish"
+   ],
+   "short": 0,
+   "oldLeader": "mangrove-manatee",
+   "leader": "mangrove-manatee",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list archerfish x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "key": "10-1",
+   "name": "Clownfish Shoal",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "clownfish-scout": 5,
+    "kraken-spawnling": 5,
+    "swordfish-spearman": 1,
+    "orca-vanguard": 5,
+    "riptide-eel": 3,
+    "reef-shark": 1
+   },
+   "after": {
+    "clownfish-scout": 5,
+    "kraken-spawnling": 5,
+    "orca-vanguard": 5,
+    "reef-shark": 1,
+    "riptide-eel": 4
+   },
+   "off": [
+    "swordfish-spearman"
+   ],
+   "short": 0,
+   "oldLeader": "swordfish-spearman",
+   "leader": "riptide-eel",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list swordfish-spearman x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "key": "10-5",
+   "name": "Current Split",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "clownfish-scout": 4,
+    "great-barracuda": 1,
+    "swordfish-spearman": 1,
+    "orca-vanguard": 2,
+    "coral-reef-shark": 2,
+    "kraken-spawnling": 2
+   },
+   "after": {
+    "clownfish-scout": 4,
+    "coral-reef-shark": 2,
+    "great-barracuda": 1,
+    "kraken-spawnling": 2,
+    "orca-vanguard": 2,
+    "supernova-jelly": 1
+   },
+   "off": [
+    "swordfish-spearman"
+   ],
+   "short": 0,
+   "oldLeader": "swordfish-spearman",
+   "leader": "supernova-jelly",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list swordfish-spearman x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "key": "10-7",
+   "name": "Eel Nest",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "riptide-eel": 3,
+    "swordfish-spearman": 3,
+    "coral-reef-shark": 2,
+    "orca-vanguard": 2,
+    "kraken-spawnling": 4
+   },
+   "after": {
+    "coral-reef-shark": 2,
+    "kraken-spawnling": 4,
+    "orca-vanguard": 2,
+    "riptide-eel": 3,
+    "supernova-jelly": 3
+   },
+   "off": [
+    "swordfish-spearman"
+   ],
+   "short": 0,
+   "oldLeader": "riptide-eel",
+   "leader": "riptide-eel",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list swordfish-spearman x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "key": "10-8",
+   "name": "Sea Turtle Elder's Court",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "clownfish-scout": 4,
+    "riptide-eel": 4,
+    "great-barracuda": 1,
+    "swordfish-spearman": 2,
+    "colossal-squid": 2,
+    "orca-vanguard": 4
+   },
+   "after": {
+    "clownfish-scout": 4,
+    "colossal-squid": 2,
+    "great-barracuda": 1,
+    "orca-vanguard": 4,
+    "riptide-eel": 4,
+    "supernova-jelly": 2
+   },
+   "off": [
+    "swordfish-spearman"
+   ],
+   "short": 0,
+   "oldLeader": "colossal-squid",
+   "leader": "colossal-squid",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list swordfish-spearman x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "side": false,
+   "key": "10-9",
+   "name": "The Orca Vanguard King",
+   "kind": "boss",
+   "cap": "veryrare",
+   "before": {
+    "clownfish-scout": 4,
+    "orca-vanguard": 5,
+    "parrotfish": 3,
+    "riptide-eel": 2,
+    "colossal-squid": 2,
+    "swordfish-spearman": 2,
+    "kraken-spawnling": 2
+   },
+   "after": {
+    "clownfish-scout": 4,
+    "colossal-squid": 2,
+    "kraken-spawnling": 2,
+    "orca-vanguard": 5,
+    "parrotfish": 3,
+    "riptide-eel": 4
+   },
+   "off": [
+    "swordfish-spearman"
+   ],
+   "short": 0,
+   "oldLeader": "orca-vanguard",
+   "leader": "orca-vanguard",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list swordfish-spearman x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "side": false,
+   "key": "11-2",
+   "name": "Avalanche Ridge",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "eyrie-warden": 4,
+    "mountain-goat-climber": 1,
+    "eagle-owl-quartermaster": 1,
+    "chipmunk-hoarder": 2,
+    "alpine-salamander": 1,
+    "alpine-swift": 4
+   },
+   "after": {
+    "alpine-salamander": 1,
+    "alpine-swift": 4,
+    "chipmunk-hoarder": 2,
+    "eagle-owl-quartermaster": 1,
+    "eyrie-warden": 4,
+    "mountain-hare": 1
+   },
+   "off": [
+    "mountain-goat-climber"
+   ],
+   "short": 0,
+   "oldLeader": "eagle-owl-quartermaster",
+   "leader": "eagle-owl-quartermaster",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list mountain-goat-climber x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "side": false,
+   "key": "11-3",
+   "name": "Cliffside Herd",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "alpine-marmot": 5,
+    "eyrie-warden": 2,
+    "mountain-goat-climber": 1,
+    "eagle-owl-quartermaster": 1,
+    "alpine-salamander": 1,
+    "alpine-swift": 2
+   },
+   "after": {
+    "alpine-marmot": 5,
+    "alpine-salamander": 1,
+    "alpine-swift": 2,
+    "eagle-owl-quartermaster": 1,
+    "eyrie-warden": 2,
+    "mountain-hare": 1
+   },
+   "off": [
+    "mountain-goat-climber"
+   ],
+   "short": 0,
+   "oldLeader": "eagle-owl-quartermaster",
+   "leader": "eagle-owl-quartermaster",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list mountain-goat-climber x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "side": false,
+   "key": "11-9",
+   "name": "The Condor Sovereign",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "alpine-marmot": 4,
+    "chipmunk-hoarder": 2,
+    "apollo-butterfly": 4,
+    "chamois-leaper": 2,
+    "eagle-owl-quartermaster": 2,
+    "mountain-hare": 4,
+    "peak-condor": 1
+   },
+   "after": {
+    "alpine-marmot": 4,
+    "alpine-swift": 2,
+    "chamois-leaper": 4,
+    "chipmunk-hoarder": 2,
+    "eagle-owl-quartermaster": 2,
+    "mountain-hare": 4,
+    "peak-condor": 1
+   },
+   "off": [
+    "apollo-butterfly"
+   ],
+   "short": 0,
+   "oldLeader": "chamois-leaper",
+   "leader": "chamois-leaper",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list apollo-butterfly x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "key": "12-1",
+   "name": "Hedge Mice",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "bramble-hoglet": 5,
+    "field-mouse": 1,
+    "mouse-sapper": 5,
+    "gatling-hog": 3,
+    "carrion-crow": 3
+   },
+   "after": {
+    "bramble-hoglet": 5,
+    "carrion-crow": 3,
+    "field-mouse": 1,
+    "mouse-sapper": 5,
+    "thorn-shrike": 3
+   },
+   "off": [
+    "gatling-hog"
+   ],
+   "short": 0,
+   "oldLeader": "gatling-hog",
+   "leader": "thorn-shrike",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list gatling-hog x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "key": "12-4",
+   "name": "Thornvine Arch",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "hedge-weasel": 3,
+    "quillguard": 1,
+    "thorn-shrike": 1,
+    "gatling-hog": 3,
+    "mouse-sapper": 3,
+    "carrion-crow": 5
+   },
+   "after": {
+    "carrion-crow": 5,
+    "hedge-weasel": 3,
+    "mouse-sapper": 3,
+    "quill-thorn-boar": 1,
+    "quillguard": 1,
+    "thorn-shrike": 3
+   },
+   "off": [
+    "gatling-hog"
+   ],
+   "short": 0,
+   "oldLeader": "quillguard",
+   "leader": "quillguard",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list gatling-hog x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "key": "12-5",
+   "name": "Quillback Hold",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "cunning-vixen": 1,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 3,
+    "quillguard": 3,
+    "gatling-hog": 2,
+    "carrion-crow": 4
+   },
+   "after": {
+    "carrion-crow": 4,
+    "cunning-vixen": 1,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 3,
+    "quillguard": 3,
+    "thorn-shrike": 2
+   },
+   "off": [
+    "gatling-hog"
+   ],
+   "short": 0,
+   "oldLeader": "quillguard",
+   "leader": "quillguard",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list gatling-hog x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "key": "12-6",
+   "name": "Rodent Court",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "field-mouse": 1,
+    "cunning-vixen": 3,
+    "quillguard": 3,
+    "thorn-shrike": 1,
+    "gatling-hog": 3,
+    "mouse-sapper": 3,
+    "carrion-crow": 2
+   },
+   "after": {
+    "carrion-crow": 2,
+    "cunning-vixen": 3,
+    "field-mouse": 1,
+    "mouse-sapper": 3,
+    "quill-thorn-boar": 1,
+    "quillguard": 3,
+    "thorn-shrike": 3
+   },
+   "off": [
+    "gatling-hog"
+   ],
+   "short": 0,
+   "oldLeader": "quillguard",
+   "leader": "quillguard",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list gatling-hog x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "side": false,
+   "key": "12-7",
+   "name": "The Briar Queen",
+   "kind": "miniboss",
+   "cap": "veryrare",
+   "before": {
+    "cunning-vixen": 1,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 3,
+    "quillguard": 3,
+    "field-mouse": 1,
+    "gatling-hog": 3,
+    "mouse-sapper": 3,
+    "carrion-crow": 3
+   },
+   "after": {
+    "carrion-crow": 3,
+    "cunning-vixen": 1,
+    "field-mouse": 1,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 3,
+    "mouse-sapper": 3,
+    "quillguard": 3,
+    "thorn-shrike": 3
+   },
+   "off": [
+    "gatling-hog"
+   ],
+   "short": 0,
+   "oldLeader": "quillguard",
+   "leader": "quillguard",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list gatling-hog x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "key": "13-1",
+   "name": "Cub Clearing",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "berserker-boar": 5,
+    "fox-kit": 4,
+    "stag-knight": 4,
+    "bramblewood-lynx": 1,
+    "fawn-scout": 1,
+    "grizzly-vanguard": 4
+   },
+   "after": {
+    "ant-hill": 1,
+    "berserker-boar": 5,
+    "bramblewood-lynx": 1,
+    "fawn-scout": 1,
+    "fox-kit": 4,
+    "grizzly-vanguard": 5,
+    "quillback-elder": 1,
+    "swift-fox": 1
+   },
+   "off": [
+    "stag-knight"
+   ],
+   "short": 0,
+   "oldLeader": "bramblewood-lynx",
+   "leader": "bramblewood-lynx",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list stag-knight x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "key": "13-2",
+   "name": "Fox Run",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "sergeant-bramblefox": 3,
+    "swift-fox": 5,
+    "owl-nightwatch": 1,
+    "quillback-elder": 1,
+    "berserker-boar": 5,
+    "stag-knight": 1
+   },
+   "after": {
+    "berserker-boar": 5,
+    "grizzly-vanguard": 1,
+    "owl-nightwatch": 1,
+    "quillback-elder": 1,
+    "sergeant-bramblefox": 3,
+    "swift-fox": 5
+   },
+   "off": [
+    "stag-knight"
+   ],
+   "short": 0,
+   "oldLeader": "sergeant-bramblefox",
+   "leader": "sergeant-bramblefox",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list stag-knight x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "key": "13-3",
+   "name": "Antler Grove",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "stag-knight": 3,
+    "woodpecker-sapper": 3,
+    "bramblewood-lynx": 3,
+    "berserker-boar": 4,
+    "swift-fox": 4
+   },
+   "after": {
+    "berserker-boar": 4,
+    "bramblewood-lynx": 3,
+    "grizzly-vanguard": 3,
+    "swift-fox": 4,
+    "tasmanian-devil": 3
+   },
+   "off": [
+    "stag-knight",
+    "woodpecker-sapper"
+   ],
+   "short": 0,
+   "oldLeader": "bramblewood-lynx",
+   "leader": "bramblewood-lynx",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list stag-knight x3, woodpecker-sapper x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "key": "13-5",
+   "name": "Badger Setts",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "fox-kit": 4,
+    "grizzly-vanguard": 1,
+    "swift-fox": 2,
+    "bramblewood-lynx": 3,
+    "fawn-scout": 2,
+    "shimmerwing-stag": 1,
+    "woodpecker-sapper": 2,
+    "stag-knight": 2
+   },
+   "after": {
+    "bramblewood-lynx": 3,
+    "fawn-scout": 2,
+    "fox-kit": 4,
+    "grizzly-vanguard": 3,
+    "shimmerwing-stag": 1,
+    "swift-fox": 2,
+    "tasmanian-devil": 2
+   },
+   "off": [
+    "woodpecker-sapper",
+    "stag-knight"
+   ],
+   "short": 0,
+   "oldLeader": "shimmerwing-stag",
+   "leader": "shimmerwing-stag",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list woodpecker-sapper x2, stag-knight x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "side": false,
+   "key": "13-8",
+   "name": "The Stag-Lord",
+   "kind": "miniboss",
+   "cap": "veryrare",
+   "before": {
+    "fox-kit": 4,
+    "grizzly-vanguard": 2,
+    "swift-fox": 1,
+    "bramblewood-lynx": 3,
+    "fawn-scout": 1,
+    "shimmerwing-stag": 2,
+    "woodpecker-sapper": 4,
+    "tasmanian-devil": 2
+   },
+   "after": {
+    "bramblewood-lynx": 3,
+    "fawn-scout": 1,
+    "fox-kit": 4,
+    "grizzly-vanguard": 2,
+    "redwood-woodpecker": 2,
+    "shimmerwing-stag": 2,
+    "swift-fox": 1,
+    "tasmanian-devil": 4
+   },
+   "off": [
+    "woodpecker-sapper"
+   ],
+   "short": 0,
+   "oldLeader": "shimmerwing-stag",
+   "leader": "shimmerwing-stag",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list woodpecker-sapper x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "side": false,
+   "key": "14-1",
+   "name": "Zebra Stampede",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "hoopoe-herald": 4,
+    "meerkat-burrower": 4,
+    "springbok-pronker": 4,
+    "marula-elephant": 3,
+    "pangolin-roller": 1
+   },
+   "after": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 1,
+    "hoopoe-herald": 5,
+    "marula-elephant": 3,
+    "mouse-sapper": 1,
+    "springbok-pronker": 5
+   },
+   "off": [
+    "meerkat-burrower",
+    "pangolin-roller"
+   ],
+   "short": 0,
+   "oldLeader": "pangolin-roller",
+   "leader": "marula-elephant",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list meerkat-burrower x4, pangolin-roller x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "side": false,
+   "key": "14-2",
+   "name": "Hyena Chorus",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "meerkat-burrower": 3,
+    "springbok-pronker": 5,
+    "spitting-cobra": 1,
+    "mouse-sapper": 1,
+    "marula-elephant": 4,
+    "house-cat": 1
+   },
+   "after": {
+    "hoopoe-herald": 3,
+    "house-cat": 1,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "spitting-cobra": 1,
+    "springbok-pronker": 5
+   },
+   "off": [
+    "meerkat-burrower"
+   ],
+   "short": 0,
+   "oldLeader": "spitting-cobra",
+   "leader": "spitting-cobra",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list meerkat-burrower x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "side": false,
+   "key": "14-3",
+   "name": "Howler Canopy",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "grave-grin-hyena": 3,
+    "marula-elephant": 3,
+    "pangolin-roller": 3,
+    "spitting-cobra": 1,
+    "springbok-pronker": 5
+   },
+   "after": {
+    "dust-hyena": 3,
+    "grave-grin-hyena": 3,
+    "marula-elephant": 3,
+    "spitting-cobra": 1,
+    "springbok-pronker": 5
+   },
+   "off": [
+    "pangolin-roller"
+   ],
+   "short": 0,
+   "oldLeader": "pangolin-roller",
+   "leader": "spitting-cobra",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list pangolin-roller x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "side": false,
+   "key": "14-5",
+   "name": "Giraffe Vanguard",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "hoopoe-herald": 4,
+    "dust-hyena": 1,
+    "grave-grin-hyena": 3,
+    "pangolin-roller": 3,
+    "savanna-cheetah": 1,
+    "marula-elephant": 4,
+    "springbok-pronker": 3,
+    "mouse-sapper": 1
+   },
+   "after": {
+    "dust-hyena": 4,
+    "grave-grin-hyena": 3,
+    "hoopoe-herald": 4,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "savanna-cheetah": 1,
+    "springbok-pronker": 3
+   },
+   "off": [
+    "pangolin-roller"
+   ],
+   "short": 0,
+   "oldLeader": "savanna-cheetah",
+   "leader": "savanna-cheetah",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list pangolin-roller x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "side": false,
+   "key": "14-7",
+   "name": "The Cheetah Matriarch",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "savanna-cheetah": 1,
+    "plains-zebra": 1,
+    "acacia-giraffe": 1,
+    "springbok-pronker": 5,
+    "house-cat": 1,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "hoopoe-herald": 2
+   },
+   "after": {
+    "acacia-giraffe": 1,
+    "dust-hyena": 1,
+    "hoopoe-herald": 2,
+    "house-cat": 1,
+    "marula-elephant": 4,
+    "mouse-sapper": 1,
+    "savanna-cheetah": 1,
+    "springbok-pronker": 5
+   },
+   "off": [
+    "plains-zebra"
+   ],
+   "short": 0,
+   "oldLeader": "savanna-cheetah",
+   "leader": "savanna-cheetah",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list plains-zebra x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "side": false,
+   "key": "15-2",
+   "name": "Squire Road",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "warhorse-charger": 2,
+    "bison-bulldozer": 4,
+    "raccoon-bandit": 3,
+    "stoat-cutthroat": 1,
+    "hedge-weasel": 1,
+    "border-collie": 2,
+    "cataphract-destrier": 3
+   },
+   "after": {
+    "bison-bulldozer": 4,
+    "border-collie": 2,
+    "cataphract-destrier": 3,
+    "hedge-weasel": 1,
+    "raccoon-bandit": 3,
+    "shepherds-bark": 2,
+    "stoat-cutthroat": 1
+   },
+   "off": [
+    "warhorse-charger"
+   ],
+   "short": 0,
+   "oldLeader": "stoat-cutthroat",
+   "leader": "stoat-cutthroat",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list warhorse-charger x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "side": false,
+   "key": "15-5",
+   "name": "Charge of the Warhorses",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "warhorse-charger": 2,
+    "bison-bulldozer": 3,
+    "border-collie": 2,
+    "stoat-cutthroat": 1,
+    "talon-archer": 2,
+    "shepherds-bark": 2,
+    "pronghorn-racer": 4,
+    "cataphract-destrier": 4
+   },
+   "after": {
+    "bison-bulldozer": 3,
+    "border-collie": 2,
+    "cataphract-destrier": 4,
+    "pronghorn-racer": 4,
+    "shepherds-bark": 4,
+    "stoat-cutthroat": 1,
+    "talon-archer": 2
+   },
+   "off": [
+    "warhorse-charger"
+   ],
+   "short": 0,
+   "oldLeader": "talon-archer",
+   "leader": "talon-archer",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list warhorse-charger x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "side": false,
+   "key": "15-6",
+   "name": "The Kennels",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "talon-archer": 2,
+    "warhorse-charger": 3,
+    "shepherds-bark": 5,
+    "pronghorn-racer": 3,
+    "cataphract-destrier": 1,
+    "hedge-weasel": 1,
+    "lodge-engineer": 1
+   },
+   "after": {
+    "cataphract-destrier": 2,
+    "hedge-weasel": 1,
+    "lodge-engineer": 1,
+    "pronghorn-racer": 5,
+    "shepherds-bark": 5,
+    "talon-archer": 2
+   },
+   "off": [
+    "warhorse-charger"
+   ],
+   "short": 0,
+   "oldLeader": "talon-archer",
+   "leader": "talon-archer",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list warhorse-charger x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "side": false,
+   "key": "16-1",
+   "name": "Snowshoe Tracks",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "alpha-howler": 3,
+    "dhole-runner": 5,
+    "frost-hare-sprinter": 3,
+    "woodland-caribou": 1,
+    "wolf-pack-runner": 3,
+    "boreal-elk": 1
+   },
+   "after": {
+    "alpha-howler": 3,
+    "boreal-elk": 2,
+    "bramblewood-lynx": 1,
+    "cone-cutter-squirrel": 5,
+    "lunar-howler": 1,
+    "snowshoe-hare": 3,
+    "woodland-caribou": 1
+   },
+   "off": [
+    "dhole-runner",
+    "frost-hare-sprinter",
+    "wolf-pack-runner"
+   ],
+   "short": 0,
+   "oldLeader": "wolf-pack-runner",
+   "leader": "bramblewood-lynx",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list dhole-runner x5, frost-hare-sprinter x3, wolf-pack-runner x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "side": false,
+   "key": "16-2",
+   "name": "Pinecone Drop",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "dhole-runner": 3,
+    "frost-hare-sprinter": 4,
+    "snowshoe-hare": 4,
+    "taiga-lynx": 1,
+    "wolf-pack-runner": 3,
+    "boreal-elk": 3
+   },
+   "after": {
+    "boreal-elk": 5,
+    "bramblewood-lynx": 1,
+    "cone-cutter-squirrel": 5,
+    "lunar-howler": 1,
+    "redwood-woodpecker": 1,
+    "snowshoe-hare": 4,
+    "taiga-lynx": 1
+   },
+   "off": [
+    "dhole-runner",
+    "frost-hare-sprinter",
+    "wolf-pack-runner"
+   ],
+   "short": 0,
+   "oldLeader": "wolf-pack-runner",
+   "leader": "bramblewood-lynx",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list dhole-runner x3, frost-hare-sprinter x4, wolf-pack-runner x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "side": false,
+   "key": "16-3",
+   "name": "Elk Crossing",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "woodland-caribou": 4,
+    "pinecone-sapper": 5,
+    "snowshoe-hare": 5,
+    "swift-fox": 1,
+    "dhole-runner": 5
+   },
+   "after": {
+    "boreal-elk": 5,
+    "cone-cutter-squirrel": 5,
+    "snowshoe-hare": 5,
+    "swift-fox": 1,
+    "woodland-caribou": 4
+   },
+   "off": [
+    "pinecone-sapper",
+    "dhole-runner"
+   ],
+   "short": 0,
+   "oldLeader": "woodland-caribou",
+   "leader": "woodland-caribou",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list pinecone-sapper x5, dhole-runner x5 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "side": false,
+   "key": "16-4",
+   "name": "Lynx Shadow",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "boreal-elk": 1,
+    "dhole-runner": 4,
+    "frost-hare-sprinter": 4,
+    "taiga-lynx": 1,
+    "snowshoe-hare": 4,
+    "alpha-howler": 2
+   },
+   "after": {
+    "alpha-howler": 2,
+    "boreal-elk": 3,
+    "cone-cutter-squirrel": 5,
+    "snowshoe-hare": 5,
+    "taiga-lynx": 1
+   },
+   "off": [
+    "dhole-runner",
+    "frost-hare-sprinter"
+   ],
+   "short": 0,
+   "oldLeader": "taiga-lynx",
+   "leader": "taiga-lynx",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list dhole-runner x4, frost-hare-sprinter x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "side": false,
+   "key": "16-5",
+   "name": "The Running Pack",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "alpha-howler": 2,
+    "dhole-runner": 4,
+    "snowshoe-hare": 4,
+    "woodland-caribou": 2,
+    "taiga-lynx": 2,
+    "dhole-matriarch": 1,
+    "boreal-elk": 4
+   },
+   "after": {
+    "alpha-howler": 2,
+    "boreal-elk": 5,
+    "cone-cutter-squirrel": 3,
+    "dhole-matriarch": 1,
+    "snowshoe-hare": 4,
+    "taiga-lynx": 2,
+    "woodland-caribou": 2
+   },
+   "off": [
+    "dhole-runner"
+   ],
+   "short": 0,
+   "oldLeader": "dhole-matriarch",
+   "leader": "dhole-matriarch",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list dhole-runner x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "side": false,
+   "key": "16-6",
+   "name": "Reaver's Hollow",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "alpha-howler": 5,
+    "dhole-runner": 5,
+    "frost-hare-sprinter": 3,
+    "dhole-matriarch": 1,
+    "boreal-elk": 4
+   },
+   "after": {
+    "alpha-howler": 5,
+    "boreal-elk": 4,
+    "cone-cutter-squirrel": 5,
+    "dhole-matriarch": 1,
+    "snowshoe-hare": 3
+   },
+   "off": [
+    "dhole-runner",
+    "frost-hare-sprinter"
+   ],
+   "short": 0,
+   "oldLeader": "dhole-matriarch",
+   "leader": "dhole-matriarch",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list dhole-runner x5, frost-hare-sprinter x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "side": false,
+   "key": "16-7",
+   "name": "The Howling Alpha",
+   "kind": "miniboss",
+   "cap": "veryrare",
+   "before": {
+    "alpha-howler": 4,
+    "frost-hare-sprinter": 4,
+    "snowshoe-hare": 2,
+    "woodland-caribou": 2,
+    "taiga-lynx": 2,
+    "wolf-pack-runner": 3,
+    "dhole-runner": 1,
+    "dhole-matriarch": 2
+   },
+   "after": {
+    "alpha-howler": 4,
+    "bramblewood-lynx": 1,
+    "cone-cutter-squirrel": 5,
+    "dhole-matriarch": 2,
+    "lunar-howler": 1,
+    "snowshoe-hare": 2,
+    "taiga-lynx": 2,
+    "tasmanian-devil": 1,
+    "woodland-caribou": 2
+   },
+   "off": [
+    "frost-hare-sprinter",
+    "wolf-pack-runner",
+    "dhole-runner"
+   ],
+   "short": 0,
+   "oldLeader": "alpha-howler",
+   "leader": "alpha-howler",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list frost-hare-sprinter x4, wolf-pack-runner x3, dhole-runner x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "key": "17-1",
+   "name": "Ice Fang Patrol",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "glacial-ape-king": 4,
+    "harbor-seal": 2,
+    "snow-ermine": 3,
+    "snow-bunting-archer": 1,
+    "spitting-spider": 1,
+    "ravenous-wolverine": 3
+   },
+   "after": {
+    "alpha-howler": 1,
+    "beluga": 3,
+    "harbor-seal": 2,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 3,
+    "spitting-spider": 1
+   },
+   "off": [
+    "glacial-ape-king",
+    "ravenous-wolverine"
+   ],
+   "short": 0,
+   "oldLeader": "glacial-ape-king",
+   "leader": "beluga",
+   "leaderChanged": true,
+   "showcase": "beluga",
+   "why": "off-list glacial-ape-king x4, ravenous-wolverine x3 rebuilt from the fight's list; new showcase leader beluga (Ice Fang Patrol: the tundra pack's own Rare with active skills (Sonar, Inspiring 1; EFFECTS-1))",
+   "k14": []
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "key": "17-2",
+   "name": "Frostbitten Pack",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "lone-grey-wolf": 1,
+    "harbor-seal": 2,
+    "beluga": 3,
+    "spitting-spider": 3,
+    "snow-bunting-archer": 4,
+    "glacial-ape-king": 4
+   },
+   "after": {
+    "alpha-howler": 1,
+    "beluga": 3,
+    "harbor-seal": 5,
+    "lone-grey-wolf": 1,
+    "snow-bunting-archer": 4,
+    "spitting-spider": 3
+   },
+   "off": [
+    "glacial-ape-king"
+   ],
+   "short": 0,
+   "oldLeader": "lone-grey-wolf",
+   "leader": "lone-grey-wolf",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list glacial-ape-king x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "key": "17-3",
+   "name": "Snowshoe Line",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "glacial-ape-king": 4,
+    "snow-ermine": 2,
+    "harbor-seal": 4,
+    "beluga": 2,
+    "talus-pika": 1
+   },
+   "after": {
+    "alpha-howler": 1,
+    "beluga": 2,
+    "harbor-seal": 5,
+    "polar-bear": 2,
+    "snow-ermine": 3
+   },
+   "off": [
+    "glacial-ape-king",
+    "talus-pika"
+   ],
+   "short": 0,
+   "oldLeader": "glacial-ape-king",
+   "leader": "polar-bear",
+   "leaderChanged": true,
+   "showcase": "polar-bear",
+   "why": "off-list glacial-ape-king x4, talus-pika x1 rebuilt from the fight's list; new showcase leader polar-bear (Snowshoe Line: the tundra's Very Rare ambusher (Ambush 4, Hibernate))",
+   "k14": []
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "key": "17-4",
+   "name": "Lynx Ambush",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "walrus-icebreaker": 2,
+    "spitting-spider": 4,
+    "glacial-ape-king": 5,
+    "harbor-seal": 5,
+    "alpha-howler": 1,
+    "beluga": 2
+   },
+   "after": {
+    "alpha-howler": 1,
+    "beluga": 2,
+    "harbor-seal": 5,
+    "snow-ermine": 5,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 2
+   },
+   "off": [
+    "glacial-ape-king"
+   ],
+   "short": 0,
+   "oldLeader": "walrus-icebreaker",
+   "leader": "walrus-icebreaker",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list glacial-ape-king x5 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "key": "17-5",
+   "name": "Musk Ox Bulwark",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "walrus-icebreaker": 1,
+    "spitting-spider": 4,
+    "alpha-howler": 1,
+    "glacial-ape-king": 5,
+    "snow-bunting-archer": 4
+   },
+   "after": {
+    "alpha-howler": 1,
+    "harbor-seal": 5,
+    "snow-bunting-archer": 4,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 1
+   },
+   "off": [
+    "glacial-ape-king"
+   ],
+   "short": 0,
+   "oldLeader": "walrus-icebreaker",
+   "leader": "walrus-icebreaker",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list glacial-ape-king x5 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "key": "17-6",
+   "name": "Glacier Herd",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "polar-bear": 2,
+    "walrus-icebreaker": 2,
+    "glacial-ape-king": 5,
+    "alpha-howler": 1,
+    "harbor-seal": 5,
+    "spitting-spider": 4,
+    "ravenous-wolverine": 1
+   },
+   "after": {
+    "alpha-howler": 1,
+    "beluga": 1,
+    "harbor-seal": 5,
+    "polar-bear": 2,
+    "snow-ermine": 5,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 2
+   },
+   "off": [
+    "glacial-ape-king",
+    "ravenous-wolverine"
+   ],
+   "short": 0,
+   "oldLeader": "walrus-icebreaker",
+   "leader": "walrus-icebreaker",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list glacial-ape-king x5, ravenous-wolverine x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "key": "17-7",
+   "name": "Alpha Howler's Den",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "harbor-seal": 4,
+    "spitting-spider": 3,
+    "ravenous-wolverine": 1,
+    "polar-bear": 2,
+    "walrus-icebreaker": 2,
+    "beluga": 1,
+    "glacial-ape-king": 4,
+    "talus-pika": 2
+   },
+   "after": {
+    "alpha-howler": 1,
+    "beluga": 2,
+    "harbor-seal": 5,
+    "polar-bear": 2,
+    "snow-ermine": 4,
+    "spitting-spider": 3,
+    "walrus-icebreaker": 2
+   },
+   "off": [
+    "ravenous-wolverine",
+    "glacial-ape-king",
+    "talus-pika"
+   ],
+   "short": 0,
+   "oldLeader": "walrus-icebreaker",
+   "leader": "walrus-icebreaker",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list ravenous-wolverine x1, glacial-ape-king x4, talus-pika x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "side": false,
+   "key": "17-8",
+   "name": "The Glacial Ape-King",
+   "kind": "miniboss",
+   "cap": "veryrare",
+   "before": {
+    "glacial-ape-king": 4,
+    "walrus-icebreaker": 2,
+    "alpha-howler": 1,
+    "spitting-spider": 4,
+    "harbor-seal": 5
+   },
+   "after": {
+    "alpha-howler": 1,
+    "beluga": 1,
+    "harbor-seal": 5,
+    "snow-ermine": 1,
+    "spitting-spider": 4,
+    "walrus-icebreaker": 4
+   },
+   "off": [
+    "glacial-ape-king"
+   ],
+   "short": 0,
+   "oldLeader": "glacial-ape-king",
+   "leader": "walrus-icebreaker",
+   "leaderChanged": true,
+   "showcase": "walrus-icebreaker",
+   "why": "off-list glacial-ape-king x4 rebuilt from the fight's list; new showcase leader walrus-icebreaker (the map's ender: its own reward card leads it (Freeze, Shatter 2); the fight keeps its name The Glacial Ape-King (owner call BAL16-2))",
+   "k14": []
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "key": "18-1",
+   "name": "Dune Jackals",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "thorny-devil": 4,
+    "caustic-scorpion": 1,
+    "dromedary": 1,
+    "komodo-warlord": 5,
+    "sand-widow": 5,
+    "hollow-belly-rat": 1
+   },
+   "after": {
+    "caustic-scorpion": 1,
+    "hollow-belly-rat": 1,
+    "komodo-warlord": 5,
+    "sand-widow": 5,
+    "sandfish": 1,
+    "thorny-devil": 4
+   },
+   "off": [
+    "dromedary"
+   ],
+   "short": 0,
+   "oldLeader": "thorny-devil",
+   "leader": "thorny-devil",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list dromedary x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "key": "18-2",
+   "name": "Scorpion Flats",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "komodo-warlord": 4,
+    "antlion-pit": 3,
+    "caustic-scorpion": 3,
+    "obsidian-scorpion": 1,
+    "dromedary": 3,
+    "roadrunner-courier": 3
+   },
+   "after": {
+    "antlion-pit": 3,
+    "caustic-scorpion": 4,
+    "hollow-belly-rat": 1,
+    "komodo-warlord": 4,
+    "roadrunner-courier": 4,
+    "sandfish": 1
+   },
+   "off": [
+    "obsidian-scorpion",
+    "dromedary"
+   ],
+   "short": 0,
+   "oldLeader": "komodo-warlord",
+   "leader": "komodo-warlord",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list obsidian-scorpion x1, dromedary x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "key": "18-3",
+   "name": "Widow's Web",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "komodo-warlord": 2,
+    "roadrunner-courier": 5,
+    "antlion-pit": 2,
+    "caustic-scorpion": 2,
+    "dromedary": 4
+   },
+   "after": {
+    "antlion-pit": 2,
+    "caustic-scorpion": 2,
+    "hollow-belly-rat": 1,
+    "komodo-warlord": 2,
+    "roadrunner-courier": 5,
+    "sandfish": 3
+   },
+   "off": [
+    "dromedary"
+   ],
+   "short": 0,
+   "oldLeader": "caustic-scorpion",
+   "leader": "caustic-scorpion",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list dromedary x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "key": "18-4",
+   "name": "Sandstorm",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "sandfish": 4,
+    "caustic-scorpion": 3,
+    "dromedary": 3,
+    "fennec-fox": 4,
+    "dust-devil-kestrel": 1,
+    "trapdoor-spider": 1,
+    "komodo-warlord": 2
+   },
+   "after": {
+    "caustic-scorpion": 3,
+    "dust-devil-kestrel": 1,
+    "dust-hyena": 1,
+    "fennec-fox": 4,
+    "hollow-belly-rat": 1,
+    "komodo-warlord": 2,
+    "sand-widow": 1,
+    "sandfish": 5
+   },
+   "off": [
+    "dromedary",
+    "trapdoor-spider"
+   ],
+   "short": 0,
+   "oldLeader": "dust-devil-kestrel",
+   "leader": "dust-devil-kestrel",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list dromedary x3, trapdoor-spider x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "key": "18-5",
+   "name": "Obsidian Nest",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "roadrunner-courier": 2,
+    "antlion-pit": 1,
+    "dromedary": 3,
+    "fennec-fox": 3,
+    "obsidian-scorpion": 3,
+    "dust-devil-kestrel": 2,
+    "komodo-warlord": 4
+   },
+   "after": {
+    "antlion-pit": 1,
+    "dust-devil-kestrel": 2,
+    "fennec-fox": 4,
+    "hollow-belly-rat": 1,
+    "komodo-warlord": 4,
+    "roadrunner-courier": 5,
+    "sandfish": 1
+   },
+   "off": [
+    "dromedary",
+    "obsidian-scorpion"
+   ],
+   "short": 0,
+   "oldLeader": "obsidian-scorpion",
+   "leader": "dust-devil-kestrel",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list dromedary x3, obsidian-scorpion x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "side": false,
+   "key": "18-7",
+   "name": "The Sand Widow Queen",
+   "kind": "miniboss",
+   "cap": "veryrare",
+   "before": {
+    "sand-widow": 1,
+    "thorny-devil": 3,
+    "dust-devil-kestrel": 1,
+    "dromedary": 2,
+    "roadrunner-courier": 2,
+    "komodo-warlord": 1,
+    "dune-packrat": 2
+   },
+   "after": {
+    "dust-devil-kestrel": 1,
+    "hollow-belly-rat": 1,
+    "komodo-warlord": 1,
+    "roadrunner-courier": 2,
+    "sand-widow": 1,
+    "sandfish": 3,
+    "thorny-devil": 3
+   },
+   "off": [
+    "dromedary",
+    "dune-packrat"
+   ],
+   "short": 0,
+   "oldLeader": "sand-widow",
+   "leader": "sand-widow",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list dromedary x2, dune-packrat x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "key": "19-1",
+   "name": "Badger Warband",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "cinder-stoker": 5,
+    "glacier-wolf-pack": 4,
+    "fire-salamander": 1,
+    "quill-volley": 1,
+    "magma-titan": 2
+   },
+   "after": {
+    "cinder-stoker": 5,
+    "fire-salamander": 1,
+    "glacier-wolf-pack": 4,
+    "magma-titan": 2,
+    "pit-glutton": 1
+   },
+   "off": [
+    "quill-volley"
+   ],
+   "short": 0,
+   "oldLeader": "quill-volley",
+   "leader": "pit-glutton",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list quill-volley x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "key": "19-2",
+   "name": "Quill Line",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "cinder-stoker": 5,
+    "magma-titan": 3,
+    "phoenix-fledgling": 2,
+    "quill-volley": 3,
+    "talus-pika": 1,
+    "sulfur-cinder-moth": 1,
+    "pumice-beetle": 1
+   },
+   "after": {
+    "cinder-stoker": 5,
+    "glacier-wolf-pack": 2,
+    "magma-titan": 3,
+    "pumice-beetle": 1,
+    "quill-volley": 3,
+    "sulfur-cinder-moth": 1,
+    "talus-pika": 1
+   },
+   "off": [
+    "phoenix-fledgling"
+   ],
+   "short": 0,
+   "oldLeader": "quill-volley",
+   "leader": "quill-volley",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list phoenix-fledgling x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "key": "19-3",
+   "name": "Porcupine Bastion",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "glacier-wolf-pack": 1,
+    "yeti": 3,
+    "fire-salamander": 4,
+    "quill-volley": 1,
+    "cinder-stoker": 2,
+    "magma-titan": 2,
+    "pit-glutton": 1
+   },
+   "after": {
+    "cinder-stoker": 2,
+    "fire-salamander": 4,
+    "glacier-wolf-pack": 1,
+    "magma-titan": 2,
+    "pit-glutton": 1,
+    "pumice-beetle": 1,
+    "yeti": 3
+   },
+   "off": [
+    "quill-volley"
+   ],
+   "short": 0,
+   "oldLeader": "quill-volley",
+   "leader": "pit-glutton",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list quill-volley x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "key": "19-5",
+   "name": "Sky Scraper Sentinel",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "cinder-stoker": 4,
+    "phoenix-fledgling": 3,
+    "yeti": 4,
+    "quill-volley": 1,
+    "magma-titan": 4,
+    "pumice-beetle": 2,
+    "talus-pika": 1,
+    "pit-glutton": 1
+   },
+   "after": {
+    "cinder-stoker": 4,
+    "glacier-wolf-pack": 3,
+    "magma-titan": 4,
+    "pit-glutton": 1,
+    "pumice-beetle": 3,
+    "talus-pika": 1,
+    "yeti": 4
+   },
+   "off": [
+    "phoenix-fledgling",
+    "quill-volley"
+   ],
+   "short": 0,
+   "oldLeader": "quill-volley",
+   "leader": "pit-glutton",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list phoenix-fledgling x3, quill-volley x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "side": false,
+   "key": "19-6",
+   "name": "The Frost Yeti King",
+   "kind": "miniboss",
+   "cap": "veryrare",
+   "before": {
+    "cinder-stoker": 5,
+    "yeti": 2,
+    "quill-volley": 2,
+    "glacier-wolf-pack": 3,
+    "talus-pika": 1,
+    "sulfur-cinder-moth": 1,
+    "pumice-beetle": 2,
+    "pit-glutton": 1,
+    "granite-ox-golem": 1
+   },
+   "after": {
+    "cinder-stoker": 5,
+    "glacier-wolf-pack": 3,
+    "granite-ox-golem": 1,
+    "pit-glutton": 1,
+    "pumice-beetle": 4,
+    "sulfur-cinder-moth": 1,
+    "talus-pika": 1,
+    "yeti": 2
+   },
+   "off": [
+    "quill-volley"
+   ],
+   "short": 0,
+   "oldLeader": "yeti",
+   "leader": "yeti",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list quill-volley x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "side": false,
+   "key": "20-8",
+   "name": "The Iron Cataphract",
+   "kind": "elite",
+   "cap": "superrare",
+   "before": {
+    "ossuary-lammergeier": 1,
+    "vampire-roost": 2,
+    "deep-cave-troll": 3,
+    "ash-moth": 2,
+    "ashbone-ghoul": 4,
+    "cinder-skeleton": 4
+   },
+   "after": {
+    "ashbone-ghoul": 5,
+    "cinder-skeleton": 5,
+    "deep-cave-troll": 3,
+    "ossuary-lammergeier": 1,
+    "vampire-roost": 2
+   },
+   "off": [
+    "ash-moth"
+   ],
+   "short": 0,
+   "oldLeader": "ossuary-lammergeier",
+   "leader": "ossuary-lammergeier",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list ash-moth x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "side": false,
+   "key": "22-1",
+   "name": "Snowmelt Switchbacks",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "cinder-gecko": 2,
+    "cinder-hornet": 5,
+    "fumarole-ibex": 1,
+    "rimefire-salamander": 1,
+    "ur-elk": 1,
+    "permafrost-mammoth": 2
+   },
+   "after": {
+    "cinder-gecko": 2,
+    "cinder-hornet": 5,
+    "fumarole-ibex": 1,
+    "glacier-yak": 1,
+    "phoenix-fledgling": 1,
+    "rimefire-salamander": 1,
+    "ur-elk": 1
+   },
+   "off": [
+    "permafrost-mammoth"
+   ],
+   "short": 0,
+   "oldLeader": "ur-elk",
+   "leader": "ur-elk",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list permafrost-mammoth x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "side": false,
+   "key": "22-2",
+   "name": "Steam Vents",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "cinder-gecko": 3,
+    "cinder-hornet": 3,
+    "gorge-wyrm": 4,
+    "permafrost-mammoth": 4,
+    "ice-petrel": 1,
+    "rimefire-salamander": 3
+   },
+   "after": {
+    "cinder-gecko": 5,
+    "cinder-hornet": 5,
+    "cinder-skeleton": 1,
+    "glacier-wolf-pack": 1,
+    "glacier-yak": 1,
+    "ice-petrel": 1,
+    "phoenix-fledgling": 1,
+    "rimefire-salamander": 3
+   },
+   "off": [
+    "gorge-wyrm",
+    "permafrost-mammoth"
+   ],
+   "short": 0,
+   "oldLeader": "gorge-wyrm",
+   "leader": "rimefire-salamander",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list gorge-wyrm x4, permafrost-mammoth x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "side": false,
+   "key": "22-4",
+   "name": "Hailstone Ridge",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "cinder-gecko": 5,
+    "cinder-hornet": 3,
+    "ice-petrel": 3,
+    "badger-berserker": 2,
+    "fumarole-ibex": 1,
+    "ur-elk": 2,
+    "permafrost-mammoth": 4
+   },
+   "after": {
+    "badger-berserker": 2,
+    "cinder-gecko": 5,
+    "cinder-hornet": 5,
+    "fumarole-ibex": 1,
+    "glacier-yak": 1,
+    "ice-petrel": 3,
+    "phoenix-fledgling": 1,
+    "ur-elk": 2
+   },
+   "off": [
+    "permafrost-mammoth"
+   ],
+   "short": 0,
+   "oldLeader": "ur-elk",
+   "leader": "ur-elk",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list permafrost-mammoth x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "side": false,
+   "key": "22-6",
+   "name": "Ashfall Cornice",
+   "kind": "elite",
+   "cap": "epic",
+   "before": {
+    "cinder-gecko": 5,
+    "badger-berserker": 3,
+    "fumarole-ibex": 1,
+    "caldera-snow-leopard": 1,
+    "permafrost-mammoth": 4
+   },
+   "after": {
+    "badger-berserker": 3,
+    "caldera-snow-leopard": 1,
+    "cinder-gecko": 5,
+    "cinder-hornet": 1,
+    "fumarole-ibex": 1,
+    "glacier-wolf-pack": 1,
+    "glacier-yak": 1,
+    "phoenix-fledgling": 1
+   },
+   "off": [
+    "permafrost-mammoth"
+   ],
+   "short": 0,
+   "oldLeader": "caldera-snow-leopard",
+   "leader": "caldera-snow-leopard",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list permafrost-mammoth x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "side": false,
+   "key": "22-7",
+   "name": "The Steam Wall",
+   "kind": "elite",
+   "cap": "epic",
+   "before": {
+    "permafrost-mammoth": 2,
+    "badger-berserker": 3,
+    "fumarole-ibex": 1,
+    "rimefire-salamander": 3,
+    "ur-elk": 2,
+    "caldera-snow-leopard": 1,
+    "cinder-gecko": 5
+   },
+   "after": {
+    "badger-berserker": 3,
+    "caldera-snow-leopard": 1,
+    "cinder-gecko": 5,
+    "fumarole-ibex": 1,
+    "glacier-wolf-pack": 1,
+    "glacier-yak": 1,
+    "rimefire-salamander": 3,
+    "ur-elk": 2
+   },
+   "off": [
+    "permafrost-mammoth"
+   ],
+   "short": 0,
+   "oldLeader": "caldera-snow-leopard",
+   "leader": "caldera-snow-leopard",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list permafrost-mammoth x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "side": false,
+   "key": "22-8",
+   "name": "The Rimeheart Mammoth",
+   "kind": "miniboss",
+   "cap": "epic",
+   "before": {
+    "gorge-wyrm": 5,
+    "ice-petrel": 3,
+    "fumarole-ibex": 1,
+    "rimefire-salamander": 3,
+    "ur-elk": 2,
+    "caldera-snow-leopard": 1,
+    "rimeheart-colossus": 1,
+    "cinder-gecko": 2
+   },
+   "after": {
+    "caldera-snow-leopard": 1,
+    "cinder-gecko": 2,
+    "cinder-hornet": 2,
+    "fumarole-ibex": 1,
+    "glacier-wolf-pack": 1,
+    "glacier-yak": 1,
+    "ice-petrel": 3,
+    "phoenix-fledgling": 1,
+    "rimefire-salamander": 3,
+    "rimeheart-colossus": 1,
+    "ur-elk": 2
+   },
+   "off": [
+    "gorge-wyrm"
+   ],
+   "short": 0,
+   "oldLeader": "gorge-wyrm",
+   "leader": "gorge-wyrm",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list gorge-wyrm x5 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "side": false,
+   "key": "23-1",
+   "name": "The Picket Line",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "badger-trench-digger": 5,
+    "mouse-sapper": 1,
+    "pack-mule": 1,
+    "balloon-archer": 1,
+    "trebuchet-crew": 3,
+    "howdah-archers": 1
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "lodge-engineer": 1,
+    "mouse-sapper": 1,
+    "pack-mule": 1
+   },
+   "off": [
+    "balloon-archer",
+    "trebuchet-crew"
+   ],
+   "short": 0,
+   "oldLeader": "trebuchet-crew",
+   "leader": "howdah-archers",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list balloon-archer x1, trebuchet-crew x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "side": false,
+   "key": "23-2",
+   "name": "Trench Works",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "badger-trench-digger": 5,
+    "mouse-sapper": 1,
+    "pack-mule": 1,
+    "howdah-archers": 3,
+    "testudo-tortoise": 3,
+    "beetle-battering-ram": 2,
+    "balloon-archer": 1
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "beetle-battering-ram": 2,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "mouse-sapper": 1,
+    "pack-mule": 1,
+    "testudo-tortoise": 3
+   },
+   "off": [
+    "balloon-archer"
+   ],
+   "short": 0,
+   "oldLeader": "beetle-battering-ram",
+   "leader": "beetle-battering-ram",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list balloon-archer x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "side": false,
+   "key": "23-3",
+   "name": "Elephant Road",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "mouse-sapper": 1,
+    "balloon-archer": 1,
+    "beetle-battering-ram": 2,
+    "howdah-archers": 3,
+    "siege-rhino": 2,
+    "testudo-tortoise": 3,
+    "trebuchet-crew": 3,
+    "colony": 1
+   },
+   "after": {
+    "badger-trench-digger": 1,
+    "beetle-battering-ram": 2,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "lodge-engineer": 1,
+    "mouse-sapper": 1,
+    "pangolin-roller": 1,
+    "raccoon-bandit": 1,
+    "siege-rhino": 2,
+    "testudo-tortoise": 3
+   },
+   "off": [
+    "balloon-archer",
+    "trebuchet-crew",
+    "colony"
+   ],
+   "short": 0,
+   "oldLeader": "siege-rhino",
+   "leader": "siege-rhino",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list balloon-archer x1, trebuchet-crew x3, colony x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "side": false,
+   "key": "23-4",
+   "name": "Siege Camp",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "mouse-sapper": 1,
+    "pack-mule": 1,
+    "beetle-battering-ram": 2,
+    "siege-rhino": 2,
+    "testudo-tortoise": 3,
+    "howdah-archers": 3,
+    "trebuchet-crew": 3,
+    "balloon-archer": 1,
+    "colony": 1
+   },
+   "after": {
+    "badger-trench-digger": 1,
+    "beetle-battering-ram": 2,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "lodge-engineer": 1,
+    "mouse-sapper": 1,
+    "pack-mule": 1,
+    "pangolin-roller": 1,
+    "raccoon-bandit": 1,
+    "siege-rhino": 2,
+    "testudo-tortoise": 3
+   },
+   "off": [
+    "trebuchet-crew",
+    "balloon-archer",
+    "colony"
+   ],
+   "short": 0,
+   "oldLeader": "siege-rhino",
+   "leader": "siege-rhino",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list trebuchet-crew x3, balloon-archer x1, colony x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "side": false,
+   "key": "23-5",
+   "name": "Under the Walls",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "badger-trench-digger": 3,
+    "mouse-sapper": 1,
+    "balloon-archer": 1,
+    "beetle-battering-ram": 2,
+    "howdah-archers": 3,
+    "siege-rhino": 2,
+    "trebuchet-crew": 3,
+    "colony": 1
+   },
+   "after": {
+    "badger-trench-digger": 4,
+    "beetle-battering-ram": 2,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "lodge-engineer": 1,
+    "mouse-sapper": 1,
+    "pangolin-roller": 1,
+    "raccoon-bandit": 1,
+    "siege-rhino": 2
+   },
+   "off": [
+    "balloon-archer",
+    "trebuchet-crew",
+    "colony"
+   ],
+   "short": 0,
+   "oldLeader": "siege-rhino",
+   "leader": "siege-rhino",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list balloon-archer x1, trebuchet-crew x3, colony x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "side": false,
+   "key": "23-6",
+   "name": "The Elephant Line",
+   "kind": "elite",
+   "cap": "epic",
+   "before": {
+    "badger-trench-digger": 5,
+    "mouse-sapper": 1,
+    "balloon-archer": 1,
+    "war-elephant": 1,
+    "beetle-battering-ram": 2,
+    "trebuchet-crew": 2,
+    "howdah-archers": 1
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "beetle-battering-ram": 2,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "mouse-sapper": 1,
+    "war-elephant": 1
+   },
+   "off": [
+    "balloon-archer",
+    "trebuchet-crew"
+   ],
+   "short": 0,
+   "oldLeader": "war-elephant",
+   "leader": "war-elephant",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list balloon-archer x1, trebuchet-crew x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "side": false,
+   "key": "23-7",
+   "name": "The Barbican",
+   "kind": "elite",
+   "cap": "epic",
+   "before": {
+    "mouse-sapper": 1,
+    "beetle-battering-ram": 2,
+    "howdah-archers": 3,
+    "siege-rhino": 1,
+    "trebuchet-crew": 3,
+    "war-elephant": 1,
+    "badger-trench-digger": 5,
+    "balloon-archer": 1
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "beetle-battering-ram": 2,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "lodge-engineer": 1,
+    "mouse-sapper": 1,
+    "pangolin-roller": 1,
+    "siege-rhino": 2,
+    "war-elephant": 1
+   },
+   "off": [
+    "trebuchet-crew",
+    "balloon-archer"
+   ],
+   "short": 0,
+   "oldLeader": "war-elephant",
+   "leader": "war-elephant",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list trebuchet-crew x3, balloon-archer x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "side": false,
+   "key": "23-8",
+   "name": "Marshal Tuskwell",
+   "kind": "miniboss",
+   "cap": "epic",
+   "before": {
+    "badger-trench-digger": 5,
+    "mouse-sapper": 1,
+    "balloon-archer": 1,
+    "beetle-battering-ram": 2,
+    "war-elephant": 1,
+    "siege-rhino": 2,
+    "howdah-archers": 3,
+    "trebuchet-crew": 1
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "beetle-battering-ram": 2,
+    "bison-bulldozer": 1,
+    "howdah-archers": 3,
+    "mouse-sapper": 1,
+    "pangolin-roller": 1,
+    "siege-rhino": 2,
+    "war-elephant": 1
+   },
+   "off": [
+    "balloon-archer",
+    "trebuchet-crew"
+   ],
+   "short": 0,
+   "oldLeader": "marshal-tuskwell",
+   "leader": "marshal-tuskwell",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list balloon-archer x1, trebuchet-crew x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "side": false,
+   "key": "24-1",
+   "name": "Breach the Gate",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "duckling-squadron": 3,
+    "elderhorn-monarch": 4,
+    "goose-sentry": 1,
+    "mallard-halberdier": 1,
+    "lodge-engineer": 1
+   },
+   "after": {
+    "duckling-squadron": 3,
+    "elderhorn-monarch": 4,
+    "lodge-engineer": 1,
+    "mallard-halberdier": 2
+   },
+   "off": [
+    "goose-sentry"
+   ],
+   "short": 0,
+   "oldLeader": "goose-sentry",
+   "leader": "mallard-halberdier",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list goose-sentry x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "side": false,
+   "key": "24-2",
+   "name": "The Bailey",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "duckling-squadron": 5,
+    "lodge-engineer": 1,
+    "goose-sentry": 3,
+    "mallard-halberdier": 2,
+    "elderhorn-monarch": 5
+   },
+   "after": {
+    "duckling-squadron": 5,
+    "elderhorn-monarch": 5,
+    "howdah-archers": 1,
+    "lodge-engineer": 1,
+    "mallard-halberdier": 3,
+    "ore-smelter-mole": 1
+   },
+   "off": [
+    "goose-sentry"
+   ],
+   "short": 0,
+   "oldLeader": "goose-sentry",
+   "leader": "mallard-halberdier",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list goose-sentry x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "side": false,
+   "key": "24-3",
+   "name": "The Counting House",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "elderhorn-monarch": 5,
+    "lodge-engineer": 1,
+    "tax-collector-teal": 2,
+    "goose-sentry": 1,
+    "mallard-halberdier": 3
+   },
+   "after": {
+    "elderhorn-monarch": 5,
+    "howdah-archers": 1,
+    "lodge-engineer": 1,
+    "mallard-halberdier": 3,
+    "tax-collector-teal": 2
+   },
+   "off": [
+    "goose-sentry"
+   ],
+   "short": 0,
+   "oldLeader": "goose-sentry",
+   "leader": "mallard-halberdier",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list goose-sentry x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "side": false,
+   "key": "24-5",
+   "name": "The Battlements",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "lodge-engineer": 1,
+    "battlement-heron": 3,
+    "goose-sentry": 3,
+    "mallard-halberdier": 3,
+    "tax-collector-teal": 4,
+    "balloon-archer": 1
+   },
+   "after": {
+    "balloon-archer": 1,
+    "battlement-heron": 3,
+    "howdah-archers": 1,
+    "lodge-engineer": 1,
+    "mallard-halberdier": 3,
+    "ore-smelter-mole": 1,
+    "raccoon-bandit": 1,
+    "tax-collector-teal": 4
+   },
+   "off": [
+    "goose-sentry"
+   ],
+   "short": 0,
+   "oldLeader": "goose-sentry",
+   "leader": "mallard-halberdier",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list goose-sentry x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "side": false,
+   "key": "24-6",
+   "name": "The Gilded Guard",
+   "kind": "elite",
+   "cap": "epic",
+   "before": {
+    "duckling-squadron": 5,
+    "tax-collector-teal": 4,
+    "gilded-swan-knight": 1,
+    "iron-warden": 1,
+    "goose-sentry": 1
+   },
+   "after": {
+    "duckling-squadron": 5,
+    "gilded-swan-knight": 1,
+    "iron-warden": 1,
+    "mallard-halberdier": 1,
+    "tax-collector-teal": 4
+   },
+   "off": [
+    "goose-sentry"
+   ],
+   "short": 0,
+   "oldLeader": "gilded-swan-knight",
+   "leader": "gilded-swan-knight",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list goose-sentry x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "side": false,
+   "key": "24-7",
+   "name": "The Treasury",
+   "kind": "elite",
+   "cap": "epic",
+   "before": {
+    "elderhorn-monarch": 1,
+    "tax-collector-teal": 4,
+    "goose-sentry": 1,
+    "iron-warden": 1,
+    "mallard-halberdier": 2,
+    "duckling-squadron": 2
+   },
+   "after": {
+    "duckling-squadron": 2,
+    "elderhorn-monarch": 1,
+    "iron-warden": 1,
+    "mallard-halberdier": 3,
+    "tax-collector-teal": 4
+   },
+   "off": [
+    "goose-sentry"
+   ],
+   "short": 0,
+   "oldLeader": "iron-warden",
+   "leader": "iron-warden",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list goose-sentry x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mq",
+   "mapNo": 1,
+   "side": true,
+   "key": "1-A-2",
+   "name": "Bee Lines",
+   "kind": "skirmish",
+   "cap": "common",
+   "before": {
+    "burrow-rabbit": 1,
+    "field-mouse": 5,
+    "honey-bee": 1,
+    "house-cat": 1,
+    "rabbit-kit": 5,
+    "hedgerow-shrew": 3,
+    "slow-worm": 3
+   },
+   "after": {
+    "burrow-rabbit": 1,
+    "field-mouse": 5,
+    "field-vole": 1,
+    "hedgerow-shrew": 3,
+    "honey-bee": 1,
+    "rabbit-kit": 5,
+    "slow-worm": 3
+   },
+   "off": [
+    "house-cat"
+   ],
+   "short": 0,
+   "oldLeader": null,
+   "leader": null,
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list house-cat x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mq",
+   "mapNo": 1,
+   "side": true,
+   "key": "1-A-3",
+   "name": "Puddle Hop",
+   "kind": "skirmish",
+   "cap": "common",
+   "before": {
+    "honey-bee": 1,
+    "house-cat": 1,
+    "harvest-mouse": 1,
+    "bramble-sprout": 5,
+    "hedgerow-shrew": 2
+   },
+   "after": {
+    "bramble-sprout": 5,
+    "field-vole": 1,
+    "harvest-mouse": 1,
+    "hedgerow-shrew": 2,
+    "honey-bee": 1
+   },
+   "off": [
+    "house-cat"
+   ],
+   "short": 0,
+   "oldLeader": null,
+   "leader": null,
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list house-cat x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mq",
+   "mapNo": 1,
+   "side": true,
+   "key": "1-A-4",
+   "name": "Harvest Mice",
+   "kind": "skirmish",
+   "cap": "common",
+   "before": {
+    "burrow-rabbit": 1,
+    "field-mouse": 5,
+    "field-vole": 5,
+    "honey-bee": 1,
+    "house-cat": 1,
+    "bramble-sprout": 3
+   },
+   "after": {
+    "bramble-sprout": 3,
+    "burrow-rabbit": 1,
+    "field-mouse": 5,
+    "field-vole": 5,
+    "hedgerow-shrew": 1,
+    "honey-bee": 1
+   },
+   "off": [
+    "house-cat"
+   ],
+   "short": 0,
+   "oldLeader": null,
+   "leader": null,
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list house-cat x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mq",
+   "mapNo": 1,
+   "side": true,
+   "key": "1-A-5",
+   "name": "The Old Hare",
+   "kind": "boss",
+   "cap": "uncommon",
+   "before": {
+    "lucky-hopper": 3,
+    "field-mouse": 5,
+    "tunnel-ant": 1,
+    "honey-bee": 1,
+    "rabbit-kit": 1,
+    "house-cat": 1,
+    "ant-hill": 1,
+    "bramble-sprout": 4
+   },
+   "after": {
+    "ant-hill": 1,
+    "bee-forager": 1,
+    "bramble-sprout": 4,
+    "field-mouse": 5,
+    "honey-bee": 1,
+    "lucky-hopper": 3,
+    "rabbit-kit": 1,
+    "tunnel-ant": 1
+   },
+   "off": [
+    "house-cat"
+   ],
+   "short": 0,
+   "oldLeader": "tunnel-ant",
+   "leader": "tunnel-ant",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list house-cat x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-A-1",
+   "name": "Lily Hop",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "guppy": 1,
+    "sea-turtle-elder": 2,
+    "tidepool-trapper-crab": 5,
+    "water-vole": 1,
+    "box-turtle": 1,
+    "pond-algae": 1,
+    "muskrat-reedgatherer": 1,
+    "alley-cat": 1
+   },
+   "after": {
+    "alley-cat": 4,
+    "box-turtle": 1,
+    "guppy": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-shrew": 1,
+    "water-vole": 4
+   },
+   "off": [
+    "sea-turtle-elder",
+    "tidepool-trapper-crab"
+   ],
+   "short": 0,
+   "oldLeader": "alley-cat",
+   "leader": "alley-cat",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list sea-turtle-elder x2, tidepool-trapper-crab x5 rebuilt from the fight's list",
+   "k14": [
+    "water-vole x4",
+    "9 non-unique copies"
+   ]
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-A-2",
+   "name": "Duck Row",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "duckling": 1,
+    "fiddler-crab-swarm": 4,
+    "guppy": 1,
+    "mangrove-mudskipper": 2,
+    "tidepool-trapper-crab": 5,
+    "water-shrew": 1
+   },
+   "after": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "off": [
+    "fiddler-crab-swarm",
+    "mangrove-mudskipper",
+    "tidepool-trapper-crab"
+   ],
+   "short": 0,
+   "oldLeader": "mangrove-mudskipper",
+   "leader": "old-sturgeon",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list fiddler-crab-swarm x4, mangrove-mudskipper x2, tidepool-trapper-crab x5 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-A-3",
+   "name": "Beaver Dam",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "fiddler-crab-swarm": 5,
+    "guppy": 1,
+    "pond-duck": 1,
+    "river-carp": 1,
+    "old-sturgeon": 1,
+    "tidepool-trapper-crab": 5
+   },
+   "after": {
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-duck": 1,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "off": [
+    "fiddler-crab-swarm",
+    "tidepool-trapper-crab"
+   ],
+   "short": 0,
+   "oldLeader": "old-sturgeon",
+   "leader": "old-sturgeon",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list fiddler-crab-swarm x5, tidepool-trapper-crab x5 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-A-4",
+   "name": "Pike Shallows",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "river-carp": 1,
+    "ford-kingfisher": 3,
+    "tidepool-trapper-crab": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "after": {
+    "box-turtle": 1,
+    "lodge-engineer": 2,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "off": [
+    "ford-kingfisher",
+    "tidepool-trapper-crab"
+   ],
+   "short": 0,
+   "oldLeader": "ford-kingfisher",
+   "leader": "old-sturgeon",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list ford-kingfisher x3, tidepool-trapper-crab x5 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-A-5",
+   "name": "Croaker Chorus",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "poison-dart-croaker": 5,
+    "camouflage-frog": 1,
+    "pond-duck": 1,
+    "mangrove-mudskipper": 1,
+    "duckling": 1,
+    "lodge-engineer": 1,
+    "tidepool-trapper-crab": 3
+   },
+   "after": {
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 3,
+    "pond-algae": 1,
+    "pond-duck": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "off": [
+    "poison-dart-croaker",
+    "camouflage-frog",
+    "mangrove-mudskipper",
+    "tidepool-trapper-crab"
+   ],
+   "short": 0,
+   "oldLeader": "poison-dart-croaker",
+   "leader": "old-sturgeon",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list poison-dart-croaker x5, camouflage-frog x1, mangrove-mudskipper x1, tidepool-trapper-crab x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-A-6",
+   "name": "The Lodge",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "lodge-engineer": 4,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "fiddler-crab-swarm": 4,
+    "old-sturgeon": 1,
+    "tidepool-trapper-crab": 5,
+    "water-vole": 1
+   },
+   "after": {
+    "box-turtle": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "water-shrew": 4,
+    "water-vole": 1
+   },
+   "off": [
+    "fiddler-crab-swarm",
+    "tidepool-trapper-crab"
+   ],
+   "short": 0,
+   "oldLeader": "lodge-engineer",
+   "leader": "lodge-engineer",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list fiddler-crab-swarm x4, tidepool-trapper-crab x5 rebuilt from the fight's list",
+   "k14": [
+    "water-shrew x4",
+    "9 non-unique copies"
+   ]
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-A-7",
+   "name": "The Lodge Matriarch",
+   "kind": "boss",
+   "cap": "uncommon",
+   "before": {
+    "riverworks-bastion": 2,
+    "lodge-engineer": 3,
+    "pike-lancer": 1,
+    "fiddler-crab-swarm": 2,
+    "duckling": 1,
+    "tidepool-trapper-crab": 5
+   },
+   "after": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 2,
+    "pond-algae": 1,
+    "riverworks-bastion": 2,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "off": [
+    "pike-lancer",
+    "fiddler-crab-swarm",
+    "tidepool-trapper-crab"
+   ],
+   "short": 0,
+   "oldLeader": "mayfly-dancer",
+   "leader": "mayfly-dancer",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list pike-lancer x1, fiddler-crab-swarm x2, tidepool-trapper-crab x5 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "side": true,
+   "key": "19-A-7",
+   "name": "Basalt Vanguard",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "cinder-stoker": 5,
+    "hercules-beetle": 1,
+    "ashbone-ghoul": 1,
+    "ember-jackal": 1,
+    "tide-spirit": 1,
+    "granite-ox-golem": 1,
+    "phoenix-fledgling": 5,
+    "cinder-gecko": 1,
+    "ore-smelter-mole": 1
+   },
+   "after": {
+    "ashbone-ghoul": 1,
+    "cinder-gecko": 1,
+    "cinder-stoker": 5,
+    "ember-jackal": 1,
+    "hercules-beetle": 1,
+    "ore-smelter-mole": 1,
+    "phoenix-fledgling": 5,
+    "tide-spirit": 2
+   },
+   "off": [
+    "granite-ox-golem"
+   ],
+   "short": 0,
+   "oldLeader": "tide-spirit",
+   "leader": "tide-spirit",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list granite-ox-golem x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "side": true,
+   "key": "19-A-8",
+   "name": "Titan's Shadow",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "obsidian-scorpion": 1,
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "tide-spirit": 1,
+    "beaver-lumberjack": 5,
+    "quill-volley": 3,
+    "cinder-gecko": 1,
+    "cinder-stoker": 5,
+    "phoenix-fledgling": 1
+   },
+   "after": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "beaver-lumberjack": 5,
+    "cinder-gecko": 1,
+    "cinder-stoker": 5,
+    "ember-jackal": 1,
+    "phoenix-fledgling": 1,
+    "quill-volley": 3,
+    "tide-spirit": 1
+   },
+   "off": [
+    "obsidian-scorpion"
+   ],
+   "short": 0,
+   "oldLeader": "tide-spirit",
+   "leader": "tide-spirit",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list obsidian-scorpion x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mj",
+   "mapNo": 10,
+   "side": true,
+   "key": "10-A-1",
+   "name": "Bubble Trail",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "abyss-lantern-squid": 2,
+    "coral-reef-shark": 1,
+    "riptide-eel": 1,
+    "orca-vanguard": 5,
+    "kraken-spawnling": 1
+   },
+   "after": {
+    "coral-reef-shark": 1,
+    "kraken-spawnling": 1,
+    "orca-vanguard": 5,
+    "riptide-eel": 3
+   },
+   "off": [
+    "abyss-lantern-squid"
+   ],
+   "short": 0,
+   "oldLeader": "abyss-lantern-squid",
+   "leader": "riptide-eel",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list abyss-lantern-squid x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mj",
+   "mapNo": 10,
+   "side": true,
+   "key": "10-A-4",
+   "name": "The Undertow",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "abyss-lantern-squid": 1,
+    "riptide-eel": 4,
+    "silver-minnow": 3,
+    "glass-octopus": 1,
+    "mangrove-manatee": 1,
+    "coral-reef-shark": 2
+   },
+   "after": {
+    "coral-reef-shark": 4,
+    "mangrove-manatee": 1,
+    "riptide-eel": 4,
+    "silver-minnow": 3
+   },
+   "off": [
+    "abyss-lantern-squid",
+    "glass-octopus"
+   ],
+   "short": 0,
+   "oldLeader": "mangrove-manatee",
+   "leader": "mangrove-manatee",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list abyss-lantern-squid x1, glass-octopus x1 rebuilt from the fight's list",
+   "k14": [
+    "silver-minnow x3"
+   ]
+  },
+  {
+   "map": "mj",
+   "mapNo": 10,
+   "side": true,
+   "key": "10-A-5",
+   "name": "The Ferry's Last Passenger",
+   "kind": "boss",
+   "cap": "veryrare",
+   "before": {
+    "vampire-squid": 2,
+    "blue-ringed-octopus": 3,
+    "riptide-eel": 4,
+    "kraken-spawnling": 5,
+    "orca-vanguard": 5,
+    "hagfish-silencer": 1
+   },
+   "after": {
+    "blue-ringed-octopus": 3,
+    "hagfish-silencer": 3,
+    "kraken-spawnling": 5,
+    "orca-vanguard": 5,
+    "riptide-eel": 4
+   },
+   "off": [
+    "vampire-squid"
+   ],
+   "short": 0,
+   "oldLeader": "vampire-squid",
+   "leader": "hagfish-silencer",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list vampire-squid x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mg",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-B-1",
+   "name": "Drip Tunnel",
+   "kind": "skirmish",
+   "cap": "uncommon",
+   "before": {
+    "blind-cave-fish": 1,
+    "fiddler-crab-swarm": 3,
+    "tide-pool-crab": 4,
+    "grey-seal-bull": 3,
+    "pelican-diver": 1,
+    "conch-crawler": 3
+   },
+   "after": {
+    "conch-crawler": 3,
+    "grey-seal-bull": 3,
+    "gull-thief": 1,
+    "pelican-diver": 1,
+    "tide-pool-crab": 4,
+    "tidepool-trapper-crab": 3
+   },
+   "off": [
+    "blind-cave-fish",
+    "fiddler-crab-swarm"
+   ],
+   "short": 0,
+   "oldLeader": "grey-seal-bull",
+   "leader": "grey-seal-bull",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list blind-cave-fish x1, fiddler-crab-swarm x3 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mg",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-B-2",
+   "name": "Smugglers' Stash",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "otter-riverguard": 1,
+    "pelican-diver": 4,
+    "open-ocean-hermit-crab": 5,
+    "blind-cave-fish": 1,
+    "tidepool-trapper-crab": 3,
+    "trash-panda-trickster": 4
+   },
+   "after": {
+    "open-ocean-hermit-crab": 5,
+    "pelican-diver": 4,
+    "sea-turtle-elder": 1,
+    "tide-pool-crab": 1,
+    "tidepool-trapper-crab": 3,
+    "trash-panda-trickster": 4
+   },
+   "off": [
+    "otter-riverguard",
+    "blind-cave-fish"
+   ],
+   "short": 0,
+   "oldLeader": "pelican-diver",
+   "leader": "pelican-diver",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list otter-riverguard x1, blind-cave-fish x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mg",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-B-3",
+   "name": "The Glowing Pool",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "open-ocean-hermit-crab": 3,
+    "pincushion-urchin": 4,
+    "duckling": 1,
+    "blind-cave-fish": 1,
+    "pelican-diver": 4,
+    "trash-panda-trickster": 1,
+    "driftwood-crab": 2,
+    "tide-pool-crab": 4
+   },
+   "after": {
+    "driftwood-crab": 2,
+    "duckling": 1,
+    "gull-thief": 1,
+    "open-ocean-hermit-crab": 3,
+    "pelican-diver": 4,
+    "pincushion-urchin": 4,
+    "tide-pool-crab": 4,
+    "trash-panda-trickster": 1
+   },
+   "off": [
+    "blind-cave-fish"
+   ],
+   "short": 0,
+   "oldLeader": "pelican-diver",
+   "leader": "pelican-diver",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list blind-cave-fish x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mg",
+   "mapNo": 2,
+   "side": true,
+   "key": "2-B-4",
+   "name": "The Grotto Keeper",
+   "kind": "elite",
+   "cap": "uncommon",
+   "before": {
+    "octopus-tactician": 3,
+    "otter-riverguard": 1,
+    "open-ocean-hermit-crab": 5,
+    "blind-cave-fish": 1,
+    "pelican-diver": 4,
+    "gull-thief": 1,
+    "tidepool-trapper-crab": 2
+   },
+   "after": {
+    "gull-thief": 1,
+    "octopus-tactician": 3,
+    "open-ocean-hermit-crab": 5,
+    "pelican-diver": 4,
+    "tidepool-trapper-crab": 4
+   },
+   "off": [
+    "otter-riverguard",
+    "blind-cave-fish"
+   ],
+   "short": 0,
+   "oldLeader": "octopus-tactician",
+   "leader": "octopus-tactician",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list otter-riverguard x1, blind-cave-fish x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "my",
+   "mapNo": 14,
+   "side": true,
+   "key": "14-A-2",
+   "name": "Strangler Arch",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "ancient-sloth-titan": 1,
+    "vampire-bat": 1,
+    "camouflage-frog": 1,
+    "proboscis-monkey": 1,
+    "apollo-butterfly": 1,
+    "weaver-bird": 4,
+    "hoopoe-herald": 3
+   },
+   "after": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hoopoe-herald": 3,
+    "proboscis-monkey": 1,
+    "vampire-bat": 1,
+    "weaver-bird": 5
+   },
+   "off": [
+    "ancient-sloth-titan"
+   ],
+   "short": 0,
+   "oldLeader": "ancient-sloth-titan",
+   "leader": "vampire-bat",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list ancient-sloth-titan x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "my",
+   "mapNo": 14,
+   "side": true,
+   "key": "14-A-3",
+   "name": "Sloth Boughs",
+   "kind": "skirmish",
+   "cap": "rare",
+   "before": {
+    "kinkajou-lurker": 1,
+    "savanna-cheetah": 1,
+    "hoopoe-herald": 5,
+    "weaver-bird": 4,
+    "leafcutter-gardener": 1,
+    "vampire-bat": 1,
+    "apollo-butterfly": 1
+   },
+   "after": {
+    "apollo-butterfly": 1,
+    "hoopoe-herald": 5,
+    "kinkajou-lurker": 1,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 1,
+    "vampire-bat": 1,
+    "weaver-bird": 4
+   },
+   "off": [
+    "savanna-cheetah"
+   ],
+   "short": 0,
+   "oldLeader": "savanna-cheetah",
+   "leader": "pangolin-roller",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list savanna-cheetah x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "my",
+   "mapNo": 14,
+   "side": true,
+   "key": "14-A-4",
+   "name": "Drum Circle",
+   "kind": "elite",
+   "cap": "veryrare",
+   "before": {
+    "jaguar-stalker": 3,
+    "hercules-beetle": 3,
+    "dust-hyena": 4,
+    "vampire-bat": 1,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1,
+    "apollo-butterfly": 1
+   },
+   "after": {
+    "apollo-butterfly": 1,
+    "hercules-beetle": 3,
+    "hoopoe-herald": 3,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1,
+    "vampire-bat": 1
+   },
+   "off": [
+    "dust-hyena"
+   ],
+   "short": 0,
+   "oldLeader": "hercules-beetle",
+   "leader": "hercules-beetle",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list dust-hyena x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "my",
+   "mapNo": 14,
+   "side": true,
+   "key": "14-A-5",
+   "name": "The Jaguar's Path",
+   "kind": "boss",
+   "cap": "veryrare",
+   "before": {
+    "grave-grin-hyena": 2,
+    "springbok-pronker": 2,
+    "weaver-bird": 5,
+    "hoopoe-herald": 5,
+    "camouflage-frog": 1,
+    "jaguar-stalker": 3,
+    "pangolin-roller": 2
+   },
+   "after": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hoopoe-herald": 5,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 3,
+    "redwood-woodpecker": 1,
+    "weaver-bird": 5
+   },
+   "off": [
+    "grave-grin-hyena",
+    "springbok-pronker"
+   ],
+   "short": 0,
+   "oldLeader": "jaguar-stalker",
+   "leader": "jaguar-stalker",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list grave-grin-hyena x2, springbok-pronker x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "side": true,
+   "key": "20-A-3",
+   "name": "The Lich's Kiln",
+   "kind": "elite",
+   "cap": "epic",
+   "before": {
+    "magma-salamander": 2,
+    "ash-moth": 1,
+    "cinder-skeleton": 2,
+    "deep-cave-troll": 1,
+    "stalactite-golem": 1,
+    "cave-warlord": 1,
+    "ashbone-ghoul": 2,
+    "cinder-stoker": 1
+   },
+   "after": {
+    "ash-moth": 1,
+    "ashbone-ghoul": 2,
+    "cave-warlord": 1,
+    "cinder-skeleton": 3,
+    "cinder-stoker": 1,
+    "deep-cave-troll": 1,
+    "obsidian-scorpion": 1,
+    "stalactite-golem": 1
+   },
+   "off": [
+    "magma-salamander"
+   ],
+   "short": 0,
+   "oldLeader": "magma-salamander",
+   "leader": "obsidian-scorpion",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list magma-salamander x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "side": true,
+   "key": "20-A-5",
+   "name": "Scorched Boars",
+   "kind": "elite",
+   "cap": "epic",
+   "before": {
+    "magma-salamander": 2,
+    "ash-moth": 5,
+    "deep-cave-troll": 4,
+    "cave-warlord": 4,
+    "cinder-skeleton": 1,
+    "cinder-stoker": 1,
+    "stalactite-golem": 1,
+    "obsidian-scorpion": 1
+   },
+   "after": {
+    "ash-moth": 5,
+    "cave-warlord": 4,
+    "cinder-skeleton": 3,
+    "cinder-stoker": 1,
+    "deep-cave-troll": 4,
+    "obsidian-scorpion": 1,
+    "stalactite-golem": 1
+   },
+   "off": [
+    "magma-salamander"
+   ],
+   "short": 0,
+   "oldLeader": "magma-salamander",
+   "leader": "obsidian-scorpion",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list magma-salamander x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "side": true,
+   "key": "20-A-6",
+   "name": "The Vent Crabs",
+   "kind": "elite",
+   "cap": "epic",
+   "before": {
+    "obsidian-scorpion": 1,
+    "cinder-stoker": 1,
+    "pack-mule": 2,
+    "ashbone-ghoul": 2,
+    "magma-salamander": 2,
+    "fumarole-ibex": 2,
+    "ancient-sloth-titan": 1
+   },
+   "after": {
+    "ancient-sloth-titan": 1,
+    "ashbone-ghoul": 2,
+    "cinder-skeleton": 4,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 1,
+    "pack-mule": 2
+   },
+   "off": [
+    "magma-salamander",
+    "fumarole-ibex"
+   ],
+   "short": 0,
+   "oldLeader": "ashbone-ghoul",
+   "leader": "ashbone-ghoul",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list magma-salamander x2, fumarole-ibex x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "side": true,
+   "key": "20-A-7",
+   "name": "Ash Condor Roost",
+   "kind": "elite",
+   "cap": "epic",
+   "before": {
+    "ash-cloud-condor": 3,
+    "cinder-gecko": 1,
+    "cinder-stoker": 1,
+    "gorge-wyrm": 2,
+    "ashbone-ghoul": 5,
+    "magma-salamander": 2,
+    "vampire-roost": 2,
+    "ash-moth": 2,
+    "obsidian-scorpion": 1
+   },
+   "after": {
+    "ancient-sloth-titan": 2,
+    "ash-cloud-condor": 3,
+    "ash-moth": 2,
+    "ashbone-ghoul": 5,
+    "cinder-skeleton": 3,
+    "cinder-stoker": 1,
+    "obsidian-scorpion": 1,
+    "vampire-roost": 2
+   },
+   "off": [
+    "cinder-gecko",
+    "gorge-wyrm",
+    "magma-salamander"
+   ],
+   "short": 0,
+   "oldLeader": "magma-salamander",
+   "leader": "obsidian-scorpion",
+   "leaderChanged": true,
+   "showcase": null,
+   "why": "off-list cinder-gecko x1, gorge-wyrm x2, magma-salamander x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mx",
+   "mapNo": 20,
+   "side": true,
+   "key": "20-B-1",
+   "name": "Cinder Slopes",
+   "kind": "skirmish",
+   "cap": "heroic",
+   "before": {
+    "cinder-gecko": 1,
+    "cinder-hornet": 1,
+    "pack-mule": 5,
+    "ember-jackal": 3,
+    "magma-salamander": 2,
+    "tide-spirit": 2,
+    "fire-drake-hatchling": 1,
+    "obsidian-scorpion": 1,
+    "cinder-stoker": 1
+   },
+   "after": {
+    "ash-moth": 1,
+    "ashbone-ghoul": 1,
+    "cinder-stoker": 1,
+    "ember-jackal": 3,
+    "fire-drake-hatchling": 1,
+    "magma-salamander": 2,
+    "obsidian-scorpion": 1,
+    "pack-mule": 5,
+    "tide-spirit": 2
+   },
+   "off": [
+    "cinder-gecko",
+    "cinder-hornet"
+   ],
+   "short": 0,
+   "oldLeader": "fire-drake-hatchling",
+   "leader": "fire-drake-hatchling",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list cinder-gecko x1, cinder-hornet x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mx",
+   "mapNo": 20,
+   "side": true,
+   "key": "20-B-3",
+   "name": "The Wyrm's Antechamber",
+   "kind": "skirmish",
+   "cap": "heroic",
+   "before": {
+    "cinder-stoker": 1,
+    "gorge-wyrm": 1,
+    "pack-mule": 5,
+    "magma-salamander": 2,
+    "ashbone-ghoul": 1,
+    "vampire-roost": 5,
+    "tide-spirit": 1
+   },
+   "after": {
+    "ashbone-ghoul": 1,
+    "cinder-stoker": 1,
+    "magma-salamander": 2,
+    "magma-titan": 1,
+    "pack-mule": 5,
+    "tide-spirit": 1,
+    "vampire-roost": 5
+   },
+   "off": [
+    "gorge-wyrm"
+   ],
+   "short": 0,
+   "oldLeader": "magma-salamander",
+   "leader": "magma-salamander",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list gorge-wyrm x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mi",
+   "mapNo": 17,
+   "side": true,
+   "key": "17-A-1",
+   "name": "Frost Tunnel",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "frost-hare-sprinter": 1,
+    "glacial-ape-king": 4,
+    "snow-ermine": 4,
+    "talus-pika": 2,
+    "harbor-seal": 4,
+    "ravenous-wolverine": 1
+   },
+   "after": {
+    "frost-hare-sprinter": 1,
+    "greenland-shark": 3,
+    "harbor-seal": 5,
+    "ravenous-wolverine": 1,
+    "snow-ermine": 4,
+    "talus-pika": 2
+   },
+   "off": [
+    "glacial-ape-king"
+   ],
+   "short": 0,
+   "oldLeader": "glacial-ape-king",
+   "leader": "greenland-shark",
+   "leaderChanged": true,
+   "showcase": "greenland-shark",
+   "why": "off-list glacial-ape-king x4 rebuilt from the fight's list; new showcase leader greenland-shark (Frost Tunnel: the Ice Hollow's own Rare (Carrion 2, Armor 1))",
+   "k14": []
+  },
+  {
+   "map": "mi",
+   "mapNo": 17,
+   "side": true,
+   "key": "17-A-2",
+   "name": "Glacier Gut",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "glacial-ape-king": 4,
+    "snow-ermine": 5,
+    "lone-grey-wolf": 1,
+    "harbor-seal": 5,
+    "talus-pika": 5
+   },
+   "after": {
+    "harbor-seal": 5,
+    "lone-grey-wolf": 1,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 5,
+    "talus-pika": 5
+   },
+   "off": [
+    "glacial-ape-king"
+   ],
+   "short": 0,
+   "oldLeader": "lone-grey-wolf",
+   "leader": "lone-grey-wolf",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list glacial-ape-king x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mi",
+   "mapNo": 17,
+   "side": true,
+   "key": "17-A-3",
+   "name": "The Rime Hall",
+   "kind": "skirmish",
+   "cap": "veryrare",
+   "before": {
+    "glacial-ape-king": 4,
+    "greenland-shark": 3,
+    "lone-grey-wolf": 2,
+    "snow-ermine": 5,
+    "talus-pika": 2,
+    "snow-bunting-archer": 4
+   },
+   "after": {
+    "greenland-shark": 3,
+    "harbor-seal": 4,
+    "lone-grey-wolf": 2,
+    "snow-bunting-archer": 4,
+    "snow-ermine": 5,
+    "talus-pika": 2
+   },
+   "off": [
+    "glacial-ape-king"
+   ],
+   "short": 0,
+   "oldLeader": "lone-grey-wolf",
+   "leader": "lone-grey-wolf",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list glacial-ape-king x4 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mi",
+   "mapNo": 17,
+   "side": true,
+   "key": "17-A-4",
+   "name": "The Hollow King",
+   "kind": "boss",
+   "cap": "veryrare",
+   "before": {
+    "lone-grey-wolf": 1,
+    "ravenous-wolverine": 2,
+    "snow-ermine": 5,
+    "frost-hare-sprinter": 1,
+    "glacial-ape-king": 2,
+    "talus-pika": 5
+   },
+   "after": {
+    "frost-hare-sprinter": 1,
+    "harbor-seal": 2,
+    "lone-grey-wolf": 1,
+    "ravenous-wolverine": 2,
+    "snow-ermine": 5,
+    "talus-pika": 5
+   },
+   "off": [
+    "glacial-ape-king"
+   ],
+   "short": 0,
+   "oldLeader": "lone-grey-wolf",
+   "leader": "lone-grey-wolf",
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list glacial-ape-king x2 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mo",
+   "mapNo": 0,
+   "side": true,
+   "key": "0-B-1",
+   "name": "Thorn Path",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "ant-scout": 5,
+    "burrow-rabbit": 1,
+    "glacier-wolf-pack": 1,
+    "otter-kit": 1,
+    "pond-duck": 1,
+    "cottontail": 1,
+    "forager-ant": 4
+   },
+   "after": {
+    "ant-scout": 5,
+    "bramblewood-lynx": 1,
+    "burrow-rabbit": 1,
+    "cottontail": 1,
+    "forager-ant": 4,
+    "otter-kit": 1,
+    "pond-duck": 1
+   },
+   "off": [
+    "glacier-wolf-pack"
+   ],
+   "short": 0,
+   "oldLeader": null,
+   "leader": null,
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list glacier-wolf-pack x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "mo",
+   "mapNo": 0,
+   "side": true,
+   "key": "0-B-3",
+   "name": "Root Gate",
+   "kind": "skirmish",
+   "cap": "superrare",
+   "before": {
+    "meadow-rabbit": 1,
+    "pond-duck": 1,
+    "trash-panda-trickster": 1,
+    "cottontail": 1,
+    "ant-scout": 5,
+    "forager-ant": 5,
+    "bramblewood-lynx": 1,
+    "gatling-hog": 1
+   },
+   "after": {
+    "ant-scout": 5,
+    "bramblewood-lynx": 1,
+    "cottontail": 1,
+    "forager-ant": 5,
+    "gatling-hog": 1,
+    "meadow-rabbit": 1,
+    "pond-duck": 1,
+    "thorn-shrike": 1
+   },
+   "off": [
+    "trash-panda-trickster"
+   ],
+   "short": 0,
+   "oldLeader": null,
+   "leader": null,
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list trash-panda-trickster x1 rebuilt from the fight's list",
+   "k14": []
+  },
+  {
+   "map": "m1",
+   "mapNo": 0,
+   "side": false,
+   "key": "0-2",
+   "name": "Thicket Swarm",
+   "kind": "skirmish",
+   "cap": "common",
+   "before": {
+    "ant-scout": 3,
+    "bee-sentry": 3,
+    "duck-paddler": 4,
+    "river-carp": 4,
+    "fox-kit": 3,
+    "cottontail": 3
+   },
+   "after": {
+    "ant-scout": 4,
+    "bee-sentry": 3,
+    "cottontail": 3,
+    "duck-paddler": 3,
+    "river-carp": 3,
+    "soldier-ant": 4
+   },
+   "off": [
+    "fox-kit"
+   ],
+   "short": 0,
+   "oldLeader": null,
+   "leader": null,
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list fox-kit x3 rebuilt from the fight's list; IDEA-EARLY-5 combo: Ant Scout + Soldier Ant: two Swarm ants that grow with each other",
+   "k14": null
+  },
+  {
+   "map": "m1",
+   "mapNo": 0,
+   "side": false,
+   "key": "0-3",
+   "name": "Raccoon Heist",
+   "kind": "skirmish",
+   "cap": "common",
+   "before": {
+    "chipmunk-forager": 3,
+    "chipmunk-skirmisher": 3,
+    "cottontail": 3,
+    "house-cat": 3,
+    "meadow-rabbit": 4,
+    "fox-kit": 4
+   },
+   "after": {
+    "chipmunk-forager": 5,
+    "chipmunk-skirmisher": 3,
+    "cottontail": 5,
+    "house-cat": 3,
+    "meadow-rabbit": 4
+   },
+   "off": [
+    "fox-kit"
+   ],
+   "short": 0,
+   "oldLeader": null,
+   "leader": null,
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list fox-kit x4 rebuilt from the fight's list",
+   "k14": null
+  },
+  {
+   "map": "m1",
+   "mapNo": 0,
+   "side": false,
+   "key": "0-4",
+   "name": "Frost Vanguard",
+   "kind": "skirmish",
+   "cap": "common",
+   "before": {
+    "cobalt-talon-fledgling": 2,
+    "duck-paddler": 4,
+    "feral-tomcat": 4,
+    "fox-kit": 4,
+    "otter-kit": 2,
+    "house-cat": 4
+   },
+   "after": {
+    "ant-scout": 1,
+    "bee-forager": 5,
+    "cobalt-talon-fledgling": 2,
+    "duck-paddler": 4,
+    "honey-bee": 1,
+    "house-cat": 4,
+    "otter-kit": 2,
+    "worker-ant": 1
+   },
+   "off": [
+    "feral-tomcat",
+    "fox-kit"
+   ],
+   "short": 0,
+   "oldLeader": null,
+   "leader": null,
+   "leaderChanged": false,
+   "showcase": null,
+   "why": "off-list feral-tomcat x4, fox-kit x4 rebuilt from the fight's list",
+   "k14": null
+  }
+ ]
+}
