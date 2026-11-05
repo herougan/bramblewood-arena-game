@@ -6,7 +6,7 @@
  "built": "2026-11-02",
  "tool": "tools/bal13/ladder_2026_11_02.js 1.1.0 (2026-11-02, BAL13: with leaders)",
  "level": "referencePlayerLevel",
- "note": "Package BAL13 (owner 2026-11-02 19:56: \"Make at least 10 reference decks\"): per map (every PRO entry: Maps 0-20 and their side maps), 10 decks a player could hold there (the map-true pool: the map's own cards plus what a player holds by then, within the map's rarity cap, no faction or enemy-only card; 20 cards, at most 12 different, the rarity copy caps), rank 1 the weakest to rank 10 the strongest by their win rate against the map's road fights. Played at the Map reference's level (referencePlayerLevel), each with the leader a player holds at that map (owner 21:37; tools/bal13/lib_leader_2026_11_02.js leaderFor, the Wandering Traveller when none), summoned by your seat's AI. A per-map ladder (\"ladder\" by map id, not \"decks\" by map number). tools/opt/ref_decks.js bakes it into arena_app.js REF_DECK_SETS (owner 22:15: the game's \"Reference (Random)\" deals one of the map's 10 at random, each with its name, leader and levelled parts); the tools play it (tools/bal13/summary_2026_11_02.js).",
+ "note": "Package BAL13 (owner 2026-11-02 19:56: \"Make at least 10 reference decks\"): per map (every PRO entry: Maps 0-20 and their side maps), 10 decks a player could hold there (the map-true pool: the map's own cards plus what a player holds by then, within the map's rarity cap, no faction or enemy-only card; 20 cards, at most 12 different, the rarity copy caps), rank 1 the weakest to rank 10 the strongest by their win rate against the map's road fights. Played at the Map reference's level (referencePlayerLevel), each with the leader a player holds at that map (owner 21:37; tools/bal13/lib_leader_2026_11_02.js leaderFor, the Wandering Traveller when none), summoned by your seat's AI. A per-map ladder (\"ladder\" by map id, not \"decks\" by map number). tools/opt/ref_decks.js bakes it into arena_app.js REF_DECK_SETS (owner 22:15: the game's \"Reference (Random)\" deals one of the map's 10 at random, each with its name, leader and levelled parts); the tools play it (tools/bal13/summary_2026_11_02.js). BAL17 (2026-11-05): Maps 21-24 (m21-m24) added, built by the same tool and rule; the other maps' entries kept as they were.",
  "rule": {
   "pool": "tools/opt/deckopt.js poolsFor mode map-true, minus enemy-only cards",
   "deck": {
@@ -23142,6 +23142,3312 @@
      "leader": "caldera-wyrm",
      "from": "20-B-PRO-2",
      "selectWin": 25
+    }
+   ]
+  },
+  "m21": {
+   "map": 21,
+   "name": "The Quiet Summit",
+   "side": false,
+   "pool": 372,
+   "level": 4.08,
+   "fights": [
+    "21-1",
+    "21-2",
+    "21-3",
+    "21-4",
+    "21-5",
+    "21-6"
+   ],
+   "leader": "old-snapjaw",
+   "decks": [
+    {
+     "rank": 1,
+     "name": {
+      "lead": "grizzly-vanguard",
+      "tactic": "flock",
+      "n": 1
+     },
+     "title": "Grizzly Vanguard Flock",
+     "counts": {
+      "ash-moth": 2,
+      "pincushion-urchin": 1,
+      "cobalt-talon-fledgling": 3,
+      "constrictor-coil": 2,
+      "skull-vulture": 2,
+      "weaver-bird": 3,
+      "grizzly-vanguard": 4,
+      "hawthorn-shieldbug": 3
+     },
+     "parts": [
+      [
+       "ash-moth",
+       2,
+       4
+      ],
+      [
+       "pincushion-urchin",
+       1,
+       4
+      ],
+      [
+       "cobalt-talon-fledgling",
+       3,
+       4
+      ],
+      [
+       "constrictor-coil",
+       1,
+       4
+      ],
+      [
+       "constrictor-coil",
+       1,
+       5
+      ],
+      [
+       "skull-vulture",
+       2,
+       4
+      ],
+      [
+       "weaver-bird",
+       3,
+       4
+      ],
+      [
+       "grizzly-vanguard",
+       4,
+       4
+      ],
+      [
+       "hawthorn-shieldbug",
+       2,
+       4
+      ],
+      [
+       "hawthorn-shieldbug",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.57",
+     "selectWin": 8.3
+    },
+    {
+     "rank": 2,
+     "name": {
+      "lead": "elephant-nose-fish",
+      "tactic": "school",
+      "n": 1
+     },
+     "title": "Elephant-nose Fish School",
+     "counts": {
+      "elephant-nose-fish": 4,
+      "rock-pool-starfish": 2,
+      "lamprey": 2,
+      "fulmar-spitter": 4,
+      "fungus-gnat-cloud": 2,
+      "lunar-howler": 3,
+      "mantis-shrimp": 3
+     },
+     "parts": [
+      [
+       "elephant-nose-fish",
+       4,
+       4
+      ],
+      [
+       "rock-pool-starfish",
+       2,
+       4
+      ],
+      [
+       "lamprey",
+       1,
+       4
+      ],
+      [
+       "lamprey",
+       1,
+       5
+      ],
+      [
+       "fulmar-spitter",
+       4,
+       4
+      ],
+      [
+       "fungus-gnat-cloud",
+       2,
+       4
+      ],
+      [
+       "lunar-howler",
+       3,
+       4
+      ],
+      [
+       "mantis-shrimp",
+       2,
+       4
+      ],
+      [
+       "mantis-shrimp",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.04",
+     "selectWin": 16.7
+    },
+    {
+     "rank": 3,
+     "name": {
+      "lead": "razorbill",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Razorbill Swarm",
+     "counts": {
+      "quillback-elder": 3,
+      "razorbill": 4,
+      "glacier-yak": 3,
+      "hawthorn-shieldbug": 4,
+      "slow-worm": 2,
+      "otter-paddler": 4
+     },
+     "parts": [
+      [
+       "quillback-elder",
+       3,
+       4
+      ],
+      [
+       "razorbill",
+       3,
+       4
+      ],
+      [
+       "razorbill",
+       1,
+       5
+      ],
+      [
+       "glacier-yak",
+       3,
+       4
+      ],
+      [
+       "hawthorn-shieldbug",
+       4,
+       4
+      ],
+      [
+       "slow-worm",
+       2,
+       4
+      ],
+      [
+       "otter-paddler",
+       3,
+       4
+      ],
+      [
+       "otter-paddler",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.61",
+     "selectWin": 19.4
+    },
+    {
+     "rank": 4,
+     "name": {
+      "lead": "rabid-jackal",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Rabid Jackal Swarm",
+     "counts": {
+      "rabid-jackal": 4,
+      "shallows-fry": 1,
+      "paper-wasp": 3,
+      "red-billed-chough": 2,
+      "yeti": 3,
+      "clover-butterfly": 3,
+      "stalactite-golem": 4
+     },
+     "parts": [
+      [
+       "rabid-jackal",
+       4,
+       4
+      ],
+      [
+       "shallows-fry",
+       1,
+       4
+      ],
+      [
+       "paper-wasp",
+       2,
+       4
+      ],
+      [
+       "paper-wasp",
+       1,
+       5
+      ],
+      [
+       "red-billed-chough",
+       2,
+       4
+      ],
+      [
+       "yeti",
+       3,
+       4
+      ],
+      [
+       "clover-butterfly",
+       3,
+       4
+      ],
+      [
+       "stalactite-golem",
+       3,
+       4
+      ],
+      [
+       "stalactite-golem",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.39",
+     "selectWin": 33.3
+    },
+    {
+     "rank": 5,
+     "name": {
+      "lead": "plague-gnat-cloud",
+      "tactic": "hive",
+      "n": 1
+     },
+     "title": "Plague Gnat Cloud Hive",
+     "counts": {
+      "garden-tiger-moth": 1,
+      "plague-gnat-cloud": 5,
+      "monitor-rambler": 4,
+      "electric-catfish": 3,
+      "firefly-swarm": 2,
+      "millipede-hauler": 2,
+      "malachite-golem": 3
+     },
+     "parts": [
+      [
+       "garden-tiger-moth",
+       1,
+       4
+      ],
+      [
+       "plague-gnat-cloud",
+       5,
+       4
+      ],
+      [
+       "monitor-rambler",
+       3,
+       4
+      ],
+      [
+       "monitor-rambler",
+       1,
+       5
+      ],
+      [
+       "electric-catfish",
+       3,
+       4
+      ],
+      [
+       "firefly-swarm",
+       2,
+       4
+      ],
+      [
+       "millipede-hauler",
+       2,
+       4
+      ],
+      [
+       "malachite-golem",
+       2,
+       4
+      ],
+      [
+       "malachite-golem",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.09",
+     "selectWin": 41.7
+    },
+    {
+     "rank": 6,
+     "name": {
+      "lead": "glasswing-moth",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Glasswing Moth Swarm",
+     "counts": {
+      "eyrie-warden": 2,
+      "red-backed-salamander": 5,
+      "cave-warlord": 2,
+      "fox-sharpshot": 3,
+      "baby-bat": 1,
+      "glasswing-moth": 5,
+      "mayfly-dancer": 2
+     },
+     "parts": [
+      [
+       "eyrie-warden",
+       2,
+       4
+      ],
+      [
+       "red-backed-salamander",
+       4,
+       4
+      ],
+      [
+       "red-backed-salamander",
+       1,
+       5
+      ],
+      [
+       "cave-warlord",
+       2,
+       4
+      ],
+      [
+       "fox-sharpshot",
+       3,
+       4
+      ],
+      [
+       "baby-bat",
+       1,
+       4
+      ],
+      [
+       "glasswing-moth",
+       5,
+       4
+      ],
+      [
+       "mayfly-dancer",
+       1,
+       4
+      ],
+      [
+       "mayfly-dancer",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.26",
+     "selectWin": 47.2
+    },
+    {
+     "rank": 7,
+     "name": {
+      "lead": "diving-bell-spider",
+      "tactic": "nest",
+      "n": 1
+     },
+     "title": "Diving Bell Spider Nest",
+     "counts": {
+      "stag-beetle": 3,
+      "raft-spider": 4,
+      "sea-hare": 2,
+      "cave-swiftlet": 4,
+      "diving-bell-spider": 4,
+      "giant-clam": 3
+     },
+     "parts": [
+      [
+       "stag-beetle",
+       3,
+       4
+      ],
+      [
+       "raft-spider",
+       3,
+       4
+      ],
+      [
+       "raft-spider",
+       1,
+       5
+      ],
+      [
+       "sea-hare",
+       2,
+       4
+      ],
+      [
+       "cave-swiftlet",
+       4,
+       4
+      ],
+      [
+       "diving-bell-spider",
+       4,
+       4
+      ],
+      [
+       "giant-clam",
+       2,
+       4
+      ],
+      [
+       "giant-clam",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.00",
+     "selectWin": 55.6
+    },
+    {
+     "rank": 8,
+     "name": {
+      "lead": "sea-hare",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Sea Hare Swarm",
+     "counts": {
+      "anaconda-coil": 3,
+      "barkplate-beetle": 1,
+      "red-backed-salamander": 4,
+      "mantis-shrimp": 2,
+      "elephant-nose-fish": 2,
+      "sea-hare": 5,
+      "sergeant-bramblefox": 3
+     },
+     "parts": [
+      [
+       "anaconda-coil",
+       3,
+       4
+      ],
+      [
+       "barkplate-beetle",
+       1,
+       4
+      ],
+      [
+       "red-backed-salamander",
+       3,
+       4
+      ],
+      [
+       "red-backed-salamander",
+       1,
+       5
+      ],
+      [
+       "mantis-shrimp",
+       2,
+       4
+      ],
+      [
+       "elephant-nose-fish",
+       2,
+       4
+      ],
+      [
+       "sea-hare",
+       5,
+       4
+      ],
+      [
+       "sergeant-bramblefox",
+       2,
+       4
+      ],
+      [
+       "sergeant-bramblefox",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.13",
+     "selectWin": 66.7
+    },
+    {
+     "rank": 9,
+     "name": {
+      "lead": "cone-cutter-squirrel",
+      "tactic": "warren",
+      "n": 1
+     },
+     "title": "Cone-cutter Squirrel Warren",
+     "counts": {
+      "grave-grin-hyena": 2,
+      "adder-ambusher": 1,
+      "talus-pika": 4,
+      "gatling-hog": 3,
+      "cone-cutter-squirrel": 4,
+      "cricket-drummer": 1,
+      "box-turtle": 3,
+      "otter-centurion": 2
+     },
+     "parts": [
+      [
+       "grave-grin-hyena",
+       2,
+       4
+      ],
+      [
+       "adder-ambusher",
+       1,
+       4
+      ],
+      [
+       "talus-pika",
+       3,
+       4
+      ],
+      [
+       "talus-pika",
+       1,
+       5
+      ],
+      [
+       "gatling-hog",
+       3,
+       4
+      ],
+      [
+       "cone-cutter-squirrel",
+       4,
+       4
+      ],
+      [
+       "cricket-drummer",
+       1,
+       4
+      ],
+      [
+       "box-turtle",
+       3,
+       4
+      ],
+      [
+       "otter-centurion",
+       1,
+       4
+      ],
+      [
+       "otter-centurion",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.96",
+     "selectWin": 72.2
+    },
+    {
+     "rank": 10,
+     "name": {
+      "lead": "eagle-owl-quartermaster",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Eagle-Owl Quartermaster Swarm",
+     "counts": {
+      "talon-archer": 2,
+      "pika-hoarder": 3,
+      "pangolin-roller": 3,
+      "truffle-piglet": 2,
+      "eagle-owl-quartermaster": 3,
+      "dhole-runner": 2,
+      "ashbone-ghoul": 3,
+      "grave-grin-hyena": 2
+     },
+     "parts": [
+      [
+       "talon-archer",
+       2,
+       4
+      ],
+      [
+       "pika-hoarder",
+       3,
+       4
+      ],
+      [
+       "pangolin-roller",
+       2,
+       4
+      ],
+      [
+       "pangolin-roller",
+       1,
+       5
+      ],
+      [
+       "truffle-piglet",
+       2,
+       4
+      ],
+      [
+       "eagle-owl-quartermaster",
+       3,
+       4
+      ],
+      [
+       "dhole-runner",
+       2,
+       4
+      ],
+      [
+       "ashbone-ghoul",
+       3,
+       4
+      ],
+      [
+       "grave-grin-hyena",
+       1,
+       4
+      ],
+      [
+       "grave-grin-hyena",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=1.00",
+     "selectWin": 80.6
+    }
+   ]
+  },
+  "m22": {
+   "map": 22,
+   "name": "The Rimefire Caldera",
+   "side": false,
+   "pool": 391,
+   "level": 4.26,
+   "fights": [
+    "22-1",
+    "22-2",
+    "22-3",
+    "22-4",
+    "22-5",
+    "22-6",
+    "22-7",
+    "22-8"
+   ],
+   "leader": "old-snapjaw",
+   "decks": [
+    {
+     "rank": 1,
+     "name": {
+      "lead": "shoal-shark",
+      "tactic": "school",
+      "n": 1
+     },
+     "title": "Shoal Shark School",
+     "counts": {
+      "diving-bell-spider": 3,
+      "signal-crayfish": 3,
+      "lionfish": 2,
+      "scree-goat": 2,
+      "mudflat-godwit": 2,
+      "shoal-shark": 4,
+      "dynamite-packrat": 4
+     },
+     "parts": [
+      [
+       "diving-bell-spider",
+       2,
+       4
+      ],
+      [
+       "diving-bell-spider",
+       1,
+       5
+      ],
+      [
+       "signal-crayfish",
+       2,
+       4
+      ],
+      [
+       "signal-crayfish",
+       1,
+       5
+      ],
+      [
+       "lionfish",
+       2,
+       4
+      ],
+      [
+       "scree-goat",
+       1,
+       4
+      ],
+      [
+       "scree-goat",
+       1,
+       5
+      ],
+      [
+       "mudflat-godwit",
+       2,
+       4
+      ],
+      [
+       "shoal-shark",
+       3,
+       4
+      ],
+      [
+       "shoal-shark",
+       1,
+       5
+      ],
+      [
+       "dynamite-packrat",
+       3,
+       4
+      ],
+      [
+       "dynamite-packrat",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.22",
+     "selectWin": 2.1
+    },
+    {
+     "rank": 2,
+     "name": {
+      "lead": "cane-toad",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Cane Toad Swarm",
+     "counts": {
+      "octopus-tactician": 2,
+      "cane-toad": 3,
+      "silver-minnow": 3,
+      "phoenix-fledgling": 3,
+      "water-vole": 2,
+      "otter-kit": 2,
+      "electric-ray": 2,
+      "banded-sea-krait": 3
+     },
+     "parts": [
+      [
+       "octopus-tactician",
+       1,
+       4
+      ],
+      [
+       "octopus-tactician",
+       1,
+       5
+      ],
+      [
+       "cane-toad",
+       3,
+       4
+      ],
+      [
+       "silver-minnow",
+       2,
+       4
+      ],
+      [
+       "silver-minnow",
+       1,
+       5
+      ],
+      [
+       "phoenix-fledgling",
+       2,
+       4
+      ],
+      [
+       "phoenix-fledgling",
+       1,
+       5
+      ],
+      [
+       "water-vole",
+       2,
+       4
+      ],
+      [
+       "otter-kit",
+       1,
+       4
+      ],
+      [
+       "otter-kit",
+       1,
+       5
+      ],
+      [
+       "electric-ray",
+       2,
+       4
+      ],
+      [
+       "banded-sea-krait",
+       2,
+       4
+      ],
+      [
+       "banded-sea-krait",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.48",
+     "selectWin": 8.3
+    },
+    {
+     "rank": 3,
+     "name": {
+      "lead": "shallows-fry",
+      "tactic": "band",
+      "n": 1
+     },
+     "title": "Shallows Fry Band",
+     "counts": {
+      "obsidian-lich": 2,
+      "paper-wasp": 2,
+      "frillneck-duelist": 2,
+      "cone-snail": 3,
+      "shallows-fry": 4,
+      "duckling": 2,
+      "ghost-crayfish": 2,
+      "lunar-howler": 3
+     },
+     "parts": [
+      [
+       "obsidian-lich",
+       1,
+       4
+      ],
+      [
+       "obsidian-lich",
+       1,
+       5
+      ],
+      [
+       "paper-wasp",
+       2,
+       4
+      ],
+      [
+       "frillneck-duelist",
+       1,
+       4
+      ],
+      [
+       "frillneck-duelist",
+       1,
+       5
+      ],
+      [
+       "cone-snail",
+       3,
+       4
+      ],
+      [
+       "shallows-fry",
+       3,
+       4
+      ],
+      [
+       "shallows-fry",
+       1,
+       5
+      ],
+      [
+       "duckling",
+       1,
+       4
+      ],
+      [
+       "duckling",
+       1,
+       5
+      ],
+      [
+       "ghost-crayfish",
+       2,
+       4
+      ],
+      [
+       "lunar-howler",
+       2,
+       4
+      ],
+      [
+       "lunar-howler",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.17",
+     "selectWin": 14.6
+    },
+    {
+     "rank": 4,
+     "name": {
+      "lead": "farm-dog",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Farm Dog Swarm",
+     "counts": {
+      "lamprey": 4,
+      "monitor-rambler": 2,
+      "farm-dog": 5,
+      "springtail-hopper": 3,
+      "grotto-lobster": 3,
+      "greater-siren": 3
+     },
+     "parts": [
+      [
+       "lamprey",
+       3,
+       4
+      ],
+      [
+       "lamprey",
+       1,
+       5
+      ],
+      [
+       "monitor-rambler",
+       1,
+       4
+      ],
+      [
+       "monitor-rambler",
+       1,
+       5
+      ],
+      [
+       "farm-dog",
+       4,
+       4
+      ],
+      [
+       "farm-dog",
+       1,
+       5
+      ],
+      [
+       "springtail-hopper",
+       2,
+       4
+      ],
+      [
+       "springtail-hopper",
+       1,
+       5
+      ],
+      [
+       "grotto-lobster",
+       3,
+       4
+      ],
+      [
+       "greater-siren",
+       2,
+       4
+      ],
+      [
+       "greater-siren",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.04",
+     "selectWin": 18.8
+    },
+    {
+     "rank": 5,
+     "name": {
+      "lead": "swift-fox",
+      "tactic": "pack",
+      "n": 1
+     },
+     "title": "Swift Fox Pack",
+     "counts": {
+      "spitting-cobra": 1,
+      "terrier-pup": 4,
+      "archerfish": 2,
+      "mouse-sapper": 3,
+      "pika-hoarder": 1,
+      "hercules-beetle": 2,
+      "chipmunk-hoarder": 3,
+      "swift-fox": 4
+     },
+     "parts": [
+      [
+       "spitting-cobra",
+       1,
+       4
+      ],
+      [
+       "terrier-pup",
+       3,
+       4
+      ],
+      [
+       "terrier-pup",
+       1,
+       5
+      ],
+      [
+       "archerfish",
+       1,
+       4
+      ],
+      [
+       "archerfish",
+       1,
+       5
+      ],
+      [
+       "mouse-sapper",
+       2,
+       4
+      ],
+      [
+       "mouse-sapper",
+       1,
+       5
+      ],
+      [
+       "pika-hoarder",
+       1,
+       4
+      ],
+      [
+       "hercules-beetle",
+       2,
+       4
+      ],
+      [
+       "chipmunk-hoarder",
+       2,
+       4
+      ],
+      [
+       "chipmunk-hoarder",
+       1,
+       5
+      ],
+      [
+       "swift-fox",
+       3,
+       4
+      ],
+      [
+       "swift-fox",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.91",
+     "selectWin": 27.1
+    },
+    {
+     "rank": 6,
+     "name": {
+      "lead": "ember-tetra",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Ember Tetra Swarm",
+     "counts": {
+      "greenland-shark": 3,
+      "woodland-caribou": 1,
+      "giant-clam": 3,
+      "musk-ox-calf": 2,
+      "pill-bug": 3,
+      "buzzed-chipmunk": 2,
+      "paper-wasp": 2,
+      "ember-tetra": 4
+     },
+     "parts": [
+      [
+       "greenland-shark",
+       2,
+       4
+      ],
+      [
+       "greenland-shark",
+       1,
+       5
+      ],
+      [
+       "woodland-caribou",
+       1,
+       4
+      ],
+      [
+       "giant-clam",
+       2,
+       4
+      ],
+      [
+       "giant-clam",
+       1,
+       5
+      ],
+      [
+       "musk-ox-calf",
+       2,
+       4
+      ],
+      [
+       "pill-bug",
+       2,
+       4
+      ],
+      [
+       "pill-bug",
+       1,
+       5
+      ],
+      [
+       "buzzed-chipmunk",
+       1,
+       4
+      ],
+      [
+       "buzzed-chipmunk",
+       1,
+       5
+      ],
+      [
+       "paper-wasp",
+       2,
+       4
+      ],
+      [
+       "ember-tetra",
+       3,
+       4
+      ],
+      [
+       "ember-tetra",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.35",
+     "selectWin": 33.3
+    },
+    {
+     "rank": 7,
+     "name": {
+      "lead": "snow-ermine",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Snow Ermine Swarm",
+     "counts": {
+      "snow-ermine": 5,
+      "rimefire-salamander": 3,
+      "duck-paddler": 3,
+      "hercules-beetle": 3,
+      "hedgehog-herbalist": 3,
+      "magma-salamander": 2,
+      "dung-beetle": 1
+     },
+     "parts": [
+      [
+       "snow-ermine",
+       4,
+       4
+      ],
+      [
+       "snow-ermine",
+       1,
+       5
+      ],
+      [
+       "rimefire-salamander",
+       2,
+       4
+      ],
+      [
+       "rimefire-salamander",
+       1,
+       5
+      ],
+      [
+       "duck-paddler",
+       2,
+       4
+      ],
+      [
+       "duck-paddler",
+       1,
+       5
+      ],
+      [
+       "hercules-beetle",
+       2,
+       4
+      ],
+      [
+       "hercules-beetle",
+       1,
+       5
+      ],
+      [
+       "hedgehog-herbalist",
+       3,
+       4
+      ],
+      [
+       "magma-salamander",
+       1,
+       4
+      ],
+      [
+       "magma-salamander",
+       1,
+       5
+      ],
+      [
+       "dung-beetle",
+       1,
+       4
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.96",
+     "selectWin": 35.4
+    },
+    {
+     "rank": 8,
+     "name": {
+      "lead": "mudpuppy",
+      "tactic": "brood",
+      "n": 1
+     },
+     "title": "Mudpuppy Brood",
+     "counts": {
+      "mudpuppy": 5,
+      "parrotfish": 4,
+      "fire-salamander": 4,
+      "the-contradiction": 1,
+      "pelican-diver": 3,
+      "glimmer-spider": 3
+     },
+     "parts": [
+      [
+       "mudpuppy",
+       4,
+       4
+      ],
+      [
+       "mudpuppy",
+       1,
+       5
+      ],
+      [
+       "parrotfish",
+       3,
+       4
+      ],
+      [
+       "parrotfish",
+       1,
+       5
+      ],
+      [
+       "fire-salamander",
+       3,
+       4
+      ],
+      [
+       "fire-salamander",
+       1,
+       5
+      ],
+      [
+       "the-contradiction",
+       1,
+       5
+      ],
+      [
+       "pelican-diver",
+       3,
+       4
+      ],
+      [
+       "glimmer-spider",
+       2,
+       4
+      ],
+      [
+       "glimmer-spider",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.78",
+     "selectWin": 37.5
+    },
+    {
+     "rank": 9,
+     "name": {
+      "lead": "muskrat-reedgatherer",
+      "tactic": "warren",
+      "n": 1
+     },
+     "title": "Muskrat Reedgatherer Warren",
+     "counts": {
+      "obsidian-scorpion": 3,
+      "muskrat-reedgatherer": 5,
+      "magma-salamander": 2,
+      "tunnel-ant": 2,
+      "wolf-spider-mother": 2,
+      "snow-owl-sentinel": 1,
+      "pika-hoarder": 3,
+      "savanna-cheetah": 2
+     },
+     "parts": [
+      [
+       "obsidian-scorpion",
+       2,
+       4
+      ],
+      [
+       "obsidian-scorpion",
+       1,
+       5
+      ],
+      [
+       "muskrat-reedgatherer",
+       4,
+       4
+      ],
+      [
+       "muskrat-reedgatherer",
+       1,
+       5
+      ],
+      [
+       "magma-salamander",
+       1,
+       4
+      ],
+      [
+       "magma-salamander",
+       1,
+       5
+      ],
+      [
+       "tunnel-ant",
+       2,
+       4
+      ],
+      [
+       "wolf-spider-mother",
+       1,
+       4
+      ],
+      [
+       "wolf-spider-mother",
+       1,
+       5
+      ],
+      [
+       "snow-owl-sentinel",
+       1,
+       4
+      ],
+      [
+       "pika-hoarder",
+       2,
+       4
+      ],
+      [
+       "pika-hoarder",
+       1,
+       5
+      ],
+      [
+       "savanna-cheetah",
+       2,
+       4
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.87",
+     "selectWin": 47.9
+    },
+    {
+     "rank": 10,
+     "name": {
+      "lead": "gannet-nestweaver",
+      "tactic": "wall",
+      "n": 1
+     },
+     "title": "Gannet Nestweaver Wall",
+     "counts": {
+      "talon-archer": 2,
+      "ibex-rockcaller": 2,
+      "ember-jackal": 2,
+      "echidna-quillshot": 1,
+      "gannet-nestweaver": 4,
+      "grave-grin-hyena": 2,
+      "giant-cave-huntsman": 3,
+      "nutria-reedcutter": 4
+     },
+     "parts": [
+      [
+       "talon-archer",
+       1,
+       4
+      ],
+      [
+       "talon-archer",
+       1,
+       5
+      ],
+      [
+       "ibex-rockcaller",
+       2,
+       4
+      ],
+      [
+       "ember-jackal",
+       1,
+       4
+      ],
+      [
+       "ember-jackal",
+       1,
+       5
+      ],
+      [
+       "echidna-quillshot",
+       1,
+       4
+      ],
+      [
+       "gannet-nestweaver",
+       3,
+       4
+      ],
+      [
+       "gannet-nestweaver",
+       1,
+       5
+      ],
+      [
+       "grave-grin-hyena",
+       2,
+       4
+      ],
+      [
+       "giant-cave-huntsman",
+       2,
+       4
+      ],
+      [
+       "giant-cave-huntsman",
+       1,
+       5
+      ],
+      [
+       "nutria-reedcutter",
+       3,
+       4
+      ],
+      [
+       "nutria-reedcutter",
+       1,
+       5
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=1.00",
+     "selectWin": 58.3
+    }
+   ]
+  },
+  "m23": {
+   "map": 23,
+   "name": "The Goldfeather Siege",
+   "side": false,
+   "pool": 399,
+   "level": 4.44,
+   "fights": [
+    "23-1",
+    "23-2",
+    "23-3",
+    "23-4",
+    "23-5",
+    "23-6",
+    "23-7",
+    "23-8"
+   ],
+   "leader": "triumvirate",
+   "decks": [
+    {
+     "rank": 1,
+     "name": {
+      "lead": "platypus-spur",
+      "tactic": "flock",
+      "n": 1
+     },
+     "title": "Platypus Spur Flock",
+     "counts": {
+      "platypus-spur": 4,
+      "eyrie-warden": 2,
+      "puffin-diver": 2,
+      "guppy": 1,
+      "alpine-swift": 4,
+      "ember-centipede": 3,
+      "fennec-fox": 3,
+      "cypress-root-lurker": 1
+     },
+     "parts": [
+      [
+       "platypus-spur",
+       2,
+       4
+      ],
+      [
+       "platypus-spur",
+       2,
+       5
+      ],
+      [
+       "eyrie-warden",
+       1,
+       4
+      ],
+      [
+       "eyrie-warden",
+       1,
+       5
+      ],
+      [
+       "puffin-diver",
+       1,
+       4
+      ],
+      [
+       "puffin-diver",
+       1,
+       5
+      ],
+      [
+       "guppy",
+       1,
+       4
+      ],
+      [
+       "alpine-swift",
+       2,
+       4
+      ],
+      [
+       "alpine-swift",
+       2,
+       5
+      ],
+      [
+       "ember-centipede",
+       2,
+       4
+      ],
+      [
+       "ember-centipede",
+       1,
+       5
+      ],
+      [
+       "fennec-fox",
+       2,
+       4
+      ],
+      [
+       "fennec-fox",
+       1,
+       5
+      ],
+      [
+       "cypress-root-lurker",
+       1,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.43",
+     "selectWin": 18.8
+    },
+    {
+     "rank": 2,
+     "name": {
+      "lead": "cataphract-destrier",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Gilded Roadwarden Swarm",
+     "counts": {
+      "cataphract-destrier": 3,
+      "springbok-pronker": 2,
+      "alpine-salamander": 3,
+      "poison-dart-croaker": 3,
+      "reef-shark": 2,
+      "owl-sentinel": 3,
+      "pill-bug": 1,
+      "sheep": 3
+     },
+     "parts": [
+      [
+       "cataphract-destrier",
+       2,
+       4
+      ],
+      [
+       "cataphract-destrier",
+       1,
+       5
+      ],
+      [
+       "springbok-pronker",
+       1,
+       4
+      ],
+      [
+       "springbok-pronker",
+       1,
+       5
+      ],
+      [
+       "alpine-salamander",
+       1,
+       4
+      ],
+      [
+       "alpine-salamander",
+       2,
+       5
+      ],
+      [
+       "poison-dart-croaker",
+       2,
+       4
+      ],
+      [
+       "poison-dart-croaker",
+       1,
+       5
+      ],
+      [
+       "reef-shark",
+       1,
+       4
+      ],
+      [
+       "reef-shark",
+       1,
+       5
+      ],
+      [
+       "owl-sentinel",
+       2,
+       4
+      ],
+      [
+       "owl-sentinel",
+       1,
+       5
+      ],
+      [
+       "pill-bug",
+       1,
+       4
+      ],
+      [
+       "sheep",
+       1,
+       4
+      ],
+      [
+       "sheep",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.39",
+     "selectWin": 27.1
+    },
+    {
+     "rank": 3,
+     "name": {
+      "lead": "dam-keeper-beaver",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Dam-Keeper Beaver Swarm",
+     "counts": {
+      "leopard-slug": 5,
+      "stonedrop-vulture": 4,
+      "colossal-squid": 2,
+      "dam-keeper-beaver": 5,
+      "fungal-colossus": 4
+     },
+     "parts": [
+      [
+       "leopard-slug",
+       3,
+       4
+      ],
+      [
+       "leopard-slug",
+       2,
+       5
+      ],
+      [
+       "stonedrop-vulture",
+       2,
+       4
+      ],
+      [
+       "stonedrop-vulture",
+       2,
+       5
+      ],
+      [
+       "colossal-squid",
+       1,
+       4
+      ],
+      [
+       "colossal-squid",
+       1,
+       5
+      ],
+      [
+       "dam-keeper-beaver",
+       3,
+       4
+      ],
+      [
+       "dam-keeper-beaver",
+       2,
+       5
+      ],
+      [
+       "fungal-colossus",
+       2,
+       4
+      ],
+      [
+       "fungal-colossus",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.26",
+     "selectWin": 35.4
+    },
+    {
+     "rank": 4,
+     "name": {
+      "lead": "mayfly-dancer",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Mayfly Dancer Swarm",
+     "counts": {
+      "mayfly-dancer": 4,
+      "red-backed-salamander": 3,
+      "eyrie-warden": 3,
+      "alpha-howler": 3,
+      "tarantula-hawk": 1,
+      "bramblewood-lynx": 3,
+      "yellow-bellied-sea-snake": 3
+     },
+     "parts": [
+      [
+       "mayfly-dancer",
+       2,
+       4
+      ],
+      [
+       "mayfly-dancer",
+       2,
+       5
+      ],
+      [
+       "red-backed-salamander",
+       2,
+       4
+      ],
+      [
+       "red-backed-salamander",
+       1,
+       5
+      ],
+      [
+       "eyrie-warden",
+       2,
+       4
+      ],
+      [
+       "eyrie-warden",
+       1,
+       5
+      ],
+      [
+       "alpha-howler",
+       1,
+       4
+      ],
+      [
+       "alpha-howler",
+       2,
+       5
+      ],
+      [
+       "tarantula-hawk",
+       1,
+       4
+      ],
+      [
+       "bramblewood-lynx",
+       2,
+       4
+      ],
+      [
+       "bramblewood-lynx",
+       1,
+       5
+      ],
+      [
+       "yellow-bellied-sea-snake",
+       1,
+       4
+      ],
+      [
+       "yellow-bellied-sea-snake",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.30",
+     "selectWin": 43.8
+    },
+    {
+     "rank": 5,
+     "name": {
+      "lead": "frost-hare-sprinter",
+      "tactic": "hive",
+      "n": 1
+     },
+     "title": "Frost Hare Sprinter Hive",
+     "counts": {
+      "worker-ant": 5,
+      "frost-hare-sprinter": 5,
+      "slow-worm": 4,
+      "bee-knight": 4,
+      "quicksand-queen": 2
+     },
+     "parts": [
+      [
+       "worker-ant",
+       3,
+       4
+      ],
+      [
+       "worker-ant",
+       2,
+       5
+      ],
+      [
+       "frost-hare-sprinter",
+       3,
+       4
+      ],
+      [
+       "frost-hare-sprinter",
+       2,
+       5
+      ],
+      [
+       "slow-worm",
+       2,
+       4
+      ],
+      [
+       "slow-worm",
+       2,
+       5
+      ],
+      [
+       "bee-knight",
+       2,
+       4
+      ],
+      [
+       "bee-knight",
+       2,
+       5
+      ],
+      [
+       "quicksand-queen",
+       1,
+       4
+      ],
+      [
+       "quicksand-queen",
+       1,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.65",
+     "selectWin": 56.3
+    },
+    {
+     "rank": 6,
+     "name": {
+      "lead": "weaver-bird",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Weaver Bird Swarm",
+     "counts": {
+      "acacia-giraffe": 3,
+      "badger-berserker": 2,
+      "house-cat": 4,
+      "howdah-archers": 3,
+      "pack-mule": 4,
+      "weaver-bird": 4
+     },
+     "parts": [
+      [
+       "acacia-giraffe",
+       2,
+       4
+      ],
+      [
+       "acacia-giraffe",
+       1,
+       5
+      ],
+      [
+       "badger-berserker",
+       1,
+       4
+      ],
+      [
+       "badger-berserker",
+       1,
+       5
+      ],
+      [
+       "house-cat",
+       2,
+       4
+      ],
+      [
+       "house-cat",
+       2,
+       5
+      ],
+      [
+       "howdah-archers",
+       2,
+       4
+      ],
+      [
+       "howdah-archers",
+       1,
+       5
+      ],
+      [
+       "pack-mule",
+       2,
+       4
+      ],
+      [
+       "pack-mule",
+       2,
+       5
+      ],
+      [
+       "weaver-bird",
+       2,
+       4
+      ],
+      [
+       "weaver-bird",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "23-PRO-2",
+     "selectWin": 64.6
+    },
+    {
+     "rank": 7,
+     "name": {
+      "lead": "archerfish",
+      "tactic": "hive",
+      "n": 1
+     },
+     "title": "Archerfish Hive",
+     "counts": {
+      "archerfish": 4,
+      "parrotfish": 1,
+      "dung-beetle": 3,
+      "ice-petrel": 1,
+      "beetle-battering-ram": 2,
+      "apollo-butterfly": 4,
+      "weaver-bird": 2,
+      "meadow-rabbit": 3
+     },
+     "parts": [
+      [
+       "archerfish",
+       2,
+       4
+      ],
+      [
+       "archerfish",
+       2,
+       5
+      ],
+      [
+       "parrotfish",
+       1,
+       4
+      ],
+      [
+       "dung-beetle",
+       1,
+       4
+      ],
+      [
+       "dung-beetle",
+       2,
+       5
+      ],
+      [
+       "ice-petrel",
+       1,
+       4
+      ],
+      [
+       "beetle-battering-ram",
+       1,
+       4
+      ],
+      [
+       "beetle-battering-ram",
+       1,
+       5
+      ],
+      [
+       "apollo-butterfly",
+       2,
+       4
+      ],
+      [
+       "apollo-butterfly",
+       2,
+       5
+      ],
+      [
+       "weaver-bird",
+       2,
+       4
+      ],
+      [
+       "meadow-rabbit",
+       1,
+       4
+      ],
+      [
+       "meadow-rabbit",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=1.00",
+     "selectWin": 66.7
+    },
+    {
+     "rank": 8,
+     "name": {
+      "lead": "cinder-gecko",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Cinder Gecko Swarm",
+     "counts": {
+      "the-contradiction": 1,
+      "ember-jackal": 3,
+      "cinder-gecko": 5,
+      "conch-crawler": 5,
+      "gatling-hog": 3,
+      "hedgehog-herbalist": 3
+     },
+     "parts": [
+      [
+       "the-contradiction",
+       1,
+       4
+      ],
+      [
+       "ember-jackal",
+       1,
+       4
+      ],
+      [
+       "ember-jackal",
+       2,
+       5
+      ],
+      [
+       "cinder-gecko",
+       3,
+       4
+      ],
+      [
+       "cinder-gecko",
+       2,
+       5
+      ],
+      [
+       "conch-crawler",
+       3,
+       4
+      ],
+      [
+       "conch-crawler",
+       2,
+       5
+      ],
+      [
+       "gatling-hog",
+       2,
+       4
+      ],
+      [
+       "gatling-hog",
+       1,
+       5
+      ],
+      [
+       "hedgehog-herbalist",
+       1,
+       4
+      ],
+      [
+       "hedgehog-herbalist",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.83",
+     "selectWin": 79.2
+    },
+    {
+     "rank": 9,
+     "name": {
+      "lead": "driftwood-crab",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Driftwood Crab Swarm",
+     "counts": {
+      "hedgehog-herbalist": 3,
+      "lantern-spark-fly": 4,
+      "owl-nightwatch": 2,
+      "leafcutter-gardener": 3,
+      "raven-scout": 3,
+      "driftwood-crab": 5
+     },
+     "parts": [
+      [
+       "hedgehog-herbalist",
+       2,
+       4
+      ],
+      [
+       "hedgehog-herbalist",
+       1,
+       5
+      ],
+      [
+       "lantern-spark-fly",
+       2,
+       4
+      ],
+      [
+       "lantern-spark-fly",
+       2,
+       5
+      ],
+      [
+       "owl-nightwatch",
+       1,
+       4
+      ],
+      [
+       "owl-nightwatch",
+       1,
+       5
+      ],
+      [
+       "leafcutter-gardener",
+       2,
+       4
+      ],
+      [
+       "leafcutter-gardener",
+       1,
+       5
+      ],
+      [
+       "raven-scout",
+       1,
+       4
+      ],
+      [
+       "raven-scout",
+       2,
+       5
+      ],
+      [
+       "driftwood-crab",
+       3,
+       4
+      ],
+      [
+       "driftwood-crab",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.87",
+     "selectWin": 87.5
+    },
+    {
+     "rank": 10,
+     "name": {
+      "lead": "border-collie",
+      "tactic": "camp",
+      "n": 1
+     },
+     "title": "Border Collie Camp",
+     "counts": {
+      "badger-berserker": 3,
+      "border-collie": 4,
+      "pack-mule": 4,
+      "raccoon-bandit": 3,
+      "tide-spirit": 2,
+      "weaver-bird": 4
+     },
+     "parts": [
+      [
+       "badger-berserker",
+       2,
+       4
+      ],
+      [
+       "badger-berserker",
+       1,
+       5
+      ],
+      [
+       "border-collie",
+       2,
+       4
+      ],
+      [
+       "border-collie",
+       2,
+       5
+      ],
+      [
+       "pack-mule",
+       2,
+       4
+      ],
+      [
+       "pack-mule",
+       2,
+       5
+      ],
+      [
+       "raccoon-bandit",
+       2,
+       4
+      ],
+      [
+       "raccoon-bandit",
+       1,
+       5
+      ],
+      [
+       "tide-spirit",
+       1,
+       4
+      ],
+      [
+       "tide-spirit",
+       1,
+       5
+      ],
+      [
+       "weaver-bird",
+       2,
+       4
+      ],
+      [
+       "weaver-bird",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "23-PRO-1",
+     "selectWin": 97.9
+    }
+   ]
+  },
+  "m24": {
+   "map": 24,
+   "name": "Goldfeather Keep",
+   "side": false,
+   "pool": 414,
+   "level": 4.62,
+   "fights": [
+    "24-1",
+    "24-2",
+    "24-3",
+    "24-4",
+    "24-5",
+    "24-6",
+    "24-7",
+    "24-8"
+   ],
+   "leader": "triumvirate",
+   "decks": [
+    {
+     "rank": 1,
+     "name": {
+      "lead": "komodo-warlord",
+      "tactic": "wall",
+      "n": 1
+     },
+     "title": "Komodo Warlord Wall",
+     "counts": {
+      "pill-bug": 1,
+      "lionfish": 4,
+      "musk-ox-calf": 3,
+      "fumarole-ibex": 3,
+      "komodo-warlord": 5,
+      "lions-mane-jelly": 4
+     },
+     "parts": [
+      [
+       "pill-bug",
+       1,
+       5
+      ],
+      [
+       "lionfish",
+       2,
+       4
+      ],
+      [
+       "lionfish",
+       2,
+       5
+      ],
+      [
+       "musk-ox-calf",
+       1,
+       4
+      ],
+      [
+       "musk-ox-calf",
+       2,
+       5
+      ],
+      [
+       "fumarole-ibex",
+       1,
+       4
+      ],
+      [
+       "fumarole-ibex",
+       2,
+       5
+      ],
+      [
+       "komodo-warlord",
+       2,
+       4
+      ],
+      [
+       "komodo-warlord",
+       3,
+       5
+      ],
+      [
+       "lions-mane-jelly",
+       2,
+       4
+      ],
+      [
+       "lions-mane-jelly",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.22",
+     "selectWin": 12.5
+    },
+    {
+     "rank": 2,
+     "name": {
+      "lead": "bee-sentry",
+      "tactic": "flock",
+      "n": 1
+     },
+     "title": "Bee Sentry Flock",
+     "counts": {
+      "duckling": 3,
+      "jay-pilferer": 2,
+      "iron-warden": 1,
+      "fumarole-ibex": 3,
+      "glacier-yak": 2,
+      "weathervane-swift": 3,
+      "chamois-leaper": 1,
+      "bee-sentry": 5
+     },
+     "parts": [
+      [
+       "duckling",
+       1,
+       4
+      ],
+      [
+       "duckling",
+       2,
+       5
+      ],
+      [
+       "jay-pilferer",
+       1,
+       4
+      ],
+      [
+       "jay-pilferer",
+       1,
+       5
+      ],
+      [
+       "iron-warden",
+       1,
+       5
+      ],
+      [
+       "fumarole-ibex",
+       1,
+       4
+      ],
+      [
+       "fumarole-ibex",
+       2,
+       5
+      ],
+      [
+       "glacier-yak",
+       1,
+       4
+      ],
+      [
+       "glacier-yak",
+       1,
+       5
+      ],
+      [
+       "weathervane-swift",
+       1,
+       4
+      ],
+      [
+       "weathervane-swift",
+       2,
+       5
+      ],
+      [
+       "chamois-leaper",
+       1,
+       4
+      ],
+      [
+       "bee-sentry",
+       2,
+       4
+      ],
+      [
+       "bee-sentry",
+       3,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.30",
+     "selectWin": 18.8
+    },
+    {
+     "rank": 3,
+     "name": {
+      "lead": "muskrat-lodgekeeper",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Muskrat Lodgekeeper Swarm",
+     "counts": {
+      "booming-bittern": 2,
+      "snapstick-turtle": 3,
+      "ant-scout": 2,
+      "muskrat-lodgekeeper": 3,
+      "honey-bee": 3,
+      "chipmunk-forager": 3,
+      "taiga-lynx": 2,
+      "duckling": 2
+     },
+     "parts": [
+      [
+       "booming-bittern",
+       1,
+       4
+      ],
+      [
+       "booming-bittern",
+       1,
+       5
+      ],
+      [
+       "snapstick-turtle",
+       1,
+       4
+      ],
+      [
+       "snapstick-turtle",
+       2,
+       5
+      ],
+      [
+       "ant-scout",
+       1,
+       4
+      ],
+      [
+       "ant-scout",
+       1,
+       5
+      ],
+      [
+       "muskrat-lodgekeeper",
+       1,
+       4
+      ],
+      [
+       "muskrat-lodgekeeper",
+       2,
+       5
+      ],
+      [
+       "honey-bee",
+       1,
+       4
+      ],
+      [
+       "honey-bee",
+       2,
+       5
+      ],
+      [
+       "chipmunk-forager",
+       1,
+       4
+      ],
+      [
+       "chipmunk-forager",
+       2,
+       5
+      ],
+      [
+       "taiga-lynx",
+       1,
+       4
+      ],
+      [
+       "taiga-lynx",
+       1,
+       5
+      ],
+      [
+       "duckling",
+       1,
+       4
+      ],
+      [
+       "duckling",
+       1,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.48",
+     "selectWin": 27.1
+    },
+    {
+     "rank": 4,
+     "name": {
+      "lead": "baby-horned-capybara",
+      "tactic": "warren",
+      "n": 1
+     },
+     "title": "Baby Horned Capybara Warren",
+     "counts": {
+      "baby-horned-capybara": 5,
+      "electric-catfish": 3,
+      "platypus-spur": 4,
+      "fumarole-ibex": 3,
+      "colossal-squid": 2,
+      "seed-cache-squirrel": 3
+     },
+     "parts": [
+      [
+       "baby-horned-capybara",
+       2,
+       4
+      ],
+      [
+       "baby-horned-capybara",
+       3,
+       5
+      ],
+      [
+       "electric-catfish",
+       1,
+       4
+      ],
+      [
+       "electric-catfish",
+       2,
+       5
+      ],
+      [
+       "platypus-spur",
+       2,
+       4
+      ],
+      [
+       "platypus-spur",
+       2,
+       5
+      ],
+      [
+       "fumarole-ibex",
+       1,
+       4
+      ],
+      [
+       "fumarole-ibex",
+       2,
+       5
+      ],
+      [
+       "colossal-squid",
+       2,
+       5
+      ],
+      [
+       "seed-cache-squirrel",
+       2,
+       4
+      ],
+      [
+       "seed-cache-squirrel",
+       1,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.17",
+     "selectWin": 35.4
+    },
+    {
+     "rank": 5,
+     "name": {
+      "lead": "lantern-spark-fly",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Lantern Spark Fly Swarm",
+     "counts": {
+      "lantern-spark-fly": 4,
+      "nutria-reedcutter": 3,
+      "mangrove-monitor": 2,
+      "talon-archer": 2,
+      "rimefire-salamander": 2,
+      "cave-olm": 2,
+      "talus-pika": 2,
+      "ashwing-ptarmigan": 3
+     },
+     "parts": [
+      [
+       "lantern-spark-fly",
+       2,
+       4
+      ],
+      [
+       "lantern-spark-fly",
+       2,
+       5
+      ],
+      [
+       "nutria-reedcutter",
+       1,
+       4
+      ],
+      [
+       "nutria-reedcutter",
+       2,
+       5
+      ],
+      [
+       "mangrove-monitor",
+       2,
+       5
+      ],
+      [
+       "talon-archer",
+       1,
+       4
+      ],
+      [
+       "talon-archer",
+       1,
+       5
+      ],
+      [
+       "rimefire-salamander",
+       1,
+       4
+      ],
+      [
+       "rimefire-salamander",
+       1,
+       5
+      ],
+      [
+       "cave-olm",
+       1,
+       4
+      ],
+      [
+       "cave-olm",
+       1,
+       5
+      ],
+      [
+       "talus-pika",
+       2,
+       5
+      ],
+      [
+       "ashwing-ptarmigan",
+       2,
+       4
+      ],
+      [
+       "ashwing-ptarmigan",
+       1,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.96",
+     "selectWin": 45.8
+    },
+    {
+     "rank": 6,
+     "name": {
+      "lead": "duck-paddler",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Duck Paddler Swarm",
+     "counts": {
+      "testudo-tortoise": 2,
+      "bogfire-newt": 3,
+      "pumice-beetle": 2,
+      "river-carp": 4,
+      "spitting-spider": 1,
+      "hawthorn-shieldbug": 3,
+      "duck-paddler": 5
+     },
+     "parts": [
+      [
+       "testudo-tortoise",
+       1,
+       4
+      ],
+      [
+       "testudo-tortoise",
+       1,
+       5
+      ],
+      [
+       "bogfire-newt",
+       1,
+       4
+      ],
+      [
+       "bogfire-newt",
+       2,
+       5
+      ],
+      [
+       "pumice-beetle",
+       1,
+       4
+      ],
+      [
+       "pumice-beetle",
+       1,
+       5
+      ],
+      [
+       "river-carp",
+       1,
+       4
+      ],
+      [
+       "river-carp",
+       3,
+       5
+      ],
+      [
+       "spitting-spider",
+       1,
+       4
+      ],
+      [
+       "hawthorn-shieldbug",
+       1,
+       4
+      ],
+      [
+       "hawthorn-shieldbug",
+       2,
+       5
+      ],
+      [
+       "duck-paddler",
+       2,
+       4
+      ],
+      [
+       "duck-paddler",
+       3,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.74",
+     "selectWin": 50
+    },
+    {
+     "rank": 7,
+     "name": {
+      "lead": "chipmunk-hoarder",
+      "tactic": "warren",
+      "n": 1
+     },
+     "title": "Chipmunk Hoarder Warren",
+     "counts": {
+      "fiddler-crab-swarm": 2,
+      "chipmunk-hoarder": 5,
+      "frost-hare-sprinter": 4,
+      "feral-tomcat": 5,
+      "tasmanian-devil": 4
+     },
+     "parts": [
+      [
+       "fiddler-crab-swarm",
+       1,
+       4
+      ],
+      [
+       "fiddler-crab-swarm",
+       1,
+       5
+      ],
+      [
+       "chipmunk-hoarder",
+       2,
+       4
+      ],
+      [
+       "chipmunk-hoarder",
+       3,
+       5
+      ],
+      [
+       "frost-hare-sprinter",
+       1,
+       4
+      ],
+      [
+       "frost-hare-sprinter",
+       3,
+       5
+      ],
+      [
+       "feral-tomcat",
+       2,
+       4
+      ],
+      [
+       "feral-tomcat",
+       3,
+       5
+      ],
+      [
+       "tasmanian-devil",
+       2,
+       4
+      ],
+      [
+       "tasmanian-devil",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.78",
+     "selectWin": 58.3
+    },
+    {
+     "rank": 8,
+     "name": {
+      "lead": "talus-pika",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Talus Pika Swarm",
+     "counts": {
+      "talus-pika": 5,
+      "dhole-runner": 2,
+      "roadrunner-courier": 1,
+      "hedgehog-herbalist": 2,
+      "apollo-butterfly": 2,
+      "parrotfish": 2,
+      "frost-hare-sprinter": 2,
+      "thorny-devil": 4
+     },
+     "parts": [
+      [
+       "talus-pika",
+       2,
+       4
+      ],
+      [
+       "talus-pika",
+       3,
+       5
+      ],
+      [
+       "dhole-runner",
+       1,
+       4
+      ],
+      [
+       "dhole-runner",
+       1,
+       5
+      ],
+      [
+       "roadrunner-courier",
+       1,
+       5
+      ],
+      [
+       "hedgehog-herbalist",
+       1,
+       4
+      ],
+      [
+       "hedgehog-herbalist",
+       1,
+       5
+      ],
+      [
+       "apollo-butterfly",
+       1,
+       4
+      ],
+      [
+       "apollo-butterfly",
+       1,
+       5
+      ],
+      [
+       "parrotfish",
+       2,
+       5
+      ],
+      [
+       "frost-hare-sprinter",
+       1,
+       4
+      ],
+      [
+       "frost-hare-sprinter",
+       1,
+       5
+      ],
+      [
+       "thorny-devil",
+       2,
+       4
+      ],
+      [
+       "thorny-devil",
+       2,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.91",
+     "selectWin": 62.5
+    },
+    {
+     "rank": 9,
+     "name": {
+      "lead": "hoopoe-herald",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Hoopoe Herald Swarm",
+     "counts": {
+      "grave-grin-hyena": 4,
+      "magma-salamander": 1,
+      "ashbone-ghoul": 3,
+      "howdah-archers": 3,
+      "chipmunk-hoarder": 4,
+      "hoopoe-herald": 5
+     },
+     "parts": [
+      [
+       "grave-grin-hyena",
+       2,
+       4
+      ],
+      [
+       "grave-grin-hyena",
+       2,
+       5
+      ],
+      [
+       "magma-salamander",
+       1,
+       5
+      ],
+      [
+       "ashbone-ghoul",
+       1,
+       4
+      ],
+      [
+       "ashbone-ghoul",
+       2,
+       5
+      ],
+      [
+       "howdah-archers",
+       1,
+       4
+      ],
+      [
+       "howdah-archers",
+       2,
+       5
+      ],
+      [
+       "chipmunk-hoarder",
+       2,
+       4
+      ],
+      [
+       "chipmunk-hoarder",
+       2,
+       5
+      ],
+      [
+       "hoopoe-herald",
+       2,
+       4
+      ],
+      [
+       "hoopoe-herald",
+       3,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "sampled q=0.87",
+     "selectWin": 64.6
+    },
+    {
+     "rank": 10,
+     "name": {
+      "lead": "grave-grin-hyena",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Grave-Grin Hyena Swarm",
+     "counts": {
+      "battlement-heron": 3,
+      "eagle-owl-quartermaster": 3,
+      "grave-grin-hyena": 4,
+      "howdah-archers": 3,
+      "land-tiller": 4,
+      "wolf-spider-mother": 3
+     },
+     "parts": [
+      [
+       "battlement-heron",
+       1,
+       4
+      ],
+      [
+       "battlement-heron",
+       2,
+       5
+      ],
+      [
+       "eagle-owl-quartermaster",
+       1,
+       4
+      ],
+      [
+       "eagle-owl-quartermaster",
+       2,
+       5
+      ],
+      [
+       "grave-grin-hyena",
+       2,
+       4
+      ],
+      [
+       "grave-grin-hyena",
+       2,
+       5
+      ],
+      [
+       "howdah-archers",
+       1,
+       4
+      ],
+      [
+       "howdah-archers",
+       2,
+       5
+      ],
+      [
+       "land-tiller",
+       1,
+       4
+      ],
+      [
+       "land-tiller",
+       3,
+       5
+      ],
+      [
+       "wolf-spider-mother",
+       2,
+       4
+      ],
+      [
+       "wolf-spider-mother",
+       1,
+       5
+      ]
+     ],
+     "leader": "triumvirate",
+     "from": "24-PRO-2",
+     "selectWin": 81.3
     }
    ]
   }
