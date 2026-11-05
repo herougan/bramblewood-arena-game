@@ -110,7 +110,7 @@ ok(byId['cricket-drummer'].effects.inspiring === 1, '5: Cricket Drummer has Insp
 { const want = {sheep:['taunt'], 'garden-snail':['armor'], 'meerkat-wayfarer':['inspiring', 'reach'], 'sparrow-chick':['flying'], 'otter-centurion':['boomerang']};
   const bad = Object.entries(want).filter(([id, ks])=> !ks.every(k=> byId[id].levelSkills && byId[id].levelSkills['1'] && byId[id].levelSkills['1'][k] != null));
   ok(!bad.length, `5: base Level 0 cards bring their abilities at Level 1 (levelSkills "1") (${bad.map(b=> b[0])})`);
-  ok(byId['garden-snail'].levelSkills['1'].slow === undefined && byId['otter-kit'].levelSkills['0'].hatchling, '5: the Slow drawback and Hatchling stay at Level 0'); }
+  ok(byId['garden-snail'].levelSkills['1'].slow === undefined && byId['otter-kit'].levelSkills['1'].hatchling, '5: the Slow drawback stays at Level 0; Hatchling arrives at Level 1 (2026-11-05 ENG25, owner #3)'); }
 ok(/taunt:\s+\{from:1\}, reach:\{from:1\}, inspiring:\{from:1\}/.test(app), '5: Map 0 and the tutorial show the untaught abilities as "?" (the reveal map)');
 
 // ---- 6. Carnage sees; Tally / Almanac / Onslaught / Riled --------------------------------------------------------------------

@@ -1918,14 +1918,15 @@ function eng17MigrateHatchling(c, baseline){
   const hasFodderKey = e.fodder != null || !!(l1 && l1.fodder != null) || !!(l0 && l0.fodder != null);
   const babyStem = baby && l1 && l1.stem === true && !l1.stemGrant;
   const babyOld1 = baby && l1 && (l1.hatchling || l1.fodder != null);
-  const needs = hasFodderKey || babyStem || babyOld1 || (baby && !(l0 && l0.hatchling));
+  // ENG25 (2026-11-05, owner #3): a Baby card's Hatchling arrives at Level 1 now (ENG18 had it at 0): one at Level 0 moves up
+  const needs = hasFodderKey || babyStem || (baby && !!(l0 && (l0.hatchling || l0.fodder != null))) || (baby && !(l1 && l1.hatchling));
   if(!needs) return c;
   const out = Object.assign({}, c), ne = Object.assign({}, e);
   if(ne.fodder != null){ if(ne.fodder) ne.hatchling = true; delete ne.fodder; } out.effects = ne;
   const nls = Object.assign({}, ls || {});
   if(baby){ const n1 = Object.assign({}, l1 || {}), n0 = Object.assign({}, l0 || {}); delete nls['1']; delete nls['0'];
-    delete n1.fodder; delete n1.hatchling; if(n1.stem === true && !n1.stemGrant) delete n1.stem; delete n0.fodder;
-    n0.hatchling = true; nls[0] = n0; if(Object.keys(n1).length) nls[1] = n1; out.levelSkills = nls; }
+    delete n1.fodder; if(n1.stem === true && !n1.stemGrant) delete n1.stem; delete n0.fodder; delete n0.hatchling;
+    n1.hatchling = true; nls[1] = n1; if(Object.keys(n0).length) nls[0] = n0; out.levelSkills = nls; } // ENG25: Hatchling at Level 1 (was n0)
   else if(l1 && l1.fodder != null){ const n1 = Object.assign({}, l1); delete nls['1']; delete n1.fodder; n1.hatchling = true; nls[1] = n1; out.levelSkills = nls; }
   return out;
 }
@@ -2061,6 +2062,7 @@ function e22Head(k, v, e){
   if(k === 'meld') return TX('ui.eng24-meld-head', {x: grantText(v && typeof v === 'object' ? v : {}) || TX('ui.cx-nothing')}); // ENG24: Meld { Quick }
   if(k === 'delivery') return TX('ui.e22-delivery-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
   if(k === 'deliveryEvery') return TX('ui.e22-delivery-every-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
+  if(k === 'tribeDelivery') return TX('ui.eng25-tribe-delivery-head', {tribe: eng25TribeOf(v), res: e22ResName(e22ResOf({deliveryRes: e && e.tribeDeliveryRes}))}); // ENG25 (2026-11-05): Bee Delivery { Lumber }
   return null; }
 PASSIVE_DEFS.push(
   {key:'fortify', category:'passive', label:TX('ui.e22-fortify-name'), kind:'text', placeholder:'Thorns 1, +1 Health', desc:v=> TX('ui.e22-fortify', {x: e22FortifyText(v)}), codexNote:TX('ui.e22-fortify-codex'),
@@ -2182,6 +2184,36 @@ function enMigrateCard(c){
   return Object.assign({}, c, {effects: ne});
 }
 // ==== end of Package SK1 (registry) ================================================================================================
+// ==== Package ENG25 (2026-11-05, owner notes 23:35; rules in bramblewood-engine.js, prices in canonical/skill-costs.json) ==================
+//   #10 Tide N        Tide 2 doubles every Tide bonus (Flood +2 Attack, Ebb +2 Armor, a Tide – {…} facet's numbers x2). true = Tide 1.
+//   #9  Moonpull      on arrival the Tide comes in (as before), and while it lives your Tide units' Tide counts double (x2, once).
+//   #5  Immortal      on death a token copy with Immortal takes its slot, Waiting 1 round; a copy that dies in its first round stays dead.
+//       Hydra         on death two token copies (Hydra too) in the nearest free slots, never its own; Attack / Health halved up, Attack 1 -> 0,
+//                     Health 1 makes none.
+//   #8  <Tribe> Delivery {Resource}  On Ally Played (that tribe, not itself): +1 of the resource. Bee Drone: Bee Delivery { Lumber }.
+//   #6  Forage N      a trigger action: the unit gathers N Berries. #4: a full basket of 3 Berries heals your most damaged other ally 3;
+//                     Foraging N gathers N Berries a turn (was: 1 a turn, Foraging N the heal).
+//   #2  duplicates    Midas Touch reads as Felling, Puncture as Breach, Stockpile as Delivery (canonical/cards.json migrated; old keys hidden).
+//   #3  Level 1       Hatchling and Regeneration are off on a Level 0 copy (effectsAtLevel, ENG25_LEVEL1_SKILLS).
+function eng25TideN(e){ const v = e && e.tide; return (v === true || !v) ? 1 : Math.max(1, Math.floor(Number(v)) || 1); }
+sk1Patch(PASSIVE_DEFS, 'tide', {kind:'number', min:1, defaultValue:1, desc:(v, n, e)=>{ const k = (v === 'N') ? 'N' : Math.max(1, Math.floor(Number(v)) || eng25TideN(e)); return TX('ui.eng25-tide', {n: k, h: k === 'N' ? '2N' : 2 * k}); },
+  get:e=> e.tideGrant ? undefined : (e.tide ? eng25TideN(e) : undefined), apply:(e, v)=>{ const n = Math.max(1, Math.floor(Number(v)) || 1); e.tide = n > 1 ? n : true; }});
+sk1Patch(PASSIVE_DEFS, 'moonpull', {desc:()=> TX('ui.eng25-moonpull'), codexNote:TX('ui.eng25-moonpull-codex')});
+sk1Patch(PASSIVE_DEFS, 'regen', {codexNote:TX('ui.eng25-regen-codex')});
+sk1Patch(PASSIVE_DEFS, 'midas', {hidden:true, retired:true}); // ENG25 (#2): Midas Touch was Felling twice over; its cards carry Felling
+sk1Patch(PASSIVE_DEFS, 'puncture', {hidden:true, retired:true}); // ENG25 (#2): Puncture was Breach twice over; its cards carry Breach
+sk1Patch(PASSIVE_DEFS, 'stockpile', {hidden:true, retired:true}); // ENG25 (#2): Stockpile was Delivery {Lumber} (hidden since ENG22)
+function eng25TribeOf(v){ return typeof v === 'string' && v.trim() ? v.trim() : 'Bee'; }
+PASSIVE_DEFS.push(
+  {key:'immortal', category:'passive', label:TX('ui.skn-eng25-immortal'), kind:'boolean', desc:()=> TX('ui.eng25-immortal'), codexNote:TX('ui.eng25-immortal-codex')},
+  {key:'hydra', category:'passive', label:TX('ui.skn-eng25-hydra'), kind:'boolean', desc:()=> TX('ui.eng25-hydra'), codexNote:TX('ui.eng25-hydra-codex')},
+  {key:'tribeDelivery', category:'passive', label:TX('ui.skn-eng25-tribe-delivery'), kind:'text', placeholder:'Bee', desc:(v, n, e)=> TX('ui.eng25-tribe-delivery', {tribe: eng25TribeOf(v), res: e22ResName(e22ResOf({deliveryRes: e && e.tribeDeliveryRes}))}), codexNote:TX('ui.eng25-tribe-delivery-codex'),
+    get:e=> e.tribeDelivery ? eng25TribeOf(e.tribeDelivery) : undefined, apply:(e, v)=>{ e.tribeDelivery = eng25TribeOf(v); }},
+  {key:'tribeDeliveryRes', category:'passive', label:TX('ui.eng25-tribe-delivery-res-name'), kind:'select', selectOptions:()=> E22_RES.map(r=> ({value:r, label:e22ResName(r)})), desc:v=> e22ResName(e22ResOf({deliveryRes:v}))});
+Object.assign(SKILL_ICON, {immortal:'♾️', hydra:'🐍', tribeDelivery:'📦', tribeDeliveryRes:'📦'});
+ACTION_DEFS.push({key:'forage', get label(){ return TX('ui.eng25-act-forage'); }, fields:['amount'], get desc(){ return TX('ui.eng25-act-forage-desc'); }});
+SK2_LINE.foraging = v=> TX('ui.eng25-foraging', {n: sk2Num(v, 'foragingN'), b: SK2_UI.foragingBerries, h: Number(SK2_UI.berryHeal) || 3});
+sk1Patch(PASSIVE_DEFS, 'foraging', {desc:v=> SK2_LINE.foraging(v)});
 // SKILL_DEFS: the unified "+ Add Skill" registry for the card editor's Passive Abilities
 // section — every PASSIVE_DEFS keyword, Explode (a two-field passive), and the former
 // "Active preset" one-shots (Arrow/Render/Revive) all live here now as one flat list of
@@ -3592,7 +3624,7 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
       const head0 = p.key==='pack' ? `${p.label}${skillValSuffix(p, v === true ? 2 : v)}` : p.label; /* BL (2026-10-23): "Pack", not "Pack 2", at its default */ lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
-    if(p.key==='deliveryRes') return; // ENG22: read on the Delivery line
+    if(p.key==='deliveryRes' || p.key==='tribeDeliveryRes') return; // ENG22: read on the Delivery line (ENG25: and the Tribe Delivery's)
     { const h22 = e22Head(p.key, v, e); if(h22){ lines.push(`${ic(p.key)}${escapeHtml(h22)} — ${skillText(p, v, e)}`); return; } } // ENG22 (2026-11-03): Build / Fortify / Delivery {…}
     const head = p.key==='hunter' ? giHunterHead(p, e) /* Hunter N (Poisoned) (2026-10-19, GI) */ : p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${skillValSuffix(p, v)}` /* BL: bare at its default */ : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.key==='crepuscular' && Array.isArray(v)) ? eng23CrepHead(v) /* ENG23 (2026-11-04): its two parts */ : (p.kind==='twoNumber' && Array.isArray(v)) ? (atSkillDefault(p, v) ? p.label : `${p.label} +${v[0]}/+${v[1]}`) /* BL (2026-10-23): "Diurnal", not "Diurnal +1/+0" */ : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
@@ -3961,8 +3993,8 @@ function buildCardDefs(){
   Object.keys(out).forEach(id=>{
     const base = out[id]; if(!base || id===HERO_ID) return;
     const b = cardBaseLevel(base), hatch = b > 0 && isHatchling(id), lvl = hatch ? 0 : Math.max(b, Math.min(LIMIT_BREAK_LEVEL, myCardLevels[id]||0));
-    if(hatch){ const st = statsAtLevel(base, 0); out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: 0, baseLevel: b, hatchling: true}); if(base.levelSkills) out[id].effects = effectsAtLevel(base, 0); return; } // 2026-10-30 (TUT3): a Level 0 copy has no skill that arrives at Level 1
-    if(lvl === b){ if(base.baseLevel !== b) out[id] = Object.assign({}, base, {baseLevel:b, level:b}); if(base.levelSkills && lvl < 1) out[id] = Object.assign({}, out[id] || base, {effects: effectsAtLevel(base, lvl)}); return; } // 2026-10-30 (TUT3): a card at Level 0 has none of its Level 1 skills
+    if(hatch){ const st = statsAtLevel(base, 0); out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: 0, baseLevel: b, hatchling: true}); out[id].effects = effectsAtLevel(base, 0); return; } // 2026-10-30 (TUT3): a Level 0 copy has no skill that arrives at Level 1 (ENG25: always, for Hatchling / Regeneration)
+    if(lvl === b){ if(base.baseLevel !== b) out[id] = Object.assign({}, base, {baseLevel:b, level:b}); if(lvl < 1) out[id] = Object.assign({}, out[id] || base, {effects: effectsAtLevel(base, lvl)}); return; } /* ENG25 (2026-11-05): every Level 0 card, not only a levelSkills one */ // 2026-10-30 (TUT3): a card at Level 0 has none of its Level 1 skills
     if(base.attack==null && base.health==null) return;
     const st = statsAtLevel(base, lvl);
     out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: lvl, baseLevel: b});
@@ -6690,7 +6722,7 @@ function sk1StatusBadges(c, badges){
   LIVE_STATUS_ROWS.splice(pz + 1, 0, ['gpoison', 'greaterPoison', TX('ui.stn-greater-poison'), n=> TX('ui.ls-greater-poison', {n, d: n}), true]); } // owner 23:45: 1 a stack, never wears off
 STATUS_KEYWORDS.push({k:'greaterPoison', re:/\b((?:deadly|greater) poison(?:ed)?)\b/gi /* EN5 (2026-10-24): it is called Deadly Poison */, cs:true, name:TX('ui.stn-greater-poison'), c:'#9b4dd6', text:TX('ui.st-greater-poison')});
 // EN5 (2026-10-24): a lit pip per state skill that is on (🪵 Timbered, 🪨 Bedrock, 🔩 Forged, 🏳️ Last Stand), from the engine's c._en5On
-function en5StatusBadges(c, badges){ const on = String((c && (c.en5On != null ? c.en5On : c._en5On)) || '').split(',').filter(k=> EN5_STATE_KEYS[k]);
+function en5StatusBadges(c, badges){ const on = String((c && (c.en5On != null ? c.en5On : c._en5On)) || '').split(',').filter(k=> EN5_STATE_KEYS[k] && !ENG25_STATE_CHIPS.has(k)); // ENG25 (2026-11-05, #7): a state skill lights its own chip in the strip; the badge is left to Anadromous
   on.forEach(k=> badges.push(`<span class="abadge en5-state" data-en5="${k}" title="${escapeAttr(TX('ui.en5-state-on-tip', {skill: TX('ui.skn-' + EN5_STATE_KEYS[k].tx)}))}">${EN5_STATE_KEYS[k].ico}</span>`)); }
 // ENG14 (2026-10-30, X26): Bola's Pinned, its line under the unit's skills and its glossary colour (the 📌 badge is in the badge list)
 LIVE_STATUS_ROWS.push(['pinDown', 'pinned', TX('ui.e14-stn-pinned'), ()=> TX('ui.e14-ls-pinned'), false]);
@@ -9086,7 +9118,7 @@ function cardTileHTML(d, opts){
       ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
       ${nmHTML(d.name||live.fallbackName||'', costParts, live.waitHTML ? 0 : d.wait) /* UI20: the scroll leaves room for the badges; a live wait ring is sized in the CSS */}
       <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */, shieldAmt: live.shieldAmt /* 2026-10-31 (UI11, FF1) */, cowering: !!live.cowering /* ENG15 (FF6) */}})}
+      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */, shieldAmt: live.shieldAmt /* 2026-10-31 (UI11, FF1) */, cowering: !!live.cowering /* ENG15 (FF6) */, en5On: live.en5On != null ? live.en5On : (live._en5On || ''), ctxOn: live.ctxOn != null ? live.ctxOn : (live._ctxOn || '') /* ENG25 (2026-11-05, #7): the lit state chips */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -9250,10 +9282,19 @@ CHIP_FALLBACK_SKILLS.push('evolute', 'evoluteAlpha', 'evoluteOmega', 'stem', 'ch
 CHIP_FALLBACK_SKILLS.push('hatchling'); // Package ENG17 (2026-11-02): 🐣
 CHIP_FALLBACK_SKILLS.push('dropRoll', 'glean', 'lumberFeast'); // Package ENG20 (2026-11-02): 🤸, 🫐, 🪵N
 CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 🪙
+// ENG25 (2026-11-05, owner #7): every state skill gets its chip on the card face (lit while on, zeitLitNow); + Immortal, Hydra, Tribe Delivery
+const ENG25_STATE_CHIPS = new Set(['timbered', 'bedrock', 'forged', 'lastStand', 'plenty', 'scarcity', 'foePlenty', 'foeScarcity', 'heat', 'frost', 'rain', 'storm', 'fog', 'salt', 'drought', 'season',
+  'requiem', 'dirge', 'carnage', 'muster', 'beset', 'throng', 'tally', 'almanac', 'onslaught', 'riled', 'liege']);
+ENG25_STATE_CHIPS.forEach(k=>{ if(!CHIP_FALLBACK_SKILLS.includes(k)) CHIP_FALLBACK_SKILLS.push(k); }); CHIP_FALLBACK_SKILLS.push('immortal', 'hydra', 'tribeDelivery');
+ENG25_STATE_CHIPS.add('loyal'); ENG25_STATE_CHIPS.add('usurper'); // their own chips (abilityBadges) light the same way
 // 2026-10-30 (coordinator; owner 21:35: "When the Sun's active, Diurnal symbol becomes highlighted, like tide. When it's night, nocturnal symbol gets
 // highlighted."): a board card's Diurnal / Nocturnal chip takes the live Tide look while its bonus applies (the engine's zeitPhase: a dark fight counts
 // as night, Twilight lights both).
 function zeitLitNow(k, bopts){
+  // ENG25 (2026-11-05, owner 23:35 #7: "When timbered (and alike skills) are active, they do pop up as active context pips (tide is an example of a
+  // active-able context pip)"): a state skill's chip (Timbered, Bedrock, Forged, Last Stand, the EN6 states, the threshold skills) is lit while
+  // the engine has it on (the board card's en5On, the same list the stateSkill events keep); Loyal / Usurper / Liege from its ctxOn.
+  if(bopts && bopts.live && typeof ENG25_STATE_CHIPS !== 'undefined' && ENG25_STATE_CHIPS.has(k)){ /* (typeof: a tool that lifts this function alone) */ const lv = bopts.live, on = String((lv.en5On != null ? lv.en5On : lv._en5On) || '').split(',').concat(String((lv.ctxOn != null ? lv.ctxOn : lv._ctxOn) || '').split(',')); return on.includes(k); }
   if((k !== 'diurnal' && k !== 'nocturnal') || !(bopts && bopts.live)) return false;
   try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || m.over || !m.engine || !m.engine.zeitPhase) return false;
     const ph = m.engine.zeitPhase(); return ph === 'twilight' || (k === 'diurnal' ? ph === 'day' : ph === 'night'); }catch(e){ return false; }
@@ -9324,7 +9365,7 @@ function abilityBadges(d, bopts){
     const isHandChip = !!(ui5Fight && bopts.hand && !bopts.live);
     const lt = (e.tide || e.swimmer) && bopts && (bopts.live || bopts.hand) && ui5Map ? liveTideState(e) : null; // live: blue, and its title says what the tide gives now (2026-10-14)
     const hcls = isHandChip ? ' tide-hand' + (lt ? '' : ' tide-hand-off') : '', hdat = isHandChip ? ` data-tide-on="${lt ? 1 : 0}"` : '';
-    if(e.tide && ui5Map) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}${hcls}"${hdat} title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${lt && lt.k === 'ebb' ? iconHTML('tide-ebb', '🐚') : iconHTML('tide', '🌊')}</span>`); // 2026-10-18 (owner: "So on flood, it's wave. On ebb, it's shell.")
+    if(e.tide && ui5Map) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}${hcls}"${hdat} title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${lt && lt.k === 'ebb' ? iconHTML('tide-ebb', '🐚') : iconHTML('tide', '🌊')}${(typeof eng25TideN === 'function' ? eng25TideN(e) : 1) > 1 ? eng25TideN(e) : ''}</span>`); /* ENG25 (2026-11-05): Tide N's number (typeof: a tool that lifts abilityBadges alone) */ // 2026-10-18 (owner: "So on flood, it's wave. On ebb, it's shell.")
     if(e.swimmer && ui5Map) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}${hcls}"${hdat} title="${escapeAttr('Swimmer – ' + (lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide') + ', ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span${isHandChip ? ` class="${hcls.trim()}"${hdat}` : ''} title="${escapeAttr(swimmerLine(e))}">${iconHTML('swimmer', '🏊')}</span>`); } // 2026-10-15: titled Swimmer, not Tide
   if(e.rainmaker) out.push(`${iconHTML('rainmaker', '🌧️')}`); if(e.rainrunner) out.push(`${iconHTML('rainrunner', '🌦️')}${n1(e.rainrunner)}`); if(e.moonborn) out.push(`${iconHTML('moonborn', '🌕')}${n1(e.moonborn)}`); if(e.frostbite) out.push(`${iconHTML('frostbite', '🥶')}${n1(e.frostbite)}`);
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
@@ -9352,7 +9393,7 @@ function abilityBadges(d, bopts){
   if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts its adjacent allies when it attacks">${iconHTML('friction', '⚙️')}${n1(e.friction)}</span>`);
   if(e.lumberjack) out.push(`${iconHTML('lumberjack', '🪓')}`); if(e.heavyMetal) out.push(`${iconHTML('heavy-metal', '🤘')}`);
   if(e.timber) out.push(`${iconHTML('timber', '🌲')}`); if(e.rockSolid) out.push(`${iconHTML('rock-solid', '🪨')}`); if(e.ironWill) out.push(`${iconHTML('iron-will', '🔩')}`);
-  if(e.loyal || e.loyalGrant) out.push(`${iconHTML('loyal', '🎖️')}`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">${iconHTML('usurper', '👑')}<i>🗡️</i></span>`);
+  if(e.loyal || e.loyalGrant) out.push(`<span class="ab-sk${zeitLitNow('loyal', bopts) ? ' zeit-live' : ''}" data-sk="loyal">${iconHTML('loyal', '🎖️')}</span>`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair${zeitLitNow('usurper', bopts) ? ' ab-sk zeit-live' : ''}" data-sk="usurper">${iconHTML('usurper', '👑')}<i>🗡️</i></span>`); // ENG25 (2026-11-05, #7): lit while on
   if(e.shell) out.push(`<span title="Shell">${iconHTML('shell', '🐢')}${n1(e.shell)}</span>`); if(e.pitchfork) out.push(`<span title="Pitchfork: one swing, 4 prongs, half Attack each">${iconHTML('pitchfork', '🍴')}</span>`); if(e.trident) out.push(`<span title="Trident: one swing, full Attack in front, half beside it">${iconHTML('trident', '🔱')}</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">${iconHTML('octolash', '🐙')}</span>`);
   // 2026-10-14 skills. Speed shows the live value on the board (c.speed: its own Speed, Haste, and a Haste ally beside it).
   { const lv = bopts && bopts.live && bopts.live.speed != null ? Number(bopts.live.speed)||0 : (Number(e.speed)||0) + (e.haste ? 2 : 0);
@@ -14548,11 +14589,15 @@ function curveStatsAtLevel(d, L){
 // 2026-10-30 (package TUT3, owner TUT2-2: "All start at lvl 0 and have no skills till lvl 1"): the skills of a card at level L. A card's `effects`
 // holds ALL its skills, `levelSkills` says at which level each one arrives; a copy below that level (Level 0) must not have it. Every builder of a
 // levelled / Level 0 copy goes through here: drops the keys of levelSkills[k] for k > L from `fx0` (default the def's effects), then lays k <= L on.
+// ENG25 (2026-11-05, owner 23:35 #3: "Hatchling ... It should also only appear at level 1 and up. Regeneration as well."): Hatchling and
+// Regeneration are Level 1+ skills: a Level 0 copy has neither, whatever its levelSkills say (the Baby cards carry Hatchling in levelSkills "1"
+// in canonical/cards.json, ENG22-4's way). The list is inline so a tool that lifts this function alone keeps the rule.
 function effectsAtLevel(b, L, fx0){
-  const fx = Object.assign({}, fx0 || (b && b.effects) || {}), ls = b && b.levelSkills; if(!ls) return fx;
-  const ks = Object.keys(ls).map(Number).sort((x, y)=> x - y);
-  ks.filter(k=> k > L).forEach(k=> Object.keys(ls[k] || {}).forEach(x=>{ delete fx[x]; }));
-  ks.filter(k=> k <= L).forEach(k=> Object.assign(fx, ls[k]));
+  const fx = Object.assign({}, fx0 || (b && b.effects) || {}), ls = b && b.levelSkills;
+  if(ls){ const ks = Object.keys(ls).map(Number).sort((x, y)=> x - y);
+    ks.filter(k=> k > L).forEach(k=> Object.keys(ls[k] || {}).forEach(x=>{ delete fx[x]; }));
+    ks.filter(k=> k <= L).forEach(k=> Object.assign(fx, ls[k])); }
+  if((Number(L) || 0) < 1) ['hatchling', 'regen'].forEach(k=>{ delete fx[k]; }); // ENG25_LEVEL1_SKILLS
   return fx; }
 function statsAtLevel(d, L){
   if((L|0) < cardBaseLevel(d)){ const ov0 = d.levelStats && (d.levelStats[0] || d.levelStats['0']); const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85));
@@ -15114,7 +15159,7 @@ function copyDefAt(id, L, gem){
     delete o.enchant; delete o.socketGem;
     if(want && gemValid(want) && cardHasSocket(o)) Object.assign(o, socketGemStats(o, want)); }
   if(L < cardBaseLevel(b)) o.hatchling = true; else delete o.hatchling;
-  if(b.levelSkills) o.effects = effectsAtLevel(b, L); // 2026-10-30 (TUT3): below their level the level skills are off
+  if((b.levelSkills || L < 1) && typeof effectsAtLevel === 'function') o.effects = effectsAtLevel(b, L, b.levelSkills ? null : o.effects); // 2026-10-30 (TUT3): below their level the level skills are off (ENG25: Level 0, Hatchling / Regeneration too)
   return o;
 }
 // Your deck for a fight: each card's copies at their own levels. The strongest copy keeps the card's id; a weaker one fights as
@@ -20507,7 +20552,7 @@ function refPartsDeck(parts, base, overlay){
     if(!b || cardBaseLevel(b) >= level || (b.attack == null && b.health == null)){ out[id] = (out[id] || 0) + k; return; } // an unknown id stays as it is: the setup reports it
     const did = id + '@p' + level;
     if(!overlay[did]){ const st = statsAtLevel(b, level), o = Object.assign({}, b, {id: did, derivedFrom: id, attack: st.attack, health: st.health, level, baseLevel: cardBaseLevel(b), locked: false});
-      if(b.levelSkills) o.effects = effectsAtLevel(b, level); // 2026-10-30 (TUT3)
+      if(b.levelSkills || level < 1) o.effects = effectsAtLevel(b, level, b.levelSkills ? null : o.effects); // 2026-10-30 (TUT3); ENG25: every Level 0 copy
       overlay[did] = o; }
     out[did] = (out[did] || 0) + k; });
   return out;
@@ -20853,7 +20898,7 @@ function defAtShownLevel(id, L){
   const out = Object.assign({}, b0, {art: b0.art || (CARD_DEFS_BASELINE[id] || {}).art || shown.art, level: lvl, baseLevel: base, locked: false, edShownLevel: lvl});
   if(b0.attack == null && b0.health == null) return out;
   const st = statsBeyondLevel(b0, lvl); out.attack = st.attack; out.health = st.health;
-  if(b0.levelSkills) out.effects = effectsAtLevel(b0, lvl); // 2026-10-30 (TUT3)
+  if(b0.levelSkills || lvl < 1) out.effects = effectsAtLevel(b0, lvl, b0.levelSkills ? null : out.effects); // 2026-10-30 (TUT3); ENG25: every Level 0 copy
   return out;
 }
 function edEnemyShownDef(node, id){ return defAtShownLevel(id, edShownLevel(node, id)); }
@@ -31177,6 +31222,7 @@ function tutorialLevel0Def(id){
   const d = getCardDefs()[id], b = copyBaseDef(id) || d; if(!d || !b || (b.attack == null && b.health == null)) return null;
   const base = cardBaseLevel(b), lvl = Number.isFinite(d.level) ? d.level : base, ls = b.levelSkills || d.levelSkills || {}, fx = Object.assign({}, d.effects || {});
   let later = 0; Object.keys(ls).map(Number).filter(k=> k > 0).forEach(k=> Object.keys(ls[k] || {}).forEach(x=>{ if(x in fx){ delete fx[x]; later++; } }));
+  ['hatchling', 'regen'].forEach(x=>{ if(x in fx){ delete fx[x]; later++; } }); // ENG25 (2026-11-05, owner #3): Level 1+ skills
   if(lvl <= 0 && !later) return null; // TUT2: was `if(!later)` (SKL0)
   const st0 = statsAtLevel(b, 0), o = Object.assign({}, d, {id: id + '~tut0', derivedFrom: id, attack: st0.attack, health: st0.health, level: 0, baseLevel: base, effects: fx, locked: false});
   delete o.socketGem; delete o.enchant; if(base > 0) o.hatchling = true; return o; }
@@ -32166,7 +32212,7 @@ function levelledEnemyDeck(node, deck){
     const lvl = Math.max(0, Math.min((node && node.levelCap) || LIMIT_BREAK_LEVEL, Math.round(Number(L)||0))), did = id + '@lv' + lvl;
     const st = statsBeyondLevel(b, early != null ? lvl : Math.max(cardBaseLevel(b), lvl)); // = statsAtLevel up to the card's own top level (the Tower goes past it, 2026-10-16); EB: the early road goes below it (Level 0)
     matchDefsOverlay[did] = Object.assign({}, b, {id: did, derivedFrom: id, attack: st.attack, health: st.health, level: lvl, baseLevel: cardBaseLevel(b), locked: false});
-    if(b.levelSkills) matchDefsOverlay[did].effects = effectsAtLevel(b, lvl); // 2026-10-30 (TUT3): an EB Level 0 enemy copy drops the skills that arrive at Level 1
+    if(b.levelSkills || lvl < 1) matchDefsOverlay[did].effects = effectsAtLevel(b, lvl, b.levelSkills ? null : matchDefsOverlay[did].effects); // 2026-10-30 (TUT3) (ENG25: every Level 0 copy): an EB Level 0 enemy copy drops the skills that arrive at Level 1
     out[did] = (out[did]||0) + n;
   });
   invalidateCardDefs();
@@ -32423,7 +32469,7 @@ function eng23MapDef(id, defs){
   defs = defs || getCardDefs(); const d = defs[id]; if(!d) return null;
   const raw = (typeof liveCards !== 'undefined' && liveCards[id]) || CARD_DEFS_BASELINE[id]; if(!raw || raw.attack == null) return d;
   const b = cardBaseLevel(raw), hatch = b > 0 && isHatchling(id), L = hatch ? 0 : b, st = statsAtLevel(raw, L);
-  const out = Object.assign({}, d, {attack: st.attack, health: st.health, level: L, baseLevel: b, effects: raw.levelSkills ? effectsAtLevel(raw, L) : (raw.effects || d.effects)});
+  const out = Object.assign({}, d, {attack: st.attack, health: st.health, level: L, baseLevel: b, effects: (raw.levelSkills || L < 1) ? effectsAtLevel(raw, L, raw.levelSkills ? null : (raw.effects || d.effects)) : (raw.effects || d.effects)}); /* ENG25: a Level 0 copy drops Hatchling / Regeneration */
   delete out.socketGem; delete out.enchant; delete out.prestigeTier; delete out.prestigeClass; delete out.prestigeIcon; delete out.prestigeLabel; return out; }
 function vis4MapCardTilesHTML(ids, defs, opts){
   defs = defs || getCardDefs(); const packs = !!(opts && opts.packs);
@@ -38290,7 +38336,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0, ffCounters:rc.ffCounters||0 /* ENG23 */, inspTokens:rc.inspTokens||0, pounceSpent:!!rc.pounceSpent /* ENG21 */ /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0, ffCounters:rc.ffCounters||0 /* ENG23 */, inspTokens:rc.inspTokens||0, pounceSpent:!!rc.pounceSpent /* ENG21 */ /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, ctxOn:rc.ctxOn||'' /* ENG25 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -40714,7 +40760,7 @@ function boardCardHTML(c, defs, opts){
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
   return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, size:'compact' /* 2026-10-30 (CS-D): only the inner tile; the .board-card wrapper (Flip, uids) is unchanged */, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, cowering: !!c.cowering /* ENG15 (FF6) */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, cowering: !!c.cowering /* ENG15 (FF6) */, en5On: c.en5On != null ? c.en5On : (c._en5On || ''), ctxOn: c.ctxOn != null ? c.ctxOn : (c._ctxOn || '') /* ENG25 (2026-11-05, #7): the lit state chips */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
       bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${fog ? '' : bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) && !fog ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}${fogC ? fogVeilHTML(fogC) : ''}
@@ -43855,7 +43901,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0, ffCounters:c.ffCounters||0 /* ENG23 */, inspTokens:c.inspTokens||0, pounceSpent:!!c.pounceSpent /* ENG21 */ /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0, ffCounters:c.ffCounters||0 /* ENG23 */, inspTokens:c.inspTokens||0, pounceSpent:!!c.pounceSpent /* ENG21 */ /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, ctxOn:c._ctxOn||'' /* ENG25 (2026-11-05): Loyal / Usurper / Liege on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -45162,11 +45208,12 @@ function liveTideState0(e){
     const t = m.engine.getTide(); if(!t) return null;
     if(e && e.tideGrant && typeof e.tideGrant === 'object' && !e.supremeTide){ const fl = grantText(e.tideGrant.flood) || 'nothing', eb = grantText(e.tideGrant.ebb) || 'nothing'; // Tide's skill list (2026-10-15); no braces (2026-10-16)
       return t === 'ebb' ? {k:'ebb', name:'Ebb', bonus:eb} : t === 'high' ? {k:'high', name:'High Tide', bonus: fl + ', ' + eb} : {k:'flow', name:'Flood', bonus:fl}; }
-    const sw = e && e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : null, up = t === 'high' ? 2 : 1;
+    const tn = typeof eng25TideN === 'function' ? eng25TideN(e) : 1; // ENG25 (2026-11-05, owner #10): Tide N multiplies the plain bonuses
+    const sw = e && e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : null, up = (t === 'high' ? 2 : 1) * tn;
     const rising = sw === 'extraAttack' ? [`+${up + 1} Attack`] : [`+${up} Attack`].concat(sw === 'quickAttack' ? ['Quick Attack'] : sw === 'evade' ? ['Evasive'] : []); // "Evade -> Evasive." (2026-10-15)
     if(sw && e.swimmerGrant && typeof e.swimmerGrant === 'object' && Object.keys(e.swimmerGrant).length) rising.push(grantText(e.swimmerGrant)); // 2026-10-15
-    if(t === 'ebb') return {k:'ebb', name:'Ebb', bonus:'+1 Armor'};
-    if(t === 'high') return {k:'high', name:'High Tide', bonus: rising.concat('+2 Armor').join(', ')};
+    if(t === 'ebb') return {k:'ebb', name:'Ebb', bonus:'+' + tn + ' Armor'};
+    if(t === 'high') return {k:'high', name:'High Tide', bonus: rising.concat('+' + (2 * tn) + ' Armor').join(', ')};
     return {k:'flow', name:'Flood', bonus: rising.join(', ')}; // 2026-10-15: Flow is called Flood
   }catch(err){ return null; }
 }
@@ -63553,3 +63600,14 @@ const HandDrag = (function(){
   }, true);
   window.addEventListener('resize', close); window.addEventListener('scroll', e=>{ if(menu && !menu.contains(e.target)) close(); }, true);
 })();
+// ==== Package ENG25 (2026-11-05, owner 23:35 #1: "Tide should be a passive skill, not evergreen." / "Evergreen skills which are basically just
+// passives and not like Earthquake or something like that should be passives."): Evergreen keeps the skills whose effect reaches the field or a
+// whole board (Earthquake's kind); every skill that is the unit's own effect (its shot, its hit, its death, its arrival on one target) is a
+// passive. Decision ENG25-1 lists the moves. Applied at the end of the file so every registry entry (late pushes too) is seen.
+const ENG25_EVERGREEN = new Set(['converge', 'moonpull', 'earthquake', 'tornado', 'avalanche', 'tsunami', 'absoluteZero', 'poisonGas', 'rainmaker', 'nova', 'volley', 'fieldBreaker', 'warcry']);
+[PASSIVE_DEFS, SKILL_DEFS].forEach(list=> list.forEach(d=>{ if(d && d.category === 'evergreen' && !ENG25_EVERGREEN.has(d.key)) d.category = 'passive'; }));
+// #2 (owner: "There are also skills with the same name (duplicate)"): a skill and its braced form (Timbered and Timbered – {…}, Tally and
+// Tally – {…}, …) read as two "Timbered" rows in "+ Add Skill". As Diurnal / Tide already were (ZEIT_TWIN), they are one entry now: the row's
+// "Gives" field picks the default or the skill list.
+SKILL_DEFS.forEach(d=>{ if(!d || !/Grant$/.test(d.key)) return; const plain = d.key.replace(/Grant$/, '');
+  if(ZEIT_TWIN[plain] || ZEIT_TWIN_BACK[d.key] || !SKILL_DEFS.some(x=> x.key === plain)) return; ZEIT_TWIN[plain] = d.key; ZEIT_TWIN_BACK[d.key] = plain; });

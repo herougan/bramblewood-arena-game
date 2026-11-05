@@ -180,10 +180,10 @@ const playable = (T, s)=> C.seatData(T, s).hand.find(h=> T.E.canPlay(C.seatData(
     ok(babies.every(d=>{ const s = G.statsAtLevel(d, 0); return s.attack === d.attack && s.health === d.health; }), 'a Level 0 Baby copy has its printed stats');
     const starters = Object.values(D).filter(d=> d.kind !== 'baby' && d.faction === 'base' && d.rarity === 'starter' && !d.token);
     ok(starters.length > 0 && starters.every(d=> G.cardBaseLevel(d) === 1), `the other starters (faction base) stay at Level 1 (${starters.length})`);
-    ok(babies.every(d=> d.levelSkills && d.levelSkills['0'] && d.levelSkills['0'].hatchling === true && !(d.levelSkills['1'] && d.levelSkills['1'].hatchling)), 'Hatchling at Level 0 on every Baby card (none at Level 1)'); // 2026-11-03 (ENG22, DESIGN1-2): a Baby's other abilities arrive at Level 1 now, so levelSkills "1" may exist; Hatchling is not in it
+    ok(babies.every(d=> d.levelSkills && d.levelSkills['1'] && d.levelSkills['1'].hatchling === true && !(d.levelSkills['0'] && d.levelSkills['0'].hatchling)), 'Hatchling at Level 1 on every Baby card (none at Level 0; 2026-11-05 ENG25, owner #3: "only appear at level 1 and up")'); // 2026-11-03 (ENG22, DESIGN1-2): a Baby's other abilities arrive at Level 1 now, so levelSkills "1" may exist; Hatchling is not in it
     const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
     const eff = app.match(/function effectsAtLevel\(b, L, fx0\)\{[\s\S]*?return fx; \}/);
-    if(eff){ const f = new Function(eff[0] + '; return effectsAtLevel;')(); ok(babies.every(d=> f(d, 0).hatchling === true), 'effectsAtLevel: a Level 0 Baby has Hatchling'); }
+    if(eff){ const f = new Function(eff[0] + '; return effectsAtLevel;')(); ok(babies.every(d=> f(d, 0).hatchling === undefined && f(d, 1).hatchling === true), 'effectsAtLevel: a Level 0 Baby has no Hatchling, a Level 1 one has it (ENG25, 2026-11-05)'); }
     else ok(false, 'effectsAtLevel found');
   }
 

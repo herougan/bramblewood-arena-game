@@ -333,6 +333,7 @@ run node tests/content11-2026-11-05.js   # 2026-11-05 (package CONTENT11, NUDI-1
 run node tests/raid2-2026-11-05.js   # 2026-11-05 (package RAID2): the raid tide's damage in waves (bands, bottom up on a Flood, top down on an Ebb), tentacle first then tide, no ally name pill, the raid / group-dungeon zoom (clamp, focus, wiring), the part picker (3 parts, then the Core alone; no leader / phase / BR / rhythm / attempts lines; reward kinds), the TX keys in 12 packs
 run node tests/fix9-2026-11-05.js   # 2026-11-05 (package FIX9, owner 22:18): generic group titles, raid allies keep playing (swap, reshuffle), Pounce shows Health before the blow, water pips on Shift, Shell = Armor N for the round
 run node tests/edit1-2026-11-05.js   # 2026-11-05 (package EDIT1, owner 23:35): the card editor: "+" puts the level in the same skill row, Hatchling / Regeneration at Level 1 and up, Species dropdown, skills with emoji, Storm Attack / Health fields; Playwright 1366 / 390, docs/screens/EDIT1/
+run node tests/eng25-2026-11-05.js   # 2026-11-05 (package ENG25, owner 23:35): categories, duplicates merged, Hatchling / Regeneration Level 1+, Berries and Forage, Immortal, Hydra, lit state chips, Tribe Delivery, Moonpull, Tide N
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)
