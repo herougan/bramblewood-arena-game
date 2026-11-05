@@ -117,7 +117,7 @@ PAIRS.filter(([ar, tr])=> ar === 2 || tr === 0).forEach(([ar, tr])=>{ const r = 
   const ev1 = [], ev2 = []; e.resolveCombat(P, so, {}, ev1, 1); const h1 = 500 - t.hp; e.resolveCombat(P, so, {}, ev2, 1); const h2 = 500 - t.hp - h1;
   ok(h1 === amt(ar, 6) && h2 === amt(ar, 6) && ev2.some(x=> x.type === 'boomerangCaught' && x.uid === att.uid), `${tag(ar, tr)} Boomerang: out ${h1}, back ${h2}, caught`); });
 // ---- Puncture 2 and Overwhelm
-PAIRS.forEach(([ar, tr])=>{ const r = swing('rr-punct', ar, tr, [0]); ok(r.ev.some(x=> x.type === 'pierceHQ' && x.dmg === 2), `${tag(ar, tr)} Puncture 2 reaches the castle`); });
+PAIRS.forEach(([ar, tr])=>{ const r = swing('rr-punct', ar, tr, [0]); ok(r.ev.some(x=> (x.type === 'pierceHQ' || x.type === 'breachHQ' /* 2026-11-05 ENG25: Puncture reads as Breach */) && x.dmg === 2), `${tag(ar, tr)} Puncture 2 reaches the castle`); });
 PAIRS.forEach(([ar, tr])=>{ const r = swing('rr-over', ar, tr, [0], {foeId:'rr-frail'}); ok(r.ev.some(x=> x.type === 'overwhelmHQ' && x.dmg === amt(ar, 20) - 1), `${tag(ar, tr)} Overwhelm spills ${amt(ar, 20) - 1} into the castle`); });
 // ---- Electricity: an arc to a unit beside the struck one, in its row
 PAIRS.forEach(([ar, tr])=>{ let dec = []; const r = swing('rr-elec', ar, tr, [-1, 0, 1], {before:(e, P)=>{ if(tr !== 0) return; dec = [-1, 1].map(sl=> place(e, P, 2, 2, 'rr-wall', sl)); }});

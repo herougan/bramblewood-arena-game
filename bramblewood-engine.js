@@ -139,7 +139,7 @@ const SK2_DEFAULTS = Object.freeze({
   scavengeN: 1, scavengeEvery: 3, scavengeLumber: 1, scavengeRange: 1,   // Scavenge N, M: points a death; M points -> Lumber; within 1 column
   salvageN: 1, salvageEvery: 3, salvageStone: 1, salvageRange: 1,        // Salvage N, M (owner 21:56): Scavenge for Structures' deaths; M points -> Stone
   repairN: 2, repairBrambleRate: 0.5, repairRange: 1,                    // Repair N: on a structure within 1 column; the bramble at half
-  foragingN: 3, foragingBerries: 3, foragingGather: 1,                   // Foraging N: the heal; Berries a full basket holds; Berries a turn
+  foragingN: 1, foragingBerries: 3, foragingGather: 1, berryHeal: 3,    // ENG25 (2026-11-05, owner #4 "Berries heal for 3, every 3"): Foraging N gathers N Berries a turn; a full basket (3) heals 3 (was: Foraging N = the heal, 1 Berry a turn)
   millingN: 1, millingAttacks: true,                                     // Milling N: Lumber a turn while Ready; the mill still attacks (ENG16, 2026-11-02: N of your Lumber become 2N)
   quarryN: 1, quarryLumber: 1,                                           // Quarry N (SK2b, owner 23:43): pay 1 Lumber, gain N Stone, each turn while Ready
   smelterN: 1, smelterLumber: 2, smelterStone: 2, smelterMetal: 1,       // Smelter N (SK2b): 2 Lumber + 2 Stone -> 1 Metal, up to N times a turn while Ready
@@ -326,6 +326,7 @@ ACTION_KEYS.push('forgeWeapon', 'disarm', 'revive' /* ENG9 (2026-10-26): Revive 
 ACTION_KEYS.push('exploit', 'poisonTick', 'pulse'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N; + Pulse N (EN4, 2026-10-23: Poison Tick is retired, it reads as Pulse)
 ACTION_KEYS.push('arrow');
 ACTION_KEYS.push('grantFastForward'); // ENG23 (2026-11-04): Grant Fast-forward N (fast-forward tokens), on no card
+ACTION_KEYS.push('forage'); // ENG25 (2026-11-05, owner 23:35 #6): Forage N, the unit gathers N Berries (a full basket of 3 heals an ally 3)
 ACTION_KEYS.push('grantShield'); // ENG19 (2026-11-02, owner #15): Grant Shield, itself / adjacent / surrounding / every ally // Package BX (2026-10-21): Arrow N as an action (the Arrow skill's shot: the enemy facing it, else the nearest, else the bramble)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
@@ -1365,8 +1366,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // moves the tide can take them away.
   function supremeTideOf(card){ const e = card && (CARD_DEFS[card.defId]||{}).effects; return !!(e && e.supremeTide) && !quietOn(); } // Quiet Contemplation (2026-10-19): plain Tide bonuses
   // Leylines I (2026-10-16, user: "Tide default becomes +3/+0 // Armor 3"): Flood +3 Attack, Ebb Armor 3, High Tide +3 and Armor 3; Supreme Tide 3 too.
-  function tideAtk(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return leyZeit ? 3 : 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? (leyZeit ? 3 : 2) : t === 'flow' ? (leyZeit ? 3 : 1) : 0; } // Tide – {…}: its facets instead (2026-10-15)
-  function tideArmor(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return leyZeit ? 3 : 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? (leyZeit ? 3 : 2) : t === 'ebb' ? (leyZeit ? 3 : 1) : 0; }
+  // ENG25 (2026-11-05, owner 23:35 #10: "Tide 2: Same effects as tide, but x2. So e.g. +2 armour instead."): effects.tide N (true = 1) multiplies
+  // every Tide bonus by N: the plain Flood / Ebb / High Tide numbers, Supreme Tide's, Leylines I's, and the numbers in a Tide – {…} facet
+  // (tideScaleGrant). #9 (Moonpull, reworked): while a Moonpull unit of its side lives, a Tide unit's Tide counts double on top (x2, once).
+  function tideNOf(card){ const v = effectsOf(card).tide; return (v === true || !v) ? 1 : Math.max(1, Math.floor(Number(v)) || 1); }
+  function moonpullAuraOn(card){ const pid = pidOfLive(card); if(!pid) return false; const pl = curPlayers[pid]; return !!pl && rowsUnitsOf(pl).some(u=> u && !u.gap && u.hp > 0 && effectsOf(u).moonpull); }
+  function tideMultOf(card){ return tideNOf(card) * (moonpullAuraOn(card) ? 2 : 1); }
+  function tideScaleGrant(g, n){ if(!g || typeof g !== 'object' || !(n > 1)) return g; const o = {}; Object.keys(g).forEach(k=>{ const v = g[k]; o[k] = typeof v === 'number' ? v * n : v; }); return o; }
+  function tideAtk(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return (leyZeit ? 3 : 2) * tideMultOf(card); if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return (t === 'high' ? (leyZeit ? 3 : 2) : t === 'flow' ? (leyZeit ? 3 : 1) : 0) * (t ? tideMultOf(card) : 1); } // Tide – {…}: its facets instead (2026-10-15)
+  function tideArmor(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return (leyZeit ? 3 : 2) * tideMultOf(card); if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return (t === 'high' ? (leyZeit ? 3 : 2) : t === 'ebb' ? (leyZeit ? 3 : 1) : 0) * (t ? tideMultOf(card) : 1); }
   function isTide(card){ return isTideDef(card && CARD_DEFS[card.defId]); } // Swimmers count (2026-10-14)
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): does this Tide-evade test rule let defCard dodge a hit from attDef?
   // Only a unit's attack counts (a spell or a field hazard is not a swimmer or a non-swimmer).
@@ -2602,7 +2610,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //     its that lands on a unit (the same moment as On Hit: whatever the hit did to its target) also deals N to the enemy bramble, through
   //     damageHQ (Rampart and Bramble Armor see it like any unit-dealt hit). Event 'breachHQ' {dmg}. (Puncture is the old twin of this rule;
   //     call EN5-1 asks whether to merge them.)
-  function en5Breach(players, att, attDef, enemyId, mySide, tSide, events){ const n = Math.max(0, Number(attDef && attDef.effects && attDef.effects.breach) || 0);
+  // ENG25 (2026-11-05, owner 23:35 #2, duplicates; EN5-1's open question): Puncture N was Breach N twice over; an old card's puncture reads as Breach.
+  function en5Breach(players, att, attDef, enemyId, mySide, tSide, events){ const fx = (attDef && attDef.effects) || {}; const n = Math.max(0, (Number(fx.breach) || 0) + (fx.breach ? 0 : Number(fx.puncture) || 0));
     if(!(n > 0) || !players[enemyId] || !(players[enemyId].hq && players[enemyId].hq.hp > 0)) return 0;
     const d = damageHQ(players[enemyId], n);
     if(d > 0 && recordEvents && events) events.push({type:'breachHQ', side:mySide, attDefId:att.defId, attUid:att.uid, targetSide:tSide, dmg:d, n});
@@ -2810,8 +2819,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'crepuscularDay', 'crepuscularNight' /* ENG23 */, 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'plentyGrant', 'scarcityGrant', 'foePlentyGrant', 'foeScarcityGrant', 'heatGrant', 'frostGrant', 'rainGrant', 'stormGrant', 'fogGrant', 'saltGrant', 'droughtGrant', 'seasonGrant', 'requiemGrant', 'dirgeGrant', 'carnageGrant', 'musterGrant', 'besetGrant', 'throngGrant' /* ENG10 */, 'tallyGrant', 'almanacGrant', 'onslaughtGrant', 'riledGrant', 'deliveryRes' /* ENG22 */, 'arrowBramble', 'fireArrowBramble', 'fireBoltBramble' /* EN6 (2026-10-24) */, 'arrowPoison', 'arrowBleed', 'fireArrowPoison', 'fireArrowBleed', 'fireBoltPoison', 'fireBoltBleed', 'diveUses' /* EN7 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
-  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant', 'crepuscularDay', 'crepuscularNight' /* ENG23 */], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */, plenty:['plentyGrant'], scarcity:['scarcityGrant'], foePlenty:['foePlentyGrant'], foeScarcity:['foeScarcityGrant'], heat:['heatGrant'], frost:['frostGrant'], rain:['rainGrant'], storm:['stormGrant'], fog:['fogGrant'], salt:['saltGrant'], drought:['droughtGrant'], season:['seasonGrant'], requiem:['requiemGrant'], dirge:['dirgeGrant'], carnage:['carnageGrant'], muster:['musterGrant'], beset:['besetGrant'], throng:['throngGrant'] /* ENG10 */, tally:['tallyGrant'], almanac:['almanacGrant'], onslaught:['onslaughtGrant'], riled:['riledGrant'], delivery:['deliveryRes'], deliveryEvery:['deliveryRes'] /* ENG22 */, arrow:['arrowBramble', 'arrowPoison', 'arrowBleed'], fireArrow:['fireArrowBramble', 'fireArrowPoison', 'fireArrowBleed'], fireBolt:['fireBoltBramble', 'fireBoltPoison', 'fireBoltBleed'] /* EN6; + EN7's – poison / – bleed */, dive:['diveUses'] /* EN7 */};
+  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'crepuscularDay', 'crepuscularNight' /* ENG23 */, 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'plentyGrant', 'scarcityGrant', 'foePlentyGrant', 'foeScarcityGrant', 'heatGrant', 'frostGrant', 'rainGrant', 'stormGrant', 'fogGrant', 'saltGrant', 'droughtGrant', 'seasonGrant', 'requiemGrant', 'dirgeGrant', 'carnageGrant', 'musterGrant', 'besetGrant', 'throngGrant' /* ENG10 */, 'tallyGrant', 'almanacGrant', 'onslaughtGrant', 'riledGrant', 'deliveryRes' /* ENG22 */, 'tribeDeliveryRes' /* ENG25 */, 'arrowBramble', 'fireArrowBramble', 'fireBoltBramble' /* EN6 (2026-10-24) */, 'arrowPoison', 'arrowBleed', 'fireArrowPoison', 'fireArrowBleed', 'fireBoltPoison', 'fireBoltBleed', 'diveUses' /* EN7 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
+  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant', 'crepuscularDay', 'crepuscularNight' /* ENG23 */], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */, plenty:['plentyGrant'], scarcity:['scarcityGrant'], foePlenty:['foePlentyGrant'], foeScarcity:['foeScarcityGrant'], heat:['heatGrant'], frost:['frostGrant'], rain:['rainGrant'], storm:['stormGrant'], fog:['fogGrant'], salt:['saltGrant'], drought:['droughtGrant'], season:['seasonGrant'], requiem:['requiemGrant'], dirge:['dirgeGrant'], carnage:['carnageGrant'], muster:['musterGrant'], beset:['besetGrant'], throng:['throngGrant'] /* ENG10 */, tally:['tallyGrant'], almanac:['almanacGrant'], onslaught:['onslaughtGrant'], riled:['riledGrant'], delivery:['deliveryRes'], tribeDelivery:['tribeDeliveryRes'] /* ENG25 */, deliveryEvery:['deliveryRes'] /* ENG22 */, arrow:['arrowBramble', 'arrowPoison', 'arrowBleed'], fireArrow:['fireArrowBramble', 'fireArrowPoison', 'fireArrowBleed'], fireBolt:['fireBoltBramble', 'fireBoltPoison', 'fireBoltBleed'] /* EN6; + EN7's – poison / – bleed */, dive:['diveUses'] /* EN7 */};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
     Object.keys(e).forEach(k=>{ if(IRR_NOT_SKILLS.has(k)) return; const v = e[k]; if(v === false || v == null || v === 0 || v === '' || (Array.isArray(v) && !v.length)) return; out.push({key:k}); });
@@ -2916,7 +2925,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Crepuscular – {day}{night} (2026-10-21, package CX2): the day part by day, the night part at night, both in Twilight
       if(e.crepuscularGrant && typeof e.crepuscularGrant === 'object'){ if(ph === 'day' || ph === 'twilight') addGrant(e.crepuscularGrant.day); if(ph === 'night' || ph === 'twilight') addGrant(e.crepuscularGrant.night); } }
     if(hasTideGrant(e)){ const t = getTide(); // Tide – {Flood}, {Ebb} (2026-10-15): High Tide brings both facets
-      if(t === 'flow' || t === 'high') addGrant(e.tideGrant.flood); if(t === 'ebb' || t === 'high') addGrant(e.tideGrant.ebb); }
+      const tm = (t === 'flow' || t === 'high' || t === 'ebb') ? tideMultOf(c) : 1; // ENG25 (2026-11-05, #10): Tide N / Moonpull scale the facet's numbers
+      if(t === 'flow' || t === 'high') addGrant(tideScaleGrant(e.tideGrant.flood, tm)); if(t === 'ebb' || t === 'high') addGrant(tideScaleGrant(e.tideGrant.ebb, tm)); }
     if(c.fullMoonRisen){ if(e.fullMoonGrant && typeof e.fullMoonGrant === 'object') addGrant(e.fullMoonGrant); else if(e.fullMoon){ const n = (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0); a += n; h += n; } } // Full Moon (2026-10-15); Leylines I +2/+2 (2026-10-16)
     if(c.transformed && e.transform && typeof e.transform === 'object' && !isMaturedTf(e.transform)) addGrant(transformGainOf(e.transform)); // Transform (2026-10-21, CX2): for good; a preset's default braces, and Matured's go to the evolute over it (TR)
     // The Crown (TR, 2026-10-21): its holder has Kingly – {…} (Tribute 1, Armor 2 by default); a number adds to the card's own (Armor 1 + 2 = 3).
@@ -2924,7 +2934,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(r){ grant = grant || {}; Object.keys(r).forEach(k=>{ const v = r[k], base = grant[k] != null ? grant[k] : e[k];
         grant[k] = (typeof v === 'number' && (typeof base === 'number' || base === true)) ? (base === true ? 1 : base) + v : v; }); } }
     // Liege – {…} (2026-10-23, package EN, owner TR-4): while a King of its side is on the battlefield, its braces (Assault 2 by default).
-    if((e.liege || e.liegeGrant) && kingOnSide(pl, c)) addGrant(liegeOf(e));
+    const ctx25 = []; // ENG25 (2026-11-05, owner 23:35 #7: conditional skills light their pip while the condition holds, as Tide does): c._ctxOn
+    if((e.liege || e.liegeGrant) && kingOnSide(pl, c)){ addGrant(liegeOf(e)); ctx25.push('liege'); }
     // EN5 (2026-10-24): Timbered / Bedrock / Forged / Last Stand – {…}, while their side's state holds (EN5_STATES); c._en5On lists the ones on
     { const on = en5StatesOn(e, pl); on.forEach(k=> addGrant(en5StateGrant(k, e)));
       const on6 = en6StatesOn(e, pl, foe, c); on6.forEach(k=> addGrant(en6StateGrant(k, e))); /* EN6 (2026-10-24): hand, heat / frost, weather, season */
@@ -2947,8 +2958,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.rage && e.rageGrant && typeof e.rageGrant === 'object'){ const gh = c._rageOn ? (grantStats(e.rageGrant)[1] || 0) : 0;
       c._rageOn = c.maxHp > 0 && ((c.hp - gh) / Math.max(1, c.maxHp - gh)) < 0.5; if(c._rageOn) addGrant(e.rageGrant); }
     // CX2 (2026-10-21): Loyal – {…} / Usurper – {…} read their braces like the other context skills (a +A/+H in them is stats, not a skill)
-    if((e.loyal || e.loyalGrant) && leaderOnBoard(pl, c)){ add(e.loyal || 0); addGrant(e.loyalGrant); }
-    if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)){ add(e.usurper || 0); addGrant(e.usurperGrant); }
+    if((e.loyal || e.loyalGrant) && leaderOnBoard(pl, c)){ add(e.loyal || 0); addGrant(e.loyalGrant); ctx25.push('loyal'); }
+    if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)){ add(e.usurper || 0); addGrant(e.usurperGrant); ctx25.push('usurper'); }
+    c._ctxOn = ctx25.join(',');
     if(e.timber){ const n = Math.max(0, pl.lumber||0); a += n; h += n; }
     // Swimmer's Flow list (2026-10-12): the skills it gets while the tide is in Flow.
     // Swimmer (reworked 2026-10-12, 09:48: "Change it to be a If Tide -> { } is enabled ... {Extra Attack} or {Quick Attack} or
@@ -4894,6 +4906,41 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     made.forEach(nc=> fireSpawnFamilyTriggers(players, sideOf, pl.id, nc, stats, events, 'spawned'));
     return made;
   }
+  // ENG25 (2026-11-05, owner 23:35 #5: "Immortal: Respawns as a token with immortal on death. Hydra: Splits into two (exact copy) as tokens on
+  // death - nearest to it, except the slot it was on. Stats are halved, rounded up. If 1/N, half -> 0/(N/2). If N/1 -> No more copies made."):
+  //   Immortal  when it dies, a token copy of it (same Attack, Health, skills, Immortal included) takes its slot (the nearest free one if
+  //             that is taken) with Wait 1: it reforms for a round. Limits (Claude's call, decision ENG25-3): a copy that dies in the round it
+  //             came back stays dead; a Nullify kill, a cage, a sacrifice or an Undead return makes none; the fight's round cap ends the rest.
+  //   Hydra     when it dies, two token copies (same skills, Hydra included) appear in the free slots nearest it, never its own slot, each
+  //             with half its printed Attack and Health rounded up, except that Attack 1 halves to 0; a unit with Health 1 makes none.
+  //             Health 1 is reached in a few halvings (8, 4, 2, 1), so a line of heads always ends. The copies' Wait is the card's own.
+  function immortalDefOf(defId){ const base = CARD_DEFS[defId]; if(!base) return defId; if(base.token) return defId;
+    const root = base.derivedFrom || base.id, id = root + '~immortal';
+    if(!CARD_DEFS[id]) CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: root, token: true, immortalOf: root});
+    return id; }
+  function hydraDefOf(defId){ const base = CARD_DEFS[defId]; if(!base) return null; const root = base.hydraOf || base.derivedFrom || base.id, depth = (base.hydraDepth || 0) + 1, id = root + '~hydra' + depth;
+    if(!CARD_DEFS[id]){ const A = Math.max(0, Number(base.attack) || 0), H = Math.max(0, Number(base.health) || 0);
+      CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: root, token: true, hydraOf: root, hydraDepth: depth,
+        attack: A <= 1 ? 0 : Math.ceil(A / 2), health: Math.max(1, Math.ceil(H / 2)), effects: Object.assign({}, base.effects || {})}); }
+    return id; }
+  function eng25Place(pl, sp, hid, selfOk){ let nc = null;
+    if(sp.res && slotMode && pl.reserve){ const sl = rowFreeSlotNear(pl, sp.res, sp.slot, selfOk); if(sl === null) return null; nc = rowPut(pl, sp.res, sl, makeBoardCard(hid), sp.card); }
+    else if(slotMode){ const sl = nearestFreeSlot(pl, Number.isInteger(sp.slot) ? sp.slot : 0, selfOk); if(sl === null) return null; nc = makeBoardCard(hid); putInSlot(pl, nc, sl); }
+    else { nc = makeBoardCard(hid); const lane = (selfOk && (sp.side !== 'center' || !pl.row.center.length)) ? sp.side : flankOrShorter(pl, sp.side === 'center' ? 'left' : sp.side); pl.row[lane].push(nc); }
+    return nc; }
+  function eng25Spawned(players, sideOf, pl, sp, hid, made, kind, stats, events){
+    if(!made.length) return made;
+    ensureStat(stats, sideOf(pl.id), sp.card.defId).spawnedTokens = (ensureStat(stats, sideOf(pl.id), sp.card.defId).spawnedTokens||0) + made.length;
+    if(recordEvents && events) events.push({type:'spawn', side:sideOf(pl.id), defId:hid, count:made.length, cause:'onDeathSpawn', kind, uids:made.map(c=> c.uid), placements:made.map(c=> ({uid:c.uid, lane: findCardSide(pl, c.uid)})), fromUid:sp.card.uid, nearUid:sp.card.uid});
+    made.forEach(nc=> fireSpawnFamilyTriggers(players, sideOf, pl.id, nc, stats, events, 'spawned'));
+    return made; }
+  function immortalRespawn(players, sideOf, sp, stats, events){ const pl = sp.pl, hid = immortalDefOf(sp.defId || sp.card.defId), nc = eng25Place(pl, sp, hid, true);
+    if(!nc) return [];
+    nc.wait = Math.max(2, Number(nc.wait) || 0); nc.immortalRound = turnNo; // it reforms: Wait 2 now is Wait 1 after this round's tick, so it misses its next round; dying again this round, it stays dead
+    return eng25Spawned(players, sideOf, pl, sp, hid, [nc], 'immortal', stats, events); }
+  function hydraSplit(players, sideOf, sp, stats, events){ const pl = sp.pl, hid = hydraDefOf(sp.defId || sp.card.defId); if(!hid) return [];
+    const made = []; for(let i = 0; i < 2; i++){ const nc = eng25Place(pl, sp, hid, false); if(!nc) break; made.push(nc); }
+    return eng25Spawned(players, sideOf, pl, sp, hid, made, 'hydra', stats, events); }
   // A brood token's card (Brood N, 2026-10-14): one per parent card per match.
   function broodDefOf(defId){ const base = CARD_DEFS[defId], root = base.derivedFrom || base.id, id = root + '~brood';
     if(!CARD_DEFS[id]){ const pe = base.effects || {}, eff = {swarm: pe.swarm || true}; if(pe.swarmN) eff.swarmN = pe.swarmN; if(pe.flying) eff.flying = true;
@@ -6137,14 +6184,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const EN8_DEF = {stonecutterN:1, stonecutterEvery:2, prospectorN:1, fellingN:1, pearlBedN:1, pearlN:1 /* ENG19 */, salvageN:1, salvageMult:2, scavengeN:1, coppiceN:1, driftwoodN:1, windfallLumber:1};
   let en8TrigMemo = null;
   function en8Trigs(e, list, def){
-    if(!e || !(e.stonecutter || e.prospector || e.felling || e.pearlBed || e.pearl || e.stockpile || e.revive || e.delivery)) return list;
+    if(!e || !(e.stonecutter || e.prospector || e.felling || e.midas || e.pearlBed || e.pearl || e.stockpile || e.revive || e.delivery || e.tribeDelivery)) return list;
     const waits = !!(def && Number(def.wait) > 0); // Pearl (ENG19; Pearl Bed before): a Wait 0 card is Ready as it lands (the engine fires no On Ready for it), so it pays On Play
-    if(!en8TrigMemo) en8TrigMemo = new WeakMap(); const key = [e.stonecutter, e.prospector, e.felling, e.pearlBed, e.pearl, e.stockpile, e.revive, waits, e.delivery, e.deliveryRes].join('|'), m = en8TrigMemo.get(e);
+    if(!en8TrigMemo) en8TrigMemo = new WeakMap(); const key = [e.stonecutter, e.prospector, e.felling, e.pearlBed, e.pearl, e.stockpile, e.revive, waits, e.delivery, e.deliveryRes, e.midas, e.tribeDelivery, e.tribeDeliveryRes].join('|'), m = en8TrigMemo.get(e);
     if(m && m.src === list && m.key === key) return m.out;
     const out = list.slice(), N = (k, d)=> numN(e[k], d);
     if(e.stonecutter) out.push({on:'perTurn', do:'gain', resource:'stone', amount:N('stonecutter', EN8_DEF.stonecutterN), every:EN8_DEF.stonecutterEvery, keyword:'stonecutter'});
     if(e.prospector) out.push({on:'onKill', do:'gain', resource:'metal', amount:N('prospector', EN8_DEF.prospectorN), keyword:'prospector'});
-    if(e.felling) out.push({on:'onKill', do:'gain', resource:'lumber', amount:N('felling', EN8_DEF.fellingN), keyword:'felling'});
+    // ENG25 (2026-11-05, owner 23:35 #2, duplicates): Midas Touch N was Felling N twice over ("When it kills a unit, you gain N Lumber"); an
+    // old card's midas reads as Felling (canonical/cards.json carries Felling only). The kill-credit payout Midas had is gone (removeDeadCards).
+    if(e.felling || e.midas) out.push({on:'onKill', do:'gain', resource:'lumber', amount: e.felling ? N('felling', EN8_DEF.fellingN) : N('midas', EN8_DEF.fellingN), keyword:'felling'});
+    // <Tribe> Delivery {Resource} (ENG25, 2026-11-05, owner 23:35 #8: "Bee Delivery -> {Lumber}: New form of skill format for delivery. Bee
+    // Drone: When you play ally Bees, you gain 1 lumber."): effects.tribeDelivery = the tribe (a Type, 'Bee'), effects.tribeDeliveryRes the
+    // resource (Delivery's list, default lumber): each time you play an ally of that tribe (not itself), +1 of it. An ordinary On Ally Played
+    // trigger (Pack Howl's filter: the taxonomy, so a Changeling counts), off while it is Waiting, Stunned, Frozen or Asleep.
+    if(e.tribeDelivery){ const tr = typeof e.tribeDelivery === 'string' && e.tribeDelivery.trim() ? e.tribeDelivery.trim() : 'Bee';
+      out.push({on:'onAllyPlayed', do:'gain', resource:deliveryResOf({deliveryRes: e.tribeDeliveryRes}), amount:1, filterArchetype:tr, keyword:'tribeDelivery'}); }
     if(e.pearl) out.push({on: waits ? 'onReady' : 'onSpawn', do:'gain', resource:'pearl', amount:N('pearl', EN8_DEF.pearlN), keyword:'pearl'}); // ENG19 (2026-11-02): Pearl, On Ready once (Pearl Bed's old rule)
     if(e.pearlBed) out.push({on:'perTurn', do:'gain', resource:'pearl', amount:N('pearlBed', EN8_DEF.pearlBedN), keyword:'pearlBed'}); // ENG19 (2026-11-02, owner #5): Pearl Bed, every turn while Ready (was On Ready, once)
     // Stockpile N (ENG9, 2026-10-26, owner EN6-6: "On ready ... is a classic. We need a named skill for this"): On Ready, gain N Lumber, once
@@ -7604,7 +7659,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Petrify lands after the hit. A unit that died in its own swing ('postDead') still draws, gains and hits, but nothing it gives itself.
   // Outside the swing (onAttackPhase null) every On Attack trigger goes off as before.
   let onAttackPhase = null;
-  const ON_ATTACK_SELF = ['heal', 'buff', 'buffAttack', 'buffHealth', 'shield', 'grantShield', 'cleanse'];
+  const ON_ATTACK_SELF = ['heal', 'buff', 'buffAttack', 'buffHealth', 'shield', 'grantShield', 'cleanse', 'forage' /* ENG25 */];
   function onAttackGoes(t){ const pre = t.do === 'fireHit'; if(onAttackPhase === 'pre') return pre; if(pre) return false;
     if(onAttackPhase === 'postDead') return !(ON_ATTACK_SELF.includes(t.do) && (!t.who || t.who === 'self') && !t.adjacent && !t.surrounding && !t.allies);
     return true; }
@@ -7859,6 +7914,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         //   surrounding N  each ally around it, corners too (surroundingOwnOf on a slot board; off one, its row's neighbours)
         //   allies N       every ally on its side, itself included
         // A unit gets one group's N at most (the biggest): "allies 3" with "adjacent 2" gives a neighbour 3, not 5.
+        // Forage N (ENG25, 2026-11-05, owner 23:35 #6): this unit gathers N Berries (sk2BerryGather: a full basket of 3 heals your most damaged other ally 3).
+        case 'forage': { if(boardCard && boardCard.kind !== 'hq' && pl) sk2BerryGather(players, sideOf, pl, boardCard, Math.max(1, Math.round(Number(t.amount) || 1)), stats, events); break; }
         case 'grantShield': {
           const want = new Map(), give = (c, n)=>{ if(c && !c.gap && c.hp > 0 && !c.cageOf && n > 0) want.set(c, Math.max(want.get(c) || 0, n)); };
           const n0 = Math.max(0, Number(t.amount)||0), nA = Math.max(0, Number(t.adjacent)||0), nS = Math.max(0, Number(t.surrounding)||0), nAll = Math.max(0, Number(t.allies)||0);
@@ -9275,18 +9332,23 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return got;
   }
   // Foraging N: a Berry a turn; a full basket heals the most damaged other ally.
-  function sk2Forage(players, sideOf, pl, c, stats, events){
-    const side = sideOf(pl.id), need = Math.max(1, Math.round(SK2.foragingBerries)), n = sk2N(c, 'foraging', SK2.foragingN), b0 = c.sk2Berries || 0;
-    c.sk2Berries = Math.min(need, b0 + Math.max(0, Math.round(SK2.foragingGather)));
+  // ENG25 (2026-11-05, owner 23:35 #4: "Berries heal for 3, every 3."; #6: "There should be forage as an action."): Berries are one rule now,
+  // whoever gathers them: a unit holds at most a basket of 3 (SK2.foragingBerries); a full basket is eaten at once to heal the most damaged
+  // OTHER ally for 3 (SK2.berryHeal; nobody hurt: it keeps them). Foraging N gathers N Berries each turn while Ready (was: 1 Berry a turn,
+  // Foraging N the heal). Forage N is the trigger action (case 'forage'): the unit gathers N Berries, on whatever trigger carries it.
+  function sk2BerryGather(players, sideOf, pl, c, n, stats, events){
+    if(!c || !pl || !(n > 0)) return; const side = sideOf(pl.id), need = Math.max(1, Math.round(SK2.foragingBerries)), b0 = c.sk2Berries || 0;
+    c.sk2Berries = Math.min(need, b0 + Math.max(0, Math.round(n)));
     if(c.sk2Berries > b0 && recordEvents && events) events.push({type:'statusFx', kind:'sk2Berry', side, attDefId:c.defId, attUid:c.uid, targetSide:side, targetDefId:c.defId, targetUid:c.uid, amount:c.sk2Berries - b0, total:c.sk2Berries});
-    if(c.sk2Berries < need || !(n > 0)) return;
+    if(c.sk2Berries < need) return;
     const hurt = rowsUnitsOf(pl).filter(o=> o && o !== c && !o.gap && o.hp > 0 && !o.cageOf && (o.hp < o.maxHp || o.bleed > 0)); if(!hurt.length) return;
     hurt.sort((x, y)=> (y.maxHp - y.hp) - (x.maxHp - x.hp) || (x.hp / x.maxHp) - (y.hp / y.maxHp) || x.uid - y.uid);
     const t = hurt[0]; c.sk2Berries -= need;
     if(recordEvents && events) events.push({type:'statusFx', kind:'sk2BerryEat', side, attDefId:c.defId, attUid:c.uid, targetSide:side, targetDefId:t.defId, targetUid:t.uid, amount:need, total:c.sk2Berries});
-    const h = applyHeal(t, n, side, events);
+    const h = applyHeal(t, Math.max(0, Math.round(SK2.berryHeal)), side, events);
     if(h > 0){ const i0 = events ? events.length : 0; fireHealTriggers(players, sideOf, pl.id, c, t, h, stats, events); if(events && events[i0] && events[i0].type === 'heal') events[i0].cause = 'forage'; }
   }
+  function sk2Forage(players, sideOf, pl, c, stats, events){ sk2BerryGather(players, sideOf, pl, c, sk2N(c, 'foraging', SK2.foragingN), stats, events); }
   // Fortification: the Palisade token (one derived card per size), built in an empty slot beside its builder.
   // ENG22 (2026-11-03, owner SKILL-BUILD-1: "Fortification renamed to Build - {}. So it would be written as Build - { 0/6 Palisade }"): the
   // engine key stays effects.fortification; its value is the Palisade's size: true = the default (SK2.fortifyAtk / fortifyHp, 0/6), a string
@@ -9854,6 +9916,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(card.boon === 'restlessDead'){ card.hp = Math.max(1, card.maxHp); boonFire(card, 'revive', events); } // Restless Dead, a selfish boon (2026-10-24, DF3): back at full Health
       if(recordEvents && events) events.push({type:'revive', side:mySide, defId:card.defId, uid:card.uid, undead:true, token:true}); }
     const spawns = [], freed = [], retributions = [], splits = [], relics = [], revives = []; // revives: 2026-10-19 (package RV)
+    const eng25Deaths = []; // ENG25 (2026-11-05): Immortal and Hydra
     deadEntries.forEach(({pl, side, card, res})=>{
       const mySide = sideOf(pl.id);
       if(card.cageOf){ freed.push({owner: card.cageOwner, leaderDefId: card.cageOf, slot: card.slot, hostSide: mySide, uid: card.uid}); return; } // a broken cage frees its leader
@@ -9911,7 +9974,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               if(killer){ killer.atk += 1; killer.baseAtk += 1; if(recordEvents && events) events.push({type:'statusFx', kind:'grit', side:parts[0], attDefId:killer.defId, attUid:killer.uid, amount:1}); } } }
           // Midas Touch N (Ecclesia, 2026-10-10): a kill by this card pays its owner N Lumber.
           const kd = CARD_DEFS[parts[1]], midas = kd && kd.effects && Number(kd.effects.midas);
-          if(midas > 0){ const kp = players[parts[0]==='A'?1:2]; kp.lumber += midas; if(recordEvents && events) events.push({type:'lumber', side:parts[0], defId:parts[1], amount:midas, cause:'midas'}); }
+          if(midas > 0 && false){ /* ENG25 (2026-11-05): Midas Touch reads as Felling now (en8Trigs: an On Kill gain); no second payout here */ }
         });
       }
       const nulled = !!card.nullified; // Nullify (2026-10-14): its own death effects don't happen
@@ -9970,6 +10033,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(!nulled) runCustomTriggers(players, sideOf, pl.id, card, cdef, 'onDeath', stats, events, {killerCard});
       // Meiosis N (2026-10-14): it splits in two once the board has cleared its dead (see the splits pass below)
       if(!nulled && meiosisOf(cdef) > 0 && !card.cageOf && !rv) splits.push({pl, side, slot:card.slot, card, res}); // + a middle / back row (2026-10-19, RR)
+      // Immortal / Hydra (ENG25, 2026-11-05): their copies come once the board has cleared its dead (the passes below)
+      if(!nulled && !card.cageOf && !rv && !card.sacrificed && cdef.effects){ const bid = card._condBase || card.defId;
+        if(cdef.effects.immortal && card.immortalRound !== turnNo) eng25Deaths.push({kind:'immortal', pl, side, slot:card.slot, card, res, defId: bid});
+        if(cdef.effects.hydra && (Number((CARD_DEFS[bid] || cdef).health) || 0) > 1) eng25Deaths.push({kind:'hydra', pl, side, slot:card.slot, card, res, defId: bid}); }
       // On Ally Die (2026-09-16): distinct from On Death (self-only) — fires on every OTHER
       // still-living card this same player controls, e.g. a "when a friend falls" avenger
       // effect. Evaluated against the board as it stands right now in this same dead-cards
@@ -10072,6 +10139,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       spawnedTokens.forEach(tok=> fireSpawnFamilyTriggers(players, sideOf, s.pl.id, tok, stats, events, 'spawned'));
     });
     splits.forEach(sp=> meiosisSplit(players, sideOf, sp, stats, events)); // Meiosis N (2026-10-14)
+    eng25Deaths.forEach(sp=> sp.kind === 'immortal' ? immortalRespawn(players, sideOf, sp, stats, events) : hydraSplit(players, sideOf, sp, stats, events)); // ENG25 (2026-11-05)
     // Center collapse-in (2026-09-16, per explicit request: "units should fall in towards
     // the holes created. Including the center. 1/2 to be left, 1/2 to be right"). A gap
     // opened in the middle of a flank already closes itself for free — the filter pass just
@@ -11086,7 +11154,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // a flat, unconditional chunk of extra damage punches straight through to the enemy
         // castle on every landed melee hit, on top of whatever this hit did to defCard —
         // independent of whether defCard survives.
-        const punctureN = attDef.effects ? (Number(attDef.effects.puncture)||0) + (Number(attDef.effects.perforate)||0) : 0; // Puncture (was Pierce, 2026-10-11); Perforate adds its N
+        const punctureN = attDef.effects ? (Number(attDef.effects.perforate)||0) : 0; // Perforate's N to the bramble (Puncture reads as Breach since ENG25, 2026-11-05: en5Breach below)
         if(punctureN > 0){
           const pierceDmg = damageHQ(players[a.enemyId], punctureN);
           if(pierceDmg>0 && recordEvents && events) events.push({type:'pierceHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:pierceDmg});

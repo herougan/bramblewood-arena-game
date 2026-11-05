@@ -1,0 +1,402 @@
+{
+ "tool": "tools/skill_canon_2026_10_31.js 1.1.0 (2026-10-31, SKILL2)",
+ "generated": "2026-11-05T17:13:22.108Z",
+ "fingerprint": "7eca461ba900",
+ "context": {
+  "name": "global-b15",
+  "level": 1,
+  "copies": 6,
+  "fights": 1000,
+  "pool": 779,
+  "fields": 410,
+  "seed": "tools1",
+  "bramble": 15
+ },
+ "carriers": [
+  "house-cat",
+  "bramblewood-lynx",
+  "blessed-avatar",
+  "stable-colt",
+  "rivergate-recruit",
+  "lucky-hopper"
+ ],
+ "attackWeight": 3,
+ "canonRate": {
+  "m": 0.0312,
+  "lo": 0.0282,
+  "hi": 0.0329
+ },
+ "lsqRate": {
+  "m": 0.0292,
+  "lo": 0.0273,
+  "hi": 0.0313
+ },
+ "statRate": {
+  "m": 0.0317,
+  "lo": 0.028,
+  "hi": 0.0354
+ },
+ "kappa": {
+  "m": 1.0167,
+  "lo": 0.9247,
+  "hi": 1.1523
+ },
+ "attackInHealth": {
+  "m": 5.5085,
+  "lo": 4.3717,
+  "hi": 7.7544
+ },
+ "line": {
+  "r2": 0.9832
+ },
+ "placebo": {
+  "effects": {
+   "skill2Placebo": true
+  },
+  "gain": 0.0041,
+  "worthStat": {
+   "m": 0.1287,
+   "lo": -0.1182,
+   "hi": 0.3415
+  }
+ },
+ "anchors": [
+  {
+   "id": "armor",
+   "n": 1,
+   "key": "armor 1",
+   "price": 2.33,
+   "reason": "defence per hit; 54 cards; 1.68 x N^1.43 set by the owner's rule (ENG10) on the measured 10-19 worth; SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (armor 1 1.68 -> 2.65, armor 2 4.53 -> 4.23); BAL12 (2026-11-02): re-set at bramble 15 (armor 1 2.65 -> 2.33, armor 2 4.23 -> 3.69)",
+   "gain": 0.0647,
+   "worth": {
+    "m": 2.0648,
+    "lo": 1.9198,
+    "hi": 2.2644
+   },
+   "worthStat": {
+    "m": 2.0381,
+    "lo": 1.8294,
+    "hi": 2.3326
+   },
+   "off": true,
+   "offStat": false
+  },
+  {
+   "id": "armor",
+   "n": 2,
+   "key": "armor 2",
+   "price": 3.7,
+   "reason": "defence per hit; 54 cards; 1.68 x N^1.43 set by the owner's rule (ENG10) on the measured 10-19 worth; SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (armor 1 1.68 -> 2.65, armor 2 4.53 -> 4.23); BAL12 (2026-11-02): re-set at bramble 15 (armor 1 2.65 -> 2.33, armor 2 4.23 -> 3.69)",
+   "gain": 0.1067,
+   "worth": {
+    "m": 3.4059,
+    "lo": 3.263,
+    "hi": 3.6736
+   },
+   "worthStat": {
+    "m": 3.3618,
+    "lo": 3.0117,
+    "hi": 3.7829
+   },
+   "off": true,
+   "offStat": false
+  },
+  {
+   "id": "bleed",
+   "n": 1,
+   "key": "bleed 1",
+   "price": 2.57,
+   "reason": "damage over time that wears off; 17 cards; RECOST1 200-fight measure 2.05 a point (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (bleed 1 2.05 -> 2.47, bleed 2 3.11 -> 4.51); BAL12 (2026-11-02): re-set at bramble 15 (bleed 1 2.47 -> 2.57, bleed 2 4.51 -> 4.74)",
+   "gain": 0.0814,
+   "worth": {
+    "m": 2.6389,
+    "lo": 2.4924,
+    "hi": 2.8764
+   },
+   "worthStat": {
+    "m": 2.566,
+    "lo": 2.3099,
+    "hi": 2.9083
+   },
+   "off": false,
+   "offStat": false
+  },
+  {
+   "id": "bleed",
+   "n": 2,
+   "key": "bleed 2",
+   "price": 4.73,
+   "reason": "damage over time that wears off; 17 cards; RECOST1 200-fight measure 2.05 a point (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (bleed 1 2.05 -> 2.47, bleed 2 3.11 -> 4.51); BAL12 (2026-11-02): re-set at bramble 15 (bleed 1 2.47 -> 2.57, bleed 2 4.51 -> 4.74)",
+   "gain": 0.1566,
+   "worth": {
+    "m": 5.0753,
+    "lo": 4.9156,
+    "hi": 5.493
+   },
+   "worthStat": {
+    "m": 4.935,
+    "lo": 4.3998,
+    "hi": 5.5429
+   },
+   "off": true,
+   "offStat": false
+  },
+  {
+   "id": "fork",
+   "n": true,
+   "key": "fork",
+   "price": 3.89,
+   "reason": "reach (more than one target); 9 cards; RECOST1 measure 1.27 (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (fork 1.27 -> 4.92); BAL12 (2026-11-02): re-set at bramble 15 (fork 4.92 -> 3.89)",
+   "gain": 0.105,
+   "worth": {
+    "m": 3.3526,
+    "lo": 3.098,
+    "hi": 3.6804
+   },
+   "worthStat": {
+    "m": 3.3093,
+    "lo": 2.907,
+    "hi": 3.8458
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "inspiring",
+   "n": 1,
+   "key": "inspiring 1",
+   "price": 5.43,
+   "reason": "an aura on allies; 9 cards; RECOST1 measure 2.3 (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (inspiring 1 2.3 -> 3.13); BAL12 (2026-11-02): re-set at bramble 15 (inspiring 1 3.13 -> 3.3); ENG21 (2026-11-03): the new token rule re-measured (inspiring 1 3.3 -> 5.43)",
+   "gain": 0.1707,
+   "worth": {
+    "m": 5.5318,
+    "lo": 5.3074,
+    "hi": 6.0267
+   },
+   "worthStat": {
+    "m": 5.3789,
+    "lo": 4.8467,
+    "hi": 6.1106
+   },
+   "off": false,
+   "offStat": false
+  },
+  {
+   "id": "onReadyGold",
+   "n": 1,
+   "key": "onReadyGold 1",
+   "price": 6.65,
+   "reason": "economy (a resource); 11 cards; RECOST1 measure 2.31 (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (onReadyGold 1 2.31 -> 5.21); BAL12 (2026-11-02): re-set at bramble 15 (onReadyGold 1 5.21 -> 6.65)",
+   "gain": 0.1487,
+   "worth": {
+    "m": 4.7496,
+    "lo": 4.4558,
+    "hi": 5.167
+   },
+   "worthStat": {
+    "m": 4.6881,
+    "lo": 4.1273,
+    "hi": 5.3729
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "poison",
+   "n": 1,
+   "key": "poison 1",
+   "price": 2.38,
+   "reason": "damage over time; 32 cards; 3.0 x N^0.7 fitted to the robust skill test (EN5), measured 3.13 (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (poison 1 3 -> 2.27, poison 2 4.87 -> 4.35); BAL12 (2026-11-02): re-set at bramble 15 (poison 1 2.27 -> 2.38, poison 2 4.35 -> 4.68)",
+   "gain": 0.0726,
+   "worth": {
+    "m": 2.3176,
+    "lo": 2.1715,
+    "hi": 2.5672
+   },
+   "worthStat": {
+    "m": 2.2876,
+    "lo": 2.0376,
+    "hi": 2.5737
+   },
+   "off": false,
+   "offStat": false
+  },
+  {
+   "id": "poison",
+   "n": 2,
+   "key": "poison 2",
+   "price": 4.69,
+   "reason": "damage over time; 32 cards; 3.0 x N^0.7 fitted to the robust skill test (EN5), measured 3.13 (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (poison 1 3 -> 2.27, poison 2 4.87 -> 4.35); BAL12 (2026-11-02): re-set at bramble 15 (poison 1 2.27 -> 2.38, poison 2 4.35 -> 4.68)",
+   "gain": 0.1512,
+   "worth": {
+    "m": 4.8997,
+    "lo": 4.734,
+    "hi": 5.2724
+   },
+   "worthStat": {
+    "m": 4.7643,
+    "lo": 4.2376,
+    "hi": 5.3717
+   },
+   "off": true,
+   "offStat": false
+  },
+  {
+   "id": "pounce",
+   "n": 2,
+   "key": "pounce 2",
+   "price": 2.96,
+   "reason": "an early extra hit; 17 cards; RECOST1 measure 0.76 (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (pounce 2 1.52 -> 2.65); BAL12 (2026-11-02): re-set at bramble 15 (pounce 2 2.67 -> 2.96)",
+   "gain": 0.097,
+   "worth": {
+    "m": 3.144,
+    "lo": 2.8907,
+    "hi": 3.5246
+   },
+   "worthStat": {
+    "m": 3.0571,
+    "lo": 2.6831,
+    "hi": 3.4986
+   },
+   "off": false,
+   "offStat": false
+  },
+  {
+   "id": "quick",
+   "n": true,
+   "key": "quick",
+   "price": 2.23,
+   "reason": "timing (no Wait to act); 16 cards; RECOST1 measure 1.12 (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (quick 1.12 -> 2.02); BAL12 (2026-11-02): re-set at bramble 15 (quick 2.02 -> 2.23)",
+   "gain": 0.0635,
+   "worth": {
+    "m": 2.0275,
+    "lo": 1.8255,
+    "hi": 2.2759
+   },
+   "worthStat": {
+    "m": 2.0013,
+    "lo": 1.7354,
+    "hi": 2.3037
+   },
+   "off": false,
+   "offStat": false
+  },
+  {
+   "id": "rage",
+   "n": true,
+   "key": "rage",
+   "price": 3.01,
+   "reason": "a stat swing on low Health; 8 cards; RECOST1 measure 0.99 (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (rage 0.99 -> 3.5); BAL12 (2026-11-02): re-set at bramble 15 (rage 3.5 -> 3.01)",
+   "gain": 0.0844,
+   "worth": {
+    "m": 2.6954,
+    "lo": 2.5519,
+    "hi": 2.9066
+   },
+   "worthStat": {
+    "m": 2.6605,
+    "lo": 2.3387,
+    "hi": 3.0102
+   },
+   "off": true,
+   "offStat": false
+  },
+  {
+   "id": "regen",
+   "n": 2,
+   "key": "regen 2",
+   "price": 2.9,
+   "reason": "healing a round; 17 cards; RECOST1 measure 0.48 a point (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (regen 2 0.96 -> 3.45); BAL12 (2026-11-02): re-set at bramble 15 (regen 2 3.45 -> 2.91)",
+   "gain": 0.0905,
+   "worth": {
+    "m": 2.9228,
+    "lo": 2.7551,
+    "hi": 3.1735
+   },
+   "worthStat": {
+    "m": 2.8523,
+    "lo": 2.5461,
+    "hi": 3.2186
+   },
+   "off": false,
+   "offStat": false
+  },
+  {
+   "id": "shell",
+   "n": 2,
+   "key": "shell 2",
+   "price": 0.57,
+   "reason": "damage reduction once; 8 cards; RECOST1 measure 0.47 a point (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (shell 2 0.94 -> 2.72); BAL12 (2026-11-02): re-set at bramble 15 (shell 2 2.72 -> 2.26); FIX9 (2026-11-05): the rule changed (Armor N for the round only); re-set from its own measure (shell 2 2.26 -> 0.57)",
+   "gain": 0.0192,
+   "worth": {
+    "m": 0.6212,
+    "lo": 0.4907,
+    "hi": 0.7627
+   },
+   "worthStat": {
+    "m": 0.6041,
+    "lo": 0.4631,
+    "hi": 0.7747
+   },
+   "off": false,
+   "offStat": false
+  },
+  {
+   "id": "sweep",
+   "n": 2,
+   "key": "sweep 2",
+   "price": 5.08,
+   "reason": "area damage (Cleave); 15 cards; RECOST1 measure 0.55 (high); SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (sweep 2 1.1 -> 4.82); BAL12 (2026-11-02): re-set at bramble 15 (sweep 2 4.82 -> 5.08)",
+   "gain": 0.1612,
+   "worth": {
+    "m": 5.2266,
+    "lo": 4.9838,
+    "hi": 5.6675
+   },
+   "worthStat": {
+    "m": 5.0821,
+    "lo": 4.5031,
+    "hi": 5.7605
+   },
+   "off": false,
+   "offStat": false
+  }
+ ],
+ "outside": [
+  "armor 1",
+  "armor 2",
+  "bleed 2",
+  "fork",
+  "onReadyGold 1",
+  "poison 2",
+  "rage"
+ ],
+ "test": {
+  "effects": {
+   "tide": 2
+  },
+  "gain": 0.0185,
+  "worth": {
+   "m": 0.5928,
+   "lo": 0.4523,
+   "hi": 0.7728
+  },
+  "worthRuler": {
+   "m": 0.5502,
+   "lo": 0.391,
+   "hi": 0.8023
+  },
+  "worthStat": {
+   "m": 0.5831,
+   "lo": 0.4243,
+   "hi": 0.7735
+  },
+  "price": 1.5,
+  "net": -0.9498,
+  "verdict": "over-priced",
+  "between": [
+   "shell 2 (0.57)",
+   "quick (2.23)"
+  ]
+ }
+}

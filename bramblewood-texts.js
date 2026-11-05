@@ -2129,8 +2129,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-chrysalis": "A Stem an Evolute Alpha can be played straight onto. The evolute gains +1/+2.",
   "ui.sk-chrysalis-grant": "A Stem an Evolute Alpha can be played straight onto. The evolute gains {skills}.",
   "ui.skn-hatchling": "Hatchling",
-  "ui.sk-hatchling": "A young one an evolute can grow from: an evolute played onto it gains +1/+2. From Level 0.",
-  "ui.sk-hatchling-codex": "Every Baby card has it from Level 0. It only matters when you play an Evomax evolute (Evolute) onto it; it is not the egg's Hatch or Stay.",
+  "ui.sk-hatchling": "An evolute played onto it gains +1/+2. From Level 1.",
+  "ui.sk-hatchling-codex": "Every Baby card gets it at Level 1. It only matters when you play an Evomax evolute (Evolute) onto it; it is not the egg's Hatch or Stay.",
   "ui.evo-stack": "Stack of {n}: {cards}",
   "ui.log-evolve": "🧬 {name} evolves over {base}: now {atk}/{hp}.",
   "ui.evo-pick-base": "Play {name} onto one of your lit units.",
@@ -3295,7 +3295,25 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng24-immunity-codex": "Stops Poison, Greater Poison, Toxin, Decay (and Decay damage's Attack loss), Swamp Fever and Spore Cloud. Poison or decay damage still hurts.",
   "ui.eng24-sequestration-name": "Sequestration",
   "ui.eng24-sequestration": "Its hit steals the target's status skills until the end of next round.",
-  "ui.eng24-sequestration-codex": "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time."
+  "ui.eng24-sequestration-codex": "Status skills: Poison, Bleed, Decay, Sleep, Freeze, Stun, Blind and the like; never shots or damage skills. One steal at a time.",
+  "ui.eng25-tide": "Flood: +{n} Attack. Ebb: +{n} Armor. High Tide: +{h} Attack, +{h} Armor.",
+  "ui.eng25-moonpull": "On arrival the Tide comes in. While it lives, your Tide bonuses double.",
+  "ui.eng25-moonpull-codex": "Flood this round (an Ebb turns to Flood). Two Moonpulls still double once. Tide 2 under it counts 4.",
+  "ui.eng25-regen-codex": "A Level 0 copy has no Regeneration; it arrives at Level 1.",
+  "ui.skn-eng25-immortal": "Immortal",
+  "ui.eng25-immortal": "When it dies, a token copy with Immortal takes its place, Waiting 1 round.",
+  "ui.eng25-immortal-codex": "A copy that dies in the round it came back stays dead. A Nullify kill makes no copy.",
+  "ui.skn-eng25-hydra": "Hydra",
+  "ui.eng25-hydra": "When it dies, two half-size token copies with Hydra appear beside it.",
+  "ui.eng25-hydra-codex": "Attack and Health halve, rounded up; Attack 1 becomes 0. Health 1 makes no copies. Never in its own slot.",
+  "ui.skn-eng25-tribe-delivery": "Tribe Delivery",
+  "ui.eng25-tribe-delivery": "When you play an ally {tribe}, you gain 1 {res}.",
+  "ui.eng25-tribe-delivery-head": "{tribe} Delivery { {res} }",
+  "ui.eng25-tribe-delivery-codex": "Not for itself. Off while it is Waiting, Stunned, Frozen or Asleep.",
+  "ui.eng25-tribe-delivery-res-name": "Tribe Delivery resource",
+  "ui.eng25-act-forage": "Forage",
+  "ui.eng25-act-forage-desc": "The unit gathers N Berries. 3 Berries heal your most hurt other ally 3.",
+  "ui.eng25-foraging": "+{n} Berry each turn. {b} Berries heal your most hurt other ally {h}."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

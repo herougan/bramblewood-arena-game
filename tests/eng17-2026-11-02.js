@@ -130,10 +130,11 @@ const cells = list=> list.map(x=> x.row + ':' + x.slot).join(' ');
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
   const babies = cards.filter(c=> c.kind === 'baby');
   ok(babies.length >= 21, `${babies.length} Baby cards`);
-  const miss = babies.filter(c=> !(c.levelSkills && c.levelSkills['0'] && c.levelSkills['0'].hatchling === true)); // ENG18 (BASELVL-1): Level 0 (was 1)
-  ok(!miss.length, `every Baby card has Hatchling at Level 0 (missing: ${miss.map(c=> c.id).join(', ')})`);
+  // 2026-11-05 (ENG25, owner 23:35 #3: "Hatchling ... It should also only appear at level 1 and up."): Level 1 again (ENG18 had it at 0)
+  const miss = babies.filter(c=> !(c.levelSkills && c.levelSkills['1'] && c.levelSkills['1'].hatchling === true));
+  ok(!miss.length, `every Baby card has Hatchling at Level 1 (missing: ${miss.map(c=> c.id).join(', ')})`);
   ok(babies.every(c=> !(c.effects || {}).hatchling && !(c.effects || {}).fodder), 'no Baby card has Hatchling in its plain effects');
-  ok(babies.every(c=> !((c.levelSkills['1'] || {}).stem) && !((c.levelSkills['1'] || {}).fodder) && !((c.levelSkills['1'] || {}).hatchling)), 'no Baby card keeps Stem / Fodder / Hatchling at Level 1 (Hatchling at Level 0)');
+  ok(babies.every(c=> !((c.levelSkills['1'] || {}).stem) && !((c.levelSkills['1'] || {}).fodder) && !((c.levelSkills['0'] || {}).hatchling)), 'no Baby card keeps Stem / Fodder, nor Hatchling at Level 0 (ENG25: Level 1)');
   ok(cards.filter(c=> c.kind !== 'baby').every(c=> !(c.effects || {}).hatchling && !Object.values(c.levelSkills || {}).some(s=> s && s.hatchling)), 'Hatchling only on Baby cards');
   const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
   const list = sc.skills || sc.entries || Object.values(sc).find(v=> Array.isArray(v)) || [];
@@ -152,19 +153,20 @@ const cells = list=> list.map(x=> x.row + ':' + x.slot).join(' ');
   if(m){
     const f = new Function(m[0] + '; return eng17MigrateHatchling;')();
     const a = f({id: 'x', kind: 'baby', effects: {}, levelSkills: {1: {stem: true}}});
-    ok(a.levelSkills[0].hatchling === true && !a.levelSkills[1], `a Baby's Stem at Level 1 reads as Hatchling at Level 0 (ENG18) (${JSON.stringify(a.levelSkills)})`);
+    ok(a.levelSkills[1].hatchling === true && !a.levelSkills[1].stem && !a.levelSkills[0], `a Baby's Stem at Level 1 reads as Hatchling at Level 1 (ENG25; ENG18 had 0) (${JSON.stringify(a.levelSkills)})`);
     const b = f({id: 'y', effects: {fodder: true}}, {kind: 'baby'});
-    ok(b.effects.hatchling === true && b.effects.fodder === undefined && b.levelSkills[0].hatchling === true, `a fodder key reads as Hatchling (Level 0 on a Baby) (${JSON.stringify(b)})`);
+    ok(b.effects.hatchling === true && b.effects.fodder === undefined && b.levelSkills[1].hatchling === true, `a fodder key reads as Hatchling (Level 1 on a Baby, ENG25) (${JSON.stringify(b)})`);
     const c0 = {id: 'z', kind: 'baby', effects: {flying: true}};
-    const c = f(c0); ok(c.levelSkills[0].hatchling === true && c.effects.flying && c0.levelSkills === undefined, 'a Baby override without it gains Hatchling at Level 0 (no mutation)');
+    const c = f(c0); ok(c.levelSkills[1].hatchling === true && c.effects.flying && c0.levelSkills === undefined, 'a Baby override without it gains Hatchling at Level 1 (ENG25; no mutation)');
     const d0 = {id: 'w', effects: {}, levelSkills: {1: {stem: true}}};
     ok(f(d0) === d0, 'a non-Baby card\'s Stem at Level 1 (the Duckling Squadron) stays a Stem');
     const o1 = f({id: 'u', kind: 'baby', effects: {}, levelSkills: {1: {hatchling: true}}});
-    ok(o1.levelSkills[0].hatchling === true && !o1.levelSkills[1], `ENG18: an older Baby override with Hatchling at Level 1 reads it at Level 0 (${JSON.stringify(o1.levelSkills)})`);
+    ok(o1 === f(o1) || (o1.levelSkills[1].hatchling === true && !o1.levelSkills[0]), `ENG25: a Baby override with Hatchling at Level 1 keeps it there (${JSON.stringify(o1.levelSkills)})`);
     const n1 = f({id: 't', effects: {}, levelSkills: {1: {fodder: true}}});
     ok(n1.levelSkills[1].hatchling === true && !n1.levelSkills[0], 'a non-Baby card\'s Level 1 fodder still reads as Hatchling at Level 1');
-    const e0 = {id: 'v', kind: 'baby', effects: {}, levelSkills: {0: {hatchling: true}}};
-    ok(f(e0) === e0, 'a Baby that already has it is untouched');
+    const e0 = {id: 'v', kind: 'baby', effects: {}, levelSkills: {1: {hatchling: true}}};
+    ok(f(e0) === e0, 'a Baby that already has it (Level 1, ENG25) is untouched');
+    const z0 = f({id: 'q', kind: 'baby', effects: {}, levelSkills: {0: {hatchling: true}}}); ok(z0.levelSkills[1].hatchling === true && !z0.levelSkills[0], 'ENG25: an ENG18 Baby override with Hatchling at Level 0 moves it to Level 1');
   }
   ok(/eng17MigrateHatchling\(liveCards\[id\], CARD_DEFS_BASELINE\[id\]\)/.test(app), 'page: buildCardDefs runs it on the live overrides');
 }

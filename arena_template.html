@@ -1766,6 +1766,8 @@
   .ab-sk.zeit-live{border-radius:999px; padding:0 2px;}
   .ab-sk.zeit-live[data-sk="diurnal"]{background:rgba(255,200,60,.30); box-shadow:0 0 0 1.5px rgba(255,210,90,.95), 0 0 8px rgba(255,200,60,.65);}
   .ab-sk.zeit-live[data-sk="nocturnal"]{background:rgba(90,110,220,.32); box-shadow:0 0 0 1.5px rgba(140,160,255,.9), 0 0 8px rgba(120,140,255,.6);}
+  /* ENG25 (2026-11-05, owner #7): a state skill's chip (Timbered, Bedrock, Tally, Loyal ...) lights gold while its condition holds, as Tide's lights blue */
+  .ab-sk.zeit-live:not([data-sk="diurnal"]):not([data-sk="nocturnal"]){background:rgba(240,190,70,.30); box-shadow:0 0 0 1.5px rgba(250,205,90,.95), 0 0 8px rgba(240,190,70,.65);}
   .ab-tide.tide-live.tide-high{box-shadow:0 0 0 2px #6cc8ff, 0 0 12px #6cc8ff;}
   /* 2026-10-30 (package UI5, W5; owner 21:35): a hand card's Tide / Swimmer chip is out (invisible) while the Tide is out. Drawn or going out: a red flash, then it fades;
      coming in: a green flash while it fades in. Reduced motion / Effects Low / None: no flash, just show / hide. */
