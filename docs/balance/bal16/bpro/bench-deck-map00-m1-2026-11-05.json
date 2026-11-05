@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-11-05T01:22:24.752Z",
- "fingerprint": "6e9febbb2cd5",
+ "generated": "2026-11-05T01:33:13.099Z",
+ "fingerprint": "0dd6941dce05",
  "map": {
   "id": "m1",
   "num": 0,
@@ -125,7 +125,7 @@
   }
  ],
  "apart": 10,
- "seconds": 86,
+ "seconds": 94,
  "games": 6336,
  "decks": [
   {

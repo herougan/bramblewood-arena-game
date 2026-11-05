@@ -1,0 +1,650 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T02:53:12.760Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "m23",
+  "num": 23,
+  "name": "The Goldfeather Siege"
+ },
+ "level": 1,
+ "pool": [
+  "acacia-giraffe",
+  "alley-cat",
+  "badger-trench-digger",
+  "beetle-battering-ram",
+  "bison-bulldozer",
+  "border-collie",
+  "eagle-owl-quartermaster",
+  "hoopoe-herald",
+  "howdah-archers",
+  "lodge-engineer",
+  "marshal-tuskwell",
+  "meerkat-burrower",
+  "mouse-sapper",
+  "pack-mule",
+  "pangolin-roller",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "siege-rhino",
+  "stoat-cutthroat",
+  "testudo-tortoise",
+  "triumvirate",
+  "war-elephant"
+ ],
+ "poolNames": [
+  "Acacia Giraffe",
+  "Alley Cat",
+  "Badger Trench Digger",
+  "Beetle Battering-Ram",
+  "Bison Bulldozer",
+  "Border Collie",
+  "Eagle-Owl Quartermaster",
+  "Hoopoe Herald",
+  "Howdah Archers",
+  "Lodge Engineer",
+  "Marshal Tuskwell",
+  "Meerkat Burrower",
+  "Mouse Sapper",
+  "Pack Mule",
+  "Pangolin Roller",
+  "Pronghorn Racer",
+  "Raccoon Bandit",
+  "Siege Rhino",
+  "Stoat Cutthroat",
+  "Testudo Tortoise",
+  "Triumphvirate",
+  "War Elephant"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bal16-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:23-1",
+   "label": "vs 23-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-2",
+   "label": "vs 23-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-3",
+   "label": "vs 23-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-4",
+   "label": "vs 23-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-5",
+   "label": "vs 23-5 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-6",
+   "label": "vs 23-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-7",
+   "label": "vs 23-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:23-8",
+   "label": "vs 23-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 23-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road23",
+   "label": "vs reference deck (Map 23) under 23-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 23-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "pack-mule",
+    "raccoon-bandit"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:armor",
+   "label": "armor (skill family)",
+   "cards": [
+    "marshal-tuskwell",
+    "pangolin-roller",
+    "testudo-tortoise",
+    "war-elephant"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:night",
+   "label": "night (skill family)",
+   "cards": [
+    "beetle-battering-ram",
+    "meerkat-burrower",
+    "raccoon-bandit"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 2,
+   "games": 1782,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:night",
+   "steps": 6,
+   "moves": 4,
+   "games": 1826,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 4,
+   "moves": 2,
+   "games": 1562,
+   "apartFromEarlier": 16
+  }
+ ],
+ "apart": 10,
+ "seconds": 89,
+ "games": 5698,
+ "decks": [
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (7 resource makers)",
+    "economy x7",
+    "armor x6"
+   ],
+   "deck": {
+    "acacia-giraffe": 4,
+    "pack-mule": 4,
+    "pangolin-roller": 3,
+    "raccoon-bandit": 3,
+    "stoat-cutthroat": 3,
+    "testudo-tortoise": 3
+   },
+   "cards": [
+    {
+     "id": "acacia-giraffe",
+     "name": "Acacia Giraffe",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pangolin-roller",
+     "name": "Pangolin Roller",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "testudo-tortoise",
+     "name": "Testudo Tortoise",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8561,
+   "ci": [
+    0.8194,
+    0.8927
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.15,
+   "curve": {
+    "0": 7,
+    "1": 6,
+    "2": 7
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "economy",
+     "n": 7
+    },
+    {
+     "f": "armor",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:23-1",
+     "label": "vs 23-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-2",
+     "label": "vs 23-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-3",
+     "label": "vs 23-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-4",
+     "label": "vs 23-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-5",
+     "label": "vs 23-5 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-6",
+     "label": "vs 23-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-7",
+     "label": "vs 23-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-8",
+     "label": "vs 23-8 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 23-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "label": "vs reference deck (Map 23) under 23-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 23-3's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "family:night",
+   "labels": [
+    "economy (7 resource makers)",
+    "night x9",
+    "economy x7"
+   ],
+   "deck": {
+    "beetle-battering-ram": 2,
+    "meerkat-burrower": 4,
+    "mouse-sapper": 4,
+    "pack-mule": 4,
+    "raccoon-bandit": 3,
+    "stoat-cutthroat": 3
+   },
+   "cards": [
+    {
+     "id": "meerkat-burrower",
+     "name": "Meerkat Burrower",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "mouse-sapper",
+     "name": "Mouse Sapper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "beetle-battering-ram",
+     "name": "Beetle Battering-Ram",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8106,
+   "ci": [
+    0.7695,
+    0.8517
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "night",
+     "n": 9
+    },
+    {
+     "f": "economy",
+     "n": 7
+    },
+    {
+     "f": "siege",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:23-1",
+     "label": "vs 23-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-2",
+     "label": "vs 23-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-3",
+     "label": "vs 23-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-4",
+     "label": "vs 23-4 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-5",
+     "label": "vs 23-5 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-6",
+     "label": "vs 23-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-7",
+     "label": "vs 23-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-8",
+     "label": "vs 23-8 miniboss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 23-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "label": "vs reference deck (Map 23) under 23-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 23-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 16
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)",
+    "ranged x6"
+   ],
+   "deck": {
+    "alley-cat": 4,
+    "eagle-owl-quartermaster": 3,
+    "hoopoe-herald": 4,
+    "howdah-archers": 3,
+    "pack-mule": 4,
+    "siege-rhino": 2
+   },
+   "cards": [
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "howdah-archers",
+     "name": "Howdah Archers",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "siege-rhino",
+     "name": "Siege Rhino",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8068,
+   "ci": [
+    0.7628,
+    0.8509
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "ranged",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:23-1",
+     "label": "vs 23-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-2",
+     "label": "vs 23-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-3",
+     "label": "vs 23-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-4",
+     "label": "vs 23-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-5",
+     "label": "vs 23-5 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-6",
+     "label": "vs 23-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-7",
+     "label": "vs 23-7 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:23-8",
+     "label": "vs 23-8 miniboss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 23-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "label": "vs reference deck (Map 23) under 23-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 23-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m23 --pool acacia-giraffe,alley-cat,badger-trench-digger,beetle-battering-ram,bison-bulldozer,border-collie,eagle-owl-quartermaster,hoopoe-herald,howdah-archers,lodge-engineer,marshal-tuskwell,meerkat-burrower,mouse-sapper,pack-mule,pangolin-roller,pronghorn-racer,raccoon-bandit,siege-rhino,stoat-cutthroat,testudo-tortoise,triumvirate,war-elephant --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-bpro --focus economy,family:armor,family:night,open --level 1 --mode map-true"
+}

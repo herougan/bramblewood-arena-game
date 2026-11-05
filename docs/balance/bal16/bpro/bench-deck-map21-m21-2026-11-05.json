@@ -1,0 +1,740 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-05T02:49:55.120Z",
+ "fingerprint": "0dd6941dce05",
+ "map": {
+  "id": "m21",
+  "num": 21,
+  "name": "The Quiet Summit"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "alpine-salamander",
+  "alpine-swift",
+  "apollo-butterfly",
+  "ashbone-ghoul",
+  "eagle-sharpshooter",
+  "ember-centipede",
+  "eyrie-warden",
+  "glacier-yak",
+  "golden-eagle-diver",
+  "magma-titan",
+  "mountain-goat-climber",
+  "pack-mule",
+  "peak-condor",
+  "pika-hoarder",
+  "pumice-beetle",
+  "red-billed-chough",
+  "snow-leopard",
+  "snow-owl-sentinel",
+  "talus-pika"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Alpine Salamander",
+  "Alpine Swift",
+  "Apollo Butterfly",
+  "Ashbone Ghoul",
+  "Eagle Sharpshooter",
+  "Ember Centipede",
+  "Eyrie Warden",
+  "Glacier Yak",
+  "Golden Eagle Diver",
+  "Magma Rhino",
+  "Mountain Goat Climber",
+  "Pack Mule",
+  "Peak Condor",
+  "Pika Hoarder",
+  "Pumice Beetle",
+  "Red-billed Chough",
+  "Snow Leopard",
+  "Snow Owl Sentinel",
+  "Talus Pika"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bal16-bpro",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:21-1",
+   "label": "vs 21-1 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:21-2",
+   "label": "vs 21-2 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:21-3",
+   "label": "vs 21-3 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:21-4",
+   "label": "vs 21-4 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:21-5",
+   "label": "vs 21-5 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:21-6",
+   "label": "vs 21-6 miniboss's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 21-1's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:road21",
+   "label": "vs reference deck (Map 21) under 21-2's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 21-3's field",
+   "weight": 0.1111
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "pack-mule",
+    "pumice-beetle"
+   ],
+   "need": 6
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "alpine-swift",
+    "apollo-butterfly",
+    "eagle-sharpshooter",
+    "eyrie-warden",
+    "golden-eagle-diver",
+    "peak-condor",
+    "red-billed-chough",
+    "snow-owl-sentinel"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:strike-first",
+   "label": "strike-first (skill family)",
+   "cards": [
+    "alpine-swift",
+    "ember-centipede",
+    "golden-eagle-diver"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 2,
+   "games": 1728,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "family:flying",
+   "steps": 6,
+   "moves": 3,
+   "games": 1512,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:strike-first",
+   "steps": 7,
+   "moves": 6,
+   "games": 1764,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 3,
+   "games": 1764,
+   "apartFromEarlier": 13
+  }
+ ],
+ "apart": 10,
+ "seconds": 127,
+ "games": 7344,
+ "decks": [
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "strike-first x8",
+    "flying x8"
+   ],
+   "deck": {
+    "alpine-marmot": 3,
+    "alpine-swift": 4,
+    "golden-eagle-diver": 4,
+    "pack-mule": 3,
+    "pika-hoarder": 4,
+    "snow-leopard": 2
+   },
+   "cards": [
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snow-leopard",
+     "name": "Snow Leopard",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7361,
+   "ci": [
+    0.6869,
+    0.7853
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "strike-first",
+     "n": 8
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:21-1",
+     "label": "vs 21-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-2",
+     "label": "vs 21-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-3",
+     "label": "vs 21-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-4",
+     "label": "vs 21-4 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-5",
+     "label": "vs 21-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-6",
+     "label": "vs 21-6 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 21-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 21-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 21-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "economy (8 resource makers)"
+   ],
+   "deck": {
+    "alpine-marmot": 3,
+    "alpine-salamander": 1,
+    "mountain-goat-climber": 4,
+    "pack-mule": 4,
+    "pika-hoarder": 4,
+    "pumice-beetle": 4
+   },
+   "cards": [
+    {
+     "id": "mountain-goat-climber",
+     "name": "Mountain Goat Climber",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7176,
+   "ci": [
+    0.6693,
+    0.7658
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 8,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:21-1",
+     "label": "vs 21-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-2",
+     "label": "vs 21-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-3",
+     "label": "vs 21-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-4",
+     "label": "vs 21-4 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-5",
+     "label": "vs 21-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-6",
+     "label": "vs 21-6 miniboss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 21-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 21-2's field",
+     "p": 0.0833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 21-3's field",
+     "p": 0.4583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "flying x9",
+    "ranged x8"
+   ],
+   "deck": {
+    "alpine-marmot": 3,
+    "ashbone-ghoul": 4,
+    "eagle-sharpshooter": 4,
+    "eyrie-warden": 1,
+    "peak-condor": 4,
+    "pika-hoarder": 4
+   },
+   "cards": [
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-sharpshooter",
+     "name": "Eagle Sharpshooter",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "peak-condor",
+     "name": "Peak Condor",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eyrie-warden",
+     "name": "Eyrie Warden",
+     "copies": 1,
+     "cost": 3,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6713,
+   "ci": [
+    0.6167,
+    0.7259
+   ],
+   "avgLumber": 0.75,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 11,
+    "1": 4,
+    "2": 4,
+    "3": 1
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 9
+    },
+    {
+     "f": "ranged",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:21-1",
+     "label": "vs 21-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-2",
+     "label": "vs 21-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-3",
+     "label": "vs 21-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-4",
+     "label": "vs 21-4 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-5",
+     "label": "vs 21-5 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-6",
+     "label": "vs 21-6 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 21-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 21-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 21-3's field",
+     "p": 0.5417,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "family:strike-first",
+   "labels": [
+    "flying x12",
+    "strike-first x8"
+   ],
+   "deck": {
+    "alpine-marmot": 1,
+    "alpine-swift": 4,
+    "apollo-butterfly": 4,
+    "golden-eagle-diver": 4,
+    "pumice-beetle": 3,
+    "talus-pika": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-swift",
+     "name": "Alpine Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6389,
+   "ci": [
+    0.5827,
+    0.6951
+   ],
+   "avgLumber": 0.35,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 13,
+    "1": 7
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "flying",
+     "n": 12
+    },
+    {
+     "f": "strike-first",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:21-1",
+     "label": "vs 21-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-2",
+     "label": "vs 21-2 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-3",
+     "label": "vs 21-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-4",
+     "label": "vs 21-4 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-5",
+     "label": "vs 21-5 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:21-6",
+     "label": "vs 21-6 miniboss's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 21-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 21-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 21-3's field",
+     "p": 0.4167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 19
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m21 --pool alpine-marmot,alpine-salamander,alpine-swift,apollo-butterfly,ashbone-ghoul,eagle-sharpshooter,ember-centipede,eyrie-warden,glacier-yak,golden-eagle-diver,magma-titan,mountain-goat-climber,pack-mule,peak-condor,pika-hoarder,pumice-beetle,red-billed-chough,snow-leopard,snow-owl-sentinel,talus-pika --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bal16-bpro --focus economy,family:flying,family:strike-first,open --level 1 --mode map-true"
+}
