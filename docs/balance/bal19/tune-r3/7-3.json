@@ -1,0 +1,88 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "7-3",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "skirmish",
+ "name": "Web Hollow",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "dung-beetle",
+  "earthworm",
+  "fungal-colossus",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "honey-bee",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "worker-ant"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "fungal-colossus"
+ ],
+ "namesake": false,
+ "shieldRule": 7,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "fungal-colossus": 2,
+   "garden-snail": 1,
+   "hawthorn-shieldbug": 3,
+   "honey-bee": 1,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 4
+  },
+  "leaders": [
+   "fungal-colossus"
+  ],
+  "shieldOverride": null,
+  "win200": 93,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "garden-snail": 1,
+   "hawthorn-shieldbug": 3,
+   "honey-bee": 1,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 4,
+   "dung-beetle": 2
+  },
+  "leaders": [
+   "dung-beetle"
+  ],
+  "shieldOverride": null,
+  "win200": 77.5,
+  "shown": 4,
+  "tune60": 78.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 95,
+   "hpLost": 14.4
+  },
+  {
+   "move": "leader fungal-colossus -> dung-beetle",
+   "win": 90,
+   "hpLost": 32.3,
+   "trials": 32
+  },
+  {
+   "move": "fungal-colossus -2 -> dung-beetle",
+   "win": 78.3,
+   "hpLost": 45.3,
+   "trials": 23
+  }
+ ],
+ "trials": 64,
+ "sec": 55
+}

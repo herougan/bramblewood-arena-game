@@ -1,0 +1,99 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "19-A-8",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "elite",
+ "name": "Titan's Shadow",
+ "band": {
+  "lo": 55.800000000000004,
+  "hi": 71.8,
+  "target": 63.800000000000004
+ },
+ "list": [
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "beaver-lumberjack",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "phoenix-fledgling",
+  "quill-volley",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 2,
+ "leaders": [
+  "tide-spirit"
+ ],
+ "namesake": false,
+ "shieldRule": 35,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ash-cloud-condor": 1,
+   "ashbone-ghoul": 1,
+   "beaver-lumberjack": 5,
+   "cinder-gecko": 1,
+   "cinder-stoker": 5,
+   "ember-jackal": 1,
+   "phoenix-fledgling": 1,
+   "quill-volley": 3,
+   "tide-spirit": 1
+  },
+  "leaders": [
+   "tide-spirit"
+  ],
+  "shieldOverride": null,
+  "win200": 7,
+  "shown": 18
+ },
+ "pick": {
+  "deck": {
+   "ash-cloud-condor": 1,
+   "ashbone-ghoul": 1,
+   "beaver-lumberjack": 5,
+   "cinder-gecko": 1,
+   "cinder-stoker": 3,
+   "phoenix-fledgling": 3,
+   "quill-volley": 3,
+   "tide-spirit": 2
+  },
+  "leaders": [
+   "tide-spirit"
+  ],
+  "shieldOverride": 8,
+  "win200": 23,
+  "shown": 4,
+  "tune60": 25.8
+ },
+ "keep": true,
+ "k14After": 2,
+ "trail": [
+  {
+   "move": "start",
+   "win": 5,
+   "hpLost": 98.2
+  },
+  {
+   "move": "ember-jackal -1 -> tide-spirit",
+   "win": 14.2,
+   "hpLost": 94.4,
+   "trials": 32
+  },
+  {
+   "move": "cinder-stoker -2 -> phoenix-fledgling",
+   "win": 21.7,
+   "hpLost": 91.4,
+   "trials": 32
+  },
+  {
+   "move": "shield 35 -> 8",
+   "win": 25.8,
+   "hpLost": 88.8,
+   "trials": 38
+  }
+ ],
+ "trials": 140,
+ "sec": 89
+}

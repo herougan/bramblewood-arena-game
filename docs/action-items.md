@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-06: Package BAL19 (on its branch, not released)
+- Done: road retune after CONTENT12's fold, 55 fights (decks, leaders, Shield; BAL19-1). Road 86 -> 115 in band, 61 -> 26 beyond 20 (docs/balance/bal19-2026-11-06.md).
+- Owner calls open: BAL19-2 (The Canopy and Savanna Reaches: Acacia Kraal), BAL19-3 (7-6, 8-8, 1-3, 1-4 too easy, no stronger list card).
+- Next: balance summary with leaders (`tools/bal13/summary_2026_11_02.js --road bal19-final`) at the batch release; the PRO / BPRO decks were not re-baked (no card changed).
+
 ## 11-06: Package CONTENT12 (on its branch, not released)
 - Done: CONTENT11-1..4, ENG22-1, FIX9-1, DELIV-1, BAL16-2/3/4, BAL18-1, CONTENT10-2 (see docs/CHANGELOG.md).
 - Owner calls open: CONTENT12-1 (your live cards over budget as set; Old Sturgeon / Ant Warrior / Fire Ant Raft skills), CONTENT12-2 (2-A-7 still 68%, a K14 exception?), CONTENT12-4 "apply it" (supabase/proposed/20261106_clear_folded_overrides_4.sql).

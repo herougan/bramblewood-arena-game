@@ -1,0 +1,87 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "15-4",
+ "map": "ml",
+ "mapName": "The Long Grass",
+ "kind": "skirmish",
+ "name": "Archer Hill",
+ "band": {
+  "lo": 64,
+  "hi": 80,
+  "target": 72
+ },
+ "list": [
+  "bison-bulldozer",
+  "carrion-crow",
+  "cataphract-destrier",
+  "hedge-weasel",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "shepherds-bark",
+  "slow-worm",
+  "stoat-cutthroat",
+  "swift-fox",
+  "talon-archer",
+  "thorn-shrike"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "cataphract-destrier"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "cataphract-destrier": 4,
+   "bison-bulldozer": 4,
+   "stoat-cutthroat": 2,
+   "talon-archer": 2,
+   "hedge-weasel": 1,
+   "shepherds-bark": 3,
+   "raccoon-bandit": 1
+  },
+  "leaders": [
+   "cataphract-destrier"
+  ],
+  "shieldOverride": null,
+  "win200": 88,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "cataphract-destrier": 4,
+   "bison-bulldozer": 4,
+   "stoat-cutthroat": 2,
+   "talon-archer": 2,
+   "hedge-weasel": 1,
+   "shepherds-bark": 3,
+   "raccoon-bandit": 1
+  },
+  "leaders": [
+   "talon-archer"
+  ],
+  "shieldOverride": null,
+  "win200": 74,
+  "shown": 8,
+  "tune60": 69.2
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 85,
+   "hpLost": 30.2
+  },
+  {
+   "move": "leader cataphract-destrier -> talon-archer",
+   "win": 69.2,
+   "hpLost": 45.7,
+   "trials": 50
+  }
+ ],
+ "trials": 55,
+ "sec": 33
+}

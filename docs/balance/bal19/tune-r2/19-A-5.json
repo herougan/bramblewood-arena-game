@@ -1,0 +1,81 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "19-A-5",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "skirmish",
+ "name": "Ashfall Line",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "anvilwhisker-otter",
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "ore-smelter-mole",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "ashbone-ghoul"
+ ],
+ "namesake": false,
+ "shieldRule": 23,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ore-smelter-mole": 1,
+   "phoenix-fledgling": 5,
+   "ember-jackal": 1,
+   "anvilwhisker-otter": 3,
+   "cinder-stoker": 1,
+   "tide-spirit": 1
+  },
+  "leaders": [
+   "ashbone-ghoul"
+  ],
+  "shieldOverride": null,
+  "win200": 64.5,
+  "shown": 12
+ },
+ "pick": {
+  "deck": {
+   "ore-smelter-mole": 1,
+   "phoenix-fledgling": 5,
+   "ember-jackal": 1,
+   "anvilwhisker-otter": 3,
+   "cinder-stoker": 1,
+   "ashbone-ghoul": 1
+  },
+  "leaders": [
+   "ashbone-ghoul"
+  ],
+  "shieldOverride": null,
+  "win200": 75.5,
+  "shown": 12,
+  "tune60": 75.8
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 65,
+   "hpLost": 56.1
+  },
+  {
+   "move": "tide-spirit -1 -> ashbone-ghoul",
+   "win": 75.8,
+   "hpLost": 49.4,
+   "trials": 34
+  }
+ ],
+ "trials": 39,
+ "sec": 32
+}

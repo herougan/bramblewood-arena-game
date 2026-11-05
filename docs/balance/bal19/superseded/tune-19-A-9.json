@@ -1,0 +1,95 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "19-A-9",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "elite",
+ "name": "The Pyroclast Wyrm",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "anvilwhisker-otter",
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "magma-salamander",
+  "ore-smelter-mole",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "magma-salamander"
+ ],
+ "namesake": false,
+ "shieldRule": 35,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ember-jackal": 1,
+   "phoenix-fledgling": 5,
+   "anvilwhisker-otter": 1,
+   "ore-smelter-mole": 1,
+   "cinder-stoker": 3,
+   "ashbone-ghoul": 1,
+   "magma-salamander": 2
+  },
+  "leaders": [
+   "magma-salamander"
+  ],
+  "shieldOverride": null,
+  "win200": 2,
+  "shown": 18
+ },
+ "pick": {
+  "deck": {
+   "ember-jackal": 1,
+   "phoenix-fledgling": 5,
+   "anvilwhisker-otter": 4,
+   "ore-smelter-mole": 1,
+   "ashbone-ghoul": 1,
+   "magma-salamander": 2
+  },
+  "leaders": [
+   "ashbone-ghoul"
+  ],
+  "shieldOverride": 0,
+  "win200": 56,
+  "shown": 0,
+  "tune60": 62.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 2.5,
+   "hpLost": 99.1
+  },
+  {
+   "move": "leader magma-salamander -> ashbone-ghoul",
+   "win": 15.8,
+   "hpLost": 95.1,
+   "trials": 42
+  },
+  {
+   "move": "cinder-stoker -3 -> anvilwhisker-otter",
+   "win": 50.8,
+   "hpLost": 75.5,
+   "trials": 34
+  },
+  {
+   "move": "shield 35 -> 0",
+   "win": 62.5,
+   "hpLost": 64.1,
+   "trials": 26
+  }
+ ],
+ "trials": 112,
+ "sec": 63
+}

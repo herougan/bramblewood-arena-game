@@ -1,0 +1,78 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "0-2",
+ "map": "m1",
+ "mapName": "Bramblewood Outskirts",
+ "kind": "skirmish",
+ "name": "Thicket Swarm",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "ant-scout",
+  "beaver-lumberjack",
+  "bee-forager",
+  "bee-sentry",
+  "chipmunk-forager",
+  "cottontail",
+  "duck-paddler",
+  "earthworm",
+  "silver-minnow",
+  "soldier-ant",
+  "worker-ant"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 0,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ant-scout": 4,
+   "soldier-ant": 4,
+   "duck-paddler": 2,
+   "bee-sentry": 3,
+   "bee-forager": 5,
+   "cottontail": 2
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 67,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "ant-scout": 4,
+   "soldier-ant": 4,
+   "duck-paddler": 2,
+   "bee-sentry": 1,
+   "bee-forager": 5,
+   "cottontail": 4
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 76,
+  "shown": 0,
+  "tune60": 74.2
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 65.8,
+   "hpLost": 54.4
+  },
+  {
+   "move": "bee-sentry -2 -> cottontail",
+   "win": 74.2,
+   "hpLost": 43.1,
+   "trials": 50
+  }
+ ],
+ "trials": 55,
+ "sec": 26
+}

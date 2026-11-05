@@ -1,0 +1,93 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "19-A-1",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "skirmish",
+ "name": "Cinder Swarm",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "anvilwhisker-otter",
+  "ashbone-ghoul",
+  "beaver-lumberjack",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "ore-smelter-mole",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 1,
+ "leaders": [
+  "ember-jackal"
+ ],
+ "namesake": false,
+ "shieldRule": 23,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "beaver-lumberjack": 3,
+   "phoenix-fledgling": 5,
+   "ember-jackal": 1,
+   "cinder-stoker": 3,
+   "ore-smelter-mole": 1,
+   "anvilwhisker-otter": 1
+  },
+  "leaders": [
+   "ember-jackal"
+  ],
+  "shieldOverride": null,
+  "win200": 14.5,
+  "shown": 12
+ },
+ "pick": {
+  "deck": {
+   "beaver-lumberjack": 3,
+   "phoenix-fledgling": 5,
+   "cinder-stoker": 1,
+   "anvilwhisker-otter": 4,
+   "ashbone-ghoul": 1
+  },
+  "leaders": [
+   "ember-jackal"
+  ],
+  "shieldOverride": null,
+  "win200": 84.5,
+  "shown": 12,
+  "tune60": 89.2
+ },
+ "keep": true,
+ "k14After": 1,
+ "trail": [
+  {
+   "move": "start",
+   "win": 10,
+   "hpLost": 94.6
+  },
+  {
+   "move": "ember-jackal -1 -> anvilwhisker-otter",
+   "win": 36.7,
+   "hpLost": 80.3,
+   "trials": 45
+  },
+  {
+   "move": "ore-smelter-mole -1 -> ashbone-ghoul",
+   "win": 54.2,
+   "hpLost": 65.3,
+   "trials": 48
+  },
+  {
+   "move": "cinder-stoker -2 -> anvilwhisker-otter",
+   "win": 89.2,
+   "hpLost": 38.9,
+   "trials": 48
+  }
+ ],
+ "trials": 136,
+ "sec": 80
+}

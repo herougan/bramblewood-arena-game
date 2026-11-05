@@ -1,0 +1,81 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "17-3",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "skirmish",
+ "name": "Snowshoe Line",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "mountain-hare",
+  "polar-bear",
+  "snow-bunting-archer",
+  "snow-ermine"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "polar-bear"
+ ],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "alpha-howler": 1,
+   "beluga": 2,
+   "harbor-seal": 5,
+   "polar-bear": 2,
+   "snow-ermine": 3
+  },
+  "leaders": [
+   "polar-bear"
+  ],
+  "shieldOverride": null,
+  "win200": 73,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "alpha-howler": 1,
+   "beluga": 1,
+   "harbor-seal": 5,
+   "polar-bear": 2,
+   "snow-ermine": 3,
+   "snow-bunting-archer": 1
+  },
+  "leaders": [
+   "polar-bear"
+  ],
+  "shieldOverride": null,
+  "win200": 79.5,
+  "shown": 9,
+  "tune60": 78.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 68.3,
+   "hpLost": 57.1
+  },
+  {
+   "move": "beluga -1 -> snow-bunting-archer",
+   "win": 78.3,
+   "hpLost": 56.1,
+   "trials": 44
+  }
+ ],
+ "trials": 49,
+ "sec": 44
+}

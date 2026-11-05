@@ -1,0 +1,89 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "7-6",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "miniboss",
+ "name": "The Morel Monarch",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "cane-toad",
+  "corpse-flower-beetle",
+  "dung-beetle",
+  "earthworm",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "wolf-spider-mother",
+  "worker-ant"
+ ],
+ "firstClear": [
+  "wolf-spider-mother"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "wolf-spider-mother"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": 18,
+ "before": {
+  "deck": {
+   "wolf-spider-mother": 1,
+   "leafcutter-gardener": 5,
+   "worker-ant": 1,
+   "garden-snail": 1,
+   "hawthorn-shieldbug": 3,
+   "cane-toad": 1,
+   "dung-beetle": 4,
+   "planarian-splitter": 3
+  },
+  "leaders": [
+   "wolf-spider-mother"
+  ],
+  "shieldOverride": 18,
+  "win200": 57.5,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "wolf-spider-mother": 1,
+   "leafcutter-gardener": 5,
+   "worker-ant": 1,
+   "hawthorn-shieldbug": 3,
+   "cane-toad": 1,
+   "dung-beetle": 4,
+   "planarian-splitter": 3,
+   "earthworm": 1
+  },
+  "leaders": [
+   "wolf-spider-mother"
+  ],
+  "shieldOverride": 18,
+  "win200": 57,
+  "shown": 9,
+  "tune60": 45
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 47.5,
+   "hpLost": 72.3
+  },
+  {
+   "move": "garden-snail -1 -> earthworm",
+   "win": 45,
+   "hpLost": 77.1,
+   "trials": 38
+  }
+ ],
+ "trials": 77,
+ "sec": 64
+}

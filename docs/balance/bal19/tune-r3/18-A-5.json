@@ -1,0 +1,79 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "18-A-5",
+ "map": "mpd",
+ "mapName": "The Pale Desert",
+ "kind": "skirmish",
+ "name": "Vulture Road",
+ "band": {
+  "lo": 64.9,
+  "hi": 80.89999999999999,
+  "target": 72.89999999999999
+ },
+ "list": [
+  "dromedary",
+  "dune-packrat",
+  "dust-hyena",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "skull-vulture",
+  "trapdoor-spider"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "trapdoor-spider"
+ ],
+ "namesake": false,
+ "shieldRule": 19,
+ "shieldOverride": 60,
+ "before": {
+  "deck": {
+   "trapdoor-spider": 2,
+   "dromedary": 4,
+   "skull-vulture": 4,
+   "sand-widow": 5,
+   "sandfish": 3
+  },
+  "leaders": [
+   "trapdoor-spider"
+  ],
+  "shieldOverride": 60,
+  "win200": 41,
+  "shown": 30
+ },
+ "pick": {
+  "deck": {
+   "dromedary": 4,
+   "skull-vulture": 4,
+   "sand-widow": 5,
+   "sandfish": 3,
+   "roadrunner-courier": 2
+  },
+  "leaders": [
+   "trapdoor-spider"
+  ],
+  "shieldOverride": 60,
+  "win200": 65.5,
+  "shown": 30,
+  "tune60": 69.2
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 46.7,
+   "hpLost": 73.6
+  },
+  {
+   "move": "trapdoor-spider -2 -> roadrunner-courier",
+   "win": 69.2,
+   "hpLost": 54,
+   "trials": 45
+  }
+ ],
+ "trials": 50,
+ "sec": 43
+}

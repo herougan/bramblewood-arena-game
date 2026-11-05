@@ -1,0 +1,74 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "17-1",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "skirmish",
+ "name": "Ice Fang Patrol",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "mountain-hare",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "beluga"
+ ],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "beluga": 3,
+   "snow-bunting-archer": 1,
+   "harbor-seal": 5,
+   "spitting-spider": 4,
+   "alpha-howler": 1
+  },
+  "leaders": [
+   "beluga"
+  ],
+  "shieldOverride": null,
+  "win200": 82.5,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "beluga": 3,
+   "snow-bunting-archer": 1,
+   "harbor-seal": 5,
+   "spitting-spider": 4,
+   "alpha-howler": 1
+  },
+  "leaders": [
+   "beluga"
+  ],
+  "shieldOverride": null,
+  "win200": 82.5,
+  "shown": 9,
+  "tune60": 88.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 88.3,
+   "hpLost": 31.8
+  }
+ ],
+ "trials": 1,
+ "sec": 8
+}

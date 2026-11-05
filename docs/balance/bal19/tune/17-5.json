@@ -1,0 +1,81 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "17-5",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "elite",
+ "name": "Musk Ox Bulwark",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "mountain-hare",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "walrus-icebreaker"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "walrus-icebreaker"
+ ],
+ "namesake": false,
+ "shieldRule": 26,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "walrus-icebreaker": 1,
+   "harbor-seal": 5,
+   "alpha-howler": 1,
+   "snow-bunting-archer": 4,
+   "spitting-spider": 4
+  },
+  "leaders": [
+   "walrus-icebreaker"
+  ],
+  "shieldOverride": null,
+  "win200": 21.5,
+  "shown": 13
+ },
+ "pick": {
+  "deck": {
+   "walrus-icebreaker": 1,
+   "harbor-seal": 5,
+   "alpha-howler": 1,
+   "snow-bunting-archer": 4,
+   "spitting-spider": 4
+  },
+  "leaders": [
+   "alpha-howler"
+  ],
+  "shieldOverride": null,
+  "win200": 63.5,
+  "shown": 13,
+  "tune60": 68.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 23.3,
+   "hpLost": 90.3
+  },
+  {
+   "move": "leader walrus-icebreaker -> alpha-howler",
+   "win": 68.3,
+   "hpLost": 51.1,
+   "trials": 49
+  }
+ ],
+ "trials": 54,
+ "sec": 51
+}

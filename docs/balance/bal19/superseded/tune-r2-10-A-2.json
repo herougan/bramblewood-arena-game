@@ -1,0 +1,86 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "10-A-2",
+ "map": "mj",
+ "mapName": "The Sunken Depths",
+ "kind": "skirmish",
+ "name": "The Drowned Deck",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "clownfish-scout",
+  "coral-polyp-colony",
+  "coral-reef-shark",
+  "hagfish-silencer",
+  "kraken-spawnling",
+  "nudibranch",
+  "orca-vanguard",
+  "parrotfish",
+  "riptide-eel"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "coral-reef-shark"
+ ],
+ "namesake": false,
+ "shieldRule": 11,
+ "shieldOverride": 3,
+ "before": {
+  "deck": {
+   "coral-reef-shark": 4,
+   "orca-vanguard": 4,
+   "riptide-eel": 1,
+   "kraken-spawnling": 2,
+   "hagfish-silencer": 1
+  },
+  "leaders": [
+   "coral-reef-shark"
+  ],
+  "shieldOverride": 3,
+  "win200": 66.5,
+  "shown": 2
+ },
+ "pick": {
+  "deck": {
+   "orca-vanguard": 4,
+   "riptide-eel": 1,
+   "kraken-spawnling": 2,
+   "hagfish-silencer": 1,
+   "nudibranch": 4
+  },
+  "leaders": [
+   "kraken-spawnling"
+  ],
+  "shieldOverride": 3,
+  "win200": 70.5,
+  "shown": 2,
+  "tune60": 80.8
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 72.5,
+   "hpLost": 48.9
+  },
+  {
+   "move": "leader coral-reef-shark -> kraken-spawnling",
+   "win": 75.8,
+   "hpLost": 45.6,
+   "trials": 66
+  },
+  {
+   "move": "coral-reef-shark -4 -> nudibranch",
+   "win": 80.8,
+   "hpLost": 41.2,
+   "trials": 57
+  }
+ ],
+ "trials": 132,
+ "sec": 63
+}

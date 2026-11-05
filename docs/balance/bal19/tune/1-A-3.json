@@ -1,0 +1,74 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "1-A-3",
+ "map": "mq",
+ "mapName": "Clovermead",
+ "kind": "skirmish",
+ "name": "Puddle Hop",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "ant-hill",
+  "ant-scout",
+  "bee-forager",
+  "bramble-sprout",
+  "cottontail",
+  "field-mouse",
+  "field-vole",
+  "harvest-mouse",
+  "hedgerow-shrew",
+  "honey-bee",
+  "meadow-rabbit",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "bramble-sprout": 3,
+   "field-vole": 2,
+   "harvest-mouse": 1,
+   "honey-bee": 1,
+   "ant-scout": 1,
+   "hedgerow-shrew": 2
+  },
+  "leaders": [],
+  "shieldOverride": 0,
+  "win200": 73,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "bramble-sprout": 3,
+   "field-vole": 2,
+   "harvest-mouse": 1,
+   "honey-bee": 1,
+   "ant-scout": 1,
+   "hedgerow-shrew": 2
+  },
+  "leaders": [],
+  "shieldOverride": 0,
+  "win200": 73,
+  "shown": 0,
+  "tune60": 79.2
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 79.2,
+   "hpLost": 58.8
+  }
+ ],
+ "trials": 56,
+ "sec": 47
+}

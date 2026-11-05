@@ -1,0 +1,101 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "19-A-10",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "boss",
+ "name": "The Phoenix Ember King",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "beaver-lumberjack",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "ember-revenant",
+  "fire-salamander",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [
+  "ember-revenant"
+ ],
+ "k14Before": 1,
+ "leaders": [
+  "ember-jackal"
+ ],
+ "namesake": true,
+ "shieldRule": 69,
+ "shieldOverride": 87,
+ "before": {
+  "deck": {
+   "ash-cloud-condor": 1,
+   "ashbone-ghoul": 1,
+   "fire-salamander": 4,
+   "cinder-gecko": 1,
+   "cinder-stoker": 5,
+   "ember-jackal": 1,
+   "beaver-lumberjack": 3,
+   "phoenix-fledgling": 3
+  },
+  "leaders": [
+   "ember-jackal"
+  ],
+  "shieldOverride": 87,
+  "win200": 7,
+  "shown": 44
+ },
+ "pick": {
+  "deck": {
+   "ash-cloud-condor": 1,
+   "ashbone-ghoul": 1,
+   "fire-salamander": 4,
+   "cinder-gecko": 1,
+   "cinder-stoker": 3,
+   "beaver-lumberjack": 3,
+   "phoenix-fledgling": 4,
+   "ember-revenant": 2
+  },
+  "leaders": [
+   "ember-jackal"
+  ],
+  "shieldOverride": 0,
+  "win200": 29,
+  "shown": 0,
+  "tune60": 34.2
+ },
+ "keep": true,
+ "k14After": 1,
+ "trail": [
+  {
+   "move": "start",
+   "win": 5.8,
+   "hpLost": 97.6
+  },
+  {
+   "move": "ember-jackal -1 -> phoenix-fledgling",
+   "win": 14.2,
+   "hpLost": 92.4,
+   "trials": 26
+  },
+  {
+   "move": "shield 87 -> 0",
+   "win": 26.7,
+   "hpLost": 86.1,
+   "trials": 31
+  },
+  {
+   "move": "cinder-stoker -2 -> ember-revenant",
+   "win": 34.2,
+   "hpLost": 82.4,
+   "trials": 27
+  }
+ ],
+ "trials": 102,
+ "sec": 61
+}

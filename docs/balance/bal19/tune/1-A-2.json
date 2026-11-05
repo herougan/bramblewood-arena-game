@@ -1,0 +1,92 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "1-A-2",
+ "map": "mq",
+ "mapName": "Clovermead",
+ "kind": "skirmish",
+ "name": "Bee Lines",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "ant-hill",
+  "ant-scout",
+  "bee-forager",
+  "bramble-sprout",
+  "cottontail",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "meadow-rabbit",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "meadow-rabbit": 1,
+   "field-vole": 5,
+   "cottontail": 1,
+   "ant-scout": 1,
+   "bee-forager": 1,
+   "woodcock-lookout": 5,
+   "bramble-sprout": 5
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 63.5,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "meadow-rabbit": 1,
+   "field-vole": 5,
+   "bee-forager": 1,
+   "woodcock-lookout": 5,
+   "bramble-sprout": 5,
+   "slow-worm": 1,
+   "ant-scout": 1
+  },
+  "leaders": [],
+  "shieldOverride": 0,
+  "win200": 79,
+  "shown": 0,
+  "tune60": 79.2
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 55.8,
+   "hpLost": 67.1
+  },
+  {
+   "move": "ant-scout -1 -> slow-worm",
+   "win": 65.8,
+   "hpLost": 58.8,
+   "trials": 20
+  },
+  {
+   "move": "shield 12 -> 0",
+   "win": 75.8,
+   "hpLost": 52.1,
+   "trials": 29
+  },
+  {
+   "move": "cottontail -1 -> ant-scout",
+   "win": 79.2,
+   "hpLost": 48.9,
+   "trials": 25
+  }
+ ],
+ "trials": 79,
+ "sec": 96
+}

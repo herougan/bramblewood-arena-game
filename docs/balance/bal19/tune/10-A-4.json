@@ -1,0 +1,93 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "10-A-4",
+ "map": "mj",
+ "mapName": "The Sunken Depths",
+ "kind": "elite",
+ "name": "The Undertow",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "clownfish-scout",
+  "coral-polyp-colony",
+  "coral-reef-shark",
+  "hagfish-silencer",
+  "kraken-spawnling",
+  "mangrove-manatee",
+  "nautilus-drifter",
+  "nudibranch",
+  "orca-vanguard",
+  "parrotfish",
+  "riptide-eel"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "mangrove-manatee"
+ ],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": 12,
+ "before": {
+  "deck": {
+   "mangrove-manatee": 1,
+   "hagfish-silencer": 3,
+   "orca-vanguard": 4,
+   "kraken-spawnling": 4
+  },
+  "leaders": [
+   "mangrove-manatee"
+  ],
+  "shieldOverride": 12,
+  "win200": 13.5,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "hagfish-silencer": 1,
+   "orca-vanguard": 4,
+   "kraken-spawnling": 4,
+   "nudibranch": 2,
+   "coral-reef-shark": 1
+  },
+  "leaders": [
+   "mangrove-manatee"
+  ],
+  "shieldOverride": 12,
+  "win200": 51,
+  "shown": 6,
+  "tune60": 60
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 18.3,
+   "hpLost": 86.7
+  },
+  {
+   "move": "mangrove-manatee -1 -> nudibranch",
+   "win": 51.7,
+   "hpLost": 67.7,
+   "trials": 84
+  },
+  {
+   "move": "hagfish-silencer -2 -> coral-reef-shark",
+   "win": 65,
+   "hpLost": 59.9,
+   "trials": 82
+  },
+  {
+   "move": "coral-reef-shark -1 -> nudibranch",
+   "win": 60,
+   "hpLost": 61.9,
+   "trials": 85
+  }
+ ],
+ "trials": 242,
+ "sec": 102
+}

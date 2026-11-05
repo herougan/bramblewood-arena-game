@@ -1,0 +1,95 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "17-4",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "skirmish",
+ "name": "Lynx Ambush",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "mountain-hare",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "walrus-icebreaker"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "walrus-icebreaker"
+ ],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "walrus-icebreaker": 2,
+   "spitting-spider": 4,
+   "harbor-seal": 5,
+   "snow-bunting-archer": 4,
+   "beluga": 3,
+   "alpha-howler": 1
+  },
+  "leaders": [
+   "walrus-icebreaker"
+  ],
+  "shieldOverride": null,
+  "win200": 32,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "spitting-spider": 4,
+   "harbor-seal": 5,
+   "snow-bunting-archer": 4,
+   "beluga": 3,
+   "alpha-howler": 1,
+   "snow-ermine": 2
+  },
+  "leaders": [
+   "alpha-howler"
+  ],
+  "shieldOverride": 0,
+  "win200": 59.5,
+  "shown": 0,
+  "tune60": 70
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 31.7,
+   "hpLost": 77.2
+  },
+  {
+   "move": "leader walrus-icebreaker -> alpha-howler",
+   "win": 53.3,
+   "hpLost": 60.2,
+   "trials": 22
+  },
+  {
+   "move": "walrus-icebreaker -2 -> snow-ermine",
+   "win": 63.3,
+   "hpLost": 59.9,
+   "trials": 12
+  },
+  {
+   "move": "shield 17 -> 0",
+   "win": 70,
+   "hpLost": 48.4,
+   "trials": 18
+  }
+ ],
+ "trials": 80,
+ "sec": 76
+}

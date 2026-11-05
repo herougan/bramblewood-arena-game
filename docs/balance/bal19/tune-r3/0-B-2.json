@@ -1,0 +1,73 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "0-B-2",
+ "map": "mo",
+ "mapName": "The Old Bramble",
+ "kind": "skirmish",
+ "name": "The Briar Ring",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "ant-scout",
+  "forager-ant",
+  "meadow-rabbit",
+  "otter-kit",
+  "otter-paddler",
+  "tunnel-ant"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ant-scout": 5,
+   "forager-ant": 5,
+   "meadow-rabbit": 1,
+   "otter-kit": 1,
+   "otter-paddler": 1,
+   "tunnel-ant": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 43,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "ant-scout": 5,
+   "forager-ant": 5,
+   "meadow-rabbit": 1,
+   "otter-kit": 1,
+   "otter-paddler": 1,
+   "tunnel-ant": 1
+  },
+  "leaders": [],
+  "shieldOverride": 0,
+  "win200": 48.5,
+  "shown": 0,
+  "tune60": 43.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 36.7,
+   "hpLost": 75.8
+  },
+  {
+   "move": "shield 17 -> 0",
+   "win": 43.3,
+   "hpLost": 72.4,
+   "trials": 4
+  }
+ ],
+ "trials": 9,
+ "sec": 14
+}

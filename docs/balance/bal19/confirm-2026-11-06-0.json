@@ -1,0 +1,1074 @@
+{
+ "about": "BAL19: changed road fights, 200 games each, road seeds 9100 + 37g (tools/bal19/confirm_2026_11_06.js)",
+ "base": "HEAD",
+ "rows": [
+  {
+   "code": "0-2",
+   "map": "m1",
+   "mapName": "Bramblewood Outskirts",
+   "kind": "skirmish",
+   "target": 75,
+   "lo": 67,
+   "hi": 83,
+   "before200": 40.5,
+   "after200": 76,
+   "keep": true,
+   "was": {
+    "deck": {
+     "ant-scout": 4,
+     "bee-sentry": 3,
+     "cottontail": 3,
+     "duck-paddler": 3,
+     "river-carp": 3,
+     "soldier-ant": 4
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": "28"
+   },
+   "now": {
+    "deck": {
+     "ant-scout": 4,
+     "soldier-ant": 4,
+     "duck-paddler": 2,
+     "bee-sentry": 1,
+     "bee-forager": 5,
+     "cottontail": 4
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": "28"
+   }
+  },
+  {
+   "code": "1-4",
+   "map": "mf",
+   "mapName": "Thistlewood",
+   "kind": "skirmish",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "before200": 99,
+   "after200": 94.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "field-mouse": 4,
+     "field-vole": 5,
+     "meadow-frog": 1,
+     "bramble-sprout": 5,
+     "cottontail": 1,
+     "slow-worm": 4
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": "12"
+   },
+   "now": {
+    "deck": {
+     "field-mouse": 4,
+     "field-vole": 5,
+     "bramble-sprout": 5,
+     "cottontail": 1,
+     "hedgerow-shrew": 4,
+     "chipmunk-cavalry": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": "12"
+   }
+  },
+  {
+   "code": "5-1",
+   "map": "mw",
+   "mapName": "Gatorback Swamp",
+   "kind": "skirmish",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "before200": 53,
+   "after200": 89,
+   "keep": true,
+   "was": {
+    "deck": {
+     "constrictor-coil": 5,
+     "bog-leech": 3,
+     "cypress-root-lurker": 3,
+     "nutria-reedcutter": 1,
+     "swamp-alligator": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "constrictor-coil": 5,
+     "cypress-root-lurker": 3,
+     "nutria-reedcutter": 1,
+     "swamp-alligator": 1,
+     "fire-ant-raft": 3
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   }
+  },
+  {
+   "code": "7-4",
+   "map": "mu",
+   "mapName": "The Morel Hollow",
+   "kind": "skirmish",
+   "target": 67.5,
+   "lo": 59.50000000000001,
+   "hi": 75.5,
+   "before200": 93,
+   "after200": 71,
+   "keep": true,
+   "was": {
+    "deck": {
+     "compost-grub": 1,
+     "dung-beetle": 4,
+     "fungal-colossus": 3,
+     "leafcutter-gardener": 4,
+     "planarian-splitter": 4
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "dung-beetle": 4,
+     "leafcutter-gardener": 4,
+     "planarian-splitter": 3,
+     "hawthorn-shieldbug": 4,
+     "worker-ant": 1
+    },
+    "leaders": "[\"dung-beetle\"]",
+    "shield": null,
+    "hqHp": null
+   }
+  },
+  {
+   "code": "7-6",
+   "map": "mu",
+   "mapName": "The Morel Hollow",
+   "kind": "miniboss",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "before200": 78.5,
+   "after200": 57.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "wolf-spider-mother": 1,
+     "leafcutter-gardener": 5,
+     "worker-ant": 1,
+     "fungal-colossus": 4,
+     "owl-nightwatch": 3,
+     "garden-snail": 1,
+     "hawthorn-shieldbug": 3,
+     "cane-toad": 1
+    },
+    "leaders": null,
+    "shield": "18",
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "wolf-spider-mother": 1,
+     "leafcutter-gardener": 5,
+     "worker-ant": 1,
+     "garden-snail": 1,
+     "hawthorn-shieldbug": 3,
+     "cane-toad": 1,
+     "dung-beetle": 4,
+     "planarian-splitter": 3
+    },
+    "leaders": null,
+    "shield": "18",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "12-2",
+   "map": "mh",
+   "mapName": "The Briar Maze",
+   "kind": "skirmish",
+   "target": 84,
+   "lo": 76,
+   "hi": 92,
+   "before200": 71.5,
+   "after200": 77,
+   "keep": true,
+   "was": {
+    "deck": {
+     "cunning-vixen": 2,
+     "lyrebird-mimic": 2,
+     "dormouse": 1,
+     "hedge-weasel": 3,
+     "mouse-sapper": 5,
+     "carrion-crow": 5
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "cunning-vixen": 4,
+     "lyrebird-mimic": 2,
+     "dormouse": 1,
+     "hedge-weasel": 3,
+     "mouse-sapper": 3,
+     "carrion-crow": 5
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   }
+  },
+  {
+   "code": "14-2",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "skirmish",
+   "target": 85,
+   "lo": 77,
+   "hi": 93,
+   "before200": 27,
+   "after200": 30.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "spitting-cobra": 1,
+     "house-cat": 1,
+     "springbok-pronker": 5,
+     "marula-elephant": 4,
+     "acacia-giraffe": 1,
+     "grave-grin-hyena": 3
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "spitting-cobra": 1,
+     "grave-grin-hyena": 3,
+     "marula-elephant": 4,
+     "ant-hill": 1,
+     "springbok-pronker": 5,
+     "acacia-giraffe": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   }
+  },
+  {
+   "code": "14-6",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "elite",
+   "target": 65,
+   "lo": 57.00000000000001,
+   "hi": 73,
+   "before200": 4.5,
+   "after200": 22,
+   "keep": true,
+   "was": {
+    "deck": {
+     "spitting-cobra": 2,
+     "savanna-cheetah": 1,
+     "marula-elephant": 4,
+     "house-cat": 1,
+     "springbok-pronker": 5,
+     "acacia-giraffe": 1,
+     "carrion-crow": 1,
+     "hoopoe-herald": 2
+    },
+    "leaders": null,
+    "shield": "12",
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "spitting-cobra": 3,
+     "marula-elephant": 4,
+     "house-cat": 1,
+     "springbok-pronker": 5,
+     "acacia-giraffe": 1,
+     "hoopoe-herald": 3
+    },
+    "leaders": null,
+    "shield": "0",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "15-4",
+   "map": "ml",
+   "mapName": "The Long Grass",
+   "kind": "skirmish",
+   "target": 72,
+   "lo": 64,
+   "hi": 80,
+   "before200": 88,
+   "after200": 74,
+   "keep": true,
+   "was": {
+    "deck": {
+     "cataphract-destrier": 4,
+     "bison-bulldozer": 4,
+     "stoat-cutthroat": 2,
+     "talon-archer": 2,
+     "hedge-weasel": 1,
+     "shepherds-bark": 3,
+     "raccoon-bandit": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "cataphract-destrier": 4,
+     "bison-bulldozer": 4,
+     "stoat-cutthroat": 2,
+     "talon-archer": 2,
+     "hedge-weasel": 1,
+     "shepherds-bark": 3,
+     "raccoon-bandit": 1
+    },
+    "leaders": "[\"talon-archer\"]",
+    "shield": null,
+    "hqHp": null
+   }
+  },
+  {
+   "code": "17-1",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "skirmish",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "before200": 75,
+   "after200": 82.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "alpha-howler": 1,
+     "beluga": 3,
+     "harbor-seal": 4,
+     "snow-bunting-archer": 4,
+     "snow-ermine": 1,
+     "spitting-spider": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "beluga": 3,
+     "snow-bunting-archer": 1,
+     "harbor-seal": 5,
+     "spitting-spider": 4,
+     "alpha-howler": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   }
+  },
+  {
+   "code": "17-3",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "skirmish",
+   "target": 80,
+   "lo": 72.00000000000001,
+   "hi": 88,
+   "before200": 73,
+   "after200": 79.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "alpha-howler": 1,
+     "beluga": 2,
+     "harbor-seal": 5,
+     "polar-bear": 2,
+     "snow-ermine": 3
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "alpha-howler": 1,
+     "beluga": 1,
+     "harbor-seal": 5,
+     "polar-bear": 2,
+     "snow-ermine": 3,
+     "snow-bunting-archer": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   }
+  },
+  {
+   "code": "17-5",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "elite",
+   "target": 70,
+   "lo": 62,
+   "hi": 77.99999999999999,
+   "before200": 21.5,
+   "after200": 63.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "walrus-icebreaker": 1,
+     "harbor-seal": 5,
+     "alpha-howler": 1,
+     "snow-bunting-archer": 4,
+     "spitting-spider": 4
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "walrus-icebreaker": 1,
+     "harbor-seal": 5,
+     "alpha-howler": 1,
+     "snow-bunting-archer": 4,
+     "spitting-spider": 4
+    },
+    "leaders": "[\"alpha-howler\"]",
+    "shield": null,
+    "hqHp": null
+   }
+  },
+  {
+   "code": "17-7",
+   "map": "m6",
+   "mapName": "Wolfsbane Tundra",
+   "kind": "elite",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "before200": 8,
+   "after200": 65,
+   "keep": true,
+   "was": {
+    "deck": {
+     "alpha-howler": 1,
+     "harbor-seal": 5,
+     "polar-bear": 2,
+     "spitting-spider": 4,
+     "walrus-icebreaker": 2,
+     "frost-hare-sprinter": 1,
+     "snow-bunting-archer": 4
+    },
+    "leaders": null,
+    "shield": "47",
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "alpha-howler": 1,
+     "harbor-seal": 5,
+     "polar-bear": 2,
+     "spitting-spider": 4,
+     "frost-hare-sprinter": 1,
+     "snow-bunting-archer": 4,
+     "snow-ermine": 2
+    },
+    "leaders": null,
+    "shield": "47",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "18-4",
+   "map": "md",
+   "mapName": "The Glass Dunes",
+   "kind": "skirmish",
+   "target": 72,
+   "lo": 64,
+   "hi": 80,
+   "before200": 90,
+   "after200": 73,
+   "keep": true,
+   "was": {
+    "deck": {
+     "caustic-scorpion": 3,
+     "dust-devil-kestrel": 1,
+     "hollow-belly-rat": 1,
+     "komodo-warlord": 2,
+     "roadrunner-courier": 5,
+     "sand-widow": 1,
+     "sandfish": 5
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": "82"
+   },
+   "now": {
+    "deck": {
+     "caustic-scorpion": 2,
+     "dust-devil-kestrel": 2,
+     "hollow-belly-rat": 1,
+     "roadrunner-courier": 5,
+     "sand-widow": 3,
+     "sandfish": 5
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": "82"
+   }
+  },
+  {
+   "code": "20-10",
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "kind": "worldboss",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "before200": 87,
+   "after200": 47,
+   "keep": true,
+   "was": {
+    "deck": {
+     "cave-warlord": 3,
+     "magma-salamander": 2,
+     "ossuary-lammergeier": 1,
+     "ashbone-ghoul": 4,
+     "fumarole-ibex": 1,
+     "cinder-skeleton": 3
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "magma-salamander": 2,
+     "ossuary-lammergeier": 1,
+     "ashbone-ghoul": 4,
+     "fumarole-ibex": 1,
+     "cinder-skeleton": 3,
+     "ancient-sloth-titan": 3
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   }
+  },
+  {
+   "code": "1-A-2",
+   "map": "mq",
+   "mapName": "Clovermead",
+   "kind": "skirmish",
+   "target": 80,
+   "lo": 72.00000000000001,
+   "hi": 88,
+   "before200": 63.5,
+   "after200": 79,
+   "keep": true,
+   "was": {
+    "deck": {
+     "meadow-rabbit": 1,
+     "field-vole": 5,
+     "cottontail": 1,
+     "ant-scout": 1,
+     "bee-forager": 1,
+     "woodcock-lookout": 5,
+     "bramble-sprout": 5
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "meadow-rabbit": 1,
+     "field-vole": 5,
+     "bee-forager": 1,
+     "woodcock-lookout": 5,
+     "bramble-sprout": 5,
+     "slow-worm": 1,
+     "ant-scout": 1
+    },
+    "leaders": null,
+    "shield": "0",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "1-A-4",
+   "map": "mq",
+   "mapName": "Clovermead",
+   "kind": "skirmish",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "before200": 18,
+   "after200": 57,
+   "keep": true,
+   "was": {
+    "deck": {
+     "cottontail": 1,
+     "meadow-rabbit": 1,
+     "woodcock-lookout": 3,
+     "field-vole": 5,
+     "ant-scout": 1,
+     "hedgerow-shrew": 5
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "woodcock-lookout": 4,
+     "field-vole": 5,
+     "ant-scout": 1,
+     "field-mouse": 5,
+     "bee-forager": 1
+    },
+    "leaders": null,
+    "shield": "6",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "19-A-1",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "skirmish",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "before200": 14.5,
+   "after200": 84.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "beaver-lumberjack": 3,
+     "phoenix-fledgling": 5,
+     "ember-jackal": 1,
+     "cinder-stoker": 3,
+     "ore-smelter-mole": 1,
+     "anvilwhisker-otter": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": "120"
+   },
+   "now": {
+    "deck": {
+     "beaver-lumberjack": 3,
+     "phoenix-fledgling": 5,
+     "cinder-stoker": 1,
+     "anvilwhisker-otter": 4,
+     "ashbone-ghoul": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": "120"
+   }
+  },
+  {
+   "code": "19-A-3",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "skirmish",
+   "target": 82.5,
+   "lo": 74.5,
+   "hi": 90.49999999999999,
+   "before200": 11.5,
+   "after200": 35,
+   "keep": true,
+   "was": {
+    "deck": {
+     "cinder-stoker": 5,
+     "tide-spirit": 2,
+     "cinder-gecko": 1,
+     "ashbone-ghoul": 1,
+     "phoenix-fledgling": 5,
+     "anvilwhisker-otter": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "cinder-stoker": 3,
+     "tide-spirit": 2,
+     "cinder-gecko": 1,
+     "phoenix-fledgling": 5,
+     "anvilwhisker-otter": 4
+    },
+    "leaders": null,
+    "shield": "0",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "19-A-5",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "skirmish",
+   "target": 75,
+   "lo": 67,
+   "hi": 83,
+   "before200": 13,
+   "after200": 75.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "ore-smelter-mole": 1,
+     "magma-salamander": 2,
+     "phoenix-fledgling": 5,
+     "ember-jackal": 1,
+     "anvilwhisker-otter": 1,
+     "cinder-stoker": 1,
+     "tide-spirit": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": "71"
+   },
+   "now": {
+    "deck": {
+     "ore-smelter-mole": 1,
+     "phoenix-fledgling": 5,
+     "ember-jackal": 1,
+     "anvilwhisker-otter": 3,
+     "cinder-stoker": 1,
+     "ashbone-ghoul": 1
+    },
+    "leaders": "[\"ashbone-ghoul\"]",
+    "shield": null,
+    "hqHp": "71"
+   }
+  },
+  {
+   "code": "19-A-7",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "elite",
+   "target": 67.5,
+   "lo": 59.50000000000001,
+   "hi": 75.5,
+   "before200": 16.5,
+   "after200": 24,
+   "keep": true,
+   "was": {
+    "deck": {
+     "ashbone-ghoul": 1,
+     "cinder-gecko": 1,
+     "cinder-stoker": 5,
+     "ember-jackal": 1,
+     "hercules-beetle": 1,
+     "ore-smelter-mole": 1,
+     "phoenix-fledgling": 5,
+     "tide-spirit": 2
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "ashbone-ghoul": 1,
+     "cinder-gecko": 1,
+     "cinder-stoker": 5,
+     "ember-jackal": 1,
+     "hercules-beetle": 1,
+     "ore-smelter-mole": 1,
+     "phoenix-fledgling": 5,
+     "tide-spirit": 2
+    },
+    "leaders": null,
+    "shield": "0",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "19-A-9",
+   "map": "m9",
+   "mapName": "Basalt Foundry",
+   "kind": "elite",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "before200": 2,
+   "after200": 66,
+   "keep": true,
+   "was": {
+    "deck": {
+     "ember-jackal": 1,
+     "phoenix-fledgling": 5,
+     "anvilwhisker-otter": 1,
+     "ore-smelter-mole": 1,
+     "cinder-stoker": 3,
+     "ashbone-ghoul": 1,
+     "magma-salamander": 2
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": "42"
+   },
+   "now": {
+    "deck": {
+     "phoenix-fledgling": 5,
+     "anvilwhisker-otter": 4,
+     "ore-smelter-mole": 1,
+     "ashbone-ghoul": 1,
+     "tide-spirit": 1,
+     "cinder-stoker": 1,
+     "cinder-gecko": 1
+    },
+    "leaders": "[\"ashbone-ghoul\"]",
+    "shield": "0",
+    "hqHp": "42"
+   }
+  },
+  {
+   "code": "10-A-1",
+   "map": "mj",
+   "mapName": "The Sunken Depths",
+   "kind": "skirmish",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "before200": 57.5,
+   "after200": 82.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "coral-reef-shark": 1,
+     "kraken-spawnling": 1,
+     "orca-vanguard": 3,
+     "parrotfish": 2,
+     "riptide-eel": 3
+    },
+    "leaders": null,
+    "shield": "8",
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "coral-reef-shark": 1,
+     "kraken-spawnling": 1,
+     "orca-vanguard": 3,
+     "riptide-eel": 3,
+     "hagfish-silencer": 2
+    },
+    "leaders": "[\"kraken-spawnling\"]",
+    "shield": "8",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "10-A-4",
+   "map": "mj",
+   "mapName": "The Sunken Depths",
+   "kind": "elite",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "before200": 13.5,
+   "after200": 55,
+   "keep": true,
+   "was": {
+    "deck": {
+     "mangrove-manatee": 1,
+     "hagfish-silencer": 3,
+     "orca-vanguard": 4,
+     "kraken-spawnling": 4
+    },
+    "leaders": null,
+    "shield": "12",
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "hagfish-silencer": 1,
+     "orca-vanguard": 4,
+     "kraken-spawnling": 4,
+     "nudibranch": 2,
+     "coral-reef-shark": 1
+    },
+    "leaders": "[\"coral-reef-shark\"]",
+    "shield": "12",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "7-A-5",
+   "map": "mz",
+   "mapName": "The Mycelium Deep",
+   "kind": "boss",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "before200": 77.5,
+   "after200": 32,
+   "keep": true,
+   "was": {
+    "deck": {
+     "fungal-colossus": 4,
+     "rootworm-colony": 5,
+     "ant-warrior": 1,
+     "leafcutter-gardener": 2,
+     "dung-beetle": 3
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "rootworm-colony": 5,
+     "ant-warrior": 1,
+     "leafcutter-gardener": 2,
+     "dung-beetle": 3,
+     "hawthorn-shieldbug": 4
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   }
+  },
+  {
+   "code": "14-A-3",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "skirmish",
+   "target": 70,
+   "lo": 62,
+   "hi": 77.99999999999999,
+   "before200": 0.5,
+   "after200": 7.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "apollo-butterfly": 1,
+     "hoopoe-herald": 5,
+     "kinkajou-lurker": 1,
+     "leafcutter-gardener": 1,
+     "pangolin-roller": 1,
+     "vampire-bat": 1,
+     "weaver-bird": 4
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "apollo-butterfly": 1,
+     "hoopoe-herald": 5,
+     "kinkajou-lurker": 1,
+     "leafcutter-gardener": 1,
+     "vampire-bat": 1,
+     "weaver-bird": 4,
+     "proboscis-monkey": 1
+    },
+    "leaders": null,
+    "shield": "0",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "0-B-1",
+   "map": "mo",
+   "mapName": "The Old Bramble",
+   "kind": "skirmish",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "before200": 60.5,
+   "after200": 63.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "ant-scout": 5,
+     "bramblewood-lynx": 1,
+     "burrow-rabbit": 1,
+     "cottontail": 1,
+     "forager-ant": 4,
+     "otter-kit": 1,
+     "pond-duck": 1
+    },
+    "leaders": null,
+    "shield": null,
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "ant-scout": 5,
+     "bramblewood-lynx": 1,
+     "burrow-rabbit": 1,
+     "cottontail": 1,
+     "forager-ant": 4,
+     "otter-kit": 1,
+     "pond-duck": 1
+    },
+    "leaders": null,
+    "shield": "0",
+    "hqHp": null
+   }
+  },
+  {
+   "code": "18-A-5",
+   "map": "mpd",
+   "mapName": "The Pale Desert",
+   "kind": "skirmish",
+   "target": 72.89999999999999,
+   "lo": 64.9,
+   "hi": 80.89999999999999,
+   "before200": 41,
+   "after200": 65.5,
+   "keep": true,
+   "was": {
+    "deck": {
+     "trapdoor-spider": 2,
+     "dromedary": 4,
+     "skull-vulture": 4,
+     "sand-widow": 5,
+     "sandfish": 3
+    },
+    "leaders": null,
+    "shield": "60",
+    "hqHp": null
+   },
+   "now": {
+    "deck": {
+     "dromedary": 4,
+     "skull-vulture": 4,
+     "sand-widow": 5,
+     "sandfish": 3,
+     "roadrunner-courier": 2
+    },
+    "leaders": null,
+    "shield": "60",
+    "hqHp": null
+   }
+  }
+ ]
+}

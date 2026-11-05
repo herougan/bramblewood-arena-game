@@ -1,0 +1,88 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "1-A-4",
+ "map": "mq",
+ "mapName": "Clovermead",
+ "kind": "skirmish",
+ "name": "Harvest Mice",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "ant-hill",
+  "ant-scout",
+  "bee-forager",
+  "cottontail",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "meadow-rabbit",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "cottontail": 1,
+   "meadow-rabbit": 1,
+   "woodcock-lookout": 3,
+   "field-vole": 5,
+   "ant-scout": 1,
+   "field-mouse": 5
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 36,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "woodcock-lookout": 4,
+   "field-vole": 5,
+   "ant-scout": 1,
+   "field-mouse": 5,
+   "bee-forager": 1
+  },
+  "leaders": [],
+  "shieldOverride": 6,
+  "win200": 57,
+  "shown": 3,
+  "tune60": 60
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 41.7,
+   "hpLost": 76.9
+  },
+  {
+   "move": "cottontail -1 -> bee-forager",
+   "win": 51.7,
+   "hpLost": 69.2,
+   "trials": 23
+  },
+  {
+   "move": "shield 12 -> 6",
+   "win": 55.8,
+   "hpLost": 66,
+   "trials": 23
+  },
+  {
+   "move": "meadow-rabbit -1 -> woodcock-lookout",
+   "win": 60,
+   "hpLost": 66.6,
+   "trials": 23
+  }
+ ],
+ "trials": 72,
+ "sec": 89
+}

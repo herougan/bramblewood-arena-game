@@ -1,0 +1,98 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "19-A-6",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "skirmish",
+ "name": "Furnace Mouth",
+ "band": {
+  "lo": 63.3,
+  "hi": 79.3,
+  "target": 71.3
+ },
+ "list": [
+  "anvilwhisker-otter",
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "ore-smelter-mole",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "ember-jackal"
+ ],
+ "namesake": false,
+ "shieldRule": 23,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ember-jackal": 2,
+   "cinder-stoker": 4,
+   "ore-smelter-mole": 1,
+   "anvilwhisker-otter": 1,
+   "phoenix-fledgling": 5,
+   "ashbone-ghoul": 1
+  },
+  "leaders": [
+   "ember-jackal"
+  ],
+  "shieldOverride": null,
+  "win200": 7.5,
+  "shown": 12
+ },
+ "pick": {
+  "deck": {
+   "cinder-stoker": 3,
+   "ore-smelter-mole": 1,
+   "anvilwhisker-otter": 4,
+   "phoenix-fledgling": 5,
+   "ashbone-ghoul": 1
+  },
+  "leaders": [
+   "phoenix-fledgling"
+  ],
+  "shieldOverride": 0,
+  "win200": 66,
+  "shown": 0,
+  "tune60": 71.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 8.3,
+   "hpLost": 96.3
+  },
+  {
+   "move": "ember-jackal -2 -> anvilwhisker-otter",
+   "win": 30.8,
+   "hpLost": 83.5,
+   "trials": 31
+  },
+  {
+   "move": "leader ember-jackal -> phoenix-fledgling",
+   "win": 54.2,
+   "hpLost": 71.9,
+   "trials": 33
+  },
+  {
+   "move": "cinder-stoker -1 -> anvilwhisker-otter",
+   "win": 65,
+   "hpLost": 62.4,
+   "trials": 25
+  },
+  {
+   "move": "shield 23 -> 0",
+   "win": 71.7,
+   "hpLost": 55.2,
+   "trials": 25
+  }
+ ],
+ "trials": 121,
+ "sec": 79
+}

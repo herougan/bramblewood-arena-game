@@ -1,0 +1,81 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "10-A-3",
+ "map": "mj",
+ "mapName": "The Sunken Depths",
+ "kind": "skirmish",
+ "name": "Cargo Hold",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "blue-ringed-octopus",
+  "clownfish-scout",
+  "coral-polyp-colony",
+  "coral-reef-shark",
+  "hagfish-silencer",
+  "kraken-spawnling",
+  "nudibranch",
+  "orca-vanguard",
+  "parrotfish",
+  "riptide-eel"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "hagfish-silencer"
+ ],
+ "namesake": false,
+ "shieldRule": 11,
+ "shieldOverride": 17,
+ "before": {
+  "deck": {
+   "blue-ringed-octopus": 2,
+   "kraken-spawnling": 4,
+   "riptide-eel": 2,
+   "orca-vanguard": 3,
+   "hagfish-silencer": 1
+  },
+  "leaders": [
+   "hagfish-silencer"
+  ],
+  "shieldOverride": 17,
+  "win200": 65,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "blue-ringed-octopus": 1,
+   "kraken-spawnling": 4,
+   "riptide-eel": 2,
+   "orca-vanguard": 3,
+   "hagfish-silencer": 2
+  },
+  "leaders": [
+   "hagfish-silencer"
+  ],
+  "shieldOverride": 17,
+  "win200": 57.5,
+  "shown": 9,
+  "tune60": 69.2
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 60.8,
+   "hpLost": 67.3
+  },
+  {
+   "move": "blue-ringed-octopus -1 -> hagfish-silencer",
+   "win": 69.2,
+   "hpLost": 62,
+   "trials": 86
+  }
+ ],
+ "trials": 91,
+ "sec": 51
+}

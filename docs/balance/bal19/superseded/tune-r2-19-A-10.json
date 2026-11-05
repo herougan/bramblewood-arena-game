@@ -1,0 +1,84 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "19-A-10",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "boss",
+ "name": "The Phoenix Ember King",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "ashbone-ghoul",
+  "beaver-lumberjack",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "ember-revenant",
+  "fire-salamander",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [
+  "ember-revenant"
+ ],
+ "k14Before": 1,
+ "leaders": [
+  "tide-spirit"
+ ],
+ "namesake": false,
+ "shieldRule": 69,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "ashbone-ghoul": 1,
+   "fire-salamander": 4,
+   "cinder-stoker": 5,
+   "beaver-lumberjack": 4,
+   "phoenix-fledgling": 4,
+   "tide-spirit": 1
+  },
+  "leaders": [
+   "tide-spirit"
+  ],
+  "shieldOverride": 0,
+  "win200": 28.5,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "ashbone-ghoul": 1,
+   "fire-salamander": 4,
+   "cinder-stoker": 5,
+   "beaver-lumberjack": 4,
+   "phoenix-fledgling": 4,
+   "tide-spirit": 1
+  },
+  "leaders": [
+   "ashbone-ghoul"
+  ],
+  "shieldOverride": 0,
+  "win200": 35,
+  "shown": 0,
+  "tune60": 40
+ },
+ "keep": true,
+ "k14After": 1,
+ "trail": [
+  {
+   "move": "start",
+   "win": 32.5,
+   "hpLost": 81.9
+  },
+  {
+   "move": "leader tide-spirit -> ashbone-ghoul",
+   "win": 40,
+   "hpLost": 80,
+   "trials": 36
+  }
+ ],
+ "trials": 41,
+ "sec": 32
+}

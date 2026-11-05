@@ -1,0 +1,91 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "19-A-3",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "skirmish",
+ "name": "Slag Runners",
+ "band": {
+  "lo": 74.5,
+  "hi": 90.49999999999999,
+  "target": 82.5
+ },
+ "list": [
+  "anvilwhisker-otter",
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "tide-spirit"
+ ],
+ "namesake": false,
+ "shieldRule": 23,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "cinder-stoker": 5,
+   "tide-spirit": 2,
+   "cinder-gecko": 1,
+   "ashbone-ghoul": 1,
+   "phoenix-fledgling": 5,
+   "anvilwhisker-otter": 1
+  },
+  "leaders": [
+   "tide-spirit"
+  ],
+  "shieldOverride": null,
+  "win200": 11.5,
+  "shown": 12
+ },
+ "pick": {
+  "deck": {
+   "cinder-stoker": 3,
+   "tide-spirit": 2,
+   "cinder-gecko": 1,
+   "phoenix-fledgling": 5,
+   "anvilwhisker-otter": 4
+  },
+  "leaders": [
+   "tide-spirit"
+  ],
+  "shieldOverride": 0,
+  "win200": 35,
+  "shown": 0,
+  "tune60": 40
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 10,
+   "hpLost": 96.1
+  },
+  {
+   "move": "cinder-stoker -2 -> anvilwhisker-otter",
+   "win": 26.7,
+   "hpLost": 85.9,
+   "trials": 15
+  },
+  {
+   "move": "shield 23 -> 0",
+   "win": 32.5,
+   "hpLost": 83.1,
+   "trials": 19
+  },
+  {
+   "move": "ashbone-ghoul -1 -> anvilwhisker-otter",
+   "win": 40,
+   "hpLost": 78.3,
+   "trials": 15
+  }
+ ],
+ "trials": 69,
+ "sec": 61
+}

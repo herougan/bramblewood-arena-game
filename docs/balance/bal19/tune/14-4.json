@@ -1,0 +1,83 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "14-4",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "skirmish",
+ "name": "Toucan Watch",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "acacia-giraffe",
+  "ant-hill",
+  "dust-hyena",
+  "hoopoe-herald",
+  "marula-elephant",
+  "springbok-pronker"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "marula-elephant"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "marula-elephant": 4,
+   "springbok-pronker": 5,
+   "hoopoe-herald": 4,
+   "acacia-giraffe": 1,
+   "ant-hill": 1
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": null,
+  "win200": 28,
+  "shown": 7
+ },
+ "pick": {
+  "deck": {
+   "marula-elephant": 4,
+   "springbok-pronker": 5,
+   "hoopoe-herald": 4,
+   "acacia-giraffe": 1,
+   "ant-hill": 1
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": 0,
+  "win200": 32,
+  "shown": 0,
+  "tune60": 40.8
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 35,
+   "hpLost": 84.8
+  },
+  {
+   "move": "shield 14 -> 3",
+   "win": 38.3,
+   "hpLost": 82.6,
+   "trials": 20
+  },
+  {
+   "move": "shield 3 -> 0",
+   "win": 40.8,
+   "hpLost": 82.7,
+   "trials": 19
+  }
+ ],
+ "trials": 67,
+ "sec": 72
+}

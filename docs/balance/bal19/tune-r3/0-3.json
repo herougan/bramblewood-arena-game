@@ -1,0 +1,84 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "0-3",
+ "map": "m1",
+ "mapName": "Bramblewood Outskirts",
+ "kind": "skirmish",
+ "name": "Raccoon Heist",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "ant-scout",
+  "beaver-lumberjack",
+  "chipmunk-forager",
+  "chipmunk-skirmisher",
+  "cottontail",
+  "duck-paddler",
+  "earthworm",
+  "house-cat",
+  "meadow-rabbit",
+  "silver-minnow",
+  "soldier-ant",
+  "worker-ant"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 0,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "chipmunk-forager": 5,
+   "chipmunk-skirmisher": 3,
+   "cottontail": 5,
+   "house-cat": 3,
+   "meadow-rabbit": 4
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 83.5,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "chipmunk-forager": 4,
+   "cottontail": 5,
+   "house-cat": 3,
+   "meadow-rabbit": 4,
+   "duck-paddler": 3,
+   "chipmunk-skirmisher": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 69.5,
+  "shown": 0,
+  "tune60": 60.8
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 86.7,
+   "hpLost": 41.4
+  },
+  {
+   "move": "chipmunk-skirmisher -3 -> duck-paddler",
+   "win": 64.2,
+   "hpLost": 62.6,
+   "trials": 99
+  },
+  {
+   "move": "chipmunk-forager -1 -> chipmunk-skirmisher",
+   "win": 60.8,
+   "hpLost": 62.1,
+   "trials": 99
+  }
+ ],
+ "trials": 198,
+ "sec": 61
+}

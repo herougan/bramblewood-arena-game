@@ -1,0 +1,87 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "14-6",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "elite",
+ "name": "Jaguar Run",
+ "band": {
+  "lo": 57.00000000000001,
+  "hi": 73,
+  "target": 65
+ },
+ "list": [
+  "acacia-giraffe",
+  "carrion-crow",
+  "dust-hyena",
+  "hoopoe-herald",
+  "house-cat",
+  "marula-elephant",
+  "savanna-cheetah",
+  "spitting-cobra",
+  "springbok-pronker"
+ ],
+ "firstClear": [
+  "spitting-cobra"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "savanna-cheetah"
+ ],
+ "namesake": false,
+ "shieldRule": 21,
+ "shieldOverride": 12,
+ "before": {
+  "deck": {
+   "spitting-cobra": 2,
+   "savanna-cheetah": 1,
+   "marula-elephant": 4,
+   "house-cat": 1,
+   "springbok-pronker": 5,
+   "acacia-giraffe": 1,
+   "carrion-crow": 1,
+   "hoopoe-herald": 2
+  },
+  "leaders": [
+   "savanna-cheetah"
+  ],
+  "shieldOverride": 12,
+  "win200": 4.5,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "spitting-cobra": 3,
+   "marula-elephant": 4,
+   "house-cat": 1,
+   "springbok-pronker": 5,
+   "acacia-giraffe": 1,
+   "carrion-crow": 1,
+   "hoopoe-herald": 2
+  },
+  "leaders": [
+   "savanna-cheetah"
+  ],
+  "shieldOverride": 12,
+  "win200": 18.5,
+  "shown": 6,
+  "tune60": 15.8
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 2.5,
+   "hpLost": 98.7
+  },
+  {
+   "move": "savanna-cheetah -1 -> spitting-cobra",
+   "win": 15.8,
+   "hpLost": 94.1,
+   "trials": 41
+  }
+ ],
+ "trials": 83,
+ "sec": 46
+}

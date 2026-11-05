@@ -1,0 +1,78 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "20-A-4",
+ "map": "me",
+ "mapName": "Eye of the Volcano",
+ "kind": "dungeon",
+ "name": "Heart of the Mountain",
+ "band": {
+  "lo": 26.200000000000003,
+  "hi": 44.3,
+  "target": 35.5
+ },
+ "list": [
+  "ash-moth",
+  "ashbone-ghoul",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "magma-wraith",
+  "obsidian-scorpion"
+ ],
+ "firstClear": [
+  "the-contradiction"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "magma-wraith"
+ ],
+ "namesake": false,
+ "shieldRule": 32,
+ "shieldOverride": 36,
+ "before": {
+  "deck": {
+   "cinder-skeleton": 2,
+   "ashbone-ghoul": 5,
+   "magma-wraith": 2,
+   "cinder-stoker": 1
+  },
+  "leaders": [
+   "magma-wraith"
+  ],
+  "shieldOverride": 36,
+  "win200": 82,
+  "shown": 18
+ },
+ "pick": {
+  "deck": {
+   "cinder-skeleton": 2,
+   "ashbone-ghoul": 4,
+   "magma-wraith": 2,
+   "cinder-stoker": 1,
+   "obsidian-scorpion": 1
+  },
+  "leaders": [
+   "magma-wraith"
+  ],
+  "shieldOverride": 36,
+  "win200": 43,
+  "shown": 18,
+  "tune60": 45.8
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 78.3,
+   "hpLost": 56.3
+  },
+  {
+   "move": "ashbone-ghoul -1 -> obsidian-scorpion",
+   "win": 45.8,
+   "hpLost": 79.9,
+   "trials": 22
+  }
+ ],
+ "trials": 55,
+ "sec": 61
+}

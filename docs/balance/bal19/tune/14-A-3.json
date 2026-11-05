@@ -1,0 +1,93 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "14-A-3",
+ "map": "my",
+ "mapName": "The Canopy",
+ "kind": "skirmish",
+ "name": "Sloth Boughs",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "hoopoe-herald",
+  "kinkajou-lurker",
+  "leafcutter-gardener",
+  "pangolin-roller",
+  "proboscis-monkey",
+  "redwood-woodpecker",
+  "vampire-bat",
+  "weaver-bird"
+ ],
+ "firstClear": [
+  "kinkajou-lurker"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "pangolin-roller"
+ ],
+ "namesake": false,
+ "shieldRule": 18,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "apollo-butterfly": 1,
+   "hoopoe-herald": 5,
+   "kinkajou-lurker": 1,
+   "leafcutter-gardener": 1,
+   "pangolin-roller": 1,
+   "vampire-bat": 1,
+   "weaver-bird": 4
+  },
+  "leaders": [
+   "pangolin-roller"
+  ],
+  "shieldOverride": null,
+  "win200": 0.5,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "apollo-butterfly": 1,
+   "hoopoe-herald": 5,
+   "kinkajou-lurker": 1,
+   "leafcutter-gardener": 1,
+   "vampire-bat": 1,
+   "weaver-bird": 4,
+   "proboscis-monkey": 1
+  },
+  "leaders": [
+   "pangolin-roller"
+  ],
+  "shieldOverride": 0,
+  "win200": 7.5,
+  "shown": 0,
+  "tune60": 7.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 0,
+   "hpLost": 100
+  },
+  {
+   "move": "pangolin-roller -1 -> proboscis-monkey",
+   "win": 5,
+   "hpLost": 97.8,
+   "trials": 41
+  },
+  {
+   "move": "shield 18 -> 0",
+   "win": 7.5,
+   "hpLost": 96.5,
+   "trials": 34
+  }
+ ],
+ "trials": 110,
+ "sec": 63
+}

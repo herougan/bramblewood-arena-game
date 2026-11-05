@@ -1,0 +1,97 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "7-4",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "skirmish",
+ "name": "Moonlit Gills",
+ "band": {
+  "lo": 59.50000000000001,
+  "hi": 75.5,
+  "target": 67.5
+ },
+ "list": [
+  "compost-grub",
+  "dung-beetle",
+  "earthworm",
+  "fungal-colossus",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "worker-ant"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "fungal-colossus"
+ ],
+ "namesake": false,
+ "shieldRule": 7,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "compost-grub": 1,
+   "dung-beetle": 4,
+   "fungal-colossus": 3,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 4
+  },
+  "leaders": [
+   "fungal-colossus"
+  ],
+  "shieldOverride": null,
+  "win200": 93,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "dung-beetle": 4,
+   "leafcutter-gardener": 4,
+   "planarian-splitter": 3,
+   "hawthorn-shieldbug": 4,
+   "worker-ant": 1
+  },
+  "leaders": [
+   "dung-beetle"
+  ],
+  "shieldOverride": null,
+  "win200": 71,
+  "shown": 4,
+  "tune60": 70
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 95.8,
+   "hpLost": 24.8
+  },
+  {
+   "move": "fungal-colossus -3 -> hawthorn-shieldbug",
+   "win": 80,
+   "hpLost": 36.7,
+   "trials": 34
+  },
+  {
+   "move": "leader fungal-colossus -> dung-beetle",
+   "win": 75.8,
+   "hpLost": 42.2,
+   "trials": 34
+  },
+  {
+   "move": "planarian-splitter -1 -> worker-ant",
+   "win": 73.3,
+   "hpLost": 42.7,
+   "trials": 26
+  },
+  {
+   "move": "compost-grub -1 -> hawthorn-shieldbug",
+   "win": 70,
+   "hpLost": 46.7,
+   "trials": 18
+  }
+ ],
+ "trials": 117,
+ "sec": 99
+}

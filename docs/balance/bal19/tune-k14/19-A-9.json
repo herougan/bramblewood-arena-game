@@ -1,0 +1,114 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "19-A-9",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "elite",
+ "name": "The Pyroclast Wyrm",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "anvilwhisker-otter",
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "magma-salamander",
+  "ore-smelter-mole",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "magma-salamander"
+ ],
+ "namesake": false,
+ "shieldRule": 35,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ember-jackal": 1,
+   "phoenix-fledgling": 5,
+   "anvilwhisker-otter": 1,
+   "ore-smelter-mole": 1,
+   "cinder-stoker": 3,
+   "ashbone-ghoul": 1,
+   "magma-salamander": 2
+  },
+  "leaders": [
+   "magma-salamander"
+  ],
+  "shieldOverride": null,
+  "win200": 2,
+  "shown": 18
+ },
+ "pick": {
+  "deck": {
+   "phoenix-fledgling": 5,
+   "anvilwhisker-otter": 4,
+   "ore-smelter-mole": 1,
+   "ashbone-ghoul": 1,
+   "tide-spirit": 1,
+   "cinder-stoker": 1,
+   "cinder-gecko": 1
+  },
+  "leaders": [
+   "ashbone-ghoul"
+  ],
+  "shieldOverride": 0,
+  "win200": 66,
+  "shown": 0,
+  "tune60": 63.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 2.5,
+   "hpLost": 99.1
+  },
+  {
+   "move": "cinder-stoker -3 -> anvilwhisker-otter",
+   "win": 13.3,
+   "hpLost": 92.9,
+   "trials": 34
+  },
+  {
+   "move": "ember-jackal -1 -> tide-spirit",
+   "win": 21.7,
+   "hpLost": 90.2,
+   "trials": 26
+  },
+  {
+   "move": "magma-salamander -2 -> cinder-stoker",
+   "win": 40,
+   "hpLost": 75.1,
+   "trials": 26
+  },
+  {
+   "move": "leader magma-salamander -> ashbone-ghoul",
+   "win": 50.8,
+   "hpLost": 71.9,
+   "trials": 40
+  },
+  {
+   "move": "shield 35 -> 0",
+   "win": 54.2,
+   "hpLost": 67.5,
+   "trials": 29
+  },
+  {
+   "move": "cinder-stoker -1 -> cinder-gecko",
+   "win": 63.3,
+   "hpLost": 61.9,
+   "trials": 25
+  }
+ ],
+ "trials": 189,
+ "sec": 108
+}

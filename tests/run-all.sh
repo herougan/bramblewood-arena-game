@@ -334,6 +334,7 @@ run node tests/raid2-2026-11-05.js   # 2026-11-05 (package RAID2): the raid tide
 run node tests/fix9-2026-11-05.js   # 2026-11-05 (package FIX9, owner 22:18): generic group titles, raid allies keep playing (swap, reshuffle), Pounce shows Health before the blow, water pips on Shift, Shell = Armor N for the round
 run node tests/edit1-2026-11-05.js   # 2026-11-05 (package EDIT1, owner 23:35): the card editor: "+" puts the level in the same skill row, Hatchling / Regeneration at Level 1 and up, Species dropdown, skills with emoji, Storm Attack / Health fields; Playwright 1366 / 390, docs/screens/EDIT1/
 run node tests/content12-2026-11-06.js   # 2026-11-06 (package CONTENT12): the owner's live card edits folded in, one job per card, ENG24 / ENG22 skill carriers, Shell re-fit, Delivery's home price, 17-8 renamed, Lilypad Reach's attackers
+run node tests/bal19-2026-11-06.js   # 2026-11-06 (package BAL19): road fights retuned after CONTENT12's fold (decks, leaders, Shield), each confirmed at 200 games; list, K14, size, first-clear, Shield <= rule, no lower bramble Health
 run node tests/eng25-2026-11-05.js   # 2026-11-05 (package ENG25, owner 23:35): categories, duplicates merged, Hatchling / Regeneration Level 1+, Berries and Forage, Immortal, Hydra, lit state chips, Tribe Delivery, Moonpull, Tide N
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

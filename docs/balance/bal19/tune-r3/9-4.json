@@ -1,0 +1,77 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "9-4",
+ "map": "mk",
+ "mapName": "The Kelp Mangroves",
+ "kind": "skirmish",
+ "name": "Kelp Curtains",
+ "band": {
+  "lo": 64,
+  "hi": 80,
+  "target": 72
+ },
+ "list": [
+  "conch-crawler",
+  "crocodile-ambusher",
+  "fiddler-crab-swarm",
+  "horseshoe-crab",
+  "mangrove-monitor",
+  "mangrove-mudskipper",
+  "proboscis-monkey",
+  "reef-shark",
+  "sea-turtle-elder",
+  "sunbittern-strider"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "proboscis-monkey"
+ ],
+ "namesake": false,
+ "shieldRule": 9,
+ "shieldOverride": 4,
+ "before": {
+  "deck": {
+   "proboscis-monkey": 4,
+   "fiddler-crab-swarm": 1,
+   "sea-turtle-elder": 1,
+   "reef-shark": 5,
+   "conch-crawler": 1,
+   "horseshoe-crab": 4
+  },
+  "leaders": [
+   "proboscis-monkey"
+  ],
+  "shieldOverride": 4,
+  "win200": 75,
+  "shown": 2
+ },
+ "pick": {
+  "deck": {
+   "proboscis-monkey": 4,
+   "fiddler-crab-swarm": 1,
+   "sea-turtle-elder": 1,
+   "reef-shark": 5,
+   "conch-crawler": 1,
+   "horseshoe-crab": 4
+  },
+  "leaders": [
+   "proboscis-monkey"
+  ],
+  "shieldOverride": 4,
+  "win200": 75,
+  "shown": 2,
+  "tune60": 75
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 75,
+   "hpLost": 38.9
+  }
+ ],
+ "trials": 1,
+ "sec": 6
+}

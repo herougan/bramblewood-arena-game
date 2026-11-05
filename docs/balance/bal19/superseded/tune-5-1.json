@@ -1,0 +1,80 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "5-1",
+ "map": "mw",
+ "mapName": "Gatorback Swamp",
+ "kind": "skirmish",
+ "name": "Leech Pools",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "nutria-reedcutter",
+  "swamp-alligator"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "bog-leech"
+ ],
+ "namesake": true,
+ "shieldRule": 5,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "bog-leech": 3,
+   "cypress-root-lurker": 4,
+   "constrictor-coil": 1,
+   "crocodile-ambusher": 1,
+   "swamp-alligator": 4
+  },
+  "leaders": [
+   "bog-leech"
+  ],
+  "shieldOverride": null,
+  "win200": 53.5,
+  "shown": 3
+ },
+ "pick": {
+  "deck": {
+   "bog-leech": 3,
+   "constrictor-coil": 1,
+   "crocodile-ambusher": 1,
+   "swamp-alligator": 4,
+   "fire-ant-raft": 4
+  },
+  "leaders": [
+   "bog-leech"
+  ],
+  "shieldOverride": null,
+  "win200": 82,
+  "shown": 3,
+  "tune60": 90
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 56.7,
+   "hpLost": 64.1
+  },
+  {
+   "move": "cypress-root-lurker -4 -> fire-ant-raft",
+   "win": 90,
+   "hpLost": 31.7,
+   "trials": 56
+  }
+ ],
+ "trials": 61,
+ "sec": 24
+}

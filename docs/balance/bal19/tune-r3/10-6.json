@@ -1,0 +1,85 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "10-6",
+ "map": "m7",
+ "mapName": "Coral Current",
+ "kind": "elite",
+ "name": "Reef Shark Pack",
+ "band": {
+  "lo": 60.60000000000001,
+  "hi": 76.6,
+  "target": 68.60000000000001
+ },
+ "list": [
+  "clownfish-scout",
+  "coral-reef-shark",
+  "dolphin-knight",
+  "great-barracuda",
+  "horseshoe-crab",
+  "kraken-spawnling",
+  "open-ocean-hermit-crab",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-shark",
+  "riptide-eel",
+  "supernova-jelly"
+ ],
+ "firstClear": [
+  "great-barracuda"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "great-barracuda"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "clownfish-scout": 4,
+   "great-barracuda": 2,
+   "orca-vanguard": 2,
+   "kraken-spawnling": 2,
+   "reef-shark": 1
+  },
+  "leaders": [
+   "great-barracuda"
+  ],
+  "shieldOverride": null,
+  "win200": 55.5,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "clownfish-scout": 4,
+   "great-barracuda": 2,
+   "orca-vanguard": 2,
+   "kraken-spawnling": 2,
+   "riptide-eel": 1
+  },
+  "leaders": [
+   "great-barracuda"
+  ],
+  "shieldOverride": null,
+  "win200": 50,
+  "shown": 8,
+  "tune60": 64.2
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 60,
+   "hpLost": 60.7
+  },
+  {
+   "move": "reef-shark -1 -> riptide-eel",
+   "win": 64.2,
+   "hpLost": 59.9,
+   "trials": 76
+  }
+ ],
+ "trials": 152,
+ "sec": 67
+}

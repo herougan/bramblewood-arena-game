@@ -1,0 +1,81 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "18-5",
+ "map": "md",
+ "mapName": "The Glass Dunes",
+ "kind": "elite",
+ "name": "Obsidian Nest",
+ "band": {
+  "lo": 58.00000000000001,
+  "hi": 74,
+  "target": 66
+ },
+ "list": [
+  "antlion-pit",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "fennec-fox",
+  "hollow-belly-rat",
+  "komodo-warlord",
+  "meerkat-burrower",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish"
+ ],
+ "firstClear": [
+  "fennec-fox"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "dust-devil-kestrel"
+ ],
+ "namesake": false,
+ "shieldRule": 27,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "antlion-pit": 1,
+   "dust-devil-kestrel": 2,
+   "fennec-fox": 4,
+   "hollow-belly-rat": 1,
+   "komodo-warlord": 4,
+   "roadrunner-courier": 5,
+   "sandfish": 1
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 46,
+  "shown": 14
+ },
+ "pick": {
+  "deck": {
+   "antlion-pit": 1,
+   "dust-devil-kestrel": 2,
+   "fennec-fox": 4,
+   "hollow-belly-rat": 1,
+   "komodo-warlord": 4,
+   "roadrunner-courier": 5,
+   "sandfish": 1
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 46,
+  "shown": 14,
+  "tune60": 59.2
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 59.2,
+   "hpLost": 65.1
+  }
+ ],
+ "trials": 64,
+ "sec": 60
+}

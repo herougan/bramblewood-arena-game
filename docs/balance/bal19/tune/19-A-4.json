@@ -1,0 +1,97 @@
+{
+ "about": "BAL19 road retune (tools/bal19/road_tune_2026_11_06.js)",
+ "code": "19-A-4",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "skirmish",
+ "name": "Vent Skitter",
+ "band": {
+  "lo": 70.80000000000001,
+  "hi": 86.8,
+  "target": 78.8
+ },
+ "list": [
+  "anvilwhisker-otter",
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "ore-smelter-mole",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "tide-spirit"
+ ],
+ "namesake": false,
+ "shieldRule": 23,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "phoenix-fledgling": 5,
+   "tide-spirit": 1,
+   "cinder-stoker": 5,
+   "ore-smelter-mole": 1,
+   "anvilwhisker-otter": 1,
+   "ashbone-ghoul": 1
+  },
+  "leaders": [
+   "tide-spirit"
+  ],
+  "shieldOverride": null,
+  "win200": 21,
+  "shown": 12
+ },
+ "pick": {
+  "deck": {
+   "phoenix-fledgling": 5,
+   "cinder-stoker": 2,
+   "ore-smelter-mole": 1,
+   "anvilwhisker-otter": 4,
+   "ashbone-ghoul": 1,
+   "cinder-gecko": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 67.5,
+  "shown": 12,
+  "tune60": 71.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 21.7,
+   "hpLost": 88.9
+  },
+  {
+   "move": "cinder-stoker -2 -> anvilwhisker-otter",
+   "win": 31.7,
+   "hpLost": 80.1,
+   "trials": 32
+  },
+  {
+   "move": "leader tide-spirit -> none",
+   "win": 53.3,
+   "hpLost": 67.4,
+   "trials": 35
+  },
+  {
+   "move": "tide-spirit -1 -> anvilwhisker-otter",
+   "win": 60,
+   "hpLost": 60.6,
+   "trials": 27
+  },
+  {
+   "move": "cinder-stoker -1 -> cinder-gecko",
+   "win": 71.7,
+   "hpLost": 55.6,
+   "trials": 26
+  }
+ ],
+ "trials": 138,
+ "sec": 92
+}
