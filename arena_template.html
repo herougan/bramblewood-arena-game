@@ -5770,6 +5770,9 @@
   @keyframes stunSpin{0%{transform:rotate(0) scale(1);}50%{transform:rotate(180deg) scale(1.18);}100%{transform:rotate(360deg) scale(1);}}
   .rally-note{font-size:8px; font-weight:700; opacity:.8; margin-left:2px; color:var(--accent-strong);}
   .abadge.poison{background:color-mix(in srgb, var(--poison) 28%, var(--surface-2)); color:var(--poison); font-weight:800;}
+  /* FIX9 (2026-11-05, owner 22:18: "Don't show wet counters anymore. Really messy. ... Maybe only shift shows it."): the 💧N water pips
+     show only while Shift is held (arena_app.js fix9WetShift puts .fix9-show-wet on <html>). */
+  html:not(.fix9-show-wet) .abadge.en20-water{display:none !important;}
   .abadge.bleed{background:color-mix(in srgb, var(--bleed) 28%, var(--surface-2)); color:var(--bleed);}
   .abadge.scar{background:color-mix(in srgb, var(--scar) 28%, var(--surface-2)); color:var(--scar);}
   /* The surprise challenge (2026-10-15): the quick "Ambush!" sub-window, and the raiders' theft on the defeat card */

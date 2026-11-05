@@ -49,13 +49,14 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
     e.debugAttack(P, so, F.uid, {}, []); const hits = ws.filter((c, i)=> c.hp < b[i]).length + (P[2].hq.hp < hq ? 1 : 0); if(hits === 1) one++; }
   ok(one > 0, `a blind Fork can still land one prong (${one} of 39)`); }
 // Shell: an arrow-type flat hit raises it; armour + temp Health soak; it skips its attack; it drops at the next round's end
+// FIX9 (2026-11-05, owner 22:18: Shell is "N armor ONLY - decaying away at the end of the turn"): Armor only, no temporary Health, it
+// still attacks, and a hit between rounds keeps it up through the coming round only (the full rule: tests/fix9-2026-11-05.js).
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-shell', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k2-hit', 'left', {}, []);
   const S = all(P[1])[0], hq = P[2].hq.hp; e.damageCardFlat(S, 1, 'physical', 'k2-hit');
-  ok(S.shellUntil != null && S.shellArmor === 3 && S.tempHp === 3, `a flat (arrow) hit raises the shell (armour ${S.shellArmor}, temp ${S.tempHp})`);
-  const hp = S.hp; const r = e.damageCard(S, 5, 'physical', all(P[2])[0]); ok(hp - S.hp === 0 && S.tempHp === 1, `5 damage: 3 armour, then 2 temp Health (hp ${hp}→${S.hp}, temp ${S.tempHp})`);
+  ok(S.shellUntil != null && S.shellArmor === 3 && !(S.tempHp > 0), `a flat (arrow) hit raises the shell (armour ${S.shellArmor}, no temp Health: ${S.tempHp})`);
+  const hp = S.hp; const r = e.damageCard(S, 5, 'physical', all(P[2])[0]); ok(hp - S.hp === 2, `5 damage: 3 armour, 2 to Health (hp ${hp}→${S.hp})`);
   all(P[2])[0].hp = 0; e.removeDeadCards(P, so, {}, {}, []);
-  e.resolveCombat(P, so, {}, [], 1); ok(P[2].hq.hp === hq && S.shellUntil != null, 'a shelled unit does not attack, and is still shelled after this round');
-  e.resolveCombat(P, so, {}, [], 1); ok(S.shellUntil == null && S.tempHp === 0 && S.shellArmor === 0, 'the shell drops at the end of the next round'); }
+  e.resolveCombat(P, so, {}, [], 1); ok(P[2].hq.hp < hq && S.shellUntil == null && S.shellArmor === 0, 'a shelled unit still attacks, and the shell drops at the end of the coming round'); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-shell', 'left', {}, []); const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1);
   ok(P[2].hq.hp < hq, 'an unhit Shell unit attacks as normal'); }
 // Rage doubles against the castle
