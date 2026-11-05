@@ -3968,5 +3968,10 @@
  "Reward": "Gantimpala",
  "Recommended by Claude": "Inirekomenda ni Claude",
  "Claude New": "Bago ni Claude",
- "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Mga mungkahi ni Claude para sa mapang ito. Ipinapakita lang: wala sa anumang listahan, pool, deck o bilang."
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Mga mungkahi ni Claude para sa mapang ito. Ipinapakita lang: wala sa anumang listahan, pool, deck o bilang.",
+ "Unlocks from discovery": "Mabubuksan sa pagtuklas",
+ "The next one unlocks from discovery.": "Ang susunod ay mabubuksan sa pagtuklas.",
+ "Keyword of the map": "Keyword ng mapa",
+ "The keyword this map introduces.": "Ang keyword na ipinakikilala ng mapang ito.",
+ "Cards on this map that have it": "Mga card sa mapang ito na mayroon nito"
 }

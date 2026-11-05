@@ -35,10 +35,10 @@ ok(/neWalletHTML\(\['gold', 'dust', 'beer'\]\)/.test(fnSrc('openTavern')), '#9 t
 ok(/where === 'camp' && st && !gate \? neWalletHTML\(\['dust', 'gold'\]\)/.test(fnSrc('deckSlotPanelHTML')), '#9 the Camp\'s deck slots show Dust and Maple Leaves');
 // ---- #10 locked nests
 { const k = fnSrc('nestKeeperHTML'), b = fnSrc('nestBuildRowHTML');
-  ok(!/Opens on Map|nest-time">Map \$\{u\.map\}|opens on Map/.test(k) && /data-nest-locked="\$\{i\}"/.test(k) && /TX\('ui\.ne-nest-next-locked'\)/.test(k), '#10 no map number on a locked nest or in the side text; locked nests are buttons');
-  ok(/TX\('ui\.ne-nest-locked'\)/.test(b) && !/nest-upg-next-map/.test(b), '#10 the Upgrades row says "Locked for now"');
-  ok(/denyShake\(b\)/.test(fnSrc('nestLockedPing')) && /ui\.ne-nest-locked-progress/.test(fnSrc('nestLockedPing')) && /data-nest-locked\]'\)\.forEach\(b=> b\.onclick = \(\)=> nestLockedPing\(b\)\)/.test(fnSrc('renderNest')), '#10 a tapped locked nest shakes and shows "Locked for now — progress further"');
-  ok(TEXT['ui.ne-nest-locked-progress'] === 'Locked for now — progress further' && TEXT['ui.ne-nest-locked'] === 'Locked for now', '#10 the owner\'s words'); }
+  ok(!/Opens on Map|nest-time">Map \$\{u\.map\}|opens on Map/.test(k) && /data-nest-locked="\$\{i\}"/.test(k) && /TX\('ui\.ui21-nest-next-discovery'\)/.test(k), '#10 no map number on a locked nest or in the side text; locked nests are buttons');
+  ok(/TX\('ui\.ui21-nest-discovery'\)/.test(b) && !/nest-upg-next-map/.test(b), '#10 the Upgrades row says "Locked for now"');
+  ok(/denyShake\(b\)/.test(fnSrc('nestLockedPing')) && /ui\.ui21-nest-discovery/.test(fnSrc('nestLockedPing')) && /data-nest-locked\]'\)\.forEach\(b=> b\.onclick = \(\)=> nestLockedPing\(b\)\)/.test(fnSrc('renderNest')), '#10 a tapped locked nest shakes and shows "Locked for now — progress further"');
+  ok(TEXT['ui.ui21-nest-discovery'] === 'Unlocks from discovery', '#10 (UI21 2026-11-05, FIX8-3: "unlocks from discovery" replaced "Locked for now")'); }
 // ---- #11 tabs
 { const r = fnSrc('renderNest'), p = fnSrc('openNestPicker');
   ok(/\[\['eggs', '🪺 ' \+ TX\('ui\.ne-nest-tab-hatchery'\)\], \['upgrades', '⬆️ ' \+ TX\('ui\.upgrades-tab'\)\]\]/.test(r) && !/tu2-nest-tab-recruits/.test(r), '#11 the Nest\'s tabs are Hatchery | Upgrades (no Level 0 tab)');
@@ -112,7 +112,7 @@ ok(/ov\.className = 'card-inspect ci-split'/.test(fnSrc('openCardInspector')) &&
   ok(/gsap\.to\(g, \{left: \(dx\/sc\) \+ 'px', top: \(dy\/sc\) \+ 'px'/.test(g) && /Math\.max\(200, hitAt \* \.6\)/.test(g) && !/onUpdate:put/.test(g), 'EN5 the Guardian\'s step-in tweens the card itself over 200 ms or more'); }
 // ---- texts
 const KEYS = Object.keys(TEXT).filter(k=> k.startsWith('ui.ne-'));
-ok(KEYS.length >= 22, `the NE texts are TX keys (${KEYS.length})`);
+ok(KEYS.length >= 19 /* 2026-11-05 (UI21): three nest-lock texts replaced by ui.ui21-nest-* */, `the NE texts are TX keys (${KEYS.length})`);
 ok(KEYS.every(k=> src.includes(`'${k}'`)), 'every NE key is used: ' + KEYS.filter(k=> !src.includes(`'${k}'`)).join(', '));
 for(const code of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']){
   const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8'));

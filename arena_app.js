@@ -28062,7 +28062,7 @@ function renderConquestSubTab(body){
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
         return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush is-floating foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${flairLairNode(map, node) ? 'is-lair-final' : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>${vis3NodeFrameHTML(node) /* VIS3 (2026-10-26, V5): a boss's skull frame, an elite's mark */}${flairLairNode(map, node) ? flairLairNodeHTML() /* FLAIR1 (2026-10-28): the lair's last fight: a molten ring and a crown of flame */ : ''}${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
+          <span class="map-node-ico">${node.icon}</span>${vis3NodeFrameHTML(node) /* VIS3 (2026-10-26, V5): a boss's skull frame, an elite's mark */}${flairLairNode(map, node) ? flairLairNodeHTML() /* FLAIR1 (2026-10-28): the lair's last fight: a molten ring and a crown of flame */ : ''}${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}${(()=>{ /* 2026-11-05 (package UI21, IDEA-EARLY-4): the fight's best rank (saved per fight in progress.ranks) as a small emblem on its map node */ const br = done && !node.tower && progress.ranks && progress.ranks[conquestNodeId(map.id, node.key)]; return br ? `<span class="rank-hex rw-mini map-node-rank rank-${escapeAttr(br)}" aria-hidden="true"><i></i><b>${escapeHtml(br)}</b></span>` : ''; })()}
         </button>`;
       }).join('')}
     </div>
@@ -32720,6 +32720,20 @@ function ui22McClaudeNewHTML(mapId, defs, ok, onLists){
   return `<section class="pk1-mc-sec rv2-panel ui22-claude" id="ui22McClaude"><h3>${escapeHtml(TX('ui.ui22-claude-title'))} <small>${list.length}</small></h3><p class="panel-sub">${escapeHtml(tip)}</p><div class="vis4-mc-row ui22-row">${tiles}</div></section>`;
 }
 // UI22_MC:END
+// UI21_KW:START
+// 2026-11-05 (package UI21, IDEA-EARLY-3; owner 2026-11-04 22:34: "put it as its own section in the map cards screen"): the keyword an early map (Maps 0-5 and their side
+// maps) introduces (canonical/map-keywords.json): its name, its rules text (skillText, the same wording the Codex shows) and this map's cards that have it. Shown only.
+const MAP_KEYWORDS = __MAP_KEYWORDS__;
+function ui21McKeywordHTML(mapId, defs, ids){
+  const key = MAP_KEYWORDS[mapId]; if(!key) return '';
+  const p = skillDefOf(key); if(!p) return '';
+  const uniq = [...new Set(ids)], row = ui19McSkillRows(uniq, defs).find(r=> r.key === key);
+  const have = row ? row.ids : [], text = ui19McSkillText(row || {key, fx: {[key]: true}});
+  return `<section class="pk1-mc-sec rv2-panel ui21-kw" id="ui21McKeyword" data-ui21-keyword="${escapeAttr(key)}"><h3>${escapeHtml(TX('ui.ui21-mapkw-title'))}</h3>
+    <p class="ui21-kw-head"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[key] || '•')}</span> <b>${escapeHtml(p.label)}</b></p><p class="panel-sub ui21-kw-text">${escapeHtml(text)}</p>
+    <h4 class="ui21-kw-cards">${escapeHtml(TX('ui.ui21-mapkw-cards'))} <small>${have.length}</small></h4><div class="vis4-mc-row ui22-row">${have.length ? vis4MapCardTilesHTML(have, defs, {packs: false}) : '<span class="panel-sub">–</span>'}</div></section>`;
+}
+// UI21_KW:END
 function pk1OpenMapCards(mapId){
   const top = mpTopOf(mapId), m = mpMapById(mapId) || mpMapById(top); if(!m) return; // 2026-10-29 (package UI3, S4): a submap's fight is labelled by the submap itself
   let ov = document.getElementById('pk1MapCardsOverlay');
@@ -32744,7 +32758,8 @@ function pk1OpenMapCards(mapId){
   }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
   // 2026-11-04 (package UI22): the fights' rewards, then Claude's recommended cards (shown, on no list)
   const ui22Lists = new Set(mapPoolSections(top).flatMap(s=> s.ids || []));
-  const ui22Secs = (()=>{ try{ return ui22McRewardsHTML(mapId, defs, ok) + ui22McClaudeNewHTML(mapId, defs, ok, ui22Lists); }catch(e){ return ''; } })();
+  const ui22Secs = (()=>{ try{ return ui22McRewardsHTML(mapId, defs, ok) + ui22McClaudeNewHTML(mapId, defs, ok, ui22Lists); }catch(e){ return ''; } })()
+    + (()=>{ try{ return ui21McKeywordHTML(mapId, defs, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok)); }catch(e){ return ''; } })(); // 2026-11-05 (UI21, IDEA-EARLY-3): the keyword of the map
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}${(()=>{ try{ return ui19McSkillsHTML(top, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok), defs, ok); }catch(e){ return ''; } })() /* 2026-11-04 (UI19) */}<div class="vis4-map-cards pk1-mc-body">${secs}${ui22Secs}</div></div>`;
@@ -57023,20 +57038,25 @@ const BABY_GROW_HOURS = 4, NEST_SLOTS = 7;
 // nestState().built counts the nests built after the first. A save from before this keeps enough built nests for what was in them.
 // 2026-10-18 (WP4): Map 25 is still Reserved (no fights) and Map 30 doesn't exist, so nests 6 and 7 can't be built yet; their spots
 // read "Unlocks beyond the charted maps" (mapIsCharted) until those maps are built. Which maps they wait for is the owner's call.
+// 2026-11-05 (package UI21, FIX8-3; owner 2026-11-04 22:34: "Do not name the map, but say it unlocks from discovery ... There's 6 to unlock in total right? You can distribute them every
+// 4 maps or something. While it's locked, show a shadow instead of a nest slot."): the six further nests unlock when you COMPLETE Map 4, 8, 12, 16, 20 and 24 (all charted), no longer
+// when a map is merely reached. The prices are unchanged. The Nest never names the map (a locked nest is a shadow that "unlocks from discovery"). A save keeps the nests it has built.
 const NEST_UNLOCKS = [
   {map:3, cost:null},
-  {map:5, cost:{gold:150, dust:40}},
-  {map:10, cost:{gold:500, dust:120}},
-  {map:15, cost:{gold:1000, dust:250}},
-  {map:20, cost:{gold:1800, dust:400}},
-  {map:25, cost:{gold:2800, dust:600}},
-  {map:30, cost:{gold:4000, dust:900}},
+  {map:4, cost:{gold:150, dust:40}},
+  {map:8, cost:{gold:500, dust:120}},
+  {map:12, cost:{gold:1000, dust:250}},
+  {map:16, cost:{gold:1800, dust:400}},
+  {map:20, cost:{gold:2800, dust:600}},
+  {map:24, cost:{gold:4000, dust:900}},
 ];
-function nestMapReached(num){ try{ const m = CONQUEST_MAPS.find(x=> x.id === mapIdAt(num)); return !!(m && isMapUnlocked(m, loadConquestProgress())); }catch(e){ return false; } }
+const NEST_LEGACY_MAPS = [3, 5, 10, 15, 20, 25, 30]; // the pre-UI21 schedule (a map reached): only used to carry a save with no built count over
+function nestMapReached(num){ try{ return conquestMapCleared(mapIdAt(num)); }catch(e){ return false; } }
+function nestLegacyReached(num){ try{ const m = CONQUEST_MAPS.find(x=> x.id === mapIdAt(num)); return !!(m && isMapUnlocked(m, loadConquestProgress())); }catch(e){ return false; } }
 function nestBuiltCount(n){
   n = n || nestState();
   if(n.built == null){ // carry an older save over: keep a nest for every egg already sitting in one, up to the maps reached
-    let reach = 0; for(let i = 1; i < NEST_UNLOCKS.length && nestMapReached(NEST_UNLOCKS[i].map); i++) reach = i;
+    let reach = 0; for(let i = 1; i < NEST_LEGACY_MAPS.length && nestLegacyReached(NEST_LEGACY_MAPS[i]); i++) reach = i; // 2026-11-05 (UI21): by the old schedule, so no save loses a nest
     n.built = Math.max(0, Math.min(reach, nestPlaced(n).length - 1)); saveNestState(n);
   }
   return Math.max(0, Math.min(NEST_UNLOCKS.length - 1, n.built | 0));
@@ -57052,7 +57072,7 @@ function nextNestUnlock(n){
 function nestBuildRowHTML(){
   const n = nestState(), nx = nextNestUnlock(n), open = nestSlotsOpen(n), max = Math.min(NEST_SLOTS, NEST_UNLOCKS.length);
   return `<div class="forge-upgrade upg-row nest-build-row" role="group" aria-label="${escapeAttr(TX('ui.nest-upg-title'))}"><div class="fu-now"><b>${escapeHtml(TX('ui.nest-upg-title'))}</b> <small>${escapeHtml(TX('ui.nest-upg-built', {open, max}))}</small></div>
-    <div class="fu-next">${!nx ? `<span>${escapeHtml(TX('ui.nest-upg-all'))}</span>` : !nx.reached ? `<span class="fu-gate">🔒 ${escapeHtml(TX('ui.ne-nest-locked'))}</span>` /* 2026-10-24 (package NE, owner 17:01 #10: "Don't say when the nest opens. Just say it's locked for now") */
+    <div class="fu-next">${!nx ? `<span>${escapeHtml(TX('ui.nest-upg-all'))}</span>` : !nx.reached ? `<span class="fu-gate">🔒 ${escapeHtml(TX('ui.ui21-nest-discovery'))}</span>` /* 2026-10-24 (package NE, owner 17:01 #10: "Don't say when the nest opens. Just say it's locked for now") */
       : `<button type="button" class="btn small primary" data-nest-build="1" ${nx.affordable ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.nest-upg-btn'))}${btnCostHTML(nx.cost)}</button>`}</div></div>`;
 }
 function buildNextNest(){
@@ -57203,7 +57223,7 @@ function neWalletHTML(kinds){
 function nestLockedPing(b){
   if(!b) return; denyShake(b); try{ SoundKit.deny && SoundKit.deny(); }catch(e){}
   const old = b.querySelector('.ne-lock-label'); if(old) old.remove();
-  const l = document.createElement('span'); l.className = 'ne-lock-label'; l.setAttribute('role', 'status'); l.textContent = TX('ui.ne-nest-locked-progress'); b.appendChild(l);
+  const l = document.createElement('span'); l.className = 'ne-lock-label'; l.setAttribute('role', 'status'); l.textContent = TX('ui.ui21-nest-discovery'); b.appendChild(l);
   setTimeout(()=>{ try{ l.remove(); }catch(e){} }, 2200);
 }
 function nestNeedToast(text){
@@ -57334,7 +57354,8 @@ function nestKeeperHTML(){
       // the hatchery, they should also shake then have a small label saying its locked for now - progress further"): no map number on any
       // locked nest; each is a button (data-nest-locked) that shakes and shows that label (nestLockedPing).
       void u; void mapName;
-      return `<button type="button" class="hay-nest is-locked ${isNext ? 'is-next' : ''}" style="--x:${x}%; --y:${y}%" data-nest-locked="${i}" title="${escapeAttr(TX('ui.ne-nest-locked'))}" aria-label="${escapeAttr(TX('ui.ne-nest-locked-progress'))}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔒</span></button>`;
+      // 2026-11-05 (package UI21, FIX8-3): a locked nest is a shadow (a dimmed silhouette), not a nest slot; it never names its map
+      return `<button type="button" class="hay-nest is-locked is-shadow ${isNext ? 'is-next' : ''}" style="--x:${x}%; --y:${y}%" data-nest-locked="${i}" title="${escapeAttr(TX('ui.ui21-nest-discovery'))}" aria-label="${escapeAttr(TX('ui.ui21-nest-discovery'))}"><span class="hay"></span></button>`;
     }
     if(!e) return `<button type="button" class="hay-nest is-empty" style="--x:${x}%; --y:${y}%" data-nest-empty="${i}" aria-label="An empty nest: set an egg or nurture a card"><span class="hay"></span><span class="nest-plus" aria-hidden="true">＋</span></button>`;
     if(e.kind === 'nurture'){ const cd = defs[e.cardId] || {}, left = e.hatchAt - Date.now(), pct = Math.max(0, Math.min(100, Math.round((Date.now() - e.laidAt) / Math.max(1, e.hatchAt - e.laidAt) * 100)));
@@ -57351,7 +57372,7 @@ function nestKeeperHTML(){
       <div class="hatch-side">
         <div class="nk-nurse"><b>🧑‍🍼 Nurse master</b>${nurse ? `<span class="nk-card">${escapeHtml(nurse.icon||'')} ${escapeHtml(nurse.name)} ${nurseChipHTML(n.nurse)}</span><button type="button" class="btn small" id="nestNurseBtn">Swap</button><small class="nk-speed">${NURSE_ICON} Nursing ${nurseMasteryOf(n.nurse)}: the nests work ${Math.round((1 - nurseTimeFactor()) * 100)}% faster.</small><small class="nk-speed ne-nurse-note">${escapeHtml(TX('ui.ne-nurse-note'))}</small>${'' /* 2026-10-24 (package NE, owner 13:16 #26) */}` : `<small>None yet: Unique cards and up (and the Wandering Traveller) can tend the nests. Their ${NURSE_ICON} Nursing mastery makes eggs hatch and cards train faster.</small><button type="button" class="btn small" id="nestNurseBtn">Choose</button>`}</div>
         <p class="hatch-help">Every egg and baby shows its <b>type</b>. What it grows into is a surprise of that type, Common to Rare. Eggs come from the road; babies are rescued after fights.</p>
-        <p class="hatch-help nest-count">🪺 <b>${open}</b> of ${NEST_SLOTS} nests built.${nx ? (nx.reached ? ` The next one can be built now: ${mapleLeafIconHTML()}${nx.cost.gold||0} and ✨${nx.cost.dust||0}.` : ' ' + escapeHtml(TX('ui.ne-nest-next-locked'))) : ''}</p>${'' /* 2026-10-24 (package NE, #10): no map number */}
+        <p class="hatch-help nest-count">🪺 <b>${open}</b> of ${NEST_SLOTS} nests built.${nx ? (nx.reached ? ` The next one can be built now: ${mapleLeafIconHTML()}${nx.cost.gold||0} and ✨${nx.cost.dust||0}.` : ' ' + escapeHtml(TX('ui.ui21-nest-next-discovery'))) : ''}</p>${'' /* 2026-10-24 (package NE, #10): no map number */}
         ${waiting.length ? `<p class="hatch-wait">🧺 ${waiting.length} more waiting in the basket for a free nest.</p>` : ''}
         ${packed.length ? `<p class="hatch-wait">🎒 ${packed.length} egg${packed.length===1?'':'s'} in your pack. Tap an empty nest to set ${packed.length===1?'it':'one'} down.</p>` : ''}
         <p class="hatch-help">🌱 ${escapeHtml(TX('ui.ne-young-help-side'))}</p>${'' /* 2026-10-24 (package NE, #11): Younglings; the wallet above shows the Kibble (#9) */}

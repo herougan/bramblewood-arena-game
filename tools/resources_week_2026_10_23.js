@@ -14,8 +14,16 @@ const ROOT = path.join(__dirname, '..');
 const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = B.G;
 const args = process.argv.slice(2), opt = k=>{ const i = args.indexOf('--' + k); return i >= 0 ? args[i + 1] : null; };
 const OUT = opt('out') || path.join(ROOT, 'docs', 'balance', 'resources-2026-10-23.json');
-// eslint-disable-next-line no-eval
-const ev = name=>{ const s = B.grab(name); const TX = (k, o)=> k + (o ? ' ' + JSON.stringify(o) : ''); void TX; return eval('(' + s.slice(s.indexOf('=') + 1).trim().replace(/;\s*$/, '') + ')'); };
+// 2026-11-05 (package UI21, ECON2-11): the numbers are read HALVED the way the game halves them (ECON_INCOME_MULT / econScale / econScaleTable run on the source's
+// own tables, as in tools/econ2/econ_sim_2026_11_03.js); before, the raw source tables were read, so every Maple Leaf / Magic Dust / Gold Leaf / Metal figure was about double.
+const econSrc = ['ECON_INCOME_MULT', 'ECON_HALVED_KINDS', 'econMult', 'econScale', 'econScaleTable'].map(B.grab).join('\n');
+const TX = (k, o)=> k + (o ? ' ' + JSON.stringify(o) : '');
+// a declaration plus the econScaleTable() line that follows it in the source, if any
+function ev(name){
+  const decl = B.grab(name), at = B.src.indexOf(decl) + decl.length, next = B.src.slice(at, at + 400).split('\n').find(l=> /^econScaleTable\(/.test(l.trim())) || '';
+  return new Function('TX', econSrc + '\n' + decl + '\n' + (next.includes(name) ? next : '') + '\nreturn ' + name + ';')(TX);
+}
+const econ = new Function(econSrc + '\nreturn {econMult, econScale};')();
 const evMulti = (line, names)=>{ const m = new RegExp('^const ' + line + '.*$', 'm').exec(B.src); if(!m) return {}; return new Function(m[0] + '\nreturn {' + names.join(',') + '};')(); };
 const UC = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'upgrade-costs.json'), 'utf8'));
 
@@ -33,14 +41,14 @@ Object.assign(N, evMulti('NURTURE_HOURS', ['NURTURE_HOURS', 'NURTURE_COST']), ev
 const PACKS = ev('SHOP_PACKS_DEFAULT').map(p=> ({id: p.id, name: p.name, cards: p.cards, gold: p.cost.gold, gems: p.cost.gems, metal: p.metal || 0}));
 const MAIN = G.CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved);
 const nodeEnergyCost = new Function('CONQUEST_MAPS', 'mainConquestMaps', 'baseKind', B.grab('mapEnergyBase') + '\n' + B.grab('nodeEnergyCost') + '\nreturn nodeEnergyCost;')(G.CONQUEST_MAPS, ()=> MAIN, G.baseKind);
-const nodeRewardTier = new Function('CONQUEST_NODE_REWARDS', 'baseKind', B.grab('nodeRewardTier') + '\nreturn nodeRewardTier;')(N.CONQUEST_NODE_REWARDS, G.baseKind);
+const nodeRewardTier = new Function('CONQUEST_NODE_REWARDS', 'baseKind', 'econScale', B.grab('nodeRewardTier') + '\nreturn nodeRewardTier;')(N.CONQUEST_NODE_REWARDS, G.baseKind, econ.econScale);
 
 // ---------- 1. every resource ----------
 const R = (key, name, icon, kind, from, spent, notes, refs)=> ({key, name, icon, kind, from, spent, notes: notes || '', refs: refs || []});
 const RESOURCES = [
-  R('gold', 'Maple Leaves', '🍁', 'currency', 'First clears (skirmish 40, elite 70, boss 120 ...) and repeat wins (8 / 14 / 24, x the rank multiplier); daily notices (40-1,100) and the daily / weekly quest tiers; PvP (4 a win); raids (damage / 48); achievements; the Gauntlet, Async and dungeon runs.', 'Packs (50 / 120 / 250, Advanced x12), levelling and the Forge, prestige, finishes (Refine), Nest building and training, Tavern recruits, Energy upgrades (150 a step), dungeon key ring, Raid Tickets (300), Rename Tickets (250).', '', ['CONQUEST_NODE_REWARDS', 'QUEST_TIERS', 'QUEST_RANK_REWARD']),
+  R('gold', 'Maple Leaves', '🍁', 'currency', 'First clears (skirmish 40, elite 70, boss 120 ...) and repeat wins (4 / 7 / 12 after the halving, x the rank multiplier); daily notices (20-550, halved) and the weekly quest tiers; PvP (4 a win); raids (damage / 48); achievements; the Gauntlet, Async and dungeon runs.', 'Packs (50 / 120 / 250, Advanced x12), levelling and the Forge, prestige, finishes (Refine), Nest building and training, Tavern recruits, Energy upgrades (150 a step), dungeon key ring, Raid Tickets (300), Rename Tickets (250).', '', ['CONQUEST_NODE_REWARDS', 'QUEST_TIERS', 'QUEST_RANK_REWARD']),
   R('gems', 'Gold Leaves', '🍂', 'currency', 'S / SS / SSS daily notices (6 / 15 / 30); daily dungeon floors (hidden today, DAILY_DUNGEONS_HIDDEN); raid claims.', 'The Tidemire Chest (10) and Highcrest Case (30), the Prism finish (5), Advanced packs.', 'The rarest everyday currency: a dedicated player sees well under 1 S notice a day.', ['QUEST_RANK_REWARD', 'SHOP_PACKS_DEFAULT']),
-  R('dust', 'Magic Dust', '✨', 'currency', 'First clears (20 / 68 / 169); daily notices (the main faucet, ~50-1,200) and quest tiers; raids; elite / boss repeats (5 / 10); melting (disenchanting) cards.', 'Levelling and limit breaks (the Forge road), prestige, finishes, crafting cards, Materia crystals (bench), Nest building and training, Tavern recruits, Max Energy steps, the key ring.', '', ['CONQUEST_NODE_REWARDS', 'DISENCHANT_DUST', 'FORGE_STEP_DUST']),
+  R('dust', 'Magic Dust', '✨', 'currency', 'First clears (20 / 68 / 169); daily notices (the main faucet) and the weekly quest tiers; raids; elite / boss repeats (5 / 10); melting (disenchanting) cards.', 'Levelling and limit breaks (the Forge road), prestige, finishes, crafting cards, Materia crystals (bench), Nest building and training, Tavern recruits, Max Energy steps, the key ring.', '', ['CONQUEST_NODE_REWARDS', 'DISENCHANT_DUST', 'FORGE_STEP_DUST']),
   R('metal', 'Metal', '🔩', 'currency', 'Weekly quest tiers (3 + 1), a raid win (1), Gauntlet / Async / dungeon runs (2), SSS notices (3), the Tidemire Chest (1), achievements.', 'Nothing spends it today (no cost lists Metal); raid claims weigh it.', 'Earned, never spent: a candidate for the Forge tiers or the Blacksmith.', ['grantCurrency(\'metal\')']),
   R('kibble', 'Kibble', '🦴', 'currency', 'Conquest first clears (1 / 2 / 3 / 5 by kind); repeat wins 15% for 1; a grown baby +2.', 'Training a Level-0 card to Level 1 in the Nest (2, +1 per card of that species already raised, up to 8).', '', ['KIBBLE_FIRST', 'NURTURE_COST']),
   R('beer', 'Beer', '🍺', 'currency', '1 every Monday once the Tavern is open, +1 for each of the first two weekly quest tiers; you hold at most 3.', 'Tavern recruits (1 each, with Dust and Maple Leaves; a Rare also an Iron Shard).', '', ['BEER_CAP', 'TAVERN_RECRUIT_COST']),
@@ -82,7 +90,7 @@ const A = {
   winShare: 1, // repeat farming of a fight already cleared: every fight won
   rank: 'S', // repeat wins at S (x RANK_MULT)
   noticesPerDay: 6, // every notice taken and finished (3 at midnight, 6 AM, 12 PM, 6 PM)
-  dailyTiers: 3, weeklyTiers: 3, // all quest tiers finished
+  dailyTiers: 0, weeklyTiers: 3, // all weekly quest tiers finished; 2026-11-05 (UI21, ECON2-11): the daily quest tiers are no longer posted (the notices replaced them), so none
   pvpPerDay: N.PVP_TICKETS_PER_DAY, pvpWin: 0.55,
   raidsPerDay: 1, raidDamage: 600, // 1 raid point a day; ~600 damage a fight (weekly goal 4,000 over ~7 fights)
   farmKind: 'skirmish', // the cheapest repeat: a skirmish of the reach map (not its first fight, which can be cheaper)

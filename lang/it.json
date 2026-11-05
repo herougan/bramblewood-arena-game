@@ -3969,5 +3969,10 @@
  "Reward": "Ricompensa",
  "Recommended by Claude": "Consigliate da Claude",
  "Claude New": "Nuovo di Claude",
- "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Suggerimenti di Claude per questa mappa. Solo visualizzati: in nessuna lista, riserva, mazzo o conteggio."
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Suggerimenti di Claude per questa mappa. Solo visualizzati: in nessuna lista, riserva, mazzo o conteggio.",
+ "Unlocks from discovery": "Si sblocca con la scoperta",
+ "The next one unlocks from discovery.": "Il prossimo si sblocca con la scoperta.",
+ "Keyword of the map": "Parola chiave della mappa",
+ "The keyword this map introduces.": "La parola chiave che questa mappa introduce.",
+ "Cards on this map that have it": "Carte di questa mappa che ce l’hanno"
 }

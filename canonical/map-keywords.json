@@ -1,0 +1,31 @@
+{
+ "_about": "UI21 (2026-11-05, IDEA-EARLY-3): the one keyword each early map (Maps 0-5) and its side maps introduces. Shown as its own section in the Map cards window (keyword, its rules text, the map's cards that have it); it changes no list, pack or card. Chosen from what each map's lists lean on (card counts below, 2026-11-05). Keys are map ids, values are skill keys.",
+ "keywords": {
+  "m1": "swarm",
+  "mtut": "diurnal",
+  "mo": "evasive",
+  "mf": "quick",
+  "mq": "keenEye",
+  "mb": "tide",
+  "mp": "venomous",
+  "mg": "armor",
+  "mc": "flying",
+  "m2": "delivery",
+  "mw": "poison",
+  "ms": "bleed"
+ },
+ "why": {
+  "m1": "Map 0: Swarm on 3 of 17 (Flying ties; Flying is Map 3's)",
+  "mtut": "Tutorial: Diurnal on 3 of 18",
+  "mo": "Old Bramble side map: Evasive on 2 of 13",
+  "mf": "Map 1: Quick on 2 of 17 (ties with True Sight; Flying leads but is Map 3's)",
+  "mq": "Map 1 side map: True Sight (keenEye) on 1 of 13",
+  "mb": "Map 2: Tide on 6 of 13",
+  "mp": "Map 2 side map: Venomous on 2 of 13",
+  "mg": "Map 2 side map: Armor on 3 of 15",
+  "mc": "Map 3: Flying on 10 of 15",
+  "m2": "Map 4: Delivery on 1 of 13 (Tide is Map 2's; Venomous is mp's)",
+  "mw": "Map 5: Poison on 2 of 14",
+  "ms": "Map 5 side map: Bleed on 1 of 13"
+ }
+}

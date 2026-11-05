@@ -3967,5 +3967,10 @@
  "Reward": "獎勵",
  "Recommended by Claude": "Claude 推薦",
  "Claude New": "Claude 新推薦",
- "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Claude 為此地圖推薦的卡牌。僅作展示：不在任何列表、卡池、牌組或計數中。"
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Claude 為此地圖推薦的卡牌。僅作展示：不在任何列表、卡池、牌組或計數中。",
+ "Unlocks from discovery": "透過探索解鎖",
+ "The next one unlocks from discovery.": "下一個巢透過探索解鎖。",
+ "Keyword of the map": "地圖關鍵字",
+ "The keyword this map introduces.": "這張地圖引入的關鍵字。",
+ "Cards on this map that have it": "本地圖中擁有它的卡牌"
 }

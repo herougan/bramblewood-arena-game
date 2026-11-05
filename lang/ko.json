@@ -3970,5 +3970,10 @@
  "Reward": "보상",
  "Recommended by Claude": "Claude 추천",
  "Claude New": "Claude 신규",
- "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "이 맵에 대한 Claude의 추천입니다. 표시만 되며 어떤 목록, 풀, 덱, 집계에도 들어가지 않습니다."
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "이 맵에 대한 Claude의 추천입니다. 표시만 되며 어떤 목록, 풀, 덱, 집계에도 들어가지 않습니다.",
+ "Unlocks from discovery": "탐험으로 해금됩니다",
+ "The next one unlocks from discovery.": "다음 둥지는 탐험으로 해금됩니다.",
+ "Keyword of the map": "맵의 키워드",
+ "The keyword this map introduces.": "이 맵에서 처음 소개하는 키워드입니다.",
+ "Cards on this map that have it": "이 맵에서 이 키워드를 가진 카드"
 }

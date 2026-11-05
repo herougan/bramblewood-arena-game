@@ -3967,5 +3967,10 @@
  "Reward": "報酬",
  "Recommended by Claude": "Claude のおすすめ",
  "Claude New": "Claude 新規",
- "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "このマップへの Claude のおすすめ。表示のみで、どのリスト・プール・デッキ・集計にも入りません。"
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "このマップへの Claude のおすすめ。表示のみで、どのリスト・プール・デッキ・集計にも入りません。",
+ "Unlocks from discovery": "探索で解放されます",
+ "The next one unlocks from discovery.": "次の巣は探索で解放されます。",
+ "Keyword of the map": "マップのキーワード",
+ "The keyword this map introduces.": "このマップで初めて登場するキーワード。",
+ "Cards on this map that have it": "このマップでそれを持つカード"
 }

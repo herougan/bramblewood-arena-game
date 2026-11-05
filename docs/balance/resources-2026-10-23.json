@@ -1,12 +1,12 @@
 {
- "generated": "2026-10-23",
+ "generated": "2026-11-05",
  "tool": "node tools/resources_week_2026_10_23.js",
  "assumptions": {
   "awakeHours": 16,
   "winShare": 1,
   "rank": "S",
   "noticesPerDay": 6,
-  "dailyTiers": 3,
+  "dailyTiers": 0,
   "weeklyTiers": 3,
   "pvpPerDay": 10,
   "pvpWin": 0.55,
@@ -27,22 +27,19 @@
  },
  "numbers": {
   "noticeEV": {
-   "gold": 71.78,
-   "dust": 82.55,
-   "gems": 0.39,
-   "metal": 0.006,
-   "xp": 46.63,
-   "raidTickets": 0.018000000000000002,
-   "kit": 0.192
+   "gold": 35.199999999999996,
+   "dust": 40.540000000000006,
+   "gems": 0.17500000000000002,
+   "metal": 0.004,
+   "xp": 45.75999999999999,
+   "raidTickets": 0.019000000000000003,
+   "kit": 0.18900000000000003
   },
-  "dailyTiers": {
-   "gold": 105,
-   "dust": 14
-  },
+  "dailyTiers": {},
   "weeklyTiers": {
-   "gold": 675,
-   "dust": 1035,
-   "metal": 4
+   "gold": 338,
+   "dust": 518,
+   "metal": 3
   },
   "packs": [
    {
@@ -56,9 +53,9 @@
    {
     "id": "silver",
     "name": "Tidemire Chest",
-    "cards": 5,
-    "gold": 120,
-    "gems": 10,
+    "cards": 3,
+    "gold": 72,
+    "gems": 6,
     "metal": 1
    },
    {
@@ -72,9 +69,9 @@
    {
     "id": "gold",
     "name": "Highcrest Case",
-    "cards": 8,
-    "gold": 250,
-    "gems": 30,
+    "cards": 3,
+    "gold": 94,
+    "gems": 11,
     "metal": 0
    }
   ],
@@ -91,7 +88,7 @@
    "name": "Maple Leaves",
    "icon": "🍁",
    "kind": "currency",
-   "from": "First clears (skirmish 40, elite 70, boss 120 ...) and repeat wins (8 / 14 / 24, x the rank multiplier); daily notices (40-1,100) and the daily / weekly quest tiers; PvP (4 a win); raids (damage / 48); achievements; the Gauntlet, Async and dungeon runs.",
+   "from": "First clears (skirmish 40, elite 70, boss 120 ...) and repeat wins (4 / 7 / 12 after the halving, x the rank multiplier); daily notices (20-550, halved) and the weekly quest tiers; PvP (4 a win); raids (damage / 48); achievements; the Gauntlet, Async and dungeon runs.",
    "spent": "Packs (50 / 120 / 250, Advanced x12), levelling and the Forge, prestige, finishes (Refine), Nest building and training, Tavern recruits, Energy upgrades (150 a step), dungeon key ring, Raid Tickets (300), Rename Tickets (250).",
    "notes": "",
    "refs": [
@@ -118,7 +115,7 @@
    "name": "Magic Dust",
    "icon": "✨",
    "kind": "currency",
-   "from": "First clears (20 / 68 / 169); daily notices (the main faucet, ~50-1,200) and quest tiers; raids; elite / boss repeats (5 / 10); melting (disenchanting) cards.",
+   "from": "First clears (20 / 68 / 169); daily notices (the main faucet) and the weekly quest tiers; raids; elite / boss repeats (5 / 10); melting (disenchanting) cards.",
    "spent": "Levelling and limit breaks (the Forge road), prestige, finishes, crafting cards, Materia crystals (bench), Nest building and training, Tavern recruits, Max Energy steps, the key ring.",
    "notes": "",
    "refs": [
@@ -547,35 +544,35 @@
    "energyPerDay": 227,
    "fightsPerDay": 56,
    "repeatPay": {
-    "gold": 8,
-    "dust": 0
+    "gold": 4,
+    "dust": 1
    },
    "week": {
-    "gold": 8178.7,
-    "dust": 4676,
-    "gems": 16.4,
-    "metal": 7.8,
+    "gold": 3829.9,
+    "dust": 2731.7,
+    "gems": 7.4,
+    "metal": 6.7,
     "kibble": 58.8,
     "laurels": 147,
     "beer": 3,
     "ironShard": 58.8,
     "temperingStone": 0,
     "raidTickets": 0.8,
-    "kitItems": 35.1,
+    "kitItems": 34.9,
     "eggs": 0.8,
     "babies": 23.5,
     "cardDrops": 3.9,
     "energy": 1589,
     "fights": 392,
-    "xp": 1958.5
+    "xp": 1921.9
    },
-   "hedgerowPouchesAffordable": 163,
+   "hedgerowPouchesAffordable": 76,
    "split": {
-    "conquestGold": 3481,
-    "noticeGold": 3015,
-    "questTierGold": 1410,
-    "noticeDust": 3467,
-    "questTierDust": 1133
+    "conquestGold": 1740,
+    "noticeGold": 1478,
+    "questTierGold": 338,
+    "noticeDust": 1703,
+    "questTierDust": 518
    }
   },
   {
@@ -586,35 +583,35 @@
    "energyPerDay": 247,
    "fightsPerDay": 35,
    "repeatPay": {
-    "gold": 8,
-    "dust": 0
+    "gold": 4,
+    "dust": 1
    },
    "week": {
-    "gold": 6873.4,
-    "dust": 4676,
-    "gems": 16.4,
-    "metal": 7.8,
+    "gold": 3177.2,
+    "dust": 2568.6,
+    "gems": 7.4,
+    "metal": 6.7,
     "kibble": 36.8,
     "laurels": 147,
     "beer": 3,
     "ironShard": 36.8,
     "temperingStone": 0,
     "raidTickets": 0.8,
-    "kitItems": 35.1,
+    "kitItems": 34.9,
     "eggs": 0.9,
     "babies": 14.7,
     "cardDrops": 2.5,
     "energy": 1729,
     "fights": 245,
-    "xp": 1958.5
+    "xp": 1921.9
    },
-   "hedgerowPouchesAffordable": 137,
+   "hedgerowPouchesAffordable": 63,
    "split": {
-    "conquestGold": 2176,
-    "noticeGold": 3015,
-    "questTierGold": 1410,
-    "noticeDust": 3467,
-    "questTierDust": 1133
+    "conquestGold": 1088,
+    "noticeGold": 1478,
+    "questTierGold": 338,
+    "noticeDust": 1703,
+    "questTierDust": 518
    }
   },
   {
@@ -625,35 +622,35 @@
    "energyPerDay": 257,
    "fightsPerDay": 28,
    "repeatPay": {
-    "gold": 8,
-    "dust": 0
+    "gold": 4,
+    "dust": 1
    },
    "week": {
-    "gold": 6438.2,
-    "dust": 4676,
-    "gems": 16.4,
-    "metal": 7.8,
+    "gold": 2959.6,
+    "dust": 2514.2,
+    "gems": 7.4,
+    "metal": 6.7,
     "kibble": 29.4,
     "laurels": 147,
     "beer": 3,
     "ironShard": 29.4,
     "temperingStone": 0,
     "raidTickets": 0.8,
-    "kitItems": 35.1,
+    "kitItems": 34.9,
     "eggs": 0.9,
     "babies": 11.8,
     "cardDrops": 2,
     "energy": 1799,
     "fights": 196,
-    "xp": 1958.5
+    "xp": 1921.9
    },
-   "hedgerowPouchesAffordable": 128,
+   "hedgerowPouchesAffordable": 59,
    "split": {
-    "conquestGold": 1740,
-    "noticeGold": 3015,
-    "questTierGold": 1410,
-    "noticeDust": 3467,
-    "questTierDust": 1133
+    "conquestGold": 870,
+    "noticeGold": 1478,
+    "questTierGold": 338,
+    "noticeDust": 1703,
+    "questTierDust": 518
    }
   }
  ],

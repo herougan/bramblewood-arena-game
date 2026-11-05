@@ -3969,5 +3969,10 @@
  "Reward": "Hadiah",
  "Recommended by Claude": "Direkomendasikan Claude",
  "Claude New": "Baru dari Claude",
- "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Saran Claude untuk peta ini. Hanya ditampilkan: tidak ada di daftar, kumpulan, dek, atau hitungan mana pun."
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "Saran Claude untuk peta ini. Hanya ditampilkan: tidak ada di daftar, kumpulan, dek, atau hitungan mana pun.",
+ "Unlocks from discovery": "Terbuka lewat penemuan",
+ "The next one unlocks from discovery.": "Berikutnya terbuka lewat penemuan.",
+ "Keyword of the map": "Kata kunci peta",
+ "The keyword this map introduces.": "Kata kunci yang diperkenalkan peta ini.",
+ "Cards on this map that have it": "Kartu di peta ini yang memilikinya"
 }

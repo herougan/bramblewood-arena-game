@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Package UI21 (owner 11-04 22:34: FIX8-3, IDEA-EARLY-3, IDEA-EARLY-4, ECON2-11)
+- **Nests unlock from discovery:** the six further nests open when you complete Map 4, 8, 12, 16, 20, 24 (prices unchanged; was: Map reached 5 / 10 / 15 / 20 / 25 / 30). A locked nest is a shadow, the text says "Unlocks from discovery" and never names the map. Saves keep every nest built.
+- **Keyword of the map:** Maps 0-5 and their side maps each introduce one keyword (`canonical/map-keywords.json`), shown as its own section in the Map cards window with its rules text and the map's cards that have it.
+- **Best rank on the map:** a cleared fight shows its best rank emblem on its map node (the fight info already did); no new reward (rank pay multipliers exist).
+- **Resources tool** reads the halved numbers (econScale) and no daily quest tiers; `docs/balance/resources-2026-10-23.json` regenerated (feeds the hub's Resources tab).
+
 ## 2026-11-05 Package BAL16 (owner 11-04 23:37, 11-05 08:08: REFDECK-1, CUT3-1 a, IDEA-EARLY-5, CONTENT10-2)
 - **Skirmish decks rebuilt from their own lists:** 142 road and side-map decks lost their off-list cards (BAL9's 99, Pebble Beach's side maps, CUT3's audit, Maps 21-24, Map 0's Fox Kits); size, rewards and first-clear cards kept. Glacial Ape-King's leaders replaced: 17-1 Beluga, 17-3 Polar Bear, 17-8 Walrus Icebreaker, 17-A-1 Greenland Shark. Combo skirmishes (no hints, no rewards): 0-2 Ant Scout + Soldier Ant, 2-1 Pincushion Urchin + Rock Pool Starfish, 3-4 Gannet Nestweaver + Peak Condor, 4-1 Muskrat Lodgekeeper + Platypus Spur.
 - **Road retune (decks only):** in band 62 -> 91 of 226, within 10 79 -> 117, beyond 20 82 -> 63 (Map reference, 40 games). 38 fights stay walls even with their list's weakest deck (Savanna Reaches, The Canopy, Basalt Foundry, 17-4 to 17-8, the Old Bramble, ...).

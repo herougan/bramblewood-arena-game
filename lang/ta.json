@@ -3970,5 +3970,10 @@
  "Reward": "வெகுமதி",
  "Recommended by Claude": "Claude பரிந்துரைத்தவை",
  "Claude New": "Claude புதியது",
- "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "இந்த வரைபடத்திற்கான Claude இன் பரிந்துரைகள். காட்சிக்கு மட்டும்: எந்த பட்டியல், தொகுப்பு, அட்டைக்கட்டு அல்லது எண்ணிக்கையிலும் இல்லை."
+ "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.": "இந்த வரைபடத்திற்கான Claude இன் பரிந்துரைகள். காட்சிக்கு மட்டும்: எந்த பட்டியல், தொகுப்பு, அட்டைக்கட்டு அல்லது எண்ணிக்கையிலும் இல்லை.",
+ "Unlocks from discovery": "கண்டுபிடிப்பால் திறக்கும்",
+ "The next one unlocks from discovery.": "அடுத்தது கண்டுபிடிப்பால் திறக்கும்.",
+ "Keyword of the map": "வரைபடத்தின் முக்கிய சொல்",
+ "The keyword this map introduces.": "இந்த வரைபடம் அறிமுகப்படுத்தும் முக்கிய சொல்.",
+ "Cards on this map that have it": "இதைக் கொண்ட இந்த வரைபடத்தின் அட்டைகள்"
 }

@@ -10823,6 +10823,8 @@
 
 /* Skirmish codes X-Y (2026-10-10) */
 .sk-code{display:inline-block; font:800 .78em/1.2 'Baloo 2',system-ui,sans-serif; padding:0 .45em; border-radius:999px; background:rgba(58,43,30,.82); color:#f3e7cc; vertical-align:.12em; margin-right:.25em; letter-spacing:.02em;}
+/* 2026-11-05 (package UI21, IDEA-EARLY-4): the best rank on a cleared fight's map node */
+.map-node .map-node-rank{position:absolute !important; top:-7px !important; right:-9px !important; left:auto !important; margin:0 !important; width:20px; height:23px; z-index:5; pointer-events:none;} .map-node .map-node-rank b{font-size:11px !important;}
 .map-node .map-node-code{position:absolute; left:50%; bottom:-9px; transform:translateX(-50%); font:800 10px/1 'Baloo 2',system-ui,sans-serif; padding:2px 5px; border-radius:999px; background:rgba(58,43,30,.86); color:#f3e7cc; white-space:nowrap; pointer-events:none;}
 
 /* ---- Shop shelves (2026-10-10): a bakery / apothecary wall of shelves ---- */
@@ -12554,6 +12556,10 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
   .hay-nest.is-locked .nest-lock{position:relative; font-size:clamp(16px, 3.6vw, 22px); margin-top:-10%; opacity:.75;}
   .hay-nest.is-locked:not(.is-next):not(.is-buildable) .nest-lock{opacity:.4;}
   .hay-nest.is-locked .nest-time{background:rgba(58,42,20,.7);}
+  /* 2026-11-05 (package UI21, FIX8-3): a locked nest is a shadow, not a hay slot */
+  .hay-nest.is-shadow{cursor:pointer; font:inherit; color:inherit;} button.hay-nest.is-shadow{background:none; border:0; padding:0;}
+  .hay-nest.is-shadow .hay{filter:brightness(0) !important; opacity:.22 !important;}
+  .hay-nest.is-shadow.is-next .hay{opacity:.34 !important;}
   button.hay-nest.is-buildable{cursor:pointer; font:inherit; color:inherit;}
   .hay-nest.is-buildable .hay{filter:saturate(.6); opacity:.85;}
   .hay-nest.is-buildable .nest-lock{opacity:1; animation:readyHop 1.4s ease-in-out infinite;}
@@ -14749,6 +14755,8 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ui22-rw.is-challenge .ui22-rw-role{color:#b8860b;}
 .ui22-pill{font:800 10px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; background:#6d4bd8; color:#fff; padding:2px 7px; border-radius:999px; cursor:help; white-space:nowrap;}
 .ui22-claude .ui22-rw{opacity:.96;}
+/* 2026-11-05 (package UI21, IDEA-EARLY-3): the keyword of the map */
+.ui21-kw .ui21-kw-head{margin:4px 0; font-size:1.05em;} .ui21-kw .ui21-kw-text{margin:0 0 8px;} .ui21-kw .ui21-kw-cards{margin:8px 0 4px; font-size:.95em;}
 /* art focus (Card editor: Art height): extended art moves down by --apy (framed art uses object-position, set inline) */
 .card-tile.art-extended > .ico .card-art-img[style*="--apy"]{top:calc((50 - var(--apy)) * .5%);}
 </style>

@@ -367,6 +367,8 @@ app_src = sub_once(app_src, "__PACK_EXTRAS__", json.dumps({k: v for k, v in json
 # 2026-10-29 (package REVIEW1): the map list review (canonical/map-review.json, filled by THEME3): chosen / cut / maybe cards per map, shown in the 🃏 Map cards overlay
 app_src = sub_once(app_src, "__MAP_REVIEW__", json.dumps({k: v for k, v in json.load(open(SCRATCH + "canonical/map-review.json", encoding="utf-8")).items() if k in ("built", "maps")}, ensure_ascii=False))
 # 2026-11-04 (package UI22): Claude's recommended cards per map (canonical/claude-new-cards.json, built by tools/ui22_claude_new_2026_11_04.py), shown in the Map cards window and put on no list
+# 2026-11-05 (package UI21): the keyword each early map introduces (canonical/map-keywords.json), shown in the Map cards window
+app_src = sub_once(app_src, "__MAP_KEYWORDS__", json.dumps(json.load(open(SCRATCH + "canonical/map-keywords.json", encoding="utf-8"))["keywords"], ensure_ascii=False))
 app_src = sub_once(app_src, "__CLAUDE_NEW__", json.dumps({k: v for k, v in json.load(open(SCRATCH + "canonical/claude-new-cards.json", encoding="utf-8")).items() if k in ("theme5", "skillrec")}, ensure_ascii=False))
 # 2026-10-24 (package PRO, owner 00:28): the hidden N-PRO-k fights per map (canonical/pro-skirmishes.json, written by tools/opt/pro_skirmishes.js --apply);
 # only what the game reads is baked in (not the replaced decks, the skipped candidates or the tool's notes)
