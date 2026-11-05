@@ -510,6 +510,7 @@ if(CMD === 'moves'){ // 2026-10-24 (package BAL3): the curve's candidate moves f
   const OUT = path.join(OUTDIR, opt('fixes', 'road-curve-fixes') + '.jsonl'), done = new Set(readJsonl(OUT).map(r=> r.map + ':' + r.key));
   const ALLF = argv.includes('--all'); // 2026-10-24 (package BAL3): every fight on the curve, measured at its start on the tune seeds (no --from file)
   const todo = all.filter(f=>{ if(ALLF) return !f.endless && (fightBand(f).curve || argv.includes('--any')); const b = before.find(r=> r.map === f.map && r.key === f.key); if(!b) return false; const bd = bandOf(f, b.win); return (bd.curve || argv.includes('--any')) && bd.green !== 'green' && !f.endless; }) // --any (2026-10-19, LV): the fights off the curve too, toward their older targets
+    .filter(f=> !opt('skip', '').split(',').filter(Boolean).includes(f.code)) // 2026-11-05 (BAL16): --skip=2-4 leaves fights with an open owner call alone (CONTENT10-2)
     .filter((f, i)=> i % NSH === SHARD && !done.has(f.map + ':' + f.key));
   console.log('fights off the road curve to tune', todo.length);
   for(const f of todo){ const b = before.find(r=> r.map === f.map && r.key === f.key) || {win: null}, t = Date.now(), band = fightBand(f), fx = curveTune(f, band, +opt('steps', 6));
