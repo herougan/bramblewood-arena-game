@@ -1,0 +1,207 @@
+{
+ "about": "CONTENT12: 2-4 retune (tools/content12_lilypad_tune_2026_11_06.js)",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "conch-herald",
+  "gull-thief",
+  "moon-jelly",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin",
+  "rock-pool-starfish"
+ ],
+ "firstClear": [
+  "conch-herald"
+ ],
+ "k14Before": 0,
+ "before": {
+  "deck": {
+   "conch-herald": 2,
+   "gull-thief": 5,
+   "open-ocean-hermit-crab": 4,
+   "pincushion-urchin": 3,
+   "rock-pool-starfish": 5
+  },
+  "tune": 33.3,
+  "measure40": 55
+ },
+ "trail": [
+  {
+   "deck": {
+    "conch-herald": 2,
+    "gull-thief": 5,
+    "open-ocean-hermit-crab": 4,
+    "pincushion-urchin": 3,
+    "rock-pool-starfish": 5
+   },
+   "win": 33.3,
+   "hpLost": 73.8
+  },
+  {
+   "move": "rock-pool-starfish -4 -> oystercatcher",
+   "deck": {
+    "conch-herald": 2,
+    "gull-thief": 5,
+    "open-ocean-hermit-crab": 4,
+    "pincushion-urchin": 3,
+    "rock-pool-starfish": 1,
+    "oystercatcher": 4
+   },
+   "win": 46.7,
+   "hpLost": 68.4
+  },
+  {
+   "move": "gull-thief -4 -> moon-jelly",
+   "deck": {
+    "conch-herald": 2,
+    "gull-thief": 1,
+    "open-ocean-hermit-crab": 4,
+    "pincushion-urchin": 3,
+    "rock-pool-starfish": 1,
+    "oystercatcher": 4,
+    "moon-jelly": 4
+   },
+   "win": 48.3,
+   "hpLost": 65.1
+  },
+  {
+   "move": "conch-herald -1 -> pincushion-urchin",
+   "deck": {
+    "conch-herald": 1,
+    "gull-thief": 1,
+    "open-ocean-hermit-crab": 4,
+    "pincushion-urchin": 4,
+    "rock-pool-starfish": 1,
+    "oystercatcher": 4,
+    "moon-jelly": 4
+   },
+   "win": 52.5,
+   "hpLost": 61.3
+  }
+ ],
+ "trials": 164,
+ "top": [
+  {
+   "deck": {
+    "conch-herald": 1,
+    "gull-thief": 1,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 4,
+    "rock-pool-starfish": 1
+   },
+   "tune": 52.5,
+   "measure40": 62.5,
+   "measure200": 58
+  },
+  {
+   "deck": {
+    "conch-herald": 1,
+    "gull-thief": 4,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 1,
+    "rock-pool-starfish": 1
+   },
+   "tune": 52.5,
+   "measure40": 60
+  },
+  {
+   "deck": {
+    "conch-herald": 1,
+    "gull-thief": 3,
+    "moon-jelly": 2,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 4,
+    "rock-pool-starfish": 1
+   },
+   "tune": 51.7,
+   "measure40": 47.5
+  },
+  {
+   "deck": {
+    "conch-herald": 1,
+    "gull-thief": 2,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 3,
+    "oystercatcher": 4,
+    "pincushion-urchin": 4,
+    "rock-pool-starfish": 1
+   },
+   "tune": 50.8,
+   "measure40": 50
+  },
+  {
+   "deck": {
+    "conch-herald": 1,
+    "gull-thief": 2,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 4
+   },
+   "tune": 50,
+   "measure40": 57.5
+  },
+  {
+   "deck": {
+    "conch-herald": 1,
+    "gull-thief": 2,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 3,
+    "rock-pool-starfish": 1
+   },
+   "tune": 50,
+   "measure40": 47.5
+  },
+  {
+   "deck": {
+    "conch-herald": 2,
+    "moon-jelly": 4,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 4,
+    "rock-pool-starfish": 1
+   },
+   "tune": 50,
+   "measure40": 65
+  },
+  {
+   "deck": {
+    "conch-herald": 1,
+    "gull-thief": 1,
+    "moon-jelly": 2,
+    "open-ocean-hermit-crab": 4,
+    "oystercatcher": 4,
+    "pincushion-urchin": 4,
+    "rock-pool-starfish": 3
+   },
+   "tune": 50,
+   "measure40": 50
+  }
+ ],
+ "pick": {
+  "deck": {
+   "conch-herald": 1,
+   "gull-thief": 1,
+   "moon-jelly": 4,
+   "open-ocean-hermit-crab": 4,
+   "oystercatcher": 4,
+   "pincushion-urchin": 4,
+   "rock-pool-starfish": 1
+  },
+  "tune": 52.5,
+  "measure40": 62.5,
+  "measure200": 58
+ },
+ "k14After": 0
+}

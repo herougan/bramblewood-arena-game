@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-06: Package CONTENT12 (on its branch, not released)
+- Done: CONTENT11-1..4, ENG22-1, FIX9-1, DELIV-1, BAL16-2/3/4, BAL18-1, CONTENT10-2 (see docs/CHANGELOG.md).
+- Owner calls open: CONTENT12-1 (your live cards over budget as set; Old Sturgeon / Ant Warrior / Fire Ant Raft skills), CONTENT12-2 (2-A-7 still 68%, a K14 exception?), CONTENT12-4 "apply it" (supabase/proposed/20261106_clear_folded_overrides_4.sql).
+- Next: road retune after the fold (Map 0-2 fights went harder, 0-2 Thicket Swarm 37.5 vs 75, 2-2 Gull Gang 50 vs 80, 1-A-1 50 vs 90, 5-1 47.5 vs 90; Maps 7-9 easier, 7-A-5 90 vs 40, 7-6 82.5 vs 40, 8-8 80 vs 40); card-matrix goldens at the batch release.
+
 ## 11-05 21:30: Release 11-05a shipped ("continue ... push at the end of this")
 - Done (shipped): DEC2-DEC5, UI22a, ENG24, UI22, CONTENT10, BAL16, UI21, BAL17, CONTENT11, BAL18, ART9, ART9b. See docs/CHANGELOG.md.
 - Open: the full unit run's 55 failing suites (19 not in the 11-04 list; most pin decks, leaders or decisions BAL16 / ENG24 / DEC changed on purpose: lead, dec1, eb, gates, pale-desert, bal9, bal13, thematic, card-pool; to update in a TESTFIX2 package). Glacial Ape-King is still a Map 6 pack card though it is on no list (rw5). ART8's 104 card arts. ART9b's weakest scenes (Wildfire, Quicksand).

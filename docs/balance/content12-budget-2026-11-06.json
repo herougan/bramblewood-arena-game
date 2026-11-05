@@ -1,0 +1,9045 @@
+{
+ "_about": "CONTENT12 (2026-11-06): cap-1 / cap-2 use of every in-play card (tools/content12_budget_2026_11_06.js --all --out)",
+ "rows": [
+  {
+   "id": "otter-centurion",
+   "name": "Otter Centurion",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 5,
+   "S": 2.25,
+   "N": 17.23,
+   "use1": 94,
+   "use2": 37,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "boomerang": true
+   },
+   "levelSkills": {
+    "1": {
+     "boomerang": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "ent",
+   "name": "Ent",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 3,
+   "A": 2,
+   "H": 22,
+   "S": 2.7,
+   "N": 33.3,
+   "use1": 92,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "fog": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "dolphin-knight",
+   "name": "Dolphin Outrider",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 9,
+   "S": 2.16,
+   "N": 20.22,
+   "use1": 100,
+   "use2": 46,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "sonar": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "bee-knight",
+   "name": "Bee Warden",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 2,
+   "S": 0,
+   "N": 11.87,
+   "use1": 42,
+   "use2": 8,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "swarm": [
+      "Bee"
+     ],
+     "flying": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 0,
+   "H": 6,
+   "S": 8.85,
+   "N": 14.09,
+   "use1": 113,
+   "use2": 57,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "do": "spawnCard",
+      "on": "onAttacked",
+      "count": 1,
+      "defId": "bee-swarmling"
+     }
+    ],
+    "tribeDelivery": "Bee"
+   },
+   "hold": ""
+  },
+  {
+   "id": "caustic-scorpion",
+   "name": "Caustic Scorpion",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 1,
+   "H": 18,
+   "S": 4.69,
+   "N": 29.62,
+   "use1": 87,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "yeti",
+   "name": "Yeti",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 5,
+   "A": 5,
+   "H": 29,
+   "S": 3.58,
+   "N": 53.03,
+   "use1": 90,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "scare": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "forager-ant",
+   "name": "Forager Ant",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 5,
+   "S": 1.35,
+   "N": 11.3,
+   "use1": 83,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "do": "gain",
+      "on": "onAttack",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "soldier-ant",
+   "name": "Soldier Ant",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 8,
+   "S": 3.13,
+   "N": 16.72,
+   "use1": 102,
+   "use2": 38,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "swarm": [
+     "Ants"
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 6,
+   "S": 3.01,
+   "N": 15.72,
+   "use1": 95,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "rage": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "ant-hill",
+   "name": "Ant Hill",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 3,
+   "A": 0,
+   "H": 22,
+   "S": 9.12,
+   "N": 34.47,
+   "use1": 90,
+   "use2": 10,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "do": "spawnCard",
+      "on": "perTurn",
+      "count": 1,
+      "defId": "ant-scout",
+      "turnOf": "self"
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "otter-scout",
+   "name": "Otter Scout",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 13,
+   "S": 0,
+   "N": 17.25,
+   "use1": 93,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "otter-shieldback",
+   "name": "Otter Shieldback",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 4,
+   "H": 15,
+   "S": 0,
+   "N": 27.91,
+   "use1": 97,
+   "use2": 44,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "owl-sentinel",
+   "name": "Owl Sentinel",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 2,
+   "A": 3,
+   "H": 9,
+   "S": 2.2,
+   "N": 24.25,
+   "use1": 97,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "keenEye": true,
+    "nocturnal": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "terrier-pup",
+   "name": "Terrier Pup",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 5,
+   "S": 0,
+   "N": 12.92,
+   "use1": 85,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 4,
+   "S": 8.95,
+   "N": 14.32,
+   "use1": 111,
+   "use2": 67,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "bleed": 1,
+    "twinStrike": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "bramblewood-lynx",
+   "name": "Bramblewood Lynx",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 5,
+   "H": 7,
+   "S": 0,
+   "N": 25.03,
+   "use1": 88,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "trapdoor-spider",
+   "name": "Trapdoor Spider",
+   "rarity": "veryrare",
+   "cost": 0,
+   "wait": 1,
+   "A": 4,
+   "H": 7,
+   "S": 2.38,
+   "N": 23.49,
+   "use1": 91,
+   "use2": 36,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "compost-grub",
+   "name": "Compost Grub",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 10,
+   "S": 0,
+   "N": 13.57,
+   "use1": 96,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 7,
+   "S": 5.43,
+   "N": 13.16,
+   "use1": 140,
+   "use2": 71,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "inspiring": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "bramble-sprout",
+   "name": "Bramble Sprout",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 5,
+   "S": 4.48,
+   "N": 12.92,
+   "use1": 97,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "thorns": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "fungal-colossus",
+   "name": "Fungal Colossus",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 3,
+   "A": 2,
+   "H": 14,
+   "S": 5.83,
+   "N": 35.63,
+   "use1": 93,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "onDeathSpawn": {
+     "defId": "bramble-sprout",
+     "count": 1
+    },
+    "bloomCopy": {
+     "when": [
+      "wet",
+      "sunny"
+     ],
+     "mode": "and",
+     "lumber": 1
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "tide-spirit",
+   "name": "Tide Seahorse",
+   "rarity": "veryrare",
+   "cost": 0,
+   "wait": 1,
+   "A": 5,
+   "H": 5,
+   "S": 1.5,
+   "N": 23.49,
+   "use1": 92,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "pike-lancer",
+   "name": "Pike Lancer",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 9,
+   "S": 1.73,
+   "N": 20.22,
+   "use1": 98,
+   "use2": 46,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "pierce": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "reef-shark",
+   "name": "Reef Shark",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 3,
+   "A": 6,
+   "H": 13,
+   "S": 1.5,
+   "N": 34.47,
+   "use1": 94,
+   "use2": 38,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "quillguard",
+   "name": "Quillguard",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 22,
+   "S": 0,
+   "N": 30.86,
+   "use1": 91,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "komodo-warlord",
+   "name": "Komodo Warlord",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 4,
+   "A": 1,
+   "H": 27,
+   "S": 9.28,
+   "N": 45.73,
+   "use1": 86,
+   "use2": 13,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 3,
+    "gash": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "raccoon-bandit",
+   "name": "Raccoon Bandit",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 6,
+   "S": 3.63,
+   "N": 22.32,
+   "use1": 83,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "nocturnal": true,
+    "bounty": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "badger-berserker",
+   "name": "Badger Berserker",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 16,
+   "S": 0,
+   "N": 28.71,
+   "use1": 98,
+   "use2": 45,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "beetle-battering-ram",
+   "name": "Beetle Battering-Ram",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 3,
+   "H": 9,
+   "S": 10.03,
+   "N": 33.12,
+   "use1": 85,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "siege": 3,
+    "nocturnal": true,
+    "breach": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "crocodile-ambusher",
+   "name": "Crocodile Ambusher",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 3,
+   "A": 5,
+   "H": 17,
+   "S": 0,
+   "N": 34.47,
+   "use1": 93,
+   "use2": 41,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "raven-scout",
+   "name": "Raven Scout",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 5,
+   "S": 3.28,
+   "N": 16.43,
+   "use1": 100,
+   "use2": 36,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "tally": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "chipmunk-skirmisher",
+   "name": "Chipmunk Skirmisher",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 5,
+   "S": 0.53,
+   "N": 12.92,
+   "use1": 89,
+   "use2": 35,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "do": "gain",
+      "on": "onAttack",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 2,
+   "A": 5,
+   "H": 7,
+   "S": 7.72,
+   "N": 30.67,
+   "use1": 97,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "sweep": 3,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "nautilus-drifter",
+   "name": "Nautilus Drifter",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 3,
+   "A": 4,
+   "H": 13,
+   "S": 8.02,
+   "N": 35.05,
+   "use1": 94,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "deliveryEvery": 1,
+    "relict": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "alpha-howler",
+   "name": "Alpha Howler",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 3,
+   "A": 7,
+   "H": 7,
+   "S": 5.08,
+   "N": 36.1,
+   "use1": 92,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "sweep": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "snapper-hatchling",
+   "name": "Snapper Hatchling",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 7,
+   "S": 1.5,
+   "N": 14.56,
+   "use1": 79,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "levelSkills": {
+    "1": {
+     "tide": true,
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "snapstick-turtle",
+   "name": "Snapstick Turtle",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 12,
+   "S": 1.5,
+   "N": 20.8,
+   "use1": 94,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 3,
+   "A": 3,
+   "H": 11,
+   "S": 7.87,
+   "N": 38.55,
+   "use1": 82,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "onReadyDamage": {
+     "amount": 6,
+     "dmgType": "physical"
+    },
+    "flying": true,
+    "daunt": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "grizzly-vanguard",
+   "name": "Grizzly Vanguard",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 3,
+   "A": 1,
+   "H": 19,
+   "S": 5.08,
+   "N": 34.47,
+   "use1": 79,
+   "use2": 12,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "sweep": 2,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord",
+   "rarity": "common",
+   "cost": 4,
+   "wait": 5,
+   "A": 6,
+   "H": 28,
+   "S": 8.61,
+   "N": 56.42,
+   "use1": 97,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "onReadyDamage": {
+     "amount": 8,
+     "dmgType": "physical"
+    },
+    "daunt": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "fawn-scout",
+   "name": "Fawn Scout",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 8,
+   "S": 0.41,
+   "N": 18.29,
+   "use1": 80,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "keenEye": true,
+    "canopyCover": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "elderhorn-monarch",
+   "name": "Elderhorn Monarch",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 4,
+   "A": 2,
+   "H": 30,
+   "S": 6.78,
+   "N": 48.07,
+   "use1": 89,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "deliveryEvery": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "fox-kit",
+   "name": "Fox Kit",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 9,
+   "S": 0,
+   "N": 15.29,
+   "use1": 98,
+   "use2": 44,
+   "band": true,
+   "verdict": "ok",
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "lodge-engineer",
+   "name": "Lodge Engineer",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 2,
+   "A": 3,
+   "H": 12,
+   "S": 7.22,
+   "N": 29.27,
+   "use1": 96,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "timbered": true,
+    "deliveryEvery": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "riverworks-bastion",
+   "name": "Riverworks Bastion",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 5,
+   "A": 0,
+   "H": 35,
+   "S": 0.49,
+   "N": 45.91,
+   "use1": 77,
+   "use2": 0,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "rampart": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 8,
+   "S": 2.38,
+   "N": 15.26,
+   "use1": 88,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "adder-ambusher",
+   "name": "Adder Ambusher",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 11,
+   "S": 4.69,
+   "N": 23.61,
+   "use1": 92,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "constrictor-coil",
+   "name": "Constrictor Coil",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "A": 4,
+   "H": 16,
+   "S": 0,
+   "N": 29.26,
+   "use1": 96,
+   "use2": 43,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 3,
+   "A": 1,
+   "H": 22,
+   "S": 7.28,
+   "N": 36.92,
+   "use1": 87,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 3,
+    "guardian": true,
+    "immunity": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "echo-screecher",
+   "name": "Echo Screecher",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 7.42,
+   "N": 24.07,
+   "use1": 85,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "onReadyDamage": {
+     "amount": 3,
+     "dmgType": "physical"
+    },
+    "flying": true,
+    "nocturnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "vampire-roost",
+   "name": "Vampire Roost",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 3,
+   "A": 0,
+   "H": 24,
+   "S": 6.21,
+   "N": 36.1,
+   "use1": 84,
+   "use2": 4,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "onDeathSpawn": {
+     "defId": "bat-swarmling",
+     "count": 2
+    },
+    "nocturnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "field-mouse",
+   "name": "Field Mouse",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 5,
+   "S": 1,
+   "N": 12.92,
+   "use1": 93,
+   "use2": 35,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "pickpocket": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "mouse-sapper",
+   "name": "Mouse Sapper",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 11,
+   "S": 1.07,
+   "N": 21.5,
+   "use1": 98,
+   "use2": 41,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "siege": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "cataphract-destrier",
+   "name": "Gilded Roadwarden",
+   "rarity": "common",
+   "cost": 4,
+   "wait": 4,
+   "A": 3,
+   "H": 28,
+   "S": 7.9,
+   "N": 50.29,
+   "use1": 89,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "pounce": 6,
+    "overwhelm": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "poison-dart-croaker",
+   "name": "Poison Dart Croaker",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 3,
+   "S": 6.62,
+   "N": 21.27,
+   "use1": 88,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 2,
+    "tide": true,
+    "sequestration": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "lucky-hopper",
+   "name": "Lucky Hopper",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "A": 1,
+   "H": 17,
+   "S": 0,
+   "N": 21.04,
+   "use1": 95,
+   "use2": 22,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "ancient-sloth-titan",
+   "name": "Ancient Sloth Titan",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 6,
+   "A": 2,
+   "H": 31,
+   "S": 5.9,
+   "N": 58.58,
+   "use1": 73,
+   "use2": 12,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bulwark": 2,
+    "slow": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "sand-widow",
+   "name": "Sand Widow",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "A": 2,
+   "H": 17,
+   "S": 4.69,
+   "N": 31.14,
+   "use1": 89,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "orca-vanguard",
+   "name": "Orca Vanguard",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 3,
+   "A": 7,
+   "H": 7,
+   "S": 7.72,
+   "N": 38.55,
+   "use1": 93,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "sweep": 3,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "quill-volley",
+   "name": "Quill Volley",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 0,
+   "A": 1,
+   "H": 14,
+   "S": 2.96,
+   "N": 22.85,
+   "use1": 87,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "pounce": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 5,
+   "S": 5.86,
+   "N": 23.84,
+   "use1": 96,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "thorns": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "berserker-boar",
+   "name": "Berserker Boar",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 1,
+   "A": 3,
+   "H": 9,
+   "S": 3.01,
+   "N": 25.12,
+   "use1": 84,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "rage": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "name": "Eagle Sharpshooter",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 1,
+   "A": 2,
+   "H": 6,
+   "S": 7.94,
+   "N": 28.39,
+   "use1": 78,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "arrow": 2,
+    "diurnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "hawk-arrowkeeper",
+   "name": "Hawk Arrowkeeper",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 8,
+   "S": 1.32,
+   "N": 20.27,
+   "use1": 89,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "diurnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "jaguar-stalker",
+   "name": "Jaguar Stalker",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 15,
+   "S": 2.23,
+   "N": 26.41,
+   "use1": 77,
+   "use2": 13,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "quick": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "acacia-giraffe",
+   "name": "Acacia Giraffe",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "A": 2,
+   "H": 11,
+   "S": 0,
+   "N": 31.14,
+   "use1": 64,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "savanna-cheetah",
+   "name": "Savanna Cheetah",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 0,
+   "A": 4,
+   "H": 4,
+   "S": 2.23,
+   "N": 22.85,
+   "use1": 80,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "quick": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "dust-hyena",
+   "name": "Dust Hyena",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 6,
+   "S": 2.89,
+   "N": 17.36,
+   "use1": 86,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "gain",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ],
+    "carnage": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "snow-owl-sentinel",
+   "name": "Snow Owl Sentinel",
+   "rarity": "superrare",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 4,
+   "S": 2.01,
+   "N": 29.44,
+   "use1": 72,
+   "use2": 13,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "expose": 2,
+    "flying": true,
+    "nocturnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "clownfish-scout",
+   "name": "Clownfish Scout",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 9,
+   "S": 1.5,
+   "N": 14.56,
+   "use1": 93,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "coral-reef-shark",
+   "name": "Coral Reef Shark",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 1,
+   "A": 4,
+   "H": 10,
+   "S": 1.5,
+   "N": 26.29,
+   "use1": 89,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 3,
+   "A": 4,
+   "H": 9,
+   "S": 6.35,
+   "N": 34.47,
+   "use1": 79,
+   "use2": 22,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 3,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "coral-polyp-colony",
+   "name": "Coral Polyp Colony",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 0,
+   "H": 9,
+   "S": 9.98,
+   "N": 19.52,
+   "use1": 97,
+   "use2": 37,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "deliveryEvery": 1,
+    "meld": {
+     "armor": 1
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "mountain-goat-climber",
+   "name": "Mountain Goat Climber",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 8,
+   "S": 0,
+   "N": 18.99,
+   "use1": 68,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "golden-eagle-diver",
+   "name": "Golden Eagle Diver",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "A": 2,
+   "H": 2,
+   "S": 5.32,
+   "N": 17.94,
+   "use1": 83,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "pounce": 3,
+    "diurnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "peak-condor",
+   "name": "Peak Condor",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 10,
+   "S": -4.2,
+   "N": 19.87,
+   "use1": 111,
+   "use2": 63,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "reload": 1,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "bog-leech",
+   "name": "Bog Leech",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 8,
+   "S": 2.57,
+   "N": 14.32,
+   "use1": 95,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bleed": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "swamp-alligator",
+   "name": "Swamp Alligator",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "A": 2,
+   "H": 15,
+   "S": 3.7,
+   "N": 27.87,
+   "use1": 89,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "cypress-root-lurker",
+   "name": "Cypress Root Lurker",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 2,
+   "A": 4,
+   "H": 12,
+   "S": 0.5,
+   "N": 24.25,
+   "use1": 101,
+   "use2": 47,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "repair": 1,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "blind-cave-fish",
+   "name": "Blind Cave Fish",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 1,
+   "S": 4.5,
+   "N": 14.56,
+   "use1": 63,
+   "use2": 17,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true,
+    "tide": true,
+    "darksight": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "stalactite-golem",
+   "name": "Stalactite Pill Bug",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 3,
+   "A": 1,
+   "H": 23,
+   "S": 0.87,
+   "N": 34.47,
+   "use1": 78,
+   "use2": 11,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "shell": 4,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "deep-cave-troll",
+   "name": "Cave Bear",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 2,
+   "A": 4,
+   "H": 13,
+   "S": 6.22,
+   "N": 35.22,
+   "use1": 89,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "rage": true,
+    "siege": 4
+   },
+   "hold": ""
+  },
+  {
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 11,
+   "S": 6.56,
+   "N": 28.04,
+   "use1": 95,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "fireArrow": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "ash-cloud-condor",
+   "name": "Ash Cloud Condor",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 4,
+   "S": 1.95,
+   "N": 26.88,
+   "use1": 65,
+   "use2": 12,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "stun",
+      "who": "enemy",
+      "sub": "adjacent"
+     }
+    ],
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "obsidian-scorpion",
+   "name": "Obsidian Scorpion",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 4,
+   "S": 8.39,
+   "N": 25.47,
+   "use1": 96,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 2,
+    "poison": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "fire-drake-hatchling",
+   "name": "Fire Drake Hatchling",
+   "rarity": "heroic",
+   "cost": 2,
+   "wait": 2,
+   "A": 6,
+   "H": 11,
+   "S": 8.04,
+   "N": 39.54,
+   "use1": 94,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "fireArrow": 2
+   },
+   "levelSkills": {
+    "1": {
+     "fireArrow": 2,
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "taiga-lynx",
+   "name": "Taiga Lynx",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 0,
+   "A": 2,
+   "H": 8,
+   "S": 0,
+   "N": 22.15,
+   "use1": 75,
+   "use2": 22,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 1,
+   "A": 5,
+   "H": 4,
+   "S": 7.48,
+   "N": 26.76,
+   "use1": 99,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "sweep": 2,
+    "riled": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "snowshoe-hare",
+   "name": "Snowshoe Hare",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 7,
+   "S": 0,
+   "N": 16.19,
+   "use1": 73,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 2,
+   "S": 6.36,
+   "N": 14.56,
+   "use1": 95,
+   "use2": 39,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "armor": 1,
+    "shield": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "gull-thief",
+   "name": "Gull Thief",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 7,
+   "S": 0.79,
+   "N": 12.92,
+   "use1": 98,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "do": "gain",
+      "on": "onKill",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "riptide-eel",
+   "name": "Riptide Eel",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 6,
+   "H": 7,
+   "S": -2.7,
+   "N": 22.67,
+   "use1": 98,
+   "use2": 45,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "reload": 1,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "pelican-diver",
+   "name": "Pelican Diver",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 8,
+   "S": 2.24,
+   "N": 22.67,
+   "use1": 83,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "on": "onReady",
+      "do": "damage",
+      "amount": 2,
+      "dmgType": "physical",
+      "who": "enemy",
+      "sub": "random"
+     }
+    ],
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "name": "Mangrove Mudskipper",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 7,
+   "S": 2.94,
+   "N": 14.56,
+   "use1": 89,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "skitter": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "mangrove-monitor",
+   "name": "Mangrove Monitor",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 12,
+   "S": 0,
+   "N": 22.58,
+   "use1": 93,
+   "use2": 40,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "name": "Fiddler Crab Swarm",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 8,
+   "S": 1.6,
+   "N": 12.92,
+   "use1": 98,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "crabClaws": true,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "mangrove-kingfisher",
+   "name": "Mangrove Kingfisher",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 0,
+   "A": 2,
+   "H": 4,
+   "S": 0,
+   "N": 20.51,
+   "use1": 68,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "gangrenous-leech",
+   "name": "Gangrenous Leech",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 3,
+   "S": 8.49,
+   "N": 22.67,
+   "use1": 90,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "parasite": true,
+    "poison": 2,
+    "fester": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "wound-reaver",
+   "name": "Wound Reaver",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 14,
+   "S": 5.39,
+   "N": 25.71,
+   "use1": 87,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bleed": 2,
+    "rupture": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "ravenous-wolverine",
+   "name": "Ravenous Wolverine",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 0,
+   "A": 3,
+   "H": 3,
+   "S": 9.32,
+   "N": 23.31,
+   "use1": 91,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "on": "onAttack",
+      "do": "buff",
+      "amount": 2,
+      "who": "self"
+     }
+    ],
+    "beset": 6
+   },
+   "hold": ""
+  },
+  {
+   "id": "shimmerwing-stag",
+   "name": "Shimmerwing Stag",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 13,
+   "S": 0,
+   "N": 30.79,
+   "use1": 73,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "name": "Open-Ocean Hermit Crab",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 2,
+   "S": 3.93,
+   "N": 12.92,
+   "use1": 92,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 1,
+    "crabClaws": true,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "frost-hare-sprinter",
+   "name": "Frost Hare Sprinter",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 4,
+   "S": 0,
+   "N": 16.19,
+   "use1": 73,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "glacier-wolf-pack",
+   "name": "Glacier Wolf Pack",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 1,
+   "A": 1,
+   "H": 15,
+   "S": 4.73,
+   "N": 26.76,
+   "use1": 85,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bleed": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "quillback-elder",
+   "name": "Quillback Elder",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "A": 5,
+   "H": 5,
+   "S": 4.85,
+   "N": 29.5,
+   "use1": 84,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "trash-panda-trickster",
+   "name": "Trash Panda Trickster",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 3,
+   "S": 3.66,
+   "N": 14.56,
+   "use1": 87,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "nocturnal": 1,
+    "bounty": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "badger-trench-digger",
+   "name": "Badger Trench Digger",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "A": 4,
+   "H": 18,
+   "S": 0.45,
+   "N": 33.24,
+   "use1": 92,
+   "use2": 37,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "guardian": true,
+    "lastStand": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 6.65,
+   "N": 18.35,
+   "use1": 96,
+   "use2": 36,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "deliveryEvery": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "name": "Chipmunk Cavalry",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "A": 3,
+   "H": 4,
+   "S": 2.23,
+   "N": 16.07,
+   "use1": 95,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "quick": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 2,
+   "A": 2,
+   "H": 16,
+   "S": 6.19,
+   "N": 33.59,
+   "use1": 84,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "fork": true,
+    "gash": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "duckling-squadron",
+   "name": "Duckling Squadron",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 9,
+   "S": 0,
+   "N": 18.9,
+   "use1": 76,
+   "use2": 17,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true
+   },
+   "levelSkills": {
+    "1": {
+     "stem": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "otter-riverguard",
+   "name": "Otter Riverguard",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 1,
+   "A": 1,
+   "H": 14,
+   "S": 3.7,
+   "N": 24.66,
+   "use1": 84,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 3,
+   "S": 12.58,
+   "N": 21.5,
+   "use1": 92,
+   "use2": 53,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "stealth": true,
+    "nocturnal": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "shepherds-bark",
+   "name": "Shepherd",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 14,
+   "S": 0,
+   "N": 23.14,
+   "use1": 86,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 4,
+   "S": 5.82,
+   "N": 12.92,
+   "use1": 99,
+   "use2": 43,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "quick": true,
+    "sweep": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "rootworm-colony",
+   "name": "Rootworm Colony",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 4,
+   "S": 1.6,
+   "N": 21.74,
+   "use1": 81,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poisonBarbs": 1
+   },
+   "levelSkills": {
+    "2": {
+     "bloomCopy": {
+      "mode": "and",
+      "when": [
+       "wet",
+       "dark",
+       "kill"
+      ]
+     }
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "camouflage-frog",
+   "name": "Camouflage Frog",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 1.5,
+   "N": 19.87,
+   "use1": 73,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "ember-jackal",
+   "name": "Ember Jackal",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 0,
+   "A": 3,
+   "H": 11,
+   "S": 0.75,
+   "N": 21.68,
+   "use1": 96,
+   "use2": 40,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "frenzy": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "magma-titan",
+   "name": "Magma Rhino",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 2,
+   "A": 2,
+   "H": 17,
+   "S": 3.38,
+   "N": 35.22,
+   "use1": 75,
+   "use2": 17,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "scar": 2,
+    "immolation": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "phoenix-fledgling",
+   "name": "Phoenix Fledgling",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 1,
+   "A": 2,
+   "H": 10,
+   "S": 1.23,
+   "N": 28.63,
+   "use1": 71,
+   "use2": 17,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "renewal": true,
+    "cure": 2,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "sulfur-cinder-moth",
+   "name": "Sulfur Cinder Moth",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "A": 1,
+   "H": 7,
+   "S": 1.7,
+   "N": 17.71,
+   "use1": 77,
+   "use2": 17,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "illuminate": true,
+    "triggers": [
+     {
+      "do": "damage",
+      "on": "onDeath",
+      "sub": "adjacent",
+      "who": "enemy",
+      "amount": 2,
+      "dmgType": "heat"
+     }
+    ],
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "glacier-yak",
+   "name": "Glacier Yak",
+   "rarity": "common",
+   "cost": 3,
+   "wait": 1,
+   "A": 1,
+   "H": 17,
+   "S": 3.36,
+   "N": 32.48,
+   "use1": 72,
+   "use2": 11,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "freeze": {
+     "chance": 40,
+     "duration": 2
+    },
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "addWait",
+      "amount": 2,
+      "who": "enemy",
+      "sub": "adjacent"
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "cinder-hornet",
+   "name": "Cinder Hornet",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 0,
+   "A": 3,
+   "H": 3,
+   "S": 2.29,
+   "N": 24.83,
+   "use1": 67,
+   "use2": 11,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "stunOnHit": 1,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "fen-mink",
+   "name": "Fen Mink",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 10,
+   "S": 0.09,
+   "N": 19.05,
+   "use1": 69,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "hunter": 2,
+    "hunterVs": "poison"
+   },
+   "hold": ""
+  },
+  {
+   "id": "tidepool-trapper-crab",
+   "name": "Tidepool Trapper Crab",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 7,
+   "S": 0.61,
+   "N": 14.56,
+   "use1": 73,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "hunter": 1,
+    "hunterVs": "wet",
+    "crabClaws": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "grave-grin-hyena",
+   "name": "Grave-Grin Hyena",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 10,
+   "S": 0.2,
+   "N": 21.15,
+   "use1": 77,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "executioner": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "rivergate-drummer",
+   "name": "Rivergate Drummer",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 3,
+   "S": 3.19,
+   "N": 19.05,
+   "use1": 80,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "kinRally": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "otter-kit",
+   "name": "Otter Kit",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 4,
+   "S": 0,
+   "N": 12.34,
+   "use1": 81,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "otter-paddler",
+   "name": "Otter Paddler",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 3,
+   "H": 3,
+   "S": 0,
+   "N": 12.34,
+   "use1": 97,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 5,
+   "S": 7.01,
+   "N": 21.04,
+   "use1": 100,
+   "use2": 35,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "arrow": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 4,
+   "S": 0,
+   "N": 11.99,
+   "use1": 69,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 0,
+   "H": 4,
+   "S": 0.3,
+   "N": 11.75,
+   "use1": 43,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "do": "heal",
+      "on": "perTurn",
+      "sub": "random",
+      "who": "ally",
+      "amount": 1,
+      "turnOf": "self"
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 2.38,
+   "N": 15.55,
+   "use1": 99,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "poison": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 6,
+   "S": 5.54,
+   "N": 11.75,
+   "use1": 124,
+   "use2": 57,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "triggers": [
+     {
+      "do": "drawCard",
+      "on": "onAttack",
+      "count": 1
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "tunnel-ant",
+   "name": "Tunnel Ant",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 9,
+   "S": 5.37,
+   "N": 22.21,
+   "use1": 92,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "swarm": [
+     "Ants"
+    ],
+    "ambush": 2,
+    "swarmN": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 5,
+   "S": 3.13,
+   "N": 11.75,
+   "use1": 95,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "swarm": [
+     "Ants"
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "silver-minnow",
+   "name": "Silver Minnow",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 3,
+   "S": 0,
+   "N": 12.34,
+   "use1": 73,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "tide": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 4,
+   "S": 0,
+   "N": 12.34,
+   "use1": 81,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "river-carp",
+   "name": "River Carp",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 10,
+   "S": 0,
+   "N": 16.33,
+   "use1": 98,
+   "use2": 43,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "duckling",
+   "name": "Duckling",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 4,
+   "S": 0,
+   "N": 12.34,
+   "use1": 57,
+   "use2": 15,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "diurnal": 1
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "pond-duck",
+   "name": "Pond Duck",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 3,
+   "H": 3,
+   "S": 0,
+   "N": 12.34,
+   "use1": 97,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 10,
+   "S": 0,
+   "N": 16.33,
+   "use1": 98,
+   "use2": 43,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "meadow-rabbit",
+   "name": "Meadow Rabbit",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 3,
+   "H": 2,
+   "S": 0,
+   "N": 12.34,
+   "use1": 89,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "cottontail",
+   "name": "Cottontail",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 3,
+   "H": 1,
+   "S": 0,
+   "N": 12.34,
+   "use1": 81,
+   "use2": 11,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "quick": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "burrow-rabbit",
+   "name": "Burrow Rabbit",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 10,
+   "S": 0,
+   "N": 16.33,
+   "use1": 98,
+   "use2": 43,
+   "band": true,
+   "verdict": "ok",
+   "hold": ""
+  },
+  {
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 8,
+   "S": 0,
+   "N": 12.34,
+   "use1": 89,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "acorn-chipmunk",
+   "name": "Acorn Chipmunk",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 3,
+   "H": 3,
+   "S": 0,
+   "N": 12.34,
+   "use1": 97,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "cobalt-talon-fledgling",
+   "name": "Cobalt Fledgling",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 4,
+   "S": 0,
+   "N": 11.99,
+   "use1": 69,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "crimson-wing-recruit",
+   "name": "Crimson Recruit",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 1,
+   "S": 0,
+   "N": 11.99,
+   "use1": 69,
+   "use2": 9,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "mosswing-laborer",
+   "name": "Mosswing",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 0,
+   "H": 7,
+   "S": 0,
+   "N": 11.99,
+   "use1": 69,
+   "use2": 0,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "gold-throated-acolyte",
+   "name": "Gold-throated Acolyte",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 2,
+   "A": 2,
+   "H": 5,
+   "S": 0,
+   "N": 23.43,
+   "use1": 66,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "evasive": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "violet-vane-fletcher",
+   "name": "Violet Vane Fletcher",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 5,
+   "S": 0,
+   "N": 13.18,
+   "use1": 72,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "sunthroat-courier",
+   "name": "Sunthroat Courier",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 1.1,
+   "N": 18.24,
+   "use1": 78,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "espritHp": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "voidfeather-scout",
+   "name": "Voidfeather Scout",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 2.42,
+   "N": 19.43,
+   "use1": 80,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "nocturnal": 1,
+    "nocturnalHp": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "crimson-wing-duelist-cadet",
+   "name": "Crimson Wing Duelist Cadet",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 4,
+   "S": 1.14,
+   "N": 17.05,
+   "use1": 76,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "diurnal": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "cobalt-talon-skirmisher",
+   "name": "Cobalt Talon Skirmisher",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 4,
+   "S": 1.14,
+   "N": 17.05,
+   "use1": 76,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "diurnal": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "dominion-nestguard",
+   "name": "Sunfeather Nestguard",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 4,
+   "S": 0,
+   "N": 21.46,
+   "use1": 72,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "river-warden",
+   "name": "River Warden",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "A": 4,
+   "H": 12,
+   "S": 1.5,
+   "N": 26.99,
+   "use1": 94,
+   "use2": 38,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "sunspire-envoy",
+   "name": "Sunspire Envoy",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 8,
+   "S": 3.37,
+   "N": 23.37,
+   "use1": 70,
+   "use2": 13,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "esprit": 2,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "quarry-mole",
+   "name": "Quarry Mole",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 12,
+   "S": 0.96,
+   "N": 21.74,
+   "use1": 87,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "keenSense": true,
+    "bedrock": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "wandering-traveller",
+   "name": "Wandering Traveller",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 0,
+   "A": 3,
+   "H": 5,
+   "S": 0.1,
+   "N": 15.26,
+   "use1": 92,
+   "use2": 43,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "leader": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "harvest-mouse",
+   "name": "Harvest Mouse",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 6,
+   "S": 0,
+   "N": 10.68,
+   "use1": 84,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "garden-snail",
+   "name": "Garden Snail",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 0,
+   "H": 7,
+   "S": 1.98,
+   "N": 10.17,
+   "use1": 88,
+   "use2": 5,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 1,
+    "slow": true
+   },
+   "levelSkills": {
+    "1": {
+     "armor": 1
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "meadow-frog",
+   "name": "Meadow Frog",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 3,
+   "S": 1.5,
+   "N": 11.3,
+   "use1": 93,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "rabbit-kit",
+   "name": "Rabbit Kit",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 2,
+   "S": 0,
+   "N": 12.92,
+   "use1": 73,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true
+   },
+   "levelSkills": {
+    "1": {
+     "evasive": true,
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "earthworm",
+   "name": "Earthworm",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 0,
+   "H": 6,
+   "S": 0,
+   "N": 10.68,
+   "use1": 56,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "regen": 1
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "dormouse",
+   "name": "Dormouse",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 5,
+   "S": 1.89,
+   "N": 13.18,
+   "use1": 98,
+   "use2": 36,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "nocturnal": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "guppy",
+   "name": "Guppy",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 4,
+   "S": 0,
+   "N": 10.68,
+   "use1": 66,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "tide": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "name": "Tiny Cave Dweller",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 6,
+   "S": 2.33,
+   "N": 15.02,
+   "use1": 95,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "beaver-lumberjack",
+   "name": "Beaver Lumberjack",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 5,
+   "S": 2.28,
+   "N": 16.72,
+   "use1": 97,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "delivery": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "pit-glutton",
+   "name": "Pit Glutton",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 11,
+   "S": 2,
+   "N": 22.21,
+   "use1": 86,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "devour": {
+     "attack": 3,
+     "health": 3,
+     "grant": {
+      "arrow": 2
+     }
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "fleetfootd",
+   "name": "Fleetfoot'd",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 3,
+   "S": 3.73,
+   "N": 14.09,
+   "use1": 90,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "quick": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "crossed-eyes",
+   "name": "Crossed-Eyes",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 2,
+   "S": 0,
+   "N": 10.68,
+   "use1": 75,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "vigil-owl",
+   "name": "Vigil Owl",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "A": 4,
+   "H": 3,
+   "S": 3.35,
+   "N": 19.05,
+   "use1": 96,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "relic": true,
+    "nocturnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "land-tiller",
+   "name": "Land Tiller",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 6,
+   "S": 6.78,
+   "N": 18.53,
+   "use1": 85,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "deliveryEvery": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "otter-ferryman",
+   "name": "Otter Ferryman",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 7,
+   "S": 1.5,
+   "N": 17.88,
+   "use1": 98,
+   "use2": 39,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "otter-netmender",
+   "name": "Otter Netmender",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 8,
+   "S": 2.33,
+   "N": 14.09,
+   "use1": 95,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "nectar-vintner",
+   "name": "Nectar Vintner",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 2,
+   "S": 3.48,
+   "N": 14.09,
+   "use1": 67,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "healing": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "dawn-bellringer",
+   "name": "Dawn Bellringer",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "A": 2,
+   "H": 4,
+   "S": 1.9,
+   "N": 18.78,
+   "use1": 73,
+   "use2": 17,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "diurnal": 1,
+    "diurnalHp": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "stoat-cutthroat",
+   "name": "Stoat Cutthroat",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 10,
+   "S": 4.78,
+   "N": 25.71,
+   "use1": 92,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "backstab": 3,
+    "foeScarcity": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "two-headed-calf",
+   "name": "Two-Headed Calf",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 10,
+   "S": 3.89,
+   "N": 25.24,
+   "use1": 91,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "fork": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "upside-down-bat",
+   "name": "Upside-Down Bat",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 4,
+   "S": 1.14,
+   "N": 17.47,
+   "use1": 75,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "diurnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "teatime-toad",
+   "name": "Teatime Toad",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 4,
+   "H": 4,
+   "S": 2.9,
+   "N": 20.92,
+   "use1": 90,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "regen": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "mirror-moth",
+   "name": "Mirror Moth",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 0.59,
+   "N": 25.24,
+   "use1": 64,
+   "use2": 13,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true,
+    "reflect": true,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "snail-mail",
+   "name": "Snail Mail",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 2,
+   "A": 0,
+   "H": 8,
+   "S": 7.5,
+   "N": 25.3,
+   "use1": 61,
+   "use2": 13,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 1,
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "drawCard",
+      "count": 2
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "glass-golem",
+   "name": "Glass Golem",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 6,
+   "H": 5,
+   "S": 0,
+   "N": 26.5,
+   "use1": 87,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "wrong-way-salmon",
+   "name": "Wrong-Way Salmon",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 10,
+   "S": 1.73,
+   "N": 17.13,
+   "use1": 86,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "backstab": 2,
+    "anadromous": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "inside-out-hedgehog",
+   "name": "Inside-Out Hedgehog",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 11,
+   "S": 2.83,
+   "N": 17.13,
+   "use1": 98,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "thorns": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "talon-archer",
+   "name": "Talon Archer",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 6,
+   "S": 8.33,
+   "N": 26.88,
+   "use1": 84,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "arrow": 2,
+    "diurnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "sergeant-bramblefox",
+   "name": "Sergeant Bramblefox",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 0,
+   "A": 3,
+   "H": 12,
+   "S": 0,
+   "N": 22.52,
+   "use1": 93,
+   "use2": 41,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "old-shell",
+   "name": "The Old Shell",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 3,
+   "A": 2,
+   "H": 20,
+   "S": 3.8,
+   "N": 30.85,
+   "use1": 97,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 2,
+    "leader": true,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "drowned-matriarch",
+   "name": "The Drowned Matriarch",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 13,
+   "S": 5.49,
+   "N": 26.35,
+   "use1": 93,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "fork": true,
+    "leader": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "echo-matriarch",
+   "name": "Echo Matriarch",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 11,
+   "S": 3.79,
+   "N": 28.45,
+   "use1": 84,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "leader": true,
+    "triggers": [
+     {
+      "do": "missile",
+      "on": "onReady",
+      "amount": 3
+     }
+    ],
+    "nocturnal": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "pride-queen",
+   "name": "Pride Queen",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 17,
+   "S": 2.33,
+   "N": 26.64,
+   "use1": 95,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "quick": true,
+    "leader": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "wolfsbane-alpha",
+   "name": "Wolfsbane Alpha",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 1,
+   "H": 17,
+   "S": 10.34,
+   "N": 31.72,
+   "use1": 96,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bleed": 2,
+    "nocturnal": true,
+    "dirge": 3,
+    "leader": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "reef-admiral",
+   "name": "Reef Admiral",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 14,
+   "S": 1.6,
+   "N": 30.09,
+   "use1": 84,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true,
+    "tide": true,
+    "leader": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "heron-hag",
+   "name": "The Heron Hag",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 11,
+   "S": 4.79,
+   "N": 27.99,
+   "use1": 89,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "poison": 2,
+    "leader": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "shell-cracker",
+   "name": "Shell-Cracker",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 8,
+   "S": 0,
+   "N": 14.79,
+   "use1": 95,
+   "use2": 42,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "rivergate-recruit",
+   "name": "Rivergate Recruit",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 12,
+   "S": 0,
+   "N": 18.77,
+   "use1": 96,
+   "use2": 39,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "riverstone-slinger",
+   "name": "Riverstone Slinger",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 8,
+   "S": 0.52,
+   "N": 20.22,
+   "use1": 87,
+   "use2": 40,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "reach": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "net-thrower",
+   "name": "Net Thrower",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 9,
+   "S": 6.26,
+   "N": 22.21,
+   "use1": 96,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bola": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "optio-of-the-ford",
+   "name": "Optio of the Ford",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 11,
+   "S": 0,
+   "N": 24.54,
+   "use1": 94,
+   "use2": 42,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "name": "Marshal of Rivergate",
+   "rarity": "epic",
+   "cost": 2,
+   "wait": 2,
+   "A": 4,
+   "H": 9,
+   "S": 10.89,
+   "N": 34.87,
+   "use1": 91,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 2,
+    "sweep": 4
+   },
+   "hold": ""
+  },
+  {
+   "id": "daily-post",
+   "name": "Daily Post",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 3,
+   "S": 2.58,
+   "N": 14.09,
+   "use1": 69,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "drawCard",
+      "count": 1
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "petal-fletcher",
+   "name": "Petal Fletcher",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 3,
+   "S": 4.26,
+   "N": 14.09,
+   "use1": 81,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "arrow": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "nectar-sipper",
+   "name": "Nectar Sipper",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 3,
+   "S": 0,
+   "N": 14.37,
+   "use1": 75,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "sunfeather-scout",
+   "name": "Sunfeather Scout",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 4,
+   "S": 6.65,
+   "N": 17.88,
+   "use1": 84,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "deliveryEvery": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "lantern-bearer",
+   "name": "Lantern Bearer",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 6,
+   "S": 0.51,
+   "N": 19.05,
+   "use1": 78,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "illuminate": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "hush-wing-spy",
+   "name": "Hush-Wing Spy",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 3,
+   "S": 6.88,
+   "N": 17.88,
+   "use1": 98,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "stealth": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "ruby-throat-duelist",
+   "name": "Ruby-Throat Duelist",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 2,
+   "S": 2.46,
+   "N": 20.22,
+   "use1": 77,
+   "use2": 14,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "quick": true,
+    "pierce": 1,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "sunspire-choirmother",
+   "name": "Sunspire Choirmother",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 3,
+   "H": 3,
+   "S": 8.61,
+   "N": 28.92,
+   "use1": 79,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "esprit": 2,
+    "flying": true,
+    "espritHp": 2,
+    "diurnal": 2,
+    "diurnalHp": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "ferry-toll-frog",
+   "name": "Ferry Toll-Frog",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 6,
+   "S": 1.2,
+   "N": 14.09,
+   "use1": 94,
+   "use2": 36,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "on": "onKill",
+      "do": "gain",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "riverside-peddler",
+   "name": "Riverside Peddler",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 7,
+   "S": 1.8,
+   "N": 14.09,
+   "use1": 84,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bounty": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "ford-kingfisher",
+   "name": "Ford Kingfisher",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "A": 1,
+   "H": 6,
+   "S": 7.05,
+   "N": 18.41,
+   "use1": 96,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "ambush": 3,
+    "flying": true,
+    "pounce": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "truce-heron",
+   "name": "Truce Heron",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 11,
+   "S": 0,
+   "N": 27.75,
+   "use1": 73,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "name": "Old Willow of the Ford",
+   "rarity": "legendary",
+   "cost": 1,
+   "wait": 4,
+   "A": 2,
+   "H": 21,
+   "S": 9.97,
+   "N": 45.27,
+   "use1": 82,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "regen": 3,
+    "deliveryEvery": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "bark-buckler",
+   "name": "Bark Buckler",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 0,
+   "H": 3,
+   "S": 0,
+   "N": 16.26,
+   "use1": 18,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "netmender-harpoon",
+   "name": "Netmender's Harpoon",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "A": 1,
+   "H": 0,
+   "S": 0,
+   "N": 20.8,
+   "use1": 14,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "quill-spear",
+   "name": "Quill Spear",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "A": 2,
+   "H": 0,
+   "S": 0,
+   "N": 20.8,
+   "use1": 29,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "sunfeather-plume",
+   "name": "Sunfeather Plume",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 0,
+   "A": 1,
+   "H": 1,
+   "S": 0,
+   "N": 22.03,
+   "use1": 18,
+   "use2": 1,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "siege-hammer",
+   "name": "Siege Hammer",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 0,
+   "A": 1,
+   "H": 0,
+   "S": 0,
+   "N": 25.83,
+   "use1": 12,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "dragonscale-mail",
+   "name": "Dragonscale Mail",
+   "rarity": "legendary",
+   "cost": 2,
+   "wait": 0,
+   "A": 0,
+   "H": 11,
+   "S": 0,
+   "N": 33.18,
+   "use1": 33,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "hedge-changeling",
+   "name": "Hedge Changeling",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 0,
+   "H": 5,
+   "S": 4.09,
+   "N": 19.05,
+   "use1": 48,
+   "use2": 7,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {
+    "changeling": true,
+    "swarm": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "glass-changeling",
+   "name": "Glass Changeling",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 6,
+   "S": 0.96,
+   "N": 25.24,
+   "use1": 75,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "changeling": true,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "cinder-stoker",
+   "name": "Cinder Stoker",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 11,
+   "S": 1.2,
+   "N": 16.19,
+   "use1": 94,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "heat": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "pack-mule",
+   "name": "Pack Mule",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 11,
+   "S": 1.8,
+   "N": 17.59,
+   "use1": 90,
+   "use2": 22,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bounty": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 5,
+   "S": 4.6,
+   "N": 16.72,
+   "use1": 94,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "shell": 2,
+    "shield": 4
+   },
+   "hold": ""
+  },
+  {
+   "id": "conch-herald",
+   "name": "Conch Herald",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 11,
+   "S": 8.49,
+   "N": 21.5,
+   "use1": 105,
+   "use2": 36,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "tide": true,
+    "inspiring": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "shoal-shark",
+   "name": "Shoal Shark",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 4,
+   "H": 11,
+   "S": 1.5,
+   "N": 25.65,
+   "use1": 96,
+   "use2": 39,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "malachite-golem",
+   "name": "Malachite Golem",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 3,
+   "A": 2,
+   "H": 23,
+   "S": 0.87,
+   "N": 36.8,
+   "use1": 81,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "shell": 4
+   },
+   "hold": ""
+  },
+  {
+   "id": "irradiated-axolotl",
+   "name": "Irradiated Axolotl",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 9,
+   "S": 1.03,
+   "N": 24.07,
+   "use1": 92,
+   "use2": 36,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "delivery": 1,
+    "deliveryRes": "uranium"
+   },
+   "hold": ""
+  },
+  {
+   "id": "irradiated-glow-wyrm",
+   "name": "Irradiated Glow Wyrm",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 1,
+   "H": 25,
+   "S": -2,
+   "N": 29.62,
+   "use1": 88,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "irradiated": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "iron-warden",
+   "name": "Iron Badger",
+   "rarity": "epic",
+   "cost": 1,
+   "wait": 3,
+   "A": 0,
+   "H": 35,
+   "S": 0.02,
+   "N": 40.65,
+   "use1": 86,
+   "use2": 0,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "ironWill": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "badger-lumberjack",
+   "name": "Badger Lumberjack",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 11,
+   "S": 3.29,
+   "N": 21.27,
+   "use1": 95,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "lumberjack": true,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "ore-smelter-mole",
+   "name": "Ore-Smelter Mole",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 9,
+   "S": 1.03,
+   "N": 26.41,
+   "use1": 83,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "heavyMetal": true,
+    "delivery": 1,
+    "deliveryRes": "metal"
+   },
+   "hold": ""
+  },
+  {
+   "id": "lunar-howler",
+   "name": "Lunar Howler",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 5,
+   "H": 2,
+   "S": 3.69,
+   "N": 29.85,
+   "use1": 69,
+   "use2": 9,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "moonborn": 4
+   },
+   "hold": ""
+  },
+  {
+   "id": "skull-vulture",
+   "name": "Skull Vulture",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 3,
+   "S": 4.17,
+   "N": 24.31,
+   "use1": 76,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "daunt": 1,
+    "nocturnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "caldera-wyrm",
+   "name": "The Caldera Wyrm",
+   "rarity": "heroic",
+   "cost": 0,
+   "wait": 1,
+   "A": 4,
+   "H": 7,
+   "S": 11.65,
+   "N": 28.39,
+   "use1": 108,
+   "use2": 52,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "armor": 1,
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "damage",
+      "amount": 5,
+      "dmgType": "heat",
+      "who": "enemy",
+      "sub": "adjacent"
+     }
+    ],
+    "pounce": 5
+   },
+   "hold": ""
+  },
+  {
+   "id": "the-contradiction",
+   "name": "The Contradiction",
+   "rarity": "epic",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 16,
+   "S": 5.91,
+   "N": 34.76,
+   "use1": 80,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "rage": true,
+    "regen": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "ashbone-ghoul",
+   "name": "Ashbone Ghoul",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 5,
+   "S": 4.55,
+   "N": 19.99,
+   "use1": 63,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "remember": 1,
+    "triggers": [
+     {
+      "on": "onDeath",
+      "do": "exileSelf"
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "cinder-skeleton",
+   "name": "Cinder Skeleton",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "A": 1,
+   "H": 7,
+   "S": 6.51,
+   "N": 19.34,
+   "use1": 85,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "undead": true,
+    "requiem": 5
+   },
+   "hold": ""
+  },
+  {
+   "id": "magma-wraith",
+   "name": "Magma Wraith",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 8,
+   "S": 8.04,
+   "N": 25.71,
+   "use1": 82,
+   "use2": 22,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true,
+    "fireArrow": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "ember-revenant",
+   "name": "Ember Revenant",
+   "rarity": "veryrare",
+   "cost": 2,
+   "wait": 1,
+   "A": 4,
+   "H": 15,
+   "S": 2.5,
+   "N": 32.36,
+   "use1": 91,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "undead": true,
+    "pierce": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "meerkat-wayfarer",
+   "name": "Meerkat Wayfarer",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 5.95,
+   "N": 14.97,
+   "use1": 113,
+   "use2": 48,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "reach": true,
+    "inspiring": 1
+   },
+   "levelSkills": {
+    "1": {
+     "reach": true,
+     "inspiring": 1
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "siege-rhino",
+   "name": "Siege Rhino",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 3,
+   "A": 5,
+   "H": 17,
+   "S": 3.21,
+   "N": 38.09,
+   "use1": 92,
+   "use2": 35,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "siege": 4
+   },
+   "hold": ""
+  },
+  {
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 4,
+   "H": 3,
+   "S": 3.48,
+   "N": 19.29,
+   "use1": 96,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "healing": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "gatling-hog",
+   "name": "Gatling Hog",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 6,
+   "S": 10.64,
+   "N": 27.11,
+   "use1": 84,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "arrow": 1,
+    "twinStrike": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "dung-beetle",
+   "name": "Dung Beetle",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 5,
+   "S": 6.13,
+   "N": 15.72,
+   "use1": 90,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "decay": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "ur-elk",
+   "name": "Ür-Elk",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 3,
+   "A": 4,
+   "H": 11,
+   "S": 3.53,
+   "N": 37.85,
+   "use1": 70,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "overwhelm": true,
+    "rage": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "house-cat",
+   "name": "House Cat",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 3,
+   "H": 3,
+   "S": 0,
+   "N": 13.57,
+   "use1": 88,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "shellwright-apprentice",
+   "name": "Shellwright Apprentice",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 10,
+   "S": 0.37,
+   "N": 17.88,
+   "use1": 92,
+   "use2": 36,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "shell": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "otter-royal-guard",
+   "name": "Royal Guard",
+   "rarity": "superrare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 6,
+   "S": 6.12,
+   "N": 25.71,
+   "use1": 82,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "grantShield",
+      "allies": 3
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "otter-flag-bearer",
+   "name": "Otter Flag Bearer",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 9,
+   "S": 5.43,
+   "N": 19.05,
+   "use1": 107,
+   "use2": 40,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "inspiring": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "otter-lantern-bearer",
+   "name": "Otter Lantern Bearer",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 12,
+   "S": 0.51,
+   "N": 19.05,
+   "use1": 97,
+   "use2": 38,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "illuminate": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "riverbed-diver",
+   "name": "Riverbed Diver",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 5,
+   "S": 0,
+   "N": 22.21,
+   "use1": 74,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "hummingbird-needler",
+   "name": "Hummingbird Needler",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 3,
+   "S": 2.8,
+   "N": 15.26,
+   "use1": 65,
+   "use2": 14,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "pierce": 1,
+    "bleed": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "riverwing-envoy",
+   "name": "Riverwing Envoy",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 6,
+   "S": 2.27,
+   "N": 12.43,
+   "use1": 91,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "esprit": 1
+   },
+   "levelSkills": {
+    "1": {
+     "esprit": 1
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "triumvirate",
+   "name": "Triumphvirate",
+   "rarity": "epic",
+   "cost": 3,
+   "wait": 1,
+   "A": 4,
+   "H": 19,
+   "S": 7.09,
+   "N": 38.79,
+   "use1": 98,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "dictator": true,
+    "inspiring": 2,
+    "leader": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "inkcloud-squid",
+   "name": "Inkcloud Squid",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 8,
+   "S": 1.5,
+   "N": 19.75,
+   "use1": 73,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "abyss-lantern-squid",
+   "name": "Abyss Lantern Squid",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 3,
+   "H": 16,
+   "S": 2.57,
+   "N": 28.45,
+   "use1": 97,
+   "use2": 35,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "shock": {
+     "chance": 30,
+     "duration": 1
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "glass-octopus",
+   "name": "Glass Octopus",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 4,
+   "H": 7,
+   "S": 10.34,
+   "N": 29.62,
+   "use1": 99,
+   "use2": 36,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "corrode": 2,
+    "stealth": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "vampire-squid",
+   "name": "Vampire Squid",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "A": 4,
+   "H": 14,
+   "S": 4.73,
+   "N": 33.24,
+   "use1": 92,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bleed": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "goliath-tentacle",
+   "name": "Goliath Tentacle",
+   "rarity": "epic",
+   "cost": 2,
+   "wait": 3,
+   "A": 7,
+   "H": 8,
+   "S": 9.54,
+   "N": 41.71,
+   "use1": 92,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "sweep": 5,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "goliath-broodmother",
+   "name": "Goliath Broodmother",
+   "rarity": "legendary",
+   "cost": 3,
+   "wait": 3,
+   "A": 4,
+   "H": 24,
+   "S": 11.34,
+   "N": 49.29,
+   "use1": 96,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "onDeathSpawn": {
+     "defId": "inkcloud-squid",
+     "count": 2
+    },
+    "inspiring": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "thorny-devil",
+   "name": "Thorny Devil",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 1,
+   "H": 20,
+   "S": 4.48,
+   "N": 29.62,
+   "use1": 93,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "thorns": 2,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "fennec-fox",
+   "name": "Fennec Fox",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 12,
+   "S": 4,
+   "N": 25.24,
+   "use1": 87,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "dry": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "lone-grey-wolf",
+   "name": "Lone Grey Wolf",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 9,
+   "S": 7.36,
+   "N": 31.72,
+   "use1": 70,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "loneWolf": [
+     1,
+     1
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "rivergate-tribune",
+   "name": "Rivergate Tribune",
+   "rarity": "heroic",
+   "cost": 3,
+   "wait": 2,
+   "A": 4,
+   "H": 18,
+   "S": 6.7,
+   "N": 40.13,
+   "use1": 91,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 2,
+    "kinship": {
+     "type": "Otter",
+     "atk": 1,
+     "hp": 1
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "sunspire-sky-sovereign",
+   "name": "Sunspire Sky-Sovereign",
+   "rarity": "heroic",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 9,
+   "S": 3.37,
+   "N": 28.04,
+   "use1": 76,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "esprit": 1,
+    "espritHp": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "bombardier-beetle",
+   "name": "Bombardier Beetle",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 3,
+   "H": 10,
+   "S": 7.68,
+   "N": 27.05,
+   "use1": 99,
+   "use2": 35,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "rocket": 4
+   },
+   "hold": ""
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 10,
+   "S": 0.33,
+   "N": 23.84,
+   "use1": 66,
+   "use2": 12,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true,
+    "backstab": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "balloon-archer",
+   "name": "Balloon Archer",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 8,
+   "S": 6.31,
+   "N": 31.02,
+   "use1": 74,
+   "use2": 17,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "arrow": 2,
+    "arrowBramble": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "helmeted-otter",
+   "name": "Helmeted Otter",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 11,
+   "S": 0.28,
+   "N": 17.88,
+   "use1": 97,
+   "use2": 39,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "helmet": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "bramble-hoglet",
+   "name": "Bramble Hoglet",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 9,
+   "S": 2.3,
+   "N": 15.72,
+   "use1": 91,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "regen": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "old-snapjaw",
+   "name": "Old Snapjaw",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 3,
+   "A": 4,
+   "H": 17,
+   "S": 5,
+   "N": 36.33,
+   "use1": 94,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bleed": 1,
+    "armor": 1,
+    "leader": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 9,
+   "S": 0,
+   "N": 19.29,
+   "use1": 93,
+   "use2": 42,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "meerkat-burrower",
+   "name": "Meerkat Burrower",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 12,
+   "S": 3,
+   "N": 23.14,
+   "use1": 91,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "darksight": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 3,
+   "S": 10.76,
+   "N": 16.72,
+   "use1": 100,
+   "use2": 65,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "tide": true,
+    "poison": 4
+   },
+   "hold": ""
+  },
+  {
+   "id": "lions-mane-jelly",
+   "name": "Lion's Mane Jelly",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 1,
+   "H": 16,
+   "S": 4.69,
+   "N": 25.65,
+   "use1": 92,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 5,
+   "S": 1.44,
+   "N": 14.56,
+   "use1": 85,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "ambush": 1
+   },
+   "levelSkills": {
+    "1": {
+     "hatchling": true,
+     "ambush": 1
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "harbor-seal",
+   "name": "Harbor Seal",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 9,
+   "S": 3.27,
+   "N": 23.14,
+   "use1": 75,
+   "use2": 14,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "evasive": true,
+    "dive": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "snow-ermine",
+   "name": "Snow Ermine",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 4,
+   "S": 1.12,
+   "N": 16.19,
+   "use1": 80,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true,
+    "frost": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 3,
+   "S": 6.23,
+   "N": 19.99,
+   "use1": 76,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "quick": true,
+    "dry": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "cinder-gecko",
+   "name": "Cinder Gecko",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 5,
+   "S": 0,
+   "N": 18.06,
+   "use1": 72,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "ash-moth",
+   "name": "Ash Moth",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "A": 1,
+   "H": 8,
+   "S": 1.59,
+   "N": 19.73,
+   "use1": 74,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "nocturnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "cave-olm",
+   "name": "Cave Olm",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 11,
+   "S": 2.3,
+   "N": 18.35,
+   "use1": 89,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "regen": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "glimmer-spider",
+   "name": "Glimmer Spider",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 11,
+   "S": 2.38,
+   "N": 24.31,
+   "use1": 92,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 3,
+   "S": 4.13,
+   "N": 22.32,
+   "use1": 66,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "sap": true,
+    "nocturnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "egg-woodland",
+   "name": "Woodland Egg",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 7,
+   "A": 0,
+   "H": 2,
+   "S": 0,
+   "N": 55.07,
+   "use1": 4,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "egg-bird",
+   "name": "Speckled Egg",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 8,
+   "A": 0,
+   "H": 1,
+   "S": 0,
+   "N": 64.58,
+   "use1": 2,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "egg-otter",
+   "name": "River Bundle",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 8,
+   "A": 0,
+   "H": 3,
+   "S": 0,
+   "N": 64.58,
+   "use1": 5,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "egg-scaly",
+   "name": "Leathery Egg",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 10,
+   "A": 0,
+   "H": 3,
+   "S": 0,
+   "N": 82.96,
+   "use1": 4,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "egg-bug",
+   "name": "Cocoon",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 5,
+   "A": 0,
+   "H": 1,
+   "S": 1.6,
+   "N": 39.6,
+   "use1": 7,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {
+    "chrysalis": true
+   },
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "egg-water",
+   "name": "Roe Pearl",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 6,
+   "A": 0,
+   "H": 2,
+   "S": 0,
+   "N": 48.64,
+   "use1": 4,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "egg-beast",
+   "name": "Den Bundle",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 9,
+   "A": 0,
+   "H": 3,
+   "S": 0,
+   "N": 73.46,
+   "use1": 4,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "otter-angler",
+   "name": "Otter Angler",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 11,
+   "S": 4.09,
+   "N": 17.88,
+   "use1": 101,
+   "use2": 27,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "tide": true,
+    "delivery": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 3,
+   "S": 5.29,
+   "N": 15.26,
+   "use1": 81,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "coffee": 1,
+    "kinship": {
+     "type": "Bee",
+     "atk": 1,
+     "hp": 0
+    },
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "rarity": "veryrare",
+   "cost": 4,
+   "wait": 3,
+   "A": 4,
+   "H": 23,
+   "S": 7.69,
+   "N": 47.31,
+   "use1": 90,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "fork": true,
+    "gash": 3,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "lantern-spark-fly",
+   "name": "Lantern Spark Fly",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 7,
+   "S": 0.51,
+   "N": 21.62,
+   "use1": 74,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "illuminate": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "egg-red-dragon",
+   "name": "Red Dragon Egg",
+   "rarity": "legendary",
+   "cost": 0,
+   "wait": 12,
+   "A": 0,
+   "H": 5,
+   "S": 0,
+   "N": 106.79,
+   "use1": 5,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "levelSkills": {
+    "1": {
+     "hatchling": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "sheep",
+   "name": "Sheep",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 6,
+   "S": 0.4,
+   "N": 10.17,
+   "use1": 92,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "taunt": true
+   },
+   "levelSkills": {
+    "1": {
+     "taunt": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "border-collie",
+   "name": "Border Collie",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 14,
+   "S": 0,
+   "N": 24.54,
+   "use1": 94,
+   "use2": 40,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "converge": "enemy"
+   },
+   "hold": ""
+  },
+  {
+   "id": "dhole-matriarch",
+   "name": "Dhole Matriarch",
+   "rarity": "veryrare",
+   "cost": 2,
+   "wait": 2,
+   "A": 4,
+   "H": 21,
+   "S": 0,
+   "N": 35.11,
+   "use1": 94,
+   "use2": 39,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "packLeader": true,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "hoopoe-herald",
+   "name": "Hoopoe Herald",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 12,
+   "S": -2.04,
+   "N": 16.51,
+   "use1": 97,
+   "use2": 48,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "nightblind": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "sunbittern-strider",
+   "name": "Sunbittern Strider",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 10,
+   "S": 1.22,
+   "N": 23.12,
+   "use1": 87,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "diurnalGrant": {
+     "evasive": true,
+     "thorns": 1
+    },
+    "diurnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "kinkajou-lurker",
+   "name": "Kinkajou Lurker",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 6,
+   "S": 1.75,
+   "N": 25.74,
+   "use1": 77,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "nocturnalGrant": {
+     "evasive": true,
+     "regen": 2
+    },
+    "nocturnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 2,
+   "A": 4,
+   "H": 20,
+   "S": -3.7,
+   "N": 32.31,
+   "use1": 88,
+   "use2": 42,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "drunk": true,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 5,
+   "H": 5,
+   "S": 0,
+   "N": 14.79,
+   "use1": 95,
+   "use2": 46,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "purblind": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "pika-hoarder",
+   "name": "Pika Hoarder",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 3,
+   "H": 13,
+   "S": -4.82,
+   "N": 17.83,
+   "use1": 96,
+   "use2": 60,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "scatterbrained": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "blue-ringed-octopus",
+   "name": "Blue-ringed Octopus",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 11,
+   "S": 7.14,
+   "N": 29.15,
+   "use1": 83,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "octolash": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "pronghorn-racer",
+   "name": "Pronghorn Racer",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "A": 1,
+   "H": 10,
+   "S": 2.04,
+   "N": 19.34,
+   "use1": 78,
+   "use2": 17,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "speed": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "roadrunner-courier",
+   "name": "Roadrunner Courier",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "A": 3,
+   "H": 6,
+   "S": 2.57,
+   "N": 19.34,
+   "use1": 91,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "haste": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "box-turtle",
+   "name": "Box Turtle",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 7,
+   "S": -0.84,
+   "N": 12.92,
+   "use1": 94,
+   "use2": 47,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "cower": "shell"
+   },
+   "hold": ""
+  },
+  {
+   "id": "leafcutter-gardener",
+   "name": "Leafcutter Gardener",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 4,
+   "S": 4.22,
+   "N": 14.56,
+   "use1": 98,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "delivery": 1,
+    "meld": {
+     "quick": true
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 8,
+   "S": 4.55,
+   "N": 22.67,
+   "use1": 95,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "meiosis": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "hagfish-silencer",
+   "name": "Hagfish Silencer",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 12,
+   "S": 0.26,
+   "N": 22.21,
+   "use1": 96,
+   "use2": 42,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "nullify": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "electric-ray",
+   "name": "Electric Ray",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 8,
+   "S": 4.85,
+   "N": 23.37,
+   "use1": 93,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "charge": {
+     "n": 2,
+     "do": {
+      "do": "damage",
+      "amount": 3,
+      "who": "enemy",
+      "sub": "random"
+     }
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "swift-fox",
+   "name": "Swift Fox",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "A": 3,
+   "H": 3,
+   "S": 3.02,
+   "N": 17.71,
+   "use1": 85,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "fastForward": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "hercules-beetle",
+   "name": "Hercules Beetle",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 17,
+   "S": 4.79,
+   "N": 30.79,
+   "use1": 90,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "mighty": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "pangolin-roller",
+   "name": "Pangolin Roller",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 5,
+   "H": 5,
+   "S": 2.81,
+   "N": 25.47,
+   "use1": 90,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "sturdy": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 11,
+   "S": 3.6,
+   "N": 22.67,
+   "use1": 78,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "berserk": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "snow-bunting-archer",
+   "name": "Snow Bunting Archer",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 6,
+   "S": 8.13,
+   "N": 24.31,
+   "use1": 83,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "iceArrow": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "spitting-cobra",
+   "name": "Spitting Cobra",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 4,
+   "H": 7,
+   "S": 6.63,
+   "N": 29.85,
+   "use1": 86,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "twinShot": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "echidna-quillshot",
+   "name": "Echidna Quillshot",
+   "rarity": "superrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 3,
+   "H": 11,
+   "S": 6.79,
+   "N": 33.82,
+   "use1": 79,
+   "use2": 22,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "volley": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "spitting-spider",
+   "name": "Spitting Spider",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 5,
+   "S": 7.06,
+   "N": 24.31,
+   "use1": 99,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poisonBolt": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "ice-petrel",
+   "name": "Ice Petrel",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 7,
+   "S": 8.08,
+   "N": 26.18,
+   "use1": 81,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "iceBolt": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "dust-devil-kestrel",
+   "name": "Dust-devil Kestrel",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 5,
+   "H": 10,
+   "S": 1.96,
+   "N": 31.96,
+   "use1": 84,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tornado": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "ibex-rockcaller",
+   "name": "Ibex Rockcaller",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 3,
+   "H": 12,
+   "S": 6.63,
+   "N": 30.32,
+   "use1": 91,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "avalanche": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "corpse-flower-beetle",
+   "name": "Corpse-flower Beetle",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 4,
+   "H": 10,
+   "S": 3.47,
+   "N": 26.58,
+   "use1": 96,
+   "use2": 35,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "wither": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer",
+   "rarity": "epic",
+   "cost": 1,
+   "wait": 3,
+   "A": 2,
+   "H": 12,
+   "S": 9.92,
+   "N": 35.05,
+   "use1": 80,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "fireball": 15
+   },
+   "hold": ""
+  },
+  {
+   "id": "platypus-spur",
+   "name": "Platypus Spur",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 4,
+   "S": 5.46,
+   "N": 21.97,
+   "use1": 98,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "venomous": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "lamprey",
+   "name": "Lamprey",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "A": 2,
+   "H": 5,
+   "S": 3.39,
+   "N": 16.07,
+   "use1": 90,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "weaken": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "bison-bulldozer",
+   "name": "Bison Bulldozer",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 12,
+   "S": 5.08,
+   "N": 24.31,
+   "use1": 95,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bulldoze": 1,
+    "onslaught": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "weaver-bird",
+   "name": "Weaver Bird",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "A": 3,
+   "H": 6,
+   "S": 2.34,
+   "N": 19.34,
+   "use1": 90,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tangle": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "fire-salamander",
+   "name": "Fire Salamander",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 7,
+   "S": 7.72,
+   "N": 25.47,
+   "use1": 93,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "spitfire": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "antlion-pit",
+   "name": "Antlion Pit",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 13,
+   "S": 3.23,
+   "N": 25.24,
+   "use1": 100,
+   "use2": 37,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "trap": 5
+   },
+   "hold": ""
+  },
+  {
+   "id": "springbok-pronker",
+   "name": "Springbok Pronker",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "A": 2,
+   "H": 12,
+   "S": 0.03,
+   "N": 19.34,
+   "use1": 93,
+   "use2": 37,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "prey": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "supernova-jelly",
+   "name": "Supernova Jelly",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 9,
+   "S": 4.48,
+   "N": 23.84,
+   "use1": 82,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "nova": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "snow-leopard",
+   "name": "Snow Leopard",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 16,
+   "S": 4,
+   "N": 28.28,
+   "use1": 92,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "mountainClimber": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "dromedary",
+   "name": "Dromedary",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 15,
+   "S": 5,
+   "N": 28.69,
+   "use1": 91,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "dry": true,
+    "drought": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "lyrebird-mimic",
+   "name": "Lyrebird Mimic",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 7,
+   "S": 1.69,
+   "N": 23.84,
+   "use1": 87,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "confuse": {
+     "chance": 50,
+     "duration": 2
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "rimefire-salamander",
+   "name": "Rimefire Salamander",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 7,
+   "S": 13.13,
+   "N": 27.34,
+   "use1": 96,
+   "use2": 44,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "fireArrow": 1,
+    "iceArrow": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 12,
+   "S": 6.96,
+   "N": 25.47,
+   "use1": 86,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "mountainClimber": true,
+    "pounce": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "name": "Caldera Snow Leopard",
+   "rarity": "superrare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 15,
+   "S": 4.15,
+   "N": 29.68,
+   "use1": 95,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "pounce": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "rimeheart-colossus",
+   "name": "Rimeheart Mammoth",
+   "rarity": "epic",
+   "cost": 3,
+   "wait": 3,
+   "A": 3,
+   "H": 19,
+   "S": 6.03,
+   "N": 42.76,
+   "use1": 80,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "immolation": 1,
+    "freeze": {
+     "chance": 30,
+     "duration": 1
+    },
+    "armor": 2,
+    "frostbite": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "war-elephant",
+   "name": "War Elephant",
+   "rarity": "superrare",
+   "cost": 3,
+   "wait": 3,
+   "A": 0,
+   "H": 28,
+   "S": 10.71,
+   "N": 46.96,
+   "use1": 82,
+   "use2": 7,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 2,
+    "arrow": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "howdah-archers",
+   "name": "Howdah Archers",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 8,
+   "S": 7.01,
+   "N": 27.58,
+   "use1": 87,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "arrow": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "testudo-tortoise",
+   "name": "Testudo Tortoise",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "A": 4,
+   "H": 12,
+   "S": 4.85,
+   "N": 35.57,
+   "use1": 81,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 3,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "marshal-tuskwell",
+   "name": "Marshal Tuskwell",
+   "rarity": "epic",
+   "cost": 4,
+   "wait": 4,
+   "A": 1,
+   "H": 26,
+   "S": 14.62,
+   "N": 52.86,
+   "use1": 83,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 3,
+    "overwhelm": true,
+    "inspiring": 2,
+    "vanguard": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "mallard-halberdier",
+   "name": "Mallard Halberdier",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 8,
+   "S": 0.82,
+   "N": 27.81,
+   "use1": 75,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "reach": true,
+    "pierce": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "tax-collector-teal",
+   "name": "Tax-Collector Teal",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 4,
+   "S": 5.9,
+   "N": 19.69,
+   "use1": 72,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "swipe": 1,
+    "hoard": 1,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "battlement-heron",
+   "name": "Battlement Heron",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 13,
+   "S": 10.28,
+   "N": 27.81,
+   "use1": 94,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "arrow": 2,
+    "sentry": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "gilded-swan-knight",
+   "name": "Gilded Swan Knight",
+   "rarity": "superrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 1,
+   "H": 20,
+   "S": 9.13,
+   "N": 34.52,
+   "use1": 93,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 2,
+    "inspiring": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "magnate-duck",
+   "name": "The Magnate Duck",
+   "rarity": "epic",
+   "cost": 4,
+   "wait": 4,
+   "A": 2,
+   "H": 37,
+   "S": 9.18,
+   "N": 58.46,
+   "use1": 89,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 1,
+    "bounty": 1,
+    "hoard": 3,
+    "king": true,
+    "felling": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 7,
+   "S": 2.75,
+   "N": 22.67,
+   "use1": 96,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "web": 1,
+    "poison": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "hedgehog-herbalist",
+   "name": "Hedgehog Herbalist",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 15,
+   "S": 0.88,
+   "N": 25.24,
+   "use1": 99,
+   "use2": 41,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "herbalist": 1,
+    "immunity": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "name": "Eagle-Owl Quartermaster",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 6,
+   "S": 7.45,
+   "N": 24.77,
+   "use1": 73,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "arrow": 1,
+    "fletcher": 1,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "ossuary-lammergeier",
+   "name": "Ossuary Lammergeier",
+   "rarity": "superrare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 8,
+   "S": 2.68,
+   "N": 29.21,
+   "use1": 78,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "carrion": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "walrus-icebreaker",
+   "name": "Walrus Icebreaker",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 4,
+   "H": 17,
+   "S": 1.87,
+   "N": 31.72,
+   "use1": 97,
+   "use2": 39,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "freeze": {
+     "chance": 25,
+     "duration": 1
+    },
+    "shatter": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "fathom-leviathan",
+   "name": "Fathom Leviathan",
+   "rarity": "legendary",
+   "cost": 4,
+   "wait": 4,
+   "A": 5,
+   "H": 24,
+   "S": 16.99,
+   "N": 59.4,
+   "use1": 94,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "supreme": true,
+    "tide": true,
+    "tsunami": 2,
+    "wave": "alternate"
+   },
+   "hold": ""
+  },
+  {
+   "id": "grotto-lobster",
+   "name": "Grotto Lobster",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 3,
+   "H": 14,
+   "S": 4.38,
+   "N": 29.85,
+   "use1": 92,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "crabClaws": true,
+    "brood": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "sandfish",
+   "name": "Sandfish",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 10,
+   "S": 0.96,
+   "N": 23.14,
+   "use1": 86,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "invisible": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "quicksand-queen",
+   "name": "Quicksand Queen",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 19,
+   "S": 5.86,
+   "N": 32.19,
+   "use1": 96,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "trap": 6,
+    "tangle": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "water-vole",
+   "name": "Water Vole",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 4,
+   "S": 1.5,
+   "N": 12.92,
+   "use1": 76,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "evasive": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "woodcock-lookout",
+   "name": "Woodcock Lookout",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 7,
+   "S": 3.47,
+   "N": 16.72,
+   "use1": 81,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "timbered": true,
+    "crepuscular": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 7,
+   "S": -0.32,
+   "N": 12.92,
+   "use1": 98,
+   "use2": 48,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "injured": 2,
+    "foraging": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "slow-worm",
+   "name": "Slow-worm",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 9,
+   "S": 2.27,
+   "N": 16.72,
+   "use1": 85,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "undead": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 5,
+   "S": 1.29,
+   "N": 14.61,
+   "use1": 98,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "diurnal": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "field-vole",
+   "name": "Field Vole",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 8,
+   "S": 3.36,
+   "N": 12.92,
+   "use1": 111,
+   "use2": 37,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "foraging": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 0,
+   "H": 6,
+   "S": 7.36,
+   "N": 16.72,
+   "use1": 80,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "thorns": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 7,
+   "S": 3.78,
+   "N": 17.18,
+   "use1": 98,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "diurnal": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "oystercatcher",
+   "name": "Oystercatcher",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 6,
+   "S": 0.3,
+   "N": 19.87,
+   "use1": 73,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "pierce": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "grey-seal-bull",
+   "name": "Grey Seal Bull",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 3,
+   "H": 12,
+   "S": 1.5,
+   "N": 27.05,
+   "use1": 83,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 3.27,
+   "N": 20.57,
+   "use1": 80,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "tide": true,
+    "dive": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "razorbill",
+   "name": "Razorbill",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 2.57,
+   "N": 21.74,
+   "use1": 72,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "bleed": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "kittiwake-flock",
+   "name": "Kittiwake Flock",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 5,
+   "S": 3.13,
+   "N": 12.92,
+   "use1": 98,
+   "use2": 29,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "swarm": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 8,
+   "S": 2.96,
+   "N": 21.74,
+   "use1": 90,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "pounce": 2,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 2,
+   "S": 4,
+   "N": 16.72,
+   "use1": 102,
+   "use2": 23,
+   "band": false,
+   "verdict": "OVER",
+   "effects": {
+    "flying": true,
+    "mountainClimber": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 1,
+   "H": 7,
+   "S": 7.46,
+   "N": 26.35,
+   "use1": 66,
+   "use2": 17,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "bulwark": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "water-shrew",
+   "name": "Water Shrew",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 6,
+   "S": 2.76,
+   "N": 12.92,
+   "use1": 91,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "venomous": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "pyrenean-desman",
+   "name": "Pyrenean Desman",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 10,
+   "S": 1.5,
+   "N": 18.82,
+   "use1": 93,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "old-sturgeon",
+   "name": "Old Sturgeon",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 3,
+   "A": 2,
+   "H": 12,
+   "S": 5.2,
+   "N": 30.61,
+   "use1": 76,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 2,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 5,
+   "H": 5,
+   "S": 6.4,
+   "N": 27.75,
+   "use1": 95,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 1,
+    "bleed": 1,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 7,
+   "S": 7.01,
+   "N": 21.27,
+   "use1": 94,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "swarm": [
+     "Ants"
+    ],
+    "poison": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 12,
+   "S": 2.96,
+   "N": 21.27,
+   "use1": 84,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "pounce": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 12,
+   "S": 3.27,
+   "N": 22.44,
+   "use1": 81,
+   "use2": 17,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "invisible": 2,
+    "daunt": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "marsh-harrier",
+   "name": "Marsh Harrier",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 4,
+   "S": 1.12,
+   "N": 21.27,
+   "use1": 78,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "predator": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 7,
+   "S": 8.26,
+   "N": 23.84,
+   "use1": 89,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "brood": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "truffle-piglet",
+   "name": "Truffle Piglet",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 9,
+   "S": 6.65,
+   "N": 22.67,
+   "use1": 96,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "deliveryEvery": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "whip-spider",
+   "name": "Whip Spider",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 7,
+   "S": 3.23,
+   "N": 24.31,
+   "use1": 79,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "sonar": true,
+    "bleed": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 3,
+   "H": 15,
+   "S": 4.15,
+   "N": 28.45,
+   "use1": 99,
+   "use2": 35,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "pounce": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 3,
+   "S": 7.32,
+   "N": 23.14,
+   "use1": 96,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "venomous": 2,
+    "nocturnal": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "proboscis-monkey",
+   "name": "Proboscis Monkey",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 11,
+   "S": 1.9,
+   "N": 22.67,
+   "use1": 83,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "taunt": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "horseshoe-crab",
+   "name": "Horseshoe Crab",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 9,
+   "S": 5.32,
+   "N": 21.5,
+   "use1": 95,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 2,
+    "salt": true,
+    "relict": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "mangrove-manatee",
+   "name": "Mangrove Manatee",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 3,
+   "A": 7,
+   "H": 7,
+   "S": 4.4,
+   "N": 33.65,
+   "use1": 96,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "regen": 2,
+    "guardian": true,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "parrotfish",
+   "name": "Parrotfish",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 9,
+   "S": 1.73,
+   "N": 18.35,
+   "use1": 91,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "pierce": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "great-barracuda",
+   "name": "Great Barracuda",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 4,
+   "S": 3.73,
+   "N": 24.54,
+   "use1": 80,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "tide": true,
+    "quick": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 10,
+   "S": 6.96,
+   "N": 23.61,
+   "use1": 85,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "mountainClimber": true,
+    "pounce": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 3,
+   "S": 2.23,
+   "N": 18.35,
+   "use1": 71,
+   "use2": 14,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "quick": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "alpine-salamander",
+   "name": "Alpine Salamander",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 10,
+   "S": 2.3,
+   "N": 21.5,
+   "use1": 85,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "regen": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "apollo-butterfly",
+   "name": "Apollo Butterfly",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 8,
+   "S": 2.83,
+   "N": 21.15,
+   "use1": 75,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "thorns": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "mountain-hare",
+   "name": "Mountain Hare",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 2,
+   "H": 3,
+   "S": 0.5,
+   "N": 14.56,
+   "use1": 76,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "evasive": true,
+    "frostbite": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "thorn-shrike",
+   "name": "Thorn Shrike",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 3,
+   "S": 4.73,
+   "N": 23.84,
+   "use1": 80,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "bleed": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "hedge-weasel",
+   "name": "Hedge Weasel",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 5,
+   "S": 1.12,
+   "N": 19.52,
+   "use1": 77,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "predator": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "name": "Hawthorn Shieldbug",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 12,
+   "S": 2.33,
+   "N": 21.5,
+   "use1": 95,
+   "use2": 31,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "armor": 1,
+    "guardian": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 17,
+   "S": 5.38,
+   "N": 31.72,
+   "use1": 81,
+   "use2": 14,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "ambush": 4,
+    "hibernate": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "A": 1,
+   "H": 16,
+   "S": 7.59,
+   "N": 29.85,
+   "use1": 89,
+   "use2": 20,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "sonar": true,
+    "inspiring": 1,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "greenland-shark",
+   "name": "Greenland Shark",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 3,
+   "A": 1,
+   "H": 23,
+   "S": 6.51,
+   "N": 36.45,
+   "use1": 89,
+   "use2": 14,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "carrion": 2,
+    "armor": 1,
+    "tide": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "woodland-caribou",
+   "name": "Woodland Caribou",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 8,
+   "S": 4.5,
+   "N": 24.77,
+   "use1": 87,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "mountainClimber": true,
+    "frostbite": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "armory",
+   "name": "Armory",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 0,
+   "H": 16,
+   "S": 0.37,
+   "N": 22.21,
+   "use1": 74,
+   "use2": 0,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "weaponMaster": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "anvilwhisker-otter",
+   "name": "Anvilwhisker Otter",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 1,
+   "A": 1,
+   "H": 14,
+   "S": 4.2,
+   "N": 29.09,
+   "use1": 73,
+   "use2": 12,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "on": "perTurn",
+      "do": "forgeWeapon",
+      "amount": 1,
+      "pay": {
+       "stone": 1
+      }
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "greyplume-fledgling",
+   "name": "Greyplume Fledgling",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 4,
+   "S": 0,
+   "N": 11.99,
+   "use1": 69,
+   "use2": 19,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "swordbill-challenger",
+   "name": "Swordbill Challenger",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 8,
+   "S": 0.4,
+   "N": 20.22,
+   "use1": 67,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "taunt": true,
+    "counterattack": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "lava-waders",
+   "name": "Lava Waders",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "A": 0,
+   "H": 3,
+   "S": 0,
+   "N": 20.8,
+   "use1": 14,
+   "use2": 0,
+   "band": false,
+   "verdict": "UNDER",
+   "effects": {},
+   "hold": ""
+  },
+  {
+   "id": "pond-algae",
+   "name": "Pond Algae",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 7,
+   "S": 1.76,
+   "N": 16.72,
+   "use1": 97,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bloomCopy": {
+     "when": [
+      "wet",
+      "sunny"
+     ],
+     "mode": "and"
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "cane-toad",
+   "name": "Cane Toad",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 2,
+   "A": 2,
+   "H": 15,
+   "S": 6.07,
+   "N": 30.67,
+   "use1": 88,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "poison": 1,
+    "greaterPoison": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "barnacle-bulwark",
+   "name": "Barnacle Bulwark",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "A": 2,
+   "H": 21,
+   "S": 2.33,
+   "N": 33.24,
+   "use1": 88,
+   "use2": 22,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "guardian": true,
+    "armor": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "reefback-turtle",
+   "name": "Reefback Turtle",
+   "rarity": "veryrare",
+   "cost": 2,
+   "wait": 2,
+   "A": 2,
+   "H": 22,
+   "S": 0.57,
+   "N": 34.41,
+   "use1": 83,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "guardian": true,
+    "shell": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "driftwood-crab",
+   "name": "Driftwood Crab",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 12,
+   "S": 1.15,
+   "N": 20.34,
+   "use1": 94,
+   "use2": 34,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "do": "gain",
+      "on": "onAttacked",
+      "amount": 1,
+      "resource": "lumber"
+     }
+    ],
+    "guardian": true,
+    "crabClaws": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "gannet-nestweaver",
+   "name": "Gannet Nestweaver",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 7,
+   "S": 2.59,
+   "N": 16.72,
+   "use1": 87,
+   "use2": 21,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 1
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "nutria-reedcutter",
+   "name": "Nutria Reedcutter",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 2,
+   "A": 2,
+   "H": 7,
+   "S": 4.24,
+   "N": 21.1,
+   "use1": 82,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "delivery": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "redwood-woodpecker",
+   "name": "Redwood Woodpecker",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 11,
+   "S": 2.46,
+   "N": 22.67,
+   "use1": 86,
+   "use2": 26,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "milling": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "cone-cutter-squirrel",
+   "name": "Cone-cutter Squirrel",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 5,
+   "S": 8.28,
+   "N": 19.99,
+   "use1": 96,
+   "use2": 39,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 2
+     }
+    ],
+    "almanac": 4
+   },
+   "hold": ""
+  },
+  {
+   "id": "talus-pika",
+   "name": "Talus Pika",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 5,
+   "S": 2.62,
+   "N": 16.19,
+   "use1": 66,
+   "use2": 15,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "delivery": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "dune-packrat",
+   "name": "Dune Packrat",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 11,
+   "S": 5.71,
+   "N": 25.47,
+   "use1": 89,
+   "use2": 27,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "delivery": 3
+   },
+   "hold": ""
+  },
+  {
+   "id": "badger-stonemason",
+   "name": "Badger Stonemason",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 15,
+   "S": 2.5,
+   "N": 24.31,
+   "use1": 84,
+   "use2": 16,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "quarry": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "pumice-beetle",
+   "name": "Pumice Beetle",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 3,
+   "H": 11,
+   "S": 2.35,
+   "N": 24.31,
+   "use1": 92,
+   "use2": 33,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "gain",
+      "resource": "stone",
+      "amount": 2
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "hollow-belly-rat",
+   "name": "Hollow-belly Rat",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 12,
+   "S": 2,
+   "N": 21.04,
+   "use1": 95,
+   "use2": 32,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "devour": {
+     "attack": 2,
+     "health": 2
+    }
+   },
+   "hold": ""
+  },
+  {
+   "id": "prospector-mole",
+   "name": "Prospector Mole",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 3,
+   "H": 9,
+   "S": 1.2,
+   "N": 19.99,
+   "use1": 96,
+   "use2": 39,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "prospector": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "carrion-crow",
+   "name": "Carrion Crow",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 4,
+   "S": 2.27,
+   "N": 18.35,
+   "use1": 77,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "scavenge": 1,
+    "flying": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "phoenix-mushrooms",
+   "name": "Phoenix Mushrooms",
+   "rarity": "epic",
+   "cost": 1,
+   "wait": 1,
+   "A": 1,
+   "H": 8,
+   "S": 8.58,
+   "N": 25.71,
+   "use1": 95,
+   "use2": 23,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "meiosis": 1,
+    "bloomCopy": {
+     "mode": "and",
+     "when": [
+      "wet",
+      "sunny"
+     ]
+    },
+    "undead": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "sleepless-shrew",
+   "name": "Sleepless Shrew",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 7,
+   "S": 0.5,
+   "N": 18.35,
+   "use1": 74,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "wakeful": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "mist-net-otter",
+   "name": "Mist-net Otter",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 10,
+   "S": 0.89,
+   "N": 17.88,
+   "use1": 94,
+   "use2": 36,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "reach": true,
+    "web": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "clap-net-trapper",
+   "name": "Clap-net Trapper",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 2,
+   "H": 11,
+   "S": 0.87,
+   "N": 17.88,
+   "use1": 100,
+   "use2": 40,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "magnet",
+      "amount": 1,
+      "who": "enemy",
+      "sub": "all"
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "birdlime-dauber",
+   "name": "Birdlime Dauber",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 2,
+   "H": 10,
+   "S": 4.17,
+   "N": 22.21,
+   "use1": 91,
+   "use2": 28,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "reach": true,
+    "strangle": 1
+   },
+   "hold": ""
+  },
+  {
+   "id": "gale-swift",
+   "name": "Gale Swift",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 1,
+   "H": 4,
+   "S": 1.8,
+   "N": 16.19,
+   "use1": 63,
+   "use2": 12,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "flying": true,
+    "storm": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "muskrat-reedgatherer",
+   "name": "Muskrat Reedgatherer",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "A": 1,
+   "H": 8,
+   "S": 4.16,
+   "N": 16.72,
+   "use1": 91,
+   "use2": 25,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "delivery": 2
+   },
+   "hold": ""
+  },
+  {
+   "id": "granite-ox-golem",
+   "name": "Granite Ox Golem",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 4,
+   "A": 3,
+   "H": 17,
+   "S": 5.91,
+   "N": 43.98,
+   "use1": 73,
+   "use2": 18,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "recoil": 2,
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "stun",
+      "who": "enemy",
+      "sub": "all",
+      "everyone": true,
+      "count": 1
+     }
+    ]
+   },
+   "hold": ""
+  },
+  {
+   "id": "torch",
+   "name": "Torch",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "A": 3,
+   "H": 3,
+   "S": 0.51,
+   "N": 14.79,
+   "use1": 85,
+   "use2": 24,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "illuminate": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "nudibranch",
+   "name": "Nudibranch",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "A": 4,
+   "H": 9,
+   "S": 0.73,
+   "N": 22.67,
+   "use1": 96,
+   "use2": 40,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "sequestration": true,
+    "immunity": true
+   },
+   "hold": ""
+  },
+  {
+   "id": "victoria-regia",
+   "name": "Victoria Regia",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "A": 2,
+   "H": 14,
+   "S": 5.11,
+   "N": 25.65,
+   "use1": 98,
+   "use2": 30,
+   "band": true,
+   "verdict": "ok",
+   "effects": {
+    "bulldoze": 1,
+    "thorns": 1
+   },
+   "hold": ""
+  }
+ ]
+}

@@ -92,7 +92,7 @@ const unit = (id, a, h, fx, more)=> Object.assign({id, name:id, attack:a, health
   const t2 = e.trigsOf({effects:{tribeDelivery:'Otter', tribeDeliveryRes:'stone'}}).find(x=> x.keyword === 'tribeDelivery');
   ok(t2 && t2.filterArchetype === 'Otter' && t2.resource === 'stone', 'Otter Delivery { Stone }: the tribe and the resource are the card\'s');
   ok(/if\(e\.tribeDelivery\)\{ const tr = /.test(fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8')), 'Tribe Delivery: an On Ally Played gain with the tribe filter (en8Trigs)');
-  const bd = byId['bee-drone']; ok(bd && bd.effects.tribeDelivery === 'Bee' && bd.attack === 0 && bd.health === 1, 'Bee Drone: Bee Delivery { Lumber }, its stats unchanged (0/1)');
+  const bd = byId['bee-drone']; ok(bd && bd.effects.tribeDelivery === 'Bee' && bd.attack === 0 && bd.health === 6, 'Bee Drone: Bee Delivery { Lumber }, the owner\'s live 0/6 (folded in by CONTENT12, 2026-11-06)');
 }
 // ---- 4. Berries and 6. Forage
 {
@@ -126,7 +126,7 @@ const unit = (id, a, h, fx, more)=> Object.assign({id, name:id, attack:a, health
 }
 // ---- 3. Level 1+
 {
-  const babies = cards.filter(c=> c.kind === 'baby' && !c.token);
+  const babies = cards.filter(c=> c.kind === 'baby' && !c.token && c.id !== 'duckling'); // 2026-11-06 (CONTENT12): the owner's live Duckling has Diurnal 1 at Level 1, no Hatchling
   ok(babies.length >= 20 && babies.every(c=> c.levelSkills && c.levelSkills['1'] && c.levelSkills['1'].hatchling && !(c.levelSkills['0'] && c.levelSkills['0'].hatchling)), `every Baby card's Hatchling is at Level 1 (${babies.length} cards)`);
   const B = require(path.join(ROOT, 'tools', 'lib_bramble.js'));
   const fx = new Function(B.grab('effectsAtLevel') + '\nreturn effectsAtLevel;')();

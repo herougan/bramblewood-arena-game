@@ -1,0 +1,215 @@
+{
+ "about": "CONTENT12: 2-A-7 retune (tools/content12_lilypad_tune_2026_11_06.js)",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "beaver-lumberjack",
+  "box-turtle",
+  "duckling",
+  "lodge-engineer",
+  "marsh-harrier",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "pond-algae",
+  "riverworks-bastion",
+  "shoal-shark",
+  "victoria-regia",
+  "water-shrew",
+  "water-vole"
+ ],
+ "firstClear": [
+  "riverworks-bastion"
+ ],
+ "k14Before": 0,
+ "before": {
+  "deck": {
+   "beaver-lumberjack": 1,
+   "box-turtle": 1,
+   "duckling": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 3,
+   "riverworks-bastion": 1,
+   "shoal-shark": 1,
+   "water-vole": 1
+  },
+  "tune": 67.5,
+  "measure40": 65
+ },
+ "trail": [
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "shoal-shark": 1,
+    "water-vole": 1
+   },
+   "win": 67.5,
+   "hpLost": 44.8
+  },
+  {
+   "move": "water-vole -1 -> marsh-harrier",
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "shoal-shark": 1,
+    "marsh-harrier": 1
+   },
+   "win": 60,
+   "hpLost": 51.3
+  }
+ ],
+ "trials": 80,
+ "top": [
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "marsh-harrier": 1,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "shoal-shark": 1
+   },
+   "tune": 60,
+   "measure40": 70,
+   "measure200": 66.5
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "shoal-shark": 1,
+    "victoria-regia": 1
+   },
+   "tune": 65,
+   "measure40": 80
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "marsh-harrier": 1,
+    "old-sturgeon": 3,
+    "pond-algae": 1,
+    "riverworks-bastion": 1,
+    "shoal-shark": 1
+   },
+   "tune": 65,
+   "measure40": 82.5
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "marsh-harrier": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "shoal-shark": 1,
+    "victoria-regia": 1
+   },
+   "tune": 65,
+   "measure40": 85
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "shoal-shark": 1,
+    "water-vole": 1
+   },
+   "tune": 67.5,
+   "measure40": 65
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "shoal-shark": 1,
+    "water-vole": 1
+   },
+   "tune": 67.5,
+   "measure40": 65
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "marsh-harrier": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "shoal-shark": 1,
+    "water-shrew": 1
+   },
+   "tune": 67.5,
+   "measure40": 72.5
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "lodge-engineer": 4,
+    "marsh-harrier": 1,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "shoal-shark": 1
+   },
+   "tune": 67.5,
+   "measure40": 75
+  }
+ ],
+ "pick": {
+  "deck": {
+   "beaver-lumberjack": 1,
+   "box-turtle": 1,
+   "duckling": 1,
+   "lodge-engineer": 4,
+   "marsh-harrier": 1,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 3,
+   "riverworks-bastion": 1,
+   "shoal-shark": 1
+  },
+  "tune": 60,
+  "measure40": 70,
+  "measure200": 66.5
+ },
+ "k14After": 0
+}

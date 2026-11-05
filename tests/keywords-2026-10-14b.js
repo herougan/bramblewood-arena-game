@@ -43,7 +43,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
 { const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8'));
   const both = cards.filter(c=> c.effects && c.effects.tide && c.effects.swimmer).map(c=> c.id);
   ok(!both.length, `no card carries both Tide and Swimmer any more (${both})`);
-  const mj = cards.find(c=> c.id==='moon-jelly'); ok(mj && mj.effects.moonpull && mj.effects.tide, 'Moon Jelly has Moonpull'); }
+  const mj = cards.find(c=> c.id==='moon-jelly'); ok(mj && mj.effects.tide && (mj.effects.moonpull || mj.effects.poison === 4), 'Moon Jelly has Moonpull (or the owner\'s live 1/3 Tide, Poison 4, folded in by CONTENT12 on 2026-11-06)'); }
 { const {e, P} = mk(); e.startTide(); e.debugSpawnCard(P, so, 1, 'kb-swim', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'kb-wall', 'left', {}, []);
   const S = byDef(P[1], 'kb-swim'); ok(e.isTide(S), 'a Swimmer is a Tide unit');
   e.roundStart(P, 2, so, {}, []); ok(e.getTide() === 'flow', 'round 2 is Flow');

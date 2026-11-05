@@ -44,6 +44,10 @@
     const ALIAS = table.aliases || {}, SH = table.shorthands || {}, B = table.budget || {}, HALF = table.halfMiss || [];
     const ZH = table.zeitHome || {}; // BAL11 (2026-11-02): per card {night, day} shares on its home maps
     const LH = table.lumberHome || {}; // BAL12 (2026-11-02): per Lumber maker the mean Lumber cost of its home lists' pools (bramblewood-budget.js lumberHomeMult)
+    // 2026-11-06 (package CONTENT12, decision DELIV-1 a: "give Delivery the home price again"): the skill keys priced x lumberHomeMult besides
+    // bramblewood-budget.js LUMBER_MAKER_KEYS (onReadyGold): table.lumberHomeKeys (Delivery, Delivery every turn), only while they deliver Lumber
+    // (no deliveryRes, or 'lumber'; Stone / Metal / Uranium deliveries keep the flat price)
+    const LHK = new Set([...(BB.LUMBER_MAKER_KEYS || []), ...((table.lumberHomeKeys && table.lumberHomeKeys.keys) || [])]);
     const mod = (id, d)=> MO[id] && typeof MO[id].value === 'number' ? MO[id].value : d;
     const actEntries = {}; (table.actions || []).forEach(a=>{ const base = a.id.split('.')[0]; (actEntries[base] = actEntries[base] || []).push(a); });
     function skillCost(id, v){
@@ -141,7 +145,7 @@
         if(BB.EN7_TIP_SHOTS && BB.EN7_TIP_SHOTS[k]){ const [base, st] = BB.EN7_TIP_SHOTS[k], c = v && effects[base] ? r2(mod('tip', BB.EN7_TIP_MULT || 0.9) * (skillCost(st, Math.max(1, numOf(effects[st]))) || 0)) : 0; S += c; parts.push(['skill', k, c, 'x' + mod('tip', 0.9) + ' of ' + st]); return; }
         if(k === 'diveUses'){ const c = effects.dive ? r2(Math.max(0, numOf(v) - 1) * (skillCost('dive', effects.dive) || 0)) : 0; S += c; parts.push(['skill', k, c, 'extra dives']); return; }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
-        if(lm !== 1 && (BB.LUMBER_MAKER_KEYS || []).includes(k)){ c = r2(c * lm); S += c; parts.push(['skill', k, c, 'x' + lm + ' at home (BAL12)']); return; } // BAL12 (2026-11-02): On Ready Lumber at its lists' mean cost
+        if(lm !== 1 && LHK.has(k) && (!effects.deliveryRes || effects.deliveryRes === 'lumber' || (BB.LUMBER_MAKER_KEYS || []).includes(k))){ c = r2(c * lm); S += c; parts.push(['skill', k, c, 'x' + lm + ' at home (BAL12)']); return; } // BAL12 (2026-11-02): On Ready Lumber at its lists' mean cost
         { const zm = BB.zeitDrawbackMult ? BB.zeitDrawbackMult(k, home) : 1; if(zm !== 1){ c = r2(c * zm); S += c; parts.push(['skill', k, c, 'x' + zm + ' at home (BAL11)']); return; } } // BAL11 (2026-11-02): Nightblind / Sunshy at their home share
         S += c; parts.push(['skill', k, c, '']);
       });

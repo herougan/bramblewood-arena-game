@@ -1,0 +1,202 @@
+{
+ "about": "CONTENT12: 2-A-2 retune (tools/content12_lilypad_tune_2026_11_06.js)",
+ "band": {
+  "lo": 76,
+  "hi": 92,
+  "target": 84
+ },
+ "list": [
+  "beaver-lumberjack",
+  "box-turtle",
+  "duckling",
+  "guppy",
+  "lodge-engineer",
+  "marsh-harrier",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "pond-algae",
+  "shoal-shark",
+  "victoria-regia",
+  "water-shrew",
+  "water-vole"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "before": {
+  "deck": {
+   "box-turtle": 1,
+   "duckling": 1,
+   "guppy": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 4,
+   "water-shrew": 1,
+   "water-vole": 1
+  },
+  "tune": 90,
+  "measure40": 87.5
+ },
+ "trail": [
+  {
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "win": 90,
+   "hpLost": 18.6
+  },
+  {
+   "move": "guppy -1 -> beaver-lumberjack",
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1,
+    "water-vole": 1,
+    "beaver-lumberjack": 1
+   },
+   "win": 83.8,
+   "hpLost": 27
+  }
+ ],
+ "trials": 33,
+ "top": [
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 83.8,
+   "measure40": 80
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 83.8,
+   "measure40": 82.5
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-vole": 1
+   },
+   "tune": 85,
+   "measure40": 72.5
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "duckling": 1,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 85,
+   "measure40": 82.5,
+   "measure200": 85
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "box-turtle": 1,
+    "duckling": 1,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1
+   },
+   "tune": 85,
+   "measure40": 75
+  },
+  {
+   "deck": {
+    "duckling": 1,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "marsh-harrier": 1,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 85,
+   "measure40": 85
+  },
+  {
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "marsh-harrier": 1,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-vole": 1
+   },
+   "tune": 86.3,
+   "measure40": 85
+  },
+  {
+   "deck": {
+    "box-turtle": 1,
+    "guppy": 1,
+    "lodge-engineer": 4,
+    "marsh-harrier": 1,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 86.3,
+   "measure40": 87.5
+  }
+ ],
+ "pick": {
+  "deck": {
+   "beaver-lumberjack": 1,
+   "duckling": 1,
+   "guppy": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 4,
+   "water-shrew": 1,
+   "water-vole": 1
+  },
+  "tune": 85,
+  "measure40": 82.5,
+  "measure200": 85
+ },
+ "k14After": 0
+}

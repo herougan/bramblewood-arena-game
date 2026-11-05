@@ -571,7 +571,6 @@
  "Beast": "兽类",
  "beat it with Rank {v1} or better to see it": "以 {v1} 级或更好的评价击败它才能看到",
  "Beat the boss of Map": "击败首领：地图",
- "Beat the Glacial Ape-King flawlessly…": "无伤击败冰川猿王……",
  "Beaver Dam": "河狸坝",
  "Beavers know timber, and timber knows how to throw a rock over a wall.": "河狸懂木头，而木头懂得怎样把石头扔过城墙。",
  "Bee Lines": "蜜蜂航线",
@@ -4986,5 +4985,7 @@
  "+{v1} 🪵 every {v2} rounds": "每 {v2} 轮 +{v1} 🪵",
  "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "每轮从中选一：为你伤势最重的单位回复 {v1}、对一个随机敌方单位造成 {v2} 点伤害，或 +{v3} 🪵",
  "It grazes on things that sting and keeps the stings for itself. The bright colours are a promise.": "它啃食会蜇人的东西，把那些刺留给自己。鲜艳的颜色是一种承诺。",
- "Its new leaf comes up folded like a fist and shoves the old ones aside. Then it opens, and the underside is all thorns.": "它的新叶像拳头一样卷着冒出水面，把旧叶推到一旁。然后它展开，叶背满是尖刺。"
+ "Its new leaf comes up folded like a fist and shoves the old ones aside. Then it opens, and the underside is all thorns.": "它的新叶像拳头一样卷着冒出水面，把旧叶推到一旁。然后它展开，叶背满是尖刺。",
+ "The Walrus Icebreaker": "破冰海象",
+ "Beat the Walrus Icebreaker flawlessly…": "无伤击败破冰海象……"
 }

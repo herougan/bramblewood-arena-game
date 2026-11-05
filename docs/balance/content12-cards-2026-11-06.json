@@ -1,0 +1,572 @@
+{
+ "_about": "CONTENT12 (2026-11-06): card edits (tools/content12_cards_2026_11_06.js)",
+ "rows": [
+  {
+   "id": "dormouse",
+   "why": "CONTENT11-1 a: a dormouse sleeps by day",
+   "from": [
+    2,
+    7
+   ],
+   "to": [
+    2,
+    5
+   ],
+   "use": [
+    "96%",
+    "98%"
+   ],
+   "effects": {
+    "nocturnal": 1
+   }
+  },
+  {
+   "id": "torch",
+   "why": "CONTENT11-1 a: a torch lights its row (Illuminate, Lantern's live name)",
+   "from": [
+    3,
+    3
+   ],
+   "to": [
+    3,
+    3
+   ],
+   "use": [
+    "77%",
+    "85%"
+   ],
+   "effects": {
+    "illuminate": true
+   }
+  },
+  {
+   "id": "meadow-frog",
+   "why": "CONTENT11-1 a: a frog of the wet meadow",
+   "from": [
+    2,
+    5
+   ],
+   "to": [
+    2,
+    3
+   ],
+   "use": [
+    "93%",
+    "93%"
+   ],
+   "effects": {
+    "tide": true
+   }
+  },
+  {
+   "id": "caiman-hatchling",
+   "why": "CONTENT11-1 a: Ambush 1 instead of Quick (Hedgerow Shrew and the Tomcat no longer share its line)",
+   "from": [
+    2,
+    4
+   ],
+   "to": [
+    2,
+    5
+   ],
+   "use": [
+    "84%",
+    "85%"
+   ],
+   "effects": {
+    "ambush": 1
+   },
+   "levelSkills": {
+    "1": {
+     "hatchling": true,
+     "ambush": 1
+    }
+   }
+  },
+  {
+   "id": "pike-lancer",
+   "why": "CONTENT11-1 a: the lance pierces",
+   "from": [
+    3,
+    9
+   ],
+   "to": [
+    3,
+    9
+   ],
+   "use": [
+    "96%",
+    "98%"
+   ],
+   "effects": {
+    "tide": true,
+    "pierce": 1
+   }
+  },
+  {
+   "id": "dolphin-knight",
+   "why": "CONTENT11-1 a: a dolphin hears by sonar",
+   "from": [
+    3,
+    9
+   ],
+   "to": [
+    3,
+    9
+   ],
+   "use": [
+    "96%",
+    "100%"
+   ],
+   "effects": {
+    "tide": true,
+    "sonar": true
+   }
+  },
+  {
+   "id": "irradiated-glow-wyrm",
+   "why": "CONTENT11-1 a: Irradiated instead of Poison (Caustic Scorpion keeps Poison 2)",
+   "from": [
+    1,
+    18
+   ],
+   "to": [
+    1,
+    25
+   ],
+   "use": [
+    "87%",
+    "88%"
+   ],
+   "effects": {
+    "irradiated": 1
+   }
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "why": "CONTENT11-1 a: a mudskipper skitters over the mud",
+   "from": [
+    1,
+    9
+   ],
+   "to": [
+    1,
+    7
+   ],
+   "use": [
+    "93%",
+    "90%"
+   ],
+   "effects": {
+    "tide": true,
+    "skitter": true
+   },
+   "note": "hand-set to 1/7: 1/8 read 103% at its start level (tools/bal9/cards_2026_11_02.js refit --check)"
+  },
+  {
+   "id": "horseshoe-crab",
+   "why": "CONTENT11-3 a: a living fossil the weather never changed",
+   "from": [
+    2,
+    9
+   ],
+   "to": [
+    2,
+    9
+   ],
+   "use": [
+    "89%",
+    "95%"
+   ],
+   "effects": {
+    "armor": 2,
+    "salt": true,
+    "relict": true
+   }
+  },
+  {
+   "id": "nautilus-drifter",
+   "why": "CONTENT11-3 a (in place of Old Sturgeon, the owner's card): the nautilus is a living fossil",
+   "from": [
+    4,
+    13
+   ],
+   "to": [
+    4,
+    13
+   ],
+   "use": [
+    "90%",
+    "94%"
+   ],
+   "effects": {
+    "deliveryEvery": 1,
+    "relict": true
+   }
+  },
+  {
+   "id": "leafcutter-gardener",
+   "why": "CONTENT11-3 a (in place of Ant Warrior / Fire Ant Raft, the owner's cards): ants that link up",
+   "from": [
+    2,
+    5
+   ],
+   "to": [
+    2,
+    4
+   ],
+   "use": [
+    "93%",
+    "98%"
+   ],
+   "effects": {
+    "delivery": 1,
+    "meld": {
+     "quick": true
+    }
+   }
+  },
+  {
+   "id": "coral-polyp-colony",
+   "why": "CONTENT11-3 a: polyps share one skeleton",
+   "from": [
+    0,
+    9
+   ],
+   "to": [
+    0,
+    9
+   ],
+   "use": [
+    "88%",
+    "97%"
+   ],
+   "effects": {
+    "tide": true,
+    "deliveryEvery": 1,
+    "meld": {
+     "armor": 1
+    }
+   }
+  },
+  {
+   "id": "hedgehog-herbalist",
+   "why": "CONTENT11-3 a: hedgehogs shrug off venom",
+   "from": [
+    3,
+    15
+   ],
+   "to": [
+    3,
+    15
+   ],
+   "use": [
+    "97%",
+    "99%"
+   ],
+   "effects": {
+    "herbalist": 1,
+    "immunity": true
+   }
+  },
+  {
+   "id": "venomlord-serpent",
+   "why": "CONTENT11-3 a: a viper is immune to its own kind",
+   "from": [
+    1,
+    22
+   ],
+   "to": [
+    1,
+    22
+   ],
+   "use": [
+    "87%",
+    "87%"
+   ],
+   "effects": {
+    "poison": 3,
+    "guardian": true,
+    "immunity": true
+   }
+  },
+  {
+   "id": "poison-dart-croaker",
+   "why": "CONTENT11-3 a: dart frogs sequester their prey's toxins",
+   "from": [
+    3,
+    3
+   ],
+   "to": [
+    3,
+    3
+   ],
+   "use": [
+    "86%",
+    "88%"
+   ],
+   "effects": {
+    "poison": 2,
+    "tide": true,
+    "sequestration": true
+   }
+  },
+  {
+   "id": "raven-scout",
+   "why": "ENG22-1 a: Tally 3, the raven counts the fallen",
+   "from": [
+    2,
+    5
+   ],
+   "to": [
+    2,
+    5
+   ],
+   "use": [
+    "78%",
+    "100%"
+   ],
+   "effects": {
+    "flying": true,
+    "tally": 3
+   }
+  },
+  {
+   "id": "cone-cutter-squirrel",
+   "why": "ENG22-1 a: Almanac 4, a squirrel keeps its caches by the calendar",
+   "from": [
+    2,
+    6
+   ],
+   "to": [
+    2,
+    5
+   ],
+   "use": [
+    "81%",
+    "96%"
+   ],
+   "effects": {
+    "triggers": [
+     {
+      "on": "onSpawn",
+      "do": "gain",
+      "resource": "lumber",
+      "amount": 2
+     }
+    ],
+    "almanac": 4
+   }
+  },
+  {
+   "id": "bison-bulldozer",
+   "why": "ENG22-1 a: Onslaught 3, the herd keeps charging the wall it has dented",
+   "from": [
+    2,
+    12
+   ],
+   "to": [
+    2,
+    12
+   ],
+   "use": [
+    "83%",
+    "95%"
+   ],
+   "effects": {
+    "bulldoze": 1,
+    "onslaught": 3
+   }
+  },
+  {
+   "id": "boreal-elk",
+   "why": "ENG22-1 a: Riled 3, a wounded bull elk charges",
+   "from": [
+    5,
+    5
+   ],
+   "to": [
+    5,
+    4
+   ],
+   "use": [
+    "94%",
+    "99%"
+   ],
+   "effects": {
+    "sweep": 2,
+    "riled": 3
+   }
+  },
+  {
+   "id": "stalactite-golem",
+   "why": "FIX9-1 a: back to its use before the Shell re-price (78%)",
+   "from": [
+    1,
+    21
+   ],
+   "to": [
+    1,
+    23
+   ],
+   "use": [
+    "72%",
+    "78%"
+   ]
+  },
+  {
+   "id": "conch-crawler",
+   "why": "FIX9-1 a: back to its use before the Shell re-price (93%)",
+   "from": [
+    1,
+    3
+   ],
+   "to": [
+    1,
+    5
+   ],
+   "use": [
+    "83%",
+    "94%"
+   ]
+  },
+  {
+   "id": "malachite-golem",
+   "why": "FIX9-1 a: back to its use before the Shell re-price (81%)",
+   "from": [
+    2,
+    21
+   ],
+   "to": [
+    2,
+    23
+   ],
+   "use": [
+    "76%",
+    "81%"
+   ]
+  },
+  {
+   "id": "shellwright-apprentice",
+   "why": "FIX9-1 a: back to its use before the Shell re-price (94%)",
+   "from": [
+    2,
+    9
+   ],
+   "to": [
+    2,
+    10
+   ],
+   "use": [
+    "86%",
+    "92%"
+   ]
+  },
+  {
+   "id": "limpet-clinger",
+   "why": "FIX9-1 a: back to its use before the Shell re-price (91%)",
+   "from": [
+    2,
+    2
+   ],
+   "to": [
+    2,
+    4
+   ],
+   "use": [
+    "78%",
+    "93%"
+   ]
+  },
+  {
+   "id": "reefback-turtle",
+   "why": "FIX9-1 a: back to its use before the Shell re-price (82%)",
+   "from": [
+    2,
+    20
+   ],
+   "to": [
+    2,
+    22
+   ],
+   "use": [
+    "77%",
+    "83%"
+   ]
+  },
+  {
+   "id": "giant-clam",
+   "why": "FIX9-1 a: was 102% of N",
+   "from": [
+    5,
+    5
+   ],
+   "to": [
+    5,
+    4
+   ],
+   "use": [
+    "102%",
+    "98%"
+   ]
+  },
+  {
+   "id": "sawfish",
+   "why": "FIX9-1 a: Breach's price (ENG25) put it at 110%",
+   "from": [
+    3,
+    8
+   ],
+   "to": [
+    3,
+    5
+   ],
+   "use": [
+    "110%",
+    "95%"
+   ]
+  }
+ ],
+ "held": [
+  {
+   "id": "old-sturgeon",
+   "why": "CONTENT11-3 a",
+   "edit": {
+    "relict": true
+   },
+   "note": "the owner's card (live edit or a named owner card): not changed"
+  },
+  {
+   "id": "ant-warrior",
+   "why": "CONTENT11-3 a",
+   "edit": {
+    "meld": {
+     "quick": true
+    }
+   },
+   "note": "the owner's card (live edit or a named owner card): not changed"
+  },
+  {
+   "id": "fire-ant-raft",
+   "why": "CONTENT11-3 a",
+   "edit": {
+    "meld": {
+     "quick": true
+    }
+   },
+   "note": "the owner's card (live edit or a named owner card): not changed"
+  },
+  {
+   "id": "moon-jelly",
+   "why": "FIX9-1 a: 128% after Moonpull's price (ENG25)",
+   "note": "the owner's card (live edit or a named owner card), now 1/3 at 100%: not changed",
+   "proposal": "1/2 (94%)"
+  },
+  {
+   "id": "bee-drone",
+   "why": "FIX9-1 a: 71% before the fold",
+   "note": "the owner's card (live edit or a named owner card), now 0/6 at 113%: not changed",
+   "proposal": "0/4 (97%)"
+  }
+ ]
+}

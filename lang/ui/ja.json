@@ -571,7 +571,6 @@
  "Beast": "獣",
  "beat it with Rank {v1} or better to see it": "ランク{v1}以上で倒すと見られる",
  "Beat the boss of Map": "ボスを倒す：マップ",
- "Beat the Glacial Ape-King flawlessly…": "氷河の猿王を無傷で倒す…",
  "Beaver Dam": "ビーバーのダム",
  "Beavers know timber, and timber knows how to throw a rock over a wall.": "ビーバーは木材を知っている。そして木材は、城壁越しに岩を投げる方法を知っている。",
  "Bee Lines": "ハチの直線",
@@ -4986,5 +4985,7 @@
  "+{v1} 🪵 every {v2} rounds": "{v2}ラウンドごとに+{v1} 🪵",
  "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "毎ラウンドどれか一つ：最も傷ついた味方を{v1}回復、ランダムな敵ユニットに{v2}ダメージ、または+{v3} 🪵",
  "It grazes on things that sting and keeps the stings for itself. The bright colours are a promise.": "刺すものを食べ、その針を自分のものにする。鮮やかな色は約束だ。",
- "Its new leaf comes up folded like a fist and shoves the old ones aside. Then it opens, and the underside is all thorns.": "新しい葉は拳のように畳まれて浮かび、古い葉を押しのける。それから開くと、裏は棘だらけだ。"
+ "Its new leaf comes up folded like a fist and shoves the old ones aside. Then it opens, and the underside is all thorns.": "新しい葉は拳のように畳まれて浮かび、古い葉を押しのける。それから開くと、裏は棘だらけだ。",
+ "The Walrus Icebreaker": "セイウチの砕氷船",
+ "Beat the Walrus Icebreaker flawlessly…": "セイウチの砕氷船を無傷で倒す…"
 }

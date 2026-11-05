@@ -1,0 +1,193 @@
+{
+ "about": "CONTENT12: 2-A-4 retune (tools/content12_lilypad_tune_2026_11_06.js)",
+ "band": {
+  "lo": 64,
+  "hi": 80,
+  "target": 72
+ },
+ "list": [
+  "beaver-lumberjack",
+  "box-turtle",
+  "lodge-engineer",
+  "marsh-harrier",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "pond-algae",
+  "river-carp",
+  "shoal-shark",
+  "victoria-regia",
+  "water-shrew",
+  "water-vole"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "before": {
+  "deck": {
+   "lodge-engineer": 3,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 4,
+   "pond-algae": 1,
+   "river-carp": 1,
+   "water-shrew": 1,
+   "water-vole": 1
+  },
+  "tune": 96.3,
+  "measure40": 92.5
+ },
+ "trail": [
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "win": 96.3,
+   "hpLost": 14.7
+  },
+  {
+   "move": "water-vole -1 -> shoal-shark",
+   "deck": {
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "shoal-shark": 1
+   },
+   "win": 71.3,
+   "hpLost": 44.7
+  }
+ ],
+ "trials": 47,
+ "top": [
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "shoal-shark": 1,
+    "water-shrew": 1
+   },
+   "tune": 71.3,
+   "measure40": 82.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 3,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "shoal-shark": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 73.8,
+   "measure40": 75,
+   "measure200": 71.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "river-carp": 1,
+    "shoal-shark": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 75,
+   "measure40": 80
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-algae": 1,
+    "shoal-shark": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 75,
+   "measure40": 77.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "shoal-shark": 1,
+    "water-vole": 1
+   },
+   "tune": 77.5,
+   "measure40": 85
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "shoal-shark": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 83.8,
+   "measure40": 67.5
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 3,
+    "pond-algae": 1,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 86.3,
+   "measure40": 85
+  },
+  {
+   "deck": {
+    "beaver-lumberjack": 1,
+    "lodge-engineer": 3,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 4,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 86.3,
+   "measure40": 85
+  }
+ ],
+ "pick": {
+  "deck": {
+   "lodge-engineer": 3,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 3,
+   "pond-algae": 1,
+   "river-carp": 1,
+   "shoal-shark": 1,
+   "water-shrew": 1,
+   "water-vole": 1
+  },
+  "tune": 73.8,
+  "measure40": 75,
+  "measure200": 71.5
+ },
+ "k14After": 0
+}

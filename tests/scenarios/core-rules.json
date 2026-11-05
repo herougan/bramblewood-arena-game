@@ -19,8 +19,8 @@
    "A":[{"id":"otter-centurion","wait":0}], "B":[{"id":"ent","hp":60,"attack":0}],
    "expect":[{"event":"hit","where":{"attDefId":"otter-centurion"},"min":1}, {"castle":"B","eq":30}]},
 
-  {"name":"Flying dodges some ground attacks (about 1 in 2)", "rounds":20, "hqHp":{"A":300,"B":300},
-   "A":[{"id":"pond-trout","wait":0,"hp":500}], "B":[{"id":"bee-knight","hp":500}],
+  {"name":"Flying dodges some ground attacks (about 1 in 2)", "note":"2026-11-06 (CONTENT12): Honey Bee flies; the Bee Warden (bee-knight) flies only from Level 1 since the owner's live edit folded in", "rounds":20, "hqHp":{"A":300,"B":300},
+   "A":[{"id":"pond-trout","wait":0,"hp":500}], "B":[{"id":"honey-bee","hp":500}],
    "expect":[{"event":"evaded","min":3}, {"event":"hit","where":{"attDefId":"pond-trout"},"min":3}]},
 
   {"name":"Poison ticks every round", "rounds":8, "hqHp":{"A":60,"B":60},

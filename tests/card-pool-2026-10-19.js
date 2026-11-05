@@ -73,10 +73,12 @@ const BANDS = {common:[35, 60], uncommon:[45, 68], rare:[52, 75], veryrare:[56, 
 // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): a card out of play (tools/lib_map_pools.js budgetHold 'unplaced') or
 // waiting for the owner's re-fit (step 3, 'pending': docs/balance/listfix1-pending-budget-2026-10-29.json) is reported, not failed
 const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js')), HELD = {unplaced: [], pending: []};
+// 2026-11-06 (package CONTENT12, CONTENT11-2 a): the owner's live card edits folded in stay as he set them (BAL-ROLES; call CONTENT12-1)
+const C12FOLD = new Set(JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'server-overrides', 'fold-plan-2026-11-06.json'), 'utf8')).rows.map(r=> r.id));
 pool.forEach(c=>{
   const b = T.budget(c), hold = b.ok || QUEUE.has(c.id) ? '' : LMP.budgetHold(c.id); if(hold) HELD[hold].push(c.id);
-  ok(b.ok || QUEUE.has(c.id) || !!hold, `2. ${c.id}: inside budget v3 (2A+H+S ${b.x1} < N ${b.N}, A·H+S ${b.x2} < ${b.N2}) or on the post-balance queue`);
-  if(QUEUE.has(c.id)) ok(!b.ok, `2. ${c.id}: queued for the post-balance step and still over (the queue is current)`);
+  ok(b.ok || QUEUE.has(c.id) || !!hold || C12FOLD.has(c.id) /* CONTENT12: the owner's live cards as he set them, his call CONTENT12-1 */, `2. ${c.id}: inside budget v3 (2A+H+S ${b.x1} < N ${b.N}, A·H+S ${b.x2} < ${b.N2}) or on the post-balance queue`);
+  if(QUEUE.has(c.id) && !C12FOLD.has(c.id)) ok(!b.ok, `2. ${c.id}: queued for the post-balance step and still over (the queue is current)`);
   ok(!b.missing.length, `2. ${c.id}: every skill has a cost entry (${b.missing})`);
   ok(RR.roadRarityOk(c.rarity, numOf(c.poolMap), 'skirmish'), `2. ${c.id}: ${c.rarity} within the Map ${numOf(c.poolMap)} skirmish cap (${RR.roadRarityCap(numOf(c.poolMap), 'skirmish')})`);
   const note = c.creatorNote || '', wr = /Measured ([\d.]+)% over (\d+) games/.exec(note), band = BANDS[c.rarity];

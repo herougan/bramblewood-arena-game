@@ -1,7 +1,7 @@
 {
  "about": "Hidden PRO fights per main map and side map (package PRO, owner 2026-10-24 00:28; PRO2 21:20; PRO3 2026-10-25: side maps as N-L-PRO-k, faction cards left out). N-PRO-k: the best decks of the deck optimizer's map-true runs (the map's own cards + what a player holds by then, within the map's rarity cap); N-BPRO-k (Basic Pro, under `bpro`): its bpro runs (only the map's own pool, within the cap). Written by tools/opt/pro_skirmishes.js --apply; baked into the game by assemble_arena.py (the `pro` list; `bpro` waits for the PRO preview package). Not on the road, no progress, no rewards.",
  "version": 2,
- "updated": "2026-11-05",
+ "updated": "2026-11-06",
  "tool": "tools/opt/pro_skirmishes.js 1.2.0 (2026-10-25, PRO3)",
  "rule": {
   "games": 400,
@@ -3842,7 +3842,7 @@
      ],
      "level": 1,
      "leaders": [
-      "conch-herald"
+      "badger-lumberjack"
      ],
      "deck": {
       "badger-lumberjack": 4,
@@ -5035,6 +5035,16 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "CONTENT12",
+     "on": "2026-11-06",
+     "leaders": {
+      "2-BPRO-3": [
+       "conch-herald"
+      ]
+     },
+     "why": "re-baked with tools/opt/skill2_pro_rebake_2026_10_31.js after CONTENT12 folded the owner's live Conch Herald (2/13 -> 1/11): the showcase leader under the current cards; the previous value is here"
     }
    ],
    "wpro": [
@@ -5302,7 +5312,7 @@
      ],
      "level": 1,
      "leaders": [
-      "conch-herald"
+      "gallery-orb-weaver"
      ],
      "deck": {
       "conch-crawler": 3,
@@ -5416,7 +5426,7 @@
      ],
      "level": 1,
      "leaders": [
-      "conch-herald"
+      "octopus-tactician"
      ],
      "deck": {
       "conch-crawler": 4,
@@ -6256,6 +6266,19 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "CONTENT12",
+     "on": "2026-11-06",
+     "leaders": {
+      "2-B-BPRO-1": [
+       "conch-herald"
+      ],
+      "2-B-BPRO-4": [
+       "conch-herald"
+      ]
+     },
+     "why": "re-baked with tools/opt/skill2_pro_rebake_2026_10_31.js after CONTENT12 folded the owner's live Conch Herald (2/13 -> 1/11): the showcase leaders under the current cards; the previous values are here"
     }
    ],
    "wpro": [

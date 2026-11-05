@@ -20,7 +20,7 @@
   "mb": {
    "cards": ["conch-herald", "open-ocean-hermit-crab", "pincushion-urchin", "gull-thief", "badger-lumberjack", "beaver-lumberjack", "bramble-sprout", "cricket-drummer", "driftwood-crab", "oystercatcher", "rock-pool-starfish", "dolphin-knight", "moon-jelly"],
    "submaps": {
-    "mp": ["riverworks-bastion", "lodge-engineer", "old-sturgeon", "water-shrew", "box-turtle", "muskrat-lodgekeeper", "platypus-spur", "pyrenean-desman", "snapstick-turtle", "water-vole", "muskrat-reedgatherer", "alley-cat", "pond-algae", "victoria-regia"],
+    "mp": ["riverworks-bastion", "lodge-engineer", "old-sturgeon", "water-shrew", "box-turtle", "muskrat-lodgekeeper", "platypus-spur", "pyrenean-desman", "snapstick-turtle", "water-vole", "muskrat-reedgatherer", "alley-cat", "pond-algae", "victoria-regia", "shoal-shark", "beaver-lumberjack", "marsh-harrier"],
     "mg": ["octopus-tactician", "trash-panda-trickster", "pelican-diver", "open-ocean-hermit-crab", "gull-thief", "pincushion-urchin", "tide-pool-crab", "tidepool-trapper-crab", "grey-seal-bull", "sea-turtle-elder", "conch-crawler", "conch-herald", "gallery-orb-weaver", "driftwood-crab", "rock-pool-starfish"]
    },
    "special": ["old-shell"]

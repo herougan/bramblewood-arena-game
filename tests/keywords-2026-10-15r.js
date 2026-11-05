@@ -59,7 +59,8 @@ const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical',
 { const lamps = cards.filter(c=> (c.effects||{}).illuminate).map(c=> c.id).sort().join(',');
   // 2026-10-21 (package TT): + the Nyoogle (package EE's Easter egg, its lantern) and the Sulfur Cinder Moth (the owner's live edit of
   // 2026-10-16, folded into cards.json by BF4: docs/balance/server-overrides-fold-2026-10-19.md)
-  ok(lamps === 'lantern-bearer,lantern-spark-fly,nyoogle,otter-lantern-bearer,sulfur-cinder-moth', `6. the three lantern cards, the Nyoogle and the Sulfur Cinder Moth carry Illuminate (${lamps})`);
+  // 2026-11-06 (package CONTENT12, CONTENT11-1 a): + the Torch (a torch lights its row)
+  ok(lamps === 'lantern-bearer,lantern-spark-fly,nyoogle,otter-lantern-bearer,sulfur-cinder-moth,torch', `6. the three lantern cards, the Nyoogle, the Sulfur Cinder Moth and the Torch carry Illuminate (${lamps})`);
   ok(!cards.some(c=> (c.effects||{}).lantern), '6. no card still carries Lantern'); }
 ok(/\{key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean',/.test(src) && /\{key:'lantern', category:'passive', hidden:true, retired:true,/.test(src), '6. Illuminate in the editor; Lantern retired');
 ok(/function unitLightKindOf\(c, d\)/.test(src) && /Number\(e\.immolation\) > 0\) return 'fire'/.test(src) && /\.board-card \.unit-light\.ul-leader\{/.test(tpl) && /\.battlefield\.is-dark-scene \.board-card \.unit-light\{opacity:1;\}/.test(tpl), '6. leaders and Light Aura units glow at night and in the dark');
