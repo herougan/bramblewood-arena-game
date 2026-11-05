@@ -25,7 +25,7 @@ const app = rd('arena_app.js'), tpl = rd('arena_template.html'), texts = rd('bra
   ok(/ui21McKeywordHTML\(mapId, defs, mapPoolSections\(top\)\.filter\(inScope\)/.test(app), 'its own section in the Map cards window, from the map\'s own lists');
   ok(/ui\.ui21-mapkw-title/.test(app) && /ui19McSkillText/.test(app.slice(app.indexOf('function ui21McKeywordHTML'), app.indexOf('// UI21_KW:END'))), 'name and rules text'); }
 // IDEA-EARLY-4
-ok(/map-node-rank rank-\$\{escapeAttr\(br\)\}/.test(app) && /progress\.ranks\[conquestNodeId\(map\.id, node\.key\)\]/.test(app), 'the best rank on the map node');
+ok(/map-node-rankbg rank-\$\{escapeAttr\(br\)\}/.test(app) /* 2026-11-05 22:24 owner: a rank-coloured fill, no letter */ && /progress\.ranks\[conquestNodeId\(map\.id, node\.key\)\]/.test(app), 'the best rank on the map node');
 ok(/cnp-rank-corner/.test(app), 'and in the fight info (already there)');
 // texts in all 12 packs
 { const langs = fs.readdirSync(path.join(ROOT, 'lang')).filter(f=> f.endsWith('.json'));

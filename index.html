@@ -10871,7 +10871,15 @@
 /* Skirmish codes X-Y (2026-10-10) */
 .sk-code{display:inline-block; font:800 .78em/1.2 'Baloo 2',system-ui,sans-serif; padding:0 .45em; border-radius:999px; background:rgba(58,43,30,.82); color:#f3e7cc; vertical-align:.12em; margin-right:.25em; letter-spacing:.02em;}
 /* 2026-11-05 (package UI21, IDEA-EARLY-4): the best rank on a cleared fight's map node */
-.map-node .map-node-rank{position:absolute !important; top:-7px !important; right:-9px !important; left:auto !important; margin:0 !important; width:20px; height:23px; z-index:5; pointer-events:none;} .map-node .map-node-rank b{font-size:11px !important;}
+/* 2026-11-05 22:24 (owner): a cleared node's fill shows its best rank's emblem colours, no letter (was a small hex emblem by the node) */
+.map-node .map-node-rankbg{position:absolute; inset:0; border-radius:50%; z-index:-1; pointer-events:none; opacity:.92; /* -1: under the icon, above the node's own fill (the node's transform makes it a stacking context) */
+  background-image:radial-gradient(circle at 32% 26%, rgba(255,255,255,.55) 0, rgba(255,255,255,.12) 34%, transparent 60%), conic-gradient(from 210deg, var(--rk1), var(--rk2), var(--rk3), var(--rk1));}
+.map-node-rankbg.rank-S{--rk1:#ff5fc8; --rk2:#b46bff; --rk3:#7ad7ff; box-shadow:0 0 10px rgba(255,90,210,.6);}
+.map-node-rankbg.rank-A{--rk1:#ffd36e; --rk2:#c98a1e; --rk3:#fff2c2;}
+.map-node-rankbg.rank-B{--rk1:#e9eef5; --rk2:#9aa6b6; --rk3:#ffffff;}
+.map-node-rankbg.rank-C{--rk1:#e2a676; --rk2:#9a5a2c; --rk3:#f3c69e;}
+.map-node-rankbg.rank-D{--rk1:#b8a996; --rk2:#6f6352; --rk3:#d4c8b8;}
+.map-node-rankbg.rank-E{--rk1:#9a9088; --rk2:#5a524b; --rk3:#b9b0a8;}
 .map-node .map-node-code{position:absolute; left:50%; bottom:-9px; transform:translateX(-50%); font:800 10px/1 'Baloo 2',system-ui,sans-serif; padding:2px 5px; border-radius:999px; background:rgba(58,43,30,.86); color:#f3e7cc; white-space:nowrap; pointer-events:none;}
 
 /* ---- Shop shelves (2026-10-10): a bakery / apothecary wall of shelves ---- */
@@ -53247,7 +53255,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '380c33705903', BUILD_CARD_HASH = 'e86f06249b2fc6ed67b2f3eb2647133597926da03008d5efbf53cda52844d100';
+const BUILD_ID = '6e0ed09a3a8e', BUILD_CARD_HASH = 'e86f06249b2fc6ed67b2f3eb2647133597926da03008d5efbf53cda52844d100';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -77535,7 +77543,7 @@ function renderConquestSubTab(body){
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
         return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush is-floating foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${flairLairNode(map, node) ? 'is-lair-final' : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>${vis3NodeFrameHTML(node) /* VIS3 (2026-10-26, V5): a boss's skull frame, an elite's mark */}${flairLairNode(map, node) ? flairLairNodeHTML() /* FLAIR1 (2026-10-28): the lair's last fight: a molten ring and a crown of flame */ : ''}${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}${(()=>{ /* 2026-11-05 (package UI21, IDEA-EARLY-4): the fight's best rank (saved per fight in progress.ranks) as a small emblem on its map node */ const br = done && !node.tower && progress.ranks && progress.ranks[conquestNodeId(map.id, node.key)]; return br ? `<span class="rank-hex rw-mini map-node-rank rank-${escapeAttr(br)}" aria-hidden="true"><i></i><b>${escapeHtml(br)}</b></span>` : ''; })()}
+          <span class="map-node-ico">${node.icon}</span>${vis3NodeFrameHTML(node) /* VIS3 (2026-10-26, V5): a boss's skull frame, an elite's mark */}${flairLairNode(map, node) ? flairLairNodeHTML() /* FLAIR1 (2026-10-28): the lair's last fight: a molten ring and a crown of flame */ : ''}${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}${(()=>{ /* 2026-11-05 (package UI21, IDEA-EARLY-4): the fight's best rank (saved per fight in progress.ranks). 2026-11-05 22:24 (owner: "Do not put the rank beside the skirmish icon. ... make the background green the emblem instead ... but without the letters"): the cleared node's green fill takes the rank emblem's colours, no letter */ const br = done && !node.tower && progress.ranks && progress.ranks[conquestNodeId(map.id, node.key)]; return br ? `<span class="map-node-rankbg rank-${escapeAttr(br)}" title="${escapeAttr(br)}" aria-hidden="true"></span>` : ''; })()}
         </button>`;
       }).join('')}
     </div>

@@ -10824,7 +10824,15 @@
 /* Skirmish codes X-Y (2026-10-10) */
 .sk-code{display:inline-block; font:800 .78em/1.2 'Baloo 2',system-ui,sans-serif; padding:0 .45em; border-radius:999px; background:rgba(58,43,30,.82); color:#f3e7cc; vertical-align:.12em; margin-right:.25em; letter-spacing:.02em;}
 /* 2026-11-05 (package UI21, IDEA-EARLY-4): the best rank on a cleared fight's map node */
-.map-node .map-node-rank{position:absolute !important; top:-7px !important; right:-9px !important; left:auto !important; margin:0 !important; width:20px; height:23px; z-index:5; pointer-events:none;} .map-node .map-node-rank b{font-size:11px !important;}
+/* 2026-11-05 22:24 (owner): a cleared node's fill shows its best rank's emblem colours, no letter (was a small hex emblem by the node) */
+.map-node .map-node-rankbg{position:absolute; inset:0; border-radius:50%; z-index:-1; pointer-events:none; opacity:.92; /* -1: under the icon, above the node's own fill (the node's transform makes it a stacking context) */
+  background-image:radial-gradient(circle at 32% 26%, rgba(255,255,255,.55) 0, rgba(255,255,255,.12) 34%, transparent 60%), conic-gradient(from 210deg, var(--rk1), var(--rk2), var(--rk3), var(--rk1));}
+.map-node-rankbg.rank-S{--rk1:#ff5fc8; --rk2:#b46bff; --rk3:#7ad7ff; box-shadow:0 0 10px rgba(255,90,210,.6);}
+.map-node-rankbg.rank-A{--rk1:#ffd36e; --rk2:#c98a1e; --rk3:#fff2c2;}
+.map-node-rankbg.rank-B{--rk1:#e9eef5; --rk2:#9aa6b6; --rk3:#ffffff;}
+.map-node-rankbg.rank-C{--rk1:#e2a676; --rk2:#9a5a2c; --rk3:#f3c69e;}
+.map-node-rankbg.rank-D{--rk1:#b8a996; --rk2:#6f6352; --rk3:#d4c8b8;}
+.map-node-rankbg.rank-E{--rk1:#9a9088; --rk2:#5a524b; --rk3:#b9b0a8;}
 .map-node .map-node-code{position:absolute; left:50%; bottom:-9px; transform:translateX(-50%); font:800 10px/1 'Baloo 2',system-ui,sans-serif; padding:2px 5px; border-radius:999px; background:rgba(58,43,30,.86); color:#f3e7cc; white-space:nowrap; pointer-events:none;}
 
 /* ---- Shop shelves (2026-10-10): a bakery / apothecary wall of shelves ---- */

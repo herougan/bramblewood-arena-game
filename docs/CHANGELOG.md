@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 UI21b (owner 22:24: "Do not put the rank beside the skirmish icon ... make the background green the emblem instead ... without the letters")
+- A cleared map node no longer has the small rank hex beside it; its fill takes the best rank's emblem colours (S foil, A gold, B silver, C bronze, D stone, E grey), no letter. Unranked cleared nodes stay green. Shot `docs/screens/UI21/node-rank-fill-390.png`.
+
 ## 2026-11-05 Release 11-05a (DEC2-5, UI22a, ENG24, UI22, CONTENT10, BAL16, UI21, BAL17, CONTENT11, BAL18, ART9, ART9b)
 - Players see: brambles +2 on every ability number; new skills Relict, Meld, Immunity, Sequestration; the map card counts (own 10 -> 5, carried 5 -> 16 by map); 142 fight decks rebuilt with each fight's own list; four two-card combo skirmishes; Maps 21-24 retuned; nests unlock from discovery (Maps 4, 8, 12, 16, 20, 24) with shadow slots; a Keyword of the map and Skirmish rewards / Recommended by Claude in Map cards (which scrolls again); best rank on cleared nodes; 11 early boss gimmicks; Nudibranch and Victoria Regia; new art for them and Old Snapjaw; seven field scenes of their own.
 - Balance tools: new PRO / BPRO / WPRO reference decks for Maps 0-24; 85 stale ladder decks rebuilt. Road (Map reference, no leader, 256 fights): 109 in band / 137 within 10 / 63 beyond 20.
