@@ -114,3 +114,13 @@ animal, never held; a full background in every frame; one bright accent; no word
 | 0:20-0:25 | Shot 5 | The bramble's last hit in gameplay leads into it |
 | 0:25-0:26 | Gameplay | The victory banner |
 | 0:26-0:30 | Shot 6 | Logo and link end card (text added in the edit, never in the image) |
+
+## New card prompts (2026-11-05, package CONTENT11)
+
+Card art: paste the base prompt first, then the line below. Run the pixel pass at 128 px. The game shows the card's emoji until the art lands.
+
+### Nudibranch
+> Full-body character in a small scene, centred, slight low angle: a cute nudibranch sea slug with big friendly eyes on two little horn-like rhinophores, a frilly cape of bright orange and violet gills along its back, gliding over a mossy timber beam of an old sunken ferry, soft river-teal water background with drifting light rays and a few pale sea anemones, one bright violet accent.
+
+### Victoria Regia
+> Full-body character in a small scene, centred, slight low angle: a giant round water lily pad with a raised rim and a cheerful face in its big white-and-pink flower, a young folded leaf pushing up beside it, the pad's turned-up underside showing rows of small red thorns, calm pond background with reeds, dragonflies and soft evening light, one bright pink accent.

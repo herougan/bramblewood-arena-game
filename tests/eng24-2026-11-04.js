@@ -74,7 +74,9 @@ ok(/function brambleArmorCut\(pl, amount, crush\)/.test(eng), '1: the rule (bram
   e.debugSpawnCard(P, so, 1, 'x-arrow', 'left', {}, ev);
   ok(r.hp === 47, `2: a single-target skill still reaches it (${r.hp})`); }
 ok(SK.relict && SK.relict.value > 0 && SK.relict.theoretical !== true && /measure/i.test(SK.relict.measuredHow || ''), `2: Relict is priced by a measure (${SK.relict && SK.relict.value})`);
-ok(!J('canonical/cards.json').some(c=> c.effects && (c.effects.relict || c.effects.meld || c.effects.immunity || c.effects.sequestration)), '2-3: the new skills are on no card');
+// 2026-11-05 (package CONTENT11, NUDI-1): the new Nudibranch carries Sequestration + Immunity (a nudibranch keeps the stings it eats); no
+// existing card does (carriers on existing cards are the owner's call, decision CONTENT11-3)
+ok(!J('canonical/cards.json').some(c=> c.id !== 'nudibranch' && c.effects && (c.effects.relict || c.effects.meld || c.effects.immunity || c.effects.sequestration)), '2-3: the new skills are on no existing card (CONTENT11: the new Nudibranch carries two)');
 
 // ---- 3. Immunity ----------------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(11); const s = put(e, P, 1, 'x-psn', 0), t = put(e, P, 2, 'x-imm', 0); const ev = [];

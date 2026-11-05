@@ -5004,5 +5004,7 @@
  "{v1} card{s} collected": "{v1}枚のカードを入手",
  "Clear {v1} / {v2}": "{v1} / {v2}をクリア",
  "+{v1} 🪵 every {v2} rounds": "{v2}ラウンドごとに+{v1} 🪵",
- "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "毎ラウンドどれか一つ：最も傷ついた味方を{v1}回復、ランダムな敵ユニットに{v2}ダメージ、または+{v3} 🪵"
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "毎ラウンドどれか一つ：最も傷ついた味方を{v1}回復、ランダムな敵ユニットに{v2}ダメージ、または+{v3} 🪵",
+ "It grazes on things that sting and keeps the stings for itself. The bright colours are a promise.": "刺すものを食べ、その針を自分のものにする。鮮やかな色は約束だ。",
+ "Its new leaf comes up folded like a fist and shoves the old ones aside. Then it opens, and the underside is all thorns.": "新しい葉は拳のように畳まれて浮かび、古い葉を押しのける。それから開くと、裏は棘だらけだ。"
 }

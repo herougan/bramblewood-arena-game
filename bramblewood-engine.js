@@ -193,6 +193,37 @@ function selfishBoonWho(def, b){ if(!def || !b) return false; if(b.who === 'all'
 function selfishBoonCount(defs, counts, id){ const b = SELFISH_BOONS[id]; if(!b) return null; let have = 0, total = 0;
   Object.keys(counts || {}).forEach(k=>{ const n = Math.max(0, Number(counts[k]) || 0); total += n; if(selfishBoonThemeOf(defs && defs[k], b)) have += n; });
   const need = Math.max(1, Math.ceil(total / 2)); return {id, have, total, need, on: total > 0 && have >= need}; }
+// ---- Boss gimmicks (2026-11-05, package CONTENT11; IDEA-EARLY-2, owner 11-04 22:34: "you do it, no need small intent icons. just unique
+// design."): each boss of Maps 0-5 and their side maps does one thing of its own, on a rhythm the player can learn. A fight sets
+// rules.bossGimmick to an id below; it acts for the boss's side only (the CPU, side B; rules.bossSide 'A' turns it round, for tests),
+// at the start of a round from round 2 (every: on rounds that are a multiple of it). The fight's Environment card names it ("?" until it
+// first happens) and each act is a 'bossGimmick' event (a float on the unit or the bramble, a log line). Texts: TX 'ui.c11-<id>-name' /
+// 'ui.c11-<id>' / 'ui.c11-<id>-log'. Measured before / after with tools/skirmish_pass.js measure (docs/content11-2026-11-05.md).
+//   coldSnap      0-4 Frost Vanguard     every 3rd round the newest unit on EACH side gets a freeze counter (it skips the round); cold-resistant units are spared
+//   thistlePrick  1-5 The Thistle Baron  every 3rd round his thistles prick your unit with the least Health: 1 damage (a spawned thistle,
+//                 even a 1/2 one, blocked his 6-Health bramble and took the fight from 36% to 26%: measured, dropped)
+//   shellUp       2-5 The Old Shell      when its bramble took 2 or more hits in a round, it hides in its shell: +3 Shield at the next round's start
+//   gannetDive    3-7 The Gannet Queen   every 3rd round she dives on the unit at one end of your row (left, then right, ...): 3 damage
+//   undertow      4-5 The Drowned Colossus  every 3rd round your unit with the most Attack is pulled under: Stunned this round
+//   snapBack      5-7 Old Snapjaw        every 2nd round the bramble bites the last unit that hit it: 3 damage
+//   hareNap       1-A-5 The Old Hare     every 4th round her units nap: Asleep this round (a hit wakes one); the hare's weakness
+//   lodgeMend     2-A-7 The Lodge Matriarch  every 2nd round her most hurt unit is patched up: heals 4
+//   inkCloud      2-B-4 The Grotto Keeper   every 3rd round ink clouds 2 of your units at random: Blind this round
+//   rootGrip      5-A-4 The Grove Warden    every 3rd round roots grip your unit with the most Health: Tangled this round
+//   crackingBark  0-B-4 The Old Bramble     every 3rd round its old bark cracks: it loses a third of its Shield; the bramble's weakness
+const BOSS_GIMMICKS = Object.freeze({
+  coldSnap:     {icon:'❄️', every:3, node:'0-4'},
+  thistlePrick: {icon:'🌾', every:3, dmg:1, node:'1-5'},
+  shellUp:      {icon:'🐢', hits:2, shield:3, node:'2-5'},
+  gannetDive:   {icon:'🪶', every:3, dmg:3, node:'3-7'},
+  undertow:     {icon:'🌀', every:2, node:'4-5'},
+  snapBack:     {icon:'🐊', every:1, dmg:6, node:'5-7'},
+  hareNap:      {icon:'💤', every:5, node:'1-A-5'},
+  lodgeMend:    {icon:'🦫', every:2, heal:4, node:'2-A-7'},
+  inkCloud:     {icon:'🐙', every:3, count:1, both:true, node:'2-B-4'},
+  rootGrip:     {icon:'🌿', every:4, both:true, node:'5-A-4'},
+  crackingBark: {icon:'🌳', every:3, frac:1/2, node:'0-B-4'},
+});
 function otherId(id){ return id===1?2:1; }
 function mulberry32(seed){
   return function(){
@@ -1578,6 +1609,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     en20TideWater(players, sideOf, events); // ENG20-2 (2026-11-02): the tide's water counters
     { const stV = statusSnap(players); volcanoTick(players, round, sideOf, stats, events, fPause); pushStatusEnds(stV, players, sideOf, events); } // 2026-10-15: petrification wearing off (2026-10-19: no hazards while the field is broken)
     if(rules.swampFever && round > 1 && !fPause) swampFeverTick(players, sideOf, events); // Swamp Fever (2026-10-15)
+    if(rules.bossGimmick && round > 1) bossGimmickTick(players, round, sideOf, stats, events); // CONTENT11 (2026-11-05, IDEA-EARLY-2): the boss's own act, not the field's (a broken field doesn't stop it)
     if(round > 1){ proliferateTick(players, sideOf, events); } // Proliferate N (2026-10-19, package GI): a unit's skill, not the field's
     if(round > 1 && !fPause) fieldEffects2Tick(players, round, sideOf, stats, events); // Field effects 2 (2026-10-16)
     if(!field) return;
@@ -1617,6 +1649,49 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'fieldTick', field:f, side:sideOf(pid), uid:c.uid, defId:c.defId, heal:h}); } }));
     }
     if(field && field.rounds != null){ field.rounds -= 1; if(field.rounds <= 0){ if(recordEvents && events) events.push({type:'fieldEnd', field:f, back: baseField ? baseField.id : null}); field = baseField; baseField = null; } }
+  }
+  // Boss gimmicks (2026-11-05, package CONTENT11, IDEA-EARLY-2): see BOSS_GIMMICKS at the top. One act a round start, the boss's side only;
+  // the hits on its bramble are counted in damageHQ (pl._bgHits, pl._bgLastHitter) for Shell Up and Snap Back.
+  function bossGimmickId(){ return rules.bossGimmick && BOSS_GIMMICKS[rules.bossGimmick] ? rules.bossGimmick : null; }
+  function bossGimmickPid(){ return rules.bossSide === 'A' ? 1 : 2; }
+  function bgSlotOf(pl, c){ if(Number.isInteger(c.slot)) return c.slot; const i = pl.row.left.indexOf(c); if(i >= 0) return -(i + 1); const j = pl.row.right.indexOf(c); return j >= 0 ? j + 1 : 0; }
+  function bossGimmickTick(players, round, sideOf, stats, events){
+    const id = bossGimmickId(); if(!id || round < 2) return; const g = BOSS_GIMMICKS[id];
+    const bp = bossGimmickPid(), fp = otherId(bp), boss = players[bp], foe = players[fp]; if(!boss || !foe || boss.hq.hp <= 0) return;
+    if(g.every && round % g.every !== 0) return;
+    const ev = o=>{ if(recordEvents && events) events.push(Object.assign({type:'bossGimmick', gimmick:id, side:sideOf(bp), round}, o)); };
+    const on = (c, pid, o)=> ev(Object.assign({uid:c.uid, defId:c.defId, targetSide:sideOf(pid)}, o || {}));
+    const foeLive = allLive(foe), mostOf = (list, f)=> list.reduce((a, c)=> !a || f(c) > f(a) || (f(c) === f(a) && c.uid > a.uid) ? c : a, null);
+    if(id === 'coldSnap'){
+      [bp, fp].forEach(pid=>{ const c = mostOf(allLive(players[pid]).filter(x=> resistFactor(x.defId, 'cold') >= 1), x=> x.uid); if(!c) return;
+        c.frozen = (c.frozen||0) + 1; on(c, pid, {freeze:1}); });
+    } else if(id === 'thistlePrick'){
+      const c = mostOf(foeLive, x=> x.hp|0); if(!c) return; const hp0 = c.hp; damageCardFlat(c, g.dmg, 'physical'); on(c, fp, {dmg: Math.max(0, hp0 - c.hp)});
+      removeDeadCards(players, sideOf, {}, stats, events);
+    } else if(id === 'shellUp'){
+      if(boss._bgHitTurn === turnNo - 1 && (boss._bgHits|0) >= g.hits){ boss.hq.shield = (boss.hq.shield||0) + g.shield; ev({hq:true, shield:g.shield, hits:boss._bgHits}); }
+    } else if(id === 'gannetDive'){
+      if(!foeLive.length) return; const right = (round / g.every) % 2 === 0, c = mostOf(foeLive, x=> right ? bgSlotOf(foe, x) : -bgSlotOf(foe, x));
+      const hp0 = c.hp; damageCardFlat(c, g.dmg, 'physical'); on(c, fp, {dmg: Math.max(0, hp0 - c.hp), end: right ? 'right' : 'left'});
+      removeDeadCards(players, sideOf, {}, stats, events);
+    } else if(id === 'undertow'){
+      const c = mostOf(foeLive, x=> x.atk|0); if(!c) return; c.stunned = Math.max(c.stunned|0, 1); on(c, fp, {stun:1});
+    } else if(id === 'snapBack'){
+      const uid = boss._bgLastHitter; boss._bgLastHitter = null; // the last unit to hit the bramble since the last bite
+      const c = uid == null ? null : rowsUnitsOf(foe).find(x=> x && !x.gap && x.hp > 0 && x.uid === uid); if(!c) return;
+      const hp0 = c.hp; damageCardFlat(c, g.dmg, 'physical'); on(c, fp, {dmg: Math.max(0, hp0 - c.hp)}); removeDeadCards(players, sideOf, {}, stats, events);
+    } else if(id === 'hareNap'){
+      const list = allLive(boss); list.forEach(c=>{ c.asleep = Math.max(c.asleep||0, 1); }); if(list.length) ev({nap:list.length, uids:list.map(c=> c.uid)});
+    } else if(id === 'lodgeMend'){
+      const c = mostOf(allLive(boss).filter(x=> x.hp < x.maxHp), x=> x.maxHp - x.hp); if(!c) return; const h = applyHeal(c, g.heal, sideOf(bp), events); if(h > 0) on(c, bp, {heal:h});
+    } else if(id === 'inkCloud'){
+      (g.both ? [fp, bp] : [fp]).forEach(pid=>{ const list = allLive(players[pid]).filter(c=>{ const e = effectsOf(c); return !(e.keenSense || e.sonar || e.trueStrike); });
+        for(let k = 0; k < g.count && list.length; k++){ const c = list.splice(Math.floor(rnd() * list.length), 1)[0]; c.blind = Math.max(c.blind||0, 1); on(c, pid, {blind:1}); } });
+    } else if(id === 'rootGrip'){
+      (g.both ? [fp, bp] : [fp]).forEach(pid=>{ const c = mostOf(allLive(players[pid]), x=> x.hp|0); if(!c) return; c.tangled = Math.max(c.tangled||0, 1); on(c, pid, {tangled:1}); });
+    } else if(id === 'crackingBark'){
+      const s = boss.hq.shield|0, n = Math.floor(s * g.frac); if(n > 0){ boss.hq.shield = s - n; ev({hq:true, shieldLost:n}); }
+    }
   }
   // New field effects (2026-10-15, user: "Propose field effects for each map ... Swamp can give swamp fever - all cards have a 50%
   // to gain 1 poison."), rules flags so they stack with a field and with each other (docs/field-effects-and-map-gaps-2026-10-15.md):
@@ -3455,6 +3530,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     amount = brambleArmorCut(pl, amount, crush); // EN3: Bramble Armor, 1 less on the bramble's part
     const reduced = Math.max(0, amount - (crush ? 0 : bulwarkReductionFor(pl)));
     if(reduced > 0) pl._hqHitTurn = turnNo;
+    if(reduced > 0 && rules.bossGimmick){ if(pl._bgHitTurn !== turnNo){ pl._bgHitTurn = turnNo; pl._bgHits = 0; } pl._bgHits += 1; if(currentAttacker && currentAttacker.uid != null) pl._bgLastHitter = currentAttacker.uid; } // CONTENT11 (2026-11-05): Shell Up / Snap Back count the bramble's hits
     if(isGladiator && pl.gladiatorLeaderUid!=null){
       const ld = gladiatorLeaderOf(pl);
       if(ld) ld.hp -= (suddenDeath && suddenDeathCastles && suddenDeathStage >= 2 && reduced>0) ? ld.hp : reduced;
@@ -11527,4 +11603,4 @@ if(typeof module !== 'undefined' && module.exports){
 }
 if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {fogOfWarView, fogPeekRoll, FOG_REVEAL_KEYS}); // Package FOG (2026-10-21): the fog of war's pure helpers
 if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS;
-if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SELFISH_BOONS, selfishBoonCount, selfishBoonThemeOf, selfishBoonWho}); // Package DF3 (2026-10-24): the selfish boons // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests
+if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SELFISH_BOONS, selfishBoonCount, selfishBoonThemeOf, selfishBoonWho, BOSS_GIMMICKS /* CONTENT11 (2026-11-05) */}); // Package DF3 (2026-10-24): the selfish boons // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests

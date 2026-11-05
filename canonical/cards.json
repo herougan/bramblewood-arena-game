@@ -35250,5 +35250,78 @@
     "unattainable": true,
     "creatorNote": "2026-11-02 (package CONTENT7, owner 19:56 \"OK go do, + art\", IDEA-11-02): MARKED FOR MAP 56+ (Mythic, unlisted). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity mythic, map term Map 56): S 2.67, N 64.3, 3A + H + S 63.51: 10/22. Skills from existing keywords only. Art: brief in docs/art/content7-2026-11-02-briefs.md.",
     "art": "data:image/png;base64,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"
+  },
+  {
+    "id": "nudibranch",
+    "name": "Nudibranch",
+    "icon": "\ud83d\udc0c",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 9,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Ocean",
+      "Coral Reef"
+    ],
+    "species": [
+      "Mollusc"
+    ],
+    "animal": "nudibranch",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "sequestration": true,
+      "immunity": true
+    },
+    "flavor": "It grazes on things that sting and keeps the stings for itself. The bright colours are a promise.",
+    "source": {
+      "kind": "pack",
+      "tier": 2,
+      "map": "mj"
+    },
+    "numericId": 9193,
+    "uuid": "508ca6e4-350c-5400-8c7d-5f33b93859ad",
+    "creatorNote": "2026-11-05 (package CONTENT11, NUDI-1): placed on the mj list (side map of m7; its pack cards count from Map 7, canonical/card-obtain-maps.json). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 7): S 0.73, N 22.67, x1 21.73: 4/9. Skills from existing keywords only. Art: placeholder (the emoji); prompt in docs/art-style-prompts.md (CONTENT11)."
+  },
+  {
+    "id": "victoria-regia",
+    "name": "Victoria Regia",
+    "icon": "\ud83e\udeb7",
+    "cost": 1,
+    "wait": 2,
+    "attack": 2,
+    "health": 14,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Flora",
+      "Pond"
+    ],
+    "species": [
+      "Plant"
+    ],
+    "animal": "giant water lily",
+    "subtype": "plant",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "bulldoze": 1,
+      "thorns": 1
+    },
+    "flavor": "Its new leaf comes up folded like a fist and shoves the old ones aside. Then it opens, and the underside is all thorns.",
+    "source": {
+      "kind": "pack",
+      "tier": 1,
+      "map": "mp"
+    },
+    "numericId": 9194,
+    "uuid": "244801cd-8754-5f84-bf6e-675fd883253a",
+    "creatorNote": "2026-11-05 (package CONTENT11, IDEA-VREGIA): placed on the mp list (side map of mb; its pack cards count from Map 1, canonical/card-obtain-maps.json). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 1): S 5.11, N 25.65, x1 25.11: 2/14. Skills from existing keywords only. Art: placeholder (the emoji); prompt in docs/art-style-prompts.md (CONTENT11)."
   }
 ]

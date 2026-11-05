@@ -1220,6 +1220,11 @@
      "id": "pond-algae",
      "why": "Carried from Map 4: lily-pond algae",
      "by": "claude"
+    },
+    {
+     "id": "victoria-regia",
+     "why": "River & pond card; the giant lily of the Reach (CONTENT11, IDEA-VREGIA: Claude new card)",
+     "by": "claude"
     }
    ],
    "cut": [
@@ -2171,6 +2176,11 @@
     {
      "id": "hagfish-silencer",
      "why": "A third own card for the delve (from the maybes); deep-sea",
+     "by": "claude"
+    },
+    {
+     "id": "nudibranch",
+     "why": "Reef & ocean card; a sea slug on the wreck (CONTENT11, NUDI-1: Claude new card)",
      "by": "claude"
     }
    ],

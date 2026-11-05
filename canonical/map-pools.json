@@ -20,7 +20,7 @@
   "mb": {
    "cards": ["conch-herald", "open-ocean-hermit-crab", "pincushion-urchin", "gull-thief", "badger-lumberjack", "beaver-lumberjack", "bramble-sprout", "cricket-drummer", "driftwood-crab", "oystercatcher", "rock-pool-starfish", "dolphin-knight", "moon-jelly"],
    "submaps": {
-    "mp": ["riverworks-bastion", "lodge-engineer", "old-sturgeon", "water-shrew", "box-turtle", "muskrat-lodgekeeper", "platypus-spur", "pyrenean-desman", "snapstick-turtle", "water-vole", "muskrat-reedgatherer", "alley-cat", "pond-algae"],
+    "mp": ["riverworks-bastion", "lodge-engineer", "old-sturgeon", "water-shrew", "box-turtle", "muskrat-lodgekeeper", "platypus-spur", "pyrenean-desman", "snapstick-turtle", "water-vole", "muskrat-reedgatherer", "alley-cat", "pond-algae", "victoria-regia"],
     "mg": ["octopus-tactician", "trash-panda-trickster", "pelican-diver", "open-ocean-hermit-crab", "gull-thief", "pincushion-urchin", "tide-pool-crab", "tidepool-trapper-crab", "grey-seal-bull", "sea-turtle-elder", "conch-crawler", "conch-herald", "gallery-orb-weaver", "driftwood-crab", "rock-pool-starfish"]
    },
    "special": ["old-shell"]
@@ -71,7 +71,7 @@
   "m7": {
    "cards": ["colossal-squid", "electric-ray", "great-barracuda", "clownfish-scout", "parrotfish", "riptide-eel", "coral-reef-shark", "kraken-spawnling", "reef-shark", "banded-sea-krait", "mangrove-manatee", "open-ocean-hermit-crab", "supernova-jelly", "dolphin-knight", "horseshoe-crab"],
    "submaps": {
-    "mj": ["blue-ringed-octopus", "orca-vanguard", "nautilus-drifter", "clownfish-scout", "kraken-spawnling", "parrotfish", "coral-reef-shark", "mangrove-manatee", "riptide-eel", "colossal-squid", "coral-polyp-colony", "electric-ray", "great-barracuda", "hagfish-silencer"]
+    "mj": ["blue-ringed-octopus", "orca-vanguard", "nautilus-drifter", "clownfish-scout", "kraken-spawnling", "parrotfish", "coral-reef-shark", "mangrove-manatee", "riptide-eel", "colossal-squid", "coral-polyp-colony", "electric-ray", "great-barracuda", "hagfish-silencer", "nudibranch"]
    },
    "special": ["orca-vanguard", "reef-admiral"]
   },

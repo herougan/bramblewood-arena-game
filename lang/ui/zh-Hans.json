@@ -5004,5 +5004,7 @@
  "{v1} card{s} collected": "已收集 {v1} 张卡牌",
  "Clear {v1} / {v2}": "通关{v1} / {v2}",
  "+{v1} 🪵 every {v2} rounds": "每 {v2} 轮 +{v1} 🪵",
- "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "每轮从中选一：为你伤势最重的单位回复 {v1}、对一个随机敌方单位造成 {v2} 点伤害，或 +{v3} 🪵"
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "每轮从中选一：为你伤势最重的单位回复 {v1}、对一个随机敌方单位造成 {v2} 点伤害，或 +{v3} 🪵",
+ "It grazes on things that sting and keeps the stings for itself. The bright colours are a promise.": "它啃食会蜇人的东西，把那些刺留给自己。鲜艳的颜色是一种承诺。",
+ "Its new leaf comes up folded like a fist and shoves the old ones aside. Then it opens, and the underside is all thorns.": "它的新叶像拳头一样卷着冒出水面，把旧叶推到一旁。然后它展开，叶背满是尖刺。"
 }

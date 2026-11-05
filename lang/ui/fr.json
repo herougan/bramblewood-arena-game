@@ -5004,5 +5004,7 @@
  "{v1} card{s} collected": "{v1} carte{s} obtenue{s}",
  "Clear {v1} / {v2}": "Terminer {v1} / {v2}",
  "+{v1} 🪵 every {v2} rounds": "+{v1} 🪵 tous les {v2} tours",
- "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "À chaque tour, au choix : soigner de {v1} votre unité la plus blessée, {v2} dégâts à une unité ennemie au hasard, ou +{v3} 🪵"
+ "Each round, one of: heal your most wounded unit {v1}, {v2} damage to a random enemy unit, or +{v3} 🪵": "À chaque tour, au choix : soigner de {v1} votre unité la plus blessée, {v2} dégâts à une unité ennemie au hasard, ou +{v3} 🪵",
+ "It grazes on things that sting and keeps the stings for itself. The bright colours are a promise.": "Il broute ce qui pique et garde les piqûres pour lui. Ses couleurs vives sont une promesse.",
+ "Its new leaf comes up folded like a fist and shoves the old ones aside. Then it opens, and the underside is all thorns.": "Sa nouvelle feuille monte pliée comme un poing et écarte les anciennes. Puis elle s’ouvre, et son revers n’est qu’épines."
 }

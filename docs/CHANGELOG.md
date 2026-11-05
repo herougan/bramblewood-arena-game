@@ -2,6 +2,23 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Package CONTENT11 (owner 11-04 22:34: NUDI-1, IDEA-VREGIA, IDEA-EARLY-2; CONTENT9-1, SKILLREC1-1, RELICT-2 as proposals)
+- **Boss gimmicks, Maps 0-5 and their side maps (11 bosses):**
+  - The gimmicks: Cold Snap (0-4), Thistle Prick (1-5), Shell Up (2-5), The Queen's Dive (3-7), Undertow (4-5), Snap Back (5-7), Hare's Nap (1-A-5), Lodge Repairs (2-A-7), Ink Cloud (2-B-4), Root Grip (5-A-4) and Cracking Bark (0-B-4).
+  - How they work: engine-only, the boss's side, from round 2 (`BOSS_GIMMICKS`, `rules.bossGimmick`). The Environment card shows "?" until the gimmick first happens. Each act floats on the unit or bramble it touched and writes a log line. There are no intent icons.
+  - Measured with the Map reference deck, 300 games each: in band 6 -> 9 of 11. The Gannet Queen 67 -> 40%, the Colossus 75 -> 45%, Snapjaw 87 -> 44%, the Old Hare 22 -> 46%. No bramble Health was changed.
+- **New cards:**
+  - Nudibranch: 4/9, Lumber 1, Wait 1, uncommon. Sequestration + Immunity. On the Sunken Depths list.
+  - Victoria Regia: 2/14, Lumber 1, Wait 2, uncommon. Bulldoze 1 + Thorns 1. On the Lilypad Reach list.
+  - Both are inside the budget. Their art is the emoji placeholder; the prompts are in `docs/art-style-prompts.md`.
+- **Proposals only (no existing card edited):** `docs/content11-2026-11-05.md`, decisions CONTENT11-1..4:
+  - identical-line cards;
+  - SKILLREC1 on the 9 cards with live owner edits (not yet folded into cards.json);
+  - carriers for the ENG24 skills;
+  - three gimmick checks.
+- **Card matrix:** 61,332 golden diffs. All of them come from the two new cards shifting the matrix's index-based pairings: the engine change alone, on the old cards, gives 0 diffs.
+- Tools: `tools/content11_cards_2026_11_05.js`, `tools/i18n_2026_11_05_content11.py`. Test: `tests/content11-2026-11-05.js`. A dated update to the eng24 test exempts the Nudibranch from "the new skills are on no card".
+
 ## 2026-11-05 Package UI21 (owner 11-04 22:34: FIX8-3, IDEA-EARLY-3, IDEA-EARLY-4, ECON2-11)
 - **Nests unlock from discovery:** the six further nests open when you complete Map 4, 8, 12, 16, 20, 24 (prices unchanged; was: Map reached 5 / 10 / 15 / 20 / 25 / 30). A locked nest is a shadow, the text says "Unlocks from discovery" and never names the map. Saves keep every nest built.
 - **Keyword of the map:** Maps 0-5 and their side maps each introduce one keyword (`canonical/map-keywords.json`), shown as its own section in the Map cards window with its rules text and the map's cards that have it.
