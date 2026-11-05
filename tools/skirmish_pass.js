@@ -195,7 +195,10 @@ const KEEP_LEADERS = argv.includes('--keep-leaders');
 // sizes"): --keep-first keeps a fight's own first-clear cards (nodeFirstClearCardIds, e.g. 8-1's Quarry Mole, RP3) in its deck, and
 // --keep-size takes only moves that leave the deck's card count as it was (swaps; no add, no remove).
 const KEEP_FIRST = argv.includes('--keep-first'), KEEP_SIZE = argv.includes('--keep-size');
-const firstClearOf = f=>{ if(f._first) return f._first; let ids = []; try{ ids = (G.nodeFirstClearCardIds || G.nodeRewardCardIds)(f.map, f.key) || []; }catch(e){} return (f._first = new Set(ids)); };
+// 2026-11-05 (package BAL16, IDEA-EARLY-5): a fight built around a two-card combo (docs/balance/bal16/decks-plan-2026-11-05.json `combos`)
+// keeps both combo cards like its first-clear cards, so a retune does not take the combo apart
+const BAL16_COMBOS = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal16', 'decks-plan-2026-11-05.json'), 'utf8')).combos || {}; }catch(e){ return {}; } })();
+const firstClearOf = f=>{ if(f._first) return f._first; let ids = []; try{ ids = (G.nodeFirstClearCardIds || G.nodeRewardCardIds)(f.map, f.key) || []; }catch(e){} if(BAL16_COMBOS[f.key]) ids = ids.concat(Object.keys(BAL16_COMBOS[f.key].cards)); return (f._first = new Set(ids)); };
 const keptLeader = (f, id)=>{ if(KEEP_FIRST && firstClearOf(f).has(id)) return true; if(!KEEP_LEADERS) return false; try{ return G.skirmishLeadersOf(f.n, f.map).includes(id); }catch(e){ return false; } };
 const otherFightsReward = (f, id)=>{ const s = (CARD_DEFS_BASELINE[id] || {}).source; return !!(s && s.kind === 'map' && s.node && !(s.id === f.map && s.node === f.key)); };
 // Candidate moves of up to two copies, most promising first. A fight's namesake (Epic and up, or its showcase card) is never taken out.

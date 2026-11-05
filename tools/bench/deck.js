@@ -148,7 +148,9 @@ async function main(o) {
     if (openBest) seeds.push(R.repair(O.deckFromKey(openBest), pool, rng, f, pref));
     while (seeds.length < 6) seeds.push(R.repair({}, pool, rng, f, null));
     // niching (deckopt's distinct optima): a focus's deck keeps at least --apart (6) copies away from the decks found before it
-    const prev = results.map(r => O.deckFromKey(r.key)), far = d => prev.every(p => O.dist(d, p) >= apart);
+    // 2026-11-05 (package BAL16, REFDECK-1 "unique optimised deck ideas"): o.avoid, decks found elsewhere (the map's new BPRO decks for its PRO
+    // search) that every focus keeps --apart copies from too
+    const prev = (o.avoid || []).concat(results.map(r => O.deckFromKey(r.key))), far = d => prev.every(p => O.dist(d, p) >= apart);
     for (let t = 0; t < 30 && !seeds.some(far) && prev.length; t++) seeds.push(R.repair(neighbours(gm, R, seeds[seeds.length - 1], pool, rng, f, 3).pop() || {}, pool, rng, f, null));
     let ok = O.uniqDecks(seeds.filter(d => R.legal(d, pool) && (!f.cards || R.focusCopies(d, f) >= f.need)));
     const okFar = ok.filter(far); let nearOk = false; if (okFar.length) ok = okFar; else if (prev.length) nearOk = true;
