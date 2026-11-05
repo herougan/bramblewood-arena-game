@@ -43,7 +43,8 @@ for(const m of mains){ const n = G.mapNumberOf(m.id), t = th6(n), r = review[m.i
 // ---- 3. the named swaps
 const deckOf = (mid, key)=> (B.byKey(mid, key) || {}).deck || {};
 ok(!pools.mb.cards.includes('sea-turtle-elder') && pools.mb.cards.includes('rock-pool-starfish'), '3. Pebble Beach: Sea Turtle Elder off, Rock Pool Starfish on (LIST-1104)');
-ok(['2-2', '2-4', '2-5'].every(k=> !deckOf('mb', k)['sea-turtle-elder'] && deckOf('mb', k)['rock-pool-starfish'] >= 2), '3. Rock Pool Starfish holds the Elder\'s slots in 2-2, 2-4, 2-5');
+// 2026-11-06 TESTFIX2: CONTENT12 retuned 2-4 (35% -> 52.5%, a new deck from the fight's list) and BAL19 the other road decks: the Elder stays off all three; the Starfish holds its slots in 2-2 and 2-5 (2-4's retuned deck has none)
+ok(['2-2', '2-4', '2-5'].every(k=> !deckOf('mb', k)['sea-turtle-elder']) && ['2-2', '2-5'].every(k=> deckOf('mb', k)['rock-pool-starfish'] >= 2), '3. Sea Turtle Elder is out of 2-2, 2-4, 2-5; Rock Pool Starfish holds its slots in 2-2 and 2-5');
 ok(pools.m2.cards.includes('shoal-shark') && !pools.m2.cards.includes('muskrat-reedgatherer') && pools.m2.cards.includes('alley-cat'), '3. Sunken Hollow: Shoal Shark back, Muskrat Reedgatherer out for Alley Cat');
 ok(!cards['shoal-shark'].unattainable && cards['shoal-shark'].source.map === 'm2', '3. Shoal Shark is a Sunken Hollow pack card again');
 ok(!pools.m11.cards.includes('glacier-wolf-pack') && pools.m11.cards.includes('chamois-leaper'), '3. The Sundered Peak: Glacier Wolf Pack replaced by Chamois Leaper');

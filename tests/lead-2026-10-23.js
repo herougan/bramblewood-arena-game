@@ -30,9 +30,14 @@ const PAIRS = plan.pairs;
         if(PAIRS[n.key]) ok(L.length === 2 && L.join() === PAIRS[n.key].join(), `${n.key}: the paired boss leads with ${PAIRS[n.key].join(' + ')} (got ${L.join(' + ')})`);
         else if(!Array.isArray(n.leaders)) ok(L[0] === G.nodeShowcaseId(n), `${n.key}: the leader is the showcase card`);
         const bossOf = k=> k === '7-5' && plan.boss[k] === 'hollow-oath-keeper' ? 'truffle-piglet' : plan.boss[k]; // 2026-10-26 (CONTENT3, G3): the Oath-Keeper left Map 7; 7-5's showcase is the card that took its place
-        if(plan.boss[n.key]) ok(L[0] === bossOf(n.key), `${n.key}: the boss unit ${bossOf(n.key)} leads (got ${L[0]})`);
+        // 2026-11-06 TESTFIX2: BAL16 / BAL19 (BAL19-1 leaders lever) and CUT3 / CONTENT12 moved leaders and boss cards on purpose. A fight with an explicit `leaders` array is a tuning override (as in the elite branch above): its leaders must be cards of its deck.
+        // A planned boss unit that has left the fight's deck (the 7-5 pattern, now also 17-8, 18-5, 20-10, 2-A-5: the card was cut or renamed) is replaced by the fight's showcase.
+        if(plan.boss[n.key] && Array.isArray(n.leaders)) ok(n.leaders.every(id=> n.deck[id]), `${n.key}: an explicit leaders override names cards of its deck (${n.leaders.join(' + ')})`);
+        else if(plan.boss[n.key]) ok(L[0] === (n.deck[bossOf(n.key)] ? bossOf(n.key) : G.nodeShowcaseId(n)), `${n.key}: the boss unit ${bossOf(n.key)} leads (got ${L[0]})`);
       } else if(bk === 'skirmish'){ skirmishes++;
-        if(no >= 2) ok(L.length === 1 && L[0] === G.nodeShowcaseId(n), `${n.key}: a Map ${no} skirmish leads with its showcase (SK)`);
+        // 2026-11-06 TESTFIX2: BAL16 / BAL19 (BAL19-1: leaders lever, never added) set explicit leaders on tuned skirmishes; those must be cards of the deck (19-A-4 has its leader taken off)
+        if(no >= 2 && Array.isArray(n.leaders)) ok(n.leaders.every(id=> n.deck[id]) && n.leaders.length <= 1, `${n.key}: a tuned Map ${no} skirmish keeps at most one leader, from its deck (BAL19-1)`);
+        else if(no >= 2) ok(L.length === 1 && L[0] === G.nodeShowcaseId(n), `${n.key}: a Map ${no} skirmish leads with its showcase (SK)`);
         else ok(!L.length, `${n.key}: a Map ${no} skirmish has no leader`);
       }
     } }

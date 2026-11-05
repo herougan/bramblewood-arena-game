@@ -81,7 +81,8 @@ ok(byId['nightjar-drifter'].effects.crepuscular === 1 && byId['nightjar-drifter'
 { const {e, P} = mk(4); const s = put(e, P, 1, 'x-skit', 0); put(e, P, 2, 'x-weak', 0); s.atk = 9; const ev = []; e.roundStart(P, 1, so, {}, []); e.resolveCombat(P, so, {}, ev, 1);
   e.roundStart(P, 2, so, {}, []); ok(e.eng23SkitterOn(s), '2: a killing hit counts too'); }
 ok(SK.skitter && SK.skitter.value === 1.44 && SK.skitter.theoretical && BB.SKITTER_MISS_MULT === 1.1 && BB.missMultOf({skitter:true}) === 1.1 && BB.missMultOf({skitter:true, evasive:true}) === BB.missMultOf({evasive:true}), '2: priced: Haste 2.57 x 0.56 = 1.44 S, Evasive x1.1 on the stat terms (nothing extra beside its own Evasive)');
-ok(!cards.some(c=> c.effects && c.effects.skitter) && !(byId['field-vole'] && byId['field-vole'].effects && byId['field-vole'].effects.skitter), '2: on no card (the owner puts it on Field Vole)');
+// 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live edit that put Skitter on Mangrove Mudskipper (it is on that one card; Field Vole still has none)
+ok(cards.filter(c=> c.effects && c.effects.skitter).map(c=> c.id).join() === 'mangrove-mudskipper' && !(byId['field-vole'] && byId['field-vole'].effects && byId['field-vole'].effects.skitter), '2: on one card only, the owner\'s Mangrove Mudskipper');
 ok(/key:'skitter', category:'passive', label:TX\('ui\.eng23-skitter-name'\)/.test(app) && TXT['ui.eng23-skitter'], '2: in "+ Add Skill" with its text');
 
 // ---- 3. Fast-forward tokens ---------------------------------------------------------------------------------------------------
@@ -114,7 +115,7 @@ ok(/function eng23MapDef\(id, defs\)/.test(app) && /data-zoom-base="1"/.test(app
 
 // ---- 6. Rodentia --------------------------------------------------------------------------------------------------------------
 ok(TAXO.name('Rodent') === 'Rodentia' && TAXO.key('Rodentia') === 'rodent' && TAXO.isA({species:['Rodent']}, 'Rodentia') && TAXO.isA({species:['Rodent']}, 'Rodent'), '6: Rodent shows as Rodentia; both names find the rodents');
-ok(cards.filter(c=> (c.species || []).includes('Rodent')).length === 53, '6: the key stays (53 cards keep species "Rodent")');
+ok(cards.filter(c=> (c.species || []).includes('Rodent')).length === 54 /* 2026-11-06 TESTFIX2: 53 -> 54, a card added or re-specied since (CONTENT11 / CONTENT12's fold) */, '6: the key stays (54 cards keep species "Rodent")');
 ok(/TAXO \? TAXO\.name\(x\) : x/.test(app), '6: the card details show the Type\'s name');
 
 // ---- 7. CONTENT9-2 ------------------------------------------------------------------------------------------------------------
@@ -145,7 +146,7 @@ ok(/eng23AiBramble\(players, sideOf, aiId, stats, events\)/.test(eng), '7: the C
 // ---- decisions, docs, packs ---------------------------------------------------------------------------------------------------
 { const D = J('docs/decisions.json'), ids = D.items.map(x=> x.id); const want = ['ENG23-1', 'ENG23-2', 'ENG23-3', 'ENG23-4', 'ENG23-5', 'ENG23-6', 'ENG23-7'];
   ok(want.every(i=> ids.includes(i)) && want.every(i=> D.items.find(x=> x.id === i).status === 'YET'), `8: decisions ${want.join(', ')} filed (YET)`); }
-ok(/ENG23/.test(R('docs/project-state.md')) && /Skitter/.test(R('docs/effects-catalogue.md')) && /ENG23/.test(R('docs/CHANGELOG.md').slice(0, 5000)), '8: project-state, effects-catalogue and the CHANGELOG carry ENG23');
+ok(/ENG23/.test(R('docs/project-state.md')) && /Skitter/.test(R('docs/effects-catalogue.md')) && /ENG23/.test(R('docs/CHANGELOG.md')) /* 2026-11-06 TESTFIX2: the whole file (the QA1 convention): newer entries push ENG23 out of a 5000-character window */, '8: project-state, effects-catalogue and the CHANGELOG carry ENG23');
 { const miss = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].filter(c=>{ const p = J('lang/' + c + '.json'); return !Object.keys(TXT).filter(k=> k.startsWith('ui.eng23-')).every(k=> p[TXT[k]]) || !p['Rodentia']; });
   ok(!miss.length, `8: the new texts and Rodentia in the 12 packs (${miss})`); }
 console.log(`eng23: ${fail ? fail + ' failure(s)' : 'all passed'} (${n} checks)`);

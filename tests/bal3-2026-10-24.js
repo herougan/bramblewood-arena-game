@@ -54,6 +54,8 @@ TEN['chipmunk-hoarder'] = [2, 5]; TEN['muskrat-lodgekeeper'] = [1, 7];
 TEN['alley-cat'] = [2, 2]; TEN['chipmunk-cavalry'] = [3, 3];
 // 2026-11-04 (TESTFIX1): BAL9 (2026-11-02, owner JJ21 / JJ12, call BAL9-1) re-fit two more onto the band (their notes say "BAL9 refit"): Alley Cat 1/1, Rock Pool Starfish 2/1
 TEN['alley-cat'] = [1, 1]; TEN['rock-pool-starfish'] = [2, 1];
+// 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live edits (2026-10-29 .. 11-05, his call, BAL-ROLES): Alley Cat 1/4, Chipmunk Cavalry 3/4, Rock Pool Starfish 2/7. The pin follows the card; whether each sits in its band is bf5's / budget2's question (listed there).
+TEN['alley-cat'] = [1, 4]; TEN['chipmunk-cavalry'] = [3, 4]; TEN['rock-pool-starfish'] = [2, 7];
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), byId = new Map(cards.map(c=> [c.id, c]));
 const held = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal2-refit-2026-10-24.json'), 'utf8')).held || [];
 const flagged = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'human-pass-1-flagged-2026-10-21.json'), 'utf8'));
@@ -62,9 +64,10 @@ Object.entries(TEN).forEach(([id, [a, h]])=>{ const c = byId.get(id);
   ok(!held.some(x=> x.id === id) && !flagged.includes(id), `3. ${id} is off the held / flagged lists`); });
 
 // ---- 4. Rising Tide: Quick and +1 Attack at Flood
+// 2026-11-06 TESTFIX2: Guppy no longer has Tide (the owner's folded edit, CONTENT12); Shallows Fry (Tide only) stands in
 function scene(rules){ const defs = Object.assign({}, H.loadCardDefs()), engine = E.makeSimEngine(defs, H.seededRng(1), {recordEvents: true, rules});
-  const players = {1: engine.newPlayer(1, {}), 2: engine.newPlayer(2, {'guppy': 10})}, sideOf = id=> id === 1 ? 'A' : 'B', ev = [];
-  engine.debugSpawnCard(players, sideOf, 2, 'guppy', 'center', {}, ev); engine.debugSpawnCard(players, sideOf, 1, 'beaver-builder', 'center', {}, ev);
+  const players = {1: engine.newPlayer(1, {}), 2: engine.newPlayer(2, {'shallows-fry': 10})}, sideOf = id=> id === 1 ? 'A' : 'B', ev = [];
+  engine.debugSpawnCard(players, sideOf, 2, 'shallows-fry', 'center', {}, ev); engine.debugSpawnCard(players, sideOf, 1, 'beaver-builder', 'center', {}, ev);
   H.boardCards(players[1]).forEach(c=>{ c.atk = c.baseAtk = 0; }); H.boardCards(players[2]).forEach(c=>{ c.wait = 0; });
   engine.resolveCombat(players, sideOf, {}, ev, 2); const g = H.boardCards(players[2])[0]; return {g, defs}; }
 { const on = scene({permaTide: true, boon: 'risingTide'}), off = scene({permaTide: true}), dry = scene({boon: 'risingTide'});

@@ -51,7 +51,7 @@ const byMap = id=> G.CONQUEST_MAPS.find(m=> m.id === id), node = (mid, k)=> byMa
 
 // --- 2. brambles
 { ['0-1', '0-2', '0-3'].forEach(k=>{ const sc = G.skirmishCastle(node('m1', k)); ok(!Object.keys(sc.character.effects || {}).length, `2. ${k} defends a plain bramble (${sc.character.id})`); });
-  const sc4 = G.skirmishCastle(node('m1', '0-4')); ok(sc4.character.id === 'plains-terrace' && sc4.character.effects.firstUnitAtkBonus === 1, '2. 0-4 keeps the +1 Attack to the first unit');
+  const sc4 = G.skirmishCastle(node('m1', '0-4')); ok(sc4.character.id === 'plains-terrace' && sc4.character.effects.firstUnitAtkBonus === 3, '2. 0-4 keeps its Attack bonus to the first unit (+3 since ENG24)'); // 2026-11-06 TESTFIX2: ENG24 (2026-11-04) put brambles +2 on every ability number: +1 -> +3
   ok(/const watch = false;/.test(fnSrc('startTutorialMatch')), '2. T-2\'s rival bramble is plain (no Outskirts Watchtower)');
   ok(/myCharacter\.health = earlyBrambleHp\(myCharacter\.health, rivalCharacter\.health\)/.test(fnSrc('startTutorialMatch')), '2. your tutorial bramble starts above the rival\'s');
   ok(/const myCharacter = (?:refBramble \|\| )?earlyHomeBramble\(node, myCastleDef\(\)\)/.test(fnSrc('startConquestMatch')), /* 2026-11-02 (QA1): a reference set's bramble comes first since PREF (2026-10-25) */ '2. a Conquest fight on Maps 0-1 gives your bramble the lead');
@@ -65,7 +65,7 @@ const byMap = id=> G.CONQUEST_MAPS.find(m=> m.id === id), node = (mid, k)=> byMa
 { ok(G.roadEnemyLevelExact(node('m1', '0-3')) === 0 && G.roadEnemyLevelExact(node('mf', '1-1')) === 0 && G.roadEnemyLevelExact(node('mf', '1-5')) === 0.5, '3. Map 0 Level 0; Map 1 from 0 to 0.5');
   ok(G.roadEnemyLevelExact(node('mb', '2-1')) === 1, '3. Map 2 is Level 1 as before');
   const d0 = G.levelledEnemyDeck(node('m1', '0-3'), node('m1', '0-3').deck), sk = G.overlay()['chipmunk-skirmisher@lv0'];
-  ok(d0['chipmunk-skirmisher@lv0'] === 3 && sk && sk.health === G.statsAtLevel(D['chipmunk-skirmisher'], 0).health && sk.health < D['chipmunk-skirmisher'].health, '3. a Map 0 enemy card fights at its Level 0 stats, below its own level');
+  ok(d0['chipmunk-skirmisher@lv0'] === node('m1', '0-3').deck['chipmunk-skirmisher'] /* 2026-11-06 TESTFIX2: the 0-3 deck was rebuilt (BAL16 / BAL19): the copy count follows the deck (1), not the old 3 */ && sk && sk.health === G.statsAtLevel(D['chipmunk-skirmisher'], 0).health && sk.health < D['chipmunk-skirmisher'].health, '3. a Map 0 enemy card fights at its Level 0 stats, below its own level');
   const n15 = node('mf', '1-5'), d15 = G.levelledEnemyDeck(n15, n15.deck), lv = {0: 0, 1: 0}; Object.entries(d15).forEach(([id, k])=>{ const m = /@lv(\d+)$/.exec(id); if(m) lv[m[1]] = (lv[m[1]] || 0) + k; });
   ok(lv[0] > 0 && lv[1] > 0, '3. the Baron\'s copies are part Level 0, part Level 1: ' + JSON.stringify(lv));
   const ov = Object.assign({}, node('mf', '1-1'), {enemyLevel: 2}); G.NODE_MAP_HINT.set(ov, 'mf'); ok(G.roadEnemyLevelExact(ov) === 2, '3. the skirmish editor\'s Enemy level still wins');

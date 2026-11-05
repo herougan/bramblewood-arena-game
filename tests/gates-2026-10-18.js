@@ -43,7 +43,8 @@ src.split('\n').forEach((l, i)=>{
 // --- 3. the gates on uncharted maps
 const NEST_UNLOCKS = new Function(block('const NEST_UNLOCKS = [', '\n];') + '\nreturn NEST_UNLOCKS;')();
 const nestOff = NEST_UNLOCKS.filter(u=> !charted(u.map)).map(u=> u.map);
-ok(nestOff.includes(25) && nestOff.includes(30), `nests on uncharted maps: ${nestOff.join(', ')}`);
+// 2026-11-06 TESTFIX2: UI21 moved the nest schedule to Maps 3/4/8/12/16/20/24 (was 3..30), so no nest waits on an uncharted map now; the check pins that, and that the helper still marks Map 25+ nests uncharted if one returns.
+ok(nestOff.length === 0 && NEST_UNLOCKS.every(u=> charted(u.map)), `nests on uncharted maps: none now (UI21 schedule ${NEST_UNLOCKS.map(u=> u.map).join(', ')}; off: ${nestOff.join(', ')})`);
 const nestHTML = fn('nestKeeperHTML');
 // 2026-10-24 (package NE, owner 17:01 #10: "Don't say when the nest opens. Just say it's locked for now."): no map number, the uncharted lock replaced by Locked for now
 ok(!/The next one opens on Map/.test(nestHTML) && /nest-locked-now|ne-locked-now|Locked for now|TX\('ui\.ne-/.test(nestHTML), 'an unbuilt nest shows Locked for now, no map number');

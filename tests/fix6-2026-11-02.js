@@ -54,7 +54,7 @@ function game(ctx, g, deal){
   ok(runs.plan.every(r=> !r.A.length || r.A[0].defId === 'drowned-matriarch'), 'it is the Drowned Matriarch that comes out');
   const bOut = k=> runs[k].filter(r=> r.B.length).length; ok(bOut('plan') > 0, `5-7: the CPU still brings its leader out (${bOut('plan')}/${N})`);
   // 4-5, the CPU's side: the Drowned Matriarch in its deck is played from hand, Old Sturgeon leads
-  const c45 = G.referenceFightSetup('m2', B.byKey('m2', '4-5'), {}); ok((c45.setup.reserveLeaders || []).includes('old-sturgeon'), '4-5 is led by Old Sturgeon');
+  const c45 = G.referenceFightSetup('m2', B.byKey('m2', '4-5'), {}); ok((c45.setup.reserveLeaders || []).includes('lions-mane-jelly') /* 2026-11-06 TESTFIX2: BAL16 / BAL19 (BAL19-1 leaders lever) rebuilt the 4-5 deck without Old Sturgeon; Lion's Mane Jelly leads */, '4-5 is led by the Lion\'s Mane Jelly (was Old Sturgeon)');
   let dmPlays = 0; for(let g = 0; g < 10; g++){ const engine = E.makeSimEngine(c45.defs, rng(9100 + g * 37), {recordEvents: true, battleMode: c45.mode, rules: c45.rules, aiAim: true, aiLevel: c45.cpu});
     const sideOf = id=> id === 1 ? 'A' : 'B', st = {}, ev = [], P = {1: engine.newPlayer(1, c45.mine, c45.myCastle), 2: engine.newPlayer(2, c45.enemyDeck, c45.sc.character)}; P[2].loopCards = []; P[2].reserveLeaders = c45.setup.reserveLeaders.slice();
     engine.draw(P[1], 3, 'A', st, ev); engine.draw(P[2], 3, 'B', st, ev);

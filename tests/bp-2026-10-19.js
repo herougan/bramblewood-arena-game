@@ -35,8 +35,9 @@ const constLine = name=>{ const m = src.match(new RegExp('^const ' + name + ' = 
 // the engine's rules the marks describe
 // 2026-11-03 (package FIX7, stale since ENG20-4): windSideOf gives 'cross' in a Crosswind (no back or face), so the regex allows that branch.
 ok(/function windSideOf\(pid\)\{ return !windNow \? null : (isCrosswind\(\) \? 'cross' (\/\*[^*]*\*\/ )?: )?\(pid === windFrom \? 'tail' : 'head'\); \}/.test(eng), 'engine: the side the wind blows from is the Tailwind side');
-ok(/function headwindDouble\(card, pid\)\{ return windNow && isFlyingCard\(card\) && !ashyNow\(\) && windSideOf\(pid\) === 'head'; \}/.test(eng), 'engine: a Headwind doubles a Flyer\'s skills and triggers (not while Ashy)');
-ok(/\(wind && e\.flying && !ashyNow\(\) && windSideOf\(pid\) === 'tail'\) \? 'tailwind'/.test(eng) && /c\.ffCounters = \(c\.ffCounters\|\|0\) \+ 1;/.test(eng), 'engine: a Tailwind gives a Flyer an extra (Fast Forward) turn');
+// 2026-11-06 TESTFIX2: ENG24 (2026-11-04) made Relict pass the wind by: the Headwind / Tailwind lines carry a `!relictOf(card)` / `!e.relict` term
+ok(/function headwindDouble\(card, pid\)\{ return windNow && isFlyingCard\(card\) && !relictOf\(card\) \/\* ENG24 \*\/ && !ashyNow\(\) && windSideOf\(pid\) === 'head'; \}/.test(eng), 'engine: a Headwind doubles a Flyer\'s skills and triggers (not while Ashy)');
+ok(/\(wind && e\.flying && !e\.relict \/\* ENG24 \*\/ && !ashyNow\(\) && windSideOf\(pid\) === 'tail'\) \? 'tailwind'/.test(eng) && /c\.ffCounters = \(c\.ffCounters\|\|0\) \+ 1;/.test(eng), 'engine: a Tailwind gives a Flyer an extra (Fast Forward) turn');
 { const ab = fnSrc('abilityBadges'); ok(!!ab, 'abilityBadges exists');
   ok(/const lw = e\.flying && bopts && bopts\.live \? liveWindState\(bopts\.live\.pid\) : null;/.test(ab), 'a board Flyer asks liveWindState for its side');
   // 2026-10-24 (package BV, owner 17:01 #4): the wind's marks are one pip now (flyerWindPips): wing + boot, or wing + ×2

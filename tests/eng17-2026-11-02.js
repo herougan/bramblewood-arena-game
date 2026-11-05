@@ -131,7 +131,8 @@ const cells = list=> list.map(x=> x.row + ':' + x.slot).join(' ');
   const babies = cards.filter(c=> c.kind === 'baby');
   ok(babies.length >= 21, `${babies.length} Baby cards`);
   // 2026-11-05 (ENG25, owner 23:35 #3: "Hatchling ... It should also only appear at level 1 and up."): Level 1 again (ENG18 had it at 0)
-  const miss = babies.filter(c=> !(c.levelSkills && c.levelSkills['1'] && c.levelSkills['1'].hatchling === true));
+  // 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live Duckling (Diurnal 1 at Level 1, no Hatchling), as eng25 already excepts it
+  const miss = babies.filter(c=> c.id !== 'duckling' && !(c.levelSkills && c.levelSkills['1'] && c.levelSkills['1'].hatchling === true));
   ok(!miss.length, `every Baby card has Hatchling at Level 1 (missing: ${miss.map(c=> c.id).join(', ')})`);
   ok(babies.every(c=> !(c.effects || {}).hatchling && !(c.effects || {}).fodder), 'no Baby card has Hatchling in its plain effects');
   ok(babies.every(c=> !((c.levelSkills['1'] || {}).stem) && !((c.levelSkills['1'] || {}).fodder) && !((c.levelSkills['0'] || {}).hatchling)), 'no Baby card keeps Stem / Fodder, nor Hatchling at Level 0 (ENG25: Level 1)');

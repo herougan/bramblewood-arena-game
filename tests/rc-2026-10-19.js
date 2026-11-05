@@ -154,19 +154,21 @@ function forgeCtx(o){
 
 // ======================= 5. texts =======================
 { const KEYS = Object.keys(TEXT).filter(k=> /\.rc-/.test(k));
-  ok(KEYS.length >= 20, `5. ${KEYS.length} rc TX keys`);
+  ok(KEYS.length >= 19, `5. ${KEYS.length} rc TX keys`); // 2026-11-06 TESTFIX2: 20 -> 19, RAID2 removed 'ui.rc-rw-participant-what' and 'ui.rc-rw-craft' (and 'ui.rc-rw-*' either way); the count is the current one
   KEYS.forEach(k=> ok(src.includes(`'${k}'`), `5. ${k} is used`));
   ok(!('toast.raid-cards' in TEXT), '5. the old "Raid cards: ..." toast is retired');
   // 2026-11-04 (TESTFIX1): TIP1 (2026-10-30, docs/tooltips-tip1-2026-10-30.md) cut the lead line's "an extra pack card" to "an extra card"
-  ['ui.raid-part-rules-lead', 'ui.raid-rw-leading-what', 'ui.raid-rw-strong-what', 'ui.raid-rw-held-what'].forEach(k=> ok(!/raid card/i.test(TEXT[k]) && (k === 'ui.raid-part-rules-lead' ? /an extra card/ : /pack card/).test(TEXT[k]) && /trophy shards/.test(TEXT[k]), `5. ${k} promises pack cards and shards, not raid cards`));
+  // 2026-11-06 TESTFIX2: RAID2 (2026-11-05) removed
+  // the four reward explainer lines ('ui.raid-part-rules-lead', 'ui.raid-rw-*-what'): the raid screen lists resource kinds only now, so the lines and their promise checks are gone
+  ['ui.raid-part-rules-lead', 'ui.raid-rw-leading-what', 'ui.raid-rw-strong-what', 'ui.raid-rw-held-what'].forEach(k=> ok(!(k in TEXT), `5. ${k} is gone (RAID2)`));
   ok(/Forge's Raid tab/.test(TEXT['ui.rc-source-raid']) && /TX\('ui\.rc-source-raid'/.test(src) && !/drops its cards when it falls/.test(src), '5. the Codex source line says crafted in the Forge');
   const panel = src.slice(src.indexOf('<section class="r3-rewards">'), src.indexOf('</section>', src.indexOf('<section class="r3-rewards">')));
-  ok(!/one of its own cards|a second card/.test(panel) && /ui\.rc-rw-participant-what/.test(panel) && /ui\.rc-rw-craft/.test(panel), '5. the raid screen\'s "If it falls" lists pack cards, shards and the Forge recipe');
+  ok(!/one of its own cards|a second card/.test(panel) && /ui\.raid2-rewards/.test(panel) && /r3-rw-types/.test(panel), '5. the raid screen\'s rewards list the kinds only (RAID2: no "If it falls" explainer, no Forge recipe line)');
   ok(TX('ui.rc-shard-name', {name: 'Goliath'}) === 'Goliath trophy shards', '5. "Goliath trophy shards"');
   const LEAD = /^[\s \p{Extended_Pictographic}\p{So}\p{Sk}️‍↻→←▸▾•·★☆✓✕✗⚡]*/u, core = v=> v.trim().replace(LEAD, '').replace(/[\s:]+$/, '');
   const PLACEHOLDER_ONLY = k=> /^[\s+{}\w]*$/.test(TEXT[k].replace(/[a-z]/g, '')) && !/[A-Za-z]{3,}/.test(TEXT[k].replace(/\{\w+\}/g, ''));
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(c=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8'));
-    const miss = KEYS.concat(['ui.raid-part-rules-lead', 'ui.raid-rw-leading-what', 'ui.raid-rw-strong-what', 'ui.raid-rw-held-what']).filter(k=> !PLACEHOLDER_ONLY(k) && !pack[core(TEXT[k])]);
+    const miss = KEYS.filter(k=> !PLACEHOLDER_ONLY(k) && !pack[core(TEXT[k])]);
     ok(!miss.length, `5. lang/${c}.json has every new text (missing: ${miss.join(', ')})`); }); }
 ok(/^## 2026-10-19 \(package RC: /m.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8')), 'CHANGELOG entry');
 

@@ -157,7 +157,7 @@ const hook = (P, pid, p, host)=>{ const pl = P[pid]; ['left', 'center', 'right']
   const {e: e3, P: P3} = mk(143); const r3 = put(e3, P3, 1, 'x-req', 0); P3[1].diedThisFight = 4; const v = put(e3, P3, 2, 'x-wall', 0); v.hp = 0; e3.removeDeadCards(P3, so, {}, {}, []);
   ok(P3[2].diedThisFight === 1 && on(r3, 'requiem'), 'PROP1-4 a death is counted in the sweep and Requiem turns on at once');
   // 2026-10-31 (package BUDGET2): the plain braces {+2/+2} are 3A + H = 8 points now (were 2A + H = 6), x the same measured uptimes
-  const price = {requiem: 4.24, dirge: 3.68, carnage: 3.28, muster: 3.92, beset: 2.4, throng: 5.12};
+  const price = {requiem: 4.24, dirge: 3.68, carnage: 1.68 /* 2026-11-06 TESTFIX2: ENG24 (2026-11-04) re-measured Carnage's uptime, 3.28 -> 1.68 (docs/balance/eng24-carnage-uptime-2026-11-04.json) */, muster: 3.92, beset: 2.4, throng: 5.12};
   Object.entries(price).forEach(([k, s])=> ok(BB.thrS(k, true, {[k]: true}).S === s, `PROP1-4 ${k}'s default price ${s} (got ${BB.thrS(k, true, {[k]: true}).S})`));
   ok(BB.thrS('requiem', 3, {requiem: 3}).S > BB.thrS('requiem', 7, {requiem: 7}).S, 'PROP1-4 a lower threshold costs more');
   const homes = {throng: 'carrion-fly-swarm', dirge: 'wolfsbane-alpha', carnage: 'dust-hyena', muster: 'wolf-pack-runner', beset: 'ravenous-wolverine', requiem: 'cinder-skeleton'};

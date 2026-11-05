@@ -91,7 +91,8 @@ ok(/const raidRules = f\.fieldRules \|\|/.test(src), 'the full raid fight runs u
 // 2026-10-19 (guild skills): guildScaledBramble passes the stage's castleHpPct on, plus the guild's Rooted Walls %
 ok(/(RaidM\.scaleCastle|guildScaledBramble)\(Math\.max\(merged\.health[^\n]*, f\.castleHpPct\)/.test(src), 'your merged castle takes the stage\'s castleHpPct');
 ok(/raidExtraVolley: f\.extraVolley/.test(src) && /m\.engine\.reserveVolley\(m\.players, m\.sideOf, 2, m\.stats, events\)/.test(src), 'extraVolley: the boss\'s back rows strike in raidSpecials');
-ok(/r3-stage-now/.test(src) && /<section class="r3-stages"><h3>Stages<\/h3>/.test(src), 'the raid tab shows the current stage\'s line and every stage');
+// 2026-11-06 TESTFIX2: RAID2 (2026-11-05, "no explainer sections") removed the stage line and the Stages list from the raid screen; the stage is the name pill with its rule text as the hover title.
+ok(/<span class="r2-stage" title="\$\{escapeAttr\(raidStageText\(st\.stage\) \|\| st\.stage\.name\)\}">/.test(src) && !/r3-stage-now/.test(src), 'the raid screen shows the current stage as a name pill whose title is the stage\'s rule text (RAID2)');
 ok(/data-st-batk/.test(src) && /data-st-volley/.test(src) && /data-st-castle/.test(src) && /data-st-field/.test(src) && /RaidM\.setStageRules\(s, vals\)/.test(src), 'the raid editor edits each stage\'s rules');
 
 console.log(fail ? `raid-stages-2026-10-18: ${fail} failure(s)` : 'raid-stages-2026-10-18: all passed');

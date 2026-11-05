@@ -72,17 +72,19 @@ const mark = (s, pid)=> H.boardCards(s.players[pid]).map(c=> c.boon || null);
   const short = scene({seed: 3, rules: {dark: 'dark', boon: 'blindFury'}, deckB: {'cave-cricket': 4, 'beaver-builder': 6}, B: [{id: 'cave-cricket', wait: 0}]});
   ok(mark(short, 2).every(x=> !x) && short.engine.boonState(short.players).on === false, '2. Blind Fury is off when under half the deck is Cave');
   ok(scene({seed: 3, rules: {dark: 'dark', boon: 'blindFury'}, deckB: {'cave-cricket': 10}, B: [{id: 'cave-cricket'}]}).engine.boonState === undefined ? false : true, '2. the engine reports boonState'); }
+// 2026-11-06 TESTFIX2: Ant Warrior lost Swarm (it carries Rage since the owner's folded edit, CONTENT12); Soldier Ant (Swarm Ants) stands in
 // Hive Chorus: Swarm counts each ally twice
-{ const base = {deckB: {'ant-scout': 6, 'ant-warrior': 6}, B: [{id: 'ant-warrior', side: 'center'}, {id: 'ant-scout', side: 'left'}, {id: 'ant-scout', side: 'right'}]};
+{ const base = {deckB: {'ant-scout': 6, 'soldier-ant': 6}, B: [{id: 'soldier-ant', side: 'center'}, {id: 'ant-scout', side: 'left'}, {id: 'ant-scout', side: 'right'}]};
   const on = scene(Object.assign({}, base, {rules: {boon: 'hiveChorus'}, rounds: 0})), off = scene(Object.assign({}, base, {rules: {}, rounds: 0}));
-  const w1 = H.boardCards(on.players[2]).find(c=> /ant-warrior/.test(c.defId)), w0 = H.boardCards(off.players[2]).find(c=> /ant-warrior/.test(c.defId));
+  const w1 = H.boardCards(on.players[2]).find(c=> /soldier-ant/.test(c.defId)), w0 = H.boardCards(off.players[2]).find(c=> /soldier-ant/.test(c.defId));
   const s1 = on.engine.swarmBonusOf(on.players, w1), s0 = off.engine.swarmBonusOf(off.players, w0);
   ok(s0 > 0 && s1 === 2 * s0, `2. Hive Chorus: Swarm counts each ally twice (${s0} -> ${s1})`); }
 // Rising Tide: Quick while the tide is in (River Rapids: always Flood)
-{ const s = scene({rules: {permaTide: true, boon: 'risingTide'}, deckB: {'guppy': 10}, B: [{id: 'guppy', wait: 0}], A: [{id: 'beaver-builder', attack: 0}]});
-  const g = H.boardCards(s.players[2])[0], s0 = scene({rules: {permaTide: true}, deckB: {'guppy': 10}, B: [{id: 'guppy', wait: 0}], A: [{id: 'beaver-builder', attack: 0}]}), g0 = H.boardCards(s0.players[2])[0];
+// 2026-11-06 TESTFIX2: Guppy no longer has Tide (the owner's folded edit, CONTENT12); Shallows Fry (a Tide-only unit) stands in
+{ const s = scene({rules: {permaTide: true, boon: 'risingTide'}, deckB: {'shallows-fry': 10}, B: [{id: 'shallows-fry', wait: 0}], A: [{id: 'beaver-builder', attack: 0}]});
+  const g = H.boardCards(s.players[2])[0], s0 = scene({rules: {permaTide: true}, deckB: {'shallows-fry': 10}, B: [{id: 'shallows-fry', wait: 0}], A: [{id: 'beaver-builder', attack: 0}]}), g0 = H.boardCards(s0.players[2])[0];
   ok(g.boon === 'risingTide' && !!s.defs[g.defId].effects.quick && !s0.defs[g0.defId].effects.quick, '2. Rising Tide: a Tide unit is Quick at Flood (and not without the boon)');
-  const dry = scene({rules: {boon: 'risingTide'}, deckB: {'guppy': 10}, B: [{id: 'guppy', wait: 0}], A: [{id: 'beaver-builder', attack: 0}]}), gd = H.boardCards(dry.players[2])[0];
+  const dry = scene({rules: {boon: 'risingTide'}, deckB: {'shallows-fry': 10}, B: [{id: 'shallows-fry', wait: 0}], A: [{id: 'beaver-builder', attack: 0}]}), gd = H.boardCards(dry.players[2])[0];
   ok(!dry.defs[gd.defId].effects.quick, '2. Rising Tide: no Quick while the tide is out'); }
 // Second Burrow: the first death goes back to the hand (once)
 { const s = scene({rules: {boon: 'secondBurrow'}, deckB: {'chipmunk-forager': 10}, B: [{id: 'chipmunk-forager', hp: 1, wait: 0, attack: 0}], A: [{id: 'beaver-builder', attack: 9, wait: 0}]});

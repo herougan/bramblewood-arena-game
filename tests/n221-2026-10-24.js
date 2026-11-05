@@ -31,7 +31,8 @@ const T2 = Object.fromEntries(J('docs/balance/theme2-proposal-2026-10-28.json').
 const t2Has = (map, id)=> (T2[map] || []).includes(id), t2Any = id=> Object.values(T2).some(l=> l.includes(id));
 const n221Probs = ((chk.stdout || '') + (chk.stderr || '')).trim().split('\n').map(l=> l.trim()).filter(l=> l && !/FAILED:?$|^ok\b/.test(l)).filter(l=>{
   let m = /^(m\d+): pool (\d+)$/.exec(l); if(m && +m[2] >= 12 && +m[2] <= 16) return false;
-  if(m && +m[2] >= 12 && +m[2] <= 18) return false; // 2026-11-04 (TESTFIX1): THEME3 / THEME4's owner-approved lists (THEME1-1, applied by APPLY1 / CONTENT4) set the sizes now: m22 holds 17
+  if(m && +m[2] >= 12 && +m[2] <= 18) return false;
+  if(m && /^m2[1-4]$/.test(m[1]) && +m[2] >= 19 && +m[2] <= 23) return false; // 2026-11-06 TESTFIX2: THEME6-1 (own 7 + carried 14 on Maps 21-24) // 2026-11-04 (TESTFIX1): THEME3 / THEME4's owner-approved lists (THEME1-1, applied by APPLY1 / CONTENT4) set the sizes now: m22 holds 17
   m = /^(\S+): a pack card of (m\w+) but not in its pool/.exec(l); if(m && !t2Has(m[2], m[1])) return false;
   m = /^(\S+): (in one map pool|card-obtain-maps)/.exec(l); if(m && !t2Any(m[1])) return false;
   m = /^(\S+): homed as \w+ \(a proposal\) but has a source now/.exec(l); if(m && (LF1SRC[m[1]] || placedSince(m[1]))) return false; // 2026-10-29 LISTFIX1 (+ TESTFIX1: placed since)
@@ -71,7 +72,8 @@ const ptMap = pools.m22.cards.includes('petrified-tree') ? 22 : 0;
 ok((J('canonical/card-obtain-maps.json').maps['petrified-tree'] || 0) === ptMap && (G.cardObtainMap(pt) || 0) === ptMap, `its obtain map is ${ptMap} (card-obtain-maps regenerated)`);
 const ut = J('canonical/unit-themes.json').units.find(u=> u.id === 'petrified-tree'); ok(ut && ut.source === 'pack', 'unit-themes regenerated (the tree is a pack card there)');
 ['m21', 'm22', 'm23', 'm24'].forEach(mid=>{ const P = pools[mid];
-  ok(P && P.cards.length >= 12 && P.cards.length <= 16, `${mid}: pool ${P && P.cards.length} (12-16, owner 10-28 22:47; 2026-10-28 APPLY1: lists follow THEME2)`);
+  // 2026-11-06 TESTFIX2: THEME6-1 (owner 2026-11-04 23:36-23:40, applied by CONTENT10; BAL17 own lists) sets Maps 21-24 at own 7 + carried 14 = 21 cards, so the pool is 19-23 (was 12-16, owner 10-28 22:47)
+  ok(P && P.cards.length >= 19 && P.cards.length <= 23, `${mid}: pool ${P && P.cards.length} (19-23: THEME6-1 own 7 + carried 14; was 12-16, owner 10-28 22:47)`);
   [...P.cards, ...P.special].forEach(id=> ok(by[id] && !by[id].awaitingSource, `${mid}: ${id} is a sourced card`)); });
 // the skirmish-base cards of Maps 21-24 under their fight's cap; their pack cards carry tier 4
 G.CONQUEST_MAPS.filter(m=> ['m21', 'm22', 'm23', 'm24'].includes(m.id)).forEach(m=>{ const no = G.mapUnlockNumberOf(m.id);

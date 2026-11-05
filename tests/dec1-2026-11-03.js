@@ -25,7 +25,8 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
     'FIX6-1', 'FIX6-2', 'FIX6-3', 'UI16-1', 'UI16-2', 'UI16-3', 'UI16-4'];
   const bad = ids.filter(id => !(by[id] && by[id].status === 'DONE' && by[id].decided === '2026-11-03' && /^Claude's call \(owner 11-03 09:39: 'Balance items you can choose\. Like ENG and FIX and UI\.'\): \S/.test(by[id].outcome || '') && by[id].group === 'game'));
   ok(!bad.length, `the ${ids.length} calls are DONE, decided 2026-11-03, Claude's call with the owner's words (${bad.join(', ') || 'all'})`);
-  ok(['ENG20-2', 'RELICT-1', 'LEAD-NAT-1'].every(id => by[id] && by[id].status === 'YET') && !d.items.some(x => /^IDEA-/.test(x.id) && /Claude's call \(owner 11-03 09:39/.test(x.outcome || '')), 'the owner\'s own calls stay with him (ENG20-2, RELICT-1, LEAD-NAT-1 YET; no IDEA-* decided by DEC1)');
+  // 2026-11-06 TESTFIX2: the owner has since answered ENG20-2, RELICT-1 and LEAD-NAT-1 (all DONE in decisions.json); DEC1 still decided none of them
+  ok(['ENG20-2', 'RELICT-1', 'LEAD-NAT-1'].every(id => by[id] && by[id].status === 'DONE' && !/Claude's call \(owner 11-03 09:39/.test(by[id].outcome || '')) && !d.items.some(x => /^IDEA-/.test(x.id) && /Claude's call \(owner 11-03 09:39/.test(x.outcome || '')), 'the owner\'s own calls were never DEC1\'s (ENG20-2, RELICT-1, LEAD-NAT-1 answered by him since; no IDEA-* decided by DEC1)');
   const lines = fs.readFileSync(path.join(ROOT, 'docs', 'decisions.json'), 'utf8').split('\n');
   ok(ids.every(id => lines.some(l => l.startsWith('    {"id": "' + id + '", '))), 'one item a line, id first'); }
 
@@ -42,8 +43,8 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
   const R = require(path.join(ROOT, 'tools', 'skill2_refit_2026_10_31.js')), v = id => R.verdict(R.NEW, C[id]);
   const rg = C['otter-royal-guard'];
   ok(rg.attack === 3 && rg.health === 6 && JSON.stringify(rg.effects) === JSON.stringify({ triggers: [{ on: 'onSpawn', do: 'grantShield', allies: 3 }] }) && v('otter-royal-guard').ok, `ENG19-2: Royal Guard 3/6, On Play +3 Shield to every ally, in band (use ${v('otter-royal-guard').use})`);
-  ok(C['oyster-bank'].effects.pearl === 1 && !C['oyster-bank'].effects.pearlBed && C['giant-clam'].effects.pearl === 1 && !C['giant-clam'].effects.pearlBed && C['oyster-bank'].health === 13 && C['giant-clam'].attack === 5 && C['giant-clam'].health === 5, 'ENG19-3: Oyster Bank and Giant Clam Pearl 1 (not Pearl Bed), stats kept');
-  ok(v('oyster-bank').ok && v('giant-clam').over, `ENG19-3: Oyster Bank in band (${v('oyster-bank').use}); Giant Clam reads over (${v('giant-clam').use}, out of play: flagged)`);
+  ok(C['oyster-bank'].effects.pearl === 1 && !C['oyster-bank'].effects.pearlBed && C['giant-clam'].effects.pearl === 1 && !C['giant-clam'].effects.pearlBed && C['oyster-bank'].health === 13 && C['giant-clam'].attack === 5 && C['giant-clam'].health === 4 /* 2026-11-06 TESTFIX2: CONTENT12 re-fit Giant Clam 5/5 -> 5/4 (102% -> 98%) */, 'ENG19-3: Oyster Bank and Giant Clam Pearl 1 (not Pearl Bed), stats kept');
+  ok(v('oyster-bank').ok && v('giant-clam').ok /* 2026-11-06 TESTFIX2: CONTENT12 5/5 -> 5/4: Giant Clam is in band now (98%) */, `ENG19-3: Oyster Bank in band (${v('oyster-bank').use}); Giant Clam in band since CONTENT12 (${v('giant-clam').use})`);
   ok(C['glass-octopus'].attack === 4 && C['glass-octopus'].health === 7 && v('glass-octopus').ok, `BAL12-2 a: Glass Octopus 4/7, in band (${v('glass-octopus').use})`);
   const ap = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), i0 = ap.indexOf('const CONQUEST_MAPS = ['), j0 = ap.indexOf('\n];', i0);
   // eslint-disable-next-line no-eval
@@ -51,7 +52,7 @@ const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = 
   ok(JSON.stringify(C['anvilwhisker-otter'].source) === JSON.stringify({ kind: 'map', id: 'm3', node: '19-6' }) && JSON.stringify(C['echidna-quillshot'].source) === JSON.stringify({ kind: 'pack', tier: 3 }) && C['echidna-quillshot'].rarity === 'superrare',
     'BAL12-6 a: 19-6\'s exclusive reward is Anvilwhisker Otter; Echidna Quillshot a tier-3 pack card, still Super Rare (RAR-1)');
   const size = d => Object.values(d).reduce((a, b) => a + b, 0);
-  ok(!n6.deck['echidna-quillshot'] && n6.deck['pit-glutton'] === 1 && n6.deck['yeti-chieftain'] === 1 && size(n6.deck) === 18, `BAL12-6 a / BAL13-2 a: the 19-6 deck swaps Echidna Quillshot for Pit Glutton, size kept (${size(n6.deck)})`);
+  ok(!n6.deck['echidna-quillshot'] && n6.deck['pit-glutton'] === 1 && !n6.deck['yeti-chieftain'] /* 2026-11-06 TESTFIX2: LISTFIX2-2 b / CONTENT10 and BAL19: the plain Yeti took its place */ && n6.deck['yeti'] >= 1 && size(n6.deck) === 18, `BAL12-6 a / BAL13-2 a: the 19-6 deck swaps Echidna Quillshot for Pit Glutton, size kept (${size(n6.deck)})`);
   const oc = cp.spawnSync('node', ['tools/bal13/decks_2026_11_02.js', 'overcap'], { cwd: ROOT, encoding: 'utf8' }).stdout || '';
   ok(/: 0 to swap, 0 kept and flagged/.test(oc), 'BAL13-2 a: no road fight fields a card over its rarity cap (overcap: 0 to swap, 0 flagged)');
   ok(['echidna-quillshot', 'anvilwhisker-otter'].every(id => v(id).ok), 'the moved reward cards stay in band');

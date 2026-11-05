@@ -113,9 +113,11 @@ ok(/extra time as each round starts/.test(R.describeStage({name:'Enraged', rules
 ok(/const bossHpBonus = \(bossUnitId && RaidM\.bossHpBonus\) \? RaidM\.bossHpBonus\(raidDefScaled\(def\), st, defs\[bossUnitId\]\.health\)\.bonus : 0;/.test(src) /* 2026-10-21 (BF5): the raid at BRAMBLE_SCALE */ && /raidBossHpBonus: bossHpBonus/.test(src), 'the fight is built with the bonus from the raid state (cloud, or this device offline)');
 ok(/const bonus = Math\.max\(0, m\.raidBossHpBonus \| 0\); if\(bonus\)\{ c\.hp \+= bonus; c\.maxHp = /.test(src) && /c\.bossHpBonus = bonus/.test(src), 'each boss unit comes in with the bonus on its Health and max Health');
 ok(/!irr && !lc\.bossHpBonus\) return/.test(src), 'the card details show the bonus as a bonus (base + N)');
-ok(/TX\('ui\.raid-might', \{name: def\.name \|\| 'The boss', hp: bh\.max, pct: Math\.ceil\(bh\.fraction \* 100\)\}\)/.test(src), "the raid tab names the elders' fresh Health and the raid's share (2026-10-19, RV2: a TX line)");
+// 2026-11-06 TESTFIX2: RAID2 (2026-11-05) dropped the explainer sections from the raid tab, the 'ui.raid-might' line among them; the elder's fresh Health is on the card details (bossHpBonus, checked above).
+ok(!/TX\('ui\.raid-might'/.test(src), "the raid tab no longer carries the might line (RAID2: no explainer sections)");
 ok(/RAID_BOSS_UNIT_ROUNDS = new Set\(\[3, 7, 11, 15, 19\]\)/.test(src), 'boss units on rounds 3, 7, 11, 15 and 19');
-ok(/raidRoundCap: f\.rounds \|\| cfg\.rounds/.test(src) && /TX\('ui\.rb-fight-note', \{turns: RaidM\.fightRounds\(def\)\}\)/.test(src) /* 2026-10-19 (package RB): a TX line */, 'the fight and the raid tab take the 20-turn clock from the data');
+// 2026-11-06 TESTFIX2: RAID2 (2026-11-05) removed the raid tab's 'ui.rb-fight-note' line; the fight still takes its clock from the data, and the fight shows it (raidClockPillHTML).
+ok(/raidRoundCap: f\.rounds \|\| cfg\.rounds/.test(src) && !/TX\('ui\.rb-fight-note'/.test(src) && /function raidClockPillHTML\(m\)/.test(src), 'the fight takes the 20-turn clock from the data and shows it in the fight (RAID2: not on the raid tab)');
 ok(/m\.round >= SUDDEN_DEATH_ROUND && !\(m\.raidRoundCap && m\.raidRoundCap <= SUDDEN_DEATH_ROUND\)/.test(src), 'a raid that ends by turn 20 never goes into sudden death');
 { const i = src.indexOf('const RAID_NEW_KEYS'), j = src.indexOf('\n', src.indexOf('function allRaidDefs('));
   const all = (base, edits)=> new Function('RAID_DEFS_BASE', 'raidDefEdits', src.slice(i, j) + '\nreturn allRaidDefs();')(base, edits);

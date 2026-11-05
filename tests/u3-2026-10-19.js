@@ -66,7 +66,8 @@ ok(/const bramble = typeof raidBrambleOf === 'function' \? raidBrambleOf\(def(?:
   '3. the boss castle takes the name and portrait only (same Health, no effects): the raid\'s balance is unchanged');
 ok(/def\.raidBramble && m\.raidFull \? raidBrambleAbsHTML\(raidBrambleAbilityLines\(m\.raidAttacks\)\)/.test(B.grab('castleHoverHTML')), '3. the bramble\'s info panel (hover / hold) lists its abilities');
 ok(/bramble: vsBramble \? \{name: vsBramble\.name, icon: vsBramble\.icon, lines: raidBrambleAbilityLines\(cfg\.attacks\)(?:, shield: [^}]*\}[^}]*)?\} : null/.test(B.grab('startRaidFullBattle')) && /TX\('ui\.u3-bramble-vs', \{name: p\.bramble\.name\}\)/.test(B.grab('showVsScreen')), '3. the VS screen\'s boss card names the bramble and lists its smack');
-ok(/TX\('ui\.u3-bramble-rules', \{name: br\.name\}\)/.test(src), '3. the raid\'s rules name it and list its attacks');
+// 2026-11-06 TESTFIX2: RAID2 (2026-11-05) removed the raid screen's rules paragraph ('ui.u3-bramble-rules'); the key is gone
+ok(!/TX\('ui\.u3-bramble-rules'/.test(src) && !('ui.u3-bramble-rules' in require('../bramblewood-texts.js').TEXT), '3. the raid screen no longer carries the rules paragraph (RAID2)');
 ok(/const origin = \(mineSide\('A', env\) \? document\.querySelector\('\.top-play-row \[data-hq="B"\]'\) : null\) \|\| document\.querySelector\('\[data-hq="B"\]'\);/.test(fxf) && /M\.tentacleSmack\(cells, \{host:env\.battlefield, origin, horizontal, onImpact:showNum\}\);/.test(fxf) /* FX 2026-10-22: one call for rows, columns and the Tail Sweep */, '3. the smack FX starts from the bramble\'s tile');
 ok(/if\(!horiz && org\)\{[^]*?B = \{x:org\.left \+ org\.width\*\.62, y:org\.top \+ org\.height\*\.62\};/.test(fxf) && /\.fromTo\(wrap, \{scale:\.06\}, \{scale:1, duration:S, ease:'power3\.in', immediateRender:false\}, 0\)/.test(fxf) /* 2026-10-30 (RAIDFX1): it grows by its wrapper's transform, not the svg's inner <g> (svgOrigin) */, '3. a column smack grows out of the bramble to the column, and draws back into it');
 ok(/const TENT = \{slam:220, squash:110, back:350\};/.test(fxf), '3. BU\'s timings kept');
@@ -109,7 +110,7 @@ ok(/const x = hqFillEndX\(rib, bar\), y = bar\.top \+ bar\.height\/2;/.test(B.gr
 
 // ---- texts and packs
 const KEYS = ['ui.u3-map-chip-tip', 'ui.u3-map-chip-tip-cleared', 'ui.u3-map-chip-tip-locked', 'ui.u3-map-chip-world', 'ui.u3-turn', 'ui.u3-turns-left', 'ui.u3-last-turn', 'ui.u3-goliath-bramble',
-  'ui.u3-bramble-kicker', 'ui.u3-bramble-vs', 'ui.u3-bramble-rules', 'ui.u3-smack-desc', 'ui.u3-sweep-desc', 'toast.the-world-opens-up-phone'];
+  'ui.u3-bramble-kicker', 'ui.u3-bramble-vs', 'ui.u3-smack-desc', 'ui.u3-sweep-desc', 'toast.the-world-opens-up-phone'];
 KEYS.forEach(k=> ok(typeof TEXT[k] === 'string' && src.includes(`'${k}'`), `TX ${k} is in the table and used`));
 for(const c of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']){
   const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8'));

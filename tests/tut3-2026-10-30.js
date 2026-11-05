@@ -16,7 +16,8 @@ const lsCards = cards.filter(c=> c.levelSkills && Object.keys(c.levelSkills).som
 const lvSkillKeys = c=> { const s = new Set(); Object.keys(c.levelSkills || {}).filter(k=> +k > 0).forEach(k=> Object.keys(c.levelSkills[k]).forEach(x=> s.add(x))); return [...s]; };
 const LV_ONLY = new Set(['stem', 'hatchling']); // 2026-11-02 (ENG17): Hatchling, like the babies' Stem before it, lives in levelSkills only (not in effects)
 const hasLv1Fx = (fx, c)=> lvSkillKeys(c).filter(k=> fx && fx[k] !== undefined && fx[k] !== false && !LV_ONLY.has(k));
-ok(byId['bee-knight'] && byId['bee-knight'].effects.flying && byId['bee-knight'].effects.swarm, '0. fixture: the Bee Knight holds Flying + Swarm in `effects` (the full set), which arrive at Level 1');
+// 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live edits; a Level 1 skill now lives in levelSkills["1"] only (effects {}), the shape the in-game editor saves (EDIT1) and the engine reads (effectsAtLevel)
+ok(byId['bee-knight'] && ((byId['bee-knight'].effects || {}).flying || ((byId['bee-knight'].levelSkills || {})[1] || {}).flying) && ((byId['bee-knight'].effects || {}).swarm || ((byId['bee-knight'].levelSkills || {})[1] || {}).swarm), '0. fixture: the Bee Knight has Flying + Swarm (in levelSkills 1 now), which arrive at Level 1');
 
 // ---- 1. the builders, on the real code
 const overlay = {}, base = L.CARD_DEFS_BASELINE;
@@ -43,7 +44,7 @@ lsCards.forEach(c=>{ const b = base[c.id], keys = lvSkillKeys(c);
   const out = R.levelledEnemyDeck({cardLevels: {[c.id]: 0}}, {[c.id]: 2}), ek = Object.keys(out);
   ok(ek.length === 1 && ek[0] === c.id + '@lv0' && !hasLv1Fx(overlay[ek[0]].effects, c).length, `1. levelledEnemyDeck: the Level 0 enemy copy of ${c.id} (${ek.join(',')}) has no Level 1 skill (${JSON.stringify(overlay[ek[0]] && overlay[ek[0]].effects)})`);
   const out1 = R.levelledEnemyDeck({cardLevels: {[c.id]: 1}}, {[c.id]: 2}); const k1 = Object.keys(out1)[0];
-  ok(hasLv1Fx(overlay[k1].effects, c).length === keys.filter(k=> !LV_ONLY.has(k) && (c.effects || {})[k] !== undefined).length, `1. levelledEnemyDeck: the Level 1 enemy copy of ${c.id} keeps them`);
+  ok(hasLv1Fx(overlay[k1].effects, c).length === keys.filter(k=> !LV_ONLY.has(k) && ((c.effects || {})[k] !== undefined || ((c.levelSkills || {})[1] || {})[k] !== undefined)).length /* TESTFIX2: skills held in levelSkills 1 count */, `1. levelledEnemyDeck: the Level 1 enemy copy of ${c.id} keeps them`);
   Object.keys(overlay).forEach(k=> delete overlay[k]);
   const t0 = R.tutorialLevel0Def(c.id); if(t0) ok(!hasLv1Fx(t0.effects, c).length, `1. tutorialLevel0Def(${c.id}) has no Level 1 skill`); });
 // source guards for the builders the vm cannot run whole: every one goes through effectsAtLevel

@@ -55,13 +55,14 @@ const relaid = e => !!e && (/BAL1[0-9]|ENG2\d/.test(e.appliedAt || '') || !!e.ba
   // 2026-11-02 (BAL9): a card BAL9 re-fit later (JJ5 / JJ21 / JJ12, its note says so) is held to the note only
   // 2026-11-02 (CARD5, decision BAL9-6 a): Conch Herald back to 1/13, its note says CARD5; held to the note too
   // 2026-11-03 (DEC1): Glass Octopus 4/7 (BAL12-2 a) and Royal Guard 3/6 (ENG19-2) were re-fit later; held to the note too
-  const bal9 = r => /2026-11-02 (BAL9|CARD5)|2026-11-03 DEC1: (BAL12-2 a|ENG19-2)/.test((by[r.id] || {}).creatorNote || '');
+  // 2026-11-06 TESTFIX2: + CONTENT12's fold of the owner's live edits (CONTENT11-2 a), whose note says so; those cards are held to the note too
+  const bal9 = r => /2026-11-02 (BAL9|CARD5)|2026-11-03 DEC1: (BAL12-2 a|ENG19-2)|2026-11-06 \(CONTENT12, CONTENT11-2 a\)|CONTENT12/.test((by[r.id] || {}).creatorNote || '');
   ip.forEach(r => ok(by[r.id] && (bal9(r) || by[r.id].attack === r.attack) && (bal9(r) || by[r.id].health === r.health) && /SKILL2 re-fit/.test(by[r.id].creatorNote || ''), `3. ${r.id}: ${r.stats} -> ${r.to} applied with its note`));
   R.changes.filter(r => !r.inPlay).forEach(r => ok(by[r.id] && (bal9(r) || `${by[r.id].attack == null ? '-' : by[r.id].attack}/${by[r.id].health}` === r.stats), `3. ${r.id}: out of play, on record only (coordinator: cards.json limited to this package's items)`));
   const st = id => by[id].attack + '/' + by[id].health;
   ok(st('marshal-of-rivergate') === '4/9', '3. BUDGET2-5: Marshal of Rivergate 4/9');
   ok(['eagle-owl-quartermaster 1/6', 'ashbone-ghoul 1/5', 'wolf-spider-mother 2/7', 'grave-grin-hyena 2/10'].every(s => { const [id, v] = s.split(' '); return st(id) === v; }), '3. DECK1-1: Quartermaster 1/6, Ghoul 1/5, Spider Mother 2/7, Hyena 2/10');
-  ok(['peak-condor 4/10', 'hawk-arrowkeeper 2/8', 'red-billed-chough 3/2', 'peregrine-stooper 2/8', 'conch-herald 2/13' /* 2026-11-02 CARD5 (BAL9-6 a): was 2/13; 2026-11-04 (TESTFIX1): the owner's 11-02 14:10 decisions (BAL-ROLES) put it back to 2/13 */].every(s => { const [id, v] = s.split(' '); return st(id) === v; }), '3. DECK1-5: Condor 4/10, Arrowkeeper 2/8, Chough 3/2, Stooper 2/8, Herald 1/13 (CARD5)');
+  ok(['peak-condor 4/10', 'hawk-arrowkeeper 2/8', 'red-billed-chough 3/2', 'peregrine-stooper 2/8', 'conch-herald 1/11' /* 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live Conch Herald edit, 1/11 (was 2/13) */ /* 2026-11-02 CARD5 (BAL9-6 a): was 2/13; 2026-11-04 (TESTFIX1): the owner's 11-02 14:10 decisions (BAL-ROLES) put it back to 2/13 */].every(s => { const [id, v] = s.split(' '); return st(id) === v; }), '3. DECK1-5: Condor 4/10, Arrowkeeper 2/8, Chough 3/2, Stooper 2/8, Herald 1/13 (CARD5)');
   ok(R.held.some(h => h.id === 'ant-warrior') && R.held.filter(h => h.inPlay && /cap|fits/.test(h.why)).length >= 7, '3. the cap-2 cards are held for SKILL2-1');
   const C = js('docs/balance/bench-contrib-global-2026-10-31-skill2-final.json'); ['ashbone-ghoul', 'grave-grin-hyena', 'peak-condor', 'hawk-arrowkeeper', 'red-billed-chough', 'peregrine-stooper', 'conch-herald']
     .forEach(id => { const c = C.cards.find(x => x.id === id); ok(c && Math.abs(c.vsFair) <= 0.015, `3. ${id}: within 1.5 points a copy of the fair line after the re-fit (${c && (c.vsFair * 100).toFixed(1)})`); }); }

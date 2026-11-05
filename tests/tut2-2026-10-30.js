@@ -31,7 +31,8 @@ T12.forEach(id=>{ const c = byId[id]; ok(!!c, '1. ' + id + ' exists'); if(!c) re
   ok(e.every(k=> k in skillsAt(c, 1)), `1. ${id}: its skills at Level 1`);
   [0, 1].forEach(lv=>{ const st = G.statsAtLevel(c, lv), b = T.budget(Object.assign({}, c, {attack: st.attack, health: st.health, effects: skillsAt(c, lv)}), {level: lv});
     ok(b.ok, `1. ${id} Level ${lv} ${st.attack}/${st.health} within budget (2A+H+S ${b.x1} <= N ${b.N}; cap 2 ${b.x2} <= ${b.N2})`); }); });
-{ const bee = byId['bee-knight']; ok(JSON.stringify(bee.levelSkills) === '{"1":{"swarm":true,"flying":true}}' && bee.effects.flying && bee.effects.swarm, '1. Bee Knight: Flying and Swarm both at Level 1; its printed Level 1 card keeps both'); }
+// 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live Bee Knight: Swarm {Bee} + Flying sit in levelSkills 1 only (effects {})
+{ const bee = byId['bee-knight']; ok(JSON.stringify(bee.levelSkills) === '{"1":{"swarm":["Bee"],"flying":true}}' && JSON.stringify(bee.effects) === '{}', '1. Bee Knight: Flying and Swarm both at Level 1; its printed Level 1 card keeps both'); }
 
 // ---- 2. every T-1 / T-2 copy is Level 0, both sides (the real tutorialLevel0Def / tutorialPlainDeck)
 { const overlay = {}, base = Object.assign({}, L.CARD_DEFS_BASELINE);

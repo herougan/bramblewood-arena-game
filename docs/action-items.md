@@ -17,6 +17,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 ## 11-05 21:30: Release 11-05a shipped ("continue ... push at the end of this")
 - Done (shipped): DEC2-DEC5, UI22a, ENG24, UI22, CONTENT10, BAL16, UI21, BAL17, CONTENT11, BAL18, ART9, ART9b. See docs/CHANGELOG.md.
 - Open: the full unit run's 55 failing suites (19 not in the 11-04 list; most pin decks, leaders or decisions BAL16 / ENG24 / DEC changed on purpose: lead, dec1, eb, gates, pale-desert, bal9, bal13, thematic, card-pool; to update in a TESTFIX2 package). Glacial Ape-King is still a Map 6 pack card though it is on no list (rw5). ART8's 104 card arts. ART9b's weakest scenes (Wildfire, Quicksand).
+- Done (2026-11-06, TESTFIX2): the stale pins among the 65 failing unit suites updated (tests only, dated comments); the rest are real-looking and listed in the TESTFIX2 report: emoji-atlas, unit-themes, codex-book / gi / en5 (lang rows, the Immunity text says Greater Poison), card-pool, thematic, pale-desert, winrate-panel, level-curve, rewards-pass, game-texts (unused TX keys), tip1, and the cards the owner's edits put over budget (Friar Badger, Caldera Wyrm, Moon Jelly, Cottontail, Wolf Pack Runner).
 - Owner calls open: BAL17-1 (enemy brambles' +2; settles ENG24-1, BAL16-1), BAL17-2, BAL18-1, BAL16-2/3/4, CONTENT10-1/2, CONTENT11-1..4, UI21-1, ENG24-2, DELIV-1, ENG22-1, WIND-3 (not yet recorded), ENG23-5 "apply it".
 
 ## 11-04 20:17: Release 11-04a shipped ("continue, then push")

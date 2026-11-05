@@ -138,7 +138,7 @@ ok(/With no enemy unit it strikes the bramble, which is never Shocked\./.test(sr
   ok(/const tg = raidTelegraph\(m\)/.test(src) && /tg\.rows\.forEach/.test(src), 'the board glows the telegraphed row or column');
   // its log lines, VFX and translations
   ok(/TX\('ui\.raid-smack-column', \{name, dmg, hits, s\}\)/.test(src) && /TX\('ui\.raid-smack-row-middle'/.test(src) && /TX\('ui\.raid-smack-bramble', \{name, dmg\}\)/.test(src), 'its log lines are TX keys');
-  const TXT = require('../bramblewood-texts.js'); const keys = ['ui.raid-smack-column', 'ui.raid-smack-row-front', 'ui.raid-smack-row-middle', 'ui.raid-smack-row-back', 'ui.raid-smack-bramble', 'ui.raid-attacks-telegraph-title'];
+  const TXT = require('../bramblewood-texts.js'); const keys = ['ui.raid-smack-column', 'ui.raid-smack-row-front', 'ui.raid-smack-row-middle', 'ui.raid-smack-row-back', 'ui.raid-smack-bramble']; // 2026-11-06 TESTFIX2: RAID2 (2026-11-05) removed the raid screen's 'ui.raid-attacks-telegraph-title' line (no explainer sections)
   ok(keys.every(k=> TXT.TEXT[k]) && !TXT.TEXT['ui.raid-smack-back-rows'], 'the texts are in the TEXT table (the old back-rows line is gone)');
   ok(/TX\('ui\.raid-smack-row-back', \{name, dmg, hits, s\}\)/.test(src) && TXT.TX('ui.raid-smack-row-back', {name:'Smack', dmg:6, hits:1, s:''}) === '💥 Smack reaches past your front rows and sweeps your back row: 6 damage to each of your 1 unit there.', 'the row lines fill in');
   const peel = s=> s.replace(/^[^\w{]+/u, '');

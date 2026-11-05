@@ -28,7 +28,8 @@ const bee = byId['bee-knight'];
   const lark = {id: 'lark', effects: {diurnal: 1, diurnalHp: 1, flying: true}}, thorny = {id: 'thorny', effects: {thorns: 2, triggers: [{on: 'onPlay', do: 'draw'}]}}, plain = {id: 'plain', effects: {}};
   // T-1 / T-2 fight (both sides' cards go through the same maskHiddenSkills)
   c.matchState = {mode: 'tutorial', tutorialStage: 1}; V.reset();
-  const mb = V.maskHiddenSkills(bee), ml = V.maskHiddenSkills(lark), mt = V.maskHiddenSkills(thorny);
+  const beeL1 = Object.assign({}, bee, {effects: Object.assign({}, bee.effects, (bee.levelSkills || {})[1])}); // 2026-11-06 TESTFIX2: the Level 1 Bee Knight (its skills live in levelSkills 1 since CONTENT12's fold)
+  const mb = V.maskHiddenSkills(beeL1), ml = V.maskHiddenSkills(lark), mt = V.maskHiddenSkills(thorny);
   ok(V.revealTut12(), '1. a T-1 fight is the T-1 / T-2 reveal');
 // 2026-10-30 TUT2: owner SKL0-1 "T-1/T-2 won't have swarm or flying": no Flying exception any more (TUT12_SHOWN empty), every skill "?"
   ok(JSON.stringify(mb.effects) === '{}' && mb._hiddenSkills === 2, `1. T-1: Bee Knight's Flying and Swarm both read "?" (${JSON.stringify(mb.effects)}, ${mb._hiddenSkills})`);
@@ -54,7 +55,8 @@ ok(/if\(ev && !ev\.__t12 && revealTut12\(\)\) return tut12LogMask\(logText\(/.te
 
 // ---- 2. Bee Knight's levels
 // 2026-10-30 TUT2: owner SKL0-1 "T-1/T-2 won't have swarm or flying ... no skills till lvl 1": Flying arrives at Level 1 too
-ok(bee && JSON.stringify(bee.effects) === '{"swarm":true,"flying":true}' && JSON.stringify(bee.levelSkills) === '{"1":{"swarm":true,"flying":true}}', '2. cards.json: Bee Knight as printed (Level 1) has Swarm + Flying; levelSkills: both arrive at Level 1 (TUT2)');
+// 2026-11-06 TESTFIX2: CONTENT12 folded the owner's live Bee Knight: Swarm {Bee} + Flying sit in levelSkills 1 only (effects {})
+ok(bee && JSON.stringify(bee.effects) === '{}' && JSON.stringify(bee.levelSkills) === '{"1":{"swarm":["Bee"],"flying":true}}', '2. cards.json: Bee Knight as printed (Level 1) has Swarm + Flying; levelSkills: both arrive at Level 1 (TUT2)');
 // 2026-11-02 (ENG18, owner BASELVL-1: "Baby cards start at level 0"): a Baby card's Hatchling is its one Level 0 level skill
 ok(cards.filter(c=> c.levelSkills).every(c=> Object.keys(c.levelSkills).every(k=> +k > 0 || (c.kind === 'baby' && JSON.stringify(c.levelSkills[k]) === '{"hatchling":true}'))), '2. no levelSkills at Level 0 (but a Baby card\'s Hatchling)');
 const L = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = L.G;

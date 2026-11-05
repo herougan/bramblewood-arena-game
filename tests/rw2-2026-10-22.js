@@ -62,8 +62,9 @@ const CH = require(path.join(ROOT, 'tools', 'challenge_cards_2026_10_22.js')).pi
 const flagged = cards.filter(c=> c.source && c.source.challenge).map(c=> c.id).sort();
 // 2026-11-04 (TESTFIX1): BAL9 (call BAL9-1, 2026-11-02, rarities against the new map lists) lowered four of the six from Heroic to Rare / Very Rare,
 // so the 10-22 picker (it ranks by rarity) now picks differently; the six flags stay where RW2 put them, and Rare is the floor now
-ok(CH.length === 6 && flagged.length === 6 && JSON.stringify(flagged) === JSON.stringify(['echo-matriarch', 'heron-hag', 'iron-warden', 'pride-queen', 'triumvirate', 'yeti-chieftain']), `1. the six flagged cards are RW2's picks (${flagged.join(', ')})`);
-ok(flagged.every(id=> defs[id].source.kind === 'map' && !['pack'].includes(defs[id].source.kind) && ['rare', 'veryrare', 'superrare', 'heroic', 'unique', 'epic'].includes(defs[id].rarity)), '1. challenge cards are map rewards (never pack cards), Rare or better');
+// 2026-11-06 TESTFIX2: CONTENT10 (LISTFIX2-2 b, owner 2026-11-04/05) gave 19-6 the plain Yeti as its reward and moved the challenge flag from Yeti Chieftain (now a pack card) to Yeti (Common)
+ok(CH.length === 6 && flagged.length === 6 && JSON.stringify(flagged) === JSON.stringify(['echo-matriarch', 'heron-hag', 'iron-warden', 'pride-queen', 'triumvirate', 'yeti']), `1. the six flagged cards are RW2's picks (${flagged.join(', ')})`);
+ok(flagged.every(id=> defs[id].source.kind === 'map' && !['pack'].includes(defs[id].source.kind) && (id === 'yeti' /* LISTFIX2-2 b: Common by the owner's call */ || ['rare', 'veryrare', 'superrare', 'heroic', 'unique', 'epic'].includes(defs[id].rarity))), '1. challenge cards are map rewards (never pack cards), Rare or better');
 ok(CH.every(p=> ['elite', 'champion', 'miniboss', 'dungeon'].includes(p.kind)) && new Set(CH.map(p=> p.band)).size === CH.length && CH.every(p=> p.map >= 4), '1. one per four-map band from Map 4, on elite-kind fights');
 { const c = defs[flagged[0]], s = c.source; defs[c.id] = Object.assign({}, c, {source: Object.assign({}, s, {id: 'm5'})});
   ok(F.cardRewardIsChallenge('m5', {key: s.node, kind: 'miniboss'}, c.id) && F.cardRewardRankFor('m5', {key: s.node, kind: 'miniboss'}, c.id) === 'SS', '1. a challenge card asks SS');

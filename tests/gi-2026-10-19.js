@@ -160,7 +160,7 @@ ok((eng.match(/aiBonusVs\(d, f\)/g) || []).length >= 4, 'every CPU slot choice (
 // ---- 15. Skill costs (canonical/skill-costs.json: S = trigger weight × action value)
 const SC = require('../tools/skill_costs.js'), table = JSON.parse(R('canonical/skill-costs.json')), T = SC.make(table);
 const sk = id=> table.skills.find(x=> x.id === id);
-[['hunter', 'half', 1], ['hunterVs', 'fixed', 0], ['executioner', 'half', 1], ['detonate', 'n', 0.2 /* 2026-10-26 (CONTENT3, E18): Detonate N, per tick; was fixed 1 */], ['proliferate', 'n', 2], ['brittle', 'half', 0.5], ['prayerWard', 'n', 0.75], ['fieldBreaker', 'half', 1]]
+[['hunter', 'n', 0.51 /* 2026-11-06 TESTFIX2: SKILL2 (BUDGET2-1, 2026-10-31) re-measured Hunter to 0.51 per N; GI's half 1 is gone from the entry */], ['hunterVs', 'fixed', 0], ['executioner', 'half', 1], ['detonate', 'n', 0.2 /* 2026-10-26 (CONTENT3, E18): Detonate N, per tick; was fixed 1 */], ['proliferate', 'n', 6.1 /* 2026-11-06 TESTFIX2: EN3 priced it up to 6.1 (owner 2026-10-23 19:27 #6); GI's 2 is prevValue */], ['brittle', 'half', 1 /* 2026-11-06 TESTFIX2: the owner applied the measured worth 2026-10-19 (1.14, priced 1); GI's 0.5 is prevValue */], ['prayerWard', 'n', 0.75], ['fieldBreaker', 'half', 1]]
   // 2026-10-19 (package TC): the owner applied the measured worth — an applied entry keeps the GI value as prevValue (value = max(0, measuredS))
   // 2026-11-04 (TESTFIX1): later re-measures (SKILL2 2026-10-31, BUDGET2-1; the bramble-15 pipeline BAL10 / BAL12 / BAL14) re-priced some in place
   // (value = measuredS, scale n with a pow); GI's value must then sit in the entry's history
@@ -217,7 +217,8 @@ ok(appSrc.includes("{k:'brittle', re:/\\b(brittle)\\b/gi, cs:true, name:TX('ui.s
 ['sporeCloud', 'thunderstorm', 'tangledRoots'].forEach(k=> ok(new RegExp(`\\n  ${k}: +\\{icon:'[^']+', name:TX\\('ui\\.fx-name-`).test(appSrc), `${k}: in FIELD2 (the Field effects chapter, Edit skirmish, the Effects library)`));
 ok(appSrc.indexOf('Object.assign(FIELD2, {\n  sporeCloud') > 0 && appSrc.indexOf('Object.assign(FIELD2, {\n  sporeCloud') < appSrc.indexOf('...Object.keys(FIELD2).map(k=>'), 'the new fields join FIELD2 before Edit skirmish reads it');
 ok(appSrc.includes('{ const g = giLogText(ev, nm); if(g) return g; }') && appSrc.includes('try{ giVfx(ev); }catch(e){}') && appSrc.includes('try{ giStatusBadges(c, badges); }catch(e){}'), 'the log, the looks and the badges are hooked');
-ok(appSrc.includes("'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots'].includes(ev.field)) hit = markFieldRow"), 'a new field row is learned when it first does something');
+// 2026-11-06 TESTFIX2: ENG10 / ENG16 added graspingBriars and quicksand to the same list (the list grew; the rows are still learned on first tick)
+ok(appSrc.includes("'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots', 'graspingBriars' /* ENG10 */, 'quicksand' /* ENG16 */].includes(ev.field)) hit = markFieldRow"), 'a new field row is learned when it first does something');
 ok(appSrc.includes('brittle:rc.brittle||0') && appSrc.includes('brittle:c.brittle||0'), 'the replay snapshot carries Brittle');
 const TKEYS = Object.keys(TXT).filter(k=> /^ui\.(skn-|sk-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)|hunter-vs-|st-brittle|stx-brittle|fx-name-(spore|thunder|tangled)|fxx?-(spore|thunder|tangled)|log-(spore|thunder|tangled|roots|detonate|proliferate|brittle|field-)|float-(brittle|field-break)|brittle-tip|prayer-ward-tip)/.test(k));
 // 2026-10-19 (package SK3): its own skill names (ui.skn-*) and Hunter's Weak pick are SK3's keys, counted in tests/skills-sk3-2026-10-19.js
