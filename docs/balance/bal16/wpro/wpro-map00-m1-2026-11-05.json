@@ -1,0 +1,83 @@
+{
+ "tool": "tools/bal16/refdecks_2026_11_05.js",
+ "generated": "2026-11-05T01:23:30.719Z",
+ "map": {
+  "id": "m1",
+  "num": 0,
+  "name": "Bramblewood Outskirts"
+ },
+ "pool": [
+  "ant-scout",
+  "beaver-lumberjack",
+  "bee-forager",
+  "bee-sentry",
+  "chipmunk-forager",
+  "chipmunk-skirmisher",
+  "cottontail",
+  "crossed-eyes",
+  "duck-paddler",
+  "earthworm",
+  "honey-bee",
+  "house-cat",
+  "silver-minnow",
+  "soldier-ant",
+  "terrier-pup",
+  "worker-ant"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "apart": 10,
+ "decks": [
+  {
+   "plan": "low",
+   "deck": {
+    "beaver-lumberjack": 4,
+    "chipmunk-forager": 4,
+    "earthworm": 4,
+    "silver-minnow": 4,
+    "worker-ant": 4
+   },
+   "score": 0.0486,
+   "ci": [
+    0.0144,
+    0.0828
+   ],
+   "refWins": 0.9375,
+   "labels": [
+    "midrange (average 0.0 Lumber)"
+   ],
+   "apartFrom": [],
+   "steps": 9,
+   "games": 1728,
+   "seconds": 30
+  },
+  {
+   "plan": "top-heavy",
+   "deck": {
+    "beaver-lumberjack": 4,
+    "bee-sentry": 4,
+    "chipmunk-forager": 4,
+    "crossed-eyes": 4,
+    "house-cat": 4
+   },
+   "score": 0.25,
+   "ci": [
+    0.1838,
+    0.3162
+   ],
+   "refWins": 0.625,
+   "labels": [
+    "midrange (average 0.0 Lumber)"
+   ],
+   "apartFrom": [
+    12
+   ],
+   "steps": 9,
+   "games": 1740,
+   "seconds": 34
+  }
+ ]
+}
