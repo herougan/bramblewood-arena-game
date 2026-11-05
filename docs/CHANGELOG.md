@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Package FIX9 (owner notes 22:18)
+- Players see: Shell N is now "each round, when first hit: +N Armor until the round ends" (no temporary Health, it still attacks); the 💧N water pips show only while Shift is held; a unit a Pounce (or any arrival) wounds or kills shows its real Health until the blow lands; the Dungeons tab says Dailies whenever it lists more than one dungeon; raid CPU allies keep playing (a full row swaps its weakest unit for a better card from its next 3; a spent deck is shuffled again).
+- Shell re-priced from its own measure (canon tool, bramble 15, 1,000 fights, stat yardstick): Shell 1 0.34, 2 0.61, 4 0.80 -> 0.37 x N^0.62 (was 1.78 x N^0.345: 1.78 / 2.26 / 2.87); `canonical/skill-costs.json` (the budget formula in `bramblewood-budget.js` has no Shell term). The seven Shell cards' use falls 5-13 points; none leaves its band; Giant Clam was over before and still is (109% -> 102%). Stats not changed (FIX9-1). Results: `docs/balance/skill-canon-fix9-*-2026-11-05.json`.
+- Tests: tests/fix9-2026-11-05.js (new), tests/e2e/fix9_2026_11_05.py (browser, 390 + 1366); keywords-2026-10-12 updated for the new Shell. card-matrix: 0 failures, 471 golden diffs, every one a fight with a Shell card (433 duels, 24 squads, 14 matches); goldens not updated (batch review).
+
 ## 2026-11-05 Release 11-05a (DEC2-5, UI22a, ENG24, UI22, CONTENT10, BAL16, UI21, BAL17, CONTENT11, BAL18, ART9, ART9b)
 - Players see: brambles +2 on every ability number; new skills Relict, Meld, Immunity, Sequestration; the map card counts (own 10 -> 5, carried 5 -> 16 by map); 142 fight decks rebuilt with each fight's own list; four two-card combo skirmishes; Maps 21-24 retuned; nests unlock from discovery (Maps 4, 8, 12, 16, 20, 24) with shadow slots; a Keyword of the map and Skirmish rewards / Recommended by Claude in Map cards (which scrolls again); best rank on cleared nodes; 11 early boss gimmicks; Nudibranch and Victoria Regia; new art for them and Old Snapjaw; seven field scenes of their own.
 - Balance tools: new PRO / BPRO / WPRO reference decks for Maps 0-24; 85 stale ladder decks rebuilt. Road (Map reference, no leader, 256 fights): 109 in band / 137 within 10 / 63 beyond 20.
