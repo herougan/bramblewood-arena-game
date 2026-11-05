@@ -16,7 +16,8 @@ const src = fs.readFileSync(path.join(R, 'arena_app.js'), 'utf8');
 // EN7 / ENG19 ...: the literal is a prefix) and a key in a line comment; a key picked by a ternary ("TX(e.weak ? 'ui.a' : 'ui.b')", BAL11) is a use
 const inComment = i=>{ const ls = src.lastIndexOf('\n', i) + 1, line = src.slice(ls, i); return /(^|[^:'"`])\/\//.test(line.replace(/'[^']*'|"[^"]*"|`[^`]*`/g, '')); };
 const uses = [...src.matchAll(/\bTX\(\s*'([^']+)'\s*(,\s*\{)?/g)].filter(m=> src.slice(m.index + m[0].length).trimStart()[0] !== '+' && !/^\s*\+/.test(src.slice(m.index + m[0].length - (m[2] ? m[2].length : 0))) && !inComment(m.index));
-const ternary = [...src.matchAll(/\bTX\([^()'`]*\?\s*'([^']+)'\s*:\s*'([^']+)'\s*[,)]/g)].flatMap(m=> [m[1], m[2]]);
+// 2026-11-06 (TEXTFIX1): the condition may hold quotes (TX(kind === 'pvp' ? 'a' : 'b'), the match log's empty hint), so quotes are no longer excluded before the ?
+const ternary = [...src.matchAll(/\bTX\([^()`]*?\?\s*'([^']+)'\s*:\s*'([^']+)'\s*[,)]/g)].flatMap(m=> [m[1], m[2]]);
 ok(uses.length > 400, `the code asks for its texts by key (${uses.length} TX calls)`);
 const missing = [...new Set(uses.map(m=> m[1]).filter(k=> !(k in TEXT)))];
 ok(!missing.length, `every TX key is in the table (missing: ${missing.slice(0, 10).join(', ')})`);
@@ -41,8 +42,13 @@ for(const m of uses){
   if(lack.length) bad.push(`${m[1]} (no ${lack.join(', ')})`);
 }
 ok(!bad.length, `every {placeholder} is filled at every call: ${bad.slice(0, 8).join('; ')}`);
-const unused = Object.keys(TEXT).filter(k=> !uses.some(m=> m[1] === k) && !ternary.includes(k));
-ok(!unused.length, `no text in the table goes unused (${unused.slice(0, 8).join(', ')})`);
+// 2026-11-06 (TEXTFIX1): a key that sits quoted in any game source (a table of keys, a data row, a TX(...) wrapper) is used too
+const allSrc = fs.readdirSync(R).filter(f=> /^(arena_app\.js|arena_template\.html|bramblewood-(?!texts).*\.js)$/.test(f)).map(f=> fs.readFileSync(path.join(R, f), 'utf8')).join('\n');
+// 2026-11-06 (TEXTFIX1): a name built from a prefix ("TX('ui.bal13-tactic-' + t)", "TX(`ui.c11-${id}-name`)") uses every key that starts with the prefix; TESTFIX2's list was cut at 8 and hid ~350 of these
+const dynPre = [...new Set([...src.matchAll(/\bTX\(\s*'([^']+)'\s*\+/g), ...src.matchAll(/\bTX\(\s*`([^`$]+)\$\{/g)].filter(m=> !inComment(m.index)).map(m=> m[1]))];
+const unused = Object.keys(TEXT).filter(k=> !uses.some(m=> m[1] === k) && !ternary.includes(k) && !dynPre.some(p=> k.startsWith(p)) && !quoted(k));
+function quoted(k){ return ["'", '"', '`'].some(q=> allSrc.includes(q + k + q)); }
+ok(!unused.length, `no text in the table goes unused (${unused.length}: ${unused.slice(0, 40).join(', ')})`);
 
 // 2. TX itself
 const anyVar = Object.keys(TEXT).find(k=> /\{n\}/.test(TEXT[k]));

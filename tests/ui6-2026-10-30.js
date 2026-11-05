@@ -57,7 +57,7 @@ ok(/opts\.logUid != null \? cardActionLogHTML\(opts\.logUid\)/.test(fnSrc('fullC
 { const T = require(path.join(ROOT, 'bramblewood-texts.js'));
   const en = k=> T.TX(k);
   ok(en('ui.ar-group-name') === 'Multiplayer' && en('ui.pl2-coop') === 'Multiplayer' && /Multiplayer/.test(en('ui.ar3-invited')) && /Multiplayer/.test(en('ui.coop2-unsupported')), 'X19: the group / co-op dungeon is Multiplayer');
-  ok(/Energy/.test(en('ui.ar-group-sub')) && /Energy/.test(en('ui.coop2-tab-sub')), 'X19: Multiplayer says it uses Energy');
+  ok(/Energy/.test(en('ui.coop2-tab-sub')), /* 2026-11-06 (TEXTFIX1): ui.ar-group-sub was unused and is gone */ 'X19: Multiplayer says it uses Energy');
   ok(en('ui.ui6-dailies') === 'Dailies' && /Dailies/.test(en('ui.dungeon-sweep-locked')) && /share/.test(en('ui.dungeon-key-rule')) && /share/.test(en('ui.dungeons-sub')), 'X19: the daily dungeons are the Dailies, and their keys are shared');
   ok(/TX\('ui\.ui6-dailies'\)/.test(fnSrc('dungeonTabLabel')) && !/'Daily Dungeons'/.test(app) && !/Daily dungeon\$\{note\}/.test(app), 'X19: the tab and the world map say Dailies (no hard-coded "Daily Dungeons")');
   const keys = Object.keys(T.TEXT || {}).filter(k=> !/^(ui|toast|results)\.(ex|codex)/.test(k));
@@ -65,7 +65,7 @@ ok(/opts\.logUid != null \? cardActionLogHTML\(opts\.logUid\)/.test(fnSrc('fullC
   ok(!bad.length, 'X19: no English text says "Dungeon key", "Group Dungeon", "daily dungeon" or "Co-op" (' + bad.slice(0, 5).join(', ') + ')');
   const CODES = ['de', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt', 'ta', 'tl', 'zh-Hans', 'zh-Hant'];
   const strip = v=> /^[^\w{]/.test(v) ? v.replace(/^\W+\s/, '') : v;
-  const need = ['ui.ar-group-name', 'ui.ar-group-sub', 'ui.dungeon-key-rule', 'ui.dungeons-sub', 'ui.coop2-tab-sub', 'ui.coop2-unsupported', 'ui.ui6-dailies', 'ui.ux2-br-tower', 'toast.dungeon-key-used', 'ui.dungeon-keys-count'].map(k=> strip(en(k)));
+  const need = ['ui.ar-group-name', 'ui.dungeon-key-rule', 'ui.dungeons-sub', 'ui.coop2-tab-sub', 'ui.coop2-unsupported', 'ui.ui6-dailies', 'ui.ux2-br-tower', 'toast.dungeon-key-used', 'ui.dungeon-keys-count'].map(k=> strip(en(k)));
   CODES.forEach(c=>{ const L = JSON.parse(rd('lang/' + c + '.json')); const miss = need.filter(e=> !(e in L) || !L[e]); ok(!miss.length, `X19: ${c} translates the new names (${miss.join(' | ')})`); });
 }
 

@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-06 Package TEXTFIX1 (text, emoji and icon failures from TESTFIX2)
+- Players see: the Immunity text says Deadly Poison (was Greater Poison); four long tooltips (SPECIAL list, Wet, Fast-forward, Feed) are shorter in all 12 languages; Glean shows 🌾, Sabotage 🪫 and Fortify 🏰 (were 🫐, 🪛 and 🏯, shared with other skills); the Crepuscular entry in "+ Add Skill" reads "Crepuscular {Day} → {Night}" with the names filled in; "Starter" and "Rage" are in the main language packs.
+- Removed 5 unused TX keys and their rows: ui21-mapkw-sub, ar-group-sub, ar-group-soon, ui12-skirm-reroll, pref-level. `ui.bal13-tactic-flock` stays (ladder decks ask for it as `TX('ui.bal13-tactic-' + tactic)`).
+- Emoji sets and atlases regenerated (601 emoji incl. 🛞 🪻 🪫 🌾); `canonical/unit-themes.json` regenerated (it was stale).
+- Tests: `game-texts` now counts a key as used when a TX name is built from a prefix or sits quoted in a game source, and finds the match log's quoted ternary; pins for the removed keys and the Crepuscular label updated. Script: `tools/i18n_2026_11_06_textfix1.py`.
+
 ## 2026-11-06 Package TESTFIX2 (the full unit run, stale pins updated; tests only)
 - Players see: nothing. Tests only (`tests/`); no game code, card data, balance number, text or Supabase write changed.
 - Stale pins updated with dated `TESTFIX2` comments (each names the package that changed the value on purpose): RAID2 (raid screen without its explainer lines: raid-stages, raid-fixes, x2, u3, rc), UI21 (nest schedule: gates), LISTFIX2-2 b (Yeti is 19-6's challenge card: rw2, dec1), ENG24 (Relict passes the wind, Carnage 1.68, brambles +2: bp, eb, eng10), CONTENT11-3 / CONTENT12's fold of the owner's live edits (Gull Thief, Horseshoe Crab, Duckling, Mangrove Mudskipper, Bee Knight's skills in levelSkills 1, Conch Herald, Giant Clam, Alley Cat / Chipmunk Cavalry / Rock Pool Starfish, Riverworks Bastion, Guppy / Ant Warrior no longer Tide / Swarm: en6, eng17, eng18, eng23, skl0, tut2, tut3, skill2, bal2, bal3, df3, dec1), BAL16 / BAL19 / CONTENT12 deck and leader changes (lead, eb, fix6 4-5, content10 2-4), THEME6-1 (Maps 21-24 pools: n221), SKILL2 / EN3 re-prices (gi), FIX9's new helpers (ui2 harness), UI9's level-up face (ui2).

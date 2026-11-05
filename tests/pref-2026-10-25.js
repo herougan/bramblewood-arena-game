@@ -79,7 +79,7 @@ ok(/adminModeEnabled \? refPlayToggleHTML\(\) : '' \/\* 2026-10-25 \(package PRE
 ok(/selectedNode\.skirm \? xrefPanelHTML\(map, selectedNode\) : ''/.test(app) && /data-skirm-you/.test(fnSrc('xrefPanelHTML')), '2. (UI10) the skirmish panel picks your deck or the set');
 ok(/m\.refDeck \? `<span class="hud-ref-tag"/.test(app) && /TX\('ui\.pref-ref-tag'\)/.test(app), '2. the fight\'s top bar shows REF');
 ok(/'proFight', 'refDeck'/.test(app) && /if\(matchState\.proFight \|\| matchState\.refDeck\) matchState\.adminTest = true/.test(app), '2. a resumed reference-set fight is still unpaid');
-{ const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, keys = ['ui.pref-set-map', 'ui.pref-toggle', 'ui.pref-set', 'ui.pref-toggle-sub', 'ui.pref-xref-vs', 'ui.pref-xref-you', 'ui.pref-level', 'ui.pref-xref-node-tip', 'ui.pref-xref-row', 'ui.pref-ref-tag', 'ui.pref-ref-tag-tip', 'ui.pref-result'];
+{ const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, keys = ['ui.pref-set-map', 'ui.pref-toggle', 'ui.pref-set', 'ui.pref-toggle-sub', 'ui.pref-xref-vs', 'ui.pref-xref-you', 'ui.pref-xref-node-tip', 'ui.pref-xref-row', 'ui.pref-ref-tag', 'ui.pref-ref-tag-tip', 'ui.pref-result'];
   const packs = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].map(c=> [c, JSON.parse(rd('lang/' + c + '.json'))]);
   keys.forEach(k=>{ ok(typeof T[k] === 'string' && T[k].length, '2. text ' + k); if(T[k]) packs.forEach(([c, p])=> ok(typeof p[T[k]] === 'string' && p[T[k]].length, `2. ${c}: "${T[k].slice(0, 30)}"`)); });
   ok(T['ui.pref-toggle'] === "Play with the map's reference deck", '2. the switch reads as the owner asked'); }

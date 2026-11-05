@@ -320,7 +320,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 Object.assign(SKILL_ICON, {hunter:'🐆', executioner:'🪦', detonate:'🎆', proliferate:'🧫', brittle:'🫙', kinRally:'📯', packHowl:'📣', prayerWard:'🧿', fieldBreaker:'🧹'}); // 2026-10-19 (package GI); 🧿 Nazar for a Ward (owner, 2026-10-18 21:26)
 Object.assign(SKILL_ICON, {vanguard:'🎖️', web:'🕸️', webbed:'🕸️', sentry:'🗼', carrion:'🦴', hoard:'🐿️', venomMaster:'⚗️', fletcher:'🪶', herbalist:'🌿', shatter:'💥'}); // 2026-10-17 skills (Leech keeps sap's 🧛, Reflect its 🪞)
-Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', quarry:'🪓🪨', smelter:'🏭', disarm:'🫴', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪛', arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
+Object.assign(SKILL_ICON, {harvest:'🌽', scavenge:'🦝', salvage:'🏚️', quarry:'🪓🪨', smelter:'🏭', disarm:'🫴', repair:'🔧', foraging:'🫐', milling:'🪚', pickpocket:'👛', sabotage:'🪫' /* 2026-11-06 (TEXTFIX1): was 🪛, shared with Poison Barbs */, arson:'🔥🪵', fortification:'🏯'}); // Package SK2 (2026-10-19), none shared with another skill
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
@@ -811,7 +811,7 @@ const PASSIVE_DEFS = [
   // Crepuscular – {day}{night} (2026-10-21, package CX2): the day part by day, the night part at night, both in Twilight.
   // ENG23 (2026-11-04, owner: "offer one option of crepescular {}, {} -> {} in day, {} in night"): the braced form's own name in "+ Add
   // Skill", "Crepuscular {day} → {night}"; each brace takes a stat change (+1/+0) or skills (evasive, regen 2), as Tide's do.
-  {key:'crepuscularGrant', category:'passive', get label(){ return TX('ui.eng23-crep-braced'); }, kind:'grant2', placeholders:[TX('ui.cx-day'), TX('ui.cx-night')], grantPlaceholders:['evasive', 'regen 2'],
+  {key:'crepuscularGrant', category:'passive', get label(){ return TX('ui.eng23-crep-braced', {day: '{' + TX('ui.cx-day') + '}', night: '{' + TX('ui.cx-night') + '}'}); /* 2026-11-06 (TEXTFIX1): the braces stay, the names are filled */ }, kind:'grant2', placeholders:[TX('ui.cx-day'), TX('ui.cx-night')], grantPlaceholders:['evasive', 'regen 2'],
     desc:v=>{ const [a, b] = Array.isArray(v) ? v : ['', '']; return TX('ui.sk-crepuscular-grant', {day: grantText(parseGrantText(a)) || TX('ui.cx-nothing'), night: grantText(parseGrantText(b)) || TX('ui.cx-nothing')}); },
     get:e=> e.crepuscularGrant ? [grantToText(e.crepuscularGrant.day), grantToText(e.crepuscularGrant.night)] : undefined,
     apply:(e, vals)=>{ const a = parseGrantText(vals && vals[0]), b = parseGrantText(vals && vals[1]); if(Object.keys(a).length || Object.keys(b).length){ e.crepuscularGrant = {day:a, night:b}; if(!e.crepuscular) e.crepuscular = true; } }},
@@ -2000,7 +2000,7 @@ PASSIVE_DEFS.push(
   {key:'dropRoll', category:'passive', label:TX('ui.eng20-droproll-name'), kind:'boolean', desc:()=> TX('ui.eng20-droproll')},
   {key:'glean', category:'passive', label:TX('ui.eng20-glean-name'), kind:'boolean', desc:()=> TX('ui.eng20-glean')},
   {key:'lumberFeast', category:'passive', label:TX('ui.eng20-feast-name'), kind:'number', min:1, defaultValue:3, desc:v=> TX('ui.eng20-feast', {n: numOr(v, 3)}), get:e=> e.lumberFeast ? numOr(e.lumberFeast, 3) : undefined});
-Object.assign(SKILL_ICON, {dropRoll:'🤸', glean:'🫐', lumberFeast:'🪵'});
+Object.assign(SKILL_ICON, {dropRoll:'🤸', glean:'🌾' /* 2026-11-06 (TEXTFIX1): was 🫐, Foraging's */, lumberFeast:'🪵'});
 // ==== Package ENG10 (2026-10-26, the owner's 10-26 11:19 answers; rules in bramblewood-engine.js, prices in canonical/skill-costs.json and
 // bramblewood-budget.js): the lines, the card editor's rows and the Codex for
 //   the elemental spits named by their element alone (ENG9-3: Cinder, Acid, Venom, Ice, Spark; Ember is a gem, Frost a skill)
@@ -2070,7 +2070,7 @@ PASSIVE_DEFS.push(
   {key:'delivery', category:'passive', label:TX('ui.e22-delivery-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
   {key:'deliveryEvery', category:'passive', label:TX('ui.e22-delivery-every-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery-every', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
   {key:'deliveryRes', category:'passive', label:TX('ui.e22-delivery-res-name'), kind:'select', selectOptions:()=> E22_RES.map(r=> ({value:r, label:e22ResName(r)})), desc:v=> e22ResName(e22ResOf({deliveryRes:v}))});
-Object.assign(SKILL_ICON, {fortify:'🏯', delivery:'📦', deliveryEvery:'📦', deliveryRes:'📦'});
+Object.assign(SKILL_ICON, {fortify:'🏰' /* 2026-11-06 (TEXTFIX1): was 🏯, Fortification's (SK2 icons are unique) */, delivery:'📦', deliveryEvery:'📦', deliveryRes:'📦'});
 sk1Patch(PASSIVE_DEFS, 'stockpile', {hidden:true}); // ENG22 (DESIGN1-6): Delivery {Lumber xN} replaces it in "+ Add Skill"; an old card still reads it
 sk1Patch(PASSIVE_DEFS, 'taunt', {desc:()=> TX('ui.e22-taunt')}); // ENG22 (DESIGN1-4): Taunt pulls the arrows and shots of the enemies around it
 // ==== Package ENG24 (2026-11-04, owner 11-04 22:34 in docs/decisions.json; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
@@ -9280,7 +9280,7 @@ CHIP_FALLBACK_SKILLS.push('mimic'); // Package MT (2026-10-21): Mimic's chip (�
 CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
 CHIP_FALLBACK_SKILLS.push('evolute', 'evoluteAlpha', 'evoluteOmega', 'stem', 'chrysalis'); // Package EV (2026-10-21): 🧬 / 🧬α / 🧬Ω, 🌱, 🐛
 CHIP_FALLBACK_SKILLS.push('hatchling'); // Package ENG17 (2026-11-02): 🐣
-CHIP_FALLBACK_SKILLS.push('dropRoll', 'glean', 'lumberFeast'); // Package ENG20 (2026-11-02): 🤸, 🫐, 🪵N
+CHIP_FALLBACK_SKILLS.push('dropRoll', 'glean', 'lumberFeast'); // Package ENG20 (2026-11-02): 🤸, 🌾, 🪵N
 CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 🪙
 // ENG25 (2026-11-05, owner #7): every state skill gets its chip on the card face (lit while on, zeitLitNow); + Immortal, Hydra, Tribe Delivery
 const ENG25_STATE_CHIPS = new Set(['timbered', 'bedrock', 'forged', 'lastStand', 'plenty', 'scarcity', 'foePlenty', 'foeScarcity', 'heat', 'frost', 'rain', 'storm', 'fog', 'salt', 'drought', 'season',
@@ -51384,9 +51384,9 @@ function sk2Vfx(ev){
   if(ev.kind === 'pickpocket'){ const tr = rcOf(ev.targetUid), me = rcOf(ev.uid); (ev.taken || []).forEach(t=>{ if(tr) tr[t.key] = t.left; if(me) me[t.key] = t.total; });
     fl(el, `👛 +${ev.amount}`, 'gold'); refresh(ev.uid); refresh(ev.targetUid); snd('coin'); return; }
   if(ev.kind === 'pickpocketRes'){ const from = hqTileEl(ev.targetSide); if(from && el){ try{ spawnProjectile(from, el, '🪵'); }catch(e){} } fl(el, `👛 +${ev.amount}`, 'gold'); snd('coin'); return; }
-  if(ev.kind === 'sabotage'){ fl(hqTileEl(ev.targetSide), `🪛 −${ev.amount}`, 'debuff'); snd('curse'); return; }
+  if(ev.kind === 'sabotage'){ fl(hqTileEl(ev.targetSide), `🪫 −${ev.amount}`, 'debuff'); snd('curse'); return; }
   if(ev.kind === 'arson'){ fl(hqTileEl(ev.targetSide), `🔥 −${ev.amount}🪵`, 'debuff'); snd('curse'); return; }
-  if(ev.kind === 'fortify'){ fl(el, '🏯', 'quick'); return; }
+  if(ev.kind === 'fortify'){ fl(el, '🏰', 'quick'); return; }
   if(ev.kind === 'pay'){ fl(el, '−' + (ev.price || []).map(x=> x.n + (x.res === 'stone' ? '🪨' : x.res === 'metal' ? '🔩' : '🪵')).join(' '), 'debuff'); return; } // SK2b
   if(ev.kind === 'cantPay' || ev.kind === 'noRoom' || ev.kind === 'disarmFull'){ fl(el, '🚫', 'quick'); return; }
   if(ev.kind === 'disarm'){ fl(el, '🫴 ' + ((getCardDefs()[ev.equipDefId] || {}).icon || '⚒️'), 'gold'); snd('swipeTone');
