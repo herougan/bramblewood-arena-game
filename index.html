@@ -53247,7 +53247,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'a5c4d9a4fd10', BUILD_CARD_HASH = 'e86f06249b2fc6ed67b2f3eb2647133597926da03008d5efbf53cda52844d100';
+const BUILD_ID = '380c33705903', BUILD_CARD_HASH = 'e86f06249b2fc6ed67b2f3eb2647133597926da03008d5efbf53cda52844d100';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -94607,7 +94607,7 @@ const FIELD_ART = {
   // 2026-10-18: those day rules no longer borrow other cards' scenes; each has its own (tools/make_field_art_2026_10_18.py): the sawmill
   // (Lumber Rush), the fair's stalls and bunting (Timber Fair), the high sun (Midsummer), the violet sunset (Dusk), the wind-tossed night
   // trees (Restless), the red banner at dawn (First Blood), the twin hourglasses (Double Time) and the crumbling cliff (Collapse).
-  fogofwar:{art:'assets/fields/misty.png?v=238712606c'} /* 2026-10-21 (package FOG): borrows the Mist scene until it has its own */, wildfire:{art:'assets/fields/scorching.png?v=087d94132d'} /* 2026-10-23 (package FX4): borrows Scorching's scene until it has its own */, quicksand:{art:'assets/fields/sandstorm.png?v=f9d6200fc8'} /* ENG16 (2026-11-02): borrows the Sandstorm scene until it has its own */, psychicdampener:{art:'assets/fields/psychicdampener.png?v=23af523fe8'}, timber:{art:'assets/fields/timberfair.png?v=84c454280d'}, lumberrush:{art:'assets/fields/lumberrush.png?v=a9a9400fac'}, midsummer:{art:'assets/fields/midsummer.png?v=07626d6f7a'},
+  fogofwar:{art:'assets/fields/fogofwar.png?v=74f67d1653'}, wildfire:{art:'assets/fields/wildfire.png?v=682b7b0f0a'}, quicksand:{art:'assets/fields/quicksand.png?v=7d365b3760'} /* 2026-11-05 (package ART9b, tools/make_field_art_2026_11_05.py): Fog of War, Wildfire and Quicksand no longer borrow Mist, Scorching and Sandstorm; Spore Cloud, Thunderstorm, Tangled Roots and Grasping Briars had no picture */, sporecloud:{art:'assets/fields/sporecloud.png?v=d72a1d3d84'}, thunderstorm:{art:'assets/fields/thunderstorm.png?v=a92bc85265'}, tangledroots:{art:'assets/fields/tangledroots.png?v=1fc41beb46'}, graspingbriars:{art:'assets/fields/graspingbriars.png?v=38b4c56b99'}, psychicdampener:{art:'assets/fields/psychicdampener.png?v=23af523fe8'}, timber:{art:'assets/fields/timberfair.png?v=84c454280d'}, lumberrush:{art:'assets/fields/lumberrush.png?v=a9a9400fac'}, midsummer:{art:'assets/fields/midsummer.png?v=07626d6f7a'},
   dusk:{art:'assets/fields/dusk.png?v=48bfd50758'}, restless:{art:'assets/fields/restless.png?v=6378c2f445'}, firstblood:{art:'assets/fields/firstblood.png?v=43524e7a53'}, doubletime:{art:'assets/fields/doubletime.png?v=3036516831'}, collapse:{art:'assets/fields/collapse.png?v=9926305627'},
 };
 function fieldArtKeyOfRow(row, fr){

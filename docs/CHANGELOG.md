@@ -4,6 +4,9 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-11-05 Package ART9 (card art: Nudibranch, Victoria Regia, Old Snapjaw)
 - PixelLab Create image (Pro, 128x128, 2x2, the owner's account, nothing bought), one variant picked by eye per card, cropped in the browser and imported with `tools/art/art9_import_2026_11_05.py` (ART7's 256 px finish + ART2's art field edit). Nudibranch A, Victoria Regia B, Old Snapjaw A. Old Snapjaw stays an alligator and keeps its flower crown; a first run that drew a snapping turtle was not used. Contact sheet `docs/art/art9-contact-2026-11-05.png`; prompts in `art/cards/<id>.prompt.txt` and `docs/art-style-prompts.md`. Viewed in game (card detail, 390 px).
+## 2026-11-05 Package ART9b (field art: seven more Environment cards get their own scene)
+- **New pictures:** Spore Cloud, Thunderstorm, Tangled Roots and Grasping Briars had none (the card showed its icon); Fog of War, Wildfire and Quicksand borrowed Mist, Scorching and Sandstorm. Each now has its own painted scene (`art/fields/<id>.png`, `tools/make_field_art_2026_11_05.py`, contact sheet `docs/art/art9b-contact-2026-11-05.png`).
+- Wired in `FIELD_ART` in `arena_app.js` (keys are the editor ids).
 
 ## 2026-11-05 Package BAL18 (stale ladder decks, the Lodge Matriarch, road re-measure)
 - **Reference ladder:** the 85 decks on 32 maps that had left their map's pool after CONTENT10 were rebuilt with BAL13's candidates, measure and choice rule. The other 315 decks are unchanged. Each map is ranked weak to strong again, and the result is baked into the game (`tools/bal18/ladder_stale_2026_11_05.js`, `tools/opt/ref_decks.js --apply`).
