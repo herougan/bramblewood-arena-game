@@ -121,8 +121,9 @@ def assess(tag, kind, at, w, h, reduced):
         check(bx['h'] >= 1.4 * bx['w'], f'{tag} column: its box is upright ({bx["w"]:.0f}x{bx["h"]:.0f})')
         check(bx['t'] <= top and bx['b'] >= low and bx['l'] <= cx <= bx['r'], f'{tag} column: it covers the struck column (box {bx["l"]:.0f},{bx["t"]:.0f}-{bx["r"]:.0f},{bx["b"]:.0f}; column x {cx:.0f}, {top:.0f}..{low:.0f})')
     else:
+        # RAID2 (2026-11-05): a raid fight now opens zoomed in (cells up to ~1.9x wider than the screen's third), so the limb, laid on screen, is judged against at most a 120px cell
         lo = min(c['l'] for c in cells); hi = max(c['r'] for c in cells); cy = sum(c['t'] + c['h']/2 for c in cells) / len(cells); cw = min(c['w'] for c in cells)
-        check(d['horizontal'] and abs(dy) < 2 and abs(dx) > 2 * cw, f'{tag} row: it lies along the row (base {B["x"]:.0f},{B["y"]:.0f} -> tip {T["x"]:.0f},{T["y"]:.0f})')
+        check(d['horizontal'] and abs(dy) < 2 and abs(dx) > 2 * min(cw, 120), f'{tag} row: it lies along the row (base {B["x"]:.0f},{B["y"]:.0f} -> tip {T["x"]:.0f},{T["y"]:.0f})')
         check(bx['w'] >= 2 * bx['h'], f'{tag} row: its box is lying down ({bx["w"]:.0f}x{bx["h"]:.0f})')
         check(bx['l'] <= lo + 2 and bx['r'] >= hi - cw * .35 and bx['t'] <= cy <= bx['b'], f'{tag} row: it spans the struck row (box {bx["l"]:.0f}-{bx["r"]:.0f}, {bx["t"]:.0f}..{bx["b"]:.0f}; row {lo:.0f}-{hi:.0f} at y {cy:.0f})')
         check(B['x'] < lo, f'{tag} row: it comes in from the bramble\'s side, the left ({B["x"]:.0f} < {lo:.0f})')

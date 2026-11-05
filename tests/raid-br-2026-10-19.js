@@ -98,7 +98,8 @@ const sfb = B.grab('startRaidFullBattle');
 ok(/raidBossBR\(def, f, b\)/.test(sfb) && /raidSideBR\(mainDeckLevel\(myDeckCounts, matchLeaderId\(\)\), allies\)/.test(sfb) && /a\.level = sideBR\.allies\[i\]/.test(sfb), 'the full raid rates both sides from the built fight; each ally chip shows its real BR');
 ok(/brLabel: TX\('ui\.raid-br-side'\)/.test(sfb) && /brLabel: TX\('ui\.raid-br-boss'\)/.test(sfb), 'the VS screen shows "Your side\'s BR" and "Boss BR"');
 ok(/deckLevelGapClass\(theirs, mine\)/.test(B.grab('showVsScreen')), 'the VS screen colours the boss\'s chip by the gap to your side\'s');
-ok(/raidPartBRLine\(def, p\.id, st\)/.test(B.grab('raidPanelHTML')) && /deckLevelGapClass\(r\.boss\.total, side\)/.test(B.grab('raidPartBRLine')), 'the raid page shows each open part\'s boss BR and your side\'s, coloured by the gap');
+// RAID2 (2026-11-05, owner: "Simplify the raid card(s)"): the part cards no longer show the BR line; raidPartBRLine stays (coloured by the gap)
+ok(!/raidPartBRLine\(def, p\.id, st\)/.test(B.grab('raidPanelHTML')) && /deckLevelGapClass\(r\.boss\.total, side\)/.test(B.grab('raidPartBRLine')), 'the raid page no longer shows each part\'s BR line (RAID2); raidPartBRLine keeps its gap colouring');
 
 // ======================= texts and packs =======================
 const KEYS = ['ui.raid-br-boss', 'ui.raid-br-side', 'ui.raid-br-line', 'ui.raid-br-boss-tip', 'ui.raid-br-side-tip'];

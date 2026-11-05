@@ -28715,13 +28715,13 @@ function raidLocale(){ try{ const c = (window.BramblewoodI18n && window.Bramblew
   return (typeof Intl !== 'undefined' && Intl.NumberFormat.supportedLocalesOf([c]).length) ? c : undefined; }catch(e){ return undefined; } }
 function raidNum(n){ return Math.round(Number(n) || 0).toLocaleString(raidLocale()); }
 function raidPhaseOf(ps){ const bars = Math.max(1, ps.def.bars|0); return ps.defeated ? bars : Math.max(1, Math.min(bars, bars - Math.ceil(ps.barsLeft - 1e-9) + 1)); }
-function raidBarsHTML(ps){
+function raidBarsHTML(ps, o){ o = o || {}; // 2026-11-05 (RAID2): o.simple = no phase pill on the part picker
   const p = ps.def, bars = Math.max(1, p.bars|0), total = ps.total || bars * (p.barHp||0), left = Math.max(0, Math.ceil(ps.remaining));
   const frac = total ? Math.max(0, Math.min(1, ps.remaining / total)) : 0, phase = raidPhaseOf(ps);
   const ticks = bars > 1 ? Array.from({length: bars - 1}, (_, i)=> `<i class="rp-tick" style="left:${((i + 1) / bars * 100).toFixed(3)}%"></i>`).join('') : '';
   const tip = bars > 1 ? `${p.name} has ${bars} phases of ${(p.barHp||0).toLocaleString(raidLocale())} HP: the marks on its bar. Phase ${phase} of ${bars} now.` : '';
   return `<div class="rp-bars is-single" role="meter" aria-label="${escapeAttr(p.name)} health" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${left}"${tip ? ` title="${escapeAttr(tip)}"` : ''}><span class="rp-bar"><span style="width:${(frac*100).toFixed(2)}%"></span>${ticks}</span></div>
-    <div class="rp-legend"><span class="rp-left">❤️ <b>${left.toLocaleString(raidLocale())}</b> / ${total.toLocaleString(raidLocale())} <small>HP left</small></span>${bars > 1 ? `<span class="rp-phase" title="${escapeAttr(tip)}">Phase ${phase} of ${bars}</span>` : ''}</div>`;
+    <div class="rp-legend"><span class="rp-left">❤️ <b>${left.toLocaleString(raidLocale())}</b> / ${total.toLocaleString(raidLocale())} <small>HP left</small></span>${bars > 1 && !o.simple ? `<span class="rp-phase" title="${escapeAttr(tip)}">Phase ${phase} of ${bars}</span>` : ''}</div>`;
 }
 // 2026-10-19 (package RO, owner 00:29): a claim per life of the raid (it falls: the full rewards; it ends standing, by a restart or the
 // cycle's end: the held-raid share), in your instance, for this cycle and the last; only if you took part (RaidM.raidReward). The key
@@ -28983,6 +28983,18 @@ function raidPanelHTML(){
   const tierTxt = t=> Object.entries((rw.tiers || {})[t] || {}).map(([k, v])=> k === 'title' ? `title “${escapeHtml(v)}”` : `+${v} ${(CURRENCY_META[k] || {}).glyph || k}`).join(' ');
   // 2026-10-19 (package RC): a participant's fall pays reward cards from the packs and trophy shards (RaidM.RAID_REWARD_TABLE)
   const rcCards = Math.max(0, Math.round(rw.cards != null ? Number(rw.cards) : 1)), rcShards = rw.shards != null ? Math.max(0, Math.round(Number(rw.shards) || 0)) : ((RaidM.RAID_REWARD_TABLE || {}).participant || {}).shards || 0;
+  // 2026-11-05 (package RAID2, owner on the part picker: "just show 3 cards. when all 3 defeated, the final card shows up as a full rectangle"):
+  // the parts that wait on others (the Core) stay out of sight until every other part has fallen; then the Core stands alone.
+  const gated = st.parts.filter(ps=> (ps.def.lockedUntil || []).length), free = st.parts.filter(ps=> !(ps.def.lockedUntil || []).length);
+  const shown = gated.length && free.length && free.every(ps=> ps.defeated) ? gated : free.length ? free : st.parts;
+  const myRaidRank = RaidM.raidTotalRank ? RaidM.raidTotalRank(Math.max(0, Math.round(Number(mine) || 0))) : null, nx = RaidM.raidTotalRankNext ? RaidM.raidTotalRankNext(mine) : null;
+  const raidRankNext = nx ? TX('ui.raid-total-rank-next', {n: Math.round(nx.need).toLocaleString(raidLocale()), nextRank: nx.rank}) : TX('ui.raid-total-rank-top');
+  // 2026-11-05 (RAID2, owner: "In terms of rewards, just say what type of resources a player can gain"): the kinds only, icon and name, no amounts
+  const rwTypes = (()=>{ const out = [], seen = new Set(), add = (k, icon, name)=>{ if(!seen.has(k)){ seen.add(k); out.push({icon, name}); } };
+    [rw.kill || {}, ...Object.values(rw.tiers || {})].forEach(o=> Object.entries(o).forEach(([k, v])=>{ if(typeof v === 'number' && v > 0 && CURRENCY_META[k]) add(k, CURRENCY_META[k].glyph, CURRENCY_META[k].label); }));
+    if(rcCards > 0 || raidCardIds(def).length) add('cards', '🃏', TX('ui.raid2-rw-cards'));
+    if(rcShards > 0) add('shards', raidShardIcon(def), raidShardName(def));
+    return out; })();
   const allyNames = (def.allyDecks || []).map(a=> a.name).filter(Boolean);
   return `<div class="panel raid2-panel raid3 map-theme-${escapeAttr(ground)}">
     <button type="button" class="btn small ghost r3-back" data-raid-hub>${escapeHtml(TX('ui.raid-all-raids'))}</button>
@@ -28990,83 +29002,39 @@ function raidPanelHTML(){
       <div class="r3-boss-card" aria-hidden="true">${raidBossIconHTML(def, '🐙')}<span class="r3-boss-glow"></span></div>
       <div class="r3-boss-info">
         <h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage" title="${escapeAttr(raidStageText(st.stage) || st.stage.name)}">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
-        <p class="r3-blurb">${escapeHtml(def.blurb||'')}</p>
-        ${st.stage && raidStageText(st.stage) ? `<p class="r3-hint r3-stage-now"><b>${escapeHtml(st.stage.name)}:</b> ${escapeHtml(raidStageText(st.stage))}</p>` : ''}
-        <div class="r2-total"><div class="raid-boss-hp-bar r3-hp"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
-          <span class="r2-total-line"><span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString(raidLocale())}</b> / ${st.total.toLocaleString(raidLocale())} left <small>(${pct}%)</small></span>${st.defeated ? raidRespawnHTML(def, st) /* 2026-10-19 (owner 23:19): down, it says when it returns */ : `<span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left this week</span>`}</span></div>
+        <div class="r3-hp-row">
+          <div class="r2-total"><div class="raid-boss-hp-bar r3-hp"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
+            <span class="r2-total-line"><span>🐙 <b>${Math.ceil(st.remaining).toLocaleString(raidLocale())}</b> / ${st.total.toLocaleString(raidLocale())}</span>${st.defeated ? raidRespawnHTML(def, st) /* 2026-10-19 (owner 23:19): down, it says when it returns */ : `<span class="r2-days">⏳ ${daysLeft}d</span>`}</span></div>
+          <div class="r3-mine" role="group" title="${escapeAttr(TX('ui.raid-total-rank-tip', {n: Math.round(mine).toLocaleString(raidLocale()), next: raidRankNext}))}">${myRaidRank ? `<span class="rank-hex rank-${escapeAttr(myRaidRank)}" aria-label="${escapeAttr(TX('ui.raid-total-rank', {raidRank: myRaidRank}))}"><i></i><b>${escapeHtml(myRaidRank)}</b></span>` : ''}<span class="r3-mine-dmg"><b>${Math.round(mine).toLocaleString(raidLocale())}</b><small>${escapeHtml(TX('ui.raid2-damage'))}</small></span></div>
+        </div>
       </div>
       ${adminModeEnabled ? `<div class="r3-admin"><button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button><button type="button" class="btn small" data-raid-admin-dmg="0.1" title="Admin: take 10% of the boss's total Health off its open parts">💥 Deal 10%</button><button type="button" class="btn small" data-raid-admin-dmg="0.5" title="Admin: take 50% of the boss's total Health off its open parts">💥 Deal 50%</button><button type="button" class="btn small" data-raid-restart title="${escapeAttr(TX('ui.raid-restart-tip'))}">${escapeHtml(TX('ui.raid-restart'))}</button></div>` : ''}
     </div>
     ${claims.map((c,i)=> raidClaimRowHTML(c, i)).join('')}
-    <div class="r3-me" role="group" aria-label="Your raid this week">
-      <span class="r3-chip"><small>Your damage</small><b>${mine.toLocaleString(raidLocale())}</b></span>
-      <span class="r3-chip"><small>Standing</small><b>${tierLabel || '—'}</b></span>
-      ${tierLabel ? `<span class="r3-chip rk-chip"><small>${escapeHtml(TX('ui.raid-total-rank-label'))}</small>${raidTotalRankBadgeHTML(mine, {none: true})}</span>` : '' /* 2026-10-21 (package RK): the total raid rank beside the standing */}
-      <span class="r3-chip"><small>Your attempts</small><b>${myTries}</b></span>
+    <div class="r3-me" role="group">
       ${raidTicketChipHTML(tickets, tkNext)}
       <span class="r3-chip"><small>${escapeHtml(TX('ui.raid-fight-costs'))}</small><b>${tkCost} 🎫 + ${enLo === enHi ? enLo : enLo + '–' + enHi} ⚡</b></span>
-      <span class="r3-chip r3-part${part.participant ? ' is-in' : ''}${part.strong ? ' is-strong' : ''}${part.leading ? ' is-leading' : ''}" title="${escapeAttr(TX('ui.raid-part-rules', {fights: pr.fights, damage: pr.damage.toLocaleString(raidLocale()), sfights: pr.strongFights, sdamage: pr.strongDamage.toLocaleString(raidLocale()), pct: pr.strongPct}) + ' ' + TX('ui.raid-part-rules-lead', {fights: pr.leadFights, damage: pr.leadDamage.toLocaleString(raidLocale()), pct: pr.leadPct}))}"><small>${escapeHtml(TX('ui.raid-taking-part'))}</small><b>${escapeHtml(raidParticipationText(part))}</b></span>
       ${st.instance > 1 ? `<span class="r3-chip r3-inst" title="${escapeAttr(TX('ui.raid-instance-tip'))}"><small>${escapeHtml(TX('ui.raid-instance-label'))}</small><b>${st.instance}</b></span>` : ''}
       ${raidAutoOpen(def) ? `<span class="r3-chip r3-auto"><small>🤖</small><b>${escapeHtml(TX('ui.raid-auto-open'))}</b></span>` : ''}
       ${(()=>{ /* 2026-10-19 (guild skills): "Guild: +12% bramble Health" */ let t = ''; try{ t = guildRaidBonusText(); }catch(e){} return t ? `<span class="r3-chip gsk-raid" title="${escapeAttr(t)}"><small>🌳</small><b>${escapeHtml(t)}</b></span>` : ''; })()}
     </div>
-    ${(()=>{ const cap = raidLeaderCapOf(def); if(!cap) return ''; // 2026-10-19 (package RX): the raid's leader cost cap, your leader against it
-      const lid = matchLeaderId(), d = lid ? getCardDefs()[lid] : null, lc = raidLeaderCapCheck(def, lid);
-      return `<p class="r3-hint r3-leader-cap${lc.ok ? '' : ' is-over'}">${TX('ui.raid-leader-cap', {cap})} ${d ? (lc.ok ? TX('ui.raid-leader-cost-ok', {name: escapeHtml(d.name), cost: lc.cost, cap}) : `<b>${escapeHtml(lc.text)}</b>`) : ''} <button type="button" class="btn small" data-raid-leader>${TX('ui.raid-change-leader')}</button></p>`; })()}
-    ${tierLabel ? '' : '<p class="r3-hint">Fight any open part to join this week’s raid.</p>'}
-    ${raidAutoOpen(def) ? '' : `<p class="r3-hint r3-auto-hint">${escapeHtml(TX('ui.raid-auto-locked'))}</p>`}
+    ${(()=>{ const cap = raidLeaderCapOf(def); if(!cap) return ''; // 2026-11-05 (package RAID2, owner: "Remove the leader text"): the leader-cost-cap line shows only when your leader is over the cap (the fight won't start then); the leader is otherwise chosen on the Deck screen
+      const lid = matchLeaderId(), lc = raidLeaderCapCheck(def, lid); if(lc.ok) return '';
+      return `<p class="r3-hint r3-leader-cap is-over"><b>${escapeHtml(lc.text)}</b> <button type="button" class="btn small" data-raid-leader>${TX('ui.raid-change-leader')}</button></p>`; })()}
     ${noTickets ? `<p class="r3-hint r3-no-tickets" role="status">${escapeHtml(raidNoTicketsText())} ${raidTicketUseBtnHTML() /* 2026-10-21 (package RK) */}</p>` : ''}
-    <h3 class="r3-h">Pick a part to fight</h3>
-    <div class="r2-parts">${st.parts.map(ps=>{ const p = ps.def;
+    <h3 class="r3-h">${escapeHtml(TX('ui.raid2-pick'))}</h3>
+    <div class="r2-parts${shown.length === 1 ? ' is-one' : ''}">${shown.map(ps=>{ const p = ps.def;
       const waits = (p.lockedUntil||[]).map(id=> (def.parts.find(x=> x.id===id)||{}).name || id).join(', ');
-      const atk = ((p.trench || {}).attacks || []).map(a=> `${a.pattern === 'frontRow' ? '🌊' : '💥'} ${escapeHtml(a.name || 'Attack')} every ${a.every || 1}`).join(' · ');
       return `<div class="r2-part ${ps.locked?'is-locked':''} ${ps.defeated?'is-down':''}">
         <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${ps.total ? Math.ceil(ps.remaining / ps.total * 100) : 0}%</span></div>
-        ${raidBarsHTML(ps)}
-        ${atk ? `<span class="r2-note r3-atk" title="${escapeAttr(TX('ui.raid-attacks-telegraph-title'))}">${atk}</span>` : ''}
-        ${(()=>{ try{ return raidPartBRLine(def, p.id, st); }catch(e){ return ''; } })() /* 2026-10-19 (package BR): the boss's BR and your side's */}
-        <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary${noTickets ? ' is-blocked' : ''}" data-raid-part="${escapeAttr(p.id)}"${noTickets ? ` aria-disabled="true" title="${escapeAttr(raidNoTicketsText())}"` : ''}>⚔️ Fight (${costOf(p.id).tickets}🎫 ${costOf(p.id).energy}⚡)</button>`}
-          <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString(raidLocale())} from other raiders` : ''}</span></div>
+        ${raidBarsHTML(ps, {simple: true})}
+        <div class="r2-part-foot">${ps.defeated ? '💀' : ps.locked ? `🔒 ${escapeHtml(waits)}` : `<button type="button" class="btn small primary${noTickets ? ' is-blocked' : ''}" data-raid-part="${escapeAttr(p.id)}"${noTickets ? ` aria-disabled="true" title="${escapeAttr(raidNoTicketsText())}"` : ''}>⚔️ ${escapeHtml(TX('ui.raid2-fight'))} (${costOf(p.id).tickets}🎫 ${costOf(p.id).energy}⚡)</button>`}</div>
       </div>`; }).join('')}</div>
     <div class="r3-info">
-      <section class="r3-lanes"><h3>Three rows a side</h3>
-        <ol class="r3-rows" aria-label="Your side of a raid fight, front to back">
-          <li class="is-you"><b>Front row · You</b><span>Your deck and your leader. You play here, and your units fight the boss's front.</span></li>
-          <li><b>Middle row · Ally 1</b><span>${escapeHtml(TX('ui.rb-ally-row-mid')) /* 2026-10-19 (package RB): its units stay in its row now */}</span></li>
-          <li><b>Back row · Ally 2</b><span>The other CPU ally, the same way, in its own row.</span></li>
-        </ol>
-        <p class="r3-note">Your three brambles are one: their Health added up, their skills merged. Allies are this week's raiders' decks${allyNames.length ? `, or stand-ins (${allyNames.map(escapeHtml).join(', ')})` : ''}.</p>
-        <p class="r3-note">${escapeHtml(TX('ui.raid-closest-row-note')) /* 2026-10-19 (package RX): closest-row targeting */}</p>
-        ${(()=>{ const rf = Object.assign({}, RaidM.REINFORCE || {}, (def.tuning || {}).reinforce || {}); // 2026-10-19: the raid's own reinforce tuning
-          if(rf.max != null && !(rf.max > 0)) return ''; // no call-ins (2026-10-19, RV2: the boss's row plays took their place)
-          return (rf.every || 1) > 1 ? `<p class="r3-note">${escapeHtml(TX('ui.raid-commons-every', {every: rf.every, max: rf.max, s: rf.max === 1 ? '' : 's'}))}</p>`
-            : `<p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${rf.max != null ? rf.max : 2} at most, only into a free slot with a card in front).</p>`; })()}
-        <p class="r3-note">${escapeHtml(TX('ui.raid-boss-plays-note')) /* 2026-10-19 (package RV2): 3 cards a turn, one a row */}</p>
-        ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(raidDefScaled(def), st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(TX('ui.raid-might', {name: def.name || 'The boss', hp: bh.max, pct: Math.ceil(bh.fraction * 100)}))}</p>` : ''; })() /* 2026-10-19 (RV2): the elders start at 100 Health, down to their own */}
-        ${raidShieldLineHTML(def, st) /* 2026-10-19 (package MX): the boss bramble's Shield, 50 falling with the raid; BF5: raidShieldNow scales it (25) */}
-        ${(()=>{ const br = raidBrambleOf(def); if(!br) return ''; // 2026-10-19 (package U3): the boss's bramble and its attacks, with the parts that use each
-          const seen = new Map(); (def.parts || []).forEach(p=>{ let atks = []; try{ atks = TrenchM.trenchConfig(def, p, st.stage).attacks || []; }catch(e){ atks = (p.trench && p.trench.attacks) || []; }
-            atks.forEach(a=>{ const k = (a.name || '') + '|' + a.pattern + '|' + a.every + '|' + a.dmg; if(!seen.has(k)) seen.set(k, {a, parts: []}); seen.get(k).parts.push(p.name); }); });
-          const list = [...seen.values()];
-          return `<div class="r3-bramble">${br.art ? `<img src="${escapeAttr(br.art)}" alt="">` : ''}<div><p class="r3-note">${escapeHtml(TX('ui.u3-bramble-rules', {name: br.name}))}</p>${raidBrambleAbsHTML(raidBrambleAbilityLines(list.map(x=> x.a)), list.map(x=> x.parts.join(', ')))}</div></div>`; })()}
-        <ul class="r3-rules">${[TX('ui.raid-rule-share'), TX('ui.raid-rule-win', {n: raidNum(sc.overwhelmCap || RaidM.SCORING_DEFAULTS.overwhelmCap)}), TX('ui.raid-rule-rank'), TX('ui.rb-rule-weaken')].map(t=> `<li>${escapeHtml(t)}</li>`).join('') /* 2026-10-19 (RV2, owner 08:46): the raid's rules, no multipliers shown; (package RB) a win's 1,000 and the boss's weakening */}</ul>
-        <p class="r3-note">${escapeHtml(TX('ui.rb-fight-note', {turns: RaidM.fightRounds(def)})) /* 2026-10-19 (package RB, owner 12:23: "Do not show the damage formula to players."): no per-fight cap or rate */}</p>
-      </section>
       <section class="r3-field"><h3>${ground === 'mabyss' ? 'Down in the deep' : 'The field'}</h3>
         <div class="ar2-fields r3-fields">${raidFieldCardsHTML(RaidM.fieldRulesFor ? RaidM.fieldRulesFor(def, null, RaidM.stageRules(st.stage, raidStageOpts())) : raidFieldRulesOf(def, null))}</div></section>
-      ${(def.stages || []).length ? `<section class="r3-stages"><h3>Stages</h3>
-        <p class="r3-note">As the boss's total Health falls, it changes. Every fight is under the stage it is in now.</p>
-        <ul class="r3-rw">${(def.stages || []).slice().sort((a, b)=> b.at - a.at).map(s=> `<li${st.stage === s ? ' aria-current="true"' : ''}><b>${st.stage === s ? '▶ ' : ''}${escapeHtml(s.name || 'Stage')} <small>below ${+(s.at * 100).toFixed(1)}%</small></b><span>${escapeHtml(raidStageText(s) || 'No change yet.')}</span></li>`).join('')}</ul></section>` : ''}
-      <section class="r3-rewards"><h3>If it falls</h3>
-        <ul class="r3-rw">
-          <li><b>${escapeHtml(TX('ui.raid-rw-participants', {fights: pr.fights, damage: pr.damage.toLocaleString(raidLocale())}))}</b><span>${kill || '—'} · ${escapeHtml(TX('ui.rc-rw-participant-what', {n: rcCards, s: rcCards === 1 ? '' : 's', shards: rcShards, icon: raidShardIcon(def)}))}</span></li>
-          <li><b>${escapeHtml(TX('ui.raid-rw-strong', {fights: pr.strongFights, damage: pr.strongDamage.toLocaleString(raidLocale())}))}</b><span>${escapeHtml(TX('ui.raid-rw-strong-what', {pct: pr.strongPct, chance: pr.strongPct}))}</span></li>
-          <li><b>${escapeHtml(TX('ui.raid-rw-leading', {fights: pr.leadFights, damage: pr.leadDamage.toLocaleString(raidLocale())}))}</b><span>${escapeHtml(TX('ui.raid-rw-leading-what', {pct: pr.leadPct}))}</span></li>
-          ${['top1', 'top10', 'top50'].filter(t=> tierTxt(t)).map(t=> `<li><b>${({top1:TX('ui.i2-top-n', {n: 1}), top10:TX('ui.i2-top-n', {n: 10}), top50:TX('ui.i2-top-n', {n: 50})})[t]}</b><span>${tierTxt(t)} · ${escapeHtml(t !== 'top50' ? TX('ui.rc-rw-tier-extra', {shards: (RaidM.RAID_TIER_SHARDS || {})[t] || 0, icon: raidShardIcon(def)}) : TX('ui.rc-rw-tier-shards', {shards: (RaidM.RAID_TIER_SHARDS || {})[t] || 0, icon: raidShardIcon(def)}))}</span></li>`).join('')}
-          ${raidCardIds(def).length ? `<li><b>${escapeHtml(TX('ui.rc-rw-craft-h'))}</b><span>${escapeHtml(TX('ui.rc-rw-craft', {icon: raidShardIcon(def), name: raidShardName(def)}))}</span></li>` : '' /* 2026-10-19 (package RC, owner 09:53): its own cards are crafted in the Forge */}
-          <li><b>${escapeHtml(TX('ui.raid-rw-held'))}</b><span>${escapeHtml(TX('ui.raid-rw-held-what', {pct: rw.failPct != null ? rw.failPct : 50, max: rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}))}</span></li>
-          <li><b>${escapeHtml(TX('ui.raid-rw-respawn-h'))}</b><span>${escapeHtml(TX('ui.raid-rw-respawn', {h: Math.round(RaidM.respawnMs(def) / 3600000)}))}</span></li>
-        </ul></section>
+      <section class="r3-rewards"><h3>${escapeHtml(TX('ui.raid2-rewards'))}</h3>
+        <ul class="r3-rw-types">${rwTypes.map(t=> `<li>${t.icon}<span>${escapeHtml(t.name)}</span></li>`).join('')}</ul></section>
     </div>
   </div>`;
 }
@@ -39742,6 +39710,8 @@ function ui2SetRowSpan(m, rowsList, rowEls){
 function fitBattlefieldZoom(){
   const inner = document.getElementById('battlefieldInner');
   if(!inner) return;
+  fightSafe(rzSync, 'rzSync'); // 2026-11-05 (package RAID2): the raid / group dungeon zoom goes back on a rebuilt wrapper
+  fightSafe(raidFightMineSync, 'raidFightMineSync'); // 2026-11-05 (RAID2): your rank and damage on the raid frame
   const mm = matchState, raid = !!(mm && mm.raidFull);
   // Only a NEW match frames instantly. A repaint mid-match rebuilds the wrapper with the current framing already on it
   // (see renderMatchUI's template), so it waits for the summon like any other render.
@@ -39754,8 +39724,133 @@ function fitBattlefieldZoom(){
     fitBattlefieldZoom._waitStart = 0;
     fitBattlefieldZoomNow(false);
     if(raid && matchState === mm) mm._raidFrameKey = raidFrameKey(mm);
+    fightSafe(rzSync, 'rzSync');
   };
   fitBattlefieldZoom._settleT = setTimeout(tick, 140);
+}
+// 2026-11-05 (package RAID2, owner: "for raids (and maybe multiplayer dungeons too) there is a zoom button and also zoom gestures. But it
+// starts out fully zoomed out (at the minimum to capture what is needed), then it zooms in to only contain 1.5 rows of each side."):
+// the fight opens at its usual fitted framing (the zoomed-out end: every row and column the fight needs), waits a beat, then eases in
+// until the view holds your front row, half your next row, the enemy's front row and half its next one (RZ_BAND). A button on the
+// frame toggles between the two ends; ctrl + wheel (a trackpad's pinch too) and a two-finger pinch zoom freely between them around the
+// pointer, and a drag pans while zoomed in. Presentation only: the zoom is the board wrapper's own `scale` / `translate` properties,
+// which stack on the camera's `transform` (fitBattlefieldZoom keeps writing that one), so nothing about the fit or the fight changes.
+// State: m._rz = {z, tx, ty} (z: 1 = zoomed out; tx, ty: screen px). Raids (m.raidFull) and group dungeons (m.coop).
+const RZ_MS = 650, RZ_OPEN_DELAY = 1100, RZ_MAXZ = 3.2, RZ_MINZ_GAIN = 1.12;
+let rzTween = 0, rzWired = false;
+function rzActive(m){ return !!(m && !m.over && (m.raidFull || m.coop) && matchState === m && document.getElementById('battlefieldInner') && document.getElementById('battlefieldEl')); }
+function bfEffScale(){ const m = matchState, z = m && m._rz && m._rz.z > 0 ? m._rz.z : 1; return (battlefieldScale > 0 ? battlefieldScale : 1) * z; } // the camera's scale times the zoom (for effects drawn inside the board)
+// The board's geometry with the zoom taken off: the layout origin the zoom scales about, the frame, the content's extent, the focus band.
+function rzGeom(m){
+  const inner = document.getElementById('battlefieldInner'), bf = document.getElementById('battlefieldEl'); if(!inner || !bf) return null;
+  const s0 = inner.style.scale, t0 = inner.style.translate; inner.style.scale = ''; inner.style.translate = '';
+  try{
+    const br = bf.getBoundingClientRect(), F = {l: br.left + bf.clientLeft, t: br.top + bf.clientTop, w: bf.clientWidth, h: bf.clientHeight};
+    const cs = getComputedStyle(bf); F.t += parseFloat(cs.paddingTop) || 0; F.h -= (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+    const ir = inner.getBoundingClientRect(), O = {x: br.left + bf.clientLeft + inner.offsetLeft + inner.offsetWidth / 2, y: br.top + bf.clientTop + inner.offsetTop};
+    const r = id=>{ const e = document.getElementById(id); if(!e) return null; const q = e.getBoundingClientRect(); return q.height ? q : null; };
+    const re = r('rowEnemy'), rm = r('rowMine'), e1 = r('resEnemy1'), m1 = r('resMine1');
+    let top = ir.top, bot = ir.bottom;
+    if(re && rm){ top = re.top - 0.5 * (e1 ? e1.height : re.height); bot = rm.bottom + 0.5 * (m1 ? m1.height : rm.height); }
+    const xs = [...document.querySelectorAll('#battlefieldInner .board-card[data-uid]')].map(c=>{ const q = c.getBoundingClientRect(); return q.width ? q.left + q.width / 2 : null; }).filter(v=> v != null);
+    const xc = xs.length ? (Math.min(...xs) + Math.max(...xs)) / 2 : ir.left + ir.width / 2;
+    const band = Math.max(40, bot - top), zmax = Math.max(1, Math.min(RZ_MAXZ, F.h / band));
+    return {F, O, L: ir.left, R: ir.right, T: ir.top, B: ir.bottom, top, bot, xc, zmax};
+  } finally { inner.style.scale = s0; inner.style.translate = t0; }
+}
+function rzClamp(g, z, tx, ty){
+  z = Math.max(1, Math.min(g.zmax, z)); const F = g.F, O = g.O;
+  const lim = (lo, hi, F0, F1, t, c)=>{ const a = F1 - O[c] - z * (hi - O[c]), b = F0 - O[c] - z * (lo - O[c]); return (hi - lo) * z <= (F1 - F0) ? (a + b) / 2 : Math.max(a, Math.min(b, t)); };
+  return {z, tx: lim(g.L, g.R, F.l, F.l + F.w, tx, 'x'), ty: lim(g.T, g.B, F.t, F.t + F.h, ty, 'y')};
+}
+function rzFocus(g, z){ // the zoom that centres the focus band (and the units' middle) in the frame
+  const F = g.F, O = g.O, yc = (g.top + g.bot) / 2;
+  return rzClamp(g, z, F.l + F.w / 2 - O.x - z * (g.xc - O.x), F.t + F.h / 2 - O.y - z * (yc - O.y));
+}
+function rzWrite(m){
+  const inner = document.getElementById('battlefieldInner'), bf = document.getElementById('battlefieldEl'), s = m && m._rz; if(!inner || !bf || !s) return;
+  if(s.z > 1.001){ inner.style.scale = String(s.z.toFixed(4)); inner.style.translate = `${s.tx.toFixed(1)}px ${s.ty.toFixed(1)}px`; } else { inner.style.scale = ''; inner.style.translate = ''; }
+  bf.classList.toggle('rz-zoomed', s.z > 1.001);
+  const b = bf.querySelector(':scope > .rz-btn'); if(b){ const inn = s.z > 1 + (s.max - 1) / 2; b.classList.toggle('is-in', inn); b.setAttribute('aria-pressed', inn ? 'true' : 'false'); const t = TX(inn ? 'ui.raid2-zoom-out' : 'ui.raid2-zoom-in'); b.title = t; b.setAttribute('aria-label', t); }
+}
+function rzTo(m, target, ms){
+  cancelAnimationFrame(rzTween); const s = m._rz; if(!s) return;
+  if(!ms || reducedMotion()){ Object.assign(s, target); rzWrite(m); return; }
+  const from = {z: s.z, tx: s.tx, ty: s.ty}, t0 = performance.now(), ease = t=> t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const step = now=>{ if(matchState !== m || s.gesture) return; const k = Math.min(1, (now - t0) / ms), e = ease(k);
+    s.z = from.z + (target.z - from.z) * e; s.tx = from.tx + (target.tx - from.tx) * e; s.ty = from.ty + (target.ty - from.ty) * e; rzWrite(m);
+    if(k < 1) rzTween = requestAnimationFrame(step); };
+  rzTween = requestAnimationFrame(step);
+}
+function rzToggle(m){
+  const g = rzGeom(m), s = m._rz; if(!g || !s) return; s.touched = true; s.max = g.zmax;
+  rzTo(m, s.z > 1 + (g.zmax - 1) / 2 ? {z: 1, tx: 0, ty: 0} : rzFocus(g, g.zmax), RZ_MS);
+}
+// Called with every board frame (fitBattlefieldZoom): puts the zoom back on a rebuilt wrapper, adds the button, and opens the fight
+// zoomed in after its beat.
+function rzSync(){
+  const m = matchState; if(!rzActive(m)) return;
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  if(!m._rz){ m._rz = {z: 1, tx: 0, ty: 0, max: 1, touched: false}; }
+  const s = m._rz, g = rzGeom(m); if(!g) return;
+  s.max = g.zmax; const usable = g.zmax >= RZ_MINZ_GAIN;
+  bf.classList.toggle('rz-on', usable); rzWire(bf);
+  let b = bf.querySelector(':scope > .rz-btn');
+  if(usable && !b){ b = document.createElement('button'); b.type = 'button'; b.className = 'rz-btn'; b.innerHTML = '<span class="rz-i rz-i-in" aria-hidden="true">🔍</span><span class="rz-i rz-i-out" aria-hidden="true">🔎</span>';
+    b.addEventListener('click', ev=>{ ev.stopPropagation(); const mm = matchState; if(rzActive(mm)) rzToggle(mm); }); bf.appendChild(b); }
+  else if(!usable && b){ b.remove(); b = null; }
+  if(!usable){ s.z = 1; s.tx = 0; s.ty = 0; rzWrite(m); return; }
+  if(s.z > 1.001 && !s.gesture){ const c = rzClamp(g, s.z, s.tx, s.ty); s.z = c.z; s.tx = c.tx; s.ty = c.ty; } // a new framing keeps the zoom inside the board
+  rzWrite(m);
+  if(!s.opened){ s.opened = true; clearTimeout(m._rzOpenT);
+    m._rzOpenT = setTimeout(()=>{ if(matchState !== m || !rzActive(m) || s.touched || s.gesture) return; const g2 = rzGeom(m); if(g2 && g2.zmax >= RZ_MINZ_GAIN){ s.max = g2.zmax; rzTo(m, rzFocus(g2, g2.zmax), 900); } }, RZ_OPEN_DELAY); }
+}
+function rzWire(bf){
+  if(bf.dataset.rzWired) return; bf.dataset.rzWired = '1';
+  { const m0 = matchState; if(m0 && m0._rz) m0._rz.gesture = false; } // a rebuilt frame ends a gesture the old one was tracking
+  const pts = new Map(); let pan = null, pinch = null, moved = false;
+  const gz = ()=>{ const m = matchState; return rzActive(m) && m._rz ? {m, s: m._rz, g: rzGeom(m)} : null; };
+  const apply = (c, z, focal)=>{ // zoom to z about a client point
+    const {m, s, g} = c; if(!g) return; const O = g.O, nz = Math.max(1, Math.min(g.zmax, z));
+    const tx = (focal.x - O.x) - nz * (focal.x - O.x - s.tx) / s.z, ty = (focal.y - O.y) - nz * (focal.y - O.y - s.ty) / s.z;
+    const r = rzClamp(g, nz, tx, ty); s.z = r.z; s.tx = r.tx; s.ty = r.ty; s.touched = true; rzWrite(m); };
+  bf.addEventListener('wheel', ev=>{
+    if(!(ev.ctrlKey || ev.metaKey)) return; const c = gz(); if(!c || !c.g || c.g.zmax < RZ_MINZ_GAIN) return;
+    ev.preventDefault(); cancelAnimationFrame(rzTween); apply(c, c.s.z * Math.exp(-ev.deltaY * (ev.deltaMode === 1 ? 0.04 : 0.0045)), {x: ev.clientX, y: ev.clientY}); }, {passive: false});
+  bf.addEventListener('pointerdown', ev=>{
+    if(ev.target.closest && ev.target.closest('.rz-btn')) return; const c = gz(); if(!c || !c.g || c.g.zmax < RZ_MINZ_GAIN) return;
+    if(!pts.size) moved = false;
+    pts.set(ev.pointerId, {x: ev.clientX, y: ev.clientY});
+    if(pts.size === 2){ cancelAnimationFrame(rzTween); const [a, b] = [...pts.values()]; pinch = {d: Math.hypot(a.x - b.x, a.y - b.y) || 1, z: c.s.z}; pan = null; c.s.gesture = true; moved = true;
+      try{ bf.setPointerCapture(ev.pointerId); }catch(e){} }
+    else if(pts.size === 1 && c.s.z > 1.02 && !(ev.target.closest && ev.target.closest('[draggable="true"], button, a, input, select, textarea'))) pan = {x: ev.clientX, y: ev.clientY, tx: c.s.tx, ty: c.s.ty, on: false, id: ev.pointerId};
+  });
+  bf.addEventListener('pointermove', ev=>{
+    if(!pts.has(ev.pointerId)) return; pts.set(ev.pointerId, {x: ev.clientX, y: ev.clientY}); const c = gz(); if(!c || !c.g) return;
+    if(pinch && pts.size >= 2){ const [a, b] = [...pts.values()], d = Math.hypot(a.x - b.x, a.y - b.y) || 1; apply(c, pinch.z * d / pinch.d, {x: (a.x + b.x) / 2, y: (a.y + b.y) / 2}); ev.preventDefault(); return; }
+    if(pan && ev.pointerId === pan.id){ const dx = ev.clientX - pan.x, dy = ev.clientY - pan.y;
+      if(!pan.on){ if(Math.hypot(dx, dy) < 8) return; pan.on = true; moved = true; c.s.gesture = true; cancelAnimationFrame(rzTween); c.s.touched = true; try{ bf.setPointerCapture(ev.pointerId); }catch(e){} bf.classList.add('rz-panning'); }
+      const r = rzClamp(c.g, c.s.z, pan.tx + dx, pan.ty + dy); c.s.tx = r.tx; c.s.ty = r.ty; rzWrite(c.m); ev.preventDefault(); }
+  });
+  const up = ev=>{ if(!pts.delete(ev.pointerId)) return; const m = matchState;
+    if(pts.size < 2) pinch = null; if(!pts.size){ pan = null; bf.classList.remove('rz-panning'); if(m && m._rz) setTimeout(()=>{ if(m._rz && !pts.size) m._rz.gesture = false; }, 0); }
+    else if(pts.size === 1){ const [p] = [...pts.entries()]; const c = gz(); if(c && c.s.z > 1.02){ pan = {x: p[1].x, y: p[1].y, tx: c.s.tx, ty: c.s.ty, on: true, id: p[0]}; } } };
+  bf.addEventListener('pointerup', up); bf.addEventListener('pointercancel', up);
+  bf.addEventListener('click', ev=>{ if(moved){ moved = false; ev.stopPropagation(); ev.preventDefault(); } }, true); // a pan or pinch isn't a tap on a card
+  if(!rzWired){ rzWired = true; window.addEventListener('resize', ()=>{ clearTimeout(rzSync._t); rzSync._t = setTimeout(()=>{ try{ rzSync(); }catch(e){} }, 220); }); }
+}
+// Your rank and your damage so far, in the raid fight's frame (2026-11-05, package RAID2, owner: "Your rank could be beside the opponent's hp bar +
+// your damage dealt ... don't explain much"): the fight's rank as it stands (the bramble's Health grade; raidFightRank) as the hex emblem, and the
+// raid damage this fight is worth so far (the boss bramble's Health taken, scored as the result will be, RaidM.contributionFor). Drawn on the frame
+// at the enemy's end of the board; redrawn with each board frame.
+function raidFightMineSync(){
+  const m = matchState, bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  let c = bf.querySelector(':scope > .raid-fight-mine');
+  if(!m || !m.raidFull || m.over || !m.raidDef || !RaidM || !m.players){ if(c) c.remove(); return; }
+  const rank = raidFightRank(m), hq = m.players[2].hq, dealt = Math.max(0, (m.raidCastleStart || 0) - Math.max(0, hq.hp));
+  const part = (m.raidDef.parts || []).find(p=> p.id === m.raidPart), dmg = RaidM.contributionFor(m.raidDef, dealt, hq.hp <= 0, part, rank);
+  if(!c){ c = document.createElement('div'); c.className = 'raid-fight-mine'; c.setAttribute('role', 'status'); bf.appendChild(c); }
+  c.innerHTML = `${rank ? `<span class="rank-hex rank-${escapeAttr(rank)}" aria-label="${escapeAttr(TX('results.raid-rank', {rank}))}"><i></i><b>${escapeHtml(rank)}</b></span>` : ''}<span class="rfm-dmg"><b>${Math.round(dmg).toLocaleString(raidLocale())}</b><small>${escapeHtml(TX('ui.raid2-damage'))}</small></span>`;
 }
 // 2026-10-19 (package MB2b): fill mode's re-frame (a new column window or card size) eases in one 300 ms step from the old framing.
 function fitBattlefieldZoomNow(instant){
@@ -43352,7 +43447,7 @@ function glideBoardCardFrom(el, from, toRect){
   const s = from.width / to.width;
   if(Math.abs(dx) < 3 && Math.abs(dy) < 3 && Math.abs(s - 1) < 0.02) return;
   if(Math.abs(dx) > Math.max(240, to.width*4) || Math.abs(dy) > to.height*1.5) return;
-  const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1;
+  const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? bfEffScale() : 1;
   dx /= sc; dy /= sc;
   const d = Math.min(.34, .16 + Math.hypot(dx, dy)/2000 + Math.abs(s - 1)*.4);
   gsap.fromTo(el, {x:dx, y:dy, scale:Math.max(.6, Math.min(1.6, s))}, {x:0, y:0, scale:1, duration:sharpBoard() ? Math.min(.22, d) : d, ease:'power2.out', clearProps:'x,y,scale'});
@@ -43362,7 +43457,7 @@ function glideFromRect(el, from){
   const to = el.getBoundingClientRect();
   let dx = (from.left + from.width/2) - (to.left + to.width/2), dy = (from.top + from.height/2) - (to.top + to.height/2);
   if(Math.abs(dx) < 3 && Math.abs(dy) < 3) return;
-  const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1;
+  const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? bfEffScale() : 1;
   dx /= sc; dy /= sc;
   gsap.fromTo(el, {x:dx, y:dy}, {x:0, y:0, duration: sharpBoard() ? Math.min(.2, .08 + Math.hypot(dx, dy)/3200) : Math.min(.32, .12 + Math.hypot(dx, dy)/2200), ease: sharpBoard() ? 'power3.out' : 'power2.out', clearProps:'x,y'});
 }
@@ -44493,16 +44588,26 @@ async function resolveRoundCore(opts){
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
     noteSpawnOrigins(drawEvents); // 2026-10-31 (package UI8, AA5): a castle's spawn (the Trojan Horse's Raider) bounces out of its bramble
     try{ fieldGapStamp(drawEvents, m); }catch(e){} // 2026-10-23 (package FX4): two field numbers on one unit, a small gap apart
+    try{ raidTideStamp(drawEvents, m); }catch(e){} // 2026-11-05 (package RAID2): the tide's damage comes in waves
     const smackSt = m.raidFull ? fightSafe(()=> raidSmackStage(drawEvents, m)) : null; // RAIDFX1 (2026-10-30): the smack's damage lands with the limb
-    floatDetachDepth++; try{ drawEvents.forEach(ev=>{ pushLog(ev); if(smackSt && smackSt.defer(ev)) return; renderVfxForEvent(ev); if(smackSt) smackSt.played(ev); }); } finally { floatDetachDepth--; } // numbers survive the re-render below (2026-10-14)
+    // 2026-11-05 (package RAID2, owner: "The tentacle event and the wave damage event should wait for each other. Otherwise its too busy. Tentacle first, then tide."):
+    // in a round with a smack, the tide's events (the water and its damage) are held back and played once the tentacle has gone.
+    const tideAfter = smackSt && drawEvents.some(ev=> ev && ev.type === 'raidSmack') ? drawEvents.filter(raidTideEv) : [], tideHeld = new Set(tideAfter);
+    floatDetachDepth++; try{ drawEvents.forEach(ev=>{ pushLog(ev); if(smackSt && smackSt.defer(ev)) return; if(tideHeld.has(ev)) return; renderVfxForEvent(ev); if(smackSt) smackSt.played(ev); }); } finally { floatDetachDepth--; } // numbers survive the re-render below (2026-10-14)
+    if(!tideAfter.length) fightSafe(()=> raidTideCrests(drawEvents, m), 'raidTideCrests');
     try{ envCardsFire(drawEvents, m); }catch(e){} // 2026-10-23 (package FX4): the Environment cards of the effects that fired straighten and shine
     // The upkeep (2026-10-16, user: "Don't let me be able to play or pitch cards during upkeep"): the round-start effects (the
     // castles' own actions such as the Herb Refinery's brew, the field's ticks) play out before your turn opens. m.resolving stays
     // set, so play, pitch and Pass wait, the hand dims and a small "Upkeep" chip shows. Always released (finally, and resolveRound's
     // recovery).
     { const upMs = upkeepHoldMs(drawEvents, m);
-      if(upMs > 0 && matchState === m){ m._upkeep = true; document.documentElement.classList.add('bw-upkeep'); showUpkeepChip();
-        try{ await Promise.all([sleep(upMs), smackSt ? smackSt.wait().catch(()=>{}) : null]); } finally { m._upkeep = false; document.documentElement.classList.remove('bw-upkeep'); hideUpkeepChip(); } } // + the smack's limb (RAIDFX1)
+      if((upMs > 0 || tideAfter.length) && matchState === m){ m._upkeep = true; document.documentElement.classList.add('bw-upkeep'); showUpkeepChip();
+        try{ await Promise.all([sleep(upMs), smackSt ? smackSt.wait().catch(()=>{}) : null]); // + the smack's limb (RAIDFX1)
+          if(tideAfter.length && matchState === m){ // the tentacle is done: now the tide (RAID2)
+            fightSafe(()=> raidTideCrests(tideAfter, m), 'raidTideCrests');
+            floatDetachDepth++; try{ tideAfter.forEach(ev=> renderVfxForEvent(ev)); } finally { floatDetachDepth--; }
+            await sleep(Math.round(900 / Math.max(1, m.speedMult || 1)) + fieldGapMaxMs(tideAfter, m)); } }
+        finally { m._upkeep = false; document.documentElement.classList.remove('bw-upkeep'); hideUpkeepChip(); } }
       if(smackSt) fightSafe(()=> smackSt.end(), 'raidSmackStage'); }
     if(m.mode==='pvp'){ aiActNow(); setTimeout(()=>{ if(matchState===m && m.aiArrivalEvents) waitForBoardEntrances(1400).then(()=> replayAiArrivalEvents(m)); }, 0); } // "They always go first": the stranger plays before you plan
   }
@@ -48060,7 +48165,7 @@ function allyPlayFx(uid, opts){
   const go = ()=>{
     const el = boardCardEl(uid);
     if(!el){ if(Date.now() - t0 < 3000) return requestAnimationFrame(go); return; }
-    try{ allyNameTagPulse(el, opts); }catch(e){}
+    // 2026-11-05 (package RAID2, owner: "When your ally plays a card, no need for the golden-yellow pill on the left"): no name tag any more
     if(reducedMotion() || lvl === 'low' || !hasGsap()){ // no flight: a quick fade where it stands
       const t = el.querySelector('.card-tile') || el; t.style.transition = 'opacity .22s ease-out'; t.style.opacity = '0';
       requestAnimationFrame(()=> requestAnimationFrame(()=>{ t.style.opacity = ''; setTimeout(()=>{ t.style.transition = ''; }, 260); })); return; }
@@ -48074,16 +48179,6 @@ function allyPlayFx(uid, opts){
       if(!handFlightProxy(c, uid, {x: from.x, y: from.y - 18, kind:'hand', w: w || null, rotate: -8, fadeIn: 0.45, ally: true, flip: true, trail: true, dust: true})) c.style.visibility = ''; }, ALLY_PLAY_RISE_MS);
   };
   requestAnimationFrame(go);
-}
-// The ally's name tag at its row's edge: "Captain Swiftpaw plays Otter Guard", popping in and pulsing twice, then fading (2026-10-19, RV2).
-function allyNameTagPulse(el, opts){
-  if(!opts || !opts.name) return;
-  const row = el.closest('.reserve-row') || el.closest('.board-row'); if(!row) return;
-  const nm = (getCardDefs()[opts.defId || (currentCardByUid(el.getAttribute('data-uid')) || {}).defId] || {}).name || ''; // opts.defId: a reserve card isn't in currentCardByUid's rows
-  row.querySelectorAll(':scope > .ally-play-tag').forEach(t=> t.remove());
-  const tag = document.createElement('span'); tag.className = 'ally-play-tag'; tag.setAttribute('role', 'status');
-  tag.textContent = nm ? TX('ui.raid-ally-plays', {name: opts.name, card: nm}) : opts.name;
-  row.appendChild(tag); setTimeout(()=> tag.classList.add('is-out'), 2100); setTimeout(()=> tag.remove(), 2500);
 }
 // The ally's hand: three card backs fanned out at the row's edge for a moment, the card it plays rising from them (2026-10-19, RV2).
 function allyHandFan(from, w){
@@ -48993,7 +49088,7 @@ function arrowFlightMs(){ const mult = (matchState && matchState.speedMult) || 1
 function bxDropStone(shooter, targetEl, outMs, fallMs){
   if(!shooter || !targetEl || !hasGsap() || reducedMotion() || !shooter.isConnected) return false;
   const a = shooter.getBoundingClientRect(), b = targetEl.getBoundingClientRect(); if(!a.width || !b.width) return false;
-  const sc = shooter.closest('#battlefieldInner') && battlefieldScale > 0 ? battlefieldScale : 1;
+  const sc = shooter.closest('#battlefieldInner') && battlefieldScale > 0 ? bfEffScale() : 1;
   const dx = (b.left + b.width/2) - (a.left + a.width/2), up = b.top < a.top ? -1 : 1; // over the target, a little short of it on the near side
   const dy = (b.top + b.height/2) - (a.top + a.height/2) - up*b.height*0.55;
   const back = Math.max(220, Math.round(outMs*1.1));
@@ -49683,6 +49778,37 @@ function raidSmackStage(events, m){
     },
     end: ()=>{ smacks.forEach(ev=>{ if(ev._smack) ev._smack.done(); }); Object.keys(deaths).forEach(k=>{ const d = deaths[k]; delete deaths[k]; try{ renderVfxForEvent(d); }catch(e){} }); m._smackHeld = null; },
   };
+}
+// The tide in a raid comes in waves (2026-11-05, package RAID2, owner: "The wave damage in the raid should come in 'waves', following the tide
+// animation."): the Tide's damage (Crushing Depths, a hit on every unit) used to land on all of them at once, over the water. Now the
+// board is cut into RAID_TIDE_WAVES bands, and each band's hits land as that wave of water passes it (RAID_TIDE_WAVE_MS apart, scaled by
+// the playback speed): from the bottom up while the tide comes in (Flood, High Tide), from the top down while it goes out (Ebb), each with
+// a crest of foam crossing its band. The same damage, the same hits and the same engine result: only the moment each lands (ev._fxGap,
+// the field gap that renderVfxForEvent already honours) and the crest are new. The held events of a round with a smack play after the
+// tentacle (resolveRoundCore's upkeep).
+const RAID_TIDE_WAVES = 3, RAID_TIDE_WAVE_MS = 460;
+function raidTideEv(ev){ return !!ev && (ev.type === 'tide' || (ev.type === 'fieldTick' && (ev.field === 'crushingDepths' || ev.field === 'crushingHit'))); }
+function raidTideDown(events){ const t = (events || []).find(ev=> ev && ev.type === 'tide'); return !!(t && t.tide === 'ebb'); }
+function raidTideStamp(events, m){
+  if(!m || !m.raidFull) return events;
+  const hits = (events || []).filter(ev=> ev && ev.type === 'fieldTick' && ev.field === 'crushingHit' && ev.uid != null); if(!hits.length) return events;
+  const down = raidTideDown(events), bf = document.getElementById('battlefieldEl'), r = bf ? bf.getBoundingClientRect() : null, mult = Math.max(1, m.speedMult || 1);
+  hits.forEach(ev=>{ let w = 0; const el = boardCardEl(ev.uid);
+    if(el && r && r.height){ const q = el.getBoundingClientRect(), f = Math.max(0, Math.min(.999, ((q.top + q.height / 2) - r.top) / r.height)); w = Math.floor((down ? f : 1 - f) * RAID_TIDE_WAVES); }
+    ev._tideWave = w; ev._fxGap = (Number(ev._fxGap) || 0) + Math.round(w * RAID_TIDE_WAVE_MS / mult); });
+  return events;
+}
+// The crest of each wave that has hits: a band of foam crossing its third of the board as the wave's damage lands.
+function raidTideCrests(events, m){
+  if(!m || !m.raidFull || reducedMotion() || !fxAtLeast('low')) return;
+  const waves = [...new Set((events || []).filter(ev=> ev && ev.type === 'fieldTick' && ev.field === 'crushingHit' && ev._tideWave != null).map(ev=> ev._tideWave))].sort((a, b)=> a - b);
+  const bf = document.getElementById('battlefieldEl'); if(!bf || !waves.length) return;
+  const down = raidTideDown(events), mult = Math.max(1, m.speedMult || 1), H = bf.clientHeight, band = H / RAID_TIDE_WAVES;
+  waves.forEach(w=> setTimeout(()=>{ if(matchState !== m) return; const host = document.getElementById('battlefieldEl'); if(!host) return;
+    const idx = down ? w : RAID_TIDE_WAVES - 1 - w, el = document.createElement('div'); el.className = 'raid-tide-crest' + (down ? ' is-down' : ''); el.setAttribute('aria-hidden', 'true');
+    el.style.cssText = `top:${(idx * band).toFixed(0)}px; height:${band.toFixed(0)}px; --rtc-ms:${Math.round(RAID_TIDE_WAVE_MS * 1.5 / mult)}ms;`; el.innerHTML = '<i></i>';
+    host.appendChild(el); try{ SoundKit.splash && SoundKit.splash(); }catch(e){}
+    setTimeout(()=> el.remove(), Math.round(RAID_TIDE_WAVE_MS * 1.5 / mult) + 120); }, Math.round(w * RAID_TIDE_WAVE_MS / mult)));
 }
 // Scorched Ground's line of fire (2026-10-23, package FX3, owner 01:57 note 3: "a line of fire moves from the left side to the right side. As
 // it touches a card, it takes fire damage."): the Effects Lab's Wildfire front (FX.B.wildfire, a flame band) crosses the battlefield, and each
@@ -51466,7 +51592,7 @@ function emptyHealEvent(ev){
 // claw, and the swing's live Attack on the attacker's plate. All on fixed overlays / the tiles, timed off animMs(); nothing here changes
 // the fight (the engine decides; these only show it).
 const EN2_BOOM = {}, EN2_BOOM_FLIGHTS = {};
-function en2Local(el){ const s = (el && el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1; return s; }
+function en2Local(el){ const s = (el && el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? bfEffScale() : 1; return s; }
 function en2Ctr(el){ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width, h:r.height}; }
 function en2Layer(html, cls){ const e = document.createElement('div'); e.className = 'sfx ' + (cls || 'sfx-boomerang'); e.setAttribute('aria-hidden', 'true'); e.innerHTML = html; document.body.appendChild(e); return e; }
 function en2Ring(x, y, size){ if(!hasGsap()) return; const r = en2Layer('', 'sfx-ring sfx-ring-dust'); gsap.set(r, {x, y, xPercent:-50, yPercent:-50, width:8, height:8, opacity:.95}); gsap.to(r, {width:size||60, height:size||60, opacity:0, duration:.42, ease:'power2.out', onComplete:()=> r.remove()}); }
@@ -51989,7 +52115,7 @@ function renderVfxForEvent(ev){
     // hit is a leap onto its target (SkillFX.pounceOnto), landing as the damage lands, then a hop home.
     else if(ev.pounce && !ev.ranged && attEl && targetEl && window.SkillFX && SkillFX.pounceOnto && hasGsap() && !reducedMotion() && fxAtLeast('low')){
       const am0 = animMs(); attackingUids.add(String(ev.attUid)); attEl.classList.add('is-attacking', 'is-pouncing');
-      SkillFX.pounceOnto(attEl, targetEl, {impact: am0.windup + am0.impactPad, scale: attEl.closest('#battlefieldInner') && battlefieldScale > 0 ? battlefieldScale : 1});
+      SkillFX.pounceOnto(attEl, targetEl, {impact: am0.windup + am0.impactPad, scale: attEl.closest('#battlefieldInner') && battlefieldScale > 0 ? bfEffScale() : 1});
       setTimeout(()=>{ attackingUids.delete(String(ev.attUid)); attEl.classList.remove('is-attacking', 'is-pouncing'); }, am0.windup + am0.impactPad + 700);
     }
     else if(!ev.ranged && !ev._cleave && quickImpactMs(ev) == null && !forkLaterLine(ev)) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf, short: !!ev.ambush /* 2026-10-29 (UI2, R3): Ambush's strike is a short jab */}); // Quick dashes itself (2026-10-16); a Fork swing lunged once already (2026-10-17)

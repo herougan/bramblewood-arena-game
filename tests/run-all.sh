@@ -330,6 +330,8 @@ run node tests/eng23-2026-11-04.js   # 2026-11-04 (package ENG23, owner 11-03 23
 run node tests/eng24-2026-11-04.js   # 2026-11-04 (package ENG24, owner 11-04 22:34): Bramble Armor as Fortify { Armor N }, while it lives; Relict, Meld {X}, Immunity, Sequestration (on no card, priced by measure); brambles +2; the defeat advice waits for the Camp; Carnage uptime re-measured
 run node tests/content10-2026-11-05.js   # 2026-11-05 (package CONTENT10, THEME6-1 / LIST-1104 / LISTFIX2 / FIX8-1): the own / carried count rule by map number, Maps 2-24 at it or listed short, the owner's swaps, no archetype cards on Map 20+, the new rewards and first-clear cards
 run node tests/content11-2026-11-05.js   # 2026-11-05 (package CONTENT11, NUDI-1 / IDEA-VREGIA / IDEA-EARLY-2): Nudibranch and Victoria Regia (budget, lists, 12 packs, art prompts), the eleven boss gimmicks in scenarios with their texts and measure, decisions CONTENT11-1..4
+run node tests/raid2-2026-11-05.js   # 2026-11-05 (package RAID2): the raid tide's damage in waves (bands, bottom up on a Flood, top down on an Ebb), tentacle first then tide, no ally name pill, the raid / group-dungeon zoom (clamp, focus, wiring), the part picker (3 parts, then the Core alone; no leader / phase / BR / rhythm / attempts lines; reward kinds), the TX keys in 12 packs
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)
+# browser check for package RAID2: python3 tests/e2e/raid2_2026_11_05.py (needs Playwright; not run by run.js)

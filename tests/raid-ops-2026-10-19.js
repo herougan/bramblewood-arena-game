@@ -221,11 +221,12 @@ const noStand = Object.assign({}, goliath, {standIns: {perDayPct: 0}});
   ok(/raidTicketChipHTML\(tickets, tkNext\)/.test(panel) && /is-blocked/.test(panel) && /r3-no-tickets/.test(panel) && /raidTicketChipHTML\(tickets, next\)/.test(B.grab('raidHubHTML')), '8. tickets show in the hub and the raid screen; Fight greys out at 0 with the reason');
   ok(goliath.cost.raidPoints === 1, '8. the Goliath: 1 ticket a fight'); }
 
+// RAID2 (2026-11-05): threshold 36 -> 28, the raid screen's explainer keys (ui.raid-rw-*, ui.raid-part-rules*) were removed
 // ---- 9. Texts: TX keys, in all 12 packs; the retired ones gone
 { const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
   const LEAD = /^[\s \p{Extended_Pictographic}\p{So}\p{Sk}️‍↻→←▸▾•·★☆✓✕✗⚡]*/u, core = s=> { const t = s.trim(); return t.slice((t.match(LEAD) || [''])[0].length).replace(/[\s:]+$/, ''); };
   const keys = Object.keys(TEXT).filter(k=> /^(ui\.raid-(all-raids|hub-|instance|tickets|ticket-next|taking-part|in$|strong|part-|auto-|claim-kill|claim-held|rw-|restart)|dialog\.raid-restart|toast\.raid-(restarted|no-tickets|auto-unlocked)|results\.raid-strong)/.test(k));
-  ok(keys.length >= 36, `9. the RO texts are TX keys (${keys.length})`);
+  ok(keys.length >= 28, `9. the RO texts are TX keys (${keys.length})`);
   keys.forEach(k=> ok(new RegExp("TX\\('" + k.replace(/\./g, '\\.') + "'").test(src), `9. ${k} is used`));
   const packs = CODES.map(c=> JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8')));
   const skip = new Set(['Raids', 'A fight costs', 'Claim']);

@@ -96,7 +96,7 @@ const rect = (l, t, w, h)=> ({left: l, top: t, width: w, height: h, right: l + w
 const a = src.indexOf('const RAID_SMACK_WAIT_MS'), b = src.indexOf('\n}', src.indexOf('function raidSmackStage(')) + 2;
 ok(a > 0 && b > a, '1. raidSmackStage found');
 ok(/const smackSt = m\.raidFull \? fightSafe\(\(\)=> raidSmackStage\(drawEvents, m\)\) : null;/.test(src)
-  && /drawEvents\.forEach\(ev=>\{ pushLog\(ev\); if\(smackSt && smackSt\.defer\(ev\)\) return; renderVfxForEvent\(ev\); if\(smackSt\) smackSt\.played\(ev\); \}\)/.test(src), '1. the upkeep plays the smack through raidSmackStage (deaths held back)');
+  && /drawEvents\.forEach\(ev=>\{ pushLog\(ev\); if\(smackSt && smackSt\.defer\(ev\)\) return; if\(tideHeld\.has\(ev\)\) return; renderVfxForEvent\(ev\); if\(smackSt\) smackSt\.played\(ev\); \}\)/.test(src), '1. the upkeep plays the smack through raidSmackStage (deaths held back)');
 ok(/await Promise\.all\(\[sleep\(upMs\), smackSt \? smackSt\.wait\(\)\.catch\(\(\)=>\{\}\) : null\]\)/.test(src) && /if\(smackSt\) fightSafe\(\(\)=> smackSt\.end\(\), 'raidSmackStage'\);/.test(src), '1. the upkeep\'s redraw waits for the limb');
 ok(/const smackHeld = \(matchState && matchState\._smackHeld && matchState\._smackHeld\[String\(uid\)\]\) \|\| 0;/.test(src), '1. a struck unit shows its Health from before the smack until the limb reaches it');
 ok(!/bramblewood-engine/.test(src.slice(a, b)), '1. presentation only');

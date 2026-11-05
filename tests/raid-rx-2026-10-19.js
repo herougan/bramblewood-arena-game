@@ -125,9 +125,9 @@ ok(/id="reLeaderCap"/.test(src) && /draft\.leaderCostCap = lc/.test(src) && /id=
   ok(R.raidRespawnAt(goliath, {cycle: 7}) === 8 * RaidM.CYCLE_MS && R.raidRespawnAt({}, {cycle: 2}, 1000) === 3000, 'raidRespawnAt: the end of the cycle (the one place a later early-respawn rule changes)');
   ok(R.raidSpanText((2*24 + 4) * 3600000 + 5 * 60000) === '2d 4h' && R.raidSpanText(3 * 3600000 + 12 * 60000) === '3h 12m' && R.raidSpanText(20000) === '1m', 'the span reads 2d 4h / 3h 12m / 1m'); }
 ok(/\$\{st\.defeated \? raidRespawnHTML\(def, st\)/.test(src) && /st\.defeated \? raidRespawnHTML\(b, st, Ghosts\.RAID\.CYCLE_DAYS/.test(src), 'a defeated raid shows when it returns instead of the days left (raid tab and the offline raid)');
-['ui.raid-returns-in', 'ui.raid-respawn-title', 'ui.raid-leader-too-costly', 'ui.raid-leader-cap', 'ui.raid-leader-cost-ok', 'ui.raid-change-leader', 'ui.raid-closest-row-note', 'ui.raid-commons-every', 'ui.play-rows-own', 'ui.play-rows-any', 'ui.play-rows-own-note', 'ui.play-rows-any-note']
+['ui.raid-returns-in', 'ui.raid-respawn-title', 'ui.raid-leader-too-costly', 'ui.raid-change-leader', 'ui.play-rows-own', 'ui.play-rows-any', 'ui.play-rows-own-note', 'ui.play-rows-any-note']
   .forEach(k=> ok(texts.TEXT[k] && src.includes(`'${k}'`), `TX key ${k} exists and is used`));
-{ const peel = s=> s.replace(/^[\s\W_]*/u, ''); const en = texts.TEXT['ui.raid-closest-row-note'];
+{ const peel = s=> s.replace(/^[\s\W_]*/u, ''); const en = texts.TEXT['ui.play-rows-own-note']; // RAID2 (2026-11-05): was ui.raid-closest-row-note, removed with the raid screen's explainers
   ['fr', 'de', 'ja', 'ko', 'zh-Hans', 'ta'].forEach(c=>{ const pack = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'lang', c + '.json'), 'utf8')); ok(pack[peel(en)] && pack[peel(texts.TEXT['ui.raid-leader-too-costly'])], `the ${c} pack has the new raid texts`); }); }
 
 // ---- Contrast: the raid results' reward pills take the theme's ink on its surface (they were a fixed dark brown: 1.15:1 in dark)
