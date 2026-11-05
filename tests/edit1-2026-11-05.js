@@ -67,30 +67,30 @@ async function browser(){
       // ---- 2 Hatchling / Regeneration at Level 1 and up
       await open('compost-grub');
       const hg = await pg.evaluate("[...document.querySelectorAll('#skillRows .skill-row')].map(r=> ({k: r.querySelector('[data-sk=key]').value, lv: r.querySelector('.sk-lv').hidden ? null : r.querySelector('[data-sk=lv]').value, opts: [...r.querySelectorAll('[data-sk=lv] option')].map(o=> o.value).join(',')}))");
-      ok(hg.length === 1 && hg[0].k === 'hatchling' && hg[0].lv === '0', `@${w} a Baby's Level 0 Hatchling now has a row, at Lv 0 ${JSON.stringify(hg)}`);
+      // 2026-11-06 ENG25 moved every Baby's Hatchling to levelSkills 1, so the row shows Lv 1
+      ok(hg.length === 1 && hg[0].k === 'hatchling' && hg[0].lv === '1', `@${w} a Baby's Hatchling has a row, at Lv 1 ${JSON.stringify(hg)}`);
       sv = await pg.evaluate("(()=>{ const d = readEditorFormIntoCard(); return {fx: d.effects.hatchling, ls: d.levelSkills}; })()");
-      ok(sv.fx === undefined && sv.ls && sv.ls['0'] && sv.ls['0'].hatchling === true, `@${w} Save keeps it at Level 0, unchanged ${JSON.stringify(sv)}`);
+      ok(sv.fx === undefined && sv.ls && sv.ls['1'] && sv.ls['1'].hatchling === true && !(sv.ls['0'] && sv.ls['0'].hatchling), `@${w} Save keeps it at Level 1, unchanged ${JSON.stringify(sv)}`);
       await open('compost-grub');
       await pg.click('#addSkill'); await pg.waitForTimeout(250);
-      for(const key of ['hatchling', 'regen']){
+      for(const key of ['regen']){ // 2026-11-06 ENG25: the Baby already has Hatchling; Regeneration is a passive now
         const i = (await rows()) - 1; // the new row is the last one
         const info = await pg.evaluate(`(()=>{ const rs = [...document.querySelectorAll('#skillRows .skill-row, #evergreenRows .skill-row')]; const r = rs[rs.length - 1]; const sel = r.querySelector('[data-sk=key]'); return {cat: r.closest('#evergreenRows') ? 'evergreen' : 'passive', opt: !![...sel.options].find(o=> o.value === '${key}')}; })()`);
         // the key dropdown of the new (passive) row; regen is an evergreen skill: use the Evergreen "+" for it
-        if(key === 'regen'){ await pg.click('#addEvergreen'); await pg.waitForTimeout(250); }
-        const sel = key === 'regen' ? '#evergreenRows .skill-row:last-child [data-sk=key]' : '#skillRows .skill-row:last-child [data-sk=key]';
+        const sel = '#skillRows .skill-row:last-child [data-sk=key]';
         const has = await pg.evaluate(`!![...document.querySelector('${sel}').options].find(o=> o.value === '${key}')`);
         ok(has, `@${w} ${key} is in the skills dropdown`);
         await pg.selectOption(sel, key); await pg.waitForTimeout(300);
-        const row = await pg.evaluate(`(()=>{ const r = document.querySelector('${key === 'regen' ? '#evergreenRows' : '#skillRows'} .skill-row:last-child'); return {k: r.querySelector('[data-sk=key]').value, lv: r.querySelector('.sk-lv').hidden ? null : r.querySelector('[data-sk=lv]').value, opts: [...r.querySelectorAll('[data-sk=lv] option')].map(o=> o.value).join(','), plus: !!r.querySelector('[data-addskillrow]'), rm: !!r.querySelector('[data-rmlv]')}; })()`);
+        const row = await pg.evaluate(`(()=>{ const r = document.querySelector('#skillRows .skill-row:last-child'); return {k: r.querySelector('[data-sk=key]').value, lv: r.querySelector('.sk-lv').hidden ? null : r.querySelector('[data-sk=lv]').value, opts: [...r.querySelectorAll('[data-sk=lv] option')].map(o=> o.value).join(','), plus: !!r.querySelector('[data-addskillrow]'), rm: !!r.querySelector('[data-rmlv]')}; })()`);
         ok(row.k === key && row.lv === '1' && !/(^|,)0(,|$)/.test(row.opts) && !row.plus && !row.rm, `@${w} a new ${key} on a Level 0 card arrives at Lv 1; the Lv box has no 0, no "+", no x ${JSON.stringify(row)}`);
       }
-      await shot('hatchling-regen-level0', '#skillRows'); await shot('regen-level1-evergreen', '#evergreenRows');
+      await shot('hatchling-regen-level0', '#skillRows');
       sv = await pg.evaluate("(()=>{ const d = readEditorFormIntoCard(); return {ef: Object.keys(d.effects), ls: d.levelSkills}; })()");
-      ok(sv.ls && sv.ls['0'] && sv.ls['0'].hatchling && sv.ls['1'] && sv.ls['1'].hatchling === true && sv.ls['1'].regen > 0, `@${w} Save: the old Level 0 Hatchling stays, the new Hatchling and Regeneration are under Level 1 ${JSON.stringify(sv.ls)}`);
+      ok(sv.ls && sv.ls['1'] && sv.ls['1'].hatchling === true && sv.ls['1'].regen > 0, `@${w} Save: Hatchling and the new Regeneration are under Level 1 ${JSON.stringify(sv.ls)}`);
       await open('bog-behemoth');
       const rg = await pg.evaluate("[...document.querySelectorAll('#evergreenRows .skill-row, #skillRows .skill-row')].map(r=> ({k: r.querySelector('[data-sk=key]').value, v: (r.querySelector('[data-sk=val]') || {}).value}))");
       ok(rg.some(x=> x.k === 'regen' && x.v === '3'), `@${w} Regeneration 3 is an editable row on a card that has it ${JSON.stringify(rg)}`);
-      await shot('regen-row', '#evergreenRows');
+      await shot('regen-row', '#skillRows');
       const late = await pg.evaluate("['weaponMaster', 'pry', 'bola', 'anadromous', 'lasso', 'hatchling', 'regen', 'storm'].filter(k=> !SKILL_DEFS.some(s=> s.key === k))");
       ok(late.length === 0, `@${w} every registered skill is in the editor's list (missing: ${late.join(', ') || 'none'})`);
       const lost = await pg.evaluate("PASSIVE_DEFS.filter(p=> !SKILL_DEFS.some(s=> s.key === p.key)).map(p=> p.key)");
