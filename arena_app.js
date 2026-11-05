@@ -1071,7 +1071,7 @@ const PASSIVE_DEFS = [
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
   {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round${v===1?'':'s'} before attacking again.`},
-  {key:'shell', category:'passive', label:'Shell', kind:'number', min:0, desc:v=>`When first hit: +${v} Armor and +${v} temporary Health until the end of next round. It can't attack for the rest of that round.`},
+  {key:'shell', category:'passive', label:'Shell', kind:'number', min:0, desc:v=> TX('ui.sk-shell', {n: v})}, // FIX9 (2026-11-05): Armor only, this round
   {key:'stealth', category:'passive', label:'Stealth', kind:'boolean', desc:()=>`Ignores targeting — always hits the enemy bramble directly.`},
   {key:'evasive', category:'passive', label:'Evasive', kind:'boolean', desc:()=>`Every incoming single-target attack or ability (melee included) has a 1-in-2 chance to be dodged. Area effects, Cleave and Swipe extra hits can't be evaded.`},
   // Feeble/Mighty/Fragile/Sturdy (2026-09-29): unconditional damage multipliers, a deliberately
@@ -26571,7 +26571,12 @@ function unlockedDailyDungeons(progress){
   }catch(e){ return []; }
 }
 function dungeonsAdminView(){ return (typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || (typeof devModeEnabled !== 'undefined' && devModeEnabled); }
-function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); return u.length === 1 ? u[0].name : TX('ui.ui6-dailies'); } // 2026-10-30 (UI6, X19): "Dailies" (was "Daily Dungeons")
+// FIX9 (2026-11-05, owner 22:18: "I noticed my daily dungeons button was called Murgle Mayhem. Recall - when there are multiple, use the
+// generic title instead. Same for the rest, like raids and stuff."): the count is the group's members the tab lists (every daily-dungeon
+// slot, locked and "coming soon" ones too, plus the Group Dungeon's card), not the ones unlocked: one open dungeon among several slots
+// named the whole tab after it. The one dungeon's own name only when the tab holds exactly one.
+function fix9DungeonMembers(){ let n = 0; try{ if(dailyDungeonsOpen()) n += (DAILY_DUNGEONS || []).length; }catch(e){} try{ if(groupDungeonCardHTML()) n += 1; }catch(e){} return n; }
+function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); return (u.length === 1 && fix9DungeonMembers() <= 1) ? u[0].name : TX('ui.ui6-dailies'); } // 2026-10-30 (UI6, X19): "Dailies" (was "Daily Dungeons")
 // 2026-10-23 (package AR3): the daily dungeons' own switch (their keys, the 🗝️ button, the Forge's key ring) is dailyDungeonsOpen; the
 // Dungeons tab itself also opens for the Group Dungeon (gdPlayerOpen), which players see while the daily dungeons stay hidden (TU2).
 function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyDungeons().length); }catch(e){ return false; } }
@@ -30087,15 +30092,31 @@ function raidAlliesTurn(m, events, first){
 }
 function raidAllyPlays(m, a, events){
   const pl = m.players[1], E = m.engine, defs = getCardDefs();
-  if(!a || a.played >= a.deck.length) return;
-  const id = a.deck[a.played]; if(!defs[id]) { a.played++; return; }
+  // FIX9 (2026-11-05, owner 22:18: "Are the CPU decks that ally with you in raids - fully carded? They seem to stop playing cards mid-way
+  // through."): the decks are full (20, less the leader), but measured in seeded Goliath fights (tests/fix9-2026-11-05.js) an ally's row
+  // fills (its 7 slots; middle and back rows are seldom hit) by round 7 to 12, and from then on it held its card every turn. Two fixes:
+  // (1) with its row full it swaps its weakest unit (3 Attack + Health, now; never its leader) for the new card when the card is worth
+  // more: the old unit leaves the board (no death, no On Death); (2) a deck that runs out is shuffled again, so a long fight never
+  // leaves an ally with nothing to play.
+  if(!a || !Array.isArray(a.deck) || !a.deck.length) return;
+  if(a.played >= a.deck.length){ const ids = a.deck.slice(); for(let k = ids.length - 1; k > 0; k--){ const j = Math.floor(Math.random()*(k + 1)); [ids[k], ids[j]] = [ids[j], ids[k]]; } a.deck = ids; a.played = 0; a.cycles = (a.cycles || 0) + 1; }
+  if(!defs[a.deck[a.played]]) { a.played++; return; }
   // 2026-10-17 (user: "for 3 lane raids, the CPU allies can only place on their own rows!"): an ally plays ONLY into its own row
   // (RaidM.allySlot). It used to fall back to the other ally's middle row and then to your front row; now, with its row full, it
   // keeps the card for its next turn.
-  const sl = RaidM.allySlot ? RaidM.allySlot(E, pl, a.row) : null;
+  let sl = RaidM.allySlot ? RaidM.allySlot(E, pl, a.row) : null, swapped = null;
+  if(sl == null && pl.reserve && pl.reserve[a.row - 1]){ // FIX9 (1): the row is full: the best of its next 3 cards (its "hand") for its weakest unit
+    const defWorth = x=>{ const d = defs[x] || {}; return 3 * (Number(d.attack) || 0) + (Number(d.health) || 0); };
+    const r = pl.reserve[a.row - 1], worth = c=> defWorth(c.defId) * Math.max(0, Math.min(1, (Number(c.hp) || 0) / Math.max(1, Number(c.maxHp) || Number(c.hp) || 1))); // printed 3A + H, by the Health it has left
+    const weak = Object.keys(r).map(k=> r[k]).filter(c=> c && c.allyOf === a.name && !c.isLeader && Number.isInteger(c.slot)).sort((x, y)=> worth(x) - worth(y) || x.slot - y.slot)[0];
+    let best = -1; for(let k = a.played; k < Math.min(a.deck.length, a.played + 3); k++) if(defs[a.deck[k]] && (best < 0 || defWorth(a.deck[k]) > defWorth(a.deck[best]))) best = k;
+    if(weak && best >= 0 && worth(weak) < defWorth(a.deck[best])){ [a.deck[a.played], a.deck[best]] = [a.deck[best], a.deck[a.played]];
+      delete r[weak.slot]; sl = weak.slot; swapped = {defId: weak.defId, uid: weak.uid}; } }
+  const id = a.deck[a.played];
   const placed = sl == null ? null : E.fillReserve(pl, a.row, sl, id), where = a.row === 1 ? 'middle row' : 'back row';
   if(!placed) return;
   a.played++;
+  if(swapped){ a.swaps = (a.swaps || 0) + 1; a.lastSwap = swapped; placed.fix9SwappedFor = swapped.defId; }
   // 2026-10-19 (package RB, owner 12:23: "Raid: Allies are still playing cards in the front column."): the play always went into the
   // ally's own row, but the unit then stepped up into your front row (or the back-row ally's into the middle) at the next round start
   // whenever the slot ahead was clear (engine advanceReserves). holdRow keeps it in its row for the whole fight: it strikes from there.
@@ -40628,7 +40649,7 @@ function boardCardHTML(c, defs, opts){
   // (VIS3, 2026-10-26: the Shield is the blue number on the card now, vis3ShieldHTML; no 💠 chip)
   if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
-  const overlaysHTML = `      ${'' /* 2026-10-31 (UI11, FF1): the Shield is the south-edge chip (abilityBadges), not an east badge */}${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
+  const overlaysHTML = `      ${'' /* 2026-10-31 (UI11, FF1): the Shield is the south-edge chip (abilityBadges), not an east badge */}${c.shellUntil!=null ? `<div class="shell-up" title="${escapeAttr(TX('ui.fix9-shell-tip', {n: c.shellArmor||0})) /* FIX9 (2026-11-05): Armor only, this round */}">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${'' /* ENG9 (2026-10-26, owner G19: "no lock icon needed"): no chain glyph over a Chained unit; its tint (is-chained) says it */}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
@@ -41275,11 +41296,20 @@ function syncWindField(m){
     else W.windFieldClear(bf);
   }catch(e){}
 }
+// FIX9 (2026-11-05, owner 22:18: "Don't show wet counters anymore. Really messy. ... Maybe only shift shows it."): the 💧N water pips
+// (.abadge.en20-water) are hidden by CSS unless <html> has .fix9-show-wet, which is on only while Shift is held (desktop). Their 💧+N /
+// 💧−N floats are skipped the same way. The Wet rule itself is unchanged (engine wetCountOf).
+function fix9WetShown(){ try{ return document.documentElement.classList.contains('fix9-show-wet'); }catch(e){ return false; } }
+(function fix9WetShift(){ try{ if(typeof document === 'undefined') return;
+  const set = on=>{ try{ document.documentElement.classList.toggle('fix9-show-wet', !!on); }catch(e){} };
+  document.addEventListener('keydown', e=>{ if(e.key === 'Shift') set(true); });
+  document.addEventListener('keyup', e=>{ if(e.key === 'Shift') set(false); });
+  window.addEventListener('blur', ()=> set(false)); }catch(e){} })();
 // ENG20 (2026-11-02): the board side of the Package ENG20 rules. Each statusFx kind keeps the replay copy (rc) in step and floats its number.
 function en20StatusFx(ev, el, rc){ try{
   const k = ev.kind; if(!/^en20|^crosswind$/.test(k || '')) return;
-  if(k === 'en20Soak'){ if(rc) rc.water = ev.total; if(el) floatText(el, '💧+' + ev.amount, 'buff'); }
-  else if(k === 'en20Dry'){ if(rc) rc.water = ev.total; if(el) floatText(el, '💧−' + ev.amount, 'debuff'); }
+  if(k === 'en20Soak'){ if(rc) rc.water = ev.total; if(el && fix9WetShown()) floatText(el, '💧+' + ev.amount, 'buff'); } // FIX9: no wet floats unless Shift is held
+  else if(k === 'en20Dry'){ if(rc) rc.water = ev.total; if(el && fix9WetShown()) floatText(el, '💧−' + ev.amount, 'debuff'); }
   else if(k === 'en20Ignite'){ if(rc) rc.burn = ev.total; if(el) floatText(el, '🔥 ' + TX('ui.eng20-float-burn'), 'debuff'); }
   else if(k === 'en20Douse'){ if(rc) rc.burn = 0; if(el) floatText(el, '💧 ' + TX('ui.eng20-float-douse'), 'heal'); }
   else if(k === 'en20Roll'){ if(rc) rc.wait = (rc.wait||0) + (ev.amount||1); if(el){ floatText(el, '🤸 ' + TX('ui.eng20-float-roll'), 'quick'); try{ if(hasGsap() && !reducedMotion() && fxAtLeast('low')) gsap.fromTo(el, {rotation:0}, {rotation:360, duration:.6, ease:'power2.inOut', clearProps:'rotation'}); }catch(e){} } }
@@ -41346,7 +41376,7 @@ function emptyFieldDustPuff(row){
 function boardPosSnapshot(m){
   const out = new Map(); if(!m || !m.players) return out;
   [1,2].forEach(pid=>{ const pl = m.players[pid]; if(!pl || !pl.row) return;
-    ['left','center','right'].forEach(lane=> (pl.row[lane]||[]).forEach((c, idx)=>{ if(c && !c.gap && c.uid != null) out.set(String(c.uid), {pid, lane, idx, card:c}); })); });
+    ['left','center','right'].forEach(lane=> (pl.row[lane]||[]).forEach((c, idx)=>{ if(c && !c.gap && c.uid != null) out.set(String(c.uid), {pid, lane, idx, card:c, hp:c.hp /* FIX9: its Health before the arrival */}); })); });
   return out;
 }
 // 2026-10-29 (package UI2, owner R3: "Ambush - ... Currently it just looks like it phases out"): root cause, the card that died as it landed
@@ -41354,7 +41384,26 @@ function boardPosSnapshot(m){
 // found, never held, and never drawn: the played card left the hand and was gone, its Ambush strike and death playing on nothing. `all`
 // (the whole list, the play included) is where the play is looked up now; the held card starts at its full Health (the blow's number and
 // the death come after it lands) and a leveled id ('fox-kit@lv0') falls back to its card.
+// FIX9 (2026-11-05, owner 22:18: "When I played a card, and it is about to be pounced upon - my HP is displayed as 0. This is wrong. It
+// should be displayed as normal, then after pounce it gets hit."): root cause, a unit already on the board that an arrival kills was held
+// as the live engine object, whose Health the engine had already set to 0, so it showed 0 before the Pounce leapt. It is held as a copy
+// with its Health from before the arrival (boardPosSnapshot's hp) now. A unit the arrival only wounds was drawn at its final Health at
+// once too; it is shown through m._arrivalShown (a copy at its Health plus the waiting blows), read by arrivalHoldRows and
+// currentCardByUid, and each blow takes its damage off as it lands (renderVfxForEvent's hit). replayAiArrivalEvents clears both.
+function fix9ArrivalShown(m, pre, events){
+  if(!m || !m.players || !Array.isArray(events)) return;
+  const dmg = new Map(), dead = new Set(events.filter(ev=> ev && ev.type==='death' && ev.uid != null).map(ev=> String(ev.uid)));
+  events.forEach(ev=>{ if(ev && ev.type==='hit' && ev.targetUid != null && (ev.dmg||0) > 0) dmg.set(String(ev.targetUid), (dmg.get(String(ev.targetUid))||0) + ev.dmg); });
+  if(!dmg.size) return;
+  m._arrivalShown = m._arrivalShown || new Map();
+  [1,2].forEach(pid=>{ const pl = m.players[pid]; if(!pl || !pl.row) return;
+    ['left','center','right'].forEach(lane=> (pl.row[lane]||[]).forEach(c=>{ if(!c || c.gap || c.uid == null) return; const u = String(c.uid);
+      if(dead.has(u) || !dmg.has(u) || !(c.hp > 0)) return; const was = pre && pre.get(u), had = m._arrivalShown.get(u);
+      const hp = had ? had.hp + dmg.get(u) : was && was.hp != null ? Math.max(c.hp, was.hp) : c.hp + dmg.get(u);
+      m._arrivalShown.set(u, Object.assign({}, c, {hp: Math.min(Math.max(c.maxHp || hp, c.hp), hp)})); })); });
+}
 function holdArrivalDead(m, pre, events, all){
+  fightSafe(()=> fix9ArrivalShown(m, pre, events), 'fix9ArrivalShown'); // FIX9: wounded, not killed
   if(!m || !Array.isArray(events) || !events.some(ev=> ev && ev.type==='death')) return;
   const playsIn = Array.isArray(all) ? all : events;
   const defs = getCardDefs(); m._arrivalHold = m._arrivalHold || new Map(); m._arrivalCollapse = m._arrivalCollapse || new Map();
@@ -41363,19 +41412,22 @@ function holdArrivalDead(m, pre, events, all){
     if(ev.type==='collapseIn' && ev.uid != null) m._arrivalCollapse.set(String(ev.uid), {pid: ev.side==='A' ? 1 : 2, fromSide: ev.fromSide});
     if(ev.type!=='death' || ev.uid == null) return;
     const u = String(ev.uid), was = pre && pre.get(u);
-    if(was){ m._arrivalHold.set(u, was); return; }
+    if(was){ m._arrivalHold.set(u, Object.assign({}, was, {card: Object.assign({}, was.card, {hp: was.hp != null ? Math.max(1, was.hp) : Math.max(1, was.card.hp || 0)})})); return; } // FIX9: a copy at its Health before the blow
     const pe = playsIn.find(x=> x && x.type==='play' && String(x.uid) === u); if(!pe) return; // the card just played died as it landed
     const d = defs[pe.defId] || defs[String(pe.defId).split('@')[0]] || {};
     m._arrivalHold.set(u, {pid: pe.side==='A' ? 1 : 2, lane: pe.boardSide || 'center', idx: Infinity, card: {uid: pe.uid, defId: pe.defId, slot: pe.slot, hp: Math.max(1, d.health||1), maxHp: d.health||1, atk: d.attack||0, baseAtk: d.attack||0, wait: d.wait||0}});
   });
 }
-function clearArrivalHold(m){ if(m){ m._arrivalHold = null; m._arrivalCollapse = null; } }
+function clearArrivalHold(m){ if(m){ m._arrivalHold = null; m._arrivalCollapse = null; m._arrivalShown = null /* FIX9 */; } }
 function releaseArrivalHold(m, uid){
   if(!m || !m._arrivalHold || !m._arrivalHold.delete(String(uid))) return false;
   if(!m._arrivalHold.size) m._arrivalCollapse = null; // the fall into the centre shows once the last held death has played
   return true;
 }
 function arrivalHoldRows(m, pl, slotView){
+  const shown = m && m._arrivalShown; // FIX9 (2026-11-05): a unit an arrival wounds shows its Health from before the blow until it lands
+  if(shown && shown.size && pl && pl.row){ const sw = arr=> (arr||[]).map(x=> (x && x.uid != null && shown.get(String(x.uid))) || x);
+    pl = Object.assign({}, pl, {row: {left: sw(pl.row.left), center: sw(pl.row.center), right: sw(pl.row.right)}}); }
   const hold = m && m._arrivalHold, col = m && m._arrivalCollapse;
   if(!(hold && hold.size) || !pl || !pl.row) return pl.row;
   const mine = [...hold.values()].filter(h=> h.pid === pl.id); if(!mine.length) return pl.row;
@@ -41387,7 +41439,7 @@ function arrivalHoldRows(m, pl, slotView){
 }
 async function replayAiArrivalEvents(m){
   // your own Pounce goes first (you played first; see playCardByUid, 2026-10-15), then the enemy's arrivals
-  const evs = [...((m && m.playerArrivalEvents) || []), ...((m && m.aiArrivalEvents) || [])]; if(!evs.length){ if(m && m._arrivalHold){ clearArrivalHold(m); fightSafe(renderBoard, 'renderBoard'); } return; } m.aiArrivalEvents = null; m.playerArrivalEvents = null;
+  const evs = [...((m && m.playerArrivalEvents) || []), ...((m && m.aiArrivalEvents) || [])]; if(!evs.length){ if(m && (m._arrivalHold || m._arrivalShown /* FIX9 */)){ clearArrivalHold(m); fightSafe(renderBoard, 'renderBoard'); } return; } m.aiArrivalEvents = null; m.playerArrivalEvents = null;
   settleDeathsEarly(evs); // 2026-10-17: each death right after the blow that caused it
   let last = null;
   for(const ev of evs){
@@ -42699,6 +42751,9 @@ function currentCardByUid(uid){
   const live = loose=>{ for(const pid of [1,2]){ const pl = m.players[pid]; if(!pl) continue;
     for(const side of ['left','center','right']){ const c = (pl.row[side]||[]).find(x=> loose ? String(x.uid)===String(uid) : x.uid===uid); if(c) return c; } } return null; };
   if(m.replayCards && m.replayCards[uid]){ if(m.replayRows) return m.replayCards[uid]; return live(true) || m.replayCards[uid]; }
+  // FIX9 (2026-11-05): while an arrival (a Pounce, an Ambush) waits to replay, the unit it wounds or kills reads its shown copy
+  if(!m.replayRows && (m._arrivalShown || m._arrivalHold)){ const k = String(uid), s = m._arrivalShown && m._arrivalShown.get(k); if(s) return s;
+    const lv = live(false); if(lv) return lv; const h = m._arrivalHold && m._arrivalHold.get(k); return (h && h.card) || null; }
   return live(false);
 }
 // Attack amplification (2026-10-11, user: "The enhanced stats shouldn't be blue ... thresholds for how to amplify the
@@ -47752,7 +47807,7 @@ function logText(ev){
         healPoison: `healed away ${ev.amount} Poison${ev.left ? ` (${ev.left} left)` : ''} before any Health ☠`, // 2026-10-16
         shieldCall: `called a Guardian shield in front of ${nm(ev.targetDefId)} 🛡️`,
         grit: `toughened up from the fight (+${ev.amount}⚔) 💪`,
-        shellUp: `went into its shell (+${ev.amount} Armor, +${ev.amount} temporary Health) 🐚`,
+        shellUp: TX('ui.fix9-shell-log', {n: ev.amount}), // FIX9 (2026-11-05): Armor only, this round
         unitShield: ev.attUid === ev.targetUid ? `raised a Shield: +${ev.amount} temporary Health (${ev.total} in all) 💠` : `shielded ${nm(ev.targetDefId)}: +${ev.amount} temporary Health 💠`, // Shield (2026-10-14)
         cower: ev.mode === 'flee' ? `was hit last turn and backs off${ev.amount ? ` (+${ev.amount} Health)` : ''} 🫣` : `was hit last turn and hides in its shell: attacks can't hurt it this turn 🫣`,
         ichor: `splashed ${nm(ev.targetDefId)} with corrosive blood: ${dnLogNum(ev.amount, ev)} 🧪 acid${ev.armor ? ', −1 Armor' : ''}, Bleed 1 🧪`,
@@ -52135,6 +52190,8 @@ function renderVfxForEvent(ev){
     const bolt = lightningBoltOf(ev); // a lightning hit (2026-10-17): its bolt is the delivery, and its number pops as the bolt lands
     const impactDelay = (ev.ambush && !ev.ranged && quickAt == null) ? Math.round(windup*0.5 + impactPad*0.5) /* 2026-10-29 (UI2, R3): the jab lands sooner */ : quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : bolt ? bolt.ms : windup + (ev.ranged ? projectile : impactPad);
     try{ const h = ev.type==='hit' && matchState._arrivalHold && matchState._arrivalHold.get(String(ev.targetUid)); if(h && h.card) h.card.hp = Math.max(0, (h.card.hp||0) - (ev.dmg||0)); }catch(e){} // 2026-10-29 (UI2, R3): a held arrival takes its blow
+    // FIX9 (2026-11-05): a unit an arrival wounds (m._arrivalShown) takes the blow as it lands, not before (see holdArrivalDead)
+    if(ev.type==='hit' && matchState._arrivalShown && ev.targetUid != null){ const s = matchState._arrivalShown.get(String(ev.targetUid)); if(s){ const live = s; setTimeout(()=>{ try{ live.hp = Math.max(0, (live.hp||0) - (ev.dmg||0)); }catch(e){} }, Math.max(0, impactDelay - 5)); } }
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
     // 2026-10-16: a skin's attack belongs to the copy wearing it (cardLookOf), not to every copy of the card
@@ -52425,7 +52482,7 @@ function renderVfxForEvent(ev){
     if(ev.kind==='surge'){ try{ SoundKit.rageRoar ? SoundKit.rageRoar() : SoundKit.swipeTone(); }catch(e){} if(el){ floatText(el, `🌋 +${ev.atk}/+${ev.hp}`, 'heal slow'); el.classList.add('surge-glow'); setTimeout(()=> el.classList.remove('surge-glow'), 1400); } }
     // 2026-10-12 (09:48, user: "The shell words comes out too fast. And don't say anything just say Shell!. There should be
     // animation across the card over 0.5s"): a pale-blue shell sweeps up the card over half a second, then "Shell!".
-    else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; rc.tempHp = ev.amount; } try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} /* ENG19 (2026-11-02, #14): its 💠 number shows at once */ try{ SoundKit.shellUp(); }catch(e){} if(el){ el.classList.remove('shell-sweep'); void el.offsetWidth; el.classList.add('shell-sweep'); setTimeout(()=> el.classList.remove('shell-sweep'), 900); setTimeout(()=> floatText(el, '🐢 Shell!', 'heal slow'), 450); } }
+    else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; if(!ev.armorOnly) rc.tempHp = ev.amount; /* FIX9 (2026-11-05): Shell is Armor only now */ } try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} /* ENG19 (2026-11-02, #14): its 💠 number shows at once */ try{ SoundKit.shellUp(); }catch(e){} if(el){ el.classList.remove('shell-sweep'); void el.offsetWidth; el.classList.add('shell-sweep'); setTimeout(()=> el.classList.remove('shell-sweep'), 900); setTimeout(()=> floatText(el, '🐢 Shell!', 'heal slow'), 450); } }
     else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} /* ENG19 (#14) */ }
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
     else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, ev.heavy ? '🪁 ' + TX('ui.eng20-float-heavy-tail') : ev.quick ? '🪁 Tailwind: Quick!' : '🪁 Tailwind!', 'quick'); }

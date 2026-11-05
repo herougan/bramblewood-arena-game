@@ -88,7 +88,8 @@ ok(hitBy('x-kingw') === 5, `#13: a Waiting Majesty unit does nothing (${hitBy('x
 // ---- #14 the 💠 number ----------------------------------------------------------------------------------------------------
 { const {e, P} = mk(7); const sh = spawn(e, P, 2, 'x-shell'); spawn(e, P, 1, 'x-hit5'); const ev = []; e.resolveCombat(P, so, {}, ev, 1); e.resolveCombat(P, so, {}, ev, 1);
   const ts = ev.filter(x=> x.type === 'tempSoak' && x.pool === 'shell' && x.uid === sh.uid);
-  ok(ts.length >= 1 && ts.every(x=> x.left >= 0 && x.soaked > 0), `#14: Shell's temporary Health soaking a blow has a tempSoak {pool:'shell'} event (${ts.map(x=> x.soaked + '/' + x.left)})`); }
+  // FIX9 (2026-11-05, owner 22:18: Shell is "N armor ONLY"): Shell gives no temporary Health any more, so no Shell soak event either
+  ok(ts.length === 0 && ev.some(x=> x.type === 'statusFx' && x.kind === 'shellUp' && x.armorOnly), `#14 (FIX9): Shell gives Armor only, no temporary Health to soak (${ts.length} tempSoak)`); }
 ok(/if\(ev\.pool === 'shell'\) rc\.tempHp = ev\.left;/.test(app), "#14: the replay steps the 💠 number down on Shell's soak");
 
 // ---- #15 Grant Shield ------------------------------------------------------------------------------------------------------

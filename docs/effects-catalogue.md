@@ -1517,3 +1517,11 @@ The rules as built (engine: `crepuscularParts`, `eng23SkitterOn` / `eng23Skitter
 |---|---|---|---|
 | 📯 Inspiration gained | `eng21InspNumFx(uid, 'gain')` on `.stats .atk` (CSS) | the horn burst over the inspirer, the 📯N pip | `statusFx inspired` {amount, tokens, total} |
 | 📯 Inspiration spent | `eng21InspNumFx(uid, 'spend')` | the Attack number back down, the pip gone | `statusFx inspiredSpent` {amount, tokens} |
+
+## 2026-11-05 additions (package FIX9): Shell reworked, water pips on Shift
+- **Shell N** (`shell: N`, owner 2026-11-05 22:18, FIX9-1): each round, the first hit of any kind (swings, prongs, arrows, spits, flat skill damage) gives N Armor (`c.shellArmor`, in both Armor sums) for the rest of that round; the round's upkeep drops it (`statusFx shellDown`) and the next round's first hit raises it again. The raising hit is not reduced. A hit between rounds raises it for the coming round. Nullify and Supreme work as before. No temporary Health and no lost swing any more (was: N Armor + N temporary Health until the next round's end, no attack). Event: `statusFx shellUp {amount, armorOnly:true}`; the `.shell-up` crystals over the Health show it.
+- **Water pips** (FIX9 #4): the 💧N pips (`.abadge.en20-water`) and their 💧+N / 💧−N floats show only while Shift is held (`html.fix9-show-wet`). The rule is unchanged.
+
+| Effect | Look | What plays | Events |
+|---|---|---|---|
+| 🐢 Shell up | `.shell-sweep`, "🐢 Shell!" float, crystals over the Health (tip: "Shell: +N Armor until this round ends") | Armor N until the round ends | `statusFx shellUp` {amount, armorOnly} / `shellDown` |

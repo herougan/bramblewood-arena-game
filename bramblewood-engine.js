@@ -2396,14 +2396,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // away at the next turn's end step ... triggers on any hit, including arrows. If not hit yet, the unit can still attack"):
   // the first hit of any kind pulls the unit into its shell. From then until the end of the next round it has N more Armour
   // and N temporary Health (spent before real Health), and it doesn't attack.
+  // FIX9 (2026-11-05, owner 22:18: "Right now shell is super unfun. I think change the skill to be, every turn, after it is hit for the
+  // first time, it gains N armor ONLY - decaying away at the end of the turn."): replaces the rule above. Each round the first hit of
+  // any kind (arrows too) gives N Armor (c.shellArmor, in both Armor sums) for the rest of that round; the round's upkeep drops it and
+  // the next round's first hit raises it again. The raising hit itself is not reduced. No temporary Health, no lost attack. A hit
+  // between rounds (a play-phase spell, a round-start hazard) raises it for the coming round.
   function shellUp(card){
     const d = CARD_DEFS[card.defId]; const n = Number(d && d.effects && d.effects.shell) || 0;
     if(!(n > 0) || !(card.hp > 0) || card.shellUntil != null) return false;
-    card.shellArmor = n; card.tempHp = n; card.shellUntil = combatNo + (combatDepth > 0 ? 1 : 2); // until the end of the next round
-    // 2026-10-12 (09:48, user: "When a card with shell gets hit ... it CANNOT attack for the rest of the turn, till the next
-    // turn"): no attack for the rest of this round (or the coming one, when it's hit between rounds); next round it swings.
-    card.shellQuiet = combatNo + (combatDepth > 0 ? 0 : 1);
-    if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusFx', kind:'shellUp', side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), attUid:card.uid, attDefId:card.defId, targetUid:card.uid, targetDefId:card.defId, amount:n}); }
+    card.shellArmor = n; card.shellUntil = combatNo + (combatDepth > 0 ? 0 : 1); // FIX9: until the end of this round (was: N temp Health, the next round, no swing)
+    if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusFx', kind:'shellUp', side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), attUid:card.uid, attDefId:card.defId, targetUid:card.uid, targetDefId:card.defId, amount:n, armorOnly:true /* FIX9 */}); }
     return true;
   }
   function spendTempHp(card, dmg){
@@ -9501,7 +9503,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{
       if(c.shellSkip){ c.shellSkip = false; } c.shellNext = 0; // (the old queued shell; retired 2026-10-12)
       rallyTick(c); // Rally's grants (BF6): spent after the next round's combat
-      if(c.shellUntil != null && combatNo >= c.shellUntil){ c.shellArmor = 0; c.tempHp = 0; c.shellUntil = null; if(recordEvents && events) events.push({type:'statusFx', kind:'shellDown', side:sideOf(pl.id), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId}); }
+      if(c.shellUntil != null && combatNo >= c.shellUntil){ c.shellArmor = 0; c.tempHp = 0 /* FIX9: Shell gives none now; clears an old save's */; c.shellUntil = null; if(recordEvents && events) events.push({type:'statusFx', kind:'shellDown', side:sideOf(pl.id), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId}); }
     }));
     // Crit (2026-09-14): a capped "once per round" proc — reset the round's usage counter
     // here so next round's attacks get a fresh proc attempt. (Evade's own counter was
