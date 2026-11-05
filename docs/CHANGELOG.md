@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Package BAL18 (stale ladder decks, the Lodge Matriarch, road re-measure)
+- **Reference ladder:** the 85 decks on 32 maps that had left their map's pool after CONTENT10 were rebuilt with BAL13's candidates, measure and choice rule. The other 315 decks are unchanged. Each map is ranked weak to strong again, and the result is baked into the game (`tools/bal18/ladder_stale_2026_11_05.js`, `tools/opt/ref_decks.js --apply`).
+- **2-A-7 The Lodge Matriarch:** no change. All 365 legal decks from her list (under K14) were tried, and the best still loses about 97.5% of the time to the Map reference (target 40). Decision BAL18-1.
+- **Road (Map reference, 40 games, Maps 0-24):** 109 of 256 fights in band, 137 within 10, 63 beyond 20. That is the same before and after this package. Report: `docs/balance/bal18-2026-11-05.md`.
+
 ## 2026-11-05 Package CONTENT11 (owner 11-04 22:34: NUDI-1, IDEA-VREGIA, IDEA-EARLY-2; CONTENT9-1, SKILLREC1-1, RELICT-2 as proposals)
 - **Boss gimmicks, Maps 0-5 and their side maps (11 bosses):**
   - The gimmicks: Cold Snap (0-4), Thistle Prick (1-5), Shell Up (2-5), The Queen's Dive (3-7), Undertow (4-5), Snap Back (5-7), Hare's Nap (1-A-5), Lodge Repairs (2-A-7), Ink Cloud (2-B-4), Root Grip (5-A-4) and Cracking Bark (0-B-4).

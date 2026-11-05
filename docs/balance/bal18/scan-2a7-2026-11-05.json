@@ -1,0 +1,5723 @@
+{
+ "about": "BAL18 item 2: every legal 2-A-7 deck under K14 (tools/bal18/scan_2a7_2026_11_05.js)",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "decks": 404,
+ "before": {
+  "deck": {
+   "box-turtle": 1,
+   "duckling": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 2,
+   "pond-algae": 1,
+   "riverworks-bastion": 2,
+   "water-shrew": 1,
+   "water-vole": 1
+  },
+  "tune": 100,
+  "measure40": 97.5,
+  "measure200": 99
+ },
+ "best": [
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 92.5,
+   "hpLost": 17.8,
+   "P": 60.72,
+   "measure40": 100,
+   "measure200": 100
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 92.5,
+   "hpLost": 16,
+   "P": 60.9,
+   "measure40": 100,
+   "measure200": 100
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1
+   },
+   "tune": 92.5,
+   "hpLost": 15.5,
+   "P": 60.95,
+   "measure40": 100,
+   "measure200": 98
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 92.5,
+   "hpLost": 15,
+   "P": 61,
+   "measure40": 100,
+   "measure200": 98
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "duckling": 1
+   },
+   "tune": 92.5,
+   "hpLost": 15,
+   "P": 61,
+   "measure40": 100,
+   "measure200": 97.5
+  }
+ ],
+ "lowest": [
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 92.5,
+   "hpLost": 16,
+   "P": 60.9,
+   "measure40": 100,
+   "measure200": 100
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 92.5,
+   "hpLost": 15,
+   "P": 61,
+   "measure40": 100,
+   "measure200": 98
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 92.5,
+   "hpLost": 13.8,
+   "P": 61.12
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 92.5,
+   "hpLost": 17.8,
+   "P": 60.72,
+   "measure40": 100,
+   "measure200": 100
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1
+   },
+   "tune": 92.5,
+   "hpLost": 15.5,
+   "P": 60.95,
+   "measure40": 100,
+   "measure200": 98
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "duckling": 1
+   },
+   "tune": 92.5,
+   "hpLost": 15,
+   "P": 61,
+   "measure40": 100,
+   "measure200": 97.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 18.2,
+   "P": 63.18
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 17.2,
+   "P": 63.28
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 14.8,
+   "P": 63.519999999999996
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 13.3,
+   "P": 63.67
+  }
+ ],
+ "all": [
+  {
+   "deck": {
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 4.3
+  },
+  {
+   "deck": {
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 5.2
+  },
+  {
+   "deck": {
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 7.7
+  },
+  {
+   "deck": {
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 5.8
+  },
+  {
+   "deck": {
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 5.5
+  },
+  {
+   "deck": {
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 5.5
+  },
+  {
+   "deck": {
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 4.3
+  },
+  {
+   "deck": {
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 10.3
+  },
+  {
+   "deck": {
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6.2
+  },
+  {
+   "deck": {
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.5
+  },
+  {
+   "deck": {
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4.8
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 10
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.3
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 6.2
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 4.8
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4.5
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 5.8
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 4.3
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 4.5
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 3.8
+  },
+  {
+   "deck": {
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.2
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 7.7
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 7.3
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.5
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 9.5
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 4.7
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 5.2
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 4.5
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4.7
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 5.3
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 4.7
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.3
+  },
+  {
+   "deck": {
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 5.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 9.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 9
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 5.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 5.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 2.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 9.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 5.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 4.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 7.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 4.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 3.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 10.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 10.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 6.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 4
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 4.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 1,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 3.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 5.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 5.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 12
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 6.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 97.5,
+   "hpLost": 9.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 11
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 6.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 13
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 10.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 6.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 2.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 18.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 97.5,
+   "hpLost": 12.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 9.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 97.5,
+   "hpLost": 6.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 97.5,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 4.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 4.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 10.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 9.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 9
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 9.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 8.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 4.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 4.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 2.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 3.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 10
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 15.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 9.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 12.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 9.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 14.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 11.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 9.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 7.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 11.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 6.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 6.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 6.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 17.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 97.5,
+   "hpLost": 13.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 14.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 97.5,
+   "hpLost": 9
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 13.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 12
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 97.5,
+   "hpLost": 11
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 97.5,
+   "hpLost": 10.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 12.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 7.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 10.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 6.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 92.5,
+   "hpLost": 16
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 13
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 97.5,
+   "hpLost": 10.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 12
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 13.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 13.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 11.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 14
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 9.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 7.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 5.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 3.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 10.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 15
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 15.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 8.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 13.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 10.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 9.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 4
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 1.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 3.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 3.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 11.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 20
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 10.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 13.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 9.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 7.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 95,
+   "hpLost": 11.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 17.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 92.5,
+   "hpLost": 15
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 13.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 97.5,
+   "hpLost": 8.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 97.5,
+   "hpLost": 12.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 15.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 11.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 10.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 97.5,
+   "hpLost": 9.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 13
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 97.5,
+   "hpLost": 10
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 5.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 4,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 10.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 97.5,
+   "hpLost": 9.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 5.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 5,
+    "victoria-regia": 3,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 6.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 15.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 10
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 97.5,
+   "hpLost": 13
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 13
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 92.5,
+   "hpLost": 13.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 10.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 12
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 5.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 14.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 7.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 6.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 3,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 5.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 6.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 4,
+    "victoria-regia": 3,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 6.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 7.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 5,
+    "victoria-regia": 2,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 3.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 10.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 13.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 12.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 12
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 10.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 9.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 7.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 2,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 5.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 9.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 6
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 3,
+    "victoria-regia": 3,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 4.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 8.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 4,
+    "victoria-regia": 2,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 2.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 5,
+    "victoria-regia": 1,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 3.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 97.5,
+   "hpLost": 13.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 6.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 6.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 4
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 9.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 6.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 2.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1
+   },
+   "tune": 100,
+   "hpLost": 9.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 4.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 3,
+    "victoria-regia": 2,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 2.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "box-turtle": 1,
+    "water-shrew": 1
+   },
+   "tune": 100,
+   "hpLost": 5.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 4,
+    "riverworks-bastion": 4,
+    "victoria-regia": 1,
+    "box-turtle": 1
+   },
+   "tune": 100,
+   "hpLost": 4.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 14.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 92.5,
+   "hpLost": 17.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 11.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 13.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1
+   },
+   "tune": 92.5,
+   "hpLost": 15.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 100,
+   "hpLost": 10.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 19
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "hpLost": 20
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "duckling": 1
+   },
+   "tune": 92.5,
+   "hpLost": 15
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "pond-algae": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 10
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "duckling": 1
+   },
+   "tune": 95,
+   "hpLost": 19
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 16
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 11
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 19
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 95,
+   "hpLost": 16.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "box-turtle": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 11.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "water-shrew": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 8.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 1,
+    "victoria-regia": 4,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 12.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 9.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 10.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 7.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "box-turtle": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 12.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 12.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "duckling": 1
+   },
+   "tune": 95,
+   "hpLost": 16.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 95,
+   "hpLost": 20.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 14.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 16.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 2,
+    "old-sturgeon": 3,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 9.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "duckling": 1
+   },
+   "tune": 95,
+   "hpLost": 14.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 95,
+   "hpLost": 18.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 12.2
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "box-turtle": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 17.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 3,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 3,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 13.5
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 13.7
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 12.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "water-shrew": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 100,
+   "hpLost": 7.3
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "box-turtle": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 9.8
+  },
+  {
+   "deck": {
+    "lodge-engineer": 4,
+    "old-sturgeon": 2,
+    "riverworks-bastion": 1,
+    "victoria-regia": 2,
+    "water-shrew": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "water-vole": 1,
+    "duckling": 1
+   },
+   "tune": 97.5,
+   "hpLost": 10.7
+  }
+ ]
+}

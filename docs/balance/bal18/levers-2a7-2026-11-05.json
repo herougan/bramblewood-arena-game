@@ -1,0 +1,65 @@
+{
+ "about": "BAL18: 2-A-7 spot checks outside the deck rules (not applied)",
+ "games": 200,
+ "seed0": 9100,
+ "rows": [
+  {
+   "label": "as is",
+   "patch": {},
+   "win": 99,
+   "shield": 9,
+   "hp": 19
+  },
+  {
+   "label": "K14 broken: 4 Box Turtle, 3 Water Shrew + the map-unique cards",
+   "patch": {
+    "deck": {
+     "lodge-engineer": 4,
+     "victoria-regia": 2,
+     "riverworks-bastion": 1,
+     "box-turtle": 4,
+     "water-shrew": 3
+    }
+   },
+   "win": 95.5,
+   "shield": 9,
+   "hp": 19
+  },
+  {
+   "label": "other fights' reward cards from the list (Snapstick Turtle, Platypus Spur, Pyrenean Desman, Muskrat Lodgekeeper) x1 each",
+   "patch": {
+    "deck": {
+     "lodge-engineer": 4,
+     "old-sturgeon": 2,
+     "riverworks-bastion": 2,
+     "victoria-regia": 2,
+     "snapstick-turtle": 1,
+     "platypus-spur": 1,
+     "pyrenean-desman": 1,
+     "muskrat-lodgekeeper": 1
+    }
+   },
+   "win": 95.5,
+   "shield": 9,
+   "hp": 19
+  },
+  {
+   "label": "Shield 20",
+   "patch": {
+    "shieldOverride": 20
+   },
+   "win": 99,
+   "shield": 10,
+   "hp": 19
+  },
+  {
+   "label": "Shield 40",
+   "patch": {
+    "shieldOverride": 40
+   },
+   "win": 98.5,
+   "shield": 20,
+   "hp": 19
+  }
+ ]
+}

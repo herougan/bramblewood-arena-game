@@ -1,0 +1,209 @@
+{
+ "about": "BAL18 item 2: 2-A-7 The Lodge Matriarch retune (tools/bal18/tune_2a7_2026_11_05.js)",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "box-turtle",
+  "duckling",
+  "lodge-engineer",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "pond-algae",
+  "riverworks-bastion",
+  "victoria-regia",
+  "water-shrew",
+  "water-vole"
+ ],
+ "firstClear": [
+  "riverworks-bastion"
+ ],
+ "k14Before": 0,
+ "before": {
+  "deck": {
+   "box-turtle": 1,
+   "duckling": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 2,
+   "pond-algae": 1,
+   "riverworks-bastion": 2,
+   "water-shrew": 1,
+   "water-vole": 1
+  },
+  "tune": 100,
+  "measure40": 97.5
+ },
+ "trail": [
+  {
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 2,
+    "pond-algae": 1,
+    "riverworks-bastion": 2,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "win": 100,
+   "hpLost": 9.8
+  },
+  {
+   "move": "old-sturgeon -2 -> victoria-regia",
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "riverworks-bastion": 2,
+    "water-shrew": 1,
+    "water-vole": 1,
+    "victoria-regia": 2
+   },
+   "win": 95,
+   "hpLost": 16.8
+  }
+ ],
+ "trials": 53,
+ "top": [
+  {
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "measure40": 100
+  },
+  {
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "measure40": 100
+  },
+  {
+   "deck": {
+    "box-turtle": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 3,
+    "pond-algae": 1,
+    "riverworks-bastion": 2,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "measure40": 95,
+   "measure200": 98.5
+  },
+  {
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 1,
+    "pond-algae": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "measure40": 100
+  },
+  {
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "measure40": 100
+  },
+  {
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "old-sturgeon": 1,
+    "pond-algae": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 2,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "measure40": 97.5
+  },
+  {
+   "deck": {
+    "box-turtle": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "old-sturgeon": 2,
+    "pond-algae": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 1,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "measure40": 95
+  },
+  {
+   "deck": {
+    "box-turtle": 1,
+    "duckling": 1,
+    "lodge-engineer": 4,
+    "muskrat-reedgatherer": 1,
+    "riverworks-bastion": 2,
+    "victoria-regia": 3,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "tune": 95,
+   "measure40": 95
+  }
+ ],
+ "pick": {
+  "deck": {
+   "box-turtle": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 3,
+   "pond-algae": 1,
+   "riverworks-bastion": 2,
+   "water-shrew": 1,
+   "water-vole": 1
+  },
+  "tune": 95,
+  "measure40": 95,
+  "measure200": 98.5
+ },
+ "k14After": 0
+}

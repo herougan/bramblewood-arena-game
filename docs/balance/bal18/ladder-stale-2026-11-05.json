@@ -1,0 +1,1034 @@
+{
+ "about": "BAL18: the stale ladder decks and what replaced them",
+ "tool": "1.0.0 (2026-11-05, BAL18)",
+ "rows": [
+  {
+   "map": "m1",
+   "oldRank": 9,
+   "out": [
+    "feral-tomcat"
+   ],
+   "oldWin": 91.7,
+   "newWin": 91.7,
+   "from": "sampled q=0.52",
+   "title": "Worker Ant Hive 1",
+   "newRank": 9
+  },
+  {
+   "map": "mo",
+   "oldRank": 7,
+   "out": [
+    "squires-mount"
+   ],
+   "oldWin": 33.3,
+   "newWin": 33.3,
+   "from": "rank 7 repaired (BAL18: squires-mount -3 -> pall-wraith x3)",
+   "title": "Lucky Hopper Swarm 1",
+   "newRank": 7
+  },
+  {
+   "map": "mo",
+   "oldRank": 8,
+   "out": [
+    "dune-packrat"
+   ],
+   "oldWin": 41.7,
+   "newWin": 45.8,
+   "from": "rank 9 repaired (BAL18: pinecone-sapper -3 -> cave-centipede x3)",
+   "title": "Conch Crawler Swarm 1",
+   "newRank": 9
+  },
+  {
+   "map": "mo",
+   "oldRank": 9,
+   "out": [
+    "pinecone-sapper"
+   ],
+   "oldWin": 58.3,
+   "newWin": 37.5,
+   "from": "0-B-PRO-2",
+   "title": "Magma Wraith Swarm 1",
+   "newRank": 8
+  },
+  {
+   "map": "mb",
+   "oldRank": 5,
+   "out": [
+    "fiddler-crab-swarm",
+    "grey-seal-bull"
+   ],
+   "oldWin": 40,
+   "newWin": 40,
+   "from": "sampled q=1.00",
+   "title": "Field Mouse Warren 1",
+   "newRank": 5
+  },
+  {
+   "map": "mb",
+   "oldRank": 6,
+   "out": [
+    "grey-seal-bull"
+   ],
+   "oldWin": 43.3,
+   "newWin": 43.3,
+   "from": "sampled q=0.00",
+   "title": "Rock Pool Starfish Swarm 1",
+   "newRank": 6
+  },
+  {
+   "map": "mg",
+   "oldRank": 2,
+   "out": [
+    "blind-cave-fish"
+   ],
+   "oldWin": 12.5,
+   "newWin": 12.5,
+   "from": "sampled q=0.43",
+   "title": "Forager Ant Hive 1",
+   "newRank": 2
+  },
+  {
+   "map": "mp",
+   "oldRank": 3,
+   "out": [
+    "snapper-hatchling"
+   ],
+   "oldWin": 23.8,
+   "newWin": 35.7,
+   "from": "sampled q=0.13",
+   "title": "Victoria Regia Swarm 1",
+   "newRank": 4
+  },
+  {
+   "map": "mp",
+   "oldRank": 6,
+   "out": [
+    "grey-seal-bull"
+   ],
+   "oldWin": 50,
+   "newWin": 57.1,
+   "from": "sampled q=0.09",
+   "title": "Swamp Alligator Swarm 1",
+   "newRank": 6
+  },
+  {
+   "map": "mp",
+   "oldRank": 8,
+   "out": [
+    "grey-seal-bull"
+   ],
+   "oldWin": 69,
+   "newWin": 69,
+   "from": "sampled q=0.04",
+   "title": "Shoal Shark Swarm 1",
+   "newRank": 8
+  },
+  {
+   "map": "mp",
+   "oldRank": 10,
+   "out": [
+    "grey-seal-bull"
+   ],
+   "oldWin": 88.1,
+   "newWin": 88.1,
+   "from": "sampled q=0.48",
+   "title": "Gull Thief Flock 1",
+   "newRank": 10
+  },
+  {
+   "map": "m2",
+   "oldRank": 1,
+   "out": [
+    "sea-turtle-elder"
+   ],
+   "oldWin": 16.7,
+   "newWin": 16.7,
+   "from": "sampled q=0.04",
+   "title": "Mosswing Flock 1",
+   "newRank": 1
+  },
+  {
+   "map": "m2",
+   "oldRank": 2,
+   "out": [
+    "sea-turtle-elder"
+   ],
+   "oldWin": 26.7,
+   "newWin": 26.7,
+   "from": "sampled q=1.00",
+   "title": "Alley Cat Swarm 1",
+   "newRank": 2
+  },
+  {
+   "map": "m2",
+   "oldRank": 3,
+   "out": [
+    "water-vole"
+   ],
+   "oldWin": 33.3,
+   "newWin": 33.3,
+   "from": "sampled q=0.35",
+   "title": "Mosswing Flock II",
+   "newRank": 3
+  },
+  {
+   "map": "m2",
+   "oldRank": 4,
+   "out": [
+    "sea-turtle-elder"
+   ],
+   "oldWin": 43.3,
+   "newWin": 43.3,
+   "from": "sampled q=0.52",
+   "title": "Slow-worm Swarm 1",
+   "newRank": 4
+  },
+  {
+   "map": "m2",
+   "oldRank": 5,
+   "out": [
+    "water-vole"
+   ],
+   "oldWin": 50,
+   "newWin": 50,
+   "from": "sampled q=0.22",
+   "title": "Fiddler Crab Swarm Swarm 1",
+   "newRank": 5
+  },
+  {
+   "map": "m2",
+   "oldRank": 6,
+   "out": [
+    "grey-seal-bull"
+   ],
+   "oldWin": 56.7,
+   "newWin": 56.7,
+   "from": "sampled q=0.00",
+   "title": "Conch Herald Flock 1",
+   "newRank": 6
+  },
+  {
+   "map": "m2",
+   "oldRank": 7,
+   "out": [
+    "box-turtle"
+   ],
+   "oldWin": 66.7,
+   "newWin": 63.3,
+   "from": "rank 8 repaired (BAL18: fire-ant-raft -4 -> otter-guard x4; muskrat-reedgatherer -4 -> beaver-lumberjack x3 + gannet-nestweaver x1)",
+   "title": "Beaver Lumberjack Swarm 1",
+   "newRank": 7
+  },
+  {
+   "map": "m2",
+   "oldRank": 8,
+   "out": [
+    "fire-ant-raft",
+    "muskrat-reedgatherer"
+   ],
+   "oldWin": 76.7,
+   "newWin": 90,
+   "from": "rank 7 repaired (BAL18: box-turtle -2 -> bramble-sprout x2)",
+   "title": "Acorn Chipmunk Swarm 1",
+   "newRank": 9
+  },
+  {
+   "map": "m2",
+   "oldRank": 9,
+   "out": [
+    "fire-ant-raft",
+    "muskrat-reedgatherer"
+   ],
+   "oldWin": 83.3,
+   "newWin": 90,
+   "from": "sampled q=0.96",
+   "title": "Burrow Rabbit Warren 1",
+   "newRank": 10
+  },
+  {
+   "map": "m2",
+   "oldRank": 10,
+   "out": [
+    "fire-ant-raft"
+   ],
+   "oldWin": 93.3,
+   "newWin": 63.3,
+   "from": "rank 10 repaired (BAL18: fire-ant-raft -4 -> otter-guard x4)",
+   "title": "Otter Guard Swarm 1",
+   "newRank": 8
+  },
+  {
+   "map": "mw",
+   "oldRank": 1,
+   "out": [
+    "sea-turtle-elder"
+   ],
+   "oldWin": 9.5,
+   "newWin": 7.1,
+   "from": "sampled q=0.22",
+   "title": "Chipmunk Forager Swarm 1",
+   "newRank": 1
+  },
+  {
+   "map": "mw",
+   "oldRank": 2,
+   "out": [
+    "venomlord-serpent"
+   ],
+   "oldWin": 31,
+   "newWin": 35.7,
+   "from": "sampled q=0.70",
+   "title": "Honey Bee Hive 1",
+   "newRank": 2
+  },
+  {
+   "map": "mw",
+   "oldRank": 3,
+   "out": [
+    "venomlord-serpent"
+   ],
+   "oldWin": 35.7,
+   "newWin": 40.5,
+   "from": "sampled q=0.74",
+   "title": "Crimson Recruit Flock 1",
+   "newRank": 3
+  },
+  {
+   "map": "mw",
+   "oldRank": 5,
+   "out": [
+    "grey-seal-bull"
+   ],
+   "oldWin": 47.6,
+   "newWin": 47.6,
+   "from": "sampled q=0.61",
+   "title": "Crimson Recruit Flock II",
+   "newRank": 5
+  },
+  {
+   "map": "mw",
+   "oldRank": 6,
+   "out": [
+    "grey-seal-bull"
+   ],
+   "oldWin": 57.1,
+   "newWin": 57.1,
+   "from": "sampled q=0.83",
+   "title": "Box Turtle Swarm 1",
+   "newRank": 6
+  },
+  {
+   "map": "ms",
+   "oldRank": 9,
+   "out": [
+    "coral-polyp-colony"
+   ],
+   "oldWin": 75,
+   "newWin": 75,
+   "from": "5-A-PRO-1",
+   "title": "Fire Ant Raft Swarm 1",
+   "newRank": 9
+  },
+  {
+   "map": "m8",
+   "oldRank": 1,
+   "out": [
+    "cane-toad"
+   ],
+   "oldWin": 35.4,
+   "newWin": 39.6,
+   "from": "sampled q=0.00",
+   "title": "Briarback Hedgehog Swarm 1",
+   "newRank": 1
+  },
+  {
+   "map": "m8",
+   "oldRank": 2,
+   "out": [
+    "sea-turtle-elder",
+    "cane-toad"
+   ],
+   "oldWin": 43.8,
+   "newWin": 43.8,
+   "from": "sampled q=0.04",
+   "title": "Buzzed Chipmunk Swarm 1",
+   "newRank": 2
+  },
+  {
+   "map": "m8",
+   "oldRank": 8,
+   "out": [
+    "cane-toad"
+   ],
+   "oldWin": 83.3,
+   "newWin": 83.3,
+   "from": "6-PRO-3",
+   "title": "Fire Ant Raft Swarm 1",
+   "newRank": 8
+  },
+  {
+   "map": "mu",
+   "oldRank": 2,
+   "out": [
+    "sea-turtle-elder"
+   ],
+   "oldWin": 16.7,
+   "newWin": 16.7,
+   "from": "rank 2 repaired (BAL18: sea-turtle-elder -5 -> swamp-alligator x5)",
+   "title": "Swamp Alligator Wall 1",
+   "newRank": 2
+  },
+  {
+   "map": "mu",
+   "oldRank": 6,
+   "out": [
+    "bombardier-beetle"
+   ],
+   "oldWin": 58.3,
+   "newWin": 58.3,
+   "from": "rank 6 repaired (BAL18: bombardier-beetle -2 -> grey-seal-bull x2)",
+   "title": "Field Vole Swarm 1",
+   "newRank": 6
+  },
+  {
+   "map": "mu",
+   "oldRank": 10,
+   "out": [
+    "bombardier-beetle"
+   ],
+   "oldWin": 94.4,
+   "newWin": 94.4,
+   "from": "sampled q=0.96",
+   "title": "Alley Cat Swarm 1",
+   "newRank": 10
+  },
+  {
+   "map": "mz",
+   "oldRank": 6,
+   "out": [
+    "snapper-hatchling"
+   ],
+   "oldWin": 60,
+   "newWin": 60,
+   "from": "sampled q=0.26",
+   "title": "Hawthorn Shieldbug Hive 1",
+   "newRank": 6
+  },
+  {
+   "map": "mz",
+   "oldRank": 7,
+   "out": [
+    "snapper-hatchling"
+   ],
+   "oldWin": 66.7,
+   "newWin": 66.7,
+   "from": "rank 6 repaired (BAL18: snapper-hatchling -3 -> acorn-chipmunk x3)",
+   "title": "Bee Warden Hive 1",
+   "newRank": 7
+  },
+  {
+   "map": "mn",
+   "oldRank": 10,
+   "out": [
+    "squires-mount"
+   ],
+   "oldWin": 87.5,
+   "newWin": 79.2,
+   "from": "8-A-PRO-4",
+   "title": "Dust Hyena Swarm 1",
+   "newRank": 9
+  },
+  {
+   "map": "mk",
+   "oldRank": 8,
+   "out": [
+    "vampire-bat"
+   ],
+   "oldWin": 76.2,
+   "newWin": 76.2,
+   "from": "rank 8 repaired (BAL18: vampire-bat -3 -> otter-centurion x3)",
+   "title": "Fiddler Crab Swarm School 1",
+   "newRank": 8
+  },
+  {
+   "map": "mk",
+   "oldRank": 10,
+   "out": [
+    "vampire-bat"
+   ],
+   "oldWin": 90.5,
+   "newWin": 88.1,
+   "from": "sampled q=0.96",
+   "title": "Terrier Pup Swarm 1",
+   "newRank": 10
+  },
+  {
+   "map": "m7",
+   "oldRank": 7,
+   "out": [
+    "grotto-lobster"
+   ],
+   "oldWin": 75.9,
+   "newWin": 72.2,
+   "from": "sampled q=0.65",
+   "title": "Cricket Drummer Swarm 1",
+   "newRank": 7
+  },
+  {
+   "map": "mj",
+   "oldRank": 3,
+   "out": [
+    "grotto-lobster"
+   ],
+   "oldWin": 56.7,
+   "newWin": 56.7,
+   "from": "sampled q=0.17",
+   "title": "Crown-of-thorns Star Swarm 1",
+   "newRank": 3
+  },
+  {
+   "map": "mj",
+   "oldRank": 10,
+   "out": [
+    "vampire-bat"
+   ],
+   "oldWin": 100,
+   "newWin": 93.3,
+   "from": "10-A-PRO-2",
+   "title": "Electric Ray Swarm 1",
+   "newRank": 10
+  },
+  {
+   "map": "m10",
+   "oldRank": 1,
+   "out": [
+    "mountain-goat-climber"
+   ],
+   "oldWin": 16.7,
+   "newWin": 20,
+   "from": "rank 1 repaired (BAL18: mountain-goat-climber -3 -> riverwing-envoy x3)",
+   "title": "Bee Sentry Swarm 1",
+   "newRank": 1
+  },
+  {
+   "map": "m10",
+   "oldRank": 3,
+   "out": [
+    "coral-polyp-colony"
+   ],
+   "oldWin": 35,
+   "newWin": 36.7,
+   "from": "sampled q=0.65",
+   "title": "Harvest Mouse Swarm 1",
+   "newRank": 3
+  },
+  {
+   "map": "m10",
+   "oldRank": 7,
+   "out": [
+    "gale-swift"
+   ],
+   "oldWin": 66.7,
+   "newWin": 68.3,
+   "from": "Reference (Random) prog-1",
+   "title": "Bee Forager Hive 1",
+   "newRank": 7
+  },
+  {
+   "map": "m10",
+   "oldRank": 8,
+   "out": [
+    "grotto-lobster"
+   ],
+   "oldWin": 75,
+   "newWin": 76.7,
+   "from": "sampled q=0.17",
+   "title": "Signal Crayfish School 1",
+   "newRank": 8
+  },
+  {
+   "map": "m10",
+   "oldRank": 9,
+   "out": [
+    "gale-swift"
+   ],
+   "oldWin": 86.7,
+   "newWin": 88.3,
+   "from": "sampled q=0.00",
+   "title": "Lamprey School 1",
+   "newRank": 9
+  },
+  {
+   "map": "mv",
+   "oldRank": 4,
+   "out": [
+    "stag-knight"
+   ],
+   "oldWin": 25,
+   "newWin": 25,
+   "from": "sampled q=0.78",
+   "title": "Chipmunk Hoarder Swarm 1",
+   "newRank": 4
+  },
+  {
+   "map": "mv",
+   "oldRank": 9,
+   "out": [
+    "gatling-hog"
+   ],
+   "oldWin": 62.5,
+   "newWin": 62.5,
+   "from": "sampled q=0.00",
+   "title": "Raft Spider Swarm 1",
+   "newRank": 9
+  },
+  {
+   "map": "mh",
+   "oldRank": 7,
+   "out": [
+    "gatling-hog"
+   ],
+   "oldWin": 61.9,
+   "newWin": 61.9,
+   "from": "sampled q=0.96",
+   "title": "Bee Forager Swarm 1",
+   "newRank": 7
+  },
+  {
+   "map": "mr",
+   "oldRank": 1,
+   "out": [
+    "snapper-hatchling"
+   ],
+   "oldWin": 8.3,
+   "newWin": 8.3,
+   "from": "sampled q=0.09",
+   "title": "Rock Pool Starfish Swarm 1",
+   "newRank": 1
+  },
+  {
+   "map": "mr",
+   "oldRank": 3,
+   "out": [
+    "woodpecker-sapper"
+   ],
+   "oldWin": 22.9,
+   "newWin": 22.9,
+   "from": "sampled q=0.00",
+   "title": "Seed-cache Squirrel Swarm 1",
+   "newRank": 3
+  },
+  {
+   "map": "mr",
+   "oldRank": 4,
+   "out": [
+    "grotto-lobster"
+   ],
+   "oldWin": 29.2,
+   "newWin": 29.2,
+   "from": "rank 7 repaired (BAL18: coral-polyp-colony -4 -> ember-tetra x4)",
+   "title": "Lyrebird Mimic Brood 1",
+   "newRank": 4
+  },
+  {
+   "map": "mr",
+   "oldRank": 7,
+   "out": [
+    "coral-polyp-colony"
+   ],
+   "oldWin": 47.9,
+   "newWin": 45.8,
+   "from": "sampled q=0.96",
+   "title": "Sunbittern Strider Swarm 1",
+   "newRank": 7
+  },
+  {
+   "map": "m5",
+   "oldRank": 9,
+   "out": [
+    "weaver-bird"
+   ],
+   "oldWin": 87.5,
+   "newWin": 60.4,
+   "from": "rank 9 repaired (BAL18: weaver-bird -4 -> jay-pilferer x4)",
+   "title": "Dust Hyena Swarm 1",
+   "newRank": 7
+  },
+  {
+   "map": "my",
+   "oldRank": 5,
+   "out": [
+    "pinecone-sapper"
+   ],
+   "oldWin": 46.7,
+   "newWin": 46.7,
+   "from": "sampled q=0.17",
+   "title": "Horseshoe Crab Flock 1",
+   "newRank": 9
+  },
+  {
+   "map": "my",
+   "oldRank": 6,
+   "out": [
+    "plains-zebra"
+   ],
+   "oldWin": 53.3,
+   "newWin": 33.3,
+   "from": "sampled q=1.00",
+   "title": "River Carp Swarm 1",
+   "newRank": 7
+  },
+  {
+   "map": "my",
+   "oldRank": 7,
+   "out": [
+    "gale-swift"
+   ],
+   "oldWin": 60,
+   "newWin": 30,
+   "from": "rank 8 repaired (BAL18: squires-mount -3 -> grotto-lobster x3)",
+   "title": "Grave-Grin Hyena Swarm 1",
+   "newRank": 5
+  },
+  {
+   "map": "my",
+   "oldRank": 8,
+   "out": [
+    "squires-mount"
+   ],
+   "oldWin": 60,
+   "newWin": 30,
+   "from": "rank 10 repaired (BAL18: coral-polyp-colony -4 -> apollo-butterfly x4)",
+   "title": "Spitting Spider Swarm 1",
+   "newRank": 6
+  },
+  {
+   "map": "my",
+   "oldRank": 10,
+   "out": [
+    "coral-polyp-colony"
+   ],
+   "oldWin": 86.7,
+   "newWin": 26.7,
+   "from": "14-A-PRO-1",
+   "title": "Grave-Grin Hyena Swarm II",
+   "newRank": 4
+  },
+  {
+   "map": "ml",
+   "oldRank": 6,
+   "out": [
+    "coral-polyp-colony"
+   ],
+   "oldWin": 42.9,
+   "newWin": 45.2,
+   "from": "sampled q=0.78",
+   "title": "Pelican Diver Flock 1",
+   "newRank": 6
+  },
+  {
+   "map": "mt",
+   "oldRank": 5,
+   "out": [
+    "gale-swift"
+   ],
+   "oldWin": 28.6,
+   "newWin": 28.6,
+   "from": "sampled q=0.26",
+   "title": "Chipmunk Forager Warren 1",
+   "newRank": 5
+  },
+  {
+   "map": "mt",
+   "oldRank": 6,
+   "out": [
+    "pinecone-sapper",
+    "squires-mount"
+   ],
+   "oldWin": 38.1,
+   "newWin": 38.1,
+   "from": "sampled q=0.48",
+   "title": "Baby Bat Swarm 1",
+   "newRank": 6
+  },
+  {
+   "map": "mt",
+   "oldRank": 9,
+   "out": [
+    "squires-mount",
+    "wolf-pack-runner"
+   ],
+   "oldWin": 57.1,
+   "newWin": 59.5,
+   "from": "sampled q=0.78",
+   "title": "Bramble Hoglet School 1",
+   "newRank": 9
+  },
+  {
+   "map": "mt",
+   "oldRank": 10,
+   "out": [
+    "pinecone-sapper"
+   ],
+   "oldWin": 64.3,
+   "newWin": 64.3,
+   "from": "rank 6 repaired (BAL18: pinecone-sapper -2 -> cave-centipede x2; squires-mount -3 -> grotto-lobster x3)",
+   "title": "Woodpecker Sapper Swarm 1",
+   "newRank": 10
+  },
+  {
+   "map": "m6",
+   "oldRank": 9,
+   "out": [
+    "talus-pika"
+   ],
+   "oldWin": 62.5,
+   "newWin": 64.6,
+   "from": "17-PRO-2",
+   "title": "Snow Bunting Archer Warren 1",
+   "newRank": 10
+  },
+  {
+   "map": "m6",
+   "oldRank": 10,
+   "out": [
+    "talus-pika"
+   ],
+   "oldWin": 70.8,
+   "newWin": 60.4,
+   "from": "rank 9 repaired (BAL18: talus-pika -4 -> mountain-hare x1 + ant-scout x3)",
+   "title": "Mountain Hare Swarm 1",
+   "newRank": 9
+  },
+  {
+   "map": "mi",
+   "oldRank": 4,
+   "out": [
+    "warhorse-charger"
+   ],
+   "oldWin": 25,
+   "newWin": 25,
+   "from": "sampled q=0.13",
+   "title": "Great Crested Grebe Flock 1",
+   "newRank": 4
+  },
+  {
+   "map": "mi",
+   "oldRank": 6,
+   "out": [
+    "gorge-wyrm"
+   ],
+   "oldWin": 45.8,
+   "newWin": 45.8,
+   "from": "sampled q=0.22",
+   "title": "Jay Pilferer Swarm 1",
+   "newRank": 6
+  },
+  {
+   "map": "md",
+   "oldRank": 5,
+   "out": [
+    "snapper-hatchling"
+   ],
+   "oldWin": 47.6,
+   "newWin": 50,
+   "from": "sampled q=0.17",
+   "title": "Raft Spider Swarm 1",
+   "newRank": 5
+  },
+  {
+   "map": "md",
+   "oldRank": 6,
+   "out": [
+    "obsidian-scorpion"
+   ],
+   "oldWin": 50,
+   "newWin": 50,
+   "from": "sampled q=1.00",
+   "title": "Hoopoe Herald Swarm 1",
+   "newRank": 6
+  },
+  {
+   "map": "md",
+   "oldRank": 9,
+   "out": [
+    "dromedary"
+   ],
+   "oldWin": 85.7,
+   "newWin": 85.7,
+   "from": "18-PRO-3",
+   "title": "Antlion Pit Flock 1",
+   "newRank": 9
+  },
+  {
+   "map": "mpd",
+   "oldRank": 5,
+   "out": [
+    "pinecone-sapper"
+   ],
+   "oldWin": 29.6,
+   "newWin": 29.6,
+   "from": "sampled q=0.13",
+   "title": "Sparrow Chick Wall 1",
+   "newRank": 5
+  },
+  {
+   "map": "mpd",
+   "oldRank": 6,
+   "out": [
+    "squires-mount"
+   ],
+   "oldWin": 35.2,
+   "newWin": 35.2,
+   "from": "sampled q=0.26",
+   "title": "Fennec Fox Swarm 1",
+   "newRank": 6
+  },
+  {
+   "map": "mpd",
+   "oldRank": 8,
+   "out": [
+    "wolf-pack-runner",
+    "gatling-hog"
+   ],
+   "oldWin": 53.7,
+   "newWin": 53.7,
+   "from": "sampled q=0.96",
+   "title": "Burrow Rabbit Warren 1",
+   "newRank": 8
+  },
+  {
+   "map": "m3",
+   "oldRank": 4,
+   "out": [
+    "pinecone-sapper"
+   ],
+   "oldWin": 33.3,
+   "newWin": 33.3,
+   "from": "sampled q=0.39",
+   "title": "Swamp Alligator Flock 1",
+   "newRank": 4
+  },
+  {
+   "map": "m3",
+   "oldRank": 6,
+   "out": [
+    "coral-polyp-colony"
+   ],
+   "oldWin": 47.2,
+   "newWin": 50,
+   "from": "sampled q=0.04",
+   "title": "Guano Beetle Hive 1",
+   "newRank": 6
+  },
+  {
+   "map": "m3",
+   "oldRank": 9,
+   "out": [
+    "pinecone-sapper"
+   ],
+   "oldWin": 72.2,
+   "newWin": 72.2,
+   "from": "19-PRO-3",
+   "title": "Apollo Butterfly Hive 1",
+   "newRank": 9
+  },
+  {
+   "map": "m9",
+   "oldRank": 5,
+   "out": [
+    "gale-swift"
+   ],
+   "oldWin": 40,
+   "newWin": 43.3,
+   "from": "sampled q=0.61",
+   "title": "Meerkat Wayfarer Swarm 1",
+   "newRank": 5
+  },
+  {
+   "map": "m9",
+   "oldRank": 8,
+   "out": [
+    "squires-mount"
+   ],
+   "oldWin": 65,
+   "newWin": 55,
+   "from": "19-A-PRO-1",
+   "title": "Fire Salamander Brood 1",
+   "newRank": 7
+  },
+  {
+   "map": "m11",
+   "oldRank": 7,
+   "out": [
+    "warhorse-charger"
+   ],
+   "oldWin": 41.7,
+   "newWin": 41.7,
+   "from": "sampled q=0.74",
+   "title": "Fire Salamander Swarm 1",
+   "newRank": 7
+  },
+  {
+   "map": "m11",
+   "oldRank": 10,
+   "out": [
+    "glass-golem"
+   ],
+   "oldWin": 60,
+   "newWin": 63.3,
+   "from": "20-PRO-2",
+   "title": "Alpine Marmot Swarm 1",
+   "newRank": 10
+  },
+  {
+   "map": "me",
+   "oldRank": 7,
+   "out": [
+    "squires-mount"
+   ],
+   "oldWin": 42.9,
+   "newWin": 42.9,
+   "from": "sampled q=0.17",
+   "title": "Lovebird Swarm 1",
+   "newRank": 7
+  },
+  {
+   "map": "me",
+   "oldRank": 8,
+   "out": [
+    "coral-polyp-colony"
+   ],
+   "oldWin": 47.6,
+   "newWin": 45.2,
+   "from": "sampled q=0.74",
+   "title": "Swift Fox Swarm 1",
+   "newRank": 8
+  },
+  {
+   "map": "me",
+   "oldRank": 10,
+   "out": [
+    "squires-mount"
+   ],
+   "oldWin": 69,
+   "newWin": 69,
+   "from": "rank 8 repaired (BAL18: coral-polyp-colony -4 -> apollo-butterfly x4)",
+   "title": "Clownfish Scout Flock 1",
+   "newRank": 10
+  },
+  {
+   "map": "mx",
+   "oldRank": 2,
+   "out": [
+    "cinder-hornet",
+    "glacial-ape-king"
+   ],
+   "oldWin": 4.2,
+   "newWin": 4.2,
+   "from": "sampled q=0.04",
+   "title": "Giant Clam Band 1",
+   "newRank": 3
+  }
+ ]
+}

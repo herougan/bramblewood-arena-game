@@ -6,7 +6,7 @@
  "built": "2026-11-02",
  "tool": "tools/bal13/ladder_2026_11_02.js 1.1.0 (2026-11-02, BAL13: with leaders)",
  "level": "referencePlayerLevel",
- "note": "Package BAL13 (owner 2026-11-02 19:56: \"Make at least 10 reference decks\"): per map (every PRO entry: Maps 0-20 and their side maps), 10 decks a player could hold there (the map-true pool: the map's own cards plus what a player holds by then, within the map's rarity cap, no faction or enemy-only card; 20 cards, at most 12 different, the rarity copy caps), rank 1 the weakest to rank 10 the strongest by their win rate against the map's road fights. Played at the Map reference's level (referencePlayerLevel), each with the leader a player holds at that map (owner 21:37; tools/bal13/lib_leader_2026_11_02.js leaderFor, the Wandering Traveller when none), summoned by your seat's AI. A per-map ladder (\"ladder\" by map id, not \"decks\" by map number). tools/opt/ref_decks.js bakes it into arena_app.js REF_DECK_SETS (owner 22:15: the game's \"Reference (Random)\" deals one of the map's 10 at random, each with its name, leader and levelled parts); the tools play it (tools/bal13/summary_2026_11_02.js). BAL17 (2026-11-05): Maps 21-24 (m21-m24) added, built by the same tool and rule; the other maps' entries kept as they were.",
+ "note": "Package BAL13 (owner 2026-11-02 19:56: \"Make at least 10 reference decks\"): per map (every PRO entry: Maps 0-20 and their side maps), 10 decks a player could hold there (the map-true pool: the map's own cards plus what a player holds by then, within the map's rarity cap, no faction or enemy-only card; 20 cards, at most 12 different, the rarity copy caps), rank 1 the weakest to rank 10 the strongest by their win rate against the map's road fights. Played at the Map reference's level (referencePlayerLevel), each with the leader a player holds at that map (owner 21:37; tools/bal13/lib_leader_2026_11_02.js leaderFor, the Wandering Traveller when none), summoned by your seat's AI. A per-map ladder (\"ladder\" by map id, not \"decks\" by map number). tools/opt/ref_decks.js bakes it into arena_app.js REF_DECK_SETS (owner 22:15: the game's \"Reference (Random)\" deals one of the map's 10 at random, each with its name, leader and levelled parts); the tools play it (tools/bal13/summary_2026_11_02.js). BAL17 (2026-11-05): Maps 21-24 (m21-m24) added, built by the same tool and rule; the other maps' entries kept as they were. BAL18 (2026-11-05): the decks that left their map-true pool after CONTENT10 rebuilt by tools/bal18/ladder_stale_2026_11_05.js with BAL13's candidates, measure and choice; every other deck kept as it was.",
  "rule": {
   "pool": "tools/opt/deckopt.js poolsFor mode map-true, minus enemy-only cards",
   "deck": {
@@ -480,48 +480,67 @@
     {
      "rank": 9,
      "name": {
-      "lead": "beaver-lumberjack",
-      "tactic": "warren",
+      "lead": "worker-ant",
+      "tactic": "hive",
       "n": 1
      },
-     "title": "Beaver Lumberjack Warren",
+     "title": "Worker Ant Hive 1",
      "counts": {
-      "beaver-lumberjack": 5,
-      "chipmunk-skirmisher": 5,
-      "feral-tomcat": 2,
-      "duck-paddler": 3,
-      "pond-duck": 5
+      "crossed-eyes": 3,
+      "honey-bee": 2,
+      "ant-scout": 1,
+      "crimson-wing-recruit": 3,
+      "house-cat": 3,
+      "otter-kit": 2,
+      "silver-minnow": 1,
+      "worker-ant": 5
      },
      "parts": [
       [
-       "beaver-lumberjack",
-       5,
-       0
-      ],
-      [
-       "chipmunk-skirmisher",
-       5,
-       0
-      ],
-      [
-       "feral-tomcat",
-       2,
-       0
-      ],
-      [
-       "duck-paddler",
+       "crossed-eyes",
        3,
        0
       ],
       [
-       "pond-duck",
+       "honey-bee",
+       2,
+       0
+      ],
+      [
+       "ant-scout",
+       1,
+       0
+      ],
+      [
+       "crimson-wing-recruit",
+       3,
+       0
+      ],
+      [
+       "house-cat",
+       3,
+       0
+      ],
+      [
+       "otter-kit",
+       2,
+       0
+      ],
+      [
+       "silver-minnow",
+       1,
+       0
+      ],
+      [
+       "worker-ant",
        5,
        0
       ]
      ],
      "leader": "wandering-traveller",
-     "from": "sampled q=0.83",
-     "selectWin": 91.7
+     "from": "sampled q=0.52",
+     "selectWin": 91.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (feral-tomcat left the map-true pool after CONTENT10; old selectWin 91.7)"
     },
     {
      "rank": 10,
@@ -1109,14 +1128,14 @@
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Lucky Hopper Swarm",
+     "title": "Lucky Hopper Swarm 1",
      "counts": {
       "ent": 3,
       "grave-grin-hyena": 4,
       "hedgehog-herbalist": 3,
       "lucky-hopper": 4,
       "mountain-hare": 3,
-      "squires-mount": 3
+      "pall-wraith": 3
      },
      "parts": [
       [
@@ -1170,108 +1189,103 @@
        4
       ],
       [
-       "squires-mount",
+       "pall-wraith",
        2,
        3
       ],
       [
-       "squires-mount",
+       "pall-wraith",
+       1,
+       4
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "rank 7 repaired (BAL18: squires-mount -3 -> pall-wraith x3)",
+     "selectWin": 33.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 7 (squires-mount left the map-true pool after CONTENT10; old selectWin 33.3)"
+    },
+    {
+     "rank": 8,
+     "name": {
+      "lead": "magma-wraith",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Magma Wraith Swarm 1",
+     "counts": {
+      "ent": 3,
+      "magma-wraith": 4,
+      "mountain-hare": 4,
+      "sergeant-bramblefox": 3,
+      "taiga-lynx": 3,
+      "wolf-spider-mother": 3
+     },
+     "parts": [
+      [
+       "ent",
+       2,
+       3
+      ],
+      [
+       "ent",
+       1,
+       4
+      ],
+      [
+       "magma-wraith",
+       2,
+       3
+      ],
+      [
+       "magma-wraith",
+       2,
+       4
+      ],
+      [
+       "mountain-hare",
+       3,
+       3
+      ],
+      [
+       "mountain-hare",
+       1,
+       4
+      ],
+      [
+       "sergeant-bramblefox",
+       2,
+       3
+      ],
+      [
+       "sergeant-bramblefox",
+       1,
+       4
+      ],
+      [
+       "taiga-lynx",
+       2,
+       3
+      ],
+      [
+       "taiga-lynx",
+       1,
+       4
+      ],
+      [
+       "wolf-spider-mother",
+       2,
+       3
+      ],
+      [
+       "wolf-spider-mother",
        1,
        4
       ]
      ],
      "leader": "old-snapjaw",
      "from": "0-B-PRO-2",
-     "selectWin": 33.3
-    },
-    {
-     "rank": 8,
-     "name": {
-      "lead": "river-carp",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "River Carp Swarm",
-     "counts": {
-      "hedgehog-herbalist": 3,
-      "dune-packrat": 1,
-      "cave-olm": 3,
-      "glimmer-spider": 2,
-      "river-carp": 4,
-      "frost-hare-sprinter": 2,
-      "planarian-splitter": 2,
-      "burrow-rabbit": 3
-     },
-     "parts": [
-      [
-       "hedgehog-herbalist",
-       2,
-       3
-      ],
-      [
-       "hedgehog-herbalist",
-       1,
-       4
-      ],
-      [
-       "dune-packrat",
-       1,
-       3
-      ],
-      [
-       "cave-olm",
-       1,
-       3
-      ],
-      [
-       "cave-olm",
-       2,
-       4
-      ],
-      [
-       "glimmer-spider",
-       2,
-       3
-      ],
-      [
-       "river-carp",
-       2,
-       3
-      ],
-      [
-       "river-carp",
-       2,
-       4
-      ],
-      [
-       "frost-hare-sprinter",
-       2,
-       3
-      ],
-      [
-       "planarian-splitter",
-       1,
-       3
-      ],
-      [
-       "planarian-splitter",
-       1,
-       4
-      ],
-      [
-       "burrow-rabbit",
-       2,
-       3
-      ],
-      [
-       "burrow-rabbit",
-       1,
-       4
-      ]
-     ],
-     "leader": "old-snapjaw",
-     "from": "sampled q=0.87",
-     "selectWin": 41.7
+     "selectWin": 37.5,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (pinecone-sapper left the map-true pool after CONTENT10; old selectWin 58.3)"
     },
     {
      "rank": 9,
@@ -1280,14 +1294,14 @@
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Conch Crawler Swarm",
+     "title": "Conch Crawler Swarm 1",
      "counts": {
       "magma-salamander": 2,
       "raccoon-bandit": 3,
       "border-collie": 4,
-      "pinecone-sapper": 3,
       "terrier-pup": 3,
-      "conch-crawler": 5
+      "conch-crawler": 5,
+      "cave-centipede": 3
      },
      "parts": [
       [
@@ -1321,16 +1335,6 @@
        4
       ],
       [
-       "pinecone-sapper",
-       2,
-       3
-      ],
-      [
-       "pinecone-sapper",
-       1,
-       4
-      ],
-      [
        "terrier-pup",
        2,
        3
@@ -1349,11 +1353,22 @@
        "conch-crawler",
        2,
        4
+      ],
+      [
+       "cave-centipede",
+       2,
+       3
+      ],
+      [
+       "cave-centipede",
+       1,
+       4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.83",
-     "selectWin": 58.3
+     "from": "rank 9 repaired (BAL18: pinecone-sapper -3 -> cave-centipede x3)",
+     "selectWin": 45.8,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 8 (dune-packrat left the map-true pool after CONTENT10; old selectWin 41.7)"
     },
     {
      "rank": 10,
@@ -2799,118 +2814,126 @@
     {
      "rank": 5,
      "name": {
-      "lead": "grey-seal-bull",
-      "tactic": "school",
+      "lead": "field-mouse",
+      "tactic": "warren",
       "n": 1
      },
-     "title": "Grey Seal Bull School",
+     "title": "Field Mouse Warren 1",
      "counts": {
-      "bee-forager": 2,
-      "fiddler-crab-swarm": 4,
-      "fleetfootd": 4,
-      "grey-seal-bull": 4,
-      "open-ocean-hermit-crab": 4,
-      "oystercatcher": 2
+      "otter-guard": 4,
+      "alley-cat": 2,
+      "burrow-rabbit": 3,
+      "bee-forager": 3,
+      "river-carp": 1,
+      "field-mouse": 5,
+      "chipmunk-skirmisher": 2
      },
      "parts": [
       [
-       "bee-forager",
-       2,
-       0
-      ],
-      [
-       "fiddler-crab-swarm",
+       "otter-guard",
        4,
        0
       ],
       [
-       "fleetfootd",
-       4,
-       0
-      ],
-      [
-       "grey-seal-bull",
-       4,
-       0
-      ],
-      [
-       "open-ocean-hermit-crab",
-       4,
-       0
-      ],
-      [
-       "oystercatcher",
-       2,
-       0
-      ]
-     ],
-     "leader": "old-shell",
-     "from": "2-PRO-4",
-     "selectWin": 40
-    },
-    {
-     "rank": 6,
-     "name": {
-      "lead": "river-carp",
-      "tactic": "school",
-      "n": 1
-     },
-     "title": "River Carp School",
-     "counts": {
-      "soldier-ant": 3,
-      "pond-duck": 3,
-      "meadow-rabbit": 2,
-      "conch-herald": 2,
-      "burrow-rabbit": 2,
-      "grey-seal-bull": 1,
-      "pond-trout": 2,
-      "river-carp": 5
-     },
-     "parts": [
-      [
-       "soldier-ant",
-       3,
-       0
-      ],
-      [
-       "pond-duck",
-       3,
-       0
-      ],
-      [
-       "meadow-rabbit",
-       2,
-       0
-      ],
-      [
-       "conch-herald",
+       "alley-cat",
        2,
        0
       ],
       [
        "burrow-rabbit",
-       2,
+       3,
        0
       ],
       [
-       "grey-seal-bull",
-       1,
-       0
-      ],
-      [
-       "pond-trout",
-       2,
+       "bee-forager",
+       3,
        0
       ],
       [
        "river-carp",
+       1,
+       0
+      ],
+      [
+       "field-mouse",
        5,
+       0
+      ],
+      [
+       "chipmunk-skirmisher",
+       2,
        0
       ]
      ],
      "leader": "old-shell",
-     "from": "sampled q=0.87",
-     "selectWin": 43.3
+     "from": "sampled q=1.00",
+     "selectWin": 40,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 5 (fiddler-crab-swarm, grey-seal-bull left the map-true pool after CONTENT10; old selectWin 40)"
+    },
+    {
+     "rank": 6,
+     "name": {
+      "lead": "rock-pool-starfish",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Rock Pool Starfish Swarm 1",
+     "counts": {
+      "rock-pool-starfish": 5,
+      "gull-thief": 1,
+      "harvest-mouse": 2,
+      "ember-tetra": 4,
+      "farm-dog": 3,
+      "duckling": 1,
+      "paper-wasp": 3,
+      "moon-jelly": 1
+     },
+     "parts": [
+      [
+       "rock-pool-starfish",
+       5,
+       0
+      ],
+      [
+       "gull-thief",
+       1,
+       0
+      ],
+      [
+       "harvest-mouse",
+       2,
+       0
+      ],
+      [
+       "ember-tetra",
+       4,
+       0
+      ],
+      [
+       "farm-dog",
+       3,
+       0
+      ],
+      [
+       "duckling",
+       1,
+       0
+      ],
+      [
+       "paper-wasp",
+       3,
+       0
+      ],
+      [
+       "moon-jelly",
+       1,
+       0
+      ]
+     ],
+     "leader": "old-shell",
+     "from": "sampled q=0.00",
+     "selectWin": 43.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (grey-seal-bull left the map-true pool after CONTENT10; old selectWin 43.3)"
     },
     {
      "rank": 7,
@@ -3185,66 +3208,61 @@
     {
      "rank": 2,
      "name": {
-      "lead": "red-billed-chough",
-      "tactic": "swarm",
+      "lead": "forager-ant",
+      "tactic": "hive",
       "n": 1
      },
-     "title": "Red-billed Chough Swarm",
+     "title": "Forager Ant Hive 1",
      "counts": {
-      "dam-keeper-beaver": 3,
-      "red-billed-chough": 4,
-      "venomlord-serpent": 1,
-      "blind-cave-fish": 2,
-      "badger-lumberjack": 2,
-      "crocodile-ambusher": 3,
-      "moon-jelly": 2,
-      "sparrow-chick": 3
+      "tide-pool-crab": 2,
+      "otter-kit": 2,
+      "bee-sentry": 3,
+      "acorn-chipmunk": 2,
+      "forager-ant": 4,
+      "worker-ant": 4,
+      "golden-eagle-diver": 3
      },
      "parts": [
       [
-       "dam-keeper-beaver",
+       "tide-pool-crab",
+       2,
+       0
+      ],
+      [
+       "otter-kit",
+       2,
+       0
+      ],
+      [
+       "bee-sentry",
        3,
        0
       ],
       [
-       "red-billed-chough",
+       "acorn-chipmunk",
+       2,
+       0
+      ],
+      [
+       "forager-ant",
        4,
        0
       ],
       [
-       "venomlord-serpent",
-       1,
+       "worker-ant",
+       4,
        0
       ],
       [
-       "blind-cave-fish",
-       2,
-       0
-      ],
-      [
-       "badger-lumberjack",
-       2,
-       0
-      ],
-      [
-       "crocodile-ambusher",
-       3,
-       0
-      ],
-      [
-       "moon-jelly",
-       2,
-       0
-      ],
-      [
-       "sparrow-chick",
+       "golden-eagle-diver",
        3,
        0
       ]
      ],
      "leader": "old-shell",
-     "from": "sampled q=0.13",
-     "selectWin": 12.5
+     "from": "sampled q=0.43",
+     "selectWin": 12.5,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 2 (blind-cave-fish left the map-true pool after CONTENT10; old selectWin 12.5)"
     },
     {
      "rank": 3,
@@ -3794,70 +3812,6 @@
     {
      "rank": 3,
      "name": {
-      "lead": "crossed-eyes",
-      "tactic": "flock",
-      "n": 1
-     },
-     "title": "Crossed-Eyes Flock",
-     "counts": {
-      "cobalt-talon-fledgling": 3,
-      "crossed-eyes": 4,
-      "golden-eagle-diver": 2,
-      "silver-minnow": 4,
-      "worker-ant": 2,
-      "snapper-hatchling": 2,
-      "badger-lumberjack": 2,
-      "fire-ant-raft": 1
-     },
-     "parts": [
-      [
-       "cobalt-talon-fledgling",
-       3,
-       0
-      ],
-      [
-       "crossed-eyes",
-       4,
-       0
-      ],
-      [
-       "golden-eagle-diver",
-       2,
-       0
-      ],
-      [
-       "silver-minnow",
-       4,
-       0
-      ],
-      [
-       "worker-ant",
-       2,
-       0
-      ],
-      [
-       "snapper-hatchling",
-       2,
-       0
-      ],
-      [
-       "badger-lumberjack",
-       2,
-       0
-      ],
-      [
-       "fire-ant-raft",
-       1,
-       0
-      ]
-     ],
-     "leader": "old-shell",
-     "from": "sampled q=0.48",
-     "selectWin": 23.8
-    },
-    {
-     "rank": 4,
-     "name": {
       "lead": "cypress-root-lurker",
       "tactic": "warren",
       "n": 1
@@ -3900,6 +3854,59 @@
      "leader": "old-shell",
      "from": "sampled q=0.35",
      "selectWin": 33.3
+    },
+    {
+     "rank": 4,
+     "name": {
+      "lead": "victoria-regia",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Victoria Regia Swarm 1",
+     "counts": {
+      "fulmar-spitter": 3,
+      "swamp-alligator": 4,
+      "paper-wasp": 2,
+      "bee-knight": 3,
+      "victoria-regia": 4,
+      "raft-spider": 4
+     },
+     "parts": [
+      [
+       "fulmar-spitter",
+       3,
+       0
+      ],
+      [
+       "swamp-alligator",
+       4,
+       0
+      ],
+      [
+       "paper-wasp",
+       2,
+       0
+      ],
+      [
+       "bee-knight",
+       3,
+       0
+      ],
+      [
+       "victoria-regia",
+       4,
+       0
+      ],
+      [
+       "raft-spider",
+       4,
+       0
+      ]
+     ],
+     "leader": "old-shell",
+     "from": "sampled q=0.13",
+     "selectWin": 35.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 3 (snapper-hatchling left the map-true pool after CONTENT10; old selectWin 23.8)"
     },
     {
      "rank": 5,
@@ -3950,66 +3957,49 @@
     {
      "rank": 6,
      "name": {
-      "lead": "badger-lumberjack",
-      "tactic": "hive",
+      "lead": "swamp-alligator",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Badger Lumberjack Hive",
+     "title": "Swamp Alligator Swarm 1",
      "counts": {
-      "badger-lumberjack": 4,
-      "lodge-engineer": 2,
-      "ant-scout": 3,
-      "grey-seal-bull": 3,
-      "water-vole": 2,
-      "soldier-ant": 2,
-      "puffin-diver": 1,
-      "bee-knight": 3
+      "swamp-alligator": 5,
+      "chipmunk-forager": 5,
+      "moat-snapper": 1,
+      "raft-spider": 5,
+      "peregrine-stooper": 4
      },
      "parts": [
       [
-       "badger-lumberjack",
-       4,
+       "swamp-alligator",
+       5,
        0
       ],
       [
-       "lodge-engineer",
-       2,
+       "chipmunk-forager",
+       5,
        0
       ],
       [
-       "ant-scout",
-       3,
-       0
-      ],
-      [
-       "grey-seal-bull",
-       3,
-       0
-      ],
-      [
-       "water-vole",
-       2,
-       0
-      ],
-      [
-       "soldier-ant",
-       2,
-       0
-      ],
-      [
-       "puffin-diver",
+       "moat-snapper",
        1,
        0
       ],
       [
-       "bee-knight",
-       3,
+       "raft-spider",
+       5,
+       0
+      ],
+      [
+       "peregrine-stooper",
+       4,
        0
       ]
      ],
      "leader": "old-shell",
-     "from": "sampled q=0.57",
-     "selectWin": 50
+     "from": "sampled q=0.09",
+     "selectWin": 57.1,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (grey-seal-bull left the map-true pool after CONTENT10; old selectWin 50)"
     },
     {
      "rank": 7,
@@ -4066,48 +4056,55 @@
     {
      "rank": 8,
      "name": {
-      "lead": "lodge-engineer",
-      "tactic": "clan",
+      "lead": "shoal-shark",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Lodge Engineer Clan",
+     "title": "Shoal Shark Swarm 1",
      "counts": {
-      "grey-seal-bull": 4,
-      "fleetfootd": 4,
-      "fen-mink": 4,
-      "pincushion-urchin": 4,
-      "lodge-engineer": 4
+      "victoria-regia": 4,
+      "shoal-shark": 4,
+      "farm-dog": 4,
+      "diving-bell-spider": 3,
+      "anhinga-spearbird": 3,
+      "platypus-spur": 2
      },
      "parts": [
       [
-       "grey-seal-bull",
+       "victoria-regia",
        4,
        0
       ],
       [
-       "fleetfootd",
+       "shoal-shark",
        4,
        0
       ],
       [
-       "fen-mink",
+       "farm-dog",
        4,
        0
       ],
       [
-       "pincushion-urchin",
-       4,
+       "diving-bell-spider",
+       3,
        0
       ],
       [
-       "lodge-engineer",
-       4,
+       "anhinga-spearbird",
+       3,
+       0
+      ],
+      [
+       "platypus-spur",
+       2,
        0
       ]
      ],
      "leader": "old-shell",
-     "from": "sampled q=0.52",
-     "selectWin": 69
+     "from": "sampled q=0.04",
+     "selectWin": 69,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 8 (grey-seal-bull left the map-true pool after CONTENT10; old selectWin 69)"
     },
     {
      "rank": 9,
@@ -4170,48 +4167,49 @@
     {
      "rank": 10,
      "name": {
-      "lead": "grey-seal-bull",
-      "tactic": "swarm",
+      "lead": "gull-thief",
+      "tactic": "flock",
       "n": 1
      },
-     "title": "Grey Seal Bull Swarm",
+     "title": "Gull Thief Flock 1",
      "counts": {
-      "box-turtle": 4,
-      "gannet-nestweaver": 4,
-      "grey-seal-bull": 4,
-      "muskrat-lodgekeeper": 4,
-      "pyrenean-desman": 4
+      "golden-eagle-diver": 4,
+      "slow-worm": 3,
+      "gull-thief": 5,
+      "field-vole": 4,
+      "fen-mink": 4
      },
      "parts": [
       [
-       "box-turtle",
+       "golden-eagle-diver",
        4,
        0
       ],
       [
-       "gannet-nestweaver",
+       "slow-worm",
+       3,
+       0
+      ],
+      [
+       "gull-thief",
+       5,
+       0
+      ],
+      [
+       "field-vole",
        4,
        0
       ],
       [
-       "grey-seal-bull",
-       4,
-       0
-      ],
-      [
-       "muskrat-lodgekeeper",
-       4,
-       0
-      ],
-      [
-       "pyrenean-desman",
+       "fen-mink",
        4,
        0
       ]
      ],
      "leader": "old-shell",
-     "from": "2-A-PRO-1",
-     "selectWin": 88.1
+     "from": "sampled q=0.48",
+     "selectWin": 88.1,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (grey-seal-bull left the map-true pool after CONTENT10; old selectWin 88.1)"
     }
    ]
   },
@@ -4832,97 +4830,164 @@
     {
      "rank": 1,
      "name": {
-      "lead": "sea-turtle-elder",
-      "tactic": "swarm",
+      "lead": "mosswing-laborer",
+      "tactic": "flock",
       "n": 1
      },
-     "title": "Sea Turtle Elder Swarm",
+     "title": "Mosswing Flock 1",
      "counts": {
-      "earthworm": 4,
-      "owl-sentinel": 3,
-      "chipmunk-forager": 2,
-      "garden-snail": 2,
-      "badger-lumberjack": 2,
-      "paper-wasp": 2,
-      "sea-turtle-elder": 5
+      "rock-pool-starfish": 3,
+      "farm-dog": 2,
+      "fulmar-spitter": 3,
+      "red-billed-chough": 3,
+      "mosswing-laborer": 4,
+      "sheep": 4,
+      "paper-wasp": 1
      },
      "parts": [
       [
-       "earthworm",
-       4,
-       0
-      ],
-      [
-       "owl-sentinel",
+       "rock-pool-starfish",
        3,
        0
       ],
       [
-       "chipmunk-forager",
+       "farm-dog",
        2,
        0
       ],
       [
-       "garden-snail",
-       2,
+       "fulmar-spitter",
+       3,
        0
       ],
       [
-       "badger-lumberjack",
-       2,
+       "red-billed-chough",
+       3,
+       0
+      ],
+      [
+       "mosswing-laborer",
+       4,
+       0
+      ],
+      [
+       "sheep",
+       4,
        0
       ],
       [
        "paper-wasp",
-       2,
-       0
-      ],
-      [
-       "sea-turtle-elder",
-       5,
+       1,
        0
       ]
      ],
      "leader": "drowned-matriarch",
-     "from": "sampled q=0.22",
-     "selectWin": 16.7
+     "from": "sampled q=0.04",
+     "selectWin": 16.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 1 (sea-turtle-elder left the map-true pool after CONTENT10; old selectWin 16.7)"
     },
     {
      "rank": 2,
      "name": {
-      "lead": "lions-mane-jelly",
+      "lead": "alley-cat",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Lion's Mane Jelly Swarm",
+     "title": "Alley Cat Swarm 1",
      "counts": {
-      "sparrow-chick": 4,
-      "sea-turtle-elder": 4,
-      "snapstick-turtle": 1,
-      "paper-wasp": 2,
-      "peregrine-stooper": 2,
-      "forager-ant": 3,
-      "lions-mane-jelly": 4
+      "alley-cat": 3,
+      "driftwood-crab": 2,
+      "meadow-rabbit": 3,
+      "robin-redbreast": 2,
+      "bramble-sprout": 2,
+      "burrow-rabbit": 3,
+      "gannet-nestweaver": 3,
+      "hedgerow-shrew": 2
      },
      "parts": [
       [
-       "sparrow-chick",
-       4,
+       "alley-cat",
+       3,
        0
       ],
       [
-       "sea-turtle-elder",
-       4,
-       0
-      ],
-      [
-       "snapstick-turtle",
-       1,
-       0
-      ],
-      [
-       "paper-wasp",
+       "driftwood-crab",
        2,
+       0
+      ],
+      [
+       "meadow-rabbit",
+       3,
+       0
+      ],
+      [
+       "robin-redbreast",
+       2,
+       0
+      ],
+      [
+       "bramble-sprout",
+       2,
+       0
+      ],
+      [
+       "burrow-rabbit",
+       3,
+       0
+      ],
+      [
+       "gannet-nestweaver",
+       3,
+       0
+      ],
+      [
+       "hedgerow-shrew",
+       2,
+       0
+      ]
+     ],
+     "leader": "drowned-matriarch",
+     "from": "sampled q=1.00",
+     "selectWin": 26.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 2 (sea-turtle-elder left the map-true pool after CONTENT10; old selectWin 26.7)"
+    },
+    {
+     "rank": 3,
+     "name": {
+      "lead": "mosswing-laborer",
+      "tactic": "flock",
+      "n": 2
+     },
+     "title": "Mosswing Flock II",
+     "counts": {
+      "riverwing-envoy": 2,
+      "chipmunk-cavalry": 3,
+      "mosswing-laborer": 4,
+      "open-ocean-hermit-crab": 3,
+      "peregrine-stooper": 2,
+      "rock-pool-starfish": 2,
+      "chipmunk-forager": 1,
+      "fiddler-crab-swarm": 3
+     },
+     "parts": [
+      [
+       "riverwing-envoy",
+       2,
+       0
+      ],
+      [
+       "chipmunk-cavalry",
+       3,
+       0
+      ],
+      [
+       "mosswing-laborer",
+       4,
+       0
+      ],
+      [
+       "open-ocean-hermit-crab",
+       3,
        0
       ],
       [
@@ -4931,226 +4996,121 @@
        0
       ],
       [
-       "forager-ant",
-       3,
+       "rock-pool-starfish",
+       2,
        0
       ],
       [
-       "lions-mane-jelly",
-       4,
-       0
-      ]
-     ],
-     "leader": "drowned-matriarch",
-     "from": "sampled q=0.13",
-     "selectWin": 26.7
-    },
-    {
-     "rank": 3,
-     "name": {
-      "lead": "open-ocean-hermit-crab",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "Open-Ocean Hermit Crab Swarm",
-     "counts": {
-      "water-vole": 1,
-      "oystercatcher": 3,
-      "house-cat": 3,
-      "slow-worm": 2,
-      "puffin-diver": 4,
-      "bee-knight": 2,
-      "open-ocean-hermit-crab": 5
-     },
-     "parts": [
-      [
-       "water-vole",
+       "chipmunk-forager",
        1,
        0
       ],
       [
-       "oystercatcher",
+       "fiddler-crab-swarm",
        3,
-       0
-      ],
-      [
-       "house-cat",
-       3,
-       0
-      ],
-      [
-       "slow-worm",
-       2,
-       0
-      ],
-      [
-       "puffin-diver",
-       4,
-       0
-      ],
-      [
-       "bee-knight",
-       2,
-       0
-      ],
-      [
-       "open-ocean-hermit-crab",
-       5,
        0
       ]
      ],
      "leader": "drowned-matriarch",
-     "from": "sampled q=0.48",
-     "selectWin": 33.3
+     "from": "sampled q=0.35",
+     "selectWin": 33.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 3 (water-vole left the map-true pool after CONTENT10; old selectWin 33.3)"
     },
     {
      "rank": 4,
      "name": {
-      "lead": "platypus-spur",
-      "tactic": "band",
+      "lead": "slow-worm",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Platypus Spur Band",
+     "title": "Slow-worm Swarm 1",
      "counts": {
-      "owl-sentinel": 4,
-      "ember-tetra": 1,
-      "chipmunk-forager": 1,
-      "bee-knight": 3,
-      "sheep": 2,
-      "platypus-spur": 4,
-      "muskrat-lodgekeeper": 3,
-      "sea-turtle-elder": 2
+      "cottontail": 2,
+      "worker-ant": 1,
+      "robin-redbreast": 2,
+      "pond-duck": 1,
+      "slow-worm": 5,
+      "otter-guard": 4,
+      "fleetfootd": 3,
+      "pincushion-urchin": 2
      },
      "parts": [
       [
-       "owl-sentinel",
-       4,
-       0
-      ],
-      [
-       "ember-tetra",
-       1,
-       0
-      ],
-      [
-       "chipmunk-forager",
-       1,
-       0
-      ],
-      [
-       "bee-knight",
-       3,
-       0
-      ],
-      [
-       "sheep",
+       "cottontail",
        2,
        0
       ],
       [
-       "platypus-spur",
+       "worker-ant",
+       1,
+       0
+      ],
+      [
+       "robin-redbreast",
+       2,
+       0
+      ],
+      [
+       "pond-duck",
+       1,
+       0
+      ],
+      [
+       "slow-worm",
+       5,
+       0
+      ],
+      [
+       "otter-guard",
        4,
        0
       ],
       [
-       "muskrat-lodgekeeper",
+       "fleetfootd",
        3,
        0
       ],
       [
-       "sea-turtle-elder",
+       "pincushion-urchin",
        2,
        0
       ]
      ],
      "leader": "drowned-matriarch",
-     "from": "sampled q=0.17",
-     "selectWin": 43.3
+     "from": "sampled q=0.52",
+     "selectWin": 43.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 4 (sea-turtle-elder left the map-true pool after CONTENT10; old selectWin 43.3)"
     },
     {
      "rank": 5,
      "name": {
-      "lead": "guppy",
+      "lead": "fiddler-crab-swarm",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Guppy Swarm",
+     "title": "Fiddler Crab Swarm Swarm 1",
      "counts": {
-      "bee-sentry": 3,
-      "water-vole": 2,
-      "guppy": 4,
-      "water-shrew": 4,
-      "puffin-diver": 2,
-      "chipmunk-forager": 2,
-      "silver-minnow": 3
+      "muskrat-lodgekeeper": 4,
+      "shoal-shark": 2,
+      "bee-sentry": 4,
+      "fiddler-crab-swarm": 5,
+      "snapstick-turtle": 1,
+      "garden-snail": 4
      },
      "parts": [
+      [
+       "muskrat-lodgekeeper",
+       4,
+       0
+      ],
+      [
+       "shoal-shark",
+       2,
+       0
+      ],
       [
        "bee-sentry",
-       3,
-       0
-      ],
-      [
-       "water-vole",
-       2,
-       0
-      ],
-      [
-       "guppy",
        4,
-       0
-      ],
-      [
-       "water-shrew",
-       4,
-       0
-      ],
-      [
-       "puffin-diver",
-       2,
-       0
-      ],
-      [
-       "chipmunk-forager",
-       2,
-       0
-      ],
-      [
-       "silver-minnow",
-       3,
-       0
-      ]
-     ],
-     "leader": "drowned-matriarch",
-     "from": "sampled q=0.30",
-     "selectWin": 50
-    },
-    {
-     "rank": 6,
-     "name": {
-      "lead": "fiddler-crab-swarm",
-      "tactic": "school",
-      "n": 1
-     },
-     "title": "Fiddler Crab Swarm School",
-     "counts": {
-      "soldier-ant": 3,
-      "grey-seal-bull": 2,
-      "fiddler-crab-swarm": 5,
-      "owl-sentinel": 3,
-      "duck-paddler": 3,
-      "open-ocean-hermit-crab": 3,
-      "pond-duck": 1
-     },
-     "parts": [
-      [
-       "soldier-ant",
-       3,
-       0
-      ],
-      [
-       "grey-seal-bull",
-       2,
        0
       ],
       [
@@ -5159,54 +5119,211 @@
        0
       ],
       [
-       "owl-sentinel",
+       "snapstick-turtle",
+       1,
+       0
+      ],
+      [
+       "garden-snail",
+       4,
+       0
+      ]
+     ],
+     "leader": "drowned-matriarch",
+     "from": "sampled q=0.22",
+     "selectWin": 50,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 5 (water-vole left the map-true pool after CONTENT10; old selectWin 50)"
+    },
+    {
+     "rank": 6,
+     "name": {
+      "lead": "conch-herald",
+      "tactic": "flock",
+      "n": 1
+     },
+     "title": "Conch Herald Flock 1",
+     "counts": {
+      "fulmar-spitter": 3,
+      "paper-wasp": 2,
+      "rock-pool-starfish": 2,
+      "briarback-hedgehog": 3,
+      "mosswing-laborer": 3,
+      "sparrow-chick": 2,
+      "moon-jelly": 1,
+      "conch-herald": 4
+     },
+     "parts": [
+      [
+       "fulmar-spitter",
        3,
        0
       ],
+      [
+       "paper-wasp",
+       2,
+       0
+      ],
+      [
+       "rock-pool-starfish",
+       2,
+       0
+      ],
+      [
+       "briarback-hedgehog",
+       3,
+       0
+      ],
+      [
+       "mosswing-laborer",
+       3,
+       0
+      ],
+      [
+       "sparrow-chick",
+       2,
+       0
+      ],
+      [
+       "moon-jelly",
+       1,
+       0
+      ],
+      [
+       "conch-herald",
+       4,
+       0
+      ]
+     ],
+     "leader": "drowned-matriarch",
+     "from": "sampled q=0.00",
+     "selectWin": 56.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (grey-seal-bull left the map-true pool after CONTENT10; old selectWin 56.7)"
+    },
+    {
+     "rank": 7,
+     "name": {
+      "lead": "beaver-lumberjack",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Beaver Lumberjack Swarm 1",
+     "counts": {
+      "duck-paddler": 2,
+      "pyrenean-desman": 4,
+      "snapstick-turtle": 4,
+      "beaver-lumberjack": 5,
+      "otter-guard": 4,
+      "gannet-nestweaver": 1
+     },
+     "parts": [
       [
        "duck-paddler",
-       3,
+       2,
        0
       ],
       [
-       "open-ocean-hermit-crab",
-       3,
+       "pyrenean-desman",
+       4,
        0
       ],
       [
-       "pond-duck",
+       "snapstick-turtle",
+       4,
+       0
+      ],
+      [
+       "beaver-lumberjack",
+       5,
+       0
+      ],
+      [
+       "otter-guard",
+       4,
+       0
+      ],
+      [
+       "gannet-nestweaver",
        1,
        0
       ]
      ],
      "leader": "drowned-matriarch",
-     "from": "sampled q=0.52",
-     "selectWin": 56.7
+     "from": "rank 8 repaired (BAL18: fire-ant-raft -4 -> otter-guard x4; muskrat-reedgatherer -4 -> beaver-lumberjack x3 + gannet-nestweaver x1)",
+     "selectWin": 63.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 7 (box-turtle left the map-true pool after CONTENT10; old selectWin 66.7)"
     },
     {
-     "rank": 7,
+     "rank": 8,
+     "name": {
+      "lead": "otter-guard",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Otter Guard Swarm 1",
+     "counts": {
+      "beaver-lumberjack": 2,
+      "bramble-sprout": 3,
+      "gannet-nestweaver": 3,
+      "pond-trout": 4,
+      "pyrenean-desman": 4,
+      "otter-guard": 4
+     },
+     "parts": [
+      [
+       "beaver-lumberjack",
+       2,
+       0
+      ],
+      [
+       "bramble-sprout",
+       3,
+       0
+      ],
+      [
+       "gannet-nestweaver",
+       3,
+       0
+      ],
+      [
+       "pond-trout",
+       4,
+       0
+      ],
+      [
+       "pyrenean-desman",
+       4,
+       0
+      ],
+      [
+       "otter-guard",
+       4,
+       0
+      ]
+     ],
+     "leader": "drowned-matriarch",
+     "from": "rank 10 repaired (BAL18: fire-ant-raft -4 -> otter-guard x4)",
+     "selectWin": 63.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (fire-ant-raft left the map-true pool after CONTENT10; old selectWin 93.3)"
+    },
+    {
+     "rank": 9,
      "name": {
       "lead": "acorn-chipmunk",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Acorn Chipmunk Swarm",
+     "title": "Acorn Chipmunk Swarm 1",
      "counts": {
-      "box-turtle": 2,
       "cricket-drummer": 3,
       "chipmunk-skirmisher": 2,
       "hedgerow-shrew": 4,
       "burrow-rabbit": 1,
       "acorn-chipmunk": 4,
       "honey-bee": 3,
-      "forager-ant": 1
+      "forager-ant": 1,
+      "bramble-sprout": 2
      },
      "parts": [
-      [
-       "box-turtle",
-       2,
-       0
-      ],
       [
        "cricket-drummer",
        3,
@@ -5241,131 +5358,35 @@
        "forager-ant",
        1,
        0
-      ]
-     ],
-     "leader": "drowned-matriarch",
-     "from": "sampled q=0.78",
-     "selectWin": 66.7
-    },
-    {
-     "rank": 8,
-     "name": {
-      "lead": "fire-ant-raft",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "Fire Ant Raft Swarm",
-     "counts": {
-      "duck-paddler": 2,
-      "fire-ant-raft": 4,
-      "muskrat-reedgatherer": 4,
-      "pyrenean-desman": 4,
-      "snapstick-turtle": 4,
-      "beaver-lumberjack": 2
-     },
-     "parts": [
-      [
-       "duck-paddler",
-       2,
-       0
-      ],
-      [
-       "fire-ant-raft",
-       4,
-       0
-      ],
-      [
-       "muskrat-reedgatherer",
-       4,
-       0
-      ],
-      [
-       "pyrenean-desman",
-       4,
-       0
-      ],
-      [
-       "snapstick-turtle",
-       4,
-       0
-      ],
-      [
-       "beaver-lumberjack",
-       2,
-       0
-      ]
-     ],
-     "leader": "drowned-matriarch",
-     "from": "4-PRO-1",
-     "selectWin": 76.7
-    },
-    {
-     "rank": 9,
-     "name": {
-      "lead": "fire-ant-raft",
-      "tactic": "swarm",
-      "n": 2
-     },
-     "title": "Fire Ant Raft Swarm II",
-     "counts": {
-      "beaver-lumberjack": 3,
-      "bramble-sprout": 3,
-      "fire-ant-raft": 4,
-      "gannet-nestweaver": 2,
-      "muskrat-reedgatherer": 4,
-      "pyrenean-desman": 4
-     },
-     "parts": [
-      [
-       "beaver-lumberjack",
-       3,
-       0
       ],
       [
        "bramble-sprout",
-       3,
-       0
-      ],
-      [
-       "fire-ant-raft",
-       4,
-       0
-      ],
-      [
-       "gannet-nestweaver",
        2,
-       0
-      ],
-      [
-       "muskrat-reedgatherer",
-       4,
-       0
-      ],
-      [
-       "pyrenean-desman",
-       4,
        0
       ]
      ],
      "leader": "drowned-matriarch",
-     "from": "4-PRO-4",
-     "selectWin": 83.3
+     "from": "rank 7 repaired (BAL18: box-turtle -2 -> bramble-sprout x2)",
+     "selectWin": 90,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 8 (fire-ant-raft, muskrat-reedgatherer left the map-true pool after CONTENT10; old selectWin 76.7)"
     },
     {
      "rank": 10,
      "name": {
-      "lead": "fire-ant-raft",
-      "tactic": "swarm",
-      "n": 3
+      "lead": "burrow-rabbit",
+      "tactic": "warren",
+      "n": 1
      },
-     "title": "Fire Ant Raft Swarm III",
+     "title": "Burrow Rabbit Warren 1",
      "counts": {
       "beaver-lumberjack": 2,
-      "bramble-sprout": 3,
-      "gannet-nestweaver": 3,
-      "pond-trout": 4,
-      "pyrenean-desman": 4,
-      "fire-ant-raft": 4
+      "burrow-rabbit": 4,
+      "pyrenean-desman": 2,
+      "field-mouse": 2,
+      "conch-crawler": 2,
+      "driftwood-crab": 1,
+      "cricket-drummer": 3,
+      "terrier-pup": 4
      },
      "parts": [
       [
@@ -5374,34 +5395,45 @@
        0
       ],
       [
-       "bramble-sprout",
-       3,
-       0
-      ],
-      [
-       "gannet-nestweaver",
-       3,
-       0
-      ],
-      [
-       "pond-trout",
+       "burrow-rabbit",
        4,
        0
       ],
       [
        "pyrenean-desman",
-       4,
+       2,
        0
       ],
       [
-       "fire-ant-raft",
+       "field-mouse",
+       2,
+       0
+      ],
+      [
+       "conch-crawler",
+       2,
+       0
+      ],
+      [
+       "driftwood-crab",
+       1,
+       0
+      ],
+      [
+       "cricket-drummer",
+       3,
+       0
+      ],
+      [
+       "terrier-pup",
        4,
        0
       ]
      ],
      "leader": "drowned-matriarch",
-     "from": "4-PRO-3",
-     "selectWin": 93.3
+     "from": "sampled q=0.96",
+     "selectWin": 90,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (fire-ant-raft, muskrat-reedgatherer left the map-true pool after CONTENT10; old selectWin 83.3)"
     }
    ]
   },
@@ -5425,49 +5457,43 @@
     {
      "rank": 1,
      "name": {
-      "lead": "sea-turtle-elder",
+      "lead": "chipmunk-forager",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Sea Turtle Elder Swarm",
+     "title": "Chipmunk Forager Swarm 1",
      "counts": {
-      "sea-turtle-elder": 4,
-      "sheep": 4,
-      "crocodile-ambusher": 1,
+      "paper-wasp": 3,
+      "bee-sentry": 3,
+      "red-billed-chough": 3,
+      "chipmunk-forager": 4,
       "rock-pool-starfish": 4,
-      "owl-sentinel": 2,
-      "bee-knight": 2,
       "guppy": 3
      },
      "parts": [
       [
-       "sea-turtle-elder",
-       4,
+       "paper-wasp",
+       3,
        0
       ],
       [
-       "sheep",
-       4,
+       "bee-sentry",
+       3,
        0
       ],
       [
-       "crocodile-ambusher",
-       1,
+       "red-billed-chough",
+       3,
+       0
+      ],
+      [
+       "chipmunk-forager",
+       4,
        0
       ],
       [
        "rock-pool-starfish",
        4,
-       0
-      ],
-      [
-       "owl-sentinel",
-       2,
-       0
-      ],
-      [
-       "bee-knight",
-       2,
        0
       ],
       [
@@ -5478,111 +5504,108 @@
      ],
      "leader": "old-snapjaw",
      "from": "sampled q=0.22",
-     "selectWin": 9.5
+     "selectWin": 7.1,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 1 (sea-turtle-elder left the map-true pool after CONTENT10; old selectWin 9.5)"
     },
     {
      "rank": 2,
      "name": {
-      "lead": "venomlord-serpent",
-      "tactic": "swarm",
+      "lead": "honey-bee",
+      "tactic": "hive",
       "n": 1
      },
-     "title": "Venomlord Serpent Swarm",
+     "title": "Honey Bee Hive 1",
      "counts": {
-      "old-sturgeon": 3,
-      "venomlord-serpent": 4,
-      "briarback-hedgehog": 1,
-      "earthworm": 4,
-      "sheep": 3,
-      "paper-wasp": 1,
-      "rock-pool-starfish": 4
+      "meerkat-wayfarer": 5,
+      "water-vole": 2,
+      "razorbill": 1,
+      "ant-scout": 3,
+      "field-mouse": 4,
+      "honey-bee": 5
      },
      "parts": [
       [
-       "old-sturgeon",
-       3,
+       "meerkat-wayfarer",
+       5,
        0
       ],
       [
-       "venomlord-serpent",
-       4,
+       "water-vole",
+       2,
        0
       ],
       [
-       "briarback-hedgehog",
+       "razorbill",
        1,
        0
       ],
       [
-       "earthworm",
-       4,
-       0
-      ],
-      [
-       "sheep",
+       "ant-scout",
        3,
        0
       ],
       [
-       "paper-wasp",
-       1,
+       "field-mouse",
+       4,
        0
       ],
       [
-       "rock-pool-starfish",
-       4,
+       "honey-bee",
+       5,
        0
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.17",
-     "selectWin": 31
+     "from": "sampled q=0.70",
+     "selectWin": 35.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 2 (venomlord-serpent left the map-true pool after CONTENT10; old selectWin 31)"
     },
     {
      "rank": 3,
      "name": {
-      "lead": "constrictor-coil",
-      "tactic": "brood",
+      "lead": "crimson-wing-recruit",
+      "tactic": "flock",
       "n": 1
      },
-     "title": "Constrictor Coil Brood",
+     "title": "Crimson Recruit Flock 1",
      "counts": {
-      "anhinga-spearbird": 3,
-      "venomlord-serpent": 4,
-      "constrictor-coil": 5,
-      "sparrow-chick": 5,
-      "diving-bell-spider": 3
+      "robin-redbreast": 4,
+      "terrier-pup": 3,
+      "driftwood-crab": 3,
+      "crimson-wing-recruit": 5,
+      "hedgerow-shrew": 5
      },
      "parts": [
       [
-       "anhinga-spearbird",
-       3,
-       0
-      ],
-      [
-       "venomlord-serpent",
+       "robin-redbreast",
        4,
        0
       ],
       [
-       "constrictor-coil",
-       5,
-       0
-      ],
-      [
-       "sparrow-chick",
-       5,
-       0
-      ],
-      [
-       "diving-bell-spider",
+       "terrier-pup",
        3,
+       0
+      ],
+      [
+       "driftwood-crab",
+       3,
+       0
+      ],
+      [
+       "crimson-wing-recruit",
+       5,
+       0
+      ],
+      [
+       "hedgerow-shrew",
+       5,
        0
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.00",
-     "selectWin": 35.7
+     "from": "sampled q=0.74",
+     "selectWin": 40.5,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 3 (venomlord-serpent left the map-true pool after CONTENT10; old selectWin 35.7)"
     },
     {
      "rank": 4,
@@ -5639,118 +5662,108 @@
     {
      "rank": 5,
      "name": {
-      "lead": "peak-condor",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "Peak Condor Swarm",
-     "counts": {
-      "pond-algae": 2,
-      "guppy": 2,
-      "silver-minnow": 3,
-      "peak-condor": 4,
-      "grey-seal-bull": 2,
-      "harvest-mouse": 1,
-      "swamp-alligator": 3,
-      "fire-ant-raft": 3
-     },
-     "parts": [
-      [
-       "pond-algae",
-       2,
-       0
-      ],
-      [
-       "guppy",
-       2,
-       0
-      ],
-      [
-       "silver-minnow",
-       3,
-       0
-      ],
-      [
-       "peak-condor",
-       4,
-       0
-      ],
-      [
-       "grey-seal-bull",
-       2,
-       0
-      ],
-      [
-       "harvest-mouse",
-       1,
-       0
-      ],
-      [
-       "swamp-alligator",
-       3,
-       0
-      ],
-      [
-       "fire-ant-raft",
-       3,
-       0
-      ]
-     ],
-     "leader": "old-snapjaw",
-     "from": "sampled q=0.26",
-     "selectWin": 47.6
-    },
-    {
-     "rank": 6,
-     "name": {
-      "lead": "slow-worm",
+      "lead": "crimson-wing-recruit",
       "tactic": "flock",
-      "n": 1
+      "n": 2
      },
-     "title": "Slow-worm Flock",
+     "title": "Crimson Recruit Flock II",
      "counts": {
-      "gull-thief": 4,
-      "grey-seal-bull": 4,
-      "fen-mink": 3,
-      "greyplume-fledgling": 2,
-      "riverwing-envoy": 2,
-      "slow-worm": 5
+      "robin-redbreast": 3,
+      "crossed-eyes": 2,
+      "fiddler-crab-swarm": 5,
+      "otter-paddler": 2,
+      "razorbill": 3,
+      "crimson-wing-recruit": 5
      },
      "parts": [
       [
-       "gull-thief",
-       4,
-       0
-      ],
-      [
-       "grey-seal-bull",
-       4,
-       0
-      ],
-      [
-       "fen-mink",
+       "robin-redbreast",
        3,
        0
       ],
       [
-       "greyplume-fledgling",
+       "crossed-eyes",
        2,
        0
       ],
       [
-       "riverwing-envoy",
+       "fiddler-crab-swarm",
+       5,
+       0
+      ],
+      [
+       "otter-paddler",
        2,
        0
       ],
       [
-       "slow-worm",
+       "razorbill",
+       3,
+       0
+      ],
+      [
+       "crimson-wing-recruit",
        5,
        0
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.48",
-     "selectWin": 57.1
+     "from": "sampled q=0.61",
+     "selectWin": 47.6,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 5 (grey-seal-bull left the map-true pool after CONTENT10; old selectWin 47.6)"
+    },
+    {
+     "rank": 6,
+     "name": {
+      "lead": "box-turtle",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Box Turtle Swarm 1",
+     "counts": {
+      "pyrenean-desman": 3,
+      "cottontail": 4,
+      "hedgerow-shrew": 3,
+      "cobalt-talon-fledgling": 4,
+      "box-turtle": 5,
+      "beaver-lumberjack": 1
+     },
+     "parts": [
+      [
+       "pyrenean-desman",
+       3,
+       0
+      ],
+      [
+       "cottontail",
+       4,
+       0
+      ],
+      [
+       "hedgerow-shrew",
+       3,
+       0
+      ],
+      [
+       "cobalt-talon-fledgling",
+       4,
+       0
+      ],
+      [
+       "box-turtle",
+       5,
+       0
+      ],
+      [
+       "beaver-lumberjack",
+       1,
+       0
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.83",
+     "selectWin": 57.1,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (grey-seal-bull left the map-true pool after CONTENT10; old selectWin 57.1)"
     },
     {
      "rank": 7,
@@ -6437,66 +6450,55 @@
     {
      "rank": 9,
      "name": {
-      "lead": "driftwood-crab",
-      "tactic": "camp",
+      "lead": "fire-ant-raft",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Driftwood Crab Camp",
+     "title": "Fire Ant Raft Swarm 1",
      "counts": {
-      "driftwood-crab": 4,
-      "duck-paddler": 3,
-      "coral-polyp-colony": 2,
-      "pond-trout": 2,
-      "mangrove-manatee": 2,
-      "chipmunk-hoarder": 1,
-      "crossed-eyes": 3,
-      "giant-cave-huntsman": 3
+      "alligator-gar": 3,
+      "alpine-marmot": 3,
+      "bog-leech": 4,
+      "caiman-hatchling": 4,
+      "fire-ant-raft": 4,
+      "otter-centurion": 2
      },
      "parts": [
       [
-       "driftwood-crab",
+       "alligator-gar",
+       3,
+       3
+      ],
+      [
+       "alpine-marmot",
+       3,
+       3
+      ],
+      [
+       "bog-leech",
        4,
        3
       ],
       [
-       "duck-paddler",
-       3,
+       "caiman-hatchling",
+       4,
        3
       ],
       [
-       "coral-polyp-colony",
+       "fire-ant-raft",
+       4,
+       3
+      ],
+      [
+       "otter-centurion",
        2,
-       3
-      ],
-      [
-       "pond-trout",
-       2,
-       3
-      ],
-      [
-       "mangrove-manatee",
-       2,
-       3
-      ],
-      [
-       "chipmunk-hoarder",
-       1,
-       3
-      ],
-      [
-       "crossed-eyes",
-       3,
-       3
-      ],
-      [
-       "giant-cave-huntsman",
-       3,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.91",
-     "selectWin": 75
+     "from": "5-A-PRO-1",
+     "selectWin": 75,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (coral-polyp-colony left the map-true pool after CONTENT10; old selectWin 75)"
     },
     {
      "rank": 10,
@@ -6573,118 +6575,96 @@
     {
      "rank": 1,
      "name": {
-      "lead": "cane-toad",
-      "tactic": "brood",
+      "lead": "briarback-hedgehog",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Cane Toad Brood",
+     "title": "Briarback Hedgehog Swarm 1",
      "counts": {
-      "swamp-alligator": 3,
-      "fulmar-spitter": 4,
-      "signal-crayfish": 4,
-      "cane-toad": 4,
-      "paper-wasp": 3,
-      "venomlord-serpent": 2
+      "shoal-shark": 4,
+      "venomlord-serpent": 4,
+      "briarback-hedgehog": 5,
+      "anhinga-spearbird": 2,
+      "raft-spider": 5
      },
      "parts": [
       [
-       "swamp-alligator",
-       3,
-       0
-      ],
-      [
-       "fulmar-spitter",
+       "shoal-shark",
        4,
-       0
-      ],
-      [
-       "signal-crayfish",
-       4,
-       0
-      ],
-      [
-       "cane-toad",
-       4,
-       0
-      ],
-      [
-       "paper-wasp",
-       3,
        0
       ],
       [
        "venomlord-serpent",
+       4,
+       0
+      ],
+      [
+       "briarback-hedgehog",
+       5,
+       0
+      ],
+      [
+       "anhinga-spearbird",
        2,
+       0
+      ],
+      [
+       "raft-spider",
+       5,
        0
       ]
      ],
      "leader": "heron-hag",
-     "from": "sampled q=0.13",
-     "selectWin": 35.4
+     "from": "sampled q=0.00",
+     "selectWin": 39.6,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 1 (cane-toad left the map-true pool after CONTENT10; old selectWin 35.4)"
     },
     {
      "rank": 2,
      "name": {
-      "lead": "sea-turtle-elder",
-      "tactic": "brood",
+      "lead": "buzzed-chipmunk",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Sea Turtle Elder Brood",
+     "title": "Buzzed Chipmunk Swarm 1",
      "counts": {
-      "moon-jelly": 4,
-      "constrictor-coil": 1,
-      "owl-sentinel": 4,
-      "river-mink": 2,
-      "platypus-spur": 1,
-      "sea-turtle-elder": 4,
-      "cane-toad": 3,
-      "puffin-diver": 1
+      "river-mink": 4,
+      "anhinga-spearbird": 4,
+      "buzzed-chipmunk": 5,
+      "fulmar-spitter": 3,
+      "diving-bell-spider": 4
      },
      "parts": [
       [
-       "moon-jelly",
-       4,
-       0
-      ],
-      [
-       "constrictor-coil",
-       1,
-       0
-      ],
-      [
-       "owl-sentinel",
-       4,
-       0
-      ],
-      [
        "river-mink",
-       2,
-       0
-      ],
-      [
-       "platypus-spur",
-       1,
-       0
-      ],
-      [
-       "sea-turtle-elder",
        4,
        0
       ],
       [
-       "cane-toad",
+       "anhinga-spearbird",
+       4,
+       0
+      ],
+      [
+       "buzzed-chipmunk",
+       5,
+       0
+      ],
+      [
+       "fulmar-spitter",
        3,
        0
       ],
       [
-       "puffin-diver",
-       1,
+       "diving-bell-spider",
+       4,
        0
       ]
      ],
      "leader": "heron-hag",
-     "from": "sampled q=0.35",
-     "selectWin": 43.8
+     "from": "sampled q=0.04",
+     "selectWin": 43.8,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 2 (sea-turtle-elder, cane-toad left the map-true pool after CONTENT10; old selectWin 43.8)"
     },
     {
      "rank": 3,
@@ -6937,60 +6917,55 @@
     {
      "rank": 8,
      "name": {
-      "lead": "chipmunk-cavalry",
+      "lead": "fire-ant-raft",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Chipmunk Cavalry Swarm",
+     "title": "Fire Ant Raft Swarm 1",
      "counts": {
-      "slow-worm": 1,
-      "silver-minnow": 4,
-      "forager-ant": 2,
-      "riverwing-envoy": 4,
-      "chipmunk-cavalry": 5,
-      "grass-viper": 1,
-      "cane-toad": 3
+      "alligator-gar": 3,
+      "bee-forager": 3,
+      "box-turtle": 3,
+      "fire-ant-raft": 4,
+      "guppy": 4,
+      "poison-dart-croaker": 3
      },
      "parts": [
       [
-       "slow-worm",
-       1,
+       "alligator-gar",
+       3,
        0
       ],
       [
-       "silver-minnow",
+       "bee-forager",
+       3,
+       0
+      ],
+      [
+       "box-turtle",
+       3,
+       0
+      ],
+      [
+       "fire-ant-raft",
        4,
        0
       ],
       [
-       "forager-ant",
-       2,
-       0
-      ],
-      [
-       "riverwing-envoy",
+       "guppy",
        4,
        0
       ],
       [
-       "chipmunk-cavalry",
-       5,
-       0
-      ],
-      [
-       "grass-viper",
-       1,
-       0
-      ],
-      [
-       "cane-toad",
+       "poison-dart-croaker",
        3,
        0
       ]
      ],
      "leader": "heron-hag",
-     "from": "sampled q=0.48",
-     "selectWin": 83.3
+     "from": "6-PRO-3",
+     "selectWin": 83.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 8 (cane-toad left the map-true pool after CONTENT10; old selectWin 83.3)"
     },
     {
      "rank": 9,
@@ -7175,17 +7150,17 @@
     {
      "rank": 2,
      "name": {
-      "lead": "sea-turtle-elder",
-      "tactic": "band",
+      "lead": "swamp-alligator",
+      "tactic": "wall",
       "n": 1
      },
-     "title": "Sea Turtle Elder Band",
+     "title": "Swamp Alligator Wall 1",
      "counts": {
       "peregrine-stooper": 4,
       "muskrat-lodgekeeper": 4,
       "buzzed-chipmunk": 3,
-      "sea-turtle-elder": 5,
-      "platypus-spur": 4
+      "platypus-spur": 4,
+      "swamp-alligator": 5
      },
      "parts": [
       [
@@ -7204,19 +7179,20 @@
        0
       ],
       [
-       "sea-turtle-elder",
-       5,
+       "platypus-spur",
+       4,
        0
       ],
       [
-       "platypus-spur",
-       4,
+       "swamp-alligator",
+       5,
        0
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.30",
-     "selectWin": 16.7
+     "from": "rank 2 repaired (BAL18: sea-turtle-elder -5 -> swamp-alligator x5)",
+     "selectWin": 16.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 2 (sea-turtle-elder left the map-true pool after CONTENT10; old selectWin 16.7)"
     },
     {
      "rank": 3,
@@ -7387,16 +7363,16 @@
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Field Vole Swarm",
+     "title": "Field Vole Swarm 1",
      "counts": {
       "field-vole": 4,
       "kittiwake-flock": 4,
       "otter-guard": 1,
       "alligator-gar": 3,
-      "bombardier-beetle": 2,
       "water-vole": 1,
       "pond-duck": 3,
-      "hedgerow-shrew": 2
+      "hedgerow-shrew": 2,
+      "grey-seal-bull": 2
      },
      "parts": [
       [
@@ -7420,11 +7396,6 @@
        0
       ],
       [
-       "bombardier-beetle",
-       2,
-       0
-      ],
-      [
        "water-vole",
        1,
        0
@@ -7438,11 +7409,17 @@
        "hedgerow-shrew",
        2,
        0
+      ],
+      [
+       "grey-seal-bull",
+       2,
+       0
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.70",
-     "selectWin": 58.3
+     "from": "rank 6 repaired (BAL18: bombardier-beetle -2 -> grey-seal-bull x2)",
+     "selectWin": 58.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (bombardier-beetle left the map-true pool after CONTENT10; old selectWin 58.3)"
     },
     {
      "rank": 7,
@@ -7615,54 +7592,61 @@
     {
      "rank": 10,
      "name": {
-      "lead": "bombardier-beetle",
-      "tactic": "hive",
+      "lead": "alley-cat",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Bombardier Beetle Hive",
+     "title": "Alley Cat Swarm 1",
      "counts": {
-      "bee-forager": 1,
-      "bombardier-beetle": 4,
-      "dung-beetle": 4,
-      "nutria-reedcutter": 4,
-      "owl-nightwatch": 4,
-      "tunnel-ant": 3
+      "cricket-drummer": 2,
+      "alley-cat": 4,
+      "mudpuppy": 4,
+      "bramble-sprout": 2,
+      "pyrenean-desman": 2,
+      "dormouse": 2,
+      "bee-forager": 4
      },
      "parts": [
       [
+       "cricket-drummer",
+       2,
+       0
+      ],
+      [
+       "alley-cat",
+       4,
+       0
+      ],
+      [
+       "mudpuppy",
+       4,
+       0
+      ],
+      [
+       "bramble-sprout",
+       2,
+       0
+      ],
+      [
+       "pyrenean-desman",
+       2,
+       0
+      ],
+      [
+       "dormouse",
+       2,
+       0
+      ],
+      [
        "bee-forager",
-       1,
-       0
-      ],
-      [
-       "bombardier-beetle",
        4,
-       0
-      ],
-      [
-       "dung-beetle",
-       4,
-       0
-      ],
-      [
-       "nutria-reedcutter",
-       4,
-       0
-      ],
-      [
-       "owl-nightwatch",
-       4,
-       0
-      ],
-      [
-       "tunnel-ant",
-       3,
        0
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "7-PRO-1",
-     "selectWin": 94.4
+     "from": "sampled q=0.96",
+     "selectWin": 94.4,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (bombardier-beetle left the map-true pool after CONTENT10; old selectWin 94.4)"
     }
    ]
   },
@@ -7992,18 +7976,71 @@
     {
      "rank": 6,
      "name": {
+      "lead": "hawthorn-shieldbug",
+      "tactic": "hive",
+      "n": 1
+     },
+     "title": "Hawthorn Shieldbug Hive 1",
+     "counts": {
+      "conch-herald": 4,
+      "mosswing-laborer": 2,
+      "carrion-beetle": 4,
+      "duckling": 4,
+      "nightjar-drifter": 1,
+      "hawthorn-shieldbug": 5
+     },
+     "parts": [
+      [
+       "conch-herald",
+       4,
+       0
+      ],
+      [
+       "mosswing-laborer",
+       2,
+       0
+      ],
+      [
+       "carrion-beetle",
+       4,
+       0
+      ],
+      [
+       "duckling",
+       4,
+       0
+      ],
+      [
+       "nightjar-drifter",
+       1,
+       0
+      ],
+      [
+       "hawthorn-shieldbug",
+       5,
+       0
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.26",
+     "selectWin": 60,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (snapper-hatchling left the map-true pool after CONTENT10; old selectWin 60)"
+    },
+    {
+     "rank": 7,
+     "name": {
       "lead": "bee-knight",
       "tactic": "hive",
       "n": 1
      },
-     "title": "Bee Knight Hive",
+     "title": "Bee Warden Hive 1",
      "counts": {
       "adder-ambusher": 1,
       "pond-algae": 4,
-      "snapper-hatchling": 3,
       "bee-knight": 5,
       "water-shrew": 4,
-      "bee-sentry": 3
+      "bee-sentry": 3,
+      "acorn-chipmunk": 3
      },
      "parts": [
       [
@@ -8014,11 +8051,6 @@
       [
        "pond-algae",
        4,
-       0
-      ],
-      [
-       "snapper-hatchling",
-       3,
        0
       ],
       [
@@ -8035,75 +8067,17 @@
        "bee-sentry",
        3,
        0
-      ]
-     ],
-     "leader": "old-snapjaw",
-     "from": "sampled q=0.43",
-     "selectWin": 60
-    },
-    {
-     "rank": 7,
-     "name": {
-      "lead": "owl-sentinel",
-      "tactic": "flock",
-      "n": 1
-     },
-     "title": "Owl Sentinel Flock",
-     "counts": {
-      "greyplume-fledgling": 3,
-      "owl-sentinel": 3,
-      "badger-lumberjack": 2,
-      "truffle-piglet": 2,
-      "chipmunk-forager": 3,
-      "forager-ant": 3,
-      "snapper-hatchling": 1,
-      "peak-condor": 3
-     },
-     "parts": [
-      [
-       "greyplume-fledgling",
-       3,
-       0
       ],
       [
-       "owl-sentinel",
-       3,
-       0
-      ],
-      [
-       "badger-lumberjack",
-       2,
-       0
-      ],
-      [
-       "truffle-piglet",
-       2,
-       0
-      ],
-      [
-       "chipmunk-forager",
-       3,
-       0
-      ],
-      [
-       "forager-ant",
-       3,
-       0
-      ],
-      [
-       "snapper-hatchling",
-       1,
-       0
-      ],
-      [
-       "peak-condor",
+       "acorn-chipmunk",
        3,
        0
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.48",
-     "selectWin": 66.7
+     "from": "rank 6 repaired (BAL18: snapper-hatchling -3 -> acorn-chipmunk x3)",
+     "selectWin": 66.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 7 (snapper-hatchling left the map-true pool after CONTENT10; old selectWin 66.7)"
     },
     {
      "rank": 8,
@@ -9453,6 +9427,79 @@
     {
      "rank": 9,
      "name": {
+      "lead": "dust-hyena",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Dust Hyena Swarm 1",
+     "counts": {
+      "dust-hyena": 4,
+      "grotto-lobster": 2,
+      "hawthorn-shieldbug": 4,
+      "prospector-mole": 4,
+      "stalactite-golem": 3,
+      "vampire-bat": 3
+     },
+     "parts": [
+      [
+       "dust-hyena",
+       3,
+       3
+      ],
+      [
+       "dust-hyena",
+       1,
+       4
+      ],
+      [
+       "grotto-lobster",
+       2,
+       3
+      ],
+      [
+       "hawthorn-shieldbug",
+       3,
+       3
+      ],
+      [
+       "hawthorn-shieldbug",
+       1,
+       4
+      ],
+      [
+       "prospector-mole",
+       3,
+       3
+      ],
+      [
+       "prospector-mole",
+       1,
+       4
+      ],
+      [
+       "stalactite-golem",
+       3,
+       3
+      ],
+      [
+       "vampire-bat",
+       2,
+       3
+      ],
+      [
+       "vampire-bat",
+       1,
+       4
+      ]
+     ],
+     "leader": "echo-matriarch",
+     "from": "8-A-PRO-4",
+     "selectWin": 79.2,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (squires-mount left the map-true pool after CONTENT10; old selectWin 87.5)"
+    },
+    {
+     "rank": 10,
+     "name": {
       "lead": "acorn-chipmunk",
       "tactic": "swarm",
       "n": 1
@@ -9528,78 +9575,6 @@
      "leader": "echo-matriarch",
      "from": "sampled q=0.96",
      "selectWin": 83.3
-    },
-    {
-     "rank": 10,
-     "name": {
-      "lead": "lantern-spark-fly",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "Lantern Spark Fly Swarm",
-     "counts": {
-      "blind-cave-fish": 3,
-      "gallery-orb-weaver": 3,
-      "lantern-spark-fly": 4,
-      "prospector-mole": 4,
-      "squires-mount": 3,
-      "badger-stonemason": 3
-     },
-     "parts": [
-      [
-       "blind-cave-fish",
-       2,
-       3
-      ],
-      [
-       "blind-cave-fish",
-       1,
-       4
-      ],
-      [
-       "gallery-orb-weaver",
-       3,
-       3
-      ],
-      [
-       "lantern-spark-fly",
-       3,
-       3
-      ],
-      [
-       "lantern-spark-fly",
-       1,
-       4
-      ],
-      [
-       "prospector-mole",
-       3,
-       3
-      ],
-      [
-       "prospector-mole",
-       1,
-       4
-      ],
-      [
-       "squires-mount",
-       3,
-       3
-      ],
-      [
-       "badger-stonemason",
-       2,
-       3
-      ],
-      [
-       "badger-stonemason",
-       1,
-       4
-      ]
-     ],
-     "leader": "echo-matriarch",
-     "from": "8-A-PRO-2",
-     "selectWin": 87.5
     }
    ]
   },
@@ -10003,14 +9978,14 @@
       "tactic": "school",
       "n": 1
      },
-     "title": "Fiddler Crab Swarm School",
+     "title": "Fiddler Crab Swarm School 1",
      "counts": {
       "fiddler-crab-swarm": 4,
       "mangrove-mudskipper": 4,
       "newt-doctor": 3,
       "proboscis-monkey": 3,
-      "vampire-bat": 3,
-      "water-vole": 3
+      "water-vole": 3,
+      "otter-centurion": 3
      },
      "parts": [
       [
@@ -10034,19 +10009,20 @@
        0
       ],
       [
-       "vampire-bat",
+       "water-vole",
        3,
        0
       ],
       [
-       "water-vole",
+       "otter-centurion",
        3,
        0
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "9-PRO-3",
-     "selectWin": 76.2
+     "from": "rank 8 repaired (BAL18: vampire-bat -3 -> otter-centurion x3)",
+     "selectWin": 76.2,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 8 (vampire-bat left the map-true pool after CONTENT10; old selectWin 76.2)"
     },
     {
      "rank": 9,
@@ -10103,54 +10079,61 @@
     {
      "rank": 10,
      "name": {
-      "lead": "pyrenean-desman",
+      "lead": "terrier-pup",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Pyrenean Desman Swarm",
+     "title": "Terrier Pup Swarm 1",
      "counts": {
-      "vampire-bat": 3,
-      "mangrove-monitor": 4,
-      "alley-cat": 3,
-      "dung-beetle": 3,
-      "otter-centurion": 3,
-      "pyrenean-desman": 4
+      "raven-scout": 2,
+      "pyrenean-desman": 4,
+      "cave-olm": 4,
+      "wolf-spider-mother": 1,
+      "terrier-pup": 5,
+      "meerkat-wayfarer": 1,
+      "muskrat-reedgatherer": 3
      },
      "parts": [
       [
-       "vampire-bat",
-       3,
-       0
-      ],
-      [
-       "mangrove-monitor",
-       4,
-       0
-      ],
-      [
-       "alley-cat",
-       3,
-       0
-      ],
-      [
-       "dung-beetle",
-       3,
-       0
-      ],
-      [
-       "otter-centurion",
-       3,
+       "raven-scout",
+       2,
        0
       ],
       [
        "pyrenean-desman",
        4,
        0
+      ],
+      [
+       "cave-olm",
+       4,
+       0
+      ],
+      [
+       "wolf-spider-mother",
+       1,
+       0
+      ],
+      [
+       "terrier-pup",
+       5,
+       0
+      ],
+      [
+       "meerkat-wayfarer",
+       1,
+       0
+      ],
+      [
+       "muskrat-reedgatherer",
+       3,
+       0
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=1.00",
-     "selectWin": 90.5
+     "from": "sampled q=0.96",
+     "selectWin": 88.1,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (vampire-bat left the map-true pool after CONTENT10; old selectWin 90.5)"
     }
    ]
   },
@@ -10512,54 +10495,55 @@
     {
      "rank": 7,
      "name": {
-      "lead": "plague-gnat-cloud",
-      "tactic": "hive",
+      "lead": "cricket-drummer",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Plague Gnat Cloud Hive",
+     "title": "Cricket Drummer Swarm 1",
      "counts": {
-      "vampire-bat-nurse": 3,
-      "pine-marten": 3,
-      "grotto-lobster": 3,
-      "colossal-squid": 2,
-      "plague-gnat-cloud": 5,
-      "fungus-gnat-cloud": 4
+      "cricket-drummer": 4,
+      "meadow-frog": 3,
+      "slow-worm": 4,
+      "open-ocean-hermit-crab": 4,
+      "alligator-gar": 1,
+      "field-vole": 4
      },
      "parts": [
       [
-       "vampire-bat-nurse",
+       "cricket-drummer",
+       4,
+       0
+      ],
+      [
+       "meadow-frog",
        3,
        0
       ],
       [
-       "pine-marten",
-       3,
+       "slow-worm",
+       4,
        0
       ],
       [
-       "grotto-lobster",
-       3,
+       "open-ocean-hermit-crab",
+       4,
        0
       ],
       [
-       "colossal-squid",
-       2,
+       "alligator-gar",
+       1,
        0
       ],
       [
-       "plague-gnat-cloud",
-       5,
-       0
-      ],
-      [
-       "fungus-gnat-cloud",
+       "field-vole",
        4,
        0
       ]
      ],
      "leader": "reef-admiral",
-     "from": "sampled q=0.00",
-     "selectWin": 75.9
+     "from": "sampled q=0.65",
+     "selectWin": 72.2,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 7 (grotto-lobster left the map-true pool after CONTENT10; old selectWin 75.9)"
     },
     {
      "rank": 8,
@@ -10871,54 +10855,61 @@
     {
      "rank": 3,
      "name": {
-      "lead": "horseshoe-crab",
-      "tactic": "hive",
+      "lead": "crown-of-thorns-star",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Horseshoe Crab Hive",
+     "title": "Crown-of-thorns Star Swarm 1",
      "counts": {
-      "paper-wasp": 3,
-      "carrion-beetle": 3,
-      "barkplate-beetle": 4,
-      "grotto-lobster": 3,
-      "camouflage-frog": 2,
-      "horseshoe-crab": 5
+      "vampire-bat-nurse": 2,
+      "shoal-shark": 2,
+      "guano-beetle": 3,
+      "crown-of-thorns-star": 4,
+      "mudflat-godwit": 4,
+      "swamp-alligator": 2,
+      "nudibranch": 3
      },
      "parts": [
       [
-       "paper-wasp",
-       3,
-       3
-      ],
-      [
-       "carrion-beetle",
-       3,
-       3
-      ],
-      [
-       "barkplate-beetle",
-       4,
-       3
-      ],
-      [
-       "grotto-lobster",
-       3,
-       3
-      ],
-      [
-       "camouflage-frog",
+       "vampire-bat-nurse",
        2,
        3
       ],
       [
-       "horseshoe-crab",
-       5,
+       "shoal-shark",
+       2,
+       3
+      ],
+      [
+       "guano-beetle",
+       3,
+       3
+      ],
+      [
+       "crown-of-thorns-star",
+       4,
+       3
+      ],
+      [
+       "mudflat-godwit",
+       4,
+       3
+      ],
+      [
+       "swamp-alligator",
+       2,
+       3
+      ],
+      [
+       "nudibranch",
+       3,
        3
       ]
      ],
      "leader": "reef-admiral",
-     "from": "sampled q=0.09",
-     "selectWin": 56.7
+     "from": "sampled q=0.17",
+     "selectWin": 56.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 3 (grotto-lobster left the map-true pool after CONTENT10; old selectWin 56.7)"
     },
     {
      "rank": 4,
@@ -11259,39 +11250,38 @@
     {
      "rank": 10,
      "name": {
-      "lead": "burrow-rabbit",
+      "lead": "electric-ray",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Burrow Rabbit Swarm",
+     "title": "Electric Ray Swarm 1",
      "counts": {
-      "sunbittern-strider": 4,
-      "meerkat-wayfarer": 3,
-      "vampire-bat": 1,
-      "burrow-rabbit": 5,
+      "clownfish-scout": 1,
+      "coral-polyp-colony": 4,
+      "electric-ray": 4,
+      "horseshoe-crab": 4,
       "mangrove-manatee": 3,
-      "dormouse": 2,
-      "dung-beetle": 2
+      "planarian-splitter": 4
      },
      "parts": [
       [
-       "sunbittern-strider",
-       4,
-       3
-      ],
-      [
-       "meerkat-wayfarer",
-       3,
-       3
-      ],
-      [
-       "vampire-bat",
+       "clownfish-scout",
        1,
        3
       ],
       [
-       "burrow-rabbit",
-       5,
+       "coral-polyp-colony",
+       4,
+       3
+      ],
+      [
+       "electric-ray",
+       4,
+       3
+      ],
+      [
+       "horseshoe-crab",
+       4,
        3
       ],
       [
@@ -11300,19 +11290,15 @@
        3
       ],
       [
-       "dormouse",
-       2,
-       3
-      ],
-      [
-       "dung-beetle",
-       2,
+       "planarian-splitter",
+       4,
        3
       ]
      ],
      "leader": "reef-admiral",
-     "from": "sampled q=0.83",
-     "selectWin": 100
+     "from": "10-A-PRO-2",
+     "selectWin": 93.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (vampire-bat left the map-true pool after CONTENT10; old selectWin 100)"
     }
    ]
   },
@@ -11343,14 +11329,14 @@
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Bee Sentry Swarm",
+     "title": "Bee Sentry Swarm 1",
      "counts": {
       "meadow-frog": 3,
       "puffin-diver": 3,
-      "mountain-goat-climber": 3,
       "bee-sentry": 5,
       "worker-ant": 2,
-      "harvest-mouse": 4
+      "harvest-mouse": 4,
+      "riverwing-envoy": 3
      },
      "parts": [
       [
@@ -11360,11 +11346,6 @@
       ],
       [
        "puffin-diver",
-       3,
-       3
-      ],
-      [
-       "mountain-goat-climber",
        3,
        3
       ],
@@ -11382,11 +11363,17 @@
        "harvest-mouse",
        4,
        3
+      ],
+      [
+       "riverwing-envoy",
+       3,
+       3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.52",
-     "selectWin": 16.7
+     "from": "rank 1 repaired (BAL18: mountain-goat-climber -3 -> riverwing-envoy x3)",
+     "selectWin": 20,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 1 (mountain-goat-climber left the map-true pool after CONTENT10; old selectWin 16.7)"
     },
     {
      "rank": 2,
@@ -11449,54 +11436,55 @@
     {
      "rank": 3,
      "name": {
-      "lead": "alley-cat",
+      "lead": "harvest-mouse",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Alley Cat Swarm",
+     "title": "Harvest Mouse Swarm 1",
      "counts": {
-      "terrier-pup": 3,
-      "mudpuppy": 3,
-      "alley-cat": 4,
-      "coral-polyp-colony": 3,
-      "conch-crawler": 4,
-      "box-turtle": 3
+      "worker-ant": 5,
+      "mangrove-manatee": 3,
+      "woodcock-lookout": 2,
+      "alpine-salamander": 4,
+      "field-mouse": 1,
+      "harvest-mouse": 5
      },
      "parts": [
       [
-       "terrier-pup",
+       "worker-ant",
+       5,
+       3
+      ],
+      [
+       "mangrove-manatee",
        3,
        3
       ],
       [
-       "mudpuppy",
-       3,
+       "woodcock-lookout",
+       2,
        3
       ],
       [
-       "alley-cat",
+       "alpine-salamander",
        4,
        3
       ],
       [
-       "coral-polyp-colony",
-       3,
+       "field-mouse",
+       1,
        3
       ],
       [
-       "conch-crawler",
-       4,
-       3
-      ],
-      [
-       "box-turtle",
-       3,
+       "harvest-mouse",
+       5,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=1.00",
-     "selectWin": 35
+     "from": "sampled q=0.65",
+     "selectWin": 36.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 3 (coral-polyp-colony left the map-true pool after CONTENT10; old selectWin 35)"
     },
     {
      "rank": 4,
@@ -11663,158 +11651,179 @@
     {
      "rank": 7,
      "name": {
-      "lead": "cone-snail",
-      "tactic": "swarm",
+      "lead": "bee-forager",
+      "tactic": "hive",
       "n": 1
      },
-     "title": "Cone Snail Swarm",
+     "title": "Bee Forager Hive 1",
      "counts": {
-      "cone-snail": 4,
-      "giant-clam": 3,
-      "grass-snake": 1,
-      "gale-swift": 4,
-      "chamois-leaper": 3,
-      "subterraneaner": 4,
-      "buzzed-chipmunk": 1
+      "bee-forager": 5,
+      "chipmunk-skirmisher": 1,
+      "cricket-drummer": 1,
+      "grass-viper": 1,
+      "greyplume-fledgling": 3,
+      "muskrat-lodgekeeper": 1,
+      "nutria-reedcutter": 1,
+      "tunnel-ant": 3,
+      "worker-ant": 4
      },
      "parts": [
       [
-       "cone-snail",
-       4,
+       "bee-forager",
+       5,
        3
       ],
       [
-       "giant-clam",
-       3,
-       3
-      ],
-      [
-       "grass-snake",
+       "chipmunk-skirmisher",
        1,
        3
       ],
       [
-       "gale-swift",
-       4,
+       "cricket-drummer",
+       1,
        3
       ],
       [
-       "chamois-leaper",
+       "grass-viper",
+       1,
+       3
+      ],
+      [
+       "greyplume-fledgling",
        3,
        3
       ],
       [
-       "subterraneaner",
-       4,
+       "muskrat-lodgekeeper",
+       1,
        3
       ],
       [
-       "buzzed-chipmunk",
+       "nutria-reedcutter",
        1,
+       3
+      ],
+      [
+       "tunnel-ant",
+       3,
+       3
+      ],
+      [
+       "worker-ant",
+       4,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.22",
-     "selectWin": 66.7
+     "from": "Reference (Random) prog-1",
+     "selectWin": 68.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 7 (gale-swift left the map-true pool after CONTENT10; old selectWin 66.7)"
     },
     {
      "rank": 8,
      "name": {
-      "lead": "nightjar-drifter",
-      "tactic": "swarm",
+      "lead": "signal-crayfish",
+      "tactic": "school",
       "n": 1
      },
-     "title": "Nightjar Drifter Swarm",
+     "title": "Signal Crayfish School 1",
      "counts": {
-      "nightjar-drifter": 5,
-      "sawfish": 4,
-      "grotto-lobster": 3,
-      "cone-snail": 3,
-      "paper-wasp": 5
+      "whale-shark": 3,
+      "lionfish": 4,
+      "signal-crayfish": 5,
+      "shoal-shark": 4,
+      "dolphin-knight": 3,
+      "nightjar-drifter": 1
      },
      "parts": [
       [
-       "nightjar-drifter",
-       5,
+       "whale-shark",
+       3,
        3
       ],
       [
-       "sawfish",
+       "lionfish",
        4,
        3
       ],
       [
-       "grotto-lobster",
-       3,
-       3
-      ],
-      [
-       "cone-snail",
-       3,
-       3
-      ],
-      [
-       "paper-wasp",
+       "signal-crayfish",
        5,
+       3
+      ],
+      [
+       "shoal-shark",
+       4,
+       3
+      ],
+      [
+       "dolphin-knight",
+       3,
+       3
+      ],
+      [
+       "nightjar-drifter",
+       1,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.26",
-     "selectWin": 75
+     "from": "sampled q=0.17",
+     "selectWin": 76.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 8 (grotto-lobster left the map-true pool after CONTENT10; old selectWin 75)"
     },
     {
      "rank": 9,
      "name": {
-      "lead": "anhinga-spearbird",
-      "tactic": "flock",
+      "lead": "lamprey",
+      "tactic": "school",
       "n": 1
      },
-     "title": "Anhinga Spearbird Flock",
+     "title": "Lamprey School 1",
      "counts": {
-      "anhinga-spearbird": 4,
-      "eagle-owl-quartermaster": 3,
-      "gale-swift": 4,
-      "gannet-nestweaver": 4,
-      "swamp-alligator": 2,
-      "wolf-spider-mother": 3
+      "signal-crayfish": 3,
+      "lamprey": 5,
+      "electric-catfish": 3,
+      "moat-snapper": 3,
+      "barkplate-beetle": 2,
+      "lotus-frog": 4
      },
      "parts": [
       [
-       "anhinga-spearbird",
-       4,
-       3
-      ],
-      [
-       "eagle-owl-quartermaster",
+       "signal-crayfish",
        3,
        3
       ],
       [
-       "gale-swift",
-       4,
+       "lamprey",
+       5,
        3
       ],
       [
-       "gannet-nestweaver",
-       4,
+       "electric-catfish",
+       3,
        3
       ],
       [
-       "swamp-alligator",
+       "moat-snapper",
+       3,
+       3
+      ],
+      [
+       "barkplate-beetle",
        2,
        3
       ],
       [
-       "wolf-spider-mother",
-       3,
+       "lotus-frog",
+       4,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "11-PRO-1",
-     "selectWin": 86.7
+     "from": "sampled q=0.00",
+     "selectWin": 88.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (gale-swift left the map-true pool after CONTENT10; old selectWin 86.7)"
     },
     {
      "rank": 10,
@@ -12055,48 +12064,67 @@
     {
      "rank": 4,
      "name": {
-      "lead": "stag-knight",
+      "lead": "chipmunk-hoarder",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Stag Knight Swarm",
+     "title": "Chipmunk Hoarder Swarm 1",
      "counts": {
-      "quillguard": 3,
-      "stag-knight": 5,
-      "ember-tetra": 4,
-      "badger-lumberjack": 3,
-      "leopard-slug": 5
+      "hedge-weasel": 3,
+      "chipmunk-hoarder": 4,
+      "woodcock-lookout": 2,
+      "dormouse": 2,
+      "wound-reaver": 3,
+      "grass-viper": 2,
+      "bramblewood-lynx": 3,
+      "fawn-scout": 1
      },
      "parts": [
       [
-       "quillguard",
+       "hedge-weasel",
        3,
        3
       ],
       [
-       "stag-knight",
-       5,
-       3
-      ],
-      [
-       "ember-tetra",
+       "chipmunk-hoarder",
        4,
        3
       ],
       [
-       "badger-lumberjack",
+       "woodcock-lookout",
+       2,
+       3
+      ],
+      [
+       "dormouse",
+       2,
+       3
+      ],
+      [
+       "wound-reaver",
        3,
        3
       ],
       [
-       "leopard-slug",
-       5,
+       "grass-viper",
+       2,
+       3
+      ],
+      [
+       "bramblewood-lynx",
+       3,
+       3
+      ],
+      [
+       "fawn-scout",
+       1,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.48",
-     "selectWin": 25
+     "from": "sampled q=0.78",
+     "selectWin": 25,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 4 (stag-knight left the map-true pool after CONTENT10; old selectWin 25)"
     },
     {
      "rank": 5,
@@ -12309,60 +12337,49 @@
     {
      "rank": 9,
      "name": {
-      "lead": "archerfish",
+      "lead": "raft-spider",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Archerfish Swarm",
+     "title": "Raft Spider Swarm 1",
      "counts": {
-      "gatling-hog": 3,
-      "feral-tomcat": 4,
-      "pyrenean-desman": 2,
-      "eagle-owl-quartermaster": 2,
-      "archerfish": 4,
-      "hawthorn-shieldbug": 2,
-      "apollo-butterfly": 3
+      "vampire-bat-nurse": 4,
+      "quill-thorn-boar": 3,
+      "raft-spider": 5,
+      "lions-mane-jelly": 4,
+      "barkplate-beetle": 4
      },
      "parts": [
       [
-       "gatling-hog",
-       3,
-       3
-      ],
-      [
-       "feral-tomcat",
+       "vampire-bat-nurse",
        4,
        3
       ],
       [
-       "pyrenean-desman",
-       2,
+       "quill-thorn-boar",
+       3,
        3
       ],
       [
-       "eagle-owl-quartermaster",
-       2,
+       "raft-spider",
+       5,
        3
       ],
       [
-       "archerfish",
+       "lions-mane-jelly",
        4,
        3
       ],
       [
-       "hawthorn-shieldbug",
-       2,
-       3
-      ],
-      [
-       "apollo-butterfly",
-       3,
+       "barkplate-beetle",
+       4,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.83",
-     "selectWin": 62.5
+     "from": "sampled q=0.00",
+     "selectWin": 62.5,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (gatling-hog left the map-true pool after CONTENT10; old selectWin 62.5)"
     },
     {
      "rank": 10,
@@ -12810,60 +12827,67 @@
     {
      "rank": 7,
      "name": {
-      "lead": "nutria-reedcutter",
-      "tactic": "camp",
+      "lead": "bee-forager",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Nutria Reedcutter Camp",
+     "title": "Bee Forager Swarm 1",
      "counts": {
-      "truffle-piglet": 3,
-      "bramble-sprout": 2,
-      "gatling-hog": 1,
-      "hedgerow-shrew": 4,
-      "giant-cave-huntsman": 3,
-      "nutria-reedcutter": 5,
-      "cave-olm": 2
+      "eagle-owl-quartermaster": 2,
+      "dormouse": 3,
+      "cave-olm": 2,
+      "bee-forager": 3,
+      "feral-tomcat": 2,
+      "nutria-reedcutter": 3,
+      "adder-ambusher": 2,
+      "parrotfish": 3
      },
      "parts": [
       [
-       "truffle-piglet",
-       3,
-       3
-      ],
-      [
-       "bramble-sprout",
+       "eagle-owl-quartermaster",
        2,
        3
       ],
       [
-       "gatling-hog",
-       1,
-       3
-      ],
-      [
-       "hedgerow-shrew",
-       4,
-       3
-      ],
-      [
-       "giant-cave-huntsman",
+       "dormouse",
        3,
-       3
-      ],
-      [
-       "nutria-reedcutter",
-       5,
        3
       ],
       [
        "cave-olm",
        2,
        3
+      ],
+      [
+       "bee-forager",
+       3,
+       3
+      ],
+      [
+       "feral-tomcat",
+       2,
+       3
+      ],
+      [
+       "nutria-reedcutter",
+       3,
+       3
+      ],
+      [
+       "adder-ambusher",
+       2,
+       3
+      ],
+      [
+       "parrotfish",
+       3,
+       3
       ]
      ],
      "leader": "old-snapjaw",
      "from": "sampled q=0.96",
-     "selectWin": 61.9
+     "selectWin": 61.9,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 7 (gatling-hog left the map-true pool after CONTENT10; old selectWin 61.9)"
     },
     {
      "rank": 8,
@@ -13074,60 +13098,49 @@
     {
      "rank": 1,
      "name": {
-      "lead": "electric-ray",
+      "lead": "rock-pool-starfish",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Electric Ray Swarm",
+     "title": "Rock Pool Starfish Swarm 1",
      "counts": {
-      "farm-dog": 4,
-      "nightjar-drifter": 1,
-      "snapper-hatchling": 3,
-      "owl-sentinel": 3,
-      "poison-dart-croaker": 2,
-      "reef-shark": 3,
-      "electric-ray": 4
+      "rock-pool-starfish": 5,
+      "dam-keeper-beaver": 4,
+      "anaconda-coil": 3,
+      "carrion-beetle": 4,
+      "elephant-nose-fish": 4
      },
      "parts": [
       [
-       "farm-dog",
+       "rock-pool-starfish",
+       5,
+       3
+      ],
+      [
+       "dam-keeper-beaver",
        4,
        3
       ],
       [
-       "nightjar-drifter",
-       1,
-       3
-      ],
-      [
-       "snapper-hatchling",
+       "anaconda-coil",
        3,
        3
       ],
       [
-       "owl-sentinel",
-       3,
+       "carrion-beetle",
+       4,
        3
       ],
       [
-       "poison-dart-croaker",
-       2,
-       3
-      ],
-      [
-       "reef-shark",
-       3,
-       3
-      ],
-      [
-       "electric-ray",
+       "elephant-nose-fish",
        4,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.43",
-     "selectWin": 8.3
+     "from": "sampled q=0.09",
+     "selectWin": 8.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 1 (snapper-hatchling left the map-true pool after CONTENT10; old selectWin 8.3)"
     },
     {
      "rank": 2,
@@ -13190,118 +13203,102 @@
     {
      "rank": 3,
      "name": {
-      "lead": "booming-bittern",
-      "tactic": "flock",
+      "lead": "seed-cache-squirrel",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Booming Bittern Flock",
+     "title": "Seed-cache Squirrel Swarm 1",
      "counts": {
-      "conch-herald": 3,
-      "chipmunk-cavalry": 3,
-      "booming-bittern": 3,
-      "woodpecker-sapper": 2,
-      "riverwing-envoy": 2,
-      "gull-thief": 2,
-      "earthworm": 3,
-      "peak-condor": 2
+      "seed-cache-squirrel": 5,
+      "plague-gnat-cloud": 4,
+      "anhinga-spearbird": 4,
+      "vampire-bat-nurse": 4,
+      "quill-thorn-boar": 3
      },
      "parts": [
       [
-       "conch-herald",
+       "seed-cache-squirrel",
+       5,
+       3
+      ],
+      [
+       "plague-gnat-cloud",
+       4,
+       3
+      ],
+      [
+       "anhinga-spearbird",
+       4,
+       3
+      ],
+      [
+       "vampire-bat-nurse",
+       4,
+       3
+      ],
+      [
+       "quill-thorn-boar",
        3,
-       3
-      ],
-      [
-       "chipmunk-cavalry",
-       3,
-       3
-      ],
-      [
-       "booming-bittern",
-       3,
-       3
-      ],
-      [
-       "woodpecker-sapper",
-       2,
-       3
-      ],
-      [
-       "riverwing-envoy",
-       2,
-       3
-      ],
-      [
-       "gull-thief",
-       2,
-       3
-      ],
-      [
-       "earthworm",
-       3,
-       3
-      ],
-      [
-       "peak-condor",
-       2,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.48",
-     "selectWin": 22.9
+     "from": "sampled q=0.00",
+     "selectWin": 22.9,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 3 (woodpecker-sapper left the map-true pool after CONTENT10; old selectWin 22.9)"
     },
     {
      "rank": 4,
      "name": {
-      "lead": "fulmar-spitter",
-      "tactic": "swarm",
+      "lead": "lyrebird-mimic",
+      "tactic": "brood",
       "n": 1
      },
-     "title": "Fulmar Spitter Swarm",
+     "title": "Lyrebird Mimic Brood 1",
      "counts": {
-      "booming-bittern": 3,
-      "grotto-lobster": 3,
-      "fulmar-spitter": 4,
-      "mantis-shrimp": 3,
-      "dam-keeper-beaver": 3,
-      "gallery-orb-weaver": 4
+      "grass-viper": 4,
+      "mangrove-manatee": 3,
+      "lyrebird-mimic": 4,
+      "newt-doctor": 4,
+      "owl-nightwatch": 1,
+      "ember-tetra": 4
      },
      "parts": [
       [
-       "booming-bittern",
-       3,
-       3
-      ],
-      [
-       "grotto-lobster",
-       3,
-       3
-      ],
-      [
-       "fulmar-spitter",
+       "grass-viper",
        4,
        3
       ],
       [
-       "mantis-shrimp",
+       "mangrove-manatee",
        3,
        3
       ],
       [
-       "dam-keeper-beaver",
-       3,
+       "lyrebird-mimic",
+       4,
        3
       ],
       [
-       "gallery-orb-weaver",
+       "newt-doctor",
+       4,
+       3
+      ],
+      [
+       "owl-nightwatch",
+       1,
+       3
+      ],
+      [
+       "ember-tetra",
        4,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.22",
-     "selectWin": 29.2
+     "from": "rank 7 repaired (BAL18: coral-polyp-colony -4 -> ember-tetra x4)",
+     "selectWin": 29.2,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 4 (grotto-lobster left the map-true pool after CONTENT10; old selectWin 29.2)"
     },
     {
      "rank": 5,
@@ -13410,54 +13407,67 @@
     {
      "rank": 7,
      "name": {
-      "lead": "lyrebird-mimic",
-      "tactic": "brood",
+      "lead": "sunbittern-strider",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Lyrebird Mimic Brood",
+     "title": "Sunbittern Strider Swarm 1",
      "counts": {
-      "grass-viper": 4,
-      "mangrove-manatee": 3,
-      "lyrebird-mimic": 4,
-      "coral-polyp-colony": 4,
-      "newt-doctor": 4,
-      "owl-nightwatch": 1
+      "archerfish": 1,
+      "box-turtle": 4,
+      "sunbittern-strider": 4,
+      "ibex-rockcaller": 2,
+      "wolf-spider-mother": 3,
+      "dormouse": 1,
+      "tunnel-ant": 3,
+      "bramble-hoglet": 2
      },
      "parts": [
       [
-       "grass-viper",
+       "archerfish",
+       1,
+       3
+      ],
+      [
+       "box-turtle",
        4,
        3
       ],
       [
-       "mangrove-manatee",
+       "sunbittern-strider",
+       4,
+       3
+      ],
+      [
+       "ibex-rockcaller",
+       2,
+       3
+      ],
+      [
+       "wolf-spider-mother",
        3,
        3
       ],
       [
-       "lyrebird-mimic",
-       4,
-       3
-      ],
-      [
-       "coral-polyp-colony",
-       4,
-       3
-      ],
-      [
-       "newt-doctor",
-       4,
-       3
-      ],
-      [
-       "owl-nightwatch",
+       "dormouse",
        1,
+       3
+      ],
+      [
+       "tunnel-ant",
+       3,
+       3
+      ],
+      [
+       "bramble-hoglet",
+       2,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.78",
-     "selectWin": 47.9
+     "from": "sampled q=0.96",
+     "selectWin": 45.8,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 7 (coral-polyp-colony left the map-true pool after CONTENT10; old selectWin 47.9)"
     },
     {
      "rank": 8,
@@ -13968,6 +13978,59 @@
     {
      "rank": 7,
      "name": {
+      "lead": "dust-hyena",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Dust Hyena Swarm 1",
+     "counts": {
+      "dust-hyena": 4,
+      "grave-grin-hyena": 4,
+      "hoopoe-herald": 3,
+      "ibex-rockcaller": 2,
+      "leafcutter-gardener": 3,
+      "jay-pilferer": 4
+     },
+     "parts": [
+      [
+       "dust-hyena",
+       4,
+       3
+      ],
+      [
+       "grave-grin-hyena",
+       4,
+       3
+      ],
+      [
+       "hoopoe-herald",
+       3,
+       3
+      ],
+      [
+       "ibex-rockcaller",
+       2,
+       3
+      ],
+      [
+       "leafcutter-gardener",
+       3,
+       3
+      ],
+      [
+       "jay-pilferer",
+       4,
+       3
+      ]
+     ],
+     "leader": "pride-queen",
+     "from": "rank 9 repaired (BAL18: weaver-bird -4 -> jay-pilferer x4)",
+     "selectWin": 60.4,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (weaver-bird left the map-true pool after CONTENT10; old selectWin 87.5)"
+    },
+    {
+     "rank": 8,
+     "name": {
       "lead": "dormouse",
       "tactic": "swarm",
       "n": 1
@@ -14018,7 +14081,7 @@
      "selectWin": 62.5
     },
     {
-     "rank": 8,
+     "rank": 9,
      "name": {
       "lead": "conch-crawler",
       "tactic": "swarm",
@@ -14062,58 +14125,6 @@
      "leader": "pride-queen",
      "from": "sampled q=0.83",
      "selectWin": 75
-    },
-    {
-     "rank": 9,
-     "name": {
-      "lead": "dust-hyena",
-      "tactic": "camp",
-      "n": 1
-     },
-     "title": "Dust Hyena Camp",
-     "counts": {
-      "dust-hyena": 4,
-      "grave-grin-hyena": 4,
-      "hoopoe-herald": 3,
-      "ibex-rockcaller": 2,
-      "leafcutter-gardener": 3,
-      "weaver-bird": 4
-     },
-     "parts": [
-      [
-       "dust-hyena",
-       4,
-       3
-      ],
-      [
-       "grave-grin-hyena",
-       4,
-       3
-      ],
-      [
-       "hoopoe-herald",
-       3,
-       3
-      ],
-      [
-       "ibex-rockcaller",
-       2,
-       3
-      ],
-      [
-       "leafcutter-gardener",
-       3,
-       3
-      ],
-      [
-       "weaver-bird",
-       4,
-       3
-      ]
-     ],
-     "leader": "pride-queen",
-     "from": "14-PRO-1",
-     "selectWin": 87.5
     },
     {
      "rank": 10,
@@ -14451,6 +14462,355 @@
     {
      "rank": 4,
      "name": {
+      "lead": "grave-grin-hyena",
+      "tactic": "swarm",
+      "n": 2
+     },
+     "title": "Grave-Grin Hyena Swarm II",
+     "counts": {
+      "grave-grin-hyena": 4,
+      "hoopoe-herald": 3,
+      "leafcutter-gardener": 4,
+      "poison-dart-croaker": 4,
+      "walrus-icebreaker": 2,
+      "wolf-spider-mother": 3
+     },
+     "parts": [
+      [
+       "grave-grin-hyena",
+       2,
+       3
+      ],
+      [
+       "grave-grin-hyena",
+       2,
+       4
+      ],
+      [
+       "hoopoe-herald",
+       1,
+       3
+      ],
+      [
+       "hoopoe-herald",
+       2,
+       4
+      ],
+      [
+       "leafcutter-gardener",
+       2,
+       3
+      ],
+      [
+       "leafcutter-gardener",
+       2,
+       4
+      ],
+      [
+       "poison-dart-croaker",
+       2,
+       3
+      ],
+      [
+       "poison-dart-croaker",
+       2,
+       4
+      ],
+      [
+       "walrus-icebreaker",
+       1,
+       3
+      ],
+      [
+       "walrus-icebreaker",
+       1,
+       4
+      ],
+      [
+       "wolf-spider-mother",
+       1,
+       3
+      ],
+      [
+       "wolf-spider-mother",
+       2,
+       4
+      ]
+     ],
+     "leader": "pride-queen",
+     "from": "14-A-PRO-1",
+     "selectWin": 26.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (coral-polyp-colony left the map-true pool after CONTENT10; old selectWin 86.7)"
+    },
+    {
+     "rank": 5,
+     "name": {
+      "lead": "grave-grin-hyena",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Grave-Grin Hyena Swarm 1",
+     "counts": {
+      "grave-grin-hyena": 4,
+      "hoopoe-herald": 3,
+      "leafcutter-gardener": 4,
+      "vampire-bat": 3,
+      "wolf-spider-mother": 3,
+      "grotto-lobster": 3
+     },
+     "parts": [
+      [
+       "grave-grin-hyena",
+       2,
+       3
+      ],
+      [
+       "grave-grin-hyena",
+       2,
+       4
+      ],
+      [
+       "hoopoe-herald",
+       1,
+       3
+      ],
+      [
+       "hoopoe-herald",
+       2,
+       4
+      ],
+      [
+       "leafcutter-gardener",
+       2,
+       3
+      ],
+      [
+       "leafcutter-gardener",
+       2,
+       4
+      ],
+      [
+       "vampire-bat",
+       1,
+       3
+      ],
+      [
+       "vampire-bat",
+       2,
+       4
+      ],
+      [
+       "wolf-spider-mother",
+       2,
+       3
+      ],
+      [
+       "wolf-spider-mother",
+       1,
+       4
+      ],
+      [
+       "grotto-lobster",
+       1,
+       3
+      ],
+      [
+       "grotto-lobster",
+       2,
+       4
+      ]
+     ],
+     "leader": "pride-queen",
+     "from": "rank 8 repaired (BAL18: squires-mount -3 -> grotto-lobster x3)",
+     "selectWin": 30,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 7 (gale-swift left the map-true pool after CONTENT10; old selectWin 60)"
+    },
+    {
+     "rank": 6,
+     "name": {
+      "lead": "spitting-spider",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Spitting Spider Swarm 1",
+     "counts": {
+      "stoat-cutthroat": 3,
+      "duck-paddler": 4,
+      "ibex-rockcaller": 2,
+      "hedgehog-herbalist": 3,
+      "spitting-spider": 4,
+      "apollo-butterfly": 4
+     },
+     "parts": [
+      [
+       "stoat-cutthroat",
+       1,
+       3
+      ],
+      [
+       "stoat-cutthroat",
+       2,
+       4
+      ],
+      [
+       "duck-paddler",
+       2,
+       3
+      ],
+      [
+       "duck-paddler",
+       2,
+       4
+      ],
+      [
+       "ibex-rockcaller",
+       1,
+       3
+      ],
+      [
+       "ibex-rockcaller",
+       1,
+       4
+      ],
+      [
+       "hedgehog-herbalist",
+       2,
+       3
+      ],
+      [
+       "hedgehog-herbalist",
+       1,
+       4
+      ],
+      [
+       "spitting-spider",
+       1,
+       3
+      ],
+      [
+       "spitting-spider",
+       3,
+       4
+      ],
+      [
+       "apollo-butterfly",
+       2,
+       3
+      ],
+      [
+       "apollo-butterfly",
+       2,
+       4
+      ]
+     ],
+     "leader": "pride-queen",
+     "from": "rank 10 repaired (BAL18: coral-polyp-colony -4 -> apollo-butterfly x4)",
+     "selectWin": 30,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 8 (squires-mount left the map-true pool after CONTENT10; old selectWin 60)"
+    },
+    {
+     "rank": 7,
+     "name": {
+      "lead": "river-carp",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "River Carp Swarm 1",
+     "counts": {
+      "river-carp": 4,
+      "mudpuppy": 1,
+      "talon-archer": 2,
+      "terrier-pup": 3,
+      "pyrenean-desman": 2,
+      "hedgehog-herbalist": 3,
+      "adder-ambusher": 2,
+      "mangrove-monitor": 3
+     },
+     "parts": [
+      [
+       "river-carp",
+       2,
+       3
+      ],
+      [
+       "river-carp",
+       2,
+       4
+      ],
+      [
+       "mudpuppy",
+       1,
+       4
+      ],
+      [
+       "talon-archer",
+       1,
+       3
+      ],
+      [
+       "talon-archer",
+       1,
+       4
+      ],
+      [
+       "terrier-pup",
+       2,
+       3
+      ],
+      [
+       "terrier-pup",
+       1,
+       4
+      ],
+      [
+       "pyrenean-desman",
+       1,
+       3
+      ],
+      [
+       "pyrenean-desman",
+       1,
+       4
+      ],
+      [
+       "hedgehog-herbalist",
+       1,
+       3
+      ],
+      [
+       "hedgehog-herbalist",
+       2,
+       4
+      ],
+      [
+       "adder-ambusher",
+       1,
+       3
+      ],
+      [
+       "adder-ambusher",
+       1,
+       4
+      ],
+      [
+       "mangrove-monitor",
+       1,
+       3
+      ],
+      [
+       "mangrove-monitor",
+       2,
+       4
+      ]
+     ],
+     "leader": "pride-queen",
+     "from": "sampled q=1.00",
+     "selectWin": 33.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (plains-zebra left the map-true pool after CONTENT10; old selectWin 53.3)"
+    },
+    {
+     "rank": 8,
+     "name": {
       "lead": "bee-knight",
       "tactic": "swarm",
       "n": 1
@@ -14531,346 +14891,79 @@
      "selectWin": 36.7
     },
     {
-     "rank": 5,
+     "rank": 9,
      "name": {
-      "lead": "stoat-cutthroat",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "Stoat Cutthroat Swarm",
-     "counts": {
-      "alpine-marmot": 2,
-      "stoat-cutthroat": 3,
-      "ibex-rockcaller": 2,
-      "kittiwake-flock": 3,
-      "parrotfish": 2,
-      "border-collie": 3,
-      "pinecone-sapper": 3,
-      "glimmer-spider": 2
-     },
-     "parts": [
-      [
-       "alpine-marmot",
-       1,
-       3
-      ],
-      [
-       "alpine-marmot",
-       1,
-       4
-      ],
-      [
-       "stoat-cutthroat",
-       1,
-       3
-      ],
-      [
-       "stoat-cutthroat",
-       2,
-       4
-      ],
-      [
-       "ibex-rockcaller",
-       1,
-       3
-      ],
-      [
-       "ibex-rockcaller",
-       1,
-       4
-      ],
-      [
-       "kittiwake-flock",
-       2,
-       3
-      ],
-      [
-       "kittiwake-flock",
-       1,
-       4
-      ],
-      [
-       "parrotfish",
-       1,
-       3
-      ],
-      [
-       "parrotfish",
-       1,
-       4
-      ],
-      [
-       "border-collie",
-       1,
-       3
-      ],
-      [
-       "border-collie",
-       2,
-       4
-      ],
-      [
-       "pinecone-sapper",
-       1,
-       3
-      ],
-      [
-       "pinecone-sapper",
-       2,
-       4
-      ],
-      [
-       "glimmer-spider",
-       1,
-       3
-      ],
-      [
-       "glimmer-spider",
-       1,
-       4
-      ]
-     ],
-     "leader": "pride-queen",
-     "from": "sampled q=1.00",
-     "selectWin": 46.7
-    },
-    {
-     "rank": 6,
-     "name": {
-      "lead": "compost-grub",
-      "tactic": "school",
-      "n": 1
-     },
-     "title": "Compost Grub School",
-     "counts": {
-      "mangrove-mudskipper": 5,
-      "compost-grub": 5,
-      "octopus-tactician": 3,
-      "hercules-beetle": 3,
-      "plains-zebra": 4
-     },
-     "parts": [
-      [
-       "mangrove-mudskipper",
-       2,
-       3
-      ],
-      [
-       "mangrove-mudskipper",
-       3,
-       4
-      ],
-      [
-       "compost-grub",
-       3,
-       3
-      ],
-      [
-       "compost-grub",
-       2,
-       4
-      ],
-      [
-       "octopus-tactician",
-       1,
-       3
-      ],
-      [
-       "octopus-tactician",
-       2,
-       4
-      ],
-      [
-       "hercules-beetle",
-       1,
-       3
-      ],
-      [
-       "hercules-beetle",
-       2,
-       4
-      ],
-      [
-       "plains-zebra",
-       2,
-       3
-      ],
-      [
-       "plains-zebra",
-       2,
-       4
-      ]
-     ],
-     "leader": "pride-queen",
-     "from": "sampled q=0.70",
-     "selectWin": 53.3
-    },
-    {
-     "rank": 7,
-     "name": {
-      "lead": "nutria-reedcutter",
+      "lead": "horseshoe-crab",
       "tactic": "flock",
       "n": 1
      },
-     "title": "Nutria Reedcutter Flock",
+     "title": "Horseshoe Crab Flock 1",
      "counts": {
-      "spitting-spider": 2,
-      "mountain-hare": 3,
-      "nutria-reedcutter": 5,
-      "owl-nightwatch": 4,
-      "gale-swift": 4,
-      "hedge-weasel": 2
+      "pine-marten": 3,
+      "mosswing-laborer": 5,
+      "horseshoe-crab": 5,
+      "subterraneaner": 3,
+      "field-crow": 4
      },
      "parts": [
       [
-       "spitting-spider",
+       "pine-marten",
        1,
        3
       ],
       [
-       "spitting-spider",
-       1,
-       4
-      ],
-      [
-       "mountain-hare",
-       1,
-       3
-      ],
-      [
-       "mountain-hare",
+       "pine-marten",
        2,
        4
       ],
       [
-       "nutria-reedcutter",
+       "mosswing-laborer",
        3,
        3
       ],
       [
-       "nutria-reedcutter",
+       "mosswing-laborer",
        2,
        4
       ],
       [
-       "owl-nightwatch",
-       1,
+       "horseshoe-crab",
+       2,
        3
       ],
       [
-       "owl-nightwatch",
+       "horseshoe-crab",
        3,
        4
       ],
       [
-       "gale-swift",
-       2,
-       3
-      ],
-      [
-       "gale-swift",
-       2,
-       4
-      ],
-      [
-       "hedge-weasel",
+       "subterraneaner",
        1,
        3
       ],
       [
-       "hedge-weasel",
-       1,
-       4
-      ]
-     ],
-     "leader": "pride-queen",
-     "from": "sampled q=0.87",
-     "selectWin": 60
-    },
-    {
-     "rank": 8,
-     "name": {
-      "lead": "grave-grin-hyena",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "Grave-Grin Hyena Swarm",
-     "counts": {
-      "grave-grin-hyena": 4,
-      "hoopoe-herald": 3,
-      "leafcutter-gardener": 4,
-      "squires-mount": 3,
-      "vampire-bat": 3,
-      "wolf-spider-mother": 3
-     },
-     "parts": [
-      [
-       "grave-grin-hyena",
-       2,
-       3
-      ],
-      [
-       "grave-grin-hyena",
+       "subterraneaner",
        2,
        4
       ],
       [
-       "hoopoe-herald",
-       1,
-       3
-      ],
-      [
-       "hoopoe-herald",
-       2,
-       4
-      ],
-      [
-       "leafcutter-gardener",
+       "field-crow",
        2,
        3
       ],
       [
-       "leafcutter-gardener",
-       2,
-       4
-      ],
-      [
-       "squires-mount",
-       1,
-       3
-      ],
-      [
-       "squires-mount",
-       2,
-       4
-      ],
-      [
-       "vampire-bat",
-       2,
-       3
-      ],
-      [
-       "vampire-bat",
-       1,
-       4
-      ],
-      [
-       "wolf-spider-mother",
-       1,
-       3
-      ],
-      [
-       "wolf-spider-mother",
+       "field-crow",
        2,
        4
       ]
      ],
      "leader": "pride-queen",
-     "from": "14-A-PRO-3",
-     "selectWin": 60
+     "from": "sampled q=0.17",
+     "selectWin": 46.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 5 (pinecone-sapper left the map-true pool after CONTENT10; old selectWin 46.7)"
     },
     {
-     "rank": 9,
+     "rank": 10,
      "name": {
       "lead": "apollo-butterfly",
       "tactic": "flock",
@@ -14945,88 +15038,6 @@
      "leader": "pride-queen",
      "from": "14-A-PRO-4",
      "selectWin": 70
-    },
-    {
-     "rank": 10,
-     "name": {
-      "lead": "spitting-spider",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "Spitting Spider Swarm",
-     "counts": {
-      "coral-polyp-colony": 4,
-      "stoat-cutthroat": 3,
-      "duck-paddler": 4,
-      "ibex-rockcaller": 2,
-      "hedgehog-herbalist": 3,
-      "spitting-spider": 4
-     },
-     "parts": [
-      [
-       "coral-polyp-colony",
-       2,
-       3
-      ],
-      [
-       "coral-polyp-colony",
-       2,
-       4
-      ],
-      [
-       "stoat-cutthroat",
-       1,
-       3
-      ],
-      [
-       "stoat-cutthroat",
-       2,
-       4
-      ],
-      [
-       "duck-paddler",
-       2,
-       3
-      ],
-      [
-       "duck-paddler",
-       2,
-       4
-      ],
-      [
-       "ibex-rockcaller",
-       1,
-       3
-      ],
-      [
-       "ibex-rockcaller",
-       1,
-       4
-      ],
-      [
-       "hedgehog-herbalist",
-       1,
-       3
-      ],
-      [
-       "hedgehog-herbalist",
-       2,
-       4
-      ],
-      [
-       "spitting-spider",
-       2,
-       3
-      ],
-      [
-       "spitting-spider",
-       2,
-       4
-      ]
-     ],
-     "leader": "pride-queen",
-     "from": "sampled q=0.96",
-     "selectWin": 86.7
     }
    ]
   },
@@ -15322,54 +15333,67 @@
     {
      "rank": 6,
      "name": {
-      "lead": "riptide-eel",
-      "tactic": "swarm",
+      "lead": "pelican-diver",
+      "tactic": "flock",
       "n": 1
      },
-     "title": "Riptide Eel Swarm",
+     "title": "Pelican Diver Flock 1",
      "counts": {
+      "pelican-diver": 4,
+      "meadow-rabbit": 2,
+      "chipmunk-skirmisher": 1,
+      "leafcutter-gardener": 2,
+      "woodcock-lookout": 4,
+      "house-cat": 2,
       "star-nosed-mole": 4,
-      "acorn-chipmunk": 2,
-      "blue-ringed-octopus": 3,
-      "tunnel-ant": 3,
-      "riptide-eel": 4,
-      "coral-polyp-colony": 4
+      "spitting-cobra": 1
      },
      "parts": [
+      [
+       "pelican-diver",
+       4,
+       3
+      ],
+      [
+       "meadow-rabbit",
+       2,
+       3
+      ],
+      [
+       "chipmunk-skirmisher",
+       1,
+       3
+      ],
+      [
+       "leafcutter-gardener",
+       2,
+       3
+      ],
+      [
+       "woodcock-lookout",
+       4,
+       3
+      ],
+      [
+       "house-cat",
+       2,
+       3
+      ],
       [
        "star-nosed-mole",
        4,
        3
       ],
       [
-       "acorn-chipmunk",
-       2,
-       3
-      ],
-      [
-       "blue-ringed-octopus",
-       3,
-       3
-      ],
-      [
-       "tunnel-ant",
-       3,
-       3
-      ],
-      [
-       "riptide-eel",
-       4,
-       3
-      ],
-      [
-       "coral-polyp-colony",
-       4,
+       "spitting-cobra",
+       1,
        3
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.83",
-     "selectWin": 42.9
+     "from": "sampled q=0.78",
+     "selectWin": 45.2,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (coral-polyp-colony left the map-true pool after CONTENT10; old selectWin 42.9)"
     },
     {
      "rank": 7,
@@ -15921,152 +15945,148 @@
     {
      "rank": 5,
      "name": {
-      "lead": "cleaner-wrasse",
-      "tactic": "flock",
+      "lead": "chipmunk-forager",
+      "tactic": "warren",
       "n": 1
      },
-     "title": "Cleaner Wrasse Flock",
+     "title": "Chipmunk Forager Warren 1",
      "counts": {
-      "gale-swift": 4,
-      "cleaner-wrasse": 4,
-      "baby-bat": 2,
-      "cane-toad": 2,
-      "peak-condor": 4,
-      "signal-crayfish": 2,
-      "pill-bug": 2
+      "horseshoe-crab": 2,
+      "grotto-lobster": 3,
+      "mudflat-godwit": 1,
+      "earthworm": 4,
+      "quillback-elder": 3,
+      "lunar-howler": 2,
+      "chipmunk-forager": 5
      },
      "parts": [
       [
-       "gale-swift",
-       3,
+       "horseshoe-crab",
+       2,
        3
       ],
       [
-       "gale-swift",
+       "grotto-lobster",
+       2,
+       3
+      ],
+      [
+       "grotto-lobster",
        1,
        4
       ],
       [
-       "cleaner-wrasse",
+       "mudflat-godwit",
+       1,
+       3
+      ],
+      [
+       "earthworm",
+       3,
+       3
+      ],
+      [
+       "earthworm",
+       1,
+       4
+      ],
+      [
+       "quillback-elder",
+       3,
+       3
+      ],
+      [
+       "lunar-howler",
+       1,
+       3
+      ],
+      [
+       "lunar-howler",
+       1,
+       4
+      ],
+      [
+       "chipmunk-forager",
+       4,
+       3
+      ],
+      [
+       "chipmunk-forager",
+       1,
+       4
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.26",
+     "selectWin": 28.6,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 5 (gale-swift left the map-true pool after CONTENT10; old selectWin 28.6)"
+    },
+    {
+     "rank": 6,
+     "name": {
+      "lead": "baby-bat",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Baby Bat Swarm 1",
+     "counts": {
+      "shallows-fry": 2,
+      "chipmunk-cavalry": 4,
+      "stalactite-golem": 4,
+      "duckling": 5,
+      "baby-bat": 5
+     },
+     "parts": [
+      [
+       "shallows-fry",
+       2,
+       3
+      ],
+      [
+       "chipmunk-cavalry",
+       3,
+       3
+      ],
+      [
+       "chipmunk-cavalry",
+       1,
+       4
+      ],
+      [
+       "stalactite-golem",
+       3,
+       3
+      ],
+      [
+       "stalactite-golem",
+       1,
+       4
+      ],
+      [
+       "duckling",
+       4,
+       3
+      ],
+      [
+       "duckling",
+       1,
+       4
+      ],
+      [
+       "baby-bat",
        4,
        3
       ],
       [
        "baby-bat",
        1,
-       3
-      ],
-      [
-       "baby-bat",
-       1,
-       4
-      ],
-      [
-       "cane-toad",
-       2,
-       3
-      ],
-      [
-       "peak-condor",
-       3,
-       3
-      ],
-      [
-       "peak-condor",
-       1,
-       4
-      ],
-      [
-       "signal-crayfish",
-       2,
-       3
-      ],
-      [
-       "pill-bug",
-       1,
-       3
-      ],
-      [
-       "pill-bug",
-       1,
        4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.30",
-     "selectWin": 28.6
-    },
-    {
-     "rank": 6,
-     "name": {
-      "lead": "woodpecker-sapper",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "Woodpecker Sapper Swarm",
-     "counts": {
-      "cone-cutter-squirrel": 4,
-      "grave-grin-hyena": 3,
-      "pinecone-sapper": 2,
-      "squires-mount": 3,
-      "swift-fox": 4,
-      "woodpecker-sapper": 4
-     },
-     "parts": [
-      [
-       "cone-cutter-squirrel",
-       3,
-       3
-      ],
-      [
-       "cone-cutter-squirrel",
-       1,
-       4
-      ],
-      [
-       "grave-grin-hyena",
-       3,
-       3
-      ],
-      [
-       "pinecone-sapper",
-       1,
-       3
-      ],
-      [
-       "pinecone-sapper",
-       1,
-       4
-      ],
-      [
-       "squires-mount",
-       3,
-       3
-      ],
-      [
-       "swift-fox",
-       3,
-       3
-      ],
-      [
-       "swift-fox",
-       1,
-       4
-      ],
-      [
-       "woodpecker-sapper",
-       3,
-       3
-      ],
-      [
-       "woodpecker-sapper",
-       1,
-       4
-      ]
-     ],
-     "leader": "old-snapjaw",
-     "from": "16-PRO-3",
-     "selectWin": 38.1
+     "from": "sampled q=0.48",
+     "selectWin": 38.1,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (pinecone-sapper, squires-mount left the map-true pool after CONTENT10; old selectWin 38.1)"
     },
     {
      "rank": 7,
@@ -16216,18 +16236,85 @@
     {
      "rank": 9,
      "name": {
-      "lead": "grave-grin-hyena",
+      "lead": "bramble-hoglet",
+      "tactic": "school",
+      "n": 1
+     },
+     "title": "Bramble Hoglet School 1",
+     "counts": {
+      "bogfire-newt": 4,
+      "bramble-hoglet": 5,
+      "tunnel-ant": 3,
+      "swordfish-spearman": 3,
+      "driftwood-crab": 5
+     },
+     "parts": [
+      [
+       "bogfire-newt",
+       3,
+       3
+      ],
+      [
+       "bogfire-newt",
+       1,
+       4
+      ],
+      [
+       "bramble-hoglet",
+       4,
+       3
+      ],
+      [
+       "bramble-hoglet",
+       1,
+       4
+      ],
+      [
+       "tunnel-ant",
+       3,
+       3
+      ],
+      [
+       "swordfish-spearman",
+       2,
+       3
+      ],
+      [
+       "swordfish-spearman",
+       1,
+       4
+      ],
+      [
+       "driftwood-crab",
+       4,
+       3
+      ],
+      [
+       "driftwood-crab",
+       1,
+       4
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.78",
+     "selectWin": 59.5,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (squires-mount, wolf-pack-runner left the map-true pool after CONTENT10; old selectWin 57.1)"
+    },
+    {
+     "rank": 10,
+     "name": {
+      "lead": "woodpecker-sapper",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Grave-Grin Hyena Swarm",
+     "title": "Woodpecker Sapper Swarm 1",
      "counts": {
       "cone-cutter-squirrel": 4,
-      "grave-grin-hyena": 4,
-      "ibex-rockcaller": 2,
-      "squires-mount": 3,
+      "grave-grin-hyena": 3,
       "swift-fox": 4,
-      "wolf-pack-runner": 3
+      "woodpecker-sapper": 4,
+      "cave-centipede": 2,
+      "grotto-lobster": 3
      },
      "parts": [
       [
@@ -16242,21 +16329,6 @@
       ],
       [
        "grave-grin-hyena",
-       4,
-       3
-      ],
-      [
-       "ibex-rockcaller",
-       1,
-       3
-      ],
-      [
-       "ibex-rockcaller",
-       1,
-       4
-      ],
-      [
-       "squires-mount",
        3,
        3
       ],
@@ -16271,103 +16343,35 @@
        4
       ],
       [
-       "wolf-pack-runner",
-       2,
-       3
-      ],
-      [
-       "wolf-pack-runner",
-       1,
-       4
-      ]
-     ],
-     "leader": "old-snapjaw",
-     "from": "16-PRO-1",
-     "selectWin": 57.1
-    },
-    {
-     "rank": 10,
-     "name": {
-      "lead": "bombardier-beetle",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "Bombardier Beetle Swarm",
-     "counts": {
-      "fawn-scout": 3,
-      "bramblewood-lynx": 1,
-      "bombardier-beetle": 4,
-      "mountain-hare": 2,
-      "field-mouse": 2,
-      "ant-scout": 2,
-      "otter-kit": 3,
-      "pinecone-sapper": 3
-     },
-     "parts": [
-      [
-       "fawn-scout",
-       2,
-       3
-      ],
-      [
-       "fawn-scout",
-       1,
-       4
-      ],
-      [
-       "bramblewood-lynx",
-       1,
-       3
-      ],
-      [
-       "bombardier-beetle",
-       4,
-       3
-      ],
-      [
-       "mountain-hare",
-       1,
-       3
-      ],
-      [
-       "mountain-hare",
-       1,
-       4
-      ],
-      [
-       "field-mouse",
-       2,
-       3
-      ],
-      [
-       "ant-scout",
-       1,
-       3
-      ],
-      [
-       "ant-scout",
-       1,
-       4
-      ],
-      [
-       "otter-kit",
+       "woodpecker-sapper",
        3,
        3
       ],
       [
-       "pinecone-sapper",
+       "woodpecker-sapper",
+       1,
+       4
+      ],
+      [
+       "cave-centipede",
        2,
        3
       ],
       [
-       "pinecone-sapper",
+       "grotto-lobster",
+       2,
+       3
+      ],
+      [
+       "grotto-lobster",
        1,
        4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.78",
-     "selectWin": 64.3
+     "from": "rank 6 repaired (BAL18: pinecone-sapper -2 -> cave-centipede x2; squires-mount -3 -> grotto-lobster x3)",
+     "selectWin": 64.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (pinecone-sapper left the map-true pool after CONTENT10; old selectWin 64.3)"
     }
    ]
   },
@@ -16988,18 +16992,18 @@
     {
      "rank": 9,
      "name": {
-      "lead": "grave-grin-hyena",
-      "tactic": "warren",
+      "lead": "mountain-hare",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Grave-Grin Hyena Warren",
+     "title": "Mountain Hare Swarm 1",
      "counts": {
       "grave-grin-hyena": 4,
       "ibex-rockcaller": 2,
-      "mountain-hare": 4,
+      "mountain-hare": 5,
       "snow-ermine": 4,
-      "talus-pika": 4,
-      "walrus-icebreaker": 2
+      "walrus-icebreaker": 2,
+      "ant-scout": 3
      },
      "parts": [
       [
@@ -17024,7 +17028,7 @@
       ],
       [
        "mountain-hare",
-       2,
+       3,
        3
       ],
       [
@@ -17043,111 +17047,113 @@
        4
       ],
       [
-       "talus-pika",
-       3,
+       "walrus-icebreaker",
+       1,
        3
       ],
       [
-       "talus-pika",
+       "walrus-icebreaker",
        1,
        4
       ],
       [
-       "walrus-icebreaker",
-       1,
+       "ant-scout",
+       2,
        3
       ],
       [
-       "walrus-icebreaker",
+       "ant-scout",
        1,
        4
       ]
      ],
      "leader": "wolfsbane-alpha",
-     "from": "17-PRO-3",
-     "selectWin": 62.5
+     "from": "rank 9 repaired (BAL18: talus-pika -4 -> mountain-hare x1 + ant-scout x3)",
+     "selectWin": 60.4,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (talus-pika left the map-true pool after CONTENT10; old selectWin 70.8)"
     },
     {
      "rank": 10,
      "name": {
-      "lead": "woodland-caribou",
+      "lead": "snow-bunting-archer",
       "tactic": "warren",
       "n": 1
      },
-     "title": "Woodland Caribou Warren",
+     "title": "Snow Bunting Archer Warren 1",
      "counts": {
+      "alpine-marmot": 4,
+      "blue-ringed-octopus": 2,
       "cone-cutter-squirrel": 4,
-      "cunning-vixen": 3,
-      "talus-pika": 4,
-      "walrus-icebreaker": 2,
-      "wolf-spider-mother": 3,
-      "woodland-caribou": 4
+      "grave-grin-hyena": 4,
+      "ibex-rockcaller": 2,
+      "snow-bunting-archer": 4
      },
      "parts": [
       [
-       "cone-cutter-squirrel",
+       "alpine-marmot",
        3,
        3
       ],
       [
+       "alpine-marmot",
+       1,
+       4
+      ],
+      [
+       "blue-ringed-octopus",
+       1,
+       3
+      ],
+      [
+       "blue-ringed-octopus",
+       1,
+       4
+      ],
+      [
        "cone-cutter-squirrel",
-       1,
-       4
-      ],
-      [
-       "cunning-vixen",
-       1,
-       3
-      ],
-      [
-       "cunning-vixen",
-       2,
-       4
-      ],
-      [
-       "talus-pika",
-       3,
-       3
-      ],
-      [
-       "talus-pika",
-       1,
-       4
-      ],
-      [
-       "walrus-icebreaker",
-       1,
-       3
-      ],
-      [
-       "walrus-icebreaker",
-       1,
-       4
-      ],
-      [
-       "wolf-spider-mother",
        2,
        3
       ],
       [
-       "wolf-spider-mother",
-       1,
+       "cone-cutter-squirrel",
+       2,
        4
       ],
       [
-       "woodland-caribou",
+       "grave-grin-hyena",
        3,
        3
       ],
       [
-       "woodland-caribou",
+       "grave-grin-hyena",
+       1,
+       4
+      ],
+      [
+       "ibex-rockcaller",
+       1,
+       3
+      ],
+      [
+       "ibex-rockcaller",
+       1,
+       4
+      ],
+      [
+       "snow-bunting-archer",
+       3,
+       3
+      ],
+      [
+       "snow-bunting-archer",
        1,
        4
       ]
      ],
      "leader": "wolfsbane-alpha",
-     "from": "17-PRO-1",
-     "selectWin": 70.8
+     "from": "17-PRO-2",
+     "selectWin": 64.6,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (talus-pika left the map-true pool after CONTENT10; old selectWin 62.5)"
     }
    ]
   },
@@ -17360,70 +17366,65 @@
     {
      "rank": 4,
      "name": {
-      "lead": "cricket-drummer",
-      "tactic": "swarm",
+      "lead": "great-crested-grebe",
+      "tactic": "flock",
       "n": 1
      },
-     "title": "Cricket Drummer Swarm",
+     "title": "Great Crested Grebe Flock 1",
      "counts": {
-      "warhorse-charger": 2,
-      "feral-tomcat": 4,
-      "box-turtle": 3,
-      "camouflage-frog": 2,
-      "dormouse": 3,
-      "cricket-drummer": 4,
-      "golden-eagle-diver": 2
+      "diving-bell-spider": 4,
+      "monitor-rambler": 4,
+      "red-backed-salamander": 1,
+      "swamp-rabbit": 2,
+      "great-crested-grebe": 5,
+      "sparrow-chick": 4
      },
      "parts": [
       [
-       "warhorse-charger",
-       2,
-       4
-      ],
-      [
-       "feral-tomcat",
+       "diving-bell-spider",
        4,
        4
       ],
       [
-       "box-turtle",
-       2,
-       4
-      ],
-      [
-       "box-turtle",
-       1,
-       5
-      ],
-      [
-       "camouflage-frog",
-       2,
-       4
-      ],
-      [
-       "dormouse",
+       "monitor-rambler",
        3,
        4
       ],
       [
-       "cricket-drummer",
-       4,
-       4
+       "monitor-rambler",
+       1,
+       5
       ],
       [
-       "golden-eagle-diver",
+       "red-backed-salamander",
        1,
        4
       ],
       [
-       "golden-eagle-diver",
+       "swamp-rabbit",
+       2,
+       4
+      ],
+      [
+       "great-crested-grebe",
+       5,
+       4
+      ],
+      [
+       "sparrow-chick",
+       3,
+       4
+      ],
+      [
+       "sparrow-chick",
        1,
        5
       ]
      ],
      "leader": "wolfsbane-alpha",
-     "from": "sampled q=0.74",
-     "selectWin": 25
+     "from": "sampled q=0.13",
+     "selectWin": 25,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 4 (warhorse-charger left the map-true pool after CONTENT10; old selectWin 25)"
     },
     {
      "rank": 5,
@@ -17502,70 +17503,71 @@
     {
      "rank": 6,
      "name": {
-      "lead": "baby-horned-capybara",
+      "lead": "jay-pilferer",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Baby Horned Capybara Swarm",
+     "title": "Jay Pilferer Swarm 1",
      "counts": {
-      "old-sturgeon": 2,
-      "chipmunk-forager": 3,
-      "mosswing-laborer": 4,
-      "shallows-fry": 3,
-      "gorge-wyrm": 1,
-      "razorbill": 3,
-      "baby-horned-capybara": 4
+      "fungus-gnat-cloud": 4,
+      "guano-beetle": 3,
+      "granite-ox-golem": 3,
+      "garden-snail": 3,
+      "jay-pilferer": 4,
+      "diving-bell-spider": 2,
+      "muntjac-barker": 1
      },
      "parts": [
       [
-       "old-sturgeon",
+       "fungus-gnat-cloud",
+       4,
+       4
+      ],
+      [
+       "guano-beetle",
        2,
        4
       ],
       [
-       "chipmunk-forager",
-       3,
-       4
-      ],
-      [
-       "mosswing-laborer",
-       3,
-       4
-      ],
-      [
-       "mosswing-laborer",
+       "guano-beetle",
        1,
        5
       ],
       [
-       "shallows-fry",
+       "granite-ox-golem",
        3,
        4
       ],
       [
-       "gorge-wyrm",
+       "garden-snail",
+       3,
+       4
+      ],
+      [
+       "jay-pilferer",
+       4,
+       4
+      ],
+      [
+       "diving-bell-spider",
        1,
        4
       ],
       [
-       "razorbill",
-       3,
-       4
-      ],
-      [
-       "baby-horned-capybara",
-       3,
-       4
-      ],
-      [
-       "baby-horned-capybara",
+       "diving-bell-spider",
        1,
        5
+      ],
+      [
+       "muntjac-barker",
+       1,
+       4
       ]
      ],
      "leader": "wolfsbane-alpha",
-     "from": "sampled q=0.43",
-     "selectWin": 45.8
+     "from": "sampled q=0.22",
+     "selectWin": 45.8,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (gorge-wyrm left the map-true pool after CONTENT10; old selectWin 45.8)"
     },
     {
      "rank": 7,
@@ -18168,177 +18170,196 @@
     {
      "rank": 5,
      "name": {
-      "lead": "swift-fox",
-      "tactic": "pack",
+      "lead": "raft-spider",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Swift Fox Pack",
+     "title": "Raft Spider Swarm 1",
      "counts": {
-      "fennec-fox": 3,
-      "old-sturgeon": 4,
-      "springbok-pronker": 2,
-      "grizzly-vanguard": 4,
-      "swift-fox": 5,
-      "snapper-hatchling": 2
+      "sea-cucumber": 1,
+      "lions-mane-jelly": 3,
+      "sergeant-bramblefox": 3,
+      "chipmunk-forager": 2,
+      "leopard-slug": 2,
+      "raft-spider": 4,
+      "ladybird-guard": 3,
+      "margay": 2
      },
      "parts": [
       [
-       "fennec-fox",
-       1,
-       3
-      ],
-      [
-       "fennec-fox",
-       2,
-       4
-      ],
-      [
-       "old-sturgeon",
-       2,
-       3
-      ],
-      [
-       "old-sturgeon",
-       2,
-       4
-      ],
-      [
-       "springbok-pronker",
-       1,
-       3
-      ],
-      [
-       "springbok-pronker",
+       "sea-cucumber",
        1,
        4
       ],
       [
-       "grizzly-vanguard",
+       "lions-mane-jelly",
        2,
        3
       ],
       [
-       "grizzly-vanguard",
-       2,
+       "lions-mane-jelly",
+       1,
        4
       ],
       [
-       "swift-fox",
-       2,
-       3
-      ],
-      [
-       "swift-fox",
-       3,
-       4
-      ],
-      [
-       "snapper-hatchling",
+       "sergeant-bramblefox",
        1,
        3
       ],
       [
-       "snapper-hatchling",
+       "sergeant-bramblefox",
+       2,
+       4
+      ],
+      [
+       "chipmunk-forager",
+       1,
+       3
+      ],
+      [
+       "chipmunk-forager",
+       1,
+       4
+      ],
+      [
+       "leopard-slug",
+       1,
+       3
+      ],
+      [
+       "leopard-slug",
+       1,
+       4
+      ],
+      [
+       "raft-spider",
+       2,
+       3
+      ],
+      [
+       "raft-spider",
+       2,
+       4
+      ],
+      [
+       "ladybird-guard",
+       1,
+       3
+      ],
+      [
+       "ladybird-guard",
+       2,
+       4
+      ],
+      [
+       "margay",
+       1,
+       3
+      ],
+      [
+       "margay",
        1,
        4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.30",
-     "selectWin": 47.6
+     "from": "sampled q=0.17",
+     "selectWin": 50,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 5 (snapper-hatchling left the map-true pool after CONTENT10; old selectWin 47.6)"
     },
     {
      "rank": 6,
      "name": {
-      "lead": "pelican-diver",
+      "lead": "hoopoe-herald",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Pelican Diver Swarm",
+     "title": "Hoopoe Herald Swarm 1",
      "counts": {
-      "driftwood-crab": 3,
-      "obsidian-scorpion": 2,
-      "honey-bee": 3,
-      "lyrebird-mimic": 3,
-      "bombardier-beetle": 2,
-      "pelican-diver": 4,
-      "spitting-spider": 3
+      "hoopoe-herald": 5,
+      "terrier-pup": 4,
+      "driftwood-crab": 2,
+      "archerfish": 3,
+      "pangolin-roller": 2,
+      "dust-devil-kestrel": 2,
+      "antlion-pit": 2
      },
      "parts": [
       [
+       "hoopoe-herald",
+       2,
+       3
+      ],
+      [
+       "hoopoe-herald",
+       3,
+       4
+      ],
+      [
+       "terrier-pup",
+       2,
+       3
+      ],
+      [
+       "terrier-pup",
+       2,
+       4
+      ],
+      [
        "driftwood-crab",
        1,
        3
       ],
       [
        "driftwood-crab",
-       2,
-       4
-      ],
-      [
-       "obsidian-scorpion",
-       1,
-       3
-      ],
-      [
-       "obsidian-scorpion",
        1,
        4
       ],
       [
-       "honey-bee",
-       2,
-       3
-      ],
-      [
-       "honey-bee",
-       1,
-       4
-      ],
-      [
-       "lyrebird-mimic",
+       "archerfish",
        1,
        3
       ],
       [
-       "lyrebird-mimic",
+       "archerfish",
        2,
        4
       ],
       [
-       "bombardier-beetle",
+       "pangolin-roller",
        1,
        3
       ],
       [
-       "bombardier-beetle",
+       "pangolin-roller",
        1,
        4
       ],
       [
-       "pelican-diver",
-       2,
-       3
-      ],
-      [
-       "pelican-diver",
-       2,
-       4
-      ],
-      [
-       "spitting-spider",
+       "dust-devil-kestrel",
        1,
        3
       ],
       [
-       "spitting-spider",
-       2,
+       "dust-devil-kestrel",
+       1,
+       4
+      ],
+      [
+       "antlion-pit",
+       1,
+       3
+      ],
+      [
+       "antlion-pit",
+       1,
        4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.78",
-     "selectWin": 50
+     "from": "sampled q=1.00",
+     "selectWin": 50,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (obsidian-scorpion left the map-true pool after CONTENT10; old selectWin 50)"
     },
     {
      "rank": 7,
@@ -18485,101 +18506,85 @@
     {
      "rank": 9,
      "name": {
-      "lead": "stalactite-golem",
-      "tactic": "wall",
+      "lead": "antlion-pit",
+      "tactic": "flock",
       "n": 1
      },
-     "title": "Stalactite Pill Bug Wall",
+     "title": "Antlion Pit Flock 1",
      "counts": {
-      "chipmunk-cavalry": 2,
-      "platypus-spur": 2,
-      "dromedary": 1,
-      "quarry-mole": 2,
-      "meerkat-burrower": 3,
-      "cane-toad": 3,
-      "stalactite-golem": 5,
-      "constrictor-coil": 2
+      "alpine-swift": 4,
+      "antlion-pit": 4,
+      "eagle-owl-quartermaster": 3,
+      "roadrunner-courier": 4,
+      "stoat-cutthroat": 3,
+      "thorny-devil": 2
      },
      "parts": [
       [
-       "chipmunk-cavalry",
-       1,
-       3
-      ],
-      [
-       "chipmunk-cavalry",
-       1,
-       4
-      ],
-      [
-       "platypus-spur",
-       1,
-       3
-      ],
-      [
-       "platypus-spur",
-       1,
-       4
-      ],
-      [
-       "dromedary",
-       1,
-       4
-      ],
-      [
-       "quarry-mole",
-       1,
-       3
-      ],
-      [
-       "quarry-mole",
-       1,
-       4
-      ],
-      [
-       "meerkat-burrower",
+       "alpine-swift",
        2,
        3
       ],
       [
-       "meerkat-burrower",
-       1,
-       4
-      ],
-      [
-       "cane-toad",
-       1,
-       3
-      ],
-      [
-       "cane-toad",
+       "alpine-swift",
        2,
        4
       ],
       [
-       "stalactite-golem",
+       "antlion-pit",
        2,
        3
       ],
       [
-       "stalactite-golem",
-       3,
+       "antlion-pit",
+       2,
        4
       ],
       [
-       "constrictor-coil",
+       "eagle-owl-quartermaster",
        1,
        3
       ],
       [
-       "constrictor-coil",
+       "eagle-owl-quartermaster",
+       2,
+       4
+      ],
+      [
+       "roadrunner-courier",
+       2,
+       3
+      ],
+      [
+       "roadrunner-courier",
+       2,
+       4
+      ],
+      [
+       "stoat-cutthroat",
+       1,
+       3
+      ],
+      [
+       "stoat-cutthroat",
+       2,
+       4
+      ],
+      [
+       "thorny-devil",
+       1,
+       3
+      ],
+      [
+       "thorny-devil",
        1,
        4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.39",
-     "selectWin": 85.7
+     "from": "18-PRO-3",
+     "selectWin": 85.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (dromedary left the map-true pool after CONTENT10; old selectWin 85.7)"
     },
     {
      "rank": 10,
@@ -19023,173 +19028,177 @@
     {
      "rank": 5,
      "name": {
-      "lead": "crimson-wing-recruit",
-      "tactic": "swarm",
+      "lead": "sparrow-chick",
+      "tactic": "wall",
       "n": 1
      },
-     "title": "Crimson Recruit Swarm",
+     "title": "Sparrow Chick Wall 1",
      "counts": {
-      "chipmunk-skirmisher": 2,
-      "cricket-drummer": 2,
-      "pinecone-sapper": 2,
-      "nutria-reedcutter": 2,
-      "crimson-wing-recruit": 5,
-      "bogfire-newt": 3,
-      "alpine-salamander": 2,
-      "beaver-lumberjack": 2
+      "fox-sharpshot": 1,
+      "skunk-gasser": 1,
+      "quill-thorn-boar": 2,
+      "whale-shark": 3,
+      "sparrow-chick": 5,
+      "anaconda-coil": 3,
+      "amber-cicada": 4,
+      "diving-bell-spider": 1
      },
      "parts": [
       [
-       "chipmunk-skirmisher",
+       "fox-sharpshot",
+       1,
+       4
+      ],
+      [
+       "skunk-gasser",
        1,
        3
       ],
       [
-       "chipmunk-skirmisher",
-       1,
-       4
-      ],
-      [
-       "cricket-drummer",
+       "quill-thorn-boar",
        2,
        4
       ],
       [
-       "pinecone-sapper",
+       "whale-shark",
        1,
        3
       ],
       [
-       "pinecone-sapper",
+       "whale-shark",
+       2,
+       4
+      ],
+      [
+       "sparrow-chick",
        1,
-       4
-      ],
-      [
-       "nutria-reedcutter",
-       2,
-       4
-      ],
-      [
-       "crimson-wing-recruit",
-       2,
        3
       ],
       [
-       "crimson-wing-recruit",
+       "sparrow-chick",
+       4,
+       4
+      ],
+      [
+       "anaconda-coil",
+       1,
+       3
+      ],
+      [
+       "anaconda-coil",
+       2,
+       4
+      ],
+      [
+       "amber-cicada",
+       1,
+       3
+      ],
+      [
+       "amber-cicada",
        3,
        4
       ],
       [
-       "bogfire-newt",
-       3,
-       4
-      ],
-      [
-       "alpine-salamander",
+       "diving-bell-spider",
        1,
        3
-      ],
-      [
-       "alpine-salamander",
-       1,
-       4
-      ],
-      [
-       "beaver-lumberjack",
-       1,
-       3
-      ],
-      [
-       "beaver-lumberjack",
-       1,
-       4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.78",
-     "selectWin": 29.6
+     "from": "sampled q=0.13",
+     "selectWin": 29.6,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 5 (pinecone-sapper left the map-true pool after CONTENT10; old selectWin 29.6)"
     },
     {
      "rank": 6,
      "name": {
-      "lead": "dust-hyena",
+      "lead": "fennec-fox",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Dust Hyena Swarm",
+     "title": "Fennec Fox Swarm 1",
      "counts": {
-      "antlion-pit": 3,
-      "dust-hyena": 4,
-      "ibex-rockcaller": 2,
-      "roadrunner-courier": 4,
-      "sandfish": 4,
-      "squires-mount": 3
+      "jay-pilferer": 4,
+      "fennec-fox": 4,
+      "musk-ox-calf": 2,
+      "tarantula-hawk": 1,
+      "coffer-mimic": 2,
+      "giant-clam": 1,
+      "meerkat-burrower": 2,
+      "baby-bat": 4
      },
      "parts": [
       [
-       "antlion-pit",
+       "jay-pilferer",
        1,
        3
       ],
       [
-       "antlion-pit",
+       "jay-pilferer",
+       3,
+       4
+      ],
+      [
+       "fennec-fox",
+       1,
+       3
+      ],
+      [
+       "fennec-fox",
+       3,
+       4
+      ],
+      [
+       "musk-ox-calf",
+       1,
+       3
+      ],
+      [
+       "musk-ox-calf",
+       1,
+       4
+      ],
+      [
+       "tarantula-hawk",
+       1,
+       4
+      ],
+      [
+       "coffer-mimic",
+       1,
+       3
+      ],
+      [
+       "coffer-mimic",
+       1,
+       4
+      ],
+      [
+       "giant-clam",
+       1,
+       4
+      ],
+      [
+       "meerkat-burrower",
        2,
        4
       ],
       [
-       "dust-hyena",
-       1,
+       "baby-bat",
+       2,
        3
       ],
       [
-       "dust-hyena",
-       3,
-       4
-      ],
-      [
-       "ibex-rockcaller",
-       1,
-       3
-      ],
-      [
-       "ibex-rockcaller",
-       1,
-       4
-      ],
-      [
-       "roadrunner-courier",
-       1,
-       3
-      ],
-      [
-       "roadrunner-courier",
-       3,
-       4
-      ],
-      [
-       "sandfish",
-       1,
-       3
-      ],
-      [
-       "sandfish",
-       3,
-       4
-      ],
-      [
-       "squires-mount",
-       1,
-       3
-      ],
-      [
-       "squires-mount",
+       "baby-bat",
        2,
        4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "18-A-PRO-2",
-     "selectWin": 35.2
+     "from": "sampled q=0.26",
+     "selectWin": 35.2,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (squires-mount left the map-true pool after CONTENT10; old selectWin 35.2)"
     },
     {
      "rank": 7,
@@ -19277,79 +19286,74 @@
     {
      "rank": 8,
      "name": {
-      "lead": "box-turtle",
-      "tactic": "brood",
+      "lead": "burrow-rabbit",
+      "tactic": "warren",
       "n": 1
      },
-     "title": "Box Turtle Brood",
+     "title": "Burrow Rabbit Warren 1",
      "counts": {
-      "box-turtle": 5,
-      "burrow-rabbit": 4,
-      "newt-doctor": 4,
-      "wolf-pack-runner": 2,
-      "gatling-hog": 2,
-      "giant-cave-huntsman": 3
+      "muskrat-reedgatherer": 5,
+      "trapdoor-spider": 2,
+      "dust-hyena": 4,
+      "burrow-rabbit": 5,
+      "sunbittern-strider": 4
      },
      "parts": [
       [
-       "box-turtle",
+       "muskrat-reedgatherer",
        1,
        3
       ],
       [
-       "box-turtle",
+       "muskrat-reedgatherer",
        4,
        4
       ],
       [
-       "burrow-rabbit",
-       2,
-       3
-      ],
-      [
-       "burrow-rabbit",
-       2,
-       4
-      ],
-      [
-       "newt-doctor",
+       "trapdoor-spider",
        1,
        3
       ],
       [
-       "newt-doctor",
+       "trapdoor-spider",
+       1,
+       4
+      ],
+      [
+       "dust-hyena",
+       1,
+       3
+      ],
+      [
+       "dust-hyena",
        3,
        4
       ],
       [
-       "wolf-pack-runner",
+       "burrow-rabbit",
+       1,
+       3
+      ],
+      [
+       "burrow-rabbit",
+       4,
+       4
+      ],
+      [
+       "sunbittern-strider",
        2,
-       4
-      ],
-      [
-       "gatling-hog",
-       1,
        3
       ],
       [
-       "gatling-hog",
-       1,
-       4
-      ],
-      [
-       "giant-cave-huntsman",
-       1,
-       3
-      ],
-      [
-       "giant-cave-huntsman",
+       "sunbittern-strider",
        2,
        4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=1.00",
-     "selectWin": 53.7
+     "from": "sampled q=0.96",
+     "selectWin": 53.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 8 (wolf-pack-runner, gatling-hog left the map-true pool after CONTENT10; old selectWin 53.7)"
     },
     {
      "rank": 9,
@@ -19779,68 +19783,69 @@
     {
      "rank": 4,
      "name": {
-      "lead": "chipmunk-hoarder",
-      "tactic": "warren",
+      "lead": "swamp-alligator",
+      "tactic": "flock",
       "n": 1
      },
-     "title": "Chipmunk Hoarder Warren",
+     "title": "Swamp Alligator Flock 1",
      "counts": {
-      "meadow-rabbit": 5,
-      "chipmunk-hoarder": 5,
-      "tunnel-ant": 3,
-      "otter-paddler": 3,
-      "pinecone-sapper": 4
+      "marula-elephant": 4,
+      "pigeon-peon": 5,
+      "peak-condor": 5,
+      "dolphin-knight": 1,
+      "swamp-alligator": 5
      },
      "parts": [
       [
-       "meadow-rabbit",
+       "marula-elephant",
        1,
        3
       ],
       [
-       "meadow-rabbit",
+       "marula-elephant",
+       3,
+       4
+      ],
+      [
+       "pigeon-peon",
+       2,
+       3
+      ],
+      [
+       "pigeon-peon",
+       3,
+       4
+      ],
+      [
+       "peak-condor",
+       1,
+       3
+      ],
+      [
+       "peak-condor",
        4,
        4
       ],
       [
-       "chipmunk-hoarder",
-       2,
-       3
-      ],
-      [
-       "chipmunk-hoarder",
-       3,
-       4
-      ],
-      [
-       "tunnel-ant",
+       "dolphin-knight",
        1,
-       3
-      ],
-      [
-       "tunnel-ant",
-       2,
        4
       ],
       [
-       "otter-paddler",
+       "swamp-alligator",
+       2,
+       3
+      ],
+      [
+       "swamp-alligator",
        3,
-       4
-      ],
-      [
-       "pinecone-sapper",
-       2,
-       3
-      ],
-      [
-       "pinecone-sapper",
-       2,
        4
       ]
      ],
      "leader": "yeti-chieftain",
-     "from": "sampled q=0.83",
-     "selectWin": 33.3
+     "from": "sampled q=0.39",
+     "selectWin": 33.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 4 (pinecone-sapper left the map-true pool after CONTENT10; old selectWin 33.3)"
     },
     {
      "rank": 5,
@@ -19933,84 +19938,75 @@
     {
      "rank": 6,
      "name": {
-      "lead": "weaver-bird",
-      "tactic": "swarm",
+      "lead": "guano-beetle",
+      "tactic": "hive",
       "n": 1
      },
-     "title": "Weaver Bird Swarm",
+     "title": "Guano Beetle Hive 1",
      "counts": {
-      "alley-cat": 4,
-      "coral-polyp-colony": 3,
-      "adder-ambusher": 3,
-      "weaver-bird": 5,
-      "pond-trout": 3,
-      "hoopoe-herald": 2
+      "electric-catfish": 3,
+      "musk-ox-calf": 2,
+      "pine-marten": 3,
+      "guano-beetle": 5,
+      "plague-gnat-cloud": 3,
+      "lotus-frog": 4
      },
      "parts": [
       [
-       "alley-cat",
+       "electric-catfish",
        1,
        3
       ],
       [
-       "alley-cat",
+       "electric-catfish",
+       2,
+       4
+      ],
+      [
+       "musk-ox-calf",
+       2,
+       4
+      ],
+      [
+       "pine-marten",
+       1,
+       3
+      ],
+      [
+       "pine-marten",
+       2,
+       4
+      ],
+      [
+       "guano-beetle",
+       2,
+       3
+      ],
+      [
+       "guano-beetle",
        3,
        4
       ],
       [
-       "coral-polyp-colony",
-       1,
-       3
+       "plague-gnat-cloud",
+       3,
+       4
       ],
       [
-       "coral-polyp-colony",
+       "lotus-frog",
        2,
-       4
-      ],
-      [
-       "adder-ambusher",
-       1,
        3
       ],
       [
-       "adder-ambusher",
+       "lotus-frog",
        2,
-       4
-      ],
-      [
-       "weaver-bird",
-       1,
-       3
-      ],
-      [
-       "weaver-bird",
-       4,
-       4
-      ],
-      [
-       "pond-trout",
-       1,
-       3
-      ],
-      [
-       "pond-trout",
-       2,
-       4
-      ],
-      [
-       "hoopoe-herald",
-       1,
-       3
-      ],
-      [
-       "hoopoe-herald",
-       1,
        4
       ]
      ],
      "leader": "yeti-chieftain",
-     "from": "sampled q=0.87",
-     "selectWin": 47.2
+     "from": "sampled q=0.04",
+     "selectWin": 50,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 6 (coral-polyp-colony left the map-true pool after CONTENT10; old selectWin 47.2)"
     },
     {
      "rank": 7,
@@ -20175,79 +20171,85 @@
     {
      "rank": 9,
      "name": {
-      "lead": "bombardier-beetle",
-      "tactic": "nest",
+      "lead": "apollo-butterfly",
+      "tactic": "hive",
       "n": 1
      },
-     "title": "Bombardier Beetle Nest",
+     "title": "Apollo Butterfly Hive 1",
      "counts": {
-      "mangrove-manatee": 3,
-      "spitting-spider": 4,
-      "pyrenean-desman": 4,
-      "bombardier-beetle": 4,
-      "glimmer-spider": 4,
-      "pinecone-sapper": 1
+      "apollo-butterfly": 4,
+      "cinder-stoker": 3,
+      "hercules-beetle": 3,
+      "lantern-spark-fly": 4,
+      "mountain-hare": 3,
+      "obsidian-scorpion": 3
      },
      "parts": [
       [
-       "mangrove-manatee",
+       "apollo-butterfly",
        1,
        3
       ],
       [
-       "mangrove-manatee",
+       "apollo-butterfly",
+       3,
+       4
+      ],
+      [
+       "cinder-stoker",
+       1,
+       3
+      ],
+      [
+       "cinder-stoker",
        2,
        4
       ],
       [
-       "spitting-spider",
+       "hercules-beetle",
        1,
        3
       ],
       [
-       "spitting-spider",
+       "hercules-beetle",
+       2,
+       4
+      ],
+      [
+       "lantern-spark-fly",
+       1,
+       3
+      ],
+      [
+       "lantern-spark-fly",
        3,
        4
       ],
       [
-       "pyrenean-desman",
+       "mountain-hare",
        1,
        3
       ],
       [
-       "pyrenean-desman",
-       3,
+       "mountain-hare",
+       2,
        4
       ],
       [
-       "bombardier-beetle",
+       "obsidian-scorpion",
        1,
        3
       ],
       [
-       "bombardier-beetle",
-       3,
+       "obsidian-scorpion",
+       2,
        4
-      ],
-      [
-       "glimmer-spider",
-       1,
-       3
-      ],
-      [
-       "glimmer-spider",
-       3,
-       4
-      ],
-      [
-       "pinecone-sapper",
-       1,
-       3
       ]
      ],
      "leader": "yeti-chieftain",
-     "from": "sampled q=0.78",
-     "selectWin": 72.2
+     "from": "19-PRO-3",
+     "selectWin": 72.2,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 9 (pinecone-sapper left the map-true pool after CONTENT10; old selectWin 72.2)"
     },
     {
      "rank": 10,
@@ -20680,101 +20682,91 @@
     {
      "rank": 5,
      "name": {
-      "lead": "alpine-marmot",
+      "lead": "meerkat-wayfarer",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Alpine Marmot Swarm",
+     "title": "Meerkat Wayfarer Swarm 1",
      "counts": {
-      "gale-swift": 2,
-      "archerfish": 1,
-      "caustic-scorpion": 4,
-      "alpine-marmot": 5,
-      "robin-redbreast": 2,
-      "crocodile-ambusher": 2,
-      "meadow-frog": 2,
-      "antlion-pit": 2
+      "taiga-lynx": 2,
+      "meerkat-wayfarer": 5,
+      "alpine-salamander": 2,
+      "spitting-cobra": 3,
+      "snowshoe-hare": 3,
+      "conch-herald": 2,
+      "bee-sentry": 3
      },
      "parts": [
       [
-       "gale-swift",
+       "taiga-lynx",
        1,
        4
       ],
       [
-       "gale-swift",
+       "taiga-lynx",
        1,
        5
       ],
       [
-       "archerfish",
-       1,
-       4
-      ],
-      [
-       "caustic-scorpion",
-       2,
-       4
-      ],
-      [
-       "caustic-scorpion",
-       2,
-       5
-      ],
-      [
-       "alpine-marmot",
+       "meerkat-wayfarer",
        3,
        4
       ],
       [
-       "alpine-marmot",
+       "meerkat-wayfarer",
        2,
        5
       ],
       [
-       "robin-redbreast",
+       "alpine-salamander",
        1,
        4
       ],
       [
-       "robin-redbreast",
+       "alpine-salamander",
        1,
        5
       ],
       [
-       "crocodile-ambusher",
-       1,
+       "spitting-cobra",
+       2,
        4
       ],
       [
-       "crocodile-ambusher",
+       "spitting-cobra",
        1,
        5
       ],
       [
-       "meadow-frog",
+       "snowshoe-hare",
        1,
        4
       ],
       [
-       "meadow-frog",
-       1,
+       "snowshoe-hare",
+       2,
        5
       ],
       [
-       "antlion-pit",
+       "conch-herald",
+       2,
+       4
+      ],
+      [
+       "bee-sentry",
        1,
        4
       ],
       [
-       "antlion-pit",
-       1,
+       "bee-sentry",
+       2,
        5
       ]
      ],
      "leader": "yeti-chieftain",
-     "from": "sampled q=0.74",
-     "selectWin": 40
+     "from": "sampled q=0.61",
+     "selectWin": 43.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 5 (gale-swift left the map-true pool after CONTENT10; old selectWin 40)"
     },
     {
      "rank": 6,
@@ -20856,6 +20848,84 @@
     {
      "rank": 7,
      "name": {
+      "lead": "fire-salamander",
+      "tactic": "brood",
+      "n": 1
+     },
+     "title": "Fire Salamander Brood 1",
+     "counts": {
+      "badger-berserker": 3,
+      "cinder-stoker": 4,
+      "fire-salamander": 4,
+      "grave-grin-hyena": 4,
+      "magma-salamander": 2,
+      "rimefire-salamander": 3
+     },
+     "parts": [
+      [
+       "badger-berserker",
+       2,
+       4
+      ],
+      [
+       "badger-berserker",
+       1,
+       5
+      ],
+      [
+       "cinder-stoker",
+       2,
+       4
+      ],
+      [
+       "cinder-stoker",
+       2,
+       5
+      ],
+      [
+       "fire-salamander",
+       2,
+       4
+      ],
+      [
+       "fire-salamander",
+       2,
+       5
+      ],
+      [
+       "grave-grin-hyena",
+       2,
+       4
+      ],
+      [
+       "grave-grin-hyena",
+       2,
+       5
+      ],
+      [
+       "magma-salamander",
+       2,
+       4
+      ],
+      [
+       "rimefire-salamander",
+       1,
+       4
+      ],
+      [
+       "rimefire-salamander",
+       2,
+       5
+      ]
+     ],
+     "leader": "yeti-chieftain",
+     "from": "19-A-PRO-1",
+     "selectWin": 55,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 8 (squires-mount left the map-true pool after CONTENT10; old selectWin 65)"
+    },
+    {
+     "rank": 8,
+     "name": {
       "lead": "gannet-nestweaver",
       "tactic": "camp",
       "n": 1
@@ -20923,88 +20993,6 @@
      "leader": "yeti-chieftain",
      "from": "sampled q=0.96",
      "selectWin": 56.7
-    },
-    {
-     "rank": 8,
-     "name": {
-      "lead": "grave-grin-hyena",
-      "tactic": "swarm",
-      "n": 1
-     },
-     "title": "Grave-Grin Hyena Swarm",
-     "counts": {
-      "ashbone-ghoul": 3,
-      "cinder-gecko": 4,
-      "fire-salamander": 3,
-      "grave-grin-hyena": 4,
-      "squires-mount": 3,
-      "stoat-cutthroat": 3
-     },
-     "parts": [
-      [
-       "ashbone-ghoul",
-       2,
-       4
-      ],
-      [
-       "ashbone-ghoul",
-       1,
-       5
-      ],
-      [
-       "cinder-gecko",
-       2,
-       4
-      ],
-      [
-       "cinder-gecko",
-       2,
-       5
-      ],
-      [
-       "fire-salamander",
-       2,
-       4
-      ],
-      [
-       "fire-salamander",
-       1,
-       5
-      ],
-      [
-       "grave-grin-hyena",
-       2,
-       4
-      ],
-      [
-       "grave-grin-hyena",
-       2,
-       5
-      ],
-      [
-       "squires-mount",
-       2,
-       4
-      ],
-      [
-       "squires-mount",
-       1,
-       5
-      ],
-      [
-       "stoat-cutthroat",
-       1,
-       4
-      ],
-      [
-       "stoat-cutthroat",
-       2,
-       5
-      ]
-     ],
-     "leader": "yeti-chieftain",
-     "from": "19-A-PRO-4",
-     "selectWin": 65
     },
     {
      "rank": 9,
@@ -21569,58 +21557,65 @@
     {
      "rank": 7,
      "name": {
-      "lead": "warhorse-charger",
-      "tactic": "hive",
+      "lead": "fire-salamander",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Warhorse Charger Hive",
+     "title": "Fire Salamander Swarm 1",
      "counts": {
-      "warhorse-charger": 5,
-      "razorbill": 4,
-      "glasswing-moth": 3,
-      "great-barracuda": 3,
-      "hawthorn-shieldbug": 5
+      "terrier-pup": 4,
+      "dung-beetle": 4,
+      "duck-paddler": 2,
+      "fire-salamander": 4,
+      "fawn-scout": 3,
+      "border-collie": 3
      },
      "parts": [
       [
-       "warhorse-charger",
-       5,
+       "terrier-pup",
+       4,
        4
       ],
       [
-       "razorbill",
+       "dung-beetle",
        1,
        3
       ],
       [
-       "razorbill",
+       "dung-beetle",
        3,
        4
       ],
       [
-       "glasswing-moth",
-       3,
-       4
-      ],
-      [
-       "great-barracuda",
-       1,
-       3
-      ],
-      [
-       "great-barracuda",
+       "duck-paddler",
        2,
        4
       ],
       [
-       "hawthorn-shieldbug",
-       5,
+       "fire-salamander",
+       4,
+       4
+      ],
+      [
+       "fawn-scout",
+       1,
+       3
+      ],
+      [
+       "fawn-scout",
+       2,
+       4
+      ],
+      [
+       "border-collie",
+       3,
        4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=0.35",
-     "selectWin": 41.7
+     "from": "sampled q=0.74",
+     "selectWin": 41.7,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 7 (warhorse-charger left the map-true pool after CONTENT10; old selectWin 41.7)"
     },
     {
      "rank": 8,
@@ -21743,76 +21738,65 @@
     {
      "rank": 10,
      "name": {
-      "lead": "snow-bunting-archer",
-      "tactic": "flock",
+      "lead": "alpine-marmot",
+      "tactic": "swarm",
       "n": 1
      },
-     "title": "Snow Bunting Archer Flock",
+     "title": "Alpine Marmot Swarm 1",
      "counts": {
-      "snow-bunting-archer": 4,
-      "raven-scout": 3,
-      "muskrat-reedgatherer": 1,
-      "pelican-diver": 2,
-      "glass-golem": 3,
-      "obsidian-scorpion": 3,
-      "ossuary-lammergeier": 1,
-      "talus-pika": 3
+      "alpine-marmot": 4,
+      "ash-cloud-condor": 3,
+      "blue-ringed-octopus": 3,
+      "chamois-leaper": 3,
+      "cinder-stoker": 4,
+      "wolf-spider-mother": 3
      },
      "parts": [
       [
-       "snow-bunting-archer",
+       "alpine-marmot",
        4,
        4
       ],
       [
-       "raven-scout",
+       "ash-cloud-condor",
        1,
        3
       ],
       [
-       "raven-scout",
+       "ash-cloud-condor",
        2,
        4
       ],
       [
-       "muskrat-reedgatherer",
-       1,
-       4
-      ],
-      [
-       "pelican-diver",
-       2,
-       4
-      ],
-      [
-       "glass-golem",
+       "blue-ringed-octopus",
        3,
        4
       ],
       [
-       "obsidian-scorpion",
+       "chamois-leaper",
+       3,
+       4
+      ],
+      [
+       "cinder-stoker",
        1,
        3
       ],
       [
-       "obsidian-scorpion",
-       2,
+       "cinder-stoker",
+       3,
        4
       ],
       [
-       "ossuary-lammergeier",
-       1,
-       4
-      ],
-      [
-       "talus-pika",
+       "wolf-spider-mother",
        3,
        4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "sampled q=1.00",
-     "selectWin": 60
+     "from": "20-PRO-2",
+     "selectWin": 63.3,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (glass-golem left the map-true pool after CONTENT10; old selectWin 60)"
     }
    ]
   },
@@ -22220,126 +22204,122 @@
     {
      "rank": 7,
      "name": {
-      "lead": "grave-grin-hyena",
+      "lead": "lovebird",
       "tactic": "swarm",
       "n": 1
      },
-     "title": "Grave-Grin Hyena Swarm",
+     "title": "Lovebird Swarm 1",
      "counts": {
-      "ancient-sloth-titan": 4,
-      "ashbone-ghoul": 3,
-      "eagle-owl-quartermaster": 3,
-      "grave-grin-hyena": 4,
-      "obsidian-scorpion": 3,
-      "squires-mount": 3
+      "baby-horned-capybara": 3,
+      "old-sturgeon": 3,
+      "lovebird": 5,
+      "lionfish": 4,
+      "clover-butterfly": 5
      },
      "parts": [
       [
-       "ancient-sloth-titan",
-       4,
-       4
-      ],
-      [
-       "ashbone-ghoul",
-       1,
-       3
-      ],
-      [
-       "ashbone-ghoul",
-       2,
-       4
-      ],
-      [
-       "eagle-owl-quartermaster",
+       "baby-horned-capybara",
        3,
        4
       ],
       [
-       "grave-grin-hyena",
-       4,
-       4
-      ],
-      [
-       "obsidian-scorpion",
+       "old-sturgeon",
        1,
        3
       ],
       [
-       "obsidian-scorpion",
+       "old-sturgeon",
        2,
        4
       ],
       [
-       "squires-mount",
-       3,
-       4
-      ]
-     ],
-     "leader": "old-snapjaw",
-     "from": "20-A-PRO-1",
-     "selectWin": 42.9
-    },
-    {
-     "rank": 8,
-     "name": {
-      "lead": "clownfish-scout",
-      "tactic": "flock",
-      "n": 1
-     },
-     "title": "Clownfish Scout Flock",
-     "counts": {
-      "coral-polyp-colony": 4,
-      "cobalt-talon-fledgling": 5,
-      "ossuary-lammergeier": 1,
-      "clownfish-scout": 5,
-      "bramblewood-lynx": 3,
-      "owl-nightwatch": 2
-     },
-     "parts": [
-      [
-       "coral-polyp-colony",
-       4,
-       4
-      ],
-      [
-       "cobalt-talon-fledgling",
-       1,
-       3
-      ],
-      [
-       "cobalt-talon-fledgling",
-       4,
-       4
-      ],
-      [
-       "ossuary-lammergeier",
-       1,
-       4
-      ],
-      [
-       "clownfish-scout",
+       "lovebird",
        5,
        4
       ],
       [
-       "bramblewood-lynx",
+       "lionfish",
        1,
        3
       ],
       [
-       "bramblewood-lynx",
+       "lionfish",
+       3,
+       4
+      ],
+      [
+       "clover-butterfly",
+       5,
+       4
+      ]
+     ],
+     "leader": "old-snapjaw",
+     "from": "sampled q=0.17",
+     "selectWin": 42.9,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 7 (squires-mount left the map-true pool after CONTENT10; old selectWin 42.9)"
+    },
+    {
+     "rank": 8,
+     "name": {
+      "lead": "swift-fox",
+      "tactic": "swarm",
+      "n": 1
+     },
+     "title": "Swift Fox Swarm 1",
+     "counts": {
+      "skull-vulture": 3,
+      "cone-cutter-squirrel": 4,
+      "swift-fox": 5,
+      "cypress-root-lurker": 3,
+      "wolf-spider-mother": 3,
+      "bramblewood-lynx": 2
+     },
+     "parts": [
+      [
+       "skull-vulture",
+       3,
+       4
+      ],
+      [
+       "cone-cutter-squirrel",
+       1,
+       3
+      ],
+      [
+       "cone-cutter-squirrel",
+       3,
+       4
+      ],
+      [
+       "swift-fox",
+       5,
+       4
+      ],
+      [
+       "cypress-root-lurker",
+       1,
+       3
+      ],
+      [
+       "cypress-root-lurker",
        2,
        4
       ],
       [
-       "owl-nightwatch",
+       "wolf-spider-mother",
+       3,
+       4
+      ],
+      [
+       "bramblewood-lynx",
        2,
        4
       ]
      ],
      "leader": "old-snapjaw",
      "from": "sampled q=0.74",
-     "selectWin": 47.6
+     "selectWin": 45.2,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 8 (coral-polyp-colony left the map-true pool after CONTENT10; old selectWin 47.6)"
     },
     {
      "rank": 9,
@@ -22406,64 +22386,60 @@
     {
      "rank": 10,
      "name": {
-      "lead": "ashbone-ghoul",
-      "tactic": "swarm",
+      "lead": "clownfish-scout",
+      "tactic": "flock",
       "n": 1
      },
-     "title": "Ashbone Ghoul Swarm",
+     "title": "Clownfish Scout Flock 1",
      "counts": {
-      "ash-cloud-condor": 3,
-      "ashbone-ghoul": 4,
-      "obsidian-scorpion": 3,
-      "squires-mount": 3,
-      "vampire-bat": 3,
-      "cinder-stoker": 4
+      "cobalt-talon-fledgling": 5,
+      "ossuary-lammergeier": 1,
+      "clownfish-scout": 5,
+      "bramblewood-lynx": 3,
+      "owl-nightwatch": 2,
+      "apollo-butterfly": 4
      },
      "parts": [
       [
-       "ash-cloud-condor",
-       3,
+       "cobalt-talon-fledgling",
+       5,
        4
       ],
       [
-       "ashbone-ghoul",
+       "ossuary-lammergeier",
        1,
        3
       ],
       [
-       "ashbone-ghoul",
+       "clownfish-scout",
+       5,
+       4
+      ],
+      [
+       "bramblewood-lynx",
        3,
        4
       ],
       [
-       "obsidian-scorpion",
-       3,
-       4
-      ],
-      [
-       "squires-mount",
-       3,
-       4
-      ],
-      [
-       "vampire-bat",
+       "owl-nightwatch",
        1,
        3
       ],
       [
-       "vampire-bat",
-       2,
+       "owl-nightwatch",
+       1,
        4
       ],
       [
-       "cinder-stoker",
+       "apollo-butterfly",
        4,
        4
       ]
      ],
      "leader": "old-snapjaw",
-     "from": "20-A-PRO-3",
-     "selectWin": 69
+     "from": "rank 8 repaired (BAL18: coral-polyp-colony -4 -> apollo-butterfly x4)",
+     "selectWin": 69,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 10 (squires-mount left the map-true pool after CONTENT10; old selectWin 69)"
     }
    ]
   },
@@ -22546,74 +22522,6 @@
     {
      "rank": 2,
      "name": {
-      "lead": "glacial-ape-king",
-      "tactic": "wall",
-      "n": 1
-     },
-     "title": "Glacial Ape-King Wall",
-     "counts": {
-      "cinder-hornet": 3,
-      "pigeon-peon": 2,
-      "garden-tiger-moth": 2,
-      "stalactite-golem": 4,
-      "glacial-ape-king": 4,
-      "musk-ox-calf": 1,
-      "quillback-elder": 4
-     },
-     "parts": [
-      [
-       "cinder-hornet",
-       3,
-       4
-      ],
-      [
-       "pigeon-peon",
-       1,
-       3
-      ],
-      [
-       "pigeon-peon",
-       1,
-       4
-      ],
-      [
-       "garden-tiger-moth",
-       2,
-       4
-      ],
-      [
-       "stalactite-golem",
-       4,
-       4
-      ],
-      [
-       "glacial-ape-king",
-       1,
-       3
-      ],
-      [
-       "glacial-ape-king",
-       3,
-       4
-      ],
-      [
-       "musk-ox-calf",
-       1,
-       4
-      ],
-      [
-       "quillback-elder",
-       4,
-       4
-      ]
-     ],
-     "leader": "caldera-wyrm",
-     "from": "sampled q=0.26",
-     "selectWin": 4.2
-    },
-    {
-     "rank": 3,
-     "name": {
       "lead": "octopus-tactician",
       "tactic": "flock",
       "n": 1
@@ -22684,6 +22592,81 @@
      "leader": "caldera-wyrm",
      "from": "sampled q=0.43",
      "selectWin": 4.2
+    },
+    {
+     "rank": 3,
+     "name": {
+      "lead": "giant-clam",
+      "tactic": "band",
+      "n": 1
+     },
+     "title": "Giant Clam Band 1",
+     "counts": {
+      "moat-snapper": 1,
+      "tarantula-hawk": 1,
+      "coffer-mimic": 3,
+      "ironclaw-fiddler": 3,
+      "signal-crayfish": 1,
+      "stag-beetle": 3,
+      "giant-clam": 5,
+      "plague-gnat-cloud": 3
+     },
+     "parts": [
+      [
+       "moat-snapper",
+       1,
+       4
+      ],
+      [
+       "tarantula-hawk",
+       1,
+       4
+      ],
+      [
+       "coffer-mimic",
+       1,
+       3
+      ],
+      [
+       "coffer-mimic",
+       2,
+       4
+      ],
+      [
+       "ironclaw-fiddler",
+       3,
+       4
+      ],
+      [
+       "signal-crayfish",
+       1,
+       4
+      ],
+      [
+       "stag-beetle",
+       3,
+       4
+      ],
+      [
+       "giant-clam",
+       1,
+       3
+      ],
+      [
+       "giant-clam",
+       4,
+       4
+      ],
+      [
+       "plague-gnat-cloud",
+       3,
+       4
+      ]
+     ],
+     "leader": "caldera-wyrm",
+     "from": "sampled q=0.04",
+     "selectWin": 4.2,
+     "bal18": "2026-11-05 (BAL18): replaces old rank 2 (cinder-hornet, glacial-ape-king left the map-true pool after CONTENT10; old selectWin 4.2)"
     },
     {
      "rank": 4,
