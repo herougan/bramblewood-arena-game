@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 Package ART9b (field art: seven more Environment cards get their own scene)
+- **New pictures:** Spore Cloud, Thunderstorm, Tangled Roots and Grasping Briars had none (the card showed its icon); Fog of War, Wildfire and Quicksand borrowed Mist, Scorching and Sandstorm. Each now has its own painted scene (`art/fields/<id>.png`, `tools/make_field_art_2026_11_05.py`, contact sheet `docs/art/art9b-contact-2026-11-05.png`).
+- Wired in `FIELD_ART` in `arena_app.js` (keys are the editor ids).
+
 ## 2026-11-05 Package BAL18 (stale ladder decks, the Lodge Matriarch, road re-measure)
 - **Reference ladder:** the 85 decks on 32 maps that had left their map's pool after CONTENT10 were rebuilt with BAL13's candidates, measure and choice rule. The other 315 decks are unchanged. Each map is ranked weak to strong again, and the result is baked into the game (`tools/bal18/ladder_stale_2026_11_05.js`, `tools/opt/ref_decks.js --apply`).
 - **2-A-7 The Lodge Matriarch:** no change. All 365 legal decks from her list (under K14) were tried, and the best still loses about 97.5% of the time to the Map reference (target 40). Decision BAL18-1.
