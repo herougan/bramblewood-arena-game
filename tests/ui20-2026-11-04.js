@@ -20,7 +20,7 @@ ok(/nmHTML\(d\.name\|\|'', null, d\.wait\)/.test(src), '1. the drag ghost passes
 ok(/--nm-reach:/.test(css) && /--nm-edge:/.test(css) && /max-width:min\(94%, calc\(100% - 2 \* var\(--nm-edge\)\)\)/.test(css), '2. the scroll is narrowed by the badges\' reach');
 ok(/\.card-tile:has\(> \.waitbadge\[data-wait-total\]\) > \.nm\{--nm-ring:/.test(css), '2. the live wait ring has its own reach');
 const blk = css.slice(css.indexOf('package UI20, owner 11-04'));
-ok(!/--nm-s\b/.test(blk.slice(0, 1800)), '2. the name is not shrunk for the badges');
+ok(!/--nm-s\b/.test(blk.slice(0, 1800).split('2026-11-05 23:39')[0]), '2. the name is not shrunk for the badges'); // 2026-11-05 23:39 (owner: names broke mid-word): after UI20 a name shrinks only until its longest word fits (--nm-lw), so the check reads the block before that rule
 // 3
 const ctx = {}; vm.createContext(ctx); vm.runInContext(grab('nmPartsEm') + grab('nmWaitEm') + ';this.a = nmPartsEm; this.b = nmWaitEm;', ctx);
 ok(ctx.b(0) === 0 && ctx.b(1) > 1 && ctx.b(4) > ctx.b(2) && ctx.b(5) > 2, '3. Wait width grows with the pips, a number icon past 4');

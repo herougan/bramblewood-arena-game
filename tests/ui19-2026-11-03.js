@@ -40,7 +40,7 @@ const A = ctx.api;
 ok(A.nmFitScale('Bee') === 1 && A.nmFitScale('Wolf Pup') === 1, '3. short names keep full size');
 const g = A.nmFitScale('Glacial Ape-King'); ok(g < 1 && g >= 0.72, '3. Glacial Ape-King shrinks a little (' + g + ')');
 ok(A.nmFitScale('The Extremely Long Named Beast of the Deep Marsh') === 0.7, '3. the shrink stops at the floor');
-ok(/class="nmt" style="--nm-s:/.test(A.nmHTML('Glacial Ape-King')) && !/--nm-s/.test(A.nmHTML('Bee')), '3. the scale rides on the name text only when needed');
+ok(/class="nmt" style="[^"]*--nm-s:/.test(A.nmHTML('Glacial Ape-King')) /* 2026-11-05 23:39: --nm-lw comes first */ && !/--nm-s/.test(A.nmHTML('Bee')), '3. the scale rides on the name text only when needed');
 ok((src.match(/\$\{nmHTML\(/g) || []).length >= 4, '3. every card face uses nmHTML');
 // 4
 ok(/function artPosStyle/.test(src) && /id="fArtPosY"/.test(src) && /c\.artPosY = Math\.max\(0, Math\.min\(100, n\)\); else delete c\.artPosY/.test(src), '4. Art height: field, save and render');

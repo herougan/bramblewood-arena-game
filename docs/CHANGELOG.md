@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-05 NM1 (owner 23:39: "The scroll display of names for long named cards are screwed up!")
+- A card name never breaks inside a word (UI20's overflow-wrap:anywhere made "Black Dragon" read Blac / k Drag / on on board cards). The text shrinks until its longest word fits the narrowed scroll (`--nm-lw` from nmHTML) and wraps only between words. Names next to a very wide cost badge (four Lumber logs) still get small; a later look may move such scrolls lower.
+
 ## 2026-11-05 MC-RESET (owner 22:49: "reset the 'undo' or 'cut' pills, since we've reset it in a way. Just show the updated map card list")
 - Map cards shows only the current lists: the 172 cut entries moved to `canonical/map-review.json` `cutArchive` (history), an empty Cut part is not drawn, and the saved Cut / Keep picks start empty (key `bw_rv_flips_v2`; v1 removed). Tests cut3, listfix2 read the archive; content11 accepts its decisions DONE.
 

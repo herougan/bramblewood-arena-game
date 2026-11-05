@@ -14734,7 +14734,10 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
   --nm-edge:max(0px, calc(var(--nm-reach) - var(--nm-cap) - .3em));
   max-width:min(94%, calc(100% - 2 * var(--nm-edge)));}
 .card-tile:has(> .waitbadge[data-wait-total]) > .nm{--nm-ring:min(28px, max(18px, 22cqw));}
-.card-tile > .nm .nmt{overflow-wrap:anywhere;} /* a long word breaks inside the narrowed scroll instead of running out under a badge */
+/* 2026-11-05 23:39 (owner: long names broke mid-word on board cards): no break inside a word; the text shrinks until its longest word (--nm-lw em, from nmHTML) fits the
+   narrowed scroll's text room (94cqw less the badge edges and the rolled caps), and wraps only between words */
+.card-tile > .nm .nmt{overflow-wrap:normal; word-break:normal; hyphens:none;
+  font-size:min(max(calc(1em * var(--nm-s, 1)), min(1em, 6.2px)), calc((min(94cqw, 100cqw - 2 * var(--nm-edge, 0px)) - 2 * var(--nm-cap) - .5em) / var(--nm-lw, 6)));}
 .card-tile.locked > .nm{filter:none;}
 /* ===== 2026-11-04 (package UI19): the Card editor, compacted (owner 23:01: "Compactify as much as you can", less margin under section titles) ===== */
 #editorOverlay .modal{padding-top:16px; padding-bottom:12px;}

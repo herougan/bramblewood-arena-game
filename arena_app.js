@@ -9003,7 +9003,10 @@ function nmFitScale(name){ const w = nmWidthEm(name); return w <= NM_ROOM_EM ? 1
 function nmPartsEm(parts){ let em = 0; for(const p of (parts || [])){ const m = /data-n="(\d+)"/.exec(p); em += m ? (+m[1] > 4 ? 2.1 : .9 * (+m[1]) + .35) : 1.3 * [...String(p).replace(/<[^>]*>/g, '')].length; } return Math.round((em * 1.04 + .2 * Math.max(0, (parts || []).length - 1)) * 100) / 100; } // + 4% and .2em between two cost parts (measured: a Lumber + Stone badge ran .17em wider than the sum)
 function nmWaitEm(w){ w = w | 0; return w <= 0 ? 0 : w > 4 ? 2.1 : Math.round((.9 * w + .35) * 100) / 100; }
 function nmHTML(name, costParts, wait){ const sc = nmFitScale(name), ce = nmPartsEm(costParts), we = nmWaitEm(wait), st = (ce ? `--nm-cem:${ce};` : '') + (we ? `--nm-wem:${we};` : '');
-  return `<div class="nm"${st ? ` style="${st}"` : ''}><span class="nmt"${sc < 1 ? ` style="--nm-s:${sc}"` : ''}>${escapeHtml(name)}</span></div>`; }
+  // 2026-11-05 23:39 (owner: "The scroll display of names for long named cards are screwed up!": "Black Dragon" broke as Blac / k Drag / on on a board card): --nm-lw is the
+  // longest word's width in em, so the CSS shrinks the text until that word fits the narrowed scroll; words never break inside (UI20's overflow-wrap:anywhere is gone)
+  const lw = Math.max(1, ...String(name || '').split(/\s+/).filter(Boolean).map(nmWidthEm));
+  return `<div class="nm"${st ? ` style="${st}"` : ''}><span class="nmt" style="--nm-lw:${Math.round(lw * 100) / 100};${sc < 1 ? `--nm-s:${sc}` : ''}">${escapeHtml(name)}</span></div>`; }
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];

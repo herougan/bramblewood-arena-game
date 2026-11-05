@@ -14781,7 +14781,10 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
   --nm-edge:max(0px, calc(var(--nm-reach) - var(--nm-cap) - .3em));
   max-width:min(94%, calc(100% - 2 * var(--nm-edge)));}
 .card-tile:has(> .waitbadge[data-wait-total]) > .nm{--nm-ring:min(28px, max(18px, 22cqw));}
-.card-tile > .nm .nmt{overflow-wrap:anywhere;} /* a long word breaks inside the narrowed scroll instead of running out under a badge */
+/* 2026-11-05 23:39 (owner: long names broke mid-word on board cards): no break inside a word; the text shrinks until its longest word (--nm-lw em, from nmHTML) fits the
+   narrowed scroll's text room (94cqw less the badge edges and the rolled caps), and wraps only between words */
+.card-tile > .nm .nmt{overflow-wrap:normal; word-break:normal; hyphens:none;
+  font-size:min(max(calc(1em * var(--nm-s, 1)), min(1em, 6.2px)), calc((min(94cqw, 100cqw - 2 * var(--nm-edge, 0px)) - 2 * var(--nm-cap) - .5em) / var(--nm-lw, 6)));}
 .card-tile.locked > .nm{filter:none;}
 /* ===== 2026-11-04 (package UI19): the Card editor, compacted (owner 23:01: "Compactify as much as you can", less margin under section titles) ===== */
 #editorOverlay .modal{padding-top:16px; padding-bottom:12px;}
@@ -53267,7 +53270,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd4e5b4b95d98', BUILD_CARD_HASH = 'e86f06249b2fc6ed67b2f3eb2647133597926da03008d5efbf53cda52844d100';
+const BUILD_ID = '711298b50e0f', BUILD_CARD_HASH = 'e86f06249b2fc6ed67b2f3eb2647133597926da03008d5efbf53cda52844d100';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -58495,7 +58498,10 @@ function nmFitScale(name){ const w = nmWidthEm(name); return w <= NM_ROOM_EM ? 1
 function nmPartsEm(parts){ let em = 0; for(const p of (parts || [])){ const m = /data-n="(\d+)"/.exec(p); em += m ? (+m[1] > 4 ? 2.1 : .9 * (+m[1]) + .35) : 1.3 * [...String(p).replace(/<[^>]*>/g, '')].length; } return Math.round((em * 1.04 + .2 * Math.max(0, (parts || []).length - 1)) * 100) / 100; } // + 4% and .2em between two cost parts (measured: a Lumber + Stone badge ran .17em wider than the sum)
 function nmWaitEm(w){ w = w | 0; return w <= 0 ? 0 : w > 4 ? 2.1 : Math.round((.9 * w + .35) * 100) / 100; }
 function nmHTML(name, costParts, wait){ const sc = nmFitScale(name), ce = nmPartsEm(costParts), we = nmWaitEm(wait), st = (ce ? `--nm-cem:${ce};` : '') + (we ? `--nm-wem:${we};` : '');
-  return `<div class="nm"${st ? ` style="${st}"` : ''}><span class="nmt"${sc < 1 ? ` style="--nm-s:${sc}"` : ''}>${escapeHtml(name)}</span></div>`; }
+  // 2026-11-05 23:39 (owner: "The scroll display of names for long named cards are screwed up!": "Black Dragon" broke as Blac / k Drag / on on a board card): --nm-lw is the
+  // longest word's width in em, so the CSS shrinks the text until that word fits the narrowed scroll; words never break inside (UI20's overflow-wrap:anywhere is gone)
+  const lw = Math.max(1, ...String(name || '').split(/\s+/).filter(Boolean).map(nmWidthEm));
+  return `<div class="nm"${st ? ` style="${st}"` : ''}><span class="nmt" style="--nm-lw:${Math.round(lw * 100) / 100};${sc < 1 ? `--nm-s:${sc}` : ''}">${escapeHtml(name)}</span></div>`; }
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
