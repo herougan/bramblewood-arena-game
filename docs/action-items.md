@@ -4,6 +4,18 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-06 22:16: Owner notes, queued after ENG27
+The alpha release checklist is `docs/alpha-checklist.md` (every item starts unverified).
+| # | Note | Package |
+|---|---|---|
+| 1 | 7-A-SK's reference deck shows Garden Snail and Silver Minnow; Map 7's road deck has neither. Trace which picker feeds it | next balance package |
+| 2 | Herb Refinery says "damage" but deals poison. Rule: poison damage adds poison stacks only, no damage. Fire: fire damage plus 1 Burn; frost the same pattern | ENG28 |
+| 3 | Darkness also affects ranged skills | ENG28 |
+| 4 | Hover shows the card's default stats and all skills at its level; Bombardier Beetle's rocket vanishes from the hover after use | ENG28 (UI) |
+| 5 | The purple edited pencil shows only to admins; for admins it marks cards not yet sealed into the card data file (hash checked against player data) | ENG28 (UI); the seal is alpha item E6 |
+| 6 | A skill learnt at a higher level shows a differently coloured "?", tooltip "Learnt at a higher level" | ENG28 (UI) |
+| 7 | Death triggers use 💀 instead of the lightning icon | ENG28 (UI) |
+
 ## 11-06: Package UI23 (on its branch, not released)
 - Done: owner items 4 (one card editor layout), 1+18 (Shield in the heart; Bleed skips Shield), 2, 7, 8, 9, 13/34/38, 15, 16, 17, 19, 25 (guarded, not reproduced), 27, 29, 30, 31, 33, 35, 37, 39, ENG23-4 b, ENG23-6; 26 answered (lens flare); 40 and ENG23-5 reported.
 - Owner calls open: UI23-1 (the map list on a fresh account).
