@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-06 Package PVP1 (30 PvP test decks; owner 20:28 #5)
+- Admin sees: Camp > Simulator's two deck builders each have a "PvP test deck" picker that loads one of 30 decks (no leader in the Simulator). Each deck in `canonical/pvp-test-decks.json` also has a deck code for Camp > Import, which brings its leader.
+- How the decks are made: 25 seeded in-play cards, the best core of 7, a fill from the other 18, and the best of 16 valid leaders, searched against a 12-deck gauntlet (strong PvP strangers, Reference-2, PRO-1 of Maps 20-24) in Standard PvP at Level 1. About 980 games a deck, then a 20-game round robin. No two decks share more than 6 of their 20 copies. They cover 20 main tribes.
+- Round robin: from pvp1-30 at 27.8% to pvp1-20 at 80.3%. Three decks are over 70% against the field, all led by The Old Shell, which won 14 of the 30 leader searches. Report: `docs/balance/pvp1-2026-11-06.md`. Tool: `tools/pvp1/pvp1.js` (build / apply / check). Test: `tests/pvp1-2026-11-06.js`.
+
 ## 2026-11-06 Package BAL20 (The Canopy and Savanna Reaches after ENG26; decisions BAL20-1, BAL20-2)
 - Players see: four road fights retuned (decks and leaders only): 14-3 Howler Canopy 55 -> 59% (target 80), 14-8 The Savanna Warlord 23 -> 54.5% (40; its leader is now Acacia Giraffe), 14-A-3 Sloth Boughs 9.5 -> 15% (70), 14-A-4 Drum Circle 0.5 -> 5.5% (60), 200 games each on the road seeds.
 - The Canopy's cause (`tools/bal20/diag_2026_11_06.js`, `cross_2026_11_06.js`): not the level (Lv 4 is the Map 18 schedule against the reference's 3.54; the reference's level gains 0-6 points) and not the leaders. Acacia Kraal walls 14-A-2 / 14-A-3; the list's cheap swarm (Hoopoe Herald, Weaver Bird, Pangolin Roller, the K14-free cards) walls 14-A-1 / 14-A-4 / 14-A-5 even with a plain bramble (BAL20-1).
