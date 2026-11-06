@@ -19,7 +19,8 @@ const app = R('arena_app.js'), tpl = R('arena_template.html'), texts = R('brambl
 const fnSrc = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0) return ''; let d = 0, j = app.indexOf('{', i); for(let k = j; k < app.length; k++){ if(app[k] === '{') d++; else if(app[k] === '}'){ d--; if(!d) return app.slice(i, k + 1); } } return ''; };
 
 // ---- 4 the editor
-ok(/list\(cur\[1\]\)\}<\/select>`; \}\)\(\)\}<\/div><\/div>/.test(app), '4: the Species field closes both its divs');
+// 2026-11-07 (package UI24 #3): the species controls are three fields of the Identity row (Phylum, Type, Second type), each closing its own div; the old single Species field is gone
+ok(/list\(cur\[1\]\)\}<\/select><\/div>`; \}\)\(\)\}/.test(app), '4: the Second type field closes its div (UI24)');
 ok(/if\(d && d\.derivedFrom\) defId = d\.derivedFrom;/.test(fnSrc('openCardEditor')), '4: a fight copy ("@lv", "~cp") opens its own card in the editor');
 ok(/TX\('ui\.ui23-costs'\)/.test(app) && /"ui\.ui23-costs": "Costs"/.test(texts), '4: the Costs heading');
 ok(/#editorOverlay \.modal\.has-ce-side\{width:min\(95vw, 1400px\)/.test(tpl) && /#editorOverlay \.ce-body > \.ce-side\{flex:0 0 300px; width:300px;\}/.test(tpl) && /#editorOverlay \.modal-actions #btnDelete\{margin-right:auto;\}/.test(tpl), '4: wide modal, 300 px preview, Delete left in the footer');

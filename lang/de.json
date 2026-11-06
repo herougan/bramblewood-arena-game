@@ -4071,5 +4071,12 @@
  "Fortify (Armor 1), while it lives": "Festigen (Rüstung 1), solange es lebt",
  "Suggested for {card}": "Vorschlag für {card}",
  "Recommended for {card}": "Empfohlen für {card}",
- "This map's keyword: on no card yet": "Schlüsselwort dieser Karte: noch auf keiner Karte"
+ "This map's keyword: on no card yet": "Schlüsselwort dieser Karte: noch auf keiner Karte",
+ "Second type": "Zweiter Typ",
+ "Worked out from the Type. Read only.": "Wird aus dem Typ abgeleitet. Nur lesbar.",
+ "Thresholds: {list}.": "Schwellen: {list}.",
+ "Power: {n}": "Stärke: {n}",
+ "Power: not measured": "Stärke: nicht gemessen",
+ "Measured {date}": "Gemessen am {date}",
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Siegquote im Kartenstärke-Test minus 50. 0 ist Durchschnitt (gewinnt die Hälfte der Kämpfe); über 0 ist stärker, unter 0 schwächer."
 }

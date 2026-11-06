@@ -4072,5 +4072,12 @@
  "Fortify (Armor 1), while it lives": "加固 (护甲 1)，存活期间",
  "Suggested for {card}": "建议给{card}",
  "Recommended for {card}": "推荐给{card}",
- "This map's keyword: on no card yet": "本地图的关键词：尚无卡牌拥有"
+ "This map's keyword: on no card yet": "本地图的关键词：尚无卡牌拥有",
+ "Second type": "第二类型",
+ "Worked out from the Type. Read only.": "由类型推算。只读。",
+ "Thresholds: {list}.": "阈值:{list}。",
+ "Power: {n}": "强度:{n}",
+ "Power: not measured": "强度:未测量",
+ "Measured {date}": "测量于 {date}",
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "卡牌强度测试中的胜率减去 50。0 为平均(赢下一半战斗);大于 0 更强,小于 0 更弱。"
 }

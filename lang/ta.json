@@ -4074,5 +4074,12 @@
  "Fortify (Armor 1), while it lives": "வலுப்படுத்து (கவசம் 1), அது உயிருடன் இருக்கும் வரை",
  "Suggested for {card}": "{card}க்குப் பரிந்துரை",
  "Recommended for {card}": "{card}க்குப் பரிந்துரைக்கப்பட்டது",
- "This map's keyword: on no card yet": "இந்த வரைபடத்தின் முக்கியச்சொல்: இன்னும் எந்த அட்டையிலும் இல்லை"
+ "This map's keyword: on no card yet": "இந்த வரைபடத்தின் முக்கியச்சொல்: இன்னும் எந்த அட்டையிலும் இல்லை",
+ "Second type": "இரண்டாவது வகை",
+ "Worked out from the Type. Read only.": "வகையிலிருந்து கணக்கிடப்படுகிறது. படிக்க மட்டும்.",
+ "Thresholds: {list}.": "எல்லைகள்: {list}.",
+ "Power: {n}": "ஆற்றல்: {n}",
+ "Power: not measured": "ஆற்றல்: அளக்கப்படவில்லை",
+ "Measured {date}": "அளவிடப்பட்ட நாள் {date}",
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "அட்டை ஆற்றல் சோதனையில் வெற்றி விகிதம் கழித்தல் 50. 0 சராசரி (பாதி சண்டைகளில் வெல்லும்); 0-க்கு மேல் வலிமையானது, கீழ் பலவீனமானது."
 }

@@ -6897,7 +6897,8 @@ function eng28LaterSkillsHTML(d){
 }
 function fullCardHTML(defId, liveCard, opts){
   opts = opts || {};
-  const d = opts.shownLevel != null && isFinite(opts.shownLevel) ? defAtShownLevel(defId, opts.shownLevel) : getCardDefs()[defId]; // 2026-10-21 (package ED): an enemy card at its fight's level
+  // 2026-11-07 (package UI24, owner 11-06 23:35 #2): the card editor's preview passes its unsaved draft (opts.draftDef), so the hover details follow the skills being edited
+  const d = opts.draftDef ? opts.draftDef : opts.shownLevel != null && isFinite(opts.shownLevel) ? defAtShownLevel(defId, opts.shownLevel) : getCardDefs()[defId]; // 2026-10-21 (package ED): an enemy card at its fight's level
   if(!d) return '';
   const hv = liveCard ? eng28HoverDef(d, liveCard) : null; // ENG28 (2026-11-07, owner 22:16 #4): the printed card, its spent one-shots marked used
   const lines = describeEffects(hv ? hv.def : d, liveCard, {terse:true}); // 2026-10-21 (package UI3): no species / Wait / damage-type lines
@@ -7198,7 +7199,7 @@ function castleHoverHTML(hqSide){
       // all skills as is"): a unit on the board shows its card as printed (its Attack and Health at its level, every skill it was printed with);
       // what happened to it in this fight (damage, buffs, statuses, a lost skill) stays on its tile. Only its own hit log is still added.
       const liveForLog = liveCardFromHoverEl(el);
-      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), null, {logUid: liveForLog ? liveForLog.uid : null, showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
+      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), null, {draftDef: (typeof editorPreviewDraft !== 'undefined' && editorPreviewDraft && el.closest && el.closest('#cePreview')) ? editorPreviewDraft : null /* 2026-11-07 (UI24 #2) */, logUid: liveForLog ? liveForLog.uid : null, showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
@@ -9885,6 +9886,21 @@ function skillBookEntriesNow(){
     { const cx = typeof SKILL_CODEX_NOTE !== 'undefined' && SKILL_CODEX_NOTE[p.key]; if(cx) txt += ' ' + cx(); } // 2026-10-18 (package D): what the terse card line left out
     return {ch:'sk', key:p.key, icon:SKILL_ICON[p.key] || '✨', name:p.label, legendary:!!p.legendary /* 2026-10-18 (owner 23:05): the gold Legendary tag */, html:keywordizeHTML(escapeHtml(txt)), ans:ans.join(', '),
       find:(p.label + ' ' + p.key + ' ' + (p.legendary ? TX('ui.legendary-ability') + ' ' : '') + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase()}; });
+  // 2026-11-07 (package UI24 #12, owner 11-06 23:35: "Codex skill list: one entry per skill (Tally and Throng appear twice, once per threshold)"): a skill with a
+  // Grant twin (Tally and Tally's Grant, Throng, Requiem ... Tide) is one entry, under the first one's key. A threshold skill lists its thresholds (its default and
+  // every value a card carries); any other twin keeps the first text (Tide's twin adds its sentence about the braces).
+  { const seenNm = new Map(), kept = [];
+    out.forEach(e=>{ const f = seenNm.get(e.name);
+      if(!f){ seenNm.set(e.name, e); kept.push(e); return; }
+      f.find += ' ' + e.find;
+      if(/Grant$/.test(f.key) && !/Grant$/.test(e.key)){ const g = {key:f.key, html:f.html}; f.key = e.key; f.icon = e.icon; f.html = e.html; if(e.key === 'tide') f.html += ' ' + g.html; return; } // the order is by key's label: the plain skill leads
+      const base = f.key, thr = typeof THR_APP !== 'undefined' && THR_APP[base];
+      if(thr){ let vals = [thr.n]; try{ Object.values(getCardDefs()).forEach(d=>{ const v = d && d.effects && d.effects[base]; if(Number(v) > 0 && v !== true) vals.push(Math.round(Number(v))); }); }catch(err){}
+        vals = [...new Set(vals)].sort((x, y)=> x - y);
+        const pd = PASSIVE_DEFS.find(x=> x.key === base), line = THR_TX[base].line({n: thr.n, skills: grantText(thrGrantApp(base, {}))});
+        f.html = keywordizeHTML(escapeHtml(line + ' ' + (pd && pd.codexNote ? pd.codexNote + ' ' : '') + TX('ui.ui24-thresholds', {list: vals.join(', ')}))); }
+      });
+    out.length = 0; kept.forEach(e=> out.push(e)); }
   // the basic skills not seen yet: a "?" once you reach the map that brings them (no icon while SKILL_REVEAL still hides the skill)
   if(!adminModeEnabled){
     const miss = BASIC_SKILL_HINTS.filter(k=> !out.some(e=> e.key === k)), intro = miss.length ? skillIntroMaps(miss) : {};
@@ -10157,6 +10173,7 @@ function diffSummary(before, after){
 
 /* ---- Card editor modal ---- */
 let editingCard = null;
+let editorPreviewDraft = null; // 2026-11-07 (package UI24 #2): the card editor's unsaved draft, read by the preview's hover details (fullCardHTML opts.draftDef)
 // Tracks uids whose attack windup/strike lunge (animateAttacker, below) is currently in
 // flight, purely so renderBoard()'s Flip pass (see its own long comment) knows which elements
 // need to be forced back to neutral before it measures anything, vs. an entrance fall-in that
@@ -11275,7 +11292,7 @@ function openCardEditor(defId, versionDef){
   renderEditor();
 }
 let cardEditorHooks = null; // {saved(id), closed()} while another editor waits on this one (skirmish editor's New card)
-function closeCardEditor(){ editingCard=null; document.getElementById('editorOverlay').hidden = true; document.getElementById('editorOverlay').innerHTML=''; const h = cardEditorHooks; cardEditorHooks = null; if(h && h.closed) try{ h.closed(); }catch(e){} }
+function closeCardEditor(){ editingCard=null; editorPreviewDraft = null; document.getElementById('editorOverlay').hidden = true; document.getElementById('editorOverlay').innerHTML=''; const h = cardEditorHooks; cardEditorHooks = null; if(h && h.closed) try{ h.closed(); }catch(e){} }
 // 2026-10-07 audit: every "+ Add" / pill click re-renders the whole form from the model, which used to
 // wipe anything typed but not yet saved. The wrapper snapshots the form first and puts the typed
 // values back afterwards (fields by id; skill and trigger rows by position, when rows were only
@@ -11304,7 +11321,6 @@ function renderEditor(){
   modal.setAttribute('role', 'dialog'); modal.setAttribute('aria-modal', 'true'); modal.setAttribute('aria-label', 'Card editor');
   try{ wireLevelStatsEditor(); }catch(e){}
   try{ if(editingCard && editingCard.id && document.querySelector('#editorOverlay #cdpKind')){ document.querySelectorAll('.cd-placement').forEach(el=>{ if(!el.closest('#editorOverlay')) el.remove(); }); wireCodexPlacement(editingCard.id); } }catch(e){} // one placement panel at a time (ids)
-  if(scroll) modal.scrollTop = scroll;
   modal.querySelectorAll('.field').forEach(f=>{ const l = f.querySelector(':scope > label'), inp = f.querySelector('input,select,textarea'); if(l && inp && inp.id && !l.htmlFor) l.htmlFor = inp.id; });
   overlay.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); if(confirm('Close the card editor? Unsaved changes are lost.')) closeCardEditor(); } };
   // The read-only id moves into the header line (audit #10) so the form opens on Identity.
@@ -11322,6 +11338,8 @@ function renderEditor(){
     det.addEventListener('toggle', ()=>{ editorMoreOpen = det.open; });
   }
   mountEditorSide(modal);
+  // 2026-11-07 (package UI24 #2, owner: "adding a skill must not scroll to the top"): the scroll position goes back after the side panel has laid the form out (it was set before, while the form was still shorter, and lost)
+  if(scroll){ modal.scrollTop = scroll; requestAnimationFrame(()=>{ try{ if(modal.isConnected && Math.abs(modal.scrollTop - scroll) > 2) modal.scrollTop = scroll; }catch(e){} }); }
   if(first){ const n = document.getElementById('fName'); if(n) setTimeout(()=> n.focus(), 30); }
 }
 // Card editor side panel (2026-10-07, audit items: no live preview, no art control, no revert):
@@ -11375,7 +11393,7 @@ function mountEditorSide(modal){
   });
   const refresh = ()=>{
     if(!editingCard || !document.getElementById('cePreview')) return; // the editor closed before the delayed redraw
-    const d = editorDraftFromForm(); d.art = editingCard.art;
+    const d = editorDraftFromForm(); d.art = editingCard.art; editorPreviewDraft = d; // 2026-11-07 (UI24 #2): the hover details read this draft
     // Preview (2026-10-08, user: "flashes too much... flash once only, then the 2nd flash follows the
     // mouse"): only re-draw when the markup actually changed, play the gold streak once on the first
     // draw (.ce-flashed stops it replaying on every keystroke), and afterwards the glint and the rim
@@ -11443,7 +11461,7 @@ function renderEditorInner(){
       <div class="field"><label>Card Name ID</label><input id="fCardId" value="${escapeAttr(c.id||'(assigned on save)')}" disabled title="The internal id used to reference this card from triggers, spawn effects, etc. Not editable."></div>
     </div>
     <div class="editor-h2">Identity</div>
-    <div class="field-row">
+    <div class="field-row ed-ident">
       <div class="field" title="Emoji shown on the card's tile, hand, and board icon."><label>Icon</label><input id="fIcon" value="${escapeAttr(c.icon)}"></div>
       <div class="field" style="grid-column:span 2" title="This card's display name, shown everywhere it appears."><label>Name</label><input id="fName" value="${escapeAttr(c.name)}"></div>
       <!-- Rarity now lives in the slot the old standalone "Card Type" (Structure/Unit) dropdown
@@ -11466,10 +11484,15 @@ function renderEditorInner(){
       <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack'], ['graveCall', TX('ui.spell3-grave-call', {cap: 10})], ['smokeScreen', TX('ui.act3-smoke-screen')], ['magnet', TX('ui.act3-magnet')] /* 2026-10-19 (SK3) */].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
       <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> (p.kind==='boolean' || p.kind==='number') && (!p.retired || Object.keys((c.equip||{}).grant||{})[0]===p.key)).map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
       <div class="field" id="fEquipTimeRow" ${c.cardType==='equipment'?'':'hidden'} title="${escapeAttr(TX('ui.c3-equip-time-tip'))}"><label>${escapeHtml(TX('ui.c3-equip-time-name'))}</label><span style="display:flex; gap:10px; align-items:center;"><input id="fEquipTime" type="number" min="0" max="5" style="width:64px" value="${(c.equip && c.equip.turns != null) ? c.equip.turns : 1}" aria-label="${escapeAttr(TX('ui.c3-equip-time-name'))}"><label style="display:flex; gap:4px; align-items:center;"><input id="fEquipTamper" type="checkbox" ${(c.equip && c.equip.tamperProof) ? 'checked' : ''}> ${escapeHtml(TX('ui.c3-tamper-name'))}</label><label style="display:flex; gap:4px; align-items:center;" title="${escapeAttr(TX('ui.e10-hardy-tip'))}">${escapeHtml(TX('ui.e10-hardy-name'))} <input id="fEquipHardy" type="number" min="1" max="9" style="width:52px" value="${eqHardyOf(c)}"></label></span></div>
-      <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select><label class="ed-arty" title="${escapeAttr(TX('ui.ui19-art-y-tip'))}"><span>${escapeHtml(TX('ui.ui19-art-y'))}</span><input id="fArtPosY" type="number" min="0" max="100" step="5" placeholder="50" value="${artPosOf(c) === null ? '' : artPosOf(c)}"></label></div>
-      <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span>${'' /* 2026-11-05 (package EDIT1, owner 23:35: "Species should be a dropdown"): the species the game knows (cards.json + the taxonomy); an existing value that is not on the list stays as its own option. A second dropdown makes a hybrid. */}${(()=>{ const names = allSpeciesNames(), cur = c.species || [], opt = (k, sel)=> `<option value="${escapeAttr(k)}" ${sel ? 'selected' : ''}>${speciesIcon(k)} ${escapeHtml(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeHtml(SPECIES_PHYLUM[k]) : ''}</option>`, list = sel=> names.concat(sel && !names.includes(sel) ? [sel] : []).sort().map(k=> opt(k, k === sel)).join(''),
-      onch = "(function(){ const v = ['fSpecies','fSpecies2'].map(i=> (document.getElementById(i)||{}).value).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })()";
-    return `<select id="fSpecies" aria-label="Species" onchange="${onch}"><option value="" ${cur[0] ? '' : 'selected'}>🧬 ${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[0])}</select><select id="fSpecies2" aria-label="${escapeAttr(TX('ui.edit1-species2'))}" title="${escapeAttr(TX('ui.edit1-species2'))}" onchange="${onch}"><option value="" ${cur[1] ? '' : 'selected'}>${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[1])}</select>`; })()}</div></div>${'' /* 2026-11-06 (package UI23 #4): this </div> closes the Species field; without it every later section sat inside the Identity grid, in both editors */}
+      <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select></div>
+      ${'' /* 2026-11-07 (package UI24 #3, owner 11-06 23:35: "species controls and Art height on the shared rows, not their own"): Art height is a field of this row (it sat under Art), and the species dropdowns follow it: Phylum (worked out from the Type, read-only) and Type, named as the card preview names them (Rodentia, Beast); a second Type makes a hybrid */}
+      <div class="field ed-arty-field" title="${escapeAttr(TX('ui.ui19-art-y-tip'))}"><label for="fArtPosY">${escapeHtml(TX('ui.ui19-art-y'))}</label><input id="fArtPosY" type="number" min="0" max="100" step="5" placeholder="50" value="${artPosOf(c) === null ? '' : artPosOf(c)}"></div>
+      ${(()=>{ const names = allSpeciesNames(), cur = c.species || [], nm = k=> (TAXO ? TAXO.name(k) : k), opt = (k, sel)=> `<option value="${escapeAttr(k)}" ${sel ? 'selected' : ''}>${speciesIcon(k)} ${escapeHtml(nm(k))}</option>`, list = sel=> names.concat(sel && !names.includes(sel) ? [sel] : []).sort((a, b)=> nm(a).localeCompare(nm(b))).map(k=> opt(k, k === sel)).join(''),
+        phyOf = v=> [...new Set(v.map(speciesPhylum))].map(x=> (PHYLUM_ICON[x] || '🧬') + ' ' + x).join(' & '),
+        onch = "(function(){ const v = ['fSpecies','fSpecies2'].map(i=> (document.getElementById(i)||{}).value).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; const ph = document.getElementById('fPhylum'); if(ph) ph.value = [...new Set(v.map(speciesPhylum))].map(x=> (PHYLUM_ICON[x] || '🧬') + ' ' + x).join(' & '); })()";
+        return `<div class="field ed-phylum-field" title="${escapeAttr(TX('ui.ui24-phylum-tip'))}"><label for="fPhylum"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${cur.map(speciesIcon).join('') || '🧬'}</span> ${escapeHtml(TX('ui.tx-phylum'))}</label><input id="fPhylum" type="text" value="${escapeAttr(phyOf(cur))}" readonly tabindex="-1"></div>
+      <div class="field ed-type-field" title="Every unit needs a type: an animal (Canid, Bird, Insect…) or Elemental. A second one makes a hybrid."><label for="fSpecies">${escapeHtml(TX('ui.tx-type'))}</label><select id="fSpecies" aria-label="${escapeAttr(TX('ui.tx-type'))}" onchange="${onch}"><option value="" ${cur[0] ? '' : 'selected'}>🧬 ${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[0])}</select></div>
+      <div class="field ed-type-field" title="${escapeAttr(TX('ui.edit1-species2'))}"><label for="fSpecies2">${escapeHtml(TX('ui.ui24-type2'))}</label><select id="fSpecies2" aria-label="${escapeAttr(TX('ui.edit1-species2'))}" onchange="${onch}"><option value="" ${cur[1] ? '' : 'selected'}>${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[1])}</select></div>`; })()}${'' /* 2026-11-06 (package UI23 #4): this </div> closes the Species field; without it every later section sat inside the Identity grid, in both editors */}
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
            request: "I think the Splash Effect doesn't need to be there as well, since it's
            related to the level of the card OR by chance, not an inherent quality of this
@@ -32947,6 +32970,8 @@ function ui19McSkillText(r){
 // introduction tile; recommendation tiles come from SKILLREC1 (docs/skill-recommendations-2026-11-04.json, rows for this map's name),
 // one per proposed skill the card does not carry yet. Shown only; nothing is applied.
 const SKILL_RECS = __SKILL_RECS__;
+// 2026-11-07 (package UI24 #7, owner 11-06 23:35: "the editor shows card power"): {date, wr:{cardId: win % of the card power test}} from docs/balance/card-balance.json (tools/card_balance.js), null when the file is missing
+const CARD_POWER = __CARD_POWER__;
 function ui24McRecs(mapId, defs){
   const m = mpMapById(mapId); if(!m) return [];
   const out = [];
@@ -33415,11 +33440,20 @@ function ceBudgetHTML(d){
     <div style="font-size:12.5px">${productLine}</div>
     ${price.missing.length ? `<small style="color:var(--danger, #c0392b); display:block">${escapeHtml(TX('ui.budget-price-missing', {skills: sbMissingNames(price.missing).join(', ')}))}</small>` : '' /* CX5 (10-21) */}${sbNMultLine(d, true)}`;
 }
+// 2026-11-07 (package UI24 #7): a card's power in the editor: its win % in the card power test minus 50, so 0 is average (half its fights won), +N stronger, -N weaker.
+// The date is the test run's; a card with no row (new, or added since the run) reads "not measured". Editor only.
+function cePowerHTML(d){
+  try{ const cp = (typeof CARD_POWER !== 'undefined') ? CARD_POWER : null, id = d && d.id, wr = cp && cp.wr && id && Object.prototype.hasOwnProperty.call(cp.wr, id) ? Number(cp.wr[id]) : NaN;
+    const tip = escapeAttr(TX('ui.ui24-power-tip'));
+    if(!Number.isFinite(wr)) return `<div class="ce-power is-none" title="${tip}">${escapeHtml(TX('ui.ui24-power-none'))}</div>`;
+    const n = Math.round(wr - 50), txt = n > 0 ? '+' + n : String(n); // 0 and -0 read "0"
+    return `<div class="ce-power ${n > 0 ? 'is-up' : n < 0 ? 'is-down' : 'is-zero'}" title="${tip}"><b>${escapeHtml(TX('ui.ui24-power', {n: txt === '-0' ? '0' : txt}))}</b>${cp.date ? ` <small>${escapeHtml(TX('ui.ui24-power-date', {date: cp.date}))}</small>` : ''}</div>`; }catch(e){ return ''; }
+}
 function ceBudgetRefresh(d){
   const fa = document.getElementById('fAtk'); if(!fa) return;
   let box = document.getElementById('ceBudget');
   if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('beforeend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:0 0 4px; font-size:12.5px; line-height:1.4"></div>'); /* UI23 (2026-11-06, #4): inside the Stats row, beside the four stats */ box = document.getElementById('ceBudget'); }
-  try{ box.innerHTML = ceBudgetHTML(d); }catch(e){ box.textContent = ''; }
+  try{ box.innerHTML = ceBudgetHTML(d) + cePowerHTML(d); }catch(e){ box.textContent = ''; }
 }
 let sbState = {upTo:5, onlyFail:true};
 function renderStatBudget(host){
