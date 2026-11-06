@@ -4074,5 +4074,12 @@
  "Fortify (Armor 1), while it lives": "보강 (방어구 1), 살아 있는 동안",
  "Suggested for {card}": "{card}에게 추천",
  "Recommended for {card}": "{card}에게 추천",
- "This map's keyword: on no card yet": "이 맵의 키워드: 아직 어떤 카드에도 없음"
+ "This map's keyword: on no card yet": "이 맵의 키워드: 아직 어떤 카드에도 없음",
+ "Second type": "두 번째 유형",
+ "Worked out from the Type. Read only.": "유형에서 계산됩니다. 읽기 전용.",
+ "Thresholds: {list}.": "기준값: {list}.",
+ "Power: {n}": "파워: {n}",
+ "Power: not measured": "파워: 측정 안 됨",
+ "Measured {date}": "측정일 {date}",
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "카드 파워 테스트의 승률에서 50을 뺀 값입니다. 0은 평균(전투의 절반을 이김), 0보다 크면 더 강하고 작으면 더 약합니다."
 }

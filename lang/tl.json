@@ -4072,5 +4072,12 @@
  "Fortify (Armor 1), while it lives": "Patibayin (Baluti 1), habang buhay ito",
  "Suggested for {card}": "Mungkahi para sa {card}",
  "Recommended for {card}": "Inirerekomenda para sa {card}",
- "This map's keyword: on no card yet": "Keyword ng mapang ito: wala pa sa anumang card"
+ "This map's keyword: on no card yet": "Keyword ng mapang ito: wala pa sa anumang card",
+ "Second type": "Pangalawang uri",
+ "Worked out from the Type. Read only.": "Hinango mula sa Uri. Basahin lang.",
+ "Thresholds: {list}.": "Mga hangganan: {list}.",
+ "Power: {n}": "Lakas: {n}",
+ "Power: not measured": "Lakas: hindi pa nasusukat",
+ "Measured {date}": "Sinukat noong {date}",
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Win rate sa pagsubok ng lakas ng card, bawas 50. Ang 0 ay karaniwan (nananalo sa kalahati ng laban); mas mataas sa 0 ay mas malakas, mas mababa ay mas mahina."
 }

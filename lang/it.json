@@ -4073,5 +4073,12 @@
  "Fortify (Armor 1), while it lives": "Rinforzo (Armatura 1), finché vive",
  "Suggested for {card}": "Suggerito per {card}",
  "Recommended for {card}": "Consigliato per {card}",
- "This map's keyword: on no card yet": "Parola chiave di questa mappa: ancora su nessuna carta"
+ "This map's keyword: on no card yet": "Parola chiave di questa mappa: ancora su nessuna carta",
+ "Second type": "Secondo tipo",
+ "Worked out from the Type. Read only.": "Ricavato dal Tipo. Sola lettura.",
+ "Thresholds: {list}.": "Soglie: {list}.",
+ "Power: {n}": "Potenza: {n}",
+ "Power: not measured": "Potenza: non misurata",
+ "Measured {date}": "Misurata il {date}",
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Percentuale di vittorie nel test di potenza delle carte, meno 50. 0 è la media (vince metà dei combattimenti); sopra 0 è più forte, sotto 0 più debole."
 }

@@ -343,6 +343,7 @@ run node tests/eng28-2026-11-07.js   # 2026-11-07 (package ENG28, owner 11-06 22
 run node tests/pvp1-2026-11-06.js   # 2026-11-06 (package PVP1, owner 20:28 #5): 30 PvP test decks legal (validateDeck + leader), in-play cards, valid leaders, <= 10 copies shared, baked into the Simulator's picker, deck codes, deterministic game
 run node tests/pvp2-2026-11-06.js   # 2026-11-06 (package PVP2): the 30 PvP test decks are seeded PvP / Async strangers with leaders, stable names, stages; themed decks legal
 run node tests/ui23-2026-11-06.js   # 2026-11-06 (package UI23, owner 20:28-20:44): one card editor layout, Shield in the heart, Bleed skips Shield, NEW!/GET!, results packs, speed gates, emblem pop, darkness overlay
+run node tests/ui24-2026-11-07.js   # 2026-11-07 (package UI24, owner 11-06 23:35): popover margin, editor scroll / live hover / Identity rows / Power, pip spacing, one Codex entry per skill
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

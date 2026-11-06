@@ -3380,7 +3380,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng28-offspring": "When it arrives, {n} copies hatch beside it: half its Attack and Health (rounded down), Wait 1, no Offspring.",
   "ui.eng28-devour-name": "Devour",
   "ui.eng28-swarm-species": "+{n} Attack for every ally of its own species.",
-  "ui.eng28-later": "Learnt at a higher level"
+  "ui.eng28-later": "Learnt at a higher level",
+  "ui.ui24-type2": "Second type",
+  "ui.ui24-phylum-tip": "Worked out from the Type. Read only.",
+  "ui.ui24-thresholds": "Thresholds: {list}.",
+  "ui.ui24-power": "Power: {n}",
+  "ui.ui24-power-none": "Power: not measured",
+  "ui.ui24-power-date": "Measured {date}",
+  "ui.ui24-power-tip": "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

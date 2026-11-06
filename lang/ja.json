@@ -4072,5 +4072,12 @@
  "Fortify (Armor 1), while it lives": "補強 (アーマー 1)、生きている間",
  "Suggested for {card}": "{card}への提案",
  "Recommended for {card}": "{card}へのおすすめ",
- "This map's keyword: on no card yet": "このマップのキーワード：まだどのカードにもない"
+ "This map's keyword: on no card yet": "このマップのキーワード：まだどのカードにもない",
+ "Second type": "2つ目のタイプ",
+ "Worked out from the Type. Read only.": "タイプから求めます。読み取り専用。",
+ "Thresholds: {list}.": "しきい値: {list}。",
+ "Power: {n}": "パワー: {n}",
+ "Power: not measured": "パワー: 未計測",
+ "Measured {date}": "計測日 {date}",
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "カードパワーテストの勝率から50を引いた値。0が平均(戦いの半分に勝つ)、0より上は強く、下は弱いです。"
 }

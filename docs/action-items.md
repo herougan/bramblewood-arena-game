@@ -9,23 +9,28 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Owner calls open: ENG28-1 (Burn stacking vs 2 rounds), ENG28-2 (a Freeze on every frost hit), ENG28-4 (names; Offspring's price).
 - Next: a road measure of Maps 0-20 (poison as stacks, Burn per hit and frost freezes move fights); canonical/skill-costs.json rows for Mulligan / Offspring at the batch release; card-matrix goldens at the batch release.
 
+## 11-07: Package UI24 (on its branch, not released)
+- Done: owner items #1 (3 px under the hover card), #2 (skill changes keep the scroll; preview and hover follow), #3 (Identity rows; Art height moves the preview; Phylum and Type), #7 display (Power in the editor), #10, #12, #14.
+- Owner calls open: UI24-1 (Phylum read only or a dropdown), UI24-2 (card power numbers date from 2026-10-19).
+- Next: BAL21's new card power run replaces `docs/balance/card-balance.json`; the editor picks it up at the next build.
+
 ## 11-06 23:35: Owner notes, queued after ENG27
 | # | Note | Package |
 |---|---|---|
-| 1 | 2-3 px more margin between the card and the text below it (context pips almost touch the text) | UI24 |
-| 2 | Card editor: skill changes update the preview and hover details live; adding a skill must not scroll to the top | UI24 |
-| 3 | Editor Identity: species controls and Art height sit on the shared rows, not their own; Art height updates the preview; species uses the preview's naming, with Phylum and Type as separate fields | UI24 |
+| 1 | 2-3 px more margin between the card and the text below it (context pips almost touch the text) | **done 11-07** (UI24) |
+| 2 | Card editor: skill changes update the preview and hover details live; adding a skill must not scroll to the top | **done 11-07** (UI24) |
+| 3 | Editor Identity: species controls and Art height sit on the shared rows, not their own; Art height updates the preview; species uses the preview's naming, with Phylum and Type as separate fields | **done 11-07** (UI24) |
 | 4 | New skill (working name Mulligan, owner may rename): if this card is in your opening hand, shuffle it back and draw a card. Price -0.1 | **done 11-07** (ENG28) |
 | 5 | Devour can't be picked in the editor's skill list and can't be removed | **done 11-07** (ENG28) |
 | 6 | Pickpocket takes tokens, or a resource from the bramble, lowest tier first | **done 11-07** (ENG28) |
-| 7 | After the owner's card pass: a 5-15 min card power test of every Map 0-20 card; the editor shows card power (0 = average, -N below, +N above) | BAL21 (tool `tools/card_balance.js`), UI24 (display) |
+| 7 | After the owner's card pass: a 5-15 min card power test of every Map 0-20 card; the editor shows card power (0 = average, -N below, +N above) | BAL21 (tool `tools/card_balance.js`; new run open); UI24 display **done 11-07** |
 | 8 | Admin-only sub-map under the tutorial with 2 skirmish decks: optimised random Otter faction cards, and Hummingbird faction cards | CONTENT13 |
 | 9 | Poison Barbs gets a context pip (2 poison counters, no damage). Default: every skill shows a context pip unless the owner said no | **done 11-07** (ENG28) |
-| 10 | Diurnal and Inspiration pip numbers 1 px closer to the emoji | UI24 |
+| 10 | Diurnal and Inspiration pip numbers 1 px closer to the emoji | **done 11-07** (UI24) |
 | 11 | Sonar and Keen Senses show as "?" until the first darkness map; their pips show only when relevant (darkness maps) | **done 11-07** (ENG28) |
-| 12 | Codex skill list: one entry per skill (Tally and Throng appear twice, once per threshold); combine them | UI24 |
+| 12 | Codex skill list: one entry per skill (Tally and Throng appear twice, once per threshold); combine them | **done 11-07** (UI24) |
 | 13 | New skill like Brood that summons a weaker copy of the card itself | **done 11-07** (ENG28) |
-| 14 | Trigger context pips: emoji and arrow closer together | UI24 |
+| 14 | Trigger context pips: emoji and arrow closer together | **done 11-07** (UI24) |
 | 15 | Map cards window skill section: smaller, no "n of N cards"; recommendation tiles (blue to yellow) and introduction tiles (yellow to white) | **done 11-07** (tiles from SKILLREC1 rows and map-keywords) |
 | 16 | Rebalance flow: when ready, run the card power test, show strengths, the owner balances by hand (no auto-balance of his cards) | BAL21 |
 | 17 | Brood's tokens get Swarm (Species), not plain Swarm (Default) | **done 11-07** (ENG28) |

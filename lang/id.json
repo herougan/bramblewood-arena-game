@@ -4073,5 +4073,12 @@
  "Fortify (Armor 1), while it lives": "Perkuat (Zirah 1), selama ia hidup",
  "Suggested for {card}": "Disarankan untuk {card}",
  "Recommended for {card}": "Direkomendasikan untuk {card}",
- "This map's keyword: on no card yet": "Kata kunci peta ini: belum ada di kartu mana pun"
+ "This map's keyword: on no card yet": "Kata kunci peta ini: belum ada di kartu mana pun",
+ "Second type": "Tipe kedua",
+ "Worked out from the Type. Read only.": "Dihitung dari Tipe. Hanya baca.",
+ "Thresholds: {list}.": "Ambang: {list}.",
+ "Power: {n}": "Kekuatan: {n}",
+ "Power: not measured": "Kekuatan: belum diukur",
+ "Measured {date}": "Diukur pada {date}",
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Persentase menang dalam uji kekuatan kartu, dikurangi 50. 0 adalah rata-rata (menang setengah pertarungan); di atas 0 lebih kuat, di bawah 0 lebih lemah."
 }

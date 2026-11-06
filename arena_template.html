@@ -995,7 +995,7 @@
   /* Trigger badges (2026-10-11): ⚡→action. Greyed while the trigger is off (its card is still Waiting); a short spark as it switches on. */
   .ab-trig{display:inline-flex; align-items:center; gap:0; white-space:nowrap;}
   .ab-trig .ab-bolt{font-style:normal; color:#ffd23f; text-shadow:0 0 4px rgba(255,200,60,.65);}
-  .ab-trig .ab-arrow{font-style:normal; font-size:.62em; opacity:.75; margin:0 1px; font-weight:900;}
+  .ab-trig .ab-arrow{font-style:normal; font-size:.62em; opacity:.75; margin:0 -1px; font-weight:900;} /* 2026-11-07 (package UI24 #14, owner 11-06 23:35: "Trigger context pips: emoji and arrow closer together"): was margin 0 1px, so 4 px closer in all */
   .ab-trig.is-off .ab-bolt{color:#9a958c; text-shadow:none; filter:grayscale(1); opacity:.55;}
   /* used up for good: shine, then grey, then fade away (2026-10-12) */
   .ab-trig.is-spent{animation:trigSpent 1.6s ease forwards; display:inline-flex; overflow:hidden; max-width:4em;}
@@ -10299,7 +10299,7 @@
      hover over the top of the window's boundary"): the card is bigger and lifted out of the frame, its top standing above the sheet's
      top edge, so the sheet doesn't grow (it is shorter than before). positionPop() keeps the lifted part on screen. */
   #cardPop{overflow:visible;}
-  #cardPop .card-pop-visual{position:relative; z-index:2; margin:calc(-1 * var(--pop-lift, 84px)) 0 24px;}
+  #cardPop .card-pop-visual{position:relative; z-index:2; margin:calc(-1 * var(--pop-lift, 84px)) 0 27px;} /* 2026-11-07 (package UI24 #1, owner 11-06 23:35: "2-3 px more margin between the card and the text below it"): was 24px, the bottom context pips almost touched the text */
   #cardPop .card-pop-visual-tile{filter:drop-shadow(0 10px 12px rgba(20,12,4,.45));} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
   #cardPop .statrow.statrow-live{font-size:13px; padding:0 0 5px; margin-bottom:6px;}
 
@@ -13665,7 +13665,10 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
 .board-card .card-tile .status-chips > .abadge{gap:0 !important;}
 .board-card .card-tile .status-chips > .abadge.poison{padding:0 !important; width:var(--sc-h);}
 .board-card .card-tile .badges .abadge img.tw-emoji{margin-right:-.16em !important;}
-.board-card .card-tile .badges .abadge.is-icon-only img.tw-emoji{margin-right:0 !important;} /* 2026-10-31 (UI11, FF5): an icon-only chip is centred */
+.board-card .card-tile .badges .abadge.is-icon-only img.tw-emoji{margin-right:0 !important;}
+/* 2026-11-07 (package UI24 #10, owner 11-06 23:35: "Diurnal and Inspiration pip numbers 1 px closer to the emoji") */
+.card-tile .badges .abadge .ab-sk[data-sk="diurnal"] img.tw-emoji, .card-tile .badges .abadge.eng21-insp img.tw-emoji{margin-right:calc(.02em - 1px);}
+.board-card .card-tile .badges .abadge .ab-sk[data-sk="diurnal"] img.tw-emoji, .board-card .card-tile .badges .abadge.eng21-insp img.tw-emoji{margin-right:calc(-.16em - 1px) !important;} /* 2026-10-31 (UI11, FF5): an icon-only chip is centred */
 .board-card .card-tile .badges .abadge .ab-poison img.tw-emoji:last-child, .board-card .card-tile .badges .abadge .ab-sk[data-sk="regen"] img.tw-emoji:last-child{margin-right:0 !important;}
 /* each status keeps its colour as the chip's ring and number */
 .board-card .card-tile .status-chips > .abadge.poison{--sc-ring:var(--poison, #7ac943); color:#c9f59a;}
@@ -14788,6 +14791,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ed-tags-line .pill-add-row{margin-top:0; flex:1 1 170px; flex-wrap:nowrap;} .ed-tags-line .pill-add-row select{flex:1 1 auto;}
 .ed-arty{display:flex; flex-direction:row; align-items:center; justify-content:flex-start; gap:6px; margin-top:2px; align-self:flex-start; text-transform:none !important; letter-spacing:0 !important;}
 .ed-arty span{white-space:nowrap;} .ed-arty input{width:62px;}
+#editorOverlay .ce-main > .field-row.ed-ident{grid-template-columns:repeat(auto-fit,minmax(104px,1fr));} /* 2026-11-07 (package UI24 #3): Icon / Name / Rank, then Card group, Card kind, Art, Art height, Phylum, Type and Second type share one row at desktop width (were 120 px minimum: Second type wrapped to a row of its own) */
 .skill-row .sk-n{display:inline-flex; align-items:center; gap:3px; font-weight:800; font-size:12px; color:var(--ink-muted); text-transform:none; letter-spacing:0;}
 /* ===== 2026-11-04 (package UI19): the skills of a map's cards in the Map cards window ===== */
 .ui19-mc-skills{margin:6px 0 10px;}
