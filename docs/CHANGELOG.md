@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-06 Package BAL20 (The Canopy and Savanna Reaches after ENG26; decisions BAL20-1, BAL20-2)
+- Players see: four road fights retuned (decks and leaders only): 14-3 Howler Canopy 55 -> 59% (target 80), 14-8 The Savanna Warlord 23 -> 54.5% (40; its leader is now Acacia Giraffe), 14-A-3 Sloth Boughs 9.5 -> 15% (70), 14-A-4 Drum Circle 0.5 -> 5.5% (60), 200 games each on the road seeds.
+- The Canopy's cause (`tools/bal20/diag_2026_11_06.js`, `cross_2026_11_06.js`): not the level (Lv 4 is the Map 18 schedule against the reference's 3.54; the reference's level gains 0-6 points) and not the leaders. Acacia Kraal walls 14-A-2 / 14-A-3; the list's cheap swarm (Hoopoe Herald, Weaver Bird, Pangolin Roller, the K14-free cards) walls 14-A-1 / 14-A-4 / 14-A-5 even with a plain bramble (BAL20-1).
+- Road (40 games, 226 curve fights, `docs/balance/bal20/road-totals-2026-11-06.json`): 116 -> 117 in band, 140 -> 141 within 10, 24 -> 23 beyond 20. Report: `docs/balance/bal20-2026-11-06.md`.
+- Tools: `tools/bal20/road_tune_2026_11_06.js` (BAL19's tuner + a rounds term where a fight reads near 0%), `confirm_2026_11_06.js`, `decisions_2026_11_06.py`. Test: `tests/bal20-2026-11-06.js`.
+
 ## 2026-11-06 Package ENG26 (owner notes 09:29; decisions ENG26-1..5, BAL19-2)
 - Players see: a card with more context pips than its slots now pages ALL its slots together, every 3 s (was: the first pips stayed put and only the last slot cycled, every 2 s; a re-rendered card also restarted its cycle and drifted out of step); a row of 9+ units with small tiles (under about 120px: 1024 with 9, 1366 with 11) drops the name scroll; **Bloom** escalates (the Nth copy of your side this fight gets +N/+N: Pond Algae 2/8, then 3/9); **Undead** units are hurt by heals (as much as the heal; their own Regeneration still heals them) and a cure or cleanse gives them Bleed N instead (log line and float); **Acacia Kraal** starts with 1 Lumber (was 3), first unit +3 Attack kept; new bramble **Banner Knoll** 🚩 (22 Health, Rare, open to everyone, on no road fight): your Leader +2 Attack / +3 Health as it takes the field; it shows in the bramble picker, the Brambles list filter and the admin bramble editor.
 - Why only some pips swapped (#1): `abilityBadges` kept the first maxSlots-1 pips fixed and put the rest into one cycling slot, and each render rebuilt that slot at its first item. Now pages of maxSlots pips, one shared tick (`BADGE_CYCLE_TICK`).

@@ -1,0 +1,92 @@
+{
+ "about": "BAL20 road retune (tools/bal20/road_tune_2026_11_06.js)",
+ "code": "14-7",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "elite",
+ "name": "The Cheetah Matriarch",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "acacia-giraffe",
+  "ant-hill",
+  "dust-hyena",
+  "hoopoe-herald",
+  "house-cat",
+  "marula-elephant",
+  "mouse-sapper",
+  "springbok-pronker"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "marula-elephant"
+ ],
+ "namesake": false,
+ "shieldRule": 21,
+ "shieldOverride": 4,
+ "before": {
+  "deck": {
+   "acacia-giraffe": 1,
+   "marula-elephant": 4,
+   "springbok-pronker": 5,
+   "ant-hill": 1,
+   "house-cat": 1,
+   "mouse-sapper": 1,
+   "dust-hyena": 2,
+   "hoopoe-herald": 1
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": 4,
+  "win200": 41,
+  "shown": 2
+ },
+ "pick": {
+  "deck": {
+   "marula-elephant": 4,
+   "springbok-pronker": 5,
+   "ant-hill": 1,
+   "mouse-sapper": 1,
+   "dust-hyena": 3,
+   "hoopoe-herald": 2
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": 4,
+  "win200": 31.5,
+  "shown": 2,
+  "tune60": 33.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 35,
+   "hpLost": 83.7,
+   "rounds": 9.55
+  },
+  {
+   "move": "house-cat -1 -> dust-hyena",
+   "win": 40,
+   "hpLost": 79.3,
+   "rounds": 9.62,
+   "trials": 30
+  },
+  {
+   "move": "acacia-giraffe -1 -> hoopoe-herald",
+   "win": 33.3,
+   "hpLost": 85.1,
+   "rounds": 9.87,
+   "trials": 34
+  }
+ ],
+ "trials": 97,
+ "sec": 54
+}

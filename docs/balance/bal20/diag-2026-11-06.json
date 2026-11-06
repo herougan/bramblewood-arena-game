@@ -1,0 +1,280 @@
+{
+ "about": "BAL20: one factor at a time on The Canopy and Savanna Reaches (tools/bal20/diag_2026_11_06.js)",
+ "games": 100,
+ "seed0": 9100,
+ "rows": [
+  {
+   "code": "14-1",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "skirmish",
+   "target": 90,
+   "enemyLevel": 3,
+   "refLevel": 3,
+   "refDeckMap": 14,
+   "win": {
+    "base": 42,
+    "enemyAtRefLevel": 42,
+    "enemyRefMinus1": 42,
+    "noCpuLeader": 45,
+    "shield0": 42,
+    "fieldOff": 42,
+    "plainBramble": 94,
+    "levelAndBramble": 94,
+    "all": 93
+   }
+  },
+  {
+   "code": "14-2",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "skirmish",
+   "target": 85,
+   "enemyLevel": 3,
+   "refLevel": 3,
+   "refDeckMap": 14,
+   "win": {
+    "base": 57,
+    "enemyAtRefLevel": 57,
+    "enemyRefMinus1": 57,
+    "noCpuLeader": 65,
+    "shield0": 64,
+    "fieldOff": 57,
+    "plainBramble": 92,
+    "levelAndBramble": 92,
+    "all": 100
+   }
+  },
+  {
+   "code": "14-3",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "skirmish",
+   "target": 80,
+   "enemyLevel": 3,
+   "refLevel": 3,
+   "refDeckMap": 14,
+   "win": {
+    "base": 56,
+    "enemyAtRefLevel": 56,
+    "enemyRefMinus1": 56,
+    "noCpuLeader": 64,
+    "shield0": 59,
+    "fieldOff": 56,
+    "plainBramble": 92,
+    "levelAndBramble": 92,
+    "all": 97
+   }
+  },
+  {
+   "code": "14-4",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "skirmish",
+   "target": 75,
+   "enemyLevel": 3,
+   "refLevel": 3,
+   "refDeckMap": 14,
+   "win": {
+    "base": 72,
+    "enemyAtRefLevel": 72,
+    "enemyRefMinus1": 72,
+    "noCpuLeader": 70,
+    "shield0": 76,
+    "fieldOff": 72,
+    "plainBramble": 97,
+    "levelAndBramble": 97,
+    "all": 97
+   }
+  },
+  {
+   "code": "14-5",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "elite",
+   "target": 70,
+   "enemyLevel": 3,
+   "refLevel": 3,
+   "refDeckMap": 14,
+   "win": {
+    "base": 25,
+    "enemyAtRefLevel": 25,
+    "enemyRefMinus1": 25,
+    "noCpuLeader": 41,
+    "shield0": 25,
+    "fieldOff": 25,
+    "plainBramble": 59,
+    "levelAndBramble": 59,
+    "all": 69
+   }
+  },
+  {
+   "code": "14-6",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "elite",
+   "target": 65,
+   "enemyLevel": 3,
+   "refLevel": 3,
+   "refDeckMap": 14,
+   "win": {
+    "base": 42,
+    "enemyAtRefLevel": 42,
+    "enemyRefMinus1": 42,
+    "noCpuLeader": 39,
+    "shield0": 42,
+    "fieldOff": 42,
+    "plainBramble": 77,
+    "levelAndBramble": 77,
+    "all": 76
+   }
+  },
+  {
+   "code": "14-7",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "elite",
+   "target": 60,
+   "enemyLevel": 3,
+   "refLevel": 3,
+   "refDeckMap": 14,
+   "win": {
+    "base": 45,
+    "enemyAtRefLevel": 45,
+    "enemyRefMinus1": 45,
+    "noCpuLeader": 46,
+    "shield0": 46,
+    "fieldOff": 45,
+    "plainBramble": 70,
+    "levelAndBramble": 70,
+    "all": 73
+   }
+  },
+  {
+   "code": "14-8",
+   "map": "m5",
+   "mapName": "Savanna Reaches",
+   "kind": "miniboss",
+   "target": 40,
+   "enemyLevel": 3,
+   "refLevel": 3,
+   "refDeckMap": 14,
+   "win": {
+    "base": 24,
+    "enemyAtRefLevel": 24,
+    "enemyRefMinus1": 24,
+    "noCpuLeader": 52,
+    "shield0": 27,
+    "fieldOff": 24,
+    "plainBramble": 71,
+    "levelAndBramble": 71,
+    "all": 86
+   }
+  },
+  {
+   "code": "14-A-1",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "skirmish",
+   "target": 90,
+   "enemyLevel": 4,
+   "refLevel": 3.54,
+   "refDeckMap": 18,
+   "win": {
+    "base": 0,
+    "enemyAtRefLevel": 0,
+    "enemyRefMinus1": 0,
+    "noCpuLeader": 0,
+    "shield0": 0,
+    "fieldOff": 5,
+    "plainBramble": 3,
+    "levelAndBramble": 2,
+    "all": 39
+   }
+  },
+  {
+   "code": "14-A-2",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "skirmish",
+   "target": 80,
+   "enemyLevel": 4,
+   "refLevel": 3.54,
+   "refDeckMap": 18,
+   "win": {
+    "base": 31,
+    "enemyAtRefLevel": 37,
+    "enemyRefMinus1": 52,
+    "noCpuLeader": 9,
+    "shield0": 33,
+    "fieldOff": 22,
+    "plainBramble": 81,
+    "levelAndBramble": 85,
+    "all": 72
+   }
+  },
+  {
+   "code": "14-A-3",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "skirmish",
+   "target": 70,
+   "enemyLevel": 4,
+   "refLevel": 3.54,
+   "refDeckMap": 18,
+   "win": {
+    "base": 8,
+    "enemyAtRefLevel": 11,
+    "enemyRefMinus1": 29,
+    "noCpuLeader": 2,
+    "shield0": 8,
+    "fieldOff": 15,
+    "plainBramble": 62,
+    "levelAndBramble": 61,
+    "all": 46
+   }
+  },
+  {
+   "code": "14-A-4",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "elite",
+   "target": 60,
+   "enemyLevel": 4,
+   "refLevel": 3.54,
+   "refDeckMap": 18,
+   "win": {
+    "base": 0,
+    "enemyAtRefLevel": 0,
+    "enemyRefMinus1": 2,
+    "noCpuLeader": 1,
+    "shield0": 1,
+    "fieldOff": 7,
+    "plainBramble": 13,
+    "levelAndBramble": 13,
+    "all": 37
+   }
+  },
+  {
+   "code": "14-A-5",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "boss",
+   "target": 40,
+   "enemyLevel": 4,
+   "refLevel": 3.54,
+   "refDeckMap": 18,
+   "win": {
+    "base": 0,
+    "enemyAtRefLevel": 0,
+    "enemyRefMinus1": 0,
+    "noCpuLeader": 0,
+    "shield0": 0,
+    "fieldOff": 1,
+    "plainBramble": 5,
+    "levelAndBramble": 6,
+    "all": 45
+   }
+  }
+ ]
+}

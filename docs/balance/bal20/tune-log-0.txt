@@ -1,0 +1,10 @@
+14-A-1 1 leader pangolin-roller -> leafcutter-gardener 1.7 7
+14-A-1 target 90 | 200 games: 0 -> 0 no | start; leader pangolin-roller -> leafcutter-gardener | 24s
+14-A-3 1 leafcutter-gardener -1 -> redwood-woodpecker 26.7 9.87
+14-A-3 target 70 | 200 games: 9.5 -> 15 KEEP | start; leafcutter-gardener -1 -> redwood-woodpecker | 50s
+14-A-5 target 40 | 200 games: 0 -> 0 no | start | 12s
+14-2 target 85 | 200 games: 56.5 -> 56.5 no | start | 31s
+14-5 target 70 | 200 games: 25 -> 25 no | start | 29s
+14-7 1 house-cat -1 -> dust-hyena 40 9.62
+14-7 2 acacia-giraffe -1 -> hoopoe-herald 33.3 9.87
+14-7 target 60 | 200 games: 41 -> 31.5 no | start; house-cat -1 -> dust-hyena; acacia-giraffe -1 -> hoopoe-herald | 54s

@@ -1,0 +1,91 @@
+{
+ "about": "BAL20: decks swapped between a Savanna (14-1) and a Canopy (14-A-1) fight (tools/bal20/cross_2026_11_06.js)",
+ "games": 100,
+ "refDecks": {
+  "map14": {
+   "alpine-marmot": 4,
+   "otter-centurion": 1,
+   "ibex-rockcaller": 3,
+   "lyrebird-mimic": 3,
+   "meadow-frog": 1,
+   "eagle-owl-quartermaster": 4,
+   "shimmerwing-stag": 3,
+   "burrow-rabbit": 1
+  },
+  "map18": {
+   "otter-centurion": 4,
+   "golden-eagle-diver": 1,
+   "ibex-rockcaller": 3,
+   "electric-ray": 3,
+   "echo-screecher": 4,
+   "adder-ambusher": 4,
+   "tunnel-ant": 1
+  }
+ },
+ "rows": [
+  {
+   "code": "14-A-1",
+   "own": 0,
+   "inSavanna14_1": 14,
+   "inCanopy14_A_1": 0,
+   "vsMap14RefDeckLv3": 0,
+   "vsMap14RefDeckLv354": 0
+  },
+  {
+   "code": "14-A-2",
+   "own": 31,
+   "inSavanna14_1": 37,
+   "inCanopy14_A_1": 31,
+   "vsMap14RefDeckLv3": 24,
+   "vsMap14RefDeckLv354": 30
+  },
+  {
+   "code": "14-A-3",
+   "own": 8,
+   "inSavanna14_1": 28,
+   "inCanopy14_A_1": 8,
+   "vsMap14RefDeckLv3": 10,
+   "vsMap14RefDeckLv354": 12
+  },
+  {
+   "code": "14-A-4",
+   "own": 0,
+   "inSavanna14_1": 11,
+   "inCanopy14_A_1": 2,
+   "vsMap14RefDeckLv3": 1,
+   "vsMap14RefDeckLv354": 4
+  },
+  {
+   "code": "14-A-5",
+   "own": 0,
+   "inSavanna14_1": 7,
+   "inCanopy14_A_1": 1,
+   "vsMap14RefDeckLv3": 0,
+   "vsMap14RefDeckLv354": 0
+  },
+  {
+   "code": "14-1",
+   "own": 42,
+   "inSavanna14_1": 42,
+   "inCanopy14_A_1": 21
+  },
+  {
+   "code": "14-3",
+   "own": 56,
+   "inSavanna14_1": 56,
+   "inCanopy14_A_1": 26
+  },
+  {
+   "code": "14-5",
+   "own": 25,
+   "inSavanna14_1": 24,
+   "inCanopy14_A_1": 12
+  },
+  {
+   "code": "14-8",
+   "own": 24,
+   "inSavanna14_1": 37,
+   "inCanopy14_A_1": 26
+  }
+ ]
+}

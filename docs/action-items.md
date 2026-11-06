@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-06: Package BAL20 (on its branch, not released)
+- Done: The Canopy / Savanna Reaches after ENG26's Acacia Kraal: 4 fights retuned (14-3, 14-8, 14-A-3, 14-A-4), road 116 -> 117 in band, 24 -> 23 beyond 20 (docs/balance/bal20-2026-11-06.md). The Canopy's gap is its list under K14 plus the bramble, not its level.
+- Owner calls open: BAL20-1 (The Canopy: re-tune its cheap cards or list, a plainer bramble, or leave it), BAL20-2 (14-8 now easier than its elites).
+- Next: the balance summary at the batch release (`tools/bal13/summary_2026_11_02.js --road bal20-final`).
+
 ## 11-06: Package ENG26 (on its branch, not released)
 - Done: owner 09:29 #1-#6: paged context pips every 3 s, names off on crowded small rows, escalating Bloom (ENG26-1), Undead heals hurt / cures bleed (ENG26-2), Acacia Kraal Lumber 1 (BAL19-2 DONE), Banner Knoll (Leader +2/+3, ENG26-4).
 - Owner calls open: ENG26-3 (Bloom's price: one line of bramblewood-budget.js, or price it from the measure), ENG26-5 (where Banner Knoll is earned).

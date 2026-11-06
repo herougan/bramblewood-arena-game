@@ -1,0 +1,12 @@
+14-A-2 target 80 | 200 games: 28.5 -> 28.5 no | start | 24s
+14-A-4 1 leader hercules-beetle -> vampire-bat 5 10.1
+14-A-4 2 leafcutter-gardener -1 -> camouflage-frog 10 10.52
+14-A-4 target 60 | 200 games: 0.5 -> 5.5 KEEP | start; leader hercules-beetle -> vampire-bat; leafcutter-gardener -1 -> camouflage-frog | 65s
+14-1 target 90 | 200 games: 45 -> 45 no | start | 20s
+14-3 1 ant-hill -1 -> dust-hyena 50 10.57
+14-3 2 spitting-cobra -1 -> hoopoe-herald 53.3 10.98
+14-3 target 80 | 200 games: 55 -> 46.5 no | start; ant-hill -1 -> dust-hyena; spitting-cobra -1 -> hoopoe-herald | 64s
+14-6 1 springbok-pronker -1 -> hoopoe-herald 36.7 10.27
+14-6 target 65 | 200 games: 45.5 -> 40.5 no | start; springbok-pronker -1 -> hoopoe-herald | 30s
+14-8 1 leader dust-hyena -> acacia-giraffe 36.7 10.78
+14-8 target 40 | 200 games: 23 -> 54.5 KEEP | start; leader dust-hyena -> acacia-giraffe | 25s

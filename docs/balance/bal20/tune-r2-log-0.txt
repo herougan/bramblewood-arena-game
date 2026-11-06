@@ -1,0 +1,8 @@
+14-A-1 1 leader pangolin-roller -> leafcutter-gardener 0.8 7.1
+14-A-1 target 90 | 200 games: 0 -> 0 no | start; leader pangolin-roller -> leafcutter-gardener | 31s
+14-A-3 target 70 | 200 games: 15 -> 15 no | start | 35s
+14-A-5 target 40 | 200 games: 0 -> 0 no | start | 18s
+14-2 1 springbok-pronker -1 -> grave-grin-hyena 58.3 10.58
+14-2 target 85 | 200 games: 56.5 -> 57.5 no | start; springbok-pronker -1 -> grave-grin-hyena | 65s
+14-5 target 70 | 200 games: 25 -> 25 no | start | 33s
+14-7 target 60 | 200 games: 41 -> 41 no | start | 27s

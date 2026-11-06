@@ -1,0 +1,132 @@
+{
+ "about": "BAL20: one factor at a time on The Canopy and Savanna Reaches (tools/bal20/diag_2026_11_06.js)",
+ "games": 100,
+ "seed0": 9100,
+ "rows": [
+  {
+   "code": "14-A-1",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "skirmish",
+   "target": 90,
+   "enemyLevel": 4,
+   "refLevel": 3.54,
+   "refDeckMap": 18,
+   "win": {
+    "base": 0,
+    "enemyAtRefLevel": 0,
+    "enemyRefMinus1": 0,
+    "noCpuLeader": 0,
+    "shield0": 0,
+    "fieldOff": 5,
+    "plainBramble": 3,
+    "levelAndBramble": 2,
+    "plainNoCanopy": 3,
+    "plainNoRain": 5,
+    "plainFieldOff": 15,
+    "plainNoLeader": 3,
+    "all": 39
+   }
+  },
+  {
+   "code": "14-A-2",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "skirmish",
+   "target": 80,
+   "enemyLevel": 4,
+   "refLevel": 3.54,
+   "refDeckMap": 18,
+   "win": {
+    "base": 31,
+    "enemyAtRefLevel": 37,
+    "enemyRefMinus1": 52,
+    "noCpuLeader": 9,
+    "shield0": 33,
+    "fieldOff": 22,
+    "plainBramble": 81,
+    "levelAndBramble": 85,
+    "plainNoCanopy": 72,
+    "plainNoRain": 58,
+    "plainFieldOff": 52,
+    "plainNoLeader": 70,
+    "all": 72
+   }
+  },
+  {
+   "code": "14-A-3",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "skirmish",
+   "target": 70,
+   "enemyLevel": 4,
+   "refLevel": 3.54,
+   "refDeckMap": 18,
+   "win": {
+    "base": 22,
+    "enemyAtRefLevel": 23,
+    "enemyRefMinus1": 30,
+    "noCpuLeader": 6,
+    "shield0": 22,
+    "fieldOff": 22,
+    "plainBramble": 66,
+    "levelAndBramble": 75,
+    "plainNoCanopy": 62,
+    "plainNoRain": 69,
+    "plainFieldOff": 65,
+    "plainNoLeader": 39,
+    "all": 62
+   }
+  },
+  {
+   "code": "14-A-4",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "elite",
+   "target": 60,
+   "enemyLevel": 4,
+   "refLevel": 3.54,
+   "refDeckMap": 18,
+   "win": {
+    "base": 7,
+    "enemyAtRefLevel": 6,
+    "enemyRefMinus1": 18,
+    "noCpuLeader": 3,
+    "shield0": 8,
+    "fieldOff": 7,
+    "plainBramble": 27,
+    "levelAndBramble": 19,
+    "plainNoCanopy": 29,
+    "plainNoRain": 22,
+    "plainFieldOff": 23,
+    "plainNoLeader": 26,
+    "all": 28
+   }
+  },
+  {
+   "code": "14-A-5",
+   "map": "my",
+   "mapName": "The Canopy",
+   "kind": "boss",
+   "target": 40,
+   "enemyLevel": 4,
+   "refLevel": 3.54,
+   "refDeckMap": 18,
+   "win": {
+    "base": 0,
+    "enemyAtRefLevel": 0,
+    "enemyRefMinus1": 0,
+    "noCpuLeader": 0,
+    "shield0": 0,
+    "fieldOff": 1,
+    "plainBramble": 5,
+    "levelAndBramble": 6,
+    "plainNoCanopy": 8,
+    "plainNoRain": 11,
+    "plainFieldOff": 25,
+    "plainNoLeader": 5,
+    "all": 45
+   }
+  }
+ ]
+}
