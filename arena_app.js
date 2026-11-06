@@ -7292,8 +7292,10 @@ function animalChipsHTML(d){
   const out = [];
   if(d && d.animal){
     out.push(`<span class="cd-chip cd-animal" title="${escapeAttr(TX('ui.codex-animal-tip', {animal: d.animal}))}">🐾 ${escapeHtml(animalCap(d.animal))}</span>`);
-    if(d.subtype) out.push(`<span class="cd-chip cd-subtype" title="${escapeAttr(TX('ui.codex-subtype-tip', {subtype: animalSubtypeLabel(d.subtype), animal: d.animal}))}">${ANIMAL_SUBTYPE_ICON[d.subtype] || '✨'} ${escapeHtml(animalSubtypeLabel(d.subtype))}</span>`);
+    if(d.subtype) out.push(`<span class="cd-chip cd-subtype" title="${escapeAttr(TX('ui.codex-subtype-tip', {subtype: animalSubtypeLabel(d.subtype), animal: d.animal}) + (d.subtype === 'undead' ? ' ' + TX('ui.eng26-undead-rule') : ''))}">${ANIMAL_SUBTYPE_ICON[d.subtype] || '✨'} ${escapeHtml(animalSubtypeLabel(d.subtype))}</span>`);
   }
+  // ENG26 (2026-11-06, owner 09:29 #4): an Undead card (species or subtype) says how heals and cures treat it
+  if(d && (d.subtype === 'undead' || (d.species || []).includes('Undead'))) out.push(`<span class="cd-chip cd-undead-rule" title="${escapeAttr(TX('ui.eng26-undead-rule'))}">🧟 ${escapeHtml(TX('ui.eng26-undead-rule'))}</span>`);
   if(d && d.faction === 'base') out.push(`<span class="cd-chip cd-base" title="${escapeAttr(TX('ui.codex-base-tip'))}">🌰 ${escapeHtml(TX('ui.codex-base-chip'))}</span>`);
   return out;
 }
@@ -9586,9 +9588,17 @@ function abilityBadges(d, bopts){
   // skill is one slot. Up to 3 slots on a big card; past that, the last slot cycles through the rest every 2 s (see the
   // badge-cycle ticker). Small cards (board and hand) have room for one slot, which cycles through every skill.
   const maxSlots = (bopts && bopts.compact) ? 3 : 4; // 2026-10-11: the strip sits on the bottom edge now, so it has room for more
+  // ENG26 (2026-11-06, owner 09:29 #1: "when there are too many context pips, why do only some of them swap every 2s? btw increase this
+  // flipping duration by 50%"): two causes. (a) Only the LAST slot cycled; the first maxSlots-1 pips stayed put, so a card with 5 pips
+  // showed 2 fixed pips and one slot flipping through the other 3. (b) Every board re-render rebuilt the cycling slot at its first item
+  // with dataset.i unset, so a card re-rendered between ticks restarted while the others carried on, and they drifted apart. Now the
+  // overflow set is split into pages of maxSlots pips and EVERY slot flips to the next page together; the shown page comes from one
+  // shared tick counter (BADGE_CYCLE_TICK), so a re-render lands on the same page as every other card. Interval 2 s -> 3 s.
   if(out.length > maxSlots){
-    const keep = out.slice(0, Math.max(0, maxSlots - 1)), rest = out.slice(Math.max(0, maxSlots - 1));
-    return `<div class="badges badge-slots has-cycle">${keep.map(b=> `<span class="abadge${ui11IconOnly(b)}">${b}</span>`).join('')}<span class="abadge badge-cycle" title="${rest.length} skills, cycling">${rest.map((b, i)=> `<span class="bc-item${i===0 ? ' is-shown' : ''}">${b}</span>`).join('')}</span></div>`;
+    const pages = []; for(let i = 0; i < out.length; i += maxSlots) pages.push(out.slice(i, i + maxSlots));
+    const shown = BADGE_CYCLE_TICK % pages.length;
+    const slots = []; for(let j = 0; j < maxSlots; j++) slots.push(`<span class="abadge badge-cycle"${j === 0 ? ` title="${out.length} skills, cycling"` : ''}>${pages.map((pg, p)=> `<span class="bc-item${p === shown ? ' is-shown' : ''}${pg[j] == null ? ' is-empty' : ''}">${pg[j] == null ? '' : pg[j]}</span>`).join('')}</span>`);
+    return `<div class="badges badge-slots has-cycle">${slots.join('')}</div>`;
   }
   // 2026-10-15 (user: "Why do those enemy cards have that slim weird & grey rectangle where their ability context icons would be.
   // Is that 'Bounty'?"): yes — on the board the opponent's Bounty shows as the Lumber bubble and its 🏆 slot is hidden, which left
@@ -9605,8 +9615,9 @@ function abilityBadges(d, bopts){
   }
   return `<div class="badges">${pills.join('')}</div>`;
 }
-// Badge cycling ticker: every 2 s each cycling slot shows its next skill.
-setInterval(()=>{ if(document.hidden) return; document.querySelectorAll('.badge-cycle').forEach(el=>{ const items = el.querySelectorAll('.bc-item'); if(items.length < 2) return; const k = ((Number(el.dataset.i)||0) + 1) % items.length; el.dataset.i = k; items.forEach((it, i)=> it.classList.toggle('is-shown', i === k)); }); }, 2000);
+// Badge cycling ticker: every 3 s (ENG26, 2026-11-06: was 2 s, owner "+50%") every cycling slot shows the page of the shared tick.
+var BADGE_CYCLE_TICK = 0;
+setInterval(()=>{ if(document.hidden) return; BADGE_CYCLE_TICK++; document.querySelectorAll('.badge-cycle').forEach(el=>{ const items = el.querySelectorAll(':scope > .bc-item'); if(items.length < 2) return; const k = BADGE_CYCLE_TICK % items.length; items.forEach((it, i)=> it.classList.toggle('is-shown', i === k)); }); }, 3000);
 function escapeAttr(s){ return (s==null || s===false ? '' : String(s)).replace(/"/g,'&quot;'); } // numbers too (2026-10-11)
 function escapeHtml(s){ return (s==null || s===false ? '' : String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
@@ -16095,6 +16106,7 @@ function characterDescHTML(ch){
   if(e.firstUnitAtkBonus) bits.push(`1st unit played: +${e.firstUnitAtkBonus} ⚔`);
   if(e.unitHpBonus) bits.push(`Every unit played: +${e.unitHpBonus} ❤`);
   if(e.flyerAtkBonus) bits.push(`Flying units played: +${e.flyerAtkBonus} ⚔`);
+  if(e.leaderBoon){ const b = e.leaderBoon === true ? {atk:2, hp:3} : e.leaderBoon; bits.push(TX('ui.eng26-leader-boon-desc', {a: b.atk||0, h: b.hp||0})); } // ENG26 (2026-11-06): Banner Knoll
   if(e.castleRegen) bits.push(TX('ui.en8-castle-regen', {n: e.castleRegen})); // EN8 (2026-10-24, P24-17): a random wounded ally, never the bramble
   if(e.enemyWaitBonus) bits.push(`The enemy's first 3 units arrive with +${e.enemyWaitBonus} ⏳ Wait`);
   if(e.castleBolt) bits.push(`Each round a ballista bolt hits a random enemy unit for ${e.castleBolt}`);
@@ -16144,6 +16156,7 @@ const BRAMBLE_FX = [
   {key:'startGold', icon:'🪵', label:()=> TX('ui.ux2-fx-start-lumber')},
   {key:'castleLumberEvery', icon:'🪵', label:()=> TX('ui.ux2-fx-lumber-time')},
   {key:'firstUnitAtkBonus', icon:'⚔️', label:()=> TX('ui.ux2-fx-first-atk')},
+  {key:'leaderBoon', icon:'🚩', label:()=> TX('ui.eng26-fx-leader')}, // ENG26 (2026-11-06): Banner Knoll's Leader +2/+3
   {key:'unitHpBonus', icon:'❤️', label:()=> TX('ui.ux2-fx-unit-hp')},
   {key:'flyerAtkBonus', icon:'🪽', label:()=> TX('ui.ux2-fx-flyer-atk')},
   {key:'castleRegen', icon:'💚', label:()=> TX('ui.ux2-fx-regen')},
@@ -22832,6 +22845,7 @@ function castleBlurb(c){
   const e = (c && c.effects) || {}, bits = [];
   if(e.startGold) bits.push(`Start with +${e.startGold} 🪵`);
   if(e.firstUnitAtkBonus) bits.push(`First unit +${e.firstUnitAtkBonus} ⚔`);
+  if(e.leaderBoon){ const b = e.leaderBoon === true ? {atk:2, hp:3} : e.leaderBoon; bits.push(TX('ui.eng26-leader-boon-desc', {a: b.atk||0, h: b.hp||0})); } // ENG26 (2026-11-06)
   return bits.join(' · ') || 'No special effect';
 }
 function castleTileHTML(c, extra){ return `<div class="ab-castle-tile ${extra||''}"><div class="ab-castle-ico">${c.icon||'🏰'}</div><div class="ab-castle-name">${escapeHtml(c.name)}</div><div class="ab-castle-hp">🏰 ${c.health} HP</div><div class="ab-castle-fx">${escapeHtml(castleBlurb(c))}</div></div>`; }
@@ -51177,6 +51191,11 @@ function field2LogText(ev, nm){
   if(ev.type === 'skipTurn' && ev.reason === 'frightened') return {cls:'', text:`${nm(ev.defId)} is too frightened to attack. 👻`};
   if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
   if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
+  // ENG26 (2026-11-06, owner 09:29 #3, #4, #6): the escalating Bloom, an Undead unit's heal and cure, a Banner Knoll Leader
+  if(ev.type === 'undeadHeal') return {cls:'dmg', text: TX('ui.eng26-log-undead-heal', {name: nm(ev.defId), n: dnLogNum(ev.dmg, ev)})};
+  if(ev.type === 'undeadCure') return {cls:'', text: TX('ui.eng26-log-undead-cure', {name: nm(ev.defId), n: ev.bleed})};
+  if(ev.type === 'statusFx' && ev.kind === 'leaderBoon') return {cls:'gold', text: TX('ui.eng26-log-leader-boon', {name: nm(ev.targetDefId), a: ev.atk, h: ev.hp})};
+  if(ev.type === 'bloom' && !ev.parasite && !ev.failed && ev.step != null) return {cls:'', text: TX(ev.lumber ? 'ui.eng26-bloom-log-lumber' : 'ui.eng26-bloom-log', {name: nm(ev.defId), n: ev.lumber||0, a: ev.step})};
   if(ev.type === 'bloom' && ev.parasite) return {cls:'poison', text: TX('ui.en7-log-para-bloom', {unit: nm(ev.defId), target: nm(ev.targetDefId)})}; // EN7 (2026-10-24)
   if(ev.type === 'bloom' && ev.failed) return {cls:'', text: TX('ui.eng9-bloom-fail-log', {name: nm(ev.defId)})}; // ENG9 (2026-10-26, EN7-2)
   if(ev.type === 'bloom') return {cls:'', text: TX(ev.lumber ? 'ui.bl-log-lumber' : 'ui.bl-log', {name: nm(ev.defId), n: ev.lumber||0})}; // BL (2026-10-23)
@@ -52555,6 +52574,7 @@ function renderVfxForEvent(ev){
     if(ev.kind==='nullify'){ try{ SoundKit.stunTone(); }catch(e){} if(el){ floatText(el, '🚫 Nullified', 'debuff'); el.classList.remove('nullify-flash'); void el.offsetWidth; el.classList.add('nullify-flash'); setTimeout(()=> el.classList.remove('nullify-flash'), 700); } }
     if(ev.kind==='sacrificed'){ const se = boardCardEl(ev.attUid); if(se){ floatText(se, '🦷 Sacrifice', 'debuff'); se.classList.add('sac-chomp'); setTimeout(()=> se.classList.remove('sac-chomp'), 700); } }
     // 2026-10-12 skills
+    if(ev.kind==='leaderBoon'){ setTimeout(()=>{ const e2 = boardCardEl(ev.targetUid); if(e2){ floatText(e2, `🚩 +${ev.atk}/+${ev.hp}`, 'heal slow'); e2.classList.add('surge-glow'); setTimeout(()=> e2.classList.remove('surge-glow'), 1400); } }, 450); } // ENG26 (2026-11-06): Banner Knoll's Leader +2/+3, once the card has landed
     if(ev.kind==='surge'){ try{ SoundKit.rageRoar ? SoundKit.rageRoar() : SoundKit.swipeTone(); }catch(e){} if(el){ floatText(el, `🌋 +${ev.atk}/+${ev.hp}`, 'heal slow'); el.classList.add('surge-glow'); setTimeout(()=> el.classList.remove('surge-glow'), 1400); } }
     // 2026-10-12 (09:48, user: "The shell words comes out too fast. And don't say anything just say Shell!. There should be
     // animation across the card over 0.5s"): a pale-blue shell sweeps up the card over half a second, then "Shell!".
@@ -52874,6 +52894,22 @@ function renderVfxForEvent(ev){
   // the one concrete asymmetry the audit found next to poison's "🫧 N!" — now mirrors it with a
   // blood-drop lead, plus its own red tint-pulse so it reads as clearly distinct from poison's
   // green rather than just a slightly different number.
+  // ENG26 (2026-11-06, owner 09:29 #4): a heal hurts an Undead unit (a damage number, a sickly tint); a cure makes it bleed (🩸N)
+  if(ev.type==='undeadHeal'){
+    try{ SoundKit.bleedTick(); }catch(e){} const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'bleed-tint-pulse');
+    if(el) floatText(el, TX('ui.eng26-float-undead-heal'), 'debuff slow');
+    dnFloat(el, ev.dmg, {type:'true', cls:'bleed-tick'});
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
+    if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
+    updateCardHpDisplay(ev.uid);
+  }
+  if(ev.type==='undeadCure'){
+    const el = boardCardEl(ev.uid); tintPulse(el, 'bleed-tint-pulse');
+    if(el) floatText(el, TX('ui.eng26-float-undead-cure', {n: ev.bleed}), 'debuff');
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
+    if(rc) rc.bleed = (rc.bleed||0) + (ev.bleed||0);
+    try{ updateCardStatusDisplay(ev.uid); }catch(e){}
+  }
   if(ev.type==='bleedTick'){
     SoundKit.bleedTick(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'bleed-tint-pulse');
     dnFloat(el, ev.dmg, {type:'bleed', mods: ev.mods, cls:'bleed-tick'}); /* DN2 */

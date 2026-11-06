@@ -4007,5 +4007,16 @@
  "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.": "젖음 {n}: 번개 공격마다 {n} 더 받습니다. 매 라운드 표식 하나를 잃고, 불은 태우기 전에 하나를 말립니다.",
  "Fast-forward ⏩ ×{n}: at the next combat's start it takes {n} extra turns before everyone else.": "빨리 감기 ⏩ ×{n}: 다음 전투가 시작될 때, 누구보다 먼저 {n}번 더 행동합니다.",
  "Feed (instead of pitching): drop a card here or on your bramble. Repair {n}, units +{a} Attack. {left} left.": "먹이기(버리기 대신): 카드를 여기나 내 덤불에 놓으세요. 수리 {n}, 유닛 공격 +{a}. {left}번 남음.",
- "Flock": "새떼"
+ "Flock": "새떼",
+ "Undead: a heal hurts it for as much instead; a cure or cleanse makes it Bleed instead.": "언데드: 회복은 같은 만큼의 피해가 되고, 치료나 정화는 출혈이 됩니다.",
+ "Your Leader: +{a} ⚔ / +{h} ❤ when it takes the field": "내 리더: 등장할 때 +{a} ⚔ / +{h} ❤",
+ "Leader's Attack and Health": "리더의 공격력과 체력",
+ "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "각 라운드 시작 시 가능 상태이고 조건이 맞으면 ({when}): 옆의 빈칸에 +1/+1(이번 전투의 다음 개화는 +2/+2, 이후 계속)과 피해, 능력치 변화는 이어받고 카운터는 이어받지 않는 복제본이 자랍니다. 본체는 그대로이며 가능 상태인 라운드마다 다시 시도해요. 복제본은 대기를 가진 토큰이며 개화가 없어요.",
+ "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "각 라운드 시작 시 가능 상태이고, 조건이 맞고 ({when}), 목재가 {n} 있으면: 목재를 내고 옆의 빈칸에 +1/+1(이번 전투의 다음 개화는 +2/+2, 이후 계속)과 피해, 능력치 변화는 이어받고 카운터는 이어받지 않는 복제본이 자랍니다. 본체는 그대로이며 가능 상태인 라운드마다 다시 시도해요. 복제본은 대기를 가진 토큰이며 개화가 없어요.",
+ "{name} blooms: a copy of it grows beside it, with +{a}/+{a}.": "{name} 개화: 옆에 복제본이 자랍니다 (+{a}/+{a}).",
+ "{name} blooms for {n} Lumber: a copy of it grows beside it, with +{a}/+{a}.": "{name} 목재 {n}로 개화: 옆에 복제본이 자랍니다 (+{a}/+{a}).",
+ "{name} is Undead: the heal hurts it for {n}.": "{name}은(는) 언데드: 회복이 오히려 {n} 피해를 줍니다.",
+ "{name} is Undead: the cure makes it Bleed {n}.": "{name}은(는) 언데드: 정화가 오히려 출혈 {n}을 줍니다.",
+ "Heal hurts": "회복이 피해",
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name}이(가) 리더로 등장: 덤불에서 +{a}/+{h}."
 }

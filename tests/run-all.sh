@@ -336,6 +336,7 @@ run node tests/edit1-2026-11-05.js   # 2026-11-05 (package EDIT1, owner 23:35): 
 run node tests/content12-2026-11-06.js   # 2026-11-06 (package CONTENT12): the owner's live card edits folded in, one job per card, ENG24 / ENG22 skill carriers, Shell re-fit, Delivery's home price, 17-8 renamed, Lilypad Reach's attackers
 run node tests/bal19-2026-11-06.js   # 2026-11-06 (package BAL19): road fights retuned after CONTENT12's fold (decks, leaders, Shield), each confirmed at 200 games; list, K14, size, first-clear, Shield <= rule, no lower bramble Health
 run node tests/eng25-2026-11-05.js   # 2026-11-05 (package ENG25, owner 23:35): categories, duplicates merged, Hatchling / Regeneration Level 1+, Berries and Forage, Immortal, Hydra, lit state chips, Tribe Delivery, Moonpull, Tide N
+run node tests/eng26-2026-11-06.js   # 2026-11-06 (package ENG26, owner 09:29): paged context pips every 3 s, crowded-row names, escalating Bloom, Undead heals / cures, Acacia Kraal Lumber 1, Banner Knoll
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

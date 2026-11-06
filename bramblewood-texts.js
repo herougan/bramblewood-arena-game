@@ -2077,8 +2077,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.bl-cond-kill": "Killed an enemy",
   "ui.bl-short": "Each Ready round its conditions hold: a copy with +1/+1 grows in an adjacent slot.",
   "ui.bl-short-lumber": "Each Ready round its conditions hold, it pays {n} Lumber: a copy with +1/+1 grows in an adjacent slot.",
-  "ui.bl-desc": "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1, its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.",
-  "ui.bl-desc-lumber": "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1, its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.",
+  "ui.bl-desc": "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.",
+  "ui.bl-desc-lumber": "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.",
   "ui.bl-codex": "Conditions: Wet (rain, the Tide in, or a beach, river or sea map), Sunny (day or Twilight, with no Rain, Fog or darkness), Killed an enemy (this unit has killed an enemy unit), and Tide, Ebb, Night, Day, Twilight, Wind, Dark, Heat, Frost, Full Moon, Rain. Beside it means left or right, or in front or behind on a board with more rows (a raid, Multiplayer). With no free slot beside it, it waits and tries again next round. The copy is a token: it arrives with the unit's printed Wait, has no Bloom and leaves no card behind when it dies.",
   "ui.bl-is-copy": "copy",
   "ui.bl-bloomed": "bloomed",
@@ -3314,7 +3314,17 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng25-tribe-delivery-res-name": "Tribe Delivery resource",
   "ui.eng25-act-forage": "Forage",
   "ui.eng25-act-forage-desc": "The unit gathers N Berries. 3 Berries heal your most hurt other ally 3.",
-  "ui.eng25-foraging": "+{n} Berry each turn. {b} Berries heal your most hurt other ally {h}."
+  "ui.eng25-foraging": "+{n} Berry each turn. {b} Berries heal your most hurt other ally {h}.",
+  "ui.eng26-bloom-log": "🌸 {name} blooms: a copy of it grows beside it, with +{a}/+{a}.",
+  "ui.eng26-bloom-log-lumber": "🌸 {name} blooms for {n} Lumber: a copy of it grows beside it, with +{a}/+{a}.",
+  "ui.eng26-log-undead-heal": "🧟 {name} is Undead: the heal hurts it for {n}.",
+  "ui.eng26-log-undead-cure": "🧟 {name} is Undead: the cure makes it Bleed {n}.",
+  "ui.eng26-float-undead-heal": "🧟 Heal hurts",
+  "ui.eng26-float-undead-cure": "🧟 🩸{n}",
+  "ui.eng26-undead-rule": "Undead: a heal hurts it for as much instead; a cure or cleanse makes it Bleed instead.",
+  "ui.eng26-log-leader-boon": "🚩 {name} takes the field as your Leader: +{a}/+{h} from the bramble.",
+  "ui.eng26-leader-boon-desc": "Your Leader: +{a} ⚔ / +{h} ❤ when it takes the field",
+  "ui.eng26-fx-leader": "Leader's Attack and Health"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

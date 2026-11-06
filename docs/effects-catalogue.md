@@ -473,7 +473,7 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Siege (`siege`) | 3 | floating text / sound only |  | — |
 | Stun (`stunOnHit`) | 3 | `SkillFX.stunStars` | statusFx stunOnHit | 🆕 |
 | Bloom, the old heal (`bloom`, retired 2026-10-23) | 1 | `SkillFX.bloomPollen` | heal from a Bloom unit |  |
-| Bloom – {conditions} (`bloomCopy`) | 4 | `bloomCopyVfx`: petals / spores / a green film drift into the free slot, the copy opens out of a ring of light; "🌸 +1/+1" on the copy | bloom, then spawn (kind bloom) | 🆕 |
+| Bloom – {conditions} (`bloomCopy`) | 4 | `bloomCopyVfx`: petals / spores / a green film drift into the free slot, the copy opens out of a ring of light; "🌸 +N/+N" on the copy (ENG26: the Nth bloom of the side) | bloom, then spawn (kind bloom) | 🆕 |
 | Boomerang (`boomerang`) | 2 | `SkillFX.boomerang*` | hit / hitHQ by a boomerang unit |  |
 | Bulwark (`bulwark`) | 2 | floating text / sound only |  | — |
 | Coffee (`coffee`) | 2 | `SkillFX.clockTick` fast, "☕ ×2" (ENG11: acts twice every N turns) | statusFx coffee / coffeeCrash | 🆕 |
@@ -1546,3 +1546,18 @@ The rules as built (engine: `tideNOf` / `tideMultOf` / `moonpullAuraOn` / `tideS
 | 📦 Tribe Delivery | the Lumber / resource float | as Delivery's pings | `lumber` / `stone` / … (cause trigger) |
 | 🫐 Forage | the 🫐 +N float, the 🫐 → 💚 heal | Berries on the unit, then the heal | `statusFx sk2Berry` / `sk2BerryEat`, `heal` cause `forage` |
 | 🪵 lit state chip | `.ab-sk.zeit-live` gold ring | the chip lights / dims as the state turns | `statusFx stateSkill` {name, on} |
+
+## 2026-11-06 additions (package ENG26): escalating Bloom, Undead heals and cures, Banner Knoll, paged context pips
+The rules as built (engine: `eng26BloomStep`, `eng26IsUndead` / `eng26UndeadHeal` / `eng26UndeadCure`, `eng26ApplyLeaderBoon`):
+- **Bloom – {conditions}** escalates (owner 2026-11-06 09:29: "first copy, becomes 2/8, next 3/9"): each bloom that lands for a side in a fight (a copy beside its parent, or a Parasite's copy on an enemy) adds 1 to that side's count; the Nth copy gets +N/+N. The side's Bloom units share the count; a bloom that waits for room does not count. Call ENG26-1.
+- **Undead** (species Undead or subtype undead, not a Changeling's every-type; a unit back as a token by its Undead skill): a heal aimed at it (the Heal action, Healing, Regeneration, Spring Rain, Herbalist's extra included) deals that much true damage instead, even at full Health; no heal triggers; its own Regeneration still heals it (Obsidian Lich). A Cure N, Cleanse N, the Cleanse action or Renewal that would take something off it takes nothing off and gives Bleed N instead (1 for a Cleanse or Renewal with no number); with nothing to take off, nothing happens. Sap (a drain on its own hit) is unchanged. Call ENG26-2.
+- **Banner Knoll** 🚩 (`leaderBoon {atk 2, hp 3}`): your Leader gets +2 Attack / +3 Health as it takes the field (a summoned Leader, or a Leader card from the hand). Health, not Armor (call ENG26-4). Open to every player; on no road fight yet (ENG26-5).
+- **Context pips** (owner 09:29 #1): a strip with more pips than its slots pages through all its slots together, one page every 3 s (was: only the last slot cycled, every 2 s); one shared tick (`BADGE_CYCLE_TICK`), so a re-rendered card stays in step.
+- **Crowded rows** (#2): a row of 9+ units with tiles under about 120px hides the name scroll.
+
+| Effect | Look | What plays | Events |
+|---|---|---|---|
+| 🌸 Bloom +N | "🌸 +N/+N" on the copy (as before, with the step) | the copy grows | `bloom` {step, copyAtk, copyHp} |
+| 🧟 heal hurts | "🧟 Heal hurts", a damage number, the bleed tint | Health down | `undeadHeal` {uid, amount, dmg} |
+| 🧟 cure bleeds | "🧟 🩸N", the bleed tint | Bleed N on | `undeadCure` {uid, bleed, kind} |
+| 🚩 Leader boon | "🚩 +2/+3" and the surge glow on the Leader | its stats up | `statusFx leaderBoon` {atk, hp} |

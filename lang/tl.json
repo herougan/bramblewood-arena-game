@@ -4005,5 +4005,16 @@
  "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.": "Basa {n}: bawat tama ng kidlat ay {n} pang dagdag. Nawawalan ng isang counter bawat round; tinutuyo ng apoy ang isa bago sumunog.",
  "Fast-forward ⏩ ×{n}: at the next combat's start it takes {n} extra turns before everyone else.": "Fast-forward ⏩ ×{n}: sa simula ng susunod na labanan, gagawa ito ng {n} dagdag na turn bago ang lahat.",
  "Feed (instead of pitching): drop a card here or on your bramble. Repair {n}, units +{a} Attack. {left} left.": "Pakainin (sa halip na itapon): ihulog dito o sa iyong dawag ang isang kard. Ayusin {n}, mga yunit +{a} Atake. {left} na lang.",
- "Flock": "Kawan"
+ "Flock": "Kawan",
+ "Undead: a heal hurts it for as much instead; a cure or cleanse makes it Bleed instead.": "Undead: sa halip na gumaling, napipinsala ito nang ganoon din; pinadudugo ito ng gamot o paglilinis.",
+ "Your Leader: +{a} ⚔ / +{h} ❤ when it takes the field": "Ang Pinuno mo: +{a} ⚔ / +{h} ❤ pagpasok sa laban",
+ "Leader's Attack and Health": "Atake at Buhay ng Pinuno",
+ "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "Sa simula ng bawat round na Handa ito at tumutugon ang kondisyon nito ({when}): tumutubo sa bakanteng puwesto sa tabi nito ang kopya nito na may +1/+1 (+2/+2 sa susunod mong pamumulaklak sa labang ito, at iba pa), ang pinsala nito at ang mga pagbabago sa stat, pero wala sa mga counter nito. Hindi nagbabago ang unit mismo at sumusubok ulit ito sa bawat round na Handa. Ang kopya ay token na may sarili nitong Hintay at walang Pamumulaklak.",
+ "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "Sa simula ng bawat round na Handa ito, tumutugon ang kondisyon nito ({when}) at may {n} Kahoy ka: binabayaran nito ang Kahoy at tumutubo sa bakanteng puwesto sa tabi nito ang kopya nito na may +1/+1 (+2/+2 sa susunod mong pamumulaklak sa labang ito, at iba pa), ang pinsala nito at ang mga pagbabago sa stat, pero wala sa mga counter nito. Hindi nagbabago ang unit mismo at sumusubok ulit ito sa bawat round na Handa. Ang kopya ay token na may sarili nitong Hintay at walang Pamumulaklak.",
+ "{name} blooms: a copy of it grows beside it, with +{a}/+{a}.": "Namumulaklak ang {name}: may kopyang tumubo sa tabi nito, may +{a}/+{a}.",
+ "{name} blooms for {n} Lumber: a copy of it grows beside it, with +{a}/+{a}.": "Namumulaklak ang {name} sa halagang {n} Kahoy: may kopyang tumubo sa tabi nito, may +{a}/+{a}.",
+ "{name} is Undead: the heal hurts it for {n}.": "Undead ang {name}: sinasaktan ito ng lunas nang {n}.",
+ "{name} is Undead: the cure makes it Bleed {n}.": "Undead ang {name}: pinadudugo ito ng gamot nang {n}.",
+ "Heal hurts": "Masakit ang lunas",
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "Pumasok sa laban ang {name} bilang Pinuno: +{a}/+{h} mula sa dawag."
 }

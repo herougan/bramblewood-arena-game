@@ -4005,5 +4005,16 @@
  "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.": "潮濕 {n}：每次閃電命中多造成 {n}。每回合失去一個標記；火焰點燃前先烘乾一個。",
  "Fast-forward ⏩ ×{n}: at the next combat's start it takes {n} extra turns before everyone else.": "快進 ⏩ ×{n}：下一場戰鬥開始時，它先於所有人多行動 {n} 次。",
  "Feed (instead of pitching): drop a card here or on your bramble. Repair {n}, units +{a} Attack. {left} left.": "餵食（代替棄牌）：把一張牌拖到這裡或你的荊棘叢上。修復 {n}，單位 +{a} 攻擊。還剩 {left} 次。",
- "Flock": "鳥群"
+ "Flock": "鳥群",
+ "Undead: a heal hurts it for as much instead; a cure or cleanse makes it Bleed instead.": "亡靈：治療改為造成等量傷害；治癒或淨化改為使其流血。",
+ "Your Leader: +{a} ⚔ / +{h} ❤ when it takes the field": "你的領袖：登場時 +{a} ⚔ / +{h} ❤",
+ "Leader's Attack and Health": "領袖的攻擊和生命",
+ "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "每回合開始時，若它處於可進行狀態且條件滿足（{when}）：旁邊的空格位會長出一個它的複製體，帶有 +1/+1（本場你的下一次開花 +2/+2，依此類推）、它的傷害和屬性變化，但不帶任何指示物。本體不變，並在每個可進行回合再次嘗試。複製體是一個帶有其等待值、沒有開花的衍生物。",
+ "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "每回合開始時，若它處於可進行狀態、條件滿足（{when}）且你有 {n} 木材：它支付木材，旁邊的空格位會長出一個它的複製體，帶有 +1/+1（本場你的下一次開花 +2/+2，依此類推）、它的傷害和屬性變化，但不帶任何指示物。本體不變，並在每個可進行回合再次嘗試。複製體是一個帶有其等待值、沒有開花的衍生物。",
+ "{name} blooms: a copy of it grows beside it, with +{a}/+{a}.": "{name} 開花：旁邊長出一個複製體，+{a}/+{a}。",
+ "{name} blooms for {n} Lumber: a copy of it grows beside it, with +{a}/+{a}.": "{name} 花費 {n} 木材開花：旁邊長出一個複製體，+{a}/+{a}。",
+ "{name} is Undead: the heal hurts it for {n}.": "{name} 是亡靈：治療反而對它造成 {n} 點傷害。",
+ "{name} is Undead: the cure makes it Bleed {n}.": "{name} 是亡靈：治癒反而讓它流血 {n}。",
+ "Heal hurts": "治療即傷害",
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} 作為領袖登場：荊棘叢給予 +{a}/+{h}。"
 }

@@ -52,6 +52,10 @@ Source for all of it: `bramblewood-engine.js` (the engine decides); player wordi
 - **Bramble actives (CONTENT9-2):** the Gnawed Larder's Feed (once a turn instead of the pitch: Repair 3, +1 Attack to your units on the field, 3 a fight) and Ballista Keep's Aimed Bolt (once a fight, 4 at the unit in a column you pick, the bramble through an empty column; not your play). **Built (ENG23, 2026-11-04).** [ENG23-6, ENG23-7]
 - **Fog of War is information only,** for both sides: it limits what a side knows, never what a skill can reach. [FOG1, FOG2, EN-8]
 - **The second player gets +1 Shield on its bramble and nothing else,** wherever a second-player bonus existed. [D24]
+- **Bloom escalates per side and fight:** the Nth bloom that lands for a side gives its copy +N/+N (owner 2026-11-06 09:29: "first copy, becomes 2/8, next 3/9"). **Built (ENG26, 2026-11-06).** [ENG26-1]
+- **Undead: a heal hurts, a cure bleeds.** A heal aimed at an Undead unit deals that much damage instead (its own Regeneration still heals it); a cure or cleanse that would take something off gives Bleed N (1 with no N) instead. **Built (ENG26).** [ENG26-2]
+- **Banner Knoll: your Leader +2 Attack / +3 Health** as it takes the field (Health, not Armor); on no road fight yet. **Built (ENG26).** [ENG26-4, ENG26-5]
+- **Acacia Kraal starts with 1 Lumber** (was 3), first unit +3 Attack kept (owner 2026-11-06 09:29: "Resources are scary"). [BAL19-2]
 
 ### Triggers and death (the engine's order)
 These are the owner's rules of 10-19, pinned by `tests/trigger-layers-2026-10-19.js`; the engine is the source.

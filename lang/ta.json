@@ -4007,5 +4007,16 @@
  "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.": "ஈரம் {n}: ஒவ்வொரு மின்னல் அடியும் {n} கூடுதல். ஒவ்வொரு சுற்றும் ஒரு குறி குறையும்; தீ எரிவதற்கு முன் ஒன்றை உலர்த்தும்.",
  "Fast-forward ⏩ ×{n}: at the next combat's start it takes {n} extra turns before everyone else.": "வேக முன்னோட்டம் ⏩ ×{n}: அடுத்த சண்டையின் தொடக்கத்தில், மற்ற எல்லோருக்கும் முன் {n} கூடுதல் முறைகள் ஆடும்.",
  "Feed (instead of pitching): drop a card here or on your bramble. Repair {n}, units +{a} Attack. {left} left.": "ஊட்டு (வீசலுக்குப் பதில்): ஓர் அட்டையை இங்கே அல்லது உன் முட்புதர் மீது விடு. பழுதுபார் {n}, அலகுகள் +{a} தாக்குதல். இன்னும் {left}.",
- "Flock": "பறவைக்கூட்டம்"
+ "Flock": "பறவைக்கூட்டம்",
+ "Undead: a heal hurts it for as much instead; a cure or cleanse makes it Bleed instead.": "இறவாதது: குணமாக்கல் அதே அளவு சேதம் தரும்; சிகிச்சை அல்லது சுத்திகரிப்பு இரத்தக்கசிவு தரும்.",
+ "Your Leader: +{a} ⚔ / +{h} ❤ when it takes the field": "உங்கள் தலைவர்: களமிறங்கும்போது +{a} ⚔ / +{h} ❤",
+ "Leader's Attack and Health": "தலைவரின் தாக்குதல் மற்றும் உயிர்",
+ "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "ஒவ்வொரு சுற்றின் தொடக்கத்தில் அது தயாராக இருந்து நிபந்தனைகள் பொருந்தினால் ({when}): +1/+1 (இந்தப் போரில் உங்கள் அடுத்த மலர்ச்சிக்கு +2/+2, இப்படியே தொடரும்), அதன் சேதம் மற்றும் புள்ளி மாற்றங்களுடன் (ஆனால் அதன் குறிகள் எதுவுமின்றி) அதன் நகல் அருகிலுள்ள காலி இடத்தில் வளரும். அந்த அலகு மாறாது; ஒவ்வொரு தயார் சுற்றிலும் மீண்டும் முயலும். நகல் தன் காத்திருப்புடன் கூடிய டோக்கன்; மலர்ச்சி இல்லை.",
+ "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "ஒவ்வொரு சுற்றின் தொடக்கத்தில் அது தயாராக இருந்து, நிபந்தனைகள் பொருந்தி ({when}), உங்களிடம் {n} மரம் இருந்தால்: அது மரத்தைச் செலுத்தும்; +1/+1 (இந்தப் போரில் உங்கள் அடுத்த மலர்ச்சிக்கு +2/+2, இப்படியே தொடரும்), அதன் சேதம் மற்றும் புள்ளி மாற்றங்களுடன் (ஆனால் அதன் குறிகள் எதுவுமின்றி) அதன் நகல் அருகிலுள்ள காலி இடத்தில் வளரும். அந்த அலகு மாறாது; ஒவ்வொரு தயார் சுற்றிலும் மீண்டும் முயலும். நகல் தன் காத்திருப்புடன் கூடிய டோக்கன்; மலர்ச்சி இல்லை.",
+ "{name} blooms: a copy of it grows beside it, with +{a}/+{a}.": "{name} மலர்கிறது: அதன் நகல் அருகில் வளர்கிறது, +{a}/+{a} உடன்.",
+ "{name} blooms for {n} Lumber: a copy of it grows beside it, with +{a}/+{a}.": "{name} {n} மரத்துக்கு மலர்கிறது: அதன் நகல் அருகில் வளர்கிறது, +{a}/+{a} உடன்.",
+ "{name} is Undead: the heal hurts it for {n}.": "{name} இறவாதது: குணமாக்கல் அதற்கு {n} சேதம் தருகிறது.",
+ "{name} is Undead: the cure makes it Bleed {n}.": "{name} இறவாதது: சுத்திகரிப்பு அதற்கு இரத்தக்கசிவு {n} தருகிறது.",
+ "Heal hurts": "குணம் காயம்",
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} தலைவராகக் களமிறங்குகிறது: முட்புதரிலிருந்து +{a}/+{h}."
 }

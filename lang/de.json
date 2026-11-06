@@ -4004,5 +4004,16 @@
  "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.": "Nass {n}: Jeder Blitztreffer verursacht {n} mehr. Verliert pro Runde einen Marker; Feuer trocknet einen, bevor es brennt.",
  "Fast-forward ⏩ ×{n}: at the next combat's start it takes {n} extra turns before everyone else.": "Vorspulen ⏩ ×{n}: Zu Beginn des nächsten Kampfes macht es {n} Extrazüge vor allen anderen.",
  "Feed (instead of pitching): drop a card here or on your bramble. Repair {n}, units +{a} Attack. {left} left.": "Füttern (statt Abwurf): Lege eine Karte hier oder auf deine Dornenhecke. Reparatur {n}, Einheiten +{a} Angriff. Noch {left}.",
- "Flock": "Schar"
+ "Flock": "Schar",
+ "Undead: a heal hurts it for as much instead; a cure or cleanse makes it Bleed instead.": "Untot: Eine Heilung fügt ihr stattdessen so viel Schaden zu; eine Heilung von Gift oder eine Reinigung lässt sie bluten.",
+ "Your Leader: +{a} ⚔ / +{h} ❤ when it takes the field": "Dein Anführer: +{a} ⚔ / +{h} ❤, wenn er das Feld betritt",
+ "Leader's Attack and Health": "Angriff und Leben des Anführers",
+ "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "Zu Beginn jeder Runde, in der sie Bereit ist und ihre Bedingungen gelten ({when}): Auf einem freien Platz neben ihr wächst eine Kopie mit +1/+1 (+2/+2 bei deiner nächsten Blüte in diesem Kampf, und so weiter), ihrem Schaden und ihren Wertänderungen, aber ohne ihre Marken. Die Einheit selbst bleibt unverändert und versucht es in jeder Bereit-Runde erneut. Die Kopie ist eine Marke mit ihrem Warten und ohne Blüte.",
+ "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "Zu Beginn jeder Runde, in der sie Bereit ist, ihre Bedingungen gelten ({when}) und du {n} Holz hast: Sie zahlt das Holz, und auf einem freien Platz neben ihr wächst eine Kopie mit +1/+1 (+2/+2 bei deiner nächsten Blüte in diesem Kampf, und so weiter), ihrem Schaden und ihren Wertänderungen, aber ohne ihre Marken. Die Einheit selbst bleibt unverändert und versucht es in jeder Bereit-Runde erneut. Die Kopie ist eine Marke mit ihrem Warten und ohne Blüte.",
+ "{name} blooms: a copy of it grows beside it, with +{a}/+{a}.": "{name} blüht: Eine Kopie wächst neben ihr, mit +{a}/+{a}.",
+ "{name} blooms for {n} Lumber: a copy of it grows beside it, with +{a}/+{a}.": "{name} blüht für {n} Holz: Eine Kopie wächst neben ihr, mit +{a}/+{a}.",
+ "{name} is Undead: the heal hurts it for {n}.": "{name} ist Untot: Die Heilung fügt ihr {n} Schaden zu.",
+ "{name} is Undead: the cure makes it Bleed {n}.": "{name} ist Untot: Die Reinigung lässt sie {n} bluten.",
+ "Heal hurts": "Heilung schadet",
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} betritt das Feld als Anführer: +{a}/+{h} durch die Dornenhecke."
 }

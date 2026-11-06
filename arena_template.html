@@ -13697,6 +13697,15 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
 /* The status icons over the art (Sleep's 💤, Paralyze's ⚡, Blind's 👁, Shock, Stagger, Chained) follow the card's size too: a fixed
    22 px icon was a third of a small card. */
 .board-card .card-tile .status-overlay:not(.stun-overlay):not(.smoke-overlay){font-size:clamp(11px, calc(var(--cw, 120px) * .2), 22px) !important;}
+/* ENG26 (2026-11-06, owner 09:29 #2: "When at super small size (at 9+ cards long row), names can be hidden."): a row or lane holding 9 or more
+   units (empty slots not counted) whose tiles are small drops the name scroll instead of squeezing it: under 100px of the tile's content box
+   (about 120px outside: a 1024 desktop with 9 units has 94px tiles, 1366 with 11 has 106px). Under 70px every board tile already drops it
+   (the tiniest-tile rule); 1366 with 9 units (130px) keeps it. */
+@container (max-width: 100px){
+  .board-row:has(> .board-card:nth-child(9 of :not(.empty-slot))) > .board-card .card-tile .nm{display:none !important;}
+}
+/* ENG26 (#1): only the last cycling slot shows the gold "more" dot; an empty slot on the last page stays blank */
+.badge-cycle:not(:last-child)::after{display:none;}
 </style>
 <style id="uxStyles">
 /* ===== Package UX (2026-10-19, owner 21:36: UI notes 8a, 8b, 8c, 9, 11) ===== */

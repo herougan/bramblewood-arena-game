@@ -4006,5 +4006,16 @@
  "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.": "Bagnato {n}: ogni colpo di fulmine infligge {n} in più. Perde un segnalino a round; il fuoco ne asciuga uno prima di bruciare.",
  "Fast-forward ⏩ ×{n}: at the next combat's start it takes {n} extra turns before everyone else.": "Avanti veloce ⏩ ×{n}: all’inizio dello scontro seguente fa {n} turni in più prima di tutti.",
  "Feed (instead of pitching): drop a card here or on your bramble. Repair {n}, units +{a} Attack. {left} left.": "Nutrire (invece dello scarto): lascia una carta qui o sul tuo rovo. Riparazione {n}, unità +{a} Attacco. Ne restano {left}.",
- "Flock": "Stormo"
+ "Flock": "Stormo",
+ "Undead: a heal hurts it for as much instead; a cure or cleanse makes it Bleed instead.": "Non morto: una cura le infligge altrettanti danni; una guarigione o purificazione le dà Sanguinamento.",
+ "Your Leader: +{a} ⚔ / +{h} ❤ when it takes the field": "Il tuo Capo: +{a} ⚔ / +{h} ❤ quando scende in campo",
+ "Leader's Attack and Health": "Attacco e Salute del Capo",
+ "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "All'inizio di ogni turno in cui è Pronta e le sue condizioni valgono ({when}): in uno spazio libero accanto a lei cresce una copia, con +1/+1 (+2/+2 alla tua fioritura successiva in questo scontro, e così via), il suo danno e le sue variazioni di statistiche, ma nessuno dei suoi segnalini. L'unità stessa non cambia e riprova a ogni turno Pronta. La copia è un segnalino con la sua Attesa e senza Fioritura.",
+ "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "All'inizio di ogni turno in cui è Pronta, le sue condizioni valgono ({when}) e hai {n} Legname: paga il Legname e in uno spazio libero accanto a lei cresce una copia, con +1/+1 (+2/+2 alla tua fioritura successiva in questo scontro, e così via), il suo danno e le sue variazioni di statistiche, ma nessuno dei suoi segnalini. L'unità stessa non cambia e riprova a ogni turno Pronta. La copia è un segnalino con la sua Attesa e senza Fioritura.",
+ "{name} blooms: a copy of it grows beside it, with +{a}/+{a}.": "{name} fiorisce: accanto cresce una copia, con +{a}/+{a}.",
+ "{name} blooms for {n} Lumber: a copy of it grows beside it, with +{a}/+{a}.": "{name} fiorisce per {n} Legname: accanto cresce una copia, con +{a}/+{a}.",
+ "{name} is Undead: the heal hurts it for {n}.": "{name} è Non morto: la cura le infligge {n}.",
+ "{name} is Undead: the cure makes it Bleed {n}.": "{name} è Non morto: la guarigione le dà Sanguinamento {n}.",
+ "Heal hurts": "La cura ferisce",
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} scende in campo come Capo: +{a}/+{h} dal rovo."
 }

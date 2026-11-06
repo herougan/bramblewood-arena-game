@@ -4005,5 +4005,16 @@
  "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.": "Mouillé {n} : chaque coup de foudre inflige {n} de plus. Perd un marqueur par manche ; le feu en sèche un avant de brûler.",
  "Fast-forward ⏩ ×{n}: at the next combat's start it takes {n} extra turns before everyone else.": "Avance rapide ⏩ ×{n} : au début du prochain combat, il joue {n} tours de plus avant tous les autres.",
  "Feed (instead of pitching): drop a card here or on your bramble. Repair {n}, units +{a} Attack. {left} left.": "Nourrir (au lieu de défausser) : déposez une carte ici ou sur votre roncier. Réparation {n}, unités +{a} Attaque. Encore {left}.",
- "Flock": "Volée"
+ "Flock": "Volée",
+ "Undead: a heal hurts it for as much instead; a cure or cleanse makes it Bleed instead.": "Mort-vivant : un soin lui inflige autant de dégâts ; une guérison ou une purification le fait saigner.",
+ "Your Leader: +{a} ⚔ / +{h} ❤ when it takes the field": "Votre Chef : +{a} ⚔ / +{h} ❤ à son entrée en jeu",
+ "Leader's Attack and Health": "Attaque et Santé du Chef",
+ "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "Au début de chaque manche où elle est Prête et où ses conditions sont réunies ({when}) : une copie pousse dans un emplacement libre à côté d’elle, avec +1/+1 (+2/+2 pour votre floraison suivante de ce combat, et ainsi de suite), ses dégâts et ses changements de stats, mais aucun de ses marqueurs. L’unité elle-même ne change pas et réessaie à chaque manche Prête. La copie est un jeton avec son Attente et sans Floraison.",
+ "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "Au début de chaque manche où elle est Prête, où ses conditions sont réunies ({when}) et où vous avez {n} Bois : elle paie le Bois et une copie pousse dans un emplacement libre à côté d’elle, avec +1/+1 (+2/+2 pour votre floraison suivante de ce combat, et ainsi de suite), ses dégâts et ses changements de stats, mais aucun de ses marqueurs. L’unité elle-même ne change pas et réessaie à chaque manche Prête. La copie est un jeton avec son Attente et sans Floraison.",
+ "{name} blooms: a copy of it grows beside it, with +{a}/+{a}.": "{name} fleurit : une copie pousse à côté, avec +{a}/+{a}.",
+ "{name} blooms for {n} Lumber: a copy of it grows beside it, with +{a}/+{a}.": "{name} fleurit pour {n} Bois : une copie pousse à côté, avec +{a}/+{a}.",
+ "{name} is Undead: the heal hurts it for {n}.": "{name} est Mort-vivant : le soin lui inflige {n}.",
+ "{name} is Undead: the cure makes it Bleed {n}.": "{name} est Mort-vivant : la guérison le fait saigner {n}.",
+ "Heal hurts": "Le soin blesse",
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} entre en jeu comme Chef : +{a}/+{h} grâce au roncier."
 }

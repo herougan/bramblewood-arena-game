@@ -721,6 +721,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Castle passives added 2026-10-10 (map castles): unitHpBonus (+N Health on every unit you play), flyerAtkBonus
       // (+N Attack on every Flying unit you play), castleRegen (EN8, 2026-10-24: heals one random wounded ally unit N at each round start; a bramble is never healed).
       unitHpBonus: (chEffects.unitHpBonus||0), flyerAtkBonus: (chEffects.flyerAtkBonus||0), castleRegen: (chEffects.castleRegen||0),
+      leaderBoon: eng26LeaderBoonOf(chEffects.leaderBoon) /* ENG26 (2026-11-06): your Leader +2/+3 (Banner Knoll) */,
       // Castle passives added 2026-10-12 (user: "Where are our diversity of castles like logjam, trojan, ballistae, clam farms,
       // thorn-cage, herb refinery, Hidden Nest"): enemyWaitBonus (the enemy's first 3 units arrive N Wait later), castleBolt (a bolt at a
       // random enemy unit each round), castleLumberEvery (+1 Lumber every N rounds), castleThorns (a unit that hits the
@@ -3058,6 +3059,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Ready and its conditions hold: no "spent" state after a split or a failed one, and no +1/+1 on a fail (no room: it simply tries again
   // next round; bloomFail is no longer called). Its copies are tokens (c.token, the token frame), have no Bloom (c.bloomCopy is skipped
   // here) and arrive with the parent's printed Wait. So growth is at most one copy a Ready round, and the player can answer it.
+  // ENG26 (2026-11-06, owner 09:29 #3: "Bloom +1/+1 grows stronger (so first copy, becomes 2/8, next 3/9... etc.)"): the copy's bonus
+  // escalates. Counting rule (decision ENG26-1): every bloom that lands for a side in this fight (a copy grows beside its parent, or a
+  // Parasite's copy hooks onto an enemy) adds one to that side's count, pl.eng26Blooms; the Nth gets +N/+N. All the side's Bloom units
+  // share the count (so two Algae split +1, +2, then +3, +4). A bloom that waits for room does not count. The count starts at 0 each fight.
+  function eng26BloomStep(pl){ pl.eng26Blooms = (Number(pl.eng26Blooms) || 0) + 1; return pl.eng26Blooms; }
   function bloomParentWait(c){ const d = CARD_DEFS[c._condBase || c.defId] || CARD_DEFS[c.defId] || {}; return Math.max(0, Number(d.wait) || 0); }
   function bloomCopyPass(players, sideOf, stats, events){
     let any = false;
@@ -3071,8 +3077,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const L = bloomCopyLumber(bc); if(L) pl.lumber = Math.max(0, (pl.lumber||0) - L);
         // the unit itself gains nothing (owner 19:30) and stays able to bloom (ENG15); its copy gets the +1/+1
         const dmg = Math.max(0, c.maxHp - c.hp), permHp = Math.max(1, c.maxHp - (c.phaseHp||0));
-        const nc = makeBoardCard(c._condBase || c.defId);
-        nc.atk = (c.atk||0) + 1; nc.baseAtk = (c.baseAtk != null ? c.baseAtk : (c.atk||0)) + 1; nc.maxHp = permHp + 1; nc.hp = Math.max(1, permHp + 1 - dmg);
+        const nc = makeBoardCard(c._condBase || c.defId), B = eng26BloomStep(pl); // ENG26: the Nth bloom of this side gets +N/+N
+        nc.atk = (c.atk||0) + B; nc.baseAtk = (c.baseAtk != null ? c.baseAtk : (c.atk||0)) + B; nc.maxHp = permHp + B; nc.hp = Math.max(1, permHp + B - dmg);
         nc.bloomCopy = true; nc.token = true; nc.bloomOf = c.uid; nc.wait = bloomParentWait(c); applyArrivalPerks(pl, nc); // ENG15: a token with the parent's Wait
         let lane = null;
         if(where.row){ rowPut(pl, where.row, where.slot, nc, c); }
@@ -3080,7 +3086,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         else lane = putInSlot(pl, nc, where.slot);
         { const st = ensureStat(stats, sideOf(pl.id), c.defId); st.spawnedTokens = (st.spawnedTokens||0) + 1; }
         if(recordEvents && events){
-          events.push({type:'bloom', side:sideOf(pl.id), uid:c.uid, defId:c.defId, copyUid:nc.uid, atk:0, hp:0, copyAtk:1, copyHp:1, lumber:L, slot: nc.slot, row: where.row || 0});
+          events.push({type:'bloom', side:sideOf(pl.id), uid:c.uid, defId:c.defId, copyUid:nc.uid, atk:0, hp:0, copyAtk:B, copyHp:B, step:B, lumber:L, slot: nc.slot, row: where.row || 0});
           events.push(Object.assign({type:'spawn', side:sideOf(pl.id), defId:nc.defId, count:1, cause:'triggerSpawn', kind:'bloom', uids:[nc.uid], lane, nearUid:c.uid}, where.row ? {row: where.row, slot: nc.slot} : {})); }
         fireSpawnFamilyTriggers(players, sideOf, pl.id, nc, stats, events, 'spawned');
         any = true;
@@ -3110,12 +3116,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const to = opts.length === 1 ? opts[0] : opts[Math.floor(rnd() * opts.length) % opts.length];
     const L = bloomCopyLumber(bc); if(L) pl.lumber = Math.max(0, (pl.lumber||0) - L);
     // ENG15 (2026-10-31, FF5): the original is not spent; the copy is a token with no Bloom and the parent's Wait
-    const dmg = Math.max(0, c.maxHp - c.hp), permHp = Math.max(1, c.maxHp - (c.phaseHp||0)), nc = makeBoardCard(c._condBase || c.defId);
-    nc.atk = (c.atk||0) + 1; nc.baseAtk = (c.baseAtk != null ? c.baseAtk : (c.atk||0)) + 1; nc.maxHp = permHp + 1; nc.hp = Math.max(1, permHp + 1 - dmg);
+    const dmg = Math.max(0, c.maxHp - c.hp), permHp = Math.max(1, c.maxHp - (c.phaseHp||0)), nc = makeBoardCard(c._condBase || c.defId), B = eng26BloomStep(pl); // ENG26: +N/+N
+    nc.atk = (c.atk||0) + B; nc.baseAtk = (c.baseAtk != null ? c.baseAtk : (c.atk||0)) + B; nc.maxHp = permHp + B; nc.hp = Math.max(1, permHp + B - dmg);
     nc.bloomCopy = true; nc.token = true; nc.wait = bloomParentWait(c); nc.bloomOf = c.uid; nc.parasiteOf = to.uid; nc.parasitePid = pid; nc.slot = to.slot; to.parasite = nc;
     { const st = ensureStat(stats || {}, sideOf(pid), c.defId); st.spawnedTokens = (st.spawnedTokens||0) + 1; }
     if(recordEvents && events){
-      events.push({type:'bloom', side:sideOf(pid), uid:c.uid, defId:c.defId, copyUid:nc.uid, atk:0, hp:0, copyAtk:1, copyHp:1, lumber:L, parasite:true, targetUid:to.uid, targetDefId:to.defId, targetSide:sideOf(otherId(pid))});
+      events.push({type:'bloom', side:sideOf(pid), uid:c.uid, defId:c.defId, copyUid:nc.uid, atk:0, hp:0, copyAtk:B, copyHp:B, step:B, lumber:L, parasite:true, targetUid:to.uid, targetDefId:to.defId, targetSide:sideOf(otherId(pid))});
       events.push({type:'parasiteAttach', side:sideOf(pid), uid:nc.uid, defId:nc.defId, atk:nc.atk, hp:nc.hp, maxHp:nc.maxHp, wait:nc.wait || 0, targetSide:sideOf(otherId(pid)), targetUid:to.uid, targetDefId:to.defId, slot:to.slot, bloom:true, fromUid: host ? host.uid : c.uid}); }
     return true;
   }
@@ -4072,16 +4078,38 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // that changed something (a stanch or Health; rebuildCastle too), so a heal or rebuild trigger can tell it did nothing,
   // the same whether events are recorded or not.
   let healWork = 0;
-  function applyHeal(card, amount, side, events){
+  function applyHeal(card, amount, side, events, hopts){
     let n = Math.max(0, amount|0); if(!card || card.hp<=0 || !n) return 0;
     if(isStructureCard(card)) return 0; // EN8 (2026-10-24, P24-17): a Structure is never healed, only repaired (Repair N, sk2Repair)
     if(card.wither > 0) return 0; // Wither (2026-10-14): nothing heals a withering unit
     { const hp = pidOfLive(card); if(hp) n += auraN(curPlayers[hp], 'herbalist'); } // Herbalist N (2026-10-17): every heal on your units heals N more
+    if(eng26IsUndead(card) && !(hopts && hopts.ownRegen)) return eng26UndeadHeal(card, n, side, events); // ENG26 (2026-11-06, owner #4): a heal hurts an Undead unit instead
     // 2026-10-19 (package SK1, owner 21:36: "heal only heals now"): no Bleed stanch any more; Bleed comes off with Cleanse.
     const stanch = 0;
     if(stanch > 0){ healWork++; card.bleed -= stanch; n -= stanch; if(recordEvents && events) events.push({type:'statusFx', kind:'stanch', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:stanch}); }
     const healed = Math.min(card.maxHp - card.hp, n); if(healed > 0){ healWork++; card.hp += healed; }
     return healed;
+  }
+  // ENG26 (2026-11-06, owner 09:29 #4: "Healing an undead deals damage instead. Curing an undead deals bleed."): an Undead unit (species
+  // Undead, not a Changeling's every-type; the subtype undead; a unit back as a token by its Undead skill) takes every heal aimed at it as that much damage (true damage, a status tick: no Armor, no Exploit,
+  // after Herbalist), even at full Health; nothing is healed and no heal trigger fires. Its OWN Regeneration still heals it (an
+  // Undead unit's unlife: Obsidian Lich has Regeneration 2; without this it burned itself every round; ENG26-2 option). A Cure or a Cleanse (Cure N, Cleanse N, the Cleanse
+  // action, Renewal) that would take something off it takes nothing off and gives it Bleed instead: the cure's N, 1 for a Cleanse or
+  // Renewal with no number (decision ENG26-2). A cure with nothing to take off still does nothing (HN: nothing to cure, nothing happens).
+  // Events: undeadHeal {uid, dmg}, undeadCure {uid, bleed, kind}. Sap (a drain on its own hit) is not a heal aimed at it and is unchanged.
+  function eng26IsUndead(c){ const d = c && CARD_DEFS[c._condBase || c.defId]; return !!(d && ((d.species || []).includes('Undead') || d.subtype === 'undead' || c.undeadToken)) && !isStructureCard(c); } // species or subtype Undead, or back from the dead by its Undead skill (ENG26-2)
+  function eng26UndeadHeal(card, n, side, events){
+    if(!(n > 0)) return 0; healWork++;
+    const dmg = damageCardFlat(card, n, 'true', null, null, {tick: true});
+    if(recordEvents && events) events.push({type:'undeadHeal', side, uid:card.uid, defId:card.defId, targetSide:side, targetUid:card.uid, targetDefId:card.defId, amount:n, dmg});
+    return 0;
+  }
+  function eng26Cleansable(players, pid, c){ if(!c) return false; const cell = players ? cellKeyOf(players, pid, c) : null;
+    return SK1_CLEANSE.some(k=> c[k] > 0) || !!(c.daunts && c.daunts.length) || c.dauntN > 0 || !!(cell && curses[cell] > 0); }
+  function eng26UndeadCure(c, n, side, events, by, kind){
+    const b = Number.isFinite(n) && n > 0 ? Math.round(n) : 1; c.bleed = (c.bleed||0) + b; ghostBleedClamp(c);
+    if(recordEvents && events) events.push({type:'undeadCure', side, kind, attDefId: by ? by.defId : null, attUid: by ? by.uid : null, uid:c.uid, defId:c.defId, targetSide:side, targetUid:c.uid, targetDefId:c.defId, bleed:b});
+    return b;
   }
   function cleanseCounters(players, pid, c, budget){
     let n = budget === Infinity ? Infinity : budget|0, removed = 0; // Infinity = no limit (an empty Cleanse, 2026-10-19 SK1)
@@ -4631,6 +4659,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       boardCard.baseAtk += pl.firstUnitAtkBonus;
       pl.firstUnitBonusUsed = true;
     }
+    if(fdef && fdef.effects && fdef.effects.leader) eng26ApplyLeaderBoon(pl, boardCard); // ENG26 (2026-11-06): a Leader played from the hand
     return boardCard;
   }
   // PLAY_PREVIEW (2026-10-23, package UI4, owner 01:57 #11: "You cards in hand can show blue numbers for their simulated numbers if you WOULD
@@ -4747,14 +4776,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(resRow){ // into a reserve row: it waits there until its column clears
       boardCard.slot = side; pl.reserve[resRow-1][side] = boardCard;
       ensureStat(stats, sideOf(playerId), hc.defId).played++;
-      if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId:hc.defId, uid:boardCard.uid, reserve:resRow, slot:side});
+      if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId:hc.defId, uid:boardCard.uid, reserve:resRow, slot:side}); eng26LeaderBoonEvent(boardCard, sideOf(playerId), events); /* ENG26 */
       return true;
     }
     let actualSide;
     if(slotMode){ actualSide = putInSlot(pl, boardCard, targetSlot); }
     else { actualSide = pl.row.center.length===0 ? 'center' : side; pl.row[actualSide].push(boardCard); }
     ensureStat(stats, sideOf(playerId), hc.defId).played++;
-    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId:hc.defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot, consterned: boardCard.consterned || undefined}); // + Consternation (2026-10-16)
+    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId:hc.defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot, consterned: boardCard.consterned || undefined}); eng26LeaderBoonEvent(boardCard, sideOf(playerId), events); /* ENG26 */ // + Consternation (2026-10-16)
     if(boardCard.vanguardUp && recordEvents && events) events.push({type:'statusFx', kind:'vanguard', side:sideOf(playerId), attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(playerId), targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:boardCard.vanguardUp}); // Vanguard (2026-10-17)
     boardCard._readyAtPlay = true; // ENG10 (2026-10-26, ENG9-7): its Wait-0 Ready comes from readyOnArrival below, not from applyOnSpawnEffects
     applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events);
@@ -5138,6 +5167,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // King Slayer's targets (TR): Royalty, Kings (the King type tag or the King skill) and whoever holds the Crown
   // ENG20-7 (2026-11-02, owner: "King Slayer should also do bonus damage to Leaders."): a leader on either side (summoned as the leader, the
   // Gladiator leader, or a card with the Leader skill) takes King Slayer's bonus too. Only King Slayer reads this; Royalty stays as it was.
+  // ENG26 (2026-11-06, owner 09:29 #6: "NEW: A bramble that increases your Leader's attack and defence by +2/+3."): the bramble passive
+  // leaderBoon {atk, hp} (true = +2/+3; decision ENG26-4: "defence" is Health, the game's +A/+H, not Armor). Your Leader gets it as it
+  // takes the field (summonLeader, or a card with Leader played from the hand), on top of everything else, once per Leader that enters.
+  // Event statusFx kind 'leaderBoon' {atk, hp}. On Banner Knoll (canonical/characters.json); on no road fight yet (ENG26-5).
+  function eng26LeaderBoonOf(v){ if(!v) return null; if(v === true) return {atk:2, hp:3}; if(typeof v === 'object') return {atk: Math.max(0, Math.round(+v.atk || 0)), hp: Math.max(0, Math.round(+v.hp || 0))}; return null; }
+  function eng26ApplyLeaderBoon(pl, c, side, events){
+    const b = pl && pl.leaderBoon; if(!b || !c || !(b.atk || b.hp)) return;
+    c.atk += b.atk; c.baseAtk = (c.baseAtk||0) + b.atk; c.hp += b.hp; c.maxHp += b.hp; c.eng26LeaderBoon = {atk:b.atk, hp:b.hp};
+  }
+  // the event goes out after the unit's 'play' event, so the board has the card to float the +2/+3 on
+  function eng26LeaderBoonEvent(c, side, events){ const b = c && c.eng26LeaderBoon; if(!b || c._eng26BoonSaid) return; c._eng26BoonSaid = true;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'leaderBoon', side, attUid:c.uid, attDefId:c.defId, targetSide:side, targetUid:c.uid, targetDefId:c.defId, atk:b.atk, hp:b.hp}); }
   function en20IsLeader(c, d){ return !!(c && (c.isLeader || c.gladiatorLeader || (d && d.effects && d.effects.leader))); }
   function isRoyalTarget(c, d){ return !!((c && c.crowned) || isKingDef(d) || txIsA(d, 'King') || txIsA(d, 'Royalty')); }
   function isKingUnit(c){ return !!c && !c.gap && c.hp > 0 && !c.cageOf && isKingDef(CARD_DEFS[c._condBase || c.defId]); }
@@ -5218,11 +5259,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       boardCard.baseAtk += pl.firstUnitAtkBonus;
       pl.firstUnitBonusUsed = true;
     }
+    eng26ApplyLeaderBoon(pl, boardCard); // ENG26 (2026-11-06): Banner Knoll's Leader +2/+3 (its event after 'play')
     let actualSide;
     if(slotMode){ actualSide = putInSlot(pl, boardCard, leaderSlot); }
     else { actualSide = pl.row.center.length===0 ? 'center' : side; pl.row[actualSide].push(boardCard); }
     ensureStat(stats, sideOf(playerId), defId).played++;
     if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot, leader:true});
+    eng26LeaderBoonEvent(boardCard, sideOf(playerId), events); // ENG26
     if(boardCard.surged && recordEvents && events) events.push({type:'statusFx', kind:'surge', side:sideOf(playerId), attUid:boardCard.uid, attDefId:defId, targetSide:sideOf(playerId), targetUid:boardCard.uid, targetDefId:defId, atk:rules.bossSurge.atk||0, hp:rules.bossSurge.hp||0});
     boardCard._readyAtPlay = true; // ENG10 (2026-10-26, ENG9-7): its Wait-0 Ready comes from readyOnArrival below, not from applyOnSpawnEffects
     applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events);
@@ -8122,6 +8165,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(t.who && t.who!=='self'){ // Cleanse a chosen target (2026-10-12): the target's own owner's cell curse comes off first
             const tg = resolveGeneralTarget(players, playerId, boardCard, t.who, t.sub || 'random'); if(!tg || !tg.card) break;
             const tpid = t.who==='enemy' ? otherId(playerId) : playerId, c = tg.card;
+            if(eng26IsUndead(c)){ if(eng26Cleansable(players, tpid, c)) eng26UndeadCure(c, t.amount, sideOf(tpid), events, boardCard, 'cleanse'); break; } // ENG26: Bleed instead
             const n = cleanseCounters(players, tpid, c, t.amount || Infinity); // 2026-10-19 (package SK1): no amount = every physical debuff (no more control statuses)
             if(n > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cleanse', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, amount:n});
             break;
@@ -8130,6 +8174,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           // harmful counters, curses on its cell first (Desecrate), then poison, bleed, decay, corrosion, scar, expose
           // and the skip-a-turn statuses. Without an amount it clears everything, as before.
           // 2026-10-19 (package SK1, owner 21:36): the physical debuffs only (SK1_CLEANSE, cleanseCounters); Poison is Cure's.
+          if(eng26IsUndead(boardCard)){ if(eng26Cleansable(players, playerId, boardCard)) eng26UndeadCure(boardCard, t.amount, mySide, events, boardCard, 'cleanse'); break; } // ENG26: Bleed instead
           if(t.amount){ const n = cleanseCounters(players, playerId, boardCard, t.amount);
             if(n > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cleanse', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:mySide, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:n});
             break; }
@@ -9031,8 +9076,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // pairing (e.g. only cleanse onKill instead).
         if(c.hp>0 && def.effects && def.effects.renewal){
           // 2026-10-19 (package SK1, owner 21:36): Renewal is Cleanse's shorthand, so it follows Cleanse: the physical debuffs only.
+          if(eng26IsUndead(c)){ if(eng26Cleansable(null, pl.id, c)) eng26UndeadCure(c, null, sideOf(pl.id), events, c, 'renewal'); } else { // ENG26: Bleed instead
           const hadAny = sk1CleanseUnit(c, Infinity) > 0;
-          if(hadAny && recordEvents && events) events.push({type:'statusFx', kind:'cleanse', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid});
+          if(hadAny && recordEvents && events) events.push({type:'statusFx', kind:'cleanse', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid}); }
         }
         // Regeneration N (2026-09-16): heals N HP at the start of every round this card is on
         // the board, capped at its own max HP — feeds the new On Heal/On Healed/On Ally Healed
@@ -9040,7 +9086,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // 2026-10-14 (user: "Do not regenerate when the unit is at full health"): nothing at all at full health, not even a bleed stanch.
         const regenN = ((def.effects && def.effects.regen) ? (def.effects.regen === true ? 1 : Number(def.effects.regen)||0) : 0) + (c.amoreRegen||0); // + Amore's Regeneration 3 (2026-10-16)
         if(c.hp>0 && c.hp < c.maxHp && regenN > 0){ // 2026-10-18: heals no longer touch Poison, so a poisoned unit at full health doesn't regenerate
-          const healed = applyHeal(c, regenN, sideOf(pl.id), events);
+          const healed = applyHeal(c, regenN, sideOf(pl.id), events, {ownRegen: true}); // ENG26-2: an Undead unit's own Regeneration still heals it
           if(healed>0){ fireHealTriggers(players, sideOf, pl.id, c, c, healed, stats, events); }
         }
         // Bloom (2026-09-17): Regeneration's support-flavored cousin — instead of healing
@@ -9073,7 +9119,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(c.hp>0 && def.effects && def.effects.cure && !c.stunned){
           // EN4 (2026-10-23): Greater Poison counts too (the most poisoned: Poison + Greater Poison); Cure takes Poison first, then Greater Poison.
           const sick = upkeepUnitsOf(pl).filter(o=> o && !o.gap && o.hp>0 && ((o.poison||0) + (o.gpoison||0)) > 0).sort((a,b)=> ((b.poison||0) + (b.gpoison||0)) - ((a.poison||0) + (a.gpoison||0)));
-          if(sick.length){ const t = sick[0], cn = w2N(def, 'cure'); const p0 = Math.min(cn, t.poison||0); t.poison -= p0; const g0 = Math.min(cn - p0, t.gpoison||0); if(g0 > 0) t.gpoison -= g0;
+          if(sick.length && eng26IsUndead(sick[0])) eng26UndeadCure(sick[0], w2N(def, 'cure'), sideOf(pl.id), events, c, 'cure'); // ENG26: Bleed instead of the cure
+          else if(sick.length){ const t = sick[0], cn = w2N(def, 'cure'); const p0 = Math.min(cn, t.poison||0); t.poison -= p0; const g0 = Math.min(cn - p0, t.gpoison||0); if(g0 > 0) t.gpoison -= g0;
             if(p0 + g0 > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cure', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:p0 + g0, poison:p0, gpoison:g0 || undefined, bleed:0}); } // 2026-10-19 (package HN): a Cure of 0 makes no event
         }
         // Satiety N (Ecclesia, 2026-10-10, my reading of the name): well fed. At the start of a round at full health it gains +N max HP.

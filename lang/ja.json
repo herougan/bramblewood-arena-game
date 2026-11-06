@@ -4005,5 +4005,16 @@
  "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.": "濡れ {n}：雷撃1回ごとに{n}多く与える。毎ラウンド1つ失う。火は燃やす前に1つ乾かす。",
  "Fast-forward ⏩ ×{n}: at the next combat's start it takes {n} extra turns before everyone else.": "早送り ⏩ ×{n}：次の戦闘の開始時、誰よりも先に{n}回多く行動する。",
  "Feed (instead of pitching): drop a card here or on your bramble. Repair {n}, units +{a} Attack. {left} left.": "餌やり（捨て札の代わり）：カードをここかいばらに置く。修復{n}、ユニットに攻撃+{a}。残り{left}回。",
- "Flock": "群れ"
+ "Flock": "群れ",
+ "Undead: a heal hurts it for as much instead; a cure or cleanse makes it Bleed instead.": "アンデッド：回復は同じだけのダメージになり、治療や浄化は出血になる。",
+ "Your Leader: +{a} ⚔ / +{h} ❤ when it takes the field": "あなたのリーダー：登場時に+{a} ⚔ / +{h} ❤",
+ "Leader's Attack and Health": "リーダーの攻撃と体力",
+ "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "各ラウンドの開始時、準備OKで条件を満たしている場合（{when}）：隣の空きマスに、+1/+1（この戦いで次の開花は+2/+2、以降も同様）と攻撃力・ステータスの変化を引き継ぎ、カウンターは引き継がないコピーが育つ。本体は変わらず、準備OKのラウンドごとにまた試す。コピーは待機を持ち開花を持たないトークン。",
+ "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "各ラウンドの開始時、準備OKで条件を満たし（{when}）、木材が{n}ある場合：木材を支払い、隣の空きマスに、+1/+1（この戦いで次の開花は+2/+2、以降も同様）と攻撃力・ステータスの変化を引き継ぎ、カウンターは引き継がないコピーが育つ。本体は変わらず、準備OKのラウンドごとにまた試す。コピーは待機を持ち開花を持たないトークン。",
+ "{name} blooms: a copy of it grows beside it, with +{a}/+{a}.": "{name}が開花：隣にコピーが育つ（+{a}/+{a}）。",
+ "{name} blooms for {n} Lumber: a copy of it grows beside it, with +{a}/+{a}.": "{name}が木材{n}で開花：隣にコピーが育つ（+{a}/+{a}）。",
+ "{name} is Undead: the heal hurts it for {n}.": "{name}はアンデッド：回復で{n}ダメージを受ける。",
+ "{name} is Undead: the cure makes it Bleed {n}.": "{name}はアンデッド：浄化で出血{n}を受ける。",
+ "Heal hurts": "回復でダメージ",
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name}がリーダーとして登場：いばらから+{a}/+{h}。"
 }

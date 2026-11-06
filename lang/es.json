@@ -4004,5 +4004,16 @@
  "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.": "Mojado {n}: cada golpe de rayo hace {n} más. Pierde un contador por ronda; el fuego seca uno antes de quemar.",
  "Fast-forward ⏩ ×{n}: at the next combat's start it takes {n} extra turns before everyone else.": "Avance rápido ⏩ ×{n}: al empezar el siguiente combate hace {n} turnos extra antes que nadie.",
  "Feed (instead of pitching): drop a card here or on your bramble. Repair {n}, units +{a} Attack. {left} left.": "Alimentar (en vez de descartar): suelta una carta aquí o en tu zarzal. Reparar {n}, unidades +{a} Ataque. Quedan {left}.",
- "Flock": "Bandada"
+ "Flock": "Bandada",
+ "Undead: a heal hurts it for as much instead; a cure or cleanse makes it Bleed instead.": "No muerto: una curación le hace ese daño en su lugar; una cura o purificación le causa Sangrado.",
+ "Your Leader: +{a} ⚔ / +{h} ❤ when it takes the field": "Tu Líder: +{a} ⚔ / +{h} ❤ al entrar al campo",
+ "Leader's Attack and Health": "Ataque y Salud del Líder",
+ "At the start of each round it is Ready and its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "Al inicio de cada ronda en que está Lista y se cumplen sus condiciones ({when}): crece una copia en una casilla libre a su lado, con +1/+1 (+2/+2 en tu siguiente floración de este combate, y así sucesivamente), su daño y sus cambios de estadísticas, pero ninguno de sus contadores. La unidad en sí no cambia y lo intenta de nuevo cada ronda Lista. La copia es una ficha con su Espera y sin Floración.",
+ "At the start of each round it is Ready, its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1 (+2/+2 for your next bloom this fight, and so on), its damage and its stat changes but none of its counters. The unit itself is unchanged and tries again every Ready round. The copy is a token with its Wait and no Bloom.": "Al inicio de cada ronda en que está Lista, se cumplen sus condiciones ({when}) y tienes {n} de Madera: paga la Madera y crece una copia en una casilla libre a su lado, con +1/+1 (+2/+2 en tu siguiente floración de este combate, y así sucesivamente), su daño y sus cambios de estadísticas, pero ninguno de sus contadores. La unidad en sí no cambia y lo intenta de nuevo cada ronda Lista. La copia es una ficha con su Espera y sin Floración.",
+ "{name} blooms: a copy of it grows beside it, with +{a}/+{a}.": "{name} florece: crece una copia a su lado, con +{a}/+{a}.",
+ "{name} blooms for {n} Lumber: a copy of it grows beside it, with +{a}/+{a}.": "{name} florece por {n} de Madera: crece una copia a su lado, con +{a}/+{a}.",
+ "{name} is Undead: the heal hurts it for {n}.": "{name} es No muerto: la curación le hace {n} de daño.",
+ "{name} is Undead: the cure makes it Bleed {n}.": "{name} es No muerto: la cura le causa Sangrado {n}.",
+ "Heal hurts": "La cura hiere",
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} entra al campo como Líder: +{a}/+{h} del zarzal."
 }
