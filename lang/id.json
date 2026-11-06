@@ -4080,7 +4080,7 @@
  "Power: {n}": "Kekuatan: {n}",
  "Power: not measured": "Kekuatan: belum diukur",
  "Measured {date}": "Diukur pada {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Persentase menang dalam uji kekuatan kartu, dikurangi 50. 0 adalah rata-rata (menang setengah pertarungan); di atas 0 lebih kuat, di bawah 0 lebih lemah.",
+ "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker.": "Uji kekuatan kartu: seberapa jauh kartu ini lebih baik atau lebih buruk daripada kartu rata-rata. 0 berarti rata-rata; di atas 0 lebih kuat, di bawah 0 lebih lemah.",
  "The Drill Grounds": "Lapangan Latihan",
  "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "Tempat Legiun Rivergate dan Suku-Suku Bulu Surya berlatih untuk perang. Pertarungan uji untuk admin: tak ada yang dimenangkan di sini yang dihitung.",
  "Rivergate Century": "Centuria Rivergate",

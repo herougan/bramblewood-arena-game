@@ -4079,7 +4079,7 @@
  "Power: {n}": "パワー: {n}",
  "Power: not measured": "パワー: 未計測",
  "Measured {date}": "計測日 {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "カードパワーテストの勝率から50を引いた値。0が平均(戦いの半分に勝つ)、0より上は強く、下は弱いです。",
+ "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker.": "カードパワーテスト：平均的なカードと比べてどれだけ強いか弱いか。0 が平均、0 より上は強く、下は弱い。",
  "The Drill Grounds": "練兵場",
  "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "リヴァーゲート軍団と陽羽の部族が戦に備えて訓練する場所。管理者用のテスト戦闘：ここで得たものは何も数えられない。",
  "Rivergate Century": "リヴァーゲート百人隊",

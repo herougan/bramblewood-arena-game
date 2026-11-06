@@ -4079,7 +4079,7 @@
  "Power: {n}": "Lakas: {n}",
  "Power: not measured": "Lakas: hindi pa nasusukat",
  "Measured {date}": "Sinukat noong {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Win rate sa pagsubok ng lakas ng card, bawas 50. Ang 0 ay karaniwan (nananalo sa kalahati ng laban); mas mataas sa 0 ay mas malakas, mas mababa ay mas mahina.",
+ "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker.": "Pagsubok sa lakas: gaano kahusay o kahina ang kard na ito kumpara sa karaniwang kard. 0 ang karaniwan; lampas sa 0 ay mas malakas, mas mababa sa 0 ay mas mahina.",
  "The Drill Grounds": "Ang Lugar ng Pagsasanay",
  "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "Dito nagsasanay para sa digmaan ang Hukbo ng Rivergate at ang Mga Tribo ng Sunfeather. Mga laban-pagsubok para sa admin: walang napapanalunan dito ang binibilang.",
  "Rivergate Century": "Centuria ng Rivergate",

@@ -4081,7 +4081,7 @@
  "Power: {n}": "파워: {n}",
  "Power: not measured": "파워: 측정 안 됨",
  "Measured {date}": "측정일 {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "카드 파워 테스트의 승률에서 50을 뺀 값입니다. 0은 평균(전투의 절반을 이김), 0보다 크면 더 강하고 작으면 더 약합니다.",
+ "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker.": "카드 파워 테스트: 평균 카드보다 이 카드가 얼마나 더 잘하거나 못하는지. 0이 평균이며, 0보다 높으면 강하고 낮으면 약합니다.",
  "The Drill Grounds": "훈련장",
  "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "리버게이트 군단과 햇깃 부족이 전쟁을 위해 훈련하는 곳. 관리자용 시험 전투: 여기서 얻은 것은 아무것도 인정되지 않습니다.",
  "Rivergate Century": "리버게이트 백인대",

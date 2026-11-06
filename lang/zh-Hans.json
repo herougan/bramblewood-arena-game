@@ -4079,7 +4079,7 @@
  "Power: {n}": "强度:{n}",
  "Power: not measured": "强度:未测量",
  "Measured {date}": "测量于 {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "卡牌强度测试中的胜率减去 50。0 为平均(赢下一半战斗);大于 0 更强,小于 0 更弱。",
+ "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker.": "卡牌强度测试：这张卡比平均卡牌表现好多少或差多少。0 为平均；高于 0 更强，低于 0 更弱。",
  "The Drill Grounds": "操练场",
  "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "河门军团与日羽诸部在此为战争操练。管理员的测试战斗：在这里赢得的一切都不算数。",
  "Rivergate Century": "河门百人队",

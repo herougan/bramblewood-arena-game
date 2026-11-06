@@ -4080,7 +4080,7 @@
  "Power: {n}": "Poder: {n}",
  "Power: not measured": "Poder: não medido",
  "Measured {date}": "Medido em {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Taxa de vitórias no teste de poder das cartas, menos 50. 0 é a média (vence metade das lutas); acima de 0 é mais forte, abaixo de 0 é mais fraca.",
+ "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker.": "Teste de poder: quanto esta carta se sai melhor ou pior que a carta média. 0 é a média; acima de 0, mais forte; abaixo, mais fraca.",
  "The Drill Grounds": "O Campo de Treino",
  "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "Onde a Legião de Rivergate e as Tribos Pluma-Sol treinam para a guerra. Lutas de teste para admins: nada do que se ganha aqui conta.",
  "Rivergate Century": "Centúria de Rivergate",

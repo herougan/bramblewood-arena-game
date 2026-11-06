@@ -4081,7 +4081,7 @@
  "Power: {n}": "ஆற்றல்: {n}",
  "Power: not measured": "ஆற்றல்: அளக்கப்படவில்லை",
  "Measured {date}": "அளவிடப்பட்ட நாள் {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "அட்டை ஆற்றல் சோதனையில் வெற்றி விகிதம் கழித்தல் 50. 0 சராசரி (பாதி சண்டைகளில் வெல்லும்); 0-க்கு மேல் வலிமையானது, கீழ் பலவீனமானது.",
+ "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker.": "அட்டை வலிமைச் சோதனை: சராசரி அட்டையை விட இந்த அட்டை எவ்வளவு சிறப்பாக அல்லது மோசமாகச் செயல்படுகிறது. 0 சராசரி; 0க்கு மேல் வலிமையானது, 0க்குக் கீழ் பலவீனமானது.",
  "The Drill Grounds": "பயிற்சி மைதானம்",
  "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "ரிவர்கேட் படையும் சூரியச்சிறகு இனக்குழுக்களும் போருக்குப் பயிற்சி செய்யும் இடம். நிர்வாகிகளுக்கான சோதனைச் சண்டைகள்: இங்கே வெல்வது எதுவும் கணக்கில் வராது.",
  "Rivergate Century": "ரிவர்கேட் நூற்றுவர் அணி",

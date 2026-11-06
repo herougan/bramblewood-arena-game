@@ -3396,7 +3396,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui24-power": "Power: {n}",
   "ui.ui24-power-none": "Power: not measured",
   "ui.ui24-power-date": "Measured {date}",
-  "ui.ui24-power-tip": "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker."
+  "ui.ui24-power-tip": "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

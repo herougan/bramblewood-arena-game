@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07: Card power run and "0 = average" (owner 11-06 23:35 #7)
+- Card power test re-run on all 828 live cards (40 games each, 17 min): `docs/balance/card-balance.json`.
+- The editor's Power number is now centred on the median measured card (win % - median + 50; the median was 30% on this run), so 0 means average, as asked. The tooltip says so in all 12 languages.
+
 ## 2026-11-07 Package CONTENT13 (owner 11-06 23:35 #8; decision CONTENT13-1)
 - Admins see: **the Drill Grounds** (🎌, with a 🛠️ badge) directly under the Tutorial's entrance on the Outskirts. Two skirmishes, both open, at a fixed Level 1: **SK-1 Rivergate Century** (Otter: Fleetfoot'd 4, Otter Angler 4, Otter Ferryman 4, Shellwright Apprentice 4, Otter Shieldback 3, Otter Royal Guard 1) and **SK-2 Sunfeather War-band** (Hummingbird: Dawn Bellringer 4, Sunfeather Nestguard 4, Sunthroat Courier 4, Lantern Bearer 3, Swordbill Challenger 3, Sunspire Choirmother 2). Test fights: free, no rewards, drops, XP, rank or progress; no Edit rewards / Mark cleared there. Players see nothing.
 - Decks: the deck optimiser (`tools/bench/bench.js deck`, open focus, 6 different / 4 copies / 20 cards, Level 1, Map 10's gauntlet, 9,000 search games) over each faction's cards (archetype Otter / Hummingbird in `canonical/cards.json`, not both; no token, test, Baby or unsourced card), seeds `content13-otters` / `content13-hummingbirds`. Gauntlet score 92.7% / 86.1%. The Map 0 reference (the starter deck, Level 0) wins 0% of 200 against each. `docs/balance/content13/faction-decks-2026-11-07.json`.
