@@ -11053,6 +11053,7 @@ function wireLevelStatsEditor(){
   setTimeout(refresh, 0);
 }
 function openCardEditor(defId, versionDef){
+  { const d = defId && getCardDefs()[defId]; if(d && d.derivedFrom) defId = d.derivedFrom; } // 2026-11-06 (package UI23 #4): a fight copy ("<id>@lv1", "~cp") edits its card, never a new one
   // 2026-10-07 audit: start from the shared definition, not getCardDefs() — that one applies THIS
   // player's card level and personal unlocks, which a plain Save used to bake into the card for everyone.
   // 2026-10-19 (package AN): a pool card (Admin's Pool cards filter) isn't in the live defs: it opens as a new card to place.
@@ -11286,7 +11287,7 @@ function renderEditorInner(){
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select><label class="ed-arty" title="${escapeAttr(TX('ui.ui19-art-y-tip'))}"><span>${escapeHtml(TX('ui.ui19-art-y'))}</span><input id="fArtPosY" type="number" min="0" max="100" step="5" placeholder="50" value="${artPosOf(c) === null ? '' : artPosOf(c)}"></label></div>
       <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span>${'' /* 2026-11-05 (package EDIT1, owner 23:35: "Species should be a dropdown"): the species the game knows (cards.json + the taxonomy); an existing value that is not on the list stays as its own option. A second dropdown makes a hybrid. */}${(()=>{ const names = allSpeciesNames(), cur = c.species || [], opt = (k, sel)=> `<option value="${escapeAttr(k)}" ${sel ? 'selected' : ''}>${speciesIcon(k)} ${escapeHtml(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeHtml(SPECIES_PHYLUM[k]) : ''}</option>`, list = sel=> names.concat(sel && !names.includes(sel) ? [sel] : []).sort().map(k=> opt(k, k === sel)).join(''),
       onch = "(function(){ const v = ['fSpecies','fSpecies2'].map(i=> (document.getElementById(i)||{}).value).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })()";
-    return `<select id="fSpecies" aria-label="Species" onchange="${onch}"><option value="" ${cur[0] ? '' : 'selected'}>🧬 ${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[0])}</select><select id="fSpecies2" aria-label="${escapeAttr(TX('ui.edit1-species2'))}" title="${escapeAttr(TX('ui.edit1-species2'))}" onchange="${onch}"><option value="" ${cur[1] ? '' : 'selected'}>${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[1])}</select>`; })()}</div>
+    return `<select id="fSpecies" aria-label="Species" onchange="${onch}"><option value="" ${cur[0] ? '' : 'selected'}>🧬 ${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[0])}</select><select id="fSpecies2" aria-label="${escapeAttr(TX('ui.edit1-species2'))}" title="${escapeAttr(TX('ui.edit1-species2'))}" onchange="${onch}"><option value="" ${cur[1] ? '' : 'selected'}>${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[1])}</select>`; })()}</div></div>${'' /* 2026-11-06 (package UI23 #4): this </div> closes the Species field; without it every later section sat inside the Identity grid, in both editors */}
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
            request: "I think the Splash Effect doesn't need to be there as well, since it's
            related to the level of the card OR by chance, not an inherent quality of this
@@ -40541,6 +40542,9 @@ function fightTreatedDef(d, pid){ return (d && d.art && fightTreatmentKind(pid)=
 function fightTreatmentClass(pid){ return fightTreatmentKind(pid)==='elite' ? 'elite-polish' : ''; }
 // 2026-10-26 (package VIS3, V3; owner #16: "Shields will just be blue numbers on the card"): a unit's Shield (and its temporary Health from
 // Bolster or Shell, which soaks the same way) is one blue number on the card, just above its Health; the 💠 chip in the status row is gone.
+// 2026-11-06 (package UI23 #1/#18, owner: "if the pip says 4 ... and the health is 1, then total it should display 5"): the heart shows Health + Shield
+// (the 💠 pip's number); it is blue while any Shield is left (has-shield). Bleed and Poison ticks skip the Shield (the engine), so they take the heart's Health part.
+function ui23HeartOf(c, extra){ return Math.max(0, (Number(c.hp) || 0) + (extra || 0)) + vis3ShieldAmount(c); }
 function vis3ShieldAmount(c){ return c ? Math.max(0, (Number(c.shield) || 0) + (Number(c.tempHp) || 0) + (Number(c.tempHpR) || 0)) : 0; }
 function vis3ShieldHTML(c, amt){
   const n = amt != null ? amt : vis3ShieldAmount(c); if(!(n > 0)) return '';
@@ -40549,7 +40553,7 @@ function vis3ShieldHTML(c, amt){
 }
 // the live chip of a board card (null when none), and its slot in the strip
 function ui11ShieldChip(tile){ return tile ? tile.querySelector('.badges .ab-unit-shield.is-live:not(.vis4-shield-out)') : null; }
-function ui11ShieldChipGone(chip){ try{ const slot = chip.closest('.abadge') || chip, strip = slot.parentElement; slot.remove(); if(strip && strip.classList.contains('badges') && !strip.querySelector('.abadge, .badge-cycle')) strip.remove(); }catch(e){} }
+function ui11ShieldChipGone(chip){ try{ const pg = chip.closest('.bc-item'); if(pg){ pg.innerHTML = ''; pg.classList.add('is-empty'); return; } /* UI23 (2026-11-06): in a cycling slot only its page empties; the slot stays for the other pips */ const slot = chip.closest('.abadge') || chip, strip = slot.parentElement; slot.remove(); if(strip && strip.classList.contains('badges') && !strip.querySelector('.abadge, .badge-cycle')) strip.remove(); }catch(e){} }
 function vis3ShieldRefresh(el, c){
   try{ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = ui11ShieldChip(tile), to = vis3ShieldAmount(c);
     // 2026-10-27 (package VIS4, K7: "if the bar is reduced to 0, it should still animate to 0"): a Shield that breaks counts down to 0 and
@@ -40667,7 +40671,7 @@ function boardCardHTML(c, defs, opts){
     c.diveAloft != null ? (c.diveMode === 'tide' ? 'en7-under' : 'en7-aloft') : '', // EN7 (2026-10-24): Dive's first turn
     c.petrified ? 'is-petrified' : '', // Petrification (2026-10-14): grey stone for the round
     c.crowned ? 'is-crowned' : '', (c.transformed && trTfName(d)) ? ('tf-on tf-' + trTfName(d)) : '', // Package TR (2026-10-21): the Crown's holder; a named Transform's look
-    c.shield > 0 ? 'has-shield' : '', // 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield"): its Health number is blue while it holds a Shield
+    vis3ShieldAmount(c) > 0 ? 'has-shield' : '', // 2026-11-06 (package UI23 #1/#18): any Shield left (with Shell's / Bolster's temporary Health, as the 💠 pip counts); 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield"): its Health number is blue while it holds a Shield
     isLowHp(c) ? 'is-low-hp' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
     opts.dance ? 'is-dancing' : '', // victory dance (2026-09-16), see rowHTML above
     opts.scatter ? 'is-scattering' : '', // unit scatter on loss/draw (2026-09-17), see rowHTML above
@@ -40774,7 +40778,7 @@ function boardCardHTML(c, defs, opts){
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
   return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, size:'compact' /* 2026-10-30 (CS-D): only the inner tile; the .board-card wrapper (Flip, uids) is unchanged */, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, cowering: !!c.cowering /* ENG15 (FF6) */, en5On: c.en5On != null ? c.en5On : (c._en5On || ''), ctxOn: c.ctxOn != null ? c.ctxOn : (c._ctxOn || '') /* ENG25 (2026-11-05, #7): the lit state chips */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, cowering: !!c.cowering /* ENG15 (FF6) */, en5On: c.en5On != null ? c.en5On : (c._en5On || ''), ctxOn: c.ctxOn != null ? c.ctxOn : (c._ctxOn || '') /* ENG25 (2026-11-05, #7): the lit state chips */, atkLabel, atkLow, atkZero, hp: ui23HeartOf(c) /* UI23 (2026-11-06, #1/#18) */, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
       bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${fog ? '' : bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) && !fog ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}${fogC ? fogVeilHTML(fogC) : ''}
@@ -42726,7 +42730,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-paralyzed', c.paralyzed>0);
   el.classList.toggle('is-blind', c.blind>0); el.classList.toggle('is-tipsy', c.tipsy>0); el.classList.toggle('is-confused', c.confused>0);
   el.classList.toggle('is-shocked', c.shocked>0);
-  el.classList.toggle('has-shield', c.shield > 0); // 2026-10-21 (package UI3): its Health number is blue while the Shield stands
+  updateCardHpDisplay(uid); // 2026-11-06 (package UI23 #1/#18): the heart counts the Shield, so it follows every Shield change too (and sets has-shield)
   el.classList.toggle('is-held', ui7IsHeld(c)); // 2026-10-31 (package UI7, owner Y4)
   vis3ShieldRefresh(el, c); // VIS3 (2026-10-26): the Shield's blue number
   el.classList.toggle('is-corroded', c.corrode>0);
@@ -43034,9 +43038,9 @@ function updateCardHpDisplay(uid){
   const el = boardCardEl(uid); if(!el) return;
   const hpSpan = el.querySelector('.stats .hp');
   const smackHeld = (matchState && matchState._smackHeld && matchState._smackHeld[String(uid)]) || 0; // RAIDFX1 (2026-10-30): a raid smack still on its way (raidSmackStage)
-  if(hpSpan) pl2SetStat(hpSpan, '<i class="sg">❤</i>'+Math.max(0,c.hp + smackHeld)); // PL2 (2026-10-25, owner 22:28 #5): a rise bounces, a fall (damage) does not
+  if(hpSpan) pl2SetStat(hpSpan, '<i class="sg">❤</i>'+ui23HeartOf(c, smackHeld)); // PL2 (2026-10-25, owner 22:28 #5): a rise bounces, a fall (damage) does not
   el.classList.toggle('is-low-hp', isLowHp(c));
-  el.classList.toggle('has-shield', c.shield > 0); // 2026-10-21 (package UI3)
+  el.classList.toggle('has-shield', vis3ShieldAmount(c) > 0); // 2026-10-21 (package UI3); UI23: any Shield left
 }
 // Chronos wait-countdown, ordinary tick (2026-09-17): redraws the ring to the new remaining
 // fraction (CSS transitions the stroke-dashoffset smoothly — see .wait-ring-fg) and gives the

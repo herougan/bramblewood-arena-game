@@ -53486,7 +53486,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '1299e0ee5c95', BUILD_CARD_HASH = 'd3ed64fda750cac912038f6cfd36b7f34a7e1d49176ee8abaed50869ba71f378';
+const BUILD_ID = 'e86114ee8fa1', BUILD_CARD_HASH = 'd3ed64fda750cac912038f6cfd36b7f34a7e1d49176ee8abaed50869ba71f378';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -60715,6 +60715,7 @@ function wireLevelStatsEditor(){
   setTimeout(refresh, 0);
 }
 function openCardEditor(defId, versionDef){
+  { const d = defId && getCardDefs()[defId]; if(d && d.derivedFrom) defId = d.derivedFrom; } // 2026-11-06 (package UI23 #4): a fight copy ("<id>@lv1", "~cp") edits its card, never a new one
   // 2026-10-07 audit: start from the shared definition, not getCardDefs() — that one applies THIS
   // player's card level and personal unlocks, which a plain Save used to bake into the card for everyone.
   // 2026-10-19 (package AN): a pool card (Admin's Pool cards filter) isn't in the live defs: it opens as a new card to place.
@@ -60948,7 +60949,7 @@ function renderEditorInner(){
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select><label class="ed-arty" title="${escapeAttr(TX('ui.ui19-art-y-tip'))}"><span>${escapeHtml(TX('ui.ui19-art-y'))}</span><input id="fArtPosY" type="number" min="0" max="100" step="5" placeholder="50" value="${artPosOf(c) === null ? '' : artPosOf(c)}"></label></div>
       <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span>${'' /* 2026-11-05 (package EDIT1, owner 23:35: "Species should be a dropdown"): the species the game knows (cards.json + the taxonomy); an existing value that is not on the list stays as its own option. A second dropdown makes a hybrid. */}${(()=>{ const names = allSpeciesNames(), cur = c.species || [], opt = (k, sel)=> `<option value="${escapeAttr(k)}" ${sel ? 'selected' : ''}>${speciesIcon(k)} ${escapeHtml(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeHtml(SPECIES_PHYLUM[k]) : ''}</option>`, list = sel=> names.concat(sel && !names.includes(sel) ? [sel] : []).sort().map(k=> opt(k, k === sel)).join(''),
       onch = "(function(){ const v = ['fSpecies','fSpecies2'].map(i=> (document.getElementById(i)||{}).value).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })()";
-    return `<select id="fSpecies" aria-label="Species" onchange="${onch}"><option value="" ${cur[0] ? '' : 'selected'}>🧬 ${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[0])}</select><select id="fSpecies2" aria-label="${escapeAttr(TX('ui.edit1-species2'))}" title="${escapeAttr(TX('ui.edit1-species2'))}" onchange="${onch}"><option value="" ${cur[1] ? '' : 'selected'}>${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[1])}</select>`; })()}</div>
+    return `<select id="fSpecies" aria-label="Species" onchange="${onch}"><option value="" ${cur[0] ? '' : 'selected'}>🧬 ${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[0])}</select><select id="fSpecies2" aria-label="${escapeAttr(TX('ui.edit1-species2'))}" title="${escapeAttr(TX('ui.edit1-species2'))}" onchange="${onch}"><option value="" ${cur[1] ? '' : 'selected'}>${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[1])}</select>`; })()}</div></div>${'' /* 2026-11-06 (package UI23 #4): this </div> closes the Species field; without it every later section sat inside the Identity grid, in both editors */}
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
            request: "I think the Splash Effect doesn't need to be there as well, since it's
            related to the level of the card OR by chance, not an inherent quality of this

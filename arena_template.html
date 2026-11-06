@@ -14773,7 +14773,8 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ed-flags{margin-top:0; gap:4px 5px; align-items:center;}
 .ed-flag-sep{width:1px; align-self:stretch; min-height:16px; background:var(--surface-border); margin:0 3px;}
 .ed-econ{display:flex; flex-wrap:wrap; gap:4px 12px; margin-bottom:6px;}
-.ed-econ .multi-resource-row input{width:33px; padding:4px 2px; text-align:center;}
+#editorOverlay .ed-econ .multi-resource-row input{width:38px; padding:4px 2px; text-align:center; -moz-appearance:textfield;} /* 2026-11-06 (package UI23 #4): #editorOverlay .field input's 8px padding hid the number */
+#editorOverlay .ed-econ .multi-resource-row input::-webkit-inner-spin-button{display:none;}
 .ed-econ .multi-resource-row .mr-glyph{margin-right:2px; font-size:12px;}
 .ed-pitch-extra{font-size:12px; font-weight:800; white-space:nowrap;}
 .ed-tags-line{display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px;}
