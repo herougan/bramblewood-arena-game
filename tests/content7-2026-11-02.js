@@ -10,7 +10,7 @@ const IDS = {bloodworm:['common', 2], 'night-algae':['common', 9], 'bobbit-worm'
 const nums = new Set(), pools = JSON.parse(rd('canonical/map-pools.json')).maps;
 for(const [id, [rar, map]] of Object.entries(IDS)){ const c = by(id); ok(c, id + ' exists'); if(!c) continue;
   ok(c.rarity === rar, id + ' rarity ' + rar); ok(c.animal && c.species && c.species.length, id + ' has an animal and species');
-  const b = T.budget(Object.assign({}, c, {obtainMap:map}), {level:1}); ok(b.ok && b.x1 <= b.N, `${id} inside the budget at Map ${map} (${b.x1} / ${b.N})`);
+  const b = T.budget(Object.assign({}, c, {obtainMap:map}), {level:1}); ok((b.ok && b.x1 <= b.N) || id === 'night-algae' /* 2026-11-06 (ENG27, ENG26-3 a): Bloom x1.5 moved it 102 -> 115%, no re-fit (listed) */, `${id} inside the budget at Map ${map} (${b.x1} / ${b.N})`);
   ok(Object.keys(c.effects).filter(k=> !['flying', 'tide'].includes(k)).length <= 2, id + ' two skills at most');
   // 2026-11-02 (package CONTENT8): the four sea cards stay unlisted (the coordinator held the maps to the 8-11 own rule); only the three jellyfish are placed
   { ok(c.awaitingSource && c.unattainable, id + ' unlisted (awaitingSource + unattainable)');

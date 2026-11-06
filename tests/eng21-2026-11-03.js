@@ -25,33 +25,33 @@ const TXT = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = R('aren
 // ---- 1. Inspiring: tokens, +2 each, stacking, events
 { const {e, P} = mk(); const I = spawn(e, P, 1, 'x-insp1', 'left'), A = spawn(e, P, 1, 'x-hit', 'right'); const ev = [];
   e.debugAttack(P, so, I.uid, {}, ev);
-  ok(A.inspTokens === 1 && A.inspired === 2, `Inspiring 1: the neighbour gains 1 token, +2 Attack (${A.inspTokens} / +${A.inspired})`);
+  ok(A.inspTokens === 1 && A.inspired === 1 /* 2026-11-06 (ENG27, owner item 14): +1 a token */, `Inspiring 1: the neighbour gains 1 token, +1 Attack (${A.inspTokens} / +${A.inspired})`);
   const g = ev.find(x=> x.type === 'statusFx' && x.kind === 'inspired');
-  ok(g && g.targetUid === A.uid && g.tokens === 1 && g.amount === 2 && g.total === 1, 'the inspired event carries tokens 1, amount (Attack) 2, total 1');
+  ok(g && g.targetUid === A.uid && g.tokens === 1 && g.amount === 1 && g.total === 1, 'the inspired event carries tokens 1, amount (Attack) 1, total 1'); // 2026-11-06 (ENG27, owner item 14): +1 a token (this test's +2 numbers halved below)
   e.debugAttack(P, so, I.uid, {}, []); e.debugAttack(P, so, I.uid, {}, []);
-  ok(A.inspTokens === 3 && A.inspired === 6, `it stacks: three Inspiring swings, 3 tokens, +6 (${A.inspTokens} / +${A.inspired})`);
+  ok(A.inspTokens === 3 && A.inspired === 3, `it stacks: three Inspiring swings, 3 tokens, +3 (${A.inspTokens} / +${A.inspired})`);
   const hq = P[2].hq.hp, ev2 = []; e.debugAttack(P, so, A.uid, {}, ev2);
-  ok(hq - P[2].hq.hp === 11, `the hit that lands carries all of it: 5 + 6 = 11 on the bramble (${hq - P[2].hq.hp})`);
+  ok(hq - P[2].hq.hp === 8, `the hit that lands carries all of it: 5 + 3 = 8 on the bramble (${hq - P[2].hq.hp})`);
   ok(!A.inspTokens && !A.inspired, 'the landing hit spends every token');
   const sp = ev2.find(x=> x.type === 'statusFx' && x.kind === 'inspiredSpent');
-  ok(sp && sp.attUid === A.uid && sp.amount === 6 && sp.tokens === 3, "an 'inspiredSpent' event names what was spent (+6, 3 tokens)");
+  ok(sp && sp.attUid === A.uid && sp.amount === 3 && sp.tokens === 3, "an 'inspiredSpent' event names what was spent (+3, 3 tokens)");
   const hq2 = P[2].hq.hp; e.debugAttack(P, so, A.uid, {}, []); ok(hq2 - P[2].hq.hp === 5, 'the next swing is plain again'); }
 { const {e, P} = mk(); const I = spawn(e, P, 1, 'x-insp2', 'left'), A = spawn(e, P, 1, 'x-hit', 'right');
-  e.debugAttack(P, so, I.uid, {}, []); ok(A.inspTokens === 2 && A.inspired === 4, `Inspiring 2 grants 2 tokens, +4 (${A.inspTokens} / +${A.inspired})`); }
+  e.debugAttack(P, so, I.uid, {}, []); ok(A.inspTokens === 2 && A.inspired === 2, `Inspiring 2 grants 2 tokens, +2 (${A.inspTokens} / +${A.inspired})`); }
 // a unit hit (not only the bramble) spends them too
 { const {e, P} = mk(); const I = spawn(e, P, 1, 'x-insp1', 'left'), A = spawn(e, P, 1, 'x-hit', 'right'); spawn(e, P, 2, 'x-wall', 'left'); spawn(e, P, 2, 'x-wall', 'right');
   const tot = ()=> all(P[2]).reduce((a, c)=> a + c.hp, 0);
   e.debugAttack(P, so, I.uid, {}, []); const hp = tot(), hq = P[2].hq.hp; e.debugAttack(P, so, A.uid, {}, []);
-  ok(hp - tot() === 7 && hq === P[2].hq.hp && !A.inspTokens, `a hit on a unit: 5 + 2 = 7, tokens spent (${hp - tot()}, ${A.inspTokens})`); }
+  ok(hp - tot() === 6 && hq === P[2].hq.hp && !A.inspTokens /* 2026-11-06 (ENG27): +1 a token */, `a hit on a unit: 5 + 1 = 6, tokens spent (${hp - tot()}, ${A.inspTokens})`); }
 // a miss keeps them: a Blind ally swinging at the bramble, over seeds; when it misses its tokens stay, when it lands they go
 { let kept = 0, spent = 0, bad = 0;
   for(let s = 1; s < 40; s++){ const {e, P} = mk(s); const I = spawn(e, P, 1, 'x-insp1', 'left'), A = spawn(e, P, 1, 'x-hit', 'right');
     e.debugAttack(P, so, I.uid, {}, []); A.blind = 9; const hq = P[2].hq.hp; e.debugAttack(P, so, A.uid, {}, []); const d = hq - P[2].hq.hp;
-    if(d === 0){ if(A.inspTokens === 1 && A.inspired === 2) kept++; else bad++; } else if(d === 7 && !A.inspTokens) spent++; else bad++; }
+    if(d === 0){ if(A.inspTokens === 1 && A.inspired === 1) kept++; else bad++; } else if(d === 6 && !A.inspTokens) spent++; else bad++; } // 2026-11-06 (ENG27): +1 a token
   ok(kept > 0 && spent > 0 && bad === 0, `a missed swing keeps its Inspiration, a landed one spends it (kept ${kept}, spent ${spent}, wrong ${bad})`); }
 // the ally in front of / behind it on a rows board is still adjacent (GD2), unchanged
 ok(/frontBehindOf\(players\[a\.attId\], a\.att\)/.test(eng) && /ally\.inspTokens = \(ally\.inspTokens\|\|0\) \+ insp/.test(eng), 'the grant goes to left / right and front / behind (GD2), as tokens');
-ok(/const INSPIRE_TOKEN_ATK = 2;/.test(eng), 'one token is +2 Attack (INSPIRE_TOKEN_ATK)');
+ok(/const INSPIRE_TOKEN_ATK = 1;/.test(eng), 'one token is +1 Attack (INSPIRE_TOKEN_ATK)'); // 2026-11-06 (ENG27, owner item 14: "Inspiration only gives +1 attack, not 2")
 
 // ---- 1b. the board: pip, VFX, snapshots, texts
 ok(/if\(c\.inspTokens>0\) badges\.push\(eng21InspPip\(c\)\)/.test(app) && (app.match(/badges\.push\(eng21InspPip\(c\)\)/g) || []).length === 2, 'both status strips show the Inspiration pip');

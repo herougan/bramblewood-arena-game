@@ -127,3 +127,10 @@ Card art: paste the base prompt first, then the line below. Run the pixel pass a
 
 ### Old Snapjaw
 > (ART9 2026-11-05, owner 11-04 "Old snapjaw needs new art") Full-body character in a small scene: a huge ancient old alligator with a long scarred snout, mossy green scales and a crown of pink swamp flowers (its own item, kept from the old art), lying half submerged in murky swamp water among cypress roots and lily pads, one glowing yellow eye watching patiently, misty green swamp with hanging moss and fireflies.
+
+## New card prompts (2026-11-06, package ENG27)
+
+Card art: paste the base prompt first, then the line below. Run the pixel pass at 128 px. The game shows the card's emoji until the art lands.
+
+### Crimson Wing Drumcaller
+> Full-body character in a small scene, centred, slight low angle: a small hummingbird of the Crimson Wing tribe hovering beside a little gourd drum on a woven strap, crimson and gold feathers with bold war-paint stripes on its cheeks, a short feather headdress, beak open in a chant, tiny wings blurred with motion, warm cliff-stone ledge background with woven tribal banners, flower garlands and a sunset sky, one bright crimson accent.

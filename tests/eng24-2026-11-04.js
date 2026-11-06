@@ -44,7 +44,7 @@ const SCt = J('canonical/skill-costs.json'), SK = Object.fromEntries(SCt.skills.
 const words = s=> String(s).replace(/\{\w+\}/g, 'N').trim().split(/\s+/).filter(Boolean).length;
 
 // ---- 1. Bramble Armor as a Fortify form -----------------------------------------------------------------------------------------
-ok(TXT['ui.skn-bramble-armor'] === 'Fortify { Armor 1 }, while it lives' && TXT['ui.eng24-barmor-head'] === 'Fortify { Armor {n} }, while it lives', `1: the name reads Fortify { Armor N }, while it lives (${TXT['ui.skn-bramble-armor']})`);
+ok(TXT['ui.skn-bramble-armor'] === 'Fortify (Armor 1), while it lives' && TXT['ui.eng24-barmor-head'] === 'Fortify (Armor {n}), while it lives' /* 2026-11-06 (ENG27, owner item 10: "Fortify - (Armor 1)"): braces became brackets */, `1: the name reads Fortify { Armor N }, while it lives (${TXT['ui.skn-bramble-armor']})`);
 ok(/brambleArmor/.test(app) && /eng24BarmorN/.test(app) && /k === 'brambleArmor'/.test(app), '1: the card line, the editor and the Codex read the Fortify form (e22Head)');
 { const {e, P} = mk(1); const b = put(e, P, 2, 'briarback-hedgehog', 0); const hq0 = P[2].hq.hp; void b;
   ok(SK.brambleArmor && SK.brambleArmor.value === 1.1, '1: its price is unchanged (1.1)'); void hq0; }

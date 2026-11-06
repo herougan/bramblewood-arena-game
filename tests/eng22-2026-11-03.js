@@ -65,7 +65,7 @@ ok(E.makeSimEngine(defs, E.mulberry32(1), {}).buildSizeOf('3/12 Palisade').hp ==
   const f = all(P[1]).find(x=> x.defId === 'x-fort'); e.debugDamage(P, so, f.uid, 999, {}, []);
   ok(P[1].castleThorns === 1, '1: Fortify stays when its unit dies'); }
 { const {e, P} = mk(4); e.debugSpawnCard(P, so, 1, 'x-fortS', 0, {}, []); ok(P[1].castleThorns === 1 && P[1].castleBolt === 2, '1: Fortify reads the card text "Thorns 1, +1 Health, Bolt 2"'); }
-ok(TXT['ui.sk2n-fortification'] === 'Build' && TXT['ui.e22-build-head'] === 'Build { {a}/{h} Palisade }' && TXT['ui.e22-fortify-name'] === 'Fortify' && TXT['ui.skn-bramble-armor'] === 'Fortify { Armor 1 }, while it lives' /* 2026-11-04 (ENG24, ENG22-2 b): a Fortify form now */, '1: the names: Build, Fortify; Bramble Armor (brambleArmor) reads as Fortify { Armor 1 }, while it lives');
+ok(TXT['ui.sk2n-fortification'] === 'Build' && TXT['ui.e22-build-head'] === 'Build { {a}/{h} Palisade }' && TXT['ui.e22-fortify-name'] === 'Fortify' && TXT['ui.skn-bramble-armor'] === 'Fortify (Armor 1), while it lives' /* 2026-11-04 (ENG24, ENG22-2 b): a Fortify form now; 2026-11-06 (ENG27, item 10): in brackets */, '1: the names: Build, Fortify; Bramble Armor (brambleArmor) reads as Fortify (Armor 1), while it lives');
 ok(/key:'fortification', category:'passive', label:TX\('ui\.sk2n-fortification'\), kind:'text', placeholder:'0\/6 Palisade'/.test(app) && /key:'fortify', category:'passive', label:TX\('ui\.e22-fortify-name'\), kind:'text'/.test(app), '1: the editor fields: Build and Fortify take their braces as text');
 ok(!cards.some(c=> c.effects && (c.effects.fortify || c.effects.fortification)), '1: Fortify (and Build) on no card');
 ok(SK.fortify && SK.fortify.value === 3.04 && SK.fortify.theoretical, '1: Fortify priced theoretically (3.04 at the owner\'s example)');
@@ -98,7 +98,7 @@ ok(/[1-9].*,[2-9]/.test(series('x-pearlEv', 'pearl')), `3: Delivery {Pearl x1}, 
   ok(!old.length, `3: no card in canonical/cards.json carries Stockpile, onReadyGold or an On Ready gain trigger (${old.map(c=> c.id).join(', ')})`);
   const every = cards.filter(c=> c.effects && c.effects.deliveryEvery).map(c=> c.id), once = cards.filter(c=> c.effects && c.effects.delivery).map(c=> c.id);
   // 2026-11-06 (CONTENT12): the owner's live Driftwood Crab (On Attacked +1 Lumber, no Delivery) folded in: 12 once
-  ok(every.length === 11 && once.length === 12, `3: 11 cards deliver every turn (onReadyGold), 12 once (Stockpile, the triggers) (${every.length} / ${once.length})`);
+  ok(every.length === 11 && once.length === 14 /* 2026-11-06 (ENG27, ENG25-6): + Giant Clam and Oyster Bank, Delivery {Pearl} */, `3: 11 cards deliver every turn (onReadyGold), 14 once (Stockpile, the triggers, the Pearl cards) (${every.length} / ${once.length})`);
   ok(byId['nutria-reedcutter'].effects.delivery === 2 && byId['dune-packrat'].effects.delivery === 3 && byId['muskrat-reedgatherer'].effects.delivery === 2 && byId['gravel-mole'].effects.deliveryRes === 'stone' && byId['ore-smelter-mole'].effects.deliveryRes === 'metal' && byId['irradiated-axolotl'].effects.deliveryRes === 'uranium', '3: amounts and resources kept'); }
 ok(SK.delivery && SK.delivery.value === 2.59 && SK.delivery.pow === 0.71 && SK.deliveryEvery && SK.deliveryEvery.value === 6.65 && SK.deliveryRes, '3: Delivery priced as the forms it replaces (2.59 x N^0.71 once; 6.65 every turn)');
 ok(/sk1Patch\(PASSIVE_DEFS, 'stockpile', \{hidden:true\}\)/.test(app) && TXT['ui.e22-delivery-head'] === 'Delivery { {res} x{n} }', '3: Stockpile leaves "+ Add Skill"; the line reads Delivery { Lumber x1 }');
@@ -144,7 +144,7 @@ ok(/Wetness is lost 1 per turn/.test(JSON.stringify(J('docs/decisions.json').ite
 // ---- decisions, docs, packs ---------------------------------------------------------------------------------------------
 { const D = J('docs/decisions.json'), ids = D.items.map(x=> x.id); ok(['ENG22-1', 'ENG22-2'].every(i=> ids.includes(i)), '8: decisions ENG22-1 / ENG22-2 filed'); }
 ok(/ENG22/.test(R('docs/project-state.md')) && /Delivery/.test(R('docs/effects-catalogue.md')) && /ENG22/.test(R('docs/CHANGELOG.md').slice(0, 6000)), '8: project-state, effects-catalogue and the CHANGELOG carry ENG22');
-{ const miss = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].filter(c=>{ const p = J('lang/' + c + '.json'); return !['Build', 'Fortify { Armor 1 }, while it lives' /* ENG24 (ENG22-2 b) */, 'Delivery { {res} x{n} }', 'Riled', TXT['ui.e22-guardian']].every(k=> p[k]); });
+{ const miss = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].filter(c=>{ const p = J('lang/' + c + '.json'); return !['Build', 'Fortify (Armor 1), while it lives' /* ENG24 (ENG22-2 b); ENG27 brackets */, 'Delivery { {res} x{n} }', 'Riled', TXT['ui.e22-guardian']].every(k=> p[k]); });
   ok(!miss.length, `8: the new texts in the 12 packs (${miss})`); }
 console.log(`eng22: ${fail ? fail + ' failure(s)' : 'all passed'} (${n} checks)`);
 process.exit(fail ? 1 : 0);

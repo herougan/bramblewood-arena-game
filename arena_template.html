@@ -3761,6 +3761,10 @@
      has dropped into the ground (FX.C.castleSink) stays down on every redraw after it: its spot is kept (the row doesn't shift), with
      only a low mound of earth where it stood. */
   .match-castle-tile.castle-fallen{visibility:hidden !important; pointer-events:none;}
+  /* ENG27 (2026-11-06, item 10): the Fortify / Unfortify pips on a bramble, a row just above its Health and Shield */
+  .match-castle-tile .eng27-fort{position:absolute; left:3px; right:3px; bottom:24%; z-index:6; display:flex; flex-wrap:wrap-reverse; justify-content:center; gap:2px; pointer-events:auto;}
+  .match-castle-tile .eng27-fort .eng27-fp{position:static; font-size:.72em; line-height:1.1; padding:1px 3px; border-radius:6px; background:rgba(20,26,22,.82); color:#fff; border:1px solid rgba(255,255,255,.35);}
+  .match-castle-tile .eng27-fort .eng27-fp-vulnerable{background:rgba(120,20,30,.88);}
   /* 2026-10-25 (package PL2, owner 22:28 #1, SS#1: "a remaining trace of the bramble is left on the top left"): the mound of earth
      (this ::before, BV) stayed on the field after the sink's dust had settled and read as a leftover. A fallen bramble leaves nothing. */
   .match-castle-tile.castle-fallen::before, .match-castle-tile.castle-fallen::after{content:none !important; display:none !important;}

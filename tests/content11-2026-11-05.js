@@ -39,7 +39,7 @@ NEW.forEach(s=>{ const c = byId[s.id]; ok(!!c, `${s.id}: in cards.json`); if(!c)
   ok(s.fx.every(k=> c.effects && c.effects[k]) && Object.keys(c.effects).length === 2, `${s.id}: carries ${s.fx.join(' + ')} (two skills)`);
   ok(/^data:image\/png;base64,/.test(c.art || "") && !!c.icon, `${s.id}: has its ART9 card art and keeps its icon`); // 2026-11-05 (ART9): the art came in; was "the emoji placeholder"
   ok(c.source && c.source.kind === 'pack' && c.source.map === s.sub && !c.unattainable && !c.awaitingSource, `${s.id}: a pack card of its list, in play`);
-  ok(cards.indexOf(c) >= cards.length - 2, `${s.id}: appended at the end`);
+  ok(cards.indexOf(c) >= cards.length - 3, `${s.id}: appended at the end`); // 2026-11-06 (ENG27): the Crimson Wing Drumcaller came after it
   const m = OBT[s.id]; ok(m > 0, `${s.id}: obtainable from Map ${m} (card-obtain-maps)`);
   const b = T.budget(Object.assign({}, c, {obtainMap: m}), {level:1}); ok(b.ok && b.x1 <= b.N, `${s.id}: inside the budget at Level 1, Map ${m} (${b.x1} / ${b.N})`);
   ok(POOLS[s.parent].submaps[s.sub].includes(s.id) && !POOLS[s.parent].cards.includes(s.id), `${s.id}: on the ${s.sub} list only`);

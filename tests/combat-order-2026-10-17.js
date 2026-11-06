@@ -38,7 +38,7 @@ const shotOf = (ev, uid)=> idx(ev, x=> (x.type==='arrow' || x.type==='bolt') && 
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'co-plain', 'center', {}, []); e.debugSpawnCard(P, so, 2, 'co-bolt', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'co-archer', 'right', {}, []);
   const pl = byDef(P[1], 'co-plain'), B = byDef(P[2], 'co-bolt'), A = byDef(P[2], 'co-archer'); const ev = []; e.resolveCombat(P, so, {}, ev, 1);
   const s = swingOf(ev, pl.uid), b = shotOf(ev, B.uid), a = shotOf(ev, A.uid);
-  ok(b >= 0 && a >= 0 && s > b && s > a, `2. shots before the Speed 0 swing (bolt ${b}, arrow ${a}, swing ${s})`); }
+  ok(b >= 0 && a >= 0 && s > b && a > s, `2. a bolt (Speed 1) before the Speed 0 swing, an arrow (Speed 0) after it (bolt ${b}, arrow ${a}, swing ${s})`); } // 2026-11-06 (ENG27, owner item 11: "Arrows and all arrow-likes are speed 0 (Slower than default). Bolts are speed 1.")
 // 3. Speed 3 beats Quick + Speed 1 (= 3, tie: initiative), which beats plain Quick (2)
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'co-quick', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'co-qfast', 'right', {}, []); e.debugSpawnCard(P, so, 2, 'co-fast3', 'center', {}, []);
   const q = byDef(P[1], 'co-quick'), qf = byDef(P[1], 'co-qfast'), f3 = byDef(P[2], 'co-fast3'); const ev = []; e.resolveCombat(P, so, {}, ev, 2);
@@ -54,12 +54,15 @@ const shotOf = (ev, uid)=> idx(ev, x=> (x.type==='arrow' || x.type==='bolt') && 
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'co-archer', 'center', {}, []); e.debugSpawnCard(P, so, 1, 'co-plain', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'co-frail', 'center', {}, []); e.debugSpawnCard(P, so, 2, 'co-wall', 'left', {}, []);
   const A = byDef(P[1], 'co-archer'), pl = byDef(P[1], 'co-plain'), fr = byDef(P[2], 'co-frail'); const ev = []; e.resolveCombat(P, so, {}, ev, 1);
   const a = shotOf(ev, A.uid), d = idx(ev, x=> x.type==='death' && x.uid===fr.uid), s = swingOf(ev, pl.uid);
-  ok(a >= 0 && d > a && (s < 0 || d < s), `5. the arrow kill's death (${d}) comes after the shot (${a}) and before the next swing (${s})`); }
+  // 2026-11-06 (ENG27, owner item 11): the arrow is Speed 0 now, after the swings; its kill still dies before the next action after the shot
+  const nx = ev.findIndex((x, i)=> i > a && (x.type === 'hit' || x.type === 'hitHQ' || x.type === 'arrow' || x.type === 'bolt') && x.uid !== A.uid && x.attUid !== A.uid);
+  ok(a >= 0 && d > a && (nx < 0 || d < nx) && s >= 0 && s < a, `5. the arrow kill's death (${d}) comes after the shot (${a}), after the swings (${s}) and before any later action (${nx})`); }
 // 6. A Volley's kill is settled once that shooter's shots are done, before anyone else acts
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'co-volley', 'center', {}, []); e.debugSpawnCard(P, so, 1, 'co-plain', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'co-frail', 'center', {}, []); e.debugSpawnCard(P, so, 2, 'co-wall', 'left', {}, []);
   const pl = byDef(P[1], 'co-plain'), fr = byDef(P[2], 'co-frail'); const ev = []; e.resolveCombat(P, so, {}, ev, 1);
   const d = idx(ev, x=> x.type==='death' && x.uid===fr.uid), s = swingOf(ev, pl.uid);
-  ok(d >= 0 && s > d, `6. the Volley kill dies (${d}) before the next swing (${s})`); }
+  const vs = ev.findIndex(x=> x.type === 'arrow' && x.volley); // 2026-11-06 (ENG27): the Volley is Speed 0, after the swings
+  ok(d >= 0 && vs >= 0 && d > vs && s >= 0 && s < vs, `6. the Volley (${vs}) comes after the swing (${s}) and its kill dies (${d}) as its shots end`); }
 // 7. Pounce: the unit it kills dies as the pouncer lands, not at the next round's first clean-up
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 2, 'co-frail', 'center', {}, []); const fr = byDef(P[2], 'co-frail');
   const ev = []; e.debugSpawnCard(P, so, 1, 'co-pounce', 'center', {}, ev);

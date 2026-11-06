@@ -65,9 +65,9 @@
   }
  ],
  "counts": {
-  "cards": 908,
-  "creatures": 809,
-  "tagged": 811,
+  "cards": 909,
+  "creatures": 810,
+  "tagged": 812,
   "animals": 366,
   "groups": 145,
   "withSubtype": 111,
@@ -96,11 +96,11 @@
    "icon": 37,
    "name": 603,
    "proposed": 23,
-   "type": 64
+   "type": 65
   },
   "topGroups": {
    "otter": 32,
-   "hummingbird": 29,
+   "hummingbird": 30,
    "fish": 26,
    "beetle": 21,
    "fox": 18,
@@ -9608,6 +9608,16 @@
    "subtype": "plant",
    "how": "proposed",
    "note": "a giant water lily pad; proposed: a frog (sits on the pad)"
+  },
+  {
+   "id": "crimson-wing-drumcaller",
+   "name": "Crimson Wing Drumcaller",
+   "icon": "🐦",
+   "creature": true,
+   "animal": "hummingbird",
+   "group": "hummingbird",
+   "subtype": null,
+   "how": "type"
   }
  ]
 }

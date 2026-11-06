@@ -1084,14 +1084,14 @@
   }
  ],
  "counts": {
-  "units": 809,
-  "live": 805,
+  "units": 810,
+  "live": 806,
   "pool": 4,
   "proposed": 139,
   "manual": 23,
   "existingVariants": 39,
   "biomeFrom": {
-   "type": 516,
+   "type": 517,
    "home map": 113,
    "fallback": 85,
    "fights": 39,
@@ -1119,7 +1119,7 @@
    "swamp": 63,
    "redwood": 7,
    "savanna": 24,
-   "cliffs": 34,
+   "cliffs": 35,
    "mangrove": 12
   },
   "family": {
@@ -1127,7 +1127,7 @@
    "plant": 15,
    "insect": 75,
    "arachnid": 16,
-   "bird": 139,
+   "bird": 140,
    "worm": 14,
    "elemental": 5,
    "construct": 16,
@@ -1156,7 +1156,7 @@
    "hollow-kin": 14,
    "great-beasts": 12,
    "tidefolk": 4,
-   "hummingbirds": 29,
+   "hummingbirds": 30,
    "ashen-choir": 15,
    "goldfeather": 7,
    "greenhood": 1,
@@ -1244,7 +1244,7 @@
    "rhino": 2,
    "bird": 2,
    "moth": 8,
-   "hummingbird": 29,
+   "hummingbird": 30,
    "mole": 7,
    "snail": 6,
    "pigeon": 3,
@@ -1985,7 +1985,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "m5": 5,
+     "m5": 4,
      "mq": 1,
      "muc": 6
     }
@@ -8294,7 +8294,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "m5": 12,
+     "m5": 13,
      "mpd": 3,
      "muc": 24
     }
@@ -12765,7 +12765,7 @@
     "home": [],
     "fights": {
      "m8": 38,
-     "my": 3
+     "my": 4
     }
    },
    "source": "pack",
@@ -29249,7 +29249,7 @@
     "fights": {
      "mu": 27,
      "mz": 4,
-     "my": 4,
+     "my": 2,
      "muc": 15
     }
    },
@@ -37935,8 +37935,12 @@
      null
     ],
     [
-     "pearl",
+     "delivery",
      1
+    ],
+    [
+     "deliveryRes",
+     "pearl"
     ]
    ],
    "types": [
@@ -40651,8 +40655,12 @@
      null
     ],
     [
-     "pearl",
+     "delivery",
      1
+    ],
+    [
+     "deliveryRes",
+     "pearl"
     ]
    ],
    "types": [
@@ -41052,7 +41060,8 @@
    "status": "live",
    "rarity": "uncommon",
    "biomes": [
-    "redwood"
+    "redwood",
+    "jungle"
    ],
    "family": "bird",
    "sub": "Bird",
@@ -41086,12 +41095,12 @@
     "fights": {
      "mr": 2,
      "mt": 2,
-     "my": 3
+     "my": 4
     }
    },
    "source": "pack",
    "why": {
-    "biome": "name",
+    "biome": "name; fights mostly on jungle",
     "family": "species Bird",
     "faction": "default"
    }
@@ -43684,6 +43693,58 @@
    }
   },
   {
+   "id": "crimson-wing-drumcaller",
+   "name": "Crimson Wing Drumcaller",
+   "icon": "🐦",
+   "status": "live",
+   "rarity": "uncommon",
+   "biomes": [
+    "cliffs"
+   ],
+   "family": "bird",
+   "sub": "Bird",
+   "animal": "hummingbird",
+   "animalGroup": "hummingbird",
+   "subtype": null,
+   "faction": "hummingbirds",
+   "size": "small",
+   "stage": null,
+   "firstMap": null,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 6,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "flying",
+     null
+    ],
+    [
+     "hype",
+     1
+    ]
+   ],
+   "types": [
+    "Hummingbird",
+    "Bird"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": null,
+   "enemyOnly": true,
+   "why": {
+    "biome": "type Hummingbird",
+    "family": "species Bird",
+    "faction": "Hummingbird type"
+   }
+  },
+  {
    "id": "dire-cave-olm",
    "name": "Peakroot Olm",
    "internalName": "Dire Cave Olm",
@@ -45684,8 +45745,12 @@
       null
      ],
      [
-      "pearl",
+      "delivery",
       1
+     ],
+     [
+      "deliveryRes",
+      "pearl"
      ]
     ],
     "map": "m6",

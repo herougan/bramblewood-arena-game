@@ -60,7 +60,7 @@ const hitsOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid
   round(e, P, 1); ok(D.diveAloft != null, 'aloft after its rise');
   const ev = round(e, P, 2); const arrowAt = ev.filter(x=> x.type === 'arrow' && x.uid === S.uid);
   const missAloft = ev.some(x=> x.type === 'evaded' && x.targetUid === D.uid && (x.reason === 'aloft'));
-  ok(!hitsOn(ev.slice(0, ev.findIndex(x=> x.type === 'dive')), D.uid).length && (missAloft || !arrowAt.some(x=> x.targetUid === D.uid)), 'a Spotter\'s arrow can\'t find it while it is aloft'); }
+  ok(!hitsOn(ev.slice(0, ev.findIndex(x=> x.type === 'dive')), D.uid).length && (missAloft || !arrowAt.some(x=> x.targetUid === D.uid && ev.indexOf(x) < ev.findIndex(y=> y.type === 'dive'))), 'a Spotter\'s arrow can\'t find it while it is aloft'); } // 2026-11-06 (ENG27, owner item 11): the arrow is Speed 0 now, after the swings: it flies once the diver has struck and is down, so only an arrow before the strike counts
 { const {e, P} = mk(); put(e, P, 1, 'x-dive', 0); const T = put(e, P, 2, 'x-taunt', 0); const wk = put(e, P, 2, 'x-weak', 1); const G = put(e, P, 2, 'x-guard', 2);
   round(e, P); const ev = round(e, P); const dv = ev.find(x=> x.type === 'dive'), h = ev.find(x=> x.type === 'hit' && x.dive);
   ok(dv && dv.targetUid === wk.uid && h && h.guardianRedirect && h.targetUid === G.uid, `the strike goes past the Taunt onto the weakest; the Guardian beside it steps in (${h && h.targetDefId})`); void T; }

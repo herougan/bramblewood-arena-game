@@ -703,17 +703,17 @@ function phaseVals(v){ return Array.isArray(v) ? [Number(v[0])||0, Number(v[1])|
 // [dayA, dayH, nightA, nightH]; an older two-number value [A, H] (the Test Kit, an old row) is the same +A/+H in both parts.
 function eng23CrepVals(v){ const n = x=> Math.max(0, Number(x)||0);
   if(Array.isArray(v)) return v.length >= 4 ? [n(v[0]), n(v[1]), n(v[2]), n(v[3])] : [n(v[0]), n(v[1]), n(v[0]), n(v[1])];
-  return v === true ? [0, 0, 0, 1] : [n(v), 0, n(v), 0]; }
+  return v === true ? [1, 0, 0, 1] /* ENG27 (2026-11-06, owner ENG23-1): the default +1/+0 by day, +0/+1 at night */ : [n(v), 0, n(v), 0]; }
 function eng23CrepGet(e){ if(!e || e.crepuscularGrant) return undefined;
   const two = v=> Array.isArray(v) ? [Number(v[0])||0, Number(v[1])||0] : (v && typeof v === 'object') ? [Number(v.attack)||0, Number(v.health)||0] : [0, 0];
   if(e.crepuscularDay != null || e.crepuscularNight != null) return two(e.crepuscularDay).concat(two(e.crepuscularNight));
-  if(e.crepuscular === true && !e.crepuscularHp) return [0, 0, 0, 1];
+  if(e.crepuscular === true && !e.crepuscularHp) return [1, 0, 0, 1]; // ENG27 (ENG23-1)
   if(e.crepuscular || e.crepuscularHp){ const a = e.crepuscular === true ? 1 : (Number(e.crepuscular)||0), h = Number(e.crepuscularHp)||0; return [a, h, a, h]; }
   return undefined; }
 function eng23CrepApply(e, vals){ const [da, dh, na, nh] = eng23CrepVals(vals); if(!(da || dh || na || nh)) return;
   delete e.crepuscularDay; delete e.crepuscularNight; delete e.crepuscularHp;
   if(da === na && dh === nh){ e.crepuscular = da; if(dh > 0) e.crepuscularHp = dh; return; } // the old form: an old card saves back unchanged
-  e.crepuscular = true; if(da === 0 && dh === 0 && na === 0 && nh === 1) return; // the default
+  e.crepuscular = true; if(da === 1 && dh === 0 && na === 0 && nh === 1) return; // the default (ENG27: +1/+0, +0/+1)
   if(da || dh) e.crepuscularDay = [da, dh]; if(na || nh) e.crepuscularNight = [na, nh]; }
 function eng23CrepHead(v){ const [da, dh, na, nh] = eng23CrepVals(v);
   if(da === 0 && dh === 0 && na === 0 && nh === 1) return 'Crepuscular'; if(da === na && dh === nh) return `Crepuscular +${da}/+${dh}`;
@@ -782,7 +782,7 @@ const PASSIVE_DEFS = [
   // 2026-11-04 (package ENG23, owner 11-03 23:01: "+0/1 at night instead. Let me change for both separately"): four numbers, the day part's
   // Attack / Health and the night part's; the default is +0/+0 by day, +0/+1 at night (a bare `crepuscular: true`). Saved as: the same
   // numbers in both parts -> the old form (crepuscular N, crepuscularHp M); the default -> true; else crepuscularDay / crepuscularNight.
-  {key:'crepuscular', category:'passive', label:'Crepuscular', kind:'twoNumber', placeholders:[TX('ui.eng23-crep-day-atk'), TX('ui.eng23-crep-day-hp'), TX('ui.eng23-crep-night-atk'), TX('ui.eng23-crep-night-hp')], defaultValue:[0, 0, 0, 1],
+  {key:'crepuscular', category:'passive', label:'Crepuscular', kind:'twoNumber', placeholders:[TX('ui.eng23-crep-day-atk'), TX('ui.eng23-crep-day-hp'), TX('ui.eng23-crep-night-atk'), TX('ui.eng23-crep-night-hp')], defaultValue:[1, 0, 0, 1] /* ENG27 (ENG23-1) */,
     desc:v=> eng23CrepText(v),
     get:e=> eng23CrepGet(e),
     apply:(e, vals)=> eng23CrepApply(e, vals)},
@@ -1024,7 +1024,7 @@ const PASSIVE_DEFS = [
   {key:'dynamite', category:'passive', label:'Dynamite', kind:'twoNumber', placeholders:['Fuse','Damage'], desc:v=>{ const f = Array.isArray(v) ? (Number(v[0])||3) : numOr(v, 3), d = Array.isArray(v) ? (Number(v[1])||5) : 5; return `It comes in with a lit fuse of ${f}. The fuse burns down one every upkeep; at 0 it explodes for ${d} fire damage to the units beside it and the three enemy units facing it (a 3×3 around it). If it dies first, the fuse goes out.`; },
     get:e=> e.dynamite ? [numOr(e.dynamite, 3), Number(e.dynamiteDmg)||5] : undefined,
     apply:(e, vals)=>{ const f = Math.max(0, Number(vals && vals[0])||0), d = Math.max(0, Number(vals && vals[1])||0); if(f > 0){ e.dynamite = f; if(d > 0 && d !== 5) e.dynamiteDmg = d; } }},
-  {key:'helmet', category:'passive', label:'Helmet', kind:'boolean', desc:()=>`Half the time, an arrow, missile or single bolt aimed at it glances off the helmet.`},
+  {key:'helmet', category:'passive', label:'Helmet', kind:'boolean', desc:()=>`Half the time, an arrow, missile or single bolt aimed at it glances off the helmet. After one block the helmet is gone.`}, // ENG27 (2026-11-06, item 32)
   // 2026-10-16 (user: "Molting N - Every 2 turns, gain +1 wait. But +N/+N."): every 2 rounds, +N/+N for good and +1 Wait.
   {key:'molting', category:'passive', label:'Molting', kind:'number', min:1, defaultValue:1, desc:v=>`Every 2 rounds on the field it molts into a bigger shell: +${numOr(v, 1)}/+${numOr(v, 1)} for good, but +1 Wait while the new shell hardens.`},
   {key:'shedding', category:'passive', label:'Shedding', kind:'number', min:1, defaultValue:3, desc:v=>`Every ${v||3} rounds on the field it sheds its skin: +1/+1 for good, and Poison, Bleed, Corrode, Scar and Exposed come off with it.`}, // 2026-10-16 skill audit: the status names as the game writes them
@@ -1067,7 +1067,7 @@ const PASSIVE_DEFS = [
   // a crit, but the counters decrease by 1."): N Expose counters; each later hit is a crit and uses one. Still can't miss.
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack puts ${v||1} Expose counter${(v||1)===1 ? '' : 's'} on the target. Each later hit on it is a crit (double damage) and removes 1 counter, and attacks at an Exposed unit can't miss.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't, and it never guards the bramble. A Guardian that steps in isn't covered by another Guardian. Taunt is different: it makes the enemies facing it aim at it.`} /* EN4 (2026-10-23, owner 22:23 #9: "Guardian shouldn't intercept an intercepting guardian."): EN3's one hop reverted */ /* EN3 (2026-10-23, owner 19:27 #2): not the bramble (call EN3-1) */ /* EN2 (2026-10-23, owner 13:16 #22): it moves in to take the hit; its reach vs Taunt's */ /* 2026-10-22 (package GD2, owner GD-3): swings only, no skills */ /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
-  {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2: before Arrows and Bolts (Speed 1) and before units without Quick (Speed 0). Speed and Haste add to it.`}, // 2026-10-17 (user: "Quick happens at Speed = 2.")
+  {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2: before Bolts (Speed 1), then other swings and Arrows (Speed 0). Speed and Haste add to it.`}, // 2026-10-17 (user: "Quick happens at Speed = 2.") // ENG27 (2026-11-06): arrows at Speed 0
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
   {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round${v===1?'':'s'} before attacking again.`},
@@ -1217,16 +1217,16 @@ const PASSIVE_DEFS = [
   // "King" (Rodent King, Glacial Ape-King) so this has real targets from day one.
   // Arrow / Fire Arrow (2026-10-04): see fireArrowVolley in bramblewood-engine.js.
   // 2026-10-16 skill audit: the arrows aim at the enemy facing it first, then the nearest (fireArrowVolley / arrowTargetOf).
-  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots an arrow for ${v} damage at the enemy facing it (with none there, the nearest enemy, a random one if two are as near; the bramble if the board is empty). Never misses Flying units.`},
-  {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots a flaming arrow for ${v} fire damage at the enemy facing it (or the nearest; fire resistance and weakness apply). Never misses Flying units.`},
+  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 0 (after the swings): shoots an arrow for ${v} damage at the enemy facing it (with none there, the nearest enemy, a random one if two are as near; the bramble if the board is empty). Never misses Flying units.`}, /* ENG27 (2026-11-06, item 11): arrows act at Speed 0, after the swings */
+  {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 0 (after the swings): shoots a flaming arrow for ${v} fire damage at the enemy facing it (or the nearest; fire resistance and weakness apply). Never misses Flying units.`}, /* ENG27 (2026-11-06, item 11): arrows act at Speed 0, after the swings */
   // Ice Arrow / Twin Shot / Volley (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire Arrow, Ice
   // Arrow etc. will be more normal."): see fireArrowVolley in bramblewood-engine.js.
-  {key:'iceArrow', category:'evergreen', label:'Ice Arrow', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots an icy arrow for ${v||2} cold damage at the enemy facing it (or the nearest). A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter). Never misses Flying units.`},
+  {key:'iceArrow', category:'evergreen', label:'Ice Arrow', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 0 (after the swings): shoots an icy arrow for ${v||2} cold damage at the enemy facing it (or the nearest). A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter). Never misses Flying units.`}, /* ENG27 (2026-11-06, item 11): arrows act at Speed 0, after the swings */
   // 2026-10-17 (user: "First creature to have 2x Arrow 2."): how many Arrow shots the card looses (a skill can't be on a card twice).
   // No line of its own: the Arrow line repeats (War Elephant reads "Arrow 2" twice). Set in the card editor as a number.
   {key:'arrowCount', category:'evergreen', hidden:true, label:'Arrow Count', kind:'number', min:1, defaultValue:2, desc:v=>`Its Arrow fires ${v||2} times a round, each arrow aimed on its own.`},
-  {key:'twinShot', category:'evergreen', label:'Twin Shot', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots two arrows for ${v||2} damage each, at two different random enemy units (both at one if there is only one; the bramble if the board is empty). Never misses Flying units.`},
-  {key:'volley', category:'evergreen', label:'Volley', kind:'number', min:1, defaultValue:1, desc:v=>`Every other round while Ready (its first Ready round, then every 2nd), at Speed 1 (after Quick units, before the rest swing): looses a volley, an arrow for ${v||1} damage at every enemy unit (the bramble if the board is empty). Never misses Flying units.`},
+  {key:'twinShot', category:'evergreen', label:'Twin Shot', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 0 (after the swings): shoots two arrows for ${v||2} damage each, at two different random enemy units (both at one if there is only one; the bramble if the board is empty). Never misses Flying units.`}, /* ENG27 (2026-11-06, item 11): arrows act at Speed 0, after the swings */
+  {key:'volley', category:'evergreen', label:'Volley', kind:'number', min:1, defaultValue:1, desc:v=>`Every other round while Ready (its first Ready round, then every 2nd), at Speed 0 (after the swings): looses a volley, an arrow for ${v||1} damage at every enemy unit (the bramble if the board is empty). Never misses Flying units.`}, /* ENG27 (2026-11-06, item 11): arrows act at Speed 0, after the swings */
   // The Bolts (2026-10-15, user: "We need bolts - these might be quite creature-specific. All elemental or status-y. They just
   // represents 'spits' of something at the enemy. Fire bolt, Acid bolt, Poison bolt etc."): one engine implementation with an
   // element table (BOLT_ELEMENTS in bramblewood-engine.js). Each spits every round while Ready, before melee, at the enemy opposite
@@ -2042,15 +2042,21 @@ Object.assign(SKILL_ICON, {sunder:'🪓💥', dismantle:'🔧💥'}); // icons n
 //   Delivery {X}    the one "resource when Ready" keyword (DESIGN1-6): Delivery {Lumber x1} once (Stockpile's and the On Ready gain's rule),
 //                   Delivery {Lumber x1}, every turn (onReadyGold's rule); deliveryRes picks another resource. Stockpile leaves "+ Add Skill".
 //   Taunt / Guardian also take arrows and shots (DESIGN1-4); Carnage counts what it saw; Tally / Almanac / Onslaught / Riled (on no card).
-const E22_FP = ['health', 'thorns', 'regen', 'bolt', 'shield'];
+const E22_FP = ['health', 'thorns', 'regen', 'bolt', 'shield', 'armor' /* ENG27 (2026-11-06, item 10): Fortify (Armor N) */];
 // Fortify's braces: {health, thorns, regen, bolt, shield} or the card's text ("Thorns 1, +1 Health"); bramblewood-engine.js fortifyParts, the same rule
 function e22FortifyParts(v){ const out = {}; if(!v) return out;
   if(typeof v === 'object'){ E22_FP.forEach(k=>{ const n = Math.round(Number(v[k])||0); if(n > 0) out[k] = n; }); return out; }
   String(v).split(/[,;&]/).forEach(x=>{ const t = x.trim().toLowerCase(); if(!t) return; const m = /([+-]?\d+)/.exec(t), n = m ? Math.abs(Number(m[1])) : 1;
-    const k = /health|hp/.test(t) ? 'health' : /thorn/.test(t) ? 'thorns' : /regen/.test(t) ? 'regen' : /bolt/.test(t) ? 'bolt' : /shield/.test(t) ? 'shield' : null;
+    const k = /health|hp/.test(t) ? 'health' : /thorn/.test(t) ? 'thorns' : /regen/.test(t) ? 'regen' : /bolt/.test(t) ? 'bolt' : /shield/.test(t) ? 'shield' : /armou?r/.test(t) ? 'armor' : null;
     if(k && n > 0) out[k] = (out[k]||0) + n; }); return out; }
-function e22FortifyText(v){ const p = e22FortifyParts(v), w = {health:n=> TX('ui.e22-fp-health', {n}), thorns:n=> TX('ui.e22-fp-thorns', {n}), regen:n=> TX('ui.e22-fp-regen', {n}), bolt:n=> TX('ui.e22-fp-bolt', {n}), shield:n=> TX('ui.e22-fp-shield', {n})};
+function e22FortifyText(v){ const p = e22FortifyParts(v), w = {health:n=> TX('ui.e22-fp-health', {n}), thorns:n=> TX('ui.e22-fp-thorns', {n}), regen:n=> TX('ui.e22-fp-regen', {n}), bolt:n=> TX('ui.e22-fp-bolt', {n}), shield:n=> TX('ui.e22-fp-shield', {n}), armor:n=> TX('ui.eng27-fp-armor', {n})};
   return E22_FP.filter(k=> p[k]).map(k=> w[k](p[k])).join(', '); }
+// Unfortify {X} (ENG27, 2026-11-06, item 10): Vulnerable N, -N Health; bare = Vulnerable 1 (bramblewood-engine.js fortifyParts(v, true), the same rule)
+function eng27UnfortifyParts(v){ const out = {}; if(v === true) return {vulnerable: 1}; if(!v) return out;
+  if(typeof v === 'object'){ ['vulnerable', 'health'].forEach(k=>{ const n = Math.abs(Math.round(Number(v[k])||0)); if(n > 0) out[k] = n; }); return out; }
+  String(v).split(/[,;&]/).forEach(x=>{ const t = x.trim().toLowerCase(); if(!t) return; const m = /([+-]?\d+)/.exec(t), n = m ? Math.abs(Number(m[1])) : 1;
+    const k = /health|hp/.test(t) ? 'health' : /vulnerab/.test(t) ? 'vulnerable' : null; if(k && n > 0) out[k] = (out[k]||0) + n; }); return out; }
+function eng27UnfortifyText(v){ const p = eng27UnfortifyParts(v); return [p.vulnerable ? TX('ui.eng27-fp-vulnerable', {n: p.vulnerable}) : '', p.health ? TX('ui.eng27-fp-minus-health', {n: p.health}) : ''].filter(Boolean).join(', '); }
 const E22_RES = ['lumber', 'stone', 'metal', 'uranium', 'pearl', 'grace'];
 function e22ResOf(e){ const r = e && typeof e.deliveryRes === 'string' ? e.deliveryRes.toLowerCase().replace(/s$/, '') : 'lumber'; return E22_RES.includes(r) ? r : 'lumber'; }
 function e22ResName(r){ return ({lumber:()=> TX('ui.e22-res-lumber'), stone:()=> TX('ui.e22-res-stone'), metal:()=> TX('ui.e22-res-metal'), uranium:()=> TX('ui.e22-res-uranium'), pearl:()=> TX('ui.e22-res-pearl'), grace:()=> TX('ui.e22-res-grace')}[r] || (()=> TX('ui.e22-res-lumber')))(); }
@@ -2058,6 +2064,9 @@ function e22ResName(r){ return ({lumber:()=> TX('ui.e22-res-lumber'), stone:()=>
 function e22Head(k, v, e){
   if(k === 'fortification'){ const z = e22BuildSize(v); return TX('ui.e22-build-head', {a: z.atk, h: z.hp}); }
   if(k === 'fortify') return TX('ui.e22-fortify-head', {x: e22FortifyText(v)});
+  if(k === 'unfortify') return TX('ui.eng27-unfortify-head', {x: eng27UnfortifyText(v)}); // ENG27 (2026-11-06)
+  if(k === 'grantSkill') return TX('ui.eng27-grant-head', {x: grantText((v && v.skills) || {}) || TX('ui.cx-nothing'), n: eng27GrantN(v)}); // ENG27
+  if(k === 'encore') return TX('ui.eng27-encore-head', {x: eng27EncoreWhen(v)}); // ENG27
   if(k === 'brambleArmor') return TX('ui.eng24-barmor-head', {n: eng24BarmorN(v)}); // ENG24 (ENG22-2 b): Fortify { Armor 1 }, while it lives
   if(k === 'meld') return TX('ui.eng24-meld-head', {x: grantText(v && typeof v === 'object' ? v : {}) || TX('ui.cx-nothing')}); // ENG24: Meld { Quick }
   if(k === 'delivery') return TX('ui.e22-delivery-head', {res: e22ResName(e22ResOf(e)), n: numOr(v, 1)});
@@ -2067,9 +2076,27 @@ function e22Head(k, v, e){
 PASSIVE_DEFS.push(
   {key:'fortify', category:'passive', label:TX('ui.e22-fortify-name'), kind:'text', placeholder:'Thorns 1, +1 Health', desc:v=> TX('ui.e22-fortify', {x: e22FortifyText(v)}), codexNote:TX('ui.e22-fortify-codex'),
     get:e=> e.fortify ? e22FortifyText(e.fortify) : undefined, apply:(e, v)=>{ const p = e22FortifyParts(v); if(Object.keys(p).length) e.fortify = p; }},
+  // ENG27 (2026-11-06, owner items 10, 11, 20, 22): Unfortify, Blitz, Mach, Anti-air, Double Time, Encore {…}, Grant {…} N, Hype N
+  {key:'unfortify', category:'passive', label:TX('ui.eng27-unfortify-name'), kind:'text', placeholder:'Vulnerable 1', desc:v=> TX('ui.eng27-unfortify', {x: eng27UnfortifyText(v) || TX('ui.eng27-fp-vulnerable', {n: 1})}),
+    get:e=> e.unfortify ? eng27UnfortifyText(e.unfortify) : undefined, apply:(e, v)=>{ const p = eng27UnfortifyParts(v); e.unfortify = Object.keys(p).length ? p : true; }},
+  {key:'blitz', category:'passive', label:TX('ui.eng27-blitz-name'), kind:'boolean', desc:()=> TX('ui.eng27-blitz')},
+  {key:'mach', category:'passive', label:TX('ui.eng27-mach-name'), kind:'boolean', desc:()=> TX('ui.eng27-mach')},
+  {key:'antiAirOnly', category:'passive', label:TX('ui.eng27-antiair-name'), kind:'boolean', desc:()=> TX('ui.eng27-antiair')},
+  {key:'doubleTime', category:'passive', label:TX('ui.eng27-double-time-name'), kind:'boolean', desc:()=> TX('ui.eng27-double-time')},
+  {key:'encore', category:'passive', label:TX('ui.eng27-encore-name'), kind:'text', placeholder:'Kill  ·  Night  ·  Tide or Wind', desc:v=> TX('ui.eng27-encore', {x: eng27EncoreWhen(v)}),
+    get:e=> e.encore ? eng27EncoreWhen(e.encore) : undefined, apply:(e, v)=>{ e.encore = parseBloomCopyText(v) || true; }},
+  {key:'grantSkill', category:'passive', label:TX('ui.eng27-grant-name'), kind:'text', placeholder:'quick, 2', desc:v=> TX('ui.eng27-grant', {x: grantText((eng27GrantOf(v) || {}).skills || {}) || TX('ui.cx-nothing'), n: eng27GrantN(eng27GrantOf(v))}),
+    get:e=> e.grantSkill ? grantToText(e.grantSkill.skills || {}) + ', ' + eng27GrantN(e.grantSkill) : undefined, apply:(e, v)=>{ const g = eng27GrantOf(v); if(g) e.grantSkill = g; }},
+  {key:'hype', category:'passive', label:TX('ui.eng27-hype-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng27-hype', {n: numOr(v, 1)})},
   {key:'delivery', category:'passive', label:TX('ui.e22-delivery-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
   {key:'deliveryEvery', category:'passive', label:TX('ui.e22-delivery-every-name'), kind:'number', min:1, defaultValue:1, desc:(v, n, e)=> TX('ui.e22-delivery-every', {n: numOr(v, 1), res: e22ResName(e22ResOf(e))}), codexNote:TX('ui.e22-delivery-codex')},
   {key:'deliveryRes', category:'passive', label:TX('ui.e22-delivery-res-name'), kind:'select', selectOptions:()=> E22_RES.map(r=> ({value:r, label:e22ResName(r)})), desc:v=> e22ResName(e22ResOf({deliveryRes:v}))});
+// ENG27: Encore's braces are Bloom's conditions (parseBloomCopyText); none = Kill. Grant's braces: skills and a trailing number N (default 2).
+function eng27EncoreWhen(v){ const bc = v && typeof v === 'object' ? v : parseBloomCopyText(v); return bc && bc.when && bc.when.length ? bloomCopyToText(bc) : 'Kill'; }
+function eng27GrantN(g){ return Math.max(1, Math.round(Number(g && g.n) || 2)); }
+function eng27GrantOf(v){ if(v && typeof v === 'object' && v.skills) return v; const t = String(v || ''); const m = /(?:^|,)\s*(\d+)\s*$/.exec(t);
+  const skills = parseGrantText(m ? t.slice(0, m.index) : t); return Object.keys(skills).length ? {skills, n: m ? Number(m[1]) : 2} : null; }
+Object.assign(SKILL_ICON, {unfortify:'💔', blitz:'⚡', mach:'💨', antiAirOnly:'📡', doubleTime:'🌀', encore:'🔁', grantSkill:'🎁', hype:'📣'}); // ENG27 (2026-11-06; icons in the emoji set, none an SK2 icon)
 Object.assign(SKILL_ICON, {fortify:'🏰' /* 2026-11-06 (TEXTFIX1): was 🏯, Fortification's (SK2 icons are unique) */, delivery:'📦', deliveryEvery:'📦', deliveryRes:'📦'});
 sk1Patch(PASSIVE_DEFS, 'stockpile', {hidden:true}); // ENG22 (DESIGN1-6): Delivery {Lumber xN} replaces it in "+ Add Skill"; an old card still reads it
 sk1Patch(PASSIVE_DEFS, 'taunt', {desc:()=> TX('ui.e22-taunt')}); // ENG22 (DESIGN1-4): Taunt pulls the arrows and shots of the enemies around it
@@ -2093,10 +2120,14 @@ Object.assign(SKILL_ICON, {skitter:'🐾'});
 ACTION_DEFS.push({key:'grantFastForward', get label(){ return TX('ui.eng23-act-ff'); }, fields:['amount', 'who', 'sub'], subOptions:['adjacent', 'random', 'all'], get desc(){ return TX('ui.eng23-act-ff-desc'); }});
 // A live edit (card_overrides) saved before ENG22 still holds Stockpile N / onReadyGold N (the Beaver Lumberjack's row, 11-03 14:49, reads
 // Stockpile 1): it reads as the Delivery that replaced them in cards.json (same amount, same timing), so the card shows and explains Delivery.
-function eng23MigrateDelivery(d){ const e = d && d.effects; if(!e || !(e.stockpile || e.onReadyGold) || e.delivery || e.deliveryEvery) return d;
+// ENG27 (2026-11-06, owner ENG25-6: "Yes"): Pearl N reads as Delivery {Pearl xN} and Pearl Bed N as its every-turn form, the same way.
+function eng23MigrateDelivery(d){ const e = d && d.effects; if(!e || !(e.stockpile || e.onReadyGold || e.pearl || e.pearlBed) || e.delivery || e.deliveryEvery) return d;
   const fx = Object.assign({}, e); if(fx.stockpile){ fx.delivery = fx.stockpile === true ? 1 : fx.stockpile; delete fx.stockpile; }
   if(fx.onReadyGold){ fx.deliveryEvery = fx.onReadyGold === true ? 1 : fx.onReadyGold; delete fx.onReadyGold; }
+  if(fx.pearl){ fx.delivery = fx.pearl === true ? 1 : fx.pearl; fx.deliveryRes = 'pearl'; delete fx.pearl; }
+  else if(fx.pearlBed){ fx.deliveryEvery = fx.pearlBed === true ? 1 : fx.pearlBed; fx.deliveryRes = 'pearl'; delete fx.pearlBed; }
   return Object.assign({}, d, {effects: fx}); }
+sk1Patch(PASSIVE_DEFS, 'pearl', {hidden:true, retired:true}); sk1Patch(PASSIVE_DEFS, 'pearlBed', {hidden:true, retired:true}); // ENG27 (ENG25-6): Delivery {Pearl} replaces them in "+ Add Skill"
 // Hardy N on an equipment card (PROP1-1): its lives, equip.hardy (default 1, shown only from 2)
 function eqHardyOf(d){ const e = (d && d.equip) || {}, v = e.hardy != null ? e.hardy : e.lives; return v != null && Number(v) > 0 ? Math.max(1, Math.min(9, Math.round(Number(v)))) : 1; }
 // FIX3-4 (owner 10-26 11:19: "Yes level pvp strangers deck"): a Collection PvP stranger's deck fights at the level that brings its battle rating
@@ -2144,6 +2175,10 @@ sk1Patch(PASSIVE_DEFS, 'liegeGrant', {category:'passive', label:TX('ui.skn-liege
   get:e=> e.liegeGrant && typeof e.liegeGrant === 'object' ? grantToText(e.liegeGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.liegeGrant = g; e.liege = true; } }});
 sk1Patch(PASSIVE_DEFS, 'rageGrant', {category:'passive', label:TX('ui.skn-rage'), kind:'grant', placeholder:'assault 2', desc:v=> TX('ui.sk-rage-grant', {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}),
   get:e=> e.rageGrant && typeof e.rageGrant === 'object' ? grantToText(e.rageGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.rageGrant = g; e.rage = true; } }});
+// Rage {N%} (ENG27, 2026-11-06, owner item 21): a braced Rage that rages below N% Health (rageAt; the plain Rage stays at half). Beside Rage {skills}.
+PASSIVE_DEFS.push({key:'rageAt', category:'passive', label:TX('ui.eng27-rage-at-name'), kind:'number', min:10, max:90, defaultValue:75, desc:v=> TX('ui.eng27-rage-at', {n: numOr(v, 75)}),
+  get:e=> Number(e.rageAt) > 0 ? Math.round(Number(e.rageAt) * 100) : undefined, apply:(e, v)=>{ const n = Math.max(10, Math.min(90, Number(v) || 75)); e.rageAt = n / 100; e.rage = true; }});
+SKILL_ICON.rageAt = '😡';
 sk1Patch(PASSIVE_DEFS, 'shapeshifter', {category:'passive', label:TX('ui.skn-shapeshifter'), kind:'boolean', desc:()=> TX('ui.sk-shapeshifter')});
 sk1Patch(PASSIVE_DEFS, 'bulwark', {category:'passive', label:'Bulwark', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-bulwark', {hp: 4 * numOr(v, 1)}), codexNote:TX('ui.sk-bulwark-codex')});
 sk1Patch(PASSIVE_DEFS, 'backstab', {category:'passive', label:'Backstab', kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-backstab', {n: numOr(v, 2)}), codexNote:TX('ui.sk-backstab-codex')});
@@ -3259,7 +3294,7 @@ Object.assign(SKILL_TEXT, {
   tideGrant: v=> { if(!Array.isArray(v)) return `On Flood and on Ebb it has the skills in its braces; at High Tide, both.`; const [f, b] = v; return `On Flood it has ${grantText(parseGrantText(f)) || 'nothing'}; on Ebb, ${grantText(parseGrantText(b)) || 'nothing'}; at High Tide, both.`; },
   charge: v=> { const c = typeof v === 'string' ? parseChargeText(v) : (v && typeof v === 'object' ? v : null); const cp = chargeParts(c); return cp && cp.act ? `${chargeLabel(c)}: once it is Ready, this happens every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.` : TX('ui.sk-charge-clock'); }, // 2026-10-18 (package D): terse
   dynamite: v=> { const f = Array.isArray(v) ? (Number(v[0])||3) : numOr(v, 3), d = Array.isArray(v) ? (Number(v[1])||5) : 5; return TX('ui.sk-dynamite', {f, d}); }, // 2026-10-18 (package D): terse
-  helmet: ()=> `Half the arrows, missiles and bolts aimed at it glance off.`,
+  helmet: ()=> `Half the shots aimed at it glance off, once; then the helmet is gone.`, // ENG27 (item 32)
   shedding: v=> `Every ${numOr(v, 3)} rounds: +1/+1 for good, and it sheds its Poison, Bleed, Corrode, Scar and Exposed.`,
   snipe: v=> `While Ready, if nothing faces it, shoot a random enemy unit for ${numOr(v, 1)} every upkeep.`,
   kinship: v=> { const k = Array.isArray(v) ? {type:v[0], atk:v[1], hp:v[2]} : (v && typeof v === 'object' ? v : {}); return k.type ? `All your ${k.type} units get +${Number(k.atk)||0}/+${Number(k.hp)||0} (itself too). Stacks.` : `All your units of its chosen type get +X/+Y (itself too). Stacks.`; },
@@ -6683,6 +6718,36 @@ Object.assign(SKILL_TEXT, {
   cure: v=> TX('ui.sk-cure', {n: numOr(v, 2)}),
   healing: v=> TX('ui.sk-healing', {n: numOr(v, 1)}),
 });
+// ENG27 (2026-11-06): the match log lines for the package's rules
+function eng27LogText(ev, nm){
+  if(!ev) return null;
+  if(ev.type === 'fortify' && ev.neg) return {cls:'', text:TX('ui.eng27-log-unfortify', {name: nm(ev.defId), x: eng27UnfortifyText(ev.parts)})};
+  if(ev.type === 'brambleArmor' && ev.fortify) return {cls:'', text:TX('ui.eng27-log-fort-armor', {n: ev.blocked||1})};
+  if(ev.type === 'brambleVulnerable') return {cls:'', text:TX('ui.eng27-log-vulnerable', {n: ev.extra||1})};
+  if(ev.type === 'evaded' && ev.reason === 'mach') return {cls:'', text:TX('ui.eng27-log-mach', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})};
+  if(ev.type === 'evaded' && ev.reason === 'antiAir') return {cls:'', text:TX('ui.eng27-log-antiair', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})};
+  if(ev.type === 'frenzy' && ev.encore) return {cls:'quick', text:TX('ui.eng27-log-encore', {name: nm(ev.attDefId)})};
+  if(ev.type === 'statusFx' && ev.kind === 'eng27Grant') return {cls:'gold', text:TX('ui.eng27-log-grant', {name: nm(ev.attDefId), n: ev.amount||0, x: (ev.skills || []).map(k=> (PASSIVE_DEFS.find(p=> p.key === k) || {}).label || k).join(', ')})};
+  if(ev.type === 'statusFx' && ev.kind === 'eng27Hype') return {cls:'quick', text:TX(ev.ff ? 'ui.eng27-log-hype-ff' : 'ui.eng27-log-hype', {name: nm(ev.attDefId), ally: nm(ev.targetDefId)})};
+  return null;
+}
+function eng27Vfx(ev){
+  if(!ev || !matchState) return; const m = matchState; const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  if(ev.type === 'fortify'){ (m.eng27Fort = m.eng27Fort || {})[ev.side] = ev.fort || null; eng27PaintFort(ev.side); fl(hqTileEl(ev.side), ev.neg ? `💔 ${eng27UnfortifyText(ev.parts)}` : `🏰 ${e22FortifyText(ev.parts)}`, ev.neg ? 'debuff' : 'buff'); return; }
+  if(ev.type === 'brambleVulnerable'){ fl(hqTileEl(ev.side), `💔 +${ev.extra||1}`, 'debuff'); return; }
+  if(ev.type === 'evaded' && ev.reason === 'mach'){ fl(boardCardEl(ev.targetUid), TX('ui.eng27-float-mach'), 'quick'); return; }
+  if(ev.type === 'evaded' && ev.reason === 'antiAir'){ fl(boardCardEl(ev.attUid), TX('ui.eng27-float-antiair'), 'debuff'); return; }
+  if(ev.type === 'frenzy' && ev.encore){ fl(boardCardEl(ev.attUid), `🔁 ${TX('ui.eng27-encore-name')}`, 'quick'); return; }
+  if(ev.type === 'statusFx' && ev.kind === 'eng27Grant'){ (ev.targets || []).forEach(u=> fl(boardCardEl(u), `🎁 ${(ev.skills || []).map(k=> (PASSIVE_DEFS.find(p=> p.key === k) || {}).label || k).join(', ')}`, 'buff')); return; }
+  if(ev.type === 'statusFx' && ev.kind === 'eng27Hype'){ fl(boardCardEl(ev.targetUid), `📣 ${TX('ui.eng27-hype-name')}`, 'quick'); return; }
+}
+// The Fortify pips on a bramble (ENG27, 2026-11-06, item 10: "reflect the relevant pips on the bramble cards"): what Fortify / Unfortify gave it
+// this fight (the engine's pl.eng27Fort, replayed from the 'fortify' events into matchState.eng27Fort). Health and Shield already show in its heart.
+const ENG27_FORT_PIPS = [['armor', '🛡️', 'ui.eng27-fp-armor'], ['thorns', '🌵', 'ui.e22-fp-thorns'], ['regen', '💚', 'ui.e22-fp-regen'], ['bolt', '🏹', 'ui.e22-fp-bolt'], ['vulnerable', '💔', 'ui.eng27-fp-vulnerable']];
+function eng27FortOf(side){ const m = matchState; if(!m || (side !== 'A' && side !== 'B')) return null; if(m.eng27Fort && m.eng27Fort[side] !== undefined) return m.eng27Fort[side]; const pl = m.players && m.players[side === 'A' ? 1 : 2]; return (pl && pl.eng27Fort) || null; }
+function eng27FortPipsHTML(side){ const f = eng27FortOf(side); if(!f) return ''; const pips = ENG27_FORT_PIPS.filter(([k])=> f[k] > 0);
+  return pips.length ? `<div class="eng27-fort" aria-label="${escapeAttr(TX('ui.eng27-fort-label'))}">${pips.map(([k, ic, tx])=> `<span class="abadge eng27-fp eng27-fp-${k}" title="${escapeAttr(TX(tx, {n: f[k]}))}">${ic}${f[k]}</span>`).join('')}</div>` : ''; }
+function eng27PaintFort(side){ const t = hqTileEl(side); if(!t) return; const old = t.querySelector('.eng27-fort'); if(old) old.remove(); const h = eng27FortPipsHTML(side); if(h) t.insertAdjacentHTML('beforeend', h); }
 function sk1LogText(ev, nm){
   if(ev && ev.type === 'feed') return {cls:'', text:TX('ui.eng23-log-feed', {name: nm(ev.eatenDefId), n: ev.repair||0, a: ev.attack||0, left: ev.left||0})}; // ENG23 (2026-11-04): Feed
   if(ev && ev.type === 'statusFx' && ev.kind === 'aimedBolt') return {cls:'', text: ev.castle ? TX('ui.eng23-log-bolt-bramble', {n: ev.amount||0}) : TX('ui.eng23-log-bolt', {name: nm(ev.targetDefId), n: ev.amount||0})};
@@ -9343,6 +9408,7 @@ function ui11BloomImpossible(bw, bopts){
 // ENG20-1 (2026-11-02): is this board card's Remember used (it came back once)? Live engine card first, then the replay's copy.
 function en20RememberSpent(bopts){ try{ const lv = bopts && bopts.live; if(!lv || lv.uid == null) return false; const lc = currentCardByUidSafe(lv.uid); return !!((lc && lc.rememberSpent) || lv.rememberSpent); }catch(e){ return false; } }
 // ENG21 (2026-11-03, owner 20:28: "After pounce, you can remove that context pill"): has this board card's Pounce fired? As en20RememberSpent.
+function eng27HelmetGone(bopts){ try{ const lv = bopts && bopts.live; if(!lv || lv.uid == null) return false; const lc = currentCardByUidSafe(lv.uid); return !!((lc && lc.helmetGone) || lv.helmetGone); }catch(e){ return false; } } // ENG27 (2026-11-06, item 32): the helmet is gone once it has blocked
 function eng21PounceSpent(bopts){ try{ const lv = bopts && bopts.live; if(!lv || lv.uid == null) return false; const lc = currentCardByUidSafe(lv.uid); return !!((lc && lc.pounceSpent) || lv.pounceSpent); }catch(e){ return false; } }
 function ui11IconOnly(html){ try{ return String(html).replace(/<[^>]*>/g, '').replace(/[\s\uFE0F\u200D]|\p{Extended_Pictographic}/gu, '') === '' ? ' is-icon-only' : ''; }catch(e){ return ''; } }
 function abilityBadges(d, bopts){
@@ -9398,7 +9464,7 @@ function abilityBadges(d, bopts){
   if(e.shedding) out.push(`<span title="Shedding">${iconHTML('shedding', '🐍')}${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
   if(e.molting) out.push(`<span title="Molting">${iconHTML('molting', '🦀')}${e.molting}</span>`);
   if(e.dynamite) out.push(`<span class="ab-dyn" title="Dynamite: explodes ${e.dynamite} rounds after it lands, for ${Number(e.dynamiteDmg)||5} fire damage">${iconHTML('dynamite', '🧨')}${e.dynamite}</span>`);
-  if(e.helmet) out.push(`<span title="Helmet: half the shots aimed at it glance off"><svg class="ab-helm" viewBox="0 0 24 20" width="1em" height="0.85em" aria-hidden="true"><path d="M3 14 C3 6 8 2 12 2 C16 2 21 6 21 14 Z" fill="#8fa3b8" stroke="#3b4652" stroke-width="1.4"/><path d="M1 14 H23 V16.5 Q12 19 1 16.5 Z" fill="#6e8296" stroke="#3b4652" stroke-width="1.2"/><circle cx="8" cy="9" r="1" fill="#e9f1f8"/><circle cx="12" cy="6" r="1" fill="#e9f1f8"/><circle cx="16" cy="9" r="1" fill="#e9f1f8"/><path d="M6 8 Q8 5 11 4.5" stroke="#d8e6f2" stroke-width="1" fill="none" opacity=".7"/></svg></span>`); // a drawn helmet: the emoji set has none that's cute (2026-10-13)
+  if(e.helmet && !eng27HelmetGone(bopts)) out.push(`<span title="Helmet: half the shots aimed at it glance off"><svg class="ab-helm" viewBox="0 0 24 20" width="1em" height="0.85em" aria-hidden="true"><path d="M3 14 C3 6 8 2 12 2 C16 2 21 6 21 14 Z" fill="#8fa3b8" stroke="#3b4652" stroke-width="1.4"/><path d="M1 14 H23 V16.5 Q12 19 1 16.5 Z" fill="#6e8296" stroke="#3b4652" stroke-width="1.2"/><circle cx="8" cy="9" r="1" fill="#e9f1f8"/><circle cx="12" cy="6" r="1" fill="#e9f1f8"/><circle cx="16" cy="9" r="1" fill="#e9f1f8"/><path d="M6 8 Q8 5 11 4.5" stroke="#d8e6f2" stroke-width="1" fill="none" opacity=".7"/></svg></span>`); // a drawn helmet: the emoji set has none that's cute (2026-10-13)
   if(e.bludgeon) out.push(`<span title="Bludgeon">${iconHTML('bludgeon', '🔨')}</span>`); if(e.snipe) out.push(`<span title="Snipe">${iconHTML('snipe', '🎯')}${n1(e.snipe)}</span>`);
   if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">${iconHTML('kinship', '🫶')}</span>`); if(e.rocket) out.push(`<span title="Rocket">${iconHTML('rocket', '🚀')}${n1(e.rocket)}</span>`);
   if(e.loneWolf) out.push(`<span title="Lone Wolf">${iconHTML('lone-wolf', '🐺')}</span>`); if(e.sociable) out.push(`<span title="Sociable">${iconHTML('sociable', '🫂')}</span>`);
@@ -16126,6 +16192,7 @@ function characterDescHTML(ch){
   if(e.startGold) bits.push(`Start with +${e.startGold} 🪵`); // 2026-09-22: startGold now seeds starting Lumber, not Gold — see newPlayer() in bramblewood-engine.js
   if(e.firstUnitAtkBonus) bits.push(`1st unit played: +${e.firstUnitAtkBonus} ⚔`);
   if(e.unitHpBonus) bits.push(`Every unit played: +${e.unitHpBonus} ❤`);
+  if(e.unitAtkBonus) bits.push(TX('ui.eng27-unit-atk-desc', {n: e.unitAtkBonus})); // ENG27 (2026-11-06, item 36)
   if(e.flyerAtkBonus) bits.push(`Flying units played: +${e.flyerAtkBonus} ⚔`);
   if(e.leaderBoon){ const b = e.leaderBoon === true ? {atk:2, hp:3} : e.leaderBoon; bits.push(TX('ui.eng26-leader-boon-desc', {a: b.atk||0, h: b.hp||0})); } // ENG26 (2026-11-06): Banner Knoll
   if(e.castleRegen) bits.push(TX('ui.en8-castle-regen', {n: e.castleRegen})); // EN8 (2026-10-24, P24-17): a random wounded ally, never the bramble
@@ -16179,6 +16246,7 @@ const BRAMBLE_FX = [
   {key:'firstUnitAtkBonus', icon:'⚔️', label:()=> TX('ui.ux2-fx-first-atk')},
   {key:'leaderBoon', icon:'🚩', label:()=> TX('ui.eng26-fx-leader')}, // ENG26 (2026-11-06): Banner Knoll's Leader +2/+3
   {key:'unitHpBonus', icon:'❤️', label:()=> TX('ui.ux2-fx-unit-hp')},
+  {key:'unitAtkBonus', icon:'⚔️', label:()=> TX('ui.eng27-fx-unit-atk')}, // ENG27 (2026-11-06, item 36)
   {key:'flyerAtkBonus', icon:'🪽', label:()=> TX('ui.ux2-fx-flyer-atk')},
   {key:'castleRegen', icon:'💚', label:()=> TX('ui.ux2-fx-regen')},
   {key:'enemyWaitBonus', icon:'⏳', label:()=> TX('ui.ux2-fx-enemy-wait')},
@@ -22865,6 +22933,7 @@ function castleBlurb(c){
   const e = (c && c.effects) || {}, bits = [];
   if(e.startGold) bits.push(`Start with +${e.startGold} 🪵`);
   if(e.firstUnitAtkBonus) bits.push(`First unit +${e.firstUnitAtkBonus} ⚔`);
+  if(e.unitAtkBonus) bits.push(TX('ui.eng27-unit-atk-desc', {n: e.unitAtkBonus})); if(e.unitHpBonus) bits.push(`Every unit played: +${e.unitHpBonus} ❤`); // ENG27 (item 36)
   if(e.leaderBoon){ const b = e.leaderBoon === true ? {atk:2, hp:3} : e.leaderBoon; bits.push(TX('ui.eng26-leader-boon-desc', {a: b.atk||0, h: b.hp||0})); } // ENG26 (2026-11-06)
   return bits.join(' · ') || 'No special effect';
 }
@@ -25732,8 +25801,7 @@ function worldRevealed(){
   if(!loadTutorial2Done() && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)) return false;
   if(adminModeEnabled) return true;
   try{ if(localStorage.getItem('bramblewood_world_open_v1') === '1') return true; }catch(e){}
-  try{ const p = loadConquestProgress(), mf = CONQUEST_MAPS.find(m=> m.id==='mf'); if(!mf) return true;
-    const key = mapRewardNodeKey(mf); if(key && p.completed.includes(conquestNodeId('mf', key))) return true;
+  try{ const p = loadConquestProgress(); if(conquestMapCleared('m1')) return true; // ENG27 (2026-11-06, UI23-1 d, owner 22:01: "Once map 0 is beaten."): Map 0 cleared (was Thistlewood's reward fight)
     return p.completed.some(id=> !['m1','mq','mf','mtut'].includes(String(id).split(':')[0])); }catch(e){ return true; } // a save already past Map 2 sees it (2026-10-22, TU: the Tutorial's own fights don't count; T-0 alone used to open the world)
 }
 function nodeNeedsAllLinks(node){ return !!(node && node.requiresAll && !node.requiresAny); } // 2026-10-25 (package FIX3, F1): links open on any one won fight unless the fight asks for all
@@ -32056,6 +32124,7 @@ function advanceDungeonWave(m, carry){
   const fresh = plan.plays.map(p=>{ const c = E.makeBoardCard(p.card.defId);
     c.wait = Math.max(0, (c.wait||0) - (d.cfg.setupTurns - p.turn));
     if(P2.unitHpBonus){ c.hp += P2.unitHpBonus; c.maxHp += P2.unitHpBonus; }
+    if(P2.unitAtkBonus){ c.atk += P2.unitAtkBonus; c.baseAtk += P2.unitAtkBonus; } // ENG27 (item 36)
     const fx = (defs[c.defId]||{}).effects || {}; if(P2.flyerAtkBonus && fx.flying){ c.atk += P2.flyerAtkBonus; c.baseAtk += P2.flyerAtkBonus; }
     return c; });
   // the new wave takes the middle; survivors are pushed outwards (nobody dies)
@@ -36193,6 +36262,7 @@ function startMatchInner(mode, opts, standardDeck){
     2: null,
   };
   players[2] = engine.newPlayer(2, (mode==='ai'||mode==='gauntlet') ? randomAiDeck() : (asyncGhost ? asyncGhost.deck : DEFAULT_DECK), brambleChar(CHARACTER_DEFS['castle'])); // BF5: at BRAMBLE_SCALE
+  if(asyncGhost && Array.isArray(asyncGhost.leaders) && asyncGhost.leaders.length) dealPlayerLeader(players[2], asyncGhost.leaders[0], getCardDefs()); // ENG27 (2026-11-06, PVP2 follow-up): a PvP / Async ghost's leader (bramblewood-ghosts.js registerPvpDecks) is dealt, as the reference player's is
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length}; // item #65: "Deck" tile shows X/Y — captured before the opening draw
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, []);
@@ -37007,7 +37077,7 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
     // popover every other card gets; stacking a plain browser title tooltip on top of it is
     // exactly the double-tooltip bug already fixed once this session for the leader widget.
     extraAttrs: `data-hq="${hqSide}"`,
-  });
+  }).replace(/<\/div>\s*$/, `${eng27FortPipsHTML(hqSide)}</div>`); // ENG27 (2026-11-06, item 10): the Fortify pips
 }
 // TOP_ROW_FIT (2026-10-23, package UI4, owner 01:57 #7: "The buttons are all screwed up. If there's no space - they collapse to icons."):
 // the fight's top-right buttons show their words while they fit; when the row would run past the screen (or into the Environment
@@ -38391,7 +38461,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0, ffCounters:rc.ffCounters||0 /* ENG23 */, inspTokens:rc.inspTokens||0, pounceSpent:!!rc.pounceSpent /* ENG21 */ /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, ctxOn:rc.ctxOn||'' /* ENG25 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0, ffCounters:rc.ffCounters||0 /* ENG23 */, inspTokens:rc.inspTokens||0, pounceSpent:!!rc.pounceSpent, helmetGone:!!rc.helmetGone /* ENG27 */ /* ENG21 */ /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, ctxOn:rc.ctxOn||'' /* ENG25 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, rememberSpent:!!rc.rememberSpent, water:rc.water||0, burn:rc.burn||0 /* ENG20 */, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -43016,7 +43086,7 @@ function pl2InspireSpent(ev){
 // and the inspiration beat on the unit's Attack number, as tokens are gained (a gold glow that swells and a 📯 that rises off the number) and
 // spent (the glow flares and drains into the number). It sits on the plate beside PL2's bounce (pl2SetStat), which is the number changing.
 // Effects None: nothing. Reduced motion: the gold tint alone, held a moment, no motion.
-function eng21InspPip(c){ const n = c.inspTokens||0; return `<span class="abadge inspired eng21-insp" title="${escapeAttr(TX('ui.eng21-insp-tip', {n, atk: c.inspired != null ? c.inspired : n * 2}))}" aria-label="${escapeAttr(TX('ui.eng21-insp-tip', {n, atk: c.inspired != null ? c.inspired : n * 2}))}">📯${n}</span>`; }
+function eng21InspPip(c){ const n = c.inspTokens||0; return `<span class="abadge inspired eng21-insp" title="${escapeAttr(TX('ui.eng21-insp-tip', {n, atk: c.inspired != null ? c.inspired : n /* ENG27: +1 a token */}))}" aria-label="${escapeAttr(TX('ui.eng21-insp-tip', {n, atk: c.inspired != null ? c.inspired : n /* ENG27: +1 a token */}))}">📯${n}</span>`; }
 const ENG21_INSP_CSS = `.stats .atk.eng21-insp-still{color:#ffd56e;text-shadow:0 0 6px rgba(255,200,80,.85)}
 .stats .atk.eng21-insp-gain{animation:eng21InspGain .75s ease-out}
 .stats .atk.eng21-insp-gain::before{content:'📯';position:absolute;left:50%;top:-2px;font-size:.8em;pointer-events:none;animation:eng21InspRise .75s ease-out forwards}
@@ -43972,7 +44042,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0, ffCounters:c.ffCounters||0 /* ENG23 */, inspTokens:c.inspTokens||0, pounceSpent:!!c.pounceSpent /* ENG21 */ /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, ctxOn:c._ctxOn||'' /* ENG25 (2026-11-05): Loyal / Usurper / Liege on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0, ffCounters:c.ffCounters||0 /* ENG23 */, inspTokens:c.inspTokens||0, pounceSpent:!!c.pounceSpent, helmetGone:!!c.helmetGone /* ENG27 */ /* ENG21 */ /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, ctxOn:c._ctxOn||'' /* ENG25 (2026-11-05): Loyal / Usurper / Liege on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, rememberSpent:!!c.rememberSpent, water:c.water||0, burn:c.burn||0 /* ENG20 */, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -47808,6 +47878,7 @@ function logText(ev){
   { const q = eq2LogText(ev, nm); if(q) return q; } // package EQ2 (2026-10-24): breaks, Dive, Parasite, the Beak Strike
   { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
   { const k = sk1LogText(ev, nm); if(k) return k; }
+  { const k27 = eng27LogText(ev, nm); if(k27) return k27; } // ENG27 (2026-11-06)
   if(ev.type === 'mimic') return {cls:'', text:TX('ui.log-mimic', {name: nm(ev.fromDefId || ev.defId), ally: nm(ev.allyDefId), atk: ev.atk, hp: ev.maxHp})}; // Package MT (2026-10-21)
   if(ev.type === 'evolve') return {cls:'gold', text:TX('ui.log-evolve', {name: nm(ev.defId), base: nm(ev.fromDefId), atk: ev.atk, hp: ev.hp})}; // Package EV (2026-10-21) // package SK1 skills (2026-10-19)
   { const k2 = sk2LogText(ev, nm); if(k2) return k2.text ? k2 : null; } // Package SK2 (2026-10-19): economy and structure skills
@@ -47878,7 +47949,7 @@ function logText(ev){
     case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Stampede carried ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble. 🐘`}; // 🐘 (Stampede's icon; was 💥, now the crit mark: GD 2026-10-22)
     case 'gash': return {cls:'bleed', text:`${nm(ev.attDefId)}'s Gash tore into ${nm(ev.targetDefId)} for +${ev.amount} bleed. 🩸`};
     case 'dynamite': return {cls:'', text:`🧨 ${nm(ev.defId)}'s dynamite goes off: ${ev.amount} damage to ${ev.hits} card${ev.hits===1?'':'s'} around it!`};
-    case 'deflect': return {cls:'', text:`🪖 The shot glances off ${nm(ev.defId)}'s helmet.`};
+    case 'deflect': return {cls:'', text: ev.helmetGone ? TX('ui.eng27-log-helmet', {name: nm(ev.defId)}) : `🪖 The shot glances off ${nm(ev.defId)}'s helmet.`}; // ENG27 (item 32): and it is gone
     case 'fuse': return null;
     case 'blindMiss': return {cls:'', text: ev.night ? `${nm(ev.attDefId)} can't see in the dark and misses! 🌙` : `${nm(ev.attDefId)} swings blindly and misses! 👁`};
     case 'tipsySwing': return {cls:'', text: ev.miss ? `${nm(ev.attDefId)} stumbles ${ev.drift<0?'left':'right'} into thin air 🍺` : `${nm(ev.attDefId)} lurches ${ev.drift<0?'left':'right'} and swings there instead 🍺`};
@@ -50197,7 +50268,7 @@ function labSkillFx(ev){
     case 'poisonTick': if(F.poisonCloud && skillFxOnce('poison' + ev.uid)){ const t = el(ev.uid); if(t) F.poisonCloud(t); } break;
     case 'bleedTick': if(F.bleedDrip && skillFxOnce('bleed' + ev.uid)){ const t = el(ev.uid); if(t) F.bleedDrip(t); } break;
     case 'thorns': if(F.thorns){ const d = el(ev.fromUid), a = el(ev.targetUid); if(d && a) F.thorns(d, a); } break;
-    case 'deflect': if(F.helmetDeflect){ const t = el(ev.uid); if(t) F.helmetDeflect(t); } break;
+    case 'deflect': { const t = el(ev.uid); if(t && F.helmetDeflect) F.helmetDeflect(t); if(ev.helmetGone){ const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid]; if(rc) rc.helmetGone = true; if(t){ try{ floatText(t, TX('ui.eng27-float-helmet'), 'buff'); }catch(e){} try{ updateCardStatusDisplay(ev.uid); }catch(e){} } } } break; // ENG27 (item 32): the helmet falls off
     case 'earthquake': if(F.earthquake && bf){ const foe = [...bf.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].filter(x=> x.querySelector('.card-tile')).slice(0, 8); if(foe.length) F.earthquake(foe, {host: bf, speed: (matchState && matchState.speedMult) || 1}); } break; // + speed (2026-10-17)
     case 'fieldTick':
       if(ev.field === 'frozen' && F.frostChill && skillFxOnce('frost' + ev.uid)){ const t = el(ev.uid); if(t) F.frostChill(t); }
@@ -52217,6 +52288,7 @@ function renderVfxForEvent(ev){
   try{ sk3Vfx(ev); }catch(e){} // package SK3 skills (2026-10-19)
   try{ giVfx(ev); }catch(e){} // package GI skills and fields (2026-10-19)
   try{ sk1Vfx(ev); }catch(e){} // package SK1 skills (2026-10-19)
+  try{ eng27Vfx(ev); }catch(e){} // ENG27 (2026-11-06)
   try{ eqVfx(ev); }catch(e){} // package EQ (2026-10-19)
   try{ eq2Vfx(ev); }catch(e){} // package EQ2 (2026-10-24)
   try{ sk2Vfx(ev); }catch(e){} // Package SK2 (2026-10-19)

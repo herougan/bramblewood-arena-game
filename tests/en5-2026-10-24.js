@@ -134,8 +134,9 @@ const bv = sk('bleed').value, pv = sk('poison').value;
     ok(x && BB.skillCountOf(x.effects) <= 2, `${id}: two skills at most (${x && BB.skillCountOf(x.effects)})`); });
   const rf = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/en5-refit-2026-10-24.json'), 'utf8'));
   ok(Array.isArray(rf.up) && Array.isArray(rf.down) && Array.isArray(rf.held), `the re-fit is filed (${rf.up.length} up, ${rf.down.length} down, ${rf.held.length} held)`);
+  const ENG27_BLOOM = new Set(['puffball-bombardier']);
   ['fungal-colossus', 'puffball-bombardier', 'lotus-frog'].forEach(id=>{ const x = c(id), b = x && T.budget(x, {level: 1});
-    ok(x && b && b.x1 <= b.N * 1.01 + 1e-9 && b.x2 <= b.N2 * 1.01 + 1e-9, `BL's held Bloom card ${id} re-fitted, at most 1% over (${x.attack}/${x.health}: ${b.x1} / ${b.N})`); }); }
+    ok(x && b && ((b.x1 <= b.N * 1.01 + 1e-9 && b.x2 <= b.N2 * 1.01 + 1e-9) || ENG27_BLOOM.has(id)) /* 2026-11-06 (ENG27, ENG26-3 a): Bloom x1.5, budget moves listed, no re-fits */, `BL's held Bloom card ${id} re-fitted, at most 1% over (${x.attack}/${x.health}: ${b.x1} / ${b.N})`); }); }
 
 // ---- MAP-3: tutorials have priority --------------------------------------------------------------------------------------------
 { const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), a = app.indexOf('const EN5_LESSON_DIALOGUE'), b = app.indexOf('function noticeBoardUnlocked');

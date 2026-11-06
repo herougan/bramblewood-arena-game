@@ -1561,3 +1561,22 @@ The rules as built (engine: `eng26BloomStep`, `eng26IsUndead` / `eng26UndeadHeal
 | 🧟 heal hurts | "🧟 Heal hurts", a damage number, the bleed tint | Health down | `undeadHeal` {uid, amount, dmg} |
 | 🧟 cure bleeds | "🧟 🩸N", the bleed tint | Bleed N on | `undeadCure` {uid, bleed, kind} |
 | 🚩 Leader boon | "🚩 +2/+3" and the surge glow on the Leader | its stats up | `statusFx leaderBoon` {atk, hp} |
+
+## 2026-11-06 additions (package ENG27): Fortify (X) and Unfortify, speed and the flying meter, Double Time, Encore, Grant, Hype, Rage (N%), the helmet that falls off, two brambles
+The rules as built (engine: `fortifyBramble` (Armor, Unfortify), `shotSpeedOf` / `BLITZ_SPEED`, `flyLevelOf` in `combatHitLands` / `dodgeCheck`, `eng27EncoreOn`, `eng27Grant`, `eng27Hype`, `rageAtOf`, `helmetDeflects`, `unitAtkBonus`); the engine decides, `docs/project-state.md` lists them with their calls.
+- **Fortify (X)**: the short form; its parts gain Armor N. **Unfortify (X)**: Vulnerable N / -N Health on your own bramble (bare: Vulnerable 1). Both show as pips on the bramble tile (`eng27FortPipsHTML`, from `pl.eng27Fort` and the replayed `fortify` events).
+- **Speed**: Blitz 10 (swing and shots), Bolts 1, Arrows and arrow-likes 0 after the swings, Quick 2 on the swing only.
+- **Flying meter**: Mach (2) dodges every ground swing and half the flying / ranged attacks; Anti-air hits only flyers and the bramble.
+- **Double Time** (two swings, shots twice), **Encore {Kill / field}** (one more swing a round), **Grant {skill} N** (the N nearest allies), **Hype N** (the N strongest Ready allies act at once), **Rage {N%}**, **Helmet** (gone after one block), **Inspiration** +1 a token, brambles **Whetstone Rise** (+1 Attack to every unit you play) and **Mossbed Hollow** (+3 Health).
+
+| Effect | Look | What plays | Events |
+|---|---|---|---|
+| 🏰 Fortify / 🏚️ Unfortify | the parts' text floats on the bramble; pips 🛡️N 🌵N 💚N 🏹N 💔N above its Health | the bramble's state | `fortify` {parts, neg, fort} |
+| 🛡️ Fortify armor | EN3's 🛡️ ting on the bramble | the hit is N less | `brambleArmor` {fortify, blocked} |
+| 💔 Vulnerable bramble | "💔 +N" on the bramble | the hit is N more | `brambleVulnerable` {extra} |
+| 🛩️ Mach dodge | "🛩️ Mach" on the target | a miss | `evaded` {reason: 'mach'} |
+| 🎯 Anti-air on the ground | "🎯 Flyers only" on the swinger | a miss | `evaded` {reason: 'antiAir'} |
+| 🔁 Encore | "🔁 Encore" on the unit | a second swing | `frenzy` {encore} |
+| 🎁 Grant | "🎁 <skills>" on each ally | the skills on them | `statusFx eng27Grant` {targets, skills} |
+| 📣 Hype | "📣 Hype" on the ally | its action now | `statusFx eng27Hype` {ff} |
+| 🪖 Helmet gone | "🪖 Helmet gone", the pip goes | no more blocks | `deflect` {helmetGone} |
