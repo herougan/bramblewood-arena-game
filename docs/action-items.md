@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-06: Package ENG27 (on its branch, not released)
+- Done: owner items 10 (Fortify (X), Unfortify, bramble pips), 11 (Blitz, arrows 0 / bolts 1, Mach, Anti-air), 12 / 20-22 names recorded, 14 (Inspiration +1), 20 (Double Time, Encore), 21 (Rage {N%}), 22 (Grant, Hype, the Crimson Wing Drumcaller), 24 (not reproduced), 32 (Helmet falls off), 36 (Whetstone Rise, Mossbed Hollow); PVP2 ghost leader; ENG25-6, ENG25-8 c, ENG23-1, ENG23-2 b, ENG26-3 a built; UI23-1 d (world opens once Map 0 is cleared).
+- Owner calls open: ENG27-5 (where +1 was seen), ENG27-7 (re-fit the Inspiring cards), ENG27-8 (bare Crepuscular's budget line), ENG27-9 (where the Drumcaller is earned), ENG27-10 (where the two brambles are earned).
+- Next: a road measure of Maps 0-20 after arrows moved to Speed 0 and Tide's price fell (87 Tide cards about 8 points under budget); card-matrix goldens at the batch release (arrow ordering).
+
 ## 11-06: Package UI23 (on its branch, not released)
 - Done: owner items 4 (one card editor layout), 1+18 (Shield in the heart; Bleed skips Shield), 2, 7, 8, 9, 13/34/38, 15, 16, 17, 19, 25 (guarded, not reproduced), 27, 29, 30, 31, 33, 35, 37, 39, ENG23-4 b, ENG23-6; 26 answered (lens flare); 40 and ENG23-5 reported.
 - Owner calls open: UI23-1 (the map list on a fresh account).

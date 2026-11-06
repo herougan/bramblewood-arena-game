@@ -854,5 +854,35 @@
     },
     "flavor": "A grassy rise under the woven war banner. Whoever leads from here stands a head taller.",
     "creatorNote": "2026-11-06 (package ENG26, owner 09:29 #6): your Leader +2 Attack / +3 Health as it takes the field. Health 22 and Rare as the other one-passive Rare brambles. On no road fight yet (ENG26-5). No art yet."
+  },
+  {
+    "id": "whetstone-rise",
+    "name": "Whetstone Rise",
+    "icon": "🪨",
+    "health": 22,
+    "rarity": "rare",
+    "archetypes": [
+      "Castle"
+    ],
+    "effects": {
+      "unitAtkBonus": 1
+    },
+    "flavor": "A bald hill of grey grit where every blade, claw and beak is honed before the march.",
+    "creatorNote": "2026-11-06 (package ENG27, owner item 36): every unit you play +1 Attack. Health 22 and Rare as the other one-passive Rare brambles (Banner Knoll). On no road fight. No art yet."
+  },
+  {
+    "id": "mossbed-hollow",
+    "name": "Mossbed Hollow",
+    "icon": "🌿",
+    "health": 22,
+    "rarity": "rare",
+    "archetypes": [
+      "Castle"
+    ],
+    "effects": {
+      "unitHpBonus": 3
+    },
+    "flavor": "Deep moss under the roots; whatever rests here a night gets up thicker-skinned.",
+    "creatorNote": "2026-11-06 (package ENG27, owner item 36): every unit you play +3 Health (the unitHpBonus passive). Health 22 and Rare as Banner Knoll. On no road fight. No art yet."
   }
 ]

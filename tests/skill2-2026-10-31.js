@@ -12,7 +12,7 @@ const table = js('canonical/skill-costs.json'), SC = require(path.join(ROOT, 'to
 const SK = {}; table.skills.forEach(e => { SK[e.id] = e; });
 const near = (a, b, e) => Math.abs(a - b) <= (e || 0.011);
 // 2026-11-04 (TESTFIX1): an entry re-priced after SKILL2 by a marked package (BAL12 / BAL14 / BAL15 appliedAt, ENG21) or in place by the pipeline (value = measuredS)
-const relaid = e => !!e && (/BAL1[0-9]|ENG2\d/.test(e.appliedAt || '') || !!e.bal12Was || !!e.eng21Was);
+const relaid = e => !!e && (/BAL1[0-9]|ENG2\d/.test(e.appliedAt || '') || !!e.bal12Was || !!e.eng21Was || !!e.eng27Was); // + ENG27 (2026-11-06): Tide 0.5 (ENG25-8 c), Inspiring 3.8
 
 // 1. the canon: 15 points, re-set in 3A + H points, kappa 1 after, the placebo
 { const before = js('docs/balance/skill-canon-check-2026-10-31-skill2-before.json'), after = js('docs/balance/skill-canon-check-2026-10-31-skill2.json');

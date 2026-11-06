@@ -40,15 +40,17 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   ok(shot && shot.bola && shot.amount === 1, `Bola 1 throws a shot for 1 at the unit facing it (${shot && shot.amount})`);
   ok(!!pin, 'the unit it hits is Pinned (statusFx pinDown)');
   ok(t.hp === 199, `the target took the bola's 1 damage (${t.hp})`);
-  const sk = ev1.find(x=> x.type === 'skipTurn' && x.uid === t.uid);
-  ok(sk && sk.reason === 'pinned' && !ev1.some(x=> x.type === 'hit' && x.attUid === t.uid), 'Pinned before its swing: its swing that round is lost (skipTurn pinned)');
+  // 2026-11-06 (ENG27, owner item 11): Bola is an arrow-like, Speed 0 after the swings: it pins after the target swung; the swing lost is the next round's
+  // (the round's own upkeep keeps a Pin laid this round: no extra upkeep between the two)
+  const evP = round(e, P, 1), sk = evP.find(x=> x.type === 'skipTurn' && x.uid === t.uid);
+  ok(sk && sk.reason === 'pinned' && !evP.some(x=> x.type === 'hit' && x.attUid === t.uid), 'Pinned: its next swing is lost (skipTurn pinned)');
   ok(!(t.pinDown > 0) && t.pinFreed != null, 'the Pin is spent by the lost swing');
+  ok(!evP.some(x=> x.type === 'statusFx' && x.kind === 'pinDown'), 'the round it broke free it can\'t be Pinned again');
   e.endOfRoundUpkeep && e.endOfRoundUpkeep(P, so, {}, []);
   const ev2 = round(e, P, 1);
-  ok(!ev2.some(x=> x.type === 'statusFx' && x.kind === 'pinDown'), 'the round after it broke free it can\'t be Pinned again');
-  ok(ev2.some(x=> x.type === 'hit' && x.attUid === t.uid), 'so it swings that round'); }
+  ok(ev2.some(x=> x.type === 'hit' && x.attUid === t.uid), 'so it swings the round after'); }
 { const {e, P} = mk(); put(e, P, 1, 'x-bola', 0); const t = put(e, P, 2, 'x-archer', 0);
-  const ev = round(e, P, 1); ok(ev.some(x=> x.type === 'arrow' && x.uid === t.uid) && ev.some(x=> x.type === 'skipTurn' && x.uid === t.uid && x.reason === 'pinned'), 'a Pinned unit still shoots its Arrow (a skill) but loses its swing'); }
+  round(e, P, 1); const ev = round(e, P, 1); /* 2026-11-06 (ENG27): pinned after round 1's swings, so round 2 */ ok(ev.some(x=> x.type === 'arrow' && x.uid === t.uid) && ev.some(x=> x.type === 'skipTurn' && x.uid === t.uid && x.reason === 'pinned'), 'a Pinned unit still shoots its Arrow (a skill) but loses its swing'); }
 { const {e, P} = mk(); const t = put(e, P, 2, 'x-hitter', 0); t.pinDown = 1; ok(e.bolaPinnable(t) === false, 'not on a unit already Pinned');
   const w = put(e, P, 2, 'x-wall', 1); ok(e.bolaPinnable(w) === true, 'a fresh unit can be Pinned'); }
 ok(/function stuckFast\(c\)\{ return !!\(c && \(c\.pinned \|\| c\.webbed > 0 \|\| c\.pinDown > 0/.test(eng), 'a Pinned unit can\'t move or be moved (stuckFast)');

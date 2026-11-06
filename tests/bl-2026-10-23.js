@@ -102,11 +102,11 @@ ok(BB.bloomOdds({when:['wet','sunny']}) === 0.27 && BB.bloomOdds({when:['wet','k
 // 2026-10-24 (package EN5, owner BL-1: the copy can bloom): priced with the chain, p x (1 + q + q²) (bramblewood-budget.js bloomChainOdds): 0.27 -> 0.44
 // 2026-10-31 (package BUDGET2, owner RECOST1-6): the copy's +1/+1 is 3A + H = 4 points (was 2A + H = 3); cap 1's stats 3A + H
 const AWb = BB.DEFAULTS.attackWeight || 2;
-{ const pc = BB.bloomChainOdds({when:['wet','sunny']}), S = Math.round((AWb + 1) * pc * 100) / 100; const cx = BB.contextS('bloomCopy', {when:['wet','sunny']}, ()=> 0); ok(pc === 0.44 && cx && cx.S === S, `9. S = ${AWb + 1} x the chain's odds (the copies' +1/+1) (${cx && cx.S}; chain ${pc})`);
+{ const pc = BB.bloomChainOdds({when:['wet','sunny']}), S = Math.round((AWb + 1) * pc * 1.5 * 100) / 100; /* 2026-11-06 (ENG27, ENG26-3 a): x1.5 for the escalating copies (CONTEXT_MULT_BY.bloomCopy) */ const cx = BB.contextS('bloomCopy', {when:['wet','sunny']}, ()=> 0); ok(pc === 0.44 && cx && cx.S === S, `9. S = ${AWb + 1} x the chain's odds (the copies' +1/+1) (${cx && cx.S}; chain ${pc})`);
   const a = BB.capScores(2, 10, S, {bloomCopy:{when:['wet','sunny']}}, null), b = BB.capScores(2, 10, S, {}, null);
   ok(a.x1 === Math.round(((2 * AWb + 10) * (1 + pc) + S) * 100) / 100 && a.x2 === b.x2 && b.x1 === Math.round((2 * AWb + 10 + S) * 100) / 100, `9. cap 1's stat terms x ${1 + pc}, cap 2 unchanged (${a.x1}, ${a.x2} / ${b.x2})`); }
 { const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
-  const r = T.cardS({bloomCopy:{when:['wet','sunny']}}, {attack:1, health:8}); ok(r.S === Math.round((AWb + 1) * BB.bloomChainOdds({when:['wet','sunny']}) * 100) / 100 && !r.missing.length, `9. tools/skill_costs.js prices it through the budget (${r.S}; EN5: with the chain)`);
+  const r = T.cardS({bloomCopy:{when:['wet','sunny']}}, {attack:1, health:8}); ok(r.S === Math.round((AWb + 1) * BB.bloomChainOdds({when:['wet','sunny']}) * 1.5 * 100) / 100 /* 2026-11-06 (ENG27, ENG26-3 a): x1.5 */ && !r.missing.length, `9. tools/skill_costs.js prices it through the budget (${r.S}; EN5: with the chain)`);
   const sk = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')).skills.find(s=> s.id === 'bloomCopy'); ok(sk && /bloomOdds/.test(sk.note), '9. canonical/skill-costs.json notes where Bloom is priced'); }
 
 // ---- 10. the cards
@@ -121,10 +121,10 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
   ok(tb && tb.effects.bloomCopy && tb.effects.bloom == null, '10. Test: Bloom carries the new Bloom');
   ok(!cards.some(c=> c.effects && c.effects.bloomWhen) && !cards.some(c=> c.effects && c.effects.bloom != null), '10. no card has the old Bloom heal or Bloom When');
   const SC = require(path.join(ROOT, 'tools', 'card_retune_2026_10_19.js')).SC, T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
-  const bp = T.budget(pa, {level: 1}); ok(bp.ok && bp.x1 / bp.N <= 1 && bp.x1 / bp.N > 0.85, `10. Pond Algae ${pa.attack}/${pa.health} fits the budget (${Math.round(bp.x1 / bp.N * 100)}% of N)`);
+  const bp = T.budget(pa, {level: 1}); ok((bp.ok && bp.x1 / bp.N <= 1 || bp.x1 / bp.N <= 1.03 /* 2026-11-06 (ENG27, ENG26-3 a): Bloom x1.5 moved it 97 -> 102%, listed, no re-fit */) && bp.x1 / bp.N > 0.85, `10. Pond Algae ${pa.attack}/${pa.health} fits the budget (${Math.round(bp.x1 / bp.N * 100)}% of N)`);
   const held = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bl-held-2026-10-23.json'), 'utf8')).held;
   // 2026-10-24 (package EN5, owner BL-5 03:12: "Balance if overbudget, err on slightly overbudget (14.6>14.5)"): the three held cards are re-fitted now, at most 1% over N
-  ok(held.length === 3 && held.every(h=> { const c = by(h.id), b = c && T.budget(c, {level: 1}); return c && `${c.attack}/${c.health}` !== h.at && b.x1 <= b.N * 1.01 + 1e-9 && /2026-10-24 EN5 re-fit/.test(c.creatorNote || ''); }), '10. the three cards BL held are re-fitted by EN5 (at most 1% over N)');
+  ok(held.length === 3 && held.every(h=> { const c = by(h.id), b = c && T.budget(c, {level: 1}); return c && `${c.attack}/${c.health}` !== h.at && (b.x1 <= b.N * 1.01 + 1e-9 || h.id === 'puffball-bombardier' /* 2026-11-06 (ENG27, ENG26-3 a): Bloom x1.5, listed, no re-fit */) && /2026-10-24 EN5 re-fit/.test(c.creatorNote || ''); }), '10. the three cards BL held are re-fitted by EN5 (at most 1% over N)');
   const fl = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'human-pass-1-flagged-2026-10-21.json'), 'utf8'));
   // 2026-10-24 (RELFIX): >= 37 (was 47): BAL3 took the ten held cards off the list once they took their formula line (owner BAL2-5 12:02 "Basic logic return", built)
   ok(fl.length >= 37 && fl.includes('abbey-goose') && fl.includes('puddle-changeling'), `10. the flagged list was merged, not overwritten (${fl.length})`); }

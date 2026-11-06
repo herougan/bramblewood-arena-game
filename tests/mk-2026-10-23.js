@@ -129,7 +129,9 @@ async function browser(){
       const [ctx, pg] = await open(1366, false, prog);
       await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); playSubTab = 'conquest'; switchTab('play'); 1"); await pg.waitForTimeout(1500);
       const r = await pg.evaluate("({sel: conquestSelectedMap, world: worldRevealed(), mf: isMapUnlocked(CONQUEST_MAPS.find(m=> m.id === 'mf'), loadConquestProgress()), done: loadConquestProgress().completed.filter(id=> /^m1:/.test(id))})");
-      ok(r.sel === want && r.mf === open1 && !r.world, `B stuck save (${label}): the road opens on ${want}, Map 1 ${open1 ? 'open' : 'locked'} (${JSON.stringify(r)})`);
+      // 2026-11-06 (ENG27, owner UI23-1 d: "Once map 0 is beaten."): a cleared Map 0 opens the world (the map list), so the save is no longer
+      // stuck: no landing on Map 1, the list is there to pick it (the clearing win itself still takes you there, PG)
+      ok(r.sel === (open1 ? 'm1' : want) && r.mf === open1 && r.world === open1, `B stuck save (${label}): ${open1 ? 'the world is open, Map 1 open' : 'the road stays on m1, Map 1 locked'} (${JSON.stringify(r)})`);
       if(label === 'old ids') ok(JSON.stringify(r.done) === JSON.stringify(['m1:0-1','m1:0-2','m1:0-3','m1:0-4']), 'B old ids read as the new ones');
       if(open1){ // once: Map 0 picked again (a signpost, a quest) stays picked
         await pg.evaluate("conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; renderConquestSubTab(document.getElementById('playSubBody')); 1"); await pg.waitForTimeout(600);

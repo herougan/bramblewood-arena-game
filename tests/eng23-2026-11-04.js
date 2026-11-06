@@ -40,13 +40,13 @@ const SCt = J('canonical/skill-costs.json'), SK = Object.fromEntries(SCt.skills.
 
 // ---- 1. Crepuscular -------------------------------------------------------------------------------------------------------------
 { const {e} = mk(1); const p = e.crepuscularParts;
-  ok(JSON.stringify(p({crepuscular:true})) === '{"day":[0,0],"night":[0,1]}', '1: a plain Crepuscular is +0/+0 by day, +0/+1 at night');
+  ok(JSON.stringify(p({crepuscular:true})) === '{"day":[1,0],"night":[0,1]}', '1: a plain Crepuscular is +1/+0 by day, +0/+1 at night'); // 2026-11-06 (ENG27, owner ENG23-1): was +0/+0 by day
   ok(JSON.stringify(p({crepuscular:1, crepuscularHp:1})) === '{"day":[1,1],"night":[1,1]}' && JSON.stringify(p({crepuscular:1})) === '{"day":[1,0],"night":[1,0]}', '1: an old card (Nightjar Drifter 1/1, Woodcock Lookout 1) keeps its +A/+H in both parts');
   ok(JSON.stringify(p({crepuscular:true, crepuscularDay:[1, 0], crepuscularNight:[0, 2]})) === '{"day":[1,0],"night":[0,2]}', '1: the day part and the night part set apart');
   ok(JSON.stringify(p({crepuscular:true, crepuscularGrant:{day:{attack:1}}})) === '{"day":[0,0],"night":[0,0]}', '1: the braces replace the plain parts'); }
 function phaseStats(id, phase){ const {e, P} = mk(2, {phase}); const c = put(e, P, 1, id, 0); e.syncPhaseStats(P, so, []); return [c.phaseAtk || 0, c.phaseHp || 0, c]; }
 { const n0 = phaseStats('x-crep0', 'night'), d0 = phaseStats('x-crep0', 'day');
-  ok(n0[0] === 0 && n0[1] === 1 && d0[0] === 0 && d0[1] === 0, `1: in a fight: plain Crepuscular +0/+1 at night, nothing by day (${n0.slice(0, 2)} | ${d0.slice(0, 2)})`);
+  ok(n0[0] === 0 && n0[1] === 1 && d0[0] === 1 && d0[1] === 0 /* 2026-11-06 (ENG27, owner ENG23-1): +1/+0 by day */, `1: in a fight: plain Crepuscular +0/+1 at night, +1/+0 by day (${n0.slice(0, 2)} | ${d0.slice(0, 2)})`);
   const nO = phaseStats('x-crepOld', 'night'), dO = phaseStats('x-crepOld', 'day');
   ok(nO[0] === 1 && nO[1] === 1 && dO[0] === 1 && dO[1] === 1, '1: an old +1/+1 card: the same by day and at night (unchanged)');
   const nD = phaseStats('x-crepDN', 'night'), dD = phaseStats('x-crepDN', 'day');
@@ -61,11 +61,11 @@ function phaseStats(id, phase){ const {e, P} = mk(2, {phase}); const c = put(e, 
   const src = app.slice(app.indexOf('function eng23CrepVals'), app.indexOf('const PASSIVE_DEFS = ['));
   const F = new Function('TX', src + '; return {eng23CrepVals, eng23CrepGet, eng23CrepApply, eng23CrepText, eng23CrepHead};')(TX);
   const ap = v=>{ const e = {}; F.eng23CrepApply(e, v); return JSON.stringify(e); };
-  ok(ap([0, 0, 0, 1]) === '{"crepuscular":true}' && ap([1, 1, 1, 1]) === '{"crepuscular":1,"crepuscularHp":1}' && ap([1, 0, 0, 2]) === '{"crepuscular":true,"crepuscularDay":[1,0],"crepuscularNight":[0,2]}',
+  ok(ap([1, 0, 0, 1]) === '{"crepuscular":true}' /* 2026-11-06 (ENG27, ENG23-1): the default is +1/+0, +0/+1 */ && ap([1, 1, 1, 1]) === '{"crepuscular":1,"crepuscularHp":1}' && ap([1, 0, 0, 2]) === '{"crepuscular":true,"crepuscularDay":[1,0],"crepuscularNight":[0,2]}',
     `1: the editor saves the default as true, equal parts as the old form, else the two parts (${ap([0, 0, 0, 1])} ${ap([1, 1, 1, 1])} ${ap([1, 0, 0, 2])})`);
-  ok(JSON.stringify(F.eng23CrepGet(byId['nightjar-drifter'].effects)) === '[1,1,1,1]' && JSON.stringify(F.eng23CrepGet({crepuscular:true})) === '[0,0,0,1]' && F.eng23CrepGet({crepuscular:true, crepuscularGrant:{day:{}, night:{}}}) === undefined, '1: the editor reads old cards, the default and leaves the braced form to its own row');
+  ok(JSON.stringify(F.eng23CrepGet(byId['nightjar-drifter'].effects)) === '[1,1,1,1]' && JSON.stringify(F.eng23CrepGet({crepuscular:true})) === '[1,0,0,1]' /* ENG27 */ && F.eng23CrepGet({crepuscular:true, crepuscularGrant:{day:{}, night:{}}}) === undefined, '1: the editor reads old cards, the default and leaves the braced form to its own row');
   ok(F.eng23CrepText([0, 0, 0, 1]) === 'At night: +0/+1. Twilight brings it too.' && F.eng23CrepText([1, 0, 0, 2]) === 'By day: +1/+0. At night: +0/+2. Twilight brings both.' && F.eng23CrepHead([1, 0, 0, 2]) === 'Crepuscular { +1/+0 } → { +0/+2 }', '1: the card text and head'); }
-ok(/placeholders:\[TX\('ui\.eng23-crep-day-atk'\), TX\('ui\.eng23-crep-day-hp'\), TX\('ui\.eng23-crep-night-atk'\), TX\('ui\.eng23-crep-night-hp'\)\], defaultValue:\[0, 0, 0, 1\]/.test(app) && /data-sk="val\$\{j \+ 2\}"/.test(app) && /v3El && v2El \? \[v0, v1, v2El\.value, v3El\.value\]/.test(app), '1: the editor row has four numbers (day / night Attack and Health), +0/+0 / +0/+1 by default');
+ok(/placeholders:\[TX\('ui\.eng23-crep-day-atk'\), TX\('ui\.eng23-crep-day-hp'\), TX\('ui\.eng23-crep-night-atk'\), TX\('ui\.eng23-crep-night-hp'\)\], defaultValue:\[1, 0, 0, 1\] \/\* ENG27 \(ENG23-1\) \*\//.test(app) /* 2026-11-06 (ENG27, owner ENG23-1): the default +1/+0, +0/+1 */ && /data-sk="val\$\{j \+ 2\}"/.test(app) && /v3El && v2El \? \[v0, v1, v2El\.value, v3El\.value\]/.test(app), '1: the editor row has four numbers (day / night Attack and Health), +0/+0 / +0/+1 by default');
 ok(TXT['ui.eng23-crep-braced'] === 'Crepuscular {day} → {night}' && /key:'crepuscularGrant', category:'passive', get label\(\)\{ return TX\('ui\.eng23-crep-braced', \{day: '\{' \+ TX\('ui\.cx-day'\) \+ '\}', night: '\{' \+ TX\('ui\.cx-night'\) \+ '\}'\}\);/.test(app), '1: the braced form is offered as "Crepuscular {day} → {night}" (stats or skills in each brace)');
 ok(byId['nightjar-drifter'].effects.crepuscular === 1 && byId['nightjar-drifter'].effects.crepuscularHp === 1 && byId['woodcock-lookout'].effects.crepuscular === 1, '1: no card changed');
 
@@ -77,7 +77,7 @@ ok(byId['nightjar-drifter'].effects.crepuscular === 1 && byId['nightjar-drifter'
   e.roundStart(P, 2, so, {}, []); const on = fx(); ok(!before && on.haste && on.evasive && e.eng23SkitterOn(s), `2: the next round it has Haste and Evasive (${JSON.stringify(on)})`);
   ok((s.speed || 0) >= 2, `2: Haste's Speed +2 (speed ${s.speed})`);
   P[2].row.center = []; e.syncSlots(P[2]); e.resolveCombat(P, so, {}, [], 1); // round 2: nothing to hit (it swings at the bramble)
-  e.roundStart(P, 3, so, {}, []); const off = fx(); ok(!off.haste && !off.evasive, `2: after a round with no unit hit: gone (${JSON.stringify(off)})`); }
+  e.roundStart(P, 3, so, {}, []); const off = fx(); ok(off.haste && off.evasive, `2: a round that hit only the bramble renews it (owner ENG23-2 b, built ENG27 2026-11-06; was: gone) (${JSON.stringify(off)})`); }
 { const {e, P} = mk(4); const s = put(e, P, 1, 'x-skit', 0); put(e, P, 2, 'x-weak', 0); s.atk = 9; const ev = []; e.roundStart(P, 1, so, {}, []); e.resolveCombat(P, so, {}, ev, 1);
   e.roundStart(P, 2, so, {}, []); ok(e.eng23SkitterOn(s), '2: a killing hit counts too'); }
 ok(SK.skitter && SK.skitter.value === 1.44 && SK.skitter.theoretical && BB.SKITTER_MISS_MULT === 1.1 && BB.missMultOf({skitter:true}) === 1.1 && BB.missMultOf({skitter:true, evasive:true}) === BB.missMultOf({evasive:true}), '2: priced: Haste 2.57 x 0.56 = 1.44 S, Evasive x1.1 on the stat terms (nothing extra beside its own Evasive)');

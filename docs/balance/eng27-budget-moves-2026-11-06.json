@@ -1,0 +1,636 @@
+{
+ "when": "2026-11-06",
+ "rule": "cap-1 use x1 / N, moves of 2 points or more",
+ "moves": [
+  {
+   "id": "conch-herald",
+   "was": 104.6,
+   "now": 90.2,
+   "why": "Tide, Inspiring"
+  },
+  {
+   "id": "cricket-drummer",
+   "was": 140,
+   "now": 127.7,
+   "why": "Inspiring"
+  },
+  {
+   "id": "giant-clam",
+   "was": 98.3,
+   "now": 87,
+   "why": "Tide, Delivery {Pearl}"
+  },
+  {
+   "id": "meerkat-wayfarer",
+   "was": 113.2,
+   "now": 102.3,
+   "why": "Inspiring"
+  },
+  {
+   "id": "meadow-frog",
+   "was": 92.9,
+   "now": 84.1,
+   "why": "Tide"
+  },
+  {
+   "id": "beluga",
+   "was": 89.1,
+   "now": 80.3,
+   "why": "Tide, Inspiring"
+  },
+  {
+   "id": "oyster-bank",
+   "was": 90.4,
+   "now": 81.7,
+   "why": "Delivery {Pearl}"
+  },
+  {
+   "id": "otter-flag-bearer",
+   "was": 107.2,
+   "now": 98.7,
+   "why": "Inspiring"
+  },
+  {
+   "id": "humpback-elder",
+   "was": 88,
+   "now": 79.6,
+   "why": "Tide, Inspiring"
+  },
+  {
+   "id": "minnow-skitter",
+   "was": 104.5,
+   "now": 96.7,
+   "why": "Tide"
+  },
+  {
+   "id": "puddle-hopper",
+   "was": 105.7,
+   "now": 97.9,
+   "why": "Tide"
+  },
+  {
+   "id": "fiddler-crab-swarm",
+   "was": 97.5,
+   "now": 89.8,
+   "why": "Tide"
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "was": 92.3,
+   "now": 84.6,
+   "why": "Tide"
+  },
+  {
+   "id": "shallows-fry",
+   "was": 96.7,
+   "now": 89,
+   "why": "Tide"
+  },
+  {
+   "id": "water-vole",
+   "was": 75.5,
+   "now": 67.8,
+   "why": "Tide"
+  },
+  {
+   "id": "limpet-clinger",
+   "was": 93.4,
+   "now": 85.7,
+   "why": "Tide"
+  },
+  {
+   "id": "swamp-rabbit",
+   "was": 75.5,
+   "now": 67.8,
+   "why": "Tide"
+  },
+  {
+   "id": "krill-swarm",
+   "was": 90,
+   "now": 82.3,
+   "why": "Tide"
+  },
+  {
+   "id": "kelpborn-otter",
+   "was": 96.7,
+   "now": 89,
+   "why": "Tide"
+  },
+  {
+   "id": "fleetfootd",
+   "was": 90.3,
+   "now": 83.3,
+   "why": "Tide"
+  },
+  {
+   "id": "snapper-hatchling",
+   "was": 79,
+   "now": 72.1,
+   "why": "Tide"
+  },
+  {
+   "id": "tide-pool-crab",
+   "was": 94.5,
+   "now": 87.6,
+   "why": "Tide"
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "was": 88.9,
+   "now": 82,
+   "why": "Tide"
+  },
+  {
+   "id": "clownfish-scout",
+   "was": 92.7,
+   "now": 85.9,
+   "why": "Tide"
+  },
+  {
+   "id": "blind-cave-fish",
+   "was": 63.3,
+   "now": 56.5,
+   "why": "Tide"
+  },
+  {
+   "id": "conch-crawler",
+   "was": 94.5,
+   "now": 88.5,
+   "why": "Tide"
+  },
+  {
+   "id": "pincushion-urchin",
+   "was": 79.9,
+   "now": 73.9,
+   "why": "Tide"
+  },
+  {
+   "id": "moon-jelly",
+   "was": 100.2,
+   "now": 94.3,
+   "why": "Tide"
+  },
+  {
+   "id": "rock-pool-starfish",
+   "was": 97.7,
+   "now": 91.9,
+   "why": "Tide"
+  },
+  {
+   "id": "sulfur-vent-crab",
+   "was": 108.7,
+   "now": 103.1,
+   "why": "Tide"
+  },
+  {
+   "id": "otter-ferryman",
+   "was": 97.9,
+   "now": 92.3,
+   "why": "Tide"
+  },
+  {
+   "id": "otter-angler",
+   "was": 101.2,
+   "now": 95.6,
+   "why": "Tide"
+  },
+  {
+   "id": "parrotfish",
+   "was": 91.2,
+   "now": 85.7,
+   "why": "Tide"
+  },
+  {
+   "id": "coral-current-eel",
+   "was": 105.9,
+   "now": 100.5,
+   "why": "Tide"
+  },
+  {
+   "id": "triumvirate",
+   "was": 98.2,
+   "now": 92.8,
+   "why": "Inspiring"
+  },
+  {
+   "id": "pyrenean-desman",
+   "was": 93,
+   "now": 87.7,
+   "why": "Tide"
+  },
+  {
+   "id": "coral-polyp-colony",
+   "was": 97.2,
+   "now": 92.1,
+   "why": "Tide"
+  },
+  {
+   "id": "cuttlefish-illusionist",
+   "was": 72.9,
+   "now": 67.8,
+   "why": "Tide"
+  },
+  {
+   "id": "camouflage-frog",
+   "was": 72.9,
+   "now": 67.8,
+   "why": "Tide"
+  },
+  {
+   "id": "great-crested-grebe",
+   "was": 72.9,
+   "now": 67.8,
+   "why": "Tide"
+  },
+  {
+   "id": "pike-lancer",
+   "was": 97.6,
+   "now": 92.6,
+   "why": "Tide"
+  },
+  {
+   "id": "inkcloud-squid",
+   "was": 73.3,
+   "now": 68.3,
+   "why": "Tide"
+  },
+  {
+   "id": "raft-spider",
+   "was": 93.1,
+   "now": 88.1,
+   "why": "Tide"
+  },
+  {
+   "id": "ringed-seal",
+   "was": 82.8,
+   "now": 77.8,
+   "why": "Tide"
+  },
+  {
+   "id": "dolphin-knight",
+   "was": 99.7,
+   "now": 94.8,
+   "why": "Tide"
+  },
+  {
+   "id": "snapstick-turtle",
+   "was": 93.8,
+   "now": 88.9,
+   "why": "Tide"
+  },
+  {
+   "id": "rainmaker-frog",
+   "was": 92.7,
+   "now": 87.9,
+   "why": "Tide"
+  },
+  {
+   "id": "river-mink",
+   "was": 92.7,
+   "now": 87.9,
+   "why": "Tide"
+  },
+  {
+   "id": "puffin-diver",
+   "was": 79.5,
+   "now": 74.7,
+   "why": "Tide"
+  },
+  {
+   "id": "diving-bell-spider",
+   "was": 92.7,
+   "now": 87.9,
+   "why": "Tide"
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "was": 115.8,
+   "now": 111,
+   "why": "Tide"
+  },
+  {
+   "id": "lionfish",
+   "was": 104.5,
+   "now": 99.7,
+   "why": "Tide"
+  },
+  {
+   "id": "poison-dart-croaker",
+   "was": 87.5,
+   "now": 82.8,
+   "why": "Tide"
+  },
+  {
+   "id": "sea-cucumber",
+   "was": 116.4,
+   "now": 111.7,
+   "why": "Tide"
+  },
+  {
+   "id": "conger-eel",
+   "was": 96.9,
+   "now": 92.2,
+   "why": "Tide"
+  },
+  {
+   "id": "gilded-swan-knight",
+   "was": 93.1,
+   "now": 88.4,
+   "why": "Inspiring"
+  },
+  {
+   "id": "fire-ant-raft",
+   "was": 94.1,
+   "now": 89.4,
+   "why": "Tide"
+  },
+  {
+   "id": "giant-water-bug",
+   "was": 90.1,
+   "now": 85.4,
+   "why": "Tide"
+  },
+  {
+   "id": "voltaic-eel",
+   "was": 92.3,
+   "now": 87.7,
+   "why": "Tide"
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "was": 110.2,
+   "now": 105.7,
+   "why": "Tide"
+  },
+  {
+   "id": "riptide-eel",
+   "was": 98.4,
+   "now": 94,
+   "why": "Tide"
+  },
+  {
+   "id": "proboscis-monkey",
+   "was": 83.4,
+   "now": 79,
+   "why": "Tide"
+  },
+  {
+   "id": "harbor-seal",
+   "was": 75.3,
+   "now": 71,
+   "why": "Tide"
+  },
+  {
+   "id": "tide-spirit",
+   "was": 91.5,
+   "now": 87.3,
+   "why": "Tide"
+  },
+  {
+   "id": "reef-manta-glider",
+   "was": 75.8,
+   "now": 71.6,
+   "why": "Tide"
+  },
+  {
+   "id": "narwhal-lancer",
+   "was": 79.5,
+   "now": 75.3,
+   "why": "Tide"
+  },
+  {
+   "id": "goliath-broodmother",
+   "was": 96,
+   "now": 91.8,
+   "why": "Inspiring"
+  },
+  {
+   "id": "great-barracuda",
+   "was": 80.4,
+   "now": 76.3,
+   "why": "Tide"
+  },
+  {
+   "id": "pufferfish-bulwark",
+   "was": 92.8,
+   "now": 88.7,
+   "why": "Tide"
+  },
+  {
+   "id": "moray-ambusher",
+   "was": 113.5,
+   "now": 109.4,
+   "why": "Tide"
+  },
+  {
+   "id": "marshal-tuskwell",
+   "was": 82.5,
+   "now": 78.5,
+   "why": "Inspiring"
+  },
+  {
+   "id": "shoal-shark",
+   "was": 95.5,
+   "now": 91.6,
+   "why": "Tide"
+  },
+  {
+   "id": "coral-reef-shark",
+   "was": 89.4,
+   "now": 85.6,
+   "why": "Tide"
+  },
+  {
+   "id": "drowned-matriarch",
+   "was": 92.9,
+   "now": 89.1,
+   "why": "Tide"
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "was": 66.3,
+   "now": 62.5,
+   "why": "Tide"
+  },
+  {
+   "id": "selkie-wavebinder",
+   "was": 96.5,
+   "now": 92.7,
+   "why": "Tide"
+  },
+  {
+   "id": "man-o-war",
+   "was": 106.1,
+   "now": 102.3,
+   "why": "Tide"
+  },
+  {
+   "id": "elder-tortoise",
+   "was": 76.3,
+   "now": 72.6,
+   "why": "Tide"
+  },
+  {
+   "id": "river-warden",
+   "was": 94.5,
+   "now": 90.8,
+   "why": "Tide"
+  },
+  {
+   "id": "grey-seal-bull",
+   "was": 83.2,
+   "now": 79.5,
+   "why": "Tide"
+  },
+  {
+   "id": "greater-siren",
+   "was": 78.3,
+   "now": 74.6,
+   "why": "Tide"
+  },
+  {
+   "id": "stone-turtle-warden",
+   "was": 80.2,
+   "now": 76.6,
+   "why": "Tide"
+  },
+  {
+   "id": "hammerhead-shark",
+   "was": 95.1,
+   "now": 91.5,
+   "why": "Tide"
+  },
+  {
+   "id": "alligator-gar",
+   "was": 95.1,
+   "now": 91.5,
+   "why": "Tide"
+  },
+  {
+   "id": "old-growth-tortoise",
+   "was": 90.9,
+   "now": 87.4,
+   "why": "Tide"
+  },
+  {
+   "id": "abyss-lantern-squid",
+   "was": 96.9,
+   "now": 93.4,
+   "why": "Tide"
+  },
+  {
+   "id": "octopus-tactician",
+   "was": 96.9,
+   "now": 93.6,
+   "why": "Tide"
+  },
+  {
+   "id": "reef-admiral",
+   "was": 83.7,
+   "now": 80.4,
+   "why": "Tide"
+  },
+  {
+   "id": "old-sturgeon",
+   "was": 75.8,
+   "now": 72.5,
+   "why": "Tide"
+  },
+  {
+   "id": "whale-shark",
+   "was": 93.9,
+   "now": 90.7,
+   "why": "Tide"
+  },
+  {
+   "id": "turtle-bastion",
+   "was": 92.9,
+   "now": 89.9,
+   "why": "Tide"
+  },
+  {
+   "id": "mangrove-manatee",
+   "was": 96.3,
+   "now": 93.3,
+   "why": "Tide"
+  },
+  {
+   "id": "reef-shark",
+   "was": 94.3,
+   "now": 91.4,
+   "why": "Tide"
+  },
+  {
+   "id": "sea-turtle-elder",
+   "was": 79.3,
+   "now": 76.4,
+   "why": "Tide"
+  },
+  {
+   "id": "ironclaw-fiddler",
+   "was": 107.6,
+   "now": 104.7,
+   "why": "Tide"
+  },
+  {
+   "id": "greenland-shark",
+   "was": 89.2,
+   "now": 86.4,
+   "why": "Tide"
+  },
+  {
+   "id": "orca-vanguard",
+   "was": 92.7,
+   "now": 90.1,
+   "why": "Tide"
+  },
+  {
+   "id": "goliath-tentacle",
+   "was": 92.4,
+   "now": 90,
+   "why": "Tide"
+  },
+  {
+   "id": "colossal-squid",
+   "was": 90.2,
+   "now": 88.1,
+   "why": "Tide"
+  },
+  {
+   "id": "fungal-colossus",
+   "was": 93.3,
+   "now": 95.3,
+   "why": "Bloom"
+  },
+  {
+   "id": "puffball-bombardier",
+   "was": 100,
+   "now": 103,
+   "why": "Bloom"
+  },
+  {
+   "id": "phoenix-mushrooms",
+   "was": 95,
+   "now": 98.4,
+   "why": "Bloom"
+  },
+  {
+   "id": "lotus-frog",
+   "was": 93.3,
+   "now": 97,
+   "why": "Bloom"
+  },
+  {
+   "id": "pond-algae",
+   "was": 96.7,
+   "now": 101.9,
+   "why": "Bloom"
+  },
+  {
+   "id": "night-algae",
+   "was": 101.7,
+   "now": 114.8,
+   "why": "Bloom"
+  }
+ ]
+}

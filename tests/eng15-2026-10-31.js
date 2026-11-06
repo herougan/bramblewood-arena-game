@@ -92,8 +92,9 @@ ok(/function eng15CowerChip\(e, on\)/.test(app) && /cowering: !!c\.cowering \/\*
   const ev = round(e, P, 1);
   ok(ev.some(x=> x.type === 'arrow' && x.uid === l.uid && x.lasso) && ev.some(x=> x.type === 'statusFx' && x.kind === 'lasso' && x.targetUid === t.uid), 'Lasso 1 throws once and ties the unit it hits');
   ok(t.lassoed === 1 && t.lassoBy === l.uid && l.lassoing === t.uid && l.lassoUsed, 'both ends are marked');
-  ok(ev.some(x=> x.type === 'skipTurn' && x.uid === t.uid && x.reason === 'lassoed') && ev.some(x=> x.type === 'skipTurn' && x.uid === l.uid && x.reason === 'lassoed'), 'neither end swings');
+  // 2026-11-06 (ENG27, owner item 11): Lasso is an arrow-like, Speed 0 after the swings: both ends swung before it landed; from the next round neither swings
   upkeep(e, P); const ev2 = round(e, P, 1);
+  ok(ev2.some(x=> x.type === 'skipTurn' && x.uid === t.uid && x.reason === 'lassoed') && ev2.some(x=> x.type === 'skipTurn' && x.uid === l.uid && x.reason === 'lassoed'), 'neither end swings');
   ok(!ev2.some(x=> x.type === 'arrow' && x.uid === l.uid) && t.lassoed === 1 && !ev2.some(x=> x.type === 'hit' && x.attUid === t.uid), 'the next round: no second throw, still tied');
   l.hp = 0; e.removeDeadCards(P, so, {}, {}, []); const ev3 = round(e, P, 1);
   ok(!ev3.some(x=> x.type === 'skipTurn' && x.uid === t.uid) && ev3.some(x=> (x.type === 'hit' || x.type === 'hitHQ') && x.attUid === t.uid), `the thrower dies: the target is free and swings (${t.lassoed}, ${ev3.filter(x=> x.attUid === t.uid || x.uid === t.uid).map(x=> x.type + (x.reason ? ':' + x.reason : '')).join(' ')})`);
