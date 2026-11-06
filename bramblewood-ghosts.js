@@ -165,7 +165,7 @@ const THEMED_GHOSTS = [
   {id:'thorn-hedge', name:"Bramble Quill", stage:3, avatar:{character:'mouse', color:'moss', title:'newcomer'}, theme:"Thornbound hedge: hedgehogs, porcupines and the briar maze",
    deck:{"hedgehog-scout":3,"bramble-hoglet":3,"porcupine-roller":3,"inside-out-hedgehog":2,"quillguard":2,"thorn-shrike":2,"seed-cache-squirrel":2,"mouse-sapper":3}},
   {id:'ashfall-legion', name:"Cinder Marlow", stage:4, avatar:{character:'mouse', color:'berry', title:'newcomer'}, theme:"Volcano: salamanders, wyrms and ember hunters",
-   deck:{"cinder-stoker":3,"cinder-gecko":3,"ashbone-ghoul":2,"fire-salamander":3,"magma-salamander":3,"ember-jackal":2,"rimefire-salamander":1,"pyroclast-wyrm":1,"phoenix-fledgling":1,"fire-hawk":1}},
+   deck:{"cinder-stoker":3,"cinder-gecko":3,"ashbone-ghoul":2,"fire-salamander":4,"magma-salamander":2,"ember-jackal":2,"rimefire-salamander":1,"pyroclast-wyrm":1,"phoenix-fledgling":1,"fire-hawk":1}},
   {id:'deep-tide', name:"Abyssal Aster", stage:4, avatar:{character:'otter', color:'violet', title:'newcomer'}, theme:"Ocean: cephalopods, jellies and the deep reef",
    deck:{"sea-hare":3,"krill-swarm":3,"tide-spirit":2,"cuttlefish-illusionist":2,"lions-mane-jelly":2,"blue-ringed-octopus":3,"octopus-tactician":2,"nautilus-drifter":2,"colossal-squid":1}},
   {id:'frost-pack', name:"Frostbite Fern", stage:5, avatar:{character:'otter', color:'frost', title:'newcomer'}, theme:"Frost pack: wolves, foxes and ermine of the tundra",
@@ -179,8 +179,21 @@ const THEMED_GHOSTS = [
   {id:'hive-swarm', name:"Honeycomb Hazel", stage:6, avatar:{character:'hummingbird', color:'sun', title:'newcomer'}, theme:"Hive swarm: bees, wasps and butterflies",
    deck:{"honey-bee":3,"bee-sentry":3,"bee-forager":3,"paper-wasp":3,"bee-knight":3,"glasswing-butterfly":2,"tarantula-hawk":2,"apollo-butterfly":1}}
 ];
+// 2026-11-06 (package PVP2, owner 21:34: "pvp decks -> move them into the actual pvp matches"): the 30 PvP test decks of canonical/pvp-test-decks.json
+// ({id, name, leader, cards, gauntletWin}), handed in by the game (registerPvpDecks) join the themed list. Each gets a stable ghost identity from its
+// id, its deck name as the theme, its leader, and a stage from its gauntlet win rate (<60% stage 3, <70% 4, <80% 5, else 6: the gauntlet is
+// stage 4-6 strangers and PRO decks). They are mixed in with the hand-built decks, never in place of recorded real-player ghosts.
+let PVP_DECKS = [];
+function stageFromGauntlet(w){ return w < 60 ? 3 : w < 70 ? 4 : w < 80 ? 5 : 6; }
+function registerPvpDecks(list){
+  const used = new Set();
+  PVP_DECKS = (list||[]).map(d=>{ let who = ghostIdentity(hashStr('pvp2:'+d.id));
+    for(let k=1; used.has(who.name) && k<50; k++) who = ghostIdentity(hashStr('pvp2:'+d.id+':'+k)); // two ids drew "Nettle G.": re-draw, still stable
+    used.add(who.name);
+    return {id:d.id, name: who.name, stage: stageFromGauntlet(d.gauntletWin), avatar: who.avatar, theme: d.name, deck: Object.assign({}, d.cards), leaders: d.leader ? [d.leader] : []}; });
+}
 function themedGhostsFor(defs, stage, epoch){
-  const list = THEMED_GHOSTS.filter(g=> g.stage === stage && !validateDeck(defs, g.deck).length);
+  const list = THEMED_GHOSTS.concat(PVP_DECKS).filter(g=> g.stage === stage && !validateDeck(defs, g.deck, g.leaders).length); // only legal decks enter the pool (PVP2: with the leader counted)
   if(list.length < 2) return list;
   const off = hashStr('themed:'+epoch+':'+stage) % list.length; // a weekly rotation, used only when fewer slots than decks are asked for
   return list.slice(off).concat(list.slice(0, off));
@@ -194,7 +207,7 @@ function seedGhosts(defs, stage, count, epoch, opts){
   const out = [];
   const themed = (opts && opts.themed) ? themedGhostsFor(defs, stage, epoch||0).slice(0, count) : [];
   themed.forEach(g=>{
-    out.push({id:`themed:${g.id}`, owner:`themed-${g.id}`, name: g.name, avatar: Object.assign({}, g.avatar), deck: Object.assign({}, g.deck), stage, source:'seed', theme: g.theme});
+    out.push({id:`themed:${g.id}`, owner:`themed-${g.id}`, name: g.name, avatar: Object.assign({}, g.avatar), deck: Object.assign({}, g.deck), leaders: (g.leaders||[]).slice(), stage, source:'seed', theme: g.theme});
   });
   for(let i=0;out.length<count;i++){
     const seed = hashStr(`ghost:${epoch||0}:${stage}:${i}`);
@@ -340,7 +353,7 @@ function seedPvpStrangers(defs, tier, count, epoch){
   const stage = Math.round(tier * (ASYNC.MAX_WINS-1) / PVP.Z_EDGES.length);
   return seedGhosts(defs, stage, count, 'pvp:'+tier+':'+(epoch||0), {themed:true}).map((g,i)=> Object.assign(g, {owner:`pvpseed-${tier}-${i}`, rating: tierMidRating(tier) + ((i*37)%120) - 60, deckLevel: simpleDeckLevel(defs, g.deck)}));
 }
-const api = {THEMED_GHOSTS, themedGhostsFor, PVP, tierIndexForRating, tierMidRating, simpleDeckLevel, matchPvp, eloUpdate, seedPvpStrangers, ASYNC, RAID, DECK_SIZE, RARITY_MAX_COPIES, mulberry32, hashStr, cardPower, deckPower, validateDeck, fitDeckToRankCaps, rankBlocks, capOf, fieldable, generateGhostDeck, ghostIdentity, seedGhosts,
+const api = {THEMED_GHOSTS, themedGhostsFor, registerPvpDecks, stageFromGauntlet, PVP, tierIndexForRating, tierMidRating, simpleDeckLevel, matchPvp, eloUpdate, seedPvpStrangers, ASYNC, RAID, DECK_SIZE, RARITY_MAX_COPIES, mulberry32, hashStr, cardPower, deckPower, validateDeck, fitDeckToRankCaps, rankBlocks, capOf, fieldable, generateGhostDeck, ghostIdentity, seedGhosts,
   buildStagePool, pickOpponent, newAsyncRun, asyncRunOver, recordAsyncGhost, raidCycle, featuredRaidBoss, raidPoolMax, simulateRaidFight, raidState, recordRaidAttempt};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodGhosts = api;
