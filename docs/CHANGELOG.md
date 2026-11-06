@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-06 Package PVP2 (the 30 PvP test decks are real PvP opponents; owner 21:34)
+- Players see: PvP strangers and Async Arena seeded ghosts now include the 30 PvP1 decks, each with a stable ghost name and its leader, mixed in with the hand-built themed decks (stage from gauntlet win: under 60% stage 3, under 70% stage 4, under 80% stage 5, else 6). Recorded real-player ghosts are untouched and still fill a pool first. The ghost's leader is carried as data (`leaders`); the match start does not deal a ghost leader yet.
+- Fix: "Ashfall Legion" had Magma Salamander x3 (Very Rare limit 2); now x2 with one more Fire Salamander. Seeded decks are checked with `validateDeck` (leader counted) before they enter a pool.
+- Hook: `Ghosts.registerPvpDecks(PVP_TEST_DECKS)` after the baked list in `arena_app.js`; the Simulator picker is unchanged. The baked list now carries `gauntletWin`. Test `tests/pvp2-2026-11-06.js`.
+
 ## 2026-11-06 Package PVP1 (30 PvP test decks; owner 20:28 #5)
 - Admin sees: Camp > Simulator's two deck builders each have a "PvP test deck" picker that loads one of 30 decks (no leader in the Simulator). Each deck in `canonical/pvp-test-decks.json` also has a deck code for Camp > Import, which brings its leader.
 - How the decks are made: 25 seeded in-play cards, the best core of 7, a fill from the other 18, and the best of 16 valid leaders, searched against a 12-deck gauntlet (strong PvP strangers, Reference-2, PRO-1 of Maps 20-24) in Standard PvP at Level 1. About 980 games a deck, then a 20-game round robin. No two decks share more than 6 of their 20 copies. They cover 20 main tribes.

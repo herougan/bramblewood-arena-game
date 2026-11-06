@@ -170,7 +170,7 @@ Field: the deck's mean win against the other 29. A 20-game pairing has a 95% int
 }
 
 // ---------------------------------------------------------------- bake / check
-function baked() { const c = JSON.parse(fs.readFileSync(OUT, 'utf8')); return c.decks.map(d => ({ id: d.id, name: d.name, leader: d.leader, cards: d.cards })); }
+function baked() { const c = JSON.parse(fs.readFileSync(OUT, 'utf8')); return c.decks.map(d => ({ id: d.id, name: d.name, leader: d.leader, cards: d.cards, gauntletWin: d.gauntletWin })); }
 function apply() {
   const src = fs.readFileSync(APP, 'utf8'), a = src.indexOf(MARK_A), b = src.indexOf(MARK_B);
   if (a < 0 || b < a) throw new Error('arena_app.js: no ' + MARK_A + ' .. ' + MARK_B + ' block');
