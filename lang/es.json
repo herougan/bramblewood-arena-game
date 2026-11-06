@@ -4015,5 +4015,9 @@
  "{name} is Undead: the heal hurts it for {n}.": "{name} es No muerto: la curación le hace {n} de daño.",
  "{name} is Undead: the cure makes it Bleed {n}.": "{name} es No muerto: la cura le causa Sangrado {n}.",
  "Heal hurts": "La cura hiere",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} entra al campo como Líder: +{a}/+{h} del zarzal."
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} entra al campo como Líder: +{a}/+{h} del zarzal.",
+ "Costs": "Costes",
+ "GET!": "¡CONSEGUIDA!",
+ "Level {n}: {name} is in your collection": "Nivel {n}: {name} está en tu colección",
+ "{name} - opens as soon as you leave the screen.": "{name} - se abre en cuanto sales de la pantalla."
 }

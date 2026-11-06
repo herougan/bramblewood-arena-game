@@ -3430,8 +3430,9 @@ const SKILL_REVEAL_MAP = {
   // ENG23 (2026-11-04, owner 11-03 23:12: "True sight is '?' until the first Map with invisible units or changelings are seen."): True Sight
   // (keenEye) reads "?" until Map 6, the Sable Swampmire, the first map whose fights field an Invisible unit (the Booming Bittern, 6-2 to
   // 6-6; no Changeling is in a fight before Map 18), or until the player has seen a card with Invisible or Changeling (seenWith), wherever.
-  // (Delivery, Map 0's Lumber maker on the Beaver Lumberjack, is not gated: it shows and explains itself on Map 0; owner call ENG23-4.)
+  // (Delivery, Map 0's Lumber maker on the Beaver Lumberjack, was not gated (ENG23-4); 2026-11-06 owner ENG23-4 b: it reads "?" on Map 0 too.)
   keenEye:     {from:6, seenWith:['invisible', 'changeling']},
+  delivery:    {from:1, parts:['deliveryEvery', 'deliveryRes']}, // UI23 (2026-11-06, owner ENG23-4 b): every Delivery form
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
@@ -3714,6 +3715,13 @@ function describeEffects(def, liveCard, opt){
 // The dark on a live unit's card detail (2026-10-18, package D; owner: "On affected units' own card details, show a line that they
 // miss 1/4 the time (from Darkness)"): the engine's share for this unit (no Darksight, not lit, not True Strike), from the map's own
 // darkness or a Cast Darkness unit. The board marks the same units with the shut eye (FX.B sightSync).
+// 2026-11-06 (package UI23 #16, owner: "A Dark-blind unit shows its blind pip at the top, like poison"): the engine's dark share for the unit
+// (darkMissOf; 0 for Darksight, a lit side, True Strike) as a 🕶️ status pip; the share is in its tooltip.
+function ui23DarkBlindPip(c){ try{ const m = matchState; if(!c || !m || m.over || !m.engine || !m.engine.darkMissOf || !m.players) return '';
+  let pid = null; [1, 2].forEach(p=>{ const pl = m.players[p]; if(pl && pl.row && [...pl.row.left, ...pl.row.center, ...pl.row.right].some(x=> x && x.uid === c.uid)) pid = p; }); if(pid == null) return '';
+  const x = m.engine.darkMissOf(c, pid, m.players); if(!(x > 0)) return '';
+  const tip = x >= 1 ? TX('ui.dark-miss-all') : TX('ui.dark-miss-share', {share: x >= 0.5 ? '1/2' : '1/4'});
+  return `<span class="abadge blind ui23-darkblind" title="${escapeAttr(tip)}">${iconHTML('blind-now', '🕶️')}</span>`; }catch(e){ return ''; } }
 function darkMissLine(liveCard){
   const m = typeof matchState !== 'undefined' ? matchState : null; if(!liveCard || !m || m.over || !m.engine || !m.engine.darkMissOf || !m.players) return '';
   const lc = currentCardByUidSafe(liveCard.uid) || liveCard; let pid = null;
@@ -4131,6 +4139,15 @@ function seenCardIds(){
   return seen;
 }
 var seenMigrated = false;
+// 2026-11-06 (package UI23 #13/#34/#38, owner: "NEW!" only for a card never seen anywhere; "GET!" the first time you own it; both: NEW! then GET!
+// on top). ui23SnapCollection keeps, once per match, the cards seen (seenCardIds) and owned before it; ui23CardTagsHTML draws the tags.
+function ui23Owned(id){ return !!((myUnlockedCardIds && myUnlockedCardIds.has(id)) || (myCardCopies[id] || []).length); }
+function ui23SnapCollection(m){ if(!m || m._ui23Seen) return; m._ui23Seen = new Set(seenCardIds()); m._ui23Owned = new Set([...(myUnlockedCardIds || [])].concat(Object.keys(myCardCopies || {}).filter(id=> (myCardCopies[id] || []).length))); }
+function ui23CardTagsHTML(seenNew, got, cls){ return (seenNew ? `<span class="${cls}" aria-hidden="true">${escapeHtml(TX('results.new'))}</span>` : '') + (got ? `<span class="${cls} ui23-get${seenNew ? ' ui23-late' : ''}" aria-hidden="true">${escapeHtml(TX('ui.ui23-get'))}</span>` : ''); }
+// 2026-11-06 (package UI23 #31, owner: tutorial text for skills has no numbers, since they differ per card): a number that changes with the skill's
+// value (the text at 1 and at 2 differ there) reads "N"; a rule's own number (miss 1 in 2, the 8 nearest) stays.
+function ui23NoNumbers(a, b){ const A = String(a || '').split(/(\d+)/), B = String(b || '').split(/(\d+)/); if(A.length !== B.length) return String(a || '').replace(/\d+/g, 'N');
+  return A.map((t, i)=> i % 2 && t !== B[i] ? 'N' : t).join(''); }
 function noteSighted(defIds){
   if(!defIds || (matchState && matchState.fxLib)) return; // the Effects library's stand-ins aren't sightings (2026-10-14)
   const defs = getCardDefs();
@@ -9119,7 +9136,7 @@ function cardTileHTML(d, opts){
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
       ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
       ${nmHTML(d.name||live.fallbackName||'', costParts, live.waitHTML ? 0 : d.wait) /* UI20: the scroll leaves room for the badges; a live wait ring is sized in the CSS */}
-      <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
+      <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp${ui23Unhealth(d)}"><i class="sg">❤</i>${live.hp}</span></div>
       ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */, shieldAmt: live.shieldAmt /* 2026-10-31 (UI11, FF1) */, cowering: !!live.cowering /* ENG15 (FF6) */, en5On: live.en5On != null ? live.en5On : (live._en5On || ''), ctxOn: live.ctxOn != null ? live.ctxOn : (live._ctxOn || '') /* ENG25 (2026-11-05, #7): the lit state chips */}})}
       ${live.bottomHTML||''}
     </div>`;
@@ -9142,7 +9159,7 @@ function cardTileHTML(d, opts){
     ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
     ${nmHTML(d.name||'', costParts, d.wait) /* UI20 */}
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
-    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
+    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp${ui23Unhealth(d)}"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
     ${abilityBadges(d, {compact: !!(hand || inMatch), hand: !!hand /* UI5 (2026-10-30, W5) */, live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
@@ -9446,6 +9463,9 @@ function abilityBadges(d, bopts){
   // (vis3ShieldHTML), shown only while some is left; at 1 the number fades and the icon alone means 1; at 0 the chip is gone. No badge on the east side any more.
   if(bopts && bopts.live){ const sa = Number(bopts.live.shieldAmt) || 0; if(sa > 0) out.push(vis3ShieldHTML(null, sa)); }
   else if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
+  // 2026-11-06 (package UI23 #33): the Delivery skills (Delivery, Delivery every turn, Tribe Delivery) are a context pip too: 📦 and the amount
+  ['delivery', 'deliveryEvery', 'tribeDelivery'].forEach(k=>{ if(!e[k]) return; const t = e22Head(k, e[k], e) || k, n = k === 'tribeDelivery' ? '' : n1(numOr(e[k], 1));
+    out.push(`<span class="ab-sk ab-delivery" data-sk="${k}" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">${iconHTML('delivery', '📦')}${n}</span>`); });
   if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit adjacent to the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
   if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units adjacent to the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
@@ -11053,6 +11073,7 @@ function wireLevelStatsEditor(){
   setTimeout(refresh, 0);
 }
 function openCardEditor(defId, versionDef){
+  { const d = defId && getCardDefs()[defId]; if(d && d.derivedFrom) defId = d.derivedFrom; } // 2026-11-06 (package UI23 #4): a fight copy ("<id>@lv1", "~cp") edits its card, never a new one
   // 2026-10-07 audit: start from the shared definition, not getCardDefs() — that one applies THIS
   // player's card level and personal unlocks, which a plain Save used to bake into the card for everyone.
   // 2026-10-19 (package AN): a pool card (Admin's Pool cards filter) isn't in the live defs: it opens as a new card to place.
@@ -11286,7 +11307,7 @@ function renderEditorInner(){
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select><label class="ed-arty" title="${escapeAttr(TX('ui.ui19-art-y-tip'))}"><span>${escapeHtml(TX('ui.ui19-art-y'))}</span><input id="fArtPosY" type="number" min="0" max="100" step="5" placeholder="50" value="${artPosOf(c) === null ? '' : artPosOf(c)}"></label></div>
       <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span>${'' /* 2026-11-05 (package EDIT1, owner 23:35: "Species should be a dropdown"): the species the game knows (cards.json + the taxonomy); an existing value that is not on the list stays as its own option. A second dropdown makes a hybrid. */}${(()=>{ const names = allSpeciesNames(), cur = c.species || [], opt = (k, sel)=> `<option value="${escapeAttr(k)}" ${sel ? 'selected' : ''}>${speciesIcon(k)} ${escapeHtml(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeHtml(SPECIES_PHYLUM[k]) : ''}</option>`, list = sel=> names.concat(sel && !names.includes(sel) ? [sel] : []).sort().map(k=> opt(k, k === sel)).join(''),
       onch = "(function(){ const v = ['fSpecies','fSpecies2'].map(i=> (document.getElementById(i)||{}).value).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })()";
-    return `<select id="fSpecies" aria-label="Species" onchange="${onch}"><option value="" ${cur[0] ? '' : 'selected'}>🧬 ${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[0])}</select><select id="fSpecies2" aria-label="${escapeAttr(TX('ui.edit1-species2'))}" title="${escapeAttr(TX('ui.edit1-species2'))}" onchange="${onch}"><option value="" ${cur[1] ? '' : 'selected'}>${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[1])}</select>`; })()}</div>
+    return `<select id="fSpecies" aria-label="Species" onchange="${onch}"><option value="" ${cur[0] ? '' : 'selected'}>🧬 ${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[0])}</select><select id="fSpecies2" aria-label="${escapeAttr(TX('ui.edit1-species2'))}" title="${escapeAttr(TX('ui.edit1-species2'))}" onchange="${onch}"><option value="" ${cur[1] ? '' : 'selected'}>${escapeHtml(TX('ui.edit1-none'))}</option>${list(cur[1])}</select>`; })()}</div></div>${'' /* 2026-11-06 (package UI23 #4): this </div> closes the Species field; without it every later section sat inside the Identity grid, in both editors */}
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
            request: "I think the Splash Effect doesn't need to be there as well, since it's
            related to the level of the card OR by chance, not an inherent quality of this
@@ -11352,7 +11373,7 @@ function renderEditorInner(){
          one compact row; each group is Lumber, Stone, Metal. Cost: c.cost / stoneCost / metalCost (only Lumber is charged by the engine today). Reward: effects.bounty*.
          Pitch is read-only (no pitchYield edit UI): its amount sits under the resource it gives, the others read 0; a Dark Point bonus or a Grace yield shows after it. -->
     ${(()=>{ const py = editorPitchColsOf(c), box = (id, val, glyph, title, dis)=> `<input ${id ? `id="${id}" ` : ''}type="number" min="0" value="${val}" title="${title}" aria-label="${title}"${dis ? ' disabled' : ''}><span class="mr-glyph" title="${title}">${glyph}</span>`;
-      return `<div class="ed-econ">
+      return `<div class="editor-h2">${escapeHtml(TX('ui.ui23-costs'))}</div><div class="ed-econ">
       <div class="field" title="What it costs to play this card: Lumber, Stone and Metal."><label>Cost</label><div class="multi-resource-row">${box('fCost', c.cost, '🪵', 'Lumber')}${box('fCostStone', c.stoneCost||0, '🪨', 'Stone')}${box('fCostMetal', c.metalCost||0, '🔩', 'Metal')}</div></div>
       <div class="field" title="What discarding this card grants. Read-only here."><label>Pitch</label><div class="multi-resource-row">${box('fPitchValueDisplay', py.lumber, '🪵', 'Lumber', true)}${box('', py.stone, '🪨', 'Stone', true)}${box('', py.metal, '🔩', 'Metal', true)}${py.extra ? `<span class="ed-pitch-extra">${escapeHtml(py.extra)}</span>` : ''}</div></div>
       <div class="field" title="Bounty: Lumber its owner gains when played and the opponent gains when it dies."><label>Reward</label><div class="multi-resource-row">${box('fBounty', c.effects.bounty||0, '🪵', 'Lumber')}${box('fBountyStone', c.effects.bountyStone||0, '🪨', 'Stone')}${box('fBountyMetal', c.effects.bountyMetal||0, '🔩', 'Metal')}</div></div>
@@ -17035,6 +17056,12 @@ function enemyDeckLevel(node){
   const body = deckLevelFrom(node.deck, lv, [], cap) * (DECK_SIZE / n), lead = deckLevelFrom({}, lv, leaders, cap);
   return Math.round(body + lead);
 }
+// 2026-11-06 (package UI23 #9): the BR of the deck you fight with. In a reference fight (matchState.refDeck) that is the reference deck dealt
+// to you, at its level, with its leader, not your own saved deck.
+function ui23MyBR(){ const m = matchState;
+  if(m && m.refDeck && m.players && m.players[1]){ const p1 = m.players[1], counts = {}; (p1.deck || []).concat(p1.hand || []).forEach(c=>{ const id = typeof c === 'string' ? c : c && c.defId; if(id) counts[id] = (counts[id] || 0) + 1; });
+    return deckLevelFrom(counts, ()=> m.refDeck.level || 0, [m.leaderDefId]); }
+  return mainDeckLevel(myDeckCounts, myLeaderId); }
 function mainDeckLevel(counts, leaderId){
   // 2026-10-18 (package NF): each copy counts at its own level (the deck's k copies of a card are your k strongest, as in a fight)
   if(copyModelOn()){ const defs = getCardDefs(); let t = 0;
@@ -20032,9 +20059,9 @@ const pointerLight = {x:null, y:null, sx:null, sy:null, type:'mouse', moved:0, t
       const touchGone = P.type === 'touch' && P.touchUp > P.moved && now - P.touchUp > 1400;
       if(px != null){ l.style.setProperty('--nx', px.toFixed(2) + '%'); l.style.setProperty('--ny', py.toFixed(2) + '%'); }
       l.classList.toggle('is-on', inside && !touchGone); }
-    if(lantern){ const follow = P.x != null && (P.type !== 'touch' || now - P.moved < 4000); // a mouse on the page, or a touch in the last 4 s
+    if(lantern){ const follow = P.x != null; // 2026-11-06 (package UI23 #19): the pointer, or a touch's last tap (it stays there); none: the centre (no wandering)
       if(px != null && follow){ bf.style.setProperty('--lx', px.toFixed(2) + '%'); bf.style.setProperty('--ly', py.toFixed(2) + '%'); }
-      else if(!reducedMotion()){ const a = (now - P.t0)/5200; bf.style.setProperty('--lx', (50 + Math.cos(a)*30).toFixed(2) + '%'); bf.style.setProperty('--ly', (50 + Math.sin(a*1.4)*22).toFixed(2) + '%'); }
+      else { bf.style.setProperty('--lx', '50%'); bf.style.setProperty('--ly', '50%'); }
       // 2026-10-31 (package UI8, Z4): the warm pool is a layer under the cards (.night-cursor-light), at the same point as the darkness's clear centre
       { const l = lightOf(bf); l.style.setProperty('--nx', bf.style.getPropertyValue('--lx') || '50%'); l.style.setProperty('--ny', bf.style.getPropertyValue('--ly') || '45%'); l.classList.add('is-on'); } }
     P.raf = requestAnimationFrame(frame);
@@ -20299,6 +20326,9 @@ function fieldRowsListHTML(rows){
 // Cast Darkness (2026-10-18, package D): while a caster stands on the board the fight reads as dark (rules.dark 'dark', darkCast: true),
 // so the Environment card, the board's darkness veil, the eye on units that can't see and the field pills all follow it; a fight dark
 // of its own is left as it is. The engine decides (darkCastNow), the same rule the combat uses.
+// 2026-11-06 (package UI23 #19, owner: any darkness field effect gives the dark overlay with the torchlight on the pointer): the level of the dark
+// that is on the field now (the fight's own darkness, Pitch Black, Absolute, or a Cast Darkness unit / Darkness card), by field effect, not map.
+function ui23DarkLevel(m){ try{ if(!m || m.over) return ''; const r = matchFieldRules(m), d = r && r.dark; return d ? (d === 'absolute' || d === 'pitch' ? d : 'dark') : ''; }catch(e){ return ''; } }
 function matchFieldRules(m){ const r = matchFieldRulesBase(m);
   let cast = false; try{ cast = !!(m && !m.over && m.engine && m.engine.darkCastNow && m.engine.darkCastNow(m.players)); }catch(e){}
   return cast && !(r && r.dark) ? Object.assign({}, r || {}, {dark:'dark', darkCast:true}) : r; }
@@ -21907,44 +21937,34 @@ function pl1XpOnMap(m){ return !!m && !ARENA_FIGHT_MODES.has(m.mode); }
 // at the fight's height, spirals on its way across, and lands in the page's bottom-right corner (the player), shrinking into it with a gold
 // ring and a few sparks. It takes FX.E.nodeRankEmblem's place (PL1's hop over the fight and spiral into the fight panel); FX.E calls it by
 // name, so the map's queue runs it unchanged. Reduced motion: a short fade in the corner.
+// 2026-11-06 (package UI23 #30, owner): the emblem pops up out of the skirmish node it was won on and fades there; it no longer flies to the
+// page's bottom-right. Rank A holds longer and bounces; S and above shine (a sweep and a glow) and fade more slowly. FX.E's map return plays the
+// cleared fights one after another (await), and fights won on another map wait in that map's queue (pl2TakeMapMoments) until it is in view.
+// Reduced motion: a fade in place. A node off screen: nothing to pop from, so it resolves at once.
 function res3RankEmblemFlight(node, rank){
   if(!rank) return Promise.resolve();
-  const g = (typeof gsap !== 'undefined') ? gsap : null, W = window.innerWidth, H = window.innerHeight, size = 58;
-  let ny = H * 0.4; try{ const r = node && node.getBoundingClientRect(); if(r && r.height) ny = Math.max(60, Math.min(H - 120, r.top + r.height / 2)); }catch(e){}
-  const o = document.createElement('div'); o.className = 'res3-rank-fly'; o.setAttribute('aria-hidden', 'true');
-  o.innerHTML = `<span class="rank-hex rank-${escapeAttr(rank)}"><i></i><b>${escapeHtml(rank)}</b></span>`; document.body.appendChild(o);
-  // 2026-10-29 (package UI3, S3; owner 23:01: "The emblem dropping animation on the conquest map moves to the bottom of the screen instead"): the landing is
-  // the fight's own spot, read live each frame so a panned / zoomed / scrolled map cannot leave it behind: the open fight panel's corner emblem
-  // (that fight's panel only), else the fight's node (its lower-right corner) when the node is on screen. Only a node scrolled out of view sends it to the
-  // page's bottom-right corner as RES3 R6 did. Was: always the bottom-right corner (ex, ey = W - 46, H - 46).
-  const tgt = ()=>{ try{
-      const pc = document.querySelector('.conquest-node-panel:not([hidden]) > .cnp-rank-corner'), key = node && node.dataset && node.dataset.lkey;
-      if(pc && (typeof conquestSelectedNodeKey === 'undefined' || !key || conquestSelectedNodeKey === key)){ const r = pc.getBoundingClientRect(); if(r.width && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W) return {x: r.left + r.width / 2, y: r.top + r.height / 2, s: Math.max(.3, r.width / size), el: pc}; }
-      const r = node && node.getBoundingClientRect && node.getBoundingClientRect();
-      if(r && r.width && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W) return {x: Math.max(24, Math.min(W - 24, r.right - r.width * .18)), y: Math.max(24, Math.min(H - 24, r.bottom - r.height * .18)), s: .42, el: null};
-    }catch(e){}
-    return {x: W - 46, y: H - 46, s: .45, el: null}; };
-  const sx = -size, sy = ny; let last = tgt();
-  const land = ()=>{ const e = last = tgt(), ring = document.createElement('i'); ring.className = 'res3-rank-ring'; ring.style.left = e.x + 'px'; ring.style.top = e.y + 'px'; document.body.appendChild(ring); setTimeout(()=> ring.remove(), 900);
-    if(e.el){ e.el.classList.remove('pl1-rank-land'); void e.el.offsetWidth; e.el.classList.add('pl1-rank-land'); }
-    try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e2){} };
-  if(!g || reducedMotion()){ const e0 = last; g ? g.set(o, {x:e0.x - size/2, y:e0.y - size/2, opacity:0}) : (o.style.transform = `translate(${e0.x - size/2}px, ${e0.y - size/2}px)`);
-    return new Promise(res=>{ o.animate ? o.animate([{opacity:0}, {opacity:1}, {opacity:0}], {duration:900}).onfinish = ()=>{ o.remove(); res(); } : setTimeout(()=>{ o.remove(); res(); }, 900); }); }
-  try{ if(/S/.test(rank)) SoundKit.rareRise && SoundKit.rareRise(); }catch(e){}
-  return new Promise(res=>{
-    const st = {k:0}, turns = 1.6, R0 = Math.min(90, Math.max(50, H * .1));
-    g.set(o, {x:sx - size/2, y:sy - size/2, opacity:0, scale:.8});
-    g.timeline({onComplete:()=>{ o.remove(); res(); }})
-      .to(o, {opacity:1, duration:.15})
-      .to(st, {k:1, duration:1.45, ease:'power1.inOut', onUpdate:()=>{ const k = st.k, ang = k * turns * Math.PI * 2, rad = R0 * Math.sin(Math.PI * Math.min(1, k * 1.08));
-          const T = last = tgt(), bx = sx + (T.x - sx) * k, by = sy + (T.y - sy) * (k * k);
-          g.set(o, {x: bx + Math.cos(ang) * rad - rad - size/2, y: by + Math.sin(ang) * rad - size/2, rotation: k * 360 * turns, scale: 1 + .35 * Math.sin(Math.PI * k) - (1 - T.s) * k}); }}, '<')
-      .add(land)
-      .to(o, {scale:.2, opacity:0, duration:.22, ease:'power2.in'});
-  });
+  let r = null; try{ r = node && node.getBoundingClientRect(); }catch(e){}
+  if(!ui23Rect(r) || r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return Promise.resolve();
+  const size = 58, x = r.left + r.width / 2 - size / 2, y = r.top + r.height / 2 - size / 2, top = /^S/.test(rank), a = rank === 'A';
+  const o = document.createElement('div'); o.className = 'res3-rank-fly' + (top ? ' ui23-rank-shine' : ''); o.setAttribute('aria-hidden', 'true');
+  o.innerHTML = `<span class="rank-hex rank-${escapeAttr(rank)}"><i></i><b>${escapeHtml(rank)}</b></span>`; o.style.transform = `translate(${x}px, ${y}px)`; document.body.appendChild(o);
+  try{ if(top) SoundKit.rareRise && SoundKit.rareRise(); else SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){}
+  const T = (dy, sc)=> `translate(${x}px, ${y + dy}px) scale(${sc})`;
+  const frames = reducedMotion() ? [{opacity:0}, {opacity:1, offset:.2}, {opacity:1, offset:.7}, {opacity:0}]
+    : a ? [{opacity:0, transform:T(0, .4)}, {opacity:1, transform:T(-46, 1.15), offset:.16, easing:'ease-out'}, {transform:T(-34, 1), offset:.26, easing:'ease-in'}, {transform:T(-46, 1.06), offset:.36, easing:'ease-out'}, {transform:T(-38, 1), offset:.46}, {opacity:1, transform:T(-40, 1), offset:.84}, {opacity:0, transform:T(-56, .9)}]
+    : top ? [{opacity:0, transform:T(0, .4)}, {opacity:1, transform:T(-48, 1.2), offset:.14, easing:'ease-out'}, {opacity:1, transform:T(-44, 1.08), offset:.3}, {opacity:1, transform:T(-50, 1.08), offset:.72}, {opacity:0, transform:T(-70, 1)}]
+    : [{opacity:0, transform:T(0, .4)}, {opacity:1, transform:T(-40, 1.1), offset:.22, easing:'ease-out'}, {opacity:1, transform:T(-44, 1), offset:.6}, {opacity:0, transform:T(-60, .9)}];
+  const ms = reducedMotion() ? 900 : a ? 2600 : top ? 3200 : 1500;
+  return new Promise(res=>{ const fin = ()=>{ o.remove(); res(); };
+    if(!o.animate){ setTimeout(fin, ms); return; } const an = o.animate(frames, {duration: ms, fill: 'forwards'}); an.onfinish = fin; an.oncancel = fin; });
 }
 function res3InstallRankFlight(){ try{ if(window.FX && window.FX.E && window.FX.E.nodeRankEmblem !== res3RankEmblemFlight) window.FX.E.nodeRankEmblem = res3RankEmblemFlight; }catch(e){} }
+// 2026-11-06 (package UI23 #37, owner: "Evening from 2/3 to 3/3 day: no sunbeam"): FX.B's dusk (the long light bars as the day's last step comes) is
+// put to rest (the Effects Lab's Dusk too); the sky's own 10 s tint ease still carries the evening. The dawn's rays (FX.B.dayBreaks, night 3/3 ->
+// day 1/3) stay, straighter and fainter (.fxb-rays in arena_template.html).
+function ui23InstallSkyFx(){ try{ const B = window.FX && window.FX.B; if(B && B.dusk && !B.dusk.ui23){ B.dusk = ()=> Promise.resolve(); B.dusk.ui23 = true; } }catch(e){} }
 res3InstallRankFlight(); setTimeout(res3InstallRankFlight, 0); setTimeout(res3InstallRankFlight, 1500);
+ui23InstallSkyFx(); setTimeout(ui23InstallSkyFx, 0); setTimeout(ui23InstallSkyFx, 1500);
 function res3XpScreenReady(){
   if(typeof matchState !== 'undefined' && matchState) return false;
   if(typeof currentTab === 'undefined' || !currentTab || document.visibilityState === 'hidden') return false;
@@ -32910,7 +32930,9 @@ function ui16VsArtStageHTML(map, node, enemyChar){
   let leaders = []; try{ leaders = leadersShownFor(node, map && map.id).slice(0, 2); }catch(e){}
   const defs = getCardDefs(), br = enemyChar || null, brArt = br && br.art ? String(br.art) : '';
   if(!leaders.length && !brArt) return '';
-  const fig = (kind, name, art, icon)=> `<figure class="ui16-vs-fig is-${kind}"><span class="ui16-vs-pic${art ? '' : ' is-emoji'}"${art ? ` style="background-image:url('${escapeAttr(art)}')"` : ''} aria-hidden="true">${art ? '' : escapeHtml(icon || '🏰')}</span><figcaption><small>${escapeHtml(TX(kind === 'leader' ? 'ui.ui16-vs-leader' : 'ui.ui16-vs-bramble'))}</small>${name ? `<b>${escapeHtml(name)}</b>` : ''}</figcaption></figure>`;
+  // 2026-11-06 (package UI23 #35, owner ss9): no title or subtitle under the portraits (the figure keeps its words for screen readers); the two
+  // portraits stand closer, overlapping, the leader a little in front (CSS)
+  const fig = (kind, name, art, icon)=> `<figure class="ui16-vs-fig is-${kind}" role="img" aria-label="${escapeAttr(TX(kind === 'leader' ? 'ui.ui16-vs-leader' : 'ui.ui16-vs-bramble') + (name ? ': ' + name : ''))}" title="${escapeAttr(name || '')}"><span class="ui16-vs-pic${art ? '' : ' is-emoji'}"${art ? ` style="background-image:url('${escapeAttr(art)}')"` : ''} aria-hidden="true">${art ? '' : escapeHtml(icon || '🏰')}</span></figure>`;
   const out = leaders.map(id=> fig('leader', defs[id].name, defs[id].art || '', defs[id].icon || '👑'));
   // a fight with no castle of its own (the placeholder bramble carries the fight's name) shows the plain bramble, unnamed
   const brName = br && br.id !== 'conquest-enemy' ? br.name : '';
@@ -32950,7 +32972,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-portrait ui14-vs-round">${avatarHTML(myAv, 84)}</div>
       <div class="vs-name ui16-name">${ui16NameHTML(myAv, myProfile ? myProfile.name : 'You')}</div>
       <div class="ui14-vs-map">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
-      ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${mainDeckLevel(myDeckCounts, myLeaderId)}</b></div>`; }catch(e){ return ''; } })()}
+      ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${ui23MyBR()}</b></div>`; }catch(e){ return ''; } })()}
     </div>
     <div class="vs-mid"><span class="vs-mark">VS</span></div>
     <div class="vs-side vs-them ui14-vs-card ui16-vs-them${ui16Stage ? ' has-art' : ''}"${bgStyle}>
@@ -32958,7 +32980,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="ui14-vs-kicker vs-kind${isBoss ? ' vis3-kind-boss' : isElite ? ' vis3-kind-elite' : ''}">${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</div>
       ${ui16Stage || `<div class="vs-portrait vs-rival-ico ui14-vs-round" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}${isBoss && !/raid|final|world|mega/.test(node.kind || '') ? '<span class="vis3-skull-frame"></span>' : isElite ? '<span class="vis3-elite-frame"></span>' : ''}</div>`}
       <div class="vs-name">${escapeHtml(node.name)}</div>
-      ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
+      ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = ui23MyBR(); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
       ${'' /* UI16 (2026-11-02, note 9): no facts line any more (people, castle Health and Armour, leaders, CPU) */}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
       <i class="ui14-vs-timer" aria-hidden="true"><i style="animation-duration:${hold}ms"></i></i>
@@ -33210,7 +33232,7 @@ function ceBudgetHTML(d){
 function ceBudgetRefresh(d){
   const fa = document.getElementById('fAtk'); if(!fa) return;
   let box = document.getElementById('ceBudget');
-  if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('afterend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:0 0 4px; font-size:12.5px; line-height:1.4"></div>'); box = document.getElementById('ceBudget'); }
+  if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('beforeend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:0 0 4px; font-size:12.5px; line-height:1.4"></div>'); /* UI23 (2026-11-06, #4): inside the Stats row, beside the four stats */ box = document.getElementById('ceBudget'); }
   try{ box.innerHTML = ceBudgetHTML(d); }catch(e){ box.textContent = ''; }
 }
 let sbState = {upTo:5, onlyFail:true};
@@ -36611,6 +36633,7 @@ function hudSettingsWidgetHTML(){
         <div class="settings-row-label"><span>💬 Voice</span><span class="settings-row-val" id="voiceVolumeValHud">80%</span></div>
         <input type="range" id="voiceVolumeSliderHud" min="0" max="100" step="1" aria-label="Voice volume">
       </div>
+      <div class="settings-row"><div class="settings-row-label"><span>🎆 ${escapeHtml(TX('ui.ui23-effects'))}</span></div><select id="fxSelectHud" aria-label="${escapeAttr(TX('ui.ui23-effects'))}"></select></div>${'' /* 2026-11-06 (package UI23 #17): the Effects level in a fight too (it scales particles, shakes and the extra effects) */}
       <div class="settings-row"><div class="settings-row-label"><span>🗨️ Voice lines</span></div><select id="voiceLinesSelectHud" aria-label="Voice lines"></select></div>
       <div class="settings-row"><div class="settings-row-label"><span>💬 NPC dialogue speed</span></div><select id="dialogueSpeedSelectHud" aria-label="NPC dialogue speed"></select></div>
       <div class="settings-row">
@@ -37199,7 +37222,7 @@ function renderMatchUI(){
              opponent's pills moved from under these controls onto the field, mirroring yours (see fieldResSideHTML in the battlefield) */}
       </div>
     </div>
-    <div class="battlefield ${matchDarkLevel(m) === 'pitch' || matchDarkLevel(m) === 'absolute' ? 'bf-lantern bf-dark-' + matchDarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
+    <div class="battlefield ${ui23DarkLevel(m) ? 'bf-lantern bf-dark-' + ui23DarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
       ${flairLairMatch(m) ? '<div class="fl1-vignette" aria-hidden="true"></div>' /* FLAIR1 (2026-10-28): the Dragon Lair's last fight: a quiet ember edge, under the cards, never over them */ : ''}
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
@@ -38100,7 +38123,9 @@ const SPEED_GATES = [{speed:3, map:20}, {speed:4, map:40}, {speed:5, map:60}];
 // cleared (its last fight), one map before the first elite (1-5) that opened it; the speed you pick is kept from fight to fight from the
 // start (SPEED_KEEP_ALWAYS; was only after Map 5); the first fight after a fast speed opens says so ("2× unlocked!", speedUnlockBanner).
 // 3×, 4×, 5× stay at Maps 20, 40, 60 (BU).
-const SPEED_2X_MAP = 0, SPEED_KEEP_ALWAYS = true, SPEED_ANNOUNCED_KEY = 'bramblewood_speed_announced_v1';
+// 2026-11-06 (package UI23 #29, owner): 1.5× opens with the first skirmish won on Map 1, 2× with the first skirmish won on Gannet Cliffs (Map 3).
+// Before: 1.5× with any first win (a Map 0 fight did it) and 2× with Map 0 cleared or a first elite. A cleared map counts too (an old save).
+const SPEED_15_MAP = 1, SPEED_2X_MAP = 3, SPEED_KEEP_ALWAYS = true, SPEED_ANNOUNCED_KEY = 'bramblewood_speed_announced_v1';
 function speedUnlockNews(steps){
   let seen = []; try{ seen = JSON.parse(localStorage.getItem(SPEED_ANNOUNCED_KEY) || '[]') || []; }catch(e){ seen = []; }
   const fresh = (steps || []).filter(s=> s > 1 && !seen.includes(s)); if(!fresh.length) return null;
@@ -38116,15 +38141,15 @@ function speedUnlockBanner(m, ffBtn){
   try{ if(ffBtn) ffBtn.classList.add('rw5-ff-new'); }catch(e){}
   setTimeout(()=>{ b.classList.add('is-out'); setTimeout(()=>{ b.remove(); try{ ffBtn && ffBtn.classList.remove('rw5-ff-new'); }catch(e){} }, 700); }, 3200);
 }
-// The cycle for a player's progress (pure, unit-tested: tests/bu-2026-10-19.js). p: {admin, firstWin, firstElite, cleared(n)}.
+// The cycle for a player's progress (pure, unit-tested: tests/bu-2026-10-19.js). p: {admin, skirmWon(n), cleared(n)} (UI23, 2026-11-06: was firstWin, firstElite).
 function speedStepsFor(p){
   // 2026-10-14 (user: "it always goes to 5x, then 1x. Include the 0.5x."): Admin Mode returned early with every fast speed and
   // skipped the 0.5× added below, so an admin's cycle wrapped from 5× straight back to 1×.
   if(p && p.admin) return [1, 1.5, 2, 3, 4, 5, 0.5];
   const out = [1];
   try{
-    if(p && p.firstWin) out.push(1.5);
-    if(p && (p.firstElite || (p.cleared && p.cleared(typeof SPEED_2X_MAP !== 'undefined' ? SPEED_2X_MAP : 0)))) out.push(2); // 2026-10-23 (package RW5): or Map 0 cleared
+    if(p && (p.skirmWon && p.skirmWon(SPEED_15_MAP) || p.cleared && p.cleared(SPEED_15_MAP))) out.push(1.5); // UI23 (#29): a Map 1 skirmish won
+    if(p && (p.skirmWon && p.skirmWon(SPEED_2X_MAP) || p.cleared && p.cleared(SPEED_2X_MAP))) out.push(2); // UI23 (#29): a Gannet Cliffs skirmish won
     SPEED_GATES.forEach(g=>{ if(p && p.cleared && p.cleared(g.map)) out.push(g.speed); });
   }catch(e){}
   out.push(0.5); // 2026-10-14 (user: "We need a 0.5x mode."): slow motion is always there, last in the cycle before normal
@@ -38136,8 +38161,7 @@ function speedSteps(){
     const done = (loadConquestProgress().completed || []).filter(id=> !/:tutorial2?$/.test(id));
     const mains = mainConquestMaps();
     const kindOf = id=>{ const [mapId, key] = id.split(':'); const f = findConquestNode(mapId, key); return f && f.node && f.node.kind; };
-    p.firstWin = done.length > 0;
-    p.firstElite = done.some(id=> /elite|boss|champion/.test(kindOf(id) || ''));
+    p.skirmWon = n=> !!mains[n] && done.some(id=> id.split(':')[0] === mains[n].id && kindOf(id) === 'skirmish'); // UI23 (#29)
     p.cleared = n=> !!(mains[n] && conquestMapCleared(mains[n].id));
   }catch(e){}
   return speedStepsFor(p);
@@ -38361,6 +38385,7 @@ function renderBoard(opts){
   const slotViewEarly = isSlotMatch(m);
   const p1Rows = rowsFor(m.players[1]), p2Rows = rowsFor(m.players[2]);
   // Discovery (2026-10-02): any card on either side of the board counts as sighted.
+  ui23SnapCollection(matchState); // 2026-11-06 (package UI23 #13/#34/#38): what was seen and owned before this match, for NEW! / GET! on the results
   noteSighted([...p1Rows.left, ...p1Rows.center, ...p1Rows.right, ...p2Rows.left, ...p2Rows.center, ...p2Rows.right].map(c=>c.defId));
   const maxLeft = Math.max(p1Rows.left.length, p2Rows.left.length);
   const maxRight = Math.max(p1Rows.right.length, p2Rows.right.length);
@@ -40541,6 +40566,11 @@ function fightTreatedDef(d, pid){ return (d && d.art && fightTreatmentKind(pid)=
 function fightTreatmentClass(pid){ return fightTreatmentKind(pid)==='elite' ? 'elite-polish' : ''; }
 // 2026-10-26 (package VIS3, V3; owner #16: "Shields will just be blue numbers on the card"): a unit's Shield (and its temporary Health from
 // Bolster or Shell, which soaks the same way) is one blue number on the card, just above its Health; the 💠 chip in the status row is gone.
+// 2026-11-06 (package UI23 #1/#18, owner: "if the pip says 4 ... and the health is 1, then total it should display 5"): the heart shows Health + Shield
+// (the 💠 pip's number); it is blue while any Shield is left (has-shield). Bleed and Poison ticks skip the Shield (the engine), so they take the heart's Health part.
+// 2026-11-06 (package UI23 #2): an Undead unit's Health ("unhealth") is a grey heart and a grey number
+function ui23Unhealth(d){ return d && (d.subtype === 'undead' || (d.species || []).includes('Undead')) ? ' is-unhealth' : ''; }
+function ui23HeartOf(c, extra){ return Math.max(0, (Number(c.hp) || 0) + (extra || 0)) + vis3ShieldAmount(c); }
 function vis3ShieldAmount(c){ return c ? Math.max(0, (Number(c.shield) || 0) + (Number(c.tempHp) || 0) + (Number(c.tempHpR) || 0)) : 0; }
 function vis3ShieldHTML(c, amt){
   const n = amt != null ? amt : vis3ShieldAmount(c); if(!(n > 0)) return '';
@@ -40549,7 +40579,7 @@ function vis3ShieldHTML(c, amt){
 }
 // the live chip of a board card (null when none), and its slot in the strip
 function ui11ShieldChip(tile){ return tile ? tile.querySelector('.badges .ab-unit-shield.is-live:not(.vis4-shield-out)') : null; }
-function ui11ShieldChipGone(chip){ try{ const slot = chip.closest('.abadge') || chip, strip = slot.parentElement; slot.remove(); if(strip && strip.classList.contains('badges') && !strip.querySelector('.abadge, .badge-cycle')) strip.remove(); }catch(e){} }
+function ui11ShieldChipGone(chip){ try{ const pg = chip.closest('.bc-item'); if(pg){ pg.innerHTML = ''; pg.classList.add('is-empty'); return; } /* UI23 (2026-11-06): in a cycling slot only its page empties; the slot stays for the other pips */ const slot = chip.closest('.abadge') || chip, strip = slot.parentElement; slot.remove(); if(strip && strip.classList.contains('badges') && !strip.querySelector('.abadge, .badge-cycle')) strip.remove(); }catch(e){} }
 function vis3ShieldRefresh(el, c){
   try{ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = ui11ShieldChip(tile), to = vis3ShieldAmount(c);
     // 2026-10-27 (package VIS4, K7: "if the bar is reduced to 0, it should still animate to 0"): a Shield that breaks counts down to 0 and
@@ -40667,7 +40697,7 @@ function boardCardHTML(c, defs, opts){
     c.diveAloft != null ? (c.diveMode === 'tide' ? 'en7-under' : 'en7-aloft') : '', // EN7 (2026-10-24): Dive's first turn
     c.petrified ? 'is-petrified' : '', // Petrification (2026-10-14): grey stone for the round
     c.crowned ? 'is-crowned' : '', (c.transformed && trTfName(d)) ? ('tf-on tf-' + trTfName(d)) : '', // Package TR (2026-10-21): the Crown's holder; a named Transform's look
-    c.shield > 0 ? 'has-shield' : '', // 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield"): its Health number is blue while it holds a Shield
+    vis3ShieldAmount(c) > 0 ? 'has-shield' : '', // 2026-11-06 (package UI23 #1/#18): any Shield left (with Shell's / Bolster's temporary Health, as the 💠 pip counts); 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield"): its Health number is blue while it holds a Shield
     isLowHp(c) ? 'is-low-hp' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
     opts.dance ? 'is-dancing' : '', // victory dance (2026-09-16), see rowHTML above
     opts.scatter ? 'is-scattering' : '', // unit scatter on loss/draw (2026-09-17), see rowHTML above
@@ -40703,6 +40733,7 @@ function boardCardHTML(c, defs, opts){
   // path but were missing from this fresh-render template entirely, same class of bug as the
   // is-frozen/etc tint classes above.
   if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">${iconHTML('blind-now', '🕶️')}${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
+  else { const db = ui23DarkBlindPip(c); if(db) badges.push(db); } // 2026-11-06 (package UI23 #16): a Dark-blind unit's pip at the top, like Poison
   if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
@@ -40774,7 +40805,7 @@ function boardCardHTML(c, defs, opts){
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
   return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, size:'compact' /* 2026-10-30 (CS-D): only the inner tile; the .board-card wrapper (Flip, uids) is unchanged */, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, cowering: !!c.cowering /* ENG15 (FF6) */, en5On: c.en5On != null ? c.en5On : (c._en5On || ''), ctxOn: c.ctxOn != null ? c.ctxOn : (c._ctxOn || '') /* ENG25 (2026-11-05, #7): the lit state chips */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, cowering: !!c.cowering /* ENG15 (FF6) */, en5On: c.en5On != null ? c.en5On : (c._en5On || ''), ctxOn: c.ctxOn != null ? c.ctxOn : (c._ctxOn || '') /* ENG25 (2026-11-05, #7): the lit state chips */, atkLabel, atkLow, atkZero, hp: ui23HeartOf(c) /* UI23 (2026-11-06, #1/#18) */, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
       bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${fog ? '' : bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) && !fog ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}${fogC ? fogVeilHTML(fogC) : ''}
@@ -41193,7 +41224,7 @@ function renderHand(){
   const m = matchState; if(!m) return;
   const defs = getCardDefs(), me = m.players[viewerHandPid(m)];
   const strip = document.getElementById('handStrip'); if(!strip) return;
-  noteSighted(me.hand.map(hc=>hc.defId)); // Discovery (2026-10-02): cards in your hand count as sighted
+  ui23SnapCollection(matchState); noteSighted(me.hand.map(hc=>hc.defId)); // Discovery (2026-10-02): cards in your hand count as sighted
   // Hand collapse (2026-10-08, user: "When you play a card, your hand collapses with the same
   // animations"): remember where each card sat, then slide the survivors into their new places.
   const prevHandRects = new Map([...strip.querySelectorAll('[data-handuid]')].map(el=> [el.getAttribute('data-handuid'), el.getBoundingClientRect()]));
@@ -42062,6 +42093,12 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
 const eng23FeedTarget = e=>{ const m = matchState; if(!m || !e.target || !e.target.closest) return null; const t = e.target.closest('[data-eng23-feed], [data-hq="A"]');
   if(!t || !eng23ActsOn(m)) return null; const pl = m.players[viewerHandPid(m)]; return pl && pl.feed && (t.dataset.eng23Feed || viewerHandPid(m) === 1) ? t : null; };
 document.addEventListener('dragover', e=>{ if(eng23FeedTarget(e)) e.preventDefault(); });
+// 2026-11-06 (package UI23, owner ENG23-6: "while a card is held, a slot fades in on the Larder, showing it can take the card"): a hand card picked up
+// while a Feed is open (the Gnawed Larder) lights a slot on your bramble (.ui23-feed-slot) until it is dropped.
+document.addEventListener('dragstart', e=>{ try{ const m = matchState; if(!eng23ActsOn(m) || !e.target.closest || !e.target.closest('[data-handuid]')) return; const pid = viewerHandPid(m), pl = m.players[pid];
+  if(!pl || !pl.feed || activePlayerId(m) !== pid || m.resolving || !m.engine.eng23CanFeed(pl)) return;
+  document.querySelectorAll('[data-hq="A"]').forEach(h=> h.classList.add('ui23-feed-slot')); }catch(err){} });
+document.addEventListener('dragend', ()=> document.querySelectorAll('.ui23-feed-slot').forEach(h=> h.classList.remove('ui23-feed-slot')));
 document.addEventListener('drop', e=>{ const t = eng23FeedTarget(e); if(!t) return; e.preventDefault(); e.stopPropagation(); const uid = Number(e.dataTransfer.getData('text/plain')); if(uid) eng23FeedByUid(uid); }, true);
 // ==== end of ENG23 HUD ====
 // Admin (2026-10-12, user: "An auto-win battle button at the top"): the enemy castle falls and the match ends as a win.
@@ -42726,7 +42763,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-paralyzed', c.paralyzed>0);
   el.classList.toggle('is-blind', c.blind>0); el.classList.toggle('is-tipsy', c.tipsy>0); el.classList.toggle('is-confused', c.confused>0);
   el.classList.toggle('is-shocked', c.shocked>0);
-  el.classList.toggle('has-shield', c.shield > 0); // 2026-10-21 (package UI3): its Health number is blue while the Shield stands
+  updateCardHpDisplay(uid); // 2026-11-06 (package UI23 #1/#18): the heart counts the Shield, so it follows every Shield change too (and sets has-shield)
   el.classList.toggle('is-held', ui7IsHeld(c)); // 2026-10-31 (package UI7, owner Y4)
   vis3ShieldRefresh(el, c); // VIS3 (2026-10-26): the Shield's blue number
   el.classList.toggle('is-corroded', c.corrode>0);
@@ -42745,6 +42782,7 @@ function updateCardStatusDisplay(uid){
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">${iconHTML('blind-now', '🕶️')}${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
+  else { const db = ui23DarkBlindPip(c); if(db) badges.push(db); } // 2026-11-06 (package UI23 #16): a Dark-blind unit's pip at the top, like Poison
   if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
@@ -43034,9 +43072,9 @@ function updateCardHpDisplay(uid){
   const el = boardCardEl(uid); if(!el) return;
   const hpSpan = el.querySelector('.stats .hp');
   const smackHeld = (matchState && matchState._smackHeld && matchState._smackHeld[String(uid)]) || 0; // RAIDFX1 (2026-10-30): a raid smack still on its way (raidSmackStage)
-  if(hpSpan) pl2SetStat(hpSpan, '<i class="sg">❤</i>'+Math.max(0,c.hp + smackHeld)); // PL2 (2026-10-25, owner 22:28 #5): a rise bounces, a fall (damage) does not
+  if(hpSpan) pl2SetStat(hpSpan, '<i class="sg">❤</i>'+ui23HeartOf(c, smackHeld)); // PL2 (2026-10-25, owner 22:28 #5): a rise bounces, a fall (damage) does not
   el.classList.toggle('is-low-hp', isLowHp(c));
-  el.classList.toggle('has-shield', c.shield > 0); // 2026-10-21 (package UI3)
+  el.classList.toggle('has-shield', vis3ShieldAmount(c) > 0); // 2026-10-21 (package UI3); UI23: any Shield left
 }
 // Chronos wait-countdown, ordinary tick (2026-09-17): redraws the ring to the new remaining
 // fraction (CSS transitions the stroke-dashoffset smoothly — see .wait-ring-fg) and gives the
@@ -43294,8 +43332,10 @@ function vis5LeaderSlam(def, enemy, host){ // host: the field's element (the Eff
     w.style.left = q.left + 'px'; w.style.width = q.width + 'px'; w.style.top = (enemy ? q.top + q.height * 0.27 : q.bottom - q.height * 0.27) + 'px'; w.style.setProperty('--lead-ms', LEADER_CALLOUT_MS + 'ms');
     // 2026-10-31 (package UI8, owner Z2: "leader summoned: remove the leader preview in the centre (the leader is clearly visible)"): the big
     // portrait that slammed into the middle of the field is gone; the band, the ring, the shake and the name banner stay.
-    w.innerHTML = `<i class="vis5-lead-band"></i><i class="vis5-lead-shock"></i>`;
-    const b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status'); b.setAttribute('aria-hidden', 'false');
+    // 2026-11-06 (package UI23 #7, owner: drop the title text, the last vertical pillar instead of the horizontal beam): no gold band across the
+    // field and no visible name banner (it stays for screen readers); the leader's own throne-beam pillar (leaderThroneVfx) carries the moment.
+    w.innerHTML = `<i class="vis5-lead-shock"></i>`;
+    const b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout sr-only' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status'); b.setAttribute('aria-hidden', 'false');
     b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; w.appendChild(b); document.body.appendChild(w); setTimeout(()=> w.remove(), LEADER_CALLOUT_MS);
     if(full) setTimeout(()=>{ try{ battlefieldShake(enemy ? 0.4 : 0.32); }catch(e){} }, Math.round(LEADER_CALLOUT_MS * 0.17)); // the slam lands at 17%
   }catch(e){}
@@ -45115,6 +45155,7 @@ function syncNightVeil(m, phase){
   const want = !!(m && !m.over && matchPhaseMatters(m) && (phase || (m.engine && m.engine.getPhase && m.engine.getPhase())) === 'night');
   // Night or a dark field: the leaders' and Light Aura units' glow shows (2026-10-15, .unit-light).
   try{ bf.classList.toggle('is-dark-scene', !!(m && !m.over && (want || matchDarkLevel(m)))); }catch(e){}
+  try{ const dl = ui23DarkLevel(m); bf.classList.toggle('bf-lantern', !!dl); ['dark', 'pitch', 'absolute'].forEach(k=> bf.classList.toggle('bf-dark-' + k, dl === k)); }catch(e){} // UI23 (#19): a Darkness cast mid-fight darkens at once
   try{ bf.classList.toggle('bf-night-cursor', want && !bf.classList.contains('bf-lantern')); }catch(e){} // 2026-10-17: the pointer's soft night light (wireNightCursorLight)
   const now = performance.now();
   if(!veilEase || veilEase.want !== want){
@@ -45906,7 +45947,7 @@ function passiveTipCandidates(){
   // "Natural Leader does not need a tutorial. this just might confuse the player").
   // 2026-10-15: a skill still hidden as "?" (SKILL_REVEAL) gets no tip yet; it comes once the skill is revealed. Retired skills none.
   Registry.skills().filter(sd=> sd.key !== 'leader' && !sd.retired && !skillHiddenNow(sd.key)).forEach(sd=>{
-    const desc = (()=>{ try{ const p = PASSIVE_DEFS.find(x=> x.key === sd.key); return p ? skillText(p, 1, {}) : sd.desc(1); }catch(e){ try{ return sd.desc(1); }catch(_){ return ''; } } })();
+    const desc = (()=>{ const p = PASSIVE_DEFS.find(x=> x.key === sd.key), at = v=>{ try{ return p ? skillText(p, v, {}) : sd.desc(v); }catch(e){ try{ return sd.desc(v); }catch(_){ return ''; } } }; return ui23NoNumbers(at(1), at(2)); })(); // UI23 (#31)
     out.push({id:'skill-'+sd.key, text:`✨ ${sd.label}: ${desc}`, anchor:()=> coachBoardEl(d=> d.effects && sd.get(d.effects)!==undefined)});
   });
   // statuses, the first time one shows up on any card
@@ -46494,7 +46535,7 @@ function showVsScreen(left, right){
     // coloured by the same gap scale as the skirmish card.
     try{
       const m = matchState, defs = getCardDefs();
-      const mine = left.level != null ? left.level : mainDeckLevel(myDeckCounts, myLeaderId);
+      const mine = left.level != null ? left.level : ui23MyBR();
       let theirs = right.level;
       if(theirs == null && m && m.players && m.players[2]){ const p2 = m.players[2], counts = {}; (p2.deck||[]).concat(p2.hand||[]).forEach(c=>{ const id = typeof c === 'string' ? c : c && c.defId; if(id) counts[id] = (counts[id]||0) + 1; }); theirs = deckLevelFrom(counts, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), []); }
       // 2026-10-17 (user: "It should show your BR in the pre-battle screen"): your battle rating always sits on your side, theirs on theirs.
@@ -47230,7 +47271,8 @@ function rewardsPanelHTML(m){
   const eggCards = wonIds.filter(id=> isEggRewardCard(getCardDefs()[id])); // 2026-10-18: eggs go with the egg / baby rewards below
   const cards = wonIds.filter(id=> !eggCards.includes(id));
   const baseCopyIds = ((m.conquestBaseGrowth && m.conquestBaseGrowth.copies) || []).filter(id=> getCardDefs()[id]); // 2026-10-24 (RW6, owner 12:02: "Base cards - e.g. Sheep - should just be a card reward"): a Base card won is a card tile in Cards won, not a "spare copy" chip
-  const firstSeen = new Set(m.discoveredThisMatch || []);
+  const firstSeen = m._ui23Seen ? new Set(wonIds.filter(id=> !m._ui23Seen.has(id))) : new Set(m.discoveredThisMatch || []); // UI23: never seen before this match
+  const firstGot = new Set(m._ui23Owned ? wonIds.filter(id=> !m._ui23Owned.has(id)) : []); // UI23: owned for the first time
   const castles = rewardCastleDrops(m); // 2026-10-18 (package T): a bramble won is a card here too
   // 2026-10-25 (package PL2, owner 00:02 #3: "When getting multiple card rewards - show it as 1 card, with the others as base behind them";
   // #5: "I noticed Rare Find! 'A top rank win...' in rewards. Do not put rewards like that there. I think, show cards as card (including eggs
@@ -47256,7 +47298,7 @@ function rewardsPanelHTML(m){
     // 2026-10-30 (CS-A): the cards won are Full size (size:'full'; the CSS keeps a height cap for short windows)
     const add = (key, d, html)=> tiles.push({key, name: d ? d.name : key, html, copy: d ? cardTileHTML(d, {inPlay:true, size:'full'}) : ''});
     cards.slice().sort((x, y)=> (rankWon.has(y) ? 1 : 0) - (rankWon.has(x) ? 1 : 0)).forEach(id=>{ if(!defs[id]) return; const special = rankWon.has(id);
-      add(id, defs[id], `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}${special ? ' pl2-rank-reward' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true, size:'full'})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}${special ? ribbon : ''}</div>`); });
+      add(id, defs[id], `<div class="rw-card is-unlock${firstSeen.has(id) || firstGot.has(id) ? ' is-first-seen' : ''}${special ? ' pl2-rank-reward' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true, size:'full'})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${ui23CardTagsHTML(firstSeen.has(id), firstGot.has(id), 'rw-new')}${special ? ribbon : ''}</div>`); });
     baseCopyIds.forEach(id=> add(id, defs[id], `<div class="rw-card is-unlock rw-base-copy" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true, size:'full'})}</div>`));
     castles.forEach(c=> add('castle:' + c.id, CHARACTER_DEFS[c.id], rewardCastleCardHTML(c)));
     eggCards.forEach(id=>{ const d = defs[id]; if(d) add(id, d, `<div class="rw-card pl2-won rw-egg-card res3-nest-card is-egg" data-tip="${escapeAttr(eggCardRewardNote())}">${cardTileHTML(d, {inPlay:true, size:'full'})}</div>`); });
@@ -47298,7 +47340,10 @@ function rewardsPanelHTML(m){
   (m.conquestEndPacks || []).forEach(r=> packRefs.push(r)); // 2026-10-23 (package RW5): the end-of-map pack of 3 and faction pack
   const packInfos = packRefs.map(rewardPackInfo).filter(Boolean);
   const heldInfo = m.conquestPackHeld ? rewardPackInfo({kind:'free', id:m.conquestPackHeld}) : null;
-  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packInfos.map(pi=> `<div class="rw-pack-art" data-tip="${escapeAttr(TX('results.cards-it-opens-as-soon-as', {name: escapeAttr(pi.name), cards: pi.cards}))}">${TX('results.cards-opens-next', {v1: rewardPackBoosterHTML(pi), name: escapeHtml(pi.name), cards: pi.cards})}</div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
+  // 2026-11-06 (package UI23 #27, owner ss6): no subtitle under a pack; its tip is "<Pack> - opens as soon as you leave the screen"; several of one kind are
+  // one visible stack titled "<Pack> (N)". The packs sit with the cards won, in the left column (rw-packs, below).
+  const packGroups = []; packInfos.forEach(pi=>{ const g = packGroups.find(x=> x.pi.id === pi.id && x.pi.name === pi.name); if(g) g.n++; else packGroups.push({pi, n: 1}); });
+  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packGroups.map(({pi, n})=> `<div class="rw-pack-art${n > 1 ? ' ui23-pack-stack' : ''}" style="--n:${Math.min(3, n - 1)}" data-tip="${escapeAttr(TX('ui.ui23-pack-tip', {name: pi.name.replace(/^Free /, '')}))}">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(pi.name.replace(/^Free /, '') + (n > 1 ? ` (${n})` : ''))}</b></div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
   const cur = [];
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
   if(reward && reward.dust>0) cur.push(['dust', reward.dust]);
@@ -47335,14 +47380,15 @@ function rewardsPanelHTML(m){
   if(m.dungeonOutcome && m.dungeonOutcome.won) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(dungeonKeyRuleText())}">${escapeHtml(TX('ui.dungeon-keys-left', {n: dungeonTicketsLeft()}))}</span>`); // 2026-10-18 (package DK): keys left (a win no longer gives one back)
   const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${'' /* 2026-10-26 (package RES3, R3): the rescued baby is a card in Cards won (res3BabyCardDef); was the rw-baby pill */}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).filter(([id])=> !getCardDefs()[id] /* PL2: card-form materia is a card tile in Cards won */).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
   const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
-  if(cur.length || packRow || acts.length || itemsHTML){
-    secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${k === 'blossoms' ? escapeAttr(TX(m.conquestBlossomsLoss ? 'results.econ1-blossoms-loss' : 'results.econ1-blossoms-win')) /* 2026-10-30 (ECON1) */ : escapeAttr(meta.label||k)}${reward&&k!=='metal'&&k!=='blossoms'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(k === 'blossoms' ? TX('ui.econ1-blossoms') : (meta.label||k))}</span></span>`; }).join('')}</div>` : ''}${packRow}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
+  if(packRow) secs.push(`<div class="rw-sec rw-packs">${packRow}</div>`); // UI23 (#27): with the cards won, on the left
+  if(cur.length || acts.length || itemsHTML){
+    secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${k === 'blossoms' ? escapeAttr(TX(m.conquestBlossomsLoss ? 'results.econ1-blossoms-loss' : 'results.econ1-blossoms-win')) /* 2026-10-30 (ECON1) */ : escapeAttr(meta.label||k)}${reward&&k!=='metal'&&k!=='blossoms'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(k === 'blossoms' ? TX('ui.econ1-blossoms') : (meta.label||k))}</span></span>`; }).join('')}</div>` : ''}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
   }
   if(!secs.length) return '';
   // 2026-10-10 (user: "Centre the cards and rewards in their own halves"): when cards were won, the panel splits
   // into two equal halves, the cards on the left and everything else on the right, each centred.
   // 2026-10-26 (package RES3, R2): the cards' column holds Cards won and New cards seen; the other column what opened and the Rewards.
-  const isCardSec = x=> x.startsWith('<div class="rw-sec rw-unlocks"') || x.startsWith('<div class="rw-sec rw-seen-cards"');
+  const isCardSec = x=> x.startsWith('<div class="rw-sec rw-unlocks"') || x.startsWith('<div class="rw-sec rw-seen-cards"') || x.startsWith('<div class="rw-sec rw-packs"'); // + the packs (UI23 #27)
   const cardSecs = secs.filter(isCardSec), rest = secs.filter(x=> !isCardSec(x));
   if(cardSecs.length && rest.length){
     return `<div class="rw-panel winloss-conquest-rewards has-split"><div class="rw-half rw-half-cards res3-col">${cardSecs.join('')}</div><div class="rw-half rw-half-side">${rest.join('')}</div></div>`;
@@ -48614,8 +48660,9 @@ const FLOAT_ICON = {crit:DN_CRIT_MARK, bleed:'🩸', 'bleed-tick':'🩸', heat:'
 // a fixed host laid over that card instead, so it survives the re-render and plays out in full.
 let floatDetachDepth = 0;
 function fxHostAt(el, ms, at){
-  const r = at || el.getBoundingClientRect(), h = document.createElement('div');
+  const r = ui23Rect(at) || ui23Rect(el && el.getBoundingClientRect && el.getBoundingClientRect()), h = document.createElement('div');
   h.className = 'fx-float-host'; h.setAttribute('aria-hidden', 'true');
+  if(!r) return h; // UI23 (#25): no box to stand on (a pip on a hidden cycle page, a card mid re-render): the float is dropped, not thrown to the top-left
   h.dataset.row = el && el.closest && el.closest('#rowEnemy, [data-row="enemy"]') ? 'enemy' : 'mine';
   h.style.cssText = `position:fixed; left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px; pointer-events:none; z-index:70;`;
   document.body.appendChild(h); setTimeout(()=> h.remove(), ms || 1900);
@@ -48630,7 +48677,7 @@ function fxHostAt(el, ms, at){
 // the upkeep doesn't cut it short. Reduced motion: it fades where it is.
 function bleedFadeDropVfx(uid){
   const el = boardCardEl(uid); if(!el) return null;
-  const pip = el.querySelector('.abadge.bleed'), r = (pip || el).getBoundingClientRect(), cr = el.getBoundingClientRect();
+  const pip0 = el.querySelector('.abadge.bleed'), pip = pip0 && ui23Rect(pip0.getBoundingClientRect()) ? pip0 : null, r = (pip || el).getBoundingClientRect(), cr = el.getBoundingClientRect(); if(!ui23Rect(cr)) return null; // UI23 (#25)
   const d = document.createElement('span'); d.className = 'bleed-drop'; d.textContent = '🩸'; d.setAttribute('aria-hidden', 'true');
   const fs = pip ? Math.max(17, Math.min(24, r.height * 1.15)) : 18, x0 = pip ? r.left + 1 : r.left + r.width / 2 - fs / 2, y0 = pip ? r.top : r.top + r.height * 0.3;
   d.style.cssText = `position:fixed; left:${x0}px; top:${y0}px; font-size:${fs}px; line-height:1; filter:grayscale(1) brightness(1.05) drop-shadow(0 1px 2px rgba(0,0,0,.55)); opacity:.95; pointer-events:none; z-index:71;`;
@@ -48663,8 +48710,12 @@ function bloomCopyVfx(srcUid, copyUid){
       p.animate([{transform: `translate(${sx}px, ${sy}px) scale(.5) rotate(0deg)`, opacity: 0}, {transform: `translate(${(sx + ex) / 2}px, ${(sy + ey) / 2 - lift}px) scale(1) rotate(${i % 2 ? 90 : -90}deg)`, opacity: 1, offset: .45},
         {transform: `translate(${ex}px, ${ey}px) scale(.6) rotate(${i % 2 ? 160 : -160}deg)`, opacity: 0}], {duration: 850 + (i % 3) * 120, delay: i * 25, easing: 'cubic-bezier(.3,.6,.4,1)', fill: 'forwards'}); }
   }, 70); }
-function afterSettle(uid, fn){ const el0 = boardCardEl(uid), r0 = el0 ? el0.getBoundingClientRect() : null, row0 = el0;
-  setTimeout(()=>{ const el = boardCardEl(uid); if(el) fn(el, el.getBoundingClientRect()); else if(r0) fn(null, r0, row0); }, 60); }
+function afterSettle(uid, fn){ const el0 = boardCardEl(uid), r0 = el0 ? ui23Rect(el0.getBoundingClientRect()) : null, row0 = el0;
+  setTimeout(()=>{ const el = boardCardEl(uid), r = el && ui23Rect(el.getBoundingClientRect()); if(r) fn(el, r); else if(r0) fn(null, r0, row0); }, 60); } // UI23 (#25): a 0x0 box is no anchor
+// 2026-11-06 (package UI23 #25, owner: "context pips get thrown to the top-left of the screen"): a page-level effect placed from an element's box
+// (position:fixed at its left / top) went to 0,0 when the box was empty: a pip on a hidden page of ENG26's cycling pip slots (display:none), or a
+// card caught mid re-render. ui23Rect gives the box only when it has a size, so callers fall back to the card or drop the effect.
+function ui23Rect(r){ return r && r.width > 0 && r.height > 0 ? r : null; }
 function washPushVfx(ev){
   try{ SoundKit.splash && SoundKit.splash(); }catch(e){}
   afterSettle(ev.targetUid, (el, r, row0)=>{
@@ -50184,7 +50235,8 @@ function battlefieldShake(t){
   const now = performance.now(); if(now - lastBigShakeAt < 150) return false;
   const bf = document.querySelector('.battlefield') || document.getElementById('battlefieldEl'); if(!bf) return false;
   lastBigShakeAt = now;
-  const amp = 1 + 9*Math.min(1, t), rot = 0.15 + 0.85*Math.min(1, t), dur = 0.25 + 0.35*Math.min(1, t);
+  const k = lv === 'med' ? 0.6 : 1; // 2026-11-06 (package UI23 #17): Medium shakes softer, Low not at all, High in full
+  const amp = (1 + 9*Math.min(1, t))*k, rot = (0.15 + 0.85*Math.min(1, t))*k, dur = 0.25 + 0.35*Math.min(1, t);
   const n = Math.max(5, Math.round(dur / 0.045)), kf = [];
   for(let i = 0; i < n; i++){ const k = 1 - i/n; kf.push({x:(Math.random()*2 - 1)*amp*k, y:(Math.random()*2 - 1)*amp*0.6*k, rotation:(Math.random()*2 - 1)*rot*k, duration:dur/n}); }
   gsap.killTweensOf(bf, 'x,y,rotation');
@@ -58180,7 +58232,7 @@ function purchasePackOnce(pack, prepaid, opts){
   const foils = rollPackFoils(pack, pulls.length);
   const eggAt = new Set(); // 2026-10-23 (package RW3, GD2-6): a Mystery Booster card is an Easter egg 0.05% of the time
   if((pack.baseId || pack.id) === MYSTERY_PACK_ID) pulls = pulls.map((id, i)=>{ if(Math.random() >= MYSTERY_EGG_CHANCE) return id; const e = mysteryEggPick(); if(!e) return id; eggAt.add(i); return e; });
-  const results = pulls.map((id, i)=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; const finish = foils[i]; unlockCardForPlayer(id, eggAt.has(i) ? 'mysteryEgg' : 'shopPack', finish ? {foil:true, finish} : null); return {id, isNew: wasNew, shiny: lastGrantWasShiny, foil: !!finish, finish}; });
+  const results = pulls.map((id, i)=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length, seenNew = !seenCardIds().has(id) /* UI23 */; const finish = foils[i]; unlockCardForPlayer(id, eggAt.has(i) ? 'mysteryEgg' : 'shopPack', finish ? {foil:true, finish} : null); return {id, isNew: wasNew, seenNew, shiny: lastGrantWasShiny, foil: !!finish, finish}; });
   results.forEach(r=> rollBonusCopy(r, 'shopPack')); // 2026-10-17
   let leveledId = null;
   if(Math.random() < (pack.levelChance||0)){
@@ -58257,7 +58309,7 @@ function creditFactionPack(id){
   if(fp.kind === 'faction') try{ noteFactionReceived(roll.pulls.filter(p=> p.from === 'own').length); }catch(e){} // 2026-10-21 (package RP): the faction reward track's count
   const pack = {id:'fp-' + id, name:fp.name, icon:fp.icon, cards:roll.pulls.length, coverPools: fp.own ? [fp.own] : [1], coverId:fp.cover, foilChance:FACTION_PACK_FOIL /* RW3: 1% (was 4%) */, foilFinishes:PACK_FOIL_FINISHES_DEFAULT};
   const foils = rollPackFoils(pack, roll.pulls.length);
-  const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, shiny:lastGrantWasShiny, foil:!!finish, finish:finish||null}; });
+  const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length, seenNew = !seenCardIds().has(r.id) /* UI23 */; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, seenNew, shiny:lastGrantWasShiny, foil:!!finish, finish:finish||null}; });
   results.forEach(r=> rollBonusCopy(r, 'factionPack')); // 2026-10-17
   try{ queueMultiDeckSwap(results.map(r=> r.id), 'factionPack'); }catch(e){} // 2026-10-23 (package UI4): the pack's cards as one several-swap window
   try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
@@ -58788,7 +58840,7 @@ function rewardPackInfo(ref){
     return {id:'fp-both', name:'Faction Pack', icon:'🦦🌺', tint:'#7a4f7a', cards: FACTION_PACK_OWN + FACTION_PACK_GENERAL, kind:'faction'};
   }
   const p = getShopPacks().find(x=> x.id === ref.id); if(!p) return null;
-  if(ref.kind === 'end') return {id:p.id, name: TX('ui.rw5-end-pack', {name: p.name}), icon:p.icon || '🎁', tint: PACK_TINT[p.id], cards: MAP_END_PACK_CARDS, kind:'free'}; // RW5
+  if(ref.kind === 'end') return {id:p.id, name: p.name /* UI23 (#27, owner: no "Map reward" text) */, icon:p.icon || '🎁', tint: PACK_TINT[p.id], cards: MAP_END_PACK_CARDS, kind:'free'}; // RW5
   return {id:p.id, name: 'Free ' + p.name, icon:p.icon || '🎁', tint: PACK_TINT[p.id], cards:p.cards || 3, kind:'free'};
 }
 function rewardPackBoosterHTML(info, cls){ return info ? boosterHTML({id:info.id, name:info.name.replace(/^Free /, ''), icon:info.icon, tint:info.tint}, cls) : ''; }
@@ -58980,8 +59032,9 @@ function openPackAnimation(pack, opened, opts){
   const bundle = !!opts.bundle;
   // NEW! once per card per opening, in the order you'll see them (2026-10-10, user: "it says NEW! multiple times although
   // i've already gotten the card once IN THE SAME OPENING").
-  const anyNew = new Set(); opened.forEach(o=> o.results.forEach(r=>{ if(r.isNew) anyNew.add(r.id); }));
-  const markFirstNew = list=>{ const seenNew = new Set(); list.forEach(r=>{ r.isNew = anyNew.has(r.id) && !seenNew.has(r.id); if(r.isNew) seenNew.add(r.id); }); return list; };
+  const anyNew = new Set(), anySeenNew = new Set(); opened.forEach(o=> o.results.forEach(r=>{ if(r.isNew) anyNew.add(r.id); if(r.seenNew) anySeenNew.add(r.id); }));
+  // UI23 (2026-11-06): isNew is GET! (first copy owned), seenNew is NEW! (never seen before); each once per card per opening
+  const markFirstNew = list=>{ const got = new Set(), sn = new Set(); list.forEach(r=>{ r.isNew = anyNew.has(r.id) && !got.has(r.id); if(r.isNew) got.add(r.id); r.seenNew = anySeenNew.has(r.id) && !sn.has(r.id); if(r.seenNew) sn.add(r.id); }); return list; };
   markFirstNew([].concat(...opened.map(o=> o.results)));
   const tierOf = id=> RARITY_TIER_BANDS.indexOf((defOf(id) && defOf(id).rarity) || 'common');
   const teaseOf = id=>{ const t = tierOf(id); return t >= 11 ? 'tease-legend' : t >= 7 ? 'tease-epic' : t >= 4 ? 'tease-rare' : ''; };
@@ -59080,7 +59133,7 @@ function openPackAnimation(pack, opened, opts){
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       ${'' /* 2026-10-30 (package CS-C): the card is the Detail card, face down (its own backing, 2026-10-16) until it is revealed; once it is up it
            tilts and turns with a sideways drag (enter() mounts it), a tap still moves on */}${detailCardHTML(d, {tag:'span', face:'back', focus:false, tile: poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)}) + (r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''), alias:{spin:'po2-flip', front:'po2-front', back:'po2-back'}})}
-      ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${r.bonusCopy ? `<span class="po2-bonus-copy" aria-hidden="true">${poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}</span><span class="po2-bonus-tag" aria-hidden="true"><b>Bonus!</b><small>+1 copy</small></span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
+      ${r.isNew || r.seenNew ? `<span class="po2-new" aria-hidden="true">${r.seenNew ? `<b>${escapeHtml(TX('results.new'))}</b>` : ''}${r.isNew ? `<b class="ui23-get${r.seenNew ? ' ui23-late' : ''}">${escapeHtml(TX('ui.ui23-get'))}</b>` : ''}</span>` : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${r.bonusCopy ? `<span class="po2-bonus-copy" aria-hidden="true">${poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}</span><span class="po2-bonus-tag" aria-hidden="true"><b>Bonus!</b><small>+1 copy</small></span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
       <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
     </button>`; }).join('');
   let deckO = null;
@@ -59262,7 +59315,7 @@ function openPackAnimation(pack, opened, opts){
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
-      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(r.id).name||r.id)} large">${poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, size:'full' /* 2026-10-30 (CS-A) */, extraClass: pullClass(r, defOf(r.id))})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
+      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(r.id).name||r.id)} large">${poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, size:'full' /* 2026-10-30 (CS-A) */, extraClass: pullClass(r, defOf(r.id))})}${ui23CardTagsHTML(r.seenNew, r.isNew, 'po2-new-tag')}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><div class="ui9-p">${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(footBits(o)).filter(Boolean).join(' · ') /* 2026-10-24 (BV): no dangling "·" */}</div>${footActions()}</div>
     </div>`;
     poClearFlights(); // 2026-10-24 (package BV): the last card's flight to the pile ends here (see poClearFlights)
@@ -59274,14 +59327,14 @@ function openPackAnimation(pack, opened, opts){
     const rest = opened.slice(packIdx);
     const tally = new Map(); let metal = 0, kroon = 0; const levels = [];
     rest.forEach(o=>{ metal += pack.metal||0; kroon += pack.kroon||0; if(o.leveledId) levels.push(o.leveledId);
-      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; tally.set(k, t); }); }); // 2026-10-17: a bonus copy counts; a Shiny is its own stack
+      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; t.seenNew = t.seenNew || r.seenNew; tally.set(k, t); }); }); // 2026-10-17: a bonus copy counts; a Shiny is its own stack
     const did = k=> tally.get(k).id;
     const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defOf(did(a)).name||'').localeCompare(defOf(did(b)).name||'') || (a < b ? -1 : 1));
     const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
     const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon && !KROONI_RETIRED) bits.push(`👑 +${kroon} Krooni`); /* 2026-10-23 (TU2) */ if(levels.length) bits.push(packLevelUpsHTML(levels, defs)); // 2026-10-23 (package RW5, owner item 13): names the cards that levelled
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, size:'full', extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, size:'full', extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${ui23CardTagsHTML(t.seenNew, t.isNew, 'po2-new-tag')}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
     poClearFlights();
@@ -59293,7 +59346,7 @@ function openPackAnimation(pack, opened, opts){
     phase = 'session';
     const all = sessionPacks(), tally = new Map(); const levels = [];
     all.forEach(({o})=>{ if(o.leveledId) levels.push(o.leveledId);
-      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; tally.set(k, t); }); });
+      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; t.seenNew = t.seenNew || r.seenNew; tally.set(k, t); }); });
     const did = k=> tally.get(k).id;
     const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defOf(did(a)).name||'').localeCompare(defOf(did(b)).name||'') || (a < b ? -1 : 1));
     const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
@@ -59301,7 +59354,7 @@ function openPackAnimation(pack, opened, opts){
     const bits = []; if(levels.length) bits.push(packLevelUpsHTML(levels, defs));
     overlay.innerHTML = `<div class="po2-top"><span class="po2-count">${escapeHtml(TX('ui.pl1-session-title', {n: all.length}))}</span></div><div class="po2-stage po2-summary po2-all pl1-session">
       <p class="pl1-session-kinds">${kinds.map(k=> `<span>${escapeHtml(k)}</span>`).join('')}</p>
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, size:'full', extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, size:'full', extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${ui23CardTagsHTML(t.seenNew, t.isNew, 'po2-new-tag')}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
     poClearFlights();
@@ -60104,7 +60157,19 @@ function res3GrantLevelReward(k, L){
   const pack = Object.assign({}, base, {cards: k === 'card' ? 1 : 3, metal:0, kroon:0, endReward:true, name: TX('ui.res3-lt-pack-name', {n: L, name: k === 'card' ? TX('ui.res3-lt-card') : base.name})});
   const o = purchasePackOnce(pack, true, {newFirst: true, gated: true}); if(!o) return;
   saveCurrencies(); if(o.leveledId) saveCardLevels(); try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
+  if(k === 'card'){ ui23LevelCardShown(o.results || [], L); return; } // 2026-11-06 (package UI23 #15): a single reward card is never a pack
   queuePackReveal(pack, o);
+}
+// 2026-11-06 (package UI23 #15, owner ss4: "Level 1: A card" opened as a pack): the level's card joins the results' Cards won (the XP bar fills
+// there, so that is where the level is reached); with no results on screen it is a toast. It is already in the collection (purchasePackOnce).
+function ui23LevelCardShown(results, L){
+  const defs = getCardDefs(), list = results.filter(r=> r && defs[r.id]); if(!list.length) return;
+  const wl = document.querySelector('.winloss-overlay');
+  if(!wl){ list.forEach(r=>{ try{ showToast('⭐ ' + TX('ui.ui23-level-card', {n: L, name: defs[r.id].name}), 'ok'); }catch(e){} }); return; }
+  const tiles = list.map(r=> `<div class="rw-card is-unlock unlocked shown ui23-level-card" data-tip="${escapeAttr(TX('ui.ui23-level-card', {n: L, name: defs[r.id].name}))}">${cardTileHTML(defs[r.id], {inPlay:true, size:'full'})}${ui23CardTagsHTML(!!r.seenNew, !!r.isNew, 'rw-new')}</div>`).join('');
+  const fan = wl.querySelector('.rw-unlocks .res3-fan');
+  if(fan) fan.insertAdjacentHTML('beforeend', tiles);
+  else { const first = wl.querySelector('.rw-sec'); const html = `<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="res3-fan">${tiles}</div></div>`; if(first) first.insertAdjacentHTML('beforebegin', html); else list.forEach(r=>{ try{ showToast('⭐ ' + TX('ui.ui23-level-card', {n: L, name: defs[r.id].name}), 'ok'); }catch(e){} }); }
 }
 // Pays every level reached since the last check. The first check on a save from before this shipped starts the track at the level it is
 // already at (no back pay); a new player starts at Level 0, so Level 1's card comes with the tutorials.
@@ -62111,10 +62176,11 @@ const GHOST_BANNERS = '.conquest-main > .conquest-headline, .conquest-main > .ma
       let onControl = false; if(inside){ const t = document.elementFromPoint(x, y); onControl = !!(t && b.contains(t) && t.closest('button, a, input, select, textarea, label')); }
       // The map's title banner (2026-10-11, user: "Hovering to the explanation on the top left makes it fade out and
       // disappear for 10s before it fades back in"): one touch sends it away for 10 seconds.
-      if(b.classList.contains('conquest-headline')){ if(b.classList.contains('is-chip')) return; /* 2026-11-03 (ECON3, ECON2-10): the folded chip is a button and stays put */ if(inside && !b.classList.contains('is-away')){ b.classList.add('is-away'); clearTimeout(b._awayT); b._awayT = setTimeout(()=> b.classList.remove('is-away'), 10000); } return; }
+      if(b.classList.contains('conquest-headline')){ if(b.classList.contains('is-chip')) return; /* 2026-11-03 (ECON3, ECON2-10): the folded chip is a button and stays put */ const enter = inside && !b._ui23In; b._ui23In = inside; if(enter && !b.classList.contains('is-away')){ b.classList.add('is-away'); clearTimeout(b._awayT); b._awayT = setTimeout(()=> b.classList.remove('is-away'), 3000); } return; } // 2026-11-06 (package UI23 #39, owner: "it disappears permanently. It should come back after 3s"): back after 3 s (was 10), and only a new entry (hover or scroll onto it) sends it away again; a pointer resting on it re-hid it at every move
       b.classList.toggle('is-ghost', inside && !onControl);
     }); };
   document.addEventListener('pointermove', e=>{ last = {x:e.clientX, y:e.clientY}; if(!raf) raf = requestAnimationFrame(run); }, {passive:true});
+  document.addEventListener('wheel', e=>{ last = {x:e.clientX, y:e.clientY}; if(!raf) raf = requestAnimationFrame(run); }, {passive:true}); // UI23 (#39): a scroll over it counts as a hover
 })();
 // Cave darkness (2026-10-10, user: "I want the parts of the map not lit by the mouse to be even darker. This effect even
 // affects the Skirmish icons and the connecting lines"): on cave maps a dark layer sits over the whole map (trail, skirmishes,
@@ -62568,7 +62634,7 @@ function wireSettingsButton(idSuffix){
     atmo.addEventListener('change', ()=> setAtmosphere(atmo.value));
   }
   const open = ()=>{
-    panel.hidden = false;
+    panel.hidden = false; SETTINGS_OPEN.add(idSuffix);
     if(!idSuffix) renderSettingsLinks();
     if(atmo) atmo.value = loadAtmosphere();
     if(emSel){ emSel.value = EmojiStyle.get(); EmojiStyle.refreshCredits(); }
@@ -62576,7 +62642,7 @@ function wireSettingsButton(idSuffix){
     btn.setAttribute('aria-expanded','true');
   };
   const close = ()=>{
-    panel.hidden = true;
+    panel.hidden = true; SETTINGS_OPEN.delete(idSuffix);
     btn.classList.remove('is-open');
     btn.setAttribute('aria-expanded','false');
   };
@@ -62585,11 +62651,14 @@ function wireSettingsButton(idSuffix){
     if(panel.hidden) open(); else close();
   });
   panel.addEventListener('click', e=> e.stopPropagation()); // clicking a slider shouldn't close the panel via the outside-click handler below
+  if(SETTINGS_OPEN.has(idSuffix)) open(); // 2026-11-06 (package UI23 #8): the fight's HUD is rebuilt when a setting changes (and each render): a panel that was open stays open
 }
+var SETTINGS_OPEN = new Set(); // the settings panels (by id suffix) the player has open
 // Global outside-click/Escape closes WHICHEVER settings panel is currently open (topbar or HUD
 // instance) — a single shared listener rather than one per instance, since the HUD instance's
 // button/panel get re-wired (and their old listeners garbage-collected) on every render.
 function closeAnyOpenSettingsPanel(){
+  SETTINGS_OPEN.clear();
   document.querySelectorAll('.settings-panel').forEach(p=>{
     if(p.hidden) return;
     p.hidden = true;

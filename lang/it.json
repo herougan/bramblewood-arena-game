@@ -4017,5 +4017,9 @@
  "{name} is Undead: the heal hurts it for {n}.": "{name} è Non morto: la cura le infligge {n}.",
  "{name} is Undead: the cure makes it Bleed {n}.": "{name} è Non morto: la guarigione le dà Sanguinamento {n}.",
  "Heal hurts": "La cura ferisce",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} scende in campo come Capo: +{a}/+{h} dal rovo."
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} scende in campo come Capo: +{a}/+{h} dal rovo.",
+ "Costs": "Costi",
+ "GET!": "OTTENUTA!",
+ "Level {n}: {name} is in your collection": "Livello {n}: {name} è nella tua collezione",
+ "{name} - opens as soon as you leave the screen.": "{name} - si apre appena lasci la schermata."
 }

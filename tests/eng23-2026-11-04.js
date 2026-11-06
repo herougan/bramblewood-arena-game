@@ -98,7 +98,8 @@ ok(/abadge ff-tokens/.test(app) && /ffCounters:rc\.ffCounters\|\|0/.test(app) &&
 
 // ---- 4. the "?" rules -------------------------------------------------------------------------------------------------------
 ok(/keenEye:\s+\{from:6, seenWith:\['invisible', 'changeling'\]\}/.test(app) && /function eng23SeenWithMet/.test(app), '4: True Sight reads "?" until Map 6 or a seen Invisible / Changeling card');
-ok(!/\bdelivery:\s*\{from:/.test(app) && !/\bstockpile:\s*\{from:/.test(app), '4: Delivery (and the old Stockpile) are not gated: Map 0 shows them');
+// 2026-11-06 (package UI23, owner ENG23-4 b: "Delivery reads ? on Map 0 too"): Delivery is gated from Map 1 now; the old Stockpile stays ungated
+ok(/\bdelivery:\s*\{from:1\b/.test(app) && !/\bstockpile:\s*\{from:/.test(app), '4 (UI23): Delivery reads ? on Map 0 (from Map 1); the old Stockpile is not gated');
 ok(byId['beaver-lumberjack'].effects.delivery === 1 && /function eng23MigrateDelivery/.test(app) && /eng23MigrateDelivery\(liveCards\[id\]\)/.test(app), '4: the Beaver Lumberjack has Delivery; a live pre-ENG22 Stockpile edit reads as Delivery');
 { const src = app.slice(app.indexOf('function eng23MigrateDelivery'), app.indexOf('return Object.assign({}, d, {effects: fx}); }', app.indexOf('function eng23MigrateDelivery')) + 46);
   const mig = new Function(src + '; return eng23MigrateDelivery;')(); const m = mig({id:'beaver-lumberjack', attack:3, health:5, effects:{stockpile:1}});

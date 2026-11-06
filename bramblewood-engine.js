@@ -3466,7 +3466,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const tick = EXPOSE_TICKS.has(dmgType) || en20Tick;
     // sudden death: any hit that lands kills, and from 2026-10-15 a hit soaked to 0 too; status ticks still need to hurt
     const sd = suddenDeath ? (d=> d>0 || (amount > 0 && factor !== 0 && !tick)) : null;
-    const out = applyDamage(card, dmg, {dmgType, crush, poisonTick: dmgType === 'poison' && !attDefId /* ENG15 (Z6) */, mods, noteHit: true, punishBy: tick ? undefined : attUid, suddenDeath: sd,
+    const out = applyDamage(card, dmg, {dmgType, crush, poisonTick: (dmgType === 'poison' || dmgType === 'bleed') && !attDefId /* ENG15 (Z6); 2026-11-06 (package UI23 #18, owner: "bleed, poison both pierce through shield"): a Bleed tick too */, mods, noteHit: true, punishBy: tick ? undefined : attUid, suddenDeath: sd,
       killerUid: attUid, killerDefId: attDefId, wake: true /* Asleep breaks on any flat/ranged damage too */, shell: !en20Tick /* Shell triggers on arrows and every other hit too (2026-10-12) */, ignite: !!attDefId && !tick /* ENG20: a unit's shot or skill lights; field fire and ticks don't */}).dmg;
     if(card.equipment && !tick && amount > 0) eq2Wear(card, dmgType === 'acid' ? EQ2_DEF.acidWear : EQ2_DEF.hitWear, dmgType === 'acid' ? 'acid' : 'hit'); // EQ2 (2026-10-24): a shot, bolt or smack wears it too (a status tick does not)
     return out;

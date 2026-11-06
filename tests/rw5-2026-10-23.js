@@ -95,11 +95,12 @@ const refine = /const REFINE_COST_MULT = ([\d.]+);/.exec(app); ok(refine && +ref
 const rt = /const RAID_TICKET_ITEM_COST = \{gold:(\d+), gems:(\d+)\};/.exec(app); ok(rt && +rt[1] > 300 && +rt[2] > 0, '5. the Raid Ticket costs more Maple Leaves and some Gold Leaves');
 ok(/function shopTicketOnShelf\(\)\{ return adminModeEnabled \|\| \(tabOpen\('guild'\) && ownsGuild\(\)\); \}/.test(app), '5. the Rename Ticket (guild management) is on the Shop only for a guild owner');
 ok(/guildShopPanelHTML\(\) \/\* 2026-10-23 \(RW5\) \*\//.test(app) && /function wireGuildShop\(root\)/.test(app), '5. the guild page has its own guild shop');
-const sp = new Function(B.grab('SPEED_GATES') + '\nconst SPEED_2X_MAP = 0;\n' + B.grab('speedStepsFor') + '\nreturn speedStepsFor;')();
-ok(JSON.stringify(sp({firstWin: true, firstElite: false, cleared: n=> n <= 0})) === '[1,1.5,2,0.5]', '5. 2× opens with Map 0 cleared (one map earlier than the first elite)');
-ok(JSON.stringify(sp({firstWin: true, firstElite: false, cleared: ()=> false})) === '[1,1.5,0.5]', '5. not before');
-ok(JSON.stringify(sp({firstWin: true, cleared: n=> n <= 40})) === '[1,1.5,2,3,4,0.5]', '5. 3× and 4× at Maps 20 and 40');
-ok(/const SPEED_2X_MAP = 0, SPEED_KEEP_ALWAYS = true/.test(app) && /function speedKeeps\(\)\{ if\(SPEED_KEEP_ALWAYS\) return true;/.test(app), '5. the chosen speed is kept from fight to fight');
+// 2026-11-06 (package UI23 #29): 2x now opens with a Gannet Cliffs (Map 3) skirmish won, 1.5x with a Map 1 skirmish won
+const sp = new Function(B.grab('SPEED_GATES') + '\nconst SPEED_15_MAP = 1, SPEED_2X_MAP = 3;\n' + B.grab('speedStepsFor') + '\nreturn speedStepsFor;')();
+ok(JSON.stringify(sp({skirmWon: n=> n <= 3, cleared: ()=> false})) === '[1,1.5,2,0.5]', '5. 2× opens with a Gannet Cliffs skirmish won');
+ok(JSON.stringify(sp({skirmWon: n=> n <= 2, cleared: ()=> false})) === '[1,1.5,0.5]', '5. not before');
+ok(JSON.stringify(sp({cleared: n=> n <= 40})) === '[1,1.5,2,3,4,0.5]', '5. 3× and 4× at Maps 20 and 40');
+ok(/const SPEED_15_MAP = 1, SPEED_2X_MAP = 3, SPEED_KEEP_ALWAYS = true/ /* UI23 (2026-11-06) */.test(app) && /function speedKeeps\(\)\{ if\(SPEED_KEEP_ALWAYS\) return true;/.test(app), '5. the chosen speed is kept from fight to fight');
 ok(/try\{ speedUnlockBanner\(m, ffBtn\); \}catch\(e\)\{\}/.test(app) && /TX\('ui\.rw5-speed-unlocked', \{speed: sp\}\)/.test(app), '5. "2× unlocked!" in the next fight');
 ok(/const ADMIN_RESOURCE_MAX = 99999;/.test(app) && /id="adminResMax"/.test(app) && /id="adminResZero"/.test(app), '5. Admin: every resource to 99,999, and to 0');
 ok(/bits\.push\(packLevelUpsHTML\(levels, defs\)\)/.test(app), '5. the pack summary names the cards its free level-ups went to');

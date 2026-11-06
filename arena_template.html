@@ -14773,7 +14773,8 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ed-flags{margin-top:0; gap:4px 5px; align-items:center;}
 .ed-flag-sep{width:1px; align-self:stretch; min-height:16px; background:var(--surface-border); margin:0 3px;}
 .ed-econ{display:flex; flex-wrap:wrap; gap:4px 12px; margin-bottom:6px;}
-.ed-econ .multi-resource-row input{width:33px; padding:4px 2px; text-align:center;}
+#editorOverlay .ed-econ .multi-resource-row input{width:38px; padding:4px 2px; text-align:center; -moz-appearance:textfield;} /* 2026-11-06 (package UI23 #4): #editorOverlay .field input's 8px padding hid the number */
+#editorOverlay .ed-econ .multi-resource-row input::-webkit-inner-spin-button{display:none;}
 .ed-econ .multi-resource-row .mr-glyph{margin-right:2px; font-size:12px;}
 .ed-pitch-extra{font-size:12px; font-weight:800; white-space:nowrap;}
 .ed-tags-line{display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px;}
@@ -14823,6 +14824,74 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ui21-kw .ui21-kw-head{margin:4px 0; font-size:1.05em;} .ui21-kw .ui21-kw-text{margin:0 0 8px;} .ui21-kw .ui21-kw-cards{margin:8px 0 4px; font-size:.95em;}
 /* art focus (Card editor: Art height): extended art moves down by --apy (framed art uses object-position, set inline) */
 .card-tile.art-extended > .ico .card-art-img[style*="--apy"]{top:calc((50 - var(--apy)) * .5%);}
+/* ===== 2026-11-06 (package UI23) ===== */
+/* #4 the card editor (codex and battlefield open the same one): wide modal, the preview a fixed right column, one full-width row per section,
+   the budget beside the stats, a sticky footer (Delete left; Cancel and Save right). Owner 20:44: "widen the width ... The advanced sections should be their own rows!" */
+#editorOverlay .modal.has-ce-side{width:min(95vw, 1400px); max-width:none; padding-bottom:0; max-height:calc(100dvh - 80px); overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain;} /* the modal scrolls (not the overlay), so the footer and the preview stay in view */
+#editorOverlay .ce-body{gap:24px;}
+#editorOverlay .ce-body > .ce-side{flex:0 0 300px; width:300px;}
+#editorOverlay .ce-preview .card-tile{margin:0 auto;}
+#editorOverlay .ce-main > .field-row{grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));}
+#editorOverlay .ce-main > .field-row:has(> .ce-budget){grid-template-columns:repeat(4, minmax(70px, 1fr)) minmax(220px, 1.6fr);}
+#editorOverlay .ce-main > .field-row > .ce-budget{align-self:start; min-width:0; overflow-wrap:anywhere;}
+#editorOverlay .ed-econ{gap:8px 28px;}
+#editorOverlay .section-divider.subsection{display:block; width:100%; margin-top:10px;}
+#editorOverlay .section-divider.group-header{width:100%;}
+#editorOverlay .skill-row{flex-wrap:nowrap;} #editorOverlay .skill-row select[data-sk="key"]{max-width:240px; flex:0 1 240px;}
+#editorOverlay .modal-actions{display:flex; gap:8px; justify-content:flex-end; margin-left:-4px; margin-right:-4px;}
+#editorOverlay .modal-actions #btnDelete{margin-right:auto;}
+@media (max-width: 1100px){ #editorOverlay .ce-main > .field-row:has(> .ce-budget){grid-template-columns:repeat(2, minmax(0, 1fr));} #editorOverlay .ce-main > .field-row > .ce-budget{grid-column:1 / -1;} }
+@media (max-width: 700px){ #editorOverlay .ce-body{align-items:stretch;} #editorOverlay .ce-body > .ce-main{width:100%; max-width:100%;} #editorOverlay .modal.has-ce-side{width:100%;} #editorOverlay .ce-body > .ce-side{width:auto;} #editorOverlay .ce-main > .field-row > .ce-budget{grid-column:1 / -1;} #editorOverlay .skill-row{flex-wrap:wrap;} }
+/* #2 an Undead unit's Health ("unhealth"): grey heart, grey number */
+.card-tile .stats .hp.is-unhealth{color:#b9bcc0 !important; text-shadow:0 1px 1px rgba(0,0,0,.6) !important;}
+.card-tile .stats .hp.is-unhealth i.sg{filter:grayscale(1) brightness(1.15);}
+/* #1/#18 the heart counts the Shield and is blue while any is left */
+.board-card.has-shield .stats .hp i.sg{filter:hue-rotate(200deg) saturate(1.3) brightness(1.15);}
+/* #13/#34/#38 GET! (first copy owned) beside NEW! (never seen); both: NEW! comes in, then GET! lands on top */
+.rw-new.ui23-get, .po2-new-tag.ui23-get, .po2-new b.ui23-get{background:linear-gradient(135deg, #2fae5a, #8fe36b) !important; color:#fff !important; text-shadow:0 .1em 0 #165a2b !important;}
+.rw-new.ui23-late{top:calc(22% + 22px);} .po2-new-tag.ui23-late{top:14px;}
+.rw-card.shown .rw-new.ui23-late{transition-delay:.45s;} .po2-new-tag.ui23-late{animation:ui23Late .5s cubic-bezier(.3,1.6,.5,1) .45s both;}
+.po2-new b.ui23-late{margin-top:.15em; animation:ui23Late .5s cubic-bezier(.3,1.6,.5,1) .5s both;}
+@keyframes ui23Late{from{opacity:0; transform:scale(2.2);} to{opacity:1; transform:scale(1);}}
+/* #16 while the shut eyes show on a unit that can't see (FX B sightSync), the card is dark again (JJ26 had cut it to 10%); then back to 10% */
+.board-card.fxb-cantsee:not(.ui14-eye-out):not(.ui14-eye-gone) > .fxb-shade{opacity:.55 !important; transition:opacity .8s ease;}
+.board-card.fxb-cantsee:not(.ui14-eye-out):not(.ui14-eye-gone) .card-tile .ico{filter:brightness(.72) !important;}
+/* #19 plain Darkness (a dark field, a Cast Darkness unit) dims a little less than Pitch Black; the torchlight follows the pointer as in the deeper darks */
+.battlefield.bf-lantern.bf-dark-dark::after{background:radial-gradient(circle 220px at var(--lx) var(--ly), rgba(255,205,130,0) 0, rgba(255,190,110,0) 32%, rgba(6,6,14,.34) 68%, rgba(4,4,10,.5) 100%);}
+/* #27 results: several packs of one kind are a visible stack (copies behind, up and to the right); "open all" lays the cards out at full width */
+.rw-pack-art.ui23-pack-stack .booster{box-shadow:6px -5px 0 -1px rgba(60,40,18,.9), 6px -5px 0 0 rgba(243,211,140,.6);}
+.rw-pack-art.ui23-pack-stack[style*="--n:2"] .booster, .rw-pack-art.ui23-pack-stack[style*="--n:3"] .booster{box-shadow:6px -5px 0 -1px rgba(60,40,18,.9), 6px -5px 0 0 rgba(243,211,140,.6), 12px -10px 0 -1px rgba(46,32,16,.9), 12px -10px 0 0 rgba(243,211,140,.45);}
+.rw-packs .rw-pack-row{padding-top:10px;}
+.po2-sum-grid.is-dense{width:min(980px, 94vw);} /* the --card-full-col width is a share of the grid: a shrink-to-fit grid had no width, so the cards collapsed to a sliver (ss8) */
+/* #27 ss7: the achievement news is a toast at the top of the screen, outside the results window (it slides in, holds, fades) */
+.winloss-achv{position:fixed !important; top:12px; left:50%; translate:-50% 0; z-index:10060; margin:0 !important; width:max-content; max-width:min(92vw, 520px); box-shadow:0 8px 24px rgba(0,0,0,.45);
+  animation:ui23AchvToast 6s ease both !important; pointer-events:none;}
+@keyframes ui23AchvToast{0%{opacity:0; transform:translateY(-24px);} 8%{opacity:1; transform:none;} 85%{opacity:1; transform:none;} 100%{opacity:0; transform:translateY(-12px);}}
+@media (max-width: 600px){ .winloss-achv{left:12px; translate:none; max-width:calc(100vw - 112px); font-size:13px;} } /* clear of the results' top-right buttons */
+@media (prefers-reduced-motion: reduce){ .winloss-achv{animation:ui23AchvFade 6s linear both !important;} @keyframes ui23AchvFade{0%,90%{opacity:1;} 100%{opacity:0;}} }
+/* #30 an S-or-better emblem shines as it pops from its node: a glow and a light sweep across the hex */
+.res3-rank-fly.ui23-rank-shine .rank-hex{filter:drop-shadow(0 0 10px rgba(255,220,120,.95)) drop-shadow(0 0 22px rgba(255,200,80,.6)) !important; overflow:hidden;}
+.res3-rank-fly.ui23-rank-shine .rank-hex::after{content:''; position:absolute; inset:-20%; background:linear-gradient(110deg, transparent 35%, rgba(255,255,255,.85) 50%, transparent 65%); transform:translateX(-120%); animation:ui23RankSweep 1.6s ease-in-out .35s 2; pointer-events:none;}
+@keyframes ui23RankSweep{to{transform:translateX(120%);}}
+@media (prefers-reduced-motion: reduce){ .res3-rank-fly.ui23-rank-shine .rank-hex::after{animation:none;} }
+/* #35 the showcase's leader and bramble portraits: no captions, closer together, overlapping, the leader in front and a touch larger */
+.ui16-vs-art.n2{gap:0;} .ui16-vs-art.n2 .ui16-vs-fig{flex-basis:44%;}
+.ui16-vs-art.n2 .ui16-vs-fig.is-leader{position:relative; z-index:2; margin-right:-9%; transform:scale(1.06); transform-origin:60% 60%;}
+.ui16-vs-art.n2 .ui16-vs-fig.is-bramble{position:relative; z-index:1; margin-left:-9%; opacity:.92;}
+.ui16-vs-art.n3 .ui16-vs-fig + .ui16-vs-fig{margin-left:-6%;}
+/* #37 the dawn's rays (FX.B.dayBreaks): the source sits far off to the upper right, so the rays run nearly straight and parallel, and they are fainter */
+.fxb-rays{--rx:230%; --ry:-60%; background:repeating-conic-gradient(from 0deg at var(--rx) var(--ry), rgba(255,232,165,.13) 0 1.1deg, transparent 1.1deg 3.2deg) !important;}
+/* ENG23-6 the Gnawed Larder's Feed: while a hand card is held, a slot fades in on your bramble */
+[data-hq].ui23-feed-slot{position:relative;}
+[data-hq].ui23-feed-slot::after{content:'🍖'; position:absolute; left:50%; top:50%; width:58%; aspect-ratio:3 / 4; translate:-50% -50%; display:grid; place-items:center; font-size:22px; z-index:8; pointer-events:none;
+  border:2.5px dashed rgba(255,226,150,.95); border-radius:10px; background:rgba(40,24,8,.45); box-shadow:0 0 14px rgba(255,200,90,.55); animation:ui23SlotIn .35s ease-out both, ui23SlotPulse 1.4s ease-in-out .35s infinite;}
+@keyframes ui23SlotIn{from{opacity:0; scale:.85;} to{opacity:1; scale:1;}}
+@keyframes ui23SlotPulse{50%{box-shadow:0 0 22px rgba(255,210,110,.85);}}
+@media (prefers-reduced-motion: reduce){ [data-hq].ui23-feed-slot::after{animation:none;} }
+/* #27 ss5: a won card's description opened above it, inside the fan's scroll box, and was cut off; in the fan it opens over the card's lower half */
+.rw-panel .res3-fan [data-tip]:hover::after, .rw-panel .res3-fan [data-tip]:focus-visible::after{bottom:8px; max-width:calc(100% - 8px); font-size:11.5px; padding:6px 8px;}
+/* #8 the fight's settings panel on a phone: a sheet under the top row, inside the screen (it opened off the left edge), scrolling */
+@media (max-width: 600px){ #settingsPanelHud{position:fixed !important; left:8px !important; right:8px !important; top:56px !important; width:auto !important; max-height:70vh; overflow-y:auto; transform:none !important;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

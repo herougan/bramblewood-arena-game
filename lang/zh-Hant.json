@@ -4016,5 +4016,9 @@
  "{name} is Undead: the heal hurts it for {n}.": "{name} 是亡靈：治療反而對它造成 {n} 點傷害。",
  "{name} is Undead: the cure makes it Bleed {n}.": "{name} 是亡靈：治癒反而讓它流血 {n}。",
  "Heal hurts": "治療即傷害",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} 作為領袖登場：荊棘叢給予 +{a}/+{h}。"
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} 作為領袖登場：荊棘叢給予 +{a}/+{h}。",
+ "Costs": "費用",
+ "GET!": "獲得！",
+ "Level {n}: {name} is in your collection": "等級 {n}：{name} 已加入你的收藏",
+ "{name} - opens as soon as you leave the screen.": "{name} - 離開此畫面後立即開啟。"
 }
