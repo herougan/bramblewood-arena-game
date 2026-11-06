@@ -1,0 +1,127 @@
+{
+ "date": "2026-11-07",
+ "package": "CONTENT13",
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20
+ },
+ "level": 1,
+ "gauntletMap": 10,
+ "decks": {
+  "otters": {
+   "seed": "content13-otters",
+   "pool": [
+    "anvilwhisker-otter",
+    "birdlime-dauber",
+    "clap-net-trapper",
+    "fleetfootd",
+    "helmeted-otter",
+    "marshal-of-rivergate",
+    "mist-net-otter",
+    "net-thrower",
+    "optio-of-the-ford",
+    "otter-angler",
+    "otter-centurion",
+    "otter-ferryman",
+    "otter-flag-bearer",
+    "otter-guard",
+    "otter-lantern-bearer",
+    "otter-netmender",
+    "otter-paddler",
+    "otter-riverguard",
+    "otter-royal-guard",
+    "otter-scout",
+    "otter-shieldback",
+    "river-warden",
+    "riverbed-diver",
+    "rivergate-drummer",
+    "rivergate-recruit",
+    "rivergate-tribune",
+    "riverstone-slinger",
+    "shell-cracker",
+    "shellwright-apprentice"
+   ],
+   "deck": {
+    "fleetfootd": 4,
+    "otter-angler": 4,
+    "otter-ferryman": 4,
+    "otter-royal-guard": 1,
+    "otter-shieldback": 3,
+    "shellwright-apprentice": 4
+   },
+   "score": 0.9271,
+   "reproduce": "node tools/bench/bench.js deck --map 10 --pool anvilwhisker-otter,birdlime-dauber,clap-net-trapper,fleetfootd,helmeted-otter,marshal-of-rivergate,mist-net-otter,net-thrower,optio-of-the-ford,otter-angler,otter-centurion,otter-ferryman,otter-flag-bearer,otter-guard,otter-lantern-bearer,otter-netmender,otter-paddler,otter-riverguard,otter-royal-guard,otter-scout,otter-shieldback,river-warden,riverbed-diver,rivergate-drummer,rivergate-recruit,rivergate-tribune,riverstone-slinger,shell-cracker,shellwright-apprentice --max-unique 6 --max-copies 4 --budget 9000 --final-games 24 --seed content13-otters --focus open --level 1 --mode bpro",
+   "run": "docs/balance/content13/bench-deck-map10-m7-2026-11-07-otters.json",
+   "problems": []
+  },
+  "hummingbirds": {
+   "seed": "content13-hummingbirds",
+   "pool": [
+    "cobalt-talon-fledgling",
+    "cobalt-talon-skirmisher",
+    "crimson-wing-duelist-cadet",
+    "crimson-wing-recruit",
+    "daily-post",
+    "dawn-bellringer",
+    "dominion-nestguard",
+    "gold-throated-acolyte",
+    "honeyjoe-brewer",
+    "hummingbird-needler",
+    "hush-wing-spy",
+    "lantern-bearer",
+    "mosswing-laborer",
+    "nectar-sipper",
+    "nectar-vintner",
+    "petal-fletcher",
+    "ruby-throat-duelist",
+    "sunfeather-scout",
+    "sunspire-choirmother",
+    "sunspire-envoy",
+    "sunspire-sky-sovereign",
+    "sunthroat-courier",
+    "swordbill-challenger",
+    "violet-vane-fletcher",
+    "voidfeather-scout"
+   ],
+   "deck": {
+    "dawn-bellringer": 4,
+    "dominion-nestguard": 4,
+    "lantern-bearer": 3,
+    "sunspire-choirmother": 2,
+    "sunthroat-courier": 4,
+    "swordbill-challenger": 3
+   },
+   "score": 0.8611,
+   "reproduce": "node tools/bench/bench.js deck --map 10 --pool cobalt-talon-fledgling,cobalt-talon-skirmisher,crimson-wing-duelist-cadet,crimson-wing-recruit,daily-post,dawn-bellringer,dominion-nestguard,gold-throated-acolyte,honeyjoe-brewer,hummingbird-needler,hush-wing-spy,lantern-bearer,mosswing-laborer,nectar-sipper,nectar-vintner,petal-fletcher,ruby-throat-duelist,sunfeather-scout,sunspire-choirmother,sunspire-envoy,sunspire-sky-sovereign,sunthroat-courier,swordbill-challenger,violet-vane-fletcher,voidfeather-scout --max-unique 6 --max-copies 4 --budget 9000 --final-games 24 --seed content13-hummingbirds --focus open --level 1 --mode bpro",
+   "run": "docs/balance/content13/bench-deck-map10-m7-2026-11-07-hummingbirds.json",
+   "problems": []
+  }
+ },
+ "mapReference": {
+  "seeds": "9100 + 37g",
+  "games": 200,
+  "results": {
+   "SK-1": {
+    "faction": "otters",
+    "win": 0,
+    "games": 200,
+    "refMap": 0,
+    "refStage": "starter",
+    "refLevel": 0,
+    "enemyLevel": 1,
+    "shield": 1
+   },
+   "SK-2": {
+    "faction": "hummingbirds",
+    "win": 0,
+    "games": 200,
+    "refMap": 0,
+    "refStage": "starter",
+    "refLevel": 0,
+    "enemyLevel": 1,
+    "shield": 1
+   }
+  }
+ }
+}

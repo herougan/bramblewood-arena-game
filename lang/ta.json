@@ -4081,5 +4081,13 @@
  "Power: {n}": "ஆற்றல்: {n}",
  "Power: not measured": "ஆற்றல்: அளக்கப்படவில்லை",
  "Measured {date}": "அளவிடப்பட்ட நாள் {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "அட்டை ஆற்றல் சோதனையில் வெற்றி விகிதம் கழித்தல் 50. 0 சராசரி (பாதி சண்டைகளில் வெல்லும்); 0-க்கு மேல் வலிமையானது, கீழ் பலவீனமானது."
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "அட்டை ஆற்றல் சோதனையில் வெற்றி விகிதம் கழித்தல் 50. 0 சராசரி (பாதி சண்டைகளில் வெல்லும்); 0-க்கு மேல் வலிமையானது, கீழ் பலவீனமானது.",
+ "The Drill Grounds": "பயிற்சி மைதானம்",
+ "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "ரிவர்கேட் படையும் சூரியச்சிறகு இனக்குழுக்களும் போருக்குப் பயிற்சி செய்யும் இடம். நிர்வாகிகளுக்கான சோதனைச் சண்டைகள்: இங்கே வெல்வது எதுவும் கணக்கில் வராது.",
+ "Rivergate Century": "ரிவர்கேட் நூற்றுவர் அணி",
+ "Shields up. Hold the line. Advance on my mark.": "கேடயங்களை உயர்த்துங்கள். வரிசையைக் காத்திடுங்கள். என் சைகையில் முன்னேறுங்கள்.",
+ "Sunfeather War-band": "சூரியச்சிறகு போர்க்குழு",
+ "The Bloom sings for us today. Come and hear it.": "இன்று மலர்ச்சி நமக்காகப் பாடுகிறது. வந்து கேளுங்கள்.",
+ "Admin only: players never see this map.": "நிர்வாகிகளுக்கு மட்டும்: வீரர்கள் இந்த வரைபடத்தை ஒருபோதும் பார்ப்பதில்லை.",
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ நிர்வாகி சோதனைச் சண்டை: இலவசம், எதுவும் தராது."
 }

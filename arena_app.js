@@ -15581,15 +15581,17 @@ function syncAdminModeToAccount(){
   const was = adminModeEnabled;
   try{ adminModeEnabled = adminAllowed() && localStorage.getItem(ADMIN_MODE_KEY)==='1'; }catch(e){ adminModeEnabled = false; }
   syncTestRules(); // 2026-10-16: the rule tests follow Admin Mode
+  try{ c13SyncAdminSubMaps(); }catch(e){} // 2026-11-07 (CONTENT13): the Drill Grounds come and go with Admin Mode
   if(was !== adminModeEnabled){ try{ if(currentTab==='play' && !matchState) renderPlay(); }catch(e){}
     // 2026-10-14 (user: "Make sure admin functions in codex such as show hidden and get all only for admin"): the Codex redraws too.
     try{ if(!adminModeEnabled) codexShowUnseen = false; if(currentTab==='codex' && !matchState) switchTab('codex'); }catch(e){} }
 }
 function setAdminMode(on){
-  if(on && !adminAllowed()){ try{ showToast('Admin tools need an admin account.', 'warn'); }catch(e){} adminModeEnabled = false; syncTestRules(); return; }
+  if(on && !adminAllowed()){ try{ showToast('Admin tools need an admin account.', 'warn'); }catch(e){} adminModeEnabled = false; syncTestRules(); try{ c13SyncAdminSubMaps(); }catch(e){} return; }
   const was = adminModeEnabled; adminModeEnabled = !!on;
   try{ localStorage.setItem(ADMIN_MODE_KEY, adminModeEnabled?'1':'0'); }catch(e){}
   syncTestRules(); // 2026-10-16: the rule tests follow Admin Mode
+  try{ c13SyncAdminSubMaps(); }catch(e){} // 2026-11-07 (CONTENT13): the Drill Grounds come and go with Admin Mode
   // 2026-10-12 (user: "When admin is turned off, remove the admin controls in the card"): redraw what's on screen so no
   // admin button (skirmish panel, card details, Codex) survives the switch.
   if(was !== adminModeEnabled){ try{ document.body.classList.toggle('is-admin', adminModeEnabled); }catch(e){}
@@ -19155,7 +19157,7 @@ function fix8AutoCamp(tries){
 // Sunken Grove, Aerie Vault and Volcano Lair had art baked in but weren't listed here, so it never drew; Murgle Mayhem had none.
 // They now borrow a recoloured map (MAP_ART_DERIVED in assemble_arena.py), and the build fails if this list falls behind.
 // 2026-10-18: + the Babel Spire ("tw") and the Long Burrow ("mlb"), which drew only a gradient.
-const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm","mlb","tw","mpd","muc"]); // + "mpd", the Pale Desert (2026-10-18, package PD: tools/make_map_backgrounds.py mpd)
+const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm","mlb","tw","mpd","muc","mdg"]); // + "mdg", the Drill Grounds (2026-11-07, package CONTENT13: assemble_arena.py MAP_ART_DERIVED) // + "mpd", the Pale Desert (2026-10-18, package PD: tools/make_map_backgrounds.py mpd)
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -19332,13 +19334,18 @@ function subMapEntrancesHTML(map, progress){
     // 2026-10-18 (owner: Lilypad Reach waits on Map 6): a main map is named with its number, "Clear Sable Swampmire (Map 6) to open".
     const gateName = gateMap ? gateMap.name + (!gateMap.sub && mapNumberOf(gateMap.id) != null ? ` (Map ${mapNumberOf(gateMap.id)})` : '') : '';
     const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : gateMap ? `${sm.entry.label || 'A cave'} — Clear ${gateName} to open` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
-    const p = decorPos(map.id, '~sub:'+sm.id, {x: sm.entry.x, y: sm.entry.y});
+    // 2026-11-07 (CONTENT13): an entrance with entry.belowSub sits under that side map's entrance where it is now (the published layout
+    // may have moved the Tutorial's), entry.dy lower; its own layout position still wins
+    const below = sm.entry.belowSub ? CONQUEST_MAPS.find(m=> m.id === sm.entry.belowSub && m.entry) : null;
+    const anchor = below ? decorPos(map.id, '~sub:'+below.id, {x: below.entry.x, y: below.entry.y}) : null;
+    const p = decorPos(map.id, '~sub:'+sm.id, anchor ? {x: anchor.x, y: Math.min(96, anchor.y + (sm.entry.dy || 12))} : {x: sm.entry.x, y: sm.entry.y});
+    const adminTag = sm.adminOnly ? `<span class="c13-admin-tag" aria-hidden="true" title="${escapeAttr(TX('ui.c13-admin-tag'))}">🛠️</span>` : ''; // 2026-11-07 (CONTENT13): only Admin Mode sees it
     // 2026-10-12 (user: "For those submaps whose maps are not caves - change the map icon/logo to be more representative.
     // Lilypad reach should be a lotus flower. and just that!"): only the real caves keep the rock and cave mouth; every other
     // side map is just its own emblem (a lotus, a clover, a nest…), with a padlock badge while it's locked.
     if(!SUBMAP_CAVES.has(sm.id)){
       return `<button type="button" class="map-cave map-subcave map-subemblem ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}${flairLairMap(sm) ? ' is-lair-final' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
-      <span class="mse-ico" aria-hidden="true">${SUBMAP_EMBLEM_SVG[sm.id] || sm.icon}</span>${flairLairMap(sm) ? flairLairEntranceHTML() /* FLAIR1 (2026-10-28): the Dragon Lair's molten ring and crown */ : ''}${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
+      <span class="mse-ico" aria-hidden="true">${SUBMAP_EMBLEM_SVG[sm.id] || sm.icon}</span>${adminTag}${flairLairMap(sm) ? flairLairEntranceHTML() /* FLAIR1 (2026-10-28): the Dragon Lair's molten ring and crown */ : ''}${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
     }
     return `<button type="button" class="map-cave map-subcave ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
       <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span>${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
@@ -23466,7 +23473,7 @@ function resumeAbandonedMatchNow(){
     const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: snap.battleMode || 'open', rules: (snap.arenaRuleset && snap.arenaRuleset.rules) || (snap.conquestNode && fightRules(snap.conquestNode.mapId, (findConquestNode(snap.conquestNode.mapId, snap.conquestNode.nodeId)||{node:{}}).node)) || undefined});
     matchState = Object.assign({engine, sideOf:id=> id===1?'A':'B', over:false, winner:0, log:snap.log||[], resolving:false, active:1, turnDone:{1:false,2:false}, awaitingPass:false, speedMult:1}, snap);
     delete matchState.savedAt;
-    if(matchState.proFight || matchState.refDeck) matchState.adminTest = true; // 2026-10-24 (package PRO): a PRO fight resumed is still unpaid; PREF: a reference-set fight too
+    if(matchState.proFight || matchState.refDeck || (matchState.conquestNode && c13NodeIsAdminTest(matchState.conquestNode.mapId))) matchState.adminTest = true; // + CONTENT13 (2026-11-07): a Drill Grounds fight // 2026-10-24 (package PRO): a PRO fight resumed is still unpaid; PREF: a reference-set fight too
     lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
     switchTab('play');
     showToast(TX('toast.picking-up-your-unfinished-match-where'));
@@ -24395,6 +24402,48 @@ CONQUEST_MAPS.filter(mp=> !mp.sub).forEach((mp, i)=>{
   if(n && n.grantsItem == null) n.grantsItem = true;
 });
 const CONQUEST_MAPS_BASELINE = JSON.parse(JSON.stringify(CONQUEST_MAPS));
+// C13_ADMIN_SUBMAPS:BEGIN
+// The Drill Grounds (2026-11-07, package CONTENT13, owner 11-06 23:35 #8: "Below the tutorial, add a sub-map (admin only). It has 2 SK
+// decks, one having a random assortment of optimised otter faction cards, the other hummingbird faction cards."): a side map of the
+// Outskirts whose entrance sits right under the Tutorial's. It is in CONQUEST_MAPS only while Admin Mode is on (c13SyncAdminSubMaps,
+// called at load and by setAdminMode / syncAdminModeToAccount), so players, the balance tools and the road tests never meet it; it is
+// added after the baseline copy, at the end, so no other side map's letter (0-A Tutorial, 0-B Old Bramble) moves. Its two fights are
+// test fights (matchState.adminTest): free, no rewards, drops, XP, rank or progress. Each deck is the deck optimiser's best faction-pure
+// deck (tools/content13_faction_decks_2026_11_07.js: the cards whose archetypes hold "Otter" / "Hummingbird", tools/bench/bench.js deck,
+// open focus, 6 different cards / 4 copies / 20 cards, Map 10's gauntlet, 9,000 search games, seeds content13-otters / content13-hummingbirds;
+// docs/balance/content13/faction-decks-2026-11-07.json); both fight at a fixed Level 1, the optimiser's level.
+const C13_ADMIN_SUBMAPS = [
+  { id:"mdg", sub:true, parent:"m1", adminOnly:true, entry:{x:7, y:92, belowSub:"mtut", dy:12, label:"The Drill Grounds"}, name:"The Drill Grounds", icon:"🎌", blurb:"Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.", sequential:false,
+    nodes: [
+      { key:"SK-1", code:"SK-1", kind:"skirmish", faction:"otters", name:"Rivergate Century", icon:"🦦", enemyLevel:1, requires:[], fixedPos:{x:30, y:58}, flavor:"Shields up. Hold the line. Advance on my mark.", deck:{"fleetfootd":4,"otter-angler":4,"otter-ferryman":4,"shellwright-apprentice":4,"otter-shieldback":3,"otter-royal-guard":1} },
+      { key:"SK-2", code:"SK-2", kind:"skirmish", faction:"hummingbirds", name:"Sunfeather War-band", icon:"🌺", enemyLevel:1, requires:[], fixedPos:{x:70, y:42}, flavor:"The Bloom sings for us today. Come and hear it.", deck:{"dawn-bellringer":4,"dominion-nestguard":4,"sunthroat-courier":4,"lantern-bearer":3,"swordbill-challenger":3,"sunspire-choirmother":2} },
+    ]},
+];
+const C13_ADMIN_BASE = JSON.parse(JSON.stringify(C13_ADMIN_SUBMAPS));
+function c13IsAdminMap(m){ const map = typeof m === 'string' ? C13_ADMIN_SUBMAPS.find(x=> x.id === m) : m; return !!(map && map.adminOnly); }
+function c13AdminOn(){ return typeof adminModeEnabled !== 'undefined' && !!adminModeEnabled; }
+// the words (TX: translated), set each time the map comes in so a language switch is followed
+function c13ApplyTexts(m){
+  if(typeof TX !== 'function' || !m || m.id !== 'mdg') return;
+  m.name = TX('map.c13-name'); m.blurb = TX('map.c13-blurb'); if(m.entry) m.entry.label = TX('map.c13-entry');
+  const T = {'SK-1': ['map.c13-1-name', 'map.c13-1-flavor'], 'SK-2': ['map.c13-2-name', 'map.c13-2-flavor']};
+  (m.nodes || []).forEach(n=>{ const t = T[n.key]; if(t){ n.name = TX(t[0]); n.flavor = TX(t[1]); } });
+}
+// in CONQUEST_MAPS while Admin Mode is on, out of it otherwise (a map left open there goes back to its parent)
+function c13SyncAdminSubMaps(){
+  let maps; try{ maps = CONQUEST_MAPS; }catch(e){ return; } // before CONQUEST_MAPS exists (an early setAdminMode): the load call does it
+  const on = c13AdminOn();
+  C13_ADMIN_SUBMAPS.forEach(def=>{
+    const i = maps.indexOf(def);
+    if(on && i < 0){ c13ApplyTexts(def); maps.push(def); }
+    else if(!on && i >= 0){ maps.splice(i, 1);
+      try{ if(conquestSelectedMap === def.id){ conquestSelectedMap = def.parent; conquestSelectedNodeKey = null; } }catch(e){} }
+  });
+}
+// its fights pay nothing and cost nothing; a fight of it from a save made in Admin Mode stays a test fight
+function c13NodeIsAdminTest(mapId){ return C13_ADMIN_SUBMAPS.some(m=> m.id === mapId); }
+c13SyncAdminSubMaps();
+// C13_ADMIN_SUBMAPS:END
 const NODE_EDITS_KEY = 'bramblewood_node_edits_v1';
 let nodeEdits = {};
 try{ nodeEdits = JSON.parse(localStorage.getItem(NODE_EDITS_KEY)||'{}') || {}; }catch(e){ nodeEdits = {}; }
@@ -24403,11 +24452,13 @@ function applyNodeEdits(){
   // The tutorials moved from Map 0 to the Tutorial side map (2026-10-13): their saved edits move with them.
   try{ const p1 = nodeEdits.m1 && nodeEdits.m1.patches; if(p1 && (p1.tutorial || p1.tutorial2)){ const t = nodeEdits.mtut = nodeEdits.mtut || {}; t.patches = t.patches || {}; ['tutorial','tutorial2'].forEach(k=>{ if(p1[k] && !t.patches[k]) t.patches[k] = p1[k]; delete p1[k]; }); } }catch(e){}
   CONQUEST_MAPS.forEach((map, mi)=>{
-    const base = CONQUEST_MAPS_BASELINE[mi] ? JSON.parse(JSON.stringify(CONQUEST_MAPS_BASELINE[mi].nodes)) : [];
+    const bmap = c13IsAdminMap(map) ? C13_ADMIN_BASE.find(x=> x.id === map.id) : CONQUEST_MAPS_BASELINE[mi]; // 2026-11-07 (CONTENT13): the Drill Grounds sit past the baseline copy
+    const base = bmap ? JSON.parse(JSON.stringify(bmap.nodes)) : [];
     const ed = nodeEdits[map.id] || {};
     const nodes = base.concat(JSON.parse(JSON.stringify(ed.added||[])));
     nodes.forEach(n=>{ const p = (ed.patches||{})[n.key]; if(p) Object.assign(n, stripRuntimeNodeFields(JSON.parse(JSON.stringify(p)))); }); // 2026-10-17: no stale _preJumpRequires from an old save
     map.nodes.length = 0; nodes.forEach(n=> map.nodes.push(n));
+    if(c13IsAdminMap(map)) c13ApplyTexts(map); // 2026-11-07 (CONTENT13): the Drill Grounds' fight names, translated again
   });
   try{ applyRoadKinds(); }catch(e){}
   try{ applyAmbushNode(); }catch(e){}
@@ -24582,7 +24633,7 @@ function secretCurrentLinks(mapId, key){ const p = cleanSecretPatch(((nodeEdits[
 // What a saved edit is compared against (link editor, skirmish editor, showcase): the built-in node, or the hidden skirmish's
 // design, or for a jumper's `before` its built-in links with the jumper in them.
 function designedNodeBase(mapId, key){
-  const b = (CONQUEST_MAPS_BASELINE.find(m=> m.id === mapId) || {nodes:[]}).nodes.find(n=> n.key === key);
+  const b = (CONQUEST_MAPS_BASELINE.find(m=> m.id === mapId) || C13_ADMIN_BASE.find(m=> m.id === mapId) /* 2026-11-07 (CONTENT13) */ || {nodes:[]}).nodes.find(n=> n.key === key);
   if(b){ const j = JUMPER_SKIRMISHES.find(x=> x.map === mapId && x.before === key);
     if(!j) return b; const c = JSON.parse(JSON.stringify(b)); c.requires = jumperBeforeLinks(c.requires, j); return c; }
   const s = secretEntryOf(mapId, key); if(!s) return {};
@@ -25498,7 +25549,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
 // is cleared, the repeat one after), the card number the same one the win rolls (nodeCardDropChance). Nothing on a tutorial fight or when neither can drop.
 function fmtDropPct(p){ const v = p * 100; return (v >= 10 ? Math.round(v) : Math.round(v * 100) / 100) + '%'; }
 function cnpDropsLineHTML(mapId, node, done){
-  if(!node || node.kind === 'tutorial' || node.virtual) return '';
+  if(!node || node.kind === 'tutorial' || node.virtual || c13NodeIsAdminTest(mapId) /* 2026-11-07 (CONTENT13) */) return '';
   let egg = 0, card = 0; try{ egg = eggChanceFor(node, mapId, !done) || 0; }catch(e){} try{ card = nodeCardDropChance(mapId, node, {repeat: !!done}) || 0; }catch(e){}
   if(!(egg > 0) && !(card > 0)) return '';
   const parts = [];
@@ -25585,6 +25636,7 @@ function resumeLastMap(){
   }catch(e){ return false; }
 }
 function completeConquestNode(node, rank){
+  if(node && c13NodeIsAdminTest(node.mapId)) return; // 2026-11-07 (CONTENT13): the Drill Grounds keep no progress
   const progress = loadConquestProgress();
   const id = conquestNodeId(node.mapId, node.nodeId);
   try{ const mains = mainConquestMaps(), here = CONQUEST_MAPS.find(m=> m.id === node.mapId), nx = here && !here.sub ? mains[mains.indexOf(here) + 1] : null;
@@ -28128,7 +28180,8 @@ function renderConquestSubTab(body){
   healTutorial2Flag();
   try{ if(!matchState) resumeLastMap(); }catch(e){} // 2026-10-24 (package MAP, owner 17:01 #1): back where you left off
   if(!loadTutorial2Done() && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit) && conquestSelectedMap !== 'mtut') conquestSelectedMap = 'mtut';
-  { const hid = CONQUEST_MAPS.find(m=> m.id === conquestSelectedMap); if(hid && dungeonHiddenFromPlayer(hid)) conquestSelectedMap = hid.parent || 'm1'; } // 2026-10-23 (TU2): a hidden daily dungeon left open in a save
+  { const hid = CONQUEST_MAPS.find(m=> m.id === conquestSelectedMap); if(hid && dungeonHiddenFromPlayer(hid)) conquestSelectedMap = hid.parent || 'm1';
+    if(!hid && c13IsAdminMap(conquestSelectedMap)) conquestSelectedMap = 'm1'; } // 2026-11-07 (CONTENT13): the Drill Grounds left open after Admin Mode went off // 2026-10-23 (TU2): a hidden daily dungeon left open in a save
   // 2026-10-23 (package MK): a next map that is open but out of reach (world still hidden, a reload since the clearing win, or a save
   // from before PG) is the road's next stop, once for each new furthest map.
   if(loadTutorial2Done() && !matchState && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)){ const far = healMapProgress();
@@ -28594,7 +28647,7 @@ function renderConquestSubTab(body){
     // 2026-10-12 (user: "'Deck Hidden' - don't say anything. Just a deck area, blacked out, with a locked icon with the B rank
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
-    const energyCost = (selectedNode.virtual || selectedNode.pro) ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
+    const energyCost = (selectedNode.virtual || selectedNode.pro || c13NodeIsAdminTest(map.id) /* CONTENT13: a Drill Grounds fight is free */) ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
     const dgKeys = !selectedNode.virtual && isDailyDungeonMap(map) ? dungeonTicketsLeft() : null; // 2026-10-18 (package DK): a floor uses a key; 0 = no fight
     panelEl.hidden = false; panelEl.classList.toggle('pl2-is-pro', !!selectedNode.pro); panelEl.classList.toggle('is-skirm', !!selectedNode.skirm); // PL2 (2026-10-25, PRO-UI): a PRO fight pays nothing and is not edited here: no rewards, drops or admin edits
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
@@ -28615,7 +28668,7 @@ function renderConquestSubTab(body){
           : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight. Costs ${energyCost}⚡ a run.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
       <div class="cnp-head">${(()=>{ const tileOf = sid=> `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" ${(sumNode.deck||{})[sid] ? `data-shown-level="${edShownLevel(sumNode, sid)}"` : ''} aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = (sumNode.deck||{})[sid] ? edEnemyShownDef(sumNode, sid) : defs[sid]; /* 2026-10-21 (package ED): an enemy card at the enemy's level */ return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>`; const L = leadersShownFor(selectedNode, map.id); if(L.length > 1) return `<span class="cnp-pair" title="${escapeAttr(TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}))}">${L.slice(0, 2).map(tileOf).join('')}</span>`; /* 2026-10-23 (package LEAD): a paired boss shows both leaders */ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? tileOf(sid) : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode, adminModeEnabled && !isTut && !selectedNode.virtual)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div>${isTut ? '' : skirmishFieldHTML(map.id, selectedNode) /* 2026-10-19 (package UX): no Field panel on a tutorial; 2026-10-24 (package NE, owner 11:26): in the top row, under the BR */}</div>
-        ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
+        ${c13NodeIsAdminTest(map.id) ? `<p class="cnp-c13-note">${escapeHtml(TX('ui.c13-panel-note'))}</p>` /* 2026-11-07 (CONTENT13): a test fight, no rewards */ : cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
       ${cnpDropsLineHTML(map.id, selectedNode, done) /* 2026-10-22 (package RW, owner N22-6): one short line of the small drop chances */}
       ${newSkillRibbonHTML(selectedNode)}
@@ -28627,7 +28680,7 @@ function renderConquestSubTab(body){
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span></div>`/* 2026-10-16 (user: "Just a lock symbol is enough, no need for a emblem") */}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
-      ${adminModeEnabled ? `<div class="cnp-admin-side" role="group" aria-label="Admin"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button><button type="button" class="btn small ghost" id="cnpMapCards" aria-haspopup="dialog">${escapeHtml(TX('ui.pk1-map-cards-btn')) /* 2026-10-28 (package PACK1) */}</button></div>` : ''}
+      ${adminModeEnabled ? `<div class="cnp-admin-side" role="group" aria-label="Admin"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button>${c13NodeIsAdminTest(map.id) ? '' /* 2026-11-07 (CONTENT13): the Drill Grounds pay nothing and keep no progress: no Edit rewards, no Mark cleared */ : `<button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button>`}<button type="button" class="btn small ghost" id="cnpMapCards" aria-haspopup="dialog">${escapeHtml(TX('ui.pk1-map-cards-btn')) /* 2026-10-28 (package PACK1) */}</button></div>` : ''}
       ${vis4MapCardsHTML(map, selectedNode)}
       `;
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
@@ -32443,6 +32496,8 @@ function levelledEnemyDeck(node, deck){
 }
 function startConquestMatch(mapId, nodeKey, opts){
   let found = findConquestNode(mapId, nodeKey); if(!found) return false;
+  // 2026-11-07 (CONTENT13): the Drill Grounds' fights are Admin Mode test fights: free, and they pay nothing (adminTest below)
+  const c13Test = c13NodeIsAdminTest(mapId); if(c13Test){ if(!c13AdminOn()) return false; if(!(opts && opts.skipEnergyCost)) opts = Object.assign({}, opts, {skipEnergyCost: true}); }
   // 2026-10-16: a daily dungeon's climb restarts after a loss, so "Play again" on floor 7 goes to the floor you're on now (floor 1)
   { const dm = CONQUEST_MAPS.find(m=> m.id === mapId);
     if(isDailyDungeonMap(dm) && found.node.floor && !(opts && opts.skipEnergyCost)){ const at = dungeonFloorProgress(dm).done + 1;
@@ -32492,7 +32547,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   }
   const dungeonKeyStaked = dungeonEntry && dungeonStakeKey(mapId); // 2026-10-18 (package DK): the fight uses a key, win or lose (was: a win gave it back)
   if(dungeonKeyStaked){ showToast(TX('toast.dungeon-key-used', {n: dungeonTicketsLeft()}), 'ok'); try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
-  try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
+  try{ if(!c13Test) noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
   const myOwnedDeck = refPlay ? refPartsDeck(refPlay.parts, referenceBaseDefs(), matchDefsOverlay) : ownedDeckForMatch(myDeckCounts); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch); PREF: or the reference set's copies
@@ -32542,6 +32597,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     // leader is already on the field from turn one, so there's nothing left to summon.
     leaderDefId: battleMode==='gladiator' ? null : refPlay ? (refPlay.leader && getCardDefs()[refPlay.leader] ? refPlay.leader : null) /* PREF: the set's leader */ : matchLeaderId(),
     leaderUid: battleMode==='gladiator' && players[1].gladiatorLeaderUid!=null ? players[1].gladiatorLeaderUid : null};
+  if(c13Test) matchState.adminTest = true; // 2026-11-07 (CONTENT13): no rewards, drops, XP, rank or progress
   if(refPlay){ matchState.adminTest = true; matchState.refDeck = {set: refPlay.set, label: refPlay.multi ? refPlay.label : refSetLabelTX(refPlay.set), mapNo: refPlay.mapNo, level: refPlay.level, pick: refPlay.pick || null};
     /* 2026-10-31 (package UI10, owner EE3): no toast when a reference deck is dealt (REF5 showed which of the map's decks) */ } // 2026-10-25 (package PREF): no rewards, a REF tag
   if(node.kind === 'dungeon'){ const cfg = dungeonConfig(node), waves = dungeonWaves(node); matchState.dungeon = {cfg, waves, wave:0, startRound:1};

@@ -1,0 +1,324 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-06T21:38:33.697Z",
+ "fingerprint": "0b1b8982f532",
+ "map": {
+  "id": "m7",
+  "num": 10,
+  "name": "Coral Current"
+ },
+ "level": 1,
+ "pool": [
+  "anvilwhisker-otter",
+  "birdlime-dauber",
+  "clap-net-trapper",
+  "fleetfootd",
+  "helmeted-otter",
+  "marshal-of-rivergate",
+  "mist-net-otter",
+  "net-thrower",
+  "optio-of-the-ford",
+  "otter-angler",
+  "otter-centurion",
+  "otter-ferryman",
+  "otter-flag-bearer",
+  "otter-guard",
+  "otter-lantern-bearer",
+  "otter-netmender",
+  "otter-paddler",
+  "otter-riverguard",
+  "otter-royal-guard",
+  "otter-scout",
+  "otter-shieldback",
+  "river-warden",
+  "riverbed-diver",
+  "rivergate-drummer",
+  "rivergate-recruit",
+  "rivergate-tribune",
+  "riverstone-slinger",
+  "shell-cracker",
+  "shellwright-apprentice"
+ ],
+ "poolNames": [
+  "Anvilwhisker Otter",
+  "Birdlime Dauber",
+  "Clap-net Trapper",
+  "Fleetfoot'd",
+  "Helmeted Otter",
+  "Marshal of Rivergate",
+  "Mist-net Otter",
+  "Net Thrower",
+  "Optio of the Ford",
+  "Otter Angler",
+  "Otter Centurion",
+  "Otter Ferryman",
+  "Otter Flag Bearer",
+  "Otter Guard",
+  "Otter Lantern Bearer",
+  "Otter Netmender",
+  "Otter Paddler",
+  "Otter Riverguard",
+  "Royal Guard",
+  "Otter Scout",
+  "Otter Shieldback",
+  "River Warden",
+  "Riverbed Diver",
+  "Rivergate Drummer",
+  "Rivergate Recruit",
+  "Rivergate Tribune",
+  "Riverstone Slinger",
+  "Shell-Cracker",
+  "Shellwright Apprentice"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "content13-otters",
+  "budget": 9000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "bpro"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:10-1",
+   "label": "vs 10-1 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-2",
+   "label": "vs 10-2 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-3",
+   "label": "vs 10-3 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-4",
+   "label": "vs 10-4 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-5",
+   "label": "vs 10-5 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-6",
+   "label": "vs 10-6 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-7",
+   "label": "vs 10-7 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-8",
+   "label": "vs 10-8 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-9",
+   "label": "vs 10-9 boss's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 10-1's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:road10",
+   "label": "vs reference deck (Map 10) under 10-2's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
+   "weight": 0.0833
+  }
+ ],
+ "focuses": [
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "open",
+   "steps": 26,
+   "moves": 8,
+   "games": 9240,
+   "apartFromEarlier": null
+  }
+ ],
+ "apart": 6,
+ "seconds": 84,
+ "games": 9432,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "tide x12"
+   ],
+   "deck": {
+    "fleetfootd": 4,
+    "otter-angler": 4,
+    "otter-ferryman": 4,
+    "otter-royal-guard": 1,
+    "otter-shieldback": 3,
+    "shellwright-apprentice": 4
+   },
+   "cards": [
+    {
+     "id": "fleetfootd",
+     "name": "Fleetfoot'd",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "otter-angler",
+     "name": "Otter Angler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "otter-ferryman",
+     "name": "Otter Ferryman",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "shellwright-apprentice",
+     "name": "Shellwright Apprentice",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "otter-shieldback",
+     "name": "Otter Shieldback",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "otter-royal-guard",
+     "name": "Royal Guard",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "superrare"
+    }
+   ],
+   "score": 0.9271,
+   "ci": [
+    0.9022,
+    0.952
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.95,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 12
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-1",
+     "label": "vs 10-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-2",
+     "label": "vs 10-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-3",
+     "label": "vs 10-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-4",
+     "label": "vs 10-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-5",
+     "label": "vs 10-5 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-6",
+     "label": "vs 10-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-7",
+     "label": "vs 10-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-8",
+     "label": "vs 10-8 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-9",
+     "label": "vs 10-9 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road10",
+     "label": "vs reference deck (Map 10) under 10-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map 10 --pool anvilwhisker-otter,birdlime-dauber,clap-net-trapper,fleetfootd,helmeted-otter,marshal-of-rivergate,mist-net-otter,net-thrower,optio-of-the-ford,otter-angler,otter-centurion,otter-ferryman,otter-flag-bearer,otter-guard,otter-lantern-bearer,otter-netmender,otter-paddler,otter-riverguard,otter-royal-guard,otter-scout,otter-shieldback,river-warden,riverbed-diver,rivergate-drummer,rivergate-recruit,rivergate-tribune,riverstone-slinger,shell-cracker,shellwright-apprentice --max-unique 6 --max-copies 4 --budget 9000 --final-games 24 --seed content13-otters --focus open --level 1 --mode bpro"
+}

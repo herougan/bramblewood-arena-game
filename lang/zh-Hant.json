@@ -4079,5 +4079,13 @@
  "Power: {n}": "強度:{n}",
  "Power: not measured": "強度:未測量",
  "Measured {date}": "測量於 {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "卡牌強度測試中的勝率減去 50。0 為平均(贏下一半戰鬥);大於 0 更強,小於 0 更弱。"
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "卡牌強度測試中的勝率減去 50。0 為平均(贏下一半戰鬥);大於 0 更強,小於 0 更弱。",
+ "The Drill Grounds": "操練場",
+ "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "河門軍團與日羽諸部在此為戰爭操練。管理員的測試戰鬥：在這裡贏得的一切都不算數。",
+ "Rivergate Century": "河門百人隊",
+ "Shields up. Hold the line. Advance on my mark.": "舉盾。守住陣線。聽我號令前進。",
+ "Sunfeather War-band": "日羽戰團",
+ "The Bloom sings for us today. Come and hear it.": "今日繁花為我們歌唱。來聽吧。",
+ "Admin only: players never see this map.": "僅限管理員：玩家永遠看不到這張地圖。",
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 管理員測試戰鬥：免費，也沒有任何獎勵。"
 }

@@ -4080,5 +4080,13 @@
  "Power: {n}": "Potenza: {n}",
  "Power: not measured": "Potenza: non misurata",
  "Measured {date}": "Misurata il {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Percentuale di vittorie nel test di potenza delle carte, meno 50. 0 è la media (vince metà dei combattimenti); sopra 0 è più forte, sotto 0 più debole."
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Percentuale di vittorie nel test di potenza delle carte, meno 50. 0 è la media (vince metà dei combattimenti); sopra 0 è più forte, sotto 0 più debole.",
+ "The Drill Grounds": "La Piazza d’Armi",
+ "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "Dove la Legione di Rivergate e le Tribù di Piumasole si addestrano alla guerra. Scontri di prova per gli admin: niente di ciò che si vince qui conta.",
+ "Rivergate Century": "Centuria di Rivergate",
+ "Shields up. Hold the line. Advance on my mark.": "Scudi alzati. Tenete la linea. Avanzate al mio segnale.",
+ "Sunfeather War-band": "Banda di guerra di Piumasole",
+ "The Bloom sings for us today. Come and hear it.": "Oggi la Fioritura canta per noi. Vieni ad ascoltarla.",
+ "Admin only: players never see this map.": "Solo admin: i giocatori non vedono mai questa mappa.",
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Scontro di prova admin: gratuito, e non dà nulla."
 }

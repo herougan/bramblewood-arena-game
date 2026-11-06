@@ -4081,5 +4081,13 @@
  "Power: {n}": "파워: {n}",
  "Power: not measured": "파워: 측정 안 됨",
  "Measured {date}": "측정일 {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "카드 파워 테스트의 승률에서 50을 뺀 값입니다. 0은 평균(전투의 절반을 이김), 0보다 크면 더 강하고 작으면 더 약합니다."
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "카드 파워 테스트의 승률에서 50을 뺀 값입니다. 0은 평균(전투의 절반을 이김), 0보다 크면 더 강하고 작으면 더 약합니다.",
+ "The Drill Grounds": "훈련장",
+ "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "리버게이트 군단과 햇깃 부족이 전쟁을 위해 훈련하는 곳. 관리자용 시험 전투: 여기서 얻은 것은 아무것도 인정되지 않습니다.",
+ "Rivergate Century": "리버게이트 백인대",
+ "Shields up. Hold the line. Advance on my mark.": "방패를 들어라. 전열을 지켜라. 내 신호에 전진하라.",
+ "Sunfeather War-band": "햇깃 전투단",
+ "The Bloom sings for us today. Come and hear it.": "오늘 꽃이 우리를 위해 노래한다. 와서 들어라.",
+ "Admin only: players never see this map.": "관리자 전용: 플레이어는 이 맵을 절대 볼 수 없습니다.",
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 관리자 시험 전투: 무료이며 보상이 없습니다."
 }

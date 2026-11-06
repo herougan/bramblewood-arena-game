@@ -1,0 +1,321 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-11-06T21:39:49.589Z",
+ "fingerprint": "0b1b8982f532",
+ "map": {
+  "id": "m7",
+  "num": 10,
+  "name": "Coral Current"
+ },
+ "level": 1,
+ "pool": [
+  "cobalt-talon-fledgling",
+  "cobalt-talon-skirmisher",
+  "crimson-wing-duelist-cadet",
+  "crimson-wing-recruit",
+  "daily-post",
+  "dawn-bellringer",
+  "dominion-nestguard",
+  "gold-throated-acolyte",
+  "honeyjoe-brewer",
+  "hummingbird-needler",
+  "hush-wing-spy",
+  "lantern-bearer",
+  "mosswing-laborer",
+  "nectar-sipper",
+  "nectar-vintner",
+  "petal-fletcher",
+  "ruby-throat-duelist",
+  "sunfeather-scout",
+  "sunspire-choirmother",
+  "sunspire-envoy",
+  "sunspire-sky-sovereign",
+  "sunthroat-courier",
+  "swordbill-challenger",
+  "violet-vane-fletcher",
+  "voidfeather-scout"
+ ],
+ "poolNames": [
+  "Cobalt Fledgling",
+  "Cobalt Talon Skirmisher",
+  "Crimson Wing Duelist Cadet",
+  "Crimson Recruit",
+  "Daily Post",
+  "Dawn Bellringer",
+  "Sunfeather Nestguard",
+  "Gold-throated Acolyte",
+  "Honeyjoe Brewer",
+  "Hummingbird Needler",
+  "Hush-Wing Spy",
+  "Lantern Bearer",
+  "Mosswing",
+  "Nectar Sipper",
+  "Nectar Vintner",
+  "Petal Fletcher",
+  "Ruby-Throat Duelist",
+  "Sunfeather Scout",
+  "Sunspire Choirmother",
+  "Sunspire Envoy",
+  "Sunspire Sky-Sovereign",
+  "Sunthroat Courier",
+  "Swordbill Challenger",
+  "Violet Vane Fletcher",
+  "Voidfeather Scout"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "content13-hummingbirds",
+  "budget": 9000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "bpro"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:10-1",
+   "label": "vs 10-1 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-2",
+   "label": "vs 10-2 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-3",
+   "label": "vs 10-3 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-4",
+   "label": "vs 10-4 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-5",
+   "label": "vs 10-5 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-6",
+   "label": "vs 10-6 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-7",
+   "label": "vs 10-7 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-8",
+   "label": "vs 10-8 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:10-9",
+   "label": "vs 10-9 boss's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 10-1's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:road10",
+   "label": "vs reference deck (Map 10) under 10-2's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
+   "weight": 0.0833
+  }
+ ],
+ "focuses": [
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "open",
+   "steps": 23,
+   "moves": 10,
+   "games": 9000,
+   "apartFromEarlier": null
+  }
+ ],
+ "apart": 6,
+ "seconds": 75,
+ "games": 9192,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "big (10 copies at 1 Lumber, average 0.5)",
+    "flying x20",
+    "day x6"
+   ],
+   "deck": {
+    "dawn-bellringer": 4,
+    "dominion-nestguard": 4,
+    "lantern-bearer": 3,
+    "sunspire-choirmother": 2,
+    "sunthroat-courier": 4,
+    "swordbill-challenger": 3
+   },
+   "cards": [
+    {
+     "id": "dawn-bellringer",
+     "name": "Dawn Bellringer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dominion-nestguard",
+     "name": "Sunfeather Nestguard",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "sunthroat-courier",
+     "name": "Sunthroat Courier",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lantern-bearer",
+     "name": "Lantern Bearer",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "swordbill-challenger",
+     "name": "Swordbill Challenger",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "sunspire-choirmother",
+     "name": "Sunspire Choirmother",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8611,
+   "ci": [
+    0.8253,
+    0.8969
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.9,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 20
+    },
+    {
+     "f": "day",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-1",
+     "label": "vs 10-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-2",
+     "label": "vs 10-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-3",
+     "label": "vs 10-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-4",
+     "label": "vs 10-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-5",
+     "label": "vs 10-5 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-6",
+     "label": "vs 10-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-7",
+     "label": "vs 10-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-8",
+     "label": "vs 10-8 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-9",
+     "label": "vs 10-9 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road10",
+     "label": "vs reference deck (Map 10) under 10-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map 10 --pool cobalt-talon-fledgling,cobalt-talon-skirmisher,crimson-wing-duelist-cadet,crimson-wing-recruit,daily-post,dawn-bellringer,dominion-nestguard,gold-throated-acolyte,honeyjoe-brewer,hummingbird-needler,hush-wing-spy,lantern-bearer,mosswing-laborer,nectar-sipper,nectar-vintner,petal-fletcher,ruby-throat-duelist,sunfeather-scout,sunspire-choirmother,sunspire-envoy,sunspire-sky-sovereign,sunthroat-courier,swordbill-challenger,violet-vane-fletcher,voidfeather-scout --max-unique 6 --max-copies 4 --budget 9000 --final-games 24 --seed content13-hummingbirds --focus open --level 1 --mode bpro"
+}

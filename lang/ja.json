@@ -4079,5 +4079,13 @@
  "Power: {n}": "パワー: {n}",
  "Power: not measured": "パワー: 未計測",
  "Measured {date}": "計測日 {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "カードパワーテストの勝率から50を引いた値。0が平均(戦いの半分に勝つ)、0より上は強く、下は弱いです。"
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "カードパワーテストの勝率から50を引いた値。0が平均(戦いの半分に勝つ)、0より上は強く、下は弱いです。",
+ "The Drill Grounds": "練兵場",
+ "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "リヴァーゲート軍団と陽羽の部族が戦に備えて訓練する場所。管理者用のテスト戦闘：ここで得たものは何も数えられない。",
+ "Rivergate Century": "リヴァーゲート百人隊",
+ "Shields up. Hold the line. Advance on my mark.": "盾を上げよ。戦列を保て。合図で前進せよ。",
+ "Sunfeather War-band": "陽羽の戦士団",
+ "The Bloom sings for us today. Come and hear it.": "今日、花は我らのために歌う。聞きに来るがいい。",
+ "Admin only: players never see this map.": "管理者専用：プレイヤーにこのマップは表示されません。",
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 管理者テスト戦闘：無料、報酬なし。"
 }

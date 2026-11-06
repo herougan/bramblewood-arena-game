@@ -4080,5 +4080,13 @@
  "Power: {n}": "Kekuatan: {n}",
  "Power: not measured": "Kekuatan: belum diukur",
  "Measured {date}": "Diukur pada {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Persentase menang dalam uji kekuatan kartu, dikurangi 50. 0 adalah rata-rata (menang setengah pertarungan); di atas 0 lebih kuat, di bawah 0 lebih lemah."
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Persentase menang dalam uji kekuatan kartu, dikurangi 50. 0 adalah rata-rata (menang setengah pertarungan); di atas 0 lebih kuat, di bawah 0 lebih lemah.",
+ "The Drill Grounds": "Lapangan Latihan",
+ "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "Tempat Legiun Rivergate dan Suku-Suku Bulu Surya berlatih untuk perang. Pertarungan uji untuk admin: tak ada yang dimenangkan di sini yang dihitung.",
+ "Rivergate Century": "Centuria Rivergate",
+ "Shields up. Hold the line. Advance on my mark.": "Angkat perisai. Jaga barisan. Maju atas aba-abaku.",
+ "Sunfeather War-band": "Pasukan Perang Bulu Surya",
+ "The Bloom sings for us today. Come and hear it.": "Sang Mekar bernyanyi untuk kami hari ini. Datang dan dengarkan.",
+ "Admin only: players never see this map.": "Khusus admin: pemain tidak pernah melihat peta ini.",
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Pertarungan uji admin: gratis, dan tidak memberi apa-apa."
 }

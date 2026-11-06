@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-07: Package CONTENT13 (on its branch, not released)
+- Done: 23:35 #8. **The Drill Grounds** (🎌), a side map of the Outskirts right under the Tutorial's entrance, in Admin Mode only (it is out of the map list while Admin Mode is off, so players, the balance tools and the road tests never see it). Two skirmishes at a fixed Level 1: SK-1 Rivergate Century (Otter) and SK-2 Sunfeather War-band (Hummingbird), each the deck optimiser's best faction-pure deck (seeded, `tools/content13_faction_decks_2026_11_07.js`). Test fights: free, no rewards, drops, XP, rank or progress.
+- Owner calls open: CONTENT13-1 (K14's one-copy rule waived there; Level 1).
+- Next: nothing queued; the decks can be rebuilt at another level with the tool's `run --budget 9000` and a new seed.
+
 ## 11-07: Package BAL21 (on its branch, not released)
 - Done: road retune of Maps 0-20 after ENG27 / ENG28 (78 fights; 94 -> 148 in band, 40 -> 22 beyond 20); 17-PRO-2 wall fixed and its cause (frost's Freeze per hit); 4 of 6 easy PROs fixed; 7-A-SK traced (its own ladder deck); 14-A-PRO-2 / WPRO-2 Hercules Beetle swapped; Mulligan / Offspring in skill-costs.json, ENG28 fallback removed.
 - Owner calls open: BAL21-1 (fights their list cannot fix), BAL21-2 (7-PRO-4, 20-A-PRO-2), BAL21-3 (ladder rule), BAL21-4 (frost rule), BAL21-5 (which reference tunes the road).
@@ -29,7 +34,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 5 | Devour can't be picked in the editor's skill list and can't be removed | **done 11-07** (ENG28) |
 | 6 | Pickpocket takes tokens, or a resource from the bramble, lowest tier first | **done 11-07** (ENG28) |
 | 7 | After the owner's card pass: a 5-15 min card power test of every Map 0-20 card; the editor shows card power (0 = average, -N below, +N above) | BAL21 (tool `tools/card_balance.js`; new run open); UI24 display **done 11-07** |
-| 8 | Admin-only sub-map under the tutorial with 2 skirmish decks: optimised random Otter faction cards, and Hummingbird faction cards | CONTENT13 |
+| 8 | Admin-only sub-map under the tutorial with 2 skirmish decks: optimised random Otter faction cards, and Hummingbird faction cards | **done 11-07** (CONTENT13: the Drill Grounds) |
 | 9 | Poison Barbs gets a context pip (2 poison counters, no damage). Default: every skill shows a context pip unless the owner said no | **done 11-07** (ENG28) |
 | 10 | Diurnal and Inspiration pip numbers 1 px closer to the emoji | **done 11-07** (UI24) |
 | 11 | Sonar and Keen Senses show as "?" until the first darkness map; their pips show only when relevant (darkness maps) | **done 11-07** (ENG28) |

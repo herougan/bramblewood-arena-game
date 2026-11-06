@@ -4079,5 +4079,13 @@
  "Power: {n}": "Lakas: {n}",
  "Power: not measured": "Lakas: hindi pa nasusukat",
  "Measured {date}": "Sinukat noong {date}",
- "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Win rate sa pagsubok ng lakas ng card, bawas 50. Ang 0 ay karaniwan (nananalo sa kalahati ng laban); mas mataas sa 0 ay mas malakas, mas mababa ay mas mahina."
+ "Win rate in the card power test, minus 50. 0 is average (it wins half its fights); above 0 is stronger, below 0 is weaker.": "Win rate sa pagsubok ng lakas ng card, bawas 50. Ang 0 ay karaniwan (nananalo sa kalahati ng laban); mas mataas sa 0 ay mas malakas, mas mababa ay mas mahina.",
+ "The Drill Grounds": "Ang Lugar ng Pagsasanay",
+ "Where the Rivergate Legion and the Sunfeather Tribes drill for war. Test fights for admins: nothing won here counts.": "Dito nagsasanay para sa digmaan ang Hukbo ng Rivergate at ang Mga Tribo ng Sunfeather. Mga laban-pagsubok para sa admin: walang napapanalunan dito ang binibilang.",
+ "Rivergate Century": "Centuria ng Rivergate",
+ "Shields up. Hold the line. Advance on my mark.": "Itaas ang kalasag. Panatilihin ang hanay. Sumulong sa hudyat ko.",
+ "Sunfeather War-band": "Pangkat-mandirigma ng Sunfeather",
+ "The Bloom sings for us today. Come and hear it.": "Umaawit ang Pamumukadkad para sa amin ngayon. Halika at pakinggan.",
+ "Admin only: players never see this map.": "Admin lang: hindi kailanman nakikita ng mga manlalaro ang mapang ito.",
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Laban-pagsubok ng admin: libre, at walang ibinibigay."
 }
