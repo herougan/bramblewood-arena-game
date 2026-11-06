@@ -56,7 +56,7 @@ const hurt = ws=> ws.filter(c=> c.hp < c.maxHp);
     for(let r = 0; r < 3; r++){ e.resolveCombat(P, so, {}, ev, 1); max = Math.max(max, w.frozen||0); }
     if(ev.some(x=> x.type === 'statusFx' && x.kind === 'freeze')) froze++;
     if(s === 1) ok(ev.some(x=> x.type === 'arrow' && x.ice) && ev.some(x=> x.type === 'hit' && x.dmgType === 'cold' && x.ranged), 'Ice Arrow: an icy arrow of cold damage'); }
-  ok(froze > 0 && froze < 20 && max <= 1, `Ice Arrow: 1 in 2 a Freeze counter, never more than one (froze in ${froze} of 20 fights, most counters ${max})`); }
+  ok(froze === 20 && max <= 1, `Ice Arrow: a Freeze counter every landed shot (2026-11-07, ENG28: was 1 in 2), never more than one (froze in ${froze} of 20 fights, most counters ${max})`); }
 { const {e, P} = mk(); const a = put(e, P, 2, 'kc-wall', -1), b = put(e, P, 2, 'kc-wall', 1); put(e, P, 1, 'kc-twin', 0); const ev = [];
   e.resolveCombat(P, so, {}, ev, 1); ok(a.hp === 498 && b.hp === 498 && ev.filter(x=> x.type === 'arrow' && x.twin).length === 2, `Twin Shot: two arrows at two different units (${a.hp}, ${b.hp})`); }
 { const {e, P} = mk(); const a = put(e, P, 2, 'kc-wall', 2); put(e, P, 1, 'kc-twin', 0);
@@ -72,7 +72,7 @@ const boltRun = (id, seed)=>{ const {e, P} = mk(seed); const w = put(e, P, 2, 'k
 { const {w, ev} = boltRun('kc-ab'); ok(w.hp === 498 && w.corrode === 1 && ev.some(x=> x.type === 'hit' && x.dmgType === 'acid'), `Acid Bolt: 2 acid damage and 1 Corrode (${w.hp}, corrode ${w.corrode})`); }
 { const {w, ev} = boltRun('kc-pb'); ok(w.hp === 500 && w.poison === 3 && ev.some(x=> x.type === 'bolt' && x.element === 'poison') && !ev.some(x=> x.type === 'hit'), `Poison Bolt: no damage, 3 Poison (${w.hp}, poison ${w.poison})`); }
 { let froze = 0; for(let s = 1; s <= 20; s++){ const {w, ev} = boltRun('kc-ib', s); if(ev.some(x=> x.type === 'statusFx' && x.kind === 'freeze')) froze++; if(s === 1) ok(w.hp === 498, 'Ice Bolt: 2 cold damage'); }
-  ok(froze > 0 && froze < 20, `Ice Bolt: 1 in 2 a Freeze counter (${froze} of 20)`); }
+  ok(froze === 20, `Ice Bolt: a Freeze counter every landed spit (2026-11-07, ENG28: was 1 in 2) (${froze} of 20)`); }
 { const {w, ev} = boltRun('kc-sb'); ok(w.hp === 498 && w.shocked === 1 && ev.some(x=> x.type === 'statusFx' && x.kind === 'shock'), `Shock Bolt: 2 damage and Shocked (${w.hp}, shocked ${w.shocked})`); }
 { const {e, P} = mk(); const w = put(e, P, 2, 'kc-wall', 2); put(e, P, 1, 'kc-fb', 0); e.resolveCombat(P, so, {}, [], 1); ok(w.hp === 498, 'a Bolt with nobody opposite spits at the nearest enemy unit'); }
 { const {e, P} = mk(); put(e, P, 1, 'kc-fb', 0); const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1); ok(P[2].hq.hp === hq - 2, 'a Bolt at an empty board: the castle'); }

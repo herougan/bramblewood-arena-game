@@ -59,14 +59,15 @@ const hitWith = (e, P, c, amt, type, srcUid)=> e.damageCardFlat(c, amt, type, sr
 { const {e, P} = mk(4); const S = spawn(e, P, 1, 'x-src'), T = spawn(e, P, 2, 'x-land');
   hitWith(e, P, T, 2, 'water', S.uid); ok(T.water === 2 && e.wetCountOf(T) === 2, `2: 2 water damage adds 2 water counters (${T.water})`);
   hitWith(e, P, T, 5, 'water', S.uid); ok(T.water === e.EN20.waterMax, `2: water counters cap at ${e.EN20.waterMax} (${T.water})`);
-  T.water = 2; hitWith(e, P, T, 3, 'heat', S.uid); ok(T.water === 0 && T.burn === 2, `2: 3 fire on 2 counters dries them and the point left lights Burn 2 (water ${T.water}, burn ${T.burn})`);
+  T.water = 2; hitWith(e, P, T, 3, 'heat', S.uid); ok(T.water === 0 && T.burn === 1, `2: 3 fire on 2 counters dries them and the point left lights Burn 1 (water ${T.water}, burn ${T.burn})`); // 2026-11-07 (ENG28, owner 22:16 #2: + 1 Burn a hit): was Burn 2
   T.burn = 0; T.water = 3; hitWith(e, P, T, 3, 'heat', S.uid); ok(T.water === 0 && !(T.burn > 0), '2: 3 fire on 3 counters only dries them');
   T.water = 0; T.burn = 0; hitWith(e, P, T, 2, 'heat', null); ok(!(T.burn > 0), '2: field fire (no source) lights nothing');
   T.water = 1; hitWith(e, P, T, 2, 'heat', null); ok(T.water === 0, '2: field fire still dries');
-  hitWith(e, P, T, 1, 'heat', S.uid); ok(T.burn === 2, '2: a sourced fire hit on a dry unit lights it');
+  hitWith(e, P, T, 1, 'heat', S.uid); ok(T.burn === 1, '2: a sourced fire hit on a dry unit lights it (Burn 1)'); // 2026-11-07 (ENG28): was 2
+  hitWith(e, P, T, 1, 'heat', S.uid); ok(T.burn === 2, '2: a second fire hit stacks (Burn 2)'); // 2026-11-07 (ENG28): Burn stacks (was refreshed to 2)
   hitWith(e, P, T, 1, 'water', S.uid); ok(!(T.burn > 0) && T.water === 1, '2: water puts Burn out (and soaks)'); }
-{ const {e, P} = mk(4); const S = spawn(e, P, 1, 'x-src'), T = spawn(e, P, 2, 'x-land'); hitWith(e, P, T, 1, 'heat', S.uid);
-  const hp0 = T.hp, ev = []; e.roundStart(P, 1, so, {}, ev); e.resolveCombat(P, so, {}, ev, 1); // the ticks run as the round's combat opens
+{ const {e, P} = mk(4); const S = spawn(e, P, 1, 'x-src'), T = spawn(e, P, 2, 'x-land'); hitWith(e, P, T, 1, 'heat', S.uid); hitWith(e, P, T, 1, 'heat', S.uid); // 2026-11-07 (ENG28): two hits = Burn 2 (one hit was 2)
+  const hp0 = T.hp, ev = []; e.roundStart(P, 1, so, {}, ev); e.resolveCombat(P, so, {}, ev, 1); // the ticks run as the round's combat opens (2026-11-07, ENG28: hp0 is read after both hits)
   ok(T.hp === hp0 - 1 && T.burn === 1 && ev.some(x=> x.type === 'burnTick' && x.uid === T.uid && x.dmg === 1), `2: Burn ticks 1 fire at the round's start (${hp0} -> ${T.hp}, ${T.burn} left)`);
   e.roundStart(P, 2, so, {}, []); e.resolveCombat(P, so, {}, [], 1); ok(T.hp === hp0 - 2 && !(T.burn > 0), '2: two rounds, then it is out');
   const P2 = spawn(e, P, 2, 'x-proof'); hitWith(e, P, P2, 3, 'heat', S.uid); ok(!(P2.burn > 0), '2: a unit that resists fire never burns'); }

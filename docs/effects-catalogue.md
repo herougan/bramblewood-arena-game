@@ -609,7 +609,7 @@ library (`FXL_SKILL_SETUPS`) and a button in the hub's Effects Lab (Skills tab �
 |---|---|---|---|
 | 🔥🧪🐍❄️⚡ Fire / Acid / Poison / Ice / Shock Bolt | `boltGlob(shooter, target, {element, flight, onImpact})` | The shooter squashes as it spits; a wobbling glob in the element's colours lobs over in an arc, shedding droplets, then splats in a coloured flash with a burst (fire embers, acid/poison drips, ice shards, sparks). One row per element in `BOLT_LOOK`, so a new element is one line. Plays at every FX level above None (it is the only cue a Poison Bolt has, which deals no damage); the hit that follows skips its plain projectile (`matchState.pendingBolt`). The status after it plays its own look: Corrode → `acidCorrode`, Freeze → `freezeEncase`, Shock → the shock glitch, Poison → a 🐍 +N ☠ number | `bolt`, then `hit` (ranged) and `statusFx` corrode / freeze / shock / poison |
 | 🌶️ Chilli | `chilliHeat(target, {burn})` | A chilli pops up over the card and is gobbled; the card flushes red, shakes and puffs steam. Each round-start sting: a smaller red flash and a wisp, and the Health drops in the replay | `statusFx` `chilli` (eaten) and `chilliBurn` (the sting); Medium FX and up |
-| 🧊🏹 Ice Arrow | `bowShot` | The bow shot; when it freezes (1 in 2), the ice block grows over the unit | `arrow` (ice) + `hit`; `statusFx` freeze |
+| 🧊🏹 Ice Arrow | `bowShot` | The bow shot; when it freezes (every landed shot since ENG28; was 1 in 2), the ice block grows over the unit | `arrow` (ice) + `hit`; `statusFx` freeze |
 | 🏹🏹 Twin Shot · 🎯🏹 Volley | `bowShot` | One bow shot per arrow, in quick succession | `arrow` (twin / volley) + `hit` |
 | 🔱 Fork · Trident · Pitchfork | `forkProngs` | Steel tines (2 / 3 / 4) into each unit hit beyond the first. The attack-line preview now draws thin red lines to every enemy unit near enough to be a prong | `hit` with `fork`, `prong` fork / trident / pitchfork |
 | 🦞 Crab Claws | `.crab-pinch` + 🦞 ←/→ | As before; the side is now random | `crabClaw` |
@@ -622,12 +622,12 @@ The rules as built (engine: `prongSpecOf`/`PRONG_SPECS`, `fireArrowVolley`, `BOL
   range: it attacks straight ahead as normal** (the castle when nothing is in front). Empty sides never go to the castle.
 - **Crab Claws**: each swing pinches one random enemy unit in the column to its left or right; neither side has one: straight
   ahead as normal.
-- **Ice Arrow N**: N cold at the nearest enemy; 1 in 2 a Freeze counter on a unit that has none (it holds that round's attack and
+- **Ice Arrow N**: N cold at the nearest enemy and a Freeze counter on a unit that has none (ENG28, 2026-11-07: every time, was 1 in 2; it holds that round's attack and
   melts at the round's end). **Twin Shot N**: two arrows of N at two different random enemy units (both at one if only one).
   **Volley N**: on its 1st, 3rd, 5th... Ready round, an arrow of N at every enemy unit.
 - **Bolts** (every round while Ready, before melee; at the enemy opposite, else the nearest enemy unit, else the castle):
-  Fire Bolt N = N fire; Acid Bolt N = N acid + 1 Corrode; Poison Bolt N = no damage, N Poison; Ice Bolt N = N cold + 1 in 2 a
-  Freeze counter; Shock Bolt N = N damage + Shocked for a round. Helmet deflects them half the time.
+  Fire Bolt N = N fire + 1 Burn (ENG28); Acid Bolt N = N acid + 1 Corrode; Poison Bolt N = no damage, N Poison; Ice Bolt N = N cold + a
+  Freeze counter (ENG28; was 1 in 2); Shock Bolt N = N damage + Shocked for a round. Helmet deflects them half the time.
 - **Chilli N** (default 2): when it first becomes Ready, +N Attack and fire attacks for the rest of the fight, 1 damage to itself
   at the start of every round. Once a fight.
 
@@ -1580,3 +1580,16 @@ The rules as built (engine: `fortifyBramble` (Armor, Unfortify), `shotSpeedOf` /
 | 🎁 Grant | "🎁 <skills>" on each ally | the skills on them | `statusFx eng27Grant` {targets, skills} |
 | 📣 Hype | "📣 Hype" on the ally | its action now | `statusFx eng27Hype` {ff} |
 | 🪖 Helmet gone | "🪖 Helmet gone", the pip goes | no more blocks | `deflect` {helmetGone} |
+
+## 2026-11-07 additions: Package ENG28 (describes; the engine decides)
+| What | Look | Engine event |
+|---|---|---|
+| ☠️ Poison damage as stacks (the Herb Refinery's brew, any skill's or shot's poison) | the Poison float on the target, no hit number | `hit` {dmg 0, dmgType poison} + `statusFx poison` {eng28} |
+| 🔥 Burn +1 a fire hit, stacking | the 🔥N badge counts up | `statusFx en20Ignite` {amount 1, total} |
+| ❄️ Freeze on a frost hit | the icy clock and snowflakes (existing) | `statusFx freeze` {eng28} |
+| 🌑 A shot lost in the dark | "Miss!" on the target, no lunge (the arrow already flew) | `blindMiss` {ranged, night} |
+| 🔀 Mulligan | a log line at the opening hand | `mulligan` {defId, drewDefId} |
+| 👶 Offspring | the copies hop out beside it (Brood's spawn look) | `spawn` {kind: 'offspring'} |
+| 👛 Pickpocket from the bramble | the resource line (existing) | `sk2` {kind: 'pickpocketRes', fallback} |
+| ? (gold) | a skill learnt at a higher level, in the hover | display only |
+| 💀 | a death trigger's chip leads with the skull | display only |
