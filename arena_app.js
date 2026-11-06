@@ -9119,7 +9119,7 @@ function cardTileHTML(d, opts){
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
       ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
       ${nmHTML(d.name||live.fallbackName||'', costParts, live.waitHTML ? 0 : d.wait) /* UI20: the scroll leaves room for the badges; a live wait ring is sized in the CSS */}
-      <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
+      <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp${ui23Unhealth(d)}"><i class="sg">❤</i>${live.hp}</span></div>
       ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */, shieldAmt: live.shieldAmt /* 2026-10-31 (UI11, FF1) */, cowering: !!live.cowering /* ENG15 (FF6) */, en5On: live.en5On != null ? live.en5On : (live._en5On || ''), ctxOn: live.ctxOn != null ? live.ctxOn : (live._ctxOn || '') /* ENG25 (2026-11-05, #7): the lit state chips */}})}
       ${live.bottomHTML||''}
     </div>`;
@@ -9142,7 +9142,7 @@ function cardTileHTML(d, opts){
     ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
     ${nmHTML(d.name||'', costParts, d.wait) /* UI20 */}
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
-    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
+    ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp${ui23Unhealth(d)}"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
     ${abilityBadges(d, {compact: !!(hand || inMatch), hand: !!hand /* UI5 (2026-10-30, W5) */, live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
@@ -11353,7 +11353,7 @@ function renderEditorInner(){
          one compact row; each group is Lumber, Stone, Metal. Cost: c.cost / stoneCost / metalCost (only Lumber is charged by the engine today). Reward: effects.bounty*.
          Pitch is read-only (no pitchYield edit UI): its amount sits under the resource it gives, the others read 0; a Dark Point bonus or a Grace yield shows after it. -->
     ${(()=>{ const py = editorPitchColsOf(c), box = (id, val, glyph, title, dis)=> `<input ${id ? `id="${id}" ` : ''}type="number" min="0" value="${val}" title="${title}" aria-label="${title}"${dis ? ' disabled' : ''}><span class="mr-glyph" title="${title}">${glyph}</span>`;
-      return `<div class="ed-econ">
+      return `<div class="editor-h2">${escapeHtml(TX('ui.ui23-costs'))}</div><div class="ed-econ">
       <div class="field" title="What it costs to play this card: Lumber, Stone and Metal."><label>Cost</label><div class="multi-resource-row">${box('fCost', c.cost, '🪵', 'Lumber')}${box('fCostStone', c.stoneCost||0, '🪨', 'Stone')}${box('fCostMetal', c.metalCost||0, '🔩', 'Metal')}</div></div>
       <div class="field" title="What discarding this card grants. Read-only here."><label>Pitch</label><div class="multi-resource-row">${box('fPitchValueDisplay', py.lumber, '🪵', 'Lumber', true)}${box('', py.stone, '🪨', 'Stone', true)}${box('', py.metal, '🔩', 'Metal', true)}${py.extra ? `<span class="ed-pitch-extra">${escapeHtml(py.extra)}</span>` : ''}</div></div>
       <div class="field" title="Bounty: Lumber its owner gains when played and the opponent gains when it dies."><label>Reward</label><div class="multi-resource-row">${box('fBounty', c.effects.bounty||0, '🪵', 'Lumber')}${box('fBountyStone', c.effects.bountyStone||0, '🪨', 'Stone')}${box('fBountyMetal', c.effects.bountyMetal||0, '🔩', 'Metal')}</div></div>
@@ -33211,7 +33211,7 @@ function ceBudgetHTML(d){
 function ceBudgetRefresh(d){
   const fa = document.getElementById('fAtk'); if(!fa) return;
   let box = document.getElementById('ceBudget');
-  if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('afterend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:0 0 4px; font-size:12.5px; line-height:1.4"></div>'); box = document.getElementById('ceBudget'); }
+  if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('beforeend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:0 0 4px; font-size:12.5px; line-height:1.4"></div>'); /* UI23 (2026-11-06, #4): inside the Stats row, beside the four stats */ box = document.getElementById('ceBudget'); }
   try{ box.innerHTML = ceBudgetHTML(d); }catch(e){ box.textContent = ''; }
 }
 let sbState = {upTo:5, onlyFail:true};
@@ -40544,6 +40544,8 @@ function fightTreatmentClass(pid){ return fightTreatmentKind(pid)==='elite' ? 'e
 // Bolster or Shell, which soaks the same way) is one blue number on the card, just above its Health; the 💠 chip in the status row is gone.
 // 2026-11-06 (package UI23 #1/#18, owner: "if the pip says 4 ... and the health is 1, then total it should display 5"): the heart shows Health + Shield
 // (the 💠 pip's number); it is blue while any Shield is left (has-shield). Bleed and Poison ticks skip the Shield (the engine), so they take the heart's Health part.
+// 2026-11-06 (package UI23 #2): an Undead unit's Health ("unhealth") is a grey heart and a grey number
+function ui23Unhealth(d){ return d && (d.subtype === 'undead' || (d.species || []).includes('Undead')) ? ' is-unhealth' : ''; }
 function ui23HeartOf(c, extra){ return Math.max(0, (Number(c.hp) || 0) + (extra || 0)) + vis3ShieldAmount(c); }
 function vis3ShieldAmount(c){ return c ? Math.max(0, (Number(c.shield) || 0) + (Number(c.tempHp) || 0) + (Number(c.tempHpR) || 0)) : 0; }
 function vis3ShieldHTML(c, amt){

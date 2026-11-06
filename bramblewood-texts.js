@@ -74,6 +74,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui19-mc-new-tip": "First time this skill shows up on the road: no earlier map’s cards carry it.",
   "ui.ui19-mc-count": "{n} of {total} cards",
   "ui.ui19-mc-none": "No skills on these cards.",
+  "ui.ui23-costs": "Costs",
   "ui.ui22-rewards-title": "Skirmish rewards",
   "ui.ui22-role-reward": "Reward",
   "ui.ui22-role-first": "First clear",

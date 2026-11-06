@@ -14824,6 +14824,29 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ui21-kw .ui21-kw-head{margin:4px 0; font-size:1.05em;} .ui21-kw .ui21-kw-text{margin:0 0 8px;} .ui21-kw .ui21-kw-cards{margin:8px 0 4px; font-size:.95em;}
 /* art focus (Card editor: Art height): extended art moves down by --apy (framed art uses object-position, set inline) */
 .card-tile.art-extended > .ico .card-art-img[style*="--apy"]{top:calc((50 - var(--apy)) * .5%);}
+/* ===== 2026-11-06 (package UI23) ===== */
+/* #4 the card editor (codex and battlefield open the same one): wide modal, the preview a fixed right column, one full-width row per section,
+   the budget beside the stats, a sticky footer (Delete left; Cancel and Save right). Owner 20:44: "widen the width ... The advanced sections should be their own rows!" */
+#editorOverlay .modal.has-ce-side{width:min(95vw, 1400px); max-width:none; padding-bottom:0; max-height:calc(100dvh - 80px); overflow-y:auto; overscroll-behavior:contain;} /* the modal scrolls (not the overlay), so the footer and the preview stay in view */
+#editorOverlay .ce-body{gap:24px;}
+#editorOverlay .ce-body > .ce-side{flex:0 0 300px; width:300px;}
+#editorOverlay .ce-preview .card-tile{margin:0 auto;}
+#editorOverlay .ce-main > .field-row{grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));}
+#editorOverlay .ce-main > .field-row:has(> .ce-budget){grid-template-columns:repeat(4, minmax(70px, 1fr)) minmax(220px, 1.6fr);}
+#editorOverlay .ce-main > .field-row > .ce-budget{align-self:start; min-width:0; overflow-wrap:anywhere;}
+#editorOverlay .ed-econ{gap:8px 28px;}
+#editorOverlay .section-divider.subsection{display:block; width:100%; margin-top:10px;}
+#editorOverlay .section-divider.group-header{width:100%;}
+#editorOverlay .skill-row{flex-wrap:nowrap;} #editorOverlay .skill-row select[data-sk="key"]{max-width:240px; flex:0 1 240px;}
+#editorOverlay .modal-actions{display:flex; gap:8px; justify-content:flex-end; margin-left:-4px; margin-right:-4px;}
+#editorOverlay .modal-actions #btnDelete{margin-right:auto;}
+@media (max-width: 1100px){ #editorOverlay .ce-main > .field-row:has(> .ce-budget){grid-template-columns:repeat(2, minmax(0, 1fr));} #editorOverlay .ce-main > .field-row > .ce-budget{grid-column:1 / -1;} }
+@media (max-width: 700px){ #editorOverlay .modal.has-ce-side{width:100%;} #editorOverlay .ce-body > .ce-side{width:auto;} #editorOverlay .ce-main > .field-row > .ce-budget{grid-column:1 / -1;} #editorOverlay .skill-row{flex-wrap:wrap;} }
+/* #2 an Undead unit's Health ("unhealth"): grey heart, grey number */
+.card-tile .stats .hp.is-unhealth{color:#b9bcc0 !important; text-shadow:0 1px 1px rgba(0,0,0,.6) !important;}
+.card-tile .stats .hp.is-unhealth i.sg{filter:grayscale(1) brightness(1.15);}
+/* #1/#18 the heart counts the Shield and is blue while any is left */
+.board-card.has-shield .stats .hp i.sg{filter:hue-rotate(200deg) saturate(1.3) brightness(1.15);}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
