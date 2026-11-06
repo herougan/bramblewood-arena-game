@@ -146,7 +146,7 @@ ok(/eng23AiBramble\(players, sideOf, aiId, stats, events\)/.test(eng), '7: the C
 
 // ---- decisions, docs, packs ---------------------------------------------------------------------------------------------------
 { const D = J('docs/decisions.json'), ids = D.items.map(x=> x.id); const want = ['ENG23-1', 'ENG23-2', 'ENG23-3', 'ENG23-4', 'ENG23-5', 'ENG23-6', 'ENG23-7'];
-  ok(want.every(i=> ids.includes(i)) && want.every(i=> D.items.find(x=> x.id === i).status === 'YET'), `8: decisions ${want.join(', ')} filed (YET)`); }
+  ok(want.every(i=> ids.includes(i)) && want.every(i=> D.items.find(x=> x.id === i)), `8: decisions ${want.join(', ')} filed` /* 2026-11-06: the owner answered ENG23-1..7 (DONE) */); }
 ok(/ENG23/.test(R('docs/project-state.md')) && /Skitter/.test(R('docs/effects-catalogue.md')) && /ENG23/.test(R('docs/CHANGELOG.md')) /* 2026-11-06 TESTFIX2: the whole file (the QA1 convention): newer entries push ENG23 out of a 5000-character window */, '8: project-state, effects-catalogue and the CHANGELOG carry ENG23');
 { const miss = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].filter(c=>{ const p = J('lang/' + c + '.json'); return !Object.keys(TXT).filter(k=> k.startsWith('ui.eng23-')).every(k=> p[TXT[k]]) || !p['Rodentia']; });
   ok(!miss.length, `8: the new texts and Rodentia in the 12 packs (${miss})`); }
