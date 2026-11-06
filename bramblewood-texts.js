@@ -75,7 +75,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui19-mc-count": "{n} of {total} cards",
   "ui.ui19-mc-none": "No skills on these cards.",
   "ui.ui24-rec-for": "Suggested for {card}",
-  "ui.ui24-rec-tip": "Recommended for {card}:",
+  "ui.ui24-rec-tip": "Recommended for {card}",
   "ui.ui24-intro-missing": "This map's keyword: on no card yet",
   "ui.ui23-costs": "Costs",
   "ui.ui23-pack-tip": "{name} - opens as soon as you leave the screen.",

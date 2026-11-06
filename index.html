@@ -45370,7 +45370,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=2c67b3f889", "es": "assets/lang/es.js?v=5355efa00b", "fr": "assets/lang/fr.js?v=4eef13b1b2", "id": "assets/lang/id.js?v=c175a8ca79", "it": "assets/lang/it.js?v=6347601bab", "ja": "assets/lang/ja.js?v=40ddee0fc4", "ko": "assets/lang/ko.js?v=9ec002581b", "pt": "assets/lang/pt.js?v=250b3d213b", "ta": "assets/lang/ta.js?v=0dbc0fc393", "tl": "assets/lang/tl.js?v=6354dcbad4", "zh-Hans": "assets/lang/zh-Hans.js?v=bc7f37cff2", "zh-Hant": "assets/lang/zh-Hant.js?v=9cded8807c"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=191dc14a12", "es": "assets/lang/es.js?v=f009c8b0bd", "fr": "assets/lang/fr.js?v=15a3753bd1", "id": "assets/lang/id.js?v=d3a01c9778", "it": "assets/lang/it.js?v=1dbb887b6a", "ja": "assets/lang/ja.js?v=946cf9e1aa", "ko": "assets/lang/ko.js?v=405393d5bb", "pt": "assets/lang/pt.js?v=fa1c788b69", "ta": "assets/lang/ta.js?v=9c3ba2a1ba", "tl": "assets/lang/tl.js?v=fb135de438", "zh-Hans": "assets/lang/zh-Hans.js?v=80f7176334", "zh-Hant": "assets/lang/zh-Hant.js?v=694d413291"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -45571,7 +45571,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui19-mc-count": "{n} of {total} cards",
   "ui.ui19-mc-none": "No skills on these cards.",
   "ui.ui24-rec-for": "Suggested for {card}",
-  "ui.ui24-rec-tip": "Recommended for {card}:",
+  "ui.ui24-rec-tip": "Recommended for {card}",
   "ui.ui24-intro-missing": "This map's keyword: on no card yet",
   "ui.ui23-costs": "Costs",
   "ui.ui23-pack-tip": "{name} - opens as soon as you leave the screen.",
@@ -53877,7 +53877,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'ef900832ba1a', BUILD_CARD_HASH = 'add6601dfc04c30c526b737ff15a2e270518266d15dd6cf736111a5c50b36336';
+const BUILD_ID = 'a1eb32d3c1af', BUILD_CARD_HASH = 'add6601dfc04c30c526b737ff15a2e270518266d15dd6cf736111a5c50b36336';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -82945,7 +82945,7 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId){
   // 2026-11-04 (UI22a): each skill tile carries its full text as a tooltip (the text is clamped to two lines)
   const li = r=> `<li class="ui19-sk${r.isNew ? ' is-new' : ''}${r.key === kw ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}" title="${escapeAttr(r.p.label + ': ' + ui19McSkillText(r) + ' (' + TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + ')')}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}<small>${escapeHtml(ui19McSkillText(r))}</small></span></li>`;
   const recs = typeof ui24McRecs === 'function' ? ui24McRecs(mapId || top, defs) : [];
-  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" title="${escapeAttr(TX('ui.ui24-rec-tip', {card: r.card}) + ' ' + r.p.label + ': ' + ui19McSkillText(r) + (r.why ? ' (' + r.why + ')' : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b><small>${escapeHtml(TX('ui.ui24-rec-for', {card: r.card}))}</small></span></li>`;
+  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" title="${escapeAttr(TX('ui.ui24-rec-tip', {card: r.card}) + ': ' + r.p.label + ': ' + ui19McSkillText(r) + (r.why ? ' (' + r.why + ')' : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b><small>${escapeHtml(TX('ui.ui24-rec-for', {card: r.card}))}</small></span></li>`;
   const kwMissing = kw && !rows.some(r=> r.key === kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" title="${escapeAttr(skillDefOf(kw).label + ': ' + ui19McSkillText({key: kw, fx: {[kw]: true}}))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b><small>${escapeHtml(TX('ui.ui24-intro-missing'))}</small></span></li>` : '';
   return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length || recs.length || kwMissing ? `<ul class="ui19-sk-list">${flagged.map(li).join('')}${kwMissing}${recs.map(rli).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }

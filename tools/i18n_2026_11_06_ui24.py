@@ -8,7 +8,7 @@ CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', '
 UI = [
  ('Suggested for {card}', ['Suggéré pour {card}', 'Vorschlag für {card}', 'Sugerido para {card}', 'Suggerito per {card}', 'Sugerido para {card}',
    'Mungkahi para sa {card}', '{card}க்குப் பரிந்துரை', 'Disarankan untuk {card}', '建议给{card}', '建議給{card}', '{card}への提案', '{card}에게 추천']),
- ('Recommended for {card}:', ['Recommandé pour {card} :', 'Empfohlen für {card}:', 'Recomendado para {card}:', 'Consigliato per {card}:', 'Recomendado para {card}:',
+ ('Recommended for {card}', ['Recommandé pour {card} :', 'Empfohlen für {card}:', 'Recomendado para {card}:', 'Consigliato per {card}:', 'Recomendado para {card}:',
    'Inirerekomenda para sa {card}:', '{card}க்குப் பரிந்துரைக்கப்பட்டது:', 'Direkomendasikan untuk {card}:', '推荐给{card}：', '推薦給{card}：', '{card}へのおすすめ：', '{card}에게 추천:']),
  ("This map's keyword: on no card yet", ['Mot-clé de cette carte : sur aucune carte pour l’instant', 'Schlüsselwort dieser Karte: noch auf keiner Karte',
    'Palabra clave de este mapa: aún en ninguna carta', 'Parola chiave di questa mappa: ancora su nessuna carta', 'Palavra-chave deste mapa: ainda em nenhuma carta',
