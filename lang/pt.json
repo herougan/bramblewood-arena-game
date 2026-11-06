@@ -4017,5 +4017,10 @@
  "{name} is Undead: the heal hurts it for {n}.": "{name} é Morto-vivo: a cura causa-lhe {n} de dano.",
  "{name} is Undead: the cure makes it Bleed {n}.": "{name} é Morto-vivo: a purificação dá-lhe Sangramento {n}.",
  "Heal hurts": "A cura fere",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} entra em campo como Líder: +{a}/+{h} do silvado."
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} entra em campo como Líder: +{a}/+{h} do silvado.",
+ "Costs": "Custos",
+ "GET!": "OBTIDA!",
+ "Level {n}: {name} is in your collection": "Nível {n}: {name} está na sua coleção",
+ "{name} - opens as soon as you leave the screen.": "{name} - abre assim que você sair da tela.",
+ "{name} ({n})": "{name} ({n})"
 }

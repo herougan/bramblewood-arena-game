@@ -4018,5 +4018,10 @@
  "{name} is Undead: the heal hurts it for {n}.": "{name}은(는) 언데드: 회복이 오히려 {n} 피해를 줍니다.",
  "{name} is Undead: the cure makes it Bleed {n}.": "{name}은(는) 언데드: 정화가 오히려 출혈 {n}을 줍니다.",
  "Heal hurts": "회복이 피해",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name}이(가) 리더로 등장: 덤불에서 +{a}/+{h}."
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name}이(가) 리더로 등장: 덤불에서 +{a}/+{h}.",
+ "Costs": "비용",
+ "GET!": "획득!",
+ "Level {n}: {name} is in your collection": "레벨 {n}: {name}이(가) 컬렉션에 들어왔습니다",
+ "{name} - opens as soon as you leave the screen.": "{name} - 화면을 나가면 바로 열립니다.",
+ "{name} ({n})": "{name} ({n})"
 }

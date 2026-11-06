@@ -4017,5 +4017,10 @@
  "{name} is Undead: the heal hurts it for {n}.": "{name} adalah Mayat Hidup: penyembuhan melukainya {n}.",
  "{name} is Undead: the cure makes it Bleed {n}.": "{name} adalah Mayat Hidup: penawar membuatnya Berdarah {n}.",
  "Heal hurts": "Sembuh melukai",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} turun ke medan sebagai Pemimpin: +{a}/+{h} dari semak."
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} turun ke medan sebagai Pemimpin: +{a}/+{h} dari semak.",
+ "Costs": "Biaya",
+ "GET!": "DAPAT!",
+ "Level {n}: {name} is in your collection": "Level {n}: {name} ada di koleksimu",
+ "{name} - opens as soon as you leave the screen.": "{name} - terbuka begitu kamu meninggalkan layar.",
+ "{name} ({n})": "{name} ({n})"
 }

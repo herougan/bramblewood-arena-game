@@ -4015,5 +4015,10 @@
  "{name} is Undead: the heal hurts it for {n}.": "{name} ist Untot: Die Heilung fügt ihr {n} Schaden zu.",
  "{name} is Undead: the cure makes it Bleed {n}.": "{name} ist Untot: Die Reinigung lässt sie {n} bluten.",
  "Heal hurts": "Heilung schadet",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} betritt das Feld als Anführer: +{a}/+{h} durch die Dornenhecke."
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} betritt das Feld als Anführer: +{a}/+{h} durch die Dornenhecke.",
+ "Costs": "Kosten",
+ "GET!": "ERHALTEN!",
+ "Level {n}: {name} is in your collection": "Stufe {n}: {name} ist in deiner Sammlung",
+ "{name} - opens as soon as you leave the screen.": "{name} - öffnet sich, sobald du den Bildschirm verlässt.",
+ "{name} ({n})": "{name} ({n})"
 }

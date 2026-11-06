@@ -42093,6 +42093,12 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
 const eng23FeedTarget = e=>{ const m = matchState; if(!m || !e.target || !e.target.closest) return null; const t = e.target.closest('[data-eng23-feed], [data-hq="A"]');
   if(!t || !eng23ActsOn(m)) return null; const pl = m.players[viewerHandPid(m)]; return pl && pl.feed && (t.dataset.eng23Feed || viewerHandPid(m) === 1) ? t : null; };
 document.addEventListener('dragover', e=>{ if(eng23FeedTarget(e)) e.preventDefault(); });
+// 2026-11-06 (package UI23, owner ENG23-6: "while a card is held, a slot fades in on the Larder, showing it can take the card"): a hand card picked up
+// while a Feed is open (the Gnawed Larder) lights a slot on your bramble (.ui23-feed-slot) until it is dropped.
+document.addEventListener('dragstart', e=>{ try{ const m = matchState; if(!eng23ActsOn(m) || !e.target.closest || !e.target.closest('[data-handuid]')) return; const pid = viewerHandPid(m), pl = m.players[pid];
+  if(!pl || !pl.feed || activePlayerId(m) !== pid || m.resolving || !m.engine.eng23CanFeed(pl)) return;
+  document.querySelectorAll('[data-hq="A"]').forEach(h=> h.classList.add('ui23-feed-slot')); }catch(err){} });
+document.addEventListener('dragend', ()=> document.querySelectorAll('.ui23-feed-slot').forEach(h=> h.classList.remove('ui23-feed-slot')));
 document.addEventListener('drop', e=>{ const t = eng23FeedTarget(e); if(!t) return; e.preventDefault(); e.stopPropagation(); const uid = Number(e.dataTransfer.getData('text/plain')); if(uid) eng23FeedByUid(uid); }, true);
 // ==== end of ENG23 HUD ====
 // Admin (2026-10-12, user: "An auto-win battle button at the top"): the enemy castle falls and the match ends as a win.
@@ -47337,7 +47343,7 @@ function rewardsPanelHTML(m){
   // 2026-11-06 (package UI23 #27, owner ss6): no subtitle under a pack; its tip is "<Pack> - opens as soon as you leave the screen"; several of one kind are
   // one visible stack titled "<Pack> (N)". The packs sit with the cards won, in the left column (rw-packs, below).
   const packGroups = []; packInfos.forEach(pi=>{ const g = packGroups.find(x=> x.pi.id === pi.id && x.pi.name === pi.name); if(g) g.n++; else packGroups.push({pi, n: 1}); });
-  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packGroups.map(({pi, n})=> `<div class="rw-pack-art${n > 1 ? ' ui23-pack-stack' : ''}" style="--n:${Math.min(3, n - 1)}" data-tip="${escapeAttr(TX('ui.ui23-pack-tip', {name: pi.name}))}">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(n > 1 ? TX('ui.ui23-pack-n', {name: pi.name, n}) : pi.name)}</b></div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
+  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packGroups.map(({pi, n})=> `<div class="rw-pack-art${n > 1 ? ' ui23-pack-stack' : ''}" style="--n:${Math.min(3, n - 1)}" data-tip="${escapeAttr(TX('ui.ui23-pack-tip', {name: pi.name.replace(/^Free /, '')}))}">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(n > 1 ? TX('ui.ui23-pack-n', {name: pi.name.replace(/^Free /, ''), n}) : pi.name.replace(/^Free /, ''))}</b></div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
   const cur = [];
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
   if(reward && reward.dust>0) cur.push(['dust', reward.dust]);
@@ -62164,10 +62170,11 @@ const GHOST_BANNERS = '.conquest-main > .conquest-headline, .conquest-main > .ma
       let onControl = false; if(inside){ const t = document.elementFromPoint(x, y); onControl = !!(t && b.contains(t) && t.closest('button, a, input, select, textarea, label')); }
       // The map's title banner (2026-10-11, user: "Hovering to the explanation on the top left makes it fade out and
       // disappear for 10s before it fades back in"): one touch sends it away for 10 seconds.
-      if(b.classList.contains('conquest-headline')){ if(b.classList.contains('is-chip')) return; /* 2026-11-03 (ECON3, ECON2-10): the folded chip is a button and stays put */ if(inside && !b.classList.contains('is-away')){ b.classList.add('is-away'); clearTimeout(b._awayT); b._awayT = setTimeout(()=> b.classList.remove('is-away'), 10000); } return; }
+      if(b.classList.contains('conquest-headline')){ if(b.classList.contains('is-chip')) return; /* 2026-11-03 (ECON3, ECON2-10): the folded chip is a button and stays put */ const enter = inside && !b._ui23In; b._ui23In = inside; if(enter && !b.classList.contains('is-away')){ b.classList.add('is-away'); clearTimeout(b._awayT); b._awayT = setTimeout(()=> b.classList.remove('is-away'), 3000); } return; } // 2026-11-06 (package UI23 #39, owner: "it disappears permanently. It should come back after 3s"): back after 3 s (was 10), and only a new entry (hover or scroll onto it) sends it away again; a pointer resting on it re-hid it at every move
       b.classList.toggle('is-ghost', inside && !onControl);
     }); };
   document.addEventListener('pointermove', e=>{ last = {x:e.clientX, y:e.clientY}; if(!raf) raf = requestAnimationFrame(run); }, {passive:true});
+  document.addEventListener('wheel', e=>{ last = {x:e.clientX, y:e.clientY}; if(!raf) raf = requestAnimationFrame(run); }, {passive:true}); // UI23 (#39): a scroll over it counts as a hover
 })();
 // Cave darkness (2026-10-10, user: "I want the parts of the map not lit by the mouse to be even darker. This effect even
 // affects the Skirmish icons and the connecting lines"): on cave maps a dark layer sits over the whole map (trail, skirmishes,

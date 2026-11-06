@@ -14914,12 +14914,29 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .winloss-achv{position:fixed !important; top:12px; left:50%; translate:-50% 0; z-index:10060; margin:0 !important; width:max-content; max-width:min(92vw, 520px); box-shadow:0 8px 24px rgba(0,0,0,.45);
   animation:ui23AchvToast 6s ease both !important; pointer-events:none;}
 @keyframes ui23AchvToast{0%{opacity:0; transform:translateY(-24px);} 8%{opacity:1; transform:none;} 85%{opacity:1; transform:none;} 100%{opacity:0; transform:translateY(-12px);}}
+@media (max-width: 600px){ .winloss-achv{left:12px; translate:none; max-width:calc(100vw - 112px); font-size:13px;} } /* clear of the results' top-right buttons */
 @media (prefers-reduced-motion: reduce){ .winloss-achv{animation:ui23AchvFade 6s linear both !important;} @keyframes ui23AchvFade{0%,90%{opacity:1;} 100%{opacity:0;}} }
 /* #30 an S-or-better emblem shines as it pops from its node: a glow and a light sweep across the hex */
 .res3-rank-fly.ui23-rank-shine .rank-hex{filter:drop-shadow(0 0 10px rgba(255,220,120,.95)) drop-shadow(0 0 22px rgba(255,200,80,.6)) !important; overflow:hidden;}
 .res3-rank-fly.ui23-rank-shine .rank-hex::after{content:''; position:absolute; inset:-20%; background:linear-gradient(110deg, transparent 35%, rgba(255,255,255,.85) 50%, transparent 65%); transform:translateX(-120%); animation:ui23RankSweep 1.6s ease-in-out .35s 2; pointer-events:none;}
 @keyframes ui23RankSweep{to{transform:translateX(120%);}}
 @media (prefers-reduced-motion: reduce){ .res3-rank-fly.ui23-rank-shine .rank-hex::after{animation:none;} }
+/* #35 the showcase's leader and bramble portraits: no captions, closer together, overlapping, the leader in front and a touch larger */
+.ui16-vs-art.n2{gap:0;} .ui16-vs-art.n2 .ui16-vs-fig{flex-basis:44%;}
+.ui16-vs-art.n2 .ui16-vs-fig.is-leader{position:relative; z-index:2; margin-right:-9%; transform:scale(1.06); transform-origin:60% 60%;}
+.ui16-vs-art.n2 .ui16-vs-fig.is-bramble{position:relative; z-index:1; margin-left:-9%; opacity:.92;}
+.ui16-vs-art.n3 .ui16-vs-fig + .ui16-vs-fig{margin-left:-6%;}
+/* #37 the dawn's rays (FX.B.dayBreaks): the source sits far off to the upper right, so the rays run nearly straight and parallel, and they are fainter */
+.fxb-rays{--rx:230%; --ry:-60%; background:repeating-conic-gradient(from 0deg at var(--rx) var(--ry), rgba(255,232,165,.13) 0 1.1deg, transparent 1.1deg 3.2deg) !important;}
+/* ENG23-6 the Gnawed Larder's Feed: while a hand card is held, a slot fades in on your bramble */
+[data-hq].ui23-feed-slot{position:relative;}
+[data-hq].ui23-feed-slot::after{content:'🍖'; position:absolute; left:50%; top:50%; width:58%; aspect-ratio:3 / 4; translate:-50% -50%; display:grid; place-items:center; font-size:22px; z-index:8; pointer-events:none;
+  border:2.5px dashed rgba(255,226,150,.95); border-radius:10px; background:rgba(40,24,8,.45); box-shadow:0 0 14px rgba(255,200,90,.55); animation:ui23SlotIn .35s ease-out both, ui23SlotPulse 1.4s ease-in-out .35s infinite;}
+@keyframes ui23SlotIn{from{opacity:0; scale:.85;} to{opacity:1; scale:1;}}
+@keyframes ui23SlotPulse{50%{box-shadow:0 0 22px rgba(255,210,110,.85);}}
+@media (prefers-reduced-motion: reduce){ [data-hq].ui23-feed-slot::after{animation:none;} }
+/* #27 ss5: a won card's description opened above it, inside the fan's scroll box, and was cut off; in the fan it opens over the card's lower half */
+.rw-panel .res3-fan [data-tip]:hover::after, .rw-panel .res3-fan [data-tip]:focus-visible::after{bottom:8px; max-width:calc(100% - 8px); font-size:11.5px; padding:6px 8px;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -45169,7 +45186,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=f987bc4984", "es": "assets/lang/es.js?v=8ad6b70115", "fr": "assets/lang/fr.js?v=784ee0b9ba", "id": "assets/lang/id.js?v=5c85fda6d1", "it": "assets/lang/it.js?v=898966adf2", "ja": "assets/lang/ja.js?v=b0ee1f9b4a", "ko": "assets/lang/ko.js?v=2c3a314a1b", "pt": "assets/lang/pt.js?v=a7c7897fba", "ta": "assets/lang/ta.js?v=93ab240f23", "tl": "assets/lang/tl.js?v=06ed7afa55", "zh-Hans": "assets/lang/zh-Hans.js?v=54cc9a70ab", "zh-Hant": "assets/lang/zh-Hant.js?v=9c288e288b"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=85ee7c3019", "es": "assets/lang/es.js?v=65c6a10255", "fr": "assets/lang/fr.js?v=873b51c17c", "id": "assets/lang/id.js?v=e0fb450fe1", "it": "assets/lang/it.js?v=a3cade6ab5", "ja": "assets/lang/ja.js?v=c024b8afa9", "ko": "assets/lang/ko.js?v=ccf7510196", "pt": "assets/lang/pt.js?v=0ff1c1d489", "ta": "assets/lang/ta.js?v=26c1eac406", "tl": "assets/lang/tl.js?v=27a2abfa7a", "zh-Hans": "assets/lang/zh-Hans.js?v=f4e9de43f9", "zh-Hant": "assets/lang/zh-Hant.js?v=e70a7ebed2"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -53148,8 +53165,9 @@ const SKILL_REVEAL_MAP = {
   // ENG23 (2026-11-04, owner 11-03 23:12: "True sight is '?' until the first Map with invisible units or changelings are seen."): True Sight
   // (keenEye) reads "?" until Map 6, the Sable Swampmire, the first map whose fights field an Invisible unit (the Booming Bittern, 6-2 to
   // 6-6; no Changeling is in a fight before Map 18), or until the player has seen a card with Invisible or Changeling (seenWith), wherever.
-  // (Delivery, Map 0's Lumber maker on the Beaver Lumberjack, is not gated: it shows and explains itself on Map 0; owner call ENG23-4.)
+  // (Delivery, Map 0's Lumber maker on the Beaver Lumberjack, was not gated (ENG23-4); 2026-11-06 owner ENG23-4 b: it reads "?" on Map 0 too.)
   keenEye:     {from:6, seenWith:['invisible', 'changeling']},
+  delivery:    {from:1, parts:['deliveryEvery', 'deliveryRes']}, // UI23 (2026-11-06, owner ENG23-4 b): every Delivery form
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
@@ -53549,7 +53567,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c47251a1ade4', BUILD_CARD_HASH = 'd3ed64fda750cac912038f6cfd36b7f34a7e1d49176ee8abaed50869ba71f378';
+const BUILD_ID = 'b4979e507795', BUILD_CARD_HASH = 'd3ed64fda750cac912038f6cfd36b7f34a7e1d49176ee8abaed50869ba71f378';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -53861,6 +53879,10 @@ var seenMigrated = false;
 function ui23Owned(id){ return !!((myUnlockedCardIds && myUnlockedCardIds.has(id)) || (myCardCopies[id] || []).length); }
 function ui23SnapCollection(m){ if(!m || m._ui23Seen) return; m._ui23Seen = new Set(seenCardIds()); m._ui23Owned = new Set([...(myUnlockedCardIds || [])].concat(Object.keys(myCardCopies || {}).filter(id=> (myCardCopies[id] || []).length))); }
 function ui23CardTagsHTML(seenNew, got, cls){ return (seenNew ? `<span class="${cls}" aria-hidden="true">${escapeHtml(TX('results.new'))}</span>` : '') + (got ? `<span class="${cls} ui23-get${seenNew ? ' ui23-late' : ''}" aria-hidden="true">${escapeHtml(TX('ui.ui23-get'))}</span>` : ''); }
+// 2026-11-06 (package UI23 #31, owner: tutorial text for skills has no numbers, since they differ per card): a number that changes with the skill's
+// value (the text at 1 and at 2 differ there) reads "N"; a rule's own number (miss 1 in 2, the 8 nearest) stays.
+function ui23NoNumbers(a, b){ const A = String(a || '').split(/(\d+)/), B = String(b || '').split(/(\d+)/); if(A.length !== B.length) return String(a || '').replace(/\d+/g, 'N');
+  return A.map((t, i)=> i % 2 && t !== B[i] ? 'N' : t).join(''); }
 function noteSighted(defIds){
   if(!defIds || (matchState && matchState.fxLib)) return; // the Effects library's stand-ins aren't sightings (2026-10-14)
   const defs = getCardDefs();
@@ -59176,6 +59198,9 @@ function abilityBadges(d, bopts){
   // (vis3ShieldHTML), shown only while some is left; at 1 the number fades and the icon alone means 1; at 0 the chip is gone. No badge on the east side any more.
   if(bopts && bopts.live){ const sa = Number(bopts.live.shieldAmt) || 0; if(sa > 0) out.push(vis3ShieldHTML(null, sa)); }
   else if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
+  // 2026-11-06 (package UI23 #33): the Delivery skills (Delivery, Delivery every turn, Tribe Delivery) are a context pip too: 📦 and the amount
+  ['delivery', 'deliveryEvery', 'tribeDelivery'].forEach(k=>{ if(!e[k]) return; const t = e22Head(k, e[k], e) || k, n = k === 'tribeDelivery' ? '' : n1(numOr(e[k], 1));
+    out.push(`<span class="ab-sk ab-delivery" data-sk="${k}" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">${iconHTML('delivery', '📦')}${n}</span>`); });
   if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit adjacent to the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
   if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units adjacent to the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
@@ -71669,7 +71694,12 @@ function res3RankEmblemFlight(node, rank){
     if(!o.animate){ setTimeout(fin, ms); return; } const an = o.animate(frames, {duration: ms, fill: 'forwards'}); an.onfinish = fin; an.oncancel = fin; });
 }
 function res3InstallRankFlight(){ try{ if(window.FX && window.FX.E && window.FX.E.nodeRankEmblem !== res3RankEmblemFlight) window.FX.E.nodeRankEmblem = res3RankEmblemFlight; }catch(e){} }
+// 2026-11-06 (package UI23 #37, owner: "Evening from 2/3 to 3/3 day: no sunbeam"): FX.B's dusk (the long light bars as the day's last step comes) is
+// put to rest (the Effects Lab's Dusk too); the sky's own 10 s tint ease still carries the evening. The dawn's rays (FX.B.dayBreaks, night 3/3 ->
+// day 1/3) stay, straighter and fainter (.fxb-rays in arena_template.html).
+function ui23InstallSkyFx(){ try{ const B = window.FX && window.FX.B; if(B && B.dusk && !B.dusk.ui23){ B.dusk = ()=> Promise.resolve(); B.dusk.ui23 = true; } }catch(e){} }
 res3InstallRankFlight(); setTimeout(res3InstallRankFlight, 0); setTimeout(res3InstallRankFlight, 1500);
+ui23InstallSkyFx(); setTimeout(ui23InstallSkyFx, 0); setTimeout(ui23InstallSkyFx, 1500);
 function res3XpScreenReady(){
   if(typeof matchState !== 'undefined' && matchState) return false;
   if(typeof currentTab === 'undefined' || !currentTab || document.visibilityState === 'hidden') return false;
@@ -82635,7 +82665,9 @@ function ui16VsArtStageHTML(map, node, enemyChar){
   let leaders = []; try{ leaders = leadersShownFor(node, map && map.id).slice(0, 2); }catch(e){}
   const defs = getCardDefs(), br = enemyChar || null, brArt = br && br.art ? String(br.art) : '';
   if(!leaders.length && !brArt) return '';
-  const fig = (kind, name, art, icon)=> `<figure class="ui16-vs-fig is-${kind}"><span class="ui16-vs-pic${art ? '' : ' is-emoji'}"${art ? ` style="background-image:url('${escapeAttr(art)}')"` : ''} aria-hidden="true">${art ? '' : escapeHtml(icon || '🏰')}</span><figcaption><small>${escapeHtml(TX(kind === 'leader' ? 'ui.ui16-vs-leader' : 'ui.ui16-vs-bramble'))}</small>${name ? `<b>${escapeHtml(name)}</b>` : ''}</figcaption></figure>`;
+  // 2026-11-06 (package UI23 #35, owner ss9): no title or subtitle under the portraits (the figure keeps its words for screen readers); the two
+  // portraits stand closer, overlapping, the leader a little in front (CSS)
+  const fig = (kind, name, art, icon)=> `<figure class="ui16-vs-fig is-${kind}" role="img" aria-label="${escapeAttr(TX(kind === 'leader' ? 'ui.ui16-vs-leader' : 'ui.ui16-vs-bramble') + (name ? ': ' + name : ''))}" title="${escapeAttr(name || '')}"><span class="ui16-vs-pic${art ? '' : ' is-emoji'}"${art ? ` style="background-image:url('${escapeAttr(art)}')"` : ''} aria-hidden="true">${art ? '' : escapeHtml(icon || '🏰')}</span></figure>`;
   const out = leaders.map(id=> fig('leader', defs[id].name, defs[id].art || '', defs[id].icon || '👑'));
   // a fight with no castle of its own (the placeholder bramble carries the fight's name) shows the plain bramble, unnamed
   const brName = br && br.id !== 'conquest-enemy' ? br.name : '';
@@ -91796,6 +91828,12 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
 const eng23FeedTarget = e=>{ const m = matchState; if(!m || !e.target || !e.target.closest) return null; const t = e.target.closest('[data-eng23-feed], [data-hq="A"]');
   if(!t || !eng23ActsOn(m)) return null; const pl = m.players[viewerHandPid(m)]; return pl && pl.feed && (t.dataset.eng23Feed || viewerHandPid(m) === 1) ? t : null; };
 document.addEventListener('dragover', e=>{ if(eng23FeedTarget(e)) e.preventDefault(); });
+// 2026-11-06 (package UI23, owner ENG23-6: "while a card is held, a slot fades in on the Larder, showing it can take the card"): a hand card picked up
+// while a Feed is open (the Gnawed Larder) lights a slot on your bramble (.ui23-feed-slot) until it is dropped.
+document.addEventListener('dragstart', e=>{ try{ const m = matchState; if(!eng23ActsOn(m) || !e.target.closest || !e.target.closest('[data-handuid]')) return; const pid = viewerHandPid(m), pl = m.players[pid];
+  if(!pl || !pl.feed || activePlayerId(m) !== pid || m.resolving || !m.engine.eng23CanFeed(pl)) return;
+  document.querySelectorAll('[data-hq="A"]').forEach(h=> h.classList.add('ui23-feed-slot')); }catch(err){} });
+document.addEventListener('dragend', ()=> document.querySelectorAll('.ui23-feed-slot').forEach(h=> h.classList.remove('ui23-feed-slot')));
 document.addEventListener('drop', e=>{ const t = eng23FeedTarget(e); if(!t) return; e.preventDefault(); e.stopPropagation(); const uid = Number(e.dataTransfer.getData('text/plain')); if(uid) eng23FeedByUid(uid); }, true);
 // ==== end of ENG23 HUD ====
 // Admin (2026-10-12, user: "An auto-win battle button at the top"): the enemy castle falls and the match ends as a win.
@@ -95644,7 +95682,7 @@ function passiveTipCandidates(){
   // "Natural Leader does not need a tutorial. this just might confuse the player").
   // 2026-10-15: a skill still hidden as "?" (SKILL_REVEAL) gets no tip yet; it comes once the skill is revealed. Retired skills none.
   Registry.skills().filter(sd=> sd.key !== 'leader' && !sd.retired && !skillHiddenNow(sd.key)).forEach(sd=>{
-    const desc = (()=>{ try{ const p = PASSIVE_DEFS.find(x=> x.key === sd.key); return p ? skillText(p, 1, {}) : sd.desc(1); }catch(e){ try{ return sd.desc(1); }catch(_){ return ''; } } })();
+    const desc = (()=>{ const p = PASSIVE_DEFS.find(x=> x.key === sd.key), at = v=>{ try{ return p ? skillText(p, v, {}) : sd.desc(v); }catch(e){ try{ return sd.desc(v); }catch(_){ return ''; } } }; return ui23NoNumbers(at(1), at(2)); })(); // UI23 (#31)
     out.push({id:'skill-'+sd.key, text:`✨ ${sd.label}: ${desc}`, anchor:()=> coachBoardEl(d=> d.effects && sd.get(d.effects)!==undefined)});
   });
   // statuses, the first time one shows up on any card
@@ -97040,7 +97078,7 @@ function rewardsPanelHTML(m){
   // 2026-11-06 (package UI23 #27, owner ss6): no subtitle under a pack; its tip is "<Pack> - opens as soon as you leave the screen"; several of one kind are
   // one visible stack titled "<Pack> (N)". The packs sit with the cards won, in the left column (rw-packs, below).
   const packGroups = []; packInfos.forEach(pi=>{ const g = packGroups.find(x=> x.pi.id === pi.id && x.pi.name === pi.name); if(g) g.n++; else packGroups.push({pi, n: 1}); });
-  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packGroups.map(({pi, n})=> `<div class="rw-pack-art${n > 1 ? ' ui23-pack-stack' : ''}" style="--n:${Math.min(3, n - 1)}" data-tip="${escapeAttr(TX('ui.ui23-pack-tip', {name: pi.name}))}">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(n > 1 ? TX('ui.ui23-pack-n', {name: pi.name, n}) : pi.name)}</b></div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
+  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packGroups.map(({pi, n})=> `<div class="rw-pack-art${n > 1 ? ' ui23-pack-stack' : ''}" style="--n:${Math.min(3, n - 1)}" data-tip="${escapeAttr(TX('ui.ui23-pack-tip', {name: pi.name.replace(/^Free /, '')}))}">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(n > 1 ? TX('ui.ui23-pack-n', {name: pi.name.replace(/^Free /, ''), n}) : pi.name.replace(/^Free /, ''))}</b></div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
   const cur = [];
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
   if(reward && reward.dust>0) cur.push(['dust', reward.dust]);
@@ -111867,10 +111905,11 @@ const GHOST_BANNERS = '.conquest-main > .conquest-headline, .conquest-main > .ma
       let onControl = false; if(inside){ const t = document.elementFromPoint(x, y); onControl = !!(t && b.contains(t) && t.closest('button, a, input, select, textarea, label')); }
       // The map's title banner (2026-10-11, user: "Hovering to the explanation on the top left makes it fade out and
       // disappear for 10s before it fades back in"): one touch sends it away for 10 seconds.
-      if(b.classList.contains('conquest-headline')){ if(b.classList.contains('is-chip')) return; /* 2026-11-03 (ECON3, ECON2-10): the folded chip is a button and stays put */ if(inside && !b.classList.contains('is-away')){ b.classList.add('is-away'); clearTimeout(b._awayT); b._awayT = setTimeout(()=> b.classList.remove('is-away'), 10000); } return; }
+      if(b.classList.contains('conquest-headline')){ if(b.classList.contains('is-chip')) return; /* 2026-11-03 (ECON3, ECON2-10): the folded chip is a button and stays put */ const enter = inside && !b._ui23In; b._ui23In = inside; if(enter && !b.classList.contains('is-away')){ b.classList.add('is-away'); clearTimeout(b._awayT); b._awayT = setTimeout(()=> b.classList.remove('is-away'), 3000); } return; } // 2026-11-06 (package UI23 #39, owner: "it disappears permanently. It should come back after 3s"): back after 3 s (was 10), and only a new entry (hover or scroll onto it) sends it away again; a pointer resting on it re-hid it at every move
       b.classList.toggle('is-ghost', inside && !onControl);
     }); };
   document.addEventListener('pointermove', e=>{ last = {x:e.clientX, y:e.clientY}; if(!raf) raf = requestAnimationFrame(run); }, {passive:true});
+  document.addEventListener('wheel', e=>{ last = {x:e.clientX, y:e.clientY}; if(!raf) raf = requestAnimationFrame(run); }, {passive:true}); // UI23 (#39): a scroll over it counts as a hover
 })();
 // Cave darkness (2026-10-10, user: "I want the parts of the map not lit by the mouse to be even darker. This effect even
 // affects the Skirmish icons and the connecting lines"): on cave maps a dark layer sits over the whole map (trail, skirmishes,

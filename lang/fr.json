@@ -4016,5 +4016,10 @@
  "{name} is Undead: the heal hurts it for {n}.": "{name} est Mort-vivant : le soin lui inflige {n}.",
  "{name} is Undead: the cure makes it Bleed {n}.": "{name} est Mort-vivant : la guérison le fait saigner {n}.",
  "Heal hurts": "Le soin blesse",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} entre en jeu comme Chef : +{a}/+{h} grâce au roncier."
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} entre en jeu comme Chef : +{a}/+{h} grâce au roncier.",
+ "Costs": "Coûts",
+ "GET!": "OBTENU !",
+ "Level {n}: {name} is in your collection": "Niveau {n} : {name} est dans ta collection",
+ "{name} - opens as soon as you leave the screen.": "{name} - s’ouvre dès que tu quittes l’écran.",
+ "{name} ({n})": "{name} ({n})"
 }

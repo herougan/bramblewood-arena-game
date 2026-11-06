@@ -14867,6 +14867,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .winloss-achv{position:fixed !important; top:12px; left:50%; translate:-50% 0; z-index:10060; margin:0 !important; width:max-content; max-width:min(92vw, 520px); box-shadow:0 8px 24px rgba(0,0,0,.45);
   animation:ui23AchvToast 6s ease both !important; pointer-events:none;}
 @keyframes ui23AchvToast{0%{opacity:0; transform:translateY(-24px);} 8%{opacity:1; transform:none;} 85%{opacity:1; transform:none;} 100%{opacity:0; transform:translateY(-12px);}}
+@media (max-width: 600px){ .winloss-achv{left:12px; translate:none; max-width:calc(100vw - 112px); font-size:13px;} } /* clear of the results' top-right buttons */
 @media (prefers-reduced-motion: reduce){ .winloss-achv{animation:ui23AchvFade 6s linear both !important;} @keyframes ui23AchvFade{0%,90%{opacity:1;} 100%{opacity:0;}} }
 /* #30 an S-or-better emblem shines as it pops from its node: a glow and a light sweep across the hex */
 .res3-rank-fly.ui23-rank-shine .rank-hex{filter:drop-shadow(0 0 10px rgba(255,220,120,.95)) drop-shadow(0 0 22px rgba(255,200,80,.6)) !important; overflow:hidden;}
@@ -14880,6 +14881,15 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ui16-vs-art.n3 .ui16-vs-fig + .ui16-vs-fig{margin-left:-6%;}
 /* #37 the dawn's rays (FX.B.dayBreaks): the source sits far off to the upper right, so the rays run nearly straight and parallel, and they are fainter */
 .fxb-rays{--rx:230%; --ry:-60%; background:repeating-conic-gradient(from 0deg at var(--rx) var(--ry), rgba(255,232,165,.13) 0 1.1deg, transparent 1.1deg 3.2deg) !important;}
+/* ENG23-6 the Gnawed Larder's Feed: while a hand card is held, a slot fades in on your bramble */
+[data-hq].ui23-feed-slot{position:relative;}
+[data-hq].ui23-feed-slot::after{content:'🍖'; position:absolute; left:50%; top:50%; width:58%; aspect-ratio:3 / 4; translate:-50% -50%; display:grid; place-items:center; font-size:22px; z-index:8; pointer-events:none;
+  border:2.5px dashed rgba(255,226,150,.95); border-radius:10px; background:rgba(40,24,8,.45); box-shadow:0 0 14px rgba(255,200,90,.55); animation:ui23SlotIn .35s ease-out both, ui23SlotPulse 1.4s ease-in-out .35s infinite;}
+@keyframes ui23SlotIn{from{opacity:0; scale:.85;} to{opacity:1; scale:1;}}
+@keyframes ui23SlotPulse{50%{box-shadow:0 0 22px rgba(255,210,110,.85);}}
+@media (prefers-reduced-motion: reduce){ [data-hq].ui23-feed-slot::after{animation:none;} }
+/* #27 ss5: a won card's description opened above it, inside the fan's scroll box, and was cut off; in the fan it opens over the card's lower half */
+.rw-panel .res3-fan [data-tip]:hover::after, .rw-panel .res3-fan [data-tip]:focus-visible::after{bottom:8px; max-width:calc(100% - 8px); font-size:11.5px; padding:6px 8px;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

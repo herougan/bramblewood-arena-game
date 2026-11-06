@@ -4016,5 +4016,10 @@
  "{name} is Undead: the heal hurts it for {n}.": "{name}はアンデッド：回復で{n}ダメージを受ける。",
  "{name} is Undead: the cure makes it Bleed {n}.": "{name}はアンデッド：浄化で出血{n}を受ける。",
  "Heal hurts": "回復でダメージ",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name}がリーダーとして登場：いばらから+{a}/+{h}。"
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name}がリーダーとして登場：いばらから+{a}/+{h}。",
+ "Costs": "コスト",
+ "GET!": "ゲット！",
+ "Level {n}: {name} is in your collection": "レベル {n}：{name} がコレクションに入った",
+ "{name} - opens as soon as you leave the screen.": "{name} - 画面を離れるとすぐに開く。",
+ "{name} ({n})": "{name} ({n})"
 }

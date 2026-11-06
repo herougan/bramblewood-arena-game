@@ -4018,5 +4018,10 @@
  "{name} is Undead: the heal hurts it for {n}.": "{name} இறவாதது: குணமாக்கல் அதற்கு {n} சேதம் தருகிறது.",
  "{name} is Undead: the cure makes it Bleed {n}.": "{name} இறவாதது: சுத்திகரிப்பு அதற்கு இரத்தக்கசிவு {n} தருகிறது.",
  "Heal hurts": "குணம் காயம்",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} தலைவராகக் களமிறங்குகிறது: முட்புதரிலிருந்து +{a}/+{h}."
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "{name} தலைவராகக் களமிறங்குகிறது: முட்புதரிலிருந்து +{a}/+{h}.",
+ "Costs": "செலவுகள்",
+ "GET!": "கிடைத்தது!",
+ "Level {n}: {name} is in your collection": "நிலை {n}: {name} உங்கள் சேகரிப்பில் உள்ளது",
+ "{name} - opens as soon as you leave the screen.": "{name} - திரையை விட்டு வெளியேறியதும் திறக்கும்.",
+ "{name} ({n})": "{name} ({n})"
 }

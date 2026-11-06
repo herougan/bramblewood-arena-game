@@ -4016,5 +4016,10 @@
  "{name} is Undead: the heal hurts it for {n}.": "Undead ang {name}: sinasaktan ito ng lunas nang {n}.",
  "{name} is Undead: the cure makes it Bleed {n}.": "Undead ang {name}: pinadudugo ito ng gamot nang {n}.",
  "Heal hurts": "Masakit ang lunas",
- "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "Pumasok sa laban ang {name} bilang Pinuno: +{a}/+{h} mula sa dawag."
+ "{name} takes the field as your Leader: +{a}/+{h} from the bramble.": "Pumasok sa laban ang {name} bilang Pinuno: +{a}/+{h} mula sa dawag.",
+ "Costs": "Mga gastos",
+ "GET!": "NAKUHA!",
+ "Level {n}: {name} is in your collection": "Level {n}: nasa koleksyon mo na ang {name}",
+ "{name} - opens as soon as you leave the screen.": "{name} - bubukas pagkaalis mo sa screen.",
+ "{name} ({n})": "{name} ({n})"
 }
