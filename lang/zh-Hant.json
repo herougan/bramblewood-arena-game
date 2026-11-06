@@ -4020,6 +4020,5 @@
  "Costs": "費用",
  "GET!": "獲得！",
  "Level {n}: {name} is in your collection": "等級 {n}：{name} 已加入你的收藏",
- "{name} - opens as soon as you leave the screen.": "{name} - 離開此畫面後立即開啟。",
- "{name} ({n})": "{name} ({n})"
+ "{name} - opens as soon as you leave the screen.": "{name} - 離開此畫面後立即開啟。"
 }

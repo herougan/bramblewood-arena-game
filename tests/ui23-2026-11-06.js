@@ -55,7 +55,7 @@ ok(/id="fxSelectHud"/.test(app) && /const k = lv === 'med' \? 0\.6 : 1;/.test(fn
 ok(/function ui23DarkLevel\(m\)/.test(app) && /\$\{ui23DarkLevel\(m\) \? 'bf-lantern bf-dark-' \+ ui23DarkLevel\(m\) : ''\}/.test(app) && /\.battlefield\.bf-lantern\.bf-dark-dark::after/.test(tpl), '19: the dark overlay follows the field effects (a plain Darkness too)');
 { const rect = new Function(fnSrc('ui23Rect') + 'return ui23Rect;')();
   ok(rect({width: 0, height: 0, left: 0, top: 0}) === null && rect({width: 10, height: 5}) && /if\(!r\) return h;/.test(fnSrc('fxHostAt')), '25: a 0x0 box is no anchor; fxHostAt drops the float'); }
-ok(/<div class="rw-sec rw-packs">/.test(app) && /x\.startsWith\('<div class="rw-sec rw-packs"'\)/.test(app) && /TX\('ui\.ui23-pack-n'/.test(app) && /"ui\.ui23-pack-tip": "\{name\} - opens as soon as you leave the screen\."/.test(texts), '27: packs with the cards, "(N)" stacks, the tip');
+ok(/<div class="rw-sec rw-packs">/.test(app) && /x\.startsWith\('<div class="rw-sec rw-packs"'\)/.test(app) && /` \(\$\{n\}\)`/.test(app) && /"ui\.ui23-pack-tip": "\{name\} - opens as soon as you leave the screen\."/.test(texts), '27: packs with the cards, "(N)" stacks, the tip');
 ok(/if\(ref\.kind === 'end'\) return \{id:p\.id, name: p\.name/.test(app), '27: no "Map reward" on a pack');
 ok(/\.winloss-achv\{position:fixed !important; top:12px/.test(tpl) && /\.po2-sum-grid\.is-dense\{width:min\(980px, 94vw\);\}/.test(tpl), '27: the achievement toast at the top; open-all cards at full width');
 
@@ -79,7 +79,7 @@ ok(/ui23-feed-slot/.test(app) && /\[data-hq\]\.ui23-feed-slot::after/.test(tpl),
 
 // ---- texts, changelog, run-all
 { const {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js')); const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
-  ['ui.ui23-costs', 'ui.ui23-effects', 'ui.ui23-get', 'ui.ui23-level-card', 'ui.ui23-pack-tip', 'ui.ui23-pack-n'].forEach(k=>{ const en = TEXT[k]; ok(!!en, 'TX ' + k);
+  ['ui.ui23-costs', 'ui.ui23-effects', 'ui.ui23-get', 'ui.ui23-level-card', 'ui.ui23-pack-tip'].forEach(k=>{ const en = TEXT[k]; ok(!!en, 'TX ' + k);
     CODES.forEach(c=>{ const pack = JSON.parse(R('lang/' + c + '.json')); ok(en && pack[en], `${c} has "${en}"`); }); }); }
 ok(/^## 2026-11-06 Package UI23/m.test(R('docs/CHANGELOG.md')), 'CHANGELOG entry');
 ok(/tests\/ui23-2026-11-06\.js/.test(R('tests/run-all.sh')), 'in run-all.sh');

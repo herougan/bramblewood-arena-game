@@ -4020,6 +4020,5 @@
  "Costs": "コスト",
  "GET!": "ゲット！",
  "Level {n}: {name} is in your collection": "レベル {n}：{name} がコレクションに入った",
- "{name} - opens as soon as you leave the screen.": "{name} - 画面を離れるとすぐに開く。",
- "{name} ({n})": "{name} ({n})"
+ "{name} - opens as soon as you leave the screen.": "{name} - 画面を離れるとすぐに開く。"
 }

@@ -45188,7 +45188,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=85ee7c3019", "es": "assets/lang/es.js?v=65c6a10255", "fr": "assets/lang/fr.js?v=873b51c17c", "id": "assets/lang/id.js?v=e0fb450fe1", "it": "assets/lang/it.js?v=a3cade6ab5", "ja": "assets/lang/ja.js?v=c024b8afa9", "ko": "assets/lang/ko.js?v=ccf7510196", "pt": "assets/lang/pt.js?v=0ff1c1d489", "ta": "assets/lang/ta.js?v=26c1eac406", "tl": "assets/lang/tl.js?v=27a2abfa7a", "zh-Hans": "assets/lang/zh-Hans.js?v=f4e9de43f9", "zh-Hant": "assets/lang/zh-Hant.js?v=e70a7ebed2"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=ab02c5f6d7", "es": "assets/lang/es.js?v=2fd208bfd7", "fr": "assets/lang/fr.js?v=9df89ab0d7", "id": "assets/lang/id.js?v=3dfba73bc8", "it": "assets/lang/it.js?v=add2efb0da", "ja": "assets/lang/ja.js?v=17bd97362f", "ko": "assets/lang/ko.js?v=66b04b812c", "pt": "assets/lang/pt.js?v=0ce137fab3", "ta": "assets/lang/ta.js?v=4b70a27512", "tl": "assets/lang/tl.js?v=8c0ec399bc", "zh-Hans": "assets/lang/zh-Hans.js?v=4424be2b89", "zh-Hant": "assets/lang/zh-Hant.js?v=cdf555e251"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -45390,7 +45390,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui19-mc-none": "No skills on these cards.",
   "ui.ui23-costs": "Costs",
   "ui.ui23-pack-tip": "{name} - opens as soon as you leave the screen.",
-  "ui.ui23-pack-n": "{name} ({n})",
   "ui.ui23-level-card": "Level {n}: {name} is in your collection",
   "ui.ui23-get": "GET!",
   "ui.ui23-effects": "Effects",
@@ -53569,7 +53568,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'b4979e507795', BUILD_CARD_HASH = 'd3ed64fda750cac912038f6cfd36b7f34a7e1d49176ee8abaed50869ba71f378';
+const BUILD_ID = 'e87551677635', BUILD_CARD_HASH = 'd3ed64fda750cac912038f6cfd36b7f34a7e1d49176ee8abaed50869ba71f378';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -97080,7 +97079,7 @@ function rewardsPanelHTML(m){
   // 2026-11-06 (package UI23 #27, owner ss6): no subtitle under a pack; its tip is "<Pack> - opens as soon as you leave the screen"; several of one kind are
   // one visible stack titled "<Pack> (N)". The packs sit with the cards won, in the left column (rw-packs, below).
   const packGroups = []; packInfos.forEach(pi=>{ const g = packGroups.find(x=> x.pi.id === pi.id && x.pi.name === pi.name); if(g) g.n++; else packGroups.push({pi, n: 1}); });
-  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packGroups.map(({pi, n})=> `<div class="rw-pack-art${n > 1 ? ' ui23-pack-stack' : ''}" style="--n:${Math.min(3, n - 1)}" data-tip="${escapeAttr(TX('ui.ui23-pack-tip', {name: pi.name.replace(/^Free /, '')}))}">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(n > 1 ? TX('ui.ui23-pack-n', {name: pi.name.replace(/^Free /, ''), n}) : pi.name.replace(/^Free /, ''))}</b></div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
+  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packGroups.map(({pi, n})=> `<div class="rw-pack-art${n > 1 ? ' ui23-pack-stack' : ''}" style="--n:${Math.min(3, n - 1)}" data-tip="${escapeAttr(TX('ui.ui23-pack-tip', {name: pi.name.replace(/^Free /, '')}))}">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(pi.name.replace(/^Free /, '') + (n > 1 ? ` (${n})` : ''))}</b></div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
   const cur = [];
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
   if(reward && reward.dust>0) cur.push(['dust', reward.dust]);

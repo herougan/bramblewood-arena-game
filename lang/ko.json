@@ -4022,6 +4022,5 @@
  "Costs": "비용",
  "GET!": "획득!",
  "Level {n}: {name} is in your collection": "레벨 {n}: {name}이(가) 컬렉션에 들어왔습니다",
- "{name} - opens as soon as you leave the screen.": "{name} - 화면을 나가면 바로 열립니다.",
- "{name} ({n})": "{name} ({n})"
+ "{name} - opens as soon as you leave the screen.": "{name} - 화면을 나가면 바로 열립니다."
 }

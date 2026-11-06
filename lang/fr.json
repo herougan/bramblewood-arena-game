@@ -4020,6 +4020,5 @@
  "Costs": "Coûts",
  "GET!": "OBTENU !",
  "Level {n}: {name} is in your collection": "Niveau {n} : {name} est dans ta collection",
- "{name} - opens as soon as you leave the screen.": "{name} - s’ouvre dès que tu quittes l’écran.",
- "{name} ({n})": "{name} ({n})"
+ "{name} - opens as soon as you leave the screen.": "{name} - s’ouvre dès que tu quittes l’écran."
 }
