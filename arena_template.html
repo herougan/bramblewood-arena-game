@@ -14847,6 +14847,15 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .card-tile .stats .hp.is-unhealth i.sg{filter:grayscale(1) brightness(1.15);}
 /* #1/#18 the heart counts the Shield and is blue while any is left */
 .board-card.has-shield .stats .hp i.sg{filter:hue-rotate(200deg) saturate(1.3) brightness(1.15);}
+/* #13/#34/#38 GET! (first copy owned) beside NEW! (never seen); both: NEW! comes in, then GET! lands on top */
+.rw-new.ui23-get, .po2-new-tag.ui23-get, .po2-new b.ui23-get{background:linear-gradient(135deg, #2fae5a, #8fe36b) !important; color:#fff !important; text-shadow:0 .1em 0 #165a2b !important;}
+.rw-new.ui23-late{top:calc(22% + 22px);} .po2-new-tag.ui23-late{top:14px;}
+.rw-card.shown .rw-new.ui23-late{transition-delay:.45s;} .po2-new-tag.ui23-late{animation:ui23Late .5s cubic-bezier(.3,1.6,.5,1) .45s both;}
+.po2-new b.ui23-late{margin-top:.15em; animation:ui23Late .5s cubic-bezier(.3,1.6,.5,1) .5s both;}
+@keyframes ui23Late{from{opacity:0; transform:scale(2.2);} to{opacity:1; transform:scale(1);}}
+/* #16 while the shut eyes show on a unit that can't see (FX B sightSync), the card is dark again (JJ26 had cut it to 10%); then back to 10% */
+.board-card.fxb-cantsee:not(.ui14-eye-out):not(.ui14-eye-gone) > .fxb-shade{opacity:.55 !important; transition:opacity .8s ease;}
+.board-card.fxb-cantsee:not(.ui14-eye-out):not(.ui14-eye-gone) .card-tile .ico{filter:brightness(.72) !important;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

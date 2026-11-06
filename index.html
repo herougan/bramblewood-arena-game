@@ -53511,7 +53511,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '2143fffb4868', BUILD_CARD_HASH = 'd3ed64fda750cac912038f6cfd36b7f34a7e1d49176ee8abaed50869ba71f378';
+const BUILD_ID = 'd60104f027e5', BUILD_CARD_HASH = 'd3ed64fda750cac912038f6cfd36b7f34a7e1d49176ee8abaed50869ba71f378';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -92987,8 +92987,10 @@ function vis5LeaderSlam(def, enemy, host){ // host: the field's element (the Eff
     w.style.left = q.left + 'px'; w.style.width = q.width + 'px'; w.style.top = (enemy ? q.top + q.height * 0.27 : q.bottom - q.height * 0.27) + 'px'; w.style.setProperty('--lead-ms', LEADER_CALLOUT_MS + 'ms');
     // 2026-10-31 (package UI8, owner Z2: "leader summoned: remove the leader preview in the centre (the leader is clearly visible)"): the big
     // portrait that slammed into the middle of the field is gone; the band, the ring, the shake and the name banner stay.
-    w.innerHTML = `<i class="vis5-lead-band"></i><i class="vis5-lead-shock"></i>`;
-    const b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status'); b.setAttribute('aria-hidden', 'false');
+    // 2026-11-06 (package UI23 #7, owner: drop the title text, the last vertical pillar instead of the horizontal beam): no gold band across the
+    // field and no visible name banner (it stays for screen readers); the leader's own throne-beam pillar (leaderThroneVfx) carries the moment.
+    w.innerHTML = `<i class="vis5-lead-shock"></i>`;
+    const b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout sr-only' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status'); b.setAttribute('aria-hidden', 'false');
     b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; w.appendChild(b); document.body.appendChild(w); setTimeout(()=> w.remove(), LEADER_CALLOUT_MS);
     if(full) setTimeout(()=>{ try{ battlefieldShake(enemy ? 0.4 : 0.32); }catch(e){} }, Math.round(LEADER_CALLOUT_MS * 0.17)); // the slam lands at 17%
   }catch(e){}

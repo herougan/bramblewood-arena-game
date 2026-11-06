@@ -3714,6 +3714,13 @@ function describeEffects(def, liveCard, opt){
 // The dark on a live unit's card detail (2026-10-18, package D; owner: "On affected units' own card details, show a line that they
 // miss 1/4 the time (from Darkness)"): the engine's share for this unit (no Darksight, not lit, not True Strike), from the map's own
 // darkness or a Cast Darkness unit. The board marks the same units with the shut eye (FX.B sightSync).
+// 2026-11-06 (package UI23 #16, owner: "A Dark-blind unit shows its blind pip at the top, like poison"): the engine's dark share for the unit
+// (darkMissOf; 0 for Darksight, a lit side, True Strike) as a 🕶️ status pip; the share is in its tooltip.
+function ui23DarkBlindPip(c){ try{ const m = matchState; if(!c || !m || m.over || !m.engine || !m.engine.darkMissOf || !m.players) return '';
+  let pid = null; [1, 2].forEach(p=>{ const pl = m.players[p]; if(pl && pl.row && [...pl.row.left, ...pl.row.center, ...pl.row.right].some(x=> x && x.uid === c.uid)) pid = p; }); if(pid == null) return '';
+  const x = m.engine.darkMissOf(c, pid, m.players); if(!(x > 0)) return '';
+  const tip = x >= 1 ? TX('ui.dark-miss-all') : TX('ui.dark-miss-share', {share: x >= 0.5 ? '1/2' : '1/4'});
+  return `<span class="abadge blind ui23-darkblind" title="${escapeAttr(tip)}">${iconHTML('blind-now', '🕶️')}</span>`; }catch(e){ return ''; } }
 function darkMissLine(liveCard){
   const m = typeof matchState !== 'undefined' ? matchState : null; if(!liveCard || !m || m.over || !m.engine || !m.engine.darkMissOf || !m.players) return '';
   const lc = currentCardByUidSafe(liveCard.uid) || liveCard; let pid = null;
@@ -4131,6 +4138,11 @@ function seenCardIds(){
   return seen;
 }
 var seenMigrated = false;
+// 2026-11-06 (package UI23 #13/#34/#38, owner: "NEW!" only for a card never seen anywhere; "GET!" the first time you own it; both: NEW! then GET!
+// on top). ui23SnapCollection keeps, once per match, the cards seen (seenCardIds) and owned before it; ui23CardTagsHTML draws the tags.
+function ui23Owned(id){ return !!((myUnlockedCardIds && myUnlockedCardIds.has(id)) || (myCardCopies[id] || []).length); }
+function ui23SnapCollection(m){ if(!m || m._ui23Seen) return; m._ui23Seen = new Set(seenCardIds()); m._ui23Owned = new Set([...(myUnlockedCardIds || [])].concat(Object.keys(myCardCopies || {}).filter(id=> (myCardCopies[id] || []).length))); }
+function ui23CardTagsHTML(seenNew, got, cls){ return (seenNew ? `<span class="${cls}" aria-hidden="true">${escapeHtml(TX('results.new'))}</span>` : '') + (got ? `<span class="${cls} ui23-get${seenNew ? ' ui23-late' : ''}" aria-hidden="true">${escapeHtml(TX('ui.ui23-get'))}</span>` : ''); }
 function noteSighted(defIds){
   if(!defIds || (matchState && matchState.fxLib)) return; // the Effects library's stand-ins aren't sightings (2026-10-14)
   const defs = getCardDefs();
@@ -17036,6 +17048,12 @@ function enemyDeckLevel(node){
   const body = deckLevelFrom(node.deck, lv, [], cap) * (DECK_SIZE / n), lead = deckLevelFrom({}, lv, leaders, cap);
   return Math.round(body + lead);
 }
+// 2026-11-06 (package UI23 #9): the BR of the deck you fight with. In a reference fight (matchState.refDeck) that is the reference deck dealt
+// to you, at its level, with its leader, not your own saved deck.
+function ui23MyBR(){ const m = matchState;
+  if(m && m.refDeck && m.players && m.players[1]){ const p1 = m.players[1], counts = {}; (p1.deck || []).concat(p1.hand || []).forEach(c=>{ const id = typeof c === 'string' ? c : c && c.defId; if(id) counts[id] = (counts[id] || 0) + 1; });
+    return deckLevelFrom(counts, ()=> m.refDeck.level || 0, [m.leaderDefId]); }
+  return mainDeckLevel(myDeckCounts, myLeaderId); }
 function mainDeckLevel(counts, leaderId){
   // 2026-10-18 (package NF): each copy counts at its own level (the deck's k copies of a card are your k strongest, as in a fight)
   if(copyModelOn()){ const defs = getCardDefs(); let t = 0;
@@ -32951,7 +32969,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-portrait ui14-vs-round">${avatarHTML(myAv, 84)}</div>
       <div class="vs-name ui16-name">${ui16NameHTML(myAv, myProfile ? myProfile.name : 'You')}</div>
       <div class="ui14-vs-map">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
-      ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${mainDeckLevel(myDeckCounts, myLeaderId)}</b></div>`; }catch(e){ return ''; } })()}
+      ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${ui23MyBR()}</b></div>`; }catch(e){ return ''; } })()}
     </div>
     <div class="vs-mid"><span class="vs-mark">VS</span></div>
     <div class="vs-side vs-them ui14-vs-card ui16-vs-them${ui16Stage ? ' has-art' : ''}"${bgStyle}>
@@ -32959,7 +32977,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="ui14-vs-kicker vs-kind${isBoss ? ' vis3-kind-boss' : isElite ? ' vis3-kind-elite' : ''}">${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</div>
       ${ui16Stage || `<div class="vs-portrait vs-rival-ico ui14-vs-round" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}${isBoss && !/raid|final|world|mega/.test(node.kind || '') ? '<span class="vis3-skull-frame"></span>' : isElite ? '<span class="vis3-elite-frame"></span>' : ''}</div>`}
       <div class="vs-name">${escapeHtml(node.name)}</div>
-      ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
+      ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = ui23MyBR(); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
       ${'' /* UI16 (2026-11-02, note 9): no facts line any more (people, castle Health and Armour, leaders, CPU) */}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
       <i class="ui14-vs-timer" aria-hidden="true"><i style="animation-duration:${hold}ms"></i></i>
@@ -36612,6 +36630,7 @@ function hudSettingsWidgetHTML(){
         <div class="settings-row-label"><span>💬 Voice</span><span class="settings-row-val" id="voiceVolumeValHud">80%</span></div>
         <input type="range" id="voiceVolumeSliderHud" min="0" max="100" step="1" aria-label="Voice volume">
       </div>
+      <div class="settings-row"><div class="settings-row-label"><span>🎆 ${escapeHtml(TX('ui.ui23-effects'))}</span></div><select id="fxSelectHud" aria-label="${escapeAttr(TX('ui.ui23-effects'))}"></select></div>${'' /* 2026-11-06 (package UI23 #17): the Effects level in a fight too (it scales particles, shakes and the extra effects) */}
       <div class="settings-row"><div class="settings-row-label"><span>🗨️ Voice lines</span></div><select id="voiceLinesSelectHud" aria-label="Voice lines"></select></div>
       <div class="settings-row"><div class="settings-row-label"><span>💬 NPC dialogue speed</span></div><select id="dialogueSpeedSelectHud" aria-label="NPC dialogue speed"></select></div>
       <div class="settings-row">
@@ -38362,6 +38381,7 @@ function renderBoard(opts){
   const slotViewEarly = isSlotMatch(m);
   const p1Rows = rowsFor(m.players[1]), p2Rows = rowsFor(m.players[2]);
   // Discovery (2026-10-02): any card on either side of the board counts as sighted.
+  ui23SnapCollection(matchState); // 2026-11-06 (package UI23 #13/#34/#38): what was seen and owned before this match, for NEW! / GET! on the results
   noteSighted([...p1Rows.left, ...p1Rows.center, ...p1Rows.right, ...p2Rows.left, ...p2Rows.center, ...p2Rows.right].map(c=>c.defId));
   const maxLeft = Math.max(p1Rows.left.length, p2Rows.left.length);
   const maxRight = Math.max(p1Rows.right.length, p2Rows.right.length);
@@ -40709,6 +40729,7 @@ function boardCardHTML(c, defs, opts){
   // path but were missing from this fresh-render template entirely, same class of bug as the
   // is-frozen/etc tint classes above.
   if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">${iconHTML('blind-now', '🕶️')}${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
+  else { const db = ui23DarkBlindPip(c); if(db) badges.push(db); } // 2026-11-06 (package UI23 #16): a Dark-blind unit's pip at the top, like Poison
   if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
@@ -41199,7 +41220,7 @@ function renderHand(){
   const m = matchState; if(!m) return;
   const defs = getCardDefs(), me = m.players[viewerHandPid(m)];
   const strip = document.getElementById('handStrip'); if(!strip) return;
-  noteSighted(me.hand.map(hc=>hc.defId)); // Discovery (2026-10-02): cards in your hand count as sighted
+  ui23SnapCollection(matchState); noteSighted(me.hand.map(hc=>hc.defId)); // Discovery (2026-10-02): cards in your hand count as sighted
   // Hand collapse (2026-10-08, user: "When you play a card, your hand collapses with the same
   // animations"): remember where each card sat, then slide the survivors into their new places.
   const prevHandRects = new Map([...strip.querySelectorAll('[data-handuid]')].map(el=> [el.getAttribute('data-handuid'), el.getBoundingClientRect()]));
@@ -42751,6 +42772,7 @@ function updateCardStatusDisplay(uid){
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">${iconHTML('blind-now', '🕶️')}${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
+  else { const db = ui23DarkBlindPip(c); if(db) badges.push(db); } // 2026-11-06 (package UI23 #16): a Dark-blind unit's pip at the top, like Poison
   if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
@@ -43300,8 +43322,10 @@ function vis5LeaderSlam(def, enemy, host){ // host: the field's element (the Eff
     w.style.left = q.left + 'px'; w.style.width = q.width + 'px'; w.style.top = (enemy ? q.top + q.height * 0.27 : q.bottom - q.height * 0.27) + 'px'; w.style.setProperty('--lead-ms', LEADER_CALLOUT_MS + 'ms');
     // 2026-10-31 (package UI8, owner Z2: "leader summoned: remove the leader preview in the centre (the leader is clearly visible)"): the big
     // portrait that slammed into the middle of the field is gone; the band, the ring, the shake and the name banner stay.
-    w.innerHTML = `<i class="vis5-lead-band"></i><i class="vis5-lead-shock"></i>`;
-    const b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status'); b.setAttribute('aria-hidden', 'false');
+    // 2026-11-06 (package UI23 #7, owner: drop the title text, the last vertical pillar instead of the horizontal beam): no gold band across the
+    // field and no visible name banner (it stays for screen readers); the leader's own throne-beam pillar (leaderThroneVfx) carries the moment.
+    w.innerHTML = `<i class="vis5-lead-shock"></i>`;
+    const b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout sr-only' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status'); b.setAttribute('aria-hidden', 'false');
     b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; w.appendChild(b); document.body.appendChild(w); setTimeout(()=> w.remove(), LEADER_CALLOUT_MS);
     if(full) setTimeout(()=>{ try{ battlefieldShake(enemy ? 0.4 : 0.32); }catch(e){} }, Math.round(LEADER_CALLOUT_MS * 0.17)); // the slam lands at 17%
   }catch(e){}
@@ -46500,7 +46524,7 @@ function showVsScreen(left, right){
     // coloured by the same gap scale as the skirmish card.
     try{
       const m = matchState, defs = getCardDefs();
-      const mine = left.level != null ? left.level : mainDeckLevel(myDeckCounts, myLeaderId);
+      const mine = left.level != null ? left.level : ui23MyBR();
       let theirs = right.level;
       if(theirs == null && m && m.players && m.players[2]){ const p2 = m.players[2], counts = {}; (p2.deck||[]).concat(p2.hand||[]).forEach(c=>{ const id = typeof c === 'string' ? c : c && c.defId; if(id) counts[id] = (counts[id]||0) + 1; }); theirs = deckLevelFrom(counts, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), []); }
       // 2026-10-17 (user: "It should show your BR in the pre-battle screen"): your battle rating always sits on your side, theirs on theirs.
@@ -47236,7 +47260,8 @@ function rewardsPanelHTML(m){
   const eggCards = wonIds.filter(id=> isEggRewardCard(getCardDefs()[id])); // 2026-10-18: eggs go with the egg / baby rewards below
   const cards = wonIds.filter(id=> !eggCards.includes(id));
   const baseCopyIds = ((m.conquestBaseGrowth && m.conquestBaseGrowth.copies) || []).filter(id=> getCardDefs()[id]); // 2026-10-24 (RW6, owner 12:02: "Base cards - e.g. Sheep - should just be a card reward"): a Base card won is a card tile in Cards won, not a "spare copy" chip
-  const firstSeen = new Set(m.discoveredThisMatch || []);
+  const firstSeen = m._ui23Seen ? new Set(wonIds.filter(id=> !m._ui23Seen.has(id))) : new Set(m.discoveredThisMatch || []); // UI23: never seen before this match
+  const firstGot = new Set(m._ui23Owned ? wonIds.filter(id=> !m._ui23Owned.has(id)) : []); // UI23: owned for the first time
   const castles = rewardCastleDrops(m); // 2026-10-18 (package T): a bramble won is a card here too
   // 2026-10-25 (package PL2, owner 00:02 #3: "When getting multiple card rewards - show it as 1 card, with the others as base behind them";
   // #5: "I noticed Rare Find! 'A top rank win...' in rewards. Do not put rewards like that there. I think, show cards as card (including eggs
@@ -47262,7 +47287,7 @@ function rewardsPanelHTML(m){
     // 2026-10-30 (CS-A): the cards won are Full size (size:'full'; the CSS keeps a height cap for short windows)
     const add = (key, d, html)=> tiles.push({key, name: d ? d.name : key, html, copy: d ? cardTileHTML(d, {inPlay:true, size:'full'}) : ''});
     cards.slice().sort((x, y)=> (rankWon.has(y) ? 1 : 0) - (rankWon.has(x) ? 1 : 0)).forEach(id=>{ if(!defs[id]) return; const special = rankWon.has(id);
-      add(id, defs[id], `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}${special ? ' pl2-rank-reward' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true, size:'full'})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}${special ? ribbon : ''}</div>`); });
+      add(id, defs[id], `<div class="rw-card is-unlock${firstSeen.has(id) || firstGot.has(id) ? ' is-first-seen' : ''}${special ? ' pl2-rank-reward' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true, size:'full'})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${ui23CardTagsHTML(firstSeen.has(id), firstGot.has(id), 'rw-new')}${special ? ribbon : ''}</div>`); });
     baseCopyIds.forEach(id=> add(id, defs[id], `<div class="rw-card is-unlock rw-base-copy" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true, size:'full'})}</div>`));
     castles.forEach(c=> add('castle:' + c.id, CHARACTER_DEFS[c.id], rewardCastleCardHTML(c)));
     eggCards.forEach(id=>{ const d = defs[id]; if(d) add(id, d, `<div class="rw-card pl2-won rw-egg-card res3-nest-card is-egg" data-tip="${escapeAttr(eggCardRewardNote())}">${cardTileHTML(d, {inPlay:true, size:'full'})}</div>`); });
@@ -50190,7 +50215,8 @@ function battlefieldShake(t){
   const now = performance.now(); if(now - lastBigShakeAt < 150) return false;
   const bf = document.querySelector('.battlefield') || document.getElementById('battlefieldEl'); if(!bf) return false;
   lastBigShakeAt = now;
-  const amp = 1 + 9*Math.min(1, t), rot = 0.15 + 0.85*Math.min(1, t), dur = 0.25 + 0.35*Math.min(1, t);
+  const k = lv === 'med' ? 0.6 : 1; // 2026-11-06 (package UI23 #17): Medium shakes softer, Low not at all, High in full
+  const amp = (1 + 9*Math.min(1, t))*k, rot = (0.15 + 0.85*Math.min(1, t))*k, dur = 0.25 + 0.35*Math.min(1, t);
   const n = Math.max(5, Math.round(dur / 0.045)), kf = [];
   for(let i = 0; i < n; i++){ const k = 1 - i/n; kf.push({x:(Math.random()*2 - 1)*amp*k, y:(Math.random()*2 - 1)*amp*0.6*k, rotation:(Math.random()*2 - 1)*rot*k, duration:dur/n}); }
   gsap.killTweensOf(bf, 'x,y,rotation');
@@ -58180,7 +58206,7 @@ function purchasePackOnce(pack, prepaid, opts){
   const foils = rollPackFoils(pack, pulls.length);
   const eggAt = new Set(); // 2026-10-23 (package RW3, GD2-6): a Mystery Booster card is an Easter egg 0.05% of the time
   if((pack.baseId || pack.id) === MYSTERY_PACK_ID) pulls = pulls.map((id, i)=>{ if(Math.random() >= MYSTERY_EGG_CHANCE) return id; const e = mysteryEggPick(); if(!e) return id; eggAt.add(i); return e; });
-  const results = pulls.map((id, i)=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; const finish = foils[i]; unlockCardForPlayer(id, eggAt.has(i) ? 'mysteryEgg' : 'shopPack', finish ? {foil:true, finish} : null); return {id, isNew: wasNew, shiny: lastGrantWasShiny, foil: !!finish, finish}; });
+  const results = pulls.map((id, i)=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length, seenNew = !seenCardIds().has(id) /* UI23 */; const finish = foils[i]; unlockCardForPlayer(id, eggAt.has(i) ? 'mysteryEgg' : 'shopPack', finish ? {foil:true, finish} : null); return {id, isNew: wasNew, seenNew, shiny: lastGrantWasShiny, foil: !!finish, finish}; });
   results.forEach(r=> rollBonusCopy(r, 'shopPack')); // 2026-10-17
   let leveledId = null;
   if(Math.random() < (pack.levelChance||0)){
@@ -58257,7 +58283,7 @@ function creditFactionPack(id){
   if(fp.kind === 'faction') try{ noteFactionReceived(roll.pulls.filter(p=> p.from === 'own').length); }catch(e){} // 2026-10-21 (package RP): the faction reward track's count
   const pack = {id:'fp-' + id, name:fp.name, icon:fp.icon, cards:roll.pulls.length, coverPools: fp.own ? [fp.own] : [1], coverId:fp.cover, foilChance:FACTION_PACK_FOIL /* RW3: 1% (was 4%) */, foilFinishes:PACK_FOIL_FINISHES_DEFAULT};
   const foils = rollPackFoils(pack, roll.pulls.length);
-  const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, shiny:lastGrantWasShiny, foil:!!finish, finish:finish||null}; });
+  const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length, seenNew = !seenCardIds().has(r.id) /* UI23 */; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, seenNew, shiny:lastGrantWasShiny, foil:!!finish, finish:finish||null}; });
   results.forEach(r=> rollBonusCopy(r, 'factionPack')); // 2026-10-17
   try{ queueMultiDeckSwap(results.map(r=> r.id), 'factionPack'); }catch(e){} // 2026-10-23 (package UI4): the pack's cards as one several-swap window
   try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
@@ -58980,8 +59006,9 @@ function openPackAnimation(pack, opened, opts){
   const bundle = !!opts.bundle;
   // NEW! once per card per opening, in the order you'll see them (2026-10-10, user: "it says NEW! multiple times although
   // i've already gotten the card once IN THE SAME OPENING").
-  const anyNew = new Set(); opened.forEach(o=> o.results.forEach(r=>{ if(r.isNew) anyNew.add(r.id); }));
-  const markFirstNew = list=>{ const seenNew = new Set(); list.forEach(r=>{ r.isNew = anyNew.has(r.id) && !seenNew.has(r.id); if(r.isNew) seenNew.add(r.id); }); return list; };
+  const anyNew = new Set(), anySeenNew = new Set(); opened.forEach(o=> o.results.forEach(r=>{ if(r.isNew) anyNew.add(r.id); if(r.seenNew) anySeenNew.add(r.id); }));
+  // UI23 (2026-11-06): isNew is GET! (first copy owned), seenNew is NEW! (never seen before); each once per card per opening
+  const markFirstNew = list=>{ const got = new Set(), sn = new Set(); list.forEach(r=>{ r.isNew = anyNew.has(r.id) && !got.has(r.id); if(r.isNew) got.add(r.id); r.seenNew = anySeenNew.has(r.id) && !sn.has(r.id); if(r.seenNew) sn.add(r.id); }); return list; };
   markFirstNew([].concat(...opened.map(o=> o.results)));
   const tierOf = id=> RARITY_TIER_BANDS.indexOf((defOf(id) && defOf(id).rarity) || 'common');
   const teaseOf = id=>{ const t = tierOf(id); return t >= 11 ? 'tease-legend' : t >= 7 ? 'tease-epic' : t >= 4 ? 'tease-rare' : ''; };
@@ -59080,7 +59107,7 @@ function openPackAnimation(pack, opened, opts){
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       ${'' /* 2026-10-30 (package CS-C): the card is the Detail card, face down (its own backing, 2026-10-16) until it is revealed; once it is up it
            tilts and turns with a sideways drag (enter() mounts it), a tap still moves on */}${detailCardHTML(d, {tag:'span', face:'back', focus:false, tile: poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)}) + (r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''), alias:{spin:'po2-flip', front:'po2-front', back:'po2-back'}})}
-      ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${r.bonusCopy ? `<span class="po2-bonus-copy" aria-hidden="true">${poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}</span><span class="po2-bonus-tag" aria-hidden="true"><b>Bonus!</b><small>+1 copy</small></span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
+      ${r.isNew || r.seenNew ? `<span class="po2-new" aria-hidden="true">${r.seenNew ? `<b>${escapeHtml(TX('results.new'))}</b>` : ''}${r.isNew ? `<b class="ui23-get${r.seenNew ? ' ui23-late' : ''}">${escapeHtml(TX('ui.ui23-get'))}</b>` : ''}</span>` : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${r.bonusCopy ? `<span class="po2-bonus-copy" aria-hidden="true">${poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}</span><span class="po2-bonus-tag" aria-hidden="true"><b>Bonus!</b><small>+1 copy</small></span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
       <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
     </button>`; }).join('');
   let deckO = null;
@@ -59262,7 +59289,7 @@ function openPackAnimation(pack, opened, opts){
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
-      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(r.id).name||r.id)} large">${poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, size:'full' /* 2026-10-30 (CS-A) */, extraClass: pullClass(r, defOf(r.id))})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
+      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(r.id).name||r.id)} large">${poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, size:'full' /* 2026-10-30 (CS-A) */, extraClass: pullClass(r, defOf(r.id))})}${ui23CardTagsHTML(r.seenNew, r.isNew, 'po2-new-tag')}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><div class="ui9-p">${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(footBits(o)).filter(Boolean).join(' · ') /* 2026-10-24 (BV): no dangling "·" */}</div>${footActions()}</div>
     </div>`;
     poClearFlights(); // 2026-10-24 (package BV): the last card's flight to the pile ends here (see poClearFlights)
@@ -59274,14 +59301,14 @@ function openPackAnimation(pack, opened, opts){
     const rest = opened.slice(packIdx);
     const tally = new Map(); let metal = 0, kroon = 0; const levels = [];
     rest.forEach(o=>{ metal += pack.metal||0; kroon += pack.kroon||0; if(o.leveledId) levels.push(o.leveledId);
-      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; tally.set(k, t); }); }); // 2026-10-17: a bonus copy counts; a Shiny is its own stack
+      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; t.seenNew = t.seenNew || r.seenNew; tally.set(k, t); }); }); // 2026-10-17: a bonus copy counts; a Shiny is its own stack
     const did = k=> tally.get(k).id;
     const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defOf(did(a)).name||'').localeCompare(defOf(did(b)).name||'') || (a < b ? -1 : 1));
     const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
     const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon && !KROONI_RETIRED) bits.push(`👑 +${kroon} Krooni`); /* 2026-10-23 (TU2) */ if(levels.length) bits.push(packLevelUpsHTML(levels, defs)); // 2026-10-23 (package RW5, owner item 13): names the cards that levelled
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, size:'full', extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, size:'full', extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${ui23CardTagsHTML(t.seenNew, t.isNew, 'po2-new-tag')}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
     poClearFlights();
@@ -59293,7 +59320,7 @@ function openPackAnimation(pack, opened, opts){
     phase = 'session';
     const all = sessionPacks(), tally = new Map(); const levels = [];
     all.forEach(({o})=>{ if(o.leveledId) levels.push(o.leveledId);
-      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; tally.set(k, t); }); });
+      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; t.seenNew = t.seenNew || r.seenNew; tally.set(k, t); }); });
     const did = k=> tally.get(k).id;
     const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defOf(did(a)).name||'').localeCompare(defOf(did(b)).name||'') || (a < b ? -1 : 1));
     const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
@@ -59301,7 +59328,7 @@ function openPackAnimation(pack, opened, opts){
     const bits = []; if(levels.length) bits.push(packLevelUpsHTML(levels, defs));
     overlay.innerHTML = `<div class="po2-top"><span class="po2-count">${escapeHtml(TX('ui.pl1-session-title', {n: all.length}))}</span></div><div class="po2-stage po2-summary po2-all pl1-session">
       <p class="pl1-session-kinds">${kinds.map(k=> `<span>${escapeHtml(k)}</span>`).join('')}</p>
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, size:'full', extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, size:'full', extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${ui23CardTagsHTML(t.seenNew, t.isNew, 'po2-new-tag')}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
     poClearFlights();
@@ -60104,7 +60131,19 @@ function res3GrantLevelReward(k, L){
   const pack = Object.assign({}, base, {cards: k === 'card' ? 1 : 3, metal:0, kroon:0, endReward:true, name: TX('ui.res3-lt-pack-name', {n: L, name: k === 'card' ? TX('ui.res3-lt-card') : base.name})});
   const o = purchasePackOnce(pack, true, {newFirst: true, gated: true}); if(!o) return;
   saveCurrencies(); if(o.leveledId) saveCardLevels(); try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
+  if(k === 'card'){ ui23LevelCardShown(o.results || [], L); return; } // 2026-11-06 (package UI23 #15): a single reward card is never a pack
   queuePackReveal(pack, o);
+}
+// 2026-11-06 (package UI23 #15, owner ss4: "Level 1: A card" opened as a pack): the level's card joins the results' Cards won (the XP bar fills
+// there, so that is where the level is reached); with no results on screen it is a toast. It is already in the collection (purchasePackOnce).
+function ui23LevelCardShown(results, L){
+  const defs = getCardDefs(), list = results.filter(r=> r && defs[r.id]); if(!list.length) return;
+  const wl = document.querySelector('.winloss-overlay');
+  if(!wl){ list.forEach(r=>{ try{ showToast('⭐ ' + TX('ui.ui23-level-card', {n: L, name: defs[r.id].name}), 'ok'); }catch(e){} }); return; }
+  const tiles = list.map(r=> `<div class="rw-card is-unlock unlocked shown ui23-level-card" data-tip="${escapeAttr(TX('ui.ui23-level-card', {n: L, name: defs[r.id].name}))}">${cardTileHTML(defs[r.id], {inPlay:true, size:'full'})}${ui23CardTagsHTML(!!r.seenNew, !!r.isNew, 'rw-new')}</div>`).join('');
+  const fan = wl.querySelector('.rw-unlocks .res3-fan');
+  if(fan) fan.insertAdjacentHTML('beforeend', tiles);
+  else { const first = wl.querySelector('.rw-sec'); const html = `<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="res3-fan">${tiles}</div></div>`; if(first) first.insertAdjacentHTML('beforebegin', html); else list.forEach(r=>{ try{ showToast('⭐ ' + TX('ui.ui23-level-card', {n: L, name: defs[r.id].name}), 'ok'); }catch(e){} }); }
 }
 // Pays every level reached since the last check. The first check on a save from before this shipped starts the track at the level it is
 // already at (no back pay); a new player starts at Level 0, so Level 1's card comes with the tutorials.
@@ -62568,7 +62607,7 @@ function wireSettingsButton(idSuffix){
     atmo.addEventListener('change', ()=> setAtmosphere(atmo.value));
   }
   const open = ()=>{
-    panel.hidden = false;
+    panel.hidden = false; SETTINGS_OPEN.add(idSuffix);
     if(!idSuffix) renderSettingsLinks();
     if(atmo) atmo.value = loadAtmosphere();
     if(emSel){ emSel.value = EmojiStyle.get(); EmojiStyle.refreshCredits(); }
@@ -62576,7 +62615,7 @@ function wireSettingsButton(idSuffix){
     btn.setAttribute('aria-expanded','true');
   };
   const close = ()=>{
-    panel.hidden = true;
+    panel.hidden = true; SETTINGS_OPEN.delete(idSuffix);
     btn.classList.remove('is-open');
     btn.setAttribute('aria-expanded','false');
   };
@@ -62585,11 +62624,14 @@ function wireSettingsButton(idSuffix){
     if(panel.hidden) open(); else close();
   });
   panel.addEventListener('click', e=> e.stopPropagation()); // clicking a slider shouldn't close the panel via the outside-click handler below
+  if(SETTINGS_OPEN.has(idSuffix)) open(); // 2026-11-06 (package UI23 #8): the fight's HUD is rebuilt when a setting changes (and each render): a panel that was open stays open
 }
+var SETTINGS_OPEN = new Set(); // the settings panels (by id suffix) the player has open
 // Global outside-click/Escape closes WHICHEVER settings panel is currently open (topbar or HUD
 // instance) — a single shared listener rather than one per instance, since the HUD instance's
 // button/panel get re-wired (and their old listeners garbage-collected) on every render.
 function closeAnyOpenSettingsPanel(){
+  SETTINGS_OPEN.clear();
   document.querySelectorAll('.settings-panel').forEach(p=>{
     if(p.hidden) return;
     p.hidden = true;
