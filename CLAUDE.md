@@ -64,4 +64,5 @@ Docs named `*-2026-10-*.md` are dated snapshots (history). When one disagrees wi
 - Owner-facing reports: short, player-visible changes first, then decisions the owner needs to make.
 - Decisions (`docs/decisions.json` body and options): under 100 words, never over 200 (owner 2026-11-04 22:34: "Simplify the decisions btw. There's too much text for a human to read.").
 - Every owner-facing report ends with a short balancing status (owner 2026-11-02 19:52: "always summarise balancing status everytime. that's our focus"): road fights in band / within 10 / beyond 20, the worst maps, open balance decisions, what runs next. New owner calls go into `docs/decisions.json`.
+- Keep balance runs going in the background whenever the machine is otherwise idle (owner 2026-11-06 21:34: "by default, always be running the balancing exes in the background - to make use of time well"): a road measure of Maps 0-20, the pipeline, or the next balance package. Tune and report Maps 0-20 only (owner 2026-11-06, BAL17-2).
 - Project docs: write only canonical or decision docs there. Every write clears the cache for every chat in the Project.
