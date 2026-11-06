@@ -3430,8 +3430,9 @@ const SKILL_REVEAL_MAP = {
   // ENG23 (2026-11-04, owner 11-03 23:12: "True sight is '?' until the first Map with invisible units or changelings are seen."): True Sight
   // (keenEye) reads "?" until Map 6, the Sable Swampmire, the first map whose fights field an Invisible unit (the Booming Bittern, 6-2 to
   // 6-6; no Changeling is in a fight before Map 18), or until the player has seen a card with Invisible or Changeling (seenWith), wherever.
-  // (Delivery, Map 0's Lumber maker on the Beaver Lumberjack, is not gated: it shows and explains itself on Map 0; owner call ENG23-4.)
+  // (Delivery, Map 0's Lumber maker on the Beaver Lumberjack, was not gated (ENG23-4); 2026-11-06 owner ENG23-4 b: it reads "?" on Map 0 too.)
   keenEye:     {from:6, seenWith:['invisible', 'changeling']},
+  delivery:    {from:1, parts:['deliveryEvery', 'deliveryRes']}, // UI23 (2026-11-06, owner ENG23-4 b): every Delivery form
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
@@ -4143,6 +4144,10 @@ var seenMigrated = false;
 function ui23Owned(id){ return !!((myUnlockedCardIds && myUnlockedCardIds.has(id)) || (myCardCopies[id] || []).length); }
 function ui23SnapCollection(m){ if(!m || m._ui23Seen) return; m._ui23Seen = new Set(seenCardIds()); m._ui23Owned = new Set([...(myUnlockedCardIds || [])].concat(Object.keys(myCardCopies || {}).filter(id=> (myCardCopies[id] || []).length))); }
 function ui23CardTagsHTML(seenNew, got, cls){ return (seenNew ? `<span class="${cls}" aria-hidden="true">${escapeHtml(TX('results.new'))}</span>` : '') + (got ? `<span class="${cls} ui23-get${seenNew ? ' ui23-late' : ''}" aria-hidden="true">${escapeHtml(TX('ui.ui23-get'))}</span>` : ''); }
+// 2026-11-06 (package UI23 #31, owner: tutorial text for skills has no numbers, since they differ per card): a number that changes with the skill's
+// value (the text at 1 and at 2 differ there) reads "N"; a rule's own number (miss 1 in 2, the 8 nearest) stays.
+function ui23NoNumbers(a, b){ const A = String(a || '').split(/(\d+)/), B = String(b || '').split(/(\d+)/); if(A.length !== B.length) return String(a || '').replace(/\d+/g, 'N');
+  return A.map((t, i)=> i % 2 && t !== B[i] ? 'N' : t).join(''); }
 function noteSighted(defIds){
   if(!defIds || (matchState && matchState.fxLib)) return; // the Effects library's stand-ins aren't sightings (2026-10-14)
   const defs = getCardDefs();
@@ -9458,6 +9463,9 @@ function abilityBadges(d, bopts){
   // (vis3ShieldHTML), shown only while some is left; at 1 the number fades and the icon alone means 1; at 0 the chip is gone. No badge on the east side any more.
   if(bopts && bopts.live){ const sa = Number(bopts.live.shieldAmt) || 0; if(sa > 0) out.push(vis3ShieldHTML(null, sa)); }
   else if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
+  // 2026-11-06 (package UI23 #33): the Delivery skills (Delivery, Delivery every turn, Tribe Delivery) are a context pip too: 📦 and the amount
+  ['delivery', 'deliveryEvery', 'tribeDelivery'].forEach(k=>{ if(!e[k]) return; const t = e22Head(k, e[k], e) || k, n = k === 'tribeDelivery' ? '' : n1(numOr(e[k], 1));
+    out.push(`<span class="ab-sk ab-delivery" data-sk="${k}" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">${iconHTML('delivery', '📦')}${n}</span>`); });
   if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit adjacent to the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
   if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units adjacent to the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
@@ -20051,9 +20059,9 @@ const pointerLight = {x:null, y:null, sx:null, sy:null, type:'mouse', moved:0, t
       const touchGone = P.type === 'touch' && P.touchUp > P.moved && now - P.touchUp > 1400;
       if(px != null){ l.style.setProperty('--nx', px.toFixed(2) + '%'); l.style.setProperty('--ny', py.toFixed(2) + '%'); }
       l.classList.toggle('is-on', inside && !touchGone); }
-    if(lantern){ const follow = P.x != null && (P.type !== 'touch' || now - P.moved < 4000); // a mouse on the page, or a touch in the last 4 s
+    if(lantern){ const follow = P.x != null; // 2026-11-06 (package UI23 #19): the pointer, or a touch's last tap (it stays there); none: the centre (no wandering)
       if(px != null && follow){ bf.style.setProperty('--lx', px.toFixed(2) + '%'); bf.style.setProperty('--ly', py.toFixed(2) + '%'); }
-      else if(!reducedMotion()){ const a = (now - P.t0)/5200; bf.style.setProperty('--lx', (50 + Math.cos(a)*30).toFixed(2) + '%'); bf.style.setProperty('--ly', (50 + Math.sin(a*1.4)*22).toFixed(2) + '%'); }
+      else { bf.style.setProperty('--lx', '50%'); bf.style.setProperty('--ly', '50%'); }
       // 2026-10-31 (package UI8, Z4): the warm pool is a layer under the cards (.night-cursor-light), at the same point as the darkness's clear centre
       { const l = lightOf(bf); l.style.setProperty('--nx', bf.style.getPropertyValue('--lx') || '50%'); l.style.setProperty('--ny', bf.style.getPropertyValue('--ly') || '45%'); l.classList.add('is-on'); } }
     P.raf = requestAnimationFrame(frame);
@@ -20318,6 +20326,9 @@ function fieldRowsListHTML(rows){
 // Cast Darkness (2026-10-18, package D): while a caster stands on the board the fight reads as dark (rules.dark 'dark', darkCast: true),
 // so the Environment card, the board's darkness veil, the eye on units that can't see and the field pills all follow it; a fight dark
 // of its own is left as it is. The engine decides (darkCastNow), the same rule the combat uses.
+// 2026-11-06 (package UI23 #19, owner: any darkness field effect gives the dark overlay with the torchlight on the pointer): the level of the dark
+// that is on the field now (the fight's own darkness, Pitch Black, Absolute, or a Cast Darkness unit / Darkness card), by field effect, not map.
+function ui23DarkLevel(m){ try{ if(!m || m.over) return ''; const r = matchFieldRules(m), d = r && r.dark; return d ? (d === 'absolute' || d === 'pitch' ? d : 'dark') : ''; }catch(e){ return ''; } }
 function matchFieldRules(m){ const r = matchFieldRulesBase(m);
   let cast = false; try{ cast = !!(m && !m.over && m.engine && m.engine.darkCastNow && m.engine.darkCastNow(m.players)); }catch(e){}
   return cast && !(r && r.dark) ? Object.assign({}, r || {}, {dark:'dark', darkCast:true}) : r; }
@@ -21926,44 +21937,34 @@ function pl1XpOnMap(m){ return !!m && !ARENA_FIGHT_MODES.has(m.mode); }
 // at the fight's height, spirals on its way across, and lands in the page's bottom-right corner (the player), shrinking into it with a gold
 // ring and a few sparks. It takes FX.E.nodeRankEmblem's place (PL1's hop over the fight and spiral into the fight panel); FX.E calls it by
 // name, so the map's queue runs it unchanged. Reduced motion: a short fade in the corner.
+// 2026-11-06 (package UI23 #30, owner): the emblem pops up out of the skirmish node it was won on and fades there; it no longer flies to the
+// page's bottom-right. Rank A holds longer and bounces; S and above shine (a sweep and a glow) and fade more slowly. FX.E's map return plays the
+// cleared fights one after another (await), and fights won on another map wait in that map's queue (pl2TakeMapMoments) until it is in view.
+// Reduced motion: a fade in place. A node off screen: nothing to pop from, so it resolves at once.
 function res3RankEmblemFlight(node, rank){
   if(!rank) return Promise.resolve();
-  const g = (typeof gsap !== 'undefined') ? gsap : null, W = window.innerWidth, H = window.innerHeight, size = 58;
-  let ny = H * 0.4; try{ const r = node && node.getBoundingClientRect(); if(r && r.height) ny = Math.max(60, Math.min(H - 120, r.top + r.height / 2)); }catch(e){}
-  const o = document.createElement('div'); o.className = 'res3-rank-fly'; o.setAttribute('aria-hidden', 'true');
-  o.innerHTML = `<span class="rank-hex rank-${escapeAttr(rank)}"><i></i><b>${escapeHtml(rank)}</b></span>`; document.body.appendChild(o);
-  // 2026-10-29 (package UI3, S3; owner 23:01: "The emblem dropping animation on the conquest map moves to the bottom of the screen instead"): the landing is
-  // the fight's own spot, read live each frame so a panned / zoomed / scrolled map cannot leave it behind: the open fight panel's corner emblem
-  // (that fight's panel only), else the fight's node (its lower-right corner) when the node is on screen. Only a node scrolled out of view sends it to the
-  // page's bottom-right corner as RES3 R6 did. Was: always the bottom-right corner (ex, ey = W - 46, H - 46).
-  const tgt = ()=>{ try{
-      const pc = document.querySelector('.conquest-node-panel:not([hidden]) > .cnp-rank-corner'), key = node && node.dataset && node.dataset.lkey;
-      if(pc && (typeof conquestSelectedNodeKey === 'undefined' || !key || conquestSelectedNodeKey === key)){ const r = pc.getBoundingClientRect(); if(r.width && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W) return {x: r.left + r.width / 2, y: r.top + r.height / 2, s: Math.max(.3, r.width / size), el: pc}; }
-      const r = node && node.getBoundingClientRect && node.getBoundingClientRect();
-      if(r && r.width && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W) return {x: Math.max(24, Math.min(W - 24, r.right - r.width * .18)), y: Math.max(24, Math.min(H - 24, r.bottom - r.height * .18)), s: .42, el: null};
-    }catch(e){}
-    return {x: W - 46, y: H - 46, s: .45, el: null}; };
-  const sx = -size, sy = ny; let last = tgt();
-  const land = ()=>{ const e = last = tgt(), ring = document.createElement('i'); ring.className = 'res3-rank-ring'; ring.style.left = e.x + 'px'; ring.style.top = e.y + 'px'; document.body.appendChild(ring); setTimeout(()=> ring.remove(), 900);
-    if(e.el){ e.el.classList.remove('pl1-rank-land'); void e.el.offsetWidth; e.el.classList.add('pl1-rank-land'); }
-    try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e2){} };
-  if(!g || reducedMotion()){ const e0 = last; g ? g.set(o, {x:e0.x - size/2, y:e0.y - size/2, opacity:0}) : (o.style.transform = `translate(${e0.x - size/2}px, ${e0.y - size/2}px)`);
-    return new Promise(res=>{ o.animate ? o.animate([{opacity:0}, {opacity:1}, {opacity:0}], {duration:900}).onfinish = ()=>{ o.remove(); res(); } : setTimeout(()=>{ o.remove(); res(); }, 900); }); }
-  try{ if(/S/.test(rank)) SoundKit.rareRise && SoundKit.rareRise(); }catch(e){}
-  return new Promise(res=>{
-    const st = {k:0}, turns = 1.6, R0 = Math.min(90, Math.max(50, H * .1));
-    g.set(o, {x:sx - size/2, y:sy - size/2, opacity:0, scale:.8});
-    g.timeline({onComplete:()=>{ o.remove(); res(); }})
-      .to(o, {opacity:1, duration:.15})
-      .to(st, {k:1, duration:1.45, ease:'power1.inOut', onUpdate:()=>{ const k = st.k, ang = k * turns * Math.PI * 2, rad = R0 * Math.sin(Math.PI * Math.min(1, k * 1.08));
-          const T = last = tgt(), bx = sx + (T.x - sx) * k, by = sy + (T.y - sy) * (k * k);
-          g.set(o, {x: bx + Math.cos(ang) * rad - rad - size/2, y: by + Math.sin(ang) * rad - size/2, rotation: k * 360 * turns, scale: 1 + .35 * Math.sin(Math.PI * k) - (1 - T.s) * k}); }}, '<')
-      .add(land)
-      .to(o, {scale:.2, opacity:0, duration:.22, ease:'power2.in'});
-  });
+  let r = null; try{ r = node && node.getBoundingClientRect(); }catch(e){}
+  if(!ui23Rect(r) || r.bottom < 0 || r.top > innerHeight || r.right < 0 || r.left > innerWidth) return Promise.resolve();
+  const size = 58, x = r.left + r.width / 2 - size / 2, y = r.top + r.height / 2 - size / 2, top = /^S/.test(rank), a = rank === 'A';
+  const o = document.createElement('div'); o.className = 'res3-rank-fly' + (top ? ' ui23-rank-shine' : ''); o.setAttribute('aria-hidden', 'true');
+  o.innerHTML = `<span class="rank-hex rank-${escapeAttr(rank)}"><i></i><b>${escapeHtml(rank)}</b></span>`; o.style.transform = `translate(${x}px, ${y}px)`; document.body.appendChild(o);
+  try{ if(top) SoundKit.rareRise && SoundKit.rareRise(); else SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){}
+  const T = (dy, sc)=> `translate(${x}px, ${y + dy}px) scale(${sc})`;
+  const frames = reducedMotion() ? [{opacity:0}, {opacity:1, offset:.2}, {opacity:1, offset:.7}, {opacity:0}]
+    : a ? [{opacity:0, transform:T(0, .4)}, {opacity:1, transform:T(-46, 1.15), offset:.16, easing:'ease-out'}, {transform:T(-34, 1), offset:.26, easing:'ease-in'}, {transform:T(-46, 1.06), offset:.36, easing:'ease-out'}, {transform:T(-38, 1), offset:.46}, {opacity:1, transform:T(-40, 1), offset:.84}, {opacity:0, transform:T(-56, .9)}]
+    : top ? [{opacity:0, transform:T(0, .4)}, {opacity:1, transform:T(-48, 1.2), offset:.14, easing:'ease-out'}, {opacity:1, transform:T(-44, 1.08), offset:.3}, {opacity:1, transform:T(-50, 1.08), offset:.72}, {opacity:0, transform:T(-70, 1)}]
+    : [{opacity:0, transform:T(0, .4)}, {opacity:1, transform:T(-40, 1.1), offset:.22, easing:'ease-out'}, {opacity:1, transform:T(-44, 1), offset:.6}, {opacity:0, transform:T(-60, .9)}];
+  const ms = reducedMotion() ? 900 : a ? 2600 : top ? 3200 : 1500;
+  return new Promise(res=>{ const fin = ()=>{ o.remove(); res(); };
+    if(!o.animate){ setTimeout(fin, ms); return; } const an = o.animate(frames, {duration: ms, fill: 'forwards'}); an.onfinish = fin; an.oncancel = fin; });
 }
 function res3InstallRankFlight(){ try{ if(window.FX && window.FX.E && window.FX.E.nodeRankEmblem !== res3RankEmblemFlight) window.FX.E.nodeRankEmblem = res3RankEmblemFlight; }catch(e){} }
+// 2026-11-06 (package UI23 #37, owner: "Evening from 2/3 to 3/3 day: no sunbeam"): FX.B's dusk (the long light bars as the day's last step comes) is
+// put to rest (the Effects Lab's Dusk too); the sky's own 10 s tint ease still carries the evening. The dawn's rays (FX.B.dayBreaks, night 3/3 ->
+// day 1/3) stay, straighter and fainter (.fxb-rays in arena_template.html).
+function ui23InstallSkyFx(){ try{ const B = window.FX && window.FX.B; if(B && B.dusk && !B.dusk.ui23){ B.dusk = ()=> Promise.resolve(); B.dusk.ui23 = true; } }catch(e){} }
 res3InstallRankFlight(); setTimeout(res3InstallRankFlight, 0); setTimeout(res3InstallRankFlight, 1500);
+ui23InstallSkyFx(); setTimeout(ui23InstallSkyFx, 0); setTimeout(ui23InstallSkyFx, 1500);
 function res3XpScreenReady(){
   if(typeof matchState !== 'undefined' && matchState) return false;
   if(typeof currentTab === 'undefined' || !currentTab || document.visibilityState === 'hidden') return false;
@@ -32929,7 +32930,9 @@ function ui16VsArtStageHTML(map, node, enemyChar){
   let leaders = []; try{ leaders = leadersShownFor(node, map && map.id).slice(0, 2); }catch(e){}
   const defs = getCardDefs(), br = enemyChar || null, brArt = br && br.art ? String(br.art) : '';
   if(!leaders.length && !brArt) return '';
-  const fig = (kind, name, art, icon)=> `<figure class="ui16-vs-fig is-${kind}"><span class="ui16-vs-pic${art ? '' : ' is-emoji'}"${art ? ` style="background-image:url('${escapeAttr(art)}')"` : ''} aria-hidden="true">${art ? '' : escapeHtml(icon || '🏰')}</span><figcaption><small>${escapeHtml(TX(kind === 'leader' ? 'ui.ui16-vs-leader' : 'ui.ui16-vs-bramble'))}</small>${name ? `<b>${escapeHtml(name)}</b>` : ''}</figcaption></figure>`;
+  // 2026-11-06 (package UI23 #35, owner ss9): no title or subtitle under the portraits (the figure keeps its words for screen readers); the two
+  // portraits stand closer, overlapping, the leader a little in front (CSS)
+  const fig = (kind, name, art, icon)=> `<figure class="ui16-vs-fig is-${kind}" role="img" aria-label="${escapeAttr(TX(kind === 'leader' ? 'ui.ui16-vs-leader' : 'ui.ui16-vs-bramble') + (name ? ': ' + name : ''))}" title="${escapeAttr(name || '')}"><span class="ui16-vs-pic${art ? '' : ' is-emoji'}"${art ? ` style="background-image:url('${escapeAttr(art)}')"` : ''} aria-hidden="true">${art ? '' : escapeHtml(icon || '🏰')}</span></figure>`;
   const out = leaders.map(id=> fig('leader', defs[id].name, defs[id].art || '', defs[id].icon || '👑'));
   // a fight with no castle of its own (the placeholder bramble carries the fight's name) shows the plain bramble, unnamed
   const brName = br && br.id !== 'conquest-enemy' ? br.name : '';
@@ -37219,7 +37222,7 @@ function renderMatchUI(){
              opponent's pills moved from under these controls onto the field, mirroring yours (see fieldResSideHTML in the battlefield) */}
       </div>
     </div>
-    <div class="battlefield ${matchDarkLevel(m) === 'pitch' || matchDarkLevel(m) === 'absolute' ? 'bf-lantern bf-dark-' + matchDarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
+    <div class="battlefield ${ui23DarkLevel(m) ? 'bf-lantern bf-dark-' + ui23DarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
       ${flairLairMatch(m) ? '<div class="fl1-vignette" aria-hidden="true"></div>' /* FLAIR1 (2026-10-28): the Dragon Lair's last fight: a quiet ember edge, under the cards, never over them */ : ''}
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
@@ -38120,7 +38123,9 @@ const SPEED_GATES = [{speed:3, map:20}, {speed:4, map:40}, {speed:5, map:60}];
 // cleared (its last fight), one map before the first elite (1-5) that opened it; the speed you pick is kept from fight to fight from the
 // start (SPEED_KEEP_ALWAYS; was only after Map 5); the first fight after a fast speed opens says so ("2× unlocked!", speedUnlockBanner).
 // 3×, 4×, 5× stay at Maps 20, 40, 60 (BU).
-const SPEED_2X_MAP = 0, SPEED_KEEP_ALWAYS = true, SPEED_ANNOUNCED_KEY = 'bramblewood_speed_announced_v1';
+// 2026-11-06 (package UI23 #29, owner): 1.5× opens with the first skirmish won on Map 1, 2× with the first skirmish won on Gannet Cliffs (Map 3).
+// Before: 1.5× with any first win (a Map 0 fight did it) and 2× with Map 0 cleared or a first elite. A cleared map counts too (an old save).
+const SPEED_15_MAP = 1, SPEED_2X_MAP = 3, SPEED_KEEP_ALWAYS = true, SPEED_ANNOUNCED_KEY = 'bramblewood_speed_announced_v1';
 function speedUnlockNews(steps){
   let seen = []; try{ seen = JSON.parse(localStorage.getItem(SPEED_ANNOUNCED_KEY) || '[]') || []; }catch(e){ seen = []; }
   const fresh = (steps || []).filter(s=> s > 1 && !seen.includes(s)); if(!fresh.length) return null;
@@ -38136,15 +38141,15 @@ function speedUnlockBanner(m, ffBtn){
   try{ if(ffBtn) ffBtn.classList.add('rw5-ff-new'); }catch(e){}
   setTimeout(()=>{ b.classList.add('is-out'); setTimeout(()=>{ b.remove(); try{ ffBtn && ffBtn.classList.remove('rw5-ff-new'); }catch(e){} }, 700); }, 3200);
 }
-// The cycle for a player's progress (pure, unit-tested: tests/bu-2026-10-19.js). p: {admin, firstWin, firstElite, cleared(n)}.
+// The cycle for a player's progress (pure, unit-tested: tests/bu-2026-10-19.js). p: {admin, skirmWon(n), cleared(n)} (UI23, 2026-11-06: was firstWin, firstElite).
 function speedStepsFor(p){
   // 2026-10-14 (user: "it always goes to 5x, then 1x. Include the 0.5x."): Admin Mode returned early with every fast speed and
   // skipped the 0.5× added below, so an admin's cycle wrapped from 5× straight back to 1×.
   if(p && p.admin) return [1, 1.5, 2, 3, 4, 5, 0.5];
   const out = [1];
   try{
-    if(p && p.firstWin) out.push(1.5);
-    if(p && (p.firstElite || (p.cleared && p.cleared(typeof SPEED_2X_MAP !== 'undefined' ? SPEED_2X_MAP : 0)))) out.push(2); // 2026-10-23 (package RW5): or Map 0 cleared
+    if(p && (p.skirmWon && p.skirmWon(SPEED_15_MAP) || p.cleared && p.cleared(SPEED_15_MAP))) out.push(1.5); // UI23 (#29): a Map 1 skirmish won
+    if(p && (p.skirmWon && p.skirmWon(SPEED_2X_MAP) || p.cleared && p.cleared(SPEED_2X_MAP))) out.push(2); // UI23 (#29): a Gannet Cliffs skirmish won
     SPEED_GATES.forEach(g=>{ if(p && p.cleared && p.cleared(g.map)) out.push(g.speed); });
   }catch(e){}
   out.push(0.5); // 2026-10-14 (user: "We need a 0.5x mode."): slow motion is always there, last in the cycle before normal
@@ -38156,8 +38161,7 @@ function speedSteps(){
     const done = (loadConquestProgress().completed || []).filter(id=> !/:tutorial2?$/.test(id));
     const mains = mainConquestMaps();
     const kindOf = id=>{ const [mapId, key] = id.split(':'); const f = findConquestNode(mapId, key); return f && f.node && f.node.kind; };
-    p.firstWin = done.length > 0;
-    p.firstElite = done.some(id=> /elite|boss|champion/.test(kindOf(id) || ''));
+    p.skirmWon = n=> !!mains[n] && done.some(id=> id.split(':')[0] === mains[n].id && kindOf(id) === 'skirmish'); // UI23 (#29)
     p.cleared = n=> !!(mains[n] && conquestMapCleared(mains[n].id));
   }catch(e){}
   return speedStepsFor(p);
@@ -45145,6 +45149,7 @@ function syncNightVeil(m, phase){
   const want = !!(m && !m.over && matchPhaseMatters(m) && (phase || (m.engine && m.engine.getPhase && m.engine.getPhase())) === 'night');
   // Night or a dark field: the leaders' and Light Aura units' glow shows (2026-10-15, .unit-light).
   try{ bf.classList.toggle('is-dark-scene', !!(m && !m.over && (want || matchDarkLevel(m)))); }catch(e){}
+  try{ const dl = ui23DarkLevel(m); bf.classList.toggle('bf-lantern', !!dl); ['dark', 'pitch', 'absolute'].forEach(k=> bf.classList.toggle('bf-dark-' + k, dl === k)); }catch(e){} // UI23 (#19): a Darkness cast mid-fight darkens at once
   try{ bf.classList.toggle('bf-night-cursor', want && !bf.classList.contains('bf-lantern')); }catch(e){} // 2026-10-17: the pointer's soft night light (wireNightCursorLight)
   const now = performance.now();
   if(!veilEase || veilEase.want !== want){
@@ -45936,7 +45941,7 @@ function passiveTipCandidates(){
   // "Natural Leader does not need a tutorial. this just might confuse the player").
   // 2026-10-15: a skill still hidden as "?" (SKILL_REVEAL) gets no tip yet; it comes once the skill is revealed. Retired skills none.
   Registry.skills().filter(sd=> sd.key !== 'leader' && !sd.retired && !skillHiddenNow(sd.key)).forEach(sd=>{
-    const desc = (()=>{ try{ const p = PASSIVE_DEFS.find(x=> x.key === sd.key); return p ? skillText(p, 1, {}) : sd.desc(1); }catch(e){ try{ return sd.desc(1); }catch(_){ return ''; } } })();
+    const desc = (()=>{ const p = PASSIVE_DEFS.find(x=> x.key === sd.key), at = v=>{ try{ return p ? skillText(p, v, {}) : sd.desc(v); }catch(e){ try{ return sd.desc(v); }catch(_){ return ''; } } }; return ui23NoNumbers(at(1), at(2)); })(); // UI23 (#31)
     out.push({id:'skill-'+sd.key, text:`✨ ${sd.label}: ${desc}`, anchor:()=> coachBoardEl(d=> d.effects && sd.get(d.effects)!==undefined)});
   });
   // statuses, the first time one shows up on any card
@@ -47329,7 +47334,10 @@ function rewardsPanelHTML(m){
   (m.conquestEndPacks || []).forEach(r=> packRefs.push(r)); // 2026-10-23 (package RW5): the end-of-map pack of 3 and faction pack
   const packInfos = packRefs.map(rewardPackInfo).filter(Boolean);
   const heldInfo = m.conquestPackHeld ? rewardPackInfo({kind:'free', id:m.conquestPackHeld}) : null;
-  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packInfos.map(pi=> `<div class="rw-pack-art" data-tip="${escapeAttr(TX('results.cards-it-opens-as-soon-as', {name: escapeAttr(pi.name), cards: pi.cards}))}">${TX('results.cards-opens-next', {v1: rewardPackBoosterHTML(pi), name: escapeHtml(pi.name), cards: pi.cards})}</div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
+  // 2026-11-06 (package UI23 #27, owner ss6): no subtitle under a pack; its tip is "<Pack> - opens as soon as you leave the screen"; several of one kind are
+  // one visible stack titled "<Pack> (N)". The packs sit with the cards won, in the left column (rw-packs, below).
+  const packGroups = []; packInfos.forEach(pi=>{ const g = packGroups.find(x=> x.pi.id === pi.id && x.pi.name === pi.name); if(g) g.n++; else packGroups.push({pi, n: 1}); });
+  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packGroups.map(({pi, n})=> `<div class="rw-pack-art${n > 1 ? ' ui23-pack-stack' : ''}" style="--n:${Math.min(3, n - 1)}" data-tip="${escapeAttr(TX('ui.ui23-pack-tip', {name: pi.name}))}">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(n > 1 ? TX('ui.ui23-pack-n', {name: pi.name, n}) : pi.name)}</b></div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
   const cur = [];
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
   if(reward && reward.dust>0) cur.push(['dust', reward.dust]);
@@ -47366,14 +47374,15 @@ function rewardsPanelHTML(m){
   if(m.dungeonOutcome && m.dungeonOutcome.won) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(dungeonKeyRuleText())}">${escapeHtml(TX('ui.dungeon-keys-left', {n: dungeonTicketsLeft()}))}</span>`); // 2026-10-18 (package DK): keys left (a win no longer gives one back)
   const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${'' /* 2026-10-26 (package RES3, R3): the rescued baby is a card in Cards won (res3BabyCardDef); was the rw-baby pill */}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).filter(([id])=> !getCardDefs()[id] /* PL2: card-form materia is a card tile in Cards won */).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
   const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
-  if(cur.length || packRow || acts.length || itemsHTML){
-    secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${k === 'blossoms' ? escapeAttr(TX(m.conquestBlossomsLoss ? 'results.econ1-blossoms-loss' : 'results.econ1-blossoms-win')) /* 2026-10-30 (ECON1) */ : escapeAttr(meta.label||k)}${reward&&k!=='metal'&&k!=='blossoms'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(k === 'blossoms' ? TX('ui.econ1-blossoms') : (meta.label||k))}</span></span>`; }).join('')}</div>` : ''}${packRow}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
+  if(packRow) secs.push(`<div class="rw-sec rw-packs">${packRow}</div>`); // UI23 (#27): with the cards won, on the left
+  if(cur.length || acts.length || itemsHTML){
+    secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${k === 'blossoms' ? escapeAttr(TX(m.conquestBlossomsLoss ? 'results.econ1-blossoms-loss' : 'results.econ1-blossoms-win')) /* 2026-10-30 (ECON1) */ : escapeAttr(meta.label||k)}${reward&&k!=='metal'&&k!=='blossoms'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(k === 'blossoms' ? TX('ui.econ1-blossoms') : (meta.label||k))}</span></span>`; }).join('')}</div>` : ''}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
   }
   if(!secs.length) return '';
   // 2026-10-10 (user: "Centre the cards and rewards in their own halves"): when cards were won, the panel splits
   // into two equal halves, the cards on the left and everything else on the right, each centred.
   // 2026-10-26 (package RES3, R2): the cards' column holds Cards won and New cards seen; the other column what opened and the Rewards.
-  const isCardSec = x=> x.startsWith('<div class="rw-sec rw-unlocks"') || x.startsWith('<div class="rw-sec rw-seen-cards"');
+  const isCardSec = x=> x.startsWith('<div class="rw-sec rw-unlocks"') || x.startsWith('<div class="rw-sec rw-seen-cards"') || x.startsWith('<div class="rw-sec rw-packs"'); // + the packs (UI23 #27)
   const cardSecs = secs.filter(isCardSec), rest = secs.filter(x=> !isCardSec(x));
   if(cardSecs.length && rest.length){
     return `<div class="rw-panel winloss-conquest-rewards has-split"><div class="rw-half rw-half-cards res3-col">${cardSecs.join('')}</div><div class="rw-half rw-half-side">${rest.join('')}</div></div>`;
@@ -48645,8 +48654,9 @@ const FLOAT_ICON = {crit:DN_CRIT_MARK, bleed:'🩸', 'bleed-tick':'🩸', heat:'
 // a fixed host laid over that card instead, so it survives the re-render and plays out in full.
 let floatDetachDepth = 0;
 function fxHostAt(el, ms, at){
-  const r = at || el.getBoundingClientRect(), h = document.createElement('div');
+  const r = ui23Rect(at) || ui23Rect(el && el.getBoundingClientRect && el.getBoundingClientRect()), h = document.createElement('div');
   h.className = 'fx-float-host'; h.setAttribute('aria-hidden', 'true');
+  if(!r) return h; // UI23 (#25): no box to stand on (a pip on a hidden cycle page, a card mid re-render): the float is dropped, not thrown to the top-left
   h.dataset.row = el && el.closest && el.closest('#rowEnemy, [data-row="enemy"]') ? 'enemy' : 'mine';
   h.style.cssText = `position:fixed; left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px; pointer-events:none; z-index:70;`;
   document.body.appendChild(h); setTimeout(()=> h.remove(), ms || 1900);
@@ -48661,7 +48671,7 @@ function fxHostAt(el, ms, at){
 // the upkeep doesn't cut it short. Reduced motion: it fades where it is.
 function bleedFadeDropVfx(uid){
   const el = boardCardEl(uid); if(!el) return null;
-  const pip = el.querySelector('.abadge.bleed'), r = (pip || el).getBoundingClientRect(), cr = el.getBoundingClientRect();
+  const pip0 = el.querySelector('.abadge.bleed'), pip = pip0 && ui23Rect(pip0.getBoundingClientRect()) ? pip0 : null, r = (pip || el).getBoundingClientRect(), cr = el.getBoundingClientRect(); if(!ui23Rect(cr)) return null; // UI23 (#25)
   const d = document.createElement('span'); d.className = 'bleed-drop'; d.textContent = '🩸'; d.setAttribute('aria-hidden', 'true');
   const fs = pip ? Math.max(17, Math.min(24, r.height * 1.15)) : 18, x0 = pip ? r.left + 1 : r.left + r.width / 2 - fs / 2, y0 = pip ? r.top : r.top + r.height * 0.3;
   d.style.cssText = `position:fixed; left:${x0}px; top:${y0}px; font-size:${fs}px; line-height:1; filter:grayscale(1) brightness(1.05) drop-shadow(0 1px 2px rgba(0,0,0,.55)); opacity:.95; pointer-events:none; z-index:71;`;
@@ -48694,8 +48704,12 @@ function bloomCopyVfx(srcUid, copyUid){
       p.animate([{transform: `translate(${sx}px, ${sy}px) scale(.5) rotate(0deg)`, opacity: 0}, {transform: `translate(${(sx + ex) / 2}px, ${(sy + ey) / 2 - lift}px) scale(1) rotate(${i % 2 ? 90 : -90}deg)`, opacity: 1, offset: .45},
         {transform: `translate(${ex}px, ${ey}px) scale(.6) rotate(${i % 2 ? 160 : -160}deg)`, opacity: 0}], {duration: 850 + (i % 3) * 120, delay: i * 25, easing: 'cubic-bezier(.3,.6,.4,1)', fill: 'forwards'}); }
   }, 70); }
-function afterSettle(uid, fn){ const el0 = boardCardEl(uid), r0 = el0 ? el0.getBoundingClientRect() : null, row0 = el0;
-  setTimeout(()=>{ const el = boardCardEl(uid); if(el) fn(el, el.getBoundingClientRect()); else if(r0) fn(null, r0, row0); }, 60); }
+function afterSettle(uid, fn){ const el0 = boardCardEl(uid), r0 = el0 ? ui23Rect(el0.getBoundingClientRect()) : null, row0 = el0;
+  setTimeout(()=>{ const el = boardCardEl(uid), r = el && ui23Rect(el.getBoundingClientRect()); if(r) fn(el, r); else if(r0) fn(null, r0, row0); }, 60); } // UI23 (#25): a 0x0 box is no anchor
+// 2026-11-06 (package UI23 #25, owner: "context pips get thrown to the top-left of the screen"): a page-level effect placed from an element's box
+// (position:fixed at its left / top) went to 0,0 when the box was empty: a pip on a hidden page of ENG26's cycling pip slots (display:none), or a
+// card caught mid re-render. ui23Rect gives the box only when it has a size, so callers fall back to the card or drop the effect.
+function ui23Rect(r){ return r && r.width > 0 && r.height > 0 ? r : null; }
 function washPushVfx(ev){
   try{ SoundKit.splash && SoundKit.splash(); }catch(e){}
   afterSettle(ev.targetUid, (el, r, row0)=>{
@@ -58814,7 +58828,7 @@ function rewardPackInfo(ref){
     return {id:'fp-both', name:'Faction Pack', icon:'🦦🌺', tint:'#7a4f7a', cards: FACTION_PACK_OWN + FACTION_PACK_GENERAL, kind:'faction'};
   }
   const p = getShopPacks().find(x=> x.id === ref.id); if(!p) return null;
-  if(ref.kind === 'end') return {id:p.id, name: TX('ui.rw5-end-pack', {name: p.name}), icon:p.icon || '🎁', tint: PACK_TINT[p.id], cards: MAP_END_PACK_CARDS, kind:'free'}; // RW5
+  if(ref.kind === 'end') return {id:p.id, name: p.name /* UI23 (#27, owner: no "Map reward" text) */, icon:p.icon || '🎁', tint: PACK_TINT[p.id], cards: MAP_END_PACK_CARDS, kind:'free'}; // RW5
   return {id:p.id, name: 'Free ' + p.name, icon:p.icon || '🎁', tint: PACK_TINT[p.id], cards:p.cards || 3, kind:'free'};
 }
 function rewardPackBoosterHTML(info, cls){ return info ? boosterHTML({id:info.id, name:info.name.replace(/^Free /, ''), icon:info.icon, tint:info.tint}, cls) : ''; }

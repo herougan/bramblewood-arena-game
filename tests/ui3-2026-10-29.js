@@ -52,10 +52,9 @@ function fnSrc(name){
   ok(/blind: c\.blind\|\|0/.test(app) && /blind: live\.blind/.test(app), 'S2 the live card passes its Blind status down to the strip'); }
 
 // ---- S3 emblem
-{ const f = fnSrc('res3RankEmblemFlight');
-  ok(/const tgt = \(\)=>/.test(f) && /\.conquest-node-panel:not\(\[hidden\]\) > \.cnp-rank-corner/.test(f) && /node\.getBoundingClientRect/.test(f) && /x: W - 46, y: H - 46/.test(f), 'S3 the landing is the open fight panel\'s emblem, else the node, else the page corner');
-  ok(/last = tgt\(\)/.test(f) && /sx \+ \(T\.x - sx\) \* k/.test(f), 'S3 the target is read every frame (a panned / zoomed / scrolled map cannot leave it behind)');
-  ok(!/const ex = W - 46, ey = H - 46/.test(f), 'S3 the fixed bottom-right corner is not the only landing any more'); }
+{ const f = fnSrc('res3RankEmblemFlight'); // 2026-11-06 (package UI23 #30): it pops up out of its node and fades there; A bounces, S and up shine
+  ok(/node\.getBoundingClientRect/.test(f) && /ui23-rank-shine/.test(f) && /rank === 'A'/.test(f), 'S3 (UI23) the emblem stands on its own node; A and S+ have their own moves');
+  ok(!/W - 46/.test(f), 'S3 (UI23) no bottom-right corner'); }
 
 // ---- S4 / S6 / S10 the Map cards overlay
 { const f = fnSrc('pk1OpenMapCards');

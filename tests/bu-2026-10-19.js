@@ -22,18 +22,20 @@ const gates = grab(/const SPEED_GATES = \[[^\]]*\];/), fnStart = src.indexOf('fu
 let fnSrc = '';
 if(fnStart >= 0){ let depth = 0, i = src.indexOf('{', fnStart); for(; i < src.length; i++){ if(src[i] === '{') depth++; else if(src[i] === '}' && --depth === 0) break; } fnSrc = src.slice(fnStart, i + 1); }
 ok(gates && fnSrc, 'speedStepsFor and SPEED_GATES are in arena_app.js');
-const speedStepsFor = new Function(gates + '\n' + fnSrc + '\nreturn speedStepsFor;')();
+const speedStepsFor = new Function(gates + '\nconst SPEED_15_MAP = 1, SPEED_2X_MAP = 3;\n' + fnSrc + '\nreturn speedStepsFor;')(); // UI23 (2026-11-06): the two map constants
 const upTo = k=> (n=> n <= k);
 const S = (o)=> JSON.stringify(speedStepsFor(o));
 ok(S({}) === '[1,0.5]', `a new player: 1x and 0.5x only (${S({})})`);
-ok(S({firstWin:true}) === '[1,1.5,0.5]', `after a first win: + 1.5x (${S({firstWin:true})})`);
-ok(S({firstWin:true, firstElite:true, cleared:upTo(19)}) === '[1,1.5,2,0.5]', `Map 19 cleared: no 3x yet (${S({firstWin:true, firstElite:true, cleared:upTo(19)})})`);
-ok(S({firstWin:true, firstElite:true, cleared:upTo(20)}) === '[1,1.5,2,3,0.5]', `Map 20 cleared: 3x (${S({firstWin:true, firstElite:true, cleared:upTo(20)})})`);
-ok(S({firstWin:true, firstElite:true, cleared:upTo(39)}) === '[1,1.5,2,3,0.5]', 'Map 39 cleared: still no 4x');
-ok(S({firstWin:true, firstElite:true, cleared:upTo(40)}) === '[1,1.5,2,3,4,0.5]', 'Map 40 cleared: 4x');
-ok(S({firstWin:true, firstElite:true, cleared:upTo(59)}) === '[1,1.5,2,3,4,0.5]', 'Map 59 cleared: still no 5x');
-ok(S({firstWin:true, firstElite:true, cleared:upTo(60)}) === '[1,1.5,2,3,4,5,0.5]', 'Map 60 cleared: 5x');
-ok(S({firstWin:true, firstElite:true, cleared:upTo(2)}) === '[1,1.5,2,0.5]', 'the old gates are gone (Map 2 no longer opens 3x)');
+// 2026-11-06 (package UI23 #29): 1.5x opens with a Map 1 skirmish won (skirmWon(1)) and 2x with a Gannet Cliffs (Map 3) skirmish won; a cleared map counts too
+const W = k=> (n=> n <= k);
+ok(S({skirmWon:W(1)}) === '[1,1.5,0.5]', `after a Map 1 skirmish: + 1.5x (${S({skirmWon:W(1)})})`);
+ok(S({skirmWon:W(3), cleared:upTo(19)}) === '[1,1.5,2,0.5]', `Map 19 cleared: no 3x yet (${S({skirmWon:W(3), cleared:upTo(19)})})`);
+ok(S({cleared:upTo(20)}) === '[1,1.5,2,3,0.5]', `Map 20 cleared: 3x (${S({cleared:upTo(20)})})`);
+ok(S({cleared:upTo(39)}) === '[1,1.5,2,3,0.5]', 'Map 39 cleared: still no 4x');
+ok(S({cleared:upTo(40)}) === '[1,1.5,2,3,4,0.5]', 'Map 40 cleared: 4x');
+ok(S({cleared:upTo(59)}) === '[1,1.5,2,3,4,0.5]', 'Map 59 cleared: still no 5x');
+ok(S({cleared:upTo(60)}) === '[1,1.5,2,3,4,5,0.5]', 'Map 60 cleared: 5x');
+ok(S({cleared:upTo(2)}) === '[1,1.5,0.5]', 'the old gates are gone (Map 2 no longer opens 3x; 2x waits for Gannet Cliffs since UI23)');
 ok(S({cleared:n=> n === 40}) === '[1,4,0.5]', 'each gate reads its own map (a cleared Map 40 alone opens 4x)');
 ok(S({admin:true}) === '[1,1.5,2,3,4,5,0.5]', 'Admin Mode: every speed');
 ok(/function speedSteps\(\)\{[^]*?p\.cleared = n=> !!\(mains\[n\] && conquestMapCleared\(mains\[n\]\.id\)\);[^]*?return speedStepsFor\(p\);/.test(src), 'the game reads "Map N cleared" as the Forge\'s Map 11 does (mainConquestMaps()[N], conquestMapCleared)');

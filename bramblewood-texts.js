@@ -75,6 +75,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui19-mc-count": "{n} of {total} cards",
   "ui.ui19-mc-none": "No skills on these cards.",
   "ui.ui23-costs": "Costs",
+  "ui.ui23-pack-tip": "{name} - opens as soon as you leave the screen.",
+  "ui.ui23-pack-n": "{name} ({n})",
   "ui.ui23-level-card": "Level {n}: {name} is in your collection",
   "ui.ui23-get": "GET!",
   "ui.ui23-effects": "Effects",
