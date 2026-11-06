@@ -1,0 +1,84 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "11-7",
+ "map": "m10",
+ "mapName": "Eyrie Heights",
+ "kind": "elite",
+ "name": "Eyrie Wardens",
+ "band": {
+  "lo": 59.50000000000001,
+  "hi": 75.5,
+  "target": 67.5
+ },
+ "list": [
+  "alpine-salamander",
+  "alpine-swift",
+  "chipmunk-hoarder",
+  "eyrie-warden",
+  "gannet-nestweaver",
+  "ibex-rockcaller",
+  "kittiwake-flock",
+  "mountain-hare",
+  "peak-condor",
+  "red-billed-chough",
+  "swamp-alligator"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "ibex-rockcaller"
+ ],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": 10,
+ "before": {
+  "deck": {
+   "ibex-rockcaller": 1,
+   "eyrie-warden": 5,
+   "alpine-swift": 4,
+   "swamp-alligator": 1,
+   "alpine-salamander": 4
+  },
+  "leaders": [
+   "ibex-rockcaller"
+  ],
+  "shieldOverride": 10,
+  "win200": 44,
+  "shown": 5
+ },
+ "pick": {
+  "deck": {
+   "ibex-rockcaller": 1,
+   "eyrie-warden": 5,
+   "alpine-swift": 4,
+   "swamp-alligator": 1,
+   "alpine-salamander": 4
+  },
+  "leaders": [
+   "alpine-salamander"
+  ],
+  "shieldOverride": 10,
+  "win200": 68,
+  "shown": 5,
+  "tune60": 63.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 50,
+   "hpLost": 65,
+   "rounds": 8.53
+  },
+  {
+   "move": "leader ibex-rockcaller -> alpine-salamander",
+   "win": 63.3,
+   "hpLost": 47,
+   "rounds": 7.53,
+   "trials": 57
+  }
+ ],
+ "trials": 113,
+ "sec": 62
+}

@@ -1,0 +1,94 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "12-2",
+ "map": "mh",
+ "mapName": "The Briar Maze",
+ "kind": "skirmish",
+ "name": "Quill Path",
+ "band": {
+  "lo": 76,
+  "hi": 92,
+  "target": 84
+ },
+ "list": [
+  "carrion-crow",
+  "cunning-vixen",
+  "dormouse",
+  "field-mouse",
+  "hedge-weasel",
+  "hollow-belly-rat",
+  "lyrebird-mimic",
+  "mouse-sapper",
+  "thorn-shrike",
+  "woodcock-lookout"
+ ],
+ "firstClear": [
+  "cunning-vixen"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "lyrebird-mimic"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "cunning-vixen": 4,
+   "lyrebird-mimic": 2,
+   "dormouse": 1,
+   "hedge-weasel": 3,
+   "mouse-sapper": 3,
+   "carrion-crow": 5
+  },
+  "leaders": [
+   "lyrebird-mimic"
+  ],
+  "shieldOverride": null,
+  "win200": 73,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "cunning-vixen": 3,
+   "lyrebird-mimic": 3,
+   "dormouse": 1,
+   "mouse-sapper": 3,
+   "carrion-crow": 5,
+   "thorn-shrike": 3
+  },
+  "leaders": [
+   "lyrebird-mimic"
+  ],
+  "shieldOverride": null,
+  "win200": 75.5,
+  "shown": 6,
+  "tune60": 82.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 75,
+   "hpLost": 37.7,
+   "rounds": 10.28
+  },
+  {
+   "move": "hedge-weasel -3 -> thorn-shrike",
+   "win": 78.3,
+   "hpLost": 38.7,
+   "rounds": 10.46,
+   "trials": 40
+  },
+  {
+   "move": "cunning-vixen -1 -> lyrebird-mimic",
+   "win": 82.5,
+   "hpLost": 36.3,
+   "rounds": 10.18,
+   "trials": 35
+  }
+ ],
+ "trials": 83,
+ "sec": 56
+}

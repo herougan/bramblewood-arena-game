@@ -1,0 +1,85 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "17-A-4",
+ "map": "mi",
+ "mapName": "The Ice Hollow",
+ "kind": "boss",
+ "name": "The Hollow King",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "frost-hare-sprinter",
+  "greenland-shark",
+  "harbor-seal",
+  "lone-grey-wolf",
+  "ravenous-wolverine",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "talus-pika"
+ ],
+ "firstClear": [
+  "greenland-shark"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "lone-grey-wolf"
+ ],
+ "namesake": false,
+ "shieldRule": 63,
+ "shieldOverride": 50,
+ "before": {
+  "deck": {
+   "frost-hare-sprinter": 1,
+   "harbor-seal": 2,
+   "lone-grey-wolf": 1,
+   "ravenous-wolverine": 2,
+   "snow-ermine": 5,
+   "talus-pika": 5
+  },
+  "leaders": [
+   "lone-grey-wolf"
+  ],
+  "shieldOverride": 50,
+  "win200": 20.5,
+  "shown": 25
+ },
+ "pick": {
+  "deck": {
+   "frost-hare-sprinter": 1,
+   "harbor-seal": 4,
+   "lone-grey-wolf": 1,
+   "ravenous-wolverine": 2,
+   "snow-ermine": 3,
+   "talus-pika": 5
+  },
+  "leaders": [
+   "lone-grey-wolf"
+  ],
+  "shieldOverride": 50,
+  "win200": 41,
+  "shown": 25,
+  "tune60": 43.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 20,
+   "hpLost": 91.7,
+   "rounds": 10.5
+  },
+  {
+   "move": "snow-ermine -2 -> harbor-seal",
+   "win": 43.3,
+   "hpLost": 80.2,
+   "rounds": 12.43,
+   "trials": 49
+  }
+ ],
+ "trials": 54,
+ "sec": 50
+}

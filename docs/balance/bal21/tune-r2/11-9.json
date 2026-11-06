@@ -1,0 +1,86 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "11-9",
+ "map": "m10",
+ "mapName": "Eyrie Heights",
+ "kind": "elite",
+ "name": "The Condor Sovereign",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "alpine-marmot",
+  "alpine-salamander",
+  "alpine-swift",
+  "chamois-leaper",
+  "chipmunk-hoarder",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gannet-nestweaver",
+  "kittiwake-flock",
+  "mountain-hare",
+  "peak-condor",
+  "red-billed-chough"
+ ],
+ "firstClear": [
+  "chamois-leaper"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "chamois-leaper"
+ ],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "alpine-marmot": 4,
+   "alpine-swift": 1,
+   "chamois-leaper": 4,
+   "chipmunk-hoarder": 1,
+   "eagle-owl-quartermaster": 2,
+   "peak-condor": 1,
+   "alpine-salamander": 4,
+   "mountain-hare": 2
+  },
+  "leaders": [
+   "chamois-leaper"
+  ],
+  "shieldOverride": null,
+  "win200": 73.5,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "alpine-marmot": 4,
+   "alpine-swift": 1,
+   "chamois-leaper": 4,
+   "chipmunk-hoarder": 1,
+   "eagle-owl-quartermaster": 2,
+   "peak-condor": 1,
+   "alpine-salamander": 4,
+   "mountain-hare": 2
+  },
+  "leaders": [
+   "chamois-leaper"
+  ],
+  "shieldOverride": null,
+  "win200": 73.5,
+  "shown": 9,
+  "tune60": 73.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 73.3,
+   "hpLost": 40.4,
+   "rounds": 9.04
+  }
+ ],
+ "trials": 74,
+ "sec": 61
+}

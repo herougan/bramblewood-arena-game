@@ -1,0 +1,134 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "tournament",
+ "status": "ok",
+ "started": "2026-11-06T21:02:58.355Z",
+ "finished": "2026-11-06T21:04:02.589Z",
+ "durationSec": 64.2,
+ "args": [
+  "--games",
+  "24",
+  "--maps",
+  "0-20",
+  "--tag",
+  "bal21-final"
+ ],
+ "head": "f8506d4c",
+ "inputs": {
+  "games": 24,
+  "maps": "0-20",
+  "tag": "bal21-final",
+  "band": 0.25,
+  "dir": "tests/out/pipeline-tournament/bal21-final",
+  "refs": [
+   "map",
+   "prog-1",
+   "prog-2",
+   "prog-3",
+   "prog-4",
+   "prog-5"
+  ],
+  "means": {
+   "map": 0.6966,
+   "prog-1": 0.6485,
+   "prog-2": 0.7044,
+   "prog-3": 0.7121999999999999,
+   "prog-4": 0.6893,
+   "prog-5": 0.7481
+  }
+ },
+ "counts": {
+  "fights": 149,
+  "rows played now": 65,
+  "rows on file": 894
+ },
+ "changed": [],
+ "flagged": [
+  {
+   "id": "m1:0-3",
+   "why": "prog mean 0.94 against the road target 0.6 (Map reference 0.667)"
+  },
+  {
+   "id": "mf:1-3",
+   "why": "prog mean 1 against the road target 0.7 (Map reference 1)"
+  },
+  {
+   "id": "mf:1-4",
+   "why": "prog mean 1 against the road target 0.6 (Map reference 1)"
+  },
+  {
+   "id": "mw:5-3",
+   "why": "prog mean 0.53 against the road target 0.78 (Map reference 0.458)"
+  },
+  {
+   "id": "mw:5-6",
+   "why": "prog mean 0.88 against the road target 0.6 (Map reference 0.583)"
+  },
+  {
+   "id": "m8:6-5",
+   "why": "prog mean 0.32 against the road target 0.7 (Map reference 0.542)"
+  },
+  {
+   "id": "m4:8-7",
+   "why": "prog mean 0.88 against the road target 0.6 (Map reference 0.708)"
+  },
+  {
+   "id": "m4:8-8",
+   "why": "prog mean 0.69 against the road target 0.4 (Map reference 0.625)"
+  },
+  {
+   "id": "m7:10-9",
+   "why": "prog mean 0.7 against the road target 0.4 (Map reference 0.583)"
+  },
+  {
+   "id": "m10:11-6",
+   "why": "prog mean 0.44 against the road target 0.713 (Map reference 0.75)"
+  },
+  {
+   "id": "m5:14-5",
+   "why": "prog mean 0.32 against the road target 0.7 (Map reference 0.417)"
+  },
+  {
+   "id": "mt:16-1",
+   "why": "prog mean 0.54 against the road target 0.9 (Map reference 0.917)"
+  },
+  {
+   "id": "md:18-6",
+   "why": "prog mean 0.34 against the road target 0.6 (Map reference 0.708)"
+  },
+  {
+   "id": "m11:20-1",
+   "why": "prog mean 0.63 against the road target 0.9 (Map reference 0.792)"
+  },
+  {
+   "id": "m11:20-5",
+   "why": "prog mean 0.48 against the road target 0.729 (Map reference 0.625)"
+  },
+  {
+   "id": "m11:20-6",
+   "why": "prog mean 0.41 against the road target 0.686 (Map reference 0.708)"
+  },
+  {
+   "id": "m11:20-8",
+   "why": "prog mean 0.32 against the road target 0.6 (Map reference 0.625)"
+  }
+ ],
+ "cached": {
+  "hits": 829,
+  "played": 65
+ },
+ "notes": [
+  "map mean win 0.6966",
+  "prog-1 mean win 0.6485",
+  "prog-2 mean win 0.7044",
+  "prog-3 mean win 0.7121999999999999",
+  "prog-4 mean win 0.6893",
+  "prog-5 mean win 0.7481"
+ ],
+ "files": [
+  "tests/out/pipeline-tournament/bal21-final/ref5-road.jsonl"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/tournament-2026-11-07-0502.json"
+}

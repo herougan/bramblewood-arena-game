@@ -1,0 +1,112 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "4-1",
+ "map": "m2",
+ "mapName": "Sunken Hollow",
+ "kind": "skirmish",
+ "name": "Reef Skirmishers",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "beaver-lumberjack",
+  "lions-mane-jelly",
+  "muskrat-lodgekeeper",
+  "platypus-spur",
+  "pond-algae",
+  "pyrenean-desman",
+  "shoal-shark",
+  "snapstick-turtle",
+  "water-shrew"
+ ],
+ "firstClear": [
+  "snapstick-turtle"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "pyrenean-desman"
+ ],
+ "namesake": false,
+ "shieldRule": 4,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "muskrat-lodgekeeper": 3,
+   "platypus-spur": 3,
+   "pyrenean-desman": 1,
+   "snapstick-turtle": 3,
+   "water-shrew": 3
+  },
+  "leaders": [
+   "pyrenean-desman"
+  ],
+  "shieldOverride": 0,
+  "win200": 60,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "platypus-spur": 3,
+   "snapstick-turtle": 2,
+   "water-shrew": 3,
+   "pond-algae": 4,
+   "muskrat-lodgekeeper": 1
+  },
+  "leaders": [
+   "beaver-lumberjack"
+  ],
+  "shieldOverride": 0,
+  "win200": 83,
+  "shown": 0,
+  "tune60": 88.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 48.3,
+   "hpLost": 66,
+   "rounds": 7.25
+  },
+  {
+   "move": "snapstick-turtle -1 -> lions-mane-jelly",
+   "win": 53.3,
+   "hpLost": 66.8,
+   "rounds": 7.73,
+   "trials": 70
+  },
+  {
+   "move": "muskrat-lodgekeeper -3 -> lions-mane-jelly",
+   "win": 58.3,
+   "hpLost": 63.3,
+   "rounds": 8.05,
+   "trials": 66
+  },
+  {
+   "move": "lions-mane-jelly -4 -> pond-algae",
+   "win": 75,
+   "hpLost": 48,
+   "rounds": 6.85,
+   "trials": 66
+  },
+  {
+   "move": "leader pyrenean-desman -> beaver-lumberjack",
+   "win": 83.3,
+   "hpLost": 31.4,
+   "rounds": 6.5,
+   "trials": 66
+  },
+  {
+   "move": "pyrenean-desman -1 -> muskrat-lodgekeeper",
+   "win": 88.3,
+   "hpLost": 30.4,
+   "rounds": 6.72,
+   "trials": 57
+  }
+ ],
+ "trials": 320,
+ "sec": 120
+}

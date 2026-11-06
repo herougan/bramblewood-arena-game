@@ -1,0 +1,92 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "4-4",
+ "map": "m2",
+ "mapName": "Sunken Hollow",
+ "kind": "elite",
+ "name": "The Kraken's Maw",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "beaver-lumberjack",
+  "lions-mane-jelly",
+  "muskrat-lodgekeeper",
+  "platypus-spur",
+  "pond-algae",
+  "shoal-shark",
+  "snapstick-turtle",
+  "water-shrew"
+ ],
+ "firstClear": [
+  "muskrat-lodgekeeper"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "lions-mane-jelly"
+ ],
+ "namesake": false,
+ "shieldRule": 6,
+ "shieldOverride": 4,
+ "before": {
+  "deck": {
+   "lions-mane-jelly": 1,
+   "muskrat-lodgekeeper": 3,
+   "platypus-spur": 1,
+   "pond-algae": 1,
+   "snapstick-turtle": 5,
+   "water-shrew": 4
+  },
+  "leaders": [
+   "lions-mane-jelly"
+  ],
+  "shieldOverride": 4,
+  "win200": 36.5,
+  "shown": 2
+ },
+ "pick": {
+  "deck": {
+   "lions-mane-jelly": 3,
+   "muskrat-lodgekeeper": 3,
+   "platypus-spur": 1,
+   "pond-algae": 1,
+   "snapstick-turtle": 3,
+   "water-shrew": 4
+  },
+  "leaders": [
+   "beaver-lumberjack"
+  ],
+  "shieldOverride": 4,
+  "win200": 59.5,
+  "shown": 2,
+  "tune60": 63.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 28.3,
+   "hpLost": 83.6,
+   "rounds": 8.52
+  },
+  {
+   "move": "leader lions-mane-jelly -> beaver-lumberjack",
+   "win": 53.3,
+   "hpLost": 65.7,
+   "rounds": 8.38,
+   "trials": 56
+  },
+  {
+   "move": "snapstick-turtle -2 -> lions-mane-jelly",
+   "win": 63.3,
+   "hpLost": 62.9,
+   "rounds": 8.73,
+   "trials": 49
+  }
+ ],
+ "trials": 114,
+ "sec": 71
+}

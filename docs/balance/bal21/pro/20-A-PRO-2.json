@@ -1,0 +1,43 @@
+{
+ "about": "BAL21 item 2 PRO fix (tools/bal21/pro_fix_2026_11_07.js)",
+ "id": "20-A-PRO-2",
+ "map": "me",
+ "mode": "easy",
+ "ref": "map",
+ "window": [
+  0,
+  0.65
+ ],
+ "before": {
+  "deck": {
+   "ash-moth": 4,
+   "ashbone-ghoul": 2,
+   "grave-grin-hyena": 4,
+   "pack-mule": 4,
+   "polar-bear": 2,
+   "skull-vulture": 4
+  },
+  "win200": 0.97
+ },
+ "pick": {
+  "deck": {
+   "ash-moth": 4,
+   "ashbone-ghoul": 2,
+   "grave-grin-hyena": 4,
+   "pack-mule": 4,
+   "polar-bear": 2,
+   "skull-vulture": 4
+  },
+  "win200": 0.97,
+  "tune60": 0.95
+ },
+ "keep": false,
+ "trail": [
+  {
+   "move": "start",
+   "win": 0.95
+  }
+ ],
+ "trials": 24,
+ "sec": 22
+}

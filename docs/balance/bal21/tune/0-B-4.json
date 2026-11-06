@@ -1,0 +1,86 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "0-B-4",
+ "map": "mo",
+ "mapName": "The Old Bramble",
+ "kind": "boss",
+ "name": "The Old Bramble",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "ant-scout",
+  "duckling",
+  "ent",
+  "forager-ant",
+  "pond-duck",
+  "silver-minnow",
+  "tunnel-ant"
+ ],
+ "firstClear": [
+  "ent"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "ent"
+ ],
+ "namesake": false,
+ "shieldRule": 51,
+ "shieldOverride": 126,
+ "before": {
+  "deck": {
+   "ent": 3,
+   "tunnel-ant": 1,
+   "ant-scout": 5,
+   "forager-ant": 3,
+   "duckling": 1,
+   "pond-duck": 1,
+   "silver-minnow": 1
+  },
+  "leaders": [
+   "ent"
+  ],
+  "shieldOverride": 126,
+  "win200": 30.5,
+  "shown": 63
+ },
+ "pick": {
+  "deck": {
+   "ent": 2,
+   "tunnel-ant": 1,
+   "ant-scout": 5,
+   "forager-ant": 4,
+   "duckling": 1,
+   "pond-duck": 1,
+   "silver-minnow": 1
+  },
+  "leaders": [
+   "ent"
+  ],
+  "shieldOverride": 126,
+  "win200": 39,
+  "shown": 63,
+  "tune60": 40
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 28.3,
+   "hpLost": 83.3,
+   "rounds": 11.53
+  },
+  {
+   "move": "ent -1 -> forager-ant",
+   "win": 40,
+   "hpLost": 74.7,
+   "rounds": 11.1,
+   "trials": 16
+  }
+ ],
+ "trials": 21,
+ "sec": 26
+}

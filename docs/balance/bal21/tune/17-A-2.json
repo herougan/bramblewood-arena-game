@@ -1,0 +1,87 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "17-A-2",
+ "map": "mi",
+ "mapName": "The Ice Hollow",
+ "kind": "skirmish",
+ "name": "Glacier Gut",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "lone-grey-wolf",
+  "ravenous-wolverine",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "talus-pika"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "lone-grey-wolf"
+ ],
+ "namesake": false,
+ "shieldRule": 21,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "harbor-seal": 5,
+   "lone-grey-wolf": 1,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 5,
+   "talus-pika": 5
+  },
+  "leaders": [
+   "lone-grey-wolf"
+  ],
+  "shieldOverride": null,
+  "win200": 53.5,
+  "shown": 11
+ },
+ "pick": {
+  "deck": {
+   "harbor-seal": 5,
+   "lone-grey-wolf": 2,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 4,
+   "talus-pika": 5
+  },
+  "leaders": [
+   "lone-grey-wolf"
+  ],
+  "shieldOverride": 0,
+  "win200": 69.5,
+  "shown": 0,
+  "tune60": 71.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 56.7,
+   "hpLost": 68.7,
+   "rounds": 12.08
+  },
+  {
+   "move": "snow-ermine -1 -> lone-grey-wolf",
+   "win": 66.7,
+   "hpLost": 62.9,
+   "rounds": 12.25,
+   "trials": 29
+  },
+  {
+   "move": "shield 21 -> 0",
+   "win": 71.7,
+   "hpLost": 53.2,
+   "rounds": 11.15,
+   "trials": 30
+  }
+ ],
+ "trials": 63,
+ "sec": 61
+}

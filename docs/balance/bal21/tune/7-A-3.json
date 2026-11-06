@@ -1,0 +1,83 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "7-A-3",
+ "map": "mz",
+ "mapName": "The Mycelium Deep",
+ "kind": "elite",
+ "name": "Silk Gallery",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "ant-warrior",
+  "bombardier-beetle",
+  "dung-beetle",
+  "fungal-colossus",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "sleepless-shrew"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "fungal-colossus"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "sleepless-shrew": 5,
+   "planarian-splitter": 4,
+   "garden-snail": 1,
+   "fungal-colossus": 4,
+   "ant-warrior": 3
+  },
+  "leaders": [
+   "fungal-colossus"
+  ],
+  "shieldOverride": null,
+  "win200": 89,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "sleepless-shrew": 3,
+   "planarian-splitter": 4,
+   "garden-snail": 1,
+   "fungal-colossus": 4,
+   "ant-warrior": 3,
+   "bombardier-beetle": 2
+  },
+  "leaders": [
+   "fungal-colossus"
+  ],
+  "shieldOverride": null,
+  "win200": 76,
+  "shown": 6,
+  "tune60": 70
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 90,
+   "hpLost": 33.3,
+   "rounds": 10.92
+  },
+  {
+   "move": "sleepless-shrew -2 -> bombardier-beetle",
+   "win": 70,
+   "hpLost": 55,
+   "rounds": 11.82,
+   "trials": 59
+  }
+ ],
+ "trials": 64,
+ "sec": 54
+}

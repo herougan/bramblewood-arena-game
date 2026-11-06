@@ -1,0 +1,79 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "14-5",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "elite",
+ "name": "Giraffe Vanguard",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "acacia-giraffe",
+  "ant-hill",
+  "dust-hyena",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "marula-elephant",
+  "mouse-sapper",
+  "savanna-cheetah",
+  "springbok-pronker"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "dust-hyena"
+ ],
+ "namesake": false,
+ "shieldRule": 21,
+ "shieldOverride": 5,
+ "before": {
+  "deck": {
+   "dust-hyena": 4,
+   "grave-grin-hyena": 4,
+   "marula-elephant": 4,
+   "mouse-sapper": 1,
+   "savanna-cheetah": 1,
+   "springbok-pronker": 5,
+   "ant-hill": 1
+  },
+  "leaders": [
+   "dust-hyena"
+  ],
+  "shieldOverride": 5,
+  "win200": 41,
+  "shown": 3
+ },
+ "pick": {
+  "deck": {
+   "dust-hyena": 4,
+   "grave-grin-hyena": 4,
+   "marula-elephant": 4,
+   "mouse-sapper": 1,
+   "savanna-cheetah": 1,
+   "springbok-pronker": 5,
+   "ant-hill": 1
+  },
+  "leaders": [
+   "dust-hyena"
+  ],
+  "shieldOverride": 5,
+  "win200": 41,
+  "shown": 3,
+  "tune60": 36.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 36.7,
+   "hpLost": 76.8,
+   "rounds": 10.37
+  }
+ ],
+ "trials": 44,
+ "sec": 30
+}

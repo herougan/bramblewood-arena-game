@@ -1,0 +1,89 @@
+{
+ "_about": "BAL13 item 1 (2026-11-02, owner 19:56 on BAL11-3 b): the late-priced cards swapped out of the earlier fights' decks; tools/bal13/decks_2026_11_02.js",
+ "late": {
+  "beetle-battering-ram": 23,
+  "siege-rhino": 23,
+  "hercules-beetle": 18
+ },
+ "rows": [
+  {
+   "where": "pro 14-A-PRO-2",
+   "map": 14,
+   "loc": "my",
+   "pro": {
+    "kind": "pro",
+    "id": "14-A-PRO-2"
+   },
+   "before": {
+    "apollo-butterfly": 4,
+    "fire-ant-raft": 4,
+    "hercules-beetle": 2,
+    "meadow-frog": 3,
+    "redwood-woodpecker": 4,
+    "wolf-spider-mother": 3
+   },
+   "after": {
+    "apollo-butterfly": 4,
+    "fire-ant-raft": 4,
+    "meadow-frog": 3,
+    "redwood-woodpecker": 4,
+    "wolf-spider-mother": 3,
+    "pangolin-roller": 2
+   },
+   "moves": [
+    {
+     "out": "hercules-beetle",
+     "copies": 2,
+     "to": {
+      "pangolin-roller": 2
+     },
+     "left": 0
+    }
+   ]
+  },
+  {
+   "where": "wpro 14-A-WPRO-2",
+   "map": 14,
+   "loc": "my",
+   "pro": {
+    "kind": "wpro",
+    "id": "14-A-WPRO-2"
+   },
+   "before": {
+    "apollo-butterfly": 3,
+    "hercules-beetle": 2,
+    "jaguar-stalker": 3,
+    "lyrebird-mimic": 4,
+    "proboscis-monkey": 4,
+    "weaver-bird": 4
+   },
+   "after": {
+    "apollo-butterfly": 3,
+    "jaguar-stalker": 3,
+    "lyrebird-mimic": 4,
+    "proboscis-monkey": 4,
+    "weaver-bird": 4,
+    "pangolin-roller": 2
+   },
+   "moves": [
+    {
+     "out": "hercules-beetle",
+     "copies": 2,
+     "to": {
+      "pangolin-roller": 2
+     },
+     "left": 0
+    }
+   ]
+  }
+ ],
+ "kept": [
+  {
+   "where": "node my:14-A-4",
+   "map": 14,
+   "card": "hercules-beetle",
+   "copies": 3,
+   "why": "the fight's own first-clear card"
+  }
+ ]
+}

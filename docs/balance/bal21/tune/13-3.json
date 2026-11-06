@@ -1,0 +1,78 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "13-3",
+ "map": "mr",
+ "mapName": "The Redwood Deep",
+ "kind": "skirmish",
+ "name": "Antler Grove",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "berserker-boar",
+  "bramblewood-lynx",
+  "grizzly-vanguard",
+  "swift-fox",
+  "tasmanian-devil"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "bramblewood-lynx"
+ ],
+ "namesake": false,
+ "shieldRule": 13,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "berserker-boar": 4,
+   "bramblewood-lynx": 3,
+   "grizzly-vanguard": 3,
+   "swift-fox": 4,
+   "tasmanian-devil": 3
+  },
+  "leaders": [
+   "bramblewood-lynx"
+  ],
+  "shieldOverride": null,
+  "win200": 88.5,
+  "shown": 7
+ },
+ "pick": {
+  "deck": {
+   "berserker-boar": 3,
+   "bramblewood-lynx": 3,
+   "grizzly-vanguard": 4,
+   "swift-fox": 4,
+   "tasmanian-devil": 3
+  },
+  "leaders": [
+   "bramblewood-lynx"
+  ],
+  "shieldOverride": null,
+  "win200": 95,
+  "shown": 7,
+  "tune60": 88.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 93.3,
+   "hpLost": 19.9,
+   "rounds": 7.75
+  },
+  {
+   "move": "berserker-boar -1 -> grizzly-vanguard",
+   "win": 88.3,
+   "hpLost": 26.4,
+   "rounds": 7.7,
+   "trials": 13
+  }
+ ],
+ "trials": 29,
+ "sec": 14
+}

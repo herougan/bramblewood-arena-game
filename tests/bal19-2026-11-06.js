@@ -51,7 +51,8 @@ for (const r of rows) {
     const U = K.uniqueOf(MAP), Lw = r.was.leaders ? JSON.parse(r.was.leaders) : (() => { const n0 = Object.assign({}, f.n, { deck: was }); delete n0.leaders; G.NODE_MAP_HINT.set(n0, MAP); return G.skirmishLeadersOf(n0, MAP) || []; })();
     const Ln = G.skirmishLeadersOf(f.n, MAP) || [], L = new Set(Lw.filter(id => Ln.includes(id))), nu = id => !U.has(id) && !L.has(id), nuW = id => !U.has(id) && !Lw.includes(id);
     const tot = (x, p) => Object.keys(x).filter(p).reduce((t, id) => t + x[id], 0);
-    Object.keys(d).filter(nu).forEach(id => ok(d[id] <= (nuW(id) ? Math.max(1, was[id] || 0) : 1), `${r.code}: K14 ${id} x${d[id]} (was x${was[id] || 0}${nuW(id) ? '' : ', then exempt as the leader'})`));
+    // 2026-11-07 (BAL21): a fight BAL21 retuned again is held to K14 against the deck BAL21 started from (tests/bal21-2026-11-07.js), not BAL19's
+    if (!/2026-11-07 \(BAL21\)/.test(l)) Object.keys(d).filter(nu).forEach(id => ok(d[id] <= (nuW(id) ? Math.max(1, was[id] || 0) : 1), `${r.code}: K14 ${id} x${d[id]} (was x${was[id] || 0}${nuW(id) ? '' : ', then exempt as the leader'})`));
     ok(tot(d, nu) <= Math.max(6, tot(was, nuW)), `${r.code}: K14 non-unique copies ${tot(was, nuW)} -> ${tot(d, nu)}`); }
   if (f.n.rules && f.n.rules.boon) ok(ENG.selfishBoonCount(D, d, f.n.rules.boon).on, `${r.code}: the challenge's boon ${f.n.rules.boon} stays on`);
   const rule = G.ruleShieldOf(f.n);

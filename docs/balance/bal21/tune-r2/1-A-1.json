@@ -1,0 +1,86 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "1-A-1",
+ "map": "mq",
+ "mapName": "Clovermead",
+ "kind": "skirmish",
+ "name": "Clover Patch",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "ant-hill",
+  "ant-scout",
+  "bee-forager",
+  "cottontail",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "meadow-rabbit",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "bee-forager": 1,
+   "meadow-rabbit": 1,
+   "ant-scout": 1,
+   "field-mouse": 5,
+   "slow-worm": 4,
+   "field-vole": 1
+  },
+  "leaders": [],
+  "shieldOverride": 0,
+  "win200": 74.5,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "bee-forager": 1,
+   "meadow-rabbit": 1,
+   "ant-scout": 1,
+   "field-mouse": 3,
+   "slow-worm": 4,
+   "woodcock-lookout": 3
+  },
+  "leaders": [],
+  "shieldOverride": 0,
+  "win200": 78,
+  "shown": 0,
+  "tune60": 89.2
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 75.8,
+   "hpLost": 49.3,
+   "rounds": 10.53
+  },
+  {
+   "move": "field-mouse -2 -> field-vole",
+   "win": 78.3,
+   "hpLost": 49.7,
+   "rounds": 11.08,
+   "trials": 25
+  },
+  {
+   "move": "field-vole -3 -> woodcock-lookout",
+   "win": 89.2,
+   "hpLost": 41.3,
+   "rounds": 10.53,
+   "trials": 30
+  }
+ ],
+ "trials": 62,
+ "sec": 70
+}

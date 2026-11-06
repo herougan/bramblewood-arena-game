@@ -1,0 +1,87 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "6-5",
+ "map": "m8",
+ "mapName": "Sable Swampmire",
+ "kind": "elite",
+ "name": "Venomlord's Coil",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "booming-bittern",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "marsh-harrier",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "raven-scout",
+  "venomlord-serpent"
+ ],
+ "firstClear": [
+  "newt-doctor"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "venomlord-serpent"
+ ],
+ "namesake": true,
+ "shieldRule": 9,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "booming-bittern": 2,
+   "camouflage-frog": 4,
+   "marsh-harrier": 1,
+   "newt-doctor": 4,
+   "raven-scout": 1,
+   "venomlord-serpent": 2
+  },
+  "leaders": [
+   "venomlord-serpent"
+  ],
+  "shieldOverride": null,
+  "win200": 59.5,
+  "shown": 5
+ },
+ "pick": {
+  "deck": {
+   "booming-bittern": 2,
+   "camouflage-frog": 4,
+   "newt-doctor": 4,
+   "raven-scout": 1,
+   "venomlord-serpent": 2,
+   "fire-ant-raft": 1
+  },
+  "leaders": [
+   "venomlord-serpent"
+  ],
+  "shieldOverride": null,
+  "win200": 66,
+  "shown": 5,
+  "tune60": 70
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 60,
+   "hpLost": 47.2,
+   "rounds": 6.75
+  },
+  {
+   "move": "marsh-harrier -1 -> fire-ant-raft",
+   "win": 70,
+   "hpLost": 38.7,
+   "rounds": 6.87,
+   "trials": 53
+  }
+ ],
+ "trials": 58,
+ "sec": 21
+}

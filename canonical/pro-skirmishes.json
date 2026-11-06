@@ -5279,8 +5279,8 @@
       "conch-crawler": 4,
       "conch-herald": 4,
       "garden-snail": 4,
-      "nutria-reedcutter": 2,
-      "open-ocean-hermit-crab": 4
+      "open-ocean-hermit-crab": 4,
+      "driftwood-crab": 2
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map02-mg-2026-11-05.json",
@@ -5297,7 +5297,21 @@
       "generated": "2026-11-05T03:05:33.037Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "history": [
+      {
+       "deck": {
+        "box-turtle": 2,
+        "conch-crawler": 4,
+        "conch-herald": 4,
+        "garden-snail": 4,
+        "nutria-reedcutter": 2,
+        "open-ocean-hermit-crab": 4
+       },
+       "replacedAt": "2026-11-07 (BAL21)"
+      }
+     ],
+     "bal21": "2026-11-07 (BAL21 item 2): too easy for the Map reference after ENG28 (map 91.5% -> 84.5% at 200 games, pro_ease seeds); nutria-reedcutter -2 -> driftwood-crab (tools/bal21/pro_fix_2026_11_07.js, BAL16's PRO rules)"
     }
    ],
    "bpro": [
@@ -7307,11 +7321,12 @@
       "conch-herald"
      ],
      "deck": {
-      "bramble-sprout": 4,
+      "bramble-sprout": 3,
       "conch-crawler": 4,
       "conch-herald": 4,
       "hawk-arrowkeeper": 4,
-      "puffin-diver": 4
+      "puffin-diver": 4,
+      "alley-cat": 1
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map03-mc-2026-11-05.json",
@@ -7328,7 +7343,20 @@
       "generated": "2026-11-05T03:11:39.364Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "history": [
+      {
+       "deck": {
+        "bramble-sprout": 4,
+        "conch-crawler": 4,
+        "conch-herald": 4,
+        "hawk-arrowkeeper": 4,
+        "puffin-diver": 4
+       },
+       "replacedAt": "2026-11-07 (BAL21)"
+      }
+     ],
+     "bal21": "2026-11-07 (BAL21 item 2): too easy for the Map reference after ENG28 (map 77% -> 75% at 200 games, pro_ease seeds); bramble-sprout -1 -> alley-cat (tools/bal21/pro_fix_2026_11_07.js, BAL16's PRO rules)"
     },
     {
      "id": "3-PRO-2",
@@ -13294,12 +13322,12 @@
       "tunnel-ant"
      ],
      "deck": {
-      "bee-forager": 4,
-      "dung-beetle": 2,
+      "bee-forager": 3,
       "earthworm": 4,
       "owl-nightwatch": 4,
       "tunnel-ant": 3,
-      "woodcock-lookout": 3
+      "woodcock-lookout": 2,
+      "worker-ant": 4
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map07-mu-2026-11-05.json",
@@ -13316,7 +13344,21 @@
       "generated": "2026-11-05T03:22:38.616Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "history": [
+      {
+       "deck": {
+        "bee-forager": 4,
+        "dung-beetle": 2,
+        "earthworm": 4,
+        "owl-nightwatch": 4,
+        "tunnel-ant": 3,
+        "woodcock-lookout": 3
+       },
+       "replacedAt": "2026-11-07 (BAL21)"
+      }
+     ],
+     "bal21": "2026-11-07 (BAL21 item 2): too easy for the Map reference after ENG28 (map 90.5% -> 81% at 200 games, pro_ease seeds); dung-beetle -2 -> worker-ant; bee-forager -1 -> worker-ant; woodcock-lookout -1 -> worker-ant (tools/bal21/pro_fix_2026_11_07.js, BAL16's PRO rules)"
     },
     {
      "id": "7-PRO-2",
@@ -27536,15 +27578,15 @@
      ],
      "level": 1,
      "leaders": [
-      "hercules-beetle"
+      "pangolin-roller"
      ],
      "deck": {
       "apollo-butterfly": 4,
       "fire-ant-raft": 4,
-      "hercules-beetle": 2,
       "meadow-frog": 3,
       "redwood-woodpecker": 4,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "pangolin-roller": 2
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map14-my-2026-11-05.json",
@@ -27561,7 +27603,8 @@
       "generated": "2026-11-05T03:48:28.623Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13": "2026-11-07 (BAL21 item 4, by the BAL13 rule, owner 19:56 on BAL11-3 b; tools/bal13/decks_2026_11_02.js --apply): hercules-beetle x2 -> pangolin-roller x2 (the card is priced for a later map; the list's nearest by Lumber, Wait, 2A+H under the 6/4 rule); not re-searched; its leader follows the deck (the map rule: the showcase card)"
     },
     {
      "id": "14-A-PRO-3",
@@ -28635,11 +28678,11 @@
      "leaders": [],
      "deck": {
       "apollo-butterfly": 3,
-      "hercules-beetle": 2,
       "jaguar-stalker": 3,
       "lyrebird-mimic": 4,
       "proboscis-monkey": 4,
-      "weaver-bird": 4
+      "weaver-bird": 4,
+      "pangolin-roller": 2
      },
      "source": {
       "file": "docs/balance/bal16/wpro/wpro-map14-my-2026-11-05.json",
@@ -28656,7 +28699,8 @@
       "generated": "2026-11-05T04:57:37.029Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "bal13": "2026-11-07 (BAL21 item 4, by the BAL13 rule, owner 19:56 on BAL11-3 b; tools/bal13/decks_2026_11_02.js --apply): hercules-beetle x2 -> pangolin-roller x2 (the card is priced for a later map; the list's nearest by Lumber, Wait, 2A+H under the 6/4 rule); not re-searched"
     }
    ]
   },
@@ -30970,12 +31014,12 @@
       "ibex-rockcaller"
      ],
      "deck": {
-      "alpine-marmot": 4,
-      "blue-ringed-octopus": 2,
+      "alpine-marmot": 3,
       "cone-cutter-squirrel": 4,
       "grave-grin-hyena": 4,
       "ibex-rockcaller": 2,
-      "snow-bunting-archer": 4
+      "snow-bunting-archer": 4,
+      "alpha-howler": 3
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map17-m6-2026-11-05.json",
@@ -30992,7 +31036,21 @@
       "generated": "2026-11-05T04:01:03.684Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "history": [
+      {
+       "deck": {
+        "alpine-marmot": 4,
+        "blue-ringed-octopus": 2,
+        "cone-cutter-squirrel": 4,
+        "grave-grin-hyena": 4,
+        "ibex-rockcaller": 2,
+        "snow-bunting-archer": 4
+       },
+       "replacedAt": "2026-11-07 (BAL21)"
+      }
+     ],
+     "bal21": "2026-11-07 (BAL21 item 2): a wall for Reference-2 after ENG28 (ref2 8% -> 21% at 200 games, pro_ease seeds); blue-ringed-octopus -2 -> alpha-howler; alpine-marmot -1 -> alpha-howler (tools/bal21/pro_fix_2026_11_07.js, BAL16's PRO rules)"
     },
     {
      "id": "17-PRO-3",
@@ -37297,11 +37355,11 @@
      ],
      "deck": {
       "beaver-lumberjack": 4,
-      "fumarole-ibex": 3,
-      "magma-wraith": 3,
+      "magma-wraith": 4,
       "peregrine-stooper": 4,
       "stoat-cutthroat": 3,
-      "wolf-spider-mother": 3
+      "wolf-spider-mother": 3,
+      "obsidian-scorpion": 2
      },
      "source": {
       "file": "docs/balance/bal16/pro/bench-deck-map20-m11-2026-11-05.json",
@@ -37318,7 +37376,21 @@
       "generated": "2026-11-05T04:16:23.673Z"
      },
      "h2h": null,
-     "later": []
+     "later": [],
+     "history": [
+      {
+       "deck": {
+        "beaver-lumberjack": 4,
+        "fumarole-ibex": 3,
+        "magma-wraith": 3,
+        "peregrine-stooper": 4,
+        "stoat-cutthroat": 3,
+        "wolf-spider-mother": 3
+       },
+       "replacedAt": "2026-11-07 (BAL21)"
+      }
+     ],
+     "bal21": "2026-11-07 (BAL21 item 2): too easy for the Map reference after ENG28 (map 89.5% -> 69.5% at 200 games, pro_ease seeds); fumarole-ibex -1 -> magma-wraith; fumarole-ibex -2 -> obsidian-scorpion (tools/bal21/pro_fix_2026_11_07.js, BAL16's PRO rules)"
     }
    ],
    "bpro": [

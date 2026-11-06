@@ -1,0 +1,83 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "6-7",
+ "map": "m8",
+ "mapName": "Sable Swampmire",
+ "kind": "elite",
+ "name": "Adder Gauntlet",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "adder-ambusher",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "lamprey",
+  "marsh-harrier",
+  "nutria-reedcutter",
+  "raven-scout",
+  "venomlord-serpent"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "adder-ambusher"
+ ],
+ "namesake": true,
+ "shieldRule": 9,
+ "shieldOverride": 14,
+ "before": {
+  "deck": {
+   "adder-ambusher": 3,
+   "lamprey": 1,
+   "venomlord-serpent": 3,
+   "marsh-harrier": 1,
+   "camouflage-frog": 4
+  },
+  "leaders": [
+   "adder-ambusher"
+  ],
+  "shieldOverride": 14,
+  "win200": 33,
+  "shown": 7
+ },
+ "pick": {
+  "deck": {
+   "adder-ambusher": 1,
+   "lamprey": 3,
+   "venomlord-serpent": 3,
+   "marsh-harrier": 1,
+   "camouflage-frog": 4
+  },
+  "leaders": [
+   "adder-ambusher"
+  ],
+  "shieldOverride": 14,
+  "win200": 58.5,
+  "shown": 7,
+  "tune60": 60
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 21.7,
+   "hpLost": 89.9,
+   "rounds": 9.5
+  },
+  {
+   "move": "adder-ambusher -2 -> lamprey",
+   "win": 60,
+   "hpLost": 69.6,
+   "rounds": 9.2,
+   "trials": 42
+  }
+ ],
+ "trials": 47,
+ "sec": 26
+}

@@ -1,0 +1,73 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "19-A-2",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "skirmish",
+ "name": "Salamander Vents",
+ "band": {
+  "lo": 78.3,
+  "hi": 94.3,
+  "target": 86.3
+ },
+ "list": [
+  "anvilwhisker-otter",
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "anvilwhisker-otter"
+ ],
+ "namesake": false,
+ "shieldRule": 23,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "anvilwhisker-otter": 4,
+   "phoenix-fledgling": 5,
+   "cinder-stoker": 3,
+   "ashbone-ghoul": 1,
+   "cinder-gecko": 1
+  },
+  "leaders": [
+   "anvilwhisker-otter"
+  ],
+  "shieldOverride": 0,
+  "win200": 80,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "anvilwhisker-otter": 4,
+   "phoenix-fledgling": 5,
+   "cinder-stoker": 3,
+   "ashbone-ghoul": 1,
+   "cinder-gecko": 1
+  },
+  "leaders": [
+   "anvilwhisker-otter"
+  ],
+  "shieldOverride": 0,
+  "win200": 80,
+  "shown": 0,
+  "tune60": 81.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 81.7,
+   "hpLost": 47.9,
+   "rounds": 8.9
+  }
+ ],
+ "trials": 24,
+ "sec": 15
+}

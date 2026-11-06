@@ -1,0 +1,92 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "2-A-2",
+ "map": "mp",
+ "mapName": "Lilypad Reach",
+ "kind": "skirmish",
+ "name": "Duck Row",
+ "band": {
+  "lo": 76,
+  "hi": 92,
+  "target": 84
+ },
+ "list": [
+  "beaver-lumberjack",
+  "box-turtle",
+  "duckling",
+  "guppy",
+  "lodge-engineer",
+  "marsh-harrier",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "pond-algae",
+  "shoal-shark",
+  "victoria-regia",
+  "water-shrew",
+  "water-vole"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "lodge-engineer"
+ ],
+ "namesake": false,
+ "shieldRule": 6,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "beaver-lumberjack": 1,
+   "duckling": 1,
+   "guppy": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 4,
+   "water-shrew": 1,
+   "water-vole": 1
+  },
+  "leaders": [
+   "lodge-engineer"
+  ],
+  "shieldOverride": null,
+  "win200": 74,
+  "shown": 3
+ },
+ "pick": {
+  "deck": {
+   "duckling": 1,
+   "guppy": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 4,
+   "water-shrew": 1,
+   "water-vole": 1,
+   "pond-algae": 1
+  },
+  "leaders": [
+   "lodge-engineer"
+  ],
+  "shieldOverride": null,
+  "win200": 77.5,
+  "shown": 3,
+  "tune60": 83.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 61.7,
+   "hpLost": 49.2,
+   "rounds": 10.88
+  },
+  {
+   "move": "beaver-lumberjack -1 -> pond-algae",
+   "win": 83.3,
+   "hpLost": 27.7,
+   "rounds": 10.37,
+   "trials": 49
+  }
+ ],
+ "trials": 54,
+ "sec": 57
+}

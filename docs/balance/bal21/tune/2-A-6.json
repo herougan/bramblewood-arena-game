@@ -1,0 +1,91 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "2-A-6",
+ "map": "mp",
+ "mapName": "Lilypad Reach",
+ "kind": "elite",
+ "name": "The Lodge",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "beaver-lumberjack",
+  "box-turtle",
+  "lodge-engineer",
+  "marsh-harrier",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "pond-algae",
+  "river-carp",
+  "shoal-shark",
+  "victoria-regia",
+  "water-shrew",
+  "water-vole"
+ ],
+ "firstClear": [],
+ "k14Before": 2,
+ "leaders": [
+  "lodge-engineer"
+ ],
+ "namesake": true,
+ "shieldRule": 9,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "box-turtle": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 4,
+   "pond-algae": 1,
+   "river-carp": 1,
+   "water-shrew": 4,
+   "water-vole": 1
+  },
+  "leaders": [
+   "lodge-engineer"
+  ],
+  "shieldOverride": null,
+  "win200": 39,
+  "shown": 5
+ },
+ "pick": {
+  "deck": {
+   "box-turtle": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "pond-algae": 1,
+   "river-carp": 1,
+   "water-shrew": 4,
+   "water-vole": 1,
+   "victoria-regia": 4
+  },
+  "leaders": [
+   "lodge-engineer"
+  ],
+  "shieldOverride": null,
+  "win200": 54,
+  "shown": 5,
+  "tune60": 63.3
+ },
+ "keep": true,
+ "k14After": 2,
+ "trail": [
+  {
+   "move": "start",
+   "win": 36.7,
+   "hpLost": 74,
+   "rounds": 13.02
+  },
+  {
+   "move": "old-sturgeon -4 -> victoria-regia",
+   "win": 63.3,
+   "hpLost": 47.4,
+   "rounds": 12.92,
+   "trials": 27
+  }
+ ],
+ "trials": 32,
+ "sec": 60
+}

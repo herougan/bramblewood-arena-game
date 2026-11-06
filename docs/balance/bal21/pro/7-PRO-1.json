@@ -1,0 +1,58 @@
+{
+ "about": "BAL21 item 2 PRO fix (tools/bal21/pro_fix_2026_11_07.js)",
+ "id": "7-PRO-1",
+ "map": "mu",
+ "mode": "easy",
+ "ref": "map",
+ "window": [
+  0,
+  0.65
+ ],
+ "before": {
+  "deck": {
+   "bee-forager": 4,
+   "dung-beetle": 2,
+   "earthworm": 4,
+   "owl-nightwatch": 4,
+   "tunnel-ant": 3,
+   "woodcock-lookout": 3
+  },
+  "win200": 0.905
+ },
+ "pick": {
+  "deck": {
+   "bee-forager": 3,
+   "earthworm": 4,
+   "owl-nightwatch": 4,
+   "tunnel-ant": 3,
+   "woodcock-lookout": 2,
+   "worker-ant": 4
+  },
+  "win200": 0.81,
+  "tune60": 0.65
+ },
+ "keep": true,
+ "trail": [
+  {
+   "move": "start",
+   "win": 0.9
+  },
+  {
+   "move": "dung-beetle -2 -> worker-ant",
+   "win": 0.817,
+   "trials": 24
+  },
+  {
+   "move": "bee-forager -1 -> worker-ant",
+   "win": 0.717,
+   "trials": 24
+  },
+  {
+   "move": "woodcock-lookout -1 -> worker-ant",
+   "win": 0.65,
+   "trials": 15
+  }
+ ],
+ "trials": 56,
+ "sec": 35
+}

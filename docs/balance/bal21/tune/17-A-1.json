@@ -1,0 +1,82 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "17-A-1",
+ "map": "mi",
+ "mapName": "The Ice Hollow",
+ "kind": "skirmish",
+ "name": "Frost Tunnel",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "frost-hare-sprinter",
+  "greenland-shark",
+  "harbor-seal",
+  "ravenous-wolverine",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "talus-pika"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "greenland-shark"
+ ],
+ "namesake": false,
+ "shieldRule": 21,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "frost-hare-sprinter": 1,
+   "greenland-shark": 3,
+   "harbor-seal": 5,
+   "ravenous-wolverine": 1,
+   "snow-ermine": 4,
+   "talus-pika": 2
+  },
+  "leaders": [
+   "greenland-shark"
+  ],
+  "shieldOverride": null,
+  "win200": 69.5,
+  "shown": 11
+ },
+ "pick": {
+  "deck": {
+   "frost-hare-sprinter": 1,
+   "greenland-shark": 3,
+   "harbor-seal": 5,
+   "ravenous-wolverine": 1,
+   "talus-pika": 2,
+   "snow-bunting-archer": 4
+  },
+  "leaders": [
+   "greenland-shark"
+  ],
+  "shieldOverride": null,
+  "win200": 86,
+  "shown": 11,
+  "tune60": 86.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 83.3,
+   "hpLost": 40,
+   "rounds": 12.6
+  },
+  {
+   "move": "snow-ermine -4 -> snow-bunting-archer",
+   "win": 86.7,
+   "hpLost": 21.6,
+   "rounds": 11.48,
+   "trials": 33
+  }
+ ],
+ "trials": 38,
+ "sec": 46
+}

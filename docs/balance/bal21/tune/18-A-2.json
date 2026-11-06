@@ -1,0 +1,82 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "18-A-2",
+ "map": "mpd",
+ "mapName": "The Pale Desert",
+ "kind": "skirmish",
+ "name": "Mirage Jackals",
+ "band": {
+  "lo": 77.7,
+  "hi": 93.69999999999999,
+  "target": 85.7
+ },
+ "list": [
+  "dromedary",
+  "dune-packrat",
+  "dust-hyena",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "skull-vulture",
+  "trapdoor-spider"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "trapdoor-spider"
+ ],
+ "namesake": false,
+ "shieldRule": 19,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "trapdoor-spider": 2,
+   "skull-vulture": 4,
+   "sand-widow": 5,
+   "sandfish": 3,
+   "dune-packrat": 1,
+   "dromedary": 1
+  },
+  "leaders": [
+   "trapdoor-spider"
+  ],
+  "shieldOverride": null,
+  "win200": 65,
+  "shown": 10
+ },
+ "pick": {
+  "deck": {
+   "skull-vulture": 4,
+   "sand-widow": 5,
+   "sandfish": 3,
+   "dune-packrat": 1,
+   "dromedary": 3
+  },
+  "leaders": [
+   "trapdoor-spider"
+  ],
+  "shieldOverride": null,
+  "win200": 69,
+  "shown": 10,
+  "tune60": 80
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 61.7,
+   "hpLost": 61,
+   "rounds": 9.48
+  },
+  {
+   "move": "trapdoor-spider -2 -> dromedary",
+   "win": 80,
+   "hpLost": 47.2,
+   "rounds": 10.08,
+   "trials": 31
+  }
+ ],
+ "trials": 82,
+ "sec": 70
+}

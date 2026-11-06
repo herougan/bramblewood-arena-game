@@ -1,0 +1,91 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "17-8",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "miniboss",
+ "name": "The Walrus Icebreaker",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "mountain-hare",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider",
+  "walrus-icebreaker"
+ ],
+ "firstClear": [
+  "wolfsbane-alpha",
+  "walrus-icebreaker"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "walrus-icebreaker"
+ ],
+ "namesake": true,
+ "shieldRule": 34,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "walrus-icebreaker": 1,
+   "harbor-seal": 5,
+   "alpha-howler": 1,
+   "spitting-spider": 4,
+   "snow-bunting-archer": 3,
+   "mountain-hare": 1,
+   "frost-hare-sprinter": 1
+  },
+  "leaders": [
+   "walrus-icebreaker"
+  ],
+  "shieldOverride": 0,
+  "win200": 24.5,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "walrus-icebreaker": 1,
+   "harbor-seal": 3,
+   "alpha-howler": 1,
+   "spitting-spider": 4,
+   "snow-bunting-archer": 3,
+   "mountain-hare": 1,
+   "frost-hare-sprinter": 1,
+   "snow-ermine": 2
+  },
+  "leaders": [
+   "walrus-icebreaker"
+  ],
+  "shieldOverride": 0,
+  "win200": 10.5,
+  "shown": 0,
+  "tune60": 14.2
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 28.3,
+   "hpLost": 86.1,
+   "rounds": 15.42
+  },
+  {
+   "move": "harbor-seal -2 -> snow-ermine",
+   "win": 14.2,
+   "hpLost": 93.9,
+   "rounds": 13.85,
+   "trials": 38
+  }
+ ],
+ "trials": 82,
+ "sec": 89
+}

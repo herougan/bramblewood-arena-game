@@ -1,0 +1,87 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "8-A-2",
+ "map": "mn",
+ "mapName": "The Glimmer Depths",
+ "kind": "skirmish",
+ "name": "The Echo Pool",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "badger-stonemason",
+  "bat-swarmling",
+  "blind-cave-fish",
+  "cave-olm",
+  "echo-screecher",
+  "glimmer-spider",
+  "prospector-mole",
+  "stalactite-golem",
+  "sulfur-cinder-moth",
+  "whip-spider"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "echo-screecher"
+ ],
+ "namesake": true,
+ "shieldRule": 16,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "bat-swarmling": 1,
+   "echo-screecher": 3,
+   "glimmer-spider": 2,
+   "prospector-mole": 2,
+   "blind-cave-fish": 4,
+   "whip-spider": 4,
+   "cave-olm": 4
+  },
+  "leaders": [
+   "echo-screecher"
+  ],
+  "shieldOverride": null,
+  "win200": 84.5,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "bat-swarmling": 1,
+   "echo-screecher": 2,
+   "glimmer-spider": 3,
+   "prospector-mole": 2,
+   "blind-cave-fish": 4,
+   "whip-spider": 4,
+   "cave-olm": 4
+  },
+  "leaders": [
+   "echo-screecher"
+  ],
+  "shieldOverride": null,
+  "win200": 87,
+  "shown": 8,
+  "tune60": 83.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 85.8,
+   "hpLost": 35.6,
+   "rounds": 8.15
+  },
+  {
+   "move": "echo-screecher -1 -> glimmer-spider",
+   "win": 83.3,
+   "hpLost": 36,
+   "rounds": 8.13,
+   "trials": 43
+  }
+ ],
+ "trials": 89,
+ "sec": 78
+}

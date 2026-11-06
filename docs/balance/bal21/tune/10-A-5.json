@@ -1,0 +1,87 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "10-A-5",
+ "map": "mj",
+ "mapName": "The Sunken Depths",
+ "kind": "boss",
+ "name": "The Ferry's Last Passenger",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "blue-ringed-octopus",
+  "clownfish-scout",
+  "coral-polyp-colony",
+  "coral-reef-shark",
+  "hagfish-silencer",
+  "kraken-spawnling",
+  "nautilus-drifter",
+  "nudibranch",
+  "orca-vanguard",
+  "parrotfish",
+  "riptide-eel"
+ ],
+ "firstClear": [
+  "blue-ringed-octopus"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "hagfish-silencer"
+ ],
+ "namesake": false,
+ "shieldRule": 33,
+ "shieldOverride": 2,
+ "before": {
+  "deck": {
+   "blue-ringed-octopus": 3,
+   "hagfish-silencer": 3,
+   "kraken-spawnling": 5,
+   "orca-vanguard": 5,
+   "coral-reef-shark": 4
+  },
+  "leaders": [
+   "hagfish-silencer"
+  ],
+  "shieldOverride": 2,
+  "win200": 33.5,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "blue-ringed-octopus": 3,
+   "hagfish-silencer": 2,
+   "kraken-spawnling": 5,
+   "orca-vanguard": 5,
+   "coral-reef-shark": 4,
+   "riptide-eel": 1
+  },
+  "leaders": [
+   "hagfish-silencer"
+  ],
+  "shieldOverride": 2,
+  "win200": 39,
+  "shown": 1,
+  "tune60": 43.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 53.3,
+   "hpLost": 69.8,
+   "rounds": 12.37
+  },
+  {
+   "move": "hagfish-silencer -1 -> riptide-eel",
+   "win": 43.3,
+   "hpLost": 69.9,
+   "rounds": 11.78,
+   "trials": 77
+  }
+ ],
+ "trials": 82,
+ "sec": 44
+}

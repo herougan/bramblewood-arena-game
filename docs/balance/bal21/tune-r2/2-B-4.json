@@ -1,0 +1,88 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "2-B-4",
+ "map": "mg",
+ "mapName": "Smugglers' Grotto",
+ "kind": "elite",
+ "name": "The Grotto Keeper",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "conch-crawler",
+  "gallery-orb-weaver",
+  "grey-seal-bull",
+  "gull-thief",
+  "octopus-tactician",
+  "open-ocean-hermit-crab",
+  "pelican-diver",
+  "pincushion-urchin",
+  "tide-pool-crab",
+  "tidepool-trapper-crab",
+  "trash-panda-trickster"
+ ],
+ "firstClear": [
+  "octopus-tactician"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "octopus-tactician"
+ ],
+ "namesake": false,
+ "shieldRule": 11,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "gull-thief": 1,
+   "octopus-tactician": 3,
+   "open-ocean-hermit-crab": 4,
+   "pelican-diver": 4,
+   "tidepool-trapper-crab": 4,
+   "conch-crawler": 1
+  },
+  "leaders": [
+   "octopus-tactician"
+  ],
+  "shieldOverride": null,
+  "win200": 55.5,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "gull-thief": 1,
+   "octopus-tactician": 4,
+   "open-ocean-hermit-crab": 3,
+   "pelican-diver": 4,
+   "tidepool-trapper-crab": 4,
+   "conch-crawler": 1
+  },
+  "leaders": [
+   "octopus-tactician"
+  ],
+  "shieldOverride": null,
+  "win200": 54,
+  "shown": 6,
+  "tune60": 46.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 50,
+   "hpLost": 65.8,
+   "rounds": 9.34
+  },
+  {
+   "move": "open-ocean-hermit-crab -1 -> octopus-tactician",
+   "win": 46.7,
+   "hpLost": 67.8,
+   "rounds": 9.19,
+   "trials": 91
+  }
+ ],
+ "trials": 181,
+ "sec": 102
+}

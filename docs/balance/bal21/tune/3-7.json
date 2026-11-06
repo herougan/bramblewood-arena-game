@@ -1,0 +1,91 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "3-7",
+ "map": "mc",
+ "mapName": "Gannet Cliffs",
+ "kind": "elite",
+ "name": "The Gannet Queen",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "conch-crawler",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "oystercatcher",
+  "peak-condor",
+  "pincushion-urchin",
+  "puffin-diver",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "firstClear": [
+  "golden-eagle-diver",
+  "razorbill"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "peak-condor"
+ ],
+ "namesake": false,
+ "shieldRule": 5,
+ "shieldOverride": 7,
+ "before": {
+  "deck": {
+   "kittiwake-flock": 2,
+   "peak-condor": 3,
+   "puffin-diver": 3,
+   "red-billed-chough": 1,
+   "golden-eagle-diver": 4,
+   "razorbill": 4,
+   "hawk-arrowkeeper": 2
+  },
+  "leaders": [
+   "peak-condor"
+  ],
+  "shieldOverride": 7,
+  "win200": 21,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "kittiwake-flock": 2,
+   "puffin-diver": 3,
+   "red-billed-chough": 4,
+   "golden-eagle-diver": 4,
+   "razorbill": 4,
+   "hawk-arrowkeeper": 2
+  },
+  "leaders": [
+   "peak-condor"
+  ],
+  "shieldOverride": 7,
+  "win200": 39,
+  "shown": 4,
+  "tune60": 40
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 20,
+   "hpLost": 88,
+   "rounds": 8.35
+  },
+  {
+   "move": "peak-condor -3 -> red-billed-chough",
+   "win": 40,
+   "hpLost": 73.4,
+   "rounds": 7.92,
+   "trials": 106
+  }
+ ],
+ "trials": 111,
+ "sec": 53
+}

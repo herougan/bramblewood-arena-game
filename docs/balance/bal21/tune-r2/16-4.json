@@ -1,0 +1,84 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "16-4",
+ "map": "mt",
+ "mapName": "The Pinewood Taiga",
+ "kind": "skirmish",
+ "name": "Lynx Shadow",
+ "band": {
+  "lo": 64,
+  "hi": 80,
+  "target": 72
+ },
+ "list": [
+  "alpha-howler",
+  "boreal-elk",
+  "cone-cutter-squirrel",
+  "lunar-howler",
+  "owl-nightwatch",
+  "snowshoe-hare",
+  "taiga-lynx"
+ ],
+ "firstClear": [
+  "taiga-lynx"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "taiga-lynx"
+ ],
+ "namesake": true,
+ "shieldRule": 16,
+ "shieldOverride": 28,
+ "before": {
+  "deck": {
+   "taiga-lynx": 3,
+   "owl-nightwatch": 1,
+   "snowshoe-hare": 3,
+   "alpha-howler": 3,
+   "boreal-elk": 5,
+   "cone-cutter-squirrel": 1
+  },
+  "leaders": [
+   "taiga-lynx"
+  ],
+  "shieldOverride": 28,
+  "win200": 85,
+  "shown": 14
+ },
+ "pick": {
+  "deck": {
+   "taiga-lynx": 3,
+   "owl-nightwatch": 1,
+   "snowshoe-hare": 2,
+   "alpha-howler": 3,
+   "boreal-elk": 5,
+   "cone-cutter-squirrel": 2
+  },
+  "leaders": [
+   "taiga-lynx"
+  ],
+  "shieldOverride": 28,
+  "win200": 74.5,
+  "shown": 14,
+  "tune60": 71.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 80,
+   "hpLost": 38.7,
+   "rounds": 10.89
+  },
+  {
+   "move": "snowshoe-hare -1 -> cone-cutter-squirrel",
+   "win": 71.7,
+   "hpLost": 50.7,
+   "rounds": 11.01,
+   "trials": 23
+  }
+ ],
+ "trials": 28,
+ "sec": 37
+}

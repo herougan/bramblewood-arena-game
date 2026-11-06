@@ -1,0 +1,53 @@
+{
+ "about": "BAL21 item 2 PRO fix (tools/bal21/pro_fix_2026_11_07.js)",
+ "id": "17-PRO-2",
+ "map": "m6",
+ "mode": "wall",
+ "ref": "ref2",
+ "window": [
+  0.2,
+  0.5
+ ],
+ "before": {
+  "deck": {
+   "alpine-marmot": 4,
+   "blue-ringed-octopus": 2,
+   "cone-cutter-squirrel": 4,
+   "grave-grin-hyena": 4,
+   "ibex-rockcaller": 2,
+   "snow-bunting-archer": 4
+  },
+  "win200": 0.08
+ },
+ "pick": {
+  "deck": {
+   "alpine-marmot": 3,
+   "cone-cutter-squirrel": 4,
+   "grave-grin-hyena": 4,
+   "ibex-rockcaller": 2,
+   "snow-bunting-archer": 4,
+   "alpha-howler": 3
+  },
+  "win200": 0.21,
+  "tune60": 0.217
+ },
+ "keep": true,
+ "trail": [
+  {
+   "move": "start",
+   "win": 0.067
+  },
+  {
+   "move": "blue-ringed-octopus -2 -> alpha-howler",
+   "win": 0.167,
+   "trials": 22
+  },
+  {
+   "move": "alpine-marmot -1 -> alpha-howler",
+   "win": 0.217,
+   "trials": 29
+  }
+ ],
+ "trials": 41,
+ "sec": 50
+}

@@ -1,0 +1,84 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "7-A-5",
+ "map": "mz",
+ "mapName": "The Mycelium Deep",
+ "kind": "boss",
+ "name": "The Mycelium Mind",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "ant-warrior",
+  "bombardier-beetle",
+  "dung-beetle",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "rootworm-colony"
+ ],
+ "firstClear": [
+  "rootworm-colony"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "ant-warrior"
+ ],
+ "namesake": false,
+ "shieldRule": 24,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "rootworm-colony": 5,
+   "ant-warrior": 1,
+   "leafcutter-gardener": 2,
+   "dung-beetle": 3,
+   "hawthorn-shieldbug": 4
+  },
+  "leaders": [
+   "ant-warrior"
+  ],
+  "shieldOverride": null,
+  "win200": 30.5,
+  "shown": 12
+ },
+ "pick": {
+  "deck": {
+   "rootworm-colony": 5,
+   "ant-warrior": 1,
+   "leafcutter-gardener": 1,
+   "dung-beetle": 3,
+   "hawthorn-shieldbug": 4,
+   "bombardier-beetle": 1
+  },
+  "leaders": [
+   "ant-warrior"
+  ],
+  "shieldOverride": null,
+  "win200": 40.5,
+  "shown": 12,
+  "tune60": 36.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 31.7,
+   "hpLost": 80.2,
+   "rounds": 10.38
+  },
+  {
+   "move": "leafcutter-gardener -1 -> bombardier-beetle",
+   "win": 36.7,
+   "hpLost": 73.9,
+   "rounds": 11.13,
+   "trials": 54
+  }
+ ],
+ "trials": 59,
+ "sec": 44
+}

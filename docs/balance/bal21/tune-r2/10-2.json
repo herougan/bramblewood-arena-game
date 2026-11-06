@@ -1,0 +1,88 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "10-2",
+ "map": "m7",
+ "mapName": "Coral Current",
+ "kind": "skirmish",
+ "name": "Moray Ambush",
+ "band": {
+  "lo": 77.7,
+  "hi": 93.69999999999999,
+  "target": 85.7
+ },
+ "list": [
+  "clownfish-scout",
+  "coral-reef-shark",
+  "dolphin-knight",
+  "electric-ray",
+  "great-barracuda",
+  "horseshoe-crab",
+  "kraken-spawnling",
+  "open-ocean-hermit-crab",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-shark",
+  "riptide-eel",
+  "supernova-jelly"
+ ],
+ "firstClear": [
+  "electric-ray"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "great-barracuda"
+ ],
+ "namesake": false,
+ "shieldRule": 10,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "electric-ray": 4,
+   "riptide-eel": 1,
+   "great-barracuda": 1,
+   "orca-vanguard": 4,
+   "kraken-spawnling": 4
+  },
+  "leaders": [
+   "great-barracuda"
+  ],
+  "shieldOverride": null,
+  "win200": 95,
+  "shown": 5
+ },
+ "pick": {
+  "deck": {
+   "electric-ray": 4,
+   "great-barracuda": 1,
+   "orca-vanguard": 4,
+   "kraken-spawnling": 4,
+   "dolphin-knight": 1
+  },
+  "leaders": [
+   "great-barracuda"
+  ],
+  "shieldOverride": null,
+  "win200": 89.5,
+  "shown": 5,
+  "tune60": 85
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 90.8,
+   "hpLost": 21.3,
+   "rounds": 6.11
+  },
+  {
+   "move": "riptide-eel -1 -> dolphin-knight",
+   "win": 85,
+   "hpLost": 29.7,
+   "rounds": 6.89,
+   "trials": 83
+  }
+ ],
+ "trials": 88,
+ "sec": 31
+}

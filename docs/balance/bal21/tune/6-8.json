@@ -1,0 +1,87 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "6-8",
+ "map": "m8",
+ "mapName": "Sable Swampmire",
+ "kind": "miniboss",
+ "name": "The Alligator King",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "adder-ambusher",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "lamprey",
+  "marsh-harrier",
+  "nutria-reedcutter",
+  "raven-scout",
+  "venomlord-serpent"
+ ],
+ "firstClear": [
+  "adder-ambusher",
+  "heron-hag"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "adder-ambusher"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": 24,
+ "before": {
+  "deck": {
+   "adder-ambusher": 3,
+   "lamprey": 5,
+   "venomlord-serpent": 5,
+   "nutria-reedcutter": 1,
+   "camouflage-frog": 5
+  },
+  "leaders": [
+   "adder-ambusher"
+  ],
+  "shieldOverride": 24,
+  "win200": 24.5,
+  "shown": 12
+ },
+ "pick": {
+  "deck": {
+   "adder-ambusher": 2,
+   "lamprey": 5,
+   "venomlord-serpent": 5,
+   "nutria-reedcutter": 1,
+   "camouflage-frog": 5,
+   "constrictor-coil": 1
+  },
+  "leaders": [
+   "adder-ambusher"
+  ],
+  "shieldOverride": 24,
+  "win200": 31.5,
+  "shown": 12,
+  "tune60": 43.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 13.3,
+   "hpLost": 93.1,
+   "rounds": 10.63
+  },
+  {
+   "move": "adder-ambusher -1 -> constrictor-coil",
+   "win": 43.3,
+   "hpLost": 79.4,
+   "rounds": 10.42,
+   "trials": 42
+  }
+ ],
+ "trials": 47,
+ "sec": 33
+}

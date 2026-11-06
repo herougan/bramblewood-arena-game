@@ -1,0 +1,86 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "2-3",
+ "map": "mb",
+ "mapName": "Pebble Beach",
+ "kind": "skirmish",
+ "name": "Hermit Row",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "driftwood-crab",
+  "gull-thief",
+  "moon-jelly",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "driftwood-crab"
+ ],
+ "namesake": false,
+ "shieldRule": 2,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "driftwood-crab": 1,
+   "gull-thief": 5,
+   "open-ocean-hermit-crab": 2,
+   "oystercatcher": 5,
+   "pincushion-urchin": 4
+  },
+  "leaders": [
+   "driftwood-crab"
+  ],
+  "shieldOverride": null,
+  "win200": 57,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "gull-thief": 5,
+   "open-ocean-hermit-crab": 2,
+   "oystercatcher": 3,
+   "pincushion-urchin": 4,
+   "moon-jelly": 3
+  },
+  "leaders": [
+   "driftwood-crab"
+  ],
+  "shieldOverride": null,
+  "win200": 62,
+  "shown": 1,
+  "tune60": 70
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 50,
+   "hpLost": 65.1,
+   "rounds": 8.8
+  },
+  {
+   "move": "driftwood-crab -1 -> moon-jelly",
+   "win": 61.7,
+   "hpLost": 52.4,
+   "rounds": 8.57,
+   "trials": 31
+  },
+  {
+   "move": "oystercatcher -2 -> moon-jelly",
+   "win": 70,
+   "hpLost": 52.3,
+   "rounds": 8.6,
+   "trials": 31
+  }
+ ],
+ "trials": 67,
+ "sec": 43
+}

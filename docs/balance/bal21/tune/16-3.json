@@ -1,0 +1,85 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "16-3",
+ "map": "mt",
+ "mapName": "The Pinewood Taiga",
+ "kind": "skirmish",
+ "name": "Elk Crossing",
+ "band": {
+  "lo": 70,
+  "hi": 86,
+  "target": 78
+ },
+ "list": [
+  "alpha-howler",
+  "boreal-elk",
+  "cone-cutter-squirrel",
+  "lunar-howler",
+  "owl-nightwatch",
+  "redwood-woodpecker",
+  "snowshoe-hare",
+  "woodland-caribou"
+ ],
+ "firstClear": [
+  "woodland-caribou"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "woodland-caribou"
+ ],
+ "namesake": false,
+ "shieldRule": 16,
+ "shieldOverride": 32,
+ "before": {
+  "deck": {
+   "woodland-caribou": 4,
+   "alpha-howler": 4,
+   "redwood-woodpecker": 1,
+   "boreal-elk": 5,
+   "snowshoe-hare": 5,
+   "cone-cutter-squirrel": 1
+  },
+  "leaders": [
+   "woodland-caribou"
+  ],
+  "shieldOverride": 32,
+  "win200": 71.5,
+  "shown": 16
+ },
+ "pick": {
+  "deck": {
+   "woodland-caribou": 4,
+   "alpha-howler": 4,
+   "redwood-woodpecker": 1,
+   "boreal-elk": 5,
+   "snowshoe-hare": 5,
+   "cone-cutter-squirrel": 1
+  },
+  "leaders": [
+   "woodland-caribou"
+  ],
+  "shieldOverride": 16,
+  "win200": 76.5,
+  "shown": 8,
+  "tune60": 78.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 71.7,
+   "hpLost": 52.4,
+   "rounds": 12.37
+  },
+  {
+   "move": "shield 32 -> 16",
+   "win": 78.3,
+   "hpLost": 47.1,
+   "rounds": 11.5,
+   "trials": 25
+  }
+ ],
+ "trials": 30,
+ "sec": 33
+}

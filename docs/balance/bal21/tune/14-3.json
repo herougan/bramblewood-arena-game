@@ -1,0 +1,79 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "14-3",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "skirmish",
+ "name": "Howler Canopy",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "acacia-giraffe",
+  "dust-hyena",
+  "hoopoe-herald",
+  "marula-elephant",
+  "spitting-cobra",
+  "springbok-pronker"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "marula-elephant"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "spitting-cobra": 1,
+   "marula-elephant": 4,
+   "springbok-pronker": 5,
+   "acacia-giraffe": 1,
+   "dust-hyena": 4
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": null,
+  "win200": 69.5,
+  "shown": 7
+ },
+ "pick": {
+  "deck": {
+   "spitting-cobra": 3,
+   "marula-elephant": 4,
+   "springbok-pronker": 3,
+   "acacia-giraffe": 1,
+   "dust-hyena": 4
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": null,
+  "win200": 73,
+  "shown": 7,
+  "tune60": 70
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 61.7,
+   "hpLost": 59.8,
+   "rounds": 11.33
+  },
+  {
+   "move": "springbok-pronker -2 -> spitting-cobra",
+   "win": 70,
+   "hpLost": 47.1,
+   "rounds": 10.82,
+   "trials": 26
+  }
+ ],
+ "trials": 60,
+ "sec": 44
+}

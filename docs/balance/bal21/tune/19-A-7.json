@@ -1,0 +1,80 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "19-A-7",
+ "map": "m9",
+ "mapName": "Basalt Foundry",
+ "kind": "elite",
+ "name": "Basalt Vanguard",
+ "band": {
+  "lo": 59.50000000000001,
+  "hi": 75.5,
+  "target": 67.5
+ },
+ "list": [
+  "ashbone-ghoul",
+  "cinder-gecko",
+  "cinder-stoker",
+  "ember-jackal",
+  "hercules-beetle",
+  "ore-smelter-mole",
+  "phoenix-fledgling",
+  "tide-spirit"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "tide-spirit"
+ ],
+ "namesake": false,
+ "shieldRule": 35,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "ashbone-ghoul": 1,
+   "cinder-gecko": 1,
+   "cinder-stoker": 5,
+   "ember-jackal": 1,
+   "hercules-beetle": 1,
+   "ore-smelter-mole": 1,
+   "phoenix-fledgling": 5,
+   "tide-spirit": 2
+  },
+  "leaders": [
+   "tide-spirit"
+  ],
+  "shieldOverride": 0,
+  "win200": 19,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "ashbone-ghoul": 1,
+   "cinder-gecko": 1,
+   "cinder-stoker": 5,
+   "ember-jackal": 1,
+   "hercules-beetle": 1,
+   "ore-smelter-mole": 1,
+   "phoenix-fledgling": 5,
+   "tide-spirit": 2
+  },
+  "leaders": [
+   "tide-spirit"
+  ],
+  "shieldOverride": 0,
+  "win200": 19,
+  "shown": 0,
+  "tune60": 25
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 25,
+   "hpLost": 88.1,
+   "rounds": 7.25
+  }
+ ],
+ "trials": 1,
+ "sec": 5
+}

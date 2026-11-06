@@ -1,0 +1,94 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "17-7",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "elite",
+ "name": "Alpha Howler's Den",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "mountain-hare",
+  "polar-bear",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "polar-bear"
+ ],
+ "namesake": false,
+ "shieldRule": 26,
+ "shieldOverride": 47,
+ "before": {
+  "deck": {
+   "alpha-howler": 1,
+   "harbor-seal": 5,
+   "polar-bear": 2,
+   "spitting-spider": 4,
+   "frost-hare-sprinter": 1,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 2
+  },
+  "leaders": [
+   "polar-bear"
+  ],
+  "shieldOverride": 47,
+  "win200": 78.5,
+  "shown": 24
+ },
+ "pick": {
+  "deck": {
+   "alpha-howler": 1,
+   "harbor-seal": 5,
+   "polar-bear": 2,
+   "spitting-spider": 4,
+   "snow-bunting-archer": 3,
+   "snow-ermine": 2,
+   "beluga": 2
+  },
+  "leaders": [
+   "polar-bear"
+  ],
+  "shieldOverride": 47,
+  "win200": 67,
+  "shown": 24,
+  "tune60": 60
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 71.7,
+   "hpLost": 48,
+   "rounds": 18.85
+  },
+  {
+   "move": "snow-bunting-archer -2 -> beluga",
+   "win": 65,
+   "hpLost": 63.4,
+   "rounds": 18.78,
+   "trials": 45
+  },
+  {
+   "move": "frost-hare-sprinter -1 -> snow-bunting-archer",
+   "win": 60,
+   "hpLost": 58,
+   "rounds": 18.53,
+   "trials": 44
+  }
+ ],
+ "trials": 91,
+ "sec": 139
+}

@@ -1,0 +1,80 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "17-2",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "skirmish",
+ "name": "Frostbitten Pack",
+ "band": {
+  "lo": 77,
+  "hi": 93,
+  "target": 85
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "lone-grey-wolf",
+  "mountain-hare",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider"
+ ],
+ "firstClear": [
+  "lone-grey-wolf"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "alpha-howler"
+ ],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "alpha-howler": 1,
+   "harbor-seal": 5,
+   "lone-grey-wolf": 1,
+   "snow-bunting-archer": 4,
+   "spitting-spider": 3,
+   "snow-ermine": 3
+  },
+  "leaders": [
+   "alpha-howler"
+  ],
+  "shieldOverride": null,
+  "win200": 90,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "alpha-howler": 1,
+   "harbor-seal": 5,
+   "lone-grey-wolf": 1,
+   "snow-bunting-archer": 4,
+   "spitting-spider": 3,
+   "snow-ermine": 3
+  },
+  "leaders": [
+   "alpha-howler"
+  ],
+  "shieldOverride": null,
+  "win200": 90,
+  "shown": 9,
+  "tune60": 88.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 88.3,
+   "hpLost": 30.1,
+   "rounds": 12.27
+  }
+ ],
+ "trials": 1,
+ "sec": 8
+}

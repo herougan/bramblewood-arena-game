@@ -1,0 +1,87 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "15-6",
+ "map": "ml",
+ "mapName": "The Long Grass",
+ "kind": "elite",
+ "name": "The Kennels",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "bison-bulldozer",
+  "carrion-crow",
+  "cataphract-destrier",
+  "hedge-weasel",
+  "lodge-engineer",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "shepherds-bark",
+  "slow-worm",
+  "swift-fox",
+  "talon-archer",
+  "thorn-shrike"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "talon-archer"
+ ],
+ "namesake": false,
+ "shieldRule": 23,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "cataphract-destrier": 2,
+   "hedge-weasel": 1,
+   "lodge-engineer": 1,
+   "pronghorn-racer": 5,
+   "shepherds-bark": 5,
+   "talon-archer": 2
+  },
+  "leaders": [
+   "talon-archer"
+  ],
+  "shieldOverride": null,
+  "win200": 62.5,
+  "shown": 12
+ },
+ "pick": {
+  "deck": {
+   "cataphract-destrier": 4,
+   "hedge-weasel": 1,
+   "lodge-engineer": 1,
+   "pronghorn-racer": 5,
+   "shepherds-bark": 3,
+   "talon-archer": 2
+  },
+  "leaders": [
+   "talon-archer"
+  ],
+  "shieldOverride": null,
+  "win200": 68.5,
+  "shown": 12,
+  "tune60": 63.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 53.3,
+   "hpLost": 62,
+   "rounds": 10.92
+  },
+  {
+   "move": "shepherds-bark -2 -> cataphract-destrier",
+   "win": 63.3,
+   "hpLost": 58.6,
+   "rounds": 10.72,
+   "trials": 67
+  }
+ ],
+ "trials": 72,
+ "sec": 52
+}

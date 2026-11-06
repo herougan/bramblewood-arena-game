@@ -1,0 +1,85 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "1-A-5",
+ "map": "mq",
+ "mapName": "Clovermead",
+ "kind": "boss",
+ "name": "The Old Hare",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "ant-hill",
+  "ant-scout",
+  "bee-forager",
+  "cottontail",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "lucky-hopper",
+  "meadow-rabbit",
+  "robin-redbreast",
+  "slow-worm",
+  "tunnel-ant",
+  "woodcock-lookout"
+ ],
+ "firstClear": [
+  "lucky-hopper"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "field-vole"
+ ],
+ "namesake": false,
+ "shieldRule": 36,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ant-hill": 1,
+   "bee-forager": 1,
+   "field-mouse": 5,
+   "lucky-hopper": 4,
+   "tunnel-ant": 1,
+   "field-vole": 4,
+   "robin-redbreast": 1
+  },
+  "leaders": [
+   "field-vole"
+  ],
+  "shieldOverride": null,
+  "win200": 30.5,
+  "shown": 18
+ },
+ "pick": {
+  "deck": {
+   "ant-hill": 1,
+   "bee-forager": 1,
+   "field-mouse": 5,
+   "lucky-hopper": 4,
+   "tunnel-ant": 1,
+   "field-vole": 4,
+   "robin-redbreast": 1
+  },
+  "leaders": [
+   "field-vole"
+  ],
+  "shieldOverride": null,
+  "win200": 30.5,
+  "shown": 18,
+  "tune60": 36.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 36.7,
+   "hpLost": 84.9,
+   "rounds": 11.57
+  }
+ ],
+ "trials": 1,
+ "sec": 8
+}

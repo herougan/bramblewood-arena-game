@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-07: Package BAL21 (on its branch, not released)
+- Done: road retune of Maps 0-20 after ENG27 / ENG28 (78 fights; 94 -> 148 in band, 40 -> 22 beyond 20); 17-PRO-2 wall fixed and its cause (frost's Freeze per hit); 4 of 6 easy PROs fixed; 7-A-SK traced (its own ladder deck); 14-A-PRO-2 / WPRO-2 Hercules Beetle swapped; Mulligan / Offspring in skill-costs.json, ENG28 fallback removed.
+- Owner calls open: BAL21-1 (fights their list cannot fix), BAL21-2 (7-PRO-4, 20-A-PRO-2), BAL21-3 (ladder rule), BAL21-4 (frost rule), BAL21-5 (which reference tunes the road).
+- Next: Map 5 once the owner's card edits land; UI24's card power run (`docs/balance/card-balance.json`) was not part of BAL21.
+
 ## 11-07: Package ENG28 (on its branch, not released)
 - Done: 22:16 #2 (poison damage = Poison stacks only, the Herb Refinery's text and brew; fire = damage + 1 Burn, stacking; frost = damage + 1 Freeze; texts fixed), #3 (shots miss in the dark by the swing's rule), #4 (hover: printed card, spent one-shot struck "used"), #5 (edited pencil admin only), #6 (gold "?" "Learnt at a higher level"), #7 (💀 on death triggers); 23:35 #4 (Mulligan, -0.1), #5 (Devour editor row), #6 (Pickpocket falls back to the bramble's resources), #9 (default pips; Poison Barbs; opt-outs in ENG28-5), #11 (Sonar / Keen Sense "?" until Map 8 or a dark map; pips only in the dark), #13 (Offspring N, priced +32% body a copy), #17 (Brood tokens Swarm (Species)).
 - Owner calls open: ENG28-1 (Burn stacking vs 2 rounds), ENG28-2 (a Freeze on every frost hit), ENG28-4 (names; Offspring's price).

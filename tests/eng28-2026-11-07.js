@@ -99,7 +99,9 @@ ok(/function eng28DeathTrig\(t\)/.test(app) && (app.match(/eng28DeathTrig\(t\) \
   ok(m.length === 1 && P[1].hand.length === 3 && P[1].deck.length === 4 && P[1].deck.includes('x-mul') === (m[0].drewDefId !== 'x-mul'), `the opening hand: Mulligan goes back, a card comes in (${P[1].hand.map(h=> h.defId)})`);
   const ev2 = []; P[1].hand = P[1].hand.filter(h=> h.defId !== 'x-mul'); P[1].deck.push('x-mul'); e.draw(P[1], 1, 'A', {}, ev2);
   ok(!ev2.some(x=> x.type === 'mulligan') && P[1].hand.some(h=> h.defId === 'x-mul'), 'a later draw keeps it (only the opening hand)'); }
-ok(B.ENG28_SKILL_PRICES.mulligan === -0.1 && /Object\.assign\(SB_DEFAULT_SKILLS, \(typeof BramblewoodBudget/.test(app), 'Mulligan is priced -0.1 (the owner\'s price), in the game\'s budget fallback');
+// 2026-11-07 (BAL21 item 5): the price moved from the budget's ENG28_SKILL_PRICES fallback to canonical/skill-costs.json; the app's literal fallback stays
+{ const sct = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'canonical', 'skill-costs.json'), 'utf8')), mr = sct.skills.find(s=> s.id === 'mulligan');
+  ok(mr && mr.value === -0.1 && B.ENG28_SKILL_PRICES === undefined && /Object\.assign\(SB_DEFAULT_SKILLS, \(typeof BramblewoodBudget/.test(app) && /\{mulligan:-0\.1, offspring:0\}/.test(app), 'Mulligan is priced -0.1 (the owner\'s price), in canonical/skill-costs.json and the game\'s literal fallback'); }
 
 // ---- 23:35 #5 Devour in the editor ---------------------------------------------------------------------------------------------
 ok(/\{key:'devour', category:'passive', label:TX\('ui\.eng28-devour-name'\), kind:'twoNumber'/.test(app), 'Devour has a card editor row (pick, edit, remove)');

@@ -1,0 +1,91 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "14-8",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "miniboss",
+ "name": "The Savanna Warlord",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "acacia-giraffe",
+  "ant-hill",
+  "dust-hyena",
+  "hoopoe-herald",
+  "marula-elephant",
+  "savanna-cheetah",
+  "springbok-pronker"
+ ],
+ "firstClear": [
+  "savanna-cheetah",
+  "pride-queen"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "acacia-giraffe"
+ ],
+ "namesake": false,
+ "shieldRule": 28,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "dust-hyena": 2,
+   "savanna-cheetah": 2,
+   "springbok-pronker": 5,
+   "marula-elephant": 4,
+   "acacia-giraffe": 1,
+   "ant-hill": 1
+  },
+  "leaders": [
+   "acacia-giraffe"
+  ],
+  "shieldOverride": null,
+  "win200": 65.5,
+  "shown": 14
+ },
+ "pick": {
+  "deck": {
+   "dust-hyena": 3,
+   "savanna-cheetah": 2,
+   "springbok-pronker": 5,
+   "marula-elephant": 4,
+   "acacia-giraffe": 1
+  },
+  "leaders": [
+   "springbok-pronker"
+  ],
+  "shieldOverride": null,
+  "win200": 44.5,
+  "shown": 14,
+  "tune60": 41.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 59.2,
+   "hpLost": 68.7,
+   "rounds": 11.33
+  },
+  {
+   "move": "leader acacia-giraffe -> springbok-pronker",
+   "win": 45.8,
+   "hpLost": 77,
+   "rounds": 10.7,
+   "trials": 31
+  },
+  {
+   "move": "ant-hill -1 -> dust-hyena",
+   "win": 41.7,
+   "hpLost": 82.3,
+   "rounds": 10.18,
+   "trials": 17
+  }
+ ],
+ "trials": 57,
+ "sec": 55
+}

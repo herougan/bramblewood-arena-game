@@ -1,0 +1,91 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "20-1",
+ "map": "m11",
+ "mapName": "The Sundered Peak",
+ "kind": "skirmish",
+ "name": "Silverback Watch",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "magma-salamander",
+  "magma-titan",
+  "obsidian-scorpion",
+  "pack-mule",
+  "pumice-beetle",
+  "talus-pika"
+ ],
+ "firstClear": [
+  "pack-mule"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "cave-warlord"
+ ],
+ "namesake": false,
+ "shieldRule": 20,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ashbone-ghoul": 3,
+   "cave-warlord": 3,
+   "cinder-skeleton": 3,
+   "pack-mule": 5,
+   "magma-salamander": 2
+  },
+  "leaders": [
+   "cave-warlord"
+  ],
+  "shieldOverride": null,
+  "win200": 98.5,
+  "shown": 10
+ },
+ "pick": {
+  "deck": {
+   "cave-warlord": 3,
+   "cinder-skeleton": 3,
+   "pack-mule": 5,
+   "magma-salamander": 2,
+   "deep-cave-troll": 3
+  },
+  "leaders": [
+   "cave-warlord"
+  ],
+  "shieldOverride": null,
+  "win200": 97,
+  "shown": 10,
+  "tune60": 90
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 98.3,
+   "hpLost": 13,
+   "rounds": 10.37
+  },
+  {
+   "move": "ashbone-ghoul -3 -> deep-cave-troll",
+   "win": 90,
+   "hpLost": 21.1,
+   "rounds": 9.52,
+   "trials": 99
+  }
+ ],
+ "trials": 104,
+ "sec": 79
+}

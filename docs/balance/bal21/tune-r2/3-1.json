@@ -1,0 +1,86 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "3-1",
+ "map": "mc",
+ "mapName": "Gannet Cliffs",
+ "kind": "skirmish",
+ "name": "Goat Ledge",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "conch-crawler",
+  "gannet-nestweaver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "oystercatcher",
+  "peak-condor",
+  "pincushion-urchin",
+  "puffin-diver",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "razorbill"
+ ],
+ "namesake": false,
+ "shieldRule": 3,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "gannet-nestweaver": 4,
+   "kittiwake-flock": 3,
+   "peak-condor": 2,
+   "puffin-diver": 3,
+   "red-billed-chough": 3,
+   "razorbill": 2
+  },
+  "leaders": [
+   "razorbill"
+  ],
+  "shieldOverride": null,
+  "win200": 81.5,
+  "shown": 2
+ },
+ "pick": {
+  "deck": {
+   "gannet-nestweaver": 4,
+   "kittiwake-flock": 3,
+   "peak-condor": 1,
+   "puffin-diver": 3,
+   "red-billed-chough": 4,
+   "razorbill": 2
+  },
+  "leaders": [
+   "razorbill"
+  ],
+  "shieldOverride": null,
+  "win200": 82,
+  "shown": 2,
+  "tune60": 88.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 85.8,
+   "hpLost": 31.8,
+   "rounds": 8.43
+  },
+  {
+   "move": "peak-condor -1 -> red-billed-chough",
+   "win": 88.3,
+   "hpLost": 28.1,
+   "rounds": 8.03,
+   "trials": 55
+  }
+ ],
+ "trials": 60,
+ "sec": 38
+}

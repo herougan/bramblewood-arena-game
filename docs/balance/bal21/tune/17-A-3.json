@@ -1,0 +1,83 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "17-A-3",
+ "map": "mi",
+ "mapName": "The Ice Hollow",
+ "kind": "skirmish",
+ "name": "The Rime Hall",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "frost-hare-sprinter",
+  "greenland-shark",
+  "harbor-seal",
+  "lone-grey-wolf",
+  "ravenous-wolverine",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "talus-pika"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "lone-grey-wolf"
+ ],
+ "namesake": false,
+ "shieldRule": 21,
+ "shieldOverride": 19,
+ "before": {
+  "deck": {
+   "greenland-shark": 3,
+   "harbor-seal": 4,
+   "lone-grey-wolf": 2,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 5,
+   "talus-pika": 2
+  },
+  "leaders": [
+   "lone-grey-wolf"
+  ],
+  "shieldOverride": 19,
+  "win200": 71,
+  "shown": 10
+ },
+ "pick": {
+  "deck": {
+   "greenland-shark": 3,
+   "harbor-seal": 4,
+   "lone-grey-wolf": 2,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 5,
+   "talus-pika": 2
+  },
+  "leaders": [
+   "ravenous-wolverine"
+  ],
+  "shieldOverride": 19,
+  "win200": 61,
+  "shown": 10,
+  "tune60": 63.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 85,
+   "hpLost": 43,
+   "rounds": 12.37
+  },
+  {
+   "move": "leader lone-grey-wolf -> ravenous-wolverine",
+   "win": 63.3,
+   "hpLost": 62.8,
+   "rounds": 11.63,
+   "trials": 23
+  }
+ ],
+ "trials": 28,
+ "sec": 38
+}

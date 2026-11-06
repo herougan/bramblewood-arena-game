@@ -1,0 +1,93 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "20-2",
+ "map": "m11",
+ "mapName": "The Sundered Peak",
+ "kind": "skirmish",
+ "name": "Grizzly Frontier",
+ "band": {
+  "lo": 77.7,
+  "hi": 93.69999999999999,
+  "target": 85.7
+ },
+ "list": [
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "magma-titan",
+  "obsidian-scorpion",
+  "pack-mule",
+  "pumice-beetle",
+  "talus-pika"
+ ],
+ "firstClear": [
+  "ash-cloud-condor"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "fumarole-ibex"
+ ],
+ "namesake": false,
+ "shieldRule": 20,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "pack-mule": 3,
+   "ash-cloud-condor": 3,
+   "cave-warlord": 3,
+   "ashbone-ghoul": 4,
+   "fumarole-ibex": 1,
+   "cinder-skeleton": 3
+  },
+  "leaders": [
+   "fumarole-ibex"
+  ],
+  "shieldOverride": null,
+  "win200": 96,
+  "shown": 10
+ },
+ "pick": {
+  "deck": {
+   "pack-mule": 3,
+   "ash-cloud-condor": 3,
+   "cave-warlord": 3,
+   "ashbone-ghoul": 4,
+   "cinder-skeleton": 3,
+   "deep-cave-troll": 1
+  },
+  "leaders": [
+   "fumarole-ibex"
+  ],
+  "shieldOverride": null,
+  "win200": 89,
+  "shown": 10,
+  "tune60": 85
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 95,
+   "hpLost": 19.9,
+   "rounds": 10.7
+  },
+  {
+   "move": "fumarole-ibex -1 -> deep-cave-troll",
+   "win": 85,
+   "hpLost": 28.9,
+   "rounds": 10.58,
+   "trials": 59
+  }
+ ],
+ "trials": 64,
+ "sec": 53
+}

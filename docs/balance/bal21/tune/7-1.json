@@ -1,0 +1,87 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "7-1",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "skirmish",
+ "name": "Spore Drift",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "bee-forager",
+  "compost-grub",
+  "dung-beetle",
+  "earthworm",
+  "fungal-colossus",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "truffle-piglet",
+  "worker-ant"
+ ],
+ "firstClear": [
+  "truffle-piglet"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "fungal-colossus"
+ ],
+ "namesake": false,
+ "shieldRule": 7,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "compost-grub": 1,
+   "dung-beetle": 1,
+   "fungal-colossus": 3,
+   "truffle-piglet": 1,
+   "bee-forager": 1,
+   "leafcutter-gardener": 5
+  },
+  "leaders": [
+   "fungal-colossus"
+  ],
+  "shieldOverride": 0,
+  "win200": 100,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "compost-grub": 1,
+   "dung-beetle": 1,
+   "truffle-piglet": 1,
+   "bee-forager": 1,
+   "leafcutter-gardener": 5,
+   "planarian-splitter": 3
+  },
+  "leaders": [
+   "fungal-colossus"
+  ],
+  "shieldOverride": 0,
+  "win200": 83,
+  "shown": 0,
+  "tune60": 85
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 98.3,
+   "hpLost": 8.6,
+   "rounds": 7.9
+  },
+  {
+   "move": "fungal-colossus -3 -> planarian-splitter",
+   "win": 85,
+   "hpLost": 32.8,
+   "rounds": 8.52,
+   "trials": 45
+  }
+ ],
+ "trials": 94,
+ "sec": 53
+}

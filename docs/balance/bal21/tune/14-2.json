@@ -1,0 +1,78 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "14-2",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "skirmish",
+ "name": "Hyena Chorus",
+ "band": {
+  "lo": 77,
+  "hi": 93,
+  "target": 85
+ },
+ "list": [
+  "acacia-giraffe",
+  "ant-hill",
+  "dust-hyena",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "marula-elephant",
+  "spitting-cobra",
+  "springbok-pronker"
+ ],
+ "firstClear": [
+  "grave-grin-hyena"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "spitting-cobra"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "spitting-cobra": 1,
+   "grave-grin-hyena": 3,
+   "marula-elephant": 4,
+   "ant-hill": 1,
+   "springbok-pronker": 5,
+   "acacia-giraffe": 1
+  },
+  "leaders": [
+   "spitting-cobra"
+  ],
+  "shieldOverride": null,
+  "win200": 71.5,
+  "shown": 7
+ },
+ "pick": {
+  "deck": {
+   "spitting-cobra": 1,
+   "grave-grin-hyena": 3,
+   "marula-elephant": 4,
+   "ant-hill": 1,
+   "springbok-pronker": 5,
+   "acacia-giraffe": 1
+  },
+  "leaders": [
+   "spitting-cobra"
+  ],
+  "shieldOverride": null,
+  "win200": 71.5,
+  "shown": 7,
+  "tune60": 73.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 73.3,
+   "hpLost": 45.8,
+   "rounds": 10.62
+  }
+ ],
+ "trials": 38,
+ "sec": 26
+}

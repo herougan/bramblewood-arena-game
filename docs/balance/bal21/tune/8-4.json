@@ -1,0 +1,79 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "8-4",
+ "map": "m4",
+ "mapName": "Caves & Alcoves",
+ "kind": "skirmish",
+ "name": "Echo Chamber",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "blind-cave-fish",
+  "cave-olm",
+  "gallery-orb-weaver",
+  "hollow-belly-rat",
+  "stalactite-golem",
+  "sulfur-cinder-moth"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "hollow-belly-rat"
+ ],
+ "namesake": false,
+ "shieldRule": 8,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "blind-cave-fish": 5,
+   "gallery-orb-weaver": 4,
+   "hollow-belly-rat": 1,
+   "stalactite-golem": 1,
+   "cave-olm": 1
+  },
+  "leaders": [
+   "hollow-belly-rat"
+  ],
+  "shieldOverride": null,
+  "win200": 87.5,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "blind-cave-fish": 5,
+   "gallery-orb-weaver": 4,
+   "hollow-belly-rat": 1,
+   "cave-olm": 1,
+   "sulfur-cinder-moth": 1
+  },
+  "leaders": [
+   "hollow-belly-rat"
+  ],
+  "shieldOverride": null,
+  "win200": 68,
+  "shown": 4,
+  "tune60": 71.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 80,
+   "hpLost": 35.4,
+   "rounds": 8.05
+  },
+  {
+   "move": "stalactite-golem -1 -> sulfur-cinder-moth",
+   "win": 71.7,
+   "hpLost": 50.2,
+   "rounds": 7.82,
+   "trials": 26
+  }
+ ],
+ "trials": 31,
+ "sec": 17
+}

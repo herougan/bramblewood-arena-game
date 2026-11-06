@@ -1,0 +1,87 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "18-7",
+ "map": "md",
+ "mapName": "The Glass Dunes",
+ "kind": "miniboss",
+ "name": "The Sand Widow Queen",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "hollow-belly-rat",
+  "komodo-warlord",
+  "meerkat-burrower",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "thorny-devil"
+ ],
+ "firstClear": [
+  "dust-devil-kestrel"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "sand-widow"
+ ],
+ "namesake": true,
+ "shieldRule": 36,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "dust-devil-kestrel": 1,
+   "hollow-belly-rat": 1,
+   "komodo-warlord": 1,
+   "roadrunner-courier": 2,
+   "sand-widow": 1,
+   "sandfish": 3,
+   "thorny-devil": 3
+  },
+  "leaders": [
+   "sand-widow"
+  ],
+  "shieldOverride": null,
+  "win200": 72,
+  "shown": 18
+ },
+ "pick": {
+  "deck": {
+   "dust-devil-kestrel": 1,
+   "hollow-belly-rat": 1,
+   "roadrunner-courier": 2,
+   "sand-widow": 1,
+   "sandfish": 3,
+   "thorny-devil": 4
+  },
+  "leaders": [
+   "sand-widow"
+  ],
+  "shieldOverride": null,
+  "win200": 43.5,
+  "shown": 18,
+  "tune60": 40
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 70,
+   "hpLost": 62.8,
+   "rounds": 13.28
+  },
+  {
+   "move": "komodo-warlord -1 -> thorny-devil",
+   "win": 40,
+   "hpLost": 83.4,
+   "rounds": 12.42,
+   "trials": 55
+  }
+ ],
+ "trials": 60,
+ "sec": 59
+}

@@ -1,0 +1,91 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "10-9",
+ "map": "m7",
+ "mapName": "Coral Current",
+ "kind": "boss",
+ "name": "The Orca Vanguard King",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "clownfish-scout",
+  "colossal-squid",
+  "coral-reef-shark",
+  "dolphin-knight",
+  "horseshoe-crab",
+  "kraken-spawnling",
+  "open-ocean-hermit-crab",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-shark",
+  "riptide-eel",
+  "supernova-jelly"
+ ],
+ "firstClear": [
+  "reef-admiral",
+  "colossal-squid"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "orca-vanguard"
+ ],
+ "namesake": true,
+ "shieldRule": 30,
+ "shieldOverride": 34,
+ "before": {
+  "deck": {
+   "clownfish-scout": 2,
+   "colossal-squid": 2,
+   "kraken-spawnling": 4,
+   "orca-vanguard": 5,
+   "parrotfish": 3,
+   "riptide-eel": 4
+  },
+  "leaders": [
+   "orca-vanguard"
+  ],
+  "shieldOverride": 34,
+  "win200": 61,
+  "shown": 17
+ },
+ "pick": {
+  "deck": {
+   "clownfish-scout": 2,
+   "colossal-squid": 1,
+   "kraken-spawnling": 4,
+   "orca-vanguard": 5,
+   "parrotfish": 3,
+   "riptide-eel": 4,
+   "open-ocean-hermit-crab": 1
+  },
+  "leaders": [
+   "orca-vanguard"
+  ],
+  "shieldOverride": 34,
+  "win200": 59,
+  "shown": 17,
+  "tune60": 41.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 56.7,
+   "hpLost": 64,
+   "rounds": 9.58
+  },
+  {
+   "move": "colossal-squid -1 -> open-ocean-hermit-crab",
+   "win": 41.7,
+   "hpLost": 75,
+   "rounds": 9.48,
+   "trials": 64
+  }
+ ],
+ "trials": 69,
+ "sec": 40
+}

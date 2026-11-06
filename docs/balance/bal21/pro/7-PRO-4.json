@@ -1,0 +1,48 @@
+{
+ "about": "BAL21 item 2 PRO fix (tools/bal21/pro_fix_2026_11_07.js)",
+ "id": "7-PRO-4",
+ "map": "mu",
+ "mode": "easy",
+ "ref": "map",
+ "window": [
+  0,
+  0.65
+ ],
+ "before": {
+  "deck": {
+   "bee-forager": 4,
+   "box-turtle": 2,
+   "cane-toad": 4,
+   "fire-ant-raft": 4,
+   "hawthorn-shieldbug": 2,
+   "leafcutter-gardener": 4
+  },
+  "win200": 0.915
+ },
+ "pick": {
+  "deck": {
+   "bee-forager": 4,
+   "cane-toad": 4,
+   "fire-ant-raft": 4,
+   "hawthorn-shieldbug": 2,
+   "leafcutter-gardener": 4,
+   "worker-ant": 2
+  },
+  "win200": 0.915,
+  "tune60": 0.8
+ },
+ "keep": false,
+ "trail": [
+  {
+   "move": "start",
+   "win": 0.917
+  },
+  {
+   "move": "box-turtle -2 -> worker-ant",
+   "win": 0.8,
+   "trials": 48
+  }
+ ],
+ "trials": 98,
+ "sec": 53
+}

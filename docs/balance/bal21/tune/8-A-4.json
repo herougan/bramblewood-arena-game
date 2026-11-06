@@ -1,0 +1,87 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "8-A-4",
+ "map": "mn",
+ "mapName": "The Glimmer Depths",
+ "kind": "boss",
+ "name": "The Gem Hoarder",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "badger-stonemason",
+  "blind-cave-fish",
+  "cave-olm",
+  "glimmer-spider",
+  "grotto-lobster",
+  "lantern-spark-fly",
+  "malachite-golem",
+  "prospector-mole",
+  "stalactite-golem",
+  "sulfur-cinder-moth",
+  "vampire-bat",
+  "whip-spider"
+ ],
+ "firstClear": [
+  "lantern-spark-fly"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "malachite-golem"
+ ],
+ "namesake": false,
+ "shieldRule": 48,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "lantern-spark-fly": 2,
+   "grotto-lobster": 1,
+   "glimmer-spider": 2,
+   "malachite-golem": 3,
+   "badger-stonemason": 3
+  },
+  "leaders": [
+   "malachite-golem"
+  ],
+  "shieldOverride": null,
+  "win200": 65.5,
+  "shown": 24
+ },
+ "pick": {
+  "deck": {
+   "lantern-spark-fly": 3,
+   "grotto-lobster": 1,
+   "glimmer-spider": 1,
+   "malachite-golem": 3,
+   "badger-stonemason": 3
+  },
+  "leaders": [
+   "malachite-golem"
+  ],
+  "shieldOverride": null,
+  "win200": 48,
+  "shown": 24,
+  "tune60": 45
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 70,
+   "hpLost": 55.3,
+   "rounds": 9.28
+  },
+  {
+   "move": "glimmer-spider -1 -> lantern-spark-fly",
+   "win": 45,
+   "hpLost": 72.6,
+   "rounds": 9.35,
+   "trials": 89
+  }
+ ],
+ "trials": 172,
+ "sec": 119
+}

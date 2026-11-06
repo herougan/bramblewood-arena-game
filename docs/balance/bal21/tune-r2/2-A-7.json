@@ -1,0 +1,89 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "2-A-7",
+ "map": "mp",
+ "mapName": "Lilypad Reach",
+ "kind": "boss",
+ "name": "The Lodge Matriarch",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "beaver-lumberjack",
+  "box-turtle",
+  "duckling",
+  "lodge-engineer",
+  "marsh-harrier",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "pond-algae",
+  "riverworks-bastion",
+  "shoal-shark",
+  "victoria-regia",
+  "water-shrew",
+  "water-vole"
+ ],
+ "firstClear": [
+  "riverworks-bastion"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "old-sturgeon"
+ ],
+ "namesake": false,
+ "shieldRule": 18,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "beaver-lumberjack": 1,
+   "box-turtle": 1,
+   "duckling": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 3,
+   "riverworks-bastion": 1,
+   "shoal-shark": 1,
+   "water-vole": 1
+  },
+  "leaders": [
+   "old-sturgeon"
+  ],
+  "shieldOverride": null,
+  "win200": 48.5,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "beaver-lumberjack": 1,
+   "box-turtle": 1,
+   "duckling": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 3,
+   "riverworks-bastion": 1,
+   "shoal-shark": 1,
+   "water-vole": 1
+  },
+  "leaders": [
+   "old-sturgeon"
+  ],
+  "shieldOverride": null,
+  "win200": 48.5,
+  "shown": 9,
+  "tune60": 46.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 46.7,
+   "hpLost": 63.2,
+   "rounds": 12.27
+  }
+ ],
+ "trials": 61,
+ "sec": 79
+}

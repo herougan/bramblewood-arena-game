@@ -1,0 +1,85 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "6-4",
+ "map": "m8",
+ "mapName": "Sable Swampmire",
+ "kind": "skirmish",
+ "name": "Root Snare",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "booming-bittern",
+  "camouflage-frog",
+  "constrictor-coil",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "marsh-harrier",
+  "nutria-reedcutter",
+  "venomlord-serpent"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "booming-bittern"
+ ],
+ "namesake": false,
+ "shieldRule": 6,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "booming-bittern": 1,
+   "camouflage-frog": 5,
+   "cypress-root-lurker": 1,
+   "fire-ant-raft": 1,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "venomlord-serpent": 3
+  },
+  "leaders": [
+   "booming-bittern"
+  ],
+  "shieldOverride": null,
+  "win200": 92,
+  "shown": 3
+ },
+ "pick": {
+  "deck": {
+   "camouflage-frog": 5,
+   "cypress-root-lurker": 1,
+   "fire-ant-raft": 1,
+   "marsh-harrier": 1,
+   "nutria-reedcutter": 1,
+   "venomlord-serpent": 3,
+   "constrictor-coil": 1
+  },
+  "leaders": [
+   "booming-bittern"
+  ],
+  "shieldOverride": null,
+  "win200": 79.5,
+  "shown": 3,
+  "tune60": 71.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 88.3,
+   "hpLost": 28.4,
+   "rounds": 8.15
+  },
+  {
+   "move": "booming-bittern -1 -> constrictor-coil",
+   "win": 71.7,
+   "hpLost": 44.8,
+   "rounds": 8.3,
+   "trials": 28
+  }
+ ],
+ "trials": 33,
+ "sec": 22
+}

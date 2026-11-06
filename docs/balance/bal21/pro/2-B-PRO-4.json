@@ -1,0 +1,48 @@
+{
+ "about": "BAL21 item 2 PRO fix (tools/bal21/pro_fix_2026_11_07.js)",
+ "id": "2-B-PRO-4",
+ "map": "mg",
+ "mode": "easy",
+ "ref": "map",
+ "window": [
+  0,
+  0.75
+ ],
+ "before": {
+  "deck": {
+   "box-turtle": 2,
+   "conch-crawler": 4,
+   "conch-herald": 4,
+   "garden-snail": 4,
+   "nutria-reedcutter": 2,
+   "open-ocean-hermit-crab": 4
+  },
+  "win200": 0.915
+ },
+ "pick": {
+  "deck": {
+   "box-turtle": 2,
+   "conch-crawler": 4,
+   "conch-herald": 4,
+   "garden-snail": 4,
+   "open-ocean-hermit-crab": 4,
+   "driftwood-crab": 2
+  },
+  "win200": 0.845,
+  "tune60": 0.733
+ },
+ "keep": true,
+ "trail": [
+  {
+   "move": "start",
+   "win": 0.833
+  },
+  {
+   "move": "nutria-reedcutter -2 -> driftwood-crab",
+   "win": 0.733,
+   "trials": 62
+  }
+ ],
+ "trials": 67,
+ "sec": 33
+}

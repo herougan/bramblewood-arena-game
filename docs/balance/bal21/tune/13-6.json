@@ -1,0 +1,85 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "13-6",
+ "map": "mr",
+ "mapName": "The Redwood Deep",
+ "kind": "elite",
+ "name": "Grizzly Ridge",
+ "band": {
+  "lo": 57.00000000000001,
+  "hi": 73,
+  "target": 65
+ },
+ "list": [
+  "berserker-boar",
+  "bramblewood-lynx",
+  "fawn-scout",
+  "fox-kit",
+  "grizzly-vanguard",
+  "shimmerwing-stag",
+  "swift-fox",
+  "tasmanian-devil"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "grizzly-vanguard"
+ ],
+ "namesake": true,
+ "shieldRule": 20,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "grizzly-vanguard": 4,
+   "bramblewood-lynx": 1,
+   "fawn-scout": 2,
+   "shimmerwing-stag": 2,
+   "fox-kit": 4,
+   "tasmanian-devil": 2,
+   "swift-fox": 2
+  },
+  "leaders": [
+   "grizzly-vanguard"
+  ],
+  "shieldOverride": null,
+  "win200": 72.5,
+  "shown": 10
+ },
+ "pick": {
+  "deck": {
+   "bramblewood-lynx": 1,
+   "fawn-scout": 2,
+   "shimmerwing-stag": 2,
+   "fox-kit": 4,
+   "tasmanian-devil": 2,
+   "swift-fox": 2,
+   "berserker-boar": 4
+  },
+  "leaders": [
+   "grizzly-vanguard"
+  ],
+  "shieldOverride": null,
+  "win200": 56,
+  "shown": 10,
+  "tune60": 65
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 75,
+   "hpLost": 63.9,
+   "rounds": 11.45
+  },
+  {
+   "move": "grizzly-vanguard -4 -> berserker-boar",
+   "win": 65,
+   "hpLost": 71.2,
+   "rounds": 11.42,
+   "trials": 55
+  }
+ ],
+ "trials": 60,
+ "sec": 42
+}

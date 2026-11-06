@@ -1,0 +1,53 @@
+{
+ "about": "BAL21 item 2 PRO fix (tools/bal21/pro_fix_2026_11_07.js)",
+ "id": "20-PRO-3",
+ "map": "m11",
+ "mode": "easy",
+ "ref": "map",
+ "window": [
+  0,
+  0.75
+ ],
+ "before": {
+  "deck": {
+   "beaver-lumberjack": 4,
+   "fumarole-ibex": 3,
+   "magma-wraith": 3,
+   "peregrine-stooper": 4,
+   "stoat-cutthroat": 3,
+   "wolf-spider-mother": 3
+  },
+  "win200": 0.895
+ },
+ "pick": {
+  "deck": {
+   "beaver-lumberjack": 4,
+   "magma-wraith": 4,
+   "peregrine-stooper": 4,
+   "stoat-cutthroat": 3,
+   "wolf-spider-mother": 3,
+   "obsidian-scorpion": 2
+  },
+  "win200": 0.695,
+  "tune60": 0.7
+ },
+ "keep": true,
+ "trail": [
+  {
+   "move": "start",
+   "win": 0.917
+  },
+  {
+   "move": "fumarole-ibex -1 -> magma-wraith",
+   "win": 0.85,
+   "trials": 5
+  },
+  {
+   "move": "fumarole-ibex -2 -> obsidian-scorpion",
+   "win": 0.7,
+   "trials": 27
+  }
+ ],
+ "trials": 37,
+ "sec": 39
+}

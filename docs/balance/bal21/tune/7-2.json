@@ -1,0 +1,94 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "7-2",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "skirmish",
+ "name": "Grub Tunnels",
+ "band": {
+  "lo": 74.5,
+  "hi": 90.49999999999999,
+  "target": 82.5
+ },
+ "list": [
+  "cane-toad",
+  "dung-beetle",
+  "earthworm",
+  "fungal-colossus",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "owl-nightwatch",
+  "planarian-splitter",
+  "worker-ant"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "cane-toad"
+ ],
+ "namesake": false,
+ "shieldRule": 7,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "planarian-splitter": 4,
+   "garden-snail": 1,
+   "leafcutter-gardener": 4,
+   "earthworm": 1,
+   "owl-nightwatch": 4,
+   "fungal-colossus": 2,
+   "cane-toad": 1
+  },
+  "leaders": [
+   "cane-toad"
+  ],
+  "shieldOverride": null,
+  "win200": 96,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "planarian-splitter": 4,
+   "garden-snail": 1,
+   "leafcutter-gardener": 4,
+   "earthworm": 1,
+   "fungal-colossus": 2,
+   "cane-toad": 1,
+   "dung-beetle": 4
+  },
+  "leaders": [
+   "dung-beetle"
+  ],
+  "shieldOverride": null,
+  "win200": 85,
+  "shown": 4,
+  "tune60": 83.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 96.7,
+   "hpLost": 24.2,
+   "rounds": 7.87
+  },
+  {
+   "move": "owl-nightwatch -4 -> dung-beetle",
+   "win": 91.7,
+   "hpLost": 22.3,
+   "rounds": 8.23,
+   "trials": 46
+  },
+  {
+   "move": "leader cane-toad -> dung-beetle",
+   "win": 83.3,
+   "hpLost": 37.1,
+   "rounds": 9.32,
+   "trials": 46
+  }
+ ],
+ "trials": 98,
+ "sec": 51
+}

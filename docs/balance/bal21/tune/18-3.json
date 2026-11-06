@@ -1,0 +1,84 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "18-3",
+ "map": "md",
+ "mapName": "The Glass Dunes",
+ "kind": "skirmish",
+ "name": "Widow's Web",
+ "band": {
+  "lo": 70,
+  "hi": 86,
+  "target": 78
+ },
+ "list": [
+  "antlion-pit",
+  "caustic-scorpion",
+  "dust-hyena",
+  "hollow-belly-rat",
+  "komodo-warlord",
+  "meerkat-burrower",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "caustic-scorpion"
+ ],
+ "namesake": false,
+ "shieldRule": 18,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "antlion-pit": 2,
+   "caustic-scorpion": 2,
+   "hollow-belly-rat": 1,
+   "komodo-warlord": 2,
+   "roadrunner-courier": 5,
+   "sandfish": 3
+  },
+  "leaders": [
+   "caustic-scorpion"
+  ],
+  "shieldOverride": null,
+  "win200": 93.5,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "antlion-pit": 2,
+   "caustic-scorpion": 2,
+   "hollow-belly-rat": 1,
+   "roadrunner-courier": 5,
+   "sandfish": 3,
+   "sand-widow": 2
+  },
+  "leaders": [
+   "caustic-scorpion"
+  ],
+  "shieldOverride": null,
+  "win200": 81.5,
+  "shown": 9,
+  "tune60": 75
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 93.3,
+   "hpLost": 27.2,
+   "rounds": 12.27
+  },
+  {
+   "move": "komodo-warlord -2 -> sand-widow",
+   "win": 75,
+   "hpLost": 44.6,
+   "rounds": 12.33,
+   "trials": 48
+  }
+ ],
+ "trials": 53,
+ "sec": 59
+}

@@ -1,0 +1,84 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "11-A-3",
+ "map": "mv",
+ "mapName": "The Aerie Vault",
+ "kind": "skirmish",
+ "name": "The High Roost",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "alpine-marmot",
+  "alpine-salamander",
+  "alpine-swift",
+  "apollo-butterfly",
+  "chipmunk-hoarder",
+  "eyrie-warden",
+  "gale-swift",
+  "ibex-rockcaller",
+  "vigil-owl"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "ibex-rockcaller"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": 18,
+ "before": {
+  "deck": {
+   "alpine-marmot": 3,
+   "chipmunk-hoarder": 5,
+   "eyrie-warden": 4,
+   "ibex-rockcaller": 1,
+   "alpine-swift": 3,
+   "vigil-owl": 2
+  },
+  "leaders": [
+   "ibex-rockcaller"
+  ],
+  "shieldOverride": 18,
+  "win200": 36.5,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "alpine-marmot": 3,
+   "chipmunk-hoarder": 5,
+   "ibex-rockcaller": 1,
+   "alpine-swift": 3,
+   "vigil-owl": 2,
+   "apollo-butterfly": 4
+  },
+  "leaders": [
+   "ibex-rockcaller"
+  ],
+  "shieldOverride": 18,
+  "win200": 67,
+  "shown": 9,
+  "tune60": 60
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 38.3,
+   "hpLost": 74.8,
+   "rounds": 10.15
+  },
+  {
+   "move": "eyrie-warden -4 -> apollo-butterfly",
+   "win": 60,
+   "hpLost": 59.8,
+   "rounds": 10.45,
+   "trials": 48
+  }
+ ],
+ "trials": 53,
+ "sec": 40
+}

@@ -1,0 +1,89 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "18-6",
+ "map": "md",
+ "mapName": "The Glass Dunes",
+ "kind": "elite",
+ "name": "Komodo Wallow",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "antlion-pit",
+  "caustic-scorpion",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "fennec-fox",
+  "hollow-belly-rat",
+  "komodo-warlord",
+  "meerkat-burrower",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish"
+ ],
+ "firstClear": [
+  "antlion-pit"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "dust-devil-kestrel"
+ ],
+ "namesake": false,
+ "shieldRule": 27,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "roadrunner-courier": 5,
+   "sandfish": 3,
+   "caustic-scorpion": 1,
+   "dust-devil-kestrel": 1,
+   "fennec-fox": 2,
+   "sand-widow": 2,
+   "komodo-warlord": 2
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 87.5,
+  "shown": 14
+ },
+ "pick": {
+  "deck": {
+   "roadrunner-courier": 5,
+   "sandfish": 3,
+   "caustic-scorpion": 1,
+   "dust-devil-kestrel": 1,
+   "fennec-fox": 4,
+   "sand-widow": 2
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 66,
+  "shown": 14,
+  "tune60": 60
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 80,
+   "hpLost": 44,
+   "rounds": 12.17
+  },
+  {
+   "move": "komodo-warlord -2 -> fennec-fox",
+   "win": 60,
+   "hpLost": 65.3,
+   "rounds": 12.83,
+   "trials": 98
+  }
+ ],
+ "trials": 103,
+ "sec": 99
+}

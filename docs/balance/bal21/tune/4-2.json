@@ -1,0 +1,80 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "4-2",
+ "map": "m2",
+ "mapName": "Sunken Hollow",
+ "kind": "skirmish",
+ "name": "Tidal Ring",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "beaver-lumberjack",
+  "field-vole",
+  "lions-mane-jelly",
+  "pond-algae",
+  "shoal-shark",
+  "snapstick-turtle",
+  "water-shrew"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "lions-mane-jelly"
+ ],
+ "namesake": false,
+ "shieldRule": 4,
+ "shieldOverride": 1,
+ "before": {
+  "deck": {
+   "field-vole": 1,
+   "lions-mane-jelly": 2,
+   "pond-algae": 3,
+   "snapstick-turtle": 3,
+   "water-shrew": 5
+  },
+  "leaders": [
+   "lions-mane-jelly"
+  ],
+  "shieldOverride": 1,
+  "win200": 58,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "field-vole": 1,
+   "lions-mane-jelly": 2,
+   "pond-algae": 3,
+   "snapstick-turtle": 3,
+   "water-shrew": 5
+  },
+  "leaders": [
+   "water-shrew"
+  ],
+  "shieldOverride": 1,
+  "win200": 76,
+  "shown": 1,
+  "tune60": 76.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 55,
+   "hpLost": 63.9,
+   "rounds": 8.72
+  },
+  {
+   "move": "leader lions-mane-jelly -> water-shrew",
+   "win": 76.7,
+   "hpLost": 49,
+   "rounds": 8.48,
+   "trials": 36
+  }
+ ],
+ "trials": 41,
+ "sec": 28
+}

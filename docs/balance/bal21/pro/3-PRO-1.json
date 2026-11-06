@@ -1,0 +1,47 @@
+{
+ "about": "BAL21 item 2 PRO fix (tools/bal21/pro_fix_2026_11_07.js)",
+ "id": "3-PRO-1",
+ "map": "mc",
+ "mode": "easy",
+ "ref": "map",
+ "window": [
+  0,
+  0.75
+ ],
+ "before": {
+  "deck": {
+   "bramble-sprout": 4,
+   "conch-crawler": 4,
+   "conch-herald": 4,
+   "hawk-arrowkeeper": 4,
+   "puffin-diver": 4
+  },
+  "win200": 0.77
+ },
+ "pick": {
+  "deck": {
+   "bramble-sprout": 3,
+   "conch-crawler": 4,
+   "conch-herald": 4,
+   "hawk-arrowkeeper": 4,
+   "puffin-diver": 4,
+   "alley-cat": 1
+  },
+  "win200": 0.75,
+  "tune60": 0.717
+ },
+ "keep": true,
+ "trail": [
+  {
+   "move": "start",
+   "win": 0.783
+  },
+  {
+   "move": "bramble-sprout -1 -> alley-cat",
+   "win": 0.717,
+   "trials": 202
+  }
+ ],
+ "trials": 207,
+ "sec": 81
+}

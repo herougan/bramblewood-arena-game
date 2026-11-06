@@ -1,0 +1,89 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "11-A-4",
+ "map": "mv",
+ "mapName": "The Aerie Vault",
+ "kind": "boss",
+ "name": "The Roost Mother",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "alpine-salamander",
+  "alpine-swift",
+  "apollo-butterfly",
+  "chipmunk-hoarder",
+  "eyrie-warden",
+  "gale-swift",
+  "ibex-rockcaller",
+  "swamp-alligator",
+  "vigil-owl",
+  "wound-reaver"
+ ],
+ "firstClear": [
+  "wound-reaver"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "ibex-rockcaller"
+ ],
+ "namesake": false,
+ "shieldRule": 45,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "wound-reaver": 2,
+   "ibex-rockcaller": 1,
+   "eyrie-warden": 5,
+   "vigil-owl": 1,
+   "alpine-swift": 5,
+   "swamp-alligator": 1,
+   "alpine-salamander": 1
+  },
+  "leaders": [
+   "ibex-rockcaller"
+  ],
+  "shieldOverride": null,
+  "win200": 16.5,
+  "shown": 23
+ },
+ "pick": {
+  "deck": {
+   "wound-reaver": 2,
+   "eyrie-warden": 5,
+   "vigil-owl": 1,
+   "alpine-swift": 5,
+   "swamp-alligator": 1,
+   "alpine-salamander": 1,
+   "gale-swift": 1
+  },
+  "leaders": [
+   "ibex-rockcaller"
+  ],
+  "shieldOverride": null,
+  "win200": 37,
+  "shown": 23,
+  "tune60": 41.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 8.3,
+   "hpLost": 94,
+   "rounds": 11.27
+  },
+  {
+   "move": "ibex-rockcaller -1 -> gale-swift",
+   "win": 41.7,
+   "hpLost": 77,
+   "rounds": 11.6,
+   "trials": 68
+  }
+ ],
+ "trials": 73,
+ "sec": 61
+}

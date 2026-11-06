@@ -1,0 +1,83 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "12-1",
+ "map": "mh",
+ "mapName": "The Briar Maze",
+ "kind": "skirmish",
+ "name": "Hedge Mice",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "bramble-hoglet",
+  "carrion-crow",
+  "dormouse",
+  "field-mouse",
+  "hollow-belly-rat",
+  "mouse-sapper",
+  "thorn-shrike",
+  "woodcock-lookout"
+ ],
+ "firstClear": [
+  "bramble-hoglet"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "thorn-shrike"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "bramble-hoglet": 5,
+   "carrion-crow": 3,
+   "field-mouse": 1,
+   "mouse-sapper": 5,
+   "thorn-shrike": 3
+  },
+  "leaders": [
+   "thorn-shrike"
+  ],
+  "shieldOverride": null,
+  "win200": 77,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "bramble-hoglet": 5,
+   "carrion-crow": 3,
+   "mouse-sapper": 5,
+   "thorn-shrike": 3,
+   "hollow-belly-rat": 1
+  },
+  "leaders": [
+   "thorn-shrike"
+  ],
+  "shieldOverride": null,
+  "win200": 82.5,
+  "shown": 6,
+  "tune60": 86.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 75,
+   "hpLost": 48.2,
+   "rounds": 11.32
+  },
+  {
+   "move": "field-mouse -1 -> hollow-belly-rat",
+   "win": 86.7,
+   "hpLost": 38.3,
+   "rounds": 11.32,
+   "trials": 30
+  }
+ ],
+ "trials": 35,
+ "sec": 35
+}

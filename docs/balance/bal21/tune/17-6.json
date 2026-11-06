@@ -1,0 +1,96 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "17-6",
+ "map": "m6",
+ "mapName": "Wolfsbane Tundra",
+ "kind": "elite",
+ "name": "Glacier Herd",
+ "band": {
+  "lo": 57.00000000000001,
+  "hi": 73,
+  "target": 65
+ },
+ "list": [
+  "alpha-howler",
+  "beluga",
+  "cone-cutter-squirrel",
+  "frost-hare-sprinter",
+  "harbor-seal",
+  "mountain-hare",
+  "polar-bear",
+  "snow-bunting-archer",
+  "snow-ermine",
+  "spitting-spider"
+ ],
+ "firstClear": [
+  "polar-bear"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "polar-bear"
+ ],
+ "namesake": false,
+ "shieldRule": 26,
+ "shieldOverride": 6,
+ "before": {
+  "deck": {
+   "polar-bear": 2,
+   "spitting-spider": 4,
+   "harbor-seal": 5,
+   "alpha-howler": 1,
+   "snow-bunting-archer": 4,
+   "beluga": 2,
+   "snow-ermine": 2
+  },
+  "leaders": [
+   "polar-bear"
+  ],
+  "shieldOverride": 6,
+  "win200": 84.5,
+  "shown": 3
+ },
+ "pick": {
+  "deck": {
+   "polar-bear": 2,
+   "spitting-spider": 4,
+   "harbor-seal": 4,
+   "alpha-howler": 1,
+   "snow-bunting-archer": 4,
+   "snow-ermine": 4,
+   "mountain-hare": 1
+  },
+  "leaders": [
+   "polar-bear"
+  ],
+  "shieldOverride": 6,
+  "win200": 66,
+  "shown": 3,
+  "tune60": 66.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 81.7,
+   "hpLost": 35.3,
+   "rounds": 16.12
+  },
+  {
+   "move": "beluga -2 -> snow-ermine",
+   "win": 71.7,
+   "hpLost": 50.3,
+   "rounds": 16.72,
+   "trials": 48
+  },
+  {
+   "move": "harbor-seal -1 -> mountain-hare",
+   "win": 66.7,
+   "hpLost": 56,
+   "rounds": 16.22,
+   "trials": 39
+  }
+ ],
+ "trials": 92,
+ "sec": 127
+}

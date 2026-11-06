@@ -1,0 +1,84 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "3-3",
+ "map": "mc",
+ "mapName": "Gannet Cliffs",
+ "kind": "skirmish",
+ "name": "Rockfall",
+ "band": {
+  "lo": 70,
+  "hi": 86,
+  "target": 78
+ },
+ "list": [
+  "conch-crawler",
+  "gannet-nestweaver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "oystercatcher",
+  "peak-condor",
+  "pincushion-urchin",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "razorbill"
+ ],
+ "namesake": false,
+ "shieldRule": 3,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "gannet-nestweaver": 3,
+   "hawk-arrowkeeper": 3,
+   "peak-condor": 3,
+   "razorbill": 3,
+   "red-billed-chough": 3
+  },
+  "leaders": [
+   "razorbill"
+  ],
+  "shieldOverride": null,
+  "win200": 88,
+  "shown": 2
+ },
+ "pick": {
+  "deck": {
+   "gannet-nestweaver": 2,
+   "hawk-arrowkeeper": 3,
+   "peak-condor": 3,
+   "razorbill": 3,
+   "red-billed-chough": 3,
+   "kittiwake-flock": 1
+  },
+  "leaders": [
+   "razorbill"
+  ],
+  "shieldOverride": null,
+  "win200": 81.5,
+  "shown": 2,
+  "tune60": 79.2
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 85,
+   "hpLost": 28.5,
+   "rounds": 8.54
+  },
+  {
+   "move": "gannet-nestweaver -1 -> kittiwake-flock",
+   "win": 79.2,
+   "hpLost": 36.5,
+   "rounds": 8.91,
+   "trials": 65
+  }
+ ],
+ "trials": 70,
+ "sec": 48
+}

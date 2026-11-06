@@ -1,0 +1,44 @@
+{
+ "about": "BAL21 item 2: one ENG28 rule turned back at a time (tools/bal21/eng28_ablate_2026_11_07.js), the PRO fight as tools/opt/pro_ease.js plays it",
+ "id": "17-PRO-2",
+ "ref": "ref2",
+ "games": 200,
+ "rows": [
+  {
+   "variant": "now",
+   "win": 0.08,
+   "rounds": 11.42,
+   "engineIsPatched": true
+  },
+  {
+   "variant": "fire",
+   "win": 0.08,
+   "rounds": 11.42,
+   "engineIsPatched": true
+  },
+  {
+   "variant": "frost",
+   "win": 0.17,
+   "rounds": 11.58,
+   "engineIsPatched": true
+  },
+  {
+   "variant": "poison",
+   "win": 0.08,
+   "rounds": 11.42,
+   "engineIsPatched": true
+  },
+  {
+   "variant": "dark",
+   "win": 0.08,
+   "rounds": 11.42,
+   "engineIsPatched": true
+  },
+  {
+   "variant": "allOff",
+   "win": 0.17,
+   "rounds": 11.58,
+   "engineIsPatched": true
+  }
+ ]
+}

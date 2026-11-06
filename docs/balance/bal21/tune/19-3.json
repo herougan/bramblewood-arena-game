@@ -1,0 +1,89 @@
+{
+ "about": "BAL21 road retune (tools/bal21/road_tune_2026_11_07.js)",
+ "code": "19-3",
+ "map": "m3",
+ "mapName": "Ashen Spurn",
+ "kind": "elite",
+ "name": "Porcupine Bastion",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "cinder-stoker",
+  "fire-salamander",
+  "glacier-wolf-pack",
+  "granite-ox-golem",
+  "magma-titan",
+  "obsidian-scorpion",
+  "pit-glutton",
+  "pumice-beetle",
+  "snow-ermine",
+  "yeti"
+ ],
+ "firstClear": [
+  "fire-salamander"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "granite-ox-golem"
+ ],
+ "namesake": false,
+ "shieldRule": 29,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "cinder-stoker": 2,
+   "fire-salamander": 4,
+   "glacier-wolf-pack": 1,
+   "magma-titan": 2,
+   "pit-glutton": 1,
+   "yeti": 3,
+   "granite-ox-golem": 1
+  },
+  "leaders": [
+   "granite-ox-golem"
+  ],
+  "shieldOverride": null,
+  "win200": 89.5,
+  "shown": 15
+ },
+ "pick": {
+  "deck": {
+   "cinder-stoker": 3,
+   "fire-salamander": 3,
+   "glacier-wolf-pack": 1,
+   "magma-titan": 2,
+   "pit-glutton": 1,
+   "yeti": 3,
+   "granite-ox-golem": 1
+  },
+  "leaders": [
+   "granite-ox-golem"
+  ],
+  "shieldOverride": null,
+  "win200": 83.5,
+  "shown": 15,
+  "tune60": 76.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 81.7,
+   "hpLost": 75.6,
+   "rounds": 10.3
+  },
+  {
+   "move": "fire-salamander -1 -> cinder-stoker",
+   "win": 76.7,
+   "hpLost": 80.4,
+   "rounds": 10.48,
+   "trials": 80
+  }
+ ],
+ "trials": 85,
+ "sec": 53
+}
