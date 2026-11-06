@@ -1,0 +1,756 @@
+{
+ "about": "PvP test decks for the owner's experiments (package PVP1, owner 2026-11-06 20:28 #5). Each: 25 seeded in-play cards, the best core of 7 and a fill from the other 18, and the best leader, by a modest search against the gauntlet. gauntletWin: the final measure against the gauntlet (%); fieldWin: the mean against the other 29 in the round robin (%). code: a deck code for Camp > Import. Built and baked into the game (the Simulator's picker) by tools/pvp1/pvp1.js.",
+ "version": "1.0.0 (2026-11-06, PVP1)",
+ "tool": "node tools/pvp1/pvp1.js build --workers 2",
+ "built": "2026-11-06",
+ "rules": "Standard PvP: 20 cards, rarity copy caps and top-rank caps with the leader counted (bramblewood-ghosts.js validateDeck), every card at Level 1, the Standard ruleset (day / night cycle), brambles 15 Health, +1 Shield for the second seat, both seats the CPU (skill 1), leaders dealt (G.dealPlayerLeader), seats swapped every other game",
+ "gauntlet": [
+  {
+   "id": "ghost:deep-tide",
+   "label": "Abyssal Aster (PvP stranger, stage 4)",
+   "leader": null
+  },
+  {
+   "id": "ghost:frost-pack",
+   "label": "Frostbite Fern (PvP stranger, stage 5)",
+   "leader": null
+  },
+  {
+   "id": "ghost:redwood-charge",
+   "label": "Redwood Rook (PvP stranger, stage 5)",
+   "leader": null
+  },
+  {
+   "id": "ghost:ant-colony",
+   "label": "Marching Mags (PvP stranger, stage 6)",
+   "leader": null
+  },
+  {
+   "id": "ghost:goldfeather-guard",
+   "label": "Gilded Juniper (PvP stranger, stage 6)",
+   "leader": null
+  },
+  {
+   "id": "ghost:hive-swarm",
+   "label": "Honeycomb Hazel (PvP stranger, stage 6)",
+   "leader": null
+  },
+  {
+   "id": "ref2",
+   "label": "Reference-2 (the owner's Ant Deck)",
+   "leader": "old-willow-of-the-ford"
+  },
+  {
+   "id": "pro:20-PRO-1",
+   "label": "20-PRO-1 (The Sundered Peak)",
+   "leader": null
+  },
+  {
+   "id": "pro:21-PRO-1",
+   "label": "21-PRO-1 (The Quiet Summit)",
+   "leader": null
+  },
+  {
+   "id": "pro:22-PRO-1",
+   "label": "22-PRO-1 (The Rimefire Caldera)",
+   "leader": null
+  },
+  {
+   "id": "pro:23-PRO-1",
+   "label": "23-PRO-1 (The Goldfeather Siege)",
+   "leader": null
+  },
+  {
+   "id": "pro:24-PRO-1",
+   "label": "24-PRO-1 (Goldfeather Keep)",
+   "leader": null
+  }
+ ],
+ "search": {
+  "seedCards": 25,
+  "core": 7,
+  "gamesAnOpponent": 2,
+  "finalGames": 96,
+  "searchGames": 29316
+ },
+ "roundRobin": {
+  "gamesAPairing": 20,
+  "games": 8700
+ },
+ "maxSharedCopies": 6,
+ "seconds": 713,
+ "decks": [
+  {
+   "id": "pvp1-01",
+   "name": "Mountain Swarm: Field Vole",
+   "leader": "echo-matriarch",
+   "cards": {
+    "mountain-hare": 3,
+    "talus-pika": 3,
+    "rivergate-recruit": 1,
+    "helmeted-otter": 3,
+    "field-vole": 3,
+    "gatling-hog": 3,
+    "ford-kingfisher": 1,
+    "thorny-devil": 2,
+    "otter-ferryman": 1
+   },
+   "seed": "pvp1-01",
+   "gauntletWin": 74,
+   "fieldWin": 40.9,
+   "tribe": "Mountain",
+   "shape": "Swarm",
+   "anchor": "River",
+   "avgCost": 0.3,
+   "code": "BWD1:eyJuIjoiTW91bnRhaW4gU3dhcm06IEZpZWxkIFZvbGUiLCJjIjoiY2FzdGxlIiwibCI6ImVjaG8tbWF0cmlhcmNoIiwiZCI6eyJtb3VudGFpbi1oYXJlIjozLCJ0YWx1cy1waWthIjozLCJyaXZlcmdhdGUtcmVjcnVpdCI6MSwiaGVsbWV0ZWQtb3R0ZXIiOjMsImZpZWxkLXZvbGUiOjMsImdhdGxpbmctaG9nIjozLCJmb3JkLWtpbmdmaXNoZXIiOjEsInRob3JueS1kZXZpbCI6Miwib3R0ZXItZmVycnltYW4iOjF9fQ=="
+  },
+  {
+   "id": "pvp1-02",
+   "name": "Bird Tempo: Weaver Bird",
+   "leader": "old-shell",
+   "cards": {
+    "otter-guard": 1,
+    "weaver-bird": 5,
+    "helmeted-otter": 2,
+    "ford-kingfisher": 3,
+    "prospector-mole": 3,
+    "riverwing-envoy": 3,
+    "raccoon-bandit": 2,
+    "otter-royal-guard": 1
+   },
+   "seed": "pvp1-02",
+   "gauntletWin": 82.3,
+   "fieldWin": 65.9,
+   "tribe": "Bird",
+   "shape": "Tempo",
+   "anchor": "Otter",
+   "avgCost": 0.5,
+   "code": "BWD1:eyJuIjoiQmlyZCBUZW1wbzogV2VhdmVyIEJpcmQiLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsib3R0ZXItZ3VhcmQiOjEsIndlYXZlci1iaXJkIjo1LCJoZWxtZXRlZC1vdHRlciI6MiwiZm9yZC1raW5nZmlzaGVyIjozLCJwcm9zcGVjdG9yLW1vbGUiOjMsInJpdmVyd2luZy1lbnZveSI6MywicmFjY29vbi1iYW5kaXQiOjIsIm90dGVyLXJveWFsLWd1YXJkIjoxfX0="
+  },
+  {
+   "id": "pvp1-03",
+   "name": "Bird Tempo: Mangrove Mudskipper",
+   "leader": "fire-drake-hatchling",
+   "cards": {
+    "mangrove-mudskipper": 4,
+    "sunbittern-strider": 3,
+    "oystercatcher": 3,
+    "slow-worm": 3,
+    "kittiwake-flock": 3,
+    "weaver-bird": 3,
+    "war-elephant": 1
+   },
+   "seed": "pvp1-03",
+   "gauntletWin": 61.5,
+   "fieldWin": 30.7,
+   "tribe": "Bird",
+   "shape": "Tempo",
+   "anchor": "Bird",
+   "avgCost": 0.6,
+   "code": "BWD1:eyJuIjoiQmlyZCBUZW1wbzogTWFuZ3JvdmUgTXVkc2tpcHBlciIsImMiOiJjYXN0bGUiLCJsIjoiZmlyZS1kcmFrZS1oYXRjaGxpbmciLCJkIjp7Im1hbmdyb3ZlLW11ZHNraXBwZXIiOjQsInN1bmJpdHRlcm4tc3RyaWRlciI6Mywib3lzdGVyY2F0Y2hlciI6Mywic2xvdy13b3JtIjozLCJraXR0aXdha2UtZmxvY2siOjMsIndlYXZlci1iaXJkIjozLCJ3YXItZWxlcGhhbnQiOjF9fQ=="
+  },
+  {
+   "id": "pvp1-04",
+   "name": "Hummingbird Tempo: Ford Kingfisher",
+   "leader": "sunspire-sky-sovereign",
+   "cards": {
+    "hush-wing-spy": 3,
+    "ruby-throat-duelist": 1,
+    "honeyjoe-brewer": 3,
+    "pincushion-urchin": 3,
+    "ford-kingfisher": 3,
+    "shell-cracker": 1,
+    "greyplume-fledgling": 2,
+    "sunspire-choirmother": 2,
+    "roadrunner-courier": 2
+   },
+   "seed": "pvp1-04",
+   "gauntletWin": 79.2,
+   "fieldWin": 66.7,
+   "tribe": "Hummingbird",
+   "shape": "Tempo",
+   "anchor": "Hummingbird",
+   "avgCost": 0.35,
+   "code": "BWD1:eyJuIjoiSHVtbWluZ2JpcmQgVGVtcG86IEZvcmQgS2luZ2Zpc2hlciIsImMiOiJjYXN0bGUiLCJsIjoic3Vuc3BpcmUtc2t5LXNvdmVyZWlnbiIsImQiOnsiaHVzaC13aW5nLXNweSI6MywicnVieS10aHJvYXQtZHVlbGlzdCI6MSwiaG9uZXlqb2UtYnJld2VyIjozLCJwaW5jdXNoaW9uLXVyY2hpbiI6MywiZm9yZC1raW5nZmlzaGVyIjozLCJzaGVsbC1jcmFja2VyIjoxLCJncmV5cGx1bWUtZmxlZGdsaW5nIjoyLCJzdW5zcGlyZS1jaG9pcm1vdGhlciI6Miwicm9hZHJ1bm5lci1jb3VyaWVyIjoyfX0="
+  },
+  {
+   "id": "pvp1-05",
+   "name": "Ocean Tempo: Rootworm Colony",
+   "leader": "old-shell",
+   "cards": {
+    "pyrenean-desman": 3,
+    "robin-redbreast": 3,
+    "mangrove-manatee": 1,
+    "pincushion-urchin": 3,
+    "banded-sea-krait": 3,
+    "rootworm-colony": 5,
+    "talon-archer": 2
+   },
+   "seed": "pvp1-05",
+   "gauntletWin": 75,
+   "fieldWin": 47.6,
+   "tribe": "Ocean",
+   "shape": "Tempo",
+   "anchor": "Ocean",
+   "avgCost": 0.55,
+   "code": "BWD1:eyJuIjoiT2NlYW4gVGVtcG86IFJvb3R3b3JtIENvbG9ueSIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJweXJlbmVhbi1kZXNtYW4iOjMsInJvYmluLXJlZGJyZWFzdCI6MywibWFuZ3JvdmUtbWFuYXRlZSI6MSwicGluY3VzaGlvbi11cmNoaW4iOjMsImJhbmRlZC1zZWEta3JhaXQiOjMsInJvb3R3b3JtLWNvbG9ueSI6NSwidGFsb24tYXJjaGVyIjoyfX0="
+  },
+  {
+   "id": "pvp1-06",
+   "name": "Hummingbird Tempo: Cinder Stoker",
+   "leader": "fire-drake-hatchling",
+   "cards": {
+    "mosswing-laborer": 3,
+    "puffin-diver": 3,
+    "cinder-stoker": 3,
+    "magma-wraith": 3,
+    "planarian-splitter": 3,
+    "sunthroat-courier": 3,
+    "snowshoe-hare": 1,
+    "gold-throated-acolyte": 1
+   },
+   "seed": "pvp1-06",
+   "gauntletWin": 69.8,
+   "fieldWin": 34.8,
+   "tribe": "Hummingbird",
+   "shape": "Tempo",
+   "anchor": "Volcanic",
+   "avgCost": 0.45,
+   "code": "BWD1:eyJuIjoiSHVtbWluZ2JpcmQgVGVtcG86IENpbmRlciBTdG9rZXIiLCJjIjoiY2FzdGxlIiwibCI6ImZpcmUtZHJha2UtaGF0Y2hsaW5nIiwiZCI6eyJtb3Nzd2luZy1sYWJvcmVyIjozLCJwdWZmaW4tZGl2ZXIiOjMsImNpbmRlci1zdG9rZXIiOjMsIm1hZ21hLXdyYWl0aCI6MywicGxhbmFyaWFuLXNwbGl0dGVyIjozLCJzdW50aHJvYXQtY291cmllciI6Mywic25vd3Nob2UtaGFyZSI6MSwiZ29sZC10aHJvYXRlZC1hY29seXRlIjoxfX0="
+  },
+  {
+   "id": "pvp1-07",
+   "name": "River Tempo: Spitting Spider",
+   "leader": "old-willow-of-the-ford",
+   "cards": {
+    "sunspire-sky-sovereign": 1,
+    "spitting-spider": 4,
+    "nectar-vintner": 3,
+    "planarian-splitter": 3,
+    "birdlime-dauber": 3,
+    "dung-beetle": 3,
+    "lamprey": 3
+   },
+   "seed": "pvp1-07",
+   "gauntletWin": 65.6,
+   "fieldWin": 38.6,
+   "tribe": "River",
+   "shape": "Tempo",
+   "anchor": "Cave",
+   "avgCost": 0.7,
+   "code": "BWD1:eyJuIjoiUml2ZXIgVGVtcG86IFNwaXR0aW5nIFNwaWRlciIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXdpbGxvdy1vZi10aGUtZm9yZCIsImQiOnsic3Vuc3BpcmUtc2t5LXNvdmVyZWlnbiI6MSwic3BpdHRpbmctc3BpZGVyIjo0LCJuZWN0YXItdmludG5lciI6MywicGxhbmFyaWFuLXNwbGl0dGVyIjozLCJiaXJkbGltZS1kYXViZXIiOjMsImR1bmctYmVldGxlIjozLCJsYW1wcmV5IjozfX0="
+  },
+  {
+   "id": "pvp1-08",
+   "name": "Arachnid Tempo: Cricket Drummer",
+   "leader": "old-shell",
+   "cards": {
+    "obsidian-scorpion": 3,
+    "glass-golem": 3,
+    "pyrenean-desman": 3,
+    "gatling-hog": 3,
+    "cricket-drummer": 3,
+    "peak-condor": 3,
+    "clap-net-trapper": 2
+   },
+   "seed": "pvp1-08",
+   "gauntletWin": 81.3,
+   "fieldWin": 64.8,
+   "tribe": "Arachnid",
+   "shape": "Tempo",
+   "anchor": "Mountain",
+   "avgCost": 0.6,
+   "code": "BWD1:eyJuIjoiQXJhY2huaWQgVGVtcG86IENyaWNrZXQgRHJ1bW1lciIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJvYnNpZGlhbi1zY29ycGlvbiI6MywiZ2xhc3MtZ29sZW0iOjMsInB5cmVuZWFuLWRlc21hbiI6MywiZ2F0bGluZy1ob2ciOjMsImNyaWNrZXQtZHJ1bW1lciI6MywicGVhay1jb25kb3IiOjMsImNsYXAtbmV0LXRyYXBwZXIiOjJ9fQ=="
+  },
+  {
+   "id": "pvp1-09",
+   "name": "Coastal Tempo: Tide Pool Crab",
+   "leader": "fire-drake-hatchling",
+   "cards": {
+    "tide-pool-crab": 5,
+    "gilded-swan-knight": 1,
+    "raccoon-bandit": 3,
+    "gull-thief": 2,
+    "thorny-devil": 3,
+    "field-vole": 3,
+    "conch-herald": 3
+   },
+   "seed": "pvp1-09",
+   "gauntletWin": 68.8,
+   "fieldWin": 60,
+   "tribe": "Coastal",
+   "shape": "Tempo",
+   "anchor": "Coastal",
+   "avgCost": 0.35,
+   "code": "BWD1:eyJuIjoiQ29hc3RhbCBUZW1wbzogVGlkZSBQb29sIENyYWIiLCJjIjoiY2FzdGxlIiwibCI6ImZpcmUtZHJha2UtaGF0Y2hsaW5nIiwiZCI6eyJ0aWRlLXBvb2wtY3JhYiI6NSwiZ2lsZGVkLXN3YW4ta25pZ2h0IjoxLCJyYWNjb29uLWJhbmRpdCI6MywiZ3VsbC10aGllZiI6MiwidGhvcm55LWRldmlsIjozLCJmaWVsZC12b2xlIjozLCJjb25jaC1oZXJhbGQiOjN9fQ=="
+  },
+  {
+   "id": "pvp1-10",
+   "name": "Insect Tempo: Bombardier Beetle",
+   "leader": "old-shell",
+   "cards": {
+    "bombardier-beetle": 3,
+    "robin-redbreast": 3,
+    "glass-changeling": 3,
+    "cinder-hornet": 3,
+    "dung-beetle": 3,
+    "tax-collector-teal": 3,
+    "mallard-halberdier": 2
+   },
+   "seed": "pvp1-10",
+   "gauntletWin": 84.4,
+   "fieldWin": 68.6,
+   "tribe": "Insect",
+   "shape": "Tempo",
+   "anchor": "Insect",
+   "avgCost": 0.7,
+   "code": "BWD1:eyJuIjoiSW5zZWN0IFRlbXBvOiBCb21iYXJkaWVyIEJlZXRsZSIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJib21iYXJkaWVyLWJlZXRsZSI6Mywicm9iaW4tcmVkYnJlYXN0IjozLCJnbGFzcy1jaGFuZ2VsaW5nIjozLCJjaW5kZXItaG9ybmV0IjozLCJkdW5nLWJlZXRsZSI6MywidGF4LWNvbGxlY3Rvci10ZWFsIjozLCJtYWxsYXJkLWhhbGJlcmRpZXIiOjJ9fQ=="
+  },
+  {
+   "id": "pvp1-11",
+   "name": "Village Swarm: House Cat",
+   "leader": "old-shell",
+   "cards": {
+    "truffle-piglet": 2,
+    "newt-doctor": 3,
+    "otter-scout": 3,
+    "raven-scout": 3,
+    "house-cat": 5,
+    "stoat-cutthroat": 1,
+    "border-collie": 2,
+    "gilded-swan-knight": 1
+   },
+   "seed": "pvp1-11",
+   "gauntletWin": 79.2,
+   "fieldWin": 59.7,
+   "tribe": "Village",
+   "shape": "Swarm",
+   "anchor": "Village",
+   "avgCost": 0.3,
+   "code": "BWD1:eyJuIjoiVmlsbGFnZSBTd2FybTogSG91c2UgQ2F0IiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtc2hlbGwiLCJkIjp7InRydWZmbGUtcGlnbGV0IjoyLCJuZXd0LWRvY3RvciI6Mywib3R0ZXItc2NvdXQiOjMsInJhdmVuLXNjb3V0IjozLCJob3VzZS1jYXQiOjUsInN0b2F0LWN1dHRocm9hdCI6MSwiYm9yZGVyLWNvbGxpZSI6MiwiZ2lsZGVkLXN3YW4ta25pZ2h0IjoxfX0="
+  },
+  {
+   "id": "pvp1-12",
+   "name": "Savanna Tempo: Sunfeather Nestguard",
+   "leader": "old-shell",
+   "cards": {
+    "duckling-squadron": 3,
+    "gannet-nestweaver": 3,
+    "dominion-nestguard": 3,
+    "pike-lancer": 3,
+    "grave-grin-hyena": 3,
+    "marula-elephant": 1,
+    "savanna-cheetah": 2,
+    "meerkat-burrower": 2
+   },
+   "seed": "pvp1-12",
+   "gauntletWin": 75,
+   "fieldWin": 44.8,
+   "tribe": "Savanna",
+   "shape": "Tempo",
+   "anchor": "Savanna",
+   "avgCost": 0.45,
+   "code": "BWD1:eyJuIjoiU2F2YW5uYSBUZW1wbzogU3VuZmVhdGhlciBOZXN0Z3VhcmQiLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsiZHVja2xpbmctc3F1YWRyb24iOjMsImdhbm5ldC1uZXN0d2VhdmVyIjozLCJkb21pbmlvbi1uZXN0Z3VhcmQiOjMsInBpa2UtbGFuY2VyIjozLCJncmF2ZS1ncmluLWh5ZW5hIjozLCJtYXJ1bGEtZWxlcGhhbnQiOjEsInNhdmFubmEtY2hlZXRhaCI6MiwibWVlcmthdC1idXJyb3dlciI6Mn19"
+  },
+  {
+   "id": "pvp1-13",
+   "name": "Swamp Midrange: Alligator Gar",
+   "leader": "old-shell",
+   "cards": {
+    "kraken-spawnling": 3,
+    "alligator-gar": 3,
+    "bog-leech": 3,
+    "skull-vulture": 3,
+    "cone-cutter-squirrel": 3,
+    "fire-ant-raft": 3,
+    "vampire-bat": 2
+   },
+   "seed": "pvp1-13",
+   "gauntletWin": 66.7,
+   "fieldWin": 42.2,
+   "tribe": "Swamp",
+   "shape": "Midrange",
+   "anchor": "Swamp",
+   "avgCost": 0.9,
+   "code": "BWD1:eyJuIjoiU3dhbXAgTWlkcmFuZ2U6IEFsbGlnYXRvciBHYXIiLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsia3Jha2VuLXNwYXdubGluZyI6MywiYWxsaWdhdG9yLWdhciI6MywiYm9nLWxlZWNoIjozLCJza3VsbC12dWx0dXJlIjozLCJjb25lLWN1dHRlci1zcXVpcnJlbCI6MywiZmlyZS1hbnQtcmFmdCI6MywidmFtcGlyZS1iYXQiOjJ9fQ=="
+  },
+  {
+   "id": "pvp1-14",
+   "name": "Bird Midrange: Birdlime Dauber",
+   "leader": "old-willow-of-the-ford",
+   "cards": {
+    "birdlime-dauber": 4,
+    "snow-bunting-archer": 3,
+    "weaver-bird": 3,
+    "robin-redbreast": 3,
+    "caustic-scorpion": 3,
+    "rivergate-tribune": 1,
+    "snow-ermine": 3
+   },
+   "seed": "pvp1-14",
+   "gauntletWin": 63.5,
+   "fieldWin": 50,
+   "tribe": "Bird",
+   "shape": "Midrange",
+   "anchor": "Tundra",
+   "avgCost": 0.8,
+   "code": "BWD1:eyJuIjoiQmlyZCBNaWRyYW5nZTogQmlyZGxpbWUgRGF1YmVyIiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtd2lsbG93LW9mLXRoZS1mb3JkIiwiZCI6eyJiaXJkbGltZS1kYXViZXIiOjQsInNub3ctYnVudGluZy1hcmNoZXIiOjMsIndlYXZlci1iaXJkIjozLCJyb2Jpbi1yZWRicmVhc3QiOjMsImNhdXN0aWMtc2NvcnBpb24iOjMsInJpdmVyZ2F0ZS10cmlidW5lIjoxLCJzbm93LWVybWluZSI6M319"
+  },
+  {
+   "id": "pvp1-15",
+   "name": "Bird Tempo: Ant Warrior",
+   "leader": "wolfsbane-alpha",
+   "cards": {
+    "ant-warrior": 3,
+    "peregrine-stooper": 3,
+    "quicksand-queen": 2,
+    "roadrunner-courier": 3,
+    "fawn-scout": 3,
+    "riverside-peddler": 3,
+    "pika-hoarder": 3
+   },
+   "seed": "pvp1-15",
+   "gauntletWin": 75,
+   "fieldWin": 50.7,
+   "tribe": "Bird",
+   "shape": "Tempo",
+   "anchor": "Desert",
+   "avgCost": 0.4,
+   "code": "BWD1:eyJuIjoiQmlyZCBUZW1wbzogQW50IFdhcnJpb3IiLCJjIjoiY2FzdGxlIiwibCI6IndvbGZzYmFuZS1hbHBoYSIsImQiOnsiYW50LXdhcnJpb3IiOjMsInBlcmVncmluZS1zdG9vcGVyIjozLCJxdWlja3NhbmQtcXVlZW4iOjIsInJvYWRydW5uZXItY291cmllciI6MywiZmF3bi1zY291dCI6Mywicml2ZXJzaWRlLXBlZGRsZXIiOjMsInBpa2EtaG9hcmRlciI6M319"
+  },
+  {
+   "id": "pvp1-16",
+   "name": "Fish Tempo: Thorny Devil",
+   "leader": "old-shell",
+   "cards": {
+    "ruby-throat-duelist": 3,
+    "thorny-devil": 4,
+    "phoenix-mushrooms": 1,
+    "pike-lancer": 3,
+    "lamprey": 3,
+    "river-carp": 3,
+    "quillguard": 3
+   },
+   "seed": "pvp1-16",
+   "gauntletWin": 77.1,
+   "fieldWin": 52.1,
+   "tribe": "Fish",
+   "shape": "Tempo",
+   "anchor": "Fish",
+   "avgCost": 0.55,
+   "code": "BWD1:eyJuIjoiRmlzaCBUZW1wbzogVGhvcm55IERldmlsIiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtc2hlbGwiLCJkIjp7InJ1YnktdGhyb2F0LWR1ZWxpc3QiOjMsInRob3JueS1kZXZpbCI6NCwicGhvZW5peC1tdXNocm9vbXMiOjEsInBpa2UtbGFuY2VyIjozLCJsYW1wcmV5IjozLCJyaXZlci1jYXJwIjozLCJxdWlsbGd1YXJkIjozfX0="
+  },
+  {
+   "id": "pvp1-17",
+   "name": "Arachnid Midrange: Crimson Wing Duelist Cadet",
+   "leader": "sunspire-sky-sovereign",
+   "cards": {
+    "crimson-wing-duelist-cadet": 3,
+    "golden-eagle-diver": 3,
+    "cunning-vixen": 3,
+    "driftwood-crab": 3,
+    "obsidian-scorpion": 3,
+    "colossal-squid": 1,
+    "rivergate-recruit": 2,
+    "cricket-drummer": 2
+   },
+   "seed": "pvp1-17",
+   "gauntletWin": 66.7,
+   "fieldWin": 40,
+   "tribe": "Arachnid",
+   "shape": "Midrange",
+   "anchor": "Cephalopod",
+   "avgCost": 0.8,
+   "code": "BWD1:eyJuIjoiQXJhY2huaWQgTWlkcmFuZ2U6IENyaW1zb24gV2luZyBEdWVsaXN0ICIsImMiOiJjYXN0bGUiLCJsIjoic3Vuc3BpcmUtc2t5LXNvdmVyZWlnbiIsImQiOnsiY3JpbXNvbi13aW5nLWR1ZWxpc3QtY2FkZXQiOjMsImdvbGRlbi1lYWdsZS1kaXZlciI6MywiY3VubmluZy12aXhlbiI6MywiZHJpZnR3b29kLWNyYWIiOjMsIm9ic2lkaWFuLXNjb3JwaW9uIjozLCJjb2xvc3NhbC1zcXVpZCI6MSwicml2ZXJnYXRlLXJlY3J1aXQiOjIsImNyaWNrZXQtZHJ1bW1lciI6Mn19"
+  },
+  {
+   "id": "pvp1-18",
+   "name": "Field Tempo: Grave-Grin Hyena",
+   "leader": "reef-admiral",
+   "cards": {
+    "robin-redbreast": 4,
+    "ember-jackal": 3,
+    "grave-grin-hyena": 4,
+    "fathom-leviathan": 1,
+    "tide-spirit": 1,
+    "honey-bee": 3,
+    "hawthorn-shieldbug": 3,
+    "field-vole": 1
+   },
+   "seed": "pvp1-18",
+   "gauntletWin": 64.6,
+   "fieldWin": 36.7,
+   "tribe": "Field",
+   "shape": "Tempo",
+   "anchor": "Field",
+   "avgCost": 0.5,
+   "code": "BWD1:eyJuIjoiRmllbGQgVGVtcG86IEdyYXZlLUdyaW4gSHllbmEiLCJjIjoiY2FzdGxlIiwibCI6InJlZWYtYWRtaXJhbCIsImQiOnsicm9iaW4tcmVkYnJlYXN0Ijo0LCJlbWJlci1qYWNrYWwiOjMsImdyYXZlLWdyaW4taHllbmEiOjQsImZhdGhvbS1sZXZpYXRoYW4iOjEsInRpZGUtc3Bpcml0IjoxLCJob25leS1iZWUiOjMsImhhd3Rob3JuLXNoaWVsZGJ1ZyI6MywiZmllbGQtdm9sZSI6MX19"
+  },
+  {
+   "id": "pvp1-19",
+   "name": "Village Tempo: Otter Ferryman",
+   "leader": "old-shell",
+   "cards": {
+    "sleepless-shrew": 1,
+    "lone-grey-wolf": 2,
+    "dune-packrat": 3,
+    "wolf-spider-mother": 3,
+    "balloon-archer": 3,
+    "springbok-pronker": 1,
+    "otter-ferryman": 5,
+    "otter-netmender": 2
+   },
+   "seed": "pvp1-19",
+   "gauntletWin": 90.6,
+   "fieldWin": 77.2,
+   "tribe": "Village",
+   "shape": "Tempo",
+   "anchor": "Mouse",
+   "avgCost": 0.6,
+   "code": "BWD1:eyJuIjoiVmlsbGFnZSBUZW1wbzogT3R0ZXIgRmVycnltYW4iLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsic2xlZXBsZXNzLXNocmV3IjoxLCJsb25lLWdyZXktd29sZiI6MiwiZHVuZS1wYWNrcmF0IjozLCJ3b2xmLXNwaWRlci1tb3RoZXIiOjMsImJhbGxvb24tYXJjaGVyIjozLCJzcHJpbmdib2stcHJvbmtlciI6MSwib3R0ZXItZmVycnltYW4iOjUsIm90dGVyLW5ldG1lbmRlciI6Mn19"
+  },
+  {
+   "id": "pvp1-20",
+   "name": "Ants Swarm: Gatling Hog",
+   "leader": "old-shell",
+   "cards": {
+    "terrier-pup": 3,
+    "pike-lancer": 3,
+    "leafcutter-gardener": 3,
+    "soldier-ant": 3,
+    "gatling-hog": 3,
+    "obsidian-scorpion": 3,
+    "acorn-chipmunk": 2
+   },
+   "seed": "pvp1-20",
+   "gauntletWin": 84.4,
+   "fieldWin": 80.3,
+   "tribe": "Ants",
+   "shape": "Swarm",
+   "anchor": "Arachnid",
+   "avgCost": 0.3,
+   "code": "BWD1:eyJuIjoiQW50cyBTd2FybTogR2F0bGluZyBIb2ciLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsidGVycmllci1wdXAiOjMsInBpa2UtbGFuY2VyIjozLCJsZWFmY3V0dGVyLWdhcmRlbmVyIjozLCJzb2xkaWVyLWFudCI6MywiZ2F0bGluZy1ob2ciOjMsIm9ic2lkaWFuLXNjb3JwaW9uIjozLCJhY29ybi1jaGlwbXVuayI6Mn19"
+  },
+  {
+   "id": "pvp1-21",
+   "name": "Forest Tempo: Owl Nightwatch",
+   "leader": "old-shell",
+   "cards": {
+    "woodcock-lookout": 4,
+    "echidna-quillshot": 1,
+    "owl-nightwatch": 4,
+    "hedge-weasel": 3,
+    "wolf-spider-mother": 3,
+    "truffle-piglet": 3,
+    "dhole-matriarch": 2
+   },
+   "seed": "pvp1-21",
+   "gauntletWin": 64.6,
+   "fieldWin": 47.1,
+   "tribe": "Forest",
+   "shape": "Tempo",
+   "anchor": "Forest",
+   "avgCost": 0.75,
+   "code": "BWD1:eyJuIjoiRm9yZXN0IFRlbXBvOiBPd2wgTmlnaHR3YXRjaCIsImMiOiJjYXN0bGUiLCJsIjoib2xkLXNoZWxsIiwiZCI6eyJ3b29kY29jay1sb29rb3V0Ijo0LCJlY2hpZG5hLXF1aWxsc2hvdCI6MSwib3dsLW5pZ2h0d2F0Y2giOjQsImhlZGdlLXdlYXNlbCI6Mywid29sZi1zcGlkZXItbW90aGVyIjozLCJ0cnVmZmxlLXBpZ2xldCI6MywiZGhvbGUtbWF0cmlhcmNoIjoyfX0="
+  },
+  {
+   "id": "pvp1-22",
+   "name": "Frost Tempo: Otter Flag Bearer",
+   "leader": "old-shell",
+   "cards": {
+    "frost-hare-sprinter": 3,
+    "otter-flag-bearer": 4,
+    "mountain-hare": 3,
+    "ice-petrel": 3,
+    "helmeted-otter": 3,
+    "springbok-pronker": 1,
+    "gangrenous-leech": 1,
+    "rimefire-salamander": 2
+   },
+   "seed": "pvp1-22",
+   "gauntletWin": 88.5,
+   "fieldWin": 75,
+   "tribe": "Frost",
+   "shape": "Tempo",
+   "anchor": "Frost",
+   "avgCost": 0.35,
+   "code": "BWD1:eyJuIjoiRnJvc3QgVGVtcG86IE90dGVyIEZsYWcgQmVhcmVyIiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtc2hlbGwiLCJkIjp7ImZyb3N0LWhhcmUtc3ByaW50ZXIiOjMsIm90dGVyLWZsYWctYmVhcmVyIjo0LCJtb3VudGFpbi1oYXJlIjozLCJpY2UtcGV0cmVsIjozLCJoZWxtZXRlZC1vdHRlciI6Mywic3ByaW5nYm9rLXByb25rZXIiOjEsImdhbmdyZW5vdXMtbGVlY2giOjEsInJpbWVmaXJlLXNhbGFtYW5kZXIiOjJ9fQ=="
+  },
+  {
+   "id": "pvp1-23",
+   "name": "Ants Tempo: Ant Hill",
+   "leader": "wolfsbane-alpha",
+   "cards": {
+    "mallard-halberdier": 3,
+    "siege-rhino": 2,
+    "ant-hill": 3,
+    "soldier-ant": 3,
+    "swordbill-challenger": 3,
+    "ant-warrior": 3,
+    "pangolin-roller": 3
+   },
+   "seed": "pvp1-23",
+   "gauntletWin": 68.8,
+   "fieldWin": 44,
+   "tribe": "Ants",
+   "shape": "Tempo",
+   "anchor": "Ants",
+   "avgCost": 0.7,
+   "code": "BWD1:eyJuIjoiQW50cyBUZW1wbzogQW50IEhpbGwiLCJjIjoiY2FzdGxlIiwibCI6IndvbGZzYmFuZS1hbHBoYSIsImQiOnsibWFsbGFyZC1oYWxiZXJkaWVyIjozLCJzaWVnZS1yaGlubyI6MiwiYW50LWhpbGwiOjMsInNvbGRpZXItYW50IjozLCJzd29yZGJpbGwtY2hhbGxlbmdlciI6MywiYW50LXdhcnJpb3IiOjMsInBhbmdvbGluLXJvbGxlciI6M319"
+  },
+  {
+   "id": "pvp1-24",
+   "name": "Desert Tempo: Birdlime Dauber",
+   "leader": "echo-matriarch",
+   "cards": {
+    "leafcutter-gardener": 3,
+    "birdlime-dauber": 3,
+    "stoat-cutthroat": 3,
+    "sandfish": 3,
+    "thorny-devil": 3,
+    "cottontail": 3,
+    "snail-mail": 2
+   },
+   "seed": "pvp1-24",
+   "gauntletWin": 75,
+   "fieldWin": 41.6,
+   "tribe": "Desert",
+   "shape": "Tempo",
+   "anchor": "Reptile",
+   "avgCost": 0.6,
+   "code": "BWD1:eyJuIjoiRGVzZXJ0IFRlbXBvOiBCaXJkbGltZSBEYXViZXIiLCJjIjoiY2FzdGxlIiwibCI6ImVjaG8tbWF0cmlhcmNoIiwiZCI6eyJsZWFmY3V0dGVyLWdhcmRlbmVyIjozLCJiaXJkbGltZS1kYXViZXIiOjMsInN0b2F0LWN1dHRocm9hdCI6Mywic2FuZGZpc2giOjMsInRob3JueS1kZXZpbCI6MywiY290dG9udGFpbCI6Mywic25haWwtbWFpbCI6Mn19"
+  },
+  {
+   "id": "pvp1-25",
+   "name": "Hummingbird Midrange: Apollo Butterfly",
+   "leader": "old-shell",
+   "cards": {
+    "gatling-hog": 3,
+    "sunspire-choirmother": 2,
+    "coral-reef-shark": 3,
+    "pond-trout": 3,
+    "spitting-spider": 3,
+    "apollo-butterfly": 3,
+    "dawn-bellringer": 3
+   },
+   "seed": "pvp1-25",
+   "gauntletWin": 53.1,
+   "fieldWin": 34.1,
+   "tribe": "Hummingbird",
+   "shape": "Midrange",
+   "anchor": "Coral Reef",
+   "avgCost": 0.85,
+   "code": "BWD1:eyJuIjoiSHVtbWluZ2JpcmQgTWlkcmFuZ2U6IEFwb2xsbyBCdXR0ZXJmbHkiLCJjIjoiY2FzdGxlIiwibCI6Im9sZC1zaGVsbCIsImQiOnsiZ2F0bGluZy1ob2ciOjMsInN1bnNwaXJlLWNob2lybW90aGVyIjoyLCJjb3JhbC1yZWVmLXNoYXJrIjozLCJwb25kLXRyb3V0IjozLCJzcGl0dGluZy1zcGlkZXIiOjMsImFwb2xsby1idXR0ZXJmbHkiOjMsImRhd24tYmVsbHJpbmdlciI6M319"
+  },
+  {
+   "id": "pvp1-26",
+   "name": "Bird Midrange: Cave Warlord",
+   "leader": "old-shell",
+   "cards": {
+    "ur-elk": 2,
+    "howdah-archers": 3,
+    "kittiwake-flock": 3,
+    "teatime-toad": 3,
+    "fawn-scout": 3,
+    "crossed-eyes": 3,
+    "cave-warlord": 3
+   },
+   "seed": "pvp1-26",
+   "gauntletWin": 66.7,
+   "fieldWin": 58.8,
+   "tribe": "Bird",
+   "shape": "Midrange",
+   "anchor": "Deer",
+   "avgCost": 0.85,
+   "code": "BWD1:eyJuIjoiQmlyZCBNaWRyYW5nZTogQ2F2ZSBXYXJsb3JkIiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtc2hlbGwiLCJkIjp7InVyLWVsayI6MiwiaG93ZGFoLWFyY2hlcnMiOjMsImtpdHRpd2FrZS1mbG9jayI6MywidGVhdGltZS10b2FkIjozLCJmYXduLXNjb3V0IjozLCJjcm9zc2VkLWV5ZXMiOjMsImNhdmUtd2FybG9yZCI6M319"
+  },
+  {
+   "id": "pvp1-27",
+   "name": "Duck Tempo: Tax-Collector Teal",
+   "leader": "heron-hag",
+   "cards": {
+    "magnate-duck": 1,
+    "tax-collector-teal": 4,
+    "box-turtle": 3,
+    "ant-warrior": 3,
+    "mallard-halberdier": 3,
+    "fennec-fox": 3,
+    "chipmunk-cavalry": 3
+   },
+   "seed": "pvp1-27",
+   "gauntletWin": 68.8,
+   "fieldWin": 30.3,
+   "tribe": "Duck",
+   "shape": "Tempo",
+   "anchor": "Duck",
+   "avgCost": 0.65,
+   "code": "BWD1:eyJuIjoiRHVjayBUZW1wbzogVGF4LUNvbGxlY3RvciBUZWFsIiwiYyI6ImNhc3RsZSIsImwiOiJoZXJvbi1oYWciLCJkIjp7Im1hZ25hdGUtZHVjayI6MSwidGF4LWNvbGxlY3Rvci10ZWFsIjo0LCJib3gtdHVydGxlIjozLCJhbnQtd2FycmlvciI6MywibWFsbGFyZC1oYWxiZXJkaWVyIjozLCJmZW5uZWMtZm94IjozLCJjaGlwbXVuay1jYXZhbHJ5IjozfX0="
+  },
+  {
+   "id": "pvp1-28",
+   "name": "Mangrove Midrange: Cinder Hornet",
+   "leader": "wolfsbane-alpha",
+   "cards": {
+    "cinder-hornet": 3,
+    "mangrove-monitor": 3,
+    "pika-hoarder": 3,
+    "coral-polyp-colony": 3,
+    "mangrove-manatee": 3,
+    "grotto-lobster": 3,
+    "lions-mane-jelly": 2
+   },
+   "seed": "pvp1-28",
+   "gauntletWin": 61.5,
+   "fieldWin": 42.6,
+   "tribe": "Mangrove",
+   "shape": "Midrange",
+   "anchor": "Mangrove",
+   "avgCost": 0.85,
+   "code": "BWD1:eyJuIjoiTWFuZ3JvdmUgTWlkcmFuZ2U6IENpbmRlciBIb3JuZXQiLCJjIjoiY2FzdGxlIiwibCI6IndvbGZzYmFuZS1hbHBoYSIsImQiOnsiY2luZGVyLWhvcm5ldCI6MywibWFuZ3JvdmUtbW9uaXRvciI6MywicGlrYS1ob2FyZGVyIjozLCJjb3JhbC1wb2x5cC1jb2xvbnkiOjMsIm1hbmdyb3ZlLW1hbmF0ZWUiOjMsImdyb3R0by1sb2JzdGVyIjozLCJsaW9ucy1tYW5lLWplbGx5IjoyfX0="
+  },
+  {
+   "id": "pvp1-29",
+   "name": "Field Tempo: Burrow Rabbit",
+   "leader": "fire-drake-hatchling",
+   "cards": {
+    "planarian-splitter": 3,
+    "testudo-tortoise": 3,
+    "hedge-weasel": 3,
+    "marsh-harrier": 3,
+    "trapdoor-spider": 2,
+    "riverstone-slinger": 3,
+    "burrow-rabbit": 3
+   },
+   "seed": "pvp1-29",
+   "gauntletWin": 67.7,
+   "fieldWin": 46.4,
+   "tribe": "Field",
+   "shape": "Tempo",
+   "anchor": "random",
+   "avgCost": 0.6,
+   "code": "BWD1:eyJuIjoiRmllbGQgVGVtcG86IEJ1cnJvdyBSYWJiaXQiLCJjIjoiY2FzdGxlIiwibCI6ImZpcmUtZHJha2UtaGF0Y2hsaW5nIiwiZCI6eyJwbGFuYXJpYW4tc3BsaXR0ZXIiOjMsInRlc3R1ZG8tdG9ydG9pc2UiOjMsImhlZGdlLXdlYXNlbCI6MywibWFyc2gtaGFycmllciI6MywidHJhcGRvb3Itc3BpZGVyIjoyLCJyaXZlcnN0b25lLXNsaW5nZXIiOjMsImJ1cnJvdy1yYWJiaXQiOjN9fQ=="
+  },
+  {
+   "id": "pvp1-30",
+   "name": "Volcanic Midrange: Badger Lumberjack",
+   "leader": "old-willow-of-the-ford",
+   "cards": {
+    "prospector-mole": 3,
+    "cinder-skeleton": 3,
+    "wound-reaver": 3,
+    "crimson-wing-duelist-cadet": 3,
+    "kinkajou-lurker": 3,
+    "badger-lumberjack": 3,
+    "marula-elephant": 2
+   },
+   "seed": "pvp1-30",
+   "gauntletWin": 54.2,
+   "fieldWin": 27.8,
+   "tribe": "Volcanic",
+   "shape": "Midrange",
+   "anchor": "random",
+   "avgCost": 0.8,
+   "code": "BWD1:eyJuIjoiVm9sY2FuaWMgTWlkcmFuZ2U6IEJhZGdlciBMdW1iZXJqYWNrIiwiYyI6ImNhc3RsZSIsImwiOiJvbGQtd2lsbG93LW9mLXRoZS1mb3JkIiwiZCI6eyJwcm9zcGVjdG9yLW1vbGUiOjMsImNpbmRlci1za2VsZXRvbiI6Mywid291bmQtcmVhdmVyIjozLCJjcmltc29uLXdpbmctZHVlbGlzdC1jYWRldCI6Mywia2lua2Fqb3UtbHVya2VyIjozLCJiYWRnZXItbHVtYmVyamFjayI6MywibWFydWxhLWVsZXBoYW50IjoyfX0="
+  }
+ ]
+}

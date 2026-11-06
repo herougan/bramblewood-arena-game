@@ -338,6 +338,7 @@ run node tests/bal19-2026-11-06.js   # 2026-11-06 (package BAL19): road fights r
 run node tests/bal20-2026-11-06.js   # 2026-11-06 (package BAL20): The Canopy and Savanna Reaches retuned after ENG26's Acacia Kraal (decks, leaders), each confirmed at 200 games; BAL19's rules, no Enemy level override, Acacia Kraal unchanged
 run node tests/eng25-2026-11-05.js   # 2026-11-05 (package ENG25, owner 23:35): categories, duplicates merged, Hatchling / Regeneration Level 1+, Berries and Forage, Immortal, Hydra, lit state chips, Tribe Delivery, Moonpull, Tide N
 run node tests/eng26-2026-11-06.js   # 2026-11-06 (package ENG26, owner 09:29): paged context pips every 3 s, crowded-row names, escalating Bloom, Undead heals / cures, Acacia Kraal Lumber 1, Banner Knoll
+run node tests/pvp1-2026-11-06.js   # 2026-11-06 (package PVP1, owner 20:28 #5): 30 PvP test decks legal (validateDeck + leader), in-play cards, valid leaders, <= 10 copies shared, baked into the Simulator's picker, deck codes, deterministic game
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)
