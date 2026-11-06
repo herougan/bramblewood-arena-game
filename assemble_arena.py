@@ -369,6 +369,8 @@ app_src = sub_once(app_src, "__MAP_REVIEW__", json.dumps({k: v for k, v in json.
 # 2026-11-04 (package UI22): Claude's recommended cards per map (canonical/claude-new-cards.json, built by tools/ui22_claude_new_2026_11_04.py), shown in the Map cards window and put on no list
 # 2026-11-05 (package UI21): the keyword each early map introduces (canonical/map-keywords.json), shown in the Map cards window
 app_src = sub_once(app_src, "__MAP_KEYWORDS__", json.dumps(json.load(open(SCRATCH + "canonical/map-keywords.json", encoding="utf-8"))["keywords"], ensure_ascii=False))
+# 2026-11-06 (owner 23:51 #15): SKILLREC1 skill recommendations shown as tiles in the Map cards window (map name without the "(side map ...)" note)
+app_src = sub_once(app_src, "__SKILL_RECS__", json.dumps([{"mapName": r["mapName"].split(" (")[0], "card": r["card"], "cardName": r["cardName"], "why": r.get("why", ""), "fx": r.get("proposedEffects")} for r in json.load(open(SCRATCH + "docs/skill-recommendations-2026-11-04.json", encoding="utf-8"))["rows"] if r.get("proposedEffects")], ensure_ascii=False))
 app_src = sub_once(app_src, "__CLAUDE_NEW__", json.dumps({k: v for k, v in json.load(open(SCRATCH + "canonical/claude-new-cards.json", encoding="utf-8")).items() if k in ("theme5", "skillrec")}, ensure_ascii=False))
 # 2026-10-24 (package PRO, owner 00:28): the hidden N-PRO-k fights per map (canonical/pro-skirmishes.json, written by tools/opt/pro_skirmishes.js --apply);
 # only what the game reads is baked in (not the replaced decks, the skipped candidates or the tool's notes)

@@ -4020,5 +4020,8 @@
  "Costs": "Mga gastos",
  "GET!": "NAKUHA!",
  "Level {n}: {name} is in your collection": "Level {n}: nasa koleksyon mo na ang {name}",
- "{name} - opens as soon as you leave the screen.": "{name} - bubukas pagkaalis mo sa screen."
+ "{name} - opens as soon as you leave the screen.": "{name} - bubukas pagkaalis mo sa screen.",
+ "Suggested for {card}": "Mungkahi para sa {card}",
+ "Recommended for {card}:": "Inirerekomenda para sa {card}:",
+ "This map's keyword: on no card yet": "Keyword ng mapang ito: wala pa sa anumang card"
 }

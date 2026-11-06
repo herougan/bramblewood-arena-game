@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07: Map cards window skill tiles (owner 11-06 23:51 #15)
+- The skill section's tiles are narrower and drop "n of N cards" (it moves to the tooltip).
+- Introduction tiles (a skill new to the road here, or this map's keyword) are yellow to white; this map's keyword shows even when no card has it yet.
+- Recommendation tiles (blue to yellow, dashed) list SKILLREC1's suggested skills for this map's cards that the card does not carry yet. Admin only; nothing is applied.
+
 ## 2026-11-06 Package PVP2 (the 30 PvP test decks are real PvP opponents; owner 21:34)
 - Players see: PvP strangers and Async Arena seeded ghosts now include the 30 PvP1 decks, each with a stable ghost name and its leader, mixed in with the hand-built themed decks (stage from gauntlet win: under 60% stage 3, under 70% stage 4, under 80% stage 5, else 6). Recorded real-player ghosts are untouched and still fill a pool first. The ghost's leader is carried as data (`leaders`); the match start does not deal a ghost leader yet.
 - Fix: "Ashfall Legion" had Magma Salamander x3 (Very Rare limit 2); now x2 with one more Fire Salamander. Seeded decks are checked with `validateDeck` (leader counted) before they enter a pool.

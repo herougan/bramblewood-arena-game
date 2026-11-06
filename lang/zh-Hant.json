@@ -4020,5 +4020,8 @@
  "Costs": "費用",
  "GET!": "獲得！",
  "Level {n}: {name} is in your collection": "等級 {n}：{name} 已加入你的收藏",
- "{name} - opens as soon as you leave the screen.": "{name} - 離開此畫面後立即開啟。"
+ "{name} - opens as soon as you leave the screen.": "{name} - 離開此畫面後立即開啟。",
+ "Suggested for {card}": "建議給{card}",
+ "Recommended for {card}:": "推薦給{card}：",
+ "This map's keyword: on no card yet": "本地圖的關鍵詞：尚無卡牌擁有"
 }

@@ -4020,5 +4020,8 @@
  "Costs": "コスト",
  "GET!": "ゲット！",
  "Level {n}: {name} is in your collection": "レベル {n}：{name} がコレクションに入った",
- "{name} - opens as soon as you leave the screen.": "{name} - 画面を離れるとすぐに開く。"
+ "{name} - opens as soon as you leave the screen.": "{name} - 画面を離れるとすぐに開く。",
+ "Suggested for {card}": "{card}への提案",
+ "Recommended for {card}:": "{card}へのおすすめ：",
+ "This map's keyword: on no card yet": "このマップのキーワード：まだどのカードにもない"
 }

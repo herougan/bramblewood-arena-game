@@ -4022,5 +4022,8 @@
  "Costs": "செலவுகள்",
  "GET!": "கிடைத்தது!",
  "Level {n}: {name} is in your collection": "நிலை {n}: {name} உங்கள் சேகரிப்பில் உள்ளது",
- "{name} - opens as soon as you leave the screen.": "{name} - திரையை விட்டு வெளியேறியதும் திறக்கும்."
+ "{name} - opens as soon as you leave the screen.": "{name} - திரையை விட்டு வெளியேறியதும் திறக்கும்.",
+ "Suggested for {card}": "{card}க்குப் பரிந்துரை",
+ "Recommended for {card}:": "{card}க்குப் பரிந்துரைக்கப்பட்டது:",
+ "This map's keyword: on no card yet": "இந்த வரைபடத்தின் முக்கியச்சொல்: இன்னும் எந்த அட்டையிலும் இல்லை"
 }

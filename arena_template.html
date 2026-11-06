@@ -14802,6 +14802,10 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ui19-mc-skills{margin:4px 0 6px;}
 .ui19-mc-skills h3{font-size:14px; margin:0 0 4px;}
 .ui19-sk-list{grid-template-columns:repeat(auto-fill, minmax(170px, 1fr)); gap:3px 5px;}
+/* 2026-11-06 (owner 23:51 #15): narrower tiles (no count), introductions yellow->white, recommendations blue->yellow */
+.pk1-mc-overlay .ui19-sk-list{grid-template-columns:repeat(auto-fill, minmax(132px, 1fr));}
+.pk1-mc-overlay .ui19-sk.is-new, .pk1-mc-overlay .ui19-sk.is-intro{border-color:#e0b23a; background:linear-gradient(135deg, color-mix(in srgb, #ffd36b 34%, var(--bg)), color-mix(in srgb, #ffffff 22%, var(--bg)));}
+.pk1-mc-overlay .ui19-sk.is-rec{border-color:#6f9fe0; border-style:dashed; background:linear-gradient(135deg, color-mix(in srgb, #4f8ee8 32%, var(--bg)), color-mix(in srgb, #ffd36b 26%, var(--bg)));}
 .ui19-sk{gap:5px; padding:2px 5px; border-radius:6px;}
 .ui19-sk-ico{font-size:12px;}
 .ui19-sk-main{font-size:11px; line-height:1.2;}

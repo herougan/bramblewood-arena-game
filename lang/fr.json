@@ -4020,5 +4020,8 @@
  "Costs": "Coûts",
  "GET!": "OBTENU !",
  "Level {n}: {name} is in your collection": "Niveau {n} : {name} est dans ta collection",
- "{name} - opens as soon as you leave the screen.": "{name} - s’ouvre dès que tu quittes l’écran."
+ "{name} - opens as soon as you leave the screen.": "{name} - s’ouvre dès que tu quittes l’écran.",
+ "Suggested for {card}": "Suggéré pour {card}",
+ "Recommended for {card}:": "Recommandé pour {card} :",
+ "This map's keyword: on no card yet": "Mot-clé de cette carte : sur aucune carte pour l’instant"
 }

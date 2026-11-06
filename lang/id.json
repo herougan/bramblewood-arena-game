@@ -4021,5 +4021,8 @@
  "Costs": "Biaya",
  "GET!": "DAPAT!",
  "Level {n}: {name} is in your collection": "Level {n}: {name} ada di koleksimu",
- "{name} - opens as soon as you leave the screen.": "{name} - terbuka begitu kamu meninggalkan layar."
+ "{name} - opens as soon as you leave the screen.": "{name} - terbuka begitu kamu meninggalkan layar.",
+ "Suggested for {card}": "Disarankan untuk {card}",
+ "Recommended for {card}:": "Direkomendasikan untuk {card}:",
+ "This map's keyword: on no card yet": "Kata kunci peta ini: belum ada di kartu mana pun"
 }

@@ -19,6 +19,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 10 | Diurnal and Inspiration pip numbers 1 px closer to the emoji | UI24 |
 | 11 | Sonar and Keen Senses show as "?" until the first darkness map; their pips show only when relevant (darkness maps) | ENG28 (UI) |
 | 12 | Codex skill list: one entry per skill (Tally and Throng appear twice, once per threshold); combine them | UI24 |
+| 13 | New skill like Brood that summons a weaker copy of the card itself | ENG28 |
+| 14 | Trigger context pips: emoji and arrow closer together | UI24 |
+| 15 | Map cards window skill section: smaller, no "n of N cards"; recommendation tiles (blue to yellow) and introduction tiles (yellow to white) | **done 11-07** (tiles from SKILLREC1 rows and map-keywords) |
+| 16 | Rebalance flow: when ready, run the card power test, show strengths, the owner balances by hand (no auto-balance of his cards) | BAL21 |
+| 17 | Brood's tokens get Swarm (Species), not plain Swarm (Default) | ENG28 |
 
 ## 11-06 22:16: Owner notes, queued after ENG27
 The alpha release checklist is `docs/alpha-checklist.md` (every item starts unverified).
