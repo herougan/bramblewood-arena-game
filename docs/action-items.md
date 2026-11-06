@@ -4,38 +4,43 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-07: Package ENG28 (on its branch, not released)
+- Done: 22:16 #2 (poison damage = Poison stacks only, the Herb Refinery's text and brew; fire = damage + 1 Burn, stacking; frost = damage + 1 Freeze; texts fixed), #3 (shots miss in the dark by the swing's rule), #4 (hover: printed card, spent one-shot struck "used"), #5 (edited pencil admin only), #6 (gold "?" "Learnt at a higher level"), #7 (💀 on death triggers); 23:35 #4 (Mulligan, -0.1), #5 (Devour editor row), #6 (Pickpocket falls back to the bramble's resources), #9 (default pips; Poison Barbs; opt-outs in ENG28-5), #11 (Sonar / Keen Sense "?" until Map 8 or a dark map; pips only in the dark), #13 (Offspring N, priced +32% body a copy), #17 (Brood tokens Swarm (Species)).
+- Owner calls open: ENG28-1 (Burn stacking vs 2 rounds), ENG28-2 (a Freeze on every frost hit), ENG28-4 (names; Offspring's price).
+- Next: a road measure of Maps 0-20 (poison as stacks, Burn per hit and frost freezes move fights); canonical/skill-costs.json rows for Mulligan / Offspring at the batch release; card-matrix goldens at the batch release.
+
 ## 11-06 23:35: Owner notes, queued after ENG27
 | # | Note | Package |
 |---|---|---|
 | 1 | 2-3 px more margin between the card and the text below it (context pips almost touch the text) | UI24 |
 | 2 | Card editor: skill changes update the preview and hover details live; adding a skill must not scroll to the top | UI24 |
 | 3 | Editor Identity: species controls and Art height sit on the shared rows, not their own; Art height updates the preview; species uses the preview's naming, with Phylum and Type as separate fields | UI24 |
-| 4 | New skill (working name Mulligan, owner may rename): if this card is in your opening hand, shuffle it back and draw a card. Price -0.1 | ENG28 |
-| 5 | Devour can't be picked in the editor's skill list and can't be removed | ENG28 (editor) |
-| 6 | Pickpocket takes tokens, or a resource from the bramble, lowest tier first | ENG28 |
+| 4 | New skill (working name Mulligan, owner may rename): if this card is in your opening hand, shuffle it back and draw a card. Price -0.1 | **done 11-07** (ENG28) |
+| 5 | Devour can't be picked in the editor's skill list and can't be removed | **done 11-07** (ENG28) |
+| 6 | Pickpocket takes tokens, or a resource from the bramble, lowest tier first | **done 11-07** (ENG28) |
 | 7 | After the owner's card pass: a 5-15 min card power test of every Map 0-20 card; the editor shows card power (0 = average, -N below, +N above) | BAL21 (tool `tools/card_balance.js`), UI24 (display) |
 | 8 | Admin-only sub-map under the tutorial with 2 skirmish decks: optimised random Otter faction cards, and Hummingbird faction cards | CONTENT13 |
-| 9 | Poison Barbs gets a context pip (2 poison counters, no damage). Default: every skill shows a context pip unless the owner said no | ENG28 (UI) |
+| 9 | Poison Barbs gets a context pip (2 poison counters, no damage). Default: every skill shows a context pip unless the owner said no | **done 11-07** (ENG28) |
 | 10 | Diurnal and Inspiration pip numbers 1 px closer to the emoji | UI24 |
-| 11 | Sonar and Keen Senses show as "?" until the first darkness map; their pips show only when relevant (darkness maps) | ENG28 (UI) |
+| 11 | Sonar and Keen Senses show as "?" until the first darkness map; their pips show only when relevant (darkness maps) | **done 11-07** (ENG28) |
 | 12 | Codex skill list: one entry per skill (Tally and Throng appear twice, once per threshold); combine them | UI24 |
-| 13 | New skill like Brood that summons a weaker copy of the card itself | ENG28 |
+| 13 | New skill like Brood that summons a weaker copy of the card itself | **done 11-07** (ENG28) |
 | 14 | Trigger context pips: emoji and arrow closer together | UI24 |
 | 15 | Map cards window skill section: smaller, no "n of N cards"; recommendation tiles (blue to yellow) and introduction tiles (yellow to white) | **done 11-07** (tiles from SKILLREC1 rows and map-keywords) |
 | 16 | Rebalance flow: when ready, run the card power test, show strengths, the owner balances by hand (no auto-balance of his cards) | BAL21 |
-| 17 | Brood's tokens get Swarm (Species), not plain Swarm (Default) | ENG28 |
+| 17 | Brood's tokens get Swarm (Species), not plain Swarm (Default) | **done 11-07** (ENG28) |
 
 ## 11-06 22:16: Owner notes, queued after ENG27
 The alpha release checklist is `docs/alpha-checklist.md` (every item starts unverified).
 | # | Note | Package |
 |---|---|---|
 | 1 | 7-A-SK's reference deck shows Garden Snail and Silver Minnow; Map 7's road deck has neither. Trace which picker feeds it | next balance package |
-| 2 | Herb Refinery says "damage" but deals poison. Rule: poison damage adds poison stacks only, no damage. Fire: fire damage plus 1 Burn; frost the same pattern | ENG28 |
-| 3 | Darkness also affects ranged skills | ENG28 |
-| 4 | Hover shows the card's default stats and all skills at its level; Bombardier Beetle's rocket vanishes from the hover after use | ENG28 (UI) |
-| 5 | The purple edited pencil shows only to admins; for admins it marks cards not yet sealed into the card data file (hash checked against player data) | ENG28 (UI); the seal is alpha item E6 |
-| 6 | A skill learnt at a higher level shows a differently coloured "?", tooltip "Learnt at a higher level" | ENG28 (UI) |
-| 7 | Death triggers use 💀 instead of the lightning icon | ENG28 (UI) |
+| 2 | Herb Refinery says "damage" but deals poison. Rule: poison damage adds poison stacks only, no damage. Fire: fire damage plus 1 Burn; frost the same pattern | **done 11-07** (ENG28) |
+| 3 | Darkness also affects ranged skills | **done 11-07** (ENG28) |
+| 4 | Hover shows the card's default stats and all skills at its level; Bombardier Beetle's rocket vanishes from the hover after use | **done 11-07** (ENG28) |
+| 5 | The purple edited pencil shows only to admins; for admins it marks cards not yet sealed into the card data file (hash checked against player data) | **done 11-07** (ENG28: admin only); the seal is alpha item E6 |
+| 6 | A skill learnt at a higher level shows a differently coloured "?", tooltip "Learnt at a higher level" | **done 11-07** (ENG28) |
+| 7 | Death triggers use 💀 instead of the lightning icon | **done 11-07** (ENG28) |
 
 ## 11-06: Package ENG27 (on its branch, not released)
 - Done: owner items 10 (Fortify (X), Unfortify, bramble pips), 11 (Blitz, arrows 0 / bolts 1, Mach, Anti-air), 12 / 20-22 names recorded, 14 (Inspiration +1), 20 (Double Time, Encore), 21 (Rage {N%}), 22 (Grant, Hype, the Crimson Wing Drumcaller), 24 (not reproduced), 32 (Helmet falls off), 36 (Whetstone Rise, Mossbed Hollow); PVP2 ghost leader; ENG25-6, ENG25-8 c, ENG23-1, ENG23-2 b, ENG26-3 a built; UI23-1 d (world opens once Map 0 is cleared).

@@ -1213,8 +1213,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-wave-right": "Hits push the target {n} column{s} right; crashing into a unit deals {n} to both.",
   "ui.skx-wave": "Either way: it leans toward the middle. It stops beside the unit it crashes into.",
   "ui.sk-nullify": "Its hits trigger no reactions. Units it kills skip their death effects and go to the {zone}.",
-  "ui.sk-ice-bolt": "While Ready, every upkeep: {n} cold damage to the foe facing it (or nearest); 1 in 2 Freezes.",
-  "ui.sk-ice-arrow": "While Ready, every upkeep: shoots {n} cold damage at the foe facing it (or nearest); 1 in 2 Freezes.",
+  "ui.sk-ice-bolt": "While Ready, every upkeep: {n} cold damage to the foe facing it (or nearest), and it Freezes.",
+  "ui.sk-ice-arrow": "While Ready, every upkeep: shoots {n} cold damage at the foe facing it (or nearest), and it Freezes.",
   "ui.sk-acid-bolt": "While Ready, every upkeep: {n} acid damage and 1 Corrode to the foe facing it (or nearest).",
   "ui.sk-pounce": "When played: {n} damage to the foe facing it, else one beside it, else the bramble.",
   "ui.sk-bloodlust": "After killing the foe facing it, it leaps to the nearest enemy. Half damage to Structures and brambles.",
@@ -3195,7 +3195,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng20-feast-name": "Lumber Feast",
   "ui.eng20-feast": "As it arrives it eats up to {n} of your Lumber: +1/+1 for each one.",
   "ui.eng20-water-tip": "Wet {n}: each lightning hit deals {n} more. Loses one each round; fire dries one before it burns.",
-  "ui.eng20-burn-tip": "Burning: 1 fire damage at the start of each round ({n} left). Water puts it out.",
+  "ui.eng20-burn-tip": "Burning {n}: 1 fire damage at the start of each round, one Burn off each time. Each fire hit adds 1. Water puts it out.",
   "ui.eng20-wind-calm": "Calm",
   "ui.eng20-wind-calm-tip": "Calm: no wind",
   "ui.eng20-wind-heavy-back": "Heavy wind at your back",
@@ -3370,7 +3370,17 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng27-log-helmet": "🪖 The shot glances off {name}'s helmet, and the helmet falls off.",
   "ui.eng27-float-mach": "💨 Mach",
   "ui.eng27-float-antiair": "📡 Flyers only",
-  "ui.eng27-float-helmet": "🪖 Helmet gone"
+  "ui.eng27-float-helmet": "🪖 Helmet gone",
+  "ui.eng28-herb-line": "Each round, one of: heal your most wounded unit {heal}, {n} Poison on a random enemy unit, or +{lumber} 🪵",
+  "ui.eng28-herb-log": "⚗️ The Herb Refinery's bitter brew poisons {name} (☠️ {n}).",
+  "ui.eng28-mulligan-name": "Mulligan",
+  "ui.eng28-mulligan": "In your opening hand, it shuffles back into your deck and you draw a card.",
+  "ui.eng28-mulligan-log": "{name} shuffles back into the deck; a new card is drawn.",
+  "ui.eng28-offspring-name": "Offspring",
+  "ui.eng28-offspring": "When it arrives, {n} copies hatch beside it: half its Attack and Health (rounded down), Wait 1, no Offspring.",
+  "ui.eng28-devour-name": "Devour",
+  "ui.eng28-swarm-species": "+{n} Attack for every ally of its own species.",
+  "ui.eng28-later": "Learnt at a higher level"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

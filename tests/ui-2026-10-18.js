@@ -51,7 +51,7 @@ ok(/psychicDampener:\{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampe
   const cloud = Object.assign({}, mole); delete cloud.revealAfter;
   ok(R.maskHiddenSkills(cloud) !== cloud, '8. a cloud edit saved without the field keeps the shipped gate');
   ok(R.maskHiddenSkills({id:'other', effects:{quick:true}}).effects.quick === true, '8. other cards are untouched');
-  cleared.add('m1'); ok(R.maskHiddenSkills(mole) === mole, '8. Map 0 cleared: the mole reads in full');
+  cleared.add('m1'); { const m1 = R.maskHiddenSkills(mole); ok(m1 === mole || (!('keenSense' in m1.effects) && Object.keys(mole.effects).filter(k=> k !== 'keenSense').every(k=> k in m1.effects)), '8. Map 0 cleared: the mole reads in full, but Keen Sense (2026-11-07, ENG28: "?" until Map 8 or a dark map)'); }
   cleared.clear(); ctx.adminModeEnabled = true; ok(R.maskHiddenSkills(mole) === mole, '8. Admin Mode sees it all'); ctx.adminModeEnabled = false;
   ok(!R.revealAfterMet({mapNum:41}), '11. no fights won: Map 41+ not met');
   completed = ['m40:40-1']; ok(!R.revealAfterMet({mapNum:41}), '11. a Map 40 win is not enough');

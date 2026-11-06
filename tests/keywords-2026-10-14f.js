@@ -179,7 +179,7 @@ ok(swings('kf-fence', 'kf-fly', 40) > 5, 'a Flyer is still out of reach half the
     ok(new RegExp(`\\{key:'${k}', category:'(evergreen|passive)'`).test(src), `${k}: a skill def (shows in the editor)`);
     ok(new RegExp(`Object\\.assign\\(SKILL_ICON, \\{[^}]*\\b${k}:`).test(src), `${k}: an icon`);
     ok(new RegExp(`\\n  ${k}: v=> `).test(src), `${k}: short text`);
-    ok(src.includes(`if(e.${k}) out.push(`) || src.includes(`if(e.${k}){`), `${k}: a chip on the card`); });
+    ok(src.includes(`if(e.${k}) out.push(`) || src.includes(`if(e.${k}){`) || src.includes(`if(e.${k} && `) /* 2026-11-07 (ENG28): Keen Sense's pip is gated to the dark */, `${k}: a chip on the card`); });
   const icons = [...src.matchAll(/Object\.assign\(SKILL_ICON, \{([^}]*)\}\)/g)].map(m=> m[1]).find(s=> s.includes('fencing')) || '';
   ok(/meteor:'☄️'/.test(icons) && !/fireball:'🔥'/.test(icons) && /keenSense:'👃'/.test(icons) && /shield:'💠'/.test(icons), `icons: Meteor ☄️, Fireball not 🔥, Keen Sense 👃, Shield 💠`);
   ok(/SKILL_ICON_HTML = \{fireball:'<i class="ico-fireball"/.test(src) && /durian:'<i class="ico-durian"/.test(src), 'Fireball and Durian have drawn icons');

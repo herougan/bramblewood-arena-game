@@ -3401,6 +3401,25 @@ Object.assign(EN5_STATE_KEYS, {anadromousSea:{tx:'e14-anadromous', ico:'🌊'}, 
 PASSIVE_DEFS.push({key:'lasso', category:'evergreen', label:TX('ui.skn-eng15-lasso'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng15-sk-lasso', {n: numOr(v, 1)}), codexNote:TX('ui.eng15-sk-lasso-codex'), get:e=> e.lasso ? numOr(e.lasso, 1) : undefined});
 Object.assign(SKILL_TEXT, {lasso: v=> TX('ui.eng15-sk-lasso-short', {n: numOr(v, 1)})});
 Object.assign(SKILL_ICON, {lasso:'➰', lassoed:'➰'});
+// ==== Package ENG28 (2026-11-07, owner 11-06 23:35 #4 / #5 / #13 / #17). Rules in bramblewood-engine.js; prices in bramblewood-budget.js
+// (ENG28_SKILL_PRICES, offspringBodyMult). On no card (the owner places skills himself).
+//   Mulligan (#4, working name)    in your opening hand it shuffles back into the deck and you draw a card (price -0.1)
+//   Offspring N (#13, working name) as it arrives, N half-size copies of itself hatch beside it (Wait 1, no Offspring)
+//   Devour (#5)                     an editor row at last (+A/+H): it could not be picked or removed; a granted skill list rides along on Save
+//   Swarm (Species) (#17)           a brood token's Swarm counts its own species (effects.swarmSpecies, a parameter: no row of its own)
+PASSIVE_DEFS.push(
+  {key:'mulligan', category:'passive', label:TX('ui.eng28-mulligan-name'), kind:'boolean', desc:()=> TX('ui.eng28-mulligan')},
+  {key:'offspring', category:'passive', label:TX('ui.eng28-offspring-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng28-offspring', {n: numOr(v, 1)})},
+  {key:'devour', category:'passive', label:TX('ui.eng28-devour-name'), kind:'twoNumber', placeholders:[TX('ui.edit1-attack'), TX('ui.edit1-health')], defaultValue:[1, 1], desc:v=>{ const [a, h] = phaseVals(v); return TX('ui.de-devour', {a, h}); },
+    get:e=> e.devour ? [Number(e.devour.attack)||0, Number(e.devour.health)||0] : undefined,
+    apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); e.devour = {attack:a, health:h}; }});
+Object.assign(SKILL_TEXT, {mulligan: ()=> TX('ui.eng28-mulligan'), offspring: v=> TX('ui.eng28-offspring', {n: numOr(v, 1)})});
+Object.assign(SKILL_ICON, {mulligan:'🔀', offspring:'👶', devour:'🫦'});
+// ENG28 (#17): a brood token's Swarm reads "every ally of its species" (SKILL_TEXT first, then the row's own desc, as skillText reads them)
+{ const sw0 = SKILL_TEXT.swarm; if(sw0) SKILL_TEXT.swarm = (v, n, e)=> e && e.swarmSpecies ? TX('ui.eng28-swarm-species', {n: n || 1}) : sw0(v, n, e);
+  [PASSIVE_DEFS, SKILL_DEFS].forEach(list=>{ const p = list.find(x=> x.key === 'swarm'); if(p && p.desc){ const d0 = p.desc; p.desc = (v, n, e)=> e && e.swarmSpecies ? TX('ui.eng28-swarm-species', {n: n || 1}) : d0(v, n, e); } }); }
+// ENG28 (2026-11-07, owner 22:16 #2, settled rule "frost: the damage plus 1 Freeze"): Ice Arrow and Ice always freeze now (was 1 in 2)
+[PASSIVE_DEFS, SKILL_DEFS].forEach(list=>{ sk1Patch(list, 'iceArrow', {desc:v=> TX('ui.sk-ice-arrow', {n: numOr(v, 2)})}); sk1Patch(list, 'iceBolt', {desc:v=> TX('ui.sk-ice-bolt', {n: numOr(v, 2)})}); });
 // 2026-11-05 (package EDIT1, owner: Hatchling and others missing from the card editor): every PASSIVE_DEFS skill pushed after SKILL_DEFS was built joins it.
 function syncLateSkillDefs(){ PASSIVE_DEFS.forEach(p=>{ if(p && p.key && !SKILL_DEFS.some(s=> s.key === p.key)) SKILL_DEFS.push(passiveToSkillDef(p)); }); }
 syncLateSkillDefs();
@@ -3468,6 +3487,10 @@ const SKILL_REVEAL_MAP = {
   // (Delivery, Map 0's Lumber maker on the Beaver Lumberjack, was not gated (ENG23-4); 2026-11-06 owner ENG23-4 b: it reads "?" on Map 0 too.)
   keenEye:     {from:6, seenWith:['invisible', 'changeling']},
   delivery:    {from:1, parts:['deliveryEvery', 'deliveryRes']}, // UI23 (2026-11-06, owner ENG23-4 b): every Delivery form
+  // ENG28 (2026-11-07, owner 11-06 23:35 #11: "Sonar and Keen Senses show as '?' until the first darkness map"): Map 8 (the first main map with
+  // its own Darkness, DARK_MAPS), or entering any dark map or sub-map sooner (darkMap: Smugglers' Grotto, a cave), whichever comes first.
+  sonar:       {from:8, darkMap:true},
+  keenSense:   {from:8, darkMap:true},
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
@@ -3497,6 +3520,8 @@ function furthestMapReached(){ let n = skillRevealState().maxMap; try{ (loadConq
 // Called when a Conquest fight starts: entering Map N reveals every skill gated at N or below.
 function noteMapEnteredForReveal(mapId){ let n = null; try{ n = mapNumberOf(mapId); }catch(e){} if(n == null) return;
   const st = skillRevealState(); if(n > st.maxMap) st.maxMap = n;
+  // ENG28 (2026-11-07): a dark map or sub-map reveals the darkMap rows (Sonar, Keen Sense) wherever it sits on the road
+  try{ const mp = CONQUEST_MAPS.find(x=> x.id === mapId); if(DARK_MAPS.has(mapId) || (mp && subMapIsDark(mp))) Object.keys(SKILL_REVEAL_MAP).forEach(k=>{ if(SKILL_REVEAL_MAP[k].darkMap && !st.keys.includes(k)) st.keys.push(k); }); }catch(e){}
   // 2026-10-23 (package RW4, owner 13:16 #6: "No skill reveal popups for now; never more than one at once; just a NEW! tag; especially not for
   // crepuscular/nocturnal."): the FX.F "Skill revealed" popup (fxHook 'skillReveal') is off. A skill that opens now is marked fresh instead: its
   // line in the card details wears a NEW! tag (one skill at a time, SKILL_NEW_SKIP never), until the next fight starts after it was seen.
@@ -3627,6 +3652,7 @@ function describeEffects(def, liveCard, opt){
       if((bk && e[bk]) || tips.length){ const br = !!(bk && e[bk]);
         lines.push(`${ic(p.key)}${p.label}${valSuffix(v)}${br ? ` – ${escapeHtml(TX('ui.en6-bramble'))}` : ''}${tips.map(t=> ` – ${escapeHtml(TX('ui.en7-' + t))}`).join('')} — ${br ? escapeHtml(TX('ui.en6-shot-bramble-line', {n: numOr(v, 1)})) : skillText(p, v, e)}${tips.map(t=> ' ' + escapeHtml(TX('ui.en7-shot-' + t + '-line', {n: Math.max(1, numOr(e[t], 0))}))).join('')}`); return; } }
     if(p.key==='arrowCount') return; // 2026-10-17: read on the Arrow line, which repeats
+    if(p.key==='devour') return; // ENG28 (2026-11-07): its editor row is new; its line is the Devour line above
     if(p.key==='arrow' && Number(e.arrowCount) > 1){ const nA = Math.min(4, Math.round(Number(e.arrowCount))); for(let k = 0; k < nA; k++) lines.push(`${ic('arrow')}${p.label}${valSuffix(v)} — ${k ? 'A second bow on the same back: another arrow, aimed on its own.' : skillText(p, v, e)}`); return; } // "2x Arrow 2" (2026-10-17)
     // Zeitgeber advanced forms (2026-10-15): "Diurnal – {Evasive, Thorns 1}", "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {…}".
     if(p.key==='diurnalGrant' || p.key==='nocturnalGrant' || p.key==='fullMoonGrant'){ const g = e[p.key]; const nmZ = p.key==='diurnalGrant' ? 'Diurnal' : p.key==='nocturnalGrant' ? 'Nocturnal' : 'Full Moon';
@@ -6836,11 +6862,46 @@ function liveStatusGlossHTML(c){
   if(c.amoreWith != null) rows.push(c.amoreBroken ? `<div><b class="kw" style="--kw:#8a5a3b">Heartbroken</b>: its partner died. It keeps +0/+3; Regeneration 3 is gone.</div>` : `<div><b class="kw" style="--kw:#d6457a">In love</b>: +0/+3 and Regeneration 3 while its partner lives.</div>`); // Amore (2026-10-16)
   return rows.length ? `<div class="kw-gloss live-status-gloss" role="note" aria-label="Its statuses right now">${rows.join('')}</div>` : '';
 }
+// ENG28 (2026-11-07, owner 11-06 22:16 #4: "Hover shows the card's default stats and all skills at its level; Bombardier Beetle's rocket vanishes from
+// the hover after use"): a unit whose card was patched in the fight (a spent one-shot, a grant, Irradiation, a Sequester ...) carries printedFrom (the
+// engine's deriveDef), the card it was printed as at its level. The hover reads that card: its stats, and every skill it had. A one-shot that has gone
+// off (spendOnReady: Rocket, Fireball, Meteor, Chilli, Converge, Stockpile, Delivery, an On Ready missile / render / Pearl, its On Ready triggers)
+// stays listed, struck, with the "used" tag. Another skill the unit lost is listed struck (Irradiation's own list says what it took: not twice).
+// Skills the unit has gained (a grant) stay in the list.
+const ENG28_ONE_SHOT = new Set(['onReadyDamage', 'rocket', 'fireball', 'meteor', 'chilli', 'converge', 'stockpile', 'delivery', 'missile', 'render', 'pearl']);
+function eng28PrintedDef(d){ try{ const id = d && d.printedFrom; const p = id ? getCardDefs()[id] : null; return p && p !== d ? p : null; }catch(e){ return null; } }
+function eng28HoverDef(d, liveCard){
+  const pd = eng28PrintedDef(d); if(!pd) return null;
+  const lc = (()=>{ try{ return currentCardByUidSafe(liveCard.uid) || liveCard; }catch(e){ return liveCard; } })(), irr = (lc && lc.irrSkills) || {};
+  const cur = d.effects || {}, base = pd.effects || {}, eff = Object.assign({}, cur), spent = {}, lost = {};
+  Object.keys(base).forEach(k=>{ if(k === 'triggers') return; if(skillValOn(base[k]) && !skillValOn(cur[k])){ delete eff[k]; if(irr[k]) return; (ENG28_ONE_SHOT.has(k) ? spent : lost)[k] = base[k]; } });
+  const key = t=> JSON.stringify(t), bt = Array.isArray(base.triggers) ? base.triggers : [], ct = Array.isArray(cur.triggers) ? cur.triggers : [];
+  const goneT = bt.filter(t=> !ct.some(x=> key(x) === key(t))), goneReady = goneT.filter(t=> t && t.on === 'onReady'), goneOther = goneT.filter(t=> !(t && t.on === 'onReady') && !Object.keys(irr).some(k=> /^trigger /.test(k)));
+  if(goneReady.length) spent.triggers = goneReady; if(goneOther.length) lost.triggers = goneOther;
+  const linesOf = fx=>{ try{ return Object.keys(fx).length ? describeEffects({id: d.id, name: d.name, effects: fx}, null, {terse:true}) : []; }catch(e){ return []; } };
+  const spentLines = linesOf(spent).map(l=> `<span class="sk-used" title="${escapeAttr(TX('ui.eng9-log-spent', {name: d.name}))}">${l}</span> <b class="sk-used-tag">${escapeHtml(TX('ui.eng20-used'))}</b>`)
+    .concat(linesOf(lost).map(l=> `<span class="sk-used">${l}</span>`));
+  const back = Object.assign({}, eff, spent, lost); if(spent.triggers || lost.triggers) back.triggers = ct.concat(spent.triggers || [], lost.triggers || []);
+  return {pd, spentLines, def: Object.assign({}, d, {attack: pd.attack, health: pd.health, effects: eff}), full: Object.assign({}, d, {attack: pd.attack, health: pd.health, effects: back})};
+}
+// ENG28 (2026-11-07, owner 11-06 22:16 #6: "A skill learnt at a higher level shows a differently coloured '?', tooltip 'Learnt at a higher level'"): each
+// skill the card only gets at a level above the one shown (levelSkills) is one gold "?" chip under its skills (the plain "?" of a skill not met yet
+// is brown, .skill-q). Admin Mode adds the skill's name and level to the tooltip.
+function eng28LaterSkillsHTML(d){
+  try{ const b = (typeof copyBaseDef === 'function' && copyBaseDef(d.id)) || d, ls = (b && b.levelSkills) || d.levelSkills; if(!ls) return '';
+    const L = Number.isFinite(Number(d.level)) ? Number(d.level) : cardBaseLevel(b), tip = TX('ui.eng28-later');
+    const rows = ui18CardSkillKeys({levelSkills: ls}).filter(x=> x.lvl > L); if(!rows.length) return '';
+    return `<div class="eng28-later-row">${rows.map(x=>{ const t = adminModeEnabled ? `${tip} (${(skillDefOf(x.key) || {}).label || x.key}, ${TX('ui.codex-skill-lvl', {n: x.lvl})})` : tip;
+      return `<span class="skill-q eng28-later" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">?</span>`; }).join('')}</div>`;
+  }catch(e){ return ''; }
+}
 function fullCardHTML(defId, liveCard, opts){
   opts = opts || {};
   const d = opts.shownLevel != null && isFinite(opts.shownLevel) ? defAtShownLevel(defId, opts.shownLevel) : getCardDefs()[defId]; // 2026-10-21 (package ED): an enemy card at its fight's level
   if(!d) return '';
-  const lines = describeEffects(d, liveCard, {terse:true}); // 2026-10-21 (package UI3): no species / Wait / damage-type lines
+  const hv = liveCard ? eng28HoverDef(d, liveCard) : null; // ENG28 (2026-11-07, owner 22:16 #4): the printed card, its spent one-shots marked used
+  const lines = describeEffects(hv ? hv.def : d, liveCard, {terse:true}); // 2026-10-21 (package UI3): no species / Wait / damage-type lines
+  if(hv) hv.spentLines.forEach(l=> lines.push(l));
   const [rA, rB] = rarityStops(d.rarity||'common');
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
@@ -6890,7 +6951,9 @@ function fullCardHTML(defId, liveCard, opts){
   // useful, but not "the card" the way an actual card tile with its full art is. Prepending the
   // real visual tile (same cardTileHTML every grid/pool/hand already renders, just scaled up via
   // .card-pop-visual in CSS) makes the popover a true full-card preview, not just a stat sheet.
-  const visualDef = liveCard ? {...d, attack: effAtk, health: Math.max(0, liveCard.hp)} : d;
+  // ENG28 (2026-11-07, owner 22:16 #4: "Hover shows the card's default stats and all skills at its level"): the big card is the printed one (its
+  // stats at its level, every skill, a spent one-shot included); the live numbers are in the row below it when they differ (liveDiffRow).
+  const visualDef = hv ? hv.full : d;
   // 2026-10-12 (user: "Why is the card in the tooltip greyed out?"): the big preview always shows the card in full colour; not
   // owning it isn't a reason to grey out the very card you asked to look at (enemy decks, rewards, the Codex).
   // 2026-10-17: in a fight the big preview wears the hovered copy's own look (opts.lookClass: is-shiny / a skin's tile class)
@@ -6906,12 +6969,12 @@ function fullCardHTML(defId, liveCard, opts){
   const liveDiffRow = (()=>{ if(!liveC) return '';
     const parts = [];
     if(atkPlus || atkMinus) parts.push(`<span class="atk" style="color:var(--attack)">${atkDisplay}</span>`);
-    if(liveC.irrHp || liveC.bossHpBonus) parts.push(`<span class="hp" style="color:var(--health)">${hpDisplay}</span>`);
+    if(liveC.irrHp || liveC.bossHpBonus || (liveCard && (liveCard.hp !== Number(d.health) || liveCard.maxHp !== Number(d.health)))) parts.push(`<span class="hp" style="color:var(--health)">${hpDisplay}</span>`); // ENG28: Health that is not the print's
     return parts.length ? `<div class="statrow statrow-live">${parts.join('')}</div>` : ''; })();
   return `${visualHTML}
     <div class="tagrow"><span class="tag" style="background:linear-gradient(135deg, ${rA}, ${rB}); color:#1a1a1a;">${rarityDef(d.rarity||'common').label}</span>${displayTypesOf(d).map(a=>`<span class="tag">${ARCHETYPE_ICON[a]||'🌰'} ${a}</span>`).join('')}${(d.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
     ${liveDiffRow}
-    ${abilityHTML}${liveStatusGlossHTML(liveC)}${irrSkillsHTML}
+    ${abilityHTML}${eng28LaterSkillsHTML(d)}${liveStatusGlossHTML(liveC)}${irrSkillsHTML}
     ${pitchYieldHTML}
     ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
     ${opts.line ? `<div class="cp-line">${escapeHtml(opts.line)}</div>` : '' /* 2026-10-30 (CS-C): a caller's extra line (data-pop-line) */}
@@ -9210,7 +9273,7 @@ function cardTileHTML(d, opts){
     ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}${hand && hasSacrificeTrigger(d) ? SAC_TEETH_HTML : ''}
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): no "🔁 Spawn" corner pill on tokens */}
-    ${isCustom&&!hand?'<div class="editbadge" title="Edited from baseline">✎</div>':''}${hand ? '' : artReviewBadgeHTML(d) /* 2026-10-21 (package ED): admins see a rejected art */}
+    ${isCustom&&!hand&&adminModeEnabled /* ENG28 (2026-11-07, owner 22:16 #5): admins only */?'<div class="editbadge" title="Edited from baseline">✎</div>':''}${hand ? '' : artReviewBadgeHTML(d) /* 2026-10-21 (package ED): admins see a rejected art */}
     ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
     ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel} — cosmetic only, no stat change">${d.prestigeIcon}</div>`:''}
     ${isCastle || hand ? '' : socketSlotHTML(d) /* 2026-10-24 (package H1): the gem socket of a Unique-and-above card */}
@@ -9338,6 +9401,9 @@ function triggerSpent(t, live, trs){
   if(t.once){ const i = trs.filter(x=> x.on === t.on).indexOf(t); return !!(live.firedOnce && live.firedOnce['once:' + t.on + ':' + i]); }
   return false;
 }
+// ENG28 (2026-11-07, owner 11-06 22:16 #7: "Death triggers use 💀 instead of the lightning icon"): an On Death trigger (and On Death -> the killer)
+// leads its chip with the skull, as the trigger's own ring glyph already does (TRIGGER_GLYPH.onDeath).
+function eng28DeathTrig(t){ return !!(t && typeof t.on === 'string' && /^onDeath/.test(t.on)); }
 function triggerBadges(d, live){
   const trs = (d && d.effects && Array.isArray(d.effects.triggers)) ? d.effects.triggers : [];
   const m = typeof matchState !== 'undefined' ? matchState : null;
@@ -9347,13 +9413,13 @@ function triggerBadges(d, live){
       const at = m._spentTrig[key] || (m._spentTrig[key] = Date.now()), age = Date.now() - at;
       if(age >= SPENT_TRIG_MS) return '';
       const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + ' (used up)';
-      return `<span class="ab-trig is-spent" style="animation-delay:-${age}ms" title="${escapeAttr(tip)}"><i class="ab-bolt">${(t.on === 'onRoundStart' || t.on === 'perTurn') ? '🕐' : '⚡'}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
+      return `<span class="ab-trig is-spent" style="animation-delay:-${age}ms" title="${escapeAttr(tip)}"><i class="ab-bolt">${(t.on === 'onRoundStart' || t.on === 'perTurn') ? '🕐' : eng28DeathTrig(t) ? '💀' : '⚡'}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
     }
     const off = triggerIsOff(t, live, d);
     const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + (off ? ' (off for now: it is Waiting, Stunned, Frozen or Asleep)' : '');
     // a trigger that fires every round leads with a clock instead of the bolt (2026-10-12, user: "Cards that have triggers
     // that depend on turns like every turn, should use the clock emoji instead")
-    const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = clock ? '🕐' : t.on === 'onSacrifice' ? '🦷' : t.on === 'onPitch' ? '♻️' : '⚡'; // Sacrifice - {} leads with teeth (2026-10-14)
+    const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = clock ? '🕐' : t.on === 'onSacrifice' ? '🦷' : t.on === 'onPitch' ? '♻️' : eng28DeathTrig(t) ? '💀' : '⚡'; // Sacrifice - {} leads with teeth (2026-10-14); ENG28: a death trigger, the skull
     return `<span class="ab-trig${off ? ' is-off' : ''}${clock ? ' is-clock' : ''}" data-hook="${escapeAttr(t.on || '')}" title="${escapeAttr(tip)}"><i class="ab-bolt">${lead}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
   });
 }
@@ -9411,6 +9477,34 @@ function en20RememberSpent(bopts){ try{ const lv = bopts && bopts.live; if(!lv |
 function eng27HelmetGone(bopts){ try{ const lv = bopts && bopts.live; if(!lv || lv.uid == null) return false; const lc = currentCardByUidSafe(lv.uid); return !!((lc && lc.helmetGone) || lv.helmetGone); }catch(e){ return false; } } // ENG27 (2026-11-06, item 32): the helmet is gone once it has blocked
 function eng21PounceSpent(bopts){ try{ const lv = bopts && bopts.live; if(!lv || lv.uid == null) return false; const lc = currentCardByUidSafe(lv.uid); return !!((lc && lc.pounceSpent) || lv.pounceSpent); }catch(e){ return false; } }
 function ui11IconOnly(html){ try{ return String(html).replace(/<[^>]*>/g, '').replace(/[\s\uFE0F\u200D]|\p{Extended_Pictographic}/gu, '') === '' ? ' is-icon-only' : ''; }catch(e){ return ''; } }
+// ENG28 (2026-11-07, owner 11-06 23:35 #11: "their pips show only when relevant (darkness maps)"): in a fight (a board or hand card) Sonar's and Keen
+// Sense's pips show only while the fight is dark (its own Darkness / Pitch Black / Absolute, or a Cast Darkness unit standing). Outside a fight: shown.
+function eng28FightDark(){ try{ const m = matchState; if(!m) return false; if(matchDarkLevel(m)) return true;
+  return [1, 2].some(pid=> m.players && m.players[pid] && ['left', 'center', 'right'].some(sd=> (m.players[pid].row[sd] || []).some(c=> c && c.hp > 0 && ((getCardDefs()[c.defId] || {}).effects || {}).castDarkness))); }catch(e){ return false; } }
+function eng28DarkPipOff(bopts){ try{ return !!(bopts && (bopts.live || bopts.hand) && matchState && !matchState.over) && !eng28FightDark(); }catch(e){ return false; } }
+// ENG28 (2026-11-07, owner 11-06 23:35 #9: "Poison Barbs gets a context pip (2 poison counters, no damage). Default: every skill shows a context pip
+// unless the owner said no"): a skill on the card that abilityBadges / triggerBadges never mention (no pip of its own, Poison Barbs among them) gets
+// one here: its icon (SKILL_ICON, else ✦), its number past 1, and its short text as the tooltip. A skill they do mention keeps its own rule (a spent
+// Pounce, Remember or Undead, Tide off its map, the Shield's count ...), so nothing doubles. Opted out on purpose (ENG28_PIP_OPT_OUT):
+//   mulligan     it acts on the opening hand, before any card is on the board, so a pip would never mean anything
+//   leader       leaders wear their own ring
+//   archerStyle  a look, not a skill
+//   hatchling, fodder  the Baby's Stem part (UI18_NOT_SKILL), read on the card's Hatchling chip
+// Parameters of another skill (BramblewoodBudget.PARAMS: swarmN, *Grant, *Hp ...) and keys with no skill row are not skills.
+const ENG28_PIP_OPT_OUT = new Set(['mulligan', 'leader', 'archerStyle', 'hatchling', 'fodder']);
+const eng28PipSeen = new Map(); let eng28PipSrc = null;
+function eng28PipHandled(k){ if(eng28PipSeen.has(k)) return eng28PipSeen.get(k);
+  if(eng28PipSrc == null){ try{ eng28PipSrc = String(abilityBadges) + String(triggerBadges) + JSON.stringify(CHIP_FALLBACK_SKILLS); }catch(e){ eng28PipSrc = ''; } }
+  const esc = k.replace(/[$]/g, '\\$'), r = new RegExp('\\be\\.' + esc + '\\b|[\'"]' + esc + '[\'"]').test(eng28PipSrc); eng28PipSeen.set(k, r); return r; }
+function eng28GenericPips(e, out, bopts, n1){
+  try{ const params = (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.PARAMS) || [];
+    Object.keys(e || {}).forEach(k=>{ const v = e[k]; if(k === 'triggers' || !skillValOn(v) || ENG28_PIP_OPT_OUT.has(k) || params.includes(k) || UI18_NOT_SKILL.has(k)) return;
+      const p = skillDefOf(k); if(!p || !p.label || p.retired || p.hidden || p.reserved) return;
+      if(eng28PipHandled(k)) return;
+      const num = typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : '', tip = (()=>{ try{ return p.label + (num !== '' ? ' ' + num : '') + ': ' + skillText(p, v, e); }catch(_){ return p.label; } })();
+      out.push(`<span class="ab-sk eng28-pip" data-sk="${k}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${iconHTML(k, SKILL_ICON[k] || '✦')}${num}</span>`); });
+  }catch(err){}
+}
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -9534,7 +9628,7 @@ function abilityBadges(d, bopts){
     out.push(`<span class="ab-sk ab-delivery" data-sk="${k}" title="${escapeAttr(t)}" aria-label="${escapeAttr(t)}">${iconHTML('delivery', '📦')}${n}</span>`); });
   if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit adjacent to the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
   if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units adjacent to the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
-  if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
+  if(e.keenSense && !eng28DarkPipOff(bopts)) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
   // 2026-10-14 (seventh pass): Psychic, Smoke Bomb.
   if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">${iconHTML('psychic', '💭')}${n1(numOr(e.psychic, 1))}</span>`);
   // 2026-10-15: Ice Arrow, Twin Shot, Volley, the Bolts and Chilli.
@@ -9546,6 +9640,7 @@ function abilityBadges(d, bopts){
     ['slashBurn', 'Slash & Burn', 3], ['trap', 'Trap', 5], ['predator', 'Predator', 1], ['prey', 'Prey', 0], ['nova', 'Nova', 3], ['crystallise', 'Crystallise', 5], ['cure', 'Cure', 2],
     ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2], ['atheist', 'Atheist', 0]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
     if(k === 'trap' && bopts && bopts.live && matchState && matchState.ui9Laid && matchState.ui9Laid[bopts.live.uid]) return; // UI9 (BB2): laid, the chip is spent
+    if(k === 'sonar' && eng28DarkPipOff(bopts)) return; // ENG28 (2026-11-07, owner 23:35 #11): only in the dark
     if(e[k]) out.push(`<span class="ab-w2 ab-${k.toLowerCase()}" title="${escapeAttr(nm + (dv ? ' ' + numOr(e[k], dv) : '') + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${dv ? n1(numOr(e[k], dv)) : ''}</span>`); });
   if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${iconHTML('smoke-bomb', '💣')}</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
@@ -9661,6 +9756,7 @@ function abilityBadges(d, bopts){
     const ui7NoNum = !!(bopts && bopts.live) && k === 'regen'; // 2026-10-31 (package UI7, owner Y1): Regeneration on a board card is the icon alone (the value is in the tooltip)
     const ui7Tip = ui7NoNum ? escapeAttr(TX('ui.ui7-regen-tip', {n: v})) : '';
     out.push(`<span class="ab-sk${zeitLitNow(k, bopts) ? ' zeit-live' : ''}" data-sk="${k}"${ui7NoNum ? ` title="${ui7Tip}" aria-label="${ui7Tip}"` : ''}>${iconHTML(k, SKILL_ICON[k] || '✦')}${!ui7NoNum && (typeof v === 'number' || /^\d+$/.test(String(v))) ? n1(v) : ''}</span>`); });
+  eng28GenericPips(e, out, bopts, n1); // ENG28 (2026-11-07, owner 23:35 #9): every other skill gets its pip by default
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
   if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL)
   if(!out.length) return '';
@@ -12412,6 +12508,7 @@ function readEditorFormIntoCard(){
       if(params.includes(k) && !Object.keys(newEffects).some(b=> b !== k && k.startsWith(b))) return; // a parameter (defianceN, hunterVs ...) only beside its skill
       const read = SKILL_DEFS.some(s=>{ try{ return (s.get ? s.get({[k]: v}) : ({[k]: v})[s.key]) !== undefined; }catch(e){ return s.key === k; } });
       if(!read) newEffects[k] = v; }); }
+  if(newEffects.devour && c.effects && c.effects.devour && c.effects.devour.grant && !newEffects.devour.grant) newEffects.devour.grant = c.effects.devour.grant; // ENG28 (#5): the row edits +A/+H; a granted skill list stays
   c.effects = newEffects;
   if(Object.keys(levelFx).length) c.levelSkills = levelFx; else delete c.levelSkills; // skills that arrive at a level (2026-10-13)
   delete c._skillRows; // transient editor-only state — never persisted
@@ -16202,7 +16299,7 @@ function characterDescHTML(ch){
   if(e.feed){ const f = eng23FeedCfgApp(e.feed); bits.push(TX('ui.eng23-feed-desc', {n: f.repair, a: f.attack, k: f.feeds})); } // ENG23 (CONTENT9-2 A): Feed
   if(e.castleLumberEvery) bits.push(`+${Number(e.castleLumberAmount) > 0 ? Math.round(e.castleLumberAmount) : 1} 🪵 every ${e.castleLumberEvery} rounds`); // ENG24 (IDEA-BRAMBLES): its amount
   if(e.castleThorns) bits.push(`A unit that hits this bramble takes ${e.castleThorns}`);
-  if(e.herbRefinery){ const hb = Object.assign({heal:3, damage:2, lumber:1}, typeof e.herbRefinery === 'object' ? e.herbRefinery : {}); bits.push(`Each round, one of: heal your most wounded unit ${hb.heal}, ${hb.damage} damage to a random enemy unit, or +${hb.lumber} 🪵`); } // ENG24: its numbers
+  if(e.herbRefinery){ const hb = Object.assign({heal:3, damage:2, lumber:1}, typeof e.herbRefinery === 'object' ? e.herbRefinery : {}); bits.push(TX('ui.eng28-herb-line', {heal: hb.heal, n: hb.damage, lumber: hb.lumber})); } // ENG24: its numbers; ENG28 (2026-11-07, owner 22:16 #2): its brew is Poison, not damage
   if(e.castleSpawn){ const sp = e.castleSpawn, d = getCardDefs()[sp.defId]; bits.push(`${(sp.count||1) > 1 ? (sp.count + '× ') : ''}${d ? d.name : sp.defId} join${(sp.count||1) > 1 ? '' : 's'} you on round ${sp.first||2}${sp.every ? ' and every ' + sp.every + ' rounds after' : ''}`); }
   return bits.length ? bits.join(' · ') : 'No passive — a plain, sturdy baseline.';
 }
@@ -33197,6 +33294,9 @@ function runCardCheck(host){
 const SB_KEY = 'bramblewood_stat_budget_v6', SB_KEY_V5 = 'bramblewood_stat_budget_v5', SB_KEY_V3 = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2'; // 2026-10-19 (BF2): v5 numbers start fresh; 2026-10-21 (BF6): so do the halved coefficients (v6)
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
 const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', shield:0 /* FIN2-c (2026-10-26): priced as 0.8 Health in capScores */, flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */, evolute:3, evoluteAlpha:4, evoluteOmega:5, stem:1.6, chrysalis:1.6 /* 2026-10-21 (package EV): theoretical, canonical/skill-costs.json */, hatchling:1.6 /* 2026-11-02 (ENG17, BABY-2): a Stem from Level 1 */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
+// ENG28 (2026-11-07): Mulligan -0.1 (owner 23:35 #4) and Offspring 0 (its price is a body multiplier, bramblewood-budget.js offspringBodyMult) until
+// canonical/skill-costs.json has their rows (the batch release)
+Object.assign(SB_DEFAULT_SKILLS, (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.ENG28_SKILL_PRICES) || {mulligan:-0.1, offspring:0});
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow']; // 2026-10-22 (BF8): Blind (Blinding) is a priced skill now, not a half-miss
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 // 2026-10-21 (package CX5, owner call CX5): the card editor's budget panel and the Test Lab price S from canonical/skill-costs.json (built
@@ -34241,11 +34341,11 @@ const FXL_SKILL_SETUPS = {
   trident: {foes:FXL_FOES3, note:'Three dummies side by side: one swing, full Attack on the one in front, half on the two beside it.'}, // 2026-10-17
   pitchfork: {foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}, {role:'foe3', slot:1}, {role:'foe2', slot:-2}, {role:'foe3', slot:2}], note:'Five dummies: one swing along 4 columns, aimed left or right at random, half Attack on each.'}, // 2026-10-17
   crabClaws: {foes:FXL_FOES3, steps:['round', 'round'], note:'Dummies either side of the one in front: each round it pinches left or right at random (never the one in front; with nobody beside it, the bramble).'},
-  iceArrow: {steps:['round', 'round'], note:'Two rounds of icy arrows (1 in 2 freezes the dummy).'},
+  iceArrow: {steps:['round', 'round'], note:'Two rounds of icy arrows (each landed one freezes the dummy).'} /* ENG28 (2026-11-07): frost always freezes */,
   twinShot: {foes:FXL_FOES3, note:'Three dummies: two arrows, at two different ones.'},
   volley: {foes:FXL_FOES3, steps:['round', 'round', 'round'], note:'Three dummies, three rounds: a volley on the 1st and 3rd.'},
   poisonBolt: {steps:['round', 'round'], note:'Two rounds, so the Poison ticks.'},
-  iceBolt: {steps:['round', 'round'], note:'Two rounds of ice bolts (1 in 2 freezes the dummy).'},
+  iceBolt: {steps:['round', 'round'], note:'Two rounds of ice bolts (each landed one freezes the dummy).'} /* ENG28 */,
   chilli: {steps:[{spawn:'subject'}, 'round', 'round'], note:'It arrives Ready and eats its chilli; two rounds, so you see its fire attacks and the heat sting.'},
   sweep: {foes:FXL_FOES3, note:'Enemies on both sides of the one in front, so the cleave lands.'},
   swarm: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1}, {role:'ally2', slot:1}], note:'Two allies of the same type stand with it.'},
@@ -48008,7 +48108,7 @@ function logText(ev){
       // castle passives (2026-10-12) read as the castle doing it
       { const castleTxt = {logjam: ()=> `🪵 The Logjam holds up ${nm(ev.targetDefId)}: +${ev.amount} Wait.`, castleBolt: ()=> `🏹 A ballista bolt flies at ${nm(ev.targetDefId)} (${ev.amount}).`,
           castleThorns: ()=> `🌿 The Thorn Cage cuts ${nm(ev.targetDefId)} (${ev.amount}).`, herbHeal: ()=> `⚗️ The Herb Refinery mends ${nm(ev.targetDefId)} (+${ev.amount}).`,
-          herbBane: ()=> `⚗️ The Herb Refinery's bitter brew splashes ${nm(ev.targetDefId)} (${ev.amount}).`, castleSpawn: ()=> `🏰 ${ev.amount > 1 ? ev.amount + '× ' : ''}${nm(ev.targetDefId)} ${ev.amount > 1 ? 'pour' : 'slips'} out of the bramble.`}[ev.kind];
+          herbBane: ()=> TX('ui.eng28-herb-log', {name: nm(ev.targetDefId), n: ev.amount}) /* ENG28 (2026-11-07): Poison stacks, no damage */, castleSpawn: ()=> `🏰 ${ev.amount > 1 ? ev.amount + '× ' : ''}${nm(ev.targetDefId)} ${ev.amount > 1 ? 'pour' : 'slips'} out of the bramble.`}[ev.kind];
         if(castleTxt) return {cls: ev.kind==='herbHeal' ? 'heal' : '', text: castleTxt()}; }
       if(ev.kind === 'exposedHit') return {cls:'', text:`🎯 ${nm(ev.targetDefId)} is Exposed: ${ev.crit === false ? 'the swing had crit already' : 'a crit'}, 1 counter used${ev.amount ? ` (${ev.amount} left)` : ' (none left)'}.`}; // 2026-10-15; a crit per counter (2026-10-16)
       if(ev.kind === 'creativity') return {cls:'', text:TX('ui.creativity-log', {who: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount||1})}; // Creative N (2026-10-18)
@@ -51341,6 +51441,7 @@ function field2LogText(ev, nm){
   if(ev.type === 'bloom') return {cls:'', text: TX(ev.lumber ? 'ui.bl-log-lumber' : 'ui.bl-log', {name: nm(ev.defId), n: ev.lumber||0})}; // BL (2026-10-23)
   if(ev.type === 'reviveGrave') return {cls:'gold', text: TX('ui.eng9-log-revive-grave', {name: nm(ev.defId)})}; // ENG9 (2026-10-26): Revive N
   if(ev.type === 'skillSpent') return {cls:'', text: TX('ui.eng9-log-spent', {name: nm(ev.defId)})}; // ENG9 (2026-10-26, G23 / G24)
+  if(ev.type === 'mulligan') return {cls:'', text: TX('ui.eng28-mulligan-log', {name: nm(ev.defId)})}; // ENG28 (2026-11-07): Mulligan
   if(ev.type === 'spawn' && ev.kind === 'bloom') return {cls:'', text: ''};
   return null;
 }
@@ -52998,7 +53099,7 @@ function renderVfxForEvent(ev){
     // floats "Miss!" on the unit it swung at (the engine now names it, targetUid; the castle when it swung at the castle); older
     // replays without a target keep it on the attacker.
     const el = boardCardEl(ev.attUid), tgt = ev.targetUid != null ? boardCardEl(ev.targetUid) : (ev.night && ev.targetKind === 'hq' ? hqTileEl(ev.side === 'A' ? 'B' : 'A') : null);
-    if(quickImpactMs(ev) == null && !forkLaterLine(ev)) animateAttacker(ev.attUid, ev.side==='A'); // a Quick attacker dashes instead (labSkillFx, 2026-10-17); a Fork swing lunged once already
+    if(quickImpactMs(ev) == null && !forkLaterLine(ev) && !ev.ranged /* ENG28: a shot lost in the dark: the arrow already flew */) animateAttacker(ev.attUid, ev.side==='A'); // a Quick attacker dashes instead (labSkillFx, 2026-10-17); a Fork swing lunged once already
     setTimeout(()=>{ SoundKit.blindTone(); const on = (ev.night && tgt && tgt.isConnected ? tgt : null) || el; if(on) floatText(on, (ev.night && window.FX && FX.B && FX.B.missText && FX.B.missText(ev, matchState)) || (ev.night ? 'Miss!' : '👁 Miss!'), 'debuff'); }, quickImpactMs(ev) != null ? quickImpactMs(ev) : animMs().windup);
   }
   // Poison tick (item #1, 2026-09-16): a bubbling sound instead of the old flat drip, and a

@@ -767,6 +767,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'draw', side, defId, uid:hc.uid}); // + uid (ENG19, 2026-11-02): the replay shows a card drawn mid-round as its draw plays (#12)
     }
     if(opening) vanguardOpening(player, side, stats, events);
+    if(opening) eng28Mulligan(player, side, stats, events);
+  }
+  // ENG28 (2026-11-07, owner 11-06 23:35 #4: "if this card is in your opening hand, shuffle it back and draw a card. Price -0.1"): Mulligan
+  // (working name, effects.mulligan). Right after the opening hand (and Vanguard's swap), every Mulligan card in it goes back into the deck at
+  // a random place (seeded rnd) and its owner draws one card in its place (the deck's top; it may be the same card again). A card drawn this
+  // way is not checked again, so it never loops. Event {type:'mulligan', side, defId, drewDefId}.
+  function eng28Mulligan(pl, side, stats, events){
+    if(!pl || !pl.hand) return;
+    const isMul = id=> !!(CARD_DEFS[id] && CARD_DEFS[id].effects && CARD_DEFS[id].effects.mulligan);
+    pl.hand.filter(h=> isMul(h.defId)).forEach(h=>{
+      const i = pl.hand.indexOf(h); if(i < 0) return; pl.hand.splice(i, 1);
+      const at = Math.floor(rnd() * (pl.deck.length + 1)); pl.deck.splice(at, 0, h.defId);
+      const drew = pl.deck.pop(); const hc = {uid:uidCounter++, defId:drew}; pl.hand.push(hc); ensureStat(stats, side, drew).drawn++;
+      if(recordEvents && events) events.push({type:'mulligan', side, defId:h.defId, drewDefId:drew, uid:hc.uid});
+    });
   }
   // Self-inflicted statuses (2026-10-11, user: "passives for each status effect - where you self inflict yourself at the
   // start. Like Drunk = apply dizzy to yourself"): Drunk keeps the card Tipsy, Purblind keeps it Blind, Scatterbrained
@@ -2169,7 +2184,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const eff = Object.assign({}, base.effects||{}, grant);
     // 2026-10-23 (package FX4): a granted Resist / Immune list (Lava Waders' {resist:['heat']}) adds to the unit's own, never replaces it
     ['resist', 'immune'].forEach(k=>{ if(Array.isArray(grant && grant[k]) && Array.isArray(base.effects && base.effects[k])) eff[k] = [...new Set([...base.effects[k], ...grant[k]])]; });
-    CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: base.derivedFrom || base.id, effects: eff});
+    // ENG28 (2026-11-07, owner 11-06 22:16 #4): printedFrom is the card the unit was printed as (its level copy), through every grant or patch,
+    // so the hover can show the printed stats and every skill, a spent one-shot marked used (arena_app.js eng28PrintedDef)
+    CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: base.derivedFrom || base.id, printedFrom: base.printedFrom || base.id, effects: eff});
     card.defId = id; return id;
   }
   // Actions per turn (2026-10-11, user: "New game modifier - number of actions per turn"): rules.actions plays a turn
@@ -2324,7 +2341,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // EN2 (2026-10-23, owner 17:34 #18: "The swarm doesnt look at phyla, only type."): Swarm compares Types only (the archetypes a card
     // lists, and the wider Types above them: Coral Reef is Ocean is Aquatic), never its species or animal (an Insect-typed ant and an
     // Insect species no longer count for each other unless both list a shared Type). swarmTypeShares / swarmTypeIsAny below.
-    const shares = c=>{ const d = CARD_DEFS[c.defId] || {}; return (!picked && mimic) || !!(d.effects && (d.effects.changeling || d.effects.growth)) || txChangeling(d) || (picked ? swarmTypeIsAny(d, picked) : swarmTypeShares(def, d)); };
+    // ENG28 (2026-11-07, owner 23:35 #17): Swarm (Species), effects.swarmSpecies (a brood token's): an ally counts when it shares a species with it
+    const spOf = d=> new Set(((d && d.species) || []).map(x=> String(x).toLowerCase())), mySp = def.effects.swarmSpecies && !picked ? spOf(CARD_DEFS[def.broodOf || def.derivedFrom] || def) : null;
+    if(mySp && !mySp.size && !mimic) return 0;
+    const shares = c=>{ const d = CARD_DEFS[c.defId] || {}; return (!picked && mimic) || !!(d.effects && (d.effects.changeling || d.effects.growth)) || txChangeling(d) || (mySp ? [...spOf(CARD_DEFS[d.broodOf] || d)].some(x=> mySp.has(x)) || [...spOf(d)].some(x=> mySp.has(x)) : picked ? swarmTypeIsAny(d, picked) : swarmTypeShares(def, d)); };
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue; const all = [...pl.row.left, ...pl.row.center, ...pl.row.right];
       if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && shares(c)).length * per * (card.boon === 'hiveChorus' ? 2 : 1); } // x2: Hive Chorus, a selfish boon (2026-10-24, DF3) // 2026-10-23 (package EN, owner 01:57 note 10: "Swarm doesn't count structures."); ENG19 (2026-11-02, owner 22:15 #6: "Structures do count"): the Structure filter is gone
     return 0;
@@ -3411,6 +3431,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(o.shell) shellUp(card);
     if(o.nul && card.hp <= 0) nullifyKill(card);
     if(o.dmgType === 'heat' || o.dmgType === 'water') en20Elements(card, y, o.dmgType, !!o.ignite); // ENG20 (2026-11-02): fire dries / lights, water soaks / douses
+    if(o.dmgType === 'cold') eng28Chill(card, y, !!o.ignite); // ENG28 (2026-11-07): frost damage plus 1 Freeze counter
     return {dmg, tempSoak};
   }
   function damageCard(card, amount, dmgType, attCard){
@@ -3435,6 +3456,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Simple flat damage with no defense pipeline (used for missiles/onReadyDamage/thorns,
   // matching the pre-existing behavior — only melee combat runs the full pipeline).
   const EXPOSE_TICKS = new Set(['poison', 'bleed', 'decay', 'curse', 'chilli', 'recoil', 'strangle']); // + Strangle's squeeze (2026-10-16) // status ticks don't use up Exposed (2026-10-15)
+  let eng28FlatPoison = null; // ENG28 (2026-11-07): the Poison stacks the last flat poison hit gave ({uid, n}), read by fireDamageAction
   function damageCardFlat(card, amount, dmgType, attDefId, attUid, fo){ // fo.armor (ENG10, 2026-10-26): an arrow or a spit, which Armor stops
     const giB = attDefId ? giHitBonus(CARD_DEFS[attDefId], card, dmgType) : 0; // Hunter N / Executioner N (2026-10-19, package GI): read before Exposed is used up
     const en20Tick = !!(fo && fo.tick); // ENG20 (2026-11-02): Burn's tick is a status tick (no Exploit, no wear, no Shell, no Punish)
@@ -3481,6 +3503,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(card.petrified && !crush){ const d0 = dmg; dmg = dmg * sk3StoneFactor(card, attDef); if(dmg < d0) mods.push('stone'); else if(dmg > d0) mods.push('weak'); } // Petrification (2026-10-14); Shatter doubles it (2026-10-19, SK3)
     if(card.invincible > 0){ if(roundDmg(dmg) > 0) mods.push('immune'); dmg = 0; } // Invincible N (2026-10-16): statuses, arrows and bolts too
     const tick = EXPOSE_TICKS.has(dmgType) || en20Tick;
+    // ENG28 (2026-11-07, owner 11-06 22:16 #2: "Herb Refinery says damage but deals poison"; settled rule: poison damage only adds poison
+    // stacks, no Health loss): a skill's, shot's or bramble's poison damage (an attacker, not a Poison tick) becomes that many Poison stacks,
+    // as a swing's poison already did (computeHitDamage's elementalConvert). eng28FlatPoison carries the stacks to fireDamageAction's events.
+    eng28FlatPoison = null;
+    // (EXPOSE_TICKS counts every poison as a tick, so the test is the attacker: a real Poison tick has none)
+    if(dmgType === 'poison' && attDefId && !en20Tick && dmg > 0){ const pn = roundDmg(dmg); const got = pn > 0 ? addPoison(card, pn) : 0; if(got > 0) eng28FlatPoison = {uid: card.uid, n: got}; dmg = 0; }
     // sudden death: any hit that lands kills, and from 2026-10-15 a hit soaked to 0 too; status ticks still need to hurt
     const sd = suddenDeath ? (d=> d>0 || (amount > 0 && factor !== 0 && !tick)) : null;
     const out = applyDamage(card, dmg, {dmgType, crush, poisonTick: (dmgType === 'poison' || dmgType === 'bleed') && !attDefId /* ENG15 (Z6); 2026-11-06 (package UI23 #18, owner: "bleed, poison both pierce through shield"): a Bleed tick too */, mods, noteHit: true, punishBy: tick ? undefined : attUid, suddenDeath: sd,
@@ -5001,11 +5029,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const made = []; for(let i = 0; i < 2; i++){ const nc = eng25Place(pl, sp, hid, false); if(!nc) break; made.push(nc); }
     return eng25Spawned(players, sideOf, pl, sp, hid, made, 'hydra', stats, events); }
   // A brood token's card (Brood N, 2026-10-14): one per parent card per match.
+  // ENG28 (2026-11-07, owner 11-06 23:35 #17: "Brood's tokens get Swarm (Species), not plain Swarm (Default)"): a brood token's Swarm counts
+  // the allies that share a species with it (effects.swarmSpecies, read by swarmBonus), when the parent card lists a species; else as before.
   function broodDefOf(defId){ const base = CARD_DEFS[defId], root = base.derivedFrom || base.id, id = root + '~brood';
     if(!CARD_DEFS[id]){ const pe = base.effects || {}, eff = {swarm: pe.swarm || true}; if(pe.swarmN) eff.swarmN = pe.swarmN; if(pe.flying) eff.flying = true;
+      if(((CARD_DEFS[root] || base).species || []).length && !Array.isArray(eff.swarm)) eff.swarmSpecies = true; // ENG28
       const src = CARD_DEFS[root] || base;
       CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, src, {id, name: (src.name || root) + ' Brood', attack:1, health:1, wait:1, cost:0, stoneCost:0, metalCost:0, uraniumCost:0, graceCost:0, devilryCost:0,
         derivedFrom: root, token:true, broodOf: root, effects: eff}); }
+    return id; }
+  // ENG28 (2026-11-07, owner 11-06 23:35 #13: "New skill like Brood that summons a weaker copy of the card itself"): Offspring N (working
+  // name; effects.offspring). When it arrives, N copies of its own card hatch beside it (spawnBeside, as Brood): half its printed Attack and
+  // Health at this level, rounded down (Health at least 1), Wait 1, a token, its types and every skill but Offspring (so it can't chain).
+  // One derived card per parent card and size ('<root>~offspring~A~H'). Priced in bramblewood-budget.js (offspringBodyMult).
+  function offspringDefOf(defId){ const base = CARD_DEFS[defId]; if(!base) return null; const root = base.derivedFrom || base.id;
+    const A = Math.max(0, Math.floor((Number(base.attack) || 0) / 2)), Hh = Math.max(1, Math.floor((Number(base.health) || 0) / 2)), id = root + '~offspring~' + A + '~' + Hh;
+    if(!CARD_DEFS[id]){ const eff = Object.assign({}, base.effects || {}); delete eff.offspring; const src = CARD_DEFS[root] || base;
+      CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, name: (src.name || root) + ' Offspring', attack: A, health: Hh, wait: 1, cost: 0, stoneCost: 0, metalCost: 0, uraniumCost: 0, graceCost: 0, devilryCost: 0,
+        derivedFrom: root, token: true, offspringOf: root, effects: eff}); }
     return id; }
   // The twin's card: a copy of the original's card, minus Twin, marked as a token (made once per match per card).
   function twinDefOf(defId){ const base = CARD_DEFS[defId]; const id = base.id + '~twin';
@@ -5344,6 +5385,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(src && shot) eqSunderHit(players, sideOf, src, c, events); } // ENG10 (2026-10-26, PROP1-1): Sunder on a landed shot too
       ensureStat(stats, sideOf(otherId(ownerId)), c.defId).taken += dmg;
       if(recordEvents && events) events.push({type:'hit', side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId)), targetDefId:c.defId, targetUid:c.uid, mods:dnModsFor(c.uid), dmg, dmgType, ranged:true, guardianRedirect});
+      { const fp = eng28FlatPoison; eng28FlatPoison = null; // ENG28 (2026-11-07): poison damage landed as stacks: the board shows the Poison it gave
+        if(fp && fp.uid === c.uid){ aStat.poisonApplied = (aStat.poisonApplied||0) + fp.n; if(recordEvents && events) events.push({type:'statusFx', kind:'poison', side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId)), targetDefId:c.defId, targetUid:c.uid, amount:fp.n, eng28:true}); } }
       // Chained (Devilry, 2026-09-17): a missile/skill hit large enough breaks a chained
       // defender free too, same threshold check as a landed melee hit below.
       maybeBreakChain(players, sideOf, otherId(ownerId), c, stats, events, {kind:'damage', amount:dmg});
@@ -7088,7 +7131,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //     Wildfire) and Burn's own tick dry counters but light nothing. A unit that resists fire (Resist, Immune, Dry) never burns. Water damage puts Burn out.
   //   Stop, Drop and Roll (owner: "take the fire damage, but put it out by 'rolling on the floor'"), effects.dropRoll: when it would start
   //     Burning it rolls instead: no Burn, Wait +1 (it loses its next swing). The hit's damage still lands.
-  const EN20 = Object.assign({waterMax:3, floodWater:2, ebbWater:1, burnRounds:2, burnDmg:1, rollWait:1, crossHp:2, heavyCrossHp:5, heavyHeadCut:2, lumberFeastN:3}, (opts && opts.eng20) || {});
+  const EN20 = Object.assign({waterMax:3, floodWater:2, ebbWater:1, burnRounds:2, burnPerHit:1 /* ENG28 (2026-11-07) */, burnDmg:1, rollWait:1, crossHp:2, heavyCrossHp:5, heavyHeadCut:2, lumberFeastN:3}, (opts && opts.eng20) || {});
   function en20Ev(card, kind, extra){ if(!recordEvents || !shieldEvents || !card) return; const pid = ownerPidOfCard(card), side = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B');
     shieldEvents.push(Object.assign({type:'statusFx', kind, side, attUid:card.uid, attDefId:card.defId, targetSide:side, targetUid:card.uid, targetDefId:card.defId}, extra || {})); }
   function en20Elements(card, y, dmgType, ignite){
@@ -7103,7 +7146,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(w0 > 0){ const dry = Math.min(w0, left); card.water = w0 - dry; left -= dry; en20Ev(card, 'en20Dry', {amount: dry, total: card.water}); }
     if(!(left > 0) || !ignite || !(card.hp > 0) || resistFactor(card.defId, 'heat') < 1) return; // fire Resist / Immune (and Dry): it never burns
     if(effectsOf(card).dropRoll){ card.burn = 0; card.wait = (card.wait || 0) + EN20.rollWait; en20Ev(card, 'en20Roll', {amount: EN20.rollWait}); return; }
-    const b0 = card.burn || 0; card.burn = Math.max(b0, EN20.burnRounds); en20Ev(card, 'en20Ignite', {amount: card.burn, total: card.burn, fresh: !(b0 > 0) || undefined});
+    // ENG28 (2026-11-07, owner 11-06 22:16 #2, settled rule: "fire damage = the damage plus 1 Burn"): each fire hit that lights adds
+    // EN20.burnPerHit (1) Burn, and Burn stacks (each counter is 1 fire at a round's start, one counter off a tick). Was (ENG20-1): it set
+    // Burning to 2 rounds, refreshed, never stacked (EN20.burnRounds, kept for old callers). Decision ENG28-1.
+    const b0 = card.burn || 0; card.burn = b0 + EN20.burnPerHit; en20Ev(card, 'en20Ignite', {amount: EN20.burnPerHit, total: card.burn, fresh: !(b0 > 0) || undefined});
+  }
+  // ENG28 (2026-11-07, owner 11-06 22:16 #2, settled rule: "frost the same pattern"): frost (cold) damage that lands from a unit's swing, shot
+  // or skill (as fire lights: field cold, Hail and the Frigid frost do not) also lays 1 Freeze counter, the existing frost status (it holds the
+  // unit for that round; it melts at the round's end). Not on a unit that resists cold (Resist / Immune), a Relict, or one already Frozen
+  // (counters don't stack, so a unit hit every round is held, never locked for several). It replaces Ice Arrow / Ice's 1 in 2 roll.
+  function eng28Chill(card, y, fromUnit){
+    if(!card || card.kind === 'hq' || card.gap || !(y > 0) || !fromUnit || !(card.hp > 0) || card.cageOf) return;
+    if(resistFactor(card.defId, 'cold') < 1 || relictOf(card) || card.frozen > 0) return;
+    card.frozen = 1; en20Ev(card, 'freeze', {amount: 1, eng28: true});
   }
   // Burn's tick, at a round's start after Poison, Decay and Wither: burnDmg fire to every Burning unit, then one round off.
   function en20BurnTicks(players, sideOf, stats, events){ let any = false;
@@ -7378,6 +7433,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Flying if it flies).
     if(Number(def.effects.brood) > 0 || def.effects.brood === true){ const n = def.effects.brood === true ? 1 : Math.min(6, Number(def.effects.brood)||0), bid = broodDefOf(boardCard.defId);
       for(let k = 0; k < n; k++){ if(!spawnBeside(players, sideOf, playerId, boardCard, bid, stats, events, 'brood')) break; } }
+    if(Number(def.effects.offspring) > 0 || def.effects.offspring === true){ const n = def.effects.offspring === true ? 1 : Math.min(6, Number(def.effects.offspring)||0), oid = offspringDefOf(boardCard.defId); // ENG28 (2026-11-07): Offspring N
+      if(oid) for(let k = 0; k < n; k++){ if(!spawnBeside(players, sideOf, playerId, boardCard, oid, stats, events, 'offspring')) break; } }
     if(def.effects.moonpull && tideInNow() && recordEvents && events) events.push({type:'tide', tide:getTide(), round:turnNo, moonpull:true, side:mySide, defId:boardCard.defId, uid:boardCard.uid}); // Moonpull (2026-10-14)
     if(def.effects.rocket && !(boardCard.wait > 0) && !boardCard._readyAtPlay) fireRocket(players, sideOf, playerId, boardCard, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
     // Shield N, Fireball N and Meteor N (2026-10-14, sixth pass): a Wait-0 unit is Ready on arrival, so its Fireball/Meteor goes then.
@@ -7617,7 +7674,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           for(let sr = 0, sn = 1; sr < sn && c.hp > 0; sr++){ const foes = allBoardCards(enemy).filter(x=> x.hp>0 && !x.cageOf);
           if(foes.length){ const t = shotRedirect(players, sideOf, pid, c, foes[Math.floor(rnd()*foes.length)], events); const amt = Number(fx.snipe === true ? 1 : fx.snipe)||1; // ENG22: Taunt / Guardian
             if(recordEvents && events) events.push({type:'arrow', snipe:true, side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: t.uid, targetDefId: t.defId, amount: amt, headwind: sr > 0 || undefined});
-            fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, killCredit, c.uid, true, true); }
+            fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(eng28DarkShotMiss(c, pid, tg)){ if(recordEvents && events) events.push({type:'blindMiss', side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetKind:'card', targetUid:tg.card.uid, night:true, ranged:true, eng28:true}); } else if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, killCredit, c.uid, true, true); }
             if(sr === 0 && hwTwice()) sn = 2; } } } }
         shots.forEach(sh=>{ if(sh.tip && sh.amount > 0 && sh.at !== 'hq'){ sh.n = sh.amount; sh.tip = Object.assign({}, sh.tip, {n: Math.round(sh.amount)}); sh.amount = 0; sh.statusOnly = true; } }); // ENG9 (2026-10-26, #40): a – poison / – bleed shot deals counters, not damage (a unit target; the bramble takes its N)
         if(shots.length && hwTwice()) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice (not under Quiet Contemplation, 2026-10-19)
@@ -7636,6 +7693,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push(shot.bolt ? Object.assign({type:'bolt', element: shot.bolt, key: shot.boltKey}, tEv)
             : Object.assign({type:'arrow', fire: !!shot.fire, ice: shot.ice || undefined, twin: shot.twin || undefined, volley: shot.volley || undefined, bola: shot.bola || undefined /* ENG14 */, lasso: shot.lasso || undefined /* ENG15 */}, tEv));
           fired = true;
+          if(eng28DarkShotMiss(c, pid, target)){ if(recordEvents && events) events.push({type:'blindMiss', side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetKind:target.kind, targetUid: target.kind === 'card' && target.card ? target.card.uid : undefined, night:true, ranged:true, eng28:true}); return; } // ENG28: the dark
           if(helmetDeflects(target, sideOf(otherId(pid)), events)) return;
           let hitCard = null; shotBounced = false;
           if(shot.amount > 0 || target.kind !== 'card') hitCard = fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, killCredit, c.uid, true, true); // true: a shot, Reflect bounces it (2026-10-17)
@@ -7655,6 +7713,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     }
     return fired;
+  }
+  // ENG28 (2026-11-07, owner 11-06 22:16 #3: "Darkness also affects ranged skills"): a shot (Arrow and every arrow-like shot, the Bolts / spits,
+  // Spitfire, Snipe) misses in the dark as the shooter's swing would: the dark's share of sightMiss (Darkness 1 in 4, Pitch Black 1 in 2,
+  // Absolute every shot), so Darksight, Nocturnal, a Relict, True Strike, an Illuminate light on its side or facing it all see as for melee.
+  // Keen Sense and Sonar never miss a shot for the dark (Keen Sense's flyer exception is a swing's only). A shot at an Exposed unit can't miss.
+  // Blind (the status) is unchanged for shots. Seeded RNG (rnd); no roll at all outside the dark, so a lit fight replays as before.
+  function eng28DarkShotMiss(c, pid, target){
+    if(!c || !darkRule()) return false;
+    if(target && target.kind === 'card' && target.card && target.card.exposed > 0) return false;
+    const m = sightMiss(c, pid, true); if(!(m > 0)) return false;
+    return m >= 1 || rnd() < m;
   }
   // Nearest enemy for Arrow (2026-10-13, user: "Arrow should shoot the nearest enemy. If tied, random."): the same
   // nearest-unit rule Backstab uses. null when the enemy board is empty.
@@ -9381,7 +9450,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       else { const t = hit.target; let left = n; const taken = [];
         SK2_STEALABLE.forEach(k=>{ if(left <= 0 || !t) return; const have = Math.max(0, Math.floor(Number(t[k])||0)), k2 = Math.min(have, left); if(!(k2 > 0)) return;
           t[k] = have - k2; a.att[k] = (Number(a.att[k])||0) + k2; left -= k2; taken.push({key:k, n:k2, left:t[k], total:a.att[k]}); });
-        if(taken.length && ev) events.push(Object.assign({}, base, {kind:'pickpocket', targetUid:t.uid, targetDefId:t.defId, taken, amount:n - left})); } }
+        if(taken.length && ev) events.push(Object.assign({}, base, {kind:'pickpocket', targetUid:t.uid, targetDefId:t.defId, taken, amount:n - left}));
+        // ENG28 (2026-11-07, owner 11-06 23:35 #6: "Pickpocket takes tokens, or a resource from the bramble, lowest tier first"): what the unit's
+        // tokens did not cover (it had none, or fewer than N) comes out of the opponent's resources at the bramble, lowest rank first (sk2TakeRes).
+        if(left > 0){ const took = sk2TakeRes(foe, left); took.forEach(r=>{ me[r.res] = (Number(me[r.res])||0) + r.n; });
+          if(took.length && ev) events.push(Object.assign({}, base, {kind:'pickpocketRes', taken:took, amount:took.reduce((s2, r)=> s2 + r.n, 0), fallback:true})); } } }
     if(e.sabotage){ const lost = sk2TakeRes(foe, sk2N(a.att, 'sabotage', SK2.sabotageN));
       if(lost.length && ev) events.push(Object.assign({}, base, {kind:'sabotage', lost, amount:lost.reduce((s, t)=> s + t.n, 0)})); }
     if(e.arson){ const have = Math.max(0, Math.floor(Number(foe.lumber)||0)), k = Math.min(have, sk2N(a.att, 'arson', SK2.arsonN));
