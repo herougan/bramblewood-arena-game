@@ -9502,6 +9502,9 @@ function eng28GenericPips(e, out, bopts, n1){
     Object.keys(e || {}).forEach(k=>{ const v = e[k]; if(k === 'triggers' || !skillValOn(v) || ENG28_PIP_OPT_OUT.has(k) || params.includes(k) || UI18_NOT_SKILL.has(k)) return;
       const p = skillDefOf(k); if(!p || !p.label || p.retired || p.hidden || p.reserved) return;
       if(eng28PipHandled(k)) return;
+      // 2026-11-07 (owner 07:40: "Why does fleetfoot' have 2 quick symbols on it?"): the source scan above misses pips drawn through a shared path
+      // (Quick's ab-quick), so a skill whose icon is already among this card's pips gets no second one
+      if(out.some(h=> String(h).includes(`data-ik="${k}"`) || String(h).includes(`ab-${k}"`))) return;
       const num = typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : '', tip = (()=>{ try{ return p.label + (num !== '' ? ' ' + num : '') + ': ' + skillText(p, v, e); }catch(_){ return p.label; } })();
       out.push(`<span class="ab-sk eng28-pip" data-sk="${k}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${iconHTML(k, SKILL_ICON[k] || '✦')}${num}</span>`); });
   }catch(err){}

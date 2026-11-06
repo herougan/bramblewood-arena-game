@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07: Quick shown once (owner 07:40)
+- Quick had two 👢 pips on 14 cards (Fleetfoot'd, Jaguar Stalker, Savanna Cheetah ...): its own pip plus ENG28's generic one. A skill whose icon is already among a card's pips no longer gets a generic one; a scan of all 905 cards finds no doubled pip.
+
 ## 2026-11-07: Card power run and "0 = average" (owner 11-06 23:35 #7)
 - Card power test re-run on all 828 live cards (40 games each, 17 min): `docs/balance/card-balance.json`.
 - The editor's Power number is now centred on the median measured card (win % - median + 50; the median was 30% on this run), so 0 means average, as asked. The tooltip says so in all 12 languages.

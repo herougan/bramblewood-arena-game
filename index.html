@@ -53899,7 +53899,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '1fae67ba2879', BUILD_CARD_HASH = 'add6601dfc04c30c526b737ff15a2e270518266d15dd6cf736111a5c50b36336';
+const BUILD_ID = '64923fba07ba', BUILD_CARD_HASH = 'add6601dfc04c30c526b737ff15a2e270518266d15dd6cf736111a5c50b36336';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -59508,6 +59508,9 @@ function eng28GenericPips(e, out, bopts, n1){
     Object.keys(e || {}).forEach(k=>{ const v = e[k]; if(k === 'triggers' || !skillValOn(v) || ENG28_PIP_OPT_OUT.has(k) || params.includes(k) || UI18_NOT_SKILL.has(k)) return;
       const p = skillDefOf(k); if(!p || !p.label || p.retired || p.hidden || p.reserved) return;
       if(eng28PipHandled(k)) return;
+      // 2026-11-07 (owner 07:40: "Why does fleetfoot' have 2 quick symbols on it?"): the source scan above misses pips drawn through a shared path
+      // (Quick's ab-quick), so a skill whose icon is already among this card's pips gets no second one
+      if(out.some(h=> String(h).includes(`data-ik="${k}"`) || String(h).includes(`ab-${k}"`))) return;
       const num = typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : '', tip = (()=>{ try{ return p.label + (num !== '' ? ' ' + num : '') + ': ' + skillText(p, v, e); }catch(_){ return p.label; } })();
       out.push(`<span class="ab-sk eng28-pip" data-sk="${k}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${iconHTML(k, SKILL_ICON[k] || '✦')}${num}</span>`); });
   }catch(err){}
