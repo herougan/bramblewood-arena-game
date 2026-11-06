@@ -4,6 +4,22 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-06 23:35: Owner notes, queued after ENG27
+| # | Note | Package |
+|---|---|---|
+| 1 | 2-3 px more margin between the card and the text below it (context pips almost touch the text) | UI24 |
+| 2 | Card editor: skill changes update the preview and hover details live; adding a skill must not scroll to the top | UI24 |
+| 3 | Editor Identity: species controls and Art height sit on the shared rows, not their own; Art height updates the preview; species uses the preview's naming, with Phylum and Type as separate fields | UI24 |
+| 4 | New skill (working name Mulligan, owner may rename): if this card is in your opening hand, shuffle it back and draw a card. Price -0.1 | ENG28 |
+| 5 | Devour can't be picked in the editor's skill list and can't be removed | ENG28 (editor) |
+| 6 | Pickpocket takes tokens, or a resource from the bramble, lowest tier first | ENG28 |
+| 7 | After the owner's card pass: a 5-15 min card power test of every Map 0-20 card; the editor shows card power (0 = average, -N below, +N above) | BAL21 (tool `tools/card_balance.js`), UI24 (display) |
+| 8 | Admin-only sub-map under the tutorial with 2 skirmish decks: optimised random Otter faction cards, and Hummingbird faction cards | CONTENT13 |
+| 9 | Poison Barbs gets a context pip (2 poison counters, no damage). Default: every skill shows a context pip unless the owner said no | ENG28 (UI) |
+| 10 | Diurnal and Inspiration pip numbers 1 px closer to the emoji | UI24 |
+| 11 | Sonar and Keen Senses show as "?" until the first darkness map; their pips show only when relevant (darkness maps) | ENG28 (UI) |
+| 12 | Codex skill list: one entry per skill (Tally and Throng appear twice, once per threshold); combine them | UI24 |
+
 ## 11-06 22:16: Owner notes, queued after ENG27
 The alpha release checklist is `docs/alpha-checklist.md` (every item starts unverified).
 | # | Note | Package |
