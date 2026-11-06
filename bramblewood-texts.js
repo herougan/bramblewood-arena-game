@@ -904,8 +904,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.now-in-your-collection": "{v1} — now in your collection",
   "results.open-your-deck-to-swap-in": "Open your deck to swap {plural_them} in",
   "results.put-in-my-deck": "🃏 Put {plural_them} in my deck",
-  "results.cards-it-opens-as-soon-as": "{name}: {cards} cards. It opens as soon as you leave this screen",
-  "results.cards-opens-next": "{v1}<b>{name}</b><small>{cards} cards · opens next</small>",
   "results.packs-open-once-the-armoury-camp": "Packs open once the Armoury (⛺ Camp) is open on the map",
   "results.opens-with-the-armoury": "{v1}<b>{name}</b><small>opens with the Armoury</small>",
   "results.new-cards-seen": "New cards seen",
