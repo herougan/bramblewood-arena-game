@@ -29,7 +29,7 @@ ok(/map-node-rankbg rank-\$\{escapeAttr\(br\)\}/.test(app) /* 2026-11-05 22:24 o
 ok(/cnp-rank-corner/.test(app), 'and in the fight info (already there)');
 // texts in all 12 packs
 { const langs = fs.readdirSync(path.join(ROOT, 'lang')).filter(f=> f.endsWith('.json'));
-  ok(langs.length === 12, '12 packs'); langs.forEach(f=>{ const d = JSON.parse(rd('lang/' + f)); ['Unlocks from discovery', 'The next one unlocks from discovery.', 'Keyword of the map', 'The keyword this map introduces.', 'Cards on this map that have it'].forEach(e=> ok(d[e] && d[e] !== e, f + ' has ' + e)); }); }
+  ok(langs.length === 12, '12 packs'); langs.forEach(f=>{ const d = JSON.parse(rd('lang/' + f)); ['Unlocks from discovery', 'The next one unlocks from discovery.', 'Keyword of the map', /* 2026-11-06 TEXTFIX1 removed the unused ui21-mapkw-sub line */ 'Cards on this map that have it'].forEach(e=> ok(d[e] && d[e] !== e, f + ' has ' + e)); }); }
 // ECON2-11
 { const t = rd('tools/resources_week_2026_10_23.js'), r = JSON.parse(rd('docs/balance/resources-2026-10-23.json'));
   ok(/econScaleTable/.test(t) && /econ\.econScale/.test(t), 'the tool halves like the game');
