@@ -1,4 +1,4 @@
--- 2026-11-06 (package CONTENT12, decision CONTENT11-2 a). PROPOSED, NOT APPLIED: run only on the owner's "apply it".
+-- 2026-11-06 (package CONTENT12, decision CONTENT11-2 a). APPLIED 2026-11-06 on the owner's "Apply it" (CONTENT12-4): 66 cleared, 2 deleted, 68 backed up.
 -- Replaces supabase/proposed/20261026_clear_folded_overrides_3.sql (never applied; its 16 rows are in this file too).
 -- Every live card row is now in canonical/cards.json: 58 folded by tools/fold_server_overrides_2026_11_06.js (plan:
 -- docs/balance/server-overrides/fold-plan-2026-11-06.json; dump: card-overrides-dump-2026-11-06.json), ant-hill already equal,

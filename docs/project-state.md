@@ -184,6 +184,8 @@ Canonical: `canonical/map-pools.json` (card pools), the maps in `arena_app.js`, 
 - **Enemy levels by map:** Map 0 enemies fight at Level 0; the schedule for later maps is `EARLY_ENEMY_LEVEL` and the level intro maps in `arena_app.js`. A challenge skirmish may go one Enemy level up. [EB-3, DF3-2]
 - **A map's card pool guides the editor and refuses nothing;** one SPECIAL list per main map is shared with its submaps. [MP-1, MP-3, MP-2, MP-4]
 - **Skirmish decks: cards not unique to the map at most 1 copy each and 6 in all** (map-unique: the map's own pack, reward and showcase cards; a side map counts its parent's; an enemy-only card only this map plays). Map 0 and the come-back fights T-2..T-4 are left out (call BAL7-2). **Built (BAL7, 2026-10-28).** [owner K14]
+- **Skirmish deck shape:** a skirmish takes any 5-6 cards of its map's list; its leader may be a card outside those 5-6; an elite adds one special card or one more list card (5-7). [owner 2026-11-06 20:40, CONTENT12-2]
+- **Tuning scope: Maps 0-20 only.** K14 holds everywhere; Maps 21+ are not tuned or reported for now. [owner 2026-11-06 20:40, BAL17-2]
 - **A map's own field effect is its `mapField`** (CONTENT4), the Tundra family's Frigid included (Wolfsbane Tundra, the Pinewood Taiga, the Rimefire Caldera: `field: frozen`), so `fightRules` and every balance tool see it. **Built (BAL7, 2026-10-28).** [owner L2; CONTENT4-4]
 - **Submaps:** one unique card each, the rest cards the player already has; every side map opens at least four maps after its parent. Side-map Rares follow the same Rare-from-Map-10 rule. [rules 10-21 RP, BAL2-2, DV7]
 - **Rare skirmish cards start at Map 10;** Map 5's only Rare is its boss's leader; one exception is the Mangrove Kingfisher on 9-6. [PP-2, BAL2-2, RW5-7]
