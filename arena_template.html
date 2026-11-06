@@ -14827,7 +14827,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 /* ===== 2026-11-06 (package UI23) ===== */
 /* #4 the card editor (codex and battlefield open the same one): wide modal, the preview a fixed right column, one full-width row per section,
    the budget beside the stats, a sticky footer (Delete left; Cancel and Save right). Owner 20:44: "widen the width ... The advanced sections should be their own rows!" */
-#editorOverlay .modal.has-ce-side{width:min(95vw, 1400px); max-width:none; padding-bottom:0; max-height:calc(100dvh - 80px); overflow-y:auto; overscroll-behavior:contain;} /* the modal scrolls (not the overlay), so the footer and the preview stay in view */
+#editorOverlay .modal.has-ce-side{width:min(95vw, 1400px); max-width:none; padding-bottom:0; max-height:calc(100dvh - 80px); overflow-y:auto; overflow-x:hidden; overscroll-behavior:contain;} /* the modal scrolls (not the overlay), so the footer and the preview stay in view */
 #editorOverlay .ce-body{gap:24px;}
 #editorOverlay .ce-body > .ce-side{flex:0 0 300px; width:300px;}
 #editorOverlay .ce-preview .card-tile{margin:0 auto;}
@@ -14841,7 +14841,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 #editorOverlay .modal-actions{display:flex; gap:8px; justify-content:flex-end; margin-left:-4px; margin-right:-4px;}
 #editorOverlay .modal-actions #btnDelete{margin-right:auto;}
 @media (max-width: 1100px){ #editorOverlay .ce-main > .field-row:has(> .ce-budget){grid-template-columns:repeat(2, minmax(0, 1fr));} #editorOverlay .ce-main > .field-row > .ce-budget{grid-column:1 / -1;} }
-@media (max-width: 700px){ #editorOverlay .modal.has-ce-side{width:100%;} #editorOverlay .ce-body > .ce-side{width:auto;} #editorOverlay .ce-main > .field-row > .ce-budget{grid-column:1 / -1;} #editorOverlay .skill-row{flex-wrap:wrap;} }
+@media (max-width: 700px){ #editorOverlay .ce-body{align-items:stretch;} #editorOverlay .ce-body > .ce-main{width:100%; max-width:100%;} #editorOverlay .modal.has-ce-side{width:100%;} #editorOverlay .ce-body > .ce-side{width:auto;} #editorOverlay .ce-main > .field-row > .ce-budget{grid-column:1 / -1;} #editorOverlay .skill-row{flex-wrap:wrap;} }
 /* #2 an Undead unit's Health ("unhealth"): grey heart, grey number */
 .card-tile .stats .hp.is-unhealth{color:#b9bcc0 !important; text-shadow:0 1px 1px rgba(0,0,0,.6) !important;}
 .card-tile .stats .hp.is-unhealth i.sg{filter:grayscale(1) brightness(1.15);}
@@ -14890,6 +14890,8 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 @media (prefers-reduced-motion: reduce){ [data-hq].ui23-feed-slot::after{animation:none;} }
 /* #27 ss5: a won card's description opened above it, inside the fan's scroll box, and was cut off; in the fan it opens over the card's lower half */
 .rw-panel .res3-fan [data-tip]:hover::after, .rw-panel .res3-fan [data-tip]:focus-visible::after{bottom:8px; max-width:calc(100% - 8px); font-size:11.5px; padding:6px 8px;}
+/* #8 the fight's settings panel on a phone: a sheet under the top row, inside the screen (it opened off the left edge), scrolling */
+@media (max-width: 600px){ #settingsPanelHud{position:fixed !important; left:8px !important; right:8px !important; top:56px !important; width:auto !important; max-height:70vh; overflow-y:auto; transform:none !important;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

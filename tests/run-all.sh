@@ -338,7 +338,9 @@ run node tests/bal19-2026-11-06.js   # 2026-11-06 (package BAL19): road fights r
 run node tests/bal20-2026-11-06.js   # 2026-11-06 (package BAL20): The Canopy and Savanna Reaches retuned after ENG26's Acacia Kraal (decks, leaders), each confirmed at 200 games; BAL19's rules, no Enemy level override, Acacia Kraal unchanged
 run node tests/eng25-2026-11-05.js   # 2026-11-05 (package ENG25, owner 23:35): categories, duplicates merged, Hatchling / Regeneration Level 1+, Berries and Forage, Immortal, Hydra, lit state chips, Tribe Delivery, Moonpull, Tide N
 run node tests/eng26-2026-11-06.js   # 2026-11-06 (package ENG26, owner 09:29): paged context pips every 3 s, crowded-row names, escalating Bloom, Undead heals / cures, Acacia Kraal Lumber 1, Banner Knoll
+run node tests/ui23-2026-11-06.js   # 2026-11-06 (package UI23, owner 20:28-20:44): one card editor layout, Shield in the heart, Bleed skips Shield, NEW!/GET!, results packs, speed gates, emblem pop, darkness overlay
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)
 # browser check for package RAID2: python3 tests/e2e/raid2_2026_11_05.py (needs Playwright; not run by run.js)
+# browser check for package UI23: python3 tests/e2e/ui23_2026_11_06.py (needs Playwright; not run by run.js)

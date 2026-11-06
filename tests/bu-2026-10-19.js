@@ -27,9 +27,9 @@ const upTo = k=> (n=> n <= k);
 const S = (o)=> JSON.stringify(speedStepsFor(o));
 ok(S({}) === '[1,0.5]', `a new player: 1x and 0.5x only (${S({})})`);
 // 2026-11-06 (package UI23 #29): 1.5x opens with a Map 1 skirmish won (skirmWon(1)) and 2x with a Gannet Cliffs (Map 3) skirmish won; a cleared map counts too
-const W = k=> (n=> n <= k);
-ok(S({skirmWon:W(1)}) === '[1,1.5,0.5]', `after a Map 1 skirmish: + 1.5x (${S({skirmWon:W(1)})})`);
-ok(S({skirmWon:W(3), cleared:upTo(19)}) === '[1,1.5,2,0.5]', `Map 19 cleared: no 3x yet (${S({skirmWon:W(3), cleared:upTo(19)})})`);
+const Wk = k=> (n=> n <= k);
+ok(S({skirmWon:Wk(1)}) === '[1,1.5,0.5]', `after a Map 1 skirmish: + 1.5x (${S({skirmWon:Wk(1)})})`);
+ok(S({skirmWon:Wk(3), cleared:upTo(19)}) === '[1,1.5,2,0.5]', `Map 19 cleared: no 3x yet (${S({skirmWon:Wk(3), cleared:upTo(19)})})`);
 ok(S({cleared:upTo(20)}) === '[1,1.5,2,3,0.5]', `Map 20 cleared: 3x (${S({cleared:upTo(20)})})`);
 ok(S({cleared:upTo(39)}) === '[1,1.5,2,3,0.5]', 'Map 39 cleared: still no 4x');
 ok(S({cleared:upTo(40)}) === '[1,1.5,2,3,4,0.5]', 'Map 40 cleared: 4x');
