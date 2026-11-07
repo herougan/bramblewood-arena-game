@@ -922,6 +922,9 @@ def _take(m):
     if len(body.encode('utf-8')) < LAZY_MIN: return m.group(0)
     ids = re.findall(r'\sid="([\w.-]+)"', m.string[max(0, m.start() - 600):m.start()]) or re.findall(r'\sid="([\w.-]+)"', body[:400]) or ['lz']
     name = ids[-1]; n = name; k = 2
+    # 2026-11-07 (coordinator): the Library docs stay inline (about 3.3 MB): the published artifact holds at most 512 files and the Visual
+    # Library's img/ files take ~360 of them, so only the big tabs move out (8 files + the search index)
+    if name.startswith('lib-'): return m.group(0)
     while n in _used: n = f'{name}-{k}'; k += 1
     _used.add(n); open(os.path.join(OUT, 'lazy', n + '.html'), 'w', encoding='utf-8').write(body)
     _stubs.append(f'<template class="lazy" data-src="lazy/{n}.html"></template>'); return f'\x00LZ{len(_stubs) - 1}\x00'
