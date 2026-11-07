@@ -125,6 +125,15 @@ const CARD_DEFS_GLOBAL = (typeof __CARD_DEFS__ !== 'undefined') ? __CARD_DEFS__ 
 // assemble_arena.py puts it ahead of this file (the BramblewoodTaxonomy global). Without it (a bare copy of this file) the helpers
 // fall back to the old rule: the archetype itself, a Changeling for any type.
 const TAXONOMY = (typeof BramblewoodTaxonomy !== 'undefined' && BramblewoodTaxonomy) || (()=>{ try{ return typeof require === 'function' ? require('./bramblewood-taxonomy.js') : null; }catch(e){ return null; } })();
+// ENG34 (2026-11-07, owner 19:25: "classify skills as melee or ranged. Then a lot of effects will be based on whether they are melee or
+// ranged"): each skill's delivery (melee / ranged / none), the skills that make a unit's own swing ranged, which hits each on-hit effect
+// rides and which hits each defence answers, all from canonical/skill-delivery.json (one source). In Node it is require()d; in the page and
+// the simulator worker assemble_arena.py puts `var __SKILL_DELIVERY__ = {...}` ahead of this file.
+const SKILL_DELIVERY = (typeof __SKILL_DELIVERY__ !== 'undefined' && __SKILL_DELIVERY__) || (()=>{ try{ return typeof require === 'function' ? require('./canonical/skill-delivery.json') : null; }catch(e){ return null; } })() || {delivery:{}, swing:[], rides:{}, against:{}};
+function skillDeliveryOf(key){ return (SKILL_DELIVERY.delivery || {})[key] || 'none'; }
+function skillRidesOn(key){ return (SKILL_DELIVERY.rides || {})[key] || null; }
+// effects e has a skill that turns its own swing into a ranged attack (Reach, a thrown Boomerang / Bananarang, the old Anti-air throw)
+function rangedSwingOf(e){ return !!e && (SKILL_DELIVERY.swing || []).some(k=> !!e[k] && !(Number(e[k]) < 0)); }
 function txChangeling(d){ return !!(d && ((d.effects && d.effects.changeling) || d.subtype === 'changeling')); }
 // d counts as type T (an eagle is a Bird; a Changeling is everything).
 function txIsA(d, T){ if(!d || T == null || T === '') return false; if(TAXONOMY) return TAXONOMY.isA(d, T); return txChangeling(d) || (d.archetypes || []).includes(T) || (d.species || []).includes(T); }
@@ -2661,6 +2670,72 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(bl > 0 && !isGhost(t) && t.hp > 0){ const hw = tip ? 0 : en4Hemorrhage(ad, t); const n = bl + venomBoost(pid); t.bleed = (t.bleed||0) + n; got += n; fx('bleed', n); if(hw) en4HemorrhageEv(att, t, hw, side, tSide, events); }
     return got;
   }
+  // ==== ENG34 (2026-11-07, owner 19:25: "bleed and venomous effects cause ALL melee attacks and skills to be affected. Ranged similarly for
+  // those only targeting ranged skills."): an on-hit effect that rides melee hits (canonical/skill-delivery.json rides: 'melee') lands on
+  // EVERY melee hit of the unit: its swing (the swing code applies them), and each melee-class skill hit, which calls this: Cleave's side
+  // hits, Fork / Trident / Pitchfork prongs and Octolash lashes (the swing's own subset is passed in skip), Pounce, Ambush, Counterattack and
+  // a Parasite's feed. Was EN7 / ENG9: only Venom and Bleed rode Pounce, Ambush and Cleave; Daunt, Breach, Leech, Decay, Corrode, Toxin and
+  // the rest rode the swing alone. The melee defences (against: 'melee': Thorns, Poison Barbs, Ichor) answer these hits too, and Spiteful
+  // (any hit) answers Ambush and Counterattack (fireDamageAction already answers Pounce), unless the attacker has Nullify or opts.noReact
+  // (a Parasite's feed: the host can't answer it). Wave, the lightning arcs, Swipe and the kill riders (Overwhelm, Momentum, Slash & Burn)
+  // stay on the swing (rides: 'swing'). The hit must have landed (not dodged); dmg is the damage it dealt (Venom needs damage through, as on
+  // the swing). Ghosts don't bleed; Structures and Immune units take no Venom (addPoison). Events as the swing's, with via.
+  const ENG34_PRONG_SKIP = new Set(['poison', 'greaterPoison', 'bleed', 'hemorrhage', 'decay', 'web', 'brittle', 'scar', 'freeze', 'sleep', 'paralyze', 'stunOnHit', 'sap', 'psychic', 'ichor', 'spiteful']); // a prong's own (older) riders
+  const ENG34_FEED_SKIP = new Set(['sap']); // a Parasite's feed heals it already
+  const ENG34_SPITE_DONE = new Set(['spiteful']); // fireDamageAction answered Spiteful already (Pounce)
+  function eng34MeleeHit(players, sideOf, attPid, att, t, dmg, events, killCredit, via, skip, opts){
+    if(!att || !t || t.kind === 'hq' || !players) return; opts = opts || {}; skip = skip || null;
+    const ok = k=> skillRidesOn(k) === 'melee' && !(skip && skip.has(k));
+    const e = effectsOf(att), ad = {effects: e}, side = sideOf(attPid), tPid = otherId(attPid), tSide = sideOf(tPid), aStat = ensureStat(opts.stats || {}, side, att.defId);
+    const landed = dmg > 0 || !!opts.elemental, alive = ()=> t.hp > 0;
+    const fx = (kind, amount, extra)=>{ if(recordEvents && events) events.push(Object.assign({type:'statusFx', kind, side, attDefId:att.defId, attUid:att.uid, targetSide:tSide, targetDefId:t.defId, targetUid:t.uid, amount, via, eng34:true}, extra || {})); };
+    { const pre = t.poison | 0;
+      if(ok('poison') && landed && alive()){ const pz = poisonOn(ad); if(pz > 0){ const n = addPoison(t, pz + venomBoost(attPid)); if(n){ aStat.poisonApplied = (aStat.poisonApplied || 0) + n; fx('poison', n); } } }
+      if(ok('greaterPoison')) en4GreaterPoison(att, ad, t, pre, landed, side, tSide, events); }
+    if(ok('bleed') && alive() && !isGhost(t)){ const hw = ok('hemorrhage') ? en4Hemorrhage(ad, t) : 0, bN = Number(e.bleed) || 0;
+      const bl = bN + en5HemoN(ad) + (Number(e.perforate) || 0) + (isFrenzied(att) ? 1 : 0) + (bN > 0 && (perksOfSide(side) || {}).thornbite ? 1 : 0);
+      if(bl > 0){ const n = bl + venomBoost(attPid); t.bleed = (t.bleed || 0) + n; fx('bleed', n); } if(hw) en4HemorrhageEv(att, t, hw, side, tSide, events); }
+    if(ok('decay') && e.decay && alive() && !immunityOf(t)) t.decay = (t.decay || 0) + (Number(e.decay) || 0);
+    if(ok('corrode') && e.corrode && alive()){ t.corrode = (t.corrode || 0) + (Number(e.corrode) || 0); t._corrodeJustSet = true; fx('corrode', e.corrode); if(t.equipment) eq2Wear(t, EQ2_DEF.corrodeWear, 'corrode'); }
+    if(ok('daunt') && Number(e.daunt) > 0 && alive()){ (t.daunts = t.daunts || []).push({n: Number(e.daunt), until: combatNo + 1}); fx('daunt', Number(e.daunt)); }
+    if(ok('scar') && e.scar && alive()){ t.scar = (t.scar || 0) + e.scar; fx('scar', e.scar); }
+    if(ok('perforate') && Number(e.perforate) > 0){ const pN = Number(e.perforate);
+      if(alive()){ const d0 = CARD_DEFS[t.defId], base = (d0 && d0.effects && d0.effects.armor) || 0; if(base - (t.armorLoss || 0) > 0){ t.armorLoss = Math.min(base, (t.armorLoss || 0) + pN); fx('armorShred', pN); } }
+      const pd = players[tPid] && players[tPid].hq && players[tPid].hq.hp > 0 ? damageHQ(players[tPid], pN) : 0;
+      if(pd > 0 && recordEvents && events) events.push({type:'pierceHQ', side, attDefId:att.defId, attUid:att.uid, targetSide:tSide, dmg:pd, via, eng34:true}); }
+    if(ok('breach')) en5Breach(players, att, ad, tPid, side, tSide, events);
+    if(ok('pry')) eqPryHit(ad, att, t, side, tSide, events);
+    if(ok('pulverise')) pulveriseHit(players, ad, att, t, side, tSide, events, sideOf);
+    if(ok('desecrate') && e.desecrate) curseCell(players, tPid, t, Number(e.desecrate), events);
+    if(ok('bludgeon') && e.bludgeon && alive()) bludgeonHit(att, t, side, tSide, events);
+    if(ok('toxin')) w2OnHit(att, ad, t, dmg, side, tSide, events, aStat); // Toxin, Weaken, Bulldoze, Tangleweed, Strangle
+    if(ok('web') && e.web && alive()) webUnit(att, t, numN(e.web, S17_DEF.web), side, tSide, events);
+    if(ok('brittle') && e.brittle && alive()) brittleUnit(att, t, numN(e.brittle, 1), side, tSide, events);
+    if(ok('wither') && e.wither && alive()) applyWither(attPid, att, t, numN(e.wither, 1), sideOf, events);
+    ['freeze', 'sleep', 'paralyze', 'stunOnHit', 'blind', 'tipsy', 'confuse', 'shock', 'stagger'].forEach(k=>{ if(ok(k) && e[k] && alive()) rollStatusOnHit(k === 'confuse' ? 'confuse' : k, e[k], t, side, att, sideOf, tPid, events); });
+    if(ok('psychic') && e.psychic && alive()) psychicHit(attPid, att, t, sideOf, opts.stats || {}, events);
+    if(ok('sequestration') && !isNullifier(att) && alive() && e.sequestration) eng24Sequester(att, t, side, tSide, events);
+    if(ok('expose')){ if(alive()) sk1OnHit(players, sideOf, attPid, att, CARD_DEFS[att.defId], t, opts.stats || {}, events); else if(e.skitter) eng23SkitterMark(att, attPid, sideOf, events); } // On Hit triggers: Expose, Exploit, Venom Pulse, Detonate, Pickpocket ... and Skitter
+    if(ok('sap') && e.sap && dmg > 0 && att.hp > 0){ const healed = Math.min(att.maxHp - att.hp, dmg); if(healed > 0){ att.hp += healed; if(recordEvents && events) events.push({type:'sap', side, attDefId:att.defId, attUid:att.uid, amount:healed, via, eng34:true}); } }
+    // the melee defences answer (against: 'melee'), and Spiteful (any hit) where the caller's path doesn't already
+    if(opts.noReact || isNullifier(att)) return;
+    const vs = k=> ((SKILL_DELIVERY.against || {})[k] === 'melee' || (SKILL_DELIVERY.against || {})[k] === 'any') && !(skip && skip.has(k));
+    const de = (CARD_DEFS[t.defId] || {}).effects || {};
+    const th = vs('thorns') ? (Number(de.thorns) || 0) + (t.thornsBonus || 0) : 0;
+    if(th > 0 && att.hp > 0){ applyDamage(att, th, {raw: true}); ensureStat(opts.stats || {}, tSide, t.defId).thornsDealt += th; aStat.taken += th;
+      if(recordEvents && events) events.push({type:'thorns', side:tSide, fromDefId:t.defId, fromUid:t.uid, targetSide:side, targetDefId:att.defId, targetUid:att.uid, dmg:th, via, eng34:true});
+      if(att.hp <= 0 && killCredit){ killCredit[att.uid] = killCredit[att.uid] || new Set(); killCredit[att.uid].add(statKey(tSide, t.defId)); } }
+    const pb = vs('poisonBarbs') ? (Number(de.poisonBarbs) || (de.poisonBarbs === true ? 1 : 0)) : 0;
+    if(pb > 0 && att.hp > 0){ const got = addPoison(att, pb); if(got && recordEvents && events) events.push({type:'statusFx', kind:'poison', side:tSide, attDefId:t.defId, attUid:t.uid, targetSide:side, targetDefId:att.defId, targetUid:att.uid, amount:got, via:'barbs', eng34:true}); }
+    if(vs('ichor')) ichorSplash(players, sideOf, tPid, t, att, opts.stats || {}, events, killCredit);
+    if(vs('spiteful')) applySpite(players, sideOf, tPid, t, att, dmg, opts.stats || {}, events, killCredit);
+  }
+  // ENG34: Fletcher N and Weapon Master N (rides: 'ranged'): every ranged shot of your side deals N more (was: the arrows only: Arrow, Fire
+  // Arrow, Ice Arrow, Twin Shot, Volley, Bola, Lasso, Barrage's physical arrows). A shot is a single-target ranged hit fireDamageAction gets
+  // with shot = true: arrows, bolts and spits (Cinder, Acid, Frost, Shock), Spitfire, Snipe, a thrown banana, Rocket's main hit, Missile,
+  // a Deal damage action's aimed hit, Barrage (every element now). Area skills (Fireball, Earthquake ...) are ranged but not shots (call
+  // ENG34-3). The Wildpath "Fletcher's Eye" perk stays on Arrow (it is an arrow perk).
+  function eng34FletchOf(pl){ if(!pl) return 0; return (skillRidesOn('fletcher') === 'ranged' ? auraN(pl, 'fletcher') : 0) + (skillRidesOn('weaponMaster') === 'ranged' ? eqArrowBonus(pl) : 0); }
   // ENG9 (2026-10-26, owner #40: "elemental poison/bleed and other attack types replaced by status-types dont deal damage anymore and just
   // deal everything in counters, not both"): a "– poison" / "– bleed" shot or action (Arrow, Fire Arrow, Fire Bolt, Missile, Deal damage
   // at one unit) aimed at a unit deals no damage: its N becomes that many Poison (Bleed) counters (both, when it says both). It can still
@@ -2694,7 +2769,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function en5Woods(){ return !!(rules.woods || rules.canopy || rules.undergrowth || (rules.terrain && rules.terrain.biome === 'forest')); }
   function en5CanopyCover(c){ if(!c || !en5Woods()) return false; const e = effectsOf(c); return !!e.canopyCover && (!e.flying || ashyNow()); }
   // ENG13 (2026-10-29): which swings the canopy covers: a Flying attacker's or a thrown one (Boomerang, Bananarang); see combatHitLands.
-  function en5FromAbove(ad){ return !!(ad && (ad.flying || ad.boomerang || ad.bananarang)); }
+  function en5FromAbove(ad){ return !!(ad && (ad.flying || rangedSwingOf(ad))); } // ENG34 (2026-11-07): every ranged swing (skill-delivery.json swing: Reach too, as the owner's "ranged and flying attacks" reads)
   //   State skills (owner 03:12: "New state-like skills like Tide: ____ - {}, as in, {} activates if ____ is met ... One if wood=3+, one if
   //     stone=2+, one if metal=1+. Help me define the default as well."; 03:12b: "When your bramble health is low - {} is gained. By default,
   //     the unit gains +1/+1."): while the side's state holds, the braces (effects.<k>Grant), or the default when a card prints the plain
@@ -4064,8 +4139,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // or a ranged one (Reach, a thrown Boomerang) misses it 1 in 2; Anti-air never. Grounded (Webbed, Pinned, Bound, diving, High Canopy, Ashy) it is a plain unit.
     const aFly = flyLevelOf(ad), grounded = webbed || held || defCard.bound > 0 || defCard.diveExposed === combatNo || canopyMode() === 'canopy' || ashyNow();
     if(ad.antiAirOnly && !(flyLevelOf(dd) > 0 && !grounded)){ lastMissReason = 'antiAir'; return false; }
-    if(dd.mach && !grounded && !ad.antiAirOnly){ if(!aFly && !ad.reach && !ad.boomerang && !ad.bananarang){ lastMissReason = 'mach'; return false; } if(L('mach') && rnd() < 0.5){ lastMissReason = 'mach'; return false; } }
-    else if(dd.flying && L('flying') && !grounded && !aFly && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    if(dd.mach && !grounded && !ad.antiAirOnly){ if(!aFly && !rangedSwingOf(ad) /* ENG34 (2026-11-07): a ranged swing, canonical/skill-delivery.json swing (Reach, Boomerang, Bananarang, the old Anti-air) */){ lastMissReason = 'mach'; return false; } if(L('mach') && rnd() < 0.5){ lastMissReason = 'mach'; return false; } }
+    else if(dd.flying && L('flying') && !grounded && !aFly && !rangedSwingOf(ad) /* ENG34: one list of ranged swings */ && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
     // Slippery (2026-10-16, user: "all units have 1/2 to miss"): every swing at a unit can skid off (1 in 2 by default).
     if(L('slippery') && slips()){ lastMissReason = 'slippery'; return false; }
     // Smoke (2026-10-14, Smoke Bomb): an ally hidden in smoke makes attacks at it miss 1 in 2 until the end of the next round.
@@ -4582,6 +4657,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     ensureStat(stats, sideOf(ownerId), card.defId).dealt += r.dmg; ensureStat(stats, sideOf(otherId(ownerId)), opp.card.defId).taken += r.dmg;
     if(recordEvents && events){ events.push({type:'hit', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, mods:dnModsFor(opp.card.uid), dmg:r.dmg, dmgType:cd.dmgType || 'physical', armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, counter:true, guardianRedirect: guardedUid != null || undefined, guardedUid: guardedUid != null ? guardedUid : undefined});
       events.push({type:'statusFx', kind:'counter', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, amount:r.dmg}); }
+    eng34MeleeHit(players, sideOf, ownerId, card, opp.card, r.dmg, events, killCredit, 'counter', null, {stats, elemental: r.elementalAmount > 0}); // ENG34 (2026-11-07): a counter is a melee hit: every melee rider and the melee defences
     if(opp.card.hp <= 0 && killCredit){ killCredit[opp.card.uid] = killCredit[opp.card.uid] || new Set(); killCredit[opp.card.uid].add(statKey(sideOf(ownerId), card.defId)); }
     if(opp.card.hp <= 0 && !card.duelWon){ card.duelWon = true; trDirty = true; } // Championed (TR, 2026-10-21): a counter that kills its attacker wins the duel too
   }
@@ -5443,6 +5519,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // rule): lightning (shock) damage aimed at a castle (the sky bolt, a Shock Bolt or any lightning skill with no unit to strike) deals
     // its damage as usual, but a castle is never Shocked (nor gets any status) and the Wet bonus never applies to it: the castle branch
     // below adds nothing to the amount and returns no card, so the callers' status steps (applyShotStatus) skip it.
+    if(shot && attUid != null && typeof amount === 'number' && amount > 0) amount += eng34FletchOf(players[ownerId]); // ENG34 (2026-11-07): Fletcher / Weapon Master, every ranged shot of the side (rides: 'ranged')
     if(shot && target && target.kind === 'card' && target.card){ const rf = reflectShotOf(players, sideOf, ownerId, target.card, events);
       if(rf) return fireDamageAction(players, sideOf, rf.pid, rf.src.defId, amount, dmgType, rf.target, stats, events, killCredit, rf.src.uid, false, armored); }
     const owner = players[ownerId], enemy = players[otherId(ownerId)];
@@ -5951,6 +6028,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const pid = otherId(hpid), dmg = damageCardFlat(host, n, 'physical', p.defId, p.uid), healed = Math.max(0, Math.min((p.maxHp || 0) - (p.hp || 0), dmg)); p.hp += healed;
         ensureStat(stats || {}, sideOf(pid), p.defId).dealt += dmg; ensureStat(stats || {}, sideOf(hpid), host.defId).taken += dmg;
         if(recordEvents && events) events.push({type:'parasiteDrain', side:sideOf(pid), uid:p.uid, defId:p.defId, targetSide:sideOf(hpid), targetUid:host.uid, targetDefId:host.defId, dmg, healed, hp:p.hp, mods:dnModsFor(host.uid), gorge: gorge || undefined});
+        eng34MeleeHit(players, sideOf, pid, p, host, dmg, events, null, gorge ? 'gorge' : 'feed', ENG34_FEED_SKIP, {stats: stats || {}, noReact: true}); // ENG34 (2026-11-07): a feed is a melee hit (its riders ride it; the host can't answer; it heals already)
         if(!(host.hp > 0)) hurt = true; }); });
     if(hurt) removeDeadCards(players, sideOf, {}, stats || {}, events);
     return !!(players && ((players[1] && players[1].hq.hp <= 0) || (players[2] && players[2].hq.hp <= 0)));
@@ -6036,7 +6114,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               const dmg = damageCardFlat(x, n, 'physical', a.defId, a.uid);
               ensureStat(stats, sideOf(foeId), a.defId).dealt += dmg; ensureStat(stats, sideOf(pid), x.defId).taken += dmg;
               if(recordEvents && events) events.push({type:'hit', side:sideOf(foeId), attDefId:a.defId, attUid:a.uid, targetSide:sideOf(pid), targetDefId:x.defId, targetUid:x.uid, mods:dnModsFor(x.uid), dmg, dmgType:'physical', ambush:true, ranged:false});
-              if(dmg > 0 && x.hp > 0) en7HitStatuses(a, x, sideOf(foeId), sideOf(pid), events, 'ambush'); // EN7 (2026-10-24, owner #5): Ambush is its own attack: its Poison N / Bleed N ride on it
+              eng34MeleeHit(players, sideOf, foeId, a, x, dmg, events, null, 'ambush', null, {stats}); // ENG34 (2026-11-07): a melee hit: every melee rider and the melee defences (was EN7: its Poison N / Bleed N, damage through only)
               if(x.hp > 0){ bleedTick(sideOf, pid, x, stats, events, 'defend'); runCustomTriggers(players, sideOf, pid, x, CARD_DEFS[x.defId], 'onAttacked', stats, events); wiltOnHit(x, sideOf(pid), events); } } }
           // Sentry N (2026-10-19, package SK1 rework; was once a round, its Attack, while Ready): N to each unit that comes into its watch.
           // + On Enemy Enters (Facing) (2026-10-19, package SK1): any trigger on it, Sentry N's keyword trigger too.
@@ -6710,7 +6788,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       sk3Targets(players, pid, src, {who:'ally', sub:'all'}).forEach(({c})=>{ c.atk += a; c.baseAtk += a; c.hp += h; c.maxHp += h;
         ev({type:'namedBuff', side, attDefId:src.defId, attUid:src.uid, targetDefId:c.defId, targetUid:c.uid, amount:a, amount2:h, warcry:true}); });
       return true; }
-    if(t.do === 'barrage'){ const dt = t.dmgType || 'physical', plus = dt === 'physical' ? auraN(pl, 'fletcher') : 0;
+    if(t.do === 'barrage'){ const dt = t.dmgType || 'physical', plus = 0; /* ENG34 (2026-11-07): Fletcher comes in fireDamageAction (a shot), every element now */
       ev({type:'statusFx', kind:'barrage', side, attDefId:src.defId, attUid:src.uid, targetSide:sideOf(otherId(pid)), amount:n, dmgType:dt});
       allBoardCards(players[otherId(pid)]).filter(sk3Live).forEach(c=> fireDamageAction(players, sideOf, pid, src.defId, n + plus, dt, {kind:'card', card:c}, stats, events, null, src.uid, true));
       return true; }
@@ -7511,8 +7589,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(target.kind==='card'){ pev.targetUid = target.card.uid; pev.targetDefId = target.card.defId; }
       bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
       const pn0 = events ? events.length : 0;
+      const pDealt0 = ensureStat(stats, sideOf(playerId), boardCard.defId).dealt;
       const pHit = fireDamageAction(players, sideOf, playerId, boardCard.defId, pAmt, 'physical', target, stats, events, null, boardCard.uid);
-      if(pHit && pAmt > 0) en7HitStatuses(boardCard, pHit, sideOf(playerId), sideOf(otherId(playerId)), events, 'pounce'); // EN7 (2026-10-24, owner #5): Pounce is its own attack: its Poison N / Bleed N ride on it
+      if(pHit && pAmt > 0) eng34MeleeHit(players, sideOf, playerId, boardCard, pHit, ensureStat(stats, sideOf(playerId), boardCard.defId).dealt - pDealt0, events, null, 'pounce', ENG34_SPITE_DONE, {stats}); // ENG34 (2026-11-07): a melee hit: every melee rider (was EN7: its Poison N / Bleed N); Spiteful already answered in fireDamageAction
       if(events) for(let i = pn0; i < events.length; i++){ const t = events[i].type; if((t==='hit' || t==='hitHQ' || t==='evaded') && events[i].attUid===boardCard.uid){ events[i].pounce = true; events[i].ranged = false; break; } } // plays as a leap, not a shot
     }
     noteTideCard(def);
@@ -7725,33 +7804,33 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(hasShotSkill(c) && confusedFumbles(c, sideOf(pid), events, 'shot')) return false; // Confused (2026-10-19, package FZ): the shot action fumbles 1 in 2
         const shots = [];
         const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
-        const fl17 = auraN(pl, 'fletcher') + eqArrowBonus(pl); // Fletcher N (2026-10-17): every arrow of your side deals N more; + Weapon Master N (EQ, 2026-10-19)
+        const fl17 = eng34FletchOf(pl); // Fletcher N (2026-10-17) + Weapon Master N (EQ, 2026-10-19); ENG34 (2026-11-07): fireDamageAction adds it to every shot now (eng34FletchOf), so the shots below no longer carry it, except a status-only shot's counters (below)
         // 2026-10-17 (user: "First creature to have 2x Arrow 2."): a skill can't sit on a card twice (effects is one key each), so
         // effects.arrowCount N says how many Arrow shots it looses: War Elephant has Arrow 2 and arrowCount 2, two arrows of 2 a round,
         // each aimed on its own (the second one goes on to the nearest if the first killed the target). The card reads "Arrow 2" twice.
-        if(fx.arrow > 0){ const nA = Math.max(1, Math.min(4, Math.round(Number(fx.arrowCount)||1))); for(let k = 0; k < nA; k++) shots.push({amount: fx.arrow + fletch + fl17, dmgType: 'physical', fire: false, nth: k || undefined, at: fx.arrowBramble ? 'hq' : undefined /* EN6: Arrow – bramble */, tip: en7ShotTip(fx, 'arrow') /* EN7: – poison / – bleed */}); }
-        if(fx.fireArrow > 0) shots.push({amount: fx.fireArrow + fl17, dmgType: 'heat', fire: true, at: fx.fireArrowBramble ? 'hq' : undefined /* EN6 */, tip: en7ShotTip(fx, 'fireArrow') /* EN7 */});
+        if(fx.arrow > 0){ const nA = Math.max(1, Math.min(4, Math.round(Number(fx.arrowCount)||1))); for(let k = 0; k < nA; k++) shots.push({amount: fx.arrow + fletch, dmgType: 'physical', fire: false, nth: k || undefined, at: fx.arrowBramble ? 'hq' : undefined /* EN6: Arrow – bramble */, tip: en7ShotTip(fx, 'arrow') /* EN7: – poison / – bleed */}); }
+        if(fx.fireArrow > 0) shots.push({amount: fx.fireArrow, dmgType: 'heat', fire: true, at: fx.fireArrowBramble ? 'hq' : undefined /* EN6 */, tip: en7ShotTip(fx, 'fireArrow') /* EN7 */});
         // Ice Arrow N, Twin Shot N, Volley N (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire
         // Arrow, Ice Arrow etc. will be more normal."). Ice Arrow: N cold, and a 1 in 2 chance to lay a Freeze counter on a unit
         // that has none (so it can't keep a unit locked every round). Twin Shot: two arrows of N at two different random enemy
         // units (both at the one if there is only one). Volley: once every 2 rounds (its 1st, 3rd, 5th... Ready round), an arrow of
         // N at every enemy unit.
-        if(Number(fx.iceArrow) > 0) shots.push({amount: Number(fx.iceArrow) + fl17, dmgType: 'cold', ice: true, status: 'freezeCounter'});
+        if(Number(fx.iceArrow) > 0) shots.push({amount: Number(fx.iceArrow), dmgType: 'cold', ice: true, status: 'freezeCounter'});
         // Bola N (2026-10-30, package ENG14, owner X26: "Bola! Works like arrow, but pins targets down somehow... maybe they can't move and
         // attack? but can use skills?"): Arrow N's shot (the enemy facing it, else the nearest, else the bramble; Fletcher N adds), and a unit
         // it hits is Pinned (c.pinDown) for its next turn: it can't swing (its next swing is skipped) and can't move or be moved; its skills,
         // shots and triggers still work. Claude's call (decision ENG14-3): a unit that broke free of a Pin last round (or this one) can't be
         // pinned again yet, so one Bola costs a unit at most every other swing (as Ice Arrow never keeps a unit locked).
-        if(Number(fx.bola) > 0) shots.push({amount: Number(fx.bola) + fl17, dmgType: 'physical', bola: true, status: 'pin'});
-        if(Number(fx.lasso) > 0 && !c.lassoUsed){ c.lassoUsed = true; shots.push({amount: Number(fx.lasso) + fl17, dmgType: 'physical', lasso: true, status: 'lasso'}); } // Lasso N (ENG15, 2026-10-31): once
+        if(Number(fx.bola) > 0) shots.push({amount: Number(fx.bola), dmgType: 'physical', bola: true, status: 'pin'});
+        if(Number(fx.lasso) > 0 && !c.lassoUsed){ c.lassoUsed = true; shots.push({amount: Number(fx.lasso), dmgType: 'physical', lasso: true, status: 'lasso'}); } // Lasso N (ENG15, 2026-10-31): once
         if(Number(fx.twinShot) > 0){ const foes = liveFoesOf(enemy); const pool = foes.slice(), picks = [];
           while(picks.length < 2 && pool.length) picks.push(pool.splice(Math.floor(rnd()*pool.length), 1)[0]);
           if(picks.length === 1) picks.push(picks[0]);
           const nTw = quietStills(c, sideOf(pid), events, 'twinShot') ? 1 : 2; // Quiet Contemplation (2026-10-19): one arrow
-          for(let k = 0; k < nTw; k++) shots.push({amount: Number(fx.twinShot) + fl17, dmgType: 'physical', twin: true, at: picks[k] || 'hq'}); }
+          for(let k = 0; k < nTw; k++) shots.push({amount: Number(fx.twinShot), dmgType: 'physical', twin: true, at: picks[k] || 'hq'}); }
         if(Number(fx.volley) > 0){ c.volleyClock = (c.volleyClock||0) + 1;
           if(c.volleyClock % 2 === 1){ const foes = liveFoesOf(enemy);
-            (foes.length ? foes : ['hq']).forEach(t=> shots.push({amount: Number(fx.volley) + fl17, dmgType: 'physical', volley: true, at: t})); } }
+            (foes.length ? foes : ['hq']).forEach(t=> shots.push({amount: Number(fx.volley), dmgType: 'physical', volley: true, at: t})); } }
         // The Bolts (2026-10-15, user: "We need bolts - these might be quite creature-specific. All elemental or status-y. They just
         // represents 'spits' of something at the enemy."): every round while Ready, before melee, it spits at the enemy opposite
         // (the nearest enemy unit if none is opposite; the castle if the board is empty). One shot per Bolt skill; what each
@@ -7772,7 +7851,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(recordEvents && events) events.push({type:'arrow', snipe:true, side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: t.uid, targetDefId: t.defId, amount: amt, headwind: sr > 0 || undefined});
             fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(eng28DarkShotMiss(c, pid, tg)){ if(recordEvents && events) events.push({type:'blindMiss', side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetKind:'card', targetUid:tg.card.uid, night:true, ranged:true, eng28:true}); } else if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, killCredit, c.uid, true, true); }
             if(sr === 0 && hwTwice()) sn = 2; } } } }
-        shots.forEach(sh=>{ if(sh.tip && sh.amount > 0 && sh.at !== 'hq'){ sh.n = sh.amount; sh.tip = Object.assign({}, sh.tip, {n: Math.round(sh.amount)}); sh.amount = 0; sh.statusOnly = true; } }); // ENG9 (2026-10-26, #40): a – poison / – bleed shot deals counters, not damage (a unit target; the bramble takes its N)
+        shots.forEach(sh=>{ if(sh.tip && sh.amount > 0 && sh.at !== 'hq'){ sh.n = sh.amount + fl17; /* ENG34: Fletcher's N joins a status-only shot's counters, as it did */ sh.tip = Object.assign({}, sh.tip, {n: Math.round(sh.amount)}); sh.amount = 0; sh.statusOnly = true; } }); // ENG9 (2026-10-26, #40): a – poison / – bleed shot deals counters, not damage (a unit target; the bramble takes its N)
         if(shots.length && hwTwice()) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice (not under Quiet Contemplation, 2026-10-19)
         if(shots.length && fx.doubleTime && !quietStills(c, sideOf(pid), events, 'doubleTime')) shots.push(...shots.map(x=> Object.assign({}, x))); // Double Time (ENG27): its shots twice
         if(shots.length && fx.coffee && c._coffeeShot !== combatNo && coffeeRound(c, sideOf(pid), events)){ c._coffeeShot = combatNo; if(!coffeeStill(c, sideOf(pid), events)) shots.push(...shots.map(x=> Object.assign({}, x))); } // Coffee N (ENG11, K2): its shots twice
@@ -9510,7 +9589,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   var bxBook = null; // the acting archer's kill-credit book (its arrow's kills are its kills, as a swing's are)
   function bxArrowShot(players, sideOf, pid, c, n, stats, events, how, bramble, tip){
     const pl = players[pid], enemy = players[otherId(pid)]; if(!pl || !enemy || !c || !(c.hp > 0)) return false;
-    const amount = Math.max(0, Math.round(Number(n) || 0)) + ((pl.perks && pl.perks.fletcher) ? 1 : 0) + auraN(pl, 'fletcher') + eqArrowBonus(pl);
+    const amount = Math.max(0, Math.round(Number(n) || 0)) + ((pl.perks && pl.perks.fletcher) ? 1 : 0); // ENG34 (2026-11-07): Fletcher / Weapon Master come in fireDamageAction (a shot)
     const opp = opposingCardOf(players, pid, c), near0 = (opp && opp.card && opp.card.hp > 0) ? opp.card : arrowTargetOf(players, pid, c);
     const near = (near0 && !bramble) ? shotRedirect(players, sideOf, pid, c, near0, events) : near0, pulled = lastShotPull; lastShotPull = null; // ENG22 (2026-11-03, DESIGN1-4): Taunt / Guardian
     const target = (near && !bramble) ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'}; // EN6 (2026-10-24): Arrow – bramble aims at the bramble
@@ -11341,7 +11420,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         maybeBreakChain(players, sideOf, a.enemyId, side, stats, events, {kind:'damage', amount:r2.dmg});
         // ENG9 (2026-10-26, owner EN7-3: "Cleave and related DOES spread the status."): a side hit that got through carries the unit's own
         // Poison N and Bleed N (with Greater Poison, Hemorrhage and Venom Master, as its swing gives them). Was EN7: an area, no statuses.
-        if(r2.dmg > 0 && side.hp > 0 && !isNullifier(a.att)) en7HitStatuses(a.att, side, mySide, sideOf(a.enemyId), events, 'cleave');
+        eng34MeleeHit(players, sideOf, otherId(a.enemyId), a.att, side, r2.dmg, events, killCredit, 'cleave', null, {stats, elemental: r2.elementalAmount > 0}); // ENG34 (2026-11-07): every melee rider and the melee defences (was ENG9: Poison N / Bleed N on damage through)
         if(!killCredit[side.uid]) killCredit[side.uid] = new Set();
         killCredit[side.uid].add(statKey(mySide, a.att.defId));
       };
@@ -11386,6 +11465,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               rollStatusOnHit('paralyze', attDef.effects.paralyze, c2, mySide, a.att, sideOf, a.enemyId, events);
               rollStatusOnHit('stunOnHit', attDef.effects.stunOnHit, c2, mySide, a.att, sideOf, a.enemyId, events);
               if(attDef.effects.sap && r3.dmg>0){ const healed3 = Math.min(a.att.maxHp - a.att.hp, r3.dmg); if(healed3>0){ a.att.hp += healed3; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healed3}); } }
+              eng34MeleeHit(players, sideOf, otherId(a.enemyId), a.att, c2, r3.dmg, events, killCredit, 'prong', ENG34_PRONG_SKIP, {stats, elemental: r3.elementalAmount > 0}); // ENG34 (2026-11-07): the rest of the melee riders (Daunt, Breach, Corrode, Toxin ...) and Thorns / Poison Barbs; the subset above stays as it was
               if(c2.hp<=0){ if(!killCredit[c2.uid]) killCredit[c2.uid] = new Set(); killCredit[c2.uid].add(statKey(mySide, a.att.defId)); }
               else if(!nullF){
                 bleedTick(sideOf, a.enemyId, c2, stats, events, 'defend');
@@ -11994,3 +12074,4 @@ if(typeof module !== 'undefined' && module.exports){
 if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {fogOfWarView, fogPeekRoll, FOG_REVEAL_KEYS}); // Package FOG (2026-10-21): the fog of war's pure helpers
 if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS;
 if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SELFISH_BOONS, selfishBoonCount, selfishBoonThemeOf, selfishBoonWho, BOSS_GIMMICKS /* CONTENT11 (2026-11-05) */}); // Package DF3 (2026-10-24): the selfish boons // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests
+if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SKILL_DELIVERY, skillDeliveryOf, skillRidesOn, rangedSwingOf}); // ENG34 (2026-11-07): skill delivery (canonical/skill-delivery.json)
