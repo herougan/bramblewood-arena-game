@@ -50,10 +50,11 @@ const hitsOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid
   ok(rise && rise.uid === D.uid && rise.mode === 'fly' && D.diveAloft != null && !ev.some(x=> x.type === 'hit' && x.attUid === D.uid), `round 1: it rises (mode ${rise && rise.mode}) instead of swinging`);
   ok(e.diveEligible(D) && D.dived === 1, 'the rise spends its one Dive');
   ev = round(e, P, 2); const ev2 = ev; const at = ev2.findIndex(x=> x.type === 'dive');
-  ok(at >= 0 && ev2.slice(0, at).some(x=> x.type === 'evaded' && x.targetUid === D.uid && x.reason === 'aloft') && !ev2.slice(0, at).some(x=> x.type === 'hit' && x.targetUid === D.uid),
-    'round 2, before its strike: the swing at it finds nothing (evaded, aloft)');
+  // 2026-11-07 (ENG32, owner 09:47 #11): a diver blocks nothing: the unit facing it swings at the bramble (was: the swing at it whiffed, aloft)
+  ok(at >= 0 && ev2.slice(0, at).some(x=> x.type === 'hitHQ' && x.attUid === F.uid) && !ev2.slice(0, at).some(x=> x.type === 'hit' && x.targetUid === D.uid),
+    'round 2, before its strike: the unit facing it swings at the bramble (ENG32), nothing hits the diver');
   const dv = ev2[at], hit = ev2.find(x=> x.type === 'hit' && x.attUid === D.uid);
-  ok(dv && dv.strike && dv.targetUid === wk.uid && dv.bonus === 2 && hit && hit.dmg === 5 && hit.dive === 2 && D.diveAloft == null, `round 2: it strikes the weakest of the row for 3 + 2 (${hit && hit.dmg}) and is down again`);
+  ok(dv && dv.strike && dv.targetUid === F.uid && dv.bonus === 2 && hit && hit.dmg === 5 && hit.dive === 2 && D.diveAloft == null && wk.hp === 5, `round 2: it strikes the unit opposite it (ENG32; was the weakest of the row) for 3 + 2 (${hit && hit.dmg}) and is down again`);
   ok(D.diveExposed === dv && true || D.diveExposed > 0, 'it is Exposed for that round (diveExposed)');
   void F; void hp0; }
 { const {e, P} = mk(); const D = put(e, P, 1, 'x-dive', 0); put(e, P, 2, 'x-wall', 0); put(e, P, 2, 'x-weak', 1); const S = put(e, P, 2, 'x-spot', 2);
@@ -63,7 +64,7 @@ const hitsOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid
   ok(!hitsOn(ev.slice(0, ev.findIndex(x=> x.type === 'dive')), D.uid).length && (missAloft || !arrowAt.some(x=> x.targetUid === D.uid && ev.indexOf(x) < ev.findIndex(y=> y.type === 'dive'))), 'a Spotter\'s arrow can\'t find it while it is aloft'); } // 2026-11-06 (ENG27, owner item 11): the arrow is Speed 0 now, after the swings: it flies once the diver has struck and is down, so only an arrow before the strike counts
 { const {e, P} = mk(); put(e, P, 1, 'x-dive', 0); const T = put(e, P, 2, 'x-taunt', 0); const wk = put(e, P, 2, 'x-weak', 1); const G = put(e, P, 2, 'x-guard', 2);
   round(e, P); const ev = round(e, P); const dv = ev.find(x=> x.type === 'dive'), h = ev.find(x=> x.type === 'hit' && x.dive);
-  ok(dv && dv.targetUid === wk.uid && h && h.guardianRedirect && h.targetUid === G.uid, `the strike goes past the Taunt onto the weakest; the Guardian beside it steps in (${h && h.targetDefId})`); void T; }
+  ok(dv && dv.targetUid === T.uid && h && h.targetUid === T.uid && wk.hp === 5, `the strike hits the unit opposite it, here the Taunt unit (ENG32, 2026-11-07; was the weakest, past Taunt) (${h && h.targetDefId})`); void G; }
 { const {e, P} = mk(); const D = put(e, P, 1, 'x-dive-g', 1); const W = put(e, P, 1, 'x-weak', 0); put(e, P, 2, 'x-hit', 0); put(e, P, 2, 'x-weak', 1);
   round(e, P, 1); ok(D.diveAloft != null, 'a diving Guardian rises');
   const ev = round(e, P, 2); const onW = hitsOn(ev, W.uid)[0];
@@ -123,14 +124,15 @@ const hitsOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid
 { if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
   const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), T = SC.make(costs);
   const sk = id=> costs.skills.find(r=> r.id === id);
-  ok(sk('dive').value === 1.25 && sk('dive').pow === 0.5 && Math.abs(T.skillCost('dive', 2) - 1.77) < 0.01 && T.skillCost('dive', true) === 1.25, `Dive N = 1.25 x N^0.5 (Dive 2: ${T.skillCost('dive', 2)})`);
+  // 2026-11-07 (ENG32): re-priced by the 4-round rule after the rework: plain Dive -1, Dive N -1 + 0.5 N (was 1.25 x N^0.5); the old row is kept as eng32Was
+  ok(sk('dive').eng32Was && sk('dive').eng32Was.value === 1.25 && T.skillCost('dive', true) === -1 && Math.abs(T.skillCost('dive', 2) - 0) < 0.01, `Dive: plain -1, Dive 2 ${T.skillCost('dive', 2)} (ENG32; EN7's 1.25 x N^0.5 kept as eng32Was)`);
   const base = {id:'q', attack:1, health:10, rarity:'common', effects:{pounce:2, poison:2}}, noP = {id:'q', attack:1, health:10, rarity:'common', effects:{pounce:2}};
   const sP = T.cardS(base.effects, base).S, s0 = T.cardS(noP.effects, noP).S + T.skillCost('poison', 2);
   ok(Math.abs(sP - (s0 + 0.33 * T.skillCost('poison', 2))) < 0.02, `Pounce + Poison 2 pays 0.33 x Poison's price on top (${sP} vs ${s0})`);
   const at = T.cardS({arrow:2, arrowPoison:true}, {}).S - T.cardS({arrow:2}, {}).S; ok(Math.abs(at - 0.9 * T.skillCost('poison', 1)) < 0.02, `Arrow – poison: 0.9 x Poison 1 (${at})`);
   ok(T.cardS({arrowPoison:true}, {}).S === 0, '– poison without the shot costs nothing');
   const tv = T.actionValue({do:'arrow', amount:1, withPoison:true}, {effects:{}}).value - T.actionValue({do:'arrow', amount:1}, {effects:{}}).value; ok(tv > 1.2 && tv < 1.3, `the Arrow action – poison: + 0.9 x the Poison action (${tv})`);
-  ok(T.cardS({dive:1, diveUses:2}, {}).S === 2.5, 'diveUses 2: Dive\'s price twice');
+  ok(T.cardS({dive:1, diveUses:2}, {}).S === 2 * T.skillCost('dive', 1), 'diveUses 2: Dive\'s price twice'); // 2026-11-07 (ENG32): Dive 1 is -0.5 now (was 1.25)
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), by = id=> cards.find(c=> c.id === id);
   const pf = by('puffin-diver'), hs = by('harbor-seal');
   ok(pf.effects.dive === 2 && pf.effects.flying && pf.attack === 2 && pf.health === 5 && T.budget(pf).ok, 'Puffin Diver: Dive 2 (a Flyer: aloft), 2/5, in its budget');

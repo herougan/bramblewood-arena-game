@@ -939,7 +939,7 @@ const PASSIVE_DEFS = [
     get:e=> e.charge ? chargeToText(e.charge) : undefined, apply:(e, v)=>{ const c = parseChargeText(v); if(c) e.charge = c; }},
   {key:'supremeTide', category:'passive', label:'Supreme Tide', kind:'boolean', legendary:true /* 2026-10-18 (owner 23:05): Legendary, the Blue Dragon's own */, desc:()=>`A Tide unit whose Tide bonuses are doubled and always on, both at once: +2 Attack and +2 Armor every round, Flood or Ebb. Nothing that moves the tide can take them away.`},
   // Brood N (user: "Swarm units tend to like summoning more units of their type").
-  {key:'brood', category:'evergreen', label:'Brood', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, ${v||1} brood token${(v||1) === 1 ? '' : 's'} of its own kind hatch${(v||1) === 1 ? 'es' : ''} beside it: a 1/1 "Brood" with Wait 1, the same types (it counts for Swarm), only Swarm, and Flying if this card flies.`},
+  {key:'brood', category:'evergreen', label:'Brood', kind:'number', min:1, defaultValue:1, desc:v=> (Number(v) || 1) > 1 ? `When it arrives, ${v} 1/1 copies of it (Wait 1, every skill but Brood) hatch beside it.` : `When it arrives, a 1/1 copy of it (Wait 1, every skill but Brood) hatches beside it.`}, // ENG32 (2026-11-07, owner 09:47 #15): a 1/1 copy, no Swarm
   // 2026-10-12 skills (the 22:40 list).
   {key:'rainmaker', category:'evergreen', label:'Rainmaker', kind:'number', min:1, defaultValue:3, desc:v=>`When it arrives, Spring Rain falls for ${v||3} rounds (every unit heals 2 each round).`},
   {key:'rainrunner', category:'passive', label:'Rainrunner', kind:'number', min:0, desc:v=>`While it rains: +${v}/+${v}, and it can't be blocked (it goes straight for the bramble).`,
@@ -1862,7 +1862,7 @@ Object.assign(SKILL_ICON, {plenty:'🃏', plentyGrant:'🃏', scarcity:'🫗', s
 //               (no dodge) for the rest of that round. Only a Flyer, a Tide unit or a Sprinter can take it;
 //   Bolster N   (owner N21-7) N temporary Health as each round's fight begins (the pale blue end of the Health bar), gone next round;
 //   Parasite    (the owner's 10-21 note) may be played onto an enemy unit in reach, feeds on it each round, drops onto your side when it dies.
-PASSIVE_DEFS.push({key:'dive', category:'passive', label:TX('ui.skn-dive'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-dive', {n: numOr(v, 1)}), codexNote:TX('ui.sk-dive-codex')},
+PASSIVE_DEFS.push({key:'dive', category:'passive', label:TX('ui.skn-dive'), kind:'number', min:1, defaultValue:1, desc:v=> (v === true || v == null) ? TX('ui.sk-dive0') : TX('ui.sk-dive', {n: numOr(v, 1)}) /* ENG32 (2026-11-07): plain Dive has no bonus */, codexNote:TX('ui.sk-dive-codex')},
   {key:'bolster', category:'passive', label:TX('ui.skn-bolster'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-bolster', {n: numOr(v, 2)}), codexNote:TX('ui.sk-bolster-codex')},
   {key:'parasite', category:'passive', label:TX('ui.skn-parasite'), kind:'boolean', desc:()=> TX('ui.sk-parasite'), codexNote:TX('ui.sk-parasite-codex')});
 Object.assign(SKILL_ICON, {dive:'⤵️', bolster:'🫧', parasite:'🪱'});
@@ -3116,7 +3116,7 @@ const SKILL_TEXT = {
   meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
   nullify: ()=> TX('ui.sk-nullify', {zone: EXILE_ZONE_NAME}), // 2026-10-18 (package D): terse
   restless: ()=> `Every upkeep it steps one column toward the nearest enemy.`,
-  brood: v=> Number(v) > 1 ? `When it arrives, ${v} 1/1 Brood tokens of its kind (Swarm) hatch beside it.` : `When it arrives, a 1/1 Brood token of its kind (Swarm) hatches beside it.`,
+  brood: v=> Number(v) > 1 ? `When it arrives, ${v} 1/1 copies of it (Wait 1, every skill but Brood) hatch beside it.` : `When it arrives, a 1/1 copy of it (Wait 1, every skill but Brood) hatches beside it.`, // ENG32 (2026-11-07, owner 09:47 #15)
   sweep: v=> `Also deals ${numOr(v, 1)} damage to the units beside its target.`, // Cleave N: default 1 (2026-10-16)
   rage: (v, n, e)=> e && e.rageGrant && typeof e.rageGrant === 'object' ? TX('ui.sk-rage-grant', {skills: grantText(e.rageGrant) || TX('ui.cx-nothing')}) : `Below half Health: double Attack and takes half damage.`, // + Rage – {…} (EN, 2026-10-23)
   immolation: v=> `Every upkeep: ${v} fire damage to adjacent units and the enemy facing it.`, // 2026-11-03 (TEXT1): + the facing enemy, as the engine's upkeep burns it
@@ -41049,7 +41049,7 @@ function boardCardHTML(c, defs, opts){
     d.crystalOf ? 'is-crystal' : '', // Crystallise (2026-10-16)
     d.relicOf ? 'is-relic' : '', // Relic (2026-10-19, package E): the dead card's art, faded and ghostly
     c.bound>0 ? 'is-bound' : '', c.invisible>0 ? 'is-invisible' : '', c.invincible>0 ? 'is-invincible' : '', c.toxin>0 ? 'is-toxic' : '', // W2 (2026-10-16)
-    c.diveAloft != null ? (c.diveMode === 'tide' ? 'en7-under' : 'en7-aloft') : '', // EN7 (2026-10-24): Dive's first turn
+    c.diveAloft != null ? eng32DiveCls(c) : '', // EN7 (2026-10-24): Dive's first turn; ENG32 (2026-11-07): + plain Dive's low look
     c.petrified ? 'is-petrified' : '', // Petrification (2026-10-14): grey stone for the round
     c.crowned ? 'is-crowned' : '', (c.transformed && trTfName(d)) ? ('tf-on tf-' + trTfName(d)) : '', // Package TR (2026-10-21): the Crown's holder; a named Transform's look
     vis3ShieldAmount(c) > 0 ? 'has-shield' : '', // 2026-11-06 (package UI23 #1/#18): any Shield left (with Shell's / Bolster's temporary Health, as the 💠 pip counts); 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield"): its Health number is blue while it holds a Shield
@@ -43125,7 +43125,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-staggered', c.staggered>0);
   el.classList.toggle('is-bound', c.bound>0); el.classList.toggle('is-invisible', c.invisible>0); el.classList.toggle('is-invincible', c.invincible>0); el.classList.toggle('is-toxic', c.toxin>0); // W2 (2026-10-16)
   el.classList.toggle('is-gpoisoned', c.gpoison>0); // EN4 (2026-10-23)
-  el.classList.toggle('en7-aloft', c.diveAloft != null && c.diveMode !== 'tide'); el.classList.toggle('en7-under', c.diveAloft != null && c.diveMode === 'tide'); // EN7 (2026-10-24)
+  eng32DiveToggle(el, c.diveAloft != null, c.diveMode, c.uid); // EN7 (2026-10-24); ENG32 (2026-11-07): the three looks
   const badges = [];
   if(c.poison>0) badges.push(ui7PoisonChip(c)); // 2026-10-31 (package UI7, owner Y1): the icon alone; the exact value is in the tooltip and aria-label
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
@@ -51497,36 +51497,52 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
 // diveMode), so a re-render keeps the look. The Parasite's bloom (#2): a 🪱 flies from the parent's host (or from the Parasite) to the
 // new host; parasiteAttach then shows it there.
 function en7DiveMarksHTML(c){
+  if(c.diveMode === 'ground'){ const tg = TX('ui.eng32-tip-ground'); return `<span class="en7-shadow eng32-gshadow" aria-hidden="true"></span><span class="en7-dive-tag" title="${escapeAttr(tg)}" aria-label="${escapeAttr(tg)}">⤵️</span>`; } // ENG32 (2026-11-07)
   const under = c.diveMode === 'tide', tip = TX(under ? 'ui.en7-tip-under' : 'ui.en7-tip-aloft');
   return under ? `<span class="en7-water" aria-hidden="true"><i></i><i></i></span><span class="en7-dive-tag" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">🌊</span>`
     : `<span class="en7-shadow" aria-hidden="true"></span><span class="en7-dive-tag" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">☁️</span>`;
 }
 function en7Rc(uid){ const m = matchState; return m && m.replayCards && uid != null ? m.replayCards[uid] : null; }
 function en7SyncEl(uid, aloft, mode){ const el = boardCardEl(uid); if(!el) return null;
-  el.classList.toggle('en7-aloft', !!aloft && mode !== 'tide'); el.classList.toggle('en7-under', !!aloft && mode === 'tide'); try{ eq2Refresh(uid); }catch(e){} return el; }
+  eng32DiveToggle(el, !!aloft, mode, uid); try{ eq2Refresh(uid); }catch(e){} return el; }
+// ENG32 (2026-11-07, owner 11-07 09:47 #11: "For flying, raise the card higher into the sky. For dive, lower it, then make it blue-er -
+// gradient that shifts. For just dive, I'll just put the card directly on the 'ground' - together with its shadow basically, and slightly
+// tilted, (random, either -5, -3, 3, or 5 degrees)"): the three looks of a unit that has dived. 'fly' (.en7-aloft): raised higher (-30px,
+// was -16px), a wider, fainter shadow below; 'tide' (.en7-under): lowered, tinted blue under a band of water whose gradient drifts;
+// 'ground' (.eng32-ground): flat on the board with its shadow tight beneath it, tilted by one of -5 / -3 / 3 / 5 degrees (picked from its
+// uid, so a repaint keeps the same tilt). The Effects setting: the bob and the drifting water run at High only (Medium / Low / Off and
+// reduced motion keep the still look); the rise / strike / land moves are en7Anim's (fxAtLeast('low'), reduced motion off).
+const ENG32_TILTS = [-5, -3, 3, 5];
+function eng32Tilt(uid){ const u = Math.abs(Math.round(Number(uid) || 0)); return u % ENG32_TILTS.length; }
+function eng32DiveCls(c){ const m = c && c.diveMode; return m === 'tide' ? 'en7-under' : m === 'ground' ? 'eng32-ground eng32-t' + eng32Tilt(c.uid) : 'en7-aloft'; }
+function eng32DiveToggle(el, on, mode, uid){ if(!el) return; const t = eng32Tilt(uid);
+  el.classList.toggle('en7-aloft', !!on && mode !== 'tide' && mode !== 'ground'); el.classList.toggle('en7-under', !!on && mode === 'tide'); el.classList.toggle('eng32-ground', !!on && mode === 'ground');
+  ENG32_TILTS.forEach((x, i)=> el.classList.toggle('eng32-t' + i, !!on && mode === 'ground' && i === t)); }
 function en7Tile(el){ return el ? el.querySelector('.card-tile') : null; } // (a Flyer's tile sits in its .fly-body)
 function en7Anim(t, frames, ms){ if(!t || reducedMotion() || !fxAtLeast('low')) return null; try{ return t.animate(frames, {duration: ms, easing: 'cubic-bezier(.3,.7,.4,1)'}); }catch(e){ return null; } }
 function en7Strike(ev){
   const rc = en7Rc(ev.attUid), mode = ev.mode || (rc && rc.diveMode) || 'fly'; if(rc) rc.diveAloft = null;
   const el = en7SyncEl(ev.attUid, false, mode), t = en7Tile(el); if(!el) return;
-  if(mode === 'tide'){ en7Anim(t, [{top:'12px', opacity:.5, transform:'scale(.96)'}, {top:'-10px', opacity:1, transform:'scale(1.06)', offset:.55}, {top:'0px', opacity:1, transform:'none'}], 420);
+  if(mode === 'tide'){ en7Anim(t, [{top:'18px', opacity:.75, transform:'scale(.96)'}, {top:'-10px', opacity:1, transform:'scale(1.06)', offset:.55}, {top:'0px', opacity:1, transform:'none'}], 420);
     try{ SoundKit.splash && SoundKit.splash(); }catch(e){} if(hasGsap() && fxAtLeast('low') && !reducedMotion()){ const c = en2Ctr(el); en2Ring(c.x, c.y + c.h * .3, c.w * 1.1); } }
-  else { en7Anim(t, [{top:'-18px', transform:'scale(1.05) rotate(-5deg)'}, {top:'6px', transform:'scale(.98) rotate(3deg)', offset:.6}, {top:'0px', transform:'none'}], 380);
+  else if(mode === 'ground'){ const deg = ENG32_TILTS[eng32Tilt(ev.attUid)]; en7Anim(t, [{top:'4px', transform:'scale(.95) rotate(' + deg + 'deg)'}, {top:'-12px', transform:'scale(1.06)', offset:.45}, {top:'0px', transform:'none'}], 360); } // ENG32 (2026-11-07): a spring up off the ground
+  else { en7Anim(t, [{top:'-30px', transform:'scale(1.05) rotate(-5deg)'}, {top:'6px', transform:'scale(.98) rotate(3deg)', offset:.6}, {top:'0px', transform:'none'}], 400); // ENG32: from higher up (was -18px)
     try{ SoundKit.featherFlutter(); }catch(e){} }
   el.classList.remove('eq2-diving'); void el.offsetWidth; el.classList.add('eq2-diving'); setTimeout(()=> el.classList.remove('eq2-diving'), 700);
-  try{ floatText(el, TX('ui.eq2-dive-float', {n: ev.bonus}), 'quick'); }catch(e){}
+  try{ floatText(el, ev.bonus > 0 ? TX('ui.eq2-dive-float', {n: ev.bonus}) : '⤵️ ' + TX('ui.skn-dive'), 'quick'); }catch(e){} // ENG32: plain Dive has no + N
   setTimeout(()=>{ try{ const e2 = boardCardEl(ev.attUid); if(e2) floatText(e2, TX('ui.en7-float-exposed'), 'debuff'); }catch(e){} }, 380);
 }
 function en7Vfx(ev){
   if(!ev || !matchState) return; const fl = (el, t, cls)=>{ if(el) try{ floatText(el, t, cls); }catch(e){} };
   if(ev.type === 'diveRise'){ const rc = en7Rc(ev.uid); if(rc){ rc.diveAloft = 1; rc.diveMode = ev.mode; }
     const el = en7SyncEl(ev.uid, true, ev.mode), t = en7Tile(el); if(!el) return;
-    if(ev.mode === 'tide'){ en7Anim(t, [{top:'0px', opacity:1}, {top:'-6px', opacity:1, offset:.3}, {top:'12px', opacity:.5}], 520); try{ SoundKit.splash && SoundKit.splash(); }catch(e){}
+    if(ev.mode === 'tide'){ en7Anim(t, [{top:'0px', opacity:1}, {top:'-6px', opacity:1, offset:.3}, {top:'18px', opacity:.75}], 520); /* ENG32: lower, less faded */ try{ SoundKit.splash && SoundKit.splash(); }catch(e){}
       if(hasGsap() && fxAtLeast('low') && !reducedMotion()){ const c = en2Ctr(el); en2Ring(c.x, c.y + c.h * .3, c.w); } fl(el, TX('ui.en7-float-under'), 'quick'); }
-    else { en7Anim(t, [{top:'0px', transform:'none'}, {top:'4px', transform:'scale(.97)', offset:.2}, {top:'-16px', transform:'none'}], 520); try{ featherBurst(el); SoundKit.featherFlutter(); }catch(e){} fl(el, TX('ui.en7-float-aloft'), 'quick'); }
+    else if(ev.mode === 'ground'){ const deg = ENG32_TILTS[eng32Tilt(ev.uid)]; en7Anim(t, [{top:'0px', transform:'none'}, {top:'-6px', transform:'scale(1.02)', offset:.3}, {top:'0px', transform:'scale(.96) rotate(' + deg + 'deg)'}], 460); fl(el, TX('ui.eng32-float-ground'), 'quick'); } // ENG32 (2026-11-07): it drops low
+    else { en7Anim(t, [{top:'0px', transform:'none'}, {top:'4px', transform:'scale(.97)', offset:.2}, {top:'-30px', transform:'none'}], 560); try{ featherBurst(el); SoundKit.featherFlutter(); }catch(e){} fl(el, TX('ui.en7-float-aloft'), 'quick'); } // ENG32: higher (was -16px)
     return; }
   if(ev.type === 'diveLand'){ const rc = en7Rc(ev.uid); if(rc) rc.diveAloft = null; const el = en7SyncEl(ev.uid, false, ev.mode);
-    en7Anim(en7Tile(el), ev.mode === 'tide' ? [{top:'12px', opacity:.5}, {top:'0px', opacity:1}] : [{top:'-16px'}, {top:'0px'}], 360); fl(el, TX('ui.en7-float-land'), 'faded'); return; }
+    en7Anim(en7Tile(el), ev.mode === 'tide' ? [{top:'18px', opacity:.75}, {top:'0px', opacity:1}] : ev.mode === 'ground' ? [{transform:'scale(.96) rotate(' + ENG32_TILTS[eng32Tilt(ev.uid)] + 'deg)'}, {transform:'none'}] : [{top:'-30px'}, {top:'0px'}], 360); fl(el, TX('ui.en7-float-land'), 'faded'); return; } // ENG32: the three looks
   if(ev.type === 'evaded' && (ev.reason === 'aloft' || ev.reason === 'under')){ fl(boardCardEl(ev.targetUid), TX('ui.en7-float-miss'), 'quick'); return; }
   if(ev.type === 'parasiteAttach' && ev.bloom){ const from = boardCardEl(ev.fromUid), to = boardCardEl(ev.targetUid);
     try{ SoundKit.bloomTone && SoundKit.bloomTone(); }catch(e){}
@@ -51534,25 +51550,35 @@ function en7Vfx(ev){
     setTimeout(()=> fl(boardCardEl(ev.targetUid), '🌸 +1/+1', 'buff'), 260); }
 }
 function en7LogText(ev, nm){
-  if(ev.type === 'diveRise') return {cls:'', text: TX(ev.mode === 'tide' ? 'ui.en7-log-under' : 'ui.en7-log-aloft', {unit: nm(ev.defId)})};
+  if(ev.type === 'diveRise') return {cls:'', text: TX(ev.mode === 'tide' ? 'ui.en7-log-under' : ev.mode === 'ground' ? 'ui.eng32-log-ground' : 'ui.en7-log-aloft', {unit: nm(ev.defId)})}; // ENG32: + low
   if(ev.type === 'diveLand') return {cls:'', text: TX('ui.en7-log-land', {unit: nm(ev.defId)})};
-  if(ev.type === 'dive' && ev.strike) return {cls:'', text: ev.targetDefId ? TX('ui.eq2-log-dive', {unit: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.bonus}) : TX('ui.en7-log-strike-none', {unit: nm(ev.attDefId), n: ev.bonus})};
+  if(ev.type === 'dive' && ev.strike){ const b = ev.bonus > 0; // ENG32 (2026-11-07): plain Dive has no + N; no unit opposite: the bramble
+    return {cls:'', text: ev.targetDefId ? TX(b ? 'ui.eq2-log-dive' : 'ui.eng32-log-dive0', {unit: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.bonus}) : TX(b ? 'ui.en7-log-strike-none' : 'ui.eng32-log-dive0-bramble', {unit: nm(ev.attDefId), n: ev.bonus})}; }
   if(ev.type === 'evaded' && (ev.reason === 'aloft' || ev.reason === 'under')) return {cls:'', text: TX('ui.en7-log-miss', {att: nm(ev.attDefId), unit: nm(ev.targetDefId)})};
   return null;
 }
 (function en7Styles(){ if(typeof document === 'undefined' || document.getElementById('en7Styles')) return; const st = document.createElement('style'); st.id = 'en7Styles';
-  st.textContent = `.board-card.en7-aloft .card-tile{top:-16px; animation:en7Bob 2.2s ease-in-out infinite; filter:drop-shadow(0 14px 6px rgba(0,0,0,.32));}
-  @keyframes en7Bob{0%,100%{top:-16px;} 50%{top:-21px;}}
+  st.textContent = `.board-card.en7-aloft .card-tile{top:-30px; animation:en7Bob 2.2s ease-in-out infinite; filter:drop-shadow(0 22px 8px rgba(0,0,0,.28));}
+  @keyframes en7Bob{0%,100%{top:-30px;} 50%{top:-36px;}}
   .board-card .eq2-marks .en7-shadow{position:absolute; left:10%; right:10%; bottom:-9px; height:18px; border-radius:50%; background:radial-gradient(ellipse at center, rgba(0,0,0,.78), rgba(0,0,0,.35) 50%, rgba(0,0,0,0) 72%); animation:en7Shadow 2.2s ease-in-out infinite; z-index:-1;}
   @keyframes en7Shadow{0%,100%{transform:scale(1); opacity:.85;} 50%{transform:scale(.86); opacity:.6;}}
-  .board-card.en7-under .card-tile{top:12px; opacity:.5; filter:saturate(.55) brightness(.85) hue-rotate(-12deg);}
+  .board-card.en7-under .card-tile{top:18px; opacity:.78; filter:sepia(.45) hue-rotate(170deg) saturate(1.6) brightness(.88);}
   .board-card .eq2-marks .en7-water{position:absolute; left:-3px; right:-3px; bottom:-4px; height:58%; border-radius:0 0 9px 9px; overflow:hidden; background:linear-gradient(180deg, rgba(90,170,220,.18), rgba(30,90,150,.55)); box-shadow:inset 0 2px 0 rgba(200,240,255,.55);}
   .board-card .eq2-marks .en7-water i{position:absolute; left:-50%; width:200%; height:10px; top:-5px; background:radial-gradient(circle at 10px -2px, transparent 8px, rgba(170,225,255,.75) 9px, transparent 10.5px) 0 0 / 20px 10px repeat-x; animation:en7Wave 2.6s linear infinite;}
   .board-card .eq2-marks .en7-water i + i{top:3px; opacity:.55; animation-duration:3.8s; animation-direction:reverse;}
   @keyframes en7Wave{from{transform:translateX(0);} to{transform:translateX(20px);}}
   .board-card .eq2-marks .en7-dive-tag{position:absolute; left:50%; top:-12px; transform:translateX(-50%); font-size:13px; line-height:18px; padding:0 5px; border-radius:9px; background:rgba(20,40,70,.82); border:1px solid rgba(170,215,255,.7); pointer-events:auto;}
-  .board-card.en7-aloft .eq2-marks .en7-dive-tag{top:-30px;}
-  @media (prefers-reduced-motion: reduce){ .board-card.en7-aloft .card-tile, .board-card .eq2-marks .en7-shadow, .board-card .eq2-marks .en7-water i{animation:none !important;} }`;
+  .board-card.en7-aloft .eq2-marks .en7-dive-tag{top:-46px;}
+  .board-card.en7-aloft .eq2-marks .en7-shadow{bottom:-12px; left:16%; right:16%; opacity:.7;}
+  .board-card.en7-under .eq2-marks .en7-water{height:84%; background:linear-gradient(180deg, rgba(140,215,255,.18), rgba(40,120,210,.5) 35%, rgba(10,60,150,.72) 70%, rgba(60,150,230,.5)) 0 0 / 100% 300%; animation:eng32Tide 5s ease-in-out infinite alternate;}
+  @keyframes eng32Tide{from{background-position:0 0;} to{background-position:0 100%;}}
+  .board-card.en7-under .eq2-marks .en7-dive-tag{top:4px;}
+  .board-card.eng32-ground .card-tile{top:0; transform:scale(.96) rotate(var(--eng32-tilt, 3deg)); filter:saturate(.9) brightness(.94);}
+  .board-card.eng32-t0{--eng32-tilt:-5deg;} .board-card.eng32-t1{--eng32-tilt:-3deg;} .board-card.eng32-t2{--eng32-tilt:3deg;} .board-card.eng32-t3{--eng32-tilt:5deg;}
+  .board-card .eq2-marks .en7-shadow.eng32-gshadow{left:-4%; right:-4%; bottom:-10px; height:20px; animation:none; opacity:1; transform:rotate(var(--eng32-tilt, 3deg));}
+  .board-card.eng32-ground .eq2-marks .en7-dive-tag{top:-14px;}
+  :where(html[data-fx="med"], html[data-fx="low"], html[data-fx="none"]) .board-card.en7-under .eq2-marks .en7-water{animation:none;}
+  @media (prefers-reduced-motion: reduce){ .board-card.en7-aloft .card-tile, .board-card .eq2-marks .en7-shadow, .board-card .eq2-marks .en7-water, .board-card .eq2-marks .en7-water i{animation:none !important;} }`;
   try{ document.head.appendChild(st); }catch(e){} })();
 // ==== end Package EN7 (board) ==================================================================================================
 const W2_BROKE_NAME = {armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow', trigger:'a trigger'};

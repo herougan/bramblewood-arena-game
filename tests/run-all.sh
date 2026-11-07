@@ -354,6 +354,7 @@ run node tests/bal23-2026-11-07.js   # 2026-11-07 (package BAL23, owner 07:37): 
 run node tests/content15-2026-11-07.js   # 2026-11-07 (package CONTENT15, owner 08:54): the two Loyal faction cards (Oathsworn Legionary, Cobalt Talon Honour-guard): Uncommon, faction pool, in budget, 12 packs, art prompts; the Loyal bonus on with a leader of their side in a scripted fight, off without
 run node tests/eng30-2026-11-07.js   # 2026-11-07 (package ENG30, owner 11-07 08:54 #1, #2, #13): Consecration / Desecration grounds and their cancel (on no card, Map 70), the Blind pip glows while attacking, sight look A only, the shut-eye blink 1 in 2
 run node tests/content16-2026-11-07.js   # 2026-11-07 (package CONTENT16, owner 09:10; ENG27-9): canonical/pack-plan.json (a proposal): schema, every live card has a source, no skirmish-unique card in a pack, <=20 basic adds per pack in budget, the Drumcaller in the Sunfeather list, 17 achievement-only cards, agrees with a fresh run of the tool
+run node tests/eng32-2026-11-07.js   # 2026-11-07 (package ENG32, owner 11-07 09:47 #11, #13, #15): Dive strikes the unit opposite (none: the bramble), plain / + N, the open bramble while dived, the three looks; Brood hatches 1/1 copies without Brood or Swarm; Preternatural stated only
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

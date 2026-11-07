@@ -2568,5 +2568,7 @@
  "Hold the ford. Hold the bridge. Then hold the next river.": "여울을 지켜라. 다리를 지켜라. 그다음엔 다음 강을 지켜라.",
  "When the Elder sings the first verse, every tribe on the cliff sings the second.": "장로가 첫 소절을 부르면, 절벽의 모든 부족이 둘째 소절을 부른다.",
  "Eyes on the standard. Where it stands, I stand.": "눈은 군기에. 군기가 서는 곳에 나도 선다.",
- "When the Elder sings, the Cobalt Talon strike before the song is done.": "장로가 노래하면, 코발트 발톱은 노래가 끝나기도 전에 덮친다."
+ "When the Elder sings, the Cobalt Talon strike before the song is done.": "장로가 노래하면, 코발트 발톱은 노래가 끝나기도 전에 덮친다.",
+ "When it arrives, a 1/1 copy of it (Wait 1, every skill but Brood) hatches beside it.": "등장하면 자신의 1/1 복제(대기 1, 한배를 뺀 모든 스킬) 하나가 옆에서 부화합니다.",
+ "When it arrives, {v1} 1/1 copies of it (Wait 1, every skill but Brood) hatch beside it.": "등장하면 자신의 1/1 복제(대기 1, 한배를 뺀 모든 스킬) {v1}개가 옆에서 부화합니다."
 }
