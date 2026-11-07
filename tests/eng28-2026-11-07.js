@@ -140,9 +140,10 @@ ok(B.OFFSPRING_COPY === 0.32 && B.bloomBodyMult({offspring:1}) === 1.32 && B.blo
 // ---- 23:35 #17 Brood: Swarm (Species) ------------------------------------------------------------------------------------------
 { const {e, P} = mk(); P[1].hand.push({uid:99283, defId:'grotto-lobster'}); P[1].lumber = 30; e.placeCard(P, so, 1, 99283, 'center', {}, []);
   const tok = all(P[1]).find(c=> /~brood$/.test(c.defId)), td = tok && dv(e, tok.defId);
-  ok(td && td.effects.swarm && td.effects.swarmSpecies, 'a Grotto Lobster brood token carries Swarm (Species)');
-  const before = e.swarmBonusOf(P, tok); put(e, P, 1, 'x-crab', 2); put(e, P, 1, 'x-mouse', -2); const after = e.swarmBonusOf(P, tok);
-  ok(after === before + 1, `a Crustacean ally of another type counts, a Rodent of its types does not (${before} -> ${after})`); }
+  // 2026-11-07 (ENG32, owner 09:47 #15: "Brood: no Swarm"): #17 undone: the token is a 1/1 copy of the parent (Crab claws) with no Swarm
+  ok(td && !td.effects.swarm && !td.effects.swarmSpecies && td.effects.crabClaws && !td.effects.brood, 'a Grotto Lobster brood token: a 1/1 copy (Crab claws), no Swarm (ENG32 undid Swarm (Species))');
+  put(e, P, 1, 'x-crab', 2); put(e, P, 1, 'x-mouse', -2); const after = e.swarmBonusOf(P, tok);
+  ok(after === 0, `no Swarm, so no Swarm bonus (${after})`); }
 ok(B.PARAMS.includes('swarmSpecies') && T['ui.eng28-swarm-species'], 'swarmSpecies is a parameter (not a skill of its own); its text says "of its own species"');
 
 // ---- texts, translations, docs ---------------------------------------------------------------------------------------------------
@@ -153,7 +154,7 @@ for(const c of ['de', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt', 'ta', 'tl', 'zh-
 ok(!/1 in 2 Freezes/.test(T['ui.sk-ice-bolt'] + T['ui.sk-ice-arrow']) && /Poison/.test(T['ui.eng28-herb-line']) && !/damage to a random enemy unit/.test(app.slice(app.indexOf('if(e.herbRefinery){ const hb'), app.indexOf('if(e.herbRefinery){ const hb') + 400)), 'the texts that said otherwise are fixed (Ice, Herb Refinery)');
 { const dec = JSON.parse(rd('docs/decisions.json')), list = dec.items || dec.decisions || dec, ids = list.filter(x=> /^ENG28-/.test(x.id));
   ok(ids.length >= 4 && ids.every(x=> (x.body || '').split(/\s+/).length < 100), `decisions ENG28-n filed, each under 100 words (${ids.map(x=> x.id)})`); }
-ok(/ENG28/.test(rd('docs/CHANGELOG.md').slice(0, 14000)), 'a CHANGELOG entry at the top'); // 2026-11-07 (UI26): window widened, newer packages' entries sit above ENG28's; (UI30): 8000 -> 14000
+ok(/ENG28/.test(rd('docs/CHANGELOG.md').slice(0, 30000)), 'a CHANGELOG entry at the top'); // 2026-11-07 (ENG32+UI30 merge): 30000, ENG32's entry sits above; // 2026-11-07 (UI26): window widened, newer packages' entries sit above ENG28's
 ok(/## 11-07: Package ENG28 \(on its branch, not released\)/.test(rd('docs/action-items.md')), 'the action-items section');
 ok(/poison damage only adds Poison stacks/i.test(rd('docs/project-state.md')), 'project-state: the settled rule');
 ok(/run node tests\/eng28-2026-11-07\.js/.test(rd('tests/run-all.sh')), 'listed in tests/run-all.sh');

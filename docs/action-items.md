@@ -26,6 +26,13 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 13 | New skill Smelly (smell wards off predators): effect to propose | ENG33 (proposal) |
 | 14 | Crunch: skill idea, effect not decided | docs/card-ideas.md |
 | 15 | Bluff (grass snake): skill idea, maybe provokes an enemy reaction | docs/card-ideas.md |
+## 11-07: Package ENG32 (on its branch, not released)
+| # | Item | Status |
+|---|---|---|
+| 1 | Dive: strikes the unit opposite (none: the bramble); plain = Attack, Dive N = + N; the dived unit blocks nothing; three looks (raised / lowered blue / on the ground, tilted) | done; ENG32-1 (dives only with a unit opposite), ENG32-2 (price) |
+| 2 | Brood: 1/1 copies with every skill but Brood, no Swarm | done; ENG32-3 |
+| 3 | Preternatural: stated, not built (docs/project-state.md) | done |
+| 4 | Follow-up (UI): the card editor's Dive field is a number from 1, so plain Dive (true) can only be set in data; a "plain / N" choice belongs to the next editor package | open |
 
 ## 11-07 09:47: Owner notes
 | # | Note | Package |
@@ -46,6 +53,13 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 14 | Poison Barbs icon 🌵☠️ | UI30: done |
 | 15 | Brood: no Swarm; summons a 1/1 copy of the parent without Brood | ENG32 |
 | 16 | Map cards window: a "Sugg. Intro" pill on skills thematic to introduce at that map; every main map at least one (sub-maps not needed) | UI30: done |
+| 10 | Codex page flip: the animation sits below the book (offset); 15% faster | UI30 |
+| 11 | Dive reworked: strikes the opposing enemy (no enemy: the bramble), optional N = bonus damage; while dived, the opposing enemy can hit your bramble; three forms (Flying + Dive raised higher, Tide + Dive lowered and bluer with a shifting gradient, plain Dive on the ground with its shadow, tilted -5/-3/3/5 degrees) | ENG32 ✅ (on its branch) |
+| 12 | Skill-count warning: in the skill section, only when the two-skill rule is breached; Tide, Flying, Diurnal, Nocturnal, Purblind etc. count 0.5 | UI27 |
+| 13 | New skill Preternatural: name only for now (effect to be decided) | ENG32 ✅ (stated, not built) |
+| 14 | Poison Barbs icon 🌵☠️ | UI30 |
+| 15 | Brood: no Swarm; summons a 1/1 copy of the parent without Brood | ENG32 ✅ (on its branch) |
+| 16 | Map cards window: a "Sugg. Intro" pill on skills thematic to introduce at that map; every main map at least one (sub-maps not needed) | UI30 |
 
 ## 11-07 09:00-09:10: Owner notes
 | # | Note | Package |

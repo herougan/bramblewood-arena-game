@@ -12,7 +12,7 @@ const table = js('canonical/skill-costs.json'), SC = require(path.join(ROOT, 'to
 const SK = {}; table.skills.forEach(e => { SK[e.id] = e; });
 const near = (a, b, e) => Math.abs(a - b) <= (e || 0.011);
 // 2026-11-04 (TESTFIX1): an entry re-priced after SKILL2 by a marked package (BAL12 / BAL14 / BAL15 appliedAt, ENG21) or in place by the pipeline (value = measuredS)
-const relaid = e => !!e && (/BAL1[0-9]|ENG2\d/.test(e.appliedAt || '') || !!e.bal12Was || !!e.eng21Was || !!e.eng27Was); // + ENG27 (2026-11-06): Tide 0.5 (ENG25-8 c), Inspiring 3.8
+const relaid = e => !!e && (/BAL1[0-9]|ENG2\d/.test(e.appliedAt || '') || !!e.bal12Was || !!e.eng21Was || !!e.eng27Was || e.prevValueENG32 != null); // 2026-11-07 (ENG32): + Dive and Brood re-priced by reasoning after their rework; + ENG27 (2026-11-06): Tide 0.5 (ENG25-8 c), Inspiring 3.8
 
 // 1. the canon: 15 points, re-set in 3A + H points, kappa 1 after, the placebo
 { const before = js('docs/balance/skill-canon-check-2026-10-31-skill2-before.json'), after = js('docs/balance/skill-canon-check-2026-10-31-skill2.json');
@@ -40,7 +40,7 @@ const relaid = e => !!e && (/BAL1[0-9]|ENG2\d/.test(e.appliedAt || '') || !!e.ba
   // 2026-10-31 (package ENG15): ENG15 reworked and re-priced it (1.4; SKILL2 left it at 2.1, kept as anadEng14Was)
   ok(SK.anadromous && SK.anadromous.value === 1.4 && (SK.anadromous.anadEng14Was || {}).value === 2.1 && !SK.anadromous.skill2Was, '2. Anadromous left to ENG15 (2.1 then; ENG15 re-priced it 1.4)');
   // 2026-11-04 (TESTFIX1): re-measured in place since by the bramble-15 pipeline (BAL10 / BAL14, value = measuredS); DECK1-1's numbers are SKILL2's
-  ok(['fletcher', 'brood', 'remember'].every(id => SK[id].skill2Was && near(SK[id].value, SK[id].measuredS, 0.011)) && T.skillCost('fletcher', 1) > 0 && T.skillCost('brood', 2) > T.skillCost('brood', 1) && T.skillCost('remember', 1) > 0, `2. DECK1-1: Fletcher 1, Brood 2, Remember 1 / 2 priced (${T.skillCost('fletcher', 1)}, ${T.skillCost('brood', 2)}, ${T.skillCost('remember', 1)} / ${T.skillCost('remember', 2)}; SKILL2 3.18, 7.2, 5.0 / 2.0)`);
+  ok(['fletcher', 'brood', 'remember'].every(id => SK[id].skill2Was && (near(SK[id].value, SK[id].measuredS, 0.011) || relaid(SK[id]) /* 2026-11-07 (ENG32): Brood re-priced */)) && T.skillCost('fletcher', 1) > 0 && T.skillCost('brood', 2) > T.skillCost('brood', 1) && T.skillCost('remember', 1) > 0, `2. DECK1-1: Fletcher 1, Brood 2, Remember 1 / 2 priced (${T.skillCost('fletcher', 1)}, ${T.skillCost('brood', 2)}, ${T.skillCost('remember', 1)} / ${T.skillCost('remember', 2)}; SKILL2 3.18, 7.2, 5.0 / 2.0)`);
   // pairs and shorthand mults
   // 2026-11-04 (TESTFIX1): BAL14 (2026-11-03) added On Spawn > Grant Shield (ENG19's action), so SKILL2's 13 plus later ones
   ok(Object.keys(table.pairs || {}).filter(k => k !== 'onSpawn>grantShield').length === 13 && Object.keys(table.pairs).length >= 13, `2. 13 trigger pairs from SKILL2 (${Object.keys(table.pairs || {}).length} in all)`);

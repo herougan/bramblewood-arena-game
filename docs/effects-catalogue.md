@@ -1611,3 +1611,16 @@ The rules as built (engine: `eng30Ground`, `eng30ExaltTick`, the curse tick in `
 | 🕶️ Blind / Dark-blind pip | glows while its unit lunges (`.is-attacking`); steady at Effects Low, none at None | display only |
 | 😴 shut eye (sight look A) | its first blink plays 1 time in 2; looks B (blindfold) and C (fog) are removed | display only |
 
+## 2026-11-07 changes (package ENG32): Dive reworked, Brood copies
+
+The rules as built (engine: the ENG32 block beside `en7DiveRise` and `broodDefOf` in `bramblewood-engine.js`; owner 11-07 09:47 #11, #15). **Replaces** the target rule of EN7's Dive and the token of Brood above.
+- **Dive ⤵️** (`effects.dive`: `true` = plain, N = + N): once a fight, at its swing, only when an enemy unit stands opposite it (`resolveLiveTarget`), it goes aloft (a Flyer, Tide or not: mode `fly`), under (Tide, no Flying: `tide`) or low (neither, a Sprinter or Quick unit: `ground`). While dived nothing can find or hit it and **it blocks nothing**: `resolveLiveTarget` skips it, so the unit opposite swings at its bramble. Its next swing strikes the unit opposite it (past Taunt; a Guardian beside that unit still steps in), or the bramble when nothing is there, for Attack (+ N for Dive N, `eng32DiveBonus`, at the bramble too). Exposed that round as before.
+- **Brood N** (`effects.brood`): N tokens, each a 1/1 copy of the parent card (Wait 1, a token, its types and every skill but Brood, `ENG32_BROOD_SKIP`); no Swarm added.
+
+| What | Look | Engine event |
+|---|---|---|
+| Flying + Dive: aloft | the card rises higher (-30px, was -16px), bobs at Effects High, a wider shadow below, ☁️ tag | `diveRise` {mode: 'fly'}, `.en7-aloft` |
+| Tide + Dive: under | the card sinks lower, tinted blue under a band of water whose gradient drifts (Effects High), 🌊 tag | `diveRise` {mode: 'tide'}, `.en7-under` |
+| Plain Dive: low | the card lies on the ground with a tight shadow, tilted -5 / -3 / 3 / 5 degrees (from its uid), ⤵️ tag; "⤵️ Out of reach" floats | `diveRise` {mode: 'ground'}, `.eng32-ground .eng32-t0..3` |
+| The strike | as EN7's; plain Dive floats "⤵️ Dive" (no + N); at the bramble the log says "dives on the bramble" | `dive` {strike, bonus, bramble?} |
+
