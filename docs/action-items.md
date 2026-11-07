@@ -30,6 +30,18 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Owner calls open: ENG33-1 (Smelly: a / b / c), ENG33-2 (Undead keeps its comeback), ENG33-3 (Thanatosis details), ENG33-4 (budget moves, no re-fit).
 - Next: Smelly once ENG33-1 is answered; Log Wall art.
 
+## 11-07 18:53-19:11: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | Battle log: raw "en20Dry." / "en20Soak." per unit; one line per field effect | UI32: done (other kinds with no line now print nothing) |
+| 2 | Venomous hit that does no damage floats "0": show the Venom added | UI32: done (☠N = stacks added by that hit) |
+| 3 | Venom pip: keep numberless, tooltip says how many tokens | UI32: done |
+| 4 | Card hover lists every counter | UI32: done |
+| 5 | Power badge: marker when the card was edited since the run | UI32: done (^ ^^ v vv ~) |
+| 6 | Map cards tile not refreshed after Save | UI32: done (UI27's refresh only covered Previous / Next visits) |
+| 7 | "Skills on these cards": Main / Other / Recommended groups, live refresh | UI32: done; Sugg. Intro pill only outside the main group (owner to confirm) |
+| 8 | Rain at medium / low looks like a flat stripe pattern: random particles, lower opacity | UI32: done (CSS layers, high unchanged) |
+
 ## 11-07 10:25: Owner notes
 | # | Note | Package |
 |---|---|---|
