@@ -11808,19 +11808,44 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
   .pg-edge-l .pg-tab:hover:not(:disabled), .pg-edge-r .pg-tab:hover:not(:disabled){transform:none;}
   .pg-book .al-head, .pg-book .bk-run{padding-left:72px; padding-right:72px; min-height:32px;} .pg-book .al-head{justify-content:center; text-align:center;} .pg-book .al-head .al-sec{flex:0 1 auto;} }
 /* the turning leaf: a copy of the page you leave, lifting off at the spine */
-/* 2026-11-07 (package UI30, owner 09:47 #10: "the animation sits below the book (offset); 15% faster"): the copy keeps its page's classes, and
-   .al-page's position:relative won, so the leaf flowed in under the book; absolute wins now. 460 -> 390 ms (the shade too; the back swing 420 -> 360). */
-.pg-leaf{position:absolute !important; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; backface-visibility:hidden; will-change:transform;
-  animation:pgLeafFwd 390ms cubic-bezier(.45,.05,.35,1) forwards;}
-.pg-leaf.pg-leaf-back{transform-origin:100% 50%; animation-name:pgLeafBack;}
-.pg-leaf::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.28)); opacity:0; animation:pgLeafShade 390ms ease-in forwards;}
-.pg-leaf.pg-leaf-back::after{background:linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,.28));}
-@keyframes pgLeafFwd{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(-96deg);}}
-@keyframes pgLeafBack{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(96deg);}}
-@keyframes pgLeafShade{to{opacity:1;}}
+/* 2026-11-07 (package UI33, owner 23:05: the turn stopped at the vertical slice): a full turn. Two pages: .pg-leaf-two turns 0 -> 180 deg about the spine; its front face
+   is the old page, its back face (turned round, backface-visibility hidden on both) is the NEW page, so the slice opens out into it. A shade crosses the
+   front, then lifts off the back; .pg-cast is the fold's soft shadow on the page being revealed; .pg-hold keeps the old page the leaf lands on.
+   One page (phone): .pg-leaf-one folds old to edge-on at the spine, then the new page (pg-leaf-open) opens out from it. The whole turn is 440 ms
+   (UI30's was 390 for the half turn): each half 220. */
+.pg-book{--pg-turn-ms:440ms;}
+.pg-leaf{position:absolute !important; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; will-change:transform;}
+.pg-leaf-two{transform-style:preserve-3d; animation:pgTurnFwd var(--pg-turn-ms) cubic-bezier(.42,0,.58,1) forwards;}
+.pg-leaf-two.pg-leaf-back{transform-origin:100% 50%; animation-name:pgTurnBack;}
+.pg-leaf-two .pg-face{backface-visibility:hidden; -webkit-backface-visibility:hidden; position:absolute !important; margin:0 !important; box-sizing:border-box;}
+.pg-leaf-two .pg-face-back{transform:rotateY(180deg);}
+.pg-face::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0;}
+.pg-leaf-fwd .pg-face-front::after{background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.34)); animation:pgShadeIn calc(var(--pg-turn-ms) / 2) ease-in forwards;}
+.pg-leaf-back .pg-face-front::after{background:linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,.34)); animation:pgShadeIn calc(var(--pg-turn-ms) / 2) ease-in forwards;}
+.pg-leaf-fwd .pg-face-back::after{background:linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,.34)); opacity:1; animation:pgShadeOut calc(var(--pg-turn-ms) / 2) ease-out calc(var(--pg-turn-ms) / 2) forwards;}
+.pg-leaf-back .pg-face-back::after{background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.34)); opacity:1; animation:pgShadeOut calc(var(--pg-turn-ms) / 2) ease-out calc(var(--pg-turn-ms) / 2) forwards;}
+.pg-hold{z-index:7; pointer-events:none;}
+.pg-cast{z-index:7; pointer-events:none; opacity:0; border-radius:inherit; animation:pgCast var(--pg-turn-ms) ease-in-out forwards;}
+.pg-cast-fwd{background:linear-gradient(90deg, rgba(0,0,0,.38), rgba(0,0,0,.12) 38%, rgba(0,0,0,0) 70%);}
+.pg-cast-back{background:linear-gradient(270deg, rgba(0,0,0,.38), rgba(0,0,0,.12) 38%, rgba(0,0,0,0) 70%);}
+.pg-leaf-one{animation:pgOneFwd calc(var(--pg-turn-ms) / 2) cubic-bezier(.5,0,.9,.6) forwards; backface-visibility:hidden;}
+.pg-leaf-one.pg-leaf-back{animation-name:pgOneBack;}
+.pg-leaf-one.pg-leaf-open{opacity:0; animation:pgOpenFwd calc(var(--pg-turn-ms) / 2) cubic-bezier(.1,.4,.5,1) calc(var(--pg-turn-ms) / 2) forwards;}
+.pg-leaf-one.pg-leaf-open.pg-leaf-back{animation-name:pgOpenBack;}
+@keyframes pgTurnFwd{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(-180deg);}}
+@keyframes pgTurnBack{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(180deg);}}
+@keyframes pgOneFwd{from{transform:perspective(1800px) rotateY(0deg); opacity:1;} 99%{opacity:1;} to{transform:perspective(1800px) rotateY(-90deg); opacity:0;}}
+@keyframes pgOneBack{from{transform:perspective(1800px) rotateY(0deg); opacity:1;} 99%{opacity:1;} to{transform:perspective(1800px) rotateY(90deg); opacity:0;}}
+@keyframes pgOpenFwd{from{transform:perspective(1800px) rotateY(-90deg); opacity:1;} to{transform:perspective(1800px) rotateY(0deg); opacity:1;}}
+@keyframes pgOpenBack{from{transform:perspective(1800px) rotateY(90deg); opacity:1;} to{transform:perspective(1800px) rotateY(0deg); opacity:1;}}
+@keyframes pgShadeIn{to{opacity:1;}}
+@keyframes pgShadeOut{from{opacity:1;} to{opacity:0;}}
+@keyframes pgCast{0%{opacity:0;} 45%{opacity:1;} 100%{opacity:0;}}
 .pg-in-back{transform-origin:0% 50%; animation:pgInBack 360ms cubic-bezier(.2,.7,.3,1) both;}
 @keyframes pgInBack{from{transform:perspective(1800px) rotateY(-80deg); opacity:.4;} to{transform:none; opacity:1;}}
-@media (prefers-reduced-motion: reduce){ .pg-leaf, .pg-leaf::after, .pg-in-back{animation:none !important;} .pg-leaf{display:none;} }
+.pg-xfade{animation:pgXfade 220ms ease-out both;}
+@keyframes pgXfade{from{opacity:0;} to{opacity:1;}}
+@media (prefers-reduced-motion: reduce){ .pg-leaf, .pg-leaf-two, .pg-face::after, .pg-cast, .pg-in-back{animation:none !important;} .pg-leaf, .pg-cast, .pg-hold{display:none;} .pg-xfade{animation:pgXfade 220ms ease-out both !important;} }
 
 /* the skills book */
 .bk-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:0 0 10px;}
@@ -53664,9 +53689,20 @@ function keywordizeLines(lines){
 // keywordizeHTML leaves its word alone. The engine's matching rule: a Legendary dodge still works against True Strike.
 const LEGENDARY_GOLD = '#c99a22';
 function legendaryTagHTML(p){ return p && p.legendary ? ` <b class="kw kw-legendary" title="${escapeAttr(TX('ui.legendary-ability-desc'))}">${TX('ui.legendary-tag')}</b>` : ''; }
-function abilityListHTML(lines){
+// 2026-11-07 (package UI33, owner 23:22): `extra` = ready gloss rows (one per custom trigger, ui33TriggerGloss), listed after the keyword rows.
+function ui33TriggerGloss(eff, usedFn){
+  try{ const ts = eff && Array.isArray(eff.triggers) ? eff.triggers : []; const rows = [];
+    ts.forEach(t=>{ const tDef = t && TRIGGER_DEFS.find(x=> x.key === t.on); if(!tDef || t.on === 'onSacrifice' || t.on === 'onPitch') return;
+      const pv = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })(), ci = pv.indexOf(', '), det = ci >= 0 ? pv.slice(ci + 2) : pv; if(!det) return;
+      const used = !!(usedFn && usedFn(t)), body = `${escapeHtml(i18nHtmlText(tDef.desc))} — ${escapeHtml(i18nHtmlText(det.replace(/\.$/, '')))}.`;
+      rows.push(`<div class="ui33-trg"><b class="kw kw-term">${escapeHtml(i18nHtmlText(tDef.label))}</b>: ${used ? `<span class="sk-used">${body}</span> <b class="sk-used-tag">${escapeHtml(TX('ui.eng20-used'))}</b>` : body}</div>`); });
+    return rows;
+  }catch(e){ return []; }
+}
+function abilityListHTML(lines, extra){
   const {lines: ls, gloss} = keywordizeLines(lines);
-  return `<ul>${ls.map(l=>`<li>${l}</li>`).join('')}</ul>` + (gloss.length ? `<div class="kw-gloss" role="note">${gloss.map(kw=> `<div>${kw.c ? `<b class="kw" style="--kw:${kw.c}">${kw.name}</b>` : `<b class="kw kw-term">${kw.name}</b>`}: ${kw.text}</div>`).join('')}</div>` : '');
+  const more = (extra || []).join('');
+  return `<ul>${ls.map(l=>`<li>${l}</li>`).join('')}</ul>` + (gloss.length || more ? `<div class="kw-gloss" role="note">${gloss.map(kw=> `<div>${kw.c ? `<b class="kw" style="--kw:${kw.c}">${kw.name}</b>` : `<b class="kw kw-term">${kw.name}</b>`}: ${kw.text}</div>`).join('')}${more}</div>` : '');
 }
 // Short skill text (2026-10-12, user: "Simplify skill description ... Immolation should just say 'Deal 2 fire damage to all
 // adjacent units every upkeep' ... Pounce 5 is 'Deal 5 damage to a random enemy unit or the castle if there are no
@@ -54346,7 +54382,7 @@ function describeEffects(def, liveCard, opt){
   }
   if(e.render) lines.push(e.render.trigger==='onReady' ? `On Ready: lowers the opposing creature's Attack by ${e.render.amount}.` : `${ic('render')}Render${valSuffix(e.render.amount)} — ${SKILL_TEXT.render(e.render.amount)}`); // 2026-10-16 skill audit
   if(Array.isArray(e.triggers)) e.triggers.forEach(t=>{
-    const tDef = TRIGGER_DEFS.find(x=>x.key===t.on), aDef = ACTION_DEFS.find(x=>x.key===t.do);
+    const tDef = TRIGGER_DEFS.find(x=>x.key===t.on), aDef = ACTION_DEFS.find(x=>x.key===t.do) || (t.do === 'exileSelf' ? ACTION_DEFS.find(x=>x.key==='exile') : null); // 2026-11-07 (package UI33, owner 23:22): exileSelf (Unremembered Heron) has no ACTION_DEFS row of its own, so its line was dropped
     if(!tDef||!aDef) return;
     // Bugfix 2026-09-30 (explicit report: "(1)/1 should be displayed simply as 1/1"): this used
     // to hand-build its own cruder "Label (amt)/amt2" string here, completely unaware of the
@@ -54516,7 +54552,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '48a0de8e3742', BUILD_CARD_HASH = '2f3a85c6a53aeffef17de9b94c8f00d8a81d453400d0f36b43a0f83d7b1cc264';
+const BUILD_ID = '5d733104fdba', BUILD_CARD_HASH = '2f3a85c6a53aeffef17de9b94c8f00d8a81d453400d0f36b43a0f83d7b1cc264';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -57596,8 +57632,8 @@ function fullCardHTML(defId, liveCard, opts){
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
     ? (mechLine!=='none'
-        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':mechLine==='evolution'?'🧬 ' + escapeHtml(TX('ui.arch-evomax')) /* 2026-10-19 (package EE): was shown as Devilry */:'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
-        : `${abilityListHTML(lines)}`)
+        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':mechLine==='evolution'?'🧬 ' + escapeHtml(TX('ui.arch-evomax')) /* 2026-10-19 (package EE): was shown as Devilry */:'😈 Devilry'}</span>${abilityListHTML(lines, ui33TriggerGloss((hv ? hv.full : d).effects, t=> !!hv && t.on === 'onReady' && !((hv.def.effects || {}).triggers || []).some(x=> JSON.stringify(x) === JSON.stringify(t))))}</div>`
+        : `${abilityListHTML(lines, ui33TriggerGloss((hv ? hv.full : d).effects, t=> !!hv && t.on === 'onReady' && !((hv.def.effects || {}).triggers || []).some(x=> JSON.stringify(x) === JSON.stringify(t))))}`)
     : '';
   // 2026-10-10 (user: "During the card detail, it should show Attack = Base + Bonus where the bonus number is blue"):
   // base = the printed Attack (at this card's level); bonus = everything on top (Esprit, Berserk, Rally, Worship...).
@@ -59367,26 +59403,60 @@ function codexEdgeTabsHTML(first, per, total){
   return `<div class="pg-edge pg-edge-l" ${grp}><div class="pg-edge-in">${tab(-1, 'pg-corner pg-prev', '‹', TX('ui.codex-prev-page'), atStart)}${tab('first', 'pg-corner pg-first', '«', TX('ui.codex-first-page'), atStart)}</div></div>`
     + `<div class="pg-edge pg-edge-r" ${grp}><div class="pg-edge-in">${tab(1, 'pg-corner pg-next', '›', TX('ui.codex-next-page'), atEnd)}${tab('last', 'pg-corner pg-last', '»', TX('ui.codex-last-page'), atEnd)}</div></div>`;
 }
-// A page turn (album and book): the page you leave lifts off at the spine and swings away (a copy of it, over the new pages), with
-// a shadow across it. Transform and opacity only. None with reduced motion or Low / None effects (like codexPageTurn): the new pages
-// are simply there. Turning back on a single page swings the new page in instead.
+// A page turn (album and book). 2026-11-07 (package UI33, owner 23:05: "the book flip is only partial ... the vertical slice needs to become a page, holding
+// the contents of the new page"): a full turn on a cloned leaf with two faces. The front is the page you leave and swings to edge-on (the slice); the back
+// is the NEW page and opens out flat on the other side (0 -> 180 deg, backface-visibility). The new pages are drawn first, so the page being revealed
+// under the leaf already holds its new content; the page the leaf lands on is held as a still copy of the old one (pg-hold) until it is covered.
+// A single page (phone): the old page folds to the slice at the spine and the new page opens out from it (two clones, one after the other).
+// Reduced motion: a plain cross-fade. Tab hidden, or Low / None effects: no animation. A click mid-turn finishes the running turn (its copies go,
+// the pages are already the new ones) and starts the next. Transform and opacity only.
+const CODEX_TURN_MS = 440; // UI30 had 390 ms for half a turn; the whole turn is 440 (each half 220), a little over the old length
 function codexLeafTurn(host, dir, draw){
-  const motion = !!host && host.isConnected && !reducedMotion() && fxAtLeast('med');
-  let leaf = null;
-  if(motion){
-    const single = host.querySelector('.pg-single'), from = single || host.querySelector(dir > 0 ? '.pg-right' : '.pg-left');
-    if(from && !(single && dir < 0)){
-      leaf = from.cloneNode(true); leaf.querySelectorAll('[id]').forEach(x=> x.removeAttribute('id'));
-      leaf.classList.add('pg-leaf', dir > 0 ? 'pg-leaf-fwd' : 'pg-leaf-back'); leaf.setAttribute('aria-hidden', 'true'); leaf.removeAttribute('aria-label');
-      let x = 0, y = 0, n = from; while(n && n !== host){ x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } // layout px, relative to the host
-      Object.assign(leaf.style, {position: 'absolute', left: x + 'px', top: y + 'px', width: from.offsetWidth + 'px', height: from.offsetHeight + 'px'}); // UI30 (2026-11-07): absolute, on the page it copies (it flowed in under the book)
-    }
+  if(host && host._cxTurnEnd){ try{ host._cxTurnEnd(); }catch(e){} } // finish the running turn
+  const live = !!host && host.isConnected && !document.hidden && fxAtLeast('med');
+  const calm = live && reducedMotion();
+  const clone = (el)=>{ const c = el.cloneNode(true); c.querySelectorAll('[id]').forEach(x=> x.removeAttribute('id')); c.removeAttribute('id'); c.setAttribute('aria-hidden', 'true'); c.removeAttribute('aria-label'); c.querySelectorAll('a, button, input, select, textarea, [tabindex]').forEach(x=> x.setAttribute('tabindex', '-1')); return c; };
+  const geo = to=>{ let x = 0, y = 0, n = to; while(n && n !== host){ x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } return {x, y, w: to.offsetWidth, h: to.offsetHeight}; }; // layout px, relative to the host
+  const put = (el, g)=>{ Object.assign(el.style, {position: 'absolute', left: g.x + 'px', top: g.y + 'px', width: g.w + 'px', height: g.h + 'px', margin: '0'}); }, place = (el, to)=> put(el, geo(to));
+  let old = null;
+  if(live && !calm){
+    const single = host.querySelector('.pg-single');
+    const from = single || host.querySelector(dir > 0 ? '.pg-right' : '.pg-left'), other = single ? null : host.querySelector(dir > 0 ? '.pg-left' : '.pg-right');
+    if(from && !from.classList.contains('is-blank')) old = {single: !!single, from, geo: geo(from), front: clone(from), hold: other && !other.classList.contains('is-blank') ? clone(other) : null};
+    if(old){ put(old.front, old.geo); if(old.hold) place(old.hold, other); }
   }
   draw();
-  if(!motion) return;
+  if(!live) return;
   try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){}
-  if(leaf){ host.appendChild(leaf); let gone = false; const done = ()=>{ if(gone) return; gone = true; try{ leaf.remove(); }catch(e){} }; leaf.addEventListener('animationend', done, {once:true}); setTimeout(done, 900); }
-  else { const pg = host.querySelector('.pg-single'); if(pg){ pg.classList.add('pg-in-back'); setTimeout(()=> pg.classList.remove('pg-in-back'), 600); } }
+  const bits = []; let gone = false;
+  const end = ()=>{ if(gone) return; gone = true; bits.forEach(x=>{ try{ x.remove(); }catch(e){} }); host._cxTurnEnd = null; };
+  host._cxTurnEnd = end;
+  if(calm){ host.querySelectorAll('.al-page, .bk-page').forEach(pg=>{ pg.classList.remove('pg-xfade'); void pg.offsetWidth; pg.classList.add('pg-xfade'); });
+    const t = setTimeout(()=>{ host.querySelectorAll('.pg-xfade').forEach(pg=> pg.classList.remove('pg-xfade')); host._cxTurnEnd = null; }, 260);
+    host._cxTurnEnd = ()=>{ clearTimeout(t); host.querySelectorAll('.pg-xfade').forEach(pg=> pg.classList.remove('pg-xfade')); host._cxTurnEnd = null; }; return; }
+  if(!old){ const pg = host.querySelector('.pg-single'); if(pg){ pg.classList.add('pg-in-back'); setTimeout(()=> pg.classList.remove('pg-in-back'), 600); } host._cxTurnEnd = null; return; } // (nothing to copy)
+  const dest = old.single ? host.querySelector('.pg-single') : host.querySelector(dir > 0 ? '.pg-left' : '.pg-right');
+  const reveal = old.single ? null : host.querySelector(dir > 0 ? '.pg-right' : '.pg-left');
+  if(old.hold){ old.hold.classList.add('pg-hold'); host.appendChild(old.hold); bits.push(old.hold); }
+  if(reveal && !reveal.classList.contains('is-blank')){ const cast = document.createElement('div'); cast.className = 'pg-cast pg-cast-' + (dir > 0 ? 'fwd' : 'back'); cast.setAttribute('aria-hidden', 'true'); place(cast, reveal); host.appendChild(cast); bits.push(cast); }
+  host.style.setProperty('--pg-turn-ms', CODEX_TURN_MS + 'ms');
+  const dirCls = dir > 0 ? 'pg-leaf-fwd' : 'pg-leaf-back';
+  if(old.single){
+    // the slice: the old page folds to edge-on at the spine (first half), the new page opens out from it (second half)
+    old.front.classList.add('pg-leaf', 'pg-leaf-one', dirCls); host.appendChild(old.front); bits.push(old.front);
+    if(dest){ const nw = clone(dest); place(nw, dest); nw.classList.add('pg-leaf', 'pg-leaf-one', 'pg-leaf-open', dirCls); host.appendChild(nw); bits.push(nw);
+      dest.style.visibility = 'hidden'; bits.push({remove: ()=>{ dest.style.visibility = ''; }}); }
+    setTimeout(end, CODEX_TURN_MS + 60);
+    return;
+  }
+  // two pages: one leaf, two faces. The wrapper turns about the spine; the back face is the new page, already turned round
+  const leaf = document.createElement('div'); leaf.className = 'pg-leaf pg-leaf-two ' + dirCls; leaf.setAttribute('aria-hidden', 'true');
+  put(leaf, old.geo);
+  old.front.classList.add('pg-face', 'pg-face-front'); Object.assign(old.front.style, {left: '0px', top: '0px', width: '100%', height: '100%'});
+  leaf.appendChild(old.front);
+  if(dest && !dest.classList.contains('is-blank')){ const back = clone(dest); back.classList.add('pg-face', 'pg-face-back'); Object.assign(back.style, {position: 'absolute', left: '0px', top: '0px', width: '100%', height: '100%', margin: '0'}); leaf.appendChild(back); }
+  host.appendChild(leaf); bits.push(leaf);
+  leaf.addEventListener('animationend', e=>{ if(e.target === leaf) end(); }); setTimeout(end, CODEX_TURN_MS + 80);
 }
 // A sideways swipe (touch, pen or a mouse drag) turns the page; up and down still scroll.
 function codexWireSwipe(el){
@@ -61293,8 +61363,8 @@ function openCardDetail(defId, opts){
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
     ? (mechLine!=='none'
-        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':mechLine==='evolution'?'🧬 ' + escapeHtml(TX('ui.arch-evomax')) /* 2026-10-19 (package EE): was shown as Devilry */:'😈 Devilry'}</span>${abilityListHTML(lines)}</div>`
-        : `${abilityListHTML(lines)}`)
+        ? `<div class="mech-wrap mech-${mechLine}"><span class="mech-tag">${mechLine==='grace'?'🕊️ Ecclesia · Grace':mechLine==='exile'?'🌫 Scrapper · Exile':mechLine==='evolution'?'🧬 ' + escapeHtml(TX('ui.arch-evomax')) /* 2026-10-19 (package EE): was shown as Devilry */:'😈 Devilry'}</span>${abilityListHTML(lines, ui33TriggerGloss(d.effects))}</div>`
+        : `${abilityListHTML(lines, ui33TriggerGloss(d.effects))}`)
     : '<p class="panel-sub">No special abilities — a plain stat card.</p>';
   // "all the quotes should end with - Jz" — the creator's own signature, not shown at all when
   // there's no note yet (nothing useful to say with no heading to explain what the block is).
@@ -62953,7 +63023,7 @@ function triggerPreviewText(t){
   const trig = TRIGGER_DEFS.find(x=>x.key===t.on);
   const trigLabel0 = trig ? (t.filterArchetype ? `${trig.label} (${t.filterArchetype} only)` : (t.on==='perTurn' && t.turnOf && t.turnOf!=='both') ? `${trig.label} (${t.turnOf==='self'?'your turn':"opponent's turn"})` : trig.label) : FILL;
   const trigLabel = trigLabel0===FILL || TRIGGER_ALWAYS_ON.has(t.on) ? trigLabel0 : (t.whileWaiting ? trigLabel0+' (even while Waiting)' : trigLabel0+' (once Ready)');
-  const aDef = ACTION_DEFS.find(x=>x.key===t.do);
+  const aDef = ACTION_DEFS.find(x=>x.key===t.do) || (t.do === 'exileSelf' ? ACTION_DEFS.find(x=>x.key==='exile') : null); // 2026-11-07 (package UI33): the legacy exileSelf reads as Exile: itself
   if(!aDef) return `${trigLabel}, ${FILL}.`;
   const amt = t.amount==='attack' ? 'its own Attack' : t.amount==='health' ? 'its own Health' : ((t.amount!=null && t.amount!=='' && !Number.isNaN(t.amount)) ? t.amount : FILL);
   const amt2 = (t.amount2!=null && t.amount2!=='' && !Number.isNaN(t.amount2)) ? t.amount2 : FILL;

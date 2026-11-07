@@ -11760,19 +11760,44 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
   .pg-edge-l .pg-tab:hover:not(:disabled), .pg-edge-r .pg-tab:hover:not(:disabled){transform:none;}
   .pg-book .al-head, .pg-book .bk-run{padding-left:72px; padding-right:72px; min-height:32px;} .pg-book .al-head{justify-content:center; text-align:center;} .pg-book .al-head .al-sec{flex:0 1 auto;} }
 /* the turning leaf: a copy of the page you leave, lifting off at the spine */
-/* 2026-11-07 (package UI30, owner 09:47 #10: "the animation sits below the book (offset); 15% faster"): the copy keeps its page's classes, and
-   .al-page's position:relative won, so the leaf flowed in under the book; absolute wins now. 460 -> 390 ms (the shade too; the back swing 420 -> 360). */
-.pg-leaf{position:absolute !important; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; backface-visibility:hidden; will-change:transform;
-  animation:pgLeafFwd 390ms cubic-bezier(.45,.05,.35,1) forwards;}
-.pg-leaf.pg-leaf-back{transform-origin:100% 50%; animation-name:pgLeafBack;}
-.pg-leaf::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.28)); opacity:0; animation:pgLeafShade 390ms ease-in forwards;}
-.pg-leaf.pg-leaf-back::after{background:linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,.28));}
-@keyframes pgLeafFwd{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(-96deg);}}
-@keyframes pgLeafBack{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(96deg);}}
-@keyframes pgLeafShade{to{opacity:1;}}
+/* 2026-11-07 (package UI33, owner 23:05: the turn stopped at the vertical slice): a full turn. Two pages: .pg-leaf-two turns 0 -> 180 deg about the spine; its front face
+   is the old page, its back face (turned round, backface-visibility hidden on both) is the NEW page, so the slice opens out into it. A shade crosses the
+   front, then lifts off the back; .pg-cast is the fold's soft shadow on the page being revealed; .pg-hold keeps the old page the leaf lands on.
+   One page (phone): .pg-leaf-one folds old to edge-on at the spine, then the new page (pg-leaf-open) opens out from it. The whole turn is 440 ms
+   (UI30's was 390 for the half turn): each half 220. */
+.pg-book{--pg-turn-ms:440ms;}
+.pg-leaf{position:absolute !important; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; will-change:transform;}
+.pg-leaf-two{transform-style:preserve-3d; animation:pgTurnFwd var(--pg-turn-ms) cubic-bezier(.42,0,.58,1) forwards;}
+.pg-leaf-two.pg-leaf-back{transform-origin:100% 50%; animation-name:pgTurnBack;}
+.pg-leaf-two .pg-face{backface-visibility:hidden; -webkit-backface-visibility:hidden; position:absolute !important; margin:0 !important; box-sizing:border-box;}
+.pg-leaf-two .pg-face-back{transform:rotateY(180deg);}
+.pg-face::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0;}
+.pg-leaf-fwd .pg-face-front::after{background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.34)); animation:pgShadeIn calc(var(--pg-turn-ms) / 2) ease-in forwards;}
+.pg-leaf-back .pg-face-front::after{background:linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,.34)); animation:pgShadeIn calc(var(--pg-turn-ms) / 2) ease-in forwards;}
+.pg-leaf-fwd .pg-face-back::after{background:linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,.34)); opacity:1; animation:pgShadeOut calc(var(--pg-turn-ms) / 2) ease-out calc(var(--pg-turn-ms) / 2) forwards;}
+.pg-leaf-back .pg-face-back::after{background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.34)); opacity:1; animation:pgShadeOut calc(var(--pg-turn-ms) / 2) ease-out calc(var(--pg-turn-ms) / 2) forwards;}
+.pg-hold{z-index:7; pointer-events:none;}
+.pg-cast{z-index:7; pointer-events:none; opacity:0; border-radius:inherit; animation:pgCast var(--pg-turn-ms) ease-in-out forwards;}
+.pg-cast-fwd{background:linear-gradient(90deg, rgba(0,0,0,.38), rgba(0,0,0,.12) 38%, rgba(0,0,0,0) 70%);}
+.pg-cast-back{background:linear-gradient(270deg, rgba(0,0,0,.38), rgba(0,0,0,.12) 38%, rgba(0,0,0,0) 70%);}
+.pg-leaf-one{animation:pgOneFwd calc(var(--pg-turn-ms) / 2) cubic-bezier(.5,0,.9,.6) forwards; backface-visibility:hidden;}
+.pg-leaf-one.pg-leaf-back{animation-name:pgOneBack;}
+.pg-leaf-one.pg-leaf-open{opacity:0; animation:pgOpenFwd calc(var(--pg-turn-ms) / 2) cubic-bezier(.1,.4,.5,1) calc(var(--pg-turn-ms) / 2) forwards;}
+.pg-leaf-one.pg-leaf-open.pg-leaf-back{animation-name:pgOpenBack;}
+@keyframes pgTurnFwd{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(-180deg);}}
+@keyframes pgTurnBack{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(180deg);}}
+@keyframes pgOneFwd{from{transform:perspective(1800px) rotateY(0deg); opacity:1;} 99%{opacity:1;} to{transform:perspective(1800px) rotateY(-90deg); opacity:0;}}
+@keyframes pgOneBack{from{transform:perspective(1800px) rotateY(0deg); opacity:1;} 99%{opacity:1;} to{transform:perspective(1800px) rotateY(90deg); opacity:0;}}
+@keyframes pgOpenFwd{from{transform:perspective(1800px) rotateY(-90deg); opacity:1;} to{transform:perspective(1800px) rotateY(0deg); opacity:1;}}
+@keyframes pgOpenBack{from{transform:perspective(1800px) rotateY(90deg); opacity:1;} to{transform:perspective(1800px) rotateY(0deg); opacity:1;}}
+@keyframes pgShadeIn{to{opacity:1;}}
+@keyframes pgShadeOut{from{opacity:1;} to{opacity:0;}}
+@keyframes pgCast{0%{opacity:0;} 45%{opacity:1;} 100%{opacity:0;}}
 .pg-in-back{transform-origin:0% 50%; animation:pgInBack 360ms cubic-bezier(.2,.7,.3,1) both;}
 @keyframes pgInBack{from{transform:perspective(1800px) rotateY(-80deg); opacity:.4;} to{transform:none; opacity:1;}}
-@media (prefers-reduced-motion: reduce){ .pg-leaf, .pg-leaf::after, .pg-in-back{animation:none !important;} .pg-leaf{display:none;} }
+.pg-xfade{animation:pgXfade 220ms ease-out both;}
+@keyframes pgXfade{from{opacity:0;} to{opacity:1;}}
+@media (prefers-reduced-motion: reduce){ .pg-leaf, .pg-leaf-two, .pg-face::after, .pg-cast, .pg-in-back{animation:none !important;} .pg-leaf, .pg-cast, .pg-hold{display:none;} .pg-xfade{animation:pgXfade 220ms ease-out both !important;} }
 
 /* the skills book */
 .bk-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:0 0 10px;}
