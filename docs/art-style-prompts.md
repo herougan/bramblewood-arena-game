@@ -144,3 +144,13 @@ Card art: paste the base prompt first, then the line below. Run the pixel pass a
 
 ### Gold-throat Elder
 > Full-body character in a small scene, centred, slight low angle: a wise old hummingbird elder of the Gold-throat tribe hovering in front of a carved wooden totem, a shimmering gold throat and emerald back, a few silver-tipped feathers of age, a tall feather headdress with beads and a small flower garland, beak open in a song, tiny wings blurred with motion, warm cliff-stone background with woven nests, tribal banners and many small bright hummingbirds gathered to listen at golden hour, one bright gold accent.
+
+## New card prompts (2026-11-07, package CONTENT15)
+
+Card art: paste the base prompt first, then the line below. Run the pixel pass at 128 px. The game shows the card's emoji until the art lands.
+
+### Oathsworn Legionary
+> Full-body character in a small scene, centred, slight low angle: a sturdy river otter legionary of the Rivergate Legion standing firm, chin up, looking past the viewer toward a tall standard topped with a bronze fish, a bronze crested helmet, an oxblood-red wool tunic under a bronze chest plate, a tall rectangular shield with a wave emblem held close at its side, river fort background with a timber palisade, a stone bridge and a line of otters behind it under a clear morning sky, one bright oxblood-red accent.
+
+### Cobalt Talon Honour-guard
+> Full-body character in a small scene, centred, slight low angle: a fierce young hummingbird of the Cobalt Talon tribe darting forward in mid-flight, shimmering cobalt-blue feathers with bold white war-paint stripes, a short crest of blue feathers, a bead necklace and a small flower garland, tiny wings blurred with motion, a carved totem and an old gold-throated hummingbird singing on a ledge behind it, warm cliff-stone background with woven nests and tribal banners at golden hour, one bright cobalt accent.
