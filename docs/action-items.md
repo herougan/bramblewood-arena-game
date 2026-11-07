@@ -8,6 +8,10 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-07: Package UI33 (on its branch, not released)
+- Done (owner 23:05): the Codex page turn is a full turn (old page to the slice, new page opens out on the back of the leaf; both ways; one-page layout folds and opens at the spine). Done (owner 23:22): custom triggers get a gloss row in the card hover and detail; Heron's exile-on-death line shows.
+- Next: owner to look at the turn on a real device (440 ms; say if it should be slower).
+
 ## 11-07: Package BAL25 (on its branch, not released)
 - Done (owner 09:47 #4-#6, 10:25 #5): card power v3 (`tools/card_balance.js --v3`): Maps 0-20 cards, 400 games, random day/night and fields, Lumber in the filler, advanced mix (median 47), Faction-Starter (balance only), "for its budget" per card in the report and the build (CARD_POWER.fb).
 - Owner calls open: BAL25-1 (advanced mix), BAL25-2 (Faction-Starter scope), BAL25-3 (show "for its budget"; Lumber 2+ reads low).

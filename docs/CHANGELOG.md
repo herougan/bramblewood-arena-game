@@ -4,6 +4,10 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 
 ## 2026-11-07 Hemorrhage icon (owner 23:15)
 - Players see: Hemorrhage's icon is 🩸💥 (one blood drop and one impact, stacked) instead of 🩸².
+## 2026-11-07 Full Codex page turn + trigger rows in the hover (UI33, owner 23:05, 23:22)
+- Players see: the Codex / Skill Book page turn is a whole turn. The page you leave swings to edge-on (the slice), then opens out flat on the other side as the NEW page (its contents on the back of the leaf); the page it uncovers already holds its new content and gets a soft fold shadow. Next and previous. On a phone (one page) the old page folds to the slice at the spine and the new page opens out from it. The turn is 440 ms (UI30: 390 ms for the half turn). Reduced motion: a plain cross-fade; hidden tab: no animation; a click mid-turn finishes the turn and starts the next.
+- Players see: a card's hover and detail list one gloss row per custom trigger ("On Death: the moment this card dies - exile itself ..."), struck with the used tag for a spent one-shot. Unremembered Heron's On Death exile line was missing altogether (the legacy `exileSelf` had no action row); it shows now.
+- Code: `codexLeafTurn` (two-face leaf, `CODEX_TURN_MS`), `.pg-leaf-two` / `.pg-leaf-one` CSS, `ui33TriggerGloss`. Test `tests/ui33-2026-11-07.js` (UI30's leaf-duration check follows the new length).
 
 ## 2026-11-07 Log Wall 0/4 (owner 22:13)
 - Players see: Bulwark's Log Walls are 0/4 (were 0/8); Muskrat Lodgekeeper has Bulwark 2 (two walls; was Bulwark 1). `ENG33_DEF.bulwarkWallHp` in `bramblewood-engine.js`, the Bulwark text reads it. Bulwark's price (3.5 a wall, canonical/skill-costs.json) was reasoned for an 0/8 wall and is unchanged: decision for the owner.
