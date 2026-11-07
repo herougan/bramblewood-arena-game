@@ -4206,5 +4206,6 @@
  "☠️ {name} was poisonous: {t} gets {n} Venom.": "☠️ {name} 有毒：{t} 獲得 {n} 層毒。",
  "{name} plays dead!": "{name} 裝死了！",
  "{name} gets up again ({n} Health).": "{name} 又站起來了（{n} 點生命）。",
- "{name} was poisonous: {t} gets {n} Venom.": "{name} 有毒：{t} 獲得 {n} 層毒。"
+ "{name} was poisonous: {t} gets {n} Venom.": "{name} 有毒：{t} 獲得 {n} 層毒。",
+ "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "每次命中，目標的攻擊都會降低 {n}，直到下一輪結束。可疊加。"
 }

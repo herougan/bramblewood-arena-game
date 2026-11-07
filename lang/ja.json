@@ -4206,5 +4206,6 @@
  "☠️ {name} was poisonous: {t} gets {n} Venom.": "☠️ {name} は有毒だった：{t} は毒を {n} 受けた。",
  "{name} plays dead!": "{name} は死んだふりをした！",
  "{name} gets up again ({n} Health).": "{name} が再び起き上がった（体力 {n}）。",
- "{name} was poisonous: {t} gets {n} Venom.": "{name} は有毒だった：{t} は毒を {n} 受けた。"
+ "{name} was poisonous: {t} gets {n} Venom.": "{name} は有毒だった：{t} は毒を {n} 受けた。",
+ "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "攻撃が命中するたびに、対象の攻撃が次のラウンド終了まで{n}下がる。累積する。"
 }

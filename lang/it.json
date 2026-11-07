@@ -4207,5 +4207,6 @@
  "☠️ {name} was poisonous: {t} gets {n} Venom.": "☠️ {name} era tossico: {t} riceve {n} Veleno.",
  "{name} plays dead!": "{name} si finge morto!",
  "{name} gets up again ({n} Health).": "{name} si rialza ({n} Salute).",
- "{name} was poisonous: {t} gets {n} Venom.": "{name} era tossico: {t} riceve {n} Veleno."
+ "{name} was poisonous: {t} gets {n} Venom.": "{name} era tossico: {t} riceve {n} Veleno.",
+ "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "A ogni colpo messo a segno, il bersaglio perde {n} di Attacco fino alla fine del round successivo. Si cumula."
 }

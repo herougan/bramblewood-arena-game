@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package UI31 (owner 10:25 notes 3, 4, 7, 11: Daunt text, pip centring, Shell pop-up, the frost)
+- Players see: Daunt reads "On every hit it lands, the target loses N Attack until the end of next round. Stacks." (the engine adds one mark per landed hit), in the card line and the editor, in 12 languages. The Shell pip is centred and the Shield and Tide pips sit about 1 px higher (one `EMOJI_NUDGE` table in `arena_app.js`, applied wherever `iconHTML` draws a pip; Fluent set only). A turtle 🐢 pops up on a unit when Shell triggers, with the existing shellUp cue.
+- The frost plays once when a unit is frozen, in reverse when it thaws, and a unit frozen again shows only a 1 s blue fade (no chime or shake). A card rebuilt while frozen no longer replays the ice.
+- Admin: the Map cards window's grey skill tiles wear the gold "?" (Learnt at a higher level) for a skill met at a higher level, and the plain "?" for a hidden one. The card face's gold "?" (ENG28) was already there.
+- No pop-up, fade or sfx while the tab is hidden (UI27). Test: `tests/ui31-2026-11-07.js` (new). 1 TX key (12 packs).
+
 ## 2026-11-07 Package BAL26: Maps 0-20 after ENG29 / ENG32 / ENG33 (decisions BAL26-1, BAL26-2)
 - Players see: 23 road fights retuned toward their targets (decks, 3 leaders, 2 lower Shields; Map reference, 200 games on the road seeds), Eyrie Heights most: 11-5 57 -> 80.5 / 75, 11-7 48 -> 65 / 67.5, 11-8 46 -> 70.5 / 64, 11-10 16.5 -> 48.5 / 40, 11-6 51 -> 69.5 / 71; also 10-3 65 -> 82 / 81, 10-4 55.5 -> 73.5 / 77, 10-6 41 -> 61 / 69, 1-A-1 76.5 -> 90.5 / 90, 8-2 76.5 -> 85.5 / 85, 16-6 72 -> 60 / 60. No Map 5 fight, card, list, bramble Health or ability touched; BAL21-1's exceptions left.
 - Why Eyrie Heights fell: ENG32's Brood. The Map reference of Maps 10-11 plays Wolf Spider Mother x4; its brood used to carry Swarm (Species), now they are plain 1/1 copies. With the old Brood the Map 11 fights read 10-20 points higher; Log Walls 1-4; Guardian (ENG29) and Dive 0 (`docs/balance/bal26/eyrie-ab-2026-11-07.json`; BAL26-1).

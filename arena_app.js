@@ -356,6 +356,15 @@ const ICON_ART = {
   'smoke-bomb': {html: SKILL_ICON_HTML.smokeBomb},
   // e.g. lumber: 'assets/icons/lumber.webp' (none shipped yet)
 };
+// 2026-11-07 (package UI31, owner 10:25: "the Shell pip is not centred; Shield and Tide pips sit 0.5-1 px too low"): a small per-emoji
+// nudge table, in em (so it scales with the pip), used wherever iconHTML draws a pip. [x, y]: + is right / down. Measured on the
+// Fluent set (the default), so it applies to that set only; another set's glyphs sit differently. Add a row to fix another emoji.
+// The turtle's ink sits 2.75 px (of 16) below its cell's centre (a short glyph drawn on the baseline), so it is lifted 0.15em; the 💠 and 🌊 cells are
+// centred but the pip rides 0.5-1 px low in its line, so they go up 0.05em (0.8 px).
+const EMOJI_NUDGE = {'🐢':[0, -0.15], '💠':[0, -0.05], '🌊':[0, -0.05]};
+function emojiNudgeStyle(fb){
+  try{ const n = EMOJI_NUDGE[String(fb).replace(/️/g, '')]; if(!n || typeof EmojiStyle === 'undefined' || !EmojiStyle || EmojiStyle.active() !== 'fluent') return ''; return ` style="--enx:${n[0]}em;--eny:${n[1]}em"`; }catch(e){ return ''; }
+}
 function iconHTML(key, fallbackEmoji, opts){
   opts = opts || {};
   const k = String(key == null ? '' : key).toLowerCase().replace(/[^a-z0-9_-]/g, '');
@@ -365,7 +374,8 @@ function iconHTML(key, fallbackEmoji, opts){
     if(typeof art === 'string') return `<img class="${cls} ico-art" data-ik="${k}" src="${escapeAttr(art)}" alt="${escapeAttr(opts.alt != null ? opts.alt : fb)}" draggable="false"${tip}>`;
     if(art.html) return art.html;
   }
-  return `<span class="${cls}" data-ik="${k}"${tip}>${typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(fb) : fb}</span>`; // 2026-10-17: in the chosen emoji set
+  const nz = emojiNudgeStyle(fb); // UI31 (2026-11-07)
+  return `<span class="${cls}${nz ? ' ico-nudge' : ''}" data-ik="${k}"${tip}${nz}>${typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(fb) : fb}</span>`; // 2026-10-17: in the chosen emoji set
 }
 // 2026-10-18 (package I3): the page translator matches whole text nodes, so a sentence that is cut up before it reaches the page
 // (keyword marks in card ability lines, emoji turned into pictures in a block of HTML) is translated here first, while it is
@@ -1138,7 +1148,7 @@ const PASSIVE_DEFS = [
   // Poison/Bleed, but saps effective Attack instead of dealing damage, and decays 1 stack/round.
   {key:'corrode', category:'passive', label:'Corrode', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Corrode.`},
   // 2026-10-12 (09:11): two new passives. The first had no name ("____ N"): Daunt is a working name.
-  {key:'daunt', category:'passive', label:'Daunt', kind:'number', min:0, desc:v=>`On hit, the target loses ${v} Attack until the end of the next round. It stacks.`},
+  {key:'daunt', category:'passive', label:'Daunt', kind:'number', min:0, desc:v=> TX('ui.ui31-daunt', {n: v})}, // UI31 (2026-11-07, owner 10:25 #1): says when it triggers (every hit it lands, as the engine does)
   {key:'recoil', category:'passive', label:'Recoil', kind:'number', min:0, desc:v=>`Every attack also deals ${v} damage to itself.`},
   // Inherent Darkness N / Core Evil (2026-09-21, per explicit request) — two new named Devilry-
   // flavored passives. Inherent Darkness N is a convenience preset for the exact "Per Turn ->
@@ -3220,7 +3230,7 @@ const SKILL_TEXT = {
   bloom: v=> `Heal a random wounded ally for ${v} every upkeep.`,
   ambush: v=> `When an enemy unit enters the slot facing it (played, spawned or moved in), deal ${numOr(v, 3)} damage to it.`, // 2026-10-17 (user: "whenever a unit enters this unit's opposing side, deal N damage")
   siege: v=> `Deals ${v} more damage to the enemy bramble.`,
-  daunt: v=> `Its hits lower the target's Attack by ${v} until the end of next round. Stacks.`,
+  daunt: v=> TX('ui.ui31-daunt', {n: v}), // UI31 (2026-11-07): one text for the card line and the editor
   recoil: v=> `Each attack also deals ${v} damage to itself.`,
   inherentDarkness: v=> `While Ready, gain ${v} Darkness every upkeep.`,
   coreEvil: ()=> `When pitched, gain 1 Darkness.`,
@@ -33301,6 +33311,12 @@ function ui30SuggTilesHTML(sugg, shown){
   return h;
 }
 // UI30_SUGG:END
+// UI31 (2026-11-07, owner 10:25 #5): a skill the cards only get at a higher level wears ENG28's coloured "?" ("Learnt at a higher level") in the
+// Map cards window's skill tiles; a skill hidden as a "?" on this map wears the plain one. (UI28's grey tiles had the colour but no "?".)
+function ui31GreyQHTML(lvl){
+  const tip = lvl > 0 ? TX('ui.eng28-later') + ' (' + TX('ui.codex-skill-lvl', {n: lvl}) + ')' : SKILL_Q_TIP;
+  return ` <span class="skill-q${lvl > 0 ? ' eng28-later' : ''} ui31-grey-q" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">?</span>`;
+}
 function ui19McSkillsHTML(top, ids, defs, ok, mapId){
   const uniq = [...new Set(ids)], rows = ui19McSkillRows(uniq, defs), early = ui19McEarlierSkillKeys(top, defs, ok), kw = (typeof MAP_KEYWORDS !== 'undefined' ? MAP_KEYWORDS : {})[mapId || top]; // typeof guards: tests lift this function alone
   const mapN = (()=>{ try{ return mapNumberOf(top); }catch(e){ return null; } })(); // 2026-11-07 (UI28 #3)
@@ -33309,7 +33325,7 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId){
   const flagged = rows.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; return Object.assign(r, {isNew: mt.met && !early.has(r.key), p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl}); }).sort((a, b)=> (a.grey - b.grey) || (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
   // 2026-11-04 (UI22a): each skill tile carries its full text as a tooltip (the text is clamped to two lines)
   const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
-    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} title="${escapeAttr(r.p.label + ': ' + ui19McSkillText(r) + ' (' + TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + ')' + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}<small>${escapeHtml(ui19McSkillText(r))}</small></span></li>`; };
+    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} title="${escapeAttr(r.p.label + ': ' + ui19McSkillText(r) + ' (' + TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + ')' + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}<small>${escapeHtml(ui19McSkillText(r))}</small></span></li>`; };
   const have = new Set(rows.map(r=> r.key)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
   const recs = recs0.filter(r=>{ if(have.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
   const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" title="${escapeAttr(TX('ui.ui24-rec-tip', {card: r.card}) + ': ' + r.p.label + ': ' + ui19McSkillText(r) + (r.why ? ' (' + r.why + ')' : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sp(r.key)}<small>${escapeHtml(TX('ui.ui24-rec-for', {card: r.card}))}</small></span></li>`;
@@ -43617,6 +43633,34 @@ function ribShieldBreakVfx(rib, track, k, atFrac){
 // badge previously only caught up once the whole round finished and renderBoard() ran a
 // full repaint. This patches just this one card's badges/status classes in place, so it
 // doesn't disturb any windup/strike animation classes currently running on the same element.
+// UI31 (2026-11-07, owner 10:25 #4): the frost's three plays. In: grows once (frost-in) when the unit becomes frozen. Out: melts in reverse
+// (frost-thaw; .is-frozen stays on for the 900 ms so the ice has something to melt from). Frozen again while frozen: ui31FrostRefresh, a short blue fade.
+// No effects while the tab is hidden or just back (UI27): the class changes still happen, the animation is skipped.
+function ui31FrostSync(el, now){
+  const was = el.classList.contains('is-frozen') && !el.classList.contains('frost-thaw');
+  if(now === was) return;
+  const quiet = ui27Away() || (typeof fxLevel === 'function' && fxLevel() === 'none');
+  clearTimeout(el._ui31FrostT); el.classList.remove('frost-in', 'frost-thaw', 'frost-refresh');
+  if(now){ el.classList.add('is-frozen'); if(!quiet){ void el.offsetWidth; el.classList.add('frost-in'); el._ui31FrostT = setTimeout(()=> el.classList.remove('frost-in'), 950); } return; }
+  if(quiet){ el.classList.remove('is-frozen'); return; }
+  void el.offsetWidth; el.classList.add('frost-thaw');
+  el._ui31FrostT = setTimeout(()=>{ el.classList.remove('frost-thaw', 'is-frozen'); }, 950);
+}
+// UI31 (2026-11-07, owner 10:25 #3): a turtle pops up on the unit the moment Shell triggers (its first hit of the round). Nothing while the
+// tab is hidden or just back (UI27), and nothing at effects "none".
+function ui31ShellPop(el){
+  if(!el || ui27Away() || (typeof fxLevel === 'function' && fxLevel() === 'none')) return null;
+  try{ el.querySelectorAll(':scope > .ui31-shell-pop').forEach(x=> x.remove()); }catch(e){}
+  const s = document.createElement('div'); s.className = 'ui31-shell-pop'; s.setAttribute('aria-hidden', 'true');
+  s.innerHTML = typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html('🐢') : '🐢';
+  el.appendChild(s); setTimeout(()=>{ try{ s.remove(); }catch(e){} }, 1100); return s;
+}
+function ui31WasFrozen(ev, rc, el){ if(ev._ui31Was == null) ev._ui31Was = rc ? (rc.frozen|0) > 0 : !!(el && el.classList.contains('is-frozen')); return ev._ui31Was; } // read before the event's own +1, cached on the event
+function ui31FrostRefresh(el){
+  if(!el || ui27Away() || (typeof fxLevel === 'function' && fxLevel() === 'none')) return;
+  el.classList.remove('frost-in', 'frost-refresh'); void el.offsetWidth; el.classList.add('frost-refresh');
+  clearTimeout(el._ui31FrostR); el._ui31FrostR = setTimeout(()=> el.classList.remove("frost-refresh"), 1050);
+}
 function updateCardStatusDisplay(uid){
   const c = currentCardByUid(uid); if(!c) return;
   const el = boardCardEl(uid); if(!el) return;
@@ -43626,7 +43670,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-bled', c.bleed>0);
   el.classList.toggle('is-stunned', !!c.stunned);
   el.classList.toggle('is-chained', !!c.chained);
-  el.classList.toggle('is-frozen', c.frozen>0);
+  ui31FrostSync(el, c.frozen > 0); // UI31 (2026-11-07): the ice plays once going in, in reverse going out (was: a plain toggle, and a rebuilt card replayed it)
   el.classList.toggle('is-asleep', c.asleep>0);
   el.classList.toggle('is-paralyzed', c.paralyzed>0);
   el.classList.toggle('is-blind', c.blind>0); el.classList.toggle('is-tipsy', c.tipsy>0); el.classList.toggle('is-confused', c.confused>0);
@@ -51495,7 +51539,7 @@ function eighthPassVfx(ev){
   if(ev.type === 'statusFx'){
     const t = el(ev.targetUid), self = el(ev.attUid), k = ev.kind;
     if(STATUS_ORBIT[k] && t) F.stunStars(t, {glyph: STATUS_ORBIT[k]});
-    else if(k === 'freeze' && t) F.freezeEncase(t);
+    else if(k === 'freeze' && t){ if(!ui31WasFrozen(ev, matchState && matchState.replayCards && matchState.replayCards[ev.targetUid], t)) F.freezeEncase(t); } // UI31 (2026-11-07): a unit frozen again gets only the blue fade (the status handler)
     else if((k === 'sleep' || k === 'coffeeCrash') && t) F.sleepZzz(t);
     else if(k === 'paralyze' && t) F.paralyzeSpark(t);
     else if((k === 'corrode' || k === 'ichor') && t) F.acidCorrode(t);
@@ -53563,7 +53607,7 @@ function renderVfxForEvent(ev){
     if(ev.kind==='surge'){ try{ SoundKit.rageRoar ? SoundKit.rageRoar() : SoundKit.swipeTone(); }catch(e){} if(el){ floatText(el, `🌋 +${ev.atk}/+${ev.hp}`, 'heal slow'); el.classList.add('surge-glow'); setTimeout(()=> el.classList.remove('surge-glow'), 1400); } }
     // 2026-10-12 (09:48, user: "The shell words comes out too fast. And don't say anything just say Shell!. There should be
     // animation across the card over 0.5s"): a pale-blue shell sweeps up the card over half a second, then "Shell!".
-    else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; if(!ev.armorOnly) rc.tempHp = ev.amount; /* FIX9 (2026-11-05): Shell is Armor only now */ } try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} /* ENG19 (2026-11-02, #14): its 💠 number shows at once */ try{ SoundKit.shellUp(); }catch(e){} if(el){ el.classList.remove('shell-sweep'); void el.offsetWidth; el.classList.add('shell-sweep'); setTimeout(()=> el.classList.remove('shell-sweep'), 900); setTimeout(()=> floatText(el, '🐢 Shell!', 'heal slow'), 450); } }
+    else if(ev.kind==='shellUp'){ if(rc){ rc.shellUntil = 1; rc.shellArmor = ev.amount; if(!ev.armorOnly) rc.tempHp = ev.amount; /* FIX9 (2026-11-05): Shell is Armor only now */ } try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} /* ENG19 (2026-11-02, #14): its 💠 number shows at once */ try{ if(!ui27Away()) SoundKit.shellUp(); }catch(e){} /* the sfx stays the existing shellUp cue (UI31, 2026-11-07, owner 10:25 #3; none in docs/sfx-cue-sheet.md fits better) */ ui31ShellPop(el); if(el){ el.classList.remove('shell-sweep'); void el.offsetWidth; el.classList.add('shell-sweep'); setTimeout(()=> el.classList.remove('shell-sweep'), 900); setTimeout(()=> floatText(el, '🐢 Shell!', 'heal slow'), 450); } }
     else if(ev.kind==='shellDown'){ if(rc){ rc.shellUntil = null; rc.shellArmor = 0; rc.tempHp = 0; } try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} /* ENG19 (#14) */ }
     else if(ev.kind==='swimmer'){ try{ SoundKit.splash ? SoundKit.splash() : SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, '🏊 Quick!', 'quick'); }
     else if(ev.kind==='tailwind'){ try{ SoundKit.swipeTone(); }catch(e){} if(el) floatText(el, ev.heavy ? '🪁 ' + TX('ui.eng20-float-heavy-tail') : ev.quick ? '🪁 Tailwind: Quick!' : '🪁 Tailwind!', 'quick'); }
@@ -53609,7 +53653,9 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='grit'){ SoundKit.gritUp(); if(el) floatText(el, '+'+ev.amount+'⚔', 'gold'); }
     // Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid),
     // Stun-on-hit (heat, reuses the existing stunOnHit->'stun' visual below).
-    else if(ev.kind==='freeze'){ SoundKit.freezeChime(); if(el){ shakeEl(el); floatText(el, '❄ Frozen', 'debuff'); } if(rc) rc.frozen = (rc.frozen||0) + 1; }
+    else if(ev.kind==='freeze'){ // UI31 (2026-11-07, owner 10:25 #4): the full effect only when the unit was not frozen; frozen again: a short blue fade
+      if(ui31WasFrozen(ev, rc, el)) ui31FrostRefresh(el); else { SoundKit.freezeChime(); if(el){ shakeEl(el); floatText(el, '❄ Frozen', 'debuff'); } }
+      if(rc) rc.frozen = (rc.frozen||0) + 1; }
     else if(ev.kind==='sleep'){ SoundKit.sleepTone(); if(el) floatText(el, '💤 Asleep', 'debuff'); if(rc) rc.asleep = ev.left != null ? ev.left : (rc.asleep||0) + 1; } // ev.left: the capped Sleep stack (2026-10-18)
     else if(ev.kind==='paralyze'){ SoundKit.paralyzeBuzz(); if(el){ shakeEl(el); floatText(el, '⚡ Paralyzed', 'debuff'); } if(rc) rc.paralyzed = (rc.paralyzed||0) + 1; }
     else if(ev.kind==='stunOnHit'){ SoundKit.stunTone(); if(el){ shakeEl(el); floatText(el, '💫 Stunned!', 'debuff'); } if(rc) rc.stunned = true; }

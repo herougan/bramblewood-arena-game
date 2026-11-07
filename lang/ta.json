@@ -4208,5 +4208,6 @@
  "☠️ {name} was poisonous: {t} gets {n} Venom.": "☠️ {name} நச்சுத்தன்மையுடையது: {t} {n} நஞ்சு பெறுகிறது.",
  "{name} plays dead!": "{name} இறந்ததுபோல் நடிக்கிறது!",
  "{name} gets up again ({n} Health).": "{name} மீண்டும் எழுகிறது ({n} உயிர்).",
- "{name} was poisonous: {t} gets {n} Venom.": "{name} நச்சுத்தன்மையுடையது: {t} {n} நஞ்சு பெறுகிறது."
+ "{name} was poisonous: {t} gets {n} Venom.": "{name} நச்சுத்தன்மையுடையது: {t} {n} நஞ்சு பெறுகிறது.",
+ "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "ஒவ்வொரு முறை தாக்கும்போதும், இலக்கு அடுத்த சுற்றின் இறுதிவரை {n} தாக்குதலை இழக்கும். அடுக்கப்படும்."
 }

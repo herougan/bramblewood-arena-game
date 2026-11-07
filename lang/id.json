@@ -4207,5 +4207,6 @@
  "☠️ {name} was poisonous: {t} gets {n} Venom.": "☠️ {name} beracun: {t} mendapat {n} Racun.",
  "{name} plays dead!": "{name} pura-pura mati!",
  "{name} gets up again ({n} Health).": "{name} bangun lagi ({n} Nyawa).",
- "{name} was poisonous: {t} gets {n} Venom.": "{name} beracun: {t} mendapat {n} Racun."
+ "{name} was poisonous: {t} gets {n} Venom.": "{name} beracun: {t} mendapat {n} Racun.",
+ "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "Setiap kali serangannya mengenai, target kehilangan {n} Serangan hingga akhir ronde berikutnya. Bisa menumpuk."
 }

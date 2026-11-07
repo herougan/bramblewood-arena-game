@@ -4208,5 +4208,6 @@
  "☠️ {name} was poisonous: {t} gets {n} Venom.": "☠️ {name}은(는) 유독했어요: {t}이(가) 독을 {n} 받아요.",
  "{name} plays dead!": "{name}이(가) 죽은 척해요!",
  "{name} gets up again ({n} Health).": "{name}이(가) 다시 일어나요 (체력 {n}).",
- "{name} was poisonous: {t} gets {n} Venom.": "{name}은(는) 유독했어요: {t}이(가) 독을 {n} 받아요."
+ "{name} was poisonous: {t} gets {n} Venom.": "{name}은(는) 유독했어요: {t}이(가) 독을 {n} 받아요.",
+ "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "공격이 명중할 때마다 대상의 공격력이 다음 라운드 종료까지 {n} 감소한다. 중첩된다."
 }

@@ -4206,5 +4206,6 @@
  "☠️ {name} was poisonous: {t} gets {n} Venom.": "☠️ Nakalalason si {name}: nakakuha si {t} ng {n} Lason.",
  "{name} plays dead!": "Nagkukunwaring patay si {name}!",
  "{name} gets up again ({n} Health).": "Bumangon muli si {name} ({n} Buhay).",
- "{name} was poisonous: {t} gets {n} Venom.": "Nakalalason si {name}: nakakuha si {t} ng {n} Lason."
+ "{name} was poisonous: {t} gets {n} Venom.": "Nakalalason si {name}: nakakuha si {t} ng {n} Lason.",
+ "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "Sa bawat tamang hampas nito, mawawalan ang target ng {n} Atake hanggang sa katapusan ng susunod na round. Nag-iipon."
 }
