@@ -72,7 +72,7 @@ ok(E && typeof H.Engine.makeSimEngine === 'function', 'engine loads');
 // ---- #10 Bulwark N: N Log Walls, 0/8 Structures with Guardian
 for(const [id, n] of [['e33-bul1', 1], ['e33-bul2', 2], ['e33-bul3', 3]]){ const {e, P} = mk(); const h = {uid: 9200 + n, defId:id}; P[1].hand.push(h); P[1].lumber = 5;
   e.placeCard(P, so, 1, h.uid, 0, {}, []); const dd = c=> e.derivedDefs[c.defId] || defs[c.defId] || {}; const w = all(P[1]).filter(c=> dd(c).bulwarkWall); // the wall's def is shared once made
-  ok(w.length === n && w.every(c=> c.hp === 8 && (c.atk | 0) === 0), `Bulwark ${n}: ${n} Log Wall(s), 0/8 (${w.map(c=> c.atk + '/' + c.hp).join(', ')})`);
+  ok(w.length === n && w.every(c=> c.hp === 4 && (c.atk | 0) === 0), `Bulwark ${n}: ${n} Log Wall(s), 0/4 (owner 22:13; was 0/8) (${w.map(c=> c.atk + '/' + c.hp).join(', ')})`);
   ok(w.length && dd(w[0]).archetypes.includes('Structure') && dd(w[0]).effects.guardian && dd(w[0]).name === 'Log Wall', 'a wall is a Structure with Guardian named Log Wall'); }
 
 // ---- #6 Timbered – {skills}: the braces still work (the editor stores a stat bonus or skills in the same braces)

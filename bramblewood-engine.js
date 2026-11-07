@@ -3641,7 +3641,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // opening hand, so a token would gain nothing from it; call EN-3.) One derived card per size ('bulwark-shield~<H>'); the app names it
   // TX('ui.en-bulwark-shield'). Priced by what it raises: 2 x 4N Health = 8 a point (canonical/skill-costs.json).
   // ENG33 (2026-11-07, owner 11-07 10:25 #10: "Bulwark N (default 1) summons N log-wall constructs (medieval palisade, not a literal shield)"):
-  // it raises N Log Walls (was two shields of 4N): each a 0/8 Structure token with Guardian, a short wall of upright logs, in the free
+  // it raises N Log Walls (was two shields of 4N): each a 0/4 (owner 22:13; was 0/8) Structure token with Guardian, a short wall of upright logs, in the free
   // front-row slots nearest it; no free slot, no wall. Bulwark 2 is the old Bulwark 2 again (two 0/8); Bulwark 1 is one 0/8 (was two 0/4).
   // One def ('bulwark-wall'); it keeps bulwarkShield: true (the app names it, tests and the AI read the flag). Priced by reasoning:
   // canonical/skill-costs.json (3.5 a wall).
@@ -4300,7 +4300,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   enemy unit's blow (its killer: card.killedBy, a live unit on the other side) that unit gets N Venom (the poison counters); when a Devour
   //   unit eats it from the hand, the eater gets N Venom. Venom-proof (resist poison 0) and Immunity units take none; ticks, the weather and
   //   brambles give no killer. Event statusFx kind 'poisonous' {amount}. On no card yet.
-  const ENG33_DEF = {poisonous: 2, bulwarkWallHp: 8};
+  const ENG33_DEF = {poisonous: 2, bulwarkWallHp: 4}; // 2026-11-07 (owner 22:13: "Log wall should be 0/4. Not 0/8"): was 8
   function eng33PoisonousN(def){ const v = def && def.effects && def.effects.poisonous; return !v ? 0 : v === true ? ENG33_DEF.poisonous : Math.max(0, Math.round(Number(v) || 0)); }
   function eng33Envenom(src, t, n, side, tSide, events){
     if(!(n > 0) || !t || !(t.hp > 0) || t.cageOf || isStructureCard(t) || resistFactor(t.defId, 'poison', CARD_DEFS[src.defId]) === 0 || immunityOf(t)) return 0;

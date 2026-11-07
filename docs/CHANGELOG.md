@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Log Wall 0/4 (owner 22:13)
+- Players see: Bulwark's Log Walls are 0/4 (were 0/8); Muskrat Lodgekeeper has Bulwark 2 (two walls; was Bulwark 1). `ENG33_DEF.bulwarkWallHp` in `bramblewood-engine.js`, the Bulwark text reads it. Bulwark's price (3.5 a wall, canonical/skill-costs.json) was reasoned for an 0/8 wall and is unchanged: decision for the owner.
+
 ## 2026-11-07 Stacked combined icons (owner 21:59)
 - Players see: a skill icon made of two or more emoji (Poison Barbs 🌵☠️, Twin Strike ⚔⚔, Fire Arrow 🔥🏹, Timbered 🪵🪵 ...) is drawn as one badge, the later emoji about 45% over the earlier one, on pips and wherever `iconHTML` draws it. `icoParts` / `.ico-stack`; test `tests/stack-icons-2026-11-07.js`.
 

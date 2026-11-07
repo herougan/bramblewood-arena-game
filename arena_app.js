@@ -1142,7 +1142,7 @@ const PASSIVE_DEFS = [
   // Overwhelm (Runeterra's word for trample). Now called Stampede; the data key stays `overwhelm`.
   {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy bramble.`},
   {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 whenever ANY ally of yours dies.`},
-  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 8})}, // 2026-10-23 (package EN, owner 01:57 note 2): two 0/4N shields as it arrives
+  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 4 /* owner 22:13: Log Wall 0/4 */})}, // 2026-10-23 (package EN, owner 01:57 note 2): two 0/4N shields as it arrives
   // 2026-10-17 (user: "Add a new skill Reflect: that reflects ranged skills back at a random enemy unit."): the engine's reflectShotOf.
   // A flag now (was Reflect N%: a melee hit's full damage thrown back); an old stored number reads as that % chance to bounce a shot.
   {key:'reflect', category:'passive', label:'Reflect', kind:'boolean', desc:v=>`${typeof v === 'number' && v < 100 ? `${v}% of the time, a` : 'A'} shot aimed at it bounces off and hits a random enemy unit instead (their bramble if they have none). Shots: Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire, Snipe, Fireball (the whole burst), Rocket, a thrown Banana, Missile and On Ready damage, a Damage trigger at a random enemy, and the bramble's bolt. Melee, Pounce and what falls from the sky or bursts over an area (Skyfall, Meteor, Lightning, Earthquake…) aren't shots. A bounced shot can be dodged, but never bounces again.`},
@@ -2231,7 +2231,7 @@ PASSIVE_DEFS.push({key:'rageAt', category:'passive', label:TX('ui.eng27-rage-at-
   get:e=> Number(e.rageAt) > 0 ? Math.round(Number(e.rageAt) * 100) : undefined, apply:(e, v)=>{ const n = Math.max(10, Math.min(90, Number(v) || 75)); e.rageAt = n / 100; e.rage = true; }});
 SKILL_ICON.rageAt = '😡';
 sk1Patch(PASSIVE_DEFS, 'shapeshifter', {category:'passive', label:TX('ui.skn-shapeshifter'), kind:'boolean', desc:()=> TX('ui.sk-shapeshifter')});
-sk1Patch(PASSIVE_DEFS, 'bulwark', {category:'passive', label:'Bulwark', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 8}), codexNote:TX('ui.sk-bulwark-codex')}); // ENG33 (2026-11-07, owner #10): N Log Walls, 0/8 each
+sk1Patch(PASSIVE_DEFS, 'bulwark', {category:'passive', label:'Bulwark', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 4 /* owner 22:13: Log Wall 0/4 */}), codexNote:TX('ui.sk-bulwark-codex')}); // ENG33 (2026-11-07, owner #10): N Log Walls, 0/8 each
 sk1Patch(PASSIVE_DEFS, 'backstab', {category:'passive', label:'Backstab', kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-backstab', {n: numOr(v, 2)}), codexNote:TX('ui.sk-backstab-codex')});
 Object.assign(SKILL_ICON, {assault:'⚔️', liege:'🛡️👑', liegeGrant:'🛡️👑', rageGrant:'😡', shapeshifter:'🧰'});
 // BF6 (owner 15:15: "Rally: temporary increase in attack. War Banner: passive increase in attack while this unit is present."): Rally N is
@@ -3234,7 +3234,7 @@ const SKILL_TEXT = {
   gash: v=> `When played, add ${v} Bleed to the enemy facing it.`,
   overwhelm: ()=> `Damage left over from a kill carries on into the enemy bramble.`,
   berserk: v=> `+${v} Attack whenever one of your units dies.`,
-  bulwark: v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 8}), // ENG33 (2026-11-07): N Log Walls // 2026-10-23 (package EN, owner 01:57 note 2): two shields as it arrives
+  bulwark: v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 4 /* owner 22:13: Log Wall 0/4 */}), // ENG33 (2026-11-07): N Log Walls // 2026-10-23 (package EN, owner 01:57 note 2): two shields as it arrives
   reflect: v=> `${typeof v === 'number' && v < 100 ? `${v}% of the time, a shot` : 'Shots'} aimed at it (arrows, bolts, missiles, fireballs) bounce${typeof v === 'number' && v < 100 ? 's' : ''} off and hit${typeof v === 'number' && v < 100 ? 's' : ''} a random enemy unit.`, // 2026-10-17 (user: "reflects ranged skills back at a random enemy unit")
   momentum: v=> `+${v} Attack every time it kills a unit.`,
   bloom: v=> `Heal a random wounded ally for ${v} every upkeep.`,
