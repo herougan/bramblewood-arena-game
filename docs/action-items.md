@@ -57,6 +57,12 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Owner calls open: none (ENG29-1 is Claude's call on the edge cases).
 - Next: road measure of Maps 0-20 (Guardian decks beside flyers change); card-matrix goldens at the batch release.
 
+## 11-07: Package BAL23 (on its branch, not released)
+- Done: the skill ladder built to the owner's 07:37 method (`tools/skill_ladder_2026_11_07.js`): N 1-4, Shield 2/4/6, random bodies at an equal 3A + H, price = the best body (a fitted curve's maximum), mean and best spread beside it, L1 / L5, 25 pairs. Verified on Armor, Shield, Twin Strike, Poison, Flying and one pair (300 fights).
+- Found (300 fights, verification only): Armor, Poison and Shield are worth far more on their best body than their price (Armor 4: 9.5 vs 5.9; Poison 2: 8.6 vs 4.7; Shield 6: 10.0 vs 2.5, its price ignores N); their mean over bodies is near the price. Their best body is always the end of the range (Armor / Shield: 7/2 glass cannon; Poison: 1/20 wall). Flying is priced 0 but worth 3-4.6. Twin Strike is about right (6.9 vs 6.4) and flat across bodies.
+- Owner calls open: whether "the best body" may be an extreme spread (7/2, 1/20) or the range should be bounded (e.g. Health at least a third of the budget); then the full run.
+- Next: the full ladder, in 2-hour segments when the machine is idle: `node tools/skill_ladder_2026_11_07.js run --games 400 --hours 2` (re-run until it says done), then `summary --games 400`. Copy `skill-canon-anchors-L5-ladder.json` from the main checkout first, or L5 is read by the stat yardstick.
+
 ## 11-07: Package CONTENT13 (on its branch, not released)
 - Done: 23:35 #8. **The Drill Grounds** (🎌), a side map of the Outskirts right under the Tutorial's entrance, in Admin Mode only (it is out of the map list while Admin Mode is off, so players, the balance tools and the road tests never see it). Two skirmishes at a fixed Level 1: SK-1 Rivergate Century (Otter) and SK-2 Sunfeather War-band (Hummingbird), each the deck optimiser's best faction-pure deck (seeded, `tools/content13_faction_decks_2026_11_07.js`). Test fights: free, no rewards, drops, XP, rank or progress.
 - Owner calls open: CONTENT13-1 (K14's one-copy rule waived there; Level 1).
