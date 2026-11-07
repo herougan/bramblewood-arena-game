@@ -167,7 +167,8 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
 // ---- 8. turning: buttons, keys, swipe, motion
 { ok(/e\.key !== 'ArrowLeft' && e\.key !== 'ArrowRight'/.test(src) && /t\.closest\('input, textarea, select/.test(src) && /\.modal-overlay:not\(\[hidden\]\)/.test(src), '8. ← / → turn the page, not while typing or under a window');
   ok(/Math\.abs\(dx\) >= 50 && Math\.abs\(dx\) > Math\.abs\(dy\) \* 1\.5/.test(fnSrc('codexWireSwipe')) && /Date\.now\(\) - codexSwipedAt < 400/.test(fnSrc('codexWireGridClick')), '8. a sideways swipe turns, and the click it ends doesn\'t open a card');
-  ok(/const motion = !!host && host\.isConnected && !reducedMotion\(\) && fxAtLeast\('med'\)/.test(fnSrc('codexLeafTurn')) && /@media \(prefers-reduced-motion: reduce\)\{ \.pg-leaf, \.pg-leaf::after, \.pg-in-back\{animation:none !important;\}/.test(css), '8. no page-turn animation with reduced motion or Low effects');
+  // 2026-11-08 (UI33, owner 23:05): the full turn runs only when the tab is shown and effects are Medium or higher; reduced motion gets a plain cross-fade, no leaf
+  ok(/const live = !!host && host\.isConnected && !document\.hidden && fxAtLeast\('med'\)/.test(fnSrc('codexLeafTurn')) && /const calm = live && reducedMotion\(\)/.test(fnSrc('codexLeafTurn')) && /@media \(prefers-reduced-motion: reduce\)\{ \.pg-leaf, \.pg-leaf-two, [^}]*animation:none !important;\} \.pg-leaf, \.pg-cast, \.pg-hold\{display:none;\}/.test(css), '8. no page-turn leaf with reduced motion (a cross-fade) or Low effects');
   ok(/touch-action:pan-y/.test(css) && /\.bk-page\{[^}]*height:clamp/.test(css), '8. vertical scrolling still works over the album and the book; pages have a fixed height');
   ok(/:root\[data-theme="dark"\]/.test(css) && !/\.bk-page\{[^}]*#[0-9a-f]{3,6}/i.test(css) && /\.bk-page\{[^}]*var\(--surface\)/.test(css), '8. the book\'s parchment is the theme\'s --surface (light and dark)');
 }

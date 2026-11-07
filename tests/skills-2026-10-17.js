@@ -197,7 +197,7 @@ ok(/\n  bloodlust: \(\)=> TX\('ui\.sk-bloodlust'\)/.test(src) && /leaps to the n
 ok(/if\(p\.codexNote\) txt \+= ' ' \+ p\.codexNote;/.test(src) && /codexNote:p\.codexNote/.test(src), 'the Skills Codex adds the note');
 ['sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'shatter'].forEach(k=>{
   ok(new RegExp(`\\{key:'${k}', category:'passive', label:'[A-Z][a-z]+( [A-Z][a-z]+)?'`).test(src), `${k}: in "+ Add Skill" with a simple name`);
-  ok(new RegExp(`\\n  ${k}: (v|\\(\\))=> \``).test(src), `${k}: a short card line`);
+  ok(new RegExp(`\\n  ${k}: (v|\\(\\))=> (\`|TX\\()`).test(src) /* 2026-11-08: ENG34 moved Fletcher's line to a TX key */, `${k}: a short card line`);
   ok(k === 'sap' || ((src.match(/Object\.assign\(SKILL_ICON, \{vanguard:[^}]*\}/) || [''])[0]).includes(`${k}:'`), `${k}: an icon`);
   ok(new RegExp(`'${k}'`).test(src.slice(src.indexOf('const CHIP_FALLBACK_SKILLS'), src.indexOf('const CHIP_FALLBACK_SKILLS') + 3000)), `${k}: a chip on the card`); });
 ok(/\{key:'sap', category:'passive', label:'Leech'/.test(src), 'Leech is the old sap key (heal on hit by the damage dealt)');

@@ -63,7 +63,7 @@ ok(/function stuckFast\(c\)\{ return !!\(c && \(c\.pinned \|\| c\.webbed > 0 \|\
 ok(ar && SC.skillCost('anadromous', true) === 1.4, 'Anadromous costs 1.4 (the ENG15 rework)'); }
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
   // 2026-10-31 (package ENG15): the owner's picks are in: Net Thrower and the new Bolas Spider (Bola), Wrong-Way Salmon (Anadromous)
-  ok(cards.filter(c=> c.effects && c.effects.bola).map(c=> c.id).sort().join() === 'bolas-spider,net-thrower' && cards.filter(c=> c.effects && c.effects.anadromous).map(c=> c.id).join() === 'wrong-way-salmon', 'Bola on Net Thrower and the Bolas Spider, Anadromous on Wrong-Way Salmon (decisions ENG14-3 / ENG14-4)'); }
+  ok(cards.filter(c=> c.effects && c.effects.bola).map(c=> c.id).sort().join() === 'bolas-spider,net-thrower,yeti-tracker' /* 2026-11-08 (CONTENT17): the Yeti Tracker throws a Bola too */ && cards.filter(c=> c.effects && c.effects.anadromous).map(c=> c.id).join() === 'wrong-way-salmon', 'Bola on Net Thrower and the Bolas Spider, Anadromous on Wrong-Way Salmon (decisions ENG14-3 / ENG14-4)'); }
 
 // ---- X20 Anadromous -------------------------------------------------------------------------------------------------------------------
 // 2026-10-31 (package ENG15, owner Y2): reworked; the sea half now needs a Tide map too (tests/eng15-2026-10-31.js has the three states)

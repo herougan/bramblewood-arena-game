@@ -63,7 +63,7 @@ const swing = (e, P, c)=>{ const ev = []; e.debugAttack(P, so, c.uid, {}, ev); r
 { const {e, P} = mk(); const h = {uid: 9001, defId:'en-bulwark'}; P[1].hand.push(h); P[1].lumber = 5;
   const ev = []; ok(e.placeCard(P, so, 1, h.uid, 0, {}, ev) !== false, 'Bulwark 2 is played');
   const sh = all(P[1]).filter(c=> (defs[c.defId] || e.derivedDefs[c.defId] || {}).bulwarkShield);
-  ok(sh.length === 2 && sh.every(c=> c.hp === 8 && (c.atk | 0) === 0), `Bulwark 2: two 0/8 shields (${sh.map(c=> c.atk + '/' + c.hp).join(', ')})`);
+  ok(sh.length === 2 && sh.every(c=> c.hp === 4 && (c.atk | 0) === 0) /* owner 11-07 22:13: Log Wall 0/4 */, `Bulwark 2: two 0/4 Log Walls (${sh.map(c=> c.atk + '/' + c.hp).join(', ')})`);
   ok(sh.every(c=> Math.abs(c.slot) === 1), `the shields stand in the free slots nearest it (${sh.map(c=> c.slot).join(', ')})`);
   ok(e.derivedDefs[sh[0].defId].archetypes.includes('Structure'), 'a shield is a Structure'); }
 { const src = fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8');

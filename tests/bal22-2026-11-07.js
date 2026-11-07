@@ -62,7 +62,7 @@ CODES.forEach(c=>{ const pk = JSON.parse(read('lang/' + c + '.json'));
   ok(i > 0 && j > i, 'cePowerHTML found');
   const esc = s=> String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const CARD_POWER = {date: '2026-11-07', wr: {up: 62.4, zero: 50.2, down: 41, noadv: 55}, adv: {up: 57.6, zero: 49.6, down: 31}, ps: {up: 0.83}};
-  const f = new Function('CARD_POWER', 'TX', 'escapeHtml', 'escapeAttr', app.slice(i, j) + '\nreturn cePowerHTML;')(CARD_POWER, TX, esc, esc);
+  const f = new Function('CARD_POWER', 'TX', 'escapeHtml', 'escapeAttr', 'ui32PowerMarkHTML', 'liveCards', 'CARD_DEFS_BASELINE', app.slice(i, j) + '\nreturn cePowerHTML;')(CARD_POWER, TX, esc, esc, ()=> '', {}, {}); // 2026-11-08: UI32's "edited since rated" mark is stubbed here (tests/ui32 covers it)
   const txt = id=> f({id}).replace(/<[^>]*>/g, '').trim(), tip = id=> (f({id}).match(/title="([^"]*)"/) || [])[1] || '';
   ok(txt('up') === 'Power: +12 · Advanced +8', 'up: ' + txt('up'));
   ok(txt('zero') === 'Power: 0 · Advanced 0', 'zero: ' + txt('zero'));

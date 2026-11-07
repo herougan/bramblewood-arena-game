@@ -116,7 +116,7 @@ ok(/function eng23MapDef\(id, defs\)/.test(app) && /data-zoom-base="1"/.test(app
 
 // ---- 6. Rodentia --------------------------------------------------------------------------------------------------------------
 ok(TAXO.name('Rodent') === 'Rodentia' && TAXO.key('Rodentia') === 'rodent' && TAXO.isA({species:['Rodent']}, 'Rodentia') && TAXO.isA({species:['Rodent']}, 'Rodent'), '6: Rodent shows as Rodentia; both names find the rodents');
-ok(cards.filter(c=> (c.species || []).includes('Rodent')).length === 54 /* 2026-11-06 TESTFIX2: 53 -> 54, a card added or re-specied since (CONTENT11 / CONTENT12's fold) */, '6: the key stays (54 cards keep species "Rodent")');
+ok(cards.filter(c=> (c.species || []).includes('Rodent')).length === 57 /* 2026-11-08 (CONTENT17): 54 -> 57, its new rodents */ /* 2026-11-06 TESTFIX2: 53 -> 54, a card added or re-specied since (CONTENT11 / CONTENT12's fold) */, '6: the key stays (57 cards keep species "Rodent")');
 ok(/TAXO \? TAXO\.name\(x\) : x/.test(app), '6: the card details show the Type\'s name');
 
 // ---- 7. CONTENT9-2 ------------------------------------------------------------------------------------------------------------

@@ -153,7 +153,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
     const hq = P[2].hq.hp; e.debugAttack(P, so, byDef(P[1], id).uid, {}, []); return hq - P[2].hq.hp; };
   // 2026-10-23 (package EN, owner 01:57 note 2): Bulwark no longer softens bramble hits; it raises two 0/4N shields (here 0/12) in front instead
   const {e, P} = mk(); e.debugSpawnCard(P, so, 2, 'kb-bulwark', 'left', {}, []); const sh = e.allBoardCards(P[2]).filter(c=> (e.derivedDefs[c.defId] || {}).bulwarkShield);
-  ok(sh.length === 3 && sh.every(c=> c.hp === 8), /* 2026-11-07 (ENG33, owner #10): N Log Walls of 0/8 (was two 0/4N shields) */ `Bulwark 3 raises three 0/8 Log Walls (${sh.map(c=> c.hp).join(', ')}; castle hit through them ${castle('kb-hit')})`); }
+  ok(sh.length === 3 && sh.every(c=> c.hp === 4), /* 2026-11-07 (ENG33, owner #10): N Log Walls; 2026-11-08 owner 22:13: 0/4 (was 0/8) */ `Bulwark 3 raises three 0/4 Log Walls (${sh.map(c=> c.hp).join(', ')}; castle hit through them ${castle('kb-hit')})`); }
 { const sup = Object.keys(base).filter(id=> base[id].effects && base[id].effects.supreme).sort();
   ok(sup.join() === 'black-dragon,blue-dragon,fathom-leviathan,green-dragon,red-dragon,white-dragon', `only the dragons and the Leviathan (rank 2, 2026-10-18) are Supreme (${sup})`); }
 
