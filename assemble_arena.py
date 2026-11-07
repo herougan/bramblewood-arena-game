@@ -6,6 +6,9 @@ engine_src = open(SCRATCH + "bramblewood-engine.js", encoding="utf-8").read()
 # 2026-10-21 (package TX): the type taxonomy (BramblewoodTaxonomy, every type comparison asks it) goes ahead of the engine, so the page,
 # the app and the simulator worker (which gets engine_src as a string) all have it. Its data comes from python3 tools/type_taxonomy.py.
 engine_src = open(SCRATCH + "bramblewood-taxonomy.js", encoding="utf-8").read() + "\n" + engine_src
+# 2026-11-07 (package ENG34): each skill's delivery (melee / ranged / none) and what each on-hit effect rides, canonical/skill-delivery.json,
+# goes ahead of the engine too (the engine's SKILL_DELIVERY reads __SKILL_DELIVERY__; in Node it require()s the file).
+engine_src = "var __SKILL_DELIVERY__ = " + json.dumps(json.load(open(SCRATCH + "canonical/skill-delivery.json", encoding="utf-8")), ensure_ascii=False) + ";\n" + engine_src
 # Ghost decks for Async Arena + offline Raid (2026-10-03) — DOM-free, shared with tests/async-raid.js.
 # 2026-10-16: + bramblewood-fx-g.js (FX.G: map titles, map grandeur, the fun set).
 # 2026-10-15: the six effect batches (bramblewood-fx-a.js … -f.js, window.FX.A…F) load right after unitfx; see

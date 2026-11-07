@@ -125,6 +125,15 @@ const CARD_DEFS_GLOBAL = (typeof __CARD_DEFS__ !== 'undefined') ? __CARD_DEFS__ 
 // assemble_arena.py puts it ahead of this file (the BramblewoodTaxonomy global). Without it (a bare copy of this file) the helpers
 // fall back to the old rule: the archetype itself, a Changeling for any type.
 const TAXONOMY = (typeof BramblewoodTaxonomy !== 'undefined' && BramblewoodTaxonomy) || (()=>{ try{ return typeof require === 'function' ? require('./bramblewood-taxonomy.js') : null; }catch(e){ return null; } })();
+// ENG34 (2026-11-07, owner 19:25: "classify skills as melee or ranged. Then a lot of effects will be based on whether they are melee or
+// ranged"): each skill's delivery (melee / ranged / none), the skills that make a unit's own swing ranged, which hits each on-hit effect
+// rides and which hits each defence answers, all from canonical/skill-delivery.json (one source). In Node it is require()d; in the page and
+// the simulator worker assemble_arena.py puts `var __SKILL_DELIVERY__ = {...}` ahead of this file.
+const SKILL_DELIVERY = (typeof __SKILL_DELIVERY__ !== 'undefined' && __SKILL_DELIVERY__) || (()=>{ try{ return typeof require === 'function' ? require('./canonical/skill-delivery.json') : null; }catch(e){ return null; } })() || {delivery:{}, swing:[], rides:{}, against:{}};
+function skillDeliveryOf(key){ return (SKILL_DELIVERY.delivery || {})[key] || 'none'; }
+function skillRidesOn(key){ return (SKILL_DELIVERY.rides || {})[key] || null; }
+// effects e has a skill that turns its own swing into a ranged attack (Reach, a thrown Boomerang / Bananarang, the old Anti-air throw)
+function rangedSwingOf(e){ return !!e && (SKILL_DELIVERY.swing || []).some(k=> !!e[k] && !(Number(e[k]) < 0)); }
 function txChangeling(d){ return !!(d && ((d.effects && d.effects.changeling) || d.subtype === 'changeling')); }
 // d counts as type T (an eagle is a Bird; a Changeling is everything).
 function txIsA(d, T){ if(!d || T == null || T === '') return false; if(TAXONOMY) return TAXONOMY.isA(d, T); return txChangeling(d) || (d.archetypes || []).includes(T) || (d.species || []).includes(T); }
@@ -11994,3 +12003,4 @@ if(typeof module !== 'undefined' && module.exports){
 if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {fogOfWarView, fogPeekRoll, FOG_REVEAL_KEYS}); // Package FOG (2026-10-21): the fog of war's pure helpers
 if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS;
 if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SELFISH_BOONS, selfishBoonCount, selfishBoonThemeOf, selfishBoonWho, BOSS_GIMMICKS /* CONTENT11 (2026-11-05) */}); // Package DF3 (2026-10-24): the selfish boons // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests
+if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SKILL_DELIVERY, skillDeliveryOf, skillRidesOn, rangedSwingOf}); // ENG34 (2026-11-07): skill delivery (canonical/skill-delivery.json)

@@ -15,7 +15,7 @@ const maps = CONQUEST_MAPS.filter(m=> !m.reserved).map(m=>{
     let lvl=null; try{ lvl = roadEnemyLevel(n); }catch(e){}
     return {key:n.key, code: skirmishCode(m.id, n.key), name:n.name||'', kind:n.kind||'skirmish', rating, enemyLevel:lvl, castle,
       deck: Object.assign({}, n.deck||{}), waves:(n.waveDecks||[]).map(w=> Object.assign({}, w)), leaders:(n.leaders||[]).concat(n.leaderId?[n.leaderId]:[]) }; });
-  return {id:m.id, name:m.name, icon:m.icon||'', sub:!!m.sub, parent:m.parent||'', no: mapNumberOf(m.id), unlockAfter:m.unlockAfter||'', entry: m.entry ? {after:m.entry.after||'', afterMapCleared:m.entry.afterMapCleared||'', label:m.entry.label||'', afterDays:m.entry.afterDays||'', quest:m.entry.quest||''} : null,
+  return {id:m.id, name:m.name, icon:m.icon||'', sub:!!m.sub, parent:m.parent||'', no: mapNumberOf(m.id), unlockAfter:m.unlockAfter||'', unlockNo: (()=>{ try{ return mapUnlockNumberOf(m.id); }catch(e){ return null; } })() /* ENG34 (2026-11-07): unlock order */, entry: m.entry ? {after:m.entry.after||'', afterMapCleared:m.entry.afterMapCleared||'', label:m.entry.label||'', afterDays:m.entry.afterDays||'', quest:m.entry.quest||''} : null,
     biome: m.biome||'', blurb: strip(m.blurb||m.desc||''), nodes};
 });
 const cards = Object.values(defs).map(d=>{ let ab=[]; try{ ab = describeEffects(d).map(strip).filter(Boolean); }catch(e){ ab=['(error: '+e.message+')']; }
@@ -34,7 +34,7 @@ return JSON.stringify({cards, maps, skills, triggers, actions, statuses, spots, 
 })()"""
 async def main():
     async with async_playwright() as p:
-        b = await p.chromium.launch(executable_path='/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell')
+        b = await p.chromium.launch()  # ENG34 (2026-11-07): Playwright's own browser (the hard-coded path was gone)
         pg = await b.new_page()
         errs=[]; pg.on('pageerror', lambda e: errs.append(str(e)))
         await pg.add_init_script("localStorage.setItem('bramblewood_arena_tutorial_done','1')")

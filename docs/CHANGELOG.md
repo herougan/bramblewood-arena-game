@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package ENG34 Part A: skills classified melee / ranged / none (owner 19:25)
+- `canonical/skill-delivery.json` (new, one source): every skill's delivery (429 skills: 23 melee, 46 ranged, 360 none) plus the damage-dealing custom actions (`action:<key>`), the skills that make a unit's own swing ranged (Reach, Boomerang, Bananarang, the old Anti-air), which hits each on-hit effect rides and which hits each defence answers, with notes for the edge cases. The engine reads it (`SKILL_DELIVERY`, `skillDeliveryOf`, `skillRidesOn`, `rangedSwingOf`); the build puts it ahead of the engine. No rule change yet.
+- Owner workbook: `python3 tools/export_workbook_2026_11_07.py` (new) writes `docs/exports/bramblewood-game-data.xlsx` (Maps in unlock order, Fights, Skills with Delivery and "Its effect applies to", Cards Maps 0-20 from BAL25, About). `tools/export_gamedata.py` exports each map's unlock number and uses Playwright's own browser.
 ## 2026-11-07 Package UI31 (owner 10:25 notes 3, 4, 7, 11: Daunt text, pip centring, Shell pop-up, the frost)
 - Players see: Daunt reads "On every hit it lands, the target loses N Attack until the end of next round. Stacks." (the engine adds one mark per landed hit), in the card line and the editor, in 12 languages. The Shell pip is centred and the Shield and Tide pips sit about 1 px higher (one `EMOJI_NUDGE` table in `arena_app.js`, applied wherever `iconHTML` draws a pip; Fluent set only). A turtle 🐢 pops up on a unit when Shell triggers, with the existing shellUp cue.
 - The frost plays once when a unit is frozen, in reverse when it thaws, and a unit frozen again shows only a 1 s blue fade (no chime or shake). A card rebuilt while frozen no longer replays the ice.
