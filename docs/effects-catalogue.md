@@ -1624,3 +1624,13 @@ The rules as built (engine: the ENG32 block beside `en7DiveRise` and `broodDefOf
 | Plain Dive: low | the card lies on the ground with a tight shadow, tilted -5 / -3 / 3 / 5 degrees (from its uid), ⤵️ tag; "⤵️ Out of reach" floats | `diveRise` {mode: 'ground'}, `.eng32-ground .eng32-t0..3` |
 | The strike | as EN7's; plain Dive floats "⤵️ Dive" (no + N); at the bramble the log says "dives on the bramble" | `dive` {strike, bonus, bramble?} |
 
+
+## 2026-11-07 additions (package ENG33): Venom, Poisonous, Thanatosis, Log Walls, Timbered's two forms
+
+The rules as built (engine: `poisonOn`, `eng33PlayDead` / `eng33Wake`, `eng33PoisonousDeath`, `eng33Envenom` in `devour`, `bulwarkRaise`; the engine decides, this describes):
+- **Venomous N** (key `poison`): the skill once called Poison N; its counters are **Venom** (☠, the same chip), the damage type is **venomous** (key `poison`). The old Venomous (`venomous`, through Armor) is retired; an old `venomous` reads as Venomous N. Poison Bolt's label is **Venom Spit**.
+- **Poisonous N** (`poisonous`, plain 2): when an enemy unit's blow kills it, or a Devour unit eats it from the hand, that unit gets N Venom. Event `statusFx` kind `poisonous`; the board floats "🤢 +N☠". On no card.
+- **Thanatosis** (`thanatosis`, 😵): its first fall to 0 Health is no death (no death event, kill credit, On Death, Bounty, graveyard). It plays dead at 1 Health, statuses cleared: no acting (`dozing`), single-target swings, shots and skills miss it (reason `playingDead`), area skills still hit it. It gets up at the next round start. Once a fight. Board: the card tips over greyed (`.is-playing-dead`) with a 😵 chip; events `statusFx` kinds `thanatosis` / `thanatosisWake`; skip reason `playingDead`.
+- **Undead** (`undead`): unchanged comeback (once, as a token) and now also the undead status (heals hurt, cures Bleed) for any unit with the skill.
+- **Bulwark N**: N Log Walls (`bulwark-wall`, 🪵, 0/8 Structure with Guardian) in the free front-row slots nearest it; was two 0/4N shields. Art prompt: `docs/art-style-prompts.md` (Log Wall).
+- **Timbered 🪵🪵 / Bedrock 🪨🪨 / Forged 🔩🔩 / Last Stand 🏳️**: the editor's "Gives" field picks a Stat bonus (Attack / Health; Bedrock: Armor N) or Skills (the braces). Both are stored in `<k>Grant`.

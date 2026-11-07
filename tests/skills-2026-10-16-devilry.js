@@ -115,7 +115,7 @@ ok(/function liveStatusGlossHTML\(c\)/.test(src) && /\$\{abilityHTML\}\$\{liveSt
   const code = grab(/const STATUS_KEYWORDS = \[[\s\S]*?\n\];/) + '\n' + grab(/const LIVE_STATUS_ROWS = \[[\s\S]*?\n\];/) + '\n' + grab(/const LIVE_STATUS_ROUNDS = [^\n]*/) + '\n' + grab(/function liveStatusGlossHTML\(c\)\{[\s\S]*?\n\}/);
   const ctx = {escapeHtml: s=> String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'), TX: TX_D /* + TX (2026-10-18, package D) */}; vm.createContext(ctx); vm.runInContext(code + '\nthis.f = liveStatusGlossHTML;', ctx);
   const h = ctx.f({poison:3, exposed:2, stunned:true, frozen:1, hp:5});
-  ok(/Poison 3<\/b>: takes 3 damage at upkeep/.test(h) && /Exposed 2<\/b>: no hiding for 2 more round/.test(h) /* 2026-10-19 (SK1) */ && /Stunned<\/b>: skips its next attack/.test(h) && /Frozen<\/b> <small>\(1 round\)<\/small>/.test(h), `the live lines (${h.slice(0, 300)})`);
+  ok(/Venom 3<\/b>: takes 3 damage at upkeep/.test(h) /* 2026-11-07 (ENG33): the counters are Venom */ && /Exposed 2<\/b>: no hiding for 2 more round/.test(h) /* 2026-10-19 (SK1) */ && /Stunned<\/b>: skips its next attack/.test(h) && /Frozen<\/b> <small>\(1 round\)<\/small>/.test(h), `the live lines (${h.slice(0, 300)})`);
   ok(/--kw:#3fa535/.test(h) && /class="kw-gloss live-status-gloss"/.test(h), 'in the status colours and the kw-gloss look');
   ok(ctx.f({hp:5, poison:0}) === '' && ctx.f(null) === '', 'nothing when it has no statuses'); }
 console.log(`skills-2026-10-16-devilry: ${fail ? fail + ' failure(s)' : 'all passed'}`); process.exit(fail ? 1 : 0);

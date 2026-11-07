@@ -63,7 +63,7 @@ const IDS = ['blindFury', 'hiveChorus', 'risingTide', 'secondBurrow', 'wildRage'
 for(const id of IDS){ const eff = T.TX('ui.pl1-boon-' + id), full = T.TX('ui.df3-' + id);
   ok(full.startsWith(eff + ' Theirs only:'), `#1 ${id}: the short effect is the DF3 sentence without its "Theirs only" part`); }
 ok(T.TX('ui.pl1-boon-theme-venomGlands') === 'Reptile' && /row\.short = row\.selfish \? boonTheme\(row\.selfish\)/.test(app), '#1 the card says "Reptile" (2026-10-30, UI6 X23: no "11/17" count any more; was built in place by PL2)');
-ok(T.TX('ui.pl1-boon-venomGlands') + ' ' + T.TX('ui.pl1-boon-theirs', {theme:'Reptile'}) === 'Their Poison gives twice the Poison. Theirs: half their deck Reptile', '#1 the detail: the effect and "Theirs: half their deck Reptile"');
+ok(T.TX('ui.pl1-boon-venomGlands') + ' ' + T.TX('ui.pl1-boon-theirs', {theme:'Reptile'}) === 'Their Venom gives twice the Venom. Theirs: half their deck Reptile' /* 2026-11-07 (ENG33): Venom */, '#1 the detail: the effect and "Theirs: half their deck Reptile"');
 ok(/function boonShortText\(/.test(app) && /boonShortText\(r\.boon\)/.test(app), '#1 the field rows use the short words');
 // 21:20 #2
 { const f = new Function(fnSrc('pl1PoisonLethal') + '; return pl1PoisonLethal;')();

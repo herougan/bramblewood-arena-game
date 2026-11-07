@@ -154,3 +154,10 @@ Card art: paste the base prompt first, then the line below. Run the pixel pass a
 
 ### Cobalt Talon Honour-guard
 > Full-body character in a small scene, centred, slight low angle: a fierce young hummingbird of the Cobalt Talon tribe darting forward in mid-flight, shimmering cobalt-blue feathers with bold white war-paint stripes, a short crest of blue feathers, a bead necklace and a small flower garland, tiny wings blurred with motion, a carved totem and an old gold-throated hummingbird singing on a ledge behind it, warm cliff-stone background with woven nests and tribal banners at golden hour, one bright cobalt accent.
+
+## Token prompts (2026-11-07, package ENG33)
+
+Token art: paste the base prompt first, then the line below. Run the pixel pass at 128 px. The game shows the token's emoji (🪵) until the art lands.
+
+### Log Wall (Bulwark N's construct, 0/8 Structure)
+> A small scene, centred, slight low angle: a short wall of upright logs lashed with rope, mossy, standing on a grassy bank, a few ferns and pebbles at its foot, soft morning light, a gentle wooded hillside and pale sky in the background.

@@ -44,7 +44,7 @@ const fight = (e, P, ev, first)=> e.resolveCombat(P, so, {}, ev || [], first || 
 
 // ---- Venomous vs Poison: Venomous gets through Armor, plain Poison doesn't
 { const {e, P} = mk(); put(e, P, 1, 'w2-venom', 0); const t = put(e, P, 2, 'w2-armor', 0); fight(e, P, [], 1);
-  ok(t.poison === 2, `Venomous 2 injects 2 Poison through Armor 10 (${t.poison})`); }
+  ok(!(t.poison > 0), /* 2026-11-07 (ENG33, owner #9: "Remove the previous venomous skill"): an old Venomous reads as Venomous N (the poison key) and needs damage through */ `the old Venomous is retired: Armor 10 stops the hit and its Venom (${t.poison || 0})`); }
 { const {e, P} = mk(); put(e, P, 1, 'w2-poison', 0); const t = put(e, P, 2, 'w2-armor', 0); fight(e, P, [], 1);
   ok(!(t.poison > 0), `plain Poison still needs damage through (${t.poison})`); }
 // ---- Toxin: stacks, never wears off, Cure leaves it

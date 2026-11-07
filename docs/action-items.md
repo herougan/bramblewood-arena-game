@@ -8,6 +8,13 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-07: Package ENG33 (on its branch, not released)
+- Done (owner 10:25 #9): Poison N reads Venomous N, counters Venom, damage type Venomous (☠ kept; key `poison` kept, docs/project-state.md); the old Venomous retired, its four cards on Venomous N (Platypus Spur, Water Shrew, Banded Sea Krait, Giant Water Bug); Poison Bolt reads Venom Spit; new Poisonous N (killer or devourer gets N Venom), on no card.
+- Done (#12): Thanatosis (plays dead once, up next round at 1 Health) on Slow Worm, Grass Snake, Phoenix Mushrooms; Undead stays on Cinder Skeleton and Ember Revenant and now also makes heals hurt.
+- Done (#10): Bulwark N raises N Log Walls (0/8, Guardian); art prompt in docs/art-style-prompts.md. (#6): Timbered / Bedrock / Forged / Last Stand: Gives Stat bonus or Skills in the editor; icons 🪵🪵 🪨🪨 🔩🔩.
+- Owner calls open: ENG33-1 (Smelly: a / b / c), ENG33-2 (Undead keeps its comeback), ENG33-3 (Thanatosis details), ENG33-4 (budget moves, no re-fit).
+- Next: Smelly once ENG33-1 is answered; Log Wall art.
+
 ## 11-07 10:25: Owner notes
 | # | Note | Package |
 |---|---|---|
@@ -16,14 +23,14 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 3 | Daunt: say in its text that every landed hit applies it | UI31 |
 | 4 | Pip centring: Shell's pip off-centre; Shield and Tide pips up 0.5-1 px; one table of per-emoji offsets; Shell activating shows a turtling 🐢 on the card with an armour-up sound | UI31 |
 | 5 | New rarity Faction-Starter (balance only, no player impact): starts at Level 0, weaker | BAL25 / budget |
-| 6 | Timbered and related skills: choose stat bonuses OR skill bonuses in the editor; Timbered's logo two stacked logs (same idea for the related skills) | ENG33 |
+| 6 | Timbered and related skills: choose stat bonuses OR skill bonuses in the editor; Timbered's logo two stacked logs (same idea for the related skills) | ENG33 ✅ done (on its branch) |
 | 7 | Gold "?" for skills learnt at a higher level: built in ENG28 (hover, tooltip "Learnt at a higher level") | answered 11-07 |
 | 8 | Animals: Slow Loris, Solenodon (rare venomous mammals) | docs/card-ideas.md |
-| 9 | Rename: Poison -> Venomous (tokens Venom, damage type venomous, same emoji); the old Venomous skill goes; new Poisonous = venom tokens on whoever kills or devours it; other poison skills keep, referring to venom | ENG33 |
-| 10 | Bulwark N (default 1) summons N log-wall constructs (medieval palisade, not a literal shield); art prompt for the construct | ENG33 |
+| 9 | Rename: Poison -> Venomous (tokens Venom, damage type venomous, same emoji); the old Venomous skill goes; new Poisonous = venom tokens on whoever kills or devours it; other poison skills keep, referring to venom | ENG33 ✅ done (on its branch) |
+| 10 | Bulwark N (default 1) summons N log-wall constructs (medieval palisade, not a literal shield); art prompt for the construct | ENG33 ✅ done (on its branch) |
 | 11 | Frozen: play the freeze once when frozen and the reverse when unfrozen; frozen again while frozen: only a short blue fade in and out (1 s) | UI31 |
-| 12 | Undead on non-undead animals means "revives once": rename it (owner suggests Thanatosis: no death trigger; at 0 Health it resets to 1 at the start of the next turn, once). Undead stays for real undead (Map 70+): heals and cures hurt, greyed Health | ENG33 |
-| 13 | New skill Smelly (smell wards off predators): effect to propose | ENG33 (proposal) |
+| 12 | Undead on non-undead animals means "revives once": rename it (owner suggests Thanatosis: no death trigger; at 0 Health it resets to 1 at the start of the next turn, once). Undead stays for real undead (Map 70+): heals and cures hurt, greyed Health | ENG33 ✅ done (on its branch) |
+| 13 | New skill Smelly (smell wards off predators): effect to propose | ENG33 (proposal: ENG33-1) |
 | 14 | Crunch: skill idea, effect not decided | docs/card-ideas.md |
 | 15 | Bluff (grass snake): skill idea, maybe provokes an enemy reaction | docs/card-ideas.md |
 ## 11-07: Package ENG32 (on its branch, not released)

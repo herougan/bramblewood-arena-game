@@ -10959,6 +10959,10 @@
 /* EN4 (2026-10-23): Greater Poison's violet badge and pulse (Poison is green, Toxin purple-green), Hemorrhage's red double pulse and drops,
    Shore Up's small shield that hops to each ally beside it. */
 .abadge.gpoison{background:color-mix(in srgb, #9b4dd6 30%, var(--surface-2)); color:#b26cf0; font-weight:800;}
+/* ENG33 (2026-11-07, owner 11-07 10:25 #12): Thanatosis: a unit playing dead lies tipped over, greyed, until the next round */
+.board-card.is-playing-dead .card-tile{filter:grayscale(.75) brightness(.8); transform:rotate(-9deg); transition:transform .35s ease, filter .35s ease;}
+.abadge.playing-dead{background:color-mix(in srgb, #8a8f98 30%, var(--surface-2)); color:#d6d9de;}
+@media (prefers-reduced-motion: reduce){ .board-card.is-playing-dead .card-tile{transform:none; transition:none;} }
 .board-card .card-tile .status-chips > .abadge.gpoison{--sc-ring:#9b4dd6; color:#e4c8ff;}
 .board-card.is-gpoisoned .card-tile{box-shadow:0 0 0 2px rgba(155,77,214,.55), 0 0 12px 2px rgba(155,77,214,.35);}
 .en4-gp-pulse{animation:en4GpPulse 520ms ease;}

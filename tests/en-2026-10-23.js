@@ -116,7 +116,7 @@ ok(sk('assault').scale === 'n' && sk('assault').value === 2.7, `Assault 2.7 a po
 ok(sk('liege').value === Math.round(0.3 * 2 * sk('assault').value * 100) / 100 && BB.CONTEXT_MULT_BY.liegeGrant === 0.3, `Liege 0.3 x Assault 2 = 1.62 (${sk('liege').value}; braces x${BB.CONTEXT_MULT_BY.liegeGrant})`);
 ok(BB.CONTEXT_MULT_BY.rageGrant === 0.4 && !BB.CONTEXT_FLAG.rage, 'Rage – {…}: Rage keeps its price, + 0.4 x the braces');
 // 2026-11-04 (TESTFIX1): SKILL2 (2026-10-31, call BUDGET2-1) re-measured both against the re-canonised anchors (appliedAt, skill2Was on the entries)
-ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 5.96 && sk('bulwark').skill2Was.value === 7.2 /* 2026-10-28 (BAL7, FIN2-2): the owner's 9 x Shield's 0.8 Health */, `Bulwark 5.96 a point (SKILL2; was 7.2 = EN3's 9 x 0.8, FIN2-2; 6, BF11) (${sk('bulwark').value})`);
+ok(sk('bulwark').scale === 'n' && sk('bulwark').eng33Was.value === 5.96 && sk('bulwark').value === 3.5 /* 2026-11-07 (ENG33): N Log Walls, 3.5 a wall */ && sk('bulwark').skill2Was.value === 7.2 /* 2026-10-28 (BAL7, FIN2-2): the owner's 9 x Shield's 0.8 Health */, `Bulwark 3.5 a wall (ENG33; was 5.96 a point (SKILL2; was 7.2 = EN3's 9 x 0.8, FIN2-2; 6, BF11) (${sk('bulwark').value})`);
 ok(sk('backstab').scale === 'n' && sk('backstab').value === 0.0273 && sk('backstab').skill2Was.value === 0.6, `Backstab 0.0273 a point (SKILL2; was 0.6) (${sk('backstab').value})`);
 ok(sk('evoluteAlpha').value === 3 && sk('evoluteOmega').value === 3 && sk('evolute').value === 3, 'EV-5: Evolute, Alpha and Omega 3');
 ok(sk('spellward').value > 0 && !costs.skills.some(x=> x.id === 'spellshield' || x.id === 'enraged'), 'GD2-1 / TR-6: spellward priced; no spellshield or enraged entry');

@@ -723,7 +723,7 @@ function eng23CrepText(v){ const [da, dh, na, nh] = eng23CrepVals(v);
   if(!(da || dh)) return TX('ui.eng23-crep-night-only', {a: na, h: nh});
   return TX('ui.eng23-crep-parts', {da, dh, na, nh}); }
 const PASSIVE_DEFS = [
-  {key:'poison', category:'passive', label:'Poison', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Poison.`},
+  {key:'poison', category:'passive', label:TX('ui.eng33-venomous-name'), kind:'number', min:0, desc:v=> TX('ui.eng33-venomous', {n: v})}, // ENG33 (2026-11-07, owner 11-07 10:25 #9): the skill Poison N reads Venomous N; its counters are Venom (the key stays poison)
   // Decay (passive, 2026-09-29): mirrors Poison's stack-then-tick shape exactly, but each tick
   // also permanently saps the same amount off the card's own Attack (floored at 0), on top of the
   // usual HP damage -- a compounding "weaker every round" debuff rather than just a damage stack.
@@ -823,7 +823,7 @@ const PASSIVE_DEFS = [
   // Tide (2026-10-09; a keyword family, not an archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
-  {key:'festering', category:'passive', label:'Lingering', /* 2026-10-16: renamed from Festering, which read too close to Fester */ kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
+  {key:'festering', category:'passive', label:'Lingering', /* 2026-10-16: renamed from Festering, which read too close to Fester */ kind:'boolean', desc:()=>`While this is on the field, Bleed and Venom stacks on every unit (both sides) don't wear down.`},
   {key:'leader', category:'passive', label:'Natural Leader', kind:'boolean', desc:()=>`Can be your leader even though it isn't Heroic.`},
   // Dictator (2026-10-12, user: "A new skill: Dictator - this card can only be a leader"): it never goes in a deck.
   {key:'dictator', category:'passive', label:'Dictator', kind:'boolean', desc:()=>`Can only be a leader: it never goes in a deck.`},
@@ -856,12 +856,12 @@ const PASSIVE_DEFS = [
   // Rabid (user: "Rabid Beasts: 2/3, Poison 2, Vulnerable to water").
   // 2026-10-16 skill audit (user: "they have the right parameters for targeting and amount"): Rabid N, the Poison its hits add
   // (default 2; an old Rabid saved as true reads as Rabid 2).
-  {key:'rabid', category:'passive', label:'Rabid', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits add ${numOr(v, 2)} Poison. Afraid of water: Swimmers and water damage hit it for double.`,
+  {key:'rabid', category:'passive', label:'Rabid', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits add ${numOr(v, 2)} Venom. Afraid of water: Swimmers and water damage hit it for double.`,
     get:e=> e.rabid ? numOr(e.rabid, 2) : undefined},
   // Cower (user: "Cower (and maybe another skill also about a Turtle going into a shell) - Do {} when hit previous turn").
   // 2026-10-31 (package ENG15, owner FF6): + Cower N (effects.cower = N): no attack, and N Armor while it cowers. A select + number row now.
   {key:'cower', category:'passive', label:'Cower', kind:'selectNumber', numberWhen:['armor'], numberTitle:'Cower N: the Armor it gains while it cowers',
-    desc:v=>{ const m = Array.isArray(v) ? v[0] : v, n = Array.isArray(v) ? (Number(v[1])||1) : (typeof v === 'number' ? v : 1); return m === 'armor' || typeof v === 'number' ? TX('ui.eng15-cower-desc', {n}) : `The "hit last turn" trigger. If it took damage last round, this round it ${m === 'flee' ? 'backs off: no attack, and it heals 2' : 'hides in its shell: no attack, and attacks can\'t hurt it (Poison and the field still can)'}. Shell is different: it reacts to the first hit straight away.`; },
+    desc:v=>{ const m = Array.isArray(v) ? v[0] : v, n = Array.isArray(v) ? (Number(v[1])||1) : (typeof v === 'number' ? v : 1); return m === 'armor' || typeof v === 'number' ? TX('ui.eng15-cower-desc', {n}) : `The "hit last turn" trigger. If it took damage last round, this round it ${m === 'flee' ? 'backs off: no attack, and it heals 2' : 'hides in its shell: no attack, and attacks can\'t hurt it (Venom and the field still can)'}. Shell is different: it reacts to the first hit straight away.`; },
     selectOptions:()=> [{value:'armor', label:'Cower N: N Armor'}, {value:'shell', label:'Hide in its shell'}, {value:'flee', label:'Flee and heal 2'}],
     get:e=> e.cower ? (typeof e.cower === 'number' ? ['armor', e.cower] : [e.cower === 'flee' ? 'flee' : 'shell', 1]) : undefined,
     apply:(e, v)=>{ const m = Array.isArray(v) ? v[0] : v; if(m === 'armor'){ e.cower = Math.max(1, Math.round(Number(Array.isArray(v) ? v[1] : 1) || 1)); return; } e.cower = m === 'flee' ? 'flee' : 'shell'; }},
@@ -869,7 +869,7 @@ const PASSIVE_DEFS = [
   // sword symbol on their bottom left, blue in colour").
   // 2026-10-14 (user: "Ghost - not just unaffected by physical, those creatures that deal elemental damage physically, deal half. Only
   // magic damage deals equal").
-  {key:'ghost', category:'passive', label:'Ghost', kind:'boolean', desc:()=>`Normal attacks pass straight through it. Fire, frost, poison, acid, water and the like deal half. Only magic deals full damage. It can't Bleed (except from Ichor).`},
+  {key:'ghost', category:'passive', label:'Ghost', kind:'boolean', desc:()=>`Normal attacks pass straight through it. Fire, frost, venom, acid, water and the like deal half. Only magic deals full damage. It can't Bleed (except from Ichor).`},
   {key:'magic', category:'passive', label:'Magic', kind:'boolean', desc:()=>`Its attacks deal magic damage (the blue wand). Magic hurts Ghosts.`},
   // Ichor (user: "Corrosive blood: When hit, the attacker takes N acid damage and loses 1 Armor" + "ghosts are immune to bleed but
   // ichor gives bleed indirectly").
@@ -1027,10 +1027,10 @@ const PASSIVE_DEFS = [
   {key:'helmet', category:'passive', label:'Helmet', kind:'boolean', desc:()=>`Half the time, an arrow, missile or single bolt aimed at it glances off the helmet. After one block the helmet is gone.`}, // ENG27 (2026-11-06, item 32)
   // 2026-10-16 (user: "Molting N - Every 2 turns, gain +1 wait. But +N/+N."): every 2 rounds, +N/+N for good and +1 Wait.
   {key:'molting', category:'passive', label:'Molting', kind:'number', min:1, defaultValue:1, desc:v=>`Every 2 rounds on the field it molts into a bigger shell: +${numOr(v, 1)}/+${numOr(v, 1)} for good, but +1 Wait while the new shell hardens.`},
-  {key:'shedding', category:'passive', label:'Shedding', kind:'number', min:1, defaultValue:3, desc:v=>`Every ${v||3} rounds on the field it sheds its skin: +1/+1 for good, and Poison, Bleed, Corrode, Scar and Exposed come off with it.`}, // 2026-10-16 skill audit: the status names as the game writes them
+  {key:'shedding', category:'passive', label:'Shedding', kind:'number', min:1, defaultValue:3, desc:v=>`Every ${v||3} rounds on the field it sheds its skin: +1/+1 for good, and Venom, Bleed, Corrode, Scar and Exposed come off with it.`}, // 2026-10-16 skill audit: the status names as the game writes them
   // 2026-10-16 (user: "Bludgeon also removes skills! remember. and attack."): -1 Attack, and the thing it breaks can be any skill.
   {key:'bludgeon', category:'passive', label:'Bludgeon', kind:'boolean', desc:()=>`Each hit takes 1 Attack for good and knocks out one of the target's skills.`,
-    longDesc:`On every hit that lands, the target loses 1 Attack for good, and one of its skills is broken for the rest of the fight, picked at random: a defence (its Armor, Flying, Swimmer or Burrow) or any other skill it has (Thorns, Poison, a trigger...). Map traits such as Tide and the day and night skills are left alone.`},
+    longDesc:`On every hit that lands, the target loses 1 Attack for good, and one of its skills is broken for the rest of the fight, picked at random: a defence (its Armor, Flying, Swimmer or Burrow) or any other skill it has (Thorns, Venomous, a trigger...). Map traits such as Tide and the day and night skills are left alone.`},
   {key:'snipe', category:'evergreen', label:'Snipe', kind:'number', min:1, defaultValue:1, desc:v=>`Every round while Ready, if nothing stands opposite it: shoots a random enemy unit for ${v||1}.`},
   {key:'kinship', category:'passive', label:'Kinship', kind:'typeTwoNumber', desc:(v, n, e)=>{ const k = (e && e.kinship) || (Array.isArray(v) ? {type:v[0], atk:v[1], hp:v[2]} : {}); return `All your ${k.type || '<Type>'} units get +${k.atk||0}/+${k.hp||0} (itself too, if it is one). Stacks.`; },
     get:e=> e.kinship ? [e.kinship.type, e.kinship.atk||0, e.kinship.hp||0] : undefined,
@@ -1083,7 +1083,7 @@ const PASSIVE_DEFS = [
   {key:'fragile', category:'passive', label:'Fragile', kind:'boolean', desc:()=>`Always takes double damage from every hit. Unconditional — not tied to a damage type, unlike the Weakness box.`},
   {key:'sturdy', category:'passive', label:'Sturdy', kind:'boolean', desc:()=>`Always takes half damage from every hit. Unconditional — not tied to a damage type, unlike the Resistance box.`},
   {key:'crit', category:'passive', label:'Crit', kind:'boolean', desc:()=>`Once per round, 1-in-2 chance to double all damage dealt that round.`},
-  {key:'fester', category:'passive', label:'Fester', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current poison stacks.`},
+  {key:'fester', category:'passive', label:'Fester', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current venom stacks.`},
   {key:'rupture', category:'passive', label:'Rupture', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current bleed stacks.`},
   {key:'bleed', category:'passive', label:'Bleed', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Bleed.`},
   // Rally REMOVED (2026-09-30, per explicit request: "I think we can remove Rally. Since it was
@@ -1122,7 +1122,7 @@ const PASSIVE_DEFS = [
   // Overwhelm (Runeterra's word for trample). Now called Stampede; the data key stays `overwhelm`.
   {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy bramble.`},
   {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 whenever ANY ally of yours dies.`},
-  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:1, desc:v=> TX('ui.sk-bulwark', {hp: 4 * numOr(v, 1)})}, // 2026-10-23 (package EN, owner 01:57 note 2): two 0/4N shields as it arrives
+  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 8})}, // 2026-10-23 (package EN, owner 01:57 note 2): two 0/4N shields as it arrives
   // 2026-10-17 (user: "Add a new skill Reflect: that reflects ranged skills back at a random enemy unit."): the engine's reflectShotOf.
   // A flag now (was Reflect N%: a melee hit's full damage thrown back); an old stored number reads as that % chance to bounce a shot.
   {key:'reflect', category:'passive', label:'Reflect', kind:'boolean', desc:v=>`${typeof v === 'number' && v < 100 ? `${v}% of the time, a` : 'A'} shot aimed at it bounces off and hits a random enemy unit instead (their bramble if they have none). Shots: Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire, Snipe, Fireball (the whole burst), Rocket, a thrown Banana, Missile and On Ready damage, a Damage trigger at a random enemy, and the bramble's bolt. Melee, Pounce and what falls from the sky or bursts over an area (Skyfall, Meteor, Lightning, Earthquake…) aren't shots. A bounced shot can be dodged, but never bounces again.`},
@@ -1169,7 +1169,7 @@ const PASSIVE_DEFS = [
   // card was hand-editing canonical/cards.json directly, bypassing the "+ Add Skill" UI
   // entirely. Same class of silent gap as a missing SoundKit/renderVfxForEvent branch, just in
   // the editor instead of the combat replay.
-  {key:'frenzy', category:'passive', label:'Frenzy', kind:'boolean', desc:()=>`While any status is on it (Poison, Bleed, Frozen, Shocked …), it flies into a frenzy: it strikes twice and each hit adds 1 Bleed.`},
+  {key:'frenzy', category:'passive', label:'Frenzy', kind:'boolean', desc:()=>`While any status is on it (Venom, Bleed, Frozen, Shocked …), it flies into a frenzy: it strikes twice and each hit adds 1 Bleed.`},
   {key:'pierce', category:'passive', label:'Pierce', kind:'number', min:0, desc:v=>`Every melee hit ignores ${v} of the target's Armor (Shell's bonus Armor included).`},
   // Perforate N (2026-10-11, user: "Perforate is to Puncture, to Pierce, and to give Bleed and to lower armour permanently.
   // Just Perforate 1 is super dangerous"): all four on every landed melee hit.
@@ -1233,7 +1233,7 @@ const PASSIVE_DEFS = [
   // (the nearest enemy unit if none is opposite; the castle if the board is empty).
   {key:'fireBolt', category:'evergreen', label:'Fire Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a glob of fire at the enemy opposite (the nearest one if none is) for ${v||2} fire damage.`},
   {key:'acidBolt', category:'evergreen', label:'Acid Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits acid at the enemy opposite (the nearest one if none is) for ${v||2} acid damage, and 1 Corrode.`},
-  {key:'poisonBolt', category:'evergreen', label:'Poison Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits venom at the enemy opposite (the nearest one if none is): no damage, but ${v||2} Poison.`},
+  {key:'poisonBolt', category:'evergreen', label:'Poison Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits venom at the enemy opposite (the nearest one if none is): no damage, but ${v||2} Venom.`},
   {key:'iceBolt', category:'evergreen', label:'Ice Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a shard of ice at the enemy opposite (the nearest one if none is) for ${v||2} Cold damage. A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter).`},
   {key:'shockBolt', category:'evergreen', label:'Shock Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a crackling spark at the enemy opposite (the nearest one if none is) for ${v||2} lightning damage, and Shocks it for a round (it takes 50% more damage).`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-17: lightning damage (was physical); the Wet note in the Codex
   {key:'kingSlayer', category:'passive', label:'King Slayer', kind:'number', min:0, desc:v=>`Deals ${v} bonus damage on every landed hit against a target with the King type.`},
@@ -1293,7 +1293,7 @@ const PASSIVE_DEFS = [
   // nothing there. Does 5 damage if a card is played there." + "Skill: When hit, its attack decreases by 1." + "Bulldoze" + "Add a sheep
   // card (basic) - it has taunt.". No card has them yet; the designer assigns them. Engine: the W2 block in bramblewood-engine.js.
   // (Blind / Paralyse / Confuse on hit already exist: the Blind, Paralyze and Confuse rows above. Rupture already exists too.)
-  {key:'venomous', category:'passive', label:'Venomous', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits inject ${numOr(v, 2)} Poison, even when Armor or a shell stops the damage (plain Poison needs damage to get through).`},
+  {key:'venomous', category:'passive', label:'Venomous (old)', hidden:true, retired:true /* ENG33 (2026-11-07, owner #9: "Remove the previous venomous skill"): an old effects.venomous reads as Venomous N (the poison key) */, kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.eng33-venomous', {n: numOr(v, 2)})},
   {key:'toxin', category:'passive', label:'Toxin', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits add ${numOr(v, 1)} Toxin: a deadlier poison that deals its whole stack every round and never wears off. Nothing cures it (not Cure, Cleanse or Shedding).`},
   {key:'weaken', category:'passive', label:'Weaken', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits take ${numOr(v, 1)} Attack from the target for good.`},
   {key:'wilting', category:'passive', label:'Wilting', kind:'number', min:1, defaultValue:1, desc:v=>`A drawback: each time it is hit, it loses ${numOr(v, 1)} Attack for good.`},
@@ -1303,7 +1303,7 @@ const PASSIVE_DEFS = [
   {key:'invincible', category:'passive', label:'Invincible', kind:'number', min:1, defaultValue:1, desc:v=>`Takes no damage of any kind for its first ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'} on the field.`},
   {key:'invisible', category:'passive', label:'Invisible', kind:'number', min:1, defaultValue:2, desc:v=>`For its first ${numOr(v, 2)} rounds on the field, attacks and enemy skills can't find it. Attacking gives it away.`},
   {key:'sonar', category:'passive', label:'Sonar', kind:'boolean', desc:()=>`Hunts by sound: Darkness, Blind, Smoke, Fog and Shadow never make it miss (flyers included), and it can't be Blinded.`},
-  {key:'poisonGas', category:'evergreen', label:'Poison Gas', kind:'number', min:1, defaultValue:2, desc:v=>`When it arrives, every enemy unit gets ${numOr(v, 2)} Poison.`},
+  {key:'poisonGas', category:'evergreen', label:'Poison Gas', kind:'number', min:1, defaultValue:2, desc:v=>`When it arrives, every enemy unit gets ${numOr(v, 2)} Venom.`},
   {key:'absoluteZero', category:'evergreen', label:'Absolute Zero', kind:'boolean', desc:()=>`When it arrives, every enemy unit is Frozen for the round (units immune to cold are spared).`},
   {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits ${numOr(v, 2)} fire at a random enemy unit (the bramble if there are none). 1 in 2 the flames catch a unit adjacent to it for 1. (Fire Bolt always aims at the enemy opposite.)`},
   {key:'slashBurn', category:'evergreen', label:'Slash & Burn', kind:'number', min:1, defaultValue:3, desc:v=>`When it kills a unit, the ground there burns: the next enemy card played into that slot takes ${numOr(v, 3)} fire damage.`},
@@ -1320,7 +1320,7 @@ const PASSIVE_DEFS = [
   // Nova (user: "Nova - oo magic skill maybe"): built, but meant for Map 50 and later.
   {key:'nova', category:'evergreen', label:'Nova', kind:'number', min:1, defaultValue:3, desc:v=>`When it dies, it bursts: every enemy unit takes ${numOr(v, 3)} magic damage.`},
   {key:'crystallise', category:'evergreen', label:'Crystallise', kind:'number', min:1, defaultValue:5, desc:v=>`When it dies, it turns into a 0/${numOr(v, 5)} crystal that holds its slot.`},
-  {key:'cure', category:'evergreen', label:'Cure', kind:'number', min:1, defaultValue:2, desc:v=>`Every upkeep, cures your most poisoned unit (itself too) of up to ${numOr(v, 2)} Poison. Toxin can't be cured.`}, // 2026-10-18 (audit 4): Poison only, as the engine does
+  {key:'cure', category:'evergreen', label:'Cure', kind:'number', min:1, defaultValue:2, desc:v=>`Every upkeep, cures your most envenomed unit (itself too) of up to ${numOr(v, 2)} Venom. Toxin can't be cured.`}, // 2026-10-18 (audit 4): Poison only, as the engine does
   {key:'mountainClimber', category:'passive', label:'Mountain Climber', kind:'boolean', desc:()=>`Sure-footed: Frigid, Scorching, Scorched Ground, the volcano, Avalanche, Landslide and Earthquake pass it by.`},
   // Atheist (2026-10-16, user: "Unless Atheist (1/2 damage from magic sources, dark (some devilry attacks) or holy (some ecclesia attacks) damage) -
   // then take 0 damage from this [Leylines III]."): on no card yet.
@@ -1342,7 +1342,7 @@ const PASSIVE_DEFS = [
   {key:'sentry', category:'passive', label:'Sentry', kind:'boolean', desc:()=>`Once a round, while Ready: when an enemy unit enters one of the 3 slots facing it (played, spawned or moved in), it attacks that unit with its Attack (Armor counts).`},
   {key:'carrion', category:'passive', label:'Carrion', kind:'number', min:1, defaultValue:2, desc:v=>`Whenever another unit dies (either side), it heals ${numOr(v, 2)}.`, get:e=> e.carrion ? numOr(e.carrion, 2) : undefined},
   {key:'hoard', category:'passive', label:'Hoard', kind:'number', min:1, defaultValue:2, desc:v=>`+1 Attack for every ${numOr(v, 2)} Lumber you hold (it changes as your Lumber does).`, get:e=> e.hoard ? numOr(e.hoard, 2) : undefined},
-  {key:'venomMaster', category:'passive', label:'Venom Master', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, your units' hits that add Poison or Bleed add ${numOr(v, 1)} more (its own too; the Poison Bolt counts).`, get:e=> e.venomMaster ? numOr(e.venomMaster, 1) : undefined},
+  {key:'venomMaster', category:'passive', label:'Venom Master', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, your units' hits that add Venom or Bleed add ${numOr(v, 1)} more (its own too; Venom Spit counts).`, get:e=> e.venomMaster ? numOr(e.venomMaster, 1) : undefined},
   {key:'fletcher', category:'passive', label:'Fletcher', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, your units' arrows (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley) deal ${numOr(v, 1)} more damage (its own too).`, get:e=> e.fletcher ? numOr(e.fletcher, 1) : undefined},
   {key:'herbalist', category:'passive', label:'Herbalist', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, every heal on your units heals ${numOr(v, 1)} more (Healing, Regeneration, Bloom, Nursing, a Heal trigger...).`, get:e=> e.herbalist ? numOr(e.herbalist, 1) : undefined},
   {key:'shatter', category:'passive', label:'Shatter', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits and shots deal ${numOr(v, 2)} more damage to a Frozen unit.`, get:e=> e.shatter ? numOr(e.shatter, 2) : undefined},
@@ -1359,7 +1359,7 @@ const PASSIVE_DEFS = [
   // ---- Package GI (2026-10-19, owner 00:19: "continue with action items, and considering our gameplay-ideas ... create what you want to
   // create"; docs/gameplay-ideas-built-2026-10-19.md). Rules in bramblewood-engine.js (the Package GI block). On pool cards only so far.
   {key:'hunter', category:'passive', label:TX('ui.skn-hunter'), kind:'selectNumber', numberWhen:['weak', 'poison', 'bleed', 'wet', 'exposed'] /* + Weak, the default (2026-10-19, SK3) */, numberTitle:'Hunter N: how much more damage',
-    selectOptions:()=> [{value:'weak', label:TX('ui.hunter-vs-weak')}, {value:'poison', label:'Poisoned'}, {value:'bleed', label:'Bleeding'}, {value:'wet', label:'Wet'}, {value:'exposed', label:'Exposed'}],
+    selectOptions:()=> [{value:'weak', label:TX('ui.hunter-vs-weak')}, {value:'poison', label:TX('ui.hunter-vs-poison')}, {value:'bleed', label:'Bleeding'}, {value:'wet', label:'Wet'}, {value:'exposed', label:'Exposed'}],
     desc:(v, n, e)=> giHunterText(v, e), codexNote:TX('ui.sk-hunter-codex'),
     get:e=> e.hunter ? [GI_HUNTER_VS.includes(e.hunterVs) ? e.hunterVs : 'weak', numOr(e.hunter, 1)] : undefined,
     apply:(e, vals)=>{ const vs = Array.isArray(vals) ? vals[0] : 'weak', n = Number(Array.isArray(vals) ? vals[1] : vals) || 0; if(n > 0){ e.hunter = n; if(vs && vs !== 'weak') e.hunterVs = vs; } }},
@@ -1483,7 +1483,8 @@ const ACTIVE_PRESETS = [
   // underlying effects.revive:true data shape and all engine logic are unchanged, this is a
   // display-label-only change.
   // 2026-10-16 skill audit (user: "so the skills are as simply named ... as possible"): Revivificated → Revive (label only).
-  {key:'undead', category:'passive', label:TX('ui.eng9-undead-name'), kind:'none', build:()=>({undead:true}), desc:()=> TX('ui.eng9-undead')}, // 2026-10-19 (package RV, owner 00:19): a true death, then it comes back; ENG9 (2026-10-26, owner #20): it is Undead now (back once, as a token), and Revive N is the graveyard action
+  {key:'undead', category:'passive', label:TX('ui.eng9-undead-name'), kind:'none', build:()=>({undead:true}), desc:()=> TX('ui.eng9-undead')},
+  {key:'thanatosis', category:'passive', label:TX('ui.eng33-thanatosis-name'), kind:'none', build:()=>({thanatosis:true}), desc:()=> TX('ui.eng33-thanatosis'), codexNote:TX('ui.eng33-thanatosis-codex')}, // ENG33 (2026-11-07, owner 11-07 10:25 #12): plays dead once (no death); the ordinary animals that had Undead // 2026-10-19 (package RV, owner 00:19): a true death, then it comes back; ENG9 (2026-10-26, owner #20): it is Undead now (back once, as a token), and Revive N is the graveyard action
 ];
 const TRIGGER_DEFS = [
   {key:'onSpawn', label:'On Spawn', desc:'the moment this card is played'},
@@ -1641,7 +1642,7 @@ const ACTION_DEFS = [
   // (no dodging your own effect, same as Buff); targeting an ally or enemy is Evasion-gated, same
   // as the old Debuff Attack was.
   {key:'debuff', label:'Debuff', fields:['who','sub','targets','amount','amount2'], desc:'Take away Attack/Health from a target: yourself, an ally, your Kin or an enemy (Health floored at 1 — this weakens, it never kills outright).'},
-  {key:'poison', label:'Poison', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply poison stacks to a chosen target — self, an ally, your Kin or an enemy.'},
+  {key:'poison', label:'Venom', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply venom stacks to a chosen target — self, an ally, your Kin or an enemy.'}, // ENG33 (2026-11-07): the counters are Venom
   {key:'bleed', label:'Bleed', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply bleed stacks to a chosen target — self, an ally, your Kin or an enemy.'},
   {key:'expose', label:'Expose', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Put N Expose counters on a chosen target (self, an ally, your Kin or an enemy): each later hit on it is a crit and removes 1, and attacks at it can\'t miss.'}, // 2026-10-15: the Exposed status; 2026-10-16: counters, each hit a crit
   {key:'stun', label:'Stun', fields:['who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:"Stun a chosen target — self, an ally, your Kin or an enemy — no Wait tick, can't attack."},
@@ -1665,10 +1666,10 @@ const ACTION_DEFS = [
   // NOT, since this isn't damage, it's direct removal).
   {key:'exile', label:'Exile', fields:['who','sub','targets'], whoOptions:['self','ally','enemy','kin','any'], desc:'Send a target to the Removal Zone instead of the graveyard. "Self" only works paired with On Death (redirects where this card\'s own death sends it); Ally/Enemy instantly removes a live target from the board right now.'},
   {key:'swapPositions', label:'Swap', fields:[], desc:'Swaps the board positions of two random live enemy creatures. No-op with fewer than 2. (The Scurry passive uses this same action under the hood.)'},
-  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent, a Kin unit or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Bleed counters are removed first (1 per heal), then any heal left over restores HP. Poison isn't touched (only Cure removes it). Fires On Heal/On Healed/On Ally Healed."}, // 2026-10-18: no longer Poison first
+  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent, a Kin unit or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Bleed counters are removed first (1 per heal), then any heal left over restores HP. Venom isn't touched (only Cure removes it). Fires On Heal/On Healed/On Ally Healed."}, // 2026-10-18: no longer Poison first
   {key:'mindControl', label:'Mind Control', fields:['sub'], subOptions:['random','adjacent','furthest'], desc:"Takes a unit from the opposing field and puts it on this side, if there's a free slot."},
   {key:'stunPlayer', label:'Player Stun', fields:['count'], desc:"The enemy player skips their turn: they can't play cards until the next round."},
-  {key:'cleanse', label:'Cleanse', fields:['amount','who','sub','targets'], desc:"Cleanse N: remove up to N harmful counters from the chosen target (this card by default): a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
+  {key:'cleanse', label:'Cleanse', fields:['amount','who','sub','targets'], desc:"Cleanse N: remove up to N harmful counters from the chosen target (this card by default): a curse on its cell first, then Venom, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
   // Shield (2026-10-14, user: "As an action - On X, Shield N"): N Shield (temporary Health) on itself, an ally, or every ally (sub All).
   {key:'shield', label:'Shield', fields:['amount','who','sub','targets'], whoOptions:['self','ally','kin'], subOptions:['adjacent','random','furthest','all'], desc:'Give Shield N: temporary Health that soaks damage before Health does and never comes back once spent (not Armor). This card by default; Ally + All shields every ally, Kin + All every one of your Kin.'},
   // Grant Shield (ENG19, 2026-11-02, owner 22:15 #15): one number per group (itself / adjacent / around it / every ally), any together. Engine:
@@ -1793,6 +1794,24 @@ Object.keys(EN5_STATE_KEYS).forEach(k=>{ const t = EN5_STATE_KEYS[k].tx;
   sk1Patch(PASSIVE_DEFS, k + 'Grant', {category:'passive', label:TX('ui.skn-' + t), kind:'grant', placeholder:grantToText(EN5_STATE_DEFAULT_APP[k]), desc:v=> TX('ui.sk-' + t, {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-' + t + '-codex'),
     get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; e[k] = true; } }}); });
 Object.assign(SKILL_ICON, {breach:'🧱', canopyCover:'🌳', timbered:'🪵', timberedGrant:'🪵', bedrock:'🪨', bedrockGrant:'🪨', forged:'🔩', forgedGrant:'🔩', lastStand:'🏳️', lastStandGrant:'🏳️'});
+// ENG33 (2026-11-07, owner 11-07 10:25 #6: "let me select the stat bonuses OR skill bonuses. Timbered logo is 2 lumber logs stacked together. Do
+// the same for the related skills."): Timbered, Bedrock, Forged and Last Stand get Diurnal's "Gives" field (ZEIT_TWIN): Stat bonus (Attack /
+// Health; Bedrock's is Armor N) or Skills (the braces, a skill picker). A stat bonus is stored as the braces too ({attack, health} / {armor}),
+// so the engine and the budget read both forms the same way; the default bonus stores no braces. Icons: two of the resource (🪵🪵, 🪨🪨, 🔩🔩);
+// Last Stand has no resource and keeps 🏳️.
+const ENG33_STAT_FORM = {timbered:{dflt:[0, 2]}, forged:{dflt:[1, 0]}, lastStand:{dflt:[1, 1]}, bedrock:{armor:true, dflt:1}};
+function eng33StatOnly(k, g){ const keys = Object.keys(g || {}); return ENG33_STAT_FORM[k].armor ? keys.every(x=> x === 'armor') : keys.every(x=> x === 'attack' || x === 'health'); }
+Object.keys(ENG33_STAT_FORM).forEach(k=>{ const t = EN5_STATE_KEYS[k].tx, f = ENG33_STAT_FORM[k], gk = k + 'Grant';
+  const gOf = e=> (e && e[gk] && typeof e[gk] === 'object' && Object.keys(e[gk]).length) ? e[gk] : null;
+  const statsOf = v=> f.armor ? {armor: Math.max(0, Math.round(Number(v) || 0))} : {attack: Math.max(0, Math.round(Number(v[0]) || 0)), health: Math.max(0, Math.round(Number(v[1]) || 0))};
+  sk1Patch(PASSIVE_DEFS, k, {kind: f.armor ? 'number' : 'twoNumber', min:0, defaultValue: f.armor ? f.dflt : f.dflt.slice(), placeholders: f.armor ? undefined : [TX('ui.eng33-ph-attack'), TX('ui.eng33-ph-health')],
+    desc:(v, n, e)=> TX('ui.sk-' + t, {skills: grantText((f.armor ? Number.isFinite(Number(v)) : Array.isArray(v)) ? statsOf(v) : en5StateOfApp(k, e))}),
+    get:e=>{ if(!e[k] && !gOf(e)) return undefined; const g = gOf(e); if(g && !eng33StatOnly(k, g)) return undefined;
+      return f.armor ? (g ? Math.max(0, Number(g.armor) || 0) : f.dflt) : (g ? [Number(g.attack) || 0, Number(g.health) || 0] : f.dflt.slice()); },
+    apply:(e, v)=>{ e[k] = true; const st = statsOf(v); const same = f.armor ? st.armor === f.dflt : (st.attack === f.dflt[0] && st.health === f.dflt[1]); if(!same) e[gk] = st; }});
+  sk1Patch(PASSIVE_DEFS, gk, {get:e=>{ const g = gOf(e); return g && !eng33StatOnly(k, g) ? grantToText(g) : undefined; }});
+  EN5_STATE_KEYS[k].ico = SKILL_ICON[k] = SKILL_ICON[gk] = ({timbered:'🪵🪵', bedrock:'🪨🪨', forged:'🔩🔩'})[k] || SKILL_ICON[k]; });
+Object.assign(SKILL_ICON, {timbered:'🪵🪵', timberedGrant:'🪵🪵', bedrock:'🪨🪨', bedrockGrant:'🪨🪨', forged:'🔩🔩', forgedGrant:'🔩🔩'});
 
 // ==== Package EN6 (2026-10-24, owner 03:17: "1. Based on number of cards in hand ... 2. Actions: Some actions like arrow - can have a subtoggle -
 // bramble ... 3. Temperature based ... 4. What about 'salty'? ... like RAIN - {}, what else? ... hibernate?"; 12:02 #11 "03:17 - all"). Rules in
@@ -1978,6 +1997,8 @@ sk1Patch(PASSIVE_DEFS, 'dive', {codexNote:TX('ui.eng9-dive-codex')});
 sk1Patch(PASSIVE_DEFS, 'bloomCopy', {codexNote:TX('ui.eng9-bloom-codex')});
 sk1Patch(PASSIVE_DEFS, 'season', {codexNote:TX('ui.eng9-season-codex')});
 // (the Spit labels and Charge's line: ENG10's block below, 2026-10-26: the element alone, and Charge recharging again)
+PASSIVE_DEFS.push({key:'poisonous', category:'passive', label:TX('ui.eng33-poisonous-name'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.eng33-poisonous', {n: numOr(v, 2)}), codexNote:TX('ui.eng33-poisonous-codex')}); // ENG33 (2026-11-07, owner #9): its killer or eater gets N Venom
+Object.assign(SKILL_ICON, {thanatosis:'😵', poisonous:'🤢' /* ENG33 (2026-11-07) */});
 Object.assign(SKILL_ICON, {undead:'↺', revive:'🪦', poisonBarbs:'🌵☠️' /* 2026-11-07 (package UI30, owner 09:47 #14): was 🪛 */, stockpile:'🪵'});
 // ==== Package CONTENT3 (2026-10-26; rules in bramblewood-engine.js, prices in canonical/skill-costs.json): the new skills' lines.
 //   Wakeful (G5)      never falls Asleep (a Sleep hit, the Spore Cloud)       Pulverise (OWN-Q5)  ignores Armor, breaks Armor / Magic Armor /
@@ -2006,7 +2027,7 @@ Object.assign(SKILL_ICON, {dropRoll:'🤸', glean:'🌾' /* 2026-11-06 (TEXTFIX1
 //   the elemental spits named by their element alone (ENG9-3: Cinder, Acid, Venom, Ice, Spark; Ember is a gem, Frost a skill)
 //   Charge recharging (ENG9-4)              Armor stops arrows and spits (ENG9-6)       Sunder / Dismantle and Hardy N (PROP1-1)
 //   Gorge, the old Fester key (PROP1-3)     Requiem / Dirge / Carnage / Muster / Beset / Throng N – {…} (PROP1-4)
-[['fireBolt', TX('ui.e10-skn-cinder')], ['acidBolt', TX('ui.e10-skn-acid')], ['poisonBolt', TX('ui.e10-skn-venom')], ['iceBolt', TX('ui.e10-skn-ice')], ['shockBolt', TX('ui.e10-skn-spark')]].forEach(([k, label])=> sk1Patch(PASSIVE_DEFS, k, {label}));
+[['fireBolt', TX('ui.e10-skn-cinder')], ['acidBolt', TX('ui.e10-skn-acid')], ['poisonBolt', TX('ui.e10-skn-venom') /* ENG33 (2026-11-07): Venom Spit (Venom is the counters' name now) */], ['iceBolt', TX('ui.e10-skn-ice')], ['shockBolt', TX('ui.e10-skn-spark')]].forEach(([k, label])=> sk1Patch(PASSIVE_DEFS, k, {label}));
 { const ch = PASSIVE_DEFS.find(x=> x.key === 'charge'); if(ch && ch.desc){ ch.desc = (v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. ${TX('ui.e10-charge', {n: cp.n})}`; }; } }
 sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.e10-armor', {n: v}), codexNote:TX('ui.e10-armor-codex')});
 // ENG11 (2026-10-27, owner K2 / K6): the new Coffee N (acts twice every Nth round it acts, then Stunned), and the dark places as night.
@@ -2190,7 +2211,7 @@ PASSIVE_DEFS.push({key:'rageAt', category:'passive', label:TX('ui.eng27-rage-at-
   get:e=> Number(e.rageAt) > 0 ? Math.round(Number(e.rageAt) * 100) : undefined, apply:(e, v)=>{ const n = Math.max(10, Math.min(90, Number(v) || 75)); e.rageAt = n / 100; e.rage = true; }});
 SKILL_ICON.rageAt = '😡';
 sk1Patch(PASSIVE_DEFS, 'shapeshifter', {category:'passive', label:TX('ui.skn-shapeshifter'), kind:'boolean', desc:()=> TX('ui.sk-shapeshifter')});
-sk1Patch(PASSIVE_DEFS, 'bulwark', {category:'passive', label:'Bulwark', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-bulwark', {hp: 4 * numOr(v, 1)}), codexNote:TX('ui.sk-bulwark-codex')});
+sk1Patch(PASSIVE_DEFS, 'bulwark', {category:'passive', label:'Bulwark', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 8}), codexNote:TX('ui.sk-bulwark-codex')}); // ENG33 (2026-11-07, owner #10): N Log Walls, 0/8 each
 sk1Patch(PASSIVE_DEFS, 'backstab', {category:'passive', label:'Backstab', kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-backstab', {n: numOr(v, 2)}), codexNote:TX('ui.sk-backstab-codex')});
 Object.assign(SKILL_ICON, {assault:'⚔️', liege:'🛡️👑', liegeGrant:'🛡️👑', rageGrant:'😡', shapeshifter:'🧰'});
 // BF6 (owner 15:15: "Rally: temporary increase in attack. War Banner: passive increase in attack while this unit is present."): Rally N is
@@ -2380,6 +2401,7 @@ const SKILL_DEFS = [
     get:e=>{
       if(p.key==='render') return e.render ? e.render.amount : undefined;
       if(p.key==='undead') return e.undead ? true : undefined; // ENG9 (2026-10-26): was Revive
+      if(p.key==='thanatosis') return e.thanatosis ? true : undefined; // ENG33 (2026-11-07)
     },
     apply:(e,v)=>{ Object.assign(e, p.build(v)); },
   })),
@@ -2432,7 +2454,7 @@ const SKILL_DEFS = [
 const DMG_TYPES = ['physical','cold','heat','acid','poison','decay','magic','water','stone','metal','shock']; // + magic and water (2026-10-14)
 // 2026-10-21 (owner 18:24: "Can I use Fire? In that dropdown list - add emojis."): editor labels for the Element dropdowns. The stored
 // value stays the engine's key (heat is fire); only the label changes.
-const DMG_TYPE_LABEL = {physical:'💢 Physical', cold:'❄️ Cold (ice)', heat:'🔥 Fire (heat)', acid:'🧪 Acid', poison:'☠️ Poison', decay:'🍂 Decay', magic:'🪄 Magic', water:'💧 Water', stone:'🪨 Stone', metal:'⚙️ Metal', shock:'⚡ Lightning'};
+const DMG_TYPE_LABEL = {physical:'💢 Physical', cold:'❄️ Cold (ice)', heat:'🔥 Fire (heat)', acid:'🧪 Acid', poison:'☠️ Venomous' /* ENG33 (2026-11-07): the damage type is Venomous (key poison) */, decay:'🍂 Decay', magic:'🪄 Magic', water:'💧 Water', stone:'🪨 Stone', metal:'⚙️ Metal', shock:'⚡ Lightning'};
 const dmgTypeOptLabel = dt=> DMG_TYPE_LABEL[dt] || dt;
 // Elemental Damage Types -> signature status (2026-09-24, task #109, "one status effect per
 // elemental damage type"): a card's own dmgType field only ever drove Resist/Weakness math (see
@@ -2566,7 +2588,7 @@ function resistOptionsList(){
 // pass through unchanged; damage types and ability keys get Title Cased / de-camelCased here so
 // every pill and dropdown option reads as "Cold" / "Stun On Hit" rather than a raw key.
 // Damage type names players see (2026-10-12, user: "Deal 5 fire damage"): Heat reads as Fire everywhere; the data key stays 'heat'.
-const DMG_LABEL = {physical:'Physical', heat:'Fire', cold:'Cold', acid:'Acid', poison:'Poison', decay:'Decay', magic:'Magic', water:'Water', stone:'Stone', metal:'Metal', shock:'Lightning', radiation:'Radiation'}; // + stone, metal, lightning (EL, 2026-10-21)
+const DMG_LABEL = {physical:'Physical', heat:'Fire', cold:'Cold', acid:'Acid', poison:'Venomous' /* ENG33 */, decay:'Decay', magic:'Magic', water:'Water', stone:'Stone', metal:'Metal', shock:'Lightning', radiation:'Radiation'}; // + stone, metal, lightning (EL, 2026-10-21)
 function dmgWord(t){ return t && t !== 'physical' ? (DMG_LABEL[t] || t).toLowerCase() + ' ' : ''; }
 function resistOptionLabel(v){
   if(!v) return '…';
@@ -2976,7 +2998,7 @@ const SKILL_COUNTER_EXTRA = {exileAns: '🌫 Exile'};
 // example. THEN after the skills are done, a small separating line, then more explanations for each keyword"). Skill
 // lines name the status in its colour; one short glossary under the skills explains each status that came up.
 const STATUS_KEYWORDS = [
-  {k:'poison', re:/\b(poison(?:ed|s)?)\b/gi, name:'Poison', c:'#3fa535', text:TX('ui.st-poison'), codex:TX('ui.stx-poison')} /* 2026-10-18 (package D): terse */,
+  {k:'poison', re:/\b(venom(?:ed|s)?|envenom(?:ed|s)?|poison(?:ed|s)?)\b/gi /* ENG33: Venom */, name:'Venom', c:'#3fa535', text:TX('ui.st-poison'), codex:TX('ui.stx-poison')} /* 2026-10-18 (package D): terse */,
   {k:'bleed', re:/\b(bleed(?:ing|s)?|bled)\b/gi, name:'Bleed', c:'#d0344a', text:TX('ui.st-bleed')} /* 2026-10-18 (package D): terse */,
   {k:'decay', re:/\b(decay(?:ing|s)?)\b/gi, name:'Decay', c:'#8d8a2e', text:'at the start of each round, takes damage and loses Attack equal to its stacks.'},
   {k:'corrode', re:/\b(corrode[ds]?)\b/gi, name:'Corrode', c:'#b8732c', text:'deals that much less Attack; loses 1 stack each round.'},
@@ -3097,7 +3119,7 @@ function waveParts(v, e){
   return {way, n: raw === 'N' ? 'N' : Math.max(1, Math.round(Number(raw)) || 1)};
 }
 const SKILL_TEXT = {
-  poison: v=> `Its hits add ${v} Poison.`, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> `Its hits add ${v} Bleed.`, corrode: v=> `Its hits add ${v} Corrode.`,
+  poison: v=> TX('ui.eng33-venomous', {n: v}) /* ENG33 */, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> `Its hits add ${v} Bleed.`, corrode: v=> `Its hits add ${v} Corrode.`,
   armor: v=> `Takes ${v} less damage from every hit.`,
   counterattack: ()=> `Never attacks on its own. Each time an enemy hits it, it strikes the enemy facing it.`, // 2026-10-16 skill audit: it hits the unit in front, not the attacker (counterStrike)
   spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,
@@ -3121,7 +3143,7 @@ const SKILL_TEXT = {
   rage: (v, n, e)=> e && e.rageGrant && typeof e.rageGrant === 'object' ? TX('ui.sk-rage-grant', {skills: grantText(e.rageGrant) || TX('ui.cx-nothing')}) : `Below half Health: double Attack and takes half damage.`, // + Rage – {…} (EN, 2026-10-23)
   immolation: v=> `Every upkeep: ${v} fire damage to adjacent units and the enemy facing it.`, // 2026-11-03 (TEXT1): + the facing enemy, as the engine's upkeep burns it
   speed: v=> `Speed ${v}: faster units swing first.`, haste: ()=> `Speed +2, and +1 to adjacent allies.`,
-  rabid: v=> `Its hits add ${numOr(v, 2)} Poison. Swimmers and water damage hit it for double.`, // 2026-10-16 skill audit: Rabid N
+  rabid: v=> `Its hits add ${numOr(v, 2)} Venom. Swimmers and water damage hit it for double.`, // 2026-10-16 skill audit: Rabid N
   cower: v=> typeof v === 'number' ? TX('ui.eng15-cower-short', {n: v}) : v === 'flee' ? `Hit last turn: it backs off this turn (no attack, heals 2).` : `Hit last turn: it hides in its shell this turn (no attack, attacks can't hurt it).`, // + Cower N (ENG15, 2026-10-31)
   ghost: ()=> `Normal attacks pass through it; other elements deal half, magic full. It can't Bleed.`, magic: ()=> `Its attacks deal magic damage.`,
   ichor: v=> `Whoever hits it takes ${v} acid damage, loses 1 Armor and Bleeds 1.`,
@@ -3132,7 +3154,7 @@ const SKILL_TEXT = {
   growth: ()=> `Counts toward every ally's Swarm.`, moonpull: ()=> `When it arrives, the Tide comes in.`,
   hiveMind: ()=> `When it dies, your newest Swarm ally gets +1/+1.`,
   reach: ()=> `Flying can't dodge its attacks.`,
-  festering: ()=> `While it's on the field, Bleed and Poison don't wear off.`,
+  festering: ()=> `While it's on the field, Bleed and Venom don't wear off.`,
   leader: ()=> `Can be your Leader.`,
   dictator: ()=> `Can only be your Leader. It never goes in your deck.`,
   changeling: ()=> `Shares a type with every unit. The enemy sees it in disguise.`,
@@ -3185,14 +3207,14 @@ const SKILL_TEXT = {
   evasive: ()=> `Dodges half of all single-target attacks and skills.`,
   feeble: ()=> `Deals half damage.`, mighty: ()=> `Deals double damage.`, fragile: ()=> `Takes double damage.`, sturdy: ()=> `Takes half damage.`,
   crit: ()=> `Each round, a 1-in-2 chance to deal double damage.`,
-  fester: ()=> `Deals extra damage equal to its own Poison.`, rupture: ()=> `Deals extra damage equal to its own Bleed.`,
+  fester: ()=> `Deals extra damage equal to its own Venom.`, rupture: ()=> `Deals extra damage equal to its own Bleed.`,
   regen: v=> `Heals ${v} every upkeep.`,
   stunOnHit: v=> `Its hits have a 1 in 3 chance to Stun the target for ${stunRounds(v)} round${stunRounds(v)===1 ? '' : 's'}.`, // 2026-10-16 (user: "Stun N: 1/3 chance to Stun a card for N turns")
   puncture: v=> `Each melee hit also deals ${v} damage to the enemy bramble.`,
   gash: v=> `When played, add ${v} Bleed to the enemy facing it.`,
   overwhelm: ()=> `Damage left over from a kill carries on into the enemy bramble.`,
   berserk: v=> `+${v} Attack whenever one of your units dies.`,
-  bulwark: v=> TX('ui.sk-bulwark', {hp: 4 * numOr(v, 1)}), // 2026-10-23 (package EN, owner 01:57 note 2): two shields as it arrives
+  bulwark: v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 8}), // ENG33 (2026-11-07): N Log Walls // 2026-10-23 (package EN, owner 01:57 note 2): two shields as it arrives
   reflect: v=> `${typeof v === 'number' && v < 100 ? `${v}% of the time, a shot` : 'Shots'} aimed at it (arrows, bolts, missiles, fireballs) bounce${typeof v === 'number' && v < 100 ? 's' : ''} off and hit${typeof v === 'number' && v < 100 ? 's' : ''} a random enemy unit.`, // 2026-10-17 (user: "reflects ranged skills back at a random enemy unit")
   momentum: v=> `+${v} Attack every time it kills a unit.`,
   bloom: v=> `Heal a random wounded ally for ${v} every upkeep.`,
@@ -3216,7 +3238,7 @@ const SKILL_TEXT = {
   volley: v=> `While Ready, every other upkeep, shoot every enemy unit for ${numOr(v, 1)} damage.`,
   fireBolt: v=> `While Ready, spit fire at the enemy facing it (or the nearest) for ${numOr(v, 2)} fire damage every upkeep.`, // 2026-10-16 skill audit: the shooting skills all say "every upkeep" and "facing it"
   acidBolt: v=> TX('ui.sk-acid-bolt', {n: numOr(v, 2)}), // 2026-10-18 (package D): terse
-  poisonBolt: v=> `While Ready, spit venom at the enemy facing it (or the nearest): ${numOr(v, 2)} Poison every upkeep.`,
+  poisonBolt: v=> `While Ready, spit venom at the enemy facing it (or the nearest): ${numOr(v, 2)} Venom every upkeep.`,
   iceBolt: v=> TX('ui.sk-ice-bolt', {n: numOr(v, 2)}), // 2026-10-18 (package D): terse
   shockBolt: v=> TX('ui.sk-shock-bolt', {n: numOr(v, 2)}), // 2026-10-17: lightning damage; 2026-10-18 (package D): terse
   bloodlust: ()=> TX('ui.sk-bloodlust'), // 2026-10-17 rework (the Codex adds one more sentence: codexNote); 2026-10-18 (package D): terse
@@ -3248,7 +3270,7 @@ Object.assign(SKILL_TEXT, {
 });
 // W2 skills (2026-10-16): the one-line card text. Defaults as in PASSIVE_DEFS (W2_DEF in the engine).
 Object.assign(SKILL_TEXT, {
-  venomous: v=> `Its hits inject ${numOr(v, 2)} Poison, even through Armor.`,
+  venomous: v=> TX('ui.eng33-venomous', {n: numOr(v, 2)}) /* ENG33: an old Venomous reads as the new one */,
   toxin: v=> `Its hits add ${numOr(v, 1)} Toxin: a poison that never wears off and can't be cured.`,
   weaken: v=> `Its hits take ${numOr(v, 1)} Attack from the target for good.`,
   wilting: v=> `Each time it is hit, it loses ${numOr(v, 1)} Attack for good.`,
@@ -3258,7 +3280,7 @@ Object.assign(SKILL_TEXT, {
   invincible: v=> `Takes no damage for its first ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'}.`,
   invisible: v=> `Can't be found for its first ${numOr(v, 2)} rounds, or until it attacks.`,
   sonar: ()=> `Never misses from Darkness, Blind, Smoke or Fog, and can't be Blinded.`,
-  poisonGas: v=> `When played, every enemy unit gets ${numOr(v, 2)} Poison.`,
+  poisonGas: v=> `When played, every enemy unit gets ${numOr(v, 2)} Venom.`,
   absoluteZero: ()=> `When played, every enemy unit is Frozen for the round.`,
   spitfire: v=> TX('ui.sk-spitfire', {n: numOr(v, 2)}), // 2026-10-16 skill audit; 2026-10-18 (package D): terse
   slashBurn: v=> `When it kills a unit, the next enemy card played there takes ${numOr(v, 3)} fire damage.`,
@@ -3269,7 +3291,7 @@ Object.assign(SKILL_TEXT, {
   prey: ()=> `Evasive while an enemy Predator is on the field.`,
   nova: v=> `When it dies, every enemy unit takes ${numOr(v, 3)} magic damage.`,
   crystallise: v=> `When it dies, it becomes a 0/${numOr(v, 5)} crystal in its slot.`,
-  cure: v=> `Every upkeep, cure ${numOr(v, 2)} Poison from your most poisoned unit.`, // 2026-10-18: Poison only
+  cure: v=> `Every upkeep, cure ${numOr(v, 2)} Venom from your most envenomed unit.`, // 2026-10-18: Poison only
   mountainClimber: ()=> `Field and terrain hazards pass it by.`,
   atheist: ()=> `Half damage from magic, Devilry and Ecclesia. Immune to the Leylines.`, // 2026-10-16
   taunt: ()=> `Enemies facing it or beside that column must attack it.`,
@@ -3291,7 +3313,7 @@ function procSkillText(verb){ return v=>{ const c = Array.isArray(v) ? Number(v[
 // Sleep N stacks up to N+1 (2026-10-18, package D; owner: "never exceeds the applied sleep + 1"): its line says so, tersely.
 function sleepSkillText(v){ const c = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Math.max(1, Number(v[1])||1) : 1, s = d === 1 ? '' : 's';
   return !c ? procSkillText('put the target to Sleep')(v) : c >= 100 ? TX('ui.sk-sleep-sure', {n: d, s, m: d + 1}) : TX('ui.sk-sleep-chance', {c, n: d, s, m: d + 1}); }
-const SKILL_DEFS_ONLY_LINES = ['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger', 'chained', 'undead' /* ENG9: was revive */];
+const SKILL_DEFS_ONLY_LINES = ['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger', 'chained', 'undead' /* ENG9: was revive */, 'thanatosis' /* ENG33 */];
 Object.assign(SKILL_TEXT, {
   converge: v=> `When it becomes Ready, ${v === 'ally' ? 'your units close' : v === 'both' ? 'the units on both sides close' : "the enemy's units close"} their gaps toward the centre.`,
   defiance: (v, n)=> `+${n||1} Attack for every enemy unit that is ${Array.isArray(v) && v.length ? v.join(' or ') : 'of its chosen type'}.`,
@@ -3305,7 +3327,7 @@ Object.assign(SKILL_TEXT, {
   charge: v=> { const c = typeof v === 'string' ? parseChargeText(v) : (v && typeof v === 'object' ? v : null); const cp = chargeParts(c); return cp && cp.act ? `${chargeLabel(c)}: once it is Ready, this happens every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.` : TX('ui.sk-charge-clock'); }, // 2026-10-18 (package D): terse
   dynamite: v=> { const f = Array.isArray(v) ? (Number(v[0])||3) : numOr(v, 3), d = Array.isArray(v) ? (Number(v[1])||5) : 5; return TX('ui.sk-dynamite', {f, d}); }, // 2026-10-18 (package D): terse
   helmet: ()=> `Half the shots aimed at it glance off, once; then the helmet is gone.`, // ENG27 (item 32)
-  shedding: v=> `Every ${numOr(v, 3)} rounds: +1/+1 for good, and it sheds its Poison, Bleed, Corrode, Scar and Exposed.`,
+  shedding: v=> `Every ${numOr(v, 3)} rounds: +1/+1 for good, and it sheds its Venom, Bleed, Corrode, Scar and Exposed.`,
   snipe: v=> `While Ready, if nothing faces it, shoot a random enemy unit for ${numOr(v, 1)} every upkeep.`,
   kinship: v=> { const k = Array.isArray(v) ? {type:v[0], atk:v[1], hp:v[2]} : (v && typeof v === 'object' ? v : {}); return k.type ? `All your ${k.type} units get +${Number(k.atk)||0}/+${Number(k.hp)||0} (itself too). Stacks.` : `All your units of its chosen type get +X/+Y (itself too). Stacks.`; },
   rocket: v=> TX('ui.sk-rocket', {n: numOr(v, 1)}), // 2026-10-18 (package D): terse; the Codex says who "strongest" is
@@ -3325,6 +3347,7 @@ Object.assign(SKILL_TEXT, {
   chained: v=> { const [on, n] = Array.isArray(v) ? v : ['damage', 1]; return on === 'enemySpawn' ? `Can't attack until the opponent plays a card.` : TX('ui.eng9-chained', {n: Number(n)||1}); }, chainedOld: v=> { const [on, n] = Array.isArray(v) ? v : ['damage', 1]; return on === 'enemySpawn' ? `Can't attack until the opponent plays a card.` : `Can't attack until one hit deals it more than ${Number(n)||1} damage.`; },
   render: v=> `When played, the enemy facing it loses ${numOr(v, 1)} Attack.`,
   undead: ()=> TX('ui.eng9-undead'), // 2026-10-19 (package RV); ENG9 (2026-10-26): Undead (was Revive)
+  thanatosis: ()=> TX('ui.eng33-thanatosis'), poisonous: v=> TX('ui.eng33-poisonous', {n: numOr(v, 2)}), // ENG33 (2026-11-07)
   onDeathSpawn: v=> Array.isArray(v) && v[0] ? `When it dies, ${Number(v[1])||1}× ${cardName(v[0])} take its place.` : `When it dies, new units take its place.`,
 });
 // 2026-10-17 skills (user's notes, 20:19): the short card lines.
@@ -3335,7 +3358,7 @@ Object.assign(SKILL_TEXT, {
   sentry: ()=> `Once a round, it attacks an enemy unit that enters one of the 3 slots facing it.`,
   carrion: v=> `Whenever another unit dies, heal ${numOr(v, 2)}.`,
   hoard: v=> `+1 Attack for every ${numOr(v, 2)} Lumber you hold.`,
-  venomMaster: v=> `Your units' Poison and Bleed hits add ${numOr(v, 1)} more.`,
+  venomMaster: v=> `Your units' Venom and Bleed hits add ${numOr(v, 1)} more.`,
   fletcher: v=> `Your units' arrows deal ${numOr(v, 1)} more damage.`,
   herbalist: v=> `Every heal on your units heals ${numOr(v, 1)} more.`,
   shatter: v=> `Its hits deal ${numOr(v, 2)} more damage to Frozen units.`,
@@ -3735,6 +3758,7 @@ function describeEffects(def, liveCard, opt){
   SKILL_DEFS_ONLY_LINES.forEach(k=>{ const sd = SKILL_DEFS.find(s=> s.key === k); if(!sd || !SKILL_TEXT[k]) return; let v; try{ v = sd.get(e); }catch(_){ v = undefined; } if(v === undefined || v === false) return;
     // 2026-10-17 (user: "...the revive skill text is redded out"): a unit in play that has already come back shows its Revive line
     // struck through in red, marked "used".
+    if(k === 'thanatosis' && liveCard){ const lc = currentCardByUidSafe(liveCard.uid) || liveCard; if(lc && lc.thanatosisUsed){ lines.push(`<span class="sk-used" title="${escapeAttr(TX('ui.eng33-thanatosis-used'))}">${ic(k)}${sd.label} — ${SKILL_TEXT[k](v)}</span> <b class="sk-used-tag">used</b>`); return; } } // ENG33 (2026-11-07)
     if(k === 'undead' && liveCard){ const lc = currentCardByUidSafe(liveCard.uid) || liveCard; if(lc && lc.revivedOnce){ lines.push(`<span class="sk-used" title="Already used: it came back once">${ic(k)}${sd.label} — ${SKILL_TEXT[k](v)}</span> <b class="sk-used-tag">used</b>`); return; } }
     lines.push(`${ic(k)}${sd.label} — ${SKILL_TEXT[k](v)}`); });
   if(e.onSpawnGold) lines.push(`On Spawn: gain ${e.onSpawnGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
@@ -6770,7 +6794,7 @@ function ambienceKindForMatch(m){
 // with no statuses.
 const LIVE_STATUS_ROWS = [
   // [field, STATUS_KEYWORDS k (colour) or null, name, text(n, c), shows its number]
-  ['poison', 'poison', 'Poison', n=> `takes ${n} damage at upkeep, then loses 1 stack. Heals don’t touch it; Cure does.`, true],
+  ['poison', 'poison', 'Venom', n=> `takes ${n} damage at upkeep, then loses 1 stack. Heals don’t touch it; Cure does.`, true],
   ['toxin', 'toxin', 'Toxin', n=> `takes ${n} damage every round. It never wears off and can’t be cured.`, true],
   ['bleed', 'bleed', 'Bleed', n=> TX('ui.ls-bleed', {n}), true], // 2026-10-18 (package D): terse
   ['decay', 'decay', 'Decay', n=> `at upkeep, takes ${n} damage and loses ${n} Attack.`, true],
@@ -7121,7 +7145,7 @@ function cardActionLogHTML(uid){
       // Self-inflicted damage over time — matched on the plain `uid` this card took it on, not
       // an attacker field, since there is no attacker.
       if(ev.uid!==uid) continue;
-      lines.push(`<li>Poison ☠ → ${ev.dmg}</li>`);
+      lines.push(`<li>Venom ☠ → ${ev.dmg}</li>`);
     } else if(ev.type==='decayTick'){
       if(ev.uid!==uid) continue;
       lines.push(`<li>Decay 🦠 → ${ev.dmg} (also -${ev.atk} atk)</li>`);
@@ -7520,7 +7544,7 @@ function animalChipsHTML(d){
     if(d.subtype) out.push(`<span class="cd-chip cd-subtype" title="${escapeAttr(TX('ui.codex-subtype-tip', {subtype: animalSubtypeLabel(d.subtype), animal: d.animal}) + (d.subtype === 'undead' ? ' ' + TX('ui.eng26-undead-rule') : ''))}">${ANIMAL_SUBTYPE_ICON[d.subtype] || '✨'} ${escapeHtml(animalSubtypeLabel(d.subtype))}</span>`);
   }
   // ENG26 (2026-11-06, owner 09:29 #4): an Undead card (species or subtype) says how heals and cures treat it
-  if(d && (d.subtype === 'undead' || (d.species || []).includes('Undead'))) out.push(`<span class="cd-chip cd-undead-rule" title="${escapeAttr(TX('ui.eng26-undead-rule'))}">🧟 ${escapeHtml(TX('ui.eng26-undead-rule'))}</span>`);
+  if(d && (d.subtype === 'undead' || (d.species || []).includes('Undead') || (d.effects || {}).undead /* ENG33: the Undead skill is the status too */)) out.push(`<span class="cd-chip cd-undead-rule" title="${escapeAttr(TX('ui.eng26-undead-rule'))}">🧟 ${escapeHtml(TX('ui.eng26-undead-rule'))}</span>`);
   if(d && d.faction === 'base') out.push(`<span class="cd-chip cd-base" title="${escapeAttr(TX('ui.codex-base-tip'))}">🌰 ${escapeHtml(TX('ui.codex-base-chip'))}</span>`);
   return out;
 }
@@ -9427,7 +9451,7 @@ function pitchYieldBadgeHTML(d){
 // anchored to the bottom-center border, mirroring the atk/hp corner pills' own glyph treatment.
 function poisonTagHTML(d){
   const p = (d.effects||{}).poison;
-  return p ? `<span class="poison-tag" title="Poisons on hit">☠${p}</span>` : '';
+  return p ? `<span class="poison-tag" title="Venomous: its hits add Venom">☠${p}</span>` : '';
 }
 // Trigger badges (2026-10-11, user: "use the lightning symbol to represent it has SOME trigger. It could even be shown
 // like Lightning -> Action's Emoji. If grave = a skill related to GY. When the creature isn't ready, the lightning is
@@ -9618,6 +9642,8 @@ function abilityBadges(d, bopts){
   if(e.evasive) out.push(`<span class="ab-evasive" title="Evasive: dodges half of single-target hits">${iconHTML('evasive', '🍃')}</span>`);
   // 2026-10-17 (user: "I think there should be a context label caues its important"): on the board Revive is a labelled chip,
   // struck through in red once it has been used (the unit came back).
+  if(e.thanatosis){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.thanatosisUsed; }catch(err){ return false; } })()); // ENG33 (2026-11-07): Thanatosis
+    out.push(`<span class="ab-sk${used ? ' is-used' : ''}" data-sk="thanatosis" title="${escapeAttr(TX(used ? 'ui.eng33-thanatosis-used' : 'ui.eng33-thanatosis-chip'))}">${iconHTML('thanatosis', '😵')}</span>`); }
   if(e.undead){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.revivedOnce; }catch(err){ return false; } })()); // ENG9 (2026-10-26): Undead, the old Revive chip
     if(lv && used) { /* 2026-10-31 (UI11, FF1): a spent one-shot changes nothing: the used Undead chip is gone, not struck through */ } else
     out.push(lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${escapeAttr(TX(used ? 'ui.eng9-undead-used' : 'ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}<b>${escapeHtml(TX('ui.eng9-undead-name'))}</b></span>` : `<span class="ab-revive" title="${escapeAttr(TX('ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}</span>`); }
@@ -9664,7 +9690,7 @@ function abilityBadges(d, bopts){
   { const lv = bopts && bopts.live && bopts.live.speed != null ? Number(bopts.live.speed)||0 : (Number(e.speed)||0) + (e.haste ? 2 : 0);
     if(lv) out.push(`<span class="ab-speed" title="Speed ${lv}: the fastest units swing first">🐇${lv}</span>`); }
   if(e.haste) out.push(`<span title="Haste: Speed +2, adjacent allies Speed +1">${iconHTML('haste', '🏃')}</span>`);
-  if(e.rabid) out.push(`<span title="Rabid ${numOr(e.rabid, 2)}: hits add ${numOr(e.rabid, 2)} Poison; Swimmers and water hit it for double">${iconHTML('rabid', '🤬')}${numOr(e.rabid, 2) === 2 ? '' : numOr(e.rabid, 2)}</span>`); // Rabid N (2026-10-16 skill audit)
+  if(e.rabid) out.push(`<span title="Rabid ${numOr(e.rabid, 2)}: hits add ${numOr(e.rabid, 2)} Venom; Swimmers and water hit it for double">${iconHTML('rabid', '🤬')}${numOr(e.rabid, 2) === 2 ? '' : numOr(e.rabid, 2)}</span>`); // Rabid N (2026-10-16 skill audit)
   if(e.cower) out.push(eng15CowerChip(e, !!(bopts && bopts.live && bopts.live.cowering))); // ENG15 (2026-10-31, FF6): lit, with its Armor, only while it cowers
   if(e.ghost) out.push(`<span title="Ghost: normal attacks pass through it">${iconHTML('ghost', '👻')}</span>`);
   if(e.ichor) out.push(`<span title="Ichor ${e.ichor}: whoever hits it takes ${e.ichor} acid, loses 1 Armor, Bleeds 1">${iconHTML('ichor', '🧪')}${n1(e.ichor)}</span>`);
@@ -10169,8 +10195,8 @@ function referenceHTML(){
        like On Death: Spawn read as "passive" here. Split into two panels driven by that same
        category field instead of re-tagging entries individually. -->
   <div class="panel"><h3 class="ref-heading">Elemental Damage Types</h3><p class="panel-sub">A card's Element (set on the main form) drives its Resist/Weakness math — and each of the five below has its own signature status, one clean skill per element, all still fully independent "+ Add Skill" entries (nothing here is automatic; a Cold card doesn't get Frozen for free, it has to carry the Freeze skill too). Poison and Decay are the two exceptions — see the two cards after this list for what makes them different.</p><div class="ref-grid">${ELEMENTAL_STATUS_MAP.map(e=>`<div class="ref-card"><span class="kind">${e.dmgType}</span><b>${e.icon} ${e.statusLabel}</b><p>${e.desc}</p></div>`).join('')}
-    <div class="ref-card"><span class="kind">poison (element)</span><b>☠ Damage → Poison stacks</b><p>Unlike the other four, a Poison-element attack is automatic and deterministic, not a chance roll: its ENTIRE damage number converts into Poison stacks on the target instead of landing as HP loss that instant — the stacks tick for real damage at the start of the next round instead (see the Poison passive skill below for a card that stacks extra Poison on top of this). A hit that reaches the bramble instead of a card always deals its normal, unconverted damage.</p></div>
-    <div class="ref-card"><span class="kind">decay (element)</span><b>🦠 Damage + Attack drain</b><p>A Decay-element attack deals its normal HP damage AND reduces the target's own Attack by that same amount (floored at 0) — both happen on every landed hit, automatically. Like Poison, a hit that reaches the bramble instead of a card deals normal, unconverted damage.</p></div>
+    <div class="ref-card"><span class="kind">venomous (element)</span><b>☠ Damage → Venom stacks</b><p>Unlike the other four, a Venomous-element attack is automatic and deterministic, not a chance roll: its ENTIRE damage number converts into Venom stacks on the target instead of landing as HP loss that instant — the stacks tick for real damage at the start of the next round instead (see the Venomous passive skill below for a card that stacks extra Venom on top of this). A hit that reaches the bramble instead of a card always deals its normal, unconverted damage.</p></div>
+    <div class="ref-card"><span class="kind">decay (element)</span><b>🦠 Damage + Attack drain</b><p>A Decay-element attack deals its normal HP damage AND reduces the target's own Attack by that same amount (floored at 0) — both happen on every landed hit, automatically. Like Venomous, a hit that reaches the bramble instead of a card deals normal, unconverted damage.</p></div>
   </div></div>
   <div class="panel"><h3 class="ref-heading">Evergreen abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A bundled trigger + action shorthand — the same thing you could build by hand with Custom Triggers, just packaged as one named skill with fewer clicks.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category==='evergreen' && !p.retired).map(p=>`<div class="ref-card"><span class="kind">Evergreen</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
   </div></div>
@@ -10596,7 +10622,7 @@ const CARD_STATS_FIELDS = [ // order is the storage format: append new numbers a
   {k:'lm', label:'Lumber generated', icon:'🪵', stat:'lumberGenerated'},
   {k:'gr', label:'Grace generated', icon:'🕊️', stat:'graceGenerated'},
   {k:'dv', label:'Devilry generated', icon:'😈', stat:'devilryGenerated'},
-  {k:'pz', label:'Poison applied', icon:'☠️', stat:'poisonApplied'},
+  {k:'pz', label:'Venom applied', icon:'☠️', stat:'poisonApplied'},
   {k:'tk', label:'Tokens summoned', icon:'✨', stat:'spawnedTokens'},
   {k:'th', label:'Thorns damage', icon:'🌵', stat:'thornsDealt'},
   {k:'rv', label:'Revives', icon:'🔁'},
@@ -12118,8 +12144,8 @@ function defaultSkillValue(key){
 }
 // A Zeitgeber's two forms (2026-10-16): the plain stat bonus and the skill list ("Diurnal" + Gives: Stat bonus / Skills).
 // 2026-10-21 (package CX2): + Crepuscular {day}{night}, Rainrunner {…}, Loyal {…}, Usurper {…}; Full Moon {…} left for Transform's Lycanthropy.
-const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant', stem:'stemGrant' /* EV (2026-10-21): +1/+2 or Stem – {…} */, king:'kinglyGrant' /* TR (2026-10-21): the default Kingly or King – {…} */, liege:'liegeGrant' /* EN (2026-10-23): Liege {Assault 2} or Liege – {…} */};
-const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', tideGrant:'tide', crepuscularGrant:'crepuscular', rainrunnerGrant:'rainrunner', loyalGrant:'loyal', usurperGrant:'usurper', stemGrant:'stem', kinglyGrant:'king', liegeGrant:'liege'};
+const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', tide:'tideGrant', crepuscular:'crepuscularGrant', rainrunner:'rainrunnerGrant', loyal:'loyalGrant', usurper:'usurperGrant', stem:'stemGrant' /* EV (2026-10-21): +1/+2 or Stem – {…} */, king:'kinglyGrant' /* TR (2026-10-21): the default Kingly or King – {…} */, liege:'liegeGrant' /* EN (2026-10-23): Liege {Assault 2} or Liege – {…} */, timbered:'timberedGrant', bedrock:'bedrockGrant', forged:'forgedGrant', lastStand:'lastStandGrant' /* ENG33 (2026-11-07, owner #6): Stat bonus or Skills */};
+const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', tideGrant:'tide', crepuscularGrant:'crepuscular', rainrunnerGrant:'rainrunner', loyalGrant:'loyal', usurperGrant:'usurper', stemGrant:'stem', kinglyGrant:'king', liegeGrant:'liege', timberedGrant:'timbered', bedrockGrant:'bedrock', forgedGrant:'forged', lastStandGrant:'lastStand' /* ENG33 */};
 // The kinds whose row is a context skill (braces): no "+ at a later level" button on them (CX2, owner 17:42: "+ skill inside each phase,
 // plus the normal add-skill, already cover it").
 const CONTEXT_ROW_KINDS = new Set(['grant', 'grant2', 'transform', 'ritual']);
@@ -16923,7 +16949,7 @@ const HERO_PEOPLES = {
     skills:['guardian','armor','bulwark','shell','thorns','sturdy','siege','reflect','regen']},
   tribes: {label:'Sunfeather Warrior', blurb:'Fast and bright. Wings, speed and first strikes.', icon:'🐦', art:'crimson-wing-recruit', archetypes:['Hummingbird'], base:{attack:3, health:6},
     skills:['flying','evasive','swift','quick','crit','frenzy','puncture','ambush','momentum']},
-  road:   {label:'Road-folk Wanderer', blurb:'Sly and slippery. Poison, bleeding, tricks and a bow.', icon:'🐭', art:'wandering-traveller', archetypes:['Mouse','Traveller'], base:{attack:2, health:7},
+  road:   {label:'Road-folk Wanderer', blurb:'Sly and slippery. Venom, bleeding, tricks and a bow.', icon:'🐭', art:'wandering-traveller', archetypes:['Mouse','Traveller'], base:{attack:2, health:7},
     skills:['stealth','poison','bleed','expose','gash','render','arrow','corrode','fester']},
 };
 function loadHero(){ try{ const h = JSON.parse(localStorage.getItem(HERO_KEY)||'null'); if(h && HERO_PEOPLES[h.people]) return heroXpMigrate(Object.assign({xp:0, alloc:{atk:0,hp:0,speed:0}, picks:{}, materia:{}, battles:0, wins:0}, h)); }catch(e){} return null; }
@@ -20320,7 +20346,7 @@ const TERRAIN_BIOMES = {
   water:   {name:'Riverbank',      icon:'🌊', types:['River','Pond'],                        grant:{inspiring:1},  sig:'Inspiring 1'},
   beach:   {name:'Tideline',       icon:'🐚', types:['Coastal','Ocean'],                     grant:{shell:1},      sig:'Shell 1'},
   reef:    {name:'Coral Shelf',    icon:'🪸', types:['Coral Reef','Ocean'],                  grant:{thorns:1},     sig:'Thorns 1'},
-  swamp:   {name:'Sucking Mire',   icon:'🪷', types:['Swamp','Mangrove'],                    grant:{poison:1},     sig:'Poison 1'},
+  swamp:   {name:'Sucking Mire',   icon:'🪷', types:['Swamp','Mangrove'],                    grant:{poison:1},     sig:'Venomous 1'},
   cave:    {name:'Deep Dark',      icon:'🦇', types:['Cave'],                                grant:{ambush:true},  sig:'Ambush'},
   alpine:  {name:'High Crags',     icon:'🏔️', types:['Mountain'],                            grant:{siege:1},      sig:'Siege 1'},
   tundra:  {name:'Frozen Waste',   icon:'❄️', types:['Tundra','Frost'],                      grant:{frostbite:1},  sig:'Frostbite 1'},
@@ -20590,7 +20616,7 @@ function fieldConditionRows(r){
   if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', '', 'Day, night, then twilight');
   if(r.permaTide) add('permaTide', '🌊', r.rapids ? 'River Rapids' : 'Perma-tide', r.rapids ? 'Always Flood: the Tide is in all match, and nothing can turn it.' : "Always Flooded. Tide effects can't change it.", '', r.rapids ? 'Always Flood' : 'Always Flooded'); // 2026-10-16 (user: "Perma-tide's effect should say \"Always Flooded\"") // 2026-10-14: Flow every round from round 1; River Rapids 2026-10-15
   // New field effects (2026-10-15)
-  if(r.swampFever) add('swampFever', '🤢', 'Swamp Fever', TX('ui.fx-swamp-fever', {odds: r.swampFever === true || Number(r.swampFever) === 50 ? '1 in 2' : (Number(r.swampFever)||50) + '%'}), '', 'Units may catch Poison', TX('ui.fxx-swamp-fever')); // 2026-10-18 (package D): terse
+  if(r.swampFever) add('swampFever', '🤢', 'Swamp Fever', TX('ui.fx-swamp-fever', {odds: r.swampFever === true || Number(r.swampFever) === 50 ? '1 in 2' : (Number(r.swampFever)||50) + '%'}), '', 'Units may catch Venom', TX('ui.fxx-swamp-fever')); // 2026-10-18 (package D): terse
   if(r.freezing) add('freezing', '🧊', 'Freezing', 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', '', 'Units arrive frozen');
   if(r.sandstorm === 'blind') add('sandstorm', '🌪️', TX('ui.c3-fx-sandstorm-blind-name'), TX('ui.c3-fx-sandstorm-blind'), '', TX('ui.c3-fx-sandstorm-blind-short')); // CONTENT3 (2026-10-26, C4): the blinding Sandstorm
   else if(r.sandstorm) add('sandstorm', '🏜️', 'Sandstorm', 'Attacks at units miss 1 in 4, except from Dry units.', '', 'Attacks miss 1 in 4');
@@ -34897,7 +34923,7 @@ const FXL_FIELDS = [
   {key:'permaTide', icon:'🌊', name:'Perma-tide', text:()=> "Always Flooded. Tide effects can't change it.", rules:{permaTide:true}, units:FXL_TIDE_UNITS}, // 2026-10-16 (user: "Perma-tide's effect should say \"Always Flooded\"")
   // New field effects (2026-10-15)
   {key:'rapids', icon:'🌊', name:'River Rapids', text:()=> 'Always Flood: the Tide is in all match, and nothing can turn it.', rules:{permaTide:true, rapids:true}, units:FXL_TIDE_UNITS},
-  {key:'swampFever', icon:'🤢', name:'Swamp Fever', text:()=> 'From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.', rules:{swampFever:50}, steps:['round', 'round'], units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Palisade', icon:'🪵', archetypes:['Structure']}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Two rounds; the Palisade beside it is a Structure and never catches it.'},
+  {key:'swampFever', icon:'🤢', name:'Swamp Fever', text:()=> 'From round 2, every unit has a 1 in 2 chance each round to gain 1 Venom. Structures never catch it.', rules:{swampFever:50}, steps:['round', 'round'], units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Palisade', icon:'🪵', archetypes:['Structure']}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Two rounds; the Palisade beside it is a Structure and never catches it.'},
   {key:'freezing', icon:'🧊', name:'Freezing', text:()=> 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', rules:{freezing:true}, steps:[{spawn:'subject'}, 'round'], note:'The Specimen arrives frozen and sits out a round.'},
   {key:'sandstorm', icon:'🏜️', name:'Sandstorm', text:()=> 'Attacks at units miss 1 in 4, except from Dry units.', rules:{sandstorm:true}, units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Fennec', icon:'🦊', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'The Fennec beside it is Dry and never misses in the sand.'},
   {key:'scorching2', icon:'🔥', name:'Scorching II', text:()=> TX('ui.e11-scorching2') /* FX3: 1 each (was 2); ENG11 (K10): by day */, rules:{field:'heatwave', heatLevel:2}},
@@ -34964,7 +34990,7 @@ const FXL_SKILL_SETUPS = {
   iceArrow: {steps:['round', 'round'], note:'Two rounds of icy arrows (each landed one freezes the dummy).'} /* ENG28 (2026-11-07): frost always freezes */,
   twinShot: {foes:FXL_FOES3, note:'Three dummies: two arrows, at two different ones.'},
   volley: {foes:FXL_FOES3, steps:['round', 'round', 'round'], note:'Three dummies, three rounds: a volley on the 1st and 3rd.'},
-  poisonBolt: {steps:['round', 'round'], note:'Two rounds, so the Poison ticks.'},
+  poisonBolt: {steps:['round', 'round'], note:'Two rounds, so the Venom ticks.'},
   iceBolt: {steps:['round', 'round'], note:'Two rounds of ice bolts (each landed one freezes the dummy).'} /* ENG28 */,
   chilli: {steps:[{spawn:'subject'}, 'round', 'round'], note:'It arrives Ready and eats its chilli; two rounds, so you see its fire attacks and the heat sting.'},
   sweep: {foes:FXL_FOES3, note:'Enemies on both sides of the one in front, so the cleave lands.'},
@@ -34996,7 +35022,7 @@ const FXL_SKILL_SETUPS = {
   prey: {foeFx:{predator:1}, steps:['round', 'round', 'round'], note:'The dummies are Predators: it dodges half of their attacks.'},
   nova: {status:{subject:{hp:1}}, steps:['round'], note:'It falls to the first hit and bursts.'},
   crystallise: {status:{subject:{hp:1}}, steps:['round', 'round'], note:'It falls to the first hit and leaves a crystal in its slot.'},
-  cure: {status:{ally:{poison:4}}, steps:['round'], note:'The ally beside it is Poisoned.'},
+  cure: {status:{ally:{poison:4}}, steps:['round'], note:'The ally beside it is Envenomed.'},
   mountainClimber: {rules:{field:'heatwave', heatLevel:3}, steps:['round', 'round'], note:'Scorching: the heat burns every unit but the climber.'},
   atheist: {rules:{leylines3:true}, steps:['round', 'round'], note:'Leylines III: every unit burns for 3 a round, but not the Atheist.'}, // 2026-10-16
   taunt: {mine:[{role:'subject', slot:1}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0}], steps:['round'], note:'The dummy faces an empty column; the Taunt beside it pulls the swing.'},
@@ -35041,7 +35067,7 @@ const FXL_SKILL_SETUPS = {
   overwhelm: {foeDef:{health:2, name:'Frail Dummy'}, note:'The dummy in front has 2 Health, so the rest of the blow carries on.'},
   berserk: {steps:[{kill:'ally'}, 'round'], note:'The Sparring Partner is killed first.'},
   retribution: {steps:[{kill:'ally'}], note:'The Sparring Partner is killed.'},
-  frenzy: {status:{subject:{poison:2}}, note:'The Specimen starts Poisoned.'}, fester: {status:{subject:{poison:3}}, note:'The Specimen starts Poisoned.'},
+  frenzy: {status:{subject:{poison:2}}, note:'The Specimen starts Envenomed.'}, fester: {status:{subject:{poison:3}}, note:'The Specimen starts Envenomed.'},
   helmet: {foeFx:{arrow:2}, note:'The dummies shoot arrows.'},
   swipe: {foeLumber:3, note:'The enemy has 3 Lumber to lose.'},
   bloomWhen: {rules:{phase:'night'}, mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Swimmer', icon:'🏊', effects:{swimmer:true}}}], steps:['round', 'round'], startTide:true, note:'At night, with the Tide in.'},
@@ -35057,7 +35083,7 @@ const FXL_SKILL_SETUPS = {
   backstab: {status:{foe:{blind:2}}, note:'The dummy in front is Blind: the Backstab lands.'}, // 2026-10-23 (package EN, owner D21)
   bloom: {steps:[{dmg:'ally', n:6}, 'round', 'round'], note:'The Sparring Partner is wounded first.'},
   bloomCopy: {rules:{phase:'day', wet:true}, steps:['round', 'round'], note:'Fought by day on a wet map (Wet & Sunny).'}, // BL (2026-10-23)
-  festering: {status:{foe:{poison:3}}, steps:['round', 'round'], note:'The dummy in front starts Poisoned.'},
+  festering: {status:{foe:{poison:3}}, steps:['round', 'round'], note:'The dummy in front starts Envenomed.'},
   rupture: {status:{subject:{bleed:3}}, note:'The Specimen starts Bleeding.'},
   kingSlayer: {foeDef:{archetypes:['King'], name:'Dummy King', icon:'👑'}, note:'The dummy in front is a King.'},
   shieldCall: {foeFx:{arrow:2}, note:'The dummies shoot arrows at your units.'},
@@ -35106,7 +35132,7 @@ const FXL_TRIGGER_SETUPS = {
   onDiscard: {fire:true, why:'It happens from the hand, when the card is pitched.'},
   onPitch: {fire:true, why:'It happens when you pitch a card from your hand while the Specimen is on the field.'}, // 2026-10-16
   // 2026-10-14 (user: "On Death: Attacking unit gets 5 Poison. - it's as if it got ingested!"): the who:'killer' target.
-  onDeathKiller: {t:{on:'onDeath', do:'poison', amount:5, who:'killer'}, status:{subject:{hp:3}}, steps:[{attack:'foe'}], note:'The Specimen has 3 Health; the dummy in front kills it and is poisoned for it.'},
+  onDeathKiller: {t:{on:'onDeath', do:'poison', amount:5, who:'killer'}, status:{subject:{hp:3}}, steps:[{attack:'foe'}], note:'The Specimen has 3 Health; the dummy in front kills it and is envenomed for it.'},
   onSacrifice: {fire:true, why:'It needs a Sacrifice, Devour or Offering.'},
 };
 // Trigger actions: On Spawn, Do <action>, unless said otherwise.
@@ -35128,7 +35154,7 @@ const FXL_ACTION_SETUPS = {
   heal: {t:{who:'ally', sub:'adjacent', amount:4}, steps:[{dmg:'ally', n:8}, {spawn:'subject'}], note:'The Sparring Partner is wounded first.'},
   mindControl: {t:{sub:'adjacent'}},
   stunPlayer: {t:{count:1}, note:'The enemy player skips a turn: it shows in the log only.'},
-  cleanse: {t:{who:'ally', sub:'adjacent'}, status:{ally:{poison:3, bleed:2}}, note:'The Sparring Partner starts Poisoned and Bleeding.'},
+  cleanse: {t:{who:'ally', sub:'adjacent'}, status:{ally:{poison:3, bleed:2}}, note:'The Sparring Partner starts Envenomed and Bleeding.'},
   addWait: {t:{amount:2, who:'enemy', sub:'adjacent'}},
   shield: {t:{amount:4, who:'ally', sub:'all'}, steps:[{spawn:'subject'}, 'round'], note:'Every ally gets Shield 4, then a round of blows eats into it.'}, // 2026-10-14
   rebuild: {t:{amount:4}, hqHurt:12, note:'Your bramble starts 12 Health down: the Specimen arrives and mends 4 of it.'}, // 2026-10-17
@@ -36778,7 +36804,7 @@ const FIELD_EFFECTS = [
   // have a 50% to gain 1 poison."): built and offered here; no map carries them yet (docs/field-effects-and-map-gaps-2026-10-15.md).
   {id:'scorching2',group:'field', icon:'🔥', name:'Scorching II', weird:3, cost:1, rules:{field:'heatwave', heatLevel:2}, text:TX('ui.e11-scorching2') /* FX3: 1 each (was 2); ENG11 (K10): by day */, editorOnly:true},
   {id:'freezing',  group:'freezing', icon:'🧊', name:'Freezing', weird:2, cost:1, rules:{freezing:true}, text:'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', editorOnly:true},
-  {id:'swampfever',group:'swampFever', icon:'🤢', name:'Swamp Fever', weird:2, cost:1, rules:{swampFever:50}, text:'From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.', editorOnly:true},
+  {id:'swampfever',group:'swampFever', icon:'🤢', name:'Swamp Fever', weird:2, cost:1, rules:{swampFever:50}, text:'From round 2, every unit has a 1 in 2 chance each round to gain 1 Venom. Structures never catch it.', editorOnly:true},
   {id:'sandstorm', group:'sandstorm', icon:'🏜️', name:'Sandstorm', weird:2, cost:1, rules:{sandstorm:true}, text:'Attacks at units miss 1 in 4, except from Dry units.', editorOnly:true},
   {id:'sandstormBlind', group:'sandstorm', icon:'🌪️', name:TX('ui.c3-fx-sandstorm-blind-name'), weird:3, cost:1, rules:{sandstorm:'blind'}, text:TX('ui.c3-fx-sandstorm-blind'), editorOnly:true}, // CONTENT3 (2026-10-26, C4)
   {id:'rapids',    group:'rapids', icon:'🌊', name:'River Rapids', weird:2, cost:1, rules:{permaTide:true, rapids:true}, text:'Always Flood: the Tide is in all match, and nothing can turn it.', editorOnly:true},
@@ -41379,7 +41405,7 @@ function fightTreatmentClass(pid){ return fightTreatmentKind(pid)==='elite' ? 'e
 // 2026-11-06 (package UI23 #1/#18, owner: "if the pip says 4 ... and the health is 1, then total it should display 5"): the heart shows Health + Shield
 // (the 💠 pip's number); it is blue while any Shield is left (has-shield). Bleed and Poison ticks skip the Shield (the engine), so they take the heart's Health part.
 // 2026-11-06 (package UI23 #2): an Undead unit's Health ("unhealth") is a grey heart and a grey number
-function ui23Unhealth(d){ return d && (d.subtype === 'undead' || (d.species || []).includes('Undead')) ? ' is-unhealth' : ''; }
+function ui23Unhealth(d){ return d && (d.subtype === 'undead' || (d.species || []).includes('Undead') || (d.effects || {}).undead /* ENG33 (2026-11-07): the Undead skill gives the status (greyed Health) */) ? ' is-unhealth' : ''; }
 function ui23HeartOf(c, extra){ return Math.max(0, (Number(c.hp) || 0) + (extra || 0)) + vis3ShieldAmount(c); }
 function vis3ShieldAmount(c){ return c ? Math.max(0, (Number(c.shield) || 0) + (Number(c.tempHp) || 0) + (Number(c.tempHpR) || 0)) : 0; }
 function vis3ShieldHTML(c, amt){
@@ -41530,6 +41556,7 @@ function boardCardHTML(c, defs, opts){
   const atkZero = printedAtk <= 0 && effAtk <= 0;
   // Live status stacks (poison/bleed/scar/etc currently affecting THIS unit right now).
   const badges = [];
+  if(c.playingDead != null && c.playingDead !== false) badges.push(eng33PlayingDeadChip()); // ENG33 (2026-11-07): Thanatosis
   if(c.poison>0) badges.push(ui7PoisonChip(c)); // 2026-10-31 (package UI7, owner Y1): the icon alone; the exact value is in the tooltip and aria-label
   if(c.bleed>0) badges.push(ui30BleedChip(c)); // 2026-11-07 (package UI30, owner 09:47 #2): no number; the count is in the tooltip
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
@@ -41652,6 +41679,7 @@ function eng15CowerChip(e, on){
 // both pips are the icon alone (the count is in the tooltip and aria-label). Each counter that goes gives the pip a short tick (ui30StackTick;
 // a pip rebuilt within the tick's time keeps it through ui30TickCls); only the last counter (1 -> 0) pops the greyed pip out. Effects None or
 // reduced motion: no tick.
+function eng33PlayingDeadChip(){ const t = escapeAttr(TX('ui.eng33-playing-dead')); return `<span class="abadge playing-dead" title="${t}" aria-label="${t}">😵</span>`; } // ENG33 (2026-11-07): Thanatosis
 function ui7PoisonChip(c){ const t = escapeAttr(TX('ui.ui7-poison-tip', {n: c.poison})); return `<span class="abadge poison${ui30TickCls(c.uid, 'poison')}" title="${t}" aria-label="${t}">☠</span>`; }
 function ui30BleedChip(c){ const t = escapeAttr(TX('ui.ui30-bleed-tip', {n: c.bleed})); return `<span class="abadge bleed${ui30TickCls(c.uid, 'bleed')}" title="${t}" aria-label="${t}">🩸</span>`; }
 var UI30_TICK = {}; // 'uid:kind' -> when its counter last went
@@ -43597,7 +43625,9 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-bound', c.bound>0); el.classList.toggle('is-invisible', c.invisible>0); el.classList.toggle('is-invincible', c.invincible>0); el.classList.toggle('is-toxic', c.toxin>0); // W2 (2026-10-16)
   el.classList.toggle('is-gpoisoned', c.gpoison>0); // EN4 (2026-10-23)
   eng32DiveToggle(el, c.diveAloft != null, c.diveMode, c.uid); // EN7 (2026-10-24); ENG32 (2026-11-07): the three looks
+  el.classList.toggle('is-playing-dead', c.playingDead != null && c.playingDead !== false); // ENG33 (2026-11-07): Thanatosis
   const badges = [];
+  if(c.playingDead != null && c.playingDead !== false) badges.push(eng33PlayingDeadChip()); // ENG33
   if(c.poison>0) badges.push(ui7PoisonChip(c)); // 2026-10-31 (package UI7, owner Y1): the icon alone; the exact value is in the tooltip and aria-label
   if(c.bleed>0) badges.push(ui30BleedChip(c)); // 2026-11-07 (package UI30, owner 09:47 #2): no number; the count is in the tooltip
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
@@ -48568,7 +48598,7 @@ function lockShards(lock){
 function creativityTip(n){ return TX('ui.creativity-tip', {n}); }
 function prayerTokenTip(n){ return TX('ui.prayer-token-tip', {n}); } // 2026-10-19 (package E): the 📿 badge // 2026-10-18 (package U): Creativity counters, reserved
 function exposedTip(n){ return TX('ui.exposed-tip', {n, s: n === 1 ? '' : 's'}); } // 2026-10-18 (package D): terse // 2026-10-16: counters
-const STATUS_END_NAMES = {pinDown:TX('ui.e14-stn-pinned') /* ENG14 */, lassoed:TX('ui.eng15-stn-lassoed') /* ENG15 */, brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
+const STATUS_END_NAMES = {pinDown:TX('ui.e14-stn-pinned') /* ENG14 */, lassoed:TX('ui.eng15-stn-lassoed') /* ENG15 */, brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, webbed:'Web', poison:'Venom' /* ENG33 */, bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 // ==== Package SK3 (2026-10-19): the board's side of the new skills (rules in bramblewood-engine.js, the Package SK3 block): the replay
 // snapshot's counters, the status chips (🚫 Silenced, ⏸️ Stymied, 😫 Exhausted, 🪨 Petrified N, 🧲 Grounded, 🦨 Stench with its green
 // wavy-line look), the battle-log lines and floats. Every string is a TX key.
@@ -48692,7 +48722,7 @@ function logText(ev){
     case 'darkCast': return {cls:'', text: ev.on ? TX('ui.log-dark-cast', {name: nm(ev.defId)}) : TX('ui.log-dark-lift')}; // Cast Darkness (2026-10-18, package D)
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
-    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='wildfireSweep' || ev.field==='scorchedSweep' ? {cls:'', text: TX('ui.fx-wildfire-sweep-log')} /* FX3; FX4: Wildfire Front */ : ev.field==='wildfire' ? {cls:'', text: TX('ui.fx-wildfire-log', {name: nm(ev.defId), n: dnLogNum(ev.dmg, ev)})} /* FX4 */ : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${dnLogNum(ev.dmg, ev)}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? dnLogNum(ev.dmg, ev) : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Poison.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
+    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='wildfireSweep' || ev.field==='scorchedSweep' ? {cls:'', text: TX('ui.fx-wildfire-sweep-log')} /* FX3; FX4: Wildfire Front */ : ev.field==='wildfire' ? {cls:'', text: TX('ui.fx-wildfire-log', {name: nm(ev.defId), n: dnLogNum(ev.dmg, ev)})} /* FX4 */ : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${dnLogNum(ev.dmg, ev)}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? dnLogNum(ev.dmg, ev) : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Venom.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
@@ -48701,7 +48731,7 @@ function logText(ev){
       // amount became poison stacks instead), so without this the log would just read "hit for
       // 0" with no explanation. Decay still shows its real ev.dmg plus the extra ATK-drain note.
       let elemNote = '';
-      if(ev.elementalConvert==='poison') elemNote = ` — converted to ${ev.elementalAmount} Poison ☠ instead of direct damage`;
+      if(ev.elementalConvert==='poison') elemNote = ` — converted to ${ev.elementalAmount} Venom ☠ instead of direct damage`;
       else if(ev.elementalConvert==='decay') elemNote = ` (also -${ev.elementalAmount} Attack, Decay 🦠)`;
       // 2026-10-17 (user: "Elemental damage has the respective elemental emoji attached."): "for 3 ⚡ lightning damage", and a Wet
       // unit's lightning hit says how many Wet counters added to it.
@@ -48732,7 +48762,7 @@ function logText(ev){
     case 'boomerangThrow': return {cls:'quick', text:TX('ui.en3-log-boom-miss', {name: nm(ev.defId)})};
     case 'arrow': if(ev.style === 'drop') return {cls:'', text: ev.targetDefId ? TX('ui.bx-log-drop', {name: nm(ev.defId), target: nm(ev.targetDefId)}) : TX('ui.bx-log-drop-bramble', {name: nm(ev.defId)})}; // Package BX (2026-10-21)
       return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};
-    case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'a poison bolt 🐍', ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
+    case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'venom 🐍' /* ENG33: Venom Spit */, ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
     case 'boonFire': return {cls:'', text:TX('ui.df3-log', {boon: boonName(ev.boon), name: nm(ev.defId)})}; // 2026-10-24 (package DF3): a selfish boon helped one of theirs
     case 'bossGimmick': return {cls:'', text:TX('ui.c11-' + ev.gimmick + '-log', {name: ev.defId ? nm(ev.defId) : '', n: ev.dmg || ev.heal || ev.shield || ev.shieldLost || ''})}; // CONTENT11 (2026-11-05): a boss gimmick
     case 'revive': return {cls:'gold', text:TX('ui.log-revive', {name: nm(ev.defId)})}; // 2026-10-19 (package RV): it did die (the death line is just before)
@@ -48793,7 +48823,7 @@ function logText(ev){
         counter: `counterattacked ${nm(ev.targetDefId)} for ${ev.amount} ↩️`,
         cleanse: ev.amount ? `cleansed ${ev.amount} ailment${ev.amount===1?'':'s'} ✨` : `cleansed itself of all ailments ✨`,
         stanch: `stopped ${ev.amount} Bleed with its healing 🩹`,
-        healPoison: `healed away ${ev.amount} Poison${ev.left ? ` (${ev.left} left)` : ''} before any Health ☠`, // 2026-10-16
+        healPoison: `healed away ${ev.amount} Venom${ev.left ? ` (${ev.left} left)` : ''} before any Health ☠`, // 2026-10-16
         shieldCall: `called a Guardian shield in front of ${nm(ev.targetDefId)} 🛡️`,
         grit: `toughened up from the fight (+${ev.amount}⚔) 💪`,
         shellUp: TX('ui.fix9-shell-log', {n: ev.amount}), // FIX9 (2026-11-05): Armor only, this round
@@ -48879,6 +48909,7 @@ function logText(ev){
         bound: 'is Bound and can\'t attack this round. 🪢', // Tangleweed / Strangle (2026-10-16)
         pinned: TX('ui.e14-log-pinned-skip'), // Bola's Pin (ENG14, 2026-10-30)
         lassoed: TX('ui.eng15-log-lassoed-skip'), // Lasso (ENG15, 2026-10-31)
+        playingDead: TX('ui.eng33-log-playing-dead-skip'), // Thanatosis (ENG33, 2026-11-07)
         zeroAttack: 'has no Attack left to swing with.',
       }[ev.reason] || 'can\'t act this round.';
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
@@ -50331,7 +50362,7 @@ const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['�
 // FX.A has run (it added magic 🪄 / water 💧 / acid / decay colours): the same icons, so the numbers and the battle log agree. Psychic
 // keeps the 💭 its own number already had. DMG_NAME: the word the battle log uses after the number.
 Object.assign(DMG_ICON, {magic:['🪄','magic'], water:['💧','water'], psychic:['💭','psychic']});
-const DMG_NAME = {poison:'poison', acid:'acid', heat:'fire', cold:'cold', decay:'decay', bleed:'bleed', shock:'lightning', magic:'magic', water:'water', stone:'stone', metal:'metal', psychic:'psychic'};
+const DMG_NAME = {poison:'venomous' /* ENG33 */, acid:'acid', heat:'fire', cold:'cold', decay:'decay', bleed:'bleed', shock:'lightning', magic:'magic', water:'water', stone:'stone', metal:'metal', psychic:'psychic'};
 // "for 3 ⚡ lightning damage" (an elemental hit) or "for 3" (physical), for the battle log (2026-10-17).
 function dmgLogText(dmg, dmgType, ev){ const di = DMG_ICON[dmgType], w = DMG_NAME[dmgType], n = ev ? dnLogNum(dmg, ev) : dmg; return di && w ? `${n} ${di[0]} ${w} damage` : String(n); } // + ev: the number's crit mark (💥 since GD) and mark (DN2)
 // 2026-10-22 (package DN2, owner DN-4 "Yes"): a damage number in the battle log carries the floating number's marks, 👊 before a crit and the
@@ -52350,6 +52381,9 @@ function w2LogText(ev, nm){
     const t = nm(ev.targetDefId), a = nm(ev.attDefId);
     switch(ev.kind){
       case 'venom': return {cls:'poison', text:`${a}'s venom gets into ${t} (+${ev.amount} ☠) 🦂`};
+      case 'thanatosis': return {cls:'', text: TX('ui.eng33-log-thanatosis', {name: t})}; // ENG33 (2026-11-07)
+      case 'thanatosisWake': return {cls:'', text: TX('ui.eng33-log-wake', {name: t, n: ev.hp || 1})};
+      case 'poisonous': return {cls:'poison', text: TX('ui.eng33-log-poisonous', {name: a, t, n: ev.amount || 0})};
       case 'toxin': return {cls:'poison', text:`${a} leaves Toxin in ${t} (+${ev.amount}, ${ev.total} in all; it never wears off) ☣️`};
       case 'weaken': return {cls:'', text:`${a} weakens ${t}: −${ev.amount} Attack for good 💔`};
       case 'wilting': return {cls:'', text:`${t} wilts: −${ev.amount} Attack 🥀`};
@@ -52372,7 +52406,7 @@ function w2LogText(ev, nm){
     case 'poisonGas': return {cls:'poison', text:`😷 ${nm(ev.defId)} lets out a poison gas: ${ev.hits.length} enemy unit${ev.hits.length === 1 ? '' : 's'} +${ev.n} ☠.`};
     case 'absoluteZero': return {cls:'', text:`🧊 Absolute Zero! ${nm(ev.defId)} freezes ${ev.hits.length} enemy unit${ev.hits.length === 1 ? '' : 's'} for the round.`};
     case 'nova': return {cls:'', text:`🔮 ${nm(ev.defId)} bursts into a Nova: ${ev.n} magic damage to every enemy unit.`};
-    case 'evaded': if(ev.reason === 'invisible') return {cls:'', text:`${nm(ev.attDefId)} can't find the invisible ${nm(ev.targetDefId)}. 🫥`}; break;
+    case 'evaded': if(ev.reason === 'invisible') return {cls:'', text:`${nm(ev.attDefId)} can't find the invisible ${nm(ev.targetDefId)}. 🫥`}; if(ev.reason === 'playingDead') return {cls:'', text: TX('ui.eng33-log-miss-playing-dead', {a: nm(ev.attDefId), t: nm(ev.targetDefId)})}; break;
     case 'spawn': if(ev.kind === 'crystal') return {cls:'', text:`💎 ${nm(ev.defId)} forms where it fell.`}; if(ev.kind === 'relic') return {cls:'', text:TX('ui.relic-log', {name: nm(ev.defId)})}; break; // + Relic (2026-10-19)
     case 'statusEnd': if(ev.status === 'invisible' && ev.attacked) return {cls:'', text:`${nm(ev.defId)} attacks and gives itself away. 🫥`}; break;
   }
@@ -52391,6 +52425,9 @@ function w2SkillVfx(ev){
   if(ev.type === 'statusFx'){
     const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid);
     switch(ev.kind){
+      case 'thanatosis': fl(el, '😵', 'quick'); if(rc){ rc.hp = 1; rc.playingDead = true; rc.poison = 0; rc.bleed = 0; rc.gpoison = 0; rc.toxin = 0; rc.decay = 0; } try{ updateCardHpDisplay(ev.targetUid); }catch(e){} refresh(ev.targetUid); break; // ENG33 (2026-11-07)
+      case 'thanatosisWake': fl(el, '💪', 'quick'); if(rc){ rc.playingDead = null; if(ev.hp != null) rc.hp = ev.hp; } try{ updateCardHpDisplay(ev.targetUid); }catch(e){} refresh(ev.targetUid); break;
+      case 'poisonous': snd('poisonApply'); fl(el, `🤢 +${ev.amount}☠`, 'poison'); if(rc) rc.poison = ev.total || ((rc.poison||0) + (ev.amount||0)); refresh(ev.targetUid); break;
       case 'venom': snd('poisonApply'); fl(el, `🦂 +${ev.amount}☠`, 'poison'); if(rc) rc.poison = (rc.poison||0) + (ev.amount||0); if(el && fx()) F.venomBite(el); refresh(ev.targetUid); break;
       case 'toxin': snd('poisonApply'); fl(el, `☣️ +${ev.amount}`, 'poison'); if(rc) rc.toxin = ev.total || ((rc.toxin||0) + (ev.amount||0)); if(el && fx()) F.toxinMark(el); refresh(ev.targetUid); break;
       case 'weaken': snd('corrodeTone'); fl(el, `💔 −${ev.amount}⚔`, 'debuff'); if(rc && rc.atk != null) rc.atk = Math.max(0, rc.atk - (ev.amount||0)); if(el && fx('low')) F.weakenDrain(el); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} break;

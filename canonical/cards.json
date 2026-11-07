@@ -25743,7 +25743,7 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "venomous": 2
+      "poison": 2
     },
     "species": [
       "Mammal"
@@ -28714,7 +28714,7 @@
       "Snake"
     ],
     "effects": {
-      "undead": true
+      "thanatosis": true
     },
     "flavor": "Corner it and it rolls over, tongue out, and plays dead. Very convincingly.",
     "dmgType": "physical",
@@ -28862,7 +28862,7 @@
       "Reptile"
     ],
     "effects": {
-      "undead": true
+      "thanatosis": true
     },
     "flavor": "Not a worm, not slow, and not finished just because you grabbed its tail.",
     "dmgType": "physical",
@@ -29451,7 +29451,7 @@
       "River"
     ],
     "effects": {
-      "venomous": 1
+      "poison": 1
     },
     "flavor": "Silver with bubbles as it dives, and its bite carries venom.",
     "dmgType": "physical",
@@ -29899,7 +29899,7 @@
     ],
     "effects": {
       "tide": true,
-      "venomous": 2
+      "poison": 2
     },
     "flavor": "The toe-biter. It waits on the bottom with its arms wide open.",
     "dmgType": "physical",
@@ -30563,7 +30563,7 @@
       "Ocean"
     ],
     "effects": {
-      "venomous": 2,
+      "poison": 2,
       "nocturnal": true
     },
     "flavor": "Hunts eels in the roots by night, then crawls ashore to lay its eggs.",
@@ -34366,7 +34366,7 @@
           "sunny"
         ]
       },
-      "undead": true
+      "thanatosis": true
     },
     "species": [
       "Fungi"

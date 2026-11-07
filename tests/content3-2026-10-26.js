@@ -163,7 +163,7 @@ const codes = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Ha
 codes.forEach(c=>{ const pk = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8')); const miss = keys.filter(k=> !(TXT[k] in pk));
   ok(!miss.length, `texts: ${c} translates every CONTENT3 text (${miss.length} missing${miss.length ? ': ' + miss.slice(0, 3) : ''})`); });
 // OVR
-ok(by['phoenix-mushrooms'] && by['phoenix-mushrooms'].species.includes('Fungi') && by['phoenix-mushrooms'].effects.undead, 'OVR the owner\'s Phoenix Mushrooms is a card (Fungi, Undead)');
+ok(by['phoenix-mushrooms'] && by['phoenix-mushrooms'].species.includes('Fungi') && by['phoenix-mushrooms'].effects.thanatosis /* 2026-11-07 (ENG33): its Undead is Thanatosis */, 'OVR the owner\'s Phoenix Mushrooms is a card (Fungi, Thanatosis)');
 ok(/phoenix-mushrooms-u248/.test(app.slice(app.indexOf('const CARD_ID_RENAMED'), app.indexOf('const CARD_ID_RENAMED') + 300)), 'OVR ... its live row is skipped (CARD_ID_RENAMED)');
 ok(fs.existsSync(path.join(ROOT, 'supabase', 'proposed', '20261026_clear_folded_overrides_3.sql')), 'OVR the clear SQL is proposed, not applied');
 console.log(`content3: ${n - fail}/${n} ok`); process.exit(fail ? 1 : 0);

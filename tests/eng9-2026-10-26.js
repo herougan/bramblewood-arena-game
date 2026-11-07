@@ -180,7 +180,7 @@ const hits = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid);
   ok(BB.nMultOf({chained:{breakOn:'damage', amount:4}}) > 1.15, `G19 Chained 4 is an N multiplier (${BB.nMultOf({chained:{breakOn:'damage', amount:4}})})`);
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), cid = {}; cards.forEach(c=> cid[c.id] = c);
   ok(!cards.some(c=> c.effects && c.effects.revive === true), 'E1 no card keeps the old self-Revive (true): those are Undead now');
-  ['cinder-skeleton', 'ember-revenant', 'grass-snake', 'slow-worm'].forEach(id=> ok(cid[id] && cid[id].effects.undead, `E1 ${id} has Undead`)); // 2026-10-26 (CONTENT3, OVR): the Sea Turtle Elder's live edit of 10-24 (folded) took its Revive off: Armor 3 and Tide, 5/10
+  ['cinder-skeleton', 'ember-revenant'].forEach(id=> ok(cid[id] && cid[id].effects.undead, `E1 ${id} has Undead`)); ['grass-snake', 'slow-worm'].forEach(id=> ok(cid[id] && cid[id].effects.thanatosis, `E1 ${id} has Thanatosis (ENG33, 2026-11-07: was Undead)`)); // 2026-10-26 (CONTENT3, OVR): the Sea Turtle Elder's live edit of 10-24 (folded) took its Revive off: Armor 3 and Tide, 5/10
   // 2026-11-04 (TESTFIX1): ENG22 (2026-11-03, owner 21:10) renamed Stockpile N to Delivery { Lumber xN } on 24 cards
   ok(cid['beaver-lumberjack'] && (cid['beaver-lumberjack'].effects.stockpile === 1 || cid['beaver-lumberjack'].effects.delivery === 1) && !(cid['beaver-lumberjack'].effects.triggers || []).length, 'E13 the Beaver Lumberjack has Stockpile 1 (Delivery 1 since ENG22)');
   const tx = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');

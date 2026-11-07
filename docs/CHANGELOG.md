@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package ENG33: Venomous and Venom, Poisonous, Thanatosis, Log Walls, Timbered's two forms (owner 11-07 10:25 #6, #9, #10, #12, #13; decisions ENG33-1..4)
+- Players see: the skill Poison N reads **Venomous N**, its counters are **Venom** and the damage type is **Venomous** (same ☠). Every text that called the counters Poison says Venom (Poison Barbs, Poison Gas, Poison Floor, Deadly Poison keep their names; Poison Bolt's label "Venom" is now **Venom Spit**; "Arrow – poison" reads "– venom"). The data key stays `poison` (docs/project-state.md).
+- The old Venomous (through Armor) is retired; its cards carry Venomous at the same N: Platypus Spur 2, Water Shrew 1, Banded Sea Krait 2, Giant Water Bug 2 (budget 3-4 points lower, ENG33-4).
+- New **Poisonous N**: its killer, or the unit that devours it, gets N Venom. On no card, 0.8 a point.
+- New **Thanatosis** 😵: the first fall to 0 is no death; it plays dead (can't act, single-target attacks miss it) and gets up next round at 1 Health. Slow Worm, Grass Snake and Phoenix Mushrooms carry it (was Undead). **Undead** stays on real undead and now also makes heals hurt (ENG33-2). Priced 2.0.
+- **Bulwark N** raises N Log Walls (0/8 Structures with Guardian), was two 0/4N shields; 3.5 a wall. Art prompt for the Log Wall.
+- Card editor: Timbered, Bedrock, Forged and Last Stand get "Gives: Stat bonus / Skills"; icons 🪵🪵, 🪨🪨, 🔩🔩.
+- Smelly: a proposal only (ENG33-1).
+- Code: bramblewood-engine.js (the ENG33 block by eng26IsUndead, bulwarkRaise, poisonOn), arena_app.js, bramblewood-texts.js (18 new texts, 66 reworded), 12 language packs (`tools/i18n_2026_11_07_eng33.py`), canonical/cards.json (7 cards), canonical/skill-costs.json. Test: tests/eng33-2026-11-07.js. Goldens not updated.
+
 ## 2026-11-07 Package HUB3 (owner 09:14: hub art wrongly cut out; "you can use a different agent")
 - Players see: nothing in the game. Master hub only: the Cards and Card table art keeps the transparency of cut-out sprites (35 cards, e.g. Cricket Drummer) and shows them on the game's art plate (rarity colour mixed into brown) instead of a baked dark box; small pixel sprites are enlarged crisp, as the game draws them.
 - Maintainers: `python3 tools/hub/build.py` builds and checks the hub in one go (build, guide splice, size/file/tab checks); caches fall back to committed copies (`tools/hub/library-fallback.html`, `tools/hub/guide-snapshot.html`), so any agent can build it; the build is deterministic. Hub section in `docs/workflows/release.md`. Page trimmed from 15.65 to 15.38 MiB (changelog search text 3000 to 1500 chars). Screens: `docs/screens/hub3/`.

@@ -72,8 +72,8 @@ const fnSrc = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0)
   const e = E.makeSimEngine(d3, E.mulberry32(5), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1, {}, {health:200}), 2:e.newPlayer(2, {}, {health:200})};
   P[1].hand.push({uid: 9201, defId:'f4-bulwark'}); P[1].lumber = 5; e.placeCard(P, so, 1, 9201, 0, {}, []);
   const sh = all(P[1]).filter(c=> (e.derivedDefs[c.defId] || {}).bulwarkShield);
-  ok(sh.length === 2 && sh.every(c=> e.derivedDefs[c.defId].effects.guardian === true), `EN-3. both Bulwark Shields have Guardian (${sh.length})`);
-  ok(/Structures with Guardian/.test(T['ui.sk-bulwark-codex']), 'EN-3. the Codex line says Guardian'); }
+  ok(sh.length === 1 && sh.every(c=> (e.derivedDefs[c.defId] || d3[c.defId]).effects.guardian === true), /* 2026-11-07 (ENG33, owner #10): Bulwark 1 is one Log Wall */ `EN-3. Bulwark 1's Log Wall has Guardian (${sh.length})`);
+  ok(/Structure with Guardian/.test(T['ui.sk-bulwark-codex']), 'EN-3. the Codex line says Guardian'); } // 2026-11-07 (ENG33): "Each wall is a Structure with Guardian"
 // ---- EN-5: Backstab's +N on a Waiting, Shocked or Exposed target
 { for(const [st, label] of [[{wait:2}, 'Waiting'], [{shocked:2}, 'Shocked'], [{exposed:1}, 'Exposed'], [{}, 'in good shape']]){
     const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1, {}), 2:e.newPlayer(2, {})};

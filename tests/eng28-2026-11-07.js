@@ -151,7 +151,7 @@ const NEWK = ['ui.eng28-herb-line', 'ui.eng28-herb-log', 'ui.eng28-mulligan-name
 ok(NEWK.every(k=> T[k]), 'every ENG28 text is a TX key');
 for(const c of ['de', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt', 'ta', 'tl', 'zh-Hans', 'zh-Hant']){ const L = JSON.parse(rd('lang/' + c + '.json')); const miss = NEWK.filter(k=> !L[T[k]] && !L[T[k].replace(/^⚗️ /, '')]); // a leading emoji is not part of the pack's key
   ok(!miss.length, `lang/${c}.json translates every ENG28 text (${miss})`); }
-ok(!/1 in 2 Freezes/.test(T['ui.sk-ice-bolt'] + T['ui.sk-ice-arrow']) && /Poison/.test(T['ui.eng28-herb-line']) && !/damage to a random enemy unit/.test(app.slice(app.indexOf('if(e.herbRefinery){ const hb'), app.indexOf('if(e.herbRefinery){ const hb') + 400)), 'the texts that said otherwise are fixed (Ice, Herb Refinery)');
+ok(!/1 in 2 Freezes/.test(T['ui.sk-ice-bolt'] + T['ui.sk-ice-arrow']) && /Venom/.test(T['ui.eng28-herb-line']) /* 2026-11-07 (ENG33): Poison counters read Venom */ && !/damage to a random enemy unit/.test(app.slice(app.indexOf('if(e.herbRefinery){ const hb'), app.indexOf('if(e.herbRefinery){ const hb') + 400)), 'the texts that said otherwise are fixed (Ice, Herb Refinery)');
 { const dec = JSON.parse(rd('docs/decisions.json')), list = dec.items || dec.decisions || dec, ids = list.filter(x=> /^ENG28-/.test(x.id));
   ok(ids.length >= 4 && ids.every(x=> (x.body || '').split(/\s+/).length < 100), `decisions ENG28-n filed, each under 100 words (${ids.map(x=> x.id)})`); }
 ok(/ENG28/.test(rd('docs/CHANGELOG.md').slice(0, 30000)), 'a CHANGELOG entry at the top'); // 2026-11-07 (ENG32+UI30 merge): 30000, ENG32's entry sits above; // 2026-11-07 (UI26): window widened, newer packages' entries sit above ENG28's

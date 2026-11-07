@@ -24,7 +24,7 @@ ok(/sig = tileEnv \+ \(owned \? 'o' : '-'\) \+ \(liveCards\[id\] \? 'e' : '-'\) 
 
 // ---- 2. texts
 { const m = src.match(/\{key:'cure', category:'evergreen'[^\n]*desc:v=>`([^`]*)`/); const t = m ? m[1] : '';
-  ok(/most poisoned unit/.test(t) && /Poison/.test(t) && !/Bleed/.test(t) && !/afflicted/.test(t), `2. Cure's skill text: Poison only, the most poisoned unit ("${t}")`); }
+  ok(/most envenomed unit/.test(t) && /Venom/.test(t) /* 2026-11-07 (ENG33): Poison counters read Venom */ && !/Bleed/.test(t) && !/afflicted/.test(t), `2. Cure's skill text: Poison only, the most poisoned unit ("${t}")`); }
 ok(/case 'heal': doText = `heal [^\n]*\(stanching Bleed first, capped at max HP\)`/.test(src) && !/Poison, then Bleed first/.test(src), '2. a heal trigger says it stanches Bleed (no Poison)');
 
 // ---- 3. a gated field row's "?"
