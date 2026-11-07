@@ -1222,7 +1222,7 @@
    "todayRule": "source {kind:\"pack\", tier:11} with side \"\" (Otter); faction pool hand-outs and the Rivergate faction pack",
    "zone": null,
    "current": {
-    "count": 26,
+    "count": 27,
     "cards": [
      "birdlime-dauber",
      "clap-net-trapper",
@@ -1231,6 +1231,7 @@
      "marshal-of-rivergate",
      "mist-net-otter",
      "net-thrower",
+     "oathsworn-legionary",
      "optio-of-the-ford",
      "otter-angler",
      "otter-ferryman",
@@ -1266,7 +1267,7 @@
     ],
     "remove": []
    },
-   "proposedCount": 27
+   "proposedCount": 28
   },
   "hummingbirds": {
    "kind": "faction",
@@ -1276,8 +1277,9 @@
    "todayRule": "source {kind:\"pack\", tier:11, side:\"tribes\"}; faction pool hand-outs and the Sunfeather faction pack",
    "zone": null,
    "current": {
-    "count": 23,
+    "count": 24,
     "cards": [
+     "cobalt-talon-honour-guard",
      "cobalt-talon-skirmisher",
      "crimson-wing-duelist-cadet",
      "daily-post",
@@ -1317,7 +1319,7 @@
     ],
     "remove": []
    },
-   "proposedCount": 24
+   "proposedCount": 25
   },
   "shared": {
    "kind": "faction",
@@ -1709,14 +1711,14 @@
   }
  },
  "summary": {
-  "liveCards": 806,
+  "liveCards": 808,
   "sourcesToday": {
    "starter": 16,
    "skirmish-unique": 108,
    "pack": 192,
    "base": 25,
    "none": 370,
-   "faction": 55,
+   "faction": 57,
    "reward": 3,
    "special": 26,
    "pack-unique": 11
@@ -1727,7 +1729,7 @@
    "pack": 194,
    "base": 25,
    "none": 292,
-   "faction": 57,
+   "faction": 59,
    "achievement": 17,
    "pack-unique": 68,
    "reward": 3,
@@ -1774,18 +1776,18 @@
     "proposed": 24
    },
    "otters": {
-    "now": 26,
+    "now": 27,
     "add": 1,
     "remove": 0,
     "movedIn": 0,
-    "proposed": 27
+    "proposed": 28
    },
    "hummingbirds": {
-    "now": 23,
+    "now": 24,
     "add": 1,
     "remove": 0,
     "movedIn": 0,
-    "proposed": 24
+    "proposed": 25
    },
    "shared": {
     "now": 6,
@@ -8031,6 +8033,18 @@
    ]
   },
   "gold-throat-elder": {
+   "source": "faction",
+   "where": [
+    "faction:hummingbirds"
+   ]
+  },
+  "oathsworn-legionary": {
+   "source": "faction",
+   "where": [
+    "faction:otters"
+   ]
+  },
+  "cobalt-talon-honour-guard": {
    "source": "faction",
    "where": [
     "faction:hummingbirds"
