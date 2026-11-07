@@ -78,14 +78,31 @@ def build(d):
     byid = {m['id']: m for m in d['maps']}
     names = {c['id']: c['name'] for c in d['cards']}
     def no(mid): return byid[mid]['no'] if mid in byid else ''
+    # 2026-11-07 (owner 21:06: "in the excel, list the map cards as well, in 'Maps'"): each map's own card list and its special cards from
+    # canonical/map-pools.json (a submap: its list under its main map's "submaps"). The code is the fights' prefix (2-A, 6-MM), not the bare number.
+    pools = json.load(open(os.path.join(ROOT, 'canonical', 'map-pools.json'), encoding='utf-8'))['maps']
+    def pool_of(m):
+        if not m['sub']: pm = pools.get(m['id'], {}); return pm.get('cards', []), pm.get('special', [])
+        return (pools.get(m['parent'], {}).get('submaps', {}) or {}).get(m['id'], []), []
+    def code_of(m):
+        for n in m['nodes']:
+            if n.get('code'): return re.sub(r'-[^-]*$', '', n['code'])
+        return str(m['no'])
+    def after_txt(e):
+        am = byid.get(e.get('afterMapCleared'))
+        t = ('Map %s (%s) cleared' % (am['no'], am['name'])) if am else ''
+        return t + (('; entry at ' + e['after']) if e.get('after') else '')
+    def card_list(ids): return ', '.join(names.get(k, k) for k in ids)
     rows = []
     for m in maps:
         e = m.get('entry') or {}
-        rows.append([rank[m['id']], str(m['no']), m['name'], 'Submap' if m['sub'] else 'Main', no(m['parent']) if m['parent'] else '',
-                     no(m['unlockAfter']) if m['unlockAfter'] else '', e.get('afterMapCleared') or e.get('after') or '', e.get('label') or '',
-                     len(m['nodes']), m['biome'], m['blurb']])
-    sheet('Maps', ['Unlock order', 'Code', 'Map', 'Kind', 'Parent map no.', 'Opens with map no.', 'Opens after', 'Entry fight', 'Fights', 'Biome', 'Blurb'],
-          rows, [8, 7, 28, 9, 9, 9, 16, 16, 7, 12, 70])
+        own, special = pool_of(m)
+        rows.append([rank[m['id']], code_of(m), m['name'], 'Submap' if m['sub'] else 'Main', no(m['parent']) if m['parent'] else '',
+                     m['unlockNo'] if m['sub'] else '', after_txt(e), e.get('label') or '',
+                     len(m['nodes']), m['biome'], len(own), card_list(own), card_list(special), m['blurb']])
+    sheet('Maps', ['Unlock order', 'Code', 'Map', 'Kind', 'Parent map no.', 'Opens with map no.', 'Opens after', 'Entry fight', 'Fights', 'Biome',
+                   'Map cards', "The map's card list", 'Special cards', 'Blurb'],
+          rows, [8, 7, 28, 9, 9, 9, 16, 16, 7, 12, 7, 80, 30, 60])
 
     def deck(dk): return ', '.join('%s ×%s' % (names.get(k, k), v) for k, v in dk.items())
     rows = []
@@ -129,13 +146,13 @@ def build(d):
     for s in sorted(d['skills'], key=lambda s: ((s['label'] or s['key']).lower(), s['key'])):
         if s['key'] in alias: continue  # ENG35: a part of a fused skill, shown in its skill's Parameters
         rows.append([s['label'] or s['key'], s['key'], deliv.get(s['key'], '?'), applies(s['key']), notes.get(s['key'], ''),
-                     s['category'], s['kind'] or 'boolean', params_txt(s['key']), count.get(s['key'], 0), s['desc']])
+                     s['category'], s['kind'] or 'boolean', params_txt(s['key']), count.get(s['key'], 0), s.get('short') or '', s['desc']])  # short: the card tooltip line (SKILL_TEXT), owner 20:58; ENG35: + Parameters
     for a in d['actions']:
         k = 'action:' + a['key']
         if k in deliv:
-            rows.append([a['label'] + ' (custom action)', k, deliv[k], applies(k), notes.get(k, ''), 'action', '', '', count.get(a['key'], 0), a['desc']])
-    sheet('Skills', ['Skill', 'Key', 'Delivery', 'Its effect applies to', 'Delivery note', 'Category', 'Type', 'Parameters (default, stat version, ability version)', 'Cards with it', 'Description (N = the skill number)'],
-          rows, [20, 18, 10, 18, 40, 10, 10, 60, 8, 90])
+            rows.append([a['label'] + ' (custom action)', k, deliv[k], applies(k), notes.get(k, ''), 'action', '', '', count.get(a['key'], 0), '', a['desc']])
+    sheet('Skills', ['Skill', 'Key', 'Delivery', 'Its effect applies to', 'Delivery note', 'Category', 'Type', 'Parameters (default, stat version, ability version)', 'Cards with it', 'Card tooltip (short)', 'Codex description (N = the skill number)'],
+          rows, [20, 18, 10, 18, 40, 10, 10, 60, 8, 60, 90])
 
     cp = json.load(open(os.path.join(ROOT, 'docs', 'balance', 'bal25', 'card-power.json'), encoding='utf-8'))
     cards = {c['id']: c for c in d['cards']}

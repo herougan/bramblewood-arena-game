@@ -1632,7 +1632,7 @@ The rules as built (engine: `poisonOn`, `eng33PlayDead` / `eng33Wake`, `eng33Poi
 - **Poisonous N** (`poisonous`, plain 2): when an enemy unit's blow kills it, or a Devour unit eats it from the hand, that unit gets N Venom. Event `statusFx` kind `poisonous`; the board floats "🤢 +N☠". On no card.
 - **Thanatosis** (`thanatosis`, 😵): its first fall to 0 Health is no death (no death event, kill credit, On Death, Bounty, graveyard). It plays dead at 1 Health, statuses cleared: no acting (`dozing`), single-target swings, shots and skills miss it (reason `playingDead`), area skills still hit it. It gets up at the next round start. Once a fight. Board: the card tips over greyed (`.is-playing-dead`) with a 😵 chip; events `statusFx` kinds `thanatosis` / `thanatosisWake`; skip reason `playingDead`.
 - **Undead** (`undead`): unchanged comeback (once, as a token) and now also the undead status (heals hurt, cures Bleed) for any unit with the skill.
-- **Bulwark N**: N Log Walls (`bulwark-wall`, 🪵, 0/8 Structure with Guardian) in the free front-row slots nearest it; was two 0/4N shields. Art prompt: `docs/art-style-prompts.md` (Log Wall).
+- **Bulwark N**: N Log Walls (`bulwark-wall`, 🪵, 0/4 Structure with Guardian (owner 11-07 22:13; was 0/8)) in the free front-row slots nearest it; was two 0/4N shields. Art prompt: `docs/art-style-prompts.md` (Log Wall).
 - **Timbered 🪵🪵 / Bedrock 🪨🪨 / Forged 🔩🔩 / Last Stand 🏳️**: the editor's "Gives" field picks a Stat bonus (Attack / Health; Bedrock: Armor N) or Skills (the braces). Both are stored in `<k>Grant`.
 
 ## 2026-11-07 ENG34: melee and ranged

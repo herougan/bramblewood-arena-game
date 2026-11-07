@@ -29457,7 +29457,7 @@
     ],
     "effects": {
       "tide": true,
-      "bulwark": 1
+      "bulwark": 2
     },
     "flavor": "Its reed lodge rises from the flood like a haystack with its front door underwater.",
     "dmgType": "physical",

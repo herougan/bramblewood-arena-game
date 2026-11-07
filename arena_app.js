@@ -365,6 +365,10 @@ const EMOJI_NUDGE = {'🐢':[0, -0.15], '💠':[0, -0.05], '🌊':[0, -0.05]};
 function emojiNudgeStyle(fb){
   try{ const n = EMOJI_NUDGE[String(fb).replace(/️/g, '')]; if(!n || typeof EmojiStyle === 'undefined' || !EmojiStyle || EmojiStyle.active() !== 'fluent') return ''; return ` style="--enx:${n[0]}em;--eny:${n[1]}em"`; }catch(e){ return ''; }
 }
+// 2026-11-07 (owner 21:59): the emoji of a combined icon, one per picture (a variation selector or joiner stays with its emoji).
+const ICO_SEG = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter(undefined, {granularity:'grapheme'}) : null;
+function icoParts(s){ s = String(s || ''); if(!ICO_SEG || s.length < 2) return [s]; const g = [...ICO_SEG.segment(s)].map(x=> x.segment);
+  return g.length > 1 && g.every(x=> /\p{Extended_Pictographic}/u.test(x)) ? g : [s]; }
 function iconHTML(key, fallbackEmoji, opts){
   opts = opts || {};
   const k = String(key == null ? '' : key).toLowerCase().replace(/[^a-z0-9_-]/g, '');
@@ -375,7 +379,13 @@ function iconHTML(key, fallbackEmoji, opts){
     if(art.html) return art.html;
   }
   const nz = emojiNudgeStyle(fb); // UI31 (2026-11-07)
-  return `<span class="${cls}${nz ? ' ico-nudge' : ''}" data-ik="${k}"${tip}${nz}>${typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(fb) : fb}</span>`; // 2026-10-17: in the chosen emoji set
+  const em = g=> typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(g) : g;
+  // 2026-11-07 (owner 21:59: "poison barb's and other 'combine emoji' skill pips should be closer together, almost stacked. Like 40+% of the
+  // poison symbol over top the cactus symbol"): an icon of two or more emoji (🌵☠️, ⚔⚔, 🔥🏹 ...) is drawn as overlapping parts, each later one
+  // pulled about 44% over the one before (.ico-stack in arena_template.html), so it reads as one badge.
+  const parts = icoParts(fb);
+  if(parts.length > 1) return `<span class="${cls} ico-stack${nz ? ' ico-nudge' : ''}" data-ik="${k}"${tip}${nz}>${parts.map(g=> `<span class="ico-part">${em(g)}</span>`).join('')}</span>`;
+  return `<span class="${cls}${nz ? ' ico-nudge' : ''}" data-ik="${k}"${tip}${nz}>${em(fb)}</span>`; // 2026-10-17: in the chosen emoji set
 }
 // 2026-10-18 (package I3): the page translator matches whole text nodes, so a sentence that is cut up before it reaches the page
 // (keyword marks in card ability lines, emoji turned into pictures in a block of HTML) is translated here first, while it is
@@ -1132,7 +1142,7 @@ const PASSIVE_DEFS = [
   // Overwhelm (Runeterra's word for trample). Now called Stampede; the data key stays `overwhelm`.
   {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy bramble.`},
   {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 whenever ANY ally of yours dies.`},
-  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 8})}, // 2026-10-23 (package EN, owner 01:57 note 2): two 0/4N shields as it arrives
+  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 4 /* owner 22:13: Log Wall 0/4 */})}, // 2026-10-23 (package EN, owner 01:57 note 2): two 0/4N shields as it arrives
   // 2026-10-17 (user: "Add a new skill Reflect: that reflects ranged skills back at a random enemy unit."): the engine's reflectShotOf.
   // A flag now (was Reflect N%: a melee hit's full damage thrown back); an old stored number reads as that % chance to bounce a shot.
   {key:'reflect', category:'passive', label:'Reflect', kind:'boolean', desc:v=>`${typeof v === 'number' && v < 100 ? `${v}% of the time, a` : 'A'} shot aimed at it bounces off and hits a random enemy unit instead (their bramble if they have none). Shots: Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire, Snipe, Fireball (the whole burst), Rocket, a thrown Banana, Missile and On Ready damage, a Damage trigger at a random enemy, and the bramble's bolt. Melee, Pounce and what falls from the sky or bursts over an area (Skyfall, Meteor, Lightning, Earthquake…) aren't shots. A bounced shot can be dodged, but never bounces again.`},
@@ -2221,7 +2231,7 @@ PASSIVE_DEFS.push({key:'rageAt', category:'passive', label:TX('ui.eng27-rage-at-
   get:e=> Number(e.rageAt) > 0 ? Math.round(Number(e.rageAt) * 100) : undefined, apply:(e, v)=>{ const n = Math.max(10, Math.min(90, Number(v) || 75)); e.rageAt = n / 100; e.rage = true; }});
 SKILL_ICON.rageAt = '😡';
 sk1Patch(PASSIVE_DEFS, 'shapeshifter', {category:'passive', label:TX('ui.skn-shapeshifter'), kind:'boolean', desc:()=> TX('ui.sk-shapeshifter')});
-sk1Patch(PASSIVE_DEFS, 'bulwark', {category:'passive', label:'Bulwark', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 8}), codexNote:TX('ui.sk-bulwark-codex')}); // ENG33 (2026-11-07, owner #10): N Log Walls, 0/8 each
+sk1Patch(PASSIVE_DEFS, 'bulwark', {category:'passive', label:'Bulwark', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 4 /* owner 22:13: Log Wall 0/4 */}), codexNote:TX('ui.sk-bulwark-codex')}); // ENG33 (2026-11-07, owner #10): N Log Walls, 0/8 each
 sk1Patch(PASSIVE_DEFS, 'backstab', {category:'passive', label:'Backstab', kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-backstab', {n: numOr(v, 2)}), codexNote:TX('ui.sk-backstab-codex')});
 Object.assign(SKILL_ICON, {assault:'⚔️', liege:'🛡️👑', liegeGrant:'🛡️👑', rageGrant:'😡', shapeshifter:'🧰'});
 // BF6 (owner 15:15: "Rally: temporary increase in attack. War Banner: passive increase in attack while this unit is present."): Rally N is
@@ -3224,7 +3234,7 @@ const SKILL_TEXT = {
   gash: v=> `When played, add ${v} Bleed to the enemy facing it.`,
   overwhelm: ()=> `Damage left over from a kill carries on into the enemy bramble.`,
   berserk: v=> `+${v} Attack whenever one of your units dies.`,
-  bulwark: v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 8}), // ENG33 (2026-11-07): N Log Walls // 2026-10-23 (package EN, owner 01:57 note 2): two shields as it arrives
+  bulwark: v=> TX('ui.sk-bulwark', {n: numOr(v, 1), hp: 4 /* owner 22:13: Log Wall 0/4 */}), // ENG33 (2026-11-07): N Log Walls // 2026-10-23 (package EN, owner 01:57 note 2): two shields as it arrives
   reflect: v=> `${typeof v === 'number' && v < 100 ? `${v}% of the time, a shot` : 'Shots'} aimed at it (arrows, bolts, missiles, fireballs) bounce${typeof v === 'number' && v < 100 ? 's' : ''} off and hit${typeof v === 'number' && v < 100 ? 's' : ''} a random enemy unit.`, // 2026-10-17 (user: "reflects ranged skills back at a random enemy unit")
   momentum: v=> `+${v} Attack every time it kills a unit.`,
   bloom: v=> `Heal a random wounded ally for ${v} every upkeep.`,
@@ -64916,7 +64926,22 @@ const HandDrag = (function(){
     else if(e.key === 'ArrowDown'){ e.preventDefault(); (items[Math.min(items.length - 1, i + 1)] || items[0]).focus(); }
     else if(e.key === 'ArrowUp'){ e.preventDefault(); (items[Math.max(0, i - 1)] || items[0]).focus(); }
     else if(e.key === 'Tab'){ close(); }
+    // 2026-11-07 (owner 21:15: "When I type a letter while in the choose-a-skill dropdown(s), jump to that section! E.g. N brings me to the
+    // section that contains Nocturnal. DONT SPLIT THE DROPDOWN"): type-ahead. A letter (or a quick run of letters) moves to the next option whose
+    // name starts with it (leading emoji and symbols skipped) and scrolls its group heading into view; pressing the same letter again cycles.
+    else if(e.key && e.key.length === 1 && /\p{L}|\p{N}/u.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey){
+      e.preventDefault(); const now = Date.now();
+      typed = (now - typedAt < 700 && typed !== e.key.toLowerCase()) ? typed + e.key.toLowerCase() : e.key.toLowerCase(); typedAt = now;
+      const nameOf = b=> (b.textContent || '').replace(/^[^\p{L}\p{N}]+/u, '').toLowerCase();
+      const from = typed.length === 1 ? i + 1 : Math.max(0, i), order = items.slice(from).concat(items.slice(0, from));
+      const hit = order.find(b=> nameOf(b).startsWith(typed)); if(!hit) return;
+      hit.focus({preventScroll:true});
+      let h = hit.previousElementSibling; while(h && !h.classList.contains('bw-sel-group')) h = h.previousElementSibling;
+      const top = h && hit.offsetTop - h.offsetTop < menu.clientHeight - hit.offsetHeight ? h : hit;
+      menu.scrollTop = Math.max(0, top.offsetTop - 2); // the menu is position:fixed, so it is its items' offsetParent
+    }
   }
+  let typed = '', typedAt = 0;
   function open(sel){
     close(); owner = sel; sel.classList.add('bw-sel-open');
     menu = document.createElement('div'); menu.className = 'bw-sel-menu'; menu.setAttribute('role', 'listbox');
