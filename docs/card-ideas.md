@@ -48,5 +48,11 @@ Prehistoric and unusual animals (the owner marked "(Pre)" for prehistoric ones):
 | Bluff | for the grass snake; "maybe it'll trigger a reaction from the enemy" | grass snakes play dead and hiss: could force a swing, or make the attacker skip |
 | Smelly | "for those animals that use smell to ward off predators" | proposal in ENG33 (e.g. melee attackers lose Attack, or the unit is targeted last) |
 
+## 2026-11-07 18:53
+| Idea | Owner's note | Notes for the build |
+|---|---|---|
+| Mimicry | skill, "?" (no such skill exists yet) | Proposals: (a) copies one skill of the enemy opposite when it enters (Batesian look-alike); (b) enemies treat it as the strongest ally for targeting / Daunt checks (it "looks dangerous"); (c) takes the Attack of the enemy opposite while that is higher. Fits hoverflies, king snakes, mimic octopus, viceroy butterfly |
+| Pyrenean Desman effects | "not sure what effects to do" (now 2/10 Tide only, the 4-1 reward) | Near-blind, hunts by touch with its trunk, semi-aquatic, nocturnal. Options from existing skills: Keen Sense (finds Hidden/Camouflaged; it had this before BF6), Nocturnal 1, Dive (swimmer), Purblind as a drawback that pays for another skill. New idea: "Whisker Sense": ignores Blind and Dodge on its attacks |
+
 ## Built
 (none yet)
