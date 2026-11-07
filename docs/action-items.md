@@ -30,7 +30,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Owner calls open: ENG33-1 (Smelly: a / b / c), ENG33-2 (Undead keeps its comeback), ENG33-3 (Thanatosis details), ENG33-4 (budget moves, no re-fit).
 - Next: Smelly once ENG33-1 is answered; Log Wall art.
 
-## 11-07 20:58-23:20: Owner notes
+## 11-07 20:58-23:49: Owner notes
 | # | Item | Package |
 |---|---|---|
 | 1 | Fuse skill variants into one skill with parameters (Almanac number / grant ...); workbook one row per skill with Parameters; card tooltip column | ENG35 (running); tooltip column done |
@@ -44,6 +44,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 9 | Codex page turn: the vertical slice opens out into the new page, carrying the new page's content | UI33 (running) |
 | 10 | New skill Constrict: an advanced Strangle; the target can't do anything (no attack, no skills, no moving) while Constricted, plus Strangle's squeeze damage. Strangle and Constrict also become custom actions (not only on-hit), so a fairer card can Constrict on play | ENG36, after ENG35 |
 | 11 | Hoard (and similar per-resource skills) phrased the other way: N = the +N/+N it gains per resource held (today Hoard N = +1 Attack per N Lumber). Cards today: Tax Collector Teal Hoard 1, Magnate Duck Hoard 3; their new values are the owner's call (decision) | ENG36, after ENG35 |
+| 12 | Map cards window: more recommended skills per map, especially skills that counter that map's cards (its enemy decks' skills and types: e.g. many flyers → Anti-air, Venom-heavy → Venom resistance / cures, Armor → Pierce). A canonical counter table (skill → what it counters) feeding the recommendations | UI34, after ENG35 (same window) |
 
 ## 11-07 18:53-19:11: Owner notes
 | # | Note | Package |
