@@ -11,15 +11,17 @@
 Steps: (1) tools/hub/build_hub.py writes .hub/ (HUB_URL defaults to the published hub so links to the hub become tab links);
 (2) the guide splice: Claude's guide tab shows docs that live only in the claude.ai Project ("claude/<doc>.md"). When this checkout has no
     .guide-src/ for them, their rendered pages come from tools/hub/guide-snapshot.html (committed, refreshed with --refresh-guide);
-(3) the check: index.html under 16 MB, file count under the artifact cap, every tab renders text and throws no page error.
+(3) the check: index.html under 15.0 MB (served over http, because the page fetches lazy/ and search-index.json), file count under the artifact cap, every tab renders text and throws no page error.
 Publishing is not done here: the coordinator publishes .hub/ with the Artifact tool (docs/workflows/release.md, hub section)."""
-import os, re, subprocess, sys, tempfile
+import functools, glob, http.server, os, re, socketserver, subprocess, sys, tempfile, threading
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 OUT = os.path.join(ROOT, '.hub'); INDEX = os.path.join(OUT, 'index.html')
 SNAP = os.path.join(ROOT, 'tools', 'hub', 'guide-snapshot.html')
 HUB_URL = 'https://claude.ai/artifact/45sGJuWwy9T6ocC1D4K99J'
-LIMIT = 16 * 1024 * 1024; MAX_FILES = 495
+# 2026-11-07 (HUB4): the publisher refuses a page over 16 MiB once it has added its syntax-highlight runtime (~0.6 MB), so the real ceiling is about 15.4 MB.
+# The check fails above 15.0 MB (decimal, 15,000,000 bytes), a margin for the runtime and for growth.
+LIMIT = 15_000_000; MAX_FILES = 495
 TABS = ['master', 'actions', 'cards', 'balance', 'ctable', 'mapcards', 'decisions', 'guide', 'changelog', 'doclib']
 GUIDE_HEAD = '<h2>The docs</h2><p class="note">Snapshots of the project docs at build time. The project copy is the source of truth. Pick one in the table above.</p>'
 SUB = '<div class="subpane" data-group="guide" id="doc-'
@@ -41,43 +43,58 @@ def split_chunks(s, start):
 def guide_region(s):
     return s.index(GUIDE_HEAD) + len(GUIDE_HEAD)
 
+def guide_file(out_dir):
+    """2026-11-07 (HUB4): the file that holds Claude's guide: index.html (older builds) or the lazy/ file the build moved it to."""
+    for f in [os.path.join(out_dir, 'index.html')] + sorted(glob.glob(os.path.join(out_dir, 'lazy', '*.html'))):
+        if GUIDE_HEAD in open(f, encoding='utf-8').read(): return f
+    raise SystemExit('guide docs not found in ' + out_dir)
+
 def splice_guide():
     if not os.path.exists(SNAP): print('guide splice: no snapshot, skipped'); return
-    new = open(INDEX, encoding='utf-8').read(); snap = open(SNAP, encoding='utf-8').read()
+    gf = guide_file(OUT); new = open(gf, encoding='utf-8').read(); snap = open(SNAP, encoding='utf-8').read()
     have = split_chunks(new, guide_region(new)); snc = split_chunks(snap, 0)
     missing = [k for k in snc if k not in have]
     add = ''.join(snap[snc[k][0]:snc[k][1]] for k in missing)
     first = min(v[0] for v in have.values())
-    open(INDEX, 'w', encoding='utf-8').write(new[:first] + add + new[first:])
+    open(gf, 'w', encoding='utf-8').write(new[:first] + add + new[first:])
     print('guide splice: added', [k[4:] for k in missing])
 
 def refresh_guide(published):
     run_build_hub()  # a fresh build without the splice, so only the docs this checkout cannot render are saved
-    new = open(INDEX, encoding='utf-8').read(); old = open(published, encoding='utf-8').read()
+    new = open(guide_file(OUT), encoding='utf-8').read(); old = open(guide_file(os.path.dirname(os.path.abspath(published))) if not GUIDE_HEAD in open(published, encoding='utf-8').read() else published, encoding='utf-8').read()
     have = split_chunks(new, guide_region(new)); oc = split_chunks(old, guide_region(old))
     miss = [k for k in oc if k not in have]
     open(SNAP, 'w', encoding='utf-8').write(''.join(old[oc[k][0]:oc[k][1]] for k in miss))
     print('guide snapshot saved:', [k[4:] for k in miss], os.path.getsize(SNAP), 'bytes')
 
 CHECK_JS = '''(tab)=>{ const p = document.querySelector('#p-' + tab); return p ? p.innerText.length : -1; }'''
+class _Quiet(http.server.SimpleHTTPRequestHandler):
+    def log_message(self, *a): pass
+def serve():
+    """2026-11-07 (HUB4): the page fetches search-index.json and lazy/*.html, which a file:// page cannot do, so the check serves .hub/ on localhost."""
+    srv = socketserver.TCPServer(('127.0.0.1', 0), functools.partial(_Quiet, directory=OUT)); srv.allow_reuse_address = True
+    threading.Thread(target=srv.serve_forever, daemon=True).start(); return srv, f'http://127.0.0.1:{srv.server_address[1]}/'
+
 def check(shots=True):
     ok = True; size = os.path.getsize(INDEX)
     nfiles = sum(len(fs) for _, _, fs in os.walk(OUT))
     big = sorted(((os.path.getsize(os.path.join(dp, f)), os.path.relpath(os.path.join(dp, f), OUT)) for dp, _, fs in os.walk(OUT) for f in fs), reverse=True)[:3]
-    print(f'check: index.html {size / 1048576:.2f} MB (limit 16 MB), {nfiles} files (cap {MAX_FILES}); largest files: ' + ', '.join(f'{n} {b / 1048576:.1f} MB' for b, n in big))
-    if size >= LIMIT: print('FAIL: index.html is over 16 MB'); ok = False
+    print(f'check: index.html {size / 1048576:.2f} MB (limit 15 MB), {nfiles} files (cap {MAX_FILES}); largest files: ' + ', '.join(f'{n} {b / 1048576:.1f} MB' for b, n in big))
+    if size >= LIMIT: print('FAIL: index.html is over 15.0 MB (the publisher refuses 16 MiB once it adds its code-highlight runtime)'); ok = False
     if nfiles > MAX_FILES: print('FAIL: too many files'); ok = False
     if shots:
         from playwright.sync_api import sync_playwright
+        srv, base = serve()
         with sync_playwright() as p:
             b = p.chromium.launch(); errs = []
             for tab in TABS:
                 pg = b.new_page(viewport={'width': 1366, 'height': 900}); pg.on('pageerror', lambda e, t=tab: errs.append(f'{t}: {e}'))
-                pg.goto('file://' + INDEX + '#' + tab); pg.wait_for_timeout(1500)
+                pg.goto(base + 'index.html#' + tab); pg.wait_for_timeout(1500)
                 n = pg.evaluate(CHECK_JS, tab); print(f'  tab {tab}: {n} chars')
                 if n <= 0: ok = False
                 pg.close()
             b.close()
+        srv.shutdown()
         if errs: print('FAIL: page errors', errs[:4]); ok = False
     print('hub check:', 'ok' if ok else 'FAILED'); return ok
 

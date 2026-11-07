@@ -2,7 +2,7 @@
 // 2026-10-15 (user: "i think the main things you can do is to improve the master hub"): the 🎴 Cards tab (art thumbnails
 // from the cards-thumbs.webp sprite sheet, filters, a detail sheet with skills, source, balance and the decks that use the
 // card), the header's global search across cards, changelog, decisions, design and guide docs, dialogues and fights, the
-// theme toggle and the changelog's open/close-all. Reads the CARDS and SEARCH constants the build writes just above.
+// theme toggle and the changelog's open/close-all. Reads the CARDS constant the build writes just above; the search text is fetched from search-index.json.
 (function(){
   const $ = id=> document.getElementById(id);
   const esc = s=> String(s==null ? '' : s).replace(/[&<>"]/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
@@ -114,8 +114,14 @@
   // ---------- global search ----------
   const TYPES = {'Card':'🎴', 'Decision':'🗳️', 'Action items':'🎯', 'Changelog':'🗒️', 'Design':'📐', 'Fight':'⚔️', 'Dialogue':'💬', 'Guide':'🧠', 'Library':'📖', 'History':'🕰️'};
   const ORDER = Object.keys(TYPES);
-  const IDX = CARDS.cards.filter(c=> !c.test).map(c=> ({type:'Card', label:c.name, sub:`${rarName(c.r)} · ${c.sk.map(skLabel).join(', ') || 'no skills'}`, hay:c.hay, text:c.where, go:{card:c.id}, c}))
-    .concat(SEARCH.map(r=> ({type:r[0], label:r[1], sub:r[2], hay:(r[1] + ' ' + r[2] + ' ' + r[3]).toLowerCase(), text:r[3], go:r[4]})));
+  // 2026-11-07 (HUB4): the page-text part of the index is search-index.json, loaded the first time the search box is used.
+  const IDX_CARDS = CARDS.cards.filter(c=> !c.test).map(c=> ({type:'Card', label:c.name, sub:`${rarName(c.r)} · ${c.sk.map(skLabel).join(', ') || 'no skills'}`, hay:c.hay, text:c.where, go:{card:c.id}, c}));
+  let IDX = null;
+  function loadIdx(){
+    if(IDX) return IDX;
+    let rows = []; try{ rows = JSON.parse(hubGet('search-index.json')); }catch(e){ console.warn('search-index.json not loaded', e); }
+    return IDX = IDX_CARDS.concat(rows.map(r=> ({type:r[0], label:r[1], sub:r[2], hay:(r[1] + ' ' + r[2] + ' ' + r[3]).toLowerCase(), text:r[3], go:r[4]})));
+  }
   const q = $('hubQ'), res = $('hubRes'); let hits = [], sel = -1;
   const mark = (s, terms)=>{ let h = esc(s); terms.forEach(t=>{ if(t.length < 2) return; h = h.replace(new RegExp('(' + esc(t).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig'), '<mark>$1</mark>'); }); return h; };
   function snippet(text, terms){
@@ -128,7 +134,7 @@
     const v = q.value.trim().toLowerCase(), terms = v.split(/\s+/).filter(Boolean);
     if(!terms.length){ res.hidden = true; q.setAttribute('aria-expanded', 'false'); return; }
     const groups = {};
-    IDX.forEach(e=>{ if(!terms.every(t=> e.hay.includes(t))) return; const L = e.label.toLowerCase();
+    loadIdx().forEach(e=>{ if(!terms.every(t=> e.hay.includes(t))) return; const L = e.label.toLowerCase();
       const s = (L === v ? 1000 : 0) + (L.startsWith(v) ? 300 : 0) + (L.includes(v) ? 100 : 0) + terms.filter(t=> L.includes(t)).length * 20;
       (groups[e.type] = groups[e.type] || []).push([s, e]); });
     hits = []; let html = '';

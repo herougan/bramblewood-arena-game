@@ -8,6 +8,10 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-07: Package HUB4 (on its branch, not released)
+- Hub page 16.2 MB to 5.7 MB: search index and 40 lazy tabs moved to files beside `index.html` (`search-index.json`, `lazy/`); the build check now fails above 15.0 MB and serves the page over localhost. Every tab, the Library sub-tabs, search and a search jump were clicked through (screens in `docs/screens/hub4/`).
+- Open: publish the hub (coordinator): send `index.html`, `search-index.json`, `lazy/*` and the other files that changed. `playground.html` and some `img/*.webp` the Lab or Library iframes ask for were already missing (404), not caused by this.
+
 ## 11-07: Package ENG33 (on its branch, not released)
 - Done (owner 10:25 #9): Poison N reads Venomous N, counters Venom, damage type Venomous (☠ kept; key `poison` kept, docs/project-state.md); the old Venomous retired, its four cards on Venomous N (Platypus Spur, Water Shrew, Banded Sea Krait, Giant Water Bug); Poison Bolt reads Venom Spit; new Poisonous N (killer or devourer gets N Venom), on no card.
 - Done (#12): Thanatosis (plays dead once, up next round at 1 Health) on Slow Worm, Grass Snake, Phoenix Mushrooms; Undead stays on Cinder Skeleton and Ember Revenant and now also makes heals hurt.
