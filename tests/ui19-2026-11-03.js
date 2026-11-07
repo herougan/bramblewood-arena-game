@@ -59,7 +59,7 @@ ok([...c5.api.ui19McEarlierSkillKeys('m1', defs, ()=> true)].sort().join() === '
 const html = c5.api.ui19McSkillsHTML('m1', ['a', 'b', 'c'], defs, ()=> true);
 ok(/data-ui19-skill="venom"[^>]*>[\s\S]*?NEW!/.test(html) && !/data-ui19-skill="swarm"[^>]*>[^]*?NEW![^]*?data-ui19-skill/.test(html.replace(/data-ui19-skill="venom"[\s\S]*$/, '')) && /2 of 3 cards/.test(html), '5. NEW! only on a skill no earlier map has; "2 of 3 cards"');
 ok(c5.api.ui19McSkillsHTML('m0', ['a'], defs, ()=> true).split('NEW!').length - 1 === 2, '5. the first map: every skill is NEW!');
-ok(/\$\{\(\(\)=>\{ try\{ return ui19McSkillsHTML\(top/.test(src), '5. the Map cards window draws the block');
+ok(/\$\{\(\(\)=>\{ try\{ (?:const g = ui32McSkillIds\(top, mapId, ok\); )?return ui19McSkillsHTML\(top/.test(src), '5. the Map cards window draws the block');
 // 6
 const keys = ['swarm-n', 'swarm-n-tip', 'swarm-per', 'art-y', 'art-y-tip', 'mc-skills', 'mc-new', 'mc-new-tip', 'mc-count', 'mc-none'].map(k=> 'ui.ui19-' + k);
 ok(keys.every(k=> TEXT[k]), '6. the ten TX keys exist');

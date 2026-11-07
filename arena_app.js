@@ -6960,6 +6960,29 @@ LIVE_STATUS_ROWS.push(['silenced', 'silenced', TX('ui.stn3-silenced'), ()=> TX('
   ['exhaust', 'exhausted', TX('ui.stn3-exhausted'), ()=> TX('ui.st3-exhausted'), true], ['grounded', 'grounded', TX('ui.stn3-grounded'), ()=> TX('ui.st3-grounded'), false],
   ['stench', 'stench', TX('ui.skn-stench'), ()=> TX('ui.st3-stench'), true]);
 ['silenced', 'stymied', 'grounded'].forEach(k=> LIVE_STATUS_ROUNDS.add(k));
+// 2026-11-07 (package UI32, owner 18:55 #4: "the card hover should list every counter on the card: Venom, Bleed, Daunt marks, Shield, frozen rounds, buffs, any token or counter"):
+// LIVE_STATUS_ROWS (above) already lists Venom, Deadly Poison, Bleed, Toxin, Scar, Exposed, Exploit, Corrode, Decay, Wither, Shield, Frozen and the other round counters,
+// Irradiation, and Daunt marks. These are the counters it did not: Wet, Burn, fast-forward, Creativity, Prayer, Inspiration, Daunt counters (Render), Brittle, the
+// Berry / scavenge / salvage points, Formation / Isolation and Durian Thorns. Each reads the same tip the unit's pip carries (same words, same number).
+function ui32CounterRows(c){
+  if(!c) return []; const out = [], N = k=> Number(c[k]) || 0;
+  const add = (ico, n, tip)=>{ if(n > 0 && tip) out.push(`<div class="ui32-ctr"><b class="kw kw-term">${ico} ${n}</b>: ${escapeHtml(tip)}</div>`); };
+  add('💧', N('water'), TX('ui.eng20-water-tip', {n: N('water')}));
+  add('🔥', N('burn'), TX('ui.eng20-burn-tip', {n: N('burn')}));
+  add('⏩', N('ffCounters'), TX('ui.eng23-ff-tip', {n: N('ffCounters')}));
+  add('🎨', N('creativity'), creativityTip(N('creativity')));
+  add('📿', N('prayerTokens'), prayerTokenTip(N('prayerTokens')));
+  add('📯', N('inspTokens'), TX('ui.eng21-insp-tip', {n: N('inspTokens'), atk: c.inspired != null ? c.inspired : N('inspTokens')}));
+  add('😨', N('dauntN'), TX('ui.en8-daunt-badge', {n: N('dauntN')}));
+  add('🫙', N('brittle'), TX('ui.brittle-tip', {n: N('brittle')}));
+  { const e = ((getCardDefs()[c.defId] || {}).effects) || {};
+    add('🫐', sk2Val(c, 'sk2Berries'), TX('ui.sk2-berries-tip', {n: sk2Val(c, 'sk2Berries'), b: SK2_UI.foragingBerries}));
+    add('🦝', sk2Val(c, 'sk2Scavenge'), TX('ui.sk2-scavenge-tip', {n: sk2Val(c, 'sk2Scavenge'), m: sk2ScavengeEvery(e)}));
+    add('🏚️', sk2Val(c, 'sk2Salvage'), TX('ui.sk2-salvage-tip', {n: sk2Val(c, 'sk2Salvage'), m: sk2SalvageEvery(e)})); }
+  { const a = N('sk1Atk'); if(a > 0) add('🔗', a, TX('ui.aura-formation-tip', {n: a})); else if(a < 0) add('🏝️', -a, TX('ui.aura-isolation-tip', {n: -a})); }
+  add('🌵', N('thornsBonus'), TX('ui.ui32-ctr-thorns', {n: N('thornsBonus')}));
+  return out;
+}
 function liveStatusGlossHTML(c){
   if(!c) return '';
   const rows = [];
@@ -6973,6 +6996,7 @@ function liveStatusGlossHTML(c){
   });
   { const dn = (c.daunts || []).reduce((t, x)=> t + (x.n || 0), 0); if(dn > 0) rows.push(`<div><b class="kw kw-term">Daunted ${dn}</b>: deals ${dn} less Attack until the end of next round.</div>`); }
   if(c.amoreWith != null) rows.push(c.amoreBroken ? `<div><b class="kw" style="--kw:#8a5a3b">Heartbroken</b>: its partner died. It keeps +0/+3; Regeneration 3 is gone.</div>` : `<div><b class="kw" style="--kw:#d6457a">In love</b>: +0/+3 and Regeneration 3 while its partner lives.</div>`); // Amore (2026-10-16)
+  try{ ui32CounterRows(c).forEach(r=> rows.push(r)); }catch(e){} // UI32 (2026-11-07, owner 18:55 #4): every other counter the unit carries
   return rows.length ? `<div class="kw-gloss live-status-gloss" role="note" aria-label="Its statuses right now">${rows.join('')}</div>` : '';
 }
 // ENG28 (2026-11-07, owner 11-06 22:16 #4: "Hover shows the card's default stats and all skills at its level; Bombardier Beetle's rocket vanishes from
@@ -11377,6 +11401,7 @@ function wireLevelStatsEditor(){
 // 🃏 Map cards window (that map's cards in the window's order: ui13EditFromGallery). Unsaved changes: the button asks on the page first ("Unsaved
 // changes: tap again to leave", as the editor's other confirmations are taps, not dialogs); a second tap within 4 s leaves without saving. ← and →
 // do the same while the focus is not in a field. Anywhere else the editor opens without them.
+let ceSavedIds = new Set(); // UI32 (2026-11-07): ids saved from the card editor since the Map cards window opened it
 let ceNav = null; // {ids, from: 'codex' | 'mapcards', visited: Set, base: the form's signature as opened, armed: {dir, at}}
 function ceNavSet(ids, from){ const list = [...new Set((ids || []).filter(Boolean))]; ceNav = list.length > 1 ? {ids: list, from, visited: new Set(), base: null, armed: null} : null; }
 function ceDraftSig(){ try{ return JSON.stringify(editorDraftFromForm()) + '|' + String((editingCard && editingCard.art) || '').length; }catch(e){ return ''; } }
@@ -12731,6 +12756,7 @@ async function onSaveEditor(){
   const restoreY = ()=>{ window.scrollTo(0, keepY); keepEls.forEach(([el, t])=>{ if(el.isConnected) el.scrollTop = t; }); };
   setTimeout(restoreY, 0); setTimeout(restoreY, 120); setTimeout(restoreY, 400);
   const published = await saveCard(c);
+  try{ ceSavedIds.add(c.id); }catch(e){} // UI32 (2026-11-07): the Map cards window redraws this card's tile when the editor closes
   if(cardEditorHooks && cardEditorHooks.saved) try{ cardEditorHooks.saved(c.id); showToast(`➕ ${c.name} added to the skirmish deck.`, 'ok'); }catch(e){}
   if(!published) showToast(`💾 ${c.name} saved in this browser` + (cloudCardAdmin ? '' : ' — sign in with an admin account to publish it for everyone') + '.', 'ok');
   closeCardEditor();
@@ -33159,6 +33185,7 @@ function ff9RefreshAdded(ov, top){
   const old = sec.querySelector('[data-rv-added-part]'), tmp = document.createElement('div'); tmp.innerHTML = rvAddedPartHTML(top, getCardDefs());
   if(old) old.replaceWith(tmp.firstChild); else sec.appendChild(tmp.firstChild);
   try{ wireRewardZoom(ov); }catch(e){}
+  ui32McRefreshSkills(ov); // UI32 #7: the skills section follows the SPECIAL list
 }
 function ff9RemoveAdded(ov, top, id){
   rvSpecialAdd[top] = rvAddedOf(top).filter(x=> x !== id); if(!rvSpecialAdd[top].length) delete rvSpecialAdd[top]; rvSpecialAddSave(); ff9RefreshAdded(ov, top);
@@ -33208,7 +33235,10 @@ function ui13EditFromGallery(ov, tile){
   const order = [...new Set([...ov.querySelectorAll('.rv1-tile[data-rv-id]')].map(t=> t.dataset.rvId))];
   if(order.length > 1) ceNavSet(order, 'mapcards');
   const nav = ceNav;
-  edOpenCardEditor(id, ov, ()=>{ const seen = nav ? [...nav.visited] : [id]; seen.forEach(v=>{ ov.querySelectorAll('.rv1-tile[data-rv-id]').forEach(t=>{ if(t.dataset.rvId === v) try{ ui13RefreshTile(ov, t); }catch(e){} }); }); if(box) box.scrollTop = keep; });
+  // 2026-11-07 (package UI32, owner 18:55 #6): UI27 refreshed only the cards walked to with Previous / Next (nav.visited, empty until the first press), so a card
+  // edited and saved where the editor opened (the usual case) kept its old tile until the window was reopened. Every card saved from the editor (ceSavedIds) counts too.
+  ceSavedIds = new Set();
+  edOpenCardEditor(id, ov, ()=>{ const seen = [...new Set([id, ...(nav ? [...nav.visited] : []), ...ceSavedIds])]; seen.forEach(v=>{ ov.querySelectorAll('.rv1-tile[data-rv-id]').forEach(t=>{ if(t.dataset.rvId === v) try{ ui13RefreshTile(ov, t); }catch(e){} }); }); ui32McRefreshSkills(ov); /* UI32 #7 */ if(box) box.scrollTop = keep; });
 }
 function ui13RefreshTile(ov, tile){
   if(!tile || !tile.isConnected) return;
@@ -33262,8 +33292,51 @@ function ui28PowerOf(id){
 function ui28PowerBadgeHTML(id){
   const r = ui28PowerOf(id); if(!r) return '';
   const sg = n=> n > 0 ? '+' + n : String(n), tip = TX('ui.ui24-power', {n: sg(r.n)}) + (r.adv != null ? ' · ' + TX('ui.ui28-power-adv', {n: sg(r.adv)}) : '') + (r.date ? ' · ' + TX('ui.ui24-power-date', {date: r.date}) : '');
-  return `<b class="ui28-pow ${r.n > 0 ? 'is-up' : r.n < 0 ? 'is-down' : 'is-zero'}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${escapeHtml(sg(r.n))}</b>`;
+  let mk = ''; try{ const b0 = (typeof liveCards !== 'undefined' && liveCards[id]) || CARD_DEFS_BASELINE[id]; mk = ui32PowerMarkHTML(b0); }catch(e){} // UI32 (2026-11-07): edited since rated
+  return `<b class="ui28-pow ${r.n > 0 ? 'is-up' : r.n < 0 ? 'is-down' : 'is-zero'}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${escapeHtml(sg(r.n))}</b>`.replace(/^(.*)$/, m=> mk ? `<span class="ui32-pw">${m}${mk}</span>` : m);
 }
+// UI32_POW:START
+// 2026-11-07 (package UI32, owner 18:55 #5): "edited since rated". CARD_POWER.fp[id] = [attack, health, {skill: value}, level, hasTriggers] is what the power run measured
+// (assemble_arena.py bakes it from the run's report and cards.json at its commit). The card's current stats are read the way the run read them (ui32DefAtLevel: a
+// card that starts at Level 0 was measured at Level 1, +10%), so such a card, and a level-granted skill, show no marker unless the card was really edited.
+// Marker: ^ a small upgrade (exactly +1 Attack, or +1..+2 Health, nothing else), ^^ any other upgrade (a skill added or raised counts), v / vv the same for
+// downgrades, ~ a mix of both. "" = unchanged (or no fingerprint). A skill's value is compared as a number (true = 1); Hatchling is left out (the run drops it).
+function ui32DefAtLevel(b0, measuredAt){
+  // exactly what tools/card_balance.js measures (its atLevel1): a card that starts at Level 0 (starter, tutorial, quest, errand, Base, the Wandering Traveller)
+  // runs as its printed stats +10% (rounded; its own Level 1 stats when it has them), every other card as printed; the skills are the card's own `effects`
+  if(!b0) return null;
+  const k = b0.source && b0.source.kind, lv0 = !!(b0.basic || b0.rarity === 'starter' || b0.tutorial || b0.quest || k === 'quest' || k === 'errand' || k === 'base' || b0.id === 'wandering-traveller');
+  let a = b0.attack, h = b0.health;
+  if(lv0 && measuredAt !== 0){ const ov = b0.levelStats && (b0.levelStats[1] || b0.levelStats['1']), r = v=> v == null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 1.10));
+    a = ov && ov.attack != null ? ov.attack : r(a); h = ov && ov.health != null ? ov.health : r(h); }
+  return {attack: a || 0, health: h || 0, effects: b0.effects || {}};
+}
+function ui32FxMap(fx){ const m = {}; Object.keys(fx || {}).forEach(k=>{ if(k === 'triggers' || k === 'hatchling') return; const v = fx[k]; if(v === false || v == null || v === 0) return; m[k] = v === true ? 1 : (Number(v) || 1); }); return m; }
+function ui32SkillText(m){ const ks = Object.keys(m); if(!ks.length) return TX('ui.ui32-no-skills'); return ks.map(k=>{ const p = skillDefOf(k); return (p && p.label ? p.label : k) + (m[k] > 1 ? ' ' + m[k] : ''); }).join(', '); }
+function ui32PowerChange(b0){
+  try{ const cp = (typeof CARD_POWER !== 'undefined') ? CARD_POWER : null, id = b0 && b0.id, fp = cp && cp.fp && id && cp.fp[id]; if(!fp) return null;
+    const cur = ui32DefAtLevel(b0, fp[3]); if(!cur) return null;
+    const A = Number(fp[0]) || 0, H = Number(fp[1]) || 0, cA = Number(cur.attack) || 0, cH = Number(cur.health) || 0, was = ui32FxMap(fp[2]), now = ui32FxMap(cur.effects);
+    const hasTrig = !!(cur.effects && Array.isArray(cur.effects.triggers) && cur.effects.triggers.length);
+    let up = false, down = false;
+    const dA = cA - A, dH = cH - H; if(dA > 0 || dH > 0) up = true; if(dA < 0 || dH < 0) down = true;
+    Object.keys(now).forEach(k=>{ if(!(k in was) || now[k] > was[k]) up = true; else if(now[k] < was[k]) down = true; });
+    Object.keys(was).forEach(k=>{ if(!(k in now)) down = true; });
+    if(hasTrig !== !!fp[4]){ if(hasTrig) up = true; else down = true; }
+    if(!up && !down) return null;
+    const skillsSame = !Object.keys(now).some(k=> !(k in was) || now[k] !== was[k]) && !Object.keys(was).some(k=> !(k in now)) && hasTrig === !!fp[4];
+    const smallUp = skillsSame && ((dA === 1 && dH === 0) || (dA === 0 && dH >= 1 && dH <= 2)), smallDown = skillsSame && ((dA === -1 && dH === 0) || (dA === 0 && dH <= -1 && dH >= -2));
+    const mark = up && down ? '~' : up ? (smallUp ? '^' : '^^') : (smallDown ? 'v' : 'vv');
+    const trig = on=> on ? ' + ' + TX('ui.ui32-triggers') : '';
+    const tip = TX('ui.ui32-edited', {was: A + '/' + H + ' ' + ui32SkillText(was) + trig(!!fp[4]), now: cA + '/' + cH + ' ' + ui32SkillText(now) + trig(hasTrig)});
+    return {mark, tip, up, down};
+  }catch(e){ return null; }
+}
+function ui32PowerMarkHTML(b0){
+  const r = ui32PowerChange(b0); if(!r) return '';
+  return `<b class="ui32-edit ${r.up && r.down ? 'is-mix' : r.up ? 'is-up' : 'is-down'}" title="${escapeAttr(r.tip)}" aria-label="${escapeAttr(r.tip)}">${escapeHtml(r.mark)}</b>`;
+}
+// UI32_POW:END
 function ui28AddSpecialHTML(){
   return `<div class="ui28-sp-add"><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span></div>`;
 }
@@ -33317,21 +33390,50 @@ function ui31GreyQHTML(lvl){
   const tip = lvl > 0 ? TX('ui.eng28-later') + ' (' + TX('ui.codex-skill-lvl', {n: lvl}) + ')' : SKILL_Q_TIP;
   return ` <span class="skill-q${lvl > 0 ? ' eng28-later' : ''} ui31-grey-q" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">?</span>`;
 }
-function ui19McSkillsHTML(top, ids, defs, ok, mapId){
-  const uniq = [...new Set(ids)], rows = ui19McSkillRows(uniq, defs), early = ui19McEarlierSkillKeys(top, defs, ok), kw = (typeof MAP_KEYWORDS !== 'undefined' ? MAP_KEYWORDS : {})[mapId || top]; // typeof guards: tests lift this function alone
+// UI32 #7: which cards feed the groups. Main = the map's own list (a main map: its MAP list; a side map: its own lists), then the owner's picks on top of it (a Chosen card
+// marked Cut leaves, a Maybe / Cut card marked Keep joins); Other = every other list of this main map (side maps, SPECIAL) and the cards the owner added to SPECIAL.
+function ui32McSkillIds(top, mapId, ok){
+  const secs = mapPoolSections(top), sub = typeof mpIsSub === 'function' && mpIsSub(mapId);
+  const isMain = s=> sub ? (s.key !== 'special' && (s.sub === mapId || (MP_EXTRA_LISTS[s.sub] && MP_EXTRA_LISTS[s.sub].map === mapId))) : s.key === 'cards';
+  const main = [], other = [];
+  secs.forEach(s=>{
+    let ids = (s.ids || []).filter(ok);
+    if(isMain(s)){ try{ const rv = rv1ReviewOf(s, top); if(rv){ const fl = id=> !!rvFlips[top + '|' + s.key + '|' + id], cut = new Set((rv.chosen || []).filter(e=> e && fl(e.id)).map(e=> e.id));
+      ids = ids.filter(id=> !cut.has(id)); (rv.maybe || []).concat(rv.cut || []).forEach(e=>{ if(e && fl(e.id) && ok(e.id) && !ids.includes(e.id)) ids.push(e.id); }); } }catch(e){} main.push(...ids); }
+    else other.push(...ids);
+  });
+  rvAddedOf(top).filter(ok).forEach(id=> other.push(id));
+  return {main: [...new Set(main)], other: [...new Set(other)]};
+}
+// the section redrawn in place (a Cut / Keep toggle, a card added to or removed from SPECIAL, a card saved in the editor): no close and reopen
+function ui32McRefreshSkills(ov){
+  try{ const c = ov && ov._ui32Skills, old = ov && ov.querySelector('#ui19McSkills'); if(!c) return;
+    const defs = getCardDefs(), g = ui32McSkillIds(c.top, c.mapId, c.ok), tmp = document.createElement('div'); tmp.innerHTML = ui19McSkillsHTML(c.top, g.main, defs, c.ok, c.mapId, g.other);
+    const fresh = tmp.firstElementChild; if(!fresh) return; if(old) old.replaceWith(fresh); else { const body = ov.querySelector('.pk1-mc-body'); if(body) body.parentNode.insertBefore(fresh, body); }
+  }catch(e){}
+}
+// 2026-11-07 (package UI32 #7, owner 19:11): three ordered groups. (a) Main skills: the cards of the map's OWN list (`ids`), with the NEW! tag on a skill first seen on this
+// map in road order; (b) Other skills: skills found only on cards of its other sections (`otherIds`: side maps, specials, owner-added cards); (c) Recommended skills for the
+// map, in blue (the keyword intro, the Sugg. Intro picks no card has, the SKILLREC1 recommendations). A skill outside (a) that is a suggested intro here wears the Sugg. Intro pill;
+// (a) tiles keep it too: UI30 says every main map shows at least one, and a main-list pick would otherwise show none (owner 19:11: skills in (a) "don't need it"; one `sp()` to drop). Called with no `otherIds` it is the old single list (the tests lift it alone).
+function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
+  const uniq = [...new Set(ids)], rows = ui19McSkillRows(uniq, defs), mainKeys = new Set(rows.map(r=> r.key));
+  const uniqO = [...new Set((otherIds || []).filter(id=> !uniq.includes(id)))], rowsO = ui19McSkillRows(uniqO, defs).filter(r=> !mainKeys.has(r.key)), early = ui19McEarlierSkillKeys(top, defs, ok), kw = (typeof MAP_KEYWORDS !== 'undefined' ? MAP_KEYWORDS : {})[mapId || top]; // typeof guards: tests lift this function alone
   const mapN = (()=>{ try{ return mapNumberOf(top); }catch(e){ return null; } })(); // 2026-11-07 (UI28 #3)
   const recs0 = typeof ui24McRecs === 'function' ? ui24McRecs(mapId || top, defs) : [], recBy = new Map(); recs0.forEach(r=>{ if(!recBy.has(r.key)) recBy.set(r.key, r); });
   const sugg = typeof ui30McSugg === 'function' ? ui30McSugg(mapId || top) : new Map(), sp = k=> typeof ui30SuggPillHTML === 'function' ? ui30SuggPillHTML(k, sugg) : ''; // 2026-11-07 (UI30 #16): the Sugg. Intro pills
-  const flagged = rows.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; return Object.assign(r, {isNew: mt.met && !early.has(r.key), p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl}); }).sort((a, b)=> (a.grey - b.grey) || (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
+  const flagOf = (arr, isMain)=> arr.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; return Object.assign(r, {isNew: isMain && mt.met && !early.has(r.key), p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl, outside: !isMain}); }).filter(r=> r.p).sort((a, b)=> (a.grey - b.grey) || (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
+  const flaggedMain = flagOf(rows, true), flaggedOther = flagOf(rowsO, false), flagged = flaggedMain.concat(flaggedOther);
   // 2026-11-04 (UI22a): each skill tile carries its full text as a tooltip (the text is clamped to two lines)
   const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
     return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} title="${escapeAttr(r.p.label + ': ' + ui19McSkillText(r) + ' (' + TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + ')' + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}<small>${escapeHtml(ui19McSkillText(r))}</small></span></li>`; };
-  const have = new Set(rows.map(r=> r.key)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
+  const have = new Set(rows.concat(rowsO).map(r=> r.key)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
   const recs = recs0.filter(r=>{ if(have.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
   const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" title="${escapeAttr(TX('ui.ui24-rec-tip', {card: r.card}) + ': ' + r.p.label + ': ' + ui19McSkillText(r) + (r.why ? ' (' + r.why + ')' : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sp(r.key)}<small>${escapeHtml(TX('ui.ui24-rec-for', {card: r.card}))}</small></span></li>`;
-  const kwMissing = kw && !rows.some(r=> r.key === kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" title="${escapeAttr(skillDefOf(kw).label + ': ' + ui19McSkillText({key: kw, fx: {[kw]: true}}))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sp(kw)}<small>${escapeHtml(TX('ui.ui24-intro-missing'))}</small></span></li>` : '';
+  const kwMissing = kw && !have.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" title="${escapeAttr(skillDefOf(kw).label + ': ' + ui19McSkillText({key: kw, fx: {[kw]: true}}))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sp(kw)}<small>${escapeHtml(TX('ui.ui24-intro-missing'))}</small></span></li>` : '';
   const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, new Set([...have, ...(kwMissing ? [kw] : []), ...recs.map(r=> r.key)])) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
-  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length || recs.length || kwMissing || suggTiles ? `<ul class="ui19-sk-list">${flagged.map(li).join('')}${kwMissing}${suggTiles}${recs.map(rli).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
+  const hd = (k, n)=> n ? `<li class="ui32-sk-head is-${k}" role="presentation">${escapeHtml(TX('ui.ui32-sk-' + k))}</li>` : ''; // UI32 #7: a divider per group
+  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length || recs.length || kwMissing || suggTiles ? `<ul class="ui19-sk-list">${hd('main', flaggedMain.length)}${flaggedMain.map(li).join('')}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}${hd('rec', recs.length + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0))}${kwMissing}${suggTiles}${recs.map(rli).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
 // UI22_MC:START
@@ -33415,7 +33517,7 @@ function pk1OpenMapCards(mapId){
     + (()=>{ try{ return ui21McKeywordHTML(mapId, defs, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok)); }catch(e){ return ''; } })(); // 2026-11-05 (UI21, IDEA-EARLY-3): the keyword of the map
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}${(()=>{ try{ return ui19McSkillsHTML(top, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok), defs, ok, mapId); }catch(e){ return ''; } })() /* 2026-11-04 (UI19) */}<div class="vis4-map-cards pk1-mc-body">${secs}${ui22Secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}${(()=>{ try{ const g = ui32McSkillIds(top, mapId, ok); return ui19McSkillsHTML(top, g.main, defs, ok, mapId, g.other); }catch(e){ return ''; } })() /* 2026-11-04 (UI19); UI32 #7: main / other groups */}<div class="vis4-map-cards pk1-mc-body">${secs}${ui22Secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); }; // 2026-11-01 (UI13, HH3): not while the card editor has it hidden
@@ -33428,7 +33530,9 @@ function pk1OpenMapCards(mapId){
     const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); { const k = top + '|' + t.dataset.rvSec + '|' + t.dataset.rvId; if(on) rvFlips[k] = true; else delete rvFlips[k]; rvFlipsSave(); } b.setAttribute('aria-pressed', on ? 'true' : 'false');
     b.textContent = on ? TX('ui.rv1-undo') : (t.dataset.rvKind === 'chosen' ? TX('ui.rv1-act-cut') : TX('ui.rv1-act-keep'));
     rv2Update(ov); // 2026-10-29 (package REVIEW2): the X/N, Y/M line follows the toggles
+    ui32McRefreshSkills(ov); // UI32 #7: so does the skills section
   };
+  ov._ui32Skills = {top, mapId, ok};
   document.getElementById('pk1McClose').addEventListener('click', close);
   const cp = document.getElementById('rv1Copy');
   if(cp) cp.addEventListener('click', ()=>{
@@ -34087,7 +34191,7 @@ function cePowerHTML(d){
     const tip = escapeAttr(tipParts.join(' '));
     if(!Number.isFinite(wr)) return `<div class="ce-power is-none" title="${tip}">${escapeHtml(TX('ui.ui24-power-none'))}</div>`;
     const n = Math.round(wr - 50), advTxt = Number.isFinite(adv) ? TX('ui.bal22-adv', {m: sg(adv - 50)}) : TX('ui.bal22-adv-none');
-    return `<div class="ce-power ${n > 0 ? 'is-up' : n < 0 ? 'is-down' : 'is-zero'}" title="${tip}"><b>${escapeHtml(TX('ui.ui24-power', {n: sg(wr - 50)}))}</b> · ${escapeHtml(advTxt)}</div>`; }catch(e){ return ''; }
+    return `<div class="ce-power ${n > 0 ? 'is-up' : n < 0 ? 'is-down' : 'is-zero'}" title="${tip}"><b>${escapeHtml(TX('ui.ui24-power', {n: sg(wr - 50)}))}</b>${ui32PowerMarkHTML(d)} · ${escapeHtml(advTxt)}</div>`; }catch(e){ return ''; } // UI32 (2026-11-07): + the edited-since-rated marker
 }
 function ceBudgetRefresh(d){
   const fa = document.getElementById('fAtk'); if(!fa) return;
@@ -38468,7 +38572,7 @@ function renderMatchUI(){
   wireDropZones();
   if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox && !m.fxLib) wireSandboxPanel();
   updateControlsDisabled();
-  { const pin0 = battleLogPinned; m.log.forEach(renderLogLine); battleLogPinned = pin0; } // replaying the lines into the fresh log never changes the pin (2026-10-18, BP)
+  { const pin0 = battleLogPinned; ui32LastFieldKey = null; m.log.forEach(renderLogLine); battleLogPinned = pin0; } // replaying the lines into the fresh log never changes the pin (2026-10-18, BP)
   try{ if(!m._logPinInit){ m._logPinInit = true; battleLogPinned = true; } wireBattleLogScroll(); const lg = document.getElementById('battleLog'); if(lg){ if(battleLogPinned) pinBattleLog(lg); else lg.scrollTop = battleLogScrollTop; } }catch(e){} // the rebuilt log keeps its place (2026-10-18, BP)
   // Sandbox has no hand/turn concept (see its own comment above) -- maybeAutoSkip exists to
   // auto-pass an empty-handed turn in a real match, which would otherwise fire every single
@@ -48716,6 +48820,26 @@ function tut12LogMask(r){
   if(!names.size) return r;
   const esc = x=> x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), re = new RegExp('(^|[^\\p{L}])(' + [...names].sort((a, b)=> b.length - a.length).map(esc).join('|') + ')(?![\\p{L}])', 'gu');
   const t = r.text.replace(re, '$1?'); return t === r.text ? r : Object.assign({}, r, {text: t}); }
+// 2026-11-07 (package UI32, owner 18:53 #1: "the log shows raw 'en20Dry.' / 'en20Soak.' after a unit chip, for every unit ... one line for the field effect, not one line per unit"):
+// the ENG20 statusFx kinds had no log line, so the generic fallback printed "<unit> en20Dry.". The tide's soak and the round's drying are events per unit; the log
+// shows each as ONE line for the whole field (fieldKey: renderLogLine skips the same key again while no other line came between). A soak or dry from a hit stays
+// one line naming the unit hit.
+const UI32_LOG_FIELD = {tide: 'ui.ui32-log-tide-soak', drain: 'ui.ui32-log-drain'};
+function ui32FieldLog(ev, nm){
+  const k = ev && ev.kind, n = ev && ev.amount, t = ()=> nm(ev.targetDefId);
+  switch(k){
+    case 'en20Soak': return ev.tide ? {cls:'', text: TX(UI32_LOG_FIELD.tide), fieldKey:'tide'} : {cls:'', text: TX('ui.ui32-log-soak', {name: t(), n: ev.total != null ? ev.total : n})};
+    case 'en20Dry': return ev.drain ? {cls:'', text: TX(UI32_LOG_FIELD.drain), fieldKey:'drain'} : {cls:'', text: TX('ui.ui32-log-dry', {name: t(), n: ev.total != null ? ev.total : 0})};
+    case 'en20Douse': return {cls:'', text: TX('ui.ui32-log-douse', {name: t()})};
+    case 'en20Ignite': return {cls:'', text: TX('ui.ui32-log-ignite', {name: t(), n: ev.total != null ? ev.total : n})};
+    case 'en20Roll': return {cls:'', text: TX('ui.ui32-log-roll', {name: t(), n: n || 1})};
+    case 'en20Glean': return {cls:'heal', text: TX('ui.ui32-log-glean', {name: t(), n: n || 0})};
+    case 'crosswind': return {cls:'', text: TX('ui.ui32-log-cross', {n: n || 0}), fieldKey:'cross'};
+    case 'en20LumberFeast': return {cls:'gold', text: TX('ui.ui32-log-feast', {name: t(), n: n || 0})};
+  }
+  return null;
+}
+let ui32LastFieldKey = null; // the field line just printed (renderLogLine); any other line clears it
 function logText(ev){
   if(emptyHealEvent(ev)) return null;
   if(ev && !ev.__t12 && revealTut12()) return tut12LogMask(logText(Object.assign({}, ev, {__t12: true}))); // SKL0 (2026-10-29): T-1 / T-2 // 2026-10-19 (package HN): no "+0" line
@@ -48867,6 +48991,7 @@ function logText(ev){
       if(ev.kind === 'creativity') return {cls:'', text:TX('ui.creativity-log', {who: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount||1})}; // Creative N (2026-10-18)
       if(ev.kind === 'prayer') return ev.offering ? {cls:'', text:TX('ui.prayer-offer-log', {name: nm(ev.targetDefId)})} : null; // Prayer tokens (2026-10-19): the badge shows the per-turn ones
       if(ev.kind === 'exposeFade') return {cls:'', text:`🎯 No enemy units left to strike ${nm(ev.targetDefId)}: its Expose ${ev.amount > 1 ? ev.amount + ' counters fade' : 'counter fades'}.`}; // 2026-10-17
+      { const u = ui32FieldLog(ev, nm); if(u) return u; } // UI32 (2026-11-07, owner 18:53 #1): the ENG20 water / fire lines (they printed the raw kind, "en20Dry.")
       const kindText = {
         surge: `surges with the mountain's fire: +${ev.atk} Attack, +${ev.hp} Health 🌋`,
         poison: `poisoned ${nm(ev.targetDefId)} (+${ev.amount} ☠)`,
@@ -48940,6 +49065,7 @@ function logText(ev){
         nullify: `nullifies ${nm(ev.targetDefId)}: no reaction from that hit${ev.killed ? `, and it goes to the ${EXILE_ZONE_NAME}` : ''} 🚫`,
         thaw: ev.left ? `thaws a little (${ev.left} freeze counter${ev.left===1?'':'s'} left) ❄` : `thaws out ❄`,
       }[ev.kind] || ev.kind;
+      if(kindText === ev.kind) return null; // UI32 (2026-11-07): a kind with no line of its own (bolster, satiety, sequester ...) printed its raw name, "<unit> satiety."; now it prints nothing
       const cls = ev.kind==='poison' || ev.kind==='corrode' ? 'poison' : ev.kind==='bleed' ? 'bleed' : (ev.kind==='cleanse' || ev.kind==='grit' || ev.kind==='berserk' || ev.kind==='momentum' || ev.kind==='esprit') ? 'heal' : '';
       return {cls, text:`${nm(ev.attDefId)} ${kindText}.`};
     }
@@ -49080,6 +49206,7 @@ function renderLogLine(ev){
   // 2026-10-25 (package FIX3, F3): read once per frame with the pin (fix3PinLogSoon), not before every line
   if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); fix3PinLogSoon(log); return; }
   const lt = logText(ev); if(!lt || !lt.text) return; // 2026-10-16: an event with no line (a fuse tick) used to throw here
+  if(lt.fieldKey){ if(ui32LastFieldKey === lt.fieldKey) return; ui32LastFieldKey = lt.fieldKey; } else ui32LastFieldKey = null; // UI32 (2026-11-07): one line for a field effect, not one per unit
   const {cls,text} = lt;
   const row = document.createElement('div');
   // 2026-10-16 (user: "Status damage should be recorded in the log. But all log items will be slightly 'forward' like 1 tab nest in. So
@@ -50582,6 +50709,18 @@ function flashDmg(uid, dmg, blocked, dmgType, crit, mods, attDefId){ // + attDef
 // the target as it was before this hit (rc: Health, Poison, Bleed, Exploit...) and the engine's own tests (hunterVsOf, sk3Weak, sk3ExecLow,
 // wetCountOf). The hit's number then shows the rest, and a moment later the bonus pops as a second, smaller number with its own flash: in water
 // for a Wet target (the skill says "bonus water damage"), else in the hit's own type. Split only when the hit got more through than the bonus.
+// 2026-11-07 (package UI32, owner 18:53 #2: "Moon Jelly (0 physical damage) hits and the float shows 0; show the venom applied, no 0 damage number when the hit's only effect is venom"):
+// the Venom a hit adds (the engine's own rule: the attacker's poison, from a hit that got through; not a Cleave side hit, not a Structure), read before the replay copy takes it.
+// Returns that amount (the Venom stacks this hit added) only for a hit that did 0 damage; 0 otherwise (a hit that also hurts keeps its damage number, the Venom pip shows the rest).
+function ui32VenomOnly(ev){
+  const m = matchState; if(!m || !ev || ev.sweep || (ev.dmg || 0) > 0 || ev.armorBlocked) return 0;
+  const conv = ev.elementalConvert === 'poison' ? (Number(ev.elementalAmount) || 0) : 0; // poison-type damage that landed as stacks (the engine's own number)
+  const e = (getCardDefs()[ev.attDefId] || {}).effects || {}; const skill = (Number(e.poison) || 0) + (!e.poison && e.venomous ? (e.venomous === true ? 2 : Math.max(0, Number(e.venomous) || 0)) : 0) + (e.rabid ? (e.rabid === true ? 2 : Math.max(0, Number(e.rabid) || 0)) : 0);
+  const through = (Number(ev.elementalAmount) || 0) > 0; // a 0-damage hit leaves its skill's Venom only when it converted into stacks
+  const rc = m.replayCards && m.replayCards[ev.targetUid]; if(!rc || !(rc.hp > 0)) return 0;
+  const tdf = getCardDefs()[rc.defId || ev.targetDefId] || {}; if((tdf.archetypes || []).includes('Structure')) return 0;
+  return conv + (through ? skill : 0);
+}
 function ui14HitBonus(ev){
   const m = matchState; if(!m || !ev || ev.source || ev.armorBlocked || ev.targetUid == null || !(ev.dmg > 0)) return null;
   const e = (getCardDefs()[ev.attDefId] || {}).effects || {}; if(!e.hunter && !e.executioner) return null;
@@ -53405,7 +53544,9 @@ function renderVfxForEvent(ev){
       }
       else {
         { const bon = ev.type === 'hit' ? fightSafe(()=> ui14HitBonus(ev), 'ui14HitBonus') : null; // UI14 (JJ3): Cull and the like show their bonus as a second hit
-          flashDmg(ev.targetUid, bon ? ev.dmg - bon.n : ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush, ev.mods, ev.attDefId); // + the mark (DN, 2026-10-22); + the attacker, a Fencer's 🤺 (GD2)
+          const vn = ev.type === 'hit' ? fightSafe(()=> ui32VenomOnly(ev), 'ui32VenomOnly') : 0; // UI32 (2026-11-07, owner 18:53 #2): a Venomous hit that does no damage shows the Venom it added, not "0"
+          if(vn > 0){ const tel = boardCardEl(ev.targetUid); if(tel){ try{ recoilEl(tel, 0.6); floatText(tel, TX('ui.en7-float-poison', {n: vn}), 'poison'); SoundKit.poisonApply(); }catch(e){} } }
+          else flashDmg(ev.targetUid, bon ? ev.dmg - bon.n : ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush, ev.mods, ev.attDefId); // + the mark (DN, 2026-10-22); + the attacker, a Fencer's 🤺 (GD2)
           if(bon) ui14BonusHitVfx(ev.targetUid, bon); }
         armorBadgeGlow(targetEl, ev); // 2026-10-15
         // Mirror the engine's own per-hit mutations into the replay snapshot (items #8/#9):

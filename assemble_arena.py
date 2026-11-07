@@ -398,6 +398,41 @@ if os.path.exists(_cp_path):
         _cp["v"] = 3
         _cp["games"] = _cpd.get("games")
         _cp["fb"] = {r["id"]: r["forBudget"] for r in _cpd.get("rows", []) if r.get("id") is not None and r.get("forBudget") is not None}
+# 2026-11-07 (package UI32, owner 18:55 #5): the measured stats per card, so the Power badge can say "edited since rated". Each row of the run's report
+# holds the card's attack, health and skill keys at the level it was measured (measuredAt); the skill VALUES (to see a raised skill) come from
+# canonical/cards.json as it was at the commit that last wrote the report, as the run reads them (its own effects).
+# fp: {id: [attack, health, {skill: value}, level, hasTriggers]}. Without git (a tarball build) the values default to true and only added / removed
+# skills show. The comparison itself is done in the page, at the same level (ui32PowerChange).
+if _cp is not None and os.path.exists(_cp_path):
+    _vals = {}
+    try:
+        import subprocess as _sp32
+        _rel = os.path.relpath(_cp_path, SCRATCH)
+        _sha = _sp32.run(["git", "log", "-1", "--format=%H", "--", _rel], cwd=SCRATCH, capture_output=True, text=True, timeout=60).stdout.strip()
+        if _sha:
+            _cj = json.loads(_sp32.run(["git", "show", _sha + ":canonical/cards.json"], cwd=SCRATCH, capture_output=True, text=True, timeout=60).stdout)
+            _cj = _cj if isinstance(_cj, list) else _cj.get("cards", [])
+            _vals = {_c.get("id"): _c for _c in _cj}
+    except Exception:
+        _vals = {}
+    _fp = {}
+    for _r in _cpd.get("rows", []):
+        _id = _r.get("id")
+        if _id is None or _r.get("attack") is None:
+            continue
+        _lv = _r.get("measuredAt", 1) or 0
+        _keys = [k for k in (_r.get("skills") or []) if k != "triggers"]
+        _fx = {}
+        _c = _vals.get(_id)
+        if _c:
+            _e = dict(_c.get("effects") or {})  # the run measures a card's own effects (no level-granted ones), as tools/card_balance.js does
+            for _k in _keys:
+                if _k in _e and not isinstance(_e[_k], (dict, list)):
+                    _fx[_k] = _e[_k]
+        for _k in _keys:
+            _fx.setdefault(_k, True)
+        _fp[_id] = [_r.get("attack"), _r.get("health"), _fx, _lv, 1 if "triggers" in (_r.get("skills") or []) else 0]
+    _cp["fp"] = _fp
 app_src = sub_once(app_src, "__CARD_POWER__", json.dumps(_cp, ensure_ascii=False))
 app_src = sub_once(app_src, "__SKILL_RECS__", json.dumps([{"mapName": r["mapName"].split(" (")[0], "card": r["card"], "cardName": r["cardName"], "why": r.get("why", ""), "fx": r.get("proposedEffects")} for r in json.load(open(SCRATCH + "docs/skill-recommendations-2026-11-04.json", encoding="utf-8"))["rows"] if r.get("proposedEffects")], ensure_ascii=False))
 # 2026-11-07 (package UI29): CONTENT16's pack plan (canonical/pack-plan.json) for the admin Pack editor: the zones, each list's rule, counts and
