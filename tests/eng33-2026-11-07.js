@@ -120,7 +120,7 @@ for(const [id, n] of [['e33-bul1', 1], ['e33-bul2', 2], ['e33-bul3', 3]]){ const
 { const dec = J('docs/decisions.json'), list = dec.items || dec.decisions || dec, ids = list.filter(x=> /^ENG33-/.test(x.id));
   ok(ids.length >= 2 && ids.every(x=> (x.body || '').split(/\s+/).length < 100), `decisions ENG33-n, each under 100 words (${ids.map(x=> x.id)})`);
   ok(ids.some(x=> /Smelly/.test((x.title || '') + (x.body || ''))), 'the Smelly proposal is a decision'); }
-ok(/ENG33/.test(rd('docs/CHANGELOG.md').slice(0, 6000)), 'a CHANGELOG entry at the top');
+ok(/ENG33/.test(rd('docs/CHANGELOG.md')), 'a CHANGELOG entry at the top'); // 2026-11-07 (ENG34 merge): later packages sit above, search the whole file
 ok(/## 11-07: Package ENG33 \(on its branch, not released\)/.test(rd('docs/action-items.md')), 'the action-items section');
 ok(/run node tests\/eng33-2026-11-07\.js/.test(rd('tests/run-all.sh')), 'listed in tests/run-all.sh');
 

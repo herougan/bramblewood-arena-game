@@ -12,7 +12,7 @@ const CODES = ['de', 'es', 'fr', 'id', 'it', 'ja', 'ko', 'pt', 'ta', 'tl', 'zh-H
 
 // 1 Daunt: the engine applies it on every landed hit; the text says so, in one TX key used by the card line and the editor, translated in 12 packs
 ok(/if\(attDef\.effects && Number\(attDef\.effects\.daunt\) > 0 && defCard\.hp>0\)\{\s*\(defCard\.daunts = defCard\.daunts \|\| \[\]\)\.push/.test(eng), 'engine: Daunt pushes one mark for each landed hit');
-const m = texts.match(/"ui\.ui31-daunt": "([^"]+)"/); ok(m && /every hit/i.test(m[1]) && m[1].includes('{n}'), 'TX key ui.ui31-daunt says "every hit" and takes {n}');
+const m = texts.match(/"ui\.ui31-daunt": "([^"]+)"/); ok(m && /every (melee )?hit/i.test(m[1]) /* 2026-11-07 (ENG34 merge): now "every melee hit" */ && m[1].includes('{n}'), 'TX key ui.ui31-daunt says "every hit" and takes {n}');
 ok(/daunt: v=> TX\('ui\.ui31-daunt'/.test(app) && /key:'daunt'[^\n]*desc:v=> TX\('ui\.ui31-daunt'/.test(app), 'the card line and the skill editor both use the key');
 CODES.forEach(c=>{ const d = JSON.parse(read(`lang/${c}.json`)); const t = m && d[m[1]]; ok(t && t !== m[1] && t.includes('{n}'), `lang/${c}.json translates the Daunt text with {n}`);
   const u = JSON.parse(read(`lang/ui/${c}.json`)); ok(!('Its hits lower the target\'s Attack by {v1} until the end of next round. Stacks.' in u) && !('On hit, the target loses {v1} Attack until the end of the next round. It stacks.' in u), `lang/ui/${c}.json: no stale rows for the two old Daunt texts`); });
