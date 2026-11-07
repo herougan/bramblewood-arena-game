@@ -3494,6 +3494,28 @@ const SKILL_REVEAL_MAP = {
   keenSense:   {from:8, darkMap:true},
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
+// 2026-11-07 (package UI27 #11, owner UI25-1 b, 08:54: "UI25-1: unlock those too."): a gated skill that sits on a card the player can own before the
+// skill's unlock map is not gated at all: worked out from the cards (the shipped ones and live edits), the map each becomes obtainable on
+// (cardObtainMap, the source of canonical/card-obtain-maps.json) and the reveal map's `from`. Cards no one can own (tokens, test cards, unattainable
+// ones) don't count. Sonar and Keen Sense keep ENG28's rule ("?" until the first darkness map, ENG28-7), unless the player owns a card that carries
+// them: then they read as themselves (ui27OwnedWithSkill).
+const UI27_KEEP_GATE = new Set(['sonar', 'keenSense']);
+let ui27UngateMemo = null;
+function ui27UngatedSkills(){
+  let sig = ''; try{ sig = Object.keys(liveCards).length + ':' + Object.keys(liveDeletes).length; }catch(e){}
+  if(ui27UngateMemo && ui27UngateMemo.sig === sig) return ui27UngateMemo.set;
+  const out = new Set();
+  try{ const src = Object.assign({}, CARD_DEFS_BASELINE, liveCards); Object.keys(liveDeletes || {}).forEach(id=>{ delete src[id]; });
+    Object.keys(src).forEach(id=>{ const d = src[id]; if(!d || d.token || d.test || d.hero || d.hallOfFame || d.cardType === 'materia') return;
+      const e = d.effects || {}, keys = Object.keys(SKILL_REVEAL_MAP).filter(k=> !UI27_KEEP_GATE.has(k) && !out.has(k) && (skillValOn(e[k]) || (SKILL_REVEAL_MAP[k].parts || []).some(x=> skillValOn(e[x]))));
+      if(!keys.length || isUnattainable(d)) return;
+      const om = cardObtainMap(d); keys.forEach(k=>{ if(om < SKILL_REVEAL_MAP[k].from) out.add(k); }); }); }catch(e){}
+  ui27UngateMemo = {sig, set: out}; return out; }
+// Sonar / Keen Sense: shown once the player owns a card with it (a copy in the collection)
+function ui27OwnedWithSkill(k){ if(!UI27_KEEP_GATE.has(k)) return false;
+  try{ const defs = Object.assign({}, CARD_DEFS_BASELINE, liveCards); for(const id of Object.keys(myCardCopies || {})){ if(!(myCardCopies[id] || []).length) continue; const e = defs[id] && defs[id].effects; if(e && (skillValOn(e[k]) || (SKILL_REVEAL_MAP[k].parts || []).some(x=> skillValOn(e[x])))) return true; } }catch(e){}
+  return false; }
+function ui27Ungated(k){ return ui27UngatedSkills().has(k) || ui27OwnedWithSkill(k); }
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
 const SKILL_REVEAL_PARTS = Object.assign({swimmer:['swimmerGrant']}, Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, (r.parts || []).slice()]))); // + the advanced forms' braces (2026-10-15)
 // In a tutorial fight now? (a skill with tutorials:true reads as itself there)
@@ -3543,6 +3565,7 @@ function hiddenSkillSet(){
     TUT12_SHOWN.forEach(k=> all.delete(k)); skillRevealMemo = {at: now, set: all, tut, t12}; return all; }
   const st = skillRevealState(), far = furthestMapReached(), set = new Set(); let grew = false;
   Object.keys(SKILL_REVEAL).forEach(k=>{ if(st.keys.includes(k)) return; if(far >= SKILL_REVEAL[k] || eng23SeenWithMet(SKILL_REVEAL_MAP[k])){ st.keys.push(k); grew = true; return; }
+    if(ui27Ungated(k)) return; // 2026-11-07 (package UI27 #11, UI25-1 b): on a card you can own earlier (not remembered, so no NEW! tag)
     if(tut && SKILL_REVEAL_MAP[k] && SKILL_REVEAL_MAP[k].tutorials) return; // 2026-10-21 (package TX): the tutorial shows it, unremembered
     if(SKILL_REVEAL_MAP[k] && SKILL_REVEAL_MAP[k].nameFrom != null && far >= SKILL_REVEAL_MAP[k].nameFrom) return; // ENG9: its name shows now (skillNameOnlyNow)
     set.add(k); });
@@ -3555,7 +3578,7 @@ function eng23SeenWithMet(r){ if(!r || !Array.isArray(r.seenWith) || !r.seenWith
 function skillHiddenNow(key){ if(key && !TUT12_SHOWN.has(key) && revealTut12()) return true; /* SKL0: T-1 / T-2 */ return hiddenSkillSet().has(key); }
 // ENG9 (2026-10-26, EN8-4): between a gated skill's nameFrom and its from map, its name shows with "?" for its effect.
 function skillNameOnlyNow(key){ const r = SKILL_REVEAL_MAP[key]; if(!r || r.nameFrom == null) return false; if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return false;
-  try{ if(skillRevealState().keys.includes(key)) return false; const far = furthestMapReached(); return far >= r.nameFrom && far < r.from; }catch(e){ return false; } }
+  try{ if(skillRevealState().keys.includes(key) || ui27Ungated(key)) return false; /* UI27 #11 */ const far = furthestMapReached(); return far >= r.nameFrom && far < r.from; }catch(e){ return false; } }
 const skillValOn = v=> v != null && v !== false && v !== 0 && v !== '';
 function hiddenSkillsOf(d){ const e = d && d.effects; if(!e) return []; const h = hiddenSkillSet(); if(!h.size) return [];
   return [...h].filter(k=> skillValOn(e[k]) || (SKILL_REVEAL_PARTS[k]||[]).some(x=> skillValOn(e[x]))); }
@@ -3921,7 +3944,15 @@ async function checkGameVersion(force){
   try{ const r = await fetch('version.json?t=' + Date.now(), {cache:'no-store'}); if(r.ok) v = await r.json(); }catch(e){ return null; }
   if(!v || !v.build) return null;
   if(v.build !== BUILD_ID){
-    versionBanner('update', 'A new version of Bramblewood is out.', 'Update', ()=>{ try{ sessionStorage.removeItem(VERSION_SEEN_KEY); }catch(e){} location.reload(); });
+    // 2026-11-07 (package UI27 #5, owner 08:54: "after pressing Update the game still asks to update; a refresh fixed it"). Cause: main shipped
+    // deploys whose version.json came from an older build than their index.html (8 of the last 30 main commits, e.g. ab178407, 57aa596b: a merge
+    // took index.html from the rebuild or the package but kept main's version.json). Every load then compared a build stamp the page could never
+    // match, and Update reloaded the same, already newest, page into the same question; the next deploy with matching files ended it. Two guards:
+    // Update remembers which build it went for and loads the page under a fresh URL (?v=<build>, cache-busting; the parameter is dropped on
+    // load), and a page that has just updated for that build and still differs does not ask again this session (the stamp is the stale one).
+    // tests/ui27-2026-11-07.js checks that version.json and index.html carry the same build.
+    if(ui27UpdateSettled(v.build)) return 'stale-stamp';
+    versionBanner('update', 'A new version of Bramblewood is out.', 'Update', ()=> ui27GoUpdate(v.build));
     return 'outdated';
   }
   if(v.cardHash && v.cardHash !== BASELINE_CARD_HASH){
@@ -3930,6 +3961,24 @@ async function checkGameVersion(force){
   }
   return 'ok';
 }
+// 2026-11-07 (package UI27 #5): the Update button's record ({to, from, at, tries} in sessionStorage) and the cache-busting load.
+const UI27_UPDATE_KEY = 'bramblewood_update_to_v1', UI27_UPDATE_IGNORE = 'bramblewood_update_ignore_v1';
+function ui27UpdateRec(){ try{ return JSON.parse(sessionStorage.getItem(UI27_UPDATE_KEY) || 'null'); }catch(e){ return null; } }
+// true = the server's stamp is not this page's, but this tab already updated for that build (the page did change, or it was tried twice): no banner
+function ui27UpdateSettled(serverBuild){
+  try{ if(sessionStorage.getItem(UI27_UPDATE_IGNORE) === serverBuild) return true; }catch(e){}
+  const r = ui27UpdateRec(); if(!r || r.to !== serverBuild || Date.now() - (r.at || 0) > 30 * 60e3) return false;
+  if(r.from !== BUILD_ID || (r.tries | 0) >= 2){ try{ sessionStorage.setItem(UI27_UPDATE_IGNORE, serverBuild); }catch(e){} try{ console.warn('[Bramblewood] version.json says ' + serverBuild + ', this page is ' + BUILD_ID + ' after an update: the stamp is stale'); }catch(e){} return true; }
+  return false; }
+function ui27GoUpdate(serverBuild){
+  const r = ui27UpdateRec(), tries = r && r.to === serverBuild ? (r.tries | 0) + 1 : 1;
+  try{ sessionStorage.removeItem(VERSION_SEEN_KEY); sessionStorage.setItem(UI27_UPDATE_KEY, JSON.stringify({to: serverBuild, from: BUILD_ID, at: Date.now(), tries})); }catch(e){}
+  const u = new URL(location.href); u.searchParams.set('v', serverBuild);
+  let went = false; const go = ()=>{ if(went) return; went = true; try{ location.replace(u.toString()); }catch(e){ location.reload(); } };
+  // refresh the HTTP cache's copy of the page first (best effort), so a later plain reload gets the new page too
+  try{ fetch(location.pathname, {cache: 'reload', credentials: 'same-origin'}).then(go, go); setTimeout(go, 2500); }catch(e){ go(); }
+}
+try{ if(typeof location !== 'undefined' && /[?&]v=/.test(location.search) && typeof history !== 'undefined' && history.replaceState){ const u = new URL(location.href); u.searchParams.delete('v'); history.replaceState(history.state, '', u.pathname + (u.search || '') + u.hash); } }catch(e){}
 if(typeof window !== 'undefined'){
   window.addEventListener('load', ()=> setTimeout(()=> checkGameVersion(false), 4000));
   document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) checkGameVersion(false); });
@@ -5085,6 +5134,16 @@ async function fetchTxns(){
    small VFX helpers shared by the Play view.
    ============================================================ */
 const SFX_THROTTLE = {}; // last-played times for the throttled cues (2026-10-14)
+// 2026-11-07 (package UI27 #15, owner 08:54: "No effects or sounds while the tab is out of focus (they pile up and play at once on return)"): the page
+// is "away" while the tab is hidden, and for UI27_BACK_MS after it shows again. While hidden the browser draws no frames, so GSAP's timelines (and
+// the timer-driven cues of a fight) wait, then all catch up in the first frames back: the sounds and effects asked for meanwhile played at once.
+// While away, cues are skipped (SoundKit's ac()), effects count as Effects None (fxLevel, fxHook: none started) and the Songbook's sting is
+// skipped. The game itself (the engine, the fight's timers, the rewards) runs as before; only the show is dropped. A window that only lost focus
+// (blur) but is still on screen keeps drawing frames, so nothing piles up there and it plays as usual.
+const UI27_BACK_MS = 600;
+let ui27BackAt = -1e9;
+function ui27Away(){ try{ if(typeof document !== 'undefined' && document.hidden) return true; return (typeof performance !== 'undefined' ? performance.now() : Date.now()) - ui27BackAt < UI27_BACK_MS; }catch(e){ return false; } }
+try{ if(typeof document !== 'undefined') document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) ui27BackAt = (typeof performance !== 'undefined' ? performance.now() : Date.now()); }); }catch(e){}
 const SoundKit = (()=>{
   let ctx = null;
   // Global sound effects volume (Task #203, UX consultant pass — see the .sound-toggle-btn CSS
@@ -5116,7 +5175,12 @@ const SoundKit = (()=>{
     if(!curPan || !c.createStereoPanner) return c.destination;
     const p = c.createStereoPanner(); p.pan.value = curPan; p.connect(c.destination); return p;
   }
-  function ac(){ if(!ctx){ try{ ctx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ ctx=null; } } return ctx; }
+  function acRaw(){ if(!ctx){ try{ ctx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ ctx=null; } } return ctx; }
+  // 2026-11-07 (package UI27 #15, owner 08:54: "No effects or sounds while the tab is out of focus (they pile up and play at once on return)"): every
+  // cue gets its context here, so a cue asked for while the page is hidden (or in the first moments back, when GSAP's paused timelines catch up and
+  // fire their callbacks all at once) is skipped, not queued. The music and the ambience use audioContext() (ungated); the music already fades out
+  // while hidden.
+  function ac(){ return ui27Away() ? null : acRaw(); }
   // Item #15 (2026-09-18, "the sound continues playing even after I end the turn"): every cue
   // here is scheduled with real Web Audio timestamps (c.currentTime + delay/duration), which run
   // on their OWN clock independent of the JS setTimeout-driven replay loop in resolveRound() that
@@ -5304,7 +5368,7 @@ const SoundKit = (()=>{
     // persists the choice so a future music system has a real, already-user-set volume to start
     // from instead of silently defaulting to full blast the day it ships.
     getMusicVolume(){ return musicVolume; },
-    audioContext(){ return ac(); },
+    audioContext(){ return acRaw(); }, // UI27 #15: ungated (music, ambience); the cues above use ac()
     setMusicVolume(v){
       musicVolume = Math.max(0, Math.min(1, v));
       try{ localStorage.setItem('bw_musicVolume', String(musicVolume)); }catch(e){}
@@ -6629,6 +6693,7 @@ const Songbook = (()=>{
     wantsPlace(){ return !!wanted(); },
     // One pass of a sting (Victory, Defeat) over whatever is playing.
     sting(key){
+      if(ui27Away()) return; // 2026-11-07 (package UI27 #15): not while the tab is hidden (or just back)
       const th = SONGBOOK[key], c = C(); if(!th || !c || vol() <= 0) return;
       try{ if(c.state === 'suspended') c.resume(); }catch(e){}
       const keep = st; out(c); master.gain.setTargetAtTime(vol()*LEVEL, c.currentTime, 0.1);
@@ -7523,10 +7588,11 @@ function fxLevelSetting(){
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   return reduce ? 'low' : lowPower ? 'med' : 'high';
 }
-function fxLevel(){ const v = fxLevelSetting(); return (fxStyle() === 'minimal' && FX_ORDER.indexOf(v) > 1) ? 'low' : v; }
+function fxLevelShown(){ const v = fxLevelSetting(); return (fxStyle() === 'minimal' && FX_ORDER.indexOf(v) > 1) ? 'low' : v; }
+function fxLevel(){ return ui27Away() ? 'none' : fxLevelShown(); } // 2026-11-07 (package UI27 #15): no effects start while the tab is hidden (or just back)
 function fxExplicit(){ try{ return FX_ORDER.includes(localStorage.getItem(FX_KEY)); }catch(e){ return false; } }
 function fxAtLeast(l){ return FX_ORDER.indexOf(fxLevel()) >= FX_ORDER.indexOf(l); }
-function applyFxLevel(){ try{ document.documentElement.dataset.fx = fxLevel(); }catch(e){} }
+function applyFxLevel(){ try{ document.documentElement.dataset.fx = fxLevelShown(); /* UI27 #15: the setting, not the away state */ }catch(e){} }
 function setFxLevel(l){
   try{ localStorage.setItem(FX_KEY, l); }catch(e){}
   applyFxLevel();
@@ -8027,6 +8093,7 @@ function wireCodexKindRow(){
     const v = setCodexLevelMode(b.dataset.cxlevel); row.querySelectorAll('[data-cxlevel]').forEach(x=>{ const on = x.dataset.cxlevel === v; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); });
     renderCodexGrid(true); }));
 }
+let codexNavIds = []; // 2026-11-07 (package UI27 #17): every card the Codex shows now, in its order (all pages), for the card editor's Previous / Next
 function renderCodexGrid(keepPage){
   if(keepPage !== true) codexPage = 0;
   saveCodexFilters();
@@ -8146,7 +8213,7 @@ function renderCodexGrid(keepPage){
     if(album){
       const sortG = g=> g.ids.slice().sort(codexFlatById ? ((x, y)=> (Number(defs[x].numericId)||1e9) - (Number(defs[y].numericId)||1e9) || x.localeCompare(y)) : cmp);
       const gIds = {}; ordered.forEach(g=>{ gIds[g.sec.key] = g.ids; });
-      codexDrawAlbum(gEl, ordered.map(g=> ({sec:g.sec, ids:sortG(g), all:g.ids})), tileFor, gIds, keepPage === true);
+      { const al = ordered.map(g=> ({sec:g.sec, ids:sortG(g), all:g.ids})); codexNavIds = al.flatMap(g=> g.ids); /* UI27 #17 */ codexDrawAlbum(gEl, al, tileFor, gIds, keepPage === true); }
       return;
     }
     codexTurnFn = null; codexAlbumState = null; }
@@ -8160,6 +8227,7 @@ function renderCodexGrid(keepPage){
       cur.push({sec:g.sec, ids:sorted, all:g.ids}); n += sorted.length; });
     if(cur.length) pages.push(cur); }
   if(codexPage >= pages.length) codexPage = Math.max(0, pages.length - 1);
+  codexNavIds = pages.flat().flatMap(g=> g.ids || []); // 2026-11-07 (package UI27 #17)
   // 2026-10-17 (80 cards a page): the first CODEX_FIRST_CHUNK tiles (the ones on screen) are drawn at once; the rest of the page
   // follows on the next frame, so a page turn shows as quickly as the old 40-card page did.
   // 2026-10-18 (Codex perf, owner: "Codex is still abit laggy"): the rest no longer lands in one go. The first chunk is about one
@@ -10666,7 +10734,7 @@ function openCardDetail(defId, opts){
   document.getElementById('cdCloseBtn').addEventListener('click', close);
   overlay.addEventListener('click', function outsideClick(e){ if(e.target===overlay){ close(); overlay.removeEventListener('click', outsideClick); } });
   const editBtn = document.getElementById('cdEditBtn');
-  if(editBtn) editBtn.addEventListener('click', ()=>{ close(); openCardEditor(defId); });
+  if(editBtn) editBtn.addEventListener('click', ()=>{ close(); if(opts && opts.codex && codexNavIds.includes(defId)) ceNavSet(codexNavIds, 'codex'); /* UI27 #17: Previous / Next in the Codex's order */ openCardEditor(defId); });
   // Admin (2026-10-12, user: "a 'get this card' button in the Codex card detail view").
   { const gb = document.getElementById('cdGetBtn'); if(gb) gb.addEventListener('click', ()=>{ try{ unlockCardForPlayer(defId, 'adminGrant'); grantCardCopy && myUnlockedCardIds.has(defId); }catch(e){} invalidateCardDefs(); try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} showToast(TX('toast.is-in-your-nest', {v1: (getCardDefs()[defId]||{}).name || defId}), 'ok'); }); }
   cardDetailCtl = mountDetailView(overlay.querySelector('.cd-dc'), d, cdSt); // 2026-10-30 (package CS-C)
@@ -11255,8 +11323,31 @@ function wireLevelStatsEditor(){
   const clr = document.getElementById('lvsClear'); if(clr) clr.onclick = ()=>{ box.querySelectorAll('tr[data-lv] input').forEach(i=> i.value = ''); };
   setTimeout(refresh, 0);
 }
+// 2026-11-07 (package UI27 #17, owner 09:01: "add 'Previous' and 'Next' buttons to the card editor that move to the neighbouring card"): the
+// neighbours come from where the editor was opened: the Codex's card detail (its current filter and order, every page: codexNavIds) or the
+// 🃏 Map cards window (that map's cards in the window's order: ui13EditFromGallery). Unsaved changes: the button asks on the page first ("Unsaved
+// changes: tap again to leave", as the editor's other confirmations are taps, not dialogs); a second tap within 4 s leaves without saving. ← and →
+// do the same while the focus is not in a field. Anywhere else the editor opens without them.
+let ceNav = null; // {ids, from: 'codex' | 'mapcards', visited: Set, base: the form's signature as opened, armed: {dir, at}}
+function ceNavSet(ids, from){ const list = [...new Set((ids || []).filter(Boolean))]; ceNav = list.length > 1 ? {ids: list, from, visited: new Set(), base: null, armed: null} : null; }
+function ceDraftSig(){ try{ return JSON.stringify(editorDraftFromForm()) + '|' + String((editingCard && editingCard.art) || '').length; }catch(e){ return ''; } }
+function ceNavPos(){ return ceNav && editingCard && editingCard.id ? ceNav.ids.indexOf(editingCard.id) : -1; }
+function ceNavHTML(){
+  const i = ceNavPos(); if(i < 0) return ''; const n = ceNav.ids.length, tip = escapeAttr(TX('ui.ui27-nav-tip'));
+  return `<span class="ui27-nav" role="group" aria-label="${tip}"><button type="button" class="btn small ghost ui27-nav-btn" data-ce-nav="-1" ${i === 0 ? 'disabled' : ''} title="${tip}">‹ ${escapeHtml(TX('ui.ui27-prev'))}</button><span class="ui27-nav-pos">${escapeHtml(TX('ui.ui27-nav-of', {i: i + 1, n}))}</span><button type="button" class="btn small ghost ui27-nav-btn" data-ce-nav="1" ${i === n - 1 ? 'disabled' : ''} title="${tip}">${escapeHtml(TX('ui.ui27-next'))} ›</button></span>`; }
+function ceNavGo(dir){
+  const i = ceNavPos(); if(i < 0) return false; const j = i + dir; if(j < 0 || j >= ceNav.ids.length) return false;
+  const dirty = ceNav.base != null && ceDraftSig() !== ceNav.base;
+  if(dirty && !(ceNav.armed && ceNav.armed.dir === dir && Date.now() - ceNav.armed.at < 4000)){
+    ceNav.armed = {dir, at: Date.now()};
+    const b = document.querySelector(`#editorOverlay [data-ce-nav="${dir}"]`); if(b){ b.classList.add('is-armed'); b.textContent = TX('ui.ui27-nav-unsaved'); }
+    return false; }
+  const target = ceNav.ids[j]; ceNav.armed = null; ceNav.base = null; ceNav.visited.add(editingCard.id); ceNav.visited.add(target);
+  const ov = document.getElementById('editorOverlay'); if(ov) ov.innerHTML = ''; // a fresh form: nothing typed in this card is carried to the next
+  openCardEditor(target); return true; }
 function openCardEditor(defId, versionDef){
   { const d = defId && getCardDefs()[defId]; if(d && d.derivedFrom) defId = d.derivedFrom; } // 2026-11-06 (package UI23 #4): a fight copy ("<id>@lv1", "~cp") edits its card, never a new one
+  if(ceNav && !(defId && ceNav.ids.includes(defId))) ceNav = null; // UI27 #17: opened from somewhere else
   // 2026-10-07 audit: start from the shared definition, not getCardDefs() — that one applies THIS
   // player's card level and personal unlocks, which a plain Save used to bake into the card for everyone.
   // 2026-10-19 (package AN): a pool card (Admin's Pool cards filter) isn't in the live defs: it opens as a new card to place.
@@ -11296,7 +11387,7 @@ function openCardEditor(defId, versionDef){
   renderEditor();
 }
 let cardEditorHooks = null; // {saved(id), closed()} while another editor waits on this one (skirmish editor's New card)
-function closeCardEditor(){ editingCard=null; editorPreviewDraft = null; document.getElementById('editorOverlay').hidden = true; document.getElementById('editorOverlay').innerHTML=''; const h = cardEditorHooks; cardEditorHooks = null; if(h && h.closed) try{ h.closed(); }catch(e){} }
+function closeCardEditor(){ editingCard=null; editorPreviewDraft = null; ceNav = null; /* UI27 #17 */ document.getElementById('editorOverlay').hidden = true; document.getElementById('editorOverlay').innerHTML=''; const h = cardEditorHooks; cardEditorHooks = null; if(h && h.closed) try{ h.closed(); }catch(e){} }
 // 2026-10-07 audit: every "+ Add" / pill click re-renders the whole form from the model, which used to
 // wipe anything typed but not yet saved. The wrapper snapshots the form first and puts the typed
 // values back afterwards (fields by id; skill and trigger rows by position, when rows were only
@@ -11326,7 +11417,11 @@ function renderEditor(){
   try{ wireLevelStatsEditor(); }catch(e){}
   try{ if(editingCard && editingCard.id && document.querySelector('#editorOverlay #cdpKind')){ document.querySelectorAll('.cd-placement').forEach(el=>{ if(!el.closest('#editorOverlay')) el.remove(); }); wireCodexPlacement(editingCard.id); } }catch(e){} // one placement panel at a time (ids)
   modal.querySelectorAll('.field').forEach(f=>{ const l = f.querySelector(':scope > label'), inp = f.querySelector('input,select,textarea'); if(l && inp && inp.id && !l.htmlFor) l.htmlFor = inp.id; });
-  overlay.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); if(confirm('Close the card editor? Unsaved changes are lost.')) closeCardEditor(); } };
+  overlay.onkeydown = ev=>{ if(ev.key==='Escape'){ ev.stopPropagation(); if(confirm('Close the card editor? Unsaved changes are lost.')) closeCardEditor(); return; }
+    // 2026-11-07 (package UI27 #17): ← / → move to the neighbouring card, unless the focus is in a field (typing) or a modifier is held
+    if((ev.key === 'ArrowLeft' || ev.key === 'ArrowRight') && ceNav && !ev.altKey && !ev.ctrlKey && !ev.metaKey && !ev.shiftKey){ const t = ev.target;
+      if(t && (t.isContentEditable || /^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName))) return; ev.preventDefault(); ceNavGo(ev.key === 'ArrowLeft' ? -1 : 1); } };
+  if(first && ceNav) setTimeout(()=>{ if(ceNav && ceNav.base == null && editingCard) ceNav.base = ceDraftSig(); }, 60); // UI27 #17: the form as opened
   // The read-only id moves into the header line (audit #10) so the form opens on Identity.
   const idEl = document.getElementById('fCardId'); const meta = modal.querySelector('.modal-meta');
   if(idEl && meta){ const row = idEl.closest('.field-row'); if(!meta.querySelector('.ce-id')) meta.insertAdjacentHTML('afterbegin', `<span class="ce-id">${escapeHtml(editingCard.id || 'new card')}</span> · `); if(row) row.hidden = true; }
@@ -11459,7 +11554,7 @@ function renderEditorInner(){
   overlay.innerHTML = `<div class="modal">
     <div class="modal-head-row">
       <h2>${c.id? '✏️ Edit '+(c.name||'Card') : '🆕 Create a Card'}<span class="modal-meta">#${c.numericId!=null ? c.numericId : '—'} · ${escapeAttr(c.uuid||'')}</span></h2>
-      <button type="button" class="modal-close-btn" id="editorXBtn" title="Cancel" aria-label="Cancel">✕</button>
+      ${ceNavHTML() /* 2026-11-07 (package UI27 #17) */}<button type="button" class="modal-close-btn" id="editorXBtn" title="Cancel" aria-label="Cancel">✕</button>
     </div>
     <div class="field-row">
       <div class="field"><label>Card Name ID</label><input id="fCardId" value="${escapeAttr(c.id||'(assigned on save)')}" disabled title="The internal id used to reference this card from triggers, spawn effects, etc. Not editable."></div>
@@ -11478,6 +11573,9 @@ function renderEditorInner(){
       <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label>${(()=>{ /* 2026-10-21 (package CX2): the rank ladder (Common → Daemonic; Starter only on a Starter card) and four toggles, Quest, Event, Dev, Special (one at a time) */
         const rp = rarityPartsOf(c.rarity || 'common'), ladder = RARITY_DEFS.filter(r=> !r.as && !r.special && (r.key !== 'starter' || rp.rank === 'starter'));
         return `<select id="fRarity" aria-label="Rank">${ladder.map(r=>`<option value="${r.key}" ${rp.rank===r.key?'selected':''}>${r.label}</option>`).join('')}</select>`; })()}</div>
+      ${(()=>{ /* 2026-11-07 (package UI27 #16, owner: "a Base level dropdown (locked for editing; shows Lvl 1 or Lvl 0) right after Rarity"): the level the card starts at (cardBaseLevel), read-only */
+        let bl = 1; try{ bl = cardBaseLevel(c); }catch(e){}
+        return `<div class="field ui27-baselv-field" title="${escapeAttr(TX('ui.ui27-base-level-tip'))}"><label for="fBaseLevel">${escapeHtml(TX('ui.ui27-base-level'))}</label><select id="fBaseLevel" disabled aria-readonly="true"><option value="${bl}" selected>${escapeHtml(TX('ui.ui27-lvl', {n: bl}))}</option></select></div>`; })()}
       ${'' /* 2026-11-04 (package UI19, owner 23:01: "Locked, Hidden and the source flags (Quest / Event / Dev / Special) on one row"): one row of toggles under Name / Rank */}
       <div class="field ed-flagrow" style="grid-column:1 / -1"><span class="rarity-flags ed-flags" role="group" aria-label="${escapeAttr(TX('ui.cx-rarity-flags'))}">
         <label class="rarity-flag" title="Locked cards can't go in a deck yet."><input type="checkbox" id="fLocked" ${c.locked?'checked':''}>Locked</label><label class="rarity-flag" title="Hidden until a player first sees one in play, then it becomes Locked."><input type="checkbox" id="fHidden" ${c.hidden===false?'':'checked'}>Hidden</label>${devModeEnabled ? `<label class="rarity-flag" title="Test cards only show in the Codex 🧪 Test cards filter and the Sandbox spawn picker."><input type="checkbox" id="fTest" ${c.test?'checked':''}>🧪 Test card</label>` : ''}<span class="ed-flag-sep" aria-hidden="true"></span>${(()=>{ const rp2 = rarityPartsOf(c.rarity || 'common'); return Object.keys(RARITY_FLAG_LABEL).map(f=> `<label class="rarity-flag" title="${escapeAttr(RARITY_FLAG_TEXT[f][1]())}"><input type="checkbox" data-rflag="${f}" ${rp2.flag===f?'checked':''}>${escapeHtml(RARITY_FLAG_TEXT[f][0]())}</label>`).join(''); })()}</span></div>
@@ -11609,6 +11707,9 @@ function renderEditorInner(){
     <div class="section-divider subsection"><span class="st-label">Custom Triggers</span><span class="st-sub">On ⟨Trigger⟩, Do ⟨Action⟩</span>
       <div id="triggerRows">${c.effects.triggers.map((t,i)=>triggerRowHTML(t,i)).join('')}</div>
       <button class="btn small" id="addTrigger">+ Add trigger</button>
+      ${'' /* 2026-11-07 (package UI27 #16): the skill points, each skill in its own price form, adding up to S (ceSkillPtsHTML, filled by ceBudgetRefresh) */}
+      <div id="ceSkillWarn" class="ui27-skwarn-row" hidden></div>${'' /* UI27 #19: the two-skill warning, only when broken */}
+      <div id="ceSkillPts" class="ui27-spts" title="${escapeAttr(TX('ui.ui27-s-tip'))}" aria-live="polite"></div>
     </div>
 
     <!-- 2026-11-04 (package UI19, owner 23:01): Resistances and weaknesses, the source ("From") and Stats by level sit below the abilities -->
@@ -11732,6 +11833,7 @@ function renderEditorInner(){
   </div>`;
   document.getElementById('btnCancel').addEventListener('click', closeCardEditor);
   document.getElementById('editorXBtn').addEventListener('click', closeCardEditor);
+  overlay.querySelectorAll('[data-ce-nav]').forEach(b=> b.addEventListener('click', ()=> ceNavGo(Number(b.getAttribute('data-ce-nav'))))); // 2026-11-07 (package UI27 #17)
   { const fk = document.getElementById('fCardKind'); if(fk) fk.addEventListener('change', ()=>{ document.getElementById('fSpellRow').hidden = fk.value !== 'spell'; document.getElementById('fEquipRow').hidden = fk.value !== 'equipment'; { const r = document.getElementById('fEquipTimeRow'); if(r) r.hidden = fk.value !== 'equipment'; } /* CONTENT3 */ }); }
   const rarityNow = ()=>{ const f = document.querySelector('#editorOverlay [data-rflag]:checked'); return rarityComposeOf(document.getElementById('fRarity').value, f ? f.getAttribute('data-rflag') : null); }; // CX2
   const raritySwatch = ()=>{ const [a,b] = rarityStops(rarityNow()); document.getElementById('fRaritySwatch').style.background = `linear-gradient(135deg, ${a}, ${b})`; };
@@ -12906,8 +13008,9 @@ function newAchievementsChipHTML(m){
     const names = m.newAchv.slice(0, 2).map(d=> (d.icon ? d.icon + " " : "") + escapeHtml(d.title || d.id)).join(', ') + (m.newAchv.length > 2 ? ` +${m.newAchv.length - 2}` : '');
     // 2026-11-07 (package UI25, owner note 2): an achievement can carry faction cards (FACTION_REWARD_TRACK.achievements), granted when you claim it, and
     // only a short toast said so afterwards. The chip now says how many cards are waiting to be claimed.
-    const nCards = m.newAchv.reduce((t, d)=> t + achievementFactionCards(d.id), 0), cardsNote = nCards ? ` <span class="wa-cards">🎁 ${escapeHtml(TX('ui.ui25-achv-cards', {n: nCards, s: nCards === 1 ? '' : 's'}))}</span>` : '';
-    return `<div class="winloss-achv" role="status"><span class="wa-ico">🏆</span><span><b>${m.newAchv.length === 1 ? _t('New achievement') : _t('New achievements')}</b> ${names}${cardsNote}</span></div>`; // 2026-10-14 (user: "'Claim it on the achievement board...' -> dont need to say this")
+    // 2026-11-07 (package UI27 #12, owner 08:54: "Don't show notices like that until I see the card! Like when I collect the achievement."): the
+    // "🎁 N cards to claim" line is gone again. The cards show when the achievement is claimed (ui27RevealAchvCards), then the "N cards added" message.
+    return `<div class="winloss-achv" role="status"><span class="wa-ico">🏆</span><span><b>${m.newAchv.length === 1 ? _t('New achievement') : _t('New achievements')}</b> ${names}</span></div>`; // 2026-10-14 (user: "'Claim it on the achievement board...' -> dont need to say this")
   }catch(e){ return ''; }
 }
 // A fight you have actually won (see the clearedAt note in achievementContext).
@@ -12960,10 +13063,34 @@ function claimAchievement(id){
   const {complete, claimed} = achievementStatus(def, ctx);
   if(!complete || claimed) return false;
   Object.keys(def.reward).forEach(kind=> grantCurrency(kind, def.reward[kind]));
-  try{ const fn = achievementFactionCards(id); if(fn){ const got = grantFactionRewardCards(fn); if(got.length) setTimeout(()=>{ try{ showToast(TX('toast.card-added-to-your-collection', {n: got.length, s: got.length===1?'':'s'}) /* 2026-11-07 (package UI25, owner note 1): "N cards added", not the card's name */, 'ok'); }catch(e){} }, 600); } }catch(e){} // 2026-10-21 (package RP)
+  // 2026-10-21 (package RP): an achievement's faction cards. 2026-11-07 (package UI27 #12): granted here, shown by the claim button's ui27RevealAchvCards
+  // (the reveal the won cards get, then one "N cards added" message); no message names or counts a card before it is seen.
+  try{ const fn = achievementFactionCards(id); if(fn){ const got = grantFactionRewardCards(fn); if(got.length) ui27AchvCardsPending.push(...got); } }catch(e){}
   myClaimedAchievements.add(id);
   saveClaimedAchievements();
   return true;
+}
+// 2026-11-07 (package UI27 #12): the cards claimed achievements gave, waiting to be shown; ui27RevealAchvCards shows them (the results' card reveal,
+// playRewardReveal: face down, the shine, face up, NEW!; with Effects Low / None or reduced motion a still window of the cards and a Continue button),
+// then says "N cards added to your collection".
+const ui27AchvCardsPending = [];
+function ui27RevealAchvCards(){
+  const got = [...new Set(ui27AchvCardsPending.splice(0))].filter(id=>{ try{ return !!getCardDefs()[id]; }catch(e){ return false; } });
+  if(!got.length) return Promise.resolve(0);
+  const rich = fxAtLeast('low') && !reducedMotion() && hasGsap();
+  const shown = rich ? playRewardReveal({rewardCardIds: got}) : ui27StillCardsReveal(got);
+  return Promise.resolve(shown).catch(()=>{}).then(()=>{ try{ showToast(TX('toast.card-added-to-your-collection', {n: got.length, s: got.length===1?'':'s'}), 'ok'); }catch(e){} return got.length; });
+}
+function ui27StillCardsReveal(ids){
+  return new Promise(res=>{
+    const defs = getCardDefs(), ov = document.createElement('div'); ov.className = 'pass-overlay ui27-cards-ov'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true');
+    const title = TX(ids.length === 1 ? 'ui.ui27-new-card' : 'ui.ui27-new-cards'); ov.setAttribute('aria-label', title);
+    ov.innerHTML = `<div class="pass-card ui27-cards-card"><h2>${escapeHtml(title)}</h2><div class="ui27-cards-row">${ids.map(id=> cardTileHTML(defs[id], {size:'full'})).join('')}</div><div class="winloss-actions"><button type="button" class="btn primary" data-ui27-ok>${escapeHtml(TX('ui.ui27-continue'))}</button></div></div>`;
+    document.body.appendChild(ov);
+    const close = ()=>{ ov.remove(); document.removeEventListener('keydown', onKey, true); res(); }, onKey = e=>{ if(e.key === 'Escape' || e.key === 'Enter'){ e.preventDefault(); close(); } };
+    ov.querySelector('[data-ui27-ok]').addEventListener('click', close); document.addEventListener('keydown', onKey, true);
+    try{ ov.querySelector('[data-ui27-ok]').focus(); }catch(e){}
+  });
 }
 function achievementRewardChipsHTML(reward, achvId){
   return Object.keys(reward).map(kind=>{
@@ -13007,7 +13134,7 @@ function achievementsPanelHTML(){
 function wireAchievementsPanel(){
   const redraw = ()=>{ const panel = document.querySelector('.achievements-panel'); if(panel) panel.outerHTML = achievementsPanelHTML(); try{ if(window.renderTopbar) renderTopbar(); }catch(e){} wireAchievementsPanel(); };
   document.querySelectorAll('[data-achv-filter]').forEach(b=> b.onclick = ()=>{ achvFilter = b.dataset.achvFilter; redraw(); });
-  { const all = document.getElementById('achvClaimAll'); if(all) all.onclick = ()=>{ let n = 0; const sum = {}; ACHIEVEMENT_DEFS.forEach(d=>{ if(claimAchievement(d.id)){ n++; Object.entries(d.reward||{}).forEach(([k, v])=> sum[k] = (sum[k]||0) + v); } }); if(!n) return; rewardRush(all.getBoundingClientRect(), sum, {big:true}); showToast(TX('toast.claimed-achievements', {n}), 'ok'); redraw(); }; }
+  { const all = document.getElementById('achvClaimAll'); if(all) all.onclick = ()=>{ let n = 0; const sum = {}; ACHIEVEMENT_DEFS.forEach(d=>{ if(claimAchievement(d.id)){ n++; Object.entries(d.reward||{}).forEach(([k, v])=> sum[k] = (sum[k]||0) + v); } }); if(!n) return; rewardRush(all.getBoundingClientRect(), sum, {big:true}); showToast(TX('toast.claimed-achievements', {n}), 'ok'); redraw(); ui27RevealAchvCards(); /* UI27 #12 */ }; }
   document.querySelectorAll('.achv-claim-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const id = btn.getAttribute('data-achv');
@@ -13021,6 +13148,7 @@ function wireAchievementsPanel(){
       if(panel) panel.outerHTML = achievementsPanelHTML();
       try{ if(window.renderTopbar) renderTopbar(); }catch(e){}
       wireAchievementsPanel();
+      ui27RevealAchvCards(); // 2026-11-07 (package UI27 #12): its cards, then "N cards added"
     });
   });
 }
@@ -33012,7 +33140,11 @@ function rv1PicksText(ov){
 function ui13EditFromGallery(ov, tile){
   if(!tile || !adminModeEnabled) return; const id = tile.dataset.rvId; if(!id) return;
   const box = ov.querySelector('.pk1-mc-modal'), keep = box ? box.scrollTop : 0;
-  edOpenCardEditor(id, ov, ()=>{ try{ ui13RefreshTile(ov, tile); }catch(e){} if(box) box.scrollTop = keep; });
+  // 2026-11-07 (package UI27 #17): the editor's Previous / Next walk the window's cards in its order (each id once); closing refreshes every tile visited
+  const order = [...new Set([...ov.querySelectorAll('.rv1-tile[data-rv-id]')].map(t=> t.dataset.rvId))];
+  if(order.length > 1) ceNavSet(order, 'mapcards');
+  const nav = ceNav;
+  edOpenCardEditor(id, ov, ()=>{ const seen = nav ? [...nav.visited] : [id]; seen.forEach(v=>{ ov.querySelectorAll('.rv1-tile[data-rv-id]').forEach(t=>{ if(t.dataset.rvId === v) try{ ui13RefreshTile(ov, t); }catch(e){} }); }); if(box) box.scrollTop = keep; });
 }
 function ui13RefreshTile(ov, tile){
   if(!tile || !tile.isConnected) return;
@@ -33496,29 +33628,82 @@ function sbContextLine(d, cfg){ const B = BramblewoodBudget, e = (d && d.effects
   const own = Object.keys(e).map(k=>{ const cx = B.contextS && B.contextS(k, e[k], inner=> sbPriceS({effects: inner, attack: d && d.attack}, cfg).S /* CX5: the canonical table */); if(!cx) return ''; const sd = SKILL_DEFS.find(x=> x.key === k);
     return TX('ui.budget-context-card', {skill: sd ? sd.label : k, k: cx.mult, inner: f1(cx.inner), s: f1(cx.S)}); }).filter(Boolean);
   return `<small style="color:var(--ink-muted); display:block">${escapeHtml(TX('ui.budget-context', {k: B.CONTEXT_MULT}))}${own.length ? ' ' + escapeHtml(own.join(' · ')) : ''}</small>`; }
+// 2026-11-07 (package UI27 #16, owner 08:54 on the editor's budget box: "Within budget, B = 13.8 < 16.2 = N"; formula on hover; A/H, B, S symbols;
+// no "skills" word): the box is a heading that compares B with N, one line that works B out and the Product line, each with its formula in
+// symbols on hover; the Level / Rank / Wait / Lumber line is gone (Rank and Base level are fields above). B is the card's cap-1 score from
+// bramblewood-budget.js capScores (B = f × ((3A + H) × m + S), its x1, through sbCheck as before), S its skill value (sbPriceS, the canonical
+// skill-cost table), N its budget at Level 1 (sbBudgetAt, as before): the numbers are the budget's own. The heading compares B with N because that is
+// the rule (Base, the old heading's second number, is in the heading's hover with N's formula). The skill points row (ceSkillPtsHTML) sits under
+// the Custom Triggers. The Power line (cePowerHTML) is appended after this, unchanged.
 function ceBudgetHTML(d){
   const cfg = sbLoad(), A = Number(d.attack)||0, D = Number(d.health)||0, price = sbPriceS(d, cfg), S = price.S, N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg), SH = sbShieldH(d), c = sbCheck(A, D, S, N, M, F, SH); // CX5 (10-21): S from canonical/skill-costs.json; BF7 (10-22): F
-  const rar = (d.rarity || 'common'), rd = RARITY_DEFS.find(r=> r.key === rar), rarLabel = rd ? rd.label : rar[0].toUpperCase() + rar.slice(1);
-  const W = Number(d.wait)||0, C = Number(d.cost)||0, f1 = v=> Math.round(v * 10) / 10, m = M !== 1 ? ` × ${f1(M)}` : '', mark = ok=> ok ? '✓' : '✗', op = ok=> ok ? '≤' : '&gt;'; // inclusive (BF3, 16:22)
-  // 2026-10-22 (BF7, texts by RW): the worked lines show the rule as it is now: f × ((2×A + H) × m + S) and f × (A×H × m + S×|S|). {f} is "0.7 × " for a Fragile
-  // card, else empty; {m} is "×1.5" per half-miss skill (on the stats only), else empty. ui.budget-stats / ui.budget-product carry the new wording (was an English fallback here).
-  const r2m = v=> Math.round(v * 100) / 100, fp = F !== 1 ? `${r2m(F)} × ` : '', mm = M !== 1 ? `×${r2m(M)}` : '';
-  const hs = SH ? `(${D} + ${r2m(SH)}💠)` : D; // FIN2-c (2026-10-26): the Shield's Health share
-  const statsLine = TX('ui.budget-stats', {f: fp, a: A, h: hs, m: mm, s: f1(S), x: f1(c.x1), op: op(c.r1), n: f1(N), mark: mark(c.r1)});
-  const productLine = TX('ui.budget-product', {f: fp, a: A, h: hs, m: mm, s: f1(S), x: f1(c.x2), op: op(c.r2), n2: f1(c.N2), mark: mark(c.r2)});
-  const miss = (cfg.halfMiss || SB_HALF_MISS).filter(k=> (d.effects || {})[k]).map(k=> (PASSIVE_DEFS.find(x=> x.key === k) || {}).label || k);
-  // 2026-10-19 (BF2, owner 14:07: "There should be a Base = ..."): Base and its parts, from the helper, so the numbers add up
-  const bc = {}; ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'perMap'].forEach(k=> bc[k] = cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k]);
+  const BB = BramblewoodBudget, BD = BB.DEFAULTS || {}, f1 = v=> Math.round(v * 10) / 10, r2 = v=> Math.round(v * 100) / 100, mark = ok=> ok ? '✓' : '✗';
+  const aw = BD.attackWeight || 3, sc = BB.CAP2_S_SCALE != null ? BB.CAP2_S_SCALE : 1, k2 = BD.cap2Mult || 2;
+  const hs = SH ? `(${D} + ${r2(SH)})` : String(D); // FIN2-c (2026-10-26): the Shield's Health share
+  const plusS = v=> !v ? '' : v > 0 ? ` + ${r2(v)}` : ` − ${r2(-v)}`, wrapF = x=> F !== 1 ? `${r2(F)}×(${x})` : x;
+  const bExpr = wrapF(`(${aw}×${A} + ${hs})${M !== 1 ? '×' + r2(M) : ''}${plusS(S)}`);
+  const s = r2(S * sc), sq = !s ? '' : s > 0 ? ` + ${s}²` : ` − ${-s}²`;
+  const pExpr = wrapF(`${A}×${hs}${M !== 1 ? '×' + r2(M) : ''}${sq}`);
+  const op1 = !c.r1 ? '>' : c.x1 < N ? '<' : '=', op2 = !c.r2 ? '>' : c.x2 < c.N2 ? '<' : '=';
+  const vals = {b: f1(c.x1), op: op1, n: f1(N)};
+  const head = !c.ok ? TX('ui.ui27-budget-over', vals) : c.wellUnder ? TX('ui.ui27-budget-under', vals) : TX('ui.ui27-budget-ok', vals);
   let om = 0; try{ om = cardObtainMap(d); }catch(e){}
-  const bp = BramblewoodBudget.baseParts(Object.assign({}, d, {obtainMap: om}), bc), part = q=> q.k === 'base' ? String(q.v) : q.k === 'rarity' ? `${rarLabel} ${f1(q.v)}` : q.k === 'wait' ? TX('ui.budget-part-wait', {v: f1(q.v)}) : q.k === 'lumber' ? TX('ui.budget-part-lumber', {v: f1(q.v)}) : q.k === 'map' ? TX('ui.budget-part-map', {map: q.map, coef: q.coef, v: f1(q.v)}) : TX('ui.budget-part-ritual', {v: f1(q.v)});
-  const head = !c.ok ? TX('ui.budget-head-over', {n: f1(N), base: f1(bp.total)}) : c.wellUnder ? TX('ui.budget-head-under', {n: f1(N), base: f1(bp.total)}) : TX('ui.budget-head-ok', {n: f1(N), base: f1(bp.total)});
-  // 2026-11-04 (package UI19, owner 23:01: "Remove the explanation text under Within budget. Keep the budget line and the Stats / Product check lines"): the half-miss,
-  // Base, N multiplier, context-skill and formula explanations are gone from the editor (the Stat budget lab still prints them); the Level / Rank / Wait / Lumber line
-  // shares the budget line's row. The warnings (a skill with no price, more than two skills) stay.
-  return `<div style="display:flex; flex-wrap:wrap; align-items:baseline; column-gap:10px"><span style="color:${sbColour(c)}; font-weight:700; font-size:14px">${escapeHtml(head)}</span><span style="font-size:12px">${escapeHtml(TX('ui.budget-line', {level: 1, rarity: rarLabel, wait: W, lumber: C}))}</span></div>
-    <div style="font-size:12.5px">${statsLine}</div>
-    <div style="font-size:12.5px">${productLine}</div>
-    ${price.missing.length ? `<small style="color:var(--danger, #c0392b); display:block">${escapeHtml(TX('ui.budget-price-missing', {skills: sbMissingNames(price.missing).join(', ')}))}</small>` : '' /* CX5 (10-21) */}${sbNMultLine(d, true)}`;
+  const bc = {}; ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'perMap'].forEach(k=> bc[k] = cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k]);
+  let base = 0, nForm = ''; try{ base = BB.baseParts(Object.assign({}, d, {obtainMap: om}), bc).total; nForm = BB.formulaParts(Object.assign({}, SB_V3_DEFAULTS, cfg)).n; }catch(e){}
+  const headTip = TX('ui.ui27-budget-n-tip', {formula: nForm, base: f1(base)});
+  const bTip = TX('ui.ui27-budget-b-tip', {aw, sh: BD.shieldPerHealth != null ? BD.shieldPerHealth : 0.8});
+  const pTip = TX('ui.ui27-budget-product-tip', {k: k2, sc});
+  return `<div class="ui27-bhead" style="color:${sbColour(c)}; font-weight:700; font-size:14px" title="${escapeAttr(headTip)}">${escapeHtml(head)}</div>
+    <div class="ui27-bline" style="font-size:12.5px" title="${escapeAttr(bTip)}">B = ${escapeHtml(bExpr)} = ${f1(c.x1)} ${mark(c.r1)}</div>
+    <div class="ui27-pline" style="font-size:12.5px" title="${escapeAttr(pTip)}">${escapeHtml(TX('ui.ui27-budget-product', {expr: pExpr, x: f1(c.x2), op: op2, n2: f1(c.N2), mark: mark(c.r2)}))}</div>
+    ${price.missing.length ? `<small style="color:var(--danger, #c0392b); display:block">${escapeHtml(TX('ui.budget-price-missing', {skills: sbMissingNames(price.missing).join(', ')}))}</small>` : '' /* CX5 (10-21) */}${'' /* UI27 #19: the two-skill warning is in the skill section now (ceSkillWarnHTML) */}`;
+}
+// 2026-11-07 (package UI27 #16): the skill points row under the Custom Triggers, e.g. "2.5 + 5 + 1.8×3^1.4 = 15.7 = S": each skill (or trigger, or
+// context skill) as the canonical table prices it (SkillCosts.cardS parts): a fixed value; value×N; value×N^p; the half rule value×(1 + ⌊N/2⌋); a
+// trigger weight×value; a context skill mult×inner. A term whose detail is anything else (a home-map share, a rule of its own) shows its price.
+// The total is sbPriceS's S, the S of the B line above.
+function ui27PartTerm(p, e){
+  const [kind, id, c, detail] = p, r2 = v=> Math.round(v * 100) / 100, near = (a, b)=> Math.abs(a - b) < 0.011, plain = String(r2(Math.abs(c)));
+  const numOf = v=> typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b || 0), 0) : 0);
+  const fv = v=> String(Math.abs(v) >= 0.1 || v === 0 ? r2(v) : Math.round(v * 1000) / 1000); // a price as shown: 2 decimals (3 under 0.1)
+  try{
+    if(kind === 'skill' && !detail){
+      const en = (SKILL_COSTS_TABLE.skills || []).find(x=> x.id === id); if(!en || en.logic || en.plus || id === 'cower') return plain;
+      const v = e[id], n = numOf(v), val = +en.value || 0;
+      if(en.scale === 'n'){ const N = Math.max(1, v === true && en.payDefault ? en.payDefault : n);
+        if(en.pow != null){ if(near(r2(val * Math.pow(N, +en.pow)), Math.abs(c))) return N === 1 ? fv(val) : `${fv(val)}×${N}^${r2(+en.pow)}`; return plain; }
+        if(near(val * N, Math.abs(c))) return N === 1 ? fv(val) : `${fv(val)}×${N}`; return plain; }
+      if(en.scale === 'half'){ const k = 1 + (n > 1 ? Math.floor(n / 2) : 0); if(near(val * k, Math.abs(c))) return k === 1 ? fv(val) : `${fv(val)}×${k}`; return plain; }
+      return plain;
+    }
+    if(kind === 'trigger' || kind === 'context' || kind === 'shorthand'){ const m = /^(-?[\d.]+) × (-?[\d.]+)$/.exec(String(detail || '')); if(m && near(r2(+m[1] * +m[2]), Math.abs(c))) return `${r2(+m[1])}×${r2(+m[2])}`; }
+  }catch(err){}
+  return plain;
+}
+// 2026-11-07 (package UI27 #19, owner 09:47 note 12): the two-skill warning moves from the budget box to the skill section and shows only when the
+// rule is broken. The owner's sum: each skill counts 1, a light one 0.5: the budget's "don't count" list (TWO_SKILL_FREE: Flying, Tide, Diurnal,
+// Nocturnal) and its siblings (LIGHT: Crepuscular, Sun-shy, Night-blind) plus Purblind, in their plain form (beside braces they count 1, as in
+// skillCountOf). Over 2 warns ("Over the two-skill limit (2.5)"), the sum on hover. Editor only: bramblewood-budget.js skillCountOf (the tools and
+// tests) keeps its count until the owner moves it there (UI27-4).
+const UI27_LIGHT_SKILLS = ['flying', 'tide', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind', 'purblind'];
+function ui27SkillCount(effects){
+  const B = BramblewoodBudget, e = effects || {}, a = B.abilitiesOf ? B.abilitiesOf(e) : Object.keys(e);
+  const light = k=> UI27_LIGHT_SKILLS.includes(k) && !(e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object');
+  const parts = a.map(k=> ({k, w: light(k) ? 0.5 : 1})), n = parts.reduce((t, p)=> t + p.w, 0);
+  return {n, parts}; }
+function ceSkillWarnHTML(d){
+  const c = ui27SkillCount((d && d.effects) || {}); if(c.n <= 2) return '';
+  const name = k=>{ if(/^trigger:/.test(k)) return k.slice(8); const sd = SKILL_DEFS.find(x=> x.key === k) || PASSIVE_DEFS.find(x=> x.key === k); return (sd && sd.label) || k; };
+  const sum = c.parts.map(p=> `${name(p.k)} ${p.w}`).join(' + ') + ` = ${c.n}`;
+  return `<span class="ui27-skwarn" role="status" title="${escapeAttr(TX('ui.ui27-two-skills-tip', {sum}))}">⚠️ ${escapeHtml(TX('ui.ui27-two-skills', {n: c.n}))}</span>`; }
+function ceSkillPtsHTML(d){
+  const T = sbCanon(), e = (d && d.effects) || {}, r2 = v=> Math.round(v * 100) / 100;
+  const S = sbPriceS(d, sbLoad()).S; let parts = [];
+  try{ if(T){ sbFbSkills = (sbLoad().skills) || null; try{ parts = T.cardS(e, d || {}).parts || []; }finally{ sbFbSkills = null; } } }catch(err){ parts = []; }
+  const terms = parts.filter(p=> p && p[2]).map(p=>{ const sd = SKILL_DEFS.find(x=> x.key === p[1]) || PASSIVE_DEFS.find(x=> x.key === p[1]), lbl = p[0] === 'trigger' ? p[1] : (sd && sd.label) || p[1];
+    return {neg: p[2] < 0, html: `<span class="ui27-sterm" title="${escapeAttr(lbl)}">${escapeHtml(ui27PartTerm(p, e))}</span>`}; });
+  const sum = terms.length ? terms.map((t, i)=> (i ? (t.neg ? ' − ' : ' + ') : (t.neg ? '−' : '')) + t.html).join('') + ` = ${r2(S)}` : String(r2(S));
+  return `<span class="ui27-spts-sum">${sum} = S</span>`;
 }
 // 2026-11-07 (package UI24 #7): a card's power in the editor: its win % in the card power test minus 50, so 0 is average (half its fights won), +N stronger, -N weaker.
 // The date is the test run's; a card with no row (new, or added since the run) reads "not measured". Editor only.
@@ -33534,6 +33719,8 @@ function ceBudgetRefresh(d){
   let box = document.getElementById('ceBudget');
   if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('beforeend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:0 0 4px; font-size:12.5px; line-height:1.4"></div>'); /* UI23 (2026-11-06, #4): inside the Stats row, beside the four stats */ box = document.getElementById('ceBudget'); }
   try{ box.innerHTML = ceBudgetHTML(d) + cePowerHTML(d); }catch(e){ box.textContent = ''; }
+  { const sp = document.getElementById('ceSkillPts'); if(sp) try{ sp.innerHTML = ceSkillPtsHTML(d); }catch(e){ sp.textContent = ''; } } // 2026-11-07 (package UI27 #16)
+  { const sw = document.getElementById('ceSkillWarn'); if(sw) try{ const h = ceSkillWarnHTML(d); sw.innerHTML = h; sw.hidden = !h; }catch(e){ sw.textContent = ''; sw.hidden = true; } } // UI27 #19
 }
 let sbState = {upTo:5, onlyFail:true};
 function renderStatBudget(host){
@@ -47014,10 +47201,33 @@ function playRewardReveal(m){
     later(()=> finish(true), t + 200);
   });
 }
+// 2026-11-07 (package UI27 #4, owner 08:54: "Victory flash: weaker, behind the victory window; tinted by context (darker in darkness etc.)"): the
+// bright gradient from the top of the screen at the end of a fight is the "darkness lifts" light (FX.B darkLeave, .fxb-spill), drawn at z 9980 over
+// the results. The fight's context goes on <html data-ui27-flash>, and the UI27 block of arena_template.html puts that light behind the results
+// window, weaker, in the context's tint: Darkness / Pitch Black / Absolute dimmer and cooler, night moon-blue, dusk rose, a heatwave's sun warm,
+// frost icy, rain or fog grey, a plain day soft gold; a defeat or draw dimmer still. Effects Low / None and reduced motion never draw it (darkLeave
+// is Medium and up), Medium draws it fainter than High.
+function ui27FlashContext(m, kind){
+  let ctx = 'day';
+  try{
+    const dk = typeof matchDarkLevel === 'function' ? matchDarkLevel(m) : null;
+    let ph = null; try{ if(m && m.engine && m.engine.getPhase && (typeof dayNightOn !== 'function' || dayNightOn(m))) ph = m.engine.getPhase(); }catch(e){}
+    let field = null; try{ const r = matchFieldRulesBase(m); field = r && r.field; }catch(e){}
+    if(dk) ctx = dk === 'absolute' ? 'absolute' : dk === 'pitch' ? 'pitch' : 'dark';
+    else if(field === 'heatwave') ctx = 'sun';
+    else if(field === 'frozen') ctx = 'frost';
+    else if(field === 'rain' || field === 'fog') ctx = 'grey';
+    else if(field === 'moon' || ph === 'night') ctx = 'night';
+    else if(ph === 'dusk' || ph === 'dawn') ctx = 'dusk';
+  }catch(e){}
+  try{ const de = document.documentElement; de.dataset.ui27Flash = ctx; de.dataset.ui27FlashRes = kind || ''; }catch(e){}
+  return ctx;
+}
 async function showEndSign(m){
   const battlefield = document.querySelector('.battlefield'); if(!battlefield) return;
   const mySeat = m.mode==='liveRanked' ? m.liveMySeat : 1;
   const kind = m.winner===0 ? 'draw' : (m.mode==='pc' ? 'victory' : (m.winner===mySeat ? 'victory' : 'defeat'));
+  try{ ui27FlashContext(m, kind); }catch(e){} // 2026-11-07 (package UI27 #4): the end light's tint
   let text = m.mode==='pc' && m.winner!==0 ? `PLAYER ${m.winner} WINS!` : ({victory:'VICTORY!', defeat:'DEFEAT', draw:'DRAW'})[kind];
   if(m.endReason === 'raidTime') text = 'THE TIDE TURNS'; // 2026-10-18: a raid that ran out of turns says so (it read "DRAW")
   // Castle falls (effects catalogue "burn / dissolve", 2026-10-04): a destroyed castle shudders,

@@ -11,17 +11,27 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 1 | New skills Consecration (makes Exalted ground) and Desecration (makes Cursed ground); they cancel each other; for Map 70+ only | ENG30 (on no card) |
 | 2 | Blind: the sunglasses top pip glows while the unit attacks (it attacks "blindly") | ENG30 (UI) |
 | 3 | Effort of an Electron build kept in step automatically, and a Steam demo | answered in chat 11-07 |
-| 4 | Victory flash: weaker, behind the victory window; tinted by context (darker in darkness etc.) | UI27 |
-| 5 | Update loop: after pressing Update the game still asks to update; a refresh fixed it | UI27 |
+| 4 | Victory flash: weaker, behind the victory window; tinted by context (darker in darkness etc.) | UI27 ✅ done (on its branch) |
+| 5 | Update loop: after pressing Update the game still asks to update; a refresh fixed it | UI27 ✅ done (on its branch) |
 | 6-7, 9-11 | CONTENT14-1 a, CONTENT14-2 a, CONTENT13-1 a, BAL21-1 a, BAL21-2 (drop every too-easy PRO deck), BAL21-3 (simulated ladder), BAL21-4 a, UI25-1 (un-gate) | recorded in decisions.json |
 | 8 | A card for each faction that grows stronger while the leader is present (like the stoat) | CONTENT15 |
 | 9b | Remove every too-easy PRO deck; few distinct strong decks is an amber flag | BAL24 |
 | 9c | Ladder decks by simulation: 100 (or 10) simulated players win packs and rewards on the road, each gets an optimised deck | BAL24 |
-| 11 | Un-gate the 17 skills on cards owned before their unlock map (UI25-1 b) | UI27 |
-| 12 | No card notice (results chip, toast) until the player sees the card, e.g. when claiming the achievement | UI27 |
+| 11 | Un-gate the 17 skills on cards owned before their unlock map (UI25-1 b) | UI27 ✅ done (on its branch) |
+| 12 | No card notice (results chip, toast) until the player sees the card, e.g. when claiming the achievement | UI27 ✅ done (on its branch) |
 | 13 | Remove the blindfold sight look; the shut-eye blink plays with a 50% chance | ENG30 (UI) |
-| 15 | No effects or sounds while the tab is out of focus (they pile up and play at once on return) | UI27 |
-| 16 | Editor budget box: "Within budget, B = 13.8 < 16.2 = N"; formula on hover; A/H, B, S symbols; no "skills" word; Base level dropdown (locked) after Rarity; a skill-points row after custom triggers (2.5 + 5.0 + 3.5^2 = ... = S, each skill in its own formula type) | UI27 |
+| 15 | No effects or sounds while the tab is out of focus (they pile up and play at once on return) | UI27 ✅ done (on its branch) |
+| 16 | Editor budget box: "Within budget, B = 13.8 < 16.2 = N"; formula on hover; A/H, B, S symbols; no "skills" word; Base level dropdown (locked) after Rarity; a skill-points row after custom triggers (2.5 + 5.0 + 3.5^2 = ... = S, each skill in its own formula type) | UI27 ✅ done (on its branch) |
+| 17 | Card editor: Previous / Next to the neighbouring card (Codex order, Map cards order) (owner 09:01) | UI27 ✅ done (on its branch) |
+| 18 | Achievement card reveal in the middle of the screen; Claim all reveals every card in one sequence, then one message (owner 09:47 note 9) | UI27 ✅ done (on its branch) |
+| 19 | Two-skill warning in the skill section, only when broken; a skill 1, a light one 0.5; "Over the two-skill limit (2.5)", sum on hover (owner 09:47 note 12) | UI27 ✅ done (on its branch) |
+
+## 11-07: Package UI27 (on its branch, not released)
+- Done (owner 08:54): 4) the end-of-fight light (the darkness lifting) behind the results window, weaker, tinted by darkness level, night, dusk, heatwave, frost, rain / fog; 5) Update loop: cause, `version.json` and `index.html` from different builds on main (8 of the last 30 commits); Update now loads a cache-busted URL and does not ask twice for one build; the test checks the pair; 11) skills on cards owned before their unlock map un-gated (16 skills; Sonar / Keen Sense keep ENG28's gate unless owned); 12) no "cards to claim" chip, the cards show on Claim, then "N cards added"; 15) no effects or sound cues while the tab is hidden (and 0.6 s after); 16) editor budget box: "Within budget, B = x < y = N", B and Product lines with formulas on hover, Base level box, skill points row.
+- Done (owner 09:01): 17) Previous / Next in the card editor (Codex order, Map cards order; ← / →; unsaved changes ask on the page).
+- Done (owner 09:47): 18) one claim reveals its cards centred (the won-card reveal); Claim all reveals all its cards in one sequence, then one "N cards added". 19) the two-skill warning sits in the skill section, only when over 2 (a skill 1, a light one 0.5), sum on hover.
+- Owner calls open: UI27-1 (check the build stamp pair before a push), UI27-2 (the budget heading compares B, not Base), UI27-3 (Frostbite, Fire Arrow, Molting, Stem stay "?": their early cards can't be owned), UI27-4 (move the half-count two-skill rule into bramblewood-budget.js).
+- Next: nothing queued.
 
 ## 11-07: Package UI26 (on its branch, not released)
 - Done (owner 08:18): 1) standing darkness on a unit that can't see halved to about 5% (shade .14 to .07, art brightness .9 to .95); the eye-intro moment and the battlefield's Darkness overlay unchanged. 2) Finding: the blue bar is the crab's own horizon art under the darkening, the top circle is the Dark-blind pip; nothing to remove.

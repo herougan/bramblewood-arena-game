@@ -111,7 +111,7 @@ async function browser(){
         live: (liveCards['tide-pool-crab'] || {}).health, defs: getCardDefs()['tide-pool-crab'].health, closed: document.getElementById('editorOverlay').hidden}; })()`);
     ok(sv.row && sv.row.t === 'card_overrides' && sv.row.health === sv.h0 + 1 && sv.row.deleted === false && sv.row.shield === 3, `B b. Save writes the card_overrides row (${JSON.stringify(sv.row || sv.dbg)})`);
     ok(sv.live === sv.h0 + 1 && sv.defs === sv.h0 + 1 && sv.closed, `B b. the edit applies to the card and the editor closes (${JSON.stringify(sv)})`);
-    ok(/\(2×1 \+ \(\d+ \+ 2\.4/.test(sv.budget),`B c. the editor's budget shows the Shield's Health share (${sv.budget.slice(0, 120)})`);
+    ok(/\([23]×1 \+ \(\d+ \+ 2\.4/.test(sv.budget), /* 2026-11-07 (UI27 #16): the B line writes the real Attack weight, 3 */`B c. the editor's budget shows the Shield's Health share (${sv.budget.slice(0, 120)})`);
     const cx = await pg.evaluate("(()=>{ adminModeEnabled = true; skillBookMemo = null; const e = skillBookEntriesNow().find(x=> x.key === 'render'); return e ? e.find : ''; })()");
     ok(/daunt counter falls off/i.test(cx), `B b. Render is back in the Codex with its note (${cx.slice(0, 80)})`);
     ok(!errs.length, `B no page errors (${errs.slice(0, 2).join(' | ')})`);
