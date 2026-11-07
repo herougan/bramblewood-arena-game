@@ -5,6 +5,20 @@
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
 
+
+## 11-07 09:00-09:10: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | Map cards window: power badge on each card, more compact chrome, "Cut" as its emoji only; picks note as a button tooltip; add-special button in the Special section; recommendation tiles skip present skills, grey tiles + "Suggested" pill for skills only at a higher level / hidden; top buttons closer to the subtitle | UI28 |
+| 2 | Card editor Previous / Next (Codex order, or the map's cards) | UI27 |
+| 3 | Pack editor window like Map cards: every pack + Starter, Base, Otters, Hummingbirds; opened from the Shop (📦 on each pack, a Starter · Base · Factions button) and from the map's 🚨 admin bar | UI29 (after UI28) |
+| 4 | Ponytail code review once the current list is done | REVIEW (last) |
+| 5 | Bramble levelling (ENG27-5): starting bramble Level 0, levelled in the Forge; Level 1 skills at Level 1; major stat steps at 5, 10, 15, 20; skill values rise per skill; resources at most +2 Lumber; flat bonuses don't scale with units | ENG31 (after ENG30) |
+| 6 | ENG27-7: Inspiring 1 costs 3 | done 11-07 (skill-costs.json) |
+| 7 | ENG27-10: pick two maps whose bosses unlock Whetstone Rise and Mossbed Hollow | ENG31 |
+| 8 | BAL21-1/2: leave those fights and PRO decks; admin pills on fights: "TOO WEAK" on N-SK when the map's PRO decks are too easy, "TOO STRONG" on N-WK when its weak decks are too strong | BAL24 |
+| 9 | Pack plan: each pack roughly holds its zone's cards (Maps 0-7, 8-15, 16-20 with their sub-maps), plus up to 20 recommended basic, thematic build-up cards; every card gets a source: pack-unique, skirmish-unique (never in packs), achievement-only; then achievement cards get a 5% upgrade discount tag | CONTENT16 (proposal), UI29 shows it |
+
 ## 11-07 08:54: Owner notes
 | # | Note | Package |
 |---|---|---|
