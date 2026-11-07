@@ -4235,5 +4235,8 @@
  "none": "keine",
  "Melee": "Nahkampf",
  "Ranged": "Fernkampf",
- "No hit of its own": "Kein eigener Treffer"
+ "No hit of its own": "Kein eigener Treffer",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "Jeder Treffer, der sitzt, heilt es um {n} (auch Treffer auf die Dornenburg), bis zu seiner maximalen Gesundheit.",
+ "Each hit heals it {n}.": "Jeder Treffer heilt es um {n}.",
+ "Blank = heals the damage dealt": "Leer = heilt den verursachten Schaden"
 }

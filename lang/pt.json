@@ -4237,5 +4237,8 @@
  "none": "nenhuma",
  "Melee": "Corpo a corpo",
  "Ranged": "À distância",
- "No hit of its own": "Sem golpe próprio"
+ "No hit of its own": "Sem golpe próprio",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "Cada golpe que acerta o cura em {n} (golpes na sarça também), até a sua Vida máxima.",
+ "Each hit heals it {n}.": "Cada golpe o cura em {n}.",
+ "Blank = heals the damage dealt": "Vazio = cura o dano causado"
 }

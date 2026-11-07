@@ -90,7 +90,7 @@ const castleHit = (id, allies)=>{ const {e, P} = mk(); const s = put(e, P, 1, id
   e.resolveCombat(P, so, {}, [], 1); ok(T.hp === 500 - 4 - 1, `the pieces on their own: On Action × Arrow 4 on a unit that also swings for 1 (${500 - T.hp})`); }
 { const ix = e=> e.trigsOf(defs['bx-arch']); const {e} = mk(); const t = ix(e).find(x=> x.keyword === 'archer');
   ok(t && t.on === 'onAction' && t.do === 'arrow' && t.amount === 3, 'Archer N is the trigger On Action × the action Arrow N'); }
-{ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), v = cards.find(c=> c.id === 'stonedrop-vulture');
+{ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).map(c=> require('../bramblewood-skillparams.js').expandDef(c)) /* ENG35 (2026-11-07): fused skills read as their flat keys */, v = cards.find(c=> c.id === 'stonedrop-vulture');
   ok(v && v.effects.archer > 0 && v.effects.archerStyle === 'drop' && !v.effects.skyfall && v.effects.flying, `Stonedrop Vulture: Archer ${v && v.effects.archer}, the drop look, Skyfall gone, still Flying`);
   ok(v && typeof v.creatorNote === 'string' && /Archer/.test(v.creatorNote), 'with a creatorNote'); }
 
@@ -102,7 +102,7 @@ const castleHit = (id, allies)=>{ const {e, P} = mk(); const s = put(e, P, 1, id
   ok(/const CARD_FRAME_HTML = '<i class="cframe-fx" aria-hidden="true"><\/i><i class="cframe"/.test(app), 'every framed card face carries .cframe-fx (before the frame art)'); }
 
 // ---- 5. fire attacks: the flame on the attack label; no magic chip (the wand on the attack label says it)
-{ const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
+{ const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).map(c=> require('../bramblewood-skillparams.js').expandDef(c)) /* ENG35 (2026-11-07): fused skills read as their flat keys */;
   const m = app.match(/function isFireDef\(d\)\{[^\n]*\}/), isMagicDef = d=> !!(d && ((d.effects && d.effects.magic) || d.dmgType === 'magic'));
   const isFireDef = m ? new Function('isMagicDef', m[0] + '\nreturn isFireDef;')(isMagicDef) : null;
   ok(isFireDef && isFireDef({dmgType:'heat'}) && isFireDef({dmgType:'fire'}) && !isFireDef({dmgType:'physical'}) && !isFireDef({dmgType:'heat', effects:{magic:true}}), 'isFireDef: heat or fire, not magic');
@@ -114,7 +114,7 @@ const castleHit = (id, allies)=>{ const {e, P} = mk(); const s = put(e, P, 1, id
   const h = ev.find(x=> x.type === 'hit' && x.attUid === S.uid); ok(h && h.dmgType === 'heat', `Cinder Stoker's swing is fire damage (${h && h.dmgType})`); }
 
 // ---- 6. the young hummingbird warrior; 7. Dive's eligibility (Flying, Tide or the Sprinter tag)
-{ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), kit = cards.find(c=> c.id === 'otter-kit'), g = cards.find(c=> c.id === 'greyplume-fledgling');
+{ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).map(c=> require('../bramblewood-skillparams.js').expandDef(c)) /* ENG35 (2026-11-07): fused skills read as their flat keys */, kit = cards.find(c=> c.id === 'otter-kit'), g = cards.find(c=> c.id === 'greyplume-fledgling');
   ok(g && g.awaitingSource === true, 'Greyplume Fledgling: awaiting a source'); // 2026-11-04 (TESTFIX1): later packages appended cards after it, so it is no longer the last
   ok(g && g.rarity === kit.rarity && g.wait === kit.wait && g.cost === kit.cost && g.basic && g.basicSet === 'hummingbirds' && g.effects.flying && g.archetypes.includes('Hummingbird'), 'Otter Kit\'s mirror: Starter, Wait 0, free, a Hummingbird basic that flies');
   const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), M = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));

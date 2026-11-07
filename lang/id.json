@@ -4237,5 +4237,8 @@
  "none": "tidak ada",
  "Melee": "Jarak dekat",
  "Ranged": "Jarak jauh",
- "No hit of its own": "Tanpa serangan sendiri"
+ "No hit of its own": "Tanpa serangan sendiri",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "Setiap serangannya yang kena memulihkannya {n} (serangan ke semak juga), sampai Nyawa maksimalnya.",
+ "Each hit heals it {n}.": "Setiap serangan memulihkannya {n}.",
+ "Blank = heals the damage dealt": "Kosong = memulihkan sebesar kerusakan"
 }

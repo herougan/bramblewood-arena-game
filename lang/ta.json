@@ -4238,5 +4238,8 @@
  "none": "இல்லை",
  "Melee": "நெருக்கத் தாக்குதல்",
  "Ranged": "தொலைவுத் தாக்குதல்",
- "No hit of its own": "சொந்த தாக்குதல் இல்லை"
+ "No hit of its own": "சொந்த தாக்குதல் இல்லை",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "அதன் ஒவ்வொரு வெற்றித் தாக்குதலும் அதை {n} குணப்படுத்தும் (முட்புதர் தாக்குதல்களும்), அதிகபட்ச உயிர் வரை.",
+ "Each hit heals it {n}.": "ஒவ்வொரு தாக்குதலும் அதை {n} குணப்படுத்தும்.",
+ "Blank = heals the damage dealt": "காலி = ஏற்படுத்திய சேதத்தை குணப்படுத்தும்"
 }

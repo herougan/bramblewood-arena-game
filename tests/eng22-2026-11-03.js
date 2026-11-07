@@ -48,7 +48,7 @@ function put(e, P, pid, id, slot){ const pl = P[pid]; const c = e.makeBoardCard(
   e.syncSlots(pl); return c; }
 const round = (e, P, r)=>{ const ev = []; e.roundStart(P, r, so, {}, ev); e.resolveCombat(P, so, {}, ev, 1); return ev; };
 const TXT = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = R('arena_app.js'), eng = R('bramblewood-engine.js');
-const cards = J('canonical/cards.json'), byId = Object.fromEntries(cards.map(c=> [c.id, c]));
+const cards = J('canonical/cards.json'), byId = Object.fromEntries(cards.map(c=> [c.id, require('../bramblewood-skillparams.js').expandDef(c)])); // ENG35 (2026-11-07): fused skills read as their flat keys
 const SCt = J('canonical/skill-costs.json'), SK = Object.fromEntries(SCt.skills.map(s=> [s.id, s]));
 
 // ---- 1. Build { A/H Palisade } and Fortify {X} ---------------------------------------------------------------------------------

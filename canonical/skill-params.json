@@ -997,6 +997,14 @@
     "style": "drop"
    },
    "about": "v = the arrow's damage; style = its look (drop ...), no rules effect."
+  },
+  "sap": {
+   "params": {},
+   "default": "Leech: each landed hit heals it for the damage dealt, up to its max Health",
+   "number": "blank (true) = the damage dealt; N = heal N a hit",
+   "stat": 2,
+   "ability": null,
+   "about": "true or no number: heals the damage each hit deals (bramble hits too); a number N: heals N on each hit that lands. Capped at max Health; rides every melee hit (skill-delivery.json). Priced 2.3 plain, 1.15 x N numbered (skill-costs.json perN)."
   }
  }
 }

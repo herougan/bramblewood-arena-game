@@ -4237,5 +4237,8 @@
  "none": "nessuna",
  "Melee": "Mischia",
  "Ranged": "A distanza",
- "No hit of its own": "Nessun colpo proprio"
+ "No hit of its own": "Nessun colpo proprio",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "Ogni colpo a segno lo cura di {n} (anche i colpi al rovo), fino alla sua Salute massima.",
+ "Each hit heals it {n}.": "Ogni colpo lo cura di {n}.",
+ "Blank = heals the damage dealt": "Vuoto = cura i danni inflitti"
 }

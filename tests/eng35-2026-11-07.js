@@ -31,7 +31,7 @@ ok(twins.length >= 60, 'found the old twin keys (' + twins.length + ')');
 const unmapped = twins.filter(k=> !SPL.aliasOf(k));
 ok(!unmapped.length, 'every old twin key maps to a fused key (' + unmapped.join(', ') + ')');
 ok(SPL.aliasOf('almanacGrant')[0] === 'almanac' && SPL.aliasOf('kinglyGrant')[0] === 'king' && SPL.aliasOf('deliveryRes')[0] === 'delivery' && SPL.aliasOf('nocturnalHp').join() === 'nocturnal,hp', 'aliases: almanacGrant -> almanac, kinglyGrant -> king, deliveryRes -> delivery, nocturnalHp -> nocturnal.hp');
-const famBad = Object.keys(FAM).filter(k=> { const f = FAM[k]; return !f.params || !Object.keys(f.params).length || !f.default || !f.about || !('stat' in f) || !('ability' in f) || !('number' in f) || Object.keys(f.params).some(x=> !P.fields[x]); });
+const famBad = Object.keys(FAM).filter(k=> { const f = FAM[k]; return !f.params || (!Object.keys(f.params).length && f.number == null) || !f.default || !f.about || !('stat' in f) || !('ability' in f) || !('number' in f) || Object.keys(f.params).some(x=> !P.fields[x]); });
 ok(!famBad.length, 'every family has params, default, number, stat, ability, about, and every parameter name is described (' + famBad.join(', ') + ')');
 ok(Object.keys(Function('return ' + app.match(/const ZEIT_TWIN = (\{[^\n]*\});\s*\n/)[1].replace(/\/\*[^*]*\*\//g, ''))()).every(k=> FAM[k]), 'every editor twin (ZEIT_TWIN) is a family');
 ok(FAM.crepuscular && FAM.crepuscular.stat && FAM.crepuscular.ability && FAM.crepuscular.default && FAM.almanac.number === 4, 'Crepuscular has default, stat and ability versions; Almanac N defaults to 4');
@@ -140,9 +140,30 @@ ok(/\.eng35-sk-tip\{position:fixed;/.test(tpl) && /\.ui19-sk\[data-eng35-key\] \
 ok(/eng35FusedKey\(k0\)/.test(grab('ui18CardSkillKeys')) && /eng35ExpandDef\(liveCards\[id\]\)/.test(app), 'the skill lists count a part as its skill; cloud edits with fused skills are read');
 // texts
 const {TEXT} = require('../bramblewood-texts.js');
-const keys = ['default', 'number', 'stat', 'ability', 'params', 'one-value', 'none', 'delivery', 'dl-melee', 'dl-ranged', 'dl-none'].map(k=> 'ui.eng35-' + k);
-ok(keys.every(k=> TEXT[k]), 'the 11 TX keys exist');
+const keys = ['default', 'number', 'stat', 'ability', 'params', 'one-value', 'none', 'delivery', 'dl-melee', 'dl-ranged', 'dl-none', 'leech-n', 'leech-n-short', 'leech-blank'].map(k=> 'ui.eng35-' + k);
+ok(keys.every(k=> TEXT[k]), 'the 14 TX keys exist');
 for(const code of ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']){ const pack = J('lang/' + code + '.json'); ok(keys.every(k=> pack[TEXT[k]] !== undefined), code + ' has every row'); }
+// ---- owner 23:26: "Just Fire Arrow and Fire Bolt is enough": the nine shot riders are parameters, not skills in the lists
+{ const tail = app.slice(app.indexOf('const ENG35_RIDER_KEYS'));
+  ok(/ENG35_RIDER_KEYS = new Set\(Object\.keys\(EN6_BRAMBLE_APP\)\.concat\(Object\.keys\(EN7_TIP_APP\)\)\)/.test(tail) && /d\.hidden = true; d\.eng35Rider = true; d\.get = \(\)=> undefined;/.test(tail), 'the nine riders are hidden from "+ Add Skill", have no editor row (get undefined)');
+  ok(/!p\.eng35Rider/.test(grab('skillBookEntriesNow')), 'the Codex skill list leaves them out');
+  const riders = ['arrow', 'fireArrow', 'fireBolt'].flatMap(b=> ['Bramble', 'Poison', 'Bleed'].map(x=> b + x));
+  ok(riders.every(k=> SPL.aliasOf(k) && ['arrow', 'fireArrow', 'fireBolt'].includes(SPL.aliasOf(k)[0])), 'each rider is a parameter of its shot in the params file');
+  const users = cards.filter(c=> { const e = SPL.expandDef(c).effects || {}; return riders.some(k=> e[k]); }).map(c=> c.id);
+  ok(users.join() === 'balloon-archer', 'one card uses a rider today: Balloon Archer (' + users.join(', ') + ')');
+  const F = J('docs/decisions.json').items.find(x=> x.id === 'ENG35-4'); ok(F && /Balloon Archer/.test(F.body), 'decision ENG35-4 asks about it'); }
+// ---- owner 23:30: Leech N
+{ const fam = FAM.sap; ok(fam && fam.number && /damage dealt/.test(fam.number), 'Leech is in the params file: blank = the damage dealt, N = heal N');
+  const SC = require('../tools/skill_costs.js'), T = SC.make(J('canonical/skill-costs.json'));
+  ok(T.skillCost('sap', true) === 2.3 && T.skillCost('sap', 2) === 2.3 && T.skillCost('sap', 3) === 3.45, 'price: plain 2.3 unchanged, Leech N 1.15 x N');
+  const run = sap=>{ const d = Object.assign({}, base); d['vampire-bat'] = Object.assign({}, base['vampire-bat'], {effects: Object.assign({}, base['vampire-bat'].effects, {sap})});
+    const r = H.runBoard({seed: 4242, rounds: 5, A: [{id: 'vampire-bat', hp: 30}], B: [{id: 'garden-snail', hp: 60, attack: 4}], defs: d}); return r.events.filter(e=> e.type === 'sap').map(e=> e.amount); };
+  const plain = run(true), three = run(3), one = run(1);
+  ok(plain.length && three.length && three.every(x=> x === 3) && one.every(x=> x === 1) && plain.some(x=> x !== 3), `Leech heals the damage dealt (${plain}), Leech 3 heals 3 a hit (${three}), Leech 1 heals 1 (${one})`);
+  ok(/sapHealOf\(e, dmg\)/.test(rd('bramblewood-engine.js')) && (rd('bramblewood-engine.js').match(/sapHealOf\(/g) || []).length === 6, 'every Leech heal reads sapHealOf (the swing, Cleave, flank, the bramble, the skill hits)');
+  const tail = app.slice(app.indexOf("SKILL_TEXT.sap = (v, n, e)"));
+  ok(/kind: 'number', blankOk: true, defaultValue: true/.test(tail) && /e\.sap = x > 0 \? x : true/.test(tail) && /s\.kind==='number' && s\.blankOk/.test(app), 'editor: an optional number field, blank saves the plain Leech');
+  ok(cards.filter(c=> (c.effects || {}).sap !== undefined).every(c=> c.effects.sap === true), 'existing Leech cards unchanged (plain)'); }
 // workbook, docs
 const wb = rd('tools/export_workbook_2026_11_07.py');
 ok(/Parameters \(default, stat version, ability version\)/.test(wb) && /if s\['key'\] in alias: continue/.test(wb), 'the workbook\'s Skills tab: one row per fused skill, a Parameters column');

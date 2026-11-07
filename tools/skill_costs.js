@@ -63,6 +63,7 @@
       if(id === 'cower' && typeof v === 'number' && v > 0) return r2(val + (skillCost('armor', v) || 0) * COWER_ARMOR_UPTIME);
       // 2026-10-24 (package EN5, owner BP-1: "price it according to your simulation. Note that bigger numbers make them stronger"): an 'n'
       // skill with `pow` costs value × N^pow (Bleed, Poison: fitted to the robust skill test's worth at N 1-3), not value × N.
+      if(e.perN != null && typeof v === 'number' && v > 0) return r2(+e.perN * v); // ENG35 (2026-11-07): a skill whose plain flag and number differ in kind (Leech: the damage dealt / heal N a hit), canonical/skill-costs.json perN
       if(e.scale === 'n'){ const N = Math.max(1, v === true && e.payDefault ? e.payDefault : n); return e.pow != null ? r2(val * Math.pow(N, +e.pow)) : val * N; }
       if(e.scale === 'half') return val * (1 + (n > 1 ? Math.floor(n / 2) : 0));
       if(e.scale === 'mult') return 0; // TUT2 (2026-10-30): Slow is a multiplier on the card's S (cardS, bramblewood-budget.js slowSMultOf), no price of its own

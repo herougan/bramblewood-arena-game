@@ -4236,5 +4236,8 @@
  "none": "aucune",
  "Melee": "Mêlée",
  "Ranged": "À distance",
- "No hit of its own": "Aucun coup propre"
+ "No hit of its own": "Aucun coup propre",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "Chaque coup qui porte le soigne de {n} (coups sur la ronce compris), jusqu’à ses PV max.",
+ "Each hit heals it {n}.": "Chaque coup le soigne de {n}.",
+ "Blank = heals the damage dealt": "Vide = soigne les dégâts infligés"
 }

@@ -35,7 +35,7 @@ function mk(seed, rules, chars){ const e = E.makeSimEngine(defs, E.mulberry32(se
 function put(e, P, pid, id, slot){ const pl = P[pid]; const c = e.makeBoardCard(id); c.slot = slot; c._seenAt = slot;
   const cs = all(pl).concat(c); pl.row.center = cs.filter(x=> x.slot === 0); pl.row.left = cs.filter(x=> x.slot < 0).sort((a, b)=> b.slot - a.slot); pl.row.right = cs.filter(x=> x.slot > 0).sort((a, b)=> a.slot - b.slot);
   e.syncSlots(pl); return c; }
-const app = R('arena_app.js'), eng = R('bramblewood-engine.js'), cards = J('canonical/cards.json'), byId = Object.fromEntries(cards.map(c=> [c.id, c]));
+const app = R('arena_app.js'), eng = R('bramblewood-engine.js'), cards = J('canonical/cards.json'), byId = Object.fromEntries(cards.map(c=> [c.id, require('../bramblewood-skillparams.js').expandDef(c)])); // ENG35 (2026-11-07): fused skills read as their flat keys
 const SCt = J('canonical/skill-costs.json'), SK = Object.fromEntries(SCt.skills.map(s=> [s.id, s])), AC = Object.fromEntries(SCt.actions.map(s=> [s.id, s]));
 
 // ---- 1. Crepuscular -------------------------------------------------------------------------------------------------------------

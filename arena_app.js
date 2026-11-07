@@ -10032,12 +10032,12 @@ function skillBookEntries(){
   const list = skillBookEntriesNow(); skillBookMemo = {sig, list}; return list;
 }
 function skillBookEntriesNow(){
-  const met = skillBookSeen(), shown = p=> p.label && !p.retired && !skillHiddenNow(p.key) && (adminModeEnabled || met.has(p.key));
+  const met = skillBookSeen(), shown = p=> p.label && !p.retired && !p.eng35Rider /* ENG35: a shot rider is a parameter */ && !skillHiddenNow(p.key) && (adminModeEnabled || met.has(p.key));
   // 2026-10-16 skill audit: the skills that live only in SKILL_DEFS (Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock,
   // Stagger, Chained, Explode, Render, Revive, Progeny) are in the Codex too.
   const list = PASSIVE_DEFS.filter(shown).concat(SKILL_DEFS.filter(s=> shown(s) && !PASSIVE_DEFS.some(p=> p.key === s.key))).sort((a, b)=> a.label.localeCompare(b.label)); // 2026-10-15: not retired (Hive Mind), not still hidden (SKILL_REVEAL)
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
-  const out = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
+  const out = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' && !p.blankOk /* ENG35: Leech's plain form */ ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
     if(p.codexNote) txt += ' ' + p.codexNote; // 2026-10-17: a sentence only the Codex shows (Bloodlust's Ambush note)
     { const cx = typeof SKILL_CODEX_NOTE !== 'undefined' && SKILL_CODEX_NOTE[p.key]; if(cx) txt += ' ' + cx(); } // 2026-10-18 (package D): what the terse card line left out
@@ -12219,7 +12219,8 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     : categoryFilter==='passive' ? SKILL_DEFS.filter(x=>x.category!=='evergreen')
     : SKILL_DEFS).filter(gateOk).filter(x=> x.key === row.key || !(ZEIT_TWIN_BACK[x.key] || (twinOf && x.key === twinOf)));
   let valueHtml = '';
-  if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${(row.value === true || row.value == null || row.value === '') ? (s.defaultValue != null ? s.defaultValue : 1) : row.value}">`; // EN5 (2026-10-24): a plain skill (true) shows its default (Hemorrhage 0); was row.value||1
+  if(s.kind==='number' && s.blankOk) valueHtml = `<input type="number" min="1" class="w-70" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder || '')}" title="${escapeAttr(s.placeholder || '')}" aria-label="${escapeAttr(s.placeholder || '')}" value="${typeof row.value === 'number' && row.value > 0 ? row.value : ''}">`; // ENG35 (2026-11-07): an optional number (Leech: blank = the damage dealt)
+  else if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${(row.value === true || row.value == null || row.value === '') ? (s.defaultValue != null ? s.defaultValue : 1) : row.value}">`; // EN5 (2026-10-24): a plain skill (true) shows its default (Hemorrhage 0); was row.value||1
   else if(s.kind==='text') valueHtml = `<input type="text" class="w-160" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder||'')}" value="${escapeAttr(typeof row.value === 'string' ? row.value : '')}">`;
   // Zeitgeber advanced forms (2026-10-15): the braces are a skill list, typed or picked ("+ skill" appends one); Tide has two facets.
   else if(s.kind==='grant') valueHtml = grantPickerHTML(i, 'val', typeof row.value === 'string' ? row.value : '', s.placeholder);
@@ -64982,3 +64983,19 @@ const ENG25_EVERGREEN = new Set(['converge', 'moonpull', 'earthquake', 'tornado'
 // "Gives" field picks the default or the skill list.
 SKILL_DEFS.forEach(d=>{ if(!d || !/Grant$/.test(d.key)) return; const plain = d.key.replace(/Grant$/, '');
   if(ZEIT_TWIN[plain] || ZEIT_TWIN_BACK[d.key] || !SKILL_DEFS.some(x=> x.key === plain)) return; ZEIT_TWIN[plain] = d.key; ZEIT_TWIN_BACK[d.key] = plain; });
+// ENG35 (2026-11-07, owner 23:26, on the editor's skill list showing "Fire Arrow – bleed / – bramble / – venom", "Fire Bolt – bleed / ..."): "No need for
+// so many hybrid variations of this skill. Just Fire Arrow and Fire Bolt is enough." The nine shot riders (Arrow, Fire Arrow, Fire Bolt x – bramble, – venom,
+// – bleed: EN6_BRAMBLE_APP, EN7_TIP_APP) are parameters of their shot (canonical/skill-params.json: arrow.bramble / .poison / .bleed), not skills: no
+// "+ Add Skill" entry, no editor row, no Codex entry. A card that has one keeps it (the editor's Save keeps a parameter beside its shot; the card text still
+// reads "Arrow 2 – bramble"). Which cards should drop theirs: decision ENG35-4.
+const ENG35_RIDER_KEYS = new Set(Object.keys(EN6_BRAMBLE_APP).concat(Object.keys(EN7_TIP_APP)));
+[PASSIVE_DEFS, SKILL_DEFS].forEach(list=> list.forEach(d=>{ if(d && ENG35_RIDER_KEYS.has(d.key)){ d.hidden = true; d.eng35Rider = true; d.get = ()=> undefined; } }));
+// ENG35 (2026-11-07, owner 23:30: "Leech should be able to accept a parameter. Default leech = how much damage you deal. Otherwise Leech N = heal N on hit."):
+// Leech (effects.sap) takes an optional number. true (the editor's blank field) heals the damage each hit deals, as before; N heals N on each hit that lands,
+// up to its max Health (engine: sapHealOf). The editor shows a number field, blank by default.
+{ const sapText0 = SKILL_TEXT.sap, sapNum = v=> typeof v === 'number' && v > 0;
+  SKILL_TEXT.sap = (v, n, e)=> sapNum(v) ? TX('ui.eng35-leech-n-short', {n: v}) : sapText0(v, n, e);
+  [PASSIVE_DEFS, SKILL_DEFS].forEach(list=> list.forEach(d=>{ if(!d || d.key !== 'sap') return; const desc0 = d.desc;
+    Object.defineProperty(d, 'placeholder', {get: ()=> TX('ui.eng35-leech-blank'), configurable: true}); Object.assign(d, {kind: 'number', blankOk: true, defaultValue: true,
+      desc: (v, n, e)=> sapNum(v) ? TX('ui.eng35-leech-n', {n: v}) : desc0(v, n, e),
+      apply: (e, v)=>{ const x = Math.round(Number(v)); e.sap = x > 0 ? x : true; }}); })); }

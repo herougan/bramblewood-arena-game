@@ -4236,5 +4236,8 @@
  "none": "無",
  "Melee": "近戰",
  "Ranged": "遠程",
- "No hit of its own": "自身不造成攻擊"
+ "No hit of its own": "自身不造成攻擊",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "每次命中都為其恢復{n}點（命中荊棘堡也算），不超過最大生命。",
+ "Each hit heals it {n}.": "每次命中恢復{n}點。",
+ "Blank = heals the damage dealt": "留空 = 恢復造成的傷害"
 }

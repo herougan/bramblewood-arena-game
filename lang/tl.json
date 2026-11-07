@@ -4236,5 +4236,8 @@
  "none": "wala",
  "Melee": "Malapitan",
  "Ranged": "Malayuan",
- "No hit of its own": "Walang sariling tama"
+ "No hit of its own": "Walang sariling tama",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "Bawat tamang tama nito ay nagpapagaling dito ng {n} (kasama ang tama sa bramble), hanggang sa max na Buhay nito.",
+ "Each hit heals it {n}.": "Bawat tama ay nagpapagaling dito ng {n}.",
+ "Blank = heals the damage dealt": "Blangko = nagpapagaling ng naibigay na pinsala"
 }

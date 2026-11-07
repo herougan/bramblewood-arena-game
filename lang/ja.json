@@ -4236,5 +4236,8 @@
  "none": "なし",
  "Melee": "近接",
  "Ranged": "遠隔",
- "No hit of its own": "自身の攻撃なし"
+ "No hit of its own": "自身の攻撃なし",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "命中するたびに{n}回復する（イバラへの命中も含む）。最大体力まで。",
+ "Each hit heals it {n}.": "命中ごとに{n}回復。",
+ "Blank = heals the damage dealt": "空欄 = 与えたダメージ分回復"
 }
