@@ -4102,5 +4102,9 @@
  "Suggested": "Vorschlag",
  "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "Empfohlen für {card}, aber Spieler begegnen dieser Fähigkeit auf dieser Karte nicht. Vielleicht sollte sie nicht verborgen bleiben.",
  "Only from level {n} on this map": "Auf dieser Karte erst ab Stufe {n}",
- "Hidden (shown as ?) on this map": "Auf dieser Karte verborgen (als ? angezeigt)"
+ "Hidden (shown as ?) on this map": "Auf dieser Karte verborgen (als ? angezeigt)",
+ "Sugg. Intro": "Vorschl. Einführung",
+ "Suggested to introduce at this map": "Vorgeschlagen zur Einführung auf dieser Karte",
+ "Suggested intro; no card here has it yet": "Vorgeschlagene Einführung; noch keine Karte hier hat sie",
+ "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.": "Blutend: {n}. Nimmt jedes Mal Schaden, wenn es angreift oder eine Fähigkeit einsetzt, und verliert dann jede Runde 1 Stapel."
 }

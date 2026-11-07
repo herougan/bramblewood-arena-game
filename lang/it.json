@@ -4104,5 +4104,9 @@
  "Suggested": "Suggerita",
  "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "Consigliata per {card}, ma i giocatori non incontreranno questa abilità in questa mappa. Forse non dovrebbe restare nascosta.",
  "Only from level {n} on this map": "Solo dal livello {n} in questa mappa",
- "Hidden (shown as ?) on this map": "Nascosta (mostrata come ?) in questa mappa"
+ "Hidden (shown as ?) on this map": "Nascosta (mostrata come ?) in questa mappa",
+ "Sugg. Intro": "Intro sugg.",
+ "Suggested to introduce at this map": "Suggerita da introdurre in questa mappa",
+ "Suggested intro; no card here has it yet": "Introduzione suggerita; nessuna carta qui ce l'ha ancora",
+ "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.": "Sanguinante: {n}. Subisce danni ogni volta che attacca o usa un'abilità, poi perde 1 accumulo a ogni round."
 }

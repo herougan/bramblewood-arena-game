@@ -11774,15 +11774,17 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
   .pg-edge-l .pg-tab:hover:not(:disabled), .pg-edge-r .pg-tab:hover:not(:disabled){transform:none;}
   .pg-book .al-head, .pg-book .bk-run{padding-left:72px; padding-right:72px; min-height:32px;} .pg-book .al-head{justify-content:center; text-align:center;} .pg-book .al-head .al-sec{flex:0 1 auto;} }
 /* the turning leaf: a copy of the page you leave, lifting off at the spine */
-.pg-leaf{position:absolute; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; backface-visibility:hidden; will-change:transform;
-  animation:pgLeafFwd 460ms cubic-bezier(.45,.05,.35,1) forwards;}
+/* 2026-11-07 (package UI30, owner 09:47 #10: "the animation sits below the book (offset); 15% faster"): the copy keeps its page's classes, and
+   .al-page's position:relative won, so the leaf flowed in under the book; absolute wins now. 460 -> 390 ms (the shade too; the back swing 420 -> 360). */
+.pg-leaf{position:absolute !important; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; backface-visibility:hidden; will-change:transform;
+  animation:pgLeafFwd 390ms cubic-bezier(.45,.05,.35,1) forwards;}
 .pg-leaf.pg-leaf-back{transform-origin:100% 50%; animation-name:pgLeafBack;}
-.pg-leaf::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.28)); opacity:0; animation:pgLeafShade 460ms ease-in forwards;}
+.pg-leaf::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.28)); opacity:0; animation:pgLeafShade 390ms ease-in forwards;}
 .pg-leaf.pg-leaf-back::after{background:linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,.28));}
 @keyframes pgLeafFwd{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(-96deg);}}
 @keyframes pgLeafBack{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(96deg);}}
 @keyframes pgLeafShade{to{opacity:1;}}
-.pg-in-back{transform-origin:0% 50%; animation:pgInBack 420ms cubic-bezier(.2,.7,.3,1) both;}
+.pg-in-back{transform-origin:0% 50%; animation:pgInBack 360ms cubic-bezier(.2,.7,.3,1) both;}
 @keyframes pgInBack{from{transform:perspective(1800px) rotateY(-80deg); opacity:.4;} to{transform:none; opacity:1;}}
 @media (prefers-reduced-motion: reduce){ .pg-leaf, .pg-leaf::after, .pg-in-back{animation:none !important;} .pg-leaf{display:none;} }
 
@@ -14674,6 +14676,16 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .board-card .card-tile .badges-bottom.status-chips{left:50% !important; transform:translate(-50%, -50%) !important; justify-content:center;}
 .board-card .card-tile:has(.waitbadge) .badges-bottom.status-chips{left:calc((100% - max(16px, 22cqw) - 4px) / 2) !important;}
 .board-card .card-tile .status-chips > .abadge.poison.has-n{width:auto; padding:0 calc(var(--sc-h) * .2) !important;}
+/* 2026-11-07 (package UI30 #2): Poison and Bleed pips have no number; each counter that goes gives the pip a short tick (a squeeze, a flash and a ring) */
+.board-card .card-tile .status-chips > .abadge.bleed{padding:0 !important; width:var(--sc-h);}
+.abadge.ui30-tick{animation:ui30PipTick .42s ease-out;}
+@keyframes ui30PipTick{0%{transform:scale(1); filter:none;} 30%{transform:scale(.72); filter:brightness(1.8) saturate(1.3); box-shadow:0 0 0 0 rgba(255,255,255,.75);} 70%{transform:scale(1.12); box-shadow:0 0 0 5px rgba(255,255,255,0);} 100%{transform:scale(1); filter:none;}}
+.board-card .card-tile .status-chips > .abadge.ui30-tick{animation:ui30PipTick .42s ease-out;}
+html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
+@media (prefers-reduced-motion: reduce){ .abadge.ui30-tick{animation:none !important;} }
+/* 2026-11-07 (package UI30 #16): the admin Map cards window's "Sugg. Intro" pill (amber, beside UI28's blue "Suggested"); a suggested skill no card here has yet is a dashed intro tile */
+.ui30-sugg{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; letter-spacing:.03em; padding:1px 5px; border-radius:999px; background:#c27f0e; color:#fff; cursor:help; vertical-align:1px; white-space:nowrap;}
+.ui19-sk.ui30-sugg-tile{border-style:dashed;}
 /* JJ14: your turn's glow on the battlefield frame (full width, your row down), not on the camera-moved row */
 .ui14-turn-glow{position:absolute; left:0; right:0; bottom:0; pointer-events:none; border-radius:0 0 inherit inherit; background:linear-gradient(to top, rgba(255,215,122,.42), rgba(255,215,122,.14) 55%, rgba(255,215,122,0)); opacity:0; animation:ui14TurnGlow 1.8s ease-out forwards;}
 @keyframes ui14TurnGlow{0%{opacity:0;} 25%{opacity:1;} 100%{opacity:0;}}
@@ -38204,9 +38216,14 @@ M.castleSink = function(el, opts){
     tl.to(t, {keyframes:[{x:-3, duration:.045}, {x:3, duration:.045}, {x:-2, duration:.045}, {x:2, duration:.045}, {x:0, duration:.045}]}, 0);
     puffs(tl, mk, .05, c.x, base, {n:3, w:w*.7, size:[10, 16], rise:-8, drift:10, dur:[.5, .7], color:'rgba(150,128,96,.55)', alpha:.7});
     // 2. the ground cracks along its foot, from the middle out
-    const cw = w*1.5, sv = svgNode('svg', {class:'fxc fxc-sinkcrack', width:Math.ceil(cw), height:16, viewBox:`0 0 ${Math.ceil(cw)} 16`}); document.body.appendChild(sv); bag.push(sv);
-    const pts = zig(0, 8, cw, 8, 9, 3.2); svgNode('polyline', {points:pts}, sv); svgNode('polyline', {points:pts, class:'lite'}, sv);
-    tl.set(sv, {x:c.x - cw/2, y:base - 8, scaleX:0, opacity:1, transformOrigin:'50% 50%'}, .12);
+    // 2026-11-07 (package UI30, owner 09:47 #3: "the quake line across a defeated bramble: shorter, centred"): GSAP's x / y / scaleX did not
+    // reach the outer <svg> (no CSS transform on it), so the 1.5x-wide line sat at the screen's top-left corner. It is now a plain box placed
+    // with left / top, centred on the bramble's foot, 0.8x the card's width, and the svg inside it.
+    const cw = w*.8, sv = document.createElement('div'); sv.className = 'fxc-sinkcrack-wrap'; sv.setAttribute('aria-hidden', 'true');
+    sv.style.cssText = `position:fixed; left:${(c.x - cw/2).toFixed(1)}px; top:${(base - 8).toFixed(1)}px; width:${Math.ceil(cw)}px; height:16px; pointer-events:none; z-index:60;`;
+    const svg = svgNode('svg', {class:'fxc fxc-sinkcrack', width:Math.ceil(cw), height:16, viewBox:`0 0 ${Math.ceil(cw)} 16`, style:'position:absolute; left:0; top:0;'}, sv); document.body.appendChild(sv); bag.push(sv);
+    const pts = zig(0, 8, cw, 8, 7, 2.6); svgNode('polyline', {points:pts}, svg); svgNode('polyline', {points:pts, class:'lite'}, svg);
+    tl.set(sv, {scaleX:0, opacity:1, transformOrigin:'50% 50%'}, .12);
     tl.to(sv, {scaleX:1, duration:.3, ease:'power2.out'}, .12);
     // 3. it sinks through that line: the move and the clip share one tween (and one ease), so only the part above the ground shows
     tl.fromTo(t, {y:0, rotation:0, clipPath:'inset(-30% -30% 0% -30%)'}, {y:h, rotation:tip, clipPath:'inset(-30% -30% 100% -30%)', duration:.95, ease:'power2.in'}, .26);
@@ -39121,7 +39138,7 @@ M.poisonDrop = function(el, opts){
   const re = ()=>{ const nb = t.isConnected && t.querySelector('.abadge.poison'); if(nb){ nb.classList.remove('fxd-psn-tick'); void nb.offsetWidth; nb.classList.add('fxd-psn-tick'); setTimeout(()=> nb.classList.remove('fxd-psn-tick'), 360); } };
   if(!g || psnCalm()){ setTimeout(re, 0); return null; }
   const bh = Math.max(10, Math.min(24, badge ? br.height : 14)), d = document.createElement('div');
-  d.className = 'fxd-psn-drop'; d.setAttribute('aria-hidden', 'true'); d.innerHTML = '<b>☠</b>−' + Math.max(1, (opts.n | 0) || 1);
+  d.className = 'fxd-psn-drop'; d.setAttribute('aria-hidden', 'true'); d.innerHTML = opts.pip ? '<b>☠</b>' : '<b>☠</b>−' + Math.max(1, (opts.n | 0) || 1); // 2026-11-07 (package UI30 #2): {pip:true} the last counter: the greyed pip alone, no number
   d.style.cssText = `height:${bh.toFixed(1)}px; border-radius:${(bh*.32).toFixed(1)}px; font-size:${(bh*.66).toFixed(1)}px;`;
   document.body.appendChild(d);
   const x0 = badge ? br.left + br.width*.55 : br.left + br.width*.25, y0 = badge ? br.top + br.height/2 : br.bottom - 12, side = Math.random() < .5 ? -1 : 1;
@@ -45465,7 +45482,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=9d8e8c3fa3", "es": "assets/lang/es.js?v=a81b3bd904", "fr": "assets/lang/fr.js?v=1fe19e614f", "id": "assets/lang/id.js?v=61ae34f920", "it": "assets/lang/it.js?v=191135a2f1", "ja": "assets/lang/ja.js?v=19a76bc498", "ko": "assets/lang/ko.js?v=adefe32815", "pt": "assets/lang/pt.js?v=1343725409", "ta": "assets/lang/ta.js?v=c60848569c", "tl": "assets/lang/tl.js?v=432319183c", "zh-Hans": "assets/lang/zh-Hans.js?v=8961d360e2", "zh-Hant": "assets/lang/zh-Hant.js?v=5e8f40a51e"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=b7da3ae167", "es": "assets/lang/es.js?v=0c07c0fb7b", "fr": "assets/lang/fr.js?v=e55bef5cb4", "id": "assets/lang/id.js?v=32113f1e81", "it": "assets/lang/it.js?v=5553253c4d", "ja": "assets/lang/ja.js?v=0105f3ae95", "ko": "assets/lang/ko.js?v=f6e3590e57", "pt": "assets/lang/pt.js?v=1149376023", "ta": "assets/lang/ta.js?v=86f7c76dda", "tl": "assets/lang/tl.js?v=218c76b70a", "zh-Hans": "assets/lang/zh-Hans.js?v=7d66836bd7", "zh-Hant": "assets/lang/zh-Hant.js?v=71ad9fca9b"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -48995,6 +49012,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui28-suggested-tip": "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.",
   "ui.ui28-grey-lvl": "Only from level {n} on this map",
   "ui.ui28-grey-hidden": "Hidden (shown as ?) on this map",
+  "ui.ui30-sugg-intro": "Sugg. Intro",
+  "ui.ui30-sugg-intro-tip": "Suggested to introduce at this map",
+  "ui.ui30-sugg-missing": "Suggested intro; no card here has it yet",
+  "ui.ui30-bleed-tip": "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.",
   "ui.eng30-consecration-name": "Consecration",
   "ui.eng30-consecration": "Exalted ground: your units heal {n} at every round start.",
   "ui.eng30-consecration-codex": "While it stands, its side's ground is Exalted: each of its units heals N at the start of every round (Undead units are hurt instead). Several carriers don't add up. Desecration anywhere on the field cancels it, and it cancels Desecration.",
@@ -52097,7 +52118,7 @@ sk1Patch(PASSIVE_DEFS, 'dive', {codexNote:TX('ui.eng9-dive-codex')});
 sk1Patch(PASSIVE_DEFS, 'bloomCopy', {codexNote:TX('ui.eng9-bloom-codex')});
 sk1Patch(PASSIVE_DEFS, 'season', {codexNote:TX('ui.eng9-season-codex')});
 // (the Spit labels and Charge's line: ENG10's block below, 2026-10-26: the element alone, and Charge recharging again)
-Object.assign(SKILL_ICON, {undead:'↺', revive:'🪦', poisonBarbs:'🪛', stockpile:'🪵'});
+Object.assign(SKILL_ICON, {undead:'↺', revive:'🪦', poisonBarbs:'🌵☠️' /* 2026-11-07 (package UI30, owner 09:47 #14): was 🪛 */, stockpile:'🪵'});
 // ==== Package CONTENT3 (2026-10-26; rules in bramblewood-engine.js, prices in canonical/skill-costs.json): the new skills' lines.
 //   Wakeful (G5)      never falls Asleep (a Sleep hit, the Spore Cloud)       Pulverise (OWN-Q5)  ignores Armor, breaks Armor / Magic Armor /
 //   Socket N (E14)    N more gem sockets on each copy (the Forge's Socket tab)                     equipment, double damage to Structures
@@ -54026,7 +54047,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'fcafd96bf6a6', BUILD_CARD_HASH = 'b42c67c86ec0adbaaca60873f6bfe967430a31f661aa309e2cfde90b2704285a';
+const BUILD_ID = 'db00ba752104', BUILD_CARD_HASH = 'b42c67c86ec0adbaaca60873f6bfe967430a31f661aa309e2cfde90b2704285a';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -58820,14 +58841,14 @@ function codexLeafTurn(host, dir, draw){
       leaf = from.cloneNode(true); leaf.querySelectorAll('[id]').forEach(x=> x.removeAttribute('id'));
       leaf.classList.add('pg-leaf', dir > 0 ? 'pg-leaf-fwd' : 'pg-leaf-back'); leaf.setAttribute('aria-hidden', 'true'); leaf.removeAttribute('aria-label');
       let x = 0, y = 0, n = from; while(n && n !== host){ x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } // layout px, relative to the host
-      Object.assign(leaf.style, {left: x + 'px', top: y + 'px', width: from.offsetWidth + 'px', height: from.offsetHeight + 'px'});
+      Object.assign(leaf.style, {position: 'absolute', left: x + 'px', top: y + 'px', width: from.offsetWidth + 'px', height: from.offsetHeight + 'px'}); // UI30 (2026-11-07): absolute, on the page it copies (it flowed in under the book)
     }
   }
   draw();
   if(!motion) return;
   try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){}
   if(leaf){ host.appendChild(leaf); let gone = false; const done = ()=>{ if(gone) return; gone = true; try{ leaf.remove(); }catch(e){} }; leaf.addEventListener('animationend', done, {once:true}); setTimeout(done, 900); }
-  else { const pg = host.querySelector('.pg-single'); if(pg){ pg.classList.add('pg-in-back'); setTimeout(()=> pg.classList.remove('pg-in-back'), 700); } }
+  else { const pg = host.querySelector('.pg-single'); if(pg){ pg.classList.add('pg-in-back'); setTimeout(()=> pg.classList.remove('pg-in-back'), 600); } }
 }
 // A sideways swipe (touch, pen or a mouse drag) turns the page; up and down still scroll.
 function codexWireSwipe(el){
@@ -59569,7 +59590,7 @@ CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 
 // ENG25 (2026-11-05, owner #7): every state skill gets its chip on the card face (lit while on, zeitLitNow); + Immortal, Hydra, Tribe Delivery
 const ENG25_STATE_CHIPS = new Set(['timbered', 'bedrock', 'forged', 'lastStand', 'plenty', 'scarcity', 'foePlenty', 'foeScarcity', 'heat', 'frost', 'rain', 'storm', 'fog', 'salt', 'drought', 'season',
   'requiem', 'dirge', 'carnage', 'muster', 'beset', 'throng', 'tally', 'almanac', 'onslaught', 'riled', 'liege']);
-ENG25_STATE_CHIPS.forEach(k=>{ if(!CHIP_FALLBACK_SKILLS.includes(k)) CHIP_FALLBACK_SKILLS.push(k); }); CHIP_FALLBACK_SKILLS.push('immortal', 'hydra', 'tribeDelivery');
+ENG25_STATE_CHIPS.forEach(k=>{ if(!CHIP_FALLBACK_SKILLS.includes(k)) CHIP_FALLBACK_SKILLS.push(k); }); CHIP_FALLBACK_SKILLS.push('immortal', 'hydra'); // 2026-11-07 (package UI30, owner 09:47 #7: "Tribe Delivery's context pip: one 📦 only"): Tribe Delivery left this list; its 📦 is the Delivery pip (UI23 #33), which drew a second one beside it
 ENG25_STATE_CHIPS.add('loyal'); ENG25_STATE_CHIPS.add('usurper'); // their own chips (abilityBadges) light the same way
 // 2026-10-30 (coordinator; owner 21:35: "When the Sun's active, Diurnal symbol becomes highlighted, like tide. When it's night, nocturnal symbol gets
 // highlighted."): a board card's Diurnal / Nocturnal chip takes the live Tide look while its bonus applies (the engine's zeitPhase: a dark fight counts
@@ -83226,19 +83247,42 @@ function ui24McRecs(mapId, defs){
     Object.keys(r.fx).forEach(k=>{ const p = skillDefOf(k); if(!p || have.has(k)) return; out.push({key: k, p, card: d ? (d.name || r.cardName) : r.cardName, why: r.why, fx: r.fx}); }); });
   return out;
 }
+// UI30_SUGG:START
+// 2026-11-07 (package UI30, owner 09:47 #16: "a 'Sugg. Intro' pill on skills thematic to introduce at that map; every main map at least one (sub-maps not needed)"):
+// Claude's picks per main map (canonical/map-intro-suggestions.json, map id -> [{skill, why}]). A pick a tile already shows (a card here has it, the
+// keyword tile, a recommendation tile) wears the pill there; a pick no card here has yet is a tile of its own with the pill (like the keyword intro tile).
+// Sub-maps: none. Shown only.
+const MAP_INTRO_SUGG = {"m1": [{"skill": "guardian", "why": "Map 0, the first tree-line past the castle walls: a sentry that guards is the simplest defensive skill (1 card)"}], "mf": [{"skill": "thorns", "why": "Map 1, Thistlewood: thistles and the boss's Thistle Prick (1 card)"}, {"skill": "foraging", "why": "Map 1: hedgerows and burrows full of busy gatherers (2 cards)"}], "mb": [{"skill": "crabClaws", "why": "Map 2, Pebble Beach: rock pools and things in shells (2 cards)"}], "mc": [{"skill": "dive", "why": "Map 3, Gannet Cliffs: seabirds that plunge, and the boss's Gannet Dive (1 card)"}, {"skill": "pounce", "why": "Map 3: every ledge belongs to a bird that drops on its prey (2 cards)"}], "m2": [{"skill": "bloomCopy", "why": "Map 4, Sunken Hollow: a flooded lowland where reef and algae spread (1 card)"}], "mw": [{"skill": "hunter", "why": "Map 5, Gatorback Swamp: logs that open their eyes and finish the weak (Cull, 1 card)"}], "m8": [{"skill": "predator", "why": "Map 6, Sable Swampmire: everything here bites first (1 card)"}, {"skill": "weaken", "why": "Map 6: a blacker wetland that saps strength (1 card)"}], "mu": [{"skill": "decay", "why": "Map 7, The Morel Hollow: rot under the old oaks (1 card)"}, {"skill": "meiosis", "why": "Map 7: mushrooms and spores that split and spread (1 card)"}], "m4": [{"skill": "sonar", "why": "Map 8, Caves & Alcoves: sound carries further than light (Sonar is revealed at Map 8; no card here has it yet)"}, {"skill": "darksight", "why": "Map 8: pitch-dark caves (1 card)"}], "mk": [{"skill": "invisible", "why": "Map 9, The Kelp Mangroves: kelp curtains and smugglers' channels (1 card)"}, {"skill": "skitter", "why": "Map 9: crabs scuttling through the mangrove roots (1 card)"}], "m7": [{"skill": "gash", "why": "Map 10, Coral Current: the teeth that live in the open sea (2 cards)"}, {"skill": "charge", "why": "Map 10: fast currents that build up and strike (1 card)"}], "m10": [{"skill": "mountainClimber", "why": "Map 11, Eyrie Heights: sheer alpine cliffs (2 cards)"}, {"skill": "avalanche", "why": "Map 11: snow above the Foundry's smoke (1 card)"}], "mh": [{"skill": "confuse", "why": "Map 12, The Briar Maze: every turn is a dead end, and the Mirage field (1 card)"}, {"skill": "backstab", "why": "Map 12: hedges hide whoever is behind you (1 card)"}], "mr": [{"skill": "canopyCover", "why": "Map 13, The Redwood Deep: the Canopy field under trees as wide as castles (1 card)"}, {"skill": "rage", "why": "Map 13: bears and boars, and the Wild Rage boon (1 card)"}], "m5": [{"skill": "prey", "why": "Map 14, Savanna Reaches: open grassland where nothing hides for long (1 card)"}, {"skill": "executioner", "why": "Map 14: First Blood fights reward finishing a unit (1 card)"}], "ml": [{"skill": "speed", "why": "Map 15, The Long Grass: horses and hounds on every road (1 card)"}, {"skill": "weaponMaster", "why": "Map 15: village militia (1 card)"}], "mt": [{"skill": "packLeader", "why": "Map 16, The Pinewood Taiga: the first of the wolf packs (1 card)"}], "m6": [{"skill": "freeze", "why": "Map 17, Wolfsbane Tundra: frozen ground and Freezing fights (1 card)"}, {"skill": "hibernate", "why": "Map 17: animals sleeping out the cold (1 card)"}], "md": [{"skill": "trap", "why": "Map 18, The Glass Dunes: things that wait under the dunes (1 card)"}, {"skill": "dry", "why": "Map 18: heat so fierce the sand turns to glass (1 card)"}], "m3": [{"skill": "heat", "why": "Map 19, Ashen Spurn: scorched high ground (1 card)"}, {"skill": "immolation", "why": "Map 19: ash rain and burning hides (1 card)"}], "m11": [{"skill": "requiem", "why": "Map 20, The Sundered Peak: the Restless Dead boon (1 card)"}, {"skill": "carrion", "why": "Map 20: apex predators and what they leave (1 card)"}], "m21": [{"skill": "expose", "why": "Map 21, The Quiet Summit: thin, still air above the clouds hides nothing (1 card)"}], "m22": [{"skill": "iceBolt", "why": "Map 22, The Rimefire Caldera: snow on black glass (1 card)"}, {"skill": "cure", "why": "Map 22: sulphur fumes to be cleared (1 card)"}], "m23": [{"skill": "breach", "why": "Map 23, The Goldfeather Siege: a hired army at the golden wall, and the Siege Train boon (1 card)"}, {"skill": "vanguard", "why": "Map 23: the army's front line (1 card)"}], "m24": [{"skill": "hoard", "why": "Map 24, Goldfeather Keep: everything gilded and counted (2 cards)"}, {"skill": "sentry", "why": "Map 24: everything guarded, Arrow Slits on the walls (1 card)"}]};
+function ui30McSugg(mapId){
+  try{ if(!mapId || (typeof mpIsSub === 'function' && mpIsSub(mapId))) return new Map(); const src = (typeof MAP_INTRO_SUGG !== 'undefined' && MAP_INTRO_SUGG) ? MAP_INTRO_SUGG : {};
+    const out = new Map(); (src[mapId] || []).forEach(e=>{ if(e && e.skill && !out.has(e.skill) && (typeof skillDefOf !== 'function' || skillDefOf(e.skill))) out.set(e.skill, e.why || ''); }); return out; }catch(e){ return new Map(); }
+}
+function ui30SuggPillHTML(key, sugg){
+  if(!sugg || !sugg.has(key)) return ''; const why = sugg.get(key), tip = TX('ui.ui30-sugg-intro-tip') + (why ? ': ' + why : '');
+  return ` <i class="ui30-sugg" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${escapeHtml(TX('ui.ui30-sugg-intro'))}</i>`;
+}
+function ui30SuggTilesHTML(sugg, shown){
+  if(!sugg || !sugg.size) return ''; let h = '';
+  sugg.forEach((why, key)=>{ if(shown.has(key)) return; const p = skillDefOf(key); if(!p) return; let text = ''; try{ text = ui19McSkillText({key, fx: {[key]: true}}); }catch(e){}
+    h += `<li class="ui19-sk is-intro ui30-sugg-tile" data-ui19-skill="${escapeAttr(key)}" data-ui30-sugg="1" title="${escapeAttr(p.label + (text ? ': ' + text : '') + (why ? ' (' + why + ')' : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[key]) || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b>${ui30SuggPillHTML(key, sugg)}<small>${escapeHtml(TX('ui.ui30-sugg-missing'))}</small></span></li>`; });
+  return h;
+}
+// UI30_SUGG:END
 function ui19McSkillsHTML(top, ids, defs, ok, mapId){
   const uniq = [...new Set(ids)], rows = ui19McSkillRows(uniq, defs), early = ui19McEarlierSkillKeys(top, defs, ok), kw = (typeof MAP_KEYWORDS !== 'undefined' ? MAP_KEYWORDS : {})[mapId || top]; // typeof guards: tests lift this function alone
   const mapN = (()=>{ try{ return mapNumberOf(top); }catch(e){ return null; } })(); // 2026-11-07 (UI28 #3)
   const recs0 = typeof ui24McRecs === 'function' ? ui24McRecs(mapId || top, defs) : [], recBy = new Map(); recs0.forEach(r=>{ if(!recBy.has(r.key)) recBy.set(r.key, r); });
+  const sugg = typeof ui30McSugg === 'function' ? ui30McSugg(mapId || top) : new Map(), sp = k=> typeof ui30SuggPillHTML === 'function' ? ui30SuggPillHTML(k, sugg) : ''; // 2026-11-07 (UI30 #16): the Sugg. Intro pills
   const flagged = rows.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; return Object.assign(r, {isNew: mt.met && !early.has(r.key), p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl}); }).sort((a, b)=> (a.grey - b.grey) || (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
   // 2026-11-04 (UI22a): each skill tile carries its full text as a tooltip (the text is clamped to two lines)
   const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
-    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} title="${escapeAttr(r.p.label + ': ' + ui19McSkillText(r) + ' (' + TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + ')' + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}<small>${escapeHtml(ui19McSkillText(r))}</small></span></li>`; };
+    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} title="${escapeAttr(r.p.label + ': ' + ui19McSkillText(r) + ' (' + TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + ')' + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}<small>${escapeHtml(ui19McSkillText(r))}</small></span></li>`; };
   const have = new Set(rows.map(r=> r.key)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
   const recs = recs0.filter(r=>{ if(have.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
-  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" title="${escapeAttr(TX('ui.ui24-rec-tip', {card: r.card}) + ': ' + r.p.label + ': ' + ui19McSkillText(r) + (r.why ? ' (' + r.why + ')' : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b><small>${escapeHtml(TX('ui.ui24-rec-for', {card: r.card}))}</small></span></li>`;
-  const kwMissing = kw && !rows.some(r=> r.key === kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" title="${escapeAttr(skillDefOf(kw).label + ': ' + ui19McSkillText({key: kw, fx: {[kw]: true}}))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b><small>${escapeHtml(TX('ui.ui24-intro-missing'))}</small></span></li>` : '';
-  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length || recs.length || kwMissing ? `<ul class="ui19-sk-list">${flagged.map(li).join('')}${kwMissing}${recs.map(rli).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
+  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" title="${escapeAttr(TX('ui.ui24-rec-tip', {card: r.card}) + ': ' + r.p.label + ': ' + ui19McSkillText(r) + (r.why ? ' (' + r.why + ')' : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sp(r.key)}<small>${escapeHtml(TX('ui.ui24-rec-for', {card: r.card}))}</small></span></li>`;
+  const kwMissing = kw && !rows.some(r=> r.key === kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" title="${escapeAttr(skillDefOf(kw).label + ': ' + ui19McSkillText({key: kw, fx: {[kw]: true}}))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sp(kw)}<small>${escapeHtml(TX('ui.ui24-intro-missing'))}</small></span></li>` : '';
+  const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, new Set([...have, ...(kwMissing ? [kw] : []), ...recs.map(r=> r.key)])) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
+  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length || recs.length || kwMissing || suggTiles ? `<ul class="ui19-sk-list">${flagged.map(li).join('')}${kwMissing}${suggTiles}${recs.map(rli).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
 // UI22_MC:START
@@ -91195,7 +91239,7 @@ function boardCardHTML(c, defs, opts){
   // Live status stacks (poison/bleed/scar/etc currently affecting THIS unit right now).
   const badges = [];
   if(c.poison>0) badges.push(ui7PoisonChip(c)); // 2026-10-31 (package UI7, owner Y1): the icon alone; the exact value is in the tooltip and aria-label
-  if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
+  if(c.bleed>0) badges.push(ui30BleedChip(c)); // 2026-11-07 (package UI30, owner 09:47 #2): no number; the count is in the tooltip
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
   if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
   if(c.creativity>0) badges.push(`<span class="abadge creativity" title="${escapeAttr(creativityTip(c.creativity))}">🎨${c.creativity}</span>`); // Creativity (2026-10-18)
@@ -91312,7 +91356,23 @@ function eng15CowerChip(e, on){
   return `<span class="ab-cower${on ? ' cower-live' : ''}" title="${escapeAttr(tip)}"${lit}>${iconHTML('cower', '🫣')}${on && n ? `<small class="cower-n">🛡${n}</small>` : ''}</span>`;
 }
 // 2026-11-02 (package UI14, owner JJ15: status pills "show the token count (no number when 1)"): Poison shows its stack again from 2 up (UI7 had the icon alone)
-function ui7PoisonChip(c){ const t = escapeAttr(TX('ui.ui7-poison-tip', {n: c.poison})), n = Math.round(c.poison) || 0; return `<span class="abadge poison${n > 1 ? ' has-n' : ''}" title="${t}" aria-label="${t}">☠${n > 1 ? n : ''}</span>`; }
+// 2026-11-07 (package UI30, owner 09:47 #2: "Poison and Bleed pips: no numbers, show the tick down; only 1 -> 0 makes the (greyed) pip pop out"):
+// both pips are the icon alone (the count is in the tooltip and aria-label). Each counter that goes gives the pip a short tick (ui30StackTick;
+// a pip rebuilt within the tick's time keeps it through ui30TickCls); only the last counter (1 -> 0) pops the greyed pip out. Effects None or
+// reduced motion: no tick.
+function ui7PoisonChip(c){ const t = escapeAttr(TX('ui.ui7-poison-tip', {n: c.poison})); return `<span class="abadge poison${ui30TickCls(c.uid, 'poison')}" title="${t}" aria-label="${t}">☠</span>`; }
+function ui30BleedChip(c){ const t = escapeAttr(TX('ui.ui30-bleed-tip', {n: c.bleed})); return `<span class="abadge bleed${ui30TickCls(c.uid, 'bleed')}" title="${t}" aria-label="${t}">🩸</span>`; }
+var UI30_TICK = {}; // 'uid:kind' -> when its counter last went
+function ui30TickOn(){ try{ if(typeof reducedMotion === 'function' && reducedMotion()) return false; return !(typeof fxLevel === 'function' && fxLevel() === 'none'); }catch(e){ return true; } }
+function ui30TickCls(uid, kind){ const t = uid != null && UI30_TICK[uid + ':' + kind]; return (t && Date.now() - t < 450 && ui30TickOn()) ? ' ui30-tick' : ''; }
+function ui30StackTick(uid, kind){ UI30_TICK[uid + ':' + kind] = Date.now(); if(!ui30TickOn() || typeof boardCardEl !== 'function') return false;
+  const el = boardCardEl(uid), pip = el && el.querySelector('.abadge.' + kind); if(!pip) return false;
+  pip.classList.remove('ui30-tick'); void pip.offsetWidth; pip.classList.add('ui30-tick'); setTimeout(()=> pip.classList.remove('ui30-tick'), 460); return true; }
+// One counter gone: the last one pops the greyed pip out (measured before the pip is redrawn), any other ticks the pip once it is redrawn.
+function ui30StackGo(uid, kind, left){
+  if(!(left > 0) && ui30TickOn()){ try{ if(kind === 'bleed') bleedFadeDropVfx(uid); else { const el = boardCardEl(uid); if(el && window.FX && FX.D && FX.D.poisonDrop) FX.D.poisonDrop(el, {pip: true}); } }catch(e){} }
+  try{ updateCardStatusDisplay(uid); }catch(e){}
+  if(left > 0) ui30StackTick(uid, kind); }
 // ENG20-2 (2026-11-02, owner 22:44: "Show the counters as pips"): a unit's water counters (💧N) and Burn (🔥, the rounds left in the tooltip).
 function en20StatusBadges(c, badges){ if(!c || !badges) return;
   if(c.water > 0){ const t = escapeAttr(TX('ui.eng20-water-tip', {n: c.water})); badges.push(`<span class="abadge en20-water" title="${t}" aria-label="${t}">💧${c.water}</span>`); }
@@ -93247,7 +93307,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('en7-aloft', c.diveAloft != null && c.diveMode !== 'tide'); el.classList.toggle('en7-under', c.diveAloft != null && c.diveMode === 'tide'); // EN7 (2026-10-24)
   const badges = [];
   if(c.poison>0) badges.push(ui7PoisonChip(c)); // 2026-10-31 (package UI7, owner Y1): the icon alone; the exact value is in the tooltip and aria-label
-  if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
+  if(c.bleed>0) badges.push(ui30BleedChip(c)); // 2026-11-07 (package UI30, owner 09:47 #2): no number; the count is in the tooltip
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
   if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
   if(c.creativity>0) badges.push(`<span class="abadge creativity" title="${escapeAttr(creativityTip(c.creativity))}">🎨${c.creativity}</span>`); // Creativity (2026-10-18)
@@ -99154,6 +99214,7 @@ function fxHostAt(el, ms, at){
 // updates) to the ground under the card, bounces once, and sinks away. Drawn on the page, not in the card, so the board's re-render after
 // the upkeep doesn't cut it short. Reduced motion: it fades where it is.
 function bleedFadeDropVfx(uid){
+  if(typeof fxLevel === 'function' && fxLevel() === 'none') return null; // 2026-11-07 (package UI30 #2): Effects None: no drop
   const el = boardCardEl(uid); if(!el) return null;
   const pip0 = el.querySelector('.abadge.bleed'), pip = pip0 && ui23Rect(pip0.getBoundingClientRect()) ? pip0 : null, r = (pip || el).getBoundingClientRect(), cr = el.getBoundingClientRect(); if(!ui23Rect(cr)) return null; // UI23 (#25)
   const d = document.createElement('span'); d.className = 'bleed-drop'; d.textContent = '🩸'; d.setAttribute('aria-hidden', 'true');
@@ -103414,10 +103475,10 @@ function renderVfxForEvent(ev){
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.hp = Math.max(0, rc.hp - ev.dmg);
     updateCardHpDisplay(ev.uid);
-    if(ev.decay){ const u = ev.uid; setTimeout(()=>{ const el2 = boardCardEl(u);
-      if(el2 && fxAtLeast('low') && !reducedMotion()) try{ if(window.FX && FX.D && FX.D.poisonDrop) FX.D.poisonDrop(el2); }catch(e){}
+    if(ev.decay){ const u = ev.uid; setTimeout(()=>{ // 2026-11-07 (package UI30 #2): a tick per counter; only the last pops the greyed pip out (ui30StackGo)
       const rc2 = matchState && matchState.replayCards && matchState.replayCards[u]; if(rc2) rc2.poison = Math.max(0, (rc2.poison||0) - 1);
-      try{ updateCardStatusDisplay(u); }catch(e){} }, EN3_STACK_DROP_MS()); }
+      const left = rc2 ? rc2.poison : ((currentCardByUid(u) || {}).poison || 0);
+      ui30StackGo(u, 'poison', left); }, EN3_STACK_DROP_MS()); }
   }
   // Bleed tick (item #9 gap found in the same pass): previously had NO front-end handler
   // at all — a bled card ticking damage on its own attack/defend/skill use showed nothing.
@@ -103447,7 +103508,9 @@ function renderVfxForEvent(ev){
     dnFloat(el, ev.dmg, {type:'bleed', mods: ev.mods, cls:'bleed-tick'}); /* DN2 */
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(ev.decay) rc.bleed = Math.max(0, (rc.bleed||0) - 1); }
-    updateCardHpDisplay(ev.uid); try{ updateCardStatusDisplay(ev.uid); }catch(e){}
+    updateCardHpDisplay(ev.uid);
+    if(ev.decay) ui30StackGo(ev.uid, 'bleed', rc ? rc.bleed : ((currentCardByUid(ev.uid) || {}).bleed || 0)); // 2026-11-07 (package UI30 #2)
+    else { try{ updateCardStatusDisplay(ev.uid); }catch(e){} }
   }
   // Awash crash (2026-10-18, user: "Awash N: Move N. If crash into another unit, both take N damage."): both units jolt and take N.
   if(ev.type==='washCrash'){
@@ -103459,11 +103522,10 @@ function renderVfxForEvent(ev){
   // 2026-10-23 (package BL; owner 17:34 #14: "When does bleed fade? After it triggers? remember to throw 1 greyed out bleed symbol into the
   // ground from the context pip when this happens"): it fades at each round's start (not when it bleeds), and one greyed-out 🩸 drops from
   // the card's Bleed pip to the ground below the card as the stack goes down by 1 (bleedFadeDropVfx; the pip is read before it updates).
-  if(ev.type==='bleedFade'){
-    try{ bleedFadeDropVfx(ev.uid); }catch(e){}
+  if(ev.type==='bleedFade'){ // 2026-11-07 (package UI30 #2): the pip ticks for each counter; only the last (1 -> 0) drops the greyed 🩸 (ui30StackGo)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc) rc.bleed = Math.max(0, ev.left|0);
-    try{ updateCardStatusDisplay(ev.uid); }catch(e){}
+    ui30StackGo(ev.uid, 'bleed', Math.max(0, ev.left|0));
   }
   // Bloom – {conditions} (2026-10-23, package BL; owner 19:30: "bloom only gives the new one +1/+1, not itself"): the unit is marked bloomed and its
   // copy (the 'spawn' event with kind 'bloom' right after) has the +1/+1: "🌸 +1/+1" floats on the copy.
@@ -113042,6 +113104,11 @@ function wireSettingsButton(idSuffix){
   const btn = document.getElementById('settingsBtn'+idSuffix);
   const panel = document.getElementById('settingsPanel'+idSuffix);
   if(!btn || !panel) return;
+  // 2026-11-07 (package UI30, owner 09:47 #1: "changing a setting shows 3 toasts"): renderHUD() calls wireHudChrome() on every HUD refresh
+  // without rebuilding the top bar, so the same 'Hud' panel collected one more set of change listeners each time (3 refreshes = 3 toasts).
+  // A panel is wired once; a re-rendered panel is new markup and gets wired afresh.
+  if(panel.dataset.ui30Wired === '1'){ if(SETTINGS_OPEN.has(idSuffix) && panel.hidden){ panel.hidden = false; btn.classList.add('is-open'); btn.setAttribute('aria-expanded','true'); } return; }
+  panel.dataset.ui30Wired = '1';
   const sliders = {
     music: {el: document.getElementById('musicVolumeSlider'+idSuffix), val: document.getElementById('musicVolumeVal'+idSuffix), get: ()=>SoundKit.getMusicVolume(), set: v=>SoundKit.setMusicVolume(v)},
     sfx:   {el: document.getElementById('sfxVolumeSlider'+idSuffix),   val: document.getElementById('sfxVolumeVal'+idSuffix),   get: ()=>SoundKit.getSfxVolume(),   set: v=>SoundKit.setSfxVolume(v)},

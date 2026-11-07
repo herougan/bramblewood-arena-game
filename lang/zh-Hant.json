@@ -4103,5 +4103,9 @@
  "Suggested": "建議",
  "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "推薦給{card}，但玩家在這張地圖上遇不到這個技能。也許不該繼續隱藏。",
  "Only from level {n} on this map": "在這張地圖上要到 {n} 級才有",
- "Hidden (shown as ?) on this map": "在這張地圖上隱藏（顯示為 ?）"
+ "Hidden (shown as ?) on this map": "在這張地圖上隱藏（顯示為 ?）",
+ "Sugg. Intro": "建議引入",
+ "Suggested to introduce at this map": "建議在此地圖引入",
+ "Suggested intro; no card here has it yet": "建議引入；此處還沒有卡牌擁有它",
+ "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.": "流血：{n}。每次攻擊或使用技能時受到傷害，之後每回合減少1層。"
 }

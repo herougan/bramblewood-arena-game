@@ -4104,5 +4104,9 @@
  "Suggested": "Disarankan",
  "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "Direkomendasikan untuk {card}, tetapi pemain tidak akan menemui skill ini di peta ini. Mungkin tidak perlu tetap tersembunyi.",
  "Only from level {n} on this map": "Hanya dari level {n} di peta ini",
- "Hidden (shown as ?) on this map": "Tersembunyi (tampil sebagai ?) di peta ini"
+ "Hidden (shown as ?) on this map": "Tersembunyi (tampil sebagai ?) di peta ini",
+ "Sugg. Intro": "Saran Intro",
+ "Suggested to introduce at this map": "Disarankan untuk diperkenalkan di peta ini",
+ "Suggested intro; no card here has it yet": "Intro yang disarankan; belum ada kartu di sini yang memilikinya",
+ "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.": "Berdarah: {n}. Menerima damage setiap kali menyerang atau memakai skill, lalu kehilangan 1 tumpukan setiap ronde."
 }

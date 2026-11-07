@@ -4105,5 +4105,9 @@
  "Suggested": "பரிந்துரை",
  "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "{card}க்குப் பரிந்துரைக்கப்பட்டது, ஆனால் வீரர்கள் இந்த வரைபடத்தில் இந்தத் திறனைச் சந்திக்க மாட்டார்கள். இது மறைவாகவே இருக்க வேண்டியதில்லை.",
  "Only from level {n} on this map": "இந்த வரைபடத்தில் நிலை {n} முதல் மட்டுமே",
- "Hidden (shown as ?) on this map": "இந்த வரைபடத்தில் மறைக்கப்பட்டது (? எனக் காட்டப்படும்)"
+ "Hidden (shown as ?) on this map": "இந்த வரைபடத்தில் மறைக்கப்பட்டது (? எனக் காட்டப்படும்)",
+ "Sugg. Intro": "அறிமுகப் பரிந்துரை",
+ "Suggested to introduce at this map": "இந்த வரைபடத்தில் அறிமுகப்படுத்தப் பரிந்துரைக்கப்படுகிறது",
+ "Suggested intro; no card here has it yet": "பரிந்துரைக்கப்பட்ட அறிமுகம்; இங்குள்ள எந்த அட்டையிலும் இது இன்னும் இல்லை",
+ "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.": "இரத்தப்போக்கு: {n}. ஒவ்வொரு முறை தாக்கும்போதும் அல்லது திறனைப் பயன்படுத்தும்போதும் சேதம் பெறும்; ஒவ்வொரு சுற்றிலும் 1 அடுக்கு குறையும்."
 }

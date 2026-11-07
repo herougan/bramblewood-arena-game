@@ -4103,5 +4103,9 @@
  "Suggested": "Suggéré",
  "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "Recommandée pour {card}, mais les joueurs ne rencontreront pas cette compétence sur cette carte. Peut-être ne devrait-elle pas rester cachée.",
  "Only from level {n} on this map": "Seulement à partir du niveau {n} sur cette carte",
- "Hidden (shown as ?) on this map": "Cachée (affichée « ? ») sur cette carte"
+ "Hidden (shown as ?) on this map": "Cachée (affichée « ? ») sur cette carte",
+ "Sugg. Intro": "Intro sugg.",
+ "Suggested to introduce at this map": "Suggérée pour être introduite sur cette carte",
+ "Suggested intro; no card here has it yet": "Introduction suggérée ; aucune carte ici ne l'a encore",
+ "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.": "Saignement : {n}. Subit des dégâts à chaque attaque ou compétence utilisée, puis perd 1 cumul à chaque manche."
 }

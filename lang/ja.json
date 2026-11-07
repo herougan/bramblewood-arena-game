@@ -4103,5 +4103,9 @@
  "Suggested": "提案",
  "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "{card}におすすめですが、このマップではプレイヤーがこのスキルに出会えません。隠したままにしなくてもよいかもしれません。",
  "Only from level {n} on this map": "このマップではレベル{n}から",
- "Hidden (shown as ?) on this map": "このマップでは非表示（?と表示）"
+ "Hidden (shown as ?) on this map": "このマップでは非表示（?と表示）",
+ "Sugg. Intro": "導入候補",
+ "Suggested to introduce at this map": "このマップで導入するのにおすすめ",
+ "Suggested intro; no card here has it yet": "導入候補：ここにはまだこのスキルを持つカードがありません",
+ "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.": "出血：{n}。攻撃やスキルを使うたびにダメージを受け、毎ラウンド1スタック減ります。"
 }

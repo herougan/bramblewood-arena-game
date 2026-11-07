@@ -360,3 +360,4 @@ exit $fail
 # browser check for package RAID2: python3 tests/e2e/raid2_2026_11_05.py (needs Playwright; not run by run.js)
 # browser check for package UI23: python3 tests/e2e/ui23_2026_11_06.py (needs Playwright; not run by run.js)
 run node tests/ui26-2026-11-07.js   # 2026-11-07 (package UI26, owner 08:18): the standing darkness on a dark-blind unit is about 5%
+run node tests/ui30-2026-11-07.js   # 2026-11-07 (package UI30, owner 09:47): one toast per setting, numberless Poison/Bleed pips that tick, centred quake line, one Tribe Delivery 📦, Codex leaf on the page, Poison Barbs 🌵☠️, Sugg. Intro pills

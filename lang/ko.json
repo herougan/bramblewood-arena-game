@@ -4105,5 +4105,9 @@
  "Suggested": "추천",
  "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "{card}에 추천되지만, 이 지도에서는 플레이어가 이 스킬을 만나지 못합니다. 숨겨 두지 않아도 될지 모릅니다.",
  "Only from level {n} on this map": "이 지도에서는 레벨 {n}부터",
- "Hidden (shown as ?) on this map": "이 지도에서는 숨김 (?로 표시)"
+ "Hidden (shown as ?) on this map": "이 지도에서는 숨김 (?로 표시)",
+ "Sugg. Intro": "도입 제안",
+ "Suggested to introduce at this map": "이 맵에서 도입하기를 추천",
+ "Suggested intro; no card here has it yet": "도입 제안: 아직 이 맵의 어떤 카드에도 없습니다",
+ "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.": "출혈: {n}. 공격하거나 스킬을 쓸 때마다 피해를 입고, 매 라운드 스택이 1씩 줄어듭니다."
 }

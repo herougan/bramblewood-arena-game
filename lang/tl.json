@@ -4103,5 +4103,9 @@
  "Suggested": "Iminungkahi",
  "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "Inirerekomenda para sa {card}, pero hindi makikita ng mga manlalaro ang skill na ito sa mapang ito. Baka hindi na ito dapat manatiling nakatago.",
  "Only from level {n} on this map": "Mula lamang sa antas {n} sa mapang ito",
- "Hidden (shown as ?) on this map": "Nakatago (ipinapakitang ?) sa mapang ito"
+ "Hidden (shown as ?) on this map": "Nakatago (ipinapakitang ?) sa mapang ito",
+ "Sugg. Intro": "Mungk. Intro",
+ "Suggested to introduce at this map": "Iminumungkahing ipakilala sa mapang ito",
+ "Suggested intro; no card here has it yet": "Iminumungkahing intro; wala pang card dito na mayroon nito",
+ "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.": "Dumudugo: {n}. Napipinsala tuwing umaatake o gumagamit ng skill, saka nababawasan ng 1 patong bawat round."
 }

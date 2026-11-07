@@ -152,7 +152,7 @@ async def icons(b, url, w):
     print(f'-- skill icons ({w})')
     pg = await W.fresh(b, url, w)
     r = await pg.evaluate("({pb: SKILL_ICON.poisonBarbs, cr: SKILL_ICON.creative, th: SKILL_ICON.thorns})")
-    ok(r['pb'] == '🪛' and r['cr'] == '⌘' and r['th'] == '🌵', f'Poison Barbs 🪛, Creative ⌘, Thorns unchanged {r}')
+    ok(r['pb'] == '🌵☠️' and r['cr'] == '⌘' and r['th'] == '🌵', f'Poison Barbs 🌵☠️ (UI30, 2026-11-07; was 🪛), Creative ⌘, Thorns unchanged {r}')
     await pg.evaluate("""(()=>{ const d = document.createElement('div'); d.id = 'ui15icons'; d.style.cssText = 'position:fixed; left:10px; top:10px; z-index:99999; background:#26211a; color:#fff; padding:8px; display:flex; gap:10px; font-size:14px';
       d.innerHTML = ['thorns', 'poisonBarbs', 'creative'].map(k=> `<span class="abadge" style="display:inline-flex; align-items:center; gap:3px">${iconHTML(k.toLowerCase(), SKILL_ICON[k])}3 <small>${k}</small></span>`).join(''); document.body.appendChild(d); })()""")
     await pg.wait_for_timeout(500)

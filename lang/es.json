@@ -4102,5 +4102,9 @@
  "Suggested": "Sugerida",
  "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "Recomendada para {card}, pero los jugadores no encontrarán esta habilidad en este mapa. Quizá no debería seguir oculta.",
  "Only from level {n} on this map": "Solo desde el nivel {n} en este mapa",
- "Hidden (shown as ?) on this map": "Oculta (se muestra como ?) en este mapa"
+ "Hidden (shown as ?) on this map": "Oculta (se muestra como ?) en este mapa",
+ "Sugg. Intro": "Intro sug.",
+ "Suggested to introduce at this map": "Sugerida para presentarla en este mapa",
+ "Suggested intro; no card here has it yet": "Introducción sugerida; ninguna carta de aquí la tiene aún",
+ "Bleeding: {n}. It takes damage each time it attacks or uses a skill, then loses 1 stack each round.": "Sangrando: {n}. Recibe daño cada vez que ataca o usa una habilidad, y pierde 1 acumulación cada ronda."
 }
