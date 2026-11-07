@@ -1,0 +1,79 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "7-A-4",
+ "map": "mz",
+ "mapName": "The Mycelium Deep",
+ "kind": "elite",
+ "name": "The Rot Heart",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "ant-warrior",
+  "bombardier-beetle",
+  "dung-beetle",
+  "fungal-colossus",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "sleepless-shrew"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "bombardier-beetle"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "garden-snail": 1,
+   "fungal-colossus": 4,
+   "sleepless-shrew": 3,
+   "planarian-splitter": 3,
+   "bombardier-beetle": 1,
+   "ant-warrior": 1,
+   "leafcutter-gardener": 1
+  },
+  "leaders": [
+   "bombardier-beetle"
+  ],
+  "shieldOverride": null,
+  "win200": 60,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "garden-snail": 1,
+   "fungal-colossus": 4,
+   "sleepless-shrew": 3,
+   "planarian-splitter": 3,
+   "bombardier-beetle": 1,
+   "ant-warrior": 1,
+   "leafcutter-gardener": 1
+  },
+  "leaders": [
+   "bombardier-beetle"
+  ],
+  "shieldOverride": null,
+  "win200": 60,
+  "shown": 6,
+  "tune60": 63.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 63.3,
+   "hpLost": 57,
+   "rounds": 11.67
+  }
+ ],
+ "trials": 1,
+ "sec": 7
+}

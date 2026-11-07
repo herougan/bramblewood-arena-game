@@ -1,0 +1,81 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "3-6",
+ "map": "mc",
+ "mapName": "Gannet Cliffs",
+ "kind": "elite",
+ "name": "Avalanche Pass",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "conch-crawler",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "oystercatcher",
+  "peak-condor",
+  "pincushion-urchin",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "mountain-goat-climber"
+ ],
+ "namesake": false,
+ "shieldRule": 5,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "gannet-nestweaver": 3,
+   "golden-eagle-diver": 3,
+   "hawk-arrowkeeper": 3,
+   "peak-condor": 1,
+   "razorbill": 2,
+   "red-billed-chough": 2,
+   "kittiwake-flock": 2
+  },
+  "leaders": [
+   "mountain-goat-climber"
+  ],
+  "shieldOverride": null,
+  "win200": 64.5,
+  "shown": 3
+ },
+ "pick": {
+  "deck": {
+   "gannet-nestweaver": 3,
+   "golden-eagle-diver": 3,
+   "hawk-arrowkeeper": 3,
+   "peak-condor": 1,
+   "razorbill": 2,
+   "red-billed-chough": 2,
+   "kittiwake-flock": 2
+  },
+  "leaders": [
+   "mountain-goat-climber"
+  ],
+  "shieldOverride": null,
+  "win200": 64.5,
+  "shown": 3,
+  "tune60": 63.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 63.3,
+   "hpLost": 57.6,
+   "rounds": 8.18
+  }
+ ],
+ "trials": 1,
+ "sec": 5
+}

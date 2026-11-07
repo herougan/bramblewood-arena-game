@@ -1,0 +1,86 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "19-6",
+ "map": "m3",
+ "mapName": "Ashen Spurn",
+ "kind": "miniboss",
+ "name": "The Frost Yeti King",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "cinder-stoker",
+  "glacier-wolf-pack",
+  "granite-ox-golem",
+  "magma-titan",
+  "obsidian-scorpion",
+  "pit-glutton",
+  "pumice-beetle",
+  "snow-ermine",
+  "sulfur-cinder-moth",
+  "talus-pika",
+  "yeti"
+ ],
+ "firstClear": [
+  "yeti",
+  "anvilwhisker-otter"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "yeti"
+ ],
+ "namesake": true,
+ "shieldRule": 38,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "cinder-stoker": 5,
+   "glacier-wolf-pack": 3,
+   "granite-ox-golem": 1,
+   "pit-glutton": 1,
+   "pumice-beetle": 4,
+   "sulfur-cinder-moth": 1,
+   "talus-pika": 1,
+   "yeti": 2
+  },
+  "leaders": [
+   "yeti"
+  ],
+  "shieldOverride": null,
+  "win200": 59,
+  "shown": 19
+ },
+ "pick": {
+  "deck": {
+   "cinder-stoker": 5,
+   "glacier-wolf-pack": 3,
+   "granite-ox-golem": 1,
+   "pit-glutton": 1,
+   "pumice-beetle": 4,
+   "sulfur-cinder-moth": 1,
+   "talus-pika": 1,
+   "yeti": 2
+  },
+  "leaders": [
+   "yeti"
+  ],
+  "shieldOverride": null,
+  "win200": 59,
+  "shown": 19,
+  "tune60": 51.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 51.7,
+   "hpLost": 75.1,
+   "rounds": 13.4
+  }
+ ],
+ "trials": 46,
+ "sec": 49
+}

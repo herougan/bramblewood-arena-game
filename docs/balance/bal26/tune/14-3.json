@@ -1,0 +1,79 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "14-3",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "skirmish",
+ "name": "Howler Canopy",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "acacia-giraffe",
+  "dust-hyena",
+  "hoopoe-herald",
+  "marula-elephant",
+  "spitting-cobra",
+  "springbok-pronker"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "marula-elephant"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "spitting-cobra": 3,
+   "marula-elephant": 4,
+   "springbok-pronker": 3,
+   "acacia-giraffe": 1,
+   "dust-hyena": 4
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": null,
+  "win200": 67,
+  "shown": 7
+ },
+ "pick": {
+  "deck": {
+   "spitting-cobra": 3,
+   "marula-elephant": 4,
+   "springbok-pronker": 3,
+   "acacia-giraffe": 1,
+   "hoopoe-herald": 4
+  },
+  "leaders": [
+   "marula-elephant"
+  ],
+  "shieldOverride": null,
+  "win200": 70.5,
+  "shown": 7,
+  "tune60": 76.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 65,
+   "hpLost": 53.2,
+   "rounds": 10.72
+  },
+  {
+   "move": "dust-hyena -4 -> hoopoe-herald",
+   "win": 76.7,
+   "hpLost": 53,
+   "rounds": 11.72,
+   "trials": 26
+  }
+ ],
+ "trials": 31,
+ "sec": 25
+}

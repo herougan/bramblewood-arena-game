@@ -1,0 +1,81 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "16-6",
+ "map": "mt",
+ "mapName": "The Pinewood Taiga",
+ "kind": "elite",
+ "name": "Reaver's Hollow",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "alpha-howler",
+  "berserker-boar",
+  "boreal-elk",
+  "cone-cutter-squirrel",
+  "dhole-matriarch",
+  "grizzly-vanguard",
+  "lunar-howler",
+  "owl-nightwatch",
+  "snowshoe-hare"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "dhole-matriarch"
+ ],
+ "namesake": false,
+ "shieldRule": 24,
+ "shieldOverride": 47,
+ "before": {
+  "deck": {
+   "dhole-matriarch": 1,
+   "owl-nightwatch": 1,
+   "snowshoe-hare": 5,
+   "alpha-howler": 3,
+   "berserker-boar": 1,
+   "boreal-elk": 5,
+   "grizzly-vanguard": 1,
+   "cone-cutter-squirrel": 1
+  },
+  "leaders": [
+   "dhole-matriarch"
+  ],
+  "shieldOverride": 47,
+  "win200": 72,
+  "shown": 24
+ },
+ "pick": {
+  "deck": {
+   "dhole-matriarch": 1,
+   "owl-nightwatch": 1,
+   "snowshoe-hare": 5,
+   "alpha-howler": 3,
+   "berserker-boar": 1,
+   "boreal-elk": 5,
+   "grizzly-vanguard": 1,
+   "cone-cutter-squirrel": 1
+  },
+  "leaders": [
+   "dhole-matriarch"
+  ],
+  "shieldOverride": 47,
+  "win200": 72,
+  "shown": 24,
+  "tune60": 65
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 65,
+   "hpLost": 52.1,
+   "rounds": 14.28
+  }
+ ],
+ "trials": 43,
+ "sec": 42
+}

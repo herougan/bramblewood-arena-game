@@ -1,0 +1,76 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "18-A-6",
+ "map": "mpd",
+ "mapName": "The Pale Desert",
+ "kind": "skirmish",
+ "name": "The Salt Pan",
+ "band": {
+  "lo": 60.60000000000001,
+  "hi": 76.6,
+  "target": 68.60000000000001
+ },
+ "list": [
+  "dromedary",
+  "dune-packrat",
+  "dust-hyena",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "skull-vulture",
+  "trapdoor-spider"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "trapdoor-spider"
+ ],
+ "namesake": false,
+ "shieldRule": 19,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "trapdoor-spider": 2,
+   "skull-vulture": 4,
+   "sand-widow": 5,
+   "sandfish": 2,
+   "roadrunner-courier": 3,
+   "dune-packrat": 1
+  },
+  "leaders": [
+   "trapdoor-spider"
+  ],
+  "shieldOverride": null,
+  "win200": 59,
+  "shown": 10
+ },
+ "pick": {
+  "deck": {
+   "trapdoor-spider": 2,
+   "skull-vulture": 4,
+   "sand-widow": 5,
+   "sandfish": 2,
+   "roadrunner-courier": 3,
+   "dune-packrat": 1
+  },
+  "leaders": [
+   "trapdoor-spider"
+  ],
+  "shieldOverride": null,
+  "win200": 59,
+  "shown": 10,
+  "tune60": 70
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 70,
+   "hpLost": 56.9,
+   "rounds": 9.52
+  }
+ ],
+ "trials": 1,
+ "sec": 6
+}

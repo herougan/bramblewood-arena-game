@@ -1,0 +1,84 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "10-3",
+ "map": "m7",
+ "mapName": "Coral Current",
+ "kind": "skirmish",
+ "name": "Tide Pool Line",
+ "band": {
+  "lo": 73.4,
+  "hi": 89.39999999999999,
+  "target": 81.39999999999999
+ },
+ "list": [
+  "clownfish-scout",
+  "coral-reef-shark",
+  "dolphin-knight",
+  "horseshoe-crab",
+  "kraken-spawnling",
+  "open-ocean-hermit-crab",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-shark",
+  "riptide-eel",
+  "supernova-jelly"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "riptide-eel"
+ ],
+ "namesake": false,
+ "shieldRule": 10,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "coral-reef-shark": 2,
+   "riptide-eel": 4,
+   "orca-vanguard": 4,
+   "clownfish-scout": 4,
+   "kraken-spawnling": 3
+  },
+  "leaders": [
+   "riptide-eel"
+  ],
+  "shieldOverride": null,
+  "win200": 65,
+  "shown": 5
+ },
+ "pick": {
+  "deck": {
+   "coral-reef-shark": 4,
+   "riptide-eel": 4,
+   "orca-vanguard": 4,
+   "clownfish-scout": 2,
+   "kraken-spawnling": 3
+  },
+  "leaders": [
+   "riptide-eel"
+  ],
+  "shieldOverride": null,
+  "win200": 82,
+  "shown": 5,
+  "tune60": 81.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 66.7,
+   "hpLost": 58.6,
+   "rounds": 7.78
+  },
+  {
+   "move": "clownfish-scout -2 -> coral-reef-shark",
+   "win": 81.7,
+   "hpLost": 41,
+   "rounds": 7.67,
+   "trials": 72
+  }
+ ],
+ "trials": 77,
+ "sec": 32
+}

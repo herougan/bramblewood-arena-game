@@ -1,0 +1,81 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "8-5",
+ "map": "m4",
+ "mapName": "Caves & Alcoves",
+ "kind": "skirmish",
+ "name": "Sulfur Vent Path",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "blind-cave-fish",
+  "cave-olm",
+  "gallery-orb-weaver",
+  "hollow-belly-rat",
+  "stalactite-golem",
+  "sulfur-cinder-moth"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "hollow-belly-rat"
+ ],
+ "namesake": false,
+ "shieldRule": 8,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "gallery-orb-weaver": 2,
+   "hollow-belly-rat": 1,
+   "sulfur-cinder-moth": 3,
+   "blind-cave-fish": 5,
+   "stalactite-golem": 4,
+   "cave-olm": 1
+  },
+  "leaders": [
+   "hollow-belly-rat"
+  ],
+  "shieldOverride": null,
+  "win200": 56,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "gallery-orb-weaver": 2,
+   "hollow-belly-rat": 1,
+   "sulfur-cinder-moth": 3,
+   "blind-cave-fish": 5,
+   "stalactite-golem": 4,
+   "cave-olm": 1
+  },
+  "leaders": [
+   "stalactite-golem"
+  ],
+  "shieldOverride": null,
+  "win200": 54,
+  "shown": 4,
+  "tune60": 68.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 75,
+   "hpLost": 46.9,
+   "rounds": 8
+  },
+  {
+   "move": "leader hollow-belly-rat -> stalactite-golem",
+   "win": 68.3,
+   "hpLost": 49,
+   "rounds": 7.98,
+   "trials": 39
+  }
+ ],
+ "trials": 44,
+ "sec": 20
+}

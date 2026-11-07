@@ -1,0 +1,96 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "20-7",
+ "map": "m11",
+ "mapName": "The Sundered Peak",
+ "kind": "elite",
+ "name": "The Blessed Avatar",
+ "band": {
+  "lo": 56.300000000000004,
+  "hi": 72.3,
+  "target": 64.3
+ },
+ "list": [
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "magma-salamander",
+  "magma-titan",
+  "magma-wraith",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pumice-beetle",
+  "talus-pika"
+ ],
+ "firstClear": [
+  "magma-wraith"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "ossuary-lammergeier"
+ ],
+ "namesake": false,
+ "shieldRule": 30,
+ "shieldOverride": 25,
+ "before": {
+  "deck": {
+   "cinder-skeleton": 4,
+   "magma-wraith": 4,
+   "ossuary-lammergeier": 1,
+   "magma-salamander": 1,
+   "fumarole-ibex": 1,
+   "magma-titan": 1,
+   "obsidian-scorpion": 1
+  },
+  "leaders": [
+   "ossuary-lammergeier"
+  ],
+  "shieldOverride": 25,
+  "win200": 75.5,
+  "shown": 13
+ },
+ "pick": {
+  "deck": {
+   "cinder-skeleton": 4,
+   "magma-wraith": 4,
+   "ossuary-lammergeier": 1,
+   "fumarole-ibex": 1,
+   "magma-titan": 1,
+   "obsidian-scorpion": 1,
+   "apollo-butterfly": 1
+  },
+  "leaders": [
+   "ossuary-lammergeier"
+  ],
+  "shieldOverride": 25,
+  "win200": 78,
+  "shown": 13,
+  "tune60": 66.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 71.7,
+   "hpLost": 53.4,
+   "rounds": 10.82
+  },
+  {
+   "move": "magma-salamander -1 -> apollo-butterfly",
+   "win": 66.7,
+   "hpLost": 53.7,
+   "rounds": 11.13,
+   "trials": 106
+  }
+ ],
+ "trials": 111,
+ "sec": 76
+}

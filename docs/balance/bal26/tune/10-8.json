@@ -1,0 +1,88 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "10-8",
+ "map": "m7",
+ "mapName": "Coral Current",
+ "kind": "elite",
+ "name": "Sea Turtle Elder's Court",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "clownfish-scout",
+  "colossal-squid",
+  "coral-reef-shark",
+  "dolphin-knight",
+  "great-barracuda",
+  "horseshoe-crab",
+  "kraken-spawnling",
+  "open-ocean-hermit-crab",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-shark",
+  "riptide-eel",
+  "supernova-jelly"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "colossal-squid"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "clownfish-scout": 4,
+   "colossal-squid": 2,
+   "great-barracuda": 1,
+   "orca-vanguard": 4,
+   "riptide-eel": 4,
+   "supernova-jelly": 2
+  },
+  "leaders": [
+   "colossal-squid"
+  ],
+  "shieldOverride": null,
+  "win200": 53.5,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "clownfish-scout": 4,
+   "colossal-squid": 2,
+   "orca-vanguard": 4,
+   "riptide-eel": 4,
+   "supernova-jelly": 2,
+   "horseshoe-crab": 1
+  },
+  "leaders": [
+   "colossal-squid"
+  ],
+  "shieldOverride": null,
+  "win200": 56,
+  "shown": 8,
+  "tune60": 58.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 50,
+   "hpLost": 70.3,
+   "rounds": 8.25
+  },
+  {
+   "move": "great-barracuda -1 -> horseshoe-crab",
+   "win": 58.3,
+   "hpLost": 62.4,
+   "rounds": 8.42,
+   "trials": 97
+  }
+ ],
+ "trials": 102,
+ "sec": 45
+}

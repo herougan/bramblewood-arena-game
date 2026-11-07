@@ -1,0 +1,94 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "20-5",
+ "map": "m11",
+ "mapName": "The Sundered Peak",
+ "kind": "elite",
+ "name": "Cave Warlord's Guard",
+ "band": {
+  "lo": 64.9,
+  "hi": 80.89999999999999,
+  "target": 72.89999999999999
+ },
+ "list": [
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "magma-titan",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pack-mule",
+  "pumice-beetle",
+  "talus-pika"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "cave-warlord"
+ ],
+ "namesake": true,
+ "shieldRule": 30,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "cave-warlord": 4,
+   "pack-mule": 4,
+   "ash-cloud-condor": 2,
+   "ossuary-lammergeier": 1,
+   "ashbone-ghoul": 2,
+   "magma-titan": 1,
+   "deep-cave-troll": 2
+  },
+  "leaders": [
+   "cave-warlord"
+  ],
+  "shieldOverride": null,
+  "win200": 75,
+  "shown": 15
+ },
+ "pick": {
+  "deck": {
+   "cave-warlord": 4,
+   "pack-mule": 4,
+   "ash-cloud-condor": 2,
+   "ossuary-lammergeier": 1,
+   "ashbone-ghoul": 2,
+   "deep-cave-troll": 2,
+   "ancient-sloth-titan": 1
+  },
+  "leaders": [
+   "cave-warlord"
+  ],
+  "shieldOverride": null,
+  "win200": 73.5,
+  "shown": 15,
+  "tune60": 73.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 78.3,
+   "hpLost": 40.8,
+   "rounds": 11.27
+  },
+  {
+   "move": "magma-titan -1 -> ancient-sloth-titan",
+   "win": 73.3,
+   "hpLost": 47.9,
+   "rounds": 11.52,
+   "trials": 110
+  }
+ ],
+ "trials": 115,
+ "sec": 81
+}

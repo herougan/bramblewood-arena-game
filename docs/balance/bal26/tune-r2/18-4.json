@@ -1,0 +1,91 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "18-4",
+ "map": "md",
+ "mapName": "The Glass Dunes",
+ "kind": "skirmish",
+ "name": "Sandstorm",
+ "band": {
+  "lo": 64,
+  "hi": 80,
+  "target": 72
+ },
+ "list": [
+  "caustic-scorpion",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "hollow-belly-rat",
+  "komodo-warlord",
+  "meerkat-burrower",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "dust-devil-kestrel"
+ ],
+ "namesake": false,
+ "shieldRule": 18,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "caustic-scorpion": 2,
+   "dust-devil-kestrel": 2,
+   "hollow-belly-rat": 1,
+   "roadrunner-courier": 5,
+   "sand-widow": 3,
+   "sandfish": 5
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 85.5,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "caustic-scorpion": 4,
+   "dust-devil-kestrel": 2,
+   "hollow-belly-rat": 1,
+   "roadrunner-courier": 5,
+   "sandfish": 5,
+   "dust-hyena": 1
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 84.5,
+  "shown": 9,
+  "tune60": 84.2
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 92.5,
+   "hpLost": 34.1,
+   "rounds": 14.53
+  },
+  {
+   "move": "sand-widow -2 -> caustic-scorpion",
+   "win": 90,
+   "hpLost": 30.7,
+   "rounds": 15.13,
+   "trials": 29
+  },
+  {
+   "move": "sand-widow -1 -> dust-hyena",
+   "win": 84.2,
+   "hpLost": 36.3,
+   "rounds": 15.64,
+   "trials": 26
+  }
+ ],
+ "trials": 78,
+ "sec": 155
+}

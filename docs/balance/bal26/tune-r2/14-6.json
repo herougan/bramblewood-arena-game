@@ -1,0 +1,77 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "14-6",
+ "map": "m5",
+ "mapName": "Savanna Reaches",
+ "kind": "elite",
+ "name": "Jaguar Run",
+ "band": {
+  "lo": 57.00000000000001,
+  "hi": 73,
+  "target": 65
+ },
+ "list": [
+  "acacia-giraffe",
+  "dust-hyena",
+  "hoopoe-herald",
+  "house-cat",
+  "marula-elephant",
+  "spitting-cobra",
+  "springbok-pronker"
+ ],
+ "firstClear": [
+  "spitting-cobra"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "spitting-cobra"
+ ],
+ "namesake": false,
+ "shieldRule": 21,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "spitting-cobra": 3,
+   "marula-elephant": 4,
+   "house-cat": 1,
+   "springbok-pronker": 5,
+   "acacia-giraffe": 1,
+   "hoopoe-herald": 3
+  },
+  "leaders": [
+   "spitting-cobra"
+  ],
+  "shieldOverride": 0,
+  "win200": 56.5,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "spitting-cobra": 3,
+   "marula-elephant": 4,
+   "house-cat": 1,
+   "springbok-pronker": 5,
+   "acacia-giraffe": 1,
+   "hoopoe-herald": 3
+  },
+  "leaders": [
+   "spitting-cobra"
+  ],
+  "shieldOverride": 0,
+  "win200": 56.5,
+  "shown": 0,
+  "tune60": 55.8
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 55.8,
+   "hpLost": 68.2,
+   "rounds": 10.09
+  }
+ ],
+ "trials": 28,
+ "sec": 23
+}

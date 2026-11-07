@@ -1,0 +1,1400 @@
+[
+ {
+  "code": "0-1",
+  "map": "m1",
+  "mapName": "Bramblewood Outskirts",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 96,
+  "after200": 96,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "garden-snail -4 -> ant-scout"
+  ],
+  "pick200": 95.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "0-B-1",
+  "map": "mo",
+  "mapName": "The Old Bramble",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 72,
+  "after200": 72,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 72,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "0-B-2",
+  "map": "mo",
+  "mapName": "The Old Bramble",
+  "kind": "skirmish",
+  "target": 75,
+  "before200": 62.5,
+  "after200": 62.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 62.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "1-5",
+  "map": "mf",
+  "mapName": "Thistlewood",
+  "kind": "elite",
+  "target": 40,
+  "before200": 43,
+  "after200": 43,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "hedgerow-shrew -2 -> cricket-drummer"
+  ],
+  "pick200": 35.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "1-A-1",
+  "map": "mq",
+  "mapName": "Clovermead",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 76.5,
+  "after200": 90.5,
+  "keep": true,
+  "moves": [
+   "field-mouse -3 -> field-vole"
+  ],
+  "tried": [
+   "field-mouse -3 -> field-vole"
+  ],
+  "pick200": 90.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "1-A-2",
+  "map": "mq",
+  "mapName": "Clovermead",
+  "kind": "skirmish",
+  "target": 80,
+  "before200": 69.5,
+  "after200": 79,
+  "keep": true,
+  "moves": [
+   "field-vole -2 -> slow-worm"
+  ],
+  "tried": [
+   "field-vole -2 -> slow-worm"
+  ],
+  "pick200": 79,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "1-A-4",
+  "map": "mq",
+  "mapName": "Clovermead",
+  "kind": "skirmish",
+  "target": 60,
+  "before200": 48,
+  "after200": 48,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "shield 6 -> 3"
+  ],
+  "pick200": 48.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "10-1",
+  "map": "m7",
+  "mapName": "Coral Current",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 84.5,
+  "after200": 87,
+  "keep": true,
+  "moves": [
+   "reef-shark -1 -> supernova-jelly"
+  ],
+  "tried": [
+   "reef-shark -1 -> supernova-jelly"
+  ],
+  "pick200": 87,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "10-2",
+  "map": "m7",
+  "mapName": "Coral Current",
+  "kind": "skirmish",
+  "target": 85.7,
+  "before200": 83,
+  "after200": 83,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "dolphin-knight -1 -> clownfish-scout"
+  ],
+  "pick200": 89,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "10-3",
+  "map": "m7",
+  "mapName": "Coral Current",
+  "kind": "skirmish",
+  "target": 81.39999999999999,
+  "before200": 65,
+  "after200": 82,
+  "keep": true,
+  "moves": [
+   "clownfish-scout -2 -> coral-reef-shark"
+  ],
+  "tried": [
+   "clownfish-scout -2 -> coral-reef-shark"
+  ],
+  "pick200": 82,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "10-4",
+  "map": "m7",
+  "mapName": "Coral Current",
+  "kind": "skirmish",
+  "target": 77.10000000000001,
+  "before200": 55.5,
+  "after200": 73.5,
+  "keep": true,
+  "moves": [
+   "shield 10 -> 0"
+  ],
+  "tried": [
+   "shield 10 -> 0"
+  ],
+  "pick200": 73.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "10-6",
+  "map": "m7",
+  "mapName": "Coral Current",
+  "kind": "elite",
+  "target": 68.60000000000001,
+  "before200": 41,
+  "after200": 61,
+  "keep": true,
+  "moves": [
+   "clownfish-scout -4 -> coral-reef-shark"
+  ],
+  "tried": [
+   "clownfish-scout -4 -> coral-reef-shark"
+  ],
+  "pick200": 61,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "10-8",
+  "map": "m7",
+  "mapName": "Coral Current",
+  "kind": "elite",
+  "target": 60,
+  "before200": 53.5,
+  "after200": 56,
+  "keep": true,
+  "moves": [
+   "great-barracuda -1 -> horseshoe-crab"
+  ],
+  "tried": [
+   "great-barracuda -1 -> horseshoe-crab"
+  ],
+  "pick200": 56,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "10-A-2",
+  "map": "mj",
+  "mapName": "The Sunken Depths",
+  "kind": "skirmish",
+  "target": 80,
+  "before200": 74.5,
+  "after200": 78.5,
+  "keep": true,
+  "moves": [
+   "riptide-eel -1 -> nudibranch"
+  ],
+  "tried": [
+   "riptide-eel -1 -> nudibranch"
+  ],
+  "pick200": 78.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "11-10",
+  "map": "m10",
+  "mapName": "Eyrie Heights",
+  "kind": "miniboss",
+  "target": 40,
+  "before200": 16.5,
+  "after200": 48.5,
+  "keep": true,
+  "moves": [
+   "leader ibex-rockcaller -> red-billed-chough"
+  ],
+  "tried": [
+   "leader ibex-rockcaller -> red-billed-chough"
+  ],
+  "pick200": 48.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "11-3",
+  "map": "m10",
+  "mapName": "Eyrie Heights",
+  "kind": "skirmish",
+  "target": 82.5,
+  "before200": 74.5,
+  "after200": 78,
+  "keep": true,
+  "moves": [
+   "mountain-hare -1 -> eyrie-warden"
+  ],
+  "tried": [
+   "mountain-hare -1 -> eyrie-warden"
+  ],
+  "pick200": 78,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "11-4",
+  "map": "m10",
+  "mapName": "Eyrie Heights",
+  "kind": "skirmish",
+  "target": 78.8,
+  "before200": 74.5,
+  "after200": 74.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 74.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "11-5",
+  "map": "m10",
+  "mapName": "Eyrie Heights",
+  "kind": "elite",
+  "target": 75,
+  "before200": 57,
+  "after200": 80.5,
+  "keep": true,
+  "moves": [
+   "ibex-rockcaller -1 -> chipmunk-hoarder",
+   "shield 12 -> 6"
+  ],
+  "tried": [
+   "ibex-rockcaller -1 -> chipmunk-hoarder",
+   "shield 12 -> 6"
+  ],
+  "pick200": 80.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "11-6",
+  "map": "m10",
+  "mapName": "Eyrie Heights",
+  "kind": "elite",
+  "target": 71.3,
+  "before200": 51,
+  "after200": 69.5,
+  "keep": true,
+  "moves": [
+   "leader chipmunk-hoarder -> peak-condor"
+  ],
+  "tried": [
+   "leader chipmunk-hoarder -> peak-condor"
+  ],
+  "pick200": 69.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "11-7",
+  "map": "m10",
+  "mapName": "Eyrie Heights",
+  "kind": "elite",
+  "target": 67.5,
+  "before200": 48,
+  "after200": 65,
+  "keep": true,
+  "moves": [
+   "leader alpine-salamander -> eyrie-warden",
+   "ibex-rockcaller -1 -> chipmunk-hoarder"
+  ],
+  "tried": [
+   "leader alpine-salamander -> eyrie-warden",
+   "ibex-rockcaller -1 -> chipmunk-hoarder"
+  ],
+  "pick200": 65,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "11-8",
+  "map": "m10",
+  "mapName": "Eyrie Heights",
+  "kind": "elite",
+  "target": 63.800000000000004,
+  "before200": 46,
+  "after200": 70.5,
+  "keep": true,
+  "moves": [
+   "ibex-rockcaller -1 -> peak-condor"
+  ],
+  "tried": [
+   "ibex-rockcaller -1 -> peak-condor"
+  ],
+  "pick200": 70.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "12-1",
+  "map": "mh",
+  "mapName": "The Briar Maze",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 79,
+  "after200": 79,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "bramble-hoglet -1 -> woodcock-lookout",
+   "shield 12 -> 6"
+  ],
+  "pick200": 80,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "13-3",
+  "map": "mr",
+  "mapName": "The Redwood Deep",
+  "kind": "skirmish",
+  "target": 80,
+  "before200": 88.5,
+  "after200": 88.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "berserker-boar -1 -> grizzly-vanguard"
+  ],
+  "pick200": 95,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "13-6",
+  "map": "mr",
+  "mapName": "The Redwood Deep",
+  "kind": "elite",
+  "target": 65,
+  "before200": 69.5,
+  "after200": 69.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "shimmerwing-stag -1 -> fawn-scout"
+  ],
+  "pick200": 70.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "14-2",
+  "map": "m5",
+  "mapName": "Savanna Reaches",
+  "kind": "skirmish",
+  "target": 85,
+  "before200": 69.5,
+  "after200": 69.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "shield 14 -> 3"
+  ],
+  "pick200": 68.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "14-3",
+  "map": "m5",
+  "mapName": "Savanna Reaches",
+  "kind": "skirmish",
+  "target": 80,
+  "before200": 67,
+  "after200": 70.5,
+  "keep": true,
+  "moves": [
+   "dust-hyena -4 -> hoopoe-herald"
+  ],
+  "tried": [
+   "dust-hyena -4 -> hoopoe-herald"
+  ],
+  "pick200": 70.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "14-6",
+  "map": "m5",
+  "mapName": "Savanna Reaches",
+  "kind": "elite",
+  "target": 65,
+  "before200": 56.5,
+  "after200": 56.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "leader spitting-cobra -> marula-elephant"
+  ],
+  "pick200": 49,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "14-7",
+  "map": "m5",
+  "mapName": "Savanna Reaches",
+  "kind": "elite",
+  "target": 60,
+  "before200": 49.5,
+  "after200": 57.5,
+  "keep": true,
+  "moves": [
+   "springbok-pronker -1 -> hoopoe-herald",
+   "dust-hyena -2 -> hoopoe-herald"
+  ],
+  "tried": [
+   "springbok-pronker -1 -> hoopoe-herald",
+   "dust-hyena -2 -> hoopoe-herald"
+  ],
+  "pick200": 57.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "15-3",
+  "map": "ml",
+  "mapName": "The Long Grass",
+  "kind": "skirmish",
+  "target": 78,
+  "before200": 71.5,
+  "after200": 71.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 71.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "16-3",
+  "map": "mt",
+  "mapName": "The Pinewood Taiga",
+  "kind": "skirmish",
+  "target": 78,
+  "before200": 76.5,
+  "after200": 76.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 76.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "16-5",
+  "map": "mt",
+  "mapName": "The Pinewood Taiga",
+  "kind": "elite",
+  "target": 66,
+  "before200": 70,
+  "after200": 70,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 70,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "16-6",
+  "map": "mt",
+  "mapName": "The Pinewood Taiga",
+  "kind": "elite",
+  "target": 60,
+  "before200": 72,
+  "after200": 72,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 72,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "17-1",
+  "map": "m6",
+  "mapName": "Wolfsbane Tundra",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 99.5,
+  "after200": 99.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "snow-bunting-archer -1 -> snow-ermine"
+  ],
+  "pick200": 99.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "17-2",
+  "map": "m6",
+  "mapName": "Wolfsbane Tundra",
+  "kind": "skirmish",
+  "target": 85,
+  "before200": 95.5,
+  "after200": 92,
+  "keep": true,
+  "moves": [
+   "spitting-spider -1 -> lone-grey-wolf"
+  ],
+  "tried": [
+   "spitting-spider -1 -> lone-grey-wolf"
+  ],
+  "pick200": 92,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "17-5",
+  "map": "m6",
+  "mapName": "Wolfsbane Tundra",
+  "kind": "elite",
+  "target": 70,
+  "before200": 77,
+  "after200": 74.5,
+  "keep": true,
+  "moves": [
+   "harbor-seal -1 -> frost-hare-sprinter"
+  ],
+  "tried": [
+   "harbor-seal -1 -> frost-hare-sprinter"
+  ],
+  "pick200": 74.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "17-8",
+  "map": "m6",
+  "mapName": "Wolfsbane Tundra",
+  "kind": "miniboss",
+  "target": 40,
+  "before200": 32,
+  "after200": 35.5,
+  "keep": true,
+  "moves": [
+   "frost-hare-sprinter -1 -> snow-bunting-archer"
+  ],
+  "tried": [
+   "frost-hare-sprinter -1 -> snow-bunting-archer"
+  ],
+  "pick200": 35.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "17-A-2",
+  "map": "mi",
+  "mapName": "The Ice Hollow",
+  "kind": "skirmish",
+  "target": 75,
+  "before200": 74.5,
+  "after200": 74.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 74.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "18-4",
+  "map": "md",
+  "mapName": "The Glass Dunes",
+  "kind": "skirmish",
+  "target": 72,
+  "before200": 85.5,
+  "after200": 85.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "sand-widow -2 -> caustic-scorpion",
+   "sand-widow -1 -> dust-hyena"
+  ],
+  "pick200": 84.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "18-6",
+  "map": "md",
+  "mapName": "The Glass Dunes",
+  "kind": "elite",
+  "target": 60,
+  "before200": 66,
+  "after200": 66,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 66,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "18-A-3",
+  "map": "mpd",
+  "mapName": "The Pale Desert",
+  "kind": "skirmish",
+  "target": 81.39999999999999,
+  "before200": 78,
+  "after200": 78,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "sandfish -2 -> skull-vulture"
+  ],
+  "pick200": 79,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "18-A-6",
+  "map": "mpd",
+  "mapName": "The Pale Desert",
+  "kind": "skirmish",
+  "target": 68.60000000000001,
+  "before200": 59,
+  "after200": 59,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 59,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "18-A-9",
+  "map": "mpd",
+  "mapName": "The Pale Desert",
+  "kind": "boss",
+  "target": 40,
+  "before200": 21,
+  "after200": 21,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "dromedary -1 -> sandfish"
+  ],
+  "pick200": 20,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "19-6",
+  "map": "m3",
+  "mapName": "Ashen Spurn",
+  "kind": "miniboss",
+  "target": 40,
+  "before200": 59,
+  "after200": 59,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 59,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "19-A-1",
+  "map": "m9",
+  "mapName": "Basalt Foundry",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 85.5,
+  "after200": 85.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 85.5,
+  "k14": [
+   1,
+   1
+  ]
+ },
+ {
+  "code": "19-A-10",
+  "map": "m9",
+  "mapName": "Basalt Foundry",
+  "kind": "boss",
+  "target": 40,
+  "before200": 24.5,
+  "after200": 24.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 24.5,
+  "k14": [
+   1,
+   1
+  ]
+ },
+ {
+  "code": "19-A-2",
+  "map": "m9",
+  "mapName": "Basalt Foundry",
+  "kind": "skirmish",
+  "target": 86.3,
+  "before200": 78,
+  "after200": 78,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 78,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "19-A-3",
+  "map": "m9",
+  "mapName": "Basalt Foundry",
+  "kind": "skirmish",
+  "target": 82.5,
+  "before200": 55,
+  "after200": 55,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "tide-spirit -1 -> cinder-stoker"
+  ],
+  "pick200": 52.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "2-2",
+  "map": "mb",
+  "mapName": "Pebble Beach",
+  "kind": "skirmish",
+  "target": 80,
+  "before200": 63.5,
+  "after200": 63.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 63.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "2-A-1",
+  "map": "mp",
+  "mapName": "Lilypad Reach",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 83,
+  "after200": 83,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 83,
+  "k14": [
+   2,
+   2
+  ]
+ },
+ {
+  "code": "2-A-5",
+  "map": "mp",
+  "mapName": "Lilypad Reach",
+  "kind": "elite",
+  "target": 66,
+  "before200": 51,
+  "after200": 51,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 51,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "2-B-2",
+  "map": "mg",
+  "mapName": "Smugglers' Grotto",
+  "kind": "elite",
+  "target": 75,
+  "before200": 78.5,
+  "after200": 78.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "pelican-diver -2 -> grey-seal-bull"
+  ],
+  "pick200": 80,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "2-B-3",
+  "map": "mg",
+  "mapName": "Smugglers' Grotto",
+  "kind": "elite",
+  "target": 60,
+  "before200": 70,
+  "after200": 70,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 70,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "2-B-4",
+  "map": "mg",
+  "mapName": "Smugglers' Grotto",
+  "kind": "elite",
+  "target": 40,
+  "before200": 55.5,
+  "after200": 55.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 55.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "20-4",
+  "map": "m11",
+  "mapName": "The Sundered Peak",
+  "kind": "skirmish",
+  "target": 77.10000000000001,
+  "before200": 81.5,
+  "after200": 81.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 81.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "20-5",
+  "map": "m11",
+  "mapName": "The Sundered Peak",
+  "kind": "elite",
+  "target": 72.89999999999999,
+  "before200": 75,
+  "after200": 75,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "magma-titan -1 -> ancient-sloth-titan"
+  ],
+  "pick200": 73.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "20-6",
+  "map": "m11",
+  "mapName": "The Sundered Peak",
+  "kind": "elite",
+  "target": 68.60000000000001,
+  "before200": 67.5,
+  "after200": 67.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "magma-titan -1 -> talus-pika"
+  ],
+  "pick200": 56.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "20-7",
+  "map": "m11",
+  "mapName": "The Sundered Peak",
+  "kind": "elite",
+  "target": 64.3,
+  "before200": 75.5,
+  "after200": 75.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "magma-salamander -1 -> apollo-butterfly"
+  ],
+  "pick200": 78,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "20-A-1",
+  "map": "me",
+  "mapName": "Eye of the Volcano",
+  "kind": "elite",
+  "target": 88.2,
+  "before200": 72,
+  "after200": 72,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "cinder-skeleton -1 -> ash-moth"
+  ],
+  "pick200": 69,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "20-A-3",
+  "map": "me",
+  "mapName": "Eye of the Volcano",
+  "kind": "elite",
+  "target": 74.6,
+  "before200": 72.5,
+  "after200": 72.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 72.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "20-A-4",
+  "map": "me",
+  "mapName": "Eye of the Volcano",
+  "kind": "dungeon",
+  "target": 35.5,
+  "before200": 41,
+  "after200": 41,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 41,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "3-4",
+  "map": "mc",
+  "mapName": "Gannet Cliffs",
+  "kind": "skirmish",
+  "target": 72,
+  "before200": 72.5,
+  "after200": 72.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 72.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "3-5",
+  "map": "mc",
+  "mapName": "Gannet Cliffs",
+  "kind": "elite",
+  "target": 66,
+  "before200": 56,
+  "after200": 56,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "golden-eagle-diver -1 -> peak-condor"
+  ],
+  "pick200": 50.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "3-6",
+  "map": "mc",
+  "mapName": "Gannet Cliffs",
+  "kind": "elite",
+  "target": 60,
+  "before200": 64.5,
+  "after200": 64.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 64.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "4-5",
+  "map": "m2",
+  "mapName": "Sunken Hollow",
+  "kind": "elite",
+  "target": 40,
+  "before200": 21,
+  "after200": 25.5,
+  "keep": true,
+  "moves": [
+   "drowned-matriarch -1 -> pond-algae"
+  ],
+  "tried": [
+   "drowned-matriarch -1 -> pond-algae"
+  ],
+  "pick200": 25.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "7-5",
+  "map": "mu",
+  "mapName": "The Morel Hollow",
+  "kind": "elite",
+  "target": 60,
+  "before200": 68.5,
+  "after200": 68.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 68.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "7-6",
+  "map": "mu",
+  "mapName": "The Morel Hollow",
+  "kind": "miniboss",
+  "target": 40,
+  "before200": 65.5,
+  "after200": 65.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "leader wolf-spider-mother -> dung-beetle"
+  ],
+  "pick200": 68,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "7-A-2",
+  "map": "mz",
+  "mapName": "The Mycelium Deep",
+  "kind": "skirmish",
+  "target": 80,
+  "before200": 76.5,
+  "after200": 76.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "leafcutter-gardener -1 -> planarian-splitter"
+  ],
+  "pick200": 75,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "7-A-4",
+  "map": "mz",
+  "mapName": "The Mycelium Deep",
+  "kind": "elite",
+  "target": 60,
+  "before200": 60,
+  "after200": 60,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 60,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "8-2",
+  "map": "m4",
+  "mapName": "Caves & Alcoves",
+  "kind": "skirmish",
+  "target": 85,
+  "before200": 76.5,
+  "after200": 85.5,
+  "keep": true,
+  "moves": [
+   "star-nosed-mole -2 -> gallery-orb-weaver"
+  ],
+  "tried": [
+   "star-nosed-mole -2 -> gallery-orb-weaver"
+  ],
+  "pick200": 85.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "8-5",
+  "map": "m4",
+  "mapName": "Caves & Alcoves",
+  "kind": "skirmish",
+  "target": 70,
+  "before200": 56,
+  "after200": 56,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "leader hollow-belly-rat -> stalactite-golem"
+  ],
+  "pick200": 54,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "8-7",
+  "map": "m4",
+  "mapName": "Caves & Alcoves",
+  "kind": "elite",
+  "target": 60,
+  "before200": 68.5,
+  "after200": 68.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 68.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "8-8",
+  "map": "m4",
+  "mapName": "Caves & Alcoves",
+  "kind": "miniboss",
+  "target": 40,
+  "before200": 50.5,
+  "after200": 50.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 50.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "8-A-2",
+  "map": "mn",
+  "mapName": "The Glimmer Depths",
+  "kind": "skirmish",
+  "target": 75,
+  "before200": 84.5,
+  "after200": 84.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "echo-screecher -1 -> glimmer-spider"
+  ],
+  "pick200": 87,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "9-4",
+  "map": "mk",
+  "mapName": "The Kelp Mangroves",
+  "kind": "skirmish",
+  "target": 72,
+  "before200": 72,
+  "after200": 72,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 72,
+  "k14": [
+   0,
+   0
+  ]
+ }
+]

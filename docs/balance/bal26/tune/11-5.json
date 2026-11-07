@@ -1,0 +1,91 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "11-5",
+ "map": "m10",
+ "mapName": "Eyrie Heights",
+ "kind": "elite",
+ "name": "West Ledge",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "alpine-salamander",
+  "alpine-swift",
+  "chipmunk-hoarder",
+  "eyrie-warden",
+  "gannet-nestweaver",
+  "ibex-rockcaller",
+  "kittiwake-flock",
+  "mountain-hare",
+  "peak-condor",
+  "red-billed-chough",
+  "swamp-alligator"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "red-billed-chough"
+ ],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": 12,
+ "before": {
+  "deck": {
+   "ibex-rockcaller": 2,
+   "alpine-swift": 5,
+   "swamp-alligator": 1,
+   "chipmunk-hoarder": 3,
+   "eyrie-warden": 5
+  },
+  "leaders": [
+   "red-billed-chough"
+  ],
+  "shieldOverride": 12,
+  "win200": 57,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "ibex-rockcaller": 1,
+   "alpine-swift": 5,
+   "swamp-alligator": 1,
+   "chipmunk-hoarder": 4,
+   "eyrie-warden": 5
+  },
+  "leaders": [
+   "red-billed-chough"
+  ],
+  "shieldOverride": 6,
+  "win200": 80.5,
+  "shown": 3,
+  "tune60": 75
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 63.3,
+   "hpLost": 60.6,
+   "rounds": 9.65
+  },
+  {
+   "move": "ibex-rockcaller -1 -> chipmunk-hoarder",
+   "win": 68.3,
+   "hpLost": 50.9,
+   "rounds": 9.4,
+   "trials": 62
+  },
+  {
+   "move": "shield 12 -> 6",
+   "win": 75,
+   "hpLost": 46.1,
+   "rounds": 8.8,
+   "trials": 59
+  }
+ ],
+ "trials": 122,
+ "sec": 77
+}

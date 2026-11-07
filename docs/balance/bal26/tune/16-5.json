@@ -1,0 +1,79 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "16-5",
+ "map": "mt",
+ "mapName": "The Pinewood Taiga",
+ "kind": "elite",
+ "name": "The Running Pack",
+ "band": {
+  "lo": 58.00000000000001,
+  "hi": 74,
+  "target": 66
+ },
+ "list": [
+  "alpha-howler",
+  "boreal-elk",
+  "cone-cutter-squirrel",
+  "dhole-matriarch",
+  "lunar-howler",
+  "owl-nightwatch",
+  "snowshoe-hare",
+  "taiga-lynx",
+  "woodland-caribou"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "dhole-matriarch"
+ ],
+ "namesake": false,
+ "shieldRule": 24,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "alpha-howler": 2,
+   "boreal-elk": 5,
+   "cone-cutter-squirrel": 1,
+   "dhole-matriarch": 1,
+   "snowshoe-hare": 4,
+   "taiga-lynx": 2,
+   "woodland-caribou": 4
+  },
+  "leaders": [
+   "dhole-matriarch"
+  ],
+  "shieldOverride": null,
+  "win200": 70,
+  "shown": 12
+ },
+ "pick": {
+  "deck": {
+   "alpha-howler": 2,
+   "boreal-elk": 5,
+   "cone-cutter-squirrel": 1,
+   "dhole-matriarch": 1,
+   "snowshoe-hare": 4,
+   "taiga-lynx": 2,
+   "woodland-caribou": 4
+  },
+  "leaders": [
+   "dhole-matriarch"
+  ],
+  "shieldOverride": null,
+  "win200": 70,
+  "shown": 12,
+  "tune60": 70
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 70,
+   "hpLost": 56.4,
+   "rounds": 12.22
+  }
+ ],
+ "trials": 1,
+ "sec": 7
+}

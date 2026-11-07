@@ -1,0 +1,83 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "18-A-3",
+ "map": "mpd",
+ "mapName": "The Pale Desert",
+ "kind": "skirmish",
+ "name": "Dust Devils",
+ "band": {
+  "lo": 73.4,
+  "hi": 89.39999999999999,
+  "target": 81.39999999999999
+ },
+ "list": [
+  "dromedary",
+  "dune-packrat",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "skull-vulture",
+  "trapdoor-spider"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "dust-devil-kestrel"
+ ],
+ "namesake": true,
+ "shieldRule": 19,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "dust-devil-kestrel": 1,
+   "dust-hyena": 1,
+   "sandfish": 4,
+   "roadrunner-courier": 5,
+   "sand-widow": 5
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 78,
+  "shown": 10
+ },
+ "pick": {
+  "deck": {
+   "dust-devil-kestrel": 1,
+   "dust-hyena": 1,
+   "sandfish": 2,
+   "roadrunner-courier": 5,
+   "sand-widow": 5,
+   "skull-vulture": 2
+  },
+  "leaders": [
+   "dust-devil-kestrel"
+  ],
+  "shieldOverride": null,
+  "win200": 79,
+  "shown": 10,
+  "tune60": 81.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 65,
+   "hpLost": 55.6,
+   "rounds": 10.68
+  },
+  {
+   "move": "sandfish -2 -> skull-vulture",
+   "win": 81.7,
+   "hpLost": 40.9,
+   "rounds": 10.55,
+   "trials": 34
+  }
+ ],
+ "trials": 39,
+ "sec": 28
+}

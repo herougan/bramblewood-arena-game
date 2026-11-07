@@ -1,0 +1,13 @@
+{
+ "about": "Package BAL26 (2026-11-07): which rule change moved Eyrie Heights (Map 11). The Map reference against the fights, 200 games each on the road measure's seeds (9100 + 37g), with today's engine ('now') and with one old rule put back at a time through a temporary, uncommitted switch in bramblewood-engine.js (reverted after): 'brood' = the ENG28 brood token (1/1, Swarm (Species), Flying if the parent flies) instead of ENG32's 1/1 copy with the parent's skills; 'bulwark' = two 0/4N Guardian shields instead of ENG33's N 0/8 Log Walls; 'guard' = the ward's dodge rolls first, then the Guardian steps in (pre-ENG29, main swing only). Dive is not in any of these decks (no diver on either side), so it was not switched.",
+ "games": 200, "seed0": 9100,
+ "decks": "Map 11's Map reference (level 3): Wolf Spider Mother x4 (Brood 2), Crimson Recruit x4, Muskrat Lodgekeeper x2 (Bulwark 1), Electric Ray x4, Echo Screecher x2, Burrow Rabbit x4. Map 10's has Wolf Spider Mother x4 and Muskrat Lodgekeeper x2 too. The Map 11 fight decks hold no Brood, Bulwark or Dive; Alpine Marmot (Guardian) only on 11-1, 11-3, 11-9.",
+ "win": {
+  "now":                 {"11-5": 57.0, "11-7": 48.0, "11-8": 46.0, "11-10": 16.5, "11-4": 74.5, "11-9": 63.5, "10-1": 84.5, "10-8": 53.5},
+  "brood":               {"11-5": 70.0, "11-7": 68.0, "11-8": 61.0, "11-10": 35.5, "11-4": 85.5, "11-9": 73.5, "10-1": 90.5, "10-8": 65.0},
+  "bulwark":             {"11-5": 58.0, "11-7": 52.5, "11-8": 49.5, "11-10": 20.0, "11-4": 76.0, "11-9": 66.0, "10-1": 86.5, "10-8": 49.5},
+  "guard":               {"11-5": 56.0, "11-7": 48.5, "11-8": 46.5, "11-10": 17.5, "11-4": 74.5, "11-9": 61.0, "10-1": 84.5, "10-8": 53.5},
+  "brood+bulwark+guard": {"11-5": 70.5, "11-7": 68.0, "11-8": 63.0, "11-10": 38.5, "11-4": 86.0, "11-9": 73.5, "10-1": 91.0, "10-8": 61.0}
+ },
+ "verdict": "Brood (ENG32): the old brood tokens had Swarm (Species), so Wolf Spider Mother and her two tokens buffed each other; the 1/1 copies have no skill (the Mother has only Brood, which a copy drops). Putting the old Brood back restores +10 to +20 points on every Map 11 fight (about the whole drop); Bulwark's Log Walls cost 1-4 points; Guardian (ENG29) and Dive nothing. The fights did not change; the player's reference deck got weaker."
+}

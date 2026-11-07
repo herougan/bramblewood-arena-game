@@ -1,0 +1,95 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "20-6",
+ "map": "m11",
+ "mapName": "The Sundered Peak",
+ "kind": "elite",
+ "name": "The Constrictor Sovereign",
+ "band": {
+  "lo": 60.60000000000001,
+  "hi": 76.6,
+  "target": 68.60000000000001
+ },
+ "list": [
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "magma-salamander",
+  "magma-titan",
+  "magma-wraith",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pumice-beetle",
+  "talus-pika"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "ossuary-lammergeier"
+ ],
+ "namesake": false,
+ "shieldRule": 30,
+ "shieldOverride": 53,
+ "before": {
+  "deck": {
+   "ashbone-ghoul": 5,
+   "magma-wraith": 3,
+   "ash-cloud-condor": 3,
+   "magma-salamander": 2,
+   "ossuary-lammergeier": 1,
+   "cave-warlord": 4,
+   "magma-titan": 1
+  },
+  "leaders": [
+   "ossuary-lammergeier"
+  ],
+  "shieldOverride": 53,
+  "win200": 67.5,
+  "shown": 27
+ },
+ "pick": {
+  "deck": {
+   "ashbone-ghoul": 5,
+   "magma-wraith": 3,
+   "ash-cloud-condor": 3,
+   "magma-salamander": 2,
+   "ossuary-lammergeier": 1,
+   "cave-warlord": 4,
+   "talus-pika": 1
+  },
+  "leaders": [
+   "ossuary-lammergeier"
+  ],
+  "shieldOverride": 53,
+  "win200": 56.5,
+  "shown": 27,
+  "tune60": 68.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 83.3,
+   "hpLost": 43.3,
+   "rounds": 13.45
+  },
+  {
+   "move": "magma-titan -1 -> talus-pika",
+   "win": 68.3,
+   "hpLost": 59.4,
+   "rounds": 13.03,
+   "trials": 124
+  }
+ ],
+ "trials": 129,
+ "sec": 121
+}

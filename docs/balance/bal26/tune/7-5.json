@@ -1,0 +1,82 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "7-5",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "elite",
+ "name": "The Oath Ring",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "bee-forager",
+  "compost-grub",
+  "corpse-flower-beetle",
+  "dung-beetle",
+  "earthworm",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "truffle-piglet",
+  "worker-ant"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "planarian-splitter"
+ ],
+ "namesake": false,
+ "shieldRule": 11,
+ "shieldOverride": 8,
+ "before": {
+  "deck": {
+   "bee-forager": 1,
+   "compost-grub": 1,
+   "dung-beetle": 2,
+   "leafcutter-gardener": 5,
+   "planarian-splitter": 4,
+   "truffle-piglet": 3,
+   "worker-ant": 1,
+   "corpse-flower-beetle": 1
+  },
+  "leaders": [
+   "planarian-splitter"
+  ],
+  "shieldOverride": 8,
+  "win200": 68.5,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "bee-forager": 1,
+   "compost-grub": 1,
+   "dung-beetle": 2,
+   "leafcutter-gardener": 5,
+   "planarian-splitter": 4,
+   "truffle-piglet": 3,
+   "worker-ant": 1,
+   "corpse-flower-beetle": 1
+  },
+  "leaders": [
+   "planarian-splitter"
+  ],
+  "shieldOverride": 8,
+  "win200": 68.5,
+  "shown": 4,
+  "tune60": 61.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 61.7,
+   "hpLost": 59.8,
+   "rounds": 8.8
+  }
+ ],
+ "trials": 1,
+ "sec": 7
+}

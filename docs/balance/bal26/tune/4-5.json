@@ -1,0 +1,88 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "4-5",
+ "map": "m2",
+ "mapName": "Sunken Hollow",
+ "kind": "elite",
+ "name": "The Drowned Colossus",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "beaver-lumberjack",
+  "drowned-matriarch",
+  "lions-mane-jelly",
+  "muskrat-lodgekeeper",
+  "pond-algae",
+  "pyrenean-desman",
+  "shoal-shark",
+  "snapstick-turtle",
+  "water-shrew"
+ ],
+ "firstClear": [
+  "drowned-matriarch",
+  "pyrenean-desman"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "lions-mane-jelly"
+ ],
+ "namesake": false,
+ "shieldRule": 6,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "drowned-matriarch": 2,
+   "lions-mane-jelly": 2,
+   "muskrat-lodgekeeper": 3,
+   "pyrenean-desman": 3,
+   "snapstick-turtle": 5,
+   "water-shrew": 5
+  },
+  "leaders": [
+   "lions-mane-jelly"
+  ],
+  "shieldOverride": 0,
+  "win200": 21,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "drowned-matriarch": 1,
+   "lions-mane-jelly": 2,
+   "muskrat-lodgekeeper": 3,
+   "pyrenean-desman": 3,
+   "snapstick-turtle": 5,
+   "water-shrew": 5,
+   "pond-algae": 1
+  },
+  "leaders": [
+   "lions-mane-jelly"
+  ],
+  "shieldOverride": 0,
+  "win200": 25.5,
+  "shown": 0,
+  "tune60": 13.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 15,
+   "hpLost": 88.4,
+   "rounds": 7.97
+  },
+  {
+   "move": "drowned-matriarch -1 -> pond-algae",
+   "win": 13.3,
+   "hpLost": 89.8,
+   "rounds": 8.15,
+   "trials": 67
+  }
+ ],
+ "trials": 134,
+ "sec": 54
+}

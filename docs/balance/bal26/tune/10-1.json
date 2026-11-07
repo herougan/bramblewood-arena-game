@@ -1,0 +1,85 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "10-1",
+ "map": "m7",
+ "mapName": "Coral Current",
+ "kind": "skirmish",
+ "name": "Clownfish Shoal",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "clownfish-scout",
+  "coral-reef-shark",
+  "dolphin-knight",
+  "horseshoe-crab",
+  "kraken-spawnling",
+  "open-ocean-hermit-crab",
+  "orca-vanguard",
+  "parrotfish",
+  "reef-shark",
+  "riptide-eel",
+  "supernova-jelly"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "supernova-jelly"
+ ],
+ "namesake": false,
+ "shieldRule": 10,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "clownfish-scout": 3,
+   "kraken-spawnling": 5,
+   "orca-vanguard": 5,
+   "reef-shark": 1,
+   "riptide-eel": 4,
+   "supernova-jelly": 2
+  },
+  "leaders": [
+   "supernova-jelly"
+  ],
+  "shieldOverride": null,
+  "win200": 84.5,
+  "shown": 5
+ },
+ "pick": {
+  "deck": {
+   "clownfish-scout": 3,
+   "kraken-spawnling": 5,
+   "orca-vanguard": 5,
+   "riptide-eel": 4,
+   "supernova-jelly": 3
+  },
+  "leaders": [
+   "supernova-jelly"
+  ],
+  "shieldOverride": null,
+  "win200": 87,
+  "shown": 5,
+  "tune60": 90
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 83.3,
+   "hpLost": 42.2,
+   "rounds": 8.03
+  },
+  {
+   "move": "reef-shark -1 -> supernova-jelly",
+   "win": 90,
+   "hpLost": 41.3,
+   "rounds": 8.13,
+   "trials": 36
+  }
+ ],
+ "trials": 41,
+ "sec": 21
+}

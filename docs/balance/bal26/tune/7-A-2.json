@@ -1,0 +1,86 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "7-A-2",
+ "map": "mz",
+ "mapName": "The Mycelium Deep",
+ "kind": "skirmish",
+ "name": "Glowcap Grotto",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "ant-warrior",
+  "bombardier-beetle",
+  "dung-beetle",
+  "fungal-colossus",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "sleepless-shrew"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "fungal-colossus"
+ ],
+ "namesake": false,
+ "shieldRule": 8,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "planarian-splitter": 3,
+   "sleepless-shrew": 2,
+   "garden-snail": 1,
+   "hawthorn-shieldbug": 5,
+   "leafcutter-gardener": 2,
+   "bombardier-beetle": 3,
+   "fungal-colossus": 1
+  },
+  "leaders": [
+   "fungal-colossus"
+  ],
+  "shieldOverride": null,
+  "win200": 76.5,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "planarian-splitter": 4,
+   "sleepless-shrew": 2,
+   "garden-snail": 1,
+   "hawthorn-shieldbug": 5,
+   "leafcutter-gardener": 1,
+   "bombardier-beetle": 3,
+   "fungal-colossus": 1
+  },
+  "leaders": [
+   "fungal-colossus"
+  ],
+  "shieldOverride": null,
+  "win200": 75,
+  "shown": 4,
+  "tune60": 80
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 73.3,
+   "hpLost": 47.6,
+   "rounds": 11.83
+  },
+  {
+   "move": "leafcutter-gardener -1 -> planarian-splitter",
+   "win": 80,
+   "hpLost": 36.3,
+   "rounds": 11.67,
+   "trials": 63
+  }
+ ],
+ "trials": 68,
+ "sec": 51
+}

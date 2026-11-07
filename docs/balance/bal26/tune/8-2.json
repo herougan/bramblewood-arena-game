@@ -1,0 +1,84 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "8-2",
+ "map": "m4",
+ "mapName": "Caves & Alcoves",
+ "kind": "skirmish",
+ "name": "Glowworm Grotto",
+ "band": {
+  "lo": 77,
+  "hi": 93,
+  "target": 85
+ },
+ "list": [
+  "blind-cave-fish",
+  "cave-olm",
+  "gallery-orb-weaver",
+  "hollow-belly-rat",
+  "pelican-diver",
+  "stalactite-golem",
+  "star-nosed-mole",
+  "sulfur-cinder-moth"
+ ],
+ "firstClear": [
+  "star-nosed-mole"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "hollow-belly-rat"
+ ],
+ "namesake": false,
+ "shieldRule": 8,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "blind-cave-fish": 5,
+   "hollow-belly-rat": 1,
+   "stalactite-golem": 5,
+   "star-nosed-mole": 4,
+   "pelican-diver": 1
+  },
+  "leaders": [
+   "hollow-belly-rat"
+  ],
+  "shieldOverride": null,
+  "win200": 76.5,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "blind-cave-fish": 5,
+   "hollow-belly-rat": 1,
+   "stalactite-golem": 5,
+   "star-nosed-mole": 2,
+   "pelican-diver": 1,
+   "gallery-orb-weaver": 2
+  },
+  "leaders": [
+   "hollow-belly-rat"
+  ],
+  "shieldOverride": null,
+  "win200": 85.5,
+  "shown": 4,
+  "tune60": 83.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 68.3,
+   "hpLost": 43.4,
+   "rounds": 7.62
+  },
+  {
+   "move": "star-nosed-mole -2 -> gallery-orb-weaver",
+   "win": 83.3,
+   "hpLost": 34.4,
+   "rounds": 7.77,
+   "trials": 42
+  }
+ ],
+ "trials": 47,
+ "sec": 19
+}

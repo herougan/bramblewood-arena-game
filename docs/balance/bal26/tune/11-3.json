@@ -1,0 +1,85 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "11-3",
+ "map": "m10",
+ "mapName": "Eyrie Heights",
+ "kind": "skirmish",
+ "name": "Cliffside Herd",
+ "band": {
+  "lo": 74.5,
+  "hi": 90.49999999999999,
+  "target": 82.5
+ },
+ "list": [
+  "alpine-marmot",
+  "alpine-salamander",
+  "alpine-swift",
+  "chipmunk-hoarder",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gannet-nestweaver",
+  "kittiwake-flock",
+  "mountain-hare",
+  "peak-condor",
+  "red-billed-chough"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "eagle-owl-quartermaster"
+ ],
+ "namesake": false,
+ "shieldRule": 11,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "alpine-marmot": 5,
+   "alpine-salamander": 1,
+   "alpine-swift": 2,
+   "eagle-owl-quartermaster": 1,
+   "eyrie-warden": 2,
+   "mountain-hare": 1
+  },
+  "leaders": [
+   "eagle-owl-quartermaster"
+  ],
+  "shieldOverride": null,
+  "win200": 74.5,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "alpine-marmot": 5,
+   "alpine-salamander": 1,
+   "alpine-swift": 2,
+   "eagle-owl-quartermaster": 1,
+   "eyrie-warden": 3
+  },
+  "leaders": [
+   "eagle-owl-quartermaster"
+  ],
+  "shieldOverride": null,
+  "win200": 78,
+  "shown": 6,
+  "tune60": 81.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 73.3,
+   "hpLost": 46.4,
+   "rounds": 8.92
+  },
+  {
+   "move": "mountain-hare -1 -> eyrie-warden",
+   "win": 81.7,
+   "hpLost": 39.1,
+   "rounds": 8.48,
+   "trials": 70
+  }
+ ],
+ "trials": 75,
+ "sec": 49
+}

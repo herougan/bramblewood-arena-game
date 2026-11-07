@@ -1,0 +1,76 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "11-4",
+ "map": "m10",
+ "mapName": "Eyrie Heights",
+ "kind": "skirmish",
+ "name": "Ridge Fork",
+ "band": {
+  "lo": 70.80000000000001,
+  "hi": 86.8,
+  "target": 78.8
+ },
+ "list": [
+  "alpine-salamander",
+  "alpine-swift",
+  "chipmunk-hoarder",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gannet-nestweaver",
+  "kittiwake-flock",
+  "mountain-hare",
+  "peak-condor",
+  "red-billed-chough"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "eagle-owl-quartermaster"
+ ],
+ "namesake": false,
+ "shieldRule": 11,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "chipmunk-hoarder": 4,
+   "eyrie-warden": 4,
+   "mountain-hare": 2,
+   "eagle-owl-quartermaster": 1,
+   "alpine-salamander": 1
+  },
+  "leaders": [
+   "eagle-owl-quartermaster"
+  ],
+  "shieldOverride": null,
+  "win200": 74.5,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "chipmunk-hoarder": 4,
+   "eyrie-warden": 4,
+   "mountain-hare": 2,
+   "eagle-owl-quartermaster": 1,
+   "alpine-salamander": 1
+  },
+  "leaders": [
+   "eagle-owl-quartermaster"
+  ],
+  "shieldOverride": null,
+  "win200": 74.5,
+  "shown": 6,
+  "tune60": 80
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 80,
+   "hpLost": 45.2,
+   "rounds": 8.47
+  }
+ ],
+ "trials": 1,
+ "sec": 6
+}

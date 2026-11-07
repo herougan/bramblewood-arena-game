@@ -1,0 +1,86 @@
+{
+ "about": "BAL26 road retune (tools/bal26/road_tune_2026_11_07.js)",
+ "code": "18-A-9",
+ "map": "mpd",
+ "mapName": "The Pale Desert",
+ "kind": "boss",
+ "name": "The Quicksand Queen",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "dromedary",
+  "dune-packrat",
+  "dust-hyena",
+  "quicksand-queen",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "skull-vulture",
+  "trapdoor-spider"
+ ],
+ "firstClear": [
+  "quicksand-queen"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "quicksand-queen"
+ ],
+ "namesake": true,
+ "shieldRule": 57,
+ "shieldOverride": 82,
+ "before": {
+  "deck": {
+   "quicksand-queen": 2,
+   "dromedary": 4,
+   "sand-widow": 5,
+   "sandfish": 2,
+   "skull-vulture": 4,
+   "roadrunner-courier": 2
+  },
+  "leaders": [
+   "quicksand-queen"
+  ],
+  "shieldOverride": 82,
+  "win200": 21,
+  "shown": 41
+ },
+ "pick": {
+  "deck": {
+   "quicksand-queen": 2,
+   "dromedary": 3,
+   "sand-widow": 5,
+   "sandfish": 3,
+   "skull-vulture": 4,
+   "roadrunner-courier": 2
+  },
+  "leaders": [
+   "quicksand-queen"
+  ],
+  "shieldOverride": 82,
+  "win200": 20,
+  "shown": 41,
+  "tune60": 31.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 21.7,
+   "hpLost": 85.6,
+   "rounds": 12.72
+  },
+  {
+   "move": "dromedary -1 -> sandfish",
+   "win": 31.7,
+   "hpLost": 80.4,
+   "rounds": 13.27,
+   "trials": 41
+  }
+ ],
+ "trials": 85,
+ "sec": 85
+}
