@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-07: Package CONTENT14 (on its branch, not released)
+- Done: owner 07:40, two natural leaders (LEAD-NAT-1): **Legate of Rivergate** (Otter) and **Gold-throat Elder** (Hummingbird), Rare, in the faction pool; the faction pattern's first Rare step (Map 14+) gives your side's leader once.
+- Owner calls open: CONTENT14-1 (names, stats, skills), CONTENT14-2 ("both" side rule; leaders held from packs until that step).
+- Next: art for both (prompts written); `node tools/forge_curve_2026_10_19.js maps` at release adds them to `canonical/card-obtain-maps.json` (Map 5 like the other faction cards; the budget % above is at Map 0, the stricter case); `tests/card-matrix.js --update` once per batch.
+
 ## 11-07: Package CONTENT13 (on its branch, not released)
 - Done: 23:35 #8. **The Drill Grounds** (🎌), a side map of the Outskirts right under the Tutorial's entrance, in Admin Mode only (it is out of the map list while Admin Mode is off, so players, the balance tools and the road tests never see it). Two skirmishes at a fixed Level 1: SK-1 Rivergate Century (Otter) and SK-2 Sunfeather War-band (Hummingbird), each the deck optimiser's best faction-pure deck (seeded, `tools/content13_faction_decks_2026_11_07.js`). Test fights: free, no rewards, drops, XP, rank or progress.
 - Owner calls open: CONTENT13-1 (K14's one-copy rule waived there; Level 1).

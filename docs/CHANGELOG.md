@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package CONTENT14 (owner 07:40; decisions LEAD-NAT-1, CONTENT14-1, CONTENT14-2)
+- Players see: two new Rare faction cards with **Natural Leader**. **Legate of Rivergate** (Otter, 1 Lumber, Wait 1, 2/9, Armor 1, Inspiring 1; 96% of budget N at Level 1) and **Gold-throat Elder** (Hummingbird, 1 Lumber, Wait 1, 3/7, Flying, Esprit 1; 96%). Names and flavour in all 12 languages; art not drawn yet (prompts in `docs/art-style-prompts.md`).
+- The first time the standard faction pattern reaches its Rare step (Map 14+), that reward is your side's leader instead of a random Rare (side "both": the side you hold more faction cards of, ties to Otters). Later Rare steps pick as before. Both leaders are in the faction pool (3 copies each); until that step neither comes from a faction pack, a random faction reward or Faction Growth.
+- Code: `FACTION_LEADERS`, `factionLeaderSide`, `factionLeaderSlot` (in the FACTION_REWARD_TRACK block), `myFactionLeaderId`, `factionLeaderHeld`, `factionSetPick` (pool state `leaderStep` / `leaderId`). Test: `tests/content14-2026-11-07.js` (new).
+
 ## 2026-11-07: Quick shown once (owner 07:40)
 - Quick had two 👢 pips on 14 cards (Fleetfoot'd, Jaguar Stalker, Savanna Cheetah ...): its own pip plus ENG28's generic one. A skill whose icon is already among a card's pips no longer gets a generic one; a scan of all 905 cards finds no doubled pip.
 
