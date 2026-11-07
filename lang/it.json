@@ -933,7 +933,7 @@
  "Every card you own, added up by its level": "Ogni carta che possiedi, sommata per il suo livello",
  "Every deck slot is open.": "Tutti gli slot dei mazzi sono aperti.",
  "Every floor you have cleared is free to fight again (0 reward).": "Ogni piano che hai superato si rigioca gratis (0 ricompensa).",
- "Every hit it lands also deals {n} damage to the enemy bramble.": "Ogni colpo a segno infligge anche {n} danni al rovo nemico.",
+ "Every melee hit it lands also deals {n} damage to the enemy bramble.": "Ogni colpo in mischia a segno infligge anche {n} danni al rovo nemico.",
  "Every instance starts a fresh life now, at full Health. If it is still standing, this life ends unbeaten and its raiders can claim the held-raid share.": "Ogni istanza inizia ora una nuova vita, con tutta la Salute. Se è ancora in piedi, questa vita finisce imbattuta e i suoi predoni possono reclamare la parte del raid che ha resistito.",
  "Every nest is full": "Tutti i nidi sono pieni",
  "Every resource is now 0.": "Ora tutte le risorse sono a 0.",
@@ -3287,7 +3287,7 @@
  "Your row only": "Solo la tua fila",
  "Your share of the spoils, raider.": "La tua parte del bottino, predone.",
  "Your side": "La tua squadra",
- "Your side's arrows deal {n} more; your equipped units get +1/+1.": "Le frecce della tua parte infliggono {n} in più; le tue unità equipaggiate ottengono +1/+1.",
+ "Your side's ranged shots deal {n} more; your equipped units get +1/+1.": "I tiri a distanza della tua parte infliggono {n} in più; le tue unità equipaggiate ottengono +1/+1.",
  "Your side's battle rating: your deck plus your allies'.": "Il punteggio di battaglia della tua squadra: il tuo mazzo più quelli degli alleati.",
  "Your side's BR": "VB della tua squadra",
  "Your Standard deck has {v1} cards. It needs exactly {DECK_SIZE}.": "Il tuo mazzo Standard ha {v1} carte. Ne servono esattamente {DECK_SIZE}.",
@@ -4190,7 +4190,7 @@
  "Copies your marks in every list as text, ready to paste to Claude": "Copia i tuoi segni di ogni lista come testo, pronto da incollare a Claude",
  "Copies every list, with its proposal and your marks, as text for Claude.": "Copia ogni lista, con la sua proposta e i tuoi segni, come testo per Claude.",
  "Venomous": "Velenoso",
- "Every landed attack adds {n} Venom.": "Ogni attacco a segno aggiunge {n} Veleno.",
+ "Every melee hit it lands adds {n} Venom.": "Ogni colpo in mischia a segno aggiunge {n} Veleno.",
  "Thanatosis": "Tanatosi",
  "First time at 0 Health: it plays dead instead of dying, then gets up next round with 1 Health.": "La prima volta a 0 Salute: si finge morto invece di morire, poi si rialza il turno seguente con 1 Salute.",
  "Once a fight. No death happens: no On Death, no kill for the attacker. While it plays dead it can't act, and single-target attacks and skills can't find it; skills that hit every unit still can, and at 0 again it dies. Its statuses are cleared.": "Una volta per scontro. Non c’è morte: niente Alla morte, nessuna uccisione per l’attaccante. Mentre si finge morto non può agire, e attacchi e abilità a bersaglio singolo non lo trovano; quelle che colpiscono tutte le unità sì, e se torna a 0 muore. I suoi stati vengono rimossi.",
@@ -4208,5 +4208,8 @@
  "{name} plays dead!": "{name} si finge morto!",
  "{name} gets up again ({n} Health).": "{name} si rialza ({n} Salute).",
  "{name} was poisonous: {t} gets {n} Venom.": "{name} era tossico: {t} riceve {n} Veleno.",
- "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "A ogni colpo messo a segno, il bersaglio perde {n} di Attacco fino alla fine del round successivo. Si cumula."
+ "On every melee hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "A ogni colpo in mischia messo a segno, il bersaglio perde {n} di Attacco fino alla fine del round successivo. Si cumula.",
+ "Every melee hit it lands adds {n} Bleed.": "Ogni colpo in mischia a segno aggiunge {n} Sanguinamento.",
+ "Your units' ranged shots deal {n} more damage.": "I tiri a distanza delle tue unità infliggono {n} danni in più.",
+ "While it is on the field, your units' ranged shots (arrows, bolts and spits, missiles, thrown hits) deal {n} more damage (its own too).": "Finché è in campo, i tiri a distanza delle tue unità (frecce, dardi e sputi, missili, lanci) infliggono {n} danni in più (anche i suoi)."
 }

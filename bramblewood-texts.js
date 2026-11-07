@@ -1645,7 +1645,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ux2-br-clear": "Clear filters",
   "ui.ux2-raid-hp": "{hp} Health a fight ({parts})",
   "ui.skn-weapon-master": "Weapon Master",
-  "ui.sk-weapon-master": "Your side's arrows deal {n} more; your equipped units get +1/+1.",
+  "ui.sk-weapon-master": "Your side's ranged shots deal {n} more; your equipped units get +1/+1.",
   "ui.sk-weapon-master-codex": "While it is on the field, every arrow of your side (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley) deals {n} more, and each of your units that carries equipment gets +1/+1 once it has finished equipping.",
   "ui.skn-pry": "Pry",
   "ui.sk-pry": "Its hits strip {n} Armor for good.",
@@ -1907,7 +1907,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.en4-float-shore-up": "🛡️ Shore Up",
   "ui.sk-hemorrhage-n": "Its hits double the Bleed the target already has, then add {n} Bleed.",
   "ui.skn-breach": "Breach",
-  "ui.sk-breach": "Every hit it lands also deals {n} damage to the enemy bramble.",
+  "ui.sk-breach": "Every melee hit it lands also deals {n} damage to the enemy bramble.",
   "ui.sk-breach-codex": "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.",
   "ui.skn-canopy-cover": "Canopy Cover",
   "ui.sk-canopy-cover": "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.",
@@ -2742,7 +2742,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.en8-render": "When played, the enemy facing it gets {n} Daunt: each is −1 Attack and −1 skill damage.",
   "ui.en8-render-codex": "A Daunt counter falls off at each round’s end and each time the unit swings or uses a skill. Cleanse takes them off.",
   "ui.en8-log-render": "{name} daunts {target}: {n} Daunt (−1 Attack and skill damage each).",
-  "ui.ui31-daunt": "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.",
+  "ui.ui31-daunt": "On every melee hit it lands, the target loses {n} Attack until the end of next round. Stacks.",
   "ui.en8-daunt-badge":"Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts",
   "ui.skn-stonecutter": "Stonecutter",
   "ui.skn-prospector": "Prospector",
@@ -3511,7 +3511,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.bal22-power-tip": "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.",
   "ui.bal22-power-share": "Played in {share}% of the test games.",
   "ui.eng33-venomous-name": "Venomous",
-  "ui.eng33-venomous": "Every landed attack adds {n} Venom.",
+  "ui.eng33-venomous": "Every melee hit it lands adds {n} Venom.",
   "ui.eng33-thanatosis-name": "Thanatosis",
   "ui.eng33-thanatosis": "First time at 0 Health: it plays dead instead of dying, then gets up next round with 1 Health.",
   "ui.eng33-thanatosis-codex": "Once a fight. No death happens: no On Death, no kill for the attacker. While it plays dead it can't act, and single-target attacks and skills can't find it; skills that hit every unit still can, and at 0 again it dies. Its statuses are cleared.",
@@ -3527,7 +3527,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng33-poisonous-codex": "Only a unit's blow counts: ticks, the weather and brambles give no venom. Venom-proof units take none.",
   "ui.eng33-log-poisonous": "☠️ {name} was poisonous: {t} gets {n} Venom.",
   "ui.eng33-ph-attack": "Attack",
-  "ui.eng33-ph-health": "Health"
+  "ui.eng33-ph-health": "Health",
+  "ui.eng34-bleed": "Every melee hit it lands adds {n} Bleed.",
+  "ui.eng34-fletcher": "Your units' ranged shots deal {n} more damage.",
+  "ui.eng34-fletcher-long": "While it is on the field, your units' ranged shots (arrows, bolts and spits, missiles, thrown hits) deal {n} more damage (its own too)."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

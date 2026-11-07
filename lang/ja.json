@@ -933,7 +933,7 @@
  "Every card you own, added up by its level": "所持カードすべてのレベルの合計",
  "Every deck slot is open.": "デッキ枠はすべて開放済みです。",
  "Every floor you have cleared is free to fight again (0 reward).": "クリアした階はすべて無料で再挑戦できます（報酬0）。",
- "Every hit it lands also deals {n} damage to the enemy bramble.": "攻撃が当たるたび、敵の砦にも{n}ダメージを与える。",
+ "Every melee hit it lands also deals {n} damage to the enemy bramble.": "近接攻撃が当たるたび、敵の砦にも{n}ダメージを与える。",
  "Every instance starts a fresh life now, at full Health. If it is still standing, this life ends unbeaten and its raiders can claim the held-raid share.": "すべてのインスタンスが今すぐ体力満タンで新しい周期を始める。まだ倒れていなければ、この周期は倒されずに終わり、参加者は持ちこたえたレイドの分け前を受け取れる。",
  "Every nest is full": "巣箱はすべて埋まっています",
  "Every resource is now 0.": "すべての資源が0になりました。",
@@ -3285,7 +3285,7 @@
  "Your row only": "自分の列だけ",
  "Your share of the spoils, raider.": "君の取り分だ、レイダー。",
  "Your side": "あなたの陣営",
- "Your side's arrows deal {n} more; your equipped units get +1/+1.": "味方の矢のダメージ +{n}。装備した味方ユニットは +1/+1。",
+ "Your side's ranged shots deal {n} more; your equipped units get +1/+1.": "味方の遠隔攻撃のダメージ +{n}。装備した味方ユニットは +1/+1。",
  "Your side's battle rating: your deck plus your allies'.": "味方側の戦闘レーティング。自分のデッキと味方のデッキの合計です。",
  "Your side's BR": "味方のBR",
  "Your Standard deck has {v1} cards. It needs exactly {DECK_SIZE}.": "スタンダードデッキは{v1}枚です。ちょうど{DECK_SIZE}枚必要です。",
@@ -4189,7 +4189,7 @@
  "Copies your marks in every list as text, ready to paste to Claude": "全リストのマークをテキストでコピーします。Claude にそのまま貼り付けできます",
  "Copies every list, with its proposal and your marks, as text for Claude.": "全リストを提案とマークつきでテキストにコピーし、Claude に渡します。",
  "Venomous": "毒性",
- "Every landed attack adds {n} Venom.": "攻撃が当たるたびに毒を {n} 与える。",
+ "Every melee hit it lands adds {n} Venom.": "近接攻撃が当たるたびに毒を {n} 与える。",
  "Thanatosis": "擬死",
  "First time at 0 Health: it plays dead instead of dying, then gets up next round with 1 Health.": "初めて体力が0になったとき：死なずに死んだふりをし、次のラウンドに体力1で起き上がる。",
  "Once a fight. No death happens: no On Death, no kill for the attacker. While it plays dead it can't act, and single-target attacks and skills can't find it; skills that hit every unit still can, and at 0 again it dies. Its statuses are cleared.": "1戦につき1回。死亡は起きない：死亡時は発動せず、攻撃側の撃破にもならない。死んだふりの間は行動できず、単体攻撃やスキルは見つけられない。全ユニットを狙うスキルは当たり、再び0になると死ぬ。状態は消える。",
@@ -4207,5 +4207,8 @@
  "{name} plays dead!": "{name} は死んだふりをした！",
  "{name} gets up again ({n} Health).": "{name} が再び起き上がった（体力 {n}）。",
  "{name} was poisonous: {t} gets {n} Venom.": "{name} は有毒だった：{t} は毒を {n} 受けた。",
- "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "攻撃が命中するたびに、対象の攻撃が次のラウンド終了まで{n}下がる。累積する。"
+ "On every melee hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "近接攻撃が命中するたびに、対象の攻撃が次のラウンド終了まで{n}下がる。累積する。",
+ "Every melee hit it lands adds {n} Bleed.": "近接攻撃が当たるたびに出血{n}を与える。",
+ "Your units' ranged shots deal {n} more damage.": "味方ユニットの遠隔攻撃のダメージが{n}増える。",
+ "While it is on the field, your units' ranged shots (arrows, bolts and spits, missiles, thrown hits) deal {n} more damage (its own too).": "場にいる間、味方ユニットの遠隔攻撃（矢、弾や吐きかけ、ミサイル、投てき）のダメージが{n}増える（自身のものも）。"
 }

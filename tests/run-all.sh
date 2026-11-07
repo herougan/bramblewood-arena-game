@@ -361,6 +361,7 @@ run node tests/bal22-2026-11-07.js   # 2026-11-07 (package BAL22, owner 07:37): 
 run node tests/bal25-2026-11-07.js   # 2026-11-07 (package BAL25, owner 09:47): card power v3: Maps 0-20 cards, 400 games, random day/night and fields, Lumber filler, top-40% advanced pool, Faction-Starter (balance only), "for its budget" fit; CARD_POWER v3 in the build
 run node tests/eng32-2026-11-07.js   # 2026-11-07 (package ENG32, owner 11-07 09:47 #11, #13, #15): Dive strikes the unit opposite (none: the bramble), plain / + N, the open bramble while dived, the three looks; Brood hatches 1/1 copies without Brood or Swarm; Preternatural stated only
 run node tests/eng33-2026-11-07.js   # 2026-11-07 (package ENG33, owner 11-07 10:25 #6, #9, #10, #12, #13): Poison -> Venomous (Venom), Poisonous, Thanatosis, Bulwark's Log Walls, Timbered's Stat bonus / Skills, Smelly proposal
+run node tests/eng34-2026-11-07.js   # 2026-11-07 (package ENG34, owner 19:25): skills melee / ranged / none (canonical/skill-delivery.json); melee riders on every melee hit, Fletcher on every ranged shot, ranged swings, texts
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

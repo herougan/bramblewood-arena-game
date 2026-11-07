@@ -933,7 +933,7 @@
  "Every card you own, added up by its level": "Setiap kartu milikmu, dijumlahkan menurut levelnya",
  "Every deck slot is open.": "Semua slot dek sudah terbuka.",
  "Every floor you have cleared is free to fight again (0 reward).": "Setiap lantai yang sudah kamu tuntaskan gratis dilawan lagi (0 hadiah).",
- "Every hit it lands also deals {n} damage to the enemy bramble.": "Setiap serangan yang kena juga memberi {n} kerusakan ke semak duri musuh.",
+ "Every melee hit it lands also deals {n} damage to the enemy bramble.": "Setiap serangan jarak dekat yang kena juga memberi {n} kerusakan ke semak duri musuh.",
  "Every instance starts a fresh life now, at full Health. If it is still standing, this life ends unbeaten and its raiders can claim the held-raid share.": "Setiap instans memulai nyawa baru sekarang, dengan Nyawa penuh. Jika masih berdiri, nyawa ini berakhir tak terkalahkan dan para penyerbunya bisa mengklaim bagian raid yang bertahan.",
  "Every nest is full": "Semua sarang penuh",
  "Every resource is now 0.": "Semua sumber daya sekarang 0.",
@@ -3287,7 +3287,7 @@
  "Your row only": "Hanya barismu",
  "Your share of the spoils, raider.": "Bagianmu dari rampasan, raider.",
  "Your side": "Pihakmu",
- "Your side's arrows deal {n} more; your equipped units get +1/+1.": "Panah pihakmu memberi {n} lebih; unitmu yang berperlengkapan mendapat +1/+1.",
+ "Your side's ranged shots deal {n} more; your equipped units get +1/+1.": "Tembakan jarak jauh pihakmu memberi {n} lebih; unitmu yang berperlengkapan mendapat +1/+1.",
  "Your side's battle rating: your deck plus your allies'.": "Peringkat tempur pihakmu: dekmu ditambah dek sekutumu.",
  "Your side's BR": "BR pihakmu",
  "Your Standard deck has {v1} cards. It needs exactly {DECK_SIZE}.": "Dek Standar-mu berisi {v1} kartu. Perlu tepat {DECK_SIZE}.",
@@ -4190,7 +4190,7 @@
  "Copies your marks in every list as text, ready to paste to Claude": "Menyalin tandamu di setiap daftar sebagai teks, siap ditempel untuk Claude",
  "Copies every list, with its proposal and your marks, as text for Claude.": "Menyalin setiap daftar, dengan usulan dan tandamu, sebagai teks untuk Claude.",
  "Venomous": "Berbisa",
- "Every landed attack adds {n} Venom.": "Setiap serangan yang kena menambah {n} Racun.",
+ "Every melee hit it lands adds {n} Venom.": "Setiap serangan jarak dekat yang kena menambah {n} Racun.",
  "Thanatosis": "Tanatosis",
  "First time at 0 Health: it plays dead instead of dying, then gets up next round with 1 Health.": "Pertama kali di 0 Nyawa: ia pura-pura mati alih-alih mati, lalu bangun ronde berikutnya dengan 1 Nyawa.",
  "Once a fight. No death happens: no On Death, no kill for the attacker. While it plays dead it can't act, and single-target attacks and skills can't find it; skills that hit every unit still can, and at 0 again it dies. Its statuses are cleared.": "Sekali per pertarungan. Tidak ada kematian: tidak ada Saat Mati, tidak ada kill bagi penyerang. Selama pura-pura mati ia tak bisa bertindak, dan serangan serta skill satu sasaran tak menemukannya; skill yang mengenai semua unit tetap bisa, dan bila 0 lagi ia mati. Statusnya dihapus.",
@@ -4208,5 +4208,8 @@
  "{name} plays dead!": "{name} pura-pura mati!",
  "{name} gets up again ({n} Health).": "{name} bangun lagi ({n} Nyawa).",
  "{name} was poisonous: {t} gets {n} Venom.": "{name} beracun: {t} mendapat {n} Racun.",
- "On every hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "Setiap kali serangannya mengenai, target kehilangan {n} Serangan hingga akhir ronde berikutnya. Bisa menumpuk."
+ "On every melee hit it lands, the target loses {n} Attack until the end of next round. Stacks.": "Setiap kali serangan jarak dekatnya mengenai, target kehilangan {n} Serangan hingga akhir ronde berikutnya. Bisa menumpuk.",
+ "Every melee hit it lands adds {n} Bleed.": "Setiap serangan jarak dekat yang kena menambah {n} Pendarahan.",
+ "Your units' ranged shots deal {n} more damage.": "Tembakan jarak jauh unitmu memberi {n} kerusakan lebih.",
+ "While it is on the field, your units' ranged shots (arrows, bolts and spits, missiles, thrown hits) deal {n} more damage (its own too).": "Selama ia di arena, tembakan jarak jauh unitmu (panah, peluru dan semburan, misil, lemparan) memberi {n} kerusakan lebih (miliknya juga)."
 }

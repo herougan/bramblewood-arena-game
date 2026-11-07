@@ -1095,7 +1095,7 @@ const PASSIVE_DEFS = [
   {key:'crit', category:'passive', label:'Crit', kind:'boolean', desc:()=>`Once per round, 1-in-2 chance to double all damage dealt that round.`},
   {key:'fester', category:'passive', label:'Fester', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current venom stacks.`},
   {key:'rupture', category:'passive', label:'Rupture', kind:'boolean', desc:()=>`Bonus damage on attack equal to this card's own current bleed stacks.`},
-  {key:'bleed', category:'passive', label:'Bleed', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Bleed.`},
+  {key:'bleed', category:'passive', label:'Bleed', kind:'number', min:0, desc:v=> TX('ui.eng34-bleed', {n: v})} /* ENG34 (2026-11-07): every melee hit */,
   // Rally REMOVED (2026-09-30, per explicit request: "I think we can remove Rally. Since it was
   // supposed to mean +N/+N to something" -- the shipped mechanic had drifted to a flat +N/+0
   // aura to the whole board, not the +N/+N-to-something the name was meant to convey, so rather
@@ -1353,7 +1353,7 @@ const PASSIVE_DEFS = [
   {key:'carrion', category:'passive', label:'Carrion', kind:'number', min:1, defaultValue:2, desc:v=>`Whenever another unit dies (either side), it heals ${numOr(v, 2)}.`, get:e=> e.carrion ? numOr(e.carrion, 2) : undefined},
   {key:'hoard', category:'passive', label:'Hoard', kind:'number', min:1, defaultValue:2, desc:v=>`+1 Attack for every ${numOr(v, 2)} Lumber you hold (it changes as your Lumber does).`, get:e=> e.hoard ? numOr(e.hoard, 2) : undefined},
   {key:'venomMaster', category:'passive', label:'Venom Master', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, your units' hits that add Venom or Bleed add ${numOr(v, 1)} more (its own too; Venom Spit counts).`, get:e=> e.venomMaster ? numOr(e.venomMaster, 1) : undefined},
-  {key:'fletcher', category:'passive', label:'Fletcher', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, your units' arrows (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley) deal ${numOr(v, 1)} more damage (its own too).`, get:e=> e.fletcher ? numOr(e.fletcher, 1) : undefined},
+  {key:'fletcher', category:'passive', label:'Fletcher', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng34-fletcher-long', {n: numOr(v, 1)}) /* ENG34 (2026-11-07): every ranged shot */, get:e=> e.fletcher ? numOr(e.fletcher, 1) : undefined},
   {key:'herbalist', category:'passive', label:'Herbalist', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, every heal on your units heals ${numOr(v, 1)} more (Healing, Regeneration, Bloom, Nursing, a Heal trigger...).`, get:e=> e.herbalist ? numOr(e.herbalist, 1) : undefined},
   {key:'shatter', category:'passive', label:'Shatter', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits and shots deal ${numOr(v, 2)} more damage to a Frozen unit.`, get:e=> e.shatter ? numOr(e.shatter, 2) : undefined},
   // Rebuild N (2026-10-17, user: "A new skill: Rebuild N: The unit regenerates the castle for N on ready. As an action, then on the
@@ -3129,7 +3129,7 @@ function waveParts(v, e){
   return {way, n: raw === 'N' ? 'N' : Math.max(1, Math.round(Number(raw)) || 1)};
 }
 const SKILL_TEXT = {
-  poison: v=> TX('ui.eng33-venomous', {n: v}) /* ENG33 */, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> `Its hits add ${v} Bleed.`, corrode: v=> `Its hits add ${v} Corrode.`,
+  poison: v=> TX('ui.eng33-venomous', {n: v}) /* ENG33 */, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> TX('ui.eng34-bleed', {n: v}) /* ENG34 */, corrode: v=> `Its hits add ${v} Corrode.`,
   armor: v=> `Takes ${v} less damage from every hit.`,
   counterattack: ()=> `Never attacks on its own. Each time an enemy hits it, it strikes the enemy facing it.`, // 2026-10-16 skill audit: it hits the unit in front, not the attacker (counterStrike)
   spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,
@@ -3369,7 +3369,7 @@ Object.assign(SKILL_TEXT, {
   carrion: v=> `Whenever another unit dies, heal ${numOr(v, 2)}.`,
   hoard: v=> `+1 Attack for every ${numOr(v, 2)} Lumber you hold.`,
   venomMaster: v=> `Your units' Venom and Bleed hits add ${numOr(v, 1)} more.`,
-  fletcher: v=> `Your units' arrows deal ${numOr(v, 1)} more damage.`,
+  fletcher: v=> TX('ui.eng34-fletcher', {n: numOr(v, 1)}) /* ENG34 */,
   herbalist: v=> `Every heal on your units heals ${numOr(v, 1)} more.`,
   shatter: v=> `Its hits deal ${numOr(v, 2)} more damage to Frozen units.`,
   rebuild: v=> `While Ready, restore ${numOr(v, 2)} Health to your bramble every upkeep.`, // 2026-10-17
