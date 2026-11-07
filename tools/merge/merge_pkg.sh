@@ -39,6 +39,7 @@ node tools/merge/prune_ui_lang.js
 python3 assemble_arena.py >/dev/null && mv bramblewood-arena.html index.html || { echo "BUILD FAILED"; exit 3; }
 for f in lang/*.json lang/ui/*.json canonical/*.json; do python3 -c "import json,sys; json.load(open(sys.argv[1]))" "$f" || { echo "BAD JSON $f"; exit 4; }; done
 node -e "const c=require('./canonical/cards.json');const seen={},dup=[];for(const x of c){for(const k of ['id','numericId']){if(x[k]==null)continue;const key=k+':'+x[k];if(seen[key])dup.push(key);seen[key]=1}}if(dup.length){console.log('DUPLICATE card ids: '+dup.join(', '));process.exit(5)}" || exit 5
+bash tools/merge/check_build_pair.sh || exit 6 # 2026-11-07 (UI27-1): never commit a mismatched version.json / index.html
 git add -A
 MSG="Merge ${MERGE_TITLE:-$B}${COMMIT_TRAILER:+
 
