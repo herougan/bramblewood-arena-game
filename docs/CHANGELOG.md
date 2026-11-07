@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package BAL23 (the skill ladder; owner 07:37, method for the new skill budget test)
+- Players see nothing. No price changed: canonical/skill-costs.json untouched.
+- `tools/skill_ladder_2026_11_07.js` reworked (2.0.0): each skill at N = 1-4 (Shield 2 / 4 / 6, on/off once, Twin Strike always), on random bodies at an equal 3A + H (War Hound re-statted: L1 23, A 1..7; L5 27, A 1..8), paired with / without, worth = gain / the anchors' canon rate; price = the maximum of a quadratic of worth against attack share (raw best body and mean beside it, bootstrap 95%), best spread, value x N^pow per level, 85% win-rate flag, 25 co-occurring pairs on their best body (synergy). Resumable (`--hours`), own cache `~/.cache/bramble-ladder`.
+- Verified at 300 fights (Armor 1-4, Shield 2/4/6, Twin Strike, Poison 1-4, Flying, Armor 2 + Poison 2): `docs/balance/skill-ladder/summary-2026-11-07-armor-shield-twinStrike-poison-flying.md`. The full ladder (250 points a level, 1.54M games at 400 fights, about 5 h idle) is not run yet.
+- Test: `tests/bal23-2026-11-07.js` (new): plan size, cap 4, Shield points, pairs, bodies, curve fits on synthetic data.
+
 ## 2026-11-07: Card power run and "0 = average" (owner 11-06 23:35 #7)
 - Card power test re-run on all 828 live cards (40 games each, 17 min): `docs/balance/card-balance.json`.
 - The editor's Power number is now centred on the median measured card (win % - median + 50; the median was 30% on this run), so 0 means average, as asked. The tooltip says so in all 12 languages.
