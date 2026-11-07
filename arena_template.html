@@ -7782,6 +7782,15 @@
   .map-pro .mpr-ico::before{content:"🏆"; font-size:17px; line-height:1; transform:rotate(-45deg); display:block;}
   .map-pro .mpr-code{font:800 10px/1 'Baloo 2',system-ui,sans-serif; color:#3a2600; background:#ffe9a8; border-radius:8px; padding:2px 5px; box-shadow:0 1px 3px rgba(0,0,0,.4); margin-top:5px; white-space:nowrap;}
   .map-pro:hover .mpr-ico, .map-pro:focus-visible .mpr-ico{transform:rotate(45deg) scale(1.12);}
+  /* 2026-11-07 (package BAL24, owner BAL21-2): Admin's PRO marks on a map's N-SK / N-WK node and the fight panel's PRO win-rate line */
+  .bal24-pill{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.03em; color:#fff; background:#b3261e; border-radius:999px; padding:2px 6px; margin-top:2px; white-space:nowrap; box-shadow:0 1px 3px rgba(0,0,0,.4);}
+  .bal24-pill[data-flag="strong"]{background:#7a3db8;}
+  .bal24-winline{display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; margin:3px 0;}
+  .bal24-winline .bal24-band{font-size:.85em; font-weight:700; border-radius:999px; padding:1px 7px; background:rgba(46,125,50,.16); color:#2e7d32;}
+  .bal24-winline[data-band="out"] .bal24-band{background:rgba(179,38,30,.14); color:#b3261e;}
+  .bal24-winline .bal24-pill{margin-top:0;}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .bal24-winline .bal24-band{color:#8fd694;} :root:not([data-theme="light"]) .bal24-winline[data-band="out"] .bal24-band{color:#ff9a8f;} }
+  :root[data-theme="dark"] .bal24-winline .bal24-band{color:#8fd694;} :root[data-theme="dark"] .bal24-winline[data-band="out"] .bal24-band{color:#ff9a8f;}
   @keyframes courierBob{0%,100%{translate:0 0;} 50%{translate:0 -4px;}} @media (prefers-reduced-motion: reduce){ .map-courier{animation:none;} }
   .map-curio{position:absolute; transform:translate(-50%,-50%); z-index:6; width:38px; height:38px; padding:0; border-radius:50%; border:2px solid rgba(255,240,205,.8); background:radial-gradient(circle at 35% 30%, rgba(255,250,235,.95), rgba(222,206,170,.92)); box-shadow:0 4px 10px rgba(0,0,0,.35); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform .15s ease;}
   .map-curio:hover{transform:translate(-50%,-50%) scale(1.1);} .map-curio .mcu-ico{font-size:19px; line-height:1;}

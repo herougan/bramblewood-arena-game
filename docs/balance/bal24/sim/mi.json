@@ -1,0 +1,1334 @@
+{
+ "about": "Package BAL24: each simulated player's optimised deck at this map and its win rate against the map's road fights (tools/bal24/ladder_sim_2026_11_07.js measure; ladder seeds 5300 + 37g, 8 games a fight, with the player's leader).",
+ "tool": "tools/bal24/ladder_sim_2026_11_07.js 1.0.0 (2026-11-07, BAL24)",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow",
+  "side": true,
+  "arrival": 21
+ },
+ "level": 4.08,
+ "fights": [
+  "17-A-1",
+  "17-A-2",
+  "17-A-3",
+  "17-A-4"
+ ],
+ "players": [
+  {
+   "player": 1,
+   "seed": "bal24-1",
+   "counts": {
+    "alpine-marmot": 1,
+    "ash-cloud-condor": 1,
+    "blind-cave-fish": 1,
+    "crimson-wing-recruit": 1,
+    "echo-screecher": 1,
+    "forager-ant": 1,
+    "glacier-wolf-pack": 1,
+    "grave-grin-hyena": 1,
+    "grotto-lobster": 1,
+    "lantern-spark-fly": 1,
+    "lone-grey-wolf": 1,
+    "obsidian-scorpion": 1,
+    "otter-centurion": 3,
+    "spitting-cobra": 1,
+    "taiga-lynx": 1,
+    "walrus-icebreaker": 1,
+    "wolf-spider-mother": 1,
+    "worker-ant": 1
+   },
+   "parts": [
+    [
+     "alpine-marmot",
+     1,
+     4
+    ],
+    [
+     "ash-cloud-condor",
+     1,
+     4
+    ],
+    [
+     "blind-cave-fish",
+     1,
+     4
+    ],
+    [
+     "crimson-wing-recruit",
+     1,
+     4
+    ],
+    [
+     "echo-screecher",
+     1,
+     4
+    ],
+    [
+     "forager-ant",
+     1,
+     4
+    ],
+    [
+     "glacier-wolf-pack",
+     1,
+     4
+    ],
+    [
+     "grave-grin-hyena",
+     1,
+     4
+    ],
+    [
+     "grotto-lobster",
+     1,
+     4
+    ],
+    [
+     "lantern-spark-fly",
+     1,
+     4
+    ],
+    [
+     "lone-grey-wolf",
+     1,
+     4
+    ],
+    [
+     "obsidian-scorpion",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "spitting-cobra",
+     1,
+     4
+    ],
+    [
+     "taiga-lynx",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ],
+    [
+     "wolf-spider-mother",
+     1,
+     4
+    ],
+    [
+     "worker-ant",
+     1,
+     4
+    ]
+   ],
+   "leader": "caldera-wyrm",
+   "collection": 359,
+   "factionCards": 50,
+   "optScore": 0.654,
+   "optBudget": 400,
+   "optFile": "deckopt-map17-mi-bal24-p1.json",
+   "games": 8,
+   "perFight": {
+    "17-A-1": 75,
+    "17-A-2": 75,
+    "17-A-3": 62.5,
+    "17-A-4": 12.5
+   },
+   "win": 56.3
+  },
+  {
+   "player": 2,
+   "seed": "bal24-2",
+   "counts": {
+    "acorn-chipmunk": 1,
+    "compost-grub": 1,
+    "cunning-vixen": 1,
+    "electric-ray": 1,
+    "field-mouse": 1,
+    "gull-thief": 1,
+    "hawthorn-shieldbug": 1,
+    "helmeted-otter": 1,
+    "nectar-sipper": 1,
+    "old-shell": 1,
+    "otter-angler": 1,
+    "otter-netmender": 1,
+    "otter-riverguard": 1,
+    "pack-mule": 1,
+    "pangolin-roller": 1,
+    "poison-dart-croaker": 1,
+    "robin-redbreast": 1,
+    "tasmanian-devil": 1,
+    "tidepool-trapper-crab": 1,
+    "trapdoor-spider": 1
+   },
+   "parts": [
+    [
+     "acorn-chipmunk",
+     1,
+     4
+    ],
+    [
+     "compost-grub",
+     1,
+     4
+    ],
+    [
+     "cunning-vixen",
+     1,
+     4
+    ],
+    [
+     "electric-ray",
+     1,
+     4
+    ],
+    [
+     "field-mouse",
+     1,
+     4
+    ],
+    [
+     "gull-thief",
+     1,
+     4
+    ],
+    [
+     "hawthorn-shieldbug",
+     1,
+     4
+    ],
+    [
+     "helmeted-otter",
+     1,
+     4
+    ],
+    [
+     "nectar-sipper",
+     1,
+     4
+    ],
+    [
+     "old-shell",
+     1,
+     4
+    ],
+    [
+     "otter-angler",
+     1,
+     4
+    ],
+    [
+     "otter-netmender",
+     1,
+     4
+    ],
+    [
+     "otter-riverguard",
+     1,
+     4
+    ],
+    [
+     "pack-mule",
+     1,
+     4
+    ],
+    [
+     "pangolin-roller",
+     1,
+     4
+    ],
+    [
+     "poison-dart-croaker",
+     1,
+     4
+    ],
+    [
+     "robin-redbreast",
+     1,
+     4
+    ],
+    [
+     "tasmanian-devil",
+     1,
+     4
+    ],
+    [
+     "tidepool-trapper-crab",
+     1,
+     4
+    ],
+    [
+     "trapdoor-spider",
+     1,
+     4
+    ]
+   ],
+   "leader": "caldera-wyrm",
+   "collection": 360,
+   "factionCards": 50,
+   "optScore": 0.541,
+   "optBudget": 400,
+   "optFile": "deckopt-map17-mi-bal24-p2.json",
+   "games": 8,
+   "perFight": {
+    "17-A-1": 75,
+    "17-A-2": 50,
+    "17-A-3": 75,
+    "17-A-4": 0
+   },
+   "win": 50
+  },
+  {
+   "player": 3,
+   "seed": "bal24-3",
+   "counts": {
+    "bee-drone": 4,
+    "bramble-hoglet": 1,
+    "cricket-drummer": 1,
+    "fawn-scout": 1,
+    "ferry-toll-frog": 1,
+    "fleetfootd": 1,
+    "garden-snail": 1,
+    "grass-viper": 1,
+    "hercules-beetle": 1,
+    "honeyjoe-brewer": 1,
+    "raven-scout": 1,
+    "savanna-cheetah": 1,
+    "sea-turtle-elder": 1,
+    "star-nosed-mole": 1,
+    "sunfeather-scout": 1,
+    "tunnel-ant": 1,
+    "voidfeather-scout": 1
+   },
+   "parts": [
+    [
+     "bee-drone",
+     4,
+     4
+    ],
+    [
+     "bramble-hoglet",
+     1,
+     4
+    ],
+    [
+     "cricket-drummer",
+     1,
+     4
+    ],
+    [
+     "fawn-scout",
+     1,
+     4
+    ],
+    [
+     "ferry-toll-frog",
+     1,
+     4
+    ],
+    [
+     "fleetfootd",
+     1,
+     4
+    ],
+    [
+     "garden-snail",
+     1,
+     4
+    ],
+    [
+     "grass-viper",
+     1,
+     4
+    ],
+    [
+     "hercules-beetle",
+     1,
+     4
+    ],
+    [
+     "honeyjoe-brewer",
+     1,
+     4
+    ],
+    [
+     "raven-scout",
+     1,
+     4
+    ],
+    [
+     "savanna-cheetah",
+     1,
+     4
+    ],
+    [
+     "sea-turtle-elder",
+     1,
+     4
+    ],
+    [
+     "star-nosed-mole",
+     1,
+     4
+    ],
+    [
+     "sunfeather-scout",
+     1,
+     4
+    ],
+    [
+     "tunnel-ant",
+     1,
+     4
+    ],
+    [
+     "voidfeather-scout",
+     1,
+     4
+    ]
+   ],
+   "leader": "caldera-wyrm",
+   "collection": 361,
+   "factionCards": 50,
+   "optScore": 0.695,
+   "optBudget": 400,
+   "optFile": "deckopt-map17-mi-bal24-p3.json",
+   "games": 8,
+   "perFight": {
+    "17-A-1": 87.5,
+    "17-A-2": 87.5,
+    "17-A-3": 25,
+    "17-A-4": 25
+   },
+   "win": 56.3
+  },
+  {
+   "player": 4,
+   "seed": "bal24-4",
+   "counts": {
+    "alpha-howler": 1,
+    "caiman-hatchling": 1,
+    "cinder-skeleton": 1,
+    "fox-kit": 1,
+    "frost-hare-sprinter": 1,
+    "glimmer-spider": 1,
+    "grave-grin-hyena": 1,
+    "ibex-rockcaller": 1,
+    "kittiwake-flock": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-duck": 1,
+    "quillback-elder": 1,
+    "robin-redbreast": 1,
+    "slow-worm": 1,
+    "sulfur-cinder-moth": 1,
+    "swift-fox": 1,
+    "talus-pika": 1,
+    "thorn-shrike": 1,
+    "trapdoor-spider": 1,
+    "upside-down-bat": 1
+   },
+   "parts": [
+    [
+     "alpha-howler",
+     1,
+     4
+    ],
+    [
+     "caiman-hatchling",
+     1,
+     4
+    ],
+    [
+     "cinder-skeleton",
+     1,
+     4
+    ],
+    [
+     "fox-kit",
+     1,
+     4
+    ],
+    [
+     "frost-hare-sprinter",
+     1,
+     4
+    ],
+    [
+     "glimmer-spider",
+     1,
+     4
+    ],
+    [
+     "grave-grin-hyena",
+     1,
+     4
+    ],
+    [
+     "ibex-rockcaller",
+     1,
+     4
+    ],
+    [
+     "kittiwake-flock",
+     1,
+     4
+    ],
+    [
+     "muskrat-reedgatherer",
+     1,
+     4
+    ],
+    [
+     "pond-duck",
+     1,
+     4
+    ],
+    [
+     "quillback-elder",
+     1,
+     4
+    ],
+    [
+     "robin-redbreast",
+     1,
+     4
+    ],
+    [
+     "slow-worm",
+     1,
+     4
+    ],
+    [
+     "sulfur-cinder-moth",
+     1,
+     4
+    ],
+    [
+     "swift-fox",
+     1,
+     4
+    ],
+    [
+     "talus-pika",
+     1,
+     4
+    ],
+    [
+     "thorn-shrike",
+     1,
+     4
+    ],
+    [
+     "trapdoor-spider",
+     1,
+     4
+    ],
+    [
+     "upside-down-bat",
+     1,
+     4
+    ]
+   ],
+   "leader": "caldera-wyrm",
+   "collection": 362,
+   "factionCards": 50,
+   "optScore": 0.571,
+   "optBudget": 400,
+   "optFile": "deckopt-map17-mi-bal24-p4.json",
+   "games": 8,
+   "perFight": {
+    "17-A-1": 87.5,
+    "17-A-2": 37.5,
+    "17-A-3": 12.5,
+    "17-A-4": 0
+   },
+   "win": 34.4
+  },
+  {
+   "player": 5,
+   "seed": "bal24-5",
+   "counts": {
+    "alpine-marmot": 1,
+    "bramble-sprout": 1,
+    "crimson-wing-duelist-cadet": 1,
+    "deep-cave-troll": 1,
+    "dust-devil-kestrel": 1,
+    "frost-hare-sprinter": 1,
+    "magma-salamander": 1,
+    "obsidian-scorpion": 2,
+    "otter-centurion": 3,
+    "pike-lancer": 1,
+    "rabbit-kit": 1,
+    "snapper-hatchling": 1,
+    "snapstick-turtle": 1,
+    "spitting-cobra": 1,
+    "taiga-lynx": 1,
+    "walrus-icebreaker": 1,
+    "wolf-spider-mother": 1
+   },
+   "parts": [
+    [
+     "alpine-marmot",
+     1,
+     4
+    ],
+    [
+     "bramble-sprout",
+     1,
+     4
+    ],
+    [
+     "crimson-wing-duelist-cadet",
+     1,
+     4
+    ],
+    [
+     "deep-cave-troll",
+     1,
+     4
+    ],
+    [
+     "dust-devil-kestrel",
+     1,
+     4
+    ],
+    [
+     "frost-hare-sprinter",
+     1,
+     4
+    ],
+    [
+     "magma-salamander",
+     1,
+     4
+    ],
+    [
+     "obsidian-scorpion",
+     2,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "pike-lancer",
+     1,
+     4
+    ],
+    [
+     "rabbit-kit",
+     1,
+     4
+    ],
+    [
+     "snapper-hatchling",
+     1,
+     4
+    ],
+    [
+     "snapstick-turtle",
+     1,
+     4
+    ],
+    [
+     "spitting-cobra",
+     1,
+     4
+    ],
+    [
+     "taiga-lynx",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ],
+    [
+     "wolf-spider-mother",
+     1,
+     4
+    ]
+   ],
+   "leader": "caldera-wyrm",
+   "collection": 361,
+   "factionCards": 50,
+   "optScore": 0.651,
+   "optBudget": 400,
+   "optFile": "deckopt-map17-mi-bal24-p5.json",
+   "games": 8,
+   "perFight": {
+    "17-A-1": 75,
+    "17-A-2": 37.5,
+    "17-A-3": 37.5,
+    "17-A-4": 25
+   },
+   "win": 43.8
+  },
+  {
+   "player": 6,
+   "seed": "bal24-6",
+   "counts": {
+    "acorn-chipmunk": 1,
+    "alpine-marmot": 1,
+    "alpine-salamander": 1,
+    "chipmunk-hoarder": 1,
+    "cypress-root-lurker": 1,
+    "dolphin-knight": 1,
+    "frost-hare-sprinter": 1,
+    "obsidian-scorpion": 1,
+    "otter-centurion": 3,
+    "poison-dart-croaker": 1,
+    "polar-bear": 1,
+    "quill-thorn-boar": 1,
+    "quill-volley": 1,
+    "sergeant-bramblefox": 1,
+    "spitting-cobra": 1,
+    "taiga-lynx": 1,
+    "walrus-icebreaker": 1,
+    "wolf-spider-mother": 1
+   },
+   "parts": [
+    [
+     "acorn-chipmunk",
+     1,
+     4
+    ],
+    [
+     "alpine-marmot",
+     1,
+     4
+    ],
+    [
+     "alpine-salamander",
+     1,
+     4
+    ],
+    [
+     "chipmunk-hoarder",
+     1,
+     4
+    ],
+    [
+     "cypress-root-lurker",
+     1,
+     4
+    ],
+    [
+     "dolphin-knight",
+     1,
+     4
+    ],
+    [
+     "frost-hare-sprinter",
+     1,
+     4
+    ],
+    [
+     "obsidian-scorpion",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "poison-dart-croaker",
+     1,
+     4
+    ],
+    [
+     "polar-bear",
+     1,
+     4
+    ],
+    [
+     "quill-thorn-boar",
+     1,
+     4
+    ],
+    [
+     "quill-volley",
+     1,
+     4
+    ],
+    [
+     "sergeant-bramblefox",
+     1,
+     4
+    ],
+    [
+     "spitting-cobra",
+     1,
+     4
+    ],
+    [
+     "taiga-lynx",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ],
+    [
+     "wolf-spider-mother",
+     1,
+     4
+    ]
+   ],
+   "leader": "caldera-wyrm",
+   "collection": 362,
+   "factionCards": 50,
+   "optScore": 0.603,
+   "optBudget": 400,
+   "optFile": "deckopt-map17-mi-bal24-p6.json",
+   "games": 8,
+   "perFight": {
+    "17-A-1": 62.5,
+    "17-A-2": 62.5,
+    "17-A-3": 50,
+    "17-A-4": 12.5
+   },
+   "win": 46.9
+  },
+  {
+   "player": 7,
+   "seed": "bal24-7",
+   "counts": {
+    "acorn-chipmunk": 1,
+    "alpine-marmot": 1,
+    "badger-lumberjack": 1,
+    "cone-cutter-squirrel": 1,
+    "crimson-wing-duelist-cadet": 1,
+    "dormouse": 1,
+    "dung-beetle": 1,
+    "magma-titan": 1,
+    "mountain-hare": 1,
+    "obsidian-scorpion": 1,
+    "otter-centurion": 3,
+    "pride-queen": 1,
+    "spitting-cobra": 1,
+    "sunfeather-scout": 1,
+    "taiga-lynx": 1,
+    "teatime-toad": 1,
+    "walrus-icebreaker": 1,
+    "wolf-spider-mother": 1
+   },
+   "parts": [
+    [
+     "acorn-chipmunk",
+     1,
+     4
+    ],
+    [
+     "alpine-marmot",
+     1,
+     4
+    ],
+    [
+     "badger-lumberjack",
+     1,
+     4
+    ],
+    [
+     "cone-cutter-squirrel",
+     1,
+     4
+    ],
+    [
+     "crimson-wing-duelist-cadet",
+     1,
+     4
+    ],
+    [
+     "dormouse",
+     1,
+     4
+    ],
+    [
+     "dung-beetle",
+     1,
+     4
+    ],
+    [
+     "magma-titan",
+     1,
+     4
+    ],
+    [
+     "mountain-hare",
+     1,
+     4
+    ],
+    [
+     "obsidian-scorpion",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "pride-queen",
+     1,
+     4
+    ],
+    [
+     "spitting-cobra",
+     1,
+     4
+    ],
+    [
+     "sunfeather-scout",
+     1,
+     4
+    ],
+    [
+     "taiga-lynx",
+     1,
+     4
+    ],
+    [
+     "teatime-toad",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ],
+    [
+     "wolf-spider-mother",
+     1,
+     4
+    ]
+   ],
+   "leader": "caldera-wyrm",
+   "collection": 360,
+   "factionCards": 50,
+   "optScore": 0.641,
+   "optBudget": 400,
+   "optFile": "deckopt-map17-mi-bal24-p7.json",
+   "games": 8,
+   "perFight": {
+    "17-A-1": 62.5,
+    "17-A-2": 62.5,
+    "17-A-3": 62.5,
+    "17-A-4": 25
+   },
+   "win": 53.1
+  },
+  {
+   "player": 8,
+   "seed": "bal24-8",
+   "counts": {
+    "alpine-marmot": 1,
+    "bombardier-beetle": 1,
+    "border-collie": 1,
+    "crossed-eyes": 1,
+    "echo-matriarch": 1,
+    "lantern-bearer": 1,
+    "mangrove-mudskipper": 1,
+    "nutria-reedcutter": 1,
+    "obsidian-scorpion": 1,
+    "otter-centurion": 3,
+    "otter-lantern-bearer": 1,
+    "raccoon-bandit": 1,
+    "razorbill": 1,
+    "spitting-cobra": 1,
+    "sunfeather-scout": 1,
+    "vampire-bat": 1,
+    "walrus-icebreaker": 1,
+    "wolf-spider-mother": 1
+   },
+   "parts": [
+    [
+     "alpine-marmot",
+     1,
+     4
+    ],
+    [
+     "bombardier-beetle",
+     1,
+     4
+    ],
+    [
+     "border-collie",
+     1,
+     4
+    ],
+    [
+     "crossed-eyes",
+     1,
+     4
+    ],
+    [
+     "echo-matriarch",
+     1,
+     4
+    ],
+    [
+     "lantern-bearer",
+     1,
+     4
+    ],
+    [
+     "mangrove-mudskipper",
+     1,
+     4
+    ],
+    [
+     "nutria-reedcutter",
+     1,
+     4
+    ],
+    [
+     "obsidian-scorpion",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "otter-lantern-bearer",
+     1,
+     4
+    ],
+    [
+     "raccoon-bandit",
+     1,
+     4
+    ],
+    [
+     "razorbill",
+     1,
+     4
+    ],
+    [
+     "spitting-cobra",
+     1,
+     4
+    ],
+    [
+     "sunfeather-scout",
+     1,
+     4
+    ],
+    [
+     "vampire-bat",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ],
+    [
+     "wolf-spider-mother",
+     1,
+     4
+    ]
+   ],
+   "leader": "caldera-wyrm",
+   "collection": 361,
+   "factionCards": 50,
+   "optScore": 0.728,
+   "optBudget": 400,
+   "optFile": "deckopt-map17-mi-bal24-p8.json",
+   "games": 8,
+   "perFight": {
+    "17-A-1": 62.5,
+    "17-A-2": 62.5,
+    "17-A-3": 37.5,
+    "17-A-4": 37.5
+   },
+   "win": 50
+  },
+  {
+   "player": 9,
+   "seed": "bal24-9",
+   "counts": {
+    "alpine-marmot": 1,
+    "bramble-sprout": 1,
+    "eagle-owl-quartermaster": 1,
+    "giant-cave-huntsman": 1,
+    "harvest-mouse": 1,
+    "kinkajou-lurker": 1,
+    "leafcutter-gardener": 1,
+    "obsidian-scorpion": 1,
+    "old-sturgeon": 1,
+    "otter-centurion": 3,
+    "otter-netmender": 1,
+    "pond-duck": 1,
+    "spitting-cobra": 1,
+    "taiga-lynx": 1,
+    "talus-pika": 1,
+    "terrier-pup": 1,
+    "walrus-icebreaker": 1,
+    "wolf-spider-mother": 1
+   },
+   "parts": [
+    [
+     "alpine-marmot",
+     1,
+     4
+    ],
+    [
+     "bramble-sprout",
+     1,
+     4
+    ],
+    [
+     "eagle-owl-quartermaster",
+     1,
+     4
+    ],
+    [
+     "giant-cave-huntsman",
+     1,
+     4
+    ],
+    [
+     "harvest-mouse",
+     1,
+     4
+    ],
+    [
+     "kinkajou-lurker",
+     1,
+     4
+    ],
+    [
+     "leafcutter-gardener",
+     1,
+     4
+    ],
+    [
+     "obsidian-scorpion",
+     1,
+     4
+    ],
+    [
+     "old-sturgeon",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "otter-netmender",
+     1,
+     4
+    ],
+    [
+     "pond-duck",
+     1,
+     4
+    ],
+    [
+     "spitting-cobra",
+     1,
+     4
+    ],
+    [
+     "taiga-lynx",
+     1,
+     4
+    ],
+    [
+     "talus-pika",
+     1,
+     4
+    ],
+    [
+     "terrier-pup",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ],
+    [
+     "wolf-spider-mother",
+     1,
+     4
+    ]
+   ],
+   "leader": "caldera-wyrm",
+   "collection": 361,
+   "factionCards": 50,
+   "optScore": 0.689,
+   "optBudget": 400,
+   "optFile": "deckopt-map17-mi-bal24-p9.json",
+   "games": 8,
+   "perFight": {
+    "17-A-1": 75,
+    "17-A-2": 37.5,
+    "17-A-3": 37.5,
+    "17-A-4": 0
+   },
+   "win": 37.5
+  },
+  {
+   "player": 10,
+   "seed": "bal24-10",
+   "counts": {
+    "alpine-marmot": 1,
+    "ant-hill": 1,
+    "bramble-sprout": 1,
+    "leafcutter-gardener": 1,
+    "muskrat-reedgatherer": 1,
+    "obsidian-scorpion": 1,
+    "otter-centurion": 3,
+    "otter-netmender": 1,
+    "pond-algae": 1,
+    "pumice-beetle": 1,
+    "raccoon-bandit": 1,
+    "riverstone-slinger": 1,
+    "rootworm-colony": 1,
+    "spitting-cobra": 1,
+    "taiga-lynx": 1,
+    "voidfeather-scout": 1,
+    "walrus-icebreaker": 1,
+    "wolf-spider-mother": 1
+   },
+   "parts": [
+    [
+     "alpine-marmot",
+     1,
+     4
+    ],
+    [
+     "ant-hill",
+     1,
+     4
+    ],
+    [
+     "bramble-sprout",
+     1,
+     4
+    ],
+    [
+     "leafcutter-gardener",
+     1,
+     4
+    ],
+    [
+     "muskrat-reedgatherer",
+     1,
+     4
+    ],
+    [
+     "obsidian-scorpion",
+     1,
+     4
+    ],
+    [
+     "otter-centurion",
+     3,
+     4
+    ],
+    [
+     "otter-netmender",
+     1,
+     4
+    ],
+    [
+     "pond-algae",
+     1,
+     4
+    ],
+    [
+     "pumice-beetle",
+     1,
+     4
+    ],
+    [
+     "raccoon-bandit",
+     1,
+     4
+    ],
+    [
+     "riverstone-slinger",
+     1,
+     4
+    ],
+    [
+     "rootworm-colony",
+     1,
+     4
+    ],
+    [
+     "spitting-cobra",
+     1,
+     4
+    ],
+    [
+     "taiga-lynx",
+     1,
+     4
+    ],
+    [
+     "voidfeather-scout",
+     1,
+     4
+    ],
+    [
+     "walrus-icebreaker",
+     1,
+     4
+    ],
+    [
+     "wolf-spider-mother",
+     1,
+     4
+    ]
+   ],
+   "leader": "caldera-wyrm",
+   "collection": 362,
+   "factionCards": 50,
+   "optScore": 0.627,
+   "optBudget": 400,
+   "optFile": "deckopt-map17-mi-bal24-p10.json",
+   "games": 8,
+   "perFight": {
+    "17-A-1": 37.5,
+    "17-A-2": 12.5,
+    "17-A-3": 25,
+    "17-A-4": 0
+   },
+   "win": 18.8
+  }
+ ],
+ "missing": 0,
+ "measured": "2026-11-07T05:46:40.433Z"
+}

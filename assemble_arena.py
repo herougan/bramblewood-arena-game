@@ -440,6 +440,44 @@ def _pro_for_game(d):
     return {"updated": d.get("updated"), "rule": d.get("rule"), "maps": out}
 _pro_file = SCRATCH + "canonical/pro-skirmishes.json"
 app_src = sub_once(app_src, "__PRO_SKIRMISHES__", json.dumps(_pro_for_game(json.load(open(_pro_file, encoding="utf-8"))) if os.path.exists(_pro_file) else {"maps": {}}, ensure_ascii=False))
+# 2026-11-07 (package BAL24, owner BAL21-2 09:10 / 09:14): Admin's PRO marks. From the newest docs/balance/pro-ease-*.json (by its "generated")
+# that plays the reference ladder (refs ladder-1 .. ladder-10) and the Map reference: per map, its N-SK decks (BPRO, else PRO, as skirmDecksOf)
+# and its N-WK decks (WPRO): win = those decks' mean win rate against the ladder decks (the ladder's losses), mapRef = the Map reference's mean
+# win rate against them; flag "weak" (N-SK: a PRO / BPRO deck the Map reference beats over 0.85) / "strong" (N-WK: a WPRO deck it beats under
+# 0.50), with flagDecks / flagRef. docs/evaluation-protocol.md section 3.
+BAL24_RULE = {"band": [0.15, 0.30], "skEasy": 0.85, "wkStrong": 0.50}
+def _bal24_marks(pro):
+    best = None
+    for f in _glob.glob(SCRATCH + "docs/balance/pro-ease-*.json"):
+        try: d = json.load(open(f, encoding="utf-8"))
+        except Exception: continue
+        refs = (d.get("settings") or {}).get("refs") or []
+        if "map" in refs and any(str(r).startswith("ladder-") for r in refs) and (best is None or (d.get("generated") or "") > (best[1].get("generated") or "")): best = (f, d)
+    out = {"rule": BAL24_RULE, "file": None, "marks": {}}
+    if not best: return out
+    out["file"], out["generated"] = os.path.relpath(best[0], SCRATCH), best[1].get("generated")
+    rows = {}
+    for r in best[1].get("rows") or []: rows.setdefault(r["id"], []).append(r)
+    for mid, m in (pro.get("maps") or {}).items():
+        sk, wk = m.get("bpro") or m.get("pro") or [], m.get("wpro") or []
+        for decks, sfx, weak in ((sk, "-SK", False), (wk, "-WK", True)):
+            if not decks: continue
+            key = _re.sub(r"-[BW]?PRO-\d+$", "", decks[0]["id"]) + sfx
+            lad = [r for e in decks for r in rows.get(e["id"], []) if str(r.get("ref", "")).startswith("ladder-")]
+            mp = [r for e in decks for r in rows.get(e["id"], []) if r.get("ref") == "map"]
+            if not lad and not mp: continue
+            win = round(sum(r["losses"] for r in lad) / sum(r["n"] for r in lad), 3) if lad else None
+            mref = round(sum(r["wins"] for r in mp) / sum(r["n"] for r in mp), 3) if mp else None
+            # the flag is per deck: N-SK is TOO WEAK when any of the map's strong decks (PRO and BPRO, BAL21-2's 7-PRO-4 / 20-A-PRO-2 are PRO
+            # decks) is beaten by the Map reference over 85%; N-WK is TOO STRONG when any WPRO deck holds it under 50%
+            judged = (m.get("pro") or []) + (m.get("bpro") or []) if not weak else wk
+            per = [(e["id"], [r for r in rows.get(e["id"], []) if r.get("ref") == "map"]) for e in judged]
+            per = [(i, round(sum(r["wins"] for r in rs) / sum(r["n"] for r in rs), 3)) for i, rs in per if rs]
+            hit = [(i, p) for i, p in per if (p > BAL24_RULE["skEasy"] if not weak else p < BAL24_RULE["wkStrong"])]
+            out["marks"][key] = {"win": win, "n": sum(r["n"] for r in lad), "mapRef": mref, "flag": ("strong" if weak else "weak") if hit else None,
+                                 "flagDecks": [i for i, p in hit], "flagRef": (min(p for i, p in hit) if weak else max(p for i, p in hit)) if hit else None}
+    return out
+app_src = sub_once(app_src, "__BAL24_PRO_MARKS__", json.dumps(_bal24_marks(json.load(open(_pro_file, encoding="utf-8"))) if os.path.exists(_pro_file) else {"marks": {}}, ensure_ascii=False))
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))
 # 2026-10-19 (package UT): each animal's kind, for the Codex's animal filter (canonical/animal-tags.json, python3 tools/animal_tags.py)
 app_src = sub_once(app_src, "__ANIMAL_GROUPS__", json.dumps({r["animal"]: r["group"] for r in json.load(open(SCRATCH + "canonical/animal-tags.json", encoding="utf-8"))["cards"] if r.get("animal")}, ensure_ascii=False, sort_keys=True))
