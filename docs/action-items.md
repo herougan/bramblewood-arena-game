@@ -30,7 +30,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Owner calls open: ENG33-1 (Smelly: a / b / c), ENG33-2 (Undead keeps its comeback), ENG33-3 (Thanatosis details), ENG33-4 (budget moves, no re-fit).
 - Next: Smelly once ENG33-1 is answered; Log Wall art.
 
-## 11-07 20:58-22:01: Owner notes
+## 11-07 20:58-23:05: Owner notes
 | # | Item | Package |
 |---|---|---|
 | 1 | Fuse skill variants into one skill with parameters (Almanac number / grant ...); workbook one row per skill with Parameters; card tooltip column | ENG35 (running); tooltip column done |
@@ -39,6 +39,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 4 | Dropdowns: type a letter to jump to options starting with it (don't split the list) | done |
 | 5 | Combined emoji pips stacked (later emoji ~45% over the earlier) | done |
 | 6 | Resistance / Weakness / Immune choices for every token and status (Venom, Bleed, Sleep, Stun, Freeze, Blind, Daunt ...). Resistance halves it: a status chance becomes half (a 50% one becomes 0%), Venom resistance = half Venom damage | ENG36, after ENG35 (both edit the engine and the editor) |
+| 7 | Summons come out at the summoner's level (Bulwark at Level 10: Log Wall 0/5): every summoned token scales with its summoner's level | ENG36, after ENG35 |
+| 8 | Thanatosis rework: the unit doesn't die; it lies greyed out for a turn (on the floor, into its shadow) and attacks pass through to the bramble (a random-target arrow still hits it); at the start of the next turn it floats back up at 1 HP, keeps its max HP, Attack and skills, Thanatosis greyed out (used) | ENG36, after ENG35 |
+| 9 | Codex page turn: the vertical slice opens out into the new page, carrying the new page's content | UI33 (running) |
 
 ## 11-07 18:53-19:11: Owner notes
 | # | Note | Package |
