@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-07: Package ENG29 (on its branch, not released)
+- Done: owner 07:55 "Flying x Guardian": a Guardian takes the attempt before any dodge; only its own dodges roll; a Guardian that dodges plays the step-in and the dodge together. Guardian text in 12 packs.
+- Owner calls open: none (ENG29-1 is Claude's call on the edge cases).
+- Next: road measure of Maps 0-20 (Guardian decks beside flyers change); card-matrix goldens at the batch release.
+
 ## 11-07: Package CONTENT13 (on its branch, not released)
 - Done: 23:35 #8. **The Drill Grounds** (🎌), a side map of the Outskirts right under the Tutorial's entrance, in Admin Mode only (it is out of the map list while Admin Mode is off, so players, the balance tools and the road tests never see it). Two skirmishes at a fixed Level 1: SK-1 Rivergate Century (Otter) and SK-2 Sunfeather War-band (Hummingbird), each the deck optimiser's best faction-pure deck (seeded, `tools/content13_faction_decks_2026_11_07.js`). Test fights: free, no rewards, drops, XP, rank or progress.
 - Owner calls open: CONTENT13-1 (K14's one-copy rule waived there; Level 1).

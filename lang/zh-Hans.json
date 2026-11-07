@@ -3871,7 +3871,7 @@
  "Riled": "激怒",
  "While it took {n} or more damage last round: {skills}.": "只要它上回合受到 {n} 点或更多伤害：{skills}。",
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "嘲讽它周围的敌人（正对它，或左右各一列）：他们的攻击、箭矢和射击都会打向它，连本要打荆棘丛的也是。潜行可绕过；齐射不会被吸引。",
- "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.": "可行动时，挡在相邻友军面前（两侧；在突袭或多人地城中也含前后），承受对其的普通攻击、反击、箭矢和射击。其他技能和范围攻击不算，且绝不守护荆棘丛或有荆刺的友军。等待、眩晕、冰冻、沉睡或束缚时无效。",
+ "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound. When it steps in, the ally's own dodges (Flying, Evasive and the like) don't count: only the Guardian's own dodges can make the attack miss.": "可行动时，挡在相邻友军面前（两侧；在突袭或多人地城中也含前后），承受对其的普通攻击、反击、箭矢和射击。其他技能和范围攻击不算，且绝不守护荆棘丛或有荆刺的友军。等待、眩晕、冰冻、沉睡或束缚时无效。挺身而出时，该友军自身的闪避（飞行、闪避等）不生效：只有守护者自己的闪避能让攻击落空。",
  "Swarm N": "集群 N",
  "Attack gained for each ally that counts (1 if left alone).": "每个符合条件的盟友增加的攻击（不填为 1）。",
  "per ally": "每个盟友",

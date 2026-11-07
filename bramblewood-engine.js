@@ -3894,6 +3894,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // EN8 (2026-10-24, P24-15: "Guardians must not intercept Thorns."): a swing at a unit with Thorns (printed, or Durian's) is never taken
   // over by a Guardian: the Thorns unit takes it and its Thorns answer. Thorns damage itself (the answer to the attacker) was never a
   // swing, so no Guardian beside the attacker steps in for it either (it goes through applyDamage straight to the attacker).
+  // ENG29 (2026-11-07, owner 07:55: "it cares about attempts"): the Guardian steps in for the attempt, before any dodge roll, and only its
+  // own dodges roll (the main swing and the prongs in resolveCombat; shots already did: shotRedirect runs before dodgeCheck).
   function hasThornsNow(c){ return !!c && ((Number(effectsOf(c).thorns)||0) > 0 || (c.thornsBonus||0) > 0 || !!effectsOf(c).poisonBarbs /* ENG9: Poison Barbs answers like Thorns */); }
   function redirectToGuardian(enemyPl, card){
     if(!enemyPl || !card) return card;
@@ -11250,11 +11252,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             const flankEntry = liveEnemyCols[flankCol];
             if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
               const c2raw = flankEntry.card;
-              if(!combatHitLands(a.att, c2raw, true)){ // every prong / lash rolls its own Evasive dodge too (2026-10-15: "if something can miss, it can miss when ... forking")
-                if(recordEvents && events) events.push(lineTag({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2raw.defId, targetUid:c2raw.uid, fork:true, prong: prong || null}));
+              // ENG29 (2026-11-07, owner 07:55): a Guardian takes the prong's attempt before any dodge roll; the rolls are the Guardian's own
+              // (the ward's Flying, Evasive and the rest don't count). Was: the ward rolled first, then a Guardian took a prong that landed.
+              const c2 = redirectToGuardian(players[a.enemyId], c2raw);
+              if(!combatHitLands(a.att, c2, true)){ // every prong / lash rolls its own Evasive dodge too (2026-10-15: "if something can miss, it can miss when ... forking")
+                const g29 = c2 !== c2raw;
+                if(recordEvents && events) events.push(lineTag({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, fork:true, prong: prong || null, guardianRedirect: g29 || undefined, guardedUid: g29 ? c2raw.uid : undefined}));
                 return;
               }
-              const c2 = redirectToGuardian(players[a.enemyId], c2raw);
               const c2GuardianRedirect = c2.uid !== c2raw.uid; // EN4 (2026-10-23): no Guardian hop (EN3's c2Hop is gone)
               const r3 = damageCard(c2, rowHalf(strikeAtk + (relictOf(a.att) ? 0 : laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol))), dmgType, a.att); // + Rook's Row / Bishop's Path (2026-10-16)
               aStat.dealt += r3.dmg; if(rowSwing) rowStrikeTally += r3.dmg; // reserveVolley's total (2026-10-19, RR)
@@ -11306,6 +11311,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const atExposed = !!(target && target.kind === 'card' && target.card && target.card.exposed > 0);
       const sMiss = (a.att.blind>0 || keenSense) ? 0 : sightMiss(a.att, otherId(a.enemyId)); const nightMiss = !atExposed && sMiss > 0 && (sMiss >= 1 || rnd() < sMiss);
       const blindNow = (!atExposed && a.att.blind>0 && !keenSense && !trueStrikes(a.att) && rnd() < 0.5) || nightMiss; // + True Strike (2026-10-18)
+      let eng29Def = null; // ENG29 (2026-11-07): the unit that takes the main swing's attempt (the target, or the Guardian that stepped in)
       let boomMiss = !!blindNow; // EN3 (2026-10-23): a Boomerang swing that misses (Blind, the dark, a dodge) still throws (below)
       // Each extra hit rolls its own miss (2026-10-15): the hits beside the target, and its lashes and prongs, don't share the main swing's.
       const extraHitBlind = card=>{ if(!card || card.exposed > 0 || trueStrikes(a.att)) return false; // + True Strike (2026-10-18) const ks = !!(attDef.effects && attDef.effects.keenSense) && !effectsOf(card).flying; if(ks) return false;
@@ -11314,18 +11320,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(blindNow){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
         if(recordEvents && events) events.push(fkTag({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind, targetUid: target.kind === 'card' && target.card ? target.card.uid : undefined, night: nightMiss || undefined})); // + targetUid: the "Miss!" shows on it (2026-10-16)
       } else
-      // Evasive: the ORIGINAL target gets the dodge roll before any Guardian redirect — a
-      // successful evade means the primary attack whiffs entirely (no damage, no Thorns/
+      // Evasive: a successful evade means the primary attack whiffs entirely (no damage, no Thorns/
       // Poison/Expose/Shell/onAttackedSpawn). Sweep/Swipe continuation and an HQ strike are
       // unaffected by a dodged primary hit.
-      if(target.kind==='card' && !combatHitLands(a.att, target.card, true)){
-        if(recordEvents && events) events.push(rowEv(fkTag({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:target.card.defId, targetUid:target.card.uid})));
+      // ENG29 (2026-11-07, owner 07:55: "Flying x Guardian. The guarded thing's flying and evade etc doesn't come into the picture anymore.
+      // Only your guardian - it cares about attempts. But IF the guardian has evasive skills, it DOES work."): the Guardian takes the
+      // attempt first (redirectToGuardian, before any dodge roll), and the dodge rolls are the Guardian's own (combatHitLands on it): the
+      // ward's Flying, Evasive, Mach, Invisible, Shadow and the rest no longer apply. A Guardian that dodges: the swing misses, nobody takes
+      // it ('evaded' on the Guardian with guardianRedirect / guardedUid, so the board plays the step-in and the dodge). Was: the ward rolled
+      // its own dodges first and the Guardian stepped in only for a swing that would have landed (and then never dodged).
+      if(target.kind==='card' && (eng29Def = redirectToGuardian(players[a.enemyId], target.card), !combatHitLands(a.att, eng29Def, true))){
+        const g29 = eng29Def !== target.card;
+        if(recordEvents && events) events.push(rowEv(fkTag({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:eng29Def.defId, targetUid:eng29Def.uid, guardianRedirect: g29 || undefined, guardedUid: g29 ? target.card.uid : undefined})));
         boomMiss = true;
       } else if(target.kind==='card'){
         // Guardian: an adjacent protector (left / right, or in front / behind on the raid board since 2026-10-22, GD) takes the hit
         // instead, if alive. Sweep/Swipe continuation still uses target.col (the ORIGINAL
         // target's position), so protection redirects damage without warping geometry.
-        const defCard = redirectToGuardian(players[a.enemyId], target.card);
+        const defCard = eng29Def; // ENG29 (2026-11-07): picked above, before the dodge rolls
         const guardianRedirect = defCard.uid !== target.card.uid; // EN4 (2026-10-23): one Guardian, no hop (EN3's guardHop is gone)
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         // Rook's Row / Bishop's Path (2026-10-16): +N for a hit straight ahead / on the slant (laneBonusOf). Tall Grass doubles a Backstab.

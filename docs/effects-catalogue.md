@@ -918,6 +918,8 @@ The engine decides (`bramblewood-engine.js`); this describes it.
 | Several | One of them at random (seeded). | The nearest to the attacker (ties at random, `tauntTargetOf`). |
 | On the board | The Guardian slides over in front of the ally it guards a beat before the blow lands, takes the hit there and slides home; if the blow kills it, it flinches and dies on that spot (`en2GuardStepIn`, from the hit's `guardedUid`). | The attacker turns to it. |
 
+**Guardian and dodges (ENG29, 2026-11-07).** The Guardian steps in for the attempt, before any dodge roll (`redirectToGuardian`, then `combatHitLands` on the Guardian). The ward's Flying, Evasive, Swift, Mach, Invisible, Shadow, Smoke and other dodges don't roll; the Guardian's own dodges and the field's misses do. A Guardian that dodges: nobody takes the swing; the `evaded` event is on the Guardian with `guardianRedirect` / `guardedUid`, and the board plays the step-in and the dodge together (`en2GuardStepIn`, without the block pulse). The attacker's own Blind / dark miss rolls first, as before. Main swings and Fork prongs; shots already did this (ENG22).
+
 **Boomerang.** The throw swings at Speed 0 (its old base of 1 is gone; Speed and Haste still add). A throw at the bramble flies on past it at the
 same speed (`en2BoomCastleThrow`); next round it comes back the same way: it strikes the bramble again, then the unit now in its lane on that
 side (`boomCastleLaneUnit`; the `hitHQ` carries `thenUid`, the unit's own `hit` carries `viaCastle`), then flies home (`en2BoomCastleReturn`).

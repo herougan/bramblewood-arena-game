@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package ENG29: Guardian takes the attempt (owner 07:55; decision ENG29-1)
+- Players see: a Guardian beside a Flying, Evasive, Swift, Mach, Invisible or Shadow ally now takes every swing aimed at that ally (the ally's dodges no longer roll first). A Guardian with its own dodge (Evasive, Flying ...) dodges by its own chance: the swing misses, nobody takes it, and the board plays the step-in and the dodge together. Guardian's text says so in all 12 languages.
+- Was: the ally rolled its own dodges first; the Guardian stepped in only for a swing that would have landed, and then never dodged.
+- Code: `resolveCombat`'s main swing and Fork prongs call `redirectToGuardian` before `combatHitLands` (rolled on the Guardian); the `evaded` event carries `guardianRedirect` / `guardedUid`; `en2Vfx` steps the Guardian in on such an `evaded` (no block pulse). Shots already worked this way (ENG22). Attacker Blind / dark misses roll first, unchanged.
+- Card-matrix (this package alone, measured against a baseline from the pre-ENG29 engine): 48 of 33,440 signatures changed, 0 failures; 0 of the 25 shown are 1v1 duels (20 squads, 5 matches), 3 of those 25 flip the winner. Goldens not updated. Test: `tests/eng29-2026-11-07.js` (new).
+
 ## 2026-11-07: Quick shown once (owner 07:40)
 - Quick had two 👢 pips on 14 cards (Fleetfoot'd, Jaguar Stalker, Savanna Cheetah ...): its own pip plus ENG28's generic one. A skill whose icon is already among a card's pips no longer gets a generic one; a scan of all 905 cards finds no doubled pip.
 

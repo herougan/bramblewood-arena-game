@@ -3871,7 +3871,7 @@
  "Riled": "逆上",
  "While it took {n} or more damage last round: {skills}.": "前のラウンドに{n}以上のダメージを受けている間：{skills}。",
  "Taunts the enemies around it (facing it, or one column to either side): their swings, arrows and shots hit it, even ones that would hit the bramble. Stealth slips past; a Volley is not pulled.": "周りの敵（正面か左右1列）を挑発する：その攻撃・矢・射撃はこれに当たる（いばらを狙うものも）。ステルスはすり抜け、一斉射撃は引き寄せない。",
- "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound.": "準備OKの間、隣の味方の前に立ち（横。レイドやマルチダンジョンでは前後も）、それへの通常攻撃・反撃・矢・射撃を受ける。他のスキルや範囲攻撃は別で、いばらや棘を持つ味方は決して守らない。待機・スタン・凍結・睡眠・拘束中は不可。",
+ "While Ready, steps in front of an adjacent ally (beside it; in a raid or multiplayer dungeon, in front or behind too) and takes the plain attacks, counter-attacks, arrows and shots aimed at it. Other skills and area hits don't, and it never guards the bramble or an ally with Thorns. Not while Waiting, Stunned, Frozen, Asleep or Bound. When it steps in, the ally's own dodges (Flying, Evasive and the like) don't count: only the Guardian's own dodges can make the attack miss.": "準備OKの間、隣の味方の前に立ち（横。レイドやマルチダンジョンでは前後も）、それへの通常攻撃・反撃・矢・射撃を受ける。他のスキルや範囲攻撃は別で、いばらや棘を持つ味方は決して守らない。待機・スタン・凍結・睡眠・拘束中は不可。割り込んだ時、味方自身の回避（飛行・回避など）は無効で、攻撃を外せるのは守護者自身の回避だけ。",
  "Swarm N": "スウォーム N",
  "Attack gained for each ally that counts (1 if left alone).": "対象となる味方1体ごとに得る攻撃力（未入力なら1）。",
  "per ally": "味方1体ごと",
