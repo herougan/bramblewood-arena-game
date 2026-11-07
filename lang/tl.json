@@ -979,7 +979,6 @@
  "Faction card": "Faction card",
  "Faction cards +{n}": "Mga card ng paksiyon +{n}",
  "Faction pack": "Pack ng paksyon",
- "Faction reward: {names}": "Gantimpala ng paksiyon: {names}",
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "Gantimpala ng paksiyon: nakukuha sa pag-usad sa labanan at mga tagumpay, hindi kailanman sa pack",
  "Factions": "Mga Paksiyon",
  "Far enemies read ?": "Ang malalayong kaaway ay ?",
@@ -3488,7 +3487,6 @@
  "{name} turns to stone for {n} rounds.": "Naging bato si {name} sa loob ng {n} round.",
  "{name} wakes from hibernation.": "Nagising si {name} mula sa paghihimbing.",
  "{name} was promoted to {v2}!{v3}": "Na-promote si {name} bilang {v2}!{v3}",
- "{name} · Map reward": "{name} · Gantimpala ng mapa",
  "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}": "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}",
  "{name}'s row": "Hanay ni {name}",
  "{name}'s {skill} fades.": "Naglaho ang {skill} ni {name}.",
@@ -4087,5 +4085,9 @@
  "Sunfeather War-band": "Pangkat-mandirigma ng Sunfeather",
  "The Bloom sings for us today. Come and hear it.": "Umaawit ang Pamumukadkad para sa amin ngayon. Halika at pakinggan.",
  "Admin only: players never see this map.": "Admin lang: hindi kailanman nakikita ng mga manlalaro ang mapang ito.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Laban-pagsubok ng admin: libre, at walang ibinibigay."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Laban-pagsubok ng admin: libre, at walang ibinibigay.",
+ "A hidden reward card": "Nakatagong card na gantimpala",
+ "A card you haven't found yet. It's yours the first time you win this fight.": "Card na hindi mo pa nahahanap. Iyo ito sa unang beses na manalo ka sa laban na ito.",
+ "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Card na hindi mo pa nahahanap. Manalo sa laban na ito sa rank na nakalagay sa card para makuha ito.",
+ "{n} card{s} to claim": "{n} card na puwedeng kunin"
 }

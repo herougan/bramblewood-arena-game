@@ -979,7 +979,6 @@
  "Faction card": "Fraktionskarte",
  "Faction cards +{n}": "Fraktionskarten +{n}",
  "Faction pack": "Fraktionspack",
- "Faction reward: {names}": "Fraktionsbelohnung: {names}",
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "Fraktionsbelohnungen: durch Gefechtsfortschritt und Erfolge verdient, nie aus Packs",
  "Factions": "Fraktionen",
  "Far enemies read ?": "Ferne Feinde zeigen ?",
@@ -3486,7 +3485,6 @@
  "{name} turns to stone for {n} rounds.": "{name} wird {n} Runden zu Stein.",
  "{name} wakes from hibernation.": "{name} erwacht aus dem Winterschlaf.",
  "{name} was promoted to {v2}!{v3}": "{name} wurde zu {v2} befördert!{v3}",
- "{name} · Map reward": "{name} · Kartenbelohnung",
  "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}": "{name} — {v2} · 🏰 {hqHp} LP{v4}{v5}",
  "{name}'s row": "Reihe von {name}",
  "{name}'s {skill} fades.": "{skill} von {name} erlischt.",
@@ -4086,5 +4084,9 @@
  "Sunfeather War-band": "Sonnenfeder-Kriegertrupp",
  "The Bloom sings for us today. Come and hear it.": "Die Blüte singt heute für uns. Komm und hör sie dir an.",
  "Admin only: players never see this map.": "Nur für Admins: Spieler sehen diese Karte nie.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Admin-Testkampf: kostenlos, und er bringt nichts ein."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Admin-Testkampf: kostenlos, und er bringt nichts ein.",
+ "A hidden reward card": "Eine verborgene Belohnungskarte",
+ "A card you haven't found yet. It's yours the first time you win this fight.": "Eine Karte, die du noch nicht gefunden hast. Sie gehört dir, sobald du diesen Kampf zum ersten Mal gewinnst.",
+ "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Eine Karte, die du noch nicht gefunden hast. Gewinne diesen Kampf mit dem darauf gezeigten Rang, um sie zu bekommen.",
+ "{n} card{s} to claim": "{n} Karte(n) zum Abholen"
 }

@@ -979,7 +979,6 @@
  "Faction card": "பிரிவு அட்டை",
  "Faction cards +{n}": "பிரிவு அட்டைகள் +{n}",
  "Faction pack": "பிரிவுப் பொதி",
- "Faction reward: {names}": "பிரிவு வெகுமதி: {names}",
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "பிரிவு வெகுமதிகள்: சண்டை முன்னேற்றம் மற்றும் சாதனைகள் மூலம் பெறப்படும், பொதிகளில் வராது",
  "Factions": "பிரிவுகள்",
  "Far enemies read ?": "தொலைவிலுள்ள எதிரிகள் ? எனக் காட்டும்",
@@ -3490,7 +3489,6 @@
  "{name} turns to stone for {n} rounds.": "{name} {n} சுற்றுகளுக்குக் கல்லாகிறது.",
  "{name} wakes from hibernation.": "{name} குளிர்உறக்கத்திலிருந்து எழுகிறது.",
  "{name} was promoted to {v2}!{v3}": "{name} {v2} ஆக உயர்த்தப்பட்டது!{v3}",
- "{name} · Map reward": "{name} · வரைபட வெகுமதி",
  "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}": "{name} — {v2} · 🏰 {hqHp} உயிர்{v4}{v5}",
  "{name}'s row": "{name} வரிசை",
  "{name}'s {skill} fades.": "{name} இன் {skill} மங்குகிறது.",
@@ -4089,5 +4087,9 @@
  "Sunfeather War-band": "சூரியச்சிறகு போர்க்குழு",
  "The Bloom sings for us today. Come and hear it.": "இன்று மலர்ச்சி நமக்காகப் பாடுகிறது. வந்து கேளுங்கள்.",
  "Admin only: players never see this map.": "நிர்வாகிகளுக்கு மட்டும்: வீரர்கள் இந்த வரைபடத்தை ஒருபோதும் பார்ப்பதில்லை.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ நிர்வாகி சோதனைச் சண்டை: இலவசம், எதுவும் தராது."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ நிர்வாகி சோதனைச் சண்டை: இலவசம், எதுவும் தராது.",
+ "A hidden reward card": "மறைக்கப்பட்ட பரிசு அட்டை",
+ "A card you haven't found yet. It's yours the first time you win this fight.": "நீங்கள் இன்னும் கண்டுபிடிக்காத அட்டை. இந்தச் சண்டையை முதல் முறை வென்றால் அது உங்களுடையது.",
+ "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "நீங்கள் இன்னும் கண்டுபிடிக்காத அட்டை. அதில் காட்டப்பட்டுள்ள தரத்தில் இந்தச் சண்டையை வென்றால் அதைப் பெறலாம்.",
+ "{n} card{s} to claim": "பெறக்கூடிய {n} அட்டை(கள்)"
 }
