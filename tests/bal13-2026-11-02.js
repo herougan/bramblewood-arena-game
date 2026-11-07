@@ -33,7 +33,10 @@ ok(set.id === 'ladder' && set.ladder && !set.decks && set.bake && set.byMapId, '
 Object.keys(pro.maps).filter(id => pro.maps[id].map <= 20).forEach(id => { const L = set.ladder[id]; ok(!!L, id + ': has a ladder'); if (!L) return;
   const map = G.CONQUEST_MAPS.find(m => m.id === id), pool = LD.poolOf(gm, map);
   ok(L.decks.length >= 10, `${id}: ${L.decks.length} decks (at least 10)`);
-  L.decks.forEach(d => ok(LD.legal(gm, d.counts, pool), `${id} rank ${d.rank}: 20 cards, the caps, every card in the map-true pool`));
+  // 2026-11-07 (package BAL24, owner BAL21-3): Maps 0-20 hold simulated players' decks ("bal24-sim"): 20 cards from that player's collection
+  // (random pack cards, no map-true filter); tests/bal24-2026-11-07.js checks them in full
+  const sim = L.source === 'bal24-sim', seeds = sim ? Object.values(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal24', 'pools', id + '.json'), 'utf8')).maps)[0].seeds : null;
+  L.decks.forEach(d => ok(sim ? Object.values(d.counts).reduce((t, k) => t + k, 0) === 20 && Object.keys(d.counts).every(c => seeds[d.player].pool.includes(c)) : LD.legal(gm, d.counts, pool), `${id} rank ${d.rank}: 20 cards, the caps, every card in the map-true pool (BAL24: the player's collection)`));
   ok(L.decks.every((d, i) => d.rank === i + 1 && (i === 0 || d.selectWin >= L.decks[i - 1].selectWin)), id + ': ranked weak to strong');
   ok(L.decks[L.decks.length - 1].selectWin > L.decks[0].selectWin, id + ': a spread (rank 10 over rank 1)');
   ok(L.decks.every(d => d.name && gm.D[d.name.lead] && d.counts[d.name.lead] && d.name.tactic && d.title), id + ': every deck has a name from its make-up (lead card in the deck, a tactic word)');

@@ -1,0 +1,1007 @@
+{
+ "about": "Package BAL24: each simulated player's optimised deck at this map and its win rate against the map's road fights (tools/bal24/ladder_sim_2026_11_07.js measure; ladder seeds 5300 + 37g, 8 games a fight, with the player's leader).",
+ "tool": "tools/bal24/ladder_sim_2026_11_07.js 1.0.0 (2026-11-07, BAL24)",
+ "map": {
+  "id": "mp",
+  "num": 2,
+  "name": "Lilypad Reach",
+  "side": true,
+  "arrival": 6
+ },
+ "level": 0,
+ "fights": [
+  "2-A-1",
+  "2-A-2",
+  "2-A-3",
+  "2-A-4",
+  "2-A-5",
+  "2-A-6",
+  "2-A-7"
+ ],
+ "players": [
+  {
+   "player": 1,
+   "seed": "bal24-1",
+   "counts": {
+    "bee-drone": 4,
+    "chipmunk-skirmisher": 1,
+    "cricket-drummer": 1,
+    "drowned-matriarch": 1,
+    "fleetfootd": 4,
+    "forager-ant": 1,
+    "garden-snail": 4,
+    "greyplume-fledgling": 1,
+    "sheep": 1,
+    "water-shrew": 1,
+    "woodcock-lookout": 1
+   },
+   "parts": [
+    [
+     "bee-drone",
+     4,
+     1
+    ],
+    [
+     "chipmunk-skirmisher",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "drowned-matriarch",
+     1,
+     1
+    ],
+    [
+     "fleetfootd",
+     4,
+     1
+    ],
+    [
+     "forager-ant",
+     1,
+     1
+    ],
+    [
+     "garden-snail",
+     4,
+     0
+    ],
+    [
+     "greyplume-fledgling",
+     1,
+     1
+    ],
+    [
+     "sheep",
+     1,
+     0
+    ],
+    [
+     "water-shrew",
+     1,
+     1
+    ],
+    [
+     "woodcock-lookout",
+     1,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 135,
+   "factionCards": 22,
+   "optScore": 0.799,
+   "optBudget": 400,
+   "optFile": "deckopt-map02-mp-bal24-p1.json",
+   "games": 8,
+   "perFight": {
+    "2-A-1": 87.5,
+    "2-A-2": 100,
+    "2-A-3": 100,
+    "2-A-4": 87.5,
+    "2-A-5": 87.5,
+    "2-A-6": 100,
+    "2-A-7": 100
+   },
+   "win": 94.6
+  },
+  {
+   "player": 2,
+   "seed": "bal24-2",
+   "counts": {
+    "bee-drone": 4,
+    "bee-knight": 1,
+    "chipmunk-skirmisher": 1,
+    "cricket-drummer": 1,
+    "fen-mink": 1,
+    "fleetfootd": 4,
+    "garden-snail": 4,
+    "house-cat": 1,
+    "otter-flag-bearer": 1,
+    "shoal-shark": 1,
+    "silver-minnow": 1
+   },
+   "parts": [
+    [
+     "bee-drone",
+     4,
+     1
+    ],
+    [
+     "bee-knight",
+     1,
+     1
+    ],
+    [
+     "chipmunk-skirmisher",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "fen-mink",
+     1,
+     1
+    ],
+    [
+     "fleetfootd",
+     4,
+     1
+    ],
+    [
+     "garden-snail",
+     4,
+     0
+    ],
+    [
+     "house-cat",
+     1,
+     1
+    ],
+    [
+     "otter-flag-bearer",
+     1,
+     1
+    ],
+    [
+     "shoal-shark",
+     1,
+     1
+    ],
+    [
+     "silver-minnow",
+     1,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 134,
+   "factionCards": 22,
+   "optScore": 0.888,
+   "optBudget": 400,
+   "optFile": "deckopt-map02-mp-bal24-p2.json",
+   "games": 8,
+   "perFight": {
+    "2-A-1": 100,
+    "2-A-2": 100,
+    "2-A-3": 100,
+    "2-A-4": 100,
+    "2-A-5": 87.5,
+    "2-A-6": 87.5,
+    "2-A-7": 87.5
+   },
+   "win": 94.6
+  },
+  {
+   "player": 3,
+   "seed": "bal24-3",
+   "counts": {
+    "bee-drone": 4,
+    "bee-forager": 1,
+    "chipmunk-skirmisher": 1,
+    "cricket-drummer": 1,
+    "crossed-eyes": 1,
+    "fleetfootd": 4,
+    "garden-snail": 4,
+    "hush-wing-spy": 1,
+    "peak-condor": 1,
+    "red-billed-chough": 1,
+    "woodcock-lookout": 1
+   },
+   "parts": [
+    [
+     "bee-drone",
+     4,
+     1
+    ],
+    [
+     "bee-forager",
+     1,
+     1
+    ],
+    [
+     "chipmunk-skirmisher",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "crossed-eyes",
+     1,
+     0
+    ],
+    [
+     "fleetfootd",
+     4,
+     1
+    ],
+    [
+     "garden-snail",
+     4,
+     0
+    ],
+    [
+     "hush-wing-spy",
+     1,
+     1
+    ],
+    [
+     "peak-condor",
+     1,
+     1
+    ],
+    [
+     "red-billed-chough",
+     1,
+     1
+    ],
+    [
+     "woodcock-lookout",
+     1,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 137,
+   "factionCards": 24,
+   "optScore": 0.846,
+   "optBudget": 400,
+   "optFile": "deckopt-map02-mp-bal24-p3.json",
+   "games": 8,
+   "perFight": {
+    "2-A-1": 100,
+    "2-A-2": 100,
+    "2-A-3": 100,
+    "2-A-4": 100,
+    "2-A-5": 87.5,
+    "2-A-6": 100,
+    "2-A-7": 87.5
+   },
+   "win": 96.4
+  },
+  {
+   "player": 4,
+   "seed": "bal24-4",
+   "counts": {
+    "alley-cat": 1,
+    "box-turtle": 1,
+    "dolphin-knight": 1,
+    "duck-paddler": 1,
+    "duckling": 1,
+    "fiddler-crab-swarm": 1,
+    "fire-ant-raft": 2,
+    "fleetfootd": 1,
+    "forager-ant": 1,
+    "guppy": 1,
+    "meadow-rabbit": 1,
+    "mist-net-otter": 1,
+    "muskrat-reedgatherer": 1,
+    "pond-algae": 1,
+    "pyrenean-desman": 1,
+    "victoria-regia": 2,
+    "water-shrew": 1,
+    "water-vole": 1
+   },
+   "parts": [
+    [
+     "alley-cat",
+     1,
+     1
+    ],
+    [
+     "box-turtle",
+     1,
+     1
+    ],
+    [
+     "dolphin-knight",
+     1,
+     1
+    ],
+    [
+     "duck-paddler",
+     1,
+     1
+    ],
+    [
+     "duckling",
+     1,
+     0
+    ],
+    [
+     "fiddler-crab-swarm",
+     1,
+     1
+    ],
+    [
+     "fire-ant-raft",
+     2,
+     1
+    ],
+    [
+     "fleetfootd",
+     1,
+     1
+    ],
+    [
+     "forager-ant",
+     1,
+     1
+    ],
+    [
+     "guppy",
+     1,
+     0
+    ],
+    [
+     "meadow-rabbit",
+     1,
+     1
+    ],
+    [
+     "mist-net-otter",
+     1,
+     1
+    ],
+    [
+     "muskrat-reedgatherer",
+     1,
+     1
+    ],
+    [
+     "pond-algae",
+     1,
+     1
+    ],
+    [
+     "pyrenean-desman",
+     1,
+     1
+    ],
+    [
+     "victoria-regia",
+     2,
+     1
+    ],
+    [
+     "water-shrew",
+     1,
+     1
+    ],
+    [
+     "water-vole",
+     1,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 137,
+   "factionCards": 24,
+   "optScore": 0.846,
+   "optBudget": 400,
+   "optFile": "deckopt-map02-mp-bal24-p4.json",
+   "games": 8,
+   "perFight": {
+    "2-A-1": 100,
+    "2-A-2": 100,
+    "2-A-3": 100,
+    "2-A-4": 100,
+    "2-A-5": 100,
+    "2-A-6": 87.5,
+    "2-A-7": 87.5
+   },
+   "win": 96.4
+  },
+  {
+   "player": 5,
+   "seed": "bal24-5",
+   "counts": {
+    "anhinga-spearbird": 1,
+    "bee-drone": 4,
+    "chipmunk-skirmisher": 1,
+    "cottontail": 1,
+    "cricket-drummer": 1,
+    "fleetfootd": 4,
+    "garden-snail": 4,
+    "river-carp": 1,
+    "robin-redbreast": 1,
+    "sheep": 1,
+    "snapstick-turtle": 1
+   },
+   "parts": [
+    [
+     "anhinga-spearbird",
+     1,
+     1
+    ],
+    [
+     "bee-drone",
+     4,
+     1
+    ],
+    [
+     "chipmunk-skirmisher",
+     1,
+     1
+    ],
+    [
+     "cottontail",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "fleetfootd",
+     4,
+     1
+    ],
+    [
+     "garden-snail",
+     4,
+     0
+    ],
+    [
+     "river-carp",
+     1,
+     1
+    ],
+    [
+     "robin-redbreast",
+     1,
+     1
+    ],
+    [
+     "sheep",
+     1,
+     0
+    ],
+    [
+     "snapstick-turtle",
+     1,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 134,
+   "factionCards": 21,
+   "optScore": 0.911,
+   "optBudget": 400,
+   "optFile": "deckopt-map02-mp-bal24-p5.json",
+   "games": 8,
+   "perFight": {
+    "2-A-1": 100,
+    "2-A-2": 100,
+    "2-A-3": 100,
+    "2-A-4": 100,
+    "2-A-5": 100,
+    "2-A-6": 87.5,
+    "2-A-7": 100
+   },
+   "win": 98.2
+  },
+  {
+   "player": 6,
+   "seed": "bal24-6",
+   "counts": {
+    "fiddler-crab-swarm": 3,
+    "gull-thief": 1,
+    "hedgerow-shrew": 4,
+    "open-ocean-hermit-crab": 5,
+    "raven-scout": 3,
+    "robin-redbreast": 4
+   },
+   "parts": [
+    [
+     "fiddler-crab-swarm",
+     3,
+     1
+    ],
+    [
+     "gull-thief",
+     1,
+     1
+    ],
+    [
+     "hedgerow-shrew",
+     4,
+     1
+    ],
+    [
+     "open-ocean-hermit-crab",
+     5,
+     1
+    ],
+    [
+     "raven-scout",
+     3,
+     1
+    ],
+    [
+     "robin-redbreast",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 133,
+   "factionCards": 21,
+   "optScore": 0.851,
+   "optBudget": 400,
+   "optFile": "deckopt-map02-mp-bal24-p6.json",
+   "games": 8,
+   "perFight": {
+    "2-A-1": 75,
+    "2-A-2": 62.5,
+    "2-A-3": 100,
+    "2-A-4": 62.5,
+    "2-A-5": 100,
+    "2-A-6": 75,
+    "2-A-7": 87.5
+   },
+   "win": 80.4
+  },
+  {
+   "player": 7,
+   "seed": "bal24-7",
+   "counts": {
+    "beaver-lumberjack": 1,
+    "bee-sentry": 1,
+    "burrow-rabbit": 1,
+    "cricket-drummer": 1,
+    "meadow-frog": 3,
+    "old-sturgeon": 1,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "pond-duck": 1,
+    "rivergate-recruit": 1,
+    "tunnel-ant": 2,
+    "water-shrew": 1
+   },
+   "parts": [
+    [
+     "beaver-lumberjack",
+     1,
+     1
+    ],
+    [
+     "bee-sentry",
+     1,
+     1
+    ],
+    [
+     "burrow-rabbit",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "meadow-frog",
+     3,
+     0
+    ],
+    [
+     "old-sturgeon",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     4,
+     1
+    ],
+    [
+     "pond-duck",
+     1,
+     1
+    ],
+    [
+     "rivergate-recruit",
+     1,
+     1
+    ],
+    [
+     "tunnel-ant",
+     2,
+     1
+    ],
+    [
+     "water-shrew",
+     1,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 136,
+   "factionCards": 23,
+   "optScore": 0.838,
+   "optBudget": 400,
+   "optFile": "deckopt-map02-mp-bal24-p7.json",
+   "games": 8,
+   "perFight": {
+    "2-A-1": 87.5,
+    "2-A-2": 87.5,
+    "2-A-3": 75,
+    "2-A-4": 75,
+    "2-A-5": 87.5,
+    "2-A-6": 37.5,
+    "2-A-7": 87.5
+   },
+   "win": 76.8
+  },
+  {
+   "player": 8,
+   "seed": "bal24-8",
+   "counts": {
+    "anhinga-spearbird": 1,
+    "bee-drone": 4,
+    "chipmunk-skirmisher": 1,
+    "constrictor-coil": 1,
+    "cricket-drummer": 1,
+    "earthworm": 1,
+    "fleetfootd": 4,
+    "forager-ant": 1,
+    "garden-snail": 4,
+    "nutria-reedcutter": 1,
+    "venomlord-serpent": 1
+   },
+   "parts": [
+    [
+     "anhinga-spearbird",
+     1,
+     1
+    ],
+    [
+     "bee-drone",
+     4,
+     1
+    ],
+    [
+     "chipmunk-skirmisher",
+     1,
+     1
+    ],
+    [
+     "constrictor-coil",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "earthworm",
+     1,
+     0
+    ],
+    [
+     "fleetfootd",
+     4,
+     1
+    ],
+    [
+     "forager-ant",
+     1,
+     1
+    ],
+    [
+     "garden-snail",
+     4,
+     0
+    ],
+    [
+     "nutria-reedcutter",
+     1,
+     1
+    ],
+    [
+     "venomlord-serpent",
+     1,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 135,
+   "factionCards": 22,
+   "optScore": 0.833,
+   "optBudget": 400,
+   "optFile": "deckopt-map02-mp-bal24-p8.json",
+   "games": 8,
+   "perFight": {
+    "2-A-1": 100,
+    "2-A-2": 100,
+    "2-A-3": 100,
+    "2-A-4": 100,
+    "2-A-5": 100,
+    "2-A-6": 100,
+    "2-A-7": 100
+   },
+   "win": 100
+  },
+  {
+   "player": 9,
+   "seed": "bal24-9",
+   "counts": {
+    "alley-cat": 1,
+    "bee-knight": 1,
+    "bee-sentry": 1,
+    "burrow-rabbit": 1,
+    "conch-crawler": 1,
+    "cricket-drummer": 1,
+    "crimson-wing-recruit": 1,
+    "dawn-bellringer": 1,
+    "fiddler-crab-swarm": 1,
+    "field-vole": 1,
+    "gannet-nestweaver": 1,
+    "hawk-arrowkeeper": 1,
+    "hedgerow-shrew": 1,
+    "otter-guard": 1,
+    "peregrine-stooper": 1,
+    "platypus-spur": 1,
+    "raven-scout": 1,
+    "slow-worm": 1,
+    "soldier-ant": 1,
+    "sunthroat-courier": 1
+   },
+   "parts": [
+    [
+     "alley-cat",
+     1,
+     1
+    ],
+    [
+     "bee-knight",
+     1,
+     1
+    ],
+    [
+     "bee-sentry",
+     1,
+     1
+    ],
+    [
+     "burrow-rabbit",
+     1,
+     1
+    ],
+    [
+     "conch-crawler",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "crimson-wing-recruit",
+     1,
+     1
+    ],
+    [
+     "dawn-bellringer",
+     1,
+     1
+    ],
+    [
+     "fiddler-crab-swarm",
+     1,
+     1
+    ],
+    [
+     "field-vole",
+     1,
+     1
+    ],
+    [
+     "gannet-nestweaver",
+     1,
+     1
+    ],
+    [
+     "hawk-arrowkeeper",
+     1,
+     1
+    ],
+    [
+     "hedgerow-shrew",
+     1,
+     1
+    ],
+    [
+     "otter-guard",
+     1,
+     1
+    ],
+    [
+     "peregrine-stooper",
+     1,
+     1
+    ],
+    [
+     "platypus-spur",
+     1,
+     1
+    ],
+    [
+     "raven-scout",
+     1,
+     1
+    ],
+    [
+     "slow-worm",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     1,
+     1
+    ],
+    [
+     "sunthroat-courier",
+     1,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 138,
+   "factionCards": 25,
+   "optScore": 0.827,
+   "optBudget": 400,
+   "optFile": "deckopt-map02-mp-bal24-p9.json",
+   "games": 8,
+   "perFight": {
+    "2-A-1": 100,
+    "2-A-2": 100,
+    "2-A-3": 100,
+    "2-A-4": 87.5,
+    "2-A-5": 100,
+    "2-A-6": 100,
+    "2-A-7": 75
+   },
+   "win": 94.6
+  },
+  {
+   "player": 10,
+   "seed": "bal24-10",
+   "counts": {
+    "bee-drone": 4,
+    "chipmunk-skirmisher": 1,
+    "cricket-drummer": 1,
+    "field-mouse": 1,
+    "fleetfootd": 4,
+    "garden-snail": 4,
+    "marsh-harrier": 1,
+    "owl-sentinel": 1,
+    "pond-algae": 1,
+    "sheep": 1,
+    "swamp-alligator": 1
+   },
+   "parts": [
+    [
+     "bee-drone",
+     4,
+     1
+    ],
+    [
+     "chipmunk-skirmisher",
+     1,
+     1
+    ],
+    [
+     "cricket-drummer",
+     1,
+     1
+    ],
+    [
+     "field-mouse",
+     1,
+     1
+    ],
+    [
+     "fleetfootd",
+     4,
+     1
+    ],
+    [
+     "garden-snail",
+     4,
+     0
+    ],
+    [
+     "marsh-harrier",
+     1,
+     1
+    ],
+    [
+     "owl-sentinel",
+     1,
+     1
+    ],
+    [
+     "pond-algae",
+     1,
+     1
+    ],
+    [
+     "sheep",
+     1,
+     0
+    ],
+    [
+     "swamp-alligator",
+     1,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 137,
+   "factionCards": 24,
+   "optScore": 0.822,
+   "optBudget": 400,
+   "optFile": "deckopt-map02-mp-bal24-p10.json",
+   "games": 8,
+   "perFight": {
+    "2-A-1": 100,
+    "2-A-2": 87.5,
+    "2-A-3": 100,
+    "2-A-4": 100,
+    "2-A-5": 87.5,
+    "2-A-6": 87.5,
+    "2-A-7": 100
+   },
+   "win": 94.6
+  }
+ ],
+ "missing": 0,
+ "measured": "2026-11-07T04:42:17.887Z"
+}

@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package BAL24: simulated reference ladder, PRO marks (owner BAL21-2 / BAL21-3; decision BAL24-1)
+- Admin sees: on a map, a red TOO WEAK pill on N-SK when the Map reference beats one of its PRO / BPRO decks over 85% (2-B, 7, 20-A today), a purple TOO STRONG pill on N-WK when it beats a weak deck under 50% (2, 14-A); in the N-SK / N-WK skirmish details, "PRO decks win X% vs your reference decks", green inside 15-30%, red outside. Players see neither (the panel shows them no balance numbers).
+- The reference ladder (the N-SK / N-WK default "Reference (Random)") for Maps 0-20 and side maps: 10 simulated players a map, each with its own collection from the game's rewards and pack odds, each deck optimised (`tools/bal24/ladder_sim_2026_11_07.js`; data `docs/balance/ref/ref-ladder.json`, pools and measures in `docs/balance/bal24/`). Maps 21-24 unchanged.
+- pro_ease plays WPRO decks (`--kind all`); re-run on Maps 0-20 with the new ladder: `docs/balance/pro-ease-bal24.json` (merged by `tools/bal24/pro_ease_merge_2026_11_07.js`), baked by `assemble_arena.py` (`__BAL24_PRO_MARKS__`). 8 texts in 12 languages. Test: `tests/bal24-2026-11-07.js` (new); `tests/bal13`/`bal21` read a simulated deck's pool from its player's collection.
+
 ## 2026-11-07 Package HUB3 (owner 09:14: hub art wrongly cut out; "you can use a different agent")
 - Players see: nothing in the game. Master hub only: the Cards and Card table art keeps the transparency of cut-out sprites (35 cards, e.g. Cricket Drummer) and shows them on the game's art plate (rarity colour mixed into brown) instead of a baked dark box; small pixel sprites are enlarged crisp, as the game draws them.
 - Maintainers: `python3 tools/hub/build.py` builds and checks the hub in one go (build, guide splice, size/file/tab checks); caches fall back to committed copies (`tools/hub/library-fallback.html`, `tools/hub/guide-snapshot.html`), so any agent can build it; the build is deterministic. Hub section in `docs/workflows/release.md`. Page trimmed from 15.65 to 15.38 MiB (changelog search text 3000 to 1500 chars). Screens: `docs/screens/hub3/`.

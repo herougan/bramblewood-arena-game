@@ -58,6 +58,12 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 15 | No effects or sounds while the tab is out of focus (they pile up and play at once on return) | UI27 |
 | 16 | Editor budget box: "Within budget, B = 13.8 < 16.2 = N"; formula on hover; A/H, B, S symbols; no "skills" word; Base level dropdown (locked) after Rarity; a skill-points row after custom triggers (2.5 + 5.0 + 3.5^2 = ... = S, each skill in its own formula type) | UI27 |
 
+## 11-07: Package BAL24 (on its branch, not released)
+- Done (owner BAL21-3): the reference ladder of Maps 0-20 and their side maps is now 10 simulated players a map: each walks the road with the game's rewards and real pack odds (collections differ by the draws), then `deckopt --mode prog` builds that player's best deck. Tool `tools/bal24/ladder_sim_2026_11_07.js`; spread at K = 10: median SD 6.6 points, SE of the mean 2.1 (max 5.1, Glass Dunes), so 10 is enough. Maps 21-24 keep BAL13's ladder.
+- Done (BAL21-2): Admin's map shows TOO WEAK on 2-B-SK, 7-SK, 20-A-SK (a PRO deck the Map reference beats over 85%) and TOO STRONG on 2-WK, 14-A-WK (a weak deck it beats under 50%); Admin's skirmish details show "PRO decks win X% vs your reference decks", 15-30% band. Data: `docs/balance/pro-ease-bal24.json`.
+- Open: BAL24-1 (the N-WK threshold, 50%). Only 7 of 36 N-SK fights sit in the 15-30% band against the new ladder (most PRO decks win more); 4 of 35 N-WK.
+- Next: the BAL13 summary (`tools/bal13/summary_2026_11_02.js`) on the new ladder; side maps opening late (the Old Bramble at Map 21) get late, strong collections.
+
 ## 11-07: Package HUB3 (on its branch, not released)
 - Done (owner 09:14): the hub builds with one command, `python3 tools/hub/build.py` (any agent; the coordinator still publishes with the Artifact tool); the Cards art keeps sprite transparency on the game's art plate; page 15.38 of 16 MiB.
 - Open: the owner's "wrongly cut-out" was read as the 35 transparent sprites on a dark box; opaque art was checked pixel for pixel and is whole. If another crop was meant, name a card.
