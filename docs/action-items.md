@@ -30,6 +30,16 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Owner calls open: ENG33-1 (Smelly: a / b / c), ENG33-2 (Undead keeps its comeback), ENG33-3 (Thanatosis details), ENG33-4 (budget moves, no re-fit).
 - Next: Smelly once ENG33-1 is answered; Log Wall art.
 
+## 11-07 20:58-22:01: Owner notes
+| # | Item | Package |
+|---|---|---|
+| 1 | Fuse skill variants into one skill with parameters (Almanac number / grant ...); workbook one row per skill with Parameters; card tooltip column | ENG35 (running); tooltip column done |
+| 2 | Workbook: list map cards on Maps | done (tools/export_workbook_2026_11_07.py) |
+| 3 | Map cards window skill tiles: one line emoji + name; hover tooltip with what it does and its parameters (default, stat version, ability version) | ENG35 (running) |
+| 4 | Dropdowns: type a letter to jump to options starting with it (don't split the list) | done |
+| 5 | Combined emoji pips stacked (later emoji ~45% over the earlier) | done |
+| 6 | Resistance / Weakness / Immune choices for every token and status (Venom, Bleed, Sleep, Stun, Freeze, Blind, Daunt ...). Resistance halves it: a status chance becomes half (a 50% one becomes 0%), Venom resistance = half Venom damage | ENG36, after ENG35 (both edit the engine and the editor) |
+
 ## 11-07 18:53-19:11: Owner notes
 | # | Note | Package |
 |---|---|---|
