@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Hemorrhage icon (owner 23:15)
+- Players see: Hemorrhage's icon is 🩸💥 (one blood drop and one impact, stacked) instead of 🩸².
+
 ## 2026-11-07 Log Wall 0/4 (owner 22:13)
 - Players see: Bulwark's Log Walls are 0/4 (were 0/8); Muskrat Lodgekeeper has Bulwark 2 (two walls; was Bulwark 1). `ENG33_DEF.bulwarkWallHp` in `bramblewood-engine.js`, the Bulwark text reads it. Bulwark's price (3.5 a wall, canonical/skill-costs.json) was reasoned for an 0/8 wall and is unchanged: decision for the owner.
 

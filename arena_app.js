@@ -1793,7 +1793,7 @@ Object.assign(SKILL_ICON, {rampart:'🚧', brambleArmor:'🌿🛡️'});
 PASSIVE_DEFS.push({key:'hemorrhage', category:'passive', label:TX('ui.skn-hemorrhage'), kind:'boolean', desc:()=> TX('ui.sk-hemorrhage'), codexNote:TX('ui.sk-hemorrhage-codex')},
   {key:'greaterPoison', category:'passive', label:TX('ui.skn-greater-poison'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-greater-poison', {n: numOr(v, 1)}), codexNote:TX('ui.sk-greater-poison-codex')},
   {key:'shoreUp', category:'passive', label:TX('ui.skn-shore-up'), kind:'boolean', desc:()=> TX('ui.sk-shore-up'), codexNote:TX('ui.sk-shore-up-codex')});
-Object.assign(SKILL_ICON, {hemorrhage:'🩸²', greaterPoison:'💀', shoreUp:'🛡️↔️'});
+Object.assign(SKILL_ICON, {hemorrhage:'🩸💥' /* 2026-11-07 (owner 23:15: "1 blood icon + 1 impact icon together"; stacked by icoParts): was 🩸² */, greaterPoison:'💀', shoreUp:'🛡️↔️'});
 // ==== Package EN5 (2026-10-24, owner 02:59 / 03:12 notes; rules in bramblewood-engine.js, the EN5 block):
 //   Breach N        every hit it lands also deals N to the enemy bramble (owner 02:59 #6; name approved);
 //   Canopy Cover    a ground unit under the trees (a forest map, Old Woods, High Canopy, Undergrowth) dodges 1 in 2 single-target attacks (FLY-1);
