@@ -2,6 +2,21 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package CONTENT16: pack plan, a proposal (owner 09:10; ENG27-9; decisions CONTENT16-1..4)
+- Players see: nothing yet. This is a proposal for which cards each pack holds, and how every card is earned.
+- `canonical/pack-plan.json` (new; schema in `_about`) holds:
+  - the zones, proposed as Maps 0-7 / 8-13 / 14-20 (today 0-6 / 7-13 / 14-20);
+  - each pack's current cards (Pouch 50, Chest 60, Case 58, Mystery 11, Pack 4 24, Otters 26, Hummingbirds 23, shared 6, starting deck 16, Base 43);
+  - 20 basic, zone-themed adds per Map 0-20 pack, each with a reason and in budget at the pack's first map, plus 5 off-theme moves or removals;
+  - the Crimson Wing Drumcaller in the Sunfeather faction list (ENG27-9);
+  - one achievement-only card per achievement (17), the cards the 5% discount would apply to;
+  - a source for each of the 806 live cards, today and proposed.
+- Today's sources: none 370, pack 192, skirmish-unique 108, faction 55, special 26, base 25, starter 16, pack-unique 11, reward 3. Under the proposal: none 292, pack-unique 68, achievement 17. No skirmish-unique card is in a pack, today or proposed.
+- Owner write-up: `docs/pack-plan-2026-11-07.md`.
+- Code:
+  - `tools/content16_pack_plan_2026_11_07.js` (new, re-runnable: it regenerates the current contents and sources from the game and keeps the proposal);
+  - `tools/content16_decisions_2026_11_07.py`;
+  - test `tests/content16-2026-11-07.js` (new).
 ## 2026-11-07 Package UI26 (owner 08:18 notes 1-2)
 - Players see: a unit that can't see in a dark fight is darkened half as much once its shut-eye intro is over (about 5%, was about 10%: FX B shade opacity .14 to .07, art brightness .9 to .95). The brief dark moment while the eyes show is unchanged. The battlefield's own Darkness overlay (plain Darkness: clear centre, .34 then .5 at the edges, masked off around units) is untouched.
 - Finding (note 2): the "blue bar over the eyes" is not an overlay. It is the Open-Ocean Hermit Crab's own art (a teal sea-and-sky horizon strip right behind the crab's eyes) under the darkening; the dark circle on the card's top edge is the Dark-blind pip (UI23 #16, the sunglasses icon, shown on every unit that misses in the dark). The look-B blindfold (`.fxb-fold`) and badge exist only in the FX lab: the game's sight look is fixed at A.
