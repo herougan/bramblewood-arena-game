@@ -72,6 +72,25 @@ async def run(p, url, w, hgt):
     print(f'   {w}: Crepuscular:', json.dumps(ct, ensure_ascii=False)[:500])
     ok('Stat version' in ct and 'day [1, 0]' in ct and 'Ability version' in ct and 'Evasive' in ct, f'{w}: Crepuscular shows its default, stat and ability versions')
     await pg.screenshot(path=os.path.join(OUT, f'mapcards-crepuscular-{w}.png'))
+    # owner 23:26 / 23:30: the editor offers Fire Arrow and Fire Bolt without riders; Balloon Archer keeps its – bramble; Leech has an optional number
+    if w == 1366:
+        await pg.evaluate("document.getElementById('pk1McClose') && document.getElementById('pk1McClose').click()")
+        await pg.evaluate(E("openCardEditor('balloon-archer'); await new Promise(r=> setTimeout(r, 900)); return 1;"))
+        ed = await pg.evaluate("""(()=>{ const opts = [...document.querySelectorAll('#editorOverlay select[data-sk="key"] option')].map(o=> o.value);
+          return {riders: opts.filter(v=> /^(arrow|fireArrow|fireBolt)(Bramble|Poison|Bleed)$/.test(v)).length, fire: opts.includes('fireArrow') && opts.includes('fireBolt'),
+            rows: [...document.querySelectorAll('#editorOverlay select[data-sk="key"]')].map(s=> s.value)}; })()""")
+        print('   editor balloon-archer:', json.dumps(ed)[:300])
+        ok(ed['riders'] == 0 and ed['fire'], 'the editor offers Fire Arrow and Fire Bolt, no rider variants')
+        ok('arrowBramble' not in ed['rows'] and 'arrow' in ed['rows'], 'Balloon Archer shows plain Arrow (its – bramble is a hidden parameter)')
+        saved = await pg.evaluate("(()=>{ const c = readEditorFormIntoCard(); return c.effects; })()")
+        ok(saved.get('arrowBramble') is True and saved.get('arrow') == 2, f'reading the form keeps the hidden rider ({saved})')
+        await pg.evaluate("document.querySelector('#editorOverlay [data-close], #editorOverlay .btn-close, #btnCancel') && document.querySelector('#editorOverlay [data-close], #editorOverlay .btn-close, #btnCancel').click()")
+        await pg.evaluate(E("openCardEditor('vampire-bat'); await new Promise(r=> setTimeout(r, 900)); return 1;"))
+        lf = await pg.evaluate("""(()=>{ const s = [...document.querySelectorAll('#editorOverlay select[data-sk="key"]')].find(s=> s.value === 'sap'); const row = s && s.closest('.skill-row'), inp = row && row.querySelector('[data-sk="val"]');
+          if(!inp) return null; const blank = {value: inp.value, ph: inp.placeholder}; const e0 = readEditorFormIntoCard().effects.sap; inp.value = '3'; const e3 = readEditorFormIntoCard().effects.sap; return {blank, e0, e3}; })()""")
+        print('   editor leech:', json.dumps(lf, ensure_ascii=False))
+        ok(lf and lf['blank']['value'] == '' and 'damage' in lf['blank']['ph'] and lf['e0'] is True and lf['e3'] == 3, 'Leech: a blank number field (plain), 3 saves Leech 3')
+        await pg.screenshot(path=os.path.join(OUT, 'editor-leech-1366.png'))
     ok(not errs, f'{w}: no page errors ({errs[:2]})')
     await b.close()
 

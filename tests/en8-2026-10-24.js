@@ -163,7 +163,7 @@ for(const lv of [0, 1, 2]){
   const codes = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
   keys.forEach(k=>{ const e1 = en(k); ok(e1, `${k} in bramblewood-texts.js`); codes.forEach(c=>{ const pk = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8')); if(e1 && !pk[e1]) ok(false, `${k}: no ${c} translation`); }); });
   ok(/column or beside it/.test(en('ui.sk-rampart') || ''), 'Rampart\'s line names its columns'); void T; }
-{ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), by = Object.fromEntries(cards.map(c=> [c.id, c]));
+{ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')).map(c=> c && require('../bramblewood-skillparams.js').expandDef(c)) /* ENG35 (2026-11-07): fused skills read as their flat keys */, by = Object.fromEntries(cards.map(c=> [c.id, c]));
   const om = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/card-obtain-maps.json'), 'utf8')).maps, pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/map-pools.json'), 'utf8')).maps;
   const C = require(path.join(ROOT, 'tools', 'en8_cards_2026_10_24.js'));
   // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the card's place on its map's MAP list is THEME2's (several are on no list now)

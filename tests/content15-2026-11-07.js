@@ -8,7 +8,7 @@ const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const rd = rel=> fs.readFileSync(path.join(ROOT, rel), 'utf8');
 let fail = 0, checks = 0; const ok = (c, m)=>{ checks++; if(!c){ fail++; console.log('  ✗', m); } };
-const cards = JSON.parse(rd('canonical/cards.json')), byId = {}; cards.forEach(c=> byId[c.id] = c);
+const cards = JSON.parse(rd('canonical/cards.json')).map(c=> c && require('../bramblewood-skillparams.js').expandDef(c)) /* ENG35 (2026-11-07): fused skills read as their flat keys */, byId = {}; cards.forEach(c=> byId[c.id] = c);
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js'));
 const T = SC.make(JSON.parse(rd('canonical/skill-costs.json')));
 const OM = JSON.parse(rd('canonical/card-obtain-maps.json')).maps;

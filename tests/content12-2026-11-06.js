@@ -7,7 +7,7 @@
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const J = f=> JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
-const cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, c]));
+const cards = J('canonical/cards.json').map(c=> c && require('../bramblewood-skillparams.js').expandDef(c)) /* ENG35 (2026-11-07): fused skills read as their flat keys */, by = Object.fromEntries(cards.map(c=> [c.id, c]));
 const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(J('canonical/skill-costs.json'));
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 let fail = 0, pass = 0; const ok = (c, m)=>{ if(c) pass++; else { fail++; console.log('  ✗ ' + m); } };
@@ -19,7 +19,8 @@ ok(plan.cards === 59 && plan.alreadyFolded.length === 9, 'fold plan: 59 rows to 
 const EDITED = new Set(J('docs/balance/content12-cards-2026-11-06.json').rows.map(r=> r.id));
 plan.rows.filter(r=> !EDITED.has(r.id)).forEach(r=>{ const c = by[r.id];
   ok(c && c.attack === r.now[0] && c.health === r.now[1], `fold: ${r.id} is ${r.now.join('/')} (file ${c && c.attack}/${c && c.health})`);
-  ok(c && JSON.stringify(c.effects || {}) === JSON.stringify(r.effects || {}), `fold: ${r.id} effects`); });
+  const srt = o=> JSON.stringify(Object.keys(o || {}).sort().reduce((m, k)=> (m[k] = o[k], m), {})); // ENG35 (2026-11-07): a fused skill comes back flat, its parts after the other keys
+  ok(c && srt(c.effects) === srt(r.effects), `fold: ${r.id} effects`); });
 ok(by['terrier-pup'].effects.guardian === true && by['terrier-pup'].health === 5, 'Terrier Pup 2/5 Guardian (owner 11-03)');
 ok(by['field-mouse'].effects.pickpocket === 1, 'Field Mouse Pickpocket 1 (owner 11-05)');
 ok(!by['driftwood-crab'].effects.delivery && by['driftwood-crab'].effects.crabClaws, 'Driftwood Crab: his On Attacked Lumber, no renamed Delivery');
