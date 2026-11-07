@@ -63,7 +63,8 @@ ok(/PASSIVE_DEFS\.filter\(p=> met\.has\(p\.key\) && p\.label && !p\.retired && !
 ok(/if\(hid\) return open \? `<span class="sbm-chip" title="\$\{escapeAttr\(SKILL_Q_TIP\)\}">\?<\/span>`/.test(src), '1. Skills along the road: a bare "?"');
 ok(/Registry\.skills\(\)\.filter\(sd=> sd\.key !== 'leader' && !sd\.retired && !skillHiddenNow\(sd\.key\)\)/.test(src), '1. no coach tip for a hidden skill');
 ok(/if\(skillHiddenNow\(k\)\) continue; \/\/ 2026-10-15: a keyword still hidden/.test(src), '1. no teaching card for a hidden keyword');
-ok(/try\{ noteMapEnteredForReveal\(mapId\); \}catch\(e\)\{\}/.test(src), '1. starting a Conquest fight notes the map');
+// 2026-11-07: CONTENT13 skips the Drill Grounds' admin test fights (if(!c13Test)), so the call may carry that guard
+ok(/try\{ (if\(!c13Test\) )?noteMapEnteredForReveal\(mapId\); \}catch\(e\)\{\}/.test(src), '1. starting a Conquest fight notes the map');
 ok(/function tideTipLines\(k\)\{ return \(skillHiddenNow\('tide'\) \? TIDE_TIPS_HIDDEN : TIDE_TIPS\)\[k\]/.test(src) && /ev\.tide==='flow' \? '🌊 Flood: the tide goes in\.' : '🐚 Ebb: the tide goes out\.'/.test(src), '1. the tide pill and the battle log don\'t name Tide while it is hidden'); // 2026-10-15: the log says only the state now
 ok(/phaseGrow: \(\(\)=>\{ const ph = ev\.phase, hid = /.test(src), '1. the battle log has a line for growing with the phase (it printed "phaseGrow" before), neutral while hidden');
 ok(/\.skill-q\{display:inline-grid;/.test(tpl), '1. the "?" chip is styled');

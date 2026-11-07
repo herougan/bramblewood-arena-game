@@ -143,7 +143,7 @@ ok(eng.indexOf('en20WaterDrain(players, sideOf, events);') > 0 && eng.indexOf('e
 ok(/Wetness is lost 1 per turn/.test(JSON.stringify(J('docs/decisions.json').items.find(x=> x.id === 'ENG20-1'))), '9: ENG20-1 carries the owner\'s quote');
 // ---- decisions, docs, packs ---------------------------------------------------------------------------------------------
 { const D = J('docs/decisions.json'), ids = D.items.map(x=> x.id); ok(['ENG22-1', 'ENG22-2'].every(i=> ids.includes(i)), '8: decisions ENG22-1 / ENG22-2 filed'); }
-ok(/ENG22/.test(R('docs/project-state.md')) && /Delivery/.test(R('docs/effects-catalogue.md')) && /ENG22/.test(R('docs/CHANGELOG.md').slice(0, 6000)), '8: project-state, effects-catalogue and the CHANGELOG carry ENG22');
+ok(/ENG22/.test(R('docs/project-state.md')) && /Delivery/.test(R('docs/effects-catalogue.md')) && /ENG22/.test(R('docs/CHANGELOG.md')) /* 2026-11-07: any position; later packages' entries pushed it past the first 6,000 characters */, '8: project-state, effects-catalogue and the CHANGELOG carry ENG22');
 { const miss = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].filter(c=>{ const p = J('lang/' + c + '.json'); return !['Build', 'Fortify (Armor 1), while it lives' /* ENG24 (ENG22-2 b); ENG27 brackets */, 'Delivery { {res} x{n} }', 'Riled', TXT['ui.e22-guardian']].every(k=> p[k]); });
   ok(!miss.length, `8: the new texts in the 12 packs (${miss})`); }
 console.log(`eng22: ${fail ? fail + ' failure(s)' : 'all passed'} (${n} checks)`);
