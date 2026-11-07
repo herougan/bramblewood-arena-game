@@ -1861,6 +1861,10 @@
   @media (max-width:699px){ .terrain-banner > b{font-size:16px;} .terrain-banner span{font-size:12.5px;} }
   @media (prefers-reduced-motion: reduce){ .battlefield.volcanic::after{animation:none;} .terrain-banner{animation:none;} }
   /* In-page select menus (2026-10-12): replaces the browser's own <select> popup on mouse devices */
+  /* 2026-11-07 (owner 21:59): combined emoji icons overlap, the later part about 44% over the earlier one (iconHTML, icoParts) */
+  .ico.ico-stack[data-ik], .card-tile .ico.ico-stack[data-ik]{display:inline-flex !important; height:auto !important; align-items:center; white-space:nowrap; width:auto !important; max-width:none !important}
+  .ico-stack > .ico-part{display:inline-block; position:relative; line-height:1}
+  .ico-stack > .ico-part + .ico-part{margin-left:-0.8em} /* the picture box is about 1.24em wide with transparent edges: -0.8em puts about 45% of the drawn glyph over the one before */
   .bw-sel-menu{position:fixed; z-index:20000; overflow:auto; padding:5px; border-radius:12px; background:var(--surface, #fff8e6); color:var(--ink, #2c3320); border:1px solid var(--surface-border, #c9b483); box-shadow:0 12px 30px rgba(0,0,0,.3); display:flex; flex-direction:column; gap:1px; font-family:'Nunito', system-ui, sans-serif; font-size:13.5px;}
   .bw-sel-opt{all:unset; box-sizing:border-box; display:flex; gap:8px; align-items:center; padding:6px 12px 6px 8px; border-radius:8px; cursor:pointer; white-space:nowrap;}
   .bw-sel-opt.in-group{padding-left:18px;}

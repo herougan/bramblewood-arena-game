@@ -365,6 +365,10 @@ const EMOJI_NUDGE = {'🐢':[0, -0.15], '💠':[0, -0.05], '🌊':[0, -0.05]};
 function emojiNudgeStyle(fb){
   try{ const n = EMOJI_NUDGE[String(fb).replace(/️/g, '')]; if(!n || typeof EmojiStyle === 'undefined' || !EmojiStyle || EmojiStyle.active() !== 'fluent') return ''; return ` style="--enx:${n[0]}em;--eny:${n[1]}em"`; }catch(e){ return ''; }
 }
+// 2026-11-07 (owner 21:59): the emoji of a combined icon, one per picture (a variation selector or joiner stays with its emoji).
+const ICO_SEG = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter(undefined, {granularity:'grapheme'}) : null;
+function icoParts(s){ s = String(s || ''); if(!ICO_SEG || s.length < 2) return [s]; const g = [...ICO_SEG.segment(s)].map(x=> x.segment);
+  return g.length > 1 && g.every(x=> /\p{Extended_Pictographic}/u.test(x)) ? g : [s]; }
 function iconHTML(key, fallbackEmoji, opts){
   opts = opts || {};
   const k = String(key == null ? '' : key).toLowerCase().replace(/[^a-z0-9_-]/g, '');
@@ -375,7 +379,13 @@ function iconHTML(key, fallbackEmoji, opts){
     if(art.html) return art.html;
   }
   const nz = emojiNudgeStyle(fb); // UI31 (2026-11-07)
-  return `<span class="${cls}${nz ? ' ico-nudge' : ''}" data-ik="${k}"${tip}${nz}>${typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(fb) : fb}</span>`; // 2026-10-17: in the chosen emoji set
+  const em = g=> typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(g) : g;
+  // 2026-11-07 (owner 21:59: "poison barb's and other 'combine emoji' skill pips should be closer together, almost stacked. Like 40+% of the
+  // poison symbol over top the cactus symbol"): an icon of two or more emoji (🌵☠️, ⚔⚔, 🔥🏹 ...) is drawn as overlapping parts, each later one
+  // pulled about 44% over the one before (.ico-stack in arena_template.html), so it reads as one badge.
+  const parts = icoParts(fb);
+  if(parts.length > 1) return `<span class="${cls} ico-stack${nz ? ' ico-nudge' : ''}" data-ik="${k}"${tip}${nz}>${parts.map(g=> `<span class="ico-part">${em(g)}</span>`).join('')}</span>`;
+  return `<span class="${cls}${nz ? ' ico-nudge' : ''}" data-ik="${k}"${tip}${nz}>${em(fb)}</span>`; // 2026-10-17: in the chosen emoji set
 }
 // 2026-10-18 (package I3): the page translator matches whole text nodes, so a sentence that is cut up before it reaches the page
 // (keyword marks in card ability lines, emoji turned into pictures in a block of HTML) is translated here first, while it is

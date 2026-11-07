@@ -1861,6 +1861,10 @@
   @media (max-width:699px){ .terrain-banner > b{font-size:16px;} .terrain-banner span{font-size:12.5px;} }
   @media (prefers-reduced-motion: reduce){ .battlefield.volcanic::after{animation:none;} .terrain-banner{animation:none;} }
   /* In-page select menus (2026-10-12): replaces the browser's own <select> popup on mouse devices */
+  /* 2026-11-07 (owner 21:59): combined emoji icons overlap, the later part about 44% over the earlier one (iconHTML, icoParts) */
+  .ico.ico-stack[data-ik], .card-tile .ico.ico-stack[data-ik]{display:inline-flex !important; height:auto !important; align-items:center; white-space:nowrap; width:auto !important; max-width:none !important}
+  .ico-stack > .ico-part{display:inline-block; position:relative; line-height:1}
+  .ico-stack > .ico-part + .ico-part{margin-left:-0.8em} /* the picture box is about 1.24em wide with transparent edges: -0.8em puts about 45% of the drawn glyph over the one before */
   .bw-sel-menu{position:fixed; z-index:20000; overflow:auto; padding:5px; border-radius:12px; background:var(--surface, #fff8e6); color:var(--ink, #2c3320); border:1px solid var(--surface-border, #c9b483); box-shadow:0 12px 30px rgba(0,0,0,.3); display:flex; flex-direction:column; gap:1px; font-family:'Nunito', system-ui, sans-serif; font-size:13.5px;}
   .bw-sel-opt{all:unset; box-sizing:border-box; display:flex; gap:8px; align-items:center; padding:6px 12px 6px 8px; border-radius:8px; cursor:pointer; white-space:nowrap;}
   .bw-sel-opt.in-group{padding-left:18px;}
@@ -50903,6 +50907,10 @@ const EMOJI_NUDGE = {'🐢':[0, -0.15], '💠':[0, -0.05], '🌊':[0, -0.05]};
 function emojiNudgeStyle(fb){
   try{ const n = EMOJI_NUDGE[String(fb).replace(/️/g, '')]; if(!n || typeof EmojiStyle === 'undefined' || !EmojiStyle || EmojiStyle.active() !== 'fluent') return ''; return ` style="--enx:${n[0]}em;--eny:${n[1]}em"`; }catch(e){ return ''; }
 }
+// 2026-11-07 (owner 21:59): the emoji of a combined icon, one per picture (a variation selector or joiner stays with its emoji).
+const ICO_SEG = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter(undefined, {granularity:'grapheme'}) : null;
+function icoParts(s){ s = String(s || ''); if(!ICO_SEG || s.length < 2) return [s]; const g = [...ICO_SEG.segment(s)].map(x=> x.segment);
+  return g.length > 1 && g.every(x=> /\p{Extended_Pictographic}/u.test(x)) ? g : [s]; }
 function iconHTML(key, fallbackEmoji, opts){
   opts = opts || {};
   const k = String(key == null ? '' : key).toLowerCase().replace(/[^a-z0-9_-]/g, '');
@@ -50913,7 +50921,13 @@ function iconHTML(key, fallbackEmoji, opts){
     if(art.html) return art.html;
   }
   const nz = emojiNudgeStyle(fb); // UI31 (2026-11-07)
-  return `<span class="${cls}${nz ? ' ico-nudge' : ''}" data-ik="${k}"${tip}${nz}>${typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(fb) : fb}</span>`; // 2026-10-17: in the chosen emoji set
+  const em = g=> typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(g) : g;
+  // 2026-11-07 (owner 21:59: "poison barb's and other 'combine emoji' skill pips should be closer together, almost stacked. Like 40+% of the
+  // poison symbol over top the cactus symbol"): an icon of two or more emoji (🌵☠️, ⚔⚔, 🔥🏹 ...) is drawn as overlapping parts, each later one
+  // pulled about 44% over the one before (.ico-stack in arena_template.html), so it reads as one badge.
+  const parts = icoParts(fb);
+  if(parts.length > 1) return `<span class="${cls} ico-stack${nz ? ' ico-nudge' : ''}" data-ik="${k}"${tip}${nz}>${parts.map(g=> `<span class="ico-part">${em(g)}</span>`).join('')}</span>`;
+  return `<span class="${cls}${nz ? ' ico-nudge' : ''}" data-ik="${k}"${tip}${nz}>${em(fb)}</span>`; // 2026-10-17: in the chosen emoji set
 }
 // 2026-10-18 (package I3): the page translator matches whole text nodes, so a sentence that is cut up before it reaches the page
 // (keyword marks in card ability lines, emoji turned into pictures in a block of HTML) is translated here first, while it is
@@ -54502,7 +54516,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '155b1085bcb2', BUILD_CARD_HASH = 'dac92f68a4a4b12eae3a019eb7b63a91a48b83776fcef7fbd30244dd863d0b42';
+const BUILD_ID = '4af8c9c27621', BUILD_CARD_HASH = 'dac92f68a4a4b12eae3a019eb7b63a91a48b83776fcef7fbd30244dd863d0b42';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;

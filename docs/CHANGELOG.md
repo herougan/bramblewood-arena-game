@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Stacked combined icons (owner 21:59)
+- Players see: a skill icon made of two or more emoji (Poison Barbs 🌵☠️, Twin Strike ⚔⚔, Fire Arrow 🔥🏹, Timbered 🪵🪵 ...) is drawn as one badge, the later emoji about 45% over the earlier one, on pips and wherever `iconHTML` draws it. `icoParts` / `.ico-stack`; test `tests/stack-icons-2026-11-07.js`.
+
 ## 2026-11-07 Dropdown type-ahead (owner 21:15)
 - Players and Admin: in any in-page dropdown (the card editor's skill picker included), typing a letter jumps to the next option whose name starts with it (leading emoji skipped); the same letter again cycles, a quick run of letters ("noc") narrows to a prefix, Enter picks. The list is not split. `inPageSelects` in `arena_app.js`; test `tests/typeahead-2026-11-07.js`.
 - Release checks for this batch: card-matrix golden updated (the file was stale on matchup names; 663 changed results from this batch's engine changes).

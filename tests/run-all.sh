@@ -373,3 +373,4 @@ run node tests/ui30-2026-11-07.js   # 2026-11-07 (package UI30, owner 09:47): on
 run node tests/ui31-2026-11-07.js   # 2026-11-07 (package UI31, owner 10:25): Daunt says it triggers on every hit, EMOJI_NUDGE pip table, Shell turtle pop-up, frost once / reverse / short fade, gold ? on higher-level skill tiles
 run node tests/ui32-2026-11-07.js   # 2026-11-07 (package UI32, owner 18:53-19:11): field lines in the battle log, Venom-only float, Venom tooltip, hover counters, Power "edited since rated" marker, Map cards tile + skills refresh, three skill groups
 run node tests/typeahead-2026-11-07.js   # 2026-11-07 (owner 21:15): type a letter in a dropdown to jump to the options starting with it
+run node tests/stack-icons-2026-11-07.js   # 2026-11-07 (owner 21:59): combined emoji icons overlap (🌵☠️, ⚔⚔ ...)
