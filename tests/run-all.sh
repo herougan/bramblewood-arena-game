@@ -375,3 +375,4 @@ run node tests/ui32-2026-11-07.js   # 2026-11-07 (package UI32, owner 18:53-19:1
 run node tests/typeahead-2026-11-07.js   # 2026-11-07 (owner 21:15): type a letter in a dropdown to jump to the options starting with it
 run node tests/stack-icons-2026-11-07.js   # 2026-11-07 (owner 21:59): combined emoji icons overlap (🌵☠️, ⚔⚔ ...)
 run node tests/ui33-2026-11-07.js   # 2026-11-07 (package UI33, owner 23:05): the Codex page turn is a full turn: two-face leaf (old page to the slice, new page opens out), both ways, reduced-motion cross-fade, hidden tab, fast clicks
+run node tests/content17-2026-11-07.js   # 2026-11-07 (package CONTENT17, owner 23:55): Claude New picks per map of Maps 0-20 (<=15, theme groups, melee/ranged, a ranged pick on every map), the 20 new cards (budget, on no list, 12 packs, art prompts), the Map cards window's theme headings, the Maps 21+ armed-creatures note

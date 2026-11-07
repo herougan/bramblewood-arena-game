@@ -33522,12 +33522,23 @@ function ui22McClaudeNew(mapId, onLists, ok, defs){
   Object.keys(CLAUDE_NEW.skillrec || {}).filter(l=> labels.has(l)).forEach(l=> CLAUDE_NEW.skillrec[l].forEach(e=> take(e.id, e.why)));
   return out;
 }
+// 2026-11-07 (package CONTENT17, owner 23:55: "More Claude recommendations per map (maybe up to 15 per map), in case I need to switch out themes"): this map's own
+// theme groups (canonical/claude-new-cards.json content17: the current theme first, then alternatives), at most 15 cards, each under a small theme heading,
+// after THEME5's and SKILLREC1's picks (a card shown there is not repeated). A ranged pick wears a 🏹 (canonical/skill-delivery.json); a new card (on no list,
+// awaiting a map) says so in its pill.
+function c17McGroups(mapId, onLists, ok, defs, seen){
+  const e = (CLAUDE_NEW.content17 || {})[mapId]; let left = 15;
+  return ((e && e.groups) || []).map(g=> ({theme: g.theme, current: !!g.current, picks: (g.picks || []).filter(p=>{ if(!p || left <= 0 || seen.has(p.id) || onLists.has(p.id) || !defs[p.id] || !ok(p.id)) return false; seen.add(p.id); left--; return true; })})).filter(g=> g.picks.length);
+}
 function ui22McClaudeNewHTML(mapId, defs, ok, onLists){
-  const list = ui22McClaudeNew(mapId, onLists, ok, defs);
-  if(!list.length) return '';
+  const list = ui22McClaudeNew(mapId, onLists, ok, defs), groups = c17McGroups(mapId, onLists, ok, defs, new Set(list.map(e=> e.id)));
+  if(!list.length && !groups.length) return '';
   const pill = TX('ui.ui22-claude-new'), tip = TX('ui.ui22-claude-new-tip');
-  const tiles = list.map(e=> `<span class="ui22-rw is-claude" data-ui22-claude-new="${escapeAttr(e.id)}" title="${escapeAttr(e.why || '')}">${vis4MapCardTilesHTML([e.id], defs, {packs: true, power: true})}<b class="ui22-pill" title="${escapeAttr(tip)}">${escapeHtml(pill)}</b></span>`).join('');
-  return `<section class="pk1-mc-sec rv2-panel ui22-claude" id="ui22McClaude"><h3>${escapeHtml(TX('ui.ui22-claude-title'))} <small>${list.length}</small></h3><p class="panel-sub">${escapeHtml(tip)}</p><div class="vis4-mc-row ui22-row">${tiles}</div></section>`;
+  const tile = e=>{ const rng = e.delivery === 'ranged', dl = rng ? TX('ui.c17-ranged') : e.delivery === 'melee' ? TX('ui.c17-melee') : '';
+    return `<span class="ui22-rw is-claude${rng ? ' is-c17-ranged' : ''}" data-ui22-claude-new="${escapeAttr(e.id)}" title="${escapeAttr((e.why || '') + (dl ? ' (' + dl + ')' : ''))}">${vis4MapCardTilesHTML([e.id], defs, {packs: true, power: true})}<b class="ui22-pill${e.source === 'new' ? ' is-c17-new' : ''}" title="${escapeAttr(tip)}">${escapeHtml(e.source === 'new' ? TX('ui.c17-new-card') : pill)}</b>${rng ? `<b class="c17-rng" title="${escapeAttr(dl)}" aria-label="${escapeAttr(dl)}">🏹</b>` : ''}</span>`; };
+  const n = list.length + groups.reduce((a, g)=> a + g.picks.length, 0);
+  const rows = (list.length ? `<div class="vis4-mc-row ui22-row">${list.map(tile).join('')}</div>` : '') + groups.map(g=> `<h4 class="c17-theme${g.current ? ' is-current' : ''}" data-c17-theme="${escapeAttr(g.theme)}">${escapeHtml(g.theme)} <small>${g.picks.length}</small></h4><div class="vis4-mc-row ui22-row">${g.picks.map(tile).join('')}</div>`).join('');
+  return `<section class="pk1-mc-sec rv2-panel ui22-claude" id="ui22McClaude"><h3>${escapeHtml(TX('ui.ui22-claude-title'))} <small>${n}</small></h3><p class="panel-sub">${escapeHtml(tip)}</p>${rows}</section>`;
 }
 // UI22_MC:END
 // UI21_KW:START

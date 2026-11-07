@@ -4228,5 +4228,8 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "Segnalini veleno: {n}. Subisce ogni turno danni pari ai suoi accumuli, poi ne perde 1.",
  "Main skills": "Abilità principali",
  "Other skills (side maps, specials)": "Altre abilità (mappe secondarie, speciali)",
- "Recommended skills for this map": "Abilità consigliate per questa mappa"
+ "Recommended skills for this map": "Abilità consigliate per questa mappa",
+ "Ranged": "A distanza",
+ "Melee": "Mischia",
+ "New card": "Nuova carta"
 }

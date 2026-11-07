@@ -583,5 +583,3298 @@
     "why": "SKILLREC1: Bramble Armor"
    }
   ]
+ },
+ "content17": {
+  "_about": "CONTENT17 (2026-11-07, owner 23:55): up to 15 Claude picks per map and submap of Maps 0-20, grouped by theme (current = the map's theme now; the others are alternatives to swap in). delivery: melee / ranged / none (canonical/skill-delivery.json); source: existing card or new (awaitingSource, on no list). Built by tools/content17_2026_11_07.js.",
+  "m1": {
+   "name": "Bramblewood Outskirts",
+   "groups": [
+    {
+     "theme": "Meadow critters (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "rabbit-kit",
+       "why": "a second, quicker rabbit for the warren",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "field-crow",
+       "why": "a cheap flyer for the fields",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pill-bug",
+       "why": "a small armoured bug beside the ants",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "beetle-grunt",
+       "why": "an armoured beetle grunt",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "ladybird-guard",
+       "why": "a Guardian bug for the meadow",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "clover-butterfly",
+       "why": "a flyer from the clover edge",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Woodland edge scouts",
+     "current": false,
+     "picks": [
+      {
+       "id": "acorn-pelter-squirrel",
+       "why": "new: an early arrow-er from the first trees",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "owl-fletcher",
+       "why": "a night owl that shoots, for the tree-line",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "warren-scout",
+       "why": "a rabbit scout that spots hidden foes",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "bear-cub",
+       "why": "a sturdy cub for the woods",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "beaver-builder",
+       "why": "a builder beside the Lumberjack",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "chipmunk-stockpiler",
+       "why": "a chipmunk that earns Bounty",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Farmyard friends",
+     "current": false,
+     "picks": [
+      {
+       "id": "farm-dog",
+       "why": "a dog friend of both peoples",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "village-miller",
+       "why": "a road-folk miller mouse",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pigeon-peon",
+       "why": "a village pigeon flyer",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mtut": {
+   "name": "Tutorial",
+   "groups": [
+    {
+     "theme": "Teaching cards (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "sparrow-chick",
+       "why": "the plainest flyer to teach Flying",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "rabbit-kit",
+       "why": "teaches Evasive",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pill-bug",
+       "why": "teaches Armor",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "beetle-grunt",
+       "why": "a plain armoured body",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "First shots (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "acorn-pelter-squirrel",
+       "why": "new: teaches a shot every upkeep",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "owl-fletcher",
+       "why": "a shot from a flyer",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Late-tutorial bruisers",
+     "current": false,
+     "picks": [
+      {
+       "id": "bear-cub",
+       "why": "a bigger body for the hard last fights",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "armored-mastiff",
+       "why": "a slow, heavy dog for the last fights",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mf": {
+   "name": "Thistlewood",
+   "groups": [
+    {
+     "theme": "Hedgerow small folk (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "hazel-coppice",
+       "why": "a hazel stool the dormice tend",
+       "delivery": "none",
+       "source": "existing"
+      },
+      {
+       "id": "red-backed-salamander",
+       "why": "a small regenerating salamander",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "leopard-slug",
+       "why": "a slow, regenerating slug",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "fungus-gnat-cloud",
+       "why": "a swarm for the damp fern",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "jay-pilferer",
+       "why": "a jay that steals Lumber",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Night shift (owls and moths)",
+     "current": false,
+     "picks": [
+      {
+       "id": "owl-fletcher",
+       "why": "a shooting owl for the first big trees",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "night-watchman",
+       "why": "a village owl, stronger at night",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "nightjar-drifter",
+       "why": "a dusk bird",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "moonlit-hare",
+       "why": "a hare that waits for the moon",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "garden-tiger-moth",
+       "why": "a night moth",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Woodland marksmen (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "acorn-pelter-squirrel",
+       "why": "new: acorns from the canopy",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "fox-sharpshot",
+       "why": "a fox that snipes the weakest",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "muntjac-barker",
+       "why": "a deer that barks at what comes close (Sentry)",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mb": {
+   "name": "Pebble Beach",
+   "groups": [
+    {
+     "theme": "Rock pools (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "limpet-clinger",
+       "why": "a limpet with a Shell",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "barnacle-fortress",
+       "why": "an armoured barnacle wall",
+       "delivery": "none",
+       "source": "existing"
+      },
+      {
+       "id": "salvager-hermit-crab",
+       "why": "a crab that salvages",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "beachcomber-sanderling",
+       "why": "a sanderling that finds driftwood",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "oyster-bank",
+       "why": "an oyster bank that shores up",
+       "delivery": "none",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Mudflat waders",
+     "current": false,
+     "picks": [
+      {
+       "id": "shell-drop-gull",
+       "why": "new: drops shells on what is below (ranged)",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "mudflat-godwit",
+       "why": "a wader that gives Tide",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "great-skua",
+       "why": "a skua that makes wounds bleed",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "bloodworm",
+       "why": "a four-jawed worm of the flats",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Tidefolk on the shore",
+     "current": false,
+     "picks": [
+      {
+       "id": "kelpborn-otter",
+       "why": "a Tidefolk otter, not the Legion",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "conger-eel",
+       "why": "a Tidefolk eel with Fork",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "selkie-wavebinder",
+       "why": "half seal, half song",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mc": {
+   "name": "Gannet Cliffs",
+   "groups": [
+    {
+     "theme": "Ledge seabirds (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "arctic-tern",
+       "why": "a tern that fights by day",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "great-skua",
+       "why": "the pirate of the ledges",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "fulmar-spitter",
+       "why": "a fulmar that spits oil (far: The Undercroft only)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "anvil-thrush",
+       "why": "a thrush that cracks shells on stones",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Stone-droppers (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "stonedrop-vulture",
+       "why": "the cliff bird that drops stones",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "eagle-sharpshooter",
+       "why": "an eagle that shoots from the air (far: Tutorial / Map 21)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "shell-drop-gull",
+       "why": "new: shells dropped from the cliff top",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "scree-goat",
+       "why": "a goat that starts a landslide",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Cliff climbers",
+     "current": false,
+     "picks": [
+      {
+       "id": "mountain-goat-climber",
+       "why": "a sure-footed goat (far: Map 21)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "marmot-stonecutter",
+       "why": "a marmot that cuts stone",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pika-hoarder",
+       "why": "a pika in the cracks (far: Map 21)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "mirrorhide-mutant",
+       "why": "a strange goat that mimics",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "m2": {
+   "name": "Sunken Hollow",
+   "groups": [
+    {
+     "theme": "River and pond (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "river-mink",
+       "why": "a mink of the banks",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "signal-crayfish",
+       "why": "an armoured crayfish",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "great-crested-grebe",
+       "why": "a diving grebe",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "diving-bell-spider",
+       "why": "a spider that lives underwater",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "grass-snake",
+       "why": "a snake that plays dead",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "shallows-fry",
+       "why": "cheap fry in the shallows",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Shockers and spitters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "electric-catfish",
+       "why": "a catfish with a Shock Bolt",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "voltaic-eel",
+       "why": "an eel whose lightning jumps",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "archerfish",
+       "why": "spits at insects over the water (far: The Undercroft only)",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Strange pond life",
+     "current": false,
+     "picks": [
+      {
+       "id": "tardigrade",
+       "why": "the water bear that will not die",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "mayfly-dancer",
+       "why": "a mayfly that lives for one fight",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "puddle-skimmer",
+       "why": "a pond skater that runs in the rain",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "elephant-nose-fish",
+       "why": "a fish that senses through the mud",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "lotus-frog",
+       "why": "a frog that blooms",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mw": {
+   "name": "Gatorback Swamp",
+   "groups": [
+    {
+     "theme": "Gators and snakes (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "trident-caiman",
+       "why": "new: a caiman that throws a fork (ranged, Reach)",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "anaconda-coil",
+       "why": "a strangling anaconda",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "cottonmouth-matriarch",
+       "why": "a venom matriarch",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "raft-spider",
+       "why": "a spider that rides the water",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Strange bog animals",
+     "current": false,
+     "picks": [
+      {
+       "id": "matamata",
+       "why": "new: a turtle that looks like dead leaves",
+       "delivery": "melee",
+       "source": "new"
+      },
+      {
+       "id": "greater-siren",
+       "why": "an eel-like salamander",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "hellbender",
+       "why": "a giant salamander",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "giant-water-bug",
+       "why": "a venomous water bug",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "bog-revenant",
+       "why": "a bog turtle that remembers",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Bog shamans and herbalists",
+     "current": false,
+     "picks": [
+      {
+       "id": "peat-smoke-shaman",
+       "why": "new: a toad who heals and cures with peat smoke",
+       "delivery": "melee",
+       "source": "new"
+      },
+      {
+       "id": "marsh-mallow-hare",
+       "why": "a hare that cures Venom with marsh-mallow",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "sphagnum-vole",
+       "why": "a vole that packs wounds with moss",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "mudpuppy",
+       "why": "a regenerating mudpuppy",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Swamp sharpshooters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "archerfish",
+       "why": "spits from the water (far: The Undercroft only)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "reed-dart-bittern",
+       "why": "new: a bittern that shoots from the reeds",
+       "delivery": "ranged",
+       "source": "new"
+      }
+     ]
+    }
+   ]
+  },
+  "m8": {
+   "name": "Sable Swampmire",
+   "groups": [
+    {
+     "theme": "Biters and venom (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "clinging-leech",
+       "why": "a leech parasite",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "mosquito-cloud",
+       "why": "a cloud that makes wounds bleed",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "bog-shrew",
+       "why": "a Gnawed shrew that saps",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "mire-rat",
+       "why": "a Gnawed rat of the pack",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "carrion-beetle",
+       "why": "a beetle that festers wounds",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Strange bog animals",
+     "current": false,
+     "picks": [
+      {
+       "id": "shoebill",
+       "why": "new: the stare that stuns",
+       "delivery": "melee",
+       "source": "new"
+      },
+      {
+       "id": "hoatzin",
+       "why": "new: the stinkbird",
+       "delivery": "melee",
+       "source": "new"
+      },
+      {
+       "id": "the-unremembered",
+       "why": "a heron the bog forgot",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "marsh-wisp",
+       "why": "a newt that glows and remembers",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "marsh-gas-toad",
+       "why": "a toad full of marsh gas",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Bog shamans and herbalists",
+     "current": false,
+     "picks": [
+      {
+       "id": "peat-smoke-shaman",
+       "why": "new: heals and cures with peat smoke",
+       "delivery": "melee",
+       "source": "new"
+      },
+      {
+       "id": "mossmother-newt",
+       "why": "new: a moss-packing healer",
+       "delivery": "melee",
+       "source": "new"
+      },
+      {
+       "id": "sphagnum-vole",
+       "why": "a moss healer vole",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Marsh lights (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "reed-dart-bittern",
+       "why": "new: shoots from the reeds",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "firefly-swarm",
+       "why": "marsh lights that throw a Fire Bolt",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mp": {
+   "name": "Lilypad Reach",
+   "groups": [
+    {
+     "theme": "Ponds and dams (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "dam-keeper-beaver",
+       "why": "a beaver that builds a rampart",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "beaver-builder",
+       "why": "a beaver builder",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "great-crested-grebe",
+       "why": "a diving grebe",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "lotus-frog",
+       "why": "a frog that blooms on the pads",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "puddle-skimmer",
+       "why": "a pond skater",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Territorial ducks",
+     "current": false,
+     "picks": [
+      {
+       "id": "goose-sentry",
+       "why": "a goose on watch (ranged, Sentry)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "pond-paddler",
+       "why": "a pond duck",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "mallard-marauder",
+       "why": "a pouncing mallard",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "migration-leader",
+       "why": "the duck at the front of the V",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "duckling-squadron",
+       "why": "ducklings in a line (far: Map 24)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Reed-bank marksmen (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "mallard-halberdier",
+       "why": "a mallard with a long reach (far: Map 24)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "battlement-heron",
+       "why": "a heron that shoots and keeps watch (far: Map 24)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "electric-catfish",
+       "why": "a catfish with a Shock Bolt",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mu": {
+   "name": "The Morel Hollow",
+   "groups": [
+    {
+     "theme": "Fungal hollow (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "leopard-slug",
+       "why": "a slug among the mushrooms",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "fungus-gnat-cloud",
+       "why": "fungus gnats",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "millipede-hauler",
+       "why": "an armoured millipede",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "springtail-hopper",
+       "why": "a springtail in the leaf litter",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "velvet-worm",
+       "why": "a velvet worm with sticky slime",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Spore shooters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "puffball-bombardier",
+       "why": "a toad that shoots puffball spores",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "firefly-swarm",
+       "why": "fireflies under the oaks",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Rot and recyclers",
+     "current": false,
+     "picks": [
+      {
+       "id": "carrion-beetle",
+       "why": "a festering carrion beetle",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "guano-beetle",
+       "why": "a beetle that eats what falls",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "rot-swollen-carcass",
+       "why": "maggots that burst into more",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "amber-cicada",
+       "why": "a cicada that scares",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Oak hollow night",
+     "current": false,
+     "picks": [
+      {
+       "id": "owl-fletcher",
+       "why": "a shooting owl in the old oaks",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "glowworm-cluster",
+       "why": "glowworms that pray",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "skunk-gasser",
+       "why": "a skunk with poison gas",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mg": {
+   "name": "Smugglers' Grotto",
+   "groups": [
+    {
+     "theme": "Sea cave (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "salvager-hermit-crab",
+       "why": "a crab that salvages wreckage",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "coffer-mimic",
+       "why": "a hermit crab in a chest",
+       "delivery": "none",
+       "source": "existing"
+      },
+      {
+       "id": "sea-hare",
+       "why": "a sea slug with ink",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "moray-ambusher",
+       "why": "an eel in the rocks",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Smugglers (road-folk)",
+     "current": false,
+     "picks": [
+      {
+       "id": "smuggler-slingrat",
+       "why": "new: a smuggler rat with a sling (ranged)",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "pack-rat-looter",
+       "why": "a looting pack rat",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "raccoon-nightcrew",
+       "why": "a raccoon thief crew",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "smoke-raccoon",
+       "why": "a raccoon with a smoke bomb",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "glintsnatch-magpie",
+       "why": "a magpie that disarms",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Grotto Tidefolk",
+     "current": false,
+     "picks": [
+      {
+       "id": "kelpborn-otter",
+       "why": "a Tidefolk otter",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "conger-eel",
+       "why": "the eel in the wreck the Tidefolk sank",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "selkie-wavebinder",
+       "why": "a Tidefolk seal",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "m4": {
+   "name": "Caves & Alcoves",
+   "groups": [
+    {
+     "theme": "Caves and burrows (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "cave-cricket",
+       "why": "an evasive cave cricket",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "cave-pseudoscorpion",
+       "why": "a venomous pseudoscorpion",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "ghost-crayfish",
+       "why": "a blind armoured crayfish",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "subterraneaner",
+       "why": "a mole that ambushes from below",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "gravel-mole",
+       "why": "a Hollow Kin mole that digs gravel",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Storm bats (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "voltwing-bat",
+       "why": "a bat that sparks",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "static-bat",
+       "why": "a bigger spark bat",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "arc-bat",
+       "why": "the strongest spark bat",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "bolas-spider",
+       "why": "a spider that throws a sticky bola",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Hollow Kin deep",
+     "current": false,
+     "picks": [
+      {
+       "id": "gorge-wyrm",
+       "why": "a worm whose quake hits everything (ranged)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "cave-swiftlet",
+       "why": "a swiftlet that hunts by sound",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "guano-beetle",
+       "why": "a guano beetle",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "quarry-troll",
+       "why": "a donkey quarry hand that sees in the dark",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mz": {
+   "name": "The Mycelium Deep",
+   "groups": [
+    {
+     "theme": "Root network (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "velvet-worm",
+       "why": "a velvet worm in the roots",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "millipede-hauler",
+       "why": "a millipede hauler",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "leopard-slug",
+       "why": "a slug on the roots",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "red-backed-salamander",
+       "why": "a salamander under the bark",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Spore shooters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "puffball-bombardier",
+       "why": "a toad that shoots spores",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "firefly-swarm",
+       "why": "fireflies in the dark",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Listening dark",
+     "current": false,
+     "picks": [
+      {
+       "id": "glowworm-cluster",
+       "why": "glowworms on the ceiling",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "cave-cricket",
+       "why": "a cricket that hears you coming",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "tunnel-wyrm",
+       "why": "a worm in the tunnels",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "subterraneaner",
+       "why": "a mole that ambushes",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mk": {
+   "name": "The Kelp Mangroves",
+   "groups": [
+    {
+     "theme": "Mangrove and kelp (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "fishing-cat",
+       "why": "a cat that fishes the roots",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "sea-hare",
+       "why": "a sea slug with ink",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "kelpborn-otter",
+       "why": "a Tidefolk otter",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "ironclaw-fiddler",
+       "why": "a big fiddler crab",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "yellow-bellied-sea-snake",
+       "why": "a venomous sea snake",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Tidefolk raiders",
+     "current": false,
+     "picks": [
+      {
+       "id": "tidefolk-harpooner",
+       "why": "new: a seal that throws a harpoon from below (ranged, Reach)",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "conger-eel",
+       "why": "a Tidefolk eel",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "selkie-wavebinder",
+       "why": "a Tidefolk seal",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Mangrove marksmen (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "archerfish",
+       "why": "the mangrove spitter (far: The Undercroft only)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "voltaic-eel",
+       "why": "an eel whose lightning jumps",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Night bays",
+     "current": false,
+     "picks": [
+      {
+       "id": "night-algae",
+       "why": "algae that light the bay at night",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "bobbit-worm",
+       "why": "a worm that snaps from the sand",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "mudflat-godwit",
+       "why": "a wader of the mud",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "m7": {
+   "name": "Coral Current",
+   "groups": [
+    {
+     "theme": "Reef and ocean (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "lionfish",
+       "why": "a venomous lionfish",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "cone-snail",
+       "why": "a cone snail with a toxin",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "cleaner-wrasse",
+       "why": "a fish that cures",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "crown-of-thorns-star",
+       "why": "a thorny starfish",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "giant-clam",
+       "why": "a giant clam",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pistol-shrimp",
+       "why": "a shrimp whose snap stuns",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "nautiloid",
+       "why": "the oldest hunter of the Current",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Open-water hunters",
+     "current": false,
+     "picks": [
+      {
+       "id": "hammerhead-shark",
+       "why": "a hammerhead",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "bloodscent-shark",
+       "why": "a shark that smells blood",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "sawfish",
+       "why": "a sawfish that breaches",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "leopard-seal",
+       "why": "a predator seal",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "whale-shark",
+       "why": "a gentle giant with armour",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Reef gunners (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "snapgun-shrimp",
+       "why": "new: a pistol shrimp whose bubble hits at range",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "voltaic-eel",
+       "why": "an eel whose lightning jumps",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "m10": {
+   "name": "Eyrie Heights",
+   "groups": [
+    {
+     "theme": "Mountain and sky (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "mountain-goat-climber",
+       "why": "a climbing goat (far: Map 21)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "snow-leopard",
+       "why": "a mountain cat (far: Map 21)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pika-hoarder",
+       "why": "a pika (far: Map 21)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "anvil-thrush",
+       "why": "a thrush that cracks shells",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "weathervane-swift",
+       "why": "a swift that breaks fields",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Stone-droppers (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "stonedrop-vulture",
+       "why": "drops stones from the heights",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "eagle-sharpshooter",
+       "why": "an eagle that shoots (far: Tutorial / Map 21)",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Raptor strike",
+     "current": false,
+     "picks": [
+      {
+       "id": "eagle-diver",
+       "why": "a diving eagle",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "raven-harbinger",
+       "why": "a raven of ill omen",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "great-horned-owl",
+       "why": "a great horned owl",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mj": {
+   "name": "The Sunken Depths",
+   "groups": [
+    {
+     "theme": "Wreck reef (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "moray-ambusher",
+       "why": "an eel in the hull",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "man-o-war",
+       "why": "a drifting man o' war",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "bobbit-worm",
+       "why": "a worm in the sand of the wreck",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "sea-cucumber",
+       "why": "a sea cucumber",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "cone-snail",
+       "why": "a cone snail",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Deep strangers",
+     "current": false,
+     "picks": [
+      {
+       "id": "sperm-whale-elder",
+       "why": "a whale that brings a Tsunami (ranged; Epic, a side map may exceed the road ladder)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "cuttlefish-illusionist",
+       "why": "an evasive cuttlefish",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "greenland-shark",
+       "why": "the oldest shark (far: The Ice Hollow)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "swordfish-spearman",
+       "why": "a swordfish with a Trident (melee) (far: The Undercroft only)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Wreck gunners (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "snapgun-shrimp",
+       "why": "new: a bubble from the hull",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "tidefolk-harpooner",
+       "why": "new: the Tidefolk who sank the ferry",
+       "delivery": "ranged",
+       "source": "new"
+      }
+     ]
+    }
+   ]
+  },
+  "mh": {
+   "name": "The Briar Maze",
+   "groups": [
+    {
+     "theme": "Briar maze (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "briarback-hedgehog",
+       "why": "a hedgehog with bramble armour",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "barkplate-beetle",
+       "why": "a thorny bark beetle",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "porcupine-roller",
+       "why": "a rolling porcupine (far: The Undercroft only)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "hedgehog-scout",
+       "why": "a thorny hedgehog scout (far: The Undercroft only)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "stag-beetle",
+       "why": "a stag beetle that sweeps",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Quill shooters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "quill-flinger-porcupine",
+       "why": "new: a porcupine that flings its quills",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "gatling-hog",
+       "why": "a hedgehog that shoots twice (far: The Old Bramble)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "fox-sharpshot",
+       "why": "a fox that snipes in the maze",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Greenhood Band (thieves)",
+     "current": false,
+     "picks": [
+      {
+       "id": "jay-pilferer",
+       "why": "a jay that steals Lumber",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "glintsnatch-magpie",
+       "why": "a magpie that disarms",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "smoke-raccoon",
+       "why": "a raccoon with a smoke bomb",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "raccoon-nightcrew",
+       "why": "a raccoon crew",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "king-maker",
+       "why": "a fox that hunts kings",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mq": {
+   "name": "Clovermead",
+   "groups": [
+    {
+     "theme": "Clover meadow (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "clover-butterfly",
+       "why": "a clover butterfly",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "rabbit-kit",
+       "why": "a rabbit kit",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "jackrabbit-sprinter",
+       "why": "a quick jackrabbit",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "ladybird-guard",
+       "why": "a ladybird Guardian",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "paper-wasp",
+       "why": "a paper wasp",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Hive and honey",
+     "current": false,
+     "picks": [
+      {
+       "id": "colony",
+       "why": "an ant colony",
+       "delivery": "none",
+       "source": "existing"
+      },
+      {
+       "id": "nest",
+       "why": "a wasp nest",
+       "delivery": "none",
+       "source": "existing"
+      },
+      {
+       "id": "swarm-matriarch",
+       "why": "a bee matriarch",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "bee-drone",
+       "why": "a bee drone",
+       "delivery": "none",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Haymaking village",
+     "current": false,
+     "picks": [
+      {
+       "id": "balloon-archer",
+       "why": "a mouse archer in a balloon (ranged) (far: Map 24)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "village-miller",
+       "why": "a miller mouse",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "farm-dog",
+       "why": "a farm dog",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "buzzed-chipmunk",
+       "why": "a chipmunk on coffee",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mr": {
+   "name": "The Redwood Deep",
+   "groups": [
+    {
+     "theme": "Redwood giants (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "bear-cub",
+       "why": "a bear cub",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "woodland-brawler",
+       "why": "a woodland bear",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "stag-knight",
+       "why": "a great stag",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "antler-skirmisher",
+       "why": "a young stag",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "boar-rampager",
+       "why": "a sweeping boar",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pine-marten",
+       "why": "a pouncing marten",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Treetop shooters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "owl-fletcher",
+       "why": "a shooting owl in the red shade",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "fox-sharpshot",
+       "why": "a sniping fox",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "muntjac-barker",
+       "why": "a barking deer (Sentry)",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Old-growth spirits",
+     "current": false,
+     "picks": [
+      {
+       "id": "heartwood-treant",
+       "why": "a tree that walks",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "lichen-tortoise",
+       "why": "a tortoise grown over with lichen",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "amber-cicada",
+       "why": "a cicada in the amber",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "werebadger",
+       "why": "a badger that changes",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "ms": {
+   "name": "The Sunken Grove",
+   "groups": [
+    {
+     "theme": "Gators and snakes (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "trident-caiman",
+       "why": "new: a caiman that throws a fork (ranged, Reach)",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "anaconda-coil",
+       "why": "a strangling anaconda",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "cottonmouth-matriarch",
+       "why": "a venom matriarch",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Strange bog animals",
+     "current": false,
+     "picks": [
+      {
+       "id": "matamata",
+       "why": "new: a leaf-heap turtle",
+       "delivery": "melee",
+       "source": "new"
+      },
+      {
+       "id": "bog-lungfish",
+       "why": "new: waits out the drought in mud",
+       "delivery": "melee",
+       "source": "new"
+      },
+      {
+       "id": "greater-siren",
+       "why": "an eel-like salamander",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "bog-revenant",
+       "why": "a bog turtle that remembers",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Bog shamans and herbalists",
+     "current": false,
+     "picks": [
+      {
+       "id": "mossmother-newt",
+       "why": "new: a moss-packing healer",
+       "delivery": "melee",
+       "source": "new"
+      },
+      {
+       "id": "peat-smoke-shaman",
+       "why": "new: peat-smoke healing",
+       "delivery": "melee",
+       "source": "new"
+      },
+      {
+       "id": "marsh-mallow-hare",
+       "why": "a marsh-mallow curer",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Drowned-forest shooters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "archerfish",
+       "why": "spits from between the trunks (far: The Undercroft only)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "reed-dart-bittern",
+       "why": "new: shoots from the reeds",
+       "delivery": "ranged",
+       "source": "new"
+      }
+     ]
+    }
+   ]
+  },
+  "m5": {
+   "name": "Savanna Reaches",
+   "groups": [
+    {
+     "theme": "Savanna (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "plains-zebra",
+       "why": "an evasive zebra",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "meerkat-sentry",
+       "why": "a sociable meerkat",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "termite-mound",
+       "why": "an armoured termite mound",
+       "delivery": "none",
+       "source": "existing"
+      },
+      {
+       "id": "termite-forager",
+       "why": "a termite that delivers",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "marching-elephant",
+       "why": "a marching elephant",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "rabid-jackal",
+       "why": "a rabid jackal",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Thrown fruit and stones (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "howdah-archers",
+       "why": "langur archers (far: Maps 23-24)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "bramblewood-macaque",
+       "why": "a macaque that throws bananas",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "stonecracker-vulture",
+       "why": "new: a vulture that drops stones",
+       "delivery": "ranged",
+       "source": "new"
+      }
+     ]
+    },
+    {
+     "theme": "Grass-fire hunters",
+     "current": false,
+     "picks": [
+      {
+       "id": "fire-hawk",
+       "why": "a kite that spreads fire",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "mongoose-duelist",
+       "why": "a mongoose that defies",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "marula-monkey",
+       "why": "a monkey on fermented fruit",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "ml": {
+   "name": "The Long Grass",
+   "groups": [
+    {
+     "theme": "Farm country (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "farm-dog",
+       "why": "a farm dog",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "war-hound",
+       "why": "a war hound",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "armored-mastiff",
+       "why": "an armoured mastiff",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "squires-mount",
+       "why": "a riding horse",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "stable-colt",
+       "why": "a colt (far: The Undercroft only)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "warhorse-charger",
+       "why": "a warhorse (far: The Undercroft only)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Village militia marksmen (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "balloon-archer",
+       "why": "a mouse archer in a balloon (far: Map 24)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "goose-sentry",
+       "why": "a goose on watch (Sentry)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "trebuchet-crew",
+       "why": "a beaver siege crew (Volley)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "mallard-halberdier",
+       "why": "a mallard with a long reach (far: Map 24)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "muntjac-barker",
+       "why": "a barking deer (Sentry)",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Hedge and harvest",
+     "current": false,
+     "picks": [
+      {
+       "id": "sworn-shieldbearer",
+       "why": "a stoat sworn to its leader",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "parish-sergeant",
+       "why": "a badger with a banner",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "village-miller",
+       "why": "a miller mouse",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "land-tiller",
+       "why": "a mouse that tills (far: Map 24)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mv": {
+   "name": "The Aerie Vault",
+   "groups": [
+    {
+     "theme": "Old nests (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "weathervane-swift",
+       "why": "a swift on the old nests",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "great-horned-owl",
+       "why": "a great horned owl",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "magpie-collector",
+       "why": "a magpie with a hoard",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Stone-droppers (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "stonedrop-vulture",
+       "why": "drops stones on the nest-raiders",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "eagle-sharpshooter",
+       "why": "an eagle that shoots (far: Tutorial / Map 21)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "owl-fletcher",
+       "why": "a shooting owl",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Nest guardians",
+     "current": false,
+     "picks": [
+      {
+       "id": "snow-owl-sentinel",
+       "why": "a snowy owl sentinel (far: Map 21)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "raven-hexcaller",
+       "why": "a raven that hexes",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "bone-diviner",
+       "why": "a raven that reads bones",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mt": {
+   "name": "The Pinewood Taiga",
+   "groups": [
+    {
+     "theme": "Taiga (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "timber-wolf-pack",
+       "why": "a timber wolf pack",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "wolf-pack-runner",
+       "why": "a mustering wolf",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "trickster-fox",
+       "why": "a trickster fox",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pinecone-sapper",
+       "why": "a pangolin that explodes like a pinecone",
+       "delivery": "none",
+       "source": "existing"
+      },
+      {
+       "id": "frostmoon-howler",
+       "why": "a howling wolf (far: The Undercroft only)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Pine marksmen (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "pinecone-crossbill",
+       "why": "new: drops pinecones on wolves",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "owl-fletcher",
+       "why": "a shooting owl in the pines",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "snow-bunting-archer",
+       "why": "a bunting with Ice Arrow from the snow edge",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Bears and elk",
+     "current": false,
+     "picks": [
+      {
+       "id": "bear-cub",
+       "why": "a bear cub",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "woodland-brawler",
+       "why": "a woodland bear",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "ur-elk",
+       "why": "a huge old elk (far: Map 22)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "musk-ox-calf",
+       "why": "a musk ox calf",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mn": {
+   "name": "The Glimmer Depths",
+   "groups": [
+    {
+     "theme": "Shiny caves (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "geode-scorpion",
+       "why": "a scorpion that crystallises",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "glowworm-cluster",
+       "why": "glowworms",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "coffer-mimic",
+       "why": "a mimic chest",
+       "delivery": "none",
+       "source": "existing"
+      },
+      {
+       "id": "ore-smelter-mole",
+       "why": "a mole that smelts (far: Maps 19-A / 22 / 24)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Storm bats (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "static-bat",
+       "why": "a spark bat",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "arc-bat",
+       "why": "a big spark bat",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "bolas-spider",
+       "why": "a bola-throwing spider",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Collectors",
+     "current": false,
+     "picks": [
+      {
+       "id": "glintsnatch-magpie",
+       "why": "a magpie that snatches",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "magpie-collector",
+       "why": "a magpie collector",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pack-rat-looter",
+       "why": "a looting pack rat",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "m6": {
+   "name": "Wolfsbane Tundra",
+   "groups": [
+    {
+     "theme": "Tundra packs (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "ice-crevasse-wolf",
+       "why": "a crevasse wolf",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "arctic-fox-raider",
+       "why": "an arctic fox raider",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "frostbitten-wolverine",
+       "why": "a frostbiting wolverine",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "tundra-musk-ox",
+       "why": "a thorny musk ox",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "lemming-swarm",
+       "why": "a lemming swarm",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Yeti hunters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "yeti-tracker",
+       "why": "new: the wolverine who reads yeti tracks (Bola)",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "icefletch-fox",
+       "why": "new: ice arrows from the tundra",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "yeti-snarer",
+       "why": "new: the snow leopard with the rope (Lasso)",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "ice-petrel",
+       "why": "a petrel with an Ice Bolt (far: Map 22)",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Sea-ice coast",
+     "current": false,
+     "picks": [
+      {
+       "id": "ringed-seal",
+       "why": "a seal under the ice",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "harp-seal-pup",
+       "why": "a harp seal pup",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "krill-swarm",
+       "why": "krill",
+       "delivery": "none",
+       "source": "existing"
+      },
+      {
+       "id": "musk-ox-matriarch",
+       "why": "a musk ox that shores up the herd",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "arctic-tern",
+       "why": "an arctic tern",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "md": {
+   "name": "The Glass Dunes",
+   "groups": [
+    {
+     "theme": "Glass dunes (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "dune-jackal",
+       "why": "a quick jackal",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "dune-jackal-scout",
+       "why": "an armoured jackal scout",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "glasswing-moth",
+       "why": "a glasswing moth",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "horned-lizard",
+       "why": "a lizard that blinds",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "armadillo-guard",
+       "why": "an armadillo with a shield",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "inland-taipan",
+       "why": "the most venomous snake",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Sand-throwers (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "sand-flinger-antlion",
+       "why": "new: flicks sand down the slope",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "stonecracker-vulture",
+       "why": "new: drops stones",
+       "delivery": "ranged",
+       "source": "new"
+      }
+     ]
+    },
+    {
+     "theme": "Night desert",
+     "current": false,
+     "picks": [
+      {
+       "id": "moon-jerboa",
+       "why": "a jerboa of the full moon",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "glowing-gecko",
+       "why": "a glowing gecko",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pale-oryx",
+       "why": "a pale oryx",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "frillneck-duelist",
+       "why": "a frilled lizard duelist",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "my": {
+   "name": "The Canopy",
+   "groups": [
+    {
+     "theme": "Jungle canopy (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "poison-dart-frog",
+       "why": "a poison dart frog",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "leaf-chameleon",
+       "why": "an invisible chameleon",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "slow-loris",
+       "why": "a slow loris",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "aye-aye-prowler",
+       "why": "an aye-aye",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "chilli-parrot",
+       "why": "a parrot with chilli",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "glasswing-butterfly",
+       "why": "a ghostly glasswing",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Fruit throwers (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "howler-monkey",
+       "why": "a monkey with a bananarang",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "bramblewood-macaque",
+       "why": "a macaque that throws bananas",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "howdah-archers",
+       "why": "langur archers (far: Maps 23-24)",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Drums and stranglers",
+     "current": false,
+     "picks": [
+      {
+       "id": "war-drum-mandrill",
+       "why": "a drumming mandrill",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "strangler-vine",
+       "why": "a strangler vine",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "margay",
+       "why": "a shadow margay",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "gloom-gibbon",
+       "why": "a gibbon in the shade",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "m3": {
+   "name": "Ashen Spurn",
+   "groups": [
+    {
+     "theme": "Volcanic and ash (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "obsidian-lich",
+       "why": "an armoured obsidian lizard",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "sulfur-vent-crab",
+       "why": "a vent crab",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "ashwing-ptarmigan",
+       "why": "a ptarmigan of ash and snow",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "basalt-boar",
+       "why": "a basalt boar (far: The Long Burrow)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "cinder-hornet",
+       "why": "a stunning hornet (far: Map 22)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Yeti and its hunters",
+     "current": false,
+     "picks": [
+      {
+       "id": "yeti-snarer",
+       "why": "new: the snow leopard who snares yeti (Lasso)",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "yeti-tracker",
+       "why": "new: the wolverine tracker (Bola)",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "icefletch-fox",
+       "why": "new: ice arrows",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "glacier-yak",
+       "why": "a yak that freezes (far: Maps 21-22)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Fire-and-ice shooters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "rimefire-salamander",
+       "why": "fire and ice arrows (far: Map 22)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "firefly-swarm",
+       "why": "a firefly Fire Bolt",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "pyroclast-wyrm",
+       "why": "a wyrm with a Fire Arrow",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mpd": {
+   "name": "The Pale Desert",
+   "groups": [
+    {
+     "theme": "Pale desert (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "dune-jackal",
+       "why": "a quick jackal",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pale-oryx",
+       "why": "a pale oryx",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "horned-lizard",
+       "why": "a lizard that blinds",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "meerkat-sentry",
+       "why": "a meerkat sentry",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "glasswing-moth",
+       "why": "a glasswing moth",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Stone and sand throwers (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "stonecracker-vulture",
+       "why": "new: drops stones on the pale sands",
+       "delivery": "ranged",
+       "source": "new"
+      },
+      {
+       "id": "sand-flinger-antlion",
+       "why": "new: flicks sand",
+       "delivery": "ranged",
+       "source": "new"
+      }
+     ]
+    },
+    {
+     "theme": "Venom and sting",
+     "current": false,
+     "picks": [
+      {
+       "id": "inland-taipan",
+       "why": "a taipan",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "geode-scorpion",
+       "why": "a crystal scorpion",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "tarantula-hawk",
+       "why": "a tarantula hawk",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "m11": {
+   "name": "The Sundered Peak",
+   "groups": [
+    {
+     "theme": "Apex volcanic (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "ember-revenant",
+       "why": "an undead ember boar (far: Map 19-A)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "phoenix-fledgling",
+       "why": "a phoenix chick (far: Maps 19-A / 22)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "caldera-snow-leopard",
+       "why": "a caldera snow leopard (far: Map 22)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "basalt-boar",
+       "why": "a basalt boar (far: The Long Burrow)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Fire shooters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "pyroclast-wyrm",
+       "why": "a wyrm with a Fire Arrow",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "firefly-swarm",
+       "why": "a firefly Fire Bolt",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "rimefire-salamander",
+       "why": "fire and ice arrows (far: Map 22)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "stonedrop-vulture",
+       "why": "drops stones from the crown",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Mountain crown",
+     "current": false,
+     "picks": [
+      {
+       "id": "snow-leopard",
+       "why": "a mountain cat (far: Map 21)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "ur-elk",
+       "why": "a huge old elk (far: Map 22)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "glacier-yak",
+       "why": "a freezing yak (far: Maps 21-22)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "me": {
+   "name": "Eye of the Volcano",
+   "groups": [
+    {
+     "theme": "Ash dead (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "ember-revenant",
+       "why": "an undead ember boar (far: Map 19-A)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "pall-wraith",
+       "why": "a raven that casts darkness",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "ash-imp",
+       "why": "an ash imp",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "cinder-imp",
+       "why": "a cinder imp",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Fire shooters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "firefly-swarm",
+       "why": "a firefly Fire Bolt",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "pyroclast-wyrm",
+       "why": "a wyrm with a Fire Arrow",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "The living who need little",
+     "current": false,
+     "picks": [
+      {
+       "id": "cinder-gecko",
+       "why": "a cinder gecko (far: Maps 19-A / 22)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "ashwing-ptarmigan",
+       "why": "an ash ptarmigan",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "sulfur-vent-crab",
+       "why": "a vent crab",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  },
+  "mx": {
+   "name": "Volcano Lair",
+   "groups": [
+    {
+     "theme": "Dragon lair (current)",
+     "current": true,
+     "picks": [
+      {
+       "id": "pyroclast-wyrm",
+       "why": "a young wyrm with a Fire Arrow (ranged)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "obsidian-lich",
+       "why": "an obsidian lizard",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "cinder-hornet",
+       "why": "a stunning hornet (far: Map 22)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Lair shooters (ranged)",
+     "current": false,
+     "picks": [
+      {
+       "id": "firefly-swarm",
+       "why": "a firefly Fire Bolt",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "rimefire-salamander",
+       "why": "fire and ice arrows (far: Map 22)",
+       "delivery": "ranged",
+       "source": "existing"
+      },
+      {
+       "id": "thunder-lizard",
+       "why": "a lizard with Dragon Lightning (Epic; a side map may exceed the road ladder)",
+       "delivery": "ranged",
+       "source": "existing"
+      }
+     ]
+    },
+    {
+     "theme": "Lair guardians",
+     "current": false,
+     "picks": [
+      {
+       "id": "basalt-boar",
+       "why": "a basalt boar (far: The Long Burrow)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "ember-revenant",
+       "why": "an undead ember boar (far: Map 19-A)",
+       "delivery": "melee",
+       "source": "existing"
+      },
+      {
+       "id": "phoenix-fledgling",
+       "why": "a phoenix chick (far: Maps 19-A / 22)",
+       "delivery": "melee",
+       "source": "existing"
+      }
+     ]
+    }
+   ]
+  }
  }
 }

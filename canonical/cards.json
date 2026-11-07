@@ -35792,5 +35792,658 @@
     },
     "numericId": 9199,
     "creatorNote": "2026-11-07 (package CONTENT15, owner 08:54: \"Create a card for both factions that get stronger when the leader is present (like the stoat).\"): the Sunfeather Tribes' Loyal card, after the Sworn Shieldbearer (the stoat). Uncommon, 0 Lumber, Wait 1, 3/4, Flying + Loyal - {+2/+1, Quick} while any leader of its side is on the field (the deck's Leader, a Gladiator leader or a Natural Leader such as the Gold-throat Elder): 5/5 Flying Quick then (lore bible: speed, glass-cannon attackers, an elder leads by voice). 91% of N at Map 0, 86% at Map 5 (its obtain map, like the other faction cards; tools/content12_budget_2026_11_06.js). Faction pool (pack 11, Hummingbird side). Art to draw (docs/art-style-prompts.md)."
+  },
+  {
+    "id": "trident-caiman",
+    "name": "Trident Caiman",
+    "icon": "\ud83d\udc0a",
+    "cost": 1,
+    "wait": 2,
+    "attack": 4,
+    "health": 11,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Swamp",
+      "Reptile"
+    ],
+    "species": [
+      "Reptile"
+    ],
+    "animal": "caiman",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "reach": true,
+      "pierce": 1
+    },
+    "flavor": "It found the fork in a sunken boat and learned to throw it. Then it learned to fetch it back.",
+    "numericId": 9200,
+    "uuid": "8f788cfd-37b3-5d58-83d3-5585d8c798d5",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Gatorback Swamp (Map 5 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 5): S 0.75, N 26.58, 2A + H + S 23.75: 4/11. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "peat-smoke-shaman",
+    "name": "Peat-smoke Shaman",
+    "icon": "\ud83d\udc38",
+    "cost": 1,
+    "wait": 1,
+    "attack": 1,
+    "health": 13,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Swamp",
+      "Frog"
+    ],
+    "species": [
+      "Amphibian"
+    ],
+    "animal": "toad",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "healing": 1,
+      "cure": 1
+    },
+    "flavor": "It hums over a smouldering pot of peat. The smoke smells awful, and the wounds close anyway.",
+    "numericId": 9201,
+    "uuid": "aa88a099-e0ec-5a01-815d-5867551594f5",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Gatorback Swamp (Map 5 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 5): S 3.98, N 22.21, 2A + H + S 19.98: 1/13. Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "matamata",
+    "name": "Matamata",
+    "icon": "\ud83d\udc22",
+    "cost": 1,
+    "wait": 2,
+    "attack": 3,
+    "health": 13,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Swamp",
+      "Turtle"
+    ],
+    "species": [
+      "Reptile"
+    ],
+    "animal": "matamata turtle",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "ambush": 2,
+      "armor": 1
+    },
+    "flavor": "It looks like a heap of dead leaves. Then the heap opens its mouth, and the river goes in.",
+    "numericId": 9202,
+    "uuid": "974a7c2b-b0b7-57b6-bf79-fd40322229a9",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Gatorback Swamp (Map 5 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 5): S 4.57, N 26.58, 2A + H + S 26.57: 3/13. Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "bog-lungfish",
+    "name": "Bog Lungfish",
+    "icon": "\ud83d\udc1f",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 9,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Swamp",
+      "Fish"
+    ],
+    "species": [
+      "Fish"
+    ],
+    "animal": "lungfish",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "regen": 1,
+      "tide": true
+    },
+    "flavor": "When the bog dries up, it wraps itself in mud and waits. It has waited out kings.",
+    "numericId": 9203,
+    "uuid": "309d9e7f-1c53-5568-b2a7-2957d84b1dba",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home The Sunken Grove (Map 5 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 5): S 2.80, N 17.88, 2A + H + S 17.80: 2/9. Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "mossmother-newt",
+    "name": "Mossmother Newt",
+    "icon": "\ud83e\udd8e",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 10,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Swamp",
+      "Newt"
+    ],
+    "species": [
+      "Amphibian"
+    ],
+    "animal": "newt",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "healing": 1
+    },
+    "flavor": "She packs moss into every cut and tells you it was your own fault.",
+    "numericId": 9204,
+    "uuid": "809cf878-adb1-5fae-9707-c0f212c5980d",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home The Sunken Grove (Map 5 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 5): S 3.48, N 17.88, 2A + H + S 16.48: 1/10. Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "reed-dart-bittern",
+    "name": "Reed-dart Bittern",
+    "icon": "\ud83d\udc26",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 5,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Swamp",
+      "Bird"
+    ],
+    "species": [
+      "Bird"
+    ],
+    "animal": "bittern",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "arrow": 1,
+      "stealth": true
+    },
+    "flavor": "It stands as still as a reed. Then one of the reeds flies at you.",
+    "numericId": 9205,
+    "uuid": "189b8c3d-202f-521c-b5e6-cda882a8646f",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Sable Swampmire (Map 6 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 6): S 11.14, N 22.44, 2A + H + S 22.14: 2/5. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "shoebill",
+    "name": "Shoebill",
+    "icon": "\ud83d\udc26",
+    "cost": 1,
+    "wait": 2,
+    "attack": 4,
+    "health": 13,
+    "rarity": "rare",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Swamp",
+      "Bird"
+    ],
+    "species": [
+      "Bird"
+    ],
+    "animal": "shoebill",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "stunOnHit": 1
+    },
+    "flavor": "It can stand and stare for an hour. Nothing in the bog has ever won the staring contest.",
+    "numericId": 9206,
+    "uuid": "0a93bd2d-96bf-5bab-83d4-43b619751a5b",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Sable Swampmire (Map 6 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity rare, map term Map 6): S 2.29, N 27.99, 2A + H + S 27.29: 4/13. Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "hoatzin",
+    "name": "Hoatzin",
+    "icon": "\ud83d\udc26",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 7,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Swamp",
+      "Bird"
+    ],
+    "species": [
+      "Bird"
+    ],
+    "animal": "hoatzin",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "flying": true,
+      "poisonGas": 1
+    },
+    "flavor": "Everything downwind calls it the stinkbird. Its chicks climb with claws on their wings.",
+    "numericId": 9207,
+    "uuid": "b886b3ae-a791-5923-a162-623826c4ce2b",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Sable Swampmire (Map 6 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 6): S 3.10, N 19.29, 2A + H + S 18.57: 2/7. Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "shell-drop-gull",
+    "name": "Shell-drop Gull",
+    "icon": "\ud83d\udd4a\ufe0f",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 7,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Coastal",
+      "Bird"
+    ],
+    "species": [
+      "Bird"
+    ],
+    "animal": "gull",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "flying": true,
+      "arrow": 1
+    },
+    "flavor": "It drops shells on the rocks to crack them. It does not much mind what is under the rocks.",
+    "numericId": 9208,
+    "uuid": "659f2570-2a68-5ec3-bafc-f011de86a6e2",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Pebble Beach (Map 2 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 2): S 4.26, N 17.18, 2A + H + S 16.16: 1/7. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "smuggler-slingrat",
+    "name": "Smuggler Slingrat",
+    "icon": "\ud83d\udc00",
+    "cost": 1,
+    "wait": 1,
+    "attack": 1,
+    "health": 5,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Mouse",
+      "Coastal"
+    ],
+    "species": [
+      "Rodent"
+    ],
+    "animal": "rat",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "arrow": 1,
+      "stealth": true
+    },
+    "flavor": "Sells you the lantern, then shoots it out. Everything has a price, friend, even the dark.",
+    "numericId": 9209,
+    "uuid": "98dec780-8e6a-5404-8fac-33aec85bd382",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Smugglers' Grotto (Map 2 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 2): S 11.14, N 21.50, 2A + H + S 19.14: 1/5. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "tidefolk-harpooner",
+    "name": "Tidefolk Harpooner",
+    "icon": "\ud83e\uddad",
+    "cost": 1,
+    "wait": 2,
+    "attack": 4,
+    "health": 15,
+    "rarity": "rare",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Ocean",
+      "Mangrove"
+    ],
+    "species": [
+      "Pinniped"
+    ],
+    "animal": "grey seal",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "reach": true,
+      "tide": true
+    },
+    "flavor": "The Tidefolk throw from below the surface. The dry ones never see the arm.",
+    "numericId": 9210,
+    "uuid": "07a56e7b-b323-52fd-89d9-e210cf4209b3",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home The Kelp Mangroves (Map 9 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity rare, map term Map 9): S 1.02, N 28.69, 2A + H + S 28.02: 4/15. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "snapgun-shrimp",
+    "name": "Snapgun Shrimp",
+    "icon": "\ud83e\udd90",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 7,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Coral Reef",
+      "Ocean"
+    ],
+    "species": [
+      "Crustacean"
+    ],
+    "animal": "pistol shrimp",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "shockBolt": 1
+    },
+    "flavor": "One snap makes a bubble hotter than a forge. It pops two fish away.",
+    "numericId": 9211,
+    "uuid": "265b54b6-b9a7-5510-9462-218b18f83091",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Coral Current (Map 10 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 10): S 5.76, N 19.05, 2A + H + S 15.76: 1/7. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "quill-flinger-porcupine",
+    "name": "Quill-flinger Porcupine",
+    "icon": "\ud83e\udd94",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 10,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Porcupine"
+    ],
+    "species": [
+      "Rodent"
+    ],
+    "animal": "porcupine",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "arrow": 1,
+      "thorns": 1
+    },
+    "flavor": "Porcupines cannot throw their quills, everyone says. This one never heard.",
+    "numericId": 9212,
+    "uuid": "92d5a55e-0dcb-5de7-94d7-f18cc8f444c3",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home The Briar Maze (Map 12 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 12): S 7.09, N 23.84, 2A + H + S 23.09: 2/10. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "acorn-pelter-squirrel",
+    "name": "Acorn-pelter Squirrel",
+    "icon": "\ud83d\udc3f\ufe0f",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 6,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Chipmunk",
+      "Forest"
+    ],
+    "species": [
+      "Rodent"
+    ],
+    "animal": "red squirrel",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "arrow": 1
+    },
+    "flavor": "It has a whole tree of ammunition and a very good memory for faces.",
+    "numericId": 9213,
+    "uuid": "2d2b63ae-ba6a-5b6a-9e29-43e8e23d8f2c",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Bramblewood Outskirts (Map 0 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 0): S 4.26, N 16.72, 2A + H + S 16.26: 2/6. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "pinecone-crossbill",
+    "name": "Pinecone Crossbill",
+    "icon": "\ud83d\udc26",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 9,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Taiga",
+      "Bird"
+    ],
+    "species": [
+      "Bird"
+    ],
+    "animal": "crossbill",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "flying": true,
+      "arrow": 1
+    },
+    "flavor": "Its crossed beak was made for prising open pinecones. Dropping them on wolves came later.",
+    "numericId": 9214,
+    "uuid": "a3f56a61-9409-57a6-ac6d-e7c9f876ba33",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home The Pinewood Taiga (Map 16 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 16): S 4.26, N 20.45, 2A + H + S 18.54: 1/9. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "yeti-tracker",
+    "name": "Yeti Tracker",
+    "icon": "\ud83e\udda1",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 11,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Tundra"
+    ],
+    "species": [
+      "Mustelid"
+    ],
+    "animal": "wolverine",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "keenEye": true,
+      "bola": 1
+    },
+    "flavor": "It reads a yeti track like a letter: how big, how hungry, how long ago.",
+    "numericId": 9215,
+    "uuid": "7cd554f5-51c8-5097-987c-ae5bfebd0176",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Wolfsbane Tundra (Map 17 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 17): S 6.60, N 25.01, 2A + H + S 23.60: 2/11. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "icefletch-fox",
+    "name": "Icefletch Fox",
+    "icon": "\ud83e\udd8a",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 7,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Tundra",
+      "Fox"
+    ],
+    "species": [
+      "Canid"
+    ],
+    "animal": "arctic fox",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "iceArrow": 1,
+      "evasive": true
+    },
+    "flavor": "Its shafts are icicles snapped from the eaves. They melt away; the cold stays in.",
+    "numericId": 9216,
+    "uuid": "626663f2-2a01-5875-8a05-3ca61e067482",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Wolfsbane Tundra (Map 17 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 17): S 6.57, N 25.01, 2A + H + S 21.91: 2/7. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "yeti-snarer",
+    "name": "Yeti Snarer",
+    "icon": "\ud83d\udc06",
+    "cost": 1,
+    "wait": 2,
+    "attack": 3,
+    "health": 14,
+    "rarity": "rare",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Tundra",
+      "Mountain"
+    ],
+    "species": [
+      "Felid"
+    ],
+    "animal": "snow leopard",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "lasso": 2,
+      "pounce": 1
+    },
+    "flavor": "The yeti hunters bring rope, patience and one snow leopard who has done this before.",
+    "numericId": 9217,
+    "uuid": "d1f49540-7dbd-5533-9b96-fa82196b64bb",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home Wolfsbane Tundra (Map 17 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity rare, map term Map 17): S 6.22, N 30.55, 2A + H + S 29.22: 3/14. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "sand-flinger-antlion",
+    "name": "Sand-flinger Antlion",
+    "icon": "\ud83d\udc1c",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 7,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Desert",
+      "Insect"
+    ],
+    "species": [
+      "Insect"
+    ],
+    "animal": "antlion",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "arrow": 1
+    },
+    "flavor": "It flicks sand at anything on the slope until the slope gives way.",
+    "numericId": 9218,
+    "uuid": "caa64a82-2fdd-5877-af22-a324db6689f8",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home The Glass Dunes (Map 18 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity common, map term Map 18): S 4.26, N 20.92, 2A + H + S 17.26: 2/7. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "stonecracker-vulture",
+    "name": "Stonecracker Vulture",
+    "icon": "\ud83e\udd85",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 9,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Desert",
+      "Vulture"
+    ],
+    "species": [
+      "Bird"
+    ],
+    "animal": "vulture",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "flying": true,
+      "arrow": 2
+    },
+    "flavor": "Too small to crack an egg by force, so it carries a stone. Then it found other things to crack.",
+    "numericId": 9219,
+    "uuid": "e9a21c6c-8904-5e68-ae11-8d305112dfcc",
+    "awaitingSource": true,
+    "unattainable": true,
+    "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home The Pale Desert (Map 18 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 18): S 7.01, N 25.24, 2A + H + S 24.86: 2/9. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
   }
 ]

@@ -36,7 +36,8 @@ async def run(b, url, w):
     print('  maps', [(x['id'], x['fights'], x['claude']) for x in r])
     ok(all(x['fights'] > 0 and x['caps'] == x['fights'] and x['roles'] >= x['fights'] for x in r), 'each map has a Skirmish rewards section: a caption per fight, a role under each card')
     ok(any(x['claude'] > 0 for x in r), 'some map has a Recommended by Claude section')
-    ok(all(p == 'Claude New' for x in r for p in x['pills']) and all(len(x['pills']) == x['claude'] for x in r), 'every Claude tile wears the Claude New pill')
+    # 2026-11-07 (CONTENT17): a pick that is a new card (on no list, awaiting a map) wears "New card" instead
+    ok(all(p in ('Claude New', 'New card') for x in r for p in x['pills']) and all(len(x['pills']) == x['claude'] for x in r), 'every Claude tile wears the Claude New pill (or New card)')
     ok(all(x['onList'] == 0 and x['inRv'] == 0 for x in r), 'Claude cards are on no list and are no review tile')
     ok(all(x['skills'] and x['modalScroll'] == 'auto' for x in r), 'the skills block and the whole-dialog scroll (UI22a) are still there')
     best = max(r, key=lambda x: x['claude'] * 100 + x['fights'])['id']
