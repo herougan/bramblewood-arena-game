@@ -10993,6 +10993,18 @@
 .board-card.is-playing-dead .card-tile{filter:grayscale(.75) brightness(.8); transform:rotate(-9deg); transition:transform .35s ease, filter .35s ease;}
 .abadge.playing-dead{background:color-mix(in srgb, #8a8f98 30%, var(--surface-2)); color:#d6d9de;}
 @media (prefers-reduced-motion: reduce){ .board-card.is-playing-dead .card-tile{transform:none; transition:none;} }
+/* ENG36 (2026-11-08, owner 11-07: "it stays greyed out for a turn ... it floats up from the floor/shadow at 1 HP"): greyer while it lies (the
+   swings pass through it), and a short float-up as it gets up: it rises out of a soft floor shadow, its grey lifting (eng36FloatUp in arena_app.js;
+   none under reduced motion, the lowest effects level or a hidden tab). */
+.board-card.is-playing-dead .card-tile{filter:grayscale(1) brightness(.72) opacity(.82);}
+.board-card.eng36-floatup{position:relative;}
+.board-card.eng36-floatup .card-tile{animation:eng36FloatUp .8s cubic-bezier(.2,.8,.25,1) both;}
+.board-card.eng36-floatup::after{content:''; position:absolute; left:12%; right:12%; bottom:-4px; height:12px; border-radius:50%; background:radial-gradient(ellipse at center, rgba(0,0,0,.45), rgba(0,0,0,0) 70%); animation:eng36FloatShadow .8s ease-out both; pointer-events:none;}
+@keyframes eng36FloatUp{0%{transform:translateY(16px) rotate(-9deg) scale(.95); filter:grayscale(1) brightness(.72) opacity(.6);} 60%{transform:translateY(-5px) rotate(0) scale(1.02); filter:grayscale(.2) brightness(1);} 100%{transform:none; filter:none;}}
+@keyframes eng36FloatShadow{0%{opacity:.9; transform:scaleX(1.15);} 100%{opacity:0; transform:scaleX(.7);}}
+.abadge.constricted{background:color-mix(in srgb, #3f8f4f 30%, var(--surface-2)); color:#9fe0a8;}
+.eng36-status-sel{max-width:11em;}
+@media (prefers-reduced-motion: reduce){ .board-card.eng36-floatup .card-tile, .board-card.eng36-floatup::after{animation:none;} }
 .board-card .card-tile .status-chips > .abadge.gpoison{--sc-ring:#9b4dd6; color:#e4c8ff;}
 .board-card.is-gpoisoned .card-tile{box-shadow:0 0 0 2px rgba(155,77,214,.55), 0 0 12px 2px rgba(155,77,214,.35);}
 .en4-gp-pulse{animation:en4GpPulse 520ms ease;}

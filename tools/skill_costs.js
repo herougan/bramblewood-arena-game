@@ -145,6 +145,15 @@
         // EN7 (2026-10-24): Arrow / Fire Arrow / Fire Bolt – poison / – bleed: tip x the price of Poison (Bleed) at the unit's own N (at least 1),
         // nothing without the shot; Dive's extra uses (effects.diveUses N): (N - 1) x Dive's price
         if(BB.EN7_TIP_SHOTS && BB.EN7_TIP_SHOTS[k]){ const [base, st] = BB.EN7_TIP_SHOTS[k], c = v && effects[base] ? r2(mod('tip', BB.EN7_TIP_MULT || 0.9) * (skillCost(st, Math.max(1, numOf(effects[st]))) || 0)) : 0; S += c; parts.push(['skill', k, c, 'x' + mod('tip', 0.9) + ' of ' + st]); return; }
+        // ENG36 (2026-11-08): a status Resist / Weakness / Immune entry ('status:<key>') costs its canonical/skill-costs.json statusResist
+        // price (by reasoning: tools/eng36_status_prices_2026_11_08.js); the list's other entries keep the price the list had (a list of
+        // statuses only has no base price), so every card priced before is priced the same.
+        if((k === 'resist' || k === 'weakness' || k === 'immune') && Array.isArray(v) && v.some(x=> typeof x === 'string' && x.indexOf('status:') === 0)){
+          const STR = table.statusResist || {}, col = k === 'immune' ? 'immune' : k === 'resist' ? 'resist' : 'weak';
+          const st = v.filter(x=> typeof x === 'string' && x.indexOf('status:') === 0), rest = v.filter(x=> !st.includes(x));
+          let c = 0; st.forEach(x=>{ const row = STR[x.slice(7)]; if(row && typeof row[col] === 'number') c += row[col]; else missing.push('status:' + x.slice(7)); });
+          if(rest.length){ let b = skillCost(k, rest); if(b == null){ const f = opts && opts.fallback ? opts.fallback(k, rest) : null; b = typeof f === 'number' ? f : 1; } c += b; }
+          c = r2(c); S += c; parts.push(['skill', k, c, st.length + ' status entr' + (st.length === 1 ? 'y' : 'ies') + ' (ENG36)']); return; }
         if(k === 'diveUses'){ const c = effects.dive ? r2(Math.max(0, numOf(v) - 1) * (skillCost('dive', effects.dive) || 0)) : 0; S += c; parts.push(['skill', k, c, 'extra dives']); return; }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
         if(lm !== 1 && LHK.has(k) && (!effects.deliveryRes || effects.deliveryRes === 'lumber' || (BB.LUMBER_MAKER_KEYS || []).includes(k))){ c = r2(c * lm); S += c; parts.push(['skill', k, c, 'x' + lm + ' at home (BAL12)']); return; } // BAL12 (2026-11-02): On Ready Lumber at its lists' mean cost

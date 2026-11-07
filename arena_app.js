@@ -2300,6 +2300,19 @@ Object.assign(SKILL_ICON, {immortal:'♾️', hydra:'🐍', tribeDelivery:'📦'
 ACTION_DEFS.push({key:'forage', get label(){ return TX('ui.eng25-act-forage'); }, fields:['amount'], get desc(){ return TX('ui.eng25-act-forage-desc'); }});
 SK2_LINE.foraging = v=> TX('ui.eng25-foraging', {n: sk2Num(v, 'foragingN'), b: SK2_UI.foragingBerries, h: Number(SK2_UI.berryHeal) || 3});
 sk1Patch(PASSIVE_DEFS, 'foraging', {desc:v=> SK2_LINE.foraging(v)});
+// ==== ENG36 (2026-11-08, owner 11-07 notes; bramblewood-engine.js ENG36 blocks) ====
+// Constrict N (item 4): an advanced Strangle; the target does nothing while held. Strangle and Constrict are also actions (ACTION_DEFS below).
+PASSIVE_DEFS.push({key:'constrict', category:'passive', label:TX('ui.eng36-constrict-name'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.eng36-constrict', {n: numOr(v, 2)}), codexNote:TX('ui.eng36-constrict-codex'), get:e=> e.constrict ? numOr(e.constrict, 2) : undefined});
+// Hoard N (item 5): +N/+N for each Lumber you hold (was +1 Attack for every N Lumber); N may be a fraction (step any).
+sk1Patch(PASSIVE_DEFS, 'hoard', {defaultValue:1, step:'any', desc:v=> TX('ui.eng36-hoard', {n: eng36Num(numOr(v, 1))}), get:e=> e.hoard ? (e.hoard === true ? 1 : Number(e.hoard)) : undefined});
+function eng36Num(n){ return String(Math.round((Number(n) || 0) * 100) / 100); }
+ACTION_DEFS.push(
+  {key:'strangle', get label(){ return TX('ui.eng36-strangle-name'); }, fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], get desc(){ return TX('ui.eng36-act-strangle-desc'); }},
+  {key:'constrict', get label(){ return TX('ui.eng36-constrict-name'); }, fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], get desc(){ return TX('ui.eng36-act-constrict-desc'); }});
+// Status resistances (item 1): 'status:<key>' entries in the Resistance / Weakness / Immune boxes (the engine's ENG36_STATUS lists them).
+const ENG36_STATUS_LIST = (typeof ENG36_STATUS !== 'undefined' && ENG36_STATUS) || {};
+function eng36StatusKeys(){ return Object.keys(ENG36_STATUS_LIST).map(k=> 'status:' + k).sort((a, b)=> resistOptionLabel(a).localeCompare(resistOptionLabel(b))); }
+function eng36StatusLabel(k){ const s = ENG36_STATUS_LIST[k] || {}; return (s.icon ? s.icon + ' ' : '') + TX('ui.eng36-status-of', {name: TX('ui.eng36-st-' + k)}); }
 // SKILL_DEFS: the unified "+ Add Skill" registry for the card editor's Passive Abilities
 // section — every PASSIVE_DEFS keyword, Explode (a two-field passive), and the former
 // "Active preset" one-shots (Arrow/Render/Revive) all live here now as one flat list of
@@ -2313,6 +2326,7 @@ const passiveToSkillDef = p=>({
     get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, codexNote:p.codexNote, whoPicker:p.whoPicker, // (2026-10-18: + whoPicker, Esprit's Kin / Any; 2026-10-15: + the grant pickers' hints, defaultValue; 2026-10-17: + codexNote, a Codex-only sentence)
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
     numberWhen:p.numberWhen, numberTitle:p.numberTitle, // a passive selectNumber's N field (Wave N, 2026-10-18)
+    step:p.step, // ENG36 (2026-11-08): Hoard N may be a fraction
 });
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(passiveToSkillDef),
@@ -2612,6 +2626,7 @@ const DMG_LABEL = {physical:'Physical', heat:'Fire', cold:'Cold', acid:'Acid', p
 function dmgWord(t){ return t && t !== 'physical' ? (DMG_LABEL[t] || t).toLowerCase() + ' ' : ''; }
 function resistOptionLabel(v){
   if(!v) return '…';
+  if(typeof v === 'string' && v.indexOf('status:') === 0) return eng36StatusLabel(v.slice(7)); // ENG36 (2026-11-08): a status entry
   if(DMG_LABEL[v]) return DMG_LABEL[v];
   if(ARCHETYPE_ICON[v]) return v; // archetype keys are already display-ready
   const spaced = v.replace(/([a-z])([A-Z])/g, '$1 $2');
@@ -3448,6 +3463,8 @@ PASSIVE_DEFS.push(
   {key:'pry', category:'passive', label:TX('ui.skn-pry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-pry', {n: numOr(v, 1)}), get:e=> e.pry ? numOr(e.pry, 1) : undefined});
 Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
 Object.assign(SKILL_TEXT, {wakeful: ()=> TX('ui.c3-wakeful'), pulverise: ()=> TX('ui.c3-pulverise'), socket: v=> TX('ui.c3-socket', {n: numOr(v, 1)})}); // CONTENT3 (2026-10-26)
+Object.assign(SKILL_TEXT, {constrict: v=> TX('ui.eng36-constrict', {n: numOr(v, 2)}), hoard: v=> TX('ui.eng36-hoard', {n: eng36Num(numOr(v, 1))})}); // ENG36 (2026-11-08)
+Object.assign(SKILL_ICON, {constrict:'🐍'}); // ENG36 (2026-11-08)
 Object.assign(SKILL_TEXT, {slow: ()=> TX('ui.eng13-slow')}); // ENG13 (2026-10-29)
 Object.assign(SKILL_TEXT, {dropRoll: ()=> TX('ui.eng20-droproll'), glean: ()=> TX('ui.eng20-glean'), lumberFeast: v=> TX('ui.eng20-feast', {n: numOr(v, 3)})}); // ENG20 (2026-11-02)
 // ==== Package ENG14 (2026-10-30, owner 10-30 23:25 X20 / X26; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
@@ -11875,6 +11892,10 @@ function renderEditorInner(){
             <option value="">+ Types</option>
             ${resistTypeOptionsList().filter(o=>!(c.effects.resist||[]).includes(o)).map(o=>`<option value="${o}">${resistOptionLabel(o)}</option>`).join('')}
           </select>
+          <select id="resistAddSelStatus" class="pill-add-plus eng36-status-sel" title="${escapeAttr(TX('ui.eng36-status-sel-title'))}">
+            <option value="">${escapeHtml(TX('ui.eng36-statuses'))}</option>
+            ${eng36StatusKeys().filter(o=>!(c.effects.resist||[]).includes(o)).map(o=>`<option value="${o}">${escapeHtml(resistOptionLabel(o))}</option>`).join('')}
+          </select>
         </div>
       </div>
       <div class="field" title="Takes DOUBLE damage from anything matching an entry — same matching rules as Resistance, opposite effect.">
@@ -11889,6 +11910,10 @@ function renderEditorInner(){
             <option value="">+ Types</option>
             ${resistTypeOptionsList().filter(o=>!(c.effects.weakness||[]).includes(o)).map(o=>`<option value="${o}">${resistOptionLabel(o)}</option>`).join('')}
           </select>
+          <select id="weaknessAddSelStatus" class="pill-add-plus eng36-status-sel" title="${escapeAttr(TX('ui.eng36-status-sel-title'))}">
+            <option value="">${escapeHtml(TX('ui.eng36-statuses'))}</option>
+            ${eng36StatusKeys().filter(o=>!(c.effects.weakness||[]).includes(o)).map(o=>`<option value="${o}">${escapeHtml(resistOptionLabel(o))}</option>`).join('')}
+          </select>
         </div>
       </div>
       <div class="field" title="Takes no damage from anything matching an entry.">
@@ -11902,6 +11927,10 @@ function renderEditorInner(){
           <select id="immuneAddSelType" class="pill-add-plus" title="Add a type">
             <option value="">+ Types</option>
             ${resistTypeOptionsList().filter(o=>!(c.effects.immune||[]).includes(o)).map(o=>`<option value="${o}">${resistOptionLabel(o)}</option>`).join('')}
+          </select>
+          <select id="immuneAddSelStatus" class="pill-add-plus eng36-status-sel" title="${escapeAttr(TX('ui.eng36-status-sel-title'))}">
+            <option value="">${escapeHtml(TX('ui.eng36-statuses'))}</option>
+            ${eng36StatusKeys().filter(o=>!(c.effects.immune||[]).includes(o)).map(o=>`<option value="${o}">${escapeHtml(resistOptionLabel(o))}</option>`).join('')}
           </select>
         </div>
       </div>
@@ -12003,6 +12032,7 @@ function renderEditorInner(){
   wireAddSelect('weaknessAddSelType', c.effects.weakness);
   wireAddSelect('immuneAddSelElement', c.effects.immune);
   wireAddSelect('immuneAddSelType', c.effects.immune);
+  wireAddSelect('resistAddSelStatus', c.effects.resist); wireAddSelect('weaknessAddSelStatus', c.effects.weakness); wireAddSelect('immuneAddSelStatus', c.effects.immune); // ENG36 (2026-11-08): the statuses
   overlay.querySelectorAll('#resistPills [data-rmresist]').forEach(b=> b.addEventListener('click', ()=>{
     c.effects.resist.splice(Number(b.getAttribute('data-rmresist')), 1); renderEditor();
   }));
@@ -12265,7 +12295,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     : SKILL_DEFS).filter(gateOk).filter(x=> x.key === row.key || !(ZEIT_TWIN_BACK[x.key] || (twinOf && x.key === twinOf)));
   let valueHtml = '';
   if(s.kind==='number' && s.blankOk) valueHtml = `<input type="number" min="1" class="w-70" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder || '')}" title="${escapeAttr(s.placeholder || '')}" aria-label="${escapeAttr(s.placeholder || '')}" value="${typeof row.value === 'number' && row.value > 0 ? row.value : ''}">`; // ENG35 (2026-11-07): an optional number (Leech: blank = the damage dealt)
-  else if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${(row.value === true || row.value == null || row.value === '') ? (s.defaultValue != null ? s.defaultValue : 1) : row.value}">`; // EN5 (2026-10-24): a plain skill (true) shows its default (Hemorrhage 0); was row.value||1
+  else if(s.kind==='number') valueHtml = `<input type="number" min="0"${s.step ? ` step="${s.step}"` : ''} class="w-70" data-sk="val" data-i="${i}" value="${(row.value === true || row.value == null || row.value === '') ? (s.defaultValue != null ? s.defaultValue : 1) : row.value}">`; // EN5 (2026-10-24): a plain skill (true) shows its default (Hemorrhage 0); was row.value||1
   else if(s.kind==='text') valueHtml = `<input type="text" class="w-160" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder||'')}" value="${escapeAttr(typeof row.value === 'string' ? row.value : '')}">`;
   // Zeitgeber advanced forms (2026-10-15): the braces are a skill list, typed or picked ("+ skill" appends one); Tide has two facets.
   else if(s.kind==='grant') valueHtml = grantPickerHTML(i, 'val', typeof row.value === 'string' ? row.value : '', s.placeholder);
@@ -35313,7 +35343,7 @@ const FXL_SKILL_SETUPS = {
   sentry: {foes:[{role:'foe', slot:1}], withhold:'foe', steps:[{spawn:'foe'}, 'round'], note:'An enemy is played into the slot beside the one facing it: the Sentry attacks it.'},
   web: {foeFx:{evasive:true}, steps:['round', 'round', 'round'], note:'The dummies are Evasive; once Webbed they can\'t dodge.'},
   carrion: {status:{subject:{hp:1}, foe:{hp:1}}, steps:['round'], note:'It starts hurt; the dummy in front falls and it feeds.'},
-  hoard: {lumber:8, note:'You hold 8 Lumber: +4 Attack at Hoard 2.'},
+  hoard: {lumber:8, note:'You hold 8 Lumber: +8/+8 at Hoard 1 (ENG36: +N/+N a Lumber).'},
   venomMaster: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Adder', icon:'🐍', effects:{poison:1}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}], steps:['round', 'round'], note:'The Adder beside it poisons for 1; with Venom Master it adds more.'},
   fletcher: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Archer', icon:'🏹', effects:{arrow:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}], steps:['round'], note:'The Archer beside it shoots for 2; with Fletcher its arrows hit harder.'},
   herbalist: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Mender', icon:'💚', effects:{regen:2}}}], status:{ally:{hp:1}}, steps:['round', 'round'], note:'The Mender beside it regenerates 2 a round; with Herbalist every heal is bigger.'},
@@ -35464,7 +35494,7 @@ function fxlRealSkillValue(sd){
 function fxlKnownTypes(){ if(fxLib && fxLib.types) return fxLib.types; const defs = getCardDefs(), s = new Set(); Object.values(defs).forEach(d=> (d && d.archetypes || []).forEach(t=> s.add(t))); if(fxLib) fxLib.types = s; return s; }
 function fxlRetype(v, to){ const T = fxlKnownTypes(); if(typeof v === 'string') return T.has(v) ? to : v; if(Array.isArray(v)) return v.map(x=> fxlRetype(x, to)); if(v && typeof v === 'object'){ const o = {}; Object.keys(v).forEach(k=> o[k] = fxlRetype(v[k], to)); return o; } return v; }
 // Skills whose stand-in value is their own default rather than 3 (2026-10-14: a Fireball 3 or a Meteor 3 shows little).
-const FXL_NUMBER_DEFAULTS = {chainLightning:2, rebuild:2, /* 2026-10-17 */ vanguard:1, web:2, carrion:2, hoard:2, venomMaster:1, fletcher:1, herbalist:1, shatter:2, ambush:3, penance:3, bloodTithe:2, fireball:15, meteor:20, bloodlust:1, venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, predator:2, nova:3, crystallise:5, cure:2, molting:1, sweep:1}; // + the W2 skills' own defaults (2026-10-16) // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
+const FXL_NUMBER_DEFAULTS = {chainLightning:2, rebuild:2, /* 2026-10-17 */ vanguard:1, web:2, carrion:2, hoard:1, venomMaster:1, fletcher:1, herbalist:1, shatter:2, ambush:3, penance:3, bloodTithe:2, fireball:15, meteor:20, bloodlust:1, venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, predator:2, nova:3, crystallise:5, cure:2, molting:1, sweep:1}; // + the W2 skills' own defaults (2026-10-16) // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
 function fxlSkillEffects(sd){
   const e = {}; let from = null;
   const real = fxlRealSkillValue(sd);
@@ -41808,7 +41838,7 @@ function boardCardHTML(c, defs, opts){
     c.staggered>0 ? 'is-staggered' : '',
     d.crystalOf ? 'is-crystal' : '', // Crystallise (2026-10-16)
     d.relicOf ? 'is-relic' : '', // Relic (2026-10-19, package E): the dead card's art, faded and ghostly
-    c.bound>0 ? 'is-bound' : '', c.invisible>0 ? 'is-invisible' : '', c.invincible>0 ? 'is-invincible' : '', c.toxin>0 ? 'is-toxic' : '', // W2 (2026-10-16)
+    c.bound>0 ? 'is-bound' : '', (c.playingDead != null && c.playingDead !== false) ? 'is-playing-dead' : '' /* ENG36 (2026-11-08): a re-render keeps the grey */, c.invisible>0 ? 'is-invisible' : '', c.invincible>0 ? 'is-invincible' : '', c.toxin>0 ? 'is-toxic' : '', // W2 (2026-10-16)
     c.diveAloft != null ? eng32DiveCls(c) : '', // EN7 (2026-10-24): Dive's first turn; ENG32 (2026-11-07): + plain Dive's low look
     c.petrified ? 'is-petrified' : '', // Petrification (2026-10-14): grey stone for the round
     c.crowned ? 'is-crowned' : '', (c.transformed && trTfName(d)) ? ('tf-on tf-' + trTfName(d)) : '', // Package TR (2026-10-21): the Crown's holder; a named Transform's look
@@ -49239,6 +49269,7 @@ function logText(ev){
         pinned: TX('ui.e14-log-pinned-skip'), // Bola's Pin (ENG14, 2026-10-30)
         lassoed: TX('ui.eng15-log-lassoed-skip'), // Lasso (ENG15, 2026-10-31)
         playingDead: TX('ui.eng33-log-playing-dead-skip'), // Thanatosis (ENG33, 2026-11-07)
+        constricted: TX('ui.eng36-log-constricted-skip'), // Constrict (ENG36, 2026-11-08)
         zeroAttack: 'has no Attack left to swing with.',
       }[ev.reason] || 'can\'t act this round.';
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
@@ -51884,6 +51915,7 @@ function w2StatusBadges(c, badges){
   try{ giStatusBadges(c, badges); }catch(e){} // Brittle, Prayer Ward (2026-10-19, package GI)
   try{ sk1StatusBadges(c, badges); }catch(e){} // Exploit tokens, Formation / Isolation (2026-10-19, package SK1)
   try{ sk2StatusBadges(c, badges); }catch(e){} // Berries, scavenge and salvage points (2026-10-19, package SK2)
+  if(c.constricted>0){ const t36 = escapeAttr(TX('ui.eng36-constricted-pip')); badges.push(`<span class="abadge constricted" title="${t36}" aria-label="${t36}">🐍</span>`); } // ENG36 (2026-11-08): Constrict
   if(c.bound>0) badges.push(`<span class="abadge bound" title="Bound: can't attack for ${c.bound} more round${c.bound === 1 ? '' : 's'}">🪢${c.bound}</span>`);
   if(c.pinDown>0) badges.push(`<span class="abadge pinned" title="${escapeAttr(TX('ui.e14-stn-pinned') + ': ' + TX('ui.e14-ls-pinned'))}">📌</span>`); // Bola's Pin (ENG14, 2026-10-30)
   if(c.lassoed>0) badges.push(`<span class="abadge lassoed" title="${escapeAttr(TX('ui.eng15-stn-lassoed') + ': ' + TX('ui.eng15-ls-lassoed'))}">➰</span>`); // Lasso (ENG15, 2026-10-31)
@@ -52717,6 +52749,10 @@ function sk2Vfx(ev){
   if(ev.kind === 'disarm'){ fl(el, '🫴 ' + ((getCardDefs()[ev.equipDefId] || {}).icon || '⚒️'), 'gold'); snd('swipeTone');
     const rc = rcOf(ev.targetUid); if(rc){ rc.equipment = null; rc.equipOn = false; rc.equipping = 0; if(ev.atk != null) rc.atk = ev.atk; if(ev.hp != null) rc.hp = ev.hp; if(ev.maxHp != null) rc.maxHp = ev.maxHp; try{ updateCardAtkDisplay(ev.targetUid); updateCardHpDisplay(ev.targetUid); }catch(e){} refresh(ev.targetUid); } return; }
 }
+// ENG36 (2026-11-08, owner 11-07: "At the start of its next turn it floats up from the floor/shadow at 1 HP"): a short float-up as a unit
+// that played dead gets up: it rises from a soft shadow on the floor, its grey lifting (CSS .eng36-floatup). No motion under reduced motion,
+// at the lowest effects level or in a hidden tab (the playing-dead grey simply goes, as before).
+function eng36FloatUp(el){ try{ if(!el || reducedMotion() || !fxAtLeast('low') || document.hidden) return; el.classList.remove('eng36-floatup'); void el.offsetWidth; el.classList.add('eng36-floatup'); setTimeout(()=>{ try{ el.classList.remove('eng36-floatup'); }catch(e){} }, 900); }catch(e){} }
 function w2LogText(ev, nm){
   { const d = devilPayLogText(ev, nm); if(d) return d; } // Penance, Blood Tithe, Ambush (2026-10-16)
   if(ev.type === 'statusFx'){
@@ -52725,6 +52761,8 @@ function w2LogText(ev, nm){
       case 'venom': return {cls:'poison', text:`${a}'s venom gets into ${t} (+${ev.amount} ☠) 🦂`};
       case 'thanatosis': return {cls:'', text: TX('ui.eng33-log-thanatosis', {name: t})}; // ENG33 (2026-11-07)
       case 'thanatosisWake': return {cls:'', text: TX('ui.eng33-log-wake', {name: t, n: ev.hp || 1})};
+      case 'constrict': return {cls:'', text: TX('ui.eng36-log-constrict', {a, t, n: ev.strangle || 0})}; // ENG36 (2026-11-08)
+      case 'eng36Resist': return {cls:'', text: TX(ev.immune ? 'ui.eng36-log-immune' : 'ui.eng36-log-resist', {name: t, status: TX('ui.eng36-st-' + ev.status)})}; // ENG36: a status held off
       case 'poisonous': return {cls:'poison', text: TX('ui.eng33-log-poisonous', {name: a, t, n: ev.amount || 0})};
       case 'toxin': return {cls:'poison', text:`${a} leaves Toxin in ${t} (+${ev.amount}, ${ev.total} in all; it never wears off) ☣️`};
       case 'weaken': return {cls:'', text:`${a} weakens ${t}: −${ev.amount} Attack for good 💔`};
@@ -52768,7 +52806,9 @@ function w2SkillVfx(ev){
     const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid);
     switch(ev.kind){
       case 'thanatosis': fl(el, '😵', 'quick'); if(rc){ rc.hp = 1; rc.playingDead = true; rc.poison = 0; rc.bleed = 0; rc.gpoison = 0; rc.toxin = 0; rc.decay = 0; } try{ updateCardHpDisplay(ev.targetUid); }catch(e){} refresh(ev.targetUid); break; // ENG33 (2026-11-07)
-      case 'thanatosisWake': fl(el, '💪', 'quick'); if(rc){ rc.playingDead = null; if(ev.hp != null) rc.hp = ev.hp; } try{ updateCardHpDisplay(ev.targetUid); }catch(e){} refresh(ev.targetUid); break;
+      case 'thanatosisWake': fl(el, '💪', 'quick'); if(rc){ rc.playingDead = null; if(ev.hp != null) rc.hp = ev.hp; } try{ updateCardHpDisplay(ev.targetUid); }catch(e){} refresh(ev.targetUid); eng36FloatUp(el); break; // + ENG36 (2026-11-08): it floats up from its shadow
+      case 'constrict': snd('curse'); fl(el, '🐍 ' + TX('ui.eng36-constrict-name'), 'debuff'); if(rc){ rc.constricted = Math.max(rc.constricted||0, ev.amount||1); rc.bound = Math.max(rc.bound||0, ev.amount||1); } if(el && fx()) F.vineBind(el, {strangle: true}); refresh(ev.targetUid); break; // ENG36 (2026-11-08)
+      case 'eng36Resist': fl(el, '🛡️ ' + (((typeof ENG36_STATUS !== 'undefined' && ENG36_STATUS[ev.status]) || {}).icon || ''), 'quick'); break; // ENG36: Resist / Immune held a status off
       case 'poisonous': snd('poisonApply'); fl(el, `🤢 +${ev.amount}☠`, 'poison'); if(rc) rc.poison = ev.total || ((rc.poison||0) + (ev.amount||0)); refresh(ev.targetUid); break;
       case 'venom': snd('poisonApply'); fl(el, `🦂 +${ev.amount}☠`, 'poison'); if(rc) rc.poison = (rc.poison||0) + (ev.amount||0); if(el && fx()) F.venomBite(el); refresh(ev.targetUid); break;
       case 'toxin': snd('poisonApply'); fl(el, `☣️ +${ev.amount}`, 'poison'); if(rc) rc.toxin = ev.total || ((rc.toxin||0) + (ev.amount||0)); if(el && fx()) F.toxinMark(el); refresh(ev.targetUid); break;

@@ -34,7 +34,7 @@ const defs = Object.assign({}, base, {
   's7-sentry': U('s7-sentry', {sentry:true}, {attack:4}), 's7-sentry-wait': U('s7-sentry-wait', {sentry:true}, {attack:4, wait:2}),
   's7-crab': U('s7-crab', {crabClaws:true}),
   's7-carrion': U('s7-carrion', {carrion:true}, {attack:0}), 's7-killer': U('s7-killer', {}, {attack:10}),
-  's7-hoard': U('s7-hoard', {hoard:true}, {attack:1}),
+  's7-hoard': U('s7-hoard', {hoard:0.5}, {attack:1}), // ENG36 (2026-11-08): Hoard N is +N/+N a Lumber (was +1 Attack per N Lumber, true = 2): 0.5 is the old Hoard 2's Attack
   's7-adder': U('s7-adder', {poison:1}, {attack:1}), 's7-bleeder': U('s7-bleeder', {bleed:1}, {attack:1}), 's7-vm': U('s7-vm', {venomMaster:true}, {attack:0}),
   's7-fletch': U('s7-fletch', {fletcher:true}, {attack:0}), 's7-archer2': U('s7-archer2', {arrow:2}, {attack:0}),
   's7-regen': U('s7-regen', {regen:2}, {attack:0}), 's7-herb': U('s7-herb', {herbalist:true}, {attack:0}),
@@ -174,8 +174,8 @@ ok(byId['piranha-shoal'].effects.bloodlust === true, 'cards: Piranha Shoal is Bl
   e.debugAttack(P, so, K.uid, {}, ev); ok(C.hp === 12 && ev.some(x=> x.type === 'statusFx' && x.kind === 'carrion' && x.amount === 2), `Carrion: a unit dies, it heals 2 (${C.hp})`); }
 
 // ---- Hoard N (default 2), Shatter N (default 2)
-{ const {e, P} = mk(); const Hd = put(e, P, 1, 's7-hoard', 0); const W = put(e, P, 2, 's7-wall', 0); P[1].lumber = 7; e.debugAttack(P, so, Hd.uid, {}, []);
-  ok(W.hp === 496, `Hoard: +1 Attack for every 2 Lumber (7 Lumber: 1 + 3 = ${500 - W.hp})`); }
+{ const {e, P} = mk(); const Hd = put(e, P, 1, 's7-hoard', 0); const W = put(e, P, 2, 's7-wall', 0); P[1].lumber = 7; e.syncPhaseStats(P, so, []); e.debugAttack(P, so, Hd.uid, {}, []);
+  ok(W.hp === 496 && Hd.maxHp === 500 + 3, `Hoard 0.5: +3/+3 with 7 Lumber (ENG36: +N/+N a Lumber, rounded down) (7 Lumber: 1 + 3 = ${500 - W.hp}, max ${Hd.maxHp})`); }
 { const {e, P} = mk(); const Sh = put(e, P, 1, 's7-shatter', 0); const W = put(e, P, 2, 's7-wall', 0); e.debugAttack(P, so, Sh.uid, {}, []); const d0 = 500 - W.hp;
   W.frozen = 3; e.debugAttack(P, so, Sh.uid, {}, []); const d1 = 500 - W.hp - d0; ok(d0 === 3 && d1 === 5, `Shatter: +2 on a Frozen unit (${d0}, then ${d1})`); }
 

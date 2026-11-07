@@ -12,6 +12,10 @@ engine_src = open(SCRATCH + "bramblewood-taxonomy.js", encoding="utf-8").read() 
 # fuse, global BramblewoodSkillParams) go ahead of the engine, so the page, the app and the worker read fused cards and old twin keys alike.
 engine_src = "var __SKILL_PARAMS__ = " + json.dumps(json.load(open(SCRATCH + "canonical/skill-params.json", encoding="utf-8")), ensure_ascii=False) + ";\n" + open(SCRATCH + "bramblewood-skillparams.js", encoding="utf-8").read() + "\n" + engine_src
 engine_src = "var __SKILL_DELIVERY__ = " + json.dumps(json.load(open(SCRATCH + "canonical/skill-delivery.json", encoding="utf-8")), ensure_ascii=False) + ";\n" + engine_src
+# 2026-11-08 (package ENG36): the stat budget and Forge curve (BramblewoodBudget) go ahead of the engine too, so a summon comes out at its
+# summoner's level (eng36SummonDefId reads forgeCurve) in the page, the app and the simulator worker (which gets engine_src only). The file is
+# not added to ghosts_src again (the page block is engine_src + ghosts_src).
+engine_src = open(SCRATCH + "bramblewood-budget.js", encoding="utf-8").read() + "\n" + engine_src
 # Ghost decks for Async Arena + offline Raid (2026-10-03) — DOM-free, shared with tests/async-raid.js.
 # 2026-10-16: + bramblewood-fx-g.js (FX.G: map titles, map grandeur, the fun set).
 # 2026-10-15: the six effect batches (bramblewood-fx-a.js … -f.js, window.FX.A…F) load right after unitfx; see
@@ -27,7 +31,8 @@ ghosts_src += "\n" + open(SCRATCH + "bramblewood-a11y.js", encoding="utf-8").rea
 ghosts_src += "\n" + open(SCRATCH + "bramblewood-guild.js", encoding="utf-8").read()
 # 2026-10-19 (package BF): the stat budget N(L) = (Base - 1 + L) x (1 + L/20) and the Forge level curve (BramblewoodBudget), DOM-free;
 # the same file tools/skill_costs.js and the master hub use.
-ghosts_src += "\n" + open(SCRATCH + "bramblewood-budget.js", encoding="utf-8").read()
+# 2026-11-08 (package ENG36): bramblewood-budget.js now rides at the head of engine_src (above), which the page loads in the same block
+# just ahead of ghosts_src, so it is not added here again.
 # 2026-10-21 (package CX5): the skill-cost pricing (SkillCosts, tools/skill_costs.js, the balance tools' and the hub's one copy) after the
 # helper it reads, so the card editor's budget panel and the Test Lab price S from canonical/skill-costs.json (__SKILL_COSTS__ below).
 # Its "#!" line is dropped; its command-line part only runs under node.

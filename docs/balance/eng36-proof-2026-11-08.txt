@@ -1,0 +1,33 @@
+# ENG36 (2026-11-08): node tools/eng36_proof_2026_11_08.js <copy of origin/batch-1023e> --n=40 (board fights 14 rounds; matches: the card x4 + fillers vs a fixed foe deck, AI both seats; Item 2: both decks levelled to L5 / L10 on the Forge curve)
+Item 1 (status resistances, on no card): 134 cards (92 status-dealing, 54 resist-carrying)
+  board fights: 536, differ: 0;  full matches: 90, differ: 0
+Match grass-snake (Thanatosis): 40 matches, 5 differ; deck wins 26 -> 23
+Match magnate-duck (Hoard 0.25): 40 matches, 0 differ; deck wins 4 -> 4
+Match phoenix-mushrooms (Thanatosis): 40 matches, 0 differ; deck wins 2 -> 2
+Match slow-worm (Thanatosis): 40 matches, 6 differ; deck wins 23 -> 22
+Match tax-collector-teal (Hoard 0.75): 40 matches, 37 differ; deck wins 39 -> 39
+Item 2 L5 ancient-sloth-titan: 20 matches, 18 differ; deck wins 3 -> 6
+Item 2 L5 ant-hill: 20 matches, 1 differ; deck wins 14 -> 14
+Item 2 L5 bee-drone: 20 matches, 0 differ; deck wins 18 -> 18
+Item 2 L5 colony: 20 matches, 0 differ; deck wins 18 -> 18
+Item 2 L5 fungal-colossus: 20 matches, 2 differ; deck wins 6 -> 6
+Item 2 L5 goliath-broodmother: 20 matches, 0 differ; deck wins 11 -> 11
+Item 2 L5 millipede-hauler: 20 matches, 1 differ; deck wins 15 -> 15
+Item 2 L5 mother-carrier: 20 matches, 18 differ; deck wins 14 -> 20
+Item 2 L5 muskrat-lodgekeeper: 20 matches, 20 differ; deck wins 7 -> 6
+Item 2 L5 rot-swollen-carcass: 20 matches, 0 differ; deck wins 2 -> 2
+Item 2 L5 scraper-of-skies: 20 matches, 0 differ; deck wins 7 -> 7
+Item 2 L5 vampire-roost: 20 matches, 0 differ; deck wins 4 -> 4
+Item 2 L10 ancient-sloth-titan: 20 matches, 19 differ; deck wins 2 -> 2
+Item 2 L10 ant-hill: 20 matches, 18 differ; deck wins 17 -> 17
+Item 2 L10 bee-drone: 20 matches, 18 differ; deck wins 19 -> 20
+Item 2 L10 colony: 20 matches, 18 differ; deck wins 19 -> 20
+Item 2 L10 fungal-colossus: 20 matches, 8 differ; deck wins 5 -> 5
+Item 2 L10 goliath-broodmother: 20 matches, 2 differ; deck wins 7 -> 7
+Item 2 L10 millipede-hauler: 20 matches, 2 differ; deck wins 11 -> 12
+Item 2 L10 mother-carrier: 20 matches, 16 differ; deck wins 13 -> 20
+Item 2 L10 muskrat-lodgekeeper: 20 matches, 18 differ; deck wins 12 -> 12
+Item 2 L10 rot-swollen-carcass: 20 matches, 5 differ; deck wins 1 -> 1
+Item 2 L10 scraper-of-skies: 20 matches, 16 differ; deck wins 12 -> 19
+Item 2 L10 vampire-roost: 20 matches, 3 differ; deck wins 0 -> 0
+

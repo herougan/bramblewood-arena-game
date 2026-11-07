@@ -47,7 +47,8 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   ok(/\['fireBolt', TX\('ui\.e10-skn-cinder'\)\]/.test(app) && !/eng9-skn-/.test(app), 'ENG9-3 the five spit labels use the new names');
   // no clash: none of the five is a skill label, a gem's name or another skill key's name (Ember is the gem, Frost a skill: hence Cinder, Ice)
   const vals = Object.entries(tx).filter(([k])=> !/^ui\.e10-skn-/.test(k)).map(([, v])=> v);
-  ['Cinder', 'Venom', 'Ice', 'Spark'].forEach(w=> ok(!vals.includes(w), `ENG9-3 "${w}" is used by no other text (no clash)`));
+  // 2026-11-08 (ENG36): 'Venom' left the list: the spit is 'Venom Spit' since ENG33-3, and 'Venom' names the counters (ENG36's status label)
+  ['Cinder', 'Ice', 'Spark'].forEach(w=> ok(!vals.includes(w), `ENG9-3 "${w}" is used by no other text (no clash)`));
   ok(tx['ui.h1-gem-ember'] === 'Ember' && tx['ui.skn-frost'] === 'Frost', 'ENG9-3 (why: Ember is a gem, Frost a skill)'); }
 
 // ---- ENG9-4 Charge recharges, Reload --------------------------------------------------------------------------------------------------

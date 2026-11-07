@@ -350,6 +350,7 @@
   "stockpile": "none",
   "stonecutter": "none",
   "storm": "none",
+  "constrict": "none",
   "strangle": "none",
   "stunOnHit": "none",
   "sturdy": "none",
@@ -462,6 +463,7 @@
   "slashBurn": "swing",
   "sleep": "melee",
   "stagger": "melee",
+  "constrict": "melee",
   "strangle": "melee",
   "stunOnHit": "melee",
   "sunder": "any",
@@ -495,6 +497,7 @@
   "thorns": "melee"
  },
  "notes": {
+  "constrict": "ENG36 (2026-11-08): Constrict N, an advanced Strangle: like Strangle it rides every melee hit (the swing, Cleave, prongs, Pounce, Ambush ...). As an action (do: constrict / strangle) it lays its hold on its target with no hit of its own.",
   "action:damage": "Deal damage: a skill hit, fired through the shot path (not a swing)",
   "action:fireHit": "rides the swing it is paired with (On Attack)",
   "action:poisonTick": "ticks Venom: no hit",
