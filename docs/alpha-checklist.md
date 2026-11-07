@@ -74,6 +74,7 @@ Started 2026-11-06, at the owner's request (22:16): "Create it, assume nothing c
 | P5 | AI crawlers | Decide whether to block AI crawlers (robots.txt, noai) | Owner decision | ☐ |
 | P6 | Performance | Load under 5 s on a mid-range phone on 4G; no long frames in fights | Lighthouse and a trace | ☐ |
 | P7 | Error reporting | Client errors reach a log the team reads | A test error appears in the log | ☐ |
+| P9 | Player and card metrics | User metrics (sessions, retention, progress), card metrics (picks, plays, win rates per card) and card similarity matrices (cosine similarity over decks, rating = copies put in a deck) | A metrics table in Supabase plus a dashboard | ☐ |
 | P8 | Hosting | Production deploy from `main` is the only path; rollback tested | One rollback drill | ☐ |
 
 ## 6. Tests and release

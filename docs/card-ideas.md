@@ -39,5 +39,14 @@ Prehistoric and unusual animals (the owner marked "(Pre)" for prehistoric ones):
 - Shoebill Stork
 - Squamates (Squamata: lizards and snakes, a family theme)
 
+## 2026-11-07 10:25
+| Idea | Owner's note | Notes for the build |
+|---|---|---|
+| Slow Loris | rare venomous mammal | the only venomous primate: Venomous (ex-Poison) fits, Nocturnal |
+| Solenodon | rare venomous mammal | venomous saliva; Venomous, digging / burrow theme |
+| Crunch | skill, effect not decided | |
+| Bluff | for the grass snake; "maybe it'll trigger a reaction from the enemy" | grass snakes play dead and hiss: could force a swing, or make the attacker skip |
+| Smelly | "for those animals that use smell to ward off predators" | proposal in ENG33 (e.g. melee attackers lose Attack, or the unit is targeted last) |
+
 ## Built
 (none yet)

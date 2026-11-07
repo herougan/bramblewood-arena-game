@@ -7,6 +7,26 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+
+## 11-07 10:25: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | Vercel: over 75% of the free tier's CDN requests used | done 11-07: assets cached 7 days (vercel.json; links carry content hashes); releases once per batch again (445 deploys to main in 7 days) |
+| 2 | Launch item: user metrics, card metrics and similarity matrices (cosine similarity; rating = number of copies put in decks) | alpha checklist P9 |
+| 3 | Daunt: say in its text that every landed hit applies it | UI31 |
+| 4 | Pip centring: Shell's pip off-centre; Shield and Tide pips up 0.5-1 px; one table of per-emoji offsets; Shell activating shows a turtling 🐢 on the card with an armour-up sound | UI31 |
+| 5 | New rarity Faction-Starter (balance only, no player impact): starts at Level 0, weaker | BAL25 / budget |
+| 6 | Timbered and related skills: choose stat bonuses OR skill bonuses in the editor; Timbered's logo two stacked logs (same idea for the related skills) | ENG33 |
+| 7 | Gold "?" for skills learnt at a higher level: built in ENG28 (hover, tooltip "Learnt at a higher level") | answered 11-07 |
+| 8 | Animals: Slow Loris, Solenodon (rare venomous mammals) | docs/card-ideas.md |
+| 9 | Rename: Poison -> Venomous (tokens Venom, damage type venomous, same emoji); the old Venomous skill goes; new Poisonous = venom tokens on whoever kills or devours it; other poison skills keep, referring to venom | ENG33 |
+| 10 | Bulwark N (default 1) summons N log-wall constructs (medieval palisade, not a literal shield); art prompt for the construct | ENG33 |
+| 11 | Frozen: play the freeze once when frozen and the reverse when unfrozen; frozen again while frozen: only a short blue fade in and out (1 s) | UI31 |
+| 12 | Undead on non-undead animals means "revives once": rename it (owner suggests Thanatosis: no death trigger; at 0 Health it resets to 1 at the start of the next turn, once). Undead stays for real undead (Map 70+): heals and cures hurt, greyed Health | ENG33 |
+| 13 | New skill Smelly (smell wards off predators): effect to propose | ENG33 (proposal) |
+| 14 | Crunch: skill idea, effect not decided | docs/card-ideas.md |
+| 15 | Bluff (grass snake): skill idea, maybe provokes an enemy reaction | docs/card-ideas.md |
+
 ## 11-07 09:47: Owner notes
 | # | Note | Package |
 |---|---|---|
