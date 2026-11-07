@@ -113,9 +113,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui22-claude-title": "Recommended by Claude",
   "ui.ui22-claude-new": "Claude New",
   "ui.ui22-claude-new-tip": "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.",
-  "ui.c17-ranged": "Ranged",   // 2026-11-07 (package CONTENT17): a Claude New pick that shoots or throws (canonical/skill-delivery.json)
+  "ui.c17-ranged": "Ranged",
   "ui.c17-melee": "Melee",
-  "ui.c17-new-card": "New card",   // a Claude New pick that is a new card, on no list until placed
+  "ui.c17-new-card": "New card",
   "ui.ui21-nest-discovery": "Unlocks from discovery",
   "ui.ui21-nest-next-discovery": "The next one unlocks from discovery.",
   "ui.ui21-mapkw-title": "Keyword of the map",
