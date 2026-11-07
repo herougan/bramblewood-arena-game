@@ -178,7 +178,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
 
 // ---- the app, texts, docs ---------------------------------------------------------------------------------------------------
 { const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
-  ["{key:'hemorrhage', category:'passive'", "{key:'greaterPoison', category:'passive'", "{key:'shoreUp', category:'passive'", "hemorrhage:'🩸²'", "greaterPoison:'💀'",
+  ["{key:'hemorrhage', category:'passive'", "{key:'greaterPoison', category:'passive'", "{key:'shoreUp', category:'passive'", "hemorrhage:'🩸💥'" /* 2026-11-07 owner 23:15: was 🩸² */, "greaterPoison:'💀'",
    'function en4Vfx', 'function en4HemorrhageVfx', 'function en4GreaterPoisonVfx', 'function en4GreaterPoisonTickVfx', 'function en4ShoreUpVfx', 'function en4LogText', 'function en4StatusBadges',
    'try{ en4Vfx(ev); }catch(e){}', "['gpoison', 'greaterPoison'", 'gpoison:rc.gpoison||0', 'gpoison:c.gpoison||0'].forEach(s=> ok(app.includes(s), 'arena_app.js: ' + s));
   ok(!/function en3GuardChain|en3GuardChain\(ev\)/.test(app), 'the board no longer walks a second Guardian in (en3GuardChain gone)');
