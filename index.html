@@ -14668,8 +14668,9 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 /* JJ26: the sight eyes (shut eye, eye badge) fade out after they first show; the standing darkness and Blind marks are 10% */
 .board-card.ui14-eye-out > .fxb-shut, .board-card.ui14-eye-out > .fxb-eyebadge{opacity:0 !important; transition:opacity .8s ease;}
 .board-card.ui14-eye-gone > .fxb-shut, .board-card.ui14-eye-gone > .fxb-eyebadge{opacity:0 !important; transition:none;}
-.board-card > .fxb-shade{opacity:.14 !important;} /* its own alpha is .72 at the centre: about 10% */
-.board-card.fxb-cantsee.fxb-look-A .card-tile .ico, .board-card.fxb-cantsee.fxb-why-sun.fxb-look-A .card-tile .ico{filter:brightness(.9) !important;}
+/* 2026-11-07 (package UI26, owner 08:18 #1: "After the blinking eye effect, the card does indeed become less dark. Make it even less darker. It's too dark for a default view."): the standing darkening halves, about 10% to about 5%: shade .14 to .07 (its own alpha is .72 at the centre, so about 5%), art brightness .9 to .95. The brief dark moment while the eyes show (below, .55 / .72) is unchanged. */
+.board-card > .fxb-shade{opacity:.07 !important;}
+.board-card.fxb-cantsee.fxb-look-A .card-tile .ico, .board-card.fxb-cantsee.fxb-why-sun.fxb-look-A .card-tile .ico{filter:brightness(.95) !important;}
 .board-card.is-blind .card-tile{filter:brightness(.9);}
 /* JJ23: Sulphur Fumes: pale green gas on the field, in for your turn, out for the fight */
 .ui14-fumes{position:absolute; inset:0; pointer-events:none; overflow:hidden; border-radius:inherit; opacity:0; transition:opacity 1.2s ease;}
