@@ -42,6 +42,20 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Owner calls open: ENG30-1 (no Exalted ground existed: Claude's reading of the two grounds).
 - Next: nothing queued.
 
+## 11-07: Package CONTENT16 (on its branch, not released)
+- Done (owner 09:10; ENG27-9): a pack plan, proposal only: `canonical/pack-plan.json` and `docs/pack-plan-2026-11-07.md`.
+  - Zones proposed: Maps 0-7 / 8-13 / 14-20 (today 0-6 / 7-13 / 14-20).
+  - Cards now, then proposed: Pouch 50 -> 88, Chest 60 -> 62, Case 58 -> 77. Each pack gets 20 basic, zone-themed adds, in budget at its first map.
+  - 5 off-theme moves or removals: Tide Spirit to the Chest; three swamp cards to the Pouch; the Tasmanian Devil out.
+  - The Drumcaller goes in the Sunfeather faction list.
+  - 17 achievement-only cards: the 5% discount list (the discount is not built).
+  - A source for each of the 806 live cards: 370 come from nothing today, 292 under the proposal.
+- Open: CONTENT16-1 (zone split), -2 (the 60 adds), -3 (achievement cards), -4 (moves).
+- Next, once answered:
+  - UI29's Pack editor reads the plan. It needs a per-pack exclusion list for the moves, and uneven zones in `packIndex` (today it is PACK_MAPS_PER_TIER 7).
+  - Achievements need a card reward and an "achievement" source with an obtain map.
+  - Then the 5% discount tag.
+
 ## 11-07: Package UI26 (on its branch, not released)
 - Done (owner 08:18): 1) standing darkness on a unit that can't see halved to about 5% (shade .14 to .07, art brightness .9 to .95); the eye-intro moment and the battlefield's Darkness overlay unchanged. 2) Finding: the blue bar is the crab's own horizon art under the darkening, the top circle is the Dark-blind pip; nothing to remove.
 - Next: nothing queued.
