@@ -146,7 +146,8 @@ ok(/\(p\.kind==='twoNumber' && Array\.isArray\(v\)\) \? \(atSkillDefault\(p, v\)
 ok(/if\(s\.kind==='twoNumber'\) return Array\.isArray\(s\.defaultValue\) \? s\.defaultValue\.slice\(\)/.test(src), '11. the card editor\'s default for Diurnal is +1/+0');
 
 // ---- 12. the looks and the log
-ok(/function bleedFadeDropVfx\(uid\)/.test(src) && /if\(ev\.type==='bleedFade'\)\{\s*try\{ bleedFadeDropVfx\(ev\.uid\); \}catch\(e\)\{\}/.test(src), '12. bleedFade drops a grey 🩸 from the pip (before the badge updates)');
+// 2026-11-07 (package UI30, owner 09:47 #2): the Bleed fade ticks the pip for each counter; only the last (1 -> 0) drops the grey 🩸 (ui30StackGo, before the redraw)
+ok(/function bleedFadeDropVfx\(uid\)/.test(src) && /if\(ev\.type==='bleedFade'\)\{[^\n]*\n[^\n]*\n[^\n]*\n\s*ui30StackGo\(ev\.uid, 'bleed', Math\.max\(0, ev\.left\|0\)\);/.test(src) && /if\(kind === 'bleed'\) bleedFadeDropVfx\(uid\)/.test(src), '12. bleedFade drops a grey 🩸 from the pip at the last counter (before the badge updates)');
 ok(/class(Name)? ?= ?'bleed-drop'/.test(src) && /grayscale\(1\)/.test(src), '12. the drop is greyed out');
 ok(/function bloomCopyVfx\(srcUid, copyUid\)/.test(src) && /ev\.type==='spawn' && ev\.kind==='bloom'\)\{ try\{ bloomCopyVfx\(ev\.nearUid/.test(src) && /ev\.kind !== 'bloom' \/\* BL: its own bloom \*\//.test(src), '12. the copy blooms in (no summon portal)');
 ok(/if\(ev\.type==='bloom'( && !ev\.parasite)?( && !ev\.failed)?\)\{/.test(src) /* + ENG9: a failed bloom has its own handler */ /* 2026-10-24 (package EN7): a Parasite's bloom has its own look (en7Vfx), so the plain handler skips it */ && /ui\.bl-log/.test(src), '12. the bloom event updates the unit and logs a line');

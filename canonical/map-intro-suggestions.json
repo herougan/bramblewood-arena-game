@@ -1,0 +1,30 @@
+{
+ "_about": "UI30 (2026-11-07, owner 09:47 #16): skills that are thematic to introduce at each main map (sub-maps not needed), shown as a small 'Sugg. Intro' pill in the admin Map cards window (ui19McSkillsHTML). Picked by Claude from the map's theme (its blurb), its fields and boons, the skills its cards carry (2026-11-07), the existing intro keyword (canonical/map-keywords.json) and what earlier maps already introduce; no skill is suggested twice along the road. A suggestion that no card on the map has yet still shows as a tile. Shown only: it changes no list, card or pack. Keys are map ids; values are [{skill, why}].",
+ "suggestions": {
+  "m1": [{"skill": "guardian", "why": "Map 0, the first tree-line past the castle walls: a sentry that guards is the simplest defensive skill (1 card)"}],
+  "mf": [{"skill": "thorns", "why": "Map 1, Thistlewood: thistles and the boss's Thistle Prick (1 card)"}, {"skill": "foraging", "why": "Map 1: hedgerows and burrows full of busy gatherers (2 cards)"}],
+  "mb": [{"skill": "crabClaws", "why": "Map 2, Pebble Beach: rock pools and things in shells (2 cards)"}],
+  "mc": [{"skill": "dive", "why": "Map 3, Gannet Cliffs: seabirds that plunge, and the boss's Gannet Dive (1 card)"}, {"skill": "pounce", "why": "Map 3: every ledge belongs to a bird that drops on its prey (2 cards)"}],
+  "m2": [{"skill": "bloomCopy", "why": "Map 4, Sunken Hollow: a flooded lowland where reef and algae spread (1 card)"}],
+  "mw": [{"skill": "hunter", "why": "Map 5, Gatorback Swamp: logs that open their eyes and finish the weak (Cull, 1 card)"}],
+  "m8": [{"skill": "predator", "why": "Map 6, Sable Swampmire: everything here bites first (1 card)"}, {"skill": "weaken", "why": "Map 6: a blacker wetland that saps strength (1 card)"}],
+  "mu": [{"skill": "decay", "why": "Map 7, The Morel Hollow: rot under the old oaks (1 card)"}, {"skill": "meiosis", "why": "Map 7: mushrooms and spores that split and spread (1 card)"}],
+  "m4": [{"skill": "sonar", "why": "Map 8, Caves & Alcoves: sound carries further than light (Sonar is revealed at Map 8; no card here has it yet)"}, {"skill": "darksight", "why": "Map 8: pitch-dark caves (1 card)"}],
+  "mk": [{"skill": "invisible", "why": "Map 9, The Kelp Mangroves: kelp curtains and smugglers' channels (1 card)"}, {"skill": "skitter", "why": "Map 9: crabs scuttling through the mangrove roots (1 card)"}],
+  "m7": [{"skill": "gash", "why": "Map 10, Coral Current: the teeth that live in the open sea (2 cards)"}, {"skill": "charge", "why": "Map 10: fast currents that build up and strike (1 card)"}],
+  "m10": [{"skill": "mountainClimber", "why": "Map 11, Eyrie Heights: sheer alpine cliffs (2 cards)"}, {"skill": "avalanche", "why": "Map 11: snow above the Foundry's smoke (1 card)"}],
+  "mh": [{"skill": "confuse", "why": "Map 12, The Briar Maze: every turn is a dead end, and the Mirage field (1 card)"}, {"skill": "backstab", "why": "Map 12: hedges hide whoever is behind you (1 card)"}],
+  "mr": [{"skill": "canopyCover", "why": "Map 13, The Redwood Deep: the Canopy field under trees as wide as castles (1 card)"}, {"skill": "rage", "why": "Map 13: bears and boars, and the Wild Rage boon (1 card)"}],
+  "m5": [{"skill": "prey", "why": "Map 14, Savanna Reaches: open grassland where nothing hides for long (1 card)"}, {"skill": "executioner", "why": "Map 14: First Blood fights reward finishing a unit (1 card)"}],
+  "ml": [{"skill": "speed", "why": "Map 15, The Long Grass: horses and hounds on every road (1 card)"}, {"skill": "weaponMaster", "why": "Map 15: village militia (1 card)"}],
+  "mt": [{"skill": "packLeader", "why": "Map 16, The Pinewood Taiga: the first of the wolf packs (1 card)"}],
+  "m6": [{"skill": "freeze", "why": "Map 17, Wolfsbane Tundra: frozen ground and Freezing fights (1 card)"}, {"skill": "hibernate", "why": "Map 17: animals sleeping out the cold (1 card)"}],
+  "md": [{"skill": "trap", "why": "Map 18, The Glass Dunes: things that wait under the dunes (1 card)"}, {"skill": "dry", "why": "Map 18: heat so fierce the sand turns to glass (1 card)"}],
+  "m3": [{"skill": "heat", "why": "Map 19, Ashen Spurn: scorched high ground (1 card)"}, {"skill": "immolation", "why": "Map 19: ash rain and burning hides (1 card)"}],
+  "m11": [{"skill": "requiem", "why": "Map 20, The Sundered Peak: the Restless Dead boon (1 card)"}, {"skill": "carrion", "why": "Map 20: apex predators and what they leave (1 card)"}],
+  "m21": [{"skill": "expose", "why": "Map 21, The Quiet Summit: thin, still air above the clouds hides nothing (1 card)"}],
+  "m22": [{"skill": "iceBolt", "why": "Map 22, The Rimefire Caldera: snow on black glass (1 card)"}, {"skill": "cure", "why": "Map 22: sulphur fumes to be cleared (1 card)"}],
+  "m23": [{"skill": "breach", "why": "Map 23, The Goldfeather Siege: a hired army at the golden wall, and the Siege Train boon (1 card)"}, {"skill": "vanguard", "why": "Map 23: the army's front line (1 card)"}],
+  "m24": [{"skill": "hoard", "why": "Map 24, Goldfeather Keep: everything gilded and counted (2 cards)"}, {"skill": "sentry", "why": "Map 24: everything guarded, Arrow Slits on the walls (1 card)"}]
+ }
+}

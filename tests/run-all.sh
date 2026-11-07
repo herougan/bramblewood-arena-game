@@ -363,3 +363,4 @@ exit $fail
 # browser check for package UI23: python3 tests/e2e/ui23_2026_11_06.py (needs Playwright; not run by run.js)
 run node tests/ui26-2026-11-07.js   # 2026-11-07 (package UI26, owner 08:18): the standing darkness on a dark-blind unit is about 5%
 run node tests/ui27-2026-11-07.js   # 2026-11-07 (package UI27, owner 08:54 / 09:01): end light behind the results and tinted, Update loop guards + build stamp pair, skills un-gated on cards owned early, achievement cards shown on claim, nothing while the tab is hidden, editor budget box (B, S, Base level, skill points), editor Previous / Next
+run node tests/ui30-2026-11-07.js   # 2026-11-07 (package UI30, owner 09:47): one toast per setting, numberless Poison/Bleed pips that tick, centred quake line, one Tribe Delivery 📦, Codex leaf on the page, Poison Barbs 🌵☠️, Sugg. Intro pills

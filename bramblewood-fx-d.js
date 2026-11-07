@@ -752,7 +752,7 @@ M.poisonDrop = function(el, opts){
   const re = ()=>{ const nb = t.isConnected && t.querySelector('.abadge.poison'); if(nb){ nb.classList.remove('fxd-psn-tick'); void nb.offsetWidth; nb.classList.add('fxd-psn-tick'); setTimeout(()=> nb.classList.remove('fxd-psn-tick'), 360); } };
   if(!g || psnCalm()){ setTimeout(re, 0); return null; }
   const bh = Math.max(10, Math.min(24, badge ? br.height : 14)), d = document.createElement('div');
-  d.className = 'fxd-psn-drop'; d.setAttribute('aria-hidden', 'true'); d.innerHTML = '<b>☠</b>−' + Math.max(1, (opts.n | 0) || 1);
+  d.className = 'fxd-psn-drop'; d.setAttribute('aria-hidden', 'true'); d.innerHTML = opts.pip ? '<b>☠</b>' : '<b>☠</b>−' + Math.max(1, (opts.n | 0) || 1); // 2026-11-07 (package UI30 #2): {pip:true} the last counter: the greyed pip alone, no number
   d.style.cssText = `height:${bh.toFixed(1)}px; border-radius:${(bh*.32).toFixed(1)}px; font-size:${(bh*.66).toFixed(1)}px;`;
   document.body.appendChild(d);
   const x0 = badge ? br.left + br.width*.55 : br.left + br.width*.25, y0 = badge ? br.top + br.height/2 : br.bottom - 12, side = Math.random() < .5 ? -1 : 1;

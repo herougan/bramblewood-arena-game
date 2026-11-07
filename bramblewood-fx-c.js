@@ -1777,9 +1777,14 @@ M.castleSink = function(el, opts){
     tl.to(t, {keyframes:[{x:-3, duration:.045}, {x:3, duration:.045}, {x:-2, duration:.045}, {x:2, duration:.045}, {x:0, duration:.045}]}, 0);
     puffs(tl, mk, .05, c.x, base, {n:3, w:w*.7, size:[10, 16], rise:-8, drift:10, dur:[.5, .7], color:'rgba(150,128,96,.55)', alpha:.7});
     // 2. the ground cracks along its foot, from the middle out
-    const cw = w*1.5, sv = svgNode('svg', {class:'fxc fxc-sinkcrack', width:Math.ceil(cw), height:16, viewBox:`0 0 ${Math.ceil(cw)} 16`}); document.body.appendChild(sv); bag.push(sv);
-    const pts = zig(0, 8, cw, 8, 9, 3.2); svgNode('polyline', {points:pts}, sv); svgNode('polyline', {points:pts, class:'lite'}, sv);
-    tl.set(sv, {x:c.x - cw/2, y:base - 8, scaleX:0, opacity:1, transformOrigin:'50% 50%'}, .12);
+    // 2026-11-07 (package UI30, owner 09:47 #3: "the quake line across a defeated bramble: shorter, centred"): GSAP's x / y / scaleX did not
+    // reach the outer <svg> (no CSS transform on it), so the 1.5x-wide line sat at the screen's top-left corner. It is now a plain box placed
+    // with left / top, centred on the bramble's foot, 0.8x the card's width, and the svg inside it.
+    const cw = w*.8, sv = document.createElement('div'); sv.className = 'fxc-sinkcrack-wrap'; sv.setAttribute('aria-hidden', 'true');
+    sv.style.cssText = `position:fixed; left:${(c.x - cw/2).toFixed(1)}px; top:${(base - 8).toFixed(1)}px; width:${Math.ceil(cw)}px; height:16px; pointer-events:none; z-index:60;`;
+    const svg = svgNode('svg', {class:'fxc fxc-sinkcrack', width:Math.ceil(cw), height:16, viewBox:`0 0 ${Math.ceil(cw)} 16`, style:'position:absolute; left:0; top:0;'}, sv); document.body.appendChild(sv); bag.push(sv);
+    const pts = zig(0, 8, cw, 8, 7, 2.6); svgNode('polyline', {points:pts}, svg); svgNode('polyline', {points:pts, class:'lite'}, svg);
+    tl.set(sv, {scaleX:0, opacity:1, transformOrigin:'50% 50%'}, .12);
     tl.to(sv, {scaleX:1, duration:.3, ease:'power2.out'}, .12);
     // 3. it sinks through that line: the move and the clip share one tween (and one ease), so only the part above the ground shows
     tl.fromTo(t, {y:0, rotation:0, clipPath:'inset(-30% -30% 0% -30%)'}, {y:h, rotation:tip, clipPath:'inset(-30% -30% 100% -30%)', duration:.95, ease:'power2.in'}, .26);
