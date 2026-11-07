@@ -8,6 +8,12 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-07: Package BAL26 (on its branch, not released)
+- Done: Eyrie Heights' drop traced to ENG32's Brood (the Map 10-11 reference's Wolf Spider Mother brood lost Swarm); Guardian and Dive changed nothing there (`docs/balance/bal26/eyrie-ab-2026-11-07.json`).
+- Done: 23 road fights retuned with BAL21's tuner (two rounds); road 133 -> 151 in band, 150 -> 164 within 10, 27 -> 22 beyond 20. Tournament complete (15 flags); pro_ease `--kind all` re-run (new: 20-PRO-1 at 95%, 20-SK TOO WEAK).
+- Owner calls open: BAL26-1 (keep the weaker reference / swap Wolf Spider Mother out / re-price Brood), BAL26-2 (8 more fights their list cannot fix).
+- Next: the fights in BAL21-1 / BAL26-2 once the owner re-tunes cards or lists; Map 5 once its edit lands.
+
 ## 11-07: Package HUB4 (on its branch, not released)
 - Hub page 16.2 MB to 5.7 MB: search index and 40 lazy tabs moved to files beside `index.html` (`search-index.json`, `lazy/`); the build check now fails above 15.0 MB and serves the page over localhost. Every tab, the Library sub-tabs, search and a search jump were clicked through (screens in `docs/screens/hub4/`).
 - Open: publish the hub (coordinator): send `index.html`, `search-index.json`, `lazy/*` and the other files that changed. `playground.html` and some `img/*.webp` the Lab or Library iframes ask for were already missing (404), not caused by this.

@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package BAL26: Maps 0-20 after ENG29 / ENG32 / ENG33 (decisions BAL26-1, BAL26-2)
+- Players see: 23 road fights retuned toward their targets (decks, 3 leaders, 2 lower Shields; Map reference, 200 games on the road seeds), Eyrie Heights most: 11-5 57 -> 80.5 / 75, 11-7 48 -> 65 / 67.5, 11-8 46 -> 70.5 / 64, 11-10 16.5 -> 48.5 / 40, 11-6 51 -> 69.5 / 71; also 10-3 65 -> 82 / 81, 10-4 55.5 -> 73.5 / 77, 10-6 41 -> 61 / 69, 1-A-1 76.5 -> 90.5 / 90, 8-2 76.5 -> 85.5 / 85, 16-6 72 -> 60 / 60. No Map 5 fight, card, list, bramble Health or ability touched; BAL21-1's exceptions left.
+- Why Eyrie Heights fell: ENG32's Brood. The Map reference of Maps 10-11 plays Wolf Spider Mother x4; its brood used to carry Swarm (Species), now they are plain 1/1 copies. With the old Brood the Map 11 fights read 10-20 points higher; Log Walls 1-4; Guardian (ENG29) and Dive 0 (`docs/balance/bal26/eyrie-ab-2026-11-07.json`; BAL26-1).
+- Road (40 games, 226 curve fights, `docs/balance/bal26/road-totals-2026-11-07.json`): 133 -> 151 in band, 150 -> 164 within 10, 27 -> 22 beyond 20, mean win 65.2 -> 66.2. Eyrie Heights 3 -> 8 of 10 in band. Fights the tuner could not move: BAL26-2.
+- Tournament (`docs/balance/pipeline/tournament-2026-11-07-1501.json`, 149 fights): 15 flags (BAL21: 17). pro_ease `--kind all` (`docs/balance/pro-ease-bal26.json`, merged by `tools/bal26/pro_ease_merge_2026_11_07.js`): Map reference over 85% on 2-B-PRO-4, 7-PRO-4, 20-A-PRO-2 and now 20-PRO-1 (95%, was 77.5% before ENG32), so Admin also marks 20-SK TOO WEAK; WPRO under 50%: 2-WPRO-2, 14-A-WPRO-1/2 (unchanged).
+- Tools: `tools/bal26/road_tune_2026_11_07.js` (BAL21's tuner, refuses Map 5 and BAL21-1's list), `pro_ease_merge_2026_11_07.js`, `decisions_2026_11_07.py`. Tests: `tests/bal26-2026-11-07.js` (new, pins the 23 fights); `tests/bal21-2026-11-07.js` checks a fight BAL26 retuned again on BAL21's pick (dated).
+
 ## 2026-11-07 Package HUB4: the hub page fits the publisher again (16.2 MB to 5.7 MB)
 - The hub could not be published (page over 16 MiB with the publisher's code-highlight runtime). The search text moved to `search-index.json` (loaded on first search) and every big lazy tab (Changelog, Deck optimizer, Library docs, Guide, Design, Feelings, Decks, Dialogues, Action items) to `lazy/*.html`, fetched when the tab opens. Same content, same tabs; no player-visible change (the hub is the owner's page).
 - `tools/hub/build.py` fails above 15.0 MB and checks the page over localhost. Notes in `docs/workflows/release.md`.
