@@ -275,7 +275,7 @@ async def jj26(b, url, w):
       return {op0, op1, op2, op3, shade: shade ? +getComputedStyle(shade).opacity : null, ico: ico ? getComputedStyle(ico).filter : null, blindTile: getComputedStyle(tile).filter}; })""", u['1:0'])
     ok(r['op0'] is not None and r['op1'] > .9, f'the eye shows when it first appears {r}')
     ok(r['op2'] < .05 and r['op3'] < .05, f'it fades out after about 2.4 s and a redraw does not bring it back {r}')
-    ok(r['shade'] is not None and r['shade'] <= .15 and (r['ico'] or '').startswith('brightness(0.9'), f'the darkness on the card is about 10% {r}')
+    ok(r['shade'] is not None and r['shade'] <= .08 and (r['ico'] or '').startswith('brightness(0.95'), f'the darkness on the card is about 5% (2026-11-07 UI26, owner 08:18: halved from 10%) {r}')
     ok('brightness(0.9)' in r['blindTile'], f'the Blind tile is darkened 10% {r["blindTile"]}')
     await done(pg)
 

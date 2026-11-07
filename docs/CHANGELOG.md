@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package UI26 (owner 08:18 notes 1-2)
+- Players see: a unit that can't see in a dark fight is darkened half as much once its shut-eye intro is over (about 5%, was about 10%: FX B shade opacity .14 to .07, art brightness .9 to .95). The brief dark moment while the eyes show is unchanged. The battlefield's own Darkness overlay (plain Darkness: clear centre, .34 then .5 at the edges, masked off around units) is untouched.
+- Finding (note 2): the "blue bar over the eyes" is not an overlay. It is the Open-Ocean Hermit Crab's own art (a teal sea-and-sky horizon strip right behind the crab's eyes) under the darkening; the dark circle on the card's top edge is the Dark-blind pip (UI23 #16, the sunglasses icon, shown on every unit that misses in the dark). The look-B blindfold (`.fxb-fold`) and badge exist only in the FX lab: the game's sight look is fixed at A.
+- Code: two CSS lines in `arena_template.html`; test `tests/ui26-2026-11-07.js` (new); `tests/e2e/ui14_2026_11_02.py` JJ26 now expects about 5%.
 ## 2026-11-07 Package UI25 (owner 07:43 notes 1-4)
 - Players see: the toast after claiming an achievement's faction cards says "N cards added to your collection" (was the card's name); the results screen's "New achievement" chip says how many cards are waiting to be claimed; a map-end pack is titled just its name when it opens (no "Map reward"); the hidden reward card (card back, red "?", rank emblem) in a fight's First clear box has a tooltip and a screen-reader label.
 - Also (07:55): one "N cards added" message per skirmish win and per sitting of pack openings; the top XP bar fills old to new (and across a level-up; none with Effects None); Boomerang is no longer a locked "?" (Otter Centurion).
