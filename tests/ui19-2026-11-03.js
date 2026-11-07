@@ -28,7 +28,7 @@ ok(/editorPitchColsOf/.test(src) && /lumber: 0, stone: 0, metal: 0/.test(src), '
 ok(at('id="skillRows"') > 0 && at('id="skillRows"') < at('id="resistPills"') && at('id="triggerRows"') < at('id="resistPills"') && at('id="resistPills"') < at('id="cdPlacement"') || at('codexPlacementHTML(c)') > at('id="resistPills"'), '2. Resistances, From and Stats by level come after the abilities');
 ok(at('levelStatsEditorHTML(c)') > at('id="triggerRows"'), '2. Stats by level after the abilities');
 const bud = grab('ceBudgetHTML');
-ok(bud && !/ui\.budget-base-line|sbContextLine|sbFormulaText|ui\.budget-miss/.test(bud) && /statsLine/.test(bud) && /productLine/.test(bud) && /head/.test(bud), '2. the budget keeps head, Stats and Product and drops the explanation lines');
+ok(bud && !/ui\.budget-base-line|sbContextLine|sbFormulaText|ui\.budget-miss/.test(bud) && (/statsLine/.test(bud) || /bExpr/.test(bud) /* 2026-11-07 (UI27 #16): the B line */) && (/productLine/.test(bud) || /pExpr/.test(bud)) && /head/.test(bud), '2. the budget keeps head, Stats and Product and drops the explanation lines');
 ok(/\.ed-econ\{display:flex; flex-wrap:wrap/.test(css) && /#editorOverlay \.editor-h2\{margin:8px 0 3px/.test(css), '2. compact editor CSS');
 // 3
 ok(/--nm-cap:clamp\(5px, 5\.6cqw, 14px\)/.test(css) && /left center \/ var\(--nm-cap\) 100%/.test(css) && /right center \/ var\(--nm-cap\) 100%/.test(css), '3. the rolled ends take their width from the card (--nm-cap), not the line count');

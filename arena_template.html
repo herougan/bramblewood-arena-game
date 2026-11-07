@@ -14994,6 +14994,43 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 @media (prefers-reduced-motion: reduce){ [data-hq].ui23-feed-slot::after{animation:none;} }
 /* #27 ss5: a won card's description opened above it, inside the fan's scroll box, and was cut off; in the fan it opens over the card's lower half */
 .rw-panel .res3-fan [data-tip]:hover::after, .rw-panel .res3-fan [data-tip]:focus-visible::after{bottom:8px; max-width:calc(100% - 8px); font-size:11.5px; padding:6px 8px;}
+/* 2026-11-07 (package UI27 #4, owner 08:54: "Victory flash: weaker, behind the victory window; tinted by context (darker in darkness etc.)"): the end
+   light is FX.B darkLeave's overlay (.fxb-dk holding a .fxb-spill; darkEnter's has no spill), at z 9980, so it flashed over the results. It now sits
+   under the results window (.pass-overlay, z 200) and its dim backdrop, at about half strength (Medium effects a third), in the colours ui27FlashContext
+   names on <html data-ui27-flash>. A defeat or draw is dimmer again. */
+:root{--ui27-fl-a:rgba(255,232,170,.62); --ui27-fl-b:rgba(255,205,120,.24); --ui27-fl-k:.5;}
+html[data-ui27-flash="dark"]{--ui27-fl-a:rgba(196,212,255,.46); --ui27-fl-b:rgba(130,150,215,.16); --ui27-fl-k:.36;}
+html[data-ui27-flash="pitch"]{--ui27-fl-a:rgba(170,180,240,.36); --ui27-fl-b:rgba(100,105,190,.12); --ui27-fl-k:.28;}
+html[data-ui27-flash="absolute"]{--ui27-fl-a:rgba(150,165,200,.28); --ui27-fl-b:rgba(80,90,130,.10); --ui27-fl-k:.2;}
+html[data-ui27-flash="night"]{--ui27-fl-a:rgba(205,222,255,.5); --ui27-fl-b:rgba(140,170,230,.18); --ui27-fl-k:.4;}
+html[data-ui27-flash="dusk"]{--ui27-fl-a:rgba(255,200,190,.55); --ui27-fl-b:rgba(230,140,150,.2); --ui27-fl-k:.42;}
+html[data-ui27-flash="sun"]{--ui27-fl-a:rgba(255,240,200,.6); --ui27-fl-b:rgba(255,190,90,.24); --ui27-fl-k:.45;}
+html[data-ui27-flash="frost"]{--ui27-fl-a:rgba(225,245,255,.55); --ui27-fl-b:rgba(150,210,240,.2); --ui27-fl-k:.4;}
+html[data-ui27-flash="grey"]{--ui27-fl-a:rgba(225,228,235,.45); --ui27-fl-b:rgba(170,175,190,.16); --ui27-fl-k:.36;}
+html[data-ui27-flash-res="defeat"], html[data-ui27-flash-res="draw"]{--ui27-fl-k:.22;}
+.fxb.fxb-dk:has(> .fxb-spill){z-index:190 !important; opacity:var(--ui27-fl-k);}
+html[data-fx="med"] .fxb.fxb-dk:has(> .fxb-spill){opacity:calc(var(--ui27-fl-k) * .66);}
+html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var(--ui27-fl-a), var(--ui27-fl-b) 40%, transparent 70%) !important;}
+/* 2026-11-07 (package UI27 #12): an achievement's cards when no animated reveal plays (Effects Low / None, reduced motion): a still window of them */
+.ui27-cards-ov{z-index:1250;}
+.ui27-cards-card{max-width:min(560px, calc(100vw - 32px)); text-align:center;}
+.ui27-cards-row{display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin:10px 0 14px;}
+.ui27-cards-row .card-tile{width:var(--card-full-w, 150px); aspect-ratio:4/5; height:auto;}
+/* 2026-11-07 (package UI27 #16): the editor's budget box lines carry their formula in symbols on hover; the skill points row under Custom Triggers */
+.ce-budget .ui27-bline, .ce-budget .ui27-pline, .ce-budget .ui27-bhead{cursor:help; font-variant-numeric:tabular-nums;}
+.ui27-spts{margin-top:8px; font-size:12.5px; font-variant-numeric:tabular-nums; color:var(--ink-muted); cursor:help; overflow-wrap:anywhere;}
+.ui27-spts .ui27-spts-sum{color:var(--ink); font-weight:600;}
+.ui27-spts .ui27-sterm{border-bottom:1px dotted color-mix(in srgb, var(--ink) 35%, transparent);}
+/* 2026-11-07 (package UI27 #19): the two-skill warning in the skill section, only when the rule is broken; the sum on hover */
+.ui27-skwarn-row{margin-top:8px;} .ui27-skwarn{display:inline-block; font-size:12.5px; font-weight:700; color:var(--danger, #c0392b); cursor:help;}
+.ui27-baselv-field select[disabled]{opacity:1; cursor:not-allowed; background:var(--surface-2); color:var(--ink-muted);}
+/* 2026-11-07 (package UI27 #17): Previous / Next in the card editor's head row */
+.modal-head-row .ui27-nav{display:inline-flex; align-items:center; gap:6px; margin-left:auto; margin-right:8px; flex-wrap:nowrap;}
+.modal-head-row .ui27-nav-pos{font-size:12px; color:var(--ink-muted); white-space:nowrap; font-variant-numeric:tabular-nums;}
+.modal-head-row .ui27-nav-btn{white-space:nowrap;}
+.modal-head-row .ui27-nav-btn.is-armed{color:var(--danger, #c0392b); border-color:var(--danger, #c0392b); white-space:normal; max-width:12em; line-height:1.15;}
+@media (max-width:600px){ #editorOverlay .modal-head-row:has(.ui27-nav){flex-wrap:wrap;} #editorOverlay .modal-head-row h2{flex:1 1 0; min-width:0;}
+  .modal-head-row .ui27-nav{order:3; flex:1 0 100%; justify-content:space-between; margin:6px 0 0;} .modal-head-row .ui27-nav-btn.is-armed{max-width:none;} }
 /* #8 the fight's settings panel on a phone: a sheet under the top row, inside the screen (it opened off the left edge), scrolling */
 @media (max-width: 600px){ #settingsPanelHud{position:fixed !important; left:8px !important; right:8px !important; top:56px !important; width:auto !important; max-height:70vh; overflow-y:auto; transform:none !important;} }
 </style>

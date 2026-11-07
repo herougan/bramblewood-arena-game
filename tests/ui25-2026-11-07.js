@@ -8,7 +8,7 @@ let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  x'
 const app = read('arena_app.js'), tpl = read('arena_template.html');
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
 const {TEXT} = require(path.join(ROOT, 'bramblewood-texts.js'));
-['ui.ui25-mystery-title', 'ui.ui25-mystery-first', 'ui.ui25-mystery-rank', 'ui.ui25-achv-cards', 'toast.card-added-to-your-collection'].forEach(k=>{
+['ui.ui25-mystery-title', 'ui.ui25-mystery-first', 'ui.ui25-mystery-rank', 'toast.card-added-to-your-collection'] /* 2026-11-07 (UI27 #12): ui.ui25-achv-cards retired with the chip */.forEach(k=>{
   const en = TEXT[k]; ok(!!en, 'TX key ' + k);
   CODES.forEach(c=>{ const pack = JSON.parse(read('lang/' + c + '.json')); const lk = en && en.replace(/^[^\w{]+/, ''); /* the packs key a toast by its text without the leading emoji */ ok(en && pack[lk] && pack[lk] !== lk, `${c} translates "${en}"`); }); });
 ok(!TEXT['ui.rw5-end-pack'] && !TEXT['toast.rp-achv-faction-cards'], 'the retired keys are gone');
@@ -22,7 +22,8 @@ ok(/endReward:true, name: p\.name \/\*/.test(app) && !/ui\.rw5-end-pack/.test(ap
 // 4: the mystery tile carries a tooltip and a label
 ok(/cnp-rw-card is-mystery[^`]*data-zoom-tip="\$\{escapeAttr\(mysteryTip\)\}"[^`]*aria-label=/.test(app), '4: mystery tile has data-zoom-tip and aria-label');
 // 2: the chip counts claimable cards
-ok(/achievementFactionCards\(d\.id\)/.test(app) && /\.winloss-achv \.wa-cards/.test(tpl), '2: chip lists cards to claim');
+// 2026-11-07 (package UI27 #12, owner 08:54: "Don't show notices like that until I see the card!"): the chip is gone; the cards show when claimed
+ok(!/ui\.ui25-achv-cards/.test(app) && /function ui27RevealAchvCards/.test(app), '2 (UI27): no "cards to claim" chip; the claim shows the cards');
 // 5: one message per win and per sitting of packs
 ok(/nWon = \(m\.conquestCardsEarned\|\|\[\]\)\.length \+/.test(app) && /toast\.card-added-to-your-collection', \{n: nWon/.test(app), '5: one message for a win, N = all its cards');
 ok(/ui25PackCards \+= opened\.reduce/.test(app) && /if\(!opts\.moreAfter\)/.test(app), '5: packs add up and show one message when no set follows');
