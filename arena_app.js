@@ -26159,7 +26159,7 @@ function mapLayoutToolbarHTML(map){
     <span class="ml-group"><button type="button" class="btn small primary" id="mlLinksDone">Done</button></span></div>`;
   if(!conquestLayoutEdit){
     const nEdits = mapEditList(map).length;
-    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit" title="Move the skirmishes">📐 Layout</button><button type="button" class="btn small" id="mlLinks" title="Choose which skirmish unlocks which">🔗 Links</button><button type="button" class="btn small" id="mlNewSkirmish" title="Add a skirmish">➕ Skirmishes</button><button type="button" class="btn small" id="mlMapCards" title="${escapeAttr(TX('ui.mp-btn-tip'))}">🃏 ${escapeHtml(TX('ui.mp-title'))}</button><button type="button" class="btn small" id="mlClearMap" title="Count every fight on this map as cleared (S rank), with its card rewards">✅ Clear map</button><button type="button" class="btn small ghost" id="mlUnclearMap" title="Set every fight on this map back to not cleared">↩ Unclear map</button><button type="button" class="btn small" id="mlPlayers" title="${escapeAttr(TX('ui.adminu1-sub'))}">👥 ${escapeHtml(TX('ui.adminu1-title'))}</button><!-- 2026-10-29 (package UI3, S8): the player list from the map's admin bar too -->
+    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit" title="Move the skirmishes">📐 Layout</button><button type="button" class="btn small" id="mlLinks" title="Choose which skirmish unlocks which">🔗 Links</button><button type="button" class="btn small" id="mlNewSkirmish" title="Add a skirmish">➕ Skirmishes</button><button type="button" class="btn small" id="mlMapCards" title="${escapeAttr(TX('ui.mp-btn-tip'))}">🃏 ${escapeHtml(TX('ui.mp-title'))}</button>${typeof ui29OpenPackEditor === 'function' ? `<button type="button" class="btn small" id="mlPacks" title="${escapeAttr(TX('ui.ui29-btn-tip'))}">${escapeHtml(TX('ui.ui29-btn'))}</button>` : '' /* 2026-11-07 (package UI29): the Pack editor */}<button type="button" class="btn small" id="mlClearMap" title="Count every fight on this map as cleared (S rank), with its card rewards">✅ Clear map</button><button type="button" class="btn small ghost" id="mlUnclearMap" title="Set every fight on this map back to not cleared">↩ Unclear map</button><button type="button" class="btn small" id="mlPlayers" title="${escapeAttr(TX('ui.adminu1-sub'))}">👥 ${escapeHtml(TX('ui.adminu1-title'))}</button><!-- 2026-10-29 (package UI3, S8): the player list from the map's admin bar too -->
       ${nEdits ? `<button type="button" class="btn small" id="mlEdits" title="Every change to this map, with Revert">📝 Edits (${nEdits})</button>` : ''}
       <span class="ml-note">${custom ? 'Custom layout' : 'Auto layout'} · Admin</span></div>`;
   }
@@ -26239,6 +26239,7 @@ function wireMapLayoutEditor(map, body){
   const on = (id, fn)=>{ const el = document.getElementById(id); if(el) el.addEventListener('click', fn); };
   on('mlNewSkirmish', ()=> addSkirmishToMap(map.id));
   on('mlMapCards', ()=> openMapCardsEditor(map.id)); // 2026-10-22 (package MP)
+  on('mlPacks', ()=>{ if(typeof ui29OpenPackEditor === 'function') ui29OpenPackEditor(ui29KeyForMap(map.id)); }); // 2026-11-07 (package UI29): this map's pack
   on('mlClearMap', ()=>{ adminCompleteNodes(map.id, map.nodes.filter(n=> n.kind!=='tutorial').map(n=> n.key), {allRewards:true}); rerender(); }); // 2026-10-17: every first-clear and clear-again reward
   on('mlUnclearMap', ()=>{ adminUnclearMap(map.id); rerender(); });
   on('mlEdits', ()=> openMapEditsList(map.id));
@@ -33239,6 +33240,243 @@ function pk1OpenMapCards(mapId){
   try{ wireRewardZoom(ov); }catch(e){}
   try{ document.getElementById('pk1McClose').focus(); }catch(e){}
 }
+// UI29_PE:START
+// 2026-11-07 (package UI29, owner 09:04 / 09:10: "I need a pack editor page - similar UI to the map editor. It also shows Starter, Base, and Factions cards!"):
+// the admin 📦 Pack editor, built from the 🃏 Map cards window's parts (the overlay and panel classes, vis4MapCardTilesHTML with UI28's power badge,
+// rv1 tiles with Cut / ↩ Keep, the Special section's add-card picker, Copy my picks / Export all). Left: every shop pack (shopPacksAll, so the
+// Collector packs too, and Pack 4 that no shop sells), then Starter, Base and the faction pool's sides. Main: that list's cards as the game builds it
+// now (packCardPool / starterDeckParts / cardSourceOf), each with where it comes from (a map list or a pack extra) and its CONTENT16 source tag;
+// CONTENT16's proposal (canonical/pack-plan.json, baked in as PACK_PLAN by assemble_arena.py) shows as Suggested tiles (✓ accept / ✂ reject,
+// the reason as the tooltip) and as Proposed-out pills. Marks are picks, kept in this browser (bw_ui29_pack_picks_v1, bw_ui29_pack_add_v1);
+// Copy my picks / Export all give the coordinator text to fold in. Nothing here changes a live pack.
+const PACK_PLAN = __PACK_PLAN__;
+const UI29_PICKS_KEY = 'bw_ui29_pack_picks_v1', UI29_ADD_KEY = 'bw_ui29_pack_add_v1';
+function ui29Load(k){ try{ const o = JSON.parse(localStorage.getItem(k) || '{}'); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; }catch(e){ return {}; } }
+const ui29Picks = ui29Load(UI29_PICKS_KEY), ui29Added = ui29Load(UI29_ADD_KEY); // picks: {"<list>|<card id>": 'cut' | 'accept' | 'reject'}; added: {list: [card ids]}
+function ui29Save(){ try{ localStorage.setItem(UI29_PICKS_KEY, JSON.stringify(ui29Picks)); localStorage.setItem(UI29_ADD_KEY, JSON.stringify(ui29Added)); }catch(e){} }
+function ui29Plan(){ const p = (typeof PACK_PLAN !== 'undefined' && PACK_PLAN) || null; return p && p.packs ? p : {packs: {}, sources: {}, zones: [], achievements: {}}; }
+function ui29Ok(defs){ return id=>{ const d = defs[id]; return !!d && !d.token && !d.test && !d.derivedFrom && !/@(lv|p)\d/.test(id) && (adminModeEnabled || !isEasterEgg(d)); }; }
+const UI29_OTHER = [['starter', '🌱'], ['base', '🧺'], ['otters', '🦦'], ['hummingbirds', '🐦'], ['shared', '🤝']];
+function ui29OtherName(k){ return ({starter: TX('ui.ui29-list-starter'), base: TX('ui.ui29-list-base'), otters: TX('ui.ui29-list-otters'), hummingbirds: TX('ui.ui29-list-hummingbirds'), shared: TX('ui.ui29-list-shared')})[k] || k; }
+// the left column: {key, plan (the pack-plan key, and the picks' key), kind: shop | unsold | starter | base | faction, name, icon, pool}
+function ui29Lists(){
+  const out = [], seen = new Set(); let packs = []; try{ packs = shopPacksAll(); }catch(e){}
+  packs.forEach(p=>{ if(!p || !p.id || seen.has(p.id)) return; seen.add(p.id); out.push({key: p.id, plan: p.baseId || p.id, kind: 'shop', name: p.name, icon: p.icon || '📦', pool: +p.pool || 1, adv: !!p.advanced}); });
+  if(!packs.some(p=> (+p.pool || 1) === 4)) out.push({key: 'pack4', plan: 'pack4', kind: 'unsold', name: TX('ui.ui29-pack4'), icon: '📦', pool: 4});
+  UI29_OTHER.forEach(([k, ic])=> out.push({key: k, plan: k, kind: k === 'starter' || k === 'base' ? k : 'faction', name: ui29OtherName(k), icon: ic}));
+  return out;
+}
+function ui29Sort(ids, defs){ return ids.slice().sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name))); }
+function ui29StarterPicks(){
+  const by = {}; ['otters', 'hummingbirds', 'both'].forEach(p=>{ let ids = []; try{ ids = Object.keys(starterDeckParts(p).all || {}); }catch(e){ ids = ((ui29Plan().packs.starter || {}).byPick || {})[p] || []; } ids.forEach(id=> (by[id] = by[id] || []).push(p)); });
+  return by;
+}
+// the list's cards as the game builds it today
+function ui29ListCards(l, defs){
+  const ok = ui29Ok(defs);
+  if(l.kind === 'shop' || l.kind === 'unsold') return ui29Sort([...new Set(packCardPool(defs, l.pool, true))].filter(ok), defs);
+  if(l.kind === 'faction'){ const want = {otters: '', hummingbirds: 'tribes', shared: 'shared'}[l.key];
+    return ui29Sort(Object.keys(defs).filter(id=>{ if(!ok(id) || isUnattainable(defs[id])) return false; const s = cardSourceOf(defs[id]); if(s.kind !== 'pack' || Number(s.tier) !== 11) return false; const side = s.side === 'tribes' || s.side === 'shared' ? s.side : ''; return side === want; }), defs); }
+  if(l.kind === 'starter') return ui29Sort(Object.keys(ui29StarterPicks()).filter(ok), defs);
+  if(l.kind === 'base') return ui29Sort(Object.keys(defs).filter(id=> ok(id) && cardSourceOf(defs[id]).kind === 'base' && defs[id].cardType !== 'spell' && defs[id].cardType !== 'field'), defs);
+  return [];
+}
+function ui29PlanNameOf(key){ const l = ui29Lists().find(x=> x.plan === key && !x.adv); return l ? l.name : (((ui29Plan().packs || {})[key] || {}).name || key); }
+// the proposal around this list: suggested tiles (add, moved in, zone move in) and the marks on today's cards (proposed out, zone move out)
+function ui29Proposal(l, live){
+  const P = ui29Plan(), pk = P.packs[l.plan] || null, liveSet = new Set(live), sug = [], out = {};
+  if(!pk) return {sug, out, pk};
+  const taken = new Set();
+  (pk.add || []).forEach(a=>{ if(a && a.id && !liveSet.has(a.id) && !taken.has(a.id)){ taken.add(a.id); sug.push({id: a.id, kind: 'add', why: a.why || ''}); } });
+  (pk.movedIn || []).forEach(a=>{ if(a && a.id && !liveSet.has(a.id) && !taken.has(a.id)){ taken.add(a.id); sug.push({id: a.id, kind: 'move', from: a.from, why: a.why || ''}); } });
+  if(Array.isArray(pk.zoneCards)){
+    const where = ui29LiveIndex(); // which basic pack holds a card today, for a zone move's "from"
+    pk.zoneCards.forEach(id=>{ if(!liveSet.has(id) && !taken.has(id)){ taken.add(id); sug.push({id, kind: 'zone', from: where[id] || ''}); } });
+    const zone = new Set(pk.zoneCards);
+    live.forEach(id=>{ if(zone.has(id)) return; const to = Object.keys(P.packs).find(k=> k !== l.plan && Array.isArray(P.packs[k].zoneCards) && P.packs[k].zoneCards.includes(id)); if(to) out[id] = {kind: 'zone', to}; });
+  }
+  (pk.remove || []).forEach(r=>{ if(r && r.id) out[r.id] = {kind: 'out', to: r.moveTo || '', why: r.why || ''}; });
+  return {sug, out, pk};
+}
+function ui29LiveIndex(){
+  const defs = getCardDefs(), out = {};
+  ui29Lists().forEach(x=>{ if(x.adv || !(x.kind === 'shop' || x.kind === 'unsold') || !(x.pool >= 1 && x.pool <= 10)) return; ui29ListCards(x, defs).forEach(id=>{ if(!out[id]) out[id] = x.plan; }); });
+  return out;
+}
+function ui29SrcHTML(id){
+  const s = (ui29Plan().sources || {})[id]; if(!s) return '';
+  const now = Array.isArray(s) ? s[0] : s, pr = Array.isArray(s) ? s[1] : null;
+  const lab = k=> ({pack: TX('ui.ui29-src-pack'), 'pack-unique': TX('ui.ui29-src-pack-unique'), 'skirmish-unique': TX('ui.ui29-src-skirmish-unique'), achievement: TX('ui.ui29-src-achievement'), starter: TX('ui.ui29-src-starter'), base: TX('ui.ui29-src-base'), faction: TX('ui.ui29-src-faction'), reward: TX('ui.ui29-src-reward'), special: TX('ui.ui29-src-special'), none: TX('ui.ui29-src-none')})[k] || k;
+  const tip = pr ? TX('ui.ui29-src-tip2', {now: lab(now), proposed: lab(pr)}) : TX('ui.ui29-src-tip', {now: lab(now)});
+  return `<b class="rv2-pill ui29-src is-${escapeAttr(String(pr || now).replace(/[^a-z-]/g, ''))}" title="${escapeAttr(tip)}" data-ui29-src="${escapeAttr(now)}"${pr ? ` data-ui29-src-proposed="${escapeAttr(pr)}"` : ''}>${escapeHtml(pr ? lab(now) + ' → ' + lab(pr) : lab(now))}</b>`;
+}
+function ui29PillsHTML(l, id, role, info, starterBy){
+  let h = '';
+  if(role === 'in' && (l.kind === 'shop' || l.kind === 'unsold') && l.pool >= 1 && l.pool <= 10){ const idx = packIndex(), f = idx.first[id];
+    if(f){ const m = (()=>{ try{ return mpMapById(f.loc); }catch(e){ return null; } })(); h += `<b class="rv2-pill ui29-from is-map" data-ui29-from="map" title="${escapeAttr(TX('ui.ui29-from-map-tip', {map: m ? m.name : f.loc, n: f.n}))}">${escapeHtml(TX('ui.ui29-from-map', {n: f.n}))}</b>`; }
+    else if(idx.extra[id]) h += `<b class="rv2-pill ui29-from is-extra" data-ui29-from="extra" title="${escapeAttr(TX('ui.ui29-from-extra-tip'))}">${escapeHtml(TX('ui.ui29-from-extra'))}</b>`; }
+  if(role === 'in' && l.kind === 'starter' && starterBy && starterBy[id]){ const nm = {otters: TX('ui.ui29-list-otters'), hummingbirds: TX('ui.ui29-list-hummingbirds'), both: TX('ui.ui29-both')}, ic = {otters: '🦦', hummingbirds: '🐦', both: '🤝'};
+    h += `<b class="rv2-pill ui29-picks" title="${escapeAttr(TX('ui.ui29-starter-tip', {picks: starterBy[id].map(p=> nm[p]).join(', ')}))}">${starterBy[id].map(p=> ic[p]).join('')}</b>`; }
+  if(role === 'in' && info && info.kind === 'out') h += `<b class="rv2-pill ui29-out" data-ui29-out="1" title="${escapeAttr(info.why || '')}">${escapeHtml(info.to ? TX('ui.ui29-out-to', {pack: ui29PlanNameOf(info.to)}) : TX('ui.ui29-out'))}</b>`;
+  if(role === 'in' && info && info.kind === 'zone') h += `<b class="rv2-pill ui29-zone-out" data-ui29-out="zone" title="${escapeAttr(TX('ui.ui29-zone-out-tip', {pack: ui29PlanNameOf(info.to)}))}">${escapeHtml(TX('ui.ui29-zone-out', {pack: ui29PlanNameOf(info.to)}))}</b>`;
+  if(role === 'sug'){ const t = info.kind === 'move' ? TX('ui.ui29-sug-move', {pack: ui29PlanNameOf(info.from)}) : info.kind === 'zone' ? TX('ui.ui29-sug-zone') : TX('ui.ui28-suggested');
+    const tip = info.kind === 'zone' ? TX('ui.ui29-zone-in-tip', {pack: info.from ? ui29PlanNameOf(info.from) : '?'}) : (info.why || '');
+    h += `<b class="rv2-pill ui29-sug-pill is-${info.kind}" title="${escapeAttr(tip)}">${escapeHtml(t)}</b>`; }
+  if(role === 'added') h += `<b class="rv2-pill is-owner">${escapeHtml(TX('ui.ff9-added-pill'))}</b>`;
+  return h + ui29SrcHTML(id);
+}
+function ui29TileHTML(l, id, defs, role, info, starterBy){
+  const mark = ui29Picks[l.plan + '|' + id] || '', why = role === 'sug' ? (info.kind === 'zone' ? TX('ui.ui29-zone-in-tip', {pack: info.from ? ui29PlanNameOf(info.from) : '?'}) : info.why || '') : (info && info.why) || '';
+  const cls = role === 'in' ? 'is-chosen' + (mark === 'cut' ? ' is-flipped' : '') : role === 'sug' ? 'is-maybe' + (mark === 'accept' ? ' is-flipped' : mark === 'reject' ? ' ui29-rejected' : '') : 'is-added';
+  let acts = '';
+  if(role === 'in'){ const on = mark === 'cut'; acts = `<button type="button" class="rv1-act" data-ui29-act="cut" aria-pressed="${on}" title="${escapeAttr(TX('ui.lf2-picks-note'))}" aria-label="${escapeAttr(TX('ui.lf2-picks-note'))}">${escapeHtml(on ? TX('ui.rv1-act-keep') : TX('ui.rv1-act-cut'))}</button>`; }
+  else if(role === 'sug') acts = `<button type="button" class="rv1-act ui29-acc" data-ui29-act="accept" aria-pressed="${mark === 'accept'}" title="${escapeAttr(TX('ui.ui29-accept-tip'))}" aria-label="${escapeAttr(TX('ui.ui29-accept-tip'))}">✓</button><button type="button" class="rv1-act ui29-rej" data-ui29-act="reject" aria-pressed="${mark === 'reject'}" title="${escapeAttr(TX('ui.ui29-reject-tip'))}" aria-label="${escapeAttr(TX('ui.ui29-reject-tip'))}">✂</button>`;
+  else acts = `<button type="button" class="rv1-act" data-ui29-act="remove-added">${escapeHtml(TX('ui.ff9-remove'))}</button>`;
+  return `<span class="rv1-tile ui29-tile ${cls}" data-ui29-id="${escapeAttr(id)}" data-ui29-role="${role}"${role === 'sug' ? ` data-ui29-kind="${escapeAttr(info.kind)}"` : ''}>${vis4MapCardTilesHTML([id], defs, {large: true, power: true, why})}<span class="rv2-pills">${ui29PillsHTML(l, id, role, info, starterBy)}</span><span class="ui13-acts">${acts}</span></span>`;
+}
+function ui29AddedOf(key){ const a = ui29Added[key]; return Array.isArray(a) ? a.filter(x=> typeof x === 'string') : []; }
+// one list's picks as numbers and names: {cut, accept, reject, added}
+function ui29PicksOf(key){
+  const out = {cut: [], accept: [], reject: [], added: ui29AddedOf(key)};
+  Object.keys(ui29Picks).forEach(k=>{ const i = k.indexOf('|'); if(i < 0 || k.slice(0, i) !== key) return; const v = ui29Picks[k]; if(out[v]) out[v].push(k.slice(i + 1)); });
+  return out;
+}
+function ui29MapsLine(t){
+  const [a, b] = packMapRange(t), inR = n=> n != null && n >= a && n <= b;
+  const mains = mainConquestMaps().filter(m=> inR(mapNumberOf(m.id))).map(m=> m.name);
+  const subs = (typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : []).filter(m=> m.sub && !packListSkipped(m) && inR((()=>{ try{ return mapUnlockNumberOf(m.id); }catch(e){ return null; } })())).map(m=> m.name);
+  return `<p class="panel-sub ui29-maps" data-ui29-maps="${a}-${b}">${escapeHtml(TX('ui.ui29-draws', {a, b, maps: mains.join(', ')}))}${subs.length ? '<br>' + escapeHtml(TX('ui.ui29-side-maps', {maps: subs.join(', ')})) : ''}</p>`;
+}
+function ui29MainHTML(l){
+  const defs = getCardDefs(), P = ui29Plan(), live = ui29ListCards(l, defs), pr = ui29Proposal(l, live), pk = pr.pk, starterBy = l.kind === 'starter' ? ui29StarterPicks() : null;
+  const picks = ui29PicksOf(l.plan), added = picks.added.filter(id=> defs[id] && !live.includes(id)), sug = pr.sug.filter(s=> defs[s.id]);
+  const mine = live.length - picks.cut.filter(id=> live.includes(id)).length + picks.accept.filter(id=> sug.some(s=> s.id === id)).length + added.length;
+  const zone = (P.zones || []).find(z=> z.pack === l.plan);
+  const info = [];
+  if((l.kind === 'shop' || l.kind === 'unsold') && l.pool >= 1 && l.pool <= 10) info.push(ui29MapsLine(l.pool));
+  if(zone) info.push(`<p class="panel-sub ui29-zone" data-ui29-zone="${escapeAttr(zone.id)}">${escapeHtml(TX('ui.ui29-zone', {id: zone.id, a: zone.maps[0], b: zone.maps[1], name: zone.name}))}${zone.submaps && zone.submaps.length ? ' · ' + escapeHtml(TX('ui.ui29-side-maps', {maps: zone.submaps.join(', ')})) : ''}</p>`);
+  if(pk && pk.rule) info.push(`<p class="panel-sub ui29-rule">${escapeHtml(pk.rule)}</p>`);
+  if(pk && pk.note) info.push(`<p class="panel-sub ui29-rule">${escapeHtml(pk.note)}</p>`);
+  if(!P.packs || !Object.keys(P.packs).length) info.push(`<p class="panel-sub">${escapeHtml(TX('ui.ui29-no-plan'))}</p>`);
+  const counts = TX('ui.ui29-counts', {now: live.length, mine, proposed: pk && pk.proposed != null ? pk.proposed : '–'});
+  const tiles = live.map(id=> ui29TileHTML(l, id, defs, 'in', pr.out[id], starterBy)).join('');
+  const sTiles = sug.map(s=> ui29TileHTML(l, s.id, defs, 'sug', s)).join('');
+  const aTiles = added.map(id=> ui29TileHTML(l, id, defs, 'added', null)).join('');
+  return `<div class="ui29-head"><h3 id="ui29ListTitle">${escapeHtml(l.icon + ' ' + l.name)}</h3><span class="ui29-counts" id="ui29Counts">${escapeHtml(counts)}</span></div>${info.join('')}
+    <section class="pk1-mc-sec rv2-panel ui29-sec" data-ui29-sec="in"><h3>${escapeHtml(TX('ui.ui29-in-list'))} <small>${live.length}</small></h3><div class="vis4-mc-row rv1-row">${tiles || `<span class="panel-sub">${escapeHtml(TX('ui.ui29-empty'))}</span>`}</div></section>
+    ${sug.length ? `<section class="pk1-mc-sec rv2-panel ui29-sec ui29-sug-sec" data-ui29-sec="sug"><h3>${escapeHtml(TX('ui.ui28-suggested'))} <small>${sug.length}</small></h3><p class="panel-sub">${escapeHtml(TX('ui.ui29-suggested-sub'))}</p><div class="vis4-mc-row rv1-row">${sTiles}</div></section>` : ''}
+    <section class="pk1-mc-sec rv2-panel ui29-sec" data-ui29-sec="special" data-rv-special="1"><h3>${escapeHtml(TX('ui.ui29-special-title'))} <small>${added.length}</small></h3><div class="ui28-sp-add"><button type="button" class="btn small" id="ui29Add" title="${escapeAttr(TX('ui.ui29-add-tip'))}">${escapeHtml(TX('ui.ff9-add-special'))}</button></div><div class="vis4-mc-row rv1-row">${aTiles || `<span class="panel-sub">–</span>`}</div></section>`;
+}
+function ui29NavHTML(cur){
+  const L = ui29Lists(), btn = l=> `<button type="button" class="ui29-nav-btn${l.key === cur ? ' is-on' : ''}" data-ui29-list="${escapeAttr(l.key)}" aria-pressed="${l.key === cur}"><span aria-hidden="true">${escapeHtml(l.icon)}</span> ${escapeHtml(l.name)}</button>`;
+  return `<h4>${escapeHtml(TX('ui.ui29-nav-shop'))}</h4>${L.filter(l=> l.kind === 'shop' || l.kind === 'unsold').map(btn).join('')}<h4>${escapeHtml(TX('ui.ui29-nav-other'))}</h4>${L.filter(l=> l.kind !== 'shop' && l.kind !== 'unsold').map(btn).join('')}`;
+}
+// the pack a map's cards go to (its basic pack by map number), for the map admin bar's button
+function ui29KeyForMap(mapId){
+  try{ const n = mapUnlockNumberOf(mapId), t = packTierOfMapNumber(n); const l = ui29Lists().find(x=> x.kind === 'shop' && !x.adv && x.pool === t) || ui29Lists().find(x=> x.pool === t); return l ? l.key : ''; }catch(e){ return ''; }
+}
+function ui29PicksText(keys){
+  const defs = getCardDefs(), nm = id=> (defs[id] && defs[id].name) || id, lines = [];
+  keys.forEach(key=>{ const p = ui29PicksOf(key), parts = [];
+    if(p.cut.length) parts.push('cut ' + p.cut.map(nm).join(', ')); if(p.accept.length) parts.push('accept ' + p.accept.map(nm).join(', '));
+    if(p.reject.length) parts.push('reject ' + p.reject.map(nm).join(', ')); if(p.added.length) parts.push('added ' + p.added.map(nm).join(', '));
+    if(parts.length) lines.push(ui29PlanNameOf(key) + ' [' + key + ']: ' + parts.join('; ')); });
+  return lines.join('\n');
+}
+function ui29ExportAll(){
+  const defs = getCardDefs(), nm = id=> (defs[id] && defs[id].name) || id, data = [], lines = [], seen = new Set();
+  ui29Lists().forEach(l=>{ if(seen.has(l.plan)) return; seen.add(l.plan);
+    const live = ui29ListCards(l, defs), pr = ui29Proposal(l, live), p = ui29PicksOf(l.plan);
+    const row = {list: l.plan, name: l.name, now: live, cut: p.cut, accept: p.accept, reject: p.reject, added: p.added, suggested: pr.sug.map(s=> ({id: s.id, kind: s.kind, from: s.from || undefined})), proposedOut: Object.keys(pr.out).map(id=> Object.assign({id}, pr.out[id]))};
+    data.push(row);
+    const mk = [p.cut.length ? 'cut ' + p.cut.map(nm).join(', ') : '', p.accept.length ? 'accept ' + p.accept.map(nm).join(', ') : '', p.reject.length ? 'reject ' + p.reject.map(nm).join(', ') : '', p.added.length ? 'added ' + p.added.map(nm).join(', ') : ''].filter(Boolean).join('; ') || 'no changes';
+    const open = pr.sug.filter(s=> !p.accept.includes(s.id) && !p.reject.includes(s.id)).map(s=> nm(s.id));
+    lines.push(l.name + ' [' + l.plan + ']: ' + mk + ' | now ' + live.length + ' cards | suggested ' + pr.sug.length + (open.length ? ' (unmarked: ' + open.join(', ') + ')' : '') + ' | proposed out: ' + (Object.keys(pr.out).map(nm).join(', ') || '-'));
+  });
+  const head = 'Bramblewood pack editor picks, exported ' + new Date().toISOString().slice(0, 10) + ' (plan ' + (ui29Plan().built || '?') + '). One line per list: "<list> [key]: <the owner\'s cut / accept / reject / added marks> | now N cards | suggested ... | proposed out ...".';
+  return {text: head + '\n' + lines.join('\n'), json: {exported: new Date().toISOString(), plan: ui29Plan().built || '', lists: data}};
+}
+function ui29OpenPicker(ov, l){
+  ov.querySelectorAll('.ff9-picker').forEach(e=> e.remove());
+  const defs = getCardDefs(), ok = ui29Ok(defs), has = new Set(ui29ListCards(l, defs).concat(ui29AddedOf(l.plan)));
+  const all = Object.keys(defs).filter(ok).sort((a, b)=> String(defs[a].name).localeCompare(String(defs[b].name)));
+  const box = document.createElement('div'); box.className = 'ff9-picker'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', TX('ui.ff9-picker-title'));
+  box.innerHTML = `<div class="ff9-pk-head"><b>${escapeHtml(TX('ui.ff9-picker-title'))}</b><button type="button" class="modal-close-btn ff9-pk-x" aria-label="Close">✕</button></div><input type="search" class="ff9-pk-q" autocomplete="off" placeholder="${escapeAttr(TX('ui.ff9-search'))}" aria-label="${escapeAttr(TX('ui.ff9-search'))}"><div class="ff9-pk-list" role="listbox"></div>`;
+  ov.querySelector('.pk1-mc-modal').appendChild(box);
+  const q = box.querySelector('.ff9-pk-q'), list = box.querySelector('.ff9-pk-list');
+  const draw = ()=>{ const t = q.value.trim().toLowerCase(), hit = all.filter(id=> !t || String(defs[id].name).toLowerCase().includes(t)).slice(0, 60);
+    list.innerHTML = hit.length ? hit.map(id=>{ const h = has.has(id); return `<button type="button" class="ff9-pk-row${h ? ' is-has' : ''}" data-ff9-id="${escapeAttr(id)}"${h ? ' disabled' : ''}><span>${escapeHtml(defs[id].name)}</span><small>${escapeHtml(String(defs[id].rarity || ''))}${h ? ' · ' + escapeHtml(TX('ui.ff9-already')) : ''}</small></button>`; }).join('') : `<p class="panel-sub">${escapeHtml(TX('ui.ff9-no-match'))}</p>`; };
+  q.addEventListener('input', draw); draw();
+  box.querySelector('.ff9-pk-x').onclick = ()=> box.remove();
+  box.addEventListener('keydown', e=>{ if(e.key === 'Escape'){ e.stopPropagation(); box.remove(); } });
+  list.addEventListener('click', e=>{ const r = e.target.closest('.ff9-pk-row'); if(!r || r.disabled) return;
+    const id = r.dataset.ff9Id, a = ui29AddedOf(l.plan); if(!a.includes(id)) a.push(id); ui29Added[l.plan] = a; ui29Save(); has.add(id);
+    r.disabled = true; r.classList.add('is-has'); ui29Draw(ov, l.key, true); });
+  try{ q.focus(); }catch(e){}
+}
+function ui29Draw(ov, key, keepPicker){
+  const L = ui29Lists(), l = L.find(x=> x.key === key) || L[0]; if(!l) return;
+  ov.dataset.ui29Cur = l.key;
+  const nav = ov.querySelector('#ui29Nav'), main = ov.querySelector('#ui29Main'); if(!nav || !main) return;
+  nav.innerHTML = ui29NavHTML(l.key);
+  const keep = main.scrollTop; main.innerHTML = ui29MainHTML(l); if(keepPicker) main.scrollTop = keep;
+  if(!keepPicker) ov.querySelectorAll('.ff9-picker').forEach(e=> e.remove());
+  const ad = main.querySelector('#ui29Add'); if(ad) ad.onclick = ()=> ui29OpenPicker(ov, l);
+  try{ wireRewardZoom(main); }catch(e){}
+  try{ const on = nav.querySelector('.is-on'); if(on && on.scrollIntoView && nav.scrollWidth > nav.clientWidth) on.scrollIntoView({block: 'nearest', inline: 'center'}); }catch(e){}
+}
+function ui29OpenPackEditor(key){
+  if(!adminModeEnabled) return;
+  let ov = document.getElementById('ui29PackEditor');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'ui29PackEditor'; ov.className = 'modal-overlay pk1-mc-overlay ui29-pe-overlay'; document.body.appendChild(ov); }
+  const tip = (id, btn, t)=> `<span class="rv2-copy">${btn}<span class="rv2-tip" id="${id}" role="tooltip">${escapeHtml(t)}</span></span>`;
+  ov.innerHTML = `<div class="modal pk1-mc-modal ui29-pe-modal" role="dialog" aria-modal="true" aria-labelledby="ui29Title"><div class="modal-head-row"><h2 id="ui29Title">${escapeHtml(TX('ui.ui29-title'))}</h2><button type="button" class="modal-close-btn" id="ui29Close" aria-label="Close">✕</button></div>
+    <p class="panel-sub">${escapeHtml(TX('ui.ui29-sub'))}</p><div class="rv1-bar">${tip('ui29CopyTip', `<button type="button" class="btn small" id="ui29Copy" aria-describedby="ui29CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button>`, TX('ui.ui29-copy-tip'))}${tip('ui29ExportTip', `<button type="button" class="btn small" id="ui29Export" aria-describedby="ui29ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button>`, TX('ui.ui29-export-tip'))}<span class="panel-sub" id="ui29Msg" aria-live="polite"></span><span id="ui29Dl"></span></div>
+    <div class="ui29-cols"><nav class="ui29-nav" id="ui29Nav" aria-label="${escapeAttr(TX('ui.ui29-title'))}"></nav><div class="ui29-main pk1-mc-body" id="ui29Main"></div></div></div>`;
+  ov.hidden = false;
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
+  const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden && !ov.querySelector('.ff9-picker')) close(); };
+  document.addEventListener('keydown', onKey);
+  ov.onclick = e=>{
+    if(e.target === ov) return close();
+    const nb = e.target.closest && e.target.closest('[data-ui29-list]'); if(nb){ ui29Draw(ov, nb.dataset.ui29List); return; }
+    const b = e.target.closest && e.target.closest('[data-ui29-act]'); if(!b) return;
+    const t = b.closest('.ui29-tile'), id = t && t.dataset.ui29Id, key = ov.dataset.ui29Cur, l = ui29Lists().find(x=> x.key === key); if(!id || !l) return;
+    const pk = l.plan + '|' + id, act = b.dataset.ui29Act;
+    if(act === 'remove-added'){ ui29Added[l.plan] = ui29AddedOf(l.plan).filter(x=> x !== id); if(!ui29Added[l.plan].length) delete ui29Added[l.plan]; }
+    else if(ui29Picks[pk] === act) delete ui29Picks[pk]; else ui29Picks[pk] = act;
+    ui29Save(); ui29Draw(ov, key, true);
+    try{ const again = ov.querySelector(`.ui29-tile[data-ui29-id="${CSS.escape(id)}"] [data-ui29-act="${act}"]`); if(again) again.focus(); }catch(_){}
+  };
+  ov.querySelector('#ui29Close').addEventListener('click', close);
+  ov.querySelector('#ui29Copy').addEventListener('click', ()=>{
+    const txt = ui29PicksText([...new Set(ui29Lists().map(l=> l.plan))]), msg = ov.querySelector('#ui29Msg');
+    if(!txt){ msg.textContent = TX('ui.rv1-copy-none'); return; }
+    window.__ui29Last = txt;
+    try{ navigator.clipboard.writeText(txt).then(()=>{ msg.textContent = TX('ui.rv1-copied'); }, ()=>{ msg.textContent = txt; }); }catch(e){ msg.textContent = txt; }
+  });
+  ov.querySelector('#ui29Export').addEventListener('click', ()=>{
+    const r = ui29ExportAll(), msg = ov.querySelector('#ui29Msg'), dl = ov.querySelector('#ui29Dl'); window.__ui29Export = r;
+    try{ navigator.clipboard.writeText(r.text).then(()=>{ msg.textContent = TX('ui.ui3-export-copied'); }, ()=>{ msg.textContent = TX('ui.ui3-export-ready'); }); }catch(e){ msg.textContent = TX('ui.ui3-export-ready'); }
+    const save = (name, body, type)=>{ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], {type})); a.download = name; document.body.appendChild(a); a.click(); a.remove(); };
+    dl.innerHTML = `<button type="button" class="btn small" data-ui29-dl="txt">⬇ .txt</button> <button type="button" class="btn small" data-ui29-dl="json">⬇ .json</button>`;
+    dl.querySelector('[data-ui29-dl=txt]').onclick = ()=> save('bramblewood-pack-picks.txt', r.text, 'text/plain');
+    dl.querySelector('[data-ui29-dl=json]').onclick = ()=> save('bramblewood-pack-picks.json', JSON.stringify(r.json, null, 1), 'application/json');
+  });
+  ui29Draw(ov, key || '');
+  try{ ov.querySelector('#ui29Close').focus(); }catch(e){}
+}
+// the entry points' hooks (Admin Mode only): the Shop's bar and each pack tile's 📦 Edit, wired once on the Shop's root (a capture listener, so a tap
+// on Edit opens the editor and does not also pick the shelf item it sits on)
+function ui29ShopBarHTML(){ return adminModeEnabled ? `<div class="ui29-shop-bar"><button type="button" class="btn small" data-ui29-open="starter" title="${escapeAttr(TX('ui.ui29-btn-tip'))}">${escapeHtml(TX('ui.ui29-shop-btn'))}</button></div>` : ''; }
+function ui29ShelfEditHTML(p){ return adminModeEnabled && p && p.id ? `<span class="ui29-shelf-edit" role="button" tabindex="0" data-ui29-open="${escapeAttr(p.id)}" title="${escapeAttr(TX('ui.ui29-edit-tip'))}" aria-label="${escapeAttr(TX('ui.ui29-edit-tip') + ': ' + p.name)}">${escapeHtml(TX('ui.ui29-edit'))}</span>` : ''; }
+function ui29WireShop(root){
+  if(!root || root.__ui29) return; root.__ui29 = true;
+  const go = e=>{ const el = e.target && e.target.closest && e.target.closest('[data-ui29-open]'); if(!el || !adminModeEnabled) return false; e.preventDefault(); e.stopPropagation(); ui29OpenPackEditor(el.dataset.ui29Open); return true; };
+  root.addEventListener('click', go, true);
+  root.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ const el = e.target && e.target.closest && e.target.closest('.ui29-shelf-edit'); if(el) go(e); } }, true);
+}
+// UI29_PE:END
 // 2026-10-28 (package FLAIR1, owner 23:06: "Dragon Lair is our overall 0-20 big boss ... a flair that's not the normal boss flair"): the Volcano Lair
 // (map `mx`) carries `finalBoss:true` and its last fight (20-B-4) does too; everything below keys off those two flags, not the name. The map's
 // entrance on Map 20, the fight's node, its versus opener and title card, a quiet ember vignette on the battlefield and the victory sign are
@@ -57477,7 +57715,7 @@ function renderShopShelves(grid, signedIn){
     return `<button type="button" class="shelf-item ${it.qty>=50?'is-crate':it.qty>1?'is-bundle':''} ${st?'is-off':''} ${k===shopSelected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===shopSelected}" aria-label="${escapeAttr(it.pack.name + (it.qty>1 ? ' ×' + it.qty : '') + (st ? ' — ' + st.tape : ''))}">
       ${shelfGoodsHTML(it.pack, it.qty)}
       <span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(it.qty>1 ? it.pack.name + ' ×' + it.qty : it.pack.name)}</span>
-      <span class="shelf-tag">${st ? escapeHtml(st.tape) : shelfPriceHTML(shelfPrice(it.pack, it.qty))}</span>
+      <span class="shelf-tag">${st ? escapeHtml(st.tape) : shelfPriceHTML(shelfPrice(it.pack, it.qty))}</span>${it.qty === 1 && typeof ui29ShelfEditHTML === 'function' ? ui29ShelfEditHTML(it.pack) : '' /* 2026-11-07 (package UI29) */}
     </button>`;
   };
   const rowHTML = (r, ri)=>{
@@ -57684,7 +57922,7 @@ function renderShop(){
       <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}${escapeHtml(TX('ui.rw5-shop-sub'))}</p> <!-- 2026-10-23 (package RW5): each pack its own pool; was "Packs of cards from Pack 1 (N cards)" -->
       ${wanderingMerchantShopHTML()}
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
-      <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}
+      <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}${typeof ui29ShopBarHTML === 'function' ? ui29ShopBarHTML() : '' /* 2026-11-07 (package UI29) */}
     </div>
     ${factionPackShelfHTML()}
     <div class="shop-pack-grid" id="shopPackGrid"></div>
@@ -57711,6 +57949,7 @@ function renderShop(){
   const pool = packCardPool();
   if(!pool.length){ grid.innerHTML = `<div class="panel"><p class="panel-sub">New packs are coming soon.</p></div>`; wireWanderingMerchantShop(root); return; }
   renderShopShelves(grid, signedIn);
+  try{ if(typeof ui29WireShop === 'function') ui29WireShop(root); }catch(e){} // 2026-11-07 (package UI29): 📦 Edit and the Starter · Base · Factions button
   const sib = document.getElementById('shopSignInBtn'); if(sib) sib.onclick = ()=> requireSignIn('to open packs', ()=> renderShop());
   { const bb = document.getElementById('shopBackBtn'); if(bb) bb.onclick = ()=>{ const c = shopCameFrom; shopCameFrom = null; if(c && c.tab === 'play'){ if(c.sub) playSubTab = c.sub; if(c.map) conquestSelectedMap = c.map; } switchTab(c ? c.tab : 'home'); }; }
   wireWanderingMerchantShop(root);

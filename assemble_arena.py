@@ -388,7 +388,37 @@ if os.path.exists(_cp_path):
     _cp["ps"] = {r["id"]: r["playedShare"] for r in _cpd.get("rows", []) if r.get("id") is not None and r.get("playedShare") is not None}
 app_src = sub_once(app_src, "__CARD_POWER__", json.dumps(_cp, ensure_ascii=False))
 app_src = sub_once(app_src, "__SKILL_RECS__", json.dumps([{"mapName": r["mapName"].split(" (")[0], "card": r["card"], "cardName": r["cardName"], "why": r.get("why", ""), "fx": r.get("proposedEffects")} for r in json.load(open(SCRATCH + "docs/skill-recommendations-2026-11-04.json", encoding="utf-8"))["rows"] if r.get("proposedEffects")], ensure_ascii=False))
-app_src = sub_once(app_src, "__CLAUDE_NEW__", json.dumps({k: v for k, v in json.load(open(SCRATCH + "canonical/claude-new-cards.json", encoding="utf-8")).items() if k in ("theme5", "skillrec")}, ensure_ascii=False))
+# 2026-11-07 (package UI29): CONTENT16's pack plan (canonical/pack-plan.json) for the admin Pack editor: the zones, each list's rule, counts and
+# proposal (add / remove / movedIn, the proposed zone's cards) and every card's source (a pair [today, proposed] when the proposal changes it).
+# The long notes, budgets and issue lists stay in the file. A missing file bakes in null (the editor then shows the live lists only).
+def _pack_plan_for_game(path):
+    try:
+        d = json.load(open(path, encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    packs = {}
+    for k, p in (d.get("packs") or {}).items():
+        pr = p.get("proposal") or {}
+        q = {"name": p.get("name"), "kind": p.get("kind"), "rule": p.get("todayRule", ""), "zone": p.get("zone"),
+             "now": (p.get("current") or {}).get("count"), "proposed": p.get("proposedCount"),
+             "add": [{"id": a["id"], "why": a.get("why", "")} for a in pr.get("add", [])],
+             "remove": [{"id": a["id"], "why": a.get("why", ""), "moveTo": a.get("moveTo")} for a in pr.get("remove", [])],
+             "movedIn": [{"id": a["id"], "why": a.get("why", ""), "from": a.get("from")} for a in pr.get("movedIn", [])]}
+        if p.get("inProposedZone"):
+            q["zoneCards"] = p["inProposedZone"].get("cards", [])
+        if pr.get("note"):
+            q["note"] = pr["note"]
+        if k == "starter":
+            q["byPick"] = (p.get("current") or {}).get("byPick", {})
+        packs[k] = q
+    src = {}
+    for cid, s in (d.get("sources") or {}).items():
+        prop = (s.get("proposed") or {}).get("source")
+        src[cid] = [s.get("source"), prop] if prop and prop != s.get("source") else s.get("source")
+    zones = [{k: z.get(k) for k in ("id", "maps", "pack", "name", "mapNames", "submaps")} for z in d.get("zones", [])]
+    return {"built": d.get("built", ""), "zones": zones, "packs": packs, "sources": src}
+app_src = sub_once(app_src, "__PACK_PLAN__", json.dumps(_pack_plan_for_game(SCRATCH + "canonical/pack-plan.json"), ensure_ascii=False))
+app_src = sub_once(app_src, "__CLAUDE_NEW__",json.dumps({k: v for k, v in json.load(open(SCRATCH + "canonical/claude-new-cards.json", encoding="utf-8")).items() if k in ("theme5", "skillrec")}, ensure_ascii=False))
 # 2026-10-24 (package PRO, owner 00:28): the hidden N-PRO-k fights per map (canonical/pro-skirmishes.json, written by tools/opt/pro_skirmishes.js --apply);
 # only what the game reads is baked in (not the replaced decks, the skipped candidates or the tool's notes)
 def _pro_for_game(d):
