@@ -32784,7 +32784,7 @@ function vis4MapCardTilesHTML(ids, defs, opts){
     if(!adminModeEnabled && isCardHiddenForPlayer(d)) return big ? `<span class="vis4-mc-card is-mystery is-large" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`
       : `<span class="vis4-mc-card is-chip is-mystery" role="img" aria-label="A mystery card">${cardChipHTML(d, {mystery:true})}</span>`;
     const pt = packs && !big ? basicPackTierOf(d) : 0, tag = pt ? `<small class="pk1-mc-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</small>` : '';
-    return `<span class="vis4-mc-card${big ? ' is-large' : ' is-chip'}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" data-zoom-base="1"${opts && opts.why ? ` data-zoom-why="${escapeAttr(opts.why)}"` : ''} aria-label="${escapeAttr(d.name)}">${big ? cardTileHTML(d, {inPlay:true, size:'full'}) : cardChipHTML(d, {noDefid:true})}${tag}</span>`; }).join('');
+    return `<span class="vis4-mc-card${big ? ' is-large' : ' is-chip'}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" data-zoom-base="1"${opts && opts.why ? ` data-zoom-why="${escapeAttr(opts.why)}"` : ''} aria-label="${escapeAttr(d.name)}">${big ? cardTileHTML(d, {inPlay:true, size:'full'}) : cardChipHTML(d, {noDefid:true})}${tag}${opts && opts.power && typeof ui28PowerBadgeHTML === 'function' ? ui28PowerBadgeHTML(id) /* 2026-11-07 (UI28 #1) */ : ''}</span>`; }).join('');
 }
 // 2026-10-28 (package PACK1; owner 10-28: the map's cards viewable from the skirmish panel's admin button list): 🃏 Map cards opens the whole
 // card list of this fight's map as an overlay, one section per list (mapPoolSections: MAP, each side map's own, SPECIAL), VIS4's tiles that zoom
@@ -32858,9 +32858,9 @@ function rv1TileHTML(e, kind, defs, secKey){
   const pills = (kind === 'cut' ? lf2CutPillHTML(e, secKey) /* 2026-11-03 (LISTFIX2) */ : '') + rv2TagsOf(e, baby).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
   const fl = !!rvFlips[rvFlipTop + '|' + secKey + '|' + e.id]; // 2026-10-29 (UI3, S10): a toggle made earlier this session is still on
   return `<span class="rv1-tile is-${kind}${fl ? ' is-flipped' : ''}${baby ? ' is-baby' : ''}${unlikely ? ' is-unlikely' : ''}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}" data-rv-baby="${baby ? 1 : 0}" data-rv-unlikely="${unlikely ? 1 : 0}">`
-    + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, why: e.why || ''})
+    + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, power: true, why: e.why || ''})
     + `<span class="rv2-pills">${pills}</span>`
-    + `<span class="ui13-acts"><button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="${fl ? 'true' : 'false'}">${escapeHtml(fl ? TX('ui.rv1-undo') : btn[0])}</button>${adminModeEnabled ? ui13EditBtnHTML(e.id) : ''}</span></span>`;
+    + `<span class="ui13-acts"><button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="${fl ? 'true' : 'false'}" title="${escapeAttr(TX('ui.lf2-picks-note'))}" aria-label="${escapeAttr(TX('ui.lf2-picks-note'))}">${escapeHtml(fl ? TX('ui.rv1-undo') : btn[0])}</button>${adminModeEnabled ? ui13EditBtnHTML(e.id) : ''}</span></span>`;
 }
 // 2026-11-01 (package UI13, HH1; owner: "the Map cards view shows them (today eggs and hatchlings are missing there)"). Why they were missing:
 // the gallery draws the map's lists (canonical/map-pools.json, read through map-review.json), and no egg card is on any list: an egg is a Nest
@@ -32881,7 +32881,7 @@ function ui13BabyPanelHTML(mapId, defs){
   const eggs = ui13MapEggs(mapId).filter(x=> defs[x.id]);
   const pct = p=> (Math.round(p * 1000) / 10) + '%';
   const tiles = eggs.map(x=>{ const why = TX('ui.ui13-egg-why', {fights: x.nodes.join(', '), p: pct(x.best)}) + (x.sure ? ' ' + TX('ui.ui13-egg-sure', {node: EGG_MAP1_NODE}) : '');
-    return `<span class="rv1-tile is-egg is-baby" data-rv-id="${escapeAttr(x.id)}" data-rv-sec="baby" data-rv-kind="egg" data-rv-baby="1">${vis4MapCardTilesHTML([x.id], defs, {large: true, why})}<span class="rv2-pills"><b class="rv2-pill is-baby" title="${escapeAttr(TX('ui.ui13-tip-baby'))}">${escapeHtml(TX('ui.ui13-tag-baby'))}</b><b class="rv2-pill is-egg" title="${escapeAttr(why)}">🥚 ${escapeHtml(TX('ui.ui13-tag-egg'))}</b></span>${adminModeEnabled ? `<span class="ui13-acts">${ui13EditBtnHTML(x.id)}</span>` : ''}</span>`; }).join('');
+    return `<span class="rv1-tile is-egg is-baby" data-rv-id="${escapeAttr(x.id)}" data-rv-sec="baby" data-rv-kind="egg" data-rv-baby="1">${vis4MapCardTilesHTML([x.id], defs, {large: true, power: true, why})}<span class="rv2-pills"><b class="rv2-pill is-baby" title="${escapeAttr(TX('ui.ui13-tip-baby'))}">${escapeHtml(TX('ui.ui13-tag-baby'))}</b><b class="rv2-pill is-egg" title="${escapeAttr(why)}">🥚 ${escapeHtml(TX('ui.ui13-tag-egg'))}</b></span>${adminModeEnabled ? `<span class="ui13-acts">${ui13EditBtnHTML(x.id)}</span>` : ''}</span>`; }).join('');
   return `<section class="pk1-mc-sec rv2-panel ui13-baby-sec" data-ui13-baby="1"><h3>🍼 ${escapeHtml(TX('ui.ui13-baby-title'))} <small>${eggs.length}</small></h3><p class="panel-sub">${escapeHtml(TX('ui.ui13-baby-sub'))}</p><div class="vis4-mc-row rv1-row">${tiles || '<span class="panel-sub">–</span>'}</div></section>`;
 }
 // N / M per list (owner 10-29 19:14; main maps replaced by THEME6-1 below): the map's own cards 8-11 (N = the list's current unique count when it is in range, else the cap 11) and carried 4-5
@@ -32938,7 +32938,7 @@ function rvSpecialAddSave(){ try{ localStorage.setItem(RV_SPECIAL_ADD_KEY, JSON.
 function rvAddedOf(top){ const a = rvSpecialAdd[top]; return Array.isArray(a) ? a.filter(x=> typeof x === 'string') : []; }
 function rvAddedPartHTML(top, defs){
   const ids = rvAddedOf(top).filter(id=> defs[id]);
-  const tiles = ids.map(id=> `<span class="rv1-tile is-added" data-rv-id="${escapeAttr(id)}" data-rv-sec="special" data-rv-kind="added">${vis4MapCardTilesHTML([id], defs, {packs: true, large: true})}<span class="rv2-pills"><b class="rv2-pill is-owner">${escapeHtml(TX('ui.ff9-added-pill'))}</b></span><span class="ui13-acts"><button type="button" class="rv1-act" data-rv-act="remove-added">${escapeHtml(TX('ui.ff9-remove'))}</button>${adminModeEnabled ? ui13EditBtnHTML(id) /* 2026-11-01 (UI13, HH3) */ : ''}</span></span>`).join('');
+  const tiles = ids.map(id=> `<span class="rv1-tile is-added" data-rv-id="${escapeAttr(id)}" data-rv-sec="special" data-rv-kind="added">${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true})}<span class="rv2-pills"><b class="rv2-pill is-owner">${escapeHtml(TX('ui.ff9-added-pill'))}</b></span><span class="ui13-acts"><button type="button" class="rv1-act" data-rv-act="remove-added">${escapeHtml(TX('ui.ff9-remove'))}</button>${adminModeEnabled ? ui13EditBtnHTML(id) /* 2026-11-01 (UI13, HH3) */ : ''}</span></span>`).join('');
   return `<div class="rv1-part is-added" data-rv-added-part${ids.length ? '' : ' hidden'}><h4>${escapeHtml(TX('ui.ff9-added-title'))} <small>${ids.length}</small></h4><div class="vis4-mc-row rv1-row">${tiles}</div></div>`;
 }
 function rv3ExportAll(){
@@ -33052,6 +33052,40 @@ function ui19McSkillText(r){
 const SKILL_RECS = __SKILL_RECS__;
 // 2026-11-07 (package UI24 #7, owner 11-06 23:35: "the editor shows card power"): {date, wr:{cardId: win % of the card power test}} from docs/balance/card-balance.json (tools/card_balance.js), null when the file is missing
 const CARD_POWER = __CARD_POWER__;
+// UI28_MC:START
+// 2026-11-07 (package UI28, owner 09:00 #1-#3): the Map cards window's helpers. ui28PowerOf reads CARD_POWER the way cePowerHTML does (win % - 50, so 0 is the median card);
+// a row that carries an advanced rate (BAL22 may add cp.advRate: {cardId: win %}) gives the badge's tooltip a second number. No row: no badge.
+function ui28PowerOf(id){
+  try{ const cp = (typeof CARD_POWER !== 'undefined') ? CARD_POWER : null; if(!cp || !cp.wr || !id || !Object.prototype.hasOwnProperty.call(cp.wr, id)) return null;
+    const wr = Number(cp.wr[id]); if(!Number.isFinite(wr)) return null;
+    const rel = v=>{ const n = Math.round(v - 50); return n === 0 ? 0 : n; }, a = cp.advRate || cp.adv;
+    const adv = a && typeof a === 'object' && Object.prototype.hasOwnProperty.call(a, id) && a[id] != null && Number.isFinite(Number(a[id])) ? rel(Number(a[id])) : null;
+    return {n: rel(wr), adv, date: cp.date || ''};
+  }catch(e){ return null; }
+}
+function ui28PowerBadgeHTML(id){
+  const r = ui28PowerOf(id); if(!r) return '';
+  const sg = n=> n > 0 ? '+' + n : String(n), tip = TX('ui.ui24-power', {n: sg(r.n)}) + (r.adv != null ? ' · ' + TX('ui.ui28-power-adv', {n: sg(r.adv)}) : '') + (r.date ? ' · ' + TX('ui.ui24-power-date', {date: r.date}) : '');
+  return `<b class="ui28-pow ${r.n > 0 ? 'is-up' : r.n < 0 ? 'is-down' : 'is-zero'}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">${escapeHtml(sg(r.n))}</b>`;
+}
+function ui28AddSpecialHTML(){
+  return `<div class="ui28-sp-add"><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span></div>`;
+}
+// a skill is "met" on this map when some card carries it from the start (lvl 0) and the player can see it there: not gated to a later map (SKILL_REVEAL, a card's revealAfter)
+function ui28SkillHiddenOnMap(key, d, n){
+  if(n == null) return false;
+  try{ const sr = (typeof SKILL_REVEAL !== 'undefined' && SKILL_REVEAL) ? SKILL_REVEAL[key] : null; if(sr != null && Number(sr) > n) return true;
+    const ra = typeof cardRevealAfter === 'function' ? cardRevealAfter(d) : null;
+    if(ra){ if(ra.mapNum != null && Number(ra.mapNum) > n) return true; if(ra.map){ const k = mapNumberOf(ra.map); if(k != null && k >= n) return true; } } }catch(e){}
+  return false;
+}
+function ui28SkillMeet(r, defs, n){
+  let met = false, minLvl = Infinity;
+  (r.ids || []).forEach(id=>{ const d = defs[id]; if(!d) return; const x = ui18CardSkillKeys(d).find(q=> q.key === r.key); if(!x) return;
+    if(x.lvl > 0) minLvl = Math.min(minLvl, x.lvl); else if(!ui28SkillHiddenOnMap(r.key, d, n)) met = true; });
+  return {met, lvl: Number.isFinite(minLvl) ? minLvl : 0};
+}
+// UI28_MC:END
 function ui24McRecs(mapId, defs){
   const m = mpMapById(mapId); if(!m) return [];
   const out = [];
@@ -33062,10 +33096,14 @@ function ui24McRecs(mapId, defs){
 }
 function ui19McSkillsHTML(top, ids, defs, ok, mapId){
   const uniq = [...new Set(ids)], rows = ui19McSkillRows(uniq, defs), early = ui19McEarlierSkillKeys(top, defs, ok), kw = (typeof MAP_KEYWORDS !== 'undefined' ? MAP_KEYWORDS : {})[mapId || top]; // typeof guards: tests lift this function alone
-  const flagged = rows.map(r=> Object.assign(r, {isNew: !early.has(r.key), p: skillDefOf(r.key)})).sort((a, b)=> (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
+  const mapN = (()=>{ try{ return mapNumberOf(top); }catch(e){ return null; } })(); // 2026-11-07 (UI28 #3)
+  const recs0 = typeof ui24McRecs === 'function' ? ui24McRecs(mapId || top, defs) : [], recBy = new Map(); recs0.forEach(r=>{ if(!recBy.has(r.key)) recBy.set(r.key, r); });
+  const flagged = rows.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; return Object.assign(r, {isNew: mt.met && !early.has(r.key), p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl}); }).sort((a, b)=> (a.grey - b.grey) || (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
   // 2026-11-04 (UI22a): each skill tile carries its full text as a tooltip (the text is clamped to two lines)
-  const li = r=> `<li class="ui19-sk${r.isNew ? ' is-new' : ''}${r.key === kw ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}" title="${escapeAttr(r.p.label + ': ' + ui19McSkillText(r) + ' (' + TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + ')')}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}<small>${escapeHtml(ui19McSkillText(r))}</small></span></li>`;
-  const recs = typeof ui24McRecs === 'function' ? ui24McRecs(mapId || top, defs) : [];
+  const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
+    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} title="${escapeAttr(r.p.label + ': ' + ui19McSkillText(r) + ' (' + TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + ')' + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}<small>${escapeHtml(ui19McSkillText(r))}</small></span></li>`; };
+  const have = new Set(rows.map(r=> r.key)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
+  const recs = recs0.filter(r=>{ if(have.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
   const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" title="${escapeAttr(TX('ui.ui24-rec-tip', {card: r.card}) + ': ' + r.p.label + ': ' + ui19McSkillText(r) + (r.why ? ' (' + r.why + ')' : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b><small>${escapeHtml(TX('ui.ui24-rec-for', {card: r.card}))}</small></span></li>`;
   const kwMissing = kw && !rows.some(r=> r.key === kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" title="${escapeAttr(skillDefOf(kw).label + ': ' + ui19McSkillText({key: kw, fx: {[kw]: true}}))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b><small>${escapeHtml(TX('ui.ui24-intro-missing'))}</small></span></li>` : '';
   return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length || recs.length || kwMissing ? `<ul class="ui19-sk-list">${flagged.map(li).join('')}${kwMissing}${recs.map(rli).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
@@ -33081,7 +33119,7 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId){
 const CLAUDE_NEW = __CLAUDE_NEW__;
 function ui22McMaps(mapId){ const top = mpTopOf(mapId); return mpIsSub(mapId) ? [mpMapById(mapId)] : [mpMapById(top)].concat(mpSubsOf(top)); }
 function ui22McTile(id, defs, role, label){
-  return `<span class="ui22-rw is-${role}">${vis4MapCardTilesHTML([id], defs, {packs: false})}<small class="ui22-rw-role">${escapeHtml(label)}</small></span>`;
+  return `<span class="ui22-rw is-${role}">${vis4MapCardTilesHTML([id], defs, {packs: false, power: true})}<small class="ui22-rw-role">${escapeHtml(label)}</small></span>`;
 }
 function ui22McRewardsHTML(mapId, defs, ok){
   const roleLabel = {reward: TX('ui.ui22-role-reward'), first: TX('ui.ui22-role-first'), challenge: TX('ui.ui22-role-challenge')};
@@ -33106,7 +33144,7 @@ function ui22McClaudeNewHTML(mapId, defs, ok, onLists){
   const list = ui22McClaudeNew(mapId, onLists, ok, defs);
   if(!list.length) return '';
   const pill = TX('ui.ui22-claude-new'), tip = TX('ui.ui22-claude-new-tip');
-  const tiles = list.map(e=> `<span class="ui22-rw is-claude" data-ui22-claude-new="${escapeAttr(e.id)}" title="${escapeAttr(e.why || '')}">${vis4MapCardTilesHTML([e.id], defs, {packs: true})}<b class="ui22-pill" title="${escapeAttr(tip)}">${escapeHtml(pill)}</b></span>`).join('');
+  const tiles = list.map(e=> `<span class="ui22-rw is-claude" data-ui22-claude-new="${escapeAttr(e.id)}" title="${escapeAttr(e.why || '')}">${vis4MapCardTilesHTML([e.id], defs, {packs: true, power: true})}<b class="ui22-pill" title="${escapeAttr(tip)}">${escapeHtml(pill)}</b></span>`).join('');
   return `<section class="pk1-mc-sec rv2-panel ui22-claude" id="ui22McClaude"><h3>${escapeHtml(TX('ui.ui22-claude-title'))} <small>${list.length}</small></h3><p class="panel-sub">${escapeHtml(tip)}</p><div class="vis4-mc-row ui22-row">${tiles}</div></section>`;
 }
 // UI22_MC:END
@@ -33121,7 +33159,7 @@ function ui21McKeywordHTML(mapId, defs, ids){
   const have = row ? row.ids : [], text = ui19McSkillText(row || {key, fx: {[key]: true}});
   return `<section class="pk1-mc-sec rv2-panel ui21-kw" id="ui21McKeyword" data-ui21-keyword="${escapeAttr(key)}"><h3>${escapeHtml(TX('ui.ui21-mapkw-title'))}</h3>
     <p class="ui21-kw-head"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[key] || '•')}</span> <b>${escapeHtml(p.label)}</b></p><p class="panel-sub ui21-kw-text">${escapeHtml(text)}</p>
-    <h4 class="ui21-kw-cards">${escapeHtml(TX('ui.ui21-mapkw-cards'))} <small>${have.length}</small></h4><div class="vis4-mc-row ui22-row">${have.length ? vis4MapCardTilesHTML(have, defs, {packs: false}) : '<span class="panel-sub">–</span>'}</div></section>`;
+    <h4 class="ui21-kw-cards">${escapeHtml(TX('ui.ui21-mapkw-cards'))} <small>${have.length}</small></h4><div class="vis4-mc-row ui22-row">${have.length ? vis4MapCardTilesHTML(have, defs, {packs: false, power: true}) : '<span class="panel-sub">–</span>'}</div></section>`;
 }
 // UI21_KW:END
 function pk1OpenMapCards(mapId){
@@ -33137,14 +33175,14 @@ function pk1OpenMapCards(mapId){
   const inScope = s=> s.key === 'cards' ? !mpIsSub(mapId) : s.key === 'special' ? true : !!(mpIsSub(mapId) && (s.sub === mapId || (MP_EXTRA_LISTS[s.sub] && MP_EXTRA_LISTS[s.sub].map === mapId)));
   const secs = mapPoolSections(top).filter(inScope).map((s, si)=>{
     const rv = rv1ReviewOf(s, top), ids = s.ids.filter(ok);
-    if(!rv) return `<section class="pk1-mc-sec rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''}><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
+    if(!rv) return `<section class="pk1-mc-sec rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''}><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3>${s.key === 'special' ? ui28AddSpecialHTML() : ''}<div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true, power: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
     // 2026-10-29 (package REVIEW2): each list is a panel of its own; Chosen, Maybe, Cut cards in that order, each a boxed part
     const part = (kind, label, list)=>{ const l = (list || []).filter(e=> e && ok(e.id)); if(kind === 'cut' && !l.length) return ''; /* 2026-11-05 22:49 (owner: "reset the 'undo' or 'cut' pills ... Just show the updated map card list"): the cut cards went to canonical/map-review.json cutArchive, and an empty Cut part is not drawn */ return `<div class="rv1-part is-${kind}"><h4>${escapeHtml(label)} <small>${l.length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(l, kind, defs, s.key)}</div></div>`; };
     const chosen = (rv.chosen || []).filter(e=> e && ok(e.id)), all = chosen.concat((rv.cut || []).filter(e=> e && ok(e.id)), (rv.maybe || []).filter(e=> e && ok(e.id)));
     const nb = e=> !ui13IsBaby(e.id, defs); // 2026-11-01 (package UI13, HH1): Baby cards are left out of the N / M targets too
     const tg = rv2TargetsOf(s, top, chosen.filter(nb), all.filter(nb));
     bars.push(`<span class="rv2-cl" data-rv2-count="${si}"><b>${escapeHtml(s.label)}</b> <span class="rv2-ct"></span></span>`);
-    return `<section class="pk1-mc-sec has-rv1 rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''} data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
+    return `<section class="pk1-mc-sec has-rv1 rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''} data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${s.key === 'special' ? ui28AddSpecialHTML() : ''}${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
   }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
   // 2026-11-04 (package UI22): the fights' rewards, then Claude's recommended cards (shown, on no list)
   const ui22Lists = new Set(mapPoolSections(top).flatMap(s=> s.ids || []));
@@ -33152,7 +33190,7 @@ function pk1OpenMapCards(mapId){
     + (()=>{ try{ return ui21McKeywordHTML(mapId, defs, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok)); }catch(e){ return ''; } })(); // 2026-11-05 (UI21, IDEA-EARLY-3): the keyword of the map
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div><p class="panel-sub lf2-picks-note">${escapeHtml(TX('ui.lf2-picks-note')) /* 2026-11-03 (LISTFIX2): the marks change no list; no Apply button (a list change is a live card_overrides write) */}</p>` : ''}${(()=>{ try{ return ui19McSkillsHTML(top, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok), defs, ok, mapId); }catch(e){ return ''; } })() /* 2026-11-04 (UI19) */}<div class="vis4-map-cards pk1-mc-body">${secs}${ui22Secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}${(()=>{ try{ return ui19McSkillsHTML(top, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok), defs, ok, mapId); }catch(e){ return ''; } })() /* 2026-11-04 (UI19) */}<div class="vis4-map-cards pk1-mc-body">${secs}${ui22Secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); }; // 2026-11-01 (UI13, HH3): not while the card editor has it hidden

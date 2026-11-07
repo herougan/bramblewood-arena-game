@@ -3636,7 +3636,7 @@
  "The Herb Refinery's bitter brew poisons {name} (☠️ {n}).": "L'amaro intruglio della Raffineria di Erbe avvelena {name} (☠️ {n}).",
  "⚡ This chip is a trigger — read the card.": "⚡ Questo gettone è un innesco — leggi la carta.",
  "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ Questo gettone è un innesco: qualcosa che la carta fa da sola quando arriva il suo momento. A sinistra dice quando, a destra cosa. Tieni il puntatore sopra (o premi a lungo) per leggerlo per intero.",
- "✂ Cut": "✂ Taglia",
+ "✂": "✂",
  "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: il simbolo del tipo di danno (nessuno per un colpo semplice, 💥 davanti per un critico), il danno, poi come l'ha preso il bersaglio: 🦴 Fragile (doppio), 💢 una debolezza (di più), ⛨ Armatura, una resistenza o uno scudo ne ha assorbito una parte, 🚫 immune.",
  "➕ Add card to SPECIAL": "➕ Aggiungi carta a SPECIAL",
  "日本語": "日本語",
@@ -4090,5 +4090,10 @@
  "A hidden reward card": "Una carta ricompensa nascosta",
  "A card you haven't found yet. It's yours the first time you win this fight.": "Una carta che non hai ancora trovato. È tua la prima volta che vinci questo scontro.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Una carta che non hai ancora trovato. Vinci questo scontro con il grado indicato sulla carta per ottenerla.",
- "{n} card{s} to claim": "{n} carte da riscuotere"
+ "{n} card{s} to claim": "{n} carte da riscuotere",
+ "Advanced: {n}": "Avanzato: {n}",
+ "Suggested": "Suggerita",
+ "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "Consigliata per {card}, ma i giocatori non incontreranno questa abilità in questa mappa. Forse non dovrebbe restare nascosta.",
+ "Only from level {n} on this map": "Solo dal livello {n} in questa mappa",
+ "Hidden (shown as ?) on this map": "Nascosta (mostrata come ?) in questa mappa"
 }

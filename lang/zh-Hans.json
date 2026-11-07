@@ -3634,7 +3634,7 @@
  "The Herb Refinery's bitter brew poisons {name} (☠️ {n}).": "草药精炼坊的苦药让 {name} 中毒（☠️ {n}）。",
  "⚡ This chip is a trigger — read the card.": "⚡ 这个小标记是触发效果 — 读一读卡牌。",
  "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ 这个小标记是触发效果：时机一到，卡牌会自动做的事。左边说明何时，右边说明做什么。把指针停在上面（或长按）即可读完整说明。",
- "✂ Cut": "✂ 剔除",
+ "✂": "✂",
  "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴：伤害类型的符号（普通攻击没有，暴击时前面加 💥），伤害值，然后是目标的承受方式：🦴 脆弱（双倍），💢 弱点（更多），⛨ 护甲、抗性或护盾挡下了一部分，🚫 免疫。",
  "➕ Add card to SPECIAL": "➕ 添加卡牌到 SPECIAL",
  "日本語": "日本語",
@@ -4089,5 +4089,10 @@
  "A hidden reward card": "隐藏的奖励卡牌",
  "A card you haven't found yet. It's yours the first time you win this fight.": "你还没找到的卡牌。首次赢下这场战斗就能得到它。",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "你还没找到的卡牌。以卡牌上显示的评级赢下这场战斗就能得到它。",
- "{n} card{s} to claim": "{n} 张卡牌待领取"
+ "{n} card{s} to claim": "{n} 张卡牌待领取",
+ "Advanced: {n}": "进阶：{n}",
+ "Suggested": "建议",
+ "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "推荐给{card}，但玩家在这张地图上遇不到这个技能。也许不该继续隐藏。",
+ "Only from level {n} on this map": "在这张地图上要到 {n} 级才有",
+ "Hidden (shown as ?) on this map": "在这张地图上隐藏（显示为 ?）"
 }

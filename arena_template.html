@@ -14842,6 +14842,34 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .ui22-claude .ui22-rw{opacity:.96;}
 /* 2026-11-05 (package UI21, IDEA-EARLY-3): the keyword of the map */
 .ui21-kw .ui21-kw-head{margin:4px 0; font-size:1.05em;} .ui21-kw .ui21-kw-text{margin:0 0 8px;} .ui21-kw .ui21-kw-cards{margin:8px 0 4px; font-size:.95em;}
+/* 2026-11-07 (package UI28, owner 09:00): the Map cards window. #1 a card power badge on each card (the card power test, 0 = the median card; its tooltip may add the advanced number),
+   tighter chrome (the card size is unchanged); #2 the Add-to-SPECIAL button sits in the SPECIAL section; #3 a skill the player won't meet on this map is a grey tile (a "Suggested"
+   pill when it is also recommended), and the top row of buttons sits right under the subtitle. */
+.pk1-mc-overlay .vis4-mc-card{position:relative;}
+.ui28-pow{position:absolute; top:44px; right:4px; z-index:3; min-width:22px; padding:2px 5px; border-radius:999px; font:800 11px/1 'Baloo 2',system-ui,sans-serif; text-align:center; font-variant-numeric:tabular-nums; cursor:help; pointer-events:auto; border:1px solid rgba(255,255,255,.55); box-shadow:0 1px 3px rgba(0,0,0,.45);}
+.ui28-pow.is-up{background:#2f8f46; color:#fff;} .ui28-pow.is-down{background:#b8463a; color:#fff;} .ui28-pow.is-zero{background:#5b6270; color:#fff;}
+.vis4-mc-card.is-chip .ui28-pow{position:static; margin-left:2px;}
+.pk1-mc-modal{padding-top:12px; padding-bottom:12px;}
+.pk1-mc-modal .modal-head-row{margin-bottom:2px;}
+.pk1-mc-modal > .panel-sub{margin:0 0 2px;}
+.pk1-mc-modal .rv1-bar{margin:0 0 2px; gap:4px 12px; align-items:center;}
+.pk1-mc-overlay .rv2-panel{margin:8px 0 10px; padding:8px 10px 6px; border-radius:12px;}
+.pk1-mc-overlay .rv2-panel > h3{margin:0 0 4px; padding:0 0 4px; font-size:15px;}
+.pk1-mc-overlay .rv1-part{margin:6px 0 0; padding:5px 8px 3px;}
+.pk1-mc-overlay .rv1-part h4{font-size:13px;}
+.pk1-mc-overlay .rv1-row{gap:8px 8px; padding:6px 0 4px;}
+.pk1-mc-overlay .rv1-tile{gap:3px;}
+.pk1-mc-overlay .rv1-tile .vis4-mc-card{margin-bottom:0;}
+.pk1-mc-overlay .rv2-pills{min-height:0; gap:2px;}
+.pk1-mc-overlay .rv2-pill{font-size:10px; padding:2px 6px;}
+.pk1-mc-overlay .rv1-act{min-height:26px; padding:3px 10px;}
+.ui28-sp-add{margin:0 0 2px;}
+.pk1-mc-overlay .ui19-mc-skills{margin-top:0;}
+.pk1-mc-overlay .ui19-sk.is-grey{border-color:var(--surface-border); border-style:solid; background:color-mix(in srgb, #8a8f99 16%, var(--bg)); color:var(--ink-muted);}
+.pk1-mc-overlay .ui19-sk.is-grey .ui19-sk-ico{filter:grayscale(1); opacity:.7;}
+.pk1-mc-overlay .ui19-sk.is-grey .ui19-sk-main b{color:var(--ink-muted);}
+.ui28-sug{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; letter-spacing:.03em; padding:1px 5px; border-radius:999px; background:#4f8ee8; color:#fff; cursor:help; vertical-align:1px; white-space:nowrap;}
+@media (max-width:560px){ .pk1-mc-overlay .rv2-panel{padding:6px 6px 4px; margin:6px 0 8px;} .pk1-mc-overlay .rv1-row{gap:8px 8px;} }
 /* art focus (Card editor: Art height): extended art moves down by --apy (framed art uses object-position, set inline) */
 .card-tile.art-extended > .ico .card-art-img[style*="--apy"]{top:calc((50 - var(--apy)) * .5%);}
 /* ===== 2026-11-06 (package UI23) ===== */

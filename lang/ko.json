@@ -3637,7 +3637,7 @@
  "The Herb Refinery's bitter brew poisons {name} (☠️ {n}).": "약초 정제소의 쓴 탕약이 {name}에게 독을 퍼뜨린다 (☠️ {n}).",
  "⚡ This chip is a trigger — read the card.": "⚡ 이 칩은 트리거예요 — 카드를 읽어 보세요.",
  "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ 이 칩은 트리거예요. 때가 되면 카드가 스스로 하는 일이에요. 왼쪽은 언제, 오른쪽은 무엇을 하는지 알려 줘요. 포인터를 올리거나 길게 누르면 전체를 읽을 수 있어요.",
- "✂ Cut": "✂ 제외",
+ "✂": "✂",
  "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: 피해 유형 기호(일반 공격은 없음, 치명타는 앞에 💥), 피해량, 그리고 대상이 받은 방식: 🦴 연약(2배), 💢 약점(더 많이), ⛨ 방어구·저항·보호막이 일부를 막음, 🚫 면역.",
  "➕ Add card to SPECIAL": "➕ SPECIAL에 카드 추가",
  "日本語": "日本語",
@@ -4091,5 +4091,10 @@
  "A hidden reward card": "숨겨진 보상 카드",
  "A card you haven't found yet. It's yours the first time you win this fight.": "아직 발견하지 못한 카드예요. 이 전투를 처음 이기면 얻어요.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "아직 발견하지 못한 카드예요. 카드에 표시된 랭크로 이 전투를 이기면 얻어요.",
- "{n} card{s} to claim": "받을 수 있는 카드 {n}장"
+ "{n} card{s} to claim": "받을 수 있는 카드 {n}장",
+ "Advanced: {n}": "고급: {n}",
+ "Suggested": "추천",
+ "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "{card}에 추천되지만, 이 지도에서는 플레이어가 이 스킬을 만나지 못합니다. 숨겨 두지 않아도 될지 모릅니다.",
+ "Only from level {n} on this map": "이 지도에서는 레벨 {n}부터",
+ "Hidden (shown as ?) on this map": "이 지도에서는 숨김 (?로 표시)"
 }

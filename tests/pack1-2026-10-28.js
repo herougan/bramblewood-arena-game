@@ -83,7 +83,7 @@ ok(/\{id:'bronze', packNo:1, name:'Hedgerow Pouch', icon:'🌿', cost:\{gold:50,
 ok(/id="cnpAdminClear"[^\n]*✅ Mark cleared<\/button><button type="button" class="btn small ghost" id="cnpMapCards" aria-haspopup="dialog">\$\{escapeHtml\(TX\('ui\.pk1-map-cards-btn'\)\)/.test(app), '5. 🃏 Map cards sits with Edit skirmish / Edit rewards / Mark cleared (admins only)');
 ok(/getElementById\('cnpMapCards'\); if\(mc\) mc\.addEventListener\('click', \(\)=> pk1OpenMapCards\(map\.id\)\)/.test(app), '5. it opens the overlay');
 { const i = app.indexOf('function pk1OpenMapCards('), body = app.slice(i, app.indexOf('\nfunction ', i + 10));
-  ok(/mapPoolSections\(top\)/.test(body) && /vis4MapCardTilesHTML\(ids, defs, \{packs: true\}\)/.test(body) && /wireRewardZoom\(ov\)/.test(body) && /Escape/.test(body), '5. the overlay: every list of the map (MAP, side maps, SPECIAL), VIS4\'s tiles with zoom tooltips, Escape closes'); }
+  ok(/mapPoolSections\(top\)/.test(body) && /vis4MapCardTilesHTML\(ids, defs, \{packs: true(, power: true)?\}\)/.test(body) /* 2026-11-07 (UI28): the power badge option */ && /wireRewardZoom\(ov\)/.test(body) && /Escape/.test(body), '5. the overlay: every list of the map (MAP, side maps, SPECIAL), VIS4\'s tiles with zoom tooltips, Escape closes'); }
 ok(/const tiles = vis4MapCardTilesHTML\(shown, defs\);/.test(app) && /\$\{vis4MapCardsHTML\(map, selectedNode\)\}/.test(app), '5. VIS4\'s "This map\'s cards" stays at the foot of the panel, on the same tiles');
 ok(/\.pk1-mc-modal\{/.test(rd('arena_template.html')), '5. its CSS');
 { const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, keys = ['ui.pk1-map-cards-btn', 'ui.pk1-map-cards-title', 'ui.pk1-map-cards-sub', 'ui.pk1-in-pack', 'ui.pk1-not-in-pack'];

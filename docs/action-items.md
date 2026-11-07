@@ -83,6 +83,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Owner calls open: ENG28-1 (Burn stacking vs 2 rounds), ENG28-2 (a Freeze on every frost hit), ENG28-4 (names; Offspring's price).
 - Next: a road measure of Maps 0-20 (poison as stacks, Burn per hit and frost freezes move fights); canonical/skill-costs.json rows for Mulligan / Offspring at the batch release; card-matrix goldens at the batch release.
 
+## 11-07: Package UI28 (on its branch, not released)
+- Owner notes 11-07 09:00, all done for the admin Map cards window: #1 power badge on each card (CARD_POWER, win % - 50, advanced value in the tooltip when the table carries `advRate`; none when not measured), tighter chrome, Cut is the emoji alone; #2 the standing picks note is the Cut / Keep tooltip (title + aria-label), Add card to SPECIAL moved into the SPECIAL section; #3 no recommendation tile for a skill already on the map's cards, grey tile for a skill met only at a higher level or hidden ("?") on this map with a "Suggested" pill when also recommended, the button row closer to the subtitle.
+- Needs a look: BAL22 may name the advanced field differently (the helper `ui28PowerOf` reads `advRate` or `adv`, a map of card id to win %).
+- Shots: `docs/screens/ui28/`. Test: `tests/ui28-2026-11-07.js`.
+
 ## 11-07: Package UI24 (on its branch, not released)
 - Done: owner items #1 (3 px under the hover card), #2 (skill changes keep the scroll; preview and hover follow), #3 (Identity rows; Art height moves the preview; Phylum and Type), #7 display (Power in the editor), #10, #12, #14.
 - Owner calls open: UI24-1 (Phylum read only or a dropdown), UI24-2 (card power numbers date from 2026-10-19).

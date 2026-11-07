@@ -3636,7 +3636,7 @@
  "The Herb Refinery's bitter brew poisons {name} (☠️ {n}).": "Ramuan pahit Kilang Herbal meracuni {name} (☠️ {n}).",
  "⚡ This chip is a trigger — read the card.": "⚡ Chip ini adalah pemicu — baca kartunya.",
  "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ Chip ini adalah pemicu: sesuatu yang dilakukan kartu dengan sendirinya saat waktunya tiba. Sisi kiri menyatakan kapan, sisi kanan menyatakan apa. Arahkan penunjuk ke sana (atau tekan lama) untuk membacanya lengkap.",
- "✂ Cut": "✂ Coret",
+ "✂": "✂",
  "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: simbol jenis damage (tidak ada untuk serangan biasa, 💥 di depan saat kritikal), jumlah damage, lalu cara target menerimanya: 🦴 Rapuh (dua kali lipat), 💢 kelemahan (lebih besar), ⛨ Armor, resistansi, atau perisai menahan sebagian, 🚫 kebal.",
  "➕ Add card to SPECIAL": "➕ Tambah kartu ke SPECIAL",
  "日本語": "日本語",
@@ -4090,5 +4090,10 @@
  "A hidden reward card": "Kartu hadiah tersembunyi",
  "A card you haven't found yet. It's yours the first time you win this fight.": "Kartu yang belum kamu temukan. Jadi milikmu saat pertama kali kamu menang di pertarungan ini.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Kartu yang belum kamu temukan. Menangkan pertarungan ini dengan peringkat yang tertera di kartu untuk mendapatkannya.",
- "{n} card{s} to claim": "{n} kartu siap diklaim"
+ "{n} card{s} to claim": "{n} kartu siap diklaim",
+ "Advanced: {n}": "Lanjutan: {n}",
+ "Suggested": "Disarankan",
+ "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "Direkomendasikan untuk {card}, tetapi pemain tidak akan menemui skill ini di peta ini. Mungkin tidak perlu tetap tersembunyi.",
+ "Only from level {n} on this map": "Hanya dari level {n} di peta ini",
+ "Hidden (shown as ?) on this map": "Tersembunyi (tampil sebagai ?) di peta ini"
 }

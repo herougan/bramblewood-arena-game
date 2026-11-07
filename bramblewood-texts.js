@@ -3044,7 +3044,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rv1-by-owner": "owner",
   "ui.rv1-by-claude": "Claude",
   "ui.rv1-by-kept": "kept",
-  "ui.rv1-act-cut": "✂ Cut",
+  "ui.rv1-act-cut": "✂",
   "ui.rv1-act-keep": "↩ Keep",
   "ui.rv1-undo": "Undo",
   "ui.rv1-copy": "Copy my picks",
@@ -3398,7 +3398,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui24-power": "Power: {n}",
   "ui.ui24-power-none": "Power: not measured",
   "ui.ui24-power-date": "Measured {date}",
-  "ui.ui24-power-tip": "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker."
+  "ui.ui24-power-tip": "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker.",
+  "ui.ui28-power-adv": "Advanced: {n}",
+  "ui.ui28-suggested": "Suggested",
+  "ui.ui28-suggested-tip": "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.",
+  "ui.ui28-grey-lvl": "Only from level {n} on this map",
+  "ui.ui28-grey-hidden": "Hidden (shown as ?) on this map"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
