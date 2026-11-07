@@ -3412,7 +3412,11 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng30-desecration-codex": "While it stands, the enemy's ground is Cursed: each enemy unit takes N curse damage at the start of every round, on top of any Desecrate curse. Several carriers don't add up. Consecration anywhere on the field cancels it, and it cancels Consecration.",
   "ui.eng30-exalt-log": "{name} heals {n} on exalted ground.",
   "ui.eng30-exalted-mark": "Exalted ground: {n} healing a round to whoever stands here",
-  "ui.eng30-cancel-mark": "Consecration and Desecration cancel out: no Exalted or Cursed ground"
+  "ui.eng30-cancel-mark": "Consecration and Desecration cancel out: no Exalted or Cursed ground",
+  "ui.bal22-adv": "Advanced {m}",
+  "ui.bal22-adv-none": "Advanced not measured",
+  "ui.bal22-power-tip": "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.",
+  "ui.bal22-power-share": "Played in {share}% of the test games."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -9,14 +9,34 @@
 // suggested stat change found by re-simulating (±Attack / ±Health in small steps until it lands in
 // its band).
 //
-//   node tools/card_balance.js [games=60] [--suggest] [--mode=open] [--only=a,b] [--pool]
-// Writes docs/balance/card-balance.json and docs/card-balance-2026-10-09.md.
+//   node tools/card_balance.js [games=100] [--suggest] [--mode=open] [--only=a,b] [--pool] [--workers=2] [--seed=2211] [--basic-only] [--resume]
+// Writes docs/balance/card-balance.json (docs/balance/card-balance-partial.json with --only / --pool).
+//
+// 2026-11-07 (package BAL22, owner 07:37): 100 games a card by default (was 60; the last runs used 40), and two numbers per card:
+//   basic    = the test above (against the filler); it tops out near 100% for strong cards. `winRate` stays the basic number.
+//   advanced = the same test deck against decks drawn from the strong cards: the top 20% of cards by basic win rate (the tested card
+//              left out, low-sample cards left out), up to min(4, the rarity's copy limit) copies each and the top-rank deck caps,
+//              20 cards; one deck per game, drawn from --seed (reproducible). A strong card's `advRate` comes back toward 50.
+//   Only games where the test side played at least one copy count (stats["A|id"/"B|id"].played): `played` of `games`, `playedShare`;
+//   under 20 played games is flagged `lowSample`. The full run's top pool comes from its own basic pass; an --only run takes it from the
+//   basic numbers already in docs/balance/card-balance.json.
+//   --workers=K (default 2) plays the cards in K child processes and merges them into one file; --resume picks up a run that stopped
+//   (progress in docs/balance/card-balance-progress.jsonl, removed when the run finishes); --basic-only skips the advanced pass.
+//   --report-only (with --resume) writes the report from the progress file without playing more games: a card the advanced pass has
+//   not reached reads advRate null, `advanced.complete` is false, and the progress file stays so a later --resume finishes the run.
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const E = require(path.join(ROOT, 'bramblewood-engine.js'));
 const args = process.argv.slice(2);
-const N = +(args.find(a=> /^\d+$/.test(a)) || 60);
+const optv = (name, dflt)=>{ const a = args.find(x=> x.startsWith('--' + name + '=')); if(a) return a.slice(name.length + 3); const i = args.indexOf('--' + name); return i >= 0 && args[i+1] && !args[i+1].startsWith('--') ? args[i+1] : dflt; };
+const N = +(args.find(a=> /^\d+$/.test(a) && args[args.indexOf(a)-1] !== '--workers' && args[args.indexOf(a)-1] !== '--seed') || 100);
+const WORKERS = Math.max(1, +optv('workers', 2) || 1);
+const SEED = +optv('seed', 2211);
+const IS_WORKER = args.includes('--worker');
+const BASIC_ONLY = args.includes('--basic-only');
+const REPORT_ONLY = args.includes('--report-only');
+const TOP_SHARE = 0.2, LOW_SAMPLE = 20;
 const SUGGEST = args.includes('--suggest');
 const MODE = (args.find(a=> a.startsWith('--mode=')) || '--mode=open').slice(7);
 // --only=a,b,c measures just those cards (writes docs/balance/card-balance-partial.json, leaving the full report alone).
@@ -49,18 +69,51 @@ function fillerDeck(n){ const d = {}; for(let i=0;i<n;i++){ const id = FILLER[i 
 const OPP = fillerDeck(20);
 const COPIES_BY_COST = [8, 6, 4, 3];
 
-function winRate(id, over){
+// 2026-11-07 (BAL22): the advanced opponents. The copy limit per rarity is the game's RARITY_MAX_COPIES (arena_app.js), capped at 4
+// like the game's own CPU deck builder (arena_app.js ~20011), plus the top-rank deck caps (BramblewoodBudget.deckRankBlock).
+const RARITY_MAX_COPIES = {common:5, uncommon:4, rare:3, veryrare:2, superrare:1, epic:1, heroic:1, unique:1, legendary:1, mythic:1, ancient:1,
+  divine:1, void:1, daemonic:1, starter:5, quest:4, questunique:1, special:3, devlegendary:1, devancient:1, eventlegendary:1, eventrare:3};
+let BB = null; try{ BB = require(path.join(ROOT, 'bramblewood-budget.js')); }catch(e){}
+const copyCap = d=> Math.min(4, RARITY_MAX_COPIES[d.rarity || 'common'] != null ? RARITY_MAX_COPIES[d.rarity || 'common'] : RARITY_MAX_COPIES.common);
+// One opponent deck for game k: the pool (sorted, without the tested card) shuffled from (SEED, k), each card at its copy cap until 20.
+// Every card meets the same 100 decks (the tested card, if it is in the pool, is swapped for the next card in the shuffle).
+function advDeck(pool, id, k){
+  const ids = pool.filter(x=> x !== id && defs[x]), rnd = E.mulberry32(SEED * 7919 + k * 104729);
+  for(let i = ids.length - 1; i > 0; i--){ const j = Math.floor(rnd() * (i + 1)); const t = ids[i]; ids[i] = ids[j]; ids[j] = t; }
+  const deck = {}; let n = 0;
+  for(const x of ids){ if(n >= 20) break; let c = Math.min(copyCap(defs[x]), 20 - n);
+    if(BB && BB.deckRankBlock){ while(c > 0){ const probe = Object.assign({}, deck); probe[x] = (probe[x]||0) + c - 1; if(!BB.deckRankBlock(probe, x, defs, [])) break; c--; } }
+    if(c > 0){ deck[x] = c; n += c; } }
+  return n >= 20 ? deck : null;
+}
+// The test: N games of (k copies of the card + filler) against the filler (basic) or against advDeck (advanced, pool given).
+// Seats alternate; a game counts only if the test side played the card at least once.
+function measure(id, over, pool){
   const D = over ? Object.assign({}, defs, {[id]: Object.assign({}, defs[id], over)}) : defs;
   // Expensive cards can't be played eight times a match, so the test deck carries fewer of them.
   const k = COPIES_BY_COST[Math.min(3, defs[id].cost||0)];
   const deck = fillerDeck(20 - k); deck[id] = (deck[id]||0) + k;
-  let w = 0;
-  for(let k=0;k<N;k++){
-    const r = E.simulateOneMatch(D, k%2 ? deck : OPP, k%2 ? OPP : deck, {rnd: E.mulberry32(7700 + k*131), maxRounds: 60, battleMode: MODE});
-    const mine = k%2 ? 1 : 2;
-    w += r.winner===mine ? 1 : r.winner===0 ? 0.5 : 0;
+  let w = 0, wAll = 0, played = 0, games = 0;
+  for(let g=0; g<N; g++){
+    const opp = pool ? advDeck(pool, id, g) : OPP; if(!opp) continue;
+    const r = E.simulateOneMatch(D, g%2 ? deck : opp, g%2 ? opp : deck, {rnd: E.mulberry32((pool ? SEED + 99991 : 7700) + g*131), maxRounds: 60, battleMode: MODE});
+    const mine = g%2 ? 1 : 2, st = r.stats && r.stats[(mine === 1 ? 'A' : 'B') + '|' + id];
+    const s = r.winner===mine ? 1 : r.winner===0 ? 0.5 : 0;
+    games++; wAll += s;
+    if(st && st.played > 0){ played++; w += s; }
   }
-  return w / N;
+  return {games, played, wins: w, rate: played ? w / played : null, rateAll: games ? wAll / games : null};
+}
+function winRate(id, over){ const m = measure(id, over, null); return m.rate == null ? 0 : m.rate; } // --suggest's yardstick (basic, played games)
+const r1 = v=> v == null ? null : Math.round(v * 1000) / 10;
+
+// ---- worker processes (BAL22): the parent hands out one card at a time ({phase, id, pool}); the worker answers {phase, id, m}.
+if(IS_WORKER){
+  process.on('message', job=>{
+    if(job.stop){ process.disconnect(); return; }
+    process.send({phase: job.phase, id: job.id, m: measure(job.id, null, job.phase === 'adv' ? job.pool : null)});
+  });
+  return;
 }
 
 // What each rarity should deliver, as a win-rate band for the test deck against the reference. A
@@ -88,17 +141,69 @@ function budgetV3(d){ // d = the card as printed (canonical/cards.json)
 }
 
 const t0 = Date.now();
-const rows = fieldable.filter(id=> !ONLY.length || ONLY.includes(id)).map(id=>{
-  const d = defs[id], wr = winRate(id), [lo, hi] = bandOf(d);
-  const verdict = wr > hi ? 'strong' : wr < lo ? 'weak' : 'ok';
+const LIVE = fieldable.filter(id=> !ONLY.length || ONLY.includes(id)).sort();
+// ---- run the cards over WORKERS child processes, one card at a time; results saved line by line so --resume can pick up.
+const PROG = path.join(ROOT, 'docs', 'balance', ONLY.length ? 'card-balance-partial-progress.jsonl' : 'card-balance-progress.jsonl');
+const SETTINGS = {games: N, mode: MODE, seed: SEED, only: ONLY.slice().sort().join(','), filler: FILLER.join(',')};
+const done = {basic: {}, adv: {}};
+if(args.includes('--resume') && fs.existsSync(PROG)){
+  const lines = fs.readFileSync(PROG, 'utf8').split('\n').filter(Boolean).map(l=>{ try{ return JSON.parse(l); }catch(e){ return null; } }).filter(Boolean);
+  if(lines[0] && JSON.stringify(lines[0].settings) === JSON.stringify(SETTINGS)) lines.slice(1).forEach(l=>{ if(l.phase && l.id) done[l.phase][l.id] = l.m; });
+  else console.error('card_balance: progress file is from other settings; starting over');
+}
+if(!Object.keys(done.basic).length) fs.writeFileSync(PROG, JSON.stringify({settings: SETTINGS}) + '\n');
+function runPhase(phase, ids, pool){
+  const todo = ids.filter(id=> !done[phase][id]);
+  if(!todo.length || REPORT_ONLY) return Promise.resolve();
+  const { fork } = require('child_process');
+  const total = todo.length; let next = 0, got = 0, tP = Date.now();
+  return new Promise((resolve, reject)=>{
+    const kids = [];
+    const feed = kid=>{ if(next < todo.length) kid.send({phase, id: todo[next++], pool}); else kid.send({stop: true}); };
+    for(let i = 0; i < Math.min(WORKERS, todo.length); i++){
+      const kid = fork(__filename, args.filter(a=> a !== '--resume').concat(['--worker']), {stdio: ['ignore', 'inherit', 'inherit', 'ipc']});
+      kids.push(kid);
+      kid.on('message', msg=>{
+        done[phase][msg.id] = msg.m; fs.appendFileSync(PROG, JSON.stringify(msg) + '\n'); got++;
+        if(got % 25 === 0 || got === total){ const el = (Date.now() - tP) / 1000; console.error(`  ${phase}: ${got}/${total} cards, ${el.toFixed(0)}s, ~${((total - got) * el / got / 60).toFixed(1)} min left`); }
+        feed(kid);
+      });
+      kid.on('exit', code=>{ if(code){ reject(new Error(phase + ' worker exited with ' + code)); return; } if(kids.every(k=> k.exitCode !== null) && got >= total) resolve(); });
+      feed(kid);
+    }
+  });
+}
+// The strong-card pool: the top 20% by basic win rate (played games), low-sample cards left out, ties by id.
+function topPool(rateOf){ // rateOf: [{id, rate, played}]
+  const ok = rateOf.filter(x=> x.rate != null && (x.played == null || x.played >= LOW_SAMPLE) && defs[x.id]);
+  ok.sort((a, b)=> b.rate - a.rate || (a.id < b.id ? -1 : 1));
+  return ok.slice(0, Math.max(1, Math.round(ok.length * TOP_SHARE))).map(x=> x.id).sort();
+}
+
+(async ()=>{
+await runPhase('basic', LIVE);
+const tBasic = (Date.now() - t0) / 1000;
+let pool = null, poolFrom = null;
+if(!BASIC_ONLY){
+  if(!ONLY.length){ pool = topPool(LIVE.map(id=> ({id, rate: done.basic[id].rate, played: done.basic[id].played}))); poolFrom = 'this run (basic pass)'; }
+  else { const prev = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'card-balance.json'), 'utf8'));
+    pool = topPool((prev.rows || []).map(r=> ({id: r.id, rate: r.winRate, played: r.played}))); poolFrom = 'docs/balance/card-balance.json (' + prev.generated + ', ' + prev.games + ' games)'; }
+  await runPhase('adv', LIVE, pool);
+}
+const rows = LIVE.filter(id=> done.basic[id]).map(id=>{
+  const d = defs[id], b = done.basic[id], a = done.adv[id], wr = b.rate, [lo, hi] = bandOf(d);
+  const verdict = wr == null ? 'unplayed' : wr > hi ? 'strong' : wr < lo ? 'weak' : 'ok';
   return {id, name:d.name, rarity:d.rarity || null, cost:d.cost||0, wait:d.wait||0, attack:d.attack||0, health:d.health||0,
     skills:Object.keys(d.effects||{}).filter(k=> k!=='triggers').concat((d.effects.triggers||[]).length ? ['triggers'] : []),
-    winRate: Math.round(wr*1000)/10, band:[lo*100, hi*100], verdict, locked: !!d.locked, source: (d.source||{}).kind || 'base', startsAt0: !!d.startsAt0, budget: budgetV3(RAW[id]), note: d.startsAt0 ? 'measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)' : undefined};
+    winRate: r1(wr), advRate: a ? r1(a.rate) : null, played: b.played, games: b.games, playedShare: b.games ? Math.round(b.played / b.games * 1000) / 1000 : 0,
+    wins: b.wins, winRateAll: r1(b.rateAll), lowSample: b.played < LOW_SAMPLE || undefined,
+    adv: a ? {played: a.played, games: a.games, playedShare: a.games ? Math.round(a.played / a.games * 1000) / 1000 : 0, wins: a.wins, rateAll: r1(a.rateAll), lowSample: a.played < LOW_SAMPLE || undefined} : undefined,
+    band:[lo*100, hi*100], verdict, locked: !!d.locked, source: (d.source||{}).kind || 'base', startsAt0: !!d.startsAt0, budget: budgetV3(RAW[id]), note: d.startsAt0 ? 'measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)' : undefined};
 });
 
 // Suggest a fix for outliers: step Attack, then Health, toward the band (max 4 steps each).
 if(SUGGEST){
-  rows.filter(r=> r.verdict!=='ok' && r.rarity).forEach(r=>{ // unrated cards get a suggested rarity instead (below)
+  rows.filter(r=> (r.verdict==='strong' || r.verdict==='weak') && r.rarity).forEach(r=>{ // unrated cards get a suggested rarity instead (below)
     const d = defs[r.id], [lo, hi] = bandOf(d), target = (lo + hi) / 2, dir = r.verdict==='strong' ? -1 : 1;
     let best = null;
     for(const stat of ['attack', 'health']){
@@ -117,10 +222,18 @@ if(SUGGEST){
 
 // Suggested rarity for cards with none set: the rarity whose band centre is nearest the measured win rate.
 const RAR_ORDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary'];
-rows.forEach(r=>{ if(r.rarity) return; const wr = r.winRate/100; let best = 'common', bd = 9;
+rows.forEach(r=>{ if(r.rarity || r.winRate == null) return; const wr = r.winRate/100; let best = 'common', bd = 9;
   RAR_ORDER.forEach(k=>{ const [lo, hi] = BANDS[k], d = Math.abs(wr - (lo+hi)/2); if(d < bd){ bd = d; best = k; } }); r.suggestRarity = best; });
-const out = {generated: new Date().toISOString().slice(0,10), games: N, mode: MODE, filler: FILLER, bands: BANDS, rows};
+const out = {generated: new Date().toISOString().slice(0,10), games: N, mode: MODE, filler: FILLER, bands: BANDS,
+  // 2026-11-07 (BAL22): how the numbers were made
+  method: {basic: 'k copies of the card + filler vs 20 filler; seeds 7700 + 131g', advanced: 'same test deck vs a 20-card deck drawn per game from the top pool (min(4, rarity copy limit) copies, top-rank caps)',
+    count: 'a game counts only if the test side played the card at least once (winRate / advRate over played games; winRateAll over all games)', lowSampleUnder: LOW_SAMPLE, workers: WORKERS,
+    seconds: REPORT_ONLY ? null : {basic: Math.round(tBasic), total: Math.round((Date.now() - t0) / 1000)}},
+  advanced: pool ? {seed: SEED, topShare: TOP_SHARE, poolFrom, pool, measured: LIVE.filter(id=> done.adv[id]).length, complete: LIVE.every(id=> done.adv[id]), matchSeeds: (SEED + 99991) + ' + 131g'} : null,
+  rows};
 fs.mkdirSync(path.join(ROOT, 'docs', 'balance'), {recursive: true});
 fs.writeFileSync(path.join(ROOT, 'docs', 'balance', ONLY.length ? 'card-balance-partial.json' : 'card-balance.json'), JSON.stringify(out, null, 1) + '\n');
+if(LIVE.every(id=> done.basic[id] && (BASIC_ONLY || done.adv[id]))){ try{ fs.unlinkSync(PROG); }catch(e){} }
 const cnt = v=> rows.filter(r=> r.verdict===v).length;
 console.log(`${rows.length} cards, ${N} games each, ${((Date.now()-t0)/1000).toFixed(0)}s: ${cnt('strong')} too strong, ${cnt('weak')} too weak, ${cnt('ok')} in band`);
+})().catch(e=>{ console.error(e); process.exit(1); });

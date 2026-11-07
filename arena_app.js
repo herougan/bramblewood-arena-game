@@ -33573,12 +33573,19 @@ function ceBudgetHTML(d){
 }
 // 2026-11-07 (package UI24 #7): a card's power in the editor: its win % in the card power test minus 50, so 0 is average (half its fights won), +N stronger, -N weaker.
 // The date is the test run's; a card with no row (new, or added since the run) reads "not measured". Editor only.
+// 2026-11-07 (package BAL22, owner 07:37): "Power: +N · Advanced +M". Power is the basic test centred on the median card (as before);
+// Advanced = the win % against decks of the strongest cards minus 50, not re-centred. The run date and the played share go in the tooltip.
 function cePowerHTML(d){
-  try{ const cp = (typeof CARD_POWER !== 'undefined') ? CARD_POWER : null, id = d && d.id, wr = cp && cp.wr && id && Object.prototype.hasOwnProperty.call(cp.wr, id) ? Number(cp.wr[id]) : NaN;
-    const tip = escapeAttr(TX('ui.ui24-power-tip'));
+  try{ const cp = (typeof CARD_POWER !== 'undefined') ? CARD_POWER : null, id = d && d.id, has = (o)=> !!(o && id && Object.prototype.hasOwnProperty.call(o, id));
+    const wr = cp && has(cp.wr) ? Number(cp.wr[id]) : NaN, adv = cp && has(cp.adv) ? Number(cp.adv[id]) : NaN, ps = cp && has(cp.ps) ? Number(cp.ps[id]) : NaN;
+    const sg = v=>{ const n = Math.round(v), t = n > 0 ? '+' + n : String(n); return t === '-0' ? '0' : t; }; // 0 and -0 read "0"
+    const tipParts = [TX('ui.bal22-power-tip')];
+    if(cp && cp.date) tipParts.push(TX('ui.ui24-power-date', {date: cp.date}) + '.');
+    if(Number.isFinite(ps)) tipParts.push(TX('ui.bal22-power-share', {share: Math.round(ps * 100)}));
+    const tip = escapeAttr(tipParts.join(' '));
     if(!Number.isFinite(wr)) return `<div class="ce-power is-none" title="${tip}">${escapeHtml(TX('ui.ui24-power-none'))}</div>`;
-    const n = Math.round(wr - 50), txt = n > 0 ? '+' + n : String(n); // 0 and -0 read "0"
-    return `<div class="ce-power ${n > 0 ? 'is-up' : n < 0 ? 'is-down' : 'is-zero'}" title="${tip}"><b>${escapeHtml(TX('ui.ui24-power', {n: txt === '-0' ? '0' : txt}))}</b>${cp.date ? ` <small>${escapeHtml(TX('ui.ui24-power-date', {date: cp.date}))}</small>` : ''}</div>`; }catch(e){ return ''; }
+    const n = Math.round(wr - 50), advTxt = Number.isFinite(adv) ? TX('ui.bal22-adv', {m: sg(adv - 50)}) : TX('ui.bal22-adv-none');
+    return `<div class="ce-power ${n > 0 ? 'is-up' : n < 0 ? 'is-down' : 'is-zero'}" title="${tip}"><b>${escapeHtml(TX('ui.ui24-power', {n: sg(wr - 50)}))}</b> · ${escapeHtml(advTxt)}</div>`; }catch(e){ return ''; }
 }
 function ceBudgetRefresh(d){
   const fa = document.getElementById('fAtk'); if(!fa) return;

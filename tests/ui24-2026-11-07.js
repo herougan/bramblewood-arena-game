@@ -88,10 +88,13 @@ async function browser(){
       ok(h0 !== h1 && /90/.test(h1.replace(h0, '|')), `@${w} Art height moves the preview`);
 
       // ---- 7 power
-      await open('abbey-goose');
-      const exp = await pg.evaluate("(()=>{ const v = CARD_POWER.wr['abbey-goose'], n = Math.round(v - 50); return {n: n > 0 ? '+' + n : String(n), date: CARD_POWER.date}; })()");
+      // 2026-11-07 (BAL22): a card that was played in the test (abbey-goose if it has a number), and the run's date moved into the tooltip
+      const pid = await pg.evaluate("CARD_POWER.wr['abbey-goose'] != null ? 'abbey-goose' : Object.keys(CARD_POWER.wr)[0]");
+      await open(pid);
+      const exp = await pg.evaluate(`(()=>{ const v = CARD_POWER.wr['${pid}'], n = Math.round(v - 50); return {n: n > 0 ? '+' + n : String(n), date: CARD_POWER.date}; })()`);
       const pw1 = await pg.evaluate("(document.querySelector('#ceBudget .ce-power')||{}).textContent");
-      ok(pw1 && pw1.includes('Power: ' + exp.n) && pw1.includes(exp.date), `@${w} the editor shows "Power: ${exp.n}" and the run's date (${pw1})`);
+      const pt1 = await pg.evaluate("(document.querySelector('#ceBudget .ce-power')||{}).title || ''");
+      ok(pw1 && pw1.includes('Power: ' + exp.n) && pt1.includes(exp.date), `@${w} the editor shows "Power: ${exp.n}" and the run's date in its tooltip (${pw1})`);
       const fmt = await pg.evaluate("(()=>{ CARD_POWER.wr['__up'] = 62.4; CARD_POWER.wr['__zero'] = 50.2; CARD_POWER.wr['__down'] = 41; const t = id=> cePowerHTML({id}).replace(/<[^>]*>/g, '').trim(); return [t('__up'), t('__zero'), t('__down'), t('__nope'), t(undefined)]; })()");
       ok(/^Power: \+12\b/.test(fmt[0]) && /^Power: 0\b/.test(fmt[1]) && /^Power: -9\b/.test(fmt[2]) && fmt[3] === 'Power: not measured' && fmt[4] === 'Power: not measured', `@${w} +N / 0 / -N, and not measured ${JSON.stringify(fmt)}`);
       await open(null);
