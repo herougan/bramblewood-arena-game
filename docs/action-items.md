@@ -37,6 +37,12 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 15 | No effects or sounds while the tab is out of focus (they pile up and play at once on return) | UI27 |
 | 16 | Editor budget box: "Within budget, B = 13.8 < 16.2 = N"; formula on hover; A/H, B, S symbols; no "skills" word; Base level dropdown (locked) after Rarity; a skill-points row after custom triggers (2.5 + 5.0 + 3.5^2 = ... = S, each skill in its own formula type) | UI27 |
 
+## 11-07: Package UI29 (on its branch, not released)
+- Done (owner 09:04 / 09:10): the admin 📦 Pack editor. Every shop pack, Starter, Base and the faction pools, each card with its source; CONTENT16's adds as Suggested tiles (✓ / ✂), its removals and zone moves marked. Opens from the Shop (📦 Edit, Starter · Base · Factions) and the map's 🚨 bar (📦 Packs). Marks are picks in the browser; Copy my picks / Export all for the coordinator.
+- Finding: the live starting decks hold 19 different cards; the plan counted 16 (live adds Crossed-Eyes, Cobalt Talon Fledgling, Dormouse, Otter Paddler; the plan has Acorn Chipmunk). Re-run the CONTENT16 tool before folding Starter picks.
+- Open: UI29-1 (marks only, or an Apply button later).
+- Next: fold the owner's pack picks once CONTENT16-1..4 are answered.
+
 ## 11-07: Package ENG30 (on its branch, not released)
 - Done (owner 08:54): #1 Consecration N / Desecration N (side-wide Exalted / Cursed ground at each round start; both on the field cancel, field-wide), on no card, "?" until Map 70, priced 3.5 / 5.9 a point by reasoning. #2 the Blind / Dark-blind 🕶️ pip glows while its unit attacks (Effects setting respected). #13 sight looks B (blindfold) and C (fog) removed, look A only; the shut eye's first blink 1 in 2.
 - Owner calls open: ENG30-1 (no Exalted ground existed: Claude's reading of the two grounds).

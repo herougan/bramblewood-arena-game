@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package UI29: the admin 📦 Pack editor (owner 09:04 / 09:10; decision UI29-1)
+- Admin only: a 📦 Pack editor window, built from the Map cards window's parts (power badges, Cut / ↩ Keep, + Add card in a Special section, Copy my picks / Export all). Left: every shop pack (with the Collector packs and Pack 4), then Starter, Base, Otters, Hummingbirds and the shared faction cards. Right: that list's cards as the game builds it now, each with its map list ("📍 Map 5") or "➕ Extra" and its CONTENT16 source tag; the maps a pack draws from and its proposed zone.
+- CONTENT16's proposal (`canonical/pack-plan.json`, baked in as `PACK_PLAN` by `assemble_arena.py`): proposed adds, moves and zone moves are Suggested tiles (✓ accept / ✂ reject, the reason as tooltip); proposed removals and zone moves out are red pills. Marks are picks saved in this browser; nothing changes a live pack.
+- Opens from the Shop (📦 Edit on each pack tile, "Starter · Base · Factions" at the top) and from the map's 🚨 admin bar (📦 Packs, on that map's pack).
+- Code: the `UI29_PE` block in `arena_app.js` plus small hooks in `renderShop`, the shelf tile, `mapLayoutToolbarHTML` and `wireMapLayoutEditor`; CSS in `arena_template.html`; 46 texts in 12 languages. Test: `tests/ui29-2026-11-07.js` (new).
+
 ## 2026-11-07 Package CONTENT15 (owner 08:54; decision CONTENT15-1)
 - Players see: two new Uncommon faction cards that grow while a leader of their side is on the field (the deck's Leader, a Gladiator leader or a Natural Leader such as the Legate / the Elder), on **Loyal**, the Sworn Shieldbearer's (the stoat's) skill. **Oathsworn Legionary** (Otter, 1 Lumber, Wait 1, 2/13, Loyal - {+1/+2, Armor 1}: 3/15 Armor 1 with a leader; 90% of budget N at Level 1, Map 5; 95% at Map 0) and **Cobalt Talon Honour-guard** (Hummingbird, 0 Lumber, Wait 1, 3/4, Flying, Loyal - {+2/+1, Quick}: 5/5 Flying Quick with a leader; 86% at Map 5, 91% at Map 0). Faction pool (4 copies each); names and flavour in all 12 languages; art not drawn yet (prompts in `docs/art-style-prompts.md`).
 - Data only: no engine or app change (Loyal and its braces already run). `canonical/card-obtain-maps.json`: both at Map 5, like the other faction cards. Test: `tests/content15-2026-11-07.js` (new).
