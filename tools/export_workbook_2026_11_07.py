@@ -99,23 +99,43 @@ def build(d):
 
     dl = json.load(open(os.path.join(ROOT, 'canonical', 'skill-delivery.json'), encoding='utf-8'))
     deliv, rides, notes, against = dl['delivery'], dl.get('rides', {}), dl.get('notes', {}), dl.get('against', {})
+    # ENG35 (2026-11-07, owner 20:58: "Fuse skills together"): one row per fused skill (canonical/skill-params.json). A part of a skill (almanacGrant,
+    # nocturnalHp, arrowPoison ...) is not a row of its own; its cards count for its skill; the Parameters column says what the skill can take.
+    sys.path.insert(0, os.path.join(ROOT, 'tools'))
+    import skill_params as SP
+    fams, alias = SP.params().get('families', {}), SP._alias()
+    fkey = lambda k: alias[k][0] if k in alias else k
+    def shape(v):
+        if v is None: return ''
+        if isinstance(v, (dict, list)): return json.dumps(v, ensure_ascii=False)
+        return str(v)
+    def params_txt(k):
+        f = fams.get(k)
+        if not f: return 'one value'
+        out = ['Default: ' + f.get('default', '')]
+        if f.get('number') is not None: out.append('Number: ' + shape(f['number']))
+        out.append('Stat version: ' + (shape(f['stat']) if f.get('stat') else 'none'))
+        out.append('Ability version: ' + (shape(f['ability']) if f.get('ability') else 'none'))
+        out.append('Parts: ' + ', '.join(['v'] + list((f.get('params') or {}).keys())))
+        return '; '.join(out)
     count = {}
     for c in d['cards']:
         if c['token'] or c['test']: continue
-        for k in set(c['effectKeys']) | {t.split(':')[1] for t in c['triggers'] if ':' in t}: count[k] = count.get(k, 0) + 1
+        for k in {fkey(x) for x in c['effectKeys']} | {t.split(':')[1] for t in c['triggers'] if ':' in t}: count[k] = count.get(k, 0) + 1
     ride_txt = {'melee': 'every melee hit', 'ranged': 'every ranged hit', 'any': 'every hit', 'swing': 'its own swing only'}
     vs_txt = {'melee': 'melee hits at it', 'ranged': 'ranged hits at it', 'any': 'every hit at it'}
     def applies(k): return ride_txt.get(rides.get(k)) or vs_txt.get(against.get(k)) or ''
     rows = []
     for s in sorted(d['skills'], key=lambda s: ((s['label'] or s['key']).lower(), s['key'])):
+        if s['key'] in alias: continue  # ENG35: a part of a fused skill, shown in its skill's Parameters
         rows.append([s['label'] or s['key'], s['key'], deliv.get(s['key'], '?'), applies(s['key']), notes.get(s['key'], ''),
-                     s['category'], s['kind'] or 'boolean', count.get(s['key'], 0), s['desc']])
+                     s['category'], s['kind'] or 'boolean', params_txt(s['key']), count.get(s['key'], 0), s['desc']])
     for a in d['actions']:
         k = 'action:' + a['key']
         if k in deliv:
-            rows.append([a['label'] + ' (custom action)', k, deliv[k], applies(k), notes.get(k, ''), 'action', '', count.get(a['key'], 0), a['desc']])
-    sheet('Skills', ['Skill', 'Key', 'Delivery', 'Its effect applies to', 'Delivery note', 'Category', 'Type', 'Cards with it', 'Description (N = the skill number)'],
-          rows, [20, 18, 10, 18, 40, 10, 10, 8, 90])
+            rows.append([a['label'] + ' (custom action)', k, deliv[k], applies(k), notes.get(k, ''), 'action', '', '', count.get(a['key'], 0), a['desc']])
+    sheet('Skills', ['Skill', 'Key', 'Delivery', 'Its effect applies to', 'Delivery note', 'Category', 'Type', 'Parameters (default, stat version, ability version)', 'Cards with it', 'Description (N = the skill number)'],
+          rows, [20, 18, 10, 18, 40, 10, 10, 60, 8, 90])
 
     cp = json.load(open(os.path.join(ROOT, 'docs', 'balance', 'bal25', 'card-power.json'), encoding='utf-8'))
     cards = {c['id']: c for c in d['cards']}
@@ -130,13 +150,13 @@ def build(d):
                               'Budget N', 'Power', 'Power for budget', 'Basic win %', 'Advanced win %', 'Where to get'],
           rows, [24, 9, 22, 10, 6, 6, 7, 7, 12, 14, 60, 8, 8, 9, 9, 9, 30])
 
-    nd = {k: sum(1 for s in d['skills'] if deliv.get(s['key']) == k) for k in ('melee', 'ranged', 'none')}
+    nd = {k: sum(1 for s in d['skills'] if s['key'] not in alias and deliv.get(s['key']) == k) for k in ('melee', 'ranged', 'none')}
     ws = wb.create_sheet('About')
     for line in [
         'Bramblewood Arena game data, exported %s from the built game (tools/export_workbook_2026_11_07.py).' % datetime.date.today().isoformat(),
         'Maps: all %d maps and submaps in unlock order.' % len(d['maps']),
         "Fights: every fight's enemy deck (card ×copies), enemy level, deck rating, castle and leader.",
-        'Skills: %d skills. Delivery: melee %d, ranged %d, none %d (canonical/skill-delivery.json; the engine reads it).' % (len(d['skills']), nd['melee'], nd['ranged'], nd['none']),
+        'Skills: %d skills, one row per skill (ENG35: a skill\'s parts such as Almanac\'s braces or Nocturnal\'s Health are in its Parameters column, canonical/skill-params.json). Delivery: melee %d, ranged %d, none %d (canonical/skill-delivery.json; the engine reads it).' % (sum(1 for s in d['skills'] if s['key'] not in alias), nd['melee'], nd['ranged'], nd['none']),
         'Melee = a swing or contact strike (the lane attack, Twin Strike, Pounce, Cleave, Ambush...). Ranged = a shot, throw or remote hit (Arrow, the Bolts, Missile, Boomerang, Fireball...). None = no hit of its own (auras, Armor, Regeneration, field and tick damage).',
         '"Its effect applies to": for an on-hit effect, which hits carry it (Bleed and Venom: every melee hit; Fletcher: every ranged hit); for a defence, which hits it answers (Thorns: melee hits at it; Reflect: ranged hits at it).',
         'Cards Maps 0-20: BAL25 card power v3 (%s, %s games a card), docs/balance/bal25/card-power.json.' % (cp.get('generated'), cp.get('games')),

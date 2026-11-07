@@ -4228,5 +4228,14 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "Token racun: {n}. Menerima kerusakan sebesar tumpukannya tiap ronde, lalu kehilangan 1 tumpukan.",
  "Main skills": "Skill utama",
  "Other skills (side maps, specials)": "Skill lainnya (peta samping, khusus)",
- "Recommended skills for this map": "Skill yang disarankan untuk peta ini"
+ "Recommended skills for this map": "Skill yang disarankan untuk peta ini",
+ "Number": "Angka",
+ "Stat version": "Versi statistik",
+ "Ability version": "Versi kemampuan",
+ "Parameters": "Parameter",
+ "One value, no parts": "Satu nilai, tanpa bagian",
+ "none": "tidak ada",
+ "Melee": "Jarak dekat",
+ "Ranged": "Jarak jauh",
+ "No hit of its own": "Tanpa serangan sendiri"
 }

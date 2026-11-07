@@ -4227,5 +4227,14 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "毒素标记：{n}。每回合受到等于层数的伤害，然后减少 1 层。",
  "Main skills": "主要技能",
  "Other skills (side maps, specials)": "其他技能（支线地图、特殊）",
- "Recommended skills for this map": "本地图的推荐技能"
+ "Recommended skills for this map": "本地图的推荐技能",
+ "Number": "数值",
+ "Stat version": "属性版",
+ "Ability version": "技能版",
+ "Parameters": "参数",
+ "One value, no parts": "单一数值，无分项",
+ "none": "无",
+ "Melee": "近战",
+ "Ranged": "远程",
+ "No hit of its own": "自身不造成攻击"
 }

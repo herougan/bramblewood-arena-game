@@ -14911,6 +14911,21 @@ html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
 /* 2026-11-07 (package UI32 #7): a divider above each group of the Map cards window's skills section */
 .ui19-sk-list > .ui32-sk-head{grid-column:1 / -1; margin:4px 0 0; padding:0 0 1px; font:800 10.5px/1.3 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; color:var(--muted,#8a8f9a); border-bottom:1px solid color-mix(in srgb, currentColor 22%, transparent);}
 .ui19-sk-list > .ui32-sk-head:first-child{margin-top:0;} .ui19-sk-list > .ui32-sk-head.is-rec{color:#4f8ee8;}
+/* 2026-11-07 (package ENG35, owner 21:13: "just leave 1 line of emoji and title"): a skill tile is one line (icon, name, compact pills); the rest is in the hover window */
+.ui19-sk[data-eng35-key]{align-items:center; cursor:help;}
+.ui19-sk[data-eng35-key]:focus-visible{outline:2px solid #4f8ee8; outline-offset:1px;}
+.ui19-sk[data-eng35-key] .ui19-sk-main{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.ui19-sk[data-eng35-key] .ui19-sk-main i, .ui19-sk[data-eng35-key] .ui19-sk-main .skill-q{font-size:9px; padding:0 3px; line-height:1.3;}
+.eng35-sk-tip{position:fixed; z-index:10050; max-width:340px; padding:8px 10px; border-radius:9px; border:1px solid var(--surface-border); background:var(--surface,#fffaf0); color:var(--ink); box-shadow:0 6px 22px rgba(0,0,0,.28); font:500 12px/1.35 system-ui,sans-serif; pointer-events:none;}
+.eng35-sk-tip[hidden]{display:none;}
+.eng35-tip-h{font-size:13px; margin-bottom:3px;}
+.eng35-tip-t{margin:0 0 4px;} .eng35-tip-c{margin:0 0 5px; color:var(--ink-muted); font-size:11px;}
+.eng35-tip-ps{display:grid; grid-template-columns:auto 1fr; gap:2px 8px; margin:0; font-size:11.5px;}
+.eng35-tip-ps dt{font-weight:800; color:var(--ink-muted); white-space:nowrap;} .eng35-tip-ps dd{margin:0; min-width:0; overflow-wrap:anywhere;}
+.eng35-tip-ps code{font:600 11px/1.3 ui-monospace,Menlo,monospace; background:color-mix(in srgb, currentColor 9%, transparent); padding:0 3px; border-radius:4px;}
+.eng35-tip-a{margin:5px 0 0; color:var(--ink-soft); font-size:10.5px;}
+.eng35-dl{font-style:normal; font-size:10px; font-weight:800; padding:0 5px; border-radius:6px; background:color-mix(in srgb, currentColor 12%, transparent);}
+.eng35-dl.is-melee{color:#b8562a;} .eng35-dl.is-ranged{color:#2f7bd0;} .eng35-dl.is-none{color:var(--ink-muted);}
 .ui32-edit{display:inline-block; min-width:14px; padding:1px 4px; border-radius:999px; font:900 11px/1 'Baloo 2',system-ui,sans-serif; text-align:center; cursor:help; border:1px solid rgba(255,255,255,.55); box-shadow:0 1px 3px rgba(0,0,0,.45); letter-spacing:-.5px;}
 .ui32-edit.is-up{background:#e0a82a; color:#2b1d00;} .ui32-edit.is-down{background:#7a4fb0; color:#fff;} .ui32-edit.is-mix{background:#5b6270; color:#fff;}
 .ce-power .ui32-edit{margin-left:5px; vertical-align:1px;}

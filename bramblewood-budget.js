@@ -66,6 +66,10 @@ const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2.5 
 // BUDGET2 (2026-10-31): the Attack weight of the stat terms (braces, thresholds, time of day): DEFAULTS.attackWeight, read at each call so a
 // comparison tool can price a card under the old 2A + H (tools/budget2_refit_2026_10_31.js sets it to 2 for its "before"); capScores reads cfg first
 const awNow = ()=> +DEFAULTS.attackWeight || 2;
+// ENG35 (2026-11-07, owner 20:58: "Fuse skills together"): a card's fused skill parameters ("nocturnal": {"v": 2, "hp": 1}, canonical/skill-params.json)
+// are read as the flat keys the prices are written for (nocturnalHp ...), so every price is the same as before the fold. XP(effects) expands.
+const SPL = (typeof BramblewoodSkillParams !== 'undefined' && BramblewoodSkillParams) || (()=>{ try{ return typeof require === 'function' ? require('./bramblewood-skillparams.js') : null; }catch(e){ return null; } })();
+const XP = e=> (SPL && e) ? SPL.expand(e) : e;
 // Shield as Health (2026-10-26, package FIN2-c; owner 23:46 #3: "Shield should be valued less than health. E.g. maybe 0.8. So tide pool crab is
 // heavily undertuned"): a unit's own Shield N (effects.shield: it arrives with N temporary Health that soaks damage first and never comes back)
 // is priced as shieldPerHealth (0.8) x N Health in the stat terms of both caps: cap 1 (2A + H + 0.8·Sh) x m + S, cap 2 A·(H + 0.8·Sh) x m + S·|S|.
@@ -148,7 +152,7 @@ function bloomOdds(v){ if(!obj(v)) return 0; const w = (Array.isArray(v.when) ? 
 // other side is free, about 0.6: 0.5) and rarely a third (a copy died and freed a cell). q stays 0.43 (a formula estimate, not measured).
 const BLOOM_CHAIN_Q = 0.43;
 function bloomChainOdds(v){ const p = bloomOdds(v), q = BLOOM_CHAIN_Q; return r2(p * (1 + q + q * q)); }
-function bloomBodyMult(effects){ const e = effects || {}; return r2((e.bloomCopy ? 1 + bloomChainOdds(e.bloomCopy) : 1) * offspringBodyMult(e)); } // EN5: the chain's copies (was 1 + p); ENG28: x Offspring's copies
+function bloomBodyMult(effects){ const e = XP(effects) || {}; return r2((e.bloomCopy ? 1 + bloomChainOdds(e.bloomCopy) : 1) * offspringBodyMult(e)); } // EN5: the chain's copies (was 1 + p); ENG28: x Offspring's copies
 // ENG28 (2026-11-07, owner 11-06 23:35 #13: "a skill like Brood that summons a weaker copy of the card itself ... price it by reasoning"):
 // Offspring N hatches N copies of the card as it arrives, each with half its Attack and Health (rounded down), Wait 1, its other skills and
 // no Offspring. Priced like Bloom's copy, as a share of a second body on cap 1's stat terms (capScores' k, and the Forge bank): a copy is
@@ -222,9 +226,9 @@ function contextS(k, v, costOf, mult){ const f = CONTEXT[k]; if(!f) return null;
     inner += awNow() * A + H + (Object.keys(rest).length ? (+costOf(rest) || 0) : 0); }); // BUDGET2 (2026-10-31): 3A + H (was 2A + H)
   const m = mult == null ? (CONTEXT_MULT_BY[k] != null ? CONTEXT_MULT_BY[k] : CONTEXT_MULT) : +mult; return {S: r2(m * inner), inner: r2(inner), mult: m}; } // + CONTEXT_MULT_BY (EN, 2026-10-23)
 // true when effects.k is a plain flag whose braces sit beside it (it costs nothing on its own then)
-function contextFlagCovered(k, e){ const g = CONTEXT_FLAG[k]; return !!(g && e && e[g] && typeof e[g] === 'object'); }
+function contextFlagCovered(k, e){ e = XP(e); const g = CONTEXT_FLAG[k]; return !!(g && e && e[g] && typeof e[g] === 'object'); }
 // a card's abilities: its effects keys with a value (not a parameter of another skill), each trigger as 'trigger:<on>'
-function abilitiesOf(effects, params){ const e = effects || {}, P = params || PARAMS, out = [];
+function abilitiesOf(effects, params){ const e = XP(effects) || {}, P = params || PARAMS, out = [];
   Object.keys(e).forEach(k=>{ const v = e[k]; if(v == null || v === false || v === 0 || v === '' || (Array.isArray(v) && !v.length) || P.includes(k)) return;
     if(k === 'triggers'){ (Array.isArray(v) ? v : []).forEach(t=> out.push('trigger:' + ((t && t.on) || '?'))); return; } out.push(k); });
   return out; }
@@ -234,7 +238,7 @@ function abilitiesOf(effects, params){ const e = effects || {}, P = params || PA
 // braces: Tide beside its tideGrant, Diurnal / Nocturnal beside their Grant count like any skill (their numbered +A/+H is still plain).
 const TWO_SKILL_FREE = ['flying', 'tide', 'diurnal', 'nocturnal'];
 function twoSkillFree(k, e){ return TWO_SKILL_FREE.includes(k) && !(e && e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object'); }
-function skillCountOf(effects, params){ const e = effects || {}, a = abilitiesOf(e, params), free = a.filter(k=> twoSkillFree(k, e)).length;
+function skillCountOf(effects, params){ const e = XP(effects) || {}, a = abilitiesOf(e, params), free = a.filter(k=> twoSkillFree(k, e)).length;
   return a.length - free + (free >= 2 ? 1 : 0); }
 // Chained as an N multiplier (ENG9, 2026-10-26, owner G19: "Being chained should grant a larger budget - multiplicatively"): a Chained unit
 // can't act until its chain breaks, so its stats are worth less for those rounds. By the 4-round rule: it takes about 3 damage a round in the
@@ -243,7 +247,7 @@ function skillCountOf(effects, params){ const e = effects || {}, a = abilitiesOf
 // wants more than that: x(1 + 0.25 per held round): Chained 1 1.08, 4 1.33, 9 1.75, 12+ 2. 'enemySpawn' (the opponent plays a card) breaks
 // within about half a round: 1.1. Its skill price is 0 (canonical/skill-costs.json).
 const CHAINED_PER_ROUND = 0.25, CHAINED_DMG_A_ROUND = 3, CHAINED_MAX_ROUNDS = 4, CHAINED_SPAWN_MULT = 1.1;
-function chainedMult(effects){ const c = effects && effects.chained; if(!c) return 1; if(typeof c === 'object' && c.breakOn === 'enemySpawn') return CHAINED_SPAWN_MULT;
+function chainedMult(effects){ effects = XP(effects); const c = effects && effects.chained; if(!c) return 1; if(typeof c === 'object' && c.breakOn === 'enemySpawn') return CHAINED_SPAWN_MULT;
   const n = Math.max(1, Number(c && c.amount) || 1); return r2(1 + CHAINED_PER_ROUND * Math.min(CHAINED_MAX_ROUNDS, n / CHAINED_DMG_A_ROUND)); }
 function nMultOf(effects, cfg, params){ const a = abilitiesOf(effects, params || (cfg && cfg.params)); let k = 1;
   if(!a.length) k *= num(cfg, 'plainBonus'); else if(a.every(x=> LIGHT.includes(x))) k *= num(cfg, 'lightBonus');
@@ -473,7 +477,7 @@ function thrUptime(k, N){ const t = THR_UPTIME[k]; if(!t) return 0; const n = Ma
 // measure, global context, 200 fights a variant, 4 copies of each carrier, so other Meld units stand beside it), MELD_MULT 0.73.
 const MELD_MULT = 0.73;
 function meldS(k, v, costOf){ if(k !== 'meld' || !obj(v) || !Object.keys(v).length || !costOf) return null; const inner = +costOf(v) || 0; return {S: r2(inner * MELD_MULT), inner: r2(inner), mult: MELD_MULT}; }
-function thrS(k, v, effects, costOf){ const e = effects || {}; let key = k;
+function thrS(k, v, effects, costOf){ const e = XP(effects) || {}; if(SPL && SPL.isFused(k, v)) v = e[k]; let key = k;
   if(/Grant$/.test(k) && THR_UPTIME[k.slice(0, -5)]){ key = k.slice(0, -5); if(e[key]) return {S: 0, inner: 0, mult: 0}; } else if(!THR_UPTIME[k]) return null;
   const g = obj(e[key + 'Grant']) && Object.keys(e[key + 'Grant']).length ? e[key + 'Grant'] : THR_DEFAULT_GRANT, rest = Object.assign({}, g), A = +rest.attack || 0, H = (+rest.health || 0) + shieldHealthOf(rest) /* FIN2-c */; delete rest.attack; delete rest.health;
   const inner = awNow() * A + H + (Object.keys(rest).length && costOf ? (+costOf(rest) || 0) : 0), m = thrUptime(key, thrN(key, e[key])); // BUDGET2: 3A + H
@@ -516,11 +520,11 @@ function zeitDrawbackMult(k, home){ const p = ZEIT_PHASE[k]; if(!p || !home || !
 // old card's +N/+M in both. Each part is priced at its own share of a Crepuscular deck's unit-rounds (ZEIT_UPTIME's measure): by day
 // 0.313 + Twilight 0.085, at night 0.506 + Twilight 0.085 (the two add up to the old 0.99, so an old card's price is unchanged).
 const CREP_SHARE = {day: 0.4 /* 0.313 + 0.085 */, night: 0.59 /* 0.506 + 0.085 */};
-function crepPartsOf(e){ const two = v=> Array.isArray(v) ? [Math.max(0, +v[0] || 0), Math.max(0, +v[1] || 0)] : obj(v) ? [Math.max(0, +v.attack || 0), Math.max(0, +v.health || 0)] : [0, 0];
+function crepPartsOf(e){ e = XP(e) || {}; const two = v=> Array.isArray(v) ? [Math.max(0, +v[0] || 0), Math.max(0, +v[1] || 0)] : obj(v) ? [Math.max(0, +v.attack || 0), Math.max(0, +v.health || 0)] : [0, 0];
   if(e.crepuscularDay != null || e.crepuscularNight != null) return {day: two(e.crepuscularDay), night: two(e.crepuscularNight)};
   if(e.crepuscular === true && !e.crepuscularHp) return {day: [0, 0], night: [0, 1]};
   const both = [e.crepuscular === true ? 1 : Math.max(0, Number(e.crepuscular) || 0), Math.max(0, Number(e.crepuscularHp) || 0)]; return {day: both.slice(), night: both.slice()}; }
-function zeitS(k, effects, home){ const e = effects || {}, base = /Hp$/.test(k) ? k.slice(0, -2) : k; if(!ZEIT_KEYS.includes(base)) return null;
+function zeitS(k, effects, home){ const e = XP(effects) || {}, base = /Hp$/.test(k) ? k.slice(0, -2) : k; if(!ZEIT_KEYS.includes(base)) return null;
   if(k !== base && e[base]) return {S: 0, inner: 0, mult: 0};
   if(e[base + 'Grant'] && typeof e[base + 'Grant'] === 'object') return {S: 0, inner: 0, mult: 0};
   if(base === 'crepuscular'){ const p = crepPartsOf(e), iD = awNow() * p.day[0] + p.day[1], iN = awNow() * p.night[0] + p.night[1]; // ENG23 (2026-11-04): each part at its own share
@@ -548,5 +552,5 @@ function shockS(v, attack){ const {p, d} = shockParams(v), A = Math.max(0, Numbe
   return r2(SHOCK.perDmg * SHOCK.mult * extra); }
 function shockBoltShockS(attack){ const A = Math.max(0, Number(attack) || 0);
   return r2(SHOCK.perDmg * SHOCK.mult * SHOCK.life * SHOCK.boltLand * SHOCK.boltRest * (SHOCK.other + SHOCK.boltOwn * A)); }
-return {ENG30_GROUND /* ENG30 (2026-11-07) */, OFFSPRING_COPY, offspringBodyMult /* ENG28 (2026-11-07); BAL21: ENG28_SKILL_PRICES moved to canonical/skill-costs.json */, MELD_MULT, meldS /* ENG24 */, CREP_SHARE, crepPartsOf, SKITTER_UPTIME, SKITTER_MISS_MULT /* ENG23 (2026-11-04) */, ZEIT_UPTIME, ZEIT_GRANT_MULT, ZEIT_DARK_SHARE, ZEIT_KEYS, zeitS, ZEIT_HOME_WEIGHT, zeitShare, zeitGrantMult, zeitDrawbackMult /* BAL11 (2026-11-02) */,SHOCK, shockParams, shockRounds, shockS, shockBoltShockS /* ENG12 (2026-10-28) */, EQUIP_DUR_BY_RARITY, EQUIP_DUR_DEFAULT, EQUIP_LIFE_ROUNDS, equipDurOf, equipLifeMult /* EQ2 (2026-10-24) */, equipLivesOf, THR_UPTIME, THR_PUSH, THR_DEFAULT_N, thrN, thrUptime, thrS /* ENG10 (2026-10-26) */, BLOOM_ODDS, BLOOM_LIVE, BLOOM_LUMBER, bloomOdds, bloomBodyMult /* BL (2026-10-23) */, BLOOM_CHAIN_Q, bloomChainOdds, EN5_UPTIME, CANOPY_UPTIME, canopyMultOf /* EN5 (2026-10-24) */, CANOPY_SHARE, SLOW_S_MULT, slowSMultOf /* TUT2 (2026-10-30) */, TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, EN6_UPTIME, EN6_HIBERNATE_UPTIME, EN6_BRAMBLE_SHOTS, EN6_BRAMBLE_ACTIONS, EN6_BRAMBLE_MULT /* EN6 (2026-10-24) */, EN7_EXTRA_HIT, EN7_EXTRA_HIT_KEYS, EN7_TIP_SHOTS, EN7_TIP_MULT, EN7_TIP_ACTIONS /* EN7 (2026-10-24) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, TEMPO_CAP2_MULT, tempoCap2Mult, LUMBER_HOME_TABLE, LUMBER_HOME_GLOBAL, lumberHomeMult, LUMBER_MAKER_KEYS, isLumberTrigger, LUMBER_GAIN_POW, LUMBER_GAIN_MULT /* DEC1 (2026-11-03) */, LUMBER_GAIN_ON, lumberGainS /* BAL12 (2026-11-02) */, MISS_MULT_BY /* BF10 */, CAP2_S_SCALE /* SPEED1 */, cap2SOf, fragileUseOf, capScores /* BF7 (2026-10-22) */, shieldHealthOf /* FIN2-c (2026-10-26) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, chainedMult, CHAINED_PER_ROUND /* ENG9 (2026-10-26) */, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
+return {XP, SPL /* ENG35 (2026-11-07) */, ENG30_GROUND /* ENG30 (2026-11-07) */, OFFSPRING_COPY, offspringBodyMult /* ENG28 (2026-11-07); BAL21: ENG28_SKILL_PRICES moved to canonical/skill-costs.json */, MELD_MULT, meldS /* ENG24 */, CREP_SHARE, crepPartsOf, SKITTER_UPTIME, SKITTER_MISS_MULT /* ENG23 (2026-11-04) */, ZEIT_UPTIME, ZEIT_GRANT_MULT, ZEIT_DARK_SHARE, ZEIT_KEYS, zeitS, ZEIT_HOME_WEIGHT, zeitShare, zeitGrantMult, zeitDrawbackMult /* BAL11 (2026-11-02) */,SHOCK, shockParams, shockRounds, shockS, shockBoltShockS /* ENG12 (2026-10-28) */, EQUIP_DUR_BY_RARITY, EQUIP_DUR_DEFAULT, EQUIP_LIFE_ROUNDS, equipDurOf, equipLifeMult /* EQ2 (2026-10-24) */, equipLivesOf, THR_UPTIME, THR_PUSH, THR_DEFAULT_N, thrN, thrUptime, thrS /* ENG10 (2026-10-26) */, BLOOM_ODDS, BLOOM_LIVE, BLOOM_LUMBER, bloomOdds, bloomBodyMult /* BL (2026-10-23) */, BLOOM_CHAIN_Q, bloomChainOdds, EN5_UPTIME, CANOPY_UPTIME, canopyMultOf /* EN5 (2026-10-24) */, CANOPY_SHARE, SLOW_S_MULT, slowSMultOf /* TUT2 (2026-10-30) */, TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, EN6_UPTIME, EN6_HIBERNATE_UPTIME, EN6_BRAMBLE_SHOTS, EN6_BRAMBLE_ACTIONS, EN6_BRAMBLE_MULT /* EN6 (2026-10-24) */, EN7_EXTRA_HIT, EN7_EXTRA_HIT_KEYS, EN7_TIP_SHOTS, EN7_TIP_MULT, EN7_TIP_ACTIONS /* EN7 (2026-10-24) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, TEMPO_CAP2_MULT, tempoCap2Mult, LUMBER_HOME_TABLE, LUMBER_HOME_GLOBAL, lumberHomeMult, LUMBER_MAKER_KEYS, isLumberTrigger, LUMBER_GAIN_POW, LUMBER_GAIN_MULT /* DEC1 (2026-11-03) */, LUMBER_GAIN_ON, lumberGainS /* BAL12 (2026-11-02) */, MISS_MULT_BY /* BF10 */, CAP2_S_SCALE /* SPEED1 */, cap2SOf, fragileUseOf, capScores /* BF7 (2026-10-22) */, shieldHealthOf /* FIN2-c (2026-10-26) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, chainedMult, CHAINED_PER_ROUND /* ENG9 (2026-10-26) */, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
 });

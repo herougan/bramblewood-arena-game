@@ -61,7 +61,11 @@ function cardDataHash(defs){
   const list = Array.isArray(defs) ? defs : Object.keys(defs || {}).map(id=> Object.assign({id}, defs[id]));
   // 2026-10-19 (package AN): pool cards ("pool": true, the owner's unplaced candidates) aren't in the build, so they aren't hashed:
   // canonical/cards.json (pool rows included) and the page (pool rows left out) give the same fingerprint.
-  const rows = list.filter(d=> d && !d.pool).map(gameplayView).sort((a,b)=> String(a.id) < String(b.id) ? -1 : String(a.id) > String(b.id) ? 1 : 0);
+  // ENG35 (2026-11-07): a fused skill ("nocturnal": {"v": 2, "hp": 1}, canonical/skill-params.json) hashes as its flat keys, so cards.json (fused)
+  // and the page (the build expands it) still give the same fingerprint, the one they had before the fold. Optional: without the helper
+  // (an Edge Function's own copy) the defs are hashed as they come.
+  const SPL = (typeof BramblewoodSkillParams !== 'undefined' && BramblewoodSkillParams) || (()=>{ try{ return typeof require === 'function' ? require('./bramblewood-skillparams.js') : null; }catch(e){ return null; } })();
+  const rows = list.filter(d=> d && !d.pool).map(d=> SPL ? SPL.expandDef(d) : d).map(gameplayView).sort((a,b)=> String(a.id) < String(b.id) ? -1 : String(a.id) > String(b.id) ? 1 : 0);
   return sha256(stableStringify(rows));
 }
 

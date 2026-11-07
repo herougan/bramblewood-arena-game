@@ -3547,7 +3547,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng33-ph-health": "Health",
   "ui.eng34-bleed": "Every melee hit it lands adds {n} Bleed.",
   "ui.eng34-fletcher": "Your units' ranged shots deal {n} more damage.",
-  "ui.eng34-fletcher-long": "While it is on the field, your units' ranged shots (arrows, bolts and spits, missiles, thrown hits) deal {n} more damage (its own too)."
+  "ui.eng34-fletcher-long": "While it is on the field, your units' ranged shots (arrows, bolts and spits, missiles, thrown hits) deal {n} more damage (its own too).",
+  "ui.eng35-default": "Default",
+  "ui.eng35-number": "Number",
+  "ui.eng35-stat": "Stat version",
+  "ui.eng35-ability": "Ability version",
+  "ui.eng35-params": "Parameters",
+  "ui.eng35-one-value": "One value, no parts",
+  "ui.eng35-none": "none",
+  "ui.eng35-delivery": "Delivery",
+  "ui.eng35-dl-melee": "Melee",
+  "ui.eng35-dl-ranged": "Ranged",
+  "ui.eng35-dl-none": "No hit of its own"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

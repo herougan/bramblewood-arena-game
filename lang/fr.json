@@ -4227,5 +4227,14 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "Jetons de venin: {n}. Elle subit chaque manche des dégâts égaux à ses cumuls, puis perd 1 cumul.",
  "Main skills": "Compétences principales",
  "Other skills (side maps, specials)": "Autres compétences (cartes annexes, spéciales)",
- "Recommended skills for this map": "Compétences recommandées pour cette carte"
+ "Recommended skills for this map": "Compétences recommandées pour cette carte",
+ "Number": "Nombre",
+ "Stat version": "Version stats",
+ "Ability version": "Version capacités",
+ "Parameters": "Paramètres",
+ "One value, no parts": "Une seule valeur, sans parties",
+ "none": "aucune",
+ "Melee": "Mêlée",
+ "Ranged": "À distance",
+ "No hit of its own": "Aucun coup propre"
 }

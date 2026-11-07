@@ -4227,5 +4227,14 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "Mga token ng lason: {n}. Tumatanggap ito ng pinsalang katumbas ng stack nito bawat round, saka nababawasan ng 1 stack.",
  "Main skills": "Mga pangunahing kasanayan",
  "Other skills (side maps, specials)": "Iba pang kasanayan (side map, espesyal)",
- "Recommended skills for this map": "Mga inirerekomendang kasanayan para sa mapang ito"
+ "Recommended skills for this map": "Mga inirerekomendang kasanayan para sa mapang ito",
+ "Number": "Numero",
+ "Stat version": "Bersyong stat",
+ "Ability version": "Bersyong kakayahan",
+ "Parameters": "Mga parameter",
+ "One value, no parts": "Isang halaga, walang bahagi",
+ "none": "wala",
+ "Melee": "Malapitan",
+ "Ranged": "Malayuan",
+ "No hit of its own": "Walang sariling tama"
 }

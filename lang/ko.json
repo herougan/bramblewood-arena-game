@@ -4229,5 +4229,14 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "독 토큰: {n}. 매 라운드 중첩 수만큼 피해를 받고, 그 뒤 중첩이 1 줄어요.",
  "Main skills": "주요 스킬",
  "Other skills (side maps, specials)": "기타 스킬 (사이드 맵, 특별)",
- "Recommended skills for this map": "이 맵의 추천 스킬"
+ "Recommended skills for this map": "이 맵의 추천 스킬",
+ "Number": "수치",
+ "Stat version": "능력치 버전",
+ "Ability version": "스킬 버전",
+ "Parameters": "매개변수",
+ "One value, no parts": "값 하나, 세부 항목 없음",
+ "none": "없음",
+ "Melee": "근접",
+ "Ranged": "원거리",
+ "No hit of its own": "자체 공격 없음"
 }

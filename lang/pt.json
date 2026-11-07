@@ -4228,5 +4228,14 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "Fichas de veneno: {n}. Sofre em cada ronda dano igual às suas acumulações e depois perde 1.",
  "Main skills": "Habilidades principais",
  "Other skills (side maps, specials)": "Outras habilidades (mapas secundários, especiais)",
- "Recommended skills for this map": "Habilidades recomendadas para este mapa"
+ "Recommended skills for this map": "Habilidades recomendadas para este mapa",
+ "Number": "Número",
+ "Stat version": "Versão de atributos",
+ "Ability version": "Versão de habilidades",
+ "Parameters": "Parâmetros",
+ "One value, no parts": "Um só valor, sem partes",
+ "none": "nenhuma",
+ "Melee": "Corpo a corpo",
+ "Ranged": "À distância",
+ "No hit of its own": "Sem golpe próprio"
 }

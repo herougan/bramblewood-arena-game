@@ -7387,9 +7387,10 @@
     ],
     "effects": {
       "armor": 2,
-      "stem": true,
-      "stemGrant": {
-        "armor": 1
+      "stem": {
+        "gives": {
+          "armor": 1
+        }
       }
     },
     "flavor": "Has not moved in three rounds. Has also not taken meaningful damage in three rounds.",
@@ -8774,8 +8775,10 @@
       "Swamp"
     ],
     "effects": {
-      "hunter": 2,
-      "hunterVs": "poison"
+      "hunter": {
+        "v": 2,
+        "vs": "poison"
+      }
     },
     "flavor": "It follows the sick ones. The swamp does half the work; the mink does the rest.",
     "dmgType": "physical",
@@ -8810,8 +8813,10 @@
       "Coastal"
     ],
     "effects": {
-      "hunter": 1,
-      "hunterVs": "wet",
+      "hunter": {
+        "v": 1,
+        "vs": "wet"
+      },
       "crabClaws": true
     },
     "flavor": "It waits where the waves break. Anything soaked and slow gets pinched twice.",
@@ -9615,11 +9620,13 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "swarm": [
-        "Ants"
-      ],
-      "ambush": 2,
-      "swarmN": 2
+      "swarm": {
+        "v": [
+          "Ants"
+        ],
+        "n": 2
+      },
+      "ambush": 2
     },
     "faction": "base",
     "species": [
@@ -10812,7 +10819,10 @@
     "dmgType": "physical",
     "effects": {
       "flying": true,
-      "espritHp": 1
+      "esprit": {
+        "v": null,
+        "hp": 1
+      }
     },
     "faction": "hummingbirds",
     "species": [
@@ -10888,8 +10898,10 @@
     "dmgType": "physical",
     "effects": {
       "flying": true,
-      "nocturnal": 1,
-      "nocturnalHp": 1
+      "nocturnal": {
+        "v": 1,
+        "hp": 1
+      }
     },
     "faction": "hummingbirds",
     "species": [
@@ -15020,8 +15032,10 @@
     "cost": 1,
     "wait": 1,
     "effects": {
-      "nocturnal": 5,
-      "nocturnalHp": 6
+      "nocturnal": {
+        "v": 5,
+        "hp": 6
+      }
     },
     "dmgType": "physical",
     "resist": [],
@@ -15161,8 +15175,10 @@
     "wait": 0,
     "effects": {
       "flying": true,
-      "nocturnal": 2,
-      "nocturnalHp": 1
+      "nocturnal": {
+        "v": 2,
+        "hp": 1
+      }
     },
     "dmgType": "physical",
     "resist": [],
@@ -15303,8 +15319,10 @@
     "wait": 0,
     "effects": {
       "flying": true,
-      "diurnal": 1,
-      "diurnalHp": 2
+      "diurnal": {
+        "v": 1,
+        "hp": 2
+      }
     },
     "dmgType": "physical",
     "resist": [],
@@ -16861,11 +16879,15 @@
     },
     "dmgType": "physical",
     "effects": {
-      "esprit": 2,
+      "esprit": {
+        "v": 2,
+        "hp": 2
+      },
       "flying": true,
-      "espritHp": 2,
-      "diurnal": 2,
-      "diurnalHp": 2
+      "diurnal": {
+        "v": 2,
+        "hp": 2
+      }
     },
     "species": [
       "Bird"
@@ -17910,8 +17932,10 @@
     "rarity": "uncommon",
     "flavor": "It glows in the dark. It glows in the light, too.",
     "effects": {
-      "delivery": 1,
-      "deliveryRes": "uranium"
+      "delivery": {
+        "v": 1,
+        "res": "uranium"
+      }
     },
     "wait": 1,
     "cost": 1,
@@ -18189,8 +18213,10 @@
     "flavor": "Comes up with a nugget most days, and a bigger one on the good ones.",
     "effects": {
       "heavyMetal": true,
-      "delivery": 1,
-      "deliveryRes": "metal"
+      "delivery": {
+        "v": 1,
+        "res": "metal"
+      }
     },
     "wait": 1,
     "cost": 1,
@@ -18223,12 +18249,14 @@
     "rarity": "uncommon",
     "flavor": "Stands taller when the banner is up.",
     "effects": {
-      "loyal": [
-        1,
-        3
-      ],
-      "loyalGrant": {
-        "armor": 1
+      "loyal": {
+        "v": [
+          1,
+          3
+        ],
+        "gives": {
+          "armor": 1
+        }
       }
     },
     "wait": 1,
@@ -19222,8 +19250,10 @@
     "animal": "vulture",
     "effects": {
       "flying": true,
-      "archer": 3,
-      "archerStyle": "drop"
+      "archer": {
+        "v": 3,
+        "style": "drop"
+      }
     },
     "flavor": "Egyptian vultures crack eggs by dropping stones on them. This one has moved on to bigger eggs.",
     "numericId": 496,
@@ -20518,8 +20548,10 @@
     "health": 9,
     "effects": {
       "flying": true,
-      "esprit": 1,
-      "espritHp": 1
+      "esprit": {
+        "v": 1,
+        "hp": 1
+      }
     },
     "archetypes": [
       "Hummingbird"
@@ -20684,8 +20716,10 @@
     "animal": "mouse",
     "effects": {
       "flying": true,
-      "arrow": 2,
-      "arrowBramble": true
+      "arrow": {
+        "v": 2,
+        "bramble": true
+      }
     },
     "rarity": "uncommon",
     "source": {
@@ -22898,10 +22932,12 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "defiance": [
-        "Snake"
-      ],
-      "defianceN": 1
+      "defiance": {
+        "v": [
+          "Snake"
+        ],
+        "n": 1
+      }
     },
     "species": [
       "Herpestid"
@@ -23033,8 +23069,10 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "crepuscular": 1,
-      "crepuscularHp": 1
+      "crepuscular": {
+        "v": 1,
+        "hp": 1
+      }
     },
     "species": [
       "Bird"
@@ -23160,11 +23198,12 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "diurnalGrant": {
-        "evasive": true,
-        "thorns": 1
-      },
-      "diurnal": true
+      "diurnal": {
+        "gives": {
+          "evasive": true,
+          "thorns": 1
+        }
+      }
     },
     "species": [
       "Bird"
@@ -23207,11 +23246,12 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "nocturnalGrant": {
-        "evasive": true,
-        "regen": 2
-      },
-      "nocturnal": true
+      "nocturnal": {
+        "gives": {
+          "evasive": true,
+          "regen": 2
+        }
+      }
     },
     "species": [
       "Procyonid"
@@ -23255,17 +23295,18 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "tideGrant": {
-        "flood": {
-          "attack": 2,
-          "health": 2,
-          "evasive": true
-        },
-        "ebb": {
-          "armor": 2
+      "tide": {
+        "gives": {
+          "flood": {
+            "attack": 2,
+            "health": 2,
+            "evasive": true
+          },
+          "ebb": {
+            "armor": 2
+          }
         }
-      },
-      "tide": true
+      }
     },
     "species": [
       "Bird"
@@ -30941,8 +30982,10 @@
     "effects": {
       "shell": 2,
       "tide": true,
-      "delivery": 1,
-      "deliveryRes": "pearl"
+      "delivery": {
+        "v": 1,
+        "res": "pearl"
+      }
     },
     "flavor": "It farms algae in its own lips, and closes like a door.",
     "dmgType": "physical",
@@ -32727,13 +32770,14 @@
     "locked": true,
     "rarity": "uncommon",
     "effects": {
-      "tide": true,
-      "tideGrant": {
-        "ebb": {
-          "armor": 2
-        },
-        "flood": {
-          "fireArrow": 4
+      "tide": {
+        "gives": {
+          "ebb": {
+            "armor": 2
+          },
+          "flood": {
+            "fireArrow": 4
+          }
         }
       }
     },
@@ -33230,8 +33274,10 @@
     "tags": [],
     "effects": {
       "shoreUp": true,
-      "delivery": 1,
-      "deliveryRes": "pearl"
+      "delivery": {
+        "v": 1,
+        "res": "pearl"
+      }
     },
     "flavor": "Every wave that breaks on it is one that does not break on you.",
     "numericId": 9135,
@@ -33724,8 +33770,10 @@
     ],
     "animal": "mole",
     "effects": {
-      "delivery": 1,
-      "deliveryRes": "stone"
+      "delivery": {
+        "v": 1,
+        "res": "stone"
+      }
     },
     "flavor": "It digs for worms and finds gravel. It keeps the gravel. The Hollow Kin pay well for gravel.",
     "numericId": 9148,
@@ -34867,8 +34915,10 @@
     "animal": "hummingbird",
     "effects": {
       "flying": true,
-      "arrow": 1,
-      "arrowCount": 2
+      "arrow": {
+        "v": 1,
+        "count": 2
+      }
     },
     "flavor": "Two darts on its back, fresh off the carrier.",
     "numericId": 9179,
@@ -35657,12 +35707,14 @@
     "flavor": "Eyes on the standard. Where it stands, I stand.",
     "rarity": "uncommon",
     "effects": {
-      "loyal": [
-        1,
-        2
-      ],
-      "loyalGrant": {
-        "armor": 1
+      "loyal": {
+        "v": [
+          1,
+          2
+        ],
+        "gives": {
+          "armor": 1
+        }
       }
     },
     "species": [
@@ -35738,12 +35790,14 @@
     "rarity": "uncommon",
     "effects": {
       "flying": true,
-      "loyal": [
-        2,
-        1
-      ],
-      "loyalGrant": {
-        "quick": true
+      "loyal": {
+        "v": [
+          2,
+          1
+        ],
+        "gives": {
+          "quick": true
+        }
       }
     },
     "species": [

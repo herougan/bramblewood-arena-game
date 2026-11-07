@@ -130,7 +130,13 @@ const TAXONOMY = (typeof BramblewoodTaxonomy !== 'undefined' && BramblewoodTaxon
 // rides and which hits each defence answers, all from canonical/skill-delivery.json (one source). In Node it is require()d; in the page and
 // the simulator worker assemble_arena.py puts `var __SKILL_DELIVERY__ = {...}` ahead of this file.
 const SKILL_DELIVERY = (typeof __SKILL_DELIVERY__ !== 'undefined' && __SKILL_DELIVERY__) || (()=>{ try{ return typeof require === 'function' ? require('./canonical/skill-delivery.json') : null; }catch(e){ return null; } })() || {delivery:{}, swing:[], rides:{}, against:{}};
-function skillDeliveryOf(key){ return (SKILL_DELIVERY.delivery || {})[key] || 'none'; }
+// ENG35 (2026-11-07, owner 20:58: "Fuse skills together ... It's just a matter of parameter choice"): one skill per idea. A card's family
+// key may hold an object of named parameters (canonical/skill-params.json: "nocturnal": {"v": 2, "hp": 1}, "tide": {"gives": {...}});
+// bramblewood-skillparams.js expands it into the flat keys the rules read (nocturnalHp, tideGrant ...) once, when makeSimEngine gets the
+// cards. Old twin keys still read as they are. In the page and the worker assemble_arena.py puts the file ahead of this one.
+const SKILL_PARAMS_LIB = (typeof BramblewoodSkillParams !== 'undefined' && BramblewoodSkillParams) || (()=>{ try{ return typeof require === 'function' ? require('./bramblewood-skillparams.js') : null; }catch(e){ return null; } })();
+// a part of a fused skill (almanacGrant, arrowPoison ...) is delivered as its skill is (ENG35: the delivery file lists the fused keys only)
+function skillDeliveryOf(key){ const D = SKILL_DELIVERY.delivery || {}; if(D[key]) return D[key]; const a = SKILL_PARAMS_LIB && SKILL_PARAMS_LIB.aliasOf(key); return (a && D[a[0]]) || 'none'; }
 function skillRidesOn(key){ return (SKILL_DELIVERY.rides || {})[key] || null; }
 // effects e has a skill that turns its own swing into a ranged attack (Reach, a thrown Boomerang / Bananarang, the old Anti-air throw)
 function rangedSwingOf(e){ return !!e && (SKILL_DELIVERY.swing || []).some(k=> !!e[k] && !(Number(e[k]) < 0)); }
@@ -339,6 +345,9 @@ ACTION_KEYS.push('forage'); // ENG25 (2026-11-05, owner 23:35 #6): Forage N, the
 ACTION_KEYS.push('grantShield'); // ENG19 (2026-11-02, owner #15): Grant Shield, itself / adjacent / surrounding / every ally // Package BX (2026-10-21): Arrow N as an action (the Arrow skill's shot: the enemy facing it, else the nearest, else the bramble)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
+  // ENG35 (2026-11-07): fused skill parameters -> the flat keys, in place (the engine already adds its derived defs to this same map); a map
+  // with nothing fused (the page's cards, which the build expands) is left untouched
+  if(SKILL_PARAMS_LIB && CARD_DEFS) SKILL_PARAMS_LIB.expandDefsInPlace(CARD_DEFS);
   rnd = rnd || Math.random;
   opts = opts || {};
   const recordEvents = !!opts.recordEvents;
@@ -12075,3 +12084,4 @@ if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports
 if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS;
 if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SELFISH_BOONS, selfishBoonCount, selfishBoonThemeOf, selfishBoonWho, BOSS_GIMMICKS /* CONTENT11 (2026-11-05) */}); // Package DF3 (2026-10-24): the selfish boons // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests
 if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SKILL_DELIVERY, skillDeliveryOf, skillRidesOn, rangedSwingOf}); // ENG34 (2026-11-07): skill delivery (canonical/skill-delivery.json)
+if(typeof module !== 'undefined' && module.exports) module.exports.SKILL_PARAMS_LIB = SKILL_PARAMS_LIB; // ENG35 (2026-11-07): fused skill parameters (bramblewood-skillparams.js)
