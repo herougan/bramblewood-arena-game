@@ -3637,7 +3637,7 @@
  "The Herb Refinery's bitter brew poisons {name} (☠️ {n}).": "மூலிகை சுத்திகரிப்பகத்தின் கசப்பான கஷாயம் {name} மீது விஷம் பரப்புகிறது (☠️ {n}).",
  "⚡ This chip is a trigger — read the card.": "⚡ இந்த சிப் ஒரு தூண்டி — அட்டையைப் படியுங்கள்.",
  "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ இந்த சிப் ஒரு தூண்டி: அட்டை தன் தருணம் வரும்போது தானாகச் செய்யும் ஒன்று. இடப்பக்கம் எப்போது என்றும், வலப்பக்கம் என்ன என்றும் சொல்லும். முழுவதும் படிக்க சுட்டியை அதன் மேல் வையுங்கள் (அல்லது அழுத்திப் பிடியுங்கள்).",
- "✂ Cut": "✂ நீக்கு",
+ "✂": "✂",
  "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: சேத வகையின் குறி (சாதாரண அடிக்கு இல்லை, கிரிட்டில் முன்னால் 💥), சேதம், பிறகு இலக்கு அதை எப்படி ஏற்றது: 🦴 Fragile (இரட்டிப்பு), 💢 பலவீனம் (அதிகம்), ⛨ கவசம், எதிர்ப்பு அல்லது கேடயம் சிறிது தாங்கியது, 🚫 தாக்கமில்லை.",
  "➕ Add card to SPECIAL": "➕ SPECIAL-இல் அட்டையைச் சேர்",
  "日本語": "日本語",
@@ -4091,5 +4091,10 @@
  "A hidden reward card": "மறைக்கப்பட்ட பரிசு அட்டை",
  "A card you haven't found yet. It's yours the first time you win this fight.": "நீங்கள் இன்னும் கண்டுபிடிக்காத அட்டை. இந்தச் சண்டையை முதல் முறை வென்றால் அது உங்களுடையது.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "நீங்கள் இன்னும் கண்டுபிடிக்காத அட்டை. அதில் காட்டப்பட்டுள்ள தரத்தில் இந்தச் சண்டையை வென்றால் அதைப் பெறலாம்.",
- "{n} card{s} to claim": "பெறக்கூடிய {n} அட்டை(கள்)"
+ "{n} card{s} to claim": "பெறக்கூடிய {n} அட்டை(கள்)",
+ "Advanced: {n}": "மேம்பட்ட: {n}",
+ "Suggested": "பரிந்துரை",
+ "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "{card}க்குப் பரிந்துரைக்கப்பட்டது, ஆனால் வீரர்கள் இந்த வரைபடத்தில் இந்தத் திறனைச் சந்திக்க மாட்டார்கள். இது மறைவாகவே இருக்க வேண்டியதில்லை.",
+ "Only from level {n} on this map": "இந்த வரைபடத்தில் நிலை {n} முதல் மட்டுமே",
+ "Hidden (shown as ?) on this map": "இந்த வரைபடத்தில் மறைக்கப்பட்டது (? எனக் காட்டப்படும்)"
 }

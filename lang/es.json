@@ -3633,7 +3633,7 @@
  "The Herb Refinery's bitter brew poisons {name} (☠️ {n}).": "El brebaje amargo de la Refinería de Hierbas envenena a {name} (☠️ {n}).",
  "⚡ This chip is a trigger — read the card.": "⚡ Esta ficha es un disparador — lee la carta.",
  "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ Esta ficha es un disparador: algo que la carta hace sola cuando llega su momento. A la izquierda dice cuándo, a la derecha qué. Deja el puntero encima (o mantén pulsado) para leerlo entero.",
- "✂ Cut": "✂ Recortar",
+ "✂": "✂",
  "❄️14🦴: the damage type's symbol (none for a plain hit, 💥 first on a crit), the damage, then how the target took it: 🦴 Fragile (double), 💢 a weakness (more), ⛨ Armor, a resist or a shield took some, 🚫 immune.": "❄️14🦴: el símbolo del tipo de daño (ninguno en un golpe normal, 💥 delante en un crítico), el daño y cómo lo recibió el objetivo: 🦴 Frágil (doble), 💢 una debilidad (más), ⛨ la Armadura, una resistencia o un escudo absorbió parte, 🚫 inmune.",
  "➕ Add card to SPECIAL": "➕ Añadir carta a SPECIAL",
  "日本語": "日本語",
@@ -4088,5 +4088,10 @@
  "A hidden reward card": "Una carta de recompensa oculta",
  "A card you haven't found yet. It's yours the first time you win this fight.": "Una carta que aún no has encontrado. Es tuya la primera vez que ganes este combate.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Una carta que aún no has encontrado. Gana este combate con el rango que se muestra en ella para conseguirla.",
- "{n} card{s} to claim": "{n} carta{s} por reclamar"
+ "{n} card{s} to claim": "{n} carta{s} por reclamar",
+ "Advanced: {n}": "Avanzado: {n}",
+ "Suggested": "Sugerida",
+ "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.": "Recomendada para {card}, pero los jugadores no encontrarán esta habilidad en este mapa. Quizá no debería seguir oculta.",
+ "Only from level {n} on this map": "Solo desde el nivel {n} en este mapa",
+ "Hidden (shown as ?) on this map": "Oculta (se muestra como ?) en este mapa"
 }

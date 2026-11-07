@@ -66,7 +66,7 @@ ok(ctx.st('ma', 'cards', 'zz').where.length === 0, 'a cut on no list: removed, n
 ok(/ui\.lf2-listed/.test(ctx.pill({id: 'a1'}, 'cards')) && /ui\.lf2-special/.test(ctx.pill({id: 's1'}, 'cards')) && /ui\.lf2-removed-elsewhere-tip/.test(ctx.pill({id: 'x1'}, 'cards')) && /ui\.lf2-removed-tip/.test(ctx.pill({id: 'zz'}, 'cards')), 'the pill per status');
 ok(ctx.pill({id: 'a1', statusWhy: 'WHY'}, 'cards').includes('WHY'), 'the entry\'s statusWhy joins the tooltip');
 ok(/kind === 'cut' \? lf2CutPillHTML\(e, secKey\)/.test(fn('rv1TileHTML')), 'a Cut tile carries the status pill');
-ok(/TX\('ui\.lf2-picks-note'\)/.test(fn('pk1OpenMapCards')), 'the note under Copy my picks');
+ok(/TX\('ui\.lf2-picks-note'\)/.test(fn('rv1TileHTML')) && !/TX\('ui\.lf2-picks-note'\)/.test(fn('pk1OpenMapCards')), 'the picks note is the Cut / Keep buttons\' tooltip, no standing text (2026-11-07, UI28 #2; was: the note under Copy my picks)');
 ok(!/Apply my cuts/i.test(src), 'no "Apply my cuts" action (a live card_overrides write waits for "apply it")');
 
 // ---------------------------------------------------------------- 4. texts and decisions
