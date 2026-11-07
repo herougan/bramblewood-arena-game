@@ -1595,3 +1595,19 @@ The rules as built (engine: `fortifyBramble` (Armor, Unfortify), `shotSpeedOf` /
 | 👛 Pickpocket from the bramble | the resource line (existing) | `sk2` {kind: 'pickpocketRes', fallback} |
 | ? (gold) | a skill learnt at a higher level, in the hover | display only |
 | 💀 | a death trigger's chip leads with the skull | display only |
+
+## 2026-11-07 additions (package ENG30): Consecration, Desecration; the Blind pip while attacking; sight look A only
+
+The rules as built (engine: `eng30Ground`, `eng30ExaltTick`, the curse tick in `applyPoisonTicks`; owner 11-07 08:54 #1, #2, #13; decision ENG30-1):
+- **Consecration N** (`consecration`): while a unit with it stands (Waiting too, not caged), its own side's ground is **Exalted**: at each round start, right after the poison and curse ticks, every unit on that side heals N (`applyHeal`: Herbalist adds; an Undead unit takes it as damage; Structures and Relict units are not healed). Event `exaltTick` {side, uid, defId, heal}; a ✨ N mark on the units standing on it.
+- **Desecration N** (`desecration`): while a unit with it stands, the **enemy** side's ground is **Cursed**: at each round start every enemy unit (not Relict) takes N curse damage, in the same `curseTick` as its cell's Desecrate curse (`ground: true` when Desecration is part of it). The 🜏 mark on enemy units adds it. Cleanse takes only Desecrate's cell curse off; the ground stays while its carrier stands.
+- Several carriers on one side: the largest N. **Cancel:** while any Consecration unit and any Desecration unit stand anywhere on the field (either side, or both on one side), neither ground applies, on the whole field; the carriers show a ⊘ mark. Desecrate's own cell curses are not cancelled.
+- On no card; "?" until Map 70 (`SKILL_REVEAL_MAP`). Prices 3.5 and 5.9 a point (scale n, theoretical): Regeneration's 2.3 x 3 units x 0.5 (heals wasted on full Health) / x 0.85 (damage).
+
+| Icon | Moment | Event |
+|---|---|---|
+| 😇 Consecration | ✨ +N heal float on each unit healed; log line | `exaltTick` {side, uid, defId, heal} |
+| 👿 Desecration | the curse drain (existing) | `curseTick` {ground: true} |
+| 🕶️ Blind / Dark-blind pip | glows while its unit lunges (`.is-attacking`); steady at Effects Low, none at None | display only |
+| 😴 shut eye (sight look A) | its first blink plays 1 time in 2; looks B (blindfold) and C (fog) are removed | display only |
+

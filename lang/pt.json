@@ -4090,5 +4090,14 @@
  "A hidden reward card": "Uma carta de recompensa oculta",
  "A card you haven't found yet. It's yours the first time you win this fight.": "Uma carta que ainda não encontraste. É tua na primeira vez que ganhares este combate.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Uma carta que ainda não encontraste. Ganha este combate com a classificação mostrada nela para a conseguires.",
- "{n} card{s} to claim": "{n} carta{s} para reclamar"
+ "{n} card{s} to claim": "{n} carta{s} para reclamar",
+ "Consecration": "Consagração",
+ "Exalted ground: your units heal {n} at every round start.": "Solo exaltado: suas unidades curam {n} no início de cada ronda.",
+ "While it stands, its side's ground is Exalted: each of its units heals N at the start of every round (Undead units are hurt instead). Several carriers don't add up. Desecration anywhere on the field cancels it, and it cancels Desecration.": "Enquanto estiver de pé, o solo do seu lado fica exaltado: cada uma das suas unidades cura N no início de cada ronda (unidades mortas-vivas sofrem dano em vez disso). Vários portadores não se somam. A Profanação em qualquer lugar do campo a anula, e ela anula a Profanação.",
+ "Desecration": "Profanação",
+ "Cursed ground: enemy units take {n} damage at every round start.": "Solo amaldiçoado: unidades inimigas sofrem {n} de dano no início de cada ronda.",
+ "While it stands, the enemy's ground is Cursed: each enemy unit takes N curse damage at the start of every round, on top of any Desecrate curse. Several carriers don't add up. Consecration anywhere on the field cancels it, and it cancels Consecration.": "Enquanto estiver de pé, o solo do inimigo fica amaldiçoado: cada unidade inimiga sofre N de dano de maldição no início de cada ronda, além de qualquer maldição de Desecrate. Vários portadores não se somam. A Consagração em qualquer lugar do campo a anula, e ela anula a Consagração.",
+ "{name} heals {n} on exalted ground.": "{name} cura {n} no solo exaltado.",
+ "Exalted ground: {n} healing a round to whoever stands here": "Solo exaltado: {n} de cura por ronda a quem estiver aqui",
+ "Consecration and Desecration cancel out: no Exalted or Cursed ground": "Consagração e Profanação se anulam: não há solo exaltado nem amaldiçoado"
 }

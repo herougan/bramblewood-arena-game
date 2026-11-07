@@ -4091,5 +4091,14 @@
  "A hidden reward card": "மறைக்கப்பட்ட பரிசு அட்டை",
  "A card you haven't found yet. It's yours the first time you win this fight.": "நீங்கள் இன்னும் கண்டுபிடிக்காத அட்டை. இந்தச் சண்டையை முதல் முறை வென்றால் அது உங்களுடையது.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "நீங்கள் இன்னும் கண்டுபிடிக்காத அட்டை. அதில் காட்டப்பட்டுள்ள தரத்தில் இந்தச் சண்டையை வென்றால் அதைப் பெறலாம்.",
- "{n} card{s} to claim": "பெறக்கூடிய {n} அட்டை(கள்)"
+ "{n} card{s} to claim": "பெறக்கூடிய {n} அட்டை(கள்)",
+ "Consecration": "புனிதப்படுத்தல்",
+ "Exalted ground: your units heal {n} at every round start.": "உயர்த்தப்பட்ட நிலம்: உன் அலகுகள் ஒவ்வொரு சுற்றின் தொடக்கத்திலும் {n} குணமடையும்.",
+ "While it stands, its side's ground is Exalted: each of its units heals N at the start of every round (Undead units are hurt instead). Several carriers don't add up. Desecration anywhere on the field cancels it, and it cancels Desecration.": "இது நிற்கும் வரை, இதன் பக்கத்தின் நிலம் உயர்த்தப்பட்டது: அதன் ஒவ்வொரு அலகும் ஒவ்வொரு சுற்றின் தொடக்கத்திலும் N குணமடையும் (இறவாத அலகுகள் பதிலாகக் காயமடையும்). பல தாங்கிகள் கூடுவதில்லை. களத்தில் எங்கேனும் தீட்டுப்படுத்தல் இருந்தால் இது ரத்தாகும், இதுவும் தீட்டுப்படுத்தலை ரத்து செய்யும்.",
+ "Desecration": "தீட்டுப்படுத்தல்",
+ "Cursed ground: enemy units take {n} damage at every round start.": "சபிக்கப்பட்ட நிலம்: எதிரி அலகுகள் ஒவ்வொரு சுற்றின் தொடக்கத்திலும் {n} சேதம் பெறும்.",
+ "While it stands, the enemy's ground is Cursed: each enemy unit takes N curse damage at the start of every round, on top of any Desecrate curse. Several carriers don't add up. Consecration anywhere on the field cancels it, and it cancels Consecration.": "இது நிற்கும் வரை, எதிரியின் நிலம் சபிக்கப்பட்டது: ஒவ்வொரு எதிரி அலகும் ஒவ்வொரு சுற்றின் தொடக்கத்திலும் N சாபச் சேதம் பெறும், எந்த Desecrate சாபத்துக்கும் மேலாக. பல தாங்கிகள் கூடுவதில்லை. களத்தில் எங்கேனும் புனிதப்படுத்தல் இருந்தால் இது ரத்தாகும், இதுவும் புனிதப்படுத்தலை ரத்து செய்யும்.",
+ "{name} heals {n} on exalted ground.": "{name} உயர்த்தப்பட்ட நிலத்தில் {n} குணமடைகிறது.",
+ "Exalted ground: {n} healing a round to whoever stands here": "உயர்த்தப்பட்ட நிலம்: இங்கே நிற்பவருக்கு ஒரு சுற்றுக்கு {n} குணம்",
+ "Consecration and Desecration cancel out: no Exalted or Cursed ground": "புனிதப்படுத்தலும் தீட்டுப்படுத்தலும் ஒன்றையொன்று ரத்து செய்கின்றன: உயர்த்தப்பட்ட அல்லது சபிக்கப்பட்ட நிலம் இல்லை"
 }

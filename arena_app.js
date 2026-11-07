@@ -2111,6 +2111,16 @@ PASSIVE_DEFS.push(
   {key:'immunity', category:'passive', label:TX('ui.eng24-immunity-name'), kind:'boolean', desc:()=> TX('ui.eng24-immunity'), codexNote:TX('ui.eng24-immunity-codex')},
   {key:'sequestration', category:'passive', label:TX('ui.eng24-sequestration-name'), kind:'boolean', desc:()=> TX('ui.eng24-sequestration'), codexNote:TX('ui.eng24-sequestration-codex')});
 Object.assign(SKILL_ICON, {relict:'🦴', meld:'🫧', immunity:'🧪', sequestration:'🫳'});
+// ==== Package ENG30 (2026-11-07, owner 11-07 08:54 #1; rules in bramblewood-engine.js eng30Ground, prices in canonical/skill-costs.json):
+//   Consecration N (its side's ground is Exalted: its units heal N each round start) and Desecration N (the enemy's ground is Cursed: N a
+//   round start); both standing anywhere cancel each other. On no card; "?" until Map 70 (SKILL_REVEAL_MAP).
+function eng30NOf(v){ const n = Math.round(Number(v)); return v === true || !(n > 0) ? 1 : n; }
+PASSIVE_DEFS.push(
+  {key:'consecration', category:'passive', label:TX('ui.eng30-consecration-name'), kind:'number', min:0, desc:v=> TX('ui.eng30-consecration', {n: eng30NOf(v)}), codexNote:TX('ui.eng30-consecration-codex')},
+  {key:'desecration', category:'passive', label:TX('ui.eng30-desecration-name'), kind:'number', min:0, desc:v=> TX('ui.eng30-desecration', {n: eng30NOf(v)}), codexNote:TX('ui.eng30-desecration-codex')});
+Object.assign(SKILL_ICON, {consecration:'😇', desecration:'👿'}); // unique in SKILL_ICON
+function eng30GroundOf(m){ const none = {exalted:{1:0, 2:0}, cursed:{1:0, 2:0}, cancelled:false}; try{ return m && !m.over && m.engine && m.engine.eng30Ground && m.players ? m.engine.eng30Ground(m.players) : none; }catch(e){ return none; } }
+function eng30Carrier(c, defs){ const d = c && defs ? defs[c._condBase || c.defId] || defs[c.defId] : null, e = (d && d.effects) || {}; return !!(e.consecration || e.desecration); }
 sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.e22-guardian')}); // ENG22 (DESIGN1-4): Guardian takes arrows and shots too
 // ==== ENG23 (2026-11-04, package ENG23; owner 11-03 23:01 / 23:12) ====
 // Skitter (owner: "After hit, it gains haste & evade for the next turn."): the engine's eng23SkitterOn grant (Haste + Evasive, its next round).
@@ -3492,6 +3502,9 @@ const SKILL_REVEAL_MAP = {
   // its own Darkness, DARK_MAPS), or entering any dark map or sub-map sooner (darkMap: Smugglers' Grotto, a cave), whichever comes first.
   sonar:       {from:8, darkMap:true},
   keenSense:   {from:8, darkMap:true},
+  // ENG30 (2026-11-07, owner 11-07 08:54 #1: "for Map 70+ only"): Consecration and Desecration read "?" until Map 70. On no card yet.
+  consecration: {from:70},
+  desecration:  {from:70},
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
@@ -38737,10 +38750,13 @@ function renderBoard(opts){
     let html = '';
     // Desecrate (2026-10-10): cursed cells show a sigil with their damage per round, occupied or not.
     const curseMap = (()=>{ try{ return m.engine.getCurses ? m.engine.getCurses() : {}; }catch(e){ return {}; } })();
+    const g30 = eng30GroundOf(m); // ENG30 (2026-11-07): Consecration's Exalted / Desecration's Cursed ground, side-wide
     const hazardMap = vis5HazardMap(m); // Trap / Slash & Burn (2026-10-16); + the ones armed in the replay but already sprung in the engine (VIS5, L4, 2026-10-28)
     for(let sl=-slotRange; sl<=slotRange; sl++){
-      const c = bySlot.get(sl), cur = curseMap[pl.id + ':s' + sl] || 0;
-      const mark = (cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '') + w2HazardMark(hazardMap[pl.id + ':s' + sl]) + eqSlotMarks(pl.id, sl, c); // + traps and burning ground (2026-10-16); + floors, lone and carried equipment, hazard drop targets (EQ, 2026-10-19)
+      const c = bySlot.get(sl), cur = (curseMap[pl.id + ':s' + sl] || 0) + (c && !c.gap ? (g30.cursed[pl.id] || 0) : 0); // + Desecration's Cursed ground on a unit (ENG30)
+      const ex30 = c && !c.gap ? (g30.exalted[pl.id] || 0) : 0, x30 = c && !c.gap && g30.cancelled && eng30Carrier(c, defs); // ENG30: Exalted ground; the cancel on its carriers
+      const mark = (cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '')
+        + (ex30 ? `<span class="exalt-mark" title="${escapeAttr(TX('ui.eng30-exalted-mark', {n: ex30}))}">✨ ${ex30}</span>` : '') + (x30 ? `<span class="eng30-cancel-mark" title="${escapeAttr(TX('ui.eng30-cancel-mark'))}">⊘</span>` : '') + w2HazardMark(hazardMap[pl.id + ':s' + sl]) + eqSlotMarks(pl.id, sl, c); // + traps and burning ground (2026-10-16); + floors, lone and carried equipment, hazard drop targets (EQ, 2026-10-19)
       if(c){ let h = boardCardHTML(c, defs, {dance, scatter, danceStyle:nextDanceStyle(), pid:pl.id, extraClass: (c.gladiatorLeader ? 'is-gladiator-leader' : '') + (cur ? ' is-cursed' : '')});
         if(mark){ const k = h.lastIndexOf('</div>'); if(k >= 0) h = h.slice(0, k) + mark + h.slice(k); }
         html += h; continue; }
@@ -38819,7 +38835,7 @@ function renderBoard(opts){
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
     // visible too, so a change in any of them must trigger a rebuild.
-    const curseSig = (()=>{ try{ return JSON.stringify(m.engine.getCurses ? m.engine.getCurses() : {}) + JSON.stringify(vis5HazardMap(m)); }catch(e){ return ''; } })(); // + hazards (2026-10-16; VIS5 2026-10-28: with the replay's armed ones)
+    const curseSig = (()=>{ try{ return JSON.stringify(m.engine.getCurses ? m.engine.getCurses() : {}) + JSON.stringify(vis5HazardMap(m)) + JSON.stringify(eng30GroundOf(m)) /* ENG30 */; }catch(e){ return ''; } })(); // + hazards (2026-10-16; VIS5 2026-10-28: with the replay's armed ones)
     const slotSig = slotView ? `K${curseSig}S${slotRange}{${[...legalForViewer].join(',')}}(${[...rows.left, ...rows.center, ...rows.right].map(c=>c.uid+'@'+c.slot).join(',')})` : '';
     return slotSig + `L${maxLeft}[${rows.left.map(cardSigPiece).join('|')}]C[${rows.center.map(cardSigPiece).join('|')}]R${maxRight}[${rows.right.map(cardSigPiece).join('|')}]`; // (dance flag dropped 2026-10-08: the dance is retired, no rebuild needed)
   }
@@ -48130,6 +48146,7 @@ function logText(ev){
     case 'stunPlayer': return {cls:'poison', text:`🔔 ${nm(ev.attDefId)}: ${ev.side==='A' ? 'the enemy skips' : 'you skip'} ${ev.turns>1 ? ev.turns + ' turns' : 'a turn'}.`};
     case 'curse': return {cls:'poison', text:`🜏 The ground under ${nm(ev.targetDefId)} is desecrated: ${ev.total} damage a round to whoever stands there.`};
     case 'curseTick': return {cls:'poison', text:`🜏 ${nm(ev.defId)} burns on cursed ground (${dnLogNum(ev.dmg, ev)}).`};
+    case 'exaltTick': return {cls:'heal', text: '✨ ' + TX('ui.eng30-exalt-log', {name: nm(ev.defId), n: ev.heal})}; // ENG30 (2026-11-07)
     case 'tide': if(ev.moonpull) return {cls:'', text:`🌙🌊 ${nm(ev.defId)}'s Moonpull: the Tide comes in. Flood!`}; // 2026-10-15 (user: "Ebb should say nothing, just 'Tide goes in, Ebb goes out' since it's not a universal truth that Tide units get 1
       // armor on Ebb"): the log says the state, like the pill; each card's own line says what it gets.
       return {cls:'', text: ev.tide==='high' ? '🌊🌊 High Tide!' : ev.tide==='flow' ? '🌊 Flood: the tide goes in.' : '🐚 Ebb: the tide goes out.'};
@@ -53422,6 +53439,8 @@ function renderVfxForEvent(ev){
     if(el){ try{ floatText(el, `🕯️ +${ev.spent}/+${ev.spent}`, 'gold'); }catch(e){} en20CandleVfx(el); } } // ENG20-1 (2026-11-02, owner: "should involve candlesticks")
   if(ev.type==='cageBroken'){ try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} if(ev.owner==='A') showToast(TX('toast.your-leader-is-free'), 'ok'); }
   if(ev.type==='curseTick'){ const el = boardCardEl(ev.uid); if(el) try{ dnFloat(el, ev.dmg, {type:'curse', mods: ev.mods}); }catch(e){} } /* DN2 */
+  if(ev.type==='exaltTick'){ const el = boardCardEl(ev.uid), rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid]; if(el) try{ floatText(el, `✨ +${ev.heal}`, 'heal'); }catch(e){}
+    if(rc){ rc.hp = Math.min(rc.maxHp || (rc.hp + ev.heal), (rc.hp || 0) + ev.heal); } try{ updateCardHpDisplay(ev.uid); }catch(e){} } /* ENG30 (2026-11-07): Exalted ground's heal, like Sap's */
   if(ev.type==='wash'){ try{ washPushVfx(ev); }catch(e){}
     if(ev.spout && ev.dmg){ const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} } }
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ syncNightVeil(matchState, ev.phase); }catch(e){} }

@@ -4088,5 +4088,14 @@
  "A hidden reward card": "Eine verborgene Belohnungskarte",
  "A card you haven't found yet. It's yours the first time you win this fight.": "Eine Karte, die du noch nicht gefunden hast. Sie gehört dir, sobald du diesen Kampf zum ersten Mal gewinnst.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Eine Karte, die du noch nicht gefunden hast. Gewinne diesen Kampf mit dem darauf gezeigten Rang, um sie zu bekommen.",
- "{n} card{s} to claim": "{n} Karte(n) zum Abholen"
+ "{n} card{s} to claim": "{n} Karte(n) zum Abholen",
+ "Consecration": "Weihe",
+ "Exalted ground: your units heal {n} at every round start.": "Erhabener Boden: Deine Einheiten heilen zu Beginn jeder Runde {n}.",
+ "While it stands, its side's ground is Exalted: each of its units heals N at the start of every round (Undead units are hurt instead). Several carriers don't add up. Desecration anywhere on the field cancels it, and it cancels Desecration.": "Solange sie steht, ist der Boden ihrer Seite erhaben: Jede ihrer Einheiten heilt zu Beginn jeder Runde N (Untote nehmen stattdessen Schaden). Mehrere Träger addieren sich nicht. Entweihung irgendwo auf dem Feld hebt sie auf, und sie hebt Entweihung auf.",
+ "Desecration": "Entweihung",
+ "Cursed ground: enemy units take {n} damage at every round start.": "Verfluchter Boden: Gegnerische Einheiten nehmen zu Beginn jeder Runde {n} Schaden.",
+ "While it stands, the enemy's ground is Cursed: each enemy unit takes N curse damage at the start of every round, on top of any Desecrate curse. Several carriers don't add up. Consecration anywhere on the field cancels it, and it cancels Consecration.": "Solange sie steht, ist der Boden des Gegners verflucht: Jede gegnerische Einheit nimmt zu Beginn jeder Runde N Fluchschaden, zusätzlich zu jedem Entweihen-Fluch. Mehrere Träger addieren sich nicht. Weihe irgendwo auf dem Feld hebt sie auf, und sie hebt Weihe auf.",
+ "{name} heals {n} on exalted ground.": "{name} heilt {n} auf erhabenem Boden.",
+ "Exalted ground: {n} healing a round to whoever stands here": "Erhabener Boden: {n} Heilung pro Runde für alle, die hier stehen",
+ "Consecration and Desecration cancel out: no Exalted or Cursed ground": "Weihe und Entweihung heben sich auf: kein erhabener oder verfluchter Boden"
 }

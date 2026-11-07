@@ -4091,5 +4091,14 @@
  "A hidden reward card": "숨겨진 보상 카드",
  "A card you haven't found yet. It's yours the first time you win this fight.": "아직 발견하지 못한 카드예요. 이 전투를 처음 이기면 얻어요.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "아직 발견하지 못한 카드예요. 카드에 표시된 랭크로 이 전투를 이기면 얻어요.",
- "{n} card{s} to claim": "받을 수 있는 카드 {n}장"
+ "{n} card{s} to claim": "받을 수 있는 카드 {n}장",
+ "Consecration": "축성",
+ "Exalted ground: your units heal {n} at every round start.": "고양된 땅: 아군 유닛이 매 라운드 시작 시 {n} 회복합니다.",
+ "While it stands, its side's ground is Exalted: each of its units heals N at the start of every round (Undead units are hurt instead). Several carriers don't add up. Desecration anywhere on the field cancels it, and it cancels Desecration.": "이 유닛이 서 있는 동안 그 진영의 땅은 고양된 땅입니다: 그 진영의 각 유닛이 매 라운드 시작 시 N 회복합니다(언데드 유닛은 대신 피해를 입습니다). 여러 보유 유닛의 효과는 합산되지 않습니다. 필드 어디에든 모독이 있으면 상쇄되며, 이 스킬도 모독을 상쇄합니다.",
+ "Desecration": "모독",
+ "Cursed ground: enemy units take {n} damage at every round start.": "저주받은 땅: 적 유닛이 매 라운드 시작 시 피해 {n}을 입습니다.",
+ "While it stands, the enemy's ground is Cursed: each enemy unit takes N curse damage at the start of every round, on top of any Desecrate curse. Several carriers don't add up. Consecration anywhere on the field cancels it, and it cancels Consecration.": "이 유닛이 서 있는 동안 적의 땅은 저주받은 땅입니다: 각 적 유닛이 매 라운드 시작 시 저주 피해 N을 입으며, 더럽힘(Desecrate)의 저주에 더해집니다. 여러 보유 유닛의 효과는 합산되지 않습니다. 필드 어디에든 축성이 있으면 상쇄되며, 이 스킬도 축성을 상쇄합니다.",
+ "{name} heals {n} on exalted ground.": "{name}이(가) 고양된 땅에서 {n} 회복합니다.",
+ "Exalted ground: {n} healing a round to whoever stands here": "고양된 땅: 여기 선 쪽은 라운드마다 {n} 회복",
+ "Consecration and Desecration cancel out: no Exalted or Cursed ground": "축성과 모독이 서로 상쇄됨: 고양된 땅도 저주받은 땅도 없음"
 }

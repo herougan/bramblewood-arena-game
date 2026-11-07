@@ -4089,5 +4089,14 @@
  "A hidden reward card": "隐藏的奖励卡牌",
  "A card you haven't found yet. It's yours the first time you win this fight.": "你还没找到的卡牌。首次赢下这场战斗就能得到它。",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "你还没找到的卡牌。以卡牌上显示的评级赢下这场战斗就能得到它。",
- "{n} card{s} to claim": "{n} 张卡牌待领取"
+ "{n} card{s} to claim": "{n} 张卡牌待领取",
+ "Consecration": "圣化",
+ "Exalted ground: your units heal {n} at every round start.": "崇高之地：你的单位在每轮开始时回复 {n} 点生命。",
+ "While it stands, its side's ground is Exalted: each of its units heals N at the start of every round (Undead units are hurt instead). Several carriers don't add up. Desecration anywhere on the field cancels it, and it cancels Desecration.": "只要它在场，其一方的土地就是崇高之地：其每个单位在每轮开始时回复 N 点生命（亡灵单位改为受到伤害）。多个携带者不叠加。场上任何地方有玷污即会将其抵消，它也会抵消玷污。",
+ "Desecration": "玷污",
+ "Cursed ground: enemy units take {n} damage at every round start.": "诅咒之地：敌方单位在每轮开始时受到 {n} 点伤害。",
+ "While it stands, the enemy's ground is Cursed: each enemy unit takes N curse damage at the start of every round, on top of any Desecrate curse. Several carriers don't add up. Consecration anywhere on the field cancels it, and it cancels Consecration.": "只要它在场，敌方的土地就是诅咒之地：每个敌方单位在每轮开始时受到 N 点诅咒伤害，叠加在任何亵渎诅咒之上。多个携带者不叠加。场上任何地方有圣化即会将其抵消，它也会抵消圣化。",
+ "{name} heals {n} on exalted ground.": "{name} 在崇高之地上回复 {n} 点生命。",
+ "Exalted ground: {n} healing a round to whoever stands here": "崇高之地：站在这里的单位每轮回复 {n} 点生命",
+ "Consecration and Desecration cancel out: no Exalted or Cursed ground": "圣化与玷污相互抵消：没有崇高之地或诅咒之地"
 }

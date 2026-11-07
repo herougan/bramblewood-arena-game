@@ -4089,5 +4089,14 @@
  "A hidden reward card": "Nakatagong card na gantimpala",
  "A card you haven't found yet. It's yours the first time you win this fight.": "Card na hindi mo pa nahahanap. Iyo ito sa unang beses na manalo ka sa laban na ito.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Card na hindi mo pa nahahanap. Manalo sa laban na ito sa rank na nakalagay sa card para makuha ito.",
- "{n} card{s} to claim": "{n} card na puwedeng kunin"
+ "{n} card{s} to claim": "{n} card na puwedeng kunin",
+ "Consecration": "Konsagrasyon",
+ "Exalted ground: your units heal {n} at every round start.": "Dakilang lupa: gumagaling ng {n} ang iyong mga unit sa simula ng bawat round.",
+ "While it stands, its side's ground is Exalted: each of its units heals N at the start of every round (Undead units are hurt instead). Several carriers don't add up. Desecration anywhere on the field cancels it, and it cancels Desecration.": "Habang nakatayo ito, dakila ang lupa ng panig nito: gumagaling ng N ang bawat unit nito sa simula ng bawat round (nasasaktan naman ang mga Undead). Hindi nagsasama-sama ang ilang tagadala. Kinakansela ito ng Paglapastangan saanman sa larangan, at kinakansela rin nito ang Paglapastangan.",
+ "Desecration": "Paglapastangan",
+ "Cursed ground: enemy units take {n} damage at every round start.": "Isinumpang lupa: tumatanggap ng {n} pinsala ang mga kalabang unit sa simula ng bawat round.",
+ "While it stands, the enemy's ground is Cursed: each enemy unit takes N curse damage at the start of every round, on top of any Desecrate curse. Several carriers don't add up. Consecration anywhere on the field cancels it, and it cancels Consecration.": "Habang nakatayo ito, isinumpa ang lupa ng kalaban: bawat kalabang unit ay tumatanggap ng N pinsalang sumpa sa simula ng bawat round, dagdag sa anumang sumpa ng Desecrate. Hindi nagsasama-sama ang ilang tagadala. Kinakansela ito ng Konsagrasyon saanman sa larangan, at kinakansela rin nito ang Konsagrasyon.",
+ "{name} heals {n} on exalted ground.": "Gumaling ng {n} si {name} sa dakilang lupa.",
+ "Exalted ground: {n} healing a round to whoever stands here": "Dakilang lupa: {n} paggaling bawat round sa sinumang nakatayo rito",
+ "Consecration and Desecration cancel out: no Exalted or Cursed ground": "Nagkakansela ang Konsagrasyon at Paglapastangan: walang dakila o isinumpang lupa"
 }

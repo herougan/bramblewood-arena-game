@@ -4089,5 +4089,14 @@
  "A hidden reward card": "Une carte récompense cachée",
  "A card you haven't found yet. It's yours the first time you win this fight.": "Une carte que vous n'avez pas encore trouvée. Elle est à vous dès votre première victoire dans ce combat.",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Une carte que vous n'avez pas encore trouvée. Gagnez ce combat avec le rang indiqué dessus pour l'obtenir.",
- "{n} card{s} to claim": "{n} carte{s} à récupérer"
+ "{n} card{s} to claim": "{n} carte{s} à récupérer",
+ "Consecration": "Consécration",
+ "Exalted ground: your units heal {n} at every round start.": "Sol exalté : tes unités soignent {n} au début de chaque tour.",
+ "While it stands, its side's ground is Exalted: each of its units heals N at the start of every round (Undead units are hurt instead). Several carriers don't add up. Desecration anywhere on the field cancels it, and it cancels Desecration.": "Tant qu’elle tient debout, le sol de son camp est exalté : chacune de ses unités soigne N au début de chaque tour (les morts-vivants subissent des dégâts à la place). Plusieurs porteurs ne s’additionnent pas. La Désacralisation n’importe où sur le terrain l’annule, et elle annule la Désacralisation.",
+ "Desecration": "Désacralisation",
+ "Cursed ground: enemy units take {n} damage at every round start.": "Sol maudit : les unités ennemies subissent {n} dégâts au début de chaque tour.",
+ "While it stands, the enemy's ground is Cursed: each enemy unit takes N curse damage at the start of every round, on top of any Desecrate curse. Several carriers don't add up. Consecration anywhere on the field cancels it, and it cancels Consecration.": "Tant qu’elle tient debout, le sol de l’ennemi est maudit : chaque unité ennemie subit N dégâts de malédiction au début de chaque tour, en plus de toute malédiction de Profanation. Plusieurs porteurs ne s’additionnent pas. La Consécration n’importe où sur le terrain l’annule, et elle annule la Consécration.",
+ "{name} heals {n} on exalted ground.": "{name} soigne {n} sur le sol exalté.",
+ "Exalted ground: {n} healing a round to whoever stands here": "Sol exalté : {n} soins par tour à qui se tient ici",
+ "Consecration and Desecration cancel out: no Exalted or Cursed ground": "Consécration et Désacralisation s’annulent : ni sol exalté ni sol maudit"
 }

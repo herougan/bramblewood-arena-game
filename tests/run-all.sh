@@ -349,6 +349,7 @@ run node tests/bal21-2026-11-07.js   # 2026-11-07 (package BAL21): Maps 0-20 aft
 run node tests/content13-2026-11-07.js   # 2026-11-07 (package CONTENT13, owner 11-06 23:35 #8): the Drill Grounds, an admin-only side map under the Tutorial: hidden for non-admins, visible for admins, two optimised faction-pure SK decks (Otter, Hummingbird) legal, no rewards or progress
 run node tests/ui25-2026-11-07.js   # 2026-11-07 (package UI25, owner 07:43): "N cards added" toast, achievement card chip, map-end pack titled by name, hidden reward card tooltip
 run node tests/content14-2026-11-07.js   # 2026-11-07 (package CONTENT14, owner 07:40; LEAD-NAT-1): the two natural leaders (Legate of Rivergate, Gold-throat Elder): Rare, Natural Leader, faction pool, in budget, 12 packs, art prompts; the faction pattern's first R step gives your side's leader once, held from the other faction hand-outs until then
+run node tests/eng30-2026-11-07.js   # 2026-11-07 (package ENG30, owner 11-07 08:54 #1, #2, #13): Consecration / Desecration grounds and their cancel (on no card, Map 70), the Blind pip glows while attacking, sight look A only, the shut-eye blink 1 in 2
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

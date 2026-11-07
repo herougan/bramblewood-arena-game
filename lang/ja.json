@@ -4089,5 +4089,14 @@
  "A hidden reward card": "隠された報酬カード",
  "A card you haven't found yet. It's yours the first time you win this fight.": "まだ見つけていないカードです。このバトルに初めて勝つと手に入ります。",
  "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "まだ見つけていないカードです。カードに表示されたランクでこのバトルに勝つと手に入ります。",
- "{n} card{s} to claim": "受け取れるカード：{n}枚"
+ "{n} card{s} to claim": "受け取れるカード：{n}枚",
+ "Consecration": "聖別",
+ "Exalted ground: your units heal {n} at every round start.": "崇高な地：味方ユニットは毎ラウンドの開始時に{n}回復する。",
+ "While it stands, its side's ground is Exalted: each of its units heals N at the start of every round (Undead units are hurt instead). Several carriers don't add up. Desecration anywhere on the field cancels it, and it cancels Desecration.": "これが立っている間、その陣営の地は崇高な地になる：その陣営の各ユニットは毎ラウンドの開始時にN回復する（アンデッドは代わりにダメージを受ける）。複数の持ち主がいても加算されない。フィールドのどこかに穢れがあると打ち消され、こちらも穢れを打ち消す。",
+ "Desecration": "穢れ",
+ "Cursed ground: enemy units take {n} damage at every round start.": "呪われた地：敵ユニットは毎ラウンドの開始時に{n}ダメージを受ける。",
+ "While it stands, the enemy's ground is Cursed: each enemy unit takes N curse damage at the start of every round, on top of any Desecrate curse. Several carriers don't add up. Consecration anywhere on the field cancels it, and it cancels Consecration.": "これが立っている間、敵の地は呪われた地になる：敵の各ユニットは毎ラウンドの開始時に呪いダメージNを受け、冒涜の呪いにも上乗せされる。複数の持ち主がいても加算されない。フィールドのどこかに聖別があると打ち消され、こちらも聖別を打ち消す。",
+ "{name} heals {n} on exalted ground.": "{name}は崇高な地で{n}回復した。",
+ "Exalted ground: {n} healing a round to whoever stands here": "崇高な地：ここに立つ者は毎ラウンド{n}回復",
+ "Consecration and Desecration cancel out: no Exalted or Cursed ground": "聖別と穢れが打ち消し合っている：崇高な地も呪われた地もない"
 }

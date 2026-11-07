@@ -613,8 +613,9 @@ M.darkMiss = function(el, opts){
 // Persistent sight looks (dark-unit-blind, P1: "units that are blind in darkness should look it"; dark-sunshy-blind;
 // dark-nightblind; dark-darksight-idle; and the Lantern's light pool). A class on the .board-card plus one small badge.
 // Re-applied after every renderBoard (fxHook 'boardRendered') because the board rebuilds its cards.
-//   cantsee looks: A shadowed art, a big shut eye that strains open now and then, and a small badge (in the game);
-//   B a blindfold across the art; C fog swirling over the art.
+//   cantsee look: A shadowed art, a big shut eye that strains open now and then, and a small badge (in the game).
+//   2026-11-07 (package ENG30, owner 11-07 08:54 #13: "Remove the blindfold sight look"): look B (a blindfold across the art) is gone, and
+//   look C (fog swirling over the art) with it, so look A is the only one; markSight reads any other look as A.
 const EYE_SVG = {
   dark:'<svg viewBox="0 0 24 14"><path d="M3 5 Q12 13 21 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M7 9 L5.5 12.5 M12 10.5 L12 13.8 M17 9 L18.5 12.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>',
   sun:'<svg viewBox="0 0 24 14"><circle cx="5" cy="7" r="3" fill="#ffd25a"/><path d="M10 8 Q15 4 22 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M11 5 L21 11" stroke="currentColor" stroke-width="1.4"/></svg>',
@@ -644,13 +645,6 @@ css('sight', `.board-card.fxb-cantsee{position:relative;}
 .fxb-eyebadge.why-blind{background:#e9e2ff; color:#3b2d63; border-color:#3b2d63;}
 .board-card.fxb-cantsee.fxb-look-A .card-tile .ico{filter:brightness(.5) saturate(.45); transition:filter .6s;}
 .board-card.fxb-cantsee.fxb-why-sun.fxb-look-A .card-tile .ico{filter:brightness(1.15) saturate(.6) contrast(.8);}
-.fxb-fold{position:absolute; left:-3%; right:-3%; top:24%; height:13%; z-index:7; pointer-events:none; transform:rotate(-5deg); border-radius:3px;
-  background:repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 3px, transparent 3px 7px), linear-gradient(180deg,#4a3b5c,#271d33); box-shadow:0 2px 4px rgba(0,0,0,.55);}
-.fxb-fold::after{content:''; position:absolute; right:6%; top:-30%; width:14px; height:160%; background:linear-gradient(180deg,#5a4870,#2b2038); clip-path:polygon(0 0,100% 20%,70% 100%,30% 100%,0 70%);}
-.fxb-fogart{position:absolute; left:4%; right:4%; top:6%; height:52%; z-index:7; pointer-events:none; border-radius:8px; opacity:.85;
-  background:radial-gradient(ellipse at 30% 40%, rgba(200,195,215,.85), transparent 60%), radial-gradient(ellipse at 70% 60%, rgba(170,165,190,.8), transparent 60%), rgba(60,56,80,.35);
-  background-size:200% 100%, 200% 100%, auto; animation:fxbFog 6s ease-in-out infinite alternate;}
-@keyframes fxbFog{to{background-position:100% 0, 0 0, 0 0;}}
 .fxb-glare{position:absolute; left:0; right:0; top:0; height:60%; z-index:7; pointer-events:none; border-radius:8px 8px 0 0; overflow:hidden;}
 .fxb-glare::before{content:''; position:absolute; top:-30%; left:-60%; width:45%; height:160%; transform:rotate(22deg); background:linear-gradient(90deg, transparent, rgba(255,250,220,.85), transparent); animation:fxbGlare 4.6s ease-in-out infinite;}
 @keyframes fxbGlare{0%,55%{left:-60%;} 85%,100%{left:120%;}}
@@ -669,12 +663,12 @@ css('sight', `.board-card.fxb-cantsee{position:relative;}
   background:radial-gradient(ellipse at 50% 50%, rgba(255,205,120,.22), rgba(255,175,80,.11) 36%, rgba(255,160,60,.04) 58%, rgba(255,150,40,0) 70%); mix-blend-mode:screen; animation:fxbFlicker 2.4s ease-in-out infinite;}
 @keyframes fxbFlicker{0%,100%{opacity:.9;} 30%{opacity:.76;} 55%{opacity:1;} 70%{opacity:.84;}}
 .board-card.fxb-lit .card-tile{box-shadow:0 0 0 1px rgba(255,200,110,.35), 0 0 14px rgba(255,180,80,.28);}
-@media (prefers-reduced-motion: reduce){ .fxb-fogart, .fxb-glare::before, .fxb-mooncloud, .fxb-darkeyes::before, .fxb-darkeyes::after, .fxb-pool, .fxb-shut .lid{animation:none !important;} }`);
+@media (prefers-reduced-motion: reduce){ .fxb-glare::before, .fxb-mooncloud, .fxb-darkeyes::before, .fxb-darkeyes::after, .fxb-pool, .fxb-shut .lid{animation:none !important;} }`);
 // The shut eye of look A: a closed lid with lashes (the .lid group flips up a crack when it strains to see).
 const SHUT_SVG = '<svg viewBox="0 0 48 24"><g class="lid"><path d="M4 8 Q24 26 44 8" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/>'
   + '<path d="M11 14.5 L8 20 M18 17.6 L16.5 23 M24 18.5 L24 24 M30 17.6 L31.5 23 M37 14.5 L40 20" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></g></svg>';
-const SIGHT_CLS = ['fxb-cantsee', 'fxb-look-A', 'fxb-look-B', 'fxb-look-C', 'fxb-why-dark', 'fxb-why-sun', 'fxb-why-night', 'fxb-why-blind', 'fxb-eyes-on', 'fxb-lit', 'fxb-lantern'];
-const SIGHT_SEL = '.fxb-eyebadge, .fxb-fold, .fxb-fogart, .fxb-glare, .fxb-mooncloud, .fxb-darkeyes, .fxb-pool, .fxb-shade, .fxb-shut';
+const SIGHT_CLS = ['fxb-cantsee', 'fxb-look-A', 'fxb-why-dark', 'fxb-why-sun', 'fxb-why-night', 'fxb-why-blind', 'fxb-eyes-on', 'fxb-lit', 'fxb-lantern'];
+const SIGHT_SEL = '.fxb-eyebadge, .fxb-glare, .fxb-mooncloud, .fxb-darkeyes, .fxb-pool, .fxb-shade, .fxb-shut';
 M.sightLook = 'A';
 // The shut eye's blinks (2026-10-16): it blinks once when it first shows on a unit (a board re-render doesn't count as new: the unit
 // is remembered by uid for 20 minutes), then stays shut; every 10 s each eye on screen has a 1-in-600 chance (about 1% a minute).
@@ -683,11 +677,11 @@ function blinkEye(e){ e.classList.remove('is-blink'); void e.offsetWidth; e.clas
 function eyeIntro(card, e){ const id = card && card.dataset && card.dataset.uid, now = Date.now();
   if(id != null && eyeSeen.has(id) && now - eyeSeen.get(id) < 20*60*1000) return;
   if(id != null){ eyeSeen.set(id, now); if(eyeSeen.size > 300) eyeSeen.clear(); }
-  blinkEye(e); }
+  if(Math.random() < 0.5) blinkEye(e); } // 2026-11-07 (package ENG30, owner 11-07 08:54 #13): the first blink plays 1 time in 2 (cosmetic, unseeded)
 if(typeof setInterval === 'function') setInterval(()=>{ try{ if(document.hidden) return; document.querySelectorAll('.fxb-shut').forEach(e=>{ if(e.closest('.is-blind')) return; /* 2026-10-30 (coordinator, owner 21:53: the blind blink plays once, then is gone) */ if(Math.random() < 1/600) blinkEye(e); }); }catch(err){} }, 10000);
 // mark(el, kind): kind 'dark' | 'sun' | 'night' (can't see) | 'eyes' (Darksight in the dark) | 'lantern' (the carrier's light pool) | 'lit' | null (clear)
 M.markSight = function(el, kind, o){
-  o = o || {}; if(!el || !el.classList) return; const look = o.look || M.sightLook || 'A';
+  o = o || {}; if(!el || !el.classList) return; const look = 'A'; void o.look; // ENG30 (2026-11-07): look A only
   const sig = kind ? kind + ':' + look : '';
   if((el.dataset.fxbSight || '') === sig) return; // nothing changed: leave the running animations alone
   el.classList.remove(...SIGHT_CLS); el.querySelectorAll(':scope > ' + SIGHT_SEL.split(', ').join(', :scope > ')).forEach(n=> n.remove());
@@ -700,10 +694,9 @@ M.markSight = function(el, kind, o){
   if(kind === 'lantern'){ el.classList.add('fxb-lantern', 'fxb-lit'); el.insertBefore(add('fxb-pool'), el.firstChild); return; } // first, so the card paints over its own light
   if(kind === 'lit'){ el.classList.add('fxb-lit'); return; }
   el.classList.add('fxb-cantsee', 'fxb-look-' + look, 'fxb-why-' + kind);
-  const b = (look !== 'A' || kind === 'sun') ? add('fxb-eyebadge why-' + kind, EYE_SVG[kind] || EYE_SVG.dark) : {}; b.title = kind === 'sun' ? 'Sun-shy: dazzled by day' : kind === 'night' ? 'Night-blind: can\'t see at night' : kind === 'blind' ? 'Blind: misses half its swings' : 'Can\'t see in the dark';
+  const b = kind === 'sun' ? add('fxb-eyebadge why-' + kind, EYE_SVG[kind] || EYE_SVG.dark) : {}; b.title = kind === 'sun' ? 'Sun-shy: dazzled by day' : kind === 'night' ? 'Night-blind: can\'t see at night' : kind === 'blind' ? 'Blind: misses half its swings' : 'Can\'t see in the dark';
   if(kind === 'sun') add('fxb-glare'); else if(kind === 'night') add('fxb-mooncloud');
-  else if(look === 'B') add('fxb-fold'); else if(look === 'C') add('fxb-fogart');
-  if(look === 'A' && kind !== 'sun'){ if(kind !== 'night') add('fxb-shade'); const e = add('fxb-shut', SHUT_SVG); eyeIntro(el, e); }
+  if(kind !== 'sun'){ if(kind !== 'night') add('fxb-shade'); const e = add('fxb-shut', SHUT_SVG); eyeIntro(el, e); }
 };
 // Work out who can see on the board from the DOM, the card defs, the field rules and the phase (mirrors the engine's
 // sightMiss: Darksight sees in the dark; a living Lantern lights its side (absolute darkness still dims it); Sun-shy is
