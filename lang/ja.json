@@ -4281,5 +4281,13 @@
  "{name} floats back up ({n} Health).": "{name}がふわりと起き上がった（体力{n}）。",
  "🛡️ {name} shrugs off {status}.": "🛡️ {name}は{status}を耐えた。",
  "🛡️ {name} is immune to {status}.": "🛡️ {name}は{status}無効。",
- "😵 {name} floats back up ({n} Health).": "😵 {name}がふわりと起き上がった（体力{n}）。"
+ "😵 {name} floats back up ({n} Health).": "😵 {name}がふわりと起き上がった（体力{n}）。",
+ "Counters to this map's cards": "このマップのカードへの対策",
+ "Counters {n} of this map's cards: {cards}": "このマップの {n} 枚に対策：{cards}",
+ "{name} resistance": "{name}耐性",
+ "A Resist or Immune {name} entry in the card editor (Resistance boxes). Resist softens it (half damage a round, or 50 points off its chance to land); Immune never lets it land.": "カードエディタ（耐性欄）の「{name}」耐性／無効の項目。耐性は効果を弱め（毎ラウンドのダメージ半減、または付与率-50ポイント）、無効は決してかからない。",
+ "A {name} Resist or Immune entry softens or stops it.": "「{name}」耐性／無効の項目で弱める、または防げる。",
+ "unsure": "未確認",
+ "Answers {n} of this map's cards": "このマップの {n} 枚に対応",
+ "Claude's pick {card} carries it (theme: {theme})": "Claude のおすすめ {card} が持つ（テーマ：{theme}）"
 }

@@ -4280,5 +4280,13 @@
  "{name} floats back up ({n} Health).": "{name} se eleva de nuevo ({n} de Salud).",
  "🛡️ {name} shrugs off {status}.": "🛡️ {name} resiste: {status}.",
  "🛡️ {name} is immune to {status}.": "🛡️ {name} es inmune: {status}.",
- "😵 {name} floats back up ({n} Health).": "😵 {name} se eleva de nuevo ({n} de Salud)."
+ "😵 {name} floats back up ({n} Health).": "😵 {name} se eleva de nuevo ({n} de Salud).",
+ "Counters to this map's cards": "Contras para las cartas de este mapa",
+ "Counters {n} of this map's cards: {cards}": "Contrarresta {n} cartas de este mapa: {cards}",
+ "{name} resistance": "Resistencia a {name}",
+ "A Resist or Immune {name} entry in the card editor (Resistance boxes). Resist softens it (half damage a round, or 50 points off its chance to land); Immune never lets it land.": "Una entrada de Resistencia o Inmunidad a {name} en el editor de cartas (casillas de Resistencia). Resistencia lo suaviza (mitad de daño por turno, o 50 puntos menos de probabilidad); Inmune nunca deja que se aplique.",
+ "A {name} Resist or Immune entry softens or stops it.": "Una entrada de Resistencia o Inmunidad a {name} lo suaviza o lo detiene.",
+ "unsure": "dudoso",
+ "Answers {n} of this map's cards": "Responde a {n} cartas de este mapa",
+ "Claude's pick {card} carries it (theme: {theme})": "{card}, elección de Claude, lo tiene (tema: {theme})"
 }

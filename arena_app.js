@@ -33515,8 +33515,9 @@ function eng35DeliveryOf(key){ try{ return typeof skillDeliveryOf === 'function'
 // the hover window's body: what the skill does, the tile's context, Default / Number / Stat version / Ability version / Parameters, and its delivery
 function eng35SkillTipHTML(key, text, ctx){
   let p = null; try{ p = skillDefOf(key); }catch(e){}
+  const ps34 = !p && typeof ui34PseudoDef === 'function' ? ui34PseudoDef(key) : null; if(ps34) p = {key, label: ps34.label, kind: 'boolean', desc: ()=> ps34.text}; // UI34 (2026-11-08): a status Resist / Immune counter tile
   const f = eng35FamilyOf(key), P = (eng35Lib() && eng35Lib().PARAMS) || {}, fields = P.fields || {}, dl = eng35DeliveryOf(key);
-  const label = (p && p.label) || key, ico = (typeof SKILL_ICON !== 'undefined' && SKILL_ICON[key]) || '•';
+  const label = (p && p.label) || key, ico = (typeof SKILL_ICON !== 'undefined' && SKILL_ICON[key]) || (ps34 && ps34.icon) || '•';
   let plain = ''; if(p) try{ plain = String(skillText(p, p.kind === 'number' ? (p.defaultValue != null ? p.defaultValue : 1) : true, {}) || ''); }catch(e){ try{ plain = String(p.desc(true) || ''); }catch(_){ plain = ''; } }
   const row = (k, v, code)=> v === '' || v == null ? '' : `<dt>${escapeHtml(TX(k))}</dt><dd>${code ? `<code>${escapeHtml(v)}</code>` : escapeHtml(v)}</dd>`;
   const num = f ? f.number : (p && p.kind === 'number' ? (p.defaultValue != null ? p.defaultValue : 1) : null);
@@ -33592,14 +33593,82 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
     return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}</span></li>`; };
   const have = new Set(rows.concat(rowsO).map(r=> r.key)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
-  const recs = recs0.filter(r=>{ if(have.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
+  // 2026-11-08 (package UI34, owner 23:49): a Counters group (skills that answer the main cards' skills, canonical/skill-counters.json); a counter is a tile once: not in Main / Other, and off the blue group
+  let ctr = []; try{ ctr = typeof ui34CounterRows === 'function' ? ui34CounterRows(flaggedMain, defs, have) : []; }catch(e){ ctr = []; }
+  const ctrKeys = new Set(ctr.map(r=> r.key));
+  const recs = recs0.filter(r=>{ if(have.has(r.key) || ctrKeys.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
   const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sp(r.key)}</span></li>`;
-  const kwMissing = kw && !have.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sp(kw)}</span></li>` : '';
-  const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, new Set([...have, ...(kwMissing ? [kw] : []), ...recs.map(r=> r.key)])) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
+  const kwMissing = kw && !have.has(kw) && !ctrKeys.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sp(kw)}</span></li>` : '';
+  const suggShown = new Set([...have, ...ctrKeys, ...(kwMissing ? [kw] : []), ...recs.map(r=> r.key)]);
+  const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, suggShown) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
+  // 2026-11-08 (package UI34 item 3, owner 23:49: up to 15 Claude recommendations per map where sensible): the blue group tops up to 15 with the skills of Claude's picked cards for this map (ui34ClaudePicks) that no tile shows yet
+  const suggMissingN = [...sugg.keys()].filter(k=> !suggShown.has(k) && skillDefOf(k)).length, blueRoom = Math.max(0, 15 - recs.length - (kwMissing ? 1 : 0) - suggMissingN);
+  let picks = []; try{ picks = typeof ui34ClaudePicks === 'function' && blueRoom ? ui34ClaudePicks(mapId || top, defs, new Set([...suggShown, ...sugg.keys(), ...(kw ? [kw] : [])]), blueRoom) : []; }catch(e){ picks = []; }
+  const spk = k=> sp(k); // a pick tile carries the Sugg. Intro pill too
+  const pickTiles = picks.map(r=> `<li class="ui19-sk is-rec is-claude-pick" data-ui34-pick="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText({key: r.key, fx: {[r.key]: true}}), TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${spk(r.key)}</span></li>`).join('');
+  const ctrTiles = ctr.map(r=> typeof ui34CounterTileHTML === 'function' ? ui34CounterTileHTML(r, defs, kw, tipA, sp) : '').join('');
   const hd = (k, n)=> n ? `<li class="ui32-sk-head is-${k}" role="presentation">${escapeHtml(TX('ui.ui32-sk-' + k))}</li>` : ''; // UI32 #7: a divider per group
-  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length || recs.length || kwMissing || suggTiles ? `<ul class="ui19-sk-list">${hd('main', flaggedMain.length)}${flaggedMain.map(li).join('')}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}${hd('rec', recs.length + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0))}${kwMissing}${suggTiles}${recs.map(rli).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
+  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length || recs.length || kwMissing || suggTiles || ctr.length || picks.length ? `<ul class="ui19-sk-list">${hd('main', flaggedMain.length)}${flaggedMain.map(li).join('')}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}${hd('counters', ctr.length)}${ctrTiles}${hd('rec', recs.length + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + picks.length)}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
+// UI34_COUNTERS:START
+// 2026-11-08 (package UI34, owner 23:49: "Add more skill recommendations to each map card window. Esp those that counter that map's cards!"): the Map cards
+// window's Counters group. canonical/skill-counters.json (baked in as SKILL_COUNTER_TABLE) says which skills answer each skill (and each status: the Resist / Immune
+// entries, key 'status:<id>', ENG36). For the cards of the map's own list: every skill they carry names its counters; a counter is ranked by how many of the
+// map's cards it answers (ties: cards answered with a certain rule, then skills answered). Up to 8 tiles, never a skill the Main / Other groups already show.
+// The hover says which cards it counters and why. Shown only: nothing here changes a card or a rule. The reasons are canonical-data text (English, admin window).
+const SKILL_COUNTER_TABLE = __SKILL_COUNTER_TABLE__;
+const UI34_COUNTER_MAX = 8, UI34_BLUE_MAX = 15;
+function ui34StatusId(key){ return typeof key === 'string' && key.indexOf('status:') === 0 ? key.slice(7) : null; }
+// a Resist / Immune status entry as a skill-like tile: {key, label, icon, text}
+function ui34PseudoDef(key){
+  const s = ui34StatusId(key); if(!s) return null;
+  const st = (typeof ENG36_STATUS_LIST !== 'undefined' && ENG36_STATUS_LIST[s]) || {}, name = TX('ui.eng36-st-' + s);
+  return {key, label: TX('ui.ui34-resist-of', {name}), icon: st.icon || '🛡️', text: TX('ui.ui34-resist-text', {name})};
+}
+function ui34DefOk(key){ try{ if(ui34StatusId(key)) return !!ui34PseudoDef(key); const p = skillDefOf(key); return !!(p && p.label && !p.retired); }catch(e){ return false; } }
+// the counters of one skill key: its own list, its status's list, and that status's Resist / Immune tile
+function ui34CountersOf(key){
+  const T = (typeof SKILL_COUNTER_TABLE !== 'undefined' && SKILL_COUNTER_TABLE) || {}, out = [], c = (T.counters || {})[key], st = (T.applies || {})[key];
+  if(c) (c.counters || []).forEach(x=> out.push({skill: x.skill, why: x.why, unc: !!x.uncertain}));
+  if(st){ const sc = (T.statuses || {})[st]; if(sc) (sc.counters || []).forEach(x=> out.push({skill: x.skill, why: x.why, unc: !!x.uncertain}));
+    out.push({skill: 'status:' + st, why: TX('ui.ui34-resist-why', {name: TX('ui.eng36-st-' + st)}), unc: false}); }
+  return out;
+}
+// rows = the Main group's rows ({key, ids}); exclude = keys already shown. Returns [{key, cards: Set, sure: Set, threats: Set, pairs: [{id, threat, why, unc}]}], best first, at most 8
+function ui34CounterRows(rows, defs, exclude){
+  const by = new Map();
+  (rows || []).forEach(r=>{ const list = ui34CountersOf(r.key); if(!list.length) return;
+    (r.ids || []).forEach(id=> list.forEach(x=>{ if((exclude && exclude.has(x.skill)) || x.skill === r.key) return;
+      let e = by.get(x.skill); if(!e){ e = {key: x.skill, cards: new Set(), sure: new Set(), threats: new Set(), pairs: []}; by.set(x.skill, e); }
+      e.cards.add(id); e.threats.add(r.key); if(!x.unc) e.sure.add(id); e.pairs.push({id, threat: r.key, why: x.why, unc: x.unc}); })); });
+  const label = k=>{ try{ return (ui34StatusId(k) ? ui34PseudoDef(k) : skillDefOf(k)).label || k; }catch(e){ return k; } };
+  return [...by.values()].filter(e=> ui34DefOk(e.key)).sort((a, b)=> (b.cards.size - a.cards.size) || (b.sure.size - a.sure.size) || (b.threats.size - a.threats.size) || String(label(a.key)).localeCompare(String(label(b.key)))).slice(0, UI34_COUNTER_MAX);
+}
+function ui34CounterTileHTML(r, defs, kw, tipA, sp){
+  const p = ui34StatusId(r.key) ? null : skillDefOf(r.key), ps = p ? null : ui34PseudoDef(r.key); if(!p && !ps) return '';
+  const label = p ? p.label : ps.label, ico = p ? ((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[r.key]) || '•') : ps.icon;
+  let text = ps ? ps.text : ''; if(p) try{ text = ui19McSkillText({key: r.key, fx: {[r.key]: true}}); }catch(e){}
+  const names = [...r.cards].map(id=> (defs[id] && defs[id].name) || id), shown = names.slice(0, 6).join(', ') + (names.length > 6 ? ' +' + (names.length - 6) : '');
+  const seen = new Set(), why = []; r.pairs.forEach(x=>{ if(seen.has(x.threat) || why.length >= 4) return; seen.add(x.threat); let tl = x.threat; try{ tl = skillDefOf(x.threat).label || tl; }catch(e){}
+    why.push(tl + ': ' + x.why + (x.unc ? ' (' + TX('ui.ui34-unsure') + ')' : '')); });
+  const ctx = TX('ui.ui34-counter-ctx', {n: names.length, cards: shown}) + ' - ' + why.join(' | ') + (seen.size < r.threats.size ? ' | +' + (r.threats.size - seen.size) : '');
+  return `<li class="ui19-sk is-counter${r.key === kw ? ' is-intro' : ''}" data-ui34-counter="${escapeAttr(r.key)}" ${tipA(r.key, label, text, ctx)}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(ico)}</span><span class="ui19-sk-main"><b>${escapeHtml(label)}</b> <i class="ui34-cn" title="${escapeAttr(TX('ui.ui34-cn-tip', {n: names.length}))}">${names.length}</i>${typeof sp === 'function' ? sp(r.key) : ''}</span></li>`;
+}
+// item 3 (owner 23:49: up to 15 recommendations per map where sensible): the skills of Claude's picked cards for this map (THEME5, SKILLREC1 and CONTENT17 picks,
+// the current theme first) that no tile shows yet, the most-carried first, at most `room`. Dynamic: a skill a map card gains leaves the list.
+function ui34ClaudePicks(mapId, defs, exclude, room){
+  const maps = typeof ui22McMaps === 'function' ? ui22McMaps(mapId).filter(Boolean) : [], cn = (typeof CLAUDE_NEW !== 'undefined' && CLAUDE_NEW) || {}, picks = [], seen = new Set();
+  const add = (id, theme)=>{ const d = defs[id]; if(id && !seen.has(id) && d && !d.token && !d.test){ seen.add(id); picks.push({id, d, theme: theme || ''}); } };
+  maps.forEach(m=> ((cn.theme5 || {})[m.id] || []).forEach(e=> add(e.id, '')));
+  const labels = new Set(maps.map(m=>{ if(!m.sub){ const n = mapNumberOf(m.id); return n == null ? '' : String(n); } const k = ((m.nodes || [])[0] || {}).key || ''; return k.replace(/-[^-]+$/, ''); }).filter(Boolean));
+  Object.keys(cn.skillrec || {}).filter(l=> labels.has(l)).forEach(l=> cn.skillrec[l].forEach(e=> add(e.id, '')));
+  maps.forEach(m=>{ const e = (cn.content17 || {})[m.id]; ((e && e.groups) || []).slice().sort((a, b)=> (b.current ? 1 : 0) - (a.current ? 1 : 0)).forEach(g=> (g.picks || []).forEach(q=> add(q.id, g.theme))); });
+  const by = new Map();
+  picks.forEach(pk=> ui18CardSkillKeys(pk.d).forEach(({key})=>{ if(exclude.has(key) || !ui34DefOk(key)) return; let e = by.get(key); if(!e){ e = {key, p: skillDefOf(key), n: 0, card: pk.d.name || pk.id, theme: pk.theme, at: by.size}; by.set(key, e); } e.n++; }));
+  return [...by.values()].sort((a, b)=> (b.n - a.n) || (a.at - b.at)).slice(0, Math.max(0, room || 0));
+}
+// UI34_COUNTERS:END
 // UI22_MC:START
 // 2026-11-04 (package UI22, owner 22:56): two more sections in the admin Map cards window.
 // 1 "Skirmish rewards": each fight of this map (a main map: its side maps' fights too) with the cards a first clear pays, read from the same

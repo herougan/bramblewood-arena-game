@@ -4281,5 +4281,13 @@
  "{name} floats back up ({n} Health).": "{name}重新浮起（{n}點生命）。",
  "🛡️ {name} shrugs off {status}.": "🛡️ {name}抵擋了{status}。",
  "🛡️ {name} is immune to {status}.": "🛡️ {name}免疫{status}。",
- "😵 {name} floats back up ({n} Health).": "😵 {name}重新浮起（{n}點生命）。"
+ "😵 {name} floats back up ({n} Health).": "😵 {name}重新浮起（{n}點生命）。",
+ "Counters to this map's cards": "針對本地圖卡牌的剋制",
+ "Counters {n} of this map's cards: {cards}": "剋制本地圖的 {n} 張卡牌：{cards}",
+ "{name} resistance": "{name}抗性",
+ "A Resist or Immune {name} entry in the card editor (Resistance boxes). Resist softens it (half damage a round, or 50 points off its chance to land); Immune never lets it land.": "卡牌編輯器（抗性欄）裡的「{name}」抗性或免疫條目。抗性削弱它（每回合傷害減半，或命中機率降低50點）；免疫則永不生效。",
+ "A {name} Resist or Immune entry softens or stops it.": "「{name}」抗性或免疫條目可削弱或阻止它。",
+ "unsure": "未確定",
+ "Answers {n} of this map's cards": "針對本地圖的 {n} 張卡牌",
+ "Claude's pick {card} carries it (theme: {theme})": "Claude 推薦的 {card} 帶有它（主題：{theme}）"
 }

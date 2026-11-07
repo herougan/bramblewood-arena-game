@@ -14958,6 +14958,12 @@ html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
 /* 2026-11-07 (package UI32 #7): a divider above each group of the Map cards window's skills section */
 .ui19-sk-list > .ui32-sk-head{grid-column:1 / -1; margin:4px 0 0; padding:0 0 1px; font:800 10.5px/1.3 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; color:var(--muted,#8a8f9a); border-bottom:1px solid color-mix(in srgb, currentColor 22%, transparent);}
 .ui19-sk-list > .ui32-sk-head:first-child{margin-top:0;} .ui19-sk-list > .ui32-sk-head.is-rec{color:#4f8ee8;}
+/* 2026-11-08 (package UI34, owner 23:49): the Counters group, teal tiles with the number of map cards each answers */
+.ui19-sk-list > .ui32-sk-head.is-counters{color:#1f8f80;}
+.pk1-mc-overlay .ui19-sk.is-counter{border-color:#2f9e8f; background:linear-gradient(135deg, color-mix(in srgb, #35b6a4 26%, var(--bg)), color-mix(in srgb, #ffffff 12%, var(--bg)));}
+.pk1-mc-overlay .ui19-sk.is-counter.is-intro{border-color:#2f9e8f; background:linear-gradient(135deg, color-mix(in srgb, #35b6a4 26%, var(--bg)), color-mix(in srgb, #ffd36b 30%, var(--bg)));}
+.ui19-sk .ui34-cn{font-style:normal; font-weight:800; font-size:9.5px; line-height:1; padding:1px 4px; margin-left:3px; border-radius:8px; background:color-mix(in srgb, #1f8f80 24%, transparent); color:inherit; white-space:nowrap;}
+.ui19-sk .ui34-cn::before{content:"\00d7";}
 /* 2026-11-07 (package ENG35, owner 21:13: "just leave 1 line of emoji and title"): a skill tile is one line (icon, name, compact pills); the rest is in the hover window */
 .ui19-sk[data-eng35-key]{align-items:center; cursor:help;}
 .ui19-sk[data-eng35-key]:focus-visible{outline:2px solid #4f8ee8; outline-offset:1px;}

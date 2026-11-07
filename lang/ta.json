@@ -4283,5 +4283,13 @@
  "{name} floats back up ({n} Health).": "{name} மீண்டும் மிதந்து எழுகிறது ({n} உயிர்).",
  "🛡️ {name} shrugs off {status}.": "🛡️ {name} {status}-ஐத் தாங்கிக்கொள்கிறது.",
  "🛡️ {name} is immune to {status}.": "🛡️ {name} {status}-க்கு நோயெதிர்ப்புள்ளது.",
- "😵 {name} floats back up ({n} Health).": "😵 {name} மீண்டும் மிதந்து எழுகிறது ({n} உயிர்)."
+ "😵 {name} floats back up ({n} Health).": "😵 {name} மீண்டும் மிதந்து எழுகிறது ({n} உயிர்).",
+ "Counters to this map's cards": "இந்த வரைபடத்தின் அட்டைகளுக்கு எதிர்ப்புகள்",
+ "Counters {n} of this map's cards: {cards}": "இந்த வரைபடத்தின் {n} அட்டைகளுக்கு எதிர்ப்பு: {cards}",
+ "{name} resistance": "{name} எதிர்ப்பு",
+ "A Resist or Immune {name} entry in the card editor (Resistance boxes). Resist softens it (half damage a round, or 50 points off its chance to land); Immune never lets it land.": "அட்டை எடிட்டரில் (எதிர்ப்புப் பெட்டிகள்) {name} க்கான எதிர்ப்பு அல்லது தடுப்பு பதிவு. எதிர்ப்பு அதைக் குறைக்கும் (சுற்றுக்குப் பாதிச் சேதம், அல்லது வாய்ப்பில் 50 புள்ளி குறைவு); தடுப்பு அதை ஒருபோதும் படியவிடாது.",
+ "A {name} Resist or Immune entry softens or stops it.": "{name} க்கான எதிர்ப்பு அல்லது தடுப்புப் பதிவு அதைக் குறைக்கும் அல்லது நிறுத்தும்.",
+ "unsure": "உறுதியில்லை",
+ "Answers {n} of this map's cards": "இந்த வரைபடத்தின் {n} அட்டைகளுக்குப் பதில்",
+ "Claude's pick {card} carries it (theme: {theme})": "Claude தேர்ந்த {card} இதைக் கொண்டுள்ளது (கருப்பொருள்: {theme})"
 }
