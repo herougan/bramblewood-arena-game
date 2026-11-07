@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package CONTENT15 (owner 08:54; decision CONTENT15-1)
+- Players see: two new Uncommon faction cards that grow while a leader of their side is on the field (the deck's Leader, a Gladiator leader or a Natural Leader such as the Legate / the Elder), on **Loyal**, the Sworn Shieldbearer's (the stoat's) skill. **Oathsworn Legionary** (Otter, 1 Lumber, Wait 1, 2/13, Loyal - {+1/+2, Armor 1}: 3/15 Armor 1 with a leader; 90% of budget N at Level 1, Map 5; 95% at Map 0) and **Cobalt Talon Honour-guard** (Hummingbird, 0 Lumber, Wait 1, 3/4, Flying, Loyal - {+2/+1, Quick}: 5/5 Flying Quick with a leader; 86% at Map 5, 91% at Map 0). Faction pool (4 copies each); names and flavour in all 12 languages; art not drawn yet (prompts in `docs/art-style-prompts.md`).
+- Data only: no engine or app change (Loyal and its braces already run). `canonical/card-obtain-maps.json`: both at Map 5, like the other faction cards. Test: `tests/content15-2026-11-07.js` (new).
 ## 2026-11-07 Package UI26 (owner 08:18 notes 1-2)
 - Players see: a unit that can't see in a dark fight is darkened half as much once its shut-eye intro is over (about 5%, was about 10%: FX B shade opacity .14 to .07, art brightness .9 to .95). The brief dark moment while the eyes show is unchanged. The battlefield's own Darkness overlay (plain Darkness: clear centre, .34 then .5 at the edges, masked off around units) is untouched.
 - Finding (note 2): the "blue bar over the eyes" is not an overlay. It is the Open-Ocean Hermit Crab's own art (a teal sea-and-sky horizon strip right behind the crab's eyes) under the darkening; the dark circle on the card's top edge is the Dark-blind pip (UI23 #16, the sunglasses icon, shown on every unit that misses in the dark). The look-B blindfold (`.fxb-fold`) and badge exist only in the FX lab: the game's sight look is fixed at A.

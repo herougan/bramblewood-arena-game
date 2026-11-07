@@ -47,6 +47,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Owner calls open: UI25-1 (skills still "?" on cards owned earlier than their unlock map, see the report).
 - Next: nothing queued.
 
+## 11-07: Package CONTENT15 (on its branch, not released)
+- Done: owner 08:54, a card per faction that grows with the leader present, on Loyal (the Sworn Shieldbearer's skill, the stoat): **Oathsworn Legionary** (Otter, 2/13, Loyal - {+1/+2, Armor 1}) and **Cobalt Talon Honour-guard** (Hummingbird, 3/4 Flying, Loyal - {+2/+1, Quick}), Uncommon, faction pool, Map 5 in card-obtain-maps.json.
+- Owner calls open: CONTENT15-1 (names, stats, skills).
+- Next: art for both (prompts written); `tests/card-matrix.js --update` once per batch.
+
 ## 11-07: Package CONTENT14 (on its branch, not released)
 - Done: owner 07:40, two natural leaders (LEAD-NAT-1): **Legate of Rivergate** (Otter) and **Gold-throat Elder** (Hummingbird), Rare, in the faction pool; the faction pattern's first Rare step (Map 14+) gives your side's leader once.
 - Owner calls open: CONTENT14-1 (names, stats, skills), CONTENT14-2 ("both" side rule; leaders held from packs until that step).
