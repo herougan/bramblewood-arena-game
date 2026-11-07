@@ -63,6 +63,7 @@
       if(id === 'cower' && typeof v === 'number' && v > 0) return r2(val + (skillCost('armor', v) || 0) * COWER_ARMOR_UPTIME);
       // 2026-10-24 (package EN5, owner BP-1: "price it according to your simulation. Note that bigger numbers make them stronger"): an 'n'
       // skill with `pow` costs value × N^pow (Bleed, Poison: fitted to the robust skill test's worth at N 1-3), not value × N.
+      if(e.perN != null && typeof v === 'number' && v > 0) return r2(+e.perN * v); // ENG35 (2026-11-07): a skill whose plain flag and number differ in kind (Leech: the damage dealt / heal N a hit), canonical/skill-costs.json perN
       if(e.scale === 'n'){ const N = Math.max(1, v === true && e.payDefault ? e.payDefault : n); return e.pow != null ? r2(val * Math.pow(N, +e.pow)) : val * N; }
       if(e.scale === 'half') return val * (1 + (n > 1 ? Math.floor(n / 2) : 0));
       if(e.scale === 'mult') return 0; // TUT2 (2026-10-30): Slow is a multiplier on the card's S (cardS, bramblewood-budget.js slowSMultOf), no price of its own
@@ -107,6 +108,7 @@
       return {cost:r2(a.w * b.value * pm), weight:r2(a.w * pm), value:r2(b.value), missing:[a.missing, b.missing].filter(Boolean)}; }
     // S of a card's effects: {S, parts:[[kind, id, cost, detail]], missing:[ids with no entry]}.
     function cardS(effects, card){
+      if(BB.XP) effects = BB.XP(effects); // ENG35 (2026-11-07): fused skill parameters read as their flat keys (bramblewood-budget.js XP), prices unchanged
       const parts = [], missing = []; let S = 0;
       // BAL11 (2026-11-02): the card's time-of-day share on its home maps (table.zeitHome, tools/bal9/zeit_home_2026_11_02.js) for zeitS, the
       // Nocturnal / Diurnal braces and the Nightblind / Sunshy drawbacks (bramblewood-budget.js ZEIT_HOME_WEIGHT)
@@ -174,6 +176,7 @@
     function obtainMapOf(d){ const x = withMap(d); return +(x && x.obtainMap) || 0; }
     // The budget rules for a card as printed: {N, S, x1, x2, N2, ok, wellUnder, m, parts, missing}; opts.N stands in for N (v3 checks).
     function budget(d, opts){
+      if(BB.SPL && d) d = BB.SPL.expandDef(d); // ENG35 (2026-11-07)
       const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= (BB.missMultFor ? BB.missMultFor(h, Object.assign({missMult: g('missMult', 1.5)}, B)) : g('missMult', 1.5)); }); /* 2026-10-31 (coordinator, SPEED1 finding 1): per-skill half-miss from bramblewood-budget.js MISS_MULT_BY, as the game's sbCheck does; was a flat 1.5 */
       if(BB.canopyMultOf) m *= BB.canopyMultOf(e, B); // Canopy Cover (EN5, 2026-10-24): Evasive's multiplier x its uptime under the trees
       // 2026-10-21 (package BX): an Archer never swings (Archer N: its arrow instead), so its Attack is not part of its strength

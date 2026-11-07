@@ -16,7 +16,7 @@ const fs = require('fs'), path = require('path'), cp = require('child_process');
 const ROOT = path.join(__dirname, '..');
 let fail = 0, n = 0; const ok = (c, m) => { n++; if (!c) { fail++; console.log('  ✗', m); } else console.log('  ✓', m); };
 const J = f => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
-const cards = J('canonical/cards.json'), C = {}; cards.forEach(c => { C[c.id] = c; });
+const cards = J('canonical/cards.json').map(c=> c && require('../bramblewood-skillparams.js').expandDef(c)) /* ENG35 (2026-11-07): fused skills read as their flat keys */, C = {}; cards.forEach(c => { C[c.id] = c; });
 
 // ---- 1. decisions
 { const d = J('docs/decisions.json'), by = {}; d.items.forEach(x => { by[x.id] = x; });

@@ -4228,7 +4228,17 @@
  "Main skills": "Compétences principales",
  "Other skills (side maps, specials)": "Autres compétences (cartes annexes, spéciales)",
  "Recommended skills for this map": "Compétences recommandées pour cette carte",
- "Ranged": "À distance",
+ "Number": "Nombre",
+ "Stat version": "Version stats",
+ "Ability version": "Version capacités",
+ "Parameters": "Paramètres",
+ "One value, no parts": "Une seule valeur, sans parties",
+ "none": "aucune",
  "Melee": "Mêlée",
+ "Ranged": "À distance",
+ "No hit of its own": "Aucun coup propre",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "Chaque coup qui porte le soigne de {n} (coups sur la ronce compris), jusqu’à ses PV max.",
+ "Each hit heals it {n}.": "Chaque coup le soigne de {n}.",
+ "Blank = heals the damage dealt": "Vide = soigne les dégâts infligés",
  "New card": "Nouvelle carte"
 }

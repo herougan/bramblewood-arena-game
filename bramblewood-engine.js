@@ -130,7 +130,16 @@ const TAXONOMY = (typeof BramblewoodTaxonomy !== 'undefined' && BramblewoodTaxon
 // rides and which hits each defence answers, all from canonical/skill-delivery.json (one source). In Node it is require()d; in the page and
 // the simulator worker assemble_arena.py puts `var __SKILL_DELIVERY__ = {...}` ahead of this file.
 const SKILL_DELIVERY = (typeof __SKILL_DELIVERY__ !== 'undefined' && __SKILL_DELIVERY__) || (()=>{ try{ return typeof require === 'function' ? require('./canonical/skill-delivery.json') : null; }catch(e){ return null; } })() || {delivery:{}, swing:[], rides:{}, against:{}};
-function skillDeliveryOf(key){ return (SKILL_DELIVERY.delivery || {})[key] || 'none'; }
+// ENG35 (2026-11-07, owner 20:58: "Fuse skills together ... It's just a matter of parameter choice"): one skill per idea. A card's family
+// key may hold an object of named parameters (canonical/skill-params.json: "nocturnal": {"v": 2, "hp": 1}, "tide": {"gives": {...}});
+// bramblewood-skillparams.js expands it into the flat keys the rules read (nocturnalHp, tideGrant ...) once, when makeSimEngine gets the
+// cards. Old twin keys still read as they are. In the page and the worker assemble_arena.py puts the file ahead of this one.
+const SKILL_PARAMS_LIB = (typeof BramblewoodSkillParams !== 'undefined' && BramblewoodSkillParams) || (()=>{ try{ return typeof require === 'function' ? require('./bramblewood-skillparams.js') : null; }catch(e){ return null; } })();
+// a part of a fused skill (almanacGrant, arrowPoison ...) is delivered as its skill is (ENG35: the delivery file lists the fused keys only)
+function skillDeliveryOf(key){ const D = SKILL_DELIVERY.delivery || {}; if(D[key]) return D[key]; const a = SKILL_PARAMS_LIB && SKILL_PARAMS_LIB.aliasOf(key); return (a && D[a[0]]) || 'none'; }
+// Leech N (ENG35, 2026-11-07, owner 23:30: "Default leech = how much damage you deal. Otherwise Leech N = heal N on hit."): what a landed hit that dealt
+// dmg heals (before the max Health cap). effects.sap true (or no number) = the damage dealt, as before; a number N = N.
+function sapHealOf(e, dmg){ const v = e && e.sap; return (typeof v === 'number' && v > 0) ? Math.round(v) : dmg; }
 function skillRidesOn(key){ return (SKILL_DELIVERY.rides || {})[key] || null; }
 // effects e has a skill that turns its own swing into a ranged attack (Reach, a thrown Boomerang / Bananarang, the old Anti-air throw)
 function rangedSwingOf(e){ return !!e && (SKILL_DELIVERY.swing || []).some(k=> !!e[k] && !(Number(e[k]) < 0)); }
@@ -339,6 +348,9 @@ ACTION_KEYS.push('forage'); // ENG25 (2026-11-05, owner 23:35 #6): Forage N, the
 ACTION_KEYS.push('grantShield'); // ENG19 (2026-11-02, owner #15): Grant Shield, itself / adjacent / surrounding / every ally // Package BX (2026-10-21): Arrow N as an action (the Arrow skill's shot: the enemy facing it, else the nearest, else the bramble)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
+  // ENG35 (2026-11-07): fused skill parameters -> the flat keys, in place (the engine already adds its derived defs to this same map); a map
+  // with nothing fused (the page's cards, which the build expands) is left untouched
+  if(SKILL_PARAMS_LIB && CARD_DEFS) SKILL_PARAMS_LIB.expandDefsInPlace(CARD_DEFS);
   rnd = rnd || Math.random;
   opts = opts || {};
   const recordEvents = !!opts.recordEvents;
@@ -2716,7 +2728,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(ok('psychic') && e.psychic && alive()) psychicHit(attPid, att, t, sideOf, opts.stats || {}, events);
     if(ok('sequestration') && !isNullifier(att) && alive() && e.sequestration) eng24Sequester(att, t, side, tSide, events);
     if(ok('expose')){ if(alive()) sk1OnHit(players, sideOf, attPid, att, CARD_DEFS[att.defId], t, opts.stats || {}, events); else if(e.skitter) eng23SkitterMark(att, attPid, sideOf, events); } // On Hit triggers: Expose, Exploit, Venom Pulse, Detonate, Pickpocket ... and Skitter
-    if(ok('sap') && e.sap && dmg > 0 && att.hp > 0){ const healed = Math.min(att.maxHp - att.hp, dmg); if(healed > 0){ att.hp += healed; if(recordEvents && events) events.push({type:'sap', side, attDefId:att.defId, attUid:att.uid, amount:healed, via, eng34:true}); } }
+    if(ok('sap') && e.sap && dmg > 0 && att.hp > 0){ const healed = Math.min(att.maxHp - att.hp, sapHealOf(e, dmg) /* ENG35: Leech N */); if(healed > 0){ att.hp += healed; if(recordEvents && events) events.push({type:'sap', side, attDefId:att.defId, attUid:att.uid, amount:healed, via, eng34:true}); } }
     // the melee defences answer (against: 'melee'), and Spiteful (any hit) where the caller's path doesn't already
     if(opts.noReact || isNullifier(att)) return;
     const vs = k=> ((SKILL_DELIVERY.against || {})[k] === 'melee' || (SKILL_DELIVERY.against || {})[k] === 'any') && !(skip && skip.has(k));
@@ -11464,7 +11476,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               rollStatusOnHit('sleep', attDef.effects.sleep, c2, mySide, a.att, sideOf, a.enemyId, events);
               rollStatusOnHit('paralyze', attDef.effects.paralyze, c2, mySide, a.att, sideOf, a.enemyId, events);
               rollStatusOnHit('stunOnHit', attDef.effects.stunOnHit, c2, mySide, a.att, sideOf, a.enemyId, events);
-              if(attDef.effects.sap && r3.dmg>0){ const healed3 = Math.min(a.att.maxHp - a.att.hp, r3.dmg); if(healed3>0){ a.att.hp += healed3; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healed3}); } }
+              if(attDef.effects.sap && r3.dmg>0){ const healed3 = Math.min(a.att.maxHp - a.att.hp, sapHealOf(attDef.effects, r3.dmg) /* ENG35: Leech N */); if(healed3>0){ a.att.hp += healed3; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healed3}); } }
               eng34MeleeHit(players, sideOf, otherId(a.enemyId), a.att, c2, r3.dmg, events, killCredit, 'prong', ENG34_PRONG_SKIP, {stats, elemental: r3.elementalAmount > 0}); // ENG34 (2026-11-07): the rest of the melee riders (Daunt, Breach, Corrode, Toxin ...) and Thorns / Poison Barbs; the subset above stays as it was
               if(c2.hp<=0){ if(!killCredit[c2.uid]) killCredit[c2.uid] = new Set(); killCredit[c2.uid].add(statKey(mySide, a.att.defId)); }
               else if(!nullF){
@@ -11481,7 +11493,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               aStat.dealt += flankDmg; aStat.faceDamage += flankDmg;
               a.att._inspHit = 1; if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:flankDmg, fork:true, prong: prong || null, festerBonus, ruptureBonus});
               if(attDef.effects.sap && flankDmg>0){
-                const healedFlank = Math.min(a.att.maxHp - a.att.hp, flankDmg);
+                const healedFlank = Math.min(a.att.maxHp - a.att.hp, sapHealOf(attDef.effects, flankDmg) /* ENG35: Leech N */);
                 if(healedFlank>0){ a.att.hp += healedFlank; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedFlank}); }
               }
             }
@@ -11665,7 +11677,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // not the target survived — draining life is a property of landing the hit, not of
         // the target's fate.
         if(attDef.effects && attDef.effects.sap && dmg>0){
-          const healed = Math.min(a.att.maxHp - a.att.hp, dmg);
+          const healed = Math.min(a.att.maxHp - a.att.hp, sapHealOf(attDef.effects, dmg) /* ENG35: Leech N */);
           if(healed>0){
             a.att.hp += healed;
             if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healed});
@@ -11794,7 +11806,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         { const th = players[a.enemyId].castleThorns; if(th > 0 && dmg > 0 && a.att.hp > 0){ const td = damageCardFlat(a.att, th, 'thorns'); aStat.taken = (aStat.taken||0) + td;
           if(recordEvents && events) events.push({type:'statusFx', kind:'castleThorns', side:sideOf(a.enemyId), targetSide:mySide, targetDefId:a.att.defId, targetUid:a.att.uid, amount:td}); } }
         if(attDef.effects && attDef.effects.sap && dmg>0){
-          const healedHq = Math.min(a.att.maxHp - a.att.hp, dmg);
+          const healedHq = Math.min(a.att.maxHp - a.att.hp, sapHealOf(attDef.effects, dmg) /* ENG35: Leech N */);
           if(healedHq>0){ a.att.hp += healedHq; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedHq}); }
         }
       }
@@ -12075,3 +12087,4 @@ if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports
 if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS;
 if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SELFISH_BOONS, selfishBoonCount, selfishBoonThemeOf, selfishBoonWho, BOSS_GIMMICKS /* CONTENT11 (2026-11-05) */}); // Package DF3 (2026-10-24): the selfish boons // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests
 if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SKILL_DELIVERY, skillDeliveryOf, skillRidesOn, rangedSwingOf}); // ENG34 (2026-11-07): skill delivery (canonical/skill-delivery.json)
+if(typeof module !== 'undefined' && module.exports) module.exports.SKILL_PARAMS_LIB = SKILL_PARAMS_LIB; // ENG35 (2026-11-07): fused skill parameters (bramblewood-skillparams.js)

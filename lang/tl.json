@@ -4228,7 +4228,17 @@
  "Main skills": "Mga pangunahing kasanayan",
  "Other skills (side maps, specials)": "Iba pang kasanayan (side map, espesyal)",
  "Recommended skills for this map": "Mga inirerekomendang kasanayan para sa mapang ito",
- "Ranged": "Malayuan",
+ "Number": "Numero",
+ "Stat version": "Bersyong stat",
+ "Ability version": "Bersyong kakayahan",
+ "Parameters": "Mga parameter",
+ "One value, no parts": "Isang halaga, walang bahagi",
+ "none": "wala",
  "Melee": "Malapitan",
+ "Ranged": "Malayuan",
+ "No hit of its own": "Walang sariling tama",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "Bawat tamang tama nito ay nagpapagaling dito ng {n} (kasama ang tama sa bramble), hanggang sa max na Buhay nito.",
+ "Each hit heals it {n}.": "Bawat tama ay nagpapagaling dito ng {n}.",
+ "Blank = heals the damage dealt": "Blangko = nagpapagaling ng naibigay na pinsala",
  "New card": "Bagong card"
 }

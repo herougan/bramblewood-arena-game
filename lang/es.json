@@ -4227,7 +4227,17 @@
  "Main skills": "Habilidades principales",
  "Other skills (side maps, specials)": "Otras habilidades (mapas secundarios, especiales)",
  "Recommended skills for this map": "Habilidades recomendadas para este mapa",
- "Ranged": "A distancia",
+ "Number": "Número",
+ "Stat version": "Versión de estadísticas",
+ "Ability version": "Versión de habilidades",
+ "Parameters": "Parámetros",
+ "One value, no parts": "Un solo valor, sin partes",
+ "none": "ninguna",
  "Melee": "Cuerpo a cuerpo",
+ "Ranged": "A distancia",
+ "No hit of its own": "Sin golpe propio",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "Cada golpe que acierta lo cura {n} (también los golpes a la zarza), hasta su Salud máxima.",
+ "Each hit heals it {n}.": "Cada golpe lo cura {n}.",
+ "Blank = heals the damage dealt": "Vacío = cura el daño infligido",
  "New card": "Carta nueva"
 }

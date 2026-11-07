@@ -122,7 +122,7 @@ ok(typeof E.makeSimEngine(defs, E.mulberry32(1), {}).equipTurnsOf !== 'function'
   box.myMateria.ember = 2; const f = S.gemFuse('ember'); ok(f && f.into === 'ember2' && box.myMateria.ember === 0 && box.myMateria.ember2 === 1, 'E14 two Embers fuse into one Greater Ember');
   ok(S.socketApply('owl', 'o1', 'ember2') && S.socketGemStats({attack:4, health:6}, 'ember2').attack === 6, 'E14 a Greater Ember sockets in for +2 Attack'); }
 // ---- the data ---------------------------------------------------------------------------------------------------------------------
-const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), by = Object.fromEntries(cards.filter(Boolean).map(c=> [c.id, c]));
+const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).map(c=> c && require('../bramblewood-skillparams.js').expandDef(c)) /* ENG35 (2026-11-07): fused skills read as their flat keys */, by = Object.fromEntries(cards.filter(Boolean).map(c=> [c.id, c]));
 const C3 = require(path.join(ROOT, 'tools', 'content3_2026_10_26.js'));
 C3.NEW.forEach(s=> ok(by[s.id], 'data: ' + s.id + ' is in cards.json'));
 // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05). The tool pins CONTENT3's placements: its "not in pool <id>" and "not moved <id>" are no

@@ -4160,6 +4160,7 @@ function buildCardDefs(){
   Object.keys(liveCards).forEach(id=>{ const m = enMigrateCard(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-10-23 (package EN): Spellshield is Spellward, Enraged is Rage – {…}
   Object.keys(liveCards).forEach(id=>{ const m = eng17MigrateHatchling(liveCards[id], CARD_DEFS_BASELINE[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-11-02 (package ENG17, BABY-2): a Baby card's Fodder / Stem from Level 1 is Hatchling
   Object.keys(liveCards).forEach(id=>{ const m = eng23MigrateDelivery(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-11-04 (package ENG23): a pre-ENG22 live edit's Stockpile reads as Delivery
+  Object.keys(liveCards).forEach(id=>{ const m = eng35ExpandDef(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; }); // 2026-11-07 (package ENG35): a fused skill ("nocturnal": {"v": 2, "hp": 1}) in a cloud edit reads as the flat keys the game uses
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
@@ -8461,7 +8462,8 @@ const UI18_MYSTERY = 'mystery', UI18_NOT_SKILL = new Set(['hatchling', 'fodder']
 function ui18SeenSkillKeys(){ try{ return new Set(skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> e.key)); }catch(e){ return new Set(); } }
 // every skill key a card can carry: its effects and each level's levelSkills, as [{key, lvl}] (lvl = the level it arrives at, 0 = from the start)
 function ui18CardSkillKeys(d){
-  const out = [], seen = new Set(), add = (k, lvl)=>{ if(UI18_NOT_SKILL.has(k) || seen.has(k)) return; const p = skillDefOf(k); if(!p || !p.label || p.retired) return; seen.add(k); out.push({key:k, lvl}); };
+  // 2026-11-07 (package ENG35, owner 20:58: "Fuse skills together"): a part of a fused skill (diurnalGrant, nocturnalHp, arrowPoison ...) counts as its skill, once
+  const out = [], seen = new Set(), add = (k0, lvl)=>{ const k = typeof eng35FusedKey === 'function' ? eng35FusedKey(k0) : k0; if(UI18_NOT_SKILL.has(k) || seen.has(k)) return; const p = skillDefOf(k); if(!p || !p.label || p.retired) return; seen.add(k); out.push({key:k, lvl}); };
   const e = (d && d.effects) || {}; Object.keys(e).forEach(k=>{ if(skillValOn(e[k])) add(k, 0); });
   const ls = (d && d.levelSkills) || {}; Object.keys(ls).map(Number).sort((a, b)=> a - b).forEach(L=>{ const o = ls[L] || ls[String(L)] || {}; Object.keys(o).forEach(k=>{ if(skillValOn(o[k])) add(k, L); }); });
   return out;
@@ -10075,12 +10077,12 @@ function skillBookEntries(){
   const list = skillBookEntriesNow(); skillBookMemo = {sig, list}; return list;
 }
 function skillBookEntriesNow(){
-  const met = skillBookSeen(), shown = p=> p.label && !p.retired && !skillHiddenNow(p.key) && (adminModeEnabled || met.has(p.key));
+  const met = skillBookSeen(), shown = p=> p.label && !p.retired && !p.eng35Rider /* ENG35: a shot rider is a parameter */ && !skillHiddenNow(p.key) && (adminModeEnabled || met.has(p.key));
   // 2026-10-16 skill audit: the skills that live only in SKILL_DEFS (Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock,
   // Stagger, Chained, Explode, Render, Revive, Progeny) are in the Codex too.
   const list = PASSIVE_DEFS.filter(shown).concat(SKILL_DEFS.filter(s=> shown(s) && !PASSIVE_DEFS.some(p=> p.key === s.key))).sort((a, b)=> a.label.localeCompare(b.label)); // 2026-10-15: not retired (Hive Mind), not still hidden (SKILL_REVEAL)
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
-  const out = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
+  const out = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' && !p.blankOk /* ENG35: Leech's plain form */ ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
     if(p.codexNote) txt += ' ' + p.codexNote; // 2026-10-17: a sentence only the Codex shows (Bloodlust's Ambush note)
     { const cx = typeof SKILL_CODEX_NOTE !== 'undefined' && SKILL_CODEX_NOTE[p.key]; if(cx) txt += ' ' + cx(); } // 2026-10-18 (package D): what the terse card line left out
@@ -12262,7 +12264,8 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     : categoryFilter==='passive' ? SKILL_DEFS.filter(x=>x.category!=='evergreen')
     : SKILL_DEFS).filter(gateOk).filter(x=> x.key === row.key || !(ZEIT_TWIN_BACK[x.key] || (twinOf && x.key === twinOf)));
   let valueHtml = '';
-  if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${(row.value === true || row.value == null || row.value === '') ? (s.defaultValue != null ? s.defaultValue : 1) : row.value}">`; // EN5 (2026-10-24): a plain skill (true) shows its default (Hemorrhage 0); was row.value||1
+  if(s.kind==='number' && s.blankOk) valueHtml = `<input type="number" min="1" class="w-70" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder || '')}" title="${escapeAttr(s.placeholder || '')}" aria-label="${escapeAttr(s.placeholder || '')}" value="${typeof row.value === 'number' && row.value > 0 ? row.value : ''}">`; // ENG35 (2026-11-07): an optional number (Leech: blank = the damage dealt)
+  else if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${(row.value === true || row.value == null || row.value === '') ? (s.defaultValue != null ? s.defaultValue : 1) : row.value}">`; // EN5 (2026-10-24): a plain skill (true) shows its default (Hemorrhage 0); was row.value||1
   else if(s.kind==='text') valueHtml = `<input type="text" class="w-160" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder||'')}" value="${escapeAttr(typeof row.value === 'string' ? row.value : '')}">`;
   // Zeitgeber advanced forms (2026-10-15): the braces are a skill list, typed or picked ("+ skill" appends one); Tide has two facets.
   else if(s.kind==='grant') valueHtml = grantPickerHTML(i, 'val', typeof row.value === 'string' ? row.value : '', s.placeholder);
@@ -33322,6 +33325,9 @@ function ui19McEarlierSkillKeys(top, defs, ok){
   return keys;
 }
 function ui19McSkillText(r){
+  // ENG35 (2026-11-07): a fused skill whose card fills its braces (Tide – {…}, Diurnal – {…}) reads as the braced form's text
+  { const gk = typeof eng35GivesKeyOf === 'function' ? eng35GivesKeyOf(r.key) : null, gp = gk && r.fx && r.fx[gk] != null && typeof r.fx[gk] === 'object' ? skillDefOf(gk) : null;
+    if(gp) try{ return String(skillText(gp, r.fx[gk], r.fx) || ''); }catch(e){} }
   const p = skillDefOf(r.key); if(!p) return '';
   try{ const v = p.get ? p.get(r.fx) : r.fx[r.key]; return String(skillText(p, v === undefined ? true : v, r.fx) || ''); }catch(e){ try{ return String(p.desc(true, undefined, r.fx) || ''); }catch(e2){ return ''; } }
 }
@@ -33366,7 +33372,7 @@ function ui32DefAtLevel(b0, measuredAt){
     a = ov && ov.attack != null ? ov.attack : r(a); h = ov && ov.health != null ? ov.health : r(h); }
   return {attack: a || 0, health: h || 0, effects: b0.effects || {}};
 }
-function ui32FxMap(fx){ const m = {}; Object.keys(fx || {}).forEach(k=>{ if(k === 'triggers' || k === 'hatchling') return; const v = fx[k]; if(v === false || v == null || v === 0) return; m[k] = v === true ? 1 : (Number(v) || 1); }); return m; }
+function ui32FxMap(fx){ const m = {}; if(typeof eng35Expand === 'function') fx = eng35Expand(fx); Object.keys(fx || {}).forEach(k=>{ if(k === 'triggers' || k === 'hatchling') return; /* ENG35 (2026-11-07): read flat (a fused skill as its keys, as the measured row lists them) */ const v = fx[k]; if(v === false || v == null || v === 0) return; m[k] = v === true ? 1 : (Number(v) || 1); }); return m; }
 function ui32SkillText(m){ const ks = Object.keys(m); if(!ks.length) return TX('ui.ui32-no-skills'); return ks.map(k=>{ const p = skillDefOf(k); return (p && p.label ? p.label : k) + (m[k] > 1 ? ' ' + m[k] : ''); }).join(', '); }
 function ui32PowerChange(b0){
   try{ const cp = (typeof CARD_POWER !== 'undefined') ? CARD_POWER : null, id = b0 && b0.id, fp = cp && cp.fp && id && cp.fp[id]; if(!fp) return null;
@@ -33435,7 +33441,8 @@ function ui30SuggPillHTML(key, sugg){
 function ui30SuggTilesHTML(sugg, shown){
   if(!sugg || !sugg.size) return ''; let h = '';
   sugg.forEach((why, key)=>{ if(shown.has(key)) return; const p = skillDefOf(key); if(!p) return; let text = ''; try{ text = ui19McSkillText({key, fx: {[key]: true}}); }catch(e){}
-    h += `<li class="ui19-sk is-intro ui30-sugg-tile" data-ui19-skill="${escapeAttr(key)}" data-ui30-sugg="1" title="${escapeAttr(p.label + (text ? ': ' + text : '') + (why ? ' (' + why + ')' : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[key]) || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b>${ui30SuggPillHTML(key, sugg)}<small>${escapeHtml(TX('ui.ui30-sugg-missing'))}</small></span></li>`; });
+    const ctx = TX('ui.ui30-sugg-missing') + (why ? ' (' + why + ')' : ''); // ENG35 (2026-11-07): one line; the text and why go in the hover window
+    h += `<li class="ui19-sk is-intro ui30-sugg-tile" data-ui19-skill="${escapeAttr(key)}" data-ui30-sugg="1" ${typeof eng35TileAttrs === 'function' ? eng35TileAttrs(key, p.label, text, ctx) : `title="${escapeAttr(p.label + (text ? ': ' + text : '') + (why ? ' (' + why + ')' : ''))}"`}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[key]) || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b>${ui30SuggPillHTML(key, sugg)}</span></li>`; });
   return h;
 }
 // UI30_SUGG:END
@@ -33445,6 +33452,75 @@ function ui31GreyQHTML(lvl){
   const tip = lvl > 0 ? TX('ui.eng28-later') + ' (' + TX('ui.codex-skill-lvl', {n: lvl}) + ')' : SKILL_Q_TIP;
   return ` <span class="skill-q${lvl > 0 ? ' eng28-later' : ''} ui31-grey-q" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">?</span>`;
 }
+// ENG35_TIP:START
+// 2026-11-07 (package ENG35; owner 20:58: "Fuse skills together ... It's just a matter of parameter choice"; 21:13: "Hovering over the skill 'cards' on the map
+// cards window shows a tooltip window of what that skill does. Include what params it can take, e.g. Crepuscular should show default value, stat, and ability
+// versions. Using this, simplify the skill 'card': just leave 1 line of emoji and title."). One skill per idea: canonical/skill-params.json lists each family's
+// parameters (BramblewoodSkillParams, bramblewood-skillparams.js, rides ahead of the engine). The helpers below read it; with no helper loaded they pass through.
+function eng35Lib(){ return (typeof BramblewoodSkillParams !== 'undefined' && BramblewoodSkillParams) || null; }
+function eng35FusedKey(k){ const L = eng35Lib(); return L ? L.fusedKey(k) : k; }
+function eng35AliasOf(k){ const L = eng35Lib(); return L ? L.aliasOf(k) : null; }
+function eng35Expand(e){ const L = eng35Lib(); return L && e ? L.expand(e) : e; }
+function eng35ExpandDef(d){ const L = eng35Lib(); return L && d ? L.expandDef(d) : d; }
+function eng35FamilyOf(k){ const L = eng35Lib(); return L ? L.familyOf(k) : null; }
+// the braces key of a family (diurnal -> diurnalGrant, king -> kinglyGrant), or null
+function eng35GivesKeyOf(k){ const f = eng35FamilyOf(k); return (f && f.key === k && f.params && f.params.gives) || null; }
+// {Evasive, Thorns 1, +2/+2}; a phase map (Tide's flood / ebb, Crepuscular's day / night) as "flood {…} · ebb {…}"
+function eng35GivesText(o){
+  if(o == null || typeof o !== 'object' || Array.isArray(o)) return Array.isArray(o) ? '[' + o.join(', ') + ']' : String(o);
+  const ks = Object.keys(o);
+  if(ks.length && ks.every(k=> o[k] && typeof o[k] === 'object' && !Array.isArray(o[k]))) return ks.map(k=> k + ' ' + eng35GivesText(o[k])).join(' · ');
+  const parts = []; if('attack' in o || 'health' in o) parts.push('+' + (Number(o.attack) || 0) + '/+' + (Number(o.health) || 0));
+  ks.filter(k=> k !== 'attack' && k !== 'health').forEach(k=>{ let lb = k; try{ const p = skillDefOf(k); if(p && p.label) lb = p.label; }catch(e){} parts.push(lb + (o[k] === true ? '' : ' ' + (typeof o[k] === 'object' ? eng35GivesText(o[k]) : o[k]))); });
+  return '{' + parts.join(', ') + '}';
+}
+// a parameter shape as one line: "v 2 · hp 1", "gives {Evasive, Thorns 1}", "4"
+function eng35ShapeText(v){
+  if(v == null) return '';
+  if(typeof v !== 'object') return String(v);
+  if(Array.isArray(v)) return '[' + v.join(', ') + ']';
+  return Object.keys(v).map(f=> f + ' ' + (f === 'gives' ? eng35GivesText(v[f]) : eng35ShapeText(v[f]))).join(' · ');
+}
+function eng35DeliveryOf(key){ try{ return typeof skillDeliveryOf === 'function' ? skillDeliveryOf(key) : 'none'; }catch(e){ return 'none'; } }
+// the hover window's body: what the skill does, the tile's context, Default / Number / Stat version / Ability version / Parameters, and its delivery
+function eng35SkillTipHTML(key, text, ctx){
+  let p = null; try{ p = skillDefOf(key); }catch(e){}
+  const f = eng35FamilyOf(key), P = (eng35Lib() && eng35Lib().PARAMS) || {}, fields = P.fields || {}, dl = eng35DeliveryOf(key);
+  const label = (p && p.label) || key, ico = (typeof SKILL_ICON !== 'undefined' && SKILL_ICON[key]) || '•';
+  let plain = ''; if(p) try{ plain = String(skillText(p, p.kind === 'number' ? (p.defaultValue != null ? p.defaultValue : 1) : true, {}) || ''); }catch(e){ try{ plain = String(p.desc(true) || ''); }catch(_){ plain = ''; } }
+  const row = (k, v, code)=> v === '' || v == null ? '' : `<dt>${escapeHtml(TX(k))}</dt><dd>${code ? `<code>${escapeHtml(v)}</code>` : escapeHtml(v)}</dd>`;
+  const num = f ? f.number : (p && p.kind === 'number' ? (p.defaultValue != null ? p.defaultValue : 1) : null);
+  const parts = f ? ['v'].concat(Object.keys(f.params || {})).map(x=> x + ': ' + (fields[x] || x)).join(' · ') : '';
+  return `<div class="eng35-tip-h"><span aria-hidden="true">${escapeHtml(ico)}</span> <b>${escapeHtml(label)}</b> <i class="eng35-dl is-${escapeAttr(dl)}">${escapeHtml(TX('ui.eng35-dl-' + dl))}</i></div>` +
+    (text ? `<p class="eng35-tip-t">${escapeHtml(text)}</p>` : '') + (ctx ? `<p class="eng35-tip-c">${escapeHtml(ctx)}</p>` : '') +
+    `<dl class="eng35-tip-ps">${row('ui.eng35-default', f ? f.default : plain)}${row('ui.eng35-number', num == null ? '' : eng35ShapeText(num), true)}${f ? row('ui.eng35-stat', f.stat ? f.key + ': ' + eng35ShapeText(f.stat) : TX('ui.eng35-none'), !!f.stat) + row('ui.eng35-ability', f.ability ? f.key + ': ' + eng35ShapeText(f.ability) : TX('ui.eng35-none'), !!f.ability) + row('ui.eng35-params', parts) : row('ui.eng35-params', TX('ui.eng35-one-value'))}${row('ui.eng35-delivery', TX('ui.eng35-dl-' + dl))}</dl>` +
+    (f && f.about ? `<p class="eng35-tip-a">${escapeHtml(f.about)}</p>` : '');
+}
+// a tile's attributes: the hover window reads them (key, its text, the tile's context); screen readers get the same line
+function eng35TileAttrs(key, label, text, ctx, aria){
+  return `data-eng35-key="${escapeAttr(key)}" data-eng35-text="${escapeAttr(text || '')}" data-eng35-ctx="${escapeAttr(ctx || '')}" tabindex="0" aria-label="${escapeAttr(aria || (label + (text ? ': ' + text : '') + (ctx ? ' (' + ctx + ')' : '')))}"`;
+}
+// one window for the whole page, shown on hover or focus of a tile, placed below it (above when there is no room), inside the viewport
+let eng35TipEl = null;
+function eng35TipShow(t){
+  if(!t || !t.dataset) return; if(!eng35TipEl){ eng35TipEl = document.createElement('div'); eng35TipEl.className = 'eng35-sk-tip'; eng35TipEl.setAttribute('role', 'tooltip'); eng35TipEl.id = 'eng35SkTip'; document.body.appendChild(eng35TipEl); }
+  eng35TipEl.innerHTML = eng35SkillTipHTML(t.dataset.eng35Key, t.dataset.eng35Text, t.dataset.eng35Ctx); eng35TipEl.hidden = false; t.setAttribute('aria-describedby', 'eng35SkTip');
+  const r = t.getBoundingClientRect(), w = Math.min(340, window.innerWidth - 16); eng35TipEl.style.maxWidth = w + 'px';
+  const h = eng35TipEl.offsetHeight, below = r.bottom + 6 + h <= window.innerHeight || r.top - 6 - h < 0;
+  eng35TipEl.style.top = Math.max(8, below ? r.bottom + 6 : r.top - 6 - h) + 'px';
+  eng35TipEl.style.left = Math.max(8, Math.min(window.innerWidth - eng35TipEl.offsetWidth - 8, r.left)) + 'px';
+}
+function eng35TipHide(t){ if(eng35TipEl) eng35TipEl.hidden = true; if(t && t.removeAttribute) t.removeAttribute('aria-describedby'); }
+if(typeof document !== 'undefined' && document.addEventListener){
+  const tileOf = e=> e.target && e.target.closest ? e.target.closest('[data-eng35-key]') : null;
+  document.addEventListener('mouseover', e=>{ const t = tileOf(e); if(t) eng35TipShow(t); });
+  document.addEventListener('mouseout', e=>{ const t = tileOf(e); if(t && !(e.relatedTarget && t.contains(e.relatedTarget))) eng35TipHide(t); });
+  document.addEventListener('focusin', e=>{ const t = tileOf(e); if(t) eng35TipShow(t); });
+  document.addEventListener('focusout', e=>{ const t = tileOf(e); if(t) eng35TipHide(t); });
+  document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && eng35TipEl && !eng35TipEl.hidden) eng35TipHide(); }, true);
+  document.addEventListener('mousedown', ()=>{ if(eng35TipEl && !eng35TipEl.hidden) eng35TipHide(); }, true); // a click (closing the window) never leaves it behind
+}
+// ENG35_TIP:END
 // UI32 #7: which cards feed the groups. Main = the map's own list (a main map: its MAP list; a side map: its own lists), then the owner's picks on top of it (a Chosen card
 // marked Cut leaves, a Maybe / Cut card marked Keep joins); Other = every other list of this main map (side maps, SPECIAL) and the cards the owner added to SPECIAL.
 function ui32McSkillIds(top, mapId, ok){
@@ -33480,12 +33556,15 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   const flagOf = (arr, isMain)=> arr.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; return Object.assign(r, {isNew: isMain && mt.met && !early.has(r.key), p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl, outside: !isMain}); }).filter(r=> r.p).sort((a, b)=> (a.grey - b.grey) || (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
   const flaggedMain = flagOf(rows, true), flaggedOther = flagOf(rowsO, false), flagged = flaggedMain.concat(flaggedOther);
   // 2026-11-04 (UI22a): each skill tile carries its full text as a tooltip (the text is clamped to two lines)
+  // 2026-11-07 (package ENG35, owner 21:13: "simplify the skill 'card': just leave 1 line of emoji and title"): a tile is one line (icon, name, pills); its text,
+  // the card count / why and the skill's parameters show in the hover window (eng35TileAttrs, eng35SkillTipHTML). Without them (a test lifting this alone) a title.
+  const tipA = (key, label, text, ctx, aria)=> typeof eng35TileAttrs === 'function' ? eng35TileAttrs(key, label, text, ctx, aria) : `title="${escapeAttr(label + ': ' + text + (ctx ? ' (' + ctx + ')' : ''))}"`;
   const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
-    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} title="${escapeAttr(r.p.label + ': ' + ui19McSkillText(r) + ' (' + TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + ')' + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}<small>${escapeHtml(ui19McSkillText(r))}</small></span></li>`; };
+    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}</span></li>`; };
   const have = new Set(rows.concat(rowsO).map(r=> r.key)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
   const recs = recs0.filter(r=>{ if(have.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
-  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" title="${escapeAttr(TX('ui.ui24-rec-tip', {card: r.card}) + ': ' + r.p.label + ': ' + ui19McSkillText(r) + (r.why ? ' (' + r.why + ')' : ''))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sp(r.key)}<small>${escapeHtml(TX('ui.ui24-rec-for', {card: r.card}))}</small></span></li>`;
-  const kwMissing = kw && !have.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" title="${escapeAttr(skillDefOf(kw).label + ': ' + ui19McSkillText({key: kw, fx: {[kw]: true}}))}"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sp(kw)}<small>${escapeHtml(TX('ui.ui24-intro-missing'))}</small></span></li>` : '';
+  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sp(r.key)}</span></li>`;
+  const kwMissing = kw && !have.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sp(kw)}</span></li>` : '';
   const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, new Set([...have, ...(kwMissing ? [kw] : []), ...recs.map(r=> r.key)])) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
   const hd = (k, n)=> n ? `<li class="ui32-sk-head is-${k}" role="presentation">${escapeHtml(TX('ui.ui32-sk-' + k))}</li>` : ''; // UI32 #7: a divider per group
   return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length || recs.length || kwMissing || suggTiles ? `<ul class="ui19-sk-list">${hd('main', flaggedMain.length)}${flaggedMain.map(li).join('')}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}${hd('rec', recs.length + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0))}${kwMissing}${suggTiles}${recs.map(rli).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
@@ -64960,3 +65039,19 @@ const ENG25_EVERGREEN = new Set(['converge', 'moonpull', 'earthquake', 'tornado'
 // "Gives" field picks the default or the skill list.
 SKILL_DEFS.forEach(d=>{ if(!d || !/Grant$/.test(d.key)) return; const plain = d.key.replace(/Grant$/, '');
   if(ZEIT_TWIN[plain] || ZEIT_TWIN_BACK[d.key] || !SKILL_DEFS.some(x=> x.key === plain)) return; ZEIT_TWIN[plain] = d.key; ZEIT_TWIN_BACK[d.key] = plain; });
+// ENG35 (2026-11-07, owner 23:26, on the editor's skill list showing "Fire Arrow – bleed / – bramble / – venom", "Fire Bolt – bleed / ..."): "No need for
+// so many hybrid variations of this skill. Just Fire Arrow and Fire Bolt is enough." The nine shot riders (Arrow, Fire Arrow, Fire Bolt x – bramble, – venom,
+// – bleed: EN6_BRAMBLE_APP, EN7_TIP_APP) are parameters of their shot (canonical/skill-params.json: arrow.bramble / .poison / .bleed), not skills: no
+// "+ Add Skill" entry, no editor row, no Codex entry. A card that has one keeps it (the editor's Save keeps a parameter beside its shot; the card text still
+// reads "Arrow 2 – bramble"). Which cards should drop theirs: decision ENG35-4.
+const ENG35_RIDER_KEYS = new Set(Object.keys(EN6_BRAMBLE_APP).concat(Object.keys(EN7_TIP_APP)));
+[PASSIVE_DEFS, SKILL_DEFS].forEach(list=> list.forEach(d=>{ if(d && ENG35_RIDER_KEYS.has(d.key)){ d.hidden = true; d.eng35Rider = true; d.get = ()=> undefined; } }));
+// ENG35 (2026-11-07, owner 23:30: "Leech should be able to accept a parameter. Default leech = how much damage you deal. Otherwise Leech N = heal N on hit."):
+// Leech (effects.sap) takes an optional number. true (the editor's blank field) heals the damage each hit deals, as before; N heals N on each hit that lands,
+// up to its max Health (engine: sapHealOf). The editor shows a number field, blank by default.
+{ const sapText0 = SKILL_TEXT.sap, sapNum = v=> typeof v === 'number' && v > 0;
+  SKILL_TEXT.sap = (v, n, e)=> sapNum(v) ? TX('ui.eng35-leech-n-short', {n: v}) : sapText0(v, n, e);
+  [PASSIVE_DEFS, SKILL_DEFS].forEach(list=> list.forEach(d=>{ if(!d || d.key !== 'sap') return; const desc0 = d.desc;
+    Object.defineProperty(d, 'placeholder', {get: ()=> TX('ui.eng35-leech-blank'), configurable: true}); Object.assign(d, {kind: 'number', blankOk: true, defaultValue: true,
+      desc: (v, n, e)=> sapNum(v) ? TX('ui.eng35-leech-n', {n: v}) : desc0(v, n, e),
+      apply: (e, v)=>{ const x = Math.round(Number(v)); e.sap = x > 0 ? x : true; }}); })); }

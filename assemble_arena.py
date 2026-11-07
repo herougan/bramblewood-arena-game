@@ -8,6 +8,9 @@ engine_src = open(SCRATCH + "bramblewood-engine.js", encoding="utf-8").read()
 engine_src = open(SCRATCH + "bramblewood-taxonomy.js", encoding="utf-8").read() + "\n" + engine_src
 # 2026-11-07 (package ENG34): each skill's delivery (melee / ranged / none) and what each on-hit effect rides, canonical/skill-delivery.json,
 # goes ahead of the engine too (the engine's SKILL_DELIVERY reads __SKILL_DELIVERY__; in Node it require()s the file).
+# 2026-11-07 (package ENG35): one skill per idea. canonical/skill-params.json (each family's parameters) and bramblewood-skillparams.js (expand /
+# fuse, global BramblewoodSkillParams) go ahead of the engine, so the page, the app and the worker read fused cards and old twin keys alike.
+engine_src = "var __SKILL_PARAMS__ = " + json.dumps(json.load(open(SCRATCH + "canonical/skill-params.json", encoding="utf-8")), ensure_ascii=False) + ";\n" + open(SCRATCH + "bramblewood-skillparams.js", encoding="utf-8").read() + "\n" + engine_src
 engine_src = "var __SKILL_DELIVERY__ = " + json.dumps(json.load(open(SCRATCH + "canonical/skill-delivery.json", encoding="utf-8")), ensure_ascii=False) + ";\n" + engine_src
 # Ghost decks for Async Arena + offline Raid (2026-10-03) — DOM-free, shared with tests/async-raid.js.
 # 2026-10-16: + bramblewood-fx-g.js (FX.G: map titles, map grandeur, the fun set).
@@ -158,6 +161,12 @@ if app_src.count("__EMOJI_ATLAS__") != 1: raise SystemExit("Expected exactly 1 _
 app_src = app_src.replace("__EMOJI_ATLAS__", json.dumps(emoji_atlases(), separators=(",", ":")), 1)
 
 canonical = json.load(open(SCRATCH + "canonical/cards.json", encoding="utf-8"))
+# 2026-11-07 (package ENG35): cards.json keeps one fused key per skill family ("nocturnal": {"v": 2, "hp": 1}); the page gets the flat keys the
+# game reads (tools/skill_params.py expand: the same data as before the fold, so the card-data hash and every save stay as they were).
+import sys as _sys35
+_sys35.path.insert(0, SCRATCH + "tools")
+import skill_params as _sp35
+canonical = [_sp35.expand_def(c) for c in canonical]
 card_defs_obj = {}
 # Pool cards (2026-10-19, package AN, owner 23:04: "More thematic animals ... I'll pick and choose when balancing for a map"):
 # candidates marked "pool": true are not live cards. They never enter __CARD_DEFS__ (so no pack, reward, Codex, CPU deck or card
@@ -428,7 +437,11 @@ if _cp is not None and os.path.exists(_cp_path):
         _fx = {}
         _c = _vals.get(_id)
         if _c:
-            _e = dict(_c.get("effects") or {})  # the run measures a card's own effects (no level-granted ones), as tools/card_balance.js does
+            _e = dict(_sp35.expand(_c.get("effects") or {}))  # ENG35: a fused card reads as its flat keys
+            for _k in list(_keys):  # ENG35: a run that listed a fused key measured its parts too (nocturnal -> nocturnalHp ...)
+                for _old in ((_sp35.params().get("families", {}).get(_k) or {}).get("params") or {}).values():
+                    if _old in _e and _old not in _keys:
+                        _keys.append(_old)  # the run measures a card's own effects (no level-granted ones), as tools/card_balance.js does
             for _k in _keys:
                 if _k in _e and not isinstance(_e[_k], (dict, list)):
                     _fx[_k] = _e[_k]

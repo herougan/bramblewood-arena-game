@@ -4228,7 +4228,17 @@
  "Main skills": "主要技能",
  "Other skills (side maps, specials)": "其他技能（支线地图、特殊）",
  "Recommended skills for this map": "本地图的推荐技能",
- "Ranged": "远程",
+ "Number": "数值",
+ "Stat version": "属性版",
+ "Ability version": "技能版",
+ "Parameters": "参数",
+ "One value, no parts": "单一数值，无分项",
+ "none": "无",
  "Melee": "近战",
+ "Ranged": "远程",
+ "No hit of its own": "自身不造成攻击",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "每次命中都为其恢复{n}点（命中荆棘堡也算），不超过最大生命。",
+ "Each hit heals it {n}.": "每次命中恢复{n}点。",
+ "Blank = heals the damage dealt": "留空 = 恢复造成的伤害",
  "New card": "新卡"
 }

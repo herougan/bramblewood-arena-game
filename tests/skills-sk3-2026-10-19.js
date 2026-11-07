@@ -13,7 +13,7 @@ const ROOT = path.join(__dirname, '..'), R = f=> fs.readFileSync(path.join(ROOT,
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 const so = id=> id===1 ? 'A' : 'B';
 const U = (id, effects, o)=> Object.assign({id, name:id, attack:0, health:30, wait:0, cost:0, archetypes:['Sk'], effects: effects || {}}, o || {});
-const cards = JSON.parse(R('canonical/cards.json')), byId = Object.fromEntries(cards.map(c=> [c.id, c]));
+const cards = JSON.parse(R('canonical/cards.json')).map(c=> c && require('../bramblewood-skillparams.js').expandDef(c)) /* ENG35 (2026-11-07): fused skills read as their flat keys */, byId = Object.fromEntries(cards.map(c=> [c.id, c]));
 const spell = id=> Object.assign({effects:{}}, byId[id]);
 const defs = Object.assign({}, H.loadCardDefs(), {
   'sk-wall':    U('sk-wall'),

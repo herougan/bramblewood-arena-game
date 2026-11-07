@@ -4229,7 +4229,17 @@
  "Main skills": "Skill utama",
  "Other skills (side maps, specials)": "Skill lainnya (peta samping, khusus)",
  "Recommended skills for this map": "Skill yang disarankan untuk peta ini",
- "Ranged": "Jarak jauh",
+ "Number": "Angka",
+ "Stat version": "Versi statistik",
+ "Ability version": "Versi kemampuan",
+ "Parameters": "Parameter",
+ "One value, no parts": "Satu nilai, tanpa bagian",
+ "none": "tidak ada",
  "Melee": "Jarak dekat",
+ "Ranged": "Jarak jauh",
+ "No hit of its own": "Tanpa serangan sendiri",
+ "Each of its hits that lands heals it {n} (bramble hits too), up to its max Health.": "Setiap serangannya yang kena memulihkannya {n} (serangan ke semak juga), sampai Nyawa maksimalnya.",
+ "Each hit heals it {n}.": "Setiap serangan memulihkannya {n}.",
+ "Blank = heals the damage dealt": "Kosong = memulihkan sebesar kerusakan",
  "New card": "Kartu baru"
 }

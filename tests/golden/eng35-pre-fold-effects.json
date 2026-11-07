@@ -1,0 +1,178 @@
+{
+ "_about": "ENG35 (2026-11-07): the effects of every card the skill-params fold changed, as they were before it (flat twin keys). tests/eng35-2026-11-07.js fuses them and checks the round trip and fixed-seed fights against them. History: never update.",
+ "effects": {
+  "slowpoke-sentinel": {
+   "armor": 2,
+   "stem": true,
+   "stemGrant": {
+    "armor": 1
+   }
+  },
+  "fen-mink": {
+   "hunter": 2,
+   "hunterVs": "poison"
+  },
+  "tidepool-trapper-crab": {
+   "hunter": 1,
+   "hunterVs": "wet",
+   "crabClaws": true
+  },
+  "tunnel-ant": {
+   "swarm": [
+    "Ants"
+   ],
+   "ambush": 2,
+   "swarmN": 2
+  },
+  "sunthroat-courier": {
+   "flying": true,
+   "espritHp": 1
+  },
+  "voidfeather-scout": {
+   "flying": true,
+   "nocturnal": 1,
+   "nocturnalHp": 1
+  },
+  "weredog": {
+   "nocturnal": 5,
+   "nocturnalHp": 6
+  },
+  "night-watchman": {
+   "flying": true,
+   "nocturnal": 2,
+   "nocturnalHp": 1
+  },
+  "dawn-bellringer": {
+   "flying": true,
+   "diurnal": 1,
+   "diurnalHp": 2
+  },
+  "sunspire-choirmother": {
+   "esprit": 2,
+   "flying": true,
+   "espritHp": 2,
+   "diurnal": 2,
+   "diurnalHp": 2
+  },
+  "irradiated-axolotl": {
+   "delivery": 1,
+   "deliveryRes": "uranium"
+  },
+  "ore-smelter-mole": {
+   "heavyMetal": true,
+   "delivery": 1,
+   "deliveryRes": "metal"
+  },
+  "sworn-shieldbearer": {
+   "loyal": [
+    1,
+    3
+   ],
+   "loyalGrant": {
+    "armor": 1
+   }
+  },
+  "stonedrop-vulture": {
+   "flying": true,
+   "archer": 3,
+   "archerStyle": "drop"
+  },
+  "sunspire-sky-sovereign": {
+   "flying": true,
+   "esprit": 1,
+   "espritHp": 1
+  },
+  "balloon-archer": {
+   "flying": true,
+   "arrow": 2,
+   "arrowBramble": true
+  },
+  "mongoose-duelist": {
+   "defiance": [
+    "Snake"
+   ],
+   "defianceN": 1
+  },
+  "nightjar-drifter": {
+   "crepuscular": 1,
+   "crepuscularHp": 1
+  },
+  "sunbittern-strider": {
+   "diurnalGrant": {
+    "evasive": true,
+    "thorns": 1
+   },
+   "diurnal": true
+  },
+  "kinkajou-lurker": {
+   "nocturnalGrant": {
+    "evasive": true,
+    "regen": 2
+   },
+   "nocturnal": true
+  },
+  "mudflat-godwit": {
+   "tideGrant": {
+    "flood": {
+     "attack": 2,
+     "health": 2,
+     "evasive": true
+    },
+    "ebb": {
+     "armor": 2
+    }
+   },
+   "tide": true
+  },
+  "giant-clam": {
+   "shell": 2,
+   "tide": true,
+   "delivery": 1,
+   "deliveryRes": "pearl"
+  },
+  "ember-tetra": {
+   "tide": true,
+   "tideGrant": {
+    "ebb": {
+     "armor": 2
+    },
+    "flood": {
+     "fireArrow": 4
+    }
+   }
+  },
+  "oyster-bank": {
+   "shoreUp": true,
+   "delivery": 1,
+   "deliveryRes": "pearl"
+  },
+  "gravel-mole": {
+   "delivery": 1,
+   "deliveryRes": "stone"
+  },
+  "laden-hummingbird": {
+   "flying": true,
+   "arrow": 1,
+   "arrowCount": 2
+  },
+  "oathsworn-legionary": {
+   "loyal": [
+    1,
+    2
+   ],
+   "loyalGrant": {
+    "armor": 1
+   }
+  },
+  "cobalt-talon-honour-guard": {
+   "flying": true,
+   "loyal": [
+    2,
+    1
+   ],
+   "loyalGrant": {
+    "quick": true
+   }
+  }
+ }
+}
