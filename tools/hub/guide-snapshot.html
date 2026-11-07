@@ -1,0 +1,1580 @@
+<div class="subpane" data-group="guide" id="doc-game-design-standard" hidden><h3>claude/game-design-standard.md <small class="note">read before: any design work (start here)</small></h3><div class="doc"><h1 id="doc-game-design-standard-h1">Bramblewood Arena — Standard of Creation</h1>
+<p>This is the "start here" doc: a distilled summary of <code>game-design.md</code> (the full history) plus
+the working rule that governs every doc in this family, including this one.</p>
+<h2 id="doc-game-design-standard-h2">The rule</h2>
+<p><strong>Before starting ANY new work, read <code>style-guideline.md</code> and <code>mechanics-guideline.md</code> first.</strong>
+These two are the mandatory, cross-cutting checklists — visual/UX/motion/sound/copy conventions in
+one, game-design/engine conventions in the other — that keep every new addition consistent with
+everything already shipped, whether or not you already know which specific system you're about to
+touch. They're short and meant to be read every time, not once.</p>
+<p>Then, before doing any work on a specific concept — audio, combat, economy, VFX/animation,
+UI/layout, or the build pipeline — <strong>read that concept's context doc too</strong> (listed below). Each
+one holds the accumulated decisions, gotchas, and current shape of that system; skipping it risks
+silently redoing a decision that was already made, or breaking a constraint that isn't obvious
+from the code alone (a timing dependency, a deliberately-rejected alternative, a reason a value is
+what it is). The guideline docs are the fast top-level pass; the context docs are where the
+implementation-level detail lives.</p>
+<p><strong>After finishing a piece of work that touches one of these concepts, update its context doc</strong> —
+not by appending a changelog entry, but by editing the relevant section in place so the doc
+always describes the CURRENT system, the way this doc and <code>game-design.md</code> already do. If the work
+also establishes or changes a cross-cutting convention (a new card-anatomy rule, a new status-
+effect shape, a new testing requirement), fold that into <code>style-guideline.md</code>/
+<code>mechanics-guideline.md</code> the same way — in place, not as a changelog. A context or guideline doc
+that just accumulates history without editing existing sections stops being useful as a reference;
+the version-addenda (<code>game-design-vNN-addendum.md</code>) are where the changelog/history belongs, not
+these.</p>
+<p>This doc itself gets the same treatment: when the game's overall shape changes enough that this
+summary goes stale, edit it in place rather than leaving it to drift.</p>
+<h2 id="doc-game-design-standard-h3">Mandatory pre-work checklists</h2>
+<ul>
+<li>
+<p><strong><code>style-guideline.md</code></strong> — design tokens, card anatomy (CSRE), motion conventions, sound
+  conventions, copy/naming conventions, layout/responsiveness, theming. Read before any visual or
+  UX-facing change.</p>
+</li>
+<li>
+<p><strong><code>mechanics-guideline.md</code></strong> — the resource model, skill/passive architecture, status-effect
+  shapes, trigger/action vocabulary, combat/column semantics, card data/leveling, and the
+  decision-discipline process (when to ask instead of guessing). Read before any new card effect,
+  status, resource, trigger, action, or combat-rule change.</p>
+</li>
+</ul>
+<h2 id="doc-game-design-standard-h4">Context docs (read the relevant one before working on that concept)</h2>
+<ul>
+<li>
+<p><strong><code>context-audio.md</code></strong> — SoundKit, the settings-menu volume sliders (Music/SFX/Voice), and
+  the speech/dialogue framework's voice cues. Read before touching any sound, any volume control,
+  or the speech bubble system.</p>
+</li>
+<li>
+<p><strong><code>context-combat-engine.md</code></strong> — the board model (center-slot + flanks), turn order, targeting
+  rules, and the engine's trigger/effect vocabulary. Read before touching combat resolution, card
+  effects, or anything in <code>bramblewood-engine.js</code>.</p>
+</li>
+<li>
+<p><strong><code>context-economy-progression.md</code></strong> — the three currencies (Gold/Prayer/Devilry in-match,
+  Gold/Gems/Magic Dust out-of-match), card leveling, and the Forge. Read before touching costs,
+  rewards, or progression.</p>
+</li>
+<li>
+<p><strong><code>context-vfx-animation.md</code></strong> — the GSAP entrance/Flip system, <code>pendingEntranceOrigins</code>,
+  particle/celebration utilities (star-fall, emoji-burst, card-flip), and speech bubbles' visual
+  half. Read before adding or changing any animation.</p>
+</li>
+<li>
+<p><strong><code>context-ui-layout.md</code></strong> — the card-sizing CSS variables, the topbar/content-width split,
+  responsive breakpoints, and general layout conventions. Read before touching CSS structure.</p>
+</li>
+<li>
+<p><strong><code>context-architecture-pipeline.md</code></strong> — file layout, the assembly script, canonical data
+  files, the test suite, and publishing. Read before rebuilding, adding a new source file, or
+  setting up a fresh working directory.</p>
+</li>
+</ul>
+<h2 id="doc-game-design-standard-h5">Current state (as of Version 30 / 2026-09-18)</h2>
+<p>Bramblewood Arena is a single-file HTML5 card game, assembled from <code>arena_template.html</code> (CSS +
+skeleton) + <code>arena_app.js</code> (all application logic) + <code>bramblewood-engine.js</code> (DOM-free combat) +
+<code>canonical/cards.json</code> + <code>canonical/characters.json</code>, stitched by <code>assemble_arena.py</code> into
+<code>bramblewood-arena.html</code>, then published as a claude.ai Artifact
+(https://claude.ai/code/artifact/51c1f54c-536f-4e69-b99d-2bd2c523f7a1).</p>
+<p><strong>Core loop:</strong> pick a Bramble (HQ passive) and a Leader, build a 20-card deck from your unlocked
+cards, fight either the local AI, another human on the same device (PC mode), or work through
+the Conquest campaign / Raid boss tab. Combat resolves a full round at once inside the engine,
+then replays as a paced sequence of animated events on the client.</p>
+<p><strong>Board:</strong> each side has <code>{left:[], center:[], right:[]}</code>; center holds exactly one card and is
+where the first card played always lands. Turn order interleaves left-to-right by column across
+both sides (not "resolve my whole row, then yours"). See <code>context-combat-engine.md</code> for the full
+targeting/turn-order rules.</p>
+<p><strong>Progression:</strong> three out-of-match currencies (Gold/Gems/Magic Dust) power a 0→10 card-leveling
+system via the Forge tab. See <code>context-economy-progression.md</code>.</p>
+<p><strong>Roster:</strong> 221+ cards across 52+ archetypes, defined in <code>canonical/cards.json</code>, editable live
+through the Codex's card editor (baseline + a live-db overlay).</p>
+<p><strong>Testing:</strong> a Playwright regression suite (74+ files as of this writeup, <code>test_*.js</code>) covers
+engine correctness and UI/animation behavior. Run individually or in small parallel batches (4-8)
+— see <code>context-architecture-pipeline.md</code> for why running all of them in one large parallel batch
+produces transient, CPU-contention-driven failures that are not real regressions.</p>
+<p><strong>Full history:</strong> <code>game-design.md</code> remains the complete, chronological record of every version —
+this doc summarizes it, it doesn't replace it. The <code>game-design-vNN-addendum.md</code> files are the
+per-session changelogs; <code>game-design-action-items.md</code> and <code>roadmap-and-backlog.md</code> are the living
+backlog/roadmap; <code>style-guideline.md</code> and <code>mechanics-guideline.md</code> are the mandatory cross-cutting
+checklists introduced 2026-09-21.</p></div></div><div class="subpane" data-group="guide" id="doc-style-guideline" hidden><h3>claude/style-guideline.md <small class="note">read before: any visual or UX change</small></h3><div class="doc"><h1 id="doc-style-guideline-h1">Bramblewood Arena — Style Guide (mandatory before shipping any visual/UX change)</h1>
+<h2 id="doc-style-guideline-h2">How this doc is used</h2>
+<p>Read this before writing or reviewing ANY change that touches how the game looks, sounds, moves,
+or reads — a new card visual, a new UI panel, a new animation, a new sound cue, new copy in a
+button or dropdown. It is a checklist, not background reading: if a planned change would violate
+a rule below, either fix the plan so it doesn't, or flag it to the user as a decision item exactly
+the way <code>game-design-action-items.md</code> already flags ambiguous asks — don't silently ship a
+violation and don't silently "improve" the rule on your own judgment mid-task.</p>
+<p>This doc holds the CROSS-CUTTING conventions — the ones that apply no matter which subsystem
+you're touching. The <code>context-*.md</code> docs remain the per-system deep reference (exact CSS variable
+names, exact function names, the full history of why a value is what it is) — read the relevant
+one too before touching that system. This doc is the fast top-level pass; the context docs are
+where the details live. When the two ever seem to disagree, the context doc is more likely current
+(it's the one this doc's own process below tells you to update after a change) — fix this doc to
+match rather than assuming the context doc is stale.</p>
+<h2 id="doc-style-guideline-h3">1. Design tokens — never hand-write a color</h2>
+<p>Every color is a CSS custom property, defined once on the bare <code>:root</code> (light theme) and
+redefined under <code>@media (prefers-color-scheme: dark)</code> guarded by <code>:root:not([data-theme="light"])</code>
+plus again under <code>:root[data-theme="dark"]</code> for the explicit toggle. A new UI element takes its
+color from <code>--bg</code>/<code>--surface</code>/<code>--surface-2</code>/<code>--surface-3</code>/<code>--surface-border</code>/<code>--ink</code>/
+<code>--ink-muted</code>/<code>--ink-soft</code>/<code>--accent</code>/<code>--accent-strong</code>/<code>--accent-ink</code>/<code>--attack</code>/<code>--health</code>, never
+a literal hex value — a literal that "looks right" in whichever theme you happened to preview
+breaks silently in the other one. <code>--page-wood</code>/<code>--page-ink</code> are the ONE deliberate exception:
+they exist specifically for content sitting directly on the outer wood background rather than
+inside a <code>--surface</code> panel (the topbar's Home/Settings/Back buttons, the home menu's ghost
+buttons) — <code>--page-ink</code> is fixed-light in both themes on purpose, because <code>--ink</code> flips per theme
+and a <code>--surface</code>-paired ink color goes unreadable on the always-dark wood backdrop. Don't reuse
+<code>--page-ink</code> for anything that DOES sit inside a <code>--surface</code> panel, and don't give <code>--ink</code> a
+<code>--page-wood</code>-specific override — that was a real, already-fixed contrast bug
+(<code>game-design-action-items.md</code>, batch #3, item 1); the fix was a new token, not patching the old
+one.</p>
+<p>Three type families, each with a job — don't introduce a fourth without a real reason: <strong>Nunito</strong>
+(body text, buttons), <strong>Baloo 2</strong> (headings, card names/stats, UI labels — the game's primary
+"voice"), <strong>MedievalSharp</strong> (the brand wordmark only, for the chivalric flavor — not for general
+UI text, it doesn't hold up at small sizes or in long strings).</p>
+<h2 id="doc-style-guideline-h4">2. Card anatomy (CSRE — Card Surface Real Estate)</h2>
+<p><code>cardTileHTML()</code> is the one renderer for every card EXCEPT the live battlefield (<code>boardCardHTML()</code>
+is separate, on purpose — combat has its own animation needs that would fight anything below).
+Current anatomy, top to bottom, and why:</p>
+<ul>
+<li>
+<p><strong>Top band, shared, <code>top:-7px</code></strong>: cost badge (far left), skill/ability badges (center), Wait
+  badge (far right). These three were deliberately unified onto one shared band — keep new
+  top-of-card indicators on this same band rather than inventing a new absolute position, and
+  don't move skill badges to a different vertical position than cost/wait again (they were once
+  moved to <code>top:16px</code> to avoid crowding cost, which instead put them on top of the card name —
+  a real, already-fixed bug; see <code>game-design-action-items.md</code>'s "Card visual design" category).</p>
+</li>
+<li>
+<p><strong>Zero-cost / zero-wait hiding rule (CSRE)</strong>: a $0 cost or $0 Wait badge renders as NOTHING, not
+  a bare "🪙0" or "⏱0" chip — apply this through the shared <code>costBadgeParts()</code> helper, not a
+  one-off check, so hand cards/deck tiles/the Leader widget/the hover popover all stay consistent.</p>
+</li>
+<li>
+<p><strong>Name</strong>, below the top band, centered, Baloo 2 700, currently 13px/1.12 line-height — sized to
+  read clearly at the in-match card size; if you change in-match card size, re-check this against
+  a card with the longest real name in the roster, not a short placeholder.</p>
+</li>
+<li>
+<p><strong>Stats</strong> (⚔/❤), bottom of the tile via <code>margin-top:auto</code> in flex-column contexts (board/hand/
+  leader) — the pool/Codex/deck-picker grid is NOT flex-column (<code>display:block</code>), so stats sit in
+  normal flow there instead; don't assume one universal position without checking which context
+  you're in first (this was a real, confirmed-wrong assumption once — verify with a real
+  <code>getComputedStyle</code> check, don't infer from a CSS comment written for a different context).</p>
+</li>
+<li>
+<p><strong><code>.rarity-band</code></strong>: a bottom-anchored gradient scrim, both a rarity-color indicator and text
+  legibility backing. Current tuning: 50% of tile height, capped at .58 max black alpha, with a
+  <code>transparent 0%, transparent 30%</code> lead-in. If retuned, re-check specifically against Common
+  (<code>#ffffff</code>-family) and Starter rarity colors — a too-dark scrim flattens those two into an
+  indistinguishable grey wash before it visibly hurts any other, more-saturated rarity.</p>
+</li>
+<li>
+<p><strong>Pitch/discard-resource badge</strong>, bottom edge, dormant by default: shows nothing for the
+  universal 1-Lumber baseline, and only appears once a card's real discard yield deviates from
+  that baseline (a non-1 Lumber amount — including 0, flagged as abnormal — or any other resource
+  above 0). Don't make this always-visible; that was explicitly rejected as noise.</p>
+</li>
+<li>
+<p><strong>Hover flourish</strong> (<code>.card-tile-magnetic</code>): cursor-following 3D tilt (<code>--ctTiltX</code>/<code>--ctTiltY</code>,
+  up to ~7-10°, eased back to flat on <code>mouseleave</code> via CSS transition, no JS needed for the reset)
+  plus a diagonal shimmer sweep reusing the card's existing <code>::after</code> glass-shine layer. Opt a
+  NEW context into this class only if it's a browsing/picking context (deck pool, castle/Bramble
+  picker, Codex) — never the hand strip, the leader widget, or anything board-related, which
+  already carry their own combat/selection-specific animation this would fight.</p>
+</li>
+<li>
+<p><strong>Foil/<code>splashEffect</code></strong> is independent of <code>rarity</code> — a card can be Rare AND Foil. Never route a
+  print-variant effect through the <code>rarity</code> field again (that was the original bug this field
+  split fixed).</p>
+</li>
+<li>
+<p>Castle/HQ tiles render through this SAME <code>cardTileHTML()</code>, with <code>opts.isCastle</code> suppressing
+  cost/wait/attack — don't build a separate castle-specific tile template; "the castle should look
+  like a proper card" was resolved by fixing shared anatomy, not by special-casing castles.</p>
+</li>
+<li>
+<p>A card that is actually yours in the current match (e.g. the tutorial's leader) is rendered with
+  <code>opts.inPlay</code> so it never gets the greyed-out "locked" treatment, even if its data is <code>locked</code>
+  for deck-building.</p>
+</li>
+</ul>
+<h2 id="doc-style-guideline-h5">3. Motion conventions</h2>
+<p>The GSAP entrance/Flip system (full detail in <code>context-vfx-animation.md</code>) is explicitly
+"extremely carefully tuned... with many bugfix comments warning against structural changes" —
+treat that warning as real. Prefer additive changes (a new event branch in <code>renderVfxForEvent</code>, a
+new <code>pendingEntranceOrigins</code> producer) over restructuring the dispatch or the Flip/new-card split.
+Two rules worth restating because they've each caused a real bug once: new cards must stay
+explicitly excluded from what <code>Flip.from()</code> targets (it will silently re-diff against stale DOM
+otherwise), and a played card's hand-uid is not always its board-uid — read the real board uid
+from the <code>'play'</code> event, not the uid a card was played with.</p>
+<p><strong>A newly-created or newly-repositioned card should reflow LIVE, mid-round, not deferred to
+round-end.</strong> This has been the standing rule since the V21 live-collapse work: death, collapse-in,
+<code>onAttackedSpawn</code>, and <code>onDeathSpawn</code> tokens all splice into the replay the instant their engine
+event replays, using <code>matchState.replayRows</code>/<code>replayCards</code> as the live snapshot. A new spawn/
+reposition event type should follow this same pattern rather than only showing its final state
+once the whole round's log finishes.</p>
+<p><strong>Interactive-element motion responds to real interaction, not a permanent scripted loop.</strong> The
+magnetic-tilt/shimmer pattern above, and the home-menu buttons' tilt+glow+squash-and-stretch
+click pop, both replaced an earlier always-rocking scripted keyframe specifically because a
+cursor-follow/click-triggered treatment reads as alive and a looping idle animation reads as
+scripted. New interactive chrome (a button, a clickable icon) should follow the interaction-driven
+pattern, not add a new permanent idle loop. Decorative, non-interactive ambiance (the Autumn
+Village leaf system) is the deliberate exception — it's atmosphere, not a control, and is allowed
+to run on its own schedule. The battle board's idle breathing and low-HP tremble (2026-10-06) fall
+under that exception: they are tiny, ambient, use the CSS <code>translate</code> property so they never fight
+GSAP's <code>transform</code> tweens, and stop for stunned, frozen and sleeping units. A hover sheen sweeps all the way across its button and exits the far
+edge — it never parks mid-button.</p>
+<p>Squash-and-stretch on click uses asymmetric <code>scaleX</code>/<code>scaleY</code> (not a uniform <code>scale</code>), a bouncy
+overshoot easing (<code>cubic-bezier(.5,1.75,.75,1.25)</code>), and must respect whatever cursor-tilt custom
+property is already active so a click mid-hover doesn't snap flat first — copy this shape for any
+new "big satisfying click" moment rather than a plain scale-pulse.</p>
+<p>Anything floating that's anchored to a card (speech bubbles, damage numbers) must follow that card
+when the page scrolls or the board re-renders — re-anchor every frame, don't position once.</p>
+<h2 id="doc-style-guideline-h6">4. Skill VFX (bubbly, obvious, clear — and queued, not simultaneous)</h2>
+<p>A skill/status animation should read instantly as "something happened" — never as ambiguous
+noise, and never as one mechanic possibly being confused for another. Three requirements, all
+non-negotiable for any new skill/status VFX:</p>
+<ul>
+<li>
+<p><strong>Bubbly.</strong> Favor a playful, physical read over a flat number appearing out of nowhere — a
+  bounce, a shake, a pop, a color pulse. <code>floatText()</code> + <code>shakeEl()</code> + a dedicated <code>SoundKit</code> cue
+  together is the baseline treatment for a new mechanic, not an optional extra.</p>
+</li>
+<li>
+<p><strong>Obvious.</strong> A player should never need to read the battle log to know something just
+  happened — the VFX alone announces it.</p>
+</li>
+<li>
+<p><strong>Distinct per mechanic.</strong> A new skill/status must be visually AND audibly distinguishable from
+  every mechanic already covered in <code>renderVfxForEvent()</code>/<code>SoundKit</code> (section 3/5 above) — a
+  shared glyph or tone across two different mechanics reads as "the same thing happening twice."
+  This has caused real, since-fixed confusion before: Poison APPLYING a fresh stack and Poison
+  TICKING an existing stack once looked "almost alike" until deliberately given distinct floats
+  (a small "+3☠" for applying vs. a bolder "🫧 5!" for ticking) — see the <code>poisonTick</code> handler's
+  own comment in <code>arena_app.js</code> for the full story. Treat that as the standard of distinctness to
+  match, not the exception.</p>
+</li>
+</ul>
+<p><strong>Skill/status VFX queue — they never play simultaneously or overlap.</strong> This is enforced
+centrally in <code>delayForEvent()</code>/<code>vfxKindOf()</code> (<code>arena_app.js</code>), not left to each effect to
+self-pace: every event in a round's replay (one per card, per tick, per triggered effect) plays
+to completion, then the replay waits a breath, then the next one starts. The breath length
+depends on whether two consecutive events are the same KIND of thing or a different one:</p>
+<ul>
+<li>
+<p><strong>Same kind back-to-back → a short, bubbly 200ms breath.</strong> Example: two Poison ticks landing
+  in the same round (two different poisoned cards) each get their own <code>SoundKit.bubble()</code> cue
+  and their own damage number, one after another, only 200ms apart — close enough to read as
+  "the same kind of thing, happening again," cute rather than sluggish.</p>
+</li>
+<li>
+<p><strong>A different kind immediately after → a longer 500ms breath.</strong> Example: a Poison tick
+  followed by a Bleed tick, or a Freeze status landing right after a Poison tick, gets 500ms —
+  long enough that the switch clearly reads as "a new, distinct thing is happening now," not a
+  blur of the previous effect.</p>
+</li>
+<li>
+<p>"Kind" is <code>ev.type</code> for most events. The one exception is <code>statusFx</code>, which bundles many
+  visually/audibly distinct sub-mechanics (poison/freeze/stun/scar/blind/...) under one event
+  type — there, <code>vfxKindOf()</code> folds in <code>ev.kind</code> too (<code>statusFx:freeze</code> vs. <code>statusFx:poison</code>
+  count as two different kinds, never lumped together as one "statusFx" kind).</p>
+</li>
+<li>
+<p>This rule governs skill/status VFX specifically. Ordinary attacks (<code>hit</code>/<code>hitHQ</code>/<code>evaded</code>),
+  deaths, and Render keep their own separately-tuned pacing (900/1260ms, 550ms, 780ms
+  respectively) — they're already distinct, deliberate beats in the combat rhythm, not part of
+  this same-kind/different-kind skill-effect queue.</p>
+</li>
+<li>
+<p>A brand-new event type needs no new plumbing to join this queue — <code>vfxKindOf()</code>'s default
+  (<code>ev.type</code>) covers it automatically. The only thing a new mechanic must get right is giving a
+  <code>statusFx</code>-shaped event its own distinct <code>ev.kind</code> string, matching no other status's.</p>
+</li>
+</ul>
+<h2 id="doc-style-guideline-h7">5. Sound conventions</h2>
+<p>Every cue is a <code>SoundKit</code> method built only from the two primitives, <code>tone()</code>/<code>noise()</code> — never
+call the Web Audio API directly from anywhere else, since volume gating (three independent
+sliders: SFX/Voice/Music — see <code>context-audio.md</code>) only happens at that one choke point. A new
+mechanic gets its own NAMED cue distinct from every existing one — this has been the rule since
+2026-09-13 ("make sure to add sfx and vfx for all the skills too") and every skill/status shipped
+since has followed it; don't reuse an existing tone for a new mechanic just because it's "close
+enough," and don't add a mechanic with no sound at all. <code>SoundKit.stopAll()</code> already cuts every
+in-flight cue at round end — a new cue with a long tail doesn't need its own cleanup, it inherits
+this for free as long as it's scheduled through <code>tone()</code>/<code>noise()</code>.</p>
+<h2 id="doc-style-guideline-h8">6. Copy &amp; naming</h2>
+<p>Skill/passive names are simple — one or two words ("Hide", "Lunge", "Chained", "Swift"), not a name
+that crams its parameters into the label ("Freeze (Chance% / Duration)" was cleaned up specifically
+for this reason). Full mechanical detail belongs in the skill's <code>desc()</code> function and the Codex
+Reference tab, generated from the same registry — never hand-write Reference tab content that
+could drift from the registry.</p>
+<p>Chance-based mechanics use halves only (1 in 2) — no 1/3s, 1/4s etc. Several independent halves
+may stack (Swift + Flying + Evade = 7/8 dodge), but each individual roll is a coin flip.</p>
+<p>Dropdowns are alphabetical by display label, with two standing exceptions: placeholder/sentinel
+options ("All types", "— pick a card —", "None") stay first rather than being folded into
+alphabetical order, and <strong>Rarity is never alphabetized</strong> (<code>RARITY_DEFS</code> is a meaningful power-tier
+ladder — alphabetizing would scramble it). Follow both exceptions for any new dropdown rather than
+re-deriving the question each time.</p>
+<p>Be honest about platform limitations rather than faking a feature. The Google SSO investigation
+is the standing precedent: rather than build a "Sign in with Google" button that couldn't actually
+authenticate anyone, the honest boundary was explained to the user and a real, smaller feature
+(the platform's own <code>user</code> capability) was built and clearly labeled for what it actually does.
+Never ship a control that looks functional but silently does nothing or lies about what happened —
+the Language button's "Soon"-tagged, genuinely-disabled other languages follow this same
+precedent.</p>
+<p><strong>Think contextually: let a control's surroundings carry its meaning.</strong> A label only needs to say
+what its position doesn't already say. A Show/Hide toggle sitting beside a deck list is obviously
+about that deck, so it reads "👁 Show" / "🙈 Hide", not "Show deck" / "Hide deck"; a "+1 🪵" next to
+the card you're holding needn't also be pinned above the Graveyard. Before adding words, ask what
+the player already knows from where they are looking. Keep the full meaning in the <code>aria-label</code>
+for screen readers, since they don't get the visual context. (Added 2026-10-06, per explicit
+request: "always think contextually".)</p>
+<h2 id="doc-style-guideline-h9">7. Layout &amp; responsiveness</h2>
+<p><code>--match-card-w</code>/<code>--match-card-h</code> is the ONLY sizing lever for in-match cards (<code>.hq-tile</code>,
+<code>.board-card</code>, <code>.hand-strip .card-tile</code> all consume it identically) — never reintroduce a
+per-context hardcoded size for these three; that was a real bug (three independently-drifted
+sizes) before this convention existed. The Codex/pool/deck-editor/Forge's own <code>.card-tile</code>
+default sizing is a deliberately SEPARATE system (browsing many cards vs. cards actually in
+play) — don't try to unify the two.</p>
+<p>Tiles in the same row (e.g. the Home menu's Settings/Profile/Ranking/Guild/Admin row) are the
+same width AND height — a wrapper element must not leave its button shrink-wrapped.</p>
+<p>One mobile breakpoint handles phone width — add a new responsive rule inside that existing
+<code>@media</code> block rather than introducing a second breakpoint. <code>.topbar-wrap</code> must never change
+width based on the current tab; only <code>.content-wrap</code> toggles between the narrow (1220px-capped)
+and wide (<code>min(1900px, 98-99vw)</code>, in-match/map views) layouts — a nav bar that visibly resizes
+between tabs was explicitly flagged as disorienting and fixed.</p>
+<p>When testing any layout change with Playwright, set an explicit viewport
+(<code>{width:1400,height:1000}</code> has been the working size) rather than trusting the default
+1280×720 — a real bug shipped once where hover/mouse-position checks silently no-op'd because
+the target element rendered below the default viewport's bottom edge, with no thrown error to
+flag it.</p>
+<h2 id="doc-style-guideline-h10">8. Theming</h2>
+<p>The game already supports light and dark themes via the token system in section 1 — a new
+component must render correctly in both, not just whichever theme you happened to preview in.
+Never give a token its only definition inside a <code>prefers-color-scheme</code>/<code>[data-theme]</code> block; the
+bare <code>:root</code> block is always the light-theme source of truth, with the dark blocks only ever
+redefining tokens that already exist there. Text placed over the splash art or another dark
+image must use a light, shadowed color — never the theme <code>--ink</code>, which can be dark.</p>
+<h2 id="doc-style-guideline-h11">9. Card art direction (PixelLab) — added 2026-10-02</h2>
+<p>Every card portrait is pixel art in a Pokémon-like creature style. Three rules apply to all of
+them, then a "genre" decides the mood.</p>
+<h3 id="doc-style-guideline-h12">Always</h3>
+<ul>
+<li>
+<p><strong>Natural animal anatomy.</strong> Not anthropomorphic: no hands, no standing upright like a person,
+  no human clothing by default. Animals without legs (fish, snakes, worms, whales) never get legs;
+  birds perch or fly; quadrupeds stay on four legs.</p>
+</li>
+<li>
+<p><strong>Gear fits the animal's body.</strong> "Knight"/"armoured" cards wear armour shaped to the creature
+  (a helmet and back-plate on a dolphin, a gold chest plate on a bee) — never a human suit of
+  armour, never a weapon held in hands. A weapon, if any, is strapped on.</p>
+</li>
+<li>
+<p><strong>Clothing only when it IS the card's identity</strong> — e.g. the Cobalt Talon Skirmisher's tiny cloth
+  scarf and padded vest, the Raccoon Nightcrew's thief mask. Keep it small.</p>
+</li>
+</ul>
+<h3 id="doc-style-guideline-h13">Make every card unique — four levers</h3>
+<p>Two cards from the same faction/species must differ on at least two of these:</p>
+<ol>
+<li><strong>Pose</strong> — perching, diving, weaving, sprinting, rearing, sleeping, mid-leap, seen from below…</li>
+<li><strong>Equipment</strong> — none, a bundle, a scroll, a cloth scarf, fitted armour, a shell…</li>
+<li>
+<p><strong>Scene</strong> — what the card is DOING, taken from its name/flavor (building a nest, delivering a
+   message, guarding eggs, slipping out of a window with loot).</p>
+</li>
+<li>
+<p><strong>Background</strong> — canyon at sunset, misty canopy, moonlit wall, reef, snowdrift, storm.</p>
+</li>
+</ol>
+<p>A good test: each portrait should tell a different story beat, the way the Wandering Traveller
+variations read as "generic", "exploring" and "hopeful about the road ahead". If a new portrait
+could be swapped with a sibling card's without anyone noticing, regenerate it.</p>
+<h3 id="doc-style-guideline-h14">Genres (mood by power)</h3>
+<table>
+<thead>
+<tr>
+<th>Genre</th>
+<th>Used for</th>
+<th>Look</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cute</strong></td>
+<td>Starter/common and weak cards (low attack + health)</td>
+<td>Big sparkling eyes, round chubby shapes, bright cheerful palette, everyday scenes</td>
+</tr>
+<tr>
+<td><strong>Brave</strong></td>
+<td>Mid-strength fighters and veterans</td>
+<td>Confident determined eyes, sturdy shapes, warm rich palette, dynamic action pose</td>
+</tr>
+<tr>
+<td><strong>Menacing</strong></td>
+<td>The strongest creatures, bosses, apex predators (high rarity or very high stats)</td>
+<td>Narrowed glowing eyes, angular silhouette, dramatic low-angle lighting, darker saturated palette, imposing pose, scars</td>
+</tr>
+</tbody>
+</table>
+<p>Rule of thumb when rarity doesn't settle it: attack + health under ~15 → Cute, ~15–27 → Brave,
+28+ → Menacing. Faction lines escalate inside one species — e.g. Hummingbird recruits and couriers
+are Cute, the Dominion Nestguard and Sunspire Envoy are Menacing.</p>
+<h3 id="doc-style-guideline-h15">Prompt template</h3>
+<p><code>&lt;genre prefix&gt;</code> + <code>natural animal anatomy, not anthropomorphic, no hands, never standing upright
+like a human,</code> + <code>&lt;subject + pose&gt;, &lt;equipment&gt;, &lt;scene&gt;, &lt;background&gt;</code>.
+Genre prefixes and the generation/download technique live in <code>pixellab-art-batch-status.md</code>.
+Generate at 128×128 (Pro returns four variations) with background removal OFF, pick the variation
+with the clearest silhouette and the most distinct story beat, and crop it with
+<code>art_staging/crop.py</code>.</p>
+<h2 id="doc-style-guideline-h16">Before you ship a visual/UX change, verify:</h2>
+<ol>
+<li>
+<p>Every new color is a token, defined in all three required places (bare <code>:root</code>, the
+   <code>prefers-color-scheme</code> dark override, the <code>[data-theme="dark"]</code> override) — not a hardcoded hex.</p>
+</li>
+<li>
+<p>If it touches a card tile, it goes through <code>cardTileHTML()</code> (or <code>boardCardHTML()</code> for the live
+   battlefield specifically), not a new bespoke template.</p>
+</li>
+<li>
+<p>If it's a new hover/click flourish, it's driven by real interaction, not a permanent loop —
+   and it's opted into deliberately per-context, not applied globally.</p>
+</li>
+<li>
+<p>It has its own distinct <code>SoundKit</code> cue if it represents a new mechanic, built from <code>tone()</code>/
+   <code>noise()</code> only — and that cue/visual is genuinely distinguishable from every other mechanic's,
+   not a reused "close enough" tone or glyph.</p>
+</li>
+<li>
+<p>If it's a new skill/status VFX event, it needs no special-casing to queue correctly — it just
+   needs a real, distinct <code>ev.type</code> (or a distinct <code>ev.kind</code> if it's shaped as <code>statusFx</code>) so
+   <code>vfxKindOf()</code> buckets it apart from every other mechanic; verify the same-kind-vs-different-kind
+   200ms/500ms breathing rule reads right in a real multi-effect round, not just in isolation.
+   And check it isn't SILENT: a new <code>statusFx</code> <code>kind</code> with no matching branch in
+   <code>renderVfxForEvent</code> produces no error of any kind, just nothing — cross-reference the engine's
+   <code>events.push({type:'statusFx', kind:...})</code> call sites against the front end's if/else chain
+   rather than trusting a visual skim (this is exactly how <code>bleed</code> and <code>esprit</code> went unnoticed for
+   a while — see <code>context-vfx-animation.md</code>'s "Skills/VFX/SFX coverage audit" section).</p>
+</li>
+<li>
+<p>Any new dropdown is alphabetized (except placeholders and Rarity).</p>
+</li>
+<li>It was checked at a real mobile viewport width, not just desktop.</li>
+<li>It was checked in both light and dark.</li>
+<li>
+<p>If it reveals a genuine platform limitation, that limitation is disclosed honestly rather than
+   faked or silently dropped.</p>
+</li>
+<li>
+<p>New card art follows section 9: natural anatomy, the right genre for the card's power, and
+    distinct from its siblings on at least two of pose / equipment / scene / background.</p>
+</li>
+<li>
+<p>Its labels lean on context: no word that the control's position already makes obvious
+    (section 6, "Think contextually"), with the full meaning kept in <code>aria-label</code>.</p>
+</li>
+</ol></div></div><div class="subpane" data-group="guide" id="doc-mechanics-guideline" hidden><h3>claude/mechanics-guideline.md <small class="note">read before: a new mechanic, skill or status</small></h3><div class="doc"><h1 id="doc-mechanics-guideline-h1">Bramblewood Arena — Mechanics Guide (mandatory before shipping any new mechanic)</h1>
+<h2 id="doc-mechanics-guideline-h2">How this doc is used</h2>
+<p>Read this before designing or implementing ANY new card effect, status, resource, trigger,
+action, or combat rule — and before touching an existing one. It is a checklist of the shapes
+and conventions already established, so a new mechanic slots into the existing system instead of
+becoming a one-off exception. Where a design question is flagged below as "ask, don't guess,"
+that's not a suggestion — build the same way this project already treats these: pose the concrete
+question(s) to the user and wait, rather than picking an interpretation and building it. The
+<code>context-combat-engine.md</code> and <code>context-economy-progression.md</code> docs are the per-system deep
+reference this doc summarizes into cross-cutting rules — read the relevant one too for exact
+function names and current edge cases.</p>
+<h2 id="doc-mechanics-guideline-h3">1. Resource model — two systems, never conflate them</h2>
+<p><strong>In-match resources</strong> (Gold/<code>pl.acorns</code>, Prayer, Devilry, Stone, Lumber, Elemental Energy) exist
+only during a live match, reset every game, gate card costs, and are shown in the in-match HUD.
+<strong>Out-of-match currencies</strong> (Gold, Gems, Magic Dust, Metal) persist in <code>localStorage</code>, power card
+leveling and Conquest rewards, and only ever appear on the Player/Forge/Conquest tabs. Both
+systems currently use the word "Gold" for different things — a known, flagged overlap, not a bug
+to silently fix by renaming one of them. <strong>Do not rename or merge either currency without checking
+<code>roadmap-and-backlog.md</code>'s "Rename Gold → Stone" item first</strong> — it's deliberately not started
+because it needs a design answer (what would Lumber/Elemental Energy each be FOR) before it's a
+build, not a guess. The out-of-match Gold currency renders with <code>coinIconHTML()</code> (a custom SVG),
+never the 🪙 emoji, which is reserved for the in-match resource — keep that visual distinction;
+it's the one thing currently telling the two Golds apart at a glance.</p>
+<p><strong>Stone is a tier-2/advanced resource (locked in 2026-09-21) — do not author ordinary card costs
+or requirements against it.</strong> Every unit now grants a flat 1 Lumber on discard (Structure vs.
+non-Structure no longer matters, see <code>game-design-v32-addendum.md</code>'s economy note), and <code>refine</code>
+(the Elemental Energy converter) consumes Lumber, not Stone, to match (2026-09-19 fix). Lumber is
+the standard, broadly-available resource a normal card should cost or require. Stone stays in the
+data model but is dormant by default — nothing grants it via discard/pitch, and the only way to
+gain any right now is the <code>gainStone</code> custom-trigger action (see <code>ACTION_DEFS</code>) — intentionally,
+so it's available for a future advanced/gated mechanic without being something every deck
+accumulates incidentally. When designing a NEW card (including the upcoming first real card
+batch), a resource-gated cost or a <code>gainStone</code>/consumes-Stone ability should be the deliberate
+exception for something meant to feel rare/late-game-ish, never the default choice a common or
+early-curve unit reaches for — reach for Lumber (or Gold/Prayer/Devilry, per their own existing
+roles) instead. As of this write-up, canonical/cards.json's 238 cards contain zero Stone cost/
+requirement references — this rule is prospective (governing what gets authored from here on),
+not a data migration.</p>
+<blockquote>
+<p><strong>Audit correction (2026-09-29):</strong> a full read of <code>canonical/cards.json</code> found Elemental Energy
+is even more dormant than "nothing spends it yet" implies — <strong>zero cards carry a <code>refine</code>
+trigger</strong>, so nothing in the current 238-card roster can <em>produce</em> Elemental Energy either. It
+and Metal are pure engine/HUD plumbing today with no card-side footprint at all. Flagged as
+backlog item needing a decision on what these resources are actually for (see
+<code>roadmap-and-backlog.md</code>).</p>
+</blockquote>
+<h2 id="doc-mechanics-guideline-h4">2. Skill/passive architecture</h2>
+<p>Every passive lives in <code>PASSIVE_DEFS</code> (or, for the handful with richer parameter shapes, directly
+in <code>SKILL_DEFS</code>) with a <code>key</code>, <code>label</code>, <code>kind</code>, and a <code>desc()</code> function. Four <code>kind</code>s cover
+everything so far — use the matching one rather than inventing a new shape:</p>
+<ul>
+<li><strong><code>number</code></strong> — a plain stacking or scaling magnitude (Poison, Armor, Rally).</li>
+<li><strong><code>boolean</code></strong> — an on/off passive with no parameter (Guardian, Stealth, Rage).</li>
+<li>
+<p><strong><code>twoNumber</code></strong> — a paired value, most often chance+duration (Freeze, Sleep, Paralyze, Blind,
+  Shock) or time+damage (Explode).</p>
+</li>
+<li>
+<p><strong><code>selectNumber</code></strong> — a dropdown that picks a mode, which may itself reveal a companion number
+  field depending on the choice (Chained's break-condition picker is the reference example). This
+  is the general-purpose row kind for "pick a mode, and only some modes need a number" — reuse it
+  rather than hand-rolling a new conditional-field UI.</p>
+</li>
+</ul>
+<p>When a mechanic needs its own extensible list of options (Chained's break conditions today,
+something similar tomorrow), follow the <code>CHAIN_BREAK_OPTIONS()</code> pattern: one small function
+returning an array of <code>{value,label}</code>, with a comment marking it as "the one place to add more" —
+don't inline a growing list of conditions directly into the skill definition.</p>
+<p>Resistance and Weakness deliberately live OUTSIDE the "+ Add Skill" list, in their own dedicated
+add/remove pill UI on the card form — they're common enough, and paired enough (a Resist and a
+matching Weakness net to 1x automatically), to earn their own area rather than crowding the
+generic skill picker. A future mechanic with a similarly-paired, similarly-universal shape is a
+candidate for the same treatment; most new mechanics are not, and belong in the normal list.</p>
+<blockquote>
+<p><strong>Audit correction (2026-09-29):</strong> the pairing above describes the intended design, but no card
+in <code>canonical/cards.json</code> has ever actually been authored with a <code>weakness</code> — 18 cards carry
+<code>resist</code>, zero carry <code>weakness</code>. Treat Weakness as designed-but-unauthored, not as an existing
+paired system with real examples, until a card actually uses it.</p>
+</blockquote>
+<p><strong>Prefer the generic Custom Triggers system (<code>TRIGGER_DEFS</code>/<code>ACTION_DEFS</code>, an <code>effects.triggers</code>
+entry) over a new dedicated hardcoded field whenever the generic system already covers the same
+timing and action.</strong> (2026-09-21, "Make consistent the abilities" pass — Arrow N/Arrow(=Attack)
+were migrated off <code>effects.missile</code> onto the generic system on 2026-09-20, and On Attacked: Spawn
+off <code>effects.onAttackedSpawn</code> on 2026-09-21, both onto a plain On-Trigger + "Spawn card(s)"/"Deal
+damage" trigger row.) A dedicated field is still the right call when the generic action genuinely
+can't reproduce the needed behavior — e.g. <code>effects.onDeathSpawn</code> was deliberately KEPT as its own
+field rather than migrated, because it has real placement timing (refill the exact slot the dying
+card vacated, deferred until after the round's whole death-filter pass) that the generic
+<code>spawnCard</code> action's plain "append to a flank" doesn't replicate. Check whether the
+timing/placement actually matches before defaulting to "migrate it" — when it does match, prefer
+the generic system; when it doesn't, keep the dedicated field and say why in a comment, the same
+way this file does.</p>
+<blockquote>
+<p><strong>Audit check (2026-09-29):</strong> verified directly against the live <code>canonical/cards.json</code> (334
+cards) — <code>effects.missile</code> and <code>effects.onAttackedSpawn</code> both return zero hits. This migration
+is genuinely complete, confirming the claim above. (A first audit pass flagged this as
+incomplete, but that pass was run against a stale 238-card project-doc mirror rather than the
+live 334-card file the game actually builds from — corrected here after re-checking against the
+real source.)</p>
+</blockquote>
+<h2 id="doc-mechanics-guideline-h5">3. Status-effect shapes</h2>
+<p>Four shapes are already established — pick the one matching a new status's real behavior instead
+of inventing a fifth:</p>
+<ol>
+<li>
+<p><strong>Stacking numeric, ticks or decays every round</strong> — Poison (ticks as damage), Bleed (ticks on
+   the card's own actions), Corrode (decays 1/round, saps effective Attack). Use this when the
+   effect should compound with repeat application and fade or resolve on its own schedule.</p>
+</li>
+<li>
+<p><strong>Plain permanent passive</strong> — a <code>boolean</code> or <code>number</code> PASSIVE_DEFS entry with no duration at
+   all (Rage, Guardian, Armor, Rally). Use this when the effect is just "always true while this
+   card is on the board," no timer involved.</p>
+</li>
+<li>
+<p><strong>Chance+duration timed lockout/debuff</strong> — Freeze, Sleep, Paralyze, Blind, Shock: each landed
+   attack has a Chance% to apply for Duration round(s), stored as <code>{chance, duration}</code>. Use this
+   for "sometimes happens, wears off after N rounds" effects, and pick a distinct break/interaction
+   rule per status the way these five each do (Sleep breaks on any damage taken; Frozen doesn't;
+   Paralyze re-rolls every round) rather than treating all timed effects as identical once applied.</p>
+</li>
+<li>
+<p><strong>No-fixed-duration, break-condition lockout</strong> — Chained: no timer at all, cleared only by a
+   configurable trigger (<code>maybeBreakChain</code>, extensible via <code>CHAIN_BREAK_OPTIONS</code>). Use this only
+   when the request genuinely describes a condition-based release rather than a countdown — don't
+   default to this shape just because it's the newest one.</p>
+</li>
+</ol>
+<h2 id="doc-mechanics-guideline-h6">4. Trigger &amp; action vocabulary</h2>
+<p>Triggers and actions are both flat registries (<code>TRIGGER_DEFS</code>, <code>ACTION_DEFS</code>) that the Codex's
+Reference tab renders directly from — add a new trigger/action to the registry, never hand-write
+Reference tab text, or the two will drift.</p>
+<p>The single most-often-mis-designed distinction: <strong><code>onReady</code> fires exactly ONCE, the round a
+card's Wait first reaches 0 — not every round after.</strong> For "does something every round this card
+is Ready," use <strong><code>perTurn</code></strong> instead. This has already caused one real bug (Dark Points'
+"generates N every turn" needing to move off <code>onReady</code>) — when a request says "every turn"/
+"every round," reach for <code>perTurn</code>, and when it says "the moment it's ready"/"once ready," reach
+for <code>onReady</code>; don't assume they're interchangeable.</p>
+<p>Other triggers worth remembering precisely: <code>onKill</code> fires for melee kills only, not ranged/
+triggered damage; <code>onAttacked</code> fires when a card is hit and SURVIVES; <code>onColumnSpawn</code> fires for
+either side spawning into that lane, not just an ally. When a new trigger is genuinely needed,
+add it to <code>TRIGGER_DEFS</code> with a <code>desc</code> precise enough that a future session won't need to
+re-derive its exact firing rule from the engine source.</p>
+<blockquote>
+<p><strong>Audit correction (2026-09-29):</strong> the generic <code>effects.triggers</code> system itself is used by only
+13 of 238 cards, and within that small sample the actions used are narrow (mostly <code>gainGold</code> on
+kill, one-shot buffs). <code>perTurn</code> — this section's own worked example for the Dark Points fix —
+appears on zero authored cards. Most of this vocabulary is real and working, but largely
+undemoed in actual content.</p>
+</blockquote>
+<h2 id="doc-mechanics-guideline-h7">5. Combat/column semantics — ask before touching</h2>
+<p>The board is <code>{left:[], center:[], right:[]}</code> per side; center holds exactly one card and is
+where the first card played always lands. <code>combatColumnsOf()</code> gives each side's raw column
+numbering (center=0, left flank negative, right flank positive, counted out from that side's own
+center) — this is the gathering/bookkeeping structure, but it is <strong>not</strong> what decides who an
+attacker actually swings at.</p>
+<p><strong>Corrected 2026-09-21</strong> (this section previously described the PRE-V26 strict same-column rule
+as current, which it no longer is — found while investigating why <code>test_column_align.js</code> was
+failing about half the time; see <code>game-design-v26-addendum.md</code> for the full history). Actual live
+targeting goes through <code>resolveLiveTarget()</code>, the <strong>rank-interlock/parity facing rule</strong>: each
+side's WHOLE row (left+center+right, left-to-right) is treated as one centered rank. An attacker
+at position <em>i</em> of an <code>n_S</code>-card rank faces position <code>jf = i + (n_E-n_S)/2</code> in the enemy's
+<code>n_E</code>-card rank. Matching parity (<code>n_E-n_S</code> even) → <code>jf</code> is a whole slot → exactly one direct
+opponent (or the castle, if that slot is empty/out of range) — this is the common case and reads
+like the old strict rule whenever both sides' live counts happen to share parity. Mismatched
+parity → <code>jf</code> lands between two enemy slots → the attacker <strong>interlocks with both</strong>: a 50/50 pick
+each swing (or 50/50 vs. the castle if only one of the two candidate slots is real, or the castle
+outright if neither is). Because every attacker resolves its own facing independently on its own
+turn, a card straddled by two interlocking enemies can genuinely be hit by both of them in the
+same round, not just one shared coin flip. <code>opposingCardOf()</code> is a separate, deterministic
+(non-random) variant of the same math for "who's directly opposite me" triggers (Render, Explode,
+Gash) — it always tries the lower/floor candidate first, falling back to the upper one, never
+rolling a coin, so those triggers stay predictable even on an interlocked board. Guardian
+adjacency, Thorns, and Sweep/Swipe's flank-continuation all key off <code>combatColumnsOf</code>'s raw
+numbering directly (adjacency and "next card down the flank" are still well-defined there); only
+the primary attack TARGET goes through the interlock resolution above.</p>
+<p><strong>Two related questions remain standing "ask, don't guess" items</strong> — do not build either without
+the user's explicit answer first, because guessing wrong means a real rebuild, not a tweak: field
+"rebalancing" to recenter an uneven flank spread (moving cards between flank arrays, not just
+renumbering columns), and the Evade/Evasion merge (two genuinely different dodge maths, not two
+names for one mechanic). If a new request touches this same flank/column territory, treat it with
+the same caution — pose the concrete behavior-determining question(s) rather than picking an
+interpretation. (A third question — "does a card facing two opponents get attacked once or
+twice" — used to be listed here too; it's answered above, by the interlock rule's own mechanics,
+not a separate open decision.)</p>
+<blockquote>
+<p><strong>Audit note (2026-09-29):</strong> the Evade/Evasion split isn't just a theoretical fork to resolve
+before it matters — it's already live in 13 cards under two different shapes: <code>effects.evade</code>
+(a number, 1 or 2) on 7 cards (Plains Zebra, Arctic Fox Raider, Mountain Goat Climber, Taiga
+Lynx, Snowshoe Hare, Mangrove Kingfisher, Frost Hare Sprinter) vs. <code>effects.evasion</code> (a boolean)
+on a different 6 (Acacia Giraffe, Blind Cave Fish, Shimmerwing Stag, Reef Manta Glider,
+Cuttlefish Illusionist, Camouflage Frog). Resolving this only requires updating ~13 cards today;
+it gets more expensive to unwind the longer both shapes keep getting authored onto new cards.</p>
+</blockquote>
+<h2 id="doc-mechanics-guideline-h8">6. Card data &amp; leveling</h2>
+<p><code>canonical/cards.json</code> is the only hand-edited source of card data — bulk roster changes happen
+there and get rebuilt, never as bulk live-db seed docs (the db has a 5,000-document cap, and the
+baseline is never re-seeded into it). A card's level (0-10 today) is independent of its <code>rarity</code>
+and <code>splashEffect</code> fields — leveling shows as a small badge, never changes the rarity band. The
+stat curve (<code>1 + 0.06L + 0.004L²</code>, floored at <code>base+level</code>) is a known choke point
+(<code>getCardDefs()</code>) — any UI showing a card's live attack/health should read through it (or the
+board's own live instance) rather than the raw baseline, or a leveled card's boost silently won't
+show. The AI currently shares your per-<code>defId</code> level table (a known, flagged gap, not a secret
+bug to quietly patch without telling the user) — don't build around an assumption that leveling is
+already owner-scoped.</p>
+<blockquote>
+<p><strong>Audit note (2026-09-29, checked against the live 334-card <code>canonical/cards.json</code>):</strong> <code>rarity</code>
+is populated on 65 of 334 cards (19.5%) — 32 <code>common</code>, 30 <code>starter</code>, 3 <code>rare</code> — the other 269
+(80.5%) have no rarity value at all, and nothing above <code>rare</code> has ever been assigned (no Epic/
+Legendary/Ancient exists in the actual data despite the full ladder being documented elsewhere).
+Anything that reads <code>rarity</code> today (deck-limit rules, drop tables, rarity-tinted UI) is working
+off a field that's 4/5 empty. Treat rarity as a system with only its bottom two rungs authored,
+not a finished ladder in active use.</p>
+</blockquote>
+<h2 id="doc-mechanics-guideline-h9">7. Data model &amp; pipeline</h2>
+<p>There is exactly ONE combat engine implementation (<code>bramblewood-engine.js</code>), shared by the live
+Play tab and the Simulator's Web Worker — never fork combat logic between the two contexts, even
+for a performance shortcut. <code>getCardDefs()</code> (baseline merged with the live-db overlay, minus
+tombstones) is the one correct read path for card data everywhere in the UI. See
+<code>context-architecture-pipeline.md</code> before adding a new source file, changing the assembly script,
+or running the test suite — it has the exact rebuild command and the batching rule for running
+tests (4-8 files in parallel, never the whole suite at once, or contention produces false
+failures).</p>
+<h2 id="doc-mechanics-guideline-h10">8. Process &amp; decision discipline</h2>
+<ul>
+<li>
+<p><strong>Flag a mid-sentence cutoff rather than guess at how it finishes.</strong> The project's own history
+  (see the <strong>Bramblewood — Open Items</strong> microsite, https://claude.ai/artifact/LwqZ67zLJNhnwBQ29dJmXE,
+  and the version addenda) has multiple standing examples — follow the same pattern: quote what
+  was actually said, note where it cut off, and ask, rather than completing the thought yourself.</p>
+</li>
+<li>
+<p><strong>When a request is genuinely ambiguous on a system with real rebuild cost if you guess wrong,
+  ask 1-3 concrete, numbered questions</strong> rather than building your best interpretation — the
+  Heroic-tier leveling-curve questions and the combat-column questions above are the reference
+  examples of the right granularity (specific enough that a one-line answer unblocks the build).</p>
+</li>
+<li>
+<p><strong>Every shipped mechanic gets its own new Playwright test file</strong>, driving the real engine
+  function (<code>matchState.engine.makeBoardCard</code>, a real <code>resolveRound()</code>/<code>placeCard()</code> call) rather
+  than only asserting on hand-constructed state — and a full regression re-run (batched, per
+  section 7) before calling anything delivered.</p>
+</li>
+<li>
+<p><strong>Update the relevant <code>context-*.md</code> doc in place</strong> once a change ships — edit the section that
+  describes current behavior, don't just append a changelog line; the changelog belongs in the
+  version addendum, not the context doc.</p>
+</li>
+</ul>
+<h2 id="doc-mechanics-guideline-h11">Before you ship a new mechanic, verify:</h2>
+<ol>
+<li>
+<p>It uses one of the four established <code>PASSIVE_DEFS</code>/<code>SKILL_DEFS</code> kinds, or one of the four
+   established status-effect shapes — and if neither fits, that's a signal to double-check the
+   request rather than freelancing a fifth shape.</p>
+</li>
+<li>
+<p>Any new trigger/action is registered in <code>TRIGGER_DEFS</code>/<code>ACTION_DEFS</code>, not hand-added to the
+   Reference tab separately.</p>
+</li>
+<li>
+<p>If it touches column/flank targeting at all, it either respects the existing rank-interlock
+   facing rule (section 5) or the user has explicitly answered the specific behavior question
+   first — don't assume the old strict same-column rule still applies.</p>
+</li>
+<li>
+<p>It has a dedicated new engine-level test using real engine calls, plus a clean full regression
+   re-run.</p>
+</li>
+<li>
+<p>It has a <code>SoundKit</code> cue and a <code>renderVfxForEvent</code> branch (see <code>style-guideline.md</code> section
+   3-4) — for a new <code>statusFx</code> sub-<code>kind</code> specifically, cross-reference the engine's
+   <code>events.push({type:'statusFx', kind:...})</code> call sites against <code>renderVfxForEvent</code>'s statusFx
+   if/else chain (see <code>context-vfx-animation.md</code>'s "Skills/VFX/SFX coverage audit" section) rather
+   than trusting a visual skim — a missing branch fails completely silently, no console error.</p>
+</li>
+<li>
+<p>The relevant <code>context-*.md</code> doc has been updated in place to describe the new current state.</p>
+</li>
+<li>It doesn't gate a normal card's cost/ability on Stone — see section 1's tier-2 resource rule;
+   use Lumber (or Gold/Prayer/Devilry per their existing roles) unless the card is deliberately
+   meant to be a rare/advanced exception.</li>
+</ol></div></div><div class="subpane" data-group="guide" id="doc-context-architecture-pipeline" hidden><h3>claude/context-architecture-pipeline.md <small class="note">read before: build, new source file, deploy</small></h3><div class="doc"><h1 id="doc-context-architecture-pipeline-h1">Context: Architecture &amp; Build Pipeline</h1>
+<p>Read this before rebuilding, adding a new source file, setting up a fresh working directory, or
+running the test suite. Update it in place (not as a changelog) when the pipeline changes.</p>
+<h2 id="doc-context-architecture-pipeline-h2">Source files → one assembled artifact</h2>
+<p><code>assemble_arena.py</code> stitches these into <code>bramblewood-arena.html</code>:</p>
+<ul>
+<li>
+<p><code>arena_template.html</code> — page skeleton: theme CSS, empty tab containers, a hidden shared SVG
+  gradient defs block, raw <code>__CARD_DEFS__</code>/<code>__CHARACTER_DEFS__</code>/<code>__ARCHETYPE_ICON__</code> placeholder
+  tokens.</p>
+</li>
+<li>
+<p><code>arena_app.js</code> — all application logic: registries, data layer, Codex/editor/reference tabs,
+  Play tab, Simulator tab, SoundKit, every VFX utility, the speech framework, settings panel.</p>
+</li>
+<li>
+<p><code>bramblewood-engine.js</code> — the DOM-free combat engine, shared between the live Play tab
+  (<code>recordEvents:true</code>) and a Web Worker for the Simulator tab (<code>recordEvents</code> off, for speed).
+  There is only ONE engine implementation — never fork combat logic between contexts.</p>
+</li>
+<li>
+<p><code>canonical/cards.json</code> — the full card roster (id, stats, effects, art, flavor). The ONLY
+  hand-edited source of card data; <code>assemble_arena.py</code> embeds it as <code>CARD_DEFS_BASELINE</code>.</p>
+</li>
+<li>
+<p><code>canonical/characters.json</code> — the Bramble/HQ-passive roster (castle, collapsed-mine,
+  plains-terrace, etc.), embedded as <code>CHARACTER_DEFS</code>.</p>
+</li>
+<li>
+<p><code>gsap.min.js</code> / <code>Flip.min.js</code> — inlined as literal script content (an Artifact-published page
+  can't load external CDN scripts, so these are fetched via <code>npm install gsap</code> ahead of time and
+  pasted in, not <code>&lt;script src&gt;</code>-referenced).</p>
+</li>
+</ul>
+<p>Run <code>python3 assemble_arena.py</code> from the directory containing all of the above (it resolves
+paths relative to its own location). Output: <code>bramblewood-arena.html</code>.</p>
+<p><strong>Setting up a fresh working directory:</strong> pull every file in the list above from the Claude
+Project (<code>claude/arena_app.js</code>, <code>claude/arena_template.html</code>, <code>claude/bramblewood-engine.js</code>,
+<code>claude/cards-canonical.json</code> → save as <code>canonical/cards.json</code>, <code>claude/characters-canonical.json</code>
+→ save as <code>canonical/characters.json</code>, <code>claude/assemble_arena.py</code>) before running the assembly
+script — a partial pull produces cryptic "file not found" or leaves <code>__CHARACTER_DEFS__</code> etc. as
+literal unsubstituted placeholder tokens in the output rather than a clear error.</p>
+<h2 id="doc-context-architecture-pipeline-h3">Live database overlay (card data only)</h2>
+<p><code>CARD_DEFS_BASELINE</code> (from <code>canonical/cards.json</code>) is the instant-first-paint baseline. The
+published Artifact also declares the <code>db</code> capability and subscribes to
+<code>db.collection('cards').onSnapshot</code> — any doc there overlays the baseline by id (edit),
+adds to it (a custom card), or removes it (a <code>{__deleted:true}</code> tombstone). <code>getCardDefs()</code> is
+the ONE function every tab reads from — it always returns baseline-merged-with-live-minus-
+deleted. <strong>The baseline is never re-seeded into the database</strong> — only edits/additions/tombstones
+are ever written as db docs. Extending the roster in bulk means editing <code>canonical/cards.json</code>
+and rebuilding, not writing bulk seed docs (the db has a 5,000-document cap).</p>
+<p>Characters (<code>CHARACTER_DEFS</code>) are NOT wired into this live-db overlay system — there's no request
+yet to let players create/edit their own Brambles, so they're baked into the page at assembly
+time only.</p>
+<h2 id="doc-context-architecture-pipeline-h4">Publishing</h2>
+<p><code>capabilities: {db: {}}</code> is declared on the artifact. Declaring <code>db</code> makes the artifact
+organization-internal only (not publicly link-shareable) — this is a known, accepted tradeoff,
+not an oversight; the three "Classic" standalone sites (frozen, unmodified, listed in
+<code>game-design.md</code>) remain as the public-facing fallback. Re-publishing after a code change never
+needs to re-touch the database declaration — it persists across republishes automatically as long
+as <code>capabilities</code> is omitted or repeated unchanged on the Artifact tool call.</p>
+<h2 id="doc-context-architecture-pipeline-h5">Test suite</h2>
+<p>Playwright-based, <code>test_*.js</code> files, run via <code>node &lt;file&gt;.js</code> (not a test runner — each file is a
+standalone script with its own <code>pass</code>/<code>fail</code> counters and <code>process.exit(fail&gt;0?1:0)</code>). 74 files
+as of Version 30.</p>
+<p><strong>Running the full suite:</strong> batch in groups of 4-8 run in parallel, not all 74 at once — running
+everything in one large parallel batch produces transient, CPU-contention-driven failures in
+tests that are otherwise completely deterministic (confirmed repeatedly across many sessions: the
+SAME set of tests fails under heavy parallel load and passes 100% cleanly when re-run in
+isolation immediately after). When the full-suite run shows failures, always re-run each failing
+file individually before concluding anything is actually broken — don't report a contention
+failure as a real regression.</p>
+<p><strong>Common test gotchas</strong> (each cost real debugging time to discover — don't rediscover them):</p>
+<ul>
+<li>
+<p>Driving the engine directly via <code>page.evaluate()</code> skips the normal click-through navigation, so
+  <code>switchTab('play')</code> must be called explicitly BEFORE <code>startMatch('ai')</code> — otherwise <code>view-play</code>
+  stays <code>hidden</code> (default tab is <code>'codex'</code>) and every <code>getBoundingClientRect()</code> in the test reads
+  back <code>{0,0,0,0}</code> regardless of real layout.</p>
+</li>
+<li>
+<p>A played card's hand-uid is not always its final board-uid — see
+  <code>context-vfx-animation.md</code>'s "trap to remember" note. A test that needs the real board uid
+  should read it from the <code>'play'</code> event, not the uid passed to <code>playCardByUid</code>.</p>
+</li>
+<li>
+<p><code>afterPlayerAction()</code> keeps doing pacing work for a real span of wall-clock time AFTER
+  <code>matchState.resolving</code> already reads <code>false</code> — a test polling only <code>resolving</code> and then
+  checking something that fires at the tail end of that function (see the speech framework's
+  onSummon trigger) needs real extra wait time past the polling loop, not just a short fixed
+  buffer. See <code>context-vfx-animation.md</code>'s timing note for the specifics.</p>
+</li>
+<li>
+<p>To force a card into a specific test scenario (low HP, no wait, etc.), construct it directly
+  via <code>matchState.engine.makeBoardCard(defId)</code> and assign fields (<code>.hp</code>, <code>.wait</code>, etc.) before
+  calling <code>renderBoard()</code>/<code>resolveRound()</code> — this is the established pattern across the test
+  suite, not a special case.</p>
+</li>
+<li>
+<p><code>SPEECH_CHANCE</code>/RNG-gated systems: monkeypatch <code>Math.random</code> to a fixed value (e.g. <code>()=&gt;0</code>) to
+  force a deterministic pass through a probability gate in a test, but remember to clear any
+  cooldown state (<code>lastSpokeAt.clear()</code>) the gate also depends on.</p>
+</li>
+</ul>
+<h2 id="doc-context-architecture-pipeline-h6">Working-directory pitfalls</h2>
+<p>Multiple stale <code>proj_out*</code>/<code>project_sync</code> directories have accumulated across sessions in
+<code>/home/claude/</code> from earlier pulls. Always confirm which directory holds the CURRENT files by
+checking mtimes (<code>ls -la</code>) before assuming a directory is up to date — don't assume
+<code>/home/claude/work</code> (or whatever the current working directory happens to be) already has
+everything; <code>canonical/</code> in particular has gone missing from the working directory mid-session
+before (present in an older <code>proj_out*</code> dir, absent from the active one) because it isn't one of
+the files this doc's own project-doc list above enumerates as pulled by default in every session.</p></div></div><div class="subpane" data-group="guide" id="doc-context-combat-engine" hidden><h3>claude/context-combat-engine.md <small class="note">read before: combat rules and the engine</small></h3><div class="doc"><h1 id="doc-context-combat-engine-h1">Context: Combat Engine</h1>
+<p>Read this before touching combat resolution, targeting, turn order, or any card effect/trigger.
+Update it in place (not as a changelog) when the rules described here change. Full mechanic-by-
+mechanic history lives in <code>game-design.md</code>; this is the current-state reference.</p>
+<h2 id="doc-context-combat-engine-h2">Board model</h2>
+<p>Each player's row is <code>{left:[], center:[], right:[]}</code>. <code>center</code> holds exactly one card. The
+first card either player plays in a match always lands in <code>center</code>, regardless of which side
+(left/right) was requested — subsequent cards go to whichever flank was actually chosen. If a
+card dies out of center and a flank has cards, the nearest flank card collapses into center
+automatically (a 50/50 coin flip when both flanks are non-empty) — this is the <code>collapseIn</code>
+event.</p>
+<p>Columns are numbered symmetrically per side, both sides sharing one numbering scheme, with center
+as column 0. <code>combatColumnsOf()</code> is the one function that derives a card's column from its array
+position — never infer column position any other way.</p>
+<h2 id="doc-context-combat-engine-h3">Turn order</h2>
+<p>Attackers are gathered (<code>gatherAttackers</code>: Wait=0, not Reloading/Stunned/Shell-skipped), then
+sorted by Quick-keyword first, then by absolute board column left-to-right across BOTH sides
+(sharing one column numbering), falling back to side (enemy before player) only when two
+attackers share a column. This means play visibly alternates top/bottom as it goes left to right,
+not "resolve one whole side, then the other." Which side wins a same-column tie alternates by
+round (not hardcoded to one side).</p>
+<h2 id="doc-context-combat-engine-h4">Targeting</h2>
+<p>An attacker's primary target uses the rank-interlock/parity facing rule (<code>resolveLiveTarget</code>):
+both sides' whole rows are centered as one unit and matched by position, so unequal row counts
+correctly interlock instead of just comparing raw column numbers — a card can end up facing one
+direct opponent, two straddled opponents (50/50 pick), one opponent-or-castle (50/50), or the
+castle outright, depending on parity. If there's no live opponent to resolve to, the attack goes
+straight to the enemy HQ. Stealth overrides targeting entirely and always hits the HQ directly,
+ignoring column state.</p>
+<p>Sweep and Swipe are both "extra hit" keywords that key off the primary target's resolved column,
+but they are NOT the same mechanic:</p>
+<ul>
+<li>
+<p><strong>Sweep</strong> (<code>effects.sweep = N</code>, a number) continues further down the SAME flank the attacker is
+  facing, past the primary target, for N additional live cards (<code>findNextLiveCardBeyond</code>). It
+  never touches the castle — if it runs off the end of that flank, the extra hits just don't
+  happen.</p>
+</li>
+<li>
+<p><strong>Swipe</strong> (<code>effects.swipe = true</code>, a boolean — redesigned 2026-09-21) hits the two enemy
+  columns immediately flanking the primary target's own column (<code>target.col-1</code> and
+  <code>target.col+1</code>), regardless of which flank the attacker itself is on. A live card in one of
+  those columns takes a full hit; an empty/off-board flank column redirects that swing straight
+  to the enemy castle instead (no Siege bonus — Siege is reserved for the PRIMARY hit landing on
+  the castle). So a lone defender with nothing on either side of it eats the castle hit twice —
+  once per empty flank. Swipe only fires when the primary attack itself landed on a card (there's
+  no reference column to flank from if the primary hit already resolved straight to HQ).</p>
+</li>
+</ul>
+<p>Both Sweep's continuation hits and Swipe's flank hits get their own independent Evasion roll,
+Guardian redirect, and full per-hit status treatment (poison/bleed/scar/Chained-break/Sap/kill-
+credit/onAttacked) — same as a primary hit, just resolved a second (or third) time.</p>
+<h2 id="doc-context-combat-engine-h5">Resolution order (one full round, synchronous in the engine)</h2>
+<p>Round-start custom triggers → poison ticks (deliberately BEFORE Renewal/Regen/Round-Start/Per-
+Turn, so a Renewed card still eats one guaranteed tick) → gather attackers → sort (Quick, then
+column, side breaks ties) → normal attacks (Stealth override; primary hit always connects;
+Guardian may redirect; Sweep/Swipe extra hits are each independently Evasion-gated; thorns
+reflection; onAttackedSpawn; Shell/Expose/poison queued) → death cleanup (bounty gold,
+onDeathSpawn, exile-on-death, onKill triggers) → end-of-round upkeep (Shell activate/deactivate,
+Reload cooldown, Stun clears, Wait decrements once, onReadyDamage/missile(onReady)/render(onReady)
+fire, onReadyGold/onReadyPrayer pay out) → death cleanup again → game-over check.</p>
+<p><strong>Important:</strong> the engine runs an ENTIRE round synchronously, including removing dead cards,
+before any of it is animated client-side. The UI replays the event log afterward as a paced
+sequence. This is why <code>matchState.replayCards</code> (hp/status snapshot) and <code>matchState.replayRows</code>
+(row-membership snapshot) exist — a card that died mid-round is already spliced out of the live
+board array by the time its OWN earlier-in-the-round events get replayed, so the UI can't just
+query the live board for it. Any new per-event UI logic that needs a card's state mid-replay
+should read from these snapshots, not the live board, unless it's a freshly-spawned uid the
+snapshot doesn't know about yet (live board is the correct fallback there).</p>
+<h2 id="doc-context-combat-engine-h6">Trigger/effect vocabulary</h2>
+<p>Triggers: <code>onSpawn</code>, <code>onReady</code> (fires once, the round Wait first hits 0 — not every round),
+<code>onDeath</code>, <code>onAttack</code>, <code>onAttacked</code>, <code>onKill</code> (melee kills only, not ranged/onReadyDamage),
+<code>onExile</code>, <code>onAllySpawn</code>, <code>onRoundStart</code>. Actions: damage, gain gold/prayer, draw, spawn, buff/
+debuff attack or health, poison, expose, stun, reduce-wait-of-spawned-ally, exile self. The
+Codex's Reference tab is generated from the same registry the editor's dropdowns use, so it can't
+drift from what's actually implemented.</p>
+<p>Passive keywords currently implemented: Armor, Thorns, Swipe, Sweep, Rage, Expose, Guardian,
+Quick, Reload, Shell, Stealth, Evasion/Evade, Bleed, Fester, Rupture, Rally, Esprit, Bloodlust,
+Berserker, Regenerate, Chained, Resist, Weakness, Scurry, and more — see <code>game-design.md</code>'s
+per-version sections for what each does; this doc doesn't re-derive every one since the Codex
+Reference tab is the always-current source of truth for their exact current behavior.</p>
+<h2 id="doc-context-combat-engine-h7">Known open design questions (do not guess at these — ask first)</h2>
+<ul>
+<li>
+<p>Column facing when flank counts mismatch (a lane with more cards on one side than the other) —
+  largely addressed by the rank-interlock/parity facing rule (<code>resolveLiveTarget</code>), but see
+  <code>game-design-action-items.md</code>, Category: Combat rules for any remaining edge cases.</p>
+</li>
+<li>
+<p>Field "rebalancing" to recenter an uneven flank spread — a bigger change than it sounds, since
+  several mechanics (Guardian adjacency, Thorns, sweep-continuation) lean on today's flank-array
+  semantics. See the same doc.</p>
+</li>
+<li>
+<p>Evade/Evasion merge — two genuinely different dodge maths (alternating vs. probabilistic), not
+  just two names for one mechanic. Needs a decision on which semantics survive.</p>
+</li>
+</ul></div></div><div class="subpane" data-group="guide" id="doc-context-economy-progression" hidden><h3>claude/context-economy-progression.md <small class="note">read before: currencies, rewards, levels</small></h3><div class="doc"><h1 id="doc-context-economy-progression-h1">Context: Economy &amp; Progression</h1>
+<p>Read this before touching costs, rewards, currencies, or the leveling/Forge system. Update it in
+place (not as a changelog) when any of this changes.</p>
+<h2 id="doc-context-economy-progression-h2">Two separate currency systems — do not conflate them</h2>
+<p><strong>In-match resources</strong> (exist only during a live match, reset every game): Gold (<code>pl.acorns</code>
+field name — a historical artifact, not a typo), Prayer, Devilry, and Stone (added later as a
+fourth). These gate playing cards (<code>cost</code>, <code>prayerCost</code>, <code>devilryCost</code>, exile costs) and are
+generated by <code>onSpawnGold</code>/<code>onReadyGold</code>/<code>onSpawnPrayer</code>/<code>onReadyPrayer</code> effects, bounty kills,
+and discarding a hand card for gold (max once per turn, human only). Shown in the in-match HUD.</p>
+<p><strong>Out-of-match currencies</strong> (persist across matches, <code>localStorage</code>-backed via
+<code>loadCurrencies()</code>/<code>saveCurrencies()</code>): Gold, Gems, Magic Dust. These power card leveling (below)
+and only ever appear on the Player/Forge tabs, never inside a live match's HUD. <strong>Naming overlap
+is a known, flagged issue</strong> — both systems currently use the word "Gold" for different things.
+The in-match resource's rename to "Stone" was proposed specifically to resolve this but is a
+separate, not-yet-done backlog item (see <code>roadmap-and-backlog.md</code>) — don't assume it's done, and
+don't casually rename either currency without checking that backlog item first, since a rename
+touches dozens of call sites (see that doc's own note on why it's not a quick tweak).</p>
+<p>The out-of-match Gold currency displays with <code>coinIconHTML()</code> — a custom inline SVG coin,
+referencing a shared <code>&lt;radialGradient id="coinIcoGrad"&gt;</code> defined once in <code>arena_template.html</code>'s
+<code>&lt;body&gt;</code> — not the 🪙 emoji, which is reserved for the in-match resource specifically so the two
+stay visually distinguishable. Don't swap either back to a shared glyph.</p>
+<h2 id="doc-context-economy-progression-h3">Devilry ("Dark Points") generation shapes</h2>
+<p>Devilry (<code>pl.devilry</code>) is an in-match resource with several ways to generate it, all landing on
+the same field via the same <code>ensureStat(...).devilryGenerated</code> bookkeeping and pushing the same
+<code>{type:'devilry', ...}</code> replay event — a new generation shape should follow this pattern rather
+than inventing a parallel one. As of 2026-09-21, the full set:</p>
+<ul>
+<li>
+<p><code>effects.onSpawnDevilry</code> / <code>effects.onReadyDevilry</code> — legacy hand-authored top-level fields
+  (mirroring Gold/Prayer's own <code>onSpawnGold</code>/<code>onReadyGold</code> shape). <code>onReadyDevilry</code> is a "per
+  round while Ready" payout (gated on <code>c.wait===0</code>, in the same board-wide pass that also grants
+  onReadyGold/onReadyPrayer), not a one-time "just became ready" trigger — same
+  <code>onReady</code>-vs-<code>perTurn</code> naming trap <code>mechanics-guideline.md</code> already calls out for other
+  onReady*-named hooks.</p>
+</li>
+<li>
+<p><code>effects.triggers</code> with <code>{on:'perTurn', do:'gainDevilry', amount:N}</code> — the generic Custom
+  Trigger route, now the intended way to AUTHOR a new "generates Devilry every ready round" card
+  from scratch (see <code>test_dark_points.js</code> and its own comment on why <code>perTurn</code> was corrected from
+  an earlier, wrong <code>onReady</code> authoring).</p>
+</li>
+<li>
+<p><code>effects.inherentDarkness</code> (number, added 2026-09-21) — a named <code>PASSIVE_DEFS</code>/<code>SKILL_DEFS</code>
+  convenience preset for exactly the <code>onReadyDevilry</code> payout above (same gate, same bookkeeping,
+  same event shape) — lets a card carry "generates N Dark Points per round" as a plain numeric
+  "+ Add Skill" row instead of hand-authoring the Custom Trigger. Implemented as its own <code>if</code>
+  block right next to <code>onReadyDevilry</code>'s in <code>bramblewood-engine.js</code> (additive if a card somehow
+  has both, though no card is expected to).</p>
+</li>
+<li>
+<p>The archetype-wide Devilry-line discard bonus (<code>discardCardByUid()</code> in <code>arena_app.js</code>,
+  <code>darkPointBonus</code>) — any card whose <code>inferMechanicLine(...)==='devilry'</code> grants +1 Devilry when
+  PITCHED (discarded for its resource yield), on top of its normal pitch yield. This is an
+  archetype-level rule, not a per-card effect field.</p>
+</li>
+<li>
+<p><code>effects.coreEvil</code> (boolean, added 2026-09-21) — a CARD-level pitch-time bonus, +1 Devilry the
+  moment this specific card is pitched, independent of the Devilry mechanic line entirely (a card
+  with no Devilry archetype tag at all can still carry it) and additive with the archetype-wide
+  bonus above if a card happens to have both (implemented as <code>coreEvilBonus</code> computed alongside
+  <code>darkPointBonus</code> in <code>discardCardByUid()</code>, summed into one <code>darkPointBonus</code> total).</p>
+</li>
+</ul>
+<p>Both new passives also extend the ★ Dark-Point <code>abadge</code> condition (<code>arena_app.js</code>, the
+<code>e.onSpawnDevilry||e.onReadyDevilry||...</code> check) — any future Devilry-generation shape should be
+added to that same condition, or a card carrying it will show no ★ badge at all despite genuinely
+granting Dark Points.</p>
+<h2 id="doc-context-economy-progression-h4">Card leveling (0→10)</h2>
+<p>Every card has an independent level 0-10, stored in <code>myCardLevels</code> (<code>localStorage</code>-backed via
+<code>loadCardLevels()</code>/<code>saveCardLevels()</code>), keyed by <code>defId</code>. Leveling up costs Magic Dust + a smaller
+amount of Gold, rising per level. The stat curve is <code>1 + 0.06L + 0.004L²</code> (exactly +100% at level
+10), floored at <code>base + level</code> so a low-stat card's early levels are never rounded away to
+nothing by the multiplier. Leveling does NOT change a card's rarity band or visual rarity
+treatment — it's shown as a small level badge instead, deliberately kept independent of the
+rarity system.</p>
+<p><code>getCardDefs()</code> is the one choke point that applies leveling to a card's live stats — anywhere
+in the UI that reads a card's attack/health for display should go through it (or the board's own
+live instance data, for a card actually in play) rather than reading <code>CARD_DEFS_BASELINE</code>
+directly, or a leveled card's boost won't show up.</p>
+<p><strong>Known open limitation:</strong> stats are looked up per-<code>defId</code> in one shared table — a leveled card's
+boost is NOT yet scoped away from an AI opponent who happens to field the same card. This means
+today, leveling YOUR Otter Centurion also makes the AI's Otter Centurion stronger if it draws one.
+Flagged, not silently worked around — needs a per-owner stat-scoping pass before this is fully
+correct.</p>
+<h2 id="doc-context-economy-progression-h5">The Forge tab</h2>
+<p>A card picker (from your unlocked roster) + a Level Up button. Clicking Level Up: deducts
+currency, increments the card's level, then (as of task list item 4, 2026-09-18) plays a 3D
+card-flip reveal (<code>flipRevealCard()</code> — see <code>context-vfx-animation.md</code>) showing old stats flipping
+to new stats, timed so the star-fall celebration fires right as the flip completes, before the
+full Forge panel re-renders (~900ms total deferred). The underlying data mutation is synchronous
+on click — only the visual confirmation is paced behind the flip.</p>
+<h2 id="doc-context-economy-progression-h6">Star-fall celebration</h2>
+<p>Reused across multiple moments (Forge level-ups, match wins): a burst of star glyphs that jump
+out from a source element and fall like leaves, reusing the Autumn Village weather system's own
+physics keyframes. See <code>context-vfx-animation.md</code> for the implementation.</p>
+<h2 id="doc-context-economy-progression-h7">Known open items</h2>
+<ul>
+<li>
+<p>Gold→Stone rename (in-match resource) — proposed, not built. See <code>roadmap-and-backlog.md</code> for
+  why it's scoped as its own session rather than a quick patch, and the open design question of
+  what Lumber/Elemental Energy (if ever added) would each be FOR.</p>
+</li>
+<li>
+<p>Leveling's per-owner stat-scoping gap (above).</p>
+</li>
+<li>
+<p>No shop/spend loop for Gold/Gems beyond the Forge yet — flagged in <code>roadmap-and-backlog.md</code>
+  Part 5 as a natural next addition once currencies were stable.</p>
+</li>
+<li>
+<p>Deckbuilding rules discussed but not implemented anywhere: copy limits per rarity, a Leader
+  that can't also appear as a regular deck copy, target deck size conventions beyond the flat
+  20-card rule that IS enforced today.</p>
+</li>
+</ul></div></div><div class="subpane" data-group="guide" id="doc-context-ui-layout" hidden><h3>claude/context-ui-layout.md <small class="note">read before: screens, layout, phone sizes</small></h3><div class="doc"><h1 id="doc-context-ui-layout-h1">Context: UI &amp; Layout</h1>
+<p>Read this before touching CSS structure, card sizing, responsive breakpoints, or the topbar/nav.
+Update it in place (not as a changelog) when the layout system changes.</p>
+<h2 id="doc-context-ui-layout-h2">Card sizing</h2>
+<p>One CSS variable pair, <code>--match-card-w</code> / <code>--match-card-h</code> (140×160 desktop, 76×92 under the
+mobile breakpoint), consumed identically by <code>.hq-tile</code> (castle/deck/leader widgets), <code>.board-card</code>
+(cards actually in play), and <code>.hand-strip .card-tile</code> (hand). Resizing any in-match card means
+editing these two numbers in one place — do not reintroduce per-context hardcoded sizes for these
+three; that was a real, since-fixed bug (three independently-drifted sizes, see
+<code>game-design-v29-addendum.md</code> item 3).</p>
+<p>This is a DIFFERENT, deliberately separate sizing system from the Codex/pool/deck-editor/Forge's
+own <code>.card-tile</code> default (100px, auto height) — that's a genuinely different job (browsing many
+cards at once) from "cards actually in play," and should stay independent.</p>
+<h2 id="doc-context-ui-layout-h3">Page structure: topbar vs. content width</h2>
+<p><code>#appWrap</code> contains <code>.topbar-wrap</code> (the nav bar) and <code>.content-wrap</code> (everything below it), both
+independently capped/widened by CSS — this split exists specifically so the nav bar's position
+never shifts when switching between narrow views (Codex/Player/Arena/Forge, capped at 1220px) and
+wide views (Conquest/Raid/in-match, <code>min(1900px, 98-99vw)</code> via <code>#appWrap.in-match</code>/<code>.wide-map</code>
+classes reaching into <code>.content-wrap</code> only). Added 2026-09-18 (task list item 3) specifically
+because the nav bar visibly shifting width on every tab change read as disorienting. <strong>Do not</strong>
+let a future width-toggling class reach <code>.topbar-wrap</code> — only <code>.content-wrap</code> should ever change
+size based on the current view. No CSS transition on this width swap, per explicit request (a
+transition on a structural width change reads as sluggish, not smooth).</p>
+<h2 id="doc-context-ui-layout-h4">Settings panel positioning</h2>
+<p><code>.settings-wrap{position:relative}</code> wraps the settings gear button + its popover panel
+specifically because <code>.topbar</code> itself has no <code>position:relative</code> of its own (it's a plain flex
+row) — the wrapper gives the absolutely-positioned <code>.settings-panel</code> a local anchor. If the
+settings button ever moves elsewhere in the topbar, keep this wrapper pattern rather than relying
+on <code>.topbar</code> gaining relative positioning (which could shift other absolutely-positioned topbar
+children).</p>
+<h2 id="doc-context-ui-layout-h5"><code>.rarity-band</code> (card rarity/legibility scrim)</h2>
+<p>A bottom-anchored gradient on <code>.card-tile</code> serving dual duty: rarity color indicator AND text
+legibility backing. As of 2026-09-18: 50% of the tile's height (was 76%), capped at .58 max black
+alpha (was .82), with a <code>transparent 0%, transparent 30%</code> lead-in so the top half of the card is
+untouched. The earlier, taller/darker version flattened Common/Starter (white/near-white rarity
+colors) into an indistinguishable dark-grey wash covering most of the card art — if this value
+ever needs tuning again, specifically re-check it against Common (<code>#ffffff</code>) and Starter
+(<code>#efece0</code>) rarity colors, since those are the ones a too-dark scrim breaks first (most other
+rarities have enough inherent saturation to still read through a darker scrim).</p>
+<h2 id="doc-context-ui-layout-h6">Board row overflow + cross-card stacking (2026-09-21)</h2>
+<p><strong><code>.board-row</code> uses <code>overflow-y:clip; overflow-clip-margin:90px;</code>, not <code>overflow-y:hidden</code>.</strong>
+Per explicit report ("Elements are still being cut out - in the battlefield"): the row pairs
+<code>overflow-x:auto</code> (needed for the horizontal-scroll-instead-of-wrap behavior, see the "visual
+'cards forming a 2nd row' bug" entry in <code>game-design-action-items.md</code>) with a vertical overflow
+rule. Per the CSS Overflow spec, pairing <code>overflow-x:auto</code> with <code>overflow-y:visible</code> silently
+PROMOTES the <code>visible</code> axis to <code>auto</code> too (risking an unwanted vertical scrollbar) — so
+<code>overflow-y</code> can't just be set to <code>visible</code> to stop clipping normal in-play decoration (damage
+floats, status badges, the FIGHT sign, hover-zoom) that legitimately pokes past the row's box.
+<code>overflow-y:clip</code> sidesteps the promotion (it's not <code>visible</code>, so it doesn't trigger the pairing
+rule) while <code>overflow-clip-margin:90px</code> gives 90px of breathing room before anything actually
+gets clipped. This is the same fix shape already used once before for <code>.speech-bubble</code> (see that
+class's own CSS comment) — if a similar "element getting cut off" report comes in for a
+DIFFERENT scrollable container, check for this same <code>overflow-x:auto</code> + <code>overflow-y:hidden</code>
+pairing before assuming it's a z-index problem.</p>
+<p><strong>Cards do NOT get a permanent per-card <code>z-index</code>.</strong> The instinct for "cards should have higher
+layer order" is to just add <code>z-index:1</code> (or similar) to the base <code>.board-card</code> rule — don't. Any
+non-<code>auto</code> <code>z-index</code> on a <code>position:relative</code>+ element creates a NEW, ISOLATING CSS stacking
+context for that element's descendants, which traps a card's own <code>.dmg-float</code> inside that one
+card's local stacking order — it can then no longer out-rank a NEIGHBORING card's badges/other
+elements, exactly backwards from the actual request ("the numbers should have the highest"
+layer order, across the whole row, not just within their own card). Resting cards are left at
+<code>z-index:auto</code> (no isolating context at all) specifically so <code>.dmg-float</code>'s own <code>z-index:40</code> (see
+below) can reach across sibling cards freely. A card that's actively lunging into its attack gets
+a temporary, animation-scoped lift instead: <code>animateAttacker()</code> adds <code>.is-attacking</code> (<code>z-index:8</code>)
+right when the lunge starts and removes it in every completion path (both GSAP timeline
+<code>onComplete</code> branches and the non-GSAP fallback's final <code>setTimeout</code>) — narrow enough in scope
+and duration that it never creates a lasting isolating context, and 8 still sits comfortably below
+<code>.dmg-float</code>'s 40. Current cross-card z stack, low to high: resting <code>.board-card</code> (auto) &lt;
+<code>.abadge</code>/skill badges (3) &lt; hover-zoom (5) &lt; <code>.is-attacking</code> (8) &lt; <code>.dmg-float</code> (40). If a new
+element needs to sit in this stack, place it deliberately in this ladder rather than picking an
+arbitrary number.</p>
+<h2 id="doc-context-ui-layout-h7">Responsive breakpoint</h2>
+<p>One mobile breakpoint (search <code>@media</code> in <code>arena_template.html</code>) handles the phone-width layout:
+<code>--match-card-w</code>/<code>--match-card-h</code> drop to 76×92, <code>.topbar-wrap</code>/<code>.content-wrap</code> padding
+tightens, <code>#appWrap.in-match .content-wrap</code> goes to <code>100vw</code>. When adding new layout rules that
+need a mobile variant, add them inside this existing media query block rather than introducing a
+second breakpoint.</p>
+<h2 id="doc-context-ui-layout-h8">Animation conventions</h2>
+<ul>
+<li>
+<p>Nav emoji hover-spin: emoji glyphs are wrapped in <code>&lt;span class="tab-emoji"&gt;</code> specifically so
+  the spin keyframe can target just the glyph, not the button's text label. Any new nav-style
+  button with an emoji should follow this same wrapping convention if it wants the same hover
+  treatment for free (just add the <code>.tab-emoji</code> class).</p>
+</li>
+<li>
+<p>See <code>context-vfx-animation.md</code> for GSAP/entrance/particle conventions — this doc is structural
+  CSS/layout only.</p>
+</li>
+</ul>
+<h2 id="doc-context-ui-layout-h9">Known open items</h2>
+<ul>
+<li>
+<p>Mobile text legibility at the 76×92 card size was flagged as worth a real-device pass
+  (<code>game-design-v29-addendum.md</code>) — not yet done.</p>
+</li>
+<li>
+<p>No dedicated design system doc beyond this one and the palette/type notes in <code>game-design.md</code>'s
+  "Visual identity" section — if a formal design-token system gets built, this doc is where it
+  should be documented going forward.</p>
+</li>
+</ul></div></div><div class="subpane" data-group="guide" id="doc-context-vfx-animation" hidden><h3>claude/context-vfx-animation.md <small class="note">read before: animation and effects</small></h3><div class="doc"><h1 id="doc-context-vfx-animation-h1">Context: VFX &amp; Animation</h1>
+<p>Read this before adding or changing any animation, particle effect, or entrance/exit behavior.
+Update it in place (not as a changelog) when the system changes. This code is described in the
+source itself as "extremely carefully-tuned... with many bugfix comments warning against
+structural changes" — treat that warning as real; prefer additive changes over restructuring.</p>
+<h2 id="doc-context-vfx-animation-h2">The entrance/Flip system (GSAP)</h2>
+<p><code>renderBoard()</code>'s <code>newEls</code> handling drives every card's entrance. Two paths exist: a GSAP path
+(used when GSAP is available, which is always in the shipped build) and a no-GSAP fallback (kept
+for robustness, not actively used). <code>Flip.from()</code> handles the "existing cards slide to their new
+position" reflow; new cards are explicitly excluded from what Flip touches and animated on a
+separate timeline instead — this split exists because Flip's onEnter/onLeave callbacks don't
+reliably fire for brand-new elements in this GSAP build, and because Flip was once found silently
+re-diffing against stale, already-discarded DOM elements when new-card detection wasn't kept
+separate (see <code>game-design-action-items.md</code>, "Landing impact" entry, for the full bug history —
+don't reintroduce that coupling).</p>
+<p><strong><code>pendingEntranceOrigins</code></strong> (a <code>Map&lt;uid, {x, y, rotate}&gt;</code>) is how a new card's entrance tween
+starts from a REAL on-screen point (where it came from) instead of a generic fall-from-above.
+Consumed once (deleted on use) so it can never leak onto a later, unrelated card reusing the same
+uid space. Three producers as of 2026-09-18:</p>
+<ul>
+<li>
+<p>Played from hand: set in <code>playCardByUid</code>, using the hand tile's own live bounding rect, keyed
+  by the HAND uid (this one specifically survives into the board card, since <code>placeCard</code>
+  preserves the hand-card's uid rather than reassigning — this is the ONE case where hand-uid ==
+  board-uid; every other producer below keys by the board card's own uid, which is often
+  different from any hand uid involved).</p>
+</li>
+<li>
+<p><code>onAttackedSpawn</code> (e.g. Bee Drone spawning on being hit): set from the attacked card's own
+  live position (<code>ev.nearUid</code>).</p>
+</li>
+<li>
+<p><code>onDeathSpawn</code> (e.g. Rot-Swollen-Carcass spawning 3 Maggot Swarmlings on death): set via
+  <code>lastDeathOrigin</code>, a one-shot heuristic — the death-event handler records the dying card's
+  on-screen center right before removal; the very next <code>onDeathSpawn</code> spawn event (which always
+  immediately follows its triggering death within one round's replay) consumes it. Added
+  2026-09-18, task list item 2.</p>
+</li>
+</ul>
+<p>When an origin IS found, the entrance starts at <code>scale:.16</code> (tuned down from an earlier <code>.5</code>) so
+it reads as "popping out of the spawner" rather than "a small card flying in." When no origin is
+recorded, the generic fall-in (<code>scale:.4, y:-52</code>) is used instead.</p>
+<p><strong>Trap to remember</strong> (a real bug hit while building item 2): a played card's HAND uid is not
+always the same as its final BOARD uid — <code>placeCard()</code>'s return doesn't reassign the hand-uid in
+every path, but any code that needs the definitive board uid (e.g. to anchor a speech bubble or
+VFX to the just-played card) should read it from the <code>'play'</code> event's own <code>uid</code> field
+(<code>events.find(ev=&gt;ev.type==='play').uid</code>), not the uid the play action was originally called
+with. <code>pendingEntranceOrigins</code>' hand-play producer is a documented, deliberate exception where
+the hand uid does carry through — don't assume that generalizes elsewhere.</p>
+<h2 id="doc-context-vfx-animation-h3"><code>renderVfxForEvent(ev)</code></h2>
+<p>The central dispatcher — one big function with an <code>if(ev.type==='...')</code> branch per engine event
+type (hit, hitHQ, death, spawn, heal, poisonTick, statusFx, etc.). Each branch typically:
+sound cue → floating text/number → element-specific animation (shake, lunge, flash). New event
+types should follow this same pattern rather than introducing a parallel dispatch mechanism.</p>
+<h3 id="doc-context-vfx-animation-h4">Skills/VFX/SFX coverage audit (2026-09-21)</h3>
+<p>The reliable way to check "does every mechanic actually have a sound and a visual" is to
+cross-reference the two ground-truth lists against each other, rather than eyeballing
+<code>renderVfxForEvent</code>'s if/else chain in isolation:</p>
+<ul>
+<li>
+<p>every <code>events.push({type:'statusFx', kind:...})</code> call site in <code>bramblewood-engine.js</code>
+  (the full set of <code>kind</code>s the engine can ever actually emit), against</p>
+</li>
+<li>
+<p>every <code>else if(ev.kind==='...')</code> branch inside <code>renderVfxForEvent</code>'s <code>ev.type==='statusFx'</code>
+  block (the full set of <code>kind</code>s the front end actually handles).</p>
+</li>
+</ul>
+<p>Doing this the first time turned up two <code>kind</code>s the engine had been pushing for a while with
+<strong>no matching branch at all</strong> — <code>bleed</code> (the "Bleed opposite" custom-trigger action) and
+<code>esprit</code> (the Esprit passive's on-ally-spawn self-buff) — both fired completely silently: no
+sound, no float, no status refresh, the exact same class of gap as the pre-existing Scurry/
+bleedTick silences found in earlier audit passes (see <code>game-design-action-items.md</code>). Both are
+now wired up:</p>
+<ul>
+<li>
+<p><code>kind:'bleed'</code> → <code>SoundKit.bleedApply()</code> (a distinct apply tone, separate from <code>bleedTick()</code>'s
+  round-tick sound, mirroring Poison's own apply-vs-tick split) + a <code>'+N🩸'</code> float using the new
+  <code>.dmg-float.bleed</code> CSS class (<code>arena_template.html</code> — was missing; floats were silently
+  falling back to the base <code>--attack</code> red) + an <code>rc.bleed</code> mirror into the replay snapshot so the
+  mid-round status badge stays in sync.</p>
+</li>
+<li>
+<p><code>kind:'esprit'</code> → <code>SoundKit.espritTone()</code> (a warm ascending triangle chime, deliberately
+  gentler than Berserk's growl or Momentum's escalating notes, since Esprit is a camaraderie
+  effect, not a rage/kill-streak one) + a <code>'🤝 +N⚔'</code> float on the card that just grew — same
+  "self-buff floats on the attacker's own tile" pattern Berserk/Momentum already use, no
+  <code>rc</code> mutation needed for the same reason those two don't need one (the permanent Attack gain
+  shows up via the normal stat display at round end).</p>
+</li>
+</ul>
+<p>Covered by <code>test_bleed_esprit_statusfx.js</code>. <strong>When adding a new custom-trigger action or passive
+that can push a <code>statusFx</code> event (or any new event <code>type</code> at all), run this same cross-reference
+before calling it done</strong> — a new <code>kind</code>/<code>type</code> with no branch fails silently, with no console
+error to catch it, so it's easy to ship an invisible mechanic by accident. This check is now
+folded into <code>mechanics-guideline.md</code>'s and <code>style-guideline.md</code>'s "before you ship" checklists.</p>
+<h3 id="doc-context-vfx-animation-h5">Coverage audit, follow-up pass — Crit/Rend/Fester/Rupture/Frenzy (2026-09-21)</h3>
+<p>Same cross-reference method, next five keywords off the ~30-keyword list. Findings:</p>
+<ul>
+<li>
+<p><strong>Crit had no dedicated sound/flourish at all</strong> — landing a crit doubled damage completely
+  silently (only a small <code>💥</code> tucked into the battle-log text). Now: <code>SoundKit.critTone()</code> + a
+  <code>💥 Crit!</code> float via <code>keywordCuesForHit</code>, suppressed when <code>ev.ambush</code> is also true (Ambush gets
+  its own distinct flourish and shouldn't double up with Crit's on the same hit).</p>
+</li>
+<li>
+<p><strong>Rend (bypasses Armor) and Fester/Rupture (bonus damage = the attacker's own poison/bleed
+  stacks) folded silently into the plain hit-damage number</strong>, zero attribution — pixel-identical
+  to an ordinary hit for the same final total. The engine now reports these as pure DISPLAY flags
+  on the <code>hit</code>/<code>hitHQ</code> event (<code>rend</code>, <code>festerBonus</code>, <code>ruptureBonus</code> — the underlying damage math
+  is unchanged, these only tell the VFX layer WHY the number is what it is):
+  <code>computeHitDamage</code>/<code>damageCard</code> compute <code>rendBypass = rend &amp;&amp; nominalArmor&gt;0</code> (only flags true
+  when Rend actually mattered — a Rend attacker vs. an unarmored target reports <code>rend:false</code>,
+  since nothing was bypassed); <code>festerBonus</code>/<code>ruptureBonus</code> are captured as named locals right
+  where the bonus is added to <code>atkThisRound</code>. <code>keywordCuesForHit</code> reads these off the event and
+  floats <code>🗡 Rend — Armor bypassed!</code> (+<code>SoundKit.rendTone()</code>) / attributed <code>+N☠</code>/<code>+N🩸</code> floats
+  (+<code>SoundKit.festerBite()</code>/<code>ruptureBite()</code>) alongside the normal damage number. <code>logText</code>'s
+  <code>'hit'</code> case appends matching text annotations.</p>
+</li>
+<li>
+<p><strong>Frenzy's bonus-attack requeue pushed no event at all</strong> — the second swing replayed as an
+  indistinguishable ordinary <code>hit</code>, nothing signaling why a card acted twice. Fixed with a new
+  standalone <code>frenzy</code> event type (<code>{type:'frenzy', side, attDefId, attUid}</code>) pushed right where
+  the attack gets requeued (<code>attackQueue.unshift(a)</code>, gated the same as the requeue itself — once
+  per round, and not if the attacker already died to Thorns first) — a new branch in
+  <code>renderVfxForEvent</code> floats <code>🔥 Frenzy!</code> (+<code>SoundKit.frenzyTone()</code>) on the card via
+  <code>boardCardEl(ev.attUid)</code>.</p>
+</li>
+<li>
+<p><strong>Separately: Frenzy and Rend turned out to be real, shipped card mechanics (Ember Jackal /
+  Pyroclast Wyrm) that were never added to the editor's <code>PASSIVE_DEFS</code> registry</strong> — no other card
+  could ever be GIVEN either skill through the "+ Add Skill" UI, only the two cards that already
+  hardcoded them in <code>canonical/cards.json</code>. Both are now real <code>kind:'boolean'</code> entries.</p>
+</li>
+</ul>
+<p>Covered by <code>test_crit_rend_fester_rupture_frenzy.js</code> (39 checks — engine-level Rend/Fester/
+Rupture/Frenzy correctness plus browser-level SoundKit/keywordCuesForHit/registry checks).</p>
+<h3 id="doc-context-vfx-animation-h6">Cross-card z-index (2026-09-21)</h3>
+<p><code>.dmg-float</code>'s z-index (and the deliberate choice NOT to give resting <code>.board-card</code>s their own
+z-index) is documented in <code>context-ui-layout.md</code>'s "Board row overflow + cross-card stacking"
+section — read that before touching either <code>.board-card</code>'s or <code>.dmg-float</code>'s stacking, since the
+two are tightly coupled (a per-card isolating stacking context on <code>.board-card</code> would silently
+break <code>.dmg-float</code>'s ability to out-rank a NEIGHBORING card, not just its own).</p>
+<h2 id="doc-context-vfx-animation-h7">Skill/status VFX queuing (2026-09-21)</h2>
+<p>Skill and status VFX are never simultaneous — the replay loops in <code>resolveRound()</code> play one event
+at a time, <code>await sleep(delayForEvent(ev, prevKind))</code> between each, so an effect always finishes
+before the next one starts. <code>delayForEvent()</code> picks the gap based on whether the CURRENT event is
+the same "kind" as the one immediately before it (tracked as <code>lastVfxKind</code>/<code>lastWaitVfxKind</code> in
+the two replay loops, computed via <code>vfxKindOf(ev)</code>):</p>
+<ul>
+<li>
+<p>Combat beats keep their own fixed, dedicated pacing regardless of neighboring kind: <code>hit</code>/
+  <code>hitHQ</code>/<code>evaded</code> (900ms, or 1260ms if <code>ev.ranged</code>), <code>death</code> (550ms), <code>render</code> (780ms).</p>
+</li>
+<li>
+<p>Every other event type (the "skill/status VFX" bucket — <code>poisonTick</code>, <code>bleedTick</code>, <code>statusFx</code>
+  and its many sub-kinds, <code>heal</code>, <code>sap</code>, <code>explode</code>, <code>namedBuff</code>, <code>collapseIn</code>, <code>spawn</code>, <code>revive</code>,
+  <code>waitTick</code>/<code>ready</code>, ...) gets <strong>200ms</strong> if <code>vfxKindOf(ev)</code> matches the previous event's kind, or
+  <strong>500ms</strong> if it doesn't (including the very first event in a sequence, which has no previous
+  kind to match). This is the "bubbly, obvious, distinct" pacing rule — see <code>style-guideline.md</code>'s
+  "Skill VFX" section for the full design rationale; this doc is just the implementation pointer.</p>
+</li>
+<li>
+<p><code>vfxKindOf(ev)</code> returns <code>ev.type</code> for everything except <code>statusFx</code>, where it returns
+  <code>'statusFx:'+ev.kind</code> — <code>statusFx</code> bundles many visually/audibly distinct sub-mechanics
+  (poison/freeze/stun/scar/blind/shock/corrode/berserk/momentum/bleed/esprit/...) under one event
+  <code>type</code>, so two different <code>ev.kind</code>s must never be treated as "the same kind of thing" for
+  queuing purposes.</p>
+</li>
+<li>
+<p>Both places that replay an event log — the main combat/skill event loop and the separate
+  Wait-timer/"next turn" replay — track their own <code>lastVfxKind</code> local variable and pass it into
+  <code>delayForEvent()</code>; a new replay loop added later should follow the same pattern rather than
+  calling <code>delayForEvent(ev)</code> with no previous-kind context (which always falls back to the
+  500ms "different kind" gap, safe but overly conservative for a genuinely repeating effect).</p>
+</li>
+<li>
+<p>All of the above is still scaled by <code>matchState.speedMult</code> exactly like every other event delay
+  always was (1x/1.5x/2x/3x, floored at 18ms).</p>
+</li>
+</ul>
+<h2 id="doc-context-vfx-animation-h8">Reusable utilities</h2>
+<ul>
+<li>
+<p><strong><code>floatText(el, text, cls)</code></strong> — appends a small floating text element directly into <code>el</code>
+  (which must be <code>position:relative</code>), with randomized x-drift and a GSAP rise-fade timeline.
+  The base pattern every other "float something above a card" utility below follows.</p>
+</li>
+<li>
+<p><strong><code>itemDropVfx(uid, glyph)</code></strong> — a heavier, bouncier drop for kill payouts (bounty gold).</p>
+</li>
+<li>
+<p><strong><code>starFallVfx.celebrate(el, count)</code></strong> — star particles that jump from <code>el</code> and fall like
+  leaves, reusing the Autumn Village weather system's physics. Used by Forge level-ups and match
+  wins.</p>
+</li>
+<li>
+<p><strong><code>flipRevealCard(mountEl, opts)</code></strong> (added 2026-09-18, item 4) — a real 3D X-axis card flip
+  (<code>perspective</code>/<code>transform-style:preserve-3d</code>/<code>rotateY</code>), <code>opts.frontHTML</code>/<code>opts.backHTML</code> for
+  the two faces, paired with <code>SoundKit.cardFlip()</code>. Generic — currently used for Forge level-up
+  reveals, built to be reusable for any "flip to show what's underneath" moment (reward reveals,
+  etc).</p>
+</li>
+<li>
+<p><strong><code>emojiBurstVfx.burst(originEl, {emojis, count, ...})</code></strong> (added 2026-09-18, item 6) — a
+  fireworks-style burst: emoji particles at varying sizes explode outward from a point, then fall
+  under gravity and fade. Shares <code>#starFallLayer</code> with the star-fall celebration — no new DOM
+  scaffolding. Built as infrastructure, not yet wired to a specific trigger moment — check
+  <code>game-design-v30-addendum.md</code> and <code>roadmap-and-backlog.md</code> before adding a new call site, in
+  case one was decided on since this was written.</p>
+</li>
+<li>
+<p><strong><code>showSpeechBubble(el, text)</code> / <code>maybeSpeak(uid, bank)</code></strong> (added 2026-09-18, item 8) — the
+  speech framework's visual half. <code>showSpeechBubble</code> appends a <code>.speech-bubble</code> div into a board
+  card element (same append-into-the-card pattern as <code>floatText</code>), fades it in/holds/fades out via
+  GSAP. <code>maybeSpeak(uid, bank)</code> is the ONE entry point every trigger site should call — it looks
+  up <code>boardCardEl(uid)</code>, gates on <code>SPEECH_CHANCE</code> (0.28, so cards don't talk every single time)
+  and a per-uid cooldown (<code>SPEECH_COOLDOWN_MS</code>, 2600ms, tracked in the <code>lastSpokeAt</code> Map), then
+  calls <code>showSpeechBubble</code> + <code>SoundKit.voiceTone(uid)</code> together. <code>SPEECH_BANKS</code> (keyed by
+  <code>onSummon</code>/<code>onAttack</code>/<code>onDeath</code>) is the one place to add new lines — see
+  <code>context-audio.md</code> for the audio half and why the content is currently generic placeholder
+  chatter rather than per-character writing.</p>
+</li>
+</ul>
+<h2 id="doc-context-vfx-animation-h9">SoundKit</h2>
+<p>Covered in full in <code>context-audio.md</code> — the two takeaways relevant here: every cue is built from
+<code>tone()</code>/<code>noise()</code>, and volume gating happens at that one choke point, so a new VFX's accompanying
+sound should always go through a named <code>SoundKit</code> method rather than calling Web Audio directly.</p>
+<h2 id="doc-context-vfx-animation-h10">Timing/pacing notes worth remembering</h2>
+<ul>
+<li>
+<p><code>resolveRound()</code>'s event replay is paced per-event-type, doubled from its original speed
+  (2x slowdown, <code>game-design.md</code> "Version 15") with a fast-forward control to compress it back
+  down mid-round. As of 2026-09-21, the non-combat "skill/status VFX" portion of that pacing is
+  also kind-aware (200ms same-kind / 500ms different-kind) rather than a flat per-type number —
+  see "Skill/status VFX queuing" above.</p>
+</li>
+<li>
+<p><code>afterPlayerAction()</code> (called after every play, human or AI) keeps doing pacing/HUD work for a
+  real, sometimes-multi-second while AFTER <code>matchState.resolving</code> itself already reads <code>false</code> —
+  don't assume <code>resolving===false</code> means all post-round animation/side-effects have finished; a
+  test or a chained animation that depends on something that fires at the very end of
+  <code>afterPlayerAction</code> (like the speech framework's onSummon trigger) needs real wall-clock
+  headroom past just polling <code>resolving</code>, confirmed via direct repro while building item 8 (see
+  <code>test_v44_settings_and_speech.js</code>'s own comment for the exact numbers observed).</p>
+</li>
+</ul></div></div><div class="subpane" data-group="guide" id="doc-context-audio" hidden><h3>claude/context-audio.md <small class="note">read before: sound</small></h3><div class="doc"><h1 id="doc-context-audio-h1">Context: Audio</h1>
+<p>Read this before touching any sound, any volume control, the settings menu, or the speech
+framework's voice cues. Update it in place (not as a changelog) when any of this changes.</p>
+<h2 id="doc-context-audio-h2">System overview</h2>
+<p>All sound is synthesized in-browser via the Web Audio API — no external audio files, no CDN
+dependency, consistent with the single-file-artifact constraint. Everything lives in one IIFE,
+<code>SoundKit</code>, near the top of <code>arena_app.js</code>.</p>
+<p>Two primitives everything else is built from:</p>
+<ul>
+<li><code>tone(freq, dur, type, gainPeak, delay, volOverride)</code> — a single oscillator envelope.</li>
+<li><code>noise(dur, gainPeak)</code> — a short filtered noise burst (explosions, impacts).</li>
+</ul>
+<p>Every named cue (<code>SoundKit.hit()</code>, <code>SoundKit.death()</code>, <code>SoundKit.gold()</code>, ~40 more) is one or a
+few calls to these two primitives with different frequency/duration/type combinations. Adding a
+new cue means adding a new named method that calls <code>tone</code>/<code>noise</code> — never bypass them, since
+volume gating (below) only happens at that one choke point.</p>
+<h2 id="doc-context-audio-h3">Volume model (three independent sliders)</h2>
+<p>As of 2026-09-18 (task list item 7), there are three persisted volume values, each 0..1:</p>
+<ul>
+<li>
+<p><strong><code>sfxVolume</code></strong> (default 1, <code>bw_sfxVolume</code> in localStorage) — gates <code>tone()</code>/<code>noise()</code>
+  directly. This is what almost every existing cue in <code>SoundKit</code> responds to.</p>
+</li>
+<li>
+<p><strong><code>voiceVolume</code></strong> (default 0.8, <code>bw_voiceVolume</code>) — gates only <code>SoundKit.voiceTone()</code>, the
+  speech framework's "voice blip" (see below). Kept separate from <code>sfxVolume</code> deliberately, so a
+  player can mute combat SFX but keep character chatter audible, or vice versa.</p>
+</li>
+<li>
+<p><strong><code>musicVolume</code></strong> (default 0.6, <code>bw_musicVolume</code>) — persisted, but <strong>there is no music system
+  yet</strong>. No oscillator or audio element reads this value today. It exists so a future music
+  track has a real, already-chosen volume to start at instead of defaulting to full blast the
+  day one ships. The settings panel's Music slider carries a small note in the UI saying so — do
+  not remove that note without actually wiring up music.</p>
+</li>
+</ul>
+<p>Exposed API (all on the <code>SoundKit</code> object): <code>getSfxVolume()/setSfxVolume(v)</code>,
+<code>getVoiceVolume()/setVoiceVolume(v)</code>, <code>getMusicVolume()/setMusicVolume(v)</code>. Each setter clamps to
+[0,1] and persists to its own localStorage key. <code>setSfxVolume(0)</code> also calls <code>stopAll()</code> so
+dragging the slider to zero mid-cue cuts off immediately rather than just blocking the next one.</p>
+<p><strong>Back-compat only:</strong> <code>isMuted()</code>/<code>setMuted(v)</code> still exist (<code>isMuted()</code> ⇔ <code>sfxVolume&lt;=0</code>), kept
+in case something outside this codebase still calls them. Nothing in this app calls them anymore
+— the settings panel talks to <code>get/setSfxVolume</code> directly. Don't build new features against
+<code>isMuted</code>/<code>setMuted</code>.</p>
+<h2 id="doc-context-audio-h4">The settings panel</h2>
+<p>HTML lives in <code>arena_template.html</code> (<code>.settings-wrap</code> / <code>#settingsBtn</code> / <code>#settingsPanel</code>,
+replacing the old single mute-toggle button). Wiring is <code>initSettingsPanel()</code> in <code>arena_app.js</code>
+(search for that name) — a small IIFE that binds each of the three <code>&lt;input type="range"&gt;</code>
+sliders to its matching getter/setter pair, syncs the displayed percentage, and handles
+open/close (gear-icon click, outside click, Escape key).</p>
+<p>To add a fourth slider later (if a real music system or another audio channel shows up): add the
+<code>&lt;input type="range"&gt;</code> + label row to the <code>.settings-panel</code> markup, add a <code>{el, val, get, set}</code>
+entry to the <code>sliders</code> object in <code>initSettingsPanel()</code>, done — the open/close/sync plumbing is
+generic and doesn't need touching.</p>
+<h2 id="doc-context-audio-h5">Speech framework's voice cue</h2>
+<p><code>SoundKit.voiceTone(seed)</code> is a two-tone blip gated by <code>voiceVolume</code> (not <code>sfxVolume</code>), added
+specifically for the speech/dialogue framework (task list item 8). It takes a numeric <code>seed</code> —
+callers pass the speaking card's own <code>uid</code> — and derives a small pitch offset from it
+(<code>340 + (seed%7)*55</code>), so the same physical card instance sounds consistent across its own
+lifetime without any real voice recording or per-character audio assets. This is a deliberate
+placeholder for "a character's voice, represented by an sfx from a set list" — see
+<code>context-vfx-animation.md</code>'s speech-bubble section for the visual half, and
+<code>game-design-v30-addendum.md</code> for why this shipped as a scaffold rather than a full content pass
+(real per-character personality needs the user's creative input, not just engineering).</p>
+<p><code>tone()</code> takes an optional final <code>volOverride</code> parameter specifically so <code>voiceTone()</code> can reuse
+the exact same oscillator-envelope code while gating off <code>voiceVolume</code> instead of <code>sfxVolume</code> — if
+a future audio channel needs the same treatment (a fourth independently-gated cue family), follow
+this same pattern rather than duplicating the oscillator logic.</p>
+<h2 id="doc-context-audio-h6">Known gaps / open items</h2>
+<ul>
+<li>
+<p>No actual music track or music-playing code exists — <code>musicVolume</code> is inert. Building this
+  would need either a synthesized ambient loop (consistent with the no-external-files approach)
+  or embedding a short audio file as a <code>data:</code> URI (size-budget tradeoff to weigh).</p>
+</li>
+<li>
+<p>The speech framework's line content is generic placeholder chatter (see
+  <code>context-vfx-animation.md</code> and <code>game-design-v30-addendum.md</code>) — no per-character voice
+  identity beyond the deterministic pitch-by-uid trick.</p>
+</li>
+<li>
+<p><code>voiceTone</code>'s pitch derivation is a simple modulo, not tuned for actually sounding distinct
+  per character — worth revisiting if/when real character personalities get designed.</p>
+</li>
+</ul></div></div><div class="subpane" data-group="guide" id="doc-pixellab-art-batch-status" hidden><h3>claude/pixellab-art-batch-status.md <small class="note">read before: card art (PixelLab)</small></h3><div class="doc"><h1 id="doc-pixellab-art-batch-status-h1">PixelLab Art Batch — Status (updated 2026-10-03, ~17:20 SGT)</h1>
+<p>Read this (and <code>style-guideline.md</code> §9, art direction) before generating or wiring card art.</p>
+<h2 id="doc-pixellab-art-batch-status-h2">Where things stand</h2>
+<ul>
+<li><strong>~123 of 341 cards have art.</strong> Done in the new style:<ul>
+<li>All 16 Otter/Hummingbird faction cards.</li>
+<li>The Wandering Traveller (elderly field mouse).</li>
+<li>Regenerated Dolphin Knight / Bee Knight / Otter Centurion / Cobalt Talon Skirmisher / Mosswing Laborer / Sunthroat Courier.</li>
+<li>Menacing Dominion Nestguard / Sunspire Envoy.</li>
+<li>The five chromatic dragons.</li>
+<li><strong>Conquest maps 1–7: every creature in their decks</strong> (except the Bat Swarmling token).</li>
+<li><strong>Map 8 (2026-10-03 evening, 10 of 11):</strong> Bog Leech, Marsh Gas Toad, Swamp Alligator, Mire Witch-Heron, Cypress Root Lurker, Adder Ambusher, Venomlord Serpent, Constrictor Coil, Crocodile Ambusher, Wound Reaver.</li>
+<li>Plus the splash (<code>art/splash.png</code>).</li>
+</ul>
+</li>
+<li><strong>⛔ PixelLab monthly generation limit reached</strong> (2026-10-03, ~17:10 SGT, mid-batch). The site offers "Buy credits" / "Upgrade plan". Nothing was bought; that's Jay's call.</li>
+<li><strong>Still to do (prompts are ready in <code>art_staging/jobs_m8_10.json</code>):</strong><ul>
+<li>Map 8: Gangrenous Leech. The first try came out as lizards; use the explicit "NO legs, segmented tube body, sucker mouth" prompt queued in the runner.</li>
+<li>Map 9: Cinder Hornet, Ember Jackal, Sulfur Vent Crab, Magma Salamander, Obsidian Scorpion, Basalt Boar, Magma Titan, Pyroclast Wyrm, Phoenix Fledgling.</li>
+<li>Map 10: Mountain Goat Climber, Peak Condor, Golden Eagle Diver, Alpine Avalanche, Rockslide Ram, Eyrie Warden.</li>
+<li><strong>Home 2.5D sprites:</strong> <code>home-otter</code>, <code>home-hummingbird</code>, generated with <strong>Remove background ON</strong>. Save them as <code>art/home/otter.png</code> and <code>art/home/hummingbird.png</code>; the build embeds them automatically, and the Home parallax scene is already coded.</li>
+<li>Then maps 11+ and cards outside Conquest decks.</li>
+</ul>
+</li>
+<li>Hall of Fame Classic drafts (Otter Centurion, Bee Knight) deliberately reuse the ORIGINAL painterly art from before the 2026-10-02 regeneration (recovered from git <code>f8fb2d3^</code>).</li>
+<li>~20 older portraits from 2026-09-18 are still in the earlier "painterly action" style — candidates for regeneration.</li>
+<li><strong>Lessons:</strong><ul>
+<li>Abstract, swarm or worm-like subjects need very explicit anatomy in the prompt ("NO legs", body shape).</li>
+<li>"Cute" + an eerie subject (Mire Witch-Heron) gives three cute blobs and one real heron. Pick by subject, or use Brave for creepy-but-small cards.</li>
+<li>Always name a background scene, or PixelLab may return a flat grey backdrop.</li>
+<li>If a job sits on "Generating…" for 15+ minutes (usually after the Mac slept), reload the tab, re-inject the helpers and resubmit — the stalled job is lost.</li>
+<li>Speed this session: about 30 s to 2.5 min per image.</li>
+<li>Before a big batch, check the remaining monthly generations; the limit shows as a "Generation Limit Reached" modal and jobs just never finish.</li>
+</ul>
+</li>
+</ul>
+<h2 id="doc-pixellab-art-batch-status-h3">Genre prompt prefixes (see style guide §9 for when to use which)</h2>
+<ul>
+<li>ANAT (always appended for animals): <code>natural animal anatomy, not anthropomorphic, no hands, never standing upright like a human,</code></li>
+<li><strong>Cute:</strong> <code>Cute Pokemon-style pixel art creature portrait, big sparkling expressive eyes, soft round chubby shapes, bright cheerful palette, clean dark outlines,</code> + ANAT</li>
+<li><strong>Brave:</strong> <code>Pokemon-style pixel art creature portrait, confident determined eyes, sturdy rounded shapes, rich warm palette, dynamic action pose, clean dark outlines,</code> + ANAT</li>
+<li><strong>Menacing:</strong> <code>Pokemon-style pixel art portrait of a fearsome creature, sharp narrowed glowing eyes, angular silhouette, dramatic low-angle lighting, deep saturated shadowy palette, imposing pose, clean dark outlines,</code> + ANAT (dragons: "natural dragon anatomy with four legs and two wings, not humanoid"; golems/trolls/elementals: no ANAT)</li>
+</ul>
+<p>Then: <code>&lt;subject + pose&gt;, &lt;equipment&gt;, &lt;scene&gt;, &lt;background&gt;</code>. Rule of thumb by stats: Attack ≤2 and Health ≤10 → Cute; Attack ≥6 or Health ≥24 → Menacing; otherwise Brave.</p>
+<h2 id="doc-pixellab-art-batch-status-h4">Tool + settings</h2>
+<ul>
+<li>https://www.pixellab.ai/create?tool=create_image_pro (signed in, in the desktop app's built-in browser). Pro = 20 generations per image.</li>
+<li>Output size select index 2 = 128×128, which returns a 256×256 sheet of FOUR variations (crop the best quadrant). Index 4 = 344×192 (16:9, single image — splash).</li>
+<li>Background removal OFF for card art; ON for the Home 2.5D sprites.</li>
+</ul>
+<h2 id="doc-pixellab-art-batch-status-h5">Technique (no downloads, no permission prompts)</h2>
+<ul>
+<li><strong>Helpers in the PixelLab tab</strong> (re-inject after any reload; full source in <code>art_staging/inject_m8_10.js</code>):<ul>
+<li><code>window.__bwGen(prompt, sizeIdx, removeBg)</code> — set the textarea and the size select via the native HTMLTextAreaElement/HTMLSelectElement value setters, dispatching input/change, then set the "Remove background" checkbox to <code>removeBg</code>.</li>
+<li><code>window.__bwRun2(jobs, sizeIdx)</code> — polls up to 15 minutes per job; ids starting <code>home-</code> get background removal on. Appending to <code>window.__bwJobs2</code> while it runs queues more jobs.</li>
+<li>Results go to <code>window.__bwArt[cardId]</code>; progress, with timestamps, to <code>window.__bwLog</code>.</li>
+</ul>
+</li>
+<li><strong>Transfer:</strong> <code>javascript_tool</code> returns <code>'BWART_JSON::'+JSON.stringify({id: dataURI,...})</code> (3–4 images per call). The oversized result is saved to a tool-results file; <code>art_staging/extract.py &lt;file&gt;</code> writes <code>art_staging/raw/&lt;id&gt;.png</code>.</li>
+<li><strong>Wiring:</strong><ol>
+<li><code>art_staging/sheet.py out.png ids…</code> builds a labelled A–D contact sheet for picking.</li>
+<li>Record picks in <code>art_staging/picks.json</code>.</li>
+<li>Run <code>art_staging/crop.py</code>, filtered to the new ids (it re-crops every pick otherwise). It writes <code>art/cards/&lt;id&gt;.png</code>.</li>
+<li><code>art_staging/wire_art.py</code> writes the data URIs into <code>canonical/cards.json</code>.</li>
+<li><code>python3 assemble_arena.py</code>, then <code>mv bramblewood-arena.html index.html</code>, commit; Vercel auto-deploys.</li>
+</ol>
+</li>
+</ul></div></div>

@@ -8,7 +8,20 @@ import json, os, re, shutil, sys, html as H
 import markdown
 from PIL import Image
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-OUT = os.path.join(ROOT, '.hub'); FX = os.path.join(ROOT, '.fxcat'); VL = os.path.join(ROOT, '.vislib')
+OUT = os.path.join(ROOT, '.hub')
+# 2026-11-07 (package HUB3): the gitignored caches (.fxcat, .vislib, .guide-src) live only in the main checkout, so a worktree or a new
+# agent finds them there when its own folder has none. Without .vislib the Visual Library page comes from tools/hub/library-fallback.html.
+def _main_checkout():
+    import subprocess
+    try:
+        g = subprocess.run(['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+        return os.path.dirname(g) if g else ROOT
+    except Exception: return ROOT
+def cache_dir(name):
+    for base in (ROOT, _main_checkout()):
+        if os.path.isdir(os.path.join(base, name)): return os.path.join(base, name)
+    return os.path.join(ROOT, name)
+FX = cache_dir('.fxcat'); VL = cache_dir('.vislib'); GUIDE_SRC = cache_dir('.guide-src')
 MAX_FILES = 495
 HUB_URL = os.environ.get('HUB_URL', '')
 shutil.rmtree(OUT, ignore_errors=True); os.makedirs(OUT)
@@ -33,30 +46,33 @@ def doc(h):
 open(os.path.join(OUT, 'effects.html'), 'w', encoding='utf-8').write(doc(lab))
 
 # 2) Visual Library: prune near-duplicates so the whole hub fits under the file limit.
-page = open(os.path.join(VL, 'visual-library.html'), encoding='utf-8').read()
-raw = json.loads(re.search(r'const RAW = (\[.*?\]);\n', page, re.S).group(1))
-def dhash(p):
-    im = Image.open(p).convert('L').resize((17, 16)); px = im.load()
-    return sum(1 << (y*16+x) for y in range(16) for x in range(16) if px[x, y] > px[x+1, y])
-budget = MAX_FILES - len(lab_files) - 3 - 1  # 2026-10-15: -1 for the card thumbnail sheet (cards-thumbs.webp)
-keepers = {'detail_before_desk', 'detail_after_desk'}
-for r in raw: r.append(dhash(os.path.join(VL, 'img', r[0] + '.webp')))
-order = sorted(raw, key=lambda r: (r[3], r[4]), reverse=True)
-for thr in range(4, 40, 2):
-    kept = []
-    for r in order:
-        protected = r[2].startswith('Card review') or r[1] in keepers or r[1].startswith('cards_')
-        if not protected and any(k[2] == r[2] and bin(k[8] ^ r[8]).count('1') <= thr for k in kept): continue
-        kept.append(r)
-    if len(kept) <= budget: break
-kept_ids = {r[0] for r in kept}
-raw2 = [r[:8] for r in raw if r[0] in kept_ids]
-print(f'library: {len(raw)} -> {len(raw2)} shots (threshold {thr})')
-page = re.sub(r'const RAW = \[.*?\];\n', lambda m: 'const RAW = ' + json.dumps(raw2, separators=(',', ':')) + ';\n', page, count=1, flags=re.S)
-page = page.replace('the most one page can hold', 'near-duplicates pruned to fit').replace('</style>', '.lb[hidden]{display:none !important;}</style>', 1)
-open(os.path.join(OUT, 'library.html'), 'w', encoding='utf-8').write(doc(page))
-os.makedirs(os.path.join(OUT, 'img'))
-for r in raw2: shutil.copy(os.path.join(VL, 'img', r[0] + '.webp'), os.path.join(OUT, 'img', r[0] + '.webp'))
+if not os.path.exists(os.path.join(VL, 'visual-library.html')):  # 2026-11-07 (HUB3): no .vislib here, so use the committed copy of the page (its screenshots stay out of the hub, as in the published one)
+    shutil.copy(os.path.join(ROOT, 'tools', 'hub', 'library-fallback.html'), os.path.join(OUT, 'library.html'))
+else:
+  page = open(os.path.join(VL, 'visual-library.html'), encoding='utf-8').read()
+  raw = json.loads(re.search(r'const RAW = (\[.*?\]);\n', page, re.S).group(1))
+  def dhash(p):
+      im = Image.open(p).convert('L').resize((17, 16)); px = im.load()
+      return sum(1 << (y*16+x) for y in range(16) for x in range(16) if px[x, y] > px[x+1, y])
+  budget = MAX_FILES - len(lab_files) - 3 - 1  # 2026-10-15: -1 for the card thumbnail sheet (cards-thumbs.webp)
+  keepers = {'detail_before_desk', 'detail_after_desk'}
+  for r in raw: r.append(dhash(os.path.join(VL, 'img', r[0] + '.webp')))
+  order = sorted(raw, key=lambda r: (r[3], r[4]), reverse=True)
+  for thr in range(4, 40, 2):
+      kept = []
+      for r in order:
+          protected = r[2].startswith('Card review') or r[1] in keepers or r[1].startswith('cards_')
+          if not protected and any(k[2] == r[2] and bin(k[8] ^ r[8]).count('1') <= thr for k in kept): continue
+          kept.append(r)
+      if len(kept) <= budget: break
+  kept_ids = {r[0] for r in kept}
+  raw2 = [r[:8] for r in raw if r[0] in kept_ids]
+  print(f'library: {len(raw)} -> {len(raw2)} shots (threshold {thr})')
+  page = re.sub(r'const RAW = \[.*?\];\n', lambda m: 'const RAW = ' + json.dumps(raw2, separators=(',', ':')) + ';\n', page, count=1, flags=re.S)
+  page = page.replace('the most one page can hold', 'near-duplicates pruned to fit').replace('</style>', '.lb[hidden]{display:none !important;}</style>', 1)
+  open(os.path.join(OUT, 'library.html'), 'w', encoding='utf-8').write(doc(page))
+  os.makedirs(os.path.join(OUT, 'img'))
+  for r in raw2: shutil.copy(os.path.join(VL, 'img', r[0] + '.webp'), os.path.join(OUT, 'img', r[0] + '.webp'))
 
 # 3) Master doc, rendered. Links to the hub's own tabs switch tabs; links to other .md docs become plain names.
 def md_html(md):
@@ -115,7 +131,7 @@ bal_json = json.dumps({'games': BAL['games'], 'generated': BAL['generated'], 'ro
 _cl_intro, _cl_secs = split_h2(rd('docs', 'CHANGELOG.md'))
 CL = [(t, md_html(b)) for t, b in _cl_secs]
 changelog = md_html(_cl_intro) + '<p class="cl-tools"><button type="button" data-cl="open">Open all</button> <button type="button" data-cl="close">Close all</button></p>' + ''.join(f'<details class="cl" id="cl-{k}"{" open" if k < 3 else ""}><summary>{H.escape(t)}</summary><div class="cl-b">{b}</div></details>' for k, (t, b) in enumerate(CL))
-for k, (t, b) in enumerate(CL): SEARCH.append(['Changelog', t, '', _txt(b)[:3000], {'tab': 'changelog', 'el': f'cl-{k}'}])  # 2026-11-05 (release 11-05a): 8000 -> 3000 chars, the page hit the 16MB publish cap
+for k, (t, b) in enumerate(CL): SEARCH.append(['Changelog', t, '', _txt(b)[:1500], {'tab': 'changelog', 'el': f'cl-{k}'}])  # 2026-11-05 (release 11-05a): 8000 -> 3000 chars; 2026-11-07 (HUB3): -> 1500, the index.html was at 15.65 of 16 MiB (the entry's title and first lines still match), the page hit the 16MB publish cap
 # 2026-10-11 (user: "fight against EVERY single Skirmish ... and publish the win rate in our artefact"): the 📈 Difficulty
 # tab is its own plain file (no f-string braces), filled with docs/balance/difficulty-curve.json.
 _curve_path = os.path.join(ROOT, 'docs', 'balance', 'difficulty-curve.json')
@@ -157,7 +173,7 @@ GUIDE = [  # (task, doc file, source)
   ('Anything waiting on a decision', 'decisions.md', 'docs'),
 ]
 def doc_src(f, src):
-    pth = os.path.join(ROOT, '.guide-src' if src == 'guide' else 'docs', f)
+    pth = os.path.join(GUIDE_SRC if src == 'guide' else os.path.join(ROOT, 'docs'), f)
     return open(pth, encoding='utf-8').read() if os.path.exists(pth) else None
 rows = ''.join(f'<tr><td>{H.escape(t)}</td><td><a href="#doc-{f[:-3]}" class="jump">claude/{f}</a></td></tr>' for t, f, _ in GUIDE)
 docs_html = ''
@@ -349,13 +365,14 @@ _thumb_ids = [c['id'] for c in CANON if c['id'] not in _egg_ids and (c['id'] in 
 if _thumb_ids:
     import base64, io
     cols = math.ceil(math.sqrt(len(_thumb_ids)))
-    sheet = Image.new('RGB', (cols * THUMB, math.ceil(len(_thumb_ids) / cols) * THUMB), (40, 34, 26))
+    sheet = Image.new('RGBA', (cols * THUMB, math.ceil(len(_thumb_ids) / cols) * THUMB), (0, 0, 0, 0))  # 2026-11-07 (HUB3): keep the alpha, so cut-out sprites sit on the page's rarity plate like in the game instead of a baked dark box
     for i, cid in enumerate(_thumb_ids):
         src = os.path.join(ROOT, 'assets', 'cards', _assets[cid]) if cid in _assets else io.BytesIO(base64.b64decode(_canon_art[cid].split(',', 1)[1]))
-        im = Image.open(src).convert('RGBA').resize((THUMB, THUMB), Image.LANCZOS)
-        bg = Image.new('RGBA', im.size, (40, 34, 26, 255)); bg.alpha_composite(im)
-        sheet.paste(bg.convert('RGB'), ((i % cols) * THUMB, (i // cols) * THUMB))
-    sheet.save(os.path.join(OUT, 'cards-thumbs.webp'), 'WEBP', quality=72, method=4)
+        im = Image.open(src).convert('RGBA')
+        # 2026-11-07 (HUB3): the game draws art with object-fit:cover and image-rendering:pixelated, so small pixel sprites (93 px and the like) are enlarged crisp, not smeared by LANCZOS
+        im = im.resize((THUMB, THUMB), Image.NEAREST if im.size[0] < THUMB else Image.LANCZOS)
+        sheet.paste(im, ((i % cols) * THUMB, (i // cols) * THUMB))
+    sheet.save(os.path.join(OUT, 'cards-thumbs.webp'), 'WEBP', quality=72, method=4, alpha_quality=100)
 else: cols = 1
 _tix = {cid: i for i, cid in enumerate(_thumb_ids)}
 _bal = {r['id']: r for r in BAL['rows']}
