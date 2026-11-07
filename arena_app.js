@@ -52236,7 +52236,7 @@ function en2GuardStepIn(ev){
   setTimeout(()=>{ try{ tiltAnim = g.animate([{rotate:'0deg'}, {rotate: tilt + 'deg'}], {duration: moveMs, easing:'ease-out', fill:'forwards'}); }catch(e){} }, Math.max(0, hitAt - moveMs - 30));
   const untilt = ()=>{ try{ const back = g.animate([{rotate: tilt + 'deg'}, {rotate:'0deg'}], {duration: 340, easing:'ease-in-out'}); if(tiltAnim) tiltAnim.cancel(); back.onfinish = ()=>{ try{ back.cancel(); }catch(e){} }; }catch(e){ if(tiltAnim) try{ tiltAnim.cancel(); }catch(e2){} } };
   setTimeout(()=>{ gsap.to(g, {left: (dx/sc) + 'px', top: (dy/sc) + 'px', duration:moveMs/1000, ease:'sine.inOut'}); }, Math.max(0, hitAt - moveMs - 30));
-  setTimeout(()=> vis3BlockPulse(g), hitAt); // VIS3 (2026-10-26, V4): it shakes with an expanding aura as it blocks
+  if(ev.type !== 'evaded') setTimeout(()=> vis3BlockPulse(g), hitAt); // VIS3 (2026-10-26, V4): it shakes with an expanding aura as it blocks; ENG29: not when it dodges (the dodge plays instead)
   if(dies) setTimeout(()=>{ const t = g.querySelector('.card-tile') || g; try{ t.animate([{translate:'0 0', rotate:'0deg'}, {translate:'-5px 0', rotate:'-4deg'}, {translate:'5px 0', rotate:'4deg'}, {translate:'-3px 0', rotate:'-2deg'}, {translate:'0 0', rotate:'0deg'}], {duration:300, easing:'ease-out'}); }catch(e){} }, hitAt + 20); // the flinch; it dies where it stands
   else setTimeout(()=>{ untilt(); gsap.to(g, {left:'0px', top:'0px', duration:.34, ease:'sine.inOut', onComplete:()=>{ g.style.left = ''; g.style.top = ''; if(pos0 === 'static') g.style.position = ''; g.style.zIndex = ''; g.classList.remove('en2-guarding'); }}); }, hitAt + 360);
 }
@@ -52272,7 +52272,7 @@ function en2Vfx(ev){
   // 17:34 #22: the swing's live Attack (Swarm, Tide, Rage ... as the engine used it) on the attacker's plate at the moment it swings
   if((ev.type === 'hit' || ev.type === 'hitHQ') && ev.liveAtk != null && ev.attUid != null && !ev.ranged){ const el = boardCardEl(ev.attUid), d = defs[ev.attDefId] || {};
     const a = el && el.querySelector('.stats .atk'); if(a && !(Number(d.attack) <= 0 && ev.liveAtk <= 0)) a.innerHTML = atkLabelHTML(ev.liveAtk, d.attack, d); }
-  if(ev.type === 'hit' && ev.guardianRedirect && ev.guardedUid != null) en2GuardStepIn(ev); // EN4 (2026-10-23, owner 22:23 #9): one Guardian steps in, no chain (EN3's en3GuardChain is gone)
+  if((ev.type === 'hit' || ev.type === 'evaded' /* ENG29 (2026-11-07, owner 07:55: "evade anim and guardian anim could play at the same time"): a Guardian that steps in and dodges: it steps in and the dodge plays on it (flashDodge / SkillFX.evasiveDodge on its tile while the card itself slides) */) && ev.guardianRedirect && ev.guardedUid != null) en2GuardStepIn(ev); // EN4 (2026-10-23, owner 22:23 #9): one Guardian steps in, no chain (EN3's en3GuardChain is gone)
   if(ev.type === 'boomerangReturn' && ev.thrownBy == null){ if(matchState) matchState.boomerangBack = null; en2BoomOrphanFlight(ev); }
   if(ev.type === 'play' && !ev.reserve && ev.uid != null && ((defs[ev.defId] || {}).fx || {}).play === 'crabClack'){ const u = ev.uid; setTimeout(()=> en2CrabClack(boardCardEl(u)), 620); }
   if(ev.type === 'hit' && !ev.ranged && ((defs[ev.attDefId] || {}).fx || {}).attack === 'crabClaw'){ const am = animMs(); en2CrabClawHit(boardCardEl(ev.attUid), boardCardEl(ev.targetUid), am.windup + am.impactPad); }
