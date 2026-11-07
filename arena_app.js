@@ -3468,6 +3468,7 @@ const SKILL_REVEAL_MAP = {
   nocturnal:   {from:1, parts:['nocturnalHp', 'nocturnalGrant']},
   crepuscular: {from:1, parts:['crepuscularHp', 'crepuscularGrant', 'crepuscularDay', 'crepuscularNight' /* ENG23 */]}, // + its braces (CX2, 2026-10-21)
   tide:        {from:2, parts:['tideGrant']}, // Map 2+ (the Meadow Frog's Tide on Map 1 is a "?")
+  // 2026-11-07 (package UI25, owner 07:55 #7): Boomerang is not gated any more (Otter Centurion, a Map 0 card, showed it as a locked "?": you only see a card once you own it).
   // ENG9 (2026-10-26, owner EN8-4: "Fodder, stem, chrysalis should all say ?. Then at maybe 5 maps before 20, you can see the name, but not the
   // effect. so Chrysalis - ?"): nameFrom = the map from which the name shows with "?" for its effect (skillNameOnlyNow); from = fully revealed.
   // (Fodder was the name of the babies' Stem, EN-6 / EV-6: one skill, stem.)
@@ -3480,7 +3481,7 @@ const SKILL_REVEAL_MAP = {
   // ENG22 (2026-11-03, owner DESIGN1-2: "If somehow in Tutorial map and Map 0 an ability we don't feel comfortable in introducing yet comes out -
   // it's a '?'."): the abilities the base Level 0 cards bring at Level 1 that Map 0's own fights don't show (they show Armor, Flying, Swarm,
   // Poison and Quick) read "?" on the tutorial map and Map 0; Map 1 reveals them. Tide is Map 2's already.
-  taunt:       {from:1}, reach:{from:1}, inspiring:{from:1}, esprit:{from:1}, boomerang:{from:1}, evasive:{from:1}, molting:{from:1}, frostbite:{from:1}, fireArrow:{from:1},
+  taunt:       {from:1}, reach:{from:1}, inspiring:{from:1}, esprit:{from:1}, evasive:{from:1}, molting:{from:1}, frostbite:{from:1}, fireArrow:{from:1},
   // ENG23 (2026-11-04, owner 11-03 23:12: "True sight is '?' until the first Map with invisible units or changelings are seen."): True Sight
   // (keenEye) reads "?" until Map 6, the Sable Swampmire, the first map whose fights field an Invisible unit (the Booming Bittern, 6-2 to
   // 6-6; no Changeling is in a fight before Map 18), or until the player has seen a card with Invisible or Changeling (seenWith), wherever.
@@ -12903,7 +12904,10 @@ function newAchievementsChipHTML(m){
     }
     if(!m.newAchv.length) return '';
     const names = m.newAchv.slice(0, 2).map(d=> (d.icon ? d.icon + " " : "") + escapeHtml(d.title || d.id)).join(', ') + (m.newAchv.length > 2 ? ` +${m.newAchv.length - 2}` : '');
-    return `<div class="winloss-achv" role="status"><span class="wa-ico">🏆</span><span><b>${m.newAchv.length === 1 ? _t('New achievement') : _t('New achievements')}</b> ${names}</span></div>`; // 2026-10-14 (user: "'Claim it on the achievement board...' -> dont need to say this")
+    // 2026-11-07 (package UI25, owner note 2): an achievement can carry faction cards (FACTION_REWARD_TRACK.achievements), granted when you claim it, and
+    // only a short toast said so afterwards. The chip now says how many cards are waiting to be claimed.
+    const nCards = m.newAchv.reduce((t, d)=> t + achievementFactionCards(d.id), 0), cardsNote = nCards ? ` <span class="wa-cards">🎁 ${escapeHtml(TX('ui.ui25-achv-cards', {n: nCards, s: nCards === 1 ? '' : 's'}))}</span>` : '';
+    return `<div class="winloss-achv" role="status"><span class="wa-ico">🏆</span><span><b>${m.newAchv.length === 1 ? _t('New achievement') : _t('New achievements')}</b> ${names}${cardsNote}</span></div>`; // 2026-10-14 (user: "'Claim it on the achievement board...' -> dont need to say this")
   }catch(e){ return ''; }
 }
 // A fight you have actually won (see the clearedAt note in achievementContext).
@@ -12956,7 +12960,7 @@ function claimAchievement(id){
   const {complete, claimed} = achievementStatus(def, ctx);
   if(!complete || claimed) return false;
   Object.keys(def.reward).forEach(kind=> grantCurrency(kind, def.reward[kind]));
-  try{ const fn = achievementFactionCards(id); if(fn){ const got = grantFactionRewardCards(fn); if(got.length) setTimeout(()=>{ try{ showToast(TX('toast.rp-achv-faction-cards', {names: got.map(x=> (getCardDefs()[x]||{}).name || x).join(', ')}), 'ok'); }catch(e){} }, 600); } }catch(e){} // 2026-10-21 (package RP)
+  try{ const fn = achievementFactionCards(id); if(fn){ const got = grantFactionRewardCards(fn); if(got.length) setTimeout(()=>{ try{ showToast(TX('toast.card-added-to-your-collection', {n: got.length, s: got.length===1?'':'s'}) /* 2026-11-07 (package UI25, owner note 1): "N cards added", not the card's name */, 'ok'); }catch(e){} }, 600); } }catch(e){} // 2026-10-21 (package RP)
   myClaimedAchievements.add(id);
   saveClaimedAchievements();
   return true;
@@ -22259,12 +22263,26 @@ function checkXpMilestones(){
   awardXp(total, fresh.length===1 ? fresh[0].label : `${fresh.length} milestones`);
   if(!(fresh.length === 1 && fresh[0].id === 'tutorial') && !rewardXpBarUp()) showToast(TX('toast.xp', {total, v2: fresh.length===1 ? fresh[0].label : fresh.length + ' milestones'}), 'ok'); // the tutorial's own XP: the Level 1 toast says it (2026-10-12: fewer toasts)
 }
-function levelBadgeHTML(){
-  const L = playerLevelInfo();
+function levelBadgeHTML(L){ const own = !L;
+  L = L || playerLevelInfo(); if(own) ui25LastBadge = L;
   return `<div class="player-level" id="playerLevelBadge" title="${L.into} / ${L.need} XP to level ${L.level+1}">
     <span class="pl-num">⭐ Level ${L.level}</span><span class="pl-bar"><span style="width:${Math.round(L.into/L.need*100)}%"></span></span><span class="pl-xp">${L.into}/${L.need} XP</span></div>`;
 }
-function refreshLevelBadge(){ const el = document.getElementById('playerLevelBadge'); if(el) el.outerHTML = levelBadgeHTML(); try{ res3CheckLevelTrack(); }catch(e){} } // + RES3 (2026-10-26, B1): pays the level track
+// 2026-11-07 (package UI25, owner 07:55 #6): the XP bar moves. The badge was redrawn whole (outerHTML), so the bar jumped to its new value. It now
+// fills from the value last drawn to the new one, and across a level-up (to full, the Level label changes, then from empty). Effects None, or
+// reduced motion: just the final value. The numbers and title are always the new ones at once.
+var ui25LastBadge = null;
+function ui25AnimateBadge(el, from, to){
+  const bar = el && el.querySelector('.pl-bar > span'), num = el && el.querySelector('.pl-num'); if(!bar || !bar.animate) return;
+  const pct = L=> Math.round(L.into / L.need * 100) + '%', ms = 650;
+  const run = (a, b, dur, then)=>{ const an = bar.animate([{width:a}, {width:b}], {duration:dur, easing:'ease-out', fill:'forwards'}); an.onfinish = ()=>{ bar.style.width = b; try{ an.cancel(); }catch(e){} if(then) then(); }; };
+  if(to.level > from.level){ num.textContent = '⭐ Level ' + from.level; bar.style.width = pct(from);
+    run(pct(from), '100%', ms * .6, ()=>{ num.textContent = '⭐ Level ' + to.level; bar.style.width = '0%'; run('0%', pct(to), ms * .8); }); }
+  else if(to.level === from.level && to.into > from.into){ bar.style.width = pct(from); run(pct(from), pct(to), ms); }
+}
+function refreshLevelBadge(){ const el = document.getElementById('playerLevelBadge'); const L = playerLevelInfo(), prev = ui25LastBadge; ui25LastBadge = L;
+  if(el){ el.outerHTML = levelBadgeHTML(L); try{ if(prev && (L.level > prev.level || (L.level === prev.level && L.into > prev.into)) && fxLevel() !== 'none' && !reducedMotion()) ui25AnimateBadge(document.getElementById('playerLevelBadge'), prev, L); }catch(e){} }
+  try{ res3CheckLevelTrack(); }catch(e){} } // + RES3 (2026-10-26, B1): pays the level track
 // ---- Quests & statistics medals (2026-10-03, explicit: "Limited rewards to stop burnout. Daily
 // quests: Use 40 energy on Skirmishes, Use 3 tickets in PVP, Defeat 12 units. Then the next tier
 // (decreasing rewards): Join a Raid, etc. Weeklies are very rewarding, but also similarly tiered."
@@ -25518,8 +25536,11 @@ function cnpRewardStripHTML(mapId, node, done, rank){
     const chal = !isTutNode && cardRewardIsChallenge(mapId, node, id), chalCls = chal ? ' is-challenge' : '';
     const chalMark = chal ? `<span class="cnp-rw-chal" aria-hidden="true">${escapeHtml(TX('ui.rw2-challenge'))}</span>` : '';
     const needLbl = (chal ? ', ' + TX('ui.rw2-challenge-card') : '') + (needR ? ', ' + TX('ui.rw-needs-rank', {rank: needR}) : '');
+    // 2026-11-07 (package UI25, owner note 4): the card back with the red "?" had no tooltip. It is a reward card you have not discovered yet; the rank emblem
+    // on it is the rank the win must reach to get it (a card reward waits for a better win otherwise).
+    const mysteryTip = TX('ui.ui25-mystery-title') + '|' + (needR ? TX('ui.ui25-mystery-rank') : TX('ui.ui25-mystery-first'));
     return isCardHiddenForPlayer(defs[id])
-    ? `<span class="cnp-rw-card is-mystery ${got?'is-got':''}${chalCls}" role="img" aria-label="A mystery card${escapeAttr(needLbl)}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
+    ? `<span class="cnp-rw-card is-mystery ${got?'is-got':''}${chalCls}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(mysteryTip)}" aria-label="${escapeAttr(TX('ui.ui25-mystery-title') + needLbl + '. ' + mysteryTip.split('|')[1])}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
     : `<span class="cnp-rw-card ${got?'is-got':''}${chalCls}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */})}${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>`; }).join('');
   const cur = [];
   // 2026-10-26 (package RES3, G6): the currencies follow the same rule (greyed with a check once the first clear is won)
@@ -44884,6 +44905,8 @@ async function resolveRoundCore(opts){
       // Errands (2026-10-12): sometimes someone on the road asks a favour once the result screen has settled.
       setTimeout(()=>{ try{ maybeOfferErrand(); }catch(e){} }, 2600);
       setTimeout(()=>{ try{ maybeOpenPitching(); }catch(e){} }, 3400); // held Lumber-cost cards arrive once pitching opens (2026-10-12)
+      // 2026-11-07 (package UI25, owner 07:55 #5): all the cards this win added are one message, N = their total (no per-card messages).
+      try{ const nWon = (m.conquestCardsEarned||[]).length + ((m.conquestBaseGrowth && m.conquestBaseGrowth.copies) || []).length; if(nWon > 0) setTimeout(()=>{ try{ showToast(TX('toast.card-added-to-your-collection', {n: nWon, s: nWon===1?'':'s'}), 'ok'); }catch(e){} }, 1200); }catch(e){}
       { const d = diffUnlocks(unlockBefore, snapshotUnlocks(), m); m.unlockedFights = d.fights; m.unlockedActivities = d.acts; m.nextBattle = pickNextBattle(m, d.fights); }
       // Metal (item #6): "defeating the enemy leader" — every Boss/Raid Boss node is a named
       // leader figure (Cave Warlord, The Alligator King, etc.); plain skirmish/elite nodes
@@ -59187,7 +59210,7 @@ function grantMapEndPacks(idx){
   refs.forEach(ref=>{ if(ref.kind === 'end') grantEndPack(ref.id); else grantFactionPack(myFactionPackId(), 1); });
   return refs;
 }
-function endPackOf(id){ const p = getShopPacks().find(x=> x.id === id); return p ? Object.assign({}, p, {cards: MAP_END_PACK_CARDS, metal:0, kroon:0, endReward:true, name: TX('ui.rw5-end-pack', {name: p.name})}) : null; }
+function endPackOf(id){ const p = getShopPacks().find(x=> x.id === id); return p ? Object.assign({}, p, {cards: MAP_END_PACK_CARDS, metal:0, kroon:0, endReward:true, name: p.name /* 2026-11-07 (package UI25, owner note 3): just the pack's name, no "Map reward" */}) : null; }
 function grantEndPack(id){ const pack = endPackOf(id); if(!pack) return null;
   const o = purchasePackOnce(pack, true, {newFirst: REWARD_NEW_FIRST, gated: true}); if(!o) return null;
   saveCurrencies(); if(o.leveledId) saveCardLevels(); try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
@@ -59296,6 +59319,7 @@ function ui17BuyAgainHTML(ba){
   const label = st.qty > 1 ? TX('ui.ui17-buy-again-n', {n: st.qty}) : TX('ui.ui17-buy-again');
   return `<button type="button" class="btn ${st.ok ? 'primary' : ''} ui17-buy-again" id="poBuyAgain" ${st.ok ? '' : `disabled aria-disabled="true" title="${escapeAttr(TX('ui.ui17-buy-again-short'))}"`}>${escapeHtml(label)} ${price}</button>`;
 }
+let ui25PackCards = 0; // 2026-11-07 (UI25 #5): cards opened so far in this sitting's pack openers, for the one summary message
 function openPackAnimation(pack, opened, opts){
   opts = opts || {};
   if(packOpenStop) packOpenStop();
@@ -59340,6 +59364,9 @@ function openPackAnimation(pack, opened, opts){
     if(onKey) document.removeEventListener('keydown', onKey, true);
     unInert(); document.documentElement.classList.remove('po2-open');
     overlay.hidden = true; overlay.innerHTML = '';
+    // 2026-11-07 (package UI25, owner 07:55 #5): one "N cards added to your collection" for everything opened in one sitting (Open all, several packs, a queue
+    // of reward packs): the cards are added up as each opener closes and the message shows once, when no further set follows. No per-card messages.
+    try{ ui25PackCards += opened.reduce((t, o)=> t + ((o && o.results) || []).length, 0); if(!opts.moreAfter){ const n = ui25PackCards; ui25PackCards = 0; if(n > 0) showToast(TX('toast.card-added-to-your-collection', {n, s: n===1?'':'s'}), 'ok'); } }catch(e){}
     try{ if(currentTab==='shop') renderShop(); }catch(e){ console.error('[Bramblewood] pack opener: shop', e); } // 2026-10-29 (UI2, R2): closing never throws
     if(opts.onClose){ try{ opts.onClose(); }catch(e){} } // the next queued reveal (2026-10-14)
   };

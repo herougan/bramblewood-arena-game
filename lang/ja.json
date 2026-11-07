@@ -979,7 +979,6 @@
  "Faction card": "勢力カード",
  "Faction cards +{n}": "勢力カード +{n}",
  "Faction pack": "陣営パック",
- "Faction reward: {names}": "勢力報酬：{names}",
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "勢力報酬：小競り合いの進行と実績で手に入り、パックからは出ません",
  "Factions": "勢力",
  "Far enemies read ?": "遠い敵は「？」と表示",
@@ -3487,7 +3486,6 @@
  "{name} turns to stone for {n} rounds.": "{name}は{n}ラウンド石になる。",
  "{name} wakes from hibernation.": "{name}は冬眠から目覚めた。",
  "{name} was promoted to {v2}!{v3}": "{name} が {v2} に昇格しました！{v3}",
- "{name} · Map reward": "{name}・マップ報酬",
  "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}": "{name} — {v2} · 🏰 HP {hqHp}{v4}{v5}",
  "{name}'s row": "{name}の列",
  "{name}'s {skill} fades.": "{name}の{skill}が消えた。",
@@ -4087,5 +4085,9 @@
  "Sunfeather War-band": "陽羽の戦士団",
  "The Bloom sings for us today. Come and hear it.": "今日、花は我らのために歌う。聞きに来るがいい。",
  "Admin only: players never see this map.": "管理者専用：プレイヤーにこのマップは表示されません。",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 管理者テスト戦闘：無料、報酬なし。"
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 管理者テスト戦闘：無料、報酬なし。",
+ "A hidden reward card": "隠された報酬カード",
+ "A card you haven't found yet. It's yours the first time you win this fight.": "まだ見つけていないカードです。このバトルに初めて勝つと手に入ります。",
+ "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "まだ見つけていないカードです。カードに表示されたランクでこのバトルに勝つと手に入ります。",
+ "{n} card{s} to claim": "受け取れるカード：{n}枚"
 }

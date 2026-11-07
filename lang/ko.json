@@ -979,7 +979,6 @@
  "Faction card": "세력 카드",
  "Faction cards +{n}": "세력 카드 +{n}",
  "Faction pack": "진영 팩",
- "Faction reward: {names}": "세력 보상: {names}",
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "세력 보상: 전투 진행과 업적으로 얻으며, 팩에서는 나오지 않습니다",
  "Factions": "세력",
  "Far enemies read ?": "먼 적은 ?로 표시",
@@ -3490,7 +3489,6 @@
  "{name} turns to stone for {n} rounds.": "{name}이(가) {n}라운드 동안 돌이 돼요.",
  "{name} wakes from hibernation.": "{name}이(가) 동면에서 깨어납니다.",
  "{name} was promoted to {v2}!{v3}": "{name}이(가) {v2}(으)로 승급했어요!{v3}",
- "{name} · Map reward": "{name} · 지도 보상",
  "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}": "{name} — {v2} · 🏰 HP {hqHp}{v4}{v5}",
  "{name}'s row": "{name}의 줄",
  "{name}'s {skill} fades.": "{name}의 {skill}이(가) 꺼졌어요.",
@@ -4089,5 +4087,9 @@
  "Sunfeather War-band": "햇깃 전투단",
  "The Bloom sings for us today. Come and hear it.": "오늘 꽃이 우리를 위해 노래한다. 와서 들어라.",
  "Admin only: players never see this map.": "관리자 전용: 플레이어는 이 맵을 절대 볼 수 없습니다.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 관리자 시험 전투: 무료이며 보상이 없습니다."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 관리자 시험 전투: 무료이며 보상이 없습니다.",
+ "A hidden reward card": "숨겨진 보상 카드",
+ "A card you haven't found yet. It's yours the first time you win this fight.": "아직 발견하지 못한 카드예요. 이 전투를 처음 이기면 얻어요.",
+ "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "아직 발견하지 못한 카드예요. 카드에 표시된 랭크로 이 전투를 이기면 얻어요.",
+ "{n} card{s} to claim": "받을 수 있는 카드 {n}장"
 }

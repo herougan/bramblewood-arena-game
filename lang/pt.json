@@ -979,7 +979,6 @@
  "Faction card": "Carta de facção",
  "Faction cards +{n}": "Cartas de facção +{n}",
  "Faction pack": "Pacote de facção",
- "Faction reward: {names}": "Recompensa de facção: {names}",
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "Recompensas de facção: obtidas com o progresso nas escaramuças e com conquistas, nunca em pacotes",
  "Factions": "Facções",
  "Far enemies read ?": "Inimigos distantes mostram ?",
@@ -3489,7 +3488,6 @@
  "{name} turns to stone for {n} rounds.": "{name} torna-se pedra durante {n} rondas.",
  "{name} wakes from hibernation.": "{name} acorda da hibernação.",
  "{name} was promoted to {v2}!{v3}": "{name} foi promovido a {v2}!{v3}",
- "{name} · Map reward": "{name} · Recompensa do mapa",
  "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}": "{name} — {v2} · 🏰 {hqHp} PV{v4}{v5}",
  "{name}'s row": "Fileira de {name}",
  "{name}'s {skill} fades.": "{skill} de {name} apaga-se.",
@@ -4088,5 +4086,9 @@
  "Sunfeather War-band": "Bando de guerra Pluma-Sol",
  "The Bloom sings for us today. Come and hear it.": "A Floração canta por nós hoje. Venha ouvi-la.",
  "Admin only: players never see this map.": "Só para admins: os jogadores nunca veem este mapa.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Luta de teste de admin: grátis, e não paga nada."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Luta de teste de admin: grátis, e não paga nada.",
+ "A hidden reward card": "Uma carta de recompensa oculta",
+ "A card you haven't found yet. It's yours the first time you win this fight.": "Uma carta que ainda não encontraste. É tua na primeira vez que ganhares este combate.",
+ "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Uma carta que ainda não encontraste. Ganha este combate com a classificação mostrada nela para a conseguires.",
+ "{n} card{s} to claim": "{n} carta{s} para reclamar"
 }

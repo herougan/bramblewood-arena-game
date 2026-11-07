@@ -979,7 +979,6 @@
  "Faction card": "陣營卡牌",
  "Faction cards +{n}": "陣營卡牌 +{n}",
  "Faction pack": "陣營卡包",
- "Faction reward: {names}": "陣營獎勵：{names}",
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "陣營獎勵：透過遭遇戰進度和成就獲得，從不出自卡包",
  "Factions": "陣營",
  "Far enemies read ?": "遠處的敵人顯示「？」",
@@ -3487,7 +3486,6 @@
  "{name} turns to stone for {n} rounds.": "{name}石化{n}回合。",
  "{name} wakes from hibernation.": "{name} 從冬眠中醒來。",
  "{name} was promoted to {v2}!{v3}": "{name} 晉升為 {v2}！{v3}",
- "{name} · Map reward": "{name} · 地圖獎勵",
  "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}": "{name} — {v2} · 🏰 {hqHp} 生命{v4}{v5}",
  "{name}'s row": "{name} 的一排",
  "{name}'s {skill} fades.": "{name} 的{skill}消退了。",
@@ -4087,5 +4085,9 @@
  "Sunfeather War-band": "日羽戰團",
  "The Bloom sings for us today. Come and hear it.": "今日繁花為我們歌唱。來聽吧。",
  "Admin only: players never see this map.": "僅限管理員：玩家永遠看不到這張地圖。",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 管理員測試戰鬥：免費，也沒有任何獎勵。"
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 管理員測試戰鬥：免費，也沒有任何獎勵。",
+ "A hidden reward card": "隱藏的獎勵卡牌",
+ "A card you haven't found yet. It's yours the first time you win this fight.": "你還沒找到的卡牌。首次贏下這場戰鬥就能得到它。",
+ "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "你還沒找到的卡牌。以卡牌上顯示的評級贏下這場戰鬥就能得到它。",
+ "{n} card{s} to claim": "{n} 張卡牌待領取"
 }

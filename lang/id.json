@@ -979,7 +979,6 @@
  "Faction card": "Kartu faksi",
  "Faction cards +{n}": "Kartu faksi +{n}",
  "Faction pack": "Paket faksi",
- "Faction reward: {names}": "Hadiah faksi: {names}",
  "Faction rewards: earned through skirmish progress and achievements, never from packs": "Hadiah faksi: didapat dari kemajuan pertempuran dan pencapaian, tak pernah dari paket",
  "Factions": "Faksi",
  "Far enemies read ?": "Musuh jauh tampil ?",
@@ -3489,7 +3488,6 @@
  "{name} turns to stone for {n} rounds.": "{name} menjadi batu selama {n} ronde.",
  "{name} wakes from hibernation.": "{name} bangun dari hibernasi.",
  "{name} was promoted to {v2}!{v3}": "{name} dipromosikan menjadi {v2}!{v3}",
- "{name} · Map reward": "{name} · Hadiah peta",
  "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}": "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}",
  "{name}'s row": "Baris {name}",
  "{name}'s {skill} fades.": "{skill} milik {name} padam.",
@@ -4088,5 +4086,9 @@
  "Sunfeather War-band": "Pasukan Perang Bulu Surya",
  "The Bloom sings for us today. Come and hear it.": "Sang Mekar bernyanyi untuk kami hari ini. Datang dan dengarkan.",
  "Admin only: players never see this map.": "Khusus admin: pemain tidak pernah melihat peta ini.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Pertarungan uji admin: gratis, dan tidak memberi apa-apa."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Pertarungan uji admin: gratis, dan tidak memberi apa-apa.",
+ "A hidden reward card": "Kartu hadiah tersembunyi",
+ "A card you haven't found yet. It's yours the first time you win this fight.": "Kartu yang belum kamu temukan. Jadi milikmu saat pertama kali kamu menang di pertarungan ini.",
+ "A card you haven't found yet. Win this fight at the rank shown on it to get it.": "Kartu yang belum kamu temukan. Menangkan pertarungan ini dengan peringkat yang tertera di kartu untuk mendapatkannya.",
+ "{n} card{s} to claim": "{n} kartu siap diklaim"
 }

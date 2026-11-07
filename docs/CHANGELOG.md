@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package UI25 (owner 07:43 notes 1-4)
+- Players see: the toast after claiming an achievement's faction cards says "N cards added to your collection" (was the card's name); the results screen's "New achievement" chip says how many cards are waiting to be claimed; a map-end pack is titled just its name when it opens (no "Map reward"); the hidden reward card (card back, red "?", rank emblem) in a fight's First clear box has a tooltip and a screen-reader label.
+- Also (07:55): one "N cards added" message per skirmish win and per sitting of pack openings; the top XP bar fills old to new (and across a level-up; none with Effects None); Boomerang is no longer a locked "?" (Otter Centurion).
+- Finding (note 2): a fight win's own grants (reward cards, faction track every 8th first clear, map milestone, base-track card, drops, journeys, Materia, eggs, packs) were all on the results screen. The one unseen grant was an achievement's faction card, paid at Claim with a 4.5 s toast only.
+- Code: `claimAchievement`, `newAchievementsChipHTML`, `endPackOf`, the mystery tile in the First clear box; 4 new TX keys (12 packs); `ui.rw5-end-pack` and `toast.rp-achv-faction-cards` retired. Test: `tests/ui25-2026-11-07.js` (new).
+
 ## 2026-11-07: Quick shown once (owner 07:40)
 - Quick had two 👢 pips on 14 cards (Fleetfoot'd, Jaguar Stalker, Savanna Cheetah ...): its own pip plus ENG28's generic one. A skill whose icon is already among a card's pips no longer gets a generic one; a scan of all 905 cards finds no doubled pip.
 

@@ -112,7 +112,7 @@ ok(dec.items.some(x=> /^RW5-/.test(x.id) && /end of each map|end-of-map/i.test(x
 
 // ---- 6. texts
 const TXT = rd('bramblewood-texts.js');
-const keys = ['ui.rw5-collector-pack', 'ui.rw5-end-pack', 'ui.rw5-speed-unlocked', 'ui.rw5-speed-unlocked-tip', 'ui.rw5-admin-res-max', 'ui.rw5-admin-res-zero', 'ui.rw5-guild-shop', 'ui.rw5-pack-levels', 'ui.rw5-cx-pack', 'ui.rw5-shop-sub', 'ui.rw5-need-gold-leaves'];
+const keys = ['ui.rw5-collector-pack', 'ui.rw5-speed-unlocked', 'ui.rw5-speed-unlocked-tip', 'ui.rw5-admin-res-max', 'ui.rw5-admin-res-zero', 'ui.rw5-guild-shop', 'ui.rw5-pack-levels', 'ui.rw5-cx-pack', 'ui.rw5-shop-sub', 'ui.rw5-need-gold-leaves'];
 const en = {}; keys.forEach(k=>{ const m = new RegExp('"' + k.replace(/[.]/g, '\\.') + '": "((?:[^"\\\\]|\\\\.)*)"').exec(TXT); en[k] = m ? JSON.parse('"' + m[1] + '"') : null; ok(!!en[k], '6. ' + k + ' is a TX key'); });
 ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const pk = JSON.parse(rd('lang/' + code + '.json')), miss = keys.filter(k=> en[k] && !pk[en[k].replace(/^(💰|🧹) /u, '')]); /* a leading emoji is peeled in the packs */ ok(!miss.length, `6. lang/${code}.json has the RW5 texts: ` + miss.join(', ')); });
 
