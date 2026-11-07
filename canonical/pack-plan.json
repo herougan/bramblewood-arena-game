@@ -1045,7 +1045,7 @@
       "why": "Tundra lemmings (Swarm, Brood): small bodies that add up",
       "budget": {
        "map": 14,
-       "use": 83,
+       "use": 76,
        "verdict": "ok"
       }
      },
@@ -1711,13 +1711,13 @@
   }
  },
  "summary": {
-  "liveCards": 808,
+  "liveCards": 828,
   "sourcesToday": {
    "starter": 16,
    "skirmish-unique": 108,
    "pack": 192,
    "base": 25,
-   "none": 370,
+   "none": 390,
    "faction": 57,
    "reward": 3,
    "special": 26,
@@ -1728,7 +1728,7 @@
    "skirmish-unique": 108,
    "pack": 194,
    "base": 25,
-   "none": 292,
+   "none": 312,
    "faction": 59,
    "achievement": 17,
    "pack-unique": 68,
@@ -1849,8 +1849,8 @@
     "armory",
     "hollow-belly-rat"
    ],
-   "onNoList": "338 cards (ids under sources, flag \"unobtainable: on no map list\")",
-   "afterProposal": 292
+   "onNoList": "358 cards (ids under sources, flag \"unobtainable: on no map list\")",
+   "afterProposal": 312
   },
   "skirmishUniqueInPack": {
    "today": [],
@@ -8049,6 +8049,126 @@
    "where": [
     "faction:hummingbirds"
    ]
+  },
+  "trident-caiman": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "peat-smoke-shaman": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "matamata": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "bog-lungfish": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "mossmother-newt": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "reed-dart-bittern": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "shoebill": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "hoatzin": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "shell-drop-gull": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "smuggler-slingrat": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "tidefolk-harpooner": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "snapgun-shrimp": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "quill-flinger-porcupine": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "acorn-pelter-squirrel": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "pinecone-crossbill": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "yeti-tracker": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "icefletch-fox": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "yeti-snarer": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "sand-flinger-antlion": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "stonecracker-vulture": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
   }
  }
 }

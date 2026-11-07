@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package CONTENT17: more Claude picks per map, ranged cards early, the yeti hunters (owner 23:55; decisions CONTENT17-1..4)
+- Admin only: each map's "Claude New" section in the Map cards window now has up to 15 more picks for its 34 maps and submaps (Maps 0-20). They are grouped under small theme headings: the map's current theme first, then 2-3 alternatives to swap in (Gatorback Swamp: Gators and snakes / Strange bog animals / Bog shamans and herbalists / Swamp sharpshooters). A ranged pick wears a 🏹, a new card says "New card". THEME5's and SKILLREC1's picks still come first. 413 picks in all, at least one ranged on every map.
+- 20 new cards on no list (awaitingSource, out of play until placed). Each is within budget for its proposed map.
+  - The yeti hunters: Yeti Tracker, Icefletch Fox, Yeti Snarer.
+  - The bog healers: Peat-smoke Shaman, Mossmother Newt.
+  - Strange bog animals: Matamata, Bog Lungfish, Shoebill, Hoatzin.
+  - Ranged early cards: Trident Caiman (a thrown fork: Reach), Reed-dart Bittern, Shell-drop Gull, Smuggler Slingrat, Tidefolk Harpooner, Snapgun Shrimp, Quill-flinger Porcupine, Acorn-pelter Squirrel, Pinecone Crossbill, Sand-flinger Antlion, Stonecracker Vulture.
+  - Art: emoji until drawn; prompts in `docs/art-style-prompts.md`.
+- Maps 21+ note: `docs/design/armed-creatures-2026-11-07.md` (animals with gear and culture, 18 concepts, ranged about 1 in 4); ideas in `docs/card-ideas.md`.
+- Tools: `tools/content17_2026_11_07.js` (picks, pricing, `canonical/claude-new-cards.json` content17), `tools/i18n_2026_11_07_content17.py` (43 rows x 12 packs), `tools/content17_decisions_2026_11_07.py`. `tools/ui22_claude_new_2026_11_04.py` keeps content17. `canonical/pack-plan.json` re-run (CONTENT16 tool, proposal kept: the 20 new cards listed as on no list). Test `tests/content17-2026-11-07.js`; the UI22 browser check accepts the "New card" pill.
+
 ## 2026-11-07 Hemorrhage icon (owner 23:15)
 - Players see: Hemorrhage's icon is 🩸💥 (one blood drop and one impact, stacked) instead of 🩸².
 

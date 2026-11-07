@@ -4227,5 +4227,8 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "Mga token ng lason: {n}. Tumatanggap ito ng pinsalang katumbas ng stack nito bawat round, saka nababawasan ng 1 stack.",
  "Main skills": "Mga pangunahing kasanayan",
  "Other skills (side maps, specials)": "Iba pang kasanayan (side map, espesyal)",
- "Recommended skills for this map": "Mga inirerekomendang kasanayan para sa mapang ito"
+ "Recommended skills for this map": "Mga inirerekomendang kasanayan para sa mapang ito",
+ "Ranged": "Malayuan",
+ "Melee": "Malapitan",
+ "New card": "Bagong card"
 }

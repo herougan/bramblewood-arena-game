@@ -374,3 +374,4 @@ run node tests/ui31-2026-11-07.js   # 2026-11-07 (package UI31, owner 10:25): Da
 run node tests/ui32-2026-11-07.js   # 2026-11-07 (package UI32, owner 18:53-19:11): field lines in the battle log, Venom-only float, Venom tooltip, hover counters, Power "edited since rated" marker, Map cards tile + skills refresh, three skill groups
 run node tests/typeahead-2026-11-07.js   # 2026-11-07 (owner 21:15): type a letter in a dropdown to jump to the options starting with it
 run node tests/stack-icons-2026-11-07.js   # 2026-11-07 (owner 21:59): combined emoji icons overlap (🌵☠️, ⚔⚔ ...)
+run node tests/content17-2026-11-07.js   # 2026-11-07 (package CONTENT17, owner 23:55): Claude New picks per map of Maps 0-20 (<=15, theme groups, melee/ranged, a ranged pick on every map), the 20 new cards (budget, on no list, 12 packs, art prompts), the Map cards window's theme headings, the Maps 21+ armed-creatures note

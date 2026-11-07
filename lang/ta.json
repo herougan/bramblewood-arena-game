@@ -4229,5 +4229,8 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "நஞ்சு குறிகள்: {n}. ஒவ்வொரு சுற்றிலும் தன் அடுக்குகளுக்கு சமமான சேதத்தை அடையும்; பின் 1 அடுக்கை இழக்கும்.",
  "Main skills": "முதன்மைத் திறன்கள்",
  "Other skills (side maps, specials)": "பிற திறன்கள் (பக்க வரைபடங்கள், சிறப்பு)",
- "Recommended skills for this map": "இந்த வரைபடத்துக்குப் பரிந்துரைக்கப்பட்ட திறன்கள்"
+ "Recommended skills for this map": "இந்த வரைபடத்துக்குப் பரிந்துரைக்கப்பட்ட திறன்கள்",
+ "Ranged": "தொலைவு",
+ "Melee": "நெருக்கம்",
+ "New card": "புதிய அட்டை"
 }

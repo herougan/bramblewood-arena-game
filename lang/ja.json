@@ -4227,5 +4227,8 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "毒トークン：{n}。毎ラウンド、スタック数と同じダメージを受け、その後スタックが1減る。",
  "Main skills": "メインスキル",
  "Other skills (side maps, specials)": "その他のスキル（サイドマップ、特別）",
- "Recommended skills for this map": "このマップのおすすめスキル"
+ "Recommended skills for this map": "このマップのおすすめスキル",
+ "Ranged": "遠距離",
+ "Melee": "近接",
+ "New card": "新カード"
 }

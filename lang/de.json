@@ -4226,5 +4226,8 @@
  "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.": "Gifttoken: {n}. Sie erleidet jede Runde Schaden in Höhe ihrer Stapel und verliert dann 1 Stapel.",
  "Main skills": "Hauptfähigkeiten",
  "Other skills (side maps, specials)": "Weitere Fähigkeiten (Nebenkarten, Spezial)",
- "Recommended skills for this map": "Empfohlene Fähigkeiten für diese Karte"
+ "Recommended skills for this map": "Empfohlene Fähigkeiten für diese Karte",
+ "Ranged": "Fernkampf",
+ "Melee": "Nahkampf",
+ "New card": "Neue Karte"
 }
