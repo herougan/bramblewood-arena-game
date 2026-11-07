@@ -3403,7 +3403,16 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui28-suggested": "Suggested",
   "ui.ui28-suggested-tip": "Recommended for {card}, but players won't meet this skill on this map. Maybe it shouldn't stay hidden.",
   "ui.ui28-grey-lvl": "Only from level {n} on this map",
-  "ui.ui28-grey-hidden": "Hidden (shown as ?) on this map"
+  "ui.ui28-grey-hidden": "Hidden (shown as ?) on this map",
+  "ui.eng30-consecration-name": "Consecration",
+  "ui.eng30-consecration": "Exalted ground: your units heal {n} at every round start.",
+  "ui.eng30-consecration-codex": "While it stands, its side's ground is Exalted: each of its units heals N at the start of every round (Undead units are hurt instead). Several carriers don't add up. Desecration anywhere on the field cancels it, and it cancels Desecration.",
+  "ui.eng30-desecration-name": "Desecration",
+  "ui.eng30-desecration": "Cursed ground: enemy units take {n} damage at every round start.",
+  "ui.eng30-desecration-codex": "While it stands, the enemy's ground is Cursed: each enemy unit takes N curse damage at the start of every round, on top of any Desecrate curse. Several carriers don't add up. Consecration anywhere on the field cancels it, and it cancels Consecration.",
+  "ui.eng30-exalt-log": "{name} heals {n} on exalted ground.",
+  "ui.eng30-exalted-mark": "Exalted ground: {n} healing a round to whoever stands here",
+  "ui.eng30-cancel-mark": "Consecration and Desecration cancel out: no Exalted or Cursed ground"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

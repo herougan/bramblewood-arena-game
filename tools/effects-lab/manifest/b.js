@@ -82,8 +82,6 @@ R({id:'st-stagger-weak-hit', stage:'board', inGameHook:'onEvent: hit by a Stagge
 R({id:'st-blind-apply', stage:'board', inGameHook:'eighthPassVfx statusFx blind (ink); then onEvent statusFx blind → FX.B.sightSync puts the lasting ink-eye badge on while Blind lasts', note:'A is what a fight shows now: the ink lands, then the card keeps a dim tint and an inked-eye badge until Blind wears off.', variants:[
   {key:'A', label:'Ink splat, then the lasting inked-eye badge', play:ctx=>{ const t = ctx.board.foe[2]; ctx.sound('blindTone'); if(S().blindInk) S().blindInk(t); fl(ctx, t, '👁 Blinded', 'debuff');
     return ctx.wait(700).then(()=>{ t.classList.add('is-blind'); X().markSight(t, 'blind'); return ctx.wait(1600); }); }},
-  {key:'B', label:'Ink splat, then a blindfold while it lasts', play:ctx=>{ const t = ctx.board.foe[2]; ctx.sound('blindTone'); if(S().blindInk) S().blindInk(t); fl(ctx, t, '👁 Blinded', 'debuff');
-    return ctx.wait(700).then(()=>{ t.classList.add('is-blind'); X().markSight(t, 'blind', {look:'B'}); return ctx.wait(1600); }); }},
   {key:'C', label:old + ': the ink splat only', play:ctx=>{ const t = ctx.board.foe[2]; ctx.sound('blindTone'); if(S().blindInk) S().blindInk(t); fl(ctx, t, '👁 Blinded', 'debuff'); return ctx.wait(1500); }}]});
 R({id:'st-blind-keen-sense', stage:'board', inGameHook:'onEvent: a Blind-on-hit attacker hits a Keen Sense unit (once a round)', variants:[
   {key:'A', label:'Ink bounces off, whisker ripples spread', play:ctx=> X().keenSense(ctx.board.foe[1], {ink:true})}]});
@@ -142,9 +140,7 @@ const LOOKS = [['A', 'Torches gutter out', 'darkEnter'], ['B', 'A black curtain 
 R({id:'dark-leave', stage:'board', inGameHook:'fxHook(\'matchUI\') when the fight ends in the dark', variants:[{key:'A', label:'The dark lifts as warm light spills in', play:ctx=> X().darkLeave(ctx.board.el, {level:'pitch'})}]});
 const sightDemo = (look)=> ctx=>{ veil(ctx, 'pitch'); const cs = allCards(ctx); cs.forEach((c, i)=> X().markSight(c, i === 1 ? 'eyes' : 'dark', {look})); return ctx.wait(2600); };
 R({id:'dark-unit-blind', stage:'board', inGameHook:'fxHook(\'boardRendered\'): FX.B.sightSync marks every unit after each render (look A)', note:'Every unit without Darksight can\'t see (one ally has Darksight: glowing eyes, for contrast). The user asked for this one.', variants:[
-  {key:'A', label:'Dimmed art and a closed-eye badge', play:sightDemo('A')},
-  {key:'B', label:'A blindfold across the art', play:sightDemo('B')},
-  {key:'C', label:'Fog swirling over the art', play:sightDemo('C')}]});
+  {key:'A', label:'Dimmed art and a closed-eye badge', play:sightDemo('A')}]}); // 2026-11-07 (package ENG30, owner #13): looks B (blindfold) and C (fog) removed
 R({id:'dark-sunshy-blind', stage:'board', inGameHook:'fxHook(\'boardRendered\') + phase: Sun-shy units by day', variants:[{key:'A', label:'Sun glare sweeps the art, a squinting badge', play:ctx=>{ skyTone(ctx, 'day'); X().markSight(ctx.board.foe[0], 'sun'); X().markSight(ctx.board.mine[2], 'sun'); return ctx.wait(2600); }}]});
 R({id:'dark-nightblind', stage:'board', inGameHook:'fxHook(\'boardRendered\') + phase: Night-blind units at night (no Lantern)', variants:[{key:'A', label:'A moonlit cloud over the eyes, a cloudy-eye badge', play:ctx=>{ nightVeil(ctx, true); skyTone(ctx, 'night'); X().markSight(ctx.board.foe[1], 'night'); X().markSight(ctx.board.mine[0], 'night'); return ctx.wait(2600); }}]});
 R({id:'dark-keen-sense', stage:'board', inGameHook:'onEvent: hit by a Keen Sense unit in the dark (once a round)', variants:[{key:'A', label:'Whisker ripples as it smells out the target', play:ctx=>{ veil(ctx, 'dark'); return X().keenSense(ctx.board.mine[0], {label:'👃 Smells it out'}); }}]});

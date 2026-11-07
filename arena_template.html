@@ -6738,6 +6738,10 @@
   .curse-mark{position:absolute; left:50%; bottom:-6px; transform:translateX(-50%); z-index:7; pointer-events:none; font:900 12px 'Baloo 2',system-ui,sans-serif; color:#f2d9ff; background:radial-gradient(circle, #5b1c6e, #2a0b33); border:1px solid #b55cd6; border-radius:999px; padding:1px 7px; box-shadow:0 0 10px rgba(181,92,214,.7);}
   .board-card.is-cursed .card-tile{box-shadow:0 0 0 2px rgba(181,92,214,.6), 0 0 16px rgba(181,92,214,.45);}
   .empty-slot.is-cursed{background:radial-gradient(circle, rgba(120,40,150,.35), transparent 70%) !important;}
+  /* ENG30 (2026-11-07, owner 11-07 08:54 #1): Consecration's Exalted ground (a unit on it heals N a round) and the cancel mark on a carrier
+     while Consecration and Desecration both stand. Desecration's Cursed ground reuses .curse-mark above. */
+  .exalt-mark{position:absolute; left:24%; bottom:-6px; transform:translateX(-50%); z-index:7; pointer-events:none; font:900 12px 'Baloo 2',system-ui,sans-serif; color:#5a3d00; background:radial-gradient(circle, #fff3c2, #f2c94c); border:1px solid #c99a1e; border-radius:999px; padding:1px 7px; box-shadow:0 0 10px rgba(242,201,76,.65);}
+  .eng30-cancel-mark{position:absolute; right:4px; bottom:-6px; z-index:7; pointer-events:none; font:900 12px 'Baloo 2',system-ui,sans-serif; color:#eee; background:#3a3346; border:1px solid #8c84a0; border-radius:999px; padding:0 6px;}
   :where(html[data-fx="none"]) .cleanse-fx, .reduce-motion .cleanse-fx{display:none;}
   @media (prefers-reduced-motion:reduce){ .cleanse-fx, .facing-svg path.facing-scared{animation:none !important;} }
   .facing-svg text{fill:#ffd77a; font:800 12px 'Baloo 2',system-ui,sans-serif; paint-order:stroke; stroke:rgba(0,0,0,.7); stroke-width:3px;}
@@ -13682,6 +13686,14 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
 .board-card .card-tile .status-chips > .abadge.sleep{--sc-ring:#9a8cff; color:#ddd6ff;}
 .board-card .card-tile .status-chips > .abadge.paralyze, .board-card .card-tile .status-chips > .abadge.shock{--sc-ring:#f2c94c; color:#ffeaa0;}
 .board-card .card-tile .status-chips > .abadge.blind, .board-card .card-tile .status-chips > .abadge.smoke{--sc-ring:#a9b0bb; color:#eef1f5;}
+/* ENG30 (2026-11-07, owner 11-07 08:54 #2: "Blind: the sunglasses top pip glows while the unit attacks (it attacks 'blindly')"): the 🕶️ pip (the
+   Blind status and UI23's Dark-blind pip, both .abadge.blind; the Sun-shy / Night-blind .ab-blindnow) glows for the attack's lunge
+   (.is-attacking). Effects None: no glow; Effects Low and reduced motion: a steady glow, no pulse. */
+.board-card.is-attacking .card-tile .status-chips > .abadge.blind, .board-card.is-attacking .ab-blindnow{animation:eng30BlindGlow .5s ease-in-out infinite alternate; box-shadow:0 0 0 2px #fff6c8, 0 0 12px 4px rgba(255,236,150,.85); filter:brightness(1.25);}
+@keyframes eng30BlindGlow{from{box-shadow:0 0 0 1px #fff6c8, 0 0 6px 2px rgba(255,236,150,.55);} to{box-shadow:0 0 0 2px #fff6c8, 0 0 14px 5px rgba(255,236,150,.95);}}
+html[data-fx="low"] .board-card.is-attacking .card-tile .status-chips > .abadge.blind, html[data-fx="low"] .board-card.is-attacking .ab-blindnow{animation:none;}
+html[data-fx="none"] .board-card.is-attacking .card-tile .status-chips > .abadge.blind, html[data-fx="none"] .board-card.is-attacking .ab-blindnow{animation:none; box-shadow:none; filter:none;}
+@media (prefers-reduced-motion: reduce){ .board-card.is-attacking .card-tile .status-chips > .abadge.blind, .board-card.is-attacking .ab-blindnow{animation:none;} }
 .board-card .card-tile .status-chips > .abadge.exposed, .board-card .card-tile .status-chips > .abadge.scar{--sc-ring:#e0663f; color:#ffc2ae;}
 .board-card .card-tile .status-chips > .abadge.corrode, .board-card .card-tile .status-chips > .abadge.irradiation{--sc-ring:#8fd14f; color:#d9ffa8;}
 .board-card .card-tile .status-chips > .abadge.unit-shield, .board-card .card-tile .status-chips > .abadge.freeze{--sc-ring:#5ab0ff; color:#cfe8ff;}

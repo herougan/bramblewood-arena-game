@@ -352,6 +352,7 @@ run node tests/ui25-2026-11-07.js   # 2026-11-07 (package UI25, owner 07:43): "N
 run node tests/content14-2026-11-07.js   # 2026-11-07 (package CONTENT14, owner 07:40; LEAD-NAT-1): the two natural leaders (Legate of Rivergate, Gold-throat Elder): Rare, Natural Leader, faction pool, in budget, 12 packs, art prompts; the faction pattern's first R step gives your side's leader once, held from the other faction hand-outs until then
 run node tests/bal23-2026-11-07.js   # 2026-11-07 (package BAL23, owner 07:37): the skill ladder's plan (cap 4, Shield 2 / 4 / 6, Twin Strike, 25 pairs), its bodies at an equal 3A + H, the curve fits on synthetic data; no games
 run node tests/content15-2026-11-07.js   # 2026-11-07 (package CONTENT15, owner 08:54): the two Loyal faction cards (Oathsworn Legionary, Cobalt Talon Honour-guard): Uncommon, faction pool, in budget, 12 packs, art prompts; the Loyal bonus on with a leader of their side in a scripted fight, off without
+run node tests/eng30-2026-11-07.js   # 2026-11-07 (package ENG30, owner 11-07 08:54 #1, #2, #13): Consecration / Desecration grounds and their cancel (on no card, Map 70), the Blind pip glows while attacking, sight look A only, the shut-eye blink 1 in 2
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)
