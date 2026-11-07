@@ -375,6 +375,10 @@ app_src = sub_once(app_src, "__MAP_INTRO_SUGG__", json.dumps(json.load(open(SCRA
 # 2026-11-06 (owner 23:51 #15): SKILLREC1 skill recommendations shown as tiles in the Map cards window (map name without the "(side map ...)" note)
 # 2026-11-07 (package UI24 #7): card power for the card editor, from tools/card_balance.js's report: {date, wr: {cardId: win %}}; null when the file is absent
 _cp_path = SCRATCH + "docs/balance/card-balance.json"
+# 2026-11-07 (package BAL25, owner 11-07 09:47): the v3 measure (tools/card_balance.js --v3: Maps 0-20 cards, 400 games, random
+# day/night and fields, Lumber in the filler, top-40% advanced pool) wins when its report is there; the v2 file stays the fallback
+if os.path.exists(SCRATCH + "docs/balance/bal25/card-power.json"):
+    _cp_path = SCRATCH + "docs/balance/bal25/card-power.json"
 _cp = None
 if os.path.exists(_cp_path):
     _cpd = json.load(open(_cp_path, encoding="utf-8"))
@@ -388,6 +392,12 @@ if os.path.exists(_cp_path):
     # re-centred) and the played share (games the card was played in / games run) per card; cards without them are left out
     _cp["adv"] = {r["id"]: r["advRate"] for r in _cpd.get("rows", []) if r.get("id") is not None and r.get("advRate") is not None}
     _cp["ps"] = {r["id"]: r["playedShare"] for r in _cpd.get("rows", []) if r.get("id") is not None and r.get("playedShare") is not None}
+    # 2026-11-07 (package BAL25, owner 09:47 #4): v3 adds "for its budget" per card (power - the fit's expected power at its N, in win %
+    # points; 0 = as strong as its rarity, Lumber, Wait, map and skills say), the measure's version and its games per card
+    if _cpd.get("v") == 3:
+        _cp["v"] = 3
+        _cp["games"] = _cpd.get("games")
+        _cp["fb"] = {r["id"]: r["forBudget"] for r in _cpd.get("rows", []) if r.get("id") is not None and r.get("forBudget") is not None}
 app_src = sub_once(app_src, "__CARD_POWER__", json.dumps(_cp, ensure_ascii=False))
 app_src = sub_once(app_src, "__SKILL_RECS__", json.dumps([{"mapName": r["mapName"].split(" (")[0], "card": r["card"], "cardName": r["cardName"], "why": r.get("why", ""), "fx": r.get("proposedEffects")} for r in json.load(open(SCRATCH + "docs/skill-recommendations-2026-11-04.json", encoding="utf-8"))["rows"] if r.get("proposedEffects")], ensure_ascii=False))
 # 2026-11-07 (package UI29): CONTENT16's pack plan (canonical/pack-plan.json) for the admin Pack editor: the zones, each list's rule, counts and

@@ -8,6 +8,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-07: Package BAL25 (on its branch, not released)
+- Done (owner 09:47 #4-#6, 10:25 #5): card power v3 (`tools/card_balance.js --v3`): Maps 0-20 cards, 400 games, random day/night and fields, Lumber in the filler, advanced mix (median 47), Faction-Starter (balance only), "for its budget" per card in the report and the build (CARD_POWER.fb).
+- Owner calls open: BAL25-1 (advanced mix), BAL25-2 (Faction-Starter scope), BAL25-3 (show "for its budget"; Lumber 2+ reads low).
+- Next: a UI package to show "for its budget" if BAL25-3 says so; re-run `--v3 --resume` after card retunes (about 2 hours on 2 cores).
+
 ## 11-07: Package BAL26 (on its branch, not released)
 - Done: Eyrie Heights' drop traced to ENG32's Brood (the Map 10-11 reference's Wolf Spider Mother brood lost Swarm); Guardian and Dive changed nothing there (`docs/balance/bal26/eyrie-ab-2026-11-07.json`).
 - Done: 23 road fights retuned with BAL21's tuner (two rounds); road 133 -> 151 in band, 150 -> 164 within 10, 27 -> 22 beyond 20. Tournament complete (15 flags); pro_ease `--kind all` re-run (new: 20-PRO-1 at 95%, 20-SK TOO WEAK).
@@ -32,7 +37,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 2 | Launch item: user metrics, card metrics and similarity matrices (cosine similarity; rating = number of copies put in decks) | alpha checklist P9 |
 | 3 | Daunt: say in its text that every landed hit applies it | UI31: done |
 | 4 | Pip centring: Shell's pip off-centre; Shield and Tide pips up 0.5-1 px; one table of per-emoji offsets; Shell activating shows a turtling 🐢 on the card with an armour-up sound | UI31: done (EMOJI_NUDGE table; Shell pop-up reuses the shellUp cue) |
-| 5 | New rarity Faction-Starter (balance only, no player impact): starts at Level 0, weaker | BAL25 / budget |
+| 5 | New rarity Faction-Starter (balance only, no player impact): starts at Level 0, weaker | BAL25 ✅ done (on its branch; scope BAL25-2) |
 | 6 | Timbered and related skills: choose stat bonuses OR skill bonuses in the editor; Timbered's logo two stacked logs (same idea for the related skills) | ENG33 ✅ done (on its branch) |
 | 7 | Gold "?" for skills learnt at a higher level: built in ENG28 (hover, tooltip "Learnt at a higher level") | answered 11-07; UI31: also on the Map cards window skill tiles (was missing there) |
 | 8 | Animals: Slow Loris, Solenodon (rare venomous mammals) | docs/card-ideas.md |
@@ -57,9 +62,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 1 | Changing a setting shows 3 toasts; one per change, for every setting | UI30: done |
 | 2 | Poison and Bleed pips: no numbers, show the tick down; only 1 -> 0 makes the (greyed) pip pop out | UI30: done |
 | 3 | The quake line across a defeated bramble: shorter, centred | UI30: done |
-| 4 | Card power: 4x the games next run (noisy); measure under random field effects (the test is always day today, so Diurnal reads strong) | BAL25 (after BAL22) |
-| 5 | Power vs budget: rarity and map raise N; show power for its budget so no mental sums (owner idea: -0.5 x N by rarity); check high-Lumber cards are tested fairly | BAL25 |
-| 6 | Lumber and resource cards depend on deck design: keep each test deck roughly balanced with some Lumber-costed cards | BAL25 |
+| 4 | Card power: 4x the games next run (noisy); measure under random field effects (the test is always day today, so Diurnal reads strong) | BAL25 ✅ done (on its branch) |
+| 5 | Power vs budget: rarity and map raise N; show power for its budget so no mental sums (owner idea: -0.5 x N by rarity); check high-Lumber cards are tested fairly | BAL25 ✅ done (on its branch) |
+| 6 | Lumber and resource cards depend on deck design: keep each test deck roughly balanced with some Lumber-costed cards | BAL25 ✅ done (on its branch) |
 | 7 | Tribe Delivery's context pip: one 📦 only | UI30: done |
 | 8 | Timbered and Undead in Thistlewood's skills: from Slow Worm (Undead) and Woodcock Lookout (Timbered) | answered 11-07 |
 | 9 | Achievement cards: show the card in the middle of the screen on claim; "Claim all" shows all cards one by one | UI27 |
