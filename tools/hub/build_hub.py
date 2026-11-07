@@ -857,7 +857,14 @@ const tabs = [...document.querySelectorAll('[role=tab]')];
 // 2026-10-15: lazy panels are stamped from their <template> on first show; the open tab is kept in #hash and
 // localStorage (the artifact frame may drop the hash); hub.onShow lets the Cards tab render on first open.
 const hub = window.hub = {{ onShow: {{}} }};
-function stamp(p){{ const t = p && p.querySelector(':scope > template.lazy'); if(t){{ t.replaceWith(t.content.cloneNode(true)); }} }}
+// 2026-11-07 (HUB4): a template with data-src holds nothing; its HTML is a file beside this page. Fetched synchronously (same origin, a few
+// hundred KB) so every caller that opens a tab and then looks inside it keeps working unchanged.
+window.hubGet = u=>{{ const x = new XMLHttpRequest(); x.open('GET', u, false); x.send(); if(x.status && x.status !== 200 || !x.status && !x.responseText) throw new Error(u + ' ' + x.status); return x.responseText; }};
+function stamp(p){{ const t = p && p.querySelector(':scope > template.lazy');
+  if(t && t.dataset.src){{ const h = document.createElement('template');
+    try{{ h.innerHTML = hubGet(t.dataset.src); }}catch(e){{ h.innerHTML = '<p class="dec-empty">Could not load ' + t.dataset.src + '. Reload the page (a file opened straight from disk cannot fetch: serve the folder, e.g. python3 -m http.server).</p>'; }}
+    t.replaceWith(h.content); }}
+  else if(t){{ t.replaceWith(t.content.cloneNode(true)); }} }}
 function show(id, keepScroll){{
   if(!document.getElementById('p-'+id)) id = 'master';
   tabs.forEach(t=>{{ const on = t.dataset.tab===id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; document.getElementById('p-'+t.dataset.tab).hidden = !on; }});
@@ -883,7 +890,7 @@ document.querySelector('[role=tablist]').addEventListener('keydown', e=>{{
 }});
 </script>
 <script>const CARDS = {CARDS_JSON};
-const SEARCH = {SEARCH_JSON};
+let SEARCH = null;  // 2026-11-07 (HUB4): search-index.json, fetched when the search box is first used (hub_app.js)
 {HUB_JS}
 {LIB_JS}
 {SC_INLINE}
@@ -900,6 +907,29 @@ const SEARCH = {SEARCH_JSON};
 if(window.hubBalRender) window.hubBalRender();
 show((location.hash.slice(1)) || (()=>{{ try{{ return localStorage.getItem('hub.tab'); }}catch(e){{ return ''; }} }})() || 'master');
 </script></body></html>'''
+# 2026-11-07 (package HUB4): index.html hit the publisher's 16 MiB cap, so the big blocks live beside it and are fetched on demand.
+# (a) the search index -> search-index.json (hub_app.js loads it on first search); (b) every <template class="lazy"> over LAZY_MIN bytes
+# -> lazy/<id>.html (stamp() in this file fetches it the first time the tab / sub-tab opens). Innermost templates go first; the files
+# keep their own nested stubs. The name is the nearest id="" before the template (p-changelog, lib-...), so a republish changes only
+# the files whose text changed.
+LAZY_MIN = 25000
+open(os.path.join(OUT, 'search-index.json'), 'w', encoding='utf-8').write(SEARCH_JSON)
+os.makedirs(os.path.join(OUT, 'lazy'), exist_ok=True)
+_stubs = []; _used = set()
+_leaf = re.compile(r'<template class="lazy">((?:(?!<template class="lazy">).)*?)</template>', re.S)
+def _take(m):
+    body = m.group(1)
+    if len(body.encode('utf-8')) < LAZY_MIN: return m.group(0)
+    ids = re.findall(r'\sid="([\w.-]+)"', m.string[max(0, m.start() - 600):m.start()]) or re.findall(r'\sid="([\w.-]+)"', body[:400]) or ['lz']
+    name = ids[-1]; n = name; k = 2
+    while n in _used: n = f'{name}-{k}'; k += 1
+    _used.add(n); open(os.path.join(OUT, 'lazy', n + '.html'), 'w', encoding='utf-8').write(body)
+    _stubs.append(f'<template class="lazy" data-src="lazy/{n}.html"></template>'); return f'\x00LZ{len(_stubs) - 1}\x00'
+while True:
+    new_index = _leaf.sub(_take, index)
+    if new_index == index: break
+    index = new_index
+for _i, _st in enumerate(_stubs): index = index.replace(f'\x00LZ{_i}\x00', _st)
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(index)
 n = sum(len(fs) for _, _, fs in os.walk(OUT))
 print('hub files:', n)

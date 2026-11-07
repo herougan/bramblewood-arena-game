@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package HUB4: the hub page fits the publisher again (16.2 MB to 5.7 MB)
+- The hub could not be published (page over 16 MiB with the publisher's code-highlight runtime). The search text moved to `search-index.json` (loaded on first search) and every big lazy tab (Changelog, Deck optimizer, Library docs, Guide, Design, Feelings, Decks, Dialogues, Action items) to `lazy/*.html`, fetched when the tab opens. Same content, same tabs; no player-visible change (the hub is the owner's page).
+- `tools/hub/build.py` fails above 15.0 MB and checks the page over localhost. Notes in `docs/workflows/release.md`.
+
 ## 2026-11-07 Package ENG33: Venomous and Venom, Poisonous, Thanatosis, Log Walls, Timbered's two forms (owner 11-07 10:25 #6, #9, #10, #12, #13; decisions ENG33-1..4)
 - Players see: the skill Poison N reads **Venomous N**, its counters are **Venom** and the damage type is **Venomous** (same ☠). Every text that called the counters Poison says Venom (Poison Barbs, Poison Gas, Poison Floor, Deadly Poison keep their names; Poison Bolt's label "Venom" is now **Venom Spit**; "Arrow – poison" reads "– venom"). The data key stays `poison` (docs/project-state.md).
 - The old Venomous (through Armor) is retired; its cards carry Venomous at the same N: Platypus Spur 2, Water Shrew 1, Banded Sea Krait 2, Giant Water Bug 2 (budget 3-4 points lower, ENG33-4).
