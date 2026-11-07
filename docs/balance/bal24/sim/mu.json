@@ -1,0 +1,702 @@
+{
+ "about": "Package BAL24: each simulated player's optimised deck at this map and its win rate against the map's road fights (tools/bal24/ladder_sim_2026_11_07.js measure; ladder seeds 5300 + 37g, 8 games a fight, with the player's leader).",
+ "tool": "tools/bal24/ladder_sim_2026_11_07.js 1.0.0 (2026-11-07, BAL24)",
+ "map": {
+  "id": "mu",
+  "num": 7,
+  "name": "The Morel Hollow",
+  "side": false,
+  "arrival": 7
+ },
+ "level": 0,
+ "fights": [
+  "7-1",
+  "7-2",
+  "7-3",
+  "7-4",
+  "7-5",
+  "7-6"
+ ],
+ "players": [
+  {
+   "player": 1,
+   "seed": "bal24-1",
+   "counts": {
+    "bog-leech": 1,
+    "greyplume-fledgling": 4,
+    "otter-centurion": 3,
+    "otter-kit": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "bog-leech",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-kit",
+     1,
+     0
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 146,
+   "factionCards": 27,
+   "optScore": 0.807,
+   "optBudget": 400,
+   "optFile": "deckopt-map07-mu-bal24-p1.json",
+   "games": 8,
+   "perFight": {
+    "7-1": 100,
+    "7-2": 100,
+    "7-3": 87.5,
+    "7-4": 100,
+    "7-5": 100,
+    "7-6": 87.5
+   },
+   "win": 95.8
+  },
+  {
+   "player": 2,
+   "seed": "bal24-2",
+   "counts": {
+    "greyplume-fledgling": 4,
+    "helmeted-otter": 1,
+    "otter-centurion": 3,
+    "robin-redbreast": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "helmeted-otter",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "robin-redbreast",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 147,
+   "factionCards": 28,
+   "optScore": 0.859,
+   "optBudget": 400,
+   "optFile": "deckopt-map07-mu-bal24-p2.json",
+   "games": 8,
+   "perFight": {
+    "7-1": 100,
+    "7-2": 87.5,
+    "7-3": 100,
+    "7-4": 100,
+    "7-5": 87.5,
+    "7-6": 87.5
+   },
+   "win": 93.8
+  },
+  {
+   "player": 3,
+   "seed": "bal24-3",
+   "counts": {
+    "greyplume-fledgling": 4,
+    "hush-wing-spy": 1,
+    "otter-centurion": 3,
+    "raven-scout": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "hush-wing-spy",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "raven-scout",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 148,
+   "factionCards": 29,
+   "optScore": 0.849,
+   "optBudget": 400,
+   "optFile": "deckopt-map07-mu-bal24-p3.json",
+   "games": 8,
+   "perFight": {
+    "7-1": 100,
+    "7-2": 100,
+    "7-3": 100,
+    "7-4": 100,
+    "7-5": 87.5,
+    "7-6": 75
+   },
+   "win": 93.8
+  },
+  {
+   "player": 4,
+   "seed": "bal24-4",
+   "counts": {
+    "chipmunk-skirmisher": 1,
+    "greyplume-fledgling": 4,
+    "otter-centurion": 3,
+    "otter-riverguard": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "chipmunk-skirmisher",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-riverguard",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 148,
+   "factionCards": 29,
+   "optScore": 0.74,
+   "optBudget": 400,
+   "optFile": "deckopt-map07-mu-bal24-p4.json",
+   "games": 8,
+   "perFight": {
+    "7-1": 100,
+    "7-2": 75,
+    "7-3": 75,
+    "7-4": 75,
+    "7-5": 100,
+    "7-6": 87.5
+   },
+   "win": 85.4
+  },
+  {
+   "player": 5,
+   "seed": "bal24-5",
+   "counts": {
+    "fire-ant-raft": 1,
+    "grass-viper": 1,
+    "greyplume-fledgling": 4,
+    "net-thrower": 1,
+    "otter-centurion": 3,
+    "soldier-ant": 4,
+    "tunnel-ant": 2,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "fire-ant-raft",
+     1,
+     1
+    ],
+    [
+     "grass-viper",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "net-thrower",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     2,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 146,
+   "factionCards": 27,
+   "optScore": 0.828,
+   "optBudget": 400,
+   "optFile": "deckopt-map07-mu-bal24-p5.json",
+   "games": 8,
+   "perFight": {
+    "7-1": 100,
+    "7-2": 87.5,
+    "7-3": 87.5,
+    "7-4": 87.5,
+    "7-5": 100,
+    "7-6": 50
+   },
+   "win": 85.4
+  },
+  {
+   "player": 6,
+   "seed": "bal24-6",
+   "counts": {
+    "box-turtle": 1,
+    "chipmunk-cavalry": 1,
+    "greyplume-fledgling": 4,
+    "otter-centurion": 2,
+    "rabbit-kit": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "box-turtle",
+     1,
+     1
+    ],
+    [
+     "chipmunk-cavalry",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "otter-centurion",
+     2,
+     0
+    ],
+    [
+     "rabbit-kit",
+     1,
+     0
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 144,
+   "factionCards": 25,
+   "optScore": 0.823,
+   "optBudget": 400,
+   "optFile": "deckopt-map07-mu-bal24-p6.json",
+   "games": 8,
+   "perFight": {
+    "7-1": 100,
+    "7-2": 100,
+    "7-3": 100,
+    "7-4": 100,
+    "7-5": 100,
+    "7-6": 62.5
+   },
+   "win": 93.8
+  },
+  {
+   "player": 7,
+   "seed": "bal24-7",
+   "counts": {
+    "greyplume-fledgling": 4,
+    "house-cat": 1,
+    "otter-centurion": 3,
+    "otter-guard": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "house-cat",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "otter-guard",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 147,
+   "factionCards": 28,
+   "optScore": 0.792,
+   "optBudget": 400,
+   "optFile": "deckopt-map07-mu-bal24-p7.json",
+   "games": 8,
+   "perFight": {
+    "7-1": 100,
+    "7-2": 87.5,
+    "7-3": 87.5,
+    "7-4": 100,
+    "7-5": 75,
+    "7-6": 87.5
+   },
+   "win": 89.6
+  },
+  {
+   "player": 8,
+   "seed": "bal24-8",
+   "counts": {
+    "greyplume-fledgling": 4,
+    "otter-angler": 1,
+    "otter-centurion": 3,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "victoria-regia": 1,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "otter-angler",
+     1,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "victoria-regia",
+     1,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 146,
+   "factionCards": 27,
+   "optScore": 0.781,
+   "optBudget": 400,
+   "optFile": "deckopt-map07-mu-bal24-p8.json",
+   "games": 8,
+   "perFight": {
+    "7-1": 87.5,
+    "7-2": 50,
+    "7-3": 87.5,
+    "7-4": 75,
+    "7-5": 75,
+    "7-6": 50
+   },
+   "win": 70.8
+  },
+  {
+   "player": 9,
+   "seed": "bal24-9",
+   "counts": {
+    "fen-mink": 1,
+    "fire-ant-raft": 1,
+    "greyplume-fledgling": 3,
+    "otter-centurion": 3,
+    "platypus-spur": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "fen-mink",
+     1,
+     1
+    ],
+    [
+     "fire-ant-raft",
+     1,
+     1
+    ],
+    [
+     "greyplume-fledgling",
+     3,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "platypus-spur",
+     1,
+     1
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 149,
+   "factionCards": 30,
+   "optScore": 0.865,
+   "optBudget": 400,
+   "optFile": "deckopt-map07-mu-bal24-p9.json",
+   "games": 8,
+   "perFight": {
+    "7-1": 100,
+    "7-2": 100,
+    "7-3": 75,
+    "7-4": 100,
+    "7-5": 87.5,
+    "7-6": 62.5
+   },
+   "win": 87.5
+  },
+  {
+   "player": 10,
+   "seed": "bal24-10",
+   "counts": {
+    "clap-net-trapper": 1,
+    "crossed-eyes": 1,
+    "greyplume-fledgling": 4,
+    "otter-centurion": 3,
+    "soldier-ant": 4,
+    "tunnel-ant": 3,
+    "worker-ant": 4
+   },
+   "parts": [
+    [
+     "clap-net-trapper",
+     1,
+     1
+    ],
+    [
+     "crossed-eyes",
+     1,
+     0
+    ],
+    [
+     "greyplume-fledgling",
+     4,
+     1
+    ],
+    [
+     "otter-centurion",
+     3,
+     0
+    ],
+    [
+     "soldier-ant",
+     4,
+     1
+    ],
+    [
+     "tunnel-ant",
+     3,
+     1
+    ],
+    [
+     "worker-ant",
+     4,
+     1
+    ]
+   ],
+   "leader": "old-shell",
+   "collection": 149,
+   "factionCards": 30,
+   "optScore": 0.854,
+   "optBudget": 400,
+   "optFile": "deckopt-map07-mu-bal24-p10.json",
+   "games": 8,
+   "perFight": {
+    "7-1": 100,
+    "7-2": 100,
+    "7-3": 100,
+    "7-4": 87.5,
+    "7-5": 100,
+    "7-6": 75
+   },
+   "win": 93.8
+  }
+ ],
+ "missing": 0,
+ "measured": "2026-11-07T04:45:33.402Z"
+}

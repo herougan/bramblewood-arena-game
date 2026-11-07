@@ -178,4 +178,4 @@ function fix() {
   console.log('fixed ' + n + ' decks');
 }
 if (require.main === module) { if (CMD === 'build') build(); else if (CMD === 'collect') collect(); else if (CMD === 'check') check(); else if (CMD === 'fix') fix(); else console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 29).map(l => l.replace(/^\/\/ ?/, '')).join('\n')); }
-module.exports = { poolOf, legal, roadFights, entries, SET, RANKS };
+module.exports = { poolOf, legal, roadFights, entries, SET, RANKS, deckName }; // 2026-11-07 (BAL24): + deckName, for the simulated ladder

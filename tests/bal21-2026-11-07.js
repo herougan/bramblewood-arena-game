@@ -71,6 +71,7 @@ for (const x of fixes) {
 // ---- 3. every fight's reference deck is its own map's ----
 const LD = require(path.join(ROOT, 'tools', 'bal13', 'ladder_2026_11_02.js')), O = require(path.join(ROOT, 'tools', 'opt', 'deckopt.js')), gm = O.loadGame(ROOT);
 const lad = (G.REF_DECK_SETS.ladder || {}).decks || {}; let fightsSeen = 0;
+const BAL24_LAD = J('docs/balance/ref/ref-ladder.json').ladder || {}, BAL24_P = {}, bal24Pool = id => BAL24_P[id] || (BAL24_P[id] = Object.values(J('docs/balance/bal24/pools/' + id + '.json').maps)[0].seeds); // BAL24 (2026-11-07)
 for (const m of G.CONQUEST_MAPS) {
   if (m.reserved || m.tower || m.endless || /^mtut/.test(m.id)) continue; const no = G.mapNumberOf(m.id); if (no == null || no > 20) continue;
   const roadNo = m.sub ? G.mapNumberOf(m.parent) : no, pool = new Set(LD.poolOf(gm, m)), sk = { key: (m.sub ? m.id : String(no)) + '-SK', kind: 'skirmish', pro: true, skirm: true, deck: {} };
@@ -80,7 +81,9 @@ for (const m of G.CONQUEST_MAPS) {
     ok(r.mapNo === (n === sk ? roadNo : G.nodeMapNumber(n)) || (n !== sk && n.shieldMap != null), `${m.id} ${n.key}: the Map reference plays its map's road deck (map ${r.mapNo})`);
     if (!lad[m.id]) continue;
     const seen = new Set(); for (let k = 1; k <= 10; k++) { const rs = G.refSetFor('ladder-' + k, m.id, n); seen.add(rs && rs.deckMap);
-      if (n === sk) Object.keys((rs || {}).deck || {}).forEach(id => ok(pool.has(id), `${m.id} ${n.key} reference ${k}: ${id} is in the map's ladder pool`)); }
+      // 2026-11-07 (package BAL24, owner BAL21-3): a simulated ladder deck's pool is its player's collection (docs/balance/bal24/pools/), not the map-true pool
+      const simL = BAL24_LAD[m.id] || {}, simP = n === sk && simL.source === 'bal24-sim' ? new Set(bal24Pool(m.id)[simL.decks[k - 1].player].pool) : null;
+      if (n === sk) Object.keys((rs || {}).deck || {}).forEach(id => ok((simP || pool).has(id), `${m.id} ${n.key} reference ${k}: ${id} is in the map's ladder pool`)); }
     ok(seen.size === 1 && seen.has(m.id), `${m.id} ${n.key}: the reference ladder deals the map's own decks (${[...seen].join(',')})`); }
 }
 ok(fightsSeen > 200, 'reference decks checked on ' + fightsSeen + ' fights');

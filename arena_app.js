@@ -25724,6 +25724,19 @@ function skirmDecksOf(ent){ const b = (ent && ent.bpro) || []; return b.length ?
 // tools/opt/wpro_2026_11_02.js) gets a second skirmish, "<N>-WK", beside N-SK: the same flow (a random draw of the map's weak decks, your deck or a
 // reference set, free, no rewards), an easy practice fight. No SPECIAL card is swapped into a weak draw.
 function skirmWeakDecksOf(ent){ return (ent && ent.wpro) || []; }
+// 2026-11-07 (package BAL24, owner BAL21-2 09:10 / 09:14): the PRO marks, Admin Mode only. BAL24_PRO_MARKS is baked by assemble_arena.py
+// from the latest docs/balance/pro-ease-*.json that plays the reference ladder: per N-SK / N-WK key, win = the map's PRO (N-WK: WPRO) decks'
+// win rate against its 10 ladder decks (target 15-30%), mapRef = the Map reference's win rate against them, flag 'weak' (N-SK: a PRO / BPRO
+// deck the Map reference beats over 85%, "TOO WEAK") or 'strong' (N-WK: a WPRO deck it beats under 50%, "TOO STRONG"; flagDecks / flagRef name
+// them; docs/evaluation-protocol.md, BAL24-1).
+const BAL24_PRO_MARKS = __BAL24_PRO_MARKS__;
+function bal24Mark(key){ return ((BAL24_PRO_MARKS && BAL24_PRO_MARKS.marks) || {})[key] || null; }
+function bal24PillHTML(key){ const m = adminModeEnabled ? bal24Mark(key) : null; if(!m || !m.flag) return '';
+  const r = BAL24_PRO_MARKS.rule || {}, tip = TX(m.flag === 'weak' ? 'ui.bal24-sk-tip' : 'ui.bal24-wk-tip', {key, decks: (m.flagDecks || []).join(', '), pct: Math.round((m.flagRef != null ? m.flagRef : m.mapRef) * 100), cut: Math.round((m.flag === 'weak' ? r.skEasy : r.wkStrong) * 100)});
+  return `<span class="bal24-pill" data-flag="${m.flag}" title="${escapeAttr(tip)}">${escapeHtml(TX(m.flag === 'weak' ? 'ui.bal24-too-weak' : 'ui.bal24-too-strong'))}</span>`; }
+function bal24WinLineHTML(key, weak){ const m = adminModeEnabled ? bal24Mark(key) : null; if(!m || m.win == null) return '';
+  const b = (BAL24_PRO_MARKS.rule || {}).band || [0.15, 0.30], inBand = m.win >= b[0] && m.win <= b[1], lo = Math.round(b[0] * 100), hi = Math.round(b[1] * 100);
+  return `<p class="panel-sub bal24-winline" data-band="${inBand ? 'in' : 'out'}"><b>${escapeHtml(TX(weak ? 'ui.bal24-wpro-win' : 'ui.bal24-pro-win', {pct: Math.round(m.win * 100)}))}</b> <span class="bal24-band">${escapeHtml(TX(inBand ? 'ui.bal24-band-in' : 'ui.bal24-band-out', {lo, hi}))}</span>${m.flag ? ' ' + bal24PillHTML(key) : ''}</p>`; }
 function proEntriesOf(ent){
   if(!ent) return []; let e = ent._skirm; if(e !== undefined) return e || [];
   const list = skirmDecksOf(ent), out = [];
@@ -25871,6 +25884,7 @@ function xrefPanelHTML(map, node){
   return `<div class="pref-xref skirm-you ui12-skirm" style="margin:6px 0;">
     <p class="panel-sub skirm-enemy ui12-skirm-row" data-skirm-side="enemy">${escapeHtml(TX('ui.pref-xref-vs'))} ${en ? `<b class="ui12-skirm-id">${escapeHtml(en.id)}</b> ${skirmRankHTML(en.rank, en.of)}` : ''} <span>${escapeHtml(TX(node.weak ? 'ui.bal11-wk-enemy' : 'ui.ui10-skirm-enemy'))}</span>${sp}</p>
     <p class="panel-sub ui12-skirm-row" data-skirm-side="you"><label>${escapeHtml(TX('ui.pref-xref-you'))}${pickHTML}</label> ${yo ? `<b class="ui12-skirm-id">${escapeHtml(yo.label)}</b> ${skirmRankHTML(yo.rank, yo.of)}` : ''}</p>
+    ${bal24WinLineHTML(node.key, node.weak) /* BAL24 (2026-11-07, owner 09:14): the PRO / WPRO decks' win rate vs the reference ladder, Admin only */}
   </div>`; // 2026-11-02 (package UI14, owner JJ11: "N-SK: no 'New draw' button; every fight draws both decks at random"): the 🎲 New draw button is gone; the
   // draw shown is the one the Fight button plays, and every fight (Fight, Play again) starts from a fresh draw of both decks (startProFight clears skirmDraw)
 }
@@ -25965,7 +25979,7 @@ function proMapNodesHTML(map, positions){
   const free = ui14ProSpots(map, positions, base, all.length); // UI14 (JJ6): off every road, so no skirmish node looks linked
   return all.map((e, i)=>{ const col = i % perRow, row = Math.floor(i / perRow);
     const x = free[i] ? free[i].x : Math.max(8, Math.min(92, base.x + dir * (9 + col * 8))), y = free[i] ? free[i].y : Math.max(8, Math.min(90, base.y + up * (11 + row * 10)));
-    return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(e.tip)}" aria-label="${escapeAttr(e.tip)}"><span class="mpr-ico" aria-hidden="true">${e.ico}</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span></button>`; }).join('');
+    return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(e.tip)}" aria-label="${escapeAttr(e.tip)}"><span class="mpr-ico" aria-hidden="true">${e.ico}</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span>${bal24PillHTML(e.id) /* BAL24 (2026-11-07): TOO WEAK / TOO STRONG */}</button>`; }).join('');
 }
 // 2026-11-02 (package UI14, owner JJ6: "no path links to ambush nodes (4-SK drawn linked between 4-H and 4-5)"; skirmish and ambush nodes get no
 // path links): the map's skirmish node (N-SK, and the X-REF one) sat a fixed step from the reward node, which on some layouts is right on the road

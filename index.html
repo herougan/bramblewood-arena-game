@@ -7830,6 +7830,15 @@
   .map-pro .mpr-ico::before{content:"🏆"; font-size:17px; line-height:1; transform:rotate(-45deg); display:block;}
   .map-pro .mpr-code{font:800 10px/1 'Baloo 2',system-ui,sans-serif; color:#3a2600; background:#ffe9a8; border-radius:8px; padding:2px 5px; box-shadow:0 1px 3px rgba(0,0,0,.4); margin-top:5px; white-space:nowrap;}
   .map-pro:hover .mpr-ico, .map-pro:focus-visible .mpr-ico{transform:rotate(45deg) scale(1.12);}
+  /* 2026-11-07 (package BAL24, owner BAL21-2): Admin's PRO marks on a map's N-SK / N-WK node and the fight panel's PRO win-rate line */
+  .bal24-pill{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.03em; color:#fff; background:#b3261e; border-radius:999px; padding:2px 6px; margin-top:2px; white-space:nowrap; box-shadow:0 1px 3px rgba(0,0,0,.4);}
+  .bal24-pill[data-flag="strong"]{background:#7a3db8;}
+  .bal24-winline{display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; margin:3px 0;}
+  .bal24-winline .bal24-band{font-size:.85em; font-weight:700; border-radius:999px; padding:1px 7px; background:rgba(46,125,50,.16); color:#2e7d32;}
+  .bal24-winline[data-band="out"] .bal24-band{background:rgba(179,38,30,.14); color:#b3261e;}
+  .bal24-winline .bal24-pill{margin-top:0;}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .bal24-winline .bal24-band{color:#8fd694;} :root:not([data-theme="light"]) .bal24-winline[data-band="out"] .bal24-band{color:#ff9a8f;} }
+  :root[data-theme="dark"] .bal24-winline .bal24-band{color:#8fd694;} :root[data-theme="dark"] .bal24-winline[data-band="out"] .bal24-band{color:#ff9a8f;}
   @keyframes courierBob{0%,100%{translate:0 0;} 50%{translate:0 -4px;}} @media (prefers-reduced-motion: reduce){ .map-courier{animation:none;} }
   .map-curio{position:absolute; transform:translate(-50%,-50%); z-index:6; width:38px; height:38px; padding:0; border-radius:50%; border:2px solid rgba(255,240,205,.8); background:radial-gradient(circle at 35% 30%, rgba(255,250,235,.95), rgba(222,206,170,.92)); box-shadow:0 4px 10px rgba(0,0,0,.35); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform .15s ease;}
   .map-curio:hover{transform:translate(-50%,-50%) scale(1.1);} .map-curio .mcu-ico{font-size:19px; line-height:1;}
@@ -45509,7 +45518,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=1ad189d446", "es": "assets/lang/es.js?v=957cafef1d", "fr": "assets/lang/fr.js?v=f54b296e37", "id": "assets/lang/id.js?v=963758c118", "it": "assets/lang/it.js?v=54953db282", "ja": "assets/lang/ja.js?v=5fdef045d2", "ko": "assets/lang/ko.js?v=915887627b", "pt": "assets/lang/pt.js?v=b66ff5d3ea", "ta": "assets/lang/ta.js?v=547a6a6a3b", "tl": "assets/lang/tl.js?v=136feb1e59", "zh-Hans": "assets/lang/zh-Hans.js?v=3c7abd8122", "zh-Hant": "assets/lang/zh-Hant.js?v=87fb2dd6e2"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=4a30c19695", "es": "assets/lang/es.js?v=e662dc268c", "fr": "assets/lang/fr.js?v=1d2cfea83a", "id": "assets/lang/id.js?v=051cf05e5d", "it": "assets/lang/it.js?v=083c17f6f6", "ja": "assets/lang/ja.js?v=481385aafa", "ko": "assets/lang/ko.js?v=765cb4dcfc", "pt": "assets/lang/pt.js?v=b983c79c0f", "ta": "assets/lang/ta.js?v=644e5ef35b", "tl": "assets/lang/tl.js?v=85e19833e2", "zh-Hans": "assets/lang/zh-Hans.js?v=6b00ac760d", "zh-Hant": "assets/lang/zh-Hant.js?v=d1da7bc1ac"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -45824,6 +45833,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui10-skirm-enemy": "a random deck built from this map's card list.",
   "ui.bal11-wk-enemy": "a weak deck built from this map's card list, for practice.",
   "ui.bal11-wk-node-tip": "{key}: practice fight against a weak deck of this map. No rewards. Tap to start.",
+  "ui.bal24-too-weak": "TOO WEAK",
+  "ui.bal24-too-strong": "TOO STRONG",
+  "ui.bal24-sk-tip": "{key}: the Map reference wins {pct}% against these PRO decks (too easy above {cut}%).",
+  "ui.bal24-wk-tip": "{key}: the Map reference wins {pct}% against these weak decks (too strong below {cut}%).",
+  "ui.bal24-pro-win": "PRO decks win {pct}% vs your reference decks",
+  "ui.bal24-wpro-win": "WPRO decks win {pct}% vs your reference decks",
+  "ui.bal24-band-in": "in the {lo}-{hi}% band",
+  "ui.bal24-band-out": "outside the {lo}-{hi}% band",
   "ui.pref-xref-node-tip": "{key}: the reference deck against this map's PRO decks",
   "ui.pref-xref-row": "Reference deck vs this map's PRO decks",
   "ui.pref-ref-tag": "REF",
@@ -54128,7 +54145,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '48d297e0c909', BUILD_CARD_HASH = 'b42c67c86ec0adbaaca60873f6bfe967430a31f661aa309e2cfde90b2704285a';
+const BUILD_ID = '5724a5cac2f9', BUILD_CARD_HASH = 'b42c67c86ec0adbaaca60873f6bfe967430a31f661aa309e2cfde90b2704285a';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -75945,6 +75962,18 @@ function skirmDecksOf(ent){ const b = (ent && ent.bpro) || []; return b.length ?
 // tools/opt/wpro_2026_11_02.js) gets a second skirmish, "<N>-WK", beside N-SK: the same flow (a random draw of the map's weak decks, your deck or a
 // reference set, free, no rewards), an easy practice fight. No SPECIAL card is swapped into a weak draw.
 function skirmWeakDecksOf(ent){ return (ent && ent.wpro) || []; }
+// 2026-11-07 (package BAL24, owner BAL21-2 09:10 / 09:14): the PRO marks, Admin Mode only. BAL24_PRO_MARKS is baked by assemble_arena.py
+// from the latest docs/balance/pro-ease-*.json that plays the reference ladder: per N-SK / N-WK key, win = the map's PRO (N-WK: WPRO) decks'
+// win rate against its 10 ladder decks (target 15-30%), mapRef = the Map reference's win rate against them, flag 'weak' (N-SK: the Map
+// reference wins over 85%, "TOO WEAK") or 'strong' (N-WK: under 50%, "TOO STRONG"; docs/evaluation-protocol.md, BAL24-1).
+const BAL24_PRO_MARKS = {"rule": {"band": [0.15, 0.3], "skEasy": 0.85, "wkStrong": 0.5}, "file": null, "marks": {}};
+function bal24Mark(key){ return ((BAL24_PRO_MARKS && BAL24_PRO_MARKS.marks) || {})[key] || null; }
+function bal24PillHTML(key){ const m = adminModeEnabled ? bal24Mark(key) : null; if(!m || !m.flag) return '';
+  const r = BAL24_PRO_MARKS.rule || {}, tip = TX(m.flag === 'weak' ? 'ui.bal24-sk-tip' : 'ui.bal24-wk-tip', {key, pct: Math.round(m.mapRef * 100), cut: Math.round((m.flag === 'weak' ? r.skEasy : r.wkStrong) * 100)});
+  return `<span class="bal24-pill" data-flag="${m.flag}" title="${escapeAttr(tip)}">${escapeHtml(TX(m.flag === 'weak' ? 'ui.bal24-too-weak' : 'ui.bal24-too-strong'))}</span>`; }
+function bal24WinLineHTML(key, weak){ const m = adminModeEnabled ? bal24Mark(key) : null; if(!m || m.win == null) return '';
+  const b = (BAL24_PRO_MARKS.rule || {}).band || [0.15, 0.30], inBand = m.win >= b[0] && m.win <= b[1], lo = Math.round(b[0] * 100), hi = Math.round(b[1] * 100);
+  return `<p class="panel-sub bal24-winline" data-band="${inBand ? 'in' : 'out'}"><b>${escapeHtml(TX(weak ? 'ui.bal24-wpro-win' : 'ui.bal24-pro-win', {pct: Math.round(m.win * 100)}))}</b> <span class="bal24-band">${escapeHtml(TX(inBand ? 'ui.bal24-band-in' : 'ui.bal24-band-out', {lo, hi}))}</span>${m.flag ? ' ' + bal24PillHTML(key) : ''}</p>`; }
 function proEntriesOf(ent){
   if(!ent) return []; let e = ent._skirm; if(e !== undefined) return e || [];
   const list = skirmDecksOf(ent), out = [];
@@ -76092,6 +76121,7 @@ function xrefPanelHTML(map, node){
   return `<div class="pref-xref skirm-you ui12-skirm" style="margin:6px 0;">
     <p class="panel-sub skirm-enemy ui12-skirm-row" data-skirm-side="enemy">${escapeHtml(TX('ui.pref-xref-vs'))} ${en ? `<b class="ui12-skirm-id">${escapeHtml(en.id)}</b> ${skirmRankHTML(en.rank, en.of)}` : ''} <span>${escapeHtml(TX(node.weak ? 'ui.bal11-wk-enemy' : 'ui.ui10-skirm-enemy'))}</span>${sp}</p>
     <p class="panel-sub ui12-skirm-row" data-skirm-side="you"><label>${escapeHtml(TX('ui.pref-xref-you'))}${pickHTML}</label> ${yo ? `<b class="ui12-skirm-id">${escapeHtml(yo.label)}</b> ${skirmRankHTML(yo.rank, yo.of)}` : ''}</p>
+    ${bal24WinLineHTML(node.key, node.weak) /* BAL24 (2026-11-07, owner 09:14): the PRO / WPRO decks' win rate vs the reference ladder, Admin only */}
   </div>`; // 2026-11-02 (package UI14, owner JJ11: "N-SK: no 'New draw' button; every fight draws both decks at random"): the 🎲 New draw button is gone; the
   // draw shown is the one the Fight button plays, and every fight (Fight, Play again) starts from a fresh draw of both decks (startProFight clears skirmDraw)
 }
@@ -76186,7 +76216,7 @@ function proMapNodesHTML(map, positions){
   const free = ui14ProSpots(map, positions, base, all.length); // UI14 (JJ6): off every road, so no skirmish node looks linked
   return all.map((e, i)=>{ const col = i % perRow, row = Math.floor(i / perRow);
     const x = free[i] ? free[i].x : Math.max(8, Math.min(92, base.x + dir * (9 + col * 8))), y = free[i] ? free[i].y : Math.max(8, Math.min(90, base.y + up * (11 + row * 10)));
-    return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(e.tip)}" aria-label="${escapeAttr(e.tip)}"><span class="mpr-ico" aria-hidden="true">${e.ico}</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span></button>`; }).join('');
+    return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(e.tip)}" aria-label="${escapeAttr(e.tip)}"><span class="mpr-ico" aria-hidden="true">${e.ico}</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span>${bal24PillHTML(e.id) /* BAL24 (2026-11-07): TOO WEAK / TOO STRONG */}</button>`; }).join('');
 }
 // 2026-11-02 (package UI14, owner JJ6: "no path links to ambush nodes (4-SK drawn linked between 4-H and 4-5)"; skirmish and ambush nodes get no
 // path links): the map's skirmish node (N-SK, and the X-REF one) sat a fixed step from the reward node, which on some layouts is right on the road
