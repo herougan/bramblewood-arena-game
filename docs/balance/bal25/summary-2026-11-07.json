@@ -1,0 +1,3968 @@
+{
+ "generated": "2026-11-07",
+ "source": "docs/balance/bal25/card-power.json (400 games) vs docs/balance/card-balance.json (100 games, 2026-11-07)",
+ "medians": {
+  "v3Basic": 51.5,
+  "v2Basic": 39,
+  "v3Adv": 47.05,
+  "v2Adv": 3.1
+ },
+ "fit": {
+  "formula": "expected = a + b × N",
+  "a": 32.047,
+  "b": 0.782,
+  "n": 340,
+  "r2": 0.103,
+  "rmse": 19.4,
+  "leftOut": [
+   "egg-beast",
+   "egg-bird",
+   "egg-bug",
+   "egg-otter",
+   "egg-scaly",
+   "egg-water",
+   "egg-woodland"
+  ],
+  "power": "mean of winRate and advRate (winRate alone without an advanced pass)",
+  "N": "bramblewood-budget.js N at the measured level (Faction-Starter: Level 0, one rank below Starter)"
+ },
+ "cards": 350,
+ "fitted": 340,
+ "factionStarter": [
+  {
+   "id": "acorn-chipmunk",
+   "name": "Acorn Chipmunk",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.49,
+   "basic": 29.3,
+   "adv": 34.3,
+   "power": 31.8,
+   "expected": 39.5,
+   "forBudget": -7.7
+  },
+  {
+   "id": "ant-scout",
+   "name": "Ant Scout",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.04,
+   "basic": 31.4,
+   "adv": 36.6,
+   "power": 34,
+   "expected": 39.1,
+   "forBudget": -5.1
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.04,
+   "basic": 9,
+   "adv": 13.5,
+   "power": 11.3,
+   "expected": 39.1,
+   "forBudget": -27.8
+  },
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 1,
+   "N": 12.71,
+   "basic": 65,
+   "adv": 67.1,
+   "power": 66.1,
+   "expected": 42,
+   "forBudget": 24.1
+  },
+  {
+   "id": "burrow-rabbit",
+   "name": "Burrow Rabbit",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 1,
+   "N": 13.35,
+   "basic": 52.9,
+   "adv": 43.6,
+   "power": 48.3,
+   "expected": 42.5,
+   "forBudget": 5.8
+  },
+  {
+   "id": "chipmunk-forager",
+   "name": "Chipmunk Forager",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.49,
+   "basic": 16.3,
+   "adv": 27.1,
+   "power": 21.7,
+   "expected": 39.5,
+   "forBudget": -17.8
+  },
+  {
+   "id": "cobalt-talon-fledgling",
+   "name": "Cobalt Fledgling",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.22,
+   "basic": 18,
+   "adv": 24,
+   "power": 21,
+   "expected": 39.3,
+   "forBudget": -18.3
+  },
+  {
+   "id": "cottontail",
+   "name": "Cottontail",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.49,
+   "basic": 18.5,
+   "adv": 22.8,
+   "power": 20.7,
+   "expected": 39.5,
+   "forBudget": -18.8
+  },
+  {
+   "id": "crimson-wing-recruit",
+   "name": "Crimson Recruit",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.22,
+   "basic": 18.3,
+   "adv": 25,
+   "power": 21.7,
+   "expected": 39.3,
+   "forBudget": -17.6
+  },
+  {
+   "id": "duck-paddler",
+   "name": "Duck Paddler",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 1,
+   "N": 13.35,
+   "basic": 52.9,
+   "adv": 45.6,
+   "power": 49.3,
+   "expected": 42.5,
+   "forBudget": 6.8
+  },
+  {
+   "id": "duckling",
+   "name": "Duckling",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.49,
+   "basic": 9.8,
+   "adv": 16,
+   "power": 12.9,
+   "expected": 39.5,
+   "forBudget": -26.6
+  },
+  {
+   "id": "greyplume-fledgling",
+   "name": "Greyplume Fledgling",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.22,
+   "basic": 18,
+   "adv": 24.3,
+   "power": 21.2,
+   "expected": 39.3,
+   "forBudget": -18.1
+  },
+  {
+   "id": "honey-bee",
+   "name": "Honey Bee",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.22,
+   "basic": 18,
+   "adv": 21.8,
+   "power": 19.9,
+   "expected": 39.3,
+   "forBudget": -19.4
+  },
+  {
+   "id": "meadow-rabbit",
+   "name": "Meadow Rabbit",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.49,
+   "basic": 21.5,
+   "adv": 25.8,
+   "power": 23.7,
+   "expected": 39.5,
+   "forBudget": -15.8
+  },
+  {
+   "id": "mosswing-laborer",
+   "name": "Mosswing",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.22,
+   "basic": 8.4,
+   "adv": 16.8,
+   "power": 12.6,
+   "expected": 39.3,
+   "forBudget": -26.7
+  },
+  {
+   "id": "otter-kit",
+   "name": "Otter Kit",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.49,
+   "basic": 24.3,
+   "adv": 25.3,
+   "power": 24.8,
+   "expected": 39.5,
+   "forBudget": -14.7
+  },
+  {
+   "id": "otter-paddler",
+   "name": "Otter Paddler",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.49,
+   "basic": 29.3,
+   "adv": 31,
+   "power": 30.2,
+   "expected": 39.5,
+   "forBudget": -9.3
+  },
+  {
+   "id": "pond-duck",
+   "name": "Pond Duck",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.49,
+   "basic": 29.3,
+   "adv": 31.8,
+   "power": 30.6,
+   "expected": 39.5,
+   "forBudget": -8.9
+  },
+  {
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.49,
+   "basic": 24.3,
+   "adv": 24.8,
+   "power": 24.6,
+   "expected": 39.5,
+   "forBudget": -14.9
+  },
+  {
+   "id": "river-carp",
+   "name": "River Carp",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 1,
+   "N": 13.35,
+   "basic": 52.9,
+   "adv": 41.5,
+   "power": 47.2,
+   "expected": 42.5,
+   "forBudget": 4.7
+  },
+  {
+   "id": "silver-minnow",
+   "name": "Silver Minnow",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.49,
+   "basic": 14,
+   "adv": 22.5,
+   "power": 18.3,
+   "expected": 39.5,
+   "forBudget": -21.2
+  },
+  {
+   "id": "worker-ant",
+   "name": "Worker Ant",
+   "rarity": "factionStarter",
+   "map": 0,
+   "cost": 0,
+   "wait": 0,
+   "N": 9.04,
+   "basic": 18.8,
+   "adv": 26,
+   "power": 22.4,
+   "expected": 39.1,
+   "forBudget": -16.7
+  }
+ ],
+ "over": [
+  {
+   "id": "raven-scout",
+   "name": "Raven Scout",
+   "rarity": "rare",
+   "map": 5,
+   "cost": 0,
+   "wait": 0,
+   "N": 16.43,
+   "basic": 95,
+   "adv": 83.9,
+   "power": 89.5,
+   "expected": 44.9,
+   "forBudget": 44.6
+  },
+  {
+   "id": "trapdoor-spider",
+   "name": "Trapdoor Spider",
+   "rarity": "veryrare",
+   "map": 14,
+   "cost": 0,
+   "wait": 1,
+   "N": 23.49,
+   "basic": 95.8,
+   "adv": 88.6,
+   "power": 92.2,
+   "expected": 50.4,
+   "forBudget": 41.8
+  },
+  {
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "rarity": "common",
+   "map": 1,
+   "cost": 0,
+   "wait": 0,
+   "N": 13.16,
+   "basic": 89.9,
+   "adv": 76.5,
+   "power": 83.2,
+   "expected": 42.3,
+   "forBudget": 40.9
+  },
+  {
+   "id": "ember-jackal",
+   "name": "Ember Jackal",
+   "rarity": "rare",
+   "map": 14,
+   "cost": 1,
+   "wait": 0,
+   "N": 21.68,
+   "basic": 93.1,
+   "adv": 83.3,
+   "power": 88.2,
+   "expected": 49,
+   "forBudget": 39.2
+  },
+  {
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "rarity": "veryrare",
+   "map": 20,
+   "cost": 1,
+   "wait": 1,
+   "N": 28.04,
+   "basic": 98.4,
+   "adv": 88,
+   "power": 93.2,
+   "expected": 54,
+   "forBudget": 39.2
+  },
+  {
+   "id": "stoat-cutthroat",
+   "name": "Stoat Cutthroat",
+   "rarity": "rare",
+   "map": 15,
+   "cost": 1,
+   "wait": 1,
+   "N": 25.71,
+   "basic": 93.8,
+   "adv": 88.1,
+   "power": 90.9,
+   "expected": 52.1,
+   "forBudget": 38.8
+  },
+  {
+   "id": "ibex-rockcaller",
+   "name": "Ibex Rockcaller",
+   "rarity": "veryrare",
+   "map": 11,
+   "cost": 1,
+   "wait": 2,
+   "N": 30.32,
+   "basic": 97.1,
+   "adv": 91.8,
+   "power": 94.4,
+   "expected": 55.8,
+   "forBudget": 38.6
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "rarity": "uncommon",
+   "map": 1,
+   "cost": 0,
+   "wait": 0,
+   "N": 14.61,
+   "basic": 86.3,
+   "adv": 75.6,
+   "power": 80.9,
+   "expected": 43.5,
+   "forBudget": 37.4
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "rarity": "uncommon",
+   "map": 5,
+   "cost": 0,
+   "wait": 0,
+   "N": 15.26,
+   "basic": 86,
+   "adv": 76.1,
+   "power": 81.1,
+   "expected": 44,
+   "forBudget": 37.1
+  },
+  {
+   "id": "thorny-devil",
+   "name": "Thorny Devil",
+   "rarity": "uncommon",
+   "map": 18,
+   "cost": 1,
+   "wait": 2,
+   "N": 29.62,
+   "basic": 94.8,
+   "adv": 89.5,
+   "power": 92.2,
+   "expected": 55.2,
+   "forBudget": 37
+  },
+  {
+   "id": "two-headed-calf",
+   "name": "Two-Headed Calf",
+   "rarity": "rare",
+   "map": 13,
+   "cost": 1,
+   "wait": 1,
+   "N": 25.24,
+   "basic": 94,
+   "adv": 83,
+   "power": 88.5,
+   "expected": 51.8,
+   "forBudget": 36.7
+  },
+  {
+   "id": "dolphin-knight",
+   "name": "Dolphin Outrider",
+   "rarity": "rare",
+   "map": 5,
+   "cost": 0,
+   "wait": 1,
+   "N": 20.22,
+   "basic": 88.1,
+   "adv": 78.5,
+   "power": 83.3,
+   "expected": 47.9,
+   "forBudget": 35.4
+  },
+  {
+   "id": "ossuary-lammergeier",
+   "name": "Ossuary Lammergeier",
+   "rarity": "superrare",
+   "map": 20,
+   "cost": 1,
+   "wait": 1,
+   "N": 29.21,
+   "basic": 93.5,
+   "adv": 85.5,
+   "power": 89.5,
+   "expected": 54.9,
+   "forBudget": 34.6
+  },
+  {
+   "id": "pike-lancer",
+   "name": "Pike Lancer",
+   "rarity": "rare",
+   "map": 5,
+   "cost": 0,
+   "wait": 1,
+   "N": 20.22,
+   "basic": 86.9,
+   "adv": 76.9,
+   "power": 81.9,
+   "expected": 47.9,
+   "forBudget": 34
+  },
+  {
+   "id": "gold-throat-elder",
+   "name": "Gold-throat Elder",
+   "rarity": "rare",
+   "map": 5,
+   "cost": 1,
+   "wait": 1,
+   "N": 23.37,
+   "basic": 89,
+   "adv": 78.5,
+   "power": 83.8,
+   "expected": 50.3,
+   "forBudget": 33.5
+  }
+ ],
+ "under": [
+  {
+   "id": "granite-ox-golem",
+   "name": "Granite Ox Golem",
+   "rarity": "rare",
+   "map": 14,
+   "cost": 2,
+   "wait": 4,
+   "N": 43.98,
+   "basic": 13,
+   "adv": 29.3,
+   "power": 21.2,
+   "expected": 66.4,
+   "forBudget": -45.2
+  },
+  {
+   "id": "riverworks-bastion",
+   "name": "Riverworks Bastion",
+   "rarity": "common",
+   "map": 6,
+   "cost": 2,
+   "wait": 5,
+   "N": 45.91,
+   "basic": 18.8,
+   "adv": 27.5,
+   "power": 23.2,
+   "expected": 67.9,
+   "forBudget": -44.7
+  },
+  {
+   "id": "glass-octopus",
+   "name": "Glass Octopus",
+   "rarity": "rare",
+   "map": 13,
+   "cost": 1,
+   "wait": 2,
+   "N": 29.62,
+   "basic": 10.6,
+   "adv": 26.4,
+   "power": 18.5,
+   "expected": 55.2,
+   "forBudget": -36.7
+  },
+  {
+   "id": "lava-waders",
+   "name": "Lava Waders",
+   "rarity": "uncommon",
+   "map": 11,
+   "cost": 1,
+   "wait": 0,
+   "N": 20.8,
+   "basic": 8.5,
+   "adv": 17,
+   "power": 12.8,
+   "expected": 48.3,
+   "forBudget": -35.5
+  },
+  {
+   "id": "netmender-harpoon",
+   "name": "Netmender's Harpoon",
+   "rarity": "uncommon",
+   "map": 11,
+   "cost": 1,
+   "wait": 0,
+   "N": 20.8,
+   "basic": 11.3,
+   "adv": 17.8,
+   "power": 14.6,
+   "expected": 48.3,
+   "forBudget": -33.7
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "rarity": "common",
+   "map": 14,
+   "cost": 0,
+   "wait": 1,
+   "N": 19.99,
+   "basic": 11.3,
+   "adv": 18.3,
+   "power": 14.8,
+   "expected": 47.7,
+   "forBudget": -32.9
+  },
+  {
+   "id": "bark-buckler",
+   "name": "Bark Buckler",
+   "rarity": "common",
+   "map": 11,
+   "cost": 0,
+   "wait": 0,
+   "N": 16.26,
+   "basic": 8.4,
+   "adv": 16.5,
+   "power": 12.5,
+   "expected": 44.8,
+   "forBudget": -32.3
+  },
+  {
+   "id": "fen-mink",
+   "name": "Fen Mink",
+   "rarity": "uncommon",
+   "map": 5,
+   "cost": 0,
+   "wait": 1,
+   "N": 19.05,
+   "basic": 9,
+   "adv": 20.5,
+   "power": 14.8,
+   "expected": 46.9,
+   "forBudget": -32.1
+  },
+  {
+   "id": "blind-cave-fish",
+   "name": "Blind Cave Fish",
+   "rarity": "common",
+   "map": 7,
+   "cost": 0,
+   "wait": 0,
+   "N": 14.56,
+   "basic": 8.8,
+   "adv": 14.5,
+   "power": 11.7,
+   "expected": 43.4,
+   "forBudget": -31.7
+  },
+  {
+   "id": "ancient-sloth-titan",
+   "name": "Ancient Sloth Titan",
+   "rarity": "common",
+   "map": 14,
+   "cost": 3,
+   "wait": 6,
+   "N": 58.58,
+   "basic": 46.9,
+   "adv": 45.7,
+   "power": 46.3,
+   "expected": 77.8,
+   "forBudget": -31.5
+  },
+  {
+   "id": "badger-stonemason",
+   "name": "Badger Stonemason",
+   "rarity": "uncommon",
+   "map": 14,
+   "cost": 1,
+   "wait": 1,
+   "N": 24.31,
+   "basic": 15.3,
+   "adv": 23.8,
+   "power": 19.6,
+   "expected": 51.1,
+   "forBudget": -31.5
+  },
+  {
+   "id": "snail-mail",
+   "name": "Snail Mail",
+   "rarity": "uncommon",
+   "map": 13,
+   "cost": 0,
+   "wait": 2,
+   "N": 25.3,
+   "basic": 17.1,
+   "adv": 23.5,
+   "power": 20.3,
+   "expected": 51.8,
+   "forBudget": -31.5
+  },
+  {
+   "id": "vampire-roost",
+   "name": "Vampire Roost",
+   "rarity": "common",
+   "map": 14,
+   "cost": 2,
+   "wait": 3,
+   "N": 36.1,
+   "basic": 26.3,
+   "adv": 31.3,
+   "power": 28.8,
+   "expected": 60.3,
+   "forBudget": -31.5
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord",
+   "rarity": "common",
+   "map": 14,
+   "cost": 4,
+   "wait": 5,
+   "N": 56.42,
+   "basic": 44.9,
+   "adv": 44.7,
+   "power": 44.8,
+   "expected": 76.2,
+   "forBudget": -31.4
+  },
+  {
+   "id": "coral-polyp-colony",
+   "name": "Coral Polyp Colony",
+   "rarity": "uncommon",
+   "map": 7,
+   "cost": 0,
+   "wait": 1,
+   "N": 19.52,
+   "basic": 8.8,
+   "adv": 23.4,
+   "power": 16.1,
+   "expected": 47.3,
+   "forBudget": -31.2
+  }
+ ],
+ "groups": [
+  {
+   "label": "Diurnal",
+   "cards": 10,
+   "meanShift": -20.2,
+   "v2MeanCentred": 37.1,
+   "v3MeanCentred": 16.9,
+   "v3ByPhase": {
+    "day": 82.1,
+    "cycle": 68.5,
+    "night": 53.8
+   },
+   "meanForBudget": 15.8,
+   "rows": [
+    {
+     "id": "rock-pool-starfish",
+     "v2": 97,
+     "v3": 66.8,
+     "shift": -42.7,
+     "day": 94.1,
+     "night": 33.3,
+     "forBudget": 15.2
+    },
+    {
+     "id": "cobalt-talon-skirmisher",
+     "v2": 77,
+     "v3": 51,
+     "shift": -38.5,
+     "day": 70.7,
+     "night": 48.9,
+     "forBudget": 0.5
+    },
+    {
+     "id": "crimson-wing-duelist-cadet",
+     "v2": 77,
+     "v3": 51,
+     "shift": -38.5,
+     "day": 70.7,
+     "night": 48.9,
+     "forBudget": 1
+    },
+    {
+     "id": "upside-down-bat",
+     "v2": 98,
+     "v3": 80,
+     "shift": -30.5,
+     "day": 97.3,
+     "night": 57.8,
+     "forBudget": 24.3
+    },
+    {
+     "id": "robin-redbreast",
+     "v2": 99,
+     "v3": 86.3,
+     "shift": -25.2,
+     "day": 97.3,
+     "night": 70,
+     "forBudget": 37.4
+    },
+    {
+     "id": "sunbittern-strider",
+     "v2": 87,
+     "v3": 81.1,
+     "shift": -18.4,
+     "day": 88.8,
+     "night": 67.8,
+     "forBudget": 24.9
+    },
+    {
+     "id": "sunspire-choirmother",
+     "v2": 70,
+     "v3": 66.4,
+     "shift": -16.1,
+     "day": 75,
+     "night": 38.9,
+     "forBudget": 13
+    },
+    {
+     "id": "talon-archer",
+     "v2": 80.8,
+     "v3": 89.8,
+     "shift": -3.5,
+     "day": 87.8,
+     "night": 88.9,
+     "forBudget": 30.5
+    },
+    {
+     "id": "golden-eagle-diver",
+     "v2": 33.3,
+     "v3": 50.5,
+     "shift": 4.7,
+     "day": 65.4,
+     "night": 42.2,
+     "forBudget": 2.1
+    },
+    {
+     "id": "dawn-bellringer",
+     "v2": 41.7,
+     "v3": 61,
+     "shift": 6.8,
+     "day": 73.9,
+     "night": 41.1,
+     "forBudget": 9
+    }
+   ]
+  },
+  {
+   "label": "Nocturnal",
+   "cards": 13,
+   "meanShift": 1.5,
+   "v2MeanCentred": -6.7,
+   "v3MeanCentred": -5.2,
+   "v3ByPhase": {
+    "day": 32.5,
+    "cycle": 47.2,
+    "night": 58.5
+   },
+   "meanForBudget": -4.6,
+   "rows": [
+    {
+     "id": "owl-nightwatch",
+     "v2": 18.8,
+     "v3": 11.6,
+     "shift": -19.7,
+     "day": 8,
+     "night": 17.8,
+     "forBudget": -30.3
+    },
+    {
+     "id": "banded-sea-krait",
+     "v2": 17.7,
+     "v3": 19.1,
+     "shift": -11.1,
+     "day": 13.3,
+     "night": 24.4,
+     "forBudget": -22.5
+    },
+    {
+     "id": "vampire-roost",
+     "v2": 22.5,
+     "v3": 26.3,
+     "shift": -8.7,
+     "day": 19.7,
+     "night": 34.8,
+     "forBudget": -31.5
+    },
+    {
+     "id": "wolfsbane-alpha",
+     "v2": 85,
+     "v3": 88.9,
+     "shift": -8.6,
+     "day": 83.5,
+     "night": 91.1,
+     "forBudget": 30.4
+    },
+    {
+     "id": "skull-vulture",
+     "v2": 32.3,
+     "v3": 41.4,
+     "shift": -3.4,
+     "day": 33.5,
+     "night": 54.4,
+     "forBudget": -9.4
+    },
+    {
+     "id": "echo-matriarch",
+     "v2": 71,
+     "v3": 82,
+     "shift": -1.5,
+     "day": 67.6,
+     "night": 90,
+     "forBudget": 22.5
+    },
+    {
+     "id": "vampire-bat",
+     "v2": 20,
+     "v3": 34.9,
+     "shift": 2.4,
+     "day": 21.8,
+     "night": 53.3,
+     "forBudget": -13.4
+    },
+    {
+     "id": "trash-panda-trickster",
+     "v2": 6,
+     "v3": 21.4,
+     "shift": 2.9,
+     "day": 14.4,
+     "night": 26.7,
+     "forBudget": -25
+    },
+    {
+     "id": "voidfeather-scout",
+     "v2": 53,
+     "v3": 70.1,
+     "shift": 4.6,
+     "day": 38.8,
+     "night": 88.9,
+     "forBudget": 18.7
+    },
+    {
+     "id": "ash-moth",
+     "v2": 22.9,
+     "v3": 42.4,
+     "shift": 7,
+     "day": 22.9,
+     "night": 57.8,
+     "forBudget": -3.8
+    },
+    {
+     "id": "echo-screecher",
+     "v2": 29.2,
+     "v3": 57.1,
+     "shift": 15.4,
+     "day": 41,
+     "night": 68.3,
+     "forBudget": 4.4
+    },
+    {
+     "id": "raccoon-bandit",
+     "v2": 13,
+     "v3": 41.3,
+     "shift": 15.8,
+     "day": 31.4,
+     "night": 58.9,
+     "forBudget": -13.5
+    },
+    {
+     "id": "kinkajou-lurker",
+     "v2": 28,
+     "v3": 64.9,
+     "shift": 24.4,
+     "day": 26.1,
+     "night": 93.3,
+     "forBudget": 13.7
+    }
+   ]
+  },
+  {
+   "label": "Lumber 3+",
+   "cards": 10,
+   "meanShift": 15.6,
+   "v2MeanCentred": -19,
+   "v3MeanCentred": -3.4,
+   "v3ByPhase": {
+    "day": 43.5,
+    "cycle": 51.4,
+    "night": 43.9
+   },
+   "meanForBudget": -17,
+   "rows": [
+    {
+     "id": "komodo-warlord",
+     "v2": 100,
+     "v3": 43.9,
+     "shift": -68.6,
+     "day": 38.2,
+     "night": 40.3,
+     "forBudget": -21.7
+    },
+    {
+     "id": "kraken-spawnling",
+     "v2": 100,
+     "v3": 53.1,
+     "shift": -59.4,
+     "day": 45.1,
+     "night": 44.8,
+     "forBudget": -5.9
+    },
+    {
+     "id": "magma-titan",
+     "v2": 0,
+     "v3": 34.4,
+     "shift": 21.9,
+     "day": 29.9,
+     "night": 35.8,
+     "forBudget": -22.7
+    },
+    {
+     "id": "orca-vanguard",
+     "v2": 0,
+     "v3": 38.5,
+     "shift": 26,
+     "day": 32.6,
+     "night": 34.3,
+     "forBudget": -20.9
+    },
+    {
+     "id": "eyrie-warden",
+     "v2": 0,
+     "v3": 43.9,
+     "shift": 31.4,
+     "day": 41,
+     "night": 38.8,
+     "forBudget": -17.4
+    },
+    {
+     "id": "yeti",
+     "v2": 0,
+     "v3": 45.1,
+     "shift": 32.6,
+     "day": 41,
+     "night": 43.3,
+     "forBudget": -29.2
+    },
+    {
+     "id": "ancient-sloth-titan",
+     "v2": 0,
+     "v3": 46.9,
+     "shift": 34.4,
+     "day": 42.4,
+     "night": 37.3,
+     "forBudget": -31.5
+    },
+    {
+     "id": "goliath-broodmother",
+     "v2": 0,
+     "v3": 57.7,
+     "shift": 45.2,
+     "day": 54.9,
+     "night": 55.2,
+     "forBudget": -14.1
+    },
+    {
+     "id": "rivergate-tribune",
+     "v2": 0,
+     "v3": 57.7,
+     "shift": 45.2,
+     "day": 54.9,
+     "night": 55.2,
+     "forBudget": -6.8
+    },
+    {
+     "id": "deep-cave-troll",
+     "v2": 0,
+     "v3": 59.8,
+     "shift": 47.3,
+     "day": 54.9,
+     "night": 53.7,
+     "forBudget": 0.3
+    }
+   ]
+  },
+  {
+   "label": "neither (control)",
+   "cards": 316,
+   "meanShift": -6,
+   "v2MeanCentred": 4,
+   "v3MeanCentred": -2,
+   "v3ByPhase": {
+    "day": 48.9,
+    "cycle": 49.2,
+    "night": 51
+   },
+   "meanForBudget": -0.2,
+   "rows": [
+    {
+     "id": "komodo-warlord",
+     "v2": 100,
+     "v3": 43.9,
+     "shift": -68.6,
+     "day": 38.2,
+     "night": 40.3,
+     "forBudget": -21.7
+    },
+    {
+     "id": "kraken-spawnling",
+     "v2": 100,
+     "v3": 53.1,
+     "shift": -59.4,
+     "day": 45.1,
+     "night": 44.8,
+     "forBudget": -5.9
+    },
+    {
+     "id": "hoopoe-herald",
+     "v2": 89,
+     "v3": 55.1,
+     "shift": -46.4,
+     "day": 81.4,
+     "night": 22.2,
+     "forBudget": 6.8
+    },
+    {
+     "id": "worker-ant",
+     "v2": 41,
+     "v3": 18.8,
+     "shift": -34.7,
+     "day": 19.7,
+     "night": 23.3,
+     "forBudget": -16.7
+    },
+    {
+     "id": "lantern-bearer",
+     "v2": 71,
+     "v3": 49.1,
+     "shift": -34.4,
+     "day": 53.7,
+     "night": 51.1,
+     "forBudget": 1.6
+    },
+    {
+     "id": "truffle-piglet",
+     "v2": 55.2,
+     "v3": 34.5,
+     "shift": -33.2,
+     "day": 29.3,
+     "night": 41.1,
+     "forBudget": -13.8
+    },
+    {
+     "id": "old-willow-of-the-ford",
+     "v2": 86,
+     "v3": 65.5,
+     "shift": -33,
+     "day": 60.6,
+     "night": 68.9,
+     "forBudget": 0.1
+    },
+    {
+     "id": "driftwood-crab",
+     "v2": 85,
+     "v3": 67.8,
+     "shift": -29.7,
+     "day": 76.1,
+     "night": 67.8,
+     "forBudget": 15.9
+    },
+    {
+     "id": "nautilus-drifter",
+     "v2": 83,
+     "v3": 65.8,
+     "shift": -29.7,
+     "day": 63.8,
+     "night": 67.8,
+     "forBudget": 7.9
+    },
+    {
+     "id": "bee-sentry",
+     "v2": 81,
+     "v3": 65,
+     "shift": -28.5,
+     "day": 63.3,
+     "night": 72.2,
+     "forBudget": 24.1
+    },
+    {
+     "id": "dune-packrat",
+     "v2": 60.4,
+     "v3": 44.8,
+     "shift": -28.1,
+     "day": 44.1,
+     "night": 44.4,
+     "forBudget": -7
+    },
+    {
+     "id": "dung-beetle",
+     "v2": 64,
+     "v3": 49.5,
+     "shift": -27,
+     "day": 53.7,
+     "night": 52.2,
+     "forBudget": 8.9
+    },
+    {
+     "id": "ant-scout",
+     "v2": 45,
+     "v3": 31.4,
+     "shift": -26.1,
+     "day": 41,
+     "night": 36.7,
+     "forBudget": -5.1
+    },
+    {
+     "id": "swordbill-challenger",
+     "v2": 46,
+     "v3": 33.3,
+     "shift": -25.2,
+     "day": 36.7,
+     "night": 38.9,
+     "forBudget": -13
+    },
+    {
+     "id": "torch",
+     "v2": 67,
+     "v3": 55.4,
+     "shift": -24.1,
+     "day": 56.9,
+     "night": 54.4,
+     "forBudget": 7.9
+    },
+    {
+     "id": "snow-ermine",
+     "v2": 73,
+     "v3": 61.8,
+     "shift": -23.7,
+     "day": 71.8,
+     "night": 57.8,
+     "forBudget": 10.7
+    },
+    {
+     "id": "netmender-harpoon",
+     "v2": 21.9,
+     "v3": 11.3,
+     "shift": -23.1,
+     "day": 9.6,
+     "night": 12.2,
+     "forBudget": -33.7
+    },
+    {
+     "id": "petal-fletcher",
+     "v2": 64,
+     "v3": 53.8,
+     "shift": -22.7,
+     "day": 49.5,
+     "night": 55.6,
+     "forBudget": 3.1
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "v2": 28,
+     "v3": 18.3,
+     "shift": -22.2,
+     "day": 13.3,
+     "night": 26.7,
+     "forBudget": -17.6
+    },
+    {
+     "id": "hummingbird-needler",
+     "v2": 36,
+     "v3": 26.3,
+     "shift": -22.2,
+     "day": 30.3,
+     "night": 31.1,
+     "forBudget": -15.7
+    },
+    {
+     "id": "riverwing-envoy",
+     "v2": 53,
+     "v3": 43.3,
+     "shift": -22.2,
+     "day": 53.7,
+     "night": 47.8,
+     "forBudget": -1.5
+    },
+    {
+     "id": "lava-waders",
+     "v2": 17.7,
+     "v3": 8.5,
+     "shift": -21.7,
+     "day": 8.5,
+     "night": 8.9,
+     "forBudget": -35.5
+    },
+    {
+     "id": "cinder-stoker",
+     "v2": 69,
+     "v3": 60.1,
+     "shift": -21.4,
+     "day": 56.9,
+     "night": 67.8,
+     "forBudget": 12.4
+    },
+    {
+     "id": "shellwright-apprentice",
+     "v2": 66,
+     "v3": 57.3,
+     "shift": -21.2,
+     "day": 59,
+     "night": 57.8,
+     "forBudget": 7.7
+    },
+    {
+     "id": "grave-grin-hyena",
+     "v2": 59,
+     "v3": 50.5,
+     "shift": -21,
+     "day": 52.7,
+     "night": 55.6,
+     "forBudget": 0.5
+    },
+    {
+     "id": "mountain-hare",
+     "v2": 39,
+     "v3": 30.6,
+     "shift": -20.9,
+     "day": 34,
+     "night": 32.2,
+     "forBudget": -10.9
+    },
+    {
+     "id": "frost-hare-sprinter",
+     "v2": 63,
+     "v3": 55,
+     "shift": -20.5,
+     "day": 59,
+     "night": 63.3,
+     "forBudget": 4.5
+    },
+    {
+     "id": "helmeted-otter",
+     "v2": 64,
+     "v3": 56,
+     "shift": -20.5,
+     "day": 63.3,
+     "night": 65.6,
+     "forBudget": 7.9
+    },
+    {
+     "id": "mist-net-otter",
+     "v2": 75,
+     "v3": 67.5,
+     "shift": -20,
+     "day": 69.7,
+     "night": 65.6,
+     "forBudget": 13.8
+    },
+    {
+     "id": "clap-net-trapper",
+     "v2": 82,
+     "v3": 74.6,
+     "shift": -19.9,
+     "day": 75,
+     "night": 83.3,
+     "forBudget": 21.6
+    },
+    {
+     "id": "leafcutter-gardener",
+     "v2": 46,
+     "v3": 38.6,
+     "shift": -19.9,
+     "day": 48.4,
+     "night": 40,
+     "forBudget": -9.7
+    },
+    {
+     "id": "shell-cracker",
+     "v2": 62,
+     "v3": 54.6,
+     "shift": -19.9,
+     "day": 63.3,
+     "night": 56.7,
+     "forBudget": 6.4
+    },
+    {
+     "id": "teatime-toad",
+     "v2": 84,
+     "v3": 76.6,
+     "shift": -19.9,
+     "day": 76.1,
+     "night": 75.6,
+     "forBudget": 22.3
+    },
+    {
+     "id": "burrow-rabbit",
+     "v2": 60,
+     "v3": 52.9,
+     "shift": -19.6,
+     "day": 54.8,
+     "night": 60,
+     "forBudget": 5.8
+    },
+    {
+     "id": "duck-paddler",
+     "v2": 60,
+     "v3": 52.9,
+     "shift": -19.6,
+     "day": 54.8,
+     "night": 60,
+     "forBudget": 6.8
+    },
+    {
+     "id": "river-carp",
+     "v2": 60,
+     "v3": 52.9,
+     "shift": -19.6,
+     "day": 54.8,
+     "night": 60,
+     "forBudget": 4.7
+    },
+    {
+     "id": "otter-scout",
+     "v2": 37,
+     "v3": 30,
+     "shift": -19.5,
+     "day": 36.7,
+     "night": 28.9,
+     "forBudget": -15.4
+    },
+    {
+     "id": "nectar-vintner",
+     "v2": 36,
+     "v3": 29.3,
+     "shift": -19.2,
+     "day": 28.2,
+     "night": 36.7,
+     "forBudget": -12.5
+    },
+    {
+     "id": "snowshoe-hare",
+     "v2": 48,
+     "v3": 41.3,
+     "shift": -19.2,
+     "day": 43.1,
+     "night": 41.1,
+     "forBudget": -4.3
+    },
+    {
+     "id": "harvest-mouse",
+     "v2": 22,
+     "v3": 15.5,
+     "shift": -19,
+     "day": 15.4,
+     "night": 17.8,
+     "forBudget": -21.5
+    },
+    {
+     "id": "otter-flag-bearer",
+     "v2": 85,
+     "v3": 78.6,
+     "shift": -18.9,
+     "day": 78.2,
+     "night": 77.8,
+     "forBudget": 30.4
+    },
+    {
+     "id": "quill-spear",
+     "v2": 25,
+     "v3": 19,
+     "shift": -18.5,
+     "day": 16,
+     "night": 28.9,
+     "forBudget": -27.2
+    },
+    {
+     "id": "sleepless-shrew",
+     "v2": 35,
+     "v3": 29,
+     "shift": -18.5,
+     "day": 31.4,
+     "night": 28.9,
+     "forBudget": -16.2
+    },
+    {
+     "id": "inside-out-hedgehog",
+     "v2": 79,
+     "v3": 73.1,
+     "shift": -18.4,
+     "day": 75,
+     "night": 73.3,
+     "forBudget": 22.5
+    },
+    {
+     "id": "gold-throated-acolyte",
+     "v2": 71,
+     "v3": 65.3,
+     "shift": -18.2,
+     "day": 77.1,
+     "night": 65.6,
+     "forBudget": 12.4
+    },
+    {
+     "id": "riverstone-slinger",
+     "v2": 91,
+     "v3": 85.3,
+     "shift": -18.2,
+     "day": 85.6,
+     "night": 87.8,
+     "forBudget": 29.3
+    },
+    {
+     "id": "glass-octopus",
+     "v2": 16,
+     "v3": 10.6,
+     "shift": -17.9,
+     "day": 9,
+     "night": 12.2,
+     "forBudget": -36.7
+    },
+    {
+     "id": "star-nosed-mole",
+     "v2": 49,
+     "v3": 43.6,
+     "shift": -17.9,
+     "day": 46.3,
+     "night": 41.1,
+     "forBudget": -0.6
+    },
+    {
+     "id": "fawn-scout",
+     "v2": 62,
+     "v3": 56.8,
+     "shift": -17.7,
+     "day": 56.9,
+     "night": 61.1,
+     "forBudget": 4.5
+    },
+    {
+     "id": "lantern-spark-fly",
+     "v2": 85,
+     "v3": 79.8,
+     "shift": -17.7,
+     "day": 81.4,
+     "night": 78.9,
+     "forBudget": 22.9
+    },
+    {
+     "id": "sheep",
+     "v2": 35,
+     "v3": 29.8,
+     "shift": -17.7,
+     "day": 26.1,
+     "night": 30,
+     "forBudget": -10.4
+    },
+    {
+     "id": "sunfeather-scout",
+     "v2": 20,
+     "v3": 14.8,
+     "shift": -17.7,
+     "day": 14.4,
+     "night": 17.8,
+     "forBudget": -28.6
+    },
+    {
+     "id": "cricket-drummer",
+     "v2": 95,
+     "v3": 89.9,
+     "shift": -17.6,
+     "day": 92,
+     "night": 90,
+     "forBudget": 40.9
+    },
+    {
+     "id": "rivergate-recruit",
+     "v2": 68,
+     "v3": 62.9,
+     "shift": -17.6,
+     "day": 61.2,
+     "night": 72.2,
+     "forBudget": 13.8
+    },
+    {
+     "id": "sunthroat-courier",
+     "v2": 69,
+     "v3": 64,
+     "shift": -17.5,
+     "day": 56.9,
+     "night": 60,
+     "forBudget": 12.7
+    },
+    {
+     "id": "sunfeather-plume",
+     "v2": 28.1,
+     "v3": 23.2,
+     "shift": -17.4,
+     "day": 18.6,
+     "night": 28.9,
+     "forBudget": -22.3
+    },
+    {
+     "id": "apollo-butterfly",
+     "v2": 65,
+     "v3": 60.3,
+     "shift": -17.2,
+     "day": 61.2,
+     "night": 60,
+     "forBudget": 10.5
+    },
+    {
+     "id": "chipmunk-forager",
+     "v2": 21,
+     "v3": 16.3,
+     "shift": -17.2,
+     "day": 14.4,
+     "night": 17.8,
+     "forBudget": -17.8
+    },
+    {
+     "id": "chipmunk-hoarder",
+     "v2": 23,
+     "v3": 18.3,
+     "shift": -17.2,
+     "day": 22.9,
+     "night": 22.2,
+     "forBudget": -23.2
+    },
+    {
+     "id": "daily-post",
+     "v2": 20,
+     "v3": 15.5,
+     "shift": -17,
+     "day": 17.6,
+     "night": 21.1,
+     "forBudget": -23.2
+    },
+    {
+     "id": "ruby-throat-duelist",
+     "v2": 35,
+     "v3": 30.5,
+     "shift": -17,
+     "day": 35.6,
+     "night": 32.2,
+     "forBudget": -14.9
+    },
+    {
+     "id": "wrong-way-salmon",
+     "v2": 73,
+     "v3": 68.8,
+     "shift": -16.7,
+     "day": 70.7,
+     "night": 80,
+     "forBudget": 21
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "v2": 43,
+     "v3": 39,
+     "shift": -16.5,
+     "day": 46.3,
+     "night": 37.8,
+     "forBudget": -3.3
+    },
+    {
+     "id": "gale-swift",
+     "v2": 22,
+     "v3": 18.1,
+     "shift": -16.4,
+     "day": 16.5,
+     "night": 18.9,
+     "forBudget": -22.9
+    },
+    {
+     "id": "trapdoor-spider",
+     "v2": 99,
+     "v3": 95.8,
+     "shift": -15.7,
+     "day": 93.6,
+     "night": 97.8,
+     "forBudget": 41.8
+    },
+    {
+     "id": "fen-mink",
+     "v2": 12,
+     "v3": 9,
+     "shift": -15.5,
+     "day": 10.1,
+     "night": 10,
+     "forBudget": -32.1
+    },
+    {
+     "id": "nectar-sipper",
+     "v2": 35,
+     "v3": 32,
+     "shift": -15.5,
+     "day": 32.4,
+     "night": 37.8,
+     "forBudget": -10.8
+    },
+    {
+     "id": "cone-cutter-squirrel",
+     "v2": 76,
+     "v3": 73.1,
+     "shift": -15.4,
+     "day": 75,
+     "night": 73.3,
+     "forBudget": 20.9
+    },
+    {
+     "id": "snail-mail",
+     "v2": 20,
+     "v3": 17.1,
+     "shift": -15.4,
+     "day": 21.8,
+     "night": 25.6,
+     "forBudget": -31.5
+    },
+    {
+     "id": "harbor-seal",
+     "v2": 28,
+     "v3": 25.3,
+     "shift": -15.2,
+     "day": 20.7,
+     "night": 33.3,
+     "forBudget": -20.4
+    },
+    {
+     "id": "tiny-cave-dweller",
+     "v2": 66,
+     "v3": 63.6,
+     "shift": -14.9,
+     "day": 71.8,
+     "night": 65.6,
+     "forBudget": 14.6
+    },
+    {
+     "id": "wolf-spider-mother",
+     "v2": 44.8,
+     "v3": 42.4,
+     "shift": -14.9,
+     "day": 38.8,
+     "night": 50,
+     "forBudget": -8.4
+    },
+    {
+     "id": "talus-pika",
+     "v2": 16,
+     "v3": 13.8,
+     "shift": -14.7,
+     "day": 14.4,
+     "night": 16.7,
+     "forBudget": -28.3
+    },
+    {
+     "id": "the-contradiction",
+     "v2": 75,
+     "v3": 72.8,
+     "shift": -14.7,
+     "day": 73.4,
+     "night": 66.7,
+     "forBudget": 12.5
+    },
+    {
+     "id": "cave-olm",
+     "v2": 36,
+     "v3": 34,
+     "shift": -14.5,
+     "day": 34.6,
+     "night": 35.6,
+     "forBudget": -11.2
+    },
+    {
+     "id": "cobalt-talon-fledgling",
+     "v2": 20,
+     "v3": 18,
+     "shift": -14.5,
+     "day": 14.4,
+     "night": 21.1,
+     "forBudget": -18.3
+    },
+    {
+     "id": "greyplume-fledgling",
+     "v2": 20,
+     "v3": 18,
+     "shift": -14.5,
+     "day": 14.4,
+     "night": 21.1,
+     "forBudget": -18.1
+    },
+    {
+     "id": "honey-bee",
+     "v2": 20,
+     "v3": 18,
+     "shift": -14.5,
+     "day": 14.4,
+     "night": 21.1,
+     "forBudget": -19.4
+    },
+    {
+     "id": "lucky-hopper",
+     "v2": 31.3,
+     "v3": 29.3,
+     "shift": -14.5,
+     "day": 26.1,
+     "night": 28.9,
+     "forBudget": -16.4
+    },
+    {
+     "id": "raven-scout",
+     "v2": 97,
+     "v3": 95,
+     "shift": -14.5,
+     "day": 96.8,
+     "night": 95.6,
+     "forBudget": 44.6
+    },
+    {
+     "id": "fox-kit",
+     "v2": 62,
+     "v3": 60.1,
+     "shift": -14.4,
+     "day": 68.6,
+     "night": 58.9,
+     "forBudget": 15.1
+    },
+    {
+     "id": "mangrove-manatee",
+     "v2": 70,
+     "v3": 68.1,
+     "shift": -14.4,
+     "day": 68.1,
+     "night": 67.8,
+     "forBudget": 11
+    },
+    {
+     "id": "alley-cat",
+     "v2": 77,
+     "v3": 75.3,
+     "shift": -14.2,
+     "day": 82.4,
+     "night": 74.4,
+     "forBudget": 24.4
+    },
+    {
+     "id": "old-shell",
+     "v2": 92,
+     "v3": 90.3,
+     "shift": -14.2,
+     "day": 89.4,
+     "night": 88.9,
+     "forBudget": 32.9
+    },
+    {
+     "id": "otter-kit",
+     "v2": 26,
+     "v3": 24.3,
+     "shift": -14.2,
+     "day": 25,
+     "night": 25.6,
+     "forBudget": -14.7
+    },
+    {
+     "id": "pond-trout",
+     "v2": 26,
+     "v3": 24.3,
+     "shift": -14.2,
+     "day": 25,
+     "night": 25.6,
+     "forBudget": -14.9
+    },
+    {
+     "id": "victoria-regia",
+     "v2": 74,
+     "v3": 72.3,
+     "shift": -14.2,
+     "day": 65.4,
+     "night": 74.4,
+     "forBudget": 17.3
+    },
+    {
+     "id": "bark-buckler",
+     "v2": 10,
+     "v3": 8.4,
+     "shift": -14.1,
+     "day": 6.9,
+     "night": 11.1,
+     "forBudget": -32.3
+    },
+    {
+     "id": "blind-cave-fish",
+     "v2": 10,
+     "v3": 8.8,
+     "shift": -13.7,
+     "day": 5.9,
+     "night": 12.2,
+     "forBudget": -31.7
+    },
+    {
+     "id": "booming-bittern",
+     "v2": 30.3,
+     "v3": 29.1,
+     "shift": -13.7,
+     "day": 21.8,
+     "night": 28.9,
+     "forBudget": -13.8
+    },
+    {
+     "id": "otter-lantern-bearer",
+     "v2": 65,
+     "v3": 63.9,
+     "shift": -13.6,
+     "day": 71.8,
+     "night": 64.4,
+     "forBudget": 14.4
+    },
+    {
+     "id": "honeyjoe-brewer",
+     "v2": 87,
+     "v3": 86,
+     "shift": -13.5,
+     "day": 89.9,
+     "night": 82.2,
+     "forBudget": 37.1
+    },
+    {
+     "id": "inkcloud-squid",
+     "v2": 41,
+     "v3": 40,
+     "shift": -13.5,
+     "day": 38.8,
+     "night": 40,
+     "forBudget": -5.5
+    },
+    {
+     "id": "heron-hag",
+     "v2": 79,
+     "v3": 78.1,
+     "shift": -13.4,
+     "day": 70.7,
+     "night": 80,
+     "forBudget": 23.4
+    },
+    {
+     "id": "acorn-chipmunk",
+     "v2": 30,
+     "v3": 29.3,
+     "shift": -13.2,
+     "day": 26.1,
+     "night": 32.2,
+     "forBudget": -7.7
+    },
+    {
+     "id": "caiman-hatchling",
+     "v2": 38,
+     "v3": 37.3,
+     "shift": -13.2,
+     "day": 43.1,
+     "night": 38.9,
+     "forBudget": -6.1
+    },
+    {
+     "id": "otter-paddler",
+     "v2": 30,
+     "v3": 29.3,
+     "shift": -13.2,
+     "day": 26.1,
+     "night": 32.2,
+     "forBudget": -9.3
+    },
+    {
+     "id": "pond-duck",
+     "v2": 30,
+     "v3": 29.3,
+     "shift": -13.2,
+     "day": 26.1,
+     "night": 32.2,
+     "forBudget": -8.9
+    },
+    {
+     "id": "sparrow-chick",
+     "v2": 12,
+     "v3": 11.3,
+     "shift": -13.2,
+     "day": 10.1,
+     "night": 12.2,
+     "forBudget": -24
+    },
+    {
+     "id": "pronghorn-racer",
+     "v2": 21.9,
+     "v3": 21.3,
+     "shift": -13.1,
+     "day": 18.6,
+     "night": 18.9,
+     "forBudget": -24
+    },
+    {
+     "id": "pyrenean-desman",
+     "v2": 59,
+     "v3": 58.5,
+     "shift": -13,
+     "day": 66.5,
+     "night": 62.2,
+     "forBudget": 9.8
+    },
+    {
+     "id": "ferry-toll-frog",
+     "v2": 34,
+     "v3": 33.8,
+     "shift": -12.7,
+     "day": 46.3,
+     "night": 34.4,
+     "forBudget": -7.8
+    },
+    {
+     "id": "hedge-weasel",
+     "v2": 30,
+     "v3": 29.8,
+     "shift": -12.7,
+     "day": 28.2,
+     "night": 37.8,
+     "forBudget": -11.2
+    },
+    {
+     "id": "carrion-crow",
+     "v2": 34,
+     "v3": 33.9,
+     "shift": -12.6,
+     "day": 37.8,
+     "night": 37.8,
+     "forBudget": -14
+    },
+    {
+     "id": "alpine-swift",
+     "v2": 24,
+     "v3": 24,
+     "shift": -12.5,
+     "day": 25,
+     "night": 28.9,
+     "forBudget": -18.7
+    },
+    {
+     "id": "ashbone-ghoul",
+     "v2": 18,
+     "v3": 18.5,
+     "shift": -12,
+     "day": 20.7,
+     "night": 16.7,
+     "forBudget": -22.1
+    },
+    {
+     "id": "badger-lumberjack",
+     "v2": 49,
+     "v3": 49.5,
+     "shift": -12,
+     "day": 49.5,
+     "night": 52.2,
+     "forBudget": -0.1
+    },
+    {
+     "id": "lunar-howler",
+     "v2": 18.8,
+     "v3": 19.5,
+     "shift": -11.8,
+     "day": 10.1,
+     "night": 26.7,
+     "forBudget": -30
+    },
+    {
+     "id": "rivergate-drummer",
+     "v2": 29,
+     "v3": 29.8,
+     "shift": -11.7,
+     "day": 29.3,
+     "night": 34.4,
+     "forBudget": -17.2
+    },
+    {
+     "id": "violet-vane-fletcher",
+     "v2": 24,
+     "v3": 24.8,
+     "shift": -11.7,
+     "day": 25,
+     "night": 28.9,
+     "forBudget": -15.3
+    },
+    {
+     "id": "caustic-scorpion",
+     "v2": 57,
+     "v3": 58,
+     "shift": -11.5,
+     "day": 52.7,
+     "night": 48.9,
+     "forBudget": 3.5
+    },
+    {
+     "id": "mangrove-mudskipper",
+     "v2": 45,
+     "v3": 46,
+     "shift": -11.5,
+     "day": 45.2,
+     "night": 47.8,
+     "forBudget": -0.1
+    },
+    {
+     "id": "quarry-mole",
+     "v2": 30,
+     "v3": 31,
+     "shift": -11.5,
+     "day": 28.2,
+     "night": 32.2,
+     "forBudget": -17
+    },
+    {
+     "id": "hush-wing-spy",
+     "v2": 9,
+     "v3": 10.3,
+     "shift": -11.2,
+     "day": 13.3,
+     "night": 13.3,
+     "forBudget": -30.6
+    },
+    {
+     "id": "old-sturgeon",
+     "v2": 58,
+     "v3": 59.3,
+     "shift": -11.2,
+     "day": 56.9,
+     "night": 50,
+     "forBudget": 3.9
+    },
+    {
+     "id": "riverworks-bastion",
+     "v2": 17.5,
+     "v3": 18.8,
+     "shift": -11.2,
+     "day": 15.2,
+     "night": 22.5,
+     "forBudget": -44.7
+    },
+    {
+     "id": "snapper-hatchling",
+     "v2": 21,
+     "v3": 22.3,
+     "shift": -11.2,
+     "day": 28.2,
+     "night": 25.6,
+     "forBudget": -18.8
+    },
+    {
+     "id": "garden-snail",
+     "v2": 5,
+     "v3": 6.5,
+     "shift": -11,
+     "day": 2.7,
+     "night": 7.8,
+     "forBudget": -30.4
+    },
+    {
+     "id": "ant-warrior",
+     "v2": 52,
+     "v3": 53.8,
+     "shift": -10.7,
+     "day": 67.6,
+     "night": 50,
+     "forBudget": 8.7
+    },
+    {
+     "id": "coral-polyp-colony",
+     "v2": 7,
+     "v3": 8.8,
+     "shift": -10.7,
+     "day": 3.7,
+     "night": 11.1,
+     "forBudget": -31.2
+    },
+    {
+     "id": "hedge-changeling",
+     "v2": 39,
+     "v3": 40.8,
+     "shift": -10.7,
+     "day": 46.3,
+     "night": 46.7,
+     "forBudget": -5.4
+    },
+    {
+     "id": "bee-forager",
+     "v2": 7,
+     "v3": 9,
+     "shift": -10.5,
+     "day": 9,
+     "night": 10,
+     "forBudget": -27.8
+    },
+    {
+     "id": "lions-mane-jelly",
+     "v2": 49,
+     "v3": 51.1,
+     "shift": -10.4,
+     "day": 46.3,
+     "night": 40.6,
+     "forBudget": -0.2
+    },
+    {
+     "id": "egg-bug",
+     "v2": 5,
+     "v3": 7.3,
+     "shift": -10.2,
+     "day": 3.7,
+     "night": 7.8,
+     "forBudget": null
+    },
+    {
+     "id": "egg-woodland",
+     "v2": 4,
+     "v3": 6.3,
+     "shift": -10.2,
+     "day": 3.7,
+     "night": 5.6,
+     "forBudget": null
+    },
+    {
+     "id": "redwood-woodpecker",
+     "v2": 37.5,
+     "v3": 39.8,
+     "shift": -10.2,
+     "day": 38.8,
+     "night": 36.7,
+     "forBudget": -12.1
+    },
+    {
+     "id": "mosswing-laborer",
+     "v2": 6,
+     "v3": 8.4,
+     "shift": -10.1,
+     "day": 8,
+     "night": 8.9,
+     "forBudget": -26.7
+    },
+    {
+     "id": "cottontail",
+     "v2": 16,
+     "v3": 18.5,
+     "shift": -10,
+     "day": 19.7,
+     "night": 18.9,
+     "forBudget": -18.8
+    },
+    {
+     "id": "hercules-beetle",
+     "v2": 78,
+     "v3": 80.5,
+     "shift": -10,
+     "day": 78.2,
+     "night": 78.9,
+     "forBudget": 19.6
+    },
+    {
+     "id": "meerkat-burrower",
+     "v2": 32.3,
+     "v3": 34.8,
+     "shift": -10,
+     "day": 33.5,
+     "night": 34.4,
+     "forBudget": -15.8
+    },
+    {
+     "id": "muskrat-lodgekeeper",
+     "v2": 26,
+     "v3": 28.5,
+     "shift": -10,
+     "day": 19.7,
+     "night": 27.8,
+     "forBudget": -23.3
+    },
+    {
+     "id": "alpine-marmot",
+     "v2": 79,
+     "v3": 81.6,
+     "shift": -9.9,
+     "day": 86.7,
+     "night": 84.4,
+     "forBudget": 29.5
+    },
+    {
+     "id": "siege-hammer",
+     "v2": 25,
+     "v3": 27.6,
+     "shift": -9.9,
+     "day": 19.5,
+     "night": 30.5,
+     "forBudget": -22.5
+    },
+    {
+     "id": "fennec-fox",
+     "v2": 32.3,
+     "v3": 35,
+     "shift": -9.8,
+     "day": 33.5,
+     "night": 36.7,
+     "forBudget": -14.6
+    },
+    {
+     "id": "duckling",
+     "v2": 7,
+     "v3": 9.8,
+     "shift": -9.7,
+     "day": 9,
+     "night": 8.9,
+     "forBudget": -26.6
+    },
+    {
+     "id": "egg-bird",
+     "v2": 2,
+     "v3": 4.8,
+     "shift": -9.7,
+     "day": 2.7,
+     "night": 3.3,
+     "forBudget": null
+    },
+    {
+     "id": "guppy",
+     "v2": 7,
+     "v3": 9.8,
+     "shift": -9.7,
+     "day": 9,
+     "night": 8.9,
+     "forBudget": -28.6
+    },
+    {
+     "id": "thorny-devil",
+     "v2": 92,
+     "v3": 94.8,
+     "shift": -9.7,
+     "day": 95.2,
+     "night": 95.6,
+     "forBudget": 37
+    },
+    {
+     "id": "egg-scaly",
+     "v2": 2,
+     "v3": 5,
+     "shift": -9.5,
+     "day": 1.6,
+     "night": 4.4,
+     "forBudget": null
+    },
+    {
+     "id": "birdlime-dauber",
+     "v2": 69,
+     "v3": 72.3,
+     "shift": -9.2,
+     "day": 65.4,
+     "night": 75.6,
+     "forBudget": 19
+    },
+    {
+     "id": "clownfish-scout",
+     "v2": 19,
+     "v3": 22.3,
+     "shift": -9.2,
+     "day": 23.9,
+     "night": 24.4,
+     "forBudget": -16
+    },
+    {
+     "id": "egg-otter",
+     "v2": 3,
+     "v3": 6.3,
+     "shift": -9.2,
+     "day": 4.8,
+     "night": 5.6,
+     "forBudget": null
+    },
+    {
+     "id": "shepherds-bark",
+     "v2": 55,
+     "v3": 58.3,
+     "shift": -9.2,
+     "day": 59,
+     "night": 47.8,
+     "forBudget": 3.1
+    },
+    {
+     "id": "anhinga-spearbird",
+     "v2": 28.1,
+     "v3": 31.6,
+     "shift": -9,
+     "day": 32.4,
+     "night": 33.3,
+     "forBudget": -15.7
+    },
+    {
+     "id": "egg-beast",
+     "v2": 2,
+     "v3": 5.5,
+     "shift": -9,
+     "day": 1.6,
+     "night": 5.6,
+     "forBudget": null
+    },
+    {
+     "id": "fleetfootd",
+     "v2": 23,
+     "v3": 26.5,
+     "shift": -9,
+     "day": 32.4,
+     "night": 31.1,
+     "forBudget": -14.5
+    },
+    {
+     "id": "newt-doctor",
+     "v2": 37,
+     "v3": 40.5,
+     "shift": -9,
+     "day": 42,
+     "night": 41.1,
+     "forBudget": -3.6
+    },
+    {
+     "id": "bog-leech",
+     "v2": 46,
+     "v3": 49.8,
+     "shift": -8.7,
+     "day": 56.9,
+     "night": 51.1,
+     "forBudget": 4.4
+    },
+    {
+     "id": "egg-water",
+     "v2": 3,
+     "v3": 6.8,
+     "shift": -8.7,
+     "day": 3.7,
+     "night": 4.4,
+     "forBudget": null
+    },
+    {
+     "id": "grey-seal-bull",
+     "v2": 41,
+     "v3": 44.8,
+     "shift": -8.7,
+     "day": 43.1,
+     "night": 41.1,
+     "forBudget": -6.5
+    },
+    {
+     "id": "bramble-hoglet",
+     "v2": 27,
+     "v3": 31,
+     "shift": -8.5,
+     "day": 32.4,
+     "night": 32.2,
+     "forBudget": -9.8
+    },
+    {
+     "id": "earthworm",
+     "v2": 3,
+     "v3": 7,
+     "shift": -8.5,
+     "day": 4.8,
+     "night": 5.6,
+     "forBudget": -31.1
+    },
+    {
+     "id": "lone-grey-wolf",
+     "v2": 38.5,
+     "v3": 42.5,
+     "shift": -8.5,
+     "day": 39.9,
+     "night": 52.2,
+     "forBudget": -15.2
+    },
+    {
+     "id": "silver-minnow",
+     "v2": 10,
+     "v3": 14,
+     "shift": -8.5,
+     "day": 13.3,
+     "night": 15.6,
+     "forBudget": -21.2
+    },
+    {
+     "id": "dust-hyena",
+     "v2": 52,
+     "v3": 56.1,
+     "shift": -8.4,
+     "day": 58.5,
+     "night": 56.7,
+     "forBudget": 5.4
+    },
+    {
+     "id": "otter-netmender",
+     "v2": 26,
+     "v3": 30.1,
+     "shift": -8.4,
+     "day": 39.9,
+     "night": 25.6,
+     "forBudget": -13.2
+    },
+    {
+     "id": "ember-centipede",
+     "v2": 7,
+     "v3": 11.3,
+     "shift": -8.2,
+     "day": 8,
+     "night": 13.3,
+     "forBudget": -32.9
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "v2": 67,
+     "v3": 71.3,
+     "shift": -8.2,
+     "day": 63.3,
+     "night": 72.2,
+     "forBudget": 17.5
+    },
+    {
+     "id": "wound-reaver",
+     "v2": 76,
+     "v3": 80.3,
+     "shift": -8.2,
+     "day": 73.9,
+     "night": 82.2,
+     "forBudget": 24
+    },
+    {
+     "id": "chamois-leaper",
+     "v2": 25,
+     "v3": 29.8,
+     "shift": -7.7,
+     "day": 30.3,
+     "night": 31.1,
+     "forBudget": -19.5
+    },
+    {
+     "id": "jaguar-stalker",
+     "v2": 19.2,
+     "v3": 24,
+     "shift": -7.7,
+     "day": 18.6,
+     "night": 26.7,
+     "forBudget": -25.4
+    },
+    {
+     "id": "riverside-peddler",
+     "v2": 13,
+     "v3": 17.8,
+     "shift": -7.7,
+     "day": 17.6,
+     "night": 21.1,
+     "forBudget": -24.7
+    },
+    {
+     "id": "tide-pool-crab",
+     "v2": 19,
+     "v3": 23.8,
+     "shift": -7.7,
+     "day": 28.2,
+     "night": 26.7,
+     "forBudget": -19
+    },
+    {
+     "id": "tidepool-trapper-crab",
+     "v2": 14,
+     "v3": 19,
+     "shift": -7.5,
+     "day": 18.6,
+     "night": 18.9,
+     "forBudget": -21.2
+    },
+    {
+     "id": "grotto-lobster",
+     "v2": 71,
+     "v3": 76.3,
+     "shift": -7.2,
+     "day": 68.6,
+     "night": 81.1,
+     "forBudget": 17.5
+    },
+    {
+     "id": "granite-ox-golem",
+     "v2": 7.5,
+     "v3": 13,
+     "shift": -7,
+     "day": 9.6,
+     "night": 13.5,
+     "forBudget": -45.2
+    },
+    {
+     "id": "grass-viper",
+     "v2": 33,
+     "v3": 38.5,
+     "shift": -7,
+     "day": 42,
+     "night": 38.9,
+     "forBudget": -6.2
+    },
+    {
+     "id": "meadow-rabbit",
+     "v2": 16,
+     "v3": 21.5,
+     "shift": -7,
+     "day": 22.9,
+     "night": 20,
+     "forBudget": -15.8
+    },
+    {
+     "id": "tide-spirit",
+     "v2": 70,
+     "v3": 75.5,
+     "shift": -7,
+     "day": 79.3,
+     "night": 77.8,
+     "forBudget": 23.4
+    },
+    {
+     "id": "fumarole-ibex",
+     "v2": 22.2,
+     "v3": 27.8,
+     "shift": -6.9,
+     "day": 28.2,
+     "night": 26.7,
+     "forBudget": -22.1
+    },
+    {
+     "id": "quicksand-queen",
+     "v2": 68,
+     "v3": 73.8,
+     "shift": -6.7,
+     "day": 68.6,
+     "night": 76.7,
+     "forBudget": 15.2
+    },
+    {
+     "id": "dromedary",
+     "v2": 26,
+     "v3": 32.1,
+     "shift": -6.4,
+     "day": 30.3,
+     "night": 31.1,
+     "forBudget": -17.7
+    },
+    {
+     "id": "crossed-eyes",
+     "v2": 6,
+     "v3": 12.3,
+     "shift": -6.2,
+     "day": 12.2,
+     "night": 14.4,
+     "forBudget": -26.1
+    },
+    {
+     "id": "optio-of-the-ford",
+     "v2": 72,
+     "v3": 78.3,
+     "shift": -6.2,
+     "day": 76.1,
+     "night": 78.9,
+     "forBudget": 23.2
+    },
+    {
+     "id": "quillguard",
+     "v2": 49,
+     "v3": 55.3,
+     "shift": -6.2,
+     "day": 52.7,
+     "night": 51.1,
+     "forBudget": -3.7
+    },
+    {
+     "id": "cunning-vixen",
+     "v2": 34.4,
+     "v3": 40.8,
+     "shift": -6.1,
+     "day": 38.8,
+     "night": 41.1,
+     "forBudget": -7.1
+    },
+    {
+     "id": "magma-salamander",
+     "v2": 92,
+     "v3": 98.4,
+     "shift": -6.1,
+     "day": 98.4,
+     "night": 96.7,
+     "forBudget": 39.2
+    },
+    {
+     "id": "polar-bear",
+     "v2": 72,
+     "v3": 78.4,
+     "shift": -6.1,
+     "day": 71.8,
+     "night": 81.1,
+     "forBudget": 13.9
+    },
+    {
+     "id": "parrotfish",
+     "v2": 38,
+     "v3": 44.5,
+     "shift": -6,
+     "day": 43.1,
+     "night": 51.1,
+     "forBudget": -2.1
+    },
+    {
+     "id": "woodland-caribou",
+     "v2": 30,
+     "v3": 36.5,
+     "shift": -6,
+     "day": 32.4,
+     "night": 44.4,
+     "forBudget": -17.1
+    },
+    {
+     "id": "platypus-spur",
+     "v2": 24,
+     "v3": 30.6,
+     "shift": -5.9,
+     "day": 25,
+     "night": 34.4,
+     "forBudget": -16.3
+    },
+    {
+     "id": "dragonscale-mail",
+     "v2": 21.4,
+     "v3": 28.1,
+     "shift": -5.8,
+     "day": 23.6,
+     "night": 28.7,
+     "forBudget": -27.2
+    },
+    {
+     "id": "puffin-diver",
+     "v2": 29.2,
+     "v3": 35.9,
+     "shift": -5.8,
+     "day": 34.6,
+     "night": 40,
+     "forBudget": -12
+    },
+    {
+     "id": "badger-stonemason",
+     "v2": 8.1,
+     "v3": 15.3,
+     "shift": -5.3,
+     "day": 8,
+     "night": 14.4,
+     "forBudget": -31.5
+    },
+    {
+     "id": "mirror-moth",
+     "v2": 44.8,
+     "v3": 52,
+     "shift": -5.3,
+     "day": 51.6,
+     "night": 56.7,
+     "forBudget": -1.1
+    },
+    {
+     "id": "otter-angler",
+     "v2": 15,
+     "v3": 22.3,
+     "shift": -5.2,
+     "day": 26.1,
+     "night": 28.9,
+     "forBudget": -19.6
+    },
+    {
+     "id": "riptide-eel",
+     "v2": 40,
+     "v3": 47.3,
+     "shift": -5.2,
+     "day": 44.1,
+     "night": 53.3,
+     "forBudget": -6.6
+    },
+    {
+     "id": "rootworm-colony",
+     "v2": 26,
+     "v3": 33.3,
+     "shift": -5.2,
+     "day": 26.1,
+     "night": 41.1,
+     "forBudget": -14.3
+    },
+    {
+     "id": "ossuary-lammergeier",
+     "v2": 86,
+     "v3": 93.5,
+     "shift": -5,
+     "day": 91.5,
+     "night": 95.6,
+     "forBudget": 34.6
+    },
+    {
+     "id": "snapstick-turtle",
+     "v2": 32.3,
+     "v3": 39.8,
+     "shift": -5,
+     "day": 37.8,
+     "night": 44.4,
+     "forBudget": -9.6
+    },
+    {
+     "id": "anvilwhisker-otter",
+     "v2": 16.2,
+     "v3": 23.8,
+     "shift": -4.9,
+     "day": 23.3,
+     "night": 25.3,
+     "forBudget": -26.9
+    },
+    {
+     "id": "prospector-mole",
+     "v2": 73,
+     "v3": 80.6,
+     "shift": -4.9,
+     "day": 78.2,
+     "night": 85.6,
+     "forBudget": 27.9
+    },
+    {
+     "id": "pike-lancer",
+     "v2": 79,
+     "v3": 86.9,
+     "shift": -4.6,
+     "day": 87.8,
+     "night": 90,
+     "forBudget": 34
+    },
+    {
+     "id": "poison-dart-croaker",
+     "v2": 15,
+     "v3": 23,
+     "shift": -4.5,
+     "day": 25,
+     "night": 22.2,
+     "forBudget": -22.5
+    },
+    {
+     "id": "ember-jackal",
+     "v2": 85,
+     "v3": 93.1,
+     "shift": -4.4,
+     "day": 91.5,
+     "night": 93.3,
+     "forBudget": 39.2
+    },
+    {
+     "id": "thorn-shrike",
+     "v2": 33.3,
+     "v3": 41.5,
+     "shift": -4.3,
+     "day": 37.8,
+     "night": 47.8,
+     "forBudget": -7.5
+    },
+    {
+     "id": "horseshoe-crab",
+     "v2": 68,
+     "v3": 76.3,
+     "shift": -4.2,
+     "day": 73.4,
+     "night": 75.6,
+     "forBudget": 21.2
+    },
+    {
+     "id": "walrus-icebreaker",
+     "v2": 83,
+     "v3": 91.4,
+     "shift": -4.1,
+     "day": 89.4,
+     "night": 91.1,
+     "forBudget": 31.7
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "v2": 75,
+     "v3": 83.5,
+     "shift": -4,
+     "day": 80.3,
+     "night": 86.7,
+     "forBudget": 25.9
+    },
+    {
+     "id": "alligator-gar",
+     "v2": 57,
+     "v3": 65.6,
+     "shift": -3.9,
+     "day": 63.3,
+     "night": 66.7,
+     "forBudget": 10.4
+    },
+    {
+     "id": "bison-bulldozer",
+     "v2": 76,
+     "v3": 84.6,
+     "shift": -3.9,
+     "day": 80.3,
+     "night": 86.7,
+     "forBudget": 32
+    },
+    {
+     "id": "otter-shieldback",
+     "v2": 77,
+     "v3": 85.8,
+     "shift": -3.7,
+     "day": 81.4,
+     "night": 82.2,
+     "forBudget": 26.7
+    },
+    {
+     "id": "stoat-cutthroat",
+     "v2": 85,
+     "v3": 93.8,
+     "shift": -3.7,
+     "day": 95.2,
+     "night": 93.3,
+     "forBudget": 38.8
+    },
+    {
+     "id": "dolphin-knight",
+     "v2": 79,
+     "v3": 88.1,
+     "shift": -3.4,
+     "day": 88.8,
+     "night": 90,
+     "forBudget": 35.4
+    },
+    {
+     "id": "pack-mule",
+     "v2": 12,
+     "v3": 21.1,
+     "shift": -3.4,
+     "day": 22.9,
+     "night": 28.9,
+     "forBudget": -25.3
+    },
+    {
+     "id": "otter-riverguard",
+     "v2": 24.3,
+     "v3": 33.6,
+     "shift": -3.2,
+     "day": 29,
+     "night": 40.2,
+     "forBudget": -17.6
+    },
+    {
+     "id": "dust-devil-kestrel",
+     "v2": 78,
+     "v3": 87.5,
+     "shift": -3,
+     "day": 86.7,
+     "night": 84.4,
+     "forBudget": 23.3
+    },
+    {
+     "id": "gangrenous-leech",
+     "v2": 38.4,
+     "v3": 47.9,
+     "shift": -3,
+     "day": 47.3,
+     "night": 46.7,
+     "forBudget": 4.2
+    },
+    {
+     "id": "antlion-pit",
+     "v2": 77,
+     "v3": 86.9,
+     "shift": -2.6,
+     "day": 80.3,
+     "night": 87.8,
+     "forBudget": 28
+    },
+    {
+     "id": "quill-volley",
+     "v2": 33.3,
+     "v3": 43.3,
+     "shift": -2.5,
+     "day": 48.4,
+     "night": 43.3,
+     "forBudget": -9
+    },
+    {
+     "id": "shimmerwing-stag",
+     "v2": 51.5,
+     "v3": 61.5,
+     "shift": -2.5,
+     "day": 61.2,
+     "night": 58.9,
+     "forBudget": 4.6
+    },
+    {
+     "id": "acacia-giraffe",
+     "v2": 27,
+     "v3": 37.4,
+     "shift": -2.1,
+     "day": 33.5,
+     "night": 37.9,
+     "forBudget": -16.2
+    },
+    {
+     "id": "reef-admiral",
+     "v2": 57,
+     "v3": 67.5,
+     "shift": -2,
+     "day": 67.6,
+     "night": 63.3,
+     "forBudget": 10.1
+    },
+    {
+     "id": "whip-spider",
+     "v2": 43.4,
+     "v3": 54.3,
+     "shift": -1.6,
+     "day": 49.5,
+     "night": 57.8,
+     "forBudget": -0.9
+    },
+    {
+     "id": "two-headed-calf",
+     "v2": 82.8,
+     "v3": 94,
+     "shift": -1.3,
+     "day": 94.1,
+     "night": 93.3,
+     "forBudget": 36.7
+    },
+    {
+     "id": "great-barracuda",
+     "v2": 33.3,
+     "v3": 45.1,
+     "shift": -0.7,
+     "day": 41,
+     "night": 51.1,
+     "forBudget": -8.8
+    },
+    {
+     "id": "otter-ferryman",
+     "v2": 62,
+     "v3": 74,
+     "shift": -0.5,
+     "day": 72.9,
+     "night": 78.9,
+     "forBudget": 21.3
+    },
+    {
+     "id": "ibex-rockcaller",
+     "v2": 85,
+     "v3": 97.1,
+     "shift": -0.4,
+     "day": 98.4,
+     "night": 96.7,
+     "forBudget": 38.6
+    },
+    {
+     "id": "springbok-pronker",
+     "v2": 39.4,
+     "v3": 51.5,
+     "shift": -0.4,
+     "day": 47.3,
+     "night": 52.2,
+     "forBudget": -1.2
+    },
+    {
+     "id": "abyss-lantern-squid",
+     "v2": 64,
+     "v3": 76.8,
+     "shift": 0.3,
+     "day": 77.1,
+     "night": 73.3,
+     "forBudget": 18.6
+    },
+    {
+     "id": "beluga",
+     "v2": 40,
+     "v3": 52.8,
+     "shift": 0.3,
+     "day": 55.9,
+     "night": 47.8,
+     "forBudget": -3.6
+    },
+    {
+     "id": "snow-bunting-archer",
+     "v2": 40.6,
+     "v3": 53.4,
+     "shift": 0.3,
+     "day": 53.7,
+     "night": 54.4,
+     "forBudget": 2.6
+    },
+    {
+     "id": "swift-fox",
+     "v2": 28.1,
+     "v3": 40.9,
+     "shift": 0.3,
+     "day": 39.9,
+     "night": 45.6,
+     "forBudget": -5.4
+    },
+    {
+     "id": "dominion-nestguard",
+     "v2": 28.1,
+     "v3": 41.3,
+     "shift": 0.7,
+     "day": 38.8,
+     "night": 45.6,
+     "forBudget": -8.5
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "v2": 68,
+     "v3": 81.3,
+     "shift": 0.8,
+     "day": 83.5,
+     "night": 77.8,
+     "forBudget": 26.3
+    },
+    {
+     "id": "alpine-salamander",
+     "v2": 35.4,
+     "v3": 48.8,
+     "shift": 0.9,
+     "day": 47.3,
+     "night": 46.7,
+     "forBudget": -2.6
+    },
+    {
+     "id": "spitting-cobra",
+     "v2": 40.6,
+     "v3": 54.5,
+     "shift": 1.4,
+     "day": 51.6,
+     "night": 56.7,
+     "forBudget": -2.5
+    },
+    {
+     "id": "cinder-skeleton",
+     "v2": 37.5,
+     "v3": 51.5,
+     "shift": 1.5,
+     "day": 54.8,
+     "night": 54.4,
+     "forBudget": 3.5
+    },
+    {
+     "id": "hedgehog-herbalist",
+     "v2": 73,
+     "v3": 87.1,
+     "shift": 1.6,
+     "day": 84.6,
+     "night": 86.7,
+     "forBudget": 29.9
+    },
+    {
+     "id": "razorbill",
+     "v2": 29.2,
+     "v3": 43.5,
+     "shift": 1.8,
+     "day": 37.8,
+     "night": 54.4,
+     "forBudget": -8
+    },
+    {
+     "id": "riverbed-diver",
+     "v2": 31.3,
+     "v3": 45.7,
+     "shift": 1.9,
+     "day": 43.1,
+     "night": 57.8,
+     "forBudget": -2.6
+    },
+    {
+     "id": "magma-wraith",
+     "v2": 69.8,
+     "v3": 84.3,
+     "shift": 2,
+     "day": 88.8,
+     "night": 86.7,
+     "forBudget": 29.2
+    },
+    {
+     "id": "proboscis-monkey",
+     "v2": 27,
+     "v3": 41.8,
+     "shift": 2.3,
+     "day": 42,
+     "night": 44.4,
+     "forBudget": -10.2
+    },
+    {
+     "id": "stalactite-golem",
+     "v2": 37.5,
+     "v3": 52.3,
+     "shift": 2.3,
+     "day": 50,
+     "night": 59.6,
+     "forBudget": -8.5
+    },
+    {
+     "id": "truce-heron",
+     "v2": 47,
+     "v3": 61.8,
+     "shift": 2.3,
+     "day": 63.3,
+     "night": 53.3,
+     "forBudget": 5.5
+    },
+    {
+     "id": "grizzly-vanguard",
+     "v2": 27.5,
+     "v3": 42.7,
+     "shift": 2.7,
+     "day": 38.8,
+     "night": 43.8,
+     "forBudget": -15.1
+    },
+    {
+     "id": "marsh-harrier",
+     "v2": 31.3,
+     "v3": 46.5,
+     "shift": 2.7,
+     "day": 48.4,
+     "night": 48.9,
+     "forBudget": -5.1
+    },
+    {
+     "id": "glass-golem",
+     "v2": 40.6,
+     "v3": 55.9,
+     "shift": 2.8,
+     "day": 54.8,
+     "night": 60,
+     "forBudget": 3.2
+    },
+    {
+     "id": "marula-elephant",
+     "v2": 35,
+     "v3": 50.3,
+     "shift": 2.8,
+     "day": 46.6,
+     "night": 52.8,
+     "forBudget": -8.5
+    },
+    {
+     "id": "electric-ray",
+     "v2": 45.8,
+     "v3": 61.3,
+     "shift": 3,
+     "day": 66,
+     "night": 62.8,
+     "forBudget": 8.8
+    },
+    {
+     "id": "fungal-colossus",
+     "v2": 22.5,
+     "v3": 38.4,
+     "shift": 3.4,
+     "day": 38.8,
+     "night": 39.3,
+     "forBudget": -20.1
+    },
+    {
+     "id": "drowned-matriarch",
+     "v2": 62,
+     "v3": 78,
+     "shift": 3.5,
+     "day": 78.2,
+     "night": 74.4,
+     "forBudget": 19.5
+    },
+    {
+     "id": "weaver-bird",
+     "v2": 44.8,
+     "v3": 60.8,
+     "shift": 3.5,
+     "day": 53.7,
+     "night": 62.2,
+     "forBudget": 10.7
+    },
+    {
+     "id": "bombardier-beetle",
+     "v2": 72.7,
+     "v3": 88.8,
+     "shift": 3.6,
+     "day": 86.7,
+     "night": 91.1,
+     "forBudget": 30.7
+    },
+    {
+     "id": "pride-queen",
+     "v2": 51,
+     "v3": 67.4,
+     "shift": 3.9,
+     "day": 62.2,
+     "night": 71.1,
+     "forBudget": 9.8
+    },
+    {
+     "id": "nudibranch",
+     "v2": 65,
+     "v3": 81.8,
+     "shift": 4.3,
+     "day": 73.9,
+     "night": 83.3,
+     "forBudget": 27.1
+    },
+    {
+     "id": "fire-ant-raft",
+     "v2": 33,
+     "v3": 50.2,
+     "shift": 4.7,
+     "day": 44.1,
+     "night": 52.2,
+     "forBudget": -0.6
+    },
+    {
+     "id": "alpha-howler",
+     "v2": 20,
+     "v3": 37.6,
+     "shift": 5.1,
+     "day": 32,
+     "night": 37.1,
+     "forBudget": -20.5
+    },
+    {
+     "id": "lodge-engineer",
+     "v2": 32.5,
+     "v3": 50.1,
+     "shift": 5.1,
+     "day": 48.9,
+     "night": 53.9,
+     "forBudget": -5.9
+    },
+    {
+     "id": "sunspire-sky-sovereign",
+     "v2": 68,
+     "v3": 85.6,
+     "shift": 5.1,
+     "day": 80.3,
+     "night": 86.7,
+     "forBudget": 26.4
+    },
+    {
+     "id": "irradiated-axolotl",
+     "v2": 55,
+     "v3": 72.8,
+     "shift": 5.3,
+     "day": 61.2,
+     "night": 75.6,
+     "forBudget": 17.7
+    },
+    {
+     "id": "mangrove-kingfisher",
+     "v2": 41.7,
+     "v3": 59.5,
+     "shift": 5.3,
+     "day": 60.1,
+     "night": 61.1,
+     "forBudget": 6.1
+    },
+    {
+     "id": "adder-ambusher",
+     "v2": 40.6,
+     "v3": 58.5,
+     "shift": 5.4,
+     "day": 52.7,
+     "night": 58.9,
+     "forBudget": 9.1
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "v2": 36.5,
+     "v3": 54.5,
+     "shift": 5.5,
+     "day": 47.3,
+     "night": 57.8,
+     "forBudget": 3.9
+    },
+    {
+     "id": "taiga-lynx",
+     "v2": 37.5,
+     "v3": 55.5,
+     "shift": 5.5,
+     "day": 60.1,
+     "night": 54.4,
+     "forBudget": 3.9
+    },
+    {
+     "id": "cane-toad",
+     "v2": 25,
+     "v3": 43.2,
+     "shift": 5.7,
+     "day": 39.9,
+     "night": 48.3,
+     "forBudget": -12.7
+    },
+    {
+     "id": "spitting-spider",
+     "v2": 52.1,
+     "v3": 70.6,
+     "shift": 6,
+     "day": 72.9,
+     "night": 67.8,
+     "forBudget": 17.3
+    },
+    {
+     "id": "bramblewood-lynx",
+     "v2": 53.1,
+     "v3": 72.3,
+     "shift": 6.7,
+     "day": 73.9,
+     "night": 76.7,
+     "forBudget": 16.7
+    },
+    {
+     "id": "tunnel-ant",
+     "v2": 59,
+     "v3": 78.3,
+     "shift": 6.8,
+     "day": 72.9,
+     "night": 80,
+     "forBudget": 24.2
+    },
+    {
+     "id": "quill-thorn-boar",
+     "v2": 44.8,
+     "v3": 64.3,
+     "shift": 7,
+     "day": 60.1,
+     "night": 72.2,
+     "forBudget": 11.4
+    },
+    {
+     "id": "sandfish",
+     "v2": 51.5,
+     "v3": 71,
+     "shift": 7,
+     "day": 64.4,
+     "night": 75.6,
+     "forBudget": 18
+    },
+    {
+     "id": "glacier-wolf-pack",
+     "v2": 25,
+     "v3": 44.8,
+     "shift": 7.3,
+     "day": 39.9,
+     "night": 47.2,
+     "forBudget": -7.9
+    },
+    {
+     "id": "border-collie",
+     "v2": 57,
+     "v3": 76.9,
+     "shift": 7.4,
+     "day": 73.9,
+     "night": 75.6,
+     "forBudget": 20.8
+    },
+    {
+     "id": "glass-changeling",
+     "v2": 34.4,
+     "v3": 54.5,
+     "shift": 7.6,
+     "day": 53.7,
+     "night": 57.8,
+     "forBudget": -0.3
+    },
+    {
+     "id": "shoal-shark",
+     "v2": 49,
+     "v3": 69.1,
+     "shift": 7.6,
+     "day": 67.6,
+     "night": 66.7,
+     "forBudget": 14
+    },
+    {
+     "id": "goliath-tentacle",
+     "v2": 25,
+     "v3": 45.2,
+     "shift": 7.7,
+     "day": 44.4,
+     "night": 42.7,
+     "forBudget": -18.8
+    },
+    {
+     "id": "fire-salamander",
+     "v2": 66.7,
+     "v3": 87.1,
+     "shift": 7.9,
+     "day": 87.8,
+     "night": 87.8,
+     "forBudget": 28.9
+    },
+    {
+     "id": "berserker-boar",
+     "v2": 35.1,
+     "v3": 55.8,
+     "shift": 8.2,
+     "day": 54,
+     "night": 60.9,
+     "forBudget": 0.5
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "v2": 64.6,
+     "v3": 85.3,
+     "shift": 8.2,
+     "day": 88.8,
+     "night": 83.3,
+     "forBudget": 26.6
+    },
+    {
+     "id": "glimmer-spider",
+     "v2": 57,
+     "v3": 77.8,
+     "shift": 8.3,
+     "day": 71.8,
+     "night": 77.8,
+     "forBudget": 21.8
+    },
+    {
+     "id": "coral-reef-shark",
+     "v2": 30,
+     "v3": 51.4,
+     "shift": 8.9,
+     "day": 42.1,
+     "night": 57.3,
+     "forBudget": -3.4
+    },
+    {
+     "id": "tasmanian-devil",
+     "v2": 57.3,
+     "v3": 79,
+     "shift": 9.2,
+     "day": 83,
+     "night": 75.6,
+     "forBudget": 29.2
+    },
+    {
+     "id": "pumice-beetle",
+     "v2": 42,
+     "v3": 63.8,
+     "shift": 9.3,
+     "day": 58,
+     "night": 71.1,
+     "forBudget": 8.6
+    },
+    {
+     "id": "pelican-diver",
+     "v2": 34.4,
+     "v3": 56.4,
+     "shift": 9.5,
+     "day": 54.8,
+     "night": 55.6,
+     "forBudget": 3.7
+    },
+    {
+     "id": "sand-widow",
+     "v2": 22.5,
+     "v3": 44.5,
+     "shift": 9.5,
+     "day": 39.9,
+     "night": 48.3,
+     "forBudget": -11.9
+    },
+    {
+     "id": "otter-guard",
+     "v2": 32.3,
+     "v3": 54.6,
+     "shift": 9.8,
+     "day": 55.9,
+     "night": 58.9,
+     "forBudget": 2.4
+    },
+    {
+     "id": "otter-royal-guard",
+     "v2": 61.5,
+     "v3": 84,
+     "shift": 10,
+     "day": 84,
+     "night": 87.8,
+     "forBudget": 29.1
+    },
+    {
+     "id": "savanna-cheetah",
+     "v2": 49,
+     "v3": 71.5,
+     "shift": 10,
+     "day": 72.9,
+     "night": 73.3,
+     "forBudget": 15.8
+    },
+    {
+     "id": "dhole-matriarch",
+     "v2": 40,
+     "v3": 62.6,
+     "shift": 10.1,
+     "day": 57.9,
+     "night": 60.7,
+     "forBudget": 1.4
+    },
+    {
+     "id": "lyrebird-mimic",
+     "v2": 38.5,
+     "v3": 61.1,
+     "shift": 10.1,
+     "day": 61.2,
+     "night": 65.6,
+     "forBudget": 6.9
+    },
+    {
+     "id": "net-thrower",
+     "v2": 58.3,
+     "v3": 81,
+     "shift": 10.2,
+     "day": 86.7,
+     "night": 81.1,
+     "forBudget": 24.9
+    },
+    {
+     "id": "roadrunner-courier",
+     "v2": 45.8,
+     "v3": 68.6,
+     "shift": 10.3,
+     "day": 64.4,
+     "night": 72.2,
+     "forBudget": 16.6
+    },
+    {
+     "id": "barnacle-bulwark",
+     "v2": 35,
+     "v3": 58,
+     "shift": 10.5,
+     "day": 56.7,
+     "night": 58.4,
+     "forBudget": 0.7
+    },
+    {
+     "id": "boreal-elk",
+     "v2": 22.5,
+     "v3": 46,
+     "shift": 11,
+     "day": 50,
+     "night": 43.8,
+     "forBudget": -7.2
+    },
+    {
+     "id": "old-snapjaw",
+     "v2": 32.5,
+     "v3": 56.1,
+     "shift": 11.1,
+     "day": 51.1,
+     "night": 59.6,
+     "forBudget": -6.7
+    },
+    {
+     "id": "pangolin-roller",
+     "v2": 51,
+     "v3": 74.6,
+     "shift": 11.1,
+     "day": 75,
+     "night": 76.7,
+     "forBudget": 16.8
+    },
+    {
+     "id": "sea-turtle-elder",
+     "v2": 30,
+     "v3": 54,
+     "shift": 11.5,
+     "day": 48.9,
+     "night": 56.2,
+     "forBudget": -5.5
+    },
+    {
+     "id": "mangrove-monitor",
+     "v2": 36.5,
+     "v3": 60.8,
+     "shift": 11.8,
+     "day": 56.9,
+     "night": 66.7,
+     "forBudget": 8.6
+    },
+    {
+     "id": "ant-hill",
+     "v2": 37.5,
+     "v3": 62.1,
+     "shift": 12.1,
+     "day": 55.6,
+     "night": 65.2,
+     "forBudget": 4.2
+    },
+    {
+     "id": "river-warden",
+     "v2": 30,
+     "v3": 54.7,
+     "shift": 12.2,
+     "day": 46.6,
+     "night": 60.7,
+     "forBudget": -1.2
+    },
+    {
+     "id": "reef-shark",
+     "v2": 30,
+     "v3": 54.8,
+     "shift": 12.3,
+     "day": 55.6,
+     "night": 55.1,
+     "forBudget": -7.5
+    },
+    {
+     "id": "peregrine-stooper",
+     "v2": 39.6,
+     "v3": 64.9,
+     "shift": 12.8,
+     "day": 70.7,
+     "night": 66.1,
+     "forBudget": 11.9
+    },
+    {
+     "id": "sunspire-envoy",
+     "v2": 28.1,
+     "v3": 53.5,
+     "shift": 12.9,
+     "day": 46.3,
+     "night": 54.4,
+     "forBudget": 2.1
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "v2": 47.9,
+     "v3": 74,
+     "shift": 13.6,
+     "day": 75,
+     "night": 75.6,
+     "forBudget": 18.9
+    },
+    {
+     "id": "planarian-splitter",
+     "v2": 42.7,
+     "v3": 68.8,
+     "shift": 13.6,
+     "day": 67.6,
+     "night": 74.4,
+     "forBudget": 13.2
+    },
+    {
+     "id": "supernova-jelly",
+     "v2": 56.3,
+     "v3": 82.5,
+     "shift": 13.7,
+     "day": 86.7,
+     "night": 82.2,
+     "forBudget": 27.6
+    },
+    {
+     "id": "conch-herald",
+     "v2": 42.4,
+     "v3": 68.8,
+     "shift": 13.9,
+     "day": 69.7,
+     "night": 63.3,
+     "forBudget": 15.9
+    },
+    {
+     "id": "mouse-sapper",
+     "v2": 46,
+     "v3": 72.5,
+     "shift": 14,
+     "day": 67.6,
+     "night": 64.4,
+     "forBudget": 19
+    },
+    {
+     "id": "quillback-elder",
+     "v2": 37.8,
+     "v3": 65.2,
+     "shift": 14.9,
+     "day": 60.8,
+     "night": 69,
+     "forBudget": 6.1
+    },
+    {
+     "id": "octopus-tactician",
+     "v2": 25,
+     "v3": 53.5,
+     "shift": 16,
+     "day": 52.2,
+     "night": 56.2,
+     "forBudget": -6.1
+    },
+    {
+     "id": "ford-kingfisher",
+     "v2": 40.6,
+     "v3": 69.4,
+     "shift": 16.3,
+     "day": 69.7,
+     "night": 74.4,
+     "forBudget": 15.1
+    },
+    {
+     "id": "obsidian-scorpion",
+     "v2": 58.3,
+     "v3": 87.4,
+     "shift": 16.6,
+     "day": 87.8,
+     "night": 87.8,
+     "forBudget": 30.1
+    },
+    {
+     "id": "ash-cloud-condor",
+     "v2": 42.7,
+     "v3": 72,
+     "shift": 16.8,
+     "day": 65.4,
+     "night": 76.7,
+     "forBudget": 15.2
+    },
+    {
+     "id": "reefback-turtle",
+     "v2": 35,
+     "v3": 64.4,
+     "shift": 16.9,
+     "day": 61.2,
+     "night": 66.3,
+     "forBudget": 1.2
+    },
+    {
+     "id": "vampire-squid",
+     "v2": 27.5,
+     "v3": 57,
+     "shift": 17,
+     "day": 54.5,
+     "night": 55.1,
+     "forBudget": -3
+    },
+    {
+     "id": "fire-drake-hatchling",
+     "v2": 47.5,
+     "v3": 77.1,
+     "shift": 17.1,
+     "day": 75.8,
+     "night": 76.4,
+     "forBudget": 10.7
+    },
+    {
+     "id": "sergeant-bramblefox",
+     "v2": 46.9,
+     "v3": 77.1,
+     "shift": 17.7,
+     "day": 74.5,
+     "night": 80,
+     "forBudget": 20.1
+    },
+    {
+     "id": "magma-titan",
+     "v2": 0,
+     "v3": 34.4,
+     "shift": 21.9,
+     "day": 29.9,
+     "night": 35.8,
+     "forBudget": -22.7
+    },
+    {
+     "id": "marshal-of-rivergate",
+     "v2": 42.5,
+     "v3": 78.3,
+     "shift": 23.3,
+     "day": 78.1,
+     "night": 77.5,
+     "forBudget": 16.5
+    },
+    {
+     "id": "orca-vanguard",
+     "v2": 0,
+     "v3": 38.5,
+     "shift": 26,
+     "day": 32.6,
+     "night": 34.3,
+     "forBudget": -20.9
+    },
+    {
+     "id": "eyrie-warden",
+     "v2": 0,
+     "v3": 43.9,
+     "shift": 31.4,
+     "day": 41,
+     "night": 38.8,
+     "forBudget": -17.4
+    },
+    {
+     "id": "yeti",
+     "v2": 0,
+     "v3": 45.1,
+     "shift": 32.6,
+     "day": 41,
+     "night": 43.3,
+     "forBudget": -29.2
+    },
+    {
+     "id": "ancient-sloth-titan",
+     "v2": 0,
+     "v3": 46.9,
+     "shift": 34.4,
+     "day": 42.4,
+     "night": 37.3,
+     "forBudget": -31.5
+    },
+    {
+     "id": "goliath-broodmother",
+     "v2": 0,
+     "v3": 57.7,
+     "shift": 45.2,
+     "day": 54.9,
+     "night": 55.2,
+     "forBudget": -14.1
+    },
+    {
+     "id": "rivergate-tribune",
+     "v2": 0,
+     "v3": 57.7,
+     "shift": 45.2,
+     "day": 54.9,
+     "night": 55.2,
+     "forBudget": -6.8
+    },
+    {
+     "id": "deep-cave-troll",
+     "v2": 0,
+     "v3": 59.8,
+     "shift": 47.3,
+     "day": 54.9,
+     "night": 53.7,
+     "forBudget": 0.3
+    }
+   ]
+  }
+ ]
+}
