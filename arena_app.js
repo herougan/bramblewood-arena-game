@@ -64838,7 +64838,22 @@ const HandDrag = (function(){
     else if(e.key === 'ArrowDown'){ e.preventDefault(); (items[Math.min(items.length - 1, i + 1)] || items[0]).focus(); }
     else if(e.key === 'ArrowUp'){ e.preventDefault(); (items[Math.max(0, i - 1)] || items[0]).focus(); }
     else if(e.key === 'Tab'){ close(); }
+    // 2026-11-07 (owner 21:15: "When I type a letter while in the choose-a-skill dropdown(s), jump to that section! E.g. N brings me to the
+    // section that contains Nocturnal. DONT SPLIT THE DROPDOWN"): type-ahead. A letter (or a quick run of letters) moves to the next option whose
+    // name starts with it (leading emoji and symbols skipped) and scrolls its group heading into view; pressing the same letter again cycles.
+    else if(e.key && e.key.length === 1 && /\p{L}|\p{N}/u.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey){
+      e.preventDefault(); const now = Date.now();
+      typed = (now - typedAt < 700 && typed !== e.key.toLowerCase()) ? typed + e.key.toLowerCase() : e.key.toLowerCase(); typedAt = now;
+      const nameOf = b=> (b.textContent || '').replace(/^[^\p{L}\p{N}]+/u, '').toLowerCase();
+      const from = typed.length === 1 ? i + 1 : Math.max(0, i), order = items.slice(from).concat(items.slice(0, from));
+      const hit = order.find(b=> nameOf(b).startsWith(typed)); if(!hit) return;
+      hit.focus({preventScroll:true});
+      let h = hit.previousElementSibling; while(h && !h.classList.contains('bw-sel-group')) h = h.previousElementSibling;
+      const top = h && hit.offsetTop - h.offsetTop < menu.clientHeight - hit.offsetHeight ? h : hit;
+      menu.scrollTop = Math.max(0, top.offsetTop - 2); // the menu is position:fixed, so it is its items' offsetParent
+    }
   }
+  let typed = '', typedAt = 0;
   function open(sel){
     close(); owner = sel; sel.classList.add('bw-sel-open');
     menu = document.createElement('div'); menu.className = 'bw-sel-menu'; menu.setAttribute('role', 'listbox');

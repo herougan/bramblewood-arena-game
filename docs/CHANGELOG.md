@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Dropdown type-ahead (owner 21:15)
+- Players and Admin: in any in-page dropdown (the card editor's skill picker included), typing a letter jumps to the next option whose name starts with it (leading emoji skipped); the same letter again cycles, a quick run of letters ("noc") narrows to a prefix, Enter picks. The list is not split. `inPageSelects` in `arena_app.js`; test `tests/typeahead-2026-11-07.js`.
+- Release checks for this batch: card-matrix golden updated (the file was stale on matchup names; 663 changed results from this batch's engine changes).
+
 ## 2026-11-07 Package UI32 (owner 18:53, 18:55, 19:11 notes: battle log field lines, Venom float and tooltip, hover counters, Power "edited" marker, Map cards refresh and skill groups)
 - Players see: the battle log no longer prints raw "en20Dry." / "en20Soak." after a unit chip. The tide's soak and the round's drying are ONE line each ("All creatures in the water are soaked.", "All creatures dry a little: -1 Wet."); a soak or dry from a hit, a douse, a roll, a light, Glean, Lumber Feast and the Crosswind each have a line. A skill event with no line of its own (Satiety, Sequester, Bolster ...) prints nothing instead of its raw name.
 - A Venomous hit that does no damage floats the Venom it added ("☠5": the stacks added by that hit, not the total) instead of "0". The Venom pip still has no number; its tooltip says "Venom tokens: N". The card hover also lists Wet, Burn, fast-forward, Creativity, Prayer, Inspiration, Daunt counters, Brittle, Berries, scavenge / salvage points, Formation / Isolation and Durian Thorns, beside the Venom, Bleed, Shield, Frozen and Daunt rows it had.
