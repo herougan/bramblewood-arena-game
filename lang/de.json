@@ -4086,5 +4086,9 @@
  "Sunfeather War-band": "Sonnenfeder-Kriegertrupp",
  "The Bloom sings for us today. Come and hear it.": "Die Blüte singt heute für uns. Komm und hör sie dir an.",
  "Admin only: players never see this map.": "Nur für Admins: Spieler sehen diese Karte nie.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Admin-Testkampf: kostenlos, und er bringt nichts ein."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Admin-Testkampf: kostenlos, und er bringt nichts ein.",
+ "Advanced {m}": "Fortgeschritten {m}",
+ "Advanced not measured": "Fortgeschritten: nicht gemessen",
+ "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.": "Stärke: Sieg-% gegen ein einfaches Füllerdeck, auf die mittlere Karte zentriert, also ist 0 der Durchschnitt. Fortgeschritten: Sieg-% gegen Decks aus den stärksten Karten, minus 50. Es zählen nur Partien, in denen die Karte gespielt wurde.",
+ "Played in {share}% of the test games.": "In {share} % der Testpartien gespielt."
 }

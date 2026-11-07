@@ -4087,5 +4087,9 @@
  "Sunfeather War-band": "陽羽の戦士団",
  "The Bloom sings for us today. Come and hear it.": "今日、花は我らのために歌う。聞きに来るがいい。",
  "Admin only: players never see this map.": "管理者専用：プレイヤーにこのマップは表示されません。",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 管理者テスト戦闘：無料、報酬なし。"
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 管理者テスト戦闘：無料、報酬なし。",
+ "Advanced {m}": "上級 {m}",
+ "Advanced not measured": "上級: 未計測",
+ "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.": "パワー: 単純な穴埋めデッキへの勝率を、中央値のカードを基準に表したもの（0 が平均）。上級: 最も強いカードで組んだデッキへの勝率から 50 を引いた値。カードが使われた試合だけを数える。",
+ "Played in {share}% of the test games.": "テスト試合の {share}% で使用。"
 }

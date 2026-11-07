@@ -4088,5 +4088,9 @@
  "Sunfeather War-band": "Banda di guerra di Piumasole",
  "The Bloom sings for us today. Come and hear it.": "Oggi la Fioritura canta per noi. Vieni ad ascoltarla.",
  "Admin only: players never see this map.": "Solo admin: i giocatori non vedono mai questa mappa.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Scontro di prova admin: gratuito, e non dà nulla."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Scontro di prova admin: gratuito, e non dà nulla.",
+ "Advanced {m}": "Avanzato {m}",
+ "Advanced not measured": "Avanzato: non misurato",
+ "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.": "Potenza: % di vittorie contro un mazzo di riempimento semplice, centrata sulla carta mediana, quindi 0 è la media. Avanzato: % di vittorie contro mazzi delle carte più forti, meno 50. Contano solo le partite in cui la carta è stata giocata.",
+ "Played in {share}% of the test games.": "Giocata nel {share}% delle partite di prova."
 }

@@ -4,6 +4,11 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 11-07: Package BAL22 (on its branch, not released)
+- Done: owner 07:37 card power items 1-5: 100 games, played games only (played share, low-sample flag), basic + advanced (top-20% pool, seed 2211), `--workers` processes merged into one file, editor "Power: +N · Advanced +M" with date and played share in the tooltip. Basic pass of all 828 live cards committed.
+- Open: the advanced pass stopped at 39 / 828 cards (the background time limit); `node tools/card_balance.js --resume` finishes it from `docs/balance/card-balance-progress.jsonl` (about 2 h on a shared machine), then rebuild. Against the top-20% pool even pool cards score 3-18% (not near 50), so the owner may want a softer pool (top 40%, or pool cards mixed with filler).
+- Next: finish the advanced pass when the machine is free.
+
 ## 11-07: Package CONTENT13 (on its branch, not released)
 - Done: 23:35 #8. **The Drill Grounds** (🎌), a side map of the Outskirts right under the Tutorial's entrance, in Admin Mode only (it is out of the map list while Admin Mode is off, so players, the balance tools and the road tests never see it). Two skirmishes at a fixed Level 1: SK-1 Rivergate Century (Otter) and SK-2 Sunfeather War-band (Hummingbird), each the deck optimiser's best faction-pure deck (seeded, `tools/content13_faction_decks_2026_11_07.js`). Test fights: free, no rewards, drops, XP, rank or progress.
 - Owner calls open: CONTENT13-1 (K14's one-copy rule waived there; Level 1).

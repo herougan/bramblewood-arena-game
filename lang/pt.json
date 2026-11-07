@@ -4088,5 +4088,9 @@
  "Sunfeather War-band": "Bando de guerra Pluma-Sol",
  "The Bloom sings for us today. Come and hear it.": "A Floração canta por nós hoje. Venha ouvi-la.",
  "Admin only: players never see this map.": "Só para admins: os jogadores nunca veem este mapa.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Luta de teste de admin: grátis, e não paga nada."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Luta de teste de admin: grátis, e não paga nada.",
+ "Advanced {m}": "Avançado {m}",
+ "Advanced not measured": "Avançado: não medido",
+ "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.": "Poder: % de vitórias contra um baralho de enchimento simples, centrado na carta mediana, então 0 é a média. Avançado: % de vitórias contra baralhos das cartas mais fortes, menos 50. Só contam as partidas em que a carta foi jogada.",
+ "Played in {share}% of the test games.": "Jogada em {share}% das partidas de teste."
 }

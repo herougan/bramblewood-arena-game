@@ -4088,5 +4088,9 @@
  "Sunfeather War-band": "Pasukan Perang Bulu Surya",
  "The Bloom sings for us today. Come and hear it.": "Sang Mekar bernyanyi untuk kami hari ini. Datang dan dengarkan.",
  "Admin only: players never see this map.": "Khusus admin: pemain tidak pernah melihat peta ini.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Pertarungan uji admin: gratis, dan tidak memberi apa-apa."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Pertarungan uji admin: gratis, dan tidak memberi apa-apa.",
+ "Advanced {m}": "Lanjutan {m}",
+ "Advanced not measured": "Lanjutan: belum diukur",
+ "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.": "Kekuatan: % menang melawan dek pengisi biasa, dipusatkan pada kartu median, jadi 0 adalah rata-rata. Lanjutan: % menang melawan dek dari kartu-kartu terkuat, dikurangi 50. Hanya permainan yang memainkan kartu ini yang dihitung.",
+ "Played in {share}% of the test games.": "Dimainkan di {share}% permainan uji."
 }

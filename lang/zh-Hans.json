@@ -4087,5 +4087,9 @@
  "Sunfeather War-band": "日羽战团",
  "The Bloom sings for us today. Come and hear it.": "今日繁花为我们歌唱。来听吧。",
  "Admin only: players never see this map.": "仅限管理员：玩家永远看不到这张地图。",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 管理员测试战斗：免费，也没有任何奖励。"
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 管理员测试战斗：免费，也没有任何奖励。",
+ "Advanced {m}": "进阶 {m}",
+ "Advanced not measured": "进阶:未测量",
+ "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.": "强度:对简单填充牌组的胜率,以中位卡牌为基准,0 即平均。进阶:对最强卡牌组成的牌组的胜率减去 50。只计算打出了这张卡的对局。",
+ "Played in {share}% of the test games.": "在 {share}% 的测试对局中打出。"
 }

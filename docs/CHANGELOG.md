@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-07 Package BAL22: card power, basic and advanced (owner 07:37)
+- Card editor: **"Power: +N · Advanced +M"**. Power is the basic test (against the filler deck), centred on the median card as before; Advanced is the win % against decks of the strongest cards, minus 50 (not re-centred), or "Advanced not measured". The run date and the card's played share moved into the tooltip. 4 TX keys, 12 language packs.
+- `tools/card_balance.js`: 100 games a card by default; only games where the test side played the card count (`played`, `games`, `playedShare`, `lowSample` under 20; `winRate` is the played-games rate, `winRateAll` the old all-games one); advanced pass against a 20-card deck drawn per game (seed 2211) from the top 20% of cards by basic win rate (the tested card and low-sample cards left out, min(4, rarity copy limit) copies, top-rank caps): `advRate`, `advanced.pool` / `seed`; `--workers=K` (default 2) child processes merged into one file; `--resume` / `--report-only` with `docs/balance/card-balance-progress.jsonl`.
+- `docs/balance/card-balance.json`: basic pass of all 828 live cards at 100 games (115 min with three other balance jobs on the 2 cores). The advanced pass stopped at 39 of 828 (the 2-hour limit on the background job); `advanced.complete: false`, the progress file is committed and `node tools/card_balance.js --resume` finishes it.
+
 ## 2026-11-07: Card power run and "0 = average" (owner 11-06 23:35 #7)
 - Card power test re-run on all 828 live cards (40 games each, 17 min): `docs/balance/card-balance.json`.
 - The editor's Power number is now centred on the median measured card (win % - median + 50; the median was 30% on this run), so 0 means average, as asked. The tooltip says so in all 12 languages.

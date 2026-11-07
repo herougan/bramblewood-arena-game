@@ -4089,5 +4089,9 @@
  "Sunfeather War-band": "햇깃 전투단",
  "The Bloom sings for us today. Come and hear it.": "오늘 꽃이 우리를 위해 노래한다. 와서 들어라.",
  "Admin only: players never see this map.": "관리자 전용: 플레이어는 이 맵을 절대 볼 수 없습니다.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 관리자 시험 전투: 무료이며 보상이 없습니다."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ 관리자 시험 전투: 무료이며 보상이 없습니다.",
+ "Advanced {m}": "상급 {m}",
+ "Advanced not measured": "상급: 측정 안 됨",
+ "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.": "파워: 단순한 채움 덱 상대로의 승률을 중앙값 카드 기준으로 나타낸 값(0이 평균). 상급: 가장 강한 카드로 만든 덱 상대로의 승률에서 50을 뺀 값. 카드를 낸 경기만 셉니다.",
+ "Played in {share}% of the test games.": "테스트 경기의 {share}%에서 사용됨."
 }

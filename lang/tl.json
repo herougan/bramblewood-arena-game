@@ -4087,5 +4087,9 @@
  "Sunfeather War-band": "Pangkat-mandirigma ng Sunfeather",
  "The Bloom sings for us today. Come and hear it.": "Umaawit ang Pamumukadkad para sa amin ngayon. Halika at pakinggan.",
  "Admin only: players never see this map.": "Admin lang: hindi kailanman nakikita ng mga manlalaro ang mapang ito.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Laban-pagsubok ng admin: libre, at walang ibinibigay."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ Laban-pagsubok ng admin: libre, at walang ibinibigay.",
+ "Advanced {m}": "Advanced {m}",
+ "Advanced not measured": "Advanced: hindi pa nasusukat",
+ "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.": "Lakas: % panalo laban sa simpleng filler deck, nakasentro sa median na card, kaya 0 ang karaniwan. Advanced: % panalo laban sa mga deck ng pinakamalalakas na card, bawas 50. Binibilang lang ang mga laro kung saan nilaro ang card.",
+ "Played in {share}% of the test games.": "Nilaro sa {share}% ng mga test na laro."
 }

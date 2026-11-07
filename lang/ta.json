@@ -4089,5 +4089,9 @@
  "Sunfeather War-band": "சூரியச்சிறகு போர்க்குழு",
  "The Bloom sings for us today. Come and hear it.": "இன்று மலர்ச்சி நமக்காகப் பாடுகிறது. வந்து கேளுங்கள்.",
  "Admin only: players never see this map.": "நிர்வாகிகளுக்கு மட்டும்: வீரர்கள் இந்த வரைபடத்தை ஒருபோதும் பார்ப்பதில்லை.",
- "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ நிர்வாகி சோதனைச் சண்டை: இலவசம், எதுவும் தராது."
+ "🛠️ Admin test fight: free, and it pays nothing.": "🛠️ நிர்வாகி சோதனைச் சண்டை: இலவசம், எதுவும் தராது.",
+ "Advanced {m}": "மேம்பட்டது {m}",
+ "Advanced not measured": "மேம்பட்டது: அளவிடப்படவில்லை",
+ "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.": "ஆற்றல்: எளிய நிரப்பு தளத்துக்கு எதிரான வெற்றி %, நடு அட்டையை மையமாகக் கொண்டு, எனவே 0 சராசரி. மேம்பட்டது: வலிமையான அட்டைகளின் தளங்களுக்கு எதிரான வெற்றி %, கழித்தல் 50. அட்டை விளையாடப்பட்ட ஆட்டங்கள் மட்டுமே கணக்கில்.",
+ "Played in {share}% of the test games.": "சோதனை ஆட்டங்களில் {share}% இல் விளையாடப்பட்டது."
 }

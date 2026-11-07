@@ -3396,7 +3396,11 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui24-power": "Power: {n}",
   "ui.ui24-power-none": "Power: not measured",
   "ui.ui24-power-date": "Measured {date}",
-  "ui.ui24-power-tip": "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker."
+  "ui.ui24-power-tip": "Card power test: how much better or worse this card does than the average card. 0 is average; above 0 is stronger, below 0 is weaker.",
+  "ui.bal22-adv": "Advanced {m}",
+  "ui.bal22-adv-none": "Advanced not measured",
+  "ui.bal22-power-tip": "Power: win % against a plain filler deck, centred on the median card, so 0 is average. Advanced: win % against decks of the strongest cards, minus 50. Only games where the card was played count.",
+  "ui.bal22-power-share": "Played in {share}% of the test games."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
