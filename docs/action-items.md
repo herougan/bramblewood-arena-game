@@ -37,6 +37,11 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 15 | No effects or sounds while the tab is out of focus (they pile up and play at once on return) | UI27 |
 | 16 | Editor budget box: "Within budget, B = 13.8 < 16.2 = N"; formula on hover; A/H, B, S symbols; no "skills" word; Base level dropdown (locked) after Rarity; a skill-points row after custom triggers (2.5 + 5.0 + 3.5^2 = ... = S, each skill in its own formula type) | UI27 |
 
+## 11-07: Package HUB3 (on its branch, not released)
+- Done (owner 09:14): the hub builds with one command, `python3 tools/hub/build.py` (any agent; the coordinator still publishes with the Artifact tool); the Cards art keeps sprite transparency on the game's art plate; page 15.38 of 16 MiB.
+- Open: the owner's "wrongly cut-out" was read as the 35 transparent sprites on a dark box; opaque art was checked pixel for pixel and is whole. If another crop was meant, name a card.
+- Next: refresh `tools/hub/guide-snapshot.html` when the Project guide docs change.
+
 ## 11-07: Package ENG30 (on its branch, not released)
 - Done (owner 08:54): #1 Consecration N / Desecration N (side-wide Exalted / Cursed ground at each round start; both on the field cancel, field-wide), on no card, "?" until Map 70, priced 3.5 / 5.9 a point by reasoning. #2 the Blind / Dark-blind 🕶️ pip glows while its unit attacks (Effects setting respected). #13 sight looks B (blindfold) and C (fog) removed, look A only; the shut eye's first blink 1 in 2.
 - Owner calls open: ENG30-1 (no Exalted ground existed: Claude's reading of the two grounds).

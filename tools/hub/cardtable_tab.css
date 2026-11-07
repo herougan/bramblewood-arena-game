@@ -28,6 +28,7 @@
 .ct-nm small{color:var(--ink-muted); font-size:11.5px; font-weight:600;}
 .ct-tag{display:inline-block; align-self:flex-start; padding:0 6px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line); margin-top:1px;}
 .ct-th{display:inline-block; flex:0 0 auto; border-radius:6px; background-color:var(--surface-2); background-repeat:no-repeat;}
+.ct-th:not(.ct-noart){background-color:#2a211a;} /* 2026-11-07 (HUB3): the dark plate cut-out sprites sit on (the sheet keeps their alpha) */
 .ct-noart{border:1px dashed var(--line); background-image:none !important;}
 .ct-big{border-radius:10px; border:1px solid var(--line);}
 .ct-r{display:inline-block; padding:1px 8px; border-radius:999px; border:1px solid var(--line); border-left:5px solid var(--rc-none); font:700 12.5px Nunito,system-ui,sans-serif; white-space:nowrap;}

@@ -106,8 +106,10 @@ details.cl > summary:hover{color:var(--link);}
 /* ---------- Cards tab ---------- */
 .th{--s:56px; width:var(--s); height:var(--s); flex:0 0 auto; border-radius:8px; background-color:var(--surface-2); background-repeat:no-repeat;
   display:grid; place-items:center; font-size:calc(var(--s) * .5); line-height:1; overflow:hidden;}
-.th.img{background-image:url(cards-thumbs.webp); background-size:calc(var(--cols) * var(--s)) auto;
-  background-position:calc(var(--x) * var(--s) * -1) calc(var(--y) * var(--s) * -1);}
+.th.img{background-image:url(cards-thumbs.webp), linear-gradient(180deg, color-mix(in srgb, var(--rc, #8a6a45) 30%, #2e1f12), color-mix(in srgb, var(--rc, #8a6a45) 26%, #1c1209));
+  background-size:calc(var(--cols) * var(--s)) auto, 100% 100%;
+  background-position:calc(var(--x) * var(--s) * -1) calc(var(--y) * var(--s) * -1), 0 0;}
+/* 2026-11-07 (package HUB3, owner: "art is wrongly cut-out"): cut-out sprites keep their transparency in the sheet and sit on the game's art plate (rarity colour mixed into brown, as .card-tile.art-framed does) */
 .cds{max-width:1240px; margin:0 auto; padding:20px 16px 80px;}
 .cd-bar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; background:var(--bg); padding:8px 0;}
 @media (min-width:861px){ .cd-bar{position:sticky; top:0; z-index:3;} } /* phones: the tall filter block would cover the list */
