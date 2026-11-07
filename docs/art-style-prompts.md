@@ -134,3 +134,13 @@ Card art: paste the base prompt first, then the line below. Run the pixel pass a
 
 ### Crimson Wing Drumcaller
 > Full-body character in a small scene, centred, slight low angle: a small hummingbird of the Crimson Wing tribe hovering beside a little gourd drum on a woven strap, crimson and gold feathers with bold war-paint stripes on its cheeks, a short feather headdress, beak open in a chant, tiny wings blurred with motion, warm cliff-stone ledge background with woven tribal banners, flower garlands and a sunset sky, one bright crimson accent.
+
+## New card prompts (2026-11-07, package CONTENT14)
+
+Card art: paste the base prompt first, then the line below. Run the pixel pass at 128 px. The game shows the card's emoji until the art lands.
+
+### Legate of Rivergate
+> Full-body character in a small scene, centred, slight low angle: a calm, upright river otter commander of the Rivergate Legion in a bronze crested helmet with a tall red plume, a bronze chest plate over an oxblood-red wool tunic and a cream cloak pinned at the shoulder, one paw raised giving an order, a tall standard topped with a bronze fish planted beside it, river fort background with a timber palisade, a stone bridge and neat ranks of small otters on the bank under a clear morning sky, one bright oxblood-red accent.
+
+### Gold-throat Elder
+> Full-body character in a small scene, centred, slight low angle: a wise old hummingbird elder of the Gold-throat tribe hovering in front of a carved wooden totem, a shimmering gold throat and emerald back, a few silver-tipped feathers of age, a tall feather headdress with beads and a small flower garland, beak open in a song, tiny wings blurred with motion, warm cliff-stone background with woven nests, tribal banners and many small bright hummingbirds gathered to listen at golden hour, one bright gold accent.

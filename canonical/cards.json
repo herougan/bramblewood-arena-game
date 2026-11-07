@@ -35479,5 +35479,157 @@
     "awaitingSource": true,
     "creatorNote": "2026-11-06 (package ENG27, owner item 22: \"Don't create new creatures for any of these skills. Except Hype - create 1.\"): the one Hype card. A Crimson Wing drummer (lore bible: songs and blessings as buffs). Uncommon, 1 Lumber, Wait 1, 3/6, Flying + Hype 1: 96% of N (Hype priced 2.25, theoretical). In no pack, on no map; art to draw (docs/art-style-prompts.md). Placement: decision ENG27-9.",
     "unattainable": true
+  },
+  {
+    "tags": [],
+    "test": false,
+    "locked": true,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "art": "",
+    "id": "legate-of-rivergate",
+    "cost": 1,
+    "icon": "\ud83e\udda6",
+    "name": "Legate of Rivergate",
+    "uuid": "c14a7e01-0b2d-4f3e-9a61-2026110701aa",
+    "wait": 1,
+    "attack": 2,
+    "health": 9,
+    "flavor": "Hold the ford. Hold the bridge. Then hold the next river.",
+    "rarity": "rare",
+    "effects": {
+      "leader": true,
+      "armor": 1,
+      "inspiring": 1
+    },
+    "species": [
+      "Mustelid"
+    ],
+    "animal": "otter",
+    "archetypes": [
+      "River",
+      "Otter"
+    ],
+    "source": {
+      "kind": "pack",
+      "tier": 11
+    },
+    "speeches": {
+      "idle": [
+        "",
+        "",
+        ""
+      ],
+      "onHit": [
+        "",
+        "",
+        ""
+      ],
+      "onDeath": [
+        "",
+        "",
+        ""
+      ],
+      "onSkill": [
+        "",
+        "",
+        ""
+      ],
+      "onSpawn": [
+        "",
+        "",
+        ""
+      ],
+      "onAttack": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "numericId": 9196,
+    "creatorNote": "2026-11-07 (package CONTENT14, owner 07:40: \"we have to make 2 new leader cards, one each for the factions. With natural leader. I'd imagine it takes up the first rare slot.\"; decision LEAD-NAT-1): the Rivergate Legion's natural leader. Rare, 1 Lumber, Wait 1, 2/9, Natural Leader + Armor 1 + Inspiring 1 (lore bible: Armor and formation bonuses, steady stats): 96% of N at Map 0, 91% at Map 5 (tools/content12_budget_2026_11_06.js). Faction pool (pack 11, Otter side); the first Rare step of the standard faction pattern gives it to an Otter player (arena_app.js FACTION_LEADERS). Art to draw (docs/art-style-prompts.md)."
+  },
+  {
+    "tags": [],
+    "test": false,
+    "locked": true,
+    "resist": [],
+    "dmgType": "physical",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "art": "",
+    "id": "gold-throat-elder",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Gold-throat Elder",
+    "uuid": "c14a7e02-5f1c-4b8a-8d27-2026110702bb",
+    "wait": 1,
+    "attack": 3,
+    "health": 7,
+    "flavor": "When the Elder sings the first verse, every tribe on the cliff sings the second.",
+    "rarity": "rare",
+    "effects": {
+      "leader": true,
+      "flying": true,
+      "esprit": 1
+    },
+    "species": [
+      "Bird"
+    ],
+    "animal": "hummingbird",
+    "archetypes": [
+      "Hummingbird"
+    ],
+    "source": {
+      "kind": "pack",
+      "tier": 11,
+      "side": "tribes"
+    },
+    "speeches": {
+      "idle": [
+        "",
+        "",
+        ""
+      ],
+      "onHit": [
+        "",
+        "",
+        ""
+      ],
+      "onDeath": [
+        "",
+        "",
+        ""
+      ],
+      "onSkill": [
+        "",
+        "",
+        ""
+      ],
+      "onSpawn": [
+        "",
+        "",
+        ""
+      ],
+      "onAttack": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "numericId": 9197,
+    "creatorNote": "2026-11-07 (package CONTENT14, owner 07:40: \"we have to make 2 new leader cards, one each for the factions. With natural leader. I'd imagine it takes up the first rare slot.\"; decision LEAD-NAT-1): the Sunfeather Tribes' natural leader, an elder of the Gold-throat tribe (lore bible: elders lead by voice and deed; songs as buffs, Flying). Rare, 1 Lumber, Wait 1, 3/7, Natural Leader + Flying + Esprit 1: 96% of N at Map 0, 92% at Map 5 (tools/content12_budget_2026_11_06.js). Faction pool (pack 11, Hummingbird side); the first Rare step of the standard faction pattern gives it to a Hummingbird player (arena_app.js FACTION_LEADERS). Art to draw (docs/art-style-prompts.md)."
   }
 ]

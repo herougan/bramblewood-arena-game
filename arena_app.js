@@ -58720,7 +58720,7 @@ function factionPackPool(fp, which){
   if(which === 'general') return packCardPool(defs, 'basic', false, true /* RW5: every pack tier, up to the map you reached */).filter(id=> !(fp.own && packPoolOf(defs[id]) === fp.own));
   // 2026-10-12 (21:01, user: "Combine the rivergate and sunfeather pools into a factions pool"): one pool (11); a card's
   // source.side ('tribes' = hummingbird side, 'shared' = Riverbank, none = otter side) still picks a faction pack's own cards.
-  if(fp.kind === 'faction'){ const want = fp.faction === 'hummingbirds' ? 'tribes' : ''; return packCardPool(defs, 11, true).filter(id=> ((cardSourceOf(defs[id]).side)||'') === want); }
+  if(fp.kind === 'faction'){ const want = fp.faction === 'hummingbirds' ? 'tribes' : ''; let fst = null; try{ fst = loadFactionPool(); }catch(e){} return packCardPool(defs, 11, true).filter(id=> ((cardSourceOf(defs[id]).side)||'') === want && !(fst && factionLeaderHeld(fst, id)) /* CONTENT14 (2026-11-07): a natural leader waits for the first R step */); }
   const ofPeople = id=>{ try{ const ps = peopleOfCard(defs[id]); return fp.people === 'folk' ? (ps.size === 0 || ps.has('folk')) : ps.has(fp.people); }catch(e){ return false; } }; // folk = everyone without another people (villagers, farm animals)
   // 2026-10-21 (package RP, owner Oct 21: skirmish rewards "CANNOT be pack rewards"): a people's bundle no longer tops itself up with
   // that people's map rewards when the packs hold fewer than six of them; it draws from the basic pack pool only.
@@ -58925,6 +58925,17 @@ const FACTION_SIDE_WEIGHT = {own:3, shared:2, base:1.5, other:1};
 // random faction rewards. factionClimbWant(side, have, left): the copies of a card the pattern may still hand out.
 const FACTION_CLIMB_HOLD = {own:2, shared:2, other:1, base:1};
 function factionClimbWant(side, have, left){ return Math.max(0, Math.min(left, (FACTION_CLIMB_HOLD[side] || 1) - (have || 0))); }
+// 2026-11-07 (package CONTENT14, owner 07:40: "we have to make 2 new leader cards, one each for the factions. With natural leader. I'd imagine
+// it takes up the first rare slot."; decision LEAD-NAT-1): each side's natural leader (Natural Leader, Rare, in the faction pool: pack 11).
+// The first time the standard pattern reaches its R step (so from Map FACTION_PATTERN_RARE_FROM_MAP), that set reward is your side's leader
+// instead of a random Rare; the pool state's leaderStep records it, so the step gives it once and later R steps pick as before. The copy
+// comes out of the pool like any set reward (factionTakeOut). Until that step the leaders are held out of the other faction hand-outs
+// (factionLeaderHeld: the pattern's other steps, the random rewards, a faction pack's own cards, Faction Growth), so the slot is the first one.
+// Your side: the tutorial's pick; 'both' (CONTENT14-1, default) = the side you hold more faction cards of (every copy), ties to the Otters.
+const FACTION_LEADERS = {otters: 'legate-of-rivergate', hummingbirds: 'gold-throat-elder'};
+function factionLeaderSide(choice, counts){ if(choice === 'otters' || choice === 'hummingbirds') return choice; const c = counts || {}; return (c.hummingbirds | 0) > (c.otters | 0) ? 'hummingbirds' : 'otters'; }
+// Pure: a set reward that started at pattern step `step` and used `steps` steps (factionPatternRarity) is the leader's slot.
+function factionLeaderSlot(st, step, steps){ const P = FACTION_STANDARD_PATTERN; return !(st && st.leaderStep) && P[((step | 0) + Math.max(1, steps | 0) - 1) % P.length] === 'rare'; }
 // FACTION_REWARD_TRACK:END
 function factionCardsOfMine(){
   const defs = getCardDefs(), fp = FACTION_PACKS[myFactionPackId()]; if(!fp) return [];
@@ -58995,13 +59006,26 @@ function factionPoolPickOf(st, ids, rnd, map){
   const w = id=> (FACTION_SIDE_WEIGHT[factionSideOf(defs[id])] || 1) * Math.max(1, st.left[id]);
   const tot = pool.reduce((t, id)=> t + w(id), 0); let r = rnd() * tot; for(const id of pool){ r -= w(id); if(r <= 0) return id; } return pool[pool.length - 1];
 }
+// CONTENT14 (2026-11-07): the side whose leader the first R step gives (FACTION_LEADERS above), and the hold until that step.
+function factionSideCounts(){
+  const defs = getCardDefs(), out = {otters: 0, hummingbirds: 0};
+  Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || d.token || d.test) return; const src = cardSourceOf(d); if(src.kind !== 'pack' || (parseInt(src.tier, 10)||1) !== 11) return;
+    const n = copiesOwned(id); if(!n) return; if(src.side === 'tribes') out.hummingbirds += n; else if(!src.side) out.otters += n; });
+  return out;
+}
+function myFactionLeaderId(){ let ch = null; try{ ch = loadFactionChoice(); }catch(e){} return FACTION_LEADERS[factionLeaderSide(ch, ch === 'both' ? factionSideCounts() : null)]; }
+function factionLeaderHeld(st, id){ return !(st && st.leaderStep) && Object.values(FACTION_LEADERS).includes(id); }
 function factionSetPick(st, rnd, mineOnly){
   const defs = getCardDefs(), map = trackMapReached();
-  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]) && !(mineOnly && factionSideOf(defs[id]) === 'other')); // 2026-11-03 (FIX8, QA2 minor 11): mineOnly = not the other side's cards
+  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]) && !factionLeaderHeld(st, id) /* CONTENT14 */ && !(mineOnly && factionSideOf(defs[id]) === 'other')); // 2026-11-03 (FIX8, QA2 minor 11): mineOnly = not the other side's cards
   const want = id=> factionClimbWant(factionSideOf(defs[id]), Math.max(copiesOwned(id), (st.given && st.given[id]) || 0), st.left[id]); // RW5: climbing the tree
   const left = {}; live.forEach(id=>{ const k = factionRarityKey(defs[id].rarity); left[k] = (left[k] || 0) + want(id); });
   const step = st.patternStep | 0, pr = factionPatternRarity(step, map, left);
   if(!pr.rarity) return null;
+  if(factionLeaderSlot(st, step, pr.steps)){ // CONTENT14 (2026-11-07): the first R step is your side's natural leader (once; leaderStep marks it even when no copy is left)
+    const lid = myFactionLeaderId(); st.leaderStep = step + pr.steps;
+    if(lid && defs[lid] && st.left[lid] > 0){ st.leaderId = lid; st.patternStep = step + pr.steps; return lid; }
+  }
   const id = factionPoolPickOf(st, live.filter(x=> factionRarityKey(defs[x].rarity) === pr.rarity && want(x) > 0), rnd, map); if(!id) return null;
   st.patternStep = step + pr.steps; return id;
 }
@@ -59017,7 +59041,7 @@ function factionDrawSet(n, rnd, mineOnly){ rnd = rnd || Math.random; const st = 
   saveFactionPool(st); return out; }
 function factionRandomReward(rnd){
   rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
-  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id])); if(!live.length) return null; // 2026-10-16: no Legendary before Map 21; 2026-10-17: no equipment
+  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]) && !factionLeaderHeld(st, id) /* CONTENT14 */); if(!live.length) return null; // 2026-10-16: no Legendary before Map 21; 2026-10-17: no equipment
   const pick = factionTrackPick(live, rnd, {received: factionReceived(st)}, id=> st.left[id]); if(!pick) return null;
   factionTakeOut(st, pick); saveFactionPool(st);
   return grantOne(pick, 'factionReward') ? pick : null;
@@ -59025,7 +59049,7 @@ function factionRandomReward(rnd){
 // A faction pack's own card (RW5): out of the pool too (that side's copies left), by the gated random draw; null when none are left.
 function factionPackPoolPick(ids, rnd, extra){
   if(!FACTION_POOL_RW5) return null; const st = loadFactionPool(), set = new Set(ids);
-  const live = Object.keys(st.left).filter(id=> set.has(id) && st.left[id] > 0); if(!live.length) return null;
+  const live = Object.keys(st.left).filter(id=> set.has(id) && st.left[id] > 0 && !factionLeaderHeld(st, id) /* CONTENT14 */); if(!live.length) return null;
   const ctx = {received: factionReceived(st) + (extra|0)}; let id = null;
   if(REWARD_NEW_FIRST){ const fresh = live.filter(x=> !copiesOwned(x) && !(st.given && st.given[x])); if(fresh.length) id = factionTrackPick(fresh, rnd || Math.random, ctx, x=> st.left[x]); } // 2026-11-03 (FIX8, QA2 M2): a card you don't have first, like the set rewards (the pack gave Shell-Cracker x2 with new Rivergate cards left)
   if(!id) id = factionTrackPick(live, rnd || Math.random, ctx, x=> st.left[x]); if(!id) return null;
@@ -59033,7 +59057,7 @@ function factionPackPoolPick(ids, rnd, extra){
 }
 function factionGrowth(rnd){
   rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
-  const left = st.growth.filter(id=> defs[id] && !legendaryHeldBack(defs[id]) && factionRarityOpen(defs[id].rarity, {received: factionReceived(st)})); if(!left.length) return null; // 2026-10-16: no Legendary before Map 21; 2026-10-21 (RP): only open rarities
+  const left = st.growth.filter(id=> defs[id] && !legendaryHeldBack(defs[id]) && !factionLeaderHeld(st, id) /* CONTENT14 */ && factionRarityOpen(defs[id].rarity, {received: factionReceived(st)})); if(!left.length) return null; // 2026-10-16: no Legendary before Map 21; 2026-10-21 (RP): only open rarities
   const rank = id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity || 'common');
   const low = Math.min(...left.map(rank)), cands = left.filter(id=> rank(id) === low), pick = cands[Math.floor(rnd()*cands.length)];
   st.growth = st.growth.filter(id=> id !== pick); noteFactionReceived(1, st); saveFactionPool(st);
