@@ -6,6 +6,27 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+
+## 11-07 09:47: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | Changing a setting shows 3 toasts; one per change, for every setting | UI30 |
+| 2 | Poison and Bleed pips: no numbers, show the tick down; only 1 -> 0 makes the (greyed) pip pop out | UI30 |
+| 3 | The quake line across a defeated bramble: shorter, centred | UI30 |
+| 4 | Card power: 4x the games next run (noisy); measure under random field effects (the test is always day today, so Diurnal reads strong) | BAL25 (after BAL22) |
+| 5 | Power vs budget: rarity and map raise N; show power for its budget so no mental sums (owner idea: -0.5 x N by rarity); check high-Lumber cards are tested fairly | BAL25 |
+| 6 | Lumber and resource cards depend on deck design: keep each test deck roughly balanced with some Lumber-costed cards | BAL25 |
+| 7 | Tribe Delivery's context pip: one 📦 only | UI30 |
+| 8 | Timbered and Undead in Thistlewood's skills: from Slow Worm (Undead) and Woodcock Lookout (Timbered) | answered 11-07 |
+| 9 | Achievement cards: show the card in the middle of the screen on claim; "Claim all" shows all cards one by one | UI27 |
+| 10 | Codex page flip: the animation sits below the book (offset); 15% faster | UI30 |
+| 11 | Dive reworked: strikes the opposing enemy (no enemy: the bramble), optional N = bonus damage; while dived, the opposing enemy can hit your bramble; three forms (Flying + Dive raised higher, Tide + Dive lowered and bluer with a shifting gradient, plain Dive on the ground with its shadow, tilted -5/-3/3/5 degrees) | ENG32 |
+| 12 | Skill-count warning: in the skill section, only when the two-skill rule is breached; Tide, Flying, Diurnal, Nocturnal, Purblind etc. count 0.5 | UI27 |
+| 13 | New skill Preternatural: name only for now (effect to be decided) | ENG32 (stated, not built) |
+| 14 | Poison Barbs icon 🌵☠️ | UI30 |
+| 15 | Brood: no Swarm; summons a 1/1 copy of the parent without Brood | ENG32 |
+| 16 | Map cards window: a "Sugg. Intro" pill on skills thematic to introduce at that map; every main map at least one (sub-maps not needed) | UI30 |
+
 ## 11-07 09:00-09:10: Owner notes
 | # | Note | Package |
 |---|---|---|
