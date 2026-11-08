@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-08 Package DES2: skill plan for Maps 0-20 (design only, docs; decisions DES2-1..3)
+- Players see: nothing (no card, list, engine or text changed).
+- `docs/design/skill-plan-maps-0-20-2026-11-08.md` (+ `.json`), owner 10:52 ("let's limit and focus in") and 11:07 ("My job is to winnow the unique skills to 3 per map"): per main map the signature candidates (recommended 2-3 marked, the Codex / DES1 alternatives beside them, each checked against `canonical/skill-delivery.json` and the engine statuses, with card counts), side skills and one-offs; the pick sheet `docs/design/skill-picks-maps-0-20-2026-11-08.csv` (blank Pick column).
+- Findings: only 2 genuinely new skills (Pressure, Vaccinate); Bandage (Cure), Undertow (Wave), and the owner's 11:03 Armoured Shield (Shield) and retreat-into-the-shell (Shell) are parameters. Vulnerable counters already exist as Exploit; Twin Strike, Confuse, Tangleweed, Rend (Pierce), Frost Bolt (Ice) exist; Cold, Snare, Suffocate, Burrow, Adrenaline dropped. 15 duplicate groups (158 cards), 76 card renames + 1 move to a later map.
+- Tools: `tools/des2/skill_census_2026_11_08.py`, `tools/des2/skill_plan_2026_11_08.py`, decisions writer `tools/des2/des2_decisions_2026_11_08.py`.
+
 ## 2026-11-08 Package DES1: map signatures, Maps 0-20 (design analysis, docs only; decisions DES1-1..3)
 - Players see: nothing (no card, list, engine or text changed).
 - `docs/design/map-signatures-2026-11-08.md` (+ `.json`), owner 09:27 ("2-3 new unique signifying skills ... and basics like guardians, arrow users, and quick-attackers"): per map in unlock order (Tutorial, Maps 0-20, 13 side maps marked), its own cards, the skills it introduces (new on the main road; side maps counted apart), basics coverage (guardians, shooters per `canonical/skill-delivery.json`, quick attackers per the engine's swing speed + Pounce), flags, and a proposal: 2-3 signatures (1-2 from Map 10), skills to move or demote to minor, missing basics with out-of-play cards that fit. Summary table at the top. The owner's Reach spear card is proposed as Gannet Cliffs' third signature.
