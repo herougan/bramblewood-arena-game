@@ -51,7 +51,7 @@ async def main():
         r = await pg.evaluate(E("""const top = %s, defs = getCardDefs(), ok = id=> !!defs[id], pros = ui37Prospects(top, defs, ok), ent = mpEntry(top), subOnly = [];
           Object.values(ent.submaps).flat().forEach(id=>{ if(!pros.has(id) && !subOnly.includes(id)) subOnly.push(id); });
           const shown = [...document.querySelectorAll('#ui37Pros [data-ui37-grp=new] .ui37-tile, #ui37Pros [data-ui37-grp=carried] .ui37-tile')].map(t=> t.dataset.ui37Id);
-          const c = (CLAUDE_NEW.content17 || {})[top], picks = ((c && c.groups) || []).flatMap(g=> (g.picks || []).map(p=> p.id)).filter(id=> defs[id]);
+          const c = (CLAUDE_NEW.content17 || {})[top], side = ui38SideOnly(top), picks = ((c && c.groups) || []).flatMap(g=> (g.picks || []).map(p=> p.id)).filter(id=> defs[id] && !side.has(id)); /* 2026-11-09 (UI38): side-map cards are left out */
           return {subShown: subOnly.filter(id=> shown.includes(id)), listMissing: ent.cards.filter(id=> defs[id] && !shown.includes(id)), picksMissing: picks.filter(id=> !shown.includes(id)), shown: shown.length,
             chip: !!document.querySelector('#ui37Pros .ui37-tile .vis4-mc-card.is-chip[data-zoom]')};""" % json.dumps(L['id'])))
         print('   ', json.dumps({k: v for k, v in r.items()}))

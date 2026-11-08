@@ -4361,5 +4361,17 @@
  "Saved in this browser": "In diesem Browser gespeichert",
  "Previous map": "Vorherige Karte",
  "Next map": "Nächste Karte",
- "More cards from earlier maps": "Weitere Karten früherer Karten"
+ "More cards from earlier maps": "Weitere Karten früherer Karten",
+ "A bigger pool for this map. NEW!: its list, cards that fit the map that no earlier main map gives, then proposed new cards (no stats or skills yet). Carried: cards from earlier main maps, best fit first. Flag each Yes or No; a Yes on an earlier map makes a card Carried here. Side maps come later.": "Eine größere Auswahl für diese Karte. NEU!: ihre Liste, passende Karten, die keine frühere Hauptkarte gibt, dann vorgeschlagene neue Karten (noch ohne Werte und Fähigkeiten). Übernommen: Karten früherer Hauptkarten, die passendsten zuerst. Markiere jede mit Ja oder Nein; ein Ja auf einer früheren Karte macht sie hier zu Übernommen. Nebenkarten kommen später.",
+ "at least {n}": "mindestens {n}",
+ "Fits the map": "Passt zur Karte",
+ "Proposed": "Vorgeschlagen",
+ "Proposed new card: {animal}, {element}, suggested {rarity}.": "Vorgeschlagene neue Karte: {animal}, {element}, vorgeschlagene Seltenheit {rarity}.",
+ "The map's habitat": "Lebensraum der Karte",
+ "A nearby habitat": "Ein benachbarter Lebensraum",
+ "CONTENT17 pick": "CONTENT17-Vorschlag",
+ "THEME5 pick": "THEME5-Vorschlag",
+ "SKILLREC1 pick": "SKILLREC1-Vorschlag",
+ "Has the map's signature skill": "Hat die Leitfähigkeit der Karte",
+ "The map's element": "Element der Karte"
 }

@@ -8,12 +8,77 @@
    "under": 6
   },
   "after": {
-   "ok": 284,
-   "over": 31,
+   "ok": 281,
+   "over": 34,
    "under": 6
   }
  },
- "flips": [],
+ "flips": [
+  {
+   "id": "bee-sentry",
+   "name": "Bee Sentry",
+   "rarity": "starter",
+   "stats": "2/5",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    2.38,
+    2.72
+   ],
+   "use": [
+    0.99,
+    1.02
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "rarity": "uncommon",
+   "stats": "4/7",
+   "skills": [
+    "web",
+    "poison"
+   ],
+   "S": [
+    2.75,
+    3.69
+   ],
+   "use": [
+    0.96,
+    1
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  },
+  {
+   "id": "walrus-icebreaker",
+   "name": "Walrus Icebreaker",
+   "rarity": "veryrare",
+   "stats": "4/17",
+   "skills": [
+    "freeze"
+   ],
+   "S": [
+    1.87,
+    2.92
+   ],
+   "use": [
+    0.97,
+    1.01
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  }
+ ],
  "beyond": [
   {
    "id": "mist-net-otter",
@@ -36,20 +101,147 @@
  ],
  "otherChanged": [
   {
+   "id": "adder-ambusher",
+   "name": "Adder Ambusher",
+   "rarity": "rare",
+   "stats": "2/11",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    4.69,
+    4.75
+   ],
+   "use": [
+    0.92,
+    0.92
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": "uncommon",
+   "stats": "1/4",
+   "skills": [
+    "bleed"
+   ],
+   "S": [
+    10.32,
+    10.64
+   ],
+   "use": [
+    1.21,
+    1.23
+   ],
+   "verdict": [
+    "over",
+    "over"
+   ]
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "rarity": "rare",
+   "stats": "5/5",
+   "skills": [
+    "bleed"
+   ],
+   "S": [
+    5.4,
+    5.72
+   ],
+   "use": [
+    0.92,
+    0.93
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "rarity": "uncommon",
+   "stats": "4/3",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    6.55,
+    6.61
+   ],
+   "use": [
+    0.93,
+    0.93
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "bog-leech",
+   "name": "Bog Leech",
+   "rarity": "uncommon",
+   "stats": "1/8",
+   "skills": [
+    "bleed"
+   ],
+   "S": [
+    2.57,
+    2.89
+   ],
+   "use": [
+    0.95,
+    0.97
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
    "id": "cane-toad",
    "name": "Cane Toad",
    "rarity": "uncommon",
    "stats": "2/15",
    "skills": [
+    "poison",
     "greaterPoison"
    ],
    "S": [
     6.07,
-    6.42
+    7.09
    ],
    "use": [
     0.88,
-    0.89
+    0.92
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "caustic-scorpion",
+   "name": "Caustic Scorpion",
+   "rarity": "uncommon",
+   "stats": "1/18",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    4.69,
+    4.75
+   ],
+   "use": [
+    0.87,
+    0.87
    ],
    "verdict": [
     "ok",
@@ -66,11 +258,11 @@
    ],
    "S": [
     3.47,
-    3.09
+    3.57
    ],
    "use": [
     0.96,
-    0.94
+    0.96
    ],
    "verdict": [
     "ok",
@@ -87,10 +279,178 @@
    ],
    "S": [
     6.13,
-    5.56
+    5.77
    ],
    "use": [
     0.9,
+    0.88
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "field-mouse",
+   "name": "Field Mouse",
+   "rarity": "common",
+   "stats": "2/5",
+   "skills": [
+    "pickpocket"
+   ],
+   "S": [
+    5.13,
+    4.77
+   ],
+   "use": [
+    1.25,
+    1.22
+   ],
+   "verdict": [
+    "over",
+    "over"
+   ]
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "rarity": "uncommon",
+   "stats": "2/7",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    6.01,
+    6.35
+   ],
+   "use": [
+    0.89,
+    0.91
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "gangrenous-leech",
+   "name": "Gangrenous Leech",
+   "rarity": "uncommon",
+   "stats": "3/3",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    8.49,
+    8.55
+   ],
+   "use": [
+    0.9,
+    0.91
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "glacier-wolf-pack",
+   "name": "Glacier Wolf Pack",
+   "rarity": "common",
+   "stats": "1/15",
+   "skills": [
+    "bleed"
+   ],
+   "S": [
+    4.73,
+    4.87
+   ],
+   "use": [
+    0.85,
+    0.85
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "glimmer-spider",
+   "name": "Glimmer Spider",
+   "rarity": "uncommon",
+   "stats": "3/11",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    2.38,
+    2.72
+   ],
+   "use": [
+    0.92,
+    0.93
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "rarity": "uncommon",
+   "stats": "1/8",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    2.38,
+    2.72
+   ],
+   "use": [
+    0.88,
+    0.9
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "heron-hag",
+   "name": "The Heron Hag",
+   "rarity": "rare",
+   "stats": "2/11",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    4.79,
+    4.85
+   ],
+   "use": [
+    0.89,
+    0.9
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "komodo-warlord",
+   "name": "Komodo Warlord",
+   "rarity": "common",
+   "stats": "1/27",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    9.71,
+    9.32
+   ],
+   "use": [
+    0.87,
     0.86
    ],
    "verdict": [
@@ -99,20 +459,125 @@
    ]
   },
   {
-   "id": "gallery-orb-weaver",
-   "name": "Gallery Orb-Weaver",
+   "id": "lions-mane-jelly",
+   "name": "Lion's Mane Jelly",
    "rarity": "uncommon",
-   "stats": "4/7",
+   "stats": "1/16",
    "skills": [
-    "web"
+    "poison"
    ],
    "S": [
-    2.75,
-    3.35
+    4.69,
+    4.75
+   ],
+   "use": [
+    0.92,
+    0.93
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "rarity": "common",
+   "stats": "1/3",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    9.76,
+    8.8
+   ],
+   "use": [
+    0.94,
+    0.89
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "obsidian-scorpion",
+   "name": "Obsidian Scorpion",
+   "rarity": "rare",
+   "stats": "4/4",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    8.39,
+    8.45
    ],
    "use": [
     0.96,
-    0.99
+    0.96
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "old-snapjaw",
+   "name": "Old Snapjaw",
+   "rarity": "rare",
+   "stats": "4/17",
+   "skills": [
+    "bleed"
+   ],
+   "S": [
+    5,
+    5.32
+   ],
+   "use": [
+    0.94,
+    0.94
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "platypus-spur",
+   "name": "Platypus Spur",
+   "rarity": "uncommon",
+   "stats": "4/4",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    4.69,
+    4.75
+   ],
+   "use": [
+    0.94,
+    0.94
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "poison-dart-croaker",
+   "name": "Poison Dart Croaker",
+   "rarity": "common",
+   "stats": "3/3",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    5.62,
+    5.68
+   ],
+   "use": [
+    0.83,
+    0.83
    ],
    "verdict": [
     "ok",
@@ -129,11 +594,137 @@
    ],
    "S": [
     6.08,
-    5.79
+    6.22
    ],
    "use": [
     0.97,
-    0.96
+    0.97
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "razorbill",
+   "name": "Razorbill",
+   "rarity": "uncommon",
+   "stats": "2/5",
+   "skills": [
+    "bleed"
+   ],
+   "S": [
+    2.57,
+    2.89
+   ],
+   "use": [
+    0.72,
+    0.74
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "sand-widow",
+   "name": "Sand Widow",
+   "rarity": "common",
+   "stats": "2/17",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    4.69,
+    4.75
+   ],
+   "use": [
+    0.89,
+    0.89
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "thorn-shrike",
+   "name": "Thorn Shrike",
+   "rarity": "rare",
+   "stats": "3/3",
+   "skills": [
+    "bleed"
+   ],
+   "S": [
+    4.73,
+    4.87
+   ],
+   "use": [
+    0.8,
+    0.8
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "trapdoor-spider",
+   "name": "Trapdoor Spider",
+   "rarity": "veryrare",
+   "stats": "4/7",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    2.38,
+    2.72
+   ],
+   "use": [
+    0.91,
+    0.92
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "rarity": "common",
+   "stats": "1/22",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    7.28,
+    6.89
+   ],
+   "use": [
+    0.87,
+    0.86
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "water-shrew",
+   "name": "Water Shrew",
+   "rarity": "common",
+   "stats": "1/6",
+   "skills": [
+    "poison"
+   ],
+   "S": [
+    2.38,
+    2.72
+   ],
+   "use": [
+    0.88,
+    0.91
    ],
    "verdict": [
     "ok",
@@ -150,10 +741,73 @@
    ],
    "S": [
     2.34,
-    2.05
+    2.48
    ],
    "use": [
     0.9,
+    0.9
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "whip-spider",
+   "name": "Whip Spider",
+   "rarity": "uncommon",
+   "stats": "3/7",
+   "skills": [
+    "bleed"
+   ],
+   "S": [
+    3.23,
+    3.55
+   ],
+   "use": [
+    0.79,
+    0.8
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "wolfsbane-alpha",
+   "name": "Wolfsbane Alpha",
+   "rarity": "veryrare",
+   "stats": "1/17",
+   "skills": [
+    "bleed"
+   ],
+   "S": [
+    10.34,
+    10.48
+   ],
+   "use": [
+    0.96,
+    0.96
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "wound-reaver",
+   "name": "Wound Reaver",
+   "rarity": "rare",
+   "stats": "1/14",
+   "skills": [
+    "bleed"
+   ],
+   "S": [
+    5.39,
+    5.53
+   ],
+   "use": [
+    0.87,
     0.88
    ],
    "verdict": [

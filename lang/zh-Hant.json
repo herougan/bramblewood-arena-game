@@ -4362,5 +4362,17 @@
  "Saved in this browser": "已儲存在此瀏覽器",
  "Previous map": "上一張地圖",
  "Next map": "下一張地圖",
- "More cards from earlier maps": "之前地圖的更多卡牌"
+ "More cards from earlier maps": "之前地圖的更多卡牌",
+ "A bigger pool for this map. NEW!: its list, cards that fit the map that no earlier main map gives, then proposed new cards (no stats or skills yet). Carried: cards from earlier main maps, best fit first. Flag each Yes or No; a Yes on an earlier map makes a card Carried here. Side maps come later.": "此地圖的更大候選池。新！：地圖列表、符合地圖且之前的主地圖都不給的卡牌，然後是提議的新卡（暫無數值和技能）。沿用：之前主地圖的卡牌，最契合的在前。逐一標記「是」或「否」；在之前的地圖標記「是」會讓它在這裡成為「沿用」。支線地圖以後再做。",
+ "at least {n}": "至少 {n}",
+ "Fits the map": "契合地圖",
+ "Proposed": "提議",
+ "Proposed new card: {animal}, {element}, suggested {rarity}.": "提議的新卡：{animal}，{element}，建議稀有度 {rarity}。",
+ "The map's habitat": "地圖的棲息地",
+ "A nearby habitat": "相鄰的棲息地",
+ "CONTENT17 pick": "CONTENT17 推薦",
+ "THEME5 pick": "THEME5 推薦",
+ "SKILLREC1 pick": "SKILLREC1 推薦",
+ "Has the map's signature skill": "有地圖的標誌技能",
+ "The map's element": "地圖的元素"
 }

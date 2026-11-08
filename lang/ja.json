@@ -4362,5 +4362,17 @@
  "Saved in this browser": "このブラウザに保存",
  "Previous map": "前のマップ",
  "Next map": "次のマップ",
- "More cards from earlier maps": "以前のマップのほかのカード"
+ "More cards from earlier maps": "以前のマップのほかのカード",
+ "A bigger pool for this map. NEW!: its list, cards that fit the map that no earlier main map gives, then proposed new cards (no stats or skills yet). Carried: cards from earlier main maps, best fit first. Flag each Yes or No; a Yes on an earlier map makes a card Carried here. Side maps come later.": "このマップの大きめの候補。NEW!：マップのリスト、以前のメインマップで手に入らないマップに合うカード、そして提案中の新カード（ステータスやスキルはまだなし）。持ち越し：以前のメインマップのカード、合うものから順に。それぞれ「はい」か「いいえ」を付けます。以前のマップで「はい」にしたカードはここでは持ち越しです。サイドマップは後で。",
+ "at least {n}": "{n} 以上",
+ "Fits the map": "マップに合う",
+ "Proposed": "提案",
+ "Proposed new card: {animal}, {element}, suggested {rarity}.": "提案中の新カード：{animal}、{element}、推奨レアリティ {rarity}。",
+ "The map's habitat": "マップの生息地",
+ "A nearby habitat": "近い生息地",
+ "CONTENT17 pick": "CONTENT17 のおすすめ",
+ "THEME5 pick": "THEME5 のおすすめ",
+ "SKILLREC1 pick": "SKILLREC1 のおすすめ",
+ "Has the map's signature skill": "マップの代表スキルを持つ",
+ "The map's element": "マップの属性"
 }

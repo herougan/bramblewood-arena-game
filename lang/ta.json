@@ -4364,5 +4364,17 @@
  "Saved in this browser": "இந்த உலாவியில் சேமிக்கப்பட்டது",
  "Previous map": "முந்தைய வரைபடம்",
  "Next map": "அடுத்த வரைபடம்",
- "More cards from earlier maps": "முந்தைய வரைபடங்களின் மேலும் அட்டைகள்"
+ "More cards from earlier maps": "முந்தைய வரைபடங்களின் மேலும் அட்டைகள்",
+ "A bigger pool for this map. NEW!: its list, cards that fit the map that no earlier main map gives, then proposed new cards (no stats or skills yet). Carried: cards from earlier main maps, best fit first. Flag each Yes or No; a Yes on an earlier map makes a card Carried here. Side maps come later.": "இந்த வரைபடத்துக்கான பெரிய தொகுப்பு. புதியது!: அதன் பட்டியல், முந்தைய முதன்மை வரைபடம் எதுவும் தராத பொருந்தும் அட்டைகள், பிறகு முன்மொழியப்பட்ட புதிய அட்டைகள் (இன்னும் புள்ளிவிவரங்களோ திறன்களோ இல்லை). கொண்டுவரப்பட்டவை: முந்தைய முதன்மை வரைபடங்களின் அட்டைகள், மிகப் பொருந்தியவை முதலில். ஒவ்வொன்றையும் ஆம் அல்லது இல்லை எனக் குறிக்கவும்; முந்தைய வரைபடத்தில் ஆம் என்றால் இங்கே கொண்டுவரப்பட்டது. பக்க வரைபடங்கள் பின்னர் வரும்.",
+ "at least {n}": "குறைந்தது {n}",
+ "Fits the map": "வரைபடத்துக்குப் பொருந்தும்",
+ "Proposed": "முன்மொழிவு",
+ "Proposed new card: {animal}, {element}, suggested {rarity}.": "முன்மொழியப்பட்ட புதிய அட்டை: {animal}, {element}, பரிந்துரைக்கப்பட்ட அரிதுநிலை {rarity}.",
+ "The map's habitat": "வரைபடத்தின் வாழிடம்",
+ "A nearby habitat": "அருகிலுள்ள வாழிடம்",
+ "CONTENT17 pick": "CONTENT17 தேர்வு",
+ "THEME5 pick": "THEME5 தேர்வு",
+ "SKILLREC1 pick": "SKILLREC1 தேர்வு",
+ "Has the map's signature skill": "வரைபடத்தின் முத்திரைத் திறன் உள்ளது",
+ "The map's element": "வரைபடத்தின் தனிமம்"
 }

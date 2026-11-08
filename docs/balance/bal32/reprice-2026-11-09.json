@@ -2,11 +2,11 @@
  "_about": "BAL32 (2026-11-09): the owner's BAL31-1/2/3 answers applied. Prices in 3A + H points, the mean over bodies (BAL29).",
  "onhitInput": {
   "file": "docs/balance/bal31/onhit-2026-11-08.json",
-  "games": 400,
+  "games": 800,
   "fingerprint": "ea252135c2bf",
   "bodies": {
-   "L1": "1/20 4/11 7/2",
-   "L5": "1/24 4/15 8/3"
+   "L1": "1/20 2/17 3/14 4/11 5/8 6/5 7/2",
+   "L5": "1/24 2/21 3/18 4/15 5/12 6/9 7/6 8/3"
   }
  },
  "riders": [
@@ -16,30 +16,30 @@
     {
      "n": 1,
      "price": 1.25,
-     "y": 3.29,
-     "lo": 2.61,
-     "hi": 4.03,
-     "best": 5.83,
+     "y": 3.17,
+     "lo": 2.77,
+     "hi": 3.56,
+     "best": 6.06,
      "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 2.5,
-     "y": 3.48,
-     "lo": 2.79,
-     "hi": 4.26,
-     "best": 6.01,
-     "under": false,
+     "y": 3.24,
+     "lo": 2.8,
+     "hi": 3.62,
+     "best": 6.28,
+     "under": true,
      "over": false
     },
     {
      "n": 3,
      "price": 3.75,
-     "y": 3.47,
-     "lo": 2.77,
-     "hi": 4.23,
-     "best": 6.01,
+     "y": 3.25,
+     "lo": 2.82,
+     "hi": 3.63,
+     "best": 6.29,
      "under": false,
      "over": false
     }
@@ -50,10 +50,10 @@
    },
    "status": false,
    "shape": "flat in N",
-   "why": "N 1: 1.25 under 3.29 [2.61, 4.03]",
+   "why": "N 1: 1.25 under 3.17 [2.77, 3.56], N 2: 2.5 under 3.24 [2.8, 3.62]",
    "new": {
     "scale": "fixed",
-    "value": 3.42
+    "value": 3.22
    }
   },
   {
@@ -62,30 +62,30 @@
     {
      "n": 1,
      "price": 2.57,
-     "y": 2.63,
-     "lo": 2.04,
-     "hi": 3.25,
-     "best": 4.68,
+     "y": 2.83,
+     "lo": 2.52,
+     "hi": 3.15,
+     "best": 4.75,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 4.73,
-     "y": 5.16,
-     "lo": 4.38,
-     "hi": 5.84,
-     "best": 9.94,
-     "under": false,
+     "y": 5.18,
+     "lo": 4.77,
+     "hi": 5.64,
+     "best": 9.41,
+     "under": true,
      "over": false
     },
     {
      "n": 3,
      "price": 6.77,
-     "y": 6.42,
-     "lo": 5.58,
-     "hi": 7.19,
-     "best": 11.75,
+     "y": 6.37,
+     "lo": 5.86,
+     "hi": 6.85,
+     "best": 11.57,
      "under": false,
      "over": false
     }
@@ -96,7 +96,13 @@
     "pow": 0.881
    },
    "status": false,
-   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+   "shape": "value x N^pow",
+   "why": "N 2: 4.73 under 5.18 [4.77, 5.64]",
+   "new": {
+    "scale": "n",
+    "value": 2.89,
+    "pow": 0.753
+   }
   },
   {
    "id": "blind",
@@ -104,32 +110,32 @@
     {
      "n": 1,
      "price": 2.5,
-     "y": 1.23,
-     "lo": 0.56,
-     "hi": 1.89,
-     "best": 1.77,
+     "y": 1.16,
+     "lo": 0.79,
+     "hi": 1.52,
+     "best": 1.5,
      "under": false,
      "over": true
     },
     {
      "n": 2,
      "price": 2.5,
-     "y": 1.62,
-     "lo": 0.95,
-     "hi": 2.29,
-     "best": 2.54,
+     "y": 1.49,
+     "lo": 1.08,
+     "hi": 1.88,
+     "best": 1.9,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 2.5,
-     "y": 1.72,
-     "lo": 1.04,
-     "hi": 2.44,
-     "best": 2.72,
+     "y": 1.56,
+     "lo": 1.14,
+     "hi": 1.95,
+     "best": 1.97,
      "under": false,
-     "over": false
+     "over": true
     }
    ],
    "old": {
@@ -138,10 +144,10 @@
    },
    "status": true,
    "shape": "status: flat at duration 2, chance 50",
-   "why": "N 1: 2.5 over 1.23 [0.56, 1.89], N 2: 2.5 over 1.62 [0.95, 2.29]",
+   "why": "N 1: 2.5 over 1.16 [0.79, 1.52], N 2: 2.5 over 1.49 [1.08, 1.88], N 3: 2.5 over 1.56 [1.14, 1.95]",
    "new": {
     "scale": "fixed",
-    "value": 1.62
+    "value": 1.49
    }
   },
   {
@@ -150,10 +156,10 @@
     {
      "n": true,
      "price": 1,
-     "y": 3.44,
-     "lo": 2.69,
-     "hi": 4.19,
-     "best": 4.98,
+     "y": 3.95,
+     "lo": 3.5,
+     "hi": 4.42,
+     "best": 5.14,
      "under": true,
      "over": false
     }
@@ -164,10 +170,10 @@
    },
    "status": false,
    "shape": "on",
-   "why": "N True: 1 under 3.44 [2.69, 4.19]",
+   "why": "N True: 1 under 3.95 [3.5, 4.42]",
    "new": {
     "scale": "fixed",
-    "value": 3.45
+    "value": 3.95
    }
   },
   {
@@ -176,30 +182,30 @@
     {
      "n": 1,
      "price": 3.03,
-     "y": 4.66,
-     "lo": 4.0,
-     "hi": 5.43,
-     "best": 9.77,
+     "y": 4.55,
+     "lo": 4.15,
+     "hi": 4.95,
+     "best": 10.1,
      "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 6.06,
-     "y": 7.77,
-     "lo": 6.96,
-     "hi": 8.57,
-     "best": 15.48,
+     "y": 7.32,
+     "lo": 6.79,
+     "hi": 7.83,
+     "best": 15.63,
      "under": true,
      "over": false
     },
     {
      "n": 3,
      "price": 9.09,
-     "y": 9.49,
-     "lo": 8.64,
-     "hi": 10.46,
-     "best": 18.13,
+     "y": 8.98,
+     "lo": 8.37,
+     "hi": 9.59,
+     "best": 18.05,
      "under": false,
      "over": false
     }
@@ -210,11 +216,11 @@
    },
    "status": false,
    "shape": "value x N^pow",
-   "why": "N 1: 3.03 under 4.66 [4.0, 5.43], N 2: 6.06 under 7.77 [6.96, 8.57]",
+   "why": "N 1: 3.03 under 4.55 [4.15, 4.95], N 2: 6.06 under 7.32 [6.79, 7.83]",
    "new": {
     "scale": "n",
-    "value": 4.73,
-    "pow": 0.657
+    "value": 4.6,
+    "pow": 0.626
    }
   },
   {
@@ -223,30 +229,30 @@
     {
      "n": 1,
      "price": 2.23,
-     "y": 1.79,
-     "lo": 1.23,
-     "hi": 2.35,
-     "best": 2.84,
+     "y": 2.31,
+     "lo": 2.02,
+     "hi": 2.62,
+     "best": 3.06,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 2.64,
-     "y": 2.33,
-     "lo": 1.75,
-     "hi": 2.88,
-     "best": 3.44,
+     "y": 2.9,
+     "lo": 2.55,
+     "hi": 3.27,
+     "best": 3.76,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 2.91,
-     "y": 2.73,
-     "lo": 2.15,
-     "hi": 3.33,
-     "best": 4.12,
+     "y": 3.23,
+     "lo": 2.85,
+     "hi": 3.58,
+     "best": 4.17,
      "under": false,
      "over": false
     }
@@ -265,30 +271,30 @@
     {
      "n": 1,
      "price": 1.69,
-     "y": 1.29,
-     "lo": 0.69,
-     "hi": 1.99,
-     "best": 1.73,
+     "y": 1.35,
+     "lo": 0.96,
+     "hi": 1.74,
+     "best": 1.65,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 1.69,
-     "y": 1.73,
-     "lo": 1.02,
-     "hi": 2.46,
-     "best": 2.47,
+     "y": 1.69,
+     "lo": 1.28,
+     "hi": 2.07,
+     "best": 2.1,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 1.69,
-     "y": 1.79,
-     "lo": 1.09,
-     "hi": 2.51,
-     "best": 2.52,
+     "y": 1.78,
+     "lo": 1.35,
+     "hi": 2.17,
+     "best": 2.21,
      "under": false,
      "over": false
     }
@@ -306,30 +312,30 @@
     {
      "n": 1,
      "price": 8,
-     "y": 5.6,
-     "lo": 4.84,
-     "hi": 6.34,
-     "best": 8.72,
+     "y": 5.88,
+     "lo": 5.4,
+     "hi": 6.38,
+     "best": 8.62,
      "under": false,
      "over": true
     },
     {
      "n": 2,
      "price": 16,
-     "y": 6.68,
-     "lo": 5.84,
-     "hi": 7.48,
-     "best": 10.95,
+     "y": 6.88,
+     "lo": 6.38,
+     "hi": 7.42,
+     "best": 10.7,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 16,
-     "y": 7.38,
-     "lo": 6.51,
-     "hi": 8.15,
-     "best": 12.11,
+     "y": 7.47,
+     "lo": 6.9,
+     "hi": 8.04,
+     "best": 11.99,
      "under": false,
      "over": true
     }
@@ -340,11 +346,11 @@
    },
    "status": false,
    "shape": "value x N^pow",
-   "why": "N 1: 8 over 5.6 [4.84, 6.34], N 2: 16 over 6.68 [5.84, 7.48], N 3: 16 over 7.38 [6.51, 8.15]",
+   "why": "N 1: 8 over 5.88 [5.4, 6.38], N 2: 16 over 6.88 [6.38, 7.42], N 3: 16 over 7.47 [6.9, 8.04]",
    "new": {
     "scale": "n",
-    "value": 5.6,
-    "pow": 0.252
+    "value": 5.89,
+    "pow": 0.219
    }
   },
   {
@@ -353,30 +359,30 @@
     {
      "n": 1,
      "price": 1.73,
-     "y": 2.12,
-     "lo": 1.59,
-     "hi": 2.62,
-     "best": 3.0,
-     "under": false,
+     "y": 2.39,
+     "lo": 2.08,
+     "hi": 2.7,
+     "best": 3.11,
+     "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 3.46,
-     "y": 2.88,
-     "lo": 2.27,
-     "hi": 3.44,
-     "best": 3.65,
+     "y": 3.29,
+     "lo": 2.92,
+     "hi": 3.63,
+     "best": 3.69,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 3.46,
-     "y": 3.3,
-     "lo": 2.67,
-     "hi": 3.89,
-     "best": 3.96,
+     "y": 3.71,
+     "lo": 3.33,
+     "hi": 4.08,
+     "best": 4.05,
      "under": false,
      "over": false
     }
@@ -386,7 +392,13 @@
     "value": 1.73
    },
    "status": false,
-   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+   "shape": "value x N^pow",
+   "why": "N 1: 1.73 under 2.39 [2.08, 2.7]",
+   "new": {
+    "scale": "n",
+    "value": 2.41,
+    "pow": 0.407
+   }
   },
   {
    "id": "daunt",
@@ -394,29 +406,29 @@
     {
      "n": 1,
      "price": 1.72,
-     "y": 1.54,
-     "lo": 1.07,
-     "hi": 1.99,
-     "best": 2.08,
+     "y": 1.89,
+     "lo": 1.62,
+     "hi": 2.17,
+     "best": 2.25,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 2.56,
-     "y": 2.62,
-     "lo": 2.02,
-     "hi": 3.19,
-     "best": 3.26,
+     "y": 2.88,
+     "lo": 2.57,
+     "hi": 3.21,
+     "best": 3.2,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 3.22,
-     "y": 2.92,
-     "lo": 2.32,
-     "hi": 3.5,
+     "y": 3.23,
+     "lo": 2.89,
+     "hi": 3.59,
      "best": 3.46,
      "under": false,
      "over": false
@@ -436,30 +448,30 @@
     {
      "n": 1,
      "price": 6.13,
-     "y": 5.5,
-     "lo": 4.74,
-     "hi": 6.27,
-     "best": 9.89,
+     "y": 5.75,
+     "lo": 5.31,
+     "hi": 6.24,
+     "best": 9.85,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 12.26,
-     "y": 7.08,
-     "lo": 6.25,
-     "hi": 7.86,
-     "best": 11.93,
+     "y": 6.96,
+     "lo": 6.46,
+     "hi": 7.46,
+     "best": 11.77,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 12.26,
-     "y": 7.62,
-     "lo": 6.76,
-     "hi": 8.5,
-     "best": 12.84,
+     "y": 7.58,
+     "lo": 7.03,
+     "hi": 8.12,
+     "best": 12.77,
      "under": false,
      "over": true
     }
@@ -470,11 +482,11 @@
    },
    "status": false,
    "shape": "value x N^pow",
-   "why": "N 2: 12.26 over 7.08 [6.25, 7.86], N 3: 12.26 over 7.62 [6.76, 8.5]",
+   "why": "N 2: 12.26 over 6.96 [6.46, 7.46], N 3: 12.26 over 7.58 [7.03, 8.12]",
    "new": {
     "scale": "n",
-    "value": 5.56,
-    "pow": 0.304
+    "value": 5.77,
+    "pow": 0.254
    }
   },
   {
@@ -483,30 +495,30 @@
     {
      "n": 1,
      "price": 6,
-     "y": 5.94,
-     "lo": 5.21,
-     "hi": 6.66,
-     "best": 10.62,
+     "y": 6.1,
+     "lo": 5.64,
+     "hi": 6.57,
+     "best": 10.47,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 12,
-     "y": 7.76,
-     "lo": 6.92,
-     "hi": 8.58,
-     "best": 13.07,
+     "y": 7.77,
+     "lo": 7.23,
+     "hi": 8.34,
+     "best": 13.18,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 12,
-     "y": 8.55,
-     "lo": 7.67,
-     "hi": 9.46,
-     "best": 14.09,
+     "y": 8.48,
+     "lo": 7.92,
+     "hi": 9.07,
+     "best": 14.2,
      "under": false,
      "over": true
     }
@@ -517,11 +529,11 @@
    },
    "status": false,
    "shape": "value x N^pow",
-   "why": "N 2: 12 over 7.76 [6.92, 8.58], N 3: 12 over 8.55 [7.67, 9.46]",
+   "why": "N 2: 12 over 7.77 [7.23, 8.34], N 3: 12 over 8.48 [7.92, 9.07]",
    "new": {
     "scale": "n",
-    "value": 5.99,
-    "pow": 0.337
+    "value": 6.15,
+    "pow": 0.305
    }
   },
   {
@@ -530,31 +542,31 @@
     {
      "n": 1,
      "price": 1.83,
-     "y": 1.89,
-     "lo": 1.25,
-     "hi": 2.58,
-     "best": 2.45,
+     "y": 2.19,
+     "lo": 1.78,
+     "hi": 2.6,
+     "best": 2.73,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 1.83,
-     "y": 2.63,
-     "lo": 1.93,
-     "hi": 3.35,
-     "best": 3.46,
-     "under": false,
+     "y": 2.88,
+     "lo": 2.44,
+     "hi": 3.33,
+     "best": 3.5,
+     "under": true,
      "over": false
     },
     {
      "n": 3,
      "price": 1.83,
-     "y": 2.58,
-     "lo": 1.83,
-     "hi": 3.33,
-     "best": 3.42,
-     "under": false,
+     "y": 3.05,
+     "lo": 2.62,
+     "hi": 3.53,
+     "best": 3.7,
+     "under": true,
      "over": false
     }
    ],
@@ -563,7 +575,12 @@
     "value": 1.83
    },
    "status": true,
-   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+   "shape": "status: flat at duration 2, chance 50",
+   "why": "N 2: 1.83 under 2.88 [2.44, 3.33], N 3: 1.83 under 3.05 [2.62, 3.53]",
+   "new": {
+    "scale": "fixed",
+    "value": 2.88
+   }
   },
   {
    "id": "greaterPoison",
@@ -571,32 +588,32 @@
     {
      "n": 1,
      "price": 3.69,
-     "y": 3.99,
-     "lo": 3.33,
-     "hi": 4.63,
-     "best": 7.26,
-     "under": false,
+     "y": 4.34,
+     "lo": 3.95,
+     "hi": 4.73,
+     "best": 7.37,
+     "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 7.38,
-     "y": 5.66,
-     "lo": 4.91,
-     "hi": 6.36,
-     "best": 9.82,
+     "y": 5.79,
+     "lo": 5.36,
+     "hi": 6.21,
+     "best": 9.68,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 7.38,
-     "y": 6.43,
-     "lo": 5.64,
-     "hi": 7.24,
-     "best": 11.05,
+     "y": 6.54,
+     "lo": 6.04,
+     "hi": 7.03,
+     "best": 11.08,
      "under": false,
-     "over": false
+     "over": true
     }
    ],
    "old": {
@@ -605,11 +622,11 @@
    },
    "status": false,
    "shape": "value x N^pow",
-   "why": "N 2: 7.38 over 5.66 [4.91, 6.36]",
+   "why": "N 1: 3.69 under 4.34 [3.95, 4.73], N 2: 7.38 over 5.79 [5.36, 6.21], N 3: 7.38 over 6.54 [6.04, 7.03]",
    "new": {
     "scale": "n",
-    "value": 4.04,
-    "pow": 0.442
+    "value": 4.37,
+    "pow": 0.378
    }
   },
   {
@@ -618,32 +635,32 @@
     {
      "n": 1,
      "price": 2,
-     "y": 0.68,
-     "lo": -0.01,
-     "hi": 1.33,
-     "best": 1.16,
+     "y": 0.88,
+     "lo": 0.52,
+     "hi": 1.25,
+     "best": 1.17,
      "under": false,
      "over": true
     },
     {
      "n": 2,
      "price": 2,
-     "y": 1.29,
-     "lo": 0.62,
-     "hi": 1.94,
-     "best": 2.12,
+     "y": 1.23,
+     "lo": 0.85,
+     "hi": 1.64,
+     "best": 1.62,
      "under": false,
-     "over": false
+     "over": true
     },
     {
      "n": 3,
      "price": 2,
-     "y": 1.52,
-     "lo": 0.86,
-     "hi": 2.16,
-     "best": 2.52,
+     "y": 1.44,
+     "lo": 1.04,
+     "hi": 1.83,
+     "best": 1.93,
      "under": false,
-     "over": false
+     "over": true
     }
    ],
    "old": {
@@ -652,10 +669,10 @@
    },
    "status": true,
    "shape": "status: flat at duration 2, chance 50",
-   "why": "N 1: 2 over 0.68 [-0.01, 1.33]",
+   "why": "N 1: 2 over 0.88 [0.52, 1.25], N 2: 2 over 1.23 [0.85, 1.64], N 3: 2 over 1.44 [1.04, 1.83]",
    "new": {
     "scale": "fixed",
-    "value": 1.29
+    "value": 1.23
    }
   },
   {
@@ -664,30 +681,30 @@
     {
      "n": 1,
      "price": 3.94,
-     "y": 6.33,
-     "lo": 5.6,
-     "hi": 7.22,
-     "best": 12.28,
+     "y": 6.25,
+     "lo": 5.78,
+     "hi": 6.75,
+     "best": 12.29,
      "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 7.88,
-     "y": 9.05,
-     "lo": 8.23,
-     "hi": 9.93,
-     "best": 16.79,
+     "y": 8.98,
+     "lo": 8.39,
+     "hi": 9.55,
+     "best": 16.83,
      "under": true,
      "over": false
     },
     {
      "n": 3,
      "price": 7.88,
-     "y": 10.65,
-     "lo": 9.75,
-     "hi": 11.64,
-     "best": 18.45,
+     "y": 10.21,
+     "lo": 9.55,
+     "hi": 10.89,
+     "best": 18.26,
      "under": true,
      "over": false
     }
@@ -698,11 +715,11 @@
    },
    "status": false,
    "shape": "value x N^pow",
-   "why": "N 1: 3.94 under 6.33 [5.6, 7.22], N 2: 7.88 under 9.05 [8.23, 9.93], N 3: 7.88 under 10.65 [9.75, 11.64]",
+   "why": "N 1: 3.94 under 6.25 [5.78, 6.75], N 2: 7.88 under 8.98 [8.39, 9.55], N 3: 7.88 under 10.21 [9.55, 10.89]",
    "new": {
     "scale": "n",
-    "value": 6.37,
-    "pow": 0.478
+    "value": 6.33,
+    "pow": 0.455
    }
   },
   {
@@ -711,32 +728,32 @@
     {
      "n": 1,
      "price": 5.13,
-     "y": 4.82,
-     "lo": 4.11,
-     "hi": 5.66,
-     "best": 8.72,
+     "y": 4.7,
+     "lo": 4.22,
+     "hi": 5.16,
+     "best": 8.73,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 5.29,
-     "y": 5.01,
-     "lo": 4.22,
-     "hi": 5.85,
-     "best": 8.88,
+     "y": 4.8,
+     "lo": 4.32,
+     "hi": 5.27,
+     "best": 8.86,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 5.38,
-     "y": 4.98,
-     "lo": 4.19,
-     "hi": 5.79,
-     "best": 8.8,
+     "y": 4.81,
+     "lo": 4.33,
+     "hi": 5.29,
+     "best": 8.88,
      "under": false,
-     "over": false
+     "over": true
     }
    ],
    "old": {
@@ -745,7 +762,12 @@
     "pow": 0.044
    },
    "status": false,
-   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+   "shape": "flat in N",
+   "why": "N 3: 5.38 over 4.81 [4.33, 5.29]",
+   "new": {
+    "scale": "fixed",
+    "value": 4.77
+   }
   },
   {
    "id": "poison",
@@ -753,32 +775,32 @@
     {
      "n": 1,
      "price": 2.38,
-     "y": 2.21,
-     "lo": 1.7,
-     "hi": 2.76,
-     "best": 3.47,
+     "y": 2.64,
+     "lo": 2.35,
+     "hi": 2.9,
+     "best": 3.72,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 4.69,
-     "y": 4.92,
-     "lo": 4.17,
-     "hi": 5.53,
-     "best": 8.68,
+     "y": 5.12,
+     "lo": 4.69,
+     "hi": 5.54,
+     "best": 8.43,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 6.98,
-     "y": 6.06,
-     "lo": 5.3,
-     "hi": 6.86,
-     "best": 10.48,
+     "y": 6.27,
+     "lo": 5.79,
+     "hi": 6.75,
+     "best": 10.36,
      "under": false,
-     "over": false
+     "over": true
     }
    ],
    "old": {
@@ -787,7 +809,13 @@
     "pow": 0.98
    },
    "status": false,
-   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+   "shape": "value x N^pow",
+   "why": "N 3: 6.98 over 6.27 [5.79, 6.75]",
+   "new": {
+    "scale": "n",
+    "value": 2.72,
+    "pow": 0.805
+   }
   },
   {
    "id": "psychic",
@@ -795,30 +823,30 @@
     {
      "n": 1,
      "price": 2,
-     "y": 2.17,
-     "lo": 1.62,
-     "hi": 2.72,
-     "best": 3.74,
-     "under": false,
+     "y": 2.56,
+     "lo": 2.3,
+     "hi": 2.81,
+     "best": 3.81,
+     "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 4,
-     "y": 4.25,
-     "lo": 3.55,
-     "hi": 4.89,
-     "best": 7.52,
-     "under": false,
+     "y": 4.57,
+     "lo": 4.21,
+     "hi": 4.97,
+     "best": 7.19,
+     "under": true,
      "over": false
     },
     {
      "n": 3,
      "price": 4,
-     "y": 5.62,
-     "lo": 4.83,
-     "hi": 6.38,
-     "best": 10.08,
+     "y": 5.96,
+     "lo": 5.53,
+     "hi": 6.46,
+     "best": 10.02,
      "under": true,
      "over": false
     }
@@ -829,11 +857,11 @@
    },
    "status": false,
    "shape": "value x N^pow",
-   "why": "N 3: 4 under 5.62 [4.83, 6.38]",
+   "why": "N 1: 2 under 2.56 [2.3, 2.81], N 2: 4 under 4.57 [4.21, 4.97], N 3: 4 under 5.96 [5.53, 6.46]",
    "new": {
     "scale": "n",
-    "value": 2.21,
-    "pow": 0.877
+    "value": 2.59,
+    "pow": 0.776
    }
   },
   {
@@ -842,30 +870,30 @@
     {
      "n": 1,
      "price": 0.7,
-     "y": 4.66,
-     "lo": 4.0,
-     "hi": 5.43,
-     "best": 9.77,
+     "y": 4.55,
+     "lo": 4.15,
+     "hi": 4.95,
+     "best": 10.09,
      "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 1.4,
-     "y": 7.79,
-     "lo": 6.97,
-     "hi": 8.59,
-     "best": 15.53,
+     "y": 7.33,
+     "lo": 6.79,
+     "hi": 7.83,
+     "best": 15.63,
      "under": true,
      "over": false
     },
     {
      "n": 3,
      "price": 1.4,
-     "y": 9.49,
-     "lo": 8.64,
-     "hi": 10.46,
-     "best": 18.13,
+     "y": 8.98,
+     "lo": 8.37,
+     "hi": 9.59,
+     "best": 18.05,
      "under": true,
      "over": false
     }
@@ -877,11 +905,11 @@
    "status": false,
    "mergeWith": "breach",
    "shape": "value x N^pow",
-   "why": "N 1: 0.7 under 4.66 [4.0, 5.43], N 2: 1.4 under 7.79 [6.97, 8.59], N 3: 1.4 under 9.49 [8.64, 10.46] (merged: the same rule as breach)",
+   "why": "N 1: 0.7 under 4.55 [4.15, 4.95], N 2: 1.4 under 7.33 [6.79, 7.83], N 3: 1.4 under 8.98 [8.37, 9.59] (merged: the same rule as breach)",
    "new": {
     "scale": "n",
-    "value": 4.73,
-    "pow": 0.657
+    "value": 4.6,
+    "pow": 0.626
    }
   },
   {
@@ -890,10 +918,10 @@
     {
      "n": true,
      "price": 5.1,
-     "y": 4.76,
-     "lo": 4.0,
-     "hi": 5.4,
-     "best": 8.59,
+     "y": 5.01,
+     "lo": 4.59,
+     "hi": 5.43,
+     "best": 8.36,
      "under": false,
      "over": false
     }
@@ -911,32 +939,32 @@
     {
      "n": 1,
      "price": 1.5,
-     "y": 3.31,
-     "lo": 2.61,
-     "hi": 4.05,
-     "best": 5.87,
+     "y": 3.18,
+     "lo": 2.77,
+     "hi": 3.56,
+     "best": 6.08,
      "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 3,
-     "y": 3.5,
-     "lo": 2.79,
-     "hi": 4.28,
-     "best": 6.05,
+     "y": 3.24,
+     "lo": 2.8,
+     "hi": 3.63,
+     "best": 6.3,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 4.5,
-     "y": 3.5,
-     "lo": 2.79,
-     "hi": 4.25,
-     "best": 6.05,
+     "y": 3.25,
+     "lo": 2.83,
+     "hi": 3.65,
+     "best": 6.3,
      "under": false,
-     "over": false
+     "over": true
     }
    ],
    "old": {
@@ -946,10 +974,10 @@
    "status": false,
    "mergeWith": "arson",
    "shape": "flat in N",
-   "why": "N 1: 1.5 under 3.31 [2.61, 4.05] (merged: the same rule as arson)",
+   "why": "N 1: 1.5 under 3.18 [2.77, 3.56], N 3: 4.5 over 3.25 [2.83, 3.65] (merged: the same rule as arson)",
    "new": {
     "scale": "fixed",
-    "value": 3.42
+    "value": 3.22
    }
   },
   {
@@ -958,40 +986,40 @@
     {
      "n": true,
      "price": 2.3,
-     "y": 1.91,
-     "lo": 1.48,
-     "hi": 2.35,
-     "best": 2.83,
+     "y": 2.52,
+     "lo": 2.21,
+     "hi": 2.84,
+     "best": 3.41,
      "under": false,
      "over": false
     },
     {
      "n": 1,
      "price": 1.15,
-     "y": 1.44,
-     "lo": 1.01,
+     "y": 1.58,
+     "lo": 1.33,
      "hi": 1.85,
-     "best": 1.92,
-     "under": false,
+     "best": 1.95,
+     "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 2.3,
-     "y": 1.87,
-     "lo": 1.39,
-     "hi": 2.33,
-     "best": 2.34,
+     "y": 2.35,
+     "lo": 2.07,
+     "hi": 2.66,
+     "best": 2.88,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 3.45,
-     "y": 2.09,
-     "lo": 1.56,
-     "hi": 2.56,
-     "best": 2.71,
+     "y": 2.67,
+     "lo": 2.38,
+     "hi": 3.0,
+     "best": 3.27,
      "under": false,
      "over": true
     }
@@ -1010,30 +1038,30 @@
     {
      "n": 1,
      "price": 2.45,
-     "y": 2.72,
-     "lo": 2.16,
-     "hi": 3.33,
-     "best": 5.83,
+     "y": 2.59,
+     "lo": 2.3,
+     "hi": 2.88,
+     "best": 5.68,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 3.41,
-     "y": 3.85,
-     "lo": 3.25,
-     "hi": 4.47,
-     "best": 8.35,
+     "y": 3.71,
+     "lo": 3.35,
+     "hi": 4.08,
+     "best": 8.36,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 4.14,
-     "y": 4.4,
-     "lo": 3.75,
-     "hi": 5.05,
-     "best": 9.45,
+     "y": 4.29,
+     "lo": 3.91,
+     "hi": 4.68,
+     "best": 9.5,
      "under": false,
      "over": false
     }
@@ -1052,10 +1080,10 @@
     {
      "n": true,
      "price": 0.43,
-     "y": 0.4,
-     "lo": 0.18,
-     "hi": 0.65,
-     "best": 0.72,
+     "y": 0.32,
+     "lo": 0.21,
+     "hi": 0.45,
+     "best": 0.65,
      "under": false,
      "over": false
     }
@@ -1073,31 +1101,31 @@
     {
      "n": 1,
      "price": 0.66,
-     "y": 1.03,
-     "lo": 0.39,
-     "hi": 1.66,
-     "best": 1.96,
-     "under": false,
+     "y": 1.42,
+     "lo": 1.02,
+     "hi": 1.81,
+     "best": 2.0,
+     "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 0.82,
-     "y": 1.36,
-     "lo": 0.65,
-     "hi": 2.07,
-     "best": 2.31,
-     "under": false,
+     "y": 1.73,
+     "lo": 1.33,
+     "hi": 2.12,
+     "best": 2.4,
+     "under": true,
      "over": false
     },
     {
      "n": 3,
      "price": 0.88,
-     "y": 1.48,
-     "lo": 0.76,
-     "hi": 2.16,
-     "best": 2.57,
-     "under": false,
+     "y": 1.82,
+     "lo": 1.43,
+     "hi": 2.21,
+     "best": 2.58,
+     "under": true,
      "over": false
     }
    ],
@@ -1114,10 +1142,10 @@
     {
      "n": true,
      "price": 3.5,
-     "y": 3.33,
-     "lo": 2.65,
-     "hi": 4.02,
-     "best": 3.67,
+     "y": 3.63,
+     "lo": 3.26,
+     "hi": 4.04,
+     "best": 4.04,
      "under": false,
      "over": false
     }
@@ -1135,30 +1163,30 @@
     {
      "n": 1,
      "price": 4,
-     "y": 2.29,
-     "lo": 1.59,
-     "hi": 2.97,
-     "best": 2.97,
+     "y": 2.63,
+     "lo": 2.2,
+     "hi": 3.04,
+     "best": 3.16,
      "under": false,
      "over": true
     },
     {
      "n": 2,
      "price": 4,
-     "y": 2.48,
-     "lo": 1.77,
-     "hi": 3.18,
-     "best": 3.42,
+     "y": 2.77,
+     "lo": 2.32,
+     "hi": 3.21,
+     "best": 3.35,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 4,
-     "y": 2.45,
-     "lo": 1.75,
-     "hi": 3.12,
-     "best": 3.29,
+     "y": 2.82,
+     "lo": 2.36,
+     "hi": 3.28,
+     "best": 3.4,
      "under": false,
      "over": true
     }
@@ -1169,10 +1197,10 @@
    },
    "status": true,
    "shape": "status: flat at duration 2, chance 50",
-   "why": "N 1: 4 over 2.29 [1.59, 2.97], N 2: 4 over 2.48 [1.77, 3.18], N 3: 4 over 2.45 [1.75, 3.12]",
+   "why": "N 1: 4 over 2.63 [2.2, 3.04], N 2: 4 over 2.77 [2.32, 3.21], N 3: 4 over 2.82 [2.36, 3.28]",
    "new": {
     "scale": "fixed",
-    "value": 2.48
+    "value": 2.77
    }
   },
   {
@@ -1181,30 +1209,30 @@
     {
      "n": 1,
      "price": 3,
-     "y": 1.12,
-     "lo": 0.49,
-     "hi": 1.77,
-     "best": 1.88,
+     "y": 1.11,
+     "lo": 0.71,
+     "hi": 1.48,
+     "best": 1.59,
      "under": false,
      "over": true
     },
     {
      "n": 2,
      "price": 3,
-     "y": 1.28,
-     "lo": 0.62,
-     "hi": 1.93,
-     "best": 2.17,
+     "y": 1.29,
+     "lo": 0.89,
+     "hi": 1.64,
+     "best": 1.79,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 3,
-     "y": 1.34,
-     "lo": 0.68,
-     "hi": 2.0,
-     "best": 2.16,
+     "y": 1.35,
+     "lo": 0.96,
+     "hi": 1.72,
+     "best": 1.88,
      "under": false,
      "over": true
     }
@@ -1215,10 +1243,10 @@
    },
    "status": true,
    "shape": "status: flat at duration 2, chance 50",
-   "why": "N 1: 3 over 1.12 [0.49, 1.77], N 2: 3 over 1.28 [0.62, 1.93], N 3: 3 over 1.34 [0.68, 2.0]",
+   "why": "N 1: 3 over 1.11 [0.71, 1.48], N 2: 3 over 1.29 [0.89, 1.64], N 3: 3 over 1.35 [0.96, 1.72]",
    "new": {
     "scale": "fixed",
-    "value": 1.28
+    "value": 1.29
    }
   },
   {
@@ -1227,32 +1255,32 @@
     {
      "n": 1,
      "price": 3.65,
-     "y": 3.61,
-     "lo": 2.99,
-     "hi": 4.24,
-     "best": 5.61,
-     "under": false,
+     "y": 4.2,
+     "lo": 3.82,
+     "hi": 4.54,
+     "best": 5.92,
+     "under": true,
      "over": false
     },
     {
      "n": 2,
      "price": 7.3,
-     "y": 5.29,
-     "lo": 4.56,
-     "hi": 5.99,
-     "best": 8.98,
+     "y": 5.62,
+     "lo": 5.2,
+     "hi": 6.07,
+     "best": 8.79,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 7.3,
-     "y": 6.42,
-     "lo": 5.56,
-     "hi": 7.2,
-     "best": 10.82,
+     "y": 6.54,
+     "lo": 6.05,
+     "hi": 7.03,
+     "best": 10.61,
      "under": false,
-     "over": false
+     "over": true
     }
    ],
    "old": {
@@ -1261,11 +1289,11 @@
    },
    "status": false,
    "shape": "value x N^pow",
-   "why": "N 2: 7.3 over 5.29 [4.56, 5.99]",
+   "why": "N 1: 3.65 under 4.2 [3.82, 4.54], N 2: 7.3 over 5.62 [5.2, 6.07], N 3: 7.3 over 6.54 [6.05, 7.03]",
    "new": {
     "scale": "n",
-    "value": 3.63,
-    "pow": 0.527
+    "value": 4.21,
+    "pow": 0.405
    }
   },
   {
@@ -1274,30 +1302,30 @@
     {
      "n": 1,
      "price": 2.29,
-     "y": 1.81,
-     "lo": 1.15,
-     "hi": 2.48,
-     "best": 2.72,
+     "y": 2.0,
+     "lo": 1.59,
+     "hi": 2.37,
+     "best": 2.46,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 4.58,
-     "y": 2.03,
-     "lo": 1.36,
-     "hi": 2.68,
-     "best": 2.9,
+     "y": 2.28,
+     "lo": 1.86,
+     "hi": 2.67,
+     "best": 2.83,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 4.58,
-     "y": 2.12,
-     "lo": 1.42,
-     "hi": 2.83,
-     "best": 3.09,
+     "y": 2.38,
+     "lo": 1.97,
+     "hi": 2.81,
+     "best": 3.0,
      "under": false,
      "over": true
     }
@@ -1308,10 +1336,10 @@
    },
    "status": false,
    "shape": "flat in N",
-   "why": "N 2: 4.58 over 2.03 [1.36, 2.68], N 3: 4.58 over 2.12 [1.42, 2.83]",
+   "why": "N 2: 4.58 over 2.28 [1.86, 2.67], N 3: 4.58 over 2.38 [1.97, 2.81]",
    "new": {
     "scale": "fixed",
-    "value": 1.99
+    "value": 2.22
    }
   },
   {
@@ -1320,30 +1348,30 @@
     {
      "n": 1,
      "price": 2.34,
-     "y": 1.98,
-     "lo": 1.31,
-     "hi": 2.67,
-     "best": 2.23,
+     "y": 2.33,
+     "lo": 1.98,
+     "hi": 2.69,
+     "best": 2.66,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 4.68,
-     "y": 2.1,
-     "lo": 1.43,
-     "hi": 2.81,
-     "best": 2.6,
+     "y": 2.53,
+     "lo": 2.17,
+     "hi": 2.88,
+     "best": 2.88,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 4.68,
-     "y": 2.08,
-     "lo": 1.42,
-     "hi": 2.76,
-     "best": 2.48,
+     "y": 2.59,
+     "lo": 2.25,
+     "hi": 2.94,
+     "best": 2.92,
      "under": false,
      "over": true
     }
@@ -1354,10 +1382,10 @@
    },
    "status": false,
    "shape": "flat in N",
-   "why": "N 2: 4.68 over 2.1 [1.43, 2.81], N 3: 4.68 over 2.08 [1.42, 2.76]",
+   "why": "N 2: 4.68 over 2.53 [2.17, 2.88], N 3: 4.68 over 2.59 [2.25, 2.94]",
    "new": {
     "scale": "fixed",
-    "value": 2.05
+    "value": 2.48
    }
   },
   {
@@ -1366,30 +1394,30 @@
     {
      "n": 1,
      "price": 1.5,
-     "y": 0.55,
-     "lo": -0.18,
-     "hi": 1.19,
-     "best": 0.65,
+     "y": 0.63,
+     "lo": 0.21,
+     "hi": 1.02,
+     "best": 1.03,
      "under": false,
      "over": true
     },
     {
      "n": 2,
      "price": 1.5,
-     "y": 0.82,
-     "lo": 0.17,
-     "hi": 1.43,
-     "best": 1.48,
+     "y": 0.68,
+     "lo": 0.26,
+     "hi": 1.06,
+     "best": 1.29,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 1.5,
-     "y": 0.61,
-     "lo": -0.07,
-     "hi": 1.22,
-     "best": 1.24,
+     "y": 0.68,
+     "lo": 0.3,
+     "hi": 1.04,
+     "best": 1.3,
      "under": false,
      "over": true
     }
@@ -1400,10 +1428,10 @@
    },
    "status": true,
    "shape": "status: flat at duration 2, chance 50",
-   "why": "N 1: 1.5 over 0.55 [-0.18, 1.19], N 2: 1.5 over 0.82 [0.17, 1.43], N 3: 1.5 over 0.61 [-0.07, 1.22]",
+   "why": "N 1: 1.5 over 0.63 [0.21, 1.02], N 2: 1.5 over 0.68 [0.26, 1.06], N 3: 1.5 over 0.68 [0.3, 1.04]",
    "new": {
     "scale": "fixed",
-    "value": 0.82
+    "value": 0.68
    }
   },
   {
@@ -1412,30 +1440,30 @@
     {
      "n": 1,
      "price": 5,
-     "y": 4.44,
-     "lo": 3.76,
-     "hi": 5.14,
-     "best": 8.37,
+     "y": 4.71,
+     "lo": 4.33,
+     "hi": 5.11,
+     "best": 8.49,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 10,
-     "y": 6.15,
-     "lo": 5.4,
-     "hi": 6.91,
-     "best": 10.93,
+     "y": 6.18,
+     "lo": 5.75,
+     "hi": 6.64,
+     "best": 10.92,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 10,
-     "y": 6.97,
-     "lo": 6.19,
-     "hi": 7.82,
-     "best": 12.38,
+     "y": 6.96,
+     "lo": 6.44,
+     "hi": 7.46,
+     "best": 12.41,
      "under": false,
      "over": true
     }
@@ -1446,11 +1474,11 @@
    },
    "status": false,
    "shape": "value x N^pow",
-   "why": "N 2: 10 over 6.15 [5.4, 6.91], N 3: 10 over 6.97 [6.19, 7.82]",
+   "why": "N 2: 10 over 6.18 [5.75, 6.64], N 3: 10 over 6.96 [6.44, 7.46]",
    "new": {
     "scale": "n",
-    "value": 4.48,
-    "pow": 0.417
+    "value": 4.74,
+    "pow": 0.359
    }
   },
   {
@@ -1459,30 +1487,30 @@
     {
      "n": 1,
      "price": 2.76,
-     "y": 2.23,
-     "lo": 1.71,
-     "hi": 2.78,
-     "best": 3.47,
+     "y": 2.65,
+     "lo": 2.37,
+     "hi": 2.92,
+     "best": 3.73,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 5.46,
-     "y": 4.93,
-     "lo": 4.17,
-     "hi": 5.58,
-     "best": 8.68,
+     "y": 5.12,
+     "lo": 4.7,
+     "hi": 5.56,
+     "best": 8.43,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 8.14,
-     "y": 6.09,
-     "lo": 5.3,
-     "hi": 6.92,
-     "best": 10.48,
+     "y": 6.29,
+     "lo": 5.81,
+     "hi": 6.77,
+     "best": 10.38,
      "under": false,
      "over": true
     }
@@ -1495,11 +1523,11 @@
    "status": false,
    "mergeWith": "poison",
    "shape": "value x N^pow",
-   "why": "N 3: 8.14 over 6.09 [5.3, 6.92] (merged: the same rule as poison)",
+   "why": "N 3: 8.14 over 6.29 [5.81, 6.77] (merged: the same rule as poison)",
    "new": {
     "scale": "n",
-    "value": 2.38,
-    "pow": 0.98
+    "value": 2.72,
+    "pow": 0.805
    }
   },
   {
@@ -1508,30 +1536,30 @@
     {
      "n": 1,
      "price": 2.64,
-     "y": 2.41,
-     "lo": 1.87,
-     "hi": 2.92,
-     "best": 3.25,
+     "y": 2.71,
+     "lo": 2.38,
+     "hi": 3.02,
+     "best": 3.39,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 3.29,
-     "y": 3.23,
-     "lo": 2.63,
-     "hi": 3.83,
-     "best": 3.88,
+     "y": 3.55,
+     "lo": 3.19,
+     "hi": 3.93,
+     "best": 3.92,
      "under": false,
      "over": false
     },
     {
      "n": 3,
      "price": 3.74,
-     "y": 3.45,
-     "lo": 2.79,
-     "hi": 4.05,
-     "best": 4.07,
+     "y": 3.83,
+     "lo": 3.46,
+     "hi": 4.23,
+     "best": 4.08,
      "under": false,
      "over": false
     }
@@ -1550,30 +1578,30 @@
     {
      "n": 1,
      "price": 3.47,
-     "y": 3.06,
-     "lo": 2.5,
-     "hi": 3.73,
-     "best": 4.74,
+     "y": 3.52,
+     "lo": 3.2,
+     "hi": 3.85,
+     "best": 4.98,
      "under": false,
      "over": false
     },
     {
      "n": 2,
      "price": 6.94,
-     "y": 5.22,
-     "lo": 4.52,
-     "hi": 5.92,
-     "best": 8.68,
+     "y": 5.52,
+     "lo": 5.07,
+     "hi": 5.97,
+     "best": 8.71,
      "under": false,
      "over": true
     },
     {
      "n": 3,
      "price": 6.94,
-     "y": 6.64,
-     "lo": 5.92,
-     "hi": 7.36,
-     "best": 11.44,
+     "y": 6.58,
+     "lo": 6.1,
+     "hi": 7.05,
+     "best": 11.04,
      "under": false,
      "over": false
     }
@@ -1584,11 +1612,11 @@
    },
    "status": false,
    "shape": "value x N^pow",
-   "why": "N 2: 6.94 over 5.22 [4.52, 5.92]",
+   "why": "N 2: 6.94 over 5.52 [5.07, 5.97]",
    "new": {
     "scale": "n",
-    "value": 3.09,
-    "pow": 0.712
+    "value": 3.57,
+    "pow": 0.578
    }
   }
  ],
@@ -1777,7 +1805,7 @@
     "value": 0.09
    },
    "terms": [],
-   "kept": "its partner is any hit on the Exposed target (every deck: share 1), so its gain with the partner is its single worth, about 0 (onhit mean -0.03 / 0.01 / 0.03 at N 1-3); the table's 0.09 is inside that interval; kept"
+   "kept": "its partner is any hit on the Exposed target (every deck: share 1), so its gain with the partner is its single worth, about 0.1 (800-fight onhit mean: L1 0.01-0.08, L5 0.26 at N 1-3); the table's 0.09 is inside the L1 interval, so not off; kept"
   }
  ],
  "changes": [
@@ -1789,24 +1817,55 @@
    },
    "new": {
     "scale": "fixed",
-    "value": 3.42
+    "value": 3.22
    },
    "at": {
     "True": [
      1.25,
-     3.42
+     3.22
     ],
     "1": [
      1.25,
-     3.42
+     3.22
     ],
     "2": [
      2.5,
-     3.42
+     3.22
     ],
     "3": [
      3.75,
-     3.42
+     3.22
+    ]
+   }
+  },
+  {
+   "id": "bleed",
+   "old": {
+    "scale": "n",
+    "value": 2.57,
+    "pow": 0.881
+   },
+   "new": {
+    "scale": "n",
+    "value": 2.89,
+    "pow": 0.753
+   },
+   "at": {
+    "True": [
+     2.57,
+     2.89
+    ],
+    "1": [
+     2.57,
+     2.89
+    ],
+    "2": [
+     4.73,
+     4.87
+    ],
+    "3": [
+     6.77,
+     6.61
     ]
    }
   },
@@ -1818,24 +1877,24 @@
    },
    "new": {
     "scale": "fixed",
-    "value": 1.62
+    "value": 1.49
    },
    "at": {
     "True": [
      2.5,
-     1.62
+     1.49
     ],
     "1": [
      2.5,
-     1.62
+     1.49
     ],
     "2": [
      5.0,
-     1.62
+     1.49
     ],
     "3": [
      5.0,
-     1.62
+     1.49
     ]
    }
   },
@@ -1847,24 +1906,24 @@
    },
    "new": {
     "scale": "fixed",
-    "value": 3.45
+    "value": 3.95
    },
    "at": {
     "True": [
      1.0,
-     3.45
+     3.95
     ],
     "1": [
      1.0,
-     3.45
+     3.95
     ],
     "2": [
      2.0,
-     3.45
+     3.95
     ],
     "3": [
      2.0,
-     3.45
+     3.95
     ]
    }
   },
@@ -1876,25 +1935,25 @@
    },
    "new": {
     "scale": "n",
-    "value": 4.73,
-    "pow": 0.657
+    "value": 4.6,
+    "pow": 0.626
    },
    "at": {
     "True": [
      3.03,
-     4.73
+     4.6
     ],
     "1": [
      3.03,
-     4.73
+     4.6
     ],
     "2": [
      6.06,
-     7.46
+     7.1
     ],
     "3": [
      9.09,
-     9.73
+     9.15
     ]
    }
   },
@@ -1906,25 +1965,55 @@
    },
    "new": {
     "scale": "n",
-    "value": 5.6,
-    "pow": 0.252
+    "value": 5.89,
+    "pow": 0.219
    },
    "at": {
     "True": [
      8.0,
-     5.6
+     5.89
     ],
     "1": [
      8.0,
-     5.6
+     5.89
     ],
     "2": [
      16.0,
-     6.67
+     6.86
     ],
     "3": [
      16.0,
-     7.39
+     7.49
+    ]
+   }
+  },
+  {
+   "id": "corrode",
+   "old": {
+    "scale": "half",
+    "value": 1.73
+   },
+   "new": {
+    "scale": "n",
+    "value": 2.41,
+    "pow": 0.407
+   },
+   "at": {
+    "True": [
+     1.73,
+     2.41
+    ],
+    "1": [
+     1.73,
+     2.41
+    ],
+    "2": [
+     3.46,
+     3.2
+    ],
+    "3": [
+     3.46,
+     3.77
     ]
    }
   },
@@ -1936,25 +2025,25 @@
    },
    "new": {
     "scale": "n",
-    "value": 5.56,
-    "pow": 0.304
+    "value": 5.77,
+    "pow": 0.254
    },
    "at": {
     "True": [
      6.13,
-     5.56
+     5.77
     ],
     "1": [
      6.13,
-     5.56
+     5.77
     ],
     "2": [
      12.26,
-     6.86
+     6.88
     ],
     "3": [
      12.26,
-     7.76
+     7.63
     ]
    }
   },
@@ -1966,25 +2055,54 @@
    },
    "new": {
     "scale": "n",
-    "value": 5.99,
-    "pow": 0.337
+    "value": 6.15,
+    "pow": 0.305
    },
    "at": {
     "True": [
      6.0,
-     5.99
+     6.15
     ],
     "1": [
      6.0,
-     5.99
+     6.15
     ],
     "2": [
      12.0,
-     7.57
+     7.6
     ],
     "3": [
      12.0,
-     8.67
+     8.6
+    ]
+   }
+  },
+  {
+   "id": "freeze",
+   "old": {
+    "scale": "half",
+    "value": 1.83
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 2.88
+   },
+   "at": {
+    "True": [
+     1.83,
+     2.88
+    ],
+    "1": [
+     1.83,
+     2.88
+    ],
+    "2": [
+     3.66,
+     2.88
+    ],
+    "3": [
+     3.66,
+     2.88
     ]
    }
   },
@@ -1996,25 +2114,25 @@
    },
    "new": {
     "scale": "n",
-    "value": 4.04,
-    "pow": 0.442
+    "value": 4.37,
+    "pow": 0.378
    },
    "at": {
     "True": [
      3.69,
-     4.04
+     4.37
     ],
     "1": [
      3.69,
-     4.04
+     4.37
     ],
     "2": [
      7.38,
-     5.49
+     5.68
     ],
     "3": [
      7.38,
-     6.57
+     6.62
     ]
    }
   },
@@ -2026,24 +2144,24 @@
    },
    "new": {
     "scale": "fixed",
-    "value": 1.29
+    "value": 1.23
    },
    "at": {
     "True": [
      2.0,
-     1.29
+     1.23
     ],
     "1": [
      2.0,
-     1.29
+     1.23
     ],
     "2": [
      4.0,
-     1.29
+     1.23
     ],
     "3": [
      4.0,
-     1.29
+     1.23
     ]
    }
   },
@@ -2055,25 +2173,86 @@
    },
    "new": {
     "scale": "n",
-    "value": 6.37,
-    "pow": 0.478
+    "value": 6.33,
+    "pow": 0.455
    },
    "at": {
     "True": [
      3.94,
-     6.37
+     6.33
     ],
     "1": [
      3.94,
-     6.37
+     6.33
     ],
     "2": [
      7.88,
-     8.87
+     8.68
     ],
     "3": [
      7.88,
-     10.77
+     10.44
+    ]
+   }
+  },
+  {
+   "id": "pickpocket",
+   "old": {
+    "scale": "n",
+    "value": 5.13,
+    "pow": 0.044
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 4.77
+   },
+   "at": {
+    "True": [
+     5.13,
+     4.77
+    ],
+    "1": [
+     5.13,
+     4.77
+    ],
+    "2": [
+     5.29,
+     4.77
+    ],
+    "3": [
+     5.38,
+     4.77
+    ]
+   }
+  },
+  {
+   "id": "poison",
+   "old": {
+    "scale": "n",
+    "value": 2.38,
+    "pow": 0.98
+   },
+   "new": {
+    "scale": "n",
+    "value": 2.72,
+    "pow": 0.805
+   },
+   "at": {
+    "True": [
+     2.38,
+     2.72
+    ],
+    "1": [
+     2.38,
+     2.72
+    ],
+    "2": [
+     4.69,
+     4.75
+    ],
+    "3": [
+     6.98,
+     6.59
     ]
    }
   },
@@ -2085,25 +2264,25 @@
    },
    "new": {
     "scale": "n",
-    "value": 2.21,
-    "pow": 0.877
+    "value": 2.59,
+    "pow": 0.776
    },
    "at": {
     "True": [
      2.0,
-     2.21
+     2.59
     ],
     "1": [
      2.0,
-     2.21
+     2.59
     ],
     "2": [
      4.0,
-     4.06
+     4.44
     ],
     "3": [
      4.0,
-     5.79
+     6.07
     ]
    }
   },
@@ -2115,25 +2294,25 @@
    },
    "new": {
     "scale": "n",
-    "value": 4.73,
-    "pow": 0.657
+    "value": 4.6,
+    "pow": 0.626
    },
    "at": {
     "True": [
      0.7,
-     4.73
+     4.6
     ],
     "1": [
      0.7,
-     4.73
+     4.6
     ],
     "2": [
      1.4,
-     7.46
+     7.1
     ],
     "3": [
      1.4,
-     9.73
+     9.15
     ]
    }
   },
@@ -2145,24 +2324,24 @@
    },
    "new": {
     "scale": "fixed",
-    "value": 3.42
+    "value": 3.22
    },
    "at": {
     "True": [
      1.5,
-     3.42
+     3.22
     ],
     "1": [
      1.5,
-     3.42
+     3.22
     ],
     "2": [
      3.0,
-     3.42
+     3.22
     ],
     "3": [
      4.5,
-     3.42
+     3.22
     ]
    }
   },
@@ -2174,24 +2353,24 @@
    },
    "new": {
     "scale": "fixed",
-    "value": 2.48
+    "value": 2.77
    },
    "at": {
     "True": [
      4.0,
-     2.48
+     2.77
     ],
     "1": [
      4.0,
-     2.48
+     2.77
     ],
     "2": [
      8.0,
-     2.48
+     2.77
     ],
     "3": [
      8.0,
-     2.48
+     2.77
     ]
    }
   },
@@ -2203,24 +2382,24 @@
    },
    "new": {
     "scale": "fixed",
-    "value": 1.28
+    "value": 1.29
    },
    "at": {
     "True": [
      3.0,
-     1.28
+     1.29
     ],
     "1": [
      3.0,
-     1.28
+     1.29
     ],
     "2": [
      6.0,
-     1.28
+     1.29
     ],
     "3": [
      6.0,
-     1.28
+     1.29
     ]
    }
   },
@@ -2232,25 +2411,25 @@
    },
    "new": {
     "scale": "n",
-    "value": 3.63,
-    "pow": 0.527
+    "value": 4.21,
+    "pow": 0.405
    },
    "at": {
     "True": [
      3.65,
-     3.63
+     4.21
     ],
     "1": [
      3.65,
-     3.63
+     4.21
     ],
     "2": [
      7.3,
-     5.23
+     5.57
     ],
     "3": [
      7.3,
-     6.48
+     6.57
     ]
    }
   },
@@ -2262,24 +2441,24 @@
    },
    "new": {
     "scale": "fixed",
-    "value": 1.99
+    "value": 2.22
    },
    "at": {
     "True": [
      2.29,
-     1.99
+     2.22
     ],
     "1": [
      2.29,
-     1.99
+     2.22
     ],
     "2": [
      4.58,
-     1.99
+     2.22
     ],
     "3": [
      4.58,
-     1.99
+     2.22
     ]
    }
   },
@@ -2291,24 +2470,24 @@
    },
    "new": {
     "scale": "fixed",
-    "value": 2.05
+    "value": 2.48
    },
    "at": {
     "True": [
      2.34,
-     2.05
+     2.48
     ],
     "1": [
      2.34,
-     2.05
+     2.48
     ],
     "2": [
      4.68,
-     2.05
+     2.48
     ],
     "3": [
      4.68,
-     2.05
+     2.48
     ]
    }
   },
@@ -2320,24 +2499,24 @@
    },
    "new": {
     "scale": "fixed",
-    "value": 0.82
+    "value": 0.68
    },
    "at": {
     "True": [
      1.5,
-     0.82
+     0.68
     ],
     "1": [
      1.5,
-     0.82
+     0.68
     ],
     "2": [
      3.0,
-     0.82
+     0.68
     ],
     "3": [
      3.0,
-     0.82
+     0.68
     ]
    }
   },
@@ -2349,25 +2528,25 @@
    },
    "new": {
     "scale": "n",
-    "value": 4.48,
-    "pow": 0.417
+    "value": 4.74,
+    "pow": 0.359
    },
    "at": {
     "True": [
      5.0,
-     4.48
+     4.74
     ],
     "1": [
      5.0,
-     4.48
+     4.74
     ],
     "2": [
      10.0,
-     5.98
+     6.08
     ],
     "3": [
      10.0,
-     7.08
+     7.03
     ]
    }
   },
@@ -2380,25 +2559,25 @@
    },
    "new": {
     "scale": "n",
-    "value": 2.38,
-    "pow": 0.98
+    "value": 2.72,
+    "pow": 0.805
    },
    "at": {
     "True": [
      2.76,
-     2.38
+     2.72
     ],
     "1": [
      2.76,
-     2.38
+     2.72
     ],
     "2": [
      5.46,
-     4.69
+     4.75
     ],
     "3": [
      8.14,
-     6.98
+     6.59
     ]
    }
   },
@@ -2410,25 +2589,25 @@
    },
    "new": {
     "scale": "n",
-    "value": 3.09,
-    "pow": 0.712
+    "value": 3.57,
+    "pow": 0.578
    },
    "at": {
     "True": [
      3.47,
-     3.09
+     3.57
     ],
     "1": [
      3.47,
-     3.09
+     3.57
     ],
     "2": [
      6.94,
-     5.06
+     5.33
     ],
     "3": [
      6.94,
-     6.76
+     6.74
     ]
    }
   },

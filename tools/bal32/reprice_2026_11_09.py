@@ -148,7 +148,7 @@ for k, parts in PARTNER.items():
     row = {'id': k, 'old': {kk: e[kk] for kk in KEYS if kk in e}, 'terms': terms}
     if k == 'expose':
         row['kept'] = ('its partner is any hit on the Exposed target (every deck: share 1), so its gain with the partner is its single worth, '
-                       'about 0 (onhit mean -0.03 / 0.01 / 0.03 at N 1-3); the table\'s 0.09 is inside that interval; kept')
+                       'about 0.1 (800-fight onhit mean: L1 0.01-0.08, L5 0.26 at N 1-3); the table\'s 0.09 is inside the L1 interval, so not off; kept')
     elif all(t['term'] is not None for t in terms):
         v = r2(sum(t['term'] for t in terms))
         ent = {kk: e[kk] for kk in ('scale', 'plus') if kk in e}
@@ -200,13 +200,13 @@ def disp(e, n, status):  # the price a card pays: a status rider printed as {cha
 L = ['# Skill re-price, 2026-11-09 (package BAL32)', '',
      'The owner\'s BAL31 answers (docs/decisions.json BAL31-1/2/3, 2026-11-09 03:55) applied to `canonical/skill-costs.json` (old values in `bal32Was`). '
      'Built by `python3 tools/bal32/reprice_2026_11_09.py`; data in `reprice-2026-11-09.json`. Prices are in 3A + H points, the mean over bodies averaged over Levels 1 and 5 (BAL29\'s unit). No card stat changed.', '',
-     f"**Input (BAL31-2):** `docs/balance/bal31/onhit-2026-11-08.json`: {ONHIT['games']} paired fights a variant, three bodies a level "
+     f"**Input (BAL31-2):** `docs/balance/bal31/onhit-2026-11-08.json`: {ONHIT['games']} paired fights a variant, all the ladder\'s bodies "
      f"(L1 {ONHIT['levels']['L1']['bodies']}, L5 {ONHIT['levels']['L5']['bodies']}), fingerprint `{ONHIT['fingerprint']}`. "
-     'Note: the file on the batch says 400 fights and three bodies (its 11-09 04:18 commit re-rendered the table prices; it is not the 800-fight all-bodies run).', '',
+     'This is the 800-fight, all-bodies run (batch-1023e 37239be2); the first BAL32 pass used the earlier 400-fight, three-body file (commit 45ac4f34).', '',
      '**Rule.** y(N) = the mean over L1 and L5 of the mean-over-bodies worth. A rider is re-priced when its table price is outside both levels\' 95% interval at some N (BAL29\'s test). '
      'Flat (y(3) < 1.2 y(1)): one fixed price, the mean of y. Otherwise value x N^pow fitted through y. On/off riders: fixed at y. '
      'Status riders printed as {chance, duration}: the table charges them its value whatever the object, so one flat value, y at duration 2 (chance 50).', '',
-     '**What the mean says about damage over time.** On the mean-over-bodies unit, Poison and Bleed are fairly priced (inside their intervals), Breach and Perforate are under-priced (raised), '
+     '**What the mean says about damage over time.** On the mean-over-bodies unit, Poison and Bleed are close to their prices (Bleed a little under at N 2, Poison a little over at N 3: both re-fitted, the canon Poison included), Breach and Perforate are under-priced (raised), '
      'and Decay, Desecrate, Toxin, Wither, Greater Poison and Strangle are over-priced at N 2-3 (the half-scale table doubles them; the worth grows about N^0.3-0.7). '
      'The "1.5-3x under" in the BAL31 report compared the table with the best body, a unit about 1.7x the table\'s (BAL29).', '',
      '## Price changes', '', '| Skill | Cards (all) | Old | New | Old -> new at N 1 / 2 / 3 (on) | Why |', '|---|---|---|---|---|---|']

@@ -4364,5 +4364,17 @@
  "Saved in this browser": "이 브라우저에 저장됨",
  "Previous map": "이전 맵",
  "Next map": "다음 맵",
- "More cards from earlier maps": "이전 맵의 다른 카드"
+ "More cards from earlier maps": "이전 맵의 다른 카드",
+ "A bigger pool for this map. NEW!: its list, cards that fit the map that no earlier main map gives, then proposed new cards (no stats or skills yet). Carried: cards from earlier main maps, best fit first. Flag each Yes or No; a Yes on an earlier map makes a card Carried here. Side maps come later.": "이 맵의 더 큰 후보 풀. NEW!: 맵 목록, 이전 메인 맵에서 얻을 수 없는 맵에 맞는 카드, 그다음 제안된 새 카드(아직 능력치와 스킬 없음). 이월: 이전 메인 맵의 카드, 잘 맞는 순서. 각각 예 또는 아니오로 표시하세요. 이전 맵에서 예로 표시한 카드는 여기서 이월이 됩니다. 사이드 맵은 나중에.",
+ "at least {n}": "최소 {n}",
+ "Fits the map": "맵에 맞음",
+ "Proposed": "제안",
+ "Proposed new card: {animal}, {element}, suggested {rarity}.": "제안된 새 카드: {animal}, {element}, 추천 희귀도 {rarity}.",
+ "The map's habitat": "맵의 서식지",
+ "A nearby habitat": "인접한 서식지",
+ "CONTENT17 pick": "CONTENT17 추천",
+ "THEME5 pick": "THEME5 추천",
+ "SKILLREC1 pick": "SKILLREC1 추천",
+ "Has the map's signature skill": "맵의 대표 스킬 보유",
+ "The map's element": "맵의 속성"
 }
