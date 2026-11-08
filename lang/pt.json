@@ -4336,5 +4336,12 @@
  "Unlocks {name}. Only this star path gives it.": "Desbloqueia {name}. Só esta trilha estelar a dá.",
  "Starpath-only card": "Carta exclusiva da trilha estelar",
  "Rainforest": "Floresta tropical",
- "Savanna": "Savana"
+ "Savanna": "Savana",
+ "Card Rewards": "Recompensas de cartas",
+ "{n} ready": "{n} prontas",
+ "Card reward x{n}": "Recompensa de cartas x{n}",
+ "Cards received x{n}": "Cartas recebidas x{n}",
+ "Face-down card, likely {rarity}": "Carta virada, provavelmente {rarity}",
+ "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Conquistas que dão uma carta. Ela sai do seu conjunto de facção ao resgatar.",
+ "No card achievements match this filter.": "Nenhuma conquista com carta corresponde a este filtro."
 }

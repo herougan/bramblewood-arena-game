@@ -4336,5 +4336,12 @@
  "Unlocks {name}. Only this star path gives it.": "Membuka {name}. Hanya jalur bintang ini yang memberikannya.",
  "Starpath-only card": "Kartu khusus jalur bintang",
  "Rainforest": "Hutan hujan",
- "Savanna": "Sabana"
+ "Savanna": "Sabana",
+ "Card Rewards": "Hadiah Kartu",
+ "{n} ready": "{n} siap",
+ "Card reward x{n}": "Hadiah kartu x{n}",
+ "Cards received x{n}": "Kartu diterima x{n}",
+ "Face-down card, likely {rarity}": "Kartu tertutup, kemungkinan {rarity}",
+ "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Pencapaian yang memberi kartu. Kartu diambil dari kumpulan faksi saat diklaim.",
+ "No card achievements match this filter.": "Tidak ada pencapaian kartu yang cocok dengan filter ini."
 }

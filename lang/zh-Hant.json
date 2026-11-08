@@ -4335,5 +4335,12 @@
  "Unlocks {name}. Only this star path gives it.": "解鎖{name}。只有這條星之路會給。",
  "Starpath-only card": "星之路專屬卡",
  "Rainforest": "雨林",
- "Savanna": "草原"
+ "Savanna": "草原",
+ "Card Rewards": "卡牌獎勵",
+ "{n} ready": "{n} 個可領取",
+ "Card reward x{n}": "卡牌獎勵 x{n}",
+ "Cards received x{n}": "已獲得卡牌 x{n}",
+ "Face-down card, likely {rarity}": "背面朝上的卡牌，很可能是{rarity}",
+ "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "會給卡牌的成就。領取時從你的陣營卡池中抽取。",
+ "No card achievements match this filter.": "沒有符合此篩選的卡牌成就。"
 }

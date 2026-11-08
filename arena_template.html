@@ -4864,6 +4864,21 @@
   .achv-tile.is-ready{border-color:var(--accent-strong); box-shadow:0 0 0 2px color-mix(in srgb, var(--accent-strong) 35%, transparent);}
   .achv-tile.is-ready .achv-medal{animation:achvGlow 1.8s ease-in-out infinite;}
   @keyframes achvGlow{0%,100%{box-shadow:inset 0 -3px 0 rgba(0,0,0,.18), 0 0 0 0 rgba(255,210,90,.0);} 50%{box-shadow:inset 0 -3px 0 rgba(0,0,0,.18), 0 0 14px 4px rgba(255,210,90,.55);}}
+  /* 2026-11-08 (package UI36, owner 10:52 #13): the Card Rewards toggle, and the card chips on the rows that give a card */
+  .achv-cardbtn{display:flex; align-items:center; gap:10px; width:100%; margin:0 0 12px; padding:12px 16px; border-radius:14px; border:2px solid #d9a93a; cursor:pointer; font:inherit; color:#3a2200; text-align:left;
+    background:linear-gradient(135deg,#ffe49a,#f0b84a); box-shadow:0 2px 0 #b8862a, 0 6px 16px rgba(240,184,74,.3);}
+  .achv-cardbtn .acb-ico{font-size:24px; line-height:1;} .achv-cardbtn .acb-txt{font-family:'Baloo 2'; font-weight:800; font-size:17px; flex:1; min-width:0;}
+  .achv-cardbtn .acb-n{padding:2px 10px; border-radius:999px; background:#3a2200; color:#ffe49a; font:800 14px/1.4 'Baloo 2',system-ui,sans-serif; font-variant-numeric:tabular-nums;}
+  .achv-cardbtn .acb-ready{font-weight:800; font-size:12px; color:#7a1d00;}
+  .achv-cardbtn:not(.is-on){background:transparent; color:inherit; box-shadow:none; border-style:dashed; border-color:#d9a93a;}
+  .achv-cardbtn:not(.is-on) .acb-n{background:#ffd56e; color:#3a2200;} .achv-cardbtn:not(.is-on) .acb-ready{color:var(--accent-strong);}
+  .achv-cardbtn.has-ready:not(.is-on){animation:achvGlow 1.8s ease-in-out infinite;}
+  .achv-cardbtn:focus-visible{outline:3px solid var(--accent-strong); outline-offset:2px;}
+  .achv-cards{display:flex; align-items:center; gap:6px 10px; flex-wrap:wrap; margin-top:6px;} .achv-cards-lbl{font-size:12px; font-weight:800;} .achv-cards-row{display:inline-flex; gap:4px; flex-wrap:wrap; min-width:0;}
+  .achv-cards .card-chip{padding-right:0; max-width:none;} .achv-cards .card-chip.is-mystery{opacity:.92;} .achv-cards .card-chip .cc-nm{display:none;}
+  .achv-tile.has-card.is-card-hot{background:linear-gradient(135deg,color-mix(in srgb,#ffd56e 22%,var(--surface-2)),var(--surface-2)); border-color:#d9a93a;}
+  .achv-tile.has-card.is-ready{box-shadow:0 0 0 2px #d9a93a, 0 0 16px rgba(240,184,74,.45);}
+  .achv-tile.has-card.is-claimed .achv-cards{opacity:.85;}
   .achv-tile.is-claimed{opacity:.8;} .achv-stamp{position:absolute; right:-4px; bottom:-4px; width:22px; height:22px; border-radius:50%; background:var(--health, #3f5c3a); color:#fff; font-style:normal; font-size:13px; display:grid; place-items:center; border:2px solid var(--surface-2);}
   .achv-tile .achv-bar{height:6px; border-radius:4px; background:rgba(127,127,127,.25); overflow:hidden; margin-top:6px;} .achv-tile .achv-bar i{display:block; height:100%; background:var(--accent-strong); border-radius:inherit;}
   .achv-tile .achv-progress{font-size:11px; color:var(--ink-muted); font-variant-numeric:tabular-nums;}

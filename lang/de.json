@@ -4334,5 +4334,12 @@
  "Unlocks {name}. Only this star path gives it.": "Schaltet {name} frei. Nur dieser Sternenpfad gibt sie.",
  "Starpath-only card": "Nur-Sternenpfad-Karte",
  "Rainforest": "Regenwald",
- "Savanna": "Savanne"
+ "Savanna": "Savanne",
+ "Card Rewards": "Kartenbelohnungen",
+ "{n} ready": "{n} bereit",
+ "Card reward x{n}": "Kartenbelohnung x{n}",
+ "Cards received x{n}": "Erhaltene Karten x{n}",
+ "Face-down card, likely {rarity}": "Verdeckte Karte, wahrscheinlich {rarity}",
+ "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Erfolge, die eine Karte geben. Sie wird beim Abholen aus deinem Fraktionspool gezogen.",
+ "No card achievements match this filter.": "Kein Erfolg mit Karte passt zu diesem Filter."
 }

@@ -4337,5 +4337,12 @@
  "Unlocks {name}. Only this star path gives it.": "{name} 해금. 이 별의 길에서만 얻는다.",
  "Starpath-only card": "별의 길 전용 카드",
  "Rainforest": "열대우림",
- "Savanna": "사바나"
+ "Savanna": "사바나",
+ "Card Rewards": "카드 보상",
+ "{n} ready": "{n}개 수령 가능",
+ "Card reward x{n}": "카드 보상 x{n}",
+ "Cards received x{n}": "받은 카드 x{n}",
+ "Face-down card, likely {rarity}": "뒷면 카드, 아마도 {rarity}",
+ "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "카드를 주는 업적입니다. 수령할 때 진영 풀에서 뽑습니다.",
+ "No card achievements match this filter.": "이 필터에 맞는 카드 업적이 없습니다."
 }

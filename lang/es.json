@@ -4334,5 +4334,12 @@
  "Unlocks {name}. Only this star path gives it.": "Desbloquea {name}. Solo esta senda estelar la da.",
  "Starpath-only card": "Carta exclusiva de senda estelar",
  "Rainforest": "Selva",
- "Savanna": "Sabana"
+ "Savanna": "Sabana",
+ "Card Rewards": "Recompensas de cartas",
+ "{n} ready": "{n} listas",
+ "Card reward x{n}": "Recompensa de cartas x{n}",
+ "Cards received x{n}": "Cartas recibidas x{n}",
+ "Face-down card, likely {rarity}": "Carta boca abajo, probablemente {rarity}",
+ "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Logros que dan una carta. Se saca de tu reserva de facción al reclamarla.",
+ "No card achievements match this filter.": "Ningún logro con carta coincide con este filtro."
 }

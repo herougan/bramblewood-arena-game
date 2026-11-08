@@ -4335,5 +4335,12 @@
  "Unlocks {name}. Only this star path gives it.": "Binubuksan ang {name}. Tanging ang landas ng bituing ito ang nagbibigay nito.",
  "Starpath-only card": "Card ng landas ng bituin lamang",
  "Rainforest": "Rainforest",
- "Savanna": "Sabana"
+ "Savanna": "Sabana",
+ "Card Rewards": "Mga Gantimpalang Card",
+ "{n} ready": "{n} handa na",
+ "Card reward x{n}": "Gantimpalang card x{n}",
+ "Cards received x{n}": "Mga natanggap na card x{n}",
+ "Face-down card, likely {rarity}": "Nakataob na card, malamang {rarity}",
+ "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Mga achievement na nagbibigay ng card. Hinuhugot ito sa faction pool mo kapag kinuha mo.",
+ "No card achievements match this filter.": "Walang achievement na may card na tugma sa filter na ito."
 }

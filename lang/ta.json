@@ -4337,5 +4337,12 @@
  "Unlocks {name}. Only this star path gives it.": "{name} திறக்கும். இந்த நட்சத்திரப் பாதை மட்டுமே இதைத் தரும்.",
  "Starpath-only card": "நட்சத்திரப் பாதைக்கு மட்டுமான அட்டை",
  "Rainforest": "மழைக்காடு",
- "Savanna": "புல்வெளி"
+ "Savanna": "புல்வெளி",
+ "Card Rewards": "அட்டை பரிசுகள்",
+ "{n} ready": "{n} தயார்",
+ "Card reward x{n}": "அட்டை பரிசு x{n}",
+ "Cards received x{n}": "பெற்ற அட்டைகள் x{n}",
+ "Face-down card, likely {rarity}": "கவிழ்த்த அட்டை, பெரும்பாலும் {rarity}",
+ "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "அட்டை தரும் சாதனைகள். பெறும்போது உங்கள் பிரிவு தொகுப்பிலிருந்து எடுக்கப்படும்.",
+ "No card achievements match this filter.": "இந்த வடிகட்டிக்கு பொருந்தும் அட்டை சாதனை இல்லை."
 }

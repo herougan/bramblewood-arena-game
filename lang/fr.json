@@ -4335,5 +4335,12 @@
  "Unlocks {name}. Only this star path gives it.": "Débloque {name}. Seul ce chemin d’étoiles la donne.",
  "Starpath-only card": "Carte exclusive au chemin d’étoiles",
  "Rainforest": "Forêt tropicale",
- "Savanna": "Savane"
+ "Savanna": "Savane",
+ "Card Rewards": "Récompenses de cartes",
+ "{n} ready": "{n} prêt(s)",
+ "Card reward x{n}": "Récompense : cartes x{n}",
+ "Cards received x{n}": "Cartes reçues x{n}",
+ "Face-down card, likely {rarity}": "Carte face cachée, probablement {rarity}",
+ "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Succès qui donnent une carte. Elle est tirée de ta réserve de faction quand tu la réclames.",
+ "No card achievements match this filter.": "Aucun succès avec carte ne correspond à ce filtre."
 }

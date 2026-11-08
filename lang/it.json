@@ -4336,5 +4336,12 @@
  "Unlocks {name}. Only this star path gives it.": "Sblocca {name}. Solo questo sentiero stellare la dà.",
  "Starpath-only card": "Carta esclusiva del sentiero stellare",
  "Rainforest": "Foresta pluviale",
- "Savanna": "Savana"
+ "Savanna": "Savana",
+ "Card Rewards": "Ricompense di carte",
+ "{n} ready": "{n} pronte",
+ "Card reward x{n}": "Ricompensa di carte x{n}",
+ "Cards received x{n}": "Carte ricevute x{n}",
+ "Face-down card, likely {rarity}": "Carta coperta, probabilmente {rarity}",
+ "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Obiettivi che danno una carta. Viene estratta dal tuo mazzo fazione quando la riscatti.",
+ "No card achievements match this filter.": "Nessun obiettivo con carta corrisponde a questo filtro."
 }

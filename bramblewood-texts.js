@@ -3661,7 +3661,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-shell-after": "After it attacks: +{n} Armor until the round ends.",
   "ui.shell-when-hit": "When first hit (default)",
   "ui.shell-when-after": "After it attacks",
-  "ui.sk-shell-when-desc": "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor)."
+  "ui.sk-shell-when-desc": "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).",
+  "ui.ui36-card-rewards": "Card Rewards",
+  "ui.ui36-n-ready": "{n} ready",
+  "ui.ui36-cards-prize": "Card reward x{n}",
+  "ui.ui36-cards-got": "Cards received x{n}",
+  "ui.ui36-next-card": "Face-down card, likely {rarity}",
+  "ui.ui36-cards-tip": "Achievements that give a card. The card is drawn from your faction pool when you claim it.",
+  "ui.ui36-none": "No card achievements match this filter."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

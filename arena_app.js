@@ -13256,7 +13256,7 @@ function claimAchievement(id){
   Object.keys(def.reward).forEach(kind=> grantCurrency(kind, def.reward[kind]));
   // 2026-10-21 (package RP): an achievement's faction cards. 2026-11-07 (package UI27 #12): granted here, shown by the claim button's ui27RevealAchvCards
   // (the reveal the won cards get, then one "N cards added" message); no message names or counts a card before it is seen.
-  try{ const fn = achievementFactionCards(id); if(fn){ const got = grantFactionRewardCards(fn); if(got.length) ui27AchvCardsPending.push(...got); } }catch(e){}
+  try{ const fn = achievementFactionCards(id); if(fn){ const got = grantFactionRewardCards(fn); if(got.length){ ui27AchvCardsPending.push(...got); ui36SaveAchvCards(id, got); /* 2026-11-08 (UI36): remembered, so the row shows the card it gave */ } } }catch(e){}
   myClaimedAchievements.add(id);
   saveClaimedAchievements();
   return true;
@@ -13292,6 +13292,43 @@ function achievementRewardChipsHTML(reward, achvId){
 // 2026-10-21 (package RP, owner Oct 21: "Certain achievements also drop faction rewards"): FACTION_REWARD_TRACK.achievements
 function achievementFactionCards(achvId){ try{ return (FACTION_REWARD_TRACK.achievements || {})[achvId] | 0; }catch(e){ return 0; } }
 function achievementFactionChipHTML(achvId){ const n = achievementFactionCards(achvId); return n ? `<span class="hud-pill achv-faction-chip">${escapeHtml(TX('ui.rp-achv-faction-chip', {n}))}</span>` : ''; }
+// UI36_ACHVCARDS:BEGIN
+// 2026-11-08 (package UI36, owner 10:52 #13: "Achievement page. We need a filter to filter out achievements that produces cards ... Card Rewards ... These kind will be the
+// most highly sought after ones."): the "🃏 Card Rewards" toggle on the Achievements page. An achievement gives cards through FACTION_REWARD_TRACK.achievements (N faction
+// cards drawn from the faction pool when it is claimed); no achievement gives an egg or a Starpath mark today (marks come from the Wildpaths trails). Which card is drawn is
+// only known at the claim, so an unclaimed row shows N face-down chips tinted with the rarity the pool's pattern will give next, and a claimed row shows the cards it gave
+// (kept per browser in ui36AchvCards; a row claimed before this package shows N plain face-down chips).
+const UI36_CARDS_KEY = 'bramblewood_arena_achv_cards_v1', UI36_ONLY_KEY = 'bramblewood_achv_cards_only_v1';
+function ui36AchvCards(){ try{ const o = JSON.parse(localStorage.getItem(UI36_CARDS_KEY) || '{}'); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; }catch(e){ return {}; } }
+function ui36SaveAchvCards(id, ids){ try{ const o = ui36AchvCards(); o[id] = (o[id] || []).concat(ids); localStorage.setItem(UI36_CARDS_KEY, JSON.stringify(o)); }catch(e){} }
+let achvCardsOnly = (()=>{ try{ return localStorage.getItem(UI36_ONLY_KEY) === '1'; }catch(e){ return false; } })();
+function ui36SetCardsOnly(on){ achvCardsOnly = !!on; try{ localStorage.setItem(UI36_ONLY_KEY, on ? '1' : '0'); }catch(e){} }
+function ui36AchvCardCount(def){ return achievementFactionCards(def.id) + (Array.isArray(def.cardIds) ? def.cardIds.length : 0); } // def.cardIds: a future fixed card (egg / hatchling / mark)
+// the rarities the next n set rewards will most likely be (factionSetPick's own rarity step, run forward; a Leader slot can still replace one)
+function ui36NextRarities(n){
+  try{
+    const st = loadFactionPool(), defs = getCardDefs(), map = trackMapReached();
+    const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]) && !factionLeaderHeld(st, id));
+    const left = {}; live.forEach(id=>{ const k = factionRarityKey(defs[id].rarity); left[k] = (left[k] || 0) + factionClimbWant(factionSideOf(defs[id]), Math.max(copiesOwned(id), (st.given && st.given[id]) || 0), st.left[id]); });
+    const out = []; let step = st.patternStep | 0;
+    for(let i = 0; i < n; i++){ const pr = factionPatternRarity(step, map, left); out.push(pr.rarity || 'common'); step += pr.steps; if(pr.rarity && left[pr.rarity] > 0) left[pr.rarity]--; }
+    return out;
+  }catch(e){ return Array(n).fill('common'); }
+}
+function ui36CardsRowHTML(def, st){
+  const n = ui36AchvCardCount(def); if(!n) return '';
+  const defs = getCardDefs(); let chips, label;
+  if(st.claimed){
+    const got = (ui36AchvCards()[def.id] || []).filter(id=> defs[id]);
+    chips = got.length ? got.map(id=> cardChipHTML(defs[id], {})).join('') : Array.from({length: n}, ()=> cardChipHTML({rarity: 'common'}, {mystery: true})).join('');
+    label = TX('ui.ui36-cards-got', {n});
+  }else{
+    chips = ui36NextRarities(n).map(r=> cardChipHTML({rarity: r}, {mystery: true, label: TX('ui.ui36-next-card', {rarity: rarityDef(r).label})})).join('');
+    label = TX('ui.ui36-cards-prize', {n});
+  }
+  return `<div class="achv-cards" title="${escapeAttr(TX('ui.ui36-cards-tip'))}"><span class="achv-cards-lbl">🃏 ${escapeHtml(label)}</span><span class="achv-cards-row">${chips}</span></div>`;
+}
+// UI36_ACHVCARDS:END
 const ACHV_CATS = [['battle','⚔️','Battles'], ['road','🗺️','The road'], ['boss','👑','Bosses and raids'], ['collection','🗂️','Collection'], ['forge','🔨','The Forge']];
 const ACHV_TIER = {1:'Bronze', 2:'Silver', 3:'Gold', 4:'Dragon'};
 let achvFilter = 'all';
@@ -13300,12 +13337,14 @@ function achievementsPanelHTML(){
   const rows = ACHIEVEMENT_DEFS.map(def=> ({def, st: achievementStatus(def, ctx)}));
   const claimed = rows.filter(r=> r.st.claimed).length, ready = rows.filter(r=> r.st.claimable).length, total = rows.length;
   const pct = Math.round(claimed / Math.max(1, total) * 100);
-  const show = r=> achvFilter === 'all' || (achvFilter === 'ready' && r.st.claimable) || (achvFilter === 'open' && !r.st.complete) || (achvFilter === 'done' && r.st.claimed);
+  const cardTotal = rows.filter(r=> ui36AchvCardCount(r.def) > 0).length, cardReady = rows.filter(r=> ui36AchvCardCount(r.def) > 0 && r.st.claimable).length;
+  const show0 = r=> achvFilter === 'all' || (achvFilter === 'ready' && r.st.claimable) || (achvFilter === 'open' && !r.st.complete) || (achvFilter === 'done' && r.st.claimed);
+  const show = r=> show0(r) && (!achvCardsOnly || ui36AchvCardCount(r.def) > 0); // 2026-11-08 (UI36): the Card Rewards toggle narrows whatever the status filter shows
   const tile = ({def, st})=>{ const p = Math.round((st.current/def.target)*100), tier = def.tier || 1;
-    const state = st.claimed ? 'is-claimed' : st.claimable ? 'is-ready' : st.current > 0 ? 'is-going' : 'is-locked';
+    const state = (st.claimed ? 'is-claimed' : st.claimable ? 'is-ready' : st.current > 0 ? 'is-going' : 'is-locked') + (ui36AchvCardCount(def) ? (st.claimed ? ' has-card' : ' has-card is-card-hot') : '');
     return `<article class="achv-tile ${state} tier-${tier}" aria-label="${escapeAttr(def.title)}: ${st.claimed ? 'claimed' : st.claimable ? 'ready to claim' : st.current + ' of ' + def.target}">
       <div class="achv-medal" title="${ACHV_TIER[tier] || ''} medal"><span>${def.icon}</span>${st.claimed ? '<i class="achv-stamp" aria-hidden="true">✓</i>' : ''}</div>
-      <div class="achv-body"><b class="achv-title">${escapeHtml(def.title)}</b><p class="achv-desc">${escapeHtml(def.desc)}</p>
+      <div class="achv-body"><b class="achv-title">${escapeHtml(def.title)}</b><p class="achv-desc">${escapeHtml(def.desc)}</p>${ui36CardsRowHTML(def, st)}
         ${st.claimed ? '' : `<div class="achv-meter"><div class="achv-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${def.target}" aria-valuenow="${st.current}"><i style="width:${p}%"></i></div><small class="achv-progress">${st.current} / ${def.target}</small></div>`}
         <div class="achv-foot"><div class="achv-reward-preview">${achievementRewardChipsHTML(def.reward, def.id)}</div>${st.claimed ? `<span class="achv-claimed-badge">Claimed</span>` : st.claimable ? `<button class="btn primary small achv-claim-btn" data-achv="${def.id}">🎁 Claim</button>` : ''}</div></div>
     </article>`; };
@@ -13318,12 +13357,14 @@ function achievementsPanelHTML(){
       <div class="achv-head-txt"><h2>🏆 Achievements</h2><p class="panel-sub">${claimed} of ${total} claimed${ready ? ` · <b>${ready} ready to claim</b>` : ''}</p></div>
       ${ready > 1 ? `<button type="button" class="btn primary achv-claim-all" id="achvClaimAll">🎁 Claim all ${ready}</button>` : ''}
     </header>
+    ${cardTotal ? `<button type="button" class="achv-cardbtn${achvCardsOnly ? ' is-on' : ''}${cardReady ? ' has-ready' : ''}" id="achvCardsBtn" aria-pressed="${achvCardsOnly}" title="${escapeAttr(TX('ui.ui36-cards-tip'))}"><span class="acb-ico" aria-hidden="true">🃏</span><span class="acb-txt">${escapeHtml(TX('ui.ui36-card-rewards'))}</span><b class="acb-n">${cardTotal}</b>${cardReady ? `<small class="acb-ready">${escapeHtml(TX('ui.ui36-n-ready', {n: cardReady}))}</small>` : ''}</button>` : ''}
     <div class="achv-filters" role="group" aria-label="Show">${f('all', 'All', total)}${f('ready', 'Ready', ready)}${f('open', 'In progress', rows.filter(r=> !r.st.complete).length)}${f('done', 'Claimed', claimed)}</div>
-    ${groups || '<p class="panel-sub achv-empty">Nothing here yet.</p>'}
+    ${groups || `<p class="panel-sub achv-empty">${achvCardsOnly ? escapeHtml(TX('ui.ui36-none')) : 'Nothing here yet.'}</p>`}
   </div>`;
 }
 function wireAchievementsPanel(){
   const redraw = ()=>{ const panel = document.querySelector('.achievements-panel'); if(panel) panel.outerHTML = achievementsPanelHTML(); try{ if(window.renderTopbar) renderTopbar(); }catch(e){} wireAchievementsPanel(); };
+  { const cb = document.getElementById('achvCardsBtn'); if(cb) cb.onclick = ()=>{ ui36SetCardsOnly(!achvCardsOnly); redraw(); try{ const nb = document.getElementById('achvCardsBtn'); if(nb) nb.focus(); }catch(e){} }; }
   document.querySelectorAll('[data-achv-filter]').forEach(b=> b.onclick = ()=>{ achvFilter = b.dataset.achvFilter; redraw(); });
   { const all = document.getElementById('achvClaimAll'); if(all) all.onclick = ()=>{ let n = 0; const sum = {}; ACHIEVEMENT_DEFS.forEach(d=>{ if(claimAchievement(d.id)){ n++; Object.entries(d.reward||{}).forEach(([k, v])=> sum[k] = (sum[k]||0) + v); } }); if(!n) return; rewardRush(all.getBoundingClientRect(), sum, {big:true}); showToast(TX('toast.claimed-achievements', {n}), 'ok'); redraw(); ui27RevealAchvCards(); /* UI27 #12 */ }; }
   document.querySelectorAll('.achv-claim-btn').forEach(btn=>{
