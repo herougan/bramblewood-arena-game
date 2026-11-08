@@ -53,7 +53,7 @@ for (const [code, l] of bal27Lines) {
 const PINS = {
   "5-1": {"deck":{"constrictor-coil":5,"cypress-root-lurker":3,"nutria-reedcutter":1,"swamp-alligator":1,"fire-ant-raft":1,"crocodile-ambusher":2}},
   "5-2": {"deck":{"bog-leech":1,"swamp-alligator":3,"cypress-root-lurker":2,"crocodile-ambusher":3,"constrictor-coil":5}},
-  "5-3": {"deck":{"constrictor-coil":3,"swamp-alligator":4,"grass-viper":2,"bog-leech":1,"fire-ant-raft":4,"nutria-reedcutter":3},"leaders":["crocodile-ambusher"]},
+  "5-3": {"deck":{"constrictor-coil":3,"swamp-alligator":4,"bog-leech":1,"fire-ant-raft":4,"nutria-reedcutter":3,"cypress-root-lurker":2}},
   "5-4": {"deck":{"fen-mink":3,"grass-viper":4,"cypress-root-lurker":1,"swamp-alligator":4,"nutria-reedcutter":3,"constrictor-coil":3},"shield":1},
   "5-5": {"deck":{"crocodile-ambusher":4,"bog-leech":1,"cypress-root-lurker":2,"constrictor-coil":2,"nutria-reedcutter":2,"fire-ant-raft":1,"swamp-alligator":2}},
   "14-2": {"deck":{"spitting-cobra":1,"grave-grin-hyena":3,"marula-elephant":4,"ant-hill":1,"springbok-pronker":5,"acacia-giraffe":1},"leaders":["ant-hill"]},
@@ -64,7 +64,6 @@ const PINS = {
   "7-6": {"deck":{"wolf-spider-mother":3,"leafcutter-gardener":3,"worker-ant":1,"hawthorn-shieldbug":2,"dung-beetle":4,"planarian-splitter":4,"earthworm":1,"corpse-flower-beetle":1},"shield":18},
   "8-8": {"deck":{"stalactite-golem":4,"echo-screecher":3,"blind-cave-fish":4,"gull-thief":1,"hollow-belly-rat":1,"gallery-orb-weaver":1,"sulfur-cinder-moth":1},"shield":1},
   "5-7": {"deck":{"constrictor-coil":3,"grass-viper":1,"alligator-gar":3,"bog-leech":1,"anhinga-spearbird":3,"cypress-root-lurker":1,"nutria-reedcutter":5,"crocodile-ambusher":2},"shield":0},
-  "2-2": {"deck":{"gull-thief":5,"pincushion-urchin":5,"open-ocean-hermit-crab":5,"rock-pool-starfish":1,"moon-jelly":4},"leaders":["open-ocean-hermit-crab"]},
   "9-4": {"deck":{"fiddler-crab-swarm":1,"sea-turtle-elder":1,"reef-shark":5,"conch-crawler":1,"horseshoe-crab":4,"mangrove-mudskipper":4},"shield":4},
   "16-3": {"deck":{"woodland-caribou":4,"alpha-howler":4,"redwood-woodpecker":1,"boreal-elk":5,"snowshoe-hare":4,"cone-cutter-squirrel":2},"shield":16},
   "11-8": {"deck":{"chipmunk-hoarder":3,"eyrie-warden":4,"mountain-hare":3,"alpine-salamander":1,"alpine-swift":2,"peak-condor":1},"leaders":["gannet-nestweaver"],"shield":16}

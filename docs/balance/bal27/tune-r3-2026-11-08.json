@@ -297,12 +297,14 @@
   "mapName": "Pebble Beach",
   "kind": "skirmish",
   "target": 80,
-  "before200": 66,
-  "after200": 66,
+  "before200": 62,
+  "after200": 62,
   "keep": false,
   "moves": [],
-  "tried": [],
-  "pick200": 66,
+  "tried": [
+   "pincushion-urchin -2 -> oystercatcher"
+  ],
+  "pick200": 59.5,
   "k14": [
    0,
    0
@@ -408,6 +410,29 @@
    "peak-condor -1 -> red-billed-chough"
   ],
   "pick200": 53.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "5-3",
+  "map": "mw",
+  "mapName": "Gatorback Swamp",
+  "kind": "skirmish",
+  "target": 68,
+  "before200": 44.5,
+  "after200": 68.5,
+  "keep": true,
+  "moves": [
+   "grass-viper -2 -> swamp-alligator",
+   "grass-viper -2 -> cypress-root-lurker"
+  ],
+  "tried": [
+   "grass-viper -2 -> swamp-alligator",
+   "grass-viper -2 -> cypress-root-lurker"
+  ],
+  "pick200": 68.5,
   "k14": [
    0,
    0

@@ -31,42 +31,50 @@
    "gull-thief": 5,
    "pincushion-urchin": 5,
    "open-ocean-hermit-crab": 5,
-   "rock-pool-starfish": 1,
-   "moon-jelly": 4
+   "rock-pool-starfish": 2,
+   "moon-jelly": 3
   },
   "leaders": [
    "open-ocean-hermit-crab"
   ],
   "shieldOverride": null,
-  "win200": 66,
+  "win200": 62,
   "shown": 1
  },
  "pick": {
   "deck": {
    "gull-thief": 5,
-   "pincushion-urchin": 5,
+   "pincushion-urchin": 3,
    "open-ocean-hermit-crab": 5,
-   "rock-pool-starfish": 1,
-   "moon-jelly": 4
+   "rock-pool-starfish": 2,
+   "moon-jelly": 3,
+   "oystercatcher": 2
   },
   "leaders": [
    "open-ocean-hermit-crab"
   ],
   "shieldOverride": null,
-  "win200": 66,
+  "win200": 59.5,
   "shown": 1,
-  "tune60": 65.8
+  "tune60": 62.5
  },
  "keep": false,
  "k14After": 0,
  "trail": [
   {
    "move": "start",
-   "win": 65.8,
-   "hpLost": 52.4,
-   "rounds": 7.44
+   "win": 58.3,
+   "hpLost": 55.8,
+   "rounds": 7.63
+  },
+  {
+   "move": "pincushion-urchin -2 -> oystercatcher",
+   "win": 62.5,
+   "hpLost": 52.1,
+   "rounds": 7.63,
+   "trials": 28
   }
  ],
- "trials": 31,
- "sec": 20
+ "trials": 70,
+ "sec": 38
 }

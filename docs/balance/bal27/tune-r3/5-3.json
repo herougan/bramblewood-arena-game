@@ -1,0 +1,92 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "5-3",
+ "map": "mw",
+ "mapName": "Gatorback Swamp",
+ "kind": "skirmish",
+ "name": "Cypress Roots",
+ "band": {
+  "lo": 60.00000000000001,
+  "hi": 76,
+  "target": 68
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "grass-viper",
+  "nutria-reedcutter",
+  "swamp-alligator"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "fire-ant-raft"
+ ],
+ "namesake": false,
+ "shieldRule": 5,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "constrictor-coil": 3,
+   "swamp-alligator": 2,
+   "grass-viper": 4,
+   "bog-leech": 1,
+   "fire-ant-raft": 4,
+   "nutria-reedcutter": 3
+  },
+  "leaders": [
+   "fire-ant-raft"
+  ],
+  "shieldOverride": null,
+  "win200": 44.5,
+  "shown": 3
+ },
+ "pick": {
+  "deck": {
+   "constrictor-coil": 3,
+   "swamp-alligator": 4,
+   "bog-leech": 1,
+   "fire-ant-raft": 4,
+   "nutria-reedcutter": 3,
+   "cypress-root-lurker": 2
+  },
+  "leaders": [
+   "fire-ant-raft"
+  ],
+  "shieldOverride": null,
+  "win200": 68.5,
+  "shown": 3,
+  "tune60": 68.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 39.2,
+   "hpLost": 77,
+   "rounds": 8.68
+  },
+  {
+   "move": "grass-viper -2 -> swamp-alligator",
+   "win": 60,
+   "hpLost": 60.7,
+   "rounds": 8.51,
+   "trials": 42
+  },
+  {
+   "move": "grass-viper -2 -> cypress-root-lurker",
+   "win": 68.3,
+   "hpLost": 53.6,
+   "rounds": 8.01,
+   "trials": 42
+  }
+ ],
+ "trials": 89,
+ "sec": 50
+}
