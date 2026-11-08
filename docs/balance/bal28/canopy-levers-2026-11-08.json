@@ -1,0 +1,62 @@
+{
+ "tool": "tools/bal28/canopy_levers_2026_11_08.js",
+ "games": 40,
+ "seed0": 9100,
+ "rows": {
+  "14-A-1": {
+   "target": 90,
+   "as is": 0,
+   "Bower off": 0,
+   "plain bramble": 0,
+   "Shield 0": 0,
+   "no Rain": 2.5,
+   "no High Canopy": 0,
+   "no Rain + Shield 0": 5,
+   "Bower off + no Rain": 15
+  },
+  "14-A-2": {
+   "target": 80,
+   "as is": 47.5,
+   "Bower off": 80,
+   "plain bramble": 80,
+   "Shield 0": 52.5,
+   "no Rain": 15,
+   "no High Canopy": 50,
+   "no Rain + Shield 0": 25,
+   "Bower off + no Rain": 65
+  },
+  "14-A-3": {
+   "target": 70,
+   "as is": 27.5,
+   "Bower off": 62.5,
+   "plain bramble": 57.5,
+   "Shield 0": 27.5,
+   "no Rain": 22.5,
+   "no High Canopy": 27.5,
+   "no Rain + Shield 0": 22.5,
+   "Bower off + no Rain": 70
+  },
+  "14-A-4": {
+   "target": 60,
+   "as is": 10,
+   "Bower off": 35,
+   "plain bramble": 35,
+   "Shield 0": 12.5,
+   "no Rain": 7.5,
+   "no High Canopy": 12.5,
+   "no Rain + Shield 0": 12.5,
+   "Bower off + no Rain": 40
+  },
+  "14-A-5": {
+   "target": 40,
+   "as is": 0,
+   "Bower off": 10,
+   "plain bramble": 10,
+   "Shield 0": 5,
+   "no Rain": 0,
+   "no High Canopy": 2.5,
+   "no Rain + Shield 0": 2.5,
+   "Bower off + no Rain": 22.5
+  }
+ }
+}
