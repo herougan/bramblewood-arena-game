@@ -1,0 +1,524 @@
+[
+ {
+  "code": "0-B-1",
+  "map": "mo",
+  "mapName": "The Old Bramble",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 72,
+  "after200": 72,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 72,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "0-B-2",
+  "map": "mo",
+  "mapName": "The Old Bramble",
+  "kind": "skirmish",
+  "target": 75,
+  "before200": 62.5,
+  "after200": 62.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 62.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "1-3",
+  "map": "mf",
+  "mapName": "Thistlewood",
+  "kind": "skirmish",
+  "target": 70,
+  "before200": 95,
+  "after200": 95,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "cottontail -1 -> honey-bee"
+  ],
+  "pick200": 95.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "1-4",
+  "map": "mf",
+  "mapName": "Thistlewood",
+  "kind": "skirmish",
+  "target": 60,
+  "before200": 93.5,
+  "after200": 93.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 93.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "1-5",
+  "map": "mf",
+  "mapName": "Thistlewood",
+  "kind": "elite",
+  "target": 40,
+  "before200": 43,
+  "after200": 43,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "dormouse -3 -> badger-lumberjack"
+  ],
+  "pick200": 45,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "14-1",
+  "map": "m5",
+  "mapName": "Savanna Reaches",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 56,
+  "after200": 56,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 56,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "14-2",
+  "map": "m5",
+  "mapName": "Savanna Reaches",
+  "kind": "skirmish",
+  "target": 85,
+  "before200": 69.5,
+  "after200": 77,
+  "keep": true,
+  "moves": [
+   "leader spitting-cobra -> ant-hill"
+  ],
+  "tried": [
+   "leader spitting-cobra -> ant-hill"
+  ],
+  "pick200": 77,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "14-5",
+  "map": "m5",
+  "mapName": "Savanna Reaches",
+  "kind": "elite",
+  "target": 70,
+  "before200": 36.5,
+  "after200": 36.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "dust-hyena -1 -> hoopoe-herald",
+   "shield 5 -> 1"
+  ],
+  "pick200": 35.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "14-6",
+  "map": "m5",
+  "mapName": "Savanna Reaches",
+  "kind": "elite",
+  "target": 65,
+  "before200": 56.5,
+  "after200": 56.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 56.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "19-A-1",
+  "map": "m9",
+  "mapName": "Basalt Foundry",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 85.5,
+  "after200": 90.5,
+  "keep": true,
+  "moves": [
+   "cinder-stoker -1 -> cinder-gecko"
+  ],
+  "tried": [
+   "cinder-stoker -1 -> cinder-gecko"
+  ],
+  "pick200": 90.5,
+  "k14": [
+   1,
+   1
+  ]
+ },
+ {
+  "code": "19-A-10",
+  "map": "m9",
+  "mapName": "Basalt Foundry",
+  "kind": "boss",
+  "target": 40,
+  "before200": 24.5,
+  "after200": 24.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 24.5,
+  "k14": [
+   1,
+   1
+  ]
+ },
+ {
+  "code": "19-A-2",
+  "map": "m9",
+  "mapName": "Basalt Foundry",
+  "kind": "skirmish",
+  "target": 86.3,
+  "before200": 78,
+  "after200": 78,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 78,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "19-A-3",
+  "map": "m9",
+  "mapName": "Basalt Foundry",
+  "kind": "skirmish",
+  "target": 72.5,
+  "before200": 55,
+  "after200": 55,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "ashbone-ghoul -1 -> ember-jackal"
+  ],
+  "pick200": 42.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "19-A-7",
+  "map": "m9",
+  "mapName": "Basalt Foundry",
+  "kind": "elite",
+  "target": 67.5,
+  "before200": 18,
+  "after200": 18,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 18,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "19-A-8",
+  "map": "m9",
+  "mapName": "Basalt Foundry",
+  "kind": "elite",
+  "target": 63.800000000000004,
+  "before200": 23.5,
+  "after200": 23.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 23.5,
+  "k14": [
+   2,
+   2
+  ]
+ },
+ {
+  "code": "2-1",
+  "map": "mb",
+  "mapName": "Pebble Beach",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 56.5,
+  "after200": 56.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "oystercatcher -1 -> moon-jelly",
+   "rock-pool-starfish -2 -> moon-jelly"
+  ],
+  "pick200": 54.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "2-2",
+  "map": "mb",
+  "mapName": "Pebble Beach",
+  "kind": "skirmish",
+  "target": 80,
+  "before200": 66,
+  "after200": 66,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 66,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "2-A-5",
+  "map": "mp",
+  "mapName": "Lilypad Reach",
+  "kind": "elite",
+  "target": 66,
+  "before200": 51,
+  "after200": 67,
+  "keep": true,
+  "moves": [
+   "box-turtle -1 -> victoria-regia",
+   "leader lodge-engineer -> marsh-harrier"
+  ],
+  "tried": [
+   "box-turtle -1 -> victoria-regia",
+   "leader lodge-engineer -> marsh-harrier"
+  ],
+  "pick200": 67,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "2-B-2",
+  "map": "mg",
+  "mapName": "Smugglers' Grotto",
+  "kind": "elite",
+  "target": 75,
+  "before200": 78.5,
+  "after200": 78.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "open-ocean-hermit-crab -1 -> conch-crawler"
+  ],
+  "pick200": 77.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "2-B-3",
+  "map": "mg",
+  "mapName": "Smugglers' Grotto",
+  "kind": "elite",
+  "target": 60,
+  "before200": 69.5,
+  "after200": 63.5,
+  "keep": true,
+  "moves": [
+   "tide-pool-crab -2 -> gull-thief"
+  ],
+  "tried": [
+   "tide-pool-crab -2 -> gull-thief"
+  ],
+  "pick200": 63.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "2-B-4",
+  "map": "mg",
+  "mapName": "Smugglers' Grotto",
+  "kind": "elite",
+  "target": 40,
+  "before200": 55.5,
+  "after200": 45,
+  "keep": true,
+  "moves": [
+   "open-ocean-hermit-crab -4 -> trash-panda-trickster",
+   "leader octopus-tactician -> gallery-orb-weaver"
+  ],
+  "tried": [
+   "open-ocean-hermit-crab -4 -> trash-panda-trickster",
+   "leader octopus-tactician -> gallery-orb-weaver"
+  ],
+  "pick200": 45,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "3-5",
+  "map": "mc",
+  "mapName": "Gannet Cliffs",
+  "kind": "elite",
+  "target": 66,
+  "before200": 56,
+  "after200": 56,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "peak-condor -1 -> red-billed-chough"
+  ],
+  "pick200": 53.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "5-4",
+  "map": "mw",
+  "mapName": "Gatorback Swamp",
+  "kind": "skirmish",
+  "target": 72,
+  "before200": 64.5,
+  "after200": 64.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 64.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "5-5",
+  "map": "mw",
+  "mapName": "Gatorback Swamp",
+  "kind": "elite",
+  "target": 66,
+  "before200": 46.5,
+  "after200": 60,
+  "keep": true,
+  "moves": [
+   "constrictor-coil -2 -> crocodile-ambusher",
+   "nutria-reedcutter -2 -> swamp-alligator"
+  ],
+  "tried": [
+   "constrictor-coil -2 -> crocodile-ambusher",
+   "nutria-reedcutter -2 -> swamp-alligator"
+  ],
+  "pick200": 60,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "7-5",
+  "map": "mu",
+  "mapName": "The Morel Hollow",
+  "kind": "elite",
+  "target": 60,
+  "before200": 68.5,
+  "after200": 68.5,
+  "keep": false,
+  "moves": [],
+  "tried": [
+   "bee-forager -1 -> earthworm",
+   "leader planarian-splitter -> dung-beetle"
+  ],
+  "pick200": 69,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "7-6",
+  "map": "mu",
+  "mapName": "The Morel Hollow",
+  "kind": "miniboss",
+  "target": 40,
+  "before200": 65.5,
+  "after200": 48,
+  "keep": true,
+  "moves": [
+   "garden-snail -1 -> earthworm",
+   "leafcutter-gardener -2 -> wolf-spider-mother",
+   "cane-toad -1 -> corpse-flower-beetle",
+   "hawthorn-shieldbug -1 -> planarian-splitter"
+  ],
+  "tried": [
+   "garden-snail -1 -> earthworm",
+   "leafcutter-gardener -2 -> wolf-spider-mother",
+   "cane-toad -1 -> corpse-flower-beetle",
+   "hawthorn-shieldbug -1 -> planarian-splitter"
+  ],
+  "pick200": 48,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "8-8",
+  "map": "m4",
+  "mapName": "Caves & Alcoves",
+  "kind": "miniboss",
+  "target": 40,
+  "before200": 53.5,
+  "after200": 41.5,
+  "keep": true,
+  "moves": [
+   "gallery-orb-weaver -1 -> sulfur-cinder-moth"
+  ],
+  "tried": [
+   "gallery-orb-weaver -1 -> sulfur-cinder-moth"
+  ],
+  "pick200": 41.5,
+  "k14": [
+   0,
+   0
+  ]
+ }
+]

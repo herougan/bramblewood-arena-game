@@ -1,0 +1,71 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "0-B-1",
+ "map": "mo",
+ "mapName": "The Old Bramble",
+ "kind": "skirmish",
+ "name": "Thorn Path",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "ant-scout",
+  "bramblewood-lynx",
+  "burrow-rabbit",
+  "cottontail",
+  "forager-ant",
+  "otter-kit",
+  "pond-duck"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": 0,
+ "before": {
+  "deck": {
+   "ant-scout": 5,
+   "bramblewood-lynx": 1,
+   "burrow-rabbit": 1,
+   "cottontail": 1,
+   "forager-ant": 4,
+   "otter-kit": 1,
+   "pond-duck": 1
+  },
+  "leaders": [],
+  "shieldOverride": 0,
+  "win200": 72,
+  "shown": 0
+ },
+ "pick": {
+  "deck": {
+   "ant-scout": 5,
+   "bramblewood-lynx": 1,
+   "burrow-rabbit": 1,
+   "cottontail": 1,
+   "forager-ant": 4,
+   "otter-kit": 1,
+   "pond-duck": 1
+  },
+  "leaders": [],
+  "shieldOverride": 0,
+  "win200": 72,
+  "shown": 0,
+  "tune60": 75
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 75,
+   "hpLost": 48.4,
+   "rounds": 7.8
+  }
+ ],
+ "trials": 1,
+ "sec": 5
+}

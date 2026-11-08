@@ -1,0 +1,89 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "2-1",
+ "map": "mb",
+ "mapName": "Pebble Beach",
+ "kind": "skirmish",
+ "name": "Rock Pool Raiders",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "gull-thief",
+  "moon-jelly",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin",
+  "rock-pool-starfish"
+ ],
+ "firstClear": [
+  "rock-pool-starfish"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "open-ocean-hermit-crab"
+ ],
+ "namesake": false,
+ "shieldRule": 2,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "gull-thief": 3,
+   "open-ocean-hermit-crab": 5,
+   "oystercatcher": 2,
+   "pincushion-urchin": 5,
+   "rock-pool-starfish": 5
+  },
+  "leaders": [
+   "open-ocean-hermit-crab"
+  ],
+  "shieldOverride": null,
+  "win200": 56.5,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "gull-thief": 3,
+   "open-ocean-hermit-crab": 5,
+   "oystercatcher": 1,
+   "pincushion-urchin": 5,
+   "rock-pool-starfish": 3,
+   "moon-jelly": 3
+  },
+  "leaders": [
+   "open-ocean-hermit-crab"
+  ],
+  "shieldOverride": null,
+  "win200": 54.5,
+  "shown": 1,
+  "tune60": 61.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 54.2,
+   "hpLost": 54.1,
+   "rounds": 7.2
+  },
+  {
+   "move": "oystercatcher -1 -> moon-jelly",
+   "win": 57.5,
+   "hpLost": 52.7,
+   "rounds": 7.08,
+   "trials": 31
+  },
+  {
+   "move": "rock-pool-starfish -2 -> moon-jelly",
+   "win": 61.7,
+   "hpLost": 49.3,
+   "rounds": 7.12,
+   "trials": 33
+  }
+ ],
+ "trials": 102,
+ "sec": 50
+}

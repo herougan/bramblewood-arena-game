@@ -22,9 +22,10 @@ const fields = l => ({ deck: JSON.parse((l.match(/deck:(\{[^}]*\})/) || [0, '{}'
 const find = code => { for (const m of G.CONQUEST_MAPS) { if (m.reserved || m.tower || m.endless) continue; const n = (m.nodes || []).find(x => x.key === code && x.deck); if (n) return { m, n }; } return null; };
 
 // ---- 1. road retune ----
-// round 1 (tune) then round 2 (tune-r2, from round 1's decks; its 'before' is round 1's pick), the later kept pick wins
+// round 1 (tune) then round 2 (tune-r2, from round 1's decks; its 'before' is round 1's pick), then round 3 (tune-r3, 2026-11-08: tune
+// seeds 11300, re-read at 120 games), the later kept pick wins
 const tune = {}, first = {};
-['tune', 'tune-r2'].map(d => path.join(ROOT, 'docs', 'balance', 'bal27', d)).filter(d => fs.existsSync(d)).forEach(tdir =>
+['tune', 'tune-r2', 'tune-r3'].map(d => path.join(ROOT, 'docs', 'balance', 'bal27', d)).filter(d => fs.existsSync(d)).forEach(tdir =>
   fs.readdirSync(tdir).filter(f => f.endsWith('.json')).forEach(f => { const x = JSON.parse(fs.readFileSync(path.join(tdir, f), 'utf8')); if (x.keep) { tune[x.code] = x; if (!first[x.code]) first[x.code] = x; } }));
 const bal27Lines = [...lines.entries()].filter(([, l]) => /2026-11-08 \(BAL27\)/.test(l));
 ok(bal27Lines.length >= 1, 'BAL27 retuned some road fights: ' + bal27Lines.length);
@@ -54,7 +55,14 @@ const PINS = {
   "5-2": {"deck":{"bog-leech":1,"swamp-alligator":3,"cypress-root-lurker":2,"crocodile-ambusher":3,"constrictor-coil":5}},
   "5-3": {"deck":{"constrictor-coil":3,"swamp-alligator":4,"grass-viper":2,"bog-leech":1,"fire-ant-raft":4,"nutria-reedcutter":3},"leaders":["crocodile-ambusher"]},
   "5-4": {"deck":{"fen-mink":3,"grass-viper":4,"cypress-root-lurker":1,"swamp-alligator":4,"nutria-reedcutter":3,"constrictor-coil":3},"shield":1},
-  "5-5": {"deck":{"crocodile-ambusher":2,"bog-leech":1,"cypress-root-lurker":2,"constrictor-coil":4,"nutria-reedcutter":4,"fire-ant-raft":1}},
+  "5-5": {"deck":{"crocodile-ambusher":4,"bog-leech":1,"cypress-root-lurker":2,"constrictor-coil":2,"nutria-reedcutter":2,"fire-ant-raft":1,"swamp-alligator":2}},
+  "14-2": {"deck":{"spitting-cobra":1,"grave-grin-hyena":3,"marula-elephant":4,"ant-hill":1,"springbok-pronker":5,"acacia-giraffe":1},"leaders":["ant-hill"]},
+  "19-A-1": {"deck":{"beaver-lumberjack":3,"phoenix-fledgling":5,"anvilwhisker-otter":4,"ashbone-ghoul":1,"cinder-gecko":1}},
+  "2-A-5": {"deck":{"duckling":1,"lodge-engineer":4,"muskrat-reedgatherer":1,"old-sturgeon":3,"pond-algae":1,"pond-duck":1,"water-vole":1,"victoria-regia":1},"leaders":["marsh-harrier"]},
+  "2-B-3": {"deck":{"driftwood-crab":2,"duckling":1,"gull-thief":3,"open-ocean-hermit-crab":3,"pelican-diver":4,"pincushion-urchin":4,"tide-pool-crab":2,"trash-panda-trickster":1}},
+  "2-B-4": {"deck":{"gull-thief":1,"octopus-tactician":3,"pelican-diver":4,"tidepool-trapper-crab":4,"conch-crawler":1,"trash-panda-trickster":4},"leaders":["gallery-orb-weaver"]},
+  "7-6": {"deck":{"wolf-spider-mother":3,"leafcutter-gardener":3,"worker-ant":1,"hawthorn-shieldbug":2,"dung-beetle":4,"planarian-splitter":4,"earthworm":1,"corpse-flower-beetle":1},"shield":18},
+  "8-8": {"deck":{"stalactite-golem":4,"echo-screecher":3,"blind-cave-fish":4,"gull-thief":1,"hollow-belly-rat":1,"gallery-orb-weaver":1,"sulfur-cinder-moth":1},"shield":1},
   "5-7": {"deck":{"constrictor-coil":3,"grass-viper":1,"alligator-gar":3,"bog-leech":1,"anhinga-spearbird":3,"cypress-root-lurker":1,"nutria-reedcutter":5,"crocodile-ambusher":2},"shield":0},
   "2-2": {"deck":{"gull-thief":5,"pincushion-urchin":5,"open-ocean-hermit-crab":5,"rock-pool-starfish":1,"moon-jelly":4},"leaders":["open-ocean-hermit-crab"]},
   "9-4": {"deck":{"fiddler-crab-swarm":1,"sea-turtle-elder":1,"reef-shark":5,"conch-crawler":1,"horseshoe-crab":4,"mangrove-mudskipper":4},"shield":4},

@@ -1,0 +1,85 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "1-3",
+ "map": "mf",
+ "mapName": "Thistlewood",
+ "kind": "skirmish",
+ "name": "Burrow Line",
+ "band": {
+  "lo": 62,
+  "hi": 77.99999999999999,
+  "target": 70
+ },
+ "list": [
+  "ant-scout",
+  "bee-forager",
+  "bramble-sprout",
+  "chipmunk-cavalry",
+  "cottontail",
+  "dormouse",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "honey-bee",
+  "meadow-frog",
+  "meadow-rabbit",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 1,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "bramble-sprout": 5,
+   "field-mouse": 3,
+   "cottontail": 1,
+   "dormouse": 5,
+   "meadow-frog": 1,
+   "hedgerow-shrew": 4,
+   "chipmunk-cavalry": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 95,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "bramble-sprout": 5,
+   "field-mouse": 3,
+   "dormouse": 5,
+   "meadow-frog": 1,
+   "hedgerow-shrew": 4,
+   "chipmunk-cavalry": 1,
+   "honey-bee": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 95.5,
+  "shown": 1,
+  "tune60": 92.5
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 96.7,
+   "hpLost": 14.8,
+   "rounds": 5.92
+  },
+  {
+   "move": "cottontail -1 -> honey-bee",
+   "win": 92.5,
+   "hpLost": 19.1,
+   "rounds": 5.88,
+   "trials": 33
+  }
+ ],
+ "trials": 66,
+ "sec": 27
+}

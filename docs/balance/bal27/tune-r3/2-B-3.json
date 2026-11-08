@@ -1,0 +1,91 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "2-B-3",
+ "map": "mg",
+ "mapName": "Smugglers' Grotto",
+ "kind": "elite",
+ "name": "The Glowing Pool",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "conch-crawler",
+  "driftwood-crab",
+  "duckling",
+  "gallery-orb-weaver",
+  "grey-seal-bull",
+  "gull-thief",
+  "open-ocean-hermit-crab",
+  "pelican-diver",
+  "pincushion-urchin",
+  "tide-pool-crab",
+  "tidepool-trapper-crab",
+  "trash-panda-trickster"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "pelican-diver"
+ ],
+ "namesake": false,
+ "shieldRule": 11,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "driftwood-crab": 2,
+   "duckling": 1,
+   "gull-thief": 1,
+   "open-ocean-hermit-crab": 3,
+   "pelican-diver": 4,
+   "pincushion-urchin": 4,
+   "tide-pool-crab": 4,
+   "trash-panda-trickster": 1
+  },
+  "leaders": [
+   "pelican-diver"
+  ],
+  "shieldOverride": null,
+  "win200": 69.5,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "driftwood-crab": 2,
+   "duckling": 1,
+   "gull-thief": 3,
+   "open-ocean-hermit-crab": 3,
+   "pelican-diver": 4,
+   "pincushion-urchin": 4,
+   "tide-pool-crab": 2,
+   "trash-panda-trickster": 1
+  },
+  "leaders": [
+   "pelican-diver"
+  ],
+  "shieldOverride": null,
+  "win200": 63.5,
+  "shown": 6,
+  "tune60": 61.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 68.3,
+   "hpLost": 51.1,
+   "rounds": 9.74
+  },
+  {
+   "move": "tide-pool-crab -2 -> gull-thief",
+   "win": 61.7,
+   "hpLost": 55.2,
+   "rounds": 9.85,
+   "trials": 82
+  }
+ ],
+ "trials": 87,
+ "sec": 63
+}

@@ -1,0 +1,112 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "7-6",
+ "map": "mu",
+ "mapName": "The Morel Hollow",
+ "kind": "miniboss",
+ "name": "The Morel Monarch",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "cane-toad",
+  "corpse-flower-beetle",
+  "dung-beetle",
+  "earthworm",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "wolf-spider-mother",
+  "worker-ant"
+ ],
+ "firstClear": [
+  "wolf-spider-mother"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "wolf-spider-mother"
+ ],
+ "namesake": false,
+ "shieldRule": 14,
+ "shieldOverride": 18,
+ "before": {
+  "deck": {
+   "wolf-spider-mother": 1,
+   "leafcutter-gardener": 5,
+   "worker-ant": 1,
+   "garden-snail": 1,
+   "hawthorn-shieldbug": 3,
+   "cane-toad": 1,
+   "dung-beetle": 4,
+   "planarian-splitter": 3
+  },
+  "leaders": [
+   "wolf-spider-mother"
+  ],
+  "shieldOverride": 18,
+  "win200": 65.5,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "wolf-spider-mother": 3,
+   "leafcutter-gardener": 3,
+   "worker-ant": 1,
+   "hawthorn-shieldbug": 2,
+   "dung-beetle": 4,
+   "planarian-splitter": 4,
+   "earthworm": 1,
+   "corpse-flower-beetle": 1
+  },
+  "leaders": [
+   "wolf-spider-mother"
+  ],
+  "shieldOverride": 18,
+  "win200": 48,
+  "shown": 9,
+  "tune60": 50.8
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 74.2,
+   "hpLost": 58.6,
+   "rounds": 8.75
+  },
+  {
+   "move": "garden-snail -1 -> earthworm",
+   "win": 68.3,
+   "hpLost": 61.1,
+   "rounds": 8.77,
+   "trials": 38
+  },
+  {
+   "move": "leafcutter-gardener -2 -> wolf-spider-mother",
+   "win": 60,
+   "hpLost": 67.1,
+   "rounds": 8.82,
+   "trials": 38
+  },
+  {
+   "move": "cane-toad -1 -> corpse-flower-beetle",
+   "win": 53.3,
+   "hpLost": 67.6,
+   "rounds": 8.84,
+   "trials": 40
+  },
+  {
+   "move": "hawthorn-shieldbug -1 -> planarian-splitter",
+   "win": 50.8,
+   "hpLost": 73.7,
+   "rounds": 8.77,
+   "trials": 40
+  }
+ ],
+ "trials": 183,
+ "sec": 142
+}
