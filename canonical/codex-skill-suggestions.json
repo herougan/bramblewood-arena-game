@@ -1,0 +1,415 @@
+{
+ "_about": "UI35 (2026-11-08, owner 10:52 #22): the Codex draft (docs/design/skill-distribution-codex-draft-2026-11-08.md section 2) as data. Keys are map ids; sig = signature skills, side = side skills (skill keys that exist), oneoff = one-off / special abilities (text only), unmatched = names with no skill yet (text only, no tile). Shown only in the admin Map cards window (Codex sig. / Codex side pills); it changes no list, card or pack. Regenerate: python3 tools/codex_skill_suggestions.py.",
+ "maps": {
+  "m1": {
+   "name": "Bramblewood Outskirts",
+   "sig": [
+    "flying",
+    "diurnal",
+    "swarm"
+   ],
+   "side": [
+    "slow"
+   ],
+   "oneoff": [
+    "Unusual flock/swarm creature abilities"
+   ],
+   "unmatched": []
+  },
+  "mf": {
+   "name": "Thistlewood",
+   "sig": [
+    "regen",
+    "guardian"
+   ],
+   "side": [
+    "foraging",
+    "pickpocket"
+   ],
+   "oneoff": [
+    "Resource-thieving creature"
+   ],
+   "unmatched": []
+  },
+  "mb": {
+   "name": "Pebble Beach",
+   "sig": [
+    "tide",
+    "shell",
+    "molting"
+   ],
+   "side": [
+    "armor",
+    "inspiring"
+   ],
+   "oneoff": [
+    "Crab Claws"
+   ],
+   "unmatched": [
+    {
+     "name": "Delivery",
+     "as": "side"
+    }
+   ]
+  },
+  "mc": {
+   "name": "Gannet Cliffs",
+   "sig": [
+    "arrow",
+    "pounce",
+    "reach"
+   ],
+   "side": [
+    "swift",
+    "evasive"
+   ],
+   "oneoff": [
+    "Dive"
+   ],
+   "unmatched": []
+  },
+  "m2": {
+   "name": "Sunken Hollow",
+   "sig": [
+    "bleed",
+    "dive",
+    "healing"
+   ],
+   "side": [
+    "guardian"
+   ],
+   "oneoff": [
+    "Fork"
+   ],
+   "unmatched": [
+    {
+     "name": "Swimmer",
+     "as": "side"
+    }
+   ]
+  },
+  "mw": {
+   "name": "Gatorback Swamp",
+   "sig": [
+    "poison",
+    "bulwark",
+    "ambush"
+   ],
+   "side": [
+    "parasite",
+    "fester"
+   ],
+   "oneoff": [
+    "Venomous predator"
+   ],
+   "unmatched": []
+  },
+  "m8": {
+   "name": "Sable Swampmire",
+   "sig": [
+    "harbinger",
+    "sap",
+    "rupture"
+   ],
+   "side": [
+    "cure",
+    "constrict",
+    "strangle"
+   ],
+   "oneoff": [
+    "Petrify"
+   ],
+   "unmatched": []
+  },
+  "mu": {
+   "name": "The Morel Hollow",
+   "sig": [
+    "sleep",
+    "paralyze",
+    "immunity"
+   ],
+   "side": [
+    "poisonBarbs",
+    "poisonGas",
+    "cure",
+    "brood",
+    "web"
+   ],
+   "oneoff": [
+    "Witchdoctor",
+    "Spore Cloud",
+    "Toxic Puff"
+   ],
+   "unmatched": [
+    {
+     "name": "Vaccinate",
+     "as": "sig"
+    }
+   ]
+  },
+  "m4": {
+   "name": "Caves & Alcoves",
+   "sig": [
+    "illuminate",
+    "sonar",
+    "darksight"
+   ],
+   "side": [
+    "keenSense",
+    "stealth"
+   ],
+   "oneoff": [
+    "Invisible"
+   ],
+   "unmatched": []
+  },
+  "mk": {
+   "name": "The Kelp Mangroves",
+   "sig": [
+    "tangle"
+   ],
+   "side": [
+    "volley",
+    "dive"
+   ],
+   "oneoff": [
+    "Undertow",
+    "Giant Squid Ink",
+    "Kelp Snare"
+   ],
+   "unmatched": [
+    {
+     "name": "Pressure",
+     "as": "sig"
+    },
+    {
+     "name": "Suffocate",
+     "as": "sig"
+    },
+    {
+     "name": "Swimmer",
+     "as": "side"
+    }
+   ]
+  },
+  "m7": {
+   "name": "Coral Current",
+   "sig": [
+    "chainLightning",
+    "wave"
+   ],
+   "side": [
+    "dive",
+    "electricity"
+   ],
+   "oneoff": [
+    "Electrical discharge"
+   ],
+   "unmatched": [
+    {
+     "name": "Wet",
+     "as": "sig"
+    }
+   ]
+  },
+  "m10": {
+   "name": "Eyrie Heights",
+   "sig": [
+    "daunt"
+   ],
+   "side": [
+    "reach",
+    "pounce"
+   ],
+   "oneoff": [
+    "Avalanche"
+   ],
+   "unmatched": [
+    {
+     "name": "Vulnerable",
+     "as": "sig"
+    },
+    {
+     "name": "Rend",
+     "as": "sig"
+    }
+   ]
+  },
+  "mh": {
+   "name": "The Briar Maze",
+   "sig": [
+    "recoil",
+    "stench",
+    "confuse"
+   ],
+   "side": [
+    "amore"
+   ],
+   "oneoff": [
+    "Dynamite (better suited to a mines submap)"
+   ],
+   "unmatched": [
+    {
+     "name": "High Thorns",
+     "as": "side"
+    },
+    {
+     "name": "Snare",
+     "as": "side"
+    }
+   ]
+  },
+  "mr": {
+   "name": "The Redwood Deep",
+   "sig": [
+    "predator",
+    "carnage",
+    "sweep"
+   ],
+   "side": [
+    "breach",
+    "gash",
+    "mighty"
+   ],
+   "oneoff": [
+    "Banana",
+    "Timbered"
+   ],
+   "unmatched": []
+  },
+  "m5": {
+   "name": "Savanna Reaches",
+   "sig": [
+    "prey",
+    "overwhelm",
+    "heat"
+   ],
+   "side": [
+    "snipe",
+    "mighty"
+   ],
+   "oneoff": [
+    "Charge"
+   ],
+   "unmatched": []
+  },
+  "ml": {
+   "name": "The Long Grass",
+   "sig": [
+    "trap",
+    "bola",
+    "blitz"
+   ],
+   "side": [
+    "swift",
+    "carrion",
+    "lasso"
+   ],
+   "oneoff": [
+    "Hunting creature"
+   ],
+   "unmatched": []
+  },
+  "mt": {
+   "name": "The Pinewood Taiga",
+   "sig": [
+    "hibernate",
+    "frostbite"
+   ],
+   "side": [
+    "lumberjack"
+   ],
+   "oneoff": [
+    "Winter-adapted creature"
+   ],
+   "unmatched": [
+    {
+     "name": "Frost Bolt",
+     "as": "sig"
+    }
+   ]
+  },
+  "m6": {
+   "name": "Wolfsbane Tundra",
+   "sig": [
+    "pack",
+    "packLeader",
+    "momentum"
+   ],
+   "side": [
+    "taunt"
+   ],
+   "oneoff": [
+    "Adrenaline"
+   ],
+   "unmatched": [
+    {
+     "name": "Cold",
+     "as": "side"
+    }
+   ]
+  },
+  "md": {
+   "name": "The Glass Dunes",
+   "sig": [
+    "acidBolt",
+    "brittle",
+    "friction"
+   ],
+   "side": [
+    "shield",
+    "fragile"
+   ],
+   "oneoff": [
+    "Glass-bodied creature"
+   ],
+   "unmatched": [
+    {
+     "name": "Burrow",
+     "as": "side"
+    }
+   ]
+  },
+  "m3": {
+   "name": "Ashen Spurn",
+   "sig": [
+    "smokeBomb",
+    "immolation"
+   ],
+   "side": [
+    "sturdy"
+   ],
+   "oneoff": [
+    "Ash/wildfire creature"
+   ],
+   "unmatched": [
+    {
+     "name": "Force of Nature",
+     "as": "sig"
+    },
+    {
+     "name": "Fire resistance",
+     "as": "side"
+    }
+   ]
+  },
+  "m11": {
+   "name": "The Sundered Peak",
+   "sig": [
+    "fireball",
+    "earthquake",
+    "meteor"
+   ],
+   "side": [],
+   "oneoff": [
+    "Volcanic creature"
+   ],
+   "unmatched": [
+    {
+     "name": "Fire Bolt",
+     "as": "side"
+    }
+   ]
+  }
+ }
+}

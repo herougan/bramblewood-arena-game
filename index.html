@@ -15017,6 +15017,8 @@ html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
 .ui35-pill{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; letter-spacing:.03em; padding:1px 5px; border-radius:999px; vertical-align:1px; white-space:nowrap; cursor:help; margin-left:2px;}
 .ui35-pill.is-main{background:color-mix(in srgb, var(--ink-muted, #6b6b6b) 32%, transparent); color:var(--ink, #222);}
 .ui35-pill.is-counter{background:#1f8f80; color:#fff;}
+.ui35-pill.is-newuse{background:#7b3fc4; color:#fff;} /* 2026-11-08 (UI35 #7): a known skill family used with a new parameter */
+.ui35-pill.is-cxsig{background:#c2410c; color:#fff;} .ui35-pill.is-cxside{background:color-mix(in srgb, #c2410c 28%, var(--bg)); color:var(--ink, #222);} /* UI35 #22: Codex draft picks */
 .ui19-sk .ui28-sug{margin-left:2px;}
 .ui35-newn{font:800 11px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted, #6b6b6b); margin-left:6px; padding:2px 7px; border-radius:999px; border:1px solid var(--surface-border); cursor:help; vertical-align:1px;}
 .ui35-newn.has-new{color:#fff; background:#d9480f; border-color:#d9480f;}
@@ -46664,7 +46666,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=dc5a1100ed", "es": "assets/lang/es.js?v=cb2fa0274d", "fr": "assets/lang/fr.js?v=163d1e02b1", "id": "assets/lang/id.js?v=6db921121b", "it": "assets/lang/it.js?v=399a993f4f", "ja": "assets/lang/ja.js?v=e4eac6c5e7", "ko": "assets/lang/ko.js?v=66748e8452", "pt": "assets/lang/pt.js?v=4237452464", "ta": "assets/lang/ta.js?v=617beea1ce", "tl": "assets/lang/tl.js?v=bcb9217763", "zh-Hans": "assets/lang/zh-Hans.js?v=5e666fae87", "zh-Hant": "assets/lang/zh-Hant.js?v=c483c4f93c"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=42ae74d396", "es": "assets/lang/es.js?v=8bf80a1f2b", "fr": "assets/lang/fr.js?v=91cc41a535", "id": "assets/lang/id.js?v=7aa23e8940", "it": "assets/lang/it.js?v=b37760481f", "ja": "assets/lang/ja.js?v=2cb91a59be", "ko": "assets/lang/ko.js?v=d4ffd83038", "pt": "assets/lang/pt.js?v=9c590c0252", "ta": "assets/lang/ta.js?v=6e37e5a23d", "tl": "assets/lang/tl.js?v=6eee86a33b", "zh-Hans": "assets/lang/zh-Hans.js?v=ded3b1e2fe", "zh-Hant": "assets/lang/zh-Hant.js?v=2bade53969"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -46821,7 +46823,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.tx-agg-metal": "Metal",
   "ui.tx-agg-resources": "Resources",
   "ui.tx-agg-damage": "Damage",
-  "ui.tx-agg-heal": "Healing",
+  "ui.tx-agg-heal": "Heal",
   "ui.tx-agg-status": "Statuses",
   "ui.tx-agg-movement": "Movement",
   "ui.tx-agg-summon": "Summons",
@@ -48058,8 +48060,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fix9-shell-tip": "Shell: +{n} Armor until this round ends",
   "ui.fix9-shell-log": "went into its shell (+{n} Armor) 🐚",
   "ui.sk-meteor": "When Ready: a meteor hits a random enemy column for {n} ({m} beside it); the crater burns 2 rounds.",
-  "ui.sk-amore": "Arriving with another of your Amore units of its Type, both fall in love: +0/+3 and Regeneration 3.",
-  "ui.skx-amore": "Once. If one dies, the other keeps the +0/+3 but loses the Regeneration.",
+  "ui.sk-amore": "Arriving with another of your Amore units of its Type, both fall in love: +0/+3 and Regenerate 3.",
+  "ui.skx-amore": "Once. If one dies, the other keeps the +0/+3 but loses the Regenerate.",
   "ui.sk-charge-clock": "Once Ready, a clock counts down each upkeep; at 0 its effect happens and the clock restarts.",
   "ui.skx-ritual": "Counted from when it arrives; deaths on either side count.",
   "ui.de-field-replaces": "Replaces any field in play; the map's own field returns when it ends.",
@@ -48077,7 +48079,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.de-ritual": "No Wait, but it can't act until {p} units perish, you draw {d} cards and deal {c} bramble damage.",
   "ui.ui7-poison-tip": "Venom tokens: {n}. It takes damage equal to its stacks each round, then loses 1 stack.",
   "ui.ui7-poison-skill-tip": "Venomous {n}: its hits give the target Venom.",
-  "ui.ui7-regen-tip": "Regeneration {n}: heals {n} Health at the start of every round.",
+  "ui.ui7-regen-tip": "Regenerate {n}: heals {n} Health at the start of every round.",
   "ui.st-poison": "takes damage equal to its stacks each round, then loses 1 stack. Cure or Shedding removes it.",
   "ui.st-bleed": "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.",
   "ui.st-exposed": "its hiding is stripped: Invisible, Evasive, Smoke and Shadow don’t protect it.",
@@ -48121,7 +48123,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fx-ash-rain": "From round 2: both brambles take 1 damage a round, and day bonuses are halved.",
   "ui.fxx-ash-rain": "Never below 1. The ash dims the sun, as under Cloudy.",
   "ui.fx-ashy": "Flying units are grounded, and every attack at a unit misses 1 in 5.",
-  "ui.fxx-ashy": "Grounded: no Flying dodge, no Tailwind or Headwind. Darksight, Keen Sense and Sonar see through the ash.",
+  "ui.fxx-ashy": "Grounded: no Flying dodge, no Tailwind or Headwind. Darksight, Keen Sense and Echolocation see through the ash.",
   "ui.fx-ashy-after": "After an Eruption, 4 Ashy rounds: Flying units are grounded and attacks at units miss 1 in 5.",
   "ui.fx-arrow-slits": "From round 2, the walls shoot a random attacking unit for 1. A Helmet can turn it.",
   "ui.fx-psychic-dampener": "Psychic damage is halved, and Confuse lasts 1 round less. Both sides.",
@@ -48415,7 +48417,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ux2-fx-first-atk": "First unit's Attack",
   "ui.ux2-fx-unit-hp": "Unit Health",
   "ui.ux2-fx-flyer-atk": "Flyers' Attack",
-  "ui.ux2-fx-regen": "Healing",
+  "ui.ux2-fx-regen": "Heal",
   "ui.ux2-fx-enemy-wait": "Enemy Wait",
   "ui.ux2-fx-bolt": "Ballista bolts",
   "ui.ux2-fx-thorns": "Thorns",
@@ -49737,7 +49739,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.c3-tamper-name": "Tamper-proof",
   "ui.c3-tamper": "Tamper-proof: it can't be stolen.",
   "ui.c3-fx-sandstorm-blind-name": "Blinding Sandstorm",
-  "ui.c3-fx-sandstorm-blind": "Every unit fights Blind (its swings miss 1 in 2), except Dry, Keen Sense and Sonar units. Storm cards are empowered.",
+  "ui.c3-fx-sandstorm-blind": "Every unit fights Blind (its swings miss 1 in 2), except Dry, Keen Sense and Echolocation units. Storm cards are empowered.",
   "ui.c3-fx-sandstorm-blind-short": "Everyone Blind",
   "ui.e10-skn-cinder": "Cinder",
   "ui.e10-skn-acid": "Acid",
@@ -50162,7 +50164,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng25-tide": "Flood: +{n} Attack. Ebb: +{n} Armor. High Tide: +{h} Attack, +{h} Armor.",
   "ui.eng25-moonpull": "On arrival the Tide comes in. While it lives, your Tide bonuses double.",
   "ui.eng25-moonpull-codex": "Flood this round (an Ebb turns to Flood). Two Moonpulls still double once. Tide 2 under it counts 4.",
-  "ui.eng25-regen-codex": "A Level 0 copy has no Regeneration; it arrives at Level 1.",
+  "ui.eng25-regen-codex": "A Level 0 copy has no Regenerate; it arrives at Level 1.",
   "ui.skn-eng25-immortal": "Immortal",
   "ui.eng25-immortal": "When it dies, a token copy with Immortal takes its place, Waiting 1 round.",
   "ui.eng25-immortal-codex": "A copy that dies in the round it came back stays dead. A Nullify kill makes no copy.",
@@ -50424,7 +50426,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui35-ref-cut-sk": "too weak above {cut}%",
   "ui.ui35-ref-cut-wk": "too strong below {cut}%",
   "ui.ui35-ref-worst": "worst deck {pct}%",
-  "ui.ui35-ref-tip": "Measured {date} by the latest pro-ease run that plays the ladder: the number the TOO WEAK / TOO STRONG pill is judged on."
+  "ui.ui35-ref-tip": "Measured {date} by the latest pro-ease run that plays the ladder: the number the TOO WEAK / TOO STRONG pill is judged on.",
+  "ui.ui35-pill-newuse": "New use",
+  "ui.ui35-pill-newuse-tip": "A skill an earlier main map already has, used here with a parameter no earlier map used (a skill family is one skill)",
+  "ui.ui35-pill-cxsig": "Codex sig.",
+  "ui.ui35-pill-cxsig-tip": "A signature skill in the Codex draft's skill distribution for this map",
+  "ui.ui35-pill-cxside": "Codex side",
+  "ui.ui35-pill-cxside-tip": "A side skill in the Codex draft's skill distribution for this map",
+  "ui.ui35-codex-ctx": "Codex draft pick (no card on this map has it yet)"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -52031,7 +52040,7 @@ const PASSIVE_DEFS = [
   // effects of the card that died"): engine relicDefOf / RELIC_KEEPS.
   {key:'relic', category:'passive', label:'Relic', kind:'boolean', desc:()=> TX('ui.relic-desc'), codexNote:TX('ui.relic-codex-note')},
   {key:'worship', category:'passive', label:'Worship', kind:'boolean', desc:()=>`+1 Attack for every 3 Prayer you have.`},
-  {key:'healing', category:'passive', label:'Healing', kind:'number', min:0, desc:v=>`At the start of each round, heals your most wounded unit for ${v}.`},
+  {key:'healing', category:'passive', label:'Heal', kind:'number', min:0, desc:v=>`At the start of each round, heals your most wounded unit for ${v}.`},
   // Nature's Force (2026-10-12, 23:12): an anthem for Elementals. Default 1, shown without the number at 1.
   // 2026-10-13 (overnight list): Lone Wolf, Sociable, Coffee, Dry, Darksight, Tailwind, Headwind and the Landslide evergreen.
   // Kinship <Type> X/Y (2026-10-13, user: "New Passive: ____ <Type> X/Y: All ally units of that Type gain +X/+Y"). The blank
@@ -52126,7 +52135,7 @@ const PASSIVE_DEFS = [
   // Regeneration N + Stun (on hit) % (2026-09-16) — both plain single-number passives, so
   // (unlike Freeze/Sleep/Paralyze just below, which need a chance+duration PAIR) they fit the
   // generic PASSIVE_DEFS -> SKILL_DEFS mapping as-is, no custom get/apply needed.
-  {key:'regen', category:'evergreen', label:'Regeneration', kind:'number', min:0, desc:v=>`Heals ${v} HP at the start of every round this card is on the board, capped at its own max HP.`},
+  {key:'regen', category:'evergreen', label:'Regenerate', kind:'number', min:0, desc:v=>`Heals ${v} HP at the start of every round this card is on the board, capped at its own max HP.`},
   // 2026-10-16 skill audit: Stun and Reflect are percentages, so a new row starts at 50% (not 1%); saved cards keep their value.
   // 2026-10-16 (user: "Stun N: 1/3 chance to Stun a card for N turns - Default 1."): N is rounds now, the chance a fixed 1 in 3. An old
   // value above 5 was a % and reads as Stun 1 (stunRounds, and the engine's stunRoundsOf).
@@ -52321,7 +52330,7 @@ const PASSIVE_DEFS = [
   {key:'strangle', category:'passive', label:'Strangle', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits Bind the target for a round, and squeeze it: ${numOr(v, 2)} damage at the start of the round it is Bound.`},
   {key:'invincible', category:'passive', label:'Invincible', kind:'number', min:1, defaultValue:1, desc:v=>`Takes no damage of any kind for its first ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'} on the field.`},
   {key:'invisible', category:'passive', label:'Invisible', kind:'number', min:1, defaultValue:2, desc:v=>`For its first ${numOr(v, 2)} rounds on the field, attacks and enemy skills can't find it. Attacking gives it away.`},
-  {key:'sonar', category:'passive', label:'Sonar', kind:'boolean', desc:()=>`Hunts by sound: Darkness, Blind, Smoke, Fog and Shadow never make it miss (flyers included), and it can't be Blinded.`},
+  {key:'sonar', category:'passive', label:'Echolocation', kind:'boolean', desc:()=>`Hunts by sound: Darkness, Blind, Smoke, Fog and Shadow never make it miss (flyers included), and it can't be Blinded.`},
   {key:'poisonGas', category:'evergreen', label:'Poison Gas', kind:'number', min:1, defaultValue:2, desc:v=>`When it arrives, every enemy unit gets ${numOr(v, 2)} Venom.`},
   {key:'absoluteZero', category:'evergreen', label:'Absolute Zero', kind:'boolean', desc:()=>`When it arrives, every enemy unit is Frozen for the round (units immune to cold are spared).`},
   {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits ${numOr(v, 2)} fire at a random enemy unit (the bramble if there are none). 1 in 2 the flames catch a unit adjacent to it for 1. (Fire Bolt always aims at the enemy opposite.)`},
@@ -55001,7 +55010,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '3e3e59fbcaee', BUILD_CARD_HASH = '4c577025fb8832bdc837bfb66ee24f1c34bc68f4db152afb508ee9dd02830151';
+const BUILD_ID = '83486399b317', BUILD_CARD_HASH = '4c577025fb8832bdc837bfb66ee24f1c34bc68f4db152afb508ee9dd02830151';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -58033,7 +58042,7 @@ function liveStatusGlossHTML(c){
     rows.push(`<div>${kw && kw.c ? `<b class="kw" style="--kw:${kw.c}">${head}</b>` : `<b class="kw kw-term">${head}</b>`}${rounds}: ${escapeHtml(t)}</div>`);
   });
   { const dn = (c.daunts || []).reduce((t, x)=> t + (x.n || 0), 0); if(dn > 0) rows.push(`<div><b class="kw kw-term">Daunted ${dn}</b>: deals ${dn} less Attack until the end of next round.</div>`); }
-  if(c.amoreWith != null) rows.push(c.amoreBroken ? `<div><b class="kw" style="--kw:#8a5a3b">Heartbroken</b>: its partner died. It keeps +0/+3; Regeneration 3 is gone.</div>` : `<div><b class="kw" style="--kw:#d6457a">In love</b>: +0/+3 and Regeneration 3 while its partner lives.</div>`); // Amore (2026-10-16)
+  if(c.amoreWith != null) rows.push(c.amoreBroken ? `<div><b class="kw" style="--kw:#8a5a3b">Heartbroken</b>: its partner died. It keeps +0/+3; Regenerate 3 is gone.</div>` : `<div><b class="kw" style="--kw:#d6457a">In love</b>: +0/+3 and Regenerate 3 while its partner lives.</div>`); // Amore (2026-10-16)
   try{ ui32CounterRows(c).forEach(r=> rows.push(r)); }catch(e){} // UI32 (2026-11-07, owner 18:55 #4): every other counter the unit carries
   return rows.length ? `<div class="kw-gloss live-status-gloss" role="note" aria-label="Its statuses right now">${rows.join('')}</div>` : '';
 }
@@ -60855,7 +60864,7 @@ function abilityBadges(d, bopts){
     if(e[k]) out.push(`<span class="ab-${k.toLowerCase()}" title="${escapeAttr(nm + ' ' + numOr(e[k], dv) + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${n1(numOr(e[k], dv))}</span>`); });
   // W2 skills (2026-10-16): one chip each, with its number (dv = the default; 0 = a skill with no number).
   [['venomous', 'Venomous', 2], ['toxin', 'Toxin', 1], ['weaken', 'Weaken', 1], ['wilting', 'Wilting', 1], ['bulldoze', 'Bulldoze', 1], ['tangle', 'Tangleweed', 1], ['strangle', 'Strangle', 2],
-    ['invincible', 'Invincible', 1], ['invisible', 'Invisible', 2], ['sonar', 'Sonar', 0], ['poisonGas', 'Poison Gas', 2], ['absoluteZero', 'Absolute Zero', 0], ['spitfire', 'Spitfire', 2],
+    ['invincible', 'Invincible', 1], ['invisible', 'Invisible', 2], ['sonar', 'Echolocation', 0], ['poisonGas', 'Poison Gas', 2], ['absoluteZero', 'Absolute Zero', 0], ['spitfire', 'Spitfire', 2],
     ['slashBurn', 'Slash & Burn', 3], ['trap', 'Trap', 5], ['predator', 'Predator', 1], ['prey', 'Prey', 0], ['nova', 'Nova', 3], ['crystallise', 'Crystallise', 5], ['cure', 'Cure', 2],
     ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2], ['atheist', 'Atheist', 0]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
     if(k === 'trap' && bopts && bopts.live && matchState && matchState.ui9Laid && matchState.ui9Laid[bopts.live.uid]) return; // UI9 (BB2): laid, the chip is spent
@@ -60951,7 +60960,7 @@ function abilityBadges(d, bopts){
   if(e.swift) out.push(`${iconHTML('swift', '💨')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
   if(e.amore){ const st = bopts && bopts.live ? amoreLiveState(bopts.live) : 'single'; // Amore (2026-10-16)
-    out.push(`<span class="ab-amore is-${st}" title="${escapeAttr(st === 'love' ? 'Amore: in love — +0/+3 and Regeneration 3 while its partner lives' : st === 'broken' ? 'Amore: heartbroken — its partner died; it kept +0/+3, lost Regeneration 3' : 'Amore: pairs with your next Amore unit of the same Type')}">${st === 'love' ? '❤️' : st === 'broken' ? '🤎' : '💕'}</span>`); }
+    out.push(`<span class="ab-amore is-${st}" title="${escapeAttr(st === 'love' ? 'Amore: in love — +0/+3 and Regenerate 3 while its partner lives' : st === 'broken' ? 'Amore: heartbroken — its partner died; it kept +0/+3, lost Regenerate 3' : 'Amore: pairs with your next Amore unit of the same Type')}">${st === 'love' ? '❤️' : st === 'broken' ? '🤎' : '💕'}</span>`); }
   if(e.pounce && !eng21PounceSpent(bopts)){ const pm = pounceMode(e.pounce), pl = bopts && bopts.live && bopts.live.pounceN != null ? bopts.live.pounceN : null; // Pounce (2026-10-12); <Att>/<Hp> (2026-10-16); ENG21 (2026-11-03): gone once it has fired
     out.push(`<span title="Pounce ${pm ? (pm === 'attack' ? '(its Attack)' : '(its Health)') : numOr(e.pounce, 1)}">${iconHTML('pounce', '🐾')}${pm ? (pl != null ? `<b class="atk-bonus">${pl}</b>` : (pm === 'attack' ? '⚔' : '❤')) : n1(e.pounce)}</span>`); }
   if(e.bloodlust) out.push(`<span title="Bloodlust: when it kills the unit facing it, it leaps to the next creature">${iconHTML('bloodlust', '🩸⚔️')}</span>`); // Bloodlust (2026-10-15; no number since the 2026-10-17 rework)
@@ -71467,7 +71476,7 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
 // skill, tier III +1/+2 and the signature. The volcano's signature is its eruption (fightRules, rules.eruption).
 const TERRAIN_BIOMES = {
   forest:  {name:'Old Woods',      icon:'🌲', types:['Forest','Flora','Taiga','Rainforest'], grant:{regen:1},      sig:'Regen 1'},
-  meadow:  {name:'Open Meadow',    icon:'🌼', types:['Field','Village','Flora'],             grant:{healing:1},    sig:'Healing 1'}, /* 2026-10-23 (BL): was Bloom 1, the retired heal */
+  meadow:  {name:'Open Meadow',    icon:'🌼', types:['Field','Village','Flora'],             grant:{healing:1},    sig:'Heal 1'}, /* 2026-10-23 (BL): was Bloom 1, the retired heal */
   water:   {name:'Riverbank',      icon:'🌊', types:['River','Pond'],                        grant:{inspiring:1},  sig:'Inspiring 1'},
   beach:   {name:'Tideline',       icon:'🐚', types:['Coastal','Ocean'],                     grant:{shell:1},      sig:'Shell 1'},
   reef:    {name:'Coral Shelf',    icon:'🪸', types:['Coral Reef','Ocean'],                  grant:{thorns:1},     sig:'Thorns 1'},
@@ -84360,7 +84369,7 @@ function ui19McSkillRows(ids, defs){
   return [...by.values()];
 }
 function ui19McEarlierSkillKeys(top, defs, ok){
-  const n = mapNumberOf(top), keys = new Set(); if(n === null) return keys;
+  const n = mapNumberOf(top), keys = new Set(); keys.uses = new Map(); if(n === null) return keys; // UI35 #7: keys.uses = skill key -> the uses earlier main maps show
   (typeof mainConquestMaps === 'function' ? mainConquestMaps() : []).forEach(mm=>{ const k = mapNumberOf(mm.id); if(k === null || k >= n) return;
     // 2026-11-08 (package UI35, owner 09:27 #6: "NEW! counts the main map progression only ... Only count the main map progression"): an earlier MAIN map introduced a skill only
     // through its own main list (the MAP section, key 'cards'); its side-map lists, SPECIAL and the "Other skills" never count, and a skill it only shows grey (a later level, hidden
@@ -84368,7 +84377,7 @@ function ui19McEarlierSkillKeys(top, defs, ok){
     let secs = []; try{ secs = mapPoolSections(mm.id); }catch(e){}
     secs.filter(s=> s.key === 'cards').forEach(s=>{ const ids = (s.ids || []).filter(ok).filter(id=> defs[id]);
       if(typeof ui28SkillMeet !== 'function'){ ids.forEach(id=> ui18CardSkillKeys(defs[id]).forEach(x=> keys.add(x.key))); return; } // tests lift this alone
-      ui19McSkillRows(ids, defs).forEach(r=>{ if(ui28SkillMeet(r, defs, k).met) keys.add(r.key); }); }); });
+      ui19McSkillRows(ids, defs).forEach(r=>{ if(ui28SkillMeet(r, defs, k).met){ keys.add(r.key); if(typeof ui35UseSigs === 'function') r.ids.forEach(id=>{ const u = ui35UseSigs(defs[id]).get(r.key); if(u){ if(!keys.uses.has(r.key)) keys.uses.set(r.key, new Set()); u.forEach(x=> keys.uses.get(r.key).add(x)); } }); } }); }); });
   return keys;
 }
 function ui19McSkillText(r){
@@ -84477,6 +84486,19 @@ function ui24McRecs(mapId, defs){
 // keyword tile, a recommendation tile) wears the pill there; a pick no card here has yet is a tile of its own with the pill (like the keyword intro tile).
 // Sub-maps: none. Shown only.
 const MAP_INTRO_SUGG = {"m1": [{"skill": "guardian", "why": "Map 0, the first tree-line past the castle walls: a sentry that guards is the simplest defensive skill (1 card)"}], "mf": [{"skill": "thorns", "why": "Map 1, Thistlewood: thistles and the boss's Thistle Prick (1 card)"}, {"skill": "foraging", "why": "Map 1: hedgerows and burrows full of busy gatherers (2 cards)"}], "mb": [{"skill": "crabClaws", "why": "Map 2, Pebble Beach: rock pools and things in shells (2 cards)"}], "mc": [{"skill": "dive", "why": "Map 3, Gannet Cliffs: seabirds that plunge, and the boss's Gannet Dive (1 card)"}, {"skill": "pounce", "why": "Map 3: every ledge belongs to a bird that drops on its prey (2 cards)"}], "m2": [{"skill": "bloomCopy", "why": "Map 4, Sunken Hollow: a flooded lowland where reef and algae spread (1 card)"}], "mw": [{"skill": "hunter", "why": "Map 5, Gatorback Swamp: logs that open their eyes and finish the weak (Cull, 1 card)"}], "m8": [{"skill": "predator", "why": "Map 6, Sable Swampmire: everything here bites first (1 card)"}, {"skill": "weaken", "why": "Map 6: a blacker wetland that saps strength (1 card)"}], "mu": [{"skill": "decay", "why": "Map 7, The Morel Hollow: rot under the old oaks (1 card)"}, {"skill": "meiosis", "why": "Map 7: mushrooms and spores that split and spread (1 card)"}], "m4": [{"skill": "sonar", "why": "Map 8, Caves & Alcoves: sound carries further than light (Sonar is revealed at Map 8; no card here has it yet)"}, {"skill": "darksight", "why": "Map 8: pitch-dark caves (1 card)"}], "mk": [{"skill": "invisible", "why": "Map 9, The Kelp Mangroves: kelp curtains and smugglers' channels (1 card)"}, {"skill": "skitter", "why": "Map 9: crabs scuttling through the mangrove roots (1 card)"}], "m7": [{"skill": "gash", "why": "Map 10, Coral Current: the teeth that live in the open sea (2 cards)"}, {"skill": "charge", "why": "Map 10: fast currents that build up and strike (1 card)"}], "m10": [{"skill": "mountainClimber", "why": "Map 11, Eyrie Heights: sheer alpine cliffs (2 cards)"}, {"skill": "avalanche", "why": "Map 11: snow above the Foundry's smoke (1 card)"}], "mh": [{"skill": "confuse", "why": "Map 12, The Briar Maze: every turn is a dead end, and the Mirage field (1 card)"}, {"skill": "backstab", "why": "Map 12: hedges hide whoever is behind you (1 card)"}], "mr": [{"skill": "canopyCover", "why": "Map 13, The Redwood Deep: the Canopy field under trees as wide as castles (1 card)"}, {"skill": "rage", "why": "Map 13: bears and boars, and the Wild Rage boon (1 card)"}], "m5": [{"skill": "prey", "why": "Map 14, Savanna Reaches: open grassland where nothing hides for long (1 card)"}, {"skill": "executioner", "why": "Map 14: First Blood fights reward finishing a unit (1 card)"}], "ml": [{"skill": "speed", "why": "Map 15, The Long Grass: horses and hounds on every road (1 card)"}, {"skill": "weaponMaster", "why": "Map 15: village militia (1 card)"}], "mt": [{"skill": "packLeader", "why": "Map 16, The Pinewood Taiga: the first of the wolf packs (1 card)"}], "m6": [{"skill": "freeze", "why": "Map 17, Wolfsbane Tundra: frozen ground and Freezing fights (1 card)"}, {"skill": "hibernate", "why": "Map 17: animals sleeping out the cold (1 card)"}], "md": [{"skill": "trap", "why": "Map 18, The Glass Dunes: things that wait under the dunes (1 card)"}, {"skill": "dry", "why": "Map 18: heat so fierce the sand turns to glass (1 card)"}], "m3": [{"skill": "heat", "why": "Map 19, Ashen Spurn: scorched high ground (1 card)"}, {"skill": "immolation", "why": "Map 19: ash rain and burning hides (1 card)"}], "m11": [{"skill": "requiem", "why": "Map 20, The Sundered Peak: the Restless Dead boon (1 card)"}, {"skill": "carrion", "why": "Map 20: apex predators and what they leave (1 card)"}], "m21": [{"skill": "expose", "why": "Map 21, The Quiet Summit: thin, still air above the clouds hides nothing (1 card)"}], "m22": [{"skill": "iceBolt", "why": "Map 22, The Rimefire Caldera: snow on black glass (1 card)"}, {"skill": "cure", "why": "Map 22: sulphur fumes to be cleared (1 card)"}], "m23": [{"skill": "breach", "why": "Map 23, The Goldfeather Siege: a hired army at the golden wall, and the Siege Train boon (1 card)"}, {"skill": "vanguard", "why": "Map 23: the army's front line (1 card)"}], "m24": [{"skill": "hoard", "why": "Map 24, Goldfeather Keep: everything gilded and counted (2 cards)"}, {"skill": "sentry", "why": "Map 24: everything guarded, Arrow Slits on the walls (1 card)"}]};
+// 2026-11-08 (package UI35, owner 10:52 #9 / #22 / #7): minor skills never count toward "N new" (canonical/minor-skills.json); the Codex draft's per-map picks
+// (canonical/codex-skill-suggestions.json: sig / side skill keys, text-only one-offs and unmatched names); and a skill's "uses" (the parameter shapes of a fused family).
+const UI35_MINOR_SKILLS = new Set(["flying", "diurnal", "tide", "salt"]);
+const UI35_CODEX = {"m1": {"name": "Bramblewood Outskirts", "sig": ["flying", "diurnal", "swarm"], "side": ["slow"], "oneoff": ["Unusual flock/swarm creature abilities"], "unmatched": []}, "mf": {"name": "Thistlewood", "sig": ["regen", "guardian"], "side": ["foraging", "pickpocket"], "oneoff": ["Resource-thieving creature"], "unmatched": []}, "mb": {"name": "Pebble Beach", "sig": ["tide", "shell", "molting"], "side": ["armor", "inspiring"], "oneoff": ["Crab Claws"], "unmatched": [{"name": "Delivery", "as": "side"}]}, "mc": {"name": "Gannet Cliffs", "sig": ["arrow", "pounce", "reach"], "side": ["swift", "evasive"], "oneoff": ["Dive"], "unmatched": []}, "m2": {"name": "Sunken Hollow", "sig": ["bleed", "dive", "healing"], "side": ["guardian"], "oneoff": ["Fork"], "unmatched": [{"name": "Swimmer", "as": "side"}]}, "mw": {"name": "Gatorback Swamp", "sig": ["poison", "bulwark", "ambush"], "side": ["parasite", "fester"], "oneoff": ["Venomous predator"], "unmatched": []}, "m8": {"name": "Sable Swampmire", "sig": ["harbinger", "sap", "rupture"], "side": ["cure", "constrict", "strangle"], "oneoff": ["Petrify"], "unmatched": []}, "mu": {"name": "The Morel Hollow", "sig": ["sleep", "paralyze", "immunity"], "side": ["poisonBarbs", "poisonGas", "cure", "brood", "web"], "oneoff": ["Witchdoctor", "Spore Cloud", "Toxic Puff"], "unmatched": [{"name": "Vaccinate", "as": "sig"}]}, "m4": {"name": "Caves & Alcoves", "sig": ["illuminate", "sonar", "darksight"], "side": ["keenSense", "stealth"], "oneoff": ["Invisible"], "unmatched": []}, "mk": {"name": "The Kelp Mangroves", "sig": ["tangle"], "side": ["volley", "dive"], "oneoff": ["Undertow", "Giant Squid Ink", "Kelp Snare"], "unmatched": [{"name": "Pressure", "as": "sig"}, {"name": "Suffocate", "as": "sig"}, {"name": "Swimmer", "as": "side"}]}, "m7": {"name": "Coral Current", "sig": ["chainLightning", "wave"], "side": ["dive", "electricity"], "oneoff": ["Electrical discharge"], "unmatched": [{"name": "Wet", "as": "sig"}]}, "m10": {"name": "Eyrie Heights", "sig": ["daunt"], "side": ["reach", "pounce"], "oneoff": ["Avalanche"], "unmatched": [{"name": "Vulnerable", "as": "sig"}, {"name": "Rend", "as": "sig"}]}, "mh": {"name": "The Briar Maze", "sig": ["recoil", "stench", "confuse"], "side": ["amore"], "oneoff": ["Dynamite (better suited to a mines submap)"], "unmatched": [{"name": "High Thorns", "as": "side"}, {"name": "Snare", "as": "side"}]}, "mr": {"name": "The Redwood Deep", "sig": ["predator", "carnage", "sweep"], "side": ["breach", "gash", "mighty"], "oneoff": ["Banana", "Timbered"], "unmatched": []}, "m5": {"name": "Savanna Reaches", "sig": ["prey", "overwhelm", "heat"], "side": ["snipe", "mighty"], "oneoff": ["Charge"], "unmatched": []}, "ml": {"name": "The Long Grass", "sig": ["trap", "bola", "blitz"], "side": ["swift", "carrion", "lasso"], "oneoff": ["Hunting creature"], "unmatched": []}, "mt": {"name": "The Pinewood Taiga", "sig": ["hibernate", "frostbite"], "side": ["lumberjack"], "oneoff": ["Winter-adapted creature"], "unmatched": [{"name": "Frost Bolt", "as": "sig"}]}, "m6": {"name": "Wolfsbane Tundra", "sig": ["pack", "packLeader", "momentum"], "side": ["taunt"], "oneoff": ["Adrenaline"], "unmatched": [{"name": "Cold", "as": "side"}]}, "md": {"name": "The Glass Dunes", "sig": ["acidBolt", "brittle", "friction"], "side": ["shield", "fragile"], "oneoff": ["Glass-bodied creature"], "unmatched": [{"name": "Burrow", "as": "side"}]}, "m3": {"name": "Ashen Spurn", "sig": ["smokeBomb", "immolation"], "side": ["sturdy"], "oneoff": ["Ash/wildfire creature"], "unmatched": [{"name": "Force of Nature", "as": "sig"}, {"name": "Fire resistance", "as": "side"}]}, "m11": {"name": "The Sundered Peak", "sig": ["fireball", "earthquake", "meteor"], "side": [], "oneoff": ["Volcanic creature"], "unmatched": [{"name": "Fire Bolt", "as": "side"}]}};
+function ui35CodexOf(mapId){ try{ const e = UI35_CODEX[mapId]; if(!e) return null; const m = new Map(); (e.sig || []).forEach(k=>{ if(skillDefOf(k)) m.set(k, 'sig'); }); (e.side || []).forEach(k=>{ if(skillDefOf(k) && !m.has(k)) m.set(k, 'side'); }); return {map: m, e}; }catch(x){ return null; } }
+// the parameter shapes ("uses") of the fused skill families a card carries: Diurnal 1/1, Diurnal - {evasive}, Tide - {...} are one skill, each with its own use
+function ui35UseSigs(d){
+  const out = new Map(); if(!d || typeof eng35FusedKey !== 'function') return out;
+  const add = (k0, v)=>{ if(!skillValOn(v)) return; const f = eng35FusedKey(k0), gk = typeof eng35GivesKeyOf === 'function' ? eng35GivesKeyOf(f) : null; if(f === k0 && !(gk === k0 || (v && typeof v === 'object'))) return; if(!out.has(f)) out.set(f, new Set()); out.get(f).add(k0 + ':' + JSON.stringify(v)); };
+  const e = d.effects || {}; Object.keys(e).forEach(k=> add(k, e[k]));
+  const ls = d.levelSkills || {}; Object.keys(ls).forEach(L=>{ const o = ls[L] || {}; Object.keys(o).forEach(k=> add(k, o[k])); });
+  return out;
+}
 function ui30McSugg(mapId){
   try{ if(!mapId || (typeof mpIsSub === 'function' && mpIsSub(mapId))) return new Map(); const src = (typeof MAP_INTRO_SUGG !== 'undefined' && MAP_INTRO_SUGG) ? MAP_INTRO_SUGG : {};
     const out = new Map(); (src[mapId] || []).forEach(e=>{ if(e && e.skill && !out.has(e.skill) && (typeof skillDefOf !== 'function' || skillDefOf(e.skill))) out.set(e.skill, e.why || ''); }); return out; }catch(e){ return new Map(); }
@@ -84601,7 +84623,8 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   const mapN = (()=>{ try{ return mapNumberOf(top); }catch(e){ return null; } })(); // 2026-11-07 (UI28 #3)
   const recs0 = typeof ui24McRecs === 'function' ? ui24McRecs(mapId || top, defs) : [], recBy = new Map(); recs0.forEach(r=>{ if(!recBy.has(r.key)) recBy.set(r.key, r); });
   const sugg = typeof ui30McSugg === 'function' ? ui30McSugg(mapId || top) : new Map(), sp = k=> typeof ui30SuggPillHTML === 'function' ? ui30SuggPillHTML(k, sugg) : ''; // 2026-11-07 (UI30 #16): the Sugg. Intro pills
-  const flagOf = (arr, isMain)=> arr.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; return Object.assign(r, {isNew: isMain && mt.met && !early.has(r.key), p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl, outside: !isMain}); }).filter(r=> r.p).sort((a, b)=> (a.grey - b.grey) || (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
+  const flagOf = (arr, isMain)=> arr.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; const useSet = new Set(); if(typeof ui35UseSigs === 'function') r.ids.forEach(id=>{ const u = ui35UseSigs(defs[id]).get(r.key); if(u) u.forEach(x=> useSet.add(x)); }); const seenUse = (early.uses && early.uses.get(r.key)) || new Set(), isNewUse = isMain && mt.met && early.has(r.key) && useSet.size > 0 && [...useSet].some(x=> !seenUse.has(x)); // UI35 #7: a known skill with a parameter no earlier main map used
+    return Object.assign(r, {isNew: isMain && mt.met && !early.has(r.key), isNewUse, p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl, outside: !isMain}); }).filter(r=> r.p).sort((a, b)=> (a.grey - b.grey) || (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
   const flaggedMain = flagOf(rows, true), flaggedOther = flagOf(rowsO, false), flagged = flaggedMain.concat(flaggedOther);
   // 2026-11-04 (UI22a): each skill tile carries its full text as a tooltip (the text is clamped to two lines)
   // 2026-11-07 (package ENG35, owner 21:13: "simplify the skill 'card': just leave 1 line of emoji and title"): a tile is one line (icon, name, pills); its text,
@@ -84610,15 +84633,16 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   // 2026-11-08 (package UI35, owner 09:27 #2: "Collapse the main and recommend skill card sections together. The only thing that differentiates them are pills"): Main, Counters and the
   // recommendations are ONE list of one-line tiles, the kind shown by a pill (Main / Counter / Suggested / Sugg. Intro / NEW!); the hover says what the skill does. Others stays its own group.
   const pill = (cls, key, tipKey, tipArgs)=> ` <i class="ui35-pill is-${cls}" title="${escapeAttr(TX(tipKey, tipArgs))}">${escapeHtml(TX(key))}</i>`;
+  const cxo = typeof ui35CodexOf === 'function' ? ui35CodexOf(mapId || top) : null, cx = k=> cxo && cxo.map.has(k) ? pill('cx' + cxo.map.get(k), 'ui.ui35-pill-cx' + cxo.map.get(k), 'ui.ui35-pill-cx' + cxo.map.get(k) + '-tip') : ''; // UI35 #22
   const sugPill = tip=> ` <i class="ui28-sug" title="${escapeAttr(tip)}">${escapeHtml(TX('ui.ui28-suggested'))}</i>`;
   const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
-    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.outside ? '' : pill('main', 'ui.ui35-pill-main', 'ui.ui35-pill-main-tip')}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}</span></li>`; };
+    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.outside ? '' : pill('main', 'ui.ui35-pill-main', 'ui.ui35-pill-main-tip')}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : r.isNewUse ? pill('newuse', 'ui.ui35-pill-newuse', 'ui.ui35-pill-newuse-tip') : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}${cx(r.key)}</span></li>`; };
   const have = new Set(rows.concat(rowsO).map(r=> r.key)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
   // 2026-11-08 (package UI34, owner 23:49): a Counters group (skills that answer the main cards' skills, canonical/skill-counters.json); a counter is a tile once: not in Main / Other, and off the blue group
   let ctr = []; try{ ctr = typeof ui34CounterRows === 'function' ? ui34CounterRows(flaggedMain, defs, have) : []; }catch(e){ ctr = []; }
   const ctrKeys = new Set(ctr.map(r=> r.key));
   const recs = recs0.filter(r=>{ if(have.has(r.key) || ctrKeys.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
-  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''))}${sp(r.key)}</span></li>`;
+  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''))}${sp(r.key)}${cx(r.key)}</span></li>`;
   const kwMissing = kw && !have.has(kw) && !ctrKeys.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sugPill(TX('ui.ui24-intro-missing'))}${sp(kw)}</span></li>` : '';
   const suggShown = new Set([...have, ...ctrKeys, ...(kwMissing ? [kw] : []), ...recs.map(r=> r.key)]);
   const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, suggShown) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
@@ -84627,11 +84651,14 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   let picks = []; try{ picks = typeof ui34ClaudePicks === 'function' && blueRoom ? ui34ClaudePicks(mapId || top, defs, new Set([...suggShown, ...sugg.keys(), ...(kw ? [kw] : [])]), blueRoom) : []; }catch(e){ picks = []; }
   const spk = k=> sp(k); // a pick tile carries the Sugg. Intro pill too
   const pickTiles = picks.map(r=> `<li class="ui19-sk is-rec is-claude-pick" data-ui34-pick="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText({key: r.key, fx: {[r.key]: true}}), TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}))}${spk(r.key)}</span></li>`).join('');
+  const cxShown = new Set([...suggShown, ...sugg.keys(), ...picks.map(r=> r.key)]);
+  const cxTiles = cxo ? [...cxo.map.keys()].filter(k=> !cxShown.has(k)).map(k=>{ const p = skillDefOf(k); let text = ''; try{ text = ui19McSkillText({key: k, fx: {[k]: true}}); }catch(e){}
+    const ctx = TX('ui.ui35-codex-ctx'); return `<li class="ui19-sk is-rec ui35-codex-tile" data-ui35-codex="${escapeAttr(k)}" data-ui19-skill="${escapeAttr(k)}" ${typeof eng35TileAttrs === 'function' ? eng35TileAttrs(k, p.label, text, ctx) : `title="${escapeAttr(p.label + (text ? ': ' + text : ''))}"`}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[k]) || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b>${cx(k)}</span></li>`; }).join('') : ''; // UI35 #22: a Codex pick no tile shows yet
   const ctrTiles = ctr.map(r=> typeof ui34CounterTileHTML === 'function' ? ui34CounterTileHTML(r, defs, kw, tipA, sp) : '').join('');
   const hd = (k, n)=> n ? `<li class="ui32-sk-head is-${k}" role="presentation">${escapeHtml(TX('ui.ui32-sk-' + k))}</li>` : ''; // UI32 #7: a divider; UI35: only the Other group keeps one
-  const newN = flaggedMain.filter(r=> r.isNew).length; // 2026-11-08 (UI35 #6): how many skills this map introduces (the owner wants 2-3 on a main map, 0-1 on a side map)
-  const tileN = flaggedMain.length + ctr.length + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + recs.length + picks.length + flaggedOther.length;
-  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<ul class="ui19-sk-list">${flaggedMain.map(li).join('')}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
+  const newN = flaggedMain.filter(r=> r.isNew && !(typeof UI35_MINOR_SKILLS !== 'undefined' && UI35_MINOR_SKILLS.has(r.key))).length; // UI35 #9: minor skills (canonical/minor-skills.json) never count; // 2026-11-08 (UI35 #6): how many skills this map introduces (the owner wants 2-3 on a main map, 0-1 on a side map)
+  const tileN = flaggedMain.length + ctr.length + (cxTiles ? 1 : 0) + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + recs.length + picks.length + flaggedOther.length;
+  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<ul class="ui19-sk-list">${flaggedMain.map(li).join('')}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${cxTiles}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
 // UI34_COUNTERS:START
@@ -104053,8 +104080,8 @@ function devilPayLogText(ev, nm){
   if(ev.type === 'bloodTithe') return {cls:'', text: ev.castle ? `⛧ Blood Tithe: no ally to pay for ${nm(ev.defId)}, so ${who} bramble pays (−${ev.dmg}).` : `⛧ Blood Tithe: ${nm(ev.targetDefId)} pays for ${nm(ev.defId)} in blood (−${ev.dmg}).`};
   if(ev.type === 'ambush') return {cls:'', text:`👀 ${nm(ev.defId)} ambushes ${nm(ev.targetDefId)} as it ${ev.moved ? 'moves in' : 'arrives'} (${ev.amount}).`}; // + moved in (2026-10-17)
   // 2026-10-16 (skills 2): Amore, Fire on hit and its Burn 1 Lumber, On Pitch.
-  if(ev.type === 'amore') return {cls:'heal', text:`💕 ${nm(ev.defId)} and ${nm(ev.mateDefId)} fall in love: +0/+${ev.hp} and Regeneration ${ev.regen} each.`};
-  if(ev.type === 'amoreBroken') return {cls:'', text:`🤎 ${nm(ev.defId)} is heartbroken: ${nm(ev.deadDefId)} is gone. It keeps +0/+3, but loses Regeneration 3.`};
+  if(ev.type === 'amore') return {cls:'heal', text:`💕 ${nm(ev.defId)} and ${nm(ev.mateDefId)} fall in love: +0/+${ev.hp} and Regenerate ${ev.regen} each.`};
+  if(ev.type === 'amoreBroken') return {cls:'', text:`🤎 ${nm(ev.defId)} is heartbroken: ${nm(ev.deadDefId)} is gone. It keeps +0/+3, but loses Regenerate 3.`};
   if(ev.type === 'lumberBurn') return {cls:'', text:`🔥 ${nm(ev.defId)} burns 1 Lumber (${ev.left} left).`};
   if(ev.type === 'fireHit') return {cls:'', text: ev.castle ? `🔥 ${nm(ev.attDefId)}'s hit burns ${ev.targetSide === 'A' ? 'your' : "the enemy's"} bramble for ${ev.dmg} more.` :`🔥 ${nm(ev.attDefId)}'s hit burns ${nm(ev.targetDefId)} for ${ev.dmg} more fire damage.`};
   return null;
@@ -108577,7 +108604,7 @@ const WILDPATH_TREES = [
     {id:'b2', x:90, y:315, icon:'🃏', name:'Keen Eye', desc:'Start with 4 cards, not 3.', req:['b1']},
     {id:'b3', x:210, y:305, icon:'⛓️', name:'Prospector', desc:'Elite first clear: +1 Iron Shard.', req:['b1']},
     {id:'b4', x:70, y:215, icon:'♻', name:'Second Pitch', desc:'Once a fight, pitch twice in a turn.', req:['b2']},
-    {id:'b5', x:190, y:215, icon:'🌸', name:'Pollen Drift', desc:'Healing heals 1 more.' /* 2026-10-23 (BL): was Bloom's; the old Bloom heal is retired */, req:['b3', 'b2'], ranks:2},
+    {id:'b5', x:190, y:215, icon:'🌸', name:'Pollen Drift', desc:'Heal heals 1 more.' /* 2026-10-23 (BL): was Bloom's; the old Bloom heal is retired */, req:['b3', 'b2'], ranks:2},
     {id:'b6', x:130, y:125, icon:'🔁', name:'Echoing Wood', desc:'First token each fight is doubled.', req:['b4', 'b5']},
     {id:'b7', x:150, y:40, icon:'🌺', name:'Everbloom', desc:'Every 5th round: draw 1, +1 Lumber.', req:['b6'], capstone:true},
   ]},

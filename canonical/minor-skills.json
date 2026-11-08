@@ -1,0 +1,9 @@
+{
+ "_about": "UI35 (2026-11-08, owner 10:52 #9): unimportant skills that never count toward a map's '{n} new' (the owner's 2-3 unique skills per map). Their tiles may still say NEW!. Skill keys (a fused part such as diurnalGrant counts as its family). Add a key to grow the list.",
+ "skills": [
+  "flying",
+  "diurnal",
+  "tide",
+  "salt"
+ ]
+}

@@ -51,7 +51,7 @@ async def run(p, url, w, hgt):
         ok(not any(h in ('is-main', 'is-rec', 'is-counters') for h in r['heads']), f'{w} {mid}: no Main / Recommended / Counters headings (one list); headings: {r["heads"]}')
         ok(r['kinds']['main'] > 0 and r['kinds']['neu'] > 0, f'{w} {mid}: Main and NEW! pills show ({r["kinds"]})')
         ok(r['maxH'] < 40, f'{w} {mid}: tiles are one line ({r["maxH"]:.0f}px)')
-        ok(r['newTxt'].endswith('new') and r['newN'] == len(r['newKeys']), f'{w} {mid}: heading says "{r["newTxt"]}" = the NEW! tiles ({len(r["newKeys"])})')
+        ok(r['newTxt'].endswith('new') and r['newN'] == len([k for k in r['newKeys'] if k not in ('flying', 'diurnal', 'tide', 'salt')]), f'{w} {mid}: heading says "{r["newTxt"]}" = the NEW! tiles without the minor skills ({len(r["newKeys"])} tiles)') # UI35 10:52 #9
         ok(r['sideNew'] == 0, f'{w} {mid}: no NEW! under Other skills')
         if mid == 'm2':
             ok('bloomCopy' in r['newKeys'], f'{w} Sunken Hollow: Bloom is NEW! (main-progression rule) {r["newKeys"]}')

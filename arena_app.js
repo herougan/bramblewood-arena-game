@@ -1032,7 +1032,7 @@ const PASSIVE_DEFS = [
   // effects of the card that died"): engine relicDefOf / RELIC_KEEPS.
   {key:'relic', category:'passive', label:'Relic', kind:'boolean', desc:()=> TX('ui.relic-desc'), codexNote:TX('ui.relic-codex-note')},
   {key:'worship', category:'passive', label:'Worship', kind:'boolean', desc:()=>`+1 Attack for every 3 Prayer you have.`},
-  {key:'healing', category:'passive', label:'Healing', kind:'number', min:0, desc:v=>`At the start of each round, heals your most wounded unit for ${v}.`},
+  {key:'healing', category:'passive', label:'Heal', kind:'number', min:0, desc:v=>`At the start of each round, heals your most wounded unit for ${v}.`},
   // Nature's Force (2026-10-12, 23:12): an anthem for Elementals. Default 1, shown without the number at 1.
   // 2026-10-13 (overnight list): Lone Wolf, Sociable, Coffee, Dry, Darksight, Tailwind, Headwind and the Landslide evergreen.
   // Kinship <Type> X/Y (2026-10-13, user: "New Passive: ____ <Type> X/Y: All ally units of that Type gain +X/+Y"). The blank
@@ -1127,7 +1127,7 @@ const PASSIVE_DEFS = [
   // Regeneration N + Stun (on hit) % (2026-09-16) — both plain single-number passives, so
   // (unlike Freeze/Sleep/Paralyze just below, which need a chance+duration PAIR) they fit the
   // generic PASSIVE_DEFS -> SKILL_DEFS mapping as-is, no custom get/apply needed.
-  {key:'regen', category:'evergreen', label:'Regeneration', kind:'number', min:0, desc:v=>`Heals ${v} HP at the start of every round this card is on the board, capped at its own max HP.`},
+  {key:'regen', category:'evergreen', label:'Regenerate', kind:'number', min:0, desc:v=>`Heals ${v} HP at the start of every round this card is on the board, capped at its own max HP.`},
   // 2026-10-16 skill audit: Stun and Reflect are percentages, so a new row starts at 50% (not 1%); saved cards keep their value.
   // 2026-10-16 (user: "Stun N: 1/3 chance to Stun a card for N turns - Default 1."): N is rounds now, the chance a fixed 1 in 3. An old
   // value above 5 was a % and reads as Stun 1 (stunRounds, and the engine's stunRoundsOf).
@@ -1322,7 +1322,7 @@ const PASSIVE_DEFS = [
   {key:'strangle', category:'passive', label:'Strangle', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits Bind the target for a round, and squeeze it: ${numOr(v, 2)} damage at the start of the round it is Bound.`},
   {key:'invincible', category:'passive', label:'Invincible', kind:'number', min:1, defaultValue:1, desc:v=>`Takes no damage of any kind for its first ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'} on the field.`},
   {key:'invisible', category:'passive', label:'Invisible', kind:'number', min:1, defaultValue:2, desc:v=>`For its first ${numOr(v, 2)} rounds on the field, attacks and enemy skills can't find it. Attacking gives it away.`},
-  {key:'sonar', category:'passive', label:'Sonar', kind:'boolean', desc:()=>`Hunts by sound: Darkness, Blind, Smoke, Fog and Shadow never make it miss (flyers included), and it can't be Blinded.`},
+  {key:'sonar', category:'passive', label:'Echolocation', kind:'boolean', desc:()=>`Hunts by sound: Darkness, Blind, Smoke, Fog and Shadow never make it miss (flyers included), and it can't be Blinded.`},
   {key:'poisonGas', category:'evergreen', label:'Poison Gas', kind:'number', min:1, defaultValue:2, desc:v=>`When it arrives, every enemy unit gets ${numOr(v, 2)} Venom.`},
   {key:'absoluteZero', category:'evergreen', label:'Absolute Zero', kind:'boolean', desc:()=>`When it arrives, every enemy unit is Frozen for the round (units immune to cold are spared).`},
   {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits ${numOr(v, 2)} fire at a random enemy unit (the bramble if there are none). 1 in 2 the flames catch a unit adjacent to it for 1. (Fire Bolt always aims at the enemy opposite.)`},
@@ -7034,7 +7034,7 @@ function liveStatusGlossHTML(c){
     rows.push(`<div>${kw && kw.c ? `<b class="kw" style="--kw:${kw.c}">${head}</b>` : `<b class="kw kw-term">${head}</b>`}${rounds}: ${escapeHtml(t)}</div>`);
   });
   { const dn = (c.daunts || []).reduce((t, x)=> t + (x.n || 0), 0); if(dn > 0) rows.push(`<div><b class="kw kw-term">Daunted ${dn}</b>: deals ${dn} less Attack until the end of next round.</div>`); }
-  if(c.amoreWith != null) rows.push(c.amoreBroken ? `<div><b class="kw" style="--kw:#8a5a3b">Heartbroken</b>: its partner died. It keeps +0/+3; Regeneration 3 is gone.</div>` : `<div><b class="kw" style="--kw:#d6457a">In love</b>: +0/+3 and Regeneration 3 while its partner lives.</div>`); // Amore (2026-10-16)
+  if(c.amoreWith != null) rows.push(c.amoreBroken ? `<div><b class="kw" style="--kw:#8a5a3b">Heartbroken</b>: its partner died. It keeps +0/+3; Regenerate 3 is gone.</div>` : `<div><b class="kw" style="--kw:#d6457a">In love</b>: +0/+3 and Regenerate 3 while its partner lives.</div>`); // Amore (2026-10-16)
   try{ ui32CounterRows(c).forEach(r=> rows.push(r)); }catch(e){} // UI32 (2026-11-07, owner 18:55 #4): every other counter the unit carries
   return rows.length ? `<div class="kw-gloss live-status-gloss" role="note" aria-label="Its statuses right now">${rows.join('')}</div>` : '';
 }
@@ -9856,7 +9856,7 @@ function abilityBadges(d, bopts){
     if(e[k]) out.push(`<span class="ab-${k.toLowerCase()}" title="${escapeAttr(nm + ' ' + numOr(e[k], dv) + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${n1(numOr(e[k], dv))}</span>`); });
   // W2 skills (2026-10-16): one chip each, with its number (dv = the default; 0 = a skill with no number).
   [['venomous', 'Venomous', 2], ['toxin', 'Toxin', 1], ['weaken', 'Weaken', 1], ['wilting', 'Wilting', 1], ['bulldoze', 'Bulldoze', 1], ['tangle', 'Tangleweed', 1], ['strangle', 'Strangle', 2],
-    ['invincible', 'Invincible', 1], ['invisible', 'Invisible', 2], ['sonar', 'Sonar', 0], ['poisonGas', 'Poison Gas', 2], ['absoluteZero', 'Absolute Zero', 0], ['spitfire', 'Spitfire', 2],
+    ['invincible', 'Invincible', 1], ['invisible', 'Invisible', 2], ['sonar', 'Echolocation', 0], ['poisonGas', 'Poison Gas', 2], ['absoluteZero', 'Absolute Zero', 0], ['spitfire', 'Spitfire', 2],
     ['slashBurn', 'Slash & Burn', 3], ['trap', 'Trap', 5], ['predator', 'Predator', 1], ['prey', 'Prey', 0], ['nova', 'Nova', 3], ['crystallise', 'Crystallise', 5], ['cure', 'Cure', 2],
     ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2], ['atheist', 'Atheist', 0]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
     if(k === 'trap' && bopts && bopts.live && matchState && matchState.ui9Laid && matchState.ui9Laid[bopts.live.uid]) return; // UI9 (BB2): laid, the chip is spent
@@ -9952,7 +9952,7 @@ function abilityBadges(d, bopts){
   if(e.swift) out.push(`${iconHTML('swift', '💨')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
   if(e.amore){ const st = bopts && bopts.live ? amoreLiveState(bopts.live) : 'single'; // Amore (2026-10-16)
-    out.push(`<span class="ab-amore is-${st}" title="${escapeAttr(st === 'love' ? 'Amore: in love — +0/+3 and Regeneration 3 while its partner lives' : st === 'broken' ? 'Amore: heartbroken — its partner died; it kept +0/+3, lost Regeneration 3' : 'Amore: pairs with your next Amore unit of the same Type')}">${st === 'love' ? '❤️' : st === 'broken' ? '🤎' : '💕'}</span>`); }
+    out.push(`<span class="ab-amore is-${st}" title="${escapeAttr(st === 'love' ? 'Amore: in love — +0/+3 and Regenerate 3 while its partner lives' : st === 'broken' ? 'Amore: heartbroken — its partner died; it kept +0/+3, lost Regenerate 3' : 'Amore: pairs with your next Amore unit of the same Type')}">${st === 'love' ? '❤️' : st === 'broken' ? '🤎' : '💕'}</span>`); }
   if(e.pounce && !eng21PounceSpent(bopts)){ const pm = pounceMode(e.pounce), pl = bopts && bopts.live && bopts.live.pounceN != null ? bopts.live.pounceN : null; // Pounce (2026-10-12); <Att>/<Hp> (2026-10-16); ENG21 (2026-11-03): gone once it has fired
     out.push(`<span title="Pounce ${pm ? (pm === 'attack' ? '(its Attack)' : '(its Health)') : numOr(e.pounce, 1)}">${iconHTML('pounce', '🐾')}${pm ? (pl != null ? `<b class="atk-bonus">${pl}</b>` : (pm === 'attack' ? '⚔' : '❤')) : n1(e.pounce)}</span>`); }
   if(e.bloodlust) out.push(`<span title="Bloodlust: when it kills the unit facing it, it leaps to the next creature">${iconHTML('bloodlust', '🩸⚔️')}</span>`); // Bloodlust (2026-10-15; no number since the 2026-10-17 rework)
@@ -20468,7 +20468,7 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
 // skill, tier III +1/+2 and the signature. The volcano's signature is its eruption (fightRules, rules.eruption).
 const TERRAIN_BIOMES = {
   forest:  {name:'Old Woods',      icon:'🌲', types:['Forest','Flora','Taiga','Rainforest'], grant:{regen:1},      sig:'Regen 1'},
-  meadow:  {name:'Open Meadow',    icon:'🌼', types:['Field','Village','Flora'],             grant:{healing:1},    sig:'Healing 1'}, /* 2026-10-23 (BL): was Bloom 1, the retired heal */
+  meadow:  {name:'Open Meadow',    icon:'🌼', types:['Field','Village','Flora'],             grant:{healing:1},    sig:'Heal 1'}, /* 2026-10-23 (BL): was Bloom 1, the retired heal */
   water:   {name:'Riverbank',      icon:'🌊', types:['River','Pond'],                        grant:{inspiring:1},  sig:'Inspiring 1'},
   beach:   {name:'Tideline',       icon:'🐚', types:['Coastal','Ocean'],                     grant:{shell:1},      sig:'Shell 1'},
   reef:    {name:'Coral Shelf',    icon:'🪸', types:['Coral Reef','Ocean'],                  grant:{thorns:1},     sig:'Thorns 1'},
@@ -33361,7 +33361,7 @@ function ui19McSkillRows(ids, defs){
   return [...by.values()];
 }
 function ui19McEarlierSkillKeys(top, defs, ok){
-  const n = mapNumberOf(top), keys = new Set(); if(n === null) return keys;
+  const n = mapNumberOf(top), keys = new Set(); keys.uses = new Map(); if(n === null) return keys; // UI35 #7: keys.uses = skill key -> the uses earlier main maps show
   (typeof mainConquestMaps === 'function' ? mainConquestMaps() : []).forEach(mm=>{ const k = mapNumberOf(mm.id); if(k === null || k >= n) return;
     // 2026-11-08 (package UI35, owner 09:27 #6: "NEW! counts the main map progression only ... Only count the main map progression"): an earlier MAIN map introduced a skill only
     // through its own main list (the MAP section, key 'cards'); its side-map lists, SPECIAL and the "Other skills" never count, and a skill it only shows grey (a later level, hidden
@@ -33369,7 +33369,7 @@ function ui19McEarlierSkillKeys(top, defs, ok){
     let secs = []; try{ secs = mapPoolSections(mm.id); }catch(e){}
     secs.filter(s=> s.key === 'cards').forEach(s=>{ const ids = (s.ids || []).filter(ok).filter(id=> defs[id]);
       if(typeof ui28SkillMeet !== 'function'){ ids.forEach(id=> ui18CardSkillKeys(defs[id]).forEach(x=> keys.add(x.key))); return; } // tests lift this alone
-      ui19McSkillRows(ids, defs).forEach(r=>{ if(ui28SkillMeet(r, defs, k).met) keys.add(r.key); }); }); });
+      ui19McSkillRows(ids, defs).forEach(r=>{ if(ui28SkillMeet(r, defs, k).met){ keys.add(r.key); if(typeof ui35UseSigs === 'function') r.ids.forEach(id=>{ const u = ui35UseSigs(defs[id]).get(r.key); if(u){ if(!keys.uses.has(r.key)) keys.uses.set(r.key, new Set()); u.forEach(x=> keys.uses.get(r.key).add(x)); } }); } }); }); });
   return keys;
 }
 function ui19McSkillText(r){
@@ -33478,6 +33478,19 @@ function ui24McRecs(mapId, defs){
 // keyword tile, a recommendation tile) wears the pill there; a pick no card here has yet is a tile of its own with the pill (like the keyword intro tile).
 // Sub-maps: none. Shown only.
 const MAP_INTRO_SUGG = __MAP_INTRO_SUGG__;
+// 2026-11-08 (package UI35, owner 10:52 #9 / #22 / #7): minor skills never count toward "N new" (canonical/minor-skills.json); the Codex draft's per-map picks
+// (canonical/codex-skill-suggestions.json: sig / side skill keys, text-only one-offs and unmatched names); and a skill's "uses" (the parameter shapes of a fused family).
+const UI35_MINOR_SKILLS = new Set(__MINOR_SKILLS__);
+const UI35_CODEX = __CODEX_SKILL_SUGG__;
+function ui35CodexOf(mapId){ try{ const e = UI35_CODEX[mapId]; if(!e) return null; const m = new Map(); (e.sig || []).forEach(k=>{ if(skillDefOf(k)) m.set(k, 'sig'); }); (e.side || []).forEach(k=>{ if(skillDefOf(k) && !m.has(k)) m.set(k, 'side'); }); return {map: m, e}; }catch(x){ return null; } }
+// the parameter shapes ("uses") of the fused skill families a card carries: Diurnal 1/1, Diurnal - {evasive}, Tide - {...} are one skill, each with its own use
+function ui35UseSigs(d){
+  const out = new Map(); if(!d || typeof eng35FusedKey !== 'function') return out;
+  const add = (k0, v)=>{ if(!skillValOn(v)) return; const f = eng35FusedKey(k0), gk = typeof eng35GivesKeyOf === 'function' ? eng35GivesKeyOf(f) : null; if(f === k0 && !(gk === k0 || (v && typeof v === 'object'))) return; if(!out.has(f)) out.set(f, new Set()); out.get(f).add(k0 + ':' + JSON.stringify(v)); };
+  const e = d.effects || {}; Object.keys(e).forEach(k=> add(k, e[k]));
+  const ls = d.levelSkills || {}; Object.keys(ls).forEach(L=>{ const o = ls[L] || {}; Object.keys(o).forEach(k=> add(k, o[k])); });
+  return out;
+}
 function ui30McSugg(mapId){
   try{ if(!mapId || (typeof mpIsSub === 'function' && mpIsSub(mapId))) return new Map(); const src = (typeof MAP_INTRO_SUGG !== 'undefined' && MAP_INTRO_SUGG) ? MAP_INTRO_SUGG : {};
     const out = new Map(); (src[mapId] || []).forEach(e=>{ if(e && e.skill && !out.has(e.skill) && (typeof skillDefOf !== 'function' || skillDefOf(e.skill))) out.set(e.skill, e.why || ''); }); return out; }catch(e){ return new Map(); }
@@ -33602,7 +33615,8 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   const mapN = (()=>{ try{ return mapNumberOf(top); }catch(e){ return null; } })(); // 2026-11-07 (UI28 #3)
   const recs0 = typeof ui24McRecs === 'function' ? ui24McRecs(mapId || top, defs) : [], recBy = new Map(); recs0.forEach(r=>{ if(!recBy.has(r.key)) recBy.set(r.key, r); });
   const sugg = typeof ui30McSugg === 'function' ? ui30McSugg(mapId || top) : new Map(), sp = k=> typeof ui30SuggPillHTML === 'function' ? ui30SuggPillHTML(k, sugg) : ''; // 2026-11-07 (UI30 #16): the Sugg. Intro pills
-  const flagOf = (arr, isMain)=> arr.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; return Object.assign(r, {isNew: isMain && mt.met && !early.has(r.key), p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl, outside: !isMain}); }).filter(r=> r.p).sort((a, b)=> (a.grey - b.grey) || (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
+  const flagOf = (arr, isMain)=> arr.map(r=>{ const mt = typeof ui28SkillMeet === 'function' ? ui28SkillMeet(r, defs, mapN) : {met: true, lvl: 0}; const useSet = new Set(); if(typeof ui35UseSigs === 'function') r.ids.forEach(id=>{ const u = ui35UseSigs(defs[id]).get(r.key); if(u) u.forEach(x=> useSet.add(x)); }); const seenUse = (early.uses && early.uses.get(r.key)) || new Set(), isNewUse = isMain && mt.met && early.has(r.key) && useSet.size > 0 && [...useSet].some(x=> !seenUse.has(x)); // UI35 #7: a known skill with a parameter no earlier main map used
+    return Object.assign(r, {isNew: isMain && mt.met && !early.has(r.key), isNewUse, p: skillDefOf(r.key), grey: !mt.met, greyLvl: mt.lvl, outside: !isMain}); }).filter(r=> r.p).sort((a, b)=> (a.grey - b.grey) || (b.isNew - a.isNew) || (b.ids.length - a.ids.length) || String(a.p.label).localeCompare(String(b.p.label)));
   const flaggedMain = flagOf(rows, true), flaggedOther = flagOf(rowsO, false), flagged = flaggedMain.concat(flaggedOther);
   // 2026-11-04 (UI22a): each skill tile carries its full text as a tooltip (the text is clamped to two lines)
   // 2026-11-07 (package ENG35, owner 21:13: "simplify the skill 'card': just leave 1 line of emoji and title"): a tile is one line (icon, name, pills); its text,
@@ -33611,15 +33625,16 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   // 2026-11-08 (package UI35, owner 09:27 #2: "Collapse the main and recommend skill card sections together. The only thing that differentiates them are pills"): Main, Counters and the
   // recommendations are ONE list of one-line tiles, the kind shown by a pill (Main / Counter / Suggested / Sugg. Intro / NEW!); the hover says what the skill does. Others stays its own group.
   const pill = (cls, key, tipKey, tipArgs)=> ` <i class="ui35-pill is-${cls}" title="${escapeAttr(TX(tipKey, tipArgs))}">${escapeHtml(TX(key))}</i>`;
+  const cxo = typeof ui35CodexOf === 'function' ? ui35CodexOf(mapId || top) : null, cx = k=> cxo && cxo.map.has(k) ? pill('cx' + cxo.map.get(k), 'ui.ui35-pill-cx' + cxo.map.get(k), 'ui.ui35-pill-cx' + cxo.map.get(k) + '-tip') : ''; // UI35 #22
   const sugPill = tip=> ` <i class="ui28-sug" title="${escapeAttr(tip)}">${escapeHtml(TX('ui.ui28-suggested'))}</i>`;
   const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
-    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.outside ? '' : pill('main', 'ui.ui35-pill-main', 'ui.ui35-pill-main-tip')}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}</span></li>`; };
+    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.outside ? '' : pill('main', 'ui.ui35-pill-main', 'ui.ui35-pill-main-tip')}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : r.isNewUse ? pill('newuse', 'ui.ui35-pill-newuse', 'ui.ui35-pill-newuse-tip') : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}${cx(r.key)}</span></li>`; };
   const have = new Set(rows.concat(rowsO).map(r=> r.key)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
   // 2026-11-08 (package UI34, owner 23:49): a Counters group (skills that answer the main cards' skills, canonical/skill-counters.json); a counter is a tile once: not in Main / Other, and off the blue group
   let ctr = []; try{ ctr = typeof ui34CounterRows === 'function' ? ui34CounterRows(flaggedMain, defs, have) : []; }catch(e){ ctr = []; }
   const ctrKeys = new Set(ctr.map(r=> r.key));
   const recs = recs0.filter(r=>{ if(have.has(r.key) || ctrKeys.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
-  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''))}${sp(r.key)}</span></li>`;
+  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''))}${sp(r.key)}${cx(r.key)}</span></li>`;
   const kwMissing = kw && !have.has(kw) && !ctrKeys.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sugPill(TX('ui.ui24-intro-missing'))}${sp(kw)}</span></li>` : '';
   const suggShown = new Set([...have, ...ctrKeys, ...(kwMissing ? [kw] : []), ...recs.map(r=> r.key)]);
   const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, suggShown) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
@@ -33628,11 +33643,14 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   let picks = []; try{ picks = typeof ui34ClaudePicks === 'function' && blueRoom ? ui34ClaudePicks(mapId || top, defs, new Set([...suggShown, ...sugg.keys(), ...(kw ? [kw] : [])]), blueRoom) : []; }catch(e){ picks = []; }
   const spk = k=> sp(k); // a pick tile carries the Sugg. Intro pill too
   const pickTiles = picks.map(r=> `<li class="ui19-sk is-rec is-claude-pick" data-ui34-pick="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText({key: r.key, fx: {[r.key]: true}}), TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}))}${spk(r.key)}</span></li>`).join('');
+  const cxShown = new Set([...suggShown, ...sugg.keys(), ...picks.map(r=> r.key)]);
+  const cxTiles = cxo ? [...cxo.map.keys()].filter(k=> !cxShown.has(k)).map(k=>{ const p = skillDefOf(k); let text = ''; try{ text = ui19McSkillText({key: k, fx: {[k]: true}}); }catch(e){}
+    const ctx = TX('ui.ui35-codex-ctx'); return `<li class="ui19-sk is-rec ui35-codex-tile" data-ui35-codex="${escapeAttr(k)}" data-ui19-skill="${escapeAttr(k)}" ${typeof eng35TileAttrs === 'function' ? eng35TileAttrs(k, p.label, text, ctx) : `title="${escapeAttr(p.label + (text ? ': ' + text : ''))}"`}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml((typeof SKILL_ICON !== 'undefined' && SKILL_ICON[k]) || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(p.label)}</b>${cx(k)}</span></li>`; }).join('') : ''; // UI35 #22: a Codex pick no tile shows yet
   const ctrTiles = ctr.map(r=> typeof ui34CounterTileHTML === 'function' ? ui34CounterTileHTML(r, defs, kw, tipA, sp) : '').join('');
   const hd = (k, n)=> n ? `<li class="ui32-sk-head is-${k}" role="presentation">${escapeHtml(TX('ui.ui32-sk-' + k))}</li>` : ''; // UI32 #7: a divider; UI35: only the Other group keeps one
-  const newN = flaggedMain.filter(r=> r.isNew).length; // 2026-11-08 (UI35 #6): how many skills this map introduces (the owner wants 2-3 on a main map, 0-1 on a side map)
-  const tileN = flaggedMain.length + ctr.length + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + recs.length + picks.length + flaggedOther.length;
-  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<ul class="ui19-sk-list">${flaggedMain.map(li).join('')}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
+  const newN = flaggedMain.filter(r=> r.isNew && !(typeof UI35_MINOR_SKILLS !== 'undefined' && UI35_MINOR_SKILLS.has(r.key))).length; // UI35 #9: minor skills (canonical/minor-skills.json) never count; // 2026-11-08 (UI35 #6): how many skills this map introduces (the owner wants 2-3 on a main map, 0-1 on a side map)
+  const tileN = flaggedMain.length + ctr.length + (cxTiles ? 1 : 0) + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + recs.length + picks.length + flaggedOther.length;
+  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<ul class="ui19-sk-list">${flaggedMain.map(li).join('')}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${cxTiles}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
 // UI34_COUNTERS:START
@@ -53054,8 +53072,8 @@ function devilPayLogText(ev, nm){
   if(ev.type === 'bloodTithe') return {cls:'', text: ev.castle ? `⛧ Blood Tithe: no ally to pay for ${nm(ev.defId)}, so ${who} bramble pays (−${ev.dmg}).` : `⛧ Blood Tithe: ${nm(ev.targetDefId)} pays for ${nm(ev.defId)} in blood (−${ev.dmg}).`};
   if(ev.type === 'ambush') return {cls:'', text:`👀 ${nm(ev.defId)} ambushes ${nm(ev.targetDefId)} as it ${ev.moved ? 'moves in' : 'arrives'} (${ev.amount}).`}; // + moved in (2026-10-17)
   // 2026-10-16 (skills 2): Amore, Fire on hit and its Burn 1 Lumber, On Pitch.
-  if(ev.type === 'amore') return {cls:'heal', text:`💕 ${nm(ev.defId)} and ${nm(ev.mateDefId)} fall in love: +0/+${ev.hp} and Regeneration ${ev.regen} each.`};
-  if(ev.type === 'amoreBroken') return {cls:'', text:`🤎 ${nm(ev.defId)} is heartbroken: ${nm(ev.deadDefId)} is gone. It keeps +0/+3, but loses Regeneration 3.`};
+  if(ev.type === 'amore') return {cls:'heal', text:`💕 ${nm(ev.defId)} and ${nm(ev.mateDefId)} fall in love: +0/+${ev.hp} and Regenerate ${ev.regen} each.`};
+  if(ev.type === 'amoreBroken') return {cls:'', text:`🤎 ${nm(ev.defId)} is heartbroken: ${nm(ev.deadDefId)} is gone. It keeps +0/+3, but loses Regenerate 3.`};
   if(ev.type === 'lumberBurn') return {cls:'', text:`🔥 ${nm(ev.defId)} burns 1 Lumber (${ev.left} left).`};
   if(ev.type === 'fireHit') return {cls:'', text: ev.castle ? `🔥 ${nm(ev.attDefId)}'s hit burns ${ev.targetSide === 'A' ? 'your' : "the enemy's"} bramble for ${ev.dmg} more.` :`🔥 ${nm(ev.attDefId)}'s hit burns ${nm(ev.targetDefId)} for ${ev.dmg} more fire damage.`};
   return null;
@@ -57578,7 +57596,7 @@ const WILDPATH_TREES = [
     {id:'b2', x:90, y:315, icon:'🃏', name:'Keen Eye', desc:'Start with 4 cards, not 3.', req:['b1']},
     {id:'b3', x:210, y:305, icon:'⛓️', name:'Prospector', desc:'Elite first clear: +1 Iron Shard.', req:['b1']},
     {id:'b4', x:70, y:215, icon:'♻', name:'Second Pitch', desc:'Once a fight, pitch twice in a turn.', req:['b2']},
-    {id:'b5', x:190, y:215, icon:'🌸', name:'Pollen Drift', desc:'Healing heals 1 more.' /* 2026-10-23 (BL): was Bloom's; the old Bloom heal is retired */, req:['b3', 'b2'], ranks:2},
+    {id:'b5', x:190, y:215, icon:'🌸', name:'Pollen Drift', desc:'Heal heals 1 more.' /* 2026-10-23 (BL): was Bloom's; the old Bloom heal is retired */, req:['b3', 'b2'], ranks:2},
     {id:'b6', x:130, y:125, icon:'🔁', name:'Echoing Wood', desc:'First token each fight is doubled.', req:['b4', 'b5']},
     {id:'b7', x:150, y:40, icon:'🌺', name:'Everbloom', desc:'Every 5th round: draw 1, +1 Lumber.', req:['b6'], capstone:true},
   ]},
