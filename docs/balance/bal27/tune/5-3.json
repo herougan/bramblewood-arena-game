@@ -63,7 +63,7 @@
   "shown": 3,
   "tune60": 78.3
  },
- "keep": true,
+ "keep": false,
  "k14After": 0,
  "trail": [
   {
@@ -88,5 +88,6 @@
   }
  ],
  "trials": 97,
- "sec": 125
+ "sec": 125,
+ "withdrawn": "withdrawn 2026-11-08 (round 3): the pick led with Crocodile Ambusher, not in the deck; a challenge skirmish leads with a card of its deck (DF3); re-tuned in tune-r3"
 }

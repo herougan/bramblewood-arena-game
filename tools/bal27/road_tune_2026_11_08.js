@@ -46,6 +46,7 @@ const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools
 const size = d => Object.values(d).reduce((t, k) => t + k, 0);
 const keyOf = d => Object.keys(d).sort().map(id => id + d[id]).join(',');
 
+const KEEP_MIN = { '2-2': { 'rock-pool-starfish': 2 }, '2-5': { 'rock-pool-starfish': 2 } }; // 2026-11-08 (BAL27 round 3): round 1 cut 2-2's Starfish to 1
 const BAL21_1 = ['1-3', '1-4', '2-1', '14-1', '14-5', '19-A-7', '19-A-8']; // BAL26: + The Canopy (14-A-*)
 function fightOf(code) {
   for (const m of G.CONQUEST_MAPS) { if (m.reserved || m.tower || m.endless) continue; const n = (m.nodes || []).find(x => x.key === code); if (n && n.deck) return { m, n }; }
@@ -80,7 +81,9 @@ function setup(code) {
   const dMax = kind === 'skirmish' ? Math.max(6, n0) : Math.max(8, n0), dMin = Math.min(5, n0);
   const legal = (d, leaders) => size(d) === S0 && Object.keys(d).length >= dMin && Object.keys(d).length <= dMax && Object.entries(d).every(([id, k]) => k >= 1 && k <= cap(id))
     && [...first].every(id => !node0.deck[id] || d[id]) && k14(d) <= K0 && k14Ok(d, leaders)
-    && !(node0.rules && node0.rules.boon && !ENG.selfishBoonCount(D, d, node0.rules.boon).on); // a challenge deck keeps its selfish boon on (DF3)
+    && !(node0.rules && node0.rules.boon && !ENG.selfishBoonCount(D, d, node0.rules.boon).on) // a challenge deck keeps its selfish boon on (DF3)
+    && !(node0.challenge && leaders && leaders.some(id => !d[id]))
+    && Object.entries(KEEP_MIN[code] || {}).every(([id, k]) => (d[id] || 0) >= k); // 2026-11-08 (BAL27 round 3): CONTENT10 / LIST-1104 slots (tests/content10-2026-11-05.js 3) // 2026-11-08 (BAL27 round 3): a challenge skirmish leads with a card of its deck (tests/df3-2026-10-24.js 3; round 1 gave 5-3 an off-deck leader)
   let leaders0 = []; try { leaders0 = G.skirmishLeadersOf(node0, MAP) || []; } catch (e) {}
   const words = s => String(s || '').toLowerCase().replace(/[^a-z ]/g, ' ').split(/\s+/).filter(w => w.length >= 4 && !['the', 'king', 'queen'].includes(w));
   const fw = new Set(words(node0.name)), namesake = leaders0.some(id => words((D[id] || {}).name).some(w => fw.has(w)));

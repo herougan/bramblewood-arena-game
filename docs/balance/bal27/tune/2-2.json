@@ -57,7 +57,7 @@
   "shown": 1,
   "tune60": 76.7
  },
- "keep": true,
+ "keep": false,
  "k14After": 0,
  "trail": [
   {
@@ -75,5 +75,6 @@
   }
  ],
  "trials": 36,
- "sec": 26
+ "sec": 26,
+ "withdrawn": "withdrawn 2026-11-08 (round 3): the pick cut Rock Pool Starfish to 1 copy; CONTENT10 / LIST-1104 keep it at 2+ in 2-2 and 2-5 (tests/content10-2026-11-05.js 3)"
 }
