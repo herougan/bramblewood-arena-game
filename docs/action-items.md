@@ -8,6 +8,19 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-08 09:27: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | Reach: can attack adjacent opposing units and always does so rather than hit the Bramble; Flying can't dodge it (counts as Flying level 1, so a match stays 50%). New wooden-spear animal with Reach in Gannet Cliffs | ENG37 |
+| 2 | Map cards: one skills section (main + recommended together); pills tell them apart; hover explains the skill | UI35 |
+| 3 | Deck editor: a second, compact view (circle + label + "x N"), like the Map cards tiles; skirmish rewards' "Recommended by Claude" becomes "Thematic Recommendation" in the same compact look | UI35 |
+| 4 | Pack cards: the 📦 Pack editor (UI29) opens from the Shop and the map's 🚨 admin bar; add a 📦 Packs button below 🃏 Map cards | UI35 |
+| 5 | Map redesign principle: each main map has 2-3 signature skills (1-2 from Map 10), a few minor one-offs (like Thanatosis), and basics (guardians, ranged, quick attackers). Per-map analysis and proposal | DES1 |
+| 6 | NEW! counts the main map progression only (side maps don't count): Sunken Hollow's Bloom should be NEW! | UI35 |
+| 7 | BAL27-1: canopy-themed fields, rain allowed; plain bramble, then retune The Canopy | BAL28 (after ENG37) |
+| 8 | BAL27-2: owner changes those fights; show the win-rate % on the SK and WK fight details | UI35 |
+| 9 | BAL27-3: owner retunes Gatorback Swamp himself | owner |
+
 ## 11-07: Package UI34 (on its branch, not released)
 - Done (owner 23:49): Counters group in the Map cards window's skills section (up to 8, ranked by map cards answered, hover says which and why), `canonical/skill-counters.json`, the blue group up to 15, Counters column in the workbook. Open: decision UI34-1 (the Codex's old counter list); the `uncertain` entries of the table want an engine proof each when someone has time.
 
