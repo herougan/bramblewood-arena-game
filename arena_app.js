@@ -5121,6 +5121,8 @@ function applyCloudCfgRow(r){
   if(mn){ applyCloudNodeEdits(mn[1], r); return; }
   const mpm = /^__cfg:map-pools:(.+)$/.exec(r.id); // 2026-10-22 (package MP): a map's card pools
   if(mpm){ applyCloudMapPools(mpm[1], r); return; }
+  const mpk = /^__cfg:map-picks:(.+)$/.exec(r.id); // 2026-11-08 (package UI37): the owner's Yes / No prospect flags (admin view only)
+  if(mpk){ try{ applyCloudMapPicks(mpk[1], r); }catch(e){} return; }
   const mr = /^__cfg:raid:(.+)$/.exec(r.id);
   if(mr){ applyCloudRaidDef(mr[1], r); return; }
   if(r.id==='__cfg:tutorial'){ applyCloudTutorialCfg(r); return; }
@@ -33912,8 +33914,149 @@ function pk1OpenMapCards(mapId){
   });
   rv2Update(ov);
   try{ wireRewardZoom(ov); }catch(e){}
+  try{ ui37Mount(ov, top, mapId, ok); }catch(e){} // 2026-11-08 (package UI37, owner 17:22 #1-#3): the Prospects view (admin, main maps)
   try{ document.getElementById('pk1McClose').focus(); }catch(e){}
 }
+// UI37_PROS:START
+// 2026-11-08 (package UI37, owner 17:22 #1-#4: "just show all prospective map cards. New! arranged first, then Carried ... Do not show submap cards ... flag yes or
+// no on a pill toggle ... when I load a map, it knows all changes I've made so far, so what is New! now, what isn't."): a Prospects view in the admin 🃏 Map cards
+// window of a MAIN map (a submap's window has none). Prospects = the map's MAP list, the review's Maybe cards (canonical/map-review.json), Claude's picks for the map
+// (CLAUDE_NEW: THEME5, SKILLREC1 and CONTENT17's theme groups, the main map's own entries only, never its submaps'), and any card already flagged here. NEW! = not
+// carried from an earlier main map; Carried = an earlier main map gives it (ui37CarriedIndex: per earlier main map, a card flagged Yes there counts, one flagged No
+// there does not, an unflagged one counts when it is on that map's MAP list today). Cards flagged Yes on earlier maps that are not prospects here sit under Carried
+// in a fold. Targets: decision THEME6-1 (own / carried per main map, th6Targets), editable per map. Flags are kept in this browser (bw_ui37_map_picks_v1) and, for a
+// signed-in admin, published as card_overrides rows `__cfg:map-picks:<mainMapId>` (data: {kind:'map-picks', mapId, mapNo, yes, no, targets}; the existing jsonb
+// column, no schema change); the game reads nothing from them (applyCloudMapPicks only feeds this view). "Export picks" downloads every map's flags (JSON / CSV).
+const UI37_KEY = 'bw_ui37_map_picks_v1', UI37_VIEW_KEY = 'bw_ui37_view_v1';
+const ui37Picks = (()=>{ try{ const o = JSON.parse(localStorage.getItem(UI37_KEY) || '{}'); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; }catch(e){ return {}; } })(); // {mainMapId: {yes:[ids], no:[ids], t:{n, c}, localAt}}
+function ui37Save(){ try{ localStorage.setItem(UI37_KEY, JSON.stringify(ui37Picks)); }catch(e){} }
+function ui37Arr(a){ return [...new Set((Array.isArray(a) ? a : []).filter(x=> typeof x === 'string' && x))]; }
+function ui37Ent(top){ const e = ui37Picks[top] || {}; return {yes: ui37Arr(e.yes), no: ui37Arr(e.no), t: (e.t && typeof e.t === 'object') ? e.t : {}, localAt: e.localAt || 0}; }
+function ui37FlagOf(top, id){ const e = ui37Ent(top); return e.yes.includes(id) ? 'yes' : e.no.includes(id) ? 'no' : ''; }
+// the pure rule (tests/ui37-2026-11-08.js lifts it): maps = [{n, list, yes, no}] (main maps, n = map number); returns Map(card id -> the earliest map number before n that gives it)
+function ui37CarriedIndex(n, maps){
+  const out = new Map();
+  (maps || []).filter(m=> m && m.n != null && m.n < n).sort((a, b)=> a.n - b.n).forEach(m=>{
+    const yes = new Set(m.yes || []), no = new Set(m.no || []);
+    (m.list || []).concat(m.yes || []).forEach(id=>{ if(!yes.has(id) && no.has(id)) return; if(!out.has(id)) out.set(id, m.n); });
+  });
+  return out;
+}
+function ui37MapsData(){
+  return mainConquestMaps().filter(m=> !m.reserved).map(m=>{ const e = ui37Ent(m.id); let list = []; try{ list = mpEntry(m.id).cards; }catch(x){} return {id: m.id, n: mapNumberOf(m.id), name: m.name, icon: m.icon || '', list, yes: e.yes, no: e.no}; }).filter(x=> x.n != null);
+}
+function ui37Targets(top){ const n = mapNumberOf(top), d = th6Targets(n == null ? 2 : n) || {own: 0, carried: 0}, t = ui37Ent(top).t, num = v=> (v === '' || v == null || !(Number(v) >= 0)) ? null : Math.round(Number(v));
+  return {n: num(t.n) != null ? num(t.n) : d.own, c: num(t.c) != null ? num(t.c) : d.carried, dn: d.own, dc: d.carried}; }
+// every prospective card of a main map: id -> {id, src: Set('list' | 'maybe' | 'claude' | 'newcard' | 'flag'), why}
+function ui37Prospects(top, defs, ok){
+  const out = new Map(), add = (id, src, why)=>{ if(!id || !defs[id] || !ok(id)) return; let e = out.get(id); if(!e){ e = {id, src: new Set(), why: ''}; out.set(id, e); } e.src.add(src); if(why && !e.why) e.why = String(why); };
+  try{ mpEntry(top).cards.forEach(id=> add(id, 'list')); }catch(e){}
+  try{ const rv = rv1ReviewOf({key: 'cards'}, top); if(rv) (rv.maybe || []).forEach(e=> e && add(e.id, 'maybe', e.why)); }catch(e){}
+  const cn = (typeof CLAUDE_NEW !== 'undefined' && CLAUDE_NEW) || {}, n = mapNumberOf(top);
+  ((cn.theme5 || {})[top] || []).forEach(e=> e && add(e.id, 'claude', e.why));
+  if(n != null) ((cn.skillrec || {})[String(n)] || []).forEach(e=> e && add(e.id, 'claude', e.why));
+  const c = (cn.content17 || {})[top]; ((c && c.groups) || []).slice().sort((a, b)=> (b.current ? 1 : 0) - (a.current ? 1 : 0)).forEach(g=> (g.picks || []).forEach(p=> p && add(p.id, p.source === 'new' ? 'newcard' : 'claude', (g.theme ? g.theme + ': ' : '') + (p.why || ''))));
+  const e = ui37Ent(top); e.yes.concat(e.no).forEach(id=> add(id, 'flag'));
+  return out;
+}
+// one map's split: {n, neu, car, extra, idx}
+function ui37Split(top, defs, ok){
+  const n = mapNumberOf(top), maps = ui37MapsData(), idx = ui37CarriedIndex(n, maps), pros = ui37Prospects(top, defs, ok), neu = [], car = [], extra = [];
+  const SRC = {list: 0, maybe: 1, claude: 2, newcard: 3, flag: 4}, rank = p=> Math.min(...[...p.src].map(s=> SRC[s] == null ? 9 : SRC[s]));
+  const by = (a, b)=> rank(a) - rank(b) || roadRarityStep(defs[a.id].rarity) - roadRarityStep(defs[b.id].rarity) || String(defs[a.id].name).localeCompare(String(defs[b.id].name));
+  pros.forEach(p=> (idx.has(p.id) ? car : neu).push(p));
+  // every other card an earlier main map gives (more Carried options, in a fold): a card flagged Yes on an earlier map first, then the most recent map first
+  const yesEarlier = new Set(maps.filter(m=> m.n < n).flatMap(m=> m.yes));
+  idx.forEach((mn, id)=>{ if(!pros.has(id) && defs[id] && ok(id)) extra.push({id, src: new Set(yesEarlier.has(id) ? ['earlier'] : []), why: ''}); });
+  neu.sort(by); car.sort(by); extra.sort((a, b)=> (b.src.size - a.src.size) || (idx.get(b.id) - idx.get(a.id)) || String(defs[a.id].name).localeCompare(String(defs[b.id].name)));
+  return {n, neu, car, extra, idx};
+}
+let ui37Status = null, ui37Live = null; const ui37Timers = {};
+function ui37StatusText(){ return !ui37Status ? '' : ui37Status.ok ? '☁️ ' + TX('ui.ui37-saved-cloud') : '💾 ' + TX('ui.ui37-saved-local'); }
+function ui37Notify(){ try{ if(ui37Live && ui37Live.ov && ui37Live.ov.isConnected && !ui37Live.ov.hidden) ui37Live.draw(); }catch(e){} }
+function ui37Publish(top){
+  clearTimeout(ui37Timers[top]);
+  ui37Timers[top] = setTimeout(async ()=>{
+    const e = ui37Picks[top], row = e ? {data: {kind: 'map-picks', mapId: top, mapNo: mapNumberOf(top), yes: ui37Arr(e.yes), no: ui37Arr(e.no), targets: e.t || {}}, deleted: false, deleted_snapshot: null} : {data: null, deleted: true, deleted_snapshot: null};
+    let ok = false; try{ ok = (typeof cloudCardAdmin !== 'undefined' && cloudCardAdmin) ? await cloudWriteCardOverride('__cfg:map-picks:' + top, row) : false; }catch(x){ ok = false; }
+    ui37Status = {ok, at: Date.now()}; const s = document.getElementById('ui37Status'); if(s) s.textContent = ui37StatusText();
+  }, 700);
+}
+// a `__cfg:map-picks:<id>` row (load or poll): the newer of this browser's unpublished edit and the row wins, as map-pools does
+function applyCloudMapPicks(top, r){
+  const localAt = (ui37Picks[top] && ui37Picks[top].localAt) || 0, cloudAt = Date.parse(r.updated_at || '') || 0;
+  if(localAt && localAt > cloudAt){ setTimeout(()=>{ if(cloudCardAdmin) ui37Publish(top); }, 4000); return; }
+  if(r.deleted || !r.data) delete ui37Picks[top]; else ui37Picks[top] = {yes: ui37Arr(r.data.yes), no: ui37Arr(r.data.no), t: (r.data.targets && typeof r.data.targets === 'object') ? r.data.targets : {}, localAt: 0};
+  ui37Save(); ui37Notify();
+}
+function ui37SetFlag(top, id, flag){
+  const e = ui37Ent(top); e.yes = e.yes.filter(x=> x !== id); e.no = e.no.filter(x=> x !== id);
+  if(flag === 'yes') e.yes.push(id); else if(flag === 'no') e.no.push(id);
+  ui37Picks[top] = {yes: e.yes, no: e.no, t: e.t, localAt: Date.now()}; ui37Save(); ui37Publish(top);
+}
+function ui37SetTarget(top, k, v){ const e = ui37Ent(top), t = Object.assign({}, e.t); if(v === '' || v == null) delete t[k]; else t[k] = Math.max(0, Math.min(99, Math.round(Number(v) || 0)));
+  ui37Picks[top] = {yes: e.yes, no: e.no, t, localAt: Date.now()}; ui37Save(); ui37Publish(top); }
+// every main map's flags, with the group each card is in on that map (as this view computes it now)
+function ui37ExportRows(){
+  const defs = getCardDefs(), rows = [], maps = ui37MapsData();
+  maps.forEach(m=>{ const e = ui37Ent(m.id); if(!e.yes.length && !e.no.length) return; const idx = ui37CarriedIndex(m.n, maps), tg = ui37Targets(m.id);
+    e.yes.map(id=> [id, 'yes']).concat(e.no.map(id=> [id, 'no'])).forEach(([id, flag])=> rows.push({mapNo: m.n, mapId: m.id, map: m.name, cardId: id, card: (defs[id] && defs[id].name) || id, flag, group: idx.has(id) ? 'carried' : 'new', carriedFrom: idx.has(id) ? idx.get(id) : null, targetNew: tg.n, targetCarried: tg.c})); });
+  return rows;
+}
+function ui37ExportFile(kind){
+  const rows = ui37ExportRows(), q = v=> { const s = v == null ? '' : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const cols = ['mapNo', 'mapId', 'map', 'cardId', 'card', 'flag', 'group', 'carriedFrom', 'targetNew', 'targetCarried'];
+  const body = kind === 'csv' ? cols.join(',') + '\n' + rows.map(r=> cols.map(c=> q(r[c])).join(',')).join('\n') + '\n' : JSON.stringify({exported: new Date().toISOString(), source: 'UI37 map card prospects', rows}, null, 1);
+  window.__ui37Last = {kind, body};
+  try{ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], {type: kind === 'csv' ? 'text/csv' : 'application/json'})); a.download = 'bramblewood-map-picks.' + (kind === 'csv' ? 'csv' : 'json'); document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
+  return body;
+}
+const UI37_SRC_TX = {list: ()=> TX('ui.ui37-src-list'), maybe: ()=> TX('ui.ui37-src-maybe'), claude: ()=> TX('ui.ui37-src-claude'), newcard: ()=> TX('ui.ui37-src-newcard'), flag: ()=> TX('ui.ui37-src-flag'), earlier: ()=> TX('ui.ui37-src-earlier')}; // literal keys (keyify drops keys built from names)
+function ui37TileHTML(top, p, kind, defs, idx){
+  const f = ui37FlagOf(top, p.id), d = defs[p.id], from = idx.get(p.id);
+  const src = [...p.src].filter(s=> s !== 'flag' || p.src.size === 1).map(s=> `<b class="ui37-src is-${s}">${escapeHtml(UI37_SRC_TX[s] ? UI37_SRC_TX[s]() : s)}</b>`).join('');
+  const fromPill = kind !== 'new' && from != null ? `<b class="ui37-from" title="${escapeAttr(TX('ui.ui37-from-tip', {n: from}))}">${escapeHtml(TX('ui.ui37-from', {n: from}))}</b>` : '';
+  const btn = (k, lab)=> `<button type="button" class="ui37-yn-b is-${k}${f === k ? ' on' : ''}" data-ui37-flag="${k}" aria-pressed="${f === k ? 'true' : 'false'}">${escapeHtml(lab)}</button>`;
+  return `<span class="ui37-tile is-${f || 'none'}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${vis4MapCardTilesHTML([p.id], defs, {power: true, why: p.why || ''})}<span class="ui37-pills">${src}${fromPill}</span>`
+    + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', TX('ui.ui37-yes'))}${btn('no', TX('ui.ui37-no'))}</span></span>`;
+}
+function ui37BodyHTML(top, defs, ok){
+  const m = mpMapById(top), sp = ui37Split(top, defs, ok), tg = ui37Targets(top), yes = l=> l.filter(p=> ui37FlagOf(top, p.id) === 'yes').length;
+  const xn = yes(sp.neu), yc = yes(sp.car) + yes(sp.extra), mains = ui37MapsData(), i = mains.findIndex(x=> x.id === top), prev = mains[i - 1], next = mains[i + 1];
+  const ct = (k, x, t, dflt, lab, cls)=> `<span class="ui37-ct ${cls}${x === t ? ' is-met' : x > t ? ' is-over' : ''}" data-ui37-ct="${k}">${escapeHtml(lab)} <b class="ui37-x">${x}</b> / <input type="number" min="0" max="99" inputmode="numeric" data-ui37-target="${k}" value="${t}" title="${escapeAttr(TX('ui.ui37-target-tip', {n: sp.n, t: dflt}))}" aria-label="${escapeAttr(TX('ui.ui37-target-tip', {n: sp.n, t: dflt}))}"></span>`;
+  const grp = (cls, title, list, kind)=> `<section class="pk1-mc-sec rv2-panel ui37-grp ${cls}" data-ui37-grp="${kind}"><h3>${escapeHtml(title)} <small>${list.length}</small></h3><div class="vis4-mc-row ui37-row">${list.length ? list.map(p=> ui37TileHTML(top, p, kind, defs, sp.idx)).join('') : '<span class="panel-sub">–</span>'}</div></section>`;
+  const nav = (mm, dir, lab)=> mm ? `<button type="button" class="btn small ghost ui37-go" data-ui37-go="${escapeAttr(mm.id)}" title="${escapeAttr(lab + ': ' + TX('ui.ui37-from', {n: mm.n}) + ' ' + mm.name)}" aria-label="${escapeAttr(lab)}">${dir}</button>` : `<button type="button" class="btn small ghost ui37-go" disabled aria-label="${escapeAttr(lab)}">${dir}</button>`;
+  return `<div class="ui37-head"><span class="ui37-nav">${nav(prev, '‹', TX('ui.ui37-prev'))}<b class="ui37-map">${escapeHtml(TX('ui.ui37-from', {n: sp.n}) + ' · ' + ((m && m.icon) ? m.icon + ' ' : '') + (m ? m.name : top))}</b>${nav(next, '›', TX('ui.ui37-next'))}</span>`
+    + ct('n', xn, tg.n, tg.dn, TX('ui.ui37-flagged-new'), 'is-new') + ct('c', yc, tg.c, tg.dc, TX('ui.ui37-flagged-carried'), 'is-car')
+    + `<span class="ui37-exp" title="${escapeAttr(TX('ui.ui37-export-tip'))}"><button type="button" class="btn small" data-ui37-export="json">⬇ ${escapeHtml(TX('ui.ui37-export'))} .json</button><button type="button" class="btn small" data-ui37-export="csv">.csv</button></span><span class="panel-sub ui37-status" id="ui37Status" role="status">${escapeHtml(ui37StatusText())}</span></div>`
+    + `<p class="panel-sub ui37-sub">${escapeHtml(TX('ui.ui37-sub'))}</p>`
+    + grp('is-new', TX('ui.ui37-new'), sp.neu, 'new') + grp('is-car', TX('ui.ui37-carried'), sp.car, 'carried')
+    + (sp.extra.length ? `<details class="pk1-mc-sec rv2-panel ui37-grp ui37-extra" data-ui37-grp="earlier"><summary><b>${escapeHtml(TX('ui.ui37-earlier'))}</b> <small>${sp.extra.length}</small></summary><div class="vis4-mc-row ui37-row">${sp.extra.map(p=> ui37TileHTML(top, p, 'earlier', defs, sp.idx)).join('')}</div></details>` : '');
+}
+function ui37View(){ try{ return localStorage.getItem(UI37_VIEW_KEY) === 'pros' ? 'pros' : 'lists'; }catch(e){ return 'lists'; } }
+// called by pk1OpenMapCards once the window is drawn: the Lists / Prospects switch and the view (admin, a main map only)
+function ui37Mount(ov, top, mapId, ok){
+  ui37Live = null;
+  if(!adminModeEnabled || mpIsSub(mapId)) return;
+  const modal = ov.querySelector('.pk1-mc-modal'); if(!modal) return;
+  const sw = document.createElement('div'); sw.className = 'ui37-switch mc-seg'; sw.setAttribute('role', 'group'); sw.setAttribute('aria-label', TX('ui.ui37-view-pros'));
+  sw.innerHTML = `<button type="button" data-ui37-view="lists">${escapeHtml(TX('ui.ui37-view-lists'))}</button><button type="button" data-ui37-view="pros">🗳️ ${escapeHtml(TX('ui.ui37-view-pros'))}</button>`;
+  const head = modal.querySelector('.modal-head-row'); head.insertAdjacentElement('afterend', sw);
+  const box = document.createElement('div'); box.className = 'ui37-pros'; box.id = 'ui37Pros'; modal.appendChild(box);
+  const draw = ()=>{ const keep = modal.scrollTop, op = box.querySelector('details.ui37-extra'), open = !!(op && op.open); box.innerHTML = ui37BodyHTML(top, getCardDefs(), ok); const d2 = box.querySelector('details.ui37-extra'); if(d2 && open) d2.open = true; try{ wireRewardZoom(box); }catch(e){} modal.scrollTop = keep; };
+  const setView = v=>{ modal.dataset.ui37View = v; sw.querySelectorAll('[data-ui37-view]').forEach(b=>{ const on = b.dataset.ui37View === v; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }); try{ localStorage.setItem(UI37_VIEW_KEY, v); }catch(e){} if(v === 'pros') draw(); };
+  sw.addEventListener('click', e=>{ const b = e.target.closest('[data-ui37-view]'); if(b) setView(b.dataset.ui37View); });
+  box.addEventListener('click', e=>{
+    const t = e.target; let b;
+    if((b = t.closest('[data-ui37-flag]'))){ e.stopPropagation(); const tile = b.closest('.ui37-tile'), id = tile.dataset.ui37Id, cur = ui37FlagOf(top, id); ui37SetFlag(top, id, cur === b.dataset.ui37Flag ? '' : b.dataset.ui37Flag); draw(); return; }
+    if((b = t.closest('[data-ui37-go]'))){ e.stopPropagation(); pk1OpenMapCards(b.dataset.ui37Go); return; }
+    if((b = t.closest('[data-ui37-export]'))){ e.stopPropagation(); ui37ExportFile(b.dataset.ui37Export); return; }
+  });
+  box.addEventListener('change', e=>{ const inp = e.target.closest && e.target.closest('[data-ui37-target]'); if(!inp) return; ui37SetTarget(top, inp.dataset.ui37Target, inp.value); draw(); });
+  ui37Live = {ov, top, draw: ()=>{ if(modal.dataset.ui37View === 'pros') draw(); }};
+  setView(ui37View());
+}
+// UI37_PROS:END
 // UI29_PE:START
 // 2026-11-07 (package UI29, owner 09:04 / 09:10: "I need a pack editor page - similar UI to the map editor. It also shows Starter, Base, and Factions cards!"):
 // the admin 📦 Pack editor, built from the 🃏 Map cards window's parts (the overlay and panel classes, vis4MapCardTilesHTML with UI28's power badge,

@@ -15211,6 +15211,34 @@ html .fxb.fxb-dk > .fxb-spill{background:radial-gradient(ellipse at 50% 30%, var
 .modal-head-row .ui27-nav-btn.is-armed{color:var(--danger, #c0392b); border-color:var(--danger, #c0392b); white-space:normal; max-width:12em; line-height:1.15;}
 @media (max-width:600px){ #editorOverlay .modal-head-row:has(.ui27-nav){flex-wrap:wrap;} #editorOverlay .modal-head-row h2{flex:1 1 0; min-width:0;}
   .modal-head-row .ui27-nav{order:3; flex:1 0 100%; justify-content:space-between; margin:6px 0 0;} .modal-head-row .ui27-nav-btn.is-armed{max-width:none;} }
+/* 2026-11-08 (package UI37, owner 17:22 #1-#3): the Map cards window's Lists / Prospects switch and the Prospects view (chip, source pills, Yes / No pill toggle, counters) */
+.ui37-switch{display:inline-flex; margin:6px 0 2px; align-self:flex-start; flex-shrink:0;}
+.pk1-mc-modal .ui37-pros{flex-shrink:0;}
+.pk1-mc-modal .ui37-pros{display:none;}
+.pk1-mc-modal[data-ui37-view="pros"] .ui37-pros{display:block;}
+.pk1-mc-modal[data-ui37-view="pros"] > :not(.modal-head-row):not(.ui37-switch):not(.ui37-pros){display:none !important;}
+.ui37-head{display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; margin:8px 0 4px;}
+.ui37-nav{display:inline-flex; align-items:center; gap:6px;} .ui37-map{font-size:14px; white-space:nowrap;}
+.ui37-ct{display:inline-flex; align-items:center; gap:5px; font-weight:700; font-size:13px; padding:3px 8px; border-radius:999px; background:var(--surface-3); border:1px solid var(--surface-border); white-space:nowrap; font-variant-numeric:tabular-nums;}
+.ui37-ct.is-new{border-color:#d9a82b;} .ui37-ct.is-car{border-color:#5b86b8;}
+.ui37-ct.is-met{background:#3f7d4e; color:#fff; border-color:transparent;} .ui37-ct.is-over{background:#d98a2b; color:#241405; border-color:transparent;}
+.ui37-ct input{width:3.2em; font:inherit; padding:1px 4px; border-radius:6px; border:1px solid var(--surface-border); background:var(--surface-1, #fff); color:var(--ink);}
+.ui37-exp{display:inline-flex; gap:4px;}
+.ui37-sub{margin:2px 0 6px;}
+.ui37-grp.is-new > h3{color:#b07d10;} .ui37-grp.is-car > h3{color:#3f6a9c;}
+.ui37-extra > summary{cursor:pointer; padding:2px 0;}
+.pk1-mc-overlay .ui37-row{gap:8px 10px;}
+.ui37-tile{display:inline-flex; align-items:center; gap:5px; padding:3px 5px 3px 3px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2); max-width:100%; flex-wrap:wrap;}
+.ui37-tile.is-yes{border-color:#3f7d4e; box-shadow:0 0 0 2px rgba(63,125,78,.35) inset;} .ui37-tile.is-no{opacity:.55;}
+.ui37-pills{display:inline-flex; gap:3px; flex-wrap:wrap;}
+.ui37-src, .ui37-from{font:800 9.5px/1 'Baloo 2',system-ui,sans-serif; padding:2px 6px; border-radius:999px; background:var(--surface-3); color:var(--ink); white-space:nowrap;}
+.ui37-src.is-claude{background:#8a6fc4; color:#fff;} .ui37-src.is-newcard{background:#6d4bd8; color:#fff;} .ui37-src.is-maybe{background:#d9c27a; color:#2a220b;} .ui37-src.is-flag, .ui37-src.is-earlier{background:#e0b030; color:#222;} .ui37-from{background:#5b86b8; color:#fff; cursor:help;}
+.ui37-yn{display:inline-flex; border-radius:999px; overflow:hidden; border:1px solid var(--surface-border);}
+.ui37-yn-b{font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:4px 9px; border:0; background:var(--surface-3); color:var(--ink); cursor:pointer; min-height:24px;}
+.ui37-yn-b + .ui37-yn-b{border-left:1px solid var(--surface-border);}
+.ui37-yn-b.is-yes.on{background:#3f7d4e; color:#fff;} .ui37-yn-b.is-no.on{background:#b8463a; color:#fff;}
+.ui37-yn-b:focus-visible{outline:2px solid #ffd98a; outline-offset:-2px;}
+@media (max-width:560px){ .ui37-head{gap:6px 8px;} .ui37-map{white-space:normal;} .ui37-tile{border-radius:12px;} }
 /* #8 the fight's settings panel on a phone: a sheet under the top row, inside the screen (it opened off the left edge), scrolling */
 @media (max-width: 600px){ #settingsPanelHud{position:fixed !important; left:8px !important; right:8px !important; top:56px !important; width:auto !important; max-height:70vh; overflow-y:auto; transform:none !important;} }
 </style>
