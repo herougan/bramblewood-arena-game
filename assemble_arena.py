@@ -388,6 +388,8 @@ app_src = sub_once(app_src, "__MAP_REVIEW__", json.dumps({k: v for k, v in json.
 # 2026-11-05 (package UI21): the keyword each early map introduces (canonical/map-keywords.json), shown in the Map cards window
 app_src = sub_once(app_src, "__MAP_KEYWORDS__", json.dumps(json.load(open(SCRATCH + "canonical/map-keywords.json", encoding="utf-8"))["keywords"], ensure_ascii=False))
 # 2026-11-07 (package UI30, owner 09:47 #16): the skills thematic to introduce at each main map (the Map cards window's "Sugg. Intro" pills)
+# 2026-11-08 (package UI34): the canonical skill counter table (threat -> counters, status -> counters) for the Map cards window's Counters group; the notes and the noCounter list stay in the file
+app_src = sub_once(app_src, "__SKILL_COUNTER_TABLE__", json.dumps({k: json.load(open(SCRATCH + "canonical/skill-counters.json", encoding="utf-8"))[k] for k in ("counters", "applies", "statuses")}, ensure_ascii=False))
 app_src = sub_once(app_src, "__MAP_INTRO_SUGG__", json.dumps(json.load(open(SCRATCH + "canonical/map-intro-suggestions.json", encoding="utf-8"))["suggestions"], ensure_ascii=False))
 # 2026-11-06 (owner 23:51 #15): SKILLREC1 skill recommendations shown as tiles in the Map cards window (map name without the "(side map ...)" note)
 # 2026-11-07 (package UI24 #7): card power for the card editor, from tools/card_balance.js's report: {date, wr: {cardId: win %}}; null when the file is absent

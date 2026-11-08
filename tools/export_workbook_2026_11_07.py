@@ -93,16 +93,45 @@ def build(d):
         t = ('Map %s (%s) cleared' % (am['no'], am['name'])) if am else ''
         return t + (('; entry at ' + e['after']) if e.get('after') else '')
     def card_list(ids): return ', '.join(names.get(k, k) for k in ids)
+    # 2026-11-08 (package UI34, owner 23:49): a Counters column, the same ranking as the Map cards window (canonical/skill-counters.json): the skills that answer
+    # the map's own cards' skills, most cards answered first, up to 8, each "Name (N)" with N the cards it answers. Skills the cards already carry are left out.
+    sys.path.insert(0, os.path.join(ROOT, 'tools'))
+    import skill_params as SPc
+    ctab = json.load(open(os.path.join(ROOT, 'canonical', 'skill-counters.json'), encoding='utf-8'))
+    cdefs = {c['id']: c for c in json.load(open(os.path.join(ROOT, 'canonical', 'cards.json'), encoding='utf-8'))}
+    calias = SPc._alias(); cfk = lambda k: calias[k][0] if k in calias else k
+    def skills_of(c):
+        out = set(); fxs = [c.get('effects') or {}] + [v or {} for v in (c.get('levelSkills') or {}).values()]
+        for fx in fxs:
+            for k, v in fx.items():
+                k = cfk(k)
+                if v not in (None, False, 0, [], {}) and (k in ctab['counters'] or k in ctab['applies'] or k in ctab['noCounter']): out.add(k)
+        return out
+    def counter_label(k):
+        if k.startswith('status:'): return 'Resist/Immune ' + k[7:]
+        return next((s['label'] for s in d['skills'] if s['key'] == k), k)
+    def counters_of(own):
+        by = {}; have = set(); per = [(skills_of(cdefs[i]) if i in cdefs else set()) for i in own]
+        for sk in per: have |= sk
+        for sk in per:
+            for k in sk:
+                lst = list((ctab['counters'].get(k) or {}).get('counters', []))
+                st = ctab['applies'].get(k)
+                if st: lst += ctab['statuses'].get(st, {}).get('counters', []) + [{'skill': 'status:' + st}]
+                for x in {x['skill'] for x in lst}:
+                    if x not in have and x != k: by.setdefault(x, [0, 0])[0] += 1
+        top = sorted(by.items(), key=lambda kv: (-kv[1][0], counter_label(kv[0])))[:8]
+        return ', '.join('%s (%d)' % (counter_label(k), n[0]) for k, n in top)
     rows = []
     for m in maps:
         e = m.get('entry') or {}
         own, special = pool_of(m)
         rows.append([rank[m['id']], code_of(m), m['name'], 'Submap' if m['sub'] else 'Main', no(m['parent']) if m['parent'] else '',
                      m['unlockNo'] if m['sub'] else '', after_txt(e), e.get('label') or '',
-                     len(m['nodes']), m['biome'], len(own), card_list(own), card_list(special), m['blurb']])
+                     len(m['nodes']), m['biome'], len(own), card_list(own), card_list(special), counters_of(own), m['blurb']])
     sheet('Maps', ['Unlock order', 'Code', 'Map', 'Kind', 'Parent map no.', 'Opens with map no.', 'Opens after', 'Entry fight', 'Fights', 'Biome',
-                   'Map cards', "The map's card list", 'Special cards', 'Blurb'],
-          rows, [8, 7, 28, 9, 9, 9, 16, 16, 7, 12, 7, 80, 30, 60])
+                   'Map cards', "The map's card list", 'Special cards', 'Counters', 'Blurb'],
+          rows, [8, 7, 28, 9, 9, 9, 16, 16, 7, 12, 7, 80, 30, 50, 60])
 
     def deck(dk): return ', '.join('%s ×%s' % (names.get(k, k), v) for k, v in dk.items())
     rows = []
@@ -171,7 +200,7 @@ def build(d):
     ws = wb.create_sheet('About')
     for line in [
         'Bramblewood Arena game data, exported %s from the built game (tools/export_workbook_2026_11_07.py).' % datetime.date.today().isoformat(),
-        'Maps: all %d maps and submaps in unlock order.' % len(d['maps']),
+        'Maps: all %d maps and submaps in unlock order; the Counters column is the Map cards window\'s counter ranking (canonical/skill-counters.json, UI34).' % len(d['maps']),
         "Fights: every fight's enemy deck (card ×copies), enemy level, deck rating, castle and leader.",
         'Skills: %d skills, one row per skill (ENG35: a skill\'s parts such as Almanac\'s braces or Nocturnal\'s Health are in its Parameters column, canonical/skill-params.json). Delivery: melee %d, ranged %d, none %d (canonical/skill-delivery.json; the engine reads it).' % (sum(1 for s in d['skills'] if s['key'] not in alias), nd['melee'], nd['ranged'], nd['none']),
         'Melee = a swing or contact strike (the lane attack, Twin Strike, Pounce, Cleave, Ambush...). Ranged = a shot, throw or remote hit (Arrow, the Bolts, Missile, Boomerang, Fireball...). None = no hit of its own (auras, Armor, Regeneration, field and tick damage).',

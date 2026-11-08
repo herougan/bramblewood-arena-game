@@ -8,6 +8,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-07: Package UI34 (on its branch, not released)
+- Done (owner 23:49): Counters group in the Map cards window's skills section (up to 8, ranked by map cards answered, hover says which and why), `canonical/skill-counters.json`, the blue group up to 15, Counters column in the workbook. Open: decision UI34-1 (the Codex's old counter list); the `uncertain` entries of the table want an engine proof each when someone has time.
+
 ## 11-07: Package UI33 (on its branch, not released)
 - Done (owner 23:05): the Codex page turn is a full turn (old page to the slice, new page opens out on the back of the leaf; both ways; one-page layout folds and opens at the spine). Done (owner 23:22): custom triggers get a gloss row in the card hover and detail; Heron's exile-on-death line shows.
 - Next: owner to look at the turn on a real device (440 ms; say if it should be slower).

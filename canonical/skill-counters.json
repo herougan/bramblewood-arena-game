@@ -1,0 +1,2193 @@
+{
+ "_about": "UI34 (2026-11-08, owner 23:49: \"Add more skill recommendations to each map card window. Esp those that counter that map's cards!\"). The canonical counter table. counters: for a skill a card can carry (a key of canonical/skill-delivery.json, which lists every skill; fused families in canonical/skill-params.json read as their own key), the skills that answer it, each with a one-line reason; the list order is the priority. applies: a skill that puts a status on its target (the ENG36 status ids of bramblewood-engine.js ENG36_STATUS), so it also takes that status's counters; statuses: per status id, the skills that answer it besides the status's own Resist / Weakness / Immune entries ('status:<id>' in a card's resist / immune lists, ENG36). Every status skill and status is also answered by its Resist and Immune tile (key 'status:<id>'), which the Map cards window draws for every status a map card applies. noCounter: skills with no counter of their own (buffs, economy, stat tags, aids): the test fails on a skill in none of the three, so a new skill gets classified. uncertain: true marks an entry read from a skill's text but not proven by a rule in bramblewood-engine.js (or a heuristic). source: where the rule lives (engine function or skill text). Shown only: nothing here changes a card or a rule. The Map cards window (ui34CounterRows in arena_app.js) counts, for the cards of a map, how many each counter answers.",
+ "version": 1,
+ "counters": {
+  "acidBolt": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "archer": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "armor": {
+   "counters": [
+    {
+     "skill": "pierce",
+     "why": "Pierce: every melee hit ignores Armor."
+    },
+    {
+     "skill": "perforate",
+     "why": "Perforate ignores and strips Armor."
+    },
+    {
+     "skill": "pulverise",
+     "why": "Pulverise ignores Armor and breaks it."
+    },
+    {
+     "skill": "pry",
+     "why": "Pry strips Armor for good."
+    },
+    {
+     "skill": "shatter",
+     "why": "Shatter: 2 more damage to heavily armored units."
+    },
+    {
+     "skill": "magic",
+     "why": "Magic goes past Armor."
+    },
+    {
+     "skill": "poison",
+     "why": "Venom ticks are flat damage: Armor does not stop them."
+    },
+    {
+     "skill": "toxin",
+     "why": "Toxin ticks are flat damage: Armor does not stop them."
+    }
+   ],
+   "source": "Armor text (stops swings, arrows, spit; not magic), damageCardFlat (fo.armor only for arrows and spit)"
+  },
+  "arrow": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "banana": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "bloomCopy": {
+   "counters": [
+    {
+     "skill": "sweep",
+     "why": "Cleave hits the unit in front and the two beside it.",
+     "uncertain": true
+    },
+    {
+     "skill": "volley",
+     "why": "A Volley hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "earthquake",
+     "why": "An earthquake hits every unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "nova",
+     "why": "A burst hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "poisonGas",
+     "why": "Venom on every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "fork",
+     "why": "Fork strikes up to 2 adjacent enemies.",
+     "uncertain": true
+    },
+    {
+     "skill": "defiance",
+     "why": "+1 Attack for every enemy of a chosen type.",
+     "uncertain": true
+    }
+   ],
+   "source": "area skills text (uncertain: a heuristic for many small bodies)"
+  },
+  "brood": {
+   "counters": [
+    {
+     "skill": "sweep",
+     "why": "Cleave hits the unit in front and the two beside it.",
+     "uncertain": true
+    },
+    {
+     "skill": "volley",
+     "why": "A Volley hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "earthquake",
+     "why": "An earthquake hits every unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "nova",
+     "why": "A burst hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "poisonGas",
+     "why": "Venom on every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "fork",
+     "why": "Fork strikes up to 2 adjacent enemies.",
+     "uncertain": true
+    },
+    {
+     "skill": "defiance",
+     "why": "+1 Attack for every enemy of a chosen type.",
+     "uncertain": true
+    }
+   ],
+   "source": "area skills text (uncertain: a heuristic for many small bodies)"
+  },
+  "bulwark": {
+   "counters": [
+    {
+     "skill": "siege",
+     "why": "Siege: 2 more damage to Structures such as Log Walls."
+    },
+    {
+     "skill": "pulverise",
+     "why": "Pulverise: double damage to Structures."
+    },
+    {
+     "skill": "overwhelm",
+     "why": "Stampede carries leftover damage past a wall into the bramble.",
+     "uncertain": true
+    },
+    {
+     "skill": "breach",
+     "why": "Breach hits the bramble on every landed melee hit, wall or not."
+    },
+    {
+     "skill": "puncture",
+     "why": "Puncture hits the bramble on every landed melee hit."
+    },
+    {
+     "skill": "perforate",
+     "why": "Perforate hits the bramble on every landed melee hit."
+    },
+    {
+     "skill": "stealth",
+     "why": "Stealth ignores targeting: it goes straight to the bramble."
+    }
+   ],
+   "source": "Bulwark and Siege text, Pulverise (isStructureCard x2), Breach, Puncture, Stealth",
+   "note": "Shots hit the unit facing them, so walls stop arrows too: ranged is not a way over a wall."
+  },
+  "canopyCover": {
+   "counters": [
+    {
+     "skill": "trueStrike",
+     "why": "True Strike: no dodge roll."
+    },
+    {
+     "skill": "spotter",
+     "why": "Spotter: your attacks cannot be dodged."
+    }
+   ],
+   "source": "combatHitLands (cc5), dodgeCheck",
+   "note": "Only shots, skills and Flying or thrown swings roll it: a ground unit melee swing is not dodged."
+  },
+  "changeling": {
+   "counters": [
+    {
+     "skill": "keenEye",
+     "why": "True Sight shows enemy Changelings as what they are."
+    }
+   ],
+   "source": "Keen Eye text (True Sight)"
+  },
+  "counterattack": {
+   "counters": [
+    {
+     "skill": "nullify",
+     "why": "Nullify: no Counterattack reaction."
+    }
+   ],
+   "source": "Nullify text"
+  },
+  "cower": {
+   "counters": [
+    {
+     "skill": "poison",
+     "why": "Venom still hurts a cowering unit."
+    }
+   ],
+   "source": "Cower text (Venom and the field still can)"
+  },
+  "cure": {
+   "counters": [
+    {
+     "skill": "toxin",
+     "why": "Nothing cures Toxin, not even Cure."
+    },
+    {
+     "skill": "wither",
+     "why": "Nothing can heal a withering unit."
+    }
+   ],
+   "source": "Toxin and Wither text"
+  },
+  "evasive": {
+   "counters": [
+    {
+     "skill": "trueStrike",
+     "why": "True Strike: its attacks never miss, Evasive included."
+    },
+    {
+     "skill": "fencing",
+     "why": "Fencing: Evasive and Swift units cannot dodge its blade."
+    },
+    {
+     "skill": "expose",
+     "why": "Expose strips Evasive for 2 rounds."
+    },
+    {
+     "skill": "spotter",
+     "why": "Spotter: your units cannot be dodged."
+    },
+    {
+     "skill": "web",
+     "why": "A Webbed unit cannot dodge."
+    },
+    {
+     "skill": "ambush",
+     "why": "Ambush strikes cannot be dodged."
+    },
+    {
+     "skill": "sweep",
+     "why": "Cleave's extra hits are area hits: Evasive cannot dodge them."
+    },
+    {
+     "skill": "fireball",
+     "why": "The fireball blast is an area hit: cannot be evaded."
+    },
+    {
+     "skill": "earthquake",
+     "why": "An area effect: cannot be evaded."
+    },
+    {
+     "skill": "nova",
+     "why": "An area burst: cannot be evaded."
+    },
+    {
+     "skill": "poisonGas",
+     "why": "Venom on every enemy unit: no dodge.",
+     "uncertain": true
+    },
+    {
+     "skill": "fork",
+     "why": "Fork's extra prongs (the old Codex line): may not be single-target.",
+     "uncertain": true
+    }
+   ],
+   "source": "combatHitLands (singleTarget only), dodgeCheck, skill text of Evasive and Fencing"
+  },
+  "fireArrow": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "fireBolt": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "flying": {
+   "counters": [
+    {
+     "skill": "reach",
+     "why": "Its swing ignores Flying's dodge (a ranged swing)."
+    },
+    {
+     "skill": "arrow",
+     "why": "Arrows never miss Flying units: shots skip the Flying roll."
+    },
+    {
+     "skill": "fireArrow",
+     "why": "Fire Arrows never miss Flying units."
+    },
+    {
+     "skill": "volley",
+     "why": "Volley arrows never miss Flying units."
+    },
+    {
+     "skill": "boomerang",
+     "why": "A thrown swing: never misses Flying units."
+    },
+    {
+     "skill": "antiAirOnly",
+     "why": "Anti-air swings hit Flying and Mach units every time."
+    },
+    {
+     "skill": "trueStrike",
+     "why": "True Strike: no dodge roll at all, Flying included."
+    },
+    {
+     "skill": "web",
+     "why": "A Webbed unit cannot dodge as a Flyer."
+    }
+   ],
+   "source": "combatHitLands (flying roll only for non-flying, non-ranged swings), skill texts",
+   "note": "Flying only dodges swings. Shots and skills never roll it."
+  },
+  "fortification": {
+   "counters": [
+    {
+     "skill": "siege",
+     "why": "Siege: 2 more damage to Structures such as Log Walls."
+    },
+    {
+     "skill": "pulverise",
+     "why": "Pulverise: double damage to Structures."
+    },
+    {
+     "skill": "overwhelm",
+     "why": "Stampede carries leftover damage past a wall into the bramble.",
+     "uncertain": true
+    },
+    {
+     "skill": "breach",
+     "why": "Breach hits the bramble on every landed melee hit, wall or not."
+    },
+    {
+     "skill": "puncture",
+     "why": "Puncture hits the bramble on every landed melee hit."
+    },
+    {
+     "skill": "perforate",
+     "why": "Perforate hits the bramble on every landed melee hit."
+    },
+    {
+     "skill": "stealth",
+     "why": "Stealth ignores targeting: it goes straight to the bramble."
+    }
+   ],
+   "source": "as bulwark (a Palisade is a Structure)"
+  },
+  "ghost": {
+   "counters": [
+    {
+     "skill": "magic",
+     "why": "Only magic deals full damage to a Ghost."
+    },
+    {
+     "skill": "nova",
+     "why": "Nova is magic damage."
+    }
+   ],
+   "source": "Ghost and Magic text"
+  },
+  "guardian": {
+   "counters": [
+    {
+     "skill": "stealth",
+     "why": "Stealth hits the bramble, and a Guardian never guards the bramble."
+    },
+    {
+     "skill": "ambush",
+     "why": "Ambush strikes: no Guardian steps in."
+    },
+    {
+     "skill": "fireball",
+     "why": "Area hits are not redirected by a Guardian."
+    },
+    {
+     "skill": "earthquake",
+     "why": "Area hits are not redirected."
+    },
+    {
+     "skill": "nova",
+     "why": "Area hits are not redirected."
+    },
+    {
+     "skill": "lightning",
+     "why": "Skills other than plain attacks and shots are not guarded.",
+     "uncertain": true
+    },
+    {
+     "skill": "sentry",
+     "why": "A skill hit, not a plain attack.",
+     "uncertain": true
+    }
+   ],
+   "source": "Guardian text (plain attacks, counter-attacks, arrows and shots only)"
+  },
+  "hatchling": {
+   "counters": [
+    {
+     "skill": "sweep",
+     "why": "Cleave hits the unit in front and the two beside it.",
+     "uncertain": true
+    },
+    {
+     "skill": "volley",
+     "why": "A Volley hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "earthquake",
+     "why": "An earthquake hits every unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "nova",
+     "why": "A burst hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "poisonGas",
+     "why": "Venom on every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "fork",
+     "why": "Fork strikes up to 2 adjacent enemies.",
+     "uncertain": true
+    },
+    {
+     "skill": "defiance",
+     "why": "+1 Attack for every enemy of a chosen type.",
+     "uncertain": true
+    }
+   ],
+   "source": "area skills text (uncertain: a heuristic for many small bodies)"
+  },
+  "healing": {
+   "counters": [
+    {
+     "skill": "wither",
+     "why": "Nothing can heal a withering unit."
+    }
+   ],
+   "source": "Wither text"
+  },
+  "helmet": {
+   "counters": [
+    {
+     "skill": "sweep",
+     "why": "Only arrows, missiles and bolts glance off a Helmet: melee swings are not."
+    },
+    {
+     "skill": "fork",
+     "why": "Melee prongs are not glanced."
+    },
+    {
+     "skill": "pounce",
+     "why": "A melee leap is not glanced."
+    }
+   ],
+   "source": "Helmet text (shots only)"
+  },
+  "hiveMind": {
+   "counters": [
+    {
+     "skill": "sweep",
+     "why": "Cleave hits the unit in front and the two beside it.",
+     "uncertain": true
+    },
+    {
+     "skill": "volley",
+     "why": "A Volley hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "earthquake",
+     "why": "An earthquake hits every unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "nova",
+     "why": "A burst hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "poisonGas",
+     "why": "Venom on every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "fork",
+     "why": "Fork strikes up to 2 adjacent enemies.",
+     "uncertain": true
+    },
+    {
+     "skill": "defiance",
+     "why": "+1 Attack for every enemy of a chosen type.",
+     "uncertain": true
+    }
+   ],
+   "source": "area skills text (uncertain: a heuristic for many small bodies)"
+  },
+  "iceArrow": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "iceBolt": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "ichor": {
+   "counters": [
+    {
+     "skill": "arrow",
+     "why": "Ichor works on melee hits only."
+    },
+    {
+     "skill": "fireArrow",
+     "why": "A shot is not a melee hit."
+    },
+    {
+     "skill": "volley",
+     "why": "A shot is not a melee hit."
+    },
+    {
+     "skill": "nullify",
+     "why": "Nullify: no Ichor reaction."
+    }
+   ],
+   "source": "skill-delivery.json against ichor: melee"
+  },
+  "immortal": {
+   "counters": [
+    {
+     "skill": "nullify",
+     "why": "Nullify: no token copy takes its place.",
+     "uncertain": true
+    }
+   ],
+   "source": "Nullify text"
+  },
+  "invisible": {
+   "counters": [
+    {
+     "skill": "keenEye",
+     "why": "True Sight sees Invisible units."
+    },
+    {
+     "skill": "spotter",
+     "why": "Spotter: Invisible units are found."
+    },
+    {
+     "skill": "expose",
+     "why": "Expose strips Invisible for 2 rounds."
+    }
+   ],
+   "source": "dodgeCheck, combatHitLands (isInvisible, spot), Expose text"
+  },
+  "landslide": {
+   "counters": [
+    {
+     "skill": "nullify",
+     "why": "Nullify: none of its death effects happen."
+    }
+   ],
+   "source": "Nullify text"
+  },
+  "mach": {
+   "counters": [
+    {
+     "skill": "antiAirOnly",
+     "why": "Anti-air never misses a Mach unit."
+    },
+    {
+     "skill": "trueStrike",
+     "why": "True Strike: no miss roll."
+    },
+    {
+     "skill": "web",
+     "why": "A Webbed Mach unit is grounded, a plain unit."
+    },
+    {
+     "skill": "spotter",
+     "why": "Spotter: your attacks cannot miss or be dodged."
+    }
+   ],
+   "source": "combatHitLands (mach), dodgeCheck"
+  },
+  "magicArmor": {
+   "counters": [
+    {
+     "skill": "pierce",
+     "why": "Magic Armor stops only magic hits: a melee hit ignores it.",
+     "uncertain": true
+    }
+   ],
+   "source": "Magic Armor text"
+  },
+  "meiosis": {
+   "counters": [
+    {
+     "skill": "sweep",
+     "why": "Cleave hits the unit in front and the two beside it.",
+     "uncertain": true
+    },
+    {
+     "skill": "volley",
+     "why": "A Volley hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "earthquake",
+     "why": "An earthquake hits every unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "nova",
+     "why": "A burst hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "poisonGas",
+     "why": "Venom on every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "fork",
+     "why": "Fork strikes up to 2 adjacent enemies.",
+     "uncertain": true
+    },
+    {
+     "skill": "defiance",
+     "why": "+1 Attack for every enemy of a chosen type.",
+     "uncertain": true
+    }
+   ],
+   "source": "area skills text (uncertain: a heuristic for many small bodies)"
+  },
+  "nova": {
+   "counters": [
+    {
+     "skill": "nullify",
+     "why": "Nullify: none of its death effects happen."
+    }
+   ],
+   "source": "Nullify text"
+  },
+  "nursing": {
+   "counters": [
+    {
+     "skill": "wither",
+     "why": "Nothing can heal a withering unit."
+    }
+   ],
+   "source": "Wither text"
+  },
+  "onDeathSpawn": {
+   "counters": [
+    {
+     "skill": "nullify",
+     "why": "Nullify: no death effects, no spawn."
+    }
+   ],
+   "source": "Nullify text (On Death, Revive, Meiosis, Landslide)"
+  },
+  "pack": {
+   "counters": [
+    {
+     "skill": "sweep",
+     "why": "Cleave hits the unit in front and the two beside it.",
+     "uncertain": true
+    },
+    {
+     "skill": "volley",
+     "why": "A Volley hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "earthquake",
+     "why": "An earthquake hits every unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "nova",
+     "why": "A burst hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "poisonGas",
+     "why": "Venom on every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "fork",
+     "why": "Fork strikes up to 2 adjacent enemies.",
+     "uncertain": true
+    },
+    {
+     "skill": "defiance",
+     "why": "+1 Attack for every enemy of a chosen type.",
+     "uncertain": true
+    }
+   ],
+   "source": "area skills text (uncertain: a heuristic for many small bodies)"
+  },
+  "poisonBarbs": {
+   "counters": [
+    {
+     "skill": "arrow",
+     "why": "Barbs prick melee attackers only."
+    },
+    {
+     "skill": "fireArrow",
+     "why": "A shot is not a melee attacker."
+    },
+    {
+     "skill": "volley",
+     "why": "A shot is not a melee attacker."
+    },
+    {
+     "skill": "nullify",
+     "why": "Nullify: no reaction from the hit."
+    },
+    {
+     "skill": "immunity",
+     "why": "Immunity: cannot be Envenomed."
+    },
+    {
+     "skill": "cure",
+     "why": "Cure clears Venom each upkeep."
+    }
+   ],
+   "source": "skill-delivery.json against poisonBarbs: melee"
+  },
+  "poisonBolt": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "prey": {
+   "counters": [
+    {
+     "skill": "trueStrike",
+     "why": "True Strike: no dodge roll."
+    },
+    {
+     "skill": "web",
+     "why": "A Webbed unit cannot dodge."
+    }
+   ],
+   "source": "dodgeCheck, combatHitLands (prey)"
+  },
+  "punish": {
+   "counters": [
+    {
+     "skill": "nullify",
+     "why": "Nullify: no reaction from the hit.",
+     "uncertain": true
+    }
+   ],
+   "source": "Nullify text"
+  },
+  "rainmaker": {
+   "counters": [
+    {
+     "skill": "wither",
+     "why": "Nothing can heal a withering unit."
+    }
+   ],
+   "source": "Wither text"
+  },
+  "reflect": {
+   "counters": [
+    {
+     "skill": "sweep",
+     "why": "Reflect bounces shots only: a melee swing is not reflected."
+    },
+    {
+     "skill": "fork",
+     "why": "Melee prongs are not reflected."
+    },
+    {
+     "skill": "twinStrike",
+     "why": "Two melee swings are not reflected."
+    },
+    {
+     "skill": "ambush",
+     "why": "Ambush is not a shot."
+    }
+   ],
+   "source": "Reflect text (shots only)"
+  },
+  "regen": {
+   "counters": [
+    {
+     "skill": "wither",
+     "why": "Nothing can heal a withering unit."
+    },
+    {
+     "skill": "festering",
+     "why": "Lingering: Bleed and Venom stacks no longer wear down."
+    },
+    {
+     "skill": "toxin",
+     "why": "Toxin never wears off.",
+     "uncertain": true
+    }
+   ],
+   "source": "Wither and Lingering text"
+  },
+  "rocket": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "shadow": {
+   "counters": [
+    {
+     "skill": "keenSense",
+     "why": "Keen Sense smells grounded units through Shadow."
+    },
+    {
+     "skill": "sonar",
+     "why": "Sonar never misses for Shadow."
+    },
+    {
+     "skill": "magic",
+     "why": "Magic never misses a Shadow unit."
+    },
+    {
+     "skill": "trueStrike",
+     "why": "True Strike: no miss roll."
+    },
+    {
+     "skill": "expose",
+     "why": "Expose strips Shadow for 2 rounds."
+    },
+    {
+     "skill": "illuminate",
+     "why": "Illuminate lights up the dark for your units.",
+     "uncertain": true
+    }
+   ],
+   "source": "combatHitLands (shadow roll: not keenNose, not magic)"
+  },
+  "shell": {
+   "counters": [
+    {
+     "skill": "pierce",
+     "why": "Pierce ignores Shell's bonus Armor too."
+    },
+    {
+     "skill": "perforate",
+     "why": "Perforate ignores Armor."
+    },
+    {
+     "skill": "pulverise",
+     "why": "Pulverise ignores Armor."
+    },
+    {
+     "skill": "magic",
+     "why": "Magic goes past Armor."
+    },
+    {
+     "skill": "poison",
+     "why": "Venom ticks ignore Armor."
+    }
+   ],
+   "source": "Pierce text"
+  },
+  "shockBolt": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "smokeBomb": {
+   "counters": [
+    {
+     "skill": "sonar",
+     "why": "Sonar hears through Smoke."
+    },
+    {
+     "skill": "trueStrike",
+     "why": "True Strike: no miss roll."
+    },
+    {
+     "skill": "expose",
+     "why": "Expose strips Smoke for 2 rounds."
+    }
+   ],
+   "source": "combatHitLands (smoke roll skips Sonar)"
+  },
+  "snipe": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "spiteful": {
+   "counters": [
+    {
+     "skill": "nullify",
+     "why": "Nullify: no Spiteful reaction."
+    },
+    {
+     "skill": "regen",
+     "why": "Regeneration heals back the damage returned.",
+     "uncertain": true
+    },
+    {
+     "skill": "healing",
+     "why": "Healing mends the damage returned.",
+     "uncertain": true
+    }
+   ],
+   "source": "Spiteful and Nullify text"
+  },
+  "spitfire": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "stealth": {
+   "counters": [
+    {
+     "skill": "rampart",
+     "why": "Rampart takes half of every hit on your bramble."
+    },
+    {
+     "skill": "fortify",
+     "why": "Fortify puts Armor on your bramble."
+    },
+    {
+     "skill": "brambleArmor",
+     "why": "Fortify (Armor 1): the bramble takes 1 less from each hit."
+    }
+   ],
+   "source": "Stealth text, Rampart, brambleArmor",
+   "note": "Stealth hits the bramble directly. Taunt does not stop it."
+  },
+  "sturdy": {
+   "counters": [],
+   "source": "stat tag: no skill counters it (raw damage and more hits do)"
+  },
+  "swarm": {
+   "counters": [
+    {
+     "skill": "sweep",
+     "why": "Cleave hits the unit in front and the two beside it.",
+     "uncertain": true
+    },
+    {
+     "skill": "volley",
+     "why": "A Volley hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "earthquake",
+     "why": "An earthquake hits every unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "nova",
+     "why": "A burst hits every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "poisonGas",
+     "why": "Venom on every enemy unit.",
+     "uncertain": true
+    },
+    {
+     "skill": "fork",
+     "why": "Fork strikes up to 2 adjacent enemies.",
+     "uncertain": true
+    },
+    {
+     "skill": "defiance",
+     "why": "+1 Attack for every enemy of a chosen type.",
+     "uncertain": true
+    }
+   ],
+   "source": "area skills text (uncertain: a heuristic for many small bodies)"
+  },
+  "swift": {
+   "counters": [
+    {
+     "skill": "fencing",
+     "why": "Fencing: Swift units cannot dodge its blade."
+    },
+    {
+     "skill": "trueStrike",
+     "why": "True Strike: no dodge roll."
+    },
+    {
+     "skill": "swift",
+     "why": "A Swift attacker is not dodged by Swift units."
+    },
+    {
+     "skill": "web",
+     "why": "A Webbed unit cannot dodge."
+    },
+    {
+     "skill": "spotter",
+     "why": "Spotter: your attacks cannot miss or be dodged."
+    }
+   ],
+   "source": "combatHitLands (swift roll skips Swift or Fencing attackers)"
+  },
+  "taunt": {
+   "counters": [
+    {
+     "skill": "stealth",
+     "why": "Stealth slips past Taunt."
+    },
+    {
+     "skill": "volley",
+     "why": "A Volley is not pulled by Taunt."
+    }
+   ],
+   "source": "Taunt text"
+  },
+  "thanatosis": {
+   "counters": [
+    {
+     "skill": "volley",
+     "why": "A Volley hits every unit, even one playing dead."
+    },
+    {
+     "skill": "twinShot",
+     "why": "A random shot can find a unit playing dead."
+    },
+    {
+     "skill": "snipe",
+     "why": "A random shot can find it."
+    },
+    {
+     "skill": "lightning",
+     "why": "A random bolt can land on it."
+    },
+    {
+     "skill": "earthquake",
+     "why": "A skill that hits every unit can hit it."
+    },
+    {
+     "skill": "nova",
+     "why": "A burst on every unit can hit it."
+    },
+    {
+     "skill": "poisonGas",
+     "why": "A skill on every unit can hit it."
+    },
+    {
+     "skill": "nullify",
+     "why": "A Nullify kill is a real death: no second life."
+    }
+   ],
+   "source": "ENG36 Thanatosis rework: resolveLiveTarget, pickRandomEnemyTarget, eng33CanPlayDead (nullified)"
+  },
+  "thorns": {
+   "counters": [
+    {
+     "skill": "arrow",
+     "why": "Thorns hurt melee attackers only: a shot does not."
+    },
+    {
+     "skill": "fireArrow",
+     "why": "A shot is not a melee attacker."
+    },
+    {
+     "skill": "volley",
+     "why": "A shot is not a melee attacker."
+    },
+    {
+     "skill": "reach",
+     "why": "A ranged swing may not trigger Thorns.",
+     "uncertain": true
+    },
+    {
+     "skill": "boomerang",
+     "why": "A thrown swing may not trigger Thorns.",
+     "uncertain": true
+    },
+    {
+     "skill": "nullify",
+     "why": "Nullify: the target gets no reaction, no Thorns."
+    }
+   ],
+   "source": "skill-delivery.json against thorns: melee; Nullify text"
+  },
+  "twinShot": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "taunt",
+     "why": "Taunt pulls arrows and shots onto the Taunt unit."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "Reflect, Helmet, Canopy Cover, Armor, Guardian, Taunt texts; dodgeCheck (evasive, mach, invisible)"
+  },
+  "undead": {
+   "counters": [
+    {
+     "skill": "nullify",
+     "why": "Nullify kills for good: straight to the Removal Zone."
+    },
+    {
+     "skill": "magic",
+     "why": "Magic hurts the undead in full.",
+     "uncertain": true
+    }
+   ],
+   "source": "Nullify text"
+  },
+  "volley": {
+   "counters": [
+    {
+     "skill": "reflect",
+     "why": "Reflect bounces a shot back at a random enemy unit."
+    },
+    {
+     "skill": "helmet",
+     "why": "A Helmet glances off half of the arrows, missiles and single bolts."
+    },
+    {
+     "skill": "canopyCover",
+     "why": "Canopy Cover: a ground unit dodges half the shots under the trees."
+    },
+    {
+     "skill": "evasive",
+     "why": "Evasive dodges single-target shots 1 in 2."
+    },
+    {
+     "skill": "armor",
+     "why": "Armor takes damage off every arrow and spit."
+    },
+    {
+     "skill": "guardian",
+     "why": "A Guardian steps in and takes the arrows aimed at an ally."
+    },
+    {
+     "skill": "mach",
+     "why": "Ranged attacks miss a Mach unit 1 in 2."
+    },
+    {
+     "skill": "invisible",
+     "why": "Skills and shots can't find an Invisible unit."
+    }
+   ],
+   "source": "as arrow; Taunt text: a Volley is not pulled"
+  }
+ },
+ "applies": {
+  "absoluteZero": "freeze",
+  "bleed": "bleed",
+  "blind": "blind",
+  "brittle": "brittle",
+  "confuse": "confuse",
+  "constrict": "constrict",
+  "corrode": "corrode",
+  "daunt": "daunt",
+  "decay": "decay",
+  "exhaust": "exhaust",
+  "freeze": "freeze",
+  "gash": "bleed",
+  "greaterPoison": "venom",
+  "hemorrhage": "bleed",
+  "paralyze": "paralyze",
+  "perforate": "bleed",
+  "petrify": "petrify",
+  "poison": "venom",
+  "poisonBarbs": "venom",
+  "poisonBolt": "venom",
+  "poisonGas": "venom",
+  "scar": "scar",
+  "shock": "shock",
+  "silence": "silence",
+  "sleep": "sleep",
+  "stagger": "stagger",
+  "stench": "stench",
+  "strangle": "strangle",
+  "stunOnHit": "stun",
+  "stymie": "stymie",
+  "tangle": "tangle",
+  "tipsy": "tipsy",
+  "toxin": "toxin",
+  "venomMaster": "venom",
+  "venomPulse": "venom",
+  "venomous": "venom",
+  "web": "web",
+  "wither": "wither"
+ },
+ "statuses": {
+  "bleed": {
+   "counters": [
+    {
+     "skill": "ghost",
+     "why": "A Ghost cannot Bleed."
+    },
+    {
+     "skill": "regen",
+     "why": "Regeneration heals each round."
+    },
+    {
+     "skill": "healing",
+     "why": "Healing mends the most wounded unit."
+    },
+    {
+     "skill": "bloom",
+     "why": "Bloom (the old Codex line): heals.",
+     "uncertain": true
+    }
+   ],
+   "source": "Ghost text"
+  },
+  "blind": {
+   "counters": [
+    {
+     "skill": "keenSense",
+     "why": "Keen Sense: nothing can Blind it."
+    },
+    {
+     "skill": "sonar",
+     "why": "Sonar: it cannot be Blinded."
+    }
+   ],
+   "source": "Keen Sense and Sonar text"
+  },
+  "brittle": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "confuse": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "constrict": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "corrode": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "daunt": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "decay": {
+   "counters": [
+    {
+     "skill": "immunity",
+     "why": "Immunity: cannot catch Decay."
+    }
+   ],
+   "source": "Immunity text"
+  },
+  "exhaust": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "freeze": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "paralyze": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "petrify": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "scar": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "shock": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "silence": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "sleep": {
+   "counters": [
+    {
+     "skill": "wakeful",
+     "why": "Wakeful never falls Asleep."
+    }
+   ],
+   "source": "Wakeful text"
+  },
+  "stagger": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "stench": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "strangle": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "stun": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "stymie": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "tangle": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "tipsy": {
+   "counters": [],
+   "source": "ENG36 status resistances only"
+  },
+  "toxin": {
+   "counters": [
+    {
+     "skill": "immunity",
+     "why": "Immunity: cannot catch Toxin."
+    }
+   ],
+   "source": "Immunity and Toxin text",
+   "note": "Nothing cures Toxin."
+  },
+  "venom": {
+   "counters": [
+    {
+     "skill": "cure",
+     "why": "Cure clears up to 2 Venom each upkeep."
+    },
+    {
+     "skill": "immunity",
+     "why": "Immunity: cannot be Envenomed."
+    },
+    {
+     "skill": "regen",
+     "why": "Regeneration heals each round."
+    },
+    {
+     "skill": "healing",
+     "why": "Healing mends the most wounded unit."
+    },
+    {
+     "skill": "nursing",
+     "why": "Nursing heals 2 a round.",
+     "uncertain": true
+    }
+   ],
+   "source": "Cure, Immunity text; ENG36 Venom Resist halves ticks"
+  },
+  "web": {
+   "counters": [
+    {
+     "skill": "anchor",
+     "why": "Anchor: nothing can move it (a Web also pins).",
+     "uncertain": true
+    }
+   ],
+   "source": "Anchor text"
+  },
+  "wither": {
+   "counters": [],
+   "source": "Wither text",
+   "note": "Nothing can heal a withering unit; only Resist or Immune helps."
+  }
+ },
+ "noCounter": [
+  "almanac",
+  "ambush",
+  "amore",
+  "amplifier",
+  "anadromous",
+  "anchor",
+  "antiAirOnly",
+  "arson",
+  "assault",
+  "atheist",
+  "attack",
+  "avalanche",
+  "backstab",
+  "bananarang",
+  "banner",
+  "bedrock",
+  "berserk",
+  "beset",
+  "blitz",
+  "bloodTithe",
+  "bloodlust",
+  "bloom",
+  "bloomWhen",
+  "bludgeon",
+  "bola",
+  "bolster",
+  "boomerang",
+  "brambleArmor",
+  "breach",
+  "broodkeeper",
+  "bulldoze",
+  "carnage",
+  "carrion",
+  "castDarkness",
+  "chainLightning",
+  "chained",
+  "charge",
+  "chilli",
+  "chrysalis",
+  "coffee",
+  "consecration",
+  "converge",
+  "coppice",
+  "coreEvil",
+  "corpsefeeder",
+  "crabClaws",
+  "creative",
+  "crepuscular",
+  "crit",
+  "crystallise",
+  "darksight",
+  "defiance",
+  "delivery",
+  "deliveryEvery",
+  "demolisher",
+  "desecrate",
+  "desecration",
+  "detonate",
+  "devour",
+  "dictator",
+  "dirge",
+  "disarm",
+  "dismantle",
+  "diurnal",
+  "dive",
+  "doubleTime",
+  "dragonLightning",
+  "driftwood",
+  "dropRoll",
+  "drought",
+  "drunk",
+  "dry",
+  "durian",
+  "dynamite",
+  "earthquake",
+  "electricity",
+  "encore",
+  "esprit",
+  "evolute",
+  "evoluteAlpha",
+  "evoluteOmega",
+  "executioner",
+  "exploit",
+  "expose",
+  "fastForward",
+  "feeble",
+  "felling",
+  "fencing",
+  "fester",
+  "festering",
+  "fieldBreaker",
+  "fireball",
+  "fletcher",
+  "foeFullHand",
+  "foeLean",
+  "foePlenty",
+  "foeScarcity",
+  "fog",
+  "foraging",
+  "forged",
+  "fork",
+  "formation",
+  "fortify",
+  "fragile",
+  "frenzy",
+  "friction",
+  "frost",
+  "frostbite",
+  "fullHand",
+  "fullMoon",
+  "glean",
+  "grantSkill",
+  "growth",
+  "harbinger",
+  "harvest",
+  "haste",
+  "heat",
+  "heavyMetal",
+  "herald",
+  "herbalist",
+  "hibernate",
+  "hoard",
+  "hunter",
+  "hydra",
+  "hype",
+  "illuminate",
+  "immolation",
+  "immunity",
+  "inherentDarkness",
+  "injured",
+  "inspiring",
+  "invincible",
+  "ironWill",
+  "irradiated",
+  "isolation",
+  "keenEye",
+  "keenSense",
+  "kinRally",
+  "king",
+  "kingSlayer",
+  "kinship",
+  "lantern",
+  "lasso",
+  "lastStand",
+  "leader",
+  "lean",
+  "liege",
+  "lightning",
+  "loneWolf",
+  "loyal",
+  "lumberFeast",
+  "lumberjack",
+  "magic",
+  "majesty",
+  "meld",
+  "meteor",
+  "midas",
+  "mighty",
+  "milling",
+  "mimic",
+  "molting",
+  "momentum",
+  "moonborn",
+  "moonpull",
+  "mountainClimber",
+  "mulligan",
+  "muster",
+  "natureForce",
+  "nightblind",
+  "nocturnal",
+  "nullify",
+  "octolash",
+  "offspring",
+  "onslaught",
+  "overwhelm",
+  "packHowl",
+  "packLeader",
+  "parasite",
+  "pearl",
+  "pearlBed",
+  "penance",
+  "pickpocket",
+  "pierce",
+  "pitchfork",
+  "plenty",
+  "poisonous",
+  "pounce",
+  "prayer",
+  "prayerWard",
+  "predator",
+  "primed",
+  "proliferate",
+  "prospector",
+  "pry",
+  "psychic",
+  "pulverise",
+  "puncture",
+  "purblind",
+  "quarry",
+  "quick",
+  "rabid",
+  "rage",
+  "rageAt",
+  "rain",
+  "rainrunner",
+  "rally",
+  "rampart",
+  "reach",
+  "rebuild",
+  "recoil",
+  "relic",
+  "relict",
+  "reload",
+  "remember",
+  "render",
+  "repair",
+  "requiem",
+  "restless",
+  "retribution",
+  "revive",
+  "riled",
+  "ritual",
+  "rockSolid",
+  "rupture",
+  "sabotage",
+  "sacrifice",
+  "salt",
+  "salvage",
+  "sap",
+  "satiety",
+  "scarcity",
+  "scare",
+  "scatterbrained",
+  "scavenge",
+  "season",
+  "sentry",
+  "sequestration",
+  "shade",
+  "shapeshifter",
+  "shatter",
+  "shedding",
+  "shield",
+  "shieldCall",
+  "shieldwall",
+  "shoreUp",
+  "siege",
+  "skitter",
+  "skyfall",
+  "slashBurn",
+  "slow",
+  "smelter",
+  "sociable",
+  "socket",
+  "sonar",
+  "spawner",
+  "speed",
+  "spellward",
+  "spoils",
+  "spotter",
+  "sprout",
+  "stem",
+  "stockpile",
+  "stonecutter",
+  "storm",
+  "sunder",
+  "sunshy",
+  "supreme",
+  "supremeTide",
+  "sweep",
+  "swimmer",
+  "swipe",
+  "tally",
+  "throng",
+  "tide",
+  "timber",
+  "timbered",
+  "tornado",
+  "transform",
+  "trap",
+  "tribeDelivery",
+  "tribute",
+  "trident",
+  "trueStrike",
+  "tsunami",
+  "twin",
+  "twinStrike",
+  "unfortify",
+  "usurper",
+  "vanguard",
+  "wakeful",
+  "warcry",
+  "wave",
+  "weaken",
+  "weaponMaster",
+  "wilting",
+  "worship",
+  "worthy"
+ ]
+}

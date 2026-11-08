@@ -4283,5 +4283,13 @@
  "{name} floats back up ({n} Health).": "{name}이(가) 다시 떠오릅니다 (체력 {n}).",
  "🛡️ {name} shrugs off {status}.": "🛡️ {name}이(가) {status}을(를) 버텨냅니다.",
  "🛡️ {name} is immune to {status}.": "🛡️ {name}은(는) {status}에 면역입니다.",
- "😵 {name} floats back up ({n} Health).": "😵 {name}이(가) 다시 떠오릅니다 (체력 {n})."
+ "😵 {name} floats back up ({n} Health).": "😵 {name}이(가) 다시 떠오릅니다 (체력 {n}).",
+ "Counters to this map's cards": "이 맵 카드에 대한 대응",
+ "Counters {n} of this map's cards: {cards}": "이 맵 카드 {n}장에 대응: {cards}",
+ "{name} resistance": "{name} 저항",
+ "A Resist or Immune {name} entry in the card editor (Resistance boxes). Resist softens it (half damage a round, or 50 points off its chance to land); Immune never lets it land.": "카드 편집기(저항 칸)의 {name} 저항 또는 면역 항목. 저항은 효과를 약화하고(라운드당 피해 절반, 또는 적용 확률 50포인트 감소) 면역은 절대 걸리지 않습니다.",
+ "A {name} Resist or Immune entry softens or stops it.": "{name} 저항 또는 면역 항목이 이를 약화하거나 막습니다.",
+ "unsure": "불확실",
+ "Answers {n} of this map's cards": "이 맵 카드 {n}장에 대응",
+ "Claude's pick {card} carries it (theme: {theme})": "Claude 추천 {card}에 있음 (테마: {theme})"
 }

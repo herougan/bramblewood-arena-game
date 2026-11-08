@@ -4282,5 +4282,13 @@
  "{name} floats back up ({n} Health).": "{name} melayang bangkit lagi ({n} Nyawa).",
  "🛡️ {name} shrugs off {status}.": "🛡️ {name} menahan {status}.",
  "🛡️ {name} is immune to {status}.": "🛡️ {name} kebal terhadap {status}.",
- "😵 {name} floats back up ({n} Health).": "😵 {name} melayang bangkit lagi ({n} Nyawa)."
+ "😵 {name} floats back up ({n} Health).": "😵 {name} melayang bangkit lagi ({n} Nyawa).",
+ "Counters to this map's cards": "Penangkal kartu peta ini",
+ "Counters {n} of this map's cards: {cards}": "Menangkal {n} kartu peta ini: {cards}",
+ "{name} resistance": "Tahan {name}",
+ "A Resist or Immune {name} entry in the card editor (Resistance boxes). Resist softens it (half damage a round, or 50 points off its chance to land); Immune never lets it land.": "Entri Tahan atau Kebal {name} di editor kartu (kotak Resistensi). Tahan melemahkannya (separuh kerusakan per ronde, atau peluang kena turun 50 poin); Kebal tidak pernah membiarkannya kena.",
+ "A {name} Resist or Immune entry softens or stops it.": "Entri Tahan atau Kebal {name} melemahkan atau menghentikannya.",
+ "unsure": "belum pasti",
+ "Answers {n} of this map's cards": "Menjawab {n} kartu peta ini",
+ "Claude's pick {card} carries it (theme: {theme})": "{card}, pilihan Claude, memilikinya (tema: {theme})"
 }

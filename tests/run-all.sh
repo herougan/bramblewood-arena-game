@@ -366,6 +366,8 @@ run node tests/eng34-2026-11-07.js   # 2026-11-07 (package ENG34, owner 19:25): 
 run node tests/eng35-2026-11-07.js   # 2026-11-07 (package ENG35, owner 20:58 / 21:13): one skill per idea (canonical/skill-params.json), cards.json folded, fixed-seed fights identical before / after, Map cards one-line skill tiles with a parameters hover window
 run node tests/eng36-2026-11-08.js   # 2026-11-08 (package ENG36, owner 11-07): status Resist / Weakness / Immune (none on a card: fights unchanged), summons at the summoner's level, Thanatosis rework (swings pass through, float-up), Constrict + Strangle / Constrict actions, Hoard N = +N/+N a Lumber
 # browser check for package ENG36: python3 tests/e2e/eng36_2026_11_08.py (needs Playwright; not run by run.js): the editor's + Statuses pickers, the Thanatosis grey and float-up; screenshots in docs/screens/eng36/
+run node tests/ui34-2026-11-08.js   # 2026-11-08 (package UI34, owner 23:49): canonical/skill-counters.json (every skill classified, real counters with reasons, claims proven in the engine), the Map cards window's Counters group (ranked by cards answered, up to 8, no repeats), the blue group topped up to 15, texts in 12 packs
+# browser check for package UI34: python3 tests/e2e/ui34_2026_11_08.py (needs Playwright; not run by run.js): Counters group at 1366 and 390, one-line tiles, hover, refresh on Cut / Keep; screenshots in docs/screens/ui34/
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

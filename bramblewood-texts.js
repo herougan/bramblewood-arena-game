@@ -3609,7 +3609,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eng36-log-constrict": "{a} coils around {t}: Constricted, squeezed for {n} next round 🐍",
   "ui.eng36-log-constricted-skip": "is Constricted and can't act. 🐍",
   "ui.eng36-constricted-pip": "Constricted: it can't attack or use skills this round.",
-  "ui.eng36-hoard": "+{n}/+{n} for each Lumber you hold (rounded down)."
+  "ui.eng36-hoard": "+{n}/+{n} for each Lumber you hold (rounded down).",
+  "ui.ui32-sk-counters": "Counters to this map's cards",
+  "ui.ui34-counter-ctx": "Counters {n} of this map's cards: {cards}",
+  "ui.ui34-resist-of": "{name} resistance",
+  "ui.ui34-resist-text": "A Resist or Immune {name} entry in the card editor (Resistance boxes). Resist softens it (half damage a round, or 50 points off its chance to land); Immune never lets it land.",
+  "ui.ui34-resist-why": "A {name} Resist or Immune entry softens or stops it.",
+  "ui.ui34-unsure": "unsure",
+  "ui.ui34-cn-tip": "Answers {n} of this map's cards",
+  "ui.ui34-pick-tip": "Claude's pick {card} carries it (theme: {theme})"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
