@@ -7906,6 +7906,16 @@
    "how": "name"
   },
   {
+   "id": "cormorant",
+   "name": "Cormorant",
+   "icon": "🐦‍⬛",
+   "creature": true,
+   "animal": "cormorant",
+   "group": "seabird",
+   "subtype": null,
+   "how": "name"
+  },
+  {
    "id": "kittiwake-flock",
    "name": "Kittiwake Flock",
    "icon": "🕊️",

@@ -491,7 +491,7 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Moonborn (`moonborn`) | 2 | phase aura | statusFx phaseGrow |  |
 | Paralyze (`paralyze`) | 2 | `SkillFX.paralyzeSpark` | statusFx paralyze | 🆕 |
 | Puncture (`puncture`) | 2 | `SkillFX.pierceThrough` | hit with ev.rend | 🆕 |
-| Reach (`reach`) | 2 | none (a rule or stat with no moment of its own) |  |  |
+| Reach (`reach`) | 2 | "↗ Reach" float on the striker + its log line | statusFx reachAim (ENG37, 2026-11-08: with nothing opposite it strikes an enemy in the lane beside it) |  |
 | Reflect (`reflect`) | 2 | `SkillFX.mirrorFlash` | reflect | 🆕 |
 | Rupture (`rupture`) | 2 | floating text / sound only |  | — |
 | Sacrifice (`sacrifice`) | 2 | `.sac-chomp` | statusFx sacrificed |  |

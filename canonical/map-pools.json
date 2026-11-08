@@ -26,7 +26,7 @@
    "special": ["old-shell"]
   },
   "mc": {
-   "cards": ["golden-eagle-diver", "puffin-diver", "peregrine-stooper", "kittiwake-flock", "peak-condor", "red-billed-chough", "razorbill", "gannet-nestweaver", "conch-crawler", "conch-herald", "feral-tomcat", "gull-thief", "fiddler-crab-swarm", "oystercatcher", "pincushion-urchin"],
+   "cards": ["golden-eagle-diver", "puffin-diver", "peregrine-stooper", "kittiwake-flock", "peak-condor", "red-billed-chough", "razorbill", "gannet-nestweaver", "conch-crawler", "conch-herald", "feral-tomcat", "gull-thief", "fiddler-crab-swarm", "oystercatcher", "pincushion-urchin", "cormorant"],
    "submaps": {},
    "special": ["hawk-arrowkeeper"]
   },

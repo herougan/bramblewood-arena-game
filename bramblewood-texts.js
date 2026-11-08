@@ -3641,7 +3641,19 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui35-pill-cxsig-tip": "A signature skill in the Codex draft's skill distribution for this map",
   "ui.ui35-pill-cxside": "Codex side",
   "ui.ui35-pill-cxside-tip": "A side skill in the Codex draft's skill distribution for this map",
-  "ui.ui35-codex-ctx": "Codex draft pick (no card on this map has it yet)"
+  "ui.ui35-codex-ctx": "Codex draft pick (no card on this map has it yet)",
+  "ui.sk-reach": "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.",
+  "ui.sk-reach-codex": "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.",
+  "ui.eng37-log-reach": "{a} reaches into the next lane and strikes {t}.",
+  "ui.eng37-reach-fl": "↗ Reach",
+  "ui.skn-shield-armor": "Shield: Armor",
+  "ui.sk-shield-armor": "Arrives with {n} Shield; +{m} Armor while any of it remains.",
+  "ui.sk-shield-armor-desc": "+{m} Armor while any of its Shield remains; gone when the Shield breaks.",
+  "ui.skn-shell-when": "Shell: when",
+  "ui.sk-shell-after": "After it attacks: +{n} Armor until the round ends.",
+  "ui.shell-when-hit": "When first hit (default)",
+  "ui.shell-when-after": "After it attacks",
+  "ui.sk-shell-when-desc": "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor)."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -4314,5 +4314,17 @@
  "A signature skill in the Codex draft's skill distribution for this map": "Uma habilidade de assinatura deste mapa na distribuição do rascunho Codex",
  "Codex side": "Codex secund.",
  "A side skill in the Codex draft's skill distribution for this map": "Uma habilidade secundária deste mapa na distribuição do rascunho Codex",
- "Codex draft pick (no card on this map has it yet)": "Escolha do rascunho Codex (nenhuma carta deste mapa a tem ainda)"
+ "Codex draft pick (no card on this map has it yet)": "Escolha do rascunho Codex (nenhuma carta deste mapa a tem ainda)",
+ "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "Voar não se esquiva dele. Sem inimigo à frente, golpeia um inimigo da faixa ao lado em vez da sarça.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "Seu golpe conta como Voar 1: um voador nunca se esquiva, uma unidade Mach 1 em 2. Com sua faixa vazia, golpeia um inimigo de uma faixa ao lado (o de menos Vida; empate, cara ou coroa) e só atinge a sarça se nenhuma das duas tiver. Provocar ainda o atrai.",
+ "{a} reaches into the next lane and strikes {t}.": "{a} alcança a faixa ao lado e golpeia {t}.",
+ "Reach": "Alcance",
+ "Shield: Armor": "Escudo: Armadura",
+ "Arrives with {n} Shield; +{m} Armor while any of it remains.": "Chega com {n} de Escudo; +{m} de Armadura enquanto restar algum.",
+ "+{m} Armor while any of its Shield remains; gone when the Shield breaks.": "+{m} de Armadura enquanto restar Escudo; some quando o Escudo quebra.",
+ "Shell: when": "Casco: quando",
+ "After it attacks: +{n} Armor until the round ends.": "Depois de atacar: +{n} de Armadura até o fim da rodada.",
+ "When first hit (default)": "Ao levar o primeiro golpe (padrão)",
+ "After it attacks": "Depois de atacar",
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Quando a Armadura do Casco surge: ao levar o primeiro golpe de cada rodada (padrão), ou depois do próprio ataque (um inimigo que golpeia antes não encontra Armadura)."
 }

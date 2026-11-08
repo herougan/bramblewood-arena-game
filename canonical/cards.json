@@ -36499,5 +36499,40 @@
     "awaitingSource": true,
     "unattainable": true,
     "creatorNote": "2026-11-07 (package CONTENT17, owner 23:55: \"More Claude recommendations per map ... I can't fit arrow-ers in Maps 0-20 much ... where are the yeti hunters?\"): unlisted Claude pick; proposed home The Pale Desert (Map 18 term), shown in that map's Map cards window under Claude New (canonical/claude-new-cards.json content17). Priced with the budget (tools/skill_costs.js budget, Level 1, rarity uncommon, map term Map 18): S 7.01, N 25.24, 2A + H + S 24.86: 2/9. Ranged (canonical/skill-delivery.json). Skills from existing keywords only. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT17)."
+  },
+  {
+    "id": "cormorant",
+    "name": "Cormorant",
+    "icon": "\ud83d\udc26\u200d\u2b1b",
+    "cost": 0,
+    "wait": 1,
+    "attack": 3,
+    "health": 7,
+    "rarity": "common",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Coastal",
+      "Bird"
+    ],
+    "species": [
+      "Bird"
+    ],
+    "animal": "cormorant",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "reach": true
+    },
+    "flavor": "It dries its wings on the ledge with a long sharpened stick from the nest close by. Whatever glides past gets a poke.",
+    "source": {
+      "kind": "pack",
+      "tier": 1,
+      "map": "mc"
+    },
+    "numericId": 9220,
+    "uuid": "80be9b20-f837-5b9b-a90f-942f9cfb127a",
+    "creatorNote": "2026-11-08 (package ENG37, owner 09:27 #1 / 10:52 #12: \"New wooden-spear animal with Reach in Gannet Cliffs\", confirmed): a plain common seabird (owner 10:52 #15: simple names, common animals on Maps 0-20; a non-faction card may hold a primitive item), a ground unit holding a sharpened stick from its nest. Reach answers the cliffs' Flyers. On the Gannet Cliffs list (canonical/map-pools.json mc), a basic-pack card of Map 3. Priced with the budget (tools/skill_costs.js budget, Level 1, common, map term Map 3): S 0.52, N 17.42, 2A + H + S 16.52: 3/7. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (ENG37)."
   }
 ]

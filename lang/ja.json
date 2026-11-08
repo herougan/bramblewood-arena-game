@@ -4313,5 +4313,17 @@
  "A signature skill in the Codex draft's skill distribution for this map": "Codexの草案でこのマップの看板技能",
  "Codex side": "Codex サブ",
  "A side skill in the Codex draft's skill distribution for this map": "Codexの草案でこのマップのサブ技能",
- "Codex draft pick (no card on this map has it yet)": "Codex草案の推奨(このマップのカードにはまだありません)"
+ "Codex draft pick (no card on this map has it yet)": "Codex草案の推奨(このマップのカードにはまだありません)",
+ "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "飛行では回避できない。正面に敵がいなければ、いばらの代わりに隣のレーンの敵を攻撃する。",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "攻撃は飛行1として扱う：飛行ユニットは回避できず、マッハは2回に1回回避する。自分のレーンが空なら隣のレーンの敵を攻撃し（体力の少ない方、同じならコイントス）、どちらにもいない時だけいばらを攻撃する。挑発には引き寄せられる。",
+ "{a} reaches into the next lane and strikes {t}.": "{a} は隣のレーンへ届き、{t} を攻撃した。",
+ "Reach": "リーチ",
+ "Shield: Armor": "シールド：アーマー",
+ "Arrives with {n} Shield; +{m} Armor while any of it remains.": "{n} シールドを持って登場。シールドが残る間、アーマー+{m}。",
+ "+{m} Armor while any of its Shield remains; gone when the Shield breaks.": "シールドが残る間アーマー+{m}。シールドが壊れると消える。",
+ "Shell: when": "甲羅：タイミング",
+ "After it attacks: +{n} Armor until the round ends.": "攻撃した後：ラウンド終了までアーマー+{n}。",
+ "When first hit (default)": "最初に攻撃を受けた時（既定）",
+ "After it attacks": "攻撃した後",
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "甲羅のアーマーが出る時：各ラウンド最初に攻撃を受けた時（既定）、または自分の攻撃の後（先に攻撃した敵はアーマーに当たらない）。"
 }

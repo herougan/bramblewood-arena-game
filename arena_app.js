@@ -1913,6 +1913,20 @@ sk1Patch(PASSIVE_DEFS, 'archerStyle', {category:'passive', label:TX('ui.skn-arch
   selectOptions:()=> [{value:'bow', label:TX('ui.archer-style-bow')}, {value:'drop', label:TX('ui.archer-style-drop')}],
   get:e=> e.archerStyle ? (e.archerStyle === 'drop' ? 'drop' : 'bow') : undefined, apply:(e, v)=>{ if(v === 'drop') e.archerStyle = 'drop'; else delete e.archerStyle; }});
 TRIGGER_DEFS.push({key:'onAction', label:TX('ui.trg-on-action'), desc:TX('ui.trg-on-action-desc')});
+// ==== Package ENG37 (2026-11-08; rules in bramblewood-engine.js, the ENG37 notes beside eng37ReachPick, eng37ShieldArmorOf, eng37ShellAfter):
+//   Reach      (owner 09:27) Flying 1 as an attacker (a Flyer never dodges it); with nothing opposite, it strikes an enemy in a lane beside its own
+//   Shield     (owner 11:03, Armoured Shield) parameter armor: shield {v: N, armor: M} = +M Armor while any of its Shield remains (effects.shieldArmor)
+//   Shell      (owner 11:03, Retreat into the shell) parameter when: shell {v: N, when: 'afterAttack'} = its Armor comes up after its own attack
+//              (effects.shellWhen); the default stays "the first hit each round". The two parameter rows are editor rows (the Archer style pattern);
+//              the card reads them on the Shield / Shell line (SKILL_TEXT below, ENG37 late block).
+sk1Patch(PASSIVE_DEFS, 'reach', {desc:()=> TX('ui.sk-reach'), codexNote:TX('ui.sk-reach-codex')});
+{ const sh = PASSIVE_DEFS.find(p=> p.key === 'shield'); if(sh){ const d0 = sh.desc; sh.desc = (v, n, e)=> (e && Number(e.shieldArmor) > 0) ? TX('ui.sk-shield-armor', {n: numOr(v, 1), m: Number(e.shieldArmor)}) : d0(v, n, e); }
+  const sl = PASSIVE_DEFS.find(p=> p.key === 'shell'); if(sl){ const d0 = sl.desc; sl.desc = (v, n, e)=> (e && e.shellWhen === 'afterAttack') ? TX('ui.sk-shell-after', {n: v}) : d0(v, n, e); } }
+PASSIVE_DEFS.push({key:'shieldArmor', category:'passive', label:TX('ui.skn-shield-armor'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-shield-armor-desc', {m: numOr(v, 1)}), codexNote:TX('ui.sk-shield-armor-desc', {m: 'M'})},
+  {key:'shellWhen', category:'passive', label:TX('ui.skn-shell-when'), kind:'select', desc:v=> v === 'afterAttack' ? TX('ui.shell-when-after') : TX('ui.shell-when-hit'), codexNote:TX('ui.sk-shell-when-desc'),
+    selectOptions:()=> [{value:'firstHit', label:TX('ui.shell-when-hit')}, {value:'afterAttack', label:TX('ui.shell-when-after')}],
+    get:e=> e.shellWhen ? (e.shellWhen === 'afterAttack' ? 'afterAttack' : 'firstHit') : undefined, apply:(e, v)=>{ if(v === 'afterAttack') e.shellWhen = 'afterAttack'; else delete e.shellWhen; }});
+Object.assign(SKILL_ICON, {shieldArmor:'🛡️', shellWhen:'🐚'});
 ACTION_DEFS.push({key:'arrow', label:TX('ui.act-arrow'), fields:['amount'], desc:TX('ui.act-arrow-desc')});
 ACTION_DEFS.push({key:'revive', label:TX('ui.eng9-revive-name'), fields:['count'], desc:TX('ui.eng9-act-revive-desc')}); // ENG9 (2026-10-26, owner #20): Revive, the graveyard action
 Object.assign(SKILL_ICON, {archer:'🏹'});
@@ -3755,6 +3769,7 @@ function describeEffects(def, liveCard, opt){
     if(THR_APP[p.key]){ const N = thrNApp(p.key, e); lines.push(`${ic(p.key)}${p.label} ${N} – {${escapeHtml(grantText(thrGrantApp(p.key, e)))}} — ${escapeHtml(THR_TX[p.key].line({n: N, skills: grantText(thrGrantApp(p.key, e))}))}`); return; } // ENG10: "Requiem 5 – {+2/+2}"
     if(EN6_BRAMBLE_APP[p.key] && e[EN6_BRAMBLE_APP[p.key].base]) return; // EN6: read on the shot's own line ("Arrow 2 – bramble")
     if(EN7_TIP_APP[p.key] && e[EN7_TIP_APP[p.key].base]) return; // EN7: read on the shot's own line ("Arrow 2 – poison")
+    if((p.key === 'shieldArmor' && e.shield) || (p.key === 'shellWhen' && e.shell)) return; // ENG37 (2026-11-08): read on the Shield / Shell line
     if(p.key==='season'){ lines.push(`${ic('season')}${escapeHtml(TX('ui.skn-season'))} (${EN6_SEASON_ICO[en6SeasonOfApp(e)]} ${escapeHtml(en6SeasonName(en6SeasonOfApp(e)))}) — ${skillText(p, v, e)}`); return; } // EN6
     { const bk = Object.keys(EN6_BRAMBLE_APP).find(k=> EN6_BRAMBLE_APP[k].base === p.key), tips = en7TipsOn(e, p.key); // EN6 (2026-10-24, owner 03:17 #2); + EN7's – poison / – bleed
       if((bk && e[bk]) || tips.length){ const br = !!(bk && e[bk]);
@@ -8475,6 +8490,11 @@ function codexFilterBadge(){
 // 2026-11-03 (package UI18, owner 22:04 + 22:08): the Codex skill filter lists only skills you have seen (skillBookEntries: on a card you
 // have seen, or met in a fight; Admin Mode lists all), plus one "? Mystery skills" entry for the cards that carry a skill you have not seen yet.
 // A card also counts for a skill it only gets at a later level (levelSkills), and its Codex tile says so with a "[Lvl N]" flag (Codex only).
+// ENG37 (2026-11-08, owner 11:03): the Shield / Shell lines read their parameter (Armoured Shield; Shell after attacking)
+{ const shT = SKILL_TEXT.shield, slT = SKILL_TEXT.shell;
+  SKILL_TEXT.shield = (v, n, e)=> (e && Number(e.shieldArmor) > 0) ? TX('ui.sk-shield-armor', {n: numOr(v, 1), m: Number(e.shieldArmor)}) : shT(v, n, e);
+  SKILL_TEXT.shell = (v, n, e)=> (e && e.shellWhen === 'afterAttack') ? TX('ui.sk-shell-after', {n: v}) : slT(v, n, e);
+  SKILL_TEXT.reach = ()=> TX('ui.sk-reach'); }
 const UI18_MYSTERY = 'mystery', UI18_NOT_SKILL = new Set(['hatchling', 'fodder']);
 function ui18SeenSkillKeys(){ try{ return new Set(skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> e.key)); }catch(e){ return new Set(); } }
 // every skill key a card can carry: its effects and each level's levelSkills, as [{key, lvl}] (lvl = the level it arrives at, 0 = from the start)
@@ -52912,6 +52932,7 @@ function w2LogText(ev, nm){
       case 'bound': return {cls:'', text: ev.strangle ? `${a} wraps ${t} up: Bound, and squeezed for ${ev.strangle} next round 🪢` : `${a} tangles ${t}: Bound for ${ev.amount} round${ev.amount === 1 ? '' : 's'} 🪢`};
       case 'cure': return {cls:'heal', text:`${a} cures ${t}${ev.poison ? ` (−${ev.poison} ☠` : ' ('}${ev.bleed ? `${ev.poison ? ', ' : ''}−${ev.bleed} 🩸` : ''}) 💊`};
       case 'taunted': return {cls:'', text:`${a} taunts ${t}: it has to attack the ${(getCardDefs()[ev.attDefId] || {}).name || 'taunter'} 📢`};
+      case 'reachAim': return {cls:'', text: TX('ui.eng37-log-reach', {a, t})}; // ENG37 (2026-11-08): Reach strikes the unit beside its lane
       case 'bludgeon': return {cls:'', text:`${a} bludgeons ${t}${ev.atkLost ? ': −1 Attack' : ''}${ev.broke ? `${ev.atkLost ? ',' : ':'} its ${w2BrokeName(ev.broke)} is broken` : ''} 🔨`};
       case 'shed': if(ev.molt) return {cls:'heal', text:`${nm(ev.attDefId)} molts: +${ev.amount}/+${ev.amount}, and +1 Wait while the new shell hardens 🦀`}; break;
     }
@@ -52958,6 +52979,7 @@ function w2SkillVfx(ev){
       case 'bound': snd('curse'); fl(el, ev.strangle ? '🪢 Strangled' : '🪢 Bound', 'debuff'); if(rc) rc.bound = Math.max(rc.bound||0, ev.amount||1); if(el && fx()) F.vineBind(el, {strangle: !!ev.strangle}); refresh(ev.targetUid); break;
       case 'cure': snd('cleanseTone'); fl(el, `💊 Cured ${ev.amount}`, 'heal'); if(rc){ rc.poison = Math.max(0, (rc.poison||0) - (ev.poison||0)); rc.bleed = Math.max(0, (rc.bleed||0) - (ev.bleed||0)); } if(el && fx()) F.cure(el); refresh(ev.targetUid); break;
       case 'taunted': { const t = boardCardEl(ev.attUid), a = boardCardEl(ev.targetUid); fl(t, '📢 Taunt!', 'quick'); if(t && fx()) F.tauntCall(t, a); break; }
+      case 'reachAim': { const a = boardCardEl(ev.attUid); fl(a, TX('ui.eng37-reach-fl'), 'quick'); break; } // ENG37 (2026-11-08)
     }
     return;
   }

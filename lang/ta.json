@@ -4315,5 +4315,17 @@
  "A signature skill in the Codex draft's skill distribution for this map": "Codex வரைவில் இந்த வரைபடத்தின் சிறப்புத் திறன்",
  "Codex side": "Codex துணை",
  "A side skill in the Codex draft's skill distribution for this map": "Codex வரைவில் இந்த வரைபடத்தின் துணைத் திறன்",
- "Codex draft pick (no card on this map has it yet)": "Codex வரைவின் தேர்வு (இந்த வரைபடத்தின் எந்த அட்டையிலும் இன்னும் இல்லை)"
+ "Codex draft pick (no card on this map has it yet)": "Codex வரைவின் தேர்வு (இந்த வரைபடத்தின் எந்த அட்டையிலும் இன்னும் இல்லை)",
+ "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "பறப்பவை இதைத் தவிர்க்க முடியாது. எதிரே எதிரி இல்லையெனில், முட்புதருக்குப் பதிலாக அடுத்த வரிசையிலுள்ள எதிரியைத் தாக்கும்.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "இதன் தாக்குதல் பறத்தல் 1 எனக் கணக்கிடப்படும்: பறப்பவை ஒருபோதும் தவிர்க்காது, Mach அலகு 2-இல் 1 முறை. தன் வரிசை காலியானால், அருகிலுள்ள வரிசையின் எதிரியைத் தாக்கும் (குறைந்த உயிர் உள்ளதை; சமமானால் நாணயச் சுண்டல்); இரண்டிலும் இல்லையெனில் மட்டுமே முட்புதரைத் தாக்கும். Taunt இன்னும் இழுக்கும்.",
+ "{a} reaches into the next lane and strikes {t}.": "{a} அடுத்த வரிசைக்கு நீண்டு {t}-ஐத் தாக்குகிறது.",
+ "Reach": "நீட்சி",
+ "Shield: Armor": "கேடயம்: கவசம்",
+ "Arrives with {n} Shield; +{m} Armor while any of it remains.": "{n} கேடயத்துடன் வரும்; அதில் சிறிதளவு இருக்கும் வரை +{m} கவசம்.",
+ "+{m} Armor while any of its Shield remains; gone when the Shield breaks.": "கேடயம் சிறிதளவு இருக்கும் வரை +{m} கவசம்; கேடயம் உடைந்ததும் போய்விடும்.",
+ "Shell: when": "ஓடு: எப்போது",
+ "After it attacks: +{n} Armor until the round ends.": "தாக்கிய பின்: சுற்று முடியும் வரை +{n} கவசம்.",
+ "When first hit (default)": "முதலில் தாக்கப்படும்போது (இயல்பு)",
+ "After it attacks": "தாக்கிய பின்",
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "ஓட்டின் கவசம் எப்போது எழும்: ஒவ்வொரு சுற்றிலும் முதலில் தாக்கப்படும்போது (இயல்பு), அல்லது தன் தாக்குதலுக்குப் பின் (முதலில் தாக்கும் எதிரி கவசத்தைச் சந்திக்க மாட்டான்)."
 }

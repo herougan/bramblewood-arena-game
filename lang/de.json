@@ -4312,5 +4312,17 @@
  "A signature skill in the Codex draft's skill distribution for this map": "Eine Signaturfähigkeit dieser Karte im Codex-Entwurf der Fähigkeitsverteilung",
  "Codex side": "Codex Neben",
  "A side skill in the Codex draft's skill distribution for this map": "Eine Nebenfähigkeit dieser Karte im Codex-Entwurf der Fähigkeitsverteilung",
- "Codex draft pick (no card on this map has it yet)": "Codex-Entwurf (noch keine Karte dieser Karte hat sie)"
+ "Codex draft pick (no card on this map has it yet)": "Codex-Entwurf (noch keine Karte dieser Karte hat sie)",
+ "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "Fliegen weicht ihm nicht aus. Ohne Gegner gegenüber trifft es einen Gegner in der Nachbarbahn statt des Dornwalls.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "Sein Schlag zählt als Fliegen 1: Ein Flieger weicht nie aus, eine Mach-Einheit 1 von 2. Ist seine Bahn leer, trifft es einen Gegner in einer Nachbarbahn (den mit weniger Leben; bei Gleichstand Münzwurf) und trifft den Dornwall nur, wenn keine der beiden einen hat. Spott zieht es weiterhin an.",
+ "{a} reaches into the next lane and strikes {t}.": "{a} greift in die Nachbarbahn und trifft {t}.",
+ "Reach": "Reichweite",
+ "Shield: Armor": "Schild: Rüstung",
+ "Arrives with {n} Shield; +{m} Armor while any of it remains.": "Kommt mit {n} Schild; +{m} Rüstung, solange davon etwas übrig ist.",
+ "+{m} Armor while any of its Shield remains; gone when the Shield breaks.": "+{m} Rüstung, solange Schild übrig ist; weg, wenn der Schild bricht.",
+ "Shell: when": "Panzer: wann",
+ "After it attacks: +{n} Armor until the round ends.": "Nach seinem Angriff: +{n} Rüstung bis zum Rundenende.",
+ "When first hit (default)": "Beim ersten Treffer (Standard)",
+ "After it attacks": "Nach seinem Angriff",
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Wann die Panzer-Rüstung kommt: beim ersten Treffer jeder Runde (Standard) oder nach seinem eigenen Angriff (ein Gegner, der zuerst zuschlägt, trifft keine Rüstung)."
 }

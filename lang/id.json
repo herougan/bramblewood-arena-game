@@ -4314,5 +4314,17 @@
  "A signature skill in the Codex draft's skill distribution for this map": "Skill utama peta ini dalam draf distribusi Codex",
  "Codex side": "Codex sampingan",
  "A side skill in the Codex draft's skill distribution for this map": "Skill sampingan peta ini dalam draf distribusi Codex",
- "Codex draft pick (no card on this map has it yet)": "Pilihan draf Codex (belum ada kartu di peta ini yang memilikinya)"
+ "Codex draft pick (no card on this map has it yet)": "Pilihan draf Codex (belum ada kartu di peta ini yang memilikinya)",
+ "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "Terbang tidak bisa menghindarinya. Tanpa lawan di depan, ia menyerang lawan di jalur sebelah, bukan semak duri.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "Serangannya dihitung sebagai Terbang 1: penerbang tak pernah menghindarinya, unit Mach 1 dari 2. Bila jalurnya kosong, ia menyerang lawan di jalur sebelah (yang Darahnya lebih sedikit; seri, lempar koin) dan hanya mengenai semak duri bila keduanya kosong. Ejekan tetap menariknya.",
+ "{a} reaches into the next lane and strikes {t}.": "{a} menjangkau jalur sebelah dan menyerang {t}.",
+ "Reach": "Jangkauan",
+ "Shield: Armor": "Perisai: Zirah",
+ "Arrives with {n} Shield; +{m} Armor while any of it remains.": "Datang dengan {n} Perisai; +{m} Zirah selama masih tersisa.",
+ "+{m} Armor while any of its Shield remains; gone when the Shield breaks.": "+{m} Zirah selama Perisai masih tersisa; hilang saat Perisai pecah.",
+ "Shell: when": "Cangkang: kapan",
+ "After it attacks: +{n} Armor until the round ends.": "Setelah menyerang: +{n} Zirah sampai ronde berakhir.",
+ "When first hit (default)": "Saat pertama kena (bawaan)",
+ "After it attacks": "Setelah menyerang",
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Kapan Zirah Cangkang muncul: saat pertama kena tiap ronde (bawaan), atau setelah serangannya sendiri (lawan yang menyerang lebih dulu tak bertemu Zirah)."
 }

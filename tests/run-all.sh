@@ -368,6 +368,8 @@ run node tests/eng36-2026-11-08.js   # 2026-11-08 (package ENG36, owner 11-07): 
 # browser check for package ENG36: python3 tests/e2e/eng36_2026_11_08.py (needs Playwright; not run by run.js): the editor's + Statuses pickers, the Thanatosis grey and float-up; screenshots in docs/screens/eng36/
 run node tests/ui34-2026-11-08.js   # 2026-11-08 (package UI34, owner 23:49): canonical/skill-counters.json (every skill classified, real counters with reasons, claims proven in the engine), the Map cards window's Counters group (ranked by cards answered, up to 8, no repeats), the blue group topped up to 15, texts in 12 packs
 # browser check for package UI34: python3 tests/e2e/ui34_2026_11_08.py (needs Playwright; not run by run.js): Counters group at 1366 and 390, one-line tiles, hover, refresh on Cut / Keep; screenshots in docs/screens/ui34/
+run node tests/eng37-2026-11-08.js   # 2026-11-08 (package ENG37, owner 09:27 #1, 10:52 #23-24): Reach rework (Flying 1 as an attacker; with nothing opposite it strikes an enemy in the lane beside it), the Cormorant (Gannet Cliffs), Armoured Shield (shield.armor), Shell after attacking (shell.when)
+# browser check for package ENG37: python3 tests/e2e/eng37_2026_11_08.py (needs Playwright; not run by run.js): the editor's Shield: Armor / Shell: when rows, a Reach diagonal strike in a Gannet Cliffs match; screenshots in docs/screens/eng37/
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

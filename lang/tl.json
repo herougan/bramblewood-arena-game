@@ -4313,5 +4313,17 @@
  "A signature skill in the Codex draft's skill distribution for this map": "Isang signature skill ng mapang ito sa draft ng Codex",
  "Codex side": "Codex pangalawa",
  "A side skill in the Codex draft's skill distribution for this map": "Isang side skill ng mapang ito sa draft ng Codex",
- "Codex draft pick (no card on this map has it yet)": "Pili ng draft ng Codex (wala pang card sa mapang ito)"
+ "Codex draft pick (no card on this map has it yet)": "Pili ng draft ng Codex (wala pang card sa mapang ito)",
+ "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "Hindi ito maiiwasan ng Flying. Kapag walang kalaban sa harap, tinatamaan nito ang kalaban sa katabing linya sa halip na ang bramble.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "Ang hampas nito ay bilang Flying 1: hindi ito naiiwasan ng lumilipad, at ng Mach na yunit 1 sa 2. Kapag walang laman ang sarili nitong linya, tinatamaan nito ang kalaban sa katabing linya (ang may mas kaunting Health; kung tabla, hagis-barya) at tatamaan lang ang bramble kapag wala sa dalawa. Naaakit pa rin ito ng Taunt.",
+ "{a} reaches into the next lane and strikes {t}.": "Umabot si {a} sa katabing linya at tinamaan si {t}.",
+ "Reach": "Abot",
+ "Shield: Armor": "Shield: Armor",
+ "Arrives with {n} Shield; +{m} Armor while any of it remains.": "Dumarating na may {n} Shield; +{m} Armor habang may natitira pa rito.",
+ "+{m} Armor while any of its Shield remains; gone when the Shield breaks.": "+{m} Armor habang may natitirang Shield; mawawala kapag nabasag ang Shield.",
+ "Shell: when": "Shell: kailan",
+ "After it attacks: +{n} Armor until the round ends.": "Pagkatapos umatake: +{n} Armor hanggang matapos ang round.",
+ "When first hit (default)": "Kapag unang natamaan (default)",
+ "After it attacks": "Pagkatapos umatake",
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Kailan lalabas ang Armor ng Shell: kapag unang natamaan bawat round (default), o pagkatapos ng sarili nitong atake (walang Armor na sasalubong sa kalabang naunang tumama)."
 }

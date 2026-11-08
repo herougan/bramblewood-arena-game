@@ -225,3 +225,10 @@ Card art for the twenty CONTENT17 Claude picks (on no list until the owner place
 
 ### Stonecracker Vulture
 > Full-body character in a small scene, centred, slight low angle: a white vulture with a yellow face and a shaggy neck ruff flying low, a round stone held in its beak, an ostrich egg on the pale sand below, bright desert background with low dunes, scattered bones and a hazy sun.
+
+## New card prompt (2026-11-08, package ENG37)
+
+Card art for the Gannet Cliffs Reach card (owner 09:27, confirmed): paste the base prompt first, then the line below. Run the pixel pass at 128 px. The game shows the card's emoji (🐦‍⬛) until the art lands. The object is held in the beak, never in hands (style guideline section 9).
+
+### Cormorant
+> Full-body character in a small scene, centred, slight low angle: a glossy black cormorant with a hooked beak, green eyes and a pale throat patch standing on a rocky sea-cliff ledge, wings half spread to dry in the wind, a long sharpened wooden pole taken from its nest held crosswise in its beak, white sea-cliff background with nesting gannets on the ledges, sea spray and a bright blue sky, one bright green eye accent.

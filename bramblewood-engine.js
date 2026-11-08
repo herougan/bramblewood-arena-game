@@ -2503,9 +2503,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // any kind (arrows too) gives N Armor (c.shellArmor, in both Armor sums) for the rest of that round; the round's upkeep drops it and
   // the next round's first hit raises it again. The raising hit itself is not reduced. No temporary Health, no lost attack. A hit
   // between rounds (a play-phase spell, a round-start hazard) raises it for the coming round.
-  function shellUp(card){
+  // ENG37 (2026-11-08, owner 11:03: "after it attacks, it gains 2 armor until the end of turn. So if the enemy attacks first, it will be hit
+  // without armor"): Shell's parameter when (effects.shellWhen, the fused shell: {v: N, when: 'afterAttack'}). 'afterAttack': no Armor on
+  // being hit; once its own swing is done (eng37ShellAfterAttack, landed or not, a unit or the bramble) it has N Armor until the round ends,
+  // raised once a round. Anything else (or none) is the FIX9 rule above: the first hit each round raises it.
+  function eng37ShellAfter(card){ const d = CARD_DEFS[card && card.defId]; return !!(d && d.effects && d.effects.shellWhen === 'afterAttack'); }
+  function eng37ShellAfterAttack(card){ if(card && eng37ShellAfter(card)) shellUp(card, true); }
+  // ENG37 (2026-11-08, owner 11:03, Armoured Shield): the unit Shield's parameter armor (effects.shieldArmor, the fused shield: {v: N, armor: M}):
+  // +M Armor while any of this unit's Shield remains (its own or one given to it), in both Armor sums; gone when the Shield breaks.
+  function eng37ShieldArmorOf(c){ if(!c || !(c.shield > 0)) return 0; const d = CARD_DEFS[c.defId], n = Number(d && d.effects && d.effects.shieldArmor) || 0; return n > 0 ? Math.round(n) : 0; }
+  function shellUp(card, afterAttack){
     const d = CARD_DEFS[card.defId]; const n = Number(d && d.effects && d.effects.shell) || 0;
     if(!(n > 0) || !(card.hp > 0) || card.shellUntil != null) return false;
+    if(!!afterAttack !== eng37ShellAfter(card)) return false; // ENG37: an after-attack Shell isn't raised by a hit, a plain one not by its swing
     card.shellArmor = n; card.shellUntil = combatNo + (combatDepth > 0 ? 0 : 1); // FIX9: until the end of this round (was: N temp Health, the next round, no swing)
     if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusFx', kind:'shellUp', side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), attUid:card.uid, attDefId:card.defId, targetUid:card.uid, targetDefId:card.defId, amount:n, armorOnly:true /* FIX9 */}); }
     return true;
@@ -3440,7 +3450,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // gone for good.
     const ae = (attDef && attDef.effects) || {};
     const pierceN = (ae.pierce === true || ae.rend || ae.supreme || ae.pulverise /* CONTENT3 (2026-10-26, OWN-Q5): Pulverise ignores Armor */) ? Infinity : /* Pitchfork no longer pierces (2026-10-13 rework) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
-    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + prayerWardOf(targetCard) + sk3ArmorOf(targetCard) + cowerArmorOf(targetCard) /* Cower N (ENG15) */; /* + Prayer Ward (2026-10-19, package GI); + Shieldwall (2026-10-19, package SK3) */ // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
+    const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + prayerWardOf(targetCard) + sk3ArmorOf(targetCard) + cowerArmorOf(targetCard) /* Cower N (ENG15) */ + eng37ShieldArmorOf(targetCard) /* ENG37: Armoured Shield */; /* + Prayer Ward (2026-10-19, package GI); + Shieldwall (2026-10-19, package SK3) */ // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
     // EN8 (2026-10-24, P24-16: "magic damage ignores Armor; normal damage ignores magic armor"): Armor (and everything nominalArmor sums:
     // Shell, the tide's, Prayer Ward, Shieldwall) takes only from physical damage. Magic and every element (fire / heat, frost / cold, shock,
     // poison, acid, water, decay, dark, holy ...) go past it. Magic Armor N (effects.magicArmor) is the other half: N off each magic or
@@ -3631,7 +3641,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // other damage skills still pass it too (they are not shots).
     if(fo && fo.armor && dmg > 0 && !isMagicDmg(dmgType) && dmgType !== 'true' && !crush){ const ae = (attDef && attDef.effects) || {}, td = CARD_DEFS[card.defId] || {};
       const pierceN = (ae.pierce === true || ae.rend || ae.supreme || ae.pulverise) ? Infinity : (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
-      const nom = Math.max(0, (Number((td.effects || {}).armor) || 0) - (card.armorLoss || 0)) + (card.shellArmor || 0) + tideArmor(card) + prayerWardOf(card) + sk3ArmorOf(card) + cowerArmorOf(card) /* Cower N (ENG15) */, ar = Math.max(0, nom - pierceN);
+      const nom = Math.max(0, (Number((td.effects || {}).armor) || 0) - (card.armorLoss || 0)) + (card.shellArmor || 0) + tideArmor(card) + prayerWardOf(card) + sk3ArmorOf(card) + cowerArmorOf(card) /* Cower N (ENG15) */ + eng37ShieldArmorOf(card) /* ENG37 */, ar = Math.max(0, nom - pierceN);
       if(ar > 0){ const d0 = dmg; dmg = Math.max(0, dmg - ar); if(dmg < d0) mods.push('armor'); } }
     { const ma = magicArmorOf(card); if(ma > 0 && dmg > 0 && isMagicDmg(dmgType) && !crush){ dmg = Math.max(0, dmg - ma); mods.push('magicArmor'); } } // EN8 (P24-16): Magic Armor N off a magic shot or skill; ENG9 (2026-10-26): magic only, not the elements
     if((dmgType === 'physical' || dmgType === 'magic') && shelledByCower(card) && !crush){ if(roundDmg(dmg) > 0) mods.push('immune'); dmg = 0; } // Cower 'shell': arrows and bolts too, not statuses
@@ -4169,6 +4179,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // ENG27 (2026-11-06, owner item 11: "Think of it as a flying meter - between 0 and 2 for now. Mach and Anti-air counts as flying 2"): 0 ground,
   // 1 Flying, 2 Mach (counts as Flying) and an Anti-air swing. As a target an Anti-air unit is a Flyer (1): Claude's call, decision ENG27-3.
   function flyLevelOf(e){ return e ? ((e.mach || e.antiAirOnly) ? 2 : e.flying ? 1 : 0) : 0; }
+  // ENG37 (2026-11-08, owner 09:27: "Flying units can't dodge its attacks. (Behind-the-scenes, flying level 1, so match still 50%)"): as an
+  // attacker a Reach unit counts as Flying level 1 on the flying meter, so a Flyer never dodges it and a Mach unit (level 2) still dodges it
+  // 1 in 2, as a flyer's swing. The same odds as Reach's ranged swing gave since ENG34; as a target a Reach unit stays a ground unit (0).
+  function attFlyLevelOf(e){ return Math.max(flyLevelOf(e), (e && e.reach && !(Number(e.reach) < 0)) ? 1 : 0); }
   function combatHitLands(attCard, defCard, singleTarget){
     const ad = (CARD_DEFS[attCard.defId] && CARD_DEFS[attCard.defId].effects) || {};
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
@@ -4199,7 +4213,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // ENG27 (2026-11-06, owner item 11): the flying meter (flyLevelOf). Anti-air's swing hits only a Flying / Mach unit (100%) and the bramble:
     // a ground unit takes nothing from it. A Mach unit (level 2) is missed by every non-flying swing; a flying one (Flying, Mach, Anti-air)
     // or a ranged one (Reach, a thrown Boomerang) misses it 1 in 2; Anti-air never. Grounded (Webbed, Pinned, Bound, diving, High Canopy, Ashy) it is a plain unit.
-    const aFly = flyLevelOf(ad), grounded = webbed || held || defCard.bound > 0 || defCard.diveExposed === combatNo || canopyMode() === 'canopy' || ashyNow();
+    const aFly = attFlyLevelOf(ad) /* ENG37: Reach is level 1 */, grounded = webbed || held || defCard.bound > 0 || defCard.diveExposed === combatNo || canopyMode() === 'canopy' || ashyNow();
     if(ad.antiAirOnly && !(flyLevelOf(dd) > 0 && !grounded)){ lastMissReason = 'antiAir'; return false; }
     if(dd.mach && !grounded && !ad.antiAirOnly){ if(!aFly && !rangedSwingOf(ad) /* ENG34 (2026-11-07): a ranged swing, canonical/skill-delivery.json swing (Reach, Boomerang, Bananarang, the old Anti-air) */){ lastMissReason = 'mach'; return false; } if(L('mach') && rnd() < 0.5){ lastMissReason = 'mach'; return false; } }
     else if(dd.flying && L('flying') && !grounded && !aFly && !rangedSwingOf(ad) /* ENG34: one list of ranged swings */ && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
@@ -7195,6 +7209,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       .map(c=> [c, L.dist(c) + rnd()*0.1]).sort((x, y)=> x[1] - y[1]);
     if(!pool.length) return null; const col = pool[0][0], en = enemyCols[col]; en.col = col; return en;
   }
+  // Reach (ENG37, 2026-11-08, owner 09:27: "Reach - Target can attack adjacent opposing units and always does so over hitting the Bramble"):
+  // a front-row swing with nothing opposite it (it would hit the bramble) strikes an enemy unit in a lane next to its own instead (the
+  // diagonal neighbours, prongLanes' left / right). With two there, the one with less Health right now; a tie, a coin flip (the only
+  // random draw, and only then). A unit aloft / under (Dive), playing dead (Thanatosis) or Invisible to it is passed over, as the swing's
+  // own target would be. null: nothing beside it either (the bramble, as before). peek: no coin flip (true when either side has one).
+  function eng37ReachPick(myCols, enemyCols, myCol, att, peek){
+    const e = att ? effectsOf(att) : {}; if(!e.reach || Number(e.reach) < 0) return null;
+    const L = prongLanes(myCols, enemyCols, myCol);
+    const ok = col=>{ const en = col != null ? enemyCols[col] : null; const c = en && en.kind === 'card' ? en.card : null;
+      return !!(c && c.hp > 0 && !c.gap && c.diveAloft == null && c.playingDead == null && !isInvisible(c, att)); };
+    const cols = [L.left, L.right].filter(ok); if(!cols.length) return null;
+    if(peek) return enemyCols[cols[0]];
+    let col = cols[0];
+    if(cols.length === 2){ const h0 = enemyCols[cols[0]].card.hp, h1 = enemyCols[cols[1]].card.hp; col = h0 < h1 ? cols[0] : h1 < h0 ? cols[1] : (rnd() < 0.5 ? cols[0] : cols[1]); }
+    const en = enemyCols[col]; en.col = col; return en;
+  }
   // Tornado N: when it arrives, it whirls the enemy row. N random enemy units (not pinned) are each thrown to a random other column
   // (swapping with whoever stands there) and take 1 damage; a flyer is flung harder and takes 2.
   function tornadoStrike(players, sideOf, pid, src, n, stats, events){
@@ -8143,6 +8173,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(onAttackPhase === 'postDead') return !(ON_ATTACK_SELF.includes(t.do) && (!t.who || t.who === 'self') && !t.adjacent && !t.surrounding && !t.allies);
     return true; }
   function runOnAttackPost(players, sideOf, a, attDef, stats, events){
+    eng37ShellAfterAttack(a.att); // ENG37 (2026-11-08): Shell (after attacking): its Armor once its swing is done
     const prev = onAttackPhase; onAttackPhase = a.att.hp > 0 ? 'post' : 'postDead';
     try{ runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events); } finally { onAttackPhase = prev; } }
   function runCustomTriggers(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
@@ -9130,7 +9161,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function aiIncomingOnBramble(players, aiId, extra){
     const ai = players[aiId], foe = players[otherId(aiId)]; let t = 0;
     aiFoes(allLive(foe)).forEach(c=>{ if(!Number.isInteger(c.slot) || c.cageOf) return; const odds = aiSwingOdds(c); if(!(odds > 0)) return;
-      if(frontCardAt(ai, c.slot) || (extra != null && extra === c.slot)) return; t += Math.max(0, c.atk||0) * odds; });
+      if(frontCardAt(ai, c.slot) || (extra != null && extra === c.slot)) return;
+      if(effectsOf(c).reach && (frontCardAt(ai, c.slot - 1) || frontCardAt(ai, c.slot + 1) || (extra != null && Math.abs(extra - c.slot) === 1))) return; // ENG37 (2026-11-08): a Reach unit strikes a unit beside its lane first
+      t += Math.max(0, c.atk||0) * odds; });
     return t;
   }
   function aiLethalBlock(players, aiId, playable){
@@ -9713,6 +9746,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const i = mk.indexOf(me.col) + 1, jf = i + (ek.length - mk.length) / 2, at = j=> j >= 1 && j <= ek.length && live(ec[ek[j - 1]]);
       if(i > 0 && (Number.isInteger(jf) ? at(jf) : (at(Math.floor(jf)) || at(Math.ceil(jf))))) return true; }
     if(RESERVE_ACTS){ const rt = rowTargetAt(foe, me.col); if(rt && rt.row > 0) return true; }
+    if(e.reach && !e.crabClaws && !(Number(e.backstab) > 0) && eng37ReachPick(combatColumnsOf(players[a.attId]), ec, me.col, a.att, true)) return true; // ENG37 (2026-11-08): Reach strikes a unit beside its lane
     return false;
   }
   // Before a swing (resolveCombat): Harvest may take its place; a mill that doesn't attack (SK2.millingAttacks false) holds. True = no swing.
@@ -11412,6 +11446,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // 2026-10-17 (user: "Claws 🦀. Can only attack Left and Right. If both, hit randomly"): it never attacks straight ahead. With no
         // unit to either side, its claws reach past them into the castle (was: it attacked the unit in front as normal).
         else { target = {kind:'hq'}; if(recordEvents && events) events.push({type:'crabClaw', side:sideOf(a.attId), attUid:a.att.uid, attDefId:a.att.defId, dir:'castle'}); }
+      }
+      // Reach (ENG37, 2026-11-08, owner 09:27): with nothing opposite it, a front-row swing strikes an enemy unit in the lane beside its own
+      // (eng37ReachPick) instead of the bramble. Not for an unblockable swing (Stealth, Rainrunner in the rain), Crab claws, Backstab or
+      // Octolash (their own aim), nor a middle / back-row swing; in a raid a unit behind in its own column comes first (the raid's rule below).
+      if(target && target.kind === 'hq' && !rowSwing && !octoAtk && attDef.effects && attDef.effects.reach && !attDef.effects.stealth && !attDef.effects.crabClaws && !(Number(attDef.effects.backstab) > 0) && !(attDef.effects.rainrunner && field && field.id === 'rain')){
+        const behind = RESERVE_ACTS ? rowTargetAt(players[a.enemyId], liveSelf.col, a.att) : null;
+        const rp = (behind && behind.row > 0) ? null : eng37ReachPick(liveOwnCols, liveEnemyCols, liveSelf.col, a.att);
+        if(rp){ target = rp; if(recordEvents && events) events.push({type:'statusFx', kind:'reachAim', side:sideOf(a.attId), attUid:a.att.uid, attDefId:a.att.defId, targetSide:sideOf(a.enemyId), targetUid:rp.card.uid, targetDefId:rp.card.defId}); }
       }
       // Taunt (2026-10-16, user: "Add a sheep card (basic) - it has taunt."): an enemy Taunt unit facing it or one column beside it
       // draws the swing, even one that was going to the castle. Stealth slips past it; Octolash lashes its usual 8.

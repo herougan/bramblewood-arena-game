@@ -4313,5 +4313,17 @@
  "A signature skill in the Codex draft's skill distribution for this map": "Une compétence signature de cette carte dans la répartition du brouillon Codex",
  "Codex side": "Codex second.",
  "A side skill in the Codex draft's skill distribution for this map": "Une compétence secondaire de cette carte dans la répartition du brouillon Codex",
- "Codex draft pick (no card on this map has it yet)": "Choix du brouillon Codex (aucune carte de cette carte ne l'a encore)"
+ "Codex draft pick (no card on this map has it yet)": "Choix du brouillon Codex (aucune carte de cette carte ne l'a encore)",
+ "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "Le Vol ne l'esquive pas. Sans ennemi en face, il frappe un ennemi du couloir voisin au lieu de la ronce.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "Son coup compte comme Vol 1 : un volant ne l'esquive jamais, une unité Mach 1 fois sur 2. Si son couloir est vide, il frappe un ennemi d'un couloir voisin (celui qui a le moins de Santé ; à égalité, pile ou face) et ne touche la ronce que si aucun des deux n'en a. La Provocation l'attire toujours.",
+ "{a} reaches into the next lane and strikes {t}.": "{a} frappe dans le couloir voisin et touche {t}.",
+ "Reach": "Allonge",
+ "Shield: Armor": "Bouclier : Armure",
+ "Arrives with {n} Shield; +{m} Armor while any of it remains.": "Arrive avec {n} Bouclier ; +{m} Armure tant qu'il en reste.",
+ "+{m} Armor while any of its Shield remains; gone when the Shield breaks.": "+{m} Armure tant qu'il reste du Bouclier ; disparaît quand le Bouclier se brise.",
+ "Shell: when": "Carapace : quand",
+ "After it attacks: +{n} Armor until the round ends.": "Après son attaque : +{n} Armure jusqu'à la fin du tour.",
+ "When first hit (default)": "Au premier coup reçu (par défaut)",
+ "After it attacks": "Après son attaque",
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Quand l'Armure de la Carapace s'active : au premier coup reçu chaque tour (par défaut), ou après sa propre attaque (un ennemi qui frappe avant ne rencontre aucune Armure)."
 }

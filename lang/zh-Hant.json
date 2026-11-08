@@ -4313,5 +4313,17 @@
  "A signature skill in the Codex draft's skill distribution for this map": "Codex 草案中本地圖的招牌技能",
  "Codex side": "Codex 副",
  "A side skill in the Codex draft's skill distribution for this map": "Codex 草案中本地圖的副技能",
- "Codex draft pick (no card on this map has it yet)": "Codex 草案推薦(本地圖還沒有卡牌帶有)"
+ "Codex draft pick (no card on this map has it yet)": "Codex 草案推薦(本地圖還沒有卡牌帶有)",
+ "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "飛行無法閃避它。正對面沒有敵人時，它攻擊相鄰線路的敵人，而不是荊棘。",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "它的攻擊算作飛行1：飛行單位永遠無法閃避，音速單位有一半機率閃避。自身線路為空時，它攻擊相鄰線路的敵人（生命較少者；相同則擲硬幣），兩側都沒有敵人時才攻擊荊棘。嘲諷仍會吸引它。",
+ "{a} reaches into the next lane and strikes {t}.": "{a} 探向相鄰線路，攻擊了 {t}。",
+ "Reach": "長臂",
+ "Shield: Armor": "護盾：護甲",
+ "Arrives with {n} Shield; +{m} Armor while any of it remains.": "登場時帶 {n} 護盾；只要護盾尚存，+{m} 護甲。",
+ "+{m} Armor while any of its Shield remains; gone when the Shield breaks.": "只要護盾尚存，+{m} 護甲；護盾破碎時消失。",
+ "Shell: when": "甲殼：時機",
+ "After it attacks: +{n} Armor until the round ends.": "攻擊之後：+{n} 護甲，直到本回合結束。",
+ "When first hit (default)": "首次被擊中時（預設）",
+ "After it attacks": "攻擊之後",
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "甲殼護甲何時出現：每回合首次被擊中時（預設），或在自身攻擊之後（先出手的敵人碰不到護甲）。"
 }

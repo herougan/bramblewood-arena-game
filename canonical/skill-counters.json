@@ -513,7 +513,7 @@
    "counters": [
     {
      "skill": "reach",
-     "why": "Its swing ignores Flying's dodge (a ranged swing)."
+     "why": "Its swing counts as Flying 1 (ENG37): a Flyer can't dodge it."
     },
     {
      "skill": "arrow",
@@ -1245,9 +1245,13 @@
     {
      "skill": "poison",
      "why": "Venom ticks ignore Armor."
+    },
+    {
+     "skill": "quick",
+     "why": "Against Shell (after attacking), a Quick unit strikes before the shell's Armor is up (ENG37)."
     }
    ],
-   "source": "Pierce text"
+   "source": "Pierce text; ENG37 eng37ShellAfter (Shell's when: afterAttack)"
   },
   "shockBolt": {
    "counters": [

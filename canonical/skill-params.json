@@ -17,7 +17,9 @@
   "count": "shots a round",
   "uses": "uses a fight",
   "vs": "the status it hunts",
-  "style": "a look, no rules effect"
+  "style": "a look, no rules effect",
+  "armor": "Armor it has while its Shield lasts",
+  "when": "when it is raised (firstHit / afterAttack)"
  },
  "families": {
   "diurnal": {
@@ -1005,6 +1007,32 @@
    "stat": 2,
    "ability": null,
    "about": "true or no number: heals the damage each hit deals (bramble hits too); a number N: heals N on each hit that lands. Capped at max Health; rides every melee hit (skill-delivery.json). Priced 2.3 plain, 1.15 x N numbered (skill-costs.json perN)."
+  },
+  "shield": {
+   "params": {
+    "armor": "shieldArmor"
+   },
+   "default": "Shield 1: arrives with 1 Shield",
+   "number": "N = the Shield it arrives with",
+   "stat": {
+    "v": 4,
+    "armor": 1
+   },
+   "ability": null,
+   "about": "ENG37 (2026-11-08, owner 11:03, Armoured Shield): v = the Shield it arrives with; armor = +M Armor while any of its Shield remains (gone when the Shield breaks). Priced in tools/skill_costs.js (shieldArmor): Armor M's price x the rounds its Shield lasts by the 4-round rule."
+  },
+  "shell": {
+   "params": {
+    "when": "shellWhen"
+   },
+   "default": "Shell 1: +1 Armor after it is first hit each round",
+   "number": "N = the Armor",
+   "stat": {
+    "v": 2,
+    "when": "afterAttack"
+   },
+   "ability": null,
+   "about": "ENG37 (2026-11-08, owner 11:03, Retreat into the shell): v = Armor N until the round ends; when = 'afterAttack': raised once its own swing is done (a foe that strikes first meets no Armor), else (default) by the first hit each round (FIX9)."
   }
  }
 }

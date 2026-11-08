@@ -44,6 +44,10 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 8 | BAL27-2: owner changes those fights; show the win-rate % on the SK and WK fight details | UI35 |
 | 9 | BAL27-3: owner retunes Gatorback Swamp himself | owner |
 
+## 11-08: Package ENG37 (on its branch, not released)
+- Done (owner 09:27 row 1; 10:52 rows 23-24): Reach strikes an enemy in the lane beside it instead of the bramble (less Health first) and counts as Flying 1 as an attacker; the Cormorant (Common 3/7 Reach) on the Gannet Cliffs list, art prompt ready; Armoured Shield (`shield: {v, armor}`) and Shell after attacking (`shell: {v, when: "afterAttack"}`) with editor rows, texts, prices.
+- Owner calls open: ENG37-1 (which neighbour), ENG37-2 (Reach price after the rework), ENG37-3 (the Cormorant), ENG37-4 (Shell after attacking: name), ENG37-5 (Armoured Shield: whose Shield). Next: the Cormorant's art on the owner's computer; BAL28 after this.
+
 ## 11-08: Package UI35 (on its branch, not released)
 - Done (owner 09:27 rows 2, 3, 4, 6, 8): one Map cards skills list (Main, Counters, recommendations; pills tell them apart; Others stay a group), NEW! on the main progression only (Bloom on Sunken Hollow) with an "N new" count, Thematic Recommendation, the deck editor's Full art / Compact switch, 📦 Packs under 🃏 Map cards, the Map reference win % on the N-SK / N-WK details.
 - Owner calls open: UI35-1 (Other skills separate or merged), UI35-2 (NEW! counts above 2-3 per map: a guide for DES1), UI35-3 (what the Compact pool's x N says).

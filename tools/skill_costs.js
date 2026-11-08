@@ -154,6 +154,13 @@
           let c = 0; st.forEach(x=>{ const row = STR[x.slice(7)]; if(row && typeof row[col] === 'number') c += row[col]; else missing.push('status:' + x.slice(7)); });
           if(rest.length){ let b = skillCost(k, rest); if(b == null){ const f = opts && opts.fallback ? opts.fallback(k, rest) : null; b = typeof f === 'number' ? f : 1; } c += b; }
           c = r2(c); S += c; parts.push(['skill', k, c, st.length + ' status entr' + (st.length === 1 ? 'y' : 'ies') + ' (ENG36)']); return; }
+        // ENG37 (2026-11-08, owner 11:03): Armoured Shield (shield.armor, effects.shieldArmor M): Armor M's price x the share of a 4-round life the
+        // unit's own Shield N lasts (rounds = N / max(1, 3 - M), share = min(1, rounds / 4)); nothing without a Shield. By reasoning (skill-costs.json).
+        if(k === 'shieldArmor'){ const M = Math.max(0, numOf(v)), N = effects.shield ? (effects.shield === true ? 1 : Math.max(0, numOf(effects.shield))) : 0;
+          const share = N > 0 && M > 0 ? Math.min(1, N / Math.max(1, 3 - M) / 4) : 0, c = r2(share * (skillCost('armor', M) || 0)); S += c; parts.push(['skill', k, c, 'Armor ' + M + ' x ' + r2(share) + ' (while its Shield lasts)']); return; }
+        // ENG37 (2026-11-08, owner 11:03): Shell (after attacking) (shell.when 'afterAttack', effects.shellWhen): afterAttackMult x Shell N's own price on
+        // top (measured, skill-costs.json shellWhen); any other value costs nothing (the default rule); nothing without a Shell.
+        if(k === 'shellWhen'){ const m = SK.shellWhen && +SK.shellWhen.afterAttackMult || 0, c = v === 'afterAttack' && effects.shell ? r2(m * (skillCost('shell', effects.shell) || 0)) : 0; S += c; parts.push(['skill', k, c, v === 'afterAttack' ? 'x' + m + ' of shell (after attacking)' : 'default']); return; }
         if(k === 'diveUses'){ const c = effects.dive ? r2(Math.max(0, numOf(v) - 1) * (skillCost('dive', effects.dive) || 0)) : 0; S += c; parts.push(['skill', k, c, 'extra dives']); return; }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
         if(lm !== 1 && LHK.has(k) && (!effects.deliveryRes || effects.deliveryRes === 'lumber' || (BB.LUMBER_MAKER_KEYS || []).includes(k))){ c = r2(c * lm); S += c; parts.push(['skill', k, c, 'x' + lm + ' at home (BAL12)']); return; } // BAL12 (2026-11-02): On Ready Lumber at its lists' mean cost
