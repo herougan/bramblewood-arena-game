@@ -8,6 +8,27 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-08 10:52: Owner notes (with the Codex skill-distribution draft, `docs/design/skill-distribution-codex-draft-2026-11-08.md`)
+| # | Note | Package |
+|---|---|---|
+| 6 | Sonar → Echolocation (name) | UI35 |
+| 7 | NEW! is per skill family: Diurnal of any parameter is one skill. A new parameter use of a known skill gets a purple label, not NEW! | UI35 |
+| 8 | BAL27-1: also make a canopy-themed bramble that strengthens savanna or canopy units | CONTENT18, then BAL28 |
+| 9 | Minor skills that never count toward a map's 2-3 signatures: Flying, Diurnal, Tide, Salt… | UI35 (count), DES2 |
+| 10 | DES1-1: main maps first; side maps later | DES2 |
+| 11 | DES1-2: a map's signature = its 2-3 new skills, each on 2+ cards | DES2 |
+| 12 | DES1-3: no shooters onto maps yet; make shooter cards, at least one per element (reuse unused cards). The Reach card is confirmed | CONTENT18 |
+| 13 | Achievements page: an obvious "Card Rewards" filter showing every achievement that gives a card | UI36 |
+| 14 | Star paths: about one card unlock per star path, Starpath-only cards, Epic and above | CONTENT18 + UI36 |
+| 15 | Maps 0-20 card names simple, common animals first (no "Pyrenean …"); complex/armed animals later; some non-faction cards may hold a primitive item (a monkey with a belt of bones) | DES2 (rename list) |
+| 16 | Kelp Mangroves: a Pressure skill (owner idea: +1 pressure, each rise deals 2 piercing to all units and gives everyone 1 Armor; enhanced in deep water, not required) | DES2 |
+| 17 | Ideas: Glide; Height (low atmosphere, below sea level); extremophile maps (acid, poison, heat each turn unless off the vents); Space as a secret map | roadmap |
+| 18 | Morel Hollow: a witchdoctor on an unexpected animal | DES2 |
+| 19 | Regeneration → Regenerate (name) | UI35 |
+| 20 | Healing → Heal (name) | UI35 |
+| 21 | Bandage: removes Vulnerable and Bleed. Halve-attack / double-damage skills are for later maps. Skill list has duplicates (many-units-on-field vs many-deaths skills): audit | DES2 |
+| 22 | Map cards skill list: also a "Codex sugg." pill (from the Codex draft), next to Claude sugg. and Sugg. Intro | UI35 |
+
 ## 11-08 09:27: Owner notes
 | # | Note | Package |
 |---|---|---|
