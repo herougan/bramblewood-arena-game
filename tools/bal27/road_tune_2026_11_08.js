@@ -36,6 +36,9 @@ const B = require('../lib_bramble.js'), G = B.G, D = B.CARD_DEFS_BASELINE, LP = 
 let TH = null; try { TH = require('../thematic_pass_2026_10_19.js'); } catch (e) {}
 const a = process.argv.slice(2), CMD = a[0] || 'run', arg = (k, d) => { const i = a.indexOf(k); return i >= 0 ? a[i + 1] : d; };
 const CODES = (arg('--codes', '') || '').split(',').filter(Boolean), STEPS = +arg('--steps', 6), RE = +arg('--reread', 60), SHARD = +arg('--shard', 0), SHARDS = +arg('--shards', 1);
+// 2026-11-08 (BAL27 round 3): --seed0 picks the tune seeds (default 7300). On 7-5, 8-8 and 2-B-4 the 7300 seeds read 7-15 points off the
+// road seeds (9100), so the search stopped at its start; round 3 screens on a third set (11300) and re-reads at 120 games
+const SEED0 = +arg('--seed0', 7300);
 const OUTDIR = path.join(ROOT, 'docs', 'balance', 'bal27', arg('--dir', 'tune')); // --dir tune-r2: a second round from the applied first
 const ENG = require(path.join(ROOT, 'bramblewood-engine.js'));
 const BASE_SRC =require('child_process').execSync(`git show ${arg('--base', 'HEAD')}:arena_app.js`, { cwd: ROOT, maxBuffer: 1 << 28 }).toString();
@@ -108,7 +111,7 @@ const desc = (F, v) => ({ deck: v.deck, leaders: v.leaders || F.leaders0, shield
 function tune(code) {
   const F = setup(code), t0 = Date.now();
   const P = r => Math.abs(r.win - F.want) + 10 * (r.win > F.want ? 1 - r.hpLost / 100 : r.hpLost / 100) - (r.win < F.want - 25 ? 2 * r.rounds : 0); // BAL20: + the rounds term
-  const cache = new Map(), T = (v, g) => { const k = vkey(v) + '#' + g; if (!cache.has(k)) cache.set(k, measure(F, v, g, 7300)); return cache.get(k); };
+  const cache = new Map(), T = (v, g) => { const k = vkey(v) + '#' + g; if (!cache.has(k)) cache.set(k, measure(F, v, g, SEED0)); return cache.get(k); };
   let cur = { deck: Object.assign({}, F.node0.deck), leaders: null, shield: null }, r = T(cur, RE); const trail = [{ move: 'start', win: r.win, hpLost: r.hpLost, rounds: r.rounds }];
   const curShieldRaw = v => v.shield != null ? v.shield : F.ov0 != null ? F.ov0 : F.rule;
   for (let step = 0; step < STEPS; step++) {
