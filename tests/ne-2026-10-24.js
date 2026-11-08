@@ -75,7 +75,7 @@ ok(deckBlock.length > 2000, 'the NE_DECK block is there');
   D.setDeckCopyPicks('duck', []); ok(!looks['~picks'], '11:15 no picks: the key goes'); }
 ok(/body\.ne-shift #myDeckPool \.pool-stack \.pg-limit, #myDeckPool\.ne-show-limits \.pool-stack \.pg-limit\{opacity:1/.test(tpl) && /#myDeckPool \.pool-stack \.pg-limit\{opacity:0/.test(tpl), '11:15 the count chip shows only while Shift is held (or the ⇧ button is on)');
 ok(/e\.key === 'Shift'\) neShift\(true\)/.test(deckBlock) && /neShiftHintHTML\(\)/.test(src) && /<kbd>⇧<\/kbd>/.test(fnSrc('neShiftHintHTML')), '11:15 Shift held sets body.ne-shift; the pool shows the ⇧ Shift hint');
-ok(/return neDeckPoolStackHTML\(id, defs\)/.test(fnSrc('renderMyDeckPanels')) && /neWirePoolFan\(pool\)/.test(fnSrc('renderMyDeckPanels')), '11:15 one stack per card, with the fan wired');
+ok(/(?:return|:) neDeckPoolStackHTML\(id, defs\)/.test(fnSrc('renderMyDeckPanels')) /* UI35 (2026-11-08): the Compact view's chip is the other branch */ && /neWirePoolFan\(pool\)/.test(fnSrc('renderMyDeckPanels')), '11:15 one stack per card, with the fan wired');
 ok(/pointerType !== 'mouse'\) return; if\(neFanState/.test(deckBlock) && /setTimeout\(\(\)=>\{ lp = null; host\._neLP = Date\.now\(\); neFanOpen\(id, host\)/.test(deckBlock) && /neFanLater\(\)/.test(deckBlock), '11:15 the fan opens on hover (desktop) or a long press (phone) and stays while the pointer is over it');
 ok(/class="ne-fan-card \$\{on \? 'is-in' : ''\}"/.test(fnSrc('neFanHTML')) && /deckCopyUidsFor\(id, myDeckCounts\[id\] \| 0\)/.test(fnSrc('neFanHTML')), '11:15 copies in the deck show greyed in the fan');
 ok(/neFanAddCopy = \(id, uid, btn\)=>/.test(src) && /p\.push\(uid\); setDeckCopyPicks/.test(src), '11:15 a fanned copy goes in as exactly that copy');

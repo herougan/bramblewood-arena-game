@@ -110,7 +110,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui22-role-reward": "Reward",
   "ui.ui22-role-first": "First clear",
   "ui.ui22-role-challenge": "Challenge",
-  "ui.ui22-claude-title": "Recommended by Claude",
+  "ui.ui22-claude-title": "Thematic Recommendation",
   "ui.ui22-claude-new": "Claude New",
   "ui.ui22-claude-new-tip": "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.",
   "ui.c17-ranged": "Ranged",
@@ -3617,7 +3617,24 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui34-resist-why": "A {name} Resist or Immune entry softens or stops it.",
   "ui.ui34-unsure": "unsure",
   "ui.ui34-cn-tip": "Answers {n} of this map's cards",
-  "ui.ui34-pick-tip": "Claude's pick {card} carries it (theme: {theme})"
+  "ui.ui34-pick-tip": "Claude's pick {card} carries it (theme: {theme})",
+  "ui.ui35-view-label": "Card view",
+  "ui.ui35-view-full": "Full art",
+  "ui.ui35-view-compact": "Compact",
+  "ui.ui35-pool-left": "{left} of {owned} copies left",
+  "ui.ui35-pool-how": "Click: add one · Shift+click: take one out",
+  "ui.ui35-pill-main": "Main",
+  "ui.ui35-pill-main-tip": "A skill of this map's own main cards",
+  "ui.ui35-pill-counter": "Counter",
+  "ui.ui35-pill-counter-tip": "Answers some of this map's cards (the number says how many)",
+  "ui.ui35-new-count": "{n} new",
+  "ui.ui35-new-count-tip": "Skills this map introduces: no earlier main map has them on its own main cards. Side maps and Other skills never count.",
+  "ui.ui35-ref-sk": "Map reference wins {pct}% vs these decks",
+  "ui.ui35-ref-wk": "Map reference wins {pct}% vs these weak decks",
+  "ui.ui35-ref-cut-sk": "too weak above {cut}%",
+  "ui.ui35-ref-cut-wk": "too strong below {cut}%",
+  "ui.ui35-ref-worst": "worst deck {pct}%",
+  "ui.ui35-ref-tip": "Measured {date} by the latest pro-ease run that plays the ladder: the number the TOO WEAK / TOO STRONG pill is judged on."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

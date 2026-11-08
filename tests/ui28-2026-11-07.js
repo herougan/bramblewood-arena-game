@@ -62,12 +62,12 @@ async function browser(){
       await pg.evaluate("adminModeEnabled = true; document.body.classList.toggle('is-admin', true); 1");
       const scan = await pg.evaluate(`(()=>{ const out = []; mainConquestMaps().forEach(m=>{ const k = mapNumberOf(m.id); if(k == null || k > 20) return; pk1OpenMapCards(m.id); const o = document.getElementById('pk1MapCardsOverlay');
         const normal = new Set([...o.querySelectorAll('.ui19-sk[data-ui19-skill]')].map(x=> x.dataset.ui19Skill)), recs = [...o.querySelectorAll('[data-ui24-rec]')].map(x=> x.dataset.ui24Rec);
-        out.push({k, dupRec: recs.filter(r=> normal.has(r)), sugOutsideGrey: [...o.querySelectorAll('.ui28-sug')].filter(x=> !x.closest('.ui19-sk.is-grey')).length, greySug: o.querySelectorAll('.ui19-sk.is-grey .ui28-sug').length,
+        out.push({k, dupRec: recs.filter(r=> normal.has(r)), sugOutsideGrey: [...o.querySelectorAll('.ui28-sug')].filter(x=> !x.closest('.ui19-sk.is-grey, .ui19-sk.is-rec, .ui19-sk.is-intro') /* UI35 (2026-11-08): the pill also marks the recommendation tiles */).length, greySug: o.querySelectorAll('.ui19-sk.is-grey .ui28-sug').length,
           grey: o.querySelectorAll('.ui19-sk.is-grey').length, greyNew: o.querySelectorAll('.ui19-sk.is-grey.is-new').length, sugWithoutRec: [...o.querySelectorAll('.ui19-sk.is-grey[data-ui28-suggested]')].length - o.querySelectorAll('.ui19-sk.is-grey .ui28-sug').length});
         document.getElementById('pk1McClose').click(); }); return out; })()`);
       ok(scan.length >= 20, `@${w} scanned Maps 0-20 (${scan.length})`);
       ok(scan.every(x=> x.dupRec.length === 0), `@${w} no recommendation tile repeats a skill already shown as a tile`);
-      ok(scan.every(x=> x.sugOutsideGrey === 0 && x.greyNew === 0 && x.sugWithoutRec === 0), `@${w} the Suggested pill is only on grey tiles; grey tiles carry no NEW!`);
+      ok(scan.every(x=> x.sugOutsideGrey === 0 && x.greyNew === 0 && x.sugWithoutRec === 0), `@${w} the Suggested pill is only on grey and recommendation tiles; grey tiles carry no NEW!`);
       ok(scan.some(x=> x.grey > 0) && scan.some(x=> x.greySug > 0), `@${w} some map has a grey tile and one has a Suggested grey tile (${scan.filter(x=> x.greySug).map(x=> x.k).join(',')})`);
       // Map 5 and Map 6 windows
       for(const num of [5, 6, 0]){

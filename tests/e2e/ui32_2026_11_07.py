@@ -109,7 +109,7 @@ async def main():
         print('   before:', json.dumps(r, ensure_ascii=False)[:500])
         cid = r['id']
         ok(r['mark'] == '', f'{cid}: no edited marker before the edit')
-        ok(len(r['heads']) >= 2 and r['heads'][0] == 'Main skills', f'the skills section has its group headings ({r["heads"]})')
+        ok(all(h != 'Main skills' for h in r['heads']), f'UI35: no Main heading any more, one list with pills ({r["heads"]})')
         await pg.screenshot(path=os.path.join(OUT, 'mapcards-before-1366.png'))
         await pg.evaluate(f"document.querySelector('#pk1MapCardsOverlay [data-ui13-edit=\"{cid}\"]').click()")
         await pg.wait_for_timeout(900)

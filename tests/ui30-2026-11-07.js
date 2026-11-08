@@ -101,7 +101,7 @@ async function browser(){
       await pg.evaluate(OWN);
       // #16: every main map (Maps 0-24) shows at least one pill; sub-maps none
       const scan = await pg.evaluate(`(()=>{ adminModeEnabled = true; const out = []; mainConquestMaps().forEach(m=>{ if(m.reserved) return; pk1OpenMapCards(m.id); const o = document.getElementById('pk1MapCardsOverlay');
-        let grp = '', outside = 0; o.querySelectorAll('#ui19McSkills .ui19-sk-list > li').forEach(l=>{ if(l.classList.contains('ui32-sk-head')) grp = l.className; else if(grp.indexOf('is-main') < 0 && l.querySelector('.ui30-sugg')) outside++; });
+        let grp = '', outside = 0; o.querySelectorAll('#ui19McSkills .ui19-sk-list > li').forEach(l=>{ if(l.classList.contains('ui32-sk-head')) grp = l.className; else if(grp.indexOf('is-other') >= 0 && l.querySelector('.ui30-sugg')) outside++; });
         out.push({id: m.id, pills: o.querySelectorAll('#ui19McSkills .ui30-sugg').length, tiles: o.querySelectorAll('#ui19McSkills .ui30-sugg-tile').length + outside}); document.getElementById('pk1McClose').click(); });
         const subs = CONQUEST_MAPS.filter(m=> mpIsSub(m.id)).map(m=>{ pk1OpenMapCards(m.id); const k = document.querySelectorAll('#pk1MapCardsOverlay .ui30-sugg').length; document.getElementById('pk1McClose').click(); return k; });
         return {out, subPills: subs.reduce((a, b)=> a + b, 0), subs: subs.length}; })()`);

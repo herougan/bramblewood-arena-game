@@ -15012,6 +15012,43 @@ html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
 .pk1-mc-overlay .ui19-sk.is-counter.is-intro{border-color:#2f9e8f; background:linear-gradient(135deg, color-mix(in srgb, #35b6a4 26%, var(--bg)), color-mix(in srgb, #ffd36b 30%, var(--bg)));}
 .ui19-sk .ui34-cn{font-style:normal; font-weight:800; font-size:9.5px; line-height:1; padding:1px 4px; margin-left:3px; border-radius:8px; background:color-mix(in srgb, #1f8f80 24%, transparent); color:inherit; white-space:nowrap;}
 .ui19-sk .ui34-cn::before{content:"\00d7";}
+/* 2026-11-08 (package UI35, owner 09:27 #2, #6): one skills list for Main, Counters and the recommendations: every tile looks alike (the kind is a pill: Main / Counter / Suggested / Sugg. Intro / NEW!),
+   a "N new" count beside the heading. The yellow NEW! / keyword-intro gradient and the grey "not met here" tile stay. */
+.ui35-pill{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; letter-spacing:.03em; padding:1px 5px; border-radius:999px; vertical-align:1px; white-space:nowrap; cursor:help; margin-left:2px;}
+.ui35-pill.is-main{background:color-mix(in srgb, var(--ink-muted, #6b6b6b) 32%, transparent); color:var(--ink, #222);}
+.ui35-pill.is-counter{background:#1f8f80; color:#fff;}
+.ui19-sk .ui28-sug{margin-left:2px;}
+.ui35-newn{font:800 11px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted, #6b6b6b); margin-left:6px; padding:2px 7px; border-radius:999px; border:1px solid var(--surface-border); cursor:help; vertical-align:1px;}
+.ui35-newn.has-new{color:#fff; background:#d9480f; border-color:#d9480f;}
+.pk1-mc-overlay .ui19-sk.is-counter, .pk1-mc-overlay .ui19-sk.is-counter.is-intro, .pk1-mc-overlay .ui19-sk.is-rec, .pk1-mc-overlay .ui19-sk.ui30-sugg-tile{border-color:var(--surface-border); border-style:solid; background:var(--bg);}
+.pk1-mc-overlay .ui19-sk.is-counter.is-intro, .pk1-mc-overlay .ui19-sk.is-intro.ui30-sugg-tile{border-color:#e0b23a; background:linear-gradient(135deg, color-mix(in srgb, #ffd36b 34%, var(--bg)), color-mix(in srgb, #ffffff 22%, var(--bg)));}
+.pk1-mc-overlay .ui19-sk-list{grid-template-columns:repeat(auto-fill, minmax(176px, 1fr));}
+@media (max-width:520px){ .pk1-mc-overlay .ui19-sk-list{grid-template-columns:1fr;} .ui35-pill, .ui19-sk .ui28-sug, .ui19-sk .ui30-sugg{font-size:8px; padding:1px 4px;} .ui19-sk .ui34-cn{margin-left:1px;} }
+/* 2026-11-08 (package UI35, owner 09:27 #3): the deck editor's Compact view (the Map cards chip: art disc, name, x N) and its Full art / Compact switch */
+.ui35-view{display:inline-flex; border:1px solid var(--surface-border); border-radius:999px; overflow:hidden; background:var(--surface-2);}
+.ui35-view-btn{border:0; background:transparent; padding:9px 12px; font:800 13px/1 'Nunito',system-ui,sans-serif; color:var(--ink); cursor:pointer; white-space:nowrap;}
+.ui35-view-btn[aria-pressed="true"]{background:var(--accent-strong, #8a5a1e); color:#fff;}
+.ui35-view-btn:focus-visible{outline:2px solid var(--accent-strong, #8a5a1e); outline-offset:-2px;}
+#myDeckList.ui35-cmp{display:flex; flex-wrap:wrap; gap:8px 8px; padding:12px 8px 8px;}
+.deck-list-mini .dchip.ui35-dchip{position:relative; display:inline-flex; align-items:center; gap:4px; background:none; border:0; padding:0; max-width:100%; cursor:pointer;}
+.ui35-dchip .card-chip{pointer-events:none; max-width:min(100%, calc(var(--chip-h) * 7));}
+.ui35-n{flex:0 0 auto; font:900 12px/1 'Baloo 2',system-ui,sans-serif; background:#ffd56e; color:#3a2200; padding:3px 7px; border-radius:999px; font-variant-numeric:tabular-nums;}
+#myDeckList .ui35-dchip .dchip-minus{top:-7px; left:-5px;}
+@media (hover:hover){ #myDeckList .ui35-dchip:hover .dchip-minus{opacity:.9;} }
+#myDeckPool.pool-grid.ui35-cmp{grid-template-columns:repeat(auto-fill, minmax(calc(var(--chip-h) * 6.6), 1fr)); justify-content:stretch; gap:8px 10px; padding-top:14px;}
+.ui35-pool-tile{display:flex; align-items:center; gap:6px; min-width:0; padding:3px; border:0; border-radius:999px; background:transparent; font:inherit; text-align:left; cursor:pointer;}
+.ui35-pool-tile .card-chip{pointer-events:none; flex:1 1 auto; min-width:0; max-width:none;}
+.ui35-pool-tile.has-in .card-chip{box-shadow:0 0 0 2px var(--accent-strong, #8a5a1e), 0 1px 3px rgba(0,0,0,.3);}
+.ui35-pool-tile.is-spent{opacity:.45; filter:saturate(.55);}
+.ui35-pool-tile:hover:not(.is-spent){filter:brightness(1.08);}
+.ui35-pool-tile:focus-visible{outline:2px solid var(--accent-strong, #8a5a1e); outline-offset:2px;}
+@media (max-width:640px){ #myDeckPool.pool-grid.ui35-cmp{grid-template-columns:repeat(auto-fill, minmax(calc(var(--chip-h) * 5.2), 1fr)); gap:6px;} #myDeckList.ui35-cmp{gap:6px;} }
+/* 2026-11-08 (package UI35, owner 09:27 #8): the SK / WK details' Map-reference line */
+.bal24-winline .bal24-refline{flex:1 0 100%; display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; cursor:help;}
+.bal24-refline[data-flag="weak"] .bal24-band, .bal24-refline[data-flag="strong"] .bal24-band{background:rgba(179,38,30,.14); color:#b3261e;}
+.bal24-refline .ui35-ref-date{opacity:.65; font-size:.8em;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .bal24-refline[data-flag="weak"] .bal24-band, :root:not([data-theme="light"]) .bal24-refline[data-flag="strong"] .bal24-band{color:#ff9a8f;} }
+:root[data-theme="dark"] .bal24-refline[data-flag="weak"] .bal24-band, :root[data-theme="dark"] .bal24-refline[data-flag="strong"] .bal24-band{color:#ff9a8f;}
 /* 2026-11-07 (package ENG35, owner 21:13: "just leave 1 line of emoji and title"): a skill tile is one line (icon, name, compact pills); the rest is in the hover window */
 .ui19-sk[data-eng35-key]{align-items:center; cursor:help;}
 .ui19-sk[data-eng35-key]:focus-visible{outline:2px solid #4f8ee8; outline-offset:1px;}
@@ -46627,7 +46664,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=26ed6a05c0", "es": "assets/lang/es.js?v=12737aa0b0", "fr": "assets/lang/fr.js?v=24eb5a17d3", "id": "assets/lang/id.js?v=10db7aa225", "it": "assets/lang/it.js?v=03d52a23f4", "ja": "assets/lang/ja.js?v=4e3071752f", "ko": "assets/lang/ko.js?v=5c4761881d", "pt": "assets/lang/pt.js?v=e1efd1db92", "ta": "assets/lang/ta.js?v=ff018f41d5", "tl": "assets/lang/tl.js?v=be7daf41c1", "zh-Hans": "assets/lang/zh-Hans.js?v=12cfe47759", "zh-Hant": "assets/lang/zh-Hant.js?v=c7e92cb37d"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=dc5a1100ed", "es": "assets/lang/es.js?v=cb2fa0274d", "fr": "assets/lang/fr.js?v=163d1e02b1", "id": "assets/lang/id.js?v=6db921121b", "it": "assets/lang/it.js?v=399a993f4f", "ja": "assets/lang/ja.js?v=e4eac6c5e7", "ko": "assets/lang/ko.js?v=66748e8452", "pt": "assets/lang/pt.js?v=4237452464", "ta": "assets/lang/ta.js?v=617beea1ce", "tl": "assets/lang/tl.js?v=bcb9217763", "zh-Hans": "assets/lang/zh-Hans.js?v=5e666fae87", "zh-Hant": "assets/lang/zh-Hant.js?v=c483c4f93c"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -46863,7 +46900,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui22-role-reward": "Reward",
   "ui.ui22-role-first": "First clear",
   "ui.ui22-role-challenge": "Challenge",
-  "ui.ui22-claude-title": "Recommended by Claude",
+  "ui.ui22-claude-title": "Thematic Recommendation",
   "ui.ui22-claude-new": "Claude New",
   "ui.ui22-claude-new-tip": "Claude’s suggestions for this map. Shown only: not on any list, pool, deck or count.",
   "ui.c17-ranged": "Ranged",
@@ -50370,7 +50407,24 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui34-resist-why": "A {name} Resist or Immune entry softens or stops it.",
   "ui.ui34-unsure": "unsure",
   "ui.ui34-cn-tip": "Answers {n} of this map's cards",
-  "ui.ui34-pick-tip": "Claude's pick {card} carries it (theme: {theme})"
+  "ui.ui34-pick-tip": "Claude's pick {card} carries it (theme: {theme})",
+  "ui.ui35-view-label": "Card view",
+  "ui.ui35-view-full": "Full art",
+  "ui.ui35-view-compact": "Compact",
+  "ui.ui35-pool-left": "{left} of {owned} copies left",
+  "ui.ui35-pool-how": "Click: add one · Shift+click: take one out",
+  "ui.ui35-pill-main": "Main",
+  "ui.ui35-pill-main-tip": "A skill of this map's own main cards",
+  "ui.ui35-pill-counter": "Counter",
+  "ui.ui35-pill-counter-tip": "Answers some of this map's cards (the number says how many)",
+  "ui.ui35-new-count": "{n} new",
+  "ui.ui35-new-count-tip": "Skills this map introduces: no earlier main map has them on its own main cards. Side maps and Other skills never count.",
+  "ui.ui35-ref-sk": "Map reference wins {pct}% vs these decks",
+  "ui.ui35-ref-wk": "Map reference wins {pct}% vs these weak decks",
+  "ui.ui35-ref-cut-sk": "too weak above {cut}%",
+  "ui.ui35-ref-cut-wk": "too strong below {cut}%",
+  "ui.ui35-ref-worst": "worst deck {pct}%",
+  "ui.ui35-ref-tip": "Measured {date} by the latest pro-ease run that plays the ladder: the number the TOO WEAK / TOO STRONG pill is judged on."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -54947,7 +55001,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '5d9c43cecab1', BUILD_CARD_HASH = '4c577025fb8832bdc837bfb66ee24f1c34bc68f4db152afb508ee9dd02830151';
+const BUILD_ID = '3e3e59fbcaee', BUILD_CARD_HASH = '4c577025fb8832bdc837bfb66ee24f1c34bc68f4db152afb508ee9dd02830151';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -68889,6 +68943,7 @@ function renderPlayerSubTab(body){
         ${cfBarHTML(deckCfState, 'dk', defs) /* 2026-10-21 (package TX, owner: "every filter power in codex to be in the deck editors"): types (with the hierarchy), animal, phylum, rarity, archetype, skills and groups, sorts both ways */}
         <select id="deckKindFilter"><option value="">All kinds</option><option>Structure</option><option>Unit</option></select>
         <select id="deckLevelFilter" title="Card level — levels only show while this filter is on"><option value="">Any level</option><option value="1">Lv 1+</option><option value="3">Lv 3+</option><option value="5">Lv 5+</option><option value="10">Lv 10+</option><option value="sort">Sort by level</option></select>
+        ${ui35DeckViewBarHTML() /* 2026-11-08 (package UI35, owner 09:27 #3): Full art / Compact */}
         ${neShiftHintHTML() /* 2026-10-24 (package NE, owner 11:15): the Shift chip's hint (was the 🗂 finishes toggle: finishes live in the copy fan now) */}
       </div>
       <div class="pool-grid" id="myDeckPool"></div>
@@ -68908,6 +68963,7 @@ function renderPlayerSubTab(body){
   // Item #12 (2026-09-18): "add the All archetypes and other filters into the deck searcher" —
   // the deck pool now gets the same search/type-tags/kind/sort toolbar the Codex Browse tab has,
   // instead of just the lone type-tags dropdown it had before.
+  body.querySelectorAll('[data-ui35-view]').forEach(b=> b.addEventListener('click', ()=>{ ui35SetDeckView(b.getAttribute('data-ui35-view')); body.querySelectorAll('[data-ui35-view]').forEach(x=> x.setAttribute('aria-pressed', String(x.getAttribute('data-ui35-view') === deckCardView))); renderMyDeckPanels(); })); // 2026-11-08 (package UI35)
   document.getElementById('deckSearch').addEventListener('input', renderMyDeckPanels);
   document.getElementById('deckKindFilter').addEventListener('change', renderMyDeckPanels);
   document.getElementById('deckLevelFilter').addEventListener('change', renderMyDeckPanels);
@@ -72406,6 +72462,7 @@ function edPopupCount(ov, id, n){
 // The Camp (tent): true when the change was written in place; false = the caller redraws (0 <-> 1, or a card with Shiny / alt-art
 // copies or finishes, whose stacks are split by copy).
 function tentQuickCount(id, prev){
+  if(deckCardView === 'compact') return false; // 2026-11-08 (package UI35): the Compact view's chips redraw (cheap); the in-place count is for the stacks
   const n = myDeckCounts[id] | 0; if((prev > 0) !== (n > 0)) return false;
   try{ if(Object.keys(deckLooksFor(id)).length) return false; const st = lookStock(id); if(st.shiny || Object.keys(st.skins || {}).length) return false; }catch(e){ return false; } // 2026-10-24 (package NE): one pool stack per card now (finishes in the fan)
   const sel = (typeof CSS !== 'undefined' && CSS.escape) ? CSS.escape(id) : id;
@@ -76959,7 +77016,16 @@ function bal24PillHTML(key){ const m = adminModeEnabled ? bal24Mark(key) : null;
   return `<span class="bal24-pill" data-flag="${m.flag}" title="${escapeAttr(tip)}">${escapeHtml(TX(m.flag === 'weak' ? 'ui.bal24-too-weak' : 'ui.bal24-too-strong'))}</span>`; }
 function bal24WinLineHTML(key, weak){ const m = adminModeEnabled ? bal24Mark(key) : null; if(!m || m.win == null) return '';
   const b = (BAL24_PRO_MARKS.rule || {}).band || [0.15, 0.30], inBand = m.win >= b[0] && m.win <= b[1], lo = Math.round(b[0] * 100), hi = Math.round(b[1] * 100);
-  return `<p class="panel-sub bal24-winline" data-band="${inBand ? 'in' : 'out'}"><b>${escapeHtml(TX(weak ? 'ui.bal24-wpro-win' : 'ui.bal24-pro-win', {pct: Math.round(m.win * 100)}))}</b> <span class="bal24-band">${escapeHtml(TX(inBand ? 'ui.bal24-band-in' : 'ui.bal24-band-out', {lo, hi}))}</span>${m.flag ? ' ' + bal24PillHTML(key) : ''}</p>`; }
+  return `<p class="panel-sub bal24-winline" data-band="${inBand ? 'in' : 'out'}"><b>${escapeHtml(TX(weak ? 'ui.bal24-wpro-win' : 'ui.bal24-pro-win', {pct: Math.round(m.win * 100)}))}</b> <span class="bal24-band">${escapeHtml(TX(inBand ? 'ui.bal24-band-in' : 'ui.bal24-band-out', {lo, hi}))}</span>${m.flag ? ' ' + bal24PillHTML(key) : ''}${bal24RefLineHTML(key, weak, m)}</p>`; }
+// 2026-11-08 (package UI35, owner 09:27 #8: "List the win-rate analysis % on the skirmish SK and WK details"): the SK / WK details already said how often the PRO / WPRO decks beat the ladder;
+// the TOO WEAK / TOO STRONG pill is judged on the OTHER number, the Map reference's win rate against these decks, which was only in the pill's hover. It is a line of its own now, with its cut
+// (SK: too weak above skEasy; WK: too strong below wkStrong) and the day it was measured (BAL24_PRO_MARKS.generated, the latest pro-ease run that plays the ladder).
+function bal24RefLineHTML(key, weak, m){
+  m = m || bal24Mark(key); if(!m || m.mapRef == null) return '';
+  const r = BAL24_PRO_MARKS.rule || {}, cut = Math.round((weak ? r.wkStrong : r.skEasy) * 100), pct = Math.round(m.mapRef * 100), bad = !!m.flag, gen = String(BAL24_PRO_MARKS.generated || '').slice(0, 10);
+  const tip = TX('ui.ui35-ref-tip', {date: gen || '?'});
+  return `<span class="bal24-refline" data-flag="${bad ? m.flag : ''}" data-ref-pct="${pct}" title="${escapeAttr(tip)}"><b>${escapeHtml(TX(weak ? 'ui.ui35-ref-wk' : 'ui.ui35-ref-sk', {pct}))}</b> <span class="bal24-band">${escapeHtml(TX(weak ? 'ui.ui35-ref-cut-wk' : 'ui.ui35-ref-cut-sk', {cut}))}${bad && m.flagRef != null ? ' · ' + escapeHtml(TX('ui.ui35-ref-worst', {pct: Math.round(m.flagRef * 100)})) : ''}</span>${gen ? ` <small class="ui35-ref-date">${escapeHtml(gen)}</small>` : ''}</span>`;
+}
 function proEntriesOf(ent){
   if(!ent) return []; let e = ent._skirm; if(e !== undefined) return e || [];
   const list = skirmDecksOf(ent), out = [];
@@ -79955,7 +80021,7 @@ function renderConquestSubTab(body){
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span></div>`/* 2026-10-16 (user: "Just a lock symbol is enough, no need for a emblem") */}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
-      ${adminModeEnabled ? `<div class="cnp-admin-side" role="group" aria-label="Admin"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button>${c13NodeIsAdminTest(map.id) ? '' /* 2026-11-07 (CONTENT13): the Drill Grounds pay nothing and keep no progress: no Edit rewards, no Mark cleared */ : `<button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button>`}<button type="button" class="btn small ghost" id="cnpMapCards" aria-haspopup="dialog">${escapeHtml(TX('ui.pk1-map-cards-btn')) /* 2026-10-28 (package PACK1) */}</button></div>` : ''}
+      ${adminModeEnabled ? `<div class="cnp-admin-side" role="group" aria-label="Admin"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button>${c13NodeIsAdminTest(map.id) ? '' /* 2026-11-07 (CONTENT13): the Drill Grounds pay nothing and keep no progress: no Edit rewards, no Mark cleared */ : `<button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button>`}<button type="button" class="btn small ghost" id="cnpMapCards" aria-haspopup="dialog">${escapeHtml(TX('ui.pk1-map-cards-btn')) /* 2026-10-28 (package PACK1) */}</button><button type="button" class="btn small ghost" id="cnpPacks" aria-haspopup="dialog" title="${escapeAttr(TX('ui.ui29-btn-tip'))}">${escapeHtml(TX('ui.ui29-btn')) /* 2026-11-08 (package UI35, owner 09:27 #4): 📦 Packs under 🃏 Map cards */}</button></div>` : ''}
       ${vis4MapCardsHTML(map, selectedNode)}
       `;
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
@@ -79976,6 +80042,7 @@ function renderConquestSubTab(body){
     // Admin (2026-10-12, user: "Auto-complete skirmishes"): no fight, no rewards; just the progress.
     { const ac = document.getElementById('cnpAdminClear'); if(ac) ac.addEventListener('click', ()=>{ adminCompleteNodes(map.id, [selectedNode.key]); renderConquestSubTab(body); }); }
     { const mc = document.getElementById('cnpMapCards'); if(mc) mc.addEventListener('click', ()=> pk1OpenMapCards(map.id)); } // 2026-10-28 (package PACK1)
+    { const pk = document.getElementById('cnpPacks'); if(pk) pk.addEventListener('click', ()=>{ if(typeof ui29OpenPackEditor === 'function') ui29OpenPackEditor(ui29KeyForMap(map.id)); }); } // 2026-11-08 (package UI35, owner 09:27 #4): the same handler as the 🚨 map bar's 📦 Packs (mlPacks)
     // (2026-10-18: #cnpAdminClearMap's handler went; "clear the whole map" is the map layout bar's mlClearMap.)
     const nrBtn = document.getElementById('cnpEditRewards');
     if(nrBtn) nrBtn.addEventListener('click', ()=> openNodeRewardsEditor(map.id, selectedNode.key));
@@ -84295,8 +84362,13 @@ function ui19McSkillRows(ids, defs){
 function ui19McEarlierSkillKeys(top, defs, ok){
   const n = mapNumberOf(top), keys = new Set(); if(n === null) return keys;
   (typeof mainConquestMaps === 'function' ? mainConquestMaps() : []).forEach(mm=>{ const k = mapNumberOf(mm.id); if(k === null || k >= n) return;
+    // 2026-11-08 (package UI35, owner 09:27 #6: "NEW! counts the main map progression only ... Only count the main map progression"): an earlier MAIN map introduced a skill only
+    // through its own main list (the MAP section, key 'cards'); its side-map lists, SPECIAL and the "Other skills" never count, and a skill it only shows grey (a later level, hidden
+    // there) was not met on it. (Sunken Hollow's Bloom sat on a Pebble Beach side-map card, so it never said NEW!.)
     let secs = []; try{ secs = mapPoolSections(mm.id); }catch(e){}
-    secs.forEach(s=> (s.ids || []).filter(ok).forEach(id=> { const d = defs[id]; if(d) ui18CardSkillKeys(d).forEach(x=> keys.add(x.key)); })); });
+    secs.filter(s=> s.key === 'cards').forEach(s=>{ const ids = (s.ids || []).filter(ok).filter(id=> defs[id]);
+      if(typeof ui28SkillMeet !== 'function'){ ids.forEach(id=> ui18CardSkillKeys(defs[id]).forEach(x=> keys.add(x.key))); return; } // tests lift this alone
+      ui19McSkillRows(ids, defs).forEach(r=>{ if(ui28SkillMeet(r, defs, k).met) keys.add(r.key); }); }); });
   return keys;
 }
 function ui19McSkillText(r){
@@ -84535,25 +84607,31 @@ function ui19McSkillsHTML(top, ids, defs, ok, mapId, otherIds){
   // 2026-11-07 (package ENG35, owner 21:13: "simplify the skill 'card': just leave 1 line of emoji and title"): a tile is one line (icon, name, pills); its text,
   // the card count / why and the skill's parameters show in the hover window (eng35TileAttrs, eng35SkillTipHTML). Without them (a test lifting this alone) a title.
   const tipA = (key, label, text, ctx, aria)=> typeof eng35TileAttrs === 'function' ? eng35TileAttrs(key, label, text, ctx, aria) : `title="${escapeAttr(label + ': ' + text + (ctx ? ' (' + ctx + ')' : ''))}"`;
+  // 2026-11-08 (package UI35, owner 09:27 #2: "Collapse the main and recommend skill card sections together. The only thing that differentiates them are pills"): Main, Counters and the
+  // recommendations are ONE list of one-line tiles, the kind shown by a pill (Main / Counter / Suggested / Sugg. Intro / NEW!); the hover says what the skill does. Others stays its own group.
+  const pill = (cls, key, tipKey, tipArgs)=> ` <i class="ui35-pill is-${cls}" title="${escapeAttr(TX(tipKey, tipArgs))}">${escapeHtml(TX(key))}</i>`;
+  const sugPill = tip=> ` <i class="ui28-sug" title="${escapeAttr(tip)}">${escapeHtml(TX('ui.ui28-suggested'))}</i>`;
   const li = r=>{ const rec = r.grey ? recBy.get(r.key) : null, why = r.grey ? (r.greyLvl > 0 ? TX('ui.ui28-grey-lvl', {n: r.greyLvl}) : TX('ui.ui28-grey-hidden')) : '';
-    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}</span></li>`; };
+    return `<li class="ui19-sk${r.grey ? ' is-grey' : ''}${r.isNew ? ' is-new' : ''}${r.key === kw && !r.grey ? ' is-intro' : ''}" data-ui19-skill="${escapeAttr(r.key)}"${rec ? ` data-ui28-suggested="1"` : ''} ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui19-mc-count', {n: r.ids.length, total: uniq.length}) + (why ? ' - ' + why : '') + (rec ? ' - ' + TX('ui.ui28-suggested-tip', {card: rec.card}) : ''))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${r.grey && typeof ui31GreyQHTML === 'function' ? ui31GreyQHTML(r.greyLvl) : ''}${r.outside ? '' : pill('main', 'ui.ui35-pill-main', 'ui.ui35-pill-main-tip')}${r.isNew ? ` <i class="ui19-new" title="${escapeAttr(TX('ui.ui19-mc-new-tip'))}">${escapeHtml(TX('ui.ui19-mc-new'))}</i>` : ''}${rec ? ` <i class="ui28-sug" title="${escapeAttr(TX('ui.ui28-suggested-tip', {card: rec.card}))}">${escapeHtml(TX('ui.ui28-suggested'))}</i>` : ''}${sp(r.key)}</span></li>`; };
   const have = new Set(rows.concat(rowsO).map(r=> r.key)), seenRec = new Set(); // 2026-11-07 (UI28 #3): a recommendation tile only for a skill none of this map's cards carries (a grey tile wears the Suggested pill instead)
   // 2026-11-08 (package UI34, owner 23:49): a Counters group (skills that answer the main cards' skills, canonical/skill-counters.json); a counter is a tile once: not in Main / Other, and off the blue group
   let ctr = []; try{ ctr = typeof ui34CounterRows === 'function' ? ui34CounterRows(flaggedMain, defs, have) : []; }catch(e){ ctr = []; }
   const ctrKeys = new Set(ctr.map(r=> r.key));
   const recs = recs0.filter(r=>{ if(have.has(r.key) || ctrKeys.has(r.key) || seenRec.has(r.key)) return false; seenRec.add(r.key); return true; });
-  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sp(r.key)}</span></li>`;
-  const kwMissing = kw && !have.has(kw) && !ctrKeys.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sp(kw)}</span></li>` : '';
+  const rli = r=> `<li class="ui19-sk is-rec" data-ui24-rec="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText(r), TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui24-rec-tip', {card: r.card}) + (r.why ? ' (' + r.why + ')' : ''))}${sp(r.key)}</span></li>`;
+  const kwMissing = kw && !have.has(kw) && !ctrKeys.has(kw) && skillDefOf(kw) ? `<li class="ui19-sk is-intro" data-ui19-skill="${escapeAttr(kw)}" ${tipA(kw, skillDefOf(kw).label, ui19McSkillText({key: kw, fx: {[kw]: true}}), TX('ui.ui24-intro-missing'))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[kw] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(skillDefOf(kw).label)}</b>${sugPill(TX('ui.ui24-intro-missing'))}${sp(kw)}</span></li>` : '';
   const suggShown = new Set([...have, ...ctrKeys, ...(kwMissing ? [kw] : []), ...recs.map(r=> r.key)]);
   const suggTiles = typeof ui30SuggTilesHTML === 'function' ? ui30SuggTilesHTML(sugg, suggShown) : ''; // 2026-11-07 (UI30 #16): a pick no tile shows yet
   // 2026-11-08 (package UI34 item 3, owner 23:49: up to 15 Claude recommendations per map where sensible): the blue group tops up to 15 with the skills of Claude's picked cards for this map (ui34ClaudePicks) that no tile shows yet
   const suggMissingN = [...sugg.keys()].filter(k=> !suggShown.has(k) && skillDefOf(k)).length, blueRoom = Math.max(0, 15 - recs.length - (kwMissing ? 1 : 0) - suggMissingN);
   let picks = []; try{ picks = typeof ui34ClaudePicks === 'function' && blueRoom ? ui34ClaudePicks(mapId || top, defs, new Set([...suggShown, ...sugg.keys(), ...(kw ? [kw] : [])]), blueRoom) : []; }catch(e){ picks = []; }
   const spk = k=> sp(k); // a pick tile carries the Sugg. Intro pill too
-  const pickTiles = picks.map(r=> `<li class="ui19-sk is-rec is-claude-pick" data-ui34-pick="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText({key: r.key, fx: {[r.key]: true}}), TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${spk(r.key)}</span></li>`).join('');
+  const pickTiles = picks.map(r=> `<li class="ui19-sk is-rec is-claude-pick" data-ui34-pick="${escapeAttr(r.key)}" ${tipA(r.key, r.p.label, ui19McSkillText({key: r.key, fx: {[r.key]: true}}), TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}), r.p.label + ': ' + TX('ui.ui24-rec-for', {card: r.card}))}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[r.key] || '•')}</span><span class="ui19-sk-main"><b>${escapeHtml(r.p.label)}</b>${sugPill(TX('ui.ui34-pick-tip', {card: r.card, theme: r.theme || '-'}))}${spk(r.key)}</span></li>`).join('');
   const ctrTiles = ctr.map(r=> typeof ui34CounterTileHTML === 'function' ? ui34CounterTileHTML(r, defs, kw, tipA, sp) : '').join('');
-  const hd = (k, n)=> n ? `<li class="ui32-sk-head is-${k}" role="presentation">${escapeHtml(TX('ui.ui32-sk-' + k))}</li>` : ''; // UI32 #7: a divider per group
-  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small></h3>${flagged.length || recs.length || kwMissing || suggTiles || ctr.length || picks.length ? `<ul class="ui19-sk-list">${hd('main', flaggedMain.length)}${flaggedMain.map(li).join('')}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}${hd('counters', ctr.length)}${ctrTiles}${hd('rec', recs.length + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + picks.length)}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
+  const hd = (k, n)=> n ? `<li class="ui32-sk-head is-${k}" role="presentation">${escapeHtml(TX('ui.ui32-sk-' + k))}</li>` : ''; // UI32 #7: a divider; UI35: only the Other group keeps one
+  const newN = flaggedMain.filter(r=> r.isNew).length; // 2026-11-08 (UI35 #6): how many skills this map introduces (the owner wants 2-3 on a main map, 0-1 on a side map)
+  const tileN = flaggedMain.length + ctr.length + (kwMissing ? 1 : 0) + (suggTiles ? 1 : 0) + recs.length + picks.length + flaggedOther.length;
+  return `<section class="pk1-mc-sec ui19-mc-skills" id="ui19McSkills"><h3>${escapeHtml(TX('ui.ui19-mc-skills'))} <small>${flagged.length}</small> <small class="ui35-newn${newN ? ' has-new' : ''}" data-ui35-new="${newN}" title="${escapeAttr(TX('ui.ui35-new-count-tip'))}">${escapeHtml(TX('ui.ui35-new-count', {n: newN}))}</small></h3>${tileN ? `<ul class="ui19-sk-list">${flaggedMain.map(li).join('')}${ctrTiles}${kwMissing}${suggTiles}${recs.map(rli).join('')}${pickTiles}${hd('other', flaggedOther.length)}${flaggedOther.map(li).join('')}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ui19-mc-none'))}</p>`}</section>`;
 }
 // UI19_MC_SKILLS:END
 // UI34_COUNTERS:START
@@ -84598,7 +84676,7 @@ function ui34CounterTileHTML(r, defs, kw, tipA, sp){
   const seen = new Set(), why = []; r.pairs.forEach(x=>{ if(seen.has(x.threat) || why.length >= 4) return; seen.add(x.threat); let tl = x.threat; try{ tl = skillDefOf(x.threat).label || tl; }catch(e){}
     why.push(tl + ': ' + x.why + (x.unc ? ' (' + TX('ui.ui34-unsure') + ')' : '')); });
   const ctx = TX('ui.ui34-counter-ctx', {n: names.length, cards: shown}) + ' - ' + why.join(' | ') + (seen.size < r.threats.size ? ' | +' + (r.threats.size - seen.size) : '');
-  return `<li class="ui19-sk is-counter${r.key === kw ? ' is-intro' : ''}" data-ui34-counter="${escapeAttr(r.key)}" ${tipA(r.key, label, text, ctx)}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(ico)}</span><span class="ui19-sk-main"><b>${escapeHtml(label)}</b> <i class="ui34-cn" title="${escapeAttr(TX('ui.ui34-cn-tip', {n: names.length}))}">${names.length}</i>${typeof sp === 'function' ? sp(r.key) : ''}</span></li>`;
+  return `<li class="ui19-sk is-counter${r.key === kw ? ' is-intro' : ''}" data-ui34-counter="${escapeAttr(r.key)}" ${tipA(r.key, label, text, ctx)}><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(ico)}</span><span class="ui19-sk-main"><b>${escapeHtml(label)}</b> <i class="ui35-pill is-counter" title="${escapeAttr(TX('ui.ui35-pill-counter-tip'))}">${escapeHtml(TX('ui.ui35-pill-counter'))}</i><i class="ui34-cn" title="${escapeAttr(TX('ui.ui34-cn-tip', {n: names.length}))}">${names.length}</i>${typeof sp === 'function' ? sp(r.key) : ''}</span></li>`;
 }
 // item 3 (owner 23:49: up to 15 recommendations per map where sensible): the skills of Claude's picked cards for this map (THEME5, SKILLREC1 and CONTENT17 picks,
 // the current theme first) that no tile shows yet, the most-carried first, at most `room`. Dynamic: a skill a map card gains leaves the list.
@@ -87947,6 +88025,30 @@ if(typeof document !== 'undefined'){
 let neShowLimits = false;
 function neShiftHintHTML(){ return `<button type="button" class="btn small ghost ne-shift-hint ${neShowLimits ? 'is-on' : ''}" id="neShiftHint" aria-pressed="${neShowLimits}" title="${escapeAttr(TX('ui.ne-shift-tip'))}"><kbd>⇧</kbd> ${escapeHtml(TX('ui.ne-shift-hint'))}</button>`; }
 // NE_DECK:END
+// UI35_DECKVIEW:START
+// 2026-11-08 (package UI35, owner 09:27 #3: "Maybe the deck editor has 2 views. Full art view and this compressed view. Each card will look like this (a circle and a label on the right
+// in the way you've done) + a 'x N' part dictating the copies"): the Camp's deck editor has a view switch, Full art (the cards, as before) or Compact (the Map cards window's chip: the art in a
+// circle, the name on its right, then x N). Compact keeps every interaction: a click adds one, Shift+click / right-click / the - corner takes one out, a drag onto the deck adds, hover shows the card.
+// The deck's chips say x copies in the deck; the pool's say x copies still free (what the full view's left/owned badge says). Remembered per viewer (localStorage; it may be blocked).
+const UI35_DECK_VIEW_KEY = 'bramblewood_deck_cardview_v1';
+let deckCardView = (()=>{ try{ return localStorage.getItem(UI35_DECK_VIEW_KEY) === 'compact' ? 'compact' : 'full'; }catch(e){ return 'full'; } })();
+function ui35SetDeckView(v){ deckCardView = v === 'compact' ? 'compact' : 'full'; try{ localStorage.setItem(UI35_DECK_VIEW_KEY, deckCardView); }catch(e){} }
+function ui35DeckViewBarHTML(){
+  const b = (k, key)=> `<button type="button" class="ui35-view-btn" data-ui35-view="${k}" aria-pressed="${deckCardView === k}">${escapeHtml(TX(key))}</button>`;
+  return `<span class="ui35-view" role="group" aria-label="${escapeAttr(TX('ui.ui35-view-label'))}">${b('full', 'ui.ui35-view-full')}${b('compact', 'ui.ui35-view-compact')}</span>`;
+}
+// a deck card as a chip: the same .dchip the full view's handlers wire (click +1, Shift / right-click / the - corner -1), x N copies after the name
+function ui35DeckChipHTML(id, d, look, k){
+  const tip = d.name + (look ? ' (' + lookLabel(id, look) + ')' : '') + ' \u00d7' + k + ': click to add one, Shift+click to take one out';
+  return `<span class="dchip ui35-dchip ${look ? 'is-look' : ''}" draggable="true" data-defid="${id}" ${look ? `data-look="${escapeAttr(look)}"` : ''} title="${escapeAttr(tip)}">${cardChipHTML(d, {noDefid: true, label: d.name + ' \u00d7' + k})}<b class="ui35-n">\u00d7${k}</b>${look ? `<span class="look-tag" aria-hidden="true">${look === 'shiny' ? '\u2726' : '\ud83c\udfa8'}</span>` : ''}<button type="button" class="dchip-minus" data-minus="${id}" ${look ? `data-minus-look="${escapeAttr(look)}"` : ''} aria-label="Take one ${escapeAttr(d.name)} out" title="Take one out">\u2212</button></span>`;
+}
+// a pool card as a chip button: x copies still free; greyed when it cannot take one more (neDeckFull)
+function ui35PoolTileHTML(id, defs){
+  const d = defs[id], owned = ownedCopiesOf(id), used = neDeckUsed(id), left = owned === Infinity ? Infinity : Math.max(0, owned - used), full = neDeckFull(id, defs);
+  const tip = d.name + (owned === Infinity ? '' : ' \u00b7 ' + TX('ui.ui35-pool-left', {left, owned})) + ' \u00b7 ' + TX('ui.ui35-pool-how');
+  return `<button type="button" class="ui35-pool-tile${full ? ' is-spent ne-full' : ''}${(myDeckCounts[id] | 0) > 0 ? ' has-in' : ''}" draggable="true" data-defid="${escapeAttr(id)}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(d.name + (owned === Infinity ? '' : ', ' + TX('ui.ui35-pool-left', {left, owned})))}">${cardChipHTML(d, {noDefid: true})}<b class="ui35-n">\u00d7${left === Infinity ? '\u221e' : left}</b></button>`;
+}
+// UI35_DECKVIEW:END
 function renderMyDeckPanels(){
   const defs = getCardDefs();
   // Item #12: the rest of the deck-searcher toolbar (search box, Structure/Unit kind filter,
@@ -87970,13 +88072,14 @@ function renderMyDeckPanels(){
   const badgeEl = document.getElementById('myDeckSizeBadge');
   if(badgeEl) badgeEl.innerHTML = deckSizeBadgeHTML(myDeckCounts);
   try{ refreshDeckHeroBanner(); }catch(e){}
-  const listEl = document.getElementById('myDeckList'); listEl.classList.add('is-stacks');
+  const compact = deckCardView === 'compact'; // 2026-11-08 (package UI35, owner 09:27 #3): the Compact view
+  const listEl = document.getElementById('myDeckList'); listEl.classList.toggle('is-stacks', !compact); listEl.classList.toggle('ui35-cmp', compact);
   listEl.innerHTML = Object.keys(myDeckCounts).filter(id=> myDeckCounts[id]>0 && defs[id]).sort(cfSort).map(id=>{ const n = myDeckCounts[id];
     // 2026-10-15 (user: "In the main deck editor - click = +, shift click = -"): a deck card adds a copy on click and takes one out on
     // Shift+click (or right-click); the small − corner does it with a tap on touch screens.
     // 2026-10-16: a card's Shiny / alt-art copies in the deck are their own chips (data-look), after its plain ones.
     const looks = deckLooksFor(id), plainN = n - deckLookCount(looks);
-    const chip = (look, k)=> `<span class="dchip deck-stack ${look ? 'is-look' : ''}" draggable="true" data-defid="${id}" ${look ? `data-look="${escapeAttr(look)}" style="${lookStyle(id, look)}"` : ''} title="${escapeAttr(defs[id].name + (look ? ' (' + lookLabel(id, look) + ')' : ''))} ×${k}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true, extraClass: lookTileClass(id, look), size:'full' /* 2026-10-30 (CS-A) */}), k, '×' + k)}${look ? `<span class="look-tag" aria-hidden="true">${look === 'shiny' ? '✦' : '🎨'}</span>` : ''}<button type="button" class="dchip-minus" data-minus="${id}" ${look ? `data-minus-look="${escapeAttr(look)}"` : ''} aria-label="Take one ${escapeAttr(defs[id].name)} out" title="Take one out">−</button></span>`;
+    const chip = (look, k)=> compact ? ui35DeckChipHTML(id, defs[id], look, k) : `<span class="dchip deck-stack ${look ? 'is-look' : ''}" draggable="true" data-defid="${id}" ${look ? `data-look="${escapeAttr(look)}" style="${lookStyle(id, look)}"` : ''} title="${escapeAttr(defs[id].name + (look ? ' (' + lookLabel(id, look) + ')' : ''))} ×${k}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true, extraClass: lookTileClass(id, look), size:'full' /* 2026-10-30 (CS-A) */}), k, '×' + k)}${look ? `<span class="look-tag" aria-hidden="true">${look === 'shiny' ? '✦' : '🎨'}</span>` : ''}<button type="button" class="dchip-minus" data-minus="${id}" ${look ? `data-minus-look="${escapeAttr(look)}"` : ''} aria-label="Take one ${escapeAttr(defs[id].name)} out" title="Take one out">−</button></span>`;
     return (plainN > 0 ? chip('', plainN) : '') + Object.keys(looks).map(k=> chip(k, looks[k])).join(''); }).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
   const baseSort = cfSort;
   const sortFn = (a,b)=>{ if(lvlMode==='sort'){ const d = (myCardLevels[b]||0) - (myCardLevels[a]||0); if(d) return d; } return baseSort(a, b); };
@@ -87985,7 +88088,7 @@ function renderMyDeckPanels(){
     .filter(id=> !kind || defs[id].type===kind)
     .filter(id=> !q || defs[id].name.toLowerCase().includes(q))
     .filter(id=> !minLvl || (myCardLevels[id]||0) >= minLvl);
-  document.getElementById('myDeckPool').classList.toggle('show-levels', !!lvlMode);
+  document.getElementById('myDeckPool').classList.toggle('show-levels', !!lvlMode); document.getElementById('myDeckPool').classList.toggle('ui35-cmp', compact);
   // 2026-10-12 (user: "In the deck editor, don't show me cards I don't own"): only cards you have (or the basics everyone has).
   const unlockedIds = allIds.filter(id=>!defs[id].locked && ownedForDeck(id)).sort(sortFn);
   const lockedIds = allIds.filter(id=>defs[id].locked).sort(sortFn);
@@ -87993,7 +88096,7 @@ function renderMyDeckPanels(){
     // 2026-10-08 (user: "The locked cards shouldn't appear in the deck editor's card selector. The card
     // selector only shows cards the user literally owns"): locked cards are left out (they live in the Codex).
     (unlockedIds.map(id=>{
-      return neDeckPoolStackHTML(id, defs); // 2026-10-24 (package NE): one stack per card, the copy fan, the leader counted, greyed when full (NE_DECK)
+      return compact ? ui35PoolTileHTML(id, defs) : neDeckPoolStackHTML(id, defs); // 2026-10-24 (package NE); 2026-11-08 (package UI35): the Compact view's chip: one stack per card, the copy fan, the leader counted, greyed when full (NE_DECK)
     }).join('') || '<p class="empty-hint">No cards match. Win fights and open packs to collect more.</p>') + (lockedIds.length && false ? '' : '');
   { const after = ()=>{ saveMyDeck(); renderMyDeckPanels(); };
     // 2026-10-21 (package ED, owner #10): a plain +1 / −1 rewrites the counts in place (tentQuickCount); 0 <-> 1 and split copies redraw
@@ -88016,6 +88119,9 @@ function renderMyDeckPanels(){
     document.querySelectorAll('#myDeckList .dchip').forEach(el=>{ const id = el.getAttribute('data-defid'), look = el.getAttribute('data-look');
       el.addEventListener('click', e=>{ if(e.target.closest('.dchip-minus')){ e.stopPropagation(); if(look) lookClick({shiftKey:true}, id, look); else deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); return; } if(look) lookClick(e, id, look); else deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); });
       el.addEventListener('contextmenu', e=>{ e.preventDefault(); if(look) lookClick({shiftKey:true}, id, look); else deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); }); });
+    document.querySelectorAll('#myDeckPool .ui35-pool-tile').forEach(el=>{ const id = el.getAttribute('data-defid'); // 2026-11-08 (package UI35): the Compact view's pool chips add on a click, take one out on Shift+click / right-click
+      el.addEventListener('click', e=> deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true));
+      el.addEventListener('contextmenu', e=>{ if(!(myDeckCounts[id] > 0)) return; e.preventDefault(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', fast(id), true); }); });
     document.querySelectorAll('#myDeckPool .look-stack').forEach(el=>{ const id = el.dataset.lookid, look = el.dataset.look; const t = el.querySelector('.card-tile'); if(t) t.classList.add('is-look-tile');
       el.addEventListener('click', e=>{ e.stopPropagation(); lookClick(e, id, look); }, true);
       el.addEventListener('contextmenu', e=>{ e.preventDefault(); e.stopPropagation(); lookClick({shiftKey:true}, id, look); }, true); });
@@ -88036,7 +88142,7 @@ function renderMyDeckPanels(){
   // also dropped on is gone, the leader is picked in openLoadoutPicker) — a locked pool
   // tile is deliberately excluded, matching the same "not usable yet" rule the click-to-add
   // handlers above already apply.
-  document.querySelectorAll('#myDeckList .dchip, #myDeckPool .card-tile:not(.locked)').forEach(el=>{
+  document.querySelectorAll('#myDeckList .dchip, #myDeckPool .card-tile:not(.locked), #myDeckPool .ui35-pool-tile').forEach(el=>{
     el.setAttribute('draggable', 'true');
     el.addEventListener('dragstart', e=> e.dataTransfer.setData('text/plain', el.getAttribute('data-defid')));
   });

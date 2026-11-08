@@ -14964,6 +14964,43 @@ html[data-fx="none"] .abadge.ui30-tick{animation:none !important;}
 .pk1-mc-overlay .ui19-sk.is-counter.is-intro{border-color:#2f9e8f; background:linear-gradient(135deg, color-mix(in srgb, #35b6a4 26%, var(--bg)), color-mix(in srgb, #ffd36b 30%, var(--bg)));}
 .ui19-sk .ui34-cn{font-style:normal; font-weight:800; font-size:9.5px; line-height:1; padding:1px 4px; margin-left:3px; border-radius:8px; background:color-mix(in srgb, #1f8f80 24%, transparent); color:inherit; white-space:nowrap;}
 .ui19-sk .ui34-cn::before{content:"\00d7";}
+/* 2026-11-08 (package UI35, owner 09:27 #2, #6): one skills list for Main, Counters and the recommendations: every tile looks alike (the kind is a pill: Main / Counter / Suggested / Sugg. Intro / NEW!),
+   a "N new" count beside the heading. The yellow NEW! / keyword-intro gradient and the grey "not met here" tile stay. */
+.ui35-pill{display:inline-block; font:800 9px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; letter-spacing:.03em; padding:1px 5px; border-radius:999px; vertical-align:1px; white-space:nowrap; cursor:help; margin-left:2px;}
+.ui35-pill.is-main{background:color-mix(in srgb, var(--ink-muted, #6b6b6b) 32%, transparent); color:var(--ink, #222);}
+.ui35-pill.is-counter{background:#1f8f80; color:#fff;}
+.ui19-sk .ui28-sug{margin-left:2px;}
+.ui35-newn{font:800 11px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted, #6b6b6b); margin-left:6px; padding:2px 7px; border-radius:999px; border:1px solid var(--surface-border); cursor:help; vertical-align:1px;}
+.ui35-newn.has-new{color:#fff; background:#d9480f; border-color:#d9480f;}
+.pk1-mc-overlay .ui19-sk.is-counter, .pk1-mc-overlay .ui19-sk.is-counter.is-intro, .pk1-mc-overlay .ui19-sk.is-rec, .pk1-mc-overlay .ui19-sk.ui30-sugg-tile{border-color:var(--surface-border); border-style:solid; background:var(--bg);}
+.pk1-mc-overlay .ui19-sk.is-counter.is-intro, .pk1-mc-overlay .ui19-sk.is-intro.ui30-sugg-tile{border-color:#e0b23a; background:linear-gradient(135deg, color-mix(in srgb, #ffd36b 34%, var(--bg)), color-mix(in srgb, #ffffff 22%, var(--bg)));}
+.pk1-mc-overlay .ui19-sk-list{grid-template-columns:repeat(auto-fill, minmax(176px, 1fr));}
+@media (max-width:520px){ .pk1-mc-overlay .ui19-sk-list{grid-template-columns:1fr;} .ui35-pill, .ui19-sk .ui28-sug, .ui19-sk .ui30-sugg{font-size:8px; padding:1px 4px;} .ui19-sk .ui34-cn{margin-left:1px;} }
+/* 2026-11-08 (package UI35, owner 09:27 #3): the deck editor's Compact view (the Map cards chip: art disc, name, x N) and its Full art / Compact switch */
+.ui35-view{display:inline-flex; border:1px solid var(--surface-border); border-radius:999px; overflow:hidden; background:var(--surface-2);}
+.ui35-view-btn{border:0; background:transparent; padding:9px 12px; font:800 13px/1 'Nunito',system-ui,sans-serif; color:var(--ink); cursor:pointer; white-space:nowrap;}
+.ui35-view-btn[aria-pressed="true"]{background:var(--accent-strong, #8a5a1e); color:#fff;}
+.ui35-view-btn:focus-visible{outline:2px solid var(--accent-strong, #8a5a1e); outline-offset:-2px;}
+#myDeckList.ui35-cmp{display:flex; flex-wrap:wrap; gap:8px 8px; padding:12px 8px 8px;}
+.deck-list-mini .dchip.ui35-dchip{position:relative; display:inline-flex; align-items:center; gap:4px; background:none; border:0; padding:0; max-width:100%; cursor:pointer;}
+.ui35-dchip .card-chip{pointer-events:none; max-width:min(100%, calc(var(--chip-h) * 7));}
+.ui35-n{flex:0 0 auto; font:900 12px/1 'Baloo 2',system-ui,sans-serif; background:#ffd56e; color:#3a2200; padding:3px 7px; border-radius:999px; font-variant-numeric:tabular-nums;}
+#myDeckList .ui35-dchip .dchip-minus{top:-7px; left:-5px;}
+@media (hover:hover){ #myDeckList .ui35-dchip:hover .dchip-minus{opacity:.9;} }
+#myDeckPool.pool-grid.ui35-cmp{grid-template-columns:repeat(auto-fill, minmax(calc(var(--chip-h) * 6.6), 1fr)); justify-content:stretch; gap:8px 10px; padding-top:14px;}
+.ui35-pool-tile{display:flex; align-items:center; gap:6px; min-width:0; padding:3px; border:0; border-radius:999px; background:transparent; font:inherit; text-align:left; cursor:pointer;}
+.ui35-pool-tile .card-chip{pointer-events:none; flex:1 1 auto; min-width:0; max-width:none;}
+.ui35-pool-tile.has-in .card-chip{box-shadow:0 0 0 2px var(--accent-strong, #8a5a1e), 0 1px 3px rgba(0,0,0,.3);}
+.ui35-pool-tile.is-spent{opacity:.45; filter:saturate(.55);}
+.ui35-pool-tile:hover:not(.is-spent){filter:brightness(1.08);}
+.ui35-pool-tile:focus-visible{outline:2px solid var(--accent-strong, #8a5a1e); outline-offset:2px;}
+@media (max-width:640px){ #myDeckPool.pool-grid.ui35-cmp{grid-template-columns:repeat(auto-fill, minmax(calc(var(--chip-h) * 5.2), 1fr)); gap:6px;} #myDeckList.ui35-cmp{gap:6px;} }
+/* 2026-11-08 (package UI35, owner 09:27 #8): the SK / WK details' Map-reference line */
+.bal24-winline .bal24-refline{flex:1 0 100%; display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; cursor:help;}
+.bal24-refline[data-flag="weak"] .bal24-band, .bal24-refline[data-flag="strong"] .bal24-band{background:rgba(179,38,30,.14); color:#b3261e;}
+.bal24-refline .ui35-ref-date{opacity:.65; font-size:.8em;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .bal24-refline[data-flag="weak"] .bal24-band, :root:not([data-theme="light"]) .bal24-refline[data-flag="strong"] .bal24-band{color:#ff9a8f;} }
+:root[data-theme="dark"] .bal24-refline[data-flag="weak"] .bal24-band, :root[data-theme="dark"] .bal24-refline[data-flag="strong"] .bal24-band{color:#ff9a8f;}
 /* 2026-11-07 (package ENG35, owner 21:13: "just leave 1 line of emoji and title"): a skill tile is one line (icon, name, compact pills); the rest is in the hover window */
 .ui19-sk[data-eng35-key]{align-items:center; cursor:help;}
 .ui19-sk[data-eng35-key]:focus-visible{outline:2px solid #4f8ee8; outline-offset:1px;}

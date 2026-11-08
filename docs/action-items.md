@@ -21,6 +21,10 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 8 | BAL27-2: owner changes those fights; show the win-rate % on the SK and WK fight details | UI35 |
 | 9 | BAL27-3: owner retunes Gatorback Swamp himself | owner |
 
+## 11-08: Package UI35 (on its branch, not released)
+- Done (owner 09:27 rows 2, 3, 4, 6, 8): one Map cards skills list (Main, Counters, recommendations; pills tell them apart; Others stay a group), NEW! on the main progression only (Bloom on Sunken Hollow) with an "N new" count, Thematic Recommendation, the deck editor's Full art / Compact switch, 📦 Packs under 🃏 Map cards, the Map reference win % on the N-SK / N-WK details.
+- Owner calls open: UI35-1 (Other skills separate or merged), UI35-2 (NEW! counts above 2-3 per map: a guide for DES1), UI35-3 (what the Compact pool's x N says).
+
 ## 11-07: Package UI34 (on its branch, not released)
 - Done (owner 23:49): Counters group in the Map cards window's skills section (up to 8, ranked by map cards answered, hover says which and why), `canonical/skill-counters.json`, the blue group up to 15, Counters column in the workbook. Open: decision UI34-1 (the Codex's old counter list); the `uncertain` entries of the table want an engine proof each when someone has time.
 

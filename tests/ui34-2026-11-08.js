@@ -91,7 +91,7 @@ function landRate(attId, defId, n){ let hit = 0; for(let s = 1; s <= n; s++){ co
   ok(/class="ui19-sk is-counter/.test(f) && !/data-ui19-skill=/.test(f), 'a counter tile is its own (is-counter), not a Main / Other tile'); }
 { const f = fn(app, 'ui19McSkillsHTML');
   ok(/ui34CounterRows\(flaggedMain, defs, have\)/.test(f), 'ui19McSkillsHTML counts the MAIN group\'s cards and leaves out what Main / Other show');
-  ok(/hd\('counters', ctr\.length\)/.test(f) && f.indexOf("hd('counters'") > f.indexOf("hd('other'") && f.indexOf("hd('counters'") < f.indexOf("hd('rec'"), 'the Counters group sits between Other and the blue group');
+  ok(!/hd\('counters'/.test(f) && f.indexOf('${ctrTiles}') > f.indexOf('${flaggedMain.map(li).join(\'\')}') && f.indexOf('${ctrTiles}') < f.indexOf('${recs.map(rli).join(\'\')}'), 'UI35 (2026-11-08): the Counter tiles follow the Main tiles in the one list, before the recommendations (a Counter pill, no heading)');
   ok(/ctrKeys\.has\(r\.key\)/.test(f) && /ctrKeys\.has\(kw\)/.test(f) && /\.\.\.ctrKeys/.test(f), 'a counter is a tile once: the blue group drops it (recommendations, keyword tile, Sugg. Intro tiles)'); }
 ok((app.match(/ui32McRefreshSkills\(ov\)/g) || []).length >= 4 && /ui19McSkillsHTML\(c\.top, g\.main, defs, c\.ok, c\.mapId, g\.other\)/.test(fn(app, 'ui32McRefreshSkills')), 'the Counters follow UI32\'s refresh (they are drawn by ui19McSkillsHTML)');
 
@@ -115,7 +115,7 @@ Object.keys(E.ENG36_STATUS).filter(s=> Object.values(T.applies).includes(s)).for
 
 // ================= 6. build, docs, tests =================
 ok(/sub_once\(app_src, "__SKILL_COUNTER_TABLE__"/.test(asm) && /const SKILL_COUNTER_TABLE = __SKILL_COUNTER_TABLE__;/.test(app), 'assemble_arena.py bakes the table in (the Codex\'s older SKILL_COUNTERS is a different, hand-written list)');
-ok(/\.ui19-sk\.is-counter/.test(tpl) && /\.ui34-cn\{/.test(tpl) && /ui32-sk-head\.is-counters/.test(tpl), 'CSS: teal counter tiles, the count pill, the heading');
+ok(/\.ui19-sk\.is-counter/.test(tpl) && /\.ui34-cn\{/.test(tpl) && /ui32-sk-head\.is-counters/.test(tpl), 'CSS: the counter tile, the count pill, the heading (UI35: the tile keeps its Counter pill; its colour is the common one)');
 ok(/Counters/.test(rd('tools/export_workbook_2026_11_07.py')) && /canonical\/skill-counters\.json/.test(rd('tools/export_workbook_2026_11_07.py')), 'the workbook exporter has a Counters column on the Maps tab');
 ok(/^## 2026-11-08 Package UI34/m.test(rd('docs/CHANGELOG.md')), 'CHANGELOG entry');
 ok(/tests\/ui34-2026-11-08\.js/.test(rd('tests/run-all.sh')), 'in run-all.sh');
