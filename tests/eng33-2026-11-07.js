@@ -93,7 +93,8 @@ for(const [id, n] of [['e33-bul1', 1], ['e33-bul2', 2], ['e33-bul3', 3]]){ const
 { const sk = J('canonical/skill-costs.json').skills, s = id=> sk.find(x=> x.id === id);
   ok(s('thanatosis') && s('thanatosis').scale === 'fixed' && s('thanatosis').value === 2, 'Thanatosis priced 2.0');
   ok(s('poisonous') && s('poisonous').scale === 'n' && s('poisonous').value === 0.8, 'Poisonous priced 0.8 a point');
-  ok(s('bulwark').value === 3.5 && s('bulwark').pow === 1 && s('bulwark').eng33Was && s('bulwark').eng33Was.value === 5.96, 'Bulwark 3.5 a wall (was 5.96 x N^0.22)');
+  // 2026-11-08 (package BAL30, owner "Bulwark - estimate yourself"): 3.5 a wall (ENG33) -> 6.65 x N^0.47 (the ladder's 6.16 x N^0.47 for a 0/4 wall, x1.08 for ENG36's growing walls)
+ok(s('bulwark').value === 6.65 && s('bulwark').pow === 0.47 && s('bulwark').eng33Was && s('bulwark').eng33Was.value === 5.96 && s('bulwark').bal29Was && s('bulwark').bal29Was.value === 3.5, 'Bulwark 6.65 x N^0.47 (BAL30; was 3.5 a wall in ENG33, 5.96 x N^0.22 before)');
   ok(!!s('venomous').retired, 'the old Venomous is marked retired'); }
 
 // ---- texts: no Poison counters left in the TX table; the new texts in all 12 packs

@@ -45,7 +45,9 @@ function isOutOfPlay(G, d){
 let LB = null, PEND = null;
 function budgetHold(id){
   LB = LB || require('./lib_bramble.js');
-  if(!PEND){ try{ PEND = new Set(JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'listfix1-pending-budget-2026-10-29.json'), 'utf8')).cards.map(c=> c.id)); }catch(e){ PEND = new Set(); } }
+  if(!PEND){ try{ PEND = new Set(JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'listfix1-pending-budget-2026-10-29.json'), 'utf8')).cards.map(c=> c.id)); }catch(e){ PEND = new Set(); }
+    // 2026-11-08 (package BAL30, owner BAL29-1: update the prices and N now, no card refit): the cards the BAL29 A+B / Reach / Bulwark prices put over (or well under) budget wait for the owner's re-fit step
+    try{ JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'bal30', 'verdict-change-2026-11-08.json'), 'utf8')).flips.forEach(c=> PEND.add(c.id)); }catch(e){} }
   const d = LB.CARD_DEFS_BASELINE[id];
   return d && isOutOfPlay(LB.G, d) ? 'unplaced' : PEND.has(id) ? 'pending' : '';
 }

@@ -1,0 +1,1283 @@
+{
+ "_about": "BAL30: Maps 0-20 budget verdicts before (HEAD) and after the BAL29 A+B / Reach 1 / Bulwark estimate prices. Report only.",
+ "tally": {
+  "cards": 321,
+  "before": {
+   "ok": 295,
+   "over": 21,
+   "under": 5
+  },
+  "after": {
+   "ok": 285,
+   "over": 30,
+   "under": 6
+  }
+ },
+ "flips": [
+  {
+   "id": "badger-lumberjack",
+   "name": "Badger Lumberjack",
+   "rarity": "uncommon",
+   "stats": "2/11",
+   "skills": [
+    "lumberjack"
+   ],
+   "S": [
+    3.29,
+    4.85
+   ],
+   "use": [
+    0.95,
+    1.03
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  },
+  {
+   "id": "beaver-lumberjack",
+   "name": "Beaver Lumberjack",
+   "rarity": "common",
+   "stats": "3/5",
+   "skills": [
+    "delivery"
+   ],
+   "S": [
+    2.28,
+    4.62
+   ],
+   "use": [
+    0.97,
+    1.11
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  },
+  {
+   "id": "bramble-sprout",
+   "name": "Bramble Sprout",
+   "rarity": "common",
+   "stats": "1/5",
+   "skills": [
+    "thorns"
+   ],
+   "S": [
+    4.48,
+    5.08
+   ],
+   "use": [
+    0.97,
+    1.01
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  },
+  {
+   "id": "cone-cutter-squirrel",
+   "name": "Cone-cutter Squirrel",
+   "rarity": "common",
+   "stats": "2/5",
+   "skills": [
+    "almanac"
+   ],
+   "S": [
+    8.28,
+    10.28
+   ],
+   "use": [
+    0.96,
+    1.06
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  },
+  {
+   "id": "dune-packrat",
+   "name": "Dune Packrat",
+   "rarity": "rare",
+   "stats": "2/11",
+   "skills": [
+    "delivery"
+   ],
+   "S": [
+    5.71,
+    8.75
+   ],
+   "use": [
+    0.89,
+    1.01
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  },
+  {
+   "id": "field-mouse",
+   "name": "Field Mouse",
+   "rarity": "common",
+   "stats": "2/5",
+   "skills": [
+    "pickpocket"
+   ],
+   "S": [
+    1,
+    5.13
+   ],
+   "use": [
+    0.93,
+    1.25
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  },
+  {
+   "id": "granite-ox-golem",
+   "name": "Granite Ox Golem",
+   "rarity": "rare",
+   "stats": "3/17",
+   "skills": [
+    "recoil"
+   ],
+   "S": [
+    5.91,
+    -1.97
+   ],
+   "use": [
+    0.73,
+    0.55
+   ],
+   "verdict": [
+    "ok",
+    "under"
+   ]
+  },
+  {
+   "id": "leafcutter-gardener",
+   "name": "Leafcutter Gardener",
+   "rarity": "common",
+   "stats": "2/4",
+   "skills": [
+    "delivery"
+   ],
+   "S": [
+    4.22,
+    6.88
+   ],
+   "use": [
+    0.98,
+    1.16
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "name": "Mangrove Mudskipper",
+   "rarity": "common",
+   "stats": "1/7",
+   "skills": [
+    "skitter"
+   ],
+   "S": [
+    1.94,
+    4
+   ],
+   "use": [
+    0.89,
+    1.03
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  },
+  {
+   "id": "muskrat-reedgatherer",
+   "name": "Muskrat Reedgatherer",
+   "rarity": "common",
+   "stats": "1/8",
+   "skills": [
+    "delivery"
+   ],
+   "S": [
+    4.16,
+    7.06
+   ],
+   "use": [
+    0.91,
+    1.08
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  }
+ ],
+ "otherChanged": [
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": "uncommon",
+   "stats": "1/4",
+   "skills": [
+    "twinStrike"
+   ],
+   "S": [
+    8.95,
+    10.32
+   ],
+   "use": [
+    1.11,
+    1.21
+   ],
+   "verdict": [
+    "over",
+    "over"
+   ]
+  },
+  {
+   "id": "ancient-sloth-titan",
+   "name": "Ancient Sloth Titan",
+   "rarity": "common",
+   "stats": "2/31",
+   "skills": [
+    "bulwark"
+   ],
+   "S": [
+    5.95,
+    7.83
+   ],
+   "use": [
+    0.73,
+    0.77
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "antlion-pit",
+   "name": "Antlion Pit",
+   "rarity": "uncommon",
+   "stats": "3/13",
+   "skills": [
+    "trap"
+   ],
+   "S": [
+    3.23,
+    2.98
+   ],
+   "use": [
+    1,
+    0.99
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "apollo-butterfly",
+   "name": "Apollo Butterfly",
+   "rarity": "uncommon",
+   "stats": "1/8",
+   "skills": [
+    "thorns"
+   ],
+   "S": [
+    2.83,
+    3.22
+   ],
+   "use": [
+    0.75,
+    0.77
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "rarity": "rare",
+   "stats": "1/16",
+   "skills": [
+    "inspiring"
+   ],
+   "S": [
+    4.16,
+    5.12
+   ],
+   "use": [
+    0.78,
+    0.81
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "bison-bulldozer",
+   "name": "Bison Bulldozer",
+   "rarity": "uncommon",
+   "stats": "2/12",
+   "skills": [
+    "bulldoze",
+    "onslaught"
+   ],
+   "S": [
+    5.08,
+    3.62
+   ],
+   "use": [
+    0.95,
+    0.89
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "rarity": "uncommon",
+   "stats": "1/12",
+   "skills": [
+    "invisible",
+    "daunt"
+   ],
+   "S": [
+    3.27,
+    3.36
+   ],
+   "use": [
+    0.81,
+    0.82
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "rarity": "common",
+   "stats": "5/4",
+   "skills": [
+    "riled"
+   ],
+   "S": [
+    7.48,
+    7.16
+   ],
+   "use": [
+    0.99,
+    0.98
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "rarity": "common",
+   "stats": "2/5",
+   "skills": [
+    "ambush"
+   ],
+   "S": [
+    1.44,
+    0.59
+   ],
+   "use": [
+    0.85,
+    0.8
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "carrion-crow",
+   "name": "Carrion Crow",
+   "rarity": "common",
+   "stats": "2/4",
+   "skills": [
+    "scavenge"
+   ],
+   "S": [
+    2.27,
+    2.99
+   ],
+   "use": [
+    0.77,
+    0.81
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "cataphract-destrier",
+   "name": "Gilded Roadwarden",
+   "rarity": "common",
+   "stats": "3/28",
+   "skills": [
+    "overwhelm"
+   ],
+   "S": [
+    7.9,
+    8.43
+   ],
+   "use": [
+    0.89,
+    0.9
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord",
+   "rarity": "common",
+   "stats": "6/28",
+   "skills": [
+    "daunt"
+   ],
+   "S": [
+    8.61,
+    8.12
+   ],
+   "use": [
+    0.97,
+    0.96
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "rarity": "veryrare",
+   "stats": "4/23",
+   "skills": [
+    "fork",
+    "gash"
+   ],
+   "S": [
+    6.69,
+    8.18
+   ],
+   "use": [
+    0.88,
+    0.91
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "conch-herald",
+   "name": "Conch Herald",
+   "rarity": "uncommon",
+   "stats": "1/11",
+   "skills": [
+    "inspiring"
+   ],
+   "S": [
+    4.36,
+    6.4
+   ],
+   "use": [
+    0.85,
+    0.95
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "cormorant",
+   "name": "Cormorant",
+   "rarity": "common",
+   "stats": "3/7",
+   "skills": [
+    "reach"
+   ],
+   "S": [
+    0.52,
+    1
+   ],
+   "use": [
+    0.95,
+    0.98
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "rarity": "common",
+   "stats": "2/7",
+   "skills": [
+    "inspiring"
+   ],
+   "S": [
+    3,
+    3.96
+   ],
+   "use": [
+    1.22,
+    1.29
+   ],
+   "verdict": [
+    "over",
+    "over"
+   ]
+  },
+  {
+   "id": "cypress-root-lurker",
+   "name": "Cypress Root Lurker",
+   "rarity": "common",
+   "stats": "4/12",
+   "skills": [
+    "repair"
+   ],
+   "S": [
+    0.5,
+    2.93
+   ],
+   "use": [
+    1.01,
+    1.11
+   ],
+   "verdict": [
+    "over",
+    "over"
+   ]
+  },
+  {
+   "id": "drowned-matriarch",
+   "name": "The Drowned Matriarch",
+   "rarity": "uncommon",
+   "stats": "2/13",
+   "skills": [
+    "fork"
+   ],
+   "S": [
+    4.49,
+    5.55
+   ],
+   "use": [
+    0.89,
+    0.93
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "dust-devil-kestrel",
+   "name": "Dust-devil Kestrel",
+   "rarity": "veryrare",
+   "stats": "5/10",
+   "skills": [
+    "tornado"
+   ],
+   "S": [
+    1.96,
+    1.17
+   ],
+   "use": [
+    0.84,
+    0.82
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "rarity": "common",
+   "stats": "3/11",
+   "skills": [
+    "daunt"
+   ],
+   "S": [
+    7.87,
+    7.28
+   ],
+   "use": [
+    0.82,
+    0.81
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "gatling-hog",
+   "name": "Gatling Hog",
+   "rarity": "rare",
+   "stats": "2/6",
+   "skills": [
+    "twinStrike"
+   ],
+   "S": [
+    10.64,
+    12.01
+   ],
+   "use": [
+    0.84,
+    0.89
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "hedgehog-herbalist",
+   "name": "Hedgehog Herbalist",
+   "rarity": "rare",
+   "stats": "3/15",
+   "skills": [
+    "herbalist"
+   ],
+   "S": [
+    0.88,
+    0.53
+   ],
+   "use": [
+    0.99,
+    0.97
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "hedgehog-scout",
+   "name": "Hedgehog Scout",
+   "rarity": "common",
+   "stats": "1/10",
+   "skills": [
+    "thorns"
+   ],
+   "S": [
+    2.83,
+    3.22
+   ],
+   "use": [
+    1.23,
+    1.26
+   ],
+   "verdict": [
+    "over",
+    "over"
+   ]
+  },
+  {
+   "id": "ibex-rockcaller",
+   "name": "Ibex Rockcaller",
+   "rarity": "veryrare",
+   "stats": "3/12",
+   "skills": [
+    "avalanche"
+   ],
+   "S": [
+    6.63,
+    9.25
+   ],
+   "use": [
+    0.91,
+    1
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "komodo-warlord",
+   "name": "Komodo Warlord",
+   "rarity": "common",
+   "stats": "1/27",
+   "skills": [
+    "gash"
+   ],
+   "S": [
+    9.28,
+    9.71
+   ],
+   "use": [
+    0.86,
+    0.87
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling",
+   "rarity": "common",
+   "stats": "2/16",
+   "skills": [
+    "fork",
+    "gash"
+   ],
+   "S": [
+    6.19,
+    7.68
+   ],
+   "use": [
+    0.84,
+    0.88
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "lamprey",
+   "name": "Lamprey",
+   "rarity": "common",
+   "stats": "2/5",
+   "skills": [
+    "weaken"
+   ],
+   "S": [
+    3.39,
+    2.64
+   ],
+   "use": [
+    0.9,
+    0.85
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "magma-titan",
+   "name": "Magma Rhino",
+   "rarity": "common",
+   "stats": "2/17",
+   "skills": [
+    "scar"
+   ],
+   "S": [
+    3.38,
+    3.41
+   ],
+   "use": [
+    0.75,
+    0.75
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "mountain-hare",
+   "name": "Mountain Hare",
+   "rarity": "common",
+   "stats": "2/3",
+   "skills": [
+    "frostbite"
+   ],
+   "S": [
+    0.5,
+    0.19
+   ],
+   "use": [
+    0.76,
+    0.74
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "rarity": "uncommon",
+   "stats": "1/7",
+   "skills": [
+    "bulwark"
+   ],
+   "S": [
+    7.5,
+    9.71
+   ],
+   "use": [
+    0.66,
+    0.75
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "nutria-reedcutter",
+   "name": "Nutria Reedcutter",
+   "rarity": "common",
+   "stats": "2/7",
+   "skills": [
+    "delivery"
+   ],
+   "S": [
+    4.24,
+    7.2
+   ],
+   "use": [
+    0.82,
+    0.96
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "ore-smelter-mole",
+   "name": "Ore-Smelter Mole",
+   "rarity": "uncommon",
+   "stats": "4/9",
+   "skills": [
+    "delivery"
+   ],
+   "S": [
+    1.03,
+    3.69
+   ],
+   "use": [
+    0.83,
+    0.93
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "rarity": "common",
+   "stats": "0/6",
+   "skills": [
+    "thorns"
+   ],
+   "S": [
+    6.36,
+    7.13
+   ],
+   "use": [
+    0.74,
+    0.79
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "rarity": "veryrare",
+   "stats": "2/17",
+   "skills": [
+    "ambush"
+   ],
+   "S": [
+    5.38,
+    5.32
+   ],
+   "use": [
+    0.81,
+    0.8
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "porcupine-roller",
+   "name": "Porcupine Roller",
+   "rarity": "common",
+   "stats": "3/2",
+   "skills": [
+    "thorns"
+   ],
+   "S": [
+    4.48,
+    5.08
+   ],
+   "use": [
+    1.2,
+    1.24
+   ],
+   "verdict": [
+    "over",
+    "over"
+   ]
+  },
+  {
+   "id": "pronghorn-racer",
+   "name": "Pronghorn Racer",
+   "rarity": "common",
+   "stats": "1/10",
+   "skills": [
+    "speed"
+   ],
+   "S": [
+    2.04,
+    2.44
+   ],
+   "use": [
+    0.78,
+    0.8
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "quicksand-queen",
+   "name": "Quicksand Queen",
+   "rarity": "veryrare",
+   "stats": "2/19",
+   "skills": [
+    "trap"
+   ],
+   "S": [
+    5.86,
+    6.08
+   ],
+   "use": [
+    0.96,
+    0.97
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "rarity": "rare",
+   "stats": "4/5",
+   "skills": [
+    "thorns"
+   ],
+   "S": [
+    5.86,
+    6.63
+   ],
+   "use": [
+    0.96,
+    0.99
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "raven-scout",
+   "name": "Raven Scout",
+   "rarity": "rare",
+   "stats": "2/5",
+   "skills": [
+    "tally"
+   ],
+   "S": [
+    3.28,
+    1.41
+   ],
+   "use": [
+    1,
+    0.88
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "sandfish",
+   "name": "Sandfish",
+   "rarity": "common",
+   "stats": "3/10",
+   "skills": [
+    "invisible"
+   ],
+   "S": [
+    0.96,
+    1.64
+   ],
+   "use": [
+    0.86,
+    0.89
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "skull-vulture",
+   "name": "Skull Vulture",
+   "rarity": "uncommon",
+   "stats": "3/3",
+   "skills": [
+    "daunt"
+   ],
+   "S": [
+    4.17,
+    3.58
+   ],
+   "use": [
+    0.76,
+    0.73
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "sunbittern-strider",
+   "name": "Sunbittern Strider",
+   "rarity": "uncommon",
+   "stats": "3/10",
+   "skills": [],
+   "S": [
+    1.22,
+    1.38
+   ],
+   "use": [
+    0.87,
+    0.88
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "supernova-jelly",
+   "name": "Supernova Jelly",
+   "rarity": "rare",
+   "stats": "2/9",
+   "skills": [
+    "nova"
+   ],
+   "S": [
+    4.48,
+    3.82
+   ],
+   "use": [
+    0.82,
+    0.79
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "swift-fox",
+   "name": "Swift Fox",
+   "rarity": "common",
+   "stats": "3/3",
+   "skills": [
+    "fastForward"
+   ],
+   "S": [
+    3.02,
+    4.24
+   ],
+   "use": [
+    0.85,
+    0.92
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "talus-pika",
+   "name": "Talus Pika",
+   "rarity": "common",
+   "stats": "1/5",
+   "skills": [
+    "delivery"
+   ],
+   "S": [
+    2.62,
+    5.3
+   ],
+   "use": [
+    0.66,
+    0.82
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "rarity": "uncommon",
+   "stats": "1/11",
+   "skills": [
+    "berserk"
+   ],
+   "S": [
+    3.6,
+    3.68
+   ],
+   "use": [
+    0.78,
+    0.78
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "thorny-devil",
+   "name": "Thorny Devil",
+   "rarity": "uncommon",
+   "stats": "1/20",
+   "skills": [
+    "thorns"
+   ],
+   "S": [
+    4.48,
+    5.08
+   ],
+   "use": [
+    0.93,
+    0.95
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "victoria-regia",
+   "name": "Victoria Regia",
+   "rarity": "uncommon",
+   "stats": "2/14",
+   "skills": [
+    "bulldoze",
+    "thorns"
+   ],
+   "S": [
+    5.11,
+    5.45
+   ],
+   "use": [
+    0.98,
+    0.99
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "woodland-caribou",
+   "name": "Woodland Caribou",
+   "rarity": "uncommon",
+   "stats": "3/8",
+   "skills": [
+    "frostbite"
+   ],
+   "S": [
+    4.5,
+    4.19
+   ],
+   "use": [
+    0.87,
+    0.86
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "yeti",
+   "name": "Yeti",
+   "rarity": "common",
+   "stats": "5/29",
+   "skills": [
+    "scare"
+   ],
+   "S": [
+    3.58,
+    3.76
+   ],
+   "use": [
+    0.9,
+    0.9
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  }
+ ]
+}
