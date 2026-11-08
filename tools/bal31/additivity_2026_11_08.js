@@ -68,6 +68,9 @@ function planOf(o) {
   const pairOf = k => { const [a, b] = k.split('+'); return { key: k, a: by.get(a), b: by.get(b) }; };
   return { S, by, phases: phases.map(ph => Object.assign(ph, { pairs: ph.pairs.map(pairOf) })), top };
 }
+// 2026-11-08: two placebo keys (neither a skill the engine knows): the CPU values a card by its number of effect keys, so the pair carries
+// two of them; this checks that two placebos cost twice one (the interaction's placebo cancel assumes it)
+const PLACEBO2 = { skill2Placebo: true, skill3Placebo: true };
 const effOf = s => ({ [s.key]: s.n });
 const effPair = p => ({ [p.a.key]: p.a.n, [p.b.key]: p.b.n });
 const nStr = n => n === true ? 'on' : String(n);
@@ -100,7 +103,7 @@ async function main(argv) {
       const t0 = Date.now(), late = () => o.hours && (Date.now() - t0) / 3600000 >= o.hours;
       K.B.log(`BAL31 additivity ${VERSION}: Level ${Lv}, bodies ${bs.map(b => b.A + '/' + b.H).join(' ')}, ${M} fights; cache ${o.cacheDir}${o.hours ? '; stops starting new work after ' + o.hours + ' h' : ''}`);
       for (const ph of P.phases) { if (ph.id > o.phase) break;
-        const groups = ph.id === 1 ? [{ name: 'bodies', its: C.statVariants(K, Lv, bs) }].concat(P.S.map(s => ({ name: s.key + ' ' + nStr(s.n), its: bs.map(b => ({ v: K.variant(Lv, b, effOf(s)) })) })))
+        const groups = ph.id === 1 ? [{ name: 'bodies', its: C.statVariants(K, Lv, bs).concat(bs.map(b => ({ v: K.variant(Lv, b, PLACEBO2) }))) }].concat(P.S.map(s => ({ name: s.key + ' ' + nStr(s.n), its: bs.map(b => ({ v: K.variant(Lv, b, effOf(s)) })) })))
           : ph.pairs.map(p => ({ name: p.a.key + ' ' + nStr(p.a.n) + ' + ' + p.b.key + ' ' + nStr(p.b.n), its: bs.map(b => ({ v: K.variant(Lv, b, effPair(p)) })) }));
         // a group of 10 per need() call: fewer saves, and the time check between groups
         for (let g = 0; g < groups.length; g += 10) { if (late()) { K.B.log(`time is up (${o.hours} h): stopped in phase ${ph.id} at ${g}/${groups.length}; re-run the same command to go on`); return; }
@@ -145,12 +148,25 @@ function summary(o, K, P, bs, M, Lv) {
   const n = pairs.length, share = f => n ? C.r2(pairs.filter(f).length / n) : null, mean = f => n ? C.r2(pairs.reduce((s, p) => s + f(p), 0) / n) : null;
   const noise = n ? C.r2(pairs.reduce((s, p) => s + p.se, 0) / n * Math.sqrt(2 / Math.PI)) : null;
   const L1 = C.ladderRate(1), L5 = C.ladderRate(5);
+  // the spread of the true interactions: observed variance less the mean sampling variance; the share within ±1 of the mean interaction
+  const mI = n ? pairs.reduce((s, p) => s + p.I.m, 0) / n : 0, vI = n > 1 ? pairs.reduce((s, p) => s + (p.I.m - mI) ** 2, 0) / (n - 1) : null, vS = n ? pairs.reduce((s, p) => s + p.se * p.se, 0) / n : null;
+  // does the interaction grow with the pair's size? the slope of I on worth(A) + worth(B) (the mean over bodies)
+  const xs = pairs.map(p => (p.aW.reduce((s, v) => s + v, 0) + p.bW.reduce((s, v) => s + v, 0)) / p.aW.length), mx = n ? xs.reduce((s, v) => s + v, 0) / n : 0;
+  let sxy = 0, sxx = 0, syy = 0; pairs.forEach((p, i) => { sxy += (xs[i] - mx) * (p.I.m - mI); sxx += (xs[i] - mx) ** 2; syy += (p.I.m - mI) ** 2; });
+  // two placebos against one: (score PP - 2 score P + score base) / rate, the mean over bodies (null until phase 1 played it)
+  let plc2 = null; if (bs.every(b => K.have(Lv, K.variant(Lv, b, PLACEBO2), M))) { const pp = bs.map(b => sc(K.variant(Lv, b, PLACEBO2)));
+    const f = ix => bs.reduce((s, b, j) => { let t = 0; const N = ix ? ix.length : M; for (let k = 0; k < N; k++) { const i = ix ? ix[k] : k; t += pp[j][i] - 2 * plc[j][i] + base[j][i]; } return s + t / N / rate; }, 0) / bs.length;
+    const bt = boots.map(f); plc2 = { m: C.r2(f(null)), lo: C.r2(C.q(bt, 0.025)), hi: C.r2(C.q(bt, 0.975)) }; }
   const out = { tool: 'tools/bal31/additivity_2026_11_08.js ' + VERSION, generated: new Date().toISOString(), fingerprint: K.L.fingerprint(), games: M, level: Lv, N: C.r2(K.lv[Lv].N), budget: K.lv[Lv].Bud,
     bodies: bs.map(b => b.A + '/' + b.H), rate: C.r2(rate * 100), rateFrom: 'the stat yardstick on the bodies at Level ' + Lv, ladderRates: { L1: L1 && C.r2(L1.r * 100), L5: L5 && C.r2(L5.r * 100) },
     totals: { pairs: n, skillsCovered: skills.filter(s => s.pairs > 0).length, skills: skills.length, minPairs: Math.min(...skills.filter(s => single.has(s.key)).map(s => s.pairs)),
       within1: share(p => p.within1), ciHas0: share(p => p.ciHas0), meanAbsI: mean(p => Math.abs(p.I.m)), meanI: mean(p => p.I.m), noiseFloor: noise,
       gapWithin1: share(p => p.gapWithin1), meanAbsGap: mean(p => Math.abs(p.gap.m)), meanGap: mean(p => p.gap.m), within2: share(p => Math.abs(p.I.m) <= 2), flag85: pairs.filter(p => p.flag85).length,
-      bigPos: pairs.filter(p => p.I.lo > 1).length, bigNeg: pairs.filter(p => p.I.hi < -1).length },
+      bigPos: pairs.filter(p => p.I.lo > 1).length, bigNeg: pairs.filter(p => p.I.hi < -1).length,
+      sdObserved: vI == null ? null : C.r2(Math.sqrt(vI)), sdNoise: vS == null ? null : C.r2(Math.sqrt(vS)), sdTrue: vI == null ? null : C.r2(Math.sqrt(Math.max(0, vI - vS))),
+      centredWithin1: share(p => Math.abs(p.I.m - mI) <= 1), slopeOnSize: sxx ? C.r2(sxy / sxx) : null, corrOnSize: sxx && syy ? C.r2(sxy / Math.sqrt(sxx * syy)) : null,
+      bodyClash: share(p => p.aW.indexOf(Math.max(...p.aW)) !== p.bW.indexOf(Math.max(...p.bW))), placebo2: plc2 },
+    baseWinRate: bs.map((b, j) => C.r2(wr(base[j]))),
     phases: P.phases.map(ph => ({ id: ph.id, name: ph.name, planned: ph.pairs.length, measured: pairs.filter(p => p.phase === ph.id).length })), skills, pairs };
   fs.mkdirSync(OUT, { recursive: true }); fs.writeFileSync(path.join(OUT, 'additivity-2026-11-08.json'), JSON.stringify(out, null, 1) + '\n');
   fs.writeFileSync(path.join(OUT, 'additivity-2026-11-08.md'), md(out)); console.log(md(out)); console.log('-> docs/balance/bal31/additivity-2026-11-08.{json,md}');
@@ -168,7 +184,13 @@ function md(out) {
     `| Mean interaction (signed) | ${t.meanI} |`,
     `| Mean abs interaction / noise floor (what pure noise would give) | ${t.meanAbsI} / ${t.noiseFloor} |`,
     `| Pairs clearly synergistic (95% low end > +1) / clearly clashing (high end < -1) | ${t.bigPos} / ${t.bigNeg} |`,
-    `| Price gap (best body of the pair - best body of A - best body of B): within ±1 / mean / mean abs | ${pct(t.gapWithin1)} / ${t.meanGap} / ${t.meanAbsGap} |`, '');
+    `| Spread of interactions: observed SD / sampling noise SD / true SD (observed less noise) | ${t.sdObserved} / ${t.sdNoise} / ${t.sdTrue} |`,
+    `| Pairs within ±1 of the mean interaction (a flat per-extra-skill term taken out) | ${pct(t.centredWithin1)} |`,
+    `| Interaction against the pair's size (worth A + worth B): slope / correlation | ${t.slopeOnSize} / ${t.corrOnSize} |`,
+    `| Two placebo keys against twice one (the CPU's key count; 0 = the cancel holds) | ${ci(t.placebo2)} |`,
+    `| Price gap (best body of the pair - best body of A - best body of B): within ±1 / mean / mean abs | ${pct(t.gapWithin1)} / ${t.meanGap} / ${t.meanAbsGap} |`,
+    `| Pairs whose two skills want different bodies (Attack 1 vs most) | ${pct(t.bodyClash)} |`, '',
+    `Base win rate on the bodies: ${out.bodies.map((b, j) => b + ' ' + Math.round(out.baseWinRate[j] * 100) + '%').join(', ')}.`, '');
   L.push(`Phases: ${out.phases.map(p => `${p.id} ${p.name} ${p.measured}/${p.planned}`).join('; ')}.`, '');
   const worst = out.pairs.slice().sort((a, b) => Math.abs(b.I.m) - Math.abs(a.I.m)).slice(0, 20);
   L.push('## Worst-interacting pairs', '', '| Pair | Interaction (95%) | A + B -> pair, best body | Per body (Attack 1 / most) | Price gap |', '|---|---|---|---|---|');
