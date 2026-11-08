@@ -1,0 +1,85 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "2-A-5",
+ "map": "mp",
+ "mapName": "Lilypad Reach",
+ "kind": "elite",
+ "name": "Croaker Chorus",
+ "band": {
+  "lo": 58.00000000000001,
+  "hi": 74,
+  "target": 66
+ },
+ "list": [
+  "beaver-lumberjack",
+  "box-turtle",
+  "duckling",
+  "lodge-engineer",
+  "marsh-harrier",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "pond-algae",
+  "pond-duck",
+  "shoal-shark",
+  "victoria-regia",
+  "water-shrew",
+  "water-vole"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "lodge-engineer"
+ ],
+ "namesake": false,
+ "shieldRule": 9,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "duckling": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 3,
+   "pond-algae": 1,
+   "pond-duck": 1,
+   "water-vole": 1,
+   "box-turtle": 1
+  },
+  "leaders": [
+   "lodge-engineer"
+  ],
+  "shieldOverride": null,
+  "win200": 51,
+  "shown": 5
+ },
+ "pick": {
+  "deck": {
+   "duckling": 1,
+   "lodge-engineer": 4,
+   "muskrat-reedgatherer": 1,
+   "old-sturgeon": 3,
+   "pond-algae": 1,
+   "pond-duck": 1,
+   "water-vole": 1,
+   "box-turtle": 1
+  },
+  "leaders": [
+   "lodge-engineer"
+  ],
+  "shieldOverride": null,
+  "win200": 51,
+  "shown": 5,
+  "tune60": 65
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 65,
+   "hpLost": 58.6,
+   "rounds": 12.05
+  }
+ ],
+ "trials": 1,
+ "sec": 24
+}

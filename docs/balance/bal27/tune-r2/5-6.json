@@ -1,0 +1,83 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "5-6",
+ "map": "mw",
+ "mapName": "Gatorback Swamp",
+ "kind": "elite",
+ "name": "Behemoth Bog",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fen-mink",
+  "fire-ant-raft",
+  "grass-viper",
+  "nutria-reedcutter",
+  "swamp-alligator"
+ ],
+ "firstClear": [
+  "fen-mink"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "fen-mink"
+ ],
+ "namesake": false,
+ "shieldRule": 8,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "constrictor-coil": 5,
+   "fen-mink": 4,
+   "grass-viper": 1,
+   "bog-leech": 1,
+   "swamp-alligator": 2,
+   "cypress-root-lurker": 2,
+   "fire-ant-raft": 2
+  },
+  "leaders": [
+   "fen-mink"
+  ],
+  "shieldOverride": null,
+  "win200": 58.5,
+  "shown": 4
+ },
+ "pick": {
+  "deck": {
+   "constrictor-coil": 5,
+   "fen-mink": 4,
+   "grass-viper": 1,
+   "bog-leech": 1,
+   "swamp-alligator": 2,
+   "cypress-root-lurker": 2,
+   "fire-ant-raft": 2
+  },
+  "leaders": [
+   "fen-mink"
+  ],
+  "shieldOverride": null,
+  "win200": 58.5,
+  "shown": 4,
+  "tune60": 61.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 61.7,
+   "hpLost": 63.7,
+   "rounds": 9.13
+  }
+ ],
+ "trials": 1,
+ "sec": 5
+}

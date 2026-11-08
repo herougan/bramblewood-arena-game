@@ -1,0 +1,80 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "8-8",
+ "map": "m4",
+ "mapName": "Caves & Alcoves",
+ "kind": "miniboss",
+ "name": "The Stalactite Warden",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "blind-cave-fish",
+  "cave-olm",
+  "echo-screecher",
+  "gallery-orb-weaver",
+  "gull-thief",
+  "hollow-belly-rat",
+  "malachite-golem",
+  "stalactite-golem",
+  "sulfur-cinder-moth"
+ ],
+ "firstClear": [
+  "echo-screecher",
+  "echo-matriarch"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "stalactite-golem"
+ ],
+ "namesake": true,
+ "shieldRule": 16,
+ "shieldOverride": 1,
+ "before": {
+  "deck": {
+   "stalactite-golem": 4,
+   "echo-screecher": 3,
+   "blind-cave-fish": 4,
+   "gull-thief": 1,
+   "hollow-belly-rat": 1,
+   "gallery-orb-weaver": 2
+  },
+  "leaders": [
+   "stalactite-golem"
+  ],
+  "shieldOverride": 1,
+  "win200": 53.5,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "stalactite-golem": 4,
+   "echo-screecher": 3,
+   "blind-cave-fish": 4,
+   "gull-thief": 1,
+   "hollow-belly-rat": 1,
+   "gallery-orb-weaver": 2
+  },
+  "leaders": [
+   "stalactite-golem"
+  ],
+  "shieldOverride": 1,
+  "win200": 53.5,
+  "shown": 1,
+  "tune60": 38.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 38.3,
+   "hpLost": 71.8,
+   "rounds": 9.88
+  }
+ ],
+ "trials": 1,
+ "sec": 12
+}

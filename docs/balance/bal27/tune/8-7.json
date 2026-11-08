@@ -1,0 +1,85 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "8-7",
+ "map": "m4",
+ "mapName": "Caves & Alcoves",
+ "kind": "elite",
+ "name": "The Roost Above",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "blind-cave-fish",
+  "cave-olm",
+  "gallery-orb-weaver",
+  "giant-cave-huntsman",
+  "hollow-belly-rat",
+  "malachite-golem",
+  "stalactite-golem",
+  "sulfur-cinder-moth"
+ ],
+ "firstClear": [
+  "giant-cave-huntsman"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "malachite-golem"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": 6,
+ "before": {
+  "deck": {
+   "giant-cave-huntsman": 1,
+   "hollow-belly-rat": 1,
+   "malachite-golem": 1,
+   "blind-cave-fish": 5,
+   "stalactite-golem": 4,
+   "gallery-orb-weaver": 2
+  },
+  "leaders": [
+   "malachite-golem"
+  ],
+  "shieldOverride": 6,
+  "win200": 66,
+  "shown": 3
+ },
+ "pick": {
+  "deck": {
+   "giant-cave-huntsman": 1,
+   "hollow-belly-rat": 1,
+   "malachite-golem": 1,
+   "blind-cave-fish": 5,
+   "gallery-orb-weaver": 2,
+   "cave-olm": 4
+  },
+  "leaders": [
+   "malachite-golem"
+  ],
+  "shieldOverride": 6,
+  "win200": 66,
+  "shown": 3,
+  "tune60": 63.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 66.7,
+   "hpLost": 60.1,
+   "rounds": 9.68
+  },
+  {
+   "move": "stalactite-golem -4 -> cave-olm",
+   "win": 63.3,
+   "hpLost": 60.9,
+   "rounds": 9.17,
+   "trials": 48
+  }
+ ],
+ "trials": 53,
+ "sec": 71
+}

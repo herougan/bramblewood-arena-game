@@ -1,0 +1,108 @@
+[
+ {
+  "code": "2-2",
+  "map": "mb",
+  "mapName": "Pebble Beach",
+  "kind": "skirmish",
+  "target": 80,
+  "before200": 66,
+  "after200": 66,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 66,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "5-1",
+  "map": "mw",
+  "mapName": "Gatorback Swamp",
+  "kind": "skirmish",
+  "target": 90,
+  "before200": 81.5,
+  "after200": 90.5,
+  "keep": true,
+  "moves": [
+   "fire-ant-raft -2 -> crocodile-ambusher"
+  ],
+  "tried": [
+   "fire-ant-raft -2 -> crocodile-ambusher"
+  ],
+  "pick200": 90.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "5-2",
+  "map": "mw",
+  "mapName": "Gatorback Swamp",
+  "kind": "skirmish",
+  "target": 84,
+  "before200": 78,
+  "after200": 78,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 78,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "5-4",
+  "map": "mw",
+  "mapName": "Gatorback Swamp",
+  "kind": "skirmish",
+  "target": 72,
+  "before200": 64.5,
+  "after200": 64.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 64.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "5-5",
+  "map": "mw",
+  "mapName": "Gatorback Swamp",
+  "kind": "elite",
+  "target": 66,
+  "before200": 46.5,
+  "after200": 46.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 46.5,
+  "k14": [
+   0,
+   0
+  ]
+ },
+ {
+  "code": "5-6",
+  "map": "mw",
+  "mapName": "Gatorback Swamp",
+  "kind": "elite",
+  "target": 60,
+  "before200": 58.5,
+  "after200": 58.5,
+  "keep": false,
+  "moves": [],
+  "tried": [],
+  "pick200": 58.5,
+  "k14": [
+   0,
+   0
+  ]
+ }
+]

@@ -1,0 +1,82 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "2-A-1",
+ "map": "mp",
+ "mapName": "Lilypad Reach",
+ "kind": "skirmish",
+ "name": "Lily Hop",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "alley-cat",
+  "beaver-lumberjack",
+  "box-turtle",
+  "lodge-engineer",
+  "marsh-harrier",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "pond-algae",
+  "shoal-shark",
+  "victoria-regia",
+  "water-shrew",
+  "water-vole"
+ ],
+ "firstClear": [],
+ "k14Before": 2,
+ "leaders": [
+  "victoria-regia"
+ ],
+ "namesake": false,
+ "shieldRule": 6,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "alley-cat": 1,
+   "box-turtle": 1,
+   "muskrat-reedgatherer": 1,
+   "pond-algae": 1,
+   "victoria-regia": 4,
+   "water-shrew": 1,
+   "water-vole": 4
+  },
+  "leaders": [
+   "victoria-regia"
+  ],
+  "shieldOverride": null,
+  "win200": 83,
+  "shown": 3
+ },
+ "pick": {
+  "deck": {
+   "alley-cat": 1,
+   "box-turtle": 1,
+   "muskrat-reedgatherer": 1,
+   "pond-algae": 1,
+   "victoria-regia": 4,
+   "water-shrew": 1,
+   "water-vole": 4
+  },
+  "leaders": [
+   "victoria-regia"
+  ],
+  "shieldOverride": null,
+  "win200": 83,
+  "shown": 3,
+  "tune60": 91.7
+ },
+ "keep": false,
+ "k14After": 2,
+ "trail": [
+  {
+   "move": "start",
+   "win": 91.7,
+   "hpLost": 36.3,
+   "rounds": 12.03
+  }
+ ],
+ "trials": 1,
+ "sec": 14
+}

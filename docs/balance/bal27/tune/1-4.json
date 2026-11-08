@@ -1,0 +1,75 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "1-4",
+ "map": "mf",
+ "mapName": "Thistlewood",
+ "kind": "skirmish",
+ "name": "Sapper Hedge",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "ant-scout",
+  "bee-forager",
+  "bramble-sprout",
+  "chipmunk-cavalry",
+  "cottontail",
+  "dormouse",
+  "field-mouse",
+  "field-vole",
+  "hedgerow-shrew",
+  "honey-bee",
+  "meadow-rabbit",
+  "slow-worm",
+  "woodcock-lookout"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [],
+ "namesake": false,
+ "shieldRule": 1,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "field-mouse": 4,
+   "field-vole": 5,
+   "bramble-sprout": 5,
+   "cottontail": 1,
+   "hedgerow-shrew": 4,
+   "chipmunk-cavalry": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 93.5,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "field-mouse": 4,
+   "field-vole": 5,
+   "bramble-sprout": 5,
+   "cottontail": 1,
+   "hedgerow-shrew": 4,
+   "chipmunk-cavalry": 1
+  },
+  "leaders": [],
+  "shieldOverride": null,
+  "win200": 93.5,
+  "shown": 1,
+  "tune60": 90
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 90,
+   "hpLost": 25.3,
+   "rounds": 6.23
+  }
+ ],
+ "trials": 25,
+ "sec": 34
+}

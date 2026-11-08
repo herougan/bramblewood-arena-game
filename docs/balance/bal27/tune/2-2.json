@@ -1,0 +1,79 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "2-2",
+ "map": "mb",
+ "mapName": "Pebble Beach",
+ "kind": "skirmish",
+ "name": "Gull Gang",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "gull-thief",
+  "moon-jelly",
+  "open-ocean-hermit-crab",
+  "oystercatcher",
+  "pincushion-urchin",
+  "rock-pool-starfish"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "open-ocean-hermit-crab"
+ ],
+ "namesake": false,
+ "shieldRule": 2,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "gull-thief": 5,
+   "pincushion-urchin": 5,
+   "open-ocean-hermit-crab": 5,
+   "rock-pool-starfish": 2,
+   "moon-jelly": 3
+  },
+  "leaders": [
+   "open-ocean-hermit-crab"
+  ],
+  "shieldOverride": null,
+  "win200": 62,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "gull-thief": 5,
+   "pincushion-urchin": 5,
+   "open-ocean-hermit-crab": 5,
+   "rock-pool-starfish": 1,
+   "moon-jelly": 4
+  },
+  "leaders": [
+   "open-ocean-hermit-crab"
+  ],
+  "shieldOverride": null,
+  "win200": 66,
+  "shown": 1,
+  "tune60": 76.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 71.7,
+   "hpLost": 42.8,
+   "rounds": 7.12
+  },
+  {
+   "move": "rock-pool-starfish -1 -> moon-jelly",
+   "win": 76.7,
+   "hpLost": 41.4,
+   "rounds": 7.23,
+   "trials": 31
+  }
+ ],
+ "trials": 36,
+ "sec": 26
+}

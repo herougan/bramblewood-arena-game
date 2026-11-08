@@ -1,0 +1,99 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "5-7",
+ "map": "mw",
+ "mapName": "Gatorback Swamp",
+ "kind": "boss",
+ "name": "Old Snapjaw",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "alligator-gar",
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fire-ant-raft",
+  "grass-viper",
+  "nutria-reedcutter",
+  "swamp-alligator"
+ ],
+ "firstClear": [
+  "old-snapjaw",
+  "alligator-gar"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "alligator-gar"
+ ],
+ "namesake": false,
+ "shieldRule": 15,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "constrictor-coil": 3,
+   "grass-viper": 3,
+   "alligator-gar": 3,
+   "bog-leech": 1,
+   "anhinga-spearbird": 3,
+   "cypress-root-lurker": 1,
+   "nutria-reedcutter": 5
+  },
+  "leaders": [
+   "alligator-gar"
+  ],
+  "shieldOverride": null,
+  "win200": 19.5,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "constrictor-coil": 3,
+   "grass-viper": 1,
+   "alligator-gar": 3,
+   "bog-leech": 1,
+   "anhinga-spearbird": 3,
+   "cypress-root-lurker": 1,
+   "nutria-reedcutter": 5,
+   "crocodile-ambusher": 2
+  },
+  "leaders": [
+   "alligator-gar"
+  ],
+  "shieldOverride": 0,
+  "win200": 42,
+  "shown": 0,
+  "tune60": 43.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 6.7,
+   "hpLost": 95.8,
+   "rounds": 10.05
+  },
+  {
+   "move": "shield 15 -> 0",
+   "win": 33.3,
+   "hpLost": 75.2,
+   "rounds": 8.87,
+   "trials": 98
+  },
+  {
+   "move": "grass-viper -2 -> crocodile-ambusher",
+   "win": 43.3,
+   "hpLost": 71.8,
+   "rounds": 8.5,
+   "trials": 94
+  }
+ ],
+ "trials": 201,
+ "sec": 169
+}

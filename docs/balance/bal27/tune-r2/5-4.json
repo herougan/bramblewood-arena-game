@@ -1,0 +1,81 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "5-4",
+ "map": "mw",
+ "mapName": "Gatorback Swamp",
+ "kind": "skirmish",
+ "name": "Snapping Reeds",
+ "band": {
+  "lo": 64,
+  "hi": 80,
+  "target": 72
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "box-turtle",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fen-mink",
+  "fire-ant-raft",
+  "grass-viper",
+  "nutria-reedcutter",
+  "swamp-alligator"
+ ],
+ "firstClear": [
+  "grass-viper"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "fen-mink"
+ ],
+ "namesake": false,
+ "shieldRule": 5,
+ "shieldOverride": 1,
+ "before": {
+  "deck": {
+   "fen-mink": 3,
+   "grass-viper": 4,
+   "cypress-root-lurker": 1,
+   "swamp-alligator": 4,
+   "nutria-reedcutter": 3,
+   "constrictor-coil": 3
+  },
+  "leaders": [
+   "fen-mink"
+  ],
+  "shieldOverride": 1,
+  "win200": 64.5,
+  "shown": 1
+ },
+ "pick": {
+  "deck": {
+   "fen-mink": 3,
+   "grass-viper": 4,
+   "cypress-root-lurker": 1,
+   "swamp-alligator": 4,
+   "nutria-reedcutter": 3,
+   "constrictor-coil": 3
+  },
+  "leaders": [
+   "fen-mink"
+  ],
+  "shieldOverride": 1,
+  "win200": 64.5,
+  "shown": 1,
+  "tune60": 73.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 73.3,
+   "hpLost": 56.2,
+   "rounds": 8.3
+  }
+ ],
+ "trials": 1,
+ "sec": 9
+}

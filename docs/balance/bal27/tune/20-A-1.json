@@ -1,0 +1,79 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "20-A-1",
+ "map": "me",
+ "mapName": "Eye of the Volcano",
+ "kind": "elite",
+ "name": "The Ash Ossuary",
+ "band": {
+  "lo": 80.2,
+  "hi": 96.2,
+  "target": 88.2
+ },
+ "list": [
+  "ash-moth",
+  "ashbone-ghoul",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pack-mule"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "ossuary-lammergeier"
+ ],
+ "namesake": true,
+ "shieldRule": 32,
+ "shieldOverride": 15,
+ "before": {
+  "deck": {
+   "cinder-skeleton": 3,
+   "ossuary-lammergeier": 1,
+   "pack-mule": 2,
+   "ashbone-ghoul": 5
+  },
+  "leaders": [
+   "ossuary-lammergeier"
+  ],
+  "shieldOverride": 15,
+  "win200": 72,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "cinder-skeleton": 2,
+   "ossuary-lammergeier": 1,
+   "pack-mule": 2,
+   "ashbone-ghoul": 5,
+   "ash-moth": 1
+  },
+  "leaders": [
+   "ossuary-lammergeier"
+  ],
+  "shieldOverride": 15,
+  "win200": 69,
+  "shown": 8,
+  "tune60": 85
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 73.3,
+   "hpLost": 57.3,
+   "rounds": 11.72
+  },
+  {
+   "move": "cinder-skeleton -1 -> ash-moth",
+   "win": 85,
+   "hpLost": 52.8,
+   "rounds": 11.8,
+   "trials": 26
+  }
+ ],
+ "trials": 31,
+ "sec": 74
+}

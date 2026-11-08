@@ -1,0 +1,81 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "11-10",
+ "map": "m10",
+ "mapName": "Eyrie Heights",
+ "kind": "miniboss",
+ "name": "The Avalanche Colossus",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "alpine-salamander",
+  "alpine-swift",
+  "chipmunk-hoarder",
+  "eyrie-warden",
+  "gannet-nestweaver",
+  "ibex-rockcaller",
+  "kittiwake-flock",
+  "mountain-hare",
+  "peak-condor",
+  "red-billed-chough",
+  "swamp-alligator"
+ ],
+ "firstClear": [
+  "ibex-rockcaller"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "red-billed-chough"
+ ],
+ "namesake": false,
+ "shieldRule": 22,
+ "shieldOverride": 21,
+ "before": {
+  "deck": {
+   "ibex-rockcaller": 1,
+   "chipmunk-hoarder": 3,
+   "alpine-swift": 5,
+   "swamp-alligator": 1,
+   "eyrie-warden": 5,
+   "peak-condor": 1
+  },
+  "leaders": [
+   "red-billed-chough"
+  ],
+  "shieldOverride": 21,
+  "win200": 53,
+  "shown": 11
+ },
+ "pick": {
+  "deck": {
+   "ibex-rockcaller": 1,
+   "chipmunk-hoarder": 3,
+   "alpine-swift": 5,
+   "swamp-alligator": 1,
+   "eyrie-warden": 5,
+   "peak-condor": 1
+  },
+  "leaders": [
+   "red-billed-chough"
+  ],
+  "shieldOverride": 21,
+  "win200": 53,
+  "shown": 11,
+  "tune60": 46.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 46.7,
+   "hpLost": 74.2,
+   "rounds": 10.13
+  }
+ ],
+ "trials": 62,
+ "sec": 131
+}

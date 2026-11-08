@@ -1,0 +1,80 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "20-A-3",
+ "map": "me",
+ "mapName": "Eye of the Volcano",
+ "kind": "elite",
+ "name": "The Lich's Kiln",
+ "band": {
+  "lo": 66.60000000000001,
+  "hi": 82.6,
+  "target": 74.6
+ },
+ "list": [
+  "ash-moth",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "obsidian-scorpion",
+  "stalactite-golem"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "obsidian-scorpion"
+ ],
+ "namesake": false,
+ "shieldRule": 32,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ash-moth": 2,
+   "ashbone-ghoul": 2,
+   "cave-warlord": 1,
+   "cinder-skeleton": 2,
+   "cinder-stoker": 1,
+   "deep-cave-troll": 1,
+   "obsidian-scorpion": 1,
+   "stalactite-golem": 1
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": null,
+  "win200": 72.5,
+  "shown": 16
+ },
+ "pick": {
+  "deck": {
+   "ash-moth": 2,
+   "ashbone-ghoul": 2,
+   "cave-warlord": 1,
+   "cinder-skeleton": 2,
+   "cinder-stoker": 1,
+   "deep-cave-troll": 1,
+   "obsidian-scorpion": 1,
+   "stalactite-golem": 1
+  },
+  "leaders": [
+   "obsidian-scorpion"
+  ],
+  "shieldOverride": null,
+  "win200": 72.5,
+  "shown": 16,
+  "tune60": 73.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 73.3,
+   "hpLost": 53.7,
+   "rounds": 10.62
+  }
+ ],
+ "trials": 1,
+ "sec": 7
+}

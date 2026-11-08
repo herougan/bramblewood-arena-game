@@ -1,0 +1,86 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "2-B-2",
+ "map": "mg",
+ "mapName": "Smugglers' Grotto",
+ "kind": "elite",
+ "name": "Smugglers' Stash",
+ "band": {
+  "lo": 67,
+  "hi": 83,
+  "target": 75
+ },
+ "list": [
+  "conch-crawler",
+  "gallery-orb-weaver",
+  "grey-seal-bull",
+  "gull-thief",
+  "open-ocean-hermit-crab",
+  "pelican-diver",
+  "pincushion-urchin",
+  "tide-pool-crab",
+  "tidepool-trapper-crab",
+  "trash-panda-trickster"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "pelican-diver"
+ ],
+ "namesake": false,
+ "shieldRule": 11,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "open-ocean-hermit-crab": 5,
+   "pelican-diver": 4,
+   "trash-panda-trickster": 4,
+   "gull-thief": 3,
+   "tidepool-trapper-crab": 1,
+   "conch-crawler": 1
+  },
+  "leaders": [
+   "pelican-diver"
+  ],
+  "shieldOverride": null,
+  "win200": 78.5,
+  "shown": 6
+ },
+ "pick": {
+  "deck": {
+   "open-ocean-hermit-crab": 5,
+   "pelican-diver": 2,
+   "trash-panda-trickster": 4,
+   "gull-thief": 3,
+   "tidepool-trapper-crab": 1,
+   "conch-crawler": 1,
+   "grey-seal-bull": 2
+  },
+  "leaders": [
+   "pelican-diver"
+  ],
+  "shieldOverride": null,
+  "win200": 80,
+  "shown": 6,
+  "tune60": 78.3
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 81.7,
+   "hpLost": 35,
+   "rounds": 8.85
+  },
+  {
+   "move": "pelican-diver -2 -> grey-seal-bull",
+   "win": 78.3,
+   "hpLost": 37.6,
+   "rounds": 9.45,
+   "trials": 79
+  }
+ ],
+ "trials": 84,
+ "sec": 122
+}

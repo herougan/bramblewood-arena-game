@@ -32,7 +32,8 @@ const bal26Lines = [...lines.entries()].filter(([, l]) => /2026-11-07 \(BAL26\)/
 ok(bal26Lines.length >= 1, 'BAL26 retuned some road fights: ' + bal26Lines.length);
 for (const [code, l] of bal26Lines) {
   const x = tune[code], f = find(code); ok(x && f, code + ': kept in a BAL26 tune file and in CONQUEST_MAPS'); if (!x || !f) continue;
-  const now = fields(l), MAP = f.m.id, mapNo = G.mapNumberOf(MAP), kind = f.n.kind || 'skirmish', was = x.before.deck, d = now.deck;
+  // 2026-11-08 (BAL27): a fight BAL27 retuned again (its line carries a BAL27 comment) is checked here on BAL26's pick; tests/bal27-2026-11-08.js checks its deck now
+  const now = fields(l), MAP = f.m.id, mapNo = G.mapNumberOf(MAP), kind = f.n.kind || 'skirmish', was = x.before.deck, d = /2026-11-08 \(BAL27\)/.test(l) ? x.pick.deck : now.deck;
   ok(mapNo != null && mapNo <= 20, code + ': on Maps 0-20');
   ok(Math.abs(x.pick.win200 - x.band.target) + 2 <= Math.abs(x.before.win200 - x.band.target), `${code}: 2+ points nearer the target at 200 games (${x.before.win200} -> ${x.pick.win200}, target ${x.band.target})`);
   ok(keyOf(d) === keyOf(x.pick.deck), code + ': the deck is the tune file\'s pick');
@@ -78,6 +79,7 @@ const PINS = {
 };
 for (const [code, p] of Object.entries(PINS)) {
   const l = lines.get(code); ok(!!l, code + ': pinned fight found'); if (!l) continue; const now = fields(l);
+  if (!/2026-11-08 \(BAL27\)/.test(l)) // 2026-11-08 (BAL27): retuned again, pinned in tests/bal27-2026-11-08.js
   ok(keyOf(now.deck) === keyOf(p.deck), `${code}: pinned deck ${JSON.stringify(p.deck)} (now ${JSON.stringify(now.deck)})`);
   if (p.leaders) ok((now.leaders ? JSON.parse(now.leaders) : null) + '' === p.leaders + '', `${code}: pinned leaders ${p.leaders}`);
   if (p.shield != null) ok(now.shield != null && +now.shield === p.shield, `${code}: pinned Shield override ${p.shield}`);

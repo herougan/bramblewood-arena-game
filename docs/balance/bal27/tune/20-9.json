@@ -1,0 +1,91 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "20-9",
+ "map": "m11",
+ "mapName": "The Sundered Peak",
+ "kind": "boss",
+ "name": "The Ancient Sloth Titan",
+ "band": {
+  "lo": 42,
+  "hi": 57.99999999999999,
+  "target": 50
+ },
+ "list": [
+  "alpine-swift",
+  "ancient-sloth-titan",
+  "apollo-butterfly",
+  "ash-cloud-condor",
+  "ashbone-ghoul",
+  "cave-warlord",
+  "cinder-skeleton",
+  "cinder-stoker",
+  "deep-cave-troll",
+  "fumarole-ibex",
+  "granite-ox-golem",
+  "magma-salamander",
+  "magma-titan",
+  "obsidian-scorpion",
+  "ossuary-lammergeier",
+  "pumice-beetle",
+  "talus-pika"
+ ],
+ "firstClear": [
+  "magma-salamander"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "ancient-sloth-titan"
+ ],
+ "namesake": true,
+ "shieldRule": 60,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "ancient-sloth-titan": 2,
+   "ashbone-ghoul": 5,
+   "ash-cloud-condor": 3,
+   "ossuary-lammergeier": 1,
+   "magma-salamander": 2,
+   "cinder-skeleton": 4,
+   "obsidian-scorpion": 1,
+   "apollo-butterfly": 1
+  },
+  "leaders": [
+   "ancient-sloth-titan"
+  ],
+  "shieldOverride": null,
+  "win200": 70,
+  "shown": 30
+ },
+ "pick": {
+  "deck": {
+   "ancient-sloth-titan": 2,
+   "ashbone-ghoul": 5,
+   "ash-cloud-condor": 3,
+   "ossuary-lammergeier": 1,
+   "magma-salamander": 2,
+   "cinder-skeleton": 4,
+   "obsidian-scorpion": 1,
+   "apollo-butterfly": 1
+  },
+  "leaders": [
+   "ancient-sloth-titan"
+  ],
+  "shieldOverride": null,
+  "win200": 70,
+  "shown": 30,
+  "tune60": 65
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 65,
+   "hpLost": 58.6,
+   "rounds": 13.13
+  }
+ ],
+ "trials": 48,
+ "sec": 87
+}

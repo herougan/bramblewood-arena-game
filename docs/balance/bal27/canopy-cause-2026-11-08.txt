@@ -1,0 +1,27 @@
+BAL27 (2026-11-08): why The Canopy (my, 14-A-*) is 53 points too hard. Map reference (Map 18 road deck at Lv 3.54, the side map's
+shieldMap 18), 40 games a cell on the road seeds (9100 + 37g), simulateReferenceFight with the node patched as named.
+Tool: tools/bal27/canopy_cause_2026_11_08.js (re-runs this table).
+
+Levels are not the cause: the enemy is Lv 4 and you are Lv 3.54, exactly as on The Glass Dunes (md, Map 18), whose first fight the
+reference wins 100% (20 games). The Canopy differs from md in three things:
+  1. its bramble: side maps defend their parent's castle (nodeCastleId: MAP_CASTLE[parent]), so The Canopy has Savanna Reaches'
+     Acacia Kraal (Lumber 1, first unit +3 Attack) at Lv 0 / 3 / 8 (skirmish / elite / boss);
+  2. its field: High Canopy (Flying grounded: the Map 18 deck has 5 flyers, Echo Screecher x4 and Golden Eagle Diver) + Spring Rain
+     (every unit heals 2 a round, so the list's cheap high-Health walls barely go down to 2-3 Attack swings);
+  3. its list: Hoopoe Herald 2/12 for 0 Lumber (x5 in 14-A-1 / 14-A-3 / 14-A-5), Hercules Beetle 2/17, Jaguar Stalker 1/15,
+     Pangolin Roller 5/5 Sturdy, Weaver Bird 3/6 Tangle.
+
+fight (target)            as is  plain bramble  no High Canopy  no Rain  no fields  plain + no fields  plain + no fields + Shield 0
+14-A-1 Dart Frogs (90)      0.0      0.0            0.0          2.5       7.5         27.5                37.5
+14-A-2 Strangler Arch (80) 30.0     80.0           37.5         25.0      27.5         52.5                 -
+14-A-3 Sloth Boughs (70)   27.5     57.5           22.5         20.0      27.5         72.5                 -   (Shield already 0)
+14-A-4 Drum Circle (60)    15.0     35.0           17.5         22.5      22.5         37.5                45.0
+14-A-5 Jaguar's Path (40)   0.0     10.0            2.5          2.5       5.0         32.5                57.5
+plain bramble + no Rain: 14-A-1 15.0, 14-A-4 37.5, 14-A-5 25.0; plain + no High Canopy: 14-A-1 2.5, 14-A-4 47.5, 14-A-5 12.5.
+Acacia Kraal with Shield 0: 14-A-1 0.0, 14-A-4 17.5, 14-A-5 0.0 (the Shield is not the wall).
+A deck of 20 Cottontails (3/1, no skill) in 14-A-1's place: the reference wins 40% (20 games) in The Canopy, 95% in 18-1's place on md.
+
+Reading: the Acacia Kraal is the largest single factor (14-A-2 +50, 14-A-3 +30, 14-A-4 +20 points); with a plain bramble the fields
+cost another 15-30 points on 14-A-1 / 14-A-3 / 14-A-5 (Spring Rain the larger part), and 14-A-1 stays 50+ points too hard even then
+(its list: Hoopoe Herald x5, Pangolin Roller x3 at Lv 4). The BAL27 tuner (deck, leader, Shield from the fight's own list) found no
+move 2+ points nearer on any of the five fights (docs/balance/bal27/tune/14-A-*.json). Decision BAL27-1.

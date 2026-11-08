@@ -1,0 +1,75 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "5-A-2",
+ "map": "ms",
+ "mapName": "The Sunken Grove",
+ "kind": "skirmish",
+ "name": "Gator Hollow",
+ "band": {
+  "lo": 57.00000000000001,
+  "hi": 73,
+  "target": 65
+ },
+ "list": [
+  "anhinga-spearbird",
+  "bog-leech",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "mangrove-mudskipper",
+  "nutria-reedcutter",
+  "snapper-hatchling",
+  "swamp-alligator",
+  "venomlord-serpent"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "bog-leech"
+ ],
+ "namesake": false,
+ "shieldRule": 13,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "mangrove-mudskipper": 1,
+   "snapper-hatchling": 3,
+   "bog-leech": 4,
+   "nutria-reedcutter": 5,
+   "venomlord-serpent": 1
+  },
+  "leaders": [
+   "bog-leech"
+  ],
+  "shieldOverride": null,
+  "win200": 74.5,
+  "shown": 7
+ },
+ "pick": {
+  "deck": {
+   "mangrove-mudskipper": 1,
+   "snapper-hatchling": 3,
+   "bog-leech": 4,
+   "nutria-reedcutter": 5,
+   "venomlord-serpent": 1
+  },
+  "leaders": [
+   "bog-leech"
+  ],
+  "shieldOverride": null,
+  "win200": 74.5,
+  "shown": 7,
+  "tune60": 70
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 70,
+   "hpLost": 64,
+   "rounds": 12.28
+  }
+ ],
+ "trials": 1,
+ "sec": 12
+}

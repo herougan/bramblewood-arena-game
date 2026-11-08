@@ -1,0 +1,84 @@
+{
+ "about": "BAL27 road retune (tools/bal27/road_tune_2026_11_08.js)",
+ "code": "11-8",
+ "map": "m10",
+ "mapName": "Eyrie Heights",
+ "kind": "elite",
+ "name": "Summit Approach",
+ "band": {
+  "lo": 55.800000000000004,
+  "hi": 71.8,
+  "target": 63.800000000000004
+ },
+ "list": [
+  "alpine-salamander",
+  "alpine-swift",
+  "chipmunk-hoarder",
+  "eyrie-warden",
+  "gannet-nestweaver",
+  "kittiwake-flock",
+  "mountain-hare",
+  "peak-condor",
+  "red-billed-chough"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "gannet-nestweaver"
+ ],
+ "namesake": false,
+ "shieldRule": 17,
+ "shieldOverride": 16,
+ "before": {
+  "deck": {
+   "chipmunk-hoarder": 4,
+   "eyrie-warden": 4,
+   "mountain-hare": 2,
+   "alpine-salamander": 1,
+   "alpine-swift": 2,
+   "peak-condor": 1
+  },
+  "leaders": [
+   "gannet-nestweaver"
+  ],
+  "shieldOverride": 16,
+  "win200": 73,
+  "shown": 8
+ },
+ "pick": {
+  "deck": {
+   "chipmunk-hoarder": 3,
+   "eyrie-warden": 4,
+   "mountain-hare": 3,
+   "alpine-salamander": 1,
+   "alpine-swift": 2,
+   "peak-condor": 1
+  },
+  "leaders": [
+   "gannet-nestweaver"
+  ],
+  "shieldOverride": 16,
+  "win200": 70,
+  "shown": 8,
+  "tune60": 66.7
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 71.7,
+   "hpLost": 51.7,
+   "rounds": 9.87
+  },
+  {
+   "move": "chipmunk-hoarder -1 -> mountain-hare",
+   "win": 66.7,
+   "hpLost": 53.8,
+   "rounds": 9.67,
+   "trials": 58
+  }
+ ],
+ "trials": 63,
+ "sec": 82
+}
