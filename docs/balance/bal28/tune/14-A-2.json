@@ -1,0 +1,91 @@
+{
+ "about": "BAL28 road retune (tools/bal28/road_tune_2026_11_08.js)",
+ "code": "14-A-2",
+ "map": "my",
+ "mapName": "The Canopy",
+ "kind": "skirmish",
+ "name": "Strangler Arch",
+ "band": {
+  "lo": 72.00000000000001,
+  "hi": 88,
+  "target": 80
+ },
+ "list": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "hoopoe-herald",
+  "leafcutter-gardener",
+  "pangolin-roller",
+  "proboscis-monkey",
+  "redwood-woodpecker",
+  "vampire-bat",
+  "weaver-bird"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "vampire-bat"
+ ],
+ "namesake": false,
+ "shieldRule": 18,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "vampire-bat": 2,
+   "weaver-bird": 5,
+   "camouflage-frog": 1,
+   "proboscis-monkey": 1,
+   "hoopoe-herald": 2,
+   "redwood-woodpecker": 1
+  },
+  "leaders": [
+   "vampire-bat"
+  ],
+  "shieldOverride": null,
+  "win200": 45,
+  "shown": 9
+ },
+ "pick": {
+  "deck": {
+   "vampire-bat": 2,
+   "weaver-bird": 5,
+   "camouflage-frog": 1,
+   "proboscis-monkey": 1,
+   "hoopoe-herald": 2,
+   "apollo-butterfly": 1
+  },
+  "leaders": [
+   "vampire-bat"
+  ],
+  "shieldOverride": 9,
+  "win200": 45,
+  "shown": 5,
+  "tune60": 51.7
+ },
+ "keep": false,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 40,
+   "hpLost": 81.7,
+   "rounds": 11.72
+  },
+  {
+   "move": "redwood-woodpecker -1 -> apollo-butterfly",
+   "win": 48.3,
+   "hpLost": 73.8,
+   "rounds": 11.88,
+   "trials": 23
+  },
+  {
+   "move": "shield 18 -> 9",
+   "win": 51.7,
+   "hpLost": 70.8,
+   "rounds": 11.4,
+   "trials": 23
+  }
+ ],
+ "trials": 74,
+ "sec": 117
+}

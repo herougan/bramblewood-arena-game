@@ -1,0 +1,100 @@
+{
+ "about": "BAL28 road retune (tools/bal28/road_tune_2026_11_08.js)",
+ "code": "14-A-4",
+ "map": "my",
+ "mapName": "The Canopy",
+ "kind": "elite",
+ "name": "Drum Circle",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "hercules-beetle",
+  "hoopoe-herald",
+  "jaguar-stalker",
+  "leafcutter-gardener",
+  "pangolin-roller",
+  "proboscis-monkey",
+  "redwood-woodpecker",
+  "weaver-bird"
+ ],
+ "firstClear": [
+  "hercules-beetle"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "vampire-bat"
+ ],
+ "namesake": false,
+ "shieldRule": 27,
+ "shieldOverride": null,
+ "before": {
+  "deck": {
+   "apollo-butterfly": 1,
+   "hercules-beetle": 3,
+   "hoopoe-herald": 3,
+   "jaguar-stalker": 3,
+   "pangolin-roller": 3,
+   "proboscis-monkey": 1,
+   "redwood-woodpecker": 1,
+   "camouflage-frog": 1,
+   "weaver-bird": 1
+  },
+  "leaders": [
+   "vampire-bat"
+  ],
+  "shieldOverride": null,
+  "win200": 6,
+  "shown": 14
+ },
+ "pick": {
+  "deck": {
+   "apollo-butterfly": 1,
+   "hercules-beetle": 1,
+   "hoopoe-herald": 3,
+   "jaguar-stalker": 3,
+   "pangolin-roller": 3,
+   "proboscis-monkey": 1,
+   "redwood-woodpecker": 1,
+   "camouflage-frog": 1,
+   "weaver-bird": 3
+  },
+  "leaders": [
+   "vampire-bat"
+  ],
+  "shieldOverride": 6,
+  "win200": 12,
+  "shown": 3,
+  "tune60": 18.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 5,
+   "hpLost": 97.6,
+   "rounds": 11.1
+  },
+  {
+   "move": "shield 27 -> 6",
+   "win": 13.3,
+   "hpLost": 94.6,
+   "rounds": 10.98,
+   "trials": 42
+  },
+  {
+   "move": "hercules-beetle -2 -> weaver-bird",
+   "win": 18.3,
+   "hpLost": 91,
+   "rounds": 11.17,
+   "trials": 42
+  }
+ ],
+ "trials": 134,
+ "sec": 154
+}

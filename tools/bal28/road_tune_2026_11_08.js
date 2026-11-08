@@ -175,3 +175,4 @@ if (CMD === 'run') {
   const out = path.join(ROOT, 'docs', 'balance', 'bal28', arg('--report', 'tune-2026-11-08.json')); fs.writeFileSync(out, JSON.stringify(rows, null, 1) + '\n');
   rows.forEach(x => console.log(x.code.padEnd(8), 't', x.target, x.before200, '->', x.after200, x.keep ? 'KEEP' : '', x.moves.join('; ')));
 }
+module.exports = { setup, measure, nodeOf }; // 2026-11-08 (BAL28): tools/bal28/canopy_space_2026_11_08.js walks a fight's whole legal space with these rules
