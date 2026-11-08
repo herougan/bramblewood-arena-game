@@ -1,0 +1,4235 @@
+{
+ "_about": "BAL29 (2026-11-08): skill re-price proposal from the BAL23 ladder (game e538c9f45c68, before ENG35-37 / CONTENT18) and its dry-run knock-on on the Maps 0-20 cards (cards as of this commit). Nothing applied. Built by node tools/bal29/reprice_2026_11_08.js.",
+ "ladder": {
+  "file": "docs/balance/skill-ladder/summary-2026-11-07.json",
+  "fingerprint": "e538c9f45c68",
+  "games": 400
+ },
+ "rule": "proposed = mean over L1/L5 of the ladder mean; numbered: value x N^pow fit",
+ "skills": [
+  {
+   "key": "inspiring",
+   "group": "A",
+   "why": "canon; mean 3.9 / 6.2 / 7.3 at N 1-3, best 2x that",
+   "cards": 3,
+   "ladderCards": 3,
+   "entry": {
+    "scale": "n",
+    "value": 3.96,
+    "pow": 0.576
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 3,
+     "mean": 3.9,
+     "best": 8.65,
+     "proposed": 3.96
+    },
+    {
+     "n": 2,
+     "old": 3.86,
+     "mean": 6.16,
+     "best": 13.28,
+     "proposed": 5.9
+    },
+    {
+     "n": 3,
+     "old": 4.48,
+     "mean": 7.26,
+     "best": 15.5,
+     "proposed": 7.46
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "delivery",
+   "group": "A",
+   "why": "theoretical price (4-round rule), never measured; mean +2.6 to +3.1 a step (x lumberHomeMult still applies)",
+   "cards": 7,
+   "ladderCards": 5,
+   "entry": {
+    "scale": "n",
+    "value": 5.25,
+    "pow": 0.456
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 2.59,
+     "mean": 5.2,
+     "best": 8.74,
+     "proposed": 5.25
+    },
+    {
+     "n": 2,
+     "old": 4.24,
+     "mean": 7.38,
+     "best": 12.32,
+     "proposed": 7.2
+    },
+    {
+     "n": 3,
+     "old": 5.65,
+     "mean": 8.53,
+     "best": 14.13,
+     "proposed": 8.66
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "pickpocket",
+   "group": "A",
+   "why": "flat in N (it steals what is there): 5.1-5.3, price 1 / 2",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 5.13,
+    "pow": 0.044
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 1,
+     "mean": 5.13,
+     "best": 10.56,
+     "proposed": 5.13
+    },
+    {
+     "n": 2,
+     "old": 2,
+     "mean": 5.29,
+     "best": 10.68,
+     "proposed": 5.29
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "almanac",
+   "group": "A",
+   "why": "N is a threshold (cards drawn): worth falls 7.7 -> 5.8 with N, price flat 4",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 7.95,
+    "pow": -0.203
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 4,
+     "mean": 7.73,
+     "best": 13.02,
+     "proposed": 7.95
+    },
+    {
+     "n": 2,
+     "old": 4,
+     "mean": 7.23,
+     "best": 12.25,
+     "proposed": 6.91
+    },
+    {
+     "n": 3,
+     "old": 4,
+     "mean": 6.49,
+     "best": 11.49,
+     "proposed": 6.36
+    },
+    {
+     "n": 4,
+     "old": 4,
+     "mean": 5.76,
+     "best": 10.6,
+     "proposed": 6
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "fork",
+   "group": "A",
+   "why": "canon 3.89, reads 4.92 [4.2, 5.7] mean at both levels",
+   "cards": 3,
+   "ladderCards": 2,
+   "entry": {
+    "scale": "fixed",
+    "value": 4.95
+   },
+   "at": [
+    {
+     "n": true,
+     "old": 3.89,
+     "mean": 4.93,
+     "best": 5.77,
+     "proposed": 4.95
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "twinStrike",
+   "group": "A",
+   "why": "7.73 mean, best 8.36: body-independent, so clear",
+   "cards": 2,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "fixed",
+    "value": 7.75
+   },
+   "at": [
+    {
+     "n": true,
+     "old": 6.38,
+     "mean": 7.73,
+     "best": 8.36,
+     "proposed": 7.75
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "bulwark",
+   "group": "A",
+   "why": "ENG33 Log Walls (before the measure): 6.2 / 8.5 vs 3.5 / 7",
+   "cards": 2,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 6.16,
+    "pow": 0.47
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 3.5,
+     "mean": 6.16,
+     "best": 10.27,
+     "proposed": 6.16
+    },
+    {
+     "n": 2,
+     "old": 7,
+     "mean": 8.53,
+     "best": 12.42,
+     "proposed": 8.53
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "fastForward",
+   "group": "A",
+   "why": "4.2 / 7.4 vs 3.0 / 6.0",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 4.24,
+    "pow": 0.802
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 3.02,
+     "mean": 4.24,
+     "best": 7.93,
+     "proposed": 4.24
+    },
+    {
+     "n": 2,
+     "old": 6.04,
+     "mean": 7.39,
+     "best": 12.84,
+     "proposed": 7.39
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "lumberjack",
+   "group": "A",
+   "why": "CONDITIONAL (needs Lumber cards): reads high even without them, so a raise is allowed",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "fixed",
+    "value": 4.85
+   },
+   "at": [
+    {
+     "n": true,
+     "old": 3.29,
+     "mean": 4.85,
+     "best": 8.47,
+     "proposed": 4.85
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "repair",
+   "group": "A",
+   "why": "flat ~2.9 (mends the bramble), price 0.5 / 1",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 2.93,
+    "pow": 0.02
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 0.5,
+     "mean": 2.93,
+     "best": 4.67,
+     "proposed": 2.93
+    },
+    {
+     "n": 2,
+     "old": 1,
+     "mean": 2.97,
+     "best": 4.76,
+     "proposed": 2.97
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "skitter",
+   "group": "A",
+   "why": "Haste x 0.56 by logic (1.44); reads 3.5 mean",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "fixed",
+    "value": 3.5
+   },
+   "at": [
+    {
+     "n": true,
+     "old": 1.44,
+     "mean": 3.52,
+     "best": 3.93,
+     "proposed": 3.5
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "invisible",
+   "group": "A",
+   "why": "1.0 / 1.9 / 2.0 vs 0.48 / 0.96 / 0.96",
+   "cards": 2,
+   "ladderCards": 2,
+   "entry": {
+    "scale": "n",
+    "value": 1.05,
+    "pow": 0.645
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 0.48,
+     "mean": 1,
+     "best": 2.4,
+     "proposed": 1.05
+    },
+    {
+     "n": 2,
+     "old": 0.96,
+     "mean": 1.89,
+     "best": 4.69,
+     "proposed": 1.64
+    },
+    {
+     "n": 3,
+     "old": 0.96,
+     "mean": 1.96,
+     "best": 4.78,
+     "proposed": 2.13
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "overwhelm",
+   "group": "A",
+   "why": "1.03 vs 0.52",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "fixed",
+    "value": 1.05
+   },
+   "at": [
+    {
+     "n": true,
+     "old": 0.52,
+     "mean": 1.03,
+     "best": 1.53,
+     "proposed": 1.05
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "thorns",
+   "group": "A",
+   "why": "N 2-3 clear, N 1 and 4 inside; +0.3 to +1.0",
+   "cards": 8,
+   "ladderCards": 5,
+   "entry": {
+    "scale": "n",
+    "value": 3.22,
+    "pow": 0.658
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 2.83,
+     "mean": 3.16,
+     "best": 5.6,
+     "proposed": 3.22
+    },
+    {
+     "n": 2,
+     "old": 4.48,
+     "mean": 5.21,
+     "best": 9,
+     "proposed": 5.08
+    },
+    {
+     "n": 3,
+     "old": 5.86,
+     "mean": 6.82,
+     "best": 11.86,
+     "proposed": 6.63
+    },
+    {
+     "n": 4,
+     "old": 7.09,
+     "mean": 7.74,
+     "best": 13.06,
+     "proposed": 8.02
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "key": "scar",
+   "group": "A",
+   "why": "half-scale step: N 1 and 3 under, N 2 fair",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 2.45,
+    "pow": 0.478
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 1.69,
+     "mean": 2.42,
+     "best": 5.94,
+     "proposed": 2.45
+    },
+    {
+     "n": 2,
+     "old": 3.38,
+     "mean": 3.51,
+     "best": 9.16,
+     "proposed": 3.41
+    },
+    {
+     "n": 3,
+     "old": 3.38,
+     "mean": 4.06,
+     "best": 10.44,
+     "proposed": 4.14
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "key": "scare",
+   "group": "A",
+   "why": "half-scale step: N 1 and 3 under, N 2 fair",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 2.52,
+    "pow": 0.577
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 1.79,
+     "mean": 2.47,
+     "best": 4.19,
+     "proposed": 2.52
+    },
+    {
+     "n": 2,
+     "old": 3.58,
+     "mean": 3.97,
+     "best": 7.23,
+     "proposed": 3.76
+    },
+    {
+     "n": 3,
+     "old": 3.58,
+     "mean": 4.59,
+     "best": 8.73,
+     "proposed": 4.75
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "key": "berserk",
+   "group": "A",
+   "why": "half-scale step: N 1 and 3 under, N 2 fair",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 2.34,
+    "pow": 0.655
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 1.8,
+     "mean": 2.33,
+     "best": 5.07,
+     "proposed": 2.34
+    },
+    {
+     "n": 2,
+     "old": 3.6,
+     "mean": 3.72,
+     "best": 7.69,
+     "proposed": 3.68
+    },
+    {
+     "n": 3,
+     "old": 3.6,
+     "mean": 4.77,
+     "best": 9.96,
+     "proposed": 4.81
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "key": "speed",
+   "group": "A",
+   "why": "N 1 2.33 vs 1.02; N 2-3 fair",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 2.33,
+    "pow": 0.068
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 1.02,
+     "mean": 2.33,
+     "best": 4.35,
+     "proposed": 2.33
+    },
+    {
+     "n": 2,
+     "old": 2.04,
+     "mean": 2.45,
+     "best": 4.79,
+     "proposed": 2.44
+    },
+    {
+     "n": 3,
+     "old": 2.04,
+     "mean": 2.51,
+     "best": 4.93,
+     "proposed": 2.51
+    }
+   ],
+   "confidence": "low"
+  },
+  {
+   "key": "avalanche",
+   "group": "A",
+   "why": "N 1 9.25 vs 6.63 (N 2 13.26 reads 9.85: re-curve)",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 9.25,
+    "pow": 0.091
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 6.63,
+     "mean": 9.25,
+     "best": 12.9,
+     "proposed": 9.25
+    },
+    {
+     "n": 2,
+     "old": 13.26,
+     "mean": 9.85,
+     "best": 14.18,
+     "proposed": 9.85
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "key": "riled",
+   "group": "A",
+   "why": "N is a threshold (damage taken): 5.0 -> 1.2 over N 1-4, price flat 2.4 (re-curve)",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 5.87,
+    "pow": -0.943
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 2.4,
+     "mean": 5.01,
+     "best": 8.33,
+     "proposed": 5.87
+    },
+    {
+     "n": 2,
+     "old": 2.4,
+     "mean": 3.92,
+     "best": 5.93,
+     "proposed": 3.05
+    },
+    {
+     "n": 3,
+     "old": 2.4,
+     "mean": 2.46,
+     "best": 4.02,
+     "proposed": 2.08
+    },
+    {
+     "n": 4,
+     "old": 2.4,
+     "mean": 1.23,
+     "best": 2.11,
+     "proposed": 1.59
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "key": "tally",
+   "group": "A",
+   "why": "threshold (enemy deaths): 4.3 -> 0.9, flat 3.28 (re-curve)",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 4.8,
+    "pow": -1.118
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 3.28,
+     "mean": 4.35,
+     "best": 6.66,
+     "proposed": 4.8
+    },
+    {
+     "n": 2,
+     "old": 3.28,
+     "mean": 2.65,
+     "best": 4.5,
+     "proposed": 2.21
+    },
+    {
+     "n": 3,
+     "old": 3.28,
+     "mean": 1.47,
+     "best": 2.81,
+     "proposed": 1.41
+    },
+    {
+     "n": 4,
+     "old": 3.28,
+     "mean": 0.9,
+     "best": 1.76,
+     "proposed": 1.02
+    }
+   ],
+   "confidence": "low"
+  },
+  {
+   "key": "scavenge",
+   "group": "A",
+   "why": "N 1 3.0 vs 2.27; N 2 3.5 vs 4.54 (re-curve)",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 2.99,
+    "pow": 0.227
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 2.27,
+     "mean": 2.99,
+     "best": 4.96,
+     "proposed": 2.99
+    },
+    {
+     "n": 2,
+     "old": 4.54,
+     "mean": 3.5,
+     "best": 5.52,
+     "proposed": 3.5
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "key": "gash",
+   "group": "A",
+   "why": "N 1-2 over, N 3-4 under (re-curve, steeper)",
+   "cards": 3,
+   "ladderCards": 3,
+   "entry": {
+    "scale": "n",
+    "value": 0.46,
+    "pow": 1.622
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 1.15,
+     "mean": 0.46,
+     "best": 0.63,
+     "proposed": 0.46
+    },
+    {
+     "n": 2,
+     "old": 2.3,
+     "mean": 1.4,
+     "best": 1.5,
+     "proposed": 1.42
+    },
+    {
+     "n": 3,
+     "old": 2.3,
+     "mean": 3.01,
+     "best": 3.63,
+     "proposed": 2.73
+    },
+    {
+     "n": 4,
+     "old": 3.45,
+     "mean": 4.14,
+     "best": 5.17,
+     "proposed": 4.36
+    }
+   ],
+   "confidence": "low"
+  },
+  {
+   "key": "recoil",
+   "group": "B",
+   "why": "a drawback priced as a skill (+1 / +2); reads -3.4 / -6.1 / -7.8 mean (best -1.5 / -3.0 / -3.2)",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": -3.46,
+    "pow": 0.765
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 1,
+     "mean": -3.41,
+     "best": -1.5,
+     "proposed": -3.46
+    },
+    {
+     "n": 2,
+     "old": 2,
+     "mean": -6.13,
+     "best": -3.02,
+     "proposed": -5.88
+    },
+    {
+     "n": 3,
+     "old": 2,
+     "mean": -7.82,
+     "best": -3.24,
+     "proposed": -8.02
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "weaken",
+   "group": "B",
+   "why": "N 2 6.78 reads 3.3 (best 3.75 [hi 5.4]); N 1 2.64 vs 3.39",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 2.64,
+    "pow": 0.318
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 3.39,
+     "mean": 2.64,
+     "best": 3.41,
+     "proposed": 2.64
+    },
+    {
+     "n": 2,
+     "old": 6.78,
+     "mean": 3.29,
+     "best": 3.76,
+     "proposed": 3.29
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "trap",
+   "group": "B",
+   "why": "best below price at N 1-2: 0.4 / 1.0 / 1.6 / 2.1 vs 1.49-2.9",
+   "cards": 2,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 0.4,
+    "pow": 1.247
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 1.49,
+     "mean": 0.38,
+     "best": 0.56,
+     "proposed": 0.4
+    },
+    {
+     "n": 2,
+     "old": 2.08,
+     "mean": 1.02,
+     "best": 1.2,
+     "proposed": 0.95
+    },
+    {
+     "n": 3,
+     "old": 2.52,
+     "mean": 1.63,
+     "best": 2,
+     "proposed": 1.57
+    },
+    {
+     "n": 4,
+     "old": 2.9,
+     "mean": 2.09,
+     "best": 2.63,
+     "proposed": 2.25
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "ambush",
+   "group": "B",
+   "why": "N 1-2 over (0.57 / 1.48 vs 1.44 / 2.24), N 3-4 fair",
+   "cards": 2,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 0.59,
+    "pow": 1.268
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 1.44,
+     "mean": 0.57,
+     "best": 0.93,
+     "proposed": 0.59
+    },
+    {
+     "n": 2,
+     "old": 2.24,
+     "mean": 1.49,
+     "best": 1.8,
+     "proposed": 1.42
+    },
+    {
+     "n": 3,
+     "old": 2.9,
+     "mean": 2.51,
+     "best": 2.9,
+     "proposed": 2.38
+    },
+    {
+     "n": 4,
+     "old": 3.48,
+     "mean": 3.2,
+     "best": 3.72,
+     "proposed": 3.42
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "nova",
+   "group": "B",
+   "why": "1.2 / 2.6 / 3.9 / 5.0 vs 2.24 / 4.48 / 4.48 / 6.72",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 1.25,
+    "pow": 1.017
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 2.24,
+     "mean": 1.23,
+     "best": 1.41,
+     "proposed": 1.25
+    },
+    {
+     "n": 2,
+     "old": 4.48,
+     "mean": 2.61,
+     "best": 3.6,
+     "proposed": 2.53
+    },
+    {
+     "n": 3,
+     "old": 4.48,
+     "mean": 3.85,
+     "best": 5.94,
+     "proposed": 3.82
+    },
+    {
+     "n": 4,
+     "old": 6.72,
+     "mean": 5.02,
+     "best": 7.8,
+     "proposed": 5.12
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "key": "tornado",
+   "group": "B",
+   "why": "1.2 / 1.75 vs 1.96 / 3.92",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 1.17,
+    "pow": 0.589
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 1.96,
+     "mean": 1.17,
+     "best": 1.92,
+     "proposed": 1.17
+    },
+    {
+     "n": 2,
+     "old": 3.92,
+     "mean": 1.76,
+     "best": 3.26,
+     "proposed": 1.76
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "bulldoze",
+   "group": "B",
+   "why": "N 2 2.64 vs 4.56",
+   "cards": 2,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 2.23,
+    "pow": 0.243
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 2.28,
+     "mean": 2.23,
+     "best": 2.87,
+     "proposed": 2.23
+    },
+    {
+     "n": 2,
+     "old": 4.56,
+     "mean": 2.64,
+     "best": 3.65,
+     "proposed": 2.64
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "key": "daunt",
+   "group": "B",
+   "why": "N 1 1.68 vs 2.31; 3 cards",
+   "cards": 4,
+   "ladderCards": 3,
+   "entry": {
+    "scale": "n",
+    "value": 1.72,
+    "pow": 0.572
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 2.31,
+     "mean": 1.68,
+     "best": 1.9,
+     "proposed": 1.72
+    },
+    {
+     "n": 2,
+     "old": 3.05,
+     "mean": 2.75,
+     "best": 3.25,
+     "proposed": 2.56
+    },
+    {
+     "n": 3,
+     "old": 3.58,
+     "mean": 3.09,
+     "best": 3.74,
+     "proposed": 3.22
+    }
+   ],
+   "confidence": "medium"
+  },
+  {
+   "key": "onslaught",
+   "group": "B",
+   "why": "threshold: 2.6 -> 0.95 over N 1-4, flat 2.8 (re-curve)",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 2.98,
+    "pow": -0.694
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 2.8,
+     "mean": 2.64,
+     "best": 4.52,
+     "proposed": 2.98
+    },
+    {
+     "n": 2,
+     "old": 2.8,
+     "mean": 2.25,
+     "best": 3.46,
+     "proposed": 1.84
+    },
+    {
+     "n": 3,
+     "old": 2.8,
+     "mean": 1.54,
+     "best": 1.76,
+     "proposed": 1.39
+    },
+    {
+     "n": 4,
+     "old": 2.8,
+     "mean": 0.95,
+     "best": 1.14,
+     "proposed": 1.14
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "frostbite",
+   "group": "B",
+   "why": "0.18 / 0.33 vs 0.5 / 1.0",
+   "cards": 2,
+   "ladderCards": 2,
+   "entry": {
+    "scale": "n",
+    "value": 0.19,
+    "pow": 0.796
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 0.5,
+     "mean": 0.19,
+     "best": 0.24,
+     "proposed": 0.19
+    },
+    {
+     "n": 2,
+     "old": 1,
+     "mean": 0.33,
+     "best": 0.52,
+     "proposed": 0.33
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "herbalist",
+   "group": "B",
+   "why": "0.23 / 0.30 vs 0.58 / 1.16",
+   "cards": 1,
+   "ladderCards": 1,
+   "entry": {
+    "scale": "n",
+    "value": 0.23,
+    "pow": 0.431
+   },
+   "at": [
+    {
+     "n": 1,
+     "old": 0.58,
+     "mean": 0.23,
+     "best": 0.51,
+     "proposed": 0.23
+    },
+    {
+     "n": 2,
+     "old": 1.16,
+     "mean": 0.31,
+     "best": 0.66,
+     "proposed": 0.31
+    }
+   ],
+   "confidence": "high"
+  },
+  {
+   "key": "fletcher",
+   "group": "C",
+   "why": "needs arrows: alone 0.2-0.4, Arrow 1 + Fletcher 1 synergy +7.2 [5.4, 8.8] L1 / +8.5 L5",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 3.19,
+     "mean": 0.23,
+     "best": 0.38
+    },
+    {
+     "n": 2,
+     "old": 6.38,
+     "mean": 0.35,
+     "best": 0.55
+    }
+   ]
+  },
+  {
+   "key": "mountainClimber",
+   "group": "C",
+   "why": "mountain terrain only",
+   "cards": 4,
+   "ladderCards": 4,
+   "at": [
+    {
+     "n": true,
+     "old": 4,
+     "mean": 0.4,
+     "best": 0.81
+    }
+   ]
+  },
+  {
+   "key": "dry",
+   "group": "C",
+   "why": "dry maps only",
+   "cards": 3,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 4,
+     "mean": 0.29,
+     "best": 0.53
+    }
+   ]
+  },
+  {
+   "key": "darksight",
+   "group": "C",
+   "why": "dark fights only",
+   "cards": 2,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 3,
+     "mean": 0.28,
+     "best": 0.33
+    }
+   ]
+  },
+  {
+   "key": "tide",
+   "group": "C",
+   "why": "Tide fields only",
+   "cards": 46,
+   "ladderCards": 31,
+   "at": [
+    {
+     "n": true,
+     "old": 0.5,
+     "mean": 0.27,
+     "best": 0.49
+    }
+   ]
+  },
+  {
+   "key": "timbered",
+   "group": "C",
+   "why": "needs Lumber cards",
+   "cards": 2,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": true,
+     "old": 0.5,
+     "mean": 0.15,
+     "best": 0.22
+    }
+   ]
+  },
+  {
+   "key": "bedrock",
+   "group": "C",
+   "why": "needs Stone",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 0.3,
+     "mean": 0,
+     "best": 0
+    }
+   ]
+  },
+  {
+   "key": "salt",
+   "group": "C",
+   "why": "Salt fields only",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 0.38,
+     "mean": 0,
+     "best": 0.03
+    }
+   ]
+  },
+  {
+   "key": "frost",
+   "group": "C",
+   "why": "cold maps only",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 1.12,
+     "mean": 0.42,
+     "best": 1.23
+    }
+   ]
+  },
+  {
+   "key": "heat",
+   "group": "C",
+   "why": "hot maps only",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 1.2,
+     "mean": 0.69,
+     "best": 1.54
+    }
+   ]
+  },
+  {
+   "key": "illuminate",
+   "group": "C",
+   "why": "dark fights only",
+   "cards": 2,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 0.51,
+     "mean": 0.38,
+     "best": 0.58
+    }
+   ]
+  },
+  {
+   "key": "canopyCover",
+   "group": "C",
+   "why": "forest maps only",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 0.07,
+     "mean": 0.14,
+     "best": 0.23
+    }
+   ]
+  },
+  {
+   "key": "keenEye",
+   "group": "C",
+   "why": "needs hidden foes",
+   "cards": 2,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": true,
+     "old": 0.34,
+     "mean": 0.03,
+     "best": 0.07
+    }
+   ]
+  },
+  {
+   "key": "keenSense",
+   "group": "C",
+   "why": "needs hidden foes",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 0.66,
+     "mean": 0.35,
+     "best": 0.42
+    }
+   ]
+  },
+  {
+   "key": "sonar",
+   "group": "C",
+   "why": "needs hidden / dark",
+   "cards": 3,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": true,
+     "old": 0.66,
+     "mean": 0.32,
+     "best": 0.38
+    }
+   ]
+  },
+  {
+   "key": "guardian",
+   "group": "C",
+   "why": "team skill: worth is the ally it saves (mean -1.1, best 3.1)",
+   "cards": 17,
+   "ladderCards": 15,
+   "at": [
+    {
+     "n": true,
+     "old": 0,
+     "mean": -1.06,
+     "best": 3.06
+    }
+   ]
+  },
+  {
+   "key": "taunt",
+   "group": "C",
+   "why": "team skill (mean -1.2, best 4.8)",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 0.4,
+     "mean": -1.23,
+     "best": 4.8
+    }
+   ]
+  },
+  {
+   "key": "packLeader",
+   "group": "C",
+   "why": "needs its pack",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 0,
+     "mean": 0.09,
+     "best": 0.35
+    }
+   ]
+  },
+  {
+   "key": "swarm",
+   "group": "C",
+   "why": "needs its type beside it (reads fair: 3.6 vs 3.13)",
+   "cards": 4,
+   "ladderCards": 4,
+   "at": [
+    {
+     "n": true,
+     "old": 3.13,
+     "mean": 3.58,
+     "best": 8.79
+    }
+   ]
+  },
+  {
+   "key": "hunter",
+   "group": "C",
+   "why": "needs its prey status (reads 0.5-0.7 vs 0.51 / 0.09 / 0.03)",
+   "cards": 2,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 0.51,
+     "mean": 0.45,
+     "best": 1.4
+    },
+    {
+     "n": 2,
+     "old": 0.09,
+     "mean": 0.65,
+     "best": 2.04
+    },
+    {
+     "n": 3,
+     "old": 0.03,
+     "mean": 0.75,
+     "best": 2.52
+    }
+   ]
+  },
+  {
+   "key": "prey",
+   "group": "C",
+   "why": "needs a Predator",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 0.03,
+     "mean": 0.09,
+     "best": 0.13
+    }
+   ]
+  },
+  {
+   "key": "carrion",
+   "group": "C",
+   "why": "needs deaths beside it",
+   "cards": 2,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 1.34,
+     "mean": 1.3,
+     "best": 1.58
+    },
+    {
+     "n": 2,
+     "old": 2.68,
+     "mean": 1.92,
+     "best": 2.26
+    },
+    {
+     "n": 3,
+     "old": 2.68,
+     "mean": 2.26,
+     "best": 2.68
+    }
+   ]
+  },
+  {
+   "key": "foeScarcity",
+   "group": "C",
+   "why": "needs the foe's resources",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 3.39,
+     "mean": 3.19,
+     "best": 5.63
+    }
+   ]
+  },
+  {
+   "key": "weaponMaster",
+   "group": "C",
+   "why": "needs equipment",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 0.37,
+     "mean": 0.23,
+     "best": 0.38
+    },
+    {
+     "n": 2,
+     "old": 0.74,
+     "mean": 0.35,
+     "best": 0.55
+    }
+   ]
+  },
+  {
+   "key": "backstab",
+   "group": "C",
+   "why": "needs a foe status / own edge (EN D21)",
+   "cards": 2,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": 1,
+     "old": 0.03,
+     "mean": -1.07,
+     "best": -0.45
+    },
+    {
+     "n": 2,
+     "old": 0.33,
+     "mean": -0.36,
+     "best": 0.6
+    },
+    {
+     "n": 3,
+     "old": 1.39,
+     "mean": 0.42,
+     "best": 1.52
+    },
+    {
+     "n": 4,
+     "old": 3.89,
+     "mean": 0.98,
+     "best": 2.28
+    }
+   ]
+  },
+  {
+   "key": "pierce",
+   "group": "C",
+   "why": "needs Armor on foes",
+   "cards": 3,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": 1,
+     "old": 0.23,
+     "mean": 0.19,
+     "best": 0.22
+    },
+    {
+     "n": 2,
+     "old": 0.3,
+     "mean": 0.24,
+     "best": 0.29
+    },
+    {
+     "n": 3,
+     "old": 0.34,
+     "mean": 0.23,
+     "best": 0.3
+    }
+   ]
+  },
+  {
+   "key": "shatter",
+   "group": "C",
+   "why": "needs Frozen foes",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 0.02,
+     "mean": 0.03,
+     "best": 0.06
+    },
+    {
+     "n": 2,
+     "old": 0.04,
+     "mean": 0.06,
+     "best": 0.1
+    },
+    {
+     "n": 3,
+     "old": 0.04,
+     "mean": 0.08,
+     "best": 0.15
+    }
+   ]
+  },
+  {
+   "key": "executioner",
+   "group": "C",
+   "why": "needs low-Health foes",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 0.1,
+     "mean": 0.06,
+     "best": 0.29
+    },
+    {
+     "n": 2,
+     "old": 0.2,
+     "mean": 0.05,
+     "best": 0.24
+    },
+    {
+     "n": 3,
+     "old": 0.2,
+     "mean": 0.06,
+     "best": 0.25
+    }
+   ]
+  },
+  {
+   "key": "crabClaws",
+   "group": "C",
+   "why": "its own aim; depends on the board",
+   "cards": 5,
+   "ladderCards": 3,
+   "at": [
+    {
+     "n": true,
+     "old": 0.1,
+     "mean": 0.12,
+     "best": 1.52
+    }
+   ]
+  },
+  {
+   "key": "reload",
+   "group": "C",
+   "why": "an Archer drawback: the war-hound has no shots to reload",
+   "cards": 2,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": 1,
+     "old": -4.2,
+     "mean": -5.77,
+     "best": -1.36
+    },
+    {
+     "n": 2,
+     "old": -8.4,
+     "mean": -7.37,
+     "best": -1.41
+    }
+   ]
+  },
+  {
+   "key": "hibernate",
+   "group": "C",
+   "why": "priced partly through its Attack (EN6 uptime), which the price column omits",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 1.9,
+     "mean": -1.13,
+     "best": 0.12
+    }
+   ]
+  },
+  {
+   "key": "nocturnal",
+   "group": "C",
+   "why": "time of day, logic-priced (zeitS uptime)",
+   "cards": 16,
+   "ladderCards": 6,
+   "at": [
+    {
+     "n": 1,
+     "old": 1.59,
+     "mean": 2.07,
+     "best": 3.4
+    },
+    {
+     "n": 2,
+     "old": 3.18,
+     "mean": 3.54,
+     "best": 6.41
+    },
+    {
+     "n": 3,
+     "old": 4.77,
+     "mean": 4.94,
+     "best": 9.59
+    },
+    {
+     "n": 4,
+     "old": 6.36,
+     "mean": 5.89,
+     "best": 11.9
+    }
+   ]
+  },
+  {
+   "key": "diurnal",
+   "group": "C",
+   "why": "time of day, logic-priced (zeitS)",
+   "cards": 8,
+   "ladderCards": 5,
+   "at": [
+    {
+     "n": 1,
+     "old": 1.14,
+     "mean": 1.74,
+     "best": 3.36
+    },
+    {
+     "n": 2,
+     "old": 2.28,
+     "mean": 3.2,
+     "best": 6.27
+    },
+    {
+     "n": 3,
+     "old": 3.42,
+     "mean": 4.63,
+     "best": 9.05
+    }
+   ]
+  },
+  {
+   "key": "crepuscular",
+   "group": "C",
+   "why": "time of day, logic-priced (zeitS)",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 2.97,
+     "mean": 3.39,
+     "best": 6.23
+    },
+    {
+     "n": 2,
+     "old": 5.94,
+     "mean": 6.03,
+     "best": 11.91
+    }
+   ]
+  },
+  {
+   "key": "moonborn",
+   "group": "C",
+   "why": "Full Moon only",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 1.23,
+     "mean": 1.59,
+     "best": 2.09
+    },
+    {
+     "n": 2,
+     "old": 2.46,
+     "mean": 2.74,
+     "best": 3.89
+    },
+    {
+     "n": 3,
+     "old": 2.46,
+     "mean": 3.43,
+     "best": 4.93
+    },
+    {
+     "n": 4,
+     "old": 3.69,
+     "mean": 3.92,
+     "best": 6.07
+    }
+   ]
+  },
+  {
+   "key": "nightblind",
+   "group": "C",
+   "why": "night drawback, logic-priced",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": -2.12,
+     "mean": -2.69,
+     "best": -0.26
+    }
+   ]
+  },
+  {
+   "key": "carnage",
+   "group": "C",
+   "why": "threshold, priced by thrS uptime (table value unused)",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 1.68,
+     "mean": 4.09,
+     "best": 6.35
+    },
+    {
+     "n": 2,
+     "old": 1.68,
+     "mean": 2.13,
+     "best": 3.91
+    },
+    {
+     "n": 3,
+     "old": 1.68,
+     "mean": 1.09,
+     "best": 2.23
+    },
+    {
+     "n": 4,
+     "old": 1.68,
+     "mean": 0.58,
+     "best": 1.39
+    }
+   ]
+  },
+  {
+   "key": "requiem",
+   "group": "C",
+   "why": "threshold, priced by thrS uptime",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 4.24,
+     "mean": 5.39,
+     "best": 8.65
+    },
+    {
+     "n": 2,
+     "old": 4.24,
+     "mean": 3.85,
+     "best": 6.38
+    },
+    {
+     "n": 3,
+     "old": 4.24,
+     "mean": 2.88,
+     "best": 5.15
+    },
+    {
+     "n": 4,
+     "old": 4.24,
+     "mean": 2.15,
+     "best": 4.2
+    }
+   ]
+  },
+  {
+   "key": "sequestration",
+   "group": "C",
+   "why": "context",
+   "cards": 2,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 0.43,
+     "mean": 0.31,
+     "best": 0.5
+    }
+   ]
+  },
+  {
+   "key": "relict",
+   "group": "C",
+   "why": "pairs with Armor (+2.9 synergy) / its relic",
+   "cards": 2,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 1.24,
+     "mean": 1.06,
+     "best": 1.86
+    }
+   ]
+  },
+  {
+   "key": "web",
+   "group": "C",
+   "why": "needs Webbed foes",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 0.37,
+     "mean": 0.37,
+     "best": 0.66
+    },
+    {
+     "n": 2,
+     "old": 0.74,
+     "mean": 0.39,
+     "best": 0.68
+    }
+   ]
+  },
+  {
+   "key": "dive",
+   "group": "C",
+   "why": "reads 0: dives need water lanes",
+   "cards": 2,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": 1,
+     "old": -0.5,
+     "mean": 0,
+     "best": 0
+    },
+    {
+     "n": 2,
+     "old": 0,
+     "mean": 0,
+     "best": 0
+    },
+    {
+     "n": 3,
+     "old": 0.5,
+     "mean": 0.01,
+     "best": 0.01
+    }
+   ]
+  },
+  {
+   "key": "thanatosis",
+   "group": "D",
+   "why": "ENG36 rework (reset to 1 Health once): measured on the ENG33 rule",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 2,
+     "mean": 1.8,
+     "best": 4.47
+    }
+   ]
+  },
+  {
+   "key": "shield",
+   "group": "D",
+   "why": "ENG37 shield.armor parameter; also N 2 over / N 6 under: a flat 2.53 misses N",
+   "cards": 2,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 2,
+     "old": 2.53,
+     "mean": 1.86,
+     "best": 5.17
+    },
+    {
+     "n": 4,
+     "old": 2.53,
+     "mean": 3.22,
+     "best": 8.35
+    },
+    {
+     "n": 6,
+     "old": 2.53,
+     "mean": 4.04,
+     "best": 10.18
+    }
+   ]
+  },
+  {
+   "key": "shell",
+   "group": "D",
+   "why": "ENG37 shell.when (after attacking x2.15)",
+   "cards": 3,
+   "ladderCards": 3,
+   "at": [
+    {
+     "n": 1,
+     "old": 0.37,
+     "mean": 0.34,
+     "best": 0.51
+    },
+    {
+     "n": 2,
+     "old": 0.57,
+     "mean": 0.73,
+     "best": 1
+    },
+    {
+     "n": 3,
+     "old": 0.73,
+     "mean": 0.86,
+     "best": 1.17
+    },
+    {
+     "n": 4,
+     "old": 0.87,
+     "mean": 0.95,
+     "best": 1.28
+    }
+   ]
+  },
+  {
+   "key": "immunity",
+   "group": "D",
+   "why": "ENG36 status resistances replace it",
+   "cards": 3,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": true,
+     "old": 0.3,
+     "mean": 0.29,
+     "best": 0.51
+    }
+   ]
+  },
+  {
+   "key": "sap",
+   "group": "D",
+   "why": "Leech N (ENG35 perN 1.15): not on the ladder",
+   "cards": 1,
+   "ladderCards": 0,
+   "at": []
+  },
+  {
+   "key": "reach",
+   "group": "D",
+   "why": "ENG37 rework: not on the ladder (ENG37 quick measure -0.18 [-0.94, 0.53]; ENG37-2 open)",
+   "cards": 1,
+   "ladderCards": 0,
+   "at": []
+  },
+  {
+   "key": "hoard",
+   "group": "D",
+   "why": "ENG36 Hoard N = +N/+N a Lumber: not on the ladder",
+   "cards": 0,
+   "ladderCards": 0,
+   "at": []
+  },
+  {
+   "key": "constrict",
+   "group": "D",
+   "why": "ENG36 new: not on the ladder",
+   "cards": 0,
+   "ladderCards": 0,
+   "at": []
+  },
+  {
+   "key": "flying",
+   "group": "F",
+   "why": "priced x1.13 on the stats (SKILL2-2), S 0; ladder 3.5 mean",
+   "cards": 42,
+   "ladderCards": 31,
+   "at": [
+    {
+     "n": true,
+     "old": 0,
+     "mean": 3.49,
+     "best": 5.1
+    }
+   ]
+  },
+  {
+   "key": "evasive",
+   "group": "F",
+   "why": "x1.13 on the stats, S 0; 3.5 mean",
+   "cards": 16,
+   "ladderCards": 12,
+   "at": [
+    {
+     "n": true,
+     "old": 0,
+     "mean": 3.48,
+     "best": 5.37
+    }
+   ]
+  },
+  {
+   "key": "purblind",
+   "group": "F",
+   "why": "x0.7 on the caps (BF8), S 0; reads -6.2 mean",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 0,
+     "mean": -6.21,
+     "best": -1.99
+    }
+   ]
+  },
+  {
+   "key": "poison",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 21,
+   "ladderCards": 16,
+   "at": [
+    {
+     "n": 1,
+     "old": 2.38,
+     "mean": 2.56,
+     "best": 4.35
+    },
+    {
+     "n": 2,
+     "old": 4.69,
+     "mean": 4.87,
+     "best": 8.79
+    },
+    {
+     "n": 3,
+     "old": 6.98,
+     "mean": 6.07,
+     "best": 11.16
+    },
+    {
+     "n": 4,
+     "old": 9.26,
+     "mean": 6.57,
+     "best": 11.96
+    }
+   ]
+  },
+  {
+   "key": "armor",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 16,
+   "ladderCards": 8,
+   "at": [
+    {
+     "n": 1,
+     "old": 2.33,
+     "mean": 2.58,
+     "best": 4.41
+    },
+    {
+     "n": 2,
+     "old": 3.7,
+     "mean": 4.16,
+     "best": 7.7
+    },
+    {
+     "n": 3,
+     "old": 4.85,
+     "mean": 4.8,
+     "best": 9.12
+    },
+    {
+     "n": 4,
+     "old": 5.88,
+     "mean": 5.02,
+     "best": 9.77
+    }
+   ]
+  },
+  {
+   "key": "pounce",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 9,
+   "ladderCards": 7,
+   "at": [
+    {
+     "n": 1,
+     "old": 1.66,
+     "mean": 1.74,
+     "best": 2.46
+    },
+    {
+     "n": 2,
+     "old": 2.96,
+     "mean": 2.91,
+     "best": 4.01
+    },
+    {
+     "n": 3,
+     "old": 4.15,
+     "mean": 4.22,
+     "best": 5.71
+    },
+    {
+     "n": 4,
+     "old": 5.27,
+     "mean": 5.39,
+     "best": 7.37
+    }
+   ]
+  },
+  {
+   "key": "bleed",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 10,
+   "ladderCards": 5,
+   "at": [
+    {
+     "n": 1,
+     "old": 2.57,
+     "mean": 2.64,
+     "best": 4.89
+    },
+    {
+     "n": 2,
+     "old": 4.73,
+     "mean": 5.22,
+     "best": 10.69
+    },
+    {
+     "n": 3,
+     "old": 6.77,
+     "mean": 6.26,
+     "best": 12.12
+    }
+   ]
+  },
+  {
+   "key": "quick",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 8,
+   "ladderCards": 5,
+   "at": [
+    {
+     "n": true,
+     "old": 2.23,
+     "mean": 2.82,
+     "best": 5
+    }
+   ]
+  },
+  {
+   "key": "sweep",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 6,
+   "ladderCards": 5,
+   "at": [
+    {
+     "n": 1,
+     "old": 3.59,
+     "mean": 3.07,
+     "best": 6.65
+    },
+    {
+     "n": 2,
+     "old": 5.08,
+     "mean": 5.36,
+     "best": 11.32
+    },
+    {
+     "n": 3,
+     "old": 6.22,
+     "mean": 6.81,
+     "best": 14.14
+    },
+    {
+     "n": 4,
+     "old": 7.19,
+     "mean": 7.75,
+     "best": 15.71
+    }
+   ]
+  },
+  {
+   "key": "regen",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 5,
+   "ladderCards": 4,
+   "at": [
+    {
+     "n": 1,
+     "old": 2.3,
+     "mean": 2.09,
+     "best": 2.62
+    },
+    {
+     "n": 2,
+     "old": 2.9,
+     "mean": 3.07,
+     "best": 4.06
+    },
+    {
+     "n": 3,
+     "old": 3.32,
+     "mean": 3.58,
+     "best": 4.53
+    }
+   ]
+  },
+  {
+   "key": "arrow",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 4,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": 1,
+     "old": 4.26,
+     "mean": 3.26,
+     "best": 6
+    },
+    {
+     "n": 2,
+     "old": 7.01,
+     "mean": 5.56,
+     "best": 10.51
+    },
+    {
+     "n": 3,
+     "old": 9.39,
+     "mean": 7.01,
+     "best": 13.8
+    }
+   ]
+  },
+  {
+   "key": "fireArrow",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 3,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": 1,
+     "old": 6.56,
+     "mean": 5.12,
+     "best": 9.86
+    },
+    {
+     "n": 2,
+     "old": 8.04,
+     "mean": 6.65,
+     "best": 12.45
+    },
+    {
+     "n": 3,
+     "old": 9.06,
+     "mean": 7.7,
+     "best": 14.82
+    }
+   ]
+  },
+  {
+   "key": "foraging",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 2,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": 1,
+     "old": 1.68,
+     "mean": 1.82,
+     "best": 2.86
+    },
+    {
+     "n": 2,
+     "old": 3.36,
+     "mean": 2.81,
+     "best": 4.46
+    },
+    {
+     "n": 3,
+     "old": 5.04,
+     "mean": 5.19,
+     "best": 9.29
+    }
+   ]
+  },
+  {
+   "key": "predator",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 2,
+   "ladderCards": 2,
+   "at": [
+    {
+     "n": 1,
+     "old": 1.12,
+     "mean": 1.24,
+     "best": 1.75
+    },
+    {
+     "n": 2,
+     "old": 2.24,
+     "mean": 2.2,
+     "best": 3
+    }
+   ]
+  },
+  {
+   "key": "brood",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 2,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 3.2,
+     "mean": 3.3,
+     "best": 5.39
+    },
+    {
+     "n": 2,
+     "old": 6.18,
+     "mean": 6.92,
+     "best": 12.34
+    },
+    {
+     "n": 3,
+     "old": 9.08,
+     "mean": 9.57,
+     "best": 16.24
+    }
+   ]
+  },
+  {
+   "key": "decay",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 6.13,
+     "mean": 5.42,
+     "best": 9.76
+    },
+    {
+     "n": 2,
+     "old": 12.26,
+     "mean": 6.67,
+     "best": 11.73
+    }
+   ]
+  },
+  {
+   "key": "drunk",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": -3.7,
+     "mean": -3.62,
+     "best": -0.37
+    }
+   ]
+  },
+  {
+   "key": "greaterPoison",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 3.69,
+     "mean": 3.94,
+     "best": 7.4
+    },
+    {
+     "n": 2,
+     "old": 7.38,
+     "mean": 5.41,
+     "best": 9.99
+    }
+   ]
+  },
+  {
+   "key": "haste",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 2.57,
+     "mean": 3.28,
+     "best": 5.36
+    }
+   ]
+  },
+  {
+   "key": "healing",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 3.48,
+     "mean": 4.02,
+     "best": 5.48
+    },
+    {
+     "n": 2,
+     "old": 6.96,
+     "mean": 6.07,
+     "best": 9
+    }
+   ]
+  },
+  {
+   "key": "iceArrow",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 6.57,
+     "mean": 4.68,
+     "best": 7.78
+    },
+    {
+     "n": 2,
+     "old": 8.13,
+     "mean": 6.55,
+     "best": 11.69
+    },
+    {
+     "n": 3,
+     "old": 9.21,
+     "mean": 7.72,
+     "best": 14.69
+    }
+   ]
+  },
+  {
+   "key": "immolation",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 0,
+     "mean": -0.43,
+     "best": 0.39
+    },
+    {
+     "n": 2,
+     "old": 0,
+     "mean": -1.04,
+     "best": -0.47
+    }
+   ]
+  },
+  {
+   "key": "injured",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": -1,
+     "mean": -1.19,
+     "best": -0.21
+    },
+    {
+     "n": 2,
+     "old": -2,
+     "mean": -2.18,
+     "best": -0.21
+    },
+    {
+     "n": 3,
+     "old": -3,
+     "mean": -3.33,
+     "best": -0.23
+    }
+   ]
+  },
+  {
+   "key": "meiosis",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 4.55,
+     "mean": 4.21,
+     "best": 6.31
+    },
+    {
+     "n": 2,
+     "old": 9.1,
+     "mean": 6.27,
+     "best": 11.27
+    }
+   ]
+  },
+  {
+   "key": "mighty",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 4.79,
+     "mean": 5.38,
+     "best": 5.98
+    }
+   ]
+  },
+  {
+   "key": "poisonBolt",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 3.53,
+     "mean": 3.63,
+     "best": 6.33
+    },
+    {
+     "n": 2,
+     "old": 7.06,
+     "mean": 6.72,
+     "best": 12.81
+    },
+    {
+     "n": 3,
+     "old": 7.06,
+     "mean": 8.09,
+     "best": 15.25
+    }
+   ]
+  },
+  {
+   "key": "rage",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 4,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 3.01,
+     "mean": 2.95,
+     "best": 4.03
+    }
+   ]
+  },
+  {
+   "key": "siege",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 2,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 1.07,
+     "mean": 0.96,
+     "best": 1.7
+    },
+    {
+     "n": 2,
+     "old": 2.14,
+     "mean": 1.67,
+     "best": 2.74
+    }
+   ]
+  },
+  {
+   "key": "spitfire",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 7.72,
+     "mean": 6.74,
+     "best": 13.87
+    },
+    {
+     "n": 2,
+     "old": 15.44,
+     "mean": 8.15,
+     "best": 15.81
+    }
+   ]
+  },
+  {
+   "key": "stealth",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 6.88,
+     "mean": 8.32,
+     "best": 12.43
+    }
+   ]
+  },
+  {
+   "key": "twinShot",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 6.63,
+     "mean": 5.1,
+     "best": 10.54
+    },
+    {
+     "n": 2,
+     "old": 13.26,
+     "mean": 7.62,
+     "best": 15.41
+    }
+   ]
+  },
+  {
+   "key": "undead",
+   "group": "E",
+   "why": "fair on the mean (flagged on best only)",
+   "cards": 2,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": true,
+     "old": 2.27,
+     "mean": 2.04,
+     "best": 5.17
+    }
+   ]
+  },
+  {
+   "key": "wither",
+   "group": "E",
+   "why": "mean says over, best says under: body-dependent (a wall body carries it); hold",
+   "cards": 1,
+   "ladderCards": 1,
+   "at": [
+    {
+     "n": 1,
+     "old": 3.47,
+     "mean": 3.45,
+     "best": 5.63
+    },
+    {
+     "n": 2,
+     "old": 6.94,
+     "mean": 5.36,
+     "best": 9.07
+    }
+   ]
+  }
+ ],
+ "knockOn": {
+  "tally": {
+   "cards": 321,
+   "before": {
+    "ok": 295,
+    "over": 21,
+    "under": 5
+   },
+   "after": {
+    "ok": 285,
+    "over": 30,
+    "under": 6
+   }
+  },
+  "rows": [
+   {
+    "id": "alley-cat",
+    "name": "Alley Cat",
+    "rarity": "uncommon",
+    "stats": "1/4",
+    "skills": [
+     "twinStrike"
+    ],
+    "S": [
+     8.95,
+     10.32
+    ],
+    "use": [
+     1.11,
+     1.21
+    ],
+    "verdict": [
+     "over",
+     "over"
+    ],
+    "fit": null
+   },
+   {
+    "id": "ancient-sloth-titan",
+    "name": "Ancient Sloth Titan",
+    "rarity": "common",
+    "stats": "2/31",
+    "skills": [
+     "bulwark"
+    ],
+    "S": [
+     5.95,
+     7.25
+    ],
+    "use": [
+     0.73,
+     0.76
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "antlion-pit",
+    "name": "Antlion Pit",
+    "rarity": "uncommon",
+    "stats": "3/13",
+    "skills": [
+     "trap"
+    ],
+    "S": [
+     3.23,
+     2.98
+    ],
+    "use": [
+     1,
+     0.99
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "apollo-butterfly",
+    "name": "Apollo Butterfly",
+    "rarity": "uncommon",
+    "stats": "1/8",
+    "skills": [
+     "thorns"
+    ],
+    "S": [
+     2.83,
+     3.22
+    ],
+    "use": [
+     0.75,
+     0.77
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "badger-lumberjack",
+    "name": "Badger Lumberjack",
+    "rarity": "uncommon",
+    "stats": "2/11",
+    "skills": [
+     "lumberjack"
+    ],
+    "S": [
+     3.29,
+     4.85
+    ],
+    "use": [
+     0.95,
+     1.03
+    ],
+    "verdict": [
+     "ok",
+     "over"
+    ],
+    "fit": {
+     "to": "2/10",
+     "dA": 0,
+     "dH": -1
+    }
+   },
+   {
+    "id": "beaver-lumberjack",
+    "name": "Beaver Lumberjack",
+    "rarity": "common",
+    "stats": "3/5",
+    "skills": [
+     "delivery"
+    ],
+    "S": [
+     2.28,
+     4.62
+    ],
+    "use": [
+     0.97,
+     1.11
+    ],
+    "verdict": [
+     "ok",
+     "over"
+    ],
+    "fit": {
+     "to": "2/5",
+     "dA": -1,
+     "dH": 0
+    }
+   },
+   {
+    "id": "beluga",
+    "name": "Beluga",
+    "rarity": "rare",
+    "stats": "1/16",
+    "skills": [
+     "inspiring"
+    ],
+    "S": [
+     4.16,
+     5.12
+    ],
+    "use": [
+     0.78,
+     0.81
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "bison-bulldozer",
+    "name": "Bison Bulldozer",
+    "rarity": "uncommon",
+    "stats": "2/12",
+    "skills": [
+     "bulldoze",
+     "onslaught"
+    ],
+    "S": [
+     5.08,
+     3.62
+    ],
+    "use": [
+     0.95,
+     0.89
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "booming-bittern",
+    "name": "Booming Bittern",
+    "rarity": "uncommon",
+    "stats": "1/12",
+    "skills": [
+     "invisible",
+     "daunt"
+    ],
+    "S": [
+     3.27,
+     3.36
+    ],
+    "use": [
+     0.81,
+     0.82
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "boreal-elk",
+    "name": "Boreal Elk",
+    "rarity": "common",
+    "stats": "5/4",
+    "skills": [
+     "riled"
+    ],
+    "S": [
+     7.48,
+     7.16
+    ],
+    "use": [
+     0.99,
+     0.98
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "bramble-sprout",
+    "name": "Bramble Sprout",
+    "rarity": "common",
+    "stats": "1/5",
+    "skills": [
+     "thorns"
+    ],
+    "S": [
+     4.48,
+     5.08
+    ],
+    "use": [
+     0.97,
+     1.01
+    ],
+    "verdict": [
+     "ok",
+     "over"
+    ],
+    "fit": {
+     "to": "1/4",
+     "dA": 0,
+     "dH": -1
+    }
+   },
+   {
+    "id": "caiman-hatchling",
+    "name": "Caiman Hatchling",
+    "rarity": "common",
+    "stats": "2/5",
+    "skills": [
+     "ambush"
+    ],
+    "S": [
+     1.44,
+     0.59
+    ],
+    "use": [
+     0.85,
+     0.8
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "carrion-crow",
+    "name": "Carrion Crow",
+    "rarity": "common",
+    "stats": "2/4",
+    "skills": [
+     "scavenge"
+    ],
+    "S": [
+     2.27,
+     2.99
+    ],
+    "use": [
+     0.77,
+     0.81
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "cataphract-destrier",
+    "name": "Gilded Roadwarden",
+    "rarity": "common",
+    "stats": "3/28",
+    "skills": [
+     "overwhelm"
+    ],
+    "S": [
+     7.9,
+     8.43
+    ],
+    "use": [
+     0.89,
+     0.9
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "cave-warlord",
+    "name": "Cave Warlord",
+    "rarity": "common",
+    "stats": "6/28",
+    "skills": [
+     "daunt"
+    ],
+    "S": [
+     8.61,
+     8.12
+    ],
+    "use": [
+     0.97,
+     0.96
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "colossal-squid",
+    "name": "Colossal Squid",
+    "rarity": "veryrare",
+    "stats": "4/23",
+    "skills": [
+     "fork",
+     "gash"
+    ],
+    "S": [
+     6.69,
+     8.18
+    ],
+    "use": [
+     0.88,
+     0.91
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "conch-herald",
+    "name": "Conch Herald",
+    "rarity": "uncommon",
+    "stats": "1/11",
+    "skills": [
+     "inspiring"
+    ],
+    "S": [
+     4.36,
+     6.4
+    ],
+    "use": [
+     0.85,
+     0.95
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "cone-cutter-squirrel",
+    "name": "Cone-cutter Squirrel",
+    "rarity": "common",
+    "stats": "2/5",
+    "skills": [
+     "almanac"
+    ],
+    "S": [
+     8.28,
+     10.28
+    ],
+    "use": [
+     0.96,
+     1.06
+    ],
+    "verdict": [
+     "ok",
+     "over"
+    ],
+    "fit": {
+     "to": "2/3",
+     "dA": 0,
+     "dH": -2
+    }
+   },
+   {
+    "id": "cricket-drummer",
+    "name": "Cricket Drummer",
+    "rarity": "common",
+    "stats": "2/7",
+    "skills": [
+     "inspiring"
+    ],
+    "S": [
+     3,
+     3.96
+    ],
+    "use": [
+     1.22,
+     1.29
+    ],
+    "verdict": [
+     "over",
+     "over"
+    ],
+    "fit": null
+   },
+   {
+    "id": "cypress-root-lurker",
+    "name": "Cypress Root Lurker",
+    "rarity": "common",
+    "stats": "4/12",
+    "skills": [
+     "repair"
+    ],
+    "S": [
+     0.5,
+     2.93
+    ],
+    "use": [
+     1.01,
+     1.11
+    ],
+    "verdict": [
+     "over",
+     "over"
+    ],
+    "fit": null
+   },
+   {
+    "id": "drowned-matriarch",
+    "name": "The Drowned Matriarch",
+    "rarity": "uncommon",
+    "stats": "2/13",
+    "skills": [
+     "fork"
+    ],
+    "S": [
+     4.49,
+     5.55
+    ],
+    "use": [
+     0.89,
+     0.93
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "dune-packrat",
+    "name": "Dune Packrat",
+    "rarity": "rare",
+    "stats": "2/11",
+    "skills": [
+     "delivery"
+    ],
+    "S": [
+     5.71,
+     8.75
+    ],
+    "use": [
+     0.89,
+     1.01
+    ],
+    "verdict": [
+     "ok",
+     "over"
+    ],
+    "fit": {
+     "to": "2/10",
+     "dA": 0,
+     "dH": -1
+    }
+   },
+   {
+    "id": "dust-devil-kestrel",
+    "name": "Dust-devil Kestrel",
+    "rarity": "veryrare",
+    "stats": "5/10",
+    "skills": [
+     "tornado"
+    ],
+    "S": [
+     1.96,
+     1.17
+    ],
+    "use": [
+     0.84,
+     0.82
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "eyrie-warden",
+    "name": "Eyrie Warden",
+    "rarity": "common",
+    "stats": "3/11",
+    "skills": [
+     "daunt"
+    ],
+    "S": [
+     7.87,
+     7.28
+    ],
+    "use": [
+     0.82,
+     0.81
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "field-mouse",
+    "name": "Field Mouse",
+    "rarity": "common",
+    "stats": "2/5",
+    "skills": [
+     "pickpocket"
+    ],
+    "S": [
+     1,
+     5.13
+    ],
+    "use": [
+     0.93,
+     1.25
+    ],
+    "verdict": [
+     "ok",
+     "over"
+    ],
+    "fit": {
+     "to": "1/4",
+     "dA": -1,
+     "dH": -1
+    }
+   },
+   {
+    "id": "gatling-hog",
+    "name": "Gatling Hog",
+    "rarity": "rare",
+    "stats": "2/6",
+    "skills": [
+     "twinStrike"
+    ],
+    "S": [
+     10.64,
+     12.01
+    ],
+    "use": [
+     0.84,
+     0.89
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "granite-ox-golem",
+    "name": "Granite Ox Golem",
+    "rarity": "rare",
+    "stats": "3/17",
+    "skills": [
+     "recoil"
+    ],
+    "S": [
+     5.91,
+     -1.97
+    ],
+    "use": [
+     0.73,
+     0.55
+    ],
+    "verdict": [
+     "ok",
+     "under"
+    ],
+    "fit": {
+     "to": "3/20",
+     "dA": 0,
+     "dH": 3
+    }
+   },
+   {
+    "id": "hedgehog-herbalist",
+    "name": "Hedgehog Herbalist",
+    "rarity": "rare",
+    "stats": "3/15",
+    "skills": [
+     "herbalist"
+    ],
+    "S": [
+     0.88,
+     0.53
+    ],
+    "use": [
+     0.99,
+     0.97
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "hedgehog-scout",
+    "name": "Hedgehog Scout",
+    "rarity": "common",
+    "stats": "1/10",
+    "skills": [
+     "thorns"
+    ],
+    "S": [
+     2.83,
+     3.22
+    ],
+    "use": [
+     1.23,
+     1.26
+    ],
+    "verdict": [
+     "over",
+     "over"
+    ],
+    "fit": null
+   },
+   {
+    "id": "ibex-rockcaller",
+    "name": "Ibex Rockcaller",
+    "rarity": "veryrare",
+    "stats": "3/12",
+    "skills": [
+     "avalanche"
+    ],
+    "S": [
+     6.63,
+     9.25
+    ],
+    "use": [
+     0.91,
+     1
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "komodo-warlord",
+    "name": "Komodo Warlord",
+    "rarity": "common",
+    "stats": "1/27",
+    "skills": [
+     "gash"
+    ],
+    "S": [
+     9.28,
+     9.71
+    ],
+    "use": [
+     0.86,
+     0.87
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "kraken-spawnling",
+    "name": "Kraken Spawnling",
+    "rarity": "common",
+    "stats": "2/16",
+    "skills": [
+     "fork",
+     "gash"
+    ],
+    "S": [
+     6.19,
+     7.68
+    ],
+    "use": [
+     0.84,
+     0.88
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "lamprey",
+    "name": "Lamprey",
+    "rarity": "common",
+    "stats": "2/5",
+    "skills": [
+     "weaken"
+    ],
+    "S": [
+     3.39,
+     2.64
+    ],
+    "use": [
+     0.9,
+     0.85
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "leafcutter-gardener",
+    "name": "Leafcutter Gardener",
+    "rarity": "common",
+    "stats": "2/4",
+    "skills": [
+     "delivery"
+    ],
+    "S": [
+     4.22,
+     6.88
+    ],
+    "use": [
+     0.98,
+     1.16
+    ],
+    "verdict": [
+     "ok",
+     "over"
+    ],
+    "fit": {
+     "to": "1/4",
+     "dA": -1,
+     "dH": 0
+    }
+   },
+   {
+    "id": "magma-titan",
+    "name": "Magma Rhino",
+    "rarity": "common",
+    "stats": "2/17",
+    "skills": [
+     "scar"
+    ],
+    "S": [
+     3.38,
+     3.41
+    ],
+    "use": [
+     0.75,
+     0.75
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "mangrove-mudskipper",
+    "name": "Mangrove Mudskipper",
+    "rarity": "common",
+    "stats": "1/7",
+    "skills": [
+     "skitter"
+    ],
+    "S": [
+     1.94,
+     4
+    ],
+    "use": [
+     0.89,
+     1.03
+    ],
+    "verdict": [
+     "ok",
+     "over"
+    ],
+    "fit": {
+     "to": "1/6",
+     "dA": 0,
+     "dH": -1
+    }
+   },
+   {
+    "id": "mountain-hare",
+    "name": "Mountain Hare",
+    "rarity": "common",
+    "stats": "2/3",
+    "skills": [
+     "frostbite"
+    ],
+    "S": [
+     0.5,
+     0.19
+    ],
+    "use": [
+     0.76,
+     0.74
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "muskrat-lodgekeeper",
+    "name": "Muskrat Lodgekeeper",
+    "rarity": "uncommon",
+    "stats": "1/7",
+    "skills": [
+     "bulwark"
+    ],
+    "S": [
+     7.5,
+     9.03
+    ],
+    "use": [
+     0.66,
+     0.72
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "muskrat-reedgatherer",
+    "name": "Muskrat Reedgatherer",
+    "rarity": "common",
+    "stats": "1/8",
+    "skills": [
+     "delivery"
+    ],
+    "S": [
+     4.16,
+     7.06
+    ],
+    "use": [
+     0.91,
+     1.08
+    ],
+    "verdict": [
+     "ok",
+     "over"
+    ],
+    "fit": {
+     "to": "1/6",
+     "dA": 0,
+     "dH": -2
+    }
+   },
+   {
+    "id": "nutria-reedcutter",
+    "name": "Nutria Reedcutter",
+    "rarity": "common",
+    "stats": "2/7",
+    "skills": [
+     "delivery"
+    ],
+    "S": [
+     4.24,
+     7.2
+    ],
+    "use": [
+     0.82,
+     0.96
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "ore-smelter-mole",
+    "name": "Ore-Smelter Mole",
+    "rarity": "uncommon",
+    "stats": "4/9",
+    "skills": [
+     "delivery"
+    ],
+    "S": [
+     1.03,
+     3.69
+    ],
+    "use": [
+     0.83,
+     0.93
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "pincushion-urchin",
+    "name": "Pincushion Urchin",
+    "rarity": "common",
+    "stats": "0/6",
+    "skills": [
+     "thorns"
+    ],
+    "S": [
+     6.36,
+     7.13
+    ],
+    "use": [
+     0.74,
+     0.79
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "polar-bear",
+    "name": "Polar Bear",
+    "rarity": "veryrare",
+    "stats": "2/17",
+    "skills": [
+     "ambush"
+    ],
+    "S": [
+     5.38,
+     5.32
+    ],
+    "use": [
+     0.81,
+     0.8
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "porcupine-roller",
+    "name": "Porcupine Roller",
+    "rarity": "common",
+    "stats": "3/2",
+    "skills": [
+     "thorns"
+    ],
+    "S": [
+     4.48,
+     5.08
+    ],
+    "use": [
+     1.2,
+     1.24
+    ],
+    "verdict": [
+     "over",
+     "over"
+    ],
+    "fit": null
+   },
+   {
+    "id": "pronghorn-racer",
+    "name": "Pronghorn Racer",
+    "rarity": "common",
+    "stats": "1/10",
+    "skills": [
+     "speed"
+    ],
+    "S": [
+     2.04,
+     2.44
+    ],
+    "use": [
+     0.78,
+     0.8
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "quicksand-queen",
+    "name": "Quicksand Queen",
+    "rarity": "veryrare",
+    "stats": "2/19",
+    "skills": [
+     "trap"
+    ],
+    "S": [
+     5.86,
+     6.08
+    ],
+    "use": [
+     0.96,
+     0.97
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "quill-thorn-boar",
+    "name": "Quill-Thorn Boar",
+    "rarity": "rare",
+    "stats": "4/5",
+    "skills": [
+     "thorns"
+    ],
+    "S": [
+     5.86,
+     6.63
+    ],
+    "use": [
+     0.96,
+     0.99
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "raven-scout",
+    "name": "Raven Scout",
+    "rarity": "rare",
+    "stats": "2/5",
+    "skills": [
+     "tally"
+    ],
+    "S": [
+     3.28,
+     1.41
+    ],
+    "use": [
+     1,
+     0.88
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "sandfish",
+    "name": "Sandfish",
+    "rarity": "common",
+    "stats": "3/10",
+    "skills": [
+     "invisible"
+    ],
+    "S": [
+     0.96,
+     1.64
+    ],
+    "use": [
+     0.86,
+     0.89
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "skull-vulture",
+    "name": "Skull Vulture",
+    "rarity": "uncommon",
+    "stats": "3/3",
+    "skills": [
+     "daunt"
+    ],
+    "S": [
+     4.17,
+     3.58
+    ],
+    "use": [
+     0.76,
+     0.73
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "supernova-jelly",
+    "name": "Supernova Jelly",
+    "rarity": "rare",
+    "stats": "2/9",
+    "skills": [
+     "nova"
+    ],
+    "S": [
+     4.48,
+     3.82
+    ],
+    "use": [
+     0.82,
+     0.79
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "swift-fox",
+    "name": "Swift Fox",
+    "rarity": "common",
+    "stats": "3/3",
+    "skills": [
+     "fastForward"
+    ],
+    "S": [
+     3.02,
+     4.24
+    ],
+    "use": [
+     0.85,
+     0.92
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "talus-pika",
+    "name": "Talus Pika",
+    "rarity": "common",
+    "stats": "1/5",
+    "skills": [
+     "delivery"
+    ],
+    "S": [
+     2.62,
+     5.3
+    ],
+    "use": [
+     0.66,
+     0.82
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "tasmanian-devil",
+    "name": "Tasmanian Devil",
+    "rarity": "uncommon",
+    "stats": "1/11",
+    "skills": [
+     "berserk"
+    ],
+    "S": [
+     3.6,
+     3.68
+    ],
+    "use": [
+     0.78,
+     0.78
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "thorny-devil",
+    "name": "Thorny Devil",
+    "rarity": "uncommon",
+    "stats": "1/20",
+    "skills": [
+     "thorns"
+    ],
+    "S": [
+     4.48,
+     5.08
+    ],
+    "use": [
+     0.93,
+     0.95
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "victoria-regia",
+    "name": "Victoria Regia",
+    "rarity": "uncommon",
+    "stats": "2/14",
+    "skills": [
+     "bulldoze",
+     "thorns"
+    ],
+    "S": [
+     5.11,
+     5.45
+    ],
+    "use": [
+     0.98,
+     0.99
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "woodland-caribou",
+    "name": "Woodland Caribou",
+    "rarity": "uncommon",
+    "stats": "3/8",
+    "skills": [
+     "frostbite"
+    ],
+    "S": [
+     4.5,
+     4.19
+    ],
+    "use": [
+     0.87,
+     0.86
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   },
+   {
+    "id": "yeti",
+    "name": "Yeti",
+    "rarity": "common",
+    "stats": "5/29",
+    "skills": [
+     "scare"
+    ],
+    "S": [
+     3.58,
+     3.76
+    ],
+    "use": [
+     0.9,
+     0.9
+    ],
+    "verdict": [
+     "ok",
+     "ok"
+    ],
+    "fit": null
+   }
+  ]
+ },
+ "bestAlternative": {
+  "tally": {
+   "cards": 321,
+   "before": {
+    "ok": 295,
+    "over": 21,
+    "under": 5
+   },
+   "after": {
+    "ok": 274,
+    "over": 42,
+    "under": 5
+   }
+  },
+  "changed": 21
+ },
+ "groupAOnly": {
+  "tally": {
+   "cards": 321,
+   "before": {
+    "ok": 295,
+    "over": 21,
+    "under": 5
+   },
+   "after": {
+    "ok": 286,
+    "over": 30,
+    "under": 5
+   }
+  },
+  "flips": [
+   "badger-lumberjack",
+   "beaver-lumberjack",
+   "bramble-sprout",
+   "cone-cutter-squirrel",
+   "dune-packrat",
+   "field-mouse",
+   "leafcutter-gardener",
+   "mangrove-mudskipper",
+   "muskrat-reedgatherer"
+  ]
+ },
+ "groupBOnly": {
+  "tally": {
+   "cards": 321,
+   "before": {
+    "ok": 295,
+    "over": 21,
+    "under": 5
+   },
+   "after": {
+    "ok": 294,
+    "over": 21,
+    "under": 6
+   }
+  },
+  "flips": [
+   "granite-ox-golem"
+  ]
+ }
+}
