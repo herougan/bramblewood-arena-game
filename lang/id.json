@@ -4363,5 +4363,17 @@
  "Saved in this browser": "Tersimpan di peramban ini",
  "Previous map": "Peta sebelumnya",
  "Next map": "Peta berikutnya",
- "More cards from earlier maps": "Kartu lain dari peta sebelumnya"
+ "More cards from earlier maps": "Kartu lain dari peta sebelumnya",
+ "A bigger pool for this map. NEW!: its list, cards that fit the map that no earlier main map gives, then proposed new cards (no stats or skills yet). Carried: cards from earlier main maps, best fit first. Flag each Yes or No; a Yes on an earlier map makes a card Carried here. Side maps come later.": "Pilihan yang lebih besar untuk peta ini. BARU!: daftarnya, kartu yang cocok dengan peta dan tidak diberikan peta utama sebelumnya, lalu kartu baru yang diusulkan (belum ada statistik atau skill). Terbawa: kartu dari peta utama sebelumnya, yang paling cocok dulu. Tandai Ya atau Tidak; Ya di peta sebelumnya membuatnya Terbawa di sini. Peta samping menyusul.",
+ "at least {n}": "paling sedikit {n}",
+ "Fits the map": "Cocok dengan peta",
+ "Proposed": "Usulan",
+ "Proposed new card: {animal}, {element}, suggested {rarity}.": "Kartu baru usulan: {animal}, {element}, kelangkaan saran {rarity}.",
+ "The map's habitat": "Habitat peta",
+ "A nearby habitat": "Habitat terdekat",
+ "CONTENT17 pick": "Pilihan CONTENT17",
+ "THEME5 pick": "Pilihan THEME5",
+ "SKILLREC1 pick": "Pilihan SKILLREC1",
+ "Has the map's signature skill": "Punya skill khas peta",
+ "The map's element": "Elemen peta"
 }

@@ -4362,5 +4362,17 @@
  "Saved in this browser": "Enregistré dans ce navigateur",
  "Previous map": "Carte précédente",
  "Next map": "Carte suivante",
- "More cards from earlier maps": "Autres cartes des cartes précédentes"
+ "More cards from earlier maps": "Autres cartes des cartes précédentes",
+ "A bigger pool for this map. NEW!: its list, cards that fit the map that no earlier main map gives, then proposed new cards (no stats or skills yet). Carried: cards from earlier main maps, best fit first. Flag each Yes or No; a Yes on an earlier map makes a card Carried here. Side maps come later.": "Un plus grand choix pour cette carte. NOUVEAU ! : sa liste, les cartes qui vont avec la carte et qu'aucune carte principale précédente ne donne, puis des nouvelles cartes proposées (sans stats ni compétences pour l'instant). Reportées : les cartes des cartes principales précédentes, les mieux adaptées d'abord. Marque chacune Oui ou Non ; un Oui sur une carte précédente la rend Reportée ici. Les cartes annexes viendront plus tard.",
+ "at least {n}": "au moins {n}",
+ "Fits the map": "Va avec la carte",
+ "Proposed": "Proposée",
+ "Proposed new card: {animal}, {element}, suggested {rarity}.": "Nouvelle carte proposée : {animal}, {element}, rareté suggérée {rarity}.",
+ "The map's habitat": "Habitat de la carte",
+ "A nearby habitat": "Un habitat voisin",
+ "CONTENT17 pick": "Choix CONTENT17",
+ "THEME5 pick": "Choix THEME5",
+ "SKILLREC1 pick": "Choix SKILLREC1",
+ "Has the map's signature skill": "A la compétence phare de la carte",
+ "The map's element": "Élément de la carte"
 }

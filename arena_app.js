@@ -33950,7 +33950,8 @@ function ui37Targets(top){ const n = mapNumberOf(top), d = th6Targets(n == null 
   return {n: num(t.n) != null ? num(t.n) : d.own, c: num(t.c) != null ? num(t.c) : d.carried, dn: d.own, dc: d.carried}; }
 // every prospective card of a main map: id -> {id, src: Set('list' | 'maybe' | 'claude' | 'newcard' | 'flag'), why}
 function ui37Prospects(top, defs, ok){
-  const out = new Map(), add = (id, src, why)=>{ if(!id || !defs[id] || !ok(id)) return; let e = out.get(id); if(!e){ e = {id, src: new Set(), why: ''}; out.set(id, e); } e.src.add(src); if(why && !e.why) e.why = String(why); };
+  const side = ui38SideOnly(top); // 2026-11-09 (package UI38, owner 03:55): no side-map cards (one only on a side map's list shows only when flagged); a proposed concept by its id
+  const out = new Map(), add = (id, src, why)=>{ if(!id || !(ui38Concept(id) || (defs[id] && ok(id))) || (src !== 'flag' && side.has(id))) return; let e = out.get(id); if(!e){ e = {id, src: new Set(), why: ''}; out.set(id, e); } e.src.add(src); if(why && !e.why) e.why = String(why); };
   try{ mpEntry(top).cards.forEach(id=> add(id, 'list')); }catch(e){}
   try{ const rv = rv1ReviewOf({key: 'cards'}, top); if(rv) (rv.maybe || []).forEach(e=> e && add(e.id, 'maybe', e.why)); }catch(e){}
   const cn = (typeof CLAUDE_NEW !== 'undefined' && CLAUDE_NEW) || {}, n = mapNumberOf(top);
@@ -33961,16 +33962,17 @@ function ui37Prospects(top, defs, ok){
   return out;
 }
 // one map's split: {n, neu, car, extra, idx}
+// 2026-11-09 (package UI38, owner 03:55): the closed "More cards from earlier maps" fold is gone; ui38Fill tops NEW! up to 30+ (cards that fit the map, then
+// proposed concepts) and Carried up to 20+ (earlier main maps' cards, best fit first). extra stays an empty list for callers.
 function ui37Split(top, defs, ok){
-  const n = mapNumberOf(top), maps = ui37MapsData(), idx = ui37CarriedIndex(n, maps), pros = ui37Prospects(top, defs, ok), neu = [], car = [], extra = [];
+  const n = mapNumberOf(top), maps = ui37MapsData(), idx = ui37CarriedIndex(n, maps), pros = ui37Prospects(top, defs, ok), neu = [], car = [];
   const SRC = {list: 0, maybe: 1, claude: 2, newcard: 3, flag: 4}, rank = p=> Math.min(...[...p.src].map(s=> SRC[s] == null ? 9 : SRC[s]));
-  const by = (a, b)=> rank(a) - rank(b) || roadRarityStep(defs[a.id].rarity) - roadRarityStep(defs[b.id].rarity) || String(defs[a.id].name).localeCompare(String(defs[b.id].name));
+  const nm = id=> String(ui38Concept(id) ? ui38Concept(id).name : defs[id].name), rs = id=> ui38Concept(id) ? roadRarityStep(ui38Concept(id).rarity) : roadRarityStep(defs[id].rarity);
+  const by = (a, b)=> rank(a) - rank(b) || rs(a.id) - rs(b.id) || nm(a.id).localeCompare(nm(b.id));
   pros.forEach(p=> (idx.has(p.id) ? car : neu).push(p));
-  // every other card an earlier main map gives (more Carried options, in a fold): a card flagged Yes on an earlier map first, then the most recent map first
-  const yesEarlier = new Set(maps.filter(m=> m.n < n).flatMap(m=> m.yes));
-  idx.forEach((mn, id)=>{ if(!pros.has(id) && defs[id] && ok(id)) extra.push({id, src: new Set(yesEarlier.has(id) ? ['earlier'] : []), why: ''}); });
-  neu.sort(by); car.sort(by); extra.sort((a, b)=> (b.src.size - a.src.size) || (idx.get(b.id) - idx.get(a.id)) || String(defs[a.id].name).localeCompare(String(defs[b.id].name)));
-  return {n, neu, car, extra, idx};
+  neu.sort(by); car.sort(by);
+  ui38Fill(top, defs, ok, idx, neu, car);
+  return {n, neu, car, extra: [], idx};
 }
 let ui37Status = null, ui37Live = null; const ui37Timers = {};
 function ui37StatusText(){ return !ui37Status ? '' : ui37Status.ok ? '☁️ ' + TX('ui.ui37-saved-cloud') : '💾 ' + TX('ui.ui37-saved-local'); }
@@ -34001,38 +34003,40 @@ function ui37SetTarget(top, k, v){ const e = ui37Ent(top), t = Object.assign({},
 function ui37ExportRows(){
   const defs = getCardDefs(), rows = [], maps = ui37MapsData();
   maps.forEach(m=>{ const e = ui37Ent(m.id); if(!e.yes.length && !e.no.length) return; const idx = ui37CarriedIndex(m.n, maps), tg = ui37Targets(m.id);
-    e.yes.map(id=> [id, 'yes']).concat(e.no.map(id=> [id, 'no'])).forEach(([id, flag])=> rows.push({mapNo: m.n, mapId: m.id, map: m.name, cardId: id, card: (defs[id] && defs[id].name) || id, flag, group: idx.has(id) ? 'carried' : 'new', carriedFrom: idx.has(id) ? idx.get(id) : null, targetNew: tg.n, targetCarried: tg.c})); });
+    e.yes.map(id=> [id, 'yes']).concat(e.no.map(id=> [id, 'no'])).forEach(([id, flag])=>{ const c = ui38Concept(id); /* 2026-11-09 (UI38): a concept row carries its fields */
+      rows.push(Object.assign({mapNo: m.n, mapId: m.id, map: m.name, cardId: id, card: c ? c.name : (defs[id] && defs[id].name) || id, flag, group: idx.has(id) ? 'carried' : 'new', carriedFrom: idx.has(id) ? idx.get(id) : null, targetNew: tg.n, targetCarried: tg.c},
+        c ? {concept: true, animal: c.animal, family: c.family, element: c.element, rarity: c.rarity, role: c.role, conceptMap: c.mapNo} : {concept: false})); }); });
   return rows;
 }
 function ui37ExportFile(kind){
   const rows = ui37ExportRows(), q = v=> { const s = v == null ? '' : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-  const cols = ['mapNo', 'mapId', 'map', 'cardId', 'card', 'flag', 'group', 'carriedFrom', 'targetNew', 'targetCarried'];
-  const body = kind === 'csv' ? cols.join(',') + '\n' + rows.map(r=> cols.map(c=> q(r[c])).join(',')).join('\n') + '\n' : JSON.stringify({exported: new Date().toISOString(), source: 'UI37 map card prospects', rows}, null, 1);
+  const cols = ['mapNo', 'mapId', 'map', 'cardId', 'card', 'flag', 'group', 'carriedFrom', 'targetNew', 'targetCarried', 'concept', 'animal', 'family', 'element', 'rarity', 'role'];
+  const body = kind === 'csv' ? cols.join(',') + '\n' + rows.map(r=> cols.map(c=> q(r[c])).join(',')).join('\n') + '\n' : JSON.stringify({exported: new Date().toISOString(), source: 'UI37 / UI38 map card prospects', rows, concepts: ui38ExportConcepts()}, null, 1); // 2026-11-09 (UI38): + every proposed concept with its fields and flag
   window.__ui37Last = {kind, body};
   try{ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], {type: kind === 'csv' ? 'text/csv' : 'application/json'})); a.download = 'bramblewood-map-picks.' + (kind === 'csv' ? 'csv' : 'json'); document.body.appendChild(a); a.click(); a.remove(); }catch(e){}
   return body;
 }
-const UI37_SRC_TX = {list: ()=> TX('ui.ui37-src-list'), maybe: ()=> TX('ui.ui37-src-maybe'), claude: ()=> TX('ui.ui37-src-claude'), newcard: ()=> TX('ui.ui37-src-newcard'), flag: ()=> TX('ui.ui37-src-flag'), earlier: ()=> TX('ui.ui37-src-earlier')}; // literal keys (keyify drops keys built from names)
+const UI37_SRC_TX = {list: ()=> TX('ui.ui37-src-list'), maybe: ()=> TX('ui.ui37-src-maybe'), claude: ()=> TX('ui.ui37-src-claude'), newcard: ()=> TX('ui.ui37-src-newcard'), flag: ()=> TX('ui.ui37-src-flag'), earlier: ()=> TX('ui.ui37-src-earlier'), fit: ()=> TX('ui.ui38-src-fit'), concept: ()=> TX('ui.ui38-src-concept')}; // UI38: + fit, concept // literal keys (keyify drops keys built from names)
 function ui37TileHTML(top, p, kind, defs, idx){
-  const f = ui37FlagOf(top, p.id), d = defs[p.id], from = idx.get(p.id);
+  const f = ui37FlagOf(top, p.id), c = ui38Concept(p.id), d = c || defs[p.id], from = idx.get(p.id);
   const src = [...p.src].filter(s=> s !== 'flag' || p.src.size === 1).map(s=> `<b class="ui37-src is-${s}">${escapeHtml(UI37_SRC_TX[s] ? UI37_SRC_TX[s]() : s)}</b>`).join('');
   const fromPill = kind !== 'new' && from != null ? `<b class="ui37-from" title="${escapeAttr(TX('ui.ui37-from-tip', {n: from}))}">${escapeHtml(TX('ui.ui37-from', {n: from}))}</b>` : '';
   const btn = (k, lab)=> `<button type="button" class="ui37-yn-b is-${k}${f === k ? ' on' : ''}" data-ui37-flag="${k}" aria-pressed="${f === k ? 'true' : 'false'}">${escapeHtml(lab)}</button>`;
-  return `<span class="ui37-tile is-${f || 'none'}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${vis4MapCardTilesHTML([p.id], defs, {power: true, why: p.why || ''})}<span class="ui37-pills">${src}${fromPill}</span>`
+  return `<span class="ui37-tile is-${f || 'none'}${c ? ' is-concept' : ''}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${c ? ui38ConceptChipHTML(c) : vis4MapCardTilesHTML([p.id], defs, {power: true, why: p.why || ''})}<span class="ui37-pills">${src}${fromPill}</span>`
     + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', TX('ui.ui37-yes'))}${btn('no', TX('ui.ui37-no'))}</span></span>`;
 }
 function ui37BodyHTML(top, defs, ok){
   const m = mpMapById(top), sp = ui37Split(top, defs, ok), tg = ui37Targets(top), yes = l=> l.filter(p=> ui37FlagOf(top, p.id) === 'yes').length;
-  const xn = yes(sp.neu), yc = yes(sp.car) + yes(sp.extra), mains = ui37MapsData(), i = mains.findIndex(x=> x.id === top), prev = mains[i - 1], next = mains[i + 1];
+  const xn = yes(sp.neu), yc = yes(sp.car), mains = ui37MapsData(), i = mains.findIndex(x=> x.id === top), prev = mains[i - 1], next = mains[i + 1];
   const ct = (k, x, t, dflt, lab, cls)=> `<span class="ui37-ct ${cls}${x === t ? ' is-met' : x > t ? ' is-over' : ''}" data-ui37-ct="${k}">${escapeHtml(lab)} <b class="ui37-x">${x}</b> / <input type="number" min="0" max="99" inputmode="numeric" data-ui37-target="${k}" value="${t}" title="${escapeAttr(TX('ui.ui37-target-tip', {n: sp.n, t: dflt}))}" aria-label="${escapeAttr(TX('ui.ui37-target-tip', {n: sp.n, t: dflt}))}"></span>`;
-  const grp = (cls, title, list, kind)=> `<section class="pk1-mc-sec rv2-panel ui37-grp ${cls}" data-ui37-grp="${kind}"><h3>${escapeHtml(title)} <small>${list.length}</small></h3><div class="vis4-mc-row ui37-row">${list.length ? list.map(p=> ui37TileHTML(top, p, kind, defs, sp.idx)).join('') : '<span class="panel-sub">–</span>'}</div></section>`;
+  const rl = (UI38_PROS && UI38_PROS.rules) || {}, mn = {new: rl.newTarget || 30, carried: rl.carriedTarget || 20}; // 2026-11-09 (UI38): the pool size and its minimum
+  const grp = (cls, title, list, kind)=> `<section class="pk1-mc-sec rv2-panel ui37-grp ${cls}" data-ui37-grp="${kind}"><h3>${escapeHtml(title)} <small data-ui38-n="${list.length}">${list.length}</small> <small class="ui38-min">${escapeHtml(TX('ui.ui38-min', {n: mn[kind]}))}</small></h3><div class="vis4-mc-row ui37-row">${list.length ? list.map(p=> ui37TileHTML(top, p, kind, defs, sp.idx)).join('') : '<span class="panel-sub">–</span>'}</div></section>`;
   const nav = (mm, dir, lab)=> mm ? `<button type="button" class="btn small ghost ui37-go" data-ui37-go="${escapeAttr(mm.id)}" title="${escapeAttr(lab + ': ' + TX('ui.ui37-from', {n: mm.n}) + ' ' + mm.name)}" aria-label="${escapeAttr(lab)}">${dir}</button>` : `<button type="button" class="btn small ghost ui37-go" disabled aria-label="${escapeAttr(lab)}">${dir}</button>`;
   return `<div class="ui37-head"><span class="ui37-nav">${nav(prev, '‹', TX('ui.ui37-prev'))}<b class="ui37-map">${escapeHtml(TX('ui.ui37-from', {n: sp.n}) + ' · ' + ((m && m.icon) ? m.icon + ' ' : '') + (m ? m.name : top))}</b>${nav(next, '›', TX('ui.ui37-next'))}</span>`
     + ct('n', xn, tg.n, tg.dn, TX('ui.ui37-flagged-new'), 'is-new') + ct('c', yc, tg.c, tg.dc, TX('ui.ui37-flagged-carried'), 'is-car')
     + `<span class="ui37-exp" title="${escapeAttr(TX('ui.ui37-export-tip'))}"><button type="button" class="btn small" data-ui37-export="json">⬇ ${escapeHtml(TX('ui.ui37-export'))} .json</button><button type="button" class="btn small" data-ui37-export="csv">.csv</button></span><span class="panel-sub ui37-status" id="ui37Status" role="status">${escapeHtml(ui37StatusText())}</span></div>`
-    + `<p class="panel-sub ui37-sub">${escapeHtml(TX('ui.ui37-sub'))}</p>`
-    + grp('is-new', TX('ui.ui37-new'), sp.neu, 'new') + grp('is-car', TX('ui.ui37-carried'), sp.car, 'carried')
-    + (sp.extra.length ? `<details class="pk1-mc-sec rv2-panel ui37-grp ui37-extra" data-ui37-grp="earlier"><summary><b>${escapeHtml(TX('ui.ui37-earlier'))}</b> <small>${sp.extra.length}</small></summary><div class="vis4-mc-row ui37-row">${sp.extra.map(p=> ui37TileHTML(top, p, 'earlier', defs, sp.idx)).join('')}</div></details>` : '');
+    + `<p class="panel-sub ui37-sub">${escapeHtml(TX('ui.ui38-sub'))}</p>`
+    + grp('is-new', TX('ui.ui37-new'), sp.neu, 'new') + grp('is-car', TX('ui.ui37-carried'), sp.car, 'carried'); // UI38: both open, no fold
 }
 function ui37View(){ try{ return localStorage.getItem(UI37_VIEW_KEY) === 'pros' ? 'pros' : 'lists'; }catch(e){ return 'lists'; } }
 // called by pk1OpenMapCards once the window is drawn: the Lists / Prospects switch and the view (admin, a main map only)
@@ -34044,7 +34048,8 @@ function ui37Mount(ov, top, mapId, ok){
   sw.innerHTML = `<button type="button" data-ui37-view="lists">${escapeHtml(TX('ui.ui37-view-lists'))}</button><button type="button" data-ui37-view="pros">🗳️ ${escapeHtml(TX('ui.ui37-view-pros'))}</button>`;
   const head = modal.querySelector('.modal-head-row'); head.insertAdjacentElement('afterend', sw);
   const box = document.createElement('div'); box.className = 'ui37-pros'; box.id = 'ui37Pros'; modal.appendChild(box);
-  const draw = ()=>{ const keep = modal.scrollTop, op = box.querySelector('details.ui37-extra'), open = !!(op && op.open); box.innerHTML = ui37BodyHTML(top, getCardDefs(), ok); const d2 = box.querySelector('details.ui37-extra'); if(d2 && open) d2.open = true; try{ wireRewardZoom(box); }catch(e){} modal.scrollTop = keep; };
+  ui38Css();
+  const draw = ()=>{ const keep = modal.scrollTop; box.innerHTML = ui37BodyHTML(top, getCardDefs(), ok); try{ wireRewardZoom(box); }catch(e){} modal.scrollTop = keep; }; // 2026-11-09 (UI38): no fold to keep open
   const setView = v=>{ modal.dataset.ui37View = v; sw.querySelectorAll('[data-ui37-view]').forEach(b=>{ const on = b.dataset.ui37View === v; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }); try{ localStorage.setItem(UI37_VIEW_KEY, v); }catch(e){} if(v === 'pros') draw(); };
   sw.addEventListener('click', e=>{ const b = e.target.closest('[data-ui37-view]'); if(b) setView(b.dataset.ui37View); });
   box.addEventListener('click', e=>{
@@ -34058,6 +34063,67 @@ function ui37Mount(ov, top, mapId, ok){
   setView(ui37View());
 }
 // UI37_PROS:END
+// UI38_PROS:START
+// 2026-11-09 (package UI38, owner 03:55: "show all the NEW! cards and proposed NEW! cards. Then also having a section for all proposed Carried cards ... show me a
+// bigger pool each map, e.g. 30+ cards for unique, 20+ cards for carried. Then I'll toggle on/off. And not displaying the submap section."): the Prospects view's
+// two open groups are filled from docs/design/map-prospects-2026-11-09.json (tools/ui38/map_prospects_2026_11_09.py, baked in by assemble_arena.py):
+// NEW! = UI37's prospects that no earlier main map gives, then existing cards that fit the map (biome, CONTENT17 / THEME5 / SKILLREC1, signature skill, element;
+// score >= rules.newMinScore) up to rules.newMax, then the map's proposed concepts (name, animal, element, rarity, role; no stats or skills: a "Proposed" pill and a
+// plain placeholder chip, the hover shows the concept). Carried = UI37's carried prospects, then earlier main maps' cards by fit, then the rest of them (the most
+// recent map first) up to rules.carriedFill. A proposed card is not added once its animal family is in its group rules.familyCap times. The split follows the
+// flags as UI37 does (ui37CarriedIndex); a concept is flagged by its stable id (concept-<name>) in the same `__cfg:map-picks:<map>` row. No side-map cards.
+const UI38_PROS = __MAP_PROSPECTS__;
+const UI38_CONCEPTS = (()=>{ const o = {}; try{ Object.keys(UI38_PROS.maps || {}).forEach(mid=> (UI38_PROS.maps[mid].concepts || []).forEach(c=>{ if(c && c.id) o[c.id] = Object.assign({mapId: mid, mapNo: mapNumberOf(mid)}, c); })); }catch(e){} return o; })();
+function ui38Concept(id){ return (typeof id === 'string' && UI38_CONCEPTS[id]) || null; }
+function ui38Family(id, defs){ const c = ui38Concept(id); return c ? c.family : ((UI38_PROS.family || {})[id] || (defs[id] && defs[id].animal) || ''); }
+// side-map cards, as the lists are now: a card only on side maps' lists (on no main map's MAP list), and, for a map `top`, a card on its own side maps' lists
+// that is not on its MAP list
+function ui38SideOnly(top){
+  const main = new Set(), side = new Set(), own = new Set();
+  try{ mainConquestMaps().forEach(m=>{ const e = mpEntry(m.id); e.cards.forEach(id=> main.add(id)); Object.values(e.submaps || {}).forEach(l=> (l || []).forEach(id=>{ side.add(id); if(m.id === top) own.add(id); })); }); }catch(e){}
+  main.forEach(id=> side.delete(id));
+  if(top){ let mine = []; try{ mine = mpEntry(top).cards; }catch(e){} own.forEach(id=>{ if(!mine.includes(id)) side.add(id); }); }
+  return side;
+}
+const UI38_WHY = {b: ()=> TX('ui.ui38-why-b'), k: ()=> TX('ui.ui38-why-k'), c: ()=> TX('ui.ui38-why-c'), t: ()=> TX('ui.ui38-why-t'), s: ()=> TX('ui.ui38-why-s'), g: ()=> TX('ui.ui38-why-g'), e: ()=> TX('ui.ui38-why-e')}; // literal keys (keyify)
+function ui38WhyText(codes){ return String(codes || '').split('').filter(k=> UI38_WHY[k]).map(k=> UI38_WHY[k]()).join(' · '); }
+// tops up a map's two groups in place (neu / car arrive with UI37's prospects, sorted)
+function ui38Fill(top, defs, ok, idx, neu, car){
+  const R = UI38_PROS.rules || {}, cap = R.familyCap || 2, minS = R.newMinScore || 4, newMax = R.newMax || 40, carFill = R.carriedFill || 22, M = (UI38_PROS.maps || {})[top] || {fit: [], concepts: []};
+  const side = ui38SideOnly(top), have = new Set(neu.concat(car).map(p=> p.id)), fam = l=>{ const c = {}; l.forEach(p=>{ const f = ui38Family(p.id, defs); if(f) c[f] = (c[f] || 0) + 1; }); return c; };
+  const fn = fam(neu), fc = fam(car), usable = id=> !have.has(id) && !side.has(id) && !!defs[id] && ok(id);
+  const take = (list, cnt, id, src, why)=>{ const f = ui38Family(id, defs); if(f && (cnt[f] || 0) >= cap) return false; if(f) cnt[f] = (cnt[f] || 0) + 1; have.add(id); list.push({id, src: new Set([src]), why: why || ''}); return true; };
+  const concepts = (M.concepts || []).filter(c=> !have.has(c.id) && !idx.has(c.id));
+  (M.fit || []).forEach(([id, sc, codes])=>{ if(neu.length + concepts.length >= newMax || sc < minS || idx.has(id) || !usable(id)) return; take(neu, fn, id, 'fit', ui38WhyText(codes)); });
+  concepts.forEach(c=>{ have.add(c.id); neu.push({id: c.id, src: new Set(['concept']), why: c.role || ''}); }); // the map's concepts always show (sized by the generator; their families were capped there)
+  const fitted = new Set(), n = mapNumberOf(top), before = ui37MapsData().filter(m=> m.n < n).sort((a, b)=> a.n - b.n), yesEarlier = new Set(before.flatMap(m=> m.yes));
+  // the previous main map's Yes cards and concepts always show first (the next map carries them most naturally; a concept has no fit row of its own here)
+  ((before[before.length - 1] || {}).yes || []).forEach(id=>{ if(idx.has(id) && !have.has(id) && (ui38Concept(id) || usable(id))){ const f = ui38Family(id, defs); if(f) fc[f] = (fc[f] || 0) + 1; have.add(id); car.push({id, src: new Set([ui38Concept(id) ? 'concept' : 'earlier', 'earlier']), why: ''}); } });
+  (M.fit || []).forEach(([id, sc, codes])=>{ fitted.add(id); if(car.length >= carFill || !idx.has(id) || !usable(id)) return; if(take(car, fc, id, 'fit', ui38WhyText(codes)) && yesEarlier.has(id)) car[car.length - 1].src.add('earlier'); });
+  if(car.length < carFill){ // then every other card (or concept) an earlier main map gives: the ones flagged Yes there first, then the most recent map first
+    const exotic = new Set(UI38_PROS.exotic || []); // not too rare or strange an animal for Maps 0-20 (owner 03:55), unless flagged Yes on an earlier map
+    const rest = [...idx.keys()].filter(id=> !fitted.has(id) && !have.has(id) && (ui38Concept(id) || usable(id)) && (!exotic.has(id) || yesEarlier.has(id))), y = id=> yesEarlier.has(id) ? 0 : 1;
+    rest.sort((a, b)=> y(a) - y(b) || idx.get(b) - idx.get(a) || String((ui38Concept(a) || defs[a]).name).localeCompare(String((ui38Concept(b) || defs[b]).name)));
+    rest.forEach(id=>{ if(car.length >= carFill) return; if(take(car, fc, id, ui38Concept(id) ? 'concept' : 'earlier', '') && !yesEarlier.has(id)) car[car.length - 1].src.delete('earlier'); });
+  }
+}
+// a concept's chip: the chip shape with a plain disc (no art); the hover shows the concept
+function ui38ConceptChipHTML(c){
+  const tip = c.name + '|' + TX('ui.ui38-concept-tip', {animal: c.animal, element: c.element, rarity: c.rarity}) + ' ' + String(c.role || '').replace(/\|/g, '/');
+  return `<span class="vis4-mc-card is-chip ui38-concept" role="img" tabindex="0" data-zoom-tip="${escapeAttr(tip)}" aria-label="${escapeAttr(c.name)}">${cardChipHTML({name: c.name, rarity: c.rarity, icon: ' '}, {noDefid: true, extraClass: 'ui38-cchip'})}</span>`;
+}
+// Export: every concept with its fields and the flag it has on its map
+function ui38ExportConcepts(){ return Object.values(UI38_CONCEPTS).map(c=> ({id: c.id, mapNo: c.mapNo, mapId: c.mapId, name: c.name, animal: c.animal, family: c.family, element: c.element, rarity: c.rarity, role: c.role, flag: ui37FlagOf(c.mapId, c.id) || ''})); }
+// the view's few extra styles (kept here with the block)
+function ui38Css(){
+  if(document.getElementById('ui38Css')) return;
+  const st = document.createElement('style'); st.id = 'ui38Css';
+  st.textContent = '.ui37-src.is-fit{background:#cfe3c8; color:#1d3a17;} .ui37-src.is-concept{background:#2f7f86; color:#fff;}'
+    + ' .ui38-min{font-weight:600; opacity:.7; font-size:.8em;} .ui38-cchip .cc-disc{background:repeating-linear-gradient(45deg, rgba(255,255,255,.08) 0 4px, transparent 4px 8px), #3a2e1e; outline:1.5px dashed rgba(255,243,220,.55); outline-offset:-4px;}'
+    + ' .ui38-cchip .cc-disc::before{content:"" !important;} .ui37-tile.is-concept{border-style:dashed;}';
+  document.head.appendChild(st);
+}
+// UI38_PROS:END
 // UI29_PE:START
 // 2026-11-07 (package UI29, owner 09:04 / 09:10: "I need a pack editor page - similar UI to the map editor. It also shows Starter, Base, and Factions cards!"):
 // the admin 📦 Pack editor, built from the 🃏 Map cards window's parts (the overlay and panel classes, vis4MapCardTilesHTML with UI28's power badge,
