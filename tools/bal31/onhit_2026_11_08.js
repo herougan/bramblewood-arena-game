@@ -87,6 +87,19 @@ const ci = e => e ? `${e.m} [${e.lo}, ${e.hi}]` : '-';
 function md(out, levels) {
   const Ls = levels.map(l => 'L' + l), L = [`# On-hit riders, ${out.generated.slice(0, 10)} (package BAL31)`, '',
     `\`${out.tool}\`; fingerprint \`${out.fingerprint}\`; ${out.games} paired fights a variant; the skill ladder's bodies and method; brambles 15, the global context. Worth in 3A + H points. Measurement only: no price changed.`, ''];
+  const notes = path.join(__dirname, 'notes', 'onhit.md'); if (fs.existsSync(notes)) L.push(fs.readFileSync(notes, 'utf8').trim(), '');
+  // the patterns, read off the numbers: riders that play identically (an alias), riders the number does not move, riders worth nothing alone
+  // the same simple price at every N, within 0.15 (a different variant id moves a tie-break now and then, so not bit-identical)
+  const vec = r => r.points.map(x => x.simple), alias = [], used = new Set();
+  out.riders.forEach((r, i) => { if (used.has(r.key)) return; const g = [r.key]; out.riders.slice(i + 1).forEach(s => { const a = vec(r), b = vec(s);
+    if (a.length === b.length && a.every((v, j) => v != null && b[j] != null && v > 1.5 && Math.abs(v - b[j]) <= 0.15)) { g.push(s.key); used.add(s.key); } }); if (g.length > 1) alias.push(g); });
+  const get = (r, n) => r.points.find(x => x.n === n);
+  const flat = out.riders.filter(r => get(r, 1) && get(r, 3) && get(r, 1).simple > 1 && get(r, 3).simple < 1.2 * get(r, 1).simple).map(r => r.key);
+  const zero = out.riders.filter(r => Math.max(...r.points.map(x => x.simple == null ? 0 : x.simple)) < 1).map(r => r.key);
+  const off = out.riders.filter(r => r.points.some(x => x.price != null && x.simple != null && Math.abs(x.simple - x.price) > 1 && levels.every(Lv => { const m = x['L' + Lv]; return m && (x.price < m.best.lo || x.price > m.best.hi); })));
+  L.push('## Patterns', '', `- Identical results (one rule under two keys): ${alias.map(g => g.join(' = ')).join('; ') || 'none'}.`,
+    `- The number barely matters (N3 under 1.2 x N1): ${flat.join(', ') || 'none'}.`, `- Worth under 1 point alone at every N (enablers or no effect on these bodies): ${zero.join(', ') || 'none'}.`,
+    `- The table off by more than 1 point (outside both levels' 95%) at some N: ${off.length} of ${out.riders.length} (under: ${off.filter(r => r.points.some(x => x.price != null && x.simple > x.price + 1)).map(r => r.key).join(', ')}; over: ${off.filter(r => r.points.some(x => x.price != null && x.simple < x.price - 1)).map(r => r.key).join(', ')}).`, '');
   Ls.forEach(l => { const x = out.levels[l]; L.push(`- ${l}: bodies 3A + H = ${x.budget} (${x.bodies}); rate ${x.rate} win-rate points a point (${x.rateFrom}); the stat yardstick on these bodies ${x.statRateOnBodies}.`); });
   L.push('', '## Simple price per rider', '', 'Simple = the larger of the L1 / L5 best (the ladder\'s rule: the most it is worth on any body); per N = a line through 0 fitted to the simple prices (numbered riders). Table = the cost table\'s price today. ** = the table is off by more than 1 point and outside both levels\' 95%.', '',
     '| Rider | Table per N (today) | Simple N1 | N2 | N3 | Per N (fit) | Shape (L1 / L5 value×N^pow) |', '|---|---|---|---|---|---|---|');
