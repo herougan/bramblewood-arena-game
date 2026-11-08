@@ -28,6 +28,8 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 20 | Healing → Heal (name) | UI35 |
 | 21 | Bandage: removes Vulnerable and Bleed. Halve-attack / double-damage skills are for later maps. Skill list has duplicates (many-units-on-field vs many-deaths skills): audit | DES2 |
 | 22 | Map cards skill list: also a "Codex sugg." pill (from the Codex draft), next to Claude sugg. and Sugg. Intro | UI35 |
+| 23 | (11:03) Armoured Shield: a unit Shield that also gives Armor while the Shield lasts. Built as a Shield parameter (`shield: {v: N, armor: M}`) | ENG37 |
+| 24 | (11:03) Retreat into the shell: after it attacks, +2 Armor until the round ends (so a foe that strikes first meets no Armor). Built as a Shell parameter (Shell today: +N Armor when first hit each round) | ENG37 |
 
 ## 11-08 09:27: Owner notes
 | # | Note | Package |
