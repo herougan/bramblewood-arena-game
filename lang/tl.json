@@ -4362,5 +4362,17 @@
  "Saved in this browser": "Naka-save sa browser na ito",
  "Previous map": "Naunang mapa",
  "Next map": "Susunod na mapa",
- "More cards from earlier maps": "Iba pang card mula sa mga naunang mapa"
+ "More cards from earlier maps": "Iba pang card mula sa mga naunang mapa",
+ "A bigger pool for this map. NEW!: its list, cards that fit the map that no earlier main map gives, then proposed new cards (no stats or skills yet). Carried: cards from earlier main maps, best fit first. Flag each Yes or No; a Yes on an earlier map makes a card Carried here. Side maps come later.": "Mas malaking pagpipilian para sa mapang ito. BAGO!: ang listahan nito, mga card na bagay sa mapa na walang naunang pangunahing mapa na nagbibigay, saka mga mungkahing bagong card (wala pang stats o skill). Dala: mga card mula sa mga naunang pangunahing mapa, ang pinakabagay muna. Markahan ng Oo o Hindi; ang Oo sa naunang mapa ay ginagawa itong Dala rito. Susunod ang mga side map.",
+ "at least {n}": "hindi bababa sa {n}",
+ "Fits the map": "Bagay sa mapa",
+ "Proposed": "Mungkahi",
+ "Proposed new card: {animal}, {element}, suggested {rarity}.": "Mungkahing bagong card: {animal}, {element}, mungkahing rarity {rarity}.",
+ "The map's habitat": "Tirahan ng mapa",
+ "A nearby habitat": "Kalapit na tirahan",
+ "CONTENT17 pick": "Pili ng CONTENT17",
+ "THEME5 pick": "Pili ng THEME5",
+ "SKILLREC1 pick": "Pili ng SKILLREC1",
+ "Has the map's signature skill": "May tatak na skill ng mapa",
+ "The map's element": "Elemento ng mapa"
 }

@@ -3694,7 +3694,19 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui37-saved-local": "Saved in this browser",
   "ui.ui37-prev": "Previous map",
   "ui.ui37-next": "Next map",
-  "ui.ui37-earlier": "More cards from earlier maps"
+  "ui.ui37-earlier": "More cards from earlier maps",
+  "ui.ui38-sub": "A bigger pool for this map. NEW!: its list, cards that fit the map that no earlier main map gives, then proposed new cards (no stats or skills yet). Carried: cards from earlier main maps, best fit first. Flag each Yes or No; a Yes on an earlier map makes a card Carried here. Side maps come later.",
+  "ui.ui38-min": "at least {n}",
+  "ui.ui38-src-fit": "Fits the map",
+  "ui.ui38-src-concept": "Proposed",
+  "ui.ui38-concept-tip": "Proposed new card: {animal}, {element}, suggested {rarity}.",
+  "ui.ui38-why-b": "The map's habitat",
+  "ui.ui38-why-k": "A nearby habitat",
+  "ui.ui38-why-c": "CONTENT17 pick",
+  "ui.ui38-why-t": "THEME5 pick",
+  "ui.ui38-why-s": "SKILLREC1 pick",
+  "ui.ui38-why-g": "Has the map's signature skill",
+  "ui.ui38-why-e": "The map's element"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
