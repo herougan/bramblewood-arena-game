@@ -4327,5 +4327,15 @@
  "After it attacks: +{n} Armor until the round ends.": "공격한 뒤: 라운드가 끝날 때까지 방어구 +{n}.",
  "When first hit (default)": "처음 맞았을 때 (기본)",
  "After it attacks": "공격한 뒤",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "껍데기 방어구가 생기는 시점: 매 라운드 처음 맞았을 때(기본), 또는 자신의 공격 뒤(먼저 공격한 적은 방어구를 만나지 않음)."
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "껍데기 방어구가 생기는 시점: 매 라운드 처음 맞았을 때(기본), 또는 자신의 공격 뒤(먼저 공격한 적은 방어구를 만나지 않음).",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "낸 {kin} 유닛: +{a} ⚔ +{h} ❤",
+ "Habitat units": "서식지 유닛",
+ "Star path: {path} (Wildpaths)": "별의 길: {path} (야생의 길)",
+ "Star path": "별의 길",
+ "Cards that only a star path gives": "별의 길에서만 얻는 카드",
+ "Card: {name}": "카드: {name}",
+ "Unlocks {name}. Only this star path gives it.": "{name} 해금. 이 별의 길에서만 얻는다.",
+ "Starpath-only card": "별의 길 전용 카드",
+ "Rainforest": "열대우림",
+ "Savanna": "사바나"
 }

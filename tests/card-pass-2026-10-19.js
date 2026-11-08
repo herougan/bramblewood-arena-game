@@ -111,7 +111,7 @@ Object.entries(PLAN.rarity || {}).forEach(([id, x])=> ok(defs[id] && defs[id].ra
 
 // ---- 3. sources
 const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = B.G, MAPS = B.MAPS;
-const obtainable = c=>{ const s = G.cardSourceOf(c); if(['pack', 'base', 'raid', 'nest', 'smith', 'secret', 'quest'].includes(s.kind)) return true;
+const obtainable = c=>{ const s = G.cardSourceOf(c); if(['pack', 'base', 'raid', 'nest', 'smith', 'secret', 'quest', 'starpath' /* 2026-11-08 (CONTENT18): a Wildpaths card mark */].includes(s.kind)) return true;
   if(s.kind !== 'map' || !s.node) return false; const m = MAPS.find(x=> x.id === s.id); return !!(m && (m.nodes || []).some(x=> x.key === s.node)); };
 const none = live.filter(c=> c.cardType !== 'materia' && !c.easterEgg && !c.awaitingSource && !obtainable(c) && !P.SOURCELESS[c.id]).map(c=> c.id);   // 2026-10-19 (EE): Easter eggs are ungettable on purpose; new cards flagged awaitingSource (SK2/EQ/SK3, owner places them later)
 ok(!none.length, '3. every live card has a source or is on the allowed sourceless list: ' + none.slice(0, 10).join(', '));

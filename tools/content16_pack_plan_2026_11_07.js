@@ -227,7 +227,7 @@ Object.keys(proposal).forEach(k=>{ const z = packOfZone(k), map = z ? z.tierFrom
 Object.values(ACHV).forEach(a=> a.budget = budgetAt(a.card, a.budgetMap));
 
 // ---- sources
-const SPECIAL_KINDS = new Set(['raid', 'nest', 'smith', 'secret', 'quest']);
+const SPECIAL_KINDS = new Set(['raid', 'nest', 'smith', 'secret', 'quest', 'starpath' /* 2026-11-08 (CONTENT18): a Wildpaths card mark */]);
 function classify(id, mode){
   const d = defs[id] || byId[id], s = G.cardSourceOf(d), where = [];
   const packs = mode === 'proposed' ? PACK_KEYS_SHOP.filter(k=> proposed[k].includes(id)) : packsToday(d);

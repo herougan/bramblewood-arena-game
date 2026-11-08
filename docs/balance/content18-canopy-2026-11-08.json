@@ -1,0 +1,74 @@
+{
+ "tool": "tools/content18_canopy_measure_2026_11_08.js",
+ "generated": "2026-11-08T04:44:38.977Z",
+ "games": 40,
+ "seed0": 9100,
+ "note": "player win %; decks unchanged (BAL28 retunes)",
+ "rows": [
+  {
+   "code": "14-A-1",
+   "kind": "skirmish",
+   "name": "Dart Frogs",
+   "castle": "canopy-bower",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "kraal": 0,
+   "bower": 0,
+   "inBand": false,
+   "gap": -90
+  },
+  {
+   "code": "14-A-2",
+   "kind": "skirmish",
+   "name": "Strangler Arch",
+   "castle": "canopy-bower",
+   "target": 80,
+   "lo": 72,
+   "hi": 88,
+   "kraal": 30,
+   "bower": 47.5,
+   "inBand": false,
+   "gap": -32.5
+  },
+  {
+   "code": "14-A-3",
+   "kind": "skirmish",
+   "name": "Sloth Boughs",
+   "castle": "canopy-bower",
+   "target": 70,
+   "lo": 62,
+   "hi": 78,
+   "kraal": 27.5,
+   "bower": 27.5,
+   "inBand": false,
+   "gap": -42.5
+  },
+  {
+   "code": "14-A-4",
+   "kind": "elite",
+   "name": "Drum Circle",
+   "castle": "canopy-bower",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "kraal": 15,
+   "bower": 10,
+   "inBand": false,
+   "gap": -50
+  },
+  {
+   "code": "14-A-5",
+   "kind": "boss",
+   "name": "The Jaguar's Path",
+   "castle": "canopy-bower",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "kraal": 0,
+   "bower": 0,
+   "inBand": false,
+   "gap": -40
+  }
+ ]
+}

@@ -370,6 +370,8 @@ run node tests/ui34-2026-11-08.js   # 2026-11-08 (package UI34, owner 23:49): ca
 # browser check for package UI34: python3 tests/e2e/ui34_2026_11_08.py (needs Playwright; not run by run.js): Counters group at 1366 and 390, one-line tiles, hover, refresh on Cut / Keep; screenshots in docs/screens/ui34/
 run node tests/eng37-2026-11-08.js   # 2026-11-08 (package ENG37, owner 09:27 #1, 10:52 #23-24): Reach rework (Flying 1 as an attacker; with nothing opposite it strikes an enemy in the lane beside it), the Cormorant (Gannet Cliffs), Armoured Shield (shield.armor), Shell after attacking (shell.when)
 # browser check for package ENG37: python3 tests/e2e/eng37_2026_11_08.py (needs Playwright; not run by run.js): the editor's Shield: Armor / Shell: when rows, a Reach diagonal strike in a Gannet Cliffs match; screenshots in docs/screens/eng37/
+run node tests/content18-2026-11-08.js   # 2026-11-08 (package CONTENT18, owner 10:52 #8 #12 #14, 09:27 #7): nine shooters (one per element, on no list, in budget), a Starpath-only card mark on each Wildpaths trail (Epic+, source starpath, granted on learning), the Canopy Bower (Rainforest / Savanna +1/+2) in The Canopy's fights, canopy fields, texts in 12 packs, art prompts
+# browser check for package CONTENT18: python3 tests/e2e/content18_2026_11_08.py (needs Playwright; not run by run.js): a star path card mark learned (the card granted, the Codex pill), the Canopy Bower in a Canopy fight; screenshots in docs/screens/content18/
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
 # browser check for package UI15 (owner #3 #4 #8 #11 #14): python3 tests/e2e/ui15_2026_11_02.py (needs Playwright; not run by run.js)

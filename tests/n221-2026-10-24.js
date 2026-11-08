@@ -24,7 +24,7 @@ const chk = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools', 'n221_divvy
 const LF1SRC = J('docs/balance/listfix1-cards-2026-10-29.json').sources;
 // 2026-11-04 (TESTFIX1): cards built after N221 wait under their own owner calls, not N221's table: the Bolas Spider (ENG15, decision ENG14-3)
 // and CONTENT7's ten (owner 11-02 19:56, IDEA-11-02; placement call CONTENT7-1); their creatorNote names it
-const laterHome = id=> /decision ENG14-3|package CONTENT7, owner 19:56|decision ENG27-9/.test((by[id] || {}).creatorNote || ''); // + 2026-11-06 (ENG27): the Hype card waits under ENG27-9
+const laterHome = id=> /decision ENG14-3|package CONTENT7, owner 19:56|decision ENG27-9|package CONTENT18, owner 10:52 DES1-3/.test((by[id] || {}).creatorNote || ''); // + 2026-11-06 (ENG27): the Hype card waits under ENG27-9; + 2026-11-08 (CONTENT18): the shooters wait under CONTENT18-1
 // ... and a proposal-homed card that a later package placed (LISTFIX1 / APPLY1-4 on 10-29, DEC1 on 11-03) has its source now
 const placedSince = id=> by[id] && !by[id].awaitingSource && !!by[id].source;
 const T2 = Object.fromEntries(J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));

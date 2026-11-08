@@ -116,6 +116,7 @@
   "sunspire-envoy": 5,
   "quarry-mole": 8,
   "tiny-cave-dweller": 4,
+  "ironmaw-warwolf": 21,
   "land-tiller": 24,
   "otter-ferryman": 5,
   "otter-netmender": 5,
@@ -132,6 +133,7 @@
   "inside-out-hedgehog": 13,
   "talon-archer": 15,
   "sergeant-bramblefox": 13,
+  "thistle-baron": 21,
   "old-shell": 2,
   "drowned-matriarch": 4,
   "echo-matriarch": 8,
@@ -354,6 +356,7 @@
   "legate-of-rivergate": 5,
   "gold-throat-elder": 5,
   "oathsworn-legionary": 5,
-  "cobalt-talon-honour-guard": 5
+  "cobalt-talon-honour-guard": 5,
+  "bumblebee-queen": 21
  }
 }

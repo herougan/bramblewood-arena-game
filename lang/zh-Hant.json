@@ -4325,5 +4325,15 @@
  "After it attacks: +{n} Armor until the round ends.": "攻擊之後：+{n} 護甲，直到本回合結束。",
  "When first hit (default)": "首次被擊中時（預設）",
  "After it attacks": "攻擊之後",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "甲殼護甲何時出現：每回合首次被擊中時（預設），或在自身攻擊之後（先出手的敵人碰不到護甲）。"
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "甲殼護甲何時出現：每回合首次被擊中時（預設），或在自身攻擊之後（先出手的敵人碰不到護甲）。",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "打出的{kin}單位：+{a} ⚔ +{h} ❤",
+ "Habitat units": "棲息地單位",
+ "Star path: {path} (Wildpaths)": "星之路：{path}（荒野小徑）",
+ "Star path": "星之路",
+ "Cards that only a star path gives": "只有星之路給的卡",
+ "Card: {name}": "卡牌：{name}",
+ "Unlocks {name}. Only this star path gives it.": "解鎖{name}。只有這條星之路會給。",
+ "Starpath-only card": "星之路專屬卡",
+ "Rainforest": "雨林",
+ "Savanna": "草原"
 }

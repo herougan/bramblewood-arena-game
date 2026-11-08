@@ -4324,5 +4324,15 @@
  "After it attacks: +{n} Armor until the round ends.": "Tras atacar: +{n} de Armadura hasta el final de la ronda.",
  "When first hit (default)": "Al recibir el primer golpe (por defecto)",
  "After it attacks": "Tras atacar",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Cuándo aparece la Armadura del Caparazón: al recibir el primer golpe de cada ronda (por defecto), o tras su propio ataque (un enemigo que golpea primero no encuentra Armadura)."
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Cuándo aparece la Armadura del Caparazón: al recibir el primer golpe de cada ronda (por defecto), o tras su propio ataque (un enemigo que golpea primero no encuentra Armadura).",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "Unidades de {kin} jugadas: +{a} ⚔ +{h} ❤",
+ "Habitat units": "Unidades de hábitat",
+ "Star path: {path} (Wildpaths)": "Senda estelar: {path} (Sendas salvajes)",
+ "Star path": "Senda estelar",
+ "Cards that only a star path gives": "Cartas que solo da una senda estelar",
+ "Card: {name}": "Carta: {name}",
+ "Unlocks {name}. Only this star path gives it.": "Desbloquea {name}. Solo esta senda estelar la da.",
+ "Starpath-only card": "Carta exclusiva de senda estelar",
+ "Rainforest": "Selva",
+ "Savanna": "Sabana"
 }

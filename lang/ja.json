@@ -4325,5 +4325,15 @@
  "After it attacks: +{n} Armor until the round ends.": "攻撃した後：ラウンド終了までアーマー+{n}。",
  "When first hit (default)": "最初に攻撃を受けた時（既定）",
  "After it attacks": "攻撃した後",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "甲羅のアーマーが出る時：各ラウンド最初に攻撃を受けた時（既定）、または自分の攻撃の後（先に攻撃した敵はアーマーに当たらない）。"
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "甲羅のアーマーが出る時：各ラウンド最初に攻撃を受けた時（既定）、または自分の攻撃の後（先に攻撃した敵はアーマーに当たらない）。",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "出した{kin}のユニット：+{a} ⚔ +{h} ❤",
+ "Habitat units": "生息地のユニット",
+ "Star path: {path} (Wildpaths)": "星の道：{path}（ワイルドパス）",
+ "Star path": "星の道",
+ "Cards that only a star path gives": "星の道だけがくれるカード",
+ "Card: {name}": "カード：{name}",
+ "Unlocks {name}. Only this star path gives it.": "{name}を解放する。この星の道でしか手に入らない。",
+ "Starpath-only card": "星の道限定カード",
+ "Rainforest": "熱帯雨林",
+ "Savanna": "サバンナ"
 }

@@ -58,7 +58,7 @@ const prompts = R('docs/art-style-prompts.md'), BANNED = ['no clothes', 'spiked'
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
 const packs = CODES.map(code=> ({code, cards: J(`lang/cards/${code}.json`), ui: J(`lang/ui/${code}.json`), main: J(`lang/${code}.json`)}));
 const firstNew = cards.findIndex(c=> newIds.has(c.id));
-ok(firstNew >= cards.length - C17.NEW.length - 5 && cards.slice(firstNew).every(c=> newIds.has(c.id) || cards.indexOf(c) > firstNew), '2: the new cards are appended at the end');
+ok(firstNew >= cards.length - C17.NEW.length - 12 /* 2026-11-08: room for later packages' appends (ENG37 1, CONTENT18 5) */ && cards.slice(firstNew).every(c=> newIds.has(c.id) || cards.indexOf(c) > firstNew), '2: the new cards are appended at the end');
 C17.NEW.forEach(s=>{ const c = by[s.id]; ok(!!c, `${s.id}: in cards.json`); if(!c) return;
   ok(c.awaitingSource === true && c.unattainable === true && !c.source, `${s.id}: awaitingSource + unattainable, no source`);
   ok(!listed.has(s.id) && !JSON.stringify(extras).includes('"' + s.id + '"'), `${s.id}: on no list and in no pack's extras`);

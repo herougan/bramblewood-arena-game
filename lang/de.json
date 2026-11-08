@@ -4324,5 +4324,15 @@
  "After it attacks: +{n} Armor until the round ends.": "Nach seinem Angriff: +{n} Rüstung bis zum Rundenende.",
  "When first hit (default)": "Beim ersten Treffer (Standard)",
  "After it attacks": "Nach seinem Angriff",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Wann die Panzer-Rüstung kommt: beim ersten Treffer jeder Runde (Standard) oder nach seinem eigenen Angriff (ein Gegner, der zuerst zuschlägt, trifft keine Rüstung)."
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Wann die Panzer-Rüstung kommt: beim ersten Treffer jeder Runde (Standard) oder nach seinem eigenen Angriff (ein Gegner, der zuerst zuschlägt, trifft keine Rüstung).",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "Gespielte {kin}-Einheiten: +{a} ⚔ +{h} ❤",
+ "Habitat units": "Lebensraum-Einheiten",
+ "Star path: {path} (Wildpaths)": "Sternenpfad: {path} (Wildpfade)",
+ "Star path": "Sternenpfad",
+ "Cards that only a star path gives": "Karten, die nur ein Sternenpfad gibt",
+ "Card: {name}": "Karte: {name}",
+ "Unlocks {name}. Only this star path gives it.": "Schaltet {name} frei. Nur dieser Sternenpfad gibt sie.",
+ "Starpath-only card": "Nur-Sternenpfad-Karte",
+ "Rainforest": "Regenwald",
+ "Savanna": "Savanne"
 }

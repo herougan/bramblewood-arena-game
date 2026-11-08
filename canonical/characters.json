@@ -884,5 +884,28 @@
     },
     "flavor": "Deep moss under the roots; whatever rests here a night gets up thicker-skinned.",
     "creatorNote": "2026-11-06 (package ENG27, owner item 36): every unit you play +3 Health (the unitHpBonus passive). Health 22 and Rare as Banner Knoll. On no road fight. No art yet."
+  },
+  {
+    "id": "canopy-bower",
+    "name": "Canopy Bower",
+    "icon": "🌴",
+    "health": 26,
+    "rarity": "epic",
+    "archetypes": [
+      "Castle"
+    ],
+    "effects": {
+      "habitatBonus": {
+        "kin": [
+          "Rainforest",
+          "Savanna"
+        ],
+        "atk": 1,
+        "hp": 2
+      }
+    },
+    "flavor": "A platform of woven lianas high in the rainforest roof. The monkeys built it; the whole canopy defends it.",
+    "unlockMap": "my",
+    "eng24Plus2": true
   }
 ]

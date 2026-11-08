@@ -44,6 +44,10 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 8 | BAL27-2: owner changes those fights; show the win-rate % on the SK and WK fight details | UI35 |
 | 9 | BAL27-3: owner retunes Gatorback Swamp himself | owner |
 
+## 11-08: Package CONTENT18 (on its branch, not released)
+- Done (owner 10:52 rows 8, 12, 14; 09:27 row 7): nine shooters, one per element, on no map list (five existing unused, four new Commons); one Starpath-only card mark on each Wildpaths trail (Thistle Baron, Ironmaw Warwolf, new Bumblebee Queen); the Canopy Bower (Rainforest / Savanna +1/+2) defended in The Canopy's five fights, fields still canopy ones.
+- Owner calls open: CONTENT18-1 (the shooters), CONTENT18-2 (star paths = Wildpaths?), CONTENT18-3 (the Bower's numbers). Next: BAL28 retunes The Canopy (all five fights under band at 40 games); art for the five cards and the bramble.
+
 ## 11-08: Package ENG37 (on its branch, not released)
 - Done (owner 09:27 row 1; 10:52 rows 23-24): Reach strikes an enemy in the lane beside it instead of the bramble (less Health first) and counts as Flying 1 as an attacker; the Cormorant (Common 3/7 Reach) on the Gannet Cliffs list, art prompt ready; Armoured Shield (`shield: {v, armor}`) and Shell after attacking (`shell: {v, when: "afterAttack"}`) with editor rows, texts, prices.
 - Owner calls open: ENG37-1 (which neighbour), ENG37-2 (Reach price after the rework), ENG37-3 (the Cormorant), ENG37-4 (Shell after attacking: name), ENG37-5 (Armoured Shield: whose Shield). Next: the Cormorant's art on the owner's computer; BAL28 after this.

@@ -4325,5 +4325,15 @@
  "After it attacks: +{n} Armor until the round ends.": "Après son attaque : +{n} Armure jusqu'à la fin du tour.",
  "When first hit (default)": "Au premier coup reçu (par défaut)",
  "After it attacks": "Après son attaque",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Quand l'Armure de la Carapace s'active : au premier coup reçu chaque tour (par défaut), ou après sa propre attaque (un ennemi qui frappe avant ne rencontre aucune Armure)."
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Quand l'Armure de la Carapace s'active : au premier coup reçu chaque tour (par défaut), ou après sa propre attaque (un ennemi qui frappe avant ne rencontre aucune Armure).",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "Unités {kin} jouées : +{a} ⚔ +{h} ❤",
+ "Habitat units": "Unités d’un habitat",
+ "Star path: {path} (Wildpaths)": "Chemin d’étoiles : {path} (Sentiers sauvages)",
+ "Star path": "Chemin d’étoiles",
+ "Cards that only a star path gives": "Cartes que seul un chemin d’étoiles donne",
+ "Card: {name}": "Carte : {name}",
+ "Unlocks {name}. Only this star path gives it.": "Débloque {name}. Seul ce chemin d’étoiles la donne.",
+ "Starpath-only card": "Carte exclusive au chemin d’étoiles",
+ "Rainforest": "Forêt tropicale",
+ "Savanna": "Savane"
 }

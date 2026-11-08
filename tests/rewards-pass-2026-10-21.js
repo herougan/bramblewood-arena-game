@@ -28,7 +28,7 @@ const mains = MAPS.filter(m=> !m.sub && !m.reserved), mapNo = R.mapNo;
 const live = cards.filter(c=> !c.pool && !c.token && !c.test);
 
 // ---- 1. the categories
-const CATS = new Set(['skirmish', 'pack', 'faction', 'raid', 'smith', 'nest', 'base', 'quest', 'secret', 'easteregg', 'materia', 'awaitingSource']);
+const CATS = new Set(['skirmish', 'pack', 'faction', 'raid', 'smith', 'nest', 'base', 'quest', 'secret', 'easteregg', 'materia', 'awaitingSource', 'starpath' /* 2026-11-08 (CONTENT18): a Wildpaths card mark */]);
 const odd = live.filter(c=>{ const k = R.category(c); return !CATS.has(k) && !(k === 'unsorted' && (PASS.SOURCELESS[c.id] || c.hallOfFame)); }).map(c=> `${c.id} (${R.category(c)})`);
 ok(!odd.length, '1. every card is in one category (an unsorted card is on the card pass\'s sourceless list): ' + odd.slice(0, 8).join(', '));
 const two = cards.filter(c=> R.overlaps(c).length).map(c=> `${c.id}: ${R.overlaps(c).join('; ')}`);

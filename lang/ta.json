@@ -4327,5 +4327,15 @@
  "After it attacks: +{n} Armor until the round ends.": "தாக்கிய பின்: சுற்று முடியும் வரை +{n} கவசம்.",
  "When first hit (default)": "முதலில் தாக்கப்படும்போது (இயல்பு)",
  "After it attacks": "தாக்கிய பின்",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "ஓட்டின் கவசம் எப்போது எழும்: ஒவ்வொரு சுற்றிலும் முதலில் தாக்கப்படும்போது (இயல்பு), அல்லது தன் தாக்குதலுக்குப் பின் (முதலில் தாக்கும் எதிரி கவசத்தைச் சந்திக்க மாட்டான்)."
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "ஓட்டின் கவசம் எப்போது எழும்: ஒவ்வொரு சுற்றிலும் முதலில் தாக்கப்படும்போது (இயல்பு), அல்லது தன் தாக்குதலுக்குப் பின் (முதலில் தாக்கும் எதிரி கவசத்தைச் சந்திக்க மாட்டான்).",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "விளையாடிய {kin} அலகுகள்: +{a} ⚔ +{h} ❤",
+ "Habitat units": "வாழிட அலகுகள்",
+ "Star path: {path} (Wildpaths)": "நட்சத்திரப் பாதை: {path} (காட்டுப் பாதைகள்)",
+ "Star path": "நட்சத்திரப் பாதை",
+ "Cards that only a star path gives": "நட்சத்திரப் பாதை மட்டுமே தரும் அட்டைகள்",
+ "Card: {name}": "அட்டை: {name}",
+ "Unlocks {name}. Only this star path gives it.": "{name} திறக்கும். இந்த நட்சத்திரப் பாதை மட்டுமே இதைத் தரும்.",
+ "Starpath-only card": "நட்சத்திரப் பாதைக்கு மட்டுமான அட்டை",
+ "Rainforest": "மழைக்காடு",
+ "Savanna": "புல்வெளி"
 }

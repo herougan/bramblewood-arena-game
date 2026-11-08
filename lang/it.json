@@ -4326,5 +4326,15 @@
  "After it attacks: +{n} Armor until the round ends.": "Dopo aver attaccato: +{n} Armatura fino a fine round.",
  "When first hit (default)": "Al primo colpo subito (predefinito)",
  "After it attacks": "Dopo aver attaccato",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Quando si alza l'Armatura del Guscio: al primo colpo subito ogni round (predefinito), o dopo il suo attacco (un nemico che colpisce prima non trova Armatura)."
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Quando si alza l'Armatura del Guscio: al primo colpo subito ogni round (predefinito), o dopo il suo attacco (un nemico che colpisce prima non trova Armatura).",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "Unità {kin} giocate: +{a} ⚔ +{h} ❤",
+ "Habitat units": "Unità di un habitat",
+ "Star path: {path} (Wildpaths)": "Sentiero stellare: {path} (Sentieri selvaggi)",
+ "Star path": "Sentiero stellare",
+ "Cards that only a star path gives": "Carte che dà solo un sentiero stellare",
+ "Card: {name}": "Carta: {name}",
+ "Unlocks {name}. Only this star path gives it.": "Sblocca {name}. Solo questo sentiero stellare la dà.",
+ "Starpath-only card": "Carta esclusiva del sentiero stellare",
+ "Rainforest": "Foresta pluviale",
+ "Savanna": "Savana"
 }

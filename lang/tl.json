@@ -4325,5 +4325,15 @@
  "After it attacks: +{n} Armor until the round ends.": "Pagkatapos umatake: +{n} Armor hanggang matapos ang round.",
  "When first hit (default)": "Kapag unang natamaan (default)",
  "After it attacks": "Pagkatapos umatake",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Kailan lalabas ang Armor ng Shell: kapag unang natamaan bawat round (default), o pagkatapos ng sarili nitong atake (walang Armor na sasalubong sa kalabang naunang tumama)."
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Kailan lalabas ang Armor ng Shell: kapag unang natamaan bawat round (default), o pagkatapos ng sarili nitong atake (walang Armor na sasalubong sa kalabang naunang tumama).",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "Mga unit na {kin} na nilaro: +{a} ⚔ +{h} ❤",
+ "Habitat units": "Mga unit ng tirahan",
+ "Star path: {path} (Wildpaths)": "Landas ng bituin: {path} (Mga Ligaw na Landas)",
+ "Star path": "Landas ng bituin",
+ "Cards that only a star path gives": "Mga card na tanging landas ng bituin ang nagbibigay",
+ "Card: {name}": "Card: {name}",
+ "Unlocks {name}. Only this star path gives it.": "Binubuksan ang {name}. Tanging ang landas ng bituing ito ang nagbibigay nito.",
+ "Starpath-only card": "Card ng landas ng bituin lamang",
+ "Rainforest": "Rainforest",
+ "Savanna": "Sabana"
 }

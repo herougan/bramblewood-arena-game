@@ -4457,7 +4457,7 @@ function easterEggMaskDef(d){ return {id:'ee-mask', name:'???', icon:'🥚', cos
 // (PACK_TIER_FROM_MAP: the end-of-map packs, Pack 1 from Map 0, Pack 2 from Map 7, Pack 3 from Map 14, mapEndPackId), never before its
 // rarity's main-line reveal (ROAD_MAIN_FROM / RARITY_INTRO). A tier no pack pays yet (4) is its pool map. A map reward or secret: the
 // main-line map that unlocks its map. Was: a pack card at its pool map (or Map 5 with none); a side map's reward at its parent's number.
-const OBTAIN_MAP_OF = {pack: 5, mystery: 13, raid: 13, nest: 3, smith: 11};
+const OBTAIN_MAP_OF = {pack: 5, mystery: 13, raid: 13, nest: 3, smith: 11, starpath: 21 /* CONTENT18 (2026-11-08): a star path's card, from the Wildpaths' first map (WILDPATH_FROM_MAP, declared later) */};
 const PACK_TIER_FROM_MAP = {1: 0, 2: 7, 3: 14};
 function cardObtainMap(d){
   if(!d || isEasterEgg(d)) return 0;
@@ -4539,6 +4539,7 @@ function cardObtainableFrom(d){
   if(src.kind==='smith') return 'smith';
   if(src.kind==='secret') return 'secret';
   if(src.kind==='quest') return 'quest';
+  if(src.kind==='starpath') return 'starpath'; // CONTENT18 (2026-11-08, owner 10:52 #14): a Starpath-only card, given by its Wildpaths mark only
   if(basicPackTierOf(d)) return 'pack'; // 2026-10-28 (package PACK1): a card the owner put in a pack's extras (canonical/pack-extras.json)
   return null; // unsorted, or an event (no event system live yet)
 }
@@ -4569,6 +4570,7 @@ function cardWhereToGetText(d){
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
   if(src.kind==='smith') return 'The Blacksmith: craft it at the Forge'; // 2026-10-18: smith / secret / quest are obtainable now (cardObtainableFrom)
   if(src.kind==='secret') return 'A secret somewhere on the road';
+  if(src.kind==='starpath') return TX('ui.c18-where-starpath', {path: c18StarPathName(src.path)}); // CONTENT18 (2026-11-08)
   if(src.kind==='quest') return src.id === 'scale-trail' ? 'A hidden trail: follow the Dragon Scales' : 'A hidden quest on the road';
   if(src.kind==='raid'){ const r = (typeof allRaidDefs === 'function' ? allRaidDefs() : []).find(x=> x.id === src.id); return TX('ui.rc-source-raid', {name: r ? r.name : TX('ui.rc-a-raid'), shards: r ? raidShardName(r) : TX('ui.rc-trophy-shards')}); } // 2026-10-19 (package RC, owner 09:53): crafted in the Forge's Raid tab, not dropped
   return 'Not obtainable yet';
@@ -4730,6 +4732,7 @@ function codexSectionOf(d){
   // short plain name (a TX key); the detail it used to carry after a "·" is its tooltip (tip).
   if(src.kind==='materia') return {key:'materia', order:[9990,0,0,''], label:TX('ui.cx-sec-materia'), tip:TX('ui.cx-sec-materia-tip')};
   if(src.kind==='smith') return codexSmithSection();
+  if(src.kind==='starpath') return c18StarPathSection(); // CONTENT18 (2026-11-08)
   if(!split && (src.kind==='base' || src.kind==='map' || src.kind==='pack')) return {key:'1-0', order:[1,0,0,''], label:codexTierName(1), tier:1};
   if(src.kind==='base') return {key:'1-0', order:[1,0,0,''], label:codexTierName(1), tip:TX('ui.cx-sec-maps-tip', {n: 1, to: BASE_GAME_MAPS}), tier:1};
   if(src.kind==='map'){
@@ -4747,6 +4750,7 @@ function codexSectionOf(d){
   }
   return {key:'unsorted', order:[9997,0,0,''], label: adminModeEnabled ? 'Unassigned' : TX('ui.cx-sec-other'), tip: adminModeEnabled ? 'Not obtainable yet: set where to get it in the card’s detail view' : ''};
 }
+function c18StarPathSection(){ return {key:'starpath', order:[9992,0,0,''], label:TX('ui.c18-pill-starpath'), tip:TX('ui.c18-sec-starpath-tip')}; } // CONTENT18 (2026-11-08): the Starpath-only cards
 function codexSmithSection(){ return {key:'smith', order:[9991,0,0,''], label:TX('ui.cx-sec-smith'), tip:TX('ui.cx-sec-smith-tip')}; }
 // "View by" grouping (2026-10-02): the same cards split by Skirmish (each node's reward cards),
 // Card pack (each pack tier), Event (theme → event) or Unassigned, so each kind of source can be
@@ -4820,6 +4824,7 @@ function codexViewSectionOf(d, view){
     if(src.kind==='event') return {key:'band-ev', order:[4,0,0,''], label:TX('ui.cx-sec-events')};
     if(src.kind==='raid') return {key:'band-raid-' + (src.id||''), order:[5,0,0,''], label:TX('ui.cx-sec-raid'), tip:TX('ui.cx-sec-raid-tip')};
     if(src.kind==='smith') return codexSmithSection();
+    if(src.kind==='starpath') return c18StarPathSection(); // CONTENT18 (2026-11-08)
     return {key:'band-more', order:[9,0,0,''], label:TX('ui.cx-sec-other')};
   }
   if(view==='advance'){
@@ -10985,6 +10990,7 @@ function neInspectDetailHTML(d){
   let wherePill = ''; try{ const src = packViewSourceOf(d) /* PACK1 */, tier = Number(src && src.tier) || 0;
     if(src && src.kind === 'pack' && d.faction !== 'base' && tier >= 1 && tier <= 6){ const nm = typeof packTierName === 'function' ? packTierName(tier) : '';
       wherePill = `<span class="pl2-where-pill" title="${escapeAttr(nm || where)}">📦 ${escapeHtml(TX('ui.pl2-pack-n', {n: tier}))}</span>`; }
+    else if(src && src.kind === 'starpath') wherePill = `<span class="pl2-where-pill c18-sp-pill" title="${escapeAttr(where)}">⭐ ${escapeHtml(TX('ui.c18-pill-starpath'))}</span>`; // CONTENT18 (2026-11-08, owner 10:52 #14): the Codex pill says Star path
     else if(where) wherePill = `<span class="pl2-where-pill is-text">${escapeHtml(where)}</span>`; }catch(e){}
   return `<aside class="ci-detail" aria-label="${escapeAttr(d.name || '')}">
     <div class="cd-chips">${chips}</div>
@@ -11230,6 +11236,7 @@ function codexPlacementHTML(d){
         <option value="map" ${src.kind==='map'?'selected':''}>Skirmish reward</option>
         <option value="pack" ${src.kind==='pack'?'selected':''}>Pack (Shop)</option>
         <option value="event" ${src.kind==='event'?'selected':''}>Event</option>
+        ${src.kind==='starpath' ? `<option value="starpath" selected>Star path (${escapeHtml(c18StarPathName(src.path))}, mark ${escapeHtml(src.node || '?')})</option>` : '' /* CONTENT18 (2026-11-08): set in canonical/cards.json; kept on save */}
       </select>
       <select id="cdpMap" aria-label="Map" ${src.kind==='map'?'':'hidden'}>${maps}</select>
       <select id="cdpNode" aria-label="Skirmish" ${src.kind==='map'?'':'hidden'}>${nodeOptionsHTML(src.kind==='map' ? src.id : CONQUEST_MAPS[0].id, src.node)}</select>
@@ -11268,6 +11275,7 @@ function wireCodexPlacement(defId){
       const was = raw.source || {}; raw.source = {kind:'map', id: document.getElementById('cdpMap').value, node};
       if(was.challenge === true && was.kind === 'map' && was.id === raw.source.id && was.node === node) raw.source.challenge = true; // 2026-10-22 (RW2): a challenge card stays one while it stays on its fight
     }
+    else if(k==='starpath'){ if(!(raw.source && raw.source.kind === 'starpath')) return; } // CONTENT18 (2026-11-08): a star path card keeps its mark
     else if(k==='pack') raw.source = {kind:'pack', tier: Math.max(1, parseInt(document.getElementById('cdpPackTier').value,10)||1)};
     else if(k==='event'){
       const theme = document.getElementById('cdpEventTheme').value.trim(), name = document.getElementById('cdpEventName').value.trim();
@@ -15247,6 +15255,7 @@ const CARD_UNLOCK_SOURCES = {
   promotion: 'Promotion',
   raidReward: 'Raid reward', // 2026-10-19 (package RC): a raid claim's pack or faction card
   raidCraft: 'Forge: raid recipe', // 2026-10-19 (package RC): crafted in the Forge's Raid tab
+  starpath: 'Star path', // CONTENT18 (2026-11-08): a Wildpaths card mark
 };
 // Pitching gate (2026-10-12, user: "Don't give lumber-cost cards until the player is ready to learn pitching. Don't allow
 // pitching at the start: no tooltip, and dropping on the graveyard does nothing"). Pitching opens once Map 1's last fight is
@@ -16634,6 +16643,7 @@ function characterDescHTML(ch){
   if(e.unitHpBonus) bits.push(`Every unit played: +${e.unitHpBonus} ❤`);
   if(e.unitAtkBonus) bits.push(TX('ui.eng27-unit-atk-desc', {n: e.unitAtkBonus})); // ENG27 (2026-11-06, item 36)
   if(e.flyerAtkBonus) bits.push(`Flying units played: +${e.flyerAtkBonus} ⚔`);
+  if(e.habitatBonus && typeof e.habitatBonus === 'object'){ const hb = e.habitatBonus; bits.push(TX('ui.c18-habitat-desc', {kin: [].concat(hb.kin || []).map(k=> _t(k)).join(' / '), a: hb.atk || 0, h: hb.hp || 0})); } // CONTENT18 (2026-11-08, BAL27-1): the Canopy Bower
   if(e.leaderBoon){ const b = e.leaderBoon === true ? {atk:2, hp:3} : e.leaderBoon; bits.push(TX('ui.eng26-leader-boon-desc', {a: b.atk||0, h: b.hp||0})); } // ENG26 (2026-11-06): Banner Knoll
   if(e.castleRegen) bits.push(TX('ui.en8-castle-regen', {n: e.castleRegen})); // EN8 (2026-10-24, P24-17): a random wounded ally, never the bramble
   if(e.enemyWaitBonus) bits.push(`The enemy's first 3 units arrive with +${e.enemyWaitBonus} ⏳ Wait`);
@@ -16688,6 +16698,7 @@ const BRAMBLE_FX = [
   {key:'unitHpBonus', icon:'❤️', label:()=> TX('ui.ux2-fx-unit-hp')},
   {key:'unitAtkBonus', icon:'⚔️', label:()=> TX('ui.eng27-fx-unit-atk')}, // ENG27 (2026-11-06, item 36)
   {key:'flyerAtkBonus', icon:'🪽', label:()=> TX('ui.ux2-fx-flyer-atk')},
+  {key:'habitatBonus', icon:'🌴', label:()=> TX('ui.c18-fx-habitat')}, // CONTENT18 (2026-11-08, BAL27-1)
   {key:'castleRegen', icon:'💚', label:()=> TX('ui.ux2-fx-regen')},
   {key:'enemyWaitBonus', icon:'⏳', label:()=> TX('ui.ux2-fx-enemy-wait')},
   {key:'castleBolt', icon:'🏹', label:()=> TX('ui.ux2-fx-bolt')},
@@ -20076,7 +20087,7 @@ function addSkirmishToMap(mapId){
 // Map castles for enemies (2026-10-10, user: "for each of our maps we need a castle. For the boss ones, we might get a
 // higher level of that castle or a whole new castle"): every fight on Maps 1–10 defends that map's castle (its passive
 // included) unless the skirmish picks its own; bigger fights get a higher level of it. node.castleLevel overrides.
-const MAP_CASTLE = {m1:'outskirts-watchtower', mf:'hedgerow-burrow', mb:'tidewall-fort', m2:'drowned-bellhouse', m3:'ashen-bastion', m4:'lantern-warren', m5:'acacia-kraal', m6:'wolfsbane-lodge', m7:'coral-spire', m8:'bog-stilt-house'};
+const MAP_CASTLE = {m1:'outskirts-watchtower', mf:'hedgerow-burrow', mb:'tidewall-fort', m2:'drowned-bellhouse', m3:'ashen-bastion', m4:'lantern-warren', m5:'acacia-kraal', m6:'wolfsbane-lodge', m7:'coral-spire', m8:'bog-stilt-house', my:'canopy-bower' /* CONTENT18 (2026-11-08, BAL27-1): The Canopy's own bramble (was its parent's Acacia Kraal) */};
 const KIND_CASTLE_LEVEL = {skirmish:0, elite:3, boss:8, raidboss:12, finalboss:15};
 const NODE_MAP_HINT = new WeakMap(); // a skirmish editor draft is a copy, so it remembers its map here
 function mapOfNode(node){ const all = typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : []; const hint = node && NODE_MAP_HINT.get(node); return (hint && all.find(m=> m.id===hint)) || all.find(m=> (m.nodes||[]).includes(node)) || null; }
@@ -20088,7 +20099,7 @@ function nodeCastleId(node){
   // skirmish of Map 0, where it gives +1 attack to the first guy)"): every Map 0 road fight defends a plain bramble (was: 0-2 and 0-3 the
   // Outskirts Watchtower, +1 Attack to the first unit); 0-4 keeps its own pick (node.characterId, the Plains Terrace: +1 Attack to the first unit).
   if(!m.sub && m.id === 'm1') return null;
-  const id = MAP_CASTLE[m.sub ? m.parent : m.id];
+  const id = (m.sub && MAP_CASTLE[m.id]) || MAP_CASTLE[m.sub ? m.parent : m.id]; // CONTENT18 (2026-11-08): a side map with its own entry (The Canopy) defends it
   return id && CHARACTER_DEFS[id] ? id : null;
 }
 function nodeCastleLevel(node){ if(node && node.castleLevel != null && node.castleLevel !== '') return Math.max(0, Math.min(20, Number(node.castleLevel)||0)); if(baseBrambleHp(node) != null) return 0; /* 2026-10-18 (X3): Map 0's road fights the base bramble at Lv 0 */ return KIND_CASTLE_LEVEL[baseKind((node && node.kind) || 'skirmish')] || 0; }
@@ -32662,6 +32673,7 @@ function advanceDungeonWave(m, carry){
     if(P2.unitHpBonus){ c.hp += P2.unitHpBonus; c.maxHp += P2.unitHpBonus; }
     if(P2.unitAtkBonus){ c.atk += P2.unitAtkBonus; c.baseAtk += P2.unitAtkBonus; } // ENG27 (item 36)
     const fx = (defs[c.defId]||{}).effects || {}; if(P2.flyerAtkBonus && fx.flying){ c.atk += P2.flyerAtkBonus; c.baseAtk += P2.flyerAtkBonus; }
+    try{ if(E.c18HabitatBonus) E.c18HabitatBonus(P2, c); }catch(e){} // CONTENT18 (2026-11-08): the Canopy Bower's Rainforest / Savanna +1/+2
     return c; });
   // the new wave takes the middle; survivors are pushed outwards (nobody dies)
   const oldC = P2.row.center.slice(), oldL = P2.row.left.slice(), oldR = P2.row.right.slice();
@@ -57603,6 +57615,7 @@ const WILDPATH_TREES = [
     {id:'r5', x:175, y:205, icon:'🌲', name:'Old Growth', desc:'Wait 2+ units get +1/+2.', req:['r3', 'r2']},
     {id:'r6', x:140, y:120, icon:'⛰️', name:'Unmoving', desc:'First hit on your bramble deals 0.', req:['r5']},
     {id:'r7', x:150, y:40, icon:'👑', name:'Heart of the Wood', desc:TX('ui.eng9-perk-heartwood') /* ENG9 (2026-10-26, EN8-3) */, req:['r6', 'r4'], capstone:true},
+    {id:'r8', x:255, y:225, icon:'⭐', card:'thistle-baron', req:['r3'], get name(){ return c18SpMarkName(this); }, get desc(){ return c18SpMarkDesc(this); }}, // CONTENT18 (2026-11-08): a Starpath-only card
   ]},
   {id:'thorn', name:'The Thorn', icon:'🌹', tint:'#f07a6a', blurb:'Attack, Quick, finishing blows.', nodes:[
     {id:'t1', x:150, y:395, icon:'⚔', name:'Sharpened Briars', desc:'+1 Attack to units with 3 or less.', ranks:2},
@@ -57612,6 +57625,7 @@ const WILDPATH_TREES = [
     {id:'t5', x:110, y:205, icon:'🏹', name:'Fletcher’s Eye', desc:'Arrows: +1 damage.', req:['t3']},
     {id:'t6', x:165, y:125, icon:'🌪', name:'Bramble Storm', desc:'Cleave side hits: +1.', req:['t4', 't5']},
     {id:'t7', x:150, y:40, icon:'🌹', name:'Crown of Thorns', desc:'A unit that kills gains +1 Attack.', req:['t6'], capstone:true},
+    {id:'t8', x:45, y:225, icon:'⭐', card:'ironmaw-warwolf', req:['t3'], get name(){ return c18SpMarkName(this); }, get desc(){ return c18SpMarkDesc(this); }}, // CONTENT18 (2026-11-08): a Starpath-only card
   ]},
   {id:'bloom', name:'The Bloom', icon:'🌸', tint:'#e2a6f0', blurb:'Lumber, cards and tricks.', nodes:[
     {id:'b1', x:150, y:395, icon:'🪵', name:'Forager', desc:'+1 starting Lumber.', ranks:2},
@@ -57621,15 +57635,27 @@ const WILDPATH_TREES = [
     {id:'b5', x:190, y:215, icon:'🌸', name:'Pollen Drift', desc:'Heal heals 1 more.' /* 2026-10-23 (BL): was Bloom's; the old Bloom heal is retired */, req:['b3', 'b2'], ranks:2},
     {id:'b6', x:130, y:125, icon:'🔁', name:'Echoing Wood', desc:'First token each fight is doubled.', req:['b4', 'b5']},
     {id:'b7', x:150, y:40, icon:'🌺', name:'Everbloom', desc:'Every 5th round: draw 1, +1 Lumber.', req:['b6'], capstone:true},
+    {id:'b8', x:260, y:225, icon:'⭐', card:'bumblebee-queen', req:['b3'], get name(){ return c18SpMarkName(this); }, get desc(){ return c18SpMarkDesc(this); }}, // CONTENT18 (2026-11-08): a Starpath-only card
   ]},
 ];
 let wildpathSel = null;
+// ---- CONTENT18 (2026-11-08, owner 10:52 #14: "In the star-path, some star-paths straight up just unlock cards (maybe 1 in each star path).
+// Starpath-only cards, let's say. At least Epic and above."): the star paths are these trails (decision CONTENT18-2). Each trail has one card
+// mark (r8 / t8 / b8, node.card): learning it gives that card (unlockCardForPlayer, source 'starpath'), shown by the claim reveal the achievement
+// cards use (ui27RevealAchvCards). The card's source is {kind:'starpath', path, node} (canonical/cards.json), so nothing else gives it: no pack,
+// skirmish drop, fuse, Tavern or faction pool (cardObtainableFrom 'starpath'; the Codex pill reads Star path).
+function c18StarPathName(pathId){ try{ const t = WILDPATH_TREES.find(x=> x.id === pathId); return t ? t.name : String(pathId || ''); }catch(e){ return String(pathId || ''); } }
+function c18SpCardName(n){ try{ const d = getCardDefs()[n.card]; return d ? d.name : n.card; }catch(e){ return n.card; } }
+function c18SpMarkName(n){ return TX('ui.c18-sp-mark-name', {name: c18SpCardName(n)}); }
+function c18SpMarkDesc(n){ return TX('ui.c18-sp-mark-desc', {name: c18SpCardName(n)}); }
+function c18StarPathGrant(n){ if(!n || !n.card) return false; let got = false; try{ got = unlockCardForPlayer(n.card, 'starpath'); }catch(e){}
+  try{ ui27AchvCardsPending.push(n.card); ui27RevealAchvCards(); }catch(e){} return got; }
 // Costs (2026-10-13, user D32: "Wildpath skills cost alot of points, like maybe 5 then 10 then advanced ones start at 15, then 20
 // then 25. This is a rare thing to upgrade"): by how far up its trail a mark sits, 5 / 10 / 15 / 20 / 25 a rank (the capstone 25).
 const WILDPATH_KEY = 'bramblewood_wildpaths_v1';
 // Wildpath effects that are live (2026-10-13): applied to your side at the start of every Conquest fight. The rest of the
 // marks still read "preview" in their detail panel until their engine hooks exist.
-const WILDPATH_LIVE = new Set(['r1','r2','r3','r4','r5','r6','r7','t1','t2','t3','t4','t5','t6','t7','b1','b2','b3','b4','b5','b6','b7']);
+const WILDPATH_LIVE = new Set(['r1','r2','r3','r4','r5','r6','r7','t1','t2','t3','t4','t5','t6','t7','b1','b2','b3','b4','b5','b6','b7', 'r8','t8','b8' /* CONTENT18: the card marks */]);
 function applyWildpathPerks(engine, pl, stats){
   const rk = wildpathRanks(); if(!pl || !Object.keys(rk).length) return;
   const r = id=> rk[id] || 0, perks = {};
@@ -57660,7 +57686,7 @@ function wildpathRanks(){ try{ return JSON.parse(localStorage.getItem(WILDPATH_K
 function wildpathSpent(){ const r = wildpathRanks(); let t = 0; WILDPATH_TREES.forEach(tr=> tr.nodes.forEach(n=>{ t += (r[n.id]||0) * wildpathCost(n); })); return t; }
 function wildpathAvailable(){ return Math.max(0, wildpathPoints().total - wildpathSpent()); }
 function wildpathCanLearn(n){ const r = wildpathRanks(); if((r[n.id]||0) >= (n.ranks||1)) return 'max'; if(!(n.req||[]).every(q=> (r[q]||0) > 0) && (n.req||[]).length) return 'locked'; return wildpathAvailable() >= wildpathCost(n) ? 'ok' : 'points'; }
-function wildpathLearn(id){ const n = WILDPATH_TREES.flatMap(t=> t.nodes).find(x=> x.id === id); if(!n || wildpathCanLearn(n) !== 'ok') return false; const r = wildpathRanks(); r[id] = (r[id]||0) + 1; try{ localStorage.setItem(WILDPATH_KEY, JSON.stringify(r)); }catch(e){} return true; }
+function wildpathLearn(id){ const n = WILDPATH_TREES.flatMap(t=> t.nodes).find(x=> x.id === id); if(!n || wildpathCanLearn(n) !== 'ok') return false; const r = wildpathRanks(); r[id] = (r[id]||0) + 1; try{ localStorage.setItem(WILDPATH_KEY, JSON.stringify(r)); }catch(e){} if(n.card) c18StarPathGrant(n); /* CONTENT18 */ return true; }
 function wildpathTreeSVG(tree){
   const byId = Object.fromEntries(tree.nodes.map(n=> [n.id, n]));
   // a wobbly, hand-inked line between two nodes (deterministic jitter from the ids)
@@ -57668,7 +57694,7 @@ function wildpathTreeSVG(tree){
   const ink = (a, b)=>{ const k = seed(a.id + b.id), mx = (a.x + b.x)/2 + ((k % 41) - 20), my = (a.y + b.y)/2 + ((k % 23) - 11);
     return `M${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`; };
   const links = tree.nodes.flatMap(n=> (n.req||[]).map(r=> byId[r] ? `<path class="wp-ink" d="${ink(byId[r], n)}" style="--len:${Math.round(Math.hypot(n.x - byId[r].x, n.y - byId[r].y) * 1.15)}"/>` : ''));
-  const nodes = tree.nodes.map((n, i)=> `<g class="wp-node${n.capstone ? ' is-cap' : ''}${i === 0 ? ' is-start' : ''}${wildpathSel === n.id ? ' is-sel' : ''}" data-wp="${n.id}" tabindex="0" role="button" aria-label="${escapeAttr(n.name + ': ' + n.desc)}" transform="translate(${n.x} ${n.y})" style="--i:${i}">
+  const nodes = tree.nodes.map((n, i)=> `<g class="wp-node${n.capstone ? ' is-cap' : ''}${n.card ? ' c18-sp-card-mark' : ''}${i === 0 ? ' is-start' : ''}${wildpathSel === n.id ? ' is-sel' : ''}" data-wp="${n.id}" tabindex="0" role="button" aria-label="${escapeAttr(n.name + ': ' + n.desc)}" transform="translate(${n.x} ${n.y})" style="--i:${i}">
       <circle class="wp-halo" r="${n.capstone ? 26 : 20}"/><circle class="wp-dot" r="${n.capstone ? 19 : 15}"/><text class="wp-ico" text-anchor="middle" dominant-baseline="central">${n.icon}</text>
       ${n.ranks ? `<text class="wp-rank" x="${n.capstone ? 18 : 14}" y="${n.capstone ? -16 : -12}" text-anchor="middle">${wildpathRanks()[n.id]||0}/${n.ranks}</text>` : ''}</g>`);
   return `<svg class="wp-tree-svg" viewBox="0 0 300 430" style="--tint:${tree.tint}" aria-label="${escapeAttr(tree.name)} path">${links.join('')}${nodes.join('')}</svg>`;
@@ -57714,10 +57740,10 @@ function renderWildpaths(){
       <span class="wp-points" data-wptip="earn" tabindex="0" title="${escapeAttr('Path points to spend. ' + WILDPATH_EARN_TIP)}">✦ ${wildpathAvailable()} Path point${wildpathAvailable()===1?'':'s'}</span></header>
     ${'' /* 2026-10-15 ("Wildpaths, too verbose"): the "Design preview ... don't change fights yet" line is gone; every mark is live (WILDPATH_LIVE). */}
     <div class="wp-trees">${WILDPATH_TREES.map(t=> `<section class="wp-tree" aria-label="${escapeAttr(t.name)}"><h3><span>${t.icon}</span> ${escapeHtml(t.name)}</h3><p>${escapeHtml(t.blurb)}</p>${wildpathTreeSVG(t)}</section>`).join('')}</div>
-    <div class="wp-detail" aria-live="polite">${sel ? `<b>${sel.icon} ${escapeHtml(sel.name)}</b>${sel.capstone ? ' <small>capstone</small>' : ''}${sel.ranks ? ` <small>${sel.ranks} ranks</small>` : ''}<span>${escapeHtml(sel.desc)}</span>${WILDPATH_LIVE.has(sel.id) ? '' : '<small class="wp-req">Preview: not in fights yet.</small>'}${(sel.req||[]).length ? `<small class="wp-req">Comes after: ${sel.req.map(r=> escapeHtml((all.find(n=> n.id===r)||{}).name || r)).join(' or ')}</small>` : `<small class="wp-req">Starting mark.</small>`}${(()=>{ const st = wildpathCanLearn(sel), c = wildpathCost(sel); return `<div class="wp-learn"><b>✦ ${c} a rank</b>${st === 'max' ? '<small>Learned.</small>' : `<button type="button" class="btn small primary" id="wpLearn" ${st === 'ok' ? '' : 'disabled'}>Learn</button><small>${st === 'locked' ? 'Learn the one before.' : st === 'points' ? `You have ✦ ${wildpathAvailable()}.` : ''}</small>`}</div>`; })()}` : '<span>Pick a mark to read it.</span>'}</div>
+    <div class="wp-detail" aria-live="polite">${sel ? `<b>${sel.icon} ${escapeHtml(sel.name)}</b>${sel.capstone ? ' <small>capstone</small>' : ''}${sel.ranks ? ` <small>${sel.ranks} ranks</small>` : ''}<span>${escapeHtml(sel.desc)}</span>${WILDPATH_LIVE.has(sel.id) ? '' : '<small class="wp-req">Preview: not in fights yet.</small>'}${sel.card && getCardDefs()[sel.card] ? `<div class="c18-sp-card" data-c18-card="${escapeAttr(sel.card)}">${cardTileHTML(getCardDefs()[sel.card], {editable:false, inPlay:true})}<small>${escapeHtml(TX('ui.c18-sp-only'))}</small></div>` : '' /* CONTENT18 (2026-11-08): the card this mark gives */}${(sel.req||[]).length ? `<small class="wp-req">Comes after: ${sel.req.map(r=> escapeHtml((all.find(n=> n.id===r)||{}).name || r)).join(' or ')}</small>` : `<small class="wp-req">Starting mark.</small>`}${(()=>{ const st = wildpathCanLearn(sel), c = wildpathCost(sel); return `<div class="wp-learn"><b>✦ ${c} a rank</b>${st === 'max' ? '<small>Learned.</small>' : `<button type="button" class="btn small primary" id="wpLearn" ${st === 'ok' ? '' : 'disabled'}>Learn</button><small>${st === 'locked' ? 'Learn the one before.' : st === 'points' ? `You have ✦ ${wildpathAvailable()}.` : ''}</small>`}</div>`; })()}` : '<span>Pick a mark to read it.</span>'}</div>
   </div>`;
   { const sb = null; if(sb) sb.onclick = ()=>{ const r = buyEnergyUpgrade(); if(r === 'ok'){ showToast(TX('toast.max-energy-is-now', {energyMax: energyMax()}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ updateEnergyHud && updateEnergyHud(); }catch(e){} renderWildpaths(); } else if(r === 'cost') showToast(TX('toast.not-enough-maple-leaves-yet'), 'warn'); }; }
-  { const lb = root.querySelector('#wpLearn'); if(lb) lb.onclick = ()=>{ if(wildpathLearn(wildpathSel)){ showToast(WILDPATH_LIVE.has(wildpathSel) ? TX('toast.learned-works-from-your-next-fight') : TX('toast.learned-still-a-preview-not-in'), 'ok'); renderWildpaths(); } }; }
+  { const lb = root.querySelector('#wpLearn'); if(lb) lb.onclick = ()=>{ const cardMark = !!(WILDPATH_TREES.flatMap(t=> t.nodes).find(x=> x.id === wildpathSel) || {}).card; if(wildpathLearn(wildpathSel)){ if(!cardMark) /* CONTENT18: a card mark shows its card instead */ showToast(WILDPATH_LIVE.has(wildpathSel) ? TX('toast.learned-works-from-your-next-fight') : TX('toast.learned-still-a-preview-not-in'), 'ok'); renderWildpaths(); } }; }
   root.querySelectorAll('[data-wp]').forEach(g=>{ const pick = ()=>{ wildpathSel = g.dataset.wp; renderWildpaths(); const ng = root.querySelector(`[data-wp="${wildpathSel}"]`); if(ng) ng.focus({preventScroll:true}); };
     g.addEventListener('click', pick); g.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } }); });
   if(!renderWildpaths.drawn){ renderWildpaths.drawn = true; root.classList.add('wp-draw'); setTimeout(()=> root.classList.remove('wp-draw'), 2600); }

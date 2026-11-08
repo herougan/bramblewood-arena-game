@@ -4326,5 +4326,15 @@
  "After it attacks: +{n} Armor until the round ends.": "Setelah menyerang: +{n} Zirah sampai ronde berakhir.",
  "When first hit (default)": "Saat pertama kena (bawaan)",
  "After it attacks": "Setelah menyerang",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Kapan Zirah Cangkang muncul: saat pertama kena tiap ronde (bawaan), atau setelah serangannya sendiri (lawan yang menyerang lebih dulu tak bertemu Zirah)."
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Kapan Zirah Cangkang muncul: saat pertama kena tiap ronde (bawaan), atau setelah serangannya sendiri (lawan yang menyerang lebih dulu tak bertemu Zirah).",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "Unit {kin} yang dimainkan: +{a} ⚔ +{h} ❤",
+ "Habitat units": "Unit habitat",
+ "Star path: {path} (Wildpaths)": "Jalur bintang: {path} (Jalur Liar)",
+ "Star path": "Jalur bintang",
+ "Cards that only a star path gives": "Kartu yang hanya diberikan jalur bintang",
+ "Card: {name}": "Kartu: {name}",
+ "Unlocks {name}. Only this star path gives it.": "Membuka {name}. Hanya jalur bintang ini yang memberikannya.",
+ "Starpath-only card": "Kartu khusus jalur bintang",
+ "Rainforest": "Hutan hujan",
+ "Savanna": "Sabana"
 }

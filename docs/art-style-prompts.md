@@ -232,3 +232,25 @@ Card art for the Gannet Cliffs Reach card (owner 09:27, confirmed): paste the ba
 
 ### Cormorant
 > Full-body character in a small scene, centred, slight low angle: a glossy black cormorant with a hooked beak, green eyes and a pale throat patch standing on a rocky sea-cliff ledge, wings half spread to dry in the wind, a long sharpened wooden pole taken from its nest held crosswise in its beak, white sea-cliff background with nesting gannets on the ledges, sea spray and a bright blue sky, one bright green eye accent.
+
+## New card and bramble prompts (2026-11-08, package CONTENT18)
+
+Card art for the CONTENT18 shooters (on no list) and the Bloom star path's card, and the Canopy Bower's bramble art: paste the base prompt first, then the line below. Run the pixel pass at 128 px. The game shows the emoji until the art lands. Natural anatomy, nothing held in hands (style guideline section 9). The shooters are Cute (low stats); the Bumblebee Queen is Brave (Epic).
+
+### Adder
+> Full-body character in a small scene, centred, slight low angle: a small grey-brown adder with a dark zigzag down its back coiled on a sun-warmed flat stone, head raised, a fine mist of droplets sprayed from its open mouth, big bright eyes, heather and bracken around the stone, misty green swamp-edge background with reeds and soft morning light.
+
+### Elephant
+> Full-body character in a small scene, centred, slight low angle: a young round grey elephant with big floppy ears standing knee-deep at a muddy waterhole, trunk raised and spraying a sparkling arc of water toward the viewer, playful eyes, a few birds on the bank, golden savanna background with acacia trees and a warm afternoon sky.
+
+### Fruit Bat
+> Full-body character in a small scene, centred, slight low angle: a fluffy brown fruit bat with a fox-like face hanging upside down from a fig branch, wings wrapped around a half-eaten fig, a soft squashed fig dropping from its feet, big dark eyes, warm dim cave-mouth background with hanging roots, green leaves and a sliver of jungle light.
+
+### Glow-worm
+> Full-body character in a small scene, centred, slight low angle: a small pale glow-worm larva with a softly glowing blue-green tail end, flicking a tiny bead of light from its tail toward the viewer, hundreds of glowing dots and silky threads on the cave roof above like a starry sky, dark blue cave background with a still underground pool reflecting the lights.
+
+### Bumblebee Queen
+> Full-body character in a small scene, centred, slight low angle: a big fuzzy bumblebee queen with black and golden-yellow bands and shimmering wings, determined bright eyes, perched on a large pollen ball on top of a clover flower, a tiny crown-shaped ring of petals on her head, a few small worker bees flying around her, spring meadow background with foxgloves, clover and a soft sunrise sky.
+
+### Canopy Bower (bramble)
+> A small scene, centred, slight low angle: a cosy platform of woven lianas and branches high in a rainforest tree, a round roof of broad green leaves, rope bridges leading off to other trees, hanging flowers and vines, a toucan perched on the railing and a monkey peeking out, misty green rainforest canopy background with light rain and soft rays of sun through the leaves.

@@ -4326,5 +4326,15 @@
  "After it attacks: +{n} Armor until the round ends.": "Depois de atacar: +{n} de Armadura até o fim da rodada.",
  "When first hit (default)": "Ao levar o primeiro golpe (padrão)",
  "After it attacks": "Depois de atacar",
- "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Quando a Armadura do Casco surge: ao levar o primeiro golpe de cada rodada (padrão), ou depois do próprio ataque (um inimigo que golpeia antes não encontra Armadura)."
+ "When Shell's Armor comes up: when first hit each round (default), or after its own attack (a foe that strikes first meets no Armor).": "Quando a Armadura do Casco surge: ao levar o primeiro golpe de cada rodada (padrão), ou depois do próprio ataque (um inimigo que golpeia antes não encontra Armadura).",
+ "{kin} units played: +{a} ⚔ +{h} ❤": "Unidades de {kin} jogadas: +{a} ⚔ +{h} ❤",
+ "Habitat units": "Unidades de habitat",
+ "Star path: {path} (Wildpaths)": "Trilha estelar: {path} (Trilhas selvagens)",
+ "Star path": "Trilha estelar",
+ "Cards that only a star path gives": "Cartas que só uma trilha estelar dá",
+ "Card: {name}": "Carta: {name}",
+ "Unlocks {name}. Only this star path gives it.": "Desbloqueia {name}. Só esta trilha estelar a dá.",
+ "Starpath-only card": "Carta exclusiva da trilha estelar",
+ "Rainforest": "Floresta tropical",
+ "Savanna": "Savana"
 }

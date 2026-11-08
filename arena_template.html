@@ -12525,6 +12525,10 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
   @keyframes wpPulse{50%{opacity:.35;}}
   .wp-detail{position:relative; margin-top:10px; padding:10px 14px; border-radius:12px; border:1px solid rgba(217,181,106,.35); background:rgba(0,0,0,.25); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:baseline; min-height:44px;}
   .wp-detail b{color:#ffe7a8;} .wp-detail small{opacity:.7;} .wp-req{flex-basis:100%;}
+  /* CONTENT18 (2026-11-08, owner 10:52 #14): a star path's card mark wears a gold ring (the trail's fixed night palette, as the marks above);
+     the detail shows the card it gives at the card-tile size the Codex uses */
+  .wp-node.c18-sp-card-mark .wp-dot{stroke:#e9c46a; stroke-width:3; stroke-dasharray:3 2;}
+  .wp-detail .c18-sp-card{flex-basis:100%; display:flex; align-items:center; gap:12px;} .wp-detail .c18-sp-card .card-tile{flex:none;}
   @media (prefers-reduced-motion: reduce){ .wp-draw .wp-ink, .wp-draw .wp-node, .wp-node.is-start .wp-halo{animation:none; stroke-dashoffset:0; opacity:1;} }
   .note-paths b{display:inline-flex; align-items:center; gap:4px;} .note-paths .wp-logo{vertical-align:middle;}
   .home-note.note-paths{right:-136px; top:272px; rotate:-4deg;}
@@ -14133,6 +14137,7 @@ body.ne-shift .ne-shift-hint kbd, .ne-shift-hint.is-on kbd{color:var(--ink);}
 .pl2-where-pill{display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:6px; background:#ead7ad; color:#3a2814; border:1.5px solid #a77d45;
   font:800 13.5px/1.2 'Baloo 2',system-ui,sans-serif; box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 2px 4px rgba(60,35,10,.25);}
 .pl2-where-pill.is-text{font:700 12.5px/1.3 Nunito,system-ui,sans-serif;}
+.pl2-where-pill.c18-sp-pill{background:#f3e3a6; border-color:#b8902f;} /* CONTENT18 (2026-11-08): the Star path pill, a touch more golden than a pack's (both sit on the detail's fixed parchment) */
 body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 @media (min-width:761px){
   .card-inspect.ci-split{display:grid; grid-template-columns:auto minmax(280px, 400px); grid-template-areas:"stage detail" "bar detail"; column-gap:40px; row-gap:14px; align-content:center; justify-content:center; align-items:center;}

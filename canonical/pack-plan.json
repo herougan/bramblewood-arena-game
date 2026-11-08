@@ -102,7 +102,7 @@
    "todayRule": "Pack 1: basic-pack cards whose first map list opens on Maps 0-6 (PACK_MAPS_PER_TIER 7), plus canonical/pack-extras.json \"1\" (empty)",
    "zone": "A",
    "current": {
-    "count": 50,
+    "count": 51,
     "cards": [
      "alley-cat",
      "anhinga-spearbird",
@@ -114,6 +114,7 @@
      "compost-grub",
      "conch-crawler",
      "constrictor-coil",
+     "cormorant",
      "crocodile-ambusher",
      "cypress-root-lurker",
      "dolphin-knight",
@@ -157,7 +158,7 @@
     ]
    },
    "inProposedZone": {
-    "count": 65,
+    "count": 66,
     "cards": [
      "alley-cat",
      "anhinga-spearbird",
@@ -170,6 +171,7 @@
      "compost-grub",
      "conch-crawler",
      "constrictor-coil",
+     "cormorant",
      "crocodile-ambusher",
      "cypress-root-lurker",
      "dolphin-knight",
@@ -443,7 +445,7 @@
      }
     ]
    },
-   "proposedCount": 88
+   "proposedCount": 89
   },
   "silver": {
    "kind": "shop",
@@ -1711,38 +1713,38 @@
   }
  },
  "summary": {
-  "liveCards": 828,
+  "liveCards": 834,
   "sourcesToday": {
    "starter": 16,
    "skirmish-unique": 108,
-   "pack": 192,
+   "pack": 193,
    "base": 25,
-   "none": 390,
+   "none": 392,
    "faction": 57,
    "reward": 3,
-   "special": 26,
+   "special": 29,
    "pack-unique": 11
   },
   "sourcesProposed": {
    "starter": 16,
    "skirmish-unique": 108,
-   "pack": 194,
+   "pack": 195,
    "base": 25,
-   "none": 312,
+   "none": 314,
    "faction": 59,
    "achievement": 17,
    "pack-unique": 68,
    "reward": 3,
-   "special": 26
+   "special": 29
   },
   "packCounts": {
    "bronze": {
-    "now": 50,
-    "inProposedZone": 65,
+    "now": 51,
+    "inProposedZone": 66,
     "add": 20,
     "remove": 0,
     "movedIn": 3,
-    "proposed": 88
+    "proposed": 89
    },
    "silver": {
     "now": 60,
@@ -1849,8 +1851,8 @@
     "armory",
     "hollow-belly-rat"
    ],
-   "onNoList": "358 cards (ids under sources, flag \"unobtainable: on no map list\")",
-   "afterProposal": 312
+   "onNoList": "360 cards (ids under sources, flag \"unobtainable: on no map list\")",
+   "afterProposal": 314
   },
   "skirmishUniqueInPack": {
    "today": [],
@@ -4406,9 +4408,10 @@
    "awaitingSource": true
   },
   "ironmaw-warwolf": {
-   "source": "none",
-   "where": [],
-   "flag": "unobtainable: on no map list"
+   "source": "special",
+   "where": [
+    "starpath"
+   ]
   },
   "weredog": {
    "source": "none",
@@ -4547,10 +4550,10 @@
    ]
   },
   "thistle-baron": {
-   "source": "none",
-   "where": [],
-   "flag": "unobtainable: on no map list",
-   "awaitingSource": true
+   "source": "special",
+   "where": [
+    "starpath"
+   ]
   },
   "old-shell": {
    "source": "skirmish-unique",
@@ -8169,6 +8172,43 @@
    "where": [],
    "flag": "unobtainable: on no map list",
    "awaitingSource": true
+  },
+  "cormorant": {
+   "source": "pack",
+   "where": [
+    "pack:bronze",
+    "list:mc@3"
+   ]
+  },
+  "adder": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "elephant": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "fruit-bat": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "glow-worm": {
+   "source": "none",
+   "where": [],
+   "flag": "unobtainable: on no map list",
+   "awaitingSource": true
+  },
+  "bumblebee-queen": {
+   "source": "special",
+   "where": [
+    "starpath"
+   ]
   }
  }
 }
