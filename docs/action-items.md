@@ -8,6 +8,13 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-09 03:55: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | Map cards Prospects, as written: main view = NEW! cards plus proposed NEW! cards (30+ a map), and proposed Carried cards (20+ a map), shown together. A bigger pool to pick from before designing skills, so the skill spread isn't skewed (e.g. too many crocodiles) | UI38 |
+| 2 | Don't show the submap (side-map) section | UI38 |
+| 3 | BAL31-1 ok, BAL31-2 ok; BAL31-3: enabler price = gain with partner x chance the partner is in the deck (Brittle 5.0 x 5% = 0.25) | BAL32 (after the on-hit re-measure) |
+
 ## 11-08 17:22: Owner notes
 | # | Note | Package |
 |---|---|---|
