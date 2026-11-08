@@ -1,6 +1,6 @@
 ## Answer first
 
-**A simple per-skill price is good enough.** Pairs of skills are worth close to the sum of the two singles: about 7 pairs in 10 within ±1 point, 94% within ±2, and almost 9 in 10 within ±1 once a flat +0.5 point a second skill is taken out. The rest is mostly a handful of pair-specific combos, not a per-skill pattern. Measurement only: no price was changed.
+**A simple per-skill price is good enough.** Pairs of skills are worth close to the sum of the two singles: about 7 pairs in 10 within ±1 point, 94% within ±2, and 85% within ±1 once a flat +0.5 point a second skill is taken out. The rest is mostly a handful of pair-specific combos, not a per-skill pattern. Measurement only: no price was changed.
 
 - **The flat +0.5.** A second skill adds on average about half a point more than its own price. Most of that is the CPU's key count (it rates a card by its number of effect keys): two placebo keys measure +0.36 [-0.28, 1.14] over twice one. It does not grow with the pair's size (slope about 0). It is not worth a rule.
 - **What is left after the flat term is pair-specific.** The true spread is about 0.7 points (the observed spread less the sampling noise). Giving each skill its own combination term ("+x when on a card with another skill") does not predict new pairs: tested leave-one-out, it does worse than the flat term alone (`tools/bal31/probe_fit.py`). So there is no case for pairwise or per-skill combination budgeting.
