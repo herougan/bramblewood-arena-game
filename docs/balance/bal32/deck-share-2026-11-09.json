@@ -1,0 +1,157 @@
+{
+ "tool": "tools/bal32/deck_share_2026_11_09.js 1.0.0 (2026-11-09, BAL32)",
+ "generated": "2026-11-08T20:25:21.232Z",
+ "maps": "0-20",
+ "decks": {
+  "road": 333,
+  "reference": 487,
+  "skirmish": 221,
+  "all": 1041
+ },
+ "partners": {
+  "shatter": {
+   "label": "Shatter (own deck)",
+   "road": {
+    "n": 5,
+    "of": 333,
+    "share": 0.015
+   },
+   "reference": {
+    "n": 54,
+    "of": 487,
+    "share": 0.111
+   },
+   "skirmish": {
+    "n": 15,
+    "of": 221,
+    "share": 0.068
+   },
+   "all": {
+    "n": 74,
+    "of": 1041,
+    "share": 0.071
+   },
+   "carriers": 1
+  },
+  "bleed": {
+   "label": "Bleed (own deck)",
+   "road": {
+    "n": 95,
+    "of": 333,
+    "share": 0.285
+   },
+   "reference": {
+    "n": 107,
+    "of": 487,
+    "share": 0.22
+   },
+   "skirmish": {
+    "n": 40,
+    "of": 221,
+    "share": 0.181
+   },
+   "all": {
+    "n": 242,
+    "of": 1041,
+    "share": 0.232
+   },
+   "carriers": 17
+  },
+  "poison": {
+   "label": "Poison / Venomous (own deck)",
+   "road": {
+    "n": 80,
+    "of": 333,
+    "share": 0.24
+   },
+   "reference": {
+    "n": 283,
+    "of": 487,
+    "share": 0.581
+   },
+   "skirmish": {
+    "n": 68,
+    "of": 221,
+    "share": 0.308
+   },
+   "all": {
+    "n": 431,
+    "of": 1041,
+    "share": 0.414
+   },
+   "carriers": 35
+  },
+  "armor": {
+   "label": "Armor (foe deck)",
+   "road": {
+    "n": 73,
+    "of": 333,
+    "share": 0.219
+   },
+   "reference": {
+    "n": 224,
+    "of": 487,
+    "share": 0.46
+   },
+   "skirmish": {
+    "n": 67,
+    "of": 221,
+    "share": 0.303
+   },
+   "all": {
+    "n": 364,
+    "of": 1041,
+    "share": 0.35
+   },
+   "carriers": 54
+  },
+  "dodge": {
+   "label": "Evasive / Swift / Flying / Prey (foe deck)",
+   "road": {
+    "n": 242,
+    "of": 333,
+    "share": 0.727
+   },
+   "reference": {
+    "n": 468,
+    "of": 487,
+    "share": 0.961
+   },
+   "skirmish": {
+    "n": 143,
+    "of": 221,
+    "share": 0.647
+   },
+   "all": {
+    "n": 853,
+    "of": 1041,
+    "share": 0.819
+   },
+   "carriers": 168
+  },
+  "equipment": {
+   "label": "equipment cards or a smith that lays a piece (Forge Weapon) (foe deck)",
+   "road": {
+    "n": 7,
+    "of": 333,
+    "share": 0.021
+   },
+   "reference": {
+    "n": 5,
+    "of": 487,
+    "share": 0.01
+   },
+   "skirmish": {
+    "n": 1,
+    "of": 221,
+    "share": 0.005
+   },
+   "all": {
+    "n": 13,
+    "of": 1041,
+    "share": 0.012
+   },
+   "carriers": 12
+  }
+ }
+}

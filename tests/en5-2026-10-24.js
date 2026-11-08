@@ -84,7 +84,8 @@ function dodges(rules, id, seed, att){ const {e, P} = mk(rules, seed || 11); put
 { const {e, P} = mk(); put(e, P, 1, 'x-hem3', 0); const W = put(e, P, 2, 'x-wall', 0); round(e, P); ok(W.bleed >= 2 && W.bleed <= 3, `Hemorrhage 3 on a fresh target: Bleed 3 (less the round's fade for a Waiting unit: ${W.bleed})`); }
 { const {e, P} = mk(); put(e, P, 1, 'x-hem3', 0); const W = put(e, P, 2, 'x-wall', 0); W.bleed = 2; const ev = round(e, P); const hv = ev.find(x=> x.kind === 'hemorrhage');
   ok(hv && hv.from === 2 && hv.total === 7, `Hemorrhage 3: 2 doubled to 4, then +3 = 7 (${hv && hv.total})`); }
-{ ok(T.cardS({hemorrhage:true}).S === 2 && Math.abs(T.cardS({hemorrhage:3}).S - (2 + T.skillCost('bleed', 3))) < 0.01, `Hemorrhage priced 2, Hemorrhage 3 = 2 + Bleed 3 (${T.cardS({hemorrhage:3}).S})`); }
+{ const hv = sk('hemorrhage').value; // 2026-11-09 (package BAL32, owner BAL31-3): the doubling's price is now gain x partner share (was 2; bal32Was keeps it); the + Bleed N rule is unchanged
+  ok(Math.abs(T.cardS({hemorrhage:true}).S - hv) < 0.01 && (hv === 2 || sk('hemorrhage').bal32Was.value === 2) && Math.abs(T.cardS({hemorrhage:3}).S - (hv + T.skillCost('bleed', 3))) < 0.01, `Hemorrhage priced ${hv}, Hemorrhage 3 = ${hv} + Bleed 3 (${T.cardS({hemorrhage:3}).S})`); }
 
 // ---- Bloom: the copy can bloom; up / down on a board with more rows --------------------------------------------------------------
 // 2026-11-04 (TESTFIX1): ENG15 (2026-10-31, owner FF5) reversed EN5's "the copy can bloom": the copy is a token with no Bloom and the parent's Wait,
@@ -116,7 +117,7 @@ const bv = sk('bleed').value, pv = sk('poison').value;
   ok(p[0] === pv && Math.abs(p[1] - pv * Math.pow(2, sk('poison').pow)) < 0.02 && p[2] > p[1], `Poison ${p.join(' / ')}`);
   const md = fs.readFileSync(path.join(ROOT, 'docs/balance/en5-bleed-poison-2026-10-24.md'), 'utf8'); ok(/bleed 3/.test(md) && /poison 1/.test(md), 'the measurement is filed (docs/balance/en5-bleed-poison-2026-10-24.md)');
   // 2026-11-04 (TESTFIX1): SKILL2 (BUDGET2-1) re-measured Breach 1.9 -> 2.25 and BAL11 (owner on BAL10-6) doubled it for the low bramble Health -> 3.03
-  ok(sk('breach') && sk('breach').scale === 'n' && sk('breach').skill2Was.value >= 1.5 && sk('breach').skill2Was.value <= 2.2 && sk('breach').bal11 && sk('breach').value === 3.03, `Breach ${sk('breach') && sk('breach').value} a point (the owner's estimate 1.9)`);
+  ok(sk('breach') && sk('breach').scale === 'n' && sk('breach').skill2Was.value >= 1.5 && sk('breach').skill2Was.value <= 2.2 && sk('breach').bal11 && (sk('breach').value === 3.03 || !!(sk('breach').bal32Was && sk('breach').bal32Was.value === 3.03) /* 2026-11-09 (package BAL32, owner BAL31-2): re-priced from the BAL31 on-hit measure; 3.03 in bal32Was */), `Breach ${sk('breach') && sk('breach').value} a point (the owner's estimate 1.9)`);
   // 2026-10-30 TUT2: owner ENG13-3 "just use logic and reduce it": x the share of covered attacks (BB.CANOPY_SHARE 0.22)
   ok(sk('canopyCover') && sk('canopyCover').skill2Was.value === 0 /* TESTFIX1: SKILL2 (BUDGET2-1) 0.07 as a skill since */ && Math.abs(BB.canopyMultOf({canopyCover:true}) - (1 + (BB.missMultFor('evasive') - 1) * BB.CANOPY_UPTIME * BB.CANOPY_SHARE)) < 1e-9 /* TESTFIX1: Evasive's own miss multiplier (re-measured since, was 1.37) */ && BB.canopyMultOf({canopyCover:true, evasive:true}) === 1 && BB.canopyMultOf({canopyCover:true, flying:true}) === 1,
     `Canopy Cover: x${BB.canopyMultOf({canopyCover:true})} on the stats (Evasive's ${BB.missMultFor('evasive')} x uptime ${BB.CANOPY_UPTIME} x share ${BB.CANOPY_SHARE}), none on top of Evasive or on a Flyer`);

@@ -1,0 +1,2641 @@
+{
+ "_about": "BAL32 (2026-11-09): the owner's BAL31-1/2/3 answers applied. Prices in 3A + H points, the mean over bodies (BAL29).",
+ "onhitInput": {
+  "file": "docs/balance/bal31/onhit-2026-11-08.json",
+  "games": 400,
+  "fingerprint": "ea252135c2bf",
+  "bodies": {
+   "L1": "1/20 4/11 7/2",
+   "L5": "1/24 4/15 8/3"
+  }
+ },
+ "riders": [
+  {
+   "id": "arson",
+   "points": [
+    {
+     "n": 1,
+     "price": 1.25,
+     "y": 3.29,
+     "lo": 2.61,
+     "hi": 4.03,
+     "best": 5.83,
+     "under": true,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 2.5,
+     "y": 3.48,
+     "lo": 2.79,
+     "hi": 4.26,
+     "best": 6.01,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 3.75,
+     "y": 3.47,
+     "lo": 2.77,
+     "hi": 4.23,
+     "best": 6.01,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 1.25
+   },
+   "status": false,
+   "shape": "flat in N",
+   "why": "N 1: 1.25 under 3.29 [2.61, 4.03]",
+   "new": {
+    "scale": "fixed",
+    "value": 3.42
+   }
+  },
+  {
+   "id": "bleed",
+   "points": [
+    {
+     "n": 1,
+     "price": 2.57,
+     "y": 2.63,
+     "lo": 2.04,
+     "hi": 3.25,
+     "best": 4.68,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 4.73,
+     "y": 5.16,
+     "lo": 4.38,
+     "hi": 5.84,
+     "best": 9.94,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 6.77,
+     "y": 6.42,
+     "lo": 5.58,
+     "hi": 7.19,
+     "best": 11.75,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 2.57,
+    "pow": 0.881
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "blind",
+   "points": [
+    {
+     "n": 1,
+     "price": 2.5,
+     "y": 1.23,
+     "lo": 0.56,
+     "hi": 1.89,
+     "best": 1.77,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 2,
+     "price": 2.5,
+     "y": 1.62,
+     "lo": 0.95,
+     "hi": 2.29,
+     "best": 2.54,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 2.5,
+     "y": 1.72,
+     "lo": 1.04,
+     "hi": 2.44,
+     "best": 2.72,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 2.5
+   },
+   "status": true,
+   "shape": "status: flat at duration 2, chance 50",
+   "why": "N 1: 2.5 over 1.23 [0.56, 1.89], N 2: 2.5 over 1.62 [0.95, 2.29]",
+   "new": {
+    "scale": "fixed",
+    "value": 1.62
+   }
+  },
+  {
+   "id": "bludgeon",
+   "points": [
+    {
+     "n": true,
+     "price": 1,
+     "y": 3.44,
+     "lo": 2.69,
+     "hi": 4.19,
+     "best": 4.98,
+     "under": true,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 1
+   },
+   "status": false,
+   "shape": "on",
+   "why": "N True: 1 under 3.44 [2.69, 4.19]",
+   "new": {
+    "scale": "fixed",
+    "value": 3.45
+   }
+  },
+  {
+   "id": "breach",
+   "points": [
+    {
+     "n": 1,
+     "price": 3.03,
+     "y": 4.66,
+     "lo": 4.0,
+     "hi": 5.43,
+     "best": 9.77,
+     "under": true,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 6.06,
+     "y": 7.77,
+     "lo": 6.96,
+     "hi": 8.57,
+     "best": 15.48,
+     "under": true,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 9.09,
+     "y": 9.49,
+     "lo": 8.64,
+     "hi": 10.46,
+     "best": 18.13,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 3.03
+   },
+   "status": false,
+   "shape": "value x N^pow",
+   "why": "N 1: 3.03 under 4.66 [4.0, 5.43], N 2: 6.06 under 7.77 [6.96, 8.57]",
+   "new": {
+    "scale": "n",
+    "value": 4.73,
+    "pow": 0.657
+   }
+  },
+  {
+   "id": "bulldoze",
+   "points": [
+    {
+     "n": 1,
+     "price": 2.23,
+     "y": 1.79,
+     "lo": 1.23,
+     "hi": 2.35,
+     "best": 2.84,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 2.64,
+     "y": 2.33,
+     "lo": 1.75,
+     "hi": 2.88,
+     "best": 3.44,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 2.91,
+     "y": 2.73,
+     "lo": 2.15,
+     "hi": 3.33,
+     "best": 4.12,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 2.23,
+    "pow": 0.243
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "confuse",
+   "points": [
+    {
+     "n": 1,
+     "price": 1.69,
+     "y": 1.29,
+     "lo": 0.69,
+     "hi": 1.99,
+     "best": 1.73,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 1.69,
+     "y": 1.73,
+     "lo": 1.02,
+     "hi": 2.46,
+     "best": 2.47,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 1.69,
+     "y": 1.79,
+     "lo": 1.09,
+     "hi": 2.51,
+     "best": 2.52,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 1.69
+   },
+   "status": true,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "constrict",
+   "points": [
+    {
+     "n": 1,
+     "price": 8,
+     "y": 5.6,
+     "lo": 4.84,
+     "hi": 6.34,
+     "best": 8.72,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 2,
+     "price": 16,
+     "y": 6.68,
+     "lo": 5.84,
+     "hi": 7.48,
+     "best": 10.95,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 16,
+     "y": 7.38,
+     "lo": 6.51,
+     "hi": 8.15,
+     "best": 12.11,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 8.0
+   },
+   "status": false,
+   "shape": "value x N^pow",
+   "why": "N 1: 8 over 5.6 [4.84, 6.34], N 2: 16 over 6.68 [5.84, 7.48], N 3: 16 over 7.38 [6.51, 8.15]",
+   "new": {
+    "scale": "n",
+    "value": 5.6,
+    "pow": 0.252
+   }
+  },
+  {
+   "id": "corrode",
+   "points": [
+    {
+     "n": 1,
+     "price": 1.73,
+     "y": 2.12,
+     "lo": 1.59,
+     "hi": 2.62,
+     "best": 3.0,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 3.46,
+     "y": 2.88,
+     "lo": 2.27,
+     "hi": 3.44,
+     "best": 3.65,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 3.46,
+     "y": 3.3,
+     "lo": 2.67,
+     "hi": 3.89,
+     "best": 3.96,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 1.73
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "daunt",
+   "points": [
+    {
+     "n": 1,
+     "price": 1.72,
+     "y": 1.54,
+     "lo": 1.07,
+     "hi": 1.99,
+     "best": 2.08,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 2.56,
+     "y": 2.62,
+     "lo": 2.02,
+     "hi": 3.19,
+     "best": 3.26,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 3.22,
+     "y": 2.92,
+     "lo": 2.32,
+     "hi": 3.5,
+     "best": 3.46,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 1.72,
+    "pow": 0.572
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "decay",
+   "points": [
+    {
+     "n": 1,
+     "price": 6.13,
+     "y": 5.5,
+     "lo": 4.74,
+     "hi": 6.27,
+     "best": 9.89,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 12.26,
+     "y": 7.08,
+     "lo": 6.25,
+     "hi": 7.86,
+     "best": 11.93,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 12.26,
+     "y": 7.62,
+     "lo": 6.76,
+     "hi": 8.5,
+     "best": 12.84,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 6.13
+   },
+   "status": false,
+   "shape": "value x N^pow",
+   "why": "N 2: 12.26 over 7.08 [6.25, 7.86], N 3: 12.26 over 7.62 [6.76, 8.5]",
+   "new": {
+    "scale": "n",
+    "value": 5.56,
+    "pow": 0.304
+   }
+  },
+  {
+   "id": "desecrate",
+   "points": [
+    {
+     "n": 1,
+     "price": 6,
+     "y": 5.94,
+     "lo": 5.21,
+     "hi": 6.66,
+     "best": 10.62,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 12,
+     "y": 7.76,
+     "lo": 6.92,
+     "hi": 8.58,
+     "best": 13.07,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 12,
+     "y": 8.55,
+     "lo": 7.67,
+     "hi": 9.46,
+     "best": 14.09,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 6
+   },
+   "status": false,
+   "shape": "value x N^pow",
+   "why": "N 2: 12 over 7.76 [6.92, 8.58], N 3: 12 over 8.55 [7.67, 9.46]",
+   "new": {
+    "scale": "n",
+    "value": 5.99,
+    "pow": 0.337
+   }
+  },
+  {
+   "id": "freeze",
+   "points": [
+    {
+     "n": 1,
+     "price": 1.83,
+     "y": 1.89,
+     "lo": 1.25,
+     "hi": 2.58,
+     "best": 2.45,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 1.83,
+     "y": 2.63,
+     "lo": 1.93,
+     "hi": 3.35,
+     "best": 3.46,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 1.83,
+     "y": 2.58,
+     "lo": 1.83,
+     "hi": 3.33,
+     "best": 3.42,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 1.83
+   },
+   "status": true,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "greaterPoison",
+   "points": [
+    {
+     "n": 1,
+     "price": 3.69,
+     "y": 3.99,
+     "lo": 3.33,
+     "hi": 4.63,
+     "best": 7.26,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 7.38,
+     "y": 5.66,
+     "lo": 4.91,
+     "hi": 6.36,
+     "best": 9.82,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 7.38,
+     "y": 6.43,
+     "lo": 5.64,
+     "hi": 7.24,
+     "best": 11.05,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 3.69
+   },
+   "status": false,
+   "shape": "value x N^pow",
+   "why": "N 2: 7.38 over 5.66 [4.91, 6.36]",
+   "new": {
+    "scale": "n",
+    "value": 4.04,
+    "pow": 0.442
+   }
+  },
+  {
+   "id": "paralyze",
+   "points": [
+    {
+     "n": 1,
+     "price": 2,
+     "y": 0.68,
+     "lo": -0.01,
+     "hi": 1.33,
+     "best": 1.16,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 2,
+     "price": 2,
+     "y": 1.29,
+     "lo": 0.62,
+     "hi": 1.94,
+     "best": 2.12,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 2,
+     "y": 1.52,
+     "lo": 0.86,
+     "hi": 2.16,
+     "best": 2.52,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 2
+   },
+   "status": true,
+   "shape": "status: flat at duration 2, chance 50",
+   "why": "N 1: 2 over 0.68 [-0.01, 1.33]",
+   "new": {
+    "scale": "fixed",
+    "value": 1.29
+   }
+  },
+  {
+   "id": "perforate",
+   "points": [
+    {
+     "n": 1,
+     "price": 3.94,
+     "y": 6.33,
+     "lo": 5.6,
+     "hi": 7.22,
+     "best": 12.28,
+     "under": true,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 7.88,
+     "y": 9.05,
+     "lo": 8.23,
+     "hi": 9.93,
+     "best": 16.79,
+     "under": true,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 7.88,
+     "y": 10.65,
+     "lo": 9.75,
+     "hi": 11.64,
+     "best": 18.45,
+     "under": true,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 3.94
+   },
+   "status": false,
+   "shape": "value x N^pow",
+   "why": "N 1: 3.94 under 6.33 [5.6, 7.22], N 2: 7.88 under 9.05 [8.23, 9.93], N 3: 7.88 under 10.65 [9.75, 11.64]",
+   "new": {
+    "scale": "n",
+    "value": 6.37,
+    "pow": 0.478
+   }
+  },
+  {
+   "id": "pickpocket",
+   "points": [
+    {
+     "n": 1,
+     "price": 5.13,
+     "y": 4.82,
+     "lo": 4.11,
+     "hi": 5.66,
+     "best": 8.72,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 5.29,
+     "y": 5.01,
+     "lo": 4.22,
+     "hi": 5.85,
+     "best": 8.88,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 5.38,
+     "y": 4.98,
+     "lo": 4.19,
+     "hi": 5.79,
+     "best": 8.8,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 5.13,
+    "pow": 0.044
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "poison",
+   "points": [
+    {
+     "n": 1,
+     "price": 2.38,
+     "y": 2.21,
+     "lo": 1.7,
+     "hi": 2.76,
+     "best": 3.47,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 4.69,
+     "y": 4.92,
+     "lo": 4.17,
+     "hi": 5.53,
+     "best": 8.68,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 6.98,
+     "y": 6.06,
+     "lo": 5.3,
+     "hi": 6.86,
+     "best": 10.48,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 2.38,
+    "pow": 0.98
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "psychic",
+   "points": [
+    {
+     "n": 1,
+     "price": 2,
+     "y": 2.17,
+     "lo": 1.62,
+     "hi": 2.72,
+     "best": 3.74,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 4,
+     "y": 4.25,
+     "lo": 3.55,
+     "hi": 4.89,
+     "best": 7.52,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 4,
+     "y": 5.62,
+     "lo": 4.83,
+     "hi": 6.38,
+     "best": 10.08,
+     "under": true,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 2
+   },
+   "status": false,
+   "shape": "value x N^pow",
+   "why": "N 3: 4 under 5.62 [4.83, 6.38]",
+   "new": {
+    "scale": "n",
+    "value": 2.21,
+    "pow": 0.877
+   }
+  },
+  {
+   "id": "puncture",
+   "points": [
+    {
+     "n": 1,
+     "price": 0.7,
+     "y": 4.66,
+     "lo": 4.0,
+     "hi": 5.43,
+     "best": 9.77,
+     "under": true,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 1.4,
+     "y": 7.79,
+     "lo": 6.97,
+     "hi": 8.59,
+     "best": 15.53,
+     "under": true,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 1.4,
+     "y": 9.49,
+     "lo": 8.64,
+     "hi": 10.46,
+     "best": 18.13,
+     "under": true,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 0.7
+   },
+   "status": false,
+   "mergeWith": "breach",
+   "shape": "value x N^pow",
+   "why": "N 1: 0.7 under 4.66 [4.0, 5.43], N 2: 1.4 under 7.79 [6.97, 8.59], N 3: 1.4 under 9.49 [8.64, 10.46] (merged: the same rule as breach)",
+   "new": {
+    "scale": "n",
+    "value": 4.73,
+    "pow": 0.657
+   }
+  },
+  {
+   "id": "rabid",
+   "points": [
+    {
+     "n": true,
+     "price": 5.1,
+     "y": 4.76,
+     "lo": 4.0,
+     "hi": 5.4,
+     "best": 8.59,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 5.1
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "sabotage",
+   "points": [
+    {
+     "n": 1,
+     "price": 1.5,
+     "y": 3.31,
+     "lo": 2.61,
+     "hi": 4.05,
+     "best": 5.87,
+     "under": true,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 3,
+     "y": 3.5,
+     "lo": 2.79,
+     "hi": 4.28,
+     "best": 6.05,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 4.5,
+     "y": 3.5,
+     "lo": 2.79,
+     "hi": 4.25,
+     "best": 6.05,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 1.5
+   },
+   "status": false,
+   "mergeWith": "arson",
+   "shape": "flat in N",
+   "why": "N 1: 1.5 under 3.31 [2.61, 4.05] (merged: the same rule as arson)",
+   "new": {
+    "scale": "fixed",
+    "value": 3.42
+   }
+  },
+  {
+   "id": "sap",
+   "points": [
+    {
+     "n": true,
+     "price": 2.3,
+     "y": 1.91,
+     "lo": 1.48,
+     "hi": 2.35,
+     "best": 2.83,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 1,
+     "price": 1.15,
+     "y": 1.44,
+     "lo": 1.01,
+     "hi": 1.85,
+     "best": 1.92,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 2.3,
+     "y": 1.87,
+     "lo": 1.39,
+     "hi": 2.33,
+     "best": 2.34,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 3.45,
+     "y": 2.09,
+     "lo": 1.56,
+     "hi": 2.56,
+     "best": 2.71,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 2.3,
+    "perN": 1.15
+   },
+   "status": false,
+   "kept": "Leech N is priced perN (ENG35); no card prints a number; plain Leech within its interval"
+  },
+  {
+   "id": "scar",
+   "points": [
+    {
+     "n": 1,
+     "price": 2.45,
+     "y": 2.72,
+     "lo": 2.16,
+     "hi": 3.33,
+     "best": 5.83,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 3.41,
+     "y": 3.85,
+     "lo": 3.25,
+     "hi": 4.47,
+     "best": 8.35,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 4.14,
+     "y": 4.4,
+     "lo": 3.75,
+     "hi": 5.05,
+     "best": 9.45,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 2.45,
+    "pow": 0.478
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "sequestration",
+   "points": [
+    {
+     "n": true,
+     "price": 0.43,
+     "y": 0.4,
+     "lo": 0.18,
+     "hi": 0.65,
+     "best": 0.72,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "fixed",
+    "value": 0.43
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "shock",
+   "points": [
+    {
+     "n": 1,
+     "price": 0.66,
+     "y": 1.03,
+     "lo": 0.39,
+     "hi": 1.66,
+     "best": 1.96,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 0.82,
+     "y": 1.36,
+     "lo": 0.65,
+     "hi": 2.07,
+     "best": 2.31,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 0.88,
+     "y": 1.48,
+     "lo": 0.76,
+     "hi": 2.16,
+     "best": 2.57,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 0.93
+   },
+   "status": true,
+   "kept": "priced by its 4-round logic (bramblewood-budget.js shockS), not the table value"
+  },
+  {
+   "id": "skitter",
+   "points": [
+    {
+     "n": true,
+     "price": 3.5,
+     "y": 3.33,
+     "lo": 2.65,
+     "hi": 4.02,
+     "best": 3.67,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "fixed",
+    "value": 3.5
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "sleep",
+   "points": [
+    {
+     "n": 1,
+     "price": 4,
+     "y": 2.29,
+     "lo": 1.59,
+     "hi": 2.97,
+     "best": 2.97,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 2,
+     "price": 4,
+     "y": 2.48,
+     "lo": 1.77,
+     "hi": 3.18,
+     "best": 3.42,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 4,
+     "y": 2.45,
+     "lo": 1.75,
+     "hi": 3.12,
+     "best": 3.29,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 4
+   },
+   "status": true,
+   "shape": "status: flat at duration 2, chance 50",
+   "why": "N 1: 4 over 2.29 [1.59, 2.97], N 2: 4 over 2.48 [1.77, 3.18], N 3: 4 over 2.45 [1.75, 3.12]",
+   "new": {
+    "scale": "fixed",
+    "value": 2.48
+   }
+  },
+  {
+   "id": "stagger",
+   "points": [
+    {
+     "n": 1,
+     "price": 3,
+     "y": 1.12,
+     "lo": 0.49,
+     "hi": 1.77,
+     "best": 1.88,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 2,
+     "price": 3,
+     "y": 1.28,
+     "lo": 0.62,
+     "hi": 1.93,
+     "best": 2.17,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 3,
+     "y": 1.34,
+     "lo": 0.68,
+     "hi": 2.0,
+     "best": 2.16,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 3
+   },
+   "status": true,
+   "shape": "status: flat at duration 2, chance 50",
+   "why": "N 1: 3 over 1.12 [0.49, 1.77], N 2: 3 over 1.28 [0.62, 1.93], N 3: 3 over 1.34 [0.68, 2.0]",
+   "new": {
+    "scale": "fixed",
+    "value": 1.28
+   }
+  },
+  {
+   "id": "strangle",
+   "points": [
+    {
+     "n": 1,
+     "price": 3.65,
+     "y": 3.61,
+     "lo": 2.99,
+     "hi": 4.24,
+     "best": 5.61,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 7.3,
+     "y": 5.29,
+     "lo": 4.56,
+     "hi": 5.99,
+     "best": 8.98,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 7.3,
+     "y": 6.42,
+     "lo": 5.56,
+     "hi": 7.2,
+     "best": 10.82,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 3.65
+   },
+   "status": false,
+   "shape": "value x N^pow",
+   "why": "N 2: 7.3 over 5.29 [4.56, 5.99]",
+   "new": {
+    "scale": "n",
+    "value": 3.63,
+    "pow": 0.527
+   }
+  },
+  {
+   "id": "stunOnHit",
+   "points": [
+    {
+     "n": 1,
+     "price": 2.29,
+     "y": 1.81,
+     "lo": 1.15,
+     "hi": 2.48,
+     "best": 2.72,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 4.58,
+     "y": 2.03,
+     "lo": 1.36,
+     "hi": 2.68,
+     "best": 2.9,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 4.58,
+     "y": 2.12,
+     "lo": 1.42,
+     "hi": 2.83,
+     "best": 3.09,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 2.29
+   },
+   "status": false,
+   "shape": "flat in N",
+   "why": "N 2: 4.58 over 2.03 [1.36, 2.68], N 3: 4.58 over 2.12 [1.42, 2.83]",
+   "new": {
+    "scale": "fixed",
+    "value": 1.99
+   }
+  },
+  {
+   "id": "tangle",
+   "points": [
+    {
+     "n": 1,
+     "price": 2.34,
+     "y": 1.98,
+     "lo": 1.31,
+     "hi": 2.67,
+     "best": 2.23,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 4.68,
+     "y": 2.1,
+     "lo": 1.43,
+     "hi": 2.81,
+     "best": 2.6,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 4.68,
+     "y": 2.08,
+     "lo": 1.42,
+     "hi": 2.76,
+     "best": 2.48,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 2.34
+   },
+   "status": false,
+   "shape": "flat in N",
+   "why": "N 2: 4.68 over 2.1 [1.43, 2.81], N 3: 4.68 over 2.08 [1.42, 2.76]",
+   "new": {
+    "scale": "fixed",
+    "value": 2.05
+   }
+  },
+  {
+   "id": "tipsy",
+   "points": [
+    {
+     "n": 1,
+     "price": 1.5,
+     "y": 0.55,
+     "lo": -0.18,
+     "hi": 1.19,
+     "best": 0.65,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 2,
+     "price": 1.5,
+     "y": 0.82,
+     "lo": 0.17,
+     "hi": 1.43,
+     "best": 1.48,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 1.5,
+     "y": 0.61,
+     "lo": -0.07,
+     "hi": 1.22,
+     "best": 1.24,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 1.5
+   },
+   "status": true,
+   "shape": "status: flat at duration 2, chance 50",
+   "why": "N 1: 1.5 over 0.55 [-0.18, 1.19], N 2: 1.5 over 0.82 [0.17, 1.43], N 3: 1.5 over 0.61 [-0.07, 1.22]",
+   "new": {
+    "scale": "fixed",
+    "value": 0.82
+   }
+  },
+  {
+   "id": "toxin",
+   "points": [
+    {
+     "n": 1,
+     "price": 5,
+     "y": 4.44,
+     "lo": 3.76,
+     "hi": 5.14,
+     "best": 8.37,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 10,
+     "y": 6.15,
+     "lo": 5.4,
+     "hi": 6.91,
+     "best": 10.93,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 10,
+     "y": 6.97,
+     "lo": 6.19,
+     "hi": 7.82,
+     "best": 12.38,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 5
+   },
+   "status": false,
+   "shape": "value x N^pow",
+   "why": "N 2: 10 over 6.15 [5.4, 6.91], N 3: 10 over 6.97 [6.19, 7.82]",
+   "new": {
+    "scale": "n",
+    "value": 4.48,
+    "pow": 0.417
+   }
+  },
+  {
+   "id": "venomous",
+   "points": [
+    {
+     "n": 1,
+     "price": 2.76,
+     "y": 2.23,
+     "lo": 1.71,
+     "hi": 2.78,
+     "best": 3.47,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 5.46,
+     "y": 4.93,
+     "lo": 4.17,
+     "hi": 5.58,
+     "best": 8.68,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 8.14,
+     "y": 6.09,
+     "lo": 5.3,
+     "hi": 6.92,
+     "best": 10.48,
+     "under": false,
+     "over": true
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 2.76,
+    "pow": 0.984
+   },
+   "status": false,
+   "mergeWith": "poison",
+   "shape": "value x N^pow",
+   "why": "N 3: 8.14 over 6.09 [5.3, 6.92] (merged: the same rule as poison)",
+   "new": {
+    "scale": "n",
+    "value": 2.38,
+    "pow": 0.98
+   }
+  },
+  {
+   "id": "weaken",
+   "points": [
+    {
+     "n": 1,
+     "price": 2.64,
+     "y": 2.41,
+     "lo": 1.87,
+     "hi": 2.92,
+     "best": 3.25,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 3.29,
+     "y": 3.23,
+     "lo": 2.63,
+     "hi": 3.83,
+     "best": 3.88,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 3,
+     "price": 3.74,
+     "y": 3.45,
+     "lo": 2.79,
+     "hi": 4.05,
+     "best": 4.07,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "n",
+    "value": 2.64,
+    "pow": 0.318
+   },
+   "status": false,
+   "kept": "the table is inside both levels' 95% interval of the mean at every N"
+  },
+  {
+   "id": "wither",
+   "points": [
+    {
+     "n": 1,
+     "price": 3.47,
+     "y": 3.06,
+     "lo": 2.5,
+     "hi": 3.73,
+     "best": 4.74,
+     "under": false,
+     "over": false
+    },
+    {
+     "n": 2,
+     "price": 6.94,
+     "y": 5.22,
+     "lo": 4.52,
+     "hi": 5.92,
+     "best": 8.68,
+     "under": false,
+     "over": true
+    },
+    {
+     "n": 3,
+     "price": 6.94,
+     "y": 6.64,
+     "lo": 5.92,
+     "hi": 7.36,
+     "best": 11.44,
+     "under": false,
+     "over": false
+    }
+   ],
+   "old": {
+    "scale": "half",
+    "value": 3.47
+   },
+   "status": false,
+   "shape": "value x N^pow",
+   "why": "N 2: 6.94 over 5.22 [4.52, 5.92]",
+   "new": {
+    "scale": "n",
+    "value": 3.09,
+    "pow": 0.712
+   }
+  }
+ ],
+ "enablers": [
+  {
+   "id": "brittle",
+   "old": {
+    "scale": "half",
+    "value": 1
+   },
+   "terms": [
+    {
+     "partner": "shatter",
+     "gain": 2.77,
+     "gainCI": [
+      1.99,
+      3.67
+     ],
+     "gainFrom": "Brittle 2 + Shatter 2 (same card)",
+     "share": 0.071,
+     "term": 0.2,
+     "other": []
+    }
+   ],
+   "new": {
+    "scale": "fixed",
+    "value": 0.2
+   }
+  },
+  {
+   "id": "hemorrhage",
+   "old": {
+    "scale": "fixed",
+    "value": 2.0,
+    "plus": "bleed"
+   },
+   "terms": [
+    {
+     "partner": "bleed",
+     "gain": 0.02,
+     "gainCI": [
+      0,
+      0.06
+     ],
+     "gainFrom": "Hemorrhage among Bleed carriers",
+     "share": 0.232,
+     "term": 0.0,
+     "other": [
+      {
+       "label": "Hemorrhage + Bleed 1 (same card)",
+       "gain": 2.11
+      }
+     ]
+    }
+   ],
+   "new": {
+    "scale": "fixed",
+    "plus": "bleed",
+    "value": 0.0
+   }
+  },
+  {
+   "id": "detonate",
+   "old": {
+    "scale": "n",
+    "value": 0.2
+   },
+   "terms": [
+    {
+     "partner": "poison",
+     "gain": 0.44,
+     "gainCI": [
+      -0.17,
+      1.02
+     ],
+     "gainFrom": "Detonate + Poison 1 (same card)",
+     "share": 0.414,
+     "term": 0.18,
+     "other": []
+    }
+   ],
+   "new": {
+    "scale": "n",
+    "value": 0.18
+   }
+  },
+  {
+   "id": "pry",
+   "old": {
+    "scale": "n",
+    "value": 0.5
+   },
+   "terms": [
+    {
+     "partner": "armor",
+     "gain": 2.85,
+     "gainCI": [
+      2.22,
+      3.5
+     ],
+     "gainFrom": "Pry 1 among Armor carriers",
+     "share": 0.35,
+     "term": 1.0,
+     "other": []
+    }
+   ],
+   "new": {
+    "scale": "n",
+    "value": 1.0
+   }
+  },
+  {
+   "id": "pulverise",
+   "old": {
+    "scale": "fixed",
+    "value": 2.1
+   },
+   "terms": [
+    {
+     "partner": "armor",
+     "gain": 4.37,
+     "gainCI": [
+      3.67,
+      5.06
+     ],
+     "gainFrom": "Pulverise among Armor carriers",
+     "share": 0.35,
+     "term": 1.53,
+     "other": []
+    }
+   ],
+   "new": {
+    "scale": "fixed",
+    "value": 1.53
+   }
+  },
+  {
+   "id": "web",
+   "old": {
+    "scale": "half",
+    "value": 0.37
+   },
+   "terms": [
+    {
+     "partner": "dodge",
+     "gain": 1.18,
+     "gainCI": [
+      0.73,
+      1.73
+     ],
+     "gainFrom": "Web 1 among dodgers (Evasive, Swift, Flying, Prey)",
+     "share": 0.819,
+     "term": 0.97,
+     "other": []
+    }
+   ],
+   "new": {
+    "scale": "half",
+    "value": 0.97
+   }
+  },
+  {
+   "id": "disarm",
+   "old": {
+    "scale": "fixed",
+    "value": 2
+   },
+   "terms": [
+    {
+     "partner": "equipment",
+     "gain": 2.0,
+     "gainFrom": "not measurable on the bench (it fields no equipment): SK2b's estimate of its worth against an equipment deck, 2",
+     "share": 0.012,
+     "term": 0.02
+    }
+   ],
+   "new": {
+    "scale": "fixed",
+    "value": 0.02
+   }
+  },
+  {
+   "id": "expose",
+   "old": {
+    "scale": "half",
+    "value": 0.09
+   },
+   "terms": [],
+   "kept": "its partner is any hit on the Exposed target (every deck: share 1), so its gain with the partner is its single worth, about 0 (onhit mean -0.03 / 0.01 / 0.03 at N 1-3); the table's 0.09 is inside that interval; kept"
+  }
+ ],
+ "changes": [
+  {
+   "id": "arson",
+   "old": {
+    "scale": "n",
+    "value": 1.25
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 3.42
+   },
+   "at": {
+    "True": [
+     1.25,
+     3.42
+    ],
+    "1": [
+     1.25,
+     3.42
+    ],
+    "2": [
+     2.5,
+     3.42
+    ],
+    "3": [
+     3.75,
+     3.42
+    ]
+   }
+  },
+  {
+   "id": "blind",
+   "old": {
+    "scale": "half",
+    "value": 2.5
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 1.62
+   },
+   "at": {
+    "True": [
+     2.5,
+     1.62
+    ],
+    "1": [
+     2.5,
+     1.62
+    ],
+    "2": [
+     5.0,
+     1.62
+    ],
+    "3": [
+     5.0,
+     1.62
+    ]
+   }
+  },
+  {
+   "id": "bludgeon",
+   "old": {
+    "scale": "half",
+    "value": 1
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 3.45
+   },
+   "at": {
+    "True": [
+     1.0,
+     3.45
+    ],
+    "1": [
+     1.0,
+     3.45
+    ],
+    "2": [
+     2.0,
+     3.45
+    ],
+    "3": [
+     2.0,
+     3.45
+    ]
+   }
+  },
+  {
+   "id": "breach",
+   "old": {
+    "scale": "n",
+    "value": 3.03
+   },
+   "new": {
+    "scale": "n",
+    "value": 4.73,
+    "pow": 0.657
+   },
+   "at": {
+    "True": [
+     3.03,
+     4.73
+    ],
+    "1": [
+     3.03,
+     4.73
+    ],
+    "2": [
+     6.06,
+     7.46
+    ],
+    "3": [
+     9.09,
+     9.73
+    ]
+   }
+  },
+  {
+   "id": "constrict",
+   "old": {
+    "scale": "half",
+    "value": 8.0
+   },
+   "new": {
+    "scale": "n",
+    "value": 5.6,
+    "pow": 0.252
+   },
+   "at": {
+    "True": [
+     8.0,
+     5.6
+    ],
+    "1": [
+     8.0,
+     5.6
+    ],
+    "2": [
+     16.0,
+     6.67
+    ],
+    "3": [
+     16.0,
+     7.39
+    ]
+   }
+  },
+  {
+   "id": "decay",
+   "old": {
+    "scale": "half",
+    "value": 6.13
+   },
+   "new": {
+    "scale": "n",
+    "value": 5.56,
+    "pow": 0.304
+   },
+   "at": {
+    "True": [
+     6.13,
+     5.56
+    ],
+    "1": [
+     6.13,
+     5.56
+    ],
+    "2": [
+     12.26,
+     6.86
+    ],
+    "3": [
+     12.26,
+     7.76
+    ]
+   }
+  },
+  {
+   "id": "desecrate",
+   "old": {
+    "scale": "half",
+    "value": 6
+   },
+   "new": {
+    "scale": "n",
+    "value": 5.99,
+    "pow": 0.337
+   },
+   "at": {
+    "True": [
+     6.0,
+     5.99
+    ],
+    "1": [
+     6.0,
+     5.99
+    ],
+    "2": [
+     12.0,
+     7.57
+    ],
+    "3": [
+     12.0,
+     8.67
+    ]
+   }
+  },
+  {
+   "id": "greaterPoison",
+   "old": {
+    "scale": "half",
+    "value": 3.69
+   },
+   "new": {
+    "scale": "n",
+    "value": 4.04,
+    "pow": 0.442
+   },
+   "at": {
+    "True": [
+     3.69,
+     4.04
+    ],
+    "1": [
+     3.69,
+     4.04
+    ],
+    "2": [
+     7.38,
+     5.49
+    ],
+    "3": [
+     7.38,
+     6.57
+    ]
+   }
+  },
+  {
+   "id": "paralyze",
+   "old": {
+    "scale": "half",
+    "value": 2
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 1.29
+   },
+   "at": {
+    "True": [
+     2.0,
+     1.29
+    ],
+    "1": [
+     2.0,
+     1.29
+    ],
+    "2": [
+     4.0,
+     1.29
+    ],
+    "3": [
+     4.0,
+     1.29
+    ]
+   }
+  },
+  {
+   "id": "perforate",
+   "old": {
+    "scale": "half",
+    "value": 3.94
+   },
+   "new": {
+    "scale": "n",
+    "value": 6.37,
+    "pow": 0.478
+   },
+   "at": {
+    "True": [
+     3.94,
+     6.37
+    ],
+    "1": [
+     3.94,
+     6.37
+    ],
+    "2": [
+     7.88,
+     8.87
+    ],
+    "3": [
+     7.88,
+     10.77
+    ]
+   }
+  },
+  {
+   "id": "psychic",
+   "old": {
+    "scale": "half",
+    "value": 2
+   },
+   "new": {
+    "scale": "n",
+    "value": 2.21,
+    "pow": 0.877
+   },
+   "at": {
+    "True": [
+     2.0,
+     2.21
+    ],
+    "1": [
+     2.0,
+     2.21
+    ],
+    "2": [
+     4.0,
+     4.06
+    ],
+    "3": [
+     4.0,
+     5.79
+    ]
+   }
+  },
+  {
+   "id": "puncture",
+   "old": {
+    "scale": "half",
+    "value": 0.7
+   },
+   "new": {
+    "scale": "n",
+    "value": 4.73,
+    "pow": 0.657
+   },
+   "at": {
+    "True": [
+     0.7,
+     4.73
+    ],
+    "1": [
+     0.7,
+     4.73
+    ],
+    "2": [
+     1.4,
+     7.46
+    ],
+    "3": [
+     1.4,
+     9.73
+    ]
+   }
+  },
+  {
+   "id": "sabotage",
+   "old": {
+    "scale": "n",
+    "value": 1.5
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 3.42
+   },
+   "at": {
+    "True": [
+     1.5,
+     3.42
+    ],
+    "1": [
+     1.5,
+     3.42
+    ],
+    "2": [
+     3.0,
+     3.42
+    ],
+    "3": [
+     4.5,
+     3.42
+    ]
+   }
+  },
+  {
+   "id": "sleep",
+   "old": {
+    "scale": "half",
+    "value": 4
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 2.48
+   },
+   "at": {
+    "True": [
+     4.0,
+     2.48
+    ],
+    "1": [
+     4.0,
+     2.48
+    ],
+    "2": [
+     8.0,
+     2.48
+    ],
+    "3": [
+     8.0,
+     2.48
+    ]
+   }
+  },
+  {
+   "id": "stagger",
+   "old": {
+    "scale": "half",
+    "value": 3
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 1.28
+   },
+   "at": {
+    "True": [
+     3.0,
+     1.28
+    ],
+    "1": [
+     3.0,
+     1.28
+    ],
+    "2": [
+     6.0,
+     1.28
+    ],
+    "3": [
+     6.0,
+     1.28
+    ]
+   }
+  },
+  {
+   "id": "strangle",
+   "old": {
+    "scale": "half",
+    "value": 3.65
+   },
+   "new": {
+    "scale": "n",
+    "value": 3.63,
+    "pow": 0.527
+   },
+   "at": {
+    "True": [
+     3.65,
+     3.63
+    ],
+    "1": [
+     3.65,
+     3.63
+    ],
+    "2": [
+     7.3,
+     5.23
+    ],
+    "3": [
+     7.3,
+     6.48
+    ]
+   }
+  },
+  {
+   "id": "stunOnHit",
+   "old": {
+    "scale": "half",
+    "value": 2.29
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 1.99
+   },
+   "at": {
+    "True": [
+     2.29,
+     1.99
+    ],
+    "1": [
+     2.29,
+     1.99
+    ],
+    "2": [
+     4.58,
+     1.99
+    ],
+    "3": [
+     4.58,
+     1.99
+    ]
+   }
+  },
+  {
+   "id": "tangle",
+   "old": {
+    "scale": "half",
+    "value": 2.34
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 2.05
+   },
+   "at": {
+    "True": [
+     2.34,
+     2.05
+    ],
+    "1": [
+     2.34,
+     2.05
+    ],
+    "2": [
+     4.68,
+     2.05
+    ],
+    "3": [
+     4.68,
+     2.05
+    ]
+   }
+  },
+  {
+   "id": "tipsy",
+   "old": {
+    "scale": "half",
+    "value": 1.5
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 0.82
+   },
+   "at": {
+    "True": [
+     1.5,
+     0.82
+    ],
+    "1": [
+     1.5,
+     0.82
+    ],
+    "2": [
+     3.0,
+     0.82
+    ],
+    "3": [
+     3.0,
+     0.82
+    ]
+   }
+  },
+  {
+   "id": "toxin",
+   "old": {
+    "scale": "half",
+    "value": 5
+   },
+   "new": {
+    "scale": "n",
+    "value": 4.48,
+    "pow": 0.417
+   },
+   "at": {
+    "True": [
+     5.0,
+     4.48
+    ],
+    "1": [
+     5.0,
+     4.48
+    ],
+    "2": [
+     10.0,
+     5.98
+    ],
+    "3": [
+     10.0,
+     7.08
+    ]
+   }
+  },
+  {
+   "id": "venomous",
+   "old": {
+    "scale": "n",
+    "value": 2.76,
+    "pow": 0.984
+   },
+   "new": {
+    "scale": "n",
+    "value": 2.38,
+    "pow": 0.98
+   },
+   "at": {
+    "True": [
+     2.76,
+     2.38
+    ],
+    "1": [
+     2.76,
+     2.38
+    ],
+    "2": [
+     5.46,
+     4.69
+    ],
+    "3": [
+     8.14,
+     6.98
+    ]
+   }
+  },
+  {
+   "id": "wither",
+   "old": {
+    "scale": "half",
+    "value": 3.47
+   },
+   "new": {
+    "scale": "n",
+    "value": 3.09,
+    "pow": 0.712
+   },
+   "at": {
+    "True": [
+     3.47,
+     3.09
+    ],
+    "1": [
+     3.47,
+     3.09
+    ],
+    "2": [
+     6.94,
+     5.06
+    ],
+    "3": [
+     6.94,
+     6.76
+    ]
+   }
+  },
+  {
+   "id": "brittle",
+   "old": {
+    "scale": "half",
+    "value": 1
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 0.2
+   },
+   "at": {
+    "True": [
+     1.0,
+     0.2
+    ],
+    "1": [
+     1.0,
+     0.2
+    ],
+    "2": [
+     2.0,
+     0.2
+    ],
+    "3": [
+     2.0,
+     0.2
+    ]
+   }
+  },
+  {
+   "id": "hemorrhage",
+   "old": {
+    "scale": "fixed",
+    "value": 2.0,
+    "plus": "bleed"
+   },
+   "new": {
+    "scale": "fixed",
+    "plus": "bleed",
+    "value": 0.0
+   },
+   "at": {
+    "True": [
+     2.0,
+     0.0
+    ],
+    "1": [
+     null,
+     null
+    ],
+    "2": [
+     null,
+     null
+    ],
+    "3": [
+     null,
+     null
+    ]
+   }
+  },
+  {
+   "id": "detonate",
+   "old": {
+    "scale": "n",
+    "value": 0.2
+   },
+   "new": {
+    "scale": "n",
+    "value": 0.18
+   },
+   "at": {
+    "True": [
+     0.2,
+     0.18
+    ],
+    "1": [
+     0.2,
+     0.18
+    ],
+    "2": [
+     0.4,
+     0.36
+    ],
+    "3": [
+     0.6,
+     0.54
+    ]
+   }
+  },
+  {
+   "id": "pry",
+   "old": {
+    "scale": "n",
+    "value": 0.5
+   },
+   "new": {
+    "scale": "n",
+    "value": 1.0
+   },
+   "at": {
+    "True": [
+     0.5,
+     1.0
+    ],
+    "1": [
+     0.5,
+     1.0
+    ],
+    "2": [
+     1.0,
+     2.0
+    ],
+    "3": [
+     1.5,
+     3.0
+    ]
+   }
+  },
+  {
+   "id": "pulverise",
+   "old": {
+    "scale": "fixed",
+    "value": 2.1
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 1.53
+   },
+   "at": {
+    "True": [
+     2.1,
+     1.53
+    ],
+    "1": [
+     2.1,
+     1.53
+    ],
+    "2": [
+     2.1,
+     1.53
+    ],
+    "3": [
+     2.1,
+     1.53
+    ]
+   }
+  },
+  {
+   "id": "web",
+   "old": {
+    "scale": "half",
+    "value": 0.37
+   },
+   "new": {
+    "scale": "half",
+    "value": 0.97
+   },
+   "at": {
+    "True": [
+     0.37,
+     0.97
+    ],
+    "1": [
+     0.37,
+     0.97
+    ],
+    "2": [
+     0.74,
+     1.94
+    ],
+    "3": [
+     0.74,
+     1.94
+    ]
+   }
+  },
+  {
+   "id": "disarm",
+   "old": {
+    "scale": "fixed",
+    "value": 2
+   },
+   "new": {
+    "scale": "fixed",
+    "value": 0.02
+   },
+   "at": {
+    "True": [
+     2.0,
+     0.02
+    ],
+    "1": [
+     2.0,
+     0.02
+    ],
+    "2": [
+     2.0,
+     0.02
+    ],
+    "3": [
+     2.0,
+     0.02
+    ]
+   }
+  }
+ ]
+}

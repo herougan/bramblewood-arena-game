@@ -25,7 +25,7 @@ const SK = {}; table.skills.forEach(e => { SK[e.id] = e; });
   const at = (id, n) => { const a = chk.anchors.find(x => x.id === id && (x.n === n || n == null)); return a.worthStat.m; };
   ok(Math.abs(T.skillCost('onReadyGold', 1) - at('onReadyGold', 1)) < 0.02 && (Math.abs(T.skillCost('fork', true) - at('fork')) < 0.02 || (!!table.skills.find(e => e.id === 'fork').bal29Was && T.skillCost('fork', true) === 4.95)) /* 2026-11-08 (package BAL30): Fork re-priced 3.89 -> 4.95 at the ladder's mean (BAL29-1 a); BAL12's reading stays in the file */, `On Ready +1 Lumber ${T.skillCost('onReadyGold', 1)} and Fork ${T.skillCost('fork', true)} at their bramble-15 readings`);
   const m = J('docs/balance/pipeline/measures.json').results; ok(m['global|stealth'] && m['global|stealth'].bramble === 15 && SK.stealth.value === Math.round(m['global|stealth'].test.worthRuler.m * 100) / 100, `Stealth priced from its bramble-15 measure (${SK.stealth.value}; BAL11's x2 was 7.28)`);
-  ok(m['global|breach=2'] && m['global|breach=2'].bramble === 15 && SK.breach.value < 4.5, `Breach priced from its bramble-15 measure (${SK.breach.value} a point; BAL11's x2 was 4.5)`);
+  ok(m['global|breach=2'] && m['global|breach=2'].bramble === 15 && (SK.breach.value < 4.5 || !!(SK.breach.bal32Was && SK.breach.bal32Was.value < 4.5)) /* 2026-11-09 (package BAL32, owner BAL31-2): re-priced from the BAL31 on-hit measure at road brambles (15); BAL12's price in bal32Was */, `Breach priced from its bramble-15 measure (${SK.breach.value} a point; BAL11's x2 was 4.5)`);
   ok(SK.bola.value === 2, 'Bola keeps its logic price 2 (BAL10)'); }
 
 // ---- Lumber makers ----------------------------------------------------------------------------------------------------------------

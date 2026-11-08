@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-09 Package BAL32: on-hit rider and enabler prices (owner BAL31-1/2/3, 11-09 03:55)
+- Players see: a card's power / budget readout prices 29 on-hit skills anew. No card stat changed; no Maps 0-20 card changes its budget verdict (6 carriers move a little: Cane Toad, Corpse-flower Beetle, Dung Beetle, Gallery Orb-weaver, Quicksand Queen, Weaver Bird).
+- Riders (BAL31-2, `docs/balance/bal31/onhit-2026-11-08.json`, the mean over bodies averaged over L1 / L5, BAL29's test and fit): raised Breach (= Puncture) 3.03 x N -> 4.73 x N^0.657, Perforate, Psychic N3, Bludgeon 1 -> 3.45, Arson (= Sabotage) -> flat 3.42; flat Stun on Hit 1.99, Tangle 2.05; lowered at N 2-3 Decay, Desecrate, Toxin, Wither, Greater Poison, Strangle, Constrict; status riders flat (Sleep 2.48, Stagger 1.28, Blind 1.62, Paralyze 1.29, Tipsy 0.82); Venomous = Poison's 2.38 x N^0.98. Poison and Bleed kept (inside their intervals on the mean unit).
+- Enablers (BAL31-3: gain with the partner x the partner's Maps 0-20 deck share; `tools/bal32/enablers_2026_11_09.js`, `tools/bal32/deck_share_2026_11_09.js`): Brittle 0.2, Detonate 0.18 a tick, Pry 1 a point, Pulverise 1.53, Web 0.97, Disarm 0.02, Hemorrhage 0 (+ Bleed N); Expose kept.
+- `canonical/skill-costs.json` (old scale / value / pow in `bal32Was`; `tools/bal32/reprice_2026_11_09.py --apply`); report `docs/balance/bal32/reprice-2026-11-09.md`, verdicts `docs/balance/bal32/verdict-change-2026-11-09.json`. Pins updated: en3, en4, en5, bal12 (old price in bal32Was), skill2 (bal32Was counts as re-laid).
+
 ## 2026-11-08 Package FIX10: batch-1023e's stale checks before release (14 tests that pass on main 519a2d72)
 - Players see: nothing changes in play. The Cormorant's budget now reads at Map 0 (it is a Pack 1 card, and Pack 1 drops from Map 0, DF-1), where its 3/7 Reach is 17 against N 16.72; held for the owner (decision FIX10-1).
 - Code: `arena_app.js` ENG37's Shield / Shell / Reach text override moved just outside the UI18 block (tests/ui18 runs that block alone; it crashed on SKILL_TEXT). `tools/ui37_decisions_2026_11_08.py` sets `group` the HUBDEC1 way (the UI37-1 row already had it).

@@ -1,0 +1,165 @@
+{
+ "_about": "BAL32: Maps 0-20 budget verdicts before (origin/batch-1023e) and after the BAL31-1/2/3 prices (on-hit riders, enablers, merged keys); beyond = live cards on no Map 0-20 list that flip. Report only.",
+ "tally": {
+  "cards": 321,
+  "before": {
+   "ok": 284,
+   "over": 31,
+   "under": 6
+  },
+  "after": {
+   "ok": 284,
+   "over": 31,
+   "under": 6
+  }
+ },
+ "flips": [],
+ "beyond": [
+  {
+   "id": "mist-net-otter",
+   "name": "Mist-net Otter",
+   "rarity": "common",
+   "stats": "2/10",
+   "S": [
+    1.37,
+    1.97
+   ],
+   "use": [
+    0.97,
+    1.01
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  }
+ ],
+ "otherChanged": [
+  {
+   "id": "cane-toad",
+   "name": "Cane Toad",
+   "rarity": "uncommon",
+   "stats": "2/15",
+   "skills": [
+    "greaterPoison"
+   ],
+   "S": [
+    6.07,
+    6.42
+   ],
+   "use": [
+    0.88,
+    0.89
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "corpse-flower-beetle",
+   "name": "Corpse-flower Beetle",
+   "rarity": "rare",
+   "stats": "4/10",
+   "skills": [
+    "wither"
+   ],
+   "S": [
+    3.47,
+    3.09
+   ],
+   "use": [
+    0.96,
+    0.94
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "dung-beetle",
+   "name": "Dung Beetle",
+   "rarity": "uncommon",
+   "stats": "1/5",
+   "skills": [
+    "decay"
+   ],
+   "S": [
+    6.13,
+    5.56
+   ],
+   "use": [
+    0.9,
+    0.86
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "rarity": "uncommon",
+   "stats": "4/7",
+   "skills": [
+    "web"
+   ],
+   "S": [
+    2.75,
+    3.35
+   ],
+   "use": [
+    0.96,
+    0.99
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "quicksand-queen",
+   "name": "Quicksand Queen",
+   "rarity": "veryrare",
+   "stats": "2/19",
+   "skills": [
+    "tangle"
+   ],
+   "S": [
+    6.08,
+    5.79
+   ],
+   "use": [
+    0.97,
+    0.96
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  },
+  {
+   "id": "weaver-bird",
+   "name": "Weaver Bird",
+   "rarity": "common",
+   "stats": "3/6",
+   "skills": [
+    "tangle"
+   ],
+   "S": [
+    2.34,
+    2.05
+   ],
+   "use": [
+    0.9,
+    0.88
+   ],
+   "verdict": [
+    "ok",
+    "ok"
+   ]
+  }
+ ]
+}
