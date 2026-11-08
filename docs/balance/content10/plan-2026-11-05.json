@@ -1487,7 +1487,12 @@
     "own": 10,
     "carried": 5
    },
-   "short": null
+   "short": null,
+   "later": {
+    "own": 1,
+    "carried": 0,
+    "why": "2026-11-08 (FIX10): ENG37 put the Cormorant on the Gannet Cliffs list (own), after this plan; 'after' stays CONTENT10's count"
+   }
   },
   "m2": {
    "no": 4,

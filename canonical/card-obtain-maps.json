@@ -1,6 +1,5 @@
 {"_about": "The map where each card becomes obtainable (arena_app.js cardObtainMap; node tools/forge_curve_2026_10_19.js maps). Budget Base + perMap x this (bramblewood-budget.js). Cards not listed are 0 (Base, tutorial, quest, Easter eggs, unsorted).",
  "maps": {
-  "cormorant": 3,
   "ent": 21,
   "dolphin-knight": 5,
   "caustic-scorpion": 18,

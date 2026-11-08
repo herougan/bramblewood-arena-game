@@ -31,7 +31,9 @@ const mains = G.CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved && G.mapNumberOf(
 ok(mains.length === 23, `2. 23 main maps from 2 to 24 (${mains.length})`);
 for(const m of mains){ const n = G.mapNumberOf(m.id), t = th6(n), r = review[m.id], ch = r.chosen.filter(e=> !isBaby(e.id));
   const own = ch.filter(e=> !carried(e)).length, car = ch.filter(carried).length, p = plan.maps[m.id];
-  ok(p && p.after.own === own && p.after.carried === car, `2. Map ${n}: the plan's counts are the file's (${own}/${car})`);
+  // 2026-11-08 (FIX10): a card a later package put on the list (ENG37's Cormorant on Map 3) is recorded in the plan's map entry as later {own, carried, why}
+  const lt = (p && p.later) || {own: 0, carried: 0};
+  ok(p && p.after.own + lt.own === own && p.after.carried + lt.carried === car, `2. Map ${n}: the plan's counts (plus later adds) are the file's (${own}/${car})`);
   ok(car <= t.carried, `2. Map ${n}: carried ${car} within ${t.carried}`);
   ok(own <= t.own || (p && p.cuts.length >= 0 && own - t.own <= 2), `2. Map ${n}: own ${own} at the target ${t.own} or a card or two over (kept: a fight's cards)`);
   ok((own >= t.own && car >= t.carried) || (p && p.short), `2. Map ${n}: a map under a target says so in the plan (${own}/${t.own}, ${car}/${t.carried})`);

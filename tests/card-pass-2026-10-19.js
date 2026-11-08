@@ -75,7 +75,10 @@ const CONTENT12 = new Set(readJSON('docs/balance/server-overrides/fold-plan-2026
 const ENG27 = new Set(['pond-algae']); // 2026-11-06 (package ENG27, owner ENG26-3 a): Bloom's x1.5 budget line, no re-fits (owner: "List the budget moves; don't re-fit cards"): Pond Algae 97 -> 102%
 // 2026-11-08 (package BAL30, owner BAL29-1: update the prices and N now, no card refit): over on paper under the BAL29 A+B prices (Thorns 1, Delivery 1): the owner's re-fit step
 const BAL30 = new Set(['inside-out-hedgehog', 'irradiated-axolotl']);
-const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !CONTENT12.has(c.id) && !ENG27.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !SKILL2.has(c.id) && !BAL11.has(c.id) && !BAL12.has(c.id) && !BAL14.has(c.id) && !DEC1.has(c.id) && !ENG22.has(c.id) && !ENG21.has(c.id) && !ENG25.has(c.id) && !BAL30.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
+// 2026-11-08 (package FIX10): the Cormorant (ENG37) is a Pack 1 card, so the game's cardObtainMap gives Map 0 (DF-1), not the Map 3 ENG37 hand-wrote;
+// at Map 0 its 3/7 Reach reads 17 > N 16.72: held for the owner (decision FIX10-1)
+const FIX10 = new Set(['cormorant']);
+const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !CONTENT12.has(c.id) && !ENG27.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !HOLD(c.id) && !SKILL2.has(c.id) && !BAL11.has(c.id) && !BAL12.has(c.id) && !BAL14.has(c.id) && !DEC1.has(c.id) && !ENG22.has(c.id) && !ENG21.has(c.id) && !ENG25.has(c.id) && !BAL30.has(c.id) && !FIX10.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
 ok(!over.length, '1. today\'s budget passes for every live card but the owner-call list, the post-balance queue and the held list: ' + over.slice(0, 8).join('; '));
 // the pass's own fits still hold under the costs it was made with (every applied entry back at its prevValue), or the card is queued
 const SCT = JSON.parse(read('canonical/skill-costs.json')); ['skills', 'triggers', 'actions', 'modifiers'].forEach(k=> (SCT[k] || []).forEach(e=>{ if(e.appliedAt) e.value = e.prevValue; }));

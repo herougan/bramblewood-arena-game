@@ -120,7 +120,9 @@ ok(E.makeSimEngine(defs, E.mulberry32(1), {}).flyLevelOf({reach:true}) === 0, 'a
     const SC = require(path.join(ROOT, 'tools/skill_costs.js')).make(J('canonical/skill-costs.json')), b = SC.budget(Object.assign({}, c, {obtainMap:3}), {level:1});
     ok(b.ok, `Cormorant fits the budget at Map 3 (2A + H + S ${b.x1} <= N ${b.N}; A·H ${b.x2} <= ${b.N2})`);
     ok(J('canonical/map-pools.json').maps.mc.cards.includes('cormorant'), 'on the Gannet Cliffs list (map-pools mc)');
-    ok(J('canonical/card-obtain-maps.json').maps.cormorant === 3, 'obtainable from Map 3 (card-obtain-maps)');
+    // 2026-11-08 (package FIX10): card-obtain-maps.json is what node tools/forge_curve_2026_10_19.js maps writes (the game's cardObtainMap); a Pack 1 card
+    // is obtainable from Map 0 (DF-1: Pack 1 is paid from Map 0), so the Cormorant is not listed (Map 0); was a hand-written 3. Its fit at Map 0: decision FIX10-1
+    ok(J('canonical/card-obtain-maps.json').maps.cormorant == null, 'obtainable from Map 0 (a Pack 1 card; card-obtain-maps, generated)');
     ok(!/spear|weapon|blade|spiked|studded|sword|knife|dagger/i.test(c.flavor || ''), 'the flavour names no weapon');
     const art = rd('docs/art-style-prompts.md'), i = art.indexOf('### Cormorant'), line = i >= 0 ? art.slice(i, art.indexOf('\n', art.indexOf('> ', i))) : '';
     ok(i >= 0 && /background/.test(line), 'an art prompt for the Cormorant, with a background');

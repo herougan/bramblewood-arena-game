@@ -82,7 +82,7 @@ async function browser(){
         const keepTxt = o.querySelector('[data-ui29-sec=in] .ui29-tile.is-flipped [data-ui29-act=cut]').textContent;
         o.querySelector('#ui29Copy').click(); o.querySelector('#ui29Export').click();
         return {counts, acc, rej, cut, keepTxt, ls: JSON.parse(localStorage.getItem('bw_ui29_pack_picks_v1') || '{}'), copy: window.__ui29Last || '', exp: window.__ui29Export ? window.__ui29Export.json.lists.find(x=> x.list === 'bronze') : null, dl: o.querySelectorAll('[data-ui29-dl]').length}; })()`);
-      ok(pk.acc === 1 && pk.rej === 1 && pk.cut === 1 && (pk.counts.match(/\d+/g) || []).join() === '50,50,88', `@${w} ✓, ✂ and Cut mark tiles; the count line follows (${pk.counts})`);
+      ok(pk.acc === 1 && pk.rej === 1 && pk.cut === 1 && (pk.counts.match(/\d+/g) || []).join() === [PLAN.packs.bronze.current.count, PLAN.packs.bronze.current.count, PLAN.packs.bronze.proposedCount].join() /* 2026-11-08 (FIX10): read from the pack plan (was '50,50,88'; ENG37's Cormorant joined Pack 1, CONTENT18 regenerated the plan: 51 / 89) */, `@${w} ✓, ✂ and Cut mark tiles; the count line follows (${pk.counts})`);
       ok(pk.keepTxt.includes('Keep'), `@${w} a cut card offers ↩ Keep (${pk.keepTxt})`);
       ok(Object.values(pk.ls).sort().join() === 'accept,cut,reject' && Object.keys(pk.ls).every(k=> k.startsWith('bronze|')), `@${w} the picks are saved in this browser`);
       ok(/Hedgerow Pouch \[bronze\]: cut .+; accept .+; reject .+/.test(pk.copy), `@${w} Copy my picks: ${pk.copy}`);

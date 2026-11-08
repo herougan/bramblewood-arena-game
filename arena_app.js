@@ -8493,15 +8493,16 @@ function codexFilterBadge(){
   const t = document.getElementById('cxFiltersToggle'); if(!t) return; const n = codexFilterCount(); let b = t.querySelector('.cx-fcount');
   if(!n){ if(b) b.remove(); return; } if(!b){ b = document.createElement('b'); b.className = 'cx-fcount'; t.append(' ', b); } b.textContent = n;
 }
-// UI18_CODEX_SKILLS:BEGIN
-// 2026-11-03 (package UI18, owner 22:04 + 22:08): the Codex skill filter lists only skills you have seen (skillBookEntries: on a card you
-// have seen, or met in a fight; Admin Mode lists all), plus one "? Mystery skills" entry for the cards that carry a skill you have not seen yet.
-// A card also counts for a skill it only gets at a later level (levelSkills), and its Codex tile says so with a "[Lvl N]" flag (Codex only).
 // ENG37 (2026-11-08, owner 11:03): the Shield / Shell lines read their parameter (Armoured Shield; Shell after attacking)
+// FIX10 (2026-11-08): kept just outside the UI18 block (tests/ui18 runs that block alone, without SKILL_TEXT)
 { const shT = SKILL_TEXT.shield, slT = SKILL_TEXT.shell;
   SKILL_TEXT.shield = (v, n, e)=> (e && Number(e.shieldArmor) > 0) ? TX('ui.sk-shield-armor', {n: numOr(v, 1), m: Number(e.shieldArmor)}) : shT(v, n, e);
   SKILL_TEXT.shell = (v, n, e)=> (e && e.shellWhen === 'afterAttack') ? TX('ui.sk-shell-after', {n: v}) : slT(v, n, e);
   SKILL_TEXT.reach = ()=> TX('ui.sk-reach'); }
+// UI18_CODEX_SKILLS:BEGIN
+// 2026-11-03 (package UI18, owner 22:04 + 22:08): the Codex skill filter lists only skills you have seen (skillBookEntries: on a card you
+// have seen, or met in a fight; Admin Mode lists all), plus one "? Mystery skills" entry for the cards that carry a skill you have not seen yet.
+// A card also counts for a skill it only gets at a later level (levelSkills), and its Codex tile says so with a "[Lvl N]" flag (Codex only).
 const UI18_MYSTERY = 'mystery', UI18_NOT_SKILL = new Set(['hatchling', 'fodder']);
 function ui18SeenSkillKeys(){ try{ return new Set(skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> e.key)); }catch(e){ return new Set(); } }
 // every skill key a card can carry: its effects and each level's levelSkills, as [{key, lvl}] (lvl = the level it arrives at, 0 = from the start)

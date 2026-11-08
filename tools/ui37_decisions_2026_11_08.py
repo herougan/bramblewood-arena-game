@@ -11,8 +11,9 @@ items = [
   "options": ["a) Keep it.", "b) Count only your Yes flags (unflagged list cards stop counting)."], "default": "a"},
 ]
 s = '\n'.join(ln for ln in s.split('\n') if not (re.match(r'\s*\{"id": "UI37-', ln)))
+# 2026-11-08 (FIX10): every writer sets group (HUBDEC1); default game
 i = s.index('"items": [') + len('"items": [')
-s = s[:i] + '\n' + '\n'.join('    ' + json.dumps(x, ensure_ascii=False) + ',' for x in items) + s[i:]
+s = s[:i] + '\n' + '\n'.join('    ' + json.dumps({**x, 'group': x.get('group', 'game')}, ensure_ascii=False) + ',' for x in items) + s[i:]
 s = re.sub(r'"updated": "[^"]+"', '"updated": "2026-11-08"', s, count=1)
 json.loads(s)
 for x in items:
