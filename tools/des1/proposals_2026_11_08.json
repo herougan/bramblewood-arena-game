@@ -1,0 +1,272 @@
+{
+ "_about": "DES1 (2026-11-08): Claude's hand-written proposal per map, read by tools/des1/map_signatures_2026_11_08.py. Suggestions only, nothing applied. signatures: the 2-3 (Map 10+: 1-2) skills the map is about; proposedNew: signatures + minor one-offs that stay; minor: new skills kept as one-offs (do not count); moveLater / moveEarlier: where a new skill would read as a signature instead; basics: missing basics and a bench card (out of play today, canonical/cards.json) or an edit that fills them. Bench cards are named only where they fit the map's animals.",
+ "topFlags": [
+  "**One card per new skill is the norm.** 17 of 21 main maps have no new skill on 2+ of their cards, so no map has a strategy the player can see yet. The fix is mostly adding 1-2 carriers per signature, not new skills.",
+  "**Ranged is missing on Maps 0-10:** no main map before Eyrie Heights (Map 11) has a single shooter on its list. Nine out-of-play shooters (Arrow, Spark, Bola) fit those maps by animal, plus the new Reach spear card (the bench is in the JSON).",
+  "**The Tutorial shows 15 skills,** Dynamite, Landslide, Spiteful and Venomous among them: they belong to later maps.",
+  "**Side maps pre-teach main skills:** Rage, Web, Bulldoze, Herbalist, Ambush, Mighty appear on a side map before the main map that should own them."
+ ],
+ "maps": {
+  "mtut": {
+   "theme": "Teaches the basics, nothing else.",
+   "signatures": ["Flying", "Quick", "Arrow"],
+   "proposedNew": "3 basics + Diurnal/Tide/Nocturnal",
+   "minor": "Pounce (Golden Eagle Diver) as a preview.",
+   "moveLater": "Dynamite and Landslide (Map 11 Eyrie Heights, with Avalanche); Spiteful / Counterattack (Thornwood Palisade: Map 1 Thistlewood, with Thorns); Venomous (Caustic Scorpion: Map 4); Swarm (Map 0); Regeneration, Bounty.",
+   "basics": "Guardian ✗: a Guardian unit in T-3..T-5 (the Terrier Pup) so the three basics are all taught."
+  },
+  "m1": {
+   "theme": "Scouts and stragglers past the walls: bees and ants.",
+   "signatures": ["Swarm", "Guardian"],
+   "proposedNew": "2 + 1 minor",
+   "minor": "Delivery (Beaver Lumberjack: the first resource).",
+   "note": "Swarm becomes new here once the Tutorial stops showing it (Bee Warden). Map 0 is UI21's Swarm map already.",
+   "basics": "Ranged ✗: Acorn-pelter Squirrel (common 2/6, Arrow). Quick ½: Cottontail only; fine for Map 0."
+  },
+  "mf": {
+   "theme": "Hedgerows and burrows: small busy things that gather and prick.",
+   "signatures": ["Foraging", "Thorns"],
+   "proposedNew": "2 + 3 minor",
+   "minor": "Inspiring (Cricket Drummer, the owner's pick), Thanatosis (Slow-worm: the owner's own one-off example), Pickpocket (Field Mouse).",
+   "moveLater": "True Sight (Owl Sentinel) to Map 6, as Invisible's answer; Devour (Hollow-belly Rat) to Map 7 or 12; Lumberjack (Badger Lumberjack) and Timbered (Woodcock Lookout) to Map 13 Redwood Deep with Milling; Crepuscular (Woodcock) to Map 7. Injured is a drawback: no count.",
+   "basics": "Ranged ✗: Quill-flinger Porcupine (uncommon 2/10, Arrow + Thorns) fills ranged and gives Thorns its second carrier."
+  },
+  "mb": {
+   "theme": "Rock pools and shells: the tide and the things that hide in shells.",
+   "signatures": ["Tide", "Crab Claws", "Armor"],
+   "proposedNew": "3 + 1 minor",
+   "minor": "Pierce (Oystercatcher: the Armor answer, keep beside it).",
+   "moveLater": "Sonar (Dolphin Outrider) to Map 8 Caves & Alcoves, where sound is the theme.",
+   "note": "Tide is new on the Tutorial today (Silver Minnow, Level 1); Pebble Beach is its UI21 map and has 6 carriers.",
+   "basics": "Ranged ✗: Shell-drop Gull (common 1/7, Flying + Arrow). Quick ✗: Fleetfoot'd (otter, Tide + Quick)."
+  },
+  "mc": {
+   "theme": "Every ledge belongs to a bird: strikes from above, and the spear that answers them.",
+   "signatures": ["Dive", "Pounce", "Reach (new spear card)"],
+   "proposedNew": "3 + 1 minor",
+   "minor": "Reload (Peak Condor).",
+   "moveLater": "Mountain Climber (Red-billed Chough) to Map 11 Eyrie Heights; Cleave (Tomcat) to Map 16 Taiga (3 Cleave carriers there); Shell + Shield (Conch Crawler) to Smugglers' Grotto or minor; Bleed (Razorbill) to Map 10 with Gash, or minor.",
+   "note": "**The owner's Reach idea fits here** (ENG37): a wooden-spear animal with Reach. Reach can't be dodged by Flying, so on a map with 10 flyers it is the player's answer: a lesson, not just a card. Reach reads '?' on starters until Map 1 (Meerkat Wayfarer); this map makes it a strategy. Add a Dive carrier too: a gannet (Gannet Nestweaver) plunge-dives.",
+   "basics": "Ranged ✗: the Reach spear card fills it. Guardian ½ (Fiddler Crab Swarm): fine."
+  },
+  "m2": {
+   "theme": "A flooded lowland: shields that hold, poison that waits, algae that spreads.",
+   "signatures": ["Bulwark", "Venomous", "Bloom"],
+   "proposedNew": "3 + 1 minor",
+   "minor": "Twin Strike (Alley Cat).",
+   "note": "Venomous has 3 carriers here but is new on the Tutorial (Caustic Scorpion). Bloom needs a second carrier (Pond Algae only).",
+   "basics": "Ranged ✗: Electric Catfish (rare 2/8, Spark). Quick ✗: give the Water Shrew Quick, or Fleetfoot'd if not used on Map 2."
+  },
+  "mw": {
+   "theme": "A living swamp: logs that open their eyes, hunters that finish the poisoned.",
+   "signatures": ["Ambush", "Cull"],
+   "proposedNew": "2 + 2 minor",
+   "minor": "Repair (Cypress Root Lurker); Cower (Box Turtle, half drawback).",
+   "moveEarlier": "Ambush from The Sunken Grove / Map 17 to here: the Crocodile Ambusher and Swamp Alligator are 'logs that open their eyes'. Cull (Hunter: Poisoned) needs a second carrier.",
+   "basics": "Ranged ✗: Reed-dart Bittern (uncommon 2/5, Arrow + Stealth). Quick ½ (Anhinga Pounce): fine."
+  },
+  "m8": {
+   "theme": "A blacker wetland: things you can't see, and the doctor who keeps you alive.",
+   "signatures": ["Invisible", "True Sight", "Healing"],
+   "proposedNew": "3 + 3 minor",
+   "minor": "Daunt (Booming Bittern's second skill), Immunity (Venomlord Serpent), Weaken (Lamprey).",
+   "moveLater": "Predator (Marsh Harrier) to Map 14 Savanna, with Prey; Evasive (Camouflage Frog) to Map 17, where 5 cards have it; Tally (Raven Scout): swap for True Sight (as SKILLREC1 proposed); Sequestration: minor or later.",
+   "basics": "Ranged ✗: Venom Spit on the Poison Dart Croaker instead of Sequestration (a spitting frog). Quick ✗: Quick on the Adder Ambusher."
+  },
+  "mp": {
+   "theme": "Beaver dams and territorial ducks.",
+   "signatures": ["Rampart"],
+   "proposedNew": "1",
+   "moveLater": "Bulldoze (Victoria Regia) to Map 15 Long Grass, where the Bison Bulldozer owns it.",
+   "basics": "Ranged ✗ / Quick ✗: Mallard Marauder (rare 2/5, Flying + Pounce) for the ducks; Dam-Keeper Beaver (Rampart) gives Rampart its second carrier."
+  },
+  "mu": {
+   "theme": "The mushroom hollow: rot, and things that multiply.",
+   "signatures": ["Decay", "Brood"],
+   "proposedNew": "2 + 2 minor",
+   "minor": "Stealth (Owl Nightwatch: a night reveal), Meld (Leafcutter Gardener).",
+   "note": "Read Meiosis (Planarian) and On Death spawn (Fungal Colossus) as part of the 'multiply' signature beside Brood, or demote them to minor.",
+   "moveLater": "Deadly Poison (Cane Toad) to Map 18 or The Pale Desert (3 Venomous there); Wither (Corpse-flower Beetle): fold into Decay or minor.",
+   "basics": "Ranged ✗: Puffball Bombardier (uncommon 1/5, Arrow + Venomous + Bloom: a puffball for a mushroom map). Quick ✗: a hunting spider with Pounce."
+  },
+  "mg": {
+   "theme": "The smugglers' sea cave: webs in the dark.",
+   "signatures": ["Web"],
+   "proposedNew": "1",
+   "basics": "Ranged ✗: Smuggler Slingrat (uncommon 1/5, Arrow + Stealth). Quick ✗: fine for a side map."
+  },
+  "m4": {
+   "theme": "Sound carries further than light: echoes against glow.",
+   "signatures": ["Sonar", "Illuminate"],
+   "proposedNew": "2 + 3 minor",
+   "minor": "Keen Sense (Quarry Mole; near Sonar), Bedrock (Quarry Mole), On Ready damage (Echo Screecher). Purblind is a drawback; Web came from Smugglers' Grotto.",
+   "moveEarlier": "Sonar from Map 2 (Dolphin Outrider) to here; the Echo Screecher bat is its natural second carrier.",
+   "basics": "Ranged ✗: Bolas Spider (uncommon 2/8, Bola). Guardian ½ (Stalactite Pill Bug), Quick ½ (Giant Cave Huntsman): fine."
+  },
+  "mz": {
+   "theme": "Roots that listen: they sting whoever touches them.",
+   "signatures": ["Poison Barbs"],
+   "proposedNew": "1 + 1 minor",
+   "minor": "Rocket (Bombardier Beetle, also the side map's shooter). Slow is a drawback.",
+   "moveLater": "Rage (Ant Warrior) to Map 13 Redwood Deep, its main home."
+  },
+  "mk": {
+   "theme": "Salt water in the swamp: mudskippers and brackish shores.",
+   "signatures": ["Skitter", "Salt"],
+   "proposedNew": "2 + 2 minor",
+   "minor": "Taunt (Proboscis Monkey: a basic), Relict (Horseshoe Crab, a living fossil one-off).",
+   "note": "Both signatures need a second carrier: Skitter on the Sunbittern Strider or Mangrove Monitor; Salt on a crab.",
+   "basics": "Ranged ✗: Trident Caiman (uncommon 4/11, Reach + Pierce). Quick ✗: Pounce on the Mangrove Kingfisher."
+  },
+  "m7": {
+   "theme": "The open sea: tentacles that strike two ways and leave wounds.",
+   "signatures": ["Fork", "Gash"],
+   "proposedNew": "2 + 2 minor",
+   "minor": "Charge (Electric Ray), Nova (Supernova Jelly: a forecast one-off).",
+   "note": "Already the cleanest map: both signatures sit on the Colossal Squid and the Kraken Spawnling.",
+   "basics": "Ranged ✗: Snapgun Shrimp (common 1/7, Spark: a pistol shrimp). Quick ½ (Great Barracuda): fine."
+  },
+  "m10": {
+   "theme": "Alpine cliffs: climbers and the rockfall they start.",
+   "signatures": ["Mountain Climber", "Avalanche"],
+   "proposedNew": "2 + 1 minor",
+   "minor": "Fletcher (Eagle-Owl Quartermaster).",
+   "moveEarlier": "Mountain Climber becomes new here once it leaves Map 3 (2 carriers here already); Landslide joins from the Tutorial as a minor.",
+   "moveLater": "Frostbite (Mountain Hare) to Map 17 Tundra (2 carriers there).",
+   "basics": "Ranged ½: Stonecracker Vulture (uncommon 2/9, Flying + Arrow)."
+  },
+  "mj": {
+   "theme": "A sunken ferry in a fast current: octopus country.",
+   "signatures": ["Octolash"],
+   "proposedNew": "1 + 1 minor",
+   "minor": "Nullify (Hagfish Silencer).",
+   "basics": "Ranged ✗: Tidefolk Harpooner (rare 4/15, Reach + Tide)."
+  },
+  "mh": {
+   "theme": "A maze: walls to break and corners to stab around.",
+   "signatures": ["Siege", "Backstab"],
+   "proposedNew": "2 + 1 minor",
+   "minor": "Confuse (Lyrebird Mimic).",
+   "moveLater": "Scavenge (Carrion Crow) to Map 20 beside Carrion.",
+   "note": "Siege needs a second carrier (Quill-Thorn Boar). The Mouse Sapper is the juke's teacher (feelings.md).",
+   "basics": "Ranged ✗: Fox Sharpshot (common 4/11, Snipe; a fox beside the Cunning Vixen). Quick ✗: Quick on the Hedge Weasel."
+  },
+  "mq": {
+   "theme": "A slow clover meadow: no new skill, and that is fine.",
+   "signatures": [],
+   "proposedNew": "0",
+   "basics": "Ranged ✗: optional; a side map may skip it."
+  },
+  "mr": {
+   "theme": "Bears, stags and boars under red shade.",
+   "signatures": ["Rage", "Canopy Cover"],
+   "proposedNew": "2 + 2 minor",
+   "minor": "Milling (Redwood Woodpecker), Fast Forward (Swift Fox).",
+   "moveEarlier": "Rage from The Mycelium Deep to here (Berserker Boar). Lumberjack / Timbered from Map 1 would sit here as minors.",
+   "note": "Berserk (Tasmanian Devil) overlaps Rage and is off-theme here: fold into Rage or move the Devil.",
+   "basics": "Ranged ✗: Muntjac Barker (uncommon 2/11, Sentry; a deer). Quick ✗: Firetail Trickster (rare 1/11, Pounce; a fox)."
+  },
+  "ms": {
+   "theme": "A drowned forest: the herbalist's grove.",
+   "signatures": ["Herbalist"],
+   "proposedNew": "1",
+   "note": "If Ambush moves to Map 5, this side map teaches only Herbalist (the limit)."
+  },
+  "m5": {
+   "theme": "Open grassland: the hunt. Predators and the prey that dodge them.",
+   "signatures": ["Prey", "Predator"],
+   "proposedNew": "2 + 3 minor",
+   "minor": "Twin Shot (Spitting Cobra, also the ranged basic), Drunk (Marula Elephant: a fun one-off), Executioner (Grave-Grin Hyena).",
+   "moveEarlier": "Predator from Map 6 to here: Prey means nothing without it.",
+   "note": "Carnage (Dust Hyena) and Night-blind (Hoopoe, a drawback): minor, no count.",
+   "basics": "Guardian ½, Ranged ½: fine with the Cobra; Quick ✓."
+  },
+  "ml": {
+   "theme": "Farm roads: fast runners and the stampede.",
+   "signatures": ["Speed", "Stampede"],
+   "proposedNew": "2 + 3 minor",
+   "minor": "Converge (Border Collie herding: a felt one-off), Weapon Master (Armory, the militia), Bulldoze (Bison Bulldozer).",
+   "note": "Onslaught (second skill on the Bison) and Foe's Scarcity (Stoat): minor. Herbalist came from The Sunken Grove.",
+   "basics": "Ranged ½ (Talon Archer): Otter Guard (uncommon 3/5, Arrow) as village militia."
+  },
+  "mv": {
+   "theme": "The oldest nests, in the storm.",
+   "signatures": ["Storm"],
+   "proposedNew": "1 + 2 minor",
+   "minor": "Relic (Vigil Owl), Rupture (Wound Reaver)."
+  },
+  "mt": {
+   "theme": "The first wolf packs among the pines.",
+   "signatures": ["Pack Leader", "Cleave"],
+   "proposedNew": "2 + 3 minor",
+   "minor": "Almanac (Cone-cutter Squirrel), Moonborn (Lunar Howler), Riled (Boreal Elk).",
+   "moveEarlier": "Cleave from Map 3 (Tomcat) to here, where 3 cards carry it. Pack Leader wants a second carrier (Alpha Howler).",
+   "basics": "Ranged ✗: Pinecone Crossbill (common 1/9, Flying + Arrow). Quick ✗: Pine Marten (rare 1/14, Pounce)."
+  },
+  "mn": {
+   "theme": "Shiny walls and the miners they draw.",
+   "signatures": ["Prospector"],
+   "proposedNew": "1 + 2 minor",
+   "minor": "Quarry (Badger Stonemason), Leech (Vampire Bat)."
+  },
+  "m6": {
+   "theme": "Frozen ground: frost that hardens you, and the hit that shatters the frozen.",
+   "signatures": ["Frostbite", "Shatter"],
+   "proposedNew": "2 + 3 minor",
+   "minor": "Hibernate (Polar Bear), Lone Wolf (a one-off against the packs), Ice Arrow (the ranged basic).",
+   "moveEarlier": "Frostbite from Map 11 to here (2 carriers). Shatter needs a Freeze source beside it: keep the Walrus's Freeze as part of the pair.",
+   "moveLater": "Venom Spit (Spitting Spider) to Map 6 Sable Swampmire or The Pale Desert. Ambush (Polar Bear) stays, no longer new if Map 5 takes it. Frost (field): minor.",
+   "basics": "Guardian ✗: Guardian on the Harbor Seal or Beluga. Quick ✗: Quick on the Frost Hare Sprinter, or Yeti Snarer (rare 3/14, Lasso + Pounce)."
+  },
+  "md": {
+   "theme": "Glass sand: traps under the dunes, and hides that don't burn.",
+   "signatures": ["Trap", "Dry"],
+   "proposedNew": "2 + 2 minor",
+   "minor": "Haste (Roadrunner Courier, a quick basic), Tornado (Dust-devil Kestrel, a big one-off).",
+   "moveLater": "Darksight (Meerkat Burrower): minor, or to Map 8 with the dark.",
+   "basics": "Ranged ½: Sand-flinger Antlion (common 2/7, Arrow; beside the Antlion Pit)."
+  },
+  "my": {
+   "theme": "The rainforest roof: vines and monkeys.",
+   "signatures": ["Tangleweed"],
+   "proposedNew": "1 + 2 minor",
+   "minor": "Mighty (Hercules Beetle), Sturdy (Pangolin Roller).",
+   "basics": "Ranged ½: Howler Monkey (Bananarang) or Bramblewood Macaque (Banana)."
+  },
+  "m3": {
+   "theme": "Scorched high ground: heat that feeds the fire-born.",
+   "signatures": ["Heat", "Immolation"],
+   "proposedNew": "2 + 2 minor",
+   "minor": "Spitfire (Fire Salamander, ranged), Scare (Yeti: a one-off).",
+   "note": "Recoil, Scar and Mighty: minor, no count (Mighty came from The Canopy).",
+   "basics": "Guardian ✗: Guardian on the Granite Ox Golem. Quick ✗: Quick on the Talus Pika."
+  },
+  "mpd": {
+   "theme": "White desert, no rain.",
+   "signatures": ["Drought"],
+   "proposedNew": "1"
+  },
+  "m11": {
+   "theme": "The broken crown: the dead keep the fire company, and the carrion birds circle.",
+   "signatures": ["Undead", "Carrion"],
+   "proposedNew": "2 + 2 minor",
+   "minor": "Requiem (Cinder Skeleton, beside Undead), Remember (Ashbone Ghoul).",
+   "moveEarlier": "Scavenge from Map 12 (Carrion Crow) to here, beside Carrion.",
+   "note": "Fire Arrow (2 carriers) counts as a ranged basic, not a signature.",
+   "basics": "Guardian ½ (Alpine Marmot): fine."
+  },
+  "me": {
+   "theme": "Inside the crater: no new skill.",
+   "signatures": [],
+   "proposedNew": "0",
+   "basics": "Guardian ✗ and Quick ✗: optional for a side map."
+  },
+  "mx": {
+   "theme": "Where the fire is born: a forecast fireball.",
+   "signatures": ["Fireball"],
+   "proposedNew": "1 + 1 minor",
+   "minor": "Frenzy (Ember Jackal).",
+   "basics": "Guardian ✗: optional for a side map."
+  }
+ }
+}
