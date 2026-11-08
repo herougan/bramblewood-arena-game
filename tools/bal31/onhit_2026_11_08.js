@@ -86,7 +86,7 @@ function summary(o, K, R, bodies, M) {
 const ci = e => e ? `${e.m} [${e.lo}, ${e.hi}]` : '-';
 function md(out, levels) {
   const Ls = levels.map(l => 'L' + l), L = [`# On-hit riders, ${out.generated.slice(0, 10)} (package BAL31)`, '',
-    `\`${out.tool}\`; fingerprint \`${out.fingerprint}\`; ${out.games} paired fights a variant; the skill ladder's bodies and method; brambles 15, the global context. Worth in 3A + H points. Measurement only: no price changed.`, ''];
+    `\`${out.tool}\`; fingerprint \`${out.fingerprint}\`; ${out.games} paired fights a variant; three bodies a level, the skill ladder's method; brambles 15, the global context. Worth in 3A + H points. Measurement only: no price changed.`, ''];
   const notes = path.join(__dirname, 'notes', 'onhit.md'); if (fs.existsSync(notes)) L.push(fs.readFileSync(notes, 'utf8').trim(), '');
   // the patterns, read off the numbers: riders that play identically (an alias), riders the number does not move, riders worth nothing alone
   // the same simple price at every N, within 0.15 (a different variant id moves a tie-break now and then, so not bit-identical)

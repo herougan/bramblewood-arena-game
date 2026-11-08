@@ -17,4 +17,5 @@ step "additivity first pass (400)" node tools/bal31/additivity_2026_11_08.js run
 step "on-hit riders (400)" node tools/bal31/onhit_2026_11_08.js run --games 400 --workers 2
 step "additivity at 800, phases 1-2" node tools/bal31/additivity_2026_11_08.js run --games 800 --phase 2 --workers 2
 step "additivity at 800, phase 3" node tools/bal31/additivity_2026_11_08.js run --games 800 --phase 3 --workers 2
+step "additivity at 800, phase 4" node tools/bal31/additivity_2026_11_08.js run --games 800 --phase 4 --workers 2
 echo "segment: all steps done"

@@ -177,6 +177,7 @@ function md(out) {
   const t = out.totals, L = [];
   L.push(`# Skill additivity, ${out.generated.slice(0, 10)} (package BAL31)`, '',
     `Is a pair of skills worth the sum of the two? ${t.pairs} pairs covering ${t.skillsCovered} of ${t.skills} skills (each in at least ${t.minPairs} pairs), Level ${out.level} (N(L) ${out.N}, bodies 3A + H = ${out.budget}: ${out.bodies.join(', ')}), ${out.games} paired fights a variant. Worth in 3A + H points (rate ${out.rate} win-rate points a point, ${out.rateFrom}; the ladder's L1 ${out.ladderRates.L1}, L5 ${out.ladderRates.L5}). Interaction = worth(A+B) - worth(A) - worth(B), the mean over the bodies. Measurement only: no price changed.`, '',
+    ...(fs.existsSync(path.join(__dirname, 'notes', 'additivity.md')) ? [fs.readFileSync(path.join(__dirname, 'notes', 'additivity.md'), 'utf8').trim(), ''] : []),
     '## Headline', '',
     `| Measure | Value |`, `|---|---|`,
     `| Pairs within ±1 point of additive | ${pct(t.within1)} (within ±2: ${pct(t.within2)}) |`,
