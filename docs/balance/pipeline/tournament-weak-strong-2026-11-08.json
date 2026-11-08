@@ -1,0 +1,1194 @@
+[
+ {
+  "fight": "0-1",
+  "target": 0.9,
+  "weakest": 1,
+  "median": 1,
+  "strongest": 1,
+  "mapref": 1
+ },
+ {
+  "fight": "0-2",
+  "target": 0.75,
+  "weakest": 0.833,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 0.667
+ },
+ {
+  "fight": "0-3",
+  "target": 0.6,
+  "weakest": 0.833,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 0.667
+ },
+ {
+  "fight": "0-4",
+  "target": 0.45,
+  "weakest": 0.5,
+  "median": 0.708,
+  "strongest": 0.875,
+  "mapref": 0.458
+ },
+ {
+  "fight": "1-1",
+  "target": 0.9,
+  "weakest": 0.917,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 1
+ },
+ {
+  "fight": "1-2",
+  "target": 0.8,
+  "weakest": 0.833,
+  "median": 0.875,
+  "strongest": 0.958,
+  "mapref": 0.833
+ },
+ {
+  "fight": "1-3",
+  "target": 0.7,
+  "weakest": 1,
+  "median": 1,
+  "strongest": 1,
+  "mapref": 1
+ },
+ {
+  "fight": "1-4",
+  "target": 0.6,
+  "weakest": 1,
+  "median": 1,
+  "strongest": 1,
+  "mapref": 1
+ },
+ {
+  "fight": "1-5",
+  "target": 0.4,
+  "weakest": 0.458,
+  "median": 0.583,
+  "strongest": 0.75,
+  "mapref": 0.5
+ },
+ {
+  "fight": "2-1",
+  "target": 0.9,
+  "weakest": 0.667,
+  "median": 0.75,
+  "strongest": 0.792,
+  "mapref": 0.708
+ },
+ {
+  "fight": "2-2",
+  "target": 0.8,
+  "weakest": 0.625,
+  "median": 0.667,
+  "strongest": 0.75,
+  "mapref": 0.625
+ },
+ {
+  "fight": "2-3",
+  "target": 0.7,
+  "weakest": 0.542,
+  "median": 0.625,
+  "strongest": 0.75,
+  "mapref": 0.667
+ },
+ {
+  "fight": "2-4",
+  "target": 0.6,
+  "weakest": 0.375,
+  "median": 0.542,
+  "strongest": 0.625,
+  "mapref": 0.542
+ },
+ {
+  "fight": "2-5",
+  "target": 0.4,
+  "weakest": 0.25,
+  "median": 0.375,
+  "strongest": 0.458,
+  "mapref": 0.292
+ },
+ {
+  "fight": "3-1",
+  "target": 0.9,
+  "weakest": 0.833,
+  "median": 0.917,
+  "strongest": 0.958,
+  "mapref": 0.792
+ },
+ {
+  "fight": "3-2",
+  "target": 0.84,
+  "weakest": 0.833,
+  "median": 0.917,
+  "strongest": 1,
+  "mapref": 0.917
+ },
+ {
+  "fight": "3-3",
+  "target": 0.78,
+  "weakest": 0.5,
+  "median": 0.875,
+  "strongest": 1,
+  "mapref": 0.75
+ },
+ {
+  "fight": "3-4",
+  "target": 0.72,
+  "weakest": 0.583,
+  "median": 0.917,
+  "strongest": 1,
+  "mapref": 0.875
+ },
+ {
+  "fight": "3-5",
+  "target": 0.66,
+  "weakest": 0.417,
+  "median": 0.75,
+  "strongest": 0.917,
+  "mapref": 0.458
+ },
+ {
+  "fight": "3-6",
+  "target": 0.6,
+  "weakest": 0.583,
+  "median": 0.833,
+  "strongest": 0.917,
+  "mapref": 0.667
+ },
+ {
+  "fight": "3-7",
+  "target": 0.4,
+  "weakest": 0.333,
+  "median": 0.792,
+  "strongest": 0.917,
+  "mapref": 0.375
+ },
+ {
+  "fight": "4-1",
+  "target": 0.9,
+  "weakest": 0.833,
+  "median": 0.875,
+  "strongest": 0.958,
+  "mapref": 0.875
+ },
+ {
+  "fight": "4-2",
+  "target": 0.8,
+  "weakest": 0.958,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 0.667
+ },
+ {
+  "fight": "4-3",
+  "target": 0.7,
+  "weakest": 0.75,
+  "median": 0.792,
+  "strongest": 0.875,
+  "mapref": 0.625
+ },
+ {
+  "fight": "4-4",
+  "target": 0.6,
+  "weakest": 0.667,
+  "median": 0.792,
+  "strongest": 0.917,
+  "mapref": 0.5
+ },
+ {
+  "fight": "4-5",
+  "target": 0.4,
+  "weakest": 0.208,
+  "median": 0.458,
+  "strongest": 0.583,
+  "mapref": 0.292
+ },
+ {
+  "fight": "5-1",
+  "target": 0.9,
+  "weakest": 0.875,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 0.875
+ },
+ {
+  "fight": "5-2",
+  "target": 0.84,
+  "weakest": 0.958,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 0.833
+ },
+ {
+  "fight": "5-3",
+  "target": 0.78,
+  "weakest": 0.667,
+  "median": 0.75,
+  "strongest": 0.917,
+  "mapref": 0.542
+ },
+ {
+  "fight": "5-4",
+  "target": 0.72,
+  "weakest": 0.833,
+  "median": 0.958,
+  "strongest": 0.958,
+  "mapref": 0.542
+ },
+ {
+  "fight": "5-5",
+  "target": 0.66,
+  "weakest": 0.625,
+  "median": 0.833,
+  "strongest": 0.958,
+  "mapref": 0.708
+ },
+ {
+  "fight": "5-6",
+  "target": 0.6,
+  "weakest": 0.667,
+  "median": 0.875,
+  "strongest": 0.958,
+  "mapref": 0.583
+ },
+ {
+  "fight": "5-7",
+  "target": 0.4,
+  "weakest": 0.333,
+  "median": 0.5,
+  "strongest": 0.542,
+  "mapref": 0.333
+ },
+ {
+  "fight": "6-1",
+  "target": 0.9,
+  "weakest": 0.75,
+  "median": 0.833,
+  "strongest": 1,
+  "mapref": 0.833
+ },
+ {
+  "fight": "6-2",
+  "target": 0.85,
+  "weakest": 0.917,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 0.917
+ },
+ {
+  "fight": "6-3",
+  "target": 0.8,
+  "weakest": 0.917,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 0.917
+ },
+ {
+  "fight": "6-4",
+  "target": 0.75,
+  "weakest": 0.875,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 0.708
+ },
+ {
+  "fight": "6-5",
+  "target": 0.7,
+  "weakest": 0.208,
+  "median": 0.333,
+  "strongest": 0.458,
+  "mapref": 0.542
+ },
+ {
+  "fight": "6-6",
+  "target": 0.65,
+  "weakest": 0.667,
+  "median": 0.75,
+  "strongest": 0.792,
+  "mapref": 0.542
+ },
+ {
+  "fight": "6-7",
+  "target": 0.6,
+  "weakest": 0.667,
+  "median": 0.875,
+  "strongest": 0.917,
+  "mapref": 0.625
+ },
+ {
+  "fight": "6-8",
+  "target": 0.4,
+  "weakest": 0.458,
+  "median": 0.583,
+  "strongest": 0.75,
+  "mapref": 0.25
+ },
+ {
+  "fight": "7-1",
+  "target": 0.9,
+  "weakest": 0.667,
+  "median": 0.708,
+  "strongest": 0.917,
+  "mapref": 0.917
+ },
+ {
+  "fight": "7-2",
+  "target": 0.825,
+  "weakest": 0.583,
+  "median": 0.583,
+  "strongest": 0.833,
+  "mapref": 0.875
+ },
+ {
+  "fight": "7-3",
+  "target": 0.75,
+  "weakest": 0.333,
+  "median": 0.542,
+  "strongest": 0.667,
+  "mapref": 0.833
+ },
+ {
+  "fight": "7-4",
+  "target": 0.675,
+  "weakest": 0.375,
+  "median": 0.5,
+  "strongest": 0.75,
+  "mapref": 0.667
+ },
+ {
+  "fight": "7-5",
+  "target": 0.6,
+  "weakest": 0.375,
+  "median": 0.625,
+  "strongest": 0.792,
+  "mapref": 0.792
+ },
+ {
+  "fight": "7-6",
+  "target": 0.4,
+  "weakest": 0.083,
+  "median": 0.208,
+  "strongest": 0.458,
+  "mapref": 0.625
+ },
+ {
+  "fight": "8-1",
+  "target": 0.9,
+  "weakest": 0.833,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 0.875
+ },
+ {
+  "fight": "8-2",
+  "target": 0.85,
+  "weakest": 0.833,
+  "median": 0.917,
+  "strongest": 0.958,
+  "mapref": 0.875
+ },
+ {
+  "fight": "8-3",
+  "target": 0.8,
+  "weakest": 0.875,
+  "median": 0.917,
+  "strongest": 0.917,
+  "mapref": 0.75
+ },
+ {
+  "fight": "8-4",
+  "target": 0.75,
+  "weakest": 0.792,
+  "median": 0.833,
+  "strongest": 0.833,
+  "mapref": 0.792
+ },
+ {
+  "fight": "8-5",
+  "target": 0.7,
+  "weakest": 0.708,
+  "median": 0.792,
+  "strongest": 0.833,
+  "mapref": 0.5
+ },
+ {
+  "fight": "8-6",
+  "target": 0.65,
+  "weakest": 0.542,
+  "median": 0.792,
+  "strongest": 0.875,
+  "mapref": 0.583
+ },
+ {
+  "fight": "8-7",
+  "target": 0.6,
+  "weakest": 0.792,
+  "median": 0.875,
+  "strongest": 0.917,
+  "mapref": 0.75
+ },
+ {
+  "fight": "8-8",
+  "target": 0.4,
+  "weakest": 0.375,
+  "median": 0.5,
+  "strongest": 0.625,
+  "mapref": 0.583
+ },
+ {
+  "fight": "9-1",
+  "target": 0.9,
+  "weakest": 0.917,
+  "median": 1,
+  "strongest": 1,
+  "mapref": 0.792
+ },
+ {
+  "fight": "9-2",
+  "target": 0.84,
+  "weakest": 0.917,
+  "median": 1,
+  "strongest": 1,
+  "mapref": 0.792
+ },
+ {
+  "fight": "9-3",
+  "target": 0.78,
+  "weakest": 0.833,
+  "median": 0.958,
+  "strongest": 1,
+  "mapref": 0.833
+ },
+ {
+  "fight": "9-4",
+  "target": 0.72,
+  "weakest": 0.792,
+  "median": 0.875,
+  "strongest": 1,
+  "mapref": 0.667
+ },
+ {
+  "fight": "9-5",
+  "target": 0.66,
+  "weakest": 0.458,
+  "median": 0.667,
+  "strongest": 0.75,
+  "mapref": 0.625
+ },
+ {
+  "fight": "9-6",
+  "target": 0.6,
+  "weakest": 0.5,
+  "median": 0.875,
+  "strongest": 0.875,
+  "mapref": 0.625
+ },
+ {
+  "fight": "9-7",
+  "target": 0.4,
+  "weakest": 0.125,
+  "median": 0.542,
+  "strongest": 0.667,
+  "mapref": 0.333
+ },
+ {
+  "fight": "10-1",
+  "target": 0.9,
+  "weakest": 0.875,
+  "median": 0.958,
+  "strongest": 0.958,
+  "mapref": 0.792
+ },
+ {
+  "fight": "10-2",
+  "target": 0.857,
+  "weakest": 0.833,
+  "median": 0.875,
+  "strongest": 1,
+  "mapref": 0.792
+ },
+ {
+  "fight": "10-3",
+  "target": 0.814,
+  "weakest": 0.792,
+  "median": 0.917,
+  "strongest": 0.958,
+  "mapref": 0.667
+ },
+ {
+  "fight": "10-4",
+  "target": 0.771,
+  "weakest": 0.417,
+  "median": 0.667,
+  "strongest": 0.792,
+  "mapref": 0.667
+ },
+ {
+  "fight": "10-5",
+  "target": 0.729,
+  "weakest": 0.792,
+  "median": 0.833,
+  "strongest": 0.958,
+  "mapref": 0.75
+ },
+ {
+  "fight": "10-6",
+  "target": 0.686,
+  "weakest": 0.583,
+  "median": 0.667,
+  "strongest": 0.833,
+  "mapref": 0.542
+ },
+ {
+  "fight": "10-7",
+  "target": 0.643,
+  "weakest": 0.833,
+  "median": 0.917,
+  "strongest": 0.958,
+  "mapref": 0.625
+ },
+ {
+  "fight": "10-8",
+  "target": 0.6,
+  "weakest": 0.375,
+  "median": 0.667,
+  "strongest": 0.833,
+  "mapref": 0.5
+ },
+ {
+  "fight": "10-9",
+  "target": 0.4,
+  "weakest": 0.417,
+  "median": 0.667,
+  "strongest": 0.875,
+  "mapref": 0.542
+ },
+ {
+  "fight": "11-1",
+  "target": 0.9,
+  "weakest": 0.708,
+  "median": 1,
+  "strongest": 1,
+  "mapref": 1
+ },
+ {
+  "fight": "11-10",
+  "target": 0.4,
+  "weakest": 0.25,
+  "median": 0.708,
+  "strongest": 0.917,
+  "mapref": 0.75
+ },
+ {
+  "fight": "11-2",
+  "target": 0.863,
+  "weakest": 0.667,
+  "median": 0.875,
+  "strongest": 1,
+  "mapref": 0.792
+ },
+ {
+  "fight": "11-3",
+  "target": 0.825,
+  "weakest": 0.333,
+  "median": 0.833,
+  "strongest": 0.875,
+  "mapref": 0.792
+ },
+ {
+  "fight": "11-4",
+  "target": 0.788,
+  "weakest": 0.542,
+  "median": 0.833,
+  "strongest": 0.875,
+  "mapref": 0.708
+ },
+ {
+  "fight": "11-5",
+  "target": 0.75,
+  "weakest": 0.458,
+  "median": 0.792,
+  "strongest": 0.917,
+  "mapref": 0.708
+ },
+ {
+  "fight": "11-6",
+  "target": 0.713,
+  "weakest": 0.417,
+  "median": 0.708,
+  "strongest": 0.958,
+  "mapref": 0.583
+ },
+ {
+  "fight": "11-7",
+  "target": 0.675,
+  "weakest": 0.583,
+  "median": 0.75,
+  "strongest": 0.833,
+  "mapref": 0.833
+ },
+ {
+  "fight": "11-8",
+  "target": 0.638,
+  "weakest": 0.208,
+  "median": 0.625,
+  "strongest": 0.708,
+  "mapref": 0.667
+ },
+ {
+  "fight": "11-9",
+  "target": 0.6,
+  "weakest": 0.583,
+  "median": 0.833,
+  "strongest": 1,
+  "mapref": 0.583
+ },
+ {
+  "fight": "12-1",
+  "target": 0.9,
+  "weakest": 0.875,
+  "median": 1,
+  "strongest": 1,
+  "mapref": 0.875
+ },
+ {
+  "fight": "12-2",
+  "target": 0.84,
+  "weakest": 0.625,
+  "median": 0.917,
+  "strongest": 0.958,
+  "mapref": 0.792
+ },
+ {
+  "fight": "12-3",
+  "target": 0.78,
+  "weakest": 0.75,
+  "median": 0.875,
+  "strongest": 0.958,
+  "mapref": 0.625
+ },
+ {
+  "fight": "12-4",
+  "target": 0.72,
+  "weakest": 0.583,
+  "median": 0.875,
+  "strongest": 0.958,
+  "mapref": 0.833
+ },
+ {
+  "fight": "12-5",
+  "target": 0.66,
+  "weakest": 0.5,
+  "median": 0.708,
+  "strongest": 0.833,
+  "mapref": 0.667
+ },
+ {
+  "fight": "12-6",
+  "target": 0.6,
+  "weakest": 0.667,
+  "median": 0.792,
+  "strongest": 0.917,
+  "mapref": 0.5
+ },
+ {
+  "fight": "12-7",
+  "target": 0.4,
+  "weakest": 0.292,
+  "median": 0.458,
+  "strongest": 0.708,
+  "mapref": 0.417
+ },
+ {
+  "fight": "13-1",
+  "target": 0.9,
+  "weakest": 0.625,
+  "median": 0.75,
+  "strongest": 0.875,
+  "mapref": 0.875
+ },
+ {
+  "fight": "13-2",
+  "target": 0.85,
+  "weakest": 0.667,
+  "median": 0.875,
+  "strongest": 0.958,
+  "mapref": 0.792
+ },
+ {
+  "fight": "13-3",
+  "target": 0.8,
+  "weakest": 0.792,
+  "median": 0.875,
+  "strongest": 0.917,
+  "mapref": 0.958
+ },
+ {
+  "fight": "13-4",
+  "target": 0.75,
+  "weakest": 0.5,
+  "median": 0.583,
+  "strongest": 0.708,
+  "mapref": 0.667
+ },
+ {
+  "fight": "13-5",
+  "target": 0.7,
+  "weakest": 0.417,
+  "median": 0.5,
+  "strongest": 0.708,
+  "mapref": 0.708
+ },
+ {
+  "fight": "13-6",
+  "target": 0.65,
+  "weakest": 0.5,
+  "median": 0.625,
+  "strongest": 0.792,
+  "mapref": 0.917
+ },
+ {
+  "fight": "13-7",
+  "target": 0.6,
+  "weakest": 0.292,
+  "median": 0.417,
+  "strongest": 0.667,
+  "mapref": 0.583
+ },
+ {
+  "fight": "13-8",
+  "target": 0.4,
+  "weakest": 0.208,
+  "median": 0.25,
+  "strongest": 0.458,
+  "mapref": 0.458
+ },
+ {
+  "fight": "14-1",
+  "target": 0.9,
+  "weakest": 0.667,
+  "median": 0.708,
+  "strongest": 0.958,
+  "mapref": 0.625
+ },
+ {
+  "fight": "14-2",
+  "target": 0.85,
+  "weakest": 0.667,
+  "median": 0.833,
+  "strongest": 0.875,
+  "mapref": 0.625
+ },
+ {
+  "fight": "14-3",
+  "target": 0.8,
+  "weakest": 0.667,
+  "median": 0.75,
+  "strongest": 0.792,
+  "mapref": 0.708
+ },
+ {
+  "fight": "14-4",
+  "target": 0.75,
+  "weakest": 0.792,
+  "median": 0.833,
+  "strongest": 0.875,
+  "mapref": 0.75
+ },
+ {
+  "fight": "14-5",
+  "target": 0.7,
+  "weakest": 0.208,
+  "median": 0.333,
+  "strongest": 0.458,
+  "mapref": 0.417
+ },
+ {
+  "fight": "14-6",
+  "target": 0.65,
+  "weakest": 0.5,
+  "median": 0.542,
+  "strongest": 0.792,
+  "mapref": 0.417
+ },
+ {
+  "fight": "14-7",
+  "target": 0.6,
+  "weakest": 0.458,
+  "median": 0.542,
+  "strongest": 0.667,
+  "mapref": 0.583
+ },
+ {
+  "fight": "14-8",
+  "target": 0.4,
+  "weakest": 0.375,
+  "median": 0.417,
+  "strongest": 0.458,
+  "mapref": 0.333
+ },
+ {
+  "fight": "15-1",
+  "target": 0.9,
+  "weakest": 0.917,
+  "median": 1,
+  "strongest": 1,
+  "mapref": 1
+ },
+ {
+  "fight": "15-2",
+  "target": 0.84,
+  "weakest": 0.75,
+  "median": 0.833,
+  "strongest": 1,
+  "mapref": 0.708
+ },
+ {
+  "fight": "15-3",
+  "target": 0.78,
+  "weakest": 0.625,
+  "median": 0.792,
+  "strongest": 0.958,
+  "mapref": 0.667
+ },
+ {
+  "fight": "15-4",
+  "target": 0.72,
+  "weakest": 0.708,
+  "median": 0.75,
+  "strongest": 0.958,
+  "mapref": 0.708
+ },
+ {
+  "fight": "15-5",
+  "target": 0.66,
+  "weakest": 0.625,
+  "median": 0.708,
+  "strongest": 0.875,
+  "mapref": 0.625
+ },
+ {
+  "fight": "15-6",
+  "target": 0.6,
+  "weakest": 0.667,
+  "median": 0.708,
+  "strongest": 0.833,
+  "mapref": 0.667
+ },
+ {
+  "fight": "15-7",
+  "target": 0.4,
+  "weakest": 0.5,
+  "median": 0.583,
+  "strongest": 0.667,
+  "mapref": 0.292
+ },
+ {
+  "fight": "16-1",
+  "target": 0.9,
+  "weakest": 0.417,
+  "median": 0.542,
+  "strongest": 0.667,
+  "mapref": 0.917
+ },
+ {
+  "fight": "16-2",
+  "target": 0.84,
+  "weakest": 0.583,
+  "median": 0.667,
+  "strongest": 0.75,
+  "mapref": 0.875
+ },
+ {
+  "fight": "16-3",
+  "target": 0.78,
+  "weakest": 0.583,
+  "median": 0.625,
+  "strongest": 0.708,
+  "mapref": 0.75
+ },
+ {
+  "fight": "16-4",
+  "target": 0.72,
+  "weakest": 0.667,
+  "median": 0.667,
+  "strongest": 0.708,
+  "mapref": 0.75
+ },
+ {
+  "fight": "16-5",
+  "target": 0.66,
+  "weakest": 0.458,
+  "median": 0.625,
+  "strongest": 0.792,
+  "mapref": 0.75
+ },
+ {
+  "fight": "16-6",
+  "target": 0.6,
+  "weakest": 0.167,
+  "median": 0.25,
+  "strongest": 0.292,
+  "mapref": 0.5
+ },
+ {
+  "fight": "16-7",
+  "target": 0.4,
+  "weakest": 0.125,
+  "median": 0.208,
+  "strongest": 0.292,
+  "mapref": 0.417
+ },
+ {
+  "fight": "17-1",
+  "target": 0.9,
+  "weakest": 0.917,
+  "median": 1,
+  "strongest": 1,
+  "mapref": 1
+ },
+ {
+  "fight": "17-2",
+  "target": 0.85,
+  "weakest": 0.792,
+  "median": 0.917,
+  "strongest": 0.958,
+  "mapref": 0.917
+ },
+ {
+  "fight": "17-3",
+  "target": 0.8,
+  "weakest": 0.5,
+  "median": 0.792,
+  "strongest": 1,
+  "mapref": 0.875
+ },
+ {
+  "fight": "17-4",
+  "target": 0.75,
+  "weakest": 0.75,
+  "median": 0.833,
+  "strongest": 0.875,
+  "mapref": 0.667
+ },
+ {
+  "fight": "17-5",
+  "target": 0.7,
+  "weakest": 0.417,
+  "median": 0.542,
+  "strongest": 0.625,
+  "mapref": 0.75
+ },
+ {
+  "fight": "17-6",
+  "target": 0.65,
+  "weakest": 0.583,
+  "median": 0.667,
+  "strongest": 0.792,
+  "mapref": 0.708
+ },
+ {
+  "fight": "17-7",
+  "target": 0.6,
+  "weakest": 0.292,
+  "median": 0.583,
+  "strongest": 0.625,
+  "mapref": 0.625
+ },
+ {
+  "fight": "17-8",
+  "target": 0.4,
+  "weakest": 0.292,
+  "median": 0.375,
+  "strongest": 0.583,
+  "mapref": 0.292
+ },
+ {
+  "fight": "18-1",
+  "target": 0.9,
+  "weakest": 0.708,
+  "median": 0.792,
+  "strongest": 0.917,
+  "mapref": 1
+ },
+ {
+  "fight": "18-2",
+  "target": 0.84,
+  "weakest": 0.5,
+  "median": 0.75,
+  "strongest": 0.792,
+  "mapref": 0.833
+ },
+ {
+  "fight": "18-3",
+  "target": 0.78,
+  "weakest": 0.5,
+  "median": 0.75,
+  "strongest": 0.833,
+  "mapref": 0.875
+ },
+ {
+  "fight": "18-4",
+  "target": 0.72,
+  "weakest": 0.458,
+  "median": 0.708,
+  "strongest": 0.833,
+  "mapref": 0.75
+ },
+ {
+  "fight": "18-5",
+  "target": 0.66,
+  "weakest": 0.458,
+  "median": 0.667,
+  "strongest": 0.833,
+  "mapref": 0.625
+ },
+ {
+  "fight": "18-6",
+  "target": 0.6,
+  "weakest": 0.083,
+  "median": 0.5,
+  "strongest": 0.583,
+  "mapref": 0.708
+ },
+ {
+  "fight": "18-7",
+  "target": 0.4,
+  "weakest": 0,
+  "median": 0.333,
+  "strongest": 0.625,
+  "mapref": 0.417
+ },
+ {
+  "fight": "19-1",
+  "target": 0.9,
+  "weakest": 0.958,
+  "median": 1,
+  "strongest": 1,
+  "mapref": 1
+ },
+ {
+  "fight": "19-2",
+  "target": 0.825,
+  "weakest": 0.792,
+  "median": 0.917,
+  "strongest": 1,
+  "mapref": 0.792
+ },
+ {
+  "fight": "19-3",
+  "target": 0.75,
+  "weakest": 0.667,
+  "median": 0.75,
+  "strongest": 0.875,
+  "mapref": 0.833
+ },
+ {
+  "fight": "19-4",
+  "target": 0.675,
+  "weakest": 0.583,
+  "median": 0.708,
+  "strongest": 0.958,
+  "mapref": 0.75
+ },
+ {
+  "fight": "19-5",
+  "target": 0.6,
+  "weakest": 0.333,
+  "median": 0.417,
+  "strongest": 0.5,
+  "mapref": 0.542
+ },
+ {
+  "fight": "19-6",
+  "target": 0.4,
+  "weakest": 0.417,
+  "median": 0.667,
+  "strongest": 0.792,
+  "mapref": 0.542
+ },
+ {
+  "fight": "20-1",
+  "target": 0.9,
+  "weakest": 0.292,
+  "median": 0.625,
+  "strongest": 0.875,
+  "mapref": 0.792
+ },
+ {
+  "fight": "20-10",
+  "target": 0.4,
+  "weakest": 0.292,
+  "median": 0.292,
+  "strongest": 0.5,
+  "mapref": 0.375
+ },
+ {
+  "fight": "20-2",
+  "target": 0.857,
+  "weakest": 0.708,
+  "median": 0.833,
+  "strongest": 0.875,
+  "mapref": 0.833
+ },
+ {
+  "fight": "20-3",
+  "target": 0.814,
+  "weakest": 0.458,
+  "median": 0.667,
+  "strongest": 0.875,
+  "mapref": 0.833
+ },
+ {
+  "fight": "20-4",
+  "target": 0.771,
+  "weakest": 0.417,
+  "median": 0.708,
+  "strongest": 0.708,
+  "mapref": 0.917
+ },
+ {
+  "fight": "20-5",
+  "target": 0.729,
+  "weakest": 0.417,
+  "median": 0.417,
+  "strongest": 0.583,
+  "mapref": 0.625
+ },
+ {
+  "fight": "20-6",
+  "target": 0.686,
+  "weakest": 0.125,
+  "median": 0.458,
+  "strongest": 0.583,
+  "mapref": 0.708
+ },
+ {
+  "fight": "20-7",
+  "target": 0.643,
+  "weakest": 0.25,
+  "median": 0.375,
+  "strongest": 0.708,
+  "mapref": 0.792
+ },
+ {
+  "fight": "20-8",
+  "target": 0.6,
+  "weakest": 0.083,
+  "median": 0.292,
+  "strongest": 0.583,
+  "mapref": 0.5
+ },
+ {
+  "fight": "20-9",
+  "target": 0.5,
+  "weakest": 0.083,
+  "median": 0.375,
+  "strongest": 0.625,
+  "mapref": 0.583
+ }
+]
