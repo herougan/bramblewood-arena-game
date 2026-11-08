@@ -1,0 +1,52 @@
+{
+ "tool": "tools/bal28/canopy_bower_2026_11_08.js",
+ "games": 200,
+ "seed0": 9100,
+ "rows": {
+  "14-A-1": {
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "Bower (a) Rainforest+Savanna +1/+2": 5.5,
+   "Bower (b) Rainforest +1/+3": 13,
+   "Bower, no ability": 14.5,
+   "plain bramble": 15.5
+  },
+  "14-A-2": {
+   "target": 80,
+   "lo": 72,
+   "hi": 88,
+   "Bower (a) Rainforest+Savanna +1/+2": 52,
+   "Bower (b) Rainforest +1/+3": 73.5,
+   "Bower, no ability": 73.5,
+   "plain bramble": 74.5
+  },
+  "14-A-3": {
+   "target": 70,
+   "lo": 62,
+   "hi": 78,
+   "Bower (a) Rainforest+Savanna +1/+2": 37,
+   "Bower (b) Rainforest +1/+3": 54.5,
+   "Bower, no ability": 64,
+   "plain bramble": 62.5
+  },
+  "14-A-4": {
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "Bower (a) Rainforest+Savanna +1/+2": 13,
+   "Bower (b) Rainforest +1/+3": 17,
+   "Bower, no ability": 49,
+   "plain bramble": 48.5
+  },
+  "14-A-5": {
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "Bower (a) Rainforest+Savanna +1/+2": 8.5,
+   "Bower (b) Rainforest +1/+3": 22,
+   "Bower, no ability": 26,
+   "plain bramble": 23
+  }
+ }
+}
