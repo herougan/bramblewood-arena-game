@@ -1,0 +1,171 @@
+{
+ "about": "BAL28 whole-space search (tools/bal28/canopy_space_2026_11_08.js)",
+ "code": "14-A-4",
+ "map": "my",
+ "mapName": "The Canopy",
+ "kind": "elite",
+ "name": "Drum Circle",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "hercules-beetle",
+  "hoopoe-herald",
+  "jaguar-stalker",
+  "leafcutter-gardener",
+  "pangolin-roller",
+  "proboscis-monkey",
+  "redwood-woodpecker",
+  "weaver-bird"
+ ],
+ "firstClear": [
+  "hercules-beetle"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "vampire-bat"
+ ],
+ "namesake": false,
+ "shieldRule": 27,
+ "shieldOverride": null,
+ "space": 549,
+ "truncated": true,
+ "screened": 160,
+ "top": [
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hercules-beetle": 3,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 2,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1,
+    "weaver-bird": 4
+   },
+   "tune60": 18.3
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hercules-beetle": 3,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1,
+    "weaver-bird": 4
+   },
+   "tune60": 18.3
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hercules-beetle": 3,
+    "hoopoe-herald": 1,
+    "jaguar-stalker": 3,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1,
+    "weaver-bird": 3
+   },
+   "tune60": 13.3
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "hercules-beetle": 3,
+    "hoopoe-herald": 4,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1,
+    "weaver-bird": 1
+   },
+   "tune60": 11.7
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "hercules-beetle": 2,
+    "hoopoe-herald": 4,
+    "jaguar-stalker": 2,
+    "pangolin-roller": 2,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1,
+    "weaver-bird": 4
+   },
+   "tune60": 11.7
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hercules-beetle": 1,
+    "hoopoe-herald": 4,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1,
+    "weaver-bird": 2
+   },
+   "tune60": 8.3
+  }
+ ],
+ "before": {
+  "deck": {
+   "apollo-butterfly": 1,
+   "hercules-beetle": 3,
+   "hoopoe-herald": 3,
+   "jaguar-stalker": 3,
+   "pangolin-roller": 3,
+   "proboscis-monkey": 1,
+   "redwood-woodpecker": 1,
+   "camouflage-frog": 1,
+   "weaver-bird": 1
+  },
+  "leaders": [
+   "vampire-bat"
+  ],
+  "shieldOverride": null,
+  "win200": 6
+ },
+ "pick": {
+  "deck": {
+   "apollo-butterfly": 1,
+   "camouflage-frog": 1,
+   "hercules-beetle": 3,
+   "jaguar-stalker": 3,
+   "leafcutter-gardener": 1,
+   "pangolin-roller": 2,
+   "proboscis-monkey": 1,
+   "redwood-woodpecker": 1,
+   "weaver-bird": 4
+  },
+  "leaders": [
+   "vampire-bat"
+  ],
+  "shieldOverride": 0,
+  "win200": 13,
+  "tune60": 18.3
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 6
+  },
+  {
+   "move": "space pick",
+   "win": 13
+  }
+ ],
+ "sec": 160
+}

@@ -1,0 +1,152 @@
+{
+ "about": "BAL28 whole-space search (tools/bal28/canopy_space_2026_11_08.js)",
+ "code": "14-A-5",
+ "map": "my",
+ "mapName": "The Canopy",
+ "kind": "boss",
+ "name": "The Jaguar's Path",
+ "band": {
+  "lo": 30,
+  "hi": 49,
+  "target": 40
+ },
+ "list": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "hoopoe-herald",
+  "jaguar-stalker",
+  "leafcutter-gardener",
+  "pangolin-roller",
+  "proboscis-monkey",
+  "redwood-woodpecker",
+  "weaver-bird"
+ ],
+ "firstClear": [
+  "jaguar-stalker"
+ ],
+ "k14Before": 0,
+ "leaders": [
+  "jaguar-stalker"
+ ],
+ "namesake": true,
+ "shieldRule": 54,
+ "shieldOverride": null,
+ "space": 5,
+ "truncated": false,
+ "screened": 5,
+ "top": [
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hoopoe-herald": 5,
+    "jaguar-stalker": 3,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1,
+    "weaver-bird": 5
+   },
+   "tune60": 10
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hoopoe-herald": 5,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1,
+    "weaver-bird": 5
+   },
+   "tune60": 8.3
+  },
+  {
+   "deck": {
+    "camouflage-frog": 1,
+    "hoopoe-herald": 5,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1,
+    "weaver-bird": 5
+   },
+   "tune60": 5
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "hoopoe-herald": 5,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 3,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1,
+    "weaver-bird": 5
+   },
+   "tune60": 3.3
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hoopoe-herald": 5,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 1,
+    "pangolin-roller": 3,
+    "redwood-woodpecker": 1,
+    "weaver-bird": 5
+   },
+   "tune60": 3.3
+  }
+ ],
+ "before": {
+  "deck": {
+   "apollo-butterfly": 1,
+   "camouflage-frog": 1,
+   "hoopoe-herald": 5,
+   "jaguar-stalker": 3,
+   "leafcutter-gardener": 1,
+   "pangolin-roller": 3,
+   "redwood-woodpecker": 1,
+   "weaver-bird": 5
+  },
+  "leaders": [
+   "jaguar-stalker"
+  ],
+  "shieldOverride": null,
+  "win200": 0
+ },
+ "pick": {
+  "deck": {
+   "apollo-butterfly": 1,
+   "camouflage-frog": 1,
+   "hoopoe-herald": 5,
+   "jaguar-stalker": 3,
+   "pangolin-roller": 3,
+   "proboscis-monkey": 1,
+   "redwood-woodpecker": 1,
+   "weaver-bird": 5
+  },
+  "leaders": [
+   "jaguar-stalker"
+  ],
+  "shieldOverride": 0,
+  "win200": 8.5,
+  "tune60": 10
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 0
+  },
+  {
+   "move": "space pick",
+   "win": 8.5
+  }
+ ],
+ "sec": 75
+}
