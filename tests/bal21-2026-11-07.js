@@ -33,7 +33,8 @@ ok(bal21Lines.length >= 1, 'BAL21 retuned some road fights: ' + bal21Lines.lengt
 for (const [code, l] of bal21Lines) {
   const x = tune[code], f = find(code); ok(x && f, code + ': kept in a BAL21 tune file and in CONQUEST_MAPS'); if (!x || !f) continue;
   // 2026-11-07 (BAL26): a fight BAL26 retuned again (its line carries a BAL26 comment) is checked here on BAL21's pick; tests/bal26-2026-11-07.js checks its deck now
-  const now = fields(l), MAP = f.m.id, mapNo = G.mapNumberOf(MAP), kind = f.n.kind || 'skirmish', was = x.before.deck, d = /2026-11-07 \(BAL26\)|2026-11-08 \(BAL27\)/.test(l) ? x.pick.deck : now.deck;
+  // 2026-11-08 (BAL28): + a Canopy fight BAL28 retuned again (14-A-3, 14-A-4); tests/bal28-2026-11-08.js checks its deck now
+  const now = fields(l), MAP = f.m.id, mapNo = G.mapNumberOf(MAP), kind = f.n.kind || 'skirmish', was = x.before.deck, d = /2026-11-07 \(BAL26\)|2026-11-08 \(BAL27\)|2026-11-08 \(BAL28\)/.test(l) ? x.pick.deck : now.deck;
   ok(mapNo !== 5, code + ': not a Map 5 (Gatorback Swamp) fight');
   ok(mapNo != null && mapNo <= 20, code + ': on Maps 0-20');
   ok(Math.abs(x.pick.win200 - x.band.target) + 2 <= Math.abs(x.before.win200 - x.band.target), `${code}: 2+ points nearer the target at 200 games (${x.before.win200} -> ${x.pick.win200}, target ${x.band.target})`);
