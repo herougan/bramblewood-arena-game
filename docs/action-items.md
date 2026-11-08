@@ -11,10 +11,10 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 ## 11-08 17:22: Owner notes
 | # | Note | Package |
 |---|---|---|
-| 1 | Map cards: show every prospective card for the map (not submap cards): NEW! first, then Carried; includes Claude's recommended cards | UI37 |
-| 2 | A yes/no pill toggle per card, with counts against the unique-card target, for NEW! and Carried ("I flagged 5 new and 7 carried - great!") | UI37 |
-| 3 | Dynamic: loading a map knows every flag made so far, so NEW! reflects earlier flags | UI37 |
-| 4 | Owner asks: export, or can Claude read the results from the db? | UI37 answers |
+| 1 | Map cards: show every prospective card for the map (not submap cards): NEW! first, then Carried; includes Claude's recommended cards | UI37 ✅ done (on its branch) |
+| 2 | A yes/no pill toggle per card, with counts against the unique-card target, for NEW! and Carried ("I flagged 5 new and 7 carried - great!") | UI37 ✅ done (on its branch; targets THEME6-1, editable) |
+| 3 | Dynamic: loading a map knows every flag made so far, so NEW! reflects earlier flags | UI37 ✅ done (on its branch; rule UI37-1) |
+| 4 | Owner asks: export, or can Claude read the results from the db? | UI37 ✅ answered: both. Flags save in the browser and, signed in as admin, in the db (card_overrides `__cfg:map-picks:<map>`); Export picks gives a file too |
 | 5 | Push (release) when done, with everything so far | release |
 | 6 | BAL29-1: update power level and N now (apply prices, no refit). BAL29-2: a. ENG37-2: Reach price 1. Bulwark: Claude estimates | BAL30 |
 | 7 | Tournament: report the weakest decks too, not only the strongest (each deck assumed the most optimised its sim could build) | coordinator |
