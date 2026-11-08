@@ -13,9 +13,11 @@
 // Lightning ...) and the `ranged` ones. A rider the cost table prices `fixed` or that cards print only as on is measured once (on); Leech
 // (sap) both on (heals the damage dealt) and N (heals N). The status riders cards print as {chance, duration} (Freeze, Sleep, Stagger,
 // Blind, Confuse, Paralyze, Shock, Tipsy) are measured at chance 50, duration N.
-// The method is the ladder's (tools/skill_ladder_2026_11_07.js): every 3A + H spread of the War Hound body at its budget (L1 23: 7 bodies,
-// L5 27: 8 bodies), paired fights, the placebo once a key, worth / the anchors' canon rate at that level, the price = the maximum of a
-// quadratic through worth against attack share; mean over bodies beside it; a value x N^pow line per level. Nothing is written to canonical/.
+// The method is the ladder's (tools/skill_ladder_2026_11_07.js): War Hound bodies re-statted at its budget (L1 3A + H = 23, L5 27), paired
+// fights, the placebo once a key, worth / the anchors' canon rate at that level, the price = the maximum of a quadratic through worth
+// against attack share (through 3 bodies: the parabola through them, its maximum inside the range); mean over bodies beside it; a value x
+// N^pow line per level. Bodies: Attack 1, the middle and the most (L1 1/20 4/11 7/2, L5 1/24 4/15 8/3), not the ladder's every spread
+// (7 / 8): cut for time on shared cores (2026-11-08); --bodies all restores the ladder's set. Nothing is written to canonical/.
 'use strict';
 const fs = require('fs'), path = require('path'), os = require('os');
 const C = require('./common.js'), ROOT = C.ROOT, OUT = path.join(ROOT, 'docs', 'balance', 'bal31');
@@ -40,9 +42,11 @@ function ridersOf(only) {
 const nStr = n => n === true ? 'on' : String(n);
 async function main(argv) {
   const o = C.parse(argv, { games: 400, levels: [1, 5], cacheDir: path.join(os.homedir(), '.cache', 'bramble-bal31'), boot: 300 }), M = o.games;
+  o.allBodies = !!(o.bodyAs && isNaN(o.bodyAs[0])); // --bodies all
   if (o.cmd === 'help' || o.cmd === '--help') { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 22).map(l => l.replace(/^\/\/ ?/, '')).join('\n')); return; }
   const R = ridersOf(o.only), K = C.bench(Object.assign({}, o, o.cmd === 'plan' ? { workers: 0 } : {}));
-  const bodies = Lv => C.LAD.bodiesOf(K.lv[Lv].Bud, 'onhit', MAX_BODIES);
+  const bodies = Lv => { const all = C.LAD.bodiesOf(K.lv[Lv].Bud, 'onhit', MAX_BODIES); if (o.allBodies) return all;
+    const mid = all[Math.floor((all.length - 1) / 2)]; return [all[0], mid, all[all.length - 1]]; };
   try {
     if (o.cmd === 'plan') {
       console.log(`${R.length} riders: ` + R.map(r => `${r.key} ${r.pts.map(p => nStr(p.n)).join('/')}`).join('; '));

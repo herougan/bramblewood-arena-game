@@ -6,14 +6,15 @@
 //   node tools/bal31/additivity_2026_11_08.js plan                 the skills, the pairs, the phases and the time (no games)
 //   node tools/bal31/additivity_2026_11_08.js run [--hours 1.5]    play them, phase by phase (resumable from the cache)
 //   node tools/bal31/additivity_2026_11_08.js summary              -> docs/balance/bal31/additivity-2026-11-08.{json,md}
-// Options: --games 800, --level 9, --workers 2, --cache-dir (default ~/.cache/bramble-bal31: its own), --rounds 4 (matching rounds in
+// Options: --games 800, --level 9, --workers 2, --cache-dir (default ~/.cache/bramble-bal31: its own), --rounds 3 (matching rounds in
 // phase 2; phase 4 adds rounds up to --rounds-max 8), --top 20 (phase 3: every pair among the 20 commonest Map 0-20 skills), --phase P (run
-// only up to phase P), --bodies 1,5,9 (the Attack of each body), --boot 200.
+// only up to phase P), --bodies 1,9 (the Attack of each body), --boot 200.
 //
 // The method (the skill ladder's, tools/skill_ladder_2026_11_07.js, at one level):
 //   - the level: the first whose War Hound budget N(L) (bramblewood-budget.js) is over 30 (Level 9: N = 30.16; bodies 3A + H = 30);
-//   - three bodies: Attack 1, the middle and the most (1/27, 5/15, 9/3), so a skill that wants Health and one that wants Attack both find
-//     their body (the ladder's best bodies sit at the two ends);
+//   - two bodies: Attack 1 and the most (1/27, 9/3), so a skill that wants Health and one that wants Attack both find their body (the
+//     ladder's best bodies sit at the two ends). The middle body (5/15, --bodies 1,5,9) was cut on 2026-11-08 for time: the 2 cores are
+//     shared with other packages' tests (about 27 games/s at Level 9), and 800 fights on two bodies beat 400 on three for the ±1 test;
 //   - the skills: the ladder's 113 (every skill on a Map 0-20 card the cost table prices, numbered or on/off), each at its commonest number
 //     on those cards (put on its ladder: 1 .. 4; Shield 2 / 4 / 6);
 //   - the pairs: phase 2, rounds of a random matching (seeded) that pairs each skill with a new partner of another kind where it can
@@ -21,7 +22,7 @@
 //     among the `top` commonest skills; phase 4, more matching rounds;
 //   - every body plays base, placebo, +1 Attack, +1 Health, each single and each pair on the same 800 fights (common random numbers);
 //   - interaction on a body = worth(A+B) - worth(A) - worth(B) = (score AB - score A - score B + score base) / rate (the placebo cancels);
-//     reported as the mean over the three bodies (95% bootstrap over fights, the same fights for every body); the price gap = the most the
+//     reported as the mean over the bodies (95% bootstrap over fights, the same fights for every body); the price gap = the most the
 //     pair is worth on a body - the most A is worth - the most B is worth (each on its own best body: what a per-skill price adds);
 //   - rate: the stat yardstick on the three bodies at this level (no anchors file at Level 9), held fixed; the ladder's L1 / L5 rates beside it.
 // Nothing is written to canonical/: prices stay the owner's call.
@@ -74,10 +75,10 @@ const nStr = n => n === true ? 'on' : String(n);
 // ---------------------------------------------------------------- run
 function opts(argv) {
   const a = argv.slice(), i = a.indexOf('--rounds-max'); let rm = 8; if (i >= 0) { rm = +a[i + 1]; a.splice(i, 2); }
-  const o = C.parse(a, { games: 800, levels: [9], cacheDir: path.join(os.homedir(), '.cache', 'bramble-bal31'), boot: 200, rounds: 4, top: 20, phase: 4 });
+  const o = C.parse(a, { games: 800, levels: [9], cacheDir: path.join(os.homedir(), '.cache', 'bramble-bal31'), boot: 200, rounds: 3, top: 20, phase: 4 });
   o.roundsMax = rm; if (o.level) o.levels = [o.level]; return o;
 }
-function bodiesFor(K, Lv, o) { const Bud = K.lv[Lv].Bud, top = Math.floor((Bud - 1) / 3), As = o.bodyAs || [1, Math.round((1 + top) / 2), top]; return As.map(A => ({ A, H: Bud - 3 * A, x: 3 * A / Bud })); }
+function bodiesFor(K, Lv, o) { const Bud = K.lv[Lv].Bud, top = Math.floor((Bud - 1) / 3), As = o.bodyAs || [1, top]; return As.map(A => ({ A, H: Bud - 3 * A, x: 3 * A / Bud })); }
 async function main(argv) {
   const o = opts(argv), M = o.games, Lv = o.levels[0];
   if (o.cmd === 'help' || o.cmd === '--help') { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 32).map(l => l.replace(/^\/\/ ?/, '')).join('\n')); return; }
@@ -145,7 +146,7 @@ function summary(o, K, P, bs, M, Lv) {
   const noise = n ? C.r2(pairs.reduce((s, p) => s + p.se, 0) / n * Math.sqrt(2 / Math.PI)) : null;
   const L1 = C.ladderRate(1), L5 = C.ladderRate(5);
   const out = { tool: 'tools/bal31/additivity_2026_11_08.js ' + VERSION, generated: new Date().toISOString(), fingerprint: K.L.fingerprint(), games: M, level: Lv, N: C.r2(K.lv[Lv].N), budget: K.lv[Lv].Bud,
-    bodies: bs.map(b => b.A + '/' + b.H), rate: C.r2(rate * 100), rateFrom: 'the stat yardstick on the three bodies at Level ' + Lv, ladderRates: { L1: L1 && C.r2(L1.r * 100), L5: L5 && C.r2(L5.r * 100) },
+    bodies: bs.map(b => b.A + '/' + b.H), rate: C.r2(rate * 100), rateFrom: 'the stat yardstick on the bodies at Level ' + Lv, ladderRates: { L1: L1 && C.r2(L1.r * 100), L5: L5 && C.r2(L5.r * 100) },
     totals: { pairs: n, skillsCovered: skills.filter(s => s.pairs > 0).length, skills: skills.length, minPairs: Math.min(...skills.filter(s => single.has(s.key)).map(s => s.pairs)),
       within1: share(p => p.within1), ciHas0: share(p => p.ciHas0), meanAbsI: mean(p => Math.abs(p.I.m)), meanI: mean(p => p.I.m), noiseFloor: noise,
       gapWithin1: share(p => p.gapWithin1), meanAbsGap: mean(p => Math.abs(p.gap.m)), meanGap: mean(p => p.gap.m), within2: share(p => Math.abs(p.I.m) <= 2), flag85: pairs.filter(p => p.flag85).length,
@@ -159,7 +160,7 @@ const pct = v => v == null ? '-' : Math.round(v * 100) + '%';
 function md(out) {
   const t = out.totals, L = [];
   L.push(`# Skill additivity, ${out.generated.slice(0, 10)} (package BAL31)`, '',
-    `Is a pair of skills worth the sum of the two? ${t.pairs} pairs covering ${t.skillsCovered} of ${t.skills} skills (each in at least ${t.minPairs} pairs), Level ${out.level} (N(L) ${out.N}, bodies 3A + H = ${out.budget}: ${out.bodies.join(', ')}), ${out.games} paired fights a variant. Worth in 3A + H points (rate ${out.rate} win-rate points a point, ${out.rateFrom}; the ladder's L1 ${out.ladderRates.L1}, L5 ${out.ladderRates.L5}). Interaction = worth(A+B) - worth(A) - worth(B), the mean over the three bodies. Measurement only: no price changed.`, '',
+    `Is a pair of skills worth the sum of the two? ${t.pairs} pairs covering ${t.skillsCovered} of ${t.skills} skills (each in at least ${t.minPairs} pairs), Level ${out.level} (N(L) ${out.N}, bodies 3A + H = ${out.budget}: ${out.bodies.join(', ')}), ${out.games} paired fights a variant. Worth in 3A + H points (rate ${out.rate} win-rate points a point, ${out.rateFrom}; the ladder's L1 ${out.ladderRates.L1}, L5 ${out.ladderRates.L5}). Interaction = worth(A+B) - worth(A) - worth(B), the mean over the bodies. Measurement only: no price changed.`, '',
     '## Headline', '',
     `| Measure | Value |`, `|---|---|`,
     `| Pairs within ±1 point of additive | ${pct(t.within1)} (within ±2: ${pct(t.within2)}) |`,
@@ -170,10 +171,10 @@ function md(out) {
     `| Price gap (best body of the pair - best body of A - best body of B): within ±1 / mean / mean abs | ${pct(t.gapWithin1)} / ${t.meanGap} / ${t.meanAbsGap} |`, '');
   L.push(`Phases: ${out.phases.map(p => `${p.id} ${p.name} ${p.measured}/${p.planned}`).join('; ')}.`, '');
   const worst = out.pairs.slice().sort((a, b) => Math.abs(b.I.m) - Math.abs(a.I.m)).slice(0, 20);
-  L.push('## Worst-interacting pairs', '', '| Pair | Interaction (95%) | A + B -> pair, best body | Per body (1 / mid / max Attack) | Price gap |', '|---|---|---|---|---|');
+  L.push('## Worst-interacting pairs', '', '| Pair | Interaction (95%) | A + B -> pair, best body | Per body (Attack 1 / most) | Price gap |', '|---|---|---|---|---|');
   worst.forEach(p => L.push(`| ${p.a.key} ${nStr(p.a.n)} + ${p.b.key} ${nStr(p.b.n)} | ${ci(p.I)}${p.flag85 ? ' ^' : ''} | ${C.r2(Math.max(...p.aW))} + ${C.r2(Math.max(...p.bW))} -> ${C.r2(Math.max(...p.pair))} | ${p.perBody.join(' / ')} | ${ci(p.gap)} |`));
-  L.push('', '## Per skill: price stability', '', 'Worth = the most the single is worth on the three bodies (Level ' + out.level + '). Mean |I| = the mean absolute interaction over its pairs; within ±1 = the share of its pairs within ±1 point; worst = its two largest interactions.', '',
-    '| Skill | N | Kind | Price | Worth (best of 3) | Pairs | Mean I | Mean abs I | Within ±1 | Worst partners |', '|---|---|---|---|---|---|---|---|---|---|');
+  L.push('', '## Per skill: price stability', '', 'Worth = the most the single is worth on the bodies (Level ' + out.level + '). Mean |I| = the mean absolute interaction over its pairs; within ±1 = the share of its pairs within ±1 point; worst = its two largest interactions.', '',
+    '| Skill | N | Kind | Price | Worth (best body) | Pairs | Mean I | Mean abs I | Within ±1 | Worst partners |', '|---|---|---|---|---|---|---|---|---|---|');
   out.skills.slice().sort((a, b) => (b.meanAbsI || 0) - (a.meanAbsI || 0)).forEach(s => L.push(`| ${s.key} (${s.cards}) | ${nStr(s.n)} | ${s.kind} | ${s.price} | ${s.best == null ? '-' : s.best} | ${s.pairs} | ${s.meanI == null ? '-' : s.meanI} | ${s.meanAbsI == null ? '-' : s.meanAbsI} | ${pct(s.within1)} | ${s.worst.join(', ')} |`));
   L.push('', '^ = a body over 85% win rate (the cap squeezes the pair). Every pair is in the json (per body, the singles, the gap).', '');
   return L.join('\n') + '\n';
