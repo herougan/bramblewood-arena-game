@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-09 Package BAL33 (The Canopy after BAL28-1 a / BAL28-2 b; Dive measured, ENG32-2 c)
+- Players see: on The Canopy the enemy's Canopy Bower has no ability (same Health and Shield); your own Canopy Bower still gives your Rainforest / Savanna units +1/+2. Sloth Boughs is now the first Canopy fight (14-A-1) and Dart Frogs the third (14-A-3); the slots keep their place, kind and reward (Kinkajou Lurker still at 14-A-3). All five Canopy decks retuned (decks only; no card stats, Shields already 0).
+- Win rates vs the Map reference, 200 games on the road seeds (target): 14-A-1 Sloth Boughs 69 (90), 14-A-2 Strangler Arch 75.5 (80), 14-A-3 Dart Frogs 53.5 (70), 14-A-4 Drum Circle 61 (60), 14-A-5 The Jaguar's Path 30.5 (40). Shipped before (Bower on, old slots): 5.5 / 52 / 37 / 13 / 8.5. Files: `docs/balance/bal33/canopy-{before,after}-2026-11-09.json`, `swap-options-2026-11-09.json`, `space/`, `space-r2/`, `tune/`.
+- Code: `arena_app.js` CPU_BRAMBLE_PASSIVE + cpuBramblePassive (skirmishCastle drops the CPU bramble's effects on that map); `tools/lib_bramble.js` lifts them. Tools: `tools/bal33/` (BAL28's tuner and whole-space search, the measure, the swap options).
+- Dive (ENG32-2 c): the canon carriers are vanilla and cannot dive, so Dive reads 0 there; measured instead as Flying / Tide carriers with and without Dive (400 paired fights): plain Dive -3.3 (formula -1), Dive 2 -1.9 (formula 0). `docs/balance/bal33/dive-measure-2026-11-09.json`; decision BAL33-1. skill-costs.json unchanged.
+- Tests: new tests/bal33-2026-11-09.js (+ pins file); bal20 / bal21 / bal28 skip the fights BAL33 moved or retuned.
+
 ## 2026-11-09 Package FIX11 (five tests that failed on release 4093e677)
 - Players see: nothing; no game file changed.
 - Stale pins updated: eng28 / eng37 read a wider CHANGELOG window (newer entries sit above theirs); eng36 accepts BAL32's intended Constrict reprice (ENG36's price 8, half scale, kept in `bal32Was`).

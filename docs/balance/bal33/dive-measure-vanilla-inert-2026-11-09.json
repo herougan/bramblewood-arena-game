@@ -1,0 +1,66 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-09T14:16:13.676Z",
+ "finished": "2026-11-09T14:27:01.079Z",
+ "durationSec": 647.4,
+ "args": [
+  "--only-file",
+  "tools/bal33/dive_items_2026_11_09.json",
+  "--wait",
+  "600"
+ ],
+ "head": "3723f3f0",
+ "inputs": {
+  "context": "global",
+  "bramble": 15,
+  "fingerprint": "2b23dc6662d2",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "dive=2",
+   "dive=true"
+  ]
+ },
+ "counts": {
+  "items": 2,
+  "measured": 2,
+  "reused": 0,
+  "stopped early": 2,
+  "fights saved": 1600,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "dive=2",
+   "field": "worth",
+   "old": "0",
+   "new": "-0.0259 [-0.1069, 0] at 200 fights, price on carriers 0"
+  },
+  {
+   "id": "dive=true",
+   "field": "worth",
+   "old": "-",
+   "new": "-0.0259 [-0.1069, 0] at 200 fights, price on carriers -1"
+  }
+ ],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 2
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-09-2216.json"
+}

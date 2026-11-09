@@ -1,0 +1,86 @@
+{
+ "tool": "tools/pipeline/run.sh measure --only-file tools/bal33/dive_items_2026_11_09.json --fights 400 (tools/skill_canon_2026_10_31.js; summary docs/balance/pipeline/measure-2026-11-09-2228.json)",
+ "about": "2026-11-09 (BAL33, ENG32-2 c): Dive priced by measure. The canon carriers are vanilla cards, which cannot dive (diveEligible: Flying, Tide, Quick or Sprinter), so Dive alone reads 0 there (dive-measure-vanilla-inert-2026-11-09.json). Here each carrier gets Flying or Tide, with and without Dive, on the same paired fights; Dive worth = worth(base + Dive) - worth(base), in canon points.",
+ "formula": {
+  "plainDive": -1,
+  "dive2": 0,
+  "rule": "-1 + 0.5 N (canonical/skill-costs.json dive + diveBonus)"
+ },
+ "diveWorth": {
+  "flying": {
+   "plainDive": -3.97,
+   "dive2": -2.38
+  },
+  "tide": {
+   "plainDive": -2.66,
+   "dive2": -1.39
+  }
+ },
+ "mean": {
+  "plainDive": -3.32,
+  "dive2": -1.88
+ },
+ "rows": {
+  "flying": {
+   "worth": {
+    "m": 3.6478,
+    "lo": 2.8816,
+    "hi": 3.9668
+   },
+   "price": 3.4517,
+   "fights": 400,
+   "carriers": null
+  },
+  "flying+dive": {
+   "worth": {
+    "m": -0.3187,
+    "lo": -1.1625,
+    "hi": 0.3886
+   },
+   "price": 2.4517,
+   "fights": 400,
+   "carriers": null
+  },
+  "flying+dive=2": {
+   "worth": {
+    "m": 1.2715,
+    "lo": 0.324,
+    "hi": 2.2489
+   },
+   "price": 3.4517,
+   "fights": 400,
+   "carriers": null
+  },
+  "tide": {
+   "worth": {
+    "m": 0.4842,
+    "lo": 0.2619,
+    "hi": 0.8737
+   },
+   "price": 0.5,
+   "fights": 400,
+   "carriers": null
+  },
+  "tide+dive": {
+   "worth": {
+    "m": -2.1758,
+    "lo": -3.791,
+    "hi": -1.373
+   },
+   "price": -0.5,
+   "fights": 400,
+   "carriers": null
+  },
+  "tide+dive=2": {
+   "worth": {
+    "m": -0.9071,
+    "lo": -1.9173,
+    "hi": -0.3081
+   },
+   "price": 0.5,
+   "fights": 400,
+   "carriers": null
+  }
+ },
+ "caveat": "400 paired fights a variant; each worth has se 0.4-0.6, so the differences are about +-1 point (95%)."
+}

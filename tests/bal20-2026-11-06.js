@@ -25,7 +25,7 @@ const find = code => { for (const m of G.CONQUEST_MAPS) { if (m.reserved || m.to
 let kept = 0;
 for (const r of rows) {
   const l = lineOf(r.code), now = fields(l), f = find(r.code); ok(l && f, r.code + ': in arena_app.js'); if (!l || !f) continue;
-  if (/2026-11-09 \(BAL33\)/.test(l)) continue; // 2026-11-09 (BAL33): a Canopy fight BAL33 moved (BAL28-2 b) or retuned; tests/bal33-2026-11-09.js checks it
+  if (/2026-11-09 \(BAL33\)/.test(l)) { if (r.keep) kept++; continue; } // 2026-11-09 (BAL33): a Canopy fight BAL33 moved (BAL28-2 b) or retuned; tests/bal33-2026-11-09.js checks it
   if (!r.keep) { ok(JSON.stringify(now.deck) === JSON.stringify(r.was.deck) && now.leaders === r.was.leaders && now.shield === r.was.shield, r.code + ': reverted to the fight as it was'); continue; }
   kept++;
   ok(Math.abs(r.after200 - r.target) + 2 <= Math.abs(r.before200 - r.target), `${r.code}: 2+ points nearer the target (${r.before200} -> ${r.after200}, target ${r.target})`);
