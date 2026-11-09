@@ -252,7 +252,7 @@ ok(Tc.cardS({spoils:2}).S === Math.round(table.triggers.find(x=> x.id === 'onKil
 ['formation', 'isolation', 'anchor', 'punish', 'exploit', 'venomPulse', 'spoils'].forEach(k=> ok(!Tc.cardS({[k]: 1}).missing.length, `${k} has a cost (no missing entry)`));
 ['sentry', 'expose', 'siege'].forEach(id=> ok(/package SK1/.test((table.skills.find(x=> x.id === id) || {}).sk1Note || ''), `${id}: flagged for re-measuring (sk1Note)`));
 // ---- 16. No live card carries a new skill; the docs
-const ALL = JSON.parse(R('canonical/cards.json'));
+const ALL = JSON.parse(R('canonical/cards.json')).map(c=> require('../bramblewood-skillparams.js').expandDef(c)); // ENG39 (2026-11-09): kinds read as their old keys (Sociable is Formation {range: 2})
 // 2026-10-21 (BF5, the owner's 10-21 ruling on the ants: "give each a distinct second skill"): the Soldier Ant carries Formation 1, the one exception
 ok(!ALL.some(c=> c.id !== 'soldier-ant' && c.effects && ['formation', 'isolation', 'anchor', 'exploit', 'spoils', 'venomPulse', 'punish'].some(k=> c.effects[k] != null)), 'no card has a new skill yet (owner: not on existing cards; BF5: but the Soldier Ant\'s Formation)');
 const D = JSON.parse(R('docs/decisions.json')), md = R('docs/decisions.md'), sk = (D.rules || []).find(r=> /Package SK1/.test(r.intro || ''));

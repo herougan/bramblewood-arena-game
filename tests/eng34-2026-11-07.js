@@ -21,7 +21,7 @@ for(const m of app.matchAll(/PASSIVE_DEFS\.push\(\s*\{\s*key:\s*'([A-Za-z0-9]+)'
 void pd;
 ok(keys.size > 300, `found the skill list in arena_app.js (${keys.size})`);
 const SPL = require('../bramblewood-skillparams.js'); // ENG35 (2026-11-07): a part of a fused skill (almanacGrant ...) is delivered as its skill
-const missing = [...keys].filter(k=> !(k in D.delivery) && !(SPL.aliasOf(k) && SPL.aliasOf(k)[0] in D.delivery));
+const missing = [...keys].filter(k=> !(k in D.delivery) && !(SPL.aliasOf(k) && SPL.aliasOf(k)[0] in D.delivery) && !(SPL.rootOf(k) in D.delivery)); // ENG39 (2026-11-09): a kind is delivered as its family
 ok(!missing.length, `every skill has a delivery (${missing.slice(0, 12).join(', ')})`);
 ok(Object.values(D.delivery).every(v=> ['melee', 'ranged', 'none'].includes(v)), 'each delivery is melee, ranged or none');
 for(const [k, v] of [['attack', 'melee'], ['twinStrike', 'melee'], ['pounce', 'melee'], ['sweep', 'melee'], ['ambush', 'melee'], ['crabClaws', 'melee'], ['counterattack', 'melee'],

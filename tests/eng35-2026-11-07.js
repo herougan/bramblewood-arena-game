@@ -31,7 +31,7 @@ ok(twins.length >= 60, 'found the old twin keys (' + twins.length + ')');
 const unmapped = twins.filter(k=> !SPL.aliasOf(k));
 ok(!unmapped.length, 'every old twin key maps to a fused key (' + unmapped.join(', ') + ')');
 ok(SPL.aliasOf('almanacGrant')[0] === 'almanac' && SPL.aliasOf('kinglyGrant')[0] === 'king' && SPL.aliasOf('deliveryRes')[0] === 'delivery' && SPL.aliasOf('nocturnalHp').join() === 'nocturnal,hp', 'aliases: almanacGrant -> almanac, kinglyGrant -> king, deliveryRes -> delivery, nocturnalHp -> nocturnal.hp');
-const famBad = Object.keys(FAM).filter(k=> { const f = FAM[k]; return !f.params || (!Object.keys(f.params).length && f.number == null) || !f.default || !f.about || !('stat' in f) || !('ability' in f) || !('number' in f) || Object.keys(f.params).some(x=> !P.fields[x]); });
+const famBad = Object.keys(FAM).filter(k=> { const f = FAM[k]; return !f.params || (!Object.keys(f.params).length && f.number == null && !f.kinds /* ENG39 (2026-11-09): a family of kinds only */) || !f.default || !f.about || !('stat' in f) || !('ability' in f) || !('number' in f) || Object.keys(f.params).concat(Object.keys(f.kinds || {})).some(x=> !P.fields[x]); });
 ok(!famBad.length, 'every family has params, default, number, stat, ability, about, and every parameter name is described (' + famBad.join(', ') + ')');
 ok(Object.keys(Function('return ' + app.match(/const ZEIT_TWIN = (\{[^\n]*\});\s*\n/)[1].replace(/\/\*[^*]*\*\//g, ''))()).every(k=> FAM[k]), 'every editor twin (ZEIT_TWIN) is a family');
 ok(FAM.crepuscular && FAM.crepuscular.stat && FAM.crepuscular.ability && FAM.crepuscular.default && FAM.almanac.number === 4, 'Crepuscular has default, stat and ability versions; Almanac N defaults to 4');

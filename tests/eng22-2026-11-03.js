@@ -94,9 +94,9 @@ function series(id, res){ const {e, P} = mk(8); put(e, P, 1, id, 0); put(e, P, 2
  ['x-oldTrig', 'x-newTrig', 'lumber', 'an On Ready gain 1 Lumber (Wait 0) -> Delivery {Lumber x1}'], ['x-oldStone', 'x-newStone', 'stone', 'an On Ready gain 1 Stone -> Delivery {Stone x1}']].forEach(([a, b, res, m])=>{
   const s1 = series(a, res), s2 = series(b, res); ok(s1 === s2 && /[1-9]/.test(s2), `3: ${m}: the same ${res} each round (${s1} | ${s2})`); });
 ok(/[1-9].*,[2-9]/.test(series('x-pearlEv', 'pearl')), `3: Delivery {Pearl x1}, every turn pays Pearls (${series('x-pearlEv', 'pearl')})`);
-{ const old = cards.filter(c=> { const e = c.effects || {}; return e.stockpile || e.onReadyGold || (e.triggers || []).some(t=> t && t.on === 'onReady' && t.do === 'gain'); });
+{ const old = cards.filter(c=> { const e = byId[c.id].effects || {}; /* ENG39 (2026-11-09): kinds read as their old keys */ return e.stockpile || e.onReadyGold || (e.triggers || []).some(t=> t && t.on === 'onReady' && t.do === 'gain'); });
   ok(!old.length, `3: no card in canonical/cards.json carries Stockpile, onReadyGold or an On Ready gain trigger (${old.map(c=> c.id).join(', ')})`);
-  const every = cards.filter(c=> c.effects && c.effects.deliveryEvery).map(c=> c.id), once = cards.filter(c=> c.effects && c.effects.delivery).map(c=> c.id);
+  const every = cards.filter(c=> byId[c.id].effects && byId[c.id].effects.deliveryEvery).map(c=> c.id), once = cards.filter(c=> byId[c.id].effects && byId[c.id].effects.delivery).map(c=> c.id); // ENG39: Delivery every round is Delivery {every: round} in cards.json
   // 2026-11-06 (CONTENT12): the owner's live Driftwood Crab (On Attacked +1 Lumber, no Delivery) folded in: 12 once
   ok(every.length === 11 && once.length === 14 /* 2026-11-06 (ENG27, ENG25-6): + Giant Clam and Oyster Bank, Delivery {Pearl} */, `3: 11 cards deliver every turn (onReadyGold), 14 once (Stockpile, the triggers, the Pearl cards) (${every.length} / ${once.length})`);
   ok(byId['nutria-reedcutter'].effects.delivery === 2 && byId['dune-packrat'].effects.delivery === 3 && byId['muskrat-reedgatherer'].effects.delivery === 2 && byId['gravel-mole'].effects.deliveryRes === 'stone' && byId['ore-smelter-mole'].effects.deliveryRes === 'metal' && byId['irradiated-axolotl'].effects.deliveryRes === 'uranium', '3: amounts and resources kept'); }
@@ -130,7 +130,7 @@ const on = c=> String(c._en5On || '').split(',');
 { const {e, P} = mk(12); const r = put(e, P, 1, 'x-riled', 0); e.roundStart(P, 1, so, {}, []); e.debugDamage(P, so, r.uid, 4, {}, []); const before = on(r).includes('riled');
   e.roundStart(P, 2, so, {}, []); const mid = on(r).includes('riled'); e.roundStart(P, 3, so, {}, []);
   ok(!before && mid && !on(r).includes('riled'), `6: Riled 3: on the round after it took 4, off the round after that (${before}/${mid}/${on(r).includes('riled')})`); }
-ok(['tally', 'almanac', 'onslaught', 'riled'].every(k=> SK[k] && SK[k].theoretical && SK[k + 'Grant'] && SK[k + 'Grant'].value === 0) && cards.filter(c=> c.effects && ['tally', 'almanac', 'onslaught', 'riled'].some(k=> c.effects[k])).map(c=> c.id).sort().join(',') === 'bison-bulldozer,boreal-elk,cone-cutter-squirrel,raven-scout', '6: the four counters priced (theoretical), one carrier each since CONTENT12 (ENG22-1 a, 2026-11-06)');
+ok(['tally', 'almanac', 'onslaught', 'riled'].every(k=> SK[k] && SK[k].theoretical && SK[k + 'Grant'] && SK[k + 'Grant'].value === 0) && cards.filter(c=> byId[c.id].effects && ['tally', 'almanac', 'onslaught', 'riled'].some(k=> byId[c.id].effects[k]) /* ENG39: Tally is Carnage {who: foes} */).map(c=> c.id).sort().join(',') === 'bison-bulldozer,boreal-elk,cone-cutter-squirrel,raven-scout', '6: the four counters priced (theoretical), one carrier each since CONTENT12 (ENG22-1 a, 2026-11-06)');
 ok(/the card must 'see'/.test(JSON.stringify(SK.carnage)), '6: Carnage\'s price note says its uptime needs a re-measure');
 
 // ---- 7. UI17-3 ----------------------------------------------------------------------------------------------------------

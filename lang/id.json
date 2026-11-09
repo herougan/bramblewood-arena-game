@@ -4375,5 +4375,15 @@
  "Has the map's signature skill": "Punya skill khas peta",
  "The map's element": "Elemen peta",
  "No art yet": "Belum ada gambar",
- "Suggested: {rarity}": "Saran: {rarity}"
+ "Suggested: {rarity}": "Saran: {rarity}",
+ "{name} is Shocked for {n} rounds.": "{name} terkena Kejut selama {n} ronde.",
+ "Its hits put {n} Vulnerable tokens on the target: each later hit on it deals 1 more.": "Serangannya memasang {n} token Rentan pada target: tiap serangan berikutnya memberi 1 lebih.",
+ "On Hit: Vulnerable N. Each hit uses one token, shots too; Venom and Bleed ticks don't. Armor still counts.": "Saat Kena: Rentan N. Tiap serangan memakai satu token, tembakan juga; detak Racun dan Pendarahan tidak. Zirah tetap dihitung.",
+ "Vulnerable {n}: its next {n} hit{s} deal 1 more each.": "Rentan {n}: {n} serangan berikutnya padanya masing-masing memberi 1 lebih.",
+ "Put N Vulnerable tokens on a chosen target: each later hit on it deals 1 more and uses one.": "Pasang N token Rentan pada target pilihan: tiap serangan berikutnya memberi 1 lebih dan memakai satu.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Vulnerable, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "Hapus hingga N pelemahan fisik dari target pilihan (kartu ini secara bawaan): Pendarahan, Luka, Korosi, Rapuh, Terungkap, Rentan, Sengatan, Terhuyung, Zirah koyak, Gentar. Kosong: semua. Bukan Racun, Beku, atau Pingsan.",
+ "{att} puts {n} Vulnerable token{s} on {name}.": "{att} memasang {n} token Rentan pada {name}.",
+ "{name} is Vulnerable: +{b} damage ({n} left).": "{name} rentan: +{b} kerusakan (sisa {n}).",
+ "No enemy units left to strike {name}: its Vulnerable tokens fade.": "Tak ada unit musuh tersisa untuk menyerang {name}: token Rentannya memudar.",
+ "Version": "Versi"
 }

@@ -4374,5 +4374,15 @@
  "Has the map's signature skill": "A la compétence phare de la carte",
  "The map's element": "Élément de la carte",
  "No art yet": "Pas encore d'illustration",
- "Suggested: {rarity}": "Suggérée : {rarity}"
+ "Suggested: {rarity}": "Suggérée : {rarity}",
+ "{name} is Shocked for {n} rounds.": "{name} est sous le Choc pendant {n} manches.",
+ "Its hits put {n} Vulnerable tokens on the target: each later hit on it deals 1 more.": "Ses coups posent {n} jetons Vulnérable sur la cible : chaque coup suivant lui inflige 1 de plus.",
+ "On Hit: Vulnerable N. Each hit uses one token, shots too; Venom and Bleed ticks don't. Armor still counts.": "Au coup : Vulnérable N. Chaque coup use un jeton, les tirs aussi ; pas les tics de Venin ou de Saignement. L’Armure compte encore.",
+ "Vulnerable {n}: its next {n} hit{s} deal 1 more each.": "Vulnérable {n} : ses {n} prochains coups reçus infligent 1 de plus chacun.",
+ "Put N Vulnerable tokens on a chosen target: each later hit on it deals 1 more and uses one.": "Pose N jetons Vulnérable sur une cible choisie : chaque coup suivant lui inflige 1 de plus et en use un.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Vulnerable, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "Retire jusqu’à N affaiblissements physiques d’une cible choisie (cette carte par défaut) : Saignement, Cicatrice, Corrosion, Fragile, Exposé, Vulnérable, Choc, Chancelant, Armure déchirée, Intimidation. Vide : tous. Pas le Venin, le Gel ni l’Étourdissement.",
+ "{att} puts {n} Vulnerable token{s} on {name}.": "{att} pose {n} jeton(s) Vulnérable sur {name}.",
+ "{name} is Vulnerable: +{b} damage ({n} left).": "{name} est vulnérable : +{b} dégâts ({n} restant(s)).",
+ "No enemy units left to strike {name}: its Vulnerable tokens fade.": "Plus aucune unité ennemie pour frapper {name} : ses jetons Vulnérable s’effacent.",
+ "Version": "Version"
 }

@@ -6900,7 +6900,7 @@ const LIVE_STATUS_ROUNDS = new Set(['shocked', 'staggered', 'frozen', 'asleep', 
 // (The Exposed row keeps its number, now the rounds left: ui.ls-exposed says "no hiding for N more rounds".)
 { const ex = LIVE_STATUS_ROWS.findIndex(r=> r[0] === 'exposed');
   LIVE_STATUS_ROWS.splice(ex + 1, 0, ['exploit', 'exploit', TX('ui.skn-exploit'), n=> TX('ui.ls-exploit', {n, s: n === 1 ? '' : 's'}), true]); }
-STATUS_KEYWORDS.push({k:'exploit', re:/\b(exploit(?:ed|s)?)\b/gi, cs:true, name:TX('ui.skn-exploit'), c:'#c0563b', text:TX('ui.st-exploit')});
+STATUS_KEYWORDS.push({k:'exploit', re:/\b(vulnerable|exploit(?:ed|s)?)\b/gi, cs:true, name:TX('ui.skn-exploit'), c:'#c0563b', text:TX('ui.st-exploit')}); // ENG39 (2026-11-09, decision DES2-3 a): its tokens are shown as Vulnerable
 Object.assign(SKILL_TEXT, {
   sentry: v=> TX('ui.sk-sentry', {n: numOr(v, SK1_DEFAULTS.sentry)}),
   expose: v=> TX('ui.sk-expose', {n: numOr(v, SK1_DEFAULTS.expose)}),
@@ -12132,6 +12132,7 @@ function renderEditorInner(){
     c._skillRows[i] = edit1NewRow(c, sel.value, c._skillRows[i]); // EDIT1: a row keeps its level when its skill changes
     renderEditor();
   }));
+  overlay.querySelectorAll('#skillRows [data-sk="eng39bramble"], #evergreenRows [data-sk="eng39bramble"]').forEach(b=> b.addEventListener('change', ()=>{ const r = c._skillRows[Number(b.getAttribute('data-i'))]; if(r) r.bramble = b.checked; })); // ENG39 (ENG35-4): the Bramble box survives a redraw
   // Live "Resist Cold" readout (2026-09-16): updates in place on every change of a select-kind
   // row's value, no full re-render needed — cheap DOM text swap.
   overlay.querySelectorAll('#skillRows select[data-sk="val"], #evergreenRows select[data-sk="val"]').forEach(sel=> sel.addEventListener('change', ()=>{
@@ -12302,6 +12303,27 @@ const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', tide
 // The kinds whose row is a context skill (braces): no "+ at a later level" button on them (CX2, owner 17:42: "+ skill inside each phase,
 // plus the normal add-skill, already cover it").
 const CONTEXT_ROW_KINDS = new Set(['grant', 'grant2', 'transform', 'ritual']);
+// ENG39 (2026-11-09, owner decision DES2-3 a: "Merge all 15 groups as parameters (ENG35)"): a family's kinds (canonical/skill-params.json: Weaken is
+// Daunt {lasts: lasting}, Requiem is Carnage {who: any} ...) are not separate "+ Add Skill" entries; a family's row (or a kind's) has a Version field
+// that switches between the family and its kinds, each keeping its own rule and price. The row still saves the old key (it reads everywhere).
+function eng39KindOf(k){ const L = typeof eng35Lib === 'function' ? eng35Lib() : null; return L && L.kindOf ? L.kindOf(k) : null; }
+function eng39KindsOf(k){ const L = typeof eng35Lib === 'function' ? eng35Lib() : null; return L && L.kindsOf ? L.kindsOf(k) : []; }
+function eng39KindSelectHTML(row, i){
+  const kd = eng39KindOf(row.key), root = kd ? kd[0] : row.key, ks = eng39KindsOf(root), rootDef = SKILL_DEFS.find(x=> x.key === root); if(!ks.length || !rootDef) return '';
+  const opts = [{key: root, text: rootDef.label}].concat(ks.map(k=>{ const d = SKILL_DEFS.find(x=> x.key === k.key); return d && (!d.hidden || k.key === row.key) ? {key: k.key, text: d.label + ' (' + Object.keys(k.match).map(p=> p + ' ' + k.match[p]).join(' · ') + ')'} : null; }).filter(Boolean));
+  if(opts.length < 2) return '';
+  return `<label class="sk-twin">${escapeHtml(TX('ui.eng39-version'))} <select data-sk="twin" data-i="${i}" aria-label="${escapeAttr(TX('ui.eng39-version'))}">${opts.map(o=> `<option value="${escapeAttr(o.key)}" ${row.key === o.key ? 'selected' : ''}>${escapeHtml(o.text)}</option>`).join('')}</select></label>`;
+}
+// ENG39 (owner 2026-11-09 23:05 on ENG35-4: "Bramble can be a parameter (same 'level' as fire/poison etc)"): a shot row (Arrow, Fire Arrow, Fire Bolt:
+// the shots with a – bramble rider, EN6_BRAMBLE_APP) shows a Bramble box; ticked, the shot aims at the enemy bramble ("arrow": {"v": 2, "bramble": true},
+// beside its type). Saved as the shot's bramble part (arrowBramble ...), as before; unticked removes it. Balloon Archer keeps it.
+function eng39BrambleKeyOf(key){ return Object.keys(EN6_BRAMBLE_APP).find(k=> EN6_BRAMBLE_APP[k].base === key) || null; }
+function eng39BrambleBoxHTML(row, i){
+  const bk = eng39BrambleKeyOf(row.key); if(!bk) return '';
+  const src = row.lv != null ? (((typeof editingCard !== 'undefined' && editingCard && editingCard.levelSkills) || {})[row.lv] || {}) : ((typeof editingCard !== 'undefined' && editingCard && editingCard.effects) || {});
+  const on = row.bramble != null ? !!row.bramble : !!src[bk];
+  return `<label class="sk-twin"><input type="checkbox" data-sk="eng39bramble" data-i="${i}" ${on ? 'checked' : ''} aria-label="${escapeAttr(TX('ui.eng39-bramble'))}"> ${escapeHtml(TX('ui.eng39-bramble'))}</label>`;
+}
 function skillRowHTML(row,i,categoryFilter,mechLine){
   const s = SKILL_DEFS.find(x=>x.key===row.key) || SKILL_DEFS[0];
   // categoryFilter (2026-09-27, "On Death [Spawn] is not a passive ability... clean up the
@@ -12323,7 +12345,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   const twinOf = ZEIT_TWIN[row.key] || ZEIT_TWIN_BACK[row.key];
   const keyPickerPool = (categoryFilter==='evergreen' ? SKILL_DEFS.filter(x=>x.category==='evergreen')
     : categoryFilter==='passive' ? SKILL_DEFS.filter(x=>x.category!=='evergreen')
-    : SKILL_DEFS).filter(gateOk).filter(x=> x.key === row.key || !(ZEIT_TWIN_BACK[x.key] || (twinOf && x.key === twinOf)));
+    : SKILL_DEFS).filter(gateOk).filter(x=> x.key === row.key || !(ZEIT_TWIN_BACK[x.key] || (twinOf && x.key === twinOf))).filter(x=> x.key === row.key || !eng39KindOf(x.key)); // ENG39: a kind is picked in its family's Version field
   let valueHtml = '';
   if(s.kind==='number' && s.blankOk) valueHtml = `<input type="number" min="1" class="w-70" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder || '')}" title="${escapeAttr(s.placeholder || '')}" aria-label="${escapeAttr(s.placeholder || '')}" value="${typeof row.value === 'number' && row.value > 0 ? row.value : ''}">`; // ENG35 (2026-11-07): an optional number (Leech: blank = the damage dealt)
   else if(s.kind==='number') valueHtml = `<input type="number" min="0"${s.step ? ` step="${s.step}"` : ''} class="w-70" data-sk="val" data-i="${i}" value="${(row.value === true || row.value == null || row.value === '') ? (s.defaultValue != null ? s.defaultValue : 1) : row.value}">`; // EN5 (2026-10-24): a plain skill (true) shows its default (Hemorrhage 0); was row.value||1
@@ -12406,7 +12428,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   return `<div class="skill-row" title="${escapeAttr(s.desc(descArg, row.n))}">
     <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${escapeHtml(SKILL_ICON[x.key] || EDIT1_OPTION_ICON[x.key] || '•')} ${x.label}</option>`).join('')}</select>
     ${twinOf ? (()=>{ const plain = ZEIT_TWIN[row.key] ? row.key : twinOf, adv = ZEIT_TWIN[plain];
-      return `<label class="sk-twin">Gives <select data-sk="twin" data-i="${i}" aria-label="What it gives"><option value="${plain}" ${row.key===plain?'selected':''}>${plain === 'tide' ? 'Tide bonus' : plain === 'king' ? escapeHtml(TX('ui.kingly-default-opt')) /* TR */ : 'Stat bonus'}</option><option value="${adv}" ${row.key===adv?'selected':''}>Skills</option></select></label>`; })() : ''}
+      return `<label class="sk-twin">Gives <select data-sk="twin" data-i="${i}" aria-label="What it gives"><option value="${plain}" ${row.key===plain?'selected':''}>${plain === 'tide' ? 'Tide bonus' : plain === 'king' ? escapeHtml(TX('ui.kingly-default-opt')) /* TR */ : 'Stat bonus'}</option><option value="${adv}" ${row.key===adv?'selected':''}>Skills</option></select></label>`; })() : ''}${eng39KindSelectHTML(row, i)}${eng39BrambleBoxHTML(row, i)}
     ${oneOffTagHTML(s)}${valueHtml}
     ${liveReadout}
     ${'' /* 2026-10-13 (user: "In the future, i want to be able to add skills at different levels. To not clump up the UI, just have a + button per row"): a row can arrive at a level; ＋ adds a row for the same skill one level up */}
@@ -12781,7 +12803,7 @@ function readEditorFormIntoCard(){
   // abilities section (#evergreenRows, split out per "On Death: Passive is not a passive
   // ability"). Missing #evergreenRows here would silently drop On Death: Spawn/Gash/Render/
   // Earthquake/Inherent Darkness on every save once they moved to their own container.
-  const levelFx = {};
+  const levelFx = {}, eng39BrambleSet = new Set(); // ENG39: the bramble parts a row's Bramble box decided (the keep-step below leaves them alone)
   document.querySelectorAll('#skillRows .skill-row, #evergreenRows .skill-row').forEach(row=>{
     const key = row.querySelector('[data-sk="key"]').value;
     const sdef = SKILL_DEFS.find(x=>x.key===key);
@@ -12801,6 +12823,7 @@ function readEditorFormIntoCard(){
     } else {
       sdef.apply(fx, true);
     }
+    { const bb = row.querySelector('[data-sk="eng39bramble"]'), bk = bb && eng39BrambleKeyOf(key); if(bk){ eng39BrambleSet.add(bk); if(bb.checked) fx[bk] = true; else delete fx[bk]; } } // ENG39 (ENG35-4): the Bramble box
   });
   const triggers = [];
   // FIN2-b (2026-10-26, owner: "The card edit - doesn't work anymore"): a trigger keeps the fields the row has no control for
@@ -12825,7 +12848,7 @@ function readEditorFormIntoCard(){
   // the form to edit or remove it, so a Save keeps it as it was (it used to vanish from the card).
   { const formKeys = new Set(['triggers', 'resist', 'weakness', 'immune', 'bounty', 'bountyStone', 'bountyMetal', 'onReadyDamage']);
     const params = (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.PARAMS) || [];
-    Object.keys(c.effects || {}).forEach(k=>{ if(k in newEffects || formKeys.has(k)) return; const v = c.effects[k];
+    Object.keys(c.effects || {}).forEach(k=>{ if(k in newEffects || formKeys.has(k) || eng39BrambleSet.has(k)) return; const v = c.effects[k];
       if(SKILL_DEFS.some(s=> s.numberKey === k)) return; // 2026-11-04 (UI19): a row's own N (swarmN, defianceN ...) is read from its field; an old value must not come back when the row says 1 or the skill is gone
       if(params.includes(k) && !Object.keys(newEffects).some(b=> b !== k && k.startsWith(b))) return; // a parameter (defianceN, hunterVs ...) only beside its skill
       const read = SKILL_DEFS.some(s=>{ try{ return (s.get ? s.get({[k]: v}) : ({[k]: v})[s.key]) !== undefined; }catch(e){ return s.key === k; } });
@@ -65611,6 +65634,9 @@ SKILL_DEFS.forEach(d=>{ if(!d || !/Grant$/.test(d.key)) return; const plain = d.
 // reads "Arrow 2 – bramble"). Which cards should drop theirs: decision ENG35-4.
 const ENG35_RIDER_KEYS = new Set(Object.keys(EN6_BRAMBLE_APP).concat(Object.keys(EN7_TIP_APP)));
 [PASSIVE_DEFS, SKILL_DEFS].forEach(list=> list.forEach(d=>{ if(d && ENG35_RIDER_KEYS.has(d.key)){ d.hidden = true; d.eng35Rider = true; d.get = ()=> undefined; } }));
+// ENG39 (2026-11-09, decision DES2-3 a; docs/design/skill-plan-maps-0-20-2026-11-08.md section 3: "Retire Swift (on no card)"): Swift is Speed {kind: swift};
+// on no card, so it leaves "+ Add Skill" and the Version field (a card or saved deck that has it still reads it). Fights and prices unchanged.
+[PASSIVE_DEFS, SKILL_DEFS].forEach(list=> list.forEach(d=>{ if(d && d.key === 'swift') d.hidden = true; }));
 // ENG35 (2026-11-07, owner 23:30: "Leech should be able to accept a parameter. Default leech = how much damage you deal. Otherwise Leech N = heal N on hit."):
 // Leech (effects.sap) takes an optional number. true (the editor's blank field) heals the damage each hit deals, as before; N heals N on each hit that lands,
 // up to its max Health (engine: sapHealOf). The editor shows a number field, blank by default.

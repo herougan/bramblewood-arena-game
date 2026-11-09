@@ -1504,7 +1504,10 @@
     "attack": 0,
     "health": 36,
     "effects": {
-      "deliveryEvery": 1
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      }
     },
     "flavor": "Roots older than the castle it now leans protectively over, and just as slow to give anything up.",
     "locked": true,
@@ -2018,7 +2021,10 @@
     "effects": {
       "siege": 3,
       "nocturnal": true,
-      "breach": 2
+      "puncture": {
+        "v": 2,
+        "kind": "breach"
+      }
     },
     "flavor": "A shell like a shield wall, lowered and driven straight through the middle of one.",
     "locked": true,
@@ -2079,7 +2085,10 @@
     "health": 5,
     "effects": {
       "flying": true,
-      "tally": 3
+      "carnage": {
+        "v": 3,
+        "who": "foes"
+      }
     },
     "flavor": "Circles once, marks a target, and dives before anyone finishes reading the omen.",
     "locked": true,
@@ -2111,7 +2120,10 @@
     "health": 11,
     "flavor": "Never fights alone if it can help it. Fights anyway if it can\u2019t.",
     "effects": {
-      "muster": 6
+      "throng": {
+        "v": 6,
+        "who": "yours"
+      }
     },
     "locked": true,
     "archetypes": [
@@ -2313,7 +2325,10 @@
     "attack": 4,
     "health": 13,
     "effects": {
-      "deliveryEvery": 1,
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      },
       "relict": true
     },
     "flavor": "A living fossil, quietly hoarding pearls since the sea was young.",
@@ -2544,7 +2559,10 @@
     "health": 15,
     "effects": {
       "siege": 2,
-      "breach": 1
+      "puncture": {
+        "v": 1,
+        "kind": "breach"
+      }
     },
     "flavor": "Tunnels under the wall instead of over it. The wall rarely notices until it's too late to matter.",
     "locked": true,
@@ -2830,7 +2848,10 @@
     "attack": 2,
     "health": 30,
     "effects": {
-      "deliveryEvery": 1
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      }
     },
     "flavor": "The oldest set of antlers in the Bramblewood. Even the raccoons pay it tribute.",
     "locked": true,
@@ -3022,7 +3043,10 @@
     "health": 12,
     "effects": {
       "timbered": true,
-      "deliveryEvery": 1
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      }
     },
     "flavor": "Never stops building, never stops taxing everyone downstream for the privilege.",
     "locked": true,
@@ -3411,7 +3435,10 @@
     "attack": 3,
     "health": 13,
     "effects": {
-      "deliveryEvery": 1
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      }
     },
     "flavor": "Crowned by acclamation of every mouse in the granary. The granary has a lot of mice.",
     "locked": true,
@@ -5168,7 +5195,10 @@
     ],
     "effects": {
       "tide": true,
-      "deliveryEvery": 1,
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      },
       "meld": {
         "armor": 1
       }
@@ -5541,7 +5571,9 @@
     ],
     "effects": {
       "flying": true,
-      "darksight": true
+      "keenSense": {
+        "sees": "dark"
+      }
     },
     "flavor": "One bat is a nuisance. This is never just one bat.",
     "locked": true,
@@ -5574,7 +5606,9 @@
     "effects": {
       "evasive": true,
       "tide": true,
-      "darksight": true
+      "keenSense": {
+        "sees": "dark"
+      }
     },
     "flavor": "Cannot see the attack coming. Dodges it anyway, out of habit.",
     "locked": true,
@@ -5753,7 +5787,10 @@
     "numericId": 163,
     "uuid": "e638ada0-5a44-48fa-85a0-5170c03f67f8",
     "effects": {
-      "fireArrow": 1
+      "arrow": {
+        "v": 1,
+        "type": "fire"
+      }
     },
     "rarity": "veryrare",
     "species": [
@@ -5891,7 +5928,10 @@
     ],
     "dmgType": "heat",
     "effects": {
-      "fireArrow": 2
+      "arrow": {
+        "v": 2,
+        "type": "fire"
+      }
     },
     "flavor": "Too young to fly. Old enough to already be a problem.",
     "locked": true,
@@ -5912,7 +5952,10 @@
     "creatorNote": "2026-10-19 (card pass, package CB): source: 20-B-4 The Caldera Wyrm (worldboss, Volcano Lair) (it fights there; 2 fight(s) field it). 2026-10-19 retune (v5 L/10): was 6/13 (well under: 2A+H+S 53.7% -> 67.6% of N 50.32). 2026-10-19 halve (BF5): was 8/16. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/7. 2026-10-21 human pass I (owner's hub skill costs): 6/11 -> 4/6. 2026-10-22 package DV re-fit (rarity common -> heroic; tools/refit_pass_2026_10_21.js): 4/6 -> 6/10. 2026-10-23 (package EN, owner EV-6: \"They will be the only NOT-evomax cards with Fodder. Treat all baby-like cards like this. Oh, and they only gain this at lvl1.\"): Stem (Fodder) from Level 1 (levelSkills 1). 2026-10-23 BF11 (cap 2 = 2x(N/3)^2, Thorns 1.25, Bulwark 6): 6/10 -> 6/11. 2026-11-03 (package ENG22, owner DESIGN1-2: \"For starter cards that start at level 0, their abilities first come out at level 1.\"): base Level 0, so fireArrow arrives at Level 1 (levelSkills \"1\"); its Level 0 copy is vanilla.",
     "levelSkills": {
       "1": {
-        "fireArrow": 2,
+        "arrow": {
+          "v": 2,
+          "type": "fire"
+        },
         "hatchling": true
       }
     },
@@ -6574,7 +6617,10 @@
           "who": "self"
         }
       ],
-      "beset": 6
+      "throng": {
+        "v": 6,
+        "who": "theirs"
+      }
     },
     "locked": true,
     "flavor": "Bloodlust 2: it does not slow down once it starts swinging. It speeds up.",
@@ -7248,7 +7294,10 @@
       "Chipmunk"
     ],
     "effects": {
-      "deliveryEvery": 1
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      }
     },
     "flavor": "Every cheek pouch is, technically, a savings account.",
     "dmgType": "physical",
@@ -8054,7 +8103,10 @@
     "attack": 2,
     "health": 17,
     "effects": {
-      "scar": 2,
+      "exploit": {
+        "v": 2,
+        "lasts": "lasting"
+      },
       "immolation": 1
     },
     "dmgType": "heat",
@@ -8162,7 +8214,10 @@
     "health": 12,
     "effects": {
       "pierce": 5,
-      "fireArrow": 2
+      "arrow": {
+        "v": 2,
+        "type": "fire"
+      }
     },
     "dmgType": "heat",
     "archetypes": [
@@ -8731,7 +8786,10 @@
           "sub": "adjacent"
         }
       ],
-      "breach": 2
+      "puncture": {
+        "v": 2,
+        "kind": "breach"
+      }
     },
     "flavor": "Carries Armor, Pierce, Flying, and an On Attack poison proc all at once, on purpose \u2014 for testing how several mechanics stack together, not for balance.",
     "locked": true,
@@ -11818,7 +11876,10 @@
     "attack": 3,
     "health": 8,
     "effects": {
-      "breach": 2
+      "puncture": {
+        "v": 2,
+        "kind": "breach"
+      }
     },
     "flavor": "Carries only Pierce -- punches flat bonus damage through to the enemy bramble on every melee hit -- and nothing else, for testing this one mechanic in isolation. Not for balance.",
     "locked": true,
@@ -11872,7 +11933,10 @@
     "attack": 3,
     "health": 8,
     "effects": {
-      "berserk": 1
+      "harbinger": {
+        "v": 1,
+        "who": "ally"
+      }
     },
     "flavor": "Carries only Berserk -- gains permanent Attack whenever any ally dies -- and nothing else, for testing this one mechanic in isolation. Not for balance.",
     "locked": true,
@@ -12589,7 +12653,10 @@
     ],
     "effects": {
       "flying": true,
-      "fireArrow": 4,
+      "arrow": {
+        "v": 4,
+        "type": "fire"
+      },
       "supreme": true
     },
     "flavor": "It doesn't burn the field. It just breathes, and the field forgets it was ever green.",
@@ -12815,7 +12882,9 @@
     "effects": {
       "flying": true,
       "corrode": 3,
-      "darksight": true,
+      "keenSense": {
+        "sees": "dark"
+      },
       "supreme": true
     },
     "flavor": "Where it nests, even the stone rots.",
@@ -15105,7 +15174,10 @@
     "cost": 0,
     "wait": 0,
     "effects": {
-      "deliveryEvery": 1
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      }
     },
     "dmgType": "physical",
     "resist": [],
@@ -16202,7 +16274,10 @@
     "effects": {
       "bleed": 2,
       "nocturnal": true,
-      "dirge": 3,
+      "carnage": {
+        "v": 3,
+        "who": "yours"
+      },
       "leader": true
     },
     "dmgType": "physical",
@@ -16711,7 +16786,10 @@
     "health": 4,
     "effects": {
       "flying": true,
-      "deliveryEvery": 1
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      }
     },
     "dmgType": "physical",
     "resist": [],
@@ -17101,7 +17179,10 @@
     "health": 21,
     "effects": {
       "regen": 3,
-      "deliveryEvery": 1
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      }
     },
     "dmgType": "physical",
     "resist": [],
@@ -18057,7 +18138,9 @@
     "rarity": "rare",
     "flavor": "Every log in your pile is a cousin. It takes that personally.",
     "effects": {
-      "timber": true
+      "hoard": {
+        "kind": "timber"
+      }
     },
     "wait": 2,
     "cost": 2,
@@ -18093,7 +18176,9 @@
     "flavor": "It is built from what you dug up, and it remembers every pick.",
     "effects": {
       "rockSolid": true,
-      "darksight": true
+      "keenSense": {
+        "sees": "dark"
+      }
     },
     "wait": 2,
     "cost": 1,
@@ -18751,7 +18836,10 @@
     ],
     "effects": {
       "undead": true,
-      "requiem": 5
+      "carnage": {
+        "v": 5,
+        "who": "any"
+      }
     },
     "source": {
       "kind": "pack",
@@ -18787,7 +18875,10 @@
     ],
     "effects": {
       "evasive": true,
-      "fireArrow": 2
+      "arrow": {
+        "v": 2,
+        "type": "fire"
+      }
     },
     "source": {
       "kind": "map",
@@ -18819,7 +18910,9 @@
     "dmgType": "physical",
     "effects": {
       "castDarkness": true,
-      "darksight": true
+      "keenSense": {
+        "sees": "dark"
+      }
     },
     "species": [
       "Undead"
@@ -19253,8 +19346,9 @@
     "animal": "vulture",
     "effects": {
       "flying": true,
-      "archer": {
+      "arrow": {
         "v": 3,
+        "swings": "never",
         "style": "drop"
       }
     },
@@ -20354,10 +20448,13 @@
     ],
     "animal": "meerkat",
     "effects": {
-      "sociable": [
-        1,
-        1
-      ]
+      "formation": {
+        "v": [
+          1,
+          1
+        ],
+        "range": 2
+      }
     },
     "rarity": "common",
     "source": {
@@ -21111,7 +21208,9 @@
       "Savanna"
     ],
     "effects": {
-      "darksight": true
+      "keenSense": {
+        "sees": "dark"
+      }
     },
     "flavor": "Digs the tunnel, then digs another tunnel in case the first one gets ideas.",
     "dmgType": "physical",
@@ -24367,7 +24466,10 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "nursing": 2
+      "healing": {
+        "v": 2,
+        "who": "weakest"
+      }
     },
     "species": [
       "Bat"
@@ -24664,7 +24766,10 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "breach": 2
+      "puncture": {
+        "v": 2,
+        "kind": "breach"
+      }
     },
     "species": [
       "Fish"
@@ -24707,7 +24812,10 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "berserk": 2
+      "harbinger": {
+        "v": 2,
+        "who": "ally"
+      }
     },
     "species": [
       "Mammal"
@@ -24918,7 +25026,10 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "iceArrow": 2
+      "arrow": {
+        "v": 2,
+        "type": "ice"
+      }
     },
     "species": [
       "Bird"
@@ -25047,7 +25158,11 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "fireBolt": 2
+      "arrow": {
+        "v": 2,
+        "type": "fire",
+        "form": "bolt"
+      }
     },
     "species": [
       "Insect"
@@ -25090,7 +25205,11 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "acidBolt": 1
+      "arrow": {
+        "v": 1,
+        "type": "acid",
+        "form": "bolt"
+      }
     },
     "species": [
       "Fish"
@@ -25134,7 +25253,11 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "poisonBolt": 2
+      "arrow": {
+        "v": 2,
+        "type": "poison",
+        "form": "bolt"
+      }
     },
     "species": [
       "Arachnid"
@@ -25177,7 +25300,11 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "iceBolt": 2
+      "arrow": {
+        "v": 2,
+        "type": "ice",
+        "form": "bolt"
+      }
     },
     "species": [
       "Bird"
@@ -25221,7 +25348,11 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "shockBolt": 2
+      "arrow": {
+        "v": 2,
+        "type": "shock",
+        "form": "bolt"
+      }
     },
     "species": [
       "Fish"
@@ -25874,7 +26005,10 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "weaken": 1
+      "daunt": {
+        "v": 1,
+        "lasts": "lasting"
+      }
     },
     "species": [
       "Fish"
@@ -26005,7 +26139,10 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "tangle": 1
+      "strangle": {
+        "v": 1,
+        "hold": "bind"
+      }
     },
     "species": [
       "Bird"
@@ -27051,7 +27188,10 @@
     ],
     "dmgType": "physical",
     "effects": {
-      "fireArrow": 1,
+      "arrow": {
+        "v": 1,
+        "type": "fire"
+      },
       "iceArrow": 1
     },
     "species": [
@@ -28526,7 +28666,10 @@
     "dmgType": "physical",
     "effects": {
       "trap": 6,
-      "tangle": 1
+      "strangle": {
+        "v": 1,
+        "hold": "bind"
+      }
     },
     "species": [
       "Insect"
@@ -30199,7 +30342,10 @@
       "Boar"
     ],
     "effects": {
-      "deliveryEvery": 1
+      "delivery": {
+        "v": 1,
+        "every": "round"
+      }
     },
     "flavor": "Nose to the leaf litter, it finds the treasure you were standing on.",
     "dmgType": "physical",
@@ -32146,7 +32292,11 @@
     ],
     "effects": {
       "chilli": 2,
-      "fireBolt": 2
+      "arrow": {
+        "v": 2,
+        "type": "fire",
+        "form": "bolt"
+      }
     },
     "flavor": "Sniff it and your eyes water. Feed it a pepper and the whole row's eyes water too.",
     "dmgType": "physical",
@@ -34163,7 +34313,10 @@
     ],
     "animal": "mole",
     "effects": {
-      "prospector": 1
+      "felling": {
+        "v": 1,
+        "res": "metal"
+      }
     },
     "flavor": "Wherever it wins a tunnel fight, it keeps digging. There is always a glint further down.",
     "numericId": 9159,
@@ -36234,7 +36387,11 @@
     "resist": [],
     "tags": [],
     "effects": {
-      "shockBolt": 1
+      "arrow": {
+        "v": 1,
+        "type": "shock",
+        "form": "bolt"
+      }
     },
     "flavor": "One snap makes a bubble hotter than a forge. It pops two fish away.",
     "numericId": 9211,
@@ -36395,7 +36552,10 @@
     "resist": [],
     "tags": [],
     "effects": {
-      "iceArrow": 1,
+      "arrow": {
+        "v": 1,
+        "type": "ice"
+      },
       "evasive": true
     },
     "flavor": "Its shafts are icicles snapped from the eaves. They melt away; the cold stays in.",
@@ -36561,7 +36721,11 @@
     "resist": [],
     "tags": [],
     "effects": {
-      "poisonBolt": 1
+      "arrow": {
+        "v": 1,
+        "type": "poison",
+        "form": "bolt"
+      }
     },
     "flavor": "It lies coiled on a warm stone and spits at anything that steps too close. It is not sorry.",
     "creatorNote": "2026-11-08 (package CONTENT18, owner 10:52 DES1-3: \"Don't do the shooters onto maps yet. Make some shooter cards for me, maybe at least 1 for each element\"): the poison shooter (Venom Spit 1; a ranged delivery, canonical/skill-delivery.json). On no map list; suggested home Gatorback Swamp (a suggestion only). Simple common animal (owner 10:52 #15). Priced with the budget (tools/skill_costs.js budget, Level 1, common, map term Map 5): S 3.53  2A+H+S 16.53 / N 17.88: 2/7. Art: the emoji until drawn; prompt in docs/art-style-prompts.md (CONTENT18).",

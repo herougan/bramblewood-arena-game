@@ -4373,5 +4373,15 @@
  "Has the map's signature skill": "Hat die Leitfähigkeit der Karte",
  "The map's element": "Element der Karte",
  "No art yet": "Noch kein Bild",
- "Suggested: {rarity}": "Vorschlag: {rarity}"
+ "Suggested: {rarity}": "Vorschlag: {rarity}",
+ "{name} is Shocked for {n} rounds.": "{name} steht {n} Runden unter Schock.",
+ "Its hits put {n} Vulnerable tokens on the target: each later hit on it deals 1 more.": "Ihre Treffer legen {n} Verwundbar-Marken auf das Ziel: Jeder spätere Treffer macht 1 mehr.",
+ "On Hit: Vulnerable N. Each hit uses one token, shots too; Venom and Bleed ticks don't. Armor still counts.": "Bei Treffer: Verwundbar N. Jeder Treffer verbraucht eine Marke, Schüsse auch; Gift- und Blutungsticks nicht. Rüstung zählt weiter.",
+ "Vulnerable {n}: its next {n} hit{s} deal 1 more each.": "Verwundbar {n}: die nächsten {n} Treffer auf sie machen je 1 mehr.",
+ "Put N Vulnerable tokens on a chosen target: each later hit on it deals 1 more and uses one.": "Lege N Verwundbar-Marken auf ein gewähltes Ziel: jeder spätere Treffer macht 1 mehr und verbraucht eine.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Vulnerable, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "Entfernt bis zu N körperliche Schwächungen von einem gewählten Ziel (standardmäßig diese Karte): Blutung, Narbe, Korrosion, Spröde, Entblößt, Verwundbar, Schock, Taumeln, zerfetzte Rüstung, Einschüchterung. Leer: alle. Nicht Gift, Frost oder Betäubung.",
+ "{att} puts {n} Vulnerable token{s} on {name}.": "{att} legt {n} Verwundbar-Marke(n) auf {name}.",
+ "{name} is Vulnerable: +{b} damage ({n} left).": "{name} ist verwundbar: +{b} Schaden ({n} übrig).",
+ "No enemy units left to strike {name}: its Vulnerable tokens fade.": "Keine feindliche Einheit mehr, die {name} trifft: ihre Verwundbar-Marken verblassen.",
+ "Version": "Version"
 }

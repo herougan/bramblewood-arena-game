@@ -4374,5 +4374,15 @@
  "Has the map's signature skill": "マップの代表スキルを持つ",
  "The map's element": "マップの属性",
  "No art yet": "イラスト未作成",
- "Suggested: {rarity}": "推奨：{rarity}"
+ "Suggested: {rarity}": "推奨：{rarity}",
+ "{name} is Shocked for {n} rounds.": "{name}は{n}ラウンドショック状態になる。",
+ "Its hits put {n} Vulnerable tokens on the target: each later hit on it deals 1 more.": "その攻撃は対象に脆弱化トークンを{n}個置く：以後の命中ごとに1多く与える。",
+ "On Hit: Vulnerable N. Each hit uses one token, shots too; Venom and Bleed ticks don't. Armor still counts.": "命中時：脆弱化N。命中（射撃も）ごとに1個消費。毒と出血の継続ダメージは消費しない。装甲は有効。",
+ "Vulnerable {n}: its next {n} hit{s} deal 1 more each.": "脆弱化{n}：次の{n}回の命中はそれぞれ1多い。",
+ "Put N Vulnerable tokens on a chosen target: each later hit on it deals 1 more and uses one.": "選んだ対象に脆弱化トークンをN個置く：以後の命中ごとに1多く与え、1個使う。",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Vulnerable, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "選んだ対象（既定はこのカード）の物理的な弱体を最大N個消す：出血、傷跡、腐食、もろい、暴露、脆弱化、感電、よろめき、裂けた装甲、威圧。空欄：すべて。毒・凍結・スタンは除く。",
+ "{att} puts {n} Vulnerable token{s} on {name}.": "{att}が{name}に脆弱化トークンを{n}個置く。",
+ "{name} is Vulnerable: +{b} damage ({n} left).": "{name}は脆弱化：+{b}ダメージ（残り{n}）。",
+ "No enemy units left to strike {name}: its Vulnerable tokens fade.": "{name}を打つ敵ユニットがいない：脆弱化トークンが消える。",
+ "Version": "バージョン"
 }

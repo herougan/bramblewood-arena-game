@@ -4373,5 +4373,15 @@
  "Has the map's signature skill": "Tiene la habilidad insignia del mapa",
  "The map's element": "Elemento del mapa",
  "No art yet": "Aún sin arte",
- "Suggested: {rarity}": "Sugerida: {rarity}"
+ "Suggested: {rarity}": "Sugerida: {rarity}",
+ "{name} is Shocked for {n} rounds.": "{name} queda en Choque durante {n} rondas.",
+ "Its hits put {n} Vulnerable tokens on the target: each later hit on it deals 1 more.": "Sus golpes ponen {n} fichas de Vulnerable en el objetivo: cada golpe posterior hace 1 más.",
+ "On Hit: Vulnerable N. Each hit uses one token, shots too; Venom and Bleed ticks don't. Armor still counts.": "Al golpear: Vulnerable N. Cada golpe gasta una ficha, también los disparos; los tics de Veneno y Sangrado no. La Armadura sigue contando.",
+ "Vulnerable {n}: its next {n} hit{s} deal 1 more each.": "Vulnerable {n}: sus próximos {n} golpes recibidos hacen 1 más cada uno.",
+ "Put N Vulnerable tokens on a chosen target: each later hit on it deals 1 more and uses one.": "Pon N fichas de Vulnerable en un objetivo elegido: cada golpe posterior hace 1 más y gasta una.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Vulnerable, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "Quita hasta N debilitaciones físicas de un objetivo elegido (esta carta por defecto): Sangrado, Cicatriz, Corrosión, Quebradizo, Expuesto, Vulnerable, Choque, Tambaleo, Armadura rota, Intimidación. Vacío: todas. No Veneno, Congelación ni Aturdimiento.",
+ "{att} puts {n} Vulnerable token{s} on {name}.": "{att} pone {n} ficha(s) de Vulnerable en {name}.",
+ "{name} is Vulnerable: +{b} damage ({n} left).": "{name} es vulnerable: +{b} de daño (quedan {n}).",
+ "No enemy units left to strike {name}: its Vulnerable tokens fade.": "No quedan unidades enemigas para golpear a {name}: sus fichas de Vulnerable se desvanecen.",
+ "Version": "Versión"
 }

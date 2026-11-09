@@ -4376,5 +4376,15 @@
  "Has the map's signature skill": "맵의 대표 스킬 보유",
  "The map's element": "맵의 속성",
  "No art yet": "아직 그림 없음",
- "Suggested: {rarity}": "추천: {rarity}"
+ "Suggested: {rarity}": "추천: {rarity}",
+ "{name} is Shocked for {n} rounds.": "{name}이(가) {n}라운드 동안 충격 상태예요.",
+ "Its hits put {n} Vulnerable tokens on the target: each later hit on it deals 1 more.": "공격이 대상에게 취약 토큰 {n}개를 놓아요: 이후 명중마다 1 더 줘요.",
+ "On Hit: Vulnerable N. Each hit uses one token, shots too; Venom and Bleed ticks don't. Armor still counts.": "명중 시: 취약 N. 명중(사격 포함)마다 토큰 1개 소모; 독·출혈 피해는 아니에요. 방어구는 그대로 적용돼요.",
+ "Vulnerable {n}: its next {n} hit{s} deal 1 more each.": "취약 {n}: 다음 {n}번의 명중은 각각 1 더 줘요.",
+ "Put N Vulnerable tokens on a chosen target: each later hit on it deals 1 more and uses one.": "고른 대상에게 취약 토큰 N개를 놓아요: 이후 명중마다 1 더 주고 하나를 써요.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Vulnerable, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "고른 대상(기본은 이 카드)의 물리 약화를 최대 N개 제거: 출혈, 흉터, 부식, 취약, 노출, 취약 토큰, 감전, 비틀거림, 찢긴 방어구, 위협. 비우면 전부. 독·빙결·기절은 제외.",
+ "{att} puts {n} Vulnerable token{s} on {name}.": "{att}이(가) {name}에게 취약 토큰 {n}개를 놓아요.",
+ "{name} is Vulnerable: +{b} damage ({n} left).": "{name}이(가) 취약해요: 피해 +{b} (남은 {n}).",
+ "No enemy units left to strike {name}: its Vulnerable tokens fade.": "{name}을(를) 칠 적 유닛이 없어요: 취약 토큰이 사라져요.",
+ "Version": "버전"
 }

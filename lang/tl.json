@@ -4374,5 +4374,15 @@
  "Has the map's signature skill": "May tatak na skill ng mapa",
  "The map's element": "Elemento ng mapa",
  "No art yet": "Wala pang larawan",
- "Suggested: {rarity}": "Mungkahi: {rarity}"
+ "Suggested: {rarity}": "Mungkahi: {rarity}",
+ "{name} is Shocked for {n} rounds.": "Na-Shock si {name} sa loob ng {n} round.",
+ "Its hits put {n} Vulnerable tokens on the target: each later hit on it deals 1 more.": "Naglalagay ang mga tama nito ng {n} Bulnerable token sa target: dagdag na 1 sa bawat susunod na tama.",
+ "On Hit: Vulnerable N. Each hit uses one token, shots too; Venom and Bleed ticks don't. Armor still counts.": "Sa Tama: Bulnerable N. Bawat tama ay gumagamit ng isang token, pati tira; hindi ang tik ng Lason at Pagdurugo. Bilang pa rin ang Baluti.",
+ "Vulnerable {n}: its next {n} hit{s} deal 1 more each.": "Bulnerable {n}: dagdag na 1 ang bawat isa sa susunod na {n} tama rito.",
+ "Put N Vulnerable tokens on a chosen target: each later hit on it deals 1 more and uses one.": "Maglagay ng N Bulnerable token sa napiling target: dagdag na 1 sa bawat susunod na tama at gumagamit ng isa.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Vulnerable, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "Alisin ang hanggang N pisikal na debuff ng napiling target (ang kard na ito kung wala): Pagdurugo, Peklat, Kalawang, Marupok, Nalantad, Bulnerable, Kuryente, Pagsuray, punit na Baluti, Pananakot. Walang laman: lahat. Hindi Lason, Yelo o Pagkatigil.",
+ "{att} puts {n} Vulnerable token{s} on {name}.": "Naglagay ang {att} ng {n} Bulnerable token sa {name}.",
+ "{name} is Vulnerable: +{b} damage ({n} left).": "Bulnerable ang {name}: +{b} pinsala ({n} natitira).",
+ "No enemy units left to strike {name}: its Vulnerable tokens fade.": "Wala nang kaaway na tatama sa {name}: naglalaho ang mga Bulnerable token nito.",
+ "Version": "Bersyon"
 }

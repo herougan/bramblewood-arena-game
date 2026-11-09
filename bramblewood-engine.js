@@ -136,7 +136,8 @@ const SKILL_DELIVERY = (typeof __SKILL_DELIVERY__ !== 'undefined' && __SKILL_DEL
 // cards. Old twin keys still read as they are. In the page and the worker assemble_arena.py puts the file ahead of this one.
 const SKILL_PARAMS_LIB = (typeof BramblewoodSkillParams !== 'undefined' && BramblewoodSkillParams) || (()=>{ try{ return typeof require === 'function' ? require('./bramblewood-skillparams.js') : null; }catch(e){ return null; } })();
 // a part of a fused skill (almanacGrant, arrowPoison ...) is delivered as its skill is (ENG35: the delivery file lists the fused keys only)
-function skillDeliveryOf(key){ const D = SKILL_DELIVERY.delivery || {}; if(D[key]) return D[key]; const a = SKILL_PARAMS_LIB && SKILL_PARAMS_LIB.aliasOf(key); return (a && D[a[0]]) || 'none'; }
+// ENG39 (2026-11-09, decision DES2-3 a): a kind (weaken, requiem, archer ...) is delivered as its family is (rootOf), unless the file lists it
+function skillDeliveryOf(key){ const D = SKILL_DELIVERY.delivery || {}; if(D[key]) return D[key]; const a = SKILL_PARAMS_LIB && SKILL_PARAMS_LIB.aliasOf(key); if(a && D[a[0]]) return D[a[0]]; const r = SKILL_PARAMS_LIB && SKILL_PARAMS_LIB.rootOf ? SKILL_PARAMS_LIB.rootOf(key) : null; return (r && D[r]) || 'none'; }
 // Leech N (ENG35, 2026-11-07, owner 23:30: "Default leech = how much damage you deal. Otherwise Leech N = heal N on hit."): what a landed hit that dealt
 // dmg heals (before the max Health cap). effects.sap true (or no number) = the damage dealt, as before; a number N = N.
 function sapHealOf(e, dmg){ const v = e && e.sap; return (typeof v === 'number' && v > 0) ? Math.round(v) : dmg; }
