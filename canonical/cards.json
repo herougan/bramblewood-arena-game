@@ -27769,7 +27769,7 @@
     "dmgType": "physical",
     "effects": {
       "swipe": 1,
-      "hoard": 0.75,
+      "hoard": 1,
       "flying": true
     },
     "species": [
@@ -27903,7 +27903,7 @@
     "effects": {
       "armor": 1,
       "bounty": 1,
-      "hoard": 0.25,
+      "hoard": 1,
       "king": true,
       "felling": 3
     },

@@ -1,0 +1,505 @@
+{
+ "when": "2026-11-10",
+ "package": "BAL34",
+ "rule": "cap-1 use = x1 / N (tools/skill_costs.js budget, Level as card_balance); within 70-100%",
+ "base": "base checkout (batch-1023e e958d6b8)",
+ "dive": [
+  {
+   "id": "harbor-seal",
+   "name": "Harbor Seal",
+   "why": "Dive 2",
+   "map": 14,
+   "stats": "1/9 cost 1",
+   "N": 23.1,
+   "S": {
+    "was": 0.5,
+    "now": -1.2
+   },
+   "use": {
+    "was": 63.4,
+    "now": 56
+   },
+   "verdict": "well under"
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "why": "Dive 2",
+   "map": 3,
+   "stats": "2/5 cost 1",
+   "N": 20.6,
+   "S": {
+    "was": 0.5,
+    "now": -1.2
+   },
+   "use": {
+    "was": 66.1,
+    "now": 57.8
+   },
+   "verdict": "well under"
+  }
+ ],
+ "bulwark": [
+  {
+   "id": "ancient-sloth-titan",
+   "name": "Ancient Sloth Titan",
+   "why": "Bulwark 2",
+   "map": 14,
+   "stats": "2/31 cost 3",
+   "N": 58.6,
+   "S": {
+    "was": 7.8,
+    "now": 7.4
+   },
+   "use": {
+    "was": 76.5,
+    "now": 75.8
+   },
+   "verdict": "within"
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "why": "Bulwark 2",
+   "map": 4,
+   "stats": "1/7 cost 1",
+   "N": 26.4,
+   "S": {
+    "was": 9.7,
+    "now": 9.2
+   },
+   "use": {
+    "was": 74.8,
+    "now": 73
+   },
+   "verdict": "within"
+  }
+ ],
+ "hoard": [
+  {
+   "id": "heartwood-treant",
+   "name": "Heartwood Treant",
+   "why": "Hoard {\"kind\":\"timber\"}",
+   "map": null,
+   "stats": "2/19 cost 2",
+   "N": 30.2,
+   "S": {
+    "was": 3,
+    "now": 3
+   },
+   "use": {
+    "was": 92.7,
+    "now": 92.7
+   },
+   "verdict": "within"
+  },
+  {
+   "id": "tax-collector-teal",
+   "name": "Tax-Collector Teal",
+   "why": "Hoard 1",
+   "map": 24,
+   "stats": "1/4 cost 0",
+   "N": 19.7,
+   "S": {
+    "was": 4.4,
+    "now": 4.7
+   },
+   "use": {
+    "was": 64.7,
+    "now": 66
+   },
+   "verdict": "well under"
+  },
+  {
+   "id": "magnate-duck",
+   "name": "The Magnate Duck",
+   "why": "Hoard 1",
+   "map": 24,
+   "stats": "2/37 cost 4",
+   "N": 58.5,
+   "S": {
+    "was": 9.3,
+    "now": 10
+   },
+   "use": {
+    "was": 89.4,
+    "now": 90.7
+   },
+   "verdict": "within"
+  }
+ ],
+ "twoSkill": {
+  "rule": "bramblewood-budget.js skillCountOf: each ability 1, plain Flying / Tide / Diurnal / Nocturnal / Crepuscular / Sun-shy / Night-blind / Purblind 0.5; over 2 breaks the rule",
+  "scope": "Maps 0-20 (BAL25 scope)",
+  "over": [
+   {
+    "id": "fathom-leviathan",
+    "name": "Fathom Leviathan",
+    "map": 13,
+    "count": 3.5,
+    "was": 3,
+    "sum": "supreme 1 + tide 0.5 + tsunami 1 + wave 1"
+   },
+   {
+    "id": "wolfsbane-alpha",
+    "name": "Wolfsbane Alpha",
+    "map": 17,
+    "count": 3.5,
+    "was": 3,
+    "sum": "bleed 1 + nocturnal 0.5 + dirge 1 + leader 1"
+   },
+   {
+    "id": "driftwood-crab",
+    "name": "Driftwood Crab",
+    "map": 2,
+    "count": 3,
+    "was": 3,
+    "sum": "trigger:onAttacked 1 + guardian 1 + crabClaws 1"
+   },
+   {
+    "id": "old-shell",
+    "name": "The Old Shell",
+    "map": 2,
+    "count": 3,
+    "was": 3,
+    "sum": "armor 1 + leader 1 + guardian 1"
+   },
+   {
+    "id": "legate-of-rivergate",
+    "name": "Legate of Rivergate",
+    "map": 5,
+    "count": 3,
+    "was": 3,
+    "sum": "leader 1 + armor 1 + inspiring 1"
+   },
+   {
+    "id": "old-snapjaw",
+    "name": "Old Snapjaw",
+    "map": 5,
+    "count": 3,
+    "was": 3,
+    "sum": "bleed 1 + armor 1 + leader 1"
+   },
+   {
+    "id": "gangrenous-leech",
+    "name": "Gangrenous Leech",
+    "map": 7,
+    "count": 3,
+    "was": 3,
+    "sum": "parasite 1 + poison 1 + fester 1"
+   },
+   {
+    "id": "horseshoe-crab",
+    "name": "Horseshoe Crab",
+    "map": 7,
+    "count": 3,
+    "was": 3,
+    "sum": "armor 1 + salt 1 + relict 1"
+   },
+   {
+    "id": "echo-matriarch",
+    "name": "Echo Matriarch",
+    "map": 8,
+    "count": 3,
+    "was": 3,
+    "sum": "flying 0.5 + leader 1 + trigger:onReady 1 + nocturnal 0.5"
+   },
+   {
+    "id": "caldera-wyrm",
+    "name": "The Caldera Wyrm",
+    "map": 20,
+    "count": 3,
+    "was": 3,
+    "sum": "armor 1 + trigger:onDeath 1 + pounce 1"
+   },
+   {
+    "id": "fire-ant-raft",
+    "name": "Fire Ant Raft",
+    "map": 1,
+    "count": 2.5,
+    "was": 2,
+    "sum": "tide 0.5 + swarm 1 + poison 1"
+   },
+   {
+    "id": "drowned-matriarch",
+    "name": "The Drowned Matriarch",
+    "map": 4,
+    "count": 2.5,
+    "was": 2,
+    "sum": "tide 0.5 + fork 1 + leader 1"
+   },
+   {
+    "id": "alligator-gar",
+    "name": "Alligator Gar",
+    "map": 5,
+    "count": 2.5,
+    "was": 2,
+    "sum": "armor 1 + bleed 1 + tide 0.5"
+   },
+   {
+    "id": "ford-kingfisher",
+    "name": "Ford Kingfisher",
+    "map": 5,
+    "count": 2.5,
+    "was": 2,
+    "sum": "ambush 1 + flying 0.5 + pounce 1"
+   },
+   {
+    "id": "gold-throat-elder",
+    "name": "Gold-throat Elder",
+    "map": 5,
+    "count": 2.5,
+    "was": 2,
+    "sum": "leader 1 + flying 0.5 + esprit 1"
+   },
+   {
+    "id": "honeyjoe-brewer",
+    "name": "Honeyjoe Brewer",
+    "map": 5,
+    "count": 2.5,
+    "was": 2,
+    "sum": "coffee 1 + kinship 1 + flying 0.5"
+   },
+   {
+    "id": "hummingbird-needler",
+    "name": "Hummingbird Needler",
+    "map": 5,
+    "count": 2.5,
+    "was": 2,
+    "sum": "flying 0.5 + pierce 1 + bleed 1"
+   },
+   {
+    "id": "ruby-throat-duelist",
+    "name": "Ruby-Throat Duelist",
+    "map": 5,
+    "count": 2.5,
+    "was": 2,
+    "sum": "quick 1 + pierce 1 + flying 0.5"
+   },
+   {
+    "id": "swordbill-challenger",
+    "name": "Swordbill Challenger",
+    "map": 5,
+    "count": 2.5,
+    "was": 2,
+    "sum": "flying 0.5 + taunt 1 + counterattack 1"
+   },
+   {
+    "id": "heron-hag",
+    "name": "The Heron Hag",
+    "map": 6,
+    "count": 2.5,
+    "was": 2,
+    "sum": "flying 0.5 + poison 1 + leader 1"
+   },
+   {
+    "id": "poison-dart-croaker",
+    "name": "Poison Dart Croaker",
+    "map": 6,
+    "count": 2.5,
+    "was": 2,
+    "sum": "poison 1 + tide 0.5 + sequestration 1"
+   },
+   {
+    "id": "blind-cave-fish",
+    "name": "Blind Cave Fish",
+    "map": 7,
+    "count": 2.5,
+    "was": 2,
+    "sum": "evasive 1 + tide 0.5 + darksight 1"
+   },
+   {
+    "id": "coral-polyp-colony",
+    "name": "Coral Polyp Colony",
+    "map": 7,
+    "count": 2.5,
+    "was": 2,
+    "sum": "tide 0.5 + deliveryEvery 1 + meld 1"
+   },
+   {
+    "id": "eyrie-warden",
+    "name": "Eyrie Warden",
+    "map": 7,
+    "count": 2.5,
+    "was": 2,
+    "sum": "onReadyDamage 1 + flying 0.5 + daunt 1"
+   },
+   {
+    "id": "sulfur-cinder-moth",
+    "name": "Sulfur Cinder Moth",
+    "map": 7,
+    "count": 2.5,
+    "was": 2,
+    "sum": "illuminate 1 + trigger:onDeath 1 + flying 0.5"
+   },
+   {
+    "id": "tide-pool-crab",
+    "name": "Tide Pool Crab",
+    "map": 7,
+    "count": 2.5,
+    "was": 2,
+    "sum": "tide 0.5 + armor 1 + shield 1"
+   },
+   {
+    "id": "mangrove-manatee",
+    "name": "Mangrove Manatee",
+    "map": 9,
+    "count": 2.5,
+    "was": 2,
+    "sum": "regen 1 + guardian 1 + tide 0.5"
+   },
+   {
+    "id": "colossal-squid",
+    "name": "Colossal Squid",
+    "map": 10,
+    "count": 2.5,
+    "was": 2,
+    "sum": "fork 1 + gash 1 + tide 0.5"
+   },
+   {
+    "id": "reef-admiral",
+    "name": "Reef Admiral",
+    "map": 10,
+    "count": 2.5,
+    "was": 2,
+    "sum": "evasive 1 + tide 0.5 + leader 1"
+   },
+   {
+    "id": "eagle-owl-quartermaster",
+    "name": "Eagle-Owl Quartermaster",
+    "map": 11,
+    "count": 2.5,
+    "was": 2,
+    "sum": "arrow 1 + fletcher 1 + flying 0.5"
+   },
+   {
+    "id": "mirror-moth",
+    "name": "Mirror Moth",
+    "map": 13,
+    "count": 2.5,
+    "was": 2,
+    "sum": "evasive 1 + reflect 1 + flying 0.5"
+   },
+   {
+    "id": "beluga",
+    "name": "Beluga",
+    "map": 14,
+    "count": 2.5,
+    "was": 2,
+    "sum": "sonar 1 + inspiring 1 + tide 0.5"
+   },
+   {
+    "id": "harbor-seal",
+    "name": "Harbor Seal",
+    "map": 14,
+    "count": 2.5,
+    "was": 2,
+    "sum": "tide 0.5 + evasive 1 + dive 1"
+   }
+  ],
+  "newlyOver": [
+   "fire-ant-raft",
+   "drowned-matriarch",
+   "alligator-gar",
+   "ford-kingfisher",
+   "gold-throat-elder",
+   "honeyjoe-brewer",
+   "hummingbird-needler",
+   "ruby-throat-duelist",
+   "swordbill-challenger",
+   "heron-hag",
+   "poison-dart-croaker",
+   "blind-cave-fish",
+   "coral-polyp-colony",
+   "eyrie-warden",
+   "sulfur-cinder-moth",
+   "tide-pool-crab",
+   "mangrove-manatee",
+   "colossal-squid",
+   "reef-admiral",
+   "eagle-owl-quartermaster",
+   "mirror-moth",
+   "beluga",
+   "harbor-seal"
+  ],
+  "overAnyMap": [
+   "alligator-gar",
+   "ashmantle-fiend",
+   "bee-drone",
+   "beetle-battering-ram",
+   "beluga",
+   "black-dragon",
+   "blind-cave-fish",
+   "blue-dragon",
+   "bone-diviner",
+   "caldera-wyrm",
+   "carrion-fly-swarm",
+   "cathedral-eagle",
+   "colossal-squid",
+   "conch-crawler",
+   "coral-polyp-colony",
+   "crown-of-thorns-star",
+   "driftwood-crab",
+   "drowned-matriarch",
+   "eagle-owl-quartermaster",
+   "echo-matriarch",
+   "exo-podas",
+   "eyrie-warden",
+   "fathom-leviathan",
+   "fiddler-crab-swarm",
+   "fire-ant-raft",
+   "ford-kingfisher",
+   "gangrenous-leech",
+   "giant-clam",
+   "gold-throat-elder",
+   "greenland-shark",
+   "grovebearer-dragon-turtle",
+   "harbor-seal",
+   "heron-hag",
+   "honeyjoe-brewer",
+   "horseshoe-crab",
+   "hummingbird-needler",
+   "ironclaw-fiddler",
+   "ironmaw-warwolf",
+   "legate-of-rivergate",
+   "magnate-duck",
+   "mangrove-manatee",
+   "marshal-tuskwell",
+   "mirror-moth",
+   "moray-ambusher",
+   "nyoogle",
+   "old-growth-tortoise",
+   "old-shell",
+   "old-snapjaw",
+   "open-ocean-hermit-crab",
+   "ore-smelter-mole",
+   "oyster-bank",
+   "permafrost-mammoth",
+   "phoenix-fledgling",
+   "phoenix-mushrooms",
+   "poison-dart-croaker",
+   "puffball-bombardier",
+   "raven-harbinger",
+   "raven-hexcaller",
+   "red-dragon",
+   "reef-admiral",
+   "reef-manta-glider",
+   "rimeheart-colossus",
+   "ruby-throat-duelist",
+   "sulfur-cinder-moth",
+   "sulfur-vent-crab",
+   "swarm-matriarch",
+   "swordbill-challenger",
+   "tax-collector-teal",
+   "the-gannet-queen",
+   "tide-pool-crab",
+   "triumvirate",
+   "venomlord-serpent",
+   "voltaic-eel",
+   "whale-shark",
+   "white-dragon",
+   "willow-o-wisp",
+   "wolfsbane-alpha"
+  ]
+ }
+}

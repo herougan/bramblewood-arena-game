@@ -125,7 +125,7 @@ const hitsOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid
   const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), T = SC.make(costs);
   const sk = id=> costs.skills.find(r=> r.id === id);
   // 2026-11-07 (ENG32): re-priced by the 4-round rule after the rework: plain Dive -1, Dive N -1 + 0.5 N (was 1.25 x N^0.5); the old row is kept as eng32Was
-  ok(sk('dive').eng32Was && sk('dive').eng32Was.value === 1.25 && T.skillCost('dive', true) === -1 && Math.abs(T.skillCost('dive', 2) - 0) < 0.01, `Dive: plain -1, Dive 2 ${T.skillCost('dive', 2)} (ENG32; EN7's 1.25 x N^0.5 kept as eng32Was)`);
+  ok(sk('dive').eng32Was && sk('dive').eng32Was.value === 1.25 && T.skillCost('dive', true) === -3.3 && Math.abs(T.skillCost('dive', 2) - -1.7) < 0.01 && sk('dive').bal34Was.value === -1, `Dive: plain -3.3, Dive 2 ${T.skillCost('dive', 2)} (2026-11-10 BAL34, measured at 1,000 fights; ENG32's -1 + 0.5 N kept as bal34Was; EN7's 1.25 x N^0.5 as eng32Was)`);
   const base = {id:'q', attack:1, health:10, rarity:'common', effects:{pounce:2, poison:2}}, noP = {id:'q', attack:1, health:10, rarity:'common', effects:{pounce:2}};
   const sP = T.cardS(base.effects, base).S, s0 = T.cardS(noP.effects, noP).S + T.skillCost('poison', 2);
   ok(Math.abs(sP - (s0 + 0.33 * T.skillCost('poison', 2))) < 0.02, `Pounce + Poison 2 pays 0.33 x Poison's price on top (${sP} vs ${s0})`);

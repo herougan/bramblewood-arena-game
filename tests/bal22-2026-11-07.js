@@ -47,7 +47,7 @@ ok(/_cp\["adv"\]/.test(asm) && /_cp\["ps"\]/.test(asm), 'assemble_arena.py bakes
 const html = read('index.html');
 const m = html.match(/const CARD_POWER = (\{.*?\});\n/);
 let CP = null; try{ CP = m && JSON.parse(m[1]); }catch(e){}
-ok(CP && CP.wr && CP.adv && CP.ps && CP.date === rep.generated, 'index.html carries wr, adv, ps and the run date');
+ok(CP && CP.wr && CP.adv && CP.ps && CP.date === JSON.parse(read(fs.existsSync(path.join(ROOT, 'docs/balance/bal25/card-power.json')) ? 'docs/balance/bal25/card-power.json' : 'docs/balance/card-balance.json')).generated /* 2026-11-10 (BAL34): the baked run is BAL25's v3 file when it exists (assemble_arena.py) */, 'index.html carries wr, adv, ps and the run date');
 
 // ---- texts
 const {TEXT, TX} = require(path.join(ROOT, 'bramblewood-texts.js'));

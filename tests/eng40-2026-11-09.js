@@ -54,7 +54,7 @@ const swing = (e, P, c, ev)=>{ ev = ev || []; e.debugAttack(P, so, c.uid, {}, ev
   ok(BB.HOARD_RES_MULT.stone === 0.8 && BB.HOARD_RES_MULT.metal === 2, 'HOARD_RES_MULT from the state skills\' uptimes (Bedrock 0.2, Forged 0.5 over Timbered 0.25)');
   ok(BB.PARAMS.includes('hoardRes') && !BB.abilitiesOf(SPL.expand({hoard:{v:1, res:'stone'}})).includes('hoardRes'), 'hoardRes is a parameter, not an ability');
   const cards = J('canonical/cards.json'), by = id=> cards.find(c=> c.id === id);
-  ok(by('tax-collector-teal').effects.hoard === 0.75 && by('magnate-duck').effects.hoard === 0.25 && by('tax-collector-teal').attack === 1 && by('tax-collector-teal').health === 4 && by('magnate-duck').attack === 2 && by('magnate-duck').health === 37, 'the Hoard cards keep their values and stats (re-fit asked: ENG40-1)');
+  ok(by('tax-collector-teal').effects.hoard === 1 && by('magnate-duck').effects.hoard === 1 /* 2026-11-10 (BAL34, ENG40-1 a): both to Hoard 1 (were 0.75 / 0.25) */ && by('tax-collector-teal').attack === 1 && by('tax-collector-teal').health === 4 && by('magnate-duck').attack === 2 && by('magnate-duck').health === 37, 'the Hoard cards keep their values and stats (re-fit asked: ENG40-1)');
   for(const id of ['tax-collector-teal', 'magnate-duck', 'heartwood-treant']){ const b = T.budget(by(id)); ok(b.ok, `${id} is in budget under the new rule (${b.x1} <= ${b.N})`); } }
 
 // ================= 2. summons: half the level curve's growth =================
@@ -125,7 +125,8 @@ const swing = (e, P, c, ev)=>{ ev = ev || []; e.debugAttack(P, so, c.uid, {}, ev
   ok(/^## 2026-11-09[^\n]*ENG40/m.test(cl), 'CHANGELOG entry');
   ok(/tests\/eng40-2026-11-09\.js/.test(rd('tests/run-all.sh')), 'in run-all.sh');
   const items = J('docs/decisions.json').items, d1 = items.find(x=> x.id === 'ENG40-1'), d2 = items.find(x=> x.id === 'ENG40-2');
-  ok(d1 && d2 && d1.status === 'YET' && d2.status === 'YET' && items.indexOf(d1) < 3 && [d1, d2].every(d=> d.body.split(/\s+/).length < 100), 'decisions ENG40-1 (Hoard values) and ENG40-2 (Bulwark price) are asked at the top, under 100 words'); }
+  // 2026-11-10 (BAL34): both answered a (DONE) and applied by BAL34; asked or answered, each stays under 100 words
+  ok(d1 && d2 && [d1, d2].every(d=> d.status === 'DONE' || (d.status === 'YET' && items.indexOf(d) < 3)) && [d1, d2].every(d=> d.body.split(/\s+/).length < 100), 'decisions ENG40-1 (Hoard values) and ENG40-2 (Bulwark price): asked at the top or answered, under 100 words'); }
 
 console.log(`eng40: ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);

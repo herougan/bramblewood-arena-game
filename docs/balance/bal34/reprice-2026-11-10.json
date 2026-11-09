@@ -1,0 +1,102 @@
+{
+ "when": "2026-11-10",
+ "package": "BAL34",
+ "measure": "docs/balance/pipeline/measure-2026-11-09-2259.json",
+ "worth": {
+  "flying": {
+   "m": 2.9581,
+   "lo": 2.9209,
+   "hi": 3.6919,
+   "fights": 1000
+  },
+  "flying+dive": {
+   "m": -0.5423,
+   "lo": -1.1491,
+   "hi": -0.0329,
+   "fights": 1000
+  },
+  "flying+dive=2": {
+   "m": 1.1528,
+   "lo": 0.5403,
+   "hi": 1.7022,
+   "fights": 1000
+  },
+  "tide": {
+   "m": 0.3376,
+   "lo": 0.1943,
+   "hi": 0.5109,
+   "fights": 1000
+  },
+  "tide+dive": {
+   "m": -2.7891,
+   "lo": -3.9233,
+   "hi": -2.008,
+   "fights": 1000
+  },
+  "tide+dive=2": {
+   "m": -1.2479,
+   "lo": -1.9984,
+   "hi": -0.7197,
+   "fights": 1000
+  }
+ },
+ "diveWorth": {
+  "flying": {
+   "plain": -3.5,
+   "dive2": -1.81
+  },
+  "tide": {
+   "plain": -3.13,
+   "dive2": -1.59
+  }
+ },
+ "dive": {
+  "plain": -3.31,
+  "dive2": -1.7,
+  "perN": 0.81,
+  "price": {
+   "dive": -3.3,
+   "diveBonus": 0.8
+  }
+ },
+ "bulwark": {
+  "value": 6.3,
+  "pow": 0.47
+ },
+ "changes": {
+  "bulwark": {
+   "old": {
+    "scale": "n",
+    "value": 6.65,
+    "pow": 0.47
+   },
+   "new": {
+    "scale": "n",
+    "value": 6.3,
+    "pow": 0.47
+   }
+  },
+  "dive": {
+   "old": {
+    "scale": "fixed",
+    "value": -1,
+    "plus": "diveBonus"
+   },
+   "new": {
+    "scale": "fixed",
+    "value": -3.3,
+    "plus": "diveBonus"
+   }
+  },
+  "diveBonus": {
+   "old": {
+    "scale": "n",
+    "value": 0.5
+   },
+   "new": {
+    "scale": "n",
+    "value": 0.8
+   }
+  }
+ }
+}

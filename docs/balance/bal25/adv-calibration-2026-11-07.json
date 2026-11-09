@@ -1,10 +1,60 @@
-{"_about": "BAL25 (2026-11-07): which advanced opponent puts the median card near 50 (owner 09:47 #6: top 40% or a mix, so the advanced rate hovers near 50). 25 cards spread over the v3 basic range (every 14th by basic win rate), 100 games each, v3 settings (random day/night and field, Lumber filler); basic median of the same cards 53.5. The first row is the full run's first 59 cards at 400 games (stopped). Picked: 5 top-40% cards + 15 from every measured card (tools/card_balance.js ADV_MIX = 5).",
+{
+ "_about": "BAL25 (2026-11-07): which advanced opponent puts the median card near 50 (owner 09:47 #6: top 40% or a mix, so the advanced rate hovers near 50). 25 cards spread over the v3 basic range (every 14th by basic win rate), 100 games each, v3 settings (random day/night and field, Lumber filler); basic median of the same cards 53.5. The first row is the full run's first 59 cards at 400 games (stopped). Picked: 5 top-40% cards + 15 from every measured card (tools/card_balance.js ADV_MIX = 5).",
  "rows": [
-  {"opponent": "20 cards from the top 40% (owner's first ask)", "cards": 59, "games": 400, "advMedian": 18.9},
-  {"opponent": "10 top-40% + 10 filler", "cards": 25, "games": 100, "advMedian": 21.5, "advMean": 26.2},
-  {"opponent": "4 top-40% + 16 filler", "cards": 25, "games": 100, "advMedian": 33.5, "advMean": 40.0},
-  {"opponent": "20 from the top 75%", "cards": 25, "games": 100, "advMedian": 46.5, "advMean": 47.1},
-  {"opponent": "20 from every measured card", "cards": 25, "games": 100, "advMedian": 65.5, "advMean": 60.9},
-  {"opponent": "10 top-40% + 10 from every measured card", "cards": 25, "games": 100, "advMedian": 39.0, "advMean": 40.4},
-  {"opponent": "5 top-40% + 15 from every measured card (picked)", "cards": 25, "games": 100, "advMedian": 48.0, "advMean": 48.0}
- ]}
+  {
+   "opponent": "20 cards from the top 40% (owner's first ask)",
+   "cards": 59,
+   "games": 400,
+   "advMedian": 18.9
+  },
+  {
+   "opponent": "10 top-40% + 10 filler",
+   "cards": 25,
+   "games": 100,
+   "advMedian": 21.5,
+   "advMean": 26.2
+  },
+  {
+   "opponent": "4 top-40% + 16 filler",
+   "cards": 25,
+   "games": 100,
+   "advMedian": 33.5,
+   "advMean": 40
+  },
+  {
+   "opponent": "20 from the top 75%",
+   "cards": 25,
+   "games": 100,
+   "advMedian": 46.5,
+   "advMean": 47.1
+  },
+  {
+   "opponent": "20 from every measured card",
+   "cards": 25,
+   "games": 100,
+   "advMedian": 65.5,
+   "advMean": 60.9
+  },
+  {
+   "opponent": "10 top-40% + 10 from every measured card",
+   "cards": 25,
+   "games": 100,
+   "advMedian": 39,
+   "advMean": 40.4
+  },
+  {
+   "opponent": "5 top-40% + 15 from every measured card (picked)",
+   "cards": 25,
+   "games": 100,
+   "advMedian": 48,
+   "advMean": 48
+  },
+  {
+   "opponent": "20 cards from the top 40% (BAL25-1 b, owner 11-09 23:05; full run, BAL34 2026-11-10)",
+   "cards": 348,
+   "games": 400,
+   "advMedian": 19.9,
+   "advMean": 23.6
+  }
+ ]
+}
