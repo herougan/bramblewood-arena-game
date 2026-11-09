@@ -33830,10 +33830,13 @@ function ui22McClaudeNewHTML(mapId, defs, ok, onLists){
   const list = ui22McClaudeNew(mapId, onLists, ok, defs), groups = c17McGroups(mapId, onLists, ok, defs, new Set(list.map(e=> e.id)));
   if(!list.length && !groups.length) return '';
   const pill = TX('ui.ui22-claude-new'), tip = TX('ui.ui22-claude-new-tip');
+  // 2026-11-09 (package UI40, owner 16:35: "Make the thematic section and keyword use the same format as the above version"): the full card (ui39PlainTileHTML:
+  // art, name, stats, skills, power badge, ✏️), its Claude New / New card pill under it with the pack pill, the 🏹 on the card; a wrapping grid (rv1-row). Was a chip.
   const tile = e=>{ const rng = e.delivery === 'ranged', dl = rng ? TX('ui.c17-ranged') : e.delivery === 'melee' ? TX('ui.c17-melee') : '';
-    return `<span class="ui22-rw is-claude${rng ? ' is-c17-ranged' : ''}" data-ui22-claude-new="${escapeAttr(e.id)}" title="${escapeAttr((e.why || '') + (dl ? ' (' + dl + ')' : ''))}">${vis4MapCardTilesHTML([e.id], defs, {packs: true, power: true})}<b class="ui22-pill${e.source === 'new' ? ' is-c17-new' : ''}" title="${escapeAttr(tip)}">${escapeHtml(e.source === 'new' ? TX('ui.c17-new-card') : pill)}</b>${rng ? `<b class="c17-rng" title="${escapeAttr(dl)}" aria-label="${escapeAttr(dl)}">🏹</b>` : ''}</span>`; };
+    return ui39PlainTileHTML(e.id, defs, e.why || '', {cls: 'is-claude ui40-tile' + (rng ? ' is-c17-ranged' : ''), attrs: ` data-ui22-claude-new="${escapeAttr(e.id)}"`, title: (e.why || '') + (dl ? ' (' + dl + ')' : ''),
+      mark: rng ? `<b class="c17-rng" title="${escapeAttr(dl)}" aria-label="${escapeAttr(dl)}">🏹</b>` : '', pills: `<b class="ui22-pill${e.source === 'new' ? ' is-c17-new' : ''}" title="${escapeAttr(tip)}">${escapeHtml(e.source === 'new' ? TX('ui.c17-new-card') : pill)}</b>`}); };
   const n = list.length + groups.reduce((a, g)=> a + g.picks.length, 0);
-  const rows = (list.length ? `<div class="vis4-mc-row ui22-row">${list.map(tile).join('')}</div>` : '') + groups.map(g=> `<h4 class="c17-theme${g.current ? ' is-current' : ''}" data-c17-theme="${escapeAttr(g.theme)}">${escapeHtml(g.theme)} <small>${g.picks.length}</small></h4><div class="vis4-mc-row ui22-row">${g.picks.map(tile).join('')}</div>`).join('');
+  const rows = (list.length ? `<div class="vis4-mc-row rv1-row ui40-row">${list.map(tile).join('')}</div>` : '') + groups.map(g=> `<h4 class="c17-theme${g.current ? ' is-current' : ''}" data-c17-theme="${escapeAttr(g.theme)}">${escapeHtml(g.theme)} <small>${g.picks.length}</small></h4><div class="vis4-mc-row rv1-row ui40-row">${g.picks.map(tile).join('')}</div>`).join('');
   return `<section class="pk1-mc-sec rv2-panel ui22-claude" id="ui22McClaude"><h3>${escapeHtml(TX('ui.ui22-claude-title'))} <small>${n}</small></h3><p class="panel-sub">${escapeHtml(tip)}</p>${rows}</section>`;
 }
 // UI22_MC:END
@@ -33848,7 +33851,17 @@ function ui21McKeywordHTML(mapId, defs, ids){
   const have = row ? row.ids : [], text = ui19McSkillText(row || {key, fx: {[key]: true}});
   return `<section class="pk1-mc-sec rv2-panel ui21-kw" id="ui21McKeyword" data-ui21-keyword="${escapeAttr(key)}"><h3>${escapeHtml(TX('ui.ui21-mapkw-title'))}</h3>
     <p class="ui21-kw-head"><span class="ui19-sk-ico" aria-hidden="true">${escapeHtml(SKILL_ICON[key] || '•')}</span> <b>${escapeHtml(p.label)}</b></p><p class="panel-sub ui21-kw-text">${escapeHtml(text)}</p>
-    <h4 class="ui21-kw-cards">${escapeHtml(TX('ui.ui21-mapkw-cards'))} <small>${have.length}</small></h4><div class="vis4-mc-row ui22-row">${have.length ? vis4MapCardTilesHTML(have, defs, {packs: false, power: true}) : '<span class="panel-sub">–</span>'}</div></section>`;
+    <h4 class="ui21-kw-cards">${escapeHtml(TX('ui.ui21-mapkw-cards'))} <small>${have.length}</small></h4><div class="vis4-mc-row rv1-row ui40-row">${have.length ? ui40Sorted(have, defs).map(id=> ui39PlainTileHTML(id, defs, '', {cls: 'ui40-tile'})).join('') /* 2026-11-09 (UI40): full cards, was chips */ : '<span class="panel-sub">–</span>'}</div></section>`;
+}
+// 2026-11-09 (package UI40): the order vis4MapCardTilesHTML gave the chips (rarity, then name)
+function ui40Sorted(ids, defs){ return ids.filter(id=> defs[id]).sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name))); }
+// 2026-11-09 (package UI40): the pills clear the card's skill bubble (it hangs below the card); the 🏹 sits on the card's left edge by the art (the corners hold the badges)
+function ui40Css(){
+  if(document.getElementById('ui40Css')) return;
+  const st = document.createElement('style'); st.id = 'ui40Css';
+  st.textContent = '.pk1-mc-overlay .ui40-tile .rv2-pills{margin-top:9px; flex-wrap:wrap; justify-content:center;}'
+    + ' .pk1-mc-overlay .ui40-tile > .c17-rng{top:34%; left:-7px; right:auto; z-index:3; font-size:15px; padding:3px; border-radius:50%; background:var(--surface-2, #fff8e8); box-shadow:0 1px 3px rgba(0,0,0,.35);}';
+  document.head.appendChild(st);
 }
 // UI21_KW:END
 function pk1OpenMapCards(mapId){
@@ -33875,6 +33888,7 @@ function pk1OpenMapCards(mapId){
   }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
   // 2026-11-04 (package UI22): the fights' rewards, then Claude's recommended cards (shown, on no list)
   const ui22Lists = new Set(mapPoolSections(top).flatMap(s=> s.ids || []));
+  try{ ui40Css(); }catch(e){} // 2026-11-09 (UI40): the full-card Thematic Recommendation and Keyword sections
   const ui22Secs = (()=>{ try{ return ui22McRewardsHTML(mapId, defs, ok) + ui22McClaudeNewHTML(mapId, defs, ok, ui22Lists); }catch(e){ return ''; } })()
     + (()=>{ try{ return ui21McKeywordHTML(mapId, defs, mapPoolSections(top).filter(inScope).flatMap(s=> s.ids || []).filter(ok)); }catch(e){ return ''; } })(); // 2026-11-05 (UI21, IDEA-EARLY-3): the keyword of the map
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
@@ -34031,10 +34045,12 @@ function ui37TileHTML(top, p, kind, defs, idx, rvMap){
     + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', TX('ui.ui37-yes'))}${btn('no', TX('ui.ui37-no'))}</span></div>`;
 }
 // a card on no review: the same full card as a review tile (pack pill, power badge, ✏️ for admins), no Cut / Keep (it is on no list to cut from)
-function ui39PlainTileHTML(id, defs, why){
-  const dd = defs[id], pt = dd ? basicPackTierOf(dd) : 0;
+// 2026-11-09 (package UI40): `x` (optional) = {cls, attrs, title, mark, pills}: the Thematic Recommendation and Keyword sections draw the same card with their own
+// pills (Claude New / New card) after the pack pill and the 🏹 mark on the card (inside the tile, so an edit's redraw of the card keeps them)
+function ui39PlainTileHTML(id, defs, why, x){
+  const dd = defs[id], pt = dd ? basicPackTierOf(dd) : 0; x = x || {};
   const pack = pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '';
-  return `<span class="rv1-tile is-ui39" data-rv-id="${escapeAttr(id)}" data-rv-sec="ui39" data-rv-kind="ui39">${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true, why})}<span class="rv2-pills">${pack}</span>${adminModeEnabled ? `<span class="ui13-acts">${ui13EditBtnHTML(id)}</span>` : ''}</span>`;
+  return `<span class="rv1-tile is-ui39${x.cls ? ' ' + x.cls : ''}" data-rv-id="${escapeAttr(id)}" data-rv-sec="ui39" data-rv-kind="ui39"${x.attrs || ''}${x.title ? ` title="${escapeAttr(x.title)}"` : ''}>${x.mark || ''}${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true, why})}<span class="rv2-pills">${pack}${x.pills || ''}</span>${adminModeEnabled ? `<span class="ui13-acts">${ui13EditBtnHTML(id)}</span>` : ''}</span>`;
 }
 // a proposed concept (no art, no stats): a full-size card-shaped placeholder with its name, animal, element, suggested rarity and role; the hover shows it all
 function ui39ConceptCardHTML(c){
