@@ -4343,8 +4343,6 @@
  "Face-down card, likely {rarity}": "背面朝上的卡牌，很可能是{rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "会给卡牌的成就。领取时从你的阵营卡池中抽取。",
  "No card achievements match this filter.": "没有符合此筛选的卡牌成就。",
- "Lists": "列表",
- "Prospects": "候选卡",
  "Every card that could fit this map: its list, Claude's picks and your picks. Flag each Yes or No. NEW! means no earlier main map gives it; a Yes on an earlier map makes a card Carried here. Side-map cards are not shown.": "所有可能适合此地图的卡牌：它的列表、Claude 的推荐和你的选择。逐一标记“是”或“否”。新！表示之前的主地图都不给这张卡；在之前的地图标记“是”会让它在这里成为“沿用”。不显示支线地图的卡牌。",
  "NEW! flagged": "新！已标记",
  "Carried flagged": "沿用已标记",
@@ -4374,5 +4372,7 @@
  "THEME5 pick": "THEME5 推荐",
  "SKILLREC1 pick": "SKILLREC1 推荐",
  "Has the map's signature skill": "有地图的标志技能",
- "The map's element": "地图的元素"
+ "The map's element": "地图的元素",
+ "No art yet": "暂无插画",
+ "Suggested: {rarity}": "建议：{rarity}"
 }

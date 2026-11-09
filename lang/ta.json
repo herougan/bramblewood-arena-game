@@ -4345,8 +4345,6 @@
  "Face-down card, likely {rarity}": "கவிழ்த்த அட்டை, பெரும்பாலும் {rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "அட்டை தரும் சாதனைகள். பெறும்போது உங்கள் பிரிவு தொகுப்பிலிருந்து எடுக்கப்படும்.",
  "No card achievements match this filter.": "இந்த வடிகட்டிக்கு பொருந்தும் அட்டை சாதனை இல்லை.",
- "Lists": "பட்டியல்கள்",
- "Prospects": "வேட்பாளர்கள்",
  "Every card that could fit this map: its list, Claude's picks and your picks. Flag each Yes or No. NEW! means no earlier main map gives it; a Yes on an earlier map makes a card Carried here. Side-map cards are not shown.": "இந்த வரைபடத்துக்குப் பொருந்தக்கூடிய ஒவ்வொரு அட்டையும்: அதன் பட்டியல், Claude-இன் தேர்வுகள், உங்கள் தேர்வுகள். ஒவ்வொன்றையும் ஆம் அல்லது இல்லை எனக் குறிக்கவும். புதியது! என்றால் முந்தைய முதன்மை வரைபடம் எதுவும் அதைத் தரவில்லை; முந்தைய வரைபடத்தில் ஆம் என்றால் இங்கே அது கொண்டுவரப்பட்டது. பக்க வரைபட அட்டைகள் காட்டப்படாது.",
  "NEW! flagged": "புதியது! குறித்தவை",
  "Carried flagged": "கொண்டுவரப்பட்டவை குறித்தவை",
@@ -4376,5 +4374,7 @@
  "THEME5 pick": "THEME5 தேர்வு",
  "SKILLREC1 pick": "SKILLREC1 தேர்வு",
  "Has the map's signature skill": "வரைபடத்தின் முத்திரைத் திறன் உள்ளது",
- "The map's element": "வரைபடத்தின் தனிமம்"
+ "The map's element": "வரைபடத்தின் தனிமம்",
+ "No art yet": "இன்னும் படம் இல்லை",
+ "Suggested: {rarity}": "பரிந்துரை: {rarity}"
 }

@@ -4342,8 +4342,6 @@
  "Face-down card, likely {rarity}": "Carta boca abajo, probablemente {rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Logros que dan una carta. Se saca de tu reserva de facción al reclamarla.",
  "No card achievements match this filter.": "Ningún logro con carta coincide con este filtro.",
- "Lists": "Listas",
- "Prospects": "Candidatas",
  "Every card that could fit this map: its list, Claude's picks and your picks. Flag each Yes or No. NEW! means no earlier main map gives it; a Yes on an earlier map makes a card Carried here. Side-map cards are not shown.": "Todas las cartas que podrían encajar en este mapa: su lista, las elecciones de Claude y las tuyas. Marca cada una Sí o No. ¡NUEVA! significa que ningún mapa principal anterior la da; un Sí en un mapa anterior la vuelve Arrastrada aquí. No se muestran las cartas de mapas secundarios.",
  "NEW! flagged": "¡NUEVA! marcadas",
  "Carried flagged": "Arrastradas marcadas",
@@ -4373,5 +4371,7 @@
  "THEME5 pick": "Elección THEME5",
  "SKILLREC1 pick": "Elección SKILLREC1",
  "Has the map's signature skill": "Tiene la habilidad insignia del mapa",
- "The map's element": "Elemento del mapa"
+ "The map's element": "Elemento del mapa",
+ "No art yet": "Aún sin arte",
+ "Suggested: {rarity}": "Sugerida: {rarity}"
 }

@@ -4343,8 +4343,6 @@
  "Face-down card, likely {rarity}": "Nakataob na card, malamang {rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Mga achievement na nagbibigay ng card. Hinuhugot ito sa faction pool mo kapag kinuha mo.",
  "No card achievements match this filter.": "Walang achievement na may card na tugma sa filter na ito.",
- "Lists": "Mga listahan",
- "Prospects": "Mga kandidato",
  "Every card that could fit this map: its list, Claude's picks and your picks. Flag each Yes or No. NEW! means no earlier main map gives it; a Yes on an earlier map makes a card Carried here. Side-map cards are not shown.": "Bawat card na puwedeng bagay sa mapang ito: ang listahan nito, ang mga pili ni Claude at ang mga pili mo. Markahan ng Oo o Hindi. Ang BAGO! ay walang naunang pangunahing mapa na nagbibigay nito; ang Oo sa naunang mapa ay ginagawa itong Dala rito. Hindi ipinapakita ang mga card ng side map.",
  "NEW! flagged": "BAGO! na may marka",
  "Carried flagged": "Dala na may marka",
@@ -4374,5 +4372,7 @@
  "THEME5 pick": "Pili ng THEME5",
  "SKILLREC1 pick": "Pili ng SKILLREC1",
  "Has the map's signature skill": "May tatak na skill ng mapa",
- "The map's element": "Elemento ng mapa"
+ "The map's element": "Elemento ng mapa",
+ "No art yet": "Wala pang larawan",
+ "Suggested: {rarity}": "Mungkahi: {rarity}"
 }

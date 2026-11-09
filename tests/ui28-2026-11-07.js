@@ -78,7 +78,7 @@ async function browser(){
           const badge = id=> { const t = o.querySelector('.rv1-tile[data-rv-id="' + id + '"] .ui28-pow'); return t ? t.textContent : null; };
           const withRow = ids.filter(id=> Object.prototype.hasOwnProperty.call(cp, id)), noRow = ids.filter(id=> !Object.prototype.hasOwnProperty.call(cp, id));
           const cut = q('[data-rv-act=cut]'), keep = q('[data-rv-act=keep]'), sub = q('.pk1-mc-modal > .panel-sub'), bar = q('.rv1-bar');
-          const sp = q('[data-rv-special]'), add = q('#ff9AddSpecial'), pow = q('.ui28-pow'), tile = q('.rv1-tile .vis4-mc-card');
+          const sp = q('[data-rv-special]'), add = q('#ff9AddSpecial'), pow = q('.rv1-tile .ui28-pow'), tile = pow ? pow.closest('.vis4-mc-card') : q('.rv1-tile .vis4-mc-card'); /* 2026-11-09 (UI39): the badge against its own card (the first tile may have none) */
           const br = pow && pow.getBoundingClientRect(), tr = tile && tile.getBoundingClientRect();
           return {n: ids.length, withRow: withRow.length, noRow: noRow.length, wrong: withRow.filter(id=> { const v = Math.round(cp[id] - 50), s = v > 0 ? '+' + v : String(v === 0 ? 0 : v); return badge(id) !== s; }).length,
             badgeOnNoRow: noRow.filter(id=> badge(id) !== null).length, tipOk: !!(pow && /Power/.test(pow.title)),

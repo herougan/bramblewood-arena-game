@@ -68,7 +68,7 @@ async def run(p, url, w, hgt):
     ok(r['c'] > 0 and r['s'] > 0, f'{w}: Counter and Suggested pills show on tiles of the one list {r}')
 
     # the rewards / thematic section title
-    await pg.evaluate(E("pk1OpenMapCards('m1'); await new Promise(r=> setTimeout(r, 1000)); return 1;"))
+    await pg.evaluate(E("for(const m of CONQUEST_MAPS.filter(m=> m.sub && !m.reserved)){ pk1OpenMapCards(m.id); const rw = document.getElementById('ui22McRewards'); if(document.getElementById('ui22McClaude') && rw && rw.querySelector('.card-chip')) break; } await new Promise(r=> setTimeout(r, 1000)); return 1;")) # 2026-11-09 (UI39): a side map (a main map's window shows these picks as full cards in NEW! / Carried)
     ttl = await pg.evaluate("(()=>{ const h = document.querySelector('#ui22McClaude h3'); return h ? h.textContent : ''; })()")
     ok(ttl.startswith('Thematic Recommendation'), f'{w}: the section is "Thematic Recommendation" ({ttl!r})')
     ok(await pg.evaluate("document.querySelectorAll('#ui22McClaude .card-chip').length > 0 && document.querySelectorAll('#ui22McRewards .card-chip').length > 0"), f'{w}: Skirmish rewards and Thematic Recommendation are chips (circle + label)')

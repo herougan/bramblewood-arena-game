@@ -35,12 +35,15 @@ async def run(b, url, w):
       ov.hidden = true; ov.innerHTML = ''; } return out; })()""")
     print('  maps', [(x['id'], x['fights'], x['claude']) for x in r])
     ok(all(x['fights'] > 0 and x['caps'] == x['fights'] and x['roles'] >= x['fights'] for x in r), 'each map has a Skirmish rewards section: a caption per fight, a role under each card')
-    ok(any(x['claude'] > 0 for x in r), 'some map has a Recommended by Claude section')
+    # 2026-11-09 (UI39): a main map's window has no Recommended by Claude section (its picks are full cards in NEW! / Carried); a side map's window keeps it
+    ok(all(x['claude'] == 0 for x in r), 'no Recommended by Claude section on a main map (UI39)')
+    sc = await pg.evaluate("""(()=>{ let n = 0, id = null; for(const m of CONQUEST_MAPS.filter(m=> m.sub && !m.reserved)){ pk1OpenMapCards(m.id); const cl = document.getElementById('ui22McClaude'); const k = cl ? cl.querySelectorAll('[data-ui22-claude-new]').length : 0; if(k > n){ n = k; id = m.id; } } const ov = document.getElementById('pk1MapCardsOverlay'); ov.hidden = true; ov.innerHTML = ''; return {n, id}; })()""")
+    ok(sc['n'] > 0, f'a side map keeps its Recommended by Claude section {sc}')
     # 2026-11-07 (CONTENT17): a pick that is a new card (on no list, awaiting a map) wears "New card" instead
     ok(all(p in ('Claude New', 'New card') for x in r for p in x['pills']) and all(len(x['pills']) == x['claude'] for x in r), 'every Claude tile wears the Claude New pill (or New card)')
     ok(all(x['onList'] == 0 and x['inRv'] == 0 for x in r), 'Claude cards are on no list and are no review tile')
     ok(all(x['skills'] and x['modalScroll'] == 'auto' for x in r), 'the skills block and the whole-dialog scroll (UI22a) are still there')
-    best = max(r, key=lambda x: x['claude'] * 100 + x['fights'])['id']
+    best = sc['id'] or max(r, key=lambda x: x['fights'])['id']
     await pg.evaluate("pk1OpenMapCards(%r)" % best); await pg.wait_for_timeout(900)
     await pg.screenshot(path=os.path.join(SHOTS, f'mapcards-top-{w}.png'), animations='allow')
     for sid, name in (('ui22McRewards', 'rewards'), ('ui22McClaude', 'claude')):

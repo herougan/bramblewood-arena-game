@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""UI38 (2026-11-09, owner 03:55) browser check: the admin Map cards window's Prospects view with the bigger pool. Maps 0, 5 and 14 (and every main map's
+"""UI38 (2026-11-09, owner 03:55; updated by UI39: one combined view, a concept is a placeholder card) browser check: the admin Map cards window's Prospects view with the bigger pool. Maps 0, 5 and 14 (and every main map's
 counts): NEW! 30+ and Carried 20+ (Map 0 has no earlier map, Map 1 only Map 0's few cards), both groups open, no fold, no side-map card; a concept chip with
 the "Proposed" pill and its hover text; a Yes on a concept is kept (localStorage), counted, exported with its fields, and makes it Carried on the next map.
 Both widths.
@@ -29,7 +29,7 @@ def E(body): return "(async()=>{ " + body + " })()"
 OPEN = "adminModeEnabled = true; pk1OpenMapCards(%s); await new Promise(r=> setTimeout(r, 700));"
 STATE = """const g = k=> [...document.querySelectorAll('#ui37Pros [data-ui37-grp="' + k + '"] .ui37-tile')].map(t=> t.dataset.ui37Id);
   const m = document.querySelector('.pk1-mc-modal'), shown = g('new').concat(g('carried')), side = ui38SideOnly(ui37Live && ui37Live.top);
-  return {view: m && m.dataset.ui37View, neu: g('new'), car: g('carried'), concepts: shown.filter(id=> id.startsWith('concept-')).length, fold: !!document.querySelector('#ui37Pros details'),
+  return {view: m && m.dataset.ui39 === '1' ? 'pros' : 'lists', /* 2026-11-09 (UI39): one view */ neu: g('new'), car: g('carried'), concepts: shown.filter(id=> id.startsWith('concept-')).length, fold: !!document.querySelector('#ui37Pros details'),
     sideShown: shown.filter(id=> side.has(id)), visibleSecs: [...m.children].filter(x=> x.offsetParent !== null).map(x=> x.className).join(' | '), map: (document.querySelector('.ui37-map') || {}).textContent};"""
 
 async def main():
@@ -55,7 +55,7 @@ async def main():
             m = next(x for x in mains if x['n'] == n)
             await pg.evaluate(E(OPEN % json.dumps(m['id']) + "return 1;"))
             s = await pg.evaluate(E(STATE))
-            ok(s['view'] == 'pros' and 'pk1-mc-sec' not in s['visibleSecs'].replace('ui37-pros', ''), f"Map {n}: only the Prospects view shows ({s['visibleSecs']})")
+            ok(s['view'] == 'pros', f"Map {n}: the combined view shows (UI39)")
             await pg.screenshot(path=os.path.join(OUT, f'map{n}-1366.png'))
             await pg.evaluate("document.querySelector('.pk1-mc-modal').scrollTop = document.querySelector('[data-ui37-grp=carried]').offsetTop - 60"); await pg.wait_for_timeout(150)
             await pg.screenshot(path=os.path.join(OUT, f'map{n}-carried-1366.png'))
@@ -68,7 +68,7 @@ async def main():
             sel = f'#ui37Pros .ui37-tile[data-ui37-id="{cid}"]'
             pill = await pg.evaluate(f"(document.querySelector('{sel} .ui37-src.is-concept') || {{}}).textContent")
             ok(pill == 'Proposed', 'the concept has the "Proposed" pill')
-            ok(await pg.evaluate(f"!document.querySelector('{sel} img')"), 'the concept chip has no art')
+            ok(await pg.evaluate(f"!document.querySelector('{sel} img:not(.emoji)')"), 'the concept card has no art')
             await pg.hover(f'{sel} .ui38-concept'); await pg.wait_for_timeout(350)
             tip = await pg.evaluate("(document.querySelector('.cnp-rw-zoom.cnp-rw-tip') || {}).textContent || ''")
             ok('Proposed new card' in tip, 'hovering the concept shows its text: ' + tip[:90])

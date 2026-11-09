@@ -33421,8 +33421,8 @@ function ui13RefreshTile(ov, tile){
   if(!tile || !tile.isConnected) return;
   const defs = getCardDefs(), id = tile.dataset.rvId, sec = tile.dataset.rvSec, kind = tile.dataset.rvKind, tmp = document.createElement('div');
   let fresh = null;
-  if(kind === 'egg' || kind === 'added'){ const card = tile.querySelector('.vis4-mc-card'), why = card ? card.getAttribute('data-zoom-why') || '' : ''; if(!card || !defs[id]) return;
-    tmp.innerHTML = vis4MapCardTilesHTML([id], defs, kind === 'egg' ? {large: true, why} : {packs: true, large: true}); fresh = tmp.firstElementChild; card.replaceWith(fresh); }
+  if(kind === 'egg' || kind === 'added' || kind === 'ui39'){ const card = tile.querySelector('.vis4-mc-card'), why = card ? card.getAttribute('data-zoom-why') || '' : ''; if(!card || !defs[id]) return; // 2026-11-09 (UI39): + a prospect's full card (on no review)
+    tmp.innerHTML = vis4MapCardTilesHTML([id], defs, kind === 'egg' ? {large: true, why} : kind === 'ui39' ? {packs: true, large: true, power: true, why} : {packs: true, large: true}); fresh = tmp.firstElementChild; card.replaceWith(fresh); }
   else { const e = rvTileEntries.get(sec + '|' + id + '|' + kind); if(!e || !defs[id]) return; tmp.innerHTML = rv1TileHTML(e, kind, defs, sec); fresh = tmp.firstElementChild; tile.replaceWith(fresh); }
   rv2Update(ov); try{ if(fresh) wireRewardZoom(fresh.matches('[data-zoom]') ? fresh.parentNode : fresh); }catch(e){} // only the new tile (a second wiring of the rest would double their listeners)
 }
@@ -34017,50 +34017,88 @@ function ui37ExportFile(kind){
   return body;
 }
 const UI37_SRC_TX = {list: ()=> TX('ui.ui37-src-list'), maybe: ()=> TX('ui.ui37-src-maybe'), claude: ()=> TX('ui.ui37-src-claude'), newcard: ()=> TX('ui.ui37-src-newcard'), flag: ()=> TX('ui.ui37-src-flag'), earlier: ()=> TX('ui.ui37-src-earlier'), fit: ()=> TX('ui.ui38-src-fit'), concept: ()=> TX('ui.ui38-src-concept')}; // UI38: + fit, concept // literal keys (keyify drops keys built from names)
-function ui37TileHTML(top, p, kind, defs, idx){
-  const f = ui37FlagOf(top, p.id), c = ui38Concept(p.id), d = c || defs[p.id], from = idx.get(p.id);
+// 2026-11-09 (package UI39, owner 10:17: "combine the prospects UI and the Lists UI. So I pick from there, full view. Not pill view. Combine them."): one view, no
+// Lists / Prospects switch. A prospect is the Lists view's full card: a card on the map's reviewed MAP list is its own review tile (rv1TileHTML: art, stats,
+// skills, the review pills, ✂ Cut / Keep, ✏️ edit), any other card the same full card with ✏️ (data-rv-kind "ui39"), a proposed concept a card-shaped placeholder
+// (ui39ConceptCardHTML); under it UI38's source pills and the Yes / No toggle. rvMap = card id -> {e, kind} of the map's review (chosen / maybe / cut).
+function ui37TileHTML(top, p, kind, defs, idx, rvMap){
+  const f = ui37FlagOf(top, p.id), c = ui38Concept(p.id), d = c || defs[p.id], from = idx.get(p.id), rv = rvMap && rvMap.get(p.id);
   const src = [...p.src].filter(s=> s !== 'flag' || p.src.size === 1).map(s=> `<b class="ui37-src is-${s}">${escapeHtml(UI37_SRC_TX[s] ? UI37_SRC_TX[s]() : s)}</b>`).join('');
   const fromPill = kind !== 'new' && from != null ? `<b class="ui37-from" title="${escapeAttr(TX('ui.ui37-from-tip', {n: from}))}">${escapeHtml(TX('ui.ui37-from', {n: from}))}</b>` : '';
   const btn = (k, lab)=> `<button type="button" class="ui37-yn-b is-${k}${f === k ? ' on' : ''}" data-ui37-flag="${k}" aria-pressed="${f === k ? 'true' : 'false'}">${escapeHtml(lab)}</button>`;
-  return `<span class="ui37-tile is-${f || 'none'}${c ? ' is-concept' : ''}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${c ? ui38ConceptChipHTML(c) : vis4MapCardTilesHTML([p.id], defs, {power: true, why: p.why || ''})}<span class="ui37-pills">${src}${fromPill}</span>`
-    + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', TX('ui.ui37-yes'))}${btn('no', TX('ui.ui37-no'))}</span></span>`;
+  const card = c ? ui39ConceptCardHTML(c) : rv ? rv1TileHTML(rv.e, rv.kind, defs, 'cards') : ui39PlainTileHTML(p.id, defs, p.why || '');
+  return `<div class="ui37-tile ui39-tile is-${f || 'none'}${c ? ' is-concept' : ''}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${card}<span class="ui37-pills">${src}${fromPill}</span>`
+    + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', TX('ui.ui37-yes'))}${btn('no', TX('ui.ui37-no'))}</span></div>`;
 }
-function ui37BodyHTML(top, defs, ok){
-  const m = mpMapById(top), sp = ui37Split(top, defs, ok), tg = ui37Targets(top), yes = l=> l.filter(p=> ui37FlagOf(top, p.id) === 'yes').length;
+// a card on no review: the same full card as a review tile (pack pill, power badge, ✏️ for admins), no Cut / Keep (it is on no list to cut from)
+function ui39PlainTileHTML(id, defs, why){
+  const dd = defs[id], pt = dd ? basicPackTierOf(dd) : 0;
+  const pack = pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '';
+  return `<span class="rv1-tile is-ui39" data-rv-id="${escapeAttr(id)}" data-rv-sec="ui39" data-rv-kind="ui39">${vis4MapCardTilesHTML([id], defs, {packs: true, large: true, power: true, why})}<span class="rv2-pills">${pack}</span>${adminModeEnabled ? `<span class="ui13-acts">${ui13EditBtnHTML(id)}</span>` : ''}</span>`;
+}
+// a proposed concept (no art, no stats): a full-size card-shaped placeholder with its name, animal, element, suggested rarity and role; the hover shows it all
+function ui39ConceptCardHTML(c){
+  const tip = c.name + '|' + TX('ui.ui38-concept-tip', {animal: c.animal, element: c.element, rarity: c.rarity}) + ' ' + String(c.role || '').replace(/\|/g, '/');
+  const el = (typeof DMG_TYPE_LABEL !== 'undefined' && DMG_TYPE_LABEL[c.element]) || c.element, rar = typeof rarityLabelOf === 'function' ? rarityLabelOf(c.rarity) : c.rarity;
+  return `<span class="ui39-ctile"><span class="vis4-mc-card is-large ui38-concept ui39-cc rar-${escapeAttr(c.rarity)}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(tip)}" aria-label="${escapeAttr(c.name)}">`
+    + `<b class="ui39-cc-name">${escapeHtml(c.name)}</b><span class="ui39-cc-art" aria-hidden="true">${escapeHtml(TX('ui.ui39-c-noart'))}</span>`
+    + `<span class="ui39-cc-line ui39-cc-animal">${escapeHtml(c.animal)}</span><span class="ui39-cc-line">${escapeHtml(el)}</span><span class="ui39-cc-line ui39-cc-rar">${escapeHtml(TX('ui.ui39-c-rarity', {rarity: rar}))}</span>`
+    + `<span class="ui39-cc-role">${escapeHtml(c.role || '')}</span></span></span>`;
+}
+// the counters, map walk, Export and status line (top of the window)
+function ui37HeadHTML(top, sp){
+  const m = mpMapById(top), tg = ui37Targets(top), yes = l=> l.filter(p=> ui37FlagOf(top, p.id) === 'yes').length;
   const xn = yes(sp.neu), yc = yes(sp.car), mains = ui37MapsData(), i = mains.findIndex(x=> x.id === top), prev = mains[i - 1], next = mains[i + 1];
   const ct = (k, x, t, dflt, lab, cls)=> `<span class="ui37-ct ${cls}${x === t ? ' is-met' : x > t ? ' is-over' : ''}" data-ui37-ct="${k}">${escapeHtml(lab)} <b class="ui37-x">${x}</b> / <input type="number" min="0" max="99" inputmode="numeric" data-ui37-target="${k}" value="${t}" title="${escapeAttr(TX('ui.ui37-target-tip', {n: sp.n, t: dflt}))}" aria-label="${escapeAttr(TX('ui.ui37-target-tip', {n: sp.n, t: dflt}))}"></span>`;
-  const rl = (UI38_PROS && UI38_PROS.rules) || {}, mn = {new: rl.newTarget || 30, carried: rl.carriedTarget || 20}; // 2026-11-09 (UI38): the pool size and its minimum
-  const grp = (cls, title, list, kind)=> `<section class="pk1-mc-sec rv2-panel ui37-grp ${cls}" data-ui37-grp="${kind}"><h3>${escapeHtml(title)} <small data-ui38-n="${list.length}">${list.length}</small> <small class="ui38-min">${escapeHtml(TX('ui.ui38-min', {n: mn[kind]}))}</small></h3><div class="vis4-mc-row ui37-row">${list.length ? list.map(p=> ui37TileHTML(top, p, kind, defs, sp.idx)).join('') : '<span class="panel-sub">–</span>'}</div></section>`;
   const nav = (mm, dir, lab)=> mm ? `<button type="button" class="btn small ghost ui37-go" data-ui37-go="${escapeAttr(mm.id)}" title="${escapeAttr(lab + ': ' + TX('ui.ui37-from', {n: mm.n}) + ' ' + mm.name)}" aria-label="${escapeAttr(lab)}">${dir}</button>` : `<button type="button" class="btn small ghost ui37-go" disabled aria-label="${escapeAttr(lab)}">${dir}</button>`;
   return `<div class="ui37-head"><span class="ui37-nav">${nav(prev, '‹', TX('ui.ui37-prev'))}<b class="ui37-map">${escapeHtml(TX('ui.ui37-from', {n: sp.n}) + ' · ' + ((m && m.icon) ? m.icon + ' ' : '') + (m ? m.name : top))}</b>${nav(next, '›', TX('ui.ui37-next'))}</span>`
     + ct('n', xn, tg.n, tg.dn, TX('ui.ui37-flagged-new'), 'is-new') + ct('c', yc, tg.c, tg.dc, TX('ui.ui37-flagged-carried'), 'is-car')
     + `<span class="ui37-exp" title="${escapeAttr(TX('ui.ui37-export-tip'))}"><button type="button" class="btn small" data-ui37-export="json">⬇ ${escapeHtml(TX('ui.ui37-export'))} .json</button><button type="button" class="btn small" data-ui37-export="csv">.csv</button></span><span class="panel-sub ui37-status" id="ui37Status" role="status">${escapeHtml(ui37StatusText())}</span></div>`
-    + `<p class="panel-sub ui37-sub">${escapeHtml(TX('ui.ui38-sub'))}</p>`
-    + grp('is-new', TX('ui.ui37-new'), sp.neu, 'new') + grp('is-car', TX('ui.ui37-carried'), sp.car, 'carried'); // UI38: both open, no fold
+    + `<p class="panel-sub ui37-sub">${escapeHtml(TX('ui.ui38-sub'))}</p>`;
 }
-function ui37View(){ try{ return localStorage.getItem(UI37_VIEW_KEY) === 'pros' ? 'pros' : 'lists'; }catch(e){ return 'lists'; } }
-// called by pk1OpenMapCards once the window is drawn: the Lists / Prospects switch and the view (admin, a main map only)
+// the map's review entries by card id (the MAP list: chosen, maybe, cut), as the Lists view drew them
+function ui39ReviewMap(top, ok){
+  const out = new Map(); let rv = null; try{ rv = rv1ReviewOf({key: 'cards'}, top); }catch(e){} if(!rv) return out;
+  [['chosen', rv.chosen], ['maybe', rv.maybe], ['cut', rv.cut]].forEach(([kind, l])=> (l || []).forEach(e=>{ if(e && ok(e.id) && !out.has(e.id)) out.set(e.id, {e, kind}); }));
+  return out;
+}
+// NEW! then Carried (both open), then any review entry neither group shows (a cut card, say) in the Lists view's own parts, so nothing on the list is lost
+function ui37GroupsHTML(top, defs, sp, rvMap){
+  const rl = (UI38_PROS && UI38_PROS.rules) || {}, mn = {new: rl.newTarget || 30, carried: rl.carriedTarget || 20}; // 2026-11-09 (UI38): the pool size and its minimum
+  const grp = (cls, title, list, kind)=> `<section class="pk1-mc-sec rv2-panel ui37-grp ${cls}" data-ui37-grp="${kind}"><h3>${escapeHtml(title)} <small data-ui38-n="${list.length}">${list.length}</small> <small class="ui38-min">${escapeHtml(TX('ui.ui38-min', {n: mn[kind]}))}</small></h3><div class="vis4-mc-row rv1-row ui37-row">${list.length ? list.map(p=> ui37TileHTML(top, p, kind, defs, sp.idx, rvMap)).join('') : '<span class="panel-sub">–</span>'}</div></section>`;
+  const shown = new Set(sp.neu.concat(sp.car).map(p=> p.id)), rest = {chosen: [], maybe: [], cut: []};
+  rvMap.forEach((v, id)=>{ if(!shown.has(id)) rest[v.kind].push(v.e); });
+  const part = (kind, label)=> rest[kind].length ? `<div class="rv1-part is-${kind}" data-ui39-rest="${kind}"><h4>${escapeHtml(label)} <small>${rest[kind].length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(rest[kind], kind, defs, 'cards')}</div></div>` : '';
+  return grp('is-new', TX('ui.ui37-new'), sp.neu, 'new') + grp('is-car', TX('ui.ui37-carried'), sp.car, 'carried') // UI38: both open, no fold
+    + part('chosen', TX('ui.rv1-chosen')) + part('maybe', TX('ui.rv1-maybe')) + part('cut', TX('ui.rv1-cut'));
+}
+// called by pk1OpenMapCards once the window is drawn (admin, a main map only): the MAP list's section becomes the NEW! / Carried groups (it keeps the
+// section's data-rv-* so the Cut / Keep counts, Copy my picks and Export all still read its review tiles), the counters go to the top, and the
+// Thematic Recommendation section leaves (its main-map picks are in the groups as "Claude's pick"; side maps keep it in their own window).
 function ui37Mount(ov, top, mapId, ok){
   ui37Live = null;
   if(!adminModeEnabled || mpIsSub(mapId)) return;
-  const modal = ov.querySelector('.pk1-mc-modal'); if(!modal) return;
-  const sw = document.createElement('div'); sw.className = 'ui37-switch mc-seg'; sw.setAttribute('role', 'group'); sw.setAttribute('aria-label', TX('ui.ui37-view-pros'));
-  sw.innerHTML = `<button type="button" data-ui37-view="lists">${escapeHtml(TX('ui.ui37-view-lists'))}</button><button type="button" data-ui37-view="pros">🗳️ ${escapeHtml(TX('ui.ui37-view-pros'))}</button>`;
-  const head = modal.querySelector('.modal-head-row'); head.insertAdjacentElement('afterend', sw);
-  const box = document.createElement('div'); box.className = 'ui37-pros'; box.id = 'ui37Pros'; modal.appendChild(box);
-  ui38Css();
-  const draw = ()=>{ const keep = modal.scrollTop; box.innerHTML = ui37BodyHTML(top, getCardDefs(), ok); try{ wireRewardZoom(box); }catch(e){} modal.scrollTop = keep; }; // 2026-11-09 (UI38): no fold to keep open
-  const setView = v=>{ modal.dataset.ui37View = v; sw.querySelectorAll('[data-ui37-view]').forEach(b=>{ const on = b.dataset.ui37View === v; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }); try{ localStorage.setItem(UI37_VIEW_KEY, v); }catch(e){} if(v === 'pros') draw(); };
-  sw.addEventListener('click', e=>{ const b = e.target.closest('[data-ui37-view]'); if(b) setView(b.dataset.ui37View); });
-  box.addEventListener('click', e=>{
+  const modal = ov.querySelector('.pk1-mc-modal'), body = modal && modal.querySelector('.pk1-mc-body'); if(!body || !ui37MapsData().some(m=> m.id === top)) return;
+  try{ localStorage.removeItem(UI37_VIEW_KEY); }catch(e){} // the old Lists / Prospects choice
+  const keys = mapPoolSections(top).filter(s=> s.key === 'cards' || s.key === 'special').map(s=> s.key), old = body.children[keys.indexOf('cards')];
+  const wrap = document.createElement('section'); wrap.id = 'ui37Pros'; wrap.className = 'pk1-mc-sec ui39-list';
+  if(old && old.matches('.pk1-mc-sec:not(.ui13-baby-sec)') && !old.hasAttribute('data-rv-special')){ ['data-rv-i', 'data-rv-n', 'data-rv-m', 'data-rv-label'].forEach(a=>{ if(old.hasAttribute(a)) wrap.setAttribute(a, old.getAttribute(a)); }); if(old.classList.contains('has-rv1')) wrap.classList.add('has-rv1'); old.replaceWith(wrap); }
+  else body.insertBefore(wrap, body.firstChild);
+  const cl = modal.querySelector('#ui22McClaude'); if(cl) cl.remove();
+  const head = document.createElement('div'); head.className = 'ui39-head'; head.id = 'ui39Head';
+  const at = modal.querySelector(':scope > .rv1-bar') || modal.querySelector('.modal-head-row + .panel-sub') || modal.querySelector('.modal-head-row'); at.insertAdjacentElement('afterend', head); // under the button row (UI28: it sits right under the subtitle), above the skills
+  modal.dataset.ui39 = '1'; ui38Css();
+  const draw = ()=>{ const keep = modal.scrollTop, defs = getCardDefs(), sp = ui37Split(top, defs, ok); head.innerHTML = ui37HeadHTML(top, sp); wrap.innerHTML = ui37GroupsHTML(top, defs, sp, ui39ReviewMap(top, ok)); try{ wireRewardZoom(wrap); }catch(e){} rv2Update(ov); modal.scrollTop = keep; };
+  const onClick = e=>{
     const t = e.target; let b;
     if((b = t.closest('[data-ui37-flag]'))){ e.stopPropagation(); const tile = b.closest('.ui37-tile'), id = tile.dataset.ui37Id, cur = ui37FlagOf(top, id); ui37SetFlag(top, id, cur === b.dataset.ui37Flag ? '' : b.dataset.ui37Flag); draw(); return; }
     if((b = t.closest('[data-ui37-go]'))){ e.stopPropagation(); pk1OpenMapCards(b.dataset.ui37Go); return; }
     if((b = t.closest('[data-ui37-export]'))){ e.stopPropagation(); ui37ExportFile(b.dataset.ui37Export); return; }
-  });
-  box.addEventListener('change', e=>{ const inp = e.target.closest && e.target.closest('[data-ui37-target]'); if(!inp) return; ui37SetTarget(top, inp.dataset.ui37Target, inp.value); draw(); });
-  ui37Live = {ov, top, draw: ()=>{ if(modal.dataset.ui37View === 'pros') draw(); }};
-  setView(ui37View());
+  };
+  head.addEventListener('click', onClick); wrap.addEventListener('click', onClick);
+  head.addEventListener('change', e=>{ const inp = e.target.closest && e.target.closest('[data-ui37-target]'); if(!inp) return; ui37SetTarget(top, inp.dataset.ui37Target, inp.value); draw(); });
+  ui37Live = {ov, top, draw};
+  draw();
 }
 // UI37_PROS:END
 // UI38_PROS:START
@@ -34120,7 +34158,19 @@ function ui38Css(){
   const st = document.createElement('style'); st.id = 'ui38Css';
   st.textContent = '.ui37-src.is-fit{background:#cfe3c8; color:#1d3a17;} .ui37-src.is-concept{background:#2f7f86; color:#fff;}'
     + ' .ui38-min{font-weight:600; opacity:.7; font-size:.8em;} .ui38-cchip .cc-disc{background:repeating-linear-gradient(45deg, rgba(255,255,255,.08) 0 4px, transparent 4px 8px), #3a2e1e; outline:1.5px dashed rgba(255,243,220,.55); outline-offset:-4px;}'
-    + ' .ui38-cchip .cc-disc::before{content:"" !important;} .ui37-tile.is-concept{border-style:dashed;}';
+    + ' .ui38-cchip .cc-disc::before{content:"" !important;} .ui37-tile.is-concept{border-style:dashed;}'
+    // 2026-11-09 (package UI39): the one combined view: full cards in a wrapping grid, the pills and Yes / No under each card, the concept placeholder card
+    + ' .pk1-mc-modal .ui39-list{margin:0; padding:0; border:0; background:none;}'
+    + ' .pk1-mc-overlay .ui39-list .ui37-row{display:flex; flex-wrap:wrap; gap:12px 10px; align-items:flex-start;}'
+    + ' .ui37-tile.ui39-tile{display:flex; flex-direction:column; align-items:center; flex-wrap:nowrap; gap:4px; padding:5px 5px 6px; border-radius:12px; width:calc(var(--card-full-w) + 12px); max-width:100%; box-sizing:border-box;}'
+    + ' .ui39-tile > .rv1-tile, .ui39-tile > .ui39-ctile{width:var(--card-full-w); max-width:100%;} .ui39-ctile{display:flex; flex-direction:column;} .ui39-ctile .ui39-cc{width:100% !important; height:auto !important; margin:0; border-radius:8px; cursor:help;} .ui39-tile .ui37-pills{justify-content:center;} .ui39-tile .ui37-yn{align-self:center;}'
+    + ' .ui39-tile.is-no > .rv1-tile{opacity:.6;} .ui37-tile.ui39-tile.is-no{opacity:1;}'
+    + ' .ui39-cc{display:flex !important; flex-direction:column; gap:3px; padding:6px 6px 7px; box-sizing:border-box; text-align:left; color:#f6ead2; overflow:hidden; font:600 10px/1.25 system-ui,sans-serif;'
+    + ' background:repeating-linear-gradient(45deg, rgba(255,255,255,.05) 0 6px, transparent 6px 12px), #3a2e1e; border:2px dashed rgba(255,243,220,.5); aspect-ratio:auto !important; min-height:calc(var(--card-full-w) * 1.25);}'
+    + ' .ui39-cc.rar-uncommon{border-color:#6fbf73;} .ui39-cc.rar-rare{border-color:#5aa0e6;}'
+    + ' .ui39-cc-name{font:800 11.5px/1.15 \'Baloo 2\',system-ui,sans-serif; color:#ffe7b0;} .ui39-cc-art{display:flex; align-items:center; justify-content:center; min-height:30px; border-radius:6px; background:rgba(0,0,0,.25); font-size:9px; opacity:.75;}'
+    + ' .ui39-cc-line{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;} .ui39-cc-rar{font-weight:800; white-space:normal;} .ui39-cc-animal{text-transform:capitalize;} .ui39-cc-role{opacity:.9; display:-webkit-box; -webkit-line-clamp:5; -webkit-box-orient:vertical; overflow:hidden;}'
+    + ' @media (max-width:560px){ .pk1-mc-modal .rv2-tip{max-width:min(240px, 62vw);} .pk1-mc-modal .rv1-bar .rv2-copy:nth-child(2) .rv2-tip{left:auto; right:0;} }'; // the Export all tip, hidden, made the window scroll sideways at 390 (as UI29 for its window)
   document.head.appendChild(st);
 }
 // UI38_PROS:END
