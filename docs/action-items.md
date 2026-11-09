@@ -8,6 +8,13 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-09 16:35: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | Thematic Recommendation and "Keyword of the map" cards: same full-card format as the list groups | UI40 |
+| 2 | Owner asks: is Maybe fused with Chosen? | answered: yes since UI38/UI39 (Maybe cards sit in NEW! / Carried with a Maybe pill) |
+| 3 | Update this and push all | release 11-09 |
+
 ## 11-09 10:17: Owner notes
 | # | Note | Package |
 |---|---|---|
