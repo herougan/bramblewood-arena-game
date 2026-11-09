@@ -8,6 +8,12 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-09 10:17: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | Combine Prospects and Lists into one view: pick from there, full card view, not pills | UI39 |
+| 2 | Owner asks: is it dynamic (a change on an earlier map changes card statuses on later maps)? | answered: yes (rule UI37-1) |
+
 ## 11-09 03:55: Owner notes
 | # | Note | Package |
 |---|---|---|
