@@ -4315,7 +4315,7 @@
  "A side skill in the Codex draft's skill distribution for this map": "Une compétence secondaire de cette carte dans la répartition du brouillon Codex",
  "Codex draft pick (no card on this map has it yet)": "Choix du brouillon Codex (aucune carte de cette carte ne l'a encore)",
  "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "Le Vol ne l'esquive pas. Sans ennemi en face, il frappe un ennemi du couloir voisin au lieu de la ronce.",
- "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "Son coup compte comme Vol 1 : un volant ne l'esquive jamais, une unité Mach 1 fois sur 2. Si son couloir est vide, il frappe un ennemi d'un couloir voisin (celui qui a le moins de Santé ; à égalité, pile ou face) et ne touche la ronce que si aucun des deux n'en a. La Provocation l'attire toujours.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (a coin flip when both have one) and hits the bramble only when neither lane has one. Taunt still draws it.": "Son coup compte comme Vol 1 : un volant ne l'esquive jamais, une unité Mach 1 fois sur 2. Si son couloir est vide, il frappe un ennemi d'un couloir voisin (pile ou face si les deux en ont un) et ne touche la ronce que si aucun des deux n'en a. La Provocation l'attire toujours.",
  "{a} reaches into the next lane and strikes {t}.": "{a} frappe dans le couloir voisin et touche {t}.",
  "Reach": "Allonge",
  "Shield: Armor": "Bouclier : Armure",

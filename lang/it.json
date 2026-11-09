@@ -4316,7 +4316,7 @@
  "A side skill in the Codex draft's skill distribution for this map": "Una abilità secondaria di questa mappa nella distribuzione della bozza Codex",
  "Codex draft pick (no card on this map has it yet)": "Scelta della bozza Codex (nessuna carta di questa mappa ce l'ha ancora)",
  "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "Il Volo non lo schiva. Senza nemici di fronte, colpisce un nemico nella corsia accanto invece del rovo.",
- "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "Il suo colpo conta come Volo 1: un volante non lo schiva mai, un'unità Mach 1 volta su 2. Con la sua corsia vuota colpisce un nemico in una corsia accanto (quello con meno Salute; a parità, testa o croce) e colpisce il rovo solo se nessuna delle due ne ha. Provocazione lo attira ancora.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (a coin flip when both have one) and hits the bramble only when neither lane has one. Taunt still draws it.": "Il suo colpo conta come Volo 1: un volante non lo schiva mai, un'unità Mach 1 volta su 2. Con la sua corsia vuota colpisce un nemico in una corsia accanto (testa o croce se entrambe ne hanno uno) e colpisce il rovo solo se nessuna delle due ne ha. Provocazione lo attira ancora.",
  "{a} reaches into the next lane and strikes {t}.": "{a} arriva nella corsia accanto e colpisce {t}.",
  "Reach": "Portata",
  "Shield: Armor": "Scudo: Armatura",

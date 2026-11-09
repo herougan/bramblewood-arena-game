@@ -4315,7 +4315,7 @@
  "A side skill in the Codex draft's skill distribution for this map": "Codexの草案でこのマップのサブ技能",
  "Codex draft pick (no card on this map has it yet)": "Codex草案の推奨(このマップのカードにはまだありません)",
  "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "飛行では回避できない。正面に敵がいなければ、いばらの代わりに隣のレーンの敵を攻撃する。",
- "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "攻撃は飛行1として扱う：飛行ユニットは回避できず、マッハは2回に1回回避する。自分のレーンが空なら隣のレーンの敵を攻撃し（体力の少ない方、同じならコイントス）、どちらにもいない時だけいばらを攻撃する。挑発には引き寄せられる。",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (a coin flip when both have one) and hits the bramble only when neither lane has one. Taunt still draws it.": "攻撃は飛行1として扱う：飛行ユニットは回避できず、マッハは2回に1回回避する。自分のレーンが空なら隣のレーンの敵を攻撃し（両方にいればコイントス）、どちらにもいない時だけいばらを攻撃する。挑発には引き寄せられる。",
  "{a} reaches into the next lane and strikes {t}.": "{a} は隣のレーンへ届き、{t} を攻撃した。",
  "Reach": "リーチ",
  "Shield: Armor": "シールド：アーマー",

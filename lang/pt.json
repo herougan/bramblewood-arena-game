@@ -4316,7 +4316,7 @@
  "A side skill in the Codex draft's skill distribution for this map": "Uma habilidade secundária deste mapa na distribuição do rascunho Codex",
  "Codex draft pick (no card on this map has it yet)": "Escolha do rascunho Codex (nenhuma carta deste mapa a tem ainda)",
  "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "Voar não se esquiva dele. Sem inimigo à frente, golpeia um inimigo da faixa ao lado em vez da sarça.",
- "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "Seu golpe conta como Voar 1: um voador nunca se esquiva, uma unidade Mach 1 em 2. Com sua faixa vazia, golpeia um inimigo de uma faixa ao lado (o de menos Vida; empate, cara ou coroa) e só atinge a sarça se nenhuma das duas tiver. Provocar ainda o atrai.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (a coin flip when both have one) and hits the bramble only when neither lane has one. Taunt still draws it.": "Seu golpe conta como Voar 1: um voador nunca se esquiva, uma unidade Mach 1 em 2. Com sua faixa vazia, golpeia um inimigo de uma faixa ao lado (cara ou coroa se as duas tiverem) e só atinge a sarça se nenhuma das duas tiver. Provocar ainda o atrai.",
  "{a} reaches into the next lane and strikes {t}.": "{a} alcança a faixa ao lado e golpeia {t}.",
  "Reach": "Alcance",
  "Shield: Armor": "Escudo: Armadura",

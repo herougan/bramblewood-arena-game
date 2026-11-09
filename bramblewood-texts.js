@@ -3651,7 +3651,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui35-pill-cxside-tip": "A side skill in the Codex draft's skill distribution for this map",
   "ui.ui35-codex-ctx": "Codex draft pick (no card on this map has it yet)",
   "ui.sk-reach": "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.",
-  "ui.sk-reach-codex": "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.",
+  "ui.sk-reach-codex": "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (a coin flip when both have one) and hits the bramble only when neither lane has one. Taunt still draws it.",
   "ui.eng37-log-reach": "{a} reaches into the next lane and strikes {t}.",
   "ui.eng37-reach-fl": "↗ Reach",
   "ui.skn-shield-armor": "Shield: Armor",

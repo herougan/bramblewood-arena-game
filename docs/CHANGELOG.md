@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-09 Package ENG38 (owner 21:36 on ENG37-1: "Never have prioritised targeting, alwayes default to randomign")
+- Players see: a Reach unit with an enemy in both lanes beside it now strikes one of them at random (was: the one with less Health); its codex line says so (12 packs updated). Where several units were equally good for a skill (as wounded, as near, as strong), one is now picked at random instead of the left one, the first listed or the newest. Amore pairs with a random fitting ally, Dismantle breaks a random loose piece (both were "the nearest", which their texts never said).
+- Engine: `eng38Pick` / `eng38Best` / `eng38TopN` (the fight's seeded RNG; a roll only on a real tie, so fights with no tie replay the same). Changed picks: Reach, Healing, Herb Refinery, Cure, Repair, Berries, Grant, Hype, Rampart, Disarm, a "furthest" ally, Thistle Prick / Undertow / Root Grip / Lodge Repairs ties, Trident / Pitchfork side line, Octolash's 7th lash, Amore, Dismantle. Named rules kept; call ENG38-1 asks whether they go random too. CPU strategy (where it plays, what it equips, its Aimed Bolt) unchanged.
+- Measure (`skirmish_pass.js measure 40 --maxmap=20 --tag=eng38` vs bal32, Maps 0-20, 226 fights): 152 in band (was 153), 170 within 10 (171), 15 beyond 20 (15), mean win 66.8 (66.8); 9 of 241 fights moved, most by one game in 40; the biggest are the two bosses whose ties went random, 4-5 Drowned Colossus (Undertow) 30 -> 20 and 2-A-7 Lodge Matriarch (Lodge Repairs) 45 -> 37.5. Same worst 8. card-matrix: 0 failures, 11 golden diffs (fights whose ties now roll differently), to accept with `--update` at the batch release.
+- Tests: `tests/eng38-2026-11-09.js`; eng37's "less Health" pin now checks one of the two is struck.
+
 ## 2026-11-09 Package FIX11 (five tests that failed on release 4093e677)
 - Players see: nothing; no game file changed.
 - Stale pins updated: eng28 / eng37 read a wider CHANGELOG window (newer entries sit above theirs); eng36 accepts BAL32's intended Constrict reprice (ENG36's price 8, half scale, kept in `bal32Was`).
