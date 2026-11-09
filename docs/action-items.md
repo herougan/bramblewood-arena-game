@@ -8,6 +8,17 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-09 21:36: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | Map cards: keep the proposed concept cards; 7 cards a row; no obvious faction cards; dark-mode number boxes | UI41 (running) |
+| 2 | UI39-1 a, with the Cut / Keep emojis on Yes / No; UI39-2 a; UI38-3 a | UI41 (running) |
+| 3 | Owner asks: how many NEW! a map? | decision UI41-1 (Claude: 10 at Maps 0-2, 8 at Maps 3-20) |
+| 4 | Owner asks: are flags permanent, or export? | answered: saved in the browser and, signed in as admin, to the cloud; Claude folds them into the map lists when asked |
+| 5 | ENG37-1 b; rule: never prioritised targeting, always random | ENG38 (running) |
+| 6 | Claude decides the rest (66 delegated; DES2-2 renames left open) | BAL33 running (BAL28-1 a, BAL28-2 b, ENG32-2 c measure). Queued: CONTENT19 (FIX10-1 a Cormorant 3/6, CONTENT16-1..4), ENG39 (ENG33-1 a Smelly, DES2-3 a skill merges), UI42 (BAL25-3 a For its budget, UI34-1 a Codex counters), BAL34 (UI27-4 a one skill count) |
+| 7 | Keep the sims running | BAL31 segments in the background |
+
 ## 11-09 16:35: Owner notes
 | # | Note | Package |
 |---|---|---|
