@@ -139,7 +139,7 @@ ok(E.makeSimEngine(defs, E.mulberry32(1), {}).flyLevelOf({reach:true}) === 0, 'a
   ok(/key:'shellWhen', category:'passive', label:TX\('ui\.skn-shell-when'\), kind:'select'/.test(app) && /value:'afterAttack'/.test(app), 'editor: a Shell "when" select row (after it attacks)');
   ok(/case 'reachAim': return \{cls:'', text: TX\('ui\.eng37-log-reach'/.test(app), 'the battle log reads a Reach strike'); }
 // docs
-{ ok(/ENG37/.test(rd('docs/CHANGELOG.md').slice(0, 6000)), 'CHANGELOG: an ENG37 entry at the top');
+{ ok(/ENG37/.test(rd('docs/CHANGELOG.md').slice(0, 60000)), 'CHANGELOG: an ENG37 entry at the top'); // 2026-11-09 (FIX11): window 6000 -> 60000, newer packages' entries sit above ENG37's
   const dj = J('docs/decisions.json'), list = Array.isArray(dj) ? dj : (dj.decisions || dj.items || []);
   ok(JSON.stringify(list).includes('ENG37-1'), 'decisions.json: ENG37 decisions'); }
 

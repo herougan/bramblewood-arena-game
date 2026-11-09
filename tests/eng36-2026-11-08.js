@@ -135,7 +135,7 @@ function wallsOf(id){ const {e, P} = mk(); const h = {uid: 9500, defId:id}; P[1]
   const app = rd('arena_app.js'); ok(/ACTION_DEFS\.push\(\s*\{key:'strangle'[\s\S]{0,400}\{key:'constrict'/.test(app), 'the action editor offers Strangle and Constrict');
   ok(/PASSIVE_DEFS\.push\(\{key:'constrict'/.test(app) && /constrict:'🐍'/.test(app), 'Constrict is a skill with an icon');
   const del = J('canonical/skill-delivery.json'); ok(del.delivery.constrict === 'none' && del.rides.constrict === 'melee', 'skill-delivery.json: Constrict rides melee hits (as Strangle)');
-  const sc = J('canonical/skill-costs.json'); ok(sc.skills.some(s=> s.id === 'constrict' && s.value === 8) && ['strangle', 'constrict', 'strangle.amount', 'constrict.amount'].every(id=> sc.actions.some(a=> a.id === id)), 'Constrict is priced (skill 8, half scale) and both actions'); }
+  const sc = J('canonical/skill-costs.json'); ok(sc.skills.some(s=> s.id === 'constrict' && (s.value === 8 || (s.bal32Was && s.bal32Was.value === 8 && s.bal32Was.scale === 'half'))) && /* 2026-11-09 (FIX11): BAL32 repriced Constrict on purpose (scale n, value x N^pow); ENG36's price 8 half scale is kept in bal32Was */['strangle', 'constrict', 'strangle.amount', 'constrict.amount'].every(id=> sc.actions.some(a=> a.id === id)), 'Constrict is priced (skill 8, half scale) and both actions'); }
 
 // ================= 5. Hoard N = +N/+N a Lumber =================
 { const {e, P} = mk(); const c = put(e, P, 1, 'e36-hoard1', 0); P[1].lumber = 2; e.syncPhaseStats(P, so, []); ok(e.effAtkOf ? true : true, '');

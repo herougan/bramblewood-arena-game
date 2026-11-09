@@ -1,5 +1,5 @@
 {
- "_about": "BAL32: Maps 0-20 budget verdicts before (origin/batch-1023e) and after the BAL31-1/2/3 prices (on-hit riders, enablers, merged keys); beyond = live cards on no Map 0-20 list that flip. Report only.",
+ "_about": "BAL32: Maps 0-20 budget verdicts before (45ac4f34^) and after the BAL31-1/2/3 prices (on-hit riders, enablers, merged keys); beyond = live cards on no Map 0-20 list that flip; unplaced = unlisted cards that flip at their proposed home map (FIX11). Report only.",
  "tally": {
   "cards": 321,
   "before": {
@@ -92,6 +92,27 @@
    "use": [
     0.97,
     1.01
+   ],
+   "verdict": [
+    "ok",
+    "over"
+   ]
+  }
+ ],
+ "unplaced": [
+  {
+   "id": "bloodworm",
+   "name": "Bloodworm",
+   "rarity": "common",
+   "stats": "2/6",
+   "map": 2,
+   "S": [
+    4.95,
+    5.61
+   ],
+   "use": [
+    0.99,
+    1.03
    ],
    "verdict": [
     "ok",

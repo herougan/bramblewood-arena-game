@@ -43,14 +43,20 @@ function isOutOfPlay(G, d){
 // 2026-10-29 LISTFIX1: why a budget check holds off on a card: 'unplaced' (out of play, isOutOfPlay), 'pending' (on a list and over its budget
 // for its first map: the owner's step 3, docs/balance/listfix1-pending-budget-2026-10-29.json), or '' (check it). Loads tools/lib_bramble.js once.
 let LB = null, PEND = null;
-function budgetHold(id){
-  LB = LB || require('./lib_bramble.js');
+function loadPending(){
   if(!PEND){ try{ PEND = new Set(JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'listfix1-pending-budget-2026-10-29.json'), 'utf8')).cards.map(c=> c.id)); }catch(e){ PEND = new Set(); }
     // 2026-11-08 (package BAL30, owner BAL29-1: update the prices and N now, no card refit): the cards the BAL29 A+B / Reach / Bulwark prices put over (or well under) budget wait for the owner's re-fit step
     try{ JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'bal30', 'verdict-change-2026-11-08.json'), 'utf8')).flips.forEach(c=> PEND.add(c.id)); }catch(e){}
     // 2026-11-09 (package BAL32, owner BAL31-1/2/3: prices only, no card refit): the cards the on-hit rider / enabler prices flip (Maps 0-20 and beyond) wait for the re-fit step
-    try{ const v = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'bal32', 'verdict-change-2026-11-09.json'), 'utf8')); (v.flips || []).concat(v.beyond || []).forEach(c=> PEND.add(c.id)); }catch(e){} }
+    try{ const v = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'bal32', 'verdict-change-2026-11-09.json'), 'utf8')); (v.flips || []).concat(v.beyond || []).concat(v.unplaced || []).forEach(c=> PEND.add(c.id)); }catch(e){} } // 2026-11-09 (FIX11): + unplaced (unlisted cards judged at their proposed home map)
+  return PEND;
+}
+function budgetHold(id){
+  LB = LB || require('./lib_bramble.js'); loadPending();
   const d = LB.CARD_DEFS_BASELINE[id];
   return d && isOutOfPlay(LB.G, d) ? 'unplaced' : PEND.has(id) ? 'pending' : '';
 }
-module.exports = {normalizeEntry, uniq, fightPool, listedIds, isOutOfPlay, budgetHold};
+// 2026-11-09 (package FIX11): is this card waiting for the owner's re-fit step, whether listed or not? For tests that judge an unlisted card at its
+// proposed home map (content7's bloodworm), where budgetHold answers 'unplaced' first.
+function budgetPending(id){ return loadPending().has(id); }
+module.exports = {normalizeEntry, uniq, fightPool, listedIds, isOutOfPlay, budgetHold, budgetPending};

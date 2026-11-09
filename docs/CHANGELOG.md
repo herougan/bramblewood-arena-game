@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-09 Package FIX11 (five tests that failed on release 4093e677)
+- Players see: nothing; no game file changed.
+- Stale pins updated: eng28 / eng37 read a wider CHANGELOG window (newer entries sit above theirs); eng36 accepts BAL32's intended Constrict reprice (ENG36's price 8, half scale, kept in `bal32Was`).
+- Bloodworm (unlisted, proposed home Map 2): BAL32's on-hit prices moved it 99 -> 103% of N at Map 2 (S 4.95 -> 5.61), no stats changed. Held for the owner's re-fit like BAL32's other flips. The miss: `tools/bal32/verdict_change_2026_11_09.js` skipped unplaced cards; it now judges them at the proposed home map in creatorNote and lists them as `unplaced` in `docs/balance/bal32/verdict-change-2026-11-09.json` (bloodworm the only one). `tools/lib_map_pools.js` holds them and adds `budgetPending(id)`, which content7 reads.
+- reward-screens B5 (and B4 / B6 in one run here): a timing flake, not the release. The auto-won fights had not reached the Victory card in 60 rounds on a loaded machine; 4 later test runs (3 in parallel) and 4 scripted repeats of the four fights all reached their cards. The loop now runs up to 150 rounds and reports why a card is missing instead of null.
+
 ## 2026-11-09 Package UI40 (owner 16:35: "Make the thematic section and keyword use the same format as the above version")
 - Players see (admin 🃏 Map cards window): "Thematic Recommendation" (side maps) and "Keyword of the map" -> "Cards on this map that have it" now show full cards (art, name, stats, skills, power badge, ✏️) in a wrapping grid, as the NEW! / Carried groups do, instead of round-art name chips. The Claude New / New card tag is a pill under the card (with the pack pill), the 🏹 ranged mark sits on the card's left edge; headings, counts and the theme-group headings are kept. At 390 px three cards a row, no sideways scroll.
 - Still chips (unchanged): Skirmish rewards, a SPECIAL list with no review, and a side-map list with no review (e.g. Murgle Mayhem, The Long Burrow, The Undercroft).
