@@ -1,0 +1,52 @@
+{
+ "tool": "tools/bal33/canopy_measure_2026_11_09.js",
+ "games": 200,
+ "seed0": 9100,
+ "rows": {
+  "14-A-1": {
+   "name": "Dart Frogs",
+   "kind": "skirmish",
+   "target": 90,
+   "lo": 82,
+   "hi": 98,
+   "now": 14.5,
+   "bowerOn": 5.5
+  },
+  "14-A-2": {
+   "name": "Strangler Arch",
+   "kind": "skirmish",
+   "target": 80,
+   "lo": 72,
+   "hi": 88,
+   "now": 73.5,
+   "bowerOn": 52
+  },
+  "14-A-3": {
+   "name": "Sloth Boughs",
+   "kind": "skirmish",
+   "target": 70,
+   "lo": 62,
+   "hi": 78,
+   "now": 64,
+   "bowerOn": 37
+  },
+  "14-A-4": {
+   "name": "Drum Circle",
+   "kind": "elite",
+   "target": 60,
+   "lo": 52,
+   "hi": 68,
+   "now": 49,
+   "bowerOn": 13
+  },
+  "14-A-5": {
+   "name": "The Jaguar's Path",
+   "kind": "boss",
+   "target": 40,
+   "lo": 30,
+   "hi": 49,
+   "now": 26,
+   "bowerOn": 8.5
+  }
+ }
+}

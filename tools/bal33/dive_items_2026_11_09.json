@@ -1,0 +1,8 @@
+[
+ {"key": "bal33:flying", "id": "flying", "test": {"flying": true}},
+ {"key": "bal33:flying+dive", "id": "dive", "n": true, "test": {"flying": true, "dive": true}},
+ {"key": "bal33:flying+dive=2", "id": "dive", "n": 2, "test": {"flying": true, "dive": 2}},
+ {"key": "bal33:tide", "id": "tide", "test": {"tide": true}},
+ {"key": "bal33:tide+dive", "id": "dive", "n": true, "test": {"tide": true, "dive": true}},
+ {"key": "bal33:tide+dive=2", "id": "dive", "n": 2, "test": {"tide": true, "dive": 2}}
+]

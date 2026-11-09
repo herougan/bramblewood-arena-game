@@ -1,0 +1,155 @@
+{
+ "about": "BAL33 whole-space search (tools/bal33/canopy_space_2026_11_09.js)",
+ "code": "14-A-1",
+ "map": "my",
+ "mapName": "The Canopy",
+ "kind": "skirmish",
+ "name": "Sloth Boughs",
+ "band": {
+  "lo": 82,
+  "hi": 98,
+  "target": 90
+ },
+ "list": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "hoopoe-herald",
+  "kinkajou-lurker",
+  "leafcutter-gardener",
+  "pangolin-roller",
+  "proboscis-monkey",
+  "redwood-woodpecker",
+  "vampire-bat",
+  "weaver-bird"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "vampire-bat"
+ ],
+ "namesake": false,
+ "shieldRule": 18,
+ "shieldOverride": 0,
+ "space": 2746,
+ "truncated": false,
+ "screened": 160,
+ "top": [
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "hoopoe-herald": 4,
+    "leafcutter-gardener": 1,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1,
+    "vampire-bat": 2,
+    "weaver-bird": 4
+   },
+   "tune60": 75
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "hoopoe-herald": 5,
+    "kinkajou-lurker": 1,
+    "leafcutter-gardener": 1,
+    "proboscis-monkey": 1,
+    "vampire-bat": 2,
+    "weaver-bird": 3
+   },
+   "tune60": 68.3
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "kinkajou-lurker": 4,
+    "proboscis-monkey": 1,
+    "redwood-woodpecker": 1,
+    "vampire-bat": 2,
+    "weaver-bird": 4
+   },
+   "tune60": 66.7
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 1,
+    "proboscis-monkey": 1,
+    "vampire-bat": 3,
+    "weaver-bird": 4
+   },
+   "tune60": 66.7
+  },
+  {
+   "deck": {
+    "hoopoe-herald": 4,
+    "kinkajou-lurker": 1,
+    "leafcutter-gardener": 1,
+    "proboscis-monkey": 1,
+    "vampire-bat": 3,
+    "weaver-bird": 4
+   },
+   "tune60": 65
+  },
+  {
+   "deck": {
+    "apollo-butterfly": 1,
+    "camouflage-frog": 1,
+    "hoopoe-herald": 4,
+    "kinkajou-lurker": 3,
+    "leafcutter-gardener": 1,
+    "proboscis-monkey": 1,
+    "vampire-bat": 3
+   },
+   "tune60": 65
+  }
+ ],
+ "before": {
+  "deck": {
+   "hoopoe-herald": 5,
+   "kinkajou-lurker": 1,
+   "vampire-bat": 3,
+   "weaver-bird": 2,
+   "proboscis-monkey": 1,
+   "redwood-woodpecker": 1,
+   "camouflage-frog": 1
+  },
+  "leaders": [
+   "vampire-bat"
+  ],
+  "shieldOverride": 0,
+  "win200": 64
+ },
+ "pick": {
+  "deck": {
+   "apollo-butterfly": 1,
+   "hoopoe-herald": 4,
+   "leafcutter-gardener": 1,
+   "proboscis-monkey": 1,
+   "redwood-woodpecker": 1,
+   "vampire-bat": 2,
+   "weaver-bird": 4
+  },
+  "leaders": [
+   "vampire-bat"
+  ],
+  "shieldOverride": 0,
+  "win200": 69,
+  "tune60": 75
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 64
+  },
+  {
+   "move": "space pick",
+   "win": 69
+  }
+ ],
+ "sec": 474
+}
