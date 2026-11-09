@@ -91,7 +91,7 @@ const SEEDS = 40;
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=> ok(!!J(`lang/${code}.json`)[codex], `lang/${code}.json: the new Reach codex text`));
   const ps = rd('docs/project-state.md'); ok(/Targeting picks at random, never by priority[^\n]*\*\*Built \(ENG38, 2026-11-09\)\.\*\*/.test(ps), 'project-state: the bullet reads Built (ENG38)');
   const d = J('docs/decisions.json'), it = (d.items || []).find(x=> x.id === 'ENG38-1');
-  ok(it && it.status === 'YET' && it.default === 'a' && (it.body || '').split(/\s+/).length < 100 && it.options.length === 2, 'decision ENG38-1: YET, default a, under 100 words');
+  ok(it && (it.status === 'YET' || it.status === 'DONE') && it.default === 'a' && (it.body || '').split(/\s+/).length < 100 && it.options.length === 2, 'decision ENG38-1: YET or DONE (decided 11-09), default a, under 100 words');
   ok(/ENG38/.test(rd('docs/CHANGELOG.md').slice(0, 6000)), 'CHANGELOG entry at the top');
   ok(/eng38-2026-11-09\.js/.test(rd('tests/run-all.sh')), 'run-all.sh runs this test');
   ok(/ENG38/.test(rd('docs/effects-catalogue.md')), 'effects-catalogue mentions ENG38'); }
