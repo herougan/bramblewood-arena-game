@@ -17,7 +17,7 @@ ok(/const V3 = args\.includes\('--v3'\)/.test(tool), '--v3 switches the measure 
 ok(/V3 && !N_ARG \? 400/.test(tool), '400 games a card by default under --v3');
 ok(/\|\| 100\);/.test(tool) && /TOP_SHARE = 0\.2, LOW_SAMPLE = 20/.test(tool), 'without --v3 the tool runs as BAL22 (100 games, top 20%)');
 ok(/optv\('adv-top', 0\.4\)/.test(tool) && /Math\.round\(ok\.length \* TOP\)/.test(tool), 'advanced pool: the top 40% under --v3');
-ok(/optv\('adv-mix', 5\)/.test(tool) && /fill\(shuf\(top\), all \? ADV_MIX : 20\)/.test(tool) && /fill\(shuf\(all\), 20\)/.test(tool), 'advanced deck: 5 top-pool cards, the rest from every measured card');
+ok(/optv\('adv-mix', 20\)/.test(tool) /* 2026-11-10 (BAL34, BAL25-1 b): 20 top-pool cards by default; --adv-mix=5 is BAL25's mix */ && /fill\(shuf\(top\), all \? ADV_MIX : 20\)/.test(tool) && /fill\(shuf\(all\), 20\)/.test(tool), 'advanced deck: 20 top-pool cards by default (BAL25-1 b; the mix with --adv-mix=K)');
 ok(/'termite-forager', 'land-tiller'/.test(tool), 'two Lumber cards in the v3 filler');
 ok(/\['cycle', 0\.5\], \['day', 0\.25\], \['night', 0\.25\]/.test(tool), 'phase roll: cycle 50% / day 25% / night 25%');
 ok(/makeSimEngine\(D, rnd, \{battleMode: MODE, rules\}\)/.test(tool) && /playV3\(D, [^)]*env\.rules, 60\)/.test(tool), 'each game passes its rolled rules to the engine');
@@ -57,7 +57,7 @@ ok(rows.every(r=> r.byPhase && ['cycle', 'day', 'night'].reduce((s, k)=> s + r.b
 ok(rows.every(r=> RAW[r.id].rarity === r.rarity || r.rarity === null), 'card data untouched: the report\'s rarity is the card\'s');
 // advanced
 { const A = rep.advanced; ok(A && A.topShare === 0.4 && A.complete === true && A.measured === rows.length, 'advanced pass complete, top 40%');
-  ok(A.poolCards === 5 && /every measured/.test(A.restFrom || ''), 'advanced mix recorded (5 top-pool cards + the field)');
+  ok(A.poolCards === 20 && !A.restFrom, 'advanced opponent recorded: 20 top-pool cards (2026-11-10 BAL34, BAL25-1 b; was 5 + the field)');
   ok(JSON.parse(read('docs/balance/bal25/adv-calibration-2026-11-07.json')).rows.some(r=> /picked/.test(r.opponent)), 'the calibration of the mix is committed');
   const elig = rows.filter(r=> r.winRate != null && r.played >= 20);
   ok(Math.abs(A.pool.length - Math.round(elig.length * 0.4)) <= 1, 'pool = top 40% of the measured cards (' + A.pool.length + ' of ' + elig.length + ')');
@@ -66,7 +66,7 @@ ok(rows.every(r=> RAW[r.id].rarity === r.rarity || r.rarity === null), 'card dat
   const adv = rows.filter(r=> r.advRate != null).map(r=> r.advRate).sort((a, b)=> a - b), med = adv[Math.floor(adv.length / 2)];
   ok(adv.length > rows.length * 0.9, 'advanced rate for most cards');
   ok(rows.filter(r=> A.pool.includes(r.id) && r.advRate != null).every(r=> r.advRate <= r.winRate + 15), 'pool cards come back toward 50 against the pool');
-  ok(med >= 40 && med <= 60, 'the advanced median sits near 50 (' + med + ')');
+  ok(med >= 10 && med <= 30, 'the advanced median sits near 20 (' + med + '); 2026-11-10 (BAL34, BAL25-1 b): 20 top-40% cards, the strongest decks (BAL25 measured 18.9; the mix held it near 50)');
   console.log('  advanced median ' + med + ' (top-40% pool of ' + A.pool.length + ')'); }
 // for its budget
 { const F = rep.fit; ok(F && Number.isFinite(F.a) && Number.isFinite(F.b) && F.b > 0, 'fit: expected = a + b N with b > 0 (' + JSON.stringify(F && {a: F.a, b: F.b, r2: F.r2}) + ')');

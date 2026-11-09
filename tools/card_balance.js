@@ -63,7 +63,9 @@ const TOP = V3 ? Math.max(0.01, Math.min(1, +optv('adv-top', 0.4) || 0.4)) : TOP
 // BAL25 (owner 09:47 #6, "or a mix"): a 20-card deck of only top-40% cards held the median card near 19% (59 cards, 400 games), so the
 // v3 opponent is a mix: ADV_MIX cards from the top pool (each at its copy cap), the rest from every measured card of the scope. --adv-mix=K
 // (20 = the top pool only). Calibration, 25 cards spread over the basic range, 100 games: docs/balance/bal25/adv-calibration-2026-11-07.json.
-const ADV_MIX = Math.max(1, Math.min(20, +optv('adv-mix', 5) || 5));
+// 2026-11-10 (package BAL34, decision BAL25-1 b, owner 11-09 23:05: "decision that maximised deck power"): the default is 20 top-40% cards (the
+// strongest decks), was 5 + 15 from every card; --adv-mix=5 runs BAL25's mix. Re-run: docs/balance/bal34/card-power-adv20-2026-11-10.json.
+const ADV_MIX = Math.max(1, Math.min(20, +optv('adv-mix', 20) || 20));
 const SUGGEST = args.includes('--suggest');
 const MODE = (args.find(a=> a.startsWith('--mode=')) || '--mode=open').slice(7);
 // --only=a,b,c measures just those cards (writes docs/balance/card-balance-partial.json, leaving the full report alone).
@@ -340,7 +342,7 @@ rows.forEach(r=>{ if(r.rarity || r.winRate == null) return; const wr = r.winRate
 const out = {generated: new Date().toISOString().slice(0,10), games: N, mode: MODE, filler: FILLER, bands: BANDS,
   // 2026-11-07 (BAL22): how the numbers were made
   method: V3 ? {basic: 'k copies of the card + filler (with 2 Lumber cards) vs 20 filler, a random day/night and field per game; seeds 7700 + 131g',
-    advanced: 'same test deck vs ' + ADV_MIX + ' cards from the top ' + Math.round(TOP * 100) + '% pool + the rest from every measured card (min(4, rarity copy limit) copies, top-rank caps), drawn per game',
+    advanced: 'same test deck vs ' + ADV_MIX + ' cards from the top ' + Math.round(TOP * 100) + '% pool' + (ADV_MIX < 20 ? ' + the rest from every measured card' : '') + ' (min(4, rarity copy limit) copies, top-rank caps), drawn per game',
     count: 'a game counts only if the test side played the card at least once (winRate / advRate over played games; winRateAll over all games)', lowSampleUnder: LOW_SAMPLE, workers: WORKERS,
     seconds: REPORT_ONLY ? null : {basic: Math.round(tBasic), total: Math.round((Date.now() - t0) / 1000)}} : {basic: 'k copies of the card + filler vs 20 filler; seeds 7700 + 131g', advanced: 'same test deck vs a 20-card deck drawn per game from the top pool (min(4, rarity copy limit) copies, top-rank caps)',
     count: 'a game counts only if the test side played the card at least once (winRate / advRate over played games; winRateAll over all games)', lowSampleUnder: LOW_SAMPLE, workers: WORKERS,
