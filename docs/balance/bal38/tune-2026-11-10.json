@@ -1,0 +1,238 @@
+{
+ "about": "BAL38 road retune summary (tools/bal38/summary_2026_11_10.js); 200 games on the road seeds (9100 + 37g), the Map reference",
+ "rows": [
+  {
+   "code": "4-1",
+   "map": "m2",
+   "mapName": "Sunken Hollow",
+   "kind": "skirmish",
+   "name": "Reef Skirmishers",
+   "target": 90,
+   "before200": 83,
+   "after200": 91,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 83,
+     "pick200": 91,
+     "keep": true,
+     "space": 15001,
+     "range": {
+      "min": 56.7,
+      "max": 96.7
+     },
+     "pick": {
+      "deck": {
+       "beaver-lumberjack": 4,
+       "muskrat-lodgekeeper": 2,
+       "platypus-spur": 1,
+       "pond-algae": 2,
+       "snapstick-turtle": 1,
+       "water-shrew": 3
+      },
+      "leaders": [
+       "beaver-lumberjack"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "4-2",
+   "map": "m2",
+   "mapName": "Sunken Hollow",
+   "kind": "skirmish",
+   "name": "Tidal Ring",
+   "target": 80,
+   "before200": 76.5,
+   "after200": 76.5,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 76.5,
+     "pick200": 69,
+     "keep": false,
+     "space": 1068,
+     "range": {
+      "min": 48.3,
+      "max": 95
+     },
+     "pick": {
+      "deck": {
+       "lions-mane-jelly": 1,
+       "pond-algae": 4,
+       "shoal-shark": 3,
+       "snapstick-turtle": 1,
+       "water-shrew": 5
+      },
+      "leaders": [
+       "pond-algae"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "4-5",
+   "map": "m2",
+   "mapName": "Sunken Hollow",
+   "kind": "elite",
+   "name": "The Drowned Colossus",
+   "target": 40,
+   "before200": 21.5,
+   "after200": 35,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 21.5,
+     "pick200": 35,
+     "keep": true,
+     "space": 8954,
+     "range": {
+      "min": 8.3,
+      "max": 50
+     },
+     "pick": {
+      "deck": {
+       "beaver-lumberjack": 1,
+       "drowned-matriarch": 1,
+       "lions-mane-jelly": 4,
+       "muskrat-lodgekeeper": 3,
+       "pond-algae": 3,
+       "pyrenean-desman": 4,
+       "water-shrew": 4
+      },
+      "leaders": [
+       "lions-mane-jelly"
+      ],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "7-A-2",
+   "map": "mz",
+   "mapName": "The Mycelium Deep",
+   "kind": "skirmish",
+   "name": "Glowcap Grotto",
+   "target": 70,
+   "before200": 66,
+   "after200": 66,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 66,
+     "pick200": 62.5,
+     "keep": false,
+     "space": 9566,
+     "range": {
+      "min": 28.3,
+      "max": 98.3
+     },
+     "pick": {
+      "deck": {
+       "ant-warrior": 4,
+       "bombardier-beetle": 4,
+       "dung-beetle": 2,
+       "fungal-colossus": 2,
+       "hawthorn-shieldbug": 4,
+       "sleepless-shrew": 1
+      },
+      "leaders": [],
+      "shieldOverride": 0
+     }
+    }
+   ],
+   "applied": false,
+   "appliedFrom": null
+  },
+  {
+   "code": "7-A-3",
+   "map": "mz",
+   "mapName": "The Mycelium Deep",
+   "kind": "elite",
+   "name": "Silk Gallery",
+   "target": 70,
+   "before200": 75.5,
+   "after200": 67,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 75.5,
+     "pick200": 67,
+     "keep": true,
+     "space": 58227,
+     "range": {
+      "min": 16.7,
+      "max": 91.7
+     },
+     "pick": {
+      "deck": {
+       "ant-warrior": 2,
+       "bombardier-beetle": 2,
+       "dung-beetle": 2,
+       "fungal-colossus": 3,
+       "garden-snail": 1,
+       "hawthorn-shieldbug": 3,
+       "planarian-splitter": 4
+      },
+      "leaders": [
+       "garden-snail"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  },
+  {
+   "code": "7-A-4",
+   "map": "mz",
+   "mapName": "The Mycelium Deep",
+   "kind": "elite",
+   "name": "The Rot Heart",
+   "target": 60,
+   "before200": 64,
+   "after200": 61,
+   "reads": [
+    {
+     "tool": "exhaust",
+     "before200": 64,
+     "pick200": 61,
+     "keep": true,
+     "space": 61972,
+     "range": {
+      "min": 6.7,
+      "max": 86.7
+     },
+     "pick": {
+      "deck": {
+       "dung-beetle": 3,
+       "fungal-colossus": 2,
+       "garden-snail": 1,
+       "leafcutter-gardener": 3,
+       "planarian-splitter": 4,
+       "sleepless-shrew": 1
+      },
+      "leaders": [
+       "planarian-splitter"
+      ],
+      "shieldOverride": null
+     }
+    }
+   ],
+   "applied": true,
+   "appliedFrom": "exhaust"
+  }
+ ]
+}

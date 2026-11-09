@@ -1,0 +1,170 @@
+{
+ "about": "BAL35 whole-space read (tools/bal35/road_exhaust_2026_11_10.js)",
+ "code": "7-A-4",
+ "map": "mz",
+ "mapName": "The Mycelium Deep",
+ "kind": "elite",
+ "name": "The Rot Heart",
+ "band": {
+  "lo": 52,
+  "hi": 68,
+  "target": 60
+ },
+ "list": [
+  "ant-warrior",
+  "bombardier-beetle",
+  "dung-beetle",
+  "fungal-colossus",
+  "garden-snail",
+  "hawthorn-shieldbug",
+  "leafcutter-gardener",
+  "planarian-splitter",
+  "sleepless-shrew"
+ ],
+ "firstClear": [],
+ "k14Before": 0,
+ "leaders": [
+  "bombardier-beetle"
+ ],
+ "namesake": false,
+ "shieldRule": 12,
+ "shieldOverride": null,
+ "space": 61972,
+ "read": 401,
+ "g1": 60,
+ "range": {
+  "min": 6.7,
+  "max": 86.7
+ },
+ "top": [
+  {
+   "deck": {
+    "dung-beetle": 3,
+    "fungal-colossus": 2,
+    "garden-snail": 1,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 4,
+    "sleepless-shrew": 1
+   },
+   "leaders": [
+    "planarian-splitter"
+   ],
+   "tune200": 59.5
+  },
+  {
+   "deck": {
+    "ant-warrior": 1,
+    "dung-beetle": 2,
+    "fungal-colossus": 2,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 3,
+    "sleepless-shrew": 1
+   },
+   "leaders": null,
+   "tune200": 59
+  },
+  {
+   "deck": {
+    "ant-warrior": 1,
+    "bombardier-beetle": 1,
+    "dung-beetle": 3,
+    "fungal-colossus": 4,
+    "leafcutter-gardener": 3,
+    "sleepless-shrew": 2
+   },
+   "leaders": [
+    "dung-beetle"
+   ],
+   "tune200": 58.5
+  },
+  {
+   "deck": {
+    "ant-warrior": 1,
+    "bombardier-beetle": 1,
+    "dung-beetle": 3,
+    "fungal-colossus": 4,
+    "leafcutter-gardener": 3,
+    "sleepless-shrew": 2
+   },
+   "leaders": [
+    "planarian-splitter"
+   ],
+   "tune200": 63
+  },
+  {
+   "deck": {
+    "dung-beetle": 3,
+    "fungal-colossus": 2,
+    "garden-snail": 1,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 4,
+    "sleepless-shrew": 1
+   },
+   "leaders": [
+    "dung-beetle"
+   ],
+   "tune200": 56.5
+  },
+  {
+   "deck": {
+    "ant-warrior": 1,
+    "dung-beetle": 2,
+    "fungal-colossus": 2,
+    "hawthorn-shieldbug": 2,
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 3,
+    "sleepless-shrew": 1
+   },
+   "leaders": [
+    "leafcutter-gardener"
+   ],
+   "tune200": 64
+  }
+ ],
+ "before": {
+  "deck": {
+   "garden-snail": 1,
+   "fungal-colossus": 4,
+   "sleepless-shrew": 3,
+   "planarian-splitter": 3,
+   "bombardier-beetle": 1,
+   "ant-warrior": 1,
+   "leafcutter-gardener": 1
+  },
+  "leaders": [
+   "bombardier-beetle"
+  ],
+  "shieldOverride": null,
+  "win200": 64
+ },
+ "pick": {
+  "deck": {
+   "dung-beetle": 3,
+   "fungal-colossus": 2,
+   "garden-snail": 1,
+   "leafcutter-gardener": 3,
+   "planarian-splitter": 4,
+   "sleepless-shrew": 1
+  },
+  "leaders": [
+   "planarian-splitter"
+  ],
+  "shieldOverride": null,
+  "win200": 61,
+  "tune200": 59.5
+ },
+ "keep": true,
+ "k14After": 0,
+ "trail": [
+  {
+   "move": "start",
+   "win": 64
+  },
+  {
+   "move": "whole-space pick",
+   "win": 61
+  }
+ ],
+ "sec": 737
+}

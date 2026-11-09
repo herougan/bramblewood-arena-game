@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-11-10 Package BAL38 (Sunken Hollow and The Mycelium Deep retuned)
+- Players see: four road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health or level touched). 200 games on the road seeds: Reef Skirmishers 4-1 83 -> 91% (target 90), The Drowned Colossus 4-5 21.5 -> 35 (40; its Drowned Matriarch and its showcase leader Lion's Mane Jelly kept), Silk Gallery 7-A-3 75.5 -> 67 (70; leader Garden Snail), The Rot Heart 7-A-4 64 -> 61 (60; leader Planarian Splitter).
+- Road (`skirmish_pass measure 40 --maxmap=20`, bal37 -> bal38): in band 164 -> 167, within 10 181 -> 184, beyond 20 9 -> 9, mean 67.5 -> 67.4. Sunken Hollow (|gap| 9 -> 5.5) and The Mycelium Deep (9 -> 6, 5/5 green) leave the worst 8. Read, no pick 2+ nearer (both in band): 4-2 76.5 (80), 7-A-2 66 (70). No new unreachable fight.
+- Tools: `tools/bal38/pick_2026_11_10.js`, `apply_2026_11_10.js`, `summary_2026_11_10.js` (BAL37's, output `docs/balance/bal38/`); the reads used `tools/bal37/road_exhaust_2026_11_10.js` unchanged.
+- Tests: new tests/bal38-2026-11-10.js (+ pins); bal21 and bal26 skip the fights BAL38 retuned (4-1, 7-A-3, 7-A-4; 4-5).
+
 ## 2026-11-10 Package BAL37 (Gannet Cliffs, Savanna Reaches, The Sundered Peak retuned; decision BAL37-1)
 - Players see: five road fights play nearer their targets (deck from the fight's own list, leader, Shield; no card, list, field, bramble Health or level touched). 200 games on the road seeds: Eagle Stoop 3-5 56 -> 60.5% (target 66), Avalanche Pass 3-6 64.5 -> 57.5 (60), Giraffe Vanguard 14-5 57 -> 61 (70), Shrine Steps 20-4 81.5 -> 73 (67.1; leader Obsidian Scorpion, Shield 1 -> 20, the rule), The Blessed Avatar 20-7 75.5 -> 63 (64.3).
 - Road (`skirmish_pass measure 40 --maxmap=20`, bal36 -> bal37): in band 163 -> 164, within 10 178 -> 181, beyond 20 10 -> 9, mean 67.7 -> 67.5. Gannet Cliffs and The Sundered Peak leave the worst 8. Already near target at 200 games, left: 3-4 72.5 (72), 20-5 75 (72.9), 20-6 67.5 (68.6). Not reachable: 14-3 70.5 (80), 14-5 61 (70), 20-9 69.5 (50; only cutting both Titans gets there, and the boss would then be led by a Magma Salamander, refused): BAL37-1.

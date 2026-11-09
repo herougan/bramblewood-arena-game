@@ -1,0 +1,66 @@
+{
+ "4-1": {
+  "deck": {
+   "beaver-lumberjack": 4,
+   "muskrat-lodgekeeper": 2,
+   "platypus-spur": 1,
+   "pond-algae": 2,
+   "snapstick-turtle": 1,
+   "water-shrew": 3
+  },
+  "leaders": [
+   "beaver-lumberjack"
+  ],
+  "shield": "0",
+  "hqHp": "19",
+  "characterId": null
+ },
+ "4-5": {
+  "deck": {
+   "beaver-lumberjack": 1,
+   "drowned-matriarch": 1,
+   "lions-mane-jelly": 4,
+   "muskrat-lodgekeeper": 3,
+   "pond-algae": 3,
+   "pyrenean-desman": 4,
+   "water-shrew": 4
+  },
+  "leaders": null,
+  "shield": "0",
+  "hqHp": "15",
+  "characterId": null
+ },
+ "7-A-3": {
+  "deck": {
+   "ant-warrior": 2,
+   "bombardier-beetle": 2,
+   "dung-beetle": 2,
+   "fungal-colossus": 3,
+   "garden-snail": 1,
+   "hawthorn-shieldbug": 3,
+   "planarian-splitter": 4
+  },
+  "leaders": [
+   "garden-snail"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ },
+ "7-A-4": {
+  "deck": {
+   "dung-beetle": 3,
+   "fungal-colossus": 2,
+   "garden-snail": 1,
+   "leafcutter-gardener": 3,
+   "planarian-splitter": 4,
+   "sleepless-shrew": 1
+  },
+  "leaders": [
+   "planarian-splitter"
+  ],
+  "shield": null,
+  "hqHp": null,
+  "characterId": null
+ }
+}
