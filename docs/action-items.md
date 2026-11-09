@@ -8,6 +8,18 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 
 
 
+## 11-09 23:05: Owner notes
+| # | Note | Package |
+|---|---|---|
+| 1 | 22 decisions answered (ENG34-36, CONTENT17, ENG35, BAL25-26, BAL32, UI39) | decisions.json |
+| 2 | ENG35-2 fuse Delivery pair, Arrow + Bolts (not Evolute, not Supreme); ENG35-4 bramble as a shot parameter; ENG35-3 b | ENG39 (running) |
+| 3 | ENG36-1 Hoard +N/+N per 3 Lumber (Stone per 2, Metal per 1), re-check budgets; ENG36-3 Log Wall 0/6 at Level 10; ENG34-1 b (ranged swing carries ranged effects only, Reach is melee); ENG34-3 c Fletcher arrows only | ENG40 (after ENG39) |
+| 4 | (23:07) "Flora are not elementals! We haven't designed a nature elemental yet." 7 plant cards carry species Elemental (Ent, Bramble Sprout, Thornvine Lasher, Elder Willow, Strangler Vine, Cypress Root Lurker, Pinecone Sapper) | ENG40: species Plant |
+| 5 | BAL25-1: advanced opponents use the deck that maximises power (20 top-40% cards) | BAL34 |
+| 6 | BAL26-1 b: owner swaps Wolf Spider Mother out of the Map 10-11 reference, then Claude re-tunes | owner |
+| 7 | CONTENT17-4: about 1 in 5-6 ranged on Maps 21-40 | design note |
+| 8 | Solve the remaining decisions | DES2-2 a, UI41-1 a (Claude); none open |
+
 ## 11-09 21:36: Owner notes
 | # | Note | Package |
 |---|---|---|
