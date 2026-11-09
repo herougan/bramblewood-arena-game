@@ -33975,6 +33975,19 @@ function ui37Prospects(top, defs, ok){
   const e = ui37Ent(top); e.yes.concat(e.no).forEach(id=> add(id, 'flag'));
   return out;
 }
+// 2026-11-09 (package UI41, owner 21:36 #3: "Don't include the obvious faction cards"): a faction card (cards.json `faction` set to a faction, not 'base') is no
+// prospect from any source (list, Maybe, Claude's picks, fill) unless the owner flagged it Yes on some main map.
+function ui41YesAnywhere(id){ try{ return ui37MapsData().some(m=> m.yes.includes(id)); }catch(e){ return false; } }
+function ui41Allowed(id, defs){ const d = defs[id]; return !d || !d.faction || d.faction === 'base' || ui41YesAnywhere(id); }
+// 2026-11-09 (package UI41, UI38-3 a): the 2-per-animal-family cap also holds for Claude's picks and Maybe cards. A card on the map's list today and a card the
+// owner flagged Yes always stay (they count first); the cap is not applied to list cards, so nothing on today's list is dropped.
+function ui41Cap(top, list, defs){
+  const cap = ((UI38_PROS && UI38_PROS.rules) || {}).familyCap || 2, cnt = {}, keep = new Set(), yes = new Set(ui37Ent(top).yes);
+  const fixed = p=> p.src.has('list') || yes.has(p.id);
+  list.forEach(p=>{ if(fixed(p)){ keep.add(p.id); const f = ui38Family(p.id, defs); if(f) cnt[f] = (cnt[f] || 0) + 1; } });
+  list.forEach(p=>{ if(keep.has(p.id)) return; const f = ui38Family(p.id, defs); if(f && (cnt[f] || 0) >= cap) return; if(f) cnt[f] = (cnt[f] || 0) + 1; keep.add(p.id); });
+  return list.filter(p=> keep.has(p.id));
+}
 // one map's split: {n, neu, car, extra, idx}
 // 2026-11-09 (package UI38, owner 03:55): the closed "More cards from earlier maps" fold is gone; ui38Fill tops NEW! up to 30+ (cards that fit the map, then
 // proposed concepts) and Carried up to 20+ (earlier main maps' cards, best fit first). extra stays an empty list for callers.
@@ -33985,6 +33998,7 @@ function ui37Split(top, defs, ok){
   const by = (a, b)=> rank(a) - rank(b) || rs(a.id) - rs(b.id) || nm(a.id).localeCompare(nm(b.id));
   pros.forEach(p=> (idx.has(p.id) ? car : neu).push(p));
   neu.sort(by); car.sort(by);
+  const neu2 = ui41Cap(top, neu, defs), car2 = ui41Cap(top, car, defs); neu.length = 0; car.length = 0; neu.push(...neu2); car.push(...car2); // 2026-11-09 (UI41)
   ui38Fill(top, defs, ok, idx, neu, car);
   return {n, neu, car, extra: [], idx};
 }
@@ -34042,7 +34056,7 @@ function ui37TileHTML(top, p, kind, defs, idx, rvMap){
   const btn = (k, lab)=> `<button type="button" class="ui37-yn-b is-${k}${f === k ? ' on' : ''}" data-ui37-flag="${k}" aria-pressed="${f === k ? 'true' : 'false'}">${escapeHtml(lab)}</button>`;
   const card = c ? ui39ConceptCardHTML(c) : rv ? rv1TileHTML(rv.e, rv.kind, defs, 'cards') : ui39PlainTileHTML(p.id, defs, p.why || '');
   return `<div class="ui37-tile ui39-tile is-${f || 'none'}${c ? ' is-concept' : ''}" data-ui37-id="${escapeAttr(p.id)}" data-ui37-kind="${kind}">${card}<span class="ui37-pills">${src}${fromPill}</span>`
-    + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', TX('ui.ui37-yes'))}${btn('no', TX('ui.ui37-no'))}</span></div>`;
+    + `<span class="ui37-yn" role="group" aria-label="${escapeAttr(TX('ui.ui37-flag-label', {name: d.name}))}">${btn('yes', '↩ ' + TX('ui.ui37-yes'))}${btn('no', '✂ ' + TX('ui.ui37-no'))}</span></div>`;
 }
 // a card on no review: the same full card as a review tile (pack pill, power badge, ✏️ for admins), no Cut / Keep (it is on no list to cut from)
 // 2026-11-09 (package UI40): `x` (optional) = {cls, attrs, title, mark, pills}: the Thematic Recommendation and Keyword sections draw the same card with their own
@@ -34104,7 +34118,7 @@ function ui37Mount(ov, top, mapId, ok){
   const head = document.createElement('div'); head.className = 'ui39-head'; head.id = 'ui39Head';
   const at = modal.querySelector(':scope > .rv1-bar') || modal.querySelector('.modal-head-row + .panel-sub') || modal.querySelector('.modal-head-row'); at.insertAdjacentElement('afterend', head); // under the button row (UI28: it sits right under the subtitle), above the skills
   modal.dataset.ui39 = '1'; ui38Css();
-  const draw = ()=>{ const keep = modal.scrollTop, defs = getCardDefs(), sp = ui37Split(top, defs, ok); head.innerHTML = ui37HeadHTML(top, sp); wrap.innerHTML = ui37GroupsHTML(top, defs, sp, ui39ReviewMap(top, ok)); try{ wireRewardZoom(wrap); }catch(e){} rv2Update(ov); modal.scrollTop = keep; };
+  const draw = ()=>{ const keep = modal.scrollTop, defs = getCardDefs(), ok2 = id=> ok(id) && ui41Allowed(id, defs) /* 2026-11-09 (UI41): no faction cards */, sp = ui37Split(top, defs, ok2); head.innerHTML = ui37HeadHTML(top, sp); wrap.innerHTML = ui37GroupsHTML(top, defs, sp, ui39ReviewMap(top, ok2)); try{ wireRewardZoom(wrap); }catch(e){} rv2Update(ov); modal.scrollTop = keep; };
   const onClick = e=>{
     const t = e.target; let b;
     if((b = t.closest('[data-ui37-flag]'))){ e.stopPropagation(); const tile = b.closest('.ui37-tile'), id = tile.dataset.ui37Id, cur = ui37FlagOf(top, id); ui37SetFlag(top, id, cur === b.dataset.ui37Flag ? '' : b.dataset.ui37Flag); draw(); return; }
@@ -34149,6 +34163,8 @@ function ui38Fill(top, defs, ok, idx, neu, car){
   const take = (list, cnt, id, src, why)=>{ const f = ui38Family(id, defs); if(f && (cnt[f] || 0) >= cap) return false; if(f) cnt[f] = (cnt[f] || 0) + 1; have.add(id); list.push({id, src: new Set([src]), why: why || ''}); return true; };
   const concepts = (M.concepts || []).filter(c=> !have.has(c.id) && !idx.has(c.id));
   (M.fit || []).forEach(([id, sc, codes])=>{ if(neu.length + concepts.length >= newMax || sc < minS || idx.has(id) || !usable(id)) return; take(neu, fn, id, 'fit', ui38WhyText(codes)); });
+  // 2026-11-09 (package UI41, owner 21:36 #3): faction cards no longer count, so NEW! is topped up to its minimum (rules.newTarget) with the next-best fits below the score floor
+  (M.fit || []).forEach(([id, sc, codes])=>{ if(neu.length + concepts.length >= (R.newTarget || 30) || idx.has(id) || !usable(id)) return; take(neu, fn, id, 'fit', ui38WhyText(codes)); });
   concepts.forEach(c=>{ have.add(c.id); neu.push({id: c.id, src: new Set(['concept']), why: c.role || ''}); }); // the map's concepts always show (sized by the generator; their families were capped there)
   const fitted = new Set(), n = mapNumberOf(top), before = ui37MapsData().filter(m=> m.n < n).sort((a, b)=> a.n - b.n), yesEarlier = new Set(before.flatMap(m=> m.yes));
   // the previous main map's Yes cards and concepts always show first (the next map carries them most naturally; a concept has no fit row of its own here)

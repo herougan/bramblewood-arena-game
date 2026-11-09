@@ -38,7 +38,7 @@ MAIN.forEach(k=>{ const m = D.maps[k], st = m.static;
 { const r = cp.spawnSync('python3', [path.join(ROOT, 'tools/ui38/map_prospects_2026_11_09.py'), '--check'], {encoding: 'utf8'}); ok(r.status === 0, 'the generator check passes (no clash, no shortfall): ' + (r.stdout || '').split('\n').filter(l=> l.includes('!')).join(' | ')); }
 
 // 2. ui38Fill on a small case
-{ const P = {rules: {familyCap: 2, newMinScore: 4, newMax: 6, carriedFill: 3, newTarget: 30, carriedTarget: 20},
+{ const P = {rules: {familyCap: 2, newMinScore: 4, newMax: 6, carriedFill: 3, newTarget: 5, carriedTarget: 20},
     family: {a1: 'croc', a2: 'croc', a3: 'croc', a4: 'frog', a5: 'heron', s1: 'snake', e1: 'croc', e2: 'bat', e3: 'mole', e4: 'owl', w1: 'frog'},
     maps: {mx: {fit: [['a1', 9, 'bc'], ['a2', 8, 'b'], ['a3', 8, 'b'], ['s1', 8, 'b'], ['a4', 3, 'k'], ['a5', 6, 'b'], ['e1', 5, 'b'], ['w1', 4, 'b']], concepts: [{id: 'concept-x', name: 'X', animal: 'x', family: 'x', element: 'physical', rarity: 'common', role: 'r'}]}}};
   const src = blk.replace('__MAP_PROSPECTS__', JSON.stringify(P));
