@@ -4375,5 +4375,15 @@
  "Has the map's signature skill": "Ha l'abilità simbolo della mappa",
  "The map's element": "Elemento della mappa",
  "No art yet": "Ancora senza immagine",
- "Suggested: {rarity}": "Suggerita: {rarity}"
+ "Suggested: {rarity}": "Suggerita: {rarity}",
+ "{name} is Shocked for {n} rounds.": "{name} è sotto Shock per {n} round.",
+ "Its hits put {n} Vulnerable tokens on the target: each later hit on it deals 1 more.": "I suoi colpi mettono {n} segnalini Vulnerabile sul bersaglio: ogni colpo successivo infligge 1 in più.",
+ "On Hit: Vulnerable N. Each hit uses one token, shots too; Venom and Bleed ticks don't. Armor still counts.": "Al colpo: Vulnerabile N. Ogni colpo usa un segnalino, anche i tiri; i tick di Veleno e Sanguinamento no. L’Armatura conta ancora.",
+ "Vulnerable {n}: its next {n} hit{s} deal 1 more each.": "Vulnerabile {n}: i prossimi {n} colpi subiti infliggono 1 in più ciascuno.",
+ "Put N Vulnerable tokens on a chosen target: each later hit on it deals 1 more and uses one.": "Metti N segnalini Vulnerabile su un bersaglio scelto: ogni colpo successivo infligge 1 in più e ne usa uno.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Vulnerable, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "Rimuove fino a N indebolimenti fisici da un bersaglio scelto (questa carta di base): Sanguinamento, Cicatrice, Corrosione, Fragile, Esposto, Vulnerabile, Shock, Barcollo, Armatura lacerata, Intimidazione. Vuoto: tutti. Non Veleno, Gelo né Stordimento.",
+ "{att} puts {n} Vulnerable token{s} on {name}.": "{att} mette {n} segnalino/i Vulnerabile su {name}.",
+ "{name} is Vulnerable: +{b} damage ({n} left).": "{name} è vulnerabile: +{b} danni ({n} rimasti).",
+ "No enemy units left to strike {name}: its Vulnerable tokens fade.": "Nessuna unità nemica può colpire {name}: i suoi segnalini Vulnerabile svaniscono.",
+ "Version": "Versione"
 }

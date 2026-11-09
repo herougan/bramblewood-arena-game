@@ -86,7 +86,7 @@ for(const lvl of ['dark', 'pitch']){ const k = mk({dark: lvl}, 13);
 ok(/v \+= aiDarkCastWorth\(players, aiId, id\);/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8')), 'the CPU card choice adds aiDarkCastWorth');
 
 // ---- 2. the Pall Wraith
-const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
+const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).map(c=> require('../bramblewood-skillparams.js').expandDef(c)); // ENG39 (2026-11-09): kinds read as their old keys (Darksight is Keen Sense {sees: dark})
 const pw = cards.find(c=> c.id === 'pall-wraith');
 ok(!!pw && pw.effects.castDarkness === true && pw.effects.darksight === true && !pw.test, 'the Pall Wraith: Cast Darkness + Darksight');
 // 2026-10-21 (package RP, owner: "submaps get 1 unique card each"): the Wraith Vents keep only their boss card, so the Pall Wraith moved to 20-5

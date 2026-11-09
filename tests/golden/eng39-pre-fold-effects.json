@@ -1,0 +1,234 @@
+{
+ "_about": "ENG39 (2026-11-09, decision DES2-3 a): the effects of the cards tools/fold_skill_params_2026_11_07.py changed when the kinds were folded, as they were before the fold (old keys). tests/eng39-2026-11-09.js checks they round-trip, price the same and fight the same as the fused form.",
+ "effects": {
+  "elder-willow": {
+   "deliveryEvery": 1
+  },
+  "beetle-battering-ram": {
+   "siege": 3,
+   "nocturnal": true,
+   "breach": 2
+  },
+  "raven-scout": {
+   "flying": true,
+   "tally": 3
+  },
+  "wolf-pack-runner": {
+   "muster": 6
+  },
+  "nautilus-drifter": {
+   "deliveryEvery": 1,
+   "relict": true
+  },
+  "badger-sapper": {
+   "siege": 2,
+   "breach": 1
+  },
+  "elderhorn-monarch": {
+   "deliveryEvery": 1
+  },
+  "lodge-engineer": {
+   "timbered": true,
+   "deliveryEvery": 1
+  },
+  "rodent-king": {
+   "deliveryEvery": 1
+  },
+  "coral-polyp-colony": {
+   "tide": true,
+   "deliveryEvery": 1,
+   "meld": {
+    "armor": 1
+   }
+  },
+  "cave-bat-swarm": {
+   "flying": true,
+   "darksight": true
+  },
+  "blind-cave-fish": {
+   "evasive": true,
+   "tide": true,
+   "darksight": true
+  },
+  "magma-salamander": {
+   "fireArrow": 1
+  },
+  "fire-drake-hatchling": {
+   "fireArrow": 2
+  },
+  "ravenous-wolverine": {
+   "triggers": [
+    {
+     "on": "onAttack",
+     "do": "buff",
+     "amount": 2,
+     "who": "self"
+    }
+   ],
+   "beset": 6
+  },
+  "chipmunk-hoarder": {
+   "deliveryEvery": 1
+  },
+  "magma-titan": {
+   "scar": 2,
+   "immolation": 1
+  },
+  "pyroclast-wyrm": {
+   "pierce": 5,
+   "fireArrow": 2
+  },
+  "test-kitchen-sink": {
+   "armor": 3,
+   "flying": true,
+   "triggers": [
+    {
+     "on": "onAttack",
+     "do": "poison",
+     "amount": 2,
+     "who": "enemy",
+     "sub": "adjacent"
+    }
+   ],
+   "breach": 2
+  },
+  "test-skill-pierce": {
+   "breach": 2
+  },
+  "test-skill-berserk": {
+   "berserk": 1
+  },
+  "red-dragon": {
+   "flying": true,
+   "fireArrow": 4,
+   "supreme": true
+  },
+  "black-dragon": {
+   "flying": true,
+   "corrode": 3,
+   "darksight": true,
+   "supreme": true
+  },
+  "land-tiller": {
+   "deliveryEvery": 1
+  },
+  "wolfsbane-alpha": {
+   "bleed": 2,
+   "nocturnal": true,
+   "dirge": 3,
+   "leader": true
+  },
+  "sunfeather-scout": {
+   "flying": true,
+   "deliveryEvery": 1
+  },
+  "old-willow-of-the-ford": {
+   "regen": 3,
+   "deliveryEvery": 1
+  },
+  "heartwood-treant": {
+   "timber": true
+  },
+  "quarry-troll": {
+   "rockSolid": true,
+   "darksight": true
+  },
+  "cinder-skeleton": {
+   "undead": true,
+   "requiem": 5
+  },
+  "magma-wraith": {
+   "evasive": true,
+   "fireArrow": 2
+  },
+  "pall-wraith": {
+   "castDarkness": true,
+   "darksight": true
+  },
+  "stonedrop-vulture": {
+   "flying": true,
+   "archer": {
+    "v": 3,
+    "style": "drop"
+   }
+  },
+  "meerkat-sentry": {
+   "sociable": [
+    1,
+    1
+   ]
+  },
+  "meerkat-burrower": {
+   "darksight": true
+  },
+  "vampire-bat-nurse": {
+   "nursing": 2
+  },
+  "sawfish": {
+   "breach": 2
+  },
+  "tasmanian-devil": {
+   "berserk": 2
+  },
+  "snow-bunting-archer": {
+   "iceArrow": 2
+  },
+  "firefly-swarm": {
+   "fireBolt": 2
+  },
+  "archerfish": {
+   "acidBolt": 1
+  },
+  "spitting-spider": {
+   "poisonBolt": 2
+  },
+  "ice-petrel": {
+   "iceBolt": 2
+  },
+  "electric-catfish": {
+   "shockBolt": 2
+  },
+  "lamprey": {
+   "weaken": 1
+  },
+  "weaver-bird": {
+   "tangle": 1
+  },
+  "rimefire-salamander": {
+   "fireArrow": 1,
+   "iceArrow": 1
+  },
+  "quicksand-queen": {
+   "trap": 6,
+   "tangle": 1
+  },
+  "truffle-piglet": {
+   "deliveryEvery": 1
+  },
+  "tobasco-drakon": {
+   "chilli": 2,
+   "fireBolt": 2
+  },
+  "prospector-mole": {
+   "prospector": 1
+  },
+  "snapgun-shrimp": {
+   "shockBolt": 1
+  },
+  "icefletch-fox": {
+   "iceArrow": 1,
+   "evasive": true
+  },
+  "adder": {
+   "poisonBolt": 1
+  }
+ },
+ "levelSkills": {
+  "fire-drake-hatchling": {
+   "1": {
+    "fireArrow": 2,
+    "hatchling": true
+   }
+  }
+ }
+}

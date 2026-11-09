@@ -7,10 +7,10 @@
   "hp": "Health beside the Attack number",
   "day": "[Attack, Health] by day",
   "night": "[Attack, Health] at night",
-  "who": "which arrivals count (kin / any)",
+  "who": "which units count: kin / any (Esprit); ally (Harbinger); any / yours / foes (Carnage); yours / theirs (Throng); weakest / random (Heal)",
   "n": "amount per counted unit",
   "species": "a brood token's Swarm parameter",
-  "res": "the resource delivered",
+  "res": "the resource delivered or gained (Delivery: res; Felling: metal = Prospector)",
   "bramble": "aims the shot at the enemy bramble",
   "poison": "the shot carries the unit's Poison",
   "bleed": "the shot carries the unit's Bleed",
@@ -19,7 +19,18 @@
   "vs": "the status it hunts",
   "style": "a look, no rules effect",
   "armor": "Armor it has while its Shield lasts",
-  "when": "when it is raised (firstHit / afterAttack)"
+  "when": "when it is raised (firstHit / afterAttack)",
+  "kind": "a named version of the skill: its own rule and price (the old skill it replaces)",
+  "lasts": "how long it lasts: a round (default); lasting = for good; washed = until washed off",
+  "swings": "never = it never swings, it only shoots (Archer)",
+  "sees": "what it senses through: dark = darkness only (Darksight); default also Blind, Fog, Shadow",
+  "hold": "how it holds: full = the target does nothing (Constrict); bind = Bound only, no squeeze (Tangleweed)",
+  "shots": "true = its shots act twice too (Double Time)",
+  "stat": "the stat it grows: hp = Health (Spoils)",
+  "range": "how far it counts allies: 2 = within 2 slots (Sociable); default adjacent",
+  "type": "the shot's damage type: fire, ice, acid, poison, shock (default: a plain arrow, physical)",
+  "form": "bolt = a bolt (Speed 1, before the rest swing); default an arrow (Speed 0, after the swings)",
+  "every": "round = it delivers every round it is Ready (Delivery every round); default once"
  },
  "families": {
   "diurnal": {
@@ -661,7 +672,14 @@
      "thorns": 1
     }
    },
-   "about": "Threshold skill: v = N (default 3); gives = the braces (default +2/+2) while the count is N or more."
+   "about": "Threshold skill: v = N (default 3); gives = the braces (default +2/+2) while the count is N or more. ENG39: who any = Requiem (any units died); who yours = Dirge (your units); who foes = Tally (enemy units); default: enemies it saw die.",
+   "kinds": {
+    "who": {
+     "any": "requiem",
+     "yours": "dirge",
+     "foes": "tally"
+    }
+   }
   },
   "muster": {
    "params": {
@@ -727,7 +745,13 @@
      "thorns": 1
     }
    },
-   "about": "Threshold skill: v = N (default 10); gives = the braces (default +2/+2) while the count is N or more."
+   "about": "Threshold skill: v = N (default 10); gives = the braces (default +2/+2) while the count is N or more. ENG39: who yours = Muster (your side); who theirs = Beset (the enemy side); default: both sides.",
+   "kinds": {
+    "who": {
+     "yours": "muster",
+     "theirs": "beset"
+    }
+   }
   },
   "tally": {
    "params": {
@@ -876,7 +900,16 @@
     "res": "stone"
    },
    "ability": null,
-   "about": "v = how many; res = the resource (lumber by default; stone, metal, uranium, pearl, grace)."
+   "about": "v = how many; res = the resource (lumber by default; stone, metal, uranium, pearl, grace). ENG39: kind stockpile = Stockpile (Lumber once, its own price); kind pearl = Pearl (a Pearl once). ENG39: kind stockpile = Stockpile (Lumber once, its own price); kind pearl = Pearl (a Pearl once); every round = Delivery every round (owner 23:05 on ENG35-2; its res as before).",
+   "kinds": {
+    "kind": {
+     "stockpile": "stockpile",
+     "pearl": "pearl"
+    },
+    "every": {
+     "round": "deliveryEvery"
+    }
+   }
   },
   "deliveryEvery": {
    "params": {
@@ -921,7 +954,53 @@
     "v": 2,
     "poison": true
    },
-   "about": "v = damage; bramble = aim at the enemy bramble; poison / bleed = the shot carries the unit's own Poison / Bleed; count = shots a round."
+   "about": "v = damage; bramble = aim at the enemy bramble; poison / bleed = the shot carries the unit's own Poison / Bleed; count = shots a round. ENG39: swings never = Archer (Arrow N that never swings; its style part as before). ENG39: swings never = Archer (Arrow N that never swings; its style part as before). type fire / ice = Fire Arrow / Ice Arrow; type + form bolt = Fire / Ice / Acid / Poison / Shock Bolt (Speed 1). The bramble / poison / bleed riders sit beside type (owner on ENG35-4: \"Bramble can be a parameter\").",
+   "kinds": {
+    "swings": {
+     "never": "archer"
+    },
+    "type": {
+     "fire": "fireArrow",
+     "ice": "iceArrow"
+    }
+   },
+   "kindSets": [
+    {
+     "match": {
+      "type": "fire",
+      "form": "bolt"
+     },
+     "key": "fireBolt"
+    },
+    {
+     "match": {
+      "type": "ice",
+      "form": "bolt"
+     },
+     "key": "iceBolt"
+    },
+    {
+     "match": {
+      "type": "acid",
+      "form": "bolt"
+     },
+     "key": "acidBolt"
+    },
+    {
+     "match": {
+      "type": "poison",
+      "form": "bolt"
+     },
+     "key": "poisonBolt"
+    },
+    {
+     "match": {
+      "type": "shock",
+      "form": "bolt"
+     },
+     "key": "shockBolt"
+    }
+   ]
   },
   "fireArrow": {
    "params": {
@@ -1033,6 +1112,183 @@
    },
    "ability": null,
    "about": "ENG37 (2026-11-08, owner 11:03, Retreat into the shell): v = Armor N until the round ends; when = 'afterAttack': raised once its own swing is done (a foe that strikes first meets no Armor), else (default) by the first hit each round (FIX9)."
+  },
+  "keenSense": {
+   "params": {},
+   "kinds": {
+    "sees": {
+     "dark": "darksight"
+    }
+   },
+   "default": "senses through Darkness, Pitch Black, Blind, Fog and Shadow",
+   "number": null,
+   "stat": null,
+   "ability": null,
+   "about": "Keen Sense. sees dark = Darksight (darkness only). (ENG39, decision DES2-3)"
+  },
+  "speed": {
+   "params": {},
+   "kinds": {
+    "kind": {
+     "blitz": "blitz",
+     "swift": "swift"
+    }
+   },
+   "default": "Speed 2",
+   "number": 2,
+   "stat": null,
+   "ability": null,
+   "about": "Speed N. kind blitz = Blitz (its swing and shots at Speed 10); kind swift = Swift (first and dodges; on no card). Quick stays its own skill (the Speed 2 name). (ENG39, decision DES2-3)"
+  },
+  "daunt": {
+   "params": {},
+   "kinds": {
+    "lasts": {
+     "lasting": "weaken",
+     "washed": "stench"
+    }
+   },
+   "default": "-1 Attack for a round on each hit",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Daunt N. lasts lasting = Weaken (for good); lasts washed = Stench (a token until washed off). (ENG39, decision DES2-3)"
+  },
+  "strangle": {
+   "params": {},
+   "kinds": {
+    "hold": {
+     "full": "constrict",
+     "bind": "tangle"
+    }
+   },
+   "default": "Bound for a round and squeezed for 2",
+   "number": 2,
+   "stat": null,
+   "ability": null,
+   "about": "Strangle N. hold full = Constrict (does nothing, squeezed N); hold bind = Tangleweed (Bound N rounds, no squeeze). (ENG39, decision DES2-3)"
+  },
+  "exploit": {
+   "params": {},
+   "kinds": {
+    "lasts": {
+     "lasting": "scar"
+    }
+   },
+   "default": "Vulnerable 2: two tokens, each later hit +1 and uses one",
+   "number": 2,
+   "stat": null,
+   "ability": null,
+   "about": "Vulnerable N (shown as Vulnerable since ENG39; key exploit). lasts lasting = Scar (+N for good). (ENG39, decision DES2-3)"
+  },
+  "healing": {
+   "params": {},
+   "kinds": {
+    "who": {
+     "weakest": "nursing",
+     "random": "bloom"
+    }
+   },
+   "default": "heals your most wounded unit 1 a round",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Heal N. who weakest = Nursing (weakest wounded ally N); who random = the old healing Bloom (a random wounded ally; retired). (ENG39, decision DES2-3)"
+  },
+  "harbinger": {
+   "params": {},
+   "kinds": {
+    "who": {
+     "ally": "berserk"
+    }
+   },
+   "default": "+1/+1 when any unit dies",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Harbinger N. who ally = Berserk (+N/+0 when an ally dies). (ENG39, decision DES2-3)"
+  },
+  "twinStrike": {
+   "params": {},
+   "kinds": {
+    "shots": {
+     "true": "doubleTime"
+    }
+   },
+   "default": "swings twice",
+   "number": null,
+   "stat": null,
+   "ability": null,
+   "about": "Twin Strike. shots true = Double Time (its shots twice too). (ENG39, decision DES2-3)"
+  },
+  "puncture": {
+   "params": {},
+   "kinds": {
+    "kind": {
+     "breach": "breach"
+    }
+   },
+   "default": "1 to the enemy bramble on each landed melee hit",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Puncture N. kind breach = Breach (the same rule under its own price entry). (ENG39, decision DES2-3)"
+  },
+  "momentum": {
+   "params": {},
+   "kinds": {
+    "stat": {
+     "hp": "spoils"
+    }
+   },
+   "default": "+1/+0 on each kill",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Momentum N. stat hp = Spoils (+0/+N on a creature kill). (ENG39, decision DES2-3)"
+  },
+  "felling": {
+   "params": {},
+   "kinds": {
+    "kind": {
+     "midas": "midas"
+    },
+    "res": {
+     "metal": "prospector"
+    }
+   },
+   "default": "1 Lumber on a kill",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Felling N. kind midas = Midas Touch; res metal = Prospector (Metal on a kill). (ENG39, decision DES2-3)"
+  },
+  "hoard": {
+   "params": {},
+   "kinds": {
+    "kind": {
+     "timber": "timber"
+    }
+   },
+   "default": "+N/+N for each Lumber you hold",
+   "number": 2,
+   "stat": null,
+   "ability": null,
+   "about": "Hoard N. kind timber = Timber (+1/+1 a Lumber, its own price). (ENG39, decision DES2-3)"
+  },
+  "formation": {
+   "params": {},
+   "kinds": {
+    "range": {
+     "2": "sociable"
+    }
+   },
+   "default": "+1/+0 for each adjacent ally",
+   "number": 1,
+   "stat": null,
+   "ability": null,
+   "about": "Formation N. range 2 = Sociable (+A/+H for each ally within 2 slots). (ENG39, decision DES2-3)"
   }
- }
+ },
+ "_aboutKinds": "ENG39 (2026-11-09, owner decision DES2-3 a): a family may list kinds, its named versions: {\"<selector>\": {\"<value>\": \"<old key>\"}}. On a card the old skill is written as the family key with the selector, e.g. \"daunt\": {\"v\": 1, \"lasts\": \"lasting\"} (was \"weaken\": 1), \"carnage\": {\"v\": 5, \"who\": \"any\"} (was \"requiem\": 5); a kind that is itself a family keeps its parts (\"arrow\": {\"v\": 3, \"swings\": \"never\", \"style\": \"drop\"}). A kind named by two selectors at once is listed in \"kindSets\": [{\"match\": {\"type\": \"fire\", \"form\": \"bolt\"}, \"key\": \"fireBolt\"}]. Expanding gives back the old key, so its rule and its price are unchanged; old keys still read. A card that holds two versions of one family keeps the second as its old key."
 }

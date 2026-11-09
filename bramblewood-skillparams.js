@@ -9,6 +9,13 @@
 //   expandDefsInPlace(defs)  every def of a defs map, in place (the engine; the same map object, so callers that patch it later still reach it)
 //   aliasOf(key)         an old twin key -> [family, param] (deliveryRes -> ['delivery', 'res'], kinglyGrant -> ['king', 'gives']), else null
 //   familyOf(key)        the family's entry (params, default, number, stat, ability, about), for the fused key or any of its old keys
+// ENG39 (2026-11-09, owner decision DES2-3 a: "Merge all 15 groups as parameters (ENG35)"): a family may also list KINDS, its named
+// versions ("kinds": {"<selector>": {"<value>": "<old key>"}}). An old skill with its own rule and price (Weaken, Scar, Requiem, Archer ...)
+// is written as its family's key plus the selector: "daunt": {"v": 1, "lasts": "lasting"} expands to "weaken": 1; "carnage": {"v": 5,
+// "who": "any", "gives": {...}} to "requiem": 5 + "requiemGrant"; a kind that is a family keeps its own parts. fuse() folds the old key into
+// the family (only when the card holds no other version of that family: the second stays its old key). kindOf(key) -> [family, {selector:
+// value ...}]; rootOf(key) -> the family key a part or a kind belongs to (requiemGrant -> carnage); kindsOf(family) -> [{match, key}].
+// A kind may need two selectors at once ("kindSets": Fire Bolt is "arrow": {"v": 2, "type": "fire", "form": "bolt"}; owner 23:05 on ENG35-2).
 // DOM-free. Node: require('./bramblewood-skillparams.js') reads canonical/skill-params.json; the page: assemble_arena.py puts
 // __SKILL_PARAMS__ and this file ahead of the engine (global BramblewoodSkillParams).
 (function(root, factory){
@@ -21,9 +28,39 @@
   Object.keys(FAM).forEach(k=>{ const ps = FAM[k].params || {}; Object.keys(ps).forEach(f=>{ if(!ALIAS[ps[f]]) ALIAS[ps[f]] = [k, f]; }); }); // first family wins a shared key (deliveryRes: delivery, stemGrant: stem)
   const has = (o, k)=> Object.prototype.hasOwnProperty.call(o, k);
   const plainObj = v=> !!v && typeof v === 'object' && !Array.isArray(v);
+  // ENG39: the kinds. A family lists them as "kinds": {"<selector>": {"<value>": "<old key>"}} and, for a kind named by two selectors at once,
+  // "kindSets": [{"match": {"type": "fire", "form": "bolt"}, "key": "fireBolt"}] (ENG35-2: one shot family, a damage type and a form).
+  // FK[family] = [{match, key}]; SELS[family] = its selector names; KIND[old key] = [family, match] (the first family listing a key wins)
+  const KIND = {}, FK = {}, SELS = {};
+  Object.keys(FAM).forEach(k=>{ const ks = FAM[k].kinds || {}, list = [];
+    Object.keys(ks).forEach(p=>{ Object.keys(ks[p]).forEach(val=> list.push({match: {[p]: val}, key: ks[p][val]})); });
+    (FAM[k].kindSets || []).forEach(e=>{ const m = {}; Object.keys(e.match || {}).forEach(p=> m[p] = String(e.match[p])); list.push({match: m, key: e.key}); });
+    if(!list.length) return; FK[k] = list; SELS[k] = new Set(); list.forEach(e=>{ Object.keys(e.match).forEach(p=> SELS[k].add(p)); if(!has(KIND, e.key)) KIND[e.key] = [k, e.match]; }); });
+  // a selector value as written on a card: "true" -> true, "2" -> 2, else the name
+  const selVal = s=> s === 'true' ? true : s === 'false' ? false : (/^-?\d+(\.\d+)?$/.test(s) ? Number(s) : s);
+  const typedMatch = m=>{ const o = {}; Object.keys(m).forEach(p=> o[p] = selVal(m[p])); return o; };
+  // the selectors an object uses: [selector names, old key]; null when it has none; false when no kind has exactly those values
+  function selOf(k, v){
+    const S = has(SELS, k) ? SELS[k] : null; if(!S) return null;
+    const used = Object.keys(v).filter(p=> S.has(p)); if(!used.length) return null;
+    const e = FK[k].find(x=>{ const ms = Object.keys(x.match); return ms.length === used.length && ms.every(p=> has(v, p) && String(v[p]) === x.match[p]); });
+    return e ? [used, e.key] : false;
+  }
   function isFused(k, v){
     const f = has(FAM, k) ? FAM[k] : null; if(!f || !plainObj(v)) return false;
-    const ks = Object.keys(v); return ks.length > 0 && ks.every(x=> x === 'v' || has(f.params, x));
+    const ks = Object.keys(v); if(!ks.length) return false;
+    const s = selOf(k, v); if(s === false) return false;
+    if(s){ const tf = has(FAM, s[1]) ? FAM[s[1]] : null; return ks.every(x=> x === 'v' || s[0].includes(x) || (tf && has(tf.params, x))); }
+    return ks.every(x=> x === 'v' || has(f.params, x));
+  }
+  // one fused key into out (a kind into its old key, and that key's own parts when it is a family)
+  function expandOne(out, k, v){
+    const s = selOf(k, v);
+    if(s){ const rest = {}; Object.keys(v).forEach(x=>{ if(!s[0].includes(x)) rest[x] = v[x]; });
+      if(has(FAM, s[1]) && Object.keys(rest).some(x=> x !== 'v')){ expandOne(out, s[1], rest); return; }
+      if(!has(rest, 'v')) out[s[1]] = true; else if(rest.v !== null) out[s[1]] = rest.v; return; }
+    if(!has(v, 'v')) out[k] = true; else if(v.v !== null) out[k] = v.v;
+    const ps = FAM[k].params; Object.keys(ps).forEach(f=>{ if(has(v, f)) out[ps[f]] = v[f]; });
   }
   function needsExpand(e){ if(!plainObj(e)) return false; for(const k in e){ if(isFused(k, e[k])) return true; } return false; }
   function expand(e){
@@ -31,8 +68,7 @@
     const out = {};
     Object.keys(e).forEach(k=>{ const v = e[k];
       if(!isFused(k, v)){ out[k] = v; return; } // a flat key after the object (a cloud override merged in) wins: the later one counts
-      if(!has(v, 'v')) out[k] = true; else if(v.v !== null) out[k] = v.v;
-      const ps = FAM[k].params; Object.keys(ps).forEach(f=>{ if(has(v, f)) out[ps[f]] = v[f]; });
+      expandOne(out, k, v);
     });
     return out;
   }
@@ -53,7 +89,17 @@
       }
       out[k] = e[k];
     });
-    return out;
+    // ENG39: a kind (weaken, requiem ...) folds into its family, when the card holds no other version of that family
+    const present = new Set(Object.keys(out)), claimed = new Set(), res = {};
+    Object.keys(out).forEach(k=>{
+      const kd = has(KIND, k) ? KIND[k] : null, v = out[k];
+      if(!kd || present.has(kd[0]) || claimed.has(kd[0])){ res[k] = v; return; }
+      claimed.add(kd[0]); const o = {};
+      if(plainObj(v) && has(FAM, k) && isFused(k, v)){ if(has(v, 'v')) o.v = v.v; Object.assign(o, typedMatch(kd[1])); Object.keys(v).forEach(x=>{ if(x !== 'v') o[x] = v[x]; }); }
+      else { if(v !== true) o.v = v; Object.assign(o, typedMatch(kd[1])); }
+      res[kd[0]] = o;
+    });
+    return res;
   }
   function expandDef(d){
     if(!d || typeof d !== 'object') return d;
@@ -81,5 +127,9 @@
   function familyOf(k){ if(has(FAM, k)) return Object.assign({key: k}, FAM[k]); const a = aliasOf(k); return a ? Object.assign({key: a[0]}, FAM[a[0]]) : null; }
   // the fused key for any key: an old twin key's family, else the key itself
   function fusedKey(k){ const a = aliasOf(k); return a ? a[0] : k; }
-  return {PARAMS: P, FAMILIES: FAM, ALIAS, isFused, needsExpand, expand, fuse, expandDef, fuseDef, expandDefsInPlace, aliasOf, familyOf, fusedKey};
+  // ENG39: a kind's family and selector; the family any key belongs to (a part's, then a kind's); a family's kinds
+  function kindOf(k){ return has(KIND, k) ? [KIND[k][0], typedMatch(KIND[k][1])] : null; }
+  function rootOf(k){ const b = fusedKey(k); return has(KIND, b) ? KIND[b][0] : b; }
+  function kindsOf(k){ return (has(FK, k) ? FK[k] : []).map(e=> ({match: typedMatch(e.match), key: e.key})); }
+  return {PARAMS: P, FAMILIES: FAM, ALIAS, KIND, isFused, needsExpand, expand, fuse, expandDef, fuseDef, expandDefsInPlace, aliasOf, familyOf, fusedKey, kindOf, rootOf, kindsOf};
 });

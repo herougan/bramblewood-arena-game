@@ -16,7 +16,7 @@ const ROOT = path.join(__dirname, '..'), R = f=> fs.readFileSync(path.join(ROOT,
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
 if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
 const C17 = require(path.join(ROOT, 'tools', 'content17_2026_11_07.js'));
-const cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, c]));
+const cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, require('../bramblewood-skillparams.js').expandDef(c)])); // ENG39 (2026-11-09): kinds read as their old keys (Ice Arrow is Arrow {type: ice})
 const POOLS = J('canonical/map-pools.json').maps, DELIV = J('canonical/skill-delivery.json'), CN = J('canonical/claude-new-cards.json');
 const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js'));
 const isRanged = c=> Object.keys(c.effects || {}).some(k=> DELIV.delivery[k] === 'ranged' || (DELIV.swing || []).includes(k));

@@ -55,7 +55,8 @@ for(const c of withStats){
   const from = G.cardBaseLevel(c), top = G.cardMaxLevel(c) === 10 ? 11 : G.cardMaxLevel(c), cv = BB.forgeCurve(Object.assign({}, c, {obtainMap: G.cardObtainMap(c)}), from, top), b0 = T.budget(c, {level: from}); checked++;
   // (BF5 10-21) each level's N is the curve's own (cv.rows[L].N: x the card's N multiplier)
   // (BF5 10-21, merge of BX) an Archer never swings: its Attack is not part of its strength (tools/skill_costs.js budget)
-  const atk = L=> (c.effects && c.effects.archer && !(Number(c.effects.archer) < 0)) ? 0 : (cv.rows[L].attack || 0);
+  const xe = require('../bramblewood-skillparams.js').expand(c.effects || {}); // ENG39 (2026-11-09): Archer is Arrow {swings: never} in cards.json
+  const atk = L=> (xe.archer && !(Number(xe.archer) < 0)) ? 0 : (cv.rows[L].attack || 0);
   // 2026-10-31 (package BUDGET2, owner RECOST1-6): cap 1's stat terms are 3A + H (BB.DEFAULTS.attackWeight), cap 2's limit is BB.cap2Limit (BF11's 2 x (N/3)², 1.57 x since BUDGET2)
   // (the two left sides are the helper's own, capScores: m and f on the stats, Shield as 0.8 Health, S·|S| in cap 2; were hand copies of budget v3)
   const aw = BB.DEFAULTS.attackWeight || 2, sc = L=> BB.capScores(atk(L), cv.rows[L].health || 0, b0.S, c.effects || {}), room1 = L=> cv.rows[L].N - sc(L).x1, room2 = L=> BB.cap2Limit(cv.rows[L].N) - sc(L).x2;

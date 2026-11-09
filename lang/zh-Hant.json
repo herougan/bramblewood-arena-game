@@ -4374,5 +4374,15 @@
  "Has the map's signature skill": "有地圖的標誌技能",
  "The map's element": "地圖的元素",
  "No art yet": "暫無插畫",
- "Suggested: {rarity}": "建議：{rarity}"
+ "Suggested: {rarity}": "建議：{rarity}",
+ "{name} is Shocked for {n} rounds.": "{name}受到震懾{n}回合。",
+ "Its hits put {n} Vulnerable tokens on the target: each later hit on it deals 1 more.": "它的攻擊在目標身上放{n}個易傷標記：之後每次命中多造成1點傷害。",
+ "On Hit: Vulnerable N. Each hit uses one token, shots too; Venom and Bleed ticks don't. Armor still counts.": "命中時：易傷N。每次命中（射擊也算）消耗一個標記；中毒和流血的跳傷不算。護甲照常生效。",
+ "Vulnerable {n}: its next {n} hit{s} deal 1 more each.": "易傷{n}：接下來{n}次命中它各多造成1點傷害。",
+ "Put N Vulnerable tokens on a chosen target: each later hit on it deals 1 more and uses one.": "在所選目標身上放N個易傷標記：之後每次命中多造成1點傷害並消耗一個。",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Vulnerable, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "移除所選目標（預設此卡）至多N個物理減益：流血、傷疤、腐蝕、易碎、暴露、易傷、感電、踉蹌、破損護甲、威嚇。留空：全部。不含中毒、冰凍和暈眩。",
+ "{att} puts {n} Vulnerable token{s} on {name}.": "{att}在{name}身上放了{n}個易傷標記。",
+ "{name} is Vulnerable: +{b} damage ({n} left).": "{name}易傷：+{b}傷害（剩{n}個）。",
+ "No enemy units left to strike {name}: its Vulnerable tokens fade.": "已沒有敵方單位能攻擊{name}：它的易傷標記消散了。",
+ "Version": "版本"
 }

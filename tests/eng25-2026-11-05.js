@@ -15,7 +15,7 @@ const ROOT = H.ROOT, E = H.Engine;
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), tpl = fs.readFileSync(path.join(ROOT, 'arena_template.html'), 'utf8');
 const texts = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');
 const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
-const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), byId = Object.fromEntries(cards.map(c=> [c.id, c]));
+const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).map(c=> require('../bramblewood-skillparams.js').expandDef(c)) /* ENG39 (2026-11-09): kinds read as their old keys (Breach is Puncture {kind: breach}) */, byId = Object.fromEntries(cards.map(c=> [c.id, c]));
 let fail = 0, pass = 0; const ok = (c, m)=>{ if(c) pass++; else { fail++; console.log('  ✗ ' + m); } };
 const so = id=> id === 1 ? 'A' : 'B';
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];

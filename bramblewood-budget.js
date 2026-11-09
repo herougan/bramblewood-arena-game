@@ -387,7 +387,7 @@ function canopyMultOf(e, cfg){ if(!e || !e.canopyCover || e.evasive || e.flying)
 // The table's own entry (canonical/skill-costs.json "slow", scale "mult") wins; tools/skill_costs.js cardS applies it.
 const SLOW_S_MULT = 0.85;
 function slowSMultOf(effects, entry){ if(!effects || !effects.slow) return 1; return entry && entry.scale === 'mult' && typeof entry.value === 'number' ? entry.value : SLOW_S_MULT; }
-function missMultOf(effects, cfg){ const e = effects || {}; let x = 1; ((cfg && cfg.halfMiss) || HALF_MISS).forEach(k=>{ if(e[k]) x *= missMultFor(k, cfg); }); if(e.skitter && !e.evasive) x *= SKITTER_MISS_MULT; return x * canopyMultOf(e, cfg); } // + Canopy Cover (EN5); + Skitter's Evasive part (ENG23)
+function missMultOf(effects, cfg){ const e = XP(effects) || {}; let x = 1; /* ENG39 (2026-11-09): read expanded, so Swift written as Speed {kind: swift} still counts */ ((cfg && cfg.halfMiss) || HALF_MISS).forEach(k=>{ if(e[k]) x *= missMultFor(k, cfg); }); if(e.skitter && !e.evasive) x *= SKITTER_MISS_MULT; return x * canopyMultOf(e, cfg); } // + Canopy Cover (EN5); + Skitter's Evasive part (ENG23)
 // Skitter (ENG23, 2026-11-04, owner 11-03 23:12: "After hit, it gains haste & evade for the next turn."; 4-round rule, not measured): on for
 // the round after a landed hit, so in rounds 2-4 of a 4-round life with the odds a hit lands (3 of 4, SHOCK.land): uptime 3/4 x 0.75 = 0.56.
 // Its Evasive is Evasive's stat-term multiplier at that share, 1 + 0.18 x 0.56 = 1.1 (here, beside a card's own Evasive it adds nothing);

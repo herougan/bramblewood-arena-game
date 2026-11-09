@@ -4376,5 +4376,15 @@
  "Has the map's signature skill": "வரைபடத்தின் முத்திரைத் திறன் உள்ளது",
  "The map's element": "வரைபடத்தின் தனிமம்",
  "No art yet": "இன்னும் படம் இல்லை",
- "Suggested: {rarity}": "பரிந்துரை: {rarity}"
+ "Suggested: {rarity}": "பரிந்துரை: {rarity}",
+ "{name} is Shocked for {n} rounds.": "{name} {n} சுற்றுகளுக்கு அதிர்ச்சியில் உள்ளது.",
+ "Its hits put {n} Vulnerable tokens on the target: each later hit on it deals 1 more.": "இதன் தாக்குதல்கள் இலக்கில் {n} பாதிப்பு வில்லைகளை வைக்கும்: அடுத்த ஒவ்வொரு தாக்குதலும் 1 அதிகம்.",
+ "On Hit: Vulnerable N. Each hit uses one token, shots too; Venom and Bleed ticks don't. Armor still counts.": "தாக்கும்போது: பாதிப்பு N. ஒவ்வொரு தாக்குதலும், எய்தலும், ஒரு வில்லையைச் செலவழிக்கும்; நஞ்சு, இரத்தக் கசிவு துடிப்புகள் அல்ல. கவசம் இன்னும் கணக்கில்.",
+ "Vulnerable {n}: its next {n} hit{s} deal 1 more each.": "பாதிப்பு {n}: அதன் மீதான அடுத்த {n} தாக்குதல்கள் ஒவ்வொன்றும் 1 அதிகம்.",
+ "Put N Vulnerable tokens on a chosen target: each later hit on it deals 1 more and uses one.": "தேர்ந்த இலக்கில் N பாதிப்பு வில்லைகளை வை: அடுத்த ஒவ்வொரு தாக்குதலும் 1 அதிகம் தந்து ஒன்றைச் செலவழிக்கும்.",
+ "Remove up to N physical debuffs from a chosen target (this card by default): Bleed, Scar, Corrosion, Brittle, Exposed, Vulnerable, Shocked, Staggered, shredded Armor, Daunt. Empty: all. Not Venom, Freeze or Stun.": "தேர்ந்த இலக்கிலிருந்து (இயல்பாக இந்த அட்டை) N வரை உடல் பலவீனங்களை நீக்கும்: இரத்தக் கசிவு, தழும்பு, அரிப்பு, நொறுங்கல், வெளிப்பாடு, பாதிப்பு, மின்னதிர்ச்சி, தடுமாற்றம், கிழிந்த கவசம், அச்சுறுத்தல். காலியெனில்: அனைத்தும். நஞ்சு, உறைவு, திகைப்பு அல்ல.",
+ "{att} puts {n} Vulnerable token{s} on {name}.": "{att} {name} மீது {n} பாதிப்பு வில்லைகளை வைக்கிறது.",
+ "{name} is Vulnerable: +{b} damage ({n} left).": "{name} பாதிக்கப்படக்கூடியது: +{b} சேதம் ({n} மீதம்).",
+ "No enemy units left to strike {name}: its Vulnerable tokens fade.": "{name}-ஐத் தாக்க எதிரி அலகுகள் இல்லை: அதன் பாதிப்பு வில்லைகள் மறைகின்றன.",
+ "Version": "பதிப்பு"
 }

@@ -1642,6 +1642,34 @@ The engine decides; this only describes. Every skill is melee, ranged or none (`
 
 The engine decides; this describes. `canonical/skill-params.json` lists 53 skill families and the parameters each takes. A card's key holds `true` (the default), a plain value, or an object `{v, <param>...}`: `v` the plain value (left out when true; `null` when the card has only a part), `gives` the braces (what used to be `<k>Grant`), `hp` the Health beside an Attack number (`<k>Hp`), `day` / `night` (Crepuscular's parts), `who` (Esprit), `n` and `species` (Swarm, Defiance), `res` (the Deliveries), `bramble` / `poison` / `bleed` / `count` (Arrow, Fire Arrow, Fire Bolt), `uses` (Dive), `vs` (Hunter), `style` (Archer's look). The table names the internal key each parameter becomes. Every entry also says what plain `true` means (`default`), the plain value's default (`number`), and one example each of the stat version and the ability version; the admin Map cards window shows them in each skill's hover window, with its delivery (melee / ranged / none, `canonical/skill-delivery.json`, which now lists the fused keys only). Examples: `"crepuscular": {"day": [1, 0], "night": [0, 2]}` (stat version), `"crepuscular": {"gives": {"day": {"evasive": true}, "night": {"regen": 2}}}` (ability version); `"loyal": {"v": [1, 2], "gives": {"armor": 1}}` (both).
 
+## 2026-11-09 (package ENG39): duplicate skills as kinds of one family; Exploit shown as Vulnerable, the SK3 action as Shock
+
+The engine decides; this describes. Decision DES2-3 a (docs/design/skill-plan-maps-0-20-2026-11-08.md section 3). A family in `canonical/skill-params.json` may list **kinds**: `"kinds": {"<selector>": {"<value>": "<old key>"}}`. A kind is an old skill with its own rule and price, written on a card as its family key plus the selector; `bramblewood-skillparams.js` (and `tools/skill_params.py`) expand it back into the old key, so the engine and the budget read what they read before.
+
+| Family (key) | Selector: value = old key (old name) |
+|---|---|
+| Arrow (`arrow`), one shot family (owner 23:05 on ENG35-2) | type: fire = `fireArrow`; type: ice = `iceArrow`; type + form: bolt = `fireBolt`, `iceBolt`, `acidBolt`, `poisonBolt`, `shockBolt` (Speed 1); swings: never = `archer` (its `style` part rides along). The bramble / poison / bleed riders sit beside type: `"arrow": {"v": 2, "type": "fire", "form": "bolt", "bramble": true}` (ENG35-4) |
+| Keen Sense (`keenSense`) | sees: dark = `darksight` (Darksight) |
+| Speed (`speed`) | kind: blitz = `blitz`; kind: swift = `swift` (on no card; left "+ Add Skill") |
+| Delivery (`delivery`) | kind: stockpile = `stockpile`; kind: pearl = `pearl`; every: round = `deliveryEvery` (its `res` rides along; ENG35-2) |
+| Daunt (`daunt`) | lasts: lasting = `weaken`; lasts: washed = `stench` |
+| Strangle (`strangle`) | hold: full = `constrict`; hold: bind = `tangle` (Tangleweed) |
+| Vulnerable (`exploit`) | lasts: lasting = `scar` |
+| Heal (`healing`) | who: weakest = `nursing`; who: random = `bloom` (the retired healing Bloom) |
+| Harbinger (`harbinger`) | who: ally = `berserk` |
+| Twin Strike (`twinStrike`) | shots: true = `doubleTime` |
+| Puncture (`puncture`) | kind: breach = `breach` |
+| Momentum (`momentum`) | stat: hp = `spoils` |
+| Felling (`felling`) | kind: midas = `midas`; res: metal = `prospector` |
+| Hoard (`hoard`) | kind: timber = `timber` |
+| Carnage (`carnage`) | who: any = `requiem`; who: yours = `dirge`; who: foes = `tally` (its `gives` part rides along) |
+| Throng (`throng`) | who: yours = `muster`; who: theirs = `beset` |
+| Formation (`formation`) | range: 2 = `sociable` |
+
+Examples: `"weaken": 1` is `"daunt": {"v": 1, "lasts": "lasting"}`; `"requiem": 5` + `"requiemGrant"` is `"carnage": {"v": 5, "who": "any", "gives": {...}}`; `"doubleTime": true` is `"twinStrike": {"shots": true}`. A kind named by two selectors is listed in `kindSets` ({match, key}). A card that holds two versions of one family keeps the second as its old key: Rimefire Salamander's Ice Arrow beside its Fire Arrow (decision ENG39-2). Evolute / Evolute Alpha / Omega and Supreme / Supreme Tide stay separate (owner 23:05). The card editor shows a shot's bramble rider as a Bramble box on the shot's row. `canonical/skill-costs.json` marks each kind's entry `kindOf` (family.selector=value; prices unchanged); `canonical/skill-delivery.json` keeps each kind's entry (the same as its family's; the engine falls back to the family for a key not listed). Quick stays its own skill (the Speed 2 name); Fire Arrow / Fire Bolt, Echolocation, True Sight, Illuminate, Stagger, Corrode, Web, Bola, Lasso, Expose, Carrion, Scavenge, Frenzy, Encore and Perforate stay separate (section 3's proposal; Twin Shot, Volley and Chilli are not arrows or bolts).
+
+Names: Exploit's tokens are shown as **Vulnerable** (`ui.skn-exploit`, the status line, the battle log, the custom action; the key stays `exploit`). The SK3 status action that makes units Shocked (+50% damage taken) is shown as **Shock** (`ui.act3-vulnerable`; log "is Shocked"). The bramble's Unfortify part keeps its name, Vulnerable N.
+
 ## 2026-11-08 (package ENG36): status resistances, summon levels, Thanatosis, Constrict, Hoard N
 
 The engine decides; this describes.

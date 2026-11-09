@@ -4,6 +4,8 @@
 # {"nocturnal": {"v": 2, "hp": 1}}, {"tide": true, "tideGrant": {...}} becomes {"tide": {"gives": {...}}} (canonical/skill-params.json
 # says the shapes). tools/skill_params.py expand() gives back exactly the old keys and values, which tests/eng35-2026-11-07.js checks card by
 # card and by fixed-seed fights. Safe to run again (it changes nothing the second time); run it after a fold of cloud overrides too.
+# ENG39 (2026-11-09, decision DES2-3 a): also folds kinds (a family's named versions: "weaken": 1 -> "daunt": {"v": 1, "lasts": "lasting"});
+# a card holding two versions of one family keeps the second as its old key, listed as "kinds left".
 # Usage: python3 tools/fold_skill_params_2026_11_07.py [--check]   (--check: report only, exit 1 when a card still has a twin key)
 import json, os, sys
 
@@ -36,6 +38,10 @@ def main():
         print('round trip differs:', bad)
         sys.exit(2)
     print('fused %d cards: %s' % (len(changed), ', '.join(changed)))
+    kinds = SP.kind_keys()
+    kleft = ['%s: %s' % (c['id'], k) for c in out for src in [c.get('effects') or {}] + list((c.get('levelSkills') or {}).values()) for k in src if k in kinds]
+    if kleft:
+        print('kinds left (the card holds another version of the family):', kleft)
     if '--check' in sys.argv:
         sys.exit(1 if changed or left else 0)
     if changed:
