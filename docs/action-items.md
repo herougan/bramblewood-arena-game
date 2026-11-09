@@ -18,6 +18,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | 5 | ENG37-1 b; rule: never prioritised targeting, always random | ENG38 (running) |
 | 6 | Claude decides the rest (66 delegated; DES2-2 renames left open) | BAL33 running (BAL28-1 a, BAL28-2 b, ENG32-2 c measure). Queued: CONTENT19 (FIX10-1 a Cormorant 3/6, CONTENT16-1..4), ENG39 (ENG33-1 a Smelly, DES2-3 a skill merges), UI42 (BAL25-3 a For its budget, UI34-1 a Codex counters), BAL34 (UI27-4 a one skill count) |
 | 7 | Keep the sims running | BAL31 segments in the background |
+| 8 | (22:48) Map cards: every card defaults to No; owner clicks Yes. Carried then counts only Yes flags (replaces UI37-1) | UI42 (running) |
 
 ## 11-09 16:35: Owner notes
 | # | Note | Package |
