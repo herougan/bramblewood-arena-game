@@ -1,0 +1,108 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-11-09T14:59:34.060Z",
+ "finished": "2026-11-09T16:29:26.061Z",
+ "durationSec": 5392,
+ "args": [
+  "--only-file",
+  "tools/bal33/dive_items_2026_11_09.json",
+  "--fights",
+  "1000"
+ ],
+ "head": "60cdab0b",
+ "inputs": {
+  "context": "global",
+  "bramble": 15,
+  "fingerprint": "acc504990de2",
+  "stages": [
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "bal33:flying",
+   "bal33:flying+dive",
+   "bal33:flying+dive=2",
+   "bal33:tide",
+   "bal33:tide+dive",
+   "bal33:tide+dive=2"
+  ]
+ },
+ "counts": {
+  "items": 6,
+  "measured": 6,
+  "reused": 0,
+  "stopped early": 0,
+  "fights saved": 0,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "bal33:flying",
+   "field": "worth",
+   "old": "3.6478",
+   "new": "2.9581 [2.9209, 3.6919] at 1000 fights, price on carriers 3.4517"
+  },
+  {
+   "id": "bal33:flying+dive",
+   "field": "worth",
+   "old": "-0.3187",
+   "new": "-0.5423 [-1.1491, -0.0329] at 1000 fights, price on carriers 2.4517"
+  },
+  {
+   "id": "bal33:flying+dive=2",
+   "field": "worth",
+   "old": "1.2715",
+   "new": "1.1528 [0.5403, 1.7022] at 1000 fights, price on carriers 3.4517"
+  },
+  {
+   "id": "bal33:tide",
+   "field": "worth",
+   "old": "0.4842",
+   "new": "0.3376 [0.1943, 0.5109] at 1000 fights, price on carriers 0.5"
+  },
+  {
+   "id": "bal33:tide+dive",
+   "field": "worth",
+   "old": "-2.1758",
+   "new": "-2.7891 [-3.9233, -2.008] at 1000 fights, price on carriers -0.5"
+  },
+  {
+   "id": "bal33:tide+dive=2",
+   "field": "worth",
+   "old": "-0.9071",
+   "new": "-1.2479 [-1.9984, -0.7197] at 1000 fights, price on carriers 0.5"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "bal33:flying+dive",
+   "why": "over-priced: worth -0.5423 against 2.4517 on the carriers"
+  },
+  {
+   "id": "bal33:flying+dive=2",
+   "why": "over-priced: worth 1.1528 against 3.4517 on the carriers"
+  },
+  {
+   "id": "bal33:tide+dive",
+   "why": "interval still wide at 1000 fights (se 0.49); measure again with --fights 1000,2000"
+  },
+  {
+   "id": "bal33:tide+dive=2",
+   "why": "interval still wide at 1000 fights (se 0.33); measure again with --fights 1000,2000"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 6
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-11-09-2259.json"
+}
