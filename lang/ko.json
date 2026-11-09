@@ -4345,8 +4345,6 @@
  "Face-down card, likely {rarity}": "뒷면 카드, 아마도 {rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "카드를 주는 업적입니다. 수령할 때 진영 풀에서 뽑습니다.",
  "No card achievements match this filter.": "이 필터에 맞는 카드 업적이 없습니다.",
- "Lists": "목록",
- "Prospects": "후보",
  "Every card that could fit this map: its list, Claude's picks and your picks. Flag each Yes or No. NEW! means no earlier main map gives it; a Yes on an earlier map makes a card Carried here. Side-map cards are not shown.": "이 맵에 어울릴 수 있는 모든 카드: 맵 목록, Claude의 추천, 당신의 선택. 각각 예 또는 아니오로 표시하세요. NEW!는 이전 메인 맵에서 얻을 수 없는 카드입니다. 이전 맵에서 예로 표시한 카드는 여기서 이월이 됩니다. 사이드 맵 카드는 표시되지 않습니다.",
  "NEW! flagged": "NEW! 표시",
  "Carried flagged": "이월 표시",
@@ -4376,5 +4374,7 @@
  "THEME5 pick": "THEME5 추천",
  "SKILLREC1 pick": "SKILLREC1 추천",
  "Has the map's signature skill": "맵의 대표 스킬 보유",
- "The map's element": "맵의 속성"
+ "The map's element": "맵의 속성",
+ "No art yet": "아직 그림 없음",
+ "Suggested: {rarity}": "추천: {rarity}"
 }

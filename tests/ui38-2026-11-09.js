@@ -65,7 +65,7 @@ ok(!/details class="pk1-mc-sec rv2-panel ui37-grp ui37-extra"/.test(b37) && !/ui
 ok(/src !== 'flag' && side\.has\(id\)/.test(b37), 'prospects leave out side-map-only cards (unless already flagged)');
 ok(/ui38Concept\(id\) \|\| \(defs\[id\] && ok\(id\)\)/.test(b37), 'a flagged concept id is a prospect');
 ok(/concepts: ui38ExportConcepts\(\)/.test(b37) && /'concept', 'animal', 'family', 'element', 'rarity', 'role'/.test(b37), 'Export: concepts with their fields (JSON section, CSV columns)');
-ok(/c \? ui38ConceptChipHTML\(c\) : vis4MapCardTilesHTML/.test(b37) && /data-zoom-tip=/.test(blk), 'a concept shows as a placeholder chip whose hover is the concept text');
+ok(/c \? ui39ConceptCardHTML\(c\) : rv \? rv1TileHTML/.test(b37) && /data-zoom-tip=/.test(b37), 'a concept shows as a placeholder card whose hover is the concept text (UI39: a full-size card, was a chip)');
 ok(/sub_once\(app_src, "__MAP_PROSPECTS__"/.test(rd('assemble_arena.py')) && (app.match(/__MAP_PROSPECTS__/g) || []).length === 1, 'the build bakes the data file in once');
 
 // 4. texts

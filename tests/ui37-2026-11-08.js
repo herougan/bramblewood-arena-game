@@ -47,7 +47,7 @@ ok(/\.pk1-mc-modal\[data-ui37-view="pros"\] > :not\(\.modal-head-row\):not\(\.ui
 ok(/\.ui37-switch\{[^}]*flex-shrink:0;/.test(tpl) && /\.ui37-yn-b\.is-yes\.on\{/.test(tpl), 'switch and pill CSS');
 
 // 4. texts
-{ const keys = ['view-lists', 'view-pros', 'sub', 'new', 'carried', 'flagged-new', 'flagged-carried', 'target-tip', 'yes', 'no', 'flag-label', 'src-list', 'src-maybe', 'src-claude', 'src-newcard', 'src-flag', 'src-earlier', 'from', 'from-tip', 'earlier', 'export', 'export-tip', 'saved-cloud', 'saved-local', 'prev', 'next'].map(k=> 'ui.ui37-' + k);
+{ const keys = ['sub', 'new', 'carried', 'flagged-new', 'flagged-carried', 'target-tip', 'yes', 'no', 'flag-label', 'src-list', 'src-maybe', 'src-claude', 'src-newcard', 'src-flag', 'src-earlier', 'from', 'from-tip', 'earlier', 'export', 'export-tip', 'saved-cloud', 'saved-local', 'prev', 'next'].map(k=> 'ui.ui37-' + k);
   const used = [...new Set([...blk.matchAll(/TX\('(ui\.ui37-[\w-]+)'/g)].map(x=> x[1]).concat([...blk.matchAll(/'ui\.ui37-src-' \+ s/g)].length ? [] : []))];
   ok(used.every(k=> keys.includes(k)), 'every TX key the block uses is listed: ' + used.filter(k=> !keys.includes(k)).join(','));
   const en = {}; keys.forEach(k=>{ const m = texts.match(new RegExp('"' + k + '": "((?:[^"\\\\]|\\\\.)*)"')); ok(!!m, k + ' in bramblewood-texts.js'); if(m) en[k] = m[1].replace(/\\"/g, '"'); });

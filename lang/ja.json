@@ -4343,8 +4343,6 @@
  "Face-down card, likely {rarity}": "伏せたカード、おそらく{rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "カードがもらえる実績。受け取る時に陣営プールから引かれます。",
  "No card achievements match this filter.": "この絞り込みに合うカード実績はありません。",
- "Lists": "リスト",
- "Prospects": "候補",
  "Every card that could fit this map: its list, Claude's picks and your picks. Flag each Yes or No. NEW! means no earlier main map gives it; a Yes on an earlier map makes a card Carried here. Side-map cards are not shown.": "このマップに合いそうな全カード：マップのリスト、Claude のおすすめ、あなたの選択。それぞれ「はい」か「いいえ」を付けます。NEW! は以前のメインマップで手に入らないカード。以前のマップで「はい」にしたカードはここでは持ち越しになります。サイドマップのカードは出ません。",
  "NEW! flagged": "NEW! 選択",
  "Carried flagged": "持ち越し 選択",
@@ -4374,5 +4372,7 @@
  "THEME5 pick": "THEME5 のおすすめ",
  "SKILLREC1 pick": "SKILLREC1 のおすすめ",
  "Has the map's signature skill": "マップの代表スキルを持つ",
- "The map's element": "マップの属性"
+ "The map's element": "マップの属性",
+ "No art yet": "イラスト未作成",
+ "Suggested: {rarity}": "推奨：{rarity}"
 }

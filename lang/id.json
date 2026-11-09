@@ -4344,8 +4344,6 @@
  "Face-down card, likely {rarity}": "Kartu tertutup, kemungkinan {rarity}",
  "Achievements that give a card. The card is drawn from your faction pool when you claim it.": "Pencapaian yang memberi kartu. Kartu diambil dari kumpulan faksi saat diklaim.",
  "No card achievements match this filter.": "Tidak ada pencapaian kartu yang cocok dengan filter ini.",
- "Lists": "Daftar",
- "Prospects": "Kandidat",
  "Every card that could fit this map: its list, Claude's picks and your picks. Flag each Yes or No. NEW! means no earlier main map gives it; a Yes on an earlier map makes a card Carried here. Side-map cards are not shown.": "Setiap kartu yang bisa cocok untuk peta ini: daftarnya, pilihan Claude, dan pilihanmu. Tandai Ya atau Tidak. BARU! berarti tidak ada peta utama sebelumnya yang memberinya; Ya di peta sebelumnya membuatnya Terbawa di sini. Kartu peta samping tidak ditampilkan.",
  "NEW! flagged": "BARU! ditandai",
  "Carried flagged": "Terbawa ditandai",
@@ -4375,5 +4373,7 @@
  "THEME5 pick": "Pilihan THEME5",
  "SKILLREC1 pick": "Pilihan SKILLREC1",
  "Has the map's signature skill": "Punya skill khas peta",
- "The map's element": "Elemen peta"
+ "The map's element": "Elemen peta",
+ "No art yet": "Belum ada gambar",
+ "Suggested: {rarity}": "Saran: {rarity}"
 }

@@ -3669,8 +3669,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui36-next-card": "Face-down card, likely {rarity}",
   "ui.ui36-cards-tip": "Achievements that give a card. The card is drawn from your faction pool when you claim it.",
   "ui.ui36-none": "No card achievements match this filter.",
-  "ui.ui37-view-lists": "Lists",
-  "ui.ui37-view-pros": "Prospects",
   "ui.ui37-sub": "Every card that could fit this map: its list, Claude's picks and your picks. Flag each Yes or No. NEW! means no earlier main map gives it; a Yes on an earlier map makes a card Carried here. Side-map cards are not shown.",
   "ui.ui37-new": "NEW!",
   "ui.ui37-carried": "Carried",
@@ -3706,7 +3704,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui38-why-t": "THEME5 pick",
   "ui.ui38-why-s": "SKILLREC1 pick",
   "ui.ui38-why-g": "Has the map's signature skill",
-  "ui.ui38-why-e": "The map's element"
+  "ui.ui38-why-e": "The map's element",
+  "ui.ui39-c-noart": "No art yet",
+  "ui.ui39-c-rarity": "Suggested: {rarity}"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

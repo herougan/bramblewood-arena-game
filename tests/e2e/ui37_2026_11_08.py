@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""UI37 (2026-11-08, owner 17:22 #1-#4) browser check: the admin Map cards window's Prospects view. NEW! first then Carried, compact chips with the hover card,
+"""UI37 (2026-11-08, owner 17:22 #1-#4; updated by UI39 2026-11-09: one combined view of full cards, no switch) browser check: the admin Map cards window's Prospects view. NEW! first then Carried, compact chips with the hover card,
 Yes / No pill toggles, the NEW! / Carried counters against the THEME6-1 targets (editable), flags kept across a reload, a flag on an EARLIER map moving a card
 between NEW! and Carried on a LATER map, Export picks (JSON / CSV), no switch on a submap's window. Both widths.
     python3 tests/e2e/ui37_2026_11_08.py      (build first; writes docs/screens/ui37/*.png; needs Playwright)"""
@@ -27,7 +27,7 @@ def E(body): return "(async()=>{ " + body + " })()"
 OPEN = "adminModeEnabled = true; pk1OpenMapCards(%s); await new Promise(r=> setTimeout(r, 900));"
 STATE = """const g = k=> [...document.querySelectorAll('#ui37Pros [data-ui37-grp="' + k + '"] .ui37-tile')].map(t=> ({id: t.dataset.ui37Id, f: t.className.includes('is-yes') ? 'yes' : t.className.includes('is-no') ? 'no' : ''}));
   const m = document.querySelector('.pk1-mc-modal');
-  return {view: m && m.dataset.ui37View, neu: g('new'), car: g('carried'), earlier: g('earlier'), ctN: (document.querySelector('[data-ui37-ct=n] .ui37-x') || {}).textContent, ctC: (document.querySelector('[data-ui37-ct=c] .ui37-x') || {}).textContent,
+  return {view: m && m.dataset.ui39 === '1' ? 'pros' : 'lists', /* 2026-11-09 (UI39): one view, no switch */ neu: g('new'), car: g('carried'), earlier: g('earlier'), ctN: (document.querySelector('[data-ui37-ct=n] .ui37-x') || {}).textContent, ctC: (document.querySelector('[data-ui37-ct=c] .ui37-x') || {}).textContent,
     tN: (document.querySelector('[data-ui37-target=n]') || {}).value, tC: (document.querySelector('[data-ui37-target=c]') || {}).value, sw: !!document.querySelector('.ui37-switch'), map: (document.querySelector('.ui37-map') || {}).textContent};"""
 
 async def main():
@@ -42,8 +42,7 @@ async def main():
         L = mains[5]; print('   later map:', L)
         # 1 the window opens on Lists; the switch shows Prospects
         await pg.evaluate(E(OPEN % json.dumps(L['id']) + "return 1;"))
-        s = await pg.evaluate(E(STATE)); ok(s['sw'] and s['view'] == 'lists', 'a main map window has the Lists / Prospects switch, Lists first')
-        await pg.click('[data-ui37-view=pros]'); await pg.wait_for_timeout(300)
+        s = await pg.evaluate(E(STATE)); ok(not s['sw'] and s['view'] == 'pros', 'a main map window is one view (UI39): no Lists / Prospects switch')
         s = await pg.evaluate(E(STATE)); print('   ', json.dumps({k: (len(v) if isinstance(v, list) else v) for k, v in s.items()}, ensure_ascii=False))
         ok(s['view'] == 'pros' and len(s['neu']) > 0 and len(s['car']) > 0, 'Prospects shows a NEW! group and a Carried group, both filled')
         order = await pg.evaluate("[...document.querySelectorAll('#ui37Pros [data-ui37-grp]')].map(x=> x.dataset.ui37Grp).join(',')")
@@ -53,13 +52,13 @@ async def main():
           const shown = [...document.querySelectorAll('#ui37Pros [data-ui37-grp=new] .ui37-tile, #ui37Pros [data-ui37-grp=carried] .ui37-tile')].map(t=> t.dataset.ui37Id);
           const c = (CLAUDE_NEW.content17 || {})[top], side = ui38SideOnly(top), picks = ((c && c.groups) || []).flatMap(g=> (g.picks || []).map(p=> p.id)).filter(id=> defs[id] && !side.has(id)); /* 2026-11-09 (UI38): side-map cards are left out */
           return {subShown: subOnly.filter(id=> shown.includes(id)), listMissing: ent.cards.filter(id=> defs[id] && !shown.includes(id)), picksMissing: picks.filter(id=> !shown.includes(id)), shown: shown.length,
-            chip: !!document.querySelector('#ui37Pros .ui37-tile .vis4-mc-card.is-chip[data-zoom]')};""" % json.dumps(L['id'])))
+            chip: !!document.querySelector('#ui37Pros .ui37-tile .vis4-mc-card.is-large[data-zoom]') && !document.querySelector('#ui37Pros .ui37-tile .vis4-mc-card.is-chip')};""" % json.dumps(L['id'])))
         print('   ', json.dumps({k: v for k, v in r.items()}))
         ok(not r['subShown'], 'no side-map-only card is shown in NEW! or Carried')
         ok(not r['listMissing'] and not r['picksMissing'], "every MAP-list card and every Claude (CONTENT17) pick for the map is a prospect")
-        ok(r['chip'], 'tiles are the compact chip with the hover card (data-zoom)')
+        ok(r['chip'], 'tiles are the full card with the hover card (data-zoom; UI39, was the compact chip)')
         await pg.hover('#ui37Pros .ui37-tile .vis4-mc-card'); await pg.wait_for_timeout(400)
-        ok(await pg.evaluate("!!document.querySelector('.cnp-rw-zoom .card-tile')"), 'hovering a chip shows the full card with its stats and skills')
+        ok(await pg.evaluate("!!document.querySelector('.cnp-rw-zoom .card-tile')"), 'hovering a card shows the full card with its stats and skills')
         await pg.screenshot(path=os.path.join(OUT, 'prospects-hover-1366.png'))
         await pg.mouse.move(5, 5)
         # 2 targets: THEME6-1 defaults
@@ -118,7 +117,7 @@ async def main():
         # 7 a submap's window has no Prospects
         sub = await pg.evaluate("(CONQUEST_MAPS.find(m=> m.sub && !m.reserved && m.parent === %s) || CONQUEST_MAPS.find(m=> m.sub && !m.reserved) || {}).id" % json.dumps(L['id']))
         await pg.evaluate(E(OPEN % json.dumps(sub) + "return 1;"))
-        ok(not await pg.evaluate("!!document.querySelector('.ui37-switch')"), f'a submap window ({sub}) has no Prospects switch')
+        ok(not await pg.evaluate("!!document.querySelector('.ui37-switch') || !!document.getElementById('ui37Pros')"), f'a submap window ({sub}) has no Prospects')
         # 8 phone
         await pg.set_viewport_size({'width': 390, 'height': 844})
         await pg.evaluate(E(OPEN % json.dumps(L['id']) + "return 1;"))
