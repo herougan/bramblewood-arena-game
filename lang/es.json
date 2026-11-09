@@ -4314,7 +4314,7 @@
  "A side skill in the Codex draft's skill distribution for this map": "Una habilidad secundaria de este mapa en el reparto del borrador de Codex",
  "Codex draft pick (no card on this map has it yet)": "Elegida por el borrador de Codex (aún ninguna carta de este mapa la tiene)",
  "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "Volar no lo esquiva. Sin enemigo enfrente, golpea a un enemigo del carril de al lado en vez de la zarza.",
- "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "Su golpe cuenta como Volar 1: un volador nunca lo esquiva, una unidad Mach 1 de cada 2. Con su carril vacío, golpea a un enemigo de un carril vecino (el de menos Salud; si empatan, a cara o cruz) y solo golpea la zarza si ninguno tiene. Provocar aún lo atrae.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (a coin flip when both have one) and hits the bramble only when neither lane has one. Taunt still draws it.": "Su golpe cuenta como Volar 1: un volador nunca lo esquiva, una unidad Mach 1 de cada 2. Con su carril vacío, golpea a un enemigo de un carril vecino (a cara o cruz si ambos tienen uno) y solo golpea la zarza si ninguno tiene. Provocar aún lo atrae.",
  "{a} reaches into the next lane and strikes {t}.": "{a} alcanza el carril vecino y golpea a {t}.",
  "Reach": "Alcance",
  "Shield: Armor": "Escudo: Armadura",

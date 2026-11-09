@@ -365,6 +365,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
   opts = opts || {};
   const recordEvents = !!opts.recordEvents;
+  // ENG38 (2026-11-09, owner 21:36 on ENG37-1: "Never have prioritised targeting, alwayes default to randomign"): when a hit, shot or skill
+  // has several units to choose from, it picks one at random (the fight's seeded RNG). A skill whose own text names its rule (the most hurt,
+  // the most Attack, the nearest ...) keeps that rule, and only its ties are random now (were: left first, first listed, the newest). Each
+  // helper rolls only when there is a real choice, so a fight with no tie draws the same numbers as before.
+  //   eng38Pick(list): one at random.  eng38Best(list, cmp): the top one by cmp (< 0: a ranks first), its ties at random.
+  //   eng38TopN(list, cmp, n, setOnly): the top n by cmp; a tie that decides who is in (or, unless setOnly, the order inside) is broken at random.
+  function eng38Pick(list){ return !list || !list.length ? null : list.length === 1 ? list[0] : list[Math.floor(rnd() * list.length)]; }
+  function eng38Best(list, cmp){ if(!list || !list.length) return null; let top = [list[0]];
+    for(let i = 1; i < list.length; i++){ const c = cmp(list[i], top[0]); if(c < 0) top = [list[i]]; else if(c === 0) top.push(list[i]); }
+    return eng38Pick(top); }
+  function eng38TopN(list, cmp, n, setOnly){ if(!list || !list.length) return []; let s = list.slice().sort(cmp); const m = Math.min(n, s.length);
+    let tie = false; for(let i = setOnly ? m - 1 : 0; i < m && i + 1 < s.length; i++) if(cmp(s[i], s[i + 1]) === 0){ tie = true; break; }
+    if(tie) s = shuffle(list, rnd).sort(cmp); // stable sort: a shuffled start breaks the ties at random
+    return s.slice(0, n); }
   // Battle modes (2026-10-02, explicit request): 'gravity' is the original game — cards collapse
   // in toward the centre and targeting uses the rank-interlock "teeth" math. 'open' and
   // 'gladiator' use FIXED SLOTS instead: every board card carries an integer `slot` (0 = centre,
@@ -1573,8 +1587,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'statusFx', kind:'castleBolt', side, targetSide:sideOf(otherId(pid)), targetDefId:t.defId, targetUid:t.uid, amount:pl.castleBolt});
       if(!helmetDeflects({kind:'card', card:t}, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, 'castle', pl.castleBolt, 'physical', {kind:'card', card:t}, stats, events, null, null, true); } }
     if(pl.herbRefinery){ const roll = Math.floor(rnd()*3), hb = pl.herbRefinery === true ? eng24HerbCfg(true) : pl.herbRefinery; // ENG24: its numbers
-      if(roll === 0){ const hurt = allLive(pl).filter(c=> c.hp < c.maxHp).sort((x,y)=> (x.hp/x.maxHp) - (y.hp/y.maxHp));
-        if(hurt.length){ const h = applyHeal(hurt[0], hb.heal, side, events); if(h > 0 && recordEvents && events) events.push({type:'statusFx', kind:'herbHeal', side, targetSide:side, targetDefId:hurt[0].defId, targetUid:hurt[0].uid, amount:h}); } }
+      if(roll === 0){ const ht = eng38Best(allLive(pl).filter(c=> c.hp < c.maxHp), (x,y)=> (x.hp/x.maxHp) - (y.hp/y.maxHp)); // ENG38 (2026-11-09): the most wounded, a tie at random (was: the left one)
+        if(ht){ const h = applyHeal(ht, hb.heal, side, events); if(h > 0 && recordEvents && events) events.push({type:'statusFx', kind:'herbHeal', side, targetSide:side, targetDefId:ht.defId, targetUid:ht.uid, amount:h}); } }
       else if(roll === 1){ const f = foes(); if(f.length){ const t = f[Math.floor(rnd()*f.length)]; if(recordEvents && events) events.push({type:'statusFx', kind:'herbBane', side, targetSide:sideOf(otherId(pid)), targetDefId:t.defId, targetUid:t.uid, amount:hb.damage});
         fireDamageAction(players, sideOf, pid, 'castle', hb.damage, 'poison', {kind:'card', card:t}, stats, events, null, null); } }
       else { pl.lumber = (pl.lumber||0) + hb.lumber; if(recordEvents && events) events.push({type:'lumber', side, defId:null, amount:hb.lumber, castle:true}); } }
@@ -1720,7 +1734,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(g.every && round % g.every !== 0) return;
     const ev = o=>{ if(recordEvents && events) events.push(Object.assign({type:'bossGimmick', gimmick:id, side:sideOf(bp), round}, o)); };
     const on = (c, pid, o)=> ev(Object.assign({uid:c.uid, defId:c.defId, targetSide:sideOf(pid)}, o || {}));
-    const foeLive = allLive(foe), mostOf = (list, f)=> list.reduce((a, c)=> !a || f(c) > f(a) || (f(c) === f(a) && c.uid > a.uid) ? c : a, null);
+    const foeLive = allLive(foe), mostOf = (list, f)=> eng38Best(list, (a, c)=> f(c) - f(a)); // ENG38 (2026-11-09): a tie at random (was: the newest)
     if(id === 'coldSnap'){
       [bp, fp].forEach(pid=>{ const c = mostOf(allLive(players[pid]).filter(x=> resistFactor(x.defId, 'cold') >= 1), x=> x.uid); if(!c) return;
         if(!eng36Lands(c, 'freeze')) return; /* ENG36 (2026-11-08) */ c.frozen = (c.frozen||0) + 1; on(c, pid, {freeze:1}); });
@@ -3742,7 +3756,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Rampart: every hit that reaches damageHQ (a unit's swing, shot, skill, a Pierce, an Overwhelm spill, a boomerang; every bramble hit
   //     that has a unit behind it) is split: ONE Rampart unit takes ceil(half), the bramble the rest (5: 3 and 2; 1: 1 and 0). The field's own
   //     ticks on a bramble (Ley Lines, Ash Rain) never come here, so they are not split. Which unit: the live Rampart unit (its side's
-  //     rows, a raid's middle and back too) nearest the attacker's column; a tie, or no attacker, the one listed first (front row, nearest the
+  //     rows, a raid's middle and back too) nearest the attacker's column; a tie at random (ENG38, 2026-11-09; was: the one listed first, front row, nearest the
   //     centre first). Its share is plain damage (its Shield soaks first; no Armor, Thorns or On Attacked: it is not a hit on it). Supreme crushes it as it crushes
   //     the rest. The 'rampart' event carries the share; the hit's own event keeps the bramble's part.
   //   Bramble Armor: the bramble's part of each hit is 1 less (after Rampart). Several Bramble Armor units: still 1 (call EN3-5: max 1).
@@ -3754,10 +3768,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // EN8 (2026-10-24, owner 21:41 #5: "Rampart - blocks 1/2 bramble dmg. Might be unfair if it just flat blocks everything!. Maybe only blocks
     // attacks from 'surrounding enemies (L/C/R)'"): a Rampart unit covers only a hit whose attacker stands in its own column or the column on
     // either side (|attacker's slot - its slot| <= 1). A hit with no attacker in a column (a field tick, a gravity board, a castle's own
-    // throw) is not covered. Of the Rampart units in reach, the nearest; a tie, the one listed first.
+    // throw) is not covered. Of the Rampart units in reach, the nearest; a tie at random (ENG38; was: the one listed first).
     const ac = currentAttacker && Number.isInteger(currentAttacker.slot) ? currentAttacker.slot : null; if(ac == null) return amount;
     const rs = rowsUnitsOf(pl).filter(c=> isRampartUnit(c) && Number.isInteger(c.slot) && Math.abs(c.slot - ac) <= 1); if(!rs.length) return amount;
-    let r = rs[0]; rs.forEach(c=>{ if(Math.abs(c.slot - ac) < Math.abs(r.slot - ac)) r = c; });
+    const r = eng38Best(rs, (x, y)=> Math.abs(x.slot - ac) - Math.abs(y.slot - ac)); // ENG38 (2026-11-09): the nearest, a tie at random (was: the one listed first)
     const share = Math.ceil(amount / 2), dmg = applyDamage(r, share, {wake: true}).dmg; // its Shield / Shell soak first, as on any damage
     if(recordEvents && shieldEvents) shieldEvents.push({type:'rampart', side: shieldSideOf ? shieldSideOf(pl.id) : undefined, uid:r.uid, defId:r.defId, dmg, share, bramble: amount - share, mods:dnModsFor(r.uid)});
     return amount - share;
@@ -3914,9 +3928,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(isAlly){
         const fullOrder = rowOrderOf(sidePl, boardCard); // a middle / back-row unit: its own row (2026-10-19, RR)
         const idx = fullOrder.findIndex(c=>c.uid===boardCard.uid);
-        let best=null, bestDist=-1;
-        pool.forEach(c=>{ const i2 = fullOrder.findIndex(x=>x.uid===c.uid); if(i2 < 0) return; /* its own row (2026-10-19, RR) */ const d=Math.abs(i2-idx); if(d>bestDist){ bestDist=d; best=c; } });
-        return best ? {pl:sidePl, card:best} : null;
+        // ENG38 (2026-11-09): the furthest ally, a tie (one as far on each side) at random (was: the left one)
+        const far = pool.map(c=> [c, fullOrder.findIndex(x=>x.uid===c.uid)]).filter(x=> x[1] >= 0 /* its own row (2026-10-19, RR) */);
+        const best = eng38Best(far, (x, y)=> Math.abs(y[1]-idx) - Math.abs(x[1]-idx));
+        return best ? {pl:sidePl, card:best[0]} : null;
       }
       const mySide = findCardSide(pl, boardCard.uid) || 'center';
       const farSide = mySide==='left' ? 'right' : (mySide==='right' ? 'left' : (rnd()<0.5?'left':'right'));
@@ -6051,7 +6066,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function eqDismantle(players, sideOf, pid, c, events){
     if(!c || !effectsOf(c).dismantle) return; const foeId = otherId(pid), foe = players[foeId]; if(!foe) return;
     const opp = opposingCardOf(players, pid, c), facing = opp && opp.card && opp.card.hp > 0 && opp.card.equipment ? opp.card : null;
-    let loose = null; if(!facing && slotMode && foe.eqSlots){ const s0 = Number.isInteger(c.slot) ? c.slot : 0; const sl = Object.keys(foe.eqSlots).map(Number).filter(x=> foe.eqSlots[x]).sort((a, b)=> Math.abs(a - s0) - Math.abs(b - s0) || a - b)[0]; if(sl != null) loose = {pl: foe, slot: sl}; }
+    // ENG38 (2026-11-09, owner: "Never have prioritised targeting"): with no piece facing it, a loose enemy piece at random (its text names
+    // no rule; was: the one nearest its column, a tie the left one)
+    let loose = null; if(!facing && slotMode && foe.eqSlots){ const sl = eng38Pick(Object.keys(foe.eqSlots).map(Number).filter(x=> foe.eqSlots[x]).sort((a, b)=> a - b)); if(sl != null) loose = {pl: foe, slot: sl}; }
     if(!facing && !loose) return; const ok = rnd() < EQ2_DEF.breakChance;
     if(recordEvents && events) events.push({type:'statusFx', kind:'dismantle', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(foeId), targetUid: facing ? facing.uid : null, targetDefId: facing ? facing.defId : null, slot: loose ? loose.slot : undefined, ok});
     if(ok) eqBreakLife(players, sideOf, facing, 'dismantle', events, facing ? null : loose); }
@@ -7021,7 +7038,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // other creature dies, the Amore becomes brown, and they lose the Regeneration 3 bonus but keep the +0/+3. Any units on the field
   // count for this effect. Amore is a 1-1 activation. No other units can be involved."):
   //   when an Amore unit arrives (played or spawned), it pairs with ONE of its owner's units already on the field that has Amore, shares
-  //   a Type with it and has never been paired (the nearest such one; ties: the earlier). Both get +0/+3 for good and Regeneration 3
+  //   a Type with it and has never been paired (one such at random, ENG38 2026-11-09; was: the nearest, ties the earlier). Both get +0/+3 for good and Regeneration 3
   //   (c.amoreRegen, added to any Regeneration of their own). Each unit pairs once in its life: a pair is only ever those two. Enemy
   //   units never pair with yours. When one of the two dies, the other's heart breaks (brown): it loses the Regeneration 3, keeps +0/+3.
   const AMORE_REGEN = 3, AMORE_HP = 3;
@@ -7033,8 +7050,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const pl = players[pid]; if(!pl) return;
     const pos = c=> Number.isInteger(c.slot) ? c.slot : 0;
     const cands = upkeepUnitsOf(pl).filter(o=> o && o !== card && !o.gap && o.hp > 0 && !o.cageOf && !o.amoreUsed && effectsOf(o).amore && (amoreTypes(card).some(t=> txIsA(CARD_DEFS[o.defId], t)) || amoreTypes(o).some(t=> txIsA(CARD_DEFS[card.defId], t)))) /* 2026-10-21 (package TX): the taxonomy; 'Misc' never pairs */
-      .sort((a, b)=> Math.abs(pos(a) - pos(card)) - Math.abs(pos(b) - pos(card)) || a.uid - b.uid);
-    const mate = cands[0]; if(!mate) return;
+      .sort((a, b)=> pos(a) - pos(b) || a.uid - b.uid);
+    const mate = eng38Pick(cands); if(!mate) return; // ENG38 (2026-11-09, owner: "Never have prioritised targeting"): one at random (its text names no rule; was: the nearest, a tie the earlier)
     [[card, mate], [mate, card]].forEach(([c, o])=>{ c.amoreUsed = true; c.amoreWith = o.uid; c.amoreRegen = AMORE_REGEN; c.maxHp += AMORE_HP; c.hp += AMORE_HP; });
     const shared = amoreTypes(mate).filter(t=> types.includes(t));
     if(recordEvents && events) events.push({type:'amore', side:sideOf(pid), uid:card.uid, defId:card.defId, mateUid:mate.uid, mateDefId:mate.defId, regen:AMORE_REGEN, hp:AMORE_HP, type2:shared[0] || null});
@@ -7222,8 +7239,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // Reach (ENG37, 2026-11-08, owner 09:27: "Reach - Target can attack adjacent opposing units and always does so over hitting the Bramble"):
   // a front-row swing with nothing opposite it (it would hit the bramble) strikes an enemy unit in a lane next to its own instead (the
-  // diagonal neighbours, prongLanes' left / right). With two there, the one with less Health right now; a tie, a coin flip (the only
-  // random draw, and only then). A unit aloft / under (Dive), playing dead (Thanatosis) or Invisible to it is passed over, as the swing's
+  // diagonal neighbours, prongLanes' left / right). With two there, a coin flip (ENG38, 2026-11-09, owner on ENG37-1 b: "Never have
+  // prioritised targeting, alwayes default to randomign"; was: the one with less Health, a tie a coin flip). The flip is its only random
+  // draw, and only then. A unit aloft / under (Dive), playing dead (Thanatosis) or Invisible to it is passed over, as the swing's
   // own target would be. null: nothing beside it either (the bramble, as before). peek: no coin flip (true when either side has one).
   function eng37ReachPick(myCols, enemyCols, myCol, att, peek){
     const e = att ? effectsOf(att) : {}; if(!e.reach || Number(e.reach) < 0) return null;
@@ -7233,7 +7251,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const cols = [L.left, L.right].filter(ok); if(!cols.length) return null;
     if(peek) return enemyCols[cols[0]];
     let col = cols[0];
-    if(cols.length === 2){ const h0 = enemyCols[cols[0]].card.hp, h1 = enemyCols[cols[1]].card.hp; col = h0 < h1 ? cols[0] : h1 < h0 ? cols[1] : (rnd() < 0.5 ? cols[0] : cols[1]); }
+    if(cols.length === 2) col = rnd() < 0.5 ? cols[0] : cols[1]; // ENG38 (ENG37-1 b): a coin flip always
     const en = enemyCols[col]; en.col = col; return en;
   }
   // Tornado N: when it arrives, it whirls the enemy row. N random enemy units (not pinned) are each thrown to a random other column
@@ -9598,14 +9616,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
         // Healing N (Ecclesia, 2026-10-10): heals the most wounded ally (itself included) for N.
         if(c.hp>0 && def.effects && def.effects.healing && !c.stunned){
-          const hurt = upkeepUnitsOf(pl).filter(o=> o.hp>0 && o.hp<o.maxHp).sort((a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp)); // 2026-10-18: Poison no longer counts; 2026-10-19 (SK1): nor Bleed
+          const hurt = [eng38Best(upkeepUnitsOf(pl).filter(o=> o.hp>0 && o.hp<o.maxHp), (a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp))].filter(Boolean); // 2026-10-18: Poison no longer counts; 2026-10-19 (SK1): nor Bleed; ENG38 (2026-11-09): a tie at random (was: the left one)
           if(hurt.length){ const h = applyHeal(hurt[0], (Number(def.effects.healing)||0) + ((pl.perks && pl.perks.pollen) || 0) /* Wildpath "Pollen Drift" moved here from the retired Bloom heal (BL, 2026-10-23) */, sideOf(pl.id), events); if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:hurt[0].uid, targetDefId:hurt[0].defId, amount:h, cause:'healing'}); fireHealTriggers(players, sideOf, pl.id, c, hurt[0], h, stats, events); } }
         }
         // Cure N (2026-10-16, user: "Cure."): every upkeep it cures your most poisoned unit (itself included) of up to N Poison.
         // 2026-10-18 (user: "Cure doesn't heal bleed."): Poison only now; heals stanch Bleed. Toxin can't be cured.
         if(c.hp>0 && def.effects && def.effects.cure && !c.stunned){
           // EN4 (2026-10-23): Greater Poison counts too (the most poisoned: Poison + Greater Poison); Cure takes Poison first, then Greater Poison.
-          const sick = upkeepUnitsOf(pl).filter(o=> o && !o.gap && o.hp>0 && ((o.poison||0) + (o.gpoison||0)) > 0).sort((a,b)=> ((b.poison||0) + (b.gpoison||0)) - ((a.poison||0) + (a.gpoison||0)));
+          const sick = [eng38Best(upkeepUnitsOf(pl).filter(o=> o && !o.gap && o.hp>0 && ((o.poison||0) + (o.gpoison||0)) > 0), (a,b)=> ((b.poison||0) + (b.gpoison||0)) - ((a.poison||0) + (a.gpoison||0)))].filter(Boolean); // ENG38 (2026-11-09): a tie at random (was: the left one)
           if(sick.length && eng26IsUndead(sick[0])) eng26UndeadCure(sick[0], w2N(def, 'cure'), sideOf(pl.id), events, c, 'cure'); // ENG26: Bleed instead of the cure
           else if(sick.length){ const t = sick[0], cn = w2N(def, 'cure'); const p0 = Math.min(cn, t.poison||0); t.poison -= p0; const g0 = Math.min(cn - p0, t.gpoison||0); if(g0 > 0) t.gpoison -= g0;
             if(p0 + g0 > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cure', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:p0 + g0, poison:p0, gpoison:g0 || undefined, bleed:0}); } // 2026-10-19 (package HN): a Cure of 0 makes no event
@@ -9862,8 +9880,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function sk2Repair(players, sideOf, pl, c, n, stats, events){
     if(!(n > 0)) return 0; const me = sk2PosOf(players, c);
     const hurt = rowsUnitsOf(pl).filter(s=> s && s !== c && !s.gap && s.hp > 0 && !s.cageOf && s.hp < s.maxHp && isStructureCard(s) && sk2Near(sk2PosOf(players, s), me, SK2.repairRange));
-    if(hurt.length){ hurt.sort((x, y)=> (y.maxHp - y.hp) - (x.maxHp - x.hp) || (x.hp / x.maxHp) - (y.hp / y.maxHp) || x.uid - y.uid);
-      const t = hurt[0], h = Math.min(Math.floor(n), t.maxHp - t.hp); if(!(h > 0)) return 0; t.hp += h; healWork++;
+    if(hurt.length){ // ENG38 (2026-11-09, owner: "Never have prioritised targeting"): the most damaged, a tie at random (was: the lower share of Health, then the oldest)
+      const t = eng38Best(hurt, (x, y)=> (y.maxHp - y.hp) - (x.maxHp - x.hp)), h = Math.min(Math.floor(n), t.maxHp - t.hp); if(!(h > 0)) return 0; t.hp += h; healWork++;
       if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetDefId:t.defId, targetUid:t.uid, amount:h, cause:'repair'});
       return h; }
     const i0 = events ? events.length : 0, got = rebuildCastle(players, sideOf, pl.id, c, Math.max(1, Math.floor(n * SK2.repairBrambleRate)), stats, events, 'repair');
@@ -9881,8 +9899,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c.sk2Berries > b0 && recordEvents && events) events.push({type:'statusFx', kind:'sk2Berry', side, attDefId:c.defId, attUid:c.uid, targetSide:side, targetDefId:c.defId, targetUid:c.uid, amount:c.sk2Berries - b0, total:c.sk2Berries});
     if(c.sk2Berries < need) return;
     const hurt = rowsUnitsOf(pl).filter(o=> o && o !== c && !o.gap && o.hp > 0 && !o.cageOf && (o.hp < o.maxHp || o.bleed > 0)); if(!hurt.length) return;
-    hurt.sort((x, y)=> (y.maxHp - y.hp) - (x.maxHp - x.hp) || (x.hp / x.maxHp) - (y.hp / y.maxHp) || x.uid - y.uid);
-    const t = hurt[0]; c.sk2Berries -= need;
+    const t = eng38Best(hurt, (x, y)=> (y.maxHp - y.hp) - (x.maxHp - x.hp)); c.sk2Berries -= need; // ENG38 (2026-11-09): the most hurt, a tie at random (was: the lower share of Health, then the oldest)
     if(recordEvents && events) events.push({type:'statusFx', kind:'sk2BerryEat', side, attDefId:c.defId, attUid:c.uid, targetSide:side, targetDefId:t.defId, targetUid:t.uid, amount:need, total:c.sk2Berries});
     const h = applyHeal(t, Math.max(0, Math.round(SK2.berryHeal)), side, events);
     if(h > 0){ const i0 = events ? events.length : 0; fireHealTriggers(players, sideOf, pl.id, c, t, h, stats, events); if(events && events[i0] && events[i0].type === 'heal') events[i0].cause = 'forage'; }
@@ -9921,25 +9938,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const k = /health|hp/.test(t) ? 'health' : neg ? (/vulnerab/.test(t) ? 'vulnerable' : null) : /thorn/.test(t) ? 'thorns' : /regen/.test(t) ? 'regen' : /bolt/.test(t) ? 'bolt' : /shield/.test(t) ? 'shield' : /armou?r/.test(t) ? 'armor' : null;
       if(k && n > 0) out[k] = (out[k]||0) + n; }); return out; }
   // Grant {skill} N (ENG27, 2026-11-06, owner item 22: "I want a skill that gives another ally a skill - like Enhance/Grant {...} two (2)
-  // allies"): on arrival, the N allies nearest it (2 by default; a tie, the one on the left) gain the braces' skills for the fight
+  // allies"): on arrival, the N allies nearest it (2 by default; a tie at random, ENG38 2026-11-09; was the one on the left) gain the braces' skills for the fight
   // (c.eng27Granted, merged into its derived card by condStatsOf). effects.grantSkill = {skills:{key: value, ...}, n}. A granted On Play
   // does not fire (they have already arrived).
   function eng27Grant(players, sideOf, pid, src, events){
     const g = effectsOf(src).grantSkill, sk = g && g.skills && typeof g.skills === 'object' ? g.skills : null; if(!sk || !Object.keys(sk).length) return [];
     const n = Math.max(1, Math.round(Number(g.n) || 2)), s0 = Number.isInteger(src.slot) ? src.slot : 0;
-    const allies = rowsUnitsOf(players[pid]).filter(c=> c && c !== src && !c.gap && c.hp > 0 && !c.cageOf)
-      .sort((a, b)=> Math.abs((a.slot||0) - s0) - Math.abs((b.slot||0) - s0) || (a.slot||0) - (b.slot||0)).slice(0, n);
+    const allies = eng38TopN(rowsUnitsOf(players[pid]).filter(c=> c && c !== src && !c.gap && c.hp > 0 && !c.cageOf), (a, b)=> Math.abs((a.slot||0) - s0) - Math.abs((b.slot||0) - s0), n, true); // ENG38 (2026-11-09): a tie at random (was: the left one)
     allies.forEach(c=>{ c.eng27Granted = Object.assign(c.eng27Granted || {}, sk); });
     if(allies.length){ syncPhaseStats(players, sideOf, events); if(recordEvents && events) events.push({type:'statusFx', kind:'eng27Grant', side:sideOf(pid), attUid:src.uid, attDefId:src.defId, targets: allies.map(c=> c.uid), skills: Object.keys(sk), amount:allies.length}); }
     return allies;
   }
   // Hype N (ENG27, 2026-11-06, owner item 22: "N allies take their action again, right after"): on arrival, the N Ready allies (1 by default)
-  // with the most Attack (a tie, the nearest, then the left) take their action now: a swing and its shots, as the Test Kit's Attack runs it
+  // with the most Attack (a tie at random, ENG38 2026-11-09; was the nearest, then the left) take their action now: a swing and its shots, as the Test Kit's Attack runs it
   // (resolveCombat's onlyUid pass). Arriving during a fight's combat (a token, a revive), each gets one Fast Forward turn instead.
   function eng27Hype(players, sideOf, pid, src, stats, events){
     const n = Math.max(1, Math.round(Number(effectsOf(src).hype) || 1)), s0 = Number.isInteger(src.slot) ? src.slot : 0, side = sideOf(pid);
     const ready = c=> c && c !== src && !c.gap && c.hp > 0 && !c.cageOf && !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !dozing(c) && !c.chained && !c.petrified;
-    const picks = rowsUnitsOf(players[pid]).filter(ready).sort((a, b)=> effAtk(b) - effAtk(a) || Math.abs((a.slot||0) - s0) - Math.abs((b.slot||0) - s0) || (a.slot||0) - (b.slot||0)).slice(0, n);
+    const picks = eng38TopN(rowsUnitsOf(players[pid]).filter(ready), (a, b)=> effAtk(b) - effAtk(a), n); // ENG38 (2026-11-09): a tie at random (was: the nearest, then the left)
     picks.forEach(c=>{ if(!(c.hp > 0) || players[1].hq.hp <= 0 || players[2].hq.hp <= 0) return;
       if(recordEvents && events) events.push({type:'statusFx', kind:'eng27Hype', side, attUid:src.uid, attDefId:src.defId, targetSide:side, targetUid:c.uid, targetDefId:c.defId, amount:1, ff: combatDepth > 0 || undefined});
       if(combatDepth > 0){ c.ffCounters = (c.ffCounters||0) + 1; return; }
@@ -10046,7 +10062,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(!eqCarrier(src)){ if(recordEvents && events) events.push({type:'sk2', kind:'disarmFull', side, uid:src.uid, defId:src.defId}); return true; }
       const foeId = otherId(pid), foe = players[foeId];
       if(t.lone){ if(!slotMode || !foe || !foe.eqSlots) return true; const s0 = Number.isInteger(src.slot) ? src.slot : 0;
-        const sl = Object.keys(foe.eqSlots).map(Number).filter(x=> foe.eqSlots[x] && !eqTamperProof(foe.eqSlots[x].defId) /* CONTENT3: Tamper-proof */).sort((a, b)=> Math.abs(a - s0) - Math.abs(b - s0) || Math.abs(a) - Math.abs(b) || a - b)[0];
+        const sl = eng38Best(Object.keys(foe.eqSlots).map(Number).filter(x=> foe.eqSlots[x] && !eqTamperProof(foe.eqSlots[x].defId) /* CONTENT3: Tamper-proof */).sort((a, b)=> a - b), (a, b)=> Math.abs(a - s0) - Math.abs(b - s0)); // ENG38 (2026-11-09): the nearest, a tie at random (was: nearer the centre, then the left)
         if(sl == null) return true; const got = foe.eqSlots[sl].defId, gotDur = foe.eqSlots[sl].dur, gotLives = foe.eqSlots[sl].lives; delete foe.eqSlots[sl];
         if(recordEvents && events) events.push({type:'sk2', kind:'disarm', side, uid:src.uid, defId:src.defId, targetSide:sideOf(foeId), slot:sl, equipDefId:got, lone:true});
         eqMeet(players, sideOf, pid, src, got, events, 'disarm', gotDur, gotLives); return true; }
@@ -11539,7 +11555,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // ENG9 (2026-10-26, G2 "check Pitchfork and Trident the same way"): the castle only when none of its lines holds a unit. With the
         // middle line empty and a side line holding one, that side line is the swing proper (Evade, Guardian, Thorns) at its own share.
         let mainLine = prongSpec.kind === 'fork' ? lines[0] : lines.find(l=> l.off === 0);
-        if(!liveAt(mainLine.col) && prongSpec.kind !== 'fork'){ const alt = lines.filter(l=> liveAt(l.col)).sort((x, y)=> Math.abs(x.off) - Math.abs(y.off))[0]; if(alt) mainLine = alt; }
+        if(!liveAt(mainLine.col) && prongSpec.kind !== 'fork'){ const alt = eng38Best(lines.filter(l=> liveAt(l.col)), (x, y)=> Math.abs(x.off) - Math.abs(y.off)); if(alt) mainLine = alt; } // ENG38 (2026-11-09): of two side lines as near, one at random (was: the left one)
         if(liveAt(mainLine.col)){ if(!(target.kind === 'card' && target.col === mainLine.col)){ const en = liveEnemyCols[mainLine.col]; en.col = mainLine.col; target = en; } }
         else target = {kind:'hq'};
         prongCols = lines.filter(l=> l !== mainLine && liveAt(l.col));
@@ -12015,8 +12031,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(sweepN) sweepStrike(sweepCol + 1, 'right');
       // Octolash (2026-10-15, user: "if something can miss, it can miss when cleaving, forking, pitchforking, etc."): every lash rolls its
       // own Blind / darkness miss and Evasive dodge, whatever became of the main swing.
-      if(octoAtk && target && target.kind === 'card'){ const mainCol = target.col, lanesO = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col); const cols = Object.keys(liveEnemyCols).map(Number).filter(c=> c !== mainCol && liveEnemyCols[c] && liveEnemyCols[c].kind==='card' && liveEnemyCols[c].card && liveEnemyCols[c].card.hp > 0)
-          .sort((x, y)=> lanesO.dist(x) - lanesO.dist(y) || x - y).slice(0, 7);
+      if(octoAtk && target && target.kind === 'card'){ const mainCol = target.col, lanesO = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col); const cols = eng38TopN(Object.keys(liveEnemyCols).map(Number).filter(c=> c !== mainCol && liveEnemyCols[c] && liveEnemyCols[c].kind==='card' && liveEnemyCols[c].card && liveEnemyCols[c].card.hp > 0)
+          .sort((x, y)=> x - y), (x, y)=> lanesO.dist(x) - lanesO.dist(y), 7, true); // ENG38 (2026-11-09): the 7 nearest, a tie for the last place at random (was: the left one)
           if(cols.length && recordEvents && events) events.push({type:'statusFx', kind:'octolash', side:mySide, attUid:a.att.uid, attDefId:a.att.defId, targetUid:a.att.uid, targetDefId:a.att.defId, amount:cols.length + 1});
           cols.forEach(c=>{ const lt = liveEnemyCols[c]; if(extraHitBlind(lt && lt.card)){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork', prong:'octolash', targetUid: lt && lt.card ? lt.card.uid : null}); return; } forkStrike(c, false, 'octolash'); swingLanded = true; }); }
       // Fork / Trident / Pitchfork prongs (2026-10-15, see prongSpec above): the other nearest units in range. A miss or dodge on
@@ -12176,7 +12192,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, c18HabitatBonus /* CONTENT18 (2026-11-08): the app's wave summons and its test */, endOfRoundUpkeep, applyDecayTicks, swingSpeedOf, shotSpeedOf, flyLevelOf, isRaging, damageHQ /* 2026-11-06 (package ENG27): for its test */, isMagicDmg, blockerReady, reviveFromGrave, spendOnReady /* 2026-10-26 (package ENG9): for its test */, fortifyParts, buildSizeOf, deliveryResOf, shotRedirect /* 2026-11-03 (package ENG22): for the app and its test */, boonState: players=> boonStateOf(players && players[boonPid()]) /* 2026-10-24 (package DF3): the selfish boon's count */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, ownedCells /* COOP3 */, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, zeitPhase /* ENG11 (K6) */, scorchingOn /* ENG11 (K10) */, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, eng32DiveBonus /* ENG32 (2026-11-07) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */, EN8_DEF, pearlSettle, pearlGap, aiUsefulNow, aiResourceGap, aiLethalBlock, aiLosingBadly, aiFreeCard, AI_PLAN: ()=> ({reach: AI_PLAN_REACH, turns: AI_PLAN_TURNS, value: AI_PLAN_VALUE}) /* ENG14 (2026-10-30, X24) */, mirageOwnerKey, bolaPinnable /* ENG14 */, aiIncomingOnBramble, hasThornsNow, magicArmorOf, redirectToGuardian /* EN8 (2026-10-24) */, EN20, en20HpAfter, en20IsLeader, getWindKind: ()=> windNow ? windKind : null, isCrosswind, isHeavyWind, aiDevourPlan /* ENG20 (2026-11-02) */, crepuscularParts, eng23SkitterOn, eng23GrantFF, feedBramble, aimedBolt, eng23CanFeed, eng23CanAim, eng23FeedCfg, ENG23_FEED_DEF, eng23AiBramble /* ENG23 (2026-11-04) */, relictOf, immunityOf, eng24MeldFrom, eng24Sequester, eng24SeqExpire, eng24SeqKeysOf, ENG24_SEQ_KEYS, eng24HerbCfg /* ENG24 (2026-11-04) */, eng30Ground, ENG30_KEYS /* ENG30 (2026-11-07) */, ENG33_DEF, eng33PoisonousN, eng33CanPlayDead, BULWARK_WALL_ID /* ENG33 (2026-11-07) */, ENG36_STATUS, ENG36_PREFIX, eng36Rel, eng36Dot, eng36Chance, eng36SummonDefId, eng36StatsAt, eng36BaseLevel, constrictUnit, hoardN, hoardStatsOf /* ENG36 (2026-11-08) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, ownedCells /* COOP3 */, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, zeitPhase /* ENG11 (K6) */, scorchingOn /* ENG11 (K10) */, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, eng32DiveBonus /* ENG32 (2026-11-07) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */, EN8_DEF, pearlSettle, pearlGap, aiUsefulNow, aiResourceGap, aiLethalBlock, aiLosingBadly, aiFreeCard, AI_PLAN: ()=> ({reach: AI_PLAN_REACH, turns: AI_PLAN_TURNS, value: AI_PLAN_VALUE}) /* ENG14 (2026-10-30, X24) */, mirageOwnerKey, bolaPinnable /* ENG14 */, aiIncomingOnBramble, hasThornsNow, magicArmorOf, redirectToGuardian /* EN8 (2026-10-24) */, EN20, en20HpAfter, en20IsLeader, getWindKind: ()=> windNow ? windKind : null, isCrosswind, isHeavyWind, aiDevourPlan /* ENG20 (2026-11-02) */, crepuscularParts, eng23SkitterOn, eng23GrantFF, feedBramble, aimedBolt, eng23CanFeed, eng23CanAim, eng23FeedCfg, ENG23_FEED_DEF, eng23AiBramble /* ENG23 (2026-11-04) */, relictOf, immunityOf, eng24MeldFrom, eng24Sequester, eng24SeqExpire, eng24SeqKeysOf, ENG24_SEQ_KEYS, eng24HerbCfg /* ENG24 (2026-11-04) */, eng30Ground, ENG30_KEYS /* ENG30 (2026-11-07) */, ENG33_DEF, eng33PoisonousN, eng33CanPlayDead, BULWARK_WALL_ID /* ENG33 (2026-11-07) */, ENG36_STATUS, ENG36_PREFIX, eng36Rel, eng36Dot, eng36Chance, eng36SummonDefId, eng36StatsAt, eng36BaseLevel, constrictUnit, hoardN, hoardStatsOf /* ENG36 (2026-11-08) */, eng38Pick, eng38Best, eng38TopN /* ENG38 (2026-11-09): for its test */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

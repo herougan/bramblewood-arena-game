@@ -4316,7 +4316,7 @@
  "A side skill in the Codex draft's skill distribution for this map": "Skill sampingan peta ini dalam draf distribusi Codex",
  "Codex draft pick (no card on this map has it yet)": "Pilihan draf Codex (belum ada kartu di peta ini yang memilikinya)",
  "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "Terbang tidak bisa menghindarinya. Tanpa lawan di depan, ia menyerang lawan di jalur sebelah, bukan semak duri.",
- "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "Serangannya dihitung sebagai Terbang 1: penerbang tak pernah menghindarinya, unit Mach 1 dari 2. Bila jalurnya kosong, ia menyerang lawan di jalur sebelah (yang Darahnya lebih sedikit; seri, lempar koin) dan hanya mengenai semak duri bila keduanya kosong. Ejekan tetap menariknya.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (a coin flip when both have one) and hits the bramble only when neither lane has one. Taunt still draws it.": "Serangannya dihitung sebagai Terbang 1: penerbang tak pernah menghindarinya, unit Mach 1 dari 2. Bila jalurnya kosong, ia menyerang lawan di jalur sebelah (lempar koin bila keduanya ada) dan hanya mengenai semak duri bila keduanya kosong. Ejekan tetap menariknya.",
  "{a} reaches into the next lane and strikes {t}.": "{a} menjangkau jalur sebelah dan menyerang {t}.",
  "Reach": "Jangkauan",
  "Shield: Armor": "Perisai: Zirah",

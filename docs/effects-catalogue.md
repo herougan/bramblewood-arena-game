@@ -1650,3 +1650,12 @@ The engine decides; this describes.
 - **Thanatosis** (rework): while it plays dead, swings pass through to its bramble (`resolveLiveTarget`), aimed skills miss it, a random pick can hit it (`eng36RandUid`). It floats up at the next round start (`.eng36-floatup`, not under reduced motion). The 😵 chip greys as used.
 - **Constrict N** (`constrict`, 🐍): its melee hits Bind and squeeze (N) for a round, and the held unit skips its turn and loses its skills and triggers (Silence through `sk3Apply`). Status `constricted`, skip reason `constricted`, `statusFx` kind `constrict`. Actions `strangle` / `constrict` (amount = squeeze, who / sub / targets).
 - **Hoard N**: +N/+N for each Lumber held, floor(Lumber x N), N may be a fraction (in `condStatsOf`, like Timber). Decision ENG36-1.
+
+## 2026-11-09 (package ENG38): targeting picks at random
+
+The engine decides; this describes (owner 2026-11-09 21:36 on ENG37-1: "Never have prioritised targeting, alwayes default to randomign"; `docs/project-state.md`).
+- **Reach**: with nothing opposite and a unit in both lanes beside it, a coin flip (`eng37ReachPick`; was the one with less Health). Taunt still draws it.
+- **Named rules kept, ties random** (`eng38Best` / `eng38TopN`, the fight's seeded RNG, a roll only on a real tie): Healing and the Herb Refinery (most wounded), Cure (most envenomed), Repair (most damaged structure), Berries (most hurt), Hype (most Attack), Grant (the N nearest), Rampart (the nearest), Disarm (the nearest lying weapon), a "furthest" ally, the bosses' Thistle Prick / Undertow / Root Grip / Lodge Repairs, Trident / Pitchfork with the middle line empty (one of the two side lines), Octolash's 7 nearest. Was: left first, first listed, or the newest.
+- **No rule in the text, now random** (`eng38Pick`): Amore's mate (was the nearest), Dismantle's loose piece (was the nearest).
+- Already random before: Arrow / Bolts / Bola / Lasso "facing, else nearest" ties, Bloodlust's leap, Restless, Guardian, Spellward, Taunt ties, Nursing ties, Rocket ties, Missile, Snipe, Spitfire.
+- Not changed: the CPU's choices (where it plays, Equipment, hazards, Parasites, Devour, its Aimed Bolt) are strategy; the old row ("gravity") board's left-hand facing convention; the raid file's own picks. Call ENG38-1: whether the named rules go random too.

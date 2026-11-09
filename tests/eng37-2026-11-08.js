@@ -38,9 +38,10 @@ const swing = (e, P, c, ev)=>{ ev = ev || []; e.debugAttack(P, so, c.uid, {}, ev
 // a unit opposite: the normal target
 { const {e, P} = mk(); const a = put(e, P, 1, 'e37-reach', 0), o = put(e, P, 2, 'e37-wall', 0), s = put(e, P, 2, 'e37-wall5', 1); swing(e, P, a);
   ok(o.hp === 47 && s.hp === 5, 'with a unit opposite it strikes that unit, as before'); }
-// two beside it: the one with less Health
+// two beside it: one of them, a coin flip whatever their Health (ENG38, 2026-11-09, owner on ENG37-1 b; was: the one with less Health).
+// The full check (both sides over seeds, Health no longer counts) is in tests/eng38-2026-11-09.js.
 { const {e, P} = mk(); const a = put(e, P, 1, 'e37-reach', 0), l = put(e, P, 2, 'e37-wall', -1), r = put(e, P, 2, 'e37-wall5', 1); swing(e, P, a);
-  ok(l.hp === 50 && r.hp === 2, `two beside it: it strikes the one with less Health (${l.hp}, ${r.hp})`); }
+  ok((l.hp === 47) !== (r.hp === 2), `two beside it: it strikes exactly one of them (${l.hp}, ${r.hp})`); }
 // a tie: a coin flip (both sides come up over seeds)
 { const seen = new Set(); for(let s = 1; s <= 30; s++){ const {e, P} = mk(100 + s); const a = put(e, P, 1, 'e37-reach', 0), l = put(e, P, 2, 'e37-wall', -1), r = put(e, P, 2, 'e37-wall', 1); swing(e, P, a); if(l.hp < 50) seen.add('L'); if(r.hp < 50) seen.add('R'); }
   ok(seen.size === 2, 'two beside it with the same Health: a coin flip (both sides struck over 30 seeds)'); }

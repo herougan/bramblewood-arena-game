@@ -4317,7 +4317,7 @@
  "A side skill in the Codex draft's skill distribution for this map": "Codex 초안에서 이 맵의 보조 스킬",
  "Codex draft pick (no card on this map has it yet)": "Codex 초안 추천(이 맵의 카드에는 아직 없음)",
  "Flying can't dodge it. With no foe opposite, it strikes a foe in the lane beside it instead of the bramble.": "비행으로 피할 수 없습니다. 맞은편에 적이 없으면 가시덤불 대신 옆 라인의 적을 공격합니다.",
- "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (the one with less Health; a tie, a coin flip) and hits the bramble only when neither lane has one. Taunt still draws it.": "공격은 비행 1로 취급됩니다: 비행 유닛은 절대 피할 수 없고, 마하 유닛은 2번에 1번 피합니다. 자기 라인이 비면 옆 라인의 적을 공격하며(체력이 적은 쪽, 같으면 동전 던지기), 양쪽 모두 없을 때만 가시덤불을 공격합니다. 도발에는 여전히 끌립니다.",
+ "Its swing counts as Flying 1: a Flyer never dodges it, a Mach unit 1 in 2. With its own lane empty it strikes an enemy in a lane beside it (a coin flip when both have one) and hits the bramble only when neither lane has one. Taunt still draws it.": "공격은 비행 1로 취급됩니다: 비행 유닛은 절대 피할 수 없고, 마하 유닛은 2번에 1번 피합니다. 자기 라인이 비면 옆 라인의 적을 공격하며(양쪽 모두 있으면 동전 던지기), 양쪽 모두 없을 때만 가시덤불을 공격합니다. 도발에는 여전히 끌립니다.",
  "{a} reaches into the next lane and strikes {t}.": "{a}이(가) 옆 라인까지 닿아 {t}을(를) 공격합니다.",
  "Reach": "리치",
  "Shield: Armor": "보호막: 방어구",
